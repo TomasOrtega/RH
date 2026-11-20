@@ -13,18 +13,18 @@ variable {W : Type} [AddCommGroup W] [Module ℚ W]
 def Keeps (P : W → Prop) (f : Module.End ℚ W) : Prop := ∀ x, P x → P (f x)
 
 /- English proof (translation)
-Introduce `x hx` and use `by simpa using hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma keeps_one (P : W → Prop) : Keeps P 1 := fun x hx => by simpa using hx
 
 /- English proof (translation)
-Introduce `x hx` and use `by rw [Module.End.mul_apply]; exact hf _ (hg _ hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma keeps_mul {P : W → Prop} {f g : Module.End ℚ W} (hf : Keeps P f) (hg : Keeps P g) : Keeps P (f * g) :=
   fun x hx => by rw [Module.End.mul_apply]; exact hf _ (hg _ hx)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa using keeps_one P`. Consider the case `cons f l ih`. Rewrite using `[List.prod_cons]`. Conclude with `keeps_mul (h f (by simp)) (ih fun g hg => h g (by simp [hg]))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma keeps_prod {P : W → Prop} (l : List (Module.End ℚ W)) (h : ∀ f ∈ l, Keeps P f) : Keeps P l.prod := by
   induction l with
@@ -34,7 +34,7 @@ lemma keeps_prod {P : W → Prop} (l : List (Module.End ℚ W)) (h : ∀ f ∈ l
     exact keeps_mul (h f (by simp)) (ih fun g hg => h g (by simp [hg]))
 
 /- English proof (translation)
-Unfold `proj`. Conclude with `Commute.sum_right _ _ _ fun k _ => (h k).smul_right _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma commute_proj' {A : Type} [Ring A] [Algebra ℚ A] {f X Y : A} (h : ∀ k : ℕ, Commute f (Y ^ k * X ^ k))
     (K j : ℕ) : Commute f (proj K j X Y) := by
@@ -42,21 +42,21 @@ lemma commute_proj' {A : Type} [Ring A] [Algebra ℚ A] {f X Y : A} (h : ∀ k :
   exact Commute.sum_right _ _ _ fun k _ => (h k).smul_right _
 
 /- English proof (translation)
-The claim follows from `commute_proj' (fun k => (hY.pow_right k).mul_right (hX.pow_right k)) K j`.
+A detailed English derivation is pending.
 -/
 lemma commute_proj {A : Type} [Ring A] [Algebra ℚ A] {f X Y : A} (hX : Commute f X) (hY : Commute f Y) (K j : ℕ) :
     Commute f (proj K j X Y) :=
   commute_proj' (fun k => (hY.pow_right k).mul_right (hX.pow_right k)) K j
 
 /- English proof (translation)
-The claim follows from `(commute_proj (commute_proj h1 h2 K' j').symm (commute_proj h3 h4 K' j').symm K j).symm`.
+A detailed English derivation is pending.
 -/
 lemma commute_proj_proj {A : Type} [Ring A] [Algebra ℚ A] {X Y X' Y' : A} (h1 : Commute X X') (h2 : Commute X Y')
     (h3 : Commute Y X') (h4 : Commute Y Y') (K j K' j' : ℕ) : Commute (proj K j X Y) (proj K' j' X' Y') :=
   (commute_proj (commute_proj h1 h2 K' j').symm (commute_proj h3 h4 K' j').symm K j).symm
 
 /- English proof (translation)
-Unfold `proj`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Break down `Nat.even_or_odd k with h | h` into its components or cases. Rewrite using `[h.neg_pow, h.neg_pow]`. Rewrite using `[h.neg_pow, h.neg_pow, neg_mul_neg]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma proj_neg {A : Type} [Ring A] [Algebra ℚ A] (K j : ℕ) (X Y : A) : proj K j (-X) (-Y) = proj K j X Y := by
   unfold proj
@@ -66,9 +66,9 @@ lemma proj_neg {A : Type} [Ring A] [Algebra ℚ A] (K j : ℕ) (X Y : A) : proj 
   · rw [h.neg_pow, h.neg_pow, neg_mul_neg]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.CommutatorPowerFormula.commutator_pow_of_commutator_eq_smul`. Consider the case `exact _root_.GlobalTheory.CommutatorPowerFormula.commutator_pow_of_commutator_eq_smul`. Consider the case `(apply _root_.GlobalTheory.CommutatorPowerFormula.commutator_pow_of_commutator_eq_smul <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.CommutatorPowerFormula.commutator_pow_of_commutator_eq_smul <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.CommutatorPowerFormula.commutator_pow_of_commutator_eq_smul <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.CommutatorPowerFormula.commutator_pow_of_commutator_eq_smul ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma comm_pow_of {A : Type} [Ring A] [Algebra ℚ A] {H X : A} {s : ℚ} (h : H * X - X * H = s • X) (k : ℕ) :
     H * X ^ k - X ^ k * H = ((k : ℚ) * s) • X ^ k := by
@@ -81,9 +81,9 @@ lemma comm_pow_of {A : Type} [Ring A] [Algebra ℚ A] {H X : A} {s : ℚ} (h : H
   | (intros; exact _root_.GlobalTheory.CommutatorPowerFormula.commutator_pow_of_commutator_eq_smul ..)
 
 /- English proof (translation)
-Establish `h1` using `comm_pow_of hX k`. Establish `h2` using `comm_pow_of hY k`. Establish `e : H * (Y ^ k * X ^ k) = (H * Y ^ k - Y ^ k * H) * X ^ k + Y ^ k * (H * X ^ k - X ^ k * H) + Y ^ k * X ^ k * H` using `by noncomm_ring`. Use `show H * (Y ^ k * X ^ k) = Y ^ k * X ^ k * H`. Rewrite using `[e, h1, h2, smul_mul_assoc, mul_smul_comm, ← add_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ((k : ℚ) * -s + (k : ℚ) * s) = 0` using `by ring`. Rewrite using `[this, zero_smul, zero_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma commute_pair_pow {A : Type} [Ring A] [Algebra ℚ A] {H X Y : A} {s : ℚ} (hX : H * X - X * H = s • X)
     (hY : H * Y - Y * H = (-s) • Y) (k : ℕ) : Commute H (Y ^ k * X ^ k) := by
@@ -99,7 +99,7 @@ lemma commute_pair_pow {A : Type} [Ring A] [Algebra ℚ A] {H X Y : A} {s : ℚ}
 variable {N : ℕ} {D : ℕ → ℕ → Module.End ℚ W}
 
 /- English proof (translation)
-Use `hD a b c d ha hb hc hd` as an intermediate fact. Rewrite `this` using `[if_neg hbc, if_neg hda, sub_zero]`. Conclude with `sub_eq_zero.mp this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma comm_off (hD : GlRel N D) {a b c d : ℕ} (ha : a < N) (hb : b < N) (hc : c < N) (hd : d < N)
     (hbc : b ≠ c) (hda : d ≠ a) : Commute (D a b) (D c d) := by
@@ -108,9 +108,9 @@ lemma comm_off (hD : GlRel N D) {a b c d : ℕ} (ha : a < N) (hb : b < N) (hc : 
   exact sub_eq_zero.mp this
 
 /- English proof (translation)
-Rewrite using `[hD c c i j hc hc hi hj]`. Apply the tactic sequence `by_cases h1 : c = i <;> by_cases h2 : j = c`. Substitute `h1` using the available equality. Substitute `h2` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `h1` using the available equality. Simplify using `[h2, Ne.symm h2]`. Substitute `h2` using the available equality. Simplify using `[h1]`. Simplify using `[h1, h2, Ne.symm h2]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma diag_comm (hD : GlRel N D) {c i j : ℕ} (hc : c < N) (hi : i < N) (hj : j < N) :
     D c c * D i j - D i j * D c c = ((if c = i then 1 else 0) - (if c = j then 1 else 0) : ℚ) • D i j := by
@@ -122,7 +122,7 @@ lemma diag_comm (hD : GlRel N D) {c i j : ℕ} (hc : c < N) (hi : i < N) (hj : j
   · simp [h1, h2, Ne.symm h2]
 
 /- English proof (translation)
-Unfold `rootP`. Use `commute_proj' (fun k => commute_pair_pow (diag_comm hD hc hi hj) ?_ k) _ _` and prove the remaining obligations. Rewrite using `[diag_comm hD hc hj hi, neg_sub]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma commute_diag_rootP (hD : GlRel N D) (K : ℕ) {c i j : ℕ} (hc : c < N) (hi : i < N) (hj : j < N) :
     Commute (D c c) (rootP D K i j) := by
@@ -134,13 +134,13 @@ def PZ (N : ℕ) (D : ℕ → ℕ → Module.End ℚ W) (k : ℕ) (x : W) : Prop
   (∀ c < N, D c c x = 0) ∧ D k (k + 1) x = 0
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, h.eq, Module.End.mul_apply, hx, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma zero_of_comm {f X : Module.End ℚ W} (h : Commute X f) {x : W} (hx : X x = 0) : X (f x) = 0 := by
   rw [← Module.End.mul_apply, h.eq, Module.End.mul_apply, hx, map_zero]
 
 /- English proof (translation)
-Introduce and unpack `x ⟨h0, h1⟩`. Conclude with `⟨fun c hc' => zero_of_comm (hc c hc') (h0 c hc'), zero_of_comm hk h1⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 lemma keeps_of_comm {k : ℕ} {f : Module.End ℚ W} (hc : ∀ c < N, Commute (D c c) f)
     (hk : Commute (D k (k + 1)) f) : Keeps (PZ N D k) f := by
@@ -148,7 +148,7 @@ lemma keeps_of_comm {k : ℕ} {f : Module.End ℚ W} (hc : ∀ c < N, Commute (D
   exact ⟨fun c hc' => zero_of_comm (hc c hc') (h0 c hc'), zero_of_comm hk h1⟩
 
 /- English proof (translation)
-Use `keeps_of_comm (fun c hc => commute_diag_rootP hD K hc hi hj) ?_` and prove the remaining obligations. Unfold `rootP`. Conclude with `commute_proj (comm_off hD (by omega) hk hi hj (Ne.symm hik') hjk) (comm_off hD (by omega) hk hj hi (Ne.symm hjk') hik) _ _`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma keeps_rootP_far (hD : GlRel N D) (K : ℕ) {k i j : ℕ} (hk : k + 1 < N) (hi : i < N) (hj : j < N)
     (hik : i ≠ k) (hik' : i ≠ k + 1) (hjk : j ≠ k) (hjk' : j ≠ k + 1) : Keeps (PZ N D k) (rootP D K i j) := by
@@ -158,9 +158,9 @@ lemma keeps_rootP_far (hD : GlRel N D) (K : ℕ) {k i j : ℕ} (hk : k + 1 < N) 
     (comm_off hD (by omega) hk hj hi (Ne.symm hjk') hik) _ _
 
 /- English proof (translation)
-Introduce and unpack `x ⟨h0, h1⟩`. Use `⟨fun c hc => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply]`. Conclude with `zero_of_comm (commute_diag_rootP hD K hc (by omega) (by omega)) (zero_of_comm (commute_diag_rootP hD K hc (by omega) hk) (h0 c hc))`. Use `h2 W N K D hD hB i k (k + 1) (by omega) (by omega) hk (by omega) (by omega) (by omega) (k - i - 1) x (h0 i (by omega)) (h0 k (by omega)) (h0 (k + 1) hk) h1` as an intermediate fact.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : k + 1 - i - 1 = k - i - 1 + 1` using `by omega`. Simplify `this` using `only [Module.End.mul_apply, rootP, e]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma keeps_pair_row (hD : GlRel N D) {K : ℕ} (hB : Bdd N (2 * K) D) (h2 : RankTwo) {k i : ℕ} (hk : k + 1 < N)
     (hi : i < k) : Keeps (PZ N D k) (rootP D K i k * rootP D K i (k + 1)) := by
@@ -175,11 +175,11 @@ lemma keeps_pair_row (hD : GlRel N D) {K : ℕ} (hB : Bdd N (2 * K) D) (h2 : Ran
     simpa only [Module.End.mul_apply, rootP, e] using this
 
 /- English proof (translation)
-Introduce `a b c d ha hb hc hd`. Establish `h` using `hD d c b a hd hc hb ha`. Establish `e : -D b a * -D d c - -D d c * -D b a = -(D d c * D b a - D b a * D d c)` using `by noncomm_ring`. Simplify using `only`. Rewrite using `[e, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases h1 : b = c <;> by_cases h3 : d = a`. Substitute `h1` using the available equality. Substitute `h3` using the available equality. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
+Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Substitute `h1` using the available equality. Simplify using `[h3, Ne.symm h3]`. Substitute `h3` using the available equality. Simplify using `[h1, Ne.symm h1]`. Simplify using `[h1, h3, Ne.symm h1, Ne.symm h3]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma glRel_twist (hD : GlRel N D) : GlRel N (fun c d => -D d c) := by
   intro a b c d ha hb hc hd
@@ -194,7 +194,7 @@ lemma glRel_twist (hD : GlRel N D) : GlRel N (fun c d => -D d c) := by
   · simp [h1, h3, Ne.symm h1, Ne.symm h3]
 
 /- English proof (translation)
-Introduce `a ha b hb n x hx hn`. Use `hB b hb a ha n x ?_ hn` and prove the remaining obligations. Rewrite using `[← hx]`. Simplify using `only [LinearMap.neg_apply]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 lemma bdd_twist {K : ℕ} (hB : Bdd N K D) : Bdd N K (fun c d => -D d c) := by
   intro a ha b hb n x hx hn
@@ -204,9 +204,9 @@ lemma bdd_twist {K : ℕ} (hB : Bdd N K D) : Bdd N K (fun c d => -D d c) := by
   abel
 
 /- English proof (translation)
-Introduce and unpack `x ⟨h0, h1⟩`. Use `⟨fun c hc => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply]`. Conclude with `zero_of_comm (commute_diag_rootP hD K hc (by omega) hj) (zero_of_comm (commute_diag_rootP hD K hc (by omega) hj) (h0 c hc))`. Use `h2 W N K (fun c d => -D d c) (glRel_twist hD) (bdd_twist hB) j (k + 1) k hj (by omega) (by omega) (by omega) (by omega) (by omega) (j - (k + 1) - 1) x (by simp [h0 j hj]) (by simp [h0 (k + 1) (by omega)]) (by simp [h0 k (by omega)]) (by simp [h1])` as an intermediate fact.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : j - k - 1 = j - (k + 1) - 1 + 1` using `by omega`. Simplify using `only [proj_neg, LinearMap.neg_apply, neg_eq_zero] at this`. Simplify `this` using `only [Module.End.mul_apply, rootP, e]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma keeps_pair_twist (hD : GlRel N D) {K : ℕ} (hB : Bdd N (2 * K) D) (h2 : RankTwo) {k j : ℕ}
     (hkj : k + 1 < j) (hj : j < N) : Keeps (PZ N D k) (rootP D K (k + 1) j * rootP D K k j) := by
@@ -223,7 +223,7 @@ lemma keeps_pair_twist (hD : GlRel N D) {K : ℕ} (hB : Bdd N (2 * K) D) (h2 : R
     simpa only [Module.End.mul_apply, rootP, e] using this
 
 /- English proof (translation)
-Use `keeps_prod _ fun f hf => ?_` and prove the remaining obligations. Take `⟨m, hm', rfl⟩` from `List.mem_map.mp hf`. Rewrite `hm'` using `[List.mem_range'_1]`. Conclude with `hm m hm'.1 hm'.2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma keeps_range' {P : W → Prop} (h : ℕ → Module.End ℚ W) (s n : ℕ)
     (hm : ∀ m, s ≤ m → m < s + n → Keeps P (h m)) : Keeps P ((List.range' s n).map h).prod := by
@@ -233,11 +233,11 @@ lemma keeps_range' {P : W → Prop} (h : ℕ → Module.End ℚ W) (s n : ℕ)
   exact hm m hm'.1 hm'.2
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro s hs hn`. Use linear arithmetic over natural numbers and integers. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Introduce `s hs hn hm`. Rewrite using `[List.range'_succ, List.map_cons, List.prod_cons]`. Distinguish the cases in `hsk : s = k`. Substitute `hsk` using the available equality. Take `⟨n', rfl⟩ : ∃ n', n = n' + 1` from `⟨n - 1, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Rewrite using `[List.range'_succ, List.map_cons, List.prod_cons, ← mul_assoc]`. Conclude with `keeps_mul hpair (keeps_range' h _ _ fun m h1 h2 => hm m (by omega) (by omega) (by omega) (by omega))`. Conclude with `keeps_mul (hm s le_rfl (by omega) hsk (by omega)) (ih (s + 1) (by omega) (by omega) fun m h1 h2 h3 h4 => hm m (by omega) (by omega) h3 h4)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma keeps_range'_pair {P : W → Prop} (h : ℕ → Module.End ℚ W) (k : ℕ) (hpair : Keeps P (h k * h (k + 1))) :
     ∀ n s, s ≤ k → k + 1 < s + n → (∀ m, s ≤ m → m < s + n → m ≠ k → m ≠ k + 1 → Keeps P (h m)) →
@@ -257,7 +257,7 @@ lemma keeps_range'_pair {P : W → Prop} (h : ℕ → Module.End ℚ W) (k : ℕ
         (ih (s + 1) (by omega) (by omega) fun m h1 h2 h3 h4 => hm m (by omega) (by omega) h3 h4)
 
 /- English proof (translation)
-Rewrite using `[List.range_succ, List.reverse_append]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma grid_succ (g : ℕ → Module.End ℚ W) (n : ℕ) :
     ((List.range (n + 1)).reverse.map g).prod = g n * ((List.range n).reverse.map g).prod := by
@@ -265,7 +265,7 @@ lemma grid_succ (g : ℕ → Module.End ℚ W) (n : ℕ) :
   simp
 
 /- English proof (translation)
-Use `keeps_prod _ fun f hf => ?_` and prove the remaining obligations. Take `⟨m, hm', rfl⟩` from `List.mem_map.mp hf`. Rewrite `hm'` using `[List.mem_reverse, List.mem_range]`. Conclude with `hm m hm'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma keeps_grid {P : W → Prop} (g : ℕ → Module.End ℚ W) (n : ℕ) (hm : ∀ m < n, Keeps P (g m)) :
     Keeps P ((List.range n).reverse.map g).prod := by
@@ -275,11 +275,11 @@ lemma keeps_grid {P : W → Prop} (g : ℕ → Module.End ℚ W) (n : ℕ) (hm :
   exact hm m hm'
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro h`. Use linear arithmetic over natural numbers and integers. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Introduce `hn hm`. Rewrite using `[grid_succ]`. Distinguish the cases in `hnk : n = k + 1`. Substitute `hnk` using the available equality. Rewrite using `[grid_succ, ← mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `keeps_mul hpair (keeps_grid g k fun m hm' => hm m (by omega) (by omega) (by omega))`. Conclude with `keeps_mul (hm n (by omega) (by omega) hnk) (ih (by omega) fun m h1 h2 h3 => hm m (by omega) h2 h3)`.
+A detailed English derivation is pending.
 -/
 lemma keeps_grid_pair {P : W → Prop} (g : ℕ → Module.End ℚ W) (k : ℕ) (hpair : Keeps P (g (k + 1) * g k)) :
     ∀ n, k + 2 ≤ n → (∀ m < n, m ≠ k → m ≠ k + 1 → Keeps P (g m)) →
@@ -297,13 +297,13 @@ lemma keeps_grid_pair {P : W → Prop} (g : ℕ → Module.End ℚ W) (k : ℕ) 
     · exact keeps_mul (hm n (by omega) (by omega) hnk) (ih (by omega) fun m h1 h2 h3 => hm m (by omega) h2 h3)
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro s _ _`. Simplify using `using keeps_one P`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `s hp hc`. Rewrite using `[List.range'_succ, List.map_cons, List.prod_cons, List.map_cons, List.prod_cons]`. Establish `hcomm : Commute ((List.range' (s + 1) n).map A).prod (B s)`. Use `Commute.list_prod_left _ _ fun f hf => ?_` and prove the remaining obligations. Take `⟨m, hm', rfl⟩` from `List.mem_map.mp hf`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `hm'` using `[List.mem_range'_1]`. Conclude with `hc s m le_rfl (by omega) (by omega) (by omega) (by omega)`. Establish `e : A s * ((List.range' (s + 1) n).map A).prod * (B s * ((List.range' (s + 1) n).map B).prod) = (A s * B s) * (((List.range' (s + 1) n).map A).prod * ((List.range' (s + 1) n).map B).prod)`. Rewrite using `[mul_assoc, ← mul_assoc ((List.range' (s + 1) n).map A).prod, hcomm.eq]`. Simplify using `only [mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `keeps_mul (hp s le_rfl (by omega)) (ih (s + 1) (fun j h1 h2 => hp j (by omega) (by omega)) fun j j' h1 h2 h3 h4 h5 => hc j j' (by omega) (by omega) (by omega) (by omega) h5)`.
+A detailed English derivation is pending.
 -/
 lemma keeps_rows_pair {P : W → Prop} (A B : ℕ → Module.End ℚ W) :
     ∀ n s, (∀ j, s ≤ j → j < s + n → Keeps P (A j * B j)) →
@@ -330,15 +330,15 @@ lemma keeps_rows_pair {P : W → Prop} (A B : ℕ → Module.End ℚ W) :
         fun j j' h1 h2 h3 h4 h5 => hc j j' (by omega) (by omega) (by omega) (by omega) h5)
 
 /- English proof (translation)
-Establish `key : ∀ n c, c + n + 1 < N → D c (c + n + 1) x = 0 ∧ D (c + n + 1) c x = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro c hc`. Conclude with `⟨hup c hc, hdown c hc⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `succ n ih`. Introduce `c hc`. Take `⟨ih1, ih2⟩` from `ih c (by omega)`. Establish `e : c + (n + 1) + 1 = c + n + 1 + 1` using `by omega`. Rewrite `hc`, the goal using `[e]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `e1` using `hD c (c + n + 1) (c + n + 1) (c + n + 1 + 1) (by omega) (by omega) (by omega) hc`. Rewrite `e1` using `[if_pos rfl, if_neg (by omega), sub_zero]`. Establish `e2` using `hD (c + n + 1 + 1) (c + n + 1) (c + n + 1) c hc (by omega) (by omega) (by omega)`. Rewrite `e2` using `[if_pos rfl, if_neg (by omega), sub_zero]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[← e1, LinearMap.sub_apply, Module.End.mul_apply, Module.End.mul_apply, hup _ hc, ih1, map_zero, map_zero, sub_zero]`. Rewrite using `[← e2, LinearMap.sub_apply, Module.End.mul_apply, Module.End.mul_apply, hdown _ hc, ih2, map_zero, map_zero, sub_zero]`. Introduce `c hc d hd`. Break down `lt_trichotomy c d with h | rfl | h` into its components or cases. Take `⟨n, rfl⟩ : ∃ n, d = c + n + 1` from `⟨d - c - 1, by omega⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `(key n c hd).1`. Conclude with `hZ c hc`. Take `⟨n, rfl⟩ : ∃ n, c = d + n + 1` from `⟨c - d - 1, by omega⟩`. Conclude with `(key n d hc).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma fill (hD : GlRel N D) (x : W) (hZ : ∀ c < N, D c c x = 0) (hup : ∀ k, k + 1 < N → D k (k + 1) x = 0)
     (hdown : ∀ k, k + 1 < N → D (k + 1) k x = 0) : ∀ c < N, ∀ d < N, D c d x = 0 := by
@@ -373,27 +373,25 @@ end GlobalTheory.LeviCut.GridProof
 open GlobalTheory.LeviCut.GridProof in
 
 /- English proof (translation)
-Introduce `W _ _ a b K D hD hB T hT`. Establish `hcommG : ∀ c < a + b, Commute (D c c) (gridP D K a b a)`. Introduce `c hc`. Use `Commute.list_prod_right _ _ fun f hf => ?_` and prove the remaining obligations. Take `⟨i, hi, rfl⟩` from `List.mem_map.mp hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `hi` using `[List.mem_reverse, List.mem_range]`. Use `Commute.list_prod_right _ _ fun f hf => ?_` and prove the remaining obligations. Take `⟨j, hj, rfl⟩` from `List.mem_map.mp hf`. Rewrite `hj` using `[List.mem_range'_1]`. Conclude with `commute_diag_rootP hD K hc (by omega) (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hZ : ∀ c < a + b, D c c (gridP D K a b a T) = 0` using `fun c hc => zero_of_comm (hcommG c hc) (hT c hc c hc Iff.rfl)`. Establish `hup : ∀ k, k + 1 < a + b → D k (k + 1) (gridP D K a b a T) = 0`. Introduce `k hk`. Break down `lt_trichotomy (k + 1) a with hka | hka | hka` into its components or cases. Establish `hT0 : PZ (a + b) D k T` using `⟨fun c hc => hT c hc c hc Iff.rfl, hT k (by omega) (k + 1) hk (by omega)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(keeps_grid_pair (P := PZ (a + b) D k) (fun i => rowP D K i a b) k ?_ a (by omega) ?_ T hT0).2` and prove the remaining obligations. Conclude with `keeps_rows_pair (rootP D K (k + 1)) (rootP D K k) b a (fun j hj1 hj2 => keeps_pair_twist hD hB h2 (by omega) (by omega)) fun j j' h1 h2 h3 h4 h5 => commute_proj_proj (comm_off hD (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)) (comm_off hD (by omega) (by omega) …`. Introduce `m hm hmk hmk'`. Conclude with `keeps_range' _ _ _ fun j h1 h2 => keeps_rootP_far hD K hk (by omega) (by omega) hmk hmk' (by omega) (by omega)`. Take `⟨b', rfl⟩ : ∃ b', b = b' + 1` from `⟨b - 1, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Substitute `hka` using the available equality. Establish `e : gridP D K (k + 1) (b' + 1) (k + 1) = rootP D K k (k + 1) * (rowP D K k (k + 1 + 1) b' * gridP D K (k + 1) (b' + 1) k)`. Unfold `gridP`. Rewrite using `[grid_succ]`. Unfold `rowP`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[List.range'_succ, List.map_cons, List.prod_cons, mul_assoc]`. Establish `hcommR : ∀ c < k + 1 + (b' + 1), Commute (D c c) (rowP D K k (k + 1 + 1) b')`. Introduce `c hc`. Use `Commute.list_prod_right _ _ fun f hf => ?_` and prove the remaining obligations. Take `⟨j, hj, rfl⟩` from `List.mem_map.mp hf`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hj` using `[List.mem_range'_1]`. Conclude with `commute_diag_rootP hD K hc (by omega) (by omega)`. Establish `hcommG' : ∀ c < k + 1 + (b' + 1), Commute (D c c) (gridP D K (k + 1) (b' + 1) k)`. Introduce `c hc`. Use `Commute.list_prod_right _ _ fun f hf => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi, rfl⟩` from `List.mem_map.mp hf`. Rewrite `hi` using `[List.mem_reverse, List.mem_range]`. Use `Commute.list_prod_right _ _ fun f hf => ?_` and prove the remaining obligations. Take `⟨j, hj, rfl⟩` from `List.mem_map.mp hf`. Rewrite `hj` using `[List.mem_range'_1]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `commute_diag_rootP hD K hc (by omega) (by omega)`. Establish `hU : ∀ c < k + 1 + (b' + 1), D c c ((rowP D K k (k + 1 + 1) b' * gridP D K (k + 1) (b' + 1) k) T) = 0`. Introduce `c hc`. Rewrite using `[Module.End.mul_apply]`. Conclude with `zero_of_comm (hcommR c hc) (zero_of_comm (hcommG' c hc) (hT c hc c hc Iff.rfl))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(h1 W (k + 1 + (b' + 1)) K D hD hB k (k + 1) (by omega) hk (by omega) _ (hU k (by omega)) (hU (k + 1) hk)).1` as an intermediate fact. Establish `e0 : k + 1 - k - 1 = 0` using `by omega`. Rewrite using `[e, Module.End.mul_apply]`. Simplify `this` using `only [rootP, e0]`. Establish `hT0 : PZ (a + b) D k T` using `⟨fun c hc => hT c hc c hc Iff.rfl, hT k (by omega) (k + 1) hk (by omega)⟩`.
-
-Use `(keeps_grid (P := PZ (a + b) D k) (fun i => rowP D K i a b) a (fun i hi => ?_) T hT0).2` and prove the remaining obligations. Conclude with `keeps_range'_pair _ k (keeps_pair_row hD hB h2 hk (by omega)) b a (by omega) (by omega) fun m hm1 hm2 h3 h4 => keeps_rootP_far hD K hk (by omega) (by omega) (by omega) (by omega) h3 h4`. Establish `hdown : ∀ k, k + 1 < a + b → D (k + 1) k (gridP D K a b a T) = 0` using `fun k hk => (h1 W (a + b) K D hD hB k (k + 1) (by omega) hk (by omega) _ (hZ k (by omega)) (hZ (k + 1) hk)).2 (hup k hk)`. Conclude with `fill hD _ hZ hup hdown`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LeviCut.gridInv_of_rankOne_rankTwo (h1 : RankOne) (h2 : RankTwo) : GridInv := by
   intro W _ _ a b K D hD hB T hT

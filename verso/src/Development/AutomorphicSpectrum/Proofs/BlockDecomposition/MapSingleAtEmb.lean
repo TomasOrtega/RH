@@ -9,13 +9,13 @@ open scoped Classical
 namespace GlobalTheory.CompanionTheory.FrameCasimir
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_fiberwise Finset.univ (fun τ : E →+* ℂ => InfinitePlace.mk τ) f]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Establish `hne : v.embedding ≠ ComplexEmbedding.conjugate v.embedding`. Introduce `h`. Establish `hc : v.IsComplex` using `IsTotallyComplex.isComplex v`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(InfinitePlace.isComplex_iff.1 hc) (ComplexEmbedding.isReal_iff.2 h.symm)`. Establish `hf : (Finset.univ.filter fun τ : E →+* ℂ => InfinitePlace.mk τ = v) = {v.embedding, ComplexEmbedding.conjugate v.embedding}`. Use extensionality with `τ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Break down `InfinitePlace.embedding_mk_eq τ with h | h` into its components or cases. Conclude with `Or.inl h.symm`. Use `right`. Rewrite using `[h]`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(star_star τ).symm`. Introduce and unpack `(rfl | rfl)`. Conclude with `InfinitePlace.mk_embedding v`. Rewrite using `[InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]`. Rewrite using `[hf, Finset.sum_pair hne]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_embeddings {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : Type} [AddCommMonoid N]
     (f : (E →+* ℂ) → N) :
@@ -43,7 +43,7 @@ theorem sum_embeddings {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
   rw [hf, Finset.sum_pair hne]
 
 /- English proof (translation)
-Unfold `atEmb`. Rewrite using `[if_pos (by rw [InfinitePlace.mk_embedding])]`. Apply the tactic sequence `congr 1 <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem atEmb_embedding {E : Type} [Field E] (v : InfinitePlace E) (z : ℂ) :
     atEmb v.embedding z = (Pi.single v z : Cinf E) := by
@@ -52,13 +52,13 @@ theorem atEmb_embedding {E : Type} [Field E] (v : InfinitePlace E) (z : ℂ) :
   congr 1 <;> simp
 
 /- English proof (translation)
-Set `L : Cinf E →ₗ[ℝ] N` to `{ toFun := fun x => φ (toL (Matrix.single i j x)) map_add' := fun x y => by`. Rewrite using `[Matrix.single_add]`. Conclude with `φ.map_add _ _`. Use the proof step `map_smul' := fun r x => by`. Rewrite using `[← Matrix.smul_single]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `φ.map_smul r _ }`. Establish `hL : ∀ x, φ (toL (Matrix.single i j x)) = L x` using `fun _ => rfl`. Establish `e : atEmb τ (-Complex.I) = -atEmb τ Complex.I`. Rewrite using `[atEmb_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hL, atEmb_eq, map_add, map_smul, map_smul]`. Simplify using `only [cx, hL, atEmb_conj, map_one, Complex.conj_I, e, map_neg]`. Establish `h1` using `Complex.add_conj z`. Establish `h2` using `Complex.sub_conj z`. Move the coercions through the operations in `at h1 h2`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Use `match_scalars`. Simplify using `only [Complex.coe_algebraMap]`. Take the linear combination `(-1 / 2 : ℂ) * h1`. Simplify using `only [Complex.coe_algebraMap]`. Take the linear combination `(Complex.I / 2 : ℂ) * h2 + z.im * Complex.I_mul_I`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem map_single_atEmb {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} {N : Type} [AddCommGroup N]
     [Module ℂ N] [Module ℝ N] [IsScalarTower ℝ ℂ N] (φ : Lie E a →ₗ[ℝ] N) (τ : E →+* ℂ) (i j : Fin a) (z : ℂ) :
@@ -85,7 +85,7 @@ theorem map_single_atEmb {E : Type} [Field E] [NumberField E] [IsTotallyComplex 
   · simp only [Complex.coe_algebraMap]; linear_combination (Complex.I / 2 : ℂ) * h2 + z.im * Complex.I_mul_I
 
 /- English proof (translation)
-Rewrite using `[← smul_sub, smul_mul_smul_comm, Complex.I_mul_I]`. Simplify using `only [mul_add, add_mul, sub_mul, mul_sub]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem alg_sq {R : Type} [Ring R] [Algebra ℂ R] (u w : R) :
     (u + w) * (u + w) - (Complex.I • u - Complex.I • w) * (Complex.I • u - Complex.I • w) =
@@ -95,9 +95,9 @@ theorem alg_sq {R : Type} [Ring R] [Algebra ℂ R] (u w : R) :
   module
 
 /- English proof (translation)
-Establish `e : ∀ i j, (c • P i j + d • P j i) * (c • P i j + d • P j i) = (c * c) • (P i j * P i j) + (c * d) • (P i j * P j i) + (c * d) • (P j i * P i j) + (d * d) • (P j i * P j i)`. Introduce `i j`. Simplify using `only [mul_add, add_mul, smul_mul_assoc, mul_smul_comm]`. Use `module`. Simplify using `only [e, Finset.sum_add_distrib, ← Finset.smul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm (f := fun i j => P j i * P i j), Finset.sum_comm (f := fun i j => P j i * P j i)]`. Generalize the expression as in `(∑ i, ∑ j, P i j * P i j) = S`. Generalize the expression as in `(∑ i, ∑ j, P i j * P j i) = T`. Combine the equalities or inequalities in the displayed calculation.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem alg_sum {R : Type} [Ring R] [Algebra ℂ R] {a : ℕ} (P : Fin a → Fin a → R) (c d : ℂ)
     (h0 : c * c + d * d = 0) (h1 : 2 * (c * d) = 1) :
@@ -115,9 +115,9 @@ theorem alg_sum {R : Type} [Ring R] [Algebra ℂ R] {a : ℕ} (P : Fin a → Fin
     _ = T := by rw [h0, h1, zero_smul, one_smul, zero_add]
 
 /- English proof (translation)
-Unfold `iM`. Rewrite using `[Matrix.smul_single]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w = v`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hw` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hw]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem iM_single {E : Type} [Field E] {a : ℕ} (v : InfinitePlace E) (i j : Fin a) (z : ℂ) :
     iM (Matrix.single i j (Pi.single v z : Cinf E)) = Matrix.single i j (Pi.single v (Complex.I * z) : Cinf E) := by
@@ -131,9 +131,9 @@ theorem iM_single {E : Type} [Field E] {a : ℕ} (v : InfinitePlace E) (i j : Fi
   · simp [Pi.single_eq_of_ne hw]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `frU (v, i, j) + star (frU (v, i, j)) = _`. Use `congr 1`. Unfold `frU`. Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.conjTranspose_single]`. Use `congr 1`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Simplify using `only [Pi.star_apply, Pi.single_eq_same, Complex.star_def]`. Simplify using `[Pi.single_eq_of_ne hw]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fr_val {E : Type} [Field E] {a : ℕ} (v : InfinitePlace E) (i j : Fin a) :
     (fr (v, i, j) : Herm E a).1 = Matrix.single i j (Pi.single v ((1 + Complex.I) / 2) : Cinf E) +
@@ -150,25 +150,23 @@ theorem fr_val {E : Type} [Field E] {a : ℕ} (v : InfinitePlace E) (i j : Fin a
   · simp [Pi.single_eq_of_ne hw]
 
 /- English proof (translation)
-Introduce `E _ _ _ a M _ _ _ _ φ`. Use `set c : ℂ := (1 + Complex.I) / 2 with hc`. Establish `hc0 : c * c + starRingEnd ℂ c * starRingEnd ℂ c = 0`. Simplify using `only [hc, map_div₀, map_add, map_one, Complex.conj_I, map_ofNat]`. Put the polynomial expressions in normal form.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hc1 : 2 * (c * starRingEnd ℂ c) = 1`. Simplify using `only [hc, map_div₀, map_add, map_one, Complex.conj_I, map_ofNat]`. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Set `P : InfinitePlace E → Fin a → Fin a → Module.End ℂ M` to `fun v => cx v.embedding φ`. Set `Q : InfinitePlace E → Fin a → Fin a → Module.End ℂ M` to `fun v => cx (ComplexEmbedding.conjugate v.embedding) φ`. Set `u : InfinitePlace E → Fin a → Fin a → Module.End ℂ M` to `fun v i j => c • P v i j + starRingEnd ℂ c • P v j i`. Set `w : InfinitePlace E → Fin a → Fin a → Module.End ℂ M` to `fun v i j => starRingEnd ℂ c • Q v i j + c • Q v j i`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hs : ∀ v i j z, φ (toL (Matrix.single i j (Pi.single v z : Cinf E))) = z • P v i j + starRingEnd ℂ z • Q v i j`. Introduce `v i j z`. Rewrite using `[← atEmb_embedding]`. Conclude with `map_single_atEmb φ v.embedding i j z`. Establish `hadd : ∀ A B : Matrix (Fin a) (Fin a) (Cinf E), φ (toL (A + B)) = φ (toL A) + φ (toL B)` using `fun A B => φ.map_add (toL A) (toL B)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfr : ∀ v i j, φ (toL (fr (v, i, j) : Herm E a).1) = u v i j + w v i j`. Introduce `v i j`. Rewrite using `[fr_val, hadd, hs, hs, Complex.conj_conj]`. Simplify using `only [u, w]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hiM : ∀ v i j, φ (toL (iM (fr (v, i, j) : Herm E a).1)) = Complex.I • u v i j - Complex.I • w v i j`. Introduce `v i j`. Establish `e : iM ((fr (v, i, j) : Herm E a).1) = iM (Matrix.single i j (Pi.single v c : Cinf E)) + iM (Matrix.single j i (Pi.single v (starRingEnd ℂ c) : Cinf E))`. Rewrite using `[fr_val]`. Conclude with `smul_add _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e, iM_single, iM_single, hadd, hs, hs]`. Simplify using `only [u, w, map_mul, Complex.conj_I, Complex.conj_conj]`. Use `module`. Establish `L1 : ∑ k : InfinitePlace E × Fin a × Fin a, φ (toL (fr k : Herm E a).1) * φ (toL (fr k : Herm E a).1) = ∑ v, ∑ i, ∑ j, (u v i j + w v i j) * (u v i j + w v i j)`. Simplify using `only [Fintype.sum_prod_type, hfr]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `L2 : ∑ k : InfinitePlace E × Fin a × Fin a, φ (toL (iM (fr k : Herm E a).1)) * φ (toL (iM (fr k : Herm E a).1)) = ∑ v, ∑ i, ∑ j, (Complex.I • u v i j - Complex.I • w v i j) * (Complex.I • u v i j - Complex.I • w v i j)`. Simplify using `only [Fintype.sum_prod_type, hiM]`. Rewrite using `[L1, L2, sum_embeddings, Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Establish `hu : ∑ i, ∑ j, u v i j * u v i j = ∑ i, ∑ j, P v i j * P v j i` using `alg_sum (P v) c (starRingEnd ℂ c) hc0 hc1`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw : ∑ i, ∑ j, w v i j * w v i j = ∑ i, ∑ j, Q v i j * Q v j i` using `alg_sum (Q v) (starRingEnd ℂ c) c (by rw [add_comm]; exact hc0) (by rw [mul_comm (starRingEnd ℂ c)]; exact hc1)`. Express the relevant statement in the definitionally equal form `_ = (2 : ℂ) • (∑ i, ∑ j, P v i j * P v j i + ∑ i, ∑ j, Q v i j * Q v j i)`. Rewrite using `[← hu, ← hw, smul_add, Finset.smul_sum, Finset.smul_sum, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum, Finset.smul_sum, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`.
-
-Conclude with `Finset.sum_congr rfl fun j _ => alg_sq _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameCas : FrameCas := by
   intro E _ _ _ a M _ _ _ _ φ

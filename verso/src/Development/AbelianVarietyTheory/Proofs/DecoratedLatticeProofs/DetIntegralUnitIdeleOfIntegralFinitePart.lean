@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.DetIntUnit
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `sum_mem fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Conclude with `zsmul_mem (prod_mem fun i _ => h _ _) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem_subring {R : Type} [CommRing R] (S : Subring R) {n : ℕ} (M : Matrix (Fin n) (Fin n) R)
     (h : ∀ i j, M i j ∈ S) : M.det ∈ S := by
@@ -22,7 +22,7 @@ theorem det_mem_subring {R : Type} [CommRing R] (S : Subring R) {n : ℕ} (M : M
   exact zsmul_mem (prod_mem fun i _ => h _ _) _
 
 /- English proof (translation)
-Unfold `finM`. Rewrite using `[Matrix.det_reindex_self, RingHom.map_det]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_finM (D : D7) (V : HSp D) (n : ℕ) (hn : V.rank = n) (g : GA D V) :
     (finM V hn g).det = toEAf D (Formalism.L2.Theta.mt V g).det := by
@@ -31,13 +31,13 @@ theorem det_finM (D : D7) (V : HSp D) (n : ℕ) (hn : V.rank = n) (g : GA D V) :
   rfl
 
 /- English proof (translation)
-Introduce `D V n hn g k hk h1 h2 d hd`. Establish `e1 : toEAf D (d : Formalism.L2.Theta.AE D) = k.1.det`. Rewrite using `[hd, ← det_finM D V n hn g, hk]`. Establish `i1 : toEAf D (d : Formalism.L2.Theta.AE D) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Rewrite using `[e1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `det_mem_subring _ _ h1`. Establish `hkk : k.1.det * (k⁻¹).1.det = 1`. Rewrite using `[← Matrix.det_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.det_one]`. Establish `hdd : toEAf D (d : Formalism.L2.Theta.AE D) * toEAf D ((d⁻¹ : (Formalism.L2.Theta.AE D)ˣ) : Formalism.L2.Theta.AE D) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : toEAf D ((d⁻¹ : (Formalism.L2.Theta.AE D)ˣ) : Formalism.L2.Theta.AE D) = (k⁻¹).1.det`. Rewrite `hdd` using `[e1]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm (k⁻¹).1.det, hkk, one_mul]`. Use `_ = (k⁻¹).1.det := by rw [mul_assoc, hdd, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `i2 : toEAf D ((d⁻¹ : (Formalism.L2.Theta.AE D)ˣ) : Formalism.L2.Theta.AE D) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Rewrite using `[e2]`. Conclude with `det_mem_subring _ _ h2`. Conclude with `⟨GlobalTheory.PlaceVec.finPart_mem_intAE i1, GlobalTheory.PlaceVec.finPart_mem_intAE i2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem det_int_unit : ∀ (D : D7) (V : HSp D) (n : ℕ) (hn : V.rank = n) (g : GA D V) (k : GL (Fin n) (EF D)),
     finM V hn g = k.1 → (∀ i j, k.1 i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) →

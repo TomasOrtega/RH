@@ -26,34 +26,34 @@ def mxSub (P : GlobalTheory.FinPl.Pl D → Prop) (S T : HSp D) : AddSubmonoid (W
     simpa using (GlobalTheory.FinPl.idAt D P).add_mem (ha i j) (hb i j)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.QPl.ThetaPin.aconv_support (mxSub P S T) l hl`.
+A detailed English derivation is pending.
 -/
 theorem combAt_aconv {P : GlobalTheory.FinPl.Pl D → Prop} {S T : HSp D} (l : List (WO S T →₀ ℂ))
     (hl : ∀ e ∈ l, GlobalTheory.FinPl.CombAt P e) : GlobalTheory.FinPl.CombAt P (aconv l) :=
   GlobalTheory.QPl.ThetaPin.aconv_support (mxSub P S T) l hl
 
 /- English proof (translation)
-Introduce `u hu` and use `he u (Finsupp.support_smul hu)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem combAt_smul {P : GlobalTheory.FinPl.Pl D → Prop} {S T : HSp D} (r : ℂ) {e : WO S T →₀ ℂ}
     (he : GlobalTheory.FinPl.CombAt P e) : GlobalTheory.FinPl.CombAt P (r • e) :=
   fun u hu => he u (Finsupp.support_smul hu)
 
 /- English proof (translation)
-Introduce `u hu` and use `by simp at hu`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem combAt_zero {P : GlobalTheory.FinPl.Pl D → Prop} {S T : HSp D} : GlobalTheory.FinPl.CombAt P (0 : WO S T →₀ ℂ) :=
   fun u hu => by simp at hu
 
 /- English proof (translation)
-Introduce `u hu` and use `GlobalTheory.DisjComb.mxAt_mono h (he u hu)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem combAt_mono {P P' : GlobalTheory.FinPl.Pl D → Prop} (h : ∀ p, P p → P' p) {S T : HSp D} {e : WO S T →₀ ℂ}
     (he : GlobalTheory.FinPl.CombAt P e) : GlobalTheory.FinPl.CombAt P' e :=
   fun u hu => GlobalTheory.DisjComb.mxAt_mono h (he u hu)
 
 /- English proof (translation)
-Introduce `u hu` and use `GlobalTheory.FinPl.SplitHalfSuppImp.mxAt_of_isHalf D k q u (h.1 u hu)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem combAt_of_isCombAt {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y']
@@ -64,14 +64,14 @@ theorem combAt_of_isCombAt {k : Type} [Field k] [ValuativeRel k] [TopologicalSpa
 variable {v : VCom c} {χ : ℕ → (AE D)ˣ →* Circle}
 
 /- English proof (translation)
-Take `⟨d, hd⟩ : ∃ d, j + d = Q.s` from `⟨Q.s - j, by omega⟩`. Conclude with `combAt_of_isCombAt (Q.eL_at j d hd)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eL_combAt (Q : QAt v χ) (j : ℕ) (hj : j ≤ Q.s) : GlobalTheory.FinPl.CombAt (· = Q.q.v) (Q.eL j) := by
   obtain ⟨d, hd⟩ : ∃ d, j + d = Q.s := ⟨Q.s - j, by omega⟩
   exact combAt_of_isCombAt (Q.eL_at j d hd)
 
 /- English proof (translation)
-Establish `hj : j = Q.s` using `by have := Q.hs; omega`. Substitute `hj` using the available equality. Conclude with `combAt_of_isCombAt Q.eLT_at`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem eT_combAt (Q : QAt v χ) (j : ℕ) (h : j + 2 * 0 + 2 = D.R.m) : GlobalTheory.FinPl.CombAt (· = Q.q.v) (Q.eT j h) := by
   have hj : j = Q.s := by have := Q.hs; omega
@@ -79,9 +79,9 @@ theorem eT_combAt (Q : QAt v χ) (j : ℕ) (h : j + 2 * 0 + 2 = D.R.m) : GlobalT
   exact combAt_of_isCombAt Q.eLT_at
 
 /- English proof (translation)
-Break down `Nat.lt_or_ge j Q.s with h | h` into its components or cases. Take `⟨d, hd⟩ : ∃ d, j + 1 + d = Q.s` from `⟨Q.s - (j + 1), by omega⟩`. Conclude with `combAt_of_isCombAt (Q.dL_mid j d hd α γ)`. Break down `Nat.eq_or_lt_of_le h with h' | h'` into its components or cases. Substitute `h'` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `combAt_of_isCombAt (Q.dL_pen α γ)`. Establish `h'' : j = Q.s + 1` using `by omega`. Substitute `h''` using the available equality. Conclude with `combAt_of_isCombAt (Q.dL_top α γ)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem dL_combAt (Q : QAt v χ) (j : ℕ) (hj : j ≤ Q.s + 1) (α : Q.Ch j) (γ : Q.Ch (j + 1)) :
     GlobalTheory.FinPl.CombAt (· = Q.q.v) (Q.dL j α γ) := by
@@ -96,13 +96,11 @@ theorem dL_combAt (Q : QAt v χ) (j : ℕ) (hj : j ≤ Q.s + 1) (α : Q.Ch j) (�
       exact combAt_of_isCombAt (Q.dL_top α γ)
 
 /- English proof (translation)
-Establish `hQ : ∀ i, (F.Q i).q.v ∈ (F.pinTup sc cT).Q` using `fun i => Finset.mem_image_of_mem _ (Finset.mem_univ i)`. Establish `hmono : ∀ i {S T : HSp D} {e : WO S T →₀ ℂ}, GlobalTheory.FinPl.CombAt (· = (F.Q i).q.v) e → GlobalTheory.FinPl.CombAt (· ∈ (F.pinTup sc cT).Q) e` using `fun i _ _ _ he => combAt_mono (fun p hp => hp ▸ hQ i) he`. Establish `hs : ∀ i, (F.Q i).s + 1 + 1 = D.R.m` using `fun i => (F.Q i).hs`. Use `⟨?_, fun h => ?_, fun α γ => ?_⟩` and prove the remaining obligations. Use `show GlobalTheory.FinPl.CombAt _ (if j + 1 < D.R.m then aconv (List.ofFn fun i => (F.Q i).eL j) else 0) split_ifs with hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `combAt_aconv _ fun e he => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 he`. Conclude with `hmono i (eL_combAt _ j (by have := hs i; omega))`. Conclude with `combAt_zero`. Use `show GlobalTheory.FinPl.CombAt _ (aconv (List.ofFn fun i => (F.Q i).eT j h))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `combAt_aconv _ fun e he => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 he`. Conclude with `hmono i (eT_combAt _ j h)`. Use `show GlobalTheory.FinPl.CombAt _ (if j < D.R.m then (∏ i, (F.Q i).wt j (F.eqv j α i)) • aconv (List.ofFn fun i => (F.Q i).dL j (F.eqv j α i) (F.eqv (j + 1) γ i)) else 0) split_ifs with hj`. Use `combAt_smul _ (combAt_aconv _ fun e he => ?_)` and prove the remaining obligations.
-
-Take `⟨i, rfl⟩` from `List.mem_ofFn.1 he`. Conclude with `hmono i (dL_combAt _ j (by have := hs i; omega) _ _)`. Conclude with `combAt_zero`.
+A detailed English derivation is pending.
 -/
 theorem pinTup_combAt {t : Tup c} (F : QFam v t) (sc cT : ℕ → ℂ) (j : ℕ) :
     GlobalTheory.FinPl.CombAt (· ∈ (F.pinTup sc cT).Q) ((F.pinTup sc cT).eQ j) ∧
@@ -137,7 +135,7 @@ end GlobalTheory.QPl.PinComb
 open GlobalTheory.QPl.PinComb in
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W _ u a _ _ J _ row col hCh sc cT t j`. Conclude with `pinTup_combAt _ sc cT j`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.QPl.PinComb.famOf_pinTup_combAt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ (J : ∀ t, QJ a t), (∀ t, (J t).Reads) → ∀ (row : ∀ t, RowCh (pk W) (lvP W) u a.g t)
     (col : ∀ t : W.P.T, ColCh (D := I.rec7 l Z) u ((I.rec7 l Z).chTw u (W.P.I.tup t))) (hCh : ∀ t, (col t).Ch = (J t).Ch) (sc cT : ℕ → ℂ) t, ∀ j,

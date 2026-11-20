@@ -11,7 +11,7 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.CarryCent
 
 /- English proof (translation)
-Take `⟨q, rfl⟩` from `GlobalTheory.CentralizerSeparable.matrix_eq_aeval_of_commute n N A hN hA`. Take `⟨q', rfl⟩` from `GlobalTheory.CentralizerSeparable.matrix_eq_aeval_of_commute n N B hN hB`. Express the relevant statement in the definitionally equal form `_ * _ = _ * _`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem commute_of_commute_sep {K : Type} [Field K] {n : ℕ} (N A B : Matrix (Fin n) (Fin n) K)
     (hN : N.charpoly.Separable) (hA : Commute A N) (hB : Commute B N) : Commute A B := by
@@ -21,11 +21,11 @@ theorem commute_of_commute_sep {K : Type} [Field K] {n : ℕ} (N A B : Matrix (F
   rw [← map_mul, ← map_mul, mul_comm]
 
 /- English proof (translation)
-Establish `k1 : (X * N.map (algebraMap K R)).map f = X.map f * N`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, ← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `k2 : (N.map (algebraMap K R) * X).map f = N * X.map f`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def, map_smul, smul_eq_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `congrArg (fun Y => Y.map f) hX.eq`. Simplify using `only [k1, k2] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_coord_commute {K R : Type} [Field K] [CommRing R] [Algebra K R] {n : ℕ}
     (N : Matrix (Fin n) (Fin n) K) (X : Matrix (Fin n) (Fin n) R)
@@ -45,11 +45,11 @@ theorem map_coord_commute {K R : Type} [Field K] [CommRing R] [Algebra K R] {n :
   exact h
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis K R`. Establish `dec : ∀ Z : Matrix (Fin n) (Fin n) R, Z = ∑ k, b k • (Z.map (b.coord k)).map (algebraMap K R)`. Introduce `Z`. Use extensionality with `i j`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, Matrix.map_apply, Module.Basis.coord_apply, smul_eq_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [← b.sum_repr (Z i j)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, mul_comm]`. Rewrite using `[dec X, dec Y]`. Use `Commute.sum_left _ _ _ fun k _ => Commute.sum_right _ _ _ fun l _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `((Commute.map ?_ (algebraMap K R).mapMatrix).smul_left _).smul_right _` and prove the remaining obligations. Conclude with `commute_of_commute_sep N _ _ hN (map_coord_commute N X hX _) (map_coord_commute N Y hY _)`.
+A detailed English derivation is pending.
 -/
 theorem commute_of_commute_map {K R : Type} [Field K] [CommRing R] [Algebra K R] [Module.Finite K R] {n : ℕ}
     (N : Matrix (Fin n) (Fin n) K) (hN : N.charpoly.Separable) (X Y : Matrix (Fin n) (Fin n) R)
@@ -70,13 +70,11 @@ theorem commute_of_commute_map {K R : Type} [Field K] [CommRing R] [Algebra K R]
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Use `Prod.ext ?_ (funext fun w => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a.1 * b.1 = b.1 * a.1`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Take `rfl : i = 0` from `Subsingleton.elim _ _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Take `rfl : j = 0` from `Subsingleton.elim _ _`. Simplify using `[Matrix.mul_apply, mul_comm]`. Express the relevant statement in the definitionally equal form `a.2 w * b.2 w = b.2 w * a.2 w`. Use `letI : Algebra (G.Fw w) (KQ p (G.Fw w) r) := Algebra.TensorProduct.leftAlgebra`. Use `haveI : FiniteDimensional ℚ_[p] (Qr p r) := ReciprocityTheory.DiscreteGroups.LocalClassField.finiteDimensional_Kn p (Q0 p) inferInstance hr`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : Module.Finite (G.Fw w) (KQ p (G.Fw w) r) := inferInstanceAs (Module.Finite (G.Fw w) ((G.Fw w) ⊗[ℚ_[p]] Qr p r))`. Establish `hw : ∀ x : Gr G r, Commute x (inclG G r γ) → Commute (x.2 w : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw w) r)) (((γ.2 w : GL (Fin G.n) (G.Fw w)) : Matrix (Fin G.n) (Fin G.n) (G.Fw w)).map (algebraMap (G.Fw w) (KQ p (G.Fw w) r)))`. Introduce `x hx`. Use `congrArg (fun y : Gr G r => ((y.2 w : GL (Fin G.n) (KQ p (G.Fw w) r)) : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw w) r))) hx.eq` as an intermediate fact. Conclude with `this`.
-
-Conclude with `Units.ext (commute_of_commute_map _ (hγ w) _ _ (hw a ha) (hw b hb)).eq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem commute_of_commute_reg (G : HTGroup p) (r : ℕ) (hr : 0 < r) (γ : Gp G) (hγ : regular₂ G γ) (a b : Gr G r)
     (ha : Commute a (inclG G r γ)) (hb : Commute b (inclG G r γ)) : Commute a b := by
@@ -110,27 +108,25 @@ namespace GlobalTheory.CarryCent
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Introduce `p _ G r γ δ z hr hγ hN`. Use `set δ' := z * δ * (sigG G r z)⁻¹ with hδ'`. Establish `hN' : nrmG (sigG G r) r δ' = inclG G r γ`. Establish `h` using `(GlobalTheory.T.twistedNormConj_normalize_and_degree_one p G).1 r γ δ z hr hN`. Simplify `h` using `[IsNrm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨hit, hfix, hinj, hrange⟩` from `GlobalTheory.T.hermitianTripleFrobeniusTwist_order_fixed_points p G r hr`. Establish `hδc : Commute δ' (inclG G r γ)`. Establish `h2` using `(GlobalTheory.T.twistedNormProductIterate_twistedConj (sigG G r) r δ' 1).2`. Rewrite `h2` using `[hN', hfix, hit]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `memT : ∀ h, h ∈ GlobalTheory.BCT.twCent (sigG G r) δ' ↔ ∃ g ∈ Subgroup.centralizer {γ}, inclG G r g = h`. Introduce `h`. Prove the components needed by the constructor for the conclusion. Introduce `hh`. Express the relevant statement in the definitionally equal form `h * δ' = δ' * sigG G r h at hh`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Commute h (inclG G r γ)`. Establish `h1` using `(GlobalTheory.T.twistedNormProductIterate_twistedConj (sigG G r) r δ' h).1`. Establish `e : h⁻¹ * δ' * sigG G r h = δ'` using `by rw [mul_assoc, ← hh, inv_mul_cancel_left]`. Rewrite `h1` using `[e, hN', hit]`. Express the relevant statement in the definitionally equal form `h * inclG G r γ = inclG G r γ * h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hcd : Commute h δ'` using `commute_of_commute_reg G r hr γ hγ h δ' hc hδc`. Establish `hs : sigG G r h = h` using `mul_left_cancel (hh.symm.trans hcd.eq)`. Take `⟨g, rfl⟩` from `hrange h hs`. Use `⟨g, ?_, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Subgroup.mem_centralizer_singleton_iff]`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul]`. Conclude with `hc.eq`. Introduce and unpack `⟨g, hg, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hg` using `[Subgroup.mem_centralizer_singleton_iff]`. Establish `hc : Commute (inclG G r g) (inclG G r γ)`. Express the relevant statement in the definitionally equal form `inclG G r g * inclG G r γ = inclG G r γ * inclG G r g`. Rewrite using `[← map_mul, ← map_mul, hg]`. Establish `hcd` using `commute_of_commute_reg G r hr γ hγ _ δ' hc hδc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `inclG G r g * δ' = δ' * sigG G r (inclG G r g)`. Rewrite using `[hfix]`. Conclude with `hcd.eq`. Establish `conjT : ∀ x, x ∈ GlobalTheory.BCT.twCent (sigG G r) δ ↔ z * x * z⁻¹ ∈ GlobalTheory.BCT.twCent (sigG G r) δ'`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `x * δ = δ * sigG G r x ↔ z * x * z⁻¹ * δ' = δ' * sigG G r (z * x * z⁻¹)`. Rewrite using `[hδ', map_mul, map_mul, map_inv]`. Establish `e1 : z * x * z⁻¹ * (z * δ * (sigG G r z)⁻¹) = z * (x * δ) * (sigG G r z)⁻¹` using `by group`. Establish `e2 : z * δ * (sigG G r z)⁻¹ * (sigG G r z * sigG G r x * (sigG G r z)⁻¹) = z * (δ * sigG G r x) * (sigG G r z)⁻¹` using `by group`. Rewrite using `[e1, e2, mul_left_inj, mul_right_inj]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use extensionality with `x`. Rewrite using `[conjT, memT, Subgroup.mem_map]`. Use `exists_congr fun g => and_congr_right fun _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `z⁻¹ * inclG G r g * z⁻¹⁻¹ = x ↔ inclG G r g = z * x * z⁻¹`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `rfl`. Use `group`. Introduce `e`. Rewrite using `[e]`. Use `group`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_centralizer_carry : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (r : ℕ) (γ : Gp G) (δ z : Gr G r),
     0 < r → regular₂ G γ → IsNrm G r γ δ z →

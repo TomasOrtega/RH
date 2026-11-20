@@ -9,9 +9,9 @@ namespace GlobalTheory.AltCoeffPow
 def dv (k e : ℕ) (v : ℝ) : ℝ := (e.factorial : ℝ)⁻¹ * (e.descFactorial k : ℝ) * v ^ (e - k)
 
 /- English proof (translation)
-Unfold `dv`. Use `congr 1`. Establish `h1` using `Nat.factorial_mul_descFactorial h`. Establish `h2 : (e.factorial : ℝ) = ((e - k).factorial : ℝ) * (e.descFactorial k : ℝ)`. Conclude with `h1.symm` after adjusting the coercions.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ((e - k).factorial : ℝ) ≠ 0` using `by positivity`. Establish `h4 : (e.factorial : ℝ) ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dv_of_le {k e : ℕ} (h : k ≤ e) (v : ℝ) :
     dv k e v = ((e - k).factorial : ℝ)⁻¹ * v ^ (e - k) := by
@@ -26,15 +26,15 @@ theorem dv_of_le {k e : ℕ} (h : k ≤ e) (v : ℝ) :
   rw [h2]; ring
 
 /- English proof (translation)
-Rewrite using `[X_pow_eq_monomial, coeff_monomial_mul']`. Use `split_ifs with hle`. Establish `hs : ∑ x, (e - Finsupp.single x₀ m) x = M`. Establish `h1 : ∑ x, (e - Finsupp.single x₀ m) x + ∑ x, Finsupp.single x₀ m x = ∑ x, e x`. Rewrite using `[← Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.tsub_apply, Nat.sub_add_cancel (hle x)]`. Establish `h2 : ∑ x, Finsupp.single x₀ m x = m`. Simplify using `[Finsupp.single_apply]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_mul, coeff_linearCombination_X_pow_of_fintype, Finsupp.sum_fintype _ _ (fun _ => rfl), if_pos hs, Finsupp.multinomial_eq_of_support_subset (Finset.subset_univ _), Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Rewrite using `[Finset.prod_congr rfl (fun x _ => dv_of_le (hle x) (a x)), Finset.prod_mul_distrib, ← mul_assoc]`. Use `congr 1`. Establish `h1` using `Nat.multinomial_spec Finset.univ (e - Finsupp.single x₀ m : α →₀ ℕ)`. Rewrite `h1` using `[hs]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (M.factorial : ℝ) = (∏ x, ((e x - Finsupp.single x₀ m x).factorial : ℝ)) * (Nat.multinomial Finset.univ (e - Finsupp.single x₀ m : α →₀ ℕ) : ℝ)`. Rewrite using `[← h1]`. Simplify using `[Finsupp.tsub_apply]`. Establish `h3 : (∏ x, ((e x - Finsupp.single x₀ m x).factorial : ℝ)) ≠ 0` using `by positivity`. Rewrite using `[h2, Finset.prod_inv_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite `hle` using `[Finsupp.single_le_iff, not_le]`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ x₀), mul_zero]`. Simplify using `[dv, hle]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_X_pow_mul_lin_pow {α : Type} [Fintype α] [DecidableEq α] (e : α →₀ ℕ) (a : α → ℝ)
     (x₀ : α) (m M : ℕ) (h : M + m = ∑ x, e x) :
@@ -70,9 +70,9 @@ theorem coeff_X_pow_mul_lin_pow {α : Type} [Fintype α] [DecidableEq α] (e : �
     simp [dv, hle]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[Function.iterate_succ_apply', ih, pderiv_monomial, tsub_tsub, ← Finsupp.single_add, Nat.descFactorial_succ]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Finsupp.tsub_apply, Finsupp.single_eq_same, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem iterate_pderiv_monomial {α : Type} [DecidableEq α] (i : α) (s : α →₀ ℕ) (c : ℝ) (m : ℕ) :
     (pderiv i)^[m] (monomial s c) =
@@ -87,7 +87,7 @@ theorem iterate_pderiv_monomial {α : Type} [DecidableEq α] (i : α) (s : α �
     ring
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => simp only [Function.iterate_succ_apply', ih, map_sum]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iterate_pderiv_sum {α β : Type} (i : α) (s : Finset β) (f : β → MvPolynomial α ℝ) (m : ℕ) :
     (pderiv i)^[m] (∑ b ∈ s, f b) = ∑ b ∈ s, (pderiv i)^[m] (f b) := by
@@ -96,7 +96,7 @@ theorem iterate_pderiv_sum {α β : Type} (i : α) (s : Finset β) (f : β → M
   | succ m ih => simp only [Function.iterate_succ_apply', ih, map_sum]
 
 /- English proof (translation)
-Rewrite using `[detE, ← Matrix.det_transpose, Matrix.det_apply']`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[monomial_eq, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Simplify using `only [Matrix.transpose_apply, Matrix.of_apply, Finset.prod_mul_distrib, map_mul, map_prod, map_intCast, Finsupp.coe_equivFunOnFinite_symm, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem detE_eq {N : ℕ} (n : Fin N → ℕ) :
     detE n = ∑ σ : Equiv.Perm (Fin N), monomial (Finsupp.equivFunOnFinite.symm fun j => n (σ j))
@@ -108,9 +108,9 @@ theorem detE_eq {N : ℕ} (n : Fin N → ℕ) :
     map_intCast, Finsupp.coe_equivFunOnFinite_symm, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[detE_eq, iterate_pderiv_sum, map_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[iterate_pderiv_monomial, eval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Establish `h : ∏ j, ((n (σ j)).descFactorial (Finsupp.single i m j) : ℝ) = ((n (σ i)).descFactorial m : ℝ)`. Rewrite using `[Finset.prod_eq_single i]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Finsupp.single_eq_of_ne hj]`. Simplify using the standard rewrite rules. Simplify using `only [dv, Finset.prod_mul_distrib, h, Finsupp.tsub_apply, Finsupp.coe_equivFunOnFinite_symm, mul_assoc]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eval_iterate_pderiv_detE {N : ℕ} (n : Fin N → ℕ) (v : Fin N → ℝ) (i : Fin N) (m : ℕ) :
     eval v ((pderiv i)^[m] (detE n)) = ∑ σ : Equiv.Perm (Fin N), ((Equiv.Perm.sign σ : ℤ) : ℝ) *
@@ -129,7 +129,7 @@ theorem eval_iterate_pderiv_detE {N : ℕ} (n : Fin N → ℕ) (v : Fin N → �
     Finsupp.coe_equivFunOnFinite_symm, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[detE_eq, map_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[eval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Simplify using `[dv, Finset.prod_mul_distrib, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eval_detE {N : ℕ} (n : Fin N → ℕ) (v : Fin N → ℝ) :
     eval v (detE n) = ∑ σ : Equiv.Perm (Fin N), ((Equiv.Perm.sign σ : ℤ) : ℝ) *
@@ -140,17 +140,17 @@ theorem eval_detE {N : ℕ} (n : Fin N → ℕ) (v : Fin N → ℝ) :
   simp [dv, Finset.prod_mul_distrib, mul_assoc]
 
 /- English proof (translation)
-Establish `hl : (X (τ', i) ^ m * linRoot u ^ M : MvPolynomial (ι × Fin N) ℝ) = C ((-1) ^ M) * (X (τ', i) ^ m * (∑ x : ι × Fin N, u x.1 x.2 • X x) ^ M)`. Simplify using `only [linRoot, smul_eq_C_mul, map_pow, map_neg, map_one]`. Rewrite using `[neg_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `set F : ι → Equiv.Perm (Fin N) → ℝ := fun τ σ => ((Equiv.Perm.sign σ : ℤ) : ℝ) * ∏ j, dv (Finsupp.single (τ', i) m (τ, j)) (n τ (σ j)) (u τ j) with hF`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hc : ∀ σ : ι → Equiv.Perm (Fin N), (∏ τ, ((Equiv.Perm.sign (σ τ) : ℤ) : ℝ)) * coeff (Finsupp.equivFunOnFinite.symm (fun x : ι × Fin N => n x.1 (σ x.1 x.2))) (X (τ', i) ^ m * linRoot u ^ M : MvPolynomial (ι × Fin N) ℝ) = (-1) ^ M * (M.factorial : ℝ) * ∏ τ, F τ (σ τ)`. Introduce `σ`. Rewrite using `[hl, coeff_C_mul, coeff_X_pow_mul_lin_pow _ (fun x : ι × Fin N => u x.1 x.2)]`. Simplify using `only [hF, Finset.prod_mul_distrib, Fintype.prod_prod_type, Finsupp.coe_equivFunOnFinite_symm]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [Finsupp.coe_equivFunOnFinite_symm]`. Conclude with `(Equiv.sum_comp (σ τ) (n τ)).symm`. Establish `hp : ∑ σ : ι → Equiv.Perm (Fin N), ∏ τ, F τ (σ τ) = ∏ τ, ∑ σ, F τ σ`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`. Establish `h1 : ∑ σ, F τ' σ = eval (u τ') ((pderiv i)^[m] (detE (n τ')))`. Rewrite using `[eval_iterate_pderiv_detE]`. Simplify using `[hF, Finsupp.single_apply]`. Establish `h2 : ∀ τ ∈ univ.erase τ', ∑ σ, F τ σ = eval (u τ) (detE (n τ))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ hτ`. Rewrite using `[eval_detE]`. Use `(Finset.ne_of_mem_erase hτ).symm` as an intermediate fact. Simplify using `[hF, Finsupp.single_apply, this]`. Unfold `altCoeff`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.sum_congr rfl (fun σ _ => hc σ), ← Finset.mul_sum, hp, ← Finset.mul_prod_erase _ _ (Finset.mem_univ τ'), h1, Finset.prod_congr rfl h2, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem altCoeff_X_pow_mul_linRoot_pow (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ)
     (n : ι → Fin N → ℕ) (u : ι → Fin N → ℝ) (τ' : ι) (i : Fin N) (m M : ℕ)

@@ -16,13 +16,13 @@ def Mn (M : Matrix (Fin N) (Fin N) R) : Prop :=
     (M.submatrix (Subtype.val : {a // P a} → Fin N) Subtype.val).det ≠ 0
 
 /- English proof (translation)
-Introduce `P i hP h0` and use `h P i hP (by rw [Matrix.submatrix_map, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Mn.of_map {M : Matrix (Fin N) (Fin N) R} (f : R →+* R') (h : Mn (M.map f)) : Mn M := fun P i hP h0 =>
   h P i hP (by rw [Matrix.submatrix_map, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero])
 
 /- English proof (translation)
-Introduce `P i hP h0` and use `by rw [Matrix.submatrix_map, ← RingHom.mapMatrix_apply, ← RingHom.map_det] at h0 exact h P i hP ((map_eq_zero_iff f hf).1 h0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Mn.map {M : Matrix (Fin N) (Fin N) R} (f : R →+* R') (hf : Function.Injective f) (h : Mn M) :
     Mn (M.map f) := fun P i hP h0 => by
@@ -30,14 +30,14 @@ theorem Mn.map {M : Matrix (Fin N) (Fin N) R} (f : R →+* R') (hf : Function.In
   exact h P i hP ((map_eq_zero_iff f hf).1 h0)
 
 /- English proof (translation)
-Introduce `P _ _` and use `by rw [h.det_submatrix P] exact one_ne_zero`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Mn.lowerUni [Nontrivial R] {M : Matrix (Fin N) (Fin N) R} (h : IsLowerUni M) : Mn M := fun P _ _ => by
   rw [h.det_submatrix P]
   exact one_ne_zero
 
 /- English proof (translation)
-Introduce `P i hP` and use `by have e : (M * B).submatrix (Subtype.val : {a // P a} → Fin N) (Subtype.val : {a // P a} → Fin N) = M.submatrix (Subtype.val : {a // P a} → Fin N) (Subtype.val : {a // P a} → Fin N) * B.submatrix (Subtype.val : {a // P a} → Fin N) (Subtype.val : {a // P a} → Fin N) := by ext a …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Mn.mul [IsDomain R] {M B : Matrix (Fin N) (Fin N) R} (h : Mn M) (hB : B.BlockTriangular id)
     (hd : B.det ≠ 0) : Mn (M * B) := fun P i hP => by
@@ -59,9 +59,9 @@ theorem Mn.mul [IsDomain R] {M B : Matrix (Fin N) (Fin N) R} (h : Mn M) (hB : B.
   exact fun a _ => hd _ (Finset.mem_univ _)
 
 /- English proof (translation)
-Establish `hb : IsBlockDiag 0 M` using `fun a b e => absurd (iff_of_true a.2 b.2) e`. Take `⟨B, -, h1, h2⟩` from `hb.exists_upper fun b => (h _ _ fun a c hac hc => ⟨hac.trans hc.1, iff_of_true a.2 b.2⟩).isUnit`. Use `⟨B, h1, fun h0 => ?_, h2⟩` and prove the remaining obligations. Use `h2.det` as an intermediate fact. Rewrite `this` using `[det_mul, h0, mul_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one this`.
+A detailed English derivation is pending.
 -/
 theorem Mn.upper {F : Type} [Field F] {M : Matrix (Fin N) (Fin N) F} (h : Mn M) :
     ∃ B, B.BlockTriangular id ∧ B.det ≠ 0 ∧ IsLowerUni (M * B) := by
@@ -74,17 +74,15 @@ theorem Mn.upper {F : Type} [Field F] {M : Matrix (Fin N) (Fin N) F} (h : Mn M) 
   exact zero_ne_one this
 
 /- English proof (translation)
-Set `t : Polynomial Ω` to `Polynomial.X`. Set `Z : Matrix (Fin N) (Fin N) (Polynomial Ω)` to `t • (A⁻¹).map Polynomial.C + (1 - t) • (1 : Matrix _ _ _)`. Set `f` to `algebraMap (Polynomial Ω) (FractionRing (Polynomial Ω))`. Establish `hf : Function.Injective f` using `IsFractionRing.injective _ _`. Establish `h1 : Mn Z`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Mn.of_map (Polynomial.evalRingHom 0) ?_` and prove the remaining obligations. Establish `: Z.map (Polynomial.evalRingHom 0) = 1`. Use extensionality with `a b`. Apply the tactic sequence `by_cases e : a = b <;> simp [Z, t, Matrix.one_apply, e]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Mn.lowerUni isLowerUni_one`. Establish `h2 : Mn (A.map Polynomial.C * Z)`. Use `Mn.of_map (Polynomial.evalRingHom 1) ?_` and prove the remaining obligations. Establish `e1 : Z.map (Polynomial.evalRingHom 1) = A⁻¹`. Use extensionality with `a b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Z, t]`. Establish `e2 : (A.map Polynomial.C).map (Polynomial.evalRingHom 1) = A`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.map_mul, e1, e2, Matrix.mul_nonsing_inv _ hA]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Mn.lowerUni isLowerUni_one`. Take `⟨B, hB, hd, hl⟩` from `(h1.map f hf).upper`. Use `⟨_, hl, ?_⟩` and prove the remaining obligations. Use `(h2.map f hf).mul hB hd` as an intermediate fact. Rewrite `this` using `[Matrix.map_mul, Matrix.mul_assoc]`.
-
-Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_low {Ω : Type} [Field Ω] (A : Matrix (Fin N) (Fin N) Ω) (hA : IsUnit A.det) :
     ∃ l : Matrix (Fin N) (Fin N) (FractionRing (Polynomial Ω)), IsLowerUni l ∧
@@ -123,9 +121,9 @@ noncomputable def gen (Ω : Type) [Field Ω] (r : S → ℕ) (s : S) : Matrix (F
   if h : b < a then MvPolynomial.X ⟨s, (a, b), h⟩ else if a = b then 1 else 0
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_mul]`. Use `congr 1`. Use extensionality with `a b`. Conclude with `MvPolynomial.aeval_C _ _`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_apply, gen]`. Use `split_ifs with h e`. Conclude with `MvPolynomial.aeval_X _ _`. Rewrite using `[map_one, e, (hu s).1]`. Rewrite using `[map_zero, (hu s).2 a b (lt_of_le_of_ne (not_lt.1 h) e)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_map {Ω : Type} [Field Ω] [Algebra Ω R] (u : ∀ s, Matrix (Fin (r s)) (Fin (r s)) R)
     (hu : ∀ s, IsLowerUni (u s)) (A : ∀ s, Matrix (Fin (r s)) (Fin (r s)) Ω) (s : S) :
@@ -147,19 +145,17 @@ end PositivityTheory.Xgp.c_fm_exists_flags_chgbasis
 
 open PositivityTheory.Xgp.c_fm_exists_flags_chgbasis in
 /- English proof (translation)
-Introduce `Ω G _ _ _ S _ r u A hu hA`. Establish `hL : ∀ s, IsLowerUni (u s)` using `fun s => ⟨hu.1 s, hu.2.1 s⟩`. Use `choose l hl hm using fun s => exists_low (A s) (hA s)`. Establish `h1 : ∀ s, Mn ((A s).map (algebraMap Ω G) * u s)` using `fun s => by`. Rewrite using `[← gen_map u hL A s]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Mn.map _ hu.2.2.1 ?_` and prove the remaining obligations. Use `hm s` as an intermediate fact. Rewrite `this` using `[← gen_map l hl A s]`. Conclude with `this.of_map _`. Use `choose B hB hd hl' using fun s => (h1 s).upper`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable.
 
-Use `⟨fun s => (A s).map (algebraMap Ω G) * u s * B s, fun s => (B s)⁻¹, ?_, fun s => Matrix.isUnit_nonsing_inv_det _ (hd s).isUnit, fun s a b h => ?_, fun s => (Matrix.mul_nonsing_inv_cancel_right _ _ (hd s).isUnit).symm⟩` and prove the remaining obligations. Use `PositivityTheory.Xgp.GenFam.of_gen hu (fun s => (hl' s).1) (fun s => (hl' s).2) fun s => ?_` and prove the remaining obligations. Generalize the expression as in `hF : IntermediateField.adjoin Ω (Set.range fun q : Σ σ, Fin (r σ) × Fin (r σ) => ((A q.1).map (algebraMap Ω G) * u q.1 * B q.1) q.2.1 q.2.2) = F`. Establish `hmem : ∀ a b, ((A s).map (algebraMap Ω G) * u s * B s) a b ∈ F` using `fun a b => hF ▸ IntermediateField.subset_adjoin _ _ ⟨⟨s, a, b⟩, rfl⟩`. Establish `e : u s * B s = (A s)⁻¹.map (algebraMap Ω G) * ((A s).map (algebraMap Ω G) * u s * B s)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc _ (u s), ← Matrix.mul_assoc, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ (hA s), Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`. Establish `hmem' : ∀ a b, (u s * B s) a b ∈ F` using `fun a b => by`. Rewrite using `[e, Matrix.mul_apply]`. Conclude with `sum_mem fun c _ => mul_mem (F.algebraMap_mem _) (hmem c b)`. Set `X₁ : Matrix (Fin (r s)) (Fin (r s)) F` to `fun a b => ⟨(u s * B s) a b, hmem' a b⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `eX : X₁.map (algebraMap F G) = u s * B s` using `rfl`. Establish `hX : Mn X₁` using `Mn.of_map (algebraMap F G) (eX ▸ (Mn.lowerUni (hL s)).mul (hB s) (hd s))`. Take `⟨B₁, hB₁, -, hl₁⟩` from `hX.upper`. Establish `e₁ : (X₁ * B₁).map (algebraMap F G) = u s * (B s * B₁.map (algebraMap F G))`. Rewrite using `[Matrix.map_mul, eX, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `hl₁.map (algebraMap F G)`. Rewrite `h2` using `[e₁]`. Rewrite `e₁` using `[(hL s).eq_one ((hB s).mul (hB₁.map _)) h2, Matrix.mul_one]`. Introduce `a b`. Rewrite using `[← e₁]`.
-
-Conclude with `((X₁ * B₁) a b).2`. Use `letI := Matrix.invertibleOfIsUnitDet _ (hd s).isUnit`. Conclude with `blockTriangular_inv_of_blockTriangular (hB s) h`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgp.t_c_fm_exists_flags_chgbasis : ∀ (Ω G : Type) [Field Ω] [Field G] [Algebra Ω G] (S : Type) [Finite S] (r : S → ℕ) (u : ∀ s, Matrix (Fin (r s)) (Fin (r s)) G) (A : ∀ s, Matrix (Fin (r s)) (Fin (r s)) Ω), IsGenFam Ω G u → (∀ s, IsUnit (A s).det) → ∃ u' B : ∀ s, Matrix (Fin (r s)) (Fin (r s)) G, IsGenFam Ω G u' ∧ (∀ s, IsUnit (B s).det) ∧ (∀ s a b, b < a → B s a b = 0) ∧ ∀ s, (A s).map (algebraMap Ω G) * u s = u' s * B s := by
   intro Ω G _ _ _ S _ r u A hu hA

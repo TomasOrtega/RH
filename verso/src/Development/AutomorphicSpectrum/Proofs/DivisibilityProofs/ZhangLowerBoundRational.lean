@@ -16,15 +16,15 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology Globa
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
 /- English proof (translation)
-Introduce `hZ1 II hII Ψ _ N M t lam s e hrat hsemi hnef hpts`. Take `⟨q, n, hq, hn⟩` from `GlobalTheory.T.rational_weight_integral_coeffs Ψ N M lam s hrat`. Establish `hp` using `GlobalTheory.T.root_model_semipositive_conj Ψ N M t lam s q n hn hsemi`. Establish `hnf` using `(GlobalTheory.T.root_model_curve_degree_nef Ψ N M t lam s q n hn).2 hnef`. Establish `hW : ∀ W, IsArithVar W 1 → M.P ≤ W → ((q : ℝ) * e) * degC W ≤ II M.K M.ι W 1 ![combLine (M.line t) n]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `W h1 h2`. Establish `hpt : M.IsPt W` using `⟨h1, h2⟩`. Take `⟨hd, hI⟩` from `GlobalTheory.T.root_model_point_height_degree II hII Ψ N M t lam s q n W hn hpt`. Rewrite using `[hI]`. Establish `hq' : (0 : ℝ) ≤ q` using `Nat.cast_nonneg q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd' : (0 : ℝ) ≤ degC W` using `Nat.cast_nonneg _`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left (hpts W hpt) hq') hd'`. Establish `key` using `hZ1 M.K M.ι M.P M.P (dimFl Ψ N) (combLine (M.line t) n) ((q : ℝ) * e) II hII.1 M.arith le_rfl hp.1 hnf hp.2 hW`. Establish `hgeo : geomDeg M.P (combLine (M.line t) n) (dimFl Ψ N) = (M.δ : ℝ) * (q : ℝ) ^ dimFl Ψ N * M.geoFun (linA lam s ^ dimFl Ψ N)`. Use `GlobalTheory.T.root_model_log_integral_formula II hII Ψ N M t (fun _ => lam) (fun _ => (s : ℝ)) q (fun _ => n) (fun _ j => hn j)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[geomDeg, Finset.prod_const]`. Rewrite `key` using `[hgeo, GlobalTheory.T.root_model_arith_intersection_formula II hII Ψ N M t lam s q n hn]`. Establish `hδ : (0 : ℝ) < M.δ` using `by exact_mod_cast M.δ_pos`. Establish `hq0 : (0 : ℝ) < q` using `by exact_mod_cast hq`. Establish `hc : (0 : ℝ) < (M.δ : ℝ) * (q : ℝ) ^ (dimFl Ψ N + 1)` using `by positivity`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_of_mul_le_mul_left ?_ hc` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem zhang_lower_bound_root_model : SuccessiveMinimaLowerBound → ∀ II : IntersectionSystem, IsFullIntersectionSystem II →
     ∀ (Ψ : Type) [Fintype Ψ] (N : ℕ) (M : RootModel Ψ N) (t : ℝ) (lam : Wt Ψ N) (s : ℚ) (e : ℝ), IsRatWt lam →

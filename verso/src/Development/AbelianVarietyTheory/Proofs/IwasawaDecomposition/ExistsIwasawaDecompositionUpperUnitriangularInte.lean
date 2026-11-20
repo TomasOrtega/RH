@@ -9,7 +9,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.SmGL
 
 /- English proof (translation)
-Introduce `k _ _ _ _ m g`. Take `⟨u, l, w, hw, h⟩` from `GlobalTheory.SmGL.UnitInd.exists_iwasawa (points (Fin m)) g`. Use `⟨u, u.2, (leviTorus k (Fin m)).symm l, w, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Simplify using `[diagT]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_unipB_mul_diagT_mul_KO : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (m : ℕ) (g : GL (Fin m) k), ∃ u ∈ unipB k (Fin m), ∃ t : Fin m → kˣ, ∃ κ ∈ KO k (Fin m), g = u * diagT k (Fin m) t * κ := by
   intro k _ _ _ _ m g

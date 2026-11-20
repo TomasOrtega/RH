@@ -14,13 +14,13 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin 
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
 
 /- English proof (translation)
-Establish `hs : ((t : ℂ) • X)ᴴ = -((t : ℂ) • X)`. Rewrite using `[Matrix.conjTranspose_smul, hX, smul_neg]`. Use `first`. Consider the case `simp`. Consider the case `(congr 2; exact Complex.conj_ofReal t)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `show NormedSpace.exp ((t : ℂ) • X) ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ NormedSpace.exp ((t : ℂ) • X) * Jm ε = Jm ε * NormedSpace.exp ((t : ℂ) • X)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose, ← Matrix.exp_conjTranspose, hs]`. Establish `hc : Commute (-((t : ℂ) • X)) ((t : ℂ) • X)` using `Commute.neg_left (Commute.refl _)`. Establish `he : NormedSpace.exp (-((t : ℂ) • X) + (t : ℂ) • X) = NormedSpace.exp (-((t : ℂ) • X)) * NormedSpace.exp ((t : ℂ) • X)` using `by first`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Matrix.exp_add_of_commute _ _ hc`. Consider the case `exact Matrix.exp_add_of_commute hc`. Consider the case `exact NormedSpace.exp_add_of_commute hc`. Rewrite using `[← he, neg_add_cancel]`. Use `first`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact NormedSpace.exp_zero`. Consider the case `simp`. Use `first`. Consider the case `exact ((show Commute X (Jm ε) from hJ).smul_left (t : ℂ)).exp_left`. Consider the case `exact Commute.exp_left ((show Commute X (Jm ε) from hJ).smul_left (t : ℂ))`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma exp_smul_mem_Kset_of_skew_of_commute_Jm (X : Matrix (Fin n) (Fin n) ℂ) (hX : Xᴴ = -X)
     (hJ : X * Jm ε = Jm ε * X) (t : ℝ) : NormedSpace.exp ((t : ℂ) • X) ∈ Kset ε := by
@@ -49,7 +49,7 @@ private lemma exp_smul_mem_Kset_of_skew_of_commute_Jm (X : Matrix (Fin n) (Fin n
     | exact Commute.exp_left ((show Commute X (Jm ε) from hJ).smul_left (t : ℂ))
 
 /- English proof (translation)
-Establish `hg' : g ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ g * Jm ε = Jm ε * g` using `hg`. Take `⟨hu, hc⟩` from `hg'`. Use `show gᴴ * Jm ε * g = Jm ε`. Rewrite using `[Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, ← Matrix.star_eq_conjTranspose, Matrix.mem_unitaryGroup_iff'.mp hu, Matrix.one_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma mem_UJset_of_mem_Kset' {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) : g ∈ UJset ε := by
   have hg' : g ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ g * Jm ε = Jm ε * g := hg
@@ -59,7 +59,7 @@ private lemma mem_UJset_of_mem_Kset' {g : Matrix (Fin n) (Fin n) ℂ} (hg : g �
     Matrix.mem_unitaryGroup_iff'.mp hu, Matrix.one_mul]
 
 /- English proof (translation)
-Use `show Xᴴ * Jm ε + Jm ε * X = 0`. Rewrite using `[hX, neg_mul, hJ, neg_add_cancel]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma inG_of_skewHermitian_of_commute_Jm (X : Matrix (Fin n) (Fin n) ℂ) (hX : Xᴴ = -X)
     (hJ : X * Jm ε = Jm ε * X) : inG ε X := by
@@ -67,7 +67,7 @@ private lemma inG_of_skewHermitian_of_commute_Jm (X : Matrix (Fin n) (Fin n) ℂ
   rw [hX, neg_mul, hJ, neg_add_cancel]
 
 /- English proof (translation)
-Establish `hcl : IsClosed (S : Set H)` using `S.closed_of_finiteDimensional`. Use `hcl.mem_of_tendsto (hasDerivAt_iff_tendsto_slope.mp hf) (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Rewrite using `[slope_def_module]`. Conclude with `(S.restrictScalars ℝ).smul_mem _ (S.sub_mem (hS t) (hS 0))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma deriv_mem_submodule_of_forall_mem {S : Submodule ℂ H} [FiniteDimensional ℂ S] {f : ℝ → H} {f' : H}
     (hf : HasDerivAt f f' 0) (hS : ∀ t, f t ∈ S) : f' ∈ S := by
@@ -78,11 +78,11 @@ private lemma deriv_mem_submodule_of_forall_mem {S : Submodule ℂ H} [FiniteDim
   exact (S.restrictScalars ℝ).smul_mem _ (S.sub_mem (hS t) (hS 0))
 
 /- English proof (translation)
-Establish `h : (t : ℂ) • Matrix.diagonal (fun b => (φ b : ℂ) * Complex.I) = Matrix.diagonal (fun b => ((t * φ b : ℝ) : ℂ) * Complex.I)`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `only [Matrix.smul_apply, Matrix.diagonal_apply_eq, smul_eq_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Matrix.diagonal_apply_ne _ hij]`. Rewrite using `[h, Matrix.exp_diagonal]`. Use `congr 1`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `b`. Use `first`. Consider the case `(rw [Pi.exp_apply, ← Complex.exp_eq_exp_ℂ])`. Consider the case `(simp only [Pi.exp_apply]; exact (congrFun Complex.exp_eq_exp_ℂ _).symm)`. Consider the case `simp [Complex.exp_eq_exp_ℂ]`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma exp_smul_diagonal_I (φ : Fin n → ℝ) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • Matrix.diagonal (fun b => (φ b : ℂ) * Complex.I)) =
@@ -105,9 +105,9 @@ private lemma exp_smul_diagonal_I (φ : Fin n → ℝ) (t : ℝ) :
   | simp [Complex.exp_eq_exp_ℂ]
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij first` using the available equality. Consider the case `simp [Matrix.conjTranspose_apply]`. Consider the case `simp [Matrix.conjTranspose_apply, Complex.star_def]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Treat this case separately. Treat this case separately.
 
-Simplify using `[Matrix.conjTranspose_apply, Matrix.diagonal_apply_ne _ hij, Matrix.diagonal_apply_ne _ (Ne.symm hij)]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma diagonal_I_conjTranspose_eq_neg (φ : Fin n → ℝ) :
     (Matrix.diagonal (fun b => (φ b : ℂ) * Complex.I))ᴴ =
@@ -122,7 +122,7 @@ private lemma diagonal_I_conjTranspose_eq_neg (φ : Fin n → ℝ) :
       Matrix.diagonal_apply_ne _ (Ne.symm hij)]
 
 /- English proof (translation)
-Simplify using `only [Jm, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma diagonal_commute_Jm (d : Fin n → ℂ) :
     Matrix.diagonal d * Jm ε = Jm ε * Matrix.diagonal d := by
@@ -132,7 +132,7 @@ private lemma diagonal_commute_Jm (d : Fin n → ℂ) :
   ring
 
 /- English proof (translation)
-Simplify using `[actM, Matrix.diagonal_apply, ite_smul]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma actM_diagonal {M : Type*} [AddCommGroup M] [Module ℂ M]
     (E' : Fin n → Fin n → Module.End ℂ M) (d : Fin n → ℂ) (x : M) :
@@ -140,11 +140,11 @@ private lemma actM_diagonal {M : Type*} [AddCommGroup M] [Module ℂ M]
   simp [actM, Matrix.diagonal_apply, ite_smul]
 
 /- English proof (translation)
-Establish `hg : ∀ s : ℝ, HasDerivAt (fun s : ℝ => Complex.exp ((s : ℂ) * -c) • f s) 0 s`. Introduce `s`. Establish `h1 : HasDerivAt (fun s : ℝ => (s : ℂ) * -c) (-c) s`. Use `((hasDerivAt_id s).ofReal_comp).mul_const (-c)` as an intermediate fact. Conclude with `this.congr_deriv (by simp)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `h1.cexp.smul (hf s)`. Use `h2.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← add_smul, ← mul_add, add_neg_cancel, mul_zero, zero_smul]`. Establish `hc : Complex.exp ((t : ℂ) * -c) • f t = Complex.exp (((0 : ℝ) : ℂ) * -c) • f 0` using `is_const_of_deriv_eq_zero (fun s => (hg s).differentiableAt) (fun s => (hg s).deriv) t 0`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, ← Complex.exp_add, mul_neg, add_neg_cancel, Complex.exp_zero, one_smul]`. Use `_ = Complex.exp ((t : ℂ) * c) • f 0 := by`. Rewrite using `[hc]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma eq_exp_smul_of_hasDerivAt_smul_self {f : ℝ → H} {c : ℂ} (hf : ∀ t, HasDerivAt f (c • f t) t) (t : ℝ) :
     f t = Complex.exp ((t : ℂ) * c) • f 0 := by
@@ -165,17 +165,17 @@ private lemma eq_exp_smul_of_hasDerivAt_smul_self {f : ℝ → H} {c : ℂ} (hf 
         simp
 
 /- English proof (translation)
-Establish `hU : ∀ s : ℝ, NormedSpace.exp ((s : ℂ) • X) ∈ UJset ε` using `fun s => mem_UJset_of_mem_Kset' (exp_smul_mem_Kset_of_skew_of_commute_Jm X hX hJ s)`. Establish `hd` using `hD.deriv X (inG_of_skewHermitian_of_commute_Jm X hX hJ) w`. Rewrite `hd` using `[hw, Submodule.coe_smul]`. Establish `hf : ∀ t : ℝ, HasDerivAt (fun s : ℝ => σ (NormedSpace.exp ((s : ℂ) • X)) (w : H)) (c • σ (NormedSpace.exp ((t : ℂ) • X)) (w : H)) t`. Introduce `t`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hL : HasDerivAt (fun s : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) (σ (NormedSpace.exp ((s : ℂ) • X)) (w : H))) (σ (NormedSpace.exp ((t : ℂ) • X)) (c • (w : H))) 0` using `by first`. Consider the case `exact ((σ (NormedSpace.exp ((t : ℂ) • X))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd`. Consider the case `simpa using ((σ (NormedSpace.exp ((t : ℂ) • X))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd`. Establish `h0 : HasDerivAt (fun s : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) (σ (NormedSpace.exp ((s : ℂ) • X)) (w : H))) (σ (NormedSpace.exp ((t : ℂ) • X)) (c • (w : H))) (t - t)`. Rewrite using `[sub_self]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hL`. Establish `hL2 : HasDerivAt (fun s : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) (σ (NormedSpace.exp (((s - t : ℝ) : ℂ) • X)) (w : H))) (σ (NormedSpace.exp ((t : ℂ) • X)) (c • (w : H))) t` using `by first`. Consider the case `exact h0.comp_sub_const t t`. Consider the case `exact HasDerivAt.comp_sub_const t t h0`. Consider the case `exact h0.comp_sub_const`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `heq : (fun s : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) (σ (NormedSpace.exp (((s - t : ℝ) : ℂ) • X)) (w : H))) = fun s : ℝ => σ (NormedSpace.exp ((s : ℂ) • X)) (w : H)`. Use function extensionality and compare the values at `s`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hσ.1.2 _ (hU t) _ (hU (s - t))]`. Establish `hc : Commute ((t : ℂ) • X) (((s - t : ℝ) : ℂ) • X)` using `((Commute.refl X).smul_left (t : ℂ)).smul_right ((s - t : ℝ) : ℂ)`. Establish `he : NormedSpace.exp ((t : ℂ) • X + ((s - t : ℝ) : ℂ) • X) = NormedSpace.exp ((t : ℂ) • X) * NormedSpace.exp (((s - t : ℝ) : ℂ) • X)` using `by first`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact Matrix.exp_add_of_commute _ _ hc`. Consider the case `exact Matrix.exp_add_of_commute hc`. Consider the case `exact NormedSpace.exp_add_of_commute hc`. Rewrite using `[← he, ← add_smul, show (t : ℂ) + ((s - t : ℝ) : ℂ) = (s : ℂ) by push_cast; ring]`. Rewrite `hL2` using `[heq, map_smul]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hL2`. Use `(eq_exp_smul_of_hasDerivAt_smul_self hf t).trans ?_` and prove the remaining obligations. Simplify using `[hσ.1.1]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma sigma_exp_smul_eq_exp_smul_of_actM_eigen (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (X : Matrix (Fin n) (Fin n) ℂ) (hX : Xᴴ = -X) (hJ : X * Jm ε = Jm ε * X) (c : ℂ) (w : D)
@@ -228,9 +228,9 @@ private lemma sigma_exp_smul_eq_exp_smul_of_actM_eigen (hσ : IsURepOn (UJset ε
   simp [hσ.1.1]
 
 /- English proof (translation)
-Rewrite using `[actM_diagonal, Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ a) h`.
+A detailed English derivation is pending.
 -/
 private lemma actM_diagonal_I_single {M : Type*} [AddCommGroup M] [Module ℂ M]
     (E' : Fin n → Fin n → Module.End ℂ M) (a : Fin n) (x : M) :
@@ -244,9 +244,9 @@ private lemma actM_diagonal_I_single {M : Type*} [AddCommGroup M] [Module ℂ M]
     exact absurd (Finset.mem_univ a) h
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `e1 : (i = b ∧ j = a) ↔ (j = a ∧ i = b)` using `and_comm`. Establish `e2 : (i = a ∧ j = b) ↔ (j = b ∧ i = a)` using `and_comm`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.of_apply, Matrix.neg_apply, e1, e2]`. Use `split_ifs`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Apply the tactic sequence `all_goals first`. Consider the case `simp`. Consider the case `simp [Complex.star_def]`. Consider the case `(simp; exact Complex.conj_I)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma antisymmetric_unit_conjTranspose_eq_neg (a b : Fin n) :
     (Matrix.of fun i j : Fin n => (if j = b ∧ i = a then (1 : ℂ) else 0) -
@@ -264,11 +264,11 @@ private lemma antisymmetric_unit_conjTranspose_eq_neg (a b : Fin n) :
     | (simp; exact Complex.conj_I)
 
 /- English proof (translation)
-Establish `hd : ∀ i j : Fin n, ((j = b ∧ i = a) ∨ (j = a ∧ i = b)) → (if ε i then (1 : ℂ) else -1) = (if ε j then 1 else -1)`. Apply the tactic sequence `rintro i j (⟨h1, h2⟩ | ⟨h1, h2⟩) <;> rw [h1, h2, hab]`. Use extensionality with `i j`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.of_apply]`. Distinguish the cases in `hP : j = b ∧ i = a`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hd i j (Or.inl hP)]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hQ : j = a ∧ i = b`. Rewrite using `[hd i j (Or.inr hQ)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[hP, hQ]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma antisymmetric_unit_commute_Jm_of_same_sign {a b : Fin n} (hab : ε a = ε b) :
     (Matrix.of fun i j : Fin n => (if j = b ∧ i = a then (1 : ℂ) else 0) -
@@ -289,9 +289,9 @@ private lemma antisymmetric_unit_commute_Jm_of_same_sign {a b : Fin n} (hab : ε
     · simp [hP, hQ]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `e1 : (i = b ∧ j = a) ↔ (j = a ∧ i = b)` using `and_comm`. Establish `e2 : (i = a ∧ j = b) ↔ (j = b ∧ i = a)` using `and_comm`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.of_apply, Matrix.neg_apply, e1, e2]`. Use `split_ifs`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Apply the tactic sequence `all_goals first`. Consider the case `simp`. Consider the case `simp [Complex.star_def]`. Consider the case `(simp; exact Complex.conj_I)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma symmetric_I_unit_conjTranspose_eq_neg (a b : Fin n) :
     (Matrix.of fun i j : Fin n => (if j = b ∧ i = a then Complex.I else 0) +
@@ -309,11 +309,11 @@ private lemma symmetric_I_unit_conjTranspose_eq_neg (a b : Fin n) :
     | (simp; exact Complex.conj_I)
 
 /- English proof (translation)
-Establish `hd : ∀ i j : Fin n, ((j = b ∧ i = a) ∨ (j = a ∧ i = b)) → (if ε i then (1 : ℂ) else -1) = (if ε j then 1 else -1)`. Apply the tactic sequence `rintro i j (⟨h1, h2⟩ | ⟨h1, h2⟩) <;> rw [h1, h2, hab]`. Use extensionality with `i j`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.of_apply]`. Distinguish the cases in `hP : j = b ∧ i = a`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hd i j (Or.inl hP)]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hQ : j = a ∧ i = b`. Rewrite using `[hd i j (Or.inr hQ)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[hP, hQ]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma symmetric_I_unit_commute_Jm_of_same_sign {a b : Fin n} (hab : ε a = ε b) :
     (Matrix.of fun i j : Fin n => (if j = b ∧ i = a then Complex.I else 0) +
@@ -334,7 +334,7 @@ private lemma symmetric_I_unit_commute_Jm_of_same_sign {a b : Fin n} (hab : ε a
     · simp [hP, hQ]
 
 /- English proof (translation)
-Simplify using `[actM, sub_smul, Finset.sum_sub_distrib, ite_and, ite_smul]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma actM_antisymmetric_unit {M : Type*} [AddCommGroup M] [Module ℂ M]
     (E' : Fin n → Fin n → Module.End ℂ M) (a b : Fin n) (x : M) :
@@ -343,7 +343,7 @@ private lemma actM_antisymmetric_unit {M : Type*} [AddCommGroup M] [Module ℂ M
   simp [actM, sub_smul, Finset.sum_sub_distrib, ite_and, ite_smul]
 
 /- English proof (translation)
-Simplify using `[actM, add_smul, Finset.sum_add_distrib, ite_and, ite_smul]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma actM_symmetric_I_unit {M : Type*} [AddCommGroup M] [Module ℂ M]
     (E' : Fin n → Fin n → Module.End ℂ M) (a b : Fin n) (x : M) :
@@ -353,43 +353,39 @@ private lemma actM_symmetric_I_unit {M : Type*} [AddCommGroup M] [Module ℂ M]
   simp [actM, add_smul, Finset.sum_add_distrib, ite_and, ite_smul]
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.IsKTypeOf`. Establish `hW : FiniteDimensional ℂ (V.map D.subtype)` using `by haveI := hV.1 first`. Consider the case `exact Module.Finite.map V D.subtype`. Consider the case `exact Module.Finite.map _ _`. Use `⟨hW, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g hg v hv`. Take `⟨x, hxV, hxv⟩` from `Submodule.mem_map.mp hv`. Take `⟨y, hyV, hy⟩` from `hVK g hg x hxV`. Rewrite using `[← hxv, Submodule.subtype_apply, ← hy]`. Conclude with `Submodule.mem_map_of_mem hyV`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S' hle hS' haveI : FiniteDimensional ℂ S' := Submodule.finiteDimensional_of_le hle`. Establish `hmem : ∀ X : Matrix (Fin n) (Fin n) ℂ, Xᴴ = -X → X * Jm ε = Jm ε * X → ∀ v : D, (v : H) ∈ S' → ((actM E X v : D) : H) ∈ S'`. Introduce `X hX hJ v hv`. Conclude with `deriv_mem_submodule_of_forall_mem (hD.deriv X (inG_of_skewHermitian_of_commute_Jm X hX hJ) v) (fun t => hS' _ (exp_smul_mem_Kset_of_skew_of_commute_Jm X hX hJ t) _ hv)`. Establish `hTs : IsKStableSub ε E (V ⊓ S'.comap D.subtype)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a b hab v hv`. Establish `hv'` using `Submodule.mem_inf.mp hv`. Establish `hv2 : (v : H) ∈ S'` using `Submodule.mem_comap.mp hv'.2`. Use `Submodule.mem_inf.mpr ⟨hV.2.1 a b hab v hv'.1, ?_⟩` and prove the remaining obligations. Establish `h1` using `hmem _ (antisymmetric_unit_conjTranspose_eq_neg a b) (antisymmetric_unit_commute_Jm_of_same_sign hab) v hv2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hmem _ (symmetric_I_unit_conjTranspose_eq_neg a b) (symmetric_I_unit_commute_Jm_of_same_sign hab) v hv2`. Rewrite `h1` using `[actM_antisymmetric_unit]`. Rewrite `h2` using `[actM_symmetric_I_unit]`. Establish `key : (2 : ℂ) • E a b v = (E a b v - E b a v) + (-Complex.I) • (Complex.I • E a b v + Complex.I • E b a v)`. Rewrite using `[smul_add (-Complex.I), smul_smul, smul_smul, neg_mul, Complex.I_mul_I, neg_neg, one_smul, one_smul, two_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `h3 : (((2 : ℂ) • E a b v : D) : H) ∈ S'`. Rewrite using `[key, Submodule.coe_add, Submodule.coe_smul]`. Conclude with `S'.add_mem h1 (S'.smul_mem _ h2)`. Rewrite `h3` using `[Submodule.coe_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Use `Submodule.mem_comap.mpr ?_` and prove the remaining obligations. Use `first`. Consider the case `exact (S'.smul_mem_iff two_ne_zero).mp h3`. Consider the case `exact (Submodule.smul_mem_iff _ two_ne_zero).mp h3`. Break down `hV.2.2.1 (V ⊓ S'.comap D.subtype) inf_le_left hTs with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `left`. Rewrite using `[Submodule.eq_bot_iff]`. Introduce `y hy`. Take `⟨x, hxV, hxy⟩` from `Submodule.mem_map.mp (hle hy)`. Establish `hx : x ∈ V ⊓ S'.comap D.subtype` using `Submodule.mem_inf.mpr ⟨hxV, Submodule.mem_comap.mpr (by rw [hxy]; exact hy)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[h, Submodule.mem_bot]`. Rewrite using `[← hxy, hx, map_zero]`. Use `right`. Apply `le_antisymm hle` to reduce the goal to its premises. Introduce `y hy`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hxV, hxy⟩` from `Submodule.mem_map.mp hy`. Rewrite `hxV` using `[← h]`. Rewrite using `[← hxy]`. Conclude with `Submodule.mem_comap.mp (Submodule.mem_inf.mp hxV).2`. Take `⟨w, hwV, hw0, hwHW⟩` from `hV.2.2.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨(w : H), Submodule.mem_map_of_mem hwV, fun h => hw0 (Submodule.coe_eq_zero.mp h), ?_⟩` and prove the remaining obligations. Introduce `θ hθ`. Establish `hact : actM E (Matrix.diagonal (fun b => (θ b : ℂ) * Complex.I)) w = (((∑ a, Λ a * θ a : ℝ) : ℂ) * Complex.I) • w`. Rewrite using `[actM_diagonal]`. Simplify using `only [hwHW.1, smul_smul]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Use `push_cast`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `sigma_exp_smul_eq_exp_smul_of_actM_eigen hσ hD (Matrix.diagonal (fun b => (θ b : ℂ) * Complex.I)) (diagonal_I_conjTranspose_eq_neg θ) (diagonal_commute_Jm _) (((∑ a, Λ a * θ a : ℝ) : ℂ) * Complex.I) w hact 1`. Rewrite `h` using `[exp_smul_diagonal_I]`. Simplify using `using h`. Introduce `μ v hv hv0 hwt'`. Take `⟨x, hxV, hxv⟩` from `Submodule.mem_map.mp hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `hxv` using `[Submodule.subtype_apply]`. Substitute `hxv` using the available equality. Use `hwt μ x hxV (fun h => hv0 (by rw [h]; rfl)) (fun a => ?_)` and prove the remaining obligations. Establish `hX` using `diagonal_I_conjTranspose_eq_neg (Pi.single a (1 : ℝ))`. Establish `hJ` using `diagonal_commute_Jm (ε := ε) (fun b => (((Pi.single a (1 : ℝ) : Fin n → ℝ) b : ℝ) : ℂ) * Complex.I)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hD.deriv _ (inG_of_skewHermitian_of_commute_Jm _ hX hJ) x`. Establish `hfeq : (fun s : ℝ => σ (NormedSpace.exp ((s : ℂ) • Matrix.diagonal (fun b => (((Pi.single a (1 : ℝ) : Fin n → ℝ) b : ℝ) : ℂ) * Complex.I))) (x : H)) = fun s : ℝ => Complex.exp (((μ a * s : ℝ) : ℂ) * Complex.I) • (x : H)`. Use function extensionality and compare the values at `s`. Establish `hK` using `exp_smul_mem_Kset_of_skew_of_commute_Jm _ hX hJ s`. Rewrite `hK`, the goal using `[exp_smul_diagonal_I (Pi.single a (1 : ℝ)) s]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hwt' _ hK]`. Simplify using `[Pi.single_apply]`. Rewrite `h1` using `[hfeq]`. Establish `h3 : HasDerivAt (fun s : ℝ => (((μ a * s : ℝ) : ℂ) * Complex.I)) ((μ a : ℂ) * Complex.I) 0`. Use `(((hasDerivAt_id (0 : ℝ)).const_mul (μ a)).ofReal_comp).mul_const Complex.I` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this`. Establish `h2 : HasDerivAt (fun s : ℝ => Complex.exp (((μ a * s : ℝ) : ℂ) * Complex.I) • (x : H)) (((μ a : ℂ) * Complex.I) • (x : H)) 0`. Use `h3.cexp.smul_const (x : H)` as an intermediate fact. Simplify using `using this`. Establish `h4` using `h1.unique h2`.
-
-Rewrite `h4` using `[actM_diagonal_I_single, Submodule.coe_smul]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_smul]`. Apply `smul_right_injective H Complex.I_ne_zero` to reduce the goal to its premises. Simplify using `only [smul_smul]`.
-
-Rewrite using `[h4, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isKTypeOf_of_isKIrrHW (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {Λ : Fin n → ℝ}
     {V : Submodule ℂ D} (hV : IsKIrrHW ε E Λ V)

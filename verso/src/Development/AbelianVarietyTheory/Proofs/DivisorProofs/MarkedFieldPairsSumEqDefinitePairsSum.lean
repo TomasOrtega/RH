@@ -9,9 +9,9 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.LKDef
 
 /- English proof (translation)
-Introduce `p _ G ha hn wt sel hsel Kf f r K φ hr hf hφ`. Take `⟨e, he⟩` from `GlobalTheory.T.markedFieldPairs_equiv_definiteFieldPairs_odd p G ha hn sel hsel`. Unfold `markedSumIrr dSumIrr`. Use `GlobalTheory.finsum_ite_eq_of_equiv _ _ e (fun a : Cls G => wt (Quot.out a).pol * (Quot.out a).term Kf f r K φ) (fun b : DCls G => wt (Quot.out b).pol * (Quot.out b).term Kf f r K φ) fun q => by` and compare the differences between its conclusion and the goal. Take `⟨hpol, hterm⟩` from `he q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Extract witnesses or component facts from the available result.
 
-Use `show wt (Quot.out (e q).1).pol * (Quot.out (e q).1).term Kf f r K φ = wt (Quot.out q.1).pol * (Quot.out q.1).term Kf f r K φ`. Rewrite using `[hpol, hterm Kf f r K φ hr hf hφ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem marked_field_pairs_sum_eq_definite_pairs_sum : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), G.a = 1 → Odd G.n → ∀ (wt sel : Polynomial G.F → ℂ), IsSel G sel → ∀ (Kf : Subgroup G.GAf) (f : G.GAf → ℂ) (r : ℕ) (K : Subgroup (Gr G r)) (φ : Gr G r → ℂ), 0 < r → (∀ k ∈ Kf, ∀ g, f (k⁻¹ * g * k) = f g) → (∀ k ∈ K, ∀ g, φ (k⁻¹ * g * sigG G r k) = φ g) → markedSumIrr G wt sel Kf f r K φ = dSumIrr G wt Kf f r K φ := by
   intro p _ G ha hn wt sel hsel Kf f r K φ hr hf hφ

@@ -15,9 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
 /- English proof (translation)
-Set `f : (VS D).V →+ (InfinitePlace X.B.I.F → Fin (D.R.k + 1) → ℂ)` to `AddMonoidHom.mk' (rowV X u) (fun x y => rowV_add (X := X) (u := u) x y)`. Set `S : AddSubgroup (VS D).V` to `(Submodule.span (𝓞 D.host.E) {y | ∃ c ∈ (aaD D b : Set D.host.E), ∃ l ∈ X.Lb, y = c • l}).toAddSubgroup`. Establish `hc : cLat X u (Sum.inl (Sum.inr b)) = S.map f` using `AddSubgroup.closure_eq (S.map f)`. Establish `key : x ∈ cLat X u (Sum.inl (Sum.inr b)) ↔ x ∈ S.map f`. Rewrite using `[hc]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Iff.rfl`. Conclude with `key.trans AddSubgroup.mem_map`.
+Unfold both sides to obtain the same proposition, which implies itself. A detailed English derivation is pending.
 -/
 theorem mem_cl_row (b : Fin D.R.rS) (x : InfinitePlace X.B.I.F → Fin (D.R.k + 1) → ℂ) :
     x ∈ cLat X u (Sum.inl (Sum.inr b)) ↔ ∃ y ∈ aaLb X b, rowV X u y = x := by
@@ -43,9 +43,9 @@ def imHom : D.host.E →+ (InfinitePlace X.B.I.F → ℝ) where
   map_add' s t := by funext v; simp
 
 /- English proof (translation)
-Establish `hc : cLat X u (Sum.inr (Sum.inr a)) = (imSub a).map (imHom X)` using `AddSubgroup.closure_eq ((imSub a).map (imHom X))`. Establish `key : x ∈ cLat X u (Sum.inr (Sum.inr a)) ↔ x ∈ (imSub a).map (imHom X)`. Rewrite using `[hc]`. Conclude with `Iff.rfl`. Use `key.trans (AddSubgroup.mem_map.trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ⟨h1, h2⟩, rfl⟩`. Conclude with `⟨t, h1, h2, rfl⟩`. Introduce and unpack `⟨t, h1, h2, rfl⟩`. Conclude with `⟨t, ⟨h1, h2⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_cl_im (a : Fin D.R.rS) (x : InfinitePlace X.B.I.F → ℝ) :
     x ∈ cLat X u (Sum.inr (Sum.inr a)) ↔
@@ -62,11 +62,11 @@ theorem mem_cl_im (a : Fin D.R.rS) (x : InfinitePlace X.B.I.F → ℝ) :
     exact ⟨t, ⟨h1, h2⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨v⟩` from `(inferInstance : Nonempty (InfinitePlace X.B.I.F))`. Establish `hs : D.host.conj (t - t') = -(t - t')` using `by rw [map_sub, ht, ht']; ring`. Establish `h1` using `CovB.embS_conj (D := D) (X.pl v) (t - t')`. Rewrite `h1` using `[hs, map_neg]`. Establish `him : (embS D (X.pl v) (t - t')).im = 0` using `by rw [map_sub, Complex.sub_im, h v, sub_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hre : (embS D (X.pl v) (t - t')).re = 0`. Establish `h2` using `congrArg Complex.re h1`. Simplify using `only [Complex.neg_re, Complex.conj_re] at h2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0 : embS D (X.pl v) (t - t') = 0` using `Complex.ext hre him`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.mp ((map_eq_zero_iff _ (RingHom.injective _)).mp h0)`.
+A detailed English derivation is pending.
 -/
 theorem im_inj {t t' : D.host.E} (ht : D.host.conj t = -t) (ht' : D.host.conj t' = -t')
     (h : ∀ v : InfinitePlace X.B.I.F, (embS D (X.pl v) t).im = (embS D (X.pl v) t').im) : t = t' := by
@@ -83,15 +83,15 @@ theorem im_inj {t t' : D.host.E} (ht : D.host.conj t = -t) (ht' : D.host.conj t'
   exact sub_eq_zero.mp ((map_eq_zero_iff _ (RingHom.injective _)).mp h0)
 
 /- English proof (translation)
-Establish `hL : ∀ l ∈ X.Lb, InW X l`. Introduce `l hl`. Establish `hp` using `Alg.pW_inW (X := X) l`. Establish `he : pW X l = l`. Establish `h1` using `Level.prV_Lb (X := X) l hl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Level.prV_apply]`. Simplify `h1` using `only [pW]`. Rewrite `hp` using `[he]`. Then use the resulting hypothesis. Simplify using `only [aaLb, SetLike.mem_coe] at hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨c, -, l, hl, rfl⟩` from `hx`. Introduce `d`. Conclude with `⟨by rw [map_smul, ((hL l hl) d).1, smul_zero], by rw [map_smul, ((hL l hl) d).2, smul_zero]⟩`. Consider the case `zero => intro d`.
+Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨map_zero _, map_zero _⟩`. Consider the case `add x z _ _ hx hz`. Introduce `d`. Conclude with `⟨by rw [map_add, (hx d).1, (hz d).1, add_zero], by rw [map_add, (hx d).2, (hz d).2, add_zero]⟩`. Consider the case `smul o x _ hx`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `d`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul D.host.E o x, map_smul, (hx d).1, smul_zero]`. Rewrite using `[← algebraMap_smul D.host.E o x, map_smul, (hx d).2, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem aaLb_inW {b : Fin D.R.rS} {y : (VS D).V} (hy : y ∈ aaLb X b) : InW X y := by
   have hL : ∀ l ∈ X.Lb, InW X l := by

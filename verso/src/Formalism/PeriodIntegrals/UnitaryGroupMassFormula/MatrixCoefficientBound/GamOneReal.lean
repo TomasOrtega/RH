@@ -13,26 +13,24 @@ namespace PI.GGMatBoundW
 open Formalism.L2.SG.GGMirabolic
 
 /- English proof (translation)
-Rewrite using `[gam_one]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem gam_one_real {F : Type} [Field F] [Fintype F] (k : ℕ) (ψ₀ : AddChar F ℂ) :
     gam ψ₀ (1 : GL (Fin k) F) = (((Fintype.card (GL (Fin k) F) : ℝ) / (cardU F k : ℝ) : ℝ) : ℂ) := by
   rw [gam_one]; push_cast; rfl
 
 /- English proof (translation)
-Introduce `hC hR ι _ Fq _ _ k ψ hψ hq V _ _ _ π w μ hw he`. Take `⟨W, hW0, hWinv, hWeig, hv⟩` from `hJ ι Fq k ψ V π w μ hw he`. Use `choose μv hμv using hv`. Take `⟨x, hxW, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW0`. Establish `hpl : ∀ v, ∃ c : ℝ, μv v = gam (ψ v) (1 : GL (Fin k) (Fq v)) * (c : ℂ) ∧ 0 ≤ c ∧ c ≤ 1 + 3 / (Fintype.card (Fq v) : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Use `hP hC hR (Fq v) k (ψ v) (hψ v) (hq v) V (π.comp (MonoidHom.mulSingle (fun v => GL (Fin k) (Fq v)) v)) W (μv v) hW0 ?_ ?_` and prove the remaining obligations. Introduce `g y hy`. Conclude with `hWinv _ y hy`. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hμv v y hy]`. Simplify using `[repGam, placeOp, LinearMap.sum_apply]`. Use `choose c hc using hpl`. Establish `h1 : totOp ψ π x = (∏ v, μv v) • x` using `hF ι Fq k ψ V π μv x (fun v => hμv v x hxW)`. Establish `h2 : μ = ∏ v, μv v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `hWeig x hxW`. Rewrite `h3` using `[h1]`. Conclude with `(smul_left_injective ℂ hx0 h3).symm`. Use `set g : ι → ℝ := fun v => (Fintype.card (GL (Fin k) (Fq v)) : ℝ) / (cardU (Fq v) k : ℝ) with hg`. Establish `hg0 : ∀ v, 0 ≤ g v` using `fun v => div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hG1 : gamProd ψ (1 : ∀ v, GL (Fin k) (Fq v)) = ((∏ v, g v : ℝ) : ℂ)`. Unfold `gamProd`. Use `push_cast`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.one_apply, gam_one_real]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(∏ v, g v) * ∏ v, c v, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h2]`. Use `push_cast`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[(hc v).1, gam_one_real]`. Conclude with `mul_nonneg (Finset.prod_nonneg fun v _ => hg0 v) (Finset.prod_nonneg fun v _ => (hc v).2.1)`. Rewrite using `[hG1, Complex.ofReal_re, mul_comm (∏ v, (1 + 3 / (Fintype.card (Fq v) : ℝ)))]`. Conclude with `mul_le_mul_of_nonneg_left (Finset.prod_le_prod (fun v _ => (hc v).2.1) (fun v _ => (hc v).2.2)) (Finset.prod_nonneg fun v _ => hg0 v)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigBound_of (hP : PlaceBound) (hJ : JointEig) (hF : ProdFormula) : EigBound := by
   intro hC hR ι _ Fq _ _ k ψ hψ hq V _ _ _ π w μ hw he

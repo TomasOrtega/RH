@@ -25,37 +25,37 @@ variable (E n) in
 def splitInf : UA E n →* infU E n := (GlobalTheory.UnitarySplit.dense_and_split E n).2.2.2.choose_spec.choose
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.UnitarySplit.dense_and_split E n).2.2.2.choose_spec.choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem continuous_splitFin : Continuous (splitFin E n) :=
   (GlobalTheory.UnitarySplit.dense_and_split E n).2.2.2.choose_spec.choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.UnitarySplit.dense_and_split E n).2.2.2.choose_spec.choose_spec.2.2.1 x`.
+A detailed English derivation is pending.
 -/
 theorem eq_splitFin_mul_splitInf (x : UA E n) : x = (splitFin E n x).1 * (splitInf E n x).1 :=
   (GlobalTheory.UnitarySplit.dense_and_split E n).2.2.2.choose_spec.choose_spec.2.2.1 x
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.UnitarySplit.dense_and_split E n).2.2.2.choose_spec.choose_spec.2.2.2 g k).1`.
+A detailed English derivation is pending.
 -/
 theorem splitFin_mul (g : finU E n) (k : infU E n) : splitFin E n (g.1 * k.1) = g :=
   ((GlobalTheory.UnitarySplit.dense_and_split E n).2.2.2.choose_spec.choose_spec.2.2.2 g k).1
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.UnitarySplit.dense_and_split E n).2.2.2.choose_spec.choose_spec.2.2.2 g k).2`.
+A detailed English derivation is pending.
 -/
 theorem splitInf_mul (g : finU E n) (k : infU E n) : splitInf E n (g.1 * k.1) = k :=
   ((GlobalTheory.UnitarySplit.dense_and_split E n).2.2.2.choose_spec.choose_spec.2.2.2 g k).2
 
 /- English proof (translation)
-Simplify using `using splitFin_mul g 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem splitFin_fin (g : finU E n) : splitFin E n g.1 = g := by
   simpa using splitFin_mul g 1
 
 /- English proof (translation)
-Simplify using `using splitFin_mul 1 k`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem splitFin_inf (k : infU E n) : splitFin E n k.1 = 1 := by
   simpa using splitFin_mul 1 k
@@ -88,21 +88,21 @@ def Phi (S : Set (Pl E)) (lam : InfinitePlace E → DomWeight n) (K' : ∀ w : P
   TensorProduct.lift ((phiFun lam).comp (vecM S lam K').subtype)
 
 /- English proof (translation)
-Simplify using `[Phi]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem Phi_tmul (S : Set (Pl E)) (lam : InfinitePlace E → DomWeight n) (K' : ∀ w : Pl E, Subgroup (UL n w))
     (F : vecM S lam K') (w : Wsp lam) : Phi S lam K' (F ⊗ₜ w) = phiFun lam F.1 w := by
   simp [Phi]
 
 /- English proof (translation)
-Establish `hk : cInf k.1 = 1` using `MonoidHom.mem_ker.1 k.2`. Simplify using `only [cEmb, MonoidHom.comp_apply, hk, map_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem cEmb_fin (τ : E →+* ℂ) (k : finU E n) : cEmb τ k.1 = 1 := by
   have hk : cInf k.1 = 1 := MonoidHom.mem_ker.1 k.2
   simp only [cEmb, MonoidHom.comp_apply, hk, map_one]
 
 /- English proof (translation)
-Establish `h : ∀ v : InfinitePlace E, cEmb v.embedding k.1 = 1` using `fun v => cEmb_fin _ k`. Express the relevant statement in the definitionally equal form `PiTensorProduct.map (fun v => GlobalTheory.Branching.sqRep ℂ n (lam v) (cEmb v.embedding k.1)) = 1`. Simplify using `only [h, map_one]`. Conclude with `PiTensorProduct.map_id`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wInf_fin (lam : InfinitePlace E → DomWeight n) (k : finU E n) : wInf lam k.1 = 1 := by
   have h : ∀ v : InfinitePlace E, cEmb v.embedding k.1 = 1 := fun v => cEmb_fin _ k
@@ -111,13 +111,13 @@ theorem wInf_fin (lam : InfinitePlace E → DomWeight n) (k : finU E n) : wInf l
   exact PiTensorProduct.map_id
 
 /- English proof (translation)
-Rewrite using `[map_mul, splitFin_fin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem splitFin_mul_fin (g : UA E n) (k : finU E n) : splitFin E n (g * k.1) = splitFin E n g * k := by
   rw [map_mul, splitFin_fin]
 
 /- English proof (translation)
-Rewrite using `[phiFun_apply, phiFun_apply, splitFin_mul_fin, map_mul, wInf_fin, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem phiFun_mul_fin (lam : InfinitePlace E → DomWeight n) (F : finU E n → Module.Dual ℂ (Wsp lam)) (w : Wsp lam)
     (g : UA E n) (k : finU E n) :

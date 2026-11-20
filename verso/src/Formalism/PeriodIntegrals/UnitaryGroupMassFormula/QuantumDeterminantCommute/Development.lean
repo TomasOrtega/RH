@@ -20,7 +20,7 @@ def QdetCommute : Prop :=
 def CapTransfer : Prop := CapCongr → QdetCommute → EabPres → EabGlLev → CapCommute
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isOpen_univ, fun _ _ => ⟨Set.univ, fun _ => 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩, ⟨⟨by simp [UH], fun _ _ => ⟨by simp, by simp⟩⟩, trivial⟩⟩`.
+Supply the required witnesses or components.
 -/
 example (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (k r : ℕ) (i : Fin (r + 1)) :
     IsOpen (Set.univ : Set (Mx k r)) ∧ SmoothLev k r i Set.univ (fun _ => (0 : E)) ∧

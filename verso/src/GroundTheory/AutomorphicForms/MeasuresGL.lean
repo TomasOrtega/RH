@@ -38,11 +38,11 @@ noncomputable def entriesHomeomorph : Matrix (Fin n) (Fin n) F ≃ₜ (Fin n × 
   continuous_invFun := continuous_pi fun i => continuous_pi fun j => continuous_apply (i, j)
 
 /- English proof (translation)
-Use `⟨Units.isEmbedding_val_mk' (f := fun A => A⁻¹) ?_ fun u => (Matrix.coe_units_inv u).symm, ?_⟩` and prove the remaining obligations. Establish `hdet : ContinuousOn (fun A : Matrix (Fin n) (Fin n) F => (A.det)⁻¹) {x | IsUnit x}` using `(continuous_id.matrix_det).continuousOn.inv₀ fun A hA => ((Matrix.isUnit_iff_isUnit_det A).1 hA).ne_zero`. Use `(hdet.smul (continuous_id.matrix_adjugate).continuousOn).congr fun A _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.inv_def, Ring.inverse_eq_inv']`. Establish `: Set.range (Units.val : GL (Fin n) F → Matrix (Fin n) (Fin n) F) = (fun A : Matrix (Fin n) (Fin n) F => A.det) ⁻¹' {0}ᶜ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `A`. Simplify using `only [Set.mem_range, Set.mem_preimage, Set.mem_compl_iff, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 u.isUnit).ne_zero`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨((Matrix.isUnit_iff_isUnit_det A).2 (isUnit_iff_ne_zero.2 h)).unit, rfl⟩`. Rewrite using `[this]`. Conclude with `isOpen_compl_singleton.preimage (continuous_id.matrix_det)`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpenEmbedding_val :
     IsOpenEmbedding (Units.val : GL (Fin n) F → Matrix (Fin n) (Fin n) F) := by
@@ -81,9 +81,9 @@ theorem glChart_apply (g : GL (Fin n) F) (ij : Fin n × Fin n) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[LinearChart.leftModulus, distribHaarChar_pi_eq, ← map_pow]`. Use `congr 1`. Use `ext`. Rewrite using `[LinearEquiv.coe_det, Units.val_pow_eq_pow_val, Matrix.GeneralLinearGroup.val_det_apply]`. Use `LinearMap.det_conj (LinearMap.mulLeft F (g : Matrix (Fin n) (Fin n) F)) (entries F n)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[det_mulLeft_matrix, Fintype.card_fin]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glChart_leftModulus (g : GL (Fin n) F) :
     (glChart F n).leftModulus g = distribHaarChar F (Matrix.GeneralLinearGroup.det g) ^ n := by
@@ -96,9 +96,9 @@ theorem glChart_leftModulus (g : GL (Fin n) F) :
   exact this
 
 /- English proof (translation)
-Rewrite using `[LinearChart.rightModulus, distribHaarChar_pi_eq, ← map_pow]`. Use `congr 1`. Use `ext`. Rewrite using `[LinearEquiv.coe_det, Units.val_pow_eq_pow_val, Matrix.GeneralLinearGroup.val_det_apply]`. Use `LinearMap.det_conj (LinearMap.mulRight F (g : Matrix (Fin n) (Fin n) F)) (entries F n)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[det_mulRight_matrix, Fintype.card_fin]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glChart_rightModulus (g : GL (Fin n) F) :
     (glChart F n).rightModulus g = distribHaarChar F (Matrix.GeneralLinearGroup.det g) ^ n := by
@@ -111,7 +111,7 @@ theorem glChart_rightModulus (g : GL (Fin n) F) :
   exact this
 
 /- English proof (translation)
-Use extensionality with `g`. Use `borelize F (GL (Fin n) F)`. Rewrite using `[(glChart F n).modularCharacter_eq, glChart_leftModulus, glChart_rightModulus, div_self (pow_pos distribHaarChar_pos n).ne', MonoidHom.one_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modularCharacter_GL : (modularCharacter : GL (Fin n) F →* ℝ≥0) = 1 := by
   ext g
@@ -120,7 +120,7 @@ theorem modularCharacter_GL : (modularCharacter : GL (Fin n) F →* ℝ≥0) = 1
     div_self (pow_pos distribHaarChar_pos n).ne', MonoidHom.one_apply]
 
 /- English proof (translation)
-Use `⟨fun g => ?_⟩` and prove the remaining obligations. Establish `: modularCharacterFun g = 1`. Express the relevant statement in the definitionally equal form `modularCharacter g = 1`. Rewrite using `[modularCharacter_GL, MonoidHom.one_apply]`. Rewrite using `[isMulLeftInvariant_eq_smul (map (· * g) μ) μ, ← modularCharacterFun_eq_haarScalarFactor, this, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem isMulRightInvariant_GL [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
     (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] : μ.IsMulRightInvariant := by
@@ -137,11 +137,11 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Meas
   [BorelSpace G]
 
 /- English proof (translation)
-Establish `hpre : ∀ a : G, (QuotientGroup.mk : G → G ⧸ K) ⁻¹' {(a : G ⧸ K)} = (a⁻¹ * ·) ⁻¹' K`. Introduce `a`. Use extensionality with `b`. Rewrite using `[Set.mem_preimage, Set.mem_singleton_iff, QuotientGroup.eq, ← K.inv_mem_iff, mul_inv_rev, inv_inv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[show (QuotientGroup.mk : G → G ⧸ K) ⁻¹' (O : Set (G ⧸ K)) = ⋃ y ∈ O, (QuotientGroup.mk : G → G ⧸ K) ⁻¹' {y} by ext; simp, measure_biUnion_finset]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => μ K) fun x _ => ?_, Finset.sum_const, nsmul_eq_mul]`. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective x`. Rewrite using `[hpre, measure_preimage_mul]`. Introduce `x _ y _ hxy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Set.disjoint_left.2 fun b hx hy => hxy (hx.symm.trans hy)`. Introduce `x _`. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective x`. Rewrite using `[hpre]`. Conclude with `(hK.preimage (continuous_const_mul _)).measurableSet`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measure_preimage_mk_finset (μ : Measure G) [μ.IsMulLeftInvariant] {K : Subgroup G}
     (hK : IsOpen (K : Set G)) (O : Finset (G ⧸ K)) :
@@ -165,28 +165,26 @@ theorem measure_preimage_mk_finset (μ : Measure G) [μ.IsMulLeftInvariant] {K :
     exact (hK.preimage (continuous_const_mul _)).measurableSet
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_map_equiv, MulAut.conj_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_map_conj_iff {K : Subgroup G} {g k : G} :
     k ∈ K.map (MulAut.conj g).toMonoidHom ↔ g⁻¹ * k * g ∈ K := by
   rw [Subgroup.mem_map_equiv, MulAut.conj_symm_apply]
 
 /- English proof (translation)
-Use `set H := K.map (MulAut.conj g).toMonoidHom with hH`. Set `O : Set (G ⧸ K)` to `MulAction.orbit K (g : G ⧸ K)`. Establish `hstab : MulAction.stabilizer K (g : G ⧸ K) = H.subgroupOf K`. Use extensionality with `k`. Rewrite using `[MulAction.mem_stabilizer_iff, Subgroup.mem_subgroupOf, mem_map_conj_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `show ((k : G) • ((g : G) : G ⧸ K)) = ((g : G) : G ⧸ K) ↔ _`. Rewrite using `[MulAction.Quotient.smul_mk, QuotientGroup.eq, smul_eq_mul, show ((k : G) * g)⁻¹ * g = (g⁻¹ * k * g)⁻¹ by group, K.inv_mem_iff]`. Establish `hdc : doubleCoset g (K : Set G) K = (QuotientGroup.mk : G → G ⧸ K) ⁻¹' O`. Use extensionality with `x`. Rewrite using `[mem_doubleCoset, Set.mem_preimage, MulAction.mem_orbit_iff]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k₁, hk₁, k₂, hk₂, rfl⟩`. Use `⟨⟨k₁, hk₁⟩, ?_⟩` and prove the remaining obligations. Use `show ((k₁ : G) • ((g : G) : G ⧸ K)) = _`. Rewrite using `[MulAction.Quotient.smul_mk, QuotientGroup.eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify `hk₂` using `[mul_assoc]`. Introduce and unpack `⟨k, hk⟩`. Express the relevant statement in the definitionally equal form `((k : G) • ((g : G) : G ⧸ K)) = _ at hk`. Rewrite `hk` using `[MulAction.Quotient.smul_mk, QuotientGroup.eq]`. Conclude with `⟨k, k.2, (k * g)⁻¹ * x, hk, by group⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcK : CompactSpace K` using `isCompact_iff_compactSpace.1 hKc`. Establish `hopen : IsOpen ((H.subgroupOf K : Subgroup K) : Set K)`. Establish `: IsOpen (H : Set G)`. Establish `e : (H : Set G) = (fun x => g⁻¹ * x * g) ⁻¹' K`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mem_map_conj_iff`. Rewrite using `[e]`. Conclude with `hKo.preimage (by fun_prop)`. Conclude with `this.preimage continuous_subtype_val`. Establish `hfin : Finite (K ⧸ H.subgroupOf K)` using `Subgroup.quotient_finite_of_isOpen _ hopen`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hOfin : O.Finite`. Establish `: Finite O`. Rewrite `hfin` using `[← hstab]`. Conclude with `Finite.of_equiv _ (MulAction.orbitEquivQuotientStabilizer K (g : G ⧸ K)).symm`. Conclude with `Set.toFinite O`.
-
-Establish `hcard : hOfin.toFinset.card = H.relIndex K`. Rewrite using `[← Nat.card_eq_card_finite_toFinset, Subgroup.relIndex, Subgroup.index, ← hstab]`. Conclude with `Nat.card_congr (MulAction.orbitEquivQuotientStabilizer K (g : G ⧸ K))`. Rewrite using `[hdc, ← hOfin.coe_toFinset, measure_preimage_mk_finset μ hKo, hcard]`.
+A detailed English derivation is pending.
 -/
 theorem measure_doubleCoset (μ : Measure G) [μ.IsMulLeftInvariant] {K : Subgroup G}
     (hKo : IsOpen (K : Set G)) (hKc : IsCompact (K : Set G)) (g : G) :
@@ -236,7 +234,7 @@ theorem measure_doubleCoset (μ : Measure G) [μ.IsMulLeftInvariant] {K : Subgro
 end DoubleCoset
 
 /- English proof (translation)
-The claim follows from `measure_doubleCoset μ (GLnLocal.isOpen_integralGL F n) (GLnLocal.isCompact_integralGL F n) _`.
+A detailed English derivation is pending.
 -/
 theorem measure_doubleCoset_diagPow [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
     (μ : Measure (GL (Fin n) F)) [μ.IsMulLeftInvariant] (a : Fin n → ℤ) :
@@ -247,11 +245,11 @@ theorem measure_doubleCoset_diagPow [MeasurableSpace (GL (Fin n) F)] [BorelSpace
   measure_doubleCoset μ (GLnLocal.isOpen_integralGL F n) (GLnLocal.isCompact_integralGL F n) _
 
 /- English proof (translation)
-Use `isMulRightInvariant_GL F n μ` as an intermediate fact. Use `set K := GLnLocal.integralGL F n`. Establish `hK0 : μ K ≠ 0` using `(GLnLocal.isOpen_integralGL F n).measure_ne_zero μ ⟨1, K.one_mem⟩`. Establish `hKT : μ K ≠ ∞` using `(GLnLocal.isCompact_integralGL F n).measure_lt_top.ne`. Establish `e` using `isMulLeftInvariant_eq_smul μ.inv μ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : haarScalarFactor μ.inv μ = 1`. Establish `h` using `congrArg (fun ν : Measure (GL (Fin n) F) => ν K) e`. Simplify using `only [Measure.inv_apply, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at h`. Establish `hKinv : (K : Set (GL (Fin n) F))⁻¹ = K`. Use extensionality with `x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite `h` using `[hKinv]`. Use `(ENNReal.mul_eq_right hK0 hKT).1 h.symm` as an intermediate fact. Conclude with `this` after adjusting the coercions. Rewrite using `[e, hc, one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_eq_self_GL [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
     (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] : μ.inv = μ := by
@@ -272,9 +270,9 @@ theorem inv_eq_self_GL [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) 
   rw [e, hc, one_smul]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Set.mem_inv, mem_doubleCoset, mem_doubleCoset]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, h⟩`. Conclude with `⟨b⁻¹, K.inv_mem hb, a⁻¹, K.inv_mem ha, by rw [← inv_inv x, h]; group⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨b⁻¹, K.inv_mem hb, a⁻¹, K.inv_mem ha, by group⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem inv_doubleCoset {G : Type*} [Group G] (g : G) (K : Subgroup G) :
     (doubleCoset g (K : Set G) K)⁻¹ = doubleCoset g⁻¹ (K : Set G) K := by
@@ -287,9 +285,9 @@ theorem inv_doubleCoset {G : Type*} [Group G] (g : G) (K : Subgroup G) :
     exact ⟨b⁻¹, K.inv_mem hb, a⁻¹, K.inv_mem ha, by group⟩
 
 /- English proof (translation)
-Use `borelize (GL (Fin n) F)`. Set `μ : Measure (GL (Fin n) F)` to `Measure.haar`. Establish `hK0 : μ K ≠ 0` using `hKo.measure_ne_zero μ ⟨1, K.one_mem⟩`. Establish `hKT : μ K ≠ ∞` using `hKc.measure_lt_top.ne`. Establish `h1` using `measure_doubleCoset μ hKo hKc g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : μ (doubleCoset g (K : Set (GL (Fin n) F)) K) = μ (doubleCoset g⁻¹ (K : Set (GL (Fin n) F)) K)` using `by conv_lhs => rw [← inv_eq_self_GL F n μ]`. Rewrite using `[Measure.inv_apply, inv_doubleCoset]`. Rewrite `h1` using `[h3, measure_doubleCoset μ hKo hKc g⁻¹]`. Conclude with `((ENNReal.mul_left_inj hK0 hKT).1 h1).symm` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_conj_eq {K : Subgroup (GL (Fin n) F)} (hKo : IsOpen (K : Set (GL (Fin n) F)))
     (hKc : IsCompact (K : Set (GL (Fin n) F))) (g : GL (Fin n) F) :
@@ -316,7 +314,7 @@ noncomputable def haarGL (μ₀ : Measure (Fin n × Fin n → F)) : Measure (GL 
 variable (μ₀ : Measure (Fin n × Fin n → F)) [μ₀.IsAddHaarMeasure]
 
 /- English proof (translation)
-Rewrite using `[haarGL, LinearChart.haar]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[glChart_leftModulus]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem haarGL_eq :
     haarGL F n μ₀ = (μ₀.comap fun (g : GL (Fin n) F) (ij : Fin n × Fin n) =>
@@ -334,7 +332,7 @@ instance isMulRightInvariant_haarGL : (haarGL F n μ₀).IsMulRightInvariant :=
   isMulRightInvariant_GL F n _
 
 /- English proof (translation)
-The claim follows from `isMulLeftInvariant_eq_smul μ _`.
+A detailed English derivation is pending.
 -/
 theorem eq_smul_haarGL (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] :
     μ = haarScalarFactor μ (haarGL F n μ₀) • haarGL F n μ₀ :=

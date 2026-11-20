@@ -8,11 +8,9 @@ open MeasureTheory Matrix NumberField IsDedekindDomain Formalism.BasicNotions Fo
 namespace GlobalTheory.ResidueCardUnif
 
 /- English proof (translation)
-Introduce `L _ _ P h`. Establish `ha : Valued.v ((piP P : (P.adicCompletion L)ˣ) : P.adicCompletion L) = WithZero.exp (-1 : ℤ)` using `unif_spec P`. Establish `h1 : ((piP P : (P.adicCompletion L)ˣ) : P.adicCompletion L) ∈ P.adicCompletionIntegers L` using `h`. Establish `e : IsLocalRing.maximalIdeal (P.adicCompletionIntegers L) = Ideal.span {⟨_, h1⟩}`. Use extensionality with `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[GlobalTheory.CNorm.mem_span_singleton_adicCompletionIntegers P (by rw [ha]; exact WithZero.exp_ne_zero)]`. Rewrite using `[ha, ← GlobalTheory.HaarLatticeScale.lt_one_iff_le_exp]`. Conclude with `Valuation.mem_maximalIdeal_iff _ _`. Establish `c` using `GlobalTheory.GaugeProdFormula.card_residue L P`. Rewrite `c` using `[IsLocalRing.ResidueField, e]`.
-
-Conclude with `c`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_kF_piP : ∀ (L : Type) [Field L] [NumberField L] (P : HeightOneSpectrum (𝓞 L)) (h : ((piP P : (P.adicCompletion L)ˣ) : P.adicCompletion L) ∈ OP P), Nat.card (kF (OP P) ((piP P : (P.adicCompletion L)ˣ) : P.adicCompletion L) h) = qP P := by
   intro L _ _ P h

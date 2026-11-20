@@ -44,7 +44,7 @@ def IsBlockEmb {l d : ℕ} (h : l + d ≤ r) (ι : GlobalTheory.CuspRep.GA E d �
 omit [NumberField F] [NumberField E] in
 
 /- English proof (translation)
-The claim follows from `le_rfl colX i j h k := by have hj : j = 0 := Subsingleton.elim _ _ subst hj have hi : i = 0 := Fin.ext h subst hi fin_cases k <;> simp columnBlock i j h k := by have hj : j = 0 := Subsingleton.elim _ _ subst hj have hi : i = 1 := Fin.ext (by simp at h; omega) subst hi fin_cases k …`.
+A detailed English derivation is pending.
 -/
 example : IsAdapted σ (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) E) (!![1; 0] : Matrix (Fin 2) (Fin 1) E) !![0; 1] 1 where
   le := le_rfl

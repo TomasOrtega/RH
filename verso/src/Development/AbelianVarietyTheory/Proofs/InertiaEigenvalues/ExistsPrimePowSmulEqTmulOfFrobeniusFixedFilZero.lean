@@ -9,7 +9,7 @@ open scoped Formalism.Per
 namespace GlobalTheory.CrisFixedLattice
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v m => simp`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem coordLeft_lTensor {R : Type} [CommRing R] {V M N : Type}
     [AddCommGroup V] [Module R V] [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
@@ -21,7 +21,7 @@ theorem coordLeft_lTensor {R : Type} [CommRing R] {V M N : Type}
   | add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v m => simp`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem coordRight_map {R : Type} [CommRing R] {M P N : Type}
     [AddCommGroup M] [Module R M] [AddCommGroup P] [Module R P] [AddCommGroup N] [Module R N]
@@ -35,9 +35,9 @@ theorem coordRight_map {R : Type} [CommRing R] {M P N : Type}
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus' (I := Ideal.span {(l : R)}) _ fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton.1 (PadicInt.appr_spec n a)`. Establish `e : a = (a.appr n : ℤ_[l]) + (l : ℤ_[l]) ^ n * c` using `by rw [← hc]; ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨f c - g c, ?_⟩` and prove the remaining obligations. Establish `hf` using `congrArg f e`. Establish `hg` using `congrArg g e`. Rewrite `hf`, `hg` using `[map_add, map_mul, map_pow, map_natCast, map_natCast]`. Rewrite using `[hf, hg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -56,13 +56,13 @@ theorem padicInt_ringHom_ext_pt {R : Type} [CommRing R] [IsHausdorff (Ideal.span
   ring
 
 /- English proof (translation)
-The claim follows from `padicInt_ringHom_ext_pt (R := WittVector l (Per.Fl l)) (Per.zA l) _ a`.
+A detailed English derivation is pending.
 -/
 theorem zA_eq_algebraMap_pt (a : ℤ_[l]) : Per.zA l a = algebraMap ℤ_[l] (Ainf l) a :=
   padicInt_ringHom_ext_pt (R := WittVector l (Per.Fl l)) (Per.zA l) _ a
 
 /- English proof (translation)
-Rewrite using `[zA_eq_algebraMap_pt]`. Conclude with `GlobalTheory.MemLoc.ULaws.iota_aB C _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_algebraMap_pt (C : GlobalTheory.MemLoc.Core l) (a : ℤ_[l]) :
     C.ι (algebraMap ℤ_[l] (Per.Bcris l) a) =
@@ -87,7 +87,7 @@ def filZero (C : GlobalTheory.MemLoc.Core l) : Submodule ℤ_[l] (Per.Bcris l) w
     exact Submodule.smul_mem _ _ hb
 
 /- English proof (translation)
-Apply `GlobalTheory.MemLoc.ULaws.iota_injective C` to reduce the goal to its premises. Rewrite using `[iota_algebraMap_pt, ← C.o_sec.z]`. Conclude with `C.ι_u _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qB_padicInt (C : GlobalTheory.MemLoc.Core l) (a : ℤ_[l]) :
     C.qB (a : ℚ_[l]) = algebraMap ℤ_[l] (Per.Bcris l) a := by
@@ -96,7 +96,7 @@ theorem qB_padicInt (C : GlobalTheory.MemLoc.Core l) (a : ℤ_[l]) :
   exact C.ι_u _
 
 /- English proof (translation)
-Establish `hl : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Rewrite using `[norm_mul, norm_pow, Padic.norm_p, inv_pow]`. Rewrite using `[inv_mul_le_iff₀ (pow_pos hl N), mul_one]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_padicInt_of_norm_le (q : ℚ_[l]) (N : ℕ) (h : ‖q‖ ≤ (l : ℝ) ^ N) :
     ‖(l : ℚ_[l]) ^ N * q‖ ≤ 1 := by
@@ -110,7 +110,7 @@ end GlobalTheory.CrisFixedLattice
 namespace GlobalTheory.CrisFixedLattice
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem frobOB_eq_lTensor {l : ℕ} [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O]
     (x : OB l O) : frobOB l O x = (frobB l).toLinearMap.lTensor O x := by
@@ -120,37 +120,35 @@ theorem frobOB_eq_lTensor {l : ℕ} [Fact l.Prime] (O : Type) [CommRing O] [Alge
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Introduce `hF l _ O K _ _ _ _ _ _ _ G _ _ T C z hφ hz`. Break down `subsingleton_or_nontrivial O with hO | hO` into its components or cases. Use `haveI := Module.subsingleton O (TW (OB l O) T)`. Conclude with `⟨0, 0, Subsingleton.elim _ _⟩`. Use `haveI : Module.Finite O ↥T.L.T := Module.Finite.iff_fg.2 T.L.fg`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : Module.Free O ↥T.L.T := T.L.free`. Set `bO` to `Module.Free.chooseBasis ℤ_[l] O`. Set `bM` to `Module.Free.chooseBasis O ↥T.L.T`. Set `eR` to `TensorProduct.equivFinsuppOfBasisRight (M := OB l O) bM`. Set `eL` to `TensorProduct.equivFinsuppOfBasisLeft (N := Per.Bcris l) bO`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `c` to `fun j i => eL (eR z j) i`. Establish `hcφ : ∀ j i, Per.φB l (c j i) = c j i`. Introduce `j i`. Establish `h1 : eR (TWmap (frobOB l O) T z) j = frobOB l O (eR z j)` using `coordRight_map bM (frobOB l O).toLinearMap z j`. Rewrite `h1` using `[hφ, frobOB_eq_lTensor]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `h2 : c j i = eL ((frobB l).toLinearMap.lTensor O (eR z j)) i` using `congrArg (fun w => eL w i) h1`. Rewrite `h2` using `[coordLeft_lTensor]`. Conclude with `h2.symm`. Set `F0` to `filZero C`. Set `RQ : Submodule ℤ_[l] (OB l O)` to `LinearMap.range (F0.subtype.lTensor O)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Establish `hsmul : ∀ (o : O) (w : OB l O), w ∈ RQ → o • w ∈ RQ`. Introduce and unpack `o _ ⟨y, rfl⟩`. Use `⟨(LinearMap.mulLeft ℤ_[l] o).rTensor _ y, ?_⟩` and prove the remaining obligations. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `tmul a f => simp [TensorProduct.smul_tmul']`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add]`. Establish `key : ∀ w, w ∈ Submodule.span O {w : TW (OB l O) T | ∃ (β : Per.Bcris l) (x : ↥T.L.T), C.ι β ∈ Per.FilD l 0 ∧ w = ((1 : O) ⊗ₜ[ℤ_[l]] β) ⊗ₜ[O] x} → ∀ j, eR w j ∈ RQ`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mem w' hw'`. Take `⟨β, x, hβ, rfl⟩` from `hw'`. Introduce `j`. Rewrite using `[TensorProduct.equivFinsuppOfBasisRight_apply_tmul_apply]`. Use `hsmul _ _ ⟨(1 : O) ⊗ₜ[ℤ_[l]] (⟨β, hβ⟩ : F0), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `zero => intro j`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro j`. Rewrite using `[map_add, Finsupp.add_apply]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `add_mem (hx j) (hy j)`. Consider the case `smul o x _ hx => intro j`. Rewrite using `[map_smul, Finsupp.smul_apply]`. Conclude with `hsmul o _ (hx j)`. Establish `hzR : ∀ j, eR z j ∈ RQ` using `key z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hcF : ∀ j i, C.ι (c j i) ∈ Per.FilD l 0`. Introduce `j i`. Take `⟨y, hy⟩` from `hzR j`. Establish `h` using `coordLeft_lTensor bO F0.subtype y i`. Simplify using `only [c]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hy, h]`. Conclude with `(equivFinsuppOfBasisLeft bO y i).2`. Establish `hq : ∀ j i, ∃ q : ℚ_[l], C.qB q = c j i` using `fun j i => (hF l C).2.2.2.1 _ (hcφ j i) (hcF j i)`. Use `choose q hqc using hq`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨N, hN⟩` from `pow_unbounded_of_one_lt (∑ j, ∑ i, ‖q j i‖) hl1`. Establish `hb : ∀ j i, ‖(l : ℚ_[l]) ^ N * q j i‖ ≤ 1` using `fun j i => by`. Use `exists_padicInt_of_norm_le _ N (le_trans ?_ hN.le)` and prove the remaining obligations. Use `le_trans ?_ (Finset.single_le_sum (fun j _ => Finset.sum_nonneg fun i _ => norm_nonneg (q j i)) (Finset.mem_univ j))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (fun i _ => norm_nonneg (q j i)) (Finset.mem_univ i)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Set `a : _ → _ → ℤ_[l]` to `fun j i => ⟨(l : ℚ_[l]) ^ N * q j i, hb j i⟩`. Establish `ha : ∀ j i, ((l ^ N : ℕ) : Per.Bcris l) * c j i = algebraMap ℤ_[l] (Per.Bcris l) (a j i)`. Introduce `j i`. Rewrite using `[← qB_padicInt, ← hqc]`. Use `show _ = C.qB ((l : ℚ_[l]) ^ N * q j i)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_pow, map_natCast, Nat.cast_pow]`. Set `y : _ → O` to `fun j => bO.equivFun.symm (a j)`. Use `⟨N, bM.equivFun.symm y, ?_⟩` and prove the remaining obligations. Apply `eR.injective` to reduce the goal to its premises. Use extensionality with `j : 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TensorProduct.equivFinsuppOfBasisRight_apply_tmul_apply]`. Apply `eL.injective` to reduce the goal to its premises. Use extensionality with `i : 1`. Establish `e1 : bM.repr (bM.equivFun.symm y) j = y j`. Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`.
-
-Rewrite using `[e1, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul, map_nsmul, Finsupp.smul_apply, map_nsmul, Finsupp.smul_apply, nsmul_eq_mul, ha, Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', smul_eq_mul, mul_one, TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply]`. Establish `e2 : bO.repr (y j) i = a j i`. Simplify using `only [y]`. Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[e2, Algebra.smul_def, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_eq_one_tmul : GlobalTheory.Published.FontaineBcris → ∀ (l : ℕ) [Fact l.Prime] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [Algebra O K] [NormedAlgebra ℚ_[l] K] (G : Type) [Group G] [TopologicalSpace G] (T : LocLat G ℚ_[l] K O) (C : GlobalTheory.MemLoc.Core l) (z : TW (OB l O) T), TWmap (frobOB l O) T z = z → z ∈ Submodule.span O {w : TW (OB l O) T | ∃ (β : Per.Bcris l) (x : ↥T.L.T), C.ι β ∈ Per.FilD l 0 ∧ w = ((1 : O) ⊗ₜ[ℤ_[l]] β) ⊗ₜ[O] x} → ∃ (n : ℕ) (x : ↥T.L.T), (l : O) ^ n • z = (1 : OB l O) ⊗ₜ[O] x := by
   intro hF l _ O K _ _ _ _ _ _ _ G _ _ T C z hφ hz

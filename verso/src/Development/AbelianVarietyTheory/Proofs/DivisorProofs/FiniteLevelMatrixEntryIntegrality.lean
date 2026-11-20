@@ -17,9 +17,9 @@ namespace GlobalTheory.HCFinLevel
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
 /- English proof (translation)
-Establish `hc : ∀ k, fstA I.F ((Formalism.L2.SG.Pf.alg_B I).repr z k) = 0`. Introduce `k`. Use function extensionality and compare the values at `v`. Use `Formalism.L2.SG.Pf.alg_inf_inj I v _ _ (by rw [← Formalism.L2.SG.Pf.alg_theta]; exact hz v)` as an intermediate fact. Use `fin_cases k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.1`. Conclude with `this.2`. Rewrite using `[Formalism.L2.SG.Pf.alg_y_eq I z, map_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.map_tmul, hc k, TensorProduct.zero_tmul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infinitePart_eq_zero_of_forall_component_eq_zero (I : Formalism.MainNotions.S.AutInst) (z : AF I.F ⊗[I.F] I.E)
     (hz : ∀ v, Formalism.L2.SG.AdBridge.thetaV I v z = 0) :
@@ -38,13 +38,13 @@ theorem infinitePart_eq_zero_of_forall_component_eq_zero (I : Formalism.MainNoti
 open Formalism.L2.SG.AdBridge in
 
 /- English proof (translation)
-Establish `hM : ∀ v, M.map (thetaV I v) = 1`. Introduce `v`. Establish `hP : IsUnit (I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v)`. Establish `h : I.P v * 1 * (I.P v)⁻¹ = I.P v * ((I.P v)⁻¹ * M.map (thetaV I v) * I.P v) * (I.P v)⁻¹` using `congrArg (fun Q => I.P v * Q * (I.P v)⁻¹) (hB v)`. Rewrite `h` using `[Matrix.mul_one, Matrix.mul_nonsing_inv _ hP]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : I.P v * ((I.P v)⁻¹ * M.map (thetaV I v) * I.P v) * (I.P v)⁻¹ = M.map (thetaV I v)`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hP, Matrix.mul_one, Matrix.mul_nonsing_inv_cancel_left _ _ hP]`. Conclude with `e.symm.trans h.symm`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `infinitePart_eq_zero_of_forall_component_eq_zero I (M i j - (1 : Matrix (Fin I.n) (Fin I.n) _) i j) (by`. Introduce `v`. Use `congrFun (congrFun (hM v) i) j` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply]`. Rewrite using `[map_sub, this, Matrix.one_apply, Matrix.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp)`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Rewrite using `[h0, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem map_fst_eq_one (I : Formalism.MainNotions.S.AutInst) (M : Matrix (Fin I.n) (Fin I.n) (AF I.F ⊗[I.F] I.E))
     (hB : ∀ v, (1 : Matrix (Fin I.n) (Fin I.n) ℂ) = (I.P v)⁻¹ * M.map (thetaV I v) * I.P v) :
@@ -72,13 +72,11 @@ theorem map_fst_eq_one (I : Formalism.MainNotions.S.AutInst) (M : Matrix (Fin I.
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `I s hs U hU`. Substitute `hs` using the available equality. Establish `hc : Continuous fun k : I.Gf => GlobalTheory.HCFinU.bridgeS I I.cm.sig rfl (1, k)` using `(GlobalTheory.HCFinU.bridgeS I I.cm.sig rfl).continuous.comp (continuous_const.prodMk continuous_id)`. Establish `hO : IsOpen ((fun k : I.Gf => GlobalTheory.HCFinU.bridgeS I I.cm.sig rfl (1, k)) ⁻¹' (U : Set _))` using `hU.preimage hc`. Establish `h1 : (fun k : I.Gf => GlobalTheory.HCFinU.bridgeS I I.cm.sig rfl (1, k)) ⁻¹' (U : Set _) ∈ nhds (1 : I.Gf)`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hO.mem_nhds ?_` and prove the remaining obligations. Use `show GlobalTheory.HCFinU.bridgeS I I.cm.sig rfl (1, 1) ∈ U`. Establish `: ((1, 1) : I.GA) = 1` using `rfl`. Rewrite using `[this, map_one]`. Conclude with `U.one_mem`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, hg1, hgU⟩` from `I.topf_basis _ h1`. Use `⟨g, hg1, fun k hk => ⟨hgU hk, ?_⟩⟩` and prove the remaining obligations. Establish `hb` using `(GlobalTheory.HCFinU.bridgeS_isBridge I (1, k)).1`. Use `map_fst_eq_one I _ fun v => ?_` and prove the remaining obligations. Establish `h2` using `hb v`.
-
-Establish `h3 : Formalism.MainNotions.S.uMat ((1 : I.Ginf) v) = 1` using `by simp [Formalism.MainNotions.S.uMat]`. Conclude with `h3.symm.trans h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (I : Formalism.MainNotions.S.AutInst) (s : I.E →ₐ[I.F] I.E) (hs : s = I.cm.sig) (U : Subgroup (GlobalTheory.AdelicU.GAd s I.J)), IsOpen (U : Set (GlobalTheory.AdelicU.GAd s I.J)) → ∃ g : ℕ, 1 ≤ g ∧ ∀ k ∈ I.Kg g, GlobalTheory.HCFinU.bridgeS I s hs (1, k) ∈ U ∧ ((Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) s I.J (GlobalTheory.HCFinU.bridgeS I s hs (1, k)) : Matrix (Fin I.n) (Fin I.n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E))).map (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA I.F) (AlgHom.id I.F I.E)) = 1 := by
   intro I s hs U hU

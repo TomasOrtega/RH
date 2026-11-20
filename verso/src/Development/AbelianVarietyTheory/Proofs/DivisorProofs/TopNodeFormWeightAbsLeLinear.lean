@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.InfSize.WtSize
 
 /- English proof (translation)
-The claim follows from `|(((wtOf n E).w i : ℤ) : ℝ)| ≤ B + n + 1 := by unfold wtOf split_ifs with h · show |((⌊GlobalTheory.SignedHC.highestWeight E h.1 i⌋ : ℤ) : ℝ)| ≤ _ set y := GlobalTheory.SignedHC.highestWeight E h.1 i with hy have hy' : (y : ℝ) = (GlobalTheory.SignedHC.descEnum E h.1 i : ℝ) - (((n …`.
+A detailed English derivation is pending.
 -/
 theorem wtOf_abs_le {n : ℕ} {E : Finset ℚ} {B : ℝ} (hB0 : 0 ≤ B) (hB : ∀ x ∈ E, |(x : ℝ)| ≤ B) (i : Fin n) :
     |(((wtOf n E).w i : ℤ) : ℝ)| ≤ B + n + 1 := by
@@ -47,35 +47,35 @@ end GlobalTheory.InfSize.WtSize
 namespace GlobalTheory.InfSize.WtSize
 
 /- English proof (translation)
-Take `⟨hγb, hb⟩` from `GlobalTheory.BigTop.Fun.gap_le_b hs`. Establish `hs'` using `hs`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, hgap, -, -⟩` from `hs'`. Establish `hS` using `large₂.Sc_pos`. Establish `h4` using `(isLeast_gap D 1).1.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `D.R.two_le_m`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hNg : bigN D ≤ gap D 1`. Use `Nat.le_self_pow (by norm_num : 3 ≠ 0) (bigN D)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `htN : D.R.t + 1 ≤ bigN D`. Unfold `bigN`. Use `Nat.le_mul_of_pos_left (D.R.t + sLen D + 1) (by omega : 0 < D.R.m)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hsN : sLen D ≤ gap D 1` using `by omega`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hγ0 : (0 : ℝ) ≤ gap D 1` using `by positivity`. Establish `hmR : (0 : ℝ) ≤ D.R.m` using `by positivity`. Establish `htR : (D.R.t : ℝ) + 1 ≤ large₂.sc.b`. Establish `h1 : ((D.R.t + 1 : ℕ) : ℝ) ≤ gap D 1` using `by exact_mod_cast htN.trans hNg`. Move the coercions through the operations in `at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsR : (sLen D : ℝ) ≤ large₂.sc.b`. Establish `h1 : (sLen D : ℝ) ≤ gap D 1` using `by exact_mod_cast hsN`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmγ : (0 : ℝ) ≤ ((D.R.m : ℝ) + 1) * gap D 1` using `by positivity`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Break down `GlobalTheory.SignedHC.GridData.mem_weightX.1 hx with h | h | ⟨i, hi1, hi2, h⟩ | ⟨l, hl1, hl2, h⟩` into its components or cases. Take `⟨i, hi, rfl⟩` from `GlobalTheory.SignedHC.GridData.mem_tops.1 h`. Establish `ev : (D.hc τ).v ⟨0, by omega⟩ = ((num D 1 τ).v 2 : ℚ)` using `(GlobalTheory.SignedHC.GridData.ofHCParam_spec (D.hc τ) (sLen D) (gap D 1) (cen D 1 τ)).1 ⟨0, by omega⟩`. Take `⟨v0, v1⟩` from `large₂.cloud_v τ ⟨0, by omega⟩`. Rewrite `v0`, `v1` using `[ev]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ha : (num D 1 τ).a i = ((num D 1 τ).v 2 : ℚ) + 1 / 2 + ((D.R.m : ℚ) + 1 - i) * (gap D 1 : ℚ)` using `rfl`. Establish `hi' : (i : ℝ) ≤ D.R.m` using `by exact_mod_cast hi`. Establish `hi0 : (0 : ℝ) ≤ i` using `by positivity`. Establish `v0' : (0 : ℝ) ≤ ((num D 1 τ).v 2 : ℝ)` using `by exact_mod_cast v0`. Establish `v1' : ((num D 1 τ).v 2 : ℝ) ≤ large₂.Sc` using `by exact_mod_cast v1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ha]`. Use `push_cast`. Establish `p1 : (0 : ℝ) ≤ ((D.R.m : ℝ) + 1 - i) * (gap D 1 : ℝ)` using `mul_nonneg (by linarith) hγ0`. Establish `p2 : ((D.R.m : ℝ) + 1 - i) * (gap D 1 : ℝ) ≤ ((D.R.m : ℝ) + 1) * gap D 1` using `by nlinarith`. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨i, hi2, hik, rfl⟩` from `GlobalTheory.SignedHC.GridData.mem_cloudHalf.1 h`. Establish `hik' : i ≤ D.R.k` using `hik`. Establish `ev : (D.hc τ).v ⟨i - 2, by omega⟩ = ((num D 1 τ).v (i - 2 + 2) : ℚ)` using `(GlobalTheory.SignedHC.GridData.ofHCParam_spec (D.hc τ) (sLen D) (gap D 1) (cen D 1 τ)).1 ⟨i - 2, by omega⟩`. Rewrite `ev` using `[show i - 2 + 2 = i by omega]`. Take `⟨v0, v1⟩` from `large₂.cloud_v τ ⟨i - 2, by omega⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `v0`, `v1` using `[ev]`. Establish `v0' : (0 : ℝ) ≤ ((num D 1 τ).v i : ℝ)` using `by exact_mod_cast v0`. Establish `v1' : ((num D 1 τ).v i : ℝ) ≤ large₂.Sc` using `by exact_mod_cast v1`. Unfold `GlobalTheory.SignedHC.GridData.vHalf`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`. Take `⟨a, ha, rfl⟩` from `GlobalTheory.SignedHC.mem_block.1 h`. Take `⟨c0, c1⟩` from `GlobalTheory.BigTop.Fun.cen_bounds hs τ hi1 hi2`. Establish `ec : (num D 1 τ).cen i = cen D 1 τ i` using `rfl`. Establish `es : (num D 1 τ).s = sLen D` using `rfl`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ec, es]`. Establish `hs1 : (((sLen D - 1 : ℕ)) : ℝ) ≤ large₂.sc.b`. Establish `: ((sLen D - 1 : ℕ) : ℝ) ≤ sLen D` using `by exact_mod_cast Nat.sub_le _ _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ha' : (a : ℝ) + 1 ≤ ((sLen D - 1 : ℕ) : ℝ)` using `by exact_mod_cast ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `ha0 : (0 : ℝ) ≤ a` using `by positivity`. Establish `c0' : (0 : ℝ) ≤ (cen D 1 τ i : ℝ)` using `by exact_mod_cast c0`. Use `push_cast`. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`. Take `⟨a, ha, rfl⟩` from `GlobalTheory.SignedHC.mem_block.1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Establish `hl2' : l ≤ D.R.m` using `hl2`. Take `⟨e0, e1⟩` from `GlobalTheory.BigTop.Fun.numE_bounds hs τ (j := l - 1) (by omega)`. Rewrite `e0`, `e1` using `[show l - 1 + 1 = l by omega]`. Establish `et : (num D 1 τ).t = D.R.t` using `rfl`. Rewrite using `[et]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha' : (a : ℝ) + 1 ≤ (D.R.t : ℝ) + 1` using `by exact_mod_cast ha`. Establish `ha0 : (0 : ℝ) ≤ a` using `by positivity`. Establish `e0' : (0 : ℝ) ≤ ((num D 1 τ).e l : ℝ)` using `by exact_mod_cast e0`. Use `push_cast`. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem weightX_abs_le {D : D7} {large₂ : SizeData₂ D} (hs : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows large₂) (τ : D.what₂.Tau) {x : ℚ}
     (hx : x ∈ (num D 1 τ).weightX D.R.m) : |(x : ℝ)| ≤ 5 * large₂.sc.b := by
@@ -158,13 +158,13 @@ theorem weightX_abs_le {D : D7} {large₂ : SizeData₂ D} (hs : GlobalTheory.In
     rw [abs_le]; constructor <;> linarith
 
 /- English proof (translation)
-Use `⟨7, fun D large₂ hs T L sc G hc τ i => ?_⟩` and prove the remaining obligations. Take `⟨hγb, hb⟩` from `GlobalTheory.BigTop.Fun.gap_le_b hs`. Establish `h4` using `(isLeast_gap D 1).1.2.1`. Establish `hNg : bigN D ≤ gap D 1`. Use `Nat.le_self_pow (by norm_num : 3 ≠ 0) (bigN D)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hn` using `GlobalTheory.DefRank.rank_le_bigN G (.top D.R.m) (show D.R.m ≤ D.R.m from le_rfl)`. Establish `hnb : (((G.V (.top D.R.m)).rank : ℕ) : ℝ) ≤ large₂.sc.b`. Establish `: (((G.V (.top D.R.m)).rank : ℕ) : ℝ) ≤ gap D 1` using `by exact_mod_cast hn.trans hNg`. Combine the linear equalities and inequalities to obtain the conclusion.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e : wt G (.top D.R.m) τ = wtOf (G.V (.top D.R.m)).rank ((num D 1 τ).weightX D.R.m)` using `by show wtOf _ (GlobalTheory.SignedHC.entries (Node.par D sc.cGap (.top D.R.m) τ)) = _`. Rewrite using `[hc]`. Conclude with `congrArg _ (GlobalTheory.SignedHC.entries_plus _)`. Rewrite using `[e]`. Use `wtOf_abs_le (B := 5 * large₂.sc.b) (by linarith) (fun x hx => weightX_abs_le hs τ hx) i` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem wt_top_abs_le : ∃ K1 : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D), GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows large₂ → ∀ {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc), sc.cGap = 1 → ∀ τ i, |(((wt G (.top D.R.m) τ).w i : ℤ) : ℝ)| ≤ K1 * large₂.sc.b := by
   refine ⟨7, fun D large₂ hs T L sc G hc τ i => ?_⟩

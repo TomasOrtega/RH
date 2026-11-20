@@ -17,9 +17,9 @@ def RegularityValuationCentre.Statement : Prop :=
       ∀ z : funField P, (z : FractionRing (MRing ι ⧸ P)) ∈ locRing P W → v z ≤ 1
 
 /- English proof (translation)
-Take `⟨x, hxv, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`. Establish `hc : v.asIdeal.comap (algebraMap ℤ (NumberField.RingOfIntegers F)) ≠ ⊥` using `Ideal.comap_ne_bot_of_integral_mem hx0 hxv (Algebra.IsIntegral.isIntegral x)`. Take `⟨n, hn, hn0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hc`. Use `⟨n, hn0, ?_⟩` and prove the remaining obligations. Establish `e : (n : F) = algebraMap (NumberField.RingOfIntegers F) F (algebraMap ℤ _ n)` using `by simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e, IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem]`. Conclude with `hn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RegularityValuationCentre.exists_int_valuation_lt_one {F : Type*} [Field F] [NumberField F]
     (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) :

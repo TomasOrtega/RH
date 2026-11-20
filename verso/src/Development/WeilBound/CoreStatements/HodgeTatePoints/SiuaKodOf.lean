@@ -15,13 +15,13 @@ namespace PositivityTheory.HtPt.Siua
 open GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.HilbertSamuel
 
 /- English proof (translation)
-Introduce `hA hC K _ ι _ Ω _ _ y D a hD hV _ hN hg`. Set `_ : DecidableEq K` to `fun x y => Classical.propDecidable (x = y)`. Establish `: Nonempty K` using `hV.1`. Take `⟨d, rfl⟩ : ∃ d, D = d + 1` from `⟨D - 1, by omega⟩`. Establish `hI : genIdeal y = mIdealOver ℚ y` using `LiftBirationalNef.genIdeal_eq y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hP` using `isProjVarF_map_of_isArithVar hV`. Establish `hnz : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0` using `fun k => (hV.2.1.2.2 k).imp fun i hi => LiftBirationalNef.coord_ne_zero_of_not_mem hi`. Establish `hdim : FieldNumbers.relDim (mIdealOver ℚ y) = ((d + 1 : ℕ) : WithBot (WithTop ℤ))` using `hI ▸ (FieldNumbers.CutRegular.relDim_eq_natCast_iff _ (d + 1)).2 hP.2`. Establish `hnef : IsNef ℚ y a` using `fun W hW hle hW1 => NefPlusAmpleDegree.nefOnF_of_nefOnGenericDeg hN W ⟨(Bridge.isMultiProjPrime_iff W).mp hW, (FieldNumbers.CutRegular.relDim_eq_natCast_iff W 1).1 hW1⟩ (hI.le.trans hle)`. Establish `hpos : 0 < NumbersDVR.intNum ℚ (mIdealOver ℚ y) (fun _ : Fin (d + 1) => a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hI]`. Conclude with `hg`. Take `⟨k, hk, σ, hσ, hσ0⟩` from `h hA hC ℚ K ι Ω y d a hnz hdim hnef hpos`. Use `⟨k, σ, hk, hσ0, fun c hc => ?_⟩` and prove the remaining obligations. Establish `h1` using `(Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 hσ c) hc`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : σ * ∏ j, y ⟨j, c j⟩ ^ (-(k • a - 1) j) ∈ chartRingOver ℚ y c` using `h1`. Establish `h3 : ∀ j, -(((1 : ℕ) : ℤ) * ((k : ℤ) • a - 1) j) = -(k • a - 1) j` using `fun j => by simp`. Simplify using `only [h3]`. Conclude with `h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem siu_kodaira_of
     (h : VeryAmpleNefPlusAmple.Statement → SectionCount.Statement → ∀ (F : Type) [Field F] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] [Algebra F Ω] (y : (Σ k, ι k) → Ω) (d : ℕ) (μ : K → ℤ), (∀ k, ∃ i, y ⟨k, i⟩ ≠ 0) → GroundTheory.Heights₂.Heights.FieldNumbers.relDim (mIdealOver F y) = ((d + 1 : ℕ) : WithBot (WithTop ℤ)) → IsNef F y μ → 0 < GroundTheory.Heights₂.Heights.NumbersDVR.intNum F (mIdealOver F y) (fun _ : Fin (d + 1) => μ) → ∃ a : ℕ, 1 ≤ a ∧ ∃ σ ∈ secOver F y (a • μ - 1), σ ≠ 0) :

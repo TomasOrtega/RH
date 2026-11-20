@@ -14,11 +14,11 @@ def idelesInf : Set (AE F E)ˣ := {a | At (evI F) ((a : AE F E) - 1)}
 def idelesFin : Set (AE F E)ˣ := {u | At (fun x : AF F => x.2) ((u : AE F E) - 1)}
 
 /- English proof (translation)
-Introduce `_ _` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : (1 : (AE F E)ˣ) ∈ idelesInf F E := fun _ _ => by simp
 /- English proof (translation)
-Introduce `_ _` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : (1 : (AE F E)ˣ) ∈ idelesFin F E := fun _ _ => by simp
 

@@ -3,11 +3,9 @@ import Mathlib
 namespace GlobalTheory.ShiftMemPowOfMulMemPow
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `Ideal.exists_pow_inf_eq_pow_smul I (Ideal.span {r} : Submodule R R)`. Use `⟨k, fun n x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : r * x ∈ I ^ (n + k) • (⊤ : Submodule R R) ⊓ Ideal.span {r}`. Use `Submodule.mem_inf.mpr ⟨?_, Ideal.mem_span_singleton'.mpr ⟨x, mul_comm _ _⟩⟩` and prove the remaining obligations. Rewrite using `[Ideal.smul_eq_mul, Ideal.mul_top]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Rewrite `h1` using `[hk (n + k) (Nat.le_add_left k n), Nat.add_sub_cancel]`. Establish `h2 : r * x ∈ I ^ n * Ideal.span {r}` using `Submodule.smul_mono le_rfl inf_le_right h1`. Take `⟨z, hz, hzr⟩` from `Ideal.mem_mul_span_singleton.mp h2`. Establish `hzx : z = x` using `mul_right_cancel₀ hr (by rw [hzr, mul_comm])`.
-
-Conclude with `hzx ▸ hz`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_shift_mem_pow_of_mul_mem_pow {R : Type} [CommRing R] [IsDomain R]
     [IsNoetherianRing R] (I : Ideal R) {r : R} (hr : r ≠ 0) :

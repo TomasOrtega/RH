@@ -28,23 +28,19 @@ open Classical
 namespace GlobalTheory.KTypeGelf
 
 /- English proof (translation)
-Introduce `D θ V S M hθ ψ hψ Y₀ τ k`. Use `set G := GlobalTheory.CuspGK.gkGen θ M ψ with hGdef`. Use `set ρ := GlobalTheory.KTypeProj.rhoK θ M with hρ`. Establish `hGsm : ∀ f ∈ G, f ∈ GlobalTheory.Mem.AutSpace.SmFun θ V` using `fun f hf => fun k τs Xs h g => (GlobalTheory.KTypeAdm.isAutFunSm_of_mem_gkGen θ M hθ hψ f hf).smooth k τs Xs h g`. Establish `hL` using `GlobalTheory.Mem.AutSpace.linOnSm_gelf (θ := θ) (V := V) τ k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `g0 : GlobalTheory.Mem.AutSpace.SmFun θ V →ₗ[ℂ] (GA D V → ℂ)` to `{ toFun := fun φ => gelf θ V τ k φ map_add' := fun φ ψ' => hL.add _ φ.2 _ ψ'.2 map_smul' := fun c φ => hL.smul c φ }`. Take `⟨L, hLe⟩` from `LinearMap.exists_extend g0`. Establish `hLa : ∀ φ ∈ GlobalTheory.Mem.AutSpace.SmFun θ V, L φ = gelf θ V τ k φ` using `fun φ hφ => by`. Use `congrArg (fun F => F ⟨φ, hφ⟩) hLe` as an intermediate fact. Simplify `this` using `[g0]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgel0 : gelf θ V τ k 0 = 0`. Use `hL.smul 0 0` as an intermediate fact. Simplify using `using this`. Set `Q : Submodule ℂ (GA D V → ℂ)` to `{ carrier := {f | f ∈ G ∧ gelf θ V τ k f ∈ GlobalTheory.KTypeProj.typeSpan ρ Y₀ G} add_mem' := fun {a b} ha hb => by`. Use `⟨G.add_mem ha.1 hb.1, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hL.add a (hGsm a ha.1) b (hGsm b hb.1)]`. Conclude with `Submodule.add_mem _ ha.2 hb.2`. Use the proof step `zero_mem' := ⟨G.zero_mem, by rw [hgel0]; exact Submodule.zero_mem _⟩`. Use the proof step `smul_mem' := fun c f hf => by`. Use `⟨G.smul_mem c hf.1, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[hL.smul c f]`. Conclude with `Submodule.smul_mem _ c hf.2 }`. Establish `hle : GlobalTheory.KTypeProj.typeSpan ρ Y₀ G ≤ Q`. Use `iSup₂_le fun T hT => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hTw : T w ∈ G` using `hT.1 ⟨w, hw, rfl⟩`. Use `⟨hTw, ?_⟩` and prove the remaining obligations. Establish `hmap : Y₀.map (L ∘ₗ T) ≤ G`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Establish `hTv : T v ∈ G` using `hT.1 ⟨v, hv, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show L (T v) ∈ G`. Rewrite using `[hLa _ (hGsm _ hTv)]`. Conclude with `GlobalTheory.KTypeAdm.gelf_mem_of_isGKSub θ M (GlobalTheory.CuspGK.isGKSub_gkGen θ M ψ) τ k _ hTv`. Establish `hcomm : ∀ i, ∀ v ∈ Y₀, (L ∘ₗ T) (ρ i v) = ρ i ((L ∘ₗ T) v)`. Introduce `i v hv`.
-
-Establish `hTv : T v ∈ G` using `hT.1 ⟨v, hv, rfl⟩`. Establish `hs` using `hGsm _ hTv`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hT.2 i v hv, hLa _ (hs), hρ, GlobalTheory.KTypeProj.rhoK, GlobalTheory.KTypeProj.rTrL_apply, GlobalTheory.KTypeProj.rTrL_apply, hLa _ (GlobalTheory.RegSch.CentreRight.rTr_mem_all hθ _ hs), GlobalTheory.RegSch.CentreRight.gelf_rTr_all hθ _ τ k hs]`. Use `GlobalTheory.KTypeProj.map_le_typeSpan ρ (L ∘ₗ T) hmap hcomm ⟨w, hw, rfl⟩` as an intermediate fact.
-
-Simplify `this` using `[hLa _ (hGsm _ hTw)]`. Introduce `f hf`. Conclude with `(hle hf).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gelf_mem_typeSpan : ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D) (S : D.what₂.Tau → SPar)
     (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ → ∀ ψ : GA D V → ℂ, IsAutFunSm θ V ψ →

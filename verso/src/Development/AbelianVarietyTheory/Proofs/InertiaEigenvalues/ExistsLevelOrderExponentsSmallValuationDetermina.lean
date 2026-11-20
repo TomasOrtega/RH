@@ -13,7 +13,7 @@ open scoped BigOperators
 namespace GlobalTheory.OrderEval
 
 /- English proof (translation)
-Rewrite using `[← IsDiscreteValuationRing.addVal_le_iff_dvd, IsDiscreteValuationRing.addVal_pow, IsDiscreteValuationRing.addVal_uniformizer hϖ, not_le]`. Simplify using `only [nsmul_eq_mul, mul_one, Nat.cast_add, Nat.cast_one]`. Conclude with `(ENat.lt_add_one_iff (ENat.coe_ne_top n)).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem addVal_le_iff_not_dvd {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {ϖ : O} (hϖ : Irreducible ϖ) (x : O) (n : ℕ) :
@@ -24,7 +24,7 @@ theorem addVal_le_iff_not_dvd {O : Type} [CommRing O] [IsDomain O] [IsDiscreteVa
   exact (ENat.lt_add_one_iff (ENat.coe_ne_top n)).symm
 
 /- English proof (translation)
-Rewrite using `[Finsupp.degree_eq_sum]`. Conclude with `Finset.sum_le_sum fun q _ => Nat.le_mul_of_pos_right _ (pow_pos hl _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degree_le_weight {σ : Type} [Fintype σ] {l : ℕ} (hl : 0 < l) (e : σ → ℕ) (m : σ →₀ ℕ) :
     m.degree ≤ ∑ q, m q * l ^ e q := by
@@ -32,7 +32,7 @@ theorem degree_le_weight {σ : Type} [Fintype σ] {l : ℕ} (hl : 0 < l) (e : σ
   exact Finset.sum_le_sum fun q _ => Nat.le_mul_of_pos_right _ (pow_pos hl _)
 
 /- English proof (translation)
-Rewrite using `[← AlgHom.comp_apply, MvPolynomial.comp_aeval]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem aeval_subst {O O' σ : Type} [CommRing O] [CommRing O'] [Algebra O O'] (l : ℕ) (e : σ → ℕ)
     (ζ : O') (F : MvPolynomial σ O) :
@@ -43,7 +43,7 @@ theorem aeval_subst {O O' σ : Type} [CommRing O] [CommRing O'] [Algebra O O'] (
   simp
 
 /- English proof (translation)
-Rewrite using `[Nat.totient_prime_pow hl hk]`. Establish `h1 : k - 1 < l ^ (k - 1)` using `Nat.lt_pow_self hl.one_lt`. Establish `h2 : 1 ≤ l - 1` using `by have := hl.two_le; omega`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem le_totient_pow {l : ℕ} (hl : l.Prime) {k : ℕ} (hk : 1 ≤ k) : k ≤ Nat.totient (l ^ k) := by
   rw [Nat.totient_prime_pow hl hk]
@@ -53,37 +53,35 @@ theorem le_totient_pow {l : ℕ} (hl : l.Prime) {k : ℕ} (hk : 1 ≤ k) : k ≤
     _ ≤ _ := Nat.mul_le_mul_left _ h2
 
 /- English proof (translation)
-Take `⟨K, hK⟩` from `(Set.finite_range μ).bddAbove`. Establish `hK' : ∀ x, μ x ≤ K` using `fun x => hK ⟨x, rfl⟩`. Take `⟨G₀, hG₀⟩` from `GlobalTheory.T.exists_limit_family_of_finite_coefficients' σ I (Fin (K + 2) → Prop) (fun M x m j => ϖ ^ (j : ℕ) ∣ (F M x).coeff m)`. Choose the witnesses or unpack the hypotheses as in `⟨G, hG⟩ : ∃ G : I → (σ →₀ ℕ) → ℕ → Prop, ∀ N M₁ : ℕ, ∃ M, M₁ ≤ M ∧ ∀ x m, m.degree ≤ N → ∀ j, j ≤ K + 1 → (ϖ ^ j ∣ (F M x).coeff m ↔ G x m j) := by`. Use `⟨fun x m j => ∀ h : j < K + 2, G₀ x m ⟨j, h⟩, fun N M₁ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨M, hM, h⟩` from `hG₀ N M₁`. Use `⟨M, hM, fun x m hm j hj => ?_⟩` and prove the remaining obligations. Establish `h2` using `h x m hm`. Prove the components needed by the constructor for the conclusion. Introduce `h3 h4`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← h2]`. Conclude with `h3`. Introduce `h3`. Establish `h4` using `h3 (by omega)`. Rewrite `h4` using `[← h2]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h4`. Establish `ex0 : ∀ x, ∃ m, ¬ G x m (μ x + 1)`. Introduce `x`. Take `⟨M, hM, h⟩` from `hG D M₀`. Take `⟨m, hm, h2⟩` from `hF M hM x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨m, fun h3 => h2 ((h x m hm _ (by have := hK' x; omega)).2 h3)⟩`. Establish `ex : ∀ x, ∃ j, ∃ m, ¬ G x m (j + 1)` using `fun x => ⟨μ x, ex0 x⟩`. Establish `hν : ∀ x, Nat.find (ex x) ≤ μ x` using `fun x => Nat.find_min' _ (ex0 x)`. Establish `hS : ∀ x, ∃ m₀ : σ →₀ ℕ, ¬ G x m₀ (Nat.find (ex x) + 1) ∧ ∀ c : σ → ℕ, (∀ i, ∑ i' ∈ Finset.Iio i, m₀ (τ i') * c (τ i') < c (τ i)) → ∀ m : σ →₀ ℕ, ¬ G x m (Nat.find (ex x) + 1) → m ≠ m₀ → ∑ q, m₀ q * c q < ∑ q, m q * c q`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m1, hm1⟩` from `Nat.find_spec (ex x)`. Take `⟨m, ⟨m₀, hm₀, rfl⟩, h⟩` from `GlobalTheory.T.exists_least_weight_exponent ρ {a | ∃ m : σ →₀ ℕ, ¬ G x m (Nat.find (ex x) + 1) ∧ (fun i => m (τ i)) = a} ⟨_, m1, hm1, rfl⟩`. Use `⟨m₀, hm₀, fun c hc m hm hne => ?_⟩` and prove the remaining obligations. Establish `h2` using `h (fun i => c (τ i)) hc (fun i => m (τ i)) ⟨m, hm, rfl⟩ (by`. Introduce `h3`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Apply `hne` to reduce the goal to its premises. Use extensionality with `q`. Simplify using `using congrFun h3 (τ.symm q))`. Rewrite using `[← τ.sum_comp (fun q => m₀ q * c q), ← τ.sum_comp (fun q => m q * c q)]`. Conclude with `h2`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose m₀ hm₀ hmin using hS`. Take `⟨B, hB⟩` from `(Set.finite_range (fun p : I × σ => m₀ p.1 p.2)).bddAbove`. Establish `hB' : ∀ x q, m₀ x q ≤ B` using `fun x q => hB ⟨(x, q), rfl⟩`. Use `⟨ρ * B, fun e he => ?_⟩` and prove the remaining obligations. Take `⟨W, hW⟩` from `(Set.finite_range (fun x => ∑ q, m₀ x q * l ^ e q)).bddAbove`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hW' : ∀ x, ∑ q, m₀ x q * l ^ e q ≤ W` using `fun x => hW ⟨x, rfl⟩`. Use `⟨W, fun M₁ => ?_⟩` and prove the remaining obligations. Take `⟨M, hM, h⟩` from `hG W M₁`. Use `⟨M, hM, fun x => ⟨_, hW' x, ?_⟩⟩` and prove the remaining obligations. Establish `hc : ∀ i, ∑ i' ∈ Finset.Iio i, m₀ x (τ i') * l ^ e (τ i') < l ^ e (τ i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Introduce `i`. Establish `h1 : (∑ i' ∈ Finset.Iio i, m₀ x (τ i') * l ^ e (τ i')) * l ^ (ρ * B) ≤ ρ * B * l ^ e (τ i)`. Rewrite using `[Finset.sum_mul]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_card_nsmul` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i' hi'`. Rewrite using `[mul_assoc, ← pow_add]`. Conclude with `Nat.mul_le_mul (hB' _ _) (Nat.pow_le_pow_right hl.pos (he i' i (Finset.mem_Iio.1 hi')))`. Use `_ ≤ _ := by`. Rewrite using `[smul_eq_mul, mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Apply `Nat.mul_le_mul_right` to reduce the goal to its premises. Simplify using `using (Finset.card_le_univ (Finset.Iio i))`. Establish `h2 : ρ * B < l ^ (ρ * B)` using `Nat.lt_pow_self hl.one_lt`. Establish `h3 : 0 < l ^ e (τ i)` using `pow_pos hl.pos _`. Apply `lt_of_mul_lt_mul_right (a := l ^ (ρ * B)) _ (Nat.zero_le _)` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hx` using `hK' x`. Establish `hνx` using `hν x`. Establish `key` using `GlobalTheory.T.not_dvd_coeff_aeval_one_add_X_pow_sub_one O ϖ hϖ σ l (Nat.find (ex x)) hl hd (F M x) e (m₀ x) ?_ ?_ ?_`. Conclude with `fun h5 => key ((pow_dvd_pow ϖ (by omega)).trans h5)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `m hm`. Break down `Nat.eq_zero_or_pos (Nat.find (ex x)) with h0 | h0` into its components or cases. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `h6` using `Nat.find_min (ex x) (m := Nat.find (ex x) - 1) (by omega)`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[h x m (hm.trans (hW' x)) _ (by omega)]`. Assume the negation of the conclusion as `h7`. Conclude with `h6 ⟨m, by rwa [Nat.sub_add_cancel h0]⟩`. Rewrite using `[h x _ ((degree_le_weight hl.pos e _).trans (hW' x)) _ (by omega)]`. Conclude with `hm₀ x`.
-
-Introduce `m hne hm`. Rewrite using `[h x _ ((degree_le_weight hl.pos e _).trans (hm.trans (hW' x))) _ (by omega)]`. Assume the negation of the conclusion as `h7`. Conclude with `absurd (hmin x (fun q => l ^ e q) hc m h7 hne) (not_lt.2 hm)`.
+A detailed English derivation is pending.
 -/
 theorem exists_low_coeff_of_limit (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (ϖ : O) (hϖ : Irreducible ϖ) (l : ℕ) (hl : l.Prime) (hd : ϖ ∣ (l : O))
@@ -194,11 +192,11 @@ def lowIdeal {O : Type} [CommRing O] (p : O) (T : ℕ) : Ideal (Polynomial O) wh
     omega
 
 /- English proof (translation)
-Introduce `i hi`. Rewrite using `[Polynomial.coeff_sub, Polynomial.coeff_one_add_X_pow, Polynomial.coeff_one]`. Break down `Nat.eq_zero_or_pos i with rfl | h0` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[if_neg h0.ne', sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : T + 1 < l ^ (T + 1)` using `Nat.lt_pow_self hl.one_lt`. Establish `h2` using `GlobalTheory.T.prime_pow_sub_dvd_choose_prime_pow_of_lt l a T i hl h0 (by omega)`. Establish `h3 : l ^ n ∣ (l ^ a).choose i` using `(pow_dvd_pow l (by omega)).trans h2`. Establish `h4 : ((l ^ n : ℕ) : O) ∣ (((l ^ a).choose i : ℕ) : O)` using `Nat.cast_dvd_cast h3`. Rewrite `h4` using `[Nat.cast_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(pow_dvd_pow_of_dvd hd n).trans h4`.
+A detailed English derivation is pending.
 -/
 theorem pow_sub_one_mem_lowIdeal {O : Type} [CommRing O] (ϖ : O) (l : ℕ) (hl : l.Prime)
     (hd : ϖ ∣ (l : O)) (n T a : ℕ) (ha : n + T ≤ a) :
@@ -216,7 +214,7 @@ theorem pow_sub_one_mem_lowIdeal {O : Type} [CommRing O] (ϖ : O) (l : ℕ) (hl 
     exact (pow_dvd_pow_of_dvd hd n).trans h4
 
 /- English proof (translation)
-Rewrite using `[Polynomial.coeff_zero_eq_aeval_zero, ← AlgHom.comp_apply, MvPolynomial.comp_aeval]`. Simplify using `only [map_sub, map_pow, map_add, map_one, Polynomial.aeval_X, add_zero, one_pow, sub_self]`. Rewrite using `[MvPolynomial.aeval_zero']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coeff_zero_subst {O σ : Type} [CommRing O] (l : ℕ) (e : σ → ℕ) (g : MvPolynomial σ O) :
     (MvPolynomial.aeval (fun q => (1 + Polynomial.X : Polynomial O) ^ (l ^ e q) - 1) g).coeff 0
@@ -227,7 +225,7 @@ theorem coeff_zero_subst {O σ : Type} [CommRing O] (l : ℕ) (e : σ → ℕ) (
   rfl
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, Polynomial.map_add, hp, hq]`. Consider the case `mul_X p q hp => simp [Polynomial.map_mul, hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_subst {O k σ : Type} [CommRing O] [CommRing k] (φ : O →+* k) (l : ℕ) (e : σ → ℕ)
     (g : MvPolynomial σ O) :
@@ -240,21 +238,19 @@ theorem map_subst {O k σ : Type} [CommRing O] [CommRing k] (φ : O →+* k) (l 
   | mul_X p q hp => simp [Polynomial.map_mul, hp]
 
 /- English proof (translation)
-Use `set m₀ := R * (nmax * l ^ s) with hm₀`. Use `⟨V + 1 + (V + 1) * m₀, (V + 1) * m₀, ?_⟩` and prove the remaining obligations. Introduce `e he1 he2 M hM v hv f Dd g hf hg u n hu hn hD`. Use `set S : MvPolynomial (Fin R ⊕ Fin R) O →ₐ[O] Polynomial O := MvPolynomial.aeval (fun q => (1 + Polynomial.X : Polynomial O) ^ (l ^ e q) - 1) with hS`. Establish `hvm : (v + 1) * m₀ ≤ (V + 1) * m₀` using `Nat.mul_le_mul_right _ (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : S (f - Dd * g) ∈ lowIdeal (ϖ ^ (V + 1)) ((V + 1) * m₀)`. Use `(Ideal.span_le (I := (lowIdeal (ϖ ^ (V + 1)) ((V + 1) * m₀)).comap S)).2 ?_ hf` and prove the remaining obligations. Introduce and unpack `p (⟨i, rfl⟩ | ⟨i, rfl⟩)`. Express the relevant statement in the definitionally equal form `S _ ∈ lowIdeal _ _`. Simplify using `only [hS, MvPolynomial.aeval_X]`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Conclude with `pow_sub_one_mem_lowIdeal ϖ l hl hd _ _ _ (he2 i)`. Express the relevant statement in the definitionally equal form `S _ ∈ lowIdeal _ _`. Simplify using `only [hS, map_sub, map_pow, map_add, map_one, MvPolynomial.aeval_X, add_sub_cancel]`. Rewrite using `[← pow_mul, ← pow_add]`. Conclude with `pow_sub_one_mem_lowIdeal ϖ l hl hd _ _ _ (by omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Use `haveI : Fact l.Prime := ⟨hl⟩`. Establish `hl0 : (l : IsLocalRing.ResidueField O) = 0`. Rewrite using `[← map_natCast (IsLocalRing.residue O), IsLocalRing.residue_eq_zero_iff]`. Conclude with `fun h => hϖ.not_isUnit (isUnit_of_dvd_unit hd h)`. Use `haveI : CharP (IsLocalRing.ResidueField O) l := (CharP.charP_iff_prime_eq_zero hl).2 hl0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw : ∑ q, Sum.elim n (fun _ => 0) q * l ^ e q ≤ m₀`. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, zero_mul, Finset.sum_const_zero, add_zero]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_card_nsmul` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `i _`. Conclude with `Nat.mul_le_mul (hn i) (Nat.pow_le_pow_right hl.pos (he1 i))`. Use `_ = m₀ := by simp [hm₀]`. Establish `hlt : m₀ < l ^ M`. Establish `h1 : M < l ^ M` using `Nat.lt_pow_self hl.one_lt`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : m₀ ≤ (V + 1) * m₀` using `Nat.le_mul_of_pos_left _ (by omega)`. Use linear arithmetic over natural numbers and integers. Establish `h4` using `GlobalTheory.T.coeff_aeval_one_add_X_pow_sub_one_ne_zero' (IsLocalRing.ResidueField O) (Fin R ⊕ Fin R) l M (Dd.map (IsLocalRing.residue O)) u (Sum.elim n (fun _ => 0)) e hu (by simpa [Fintype.prod_sum_type] using hD) (hw.trans_lt hlt)`. Rewrite `h4` using `[← map_subst, Polynomial.coeff_map, IsLocalRing.residue_ne_zero_iff_isUnit]`. Take `⟨i, hi, h5⟩` from `GlobalTheory.T.exists_low_coeff_not_dvd_of_congr_mul' O ϖ hϖ (S Dd : Polynomial O) (S g : Polynomial O) (S f : Polynomial O) m₀ v (V + 1) ((V + 1) * m₀) ⟨_, hw, by rw [Polynomial.coeff_coe]; exact h4⟩ (by rw [Polynomial.coeff_coe, hS, coeff_zero_subst]; exact hg) (by omega) hvm ( …`.
-
-Introduce `i hi`. Rewrite using `[← Polynomial.coe_mul, ← Polynomial.coe_sub, Polynomial.coeff_coe, ← map_mul, ← map_sub]`. Conclude with `hmem i hi)`. Rewrite `h5` using `[Polynomial.coeff_coe]`. Conclude with `⟨i, hi.trans hvm, h5⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_low_coeff_of_factor (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (ϖ : O) (hϖ : Irreducible ϖ) (l : ℕ) (hl : l.Prime)
@@ -322,11 +318,9 @@ theorem exists_low_coeff_of_factor (O : Type) [CommRing O] [IsDomain O]
   exact ⟨i, hi.trans hvm, h5⟩
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite J`. Use `⟨∑ y, (W + v y), fun h hh => ?_⟩` and prove the remaining obligations. Use `choose w hw hd using hh`. Establish `hne : ∀ y, (h y).coeff (w y) ≠ 0` using `fun y h1 => hd y (by rw [h1]; exact dvd_zero _)`. Establish `hval : ∀ y, (IsDiscreteValuationRing.addVal O ((h y).coeff (w y))).toNat ≤ v y` using `fun y => ENat.toNat_le_of_le_coe ((addVal_le_iff_not_dvd hϖ _ _).2 (hd y))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose BB c hc hB using fun y => GlobalTheory.T.valuation_polynomial_at_root_of_unity_sub_one O l hl h0 hu (h y) (w y) (hne y)`. Use `⟨Finset.univ.biUnion BB, Finset.card_biUnion_le.trans (Finset.sum_le_sum fun y _ => (hc y).trans (Nat.add_le_add (hw y) (hval y))), ?_⟩` and prove the remaining obligations. Introduce `k hk hkB O' _ _ _ _ _ hinj ζ hζ y`. Take `⟨h1, h2⟩` from `hB y k hk (fun h3 => hkB (Finset.mem_biUnion.2 ⟨y, Finset.mem_univ _, h3⟩))`. Take `⟨h3, h4⟩` from `h2 O' hinj ζ hζ`.
-
-Use `⟨h3, h4 ▸ h1.trans (add_le_add ?_ ?_)⟩` and prove the remaining obligations. Unfold `Formalism.MainNotions.BlochKatoReduction.Gen.nval`. Conclude with `div_le_div_of_nonneg_right (by exact_mod_cast hval y) (Nat.cast_nonneg _)`. Conclude with `div_le_div_of_nonneg_right (by exact_mod_cast hw y) (Nat.cast_nonneg _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem exists_levels (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (ϖ : O) (hϖ : Irreducible ϖ) (l : ℕ) (hl : l.Prime) (h0 : (l : O) ≠ 0) (hu : ¬ IsUnit (l : O))
@@ -358,43 +352,39 @@ theorem exists_levels (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationR
   · exact div_le_div_of_nonneg_right (by exact_mod_cast hw y) (Nat.cast_nonneg _)
 
 /- English proof (translation)
-Introduce `O₀ _ _ _ _ O _ _ _ _ _ hinj₀ l hl hl0 hlu R D nmax M₀ I J _ _ μ v F f Dd g hF hf ε hε`. Take `⟨ϖ₀, hϖ₀⟩` from `IsDiscreteValuationRing.exists_irreducible O₀`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hl0' : (l : O) ≠ 0`. Rewrite using `[← map_natCast (algebraMap O₀ O)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => hl0 (hinj₀ (by rw [h, map_zero]))`. Establish `hlu' : ¬ IsUnit (l : O)`. Rewrite using `[← map_natCast (algebraMap O₀ O)]`. Conclude with `fun h => hlu (IsLocalHom.map_nonunit _ h)`. Establish `hdv : ∀ (A : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] (π : A), Irreducible π → ¬ IsUnit (l : A) → π ∣ (l : A)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Introduce `A _ _ _ π hπ h`. Rewrite using `[← Ideal.mem_span_singleton, ← hπ.maximalIdeal_eq]`. Conclude with `h`. Take `⟨a, ha⟩` from `exists_low_coeff_of_limit O₀ ϖ₀ hϖ₀ l hl (hdv _ _ hϖ₀ hlu) (Fin R ⊕ Fin R) (R + R) finSumFinEquiv.symm D M₀ I μ F (fun M hM x => by`. Take `⟨m, h1, h2⟩` from `hF M hM x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨m, h1, (addVal_le_iff_not_dvd hϖ₀ _ _).1 h2⟩)`. Take `⟨V, hV⟩` from `(Set.finite_range v).bddAbove`. Take `⟨E, W₂, hE⟩` from `exists_low_coeff_of_factor O ϖ hϖ l hl (hdv _ _ hϖ hlu') R nmax V (a * R)`. Choose the witnesses or unpack the hypotheses as in `⟨e, he0, he1, he2⟩ : ∃ e : Fin R ⊕ Fin R → ℕ, (∀ i' i : Fin (R + R), i' < i → e (finSumFinEquiv.symm i') + a ≤ e (finSumFinEquiv.symm i)) ∧ (∀ i, e (Sum.inl i) ≤ a * R) ∧ (∀ i, E ≤ e (Sum.inr i)) := by`. Use `⟨Sum.elim (fun i => a * i) (fun i => a * (i + R) + E), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i' i hi`. Take `⟨p, rfl⟩` from `finSumFinEquiv.surjective i'`. Take `⟨q, rfl⟩` from `finSumFinEquiv.surjective i`. Rewrite using `[Equiv.symm_apply_apply, Equiv.symm_apply_apply]`. Establish `aux : ∀ s t : ℕ, s < t → a * s + a ≤ a * t` using `fun s t h => Nat.mul_le_mul_left a (Nat.succ_le_of_lt h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `aux _ _ (Fin.lt_def.1 hi)`. Apply the tactic sequence `rcases p with p | p <;> rcases q with q | q`. Simplify using `using h2`. Simplify using `at h2 ⊢`. Use linear arithmetic over natural numbers and integers.
+Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Establish `h3` using `Fin.lt_def.1 hi`. Establish `h4` using `q.2`. Simplify using `at h3`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Simplify using `at h2 ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `i`. Conclude with `Nat.mul_le_mul_left a i.2.le`. Introduce `i`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Nat.le_add_left _ _`. Take `⟨W₁, hW₁⟩` from `ha e he0`. Take `⟨N₁, hN₁⟩` from `exists_levels O₀ ϖ₀ hϖ₀ l hl hl0 hlu I μ W₁`. Take `⟨N₂, hN₂⟩` from `exists_levels O ϖ hϖ l hl hl0' hlu' J v W₂`. Take `⟨C, hC⟩` from `(Set.finite_range (fun q => l ^ e q)).bddAbove`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hC' : ∀ q, l ^ e q ≤ C` using `fun q => hC ⟨q, rfl⟩`. Take `⟨k₁, hk₁⟩` from `exists_nat_ge (((C + W₁ + W₂ : ℕ) : ℝ) / ε)`. Take `⟨M, hM, hMF⟩` from `hW₁ (M₀ + E + (k₁ + C + 1 + (N₁ + N₂)))`. Take `⟨B₁, hB₁, hb₁⟩` from `hN₁ _ hMF`. Take `⟨B₂, hB₂, hb₂⟩` from `hN₂ (fun y => MvPolynomial.aeval (fun q => (1 + Polynomial.X : Polynomial O) ^ (l ^ e q) - 1) (f M y)) (fun y => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h1, h2, u, n, h3, h4, h5⟩` from `hf M (by omega) y`. Conclude with `hE e he1 he2 M (by omega) (v y) (hV ⟨y, rfl⟩) _ _ _ h1 ((addVal_le_iff_not_dvd hϖ _ _).1 h2) u n h3 h4 h5)`. Take `⟨k, hk, hkB⟩` from `Finset.exists_mem_notMem_of_card_lt_card (s := B₁ ∪ B₂) (t := Finset.Icc (k₁ + C + 1) (k₁ + C + 1 + (N₁ + N₂))) (by`. Use `Finset.card_union_le B₁ B₂` as an intermediate fact. Rewrite using `[Nat.card_Icc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `omega)`. Rewrite `hk` using `[Finset.mem_Icc]`. Rewrite `hkB` using `[Finset.mem_union, not_or]`. Establish `hk1 : 1 ≤ k` using `by omega`. Establish `hsm : ∀ c : ℕ, c ≤ C + W₁ + W₂ → (c : ℝ) / (Nat.totient (l ^ k) : ℝ) ≤ ε`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c hc`. Establish `h1 : (k₁ : ℝ) ≤ Nat.totient (l ^ k)`. Use `le_totient_pow hl hk1` as an intermediate fact. Conclude with `(by omega : k₁ ≤ Nat.totient (l ^ k))` after adjusting the coercions. Establish `h2 : (0 : ℝ) < Nat.totient (l ^ k)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_totient_pow hl hk1` as an intermediate fact. Conclude with `(by omega : 0 < Nat.totient (l ^ k))` after adjusting the coercions. Establish `h3 : (c : ℝ) ≤ ((C + W₁ + W₂ : ℕ) : ℝ)` using `by exact_mod_cast hc`. Rewrite `hk₁` using `[div_le_iff₀ hε]`. Rewrite using `[div_le_iff₀ h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `⟨M, k, e, by omega, hk1, by omega, fun q => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : e q < l ^ e q` using `Nat.lt_pow_self hl.one_lt`. Use `hC' q` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `hsm (l ^ e q) (by have := hC' q; omega)` as an intermediate fact. Rewrite `this` using `[Nat.cast_pow]`. Then use the resulting hypothesis. Introduce `O' _ _ _ _ _ hinj ζ hζ`. Prove the components needed by the constructor for the conclusion. Introduce `x`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `letI : Algebra O₀ O' := ((algebraMap O O').comp (algebraMap O₀ O)).toAlgebra`. Use `haveI : IsScalarTower O₀ O O' := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : IsLocalHom (algebraMap O₀ O') := RingHom.isLocalHom_comp (algebraMap O O') (algebraMap O₀ O)`. Establish `h` using `hb₁ k hk1 hkB.1 O' (hinj.comp hinj₀) ζ hζ x`. Rewrite `h` using `[aeval_subst]`.
-
-Rewrite using `[MvPolynomial.aeval_map_algebraMap]`. Conclude with `⟨h.1, h.2.trans (add_le_add le_rfl (hsm W₁ (by omega)))⟩`. Introduce `y`. Establish `h` using `hb₂ k hk1 hkB.2 O' hinj ζ hζ y`. Rewrite `h` using `[aeval_subst]`.
-
-Conclude with `⟨h.1, h.2.trans (add_le_add le_rfl (hsm W₂ (by omega)))⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem order_eval : ∀ (O₀ : Type) [CommRing O₀] [IsDomain O₀] [IsDiscreteValuationRing O₀] [Finite (IsLocalRing.ResidueField O₀)] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra O₀ O] [IsLocalHom (algebraMap O₀ O)], Function.Injective (algebraMap O₀ O) → ∀ (l : ℕ), l.Prime → (l : O₀) ≠ 0 → ¬ IsUnit (l : O₀) → ∀ (R D nmax M₀ : ℕ) (I J : Type) [Finite I] [Finite J] (μ : I → ℕ) (v : J → ℕ) (F : ℕ → I → MvPolynomial (Fin R ⊕ Fin R) O₀) (f Dd g : ℕ → J → MvPolynomial (Fin R ⊕ Fin R) O), (∀ M, M₀ ≤ M → ∀ x, ∃ m : Fin R ⊕ Fin R →₀ ℕ, m.degree ≤ D ∧ IsDiscreteValuationRing.addVal O₀ ((F M x).coeff m) ≤ μ x) → (∀ M, M₀ ≤ M → ∀ y, f M y - Dd M y * g M y ∈ Ideal.span (Set.range (fun i : Fin R => (MvPolynomial.X (Sum.inr i) : MvPolynomial (Fin R ⊕ Fin R) O)) ∪ Set.range (fun i : Fin R => (1 + MvPolynomial.X (Sum.inl i)) ^ (l ^ M) - 1)) ∧ IsDiscreteValuationRing.addVal O ((g M y).coeff 0) ≤ v y ∧ ∃ (u : MvPolynomial (Fin R ⊕ Fin R) (IsLocalRing.ResidueField O)) (n : Fin R → ℕ), u.coeff 0 ≠ 0 ∧ (∀ i, n i ≤ nmax) ∧ (Dd M y).map (IsLocalRing.residue O) - u * ∏ i, MvPolynomial.X (Sum.inl i) ^ n i ∈ Ideal.span (Set.range fun q => (MvPolynomial.X q : MvPolynomial (Fin R ⊕ Fin R) (IsLocalRing.ResidueField O)) ^ (l ^ M))) → ∀ ε : ℝ, 0 < ε → ∃ (M k : ℕ) (e : Fin R ⊕ Fin R → ℕ), M₀ ≤ M ∧ 1 ≤ k ∧ k ≤ M ∧ (∀ q, e q < k ∧ (l : ℝ) ^ e q / (Nat.totient (l ^ k) : ℝ) ≤ ε) ∧ ∀ (O' : Type) [CommRing O'] [IsDomain O'] [IsDiscreteValuationRing O'] [Algebra O O'] [IsLocalHom (algebraMap O O')], Function.Injective (algebraMap O O') → ∀ ζ : O', IsPrimitiveRoot ζ (l ^ k) → (∀ x, MvPolynomial.aeval (fun q => ζ ^ (l ^ e q) - 1) ((F M x).map (algebraMap O₀ O)) ≠ 0 ∧ Formalism.MainNotions.BlochKatoReduction.Gen.nval O' l (MvPolynomial.aeval (fun q => ζ ^ (l ^ e q) - 1) ((F M x).map (algebraMap O₀ O))) ≤ (μ x : ℝ) / ((IsDiscreteValuationRing.addVal O₀ (l : O₀)).toNat : ℝ) + ε) ∧ (∀ y, MvPolynomial.aeval (fun q => ζ ^ (l ^ e q) - 1) (f M y) ≠ 0 ∧ Formalism.MainNotions.BlochKatoReduction.Gen.nval O' l (MvPolynomial.aeval (fun q => ζ ^ (l ^ e q) - 1) (f M y)) ≤ (v y : ℝ) / ((IsDiscreteValuationRing.addVal O (l : O)).toNat : ℝ) + ε) := by
   intro O₀ _ _ _ _ O _ _ _ _ _ hinj₀ l hl hl0 hlu R D nmax M₀ I J _ _ μ v F f Dd g hF hf ε hε

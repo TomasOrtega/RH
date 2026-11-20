@@ -16,7 +16,7 @@ namespace GlobalTheory.VacShift
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Set `τ : E →+* ℂ` to `(IsAlgClosed.lift (M := ℂ) (R := ℚ) (S := E)).toRingHom`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hcm.2.2.2 τ, hcm.2.2.2 τ, star_star]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_invol {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   let τ : E →+* ℂ := (IsAlgClosed.lift (M := ℂ) (R := ℚ) (S := E)).toRingHom
@@ -24,7 +24,7 @@ theorem sigma_invol {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (x : E) : σ (σ
   rw [hcm.2.2.2 τ, hcm.2.2.2 τ, star_star]
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hJ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -38,14 +38,14 @@ theorem form_swap {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (J
   ring
 
 /- English proof (translation)
-Simplify using `only [form, smul_dotProduct, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_smul_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (t : E) (a b : Fin n → E) :
     form σ J (t • a) b = t * form σ J a b := by
   simp only [form, smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Establish `: (fun i => σ ((t • b) i)) = σ t • fun i => σ (b i)` using `funext fun i => by simp`. Simplify using `only [form, this, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem form_smul_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (t : E) (a b : Fin n → E) :
     form σ J a (t • b) = σ t * form σ J a b := by
@@ -53,7 +53,7 @@ theorem form_smul_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin 
   simp only [form, this, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Establish `: (fun i => σ ((b + c) i)) = (fun i => σ (b i)) + fun i => σ (c i)` using `funext fun i => by simp`. Simplify using `only [form, this, Matrix.mulVec_add, dotProduct_add]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem form_add_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a b c : Fin n → E) :
     form σ J a (b + c) = form σ J a b + form σ J a c := by
@@ -61,9 +61,9 @@ theorem form_add_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n
   simp only [form, this, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Rewrite using `[conjI, FractionalIdeal.mem_extended_iff]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `h : (IsLocalization.map E (conjO σ) (conjO_le σ) : E →+* E) = (σ : E →+* E)` using `IsLocalization.ringHom_ext (𝓞 E)⁰ (RingHom.ext fun x => by`. Simplify using `[IsLocalization.map_eq, conjO, RingOfIntegers.mapRingHom_apply])`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `congrFun (congrArg DFunLike.coe h) s`.
+A detailed English derivation is pending.
 -/
 theorem mem_conjI (σ : E →ₐ[F] E) {𝔠 : FractionalIdeal (𝓞 E)⁰ E} {s : E} (hs : s ∈ 𝔠) :
     σ s ∈ conjI σ 𝔠 := by
@@ -82,15 +82,13 @@ namespace GlobalTheory.VacShift
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Distinguish the cases in `h0 : conjI σ H'.𝔟 = 0`. Rewrite `ht` using `[h0, inv_zero, zero_mul, FractionalIdeal.mem_zero_iff]`. Rewrite using `[ht, zero_smul]`. Conclude with `W.L.zero_mem`. Use `(hW.dual _).2 fun x hx o => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨s, t', u, hs, -, -, rfl⟩` from `hH.split x hx`. Establish `hs' : s ∈ H'.𝔟` using `(hH.ideal s).2 hs`. Establish `hyx : form σ W.J H'.y H'.x = -1` using `by rw [form_swap hσ _ hW.skew, hH.xy, map_one]`. Establish `hyι : form σ W.J H'.y (H'.ι *ᵥ u) = 0`. Rewrite using `[form_swap hσ _ hW.skew, (hH.orth u).2, map_zero, neg_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : form σ W.J (t • H'.y) (s • H'.x + H'.ι *ᵥ u + t' • H'.y) = -(t * σ s)`. Rewrite using `[form_smul_left, form_add_right, form_add_right, form_smul_right, form_smul_right, hyx, hyι, hH.yy]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem : (o : E) * (t * σ s) ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E)`. Establish `h1 : (o : E) ∈ (1 : FractionalIdeal (𝓞 E)⁰ E)` using `(FractionalIdeal.mem_one_iff _).2 ⟨o, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `FractionalIdeal.mul_mem_mul h1 (FractionalIdeal.mul_mem_mul ht (mem_conjI σ hs'))`. Rewrite `h2` using `[one_mul, mul_right_comm, inv_mul_cancel₀ h0, one_mul, diffE, coeIdeal_differentIdeal ℤ ℚ, inv_inv]`. Then use the resulting hypothesis. Take `⟨k, hk⟩` from `(FractionalIdeal.mem_dual (one_ne_zero (α := FractionalIdeal (𝓞 E)⁰ E))).1 hmem 1 ((FractionalIdeal.mem_one_iff _).2 ⟨1, map_one _⟩)`. Rewrite `hk` using `[Algebra.traceForm_apply, mul_one]`. Rewrite using `[e, mul_neg, map_neg, ← hk]`.
-
-Conclude with `isIntegral_algebraMap.neg`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_y_mem {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {B : Base F E} {d d₁ : ℕ} {W : Spc F E d}
     {W₁ : Spc F E d₁} {H' : Plane E d d₁} {i₀ i₁ r s : ℕ} (hW : W.IsSkew σ B r s)
@@ -118,7 +116,7 @@ theorem smul_y_mem {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {B : Base F
   exact isIntegral_algebraMap.neg
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.LatVac.at_liftV v (1 : Fv F v) (x - GlobalTheory.LatVac.liftV v (evFin F v x)) (by rw [map_sub, GlobalTheory.LatVac.evFin_liftV, sub_self])`. Establish `h2` using `GlobalTheory.LatVac.at_liftV v (evFin F v x) (1 - GlobalTheory.LatVac.liftV v 1) (by rw [map_sub, map_one, GlobalTheory.LatVac.evFin_liftV, sub_self])`. Rewrite `h`, `h2` using `[smul_eq_mul]`. Take the linear combination `h - h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem liftV_one_mul (v : Pl F) (x : AF F) :
     GlobalTheory.LatVac.liftV v (1 : Fv F v) * x = GlobalTheory.LatVac.liftV v (evFin F v x) := by
@@ -130,9 +128,9 @@ theorem liftV_one_mul (v : Pl F) (x : AF F) :
   linear_combination h - h2
 
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x e`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, liftV_one_mul]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `add a b ha hb => rw [smul_add, ha, hb, map_add, map_add]`.
+Treat this case separately.
 -/
 theorem liftV_one_smul_eq (v : Pl F) (a : AE F E) :
     GlobalTheory.LatVac.liftV v (1 : Fv F v) • a = (GlobalTheory.LatVac.liftV v).rTensor E (compFin F E v a) := by
@@ -150,15 +148,13 @@ namespace GlobalTheory.VacShift
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨c, hc, x, hx, rfl⟩` from `hy`. Rewrite using `[LinearMap.rTensor_tmul]`. Rewrite `hx` using `[idA, mul_assoc]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `FractionalIdeal.mul_induction_on hx (fun p hp q hq => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Establish `e : (GlobalTheory.LatVac.liftV v c ⊗ₜ[F] (p * q)) • Matrix.vecMulVec (incV F H.x) (incV F H'.y) = GlobalTheory.LatVac.liftV v c • incM F (Matrix.vecMulVec (p • H.x) (q • H'.y))`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.vecMulVec_apply, incV, incM, Matrix.map_apply, inclR, Pi.smul_apply, smul_eq_mul, RingHom.coe_coe, AlgHom.toRingHom_eq_coe, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, TensorProduct.smul_tmul', mul_one]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `AddSubgroup.subset_closure ⟨_, GlobalTheory.LatVac.at_liftV v c, by rw [GlobalTheory.LatVac.evFin_liftV]; exact hc, _, (hH.ideal p).1 hp, _, smul_y_mem hσ hW hH' hq, rfl⟩`. Rewrite using `[TensorProduct.tmul_add, add_smul]`. Conclude with `add_mem hp hq`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [map_zero, zero_smul]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add, add_smul]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg, neg_smul]`.
-
-Conclude with `neg_mem hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lift_smul_mem (hσ : ∀ x, σ (σ x) = x) {B : Base F E} {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d}
     {X₁ : Spc F E n₁} {W₁ : Spc F E d₁} {H : Plane E n n₁} {H' : Plane E d d₁} {i₀ i₁ j₀ j₁ r s : ℕ}
@@ -190,7 +186,7 @@ theorem lift_smul_mem (hσ : ∀ x, σ (σ x) = x) {B : Base F E} {n d n₁ d₁
   | neg x _ hx => rw [map_neg, neg_smul]; exact neg_mem hx
 
 /- English proof (translation)
-Unfold `GlobalTheory.WeilM.hTens`. Repeatedly rewrite using `[Finset.sum_mul_sum]`. Simplify using `only [Matrix.vecMulVec_apply, map_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hTens_vecMulVec_gen {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A)
     {α β : Type} [Fintype α] [Fintype β] (JA : Matrix α α A) (JB : Matrix β β A) (x x' : α → A) (y y' : β → A) :
@@ -206,9 +202,9 @@ theorem hTens_vecMulVec_gen {R A : Type} [CommRing R] [CommRing A] [Algebra R A]
 variable (σ) in
 
 /- English proof (translation)
-Establish `hc : ∀ e : E, cA σ (inclR (F` using `F) (AF F) e) = inclR (F := F) (AF F) (σ e) := fun e => rfl`. Establish `h0 : (∑ j, ∑ l, incV F y j * incM F JB j l * cA σ (incV F y l)) = 0`. Establish `e : (∑ j, ∑ l, incV F y j * incM F JB j l * cA σ (incV F y l)) = inclR (F` using `F) (AF F) (form σ JB y y) := by`. Simplify using `only [form, dotProduct, Matrix.mulVec, incV, incM, Matrix.map_apply, hc, map_sum, map_mul, Finset.mul_sum, mul_assoc]`. Rewrite using `[e, hy, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : c • Matrix.vecMulVec (incV F x) (incV F y) = Matrix.vecMulVec (c • incV F x) (incV F y)`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, mul_assoc]`. Rewrite using `[hs, symp, hTens_vecMulVec_gen, h0, mul_zero, mul_zero, map_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem symp_shift_zero {n d : ℕ} (JA : Matrix (Fin n) (Fin n) E) (JB : Matrix (Fin d) (Fin d) E) {y : Fin d → E}
     (hy : form σ JB y y = 0) (ξ c : AE F E) (x : Fin n → E) :
@@ -226,13 +222,13 @@ theorem symp_shift_zero {n d : ℕ} (JA : Matrix (Fin n) (Fin n) E) (JB : Matrix
   rw [hs, symp, hTens_vecMulVec_gen, h0, mul_zero, mul_zero, map_zero]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' X om om' hX hC v l hl hloc`. Establish `hσ` using `sigma_invol hX.base.cm`. Use `set u := shiftA H H' l with hu`. Establish `hpart : partFin v u = ((GlobalTheory.LatVac.liftV v).rTensor E (compFin F E v l.1)) • Matrix.vecMulVec (incV F H.x) (incV F H'.y)`. Rewrite using `[partFin, hu, smul_shiftA, liftV_one_smul_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hγ : partFin v u ∈ latAtV G.V G.W v`. Rewrite using `[hpart]`. Conclude with `lift_smul_mem hσ hX.geo.hW hC.hH hC.hH' v hloc`. Take `⟨hSB, -, θ, -, hvac⟩` from `hX.geo.hM.vac v`. Establish `h1` using `hvac _ hγ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : symp (R` using `AF F) (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V.J) (incM F G.W.J) (partFin v u) (partFin v u) = 0 := by`. Rewrite using `[hpart]`. Conclude with `symp_shift_zero σ _ _ hC.hH'.yy _ _ _`. Rewrite `h1` using `[hz, mul_zero, AddChar.map_zero_eq_one, one_smul]`. Establish `h2` using `GlobalTheory.VacBridge.rho_acts_locCo G.M.co B.ψ v _ (at_partFin v u) (G.M.vac v)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Establish `e : GlobalTheory.LatVac.locCo G.M.co v (partFin v u) = GlobalTheory.LatVac.locCo G.M.co v u`. Apply the tactic sequence `refine Prod.ext (funext fun k => ?_) (funext fun k => ?_) <;>`. Simplify using `[GlobalTheory.LatVac.locCo, partFin, GlobalTheory.LatVac.evFin_liftV]`. Rewrite `h2` using `[e]`. Conclude with `GlobalTheory.TensUniq.eq_of_tens_eq v (G.M.vac v) _ _ hSB fun r hr => (h2 r hr).symm.trans (h1 r hr)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vac_fixed : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) {b a' : ℕ}
     (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')) (X : Chars F E)

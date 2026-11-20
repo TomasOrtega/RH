@@ -13,9 +13,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.GalN
 
 /- English proof (translation)
-Introduce `φ hφ α hα`. Proceed by induction on `x using WD.ind with`. Consider the case `hP n b`. Rewrite `hα` using `[WD.eig, WD.charPol_mk]`. Rewrite `hx` using `[WD.tempered_mk]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[WD.lpDim_mk]`. Establish `hroot : IsRoot (b.ρ φ).charpoly α` using `(mem_roots (LinearMap.charpoly_monic _).ne_zero).mp hα`. Establish `hev : Module.End.HasEigenvalue (b.ρ φ) α` using `(Module.End.hasEigenvalue_iff_isRoot_charpoly _ _).mpr hroot`. Establish `hq : (1 : ℝ) < ((normV w : ℕ) : ℝ)` using `by exact_mod_cast one_lt_normV w`. Conclude with `(GlobalTheory.LocalInv.norm_le_of_isPurePair hq b.nilpotent (hx φ hφ) hev).2.trans (Real.rpow_le_rpow_of_exponent_le hq.le (by linarith))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Sz.of_tempered {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w} {x : WD h} (hx : x.tempered) : Sz x := by
@@ -36,7 +36,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] {l : 
   [IsAlgClosure E Ω] [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `H.cont ss := H.ss pol := H.pol.imp fun _ k => k.1 away w hl A h rc hrc σ hσ := Aw.of_eq ((H.away w hl A h rc hrc σ hσ).wdOf_eq hl) size _ hl _ h := Sz.of_tempered (H.tempered_wdOf hl h) weights := H.weights weights_conj := H.weights_conj above P AI T w A h O _ _ _ Bw hj := have k …`.
+A detailed English derivation is pending.
 -/
 theorem IsGalU.of_old {π : CuspSub E a} {χ : HChar (maximalRealSubfield E)} {ι : Qbar l ≃+* ℂ}
     {r : G E Ω →* GL (Fin a) (Qbar l)} {wt : ℤ} {HT : (E →+* Qbar l) → Multiset ℤ}
@@ -54,13 +54,13 @@ theorem IsGalU.of_old {π : CuspSub E a} {χ : HChar (maximalRealSubfield E)} {�
       ⟨fun g => by rw [(k.iwahori σ hσ hi).2 rc hrc], fun m => by rw [(k.iwahori σ hσ hi).2 rc hrc]; exact m⟩⟩, k.crys⟩
 
 /- English proof (translation)
-Establish `e : ι.toRingHom.comp (ι.symm.toRingHom.comp s) = s` using `by ext x; simp`. Establish `h1` using `H.weights (ι.symm.toRingHom.comp s)`. Establish `h2` using `H.weights ((ι.symm.toRingHom.comp s).comp (IsCMField.complexConj E).toRingEquiv.toRingHom)`. Rewrite `h2` using `[H.weights_conj, ← RingHom.comp_assoc, e, Multiset.map_map]`. Rewrite `h1` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `c1 : Multiset.card (HT (ι.symm.toRingHom.comp s)) = a`. Use `congrArg Multiset.card h1` as an intermediate fact. Rewrite `this` using `[Multiset.card_map, Multiset.card_map, CG.card_infChar]`. Then use the resulting hypothesis. Establish `s1` using `congrArg Multiset.sum h1`. Establish `s2` using `congrArg Multiset.sum h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q : ∀ (c : ℂ) (m : Multiset ℂ), (m.map fun z => c - z).sum = Multiset.card m * c - m.sum` using `fun c m => by`. Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons x m ih => rw [Multiset.map_cons, Multiset.sum_cons, ih, Multiset.sum_cons, Multiset.card_cons]`. Use `push_cast`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `s1`, `s2` using `[q, CG.card_infChar]`. Simplify using `only [Function.comp_def, Int.cast_sub, Multiset.sum_map_sub, Multiset.map_const', Multiset.sum_replicate, c1, nsmul_eq_mul] at s2`. Take the linear combination `s1 + s2`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem wt_sum {π : CuspSub E a} {χ : HChar (maximalRealSubfield E)} {ι : Qbar l ≃+* ℂ}
     {r : G E Ω →* GL (Fin a) (Qbar l)} {wt : ℤ} {HT : (E →+* Qbar l) → Multiset ℤ} (H : IsGalU π χ ι r wt HT) (s : E →+* ℂ) :
@@ -86,7 +86,7 @@ theorem wt_sum {π : CuspSub E a} {χ : HChar (maximalRealSubfield E)} {ι : Qba
   linear_combination s1 + s2
 
 /- English proof (translation)
-Take `⟨s⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `h` using `(wt_sum H s).trans (wt_sum H' s).symm`. Establish `h0 : (a : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Conclude with `mul_left_cancel₀ h0 h` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wt_eq {l' : ℕ} [Fact l'.Prime] (ha : 1 ≤ a) {π : CuspSub E a} {χ χ' : HChar (maximalRealSubfield E)}
     {ι : Qbar l ≃+* ℂ} {ι' : Qbar l' ≃+* ℂ} {r : G E Ω →* GL (Fin a) (Qbar l)} {r' : G E Ω →* GL (Fin a) (Qbar l')}
@@ -100,37 +100,37 @@ theorem wt_eq {l' : ℕ} [Fact l'.Prime] (ha : 1 ≤ a) {π : CuspSub E a} {χ �
 end
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π χ hr hp` and use `by obtain ⟨r, wt, HT, H⟩ := h E Ω l ι a ha π χ hr hp exact ⟨r, wt, HT, .of_old H⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weakP (h : GlobalTheory.Published.GaloisRepOfPolarizedPair) : PairU :=
   fun E Ω _ _ _ _ _ _ l _ ι a ha π χ hr hp => by
     obtain ⟨r, wt, HT, H⟩ := h E Ω l ι a ha π χ hr hp
     exact ⟨r, wt, HT, .of_old H⟩
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem weakP' (h : PairU) : PairU := h
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π χ hr hp` and use `by obtain ⟨r, wt, HT, H⟩ := h E Ω l ι a ha π χ hr hp exact ⟨r, wt, HT, .of_old H⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weakG (h : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal) : CuspU :=
   fun E Ω _ _ _ _ _ _ l _ ι a ha π χ hr hp => by
     obtain ⟨r, wt, HT, H⟩ := h E Ω l ι a ha π χ hr hp
     exact ⟨r, wt, HT, .of_old H⟩
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem weakG' (h : CuspU) : CuspU := h
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π hc hr`. Take `⟨r, wt, HT, H⟩` from `hG.of_isCsd Ω ι (by omega) hr hc`. Use `⟨r, wt, HT, .of_old H, fun P AI T w hw A h O _ _ _ Bw hj => ⟨fun _ => ?_, fun σ hσ rc hrc => Ab.of_eq (hC E Ω l ι a ha π hc hr r wt HT H P AI T w hw A h O Bw hj σ hσ rc hrc)⟩⟩` and prove the remaining obligations. Take `⟨σ, hσ, -⟩` from `LocEx.exists_isLocComp hF E a π w`. Establish `hrc` using `ParLaws.isRec_locRec hL h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hC E Ω l ι a ha π hc hr r wt HT H P AI T w hw A h O Bw hj σ hσ _ hrc]`. Establish `key : ∀ (p : ℕ) [Fact p.Prime], ((p : ℕ) : 𝓞 E) ∉ w.asIdeal → Sz ((ParLaws.locRec hL h (algNorm σ)).lpTw ((wt : ℝ) / 2))` using `fun p _ hp => by`. Take `⟨ι'⟩ : Nonempty (Qbar p ≃+* ℂ)` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex p`. Take `⟨r', wt', HT', H'⟩` from `hG.of_isCsd Ω ι' (by omega) hr hc`. Rewrite using `[wt_eq (by omega) (IsGalU.of_old H) (IsGalU.of_old H'), ← (H'.away w hp A h _ hrc σ hσ).wdOf_eq hp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Sz.of_tempered (H'.tempered_wdOf hp h)`. Distinguish the cases in `h2 : ((2 : ℕ) : 𝓞 E) ∈ w.asIdeal`. Use `key 3 fun h3 => w.isPrime.ne_top ?_` and prove the remaining obligations. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `e : ((3 : ℕ) : 𝓞 E) - ((2 : ℕ) : 𝓞 E) = 1` using `by push_cast; ring`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `w.asIdeal.sub_mem h3 h2`. Conclude with `key 2 h2`.
+A detailed English derivation is pending.
 -/
 theorem merge (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hL : GlobalTheory.Published.LocalLanglandsGL)
     (hG : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal) (hC : GlobalTheory.GalOfCusp.LocalGlobalAboveL) : CarU := by
@@ -155,24 +155,24 @@ theorem merge (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hL : Globa
     exact w.asIdeal.sub_mem h3 h2
   · exact key 2 h2
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem merge' (_ : GlobalTheory.Published.AutomorphicFormsFiniteGL) (_ : GlobalTheory.Published.LocalLanglandsGL) (_ : CuspU) (h : CarU) : CarU := h
 
 /- English proof (translation)
-The claim follows from `merge hF hL hG (hC.regAlg hR)`.
+A detailed English derivation is pending.
 -/
 theorem mergeP (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hL : GlobalTheory.Published.LocalLanglandsGL)
     (hG : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal) (hC : GlobalTheory.Published.LocalGlobalAboveL)
     (hR : GlobalTheory.Published.RegularAlgebraicPurity) : CarU := merge hF hL hG (hC.regAlg hR)
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem mergeP' (_ : GlobalTheory.Published.AutomorphicFormsFiniteGL) (_ : GlobalTheory.Published.LocalLanglandsGL) (_ : CuspU) (h : CarU)
     (_ : GlobalTheory.Published.RegularAlgebraicPurity) : CarU := h
 
 /- English proof (translation)
-The claim follows from `mergeP hF hL hG hC.localGlobalAboveL hR`.
+A detailed English derivation is pending.
 -/
 theorem mergePst (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hL : GlobalTheory.Published.LocalLanglandsGL)
     (hG : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal) (hC : GlobalTheory.Published.LocalGlobalAboveLPst)

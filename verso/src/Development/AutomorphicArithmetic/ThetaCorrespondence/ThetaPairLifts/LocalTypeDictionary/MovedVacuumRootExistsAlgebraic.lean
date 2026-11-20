@@ -18,12 +18,12 @@ open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 noncomputable section
 namespace GlobalTheory.MovedVacRoot
 /- English proof (translation)
-The claim follows from `mem_algebraicClosure_iff'.2 (IsIntegral.of_pow hm (h ▸ isIntegral_one))`.
+A detailed English derivation is pending.
 -/
 private theorem mem_algebraic_of_root_of_unity {c : ℂ} {m : ℕ} (hm : 0 < m) (h : c ^ m = 1) : c ∈ Qbar :=
   mem_algebraicClosure_iff'.2 (IsIntegral.of_pow hm (h ▸ isIntegral_one))
 /- English proof (translation)
-Establish `e : (⟨c, hc⟩ : Qbar) ^ m = 1` using `Subtype.ext h`. Establish `e' : ‖σ ⟨c, hc⟩‖ ^ m = 1` using `by rw [← norm_pow, ← map_pow, e, map_one, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').1 e'`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem norm_root_of_unity_eq_one {K : Type} [NormedField K] (σ : Qbar →+* K) {c : ℂ} {m : ℕ} (hm : 0 < m) (h : c ^ m = 1)
     (hc : c ∈ Qbar) : ‖σ ⟨c, hc⟩‖ = 1 := by
@@ -31,15 +31,15 @@ private theorem norm_root_of_unity_eq_one {K : Type} [NormedField K] (σ : Qbar 
   have e' : ‖σ ⟨c, hc⟩‖ ^ m = 1 := by rw [← norm_pow, ← map_pow, e, map_one, norm_one]
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').1 e'
 /- English proof (translation)
-Set `F : GfC T → Formalism.IndefR.Bridge.Gf T` to `fun x => (finHom T).rangeRestrict x.1`. Establish `hG : Continuous fun x : GfC T => (finHom T x.1 : GL (Fin T.rank) (Formalism.L2.Herm.Af D.host.F ⊗[D.host.F] D.host.E))`. Use `Units.continuous_iff.2 ⟨(GlobalTheory.Member.continuous_finHom_val D T).comp continuous_subtype_val, ?_⟩` and prove the remaining obligations. Establish `h` using `((GlobalTheory.Member.continuous_finHom_val D T).comp continuous_inv).comp (continuous_subtype_val (p := fun x => x ∈ GfC T))`. Use `h.congr fun x => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Function.comp_def, map_inv]`. Establish `hF : Continuous F` using `hG.subtype_mk _`. Establish `e : (((GlobalTheory.Member.PrincLevel.levelGroup T N).subgroupOf (GfC T) : Subgroup (GfC T)) : Set (GfC T)) = F ⁻¹' (((GlobalTheory.Member.PrincLevel.levelGroup T N).map (finHom T).rangeRestrict : Subgroup (Formalism.IndefR.Bridge.Gf T)) : Set (Formalism.IndefR.Bridge.Gf T))`. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, Subgroup.mem_subgroupOf, Set.mem_preimage]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `Subgroup.mem_map.2 ⟨x.1, hx, rfl⟩`. Introduce `hx`. Take `⟨k', hk', e⟩` from `Subgroup.mem_map.1 hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e' : finHom T k' = finHom T x.1` using `congrArg Subtype.val e`. Use `⟨x.2, ?_⟩` and prove the remaining obligations. Establish `hc` using `hk'.2`. Unfold `GlobalTheory.Member.FinCong at hc ⊢`. Rewrite using `[← e']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc`. Rewrite using `[e]`. Conclude with `(GlobalTheory.SmoothVac.isOpen_map_levelGroup T hN).preimage hF`.
+A detailed English derivation is pending.
 -/
 private theorem isOpen_principal_level_subgroup {D : D7} (T : HSp D) {N : ℕ} (hN : 0 < N) :
     IsOpen (((GlobalTheory.Member.PrincLevel.levelGroup T N).subgroupOf (GfC T) : Subgroup (GfC T)) : Set (GfC T)) := by
@@ -70,9 +70,7 @@ private theorem isOpen_principal_level_subgroup {D : D7} (T : HSp D) {N : ℕ} (
   rw [e]
   exact (GlobalTheory.SmoothVac.isOpen_map_levelGroup T hN).preimage hF
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Establish `ho : IsOpen ((U.subgroupOf K : Subgroup K) : Set K)`. Establish `hc : Continuous (Subgroup.inclusion hKH)` using `continuous_inclusion hKH`. Conclude with `hU.preimage hc`. Use `haveI := Subgroup.quotient_finite_of_isOpen _ ho`.
-
-Take `⟨m, hm, -, h⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero (H := U.subgroupOf K) Subgroup.index_ne_zero_of_finite ⟨k, hk⟩`. Conclude with `⟨m, hm, h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_pow_mem_open_subgroup {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (H K U : Subgroup G)
     (hKH : K ≤ H) (hK : IsCompact (K : Set G)) (hU : IsOpen ((U.subgroupOf H : Subgroup H) : Set H)) {k : G} (hk : k ∈ K) :
@@ -88,9 +86,9 @@ private theorem exists_pow_mem_open_subgroup {G : Type} [Group G] [TopologicalSp
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram` as an intermediate fact. Take `⟨β, hβ⟩` from `GlobalTheory.latticeFrame.exists_frame D.host.F D.host.E _ Λ hΛ`. Establish `key` using `Formalism.UG.P.span_recovery_of_integral_adelic_approx Formalism.UG.P.integral_adele_approximation_holds D.host.F D.host.E (Fin V.rank) Λ (Module.Finite.iff_fg.2 hΛ.fg) hΛ.span_eq_top (Formalism.IndefR.Lev.finE V k)`. Rewrite `key` using `[hfix]`. Establish `key' : ∀ u, u ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) Λ ↔ Matrix.mulVec ((Formalism.IndefR.Lev.finE V k)⁻¹).1 u ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ := key`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hst : Formalism.IndefR.Lev.finE V k ∈ Formalism.L2.DIV.St β`. Use `(GlobalTheory.LevSplit.mem_St_iff β Λ hβ _).2 ⟨fun y hy => (key' _).2 ?_, fun y hy => (key' y).1 hy⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `hy`. Conclude with `exists_pow_mem_open_subgroup (GfC V) (Formalism.IndefR.Lev.levA V (Formalism.L2.DIV.St β)) _ inf_le_left (GlobalTheory.AscInh.stab_compact_open V β).1 (isOpen_principal_level_subgroup V hN) ⟨hk, hst⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_pow_mem_principal_level {D : D7} (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (hΛ : Submodule.IsLattice D.host.E Λ) {k : GA D V} (hk : k ∈ GfC V)
@@ -112,13 +110,13 @@ private theorem exists_pow_mem_principal_level {D : D7} (V : HSp D) (Λ : Submod
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Take `⟨c, hc⟩` from `GlobalTheory.LevelVac.vac_eq_smul hS hT hΛS hΛT hf hf'`. Take `⟨α, hα⟩` from `GlobalTheory.latticeFrame.exists_frame D.host.F D.host.E _ ΛS hΛS.1`. Take `⟨β, hβ⟩` from `GlobalTheory.latticeFrame.exists_frame D.host.F D.host.E _ ΛT hΛT.1`. Take `⟨N, hN, hfix⟩` from `GlobalTheory.LevelVac.exists_level_fix hW hS hT hΛS hΛT hα hβ hf`. Take `⟨a, ha, hka⟩` from `exists_pow_mem_principal_level S ΛS hΛS.1 hk h1 hN`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hkb⟩` from `exists_pow_mem_principal_level T ΛT hΛT.1 hk' h2 hN`. Establish `e1 : k ^ (a * b) ∈ GlobalTheory.Member.PrincLevel.levelGroup S N`. Rewrite using `[pow_mul]`. Conclude with `pow_mem hka b`. Establish `e2 : k' ^ (a * b) ∈ GlobalTheory.Member.PrincLevel.levelGroup T N`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_mul']`. Conclude with `pow_mem hkb a`. Establish `e3` using `hfix _ e1.1 _ e2.1 e1.2 e2.2`. Establish `e4 : om (k ^ (a * b), k' ^ (a * b)) f = c ^ (a * b) • f` using `GlobalTheory.LevelVac.om_pow_eq om (k, k') f c hc (a * b)`. Take `⟨w, hw⟩` from `GlobalTheory.SmoothVac.exists_ne_zero_of_isVacO hf`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨c, a * b, mul_pos ha hb, ?_, hc⟩` and prove the remaining obligations. Establish `e5` using `congrFun (e4.symm.trans e3) w`. Rewrite `e5` using `[Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_right_cancel₀ hw (e5.trans (one_mul _).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_root_of_unity_factor {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     {χS χT : (Formalism.L2.Theta.AE D)ˣ →* Circle}
@@ -150,11 +148,11 @@ private theorem exists_root_of_unity_factor {D : D7} {ψ : AddChar (AF D.host.F)
   rw [Pi.smul_apply, smul_eq_mul] at e5
   exact mul_right_cancel₀ hw (e5.trans (one_mul _).symm)
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [inV, Set.mem_image, SetLike.mem_coe]`. Unfold `colLat`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨z, hz, rfl⟩`. Establish `hz' : ∀ i, ∃ c : 𝓞 D.host.E, algebraMap _ D.host.E c = z i` using `fun i => Submodule.mem_one.1 (hz i (Set.mem_univ i))`. Use `choose c hc using hz'`. Use `⟨c, funext fun a => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Algebra.smul_def, hc, Matrix.mulVec, dotProduct]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Introduce and unpack `⟨c, rfl⟩`. Use `⟨fun j => algebraMap _ D.host.E (c j), fun i _ => Submodule.mem_one.2 ⟨c i, rfl⟩, funext fun a => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Algebra.smul_def, Matrix.mulVec, dotProduct]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem inverse_image_standard_lattice {D : D7} {n : ℕ} (B : GL (Fin n) D.host.E) :
     inV B (stdL D n) = (colLat B : Set (Fin n → D.host.E)) := by
@@ -177,17 +175,17 @@ private theorem inverse_image_standard_lattice {D : D7} {n : ℕ} (B : GL (Fin n
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hn` using `DefPair.nodes hp`. Take `⟨h1, h2⟩` from `DefPair.nodes hp`. Apply the tactic sequence `have hom := ch.W.om_is p (by cases p <;> simp only [DefPair, DefNode] at hp hn <;> simp only [Pair.InRange, Node.InRange] <;> omega)`. Establish `negMem : ∀ (V : HSp D) {g : Formalism.L2.Theta.GA D V}, g ∈ GfC V → negGA V g ∈ GfC (negSp V)`. Introduce `V g hg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : matHom (negSp V) (negGA V g) = matHom V g` using `Units.ext (mt_negGA V g)`. Simplify using `only [GfC, MonoidHom.mem_ker, infHom, MonoidHom.comp_apply] at hg ⊢`. Rewrite using `[e]`. Conclude with `hg`. Establish `hvac` using `_root_.GlobalTheory.MovedDict.moved_vacuum_isVacuumIntegral hP hI ch hch p hp x y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv` using `ch.S.Z.vac_is p hp`. Establish `gx` using `GlobalTheory.MovedHomLat.movedLat_eq ch.S.toGridChoice _ h1 x`. Establish `gy` using `GlobalTheory.MovedHomLat.movedLat_eq ch.S.toGridChoice _ h2 y`. Establish `ix : inV (ch.S.N.fr p.small) (GlobalTheory.SumSize.latAt ch.S.toGridChoice p.small x) = (colLat (ch.S.N.fr p.small) : Set _)`. Rewrite using `[hx, inverse_image_standard_lattice]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `iy : inV (ch.S.N.fr p.big) (GlobalTheory.SumSize.latAt ch.S.toGridChoice p.big y) = (colLat (ch.S.N.fr p.big) : Set _)`. Rewrite using `[hy, inverse_image_standard_lattice]`. Establish `fx` using `SetLike.coe_injective (gx.symm.trans ix)`. Establish `fy` using `SetLike.coe_injective (gy.symm.trans iy)`. Consider the cases of `p with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `chi i j`. Rewrite `hvac` using `[show inV (frS ch.S.N (.chi i j)) (srcLat ch.S.toGridChoice (.chi i j) x y) = _ from iy, show inV (frT ch.S.N (.chi i j)) (tgtLat ch.S.toGridChoice (.chi i j) x y) = _ from ix]`. Conclude with `exists_root_of_unity_factor hom (fun τ => isCartanInv_neg (ch.W.cart_is _ h2.inRange τ)) (fun τ => ch.W.cart_is _ h1.inRange τ) (isSelfDualC_neg (ch.S.N.selfDual h2)) (ch.S.N.selfDual h1) hv (negMem _ (y * ch.S.N.u _).2) (x * ch.S.N.u _).2 fy fx hvac`. Consider the case `mu t i j => exact absurd hp id`. Consider the case `core i => exact absurd hp id`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `top t j`. Rewrite `hvac` using `[show inV (frS ch.S.N (.top t j)) (srcLat ch.S.toGridChoice (.top t j) x y) = _ from ix, show inV (frT ch.S.N (.top t j)) (tgtLat ch.S.toGridChoice (.top t j) x y) = _ from iy]`. Conclude with `exists_root_of_unity_factor hom (fun τ => ch.W.cart_is _ h1.inRange τ) (fun τ => ch.W.cart_is _ h2.inRange τ) (ch.S.N.selfDual h1) (ch.S.N.selfDual h2) hv (x * ch.S.N.u _).2 (y * ch.S.N.u _).2 fx fy hvac`.
+A detailed English derivation is pending.
 -/
 theorem movedVacuum_root_exists_algebraic (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hI : ∀ D, GlobalTheory.NormSum.Inp D) {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
@@ -237,17 +235,15 @@ open GlobalTheory.MovedVacRoot in
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `hP hI D Γ _ _ Pl0 T A Ks _ _ _ R ch hch p hp x y hx hy`. Take `⟨c, m, hm, h1, hc⟩` from `_root_.GlobalTheory.MovedVacRoot.movedVacuum_root_exists_algebraic hP hI ch hch p hp x y hx hy`. Establish `h2 : (opp p c) ^ m = 1` using `by rw [← map_pow, h1, map_one]`. Establish `h3` using `mem_algebraic_of_root_of_unity hm h2`. Use `⟨opp p c, ⟨h3, fun σ => norm_root_of_unity_eq_one σ hm h2 h3⟩, fun q _ lam => ?_, fun k => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[lamC, dif_pos h3]`. Conclude with `norm_root_of_unity_eq_one lam hm h2 h3`. Establish `hs : srcLat ch.S.toGridChoice p x y = stdL D _`. Consider the cases of `p`. Use `exacts [hy, hx, hy, hx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Establish `ht : tgtLat ch.S.toGridChoice p x y = stdL D _`. Consider the cases of `p`. Use `exacts [hx, hy, hx, hy]`. Establish `hoo : opp p (opp p c) = c`. Apply the tactic sequence `cases p <;> simp [opp]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `he0` using `ch.S.Z.e0_is p hp`. Establish `hK : KLat D (tor0 D D.host.ccK ch.S.Z.δ) (La0 D (tor0 D D.host.ccK ch.S.Z.δ) (ch.G.pS p).rank (ch.G.pT p).rank)` using `Or.inr ⟨_, _, GlobalTheory.NormSum.VacInt.sd_std D _, GlobalTheory.NormSum.VacInt.sd_std D _, rfl⟩`. Take `⟨-, -, hself, -⟩` from `GlobalTheory.ThetaTriple.klat_triples D D.host.ccK ch.S.Z.δ ch.S.Z.crv (ch.G.pS p).rank (ch.G.pT p).rank`. Establish `hI0 : Iop D (tor0 D D.host.ccK ch.S.Z.δ) (La0 D (tor0 D D.host.ccK ch.S.Z.δ) _ _) (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D D.host.ccK ch.S.Z.δ) (srcLat ch.S.toGridChoice p x y) (tgtLat ch.S.toGridChoice p x y)) (ch.S.Z.e0 p) = ch.S.Z.e0 p`. Rewrite using `[hs, ht]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hself _ hK _ he0.1`. Establish `hd : Differentiable ℂ (ch.S.Z.e0 p)` using `he0.1.1`. Establish `h0` using `ch.S.Z.kernelNorm_constant_spec p hp k`. Rewrite using `[hI0, GlobalTheory.MovedKappa.applyAt0_const_mul D _ hd, hc]`. Unfold `fockIn at h0 ⊢`.
-
-Rewrite using `[Formalism.IndefR.Eqv.KerDiag.pureTensorO_smul, Pi.smul_apply, h0, smul_eq_mul]`. Simplify using `only [map_mul, hoo]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.moved_vacuum_has_algebraic_root : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}

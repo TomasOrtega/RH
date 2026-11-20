@@ -17,9 +17,9 @@ variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {θ : InfFam D} {M : 
   {L : LevDat D.host.E ℂ V.rank} {G : Type} [Group G] [Fintype G]
 
 /- English proof (translation)
-Establish `h1 : rTup β L (finE V k) = 1`. Establish `: rTup β L (finE V k) ∈ (⊥ : Subgroup (G0 L.Pg L.r))` using `hk.2.2`. Conclude with `Subgroup.mem_bot.1 this`. Use `⟨⟨hk.1, hk.2.1, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show rTup β L (finE V k) ∈ P.H`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[h1]`. Conclude with `P.H.one_mem`. Unfold `levChi`. Rewrite using `[levFn_withP, h1, blockDiagonalExtendByOnePrimeField_one, one_mul, levFn_flag1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_levi_flag_of_mem_parabolic (P : LevelP L.Pg L.r ℂ) {k : GA D V} (hk : k ∈ levG V β (flag1L L)) :
     k ∈ levG V β (withP L P) ∧ levChi V β (withP L P) k = levChi V β (flag1L L) k := by
@@ -33,11 +33,11 @@ theorem mem_levi_flag_of_mem_parabolic (P : LevelP L.Pg L.r ℂ) {k : GA D V} (h
     rw [levFn_withP, h1, blockDiagonalExtendByOnePrimeField_one, one_mul, levFn_flag1]
 
 /- English proof (translation)
-Establish `h1 : HasType V β (flag1L L) F` using `fun k hk h => by`. Rewrite using `[hF k (mem_levi_flag_of_mem_parabolic P hk).1, (mem_levi_flag_of_mem_parabolic P hk).2]`. Use `⟨h1, fun p => ?_⟩` and prove the remaining obligations. Take `⟨κ, hκ⟩` from `hL p.1`. Establish `hp : rTup β L (finE V κ) ∈ P.H` using `by rw [hκ.2.2]; exact p.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm : κ ∈ levG V β (withP L P)` using `⟨hκ.1, hκ.2.1, hp⟩`. Establish `hc : levChi V β (withP L P) κ = ((P.chi p : ℂˣ) : ℂ) * levChi V β (flagL L) κ`. Unfold `levChi`. Rewrite using `[levFn_withP, hκ.2.2, extendOne_of_mem _ p.2, Units.val_mul]`. Establish `ha` using `levChi_ne_zero (β := β) (flagL L) κ`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `h`. Rewrite using `[level_action_spec h1 ⟨κ, hκ⟩ κ hκ h, hF κ hm, hc]`. Clear the denominators using the available nonvanishing facts.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem isPLevel_of_hasType (hL : LiftsExist V β L) {P : LevelP L.Pg L.r ℂ} {F : GA D V → ℂ}
     (hF : HasType V β (withP L P) F) : IsPLevel V β L P F := by
@@ -56,15 +56,15 @@ theorem isPLevel_of_hasType (hL : LiftsExist V β L) {P : LevelP L.Pg L.r ℂ} {
   field_simp
 
 /- English proof (translation)
-Establish `hU : ∀ v, postOn M (actL V β L g0) X v = actG0 V β L g0 (X v)` using `fun _ => rfl`. Distinguish the cases in `hex : ∃ κ, IsLevelLift V β L g0 κ`. Establish `hκ` using `hex.choose_spec`. Establish `e : postOn M (actL V β L g0) X = (levChi V β (flagL L) hex.choose)⁻¹ • heckeOn M {hex.choose} X`. Use extensionality with `v g`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[hU, actG0, dif_pos hex]`. Simplify using `[heckeOn, postOn_apply, heckeLin_apply]`. Rewrite using `[e]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite `hT`, the goal using `[GlobalTheory.MultMem.mem_mult_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `GlobalTheory.SphericalOps.isMultMap_heckeOn hT (fun k hk => ?_) fun v k hk g => ?_` and prove the remaining obligations. Rewrite using `[Finset.mem_singleton.1 hk]`. Conclude with `hκ.1`. Take `⟨h1, h2⟩` from `GlobalTheory.FlagAction.conj_mem_flag1 hκ hk`. Simplify using `only [heckeLin_apply, Finset.sum_singleton]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2, ← hT.lev v _ h1]`. Use `group`. Establish `e : postOn M (actL V β L g0) X = 0`. Use extensionality with `v g`. Rewrite using `[hU, actG0, dif_neg hex]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem postOn_actL_mem (g0 : G0 L.Pg L.r) {X : MMap M}
     (hT : X ∈ Mult θ M (levG V β (flag1L L) : Set (GA D V)) (levChi V β (flag1L L))) :
@@ -94,13 +94,13 @@ theorem postOn_actL_mem (g0 : G0 L.Pg L.r) {X : MMap M}
     exact zero_mem _
 
 /- English proof (translation)
-Establish `hX1 : X ∈ Mult θ M (levG V β (flag1L L) : Set (GA D V)) (levChi V β (flag1L L))` using `GlobalTheory.ProjectedLift.mult_mono (fun k hk => mem_levi_flag_of_mem_parabolic P hk) hX`. Establish `hY : postOn M (gaL V β L eG c) X ∈ Mult θ M (levG V β (flag1L L) : Set (GA D V)) (levChi V β (flag1L L))`. Establish `e : postOn M (gaL V β L eG c) X = ∑ g, c g • postOn M (actL V β L (eG g)) X`. Use extensionality with `v h`. Simplify using `[gaL, postOn_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _ (postOn_actL_mem _ hX1)`. Rewrite using `[mem_goodPart]`. Use `⟨?_, fun v => GlobalTheory.ProjectedLift.gaL_gaL hL eG c hc (GlobalTheory.hasType_of_mem_mult θ M β _ X hX1 v)⟩` and prove the remaining obligations. Establish `hY'` using `(GlobalTheory.MultMem.mem_mult_iff ..).1 hY`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(GlobalTheory.MultMem.mem_mult_iff ..).2 ⟨hY'.aut, hY'.cusp, fun v => ?_, hY'.equiv, hY'.cont⟩` and prove the remaining obligations. Establish `hP` using `isPLevel_of_hasType hL (GlobalTheory.hasType_of_mem_mult θ M β _ X hX v)`. Establish `hQ : IsPLevel V β L P (gaL V β L eG c (X v))`. Use `⟨hY'.lev v, fun p => ?_⟩` and prove the remaining obligations. Establish `e1 : actL V β L p.1 (X v) = ((P.chi p : ℂˣ) : ℂ) • X v` using `hP.2 p`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hcomm (eG.symm p.1) _ hP.1`. Rewrite `e2` using `[MulEquiv.apply_symm_apply, e1, map_smul]`. Conclude with `e2.symm`. Conclude with `hQ.hasType`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem postOn_gaL_mem_goodPart (hL : LiftsExist V β L) (eG : G ≃* G0 L.Pg L.r) (c : G → ℂ)
     (hc : ∀ g, ∑ a, c a * c (a⁻¹ * g) = c g)
@@ -134,11 +134,9 @@ theorem postOn_gaL_mem_goodPart (hL : LiftsExist V β L) (eG : G ≃* G0 L.Pg L.
 end Act
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R h hr hv i P U hU`. Establish `hL : LiftsExist (Wc D i) (R.βW i) (R.datWp i R.triv)`. Take `⟨c, hc⟩` from `h.βW i`. Use `GlobalTheory.ParahoricLift.liftsExist _ _ _ _ _ hc (fun PP hP PP' hP' => ?_) (Finset.disjoint_empty_right _)` and prove the remaining obligations. Take `⟨k, hk⟩` from `(h.Pg PP).1 hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨k', hk'⟩` from `(h.Pg PP').1 (hP'.resolve_right (Finset.notMem_empty _))`. Conclude with `GlobalTheory.ProjectedLift.not_isConjPl R.C.P hk hk'`. Establish `hs : sg0 D A = D.what₂.embLL` using `sgAt_mk _ hv`. Establish `hc : ∀ g, ∑ a, RealDat.eC (A` using `A) (sg0 D A) a * RealDat.eC (A := A) (sg0 D A) (a⁻¹ * g) = RealDat.eC (A := A) (sg0 D A) g := by`. Rewrite using `[hs]`.
-
-Conclude with `GlobalTheory.ProjectedLift.eC_conv R hr`. Conclude with `postOn_gaL_mem_goodPart (L := R.datWp i R.triv) hL R.eG _ hc ((GlobalTheory.ProjComm.proj_comm R h hr).2 i (sg0 D A)) P hU`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_mem_good : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.toLevCh.Is A.μ0 → R.grp_record → A.v0 = InfinitePlace.mk D.what₂.embLL → ∀ (i : Fin D.R.m) (P : LevelP R.Pg D.R.r ℂ), ∀ U ∈ Mult R.θ (R.MW i (sg0 D A)) (levS _ (R.βW i) (R.datWp i P)) (levChi _ (R.βW i) (R.datWp i P)), postOn (R.MW i (sg0 D A)) (R.eWf i (sg0 D A)) U ∈ R.Wat i (sg0 D A) P := by
   intro D G _ _ Pl0 T A Ks _ _ _ R h hr hv i P U hU

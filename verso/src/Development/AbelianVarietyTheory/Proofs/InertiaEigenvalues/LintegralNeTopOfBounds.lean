@@ -21,19 +21,19 @@ abbrev LA : Prop := ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) 
 abbrev LB : Prop := ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (νV : Measure (GA D V)) (𝓗 : Set (GA D V)) (νW : Measure (GA D W)) (𝓖 : Set (GA D W)) (μ : Measure (WO V W)) (𝓕 : Set (WO V W)) (fr : Lag W → Matrix (Fin W.rank) (Fin W.rank) D.host.E × Matrix (Fin W.rank) (Fin W.rank) D.host.E), SWSetup ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr → ∀ (F₁ F₂ : WO V W → ℂ), IsThetaFunO ψ V W F₁ → IsThetaFunO ψ V W F₂ → ∀ γ₁ ∈ GQ W, ∀ γ₂ ∈ GQ W, ∑' Y : Lag W, ‖lagTerm μ 𝓕 (fr Y) (om (1, γ₁) F₁) (om (1, γ₂) F₂)‖ₑ = ∑' Y : Lag W, ‖lagTerm μ 𝓕 (fr Y) F₁ F₂‖ₑ
 
 /- English proof (translation)
-Establish `hpt : ∀ g₁ g₂, S g₁ g₂ * ‖a g₁‖ₑ * ‖b g₂‖ₑ ≤ ENNReal.ofReal (|C| * 4 ^ M * C₁ * C₂)`. Introduce `g₁ g₂`. Take `⟨γ₁, hγ₁, e1⟩` from `htr g₁`. Take `⟨γ₂, hγ₂, e2⟩` from `htr g₂`. Establish `hq₁` using `hq g₁`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq₂` using `hq g₂`. Establish `hS1 : S g₁ g₂ ≤ ENNReal.ofReal (|C| * 4 ^ M * (q g₁ ^ M * q g₂ ^ M))`. Rewrite using `[← hinv γ₁ hγ₁ γ₂ hγ₂ g₁ g₂]`. Use `(hC _ _).trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Establish `hh' : h (γ₁ * g₁) * h (γ₂ * g₂) ≤ (2 * q g₁) * (2 * q g₂)` using `mul_le_mul e1 e2 (hh _) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (2 * q g₁) * (2 * q g₂) = 4 * (q g₁ * q g₂) by ring, mul_pow, mul_pow]; ring`. Establish `hn1 : ‖a g₁‖ₑ = ENNReal.ofReal ‖a g₁‖` using `(ofReal_norm_eq_enorm _).symm`. Establish `hn2 : ‖b g₂‖ₑ = ENNReal.ofReal ‖b g₂‖` using `(ofReal_norm_eq_enorm _).symm`. Establish `a1` using `hC₁ g₁`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `hC₂ g₂`. Establish `p1 : 0 ≤ ‖a g₁‖ * q g₁ ^ M` using `mul_nonneg (norm_nonneg _) (pow_nonneg hq₁ M)`. Establish `p2 : 0 ≤ ‖b g₂‖ * q g₂ ^ M` using `mul_nonneg (norm_nonneg _) (pow_nonneg hq₂ M)`. Establish `c0 : 0 ≤ |C| * 4 ^ M` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hn1, hn2]`. Use `gcongr`. Use `_ = ENNReal.ofReal (|C| * 4 ^ M * (‖a g₁‖ * q g₁ ^ M) * (‖b g₂‖ * q g₂ ^ M)) := by`. Establish `c1 : 0 ≤ |C| * 4 ^ M * (q g₁ ^ M * q g₂ ^ M)` using `mul_nonneg c0 (mul_nonneg (pow_nonneg hq₁ M) (pow_nonneg hq₂ M))`. Rewrite using `[← ENNReal.ofReal_mul c1, ← ENNReal.ofReal_mul (mul_nonneg c1 (norm_nonneg _))]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ENNReal.ofReal (|C| * 4 ^ M * C₁ * C₂) := by`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `ne_top_of_le_ne_top (b := ENNReal.ofReal (|C| * 4 ^ M * C₁ * C₂) * ν 𝓖 * ν 𝓖) ?_ ?_` and prove the remaining obligations. Conclude with `ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hfin.ne) hfin.ne`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[setLIntegral_const, setLIntegral_const]`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_ne_top_of_bounds {X : Type*} [MeasurableSpace X] [Mul X] (ν : Measure X) (𝓖 : Set X)
     (hfin : ν 𝓖 < ⊤) (Γ : Set X) (h q : X → ℝ) (hq : ∀ g, 0 ≤ q g)
@@ -89,13 +89,13 @@ theorem lintegral_ne_top_of_bounds {X : Type*} [MeasurableSpace X] [Mul X] (ν :
           rw [setLIntegral_const, setLIntegral_const]
 
 /- English proof (translation)
-Introduce `D ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS θ hθ f₁ f₂ h1 h2 φ₁ φ₂ hA1 hC1 hA2 hC2`. Take `⟨M, C, hC⟩` from `hA D ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS θ hθ f₁ f₂ h1 h2`. Establish `e : ∀ γ g : GA D W, om (1, γ * g) = om (1, γ) * om (1, g)`. Introduce `γ g`. Rewrite using `[← map_mul, Prod.mk_mul_mk, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : ∀ γ₁ ∈ (GQ W : Set (GA D W)), ∀ γ₂ ∈ (GQ W : Set (GA D W)), ∀ g₁ g₂ : GA D W, (∑' Y : Lag W, ‖lagTerm μ 𝓕 (fr Y) (om (1, γ₁ * g₁) f₁) (om (1, γ₂ * g₂) f₂)‖ₑ) = ∑' Y : Lag W, ‖lagTerm μ 𝓕 (fr Y) (om (1, g₁) f₁) (om (1, g₂) f₂)‖ₑ`. Introduce `γ₁ hγ₁ γ₂ hγ₂ g₁ g₂`. Rewrite using `[e γ₁ g₁, e γ₂ g₂, Module.End.mul_apply, Module.End.mul_apply]`. Conclude with `hB D ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS _ _ (hS.weil.om_pres _ _ h1) (hS.weil.om_pres _ _ h2) γ₁ hγ₁ γ₂ hγ₂`. Take `⟨C₁, hC₁⟩` from `GlobalTheory.CuspDecay.isRapidDecay_of_cuspForm hP hθ hA1 hC1 M`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C₂, hC₂⟩` from `GlobalTheory.CuspDecay.isRapidDecay_of_cuspForm hP hθ hA2 hC2 M`. Establish `hfin : νW 𝓖 < ⊤` using `GlobalTheory.CuspDecay.measure_lt_top hV W νW 𝓖 hS.haarW hS.fdW`. Establish `key` using `lintegral_ne_top_of_bounds νW 𝓖 hfin (GQ W : Set (GA D W)) (fun g => (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ W g : ℝ)) (fun g => (GlobalTheory.CuspDecay.quotHeight θ W g : ℝ)) (fun g => NNReal.coe_nonneg _) (fun g => by`. Take `⟨γ, hγ, hle⟩` from `GlobalTheory.CuspDecay.exists_height_le (θ := θ) g`. Conclude with `⟨γ, hγ, by exact_mod_cast hle⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun g => NNReal.coe_nonneg _)`. Use the proof step `(fun g₁ g₂ => ∑' Y : Lag W, ‖lagTerm μ 𝓕 (fr Y) (om (1, g₁) f₁) (om (1, g₂) f₂)‖ₑ) hinv M C hC φ₁ φ₂ C₁ C₂ hC₁ hC₂`. Use `ne_top_of_le_ne_top key (le_of_eq ?_)` and prove the remaining obligations. Use `lintegral_congr fun g₁ => lintegral_congr fun g₂ => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.tsum_mul_right, ENNReal.tsum_mul_right]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eisAbs_of_bounds (hP : GlobalTheory.Published.CuspRapidDecay) (hV : GlobalTheory.Mem.Vol.FiniteVolume₂) (hA : LA) (hB : LB) :
     ∀ D : D7, EisAbs D := by
@@ -126,7 +126,7 @@ theorem eisAbs_of_bounds (hP : GlobalTheory.Published.CuspRapidDecay) (hV : Glob
   rw [ENNReal.tsum_mul_right, ENNReal.tsum_mul_right]
 
 /- English proof (translation)
-Introduce `hP` and use `eisAbs_of_bounds hP GlobalTheory.Mem.VolFin.finVol GlobalTheory.T.siegelWeilLagrangianTerms_abs_tsum_le_heightPoly GlobalTheory.T.siegelWeil_tsum_enorm_rational_invariant`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eisAbs : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, EisAbs D :=
   fun hP => eisAbs_of_bounds hP GlobalTheory.Mem.VolFin.finVol GlobalTheory.T.siegelWeilLagrangianTerms_abs_tsum_le_heightPoly GlobalTheory.T.siegelWeil_tsum_enorm_rational_invariant

@@ -13,13 +13,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.CechSerre
 
 /- English proof (translation)
-Introduce `R _ K L φ a j z`. Establish `hc : L.tot.d (a + j) (φ.tot.f (a + j) z.1.1) = 0`. Rewrite using `[φ.tot.comm, show K.tot.d (a + j) z.1.1 = 0 from z.1.2, map_zero]`. Establish `hvan : ∀ p q, p < j → (φ.tot.f (a + j) z.1.1).1 p q = 0`. Introduce `p q hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `φ.f p q (z.1.1.1 p q) = 0`. Rewrite using `[z.2 p q hp, map_zero]`. Set `z' : Zf L (a + j) j` to `⟨⟨φ.tot.f (a + j) z.1.1, hc⟩, hvan⟩`. Establish `hv : (K.col j).d a (z.1.1.1 j a) = 0` using `dv_lead K z.1.1.1 (D_zero K z.1) j a z.2`. Establish `hv' : (L.col j).d a ((φ.col j).f a (z.1.1.1 j a)) = 0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(φ.col j).comm, hv, map_zero]`. Establish `hy : leadC L j a z' = (φ.col j).mapH a (leadC K j a z)`. Rewrite using `[leadC_eq K j a z hv, P.mapH_cls _ a _ hv hv']`. Both sides reduce to the same expression. Use `⟨z', ?_, leadC L j a z', leadC_mem L j a z', leadC K j a z, leadC_mem K j a z, leadE_eq K j a z, leadE_eq L j a z', hy⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(P.mapH_cls φ.tot (a + j) z.1.1 z.1.2 hc).symm`.
+A detailed English derivation is pending.
 -/
 theorem leadE_map : ∀ {R : Type} [CommRing R] (K L : DCx.{1} R) (φ : DCx.Hom K L (RingHom.id R)) (a j : ℕ) (z : Zf K (a + j) j),
     ∃ z' : Zf L (a + j) j, clsZ L (a + j) j z' = φ.tot.mapH (a + j) (clsZ K (a + j) j z) ∧

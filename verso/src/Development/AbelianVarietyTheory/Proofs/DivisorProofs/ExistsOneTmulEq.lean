@@ -5,9 +5,9 @@ namespace GlobalTheory.OneTensorExistence
 open TensorProduct
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, TensorProduct.tmul_zero _ _⟩`. Consider the case `tmul k l`. Take `⟨a, rfl⟩` from `IsLocalRing.residue_surjective k`. Use `⟨a • l, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← TensorProduct.smul_tmul, ← IsLocalRing.ResidueField.algebraMap_eq, Algebra.algebraMap_eq_smul_one]`. Consider the case `add x y hx hy`. Take `⟨u, rfl⟩` from `hx`. Take `⟨v, rfl⟩` from `hy`. Conclude with `⟨u + v, TensorProduct.tmul_add _ _ _⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_one_tmul_eq (A : Type) [CommRing A] [IsLocalRing A] (Λ : Type) [Ring Λ]
     [Algebra A Λ] (z : TensorProduct A (IsLocalRing.ResidueField A) Λ) :

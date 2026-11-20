@@ -20,11 +20,11 @@ section Torus
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval_map, MvPolynomial.eval_map, MvPolynomial.eval₂_eq', MvPolynomial.eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hprod : ∏ p, (c p.1 * u p) ^ d p = (∏ k, c k ^ a k) * ∏ p, u p ^ d p`. Simplify using `only [mul_pow, Finset.prod_mul_distrib]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ∏ i, c k ^ d ⟨k, i⟩ = c k ^ a k`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hs d hd k]`. Rewrite using `[hprod]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem eval_torus_of_homog {s : ReciprocityTheory.ChartRestriction.G.Geo.MRing ι} {a : K → ℕ} (hs : IsMultiHomog s a) (c : K → ℂ)
     (u : (Σ k, ι k) → ℂ) :
@@ -43,7 +43,7 @@ theorem eval_torus_of_homog {s : ReciprocityTheory.ChartRestriction.G.Geo.MRing 
   ring
 
 /- English proof (translation)
-Distinguish the cases in `hG : G = 0`. Simplify using `[hG]`. Distinguish the cases in `hH : H = 0`. Simplify using `[hH]`. Clear the denominators using the available nonvanishing facts.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 private theorem ratio_cancel {a b F G H : ℝ} (ha : a ≠ 0) (hb : b ≠ 0) :
     a * F / (b * G) / (a / b * H) = F / G / H := by
@@ -54,9 +54,9 @@ private theorem ratio_cancel {a b F G H : ℝ} (ha : a ≠ 0) (hb : b ≠ 0) :
   field_simp
 
 /- English proof (translation)
-Take `⟨α, β, hf, hg, -, -, hd⟩` from `h`. Establish `hne : ∀ (a : K → ℕ), ‖∏ k, c k ^ a k‖ ≠ 0` using `fun a => norm_ne_zero_iff.2 (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k))`. Establish `hab : ∏ k, ‖c k‖ ^ A.a k = ‖∏ k, c k ^ α k‖ / ‖∏ k, c k ^ β k‖`. Rewrite using `[norm_prod, norm_prod, ← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hd k, zpow_sub₀ (norm_ne_zero_iff.2 (hc k)), norm_pow, norm_pow, zpow_natCast, zpow_natCast]`. Unfold `logNormRat`. Rewrite using `[eval_torus_of_homog hf, eval_torus_of_homog hg, A.smul c z hc, norm_mul, norm_mul, hab, ratio_cancel (hne α) (hne β)]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem logNormRat_torus {P : Ideal (ReciprocityTheory.ChartRestriction.G.Geo.MRing ι)} {A : HermLine ι} {f g : ReciprocityTheory.ChartRestriction.G.Geo.MRing ι}
     (h : IsRatSectionOn P A f g) {c : K → ℂ} (hc : ∀ k, c k ≠ 0) (z : (Σ k, ι k) → ℂ) :
@@ -75,15 +75,13 @@ theorem logNormRat_torus {P : Ideal (ReciprocityTheory.ChartRestriction.G.Geo.MR
 end Torus
 
 /- English proof (translation)
-Introduce `m n P D Ψ B A f g hP hΨ hB hA`. Set `A' : HermLine (Bk n)` to `ReciprocityTheory.ChartRestriction.G.AI.I2.constLine 1`. Establish `hA1 : ∀ z, ReciprocityTheory.ChartRestriction.G.Geo.logNorm A' 1 z = 1` using `fun z => by`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Geo.logNorm, A', ReciprocityTheory.ChartRestriction.G.AI.I2.constLine, HermLine.ofWeight, Real.exp_neg]`. Establish `hAs : IsSmoothHerm A'` using `contDiffOn_const`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs : ReciprocityTheory.ChartRestriction.G.Geo.IsSectionOn P A' 1`. Use `⟨0, fun k => by simp [A', ReciprocityTheory.ChartRestriction.G.AI.I2.constLine, HermLine.ofWeight], fun d hd k => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite `hd` using `[MvPolynomial.support_one, Finset.mem_singleton]`. Substitute `hd` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `hP.2.1.1.ne_top ((Ideal.eq_top_iff_one P).mpr h)`. Use `filter_upwards [ReciprocityTheory.ChartRestriction.G.Geo.sheetIndep (Fin (m + 1)) (Bk n) P D Ψ (fun _ => B) A' 1 hP hΨ (fun _ => hB) hAs hs] with v hind w γ hγ`. Establish `hex : ∃ γ, IsSheet P Ψ v w γ` using `⟨γ, hγ⟩`. Establish `hc` using `hex.choose_spec`. Establish `h1` using `hind w _ γ hc hγ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hA1, one_mul] at h1`. Establish `hval : logNormRat A f g (hex.choose v) = logNormRat A f g (γ v)`. Take `⟨c, hcne, hcz⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.sameOrbit_of_segre hγ.2.self_of_nhds.2.1.1 1 one_ne_zero (by rw [one_smul, hc.1, hγ.1])`. Rewrite using `[hcz]`. Conclude with `logNormRat_torus hA hcne _`.
-
-Unfold `sheetDensity`. Rewrite using `[dif_pos hex, hval]`. Conclude with `congrArg (logNormRat A f g (γ v) * ·) h1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sheetDensity_eq_of_isSheet : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (P : Ideal (Pol n)) (D : ℕ) (Ψ : GlobalTheory.CompanionTheory.MixZ.ArchEq.LinProj n D)
     (B A : HermLine (Bk n)) (f g : Pol n), ReciprocityTheory.ChartRestriction.G.Geo.IsArithVar P (D + 1) → IsGoodProj P Ψ → IsSmoothHerm B →

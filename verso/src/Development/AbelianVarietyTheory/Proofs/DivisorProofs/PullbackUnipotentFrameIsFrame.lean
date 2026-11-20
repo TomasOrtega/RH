@@ -23,7 +23,7 @@ open GlobalTheory.LB (resG_resG resG_self)
 namespace GlobalTheory.UniColFrame
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_lowerTriangular (uniR n)]`. Conclude with `Finset.prod_eq_one fun a _ => by simp [uniR_apply]`. Introduce `a b h`. Establish `h' : a < b` using `h`. Simplify using `[uniR_apply, h'.not_gt, h'.ne]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_uniR {R : Type*} [CommRing R] {m : ℕ} (n : Low m → R) : (uniR n).det = 1 := by
   rw [Matrix.det_of_lowerTriangular (uniR n)]
@@ -33,7 +33,7 @@ theorem det_uniR {R : Type*} [CommRing R] {m : ℕ} (n : Low m → R) : (uniR n)
     simp [uniR_apply, h'.not_gt, h'.ne]
 
 /- English proof (translation)
-Introduce `W h` and use `by have hM' : IsUnit (M.map (resG X h)).det := by have := hM.map (resG X h) rwa [RingHom.map_det] at this have hb : Function.Bijective (M.map (resG X h)).mulVec := ⟨Matrix.mulVec_injective_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).2 hM'), Matrix.mulVec_surjective_iff_isUnit.2 ( …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isFrame_cols {X : Scheme.{0}} {F : X.Modules} {V : X.Opens} {m : ℕ} {e : Fin m → Γ(F, V)}
     (he : IsFrame e) (M : Matrix (Fin m) (Fin m) Γ(X, V)) (hM : IsUnit M.det) :
@@ -55,9 +55,9 @@ theorem isFrame_cols {X : Scheme.{0}} {F : X.Modules} {V : X.Opens} {m : ℕ} {e
   exact (he W h).comp hb
 
 /- English proof (translation)
-Introduce `X B g E m hE U e he V hV n`. Use `hE.isQuasicoherent` as an intermediate fact. Establish `h1 : IsFrame fun i => QCoh.pullbackSections g E hV (e i)`. Establish `h2` using `(he.pullback g).res hV`. Establish `h3 : (fun i => resM _ hV (QCoh.pullbackSections g E (le_refl (g ⁻¹ᵁ U)) (e i))) = fun i => QCoh.pullbackSections g E hV (e i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun i => QCoh.res_pullbackSections g E _ _ _`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis. Conclude with `isFrame_cols h1 (uniR n) (by rw [det_uniR]; exact isUnit_one)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isFrame_pullCol_uniR : ∀ (X B : Scheme.{0}) (g : X ⟶ B) (E : B.Modules) (m : ℕ), IsVB E m → ∀ (U : B.Opens) (e : Fin m → Γ(E, U)), IsFrame e → ∀ (V : X.Opens) (hV : V ≤ g ⁻¹ᵁ U) (n : Low m → Γ(X, V)), IsFrame (pullCol g e hV (uniR n)) := by
   intro X B g E m hE U e he V hV n

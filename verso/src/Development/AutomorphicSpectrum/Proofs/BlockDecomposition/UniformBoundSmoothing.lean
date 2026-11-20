@@ -10,9 +10,9 @@ open scoped Pointwise
 namespace GlobalTheory.CompanionTheory.Conc
 
 /- English proof (translation)
-Establish `hint : Integrable (fun y => β y * M) ν` using `(hk.cont.integrable_of_hasCompactSupport hk.cpt).mul_const M`. Establish `hpt : ∀ y, ‖(β y : ℂ) * g y‖ ≤ β y * M`. Introduce `y`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (hk.nonneg y)]`. Distinguish the cases in `hy : y ∈ tsupport β`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `mul_le_mul_of_nonneg_left (hg y hy) (hk.nonneg y)`. Rewrite using `[image_eq_zero_of_notMem_tsupport hy]`. Simplify using the standard rewrite rules. Establish `h` using `norm_integral_le_of_norm_le hint (Eventually.of_forall hpt)`. Rewrite `h` using `[integral_mul_const, hk.mass, one_mul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem norm_integral_ker_le {K : Type} [Field K] [NumberField K] {n : ℕ}
     [MeasurableSpace (archGroup K n)] [BorelSpace (archGroup K n)]
@@ -32,9 +32,9 @@ theorem norm_integral_ker_le {K : Type} [Field K] [NumberField K] {n : ℕ}
   rwa [integral_mul_const, hk.mass, one_mul] at h
 
 /- English proof (translation)
-Introduce `ω hω hsub t₀ Q hQ`. Establish `hQ' : IsCompact (Q * infEmb K n '' tsupport β)` using `hQ.mul (hk.cpt.isCompact.image continuous_infEmb)`. Take `⟨C, hC⟩` from `hb ω hω hsub t₀ _ hQ'`. Use `⟨max C 0, fun i b hbω x hx q hq => ?_⟩` and prove the remaining obligations. Use `norm_integral_ker_le ν hk _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Rewrite using `[mul_assoc (b * _) q]`. Use `(hC i b hbω x hx _ (Set.mul_mem_mul hq (Set.mem_image_of_mem _ hy))).trans ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.exp_pos _).le`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem uBnd_sm (K : Type) [Field K] [NumberField K] (n : ℕ)
     [MeasurableSpace (archGroup K n)] [BorelSpace (archGroup K n)]

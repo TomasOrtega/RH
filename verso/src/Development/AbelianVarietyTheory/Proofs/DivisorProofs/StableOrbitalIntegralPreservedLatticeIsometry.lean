@@ -16,9 +16,7 @@ namespace GlobalTheory.IsomPhi
 open GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots (gam centMeas orbCls torEmb)
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show a.1 * b.1 = b.1 * a.1`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`.
-
-Simplify using `[Matrix.mul_apply, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tor_mul_comm {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {r : ℕ} (P : PPol σ r)
     (k : Type) [CommRing k] [Algebra F k] (a b : Tor P k) : a * b = b * a := by
@@ -29,9 +27,9 @@ theorem tor_mul_comm {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →�
   simp [Matrix.mul_apply, mul_comm]
 
 /- English proof (translation)
-Use `haveI h1 : (dt.map e).IsHaarMeasure := MulEquiv.isHaarMeasure_map dt e.toMulEquiv e.continuous e.symm.continuous`. Use `⟨h1, ⟨fun g => ?_⟩⟩` and prove the remaining obligations. Establish `hc : (fun x : H => x * g) = fun x => g * x` using `funext fun x => by`. Take `⟨a, rfl⟩` from `e.surjective x`. Take `⟨b, rfl⟩` from `e.surjective g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, ← map_mul, tor_mul_comm]`. Rewrite using `[hc]`. Conclude with `map_mul_left_eq_self _ g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_isHaar_rightInv {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {r : ℕ} (P : PPol σ r)
     (k : Type) [CommRing k] [Algebra F k] [TopologicalSpace k] {H : Type} [Group H] [TopologicalSpace H]
@@ -52,19 +50,17 @@ set_option maxHeartbeats 4000000 in
 open GlobalTheory.Orb in
 
 /- English proof (translation)
-Introduce `D V V' r P v j hj μ dt f hμ hdt hok hok'`. Establish `hcm` using `Formalism.MainNotions.UnusedSlot34.isCMExt_D D`. Apply the tactic sequence `obtain ⟨hX, hmv⟩ := GlobalTheory.T.unitaryTorusEllipticElements_of_localLatticeIsometry _ _ D.sp.cm.sig hcm r V.rank V'.rank P V.gram V'.gram (frameLat V) (frameLat V') v j hj`. Unfold `Phi`. Rewrite using `[← finsum_comp_equiv (Equiv.setCongr hX.symm)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `finsum_congr fun q => ?_` and prove the remaining obligations. Take `⟨c, h2⟩` from `q`. Take `⟨x, φ, hc, h⟩` from `id h2`. Substitute `hc` using the available equality. Take `⟨φ'', h'', hγ, ht⟩` from `hmv x φ h`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he, hme⟩` from `GlobalTheory.T.unitaryTorus_equiv_centralizer_with_measure _ _ D.sp.cm.sig hcm r V.rank P V.gram (isHermND_gram V) (Fv D.host.F v) x φ h`. Take `⟨e'', he'', hme''⟩` from `GlobalTheory.T.unitaryTorus_equiv_centralizer_with_measure _ _ D.sp.cm.sig hcm r V'.rank P V'.gram (isHermND_gram V') (Fv D.host.F v) x φ'' h''`. Use `haveI := hμ`. Use `haveI := hdt`. Take `⟨i1, i2⟩` from `map_isHaar_rightInv P (Fv D.host.F v) e dt`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : (centMeas h dt).IsHaarMeasure := by rw [hme dt]; exact i1`. Use `haveI : (centMeas h dt).IsMulRightInvariant := by rw [hme dt]; exact i2`. Establish `v1` using `(hok.2 x φ h).orbInt_eq`. Establish `v2` using `(hok'.2 x φ'' h'').orbInt_eq`. Establish `hm : centMeas h'' dt = (centMeas h dt).map (centEquiv j (gam h) hγ.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hme'', hme dt, Measure.map_map (map_continuous (centEquiv j (gam h) hγ.symm)).measurable (map_continuous e).measurable]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[he'', ht, ← he]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules.
-
-Use `_ = orbCls (J := V.gram) μ dt f ⟨QuotientGroup.mk x, h2⟩ := v1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phi_map : ∀ (D : D7) (V V' : HSp D) (r : ℕ) (P : PPol D.sp.cm.sig r) (v : HeightOneSpectrum (𝓞 D.host.F)) (j : GLoc D.sp.cm.sig V.gram v ≃ₜ* GLoc D.sp.cm.sig V'.gram v), IsLatticeConj (frameLat V) (frameLat V') j → ∀ (μ : Measure (GLoc D.sp.cm.sig V.gram v)) (dt : Measure (Tor P (Fv D.host.F v))) (f : GLoc D.sp.cm.sig V.gram v → ℂ), μ.IsHaarMeasure → dt.IsHaarMeasure → PhiOK (J := V.gram) μ dt f → PhiOK (J := V'.gram) (μ.map j) dt (f ∘ j.symm) → Phi (J := V'.gram) (μ.map j) dt (f ∘ j.symm) = Phi (J := V.gram) μ dt f := by
   intro D V V' r P v j hj μ dt f hμ hdt hok hok'

@@ -6,7 +6,7 @@ open scoped InnerProductSpace BigOperators
 namespace GlobalTheory.SubZeta
 
 /- English proof (translation)
-Establish `h1 : (H.map π).index = (H ⊔ π.ker).index`. Rewrite using `[← AddSubgroup.index_comap_of_surjective (H := H.map π) hπ, AddSubgroup.comap_map_eq]`. Establish `h2 : (H.comap ι).index = H.relIndex π.ker`. Rewrite using `[AddSubgroup.index_comap, hι]`. Rewrite using `[h1, h2, ← AddSubgroup.relIndex_sup_left, mul_comm, AddSubgroup.relIndex_mul_index le_sup_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem index_eq_mul_of_exact {G A B : Type*} [AddCommGroup G] [AddCommGroup A] [AddCommGroup B]
     (π : G →+ A) (hπ : Function.Surjective π) (ι : B →+ G) (hι : ι.range = π.ker)
@@ -20,13 +20,13 @@ theorem index_eq_mul_of_exact {G A B : Type*} [AddCommGroup G] [AddCommGroup A] 
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `hle : (Ideal.span {ϖ ^ (n+1)} : Ideal O).toAddSubgroup ≤ (Ideal.span {ϖ ^ n} : Ideal O).toAddSubgroup`. Introduce `x hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Ideal.span_singleton_le_span_singleton.mpr (Dvd.intro _ (pow_succ ϖ n).symm)) hx`. Rewrite using `[← AddSubgroup.relIndex_mul_index hle, ih, pow_succ (Nat.card (IsLocalRing.ResidueField O)) n, mul_comm]`. Use `congr 1`. Set `f : O →+ O` to `AddMonoidHom.mulLeft (ϖ ^ n)`. Establish `hr : f.range = (Ideal.span {ϖ ^ n} : Ideal O).toAddSubgroup`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `[f, Ideal.mem_span_singleton', mul_comm]`. Rewrite using `[← hr, ← AddSubgroup.index_comap]`. Establish `hc : (Ideal.span {ϖ ^ (n+1)} : Ideal O).toAddSubgroup.comap f = (IsLocalRing.maximalIdeal O).toAddSubgroup`. Use extensionality with `x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [AddSubgroup.mem_comap, Submodule.mem_toAddSubgroup, f, AddMonoidHom.coe_mulLeft]`. Rewrite using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ, Ideal.mem_span_singleton, Ideal.mem_span_singleton, pow_succ, mul_dvd_mul_iff_left (pow_ne_zero _ hϖ.ne_zero)]`. Rewrite using `[hc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem index_span_pow {ϖ : O} (hϖ : Irreducible ϖ) (n : ℕ) :
     (Ideal.span {ϖ ^ n} : Ideal O).toAddSubgroup.index =
@@ -61,7 +61,7 @@ namespace GlobalTheory.SubZeta
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_infinite_iff_finite]`. Conclude with `IsDiscreteValuationRing.not_isField O (Finite.isField_of_domain O)`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infinite_of_dvr : Infinite O := by
   by_contra h
@@ -69,15 +69,13 @@ theorem infinite_of_dvr : Infinite O := by
   exact IsDiscreteValuationRing.not_isField O (Finite.isField_of_domain O)
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hq : (1 : ℝ) < (Nat.card (IsLocalRing.ResidueField O) : ℝ)`. Conclude with `Finite.one_lt_card` after adjusting the coercions. Establish `hne : ∀ I ∈ D, I ≠ ⊥`. Introduce `I hI h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hD I hI` to reduce the goal to its premises. Rewrite using `[h, Submodule.bot_toAddSubgroup, AddSubgroup.index_bot]`. Use `haveI := infinite_of_dvr (O := O)`. Conclude with `Nat.card_eq_zero_of_infinite`. Use `choose! e he using fun I hI => IsDiscreteValuationRing.ideal_eq_span_pow_irreducible (hne I hI) hϖ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : Set.InjOn e D` using `fun I hI J hJ h => by rw [he I hI, he J hJ, h]`. Use `set q : ℝ := (Nat.card (IsLocalRing.ResidueField O) : ℝ) with hqdef`. Establish `hq0 : 0 < q` using `by linarith`. Establish `hval : ∀ I ∈ D, (I.toAddSubgroup.index : ℝ) ^ (-σ) = (q ^ (-σ)) ^ e I`. Introduce `I hI`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hidx : I.toAddSubgroup.index = Nat.card (IsLocalRing.ResidueField O) ^ e I` using `by conv_lhs => rw [he I hI]`. Conclude with `index_span_pow hϖ _`. Rewrite using `[hidx, Nat.cast_pow, ← hqdef, ← Real.rpow_natCast q, ← Real.rpow_mul hq0.le, ← Real.rpow_natCast (q ^ (-σ)), ← Real.rpow_mul hq0.le, mul_comm]`. Rewrite using `[Finset.sum_congr rfl hval, ← Finset.sum_image (f := fun n : ℕ => (q ^ (-σ)) ^ n) hinj]`. Establish `hx0 : 0 ≤ q ^ (-σ)` using `(Real.rpow_pos_of_pos hq0 _).le`.
-
-Establish `hx1 : q ^ (-σ) < 1` using `Real.rpow_lt_one_of_one_lt_of_neg hq (by linarith)`. Rewrite using `[← tsum_geometric_of_lt_one hx0 hx1]`. Conclude with `Summable.sum_le_tsum _ (fun i _ => pow_nonneg hx0 i) (summable_geometric_of_lt_one hx0 hx1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_ideal_le [Finite (IsLocalRing.ResidueField O)] (σ : ℝ) (hσ : 0 < σ) (D : Finset (Ideal O))
     (hD : ∀ I ∈ D, I.toAddSubgroup.index ≠ 0) :
@@ -132,11 +130,11 @@ Both sides reduce to the same expression.
 theorem consL_apply (r : ℕ) (y : Fin r → O) : consL r y = Fin.cons 0 y := rfl
 
 /- English proof (translation)
-Establish `hπ : Function.Surjective (headL (O` using `O) r).toAddMonoidHom := fun a => ⟨Fin.cons a 0, by simp [headL_apply]⟩`. Establish `hι : (consL (O` using `O) r).toAddMonoidHom.range = (headL (O := O) r).toAddMonoidHom.ker := by`. Use extensionality with `x`. Simplify using `only [AddMonoidHom.mem_range, AddMonoidHom.mem_ker, LinearMap.toAddMonoidHom_coe, headL_apply, consL_apply]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, rfl⟩`. Simplify using the standard rewrite rules. Introduce `h`. Conclude with `⟨Fin.tail x, by rw [← h]; exact Fin.cons_self_tail x⟩`. Use `index_eq_mul_of_exact _ hπ _ hι M.toAddSubgroup` as an intermediate fact.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[this]`. Use `congr 2`. Apply the tactic sequence `all_goals (ext x; simp)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem index_split {r : ℕ} (M : Submodule O (Fin (r+1) → O)) :
     M.toAddSubgroup.index =
@@ -158,15 +156,13 @@ theorem index_split {r : ℕ} (M : Submodule O (Fin (r+1) → O)) :
   all_goals (ext x; simp)
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hx0 : x 0 ∈ Ideal.span {g}` using `hI (Submodule.mem_map_of_mem hx)`. Take `⟨c, hc'⟩` from `Ideal.mem_span_singleton'.mp hx0`. Establish `hA : Fin.tail x - c • Fin.tail w1 ∈ M2.comap (consL r)`. Apply `hc` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Submodule.mem_comap]`. Establish `: consL r (Fin.tail x - c • Fin.tail w1) = x - c • w1`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[consL_apply, h1, hc']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[consL_apply, Fin.tail]`. Rewrite using `[this]`. Conclude with `M1.sub_mem hx (M1.smul_mem c hw1)`. Establish `key : x = consL r (Fin.tail x - c • Fin.tail w1) + c • consL r (Fin.tail w1 - Fin.tail w2) + c • w2`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[consL_apply, h2, hc']`. Simplify using `only [consL_apply, Fin.tail, Pi.add_apply, Pi.smul_apply, Pi.sub_apply, Fin.cons_succ, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`.
-
-Conclude with `M2.add_mem (M2.add_mem hA (M2.smul_mem c hd)) (M2.smul_mem c hw2)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_of_lift {r : ℕ} (M1 M2 : Submodule O (Fin (r+1) → O)) (g : O)
     (hI : M1.map (headL r) ≤ Ideal.span {g}) (hc : M1.comap (consL r) ≤ M2.comap (consL r))
@@ -203,19 +199,17 @@ namespace GlobalTheory.SubZeta
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Take `⟨g, hg⟩ : ∃ g, I = Ideal.span {g}` from `⟨_, (Submodule.IsPrincipal.span_singleton_generator I).symm⟩`. Establish `hex : ∀ M ∈ S, ∃ w ∈ M, w 0 = g`. Introduce `M hM`. Establish `: g ∈ M.map (headL r)`. Rewrite using `[(hS M hM).1, hg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mem_span_singleton_self g`. Take `⟨w, hw, hw0⟩` from `Submodule.mem_map.mp this`. Conclude with `⟨w, hw, hw0⟩`. Use `choose! w hwM hw0 using hex`. Use `haveI : Finite ((Fin r → O) ⧸ M'.toAddSubgroup) := Nat.finite_of_card_ne_zero hM'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI := Fintype.ofFinite ((Fin r → O) ⧸ M'.toAddSubgroup)`. Establish `hinj : Set.InjOn (fun M => (QuotientAddGroup.mk (Fin.tail (w M)) : (Fin r → O) ⧸ M'.toAddSubgroup)) S`. Introduce `M1 h1 M2 h2 heq`. Establish `hd : -Fin.tail (w M1) + Fin.tail (w M2) ∈ M'` using `(QuotientAddGroup.eq).mp heq`. Establish `hd1 : Fin.tail (w M1) - Fin.tail (w M2) ∈ M'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `M'.neg_mem hd` as an intermediate fact. Rewrite `this` using `[neg_add, neg_neg, ← sub_eq_add_neg]`. Then use the resulting hypothesis. Establish `hd2 : Fin.tail (w M2) - Fin.tail (w M1) ∈ M'`. Rewrite `hd` using `[neg_add_eq_sub]`. Then use the resulting hypothesis. Apply `le_antisymm` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `le_of_lift M1 M2 g ?_ ?_ _ _ (hwM M1 h1) (hwM M2 h2) (hw0 M1 h1) (hw0 M2 h2) ?_` and prove the remaining obligations. Rewrite using `[(hS M1 h1).1, hg]`. Rewrite using `[(hS M1 h1).2, (hS M2 h2).2]`. Rewrite using `[(hS M2 h2).2]`. Conclude with `hd1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `le_of_lift M2 M1 g ?_ ?_ _ _ (hwM M2 h2) (hwM M1 h1) (hw0 M2 h2) (hw0 M1 h1) ?_` and prove the remaining obligations. Rewrite using `[(hS M2 h2).1, hg]`. Rewrite using `[(hS M1 h1).2, (hS M2 h2).2]`. Rewrite using `[(hS M1 h1).2]`. Conclude with `hd2`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.card_univ, ← Nat.card_eq_fintype_card]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fiber_card_le {r : ℕ} (I : Ideal O) (M' : Submodule O (Fin r → O))
     (hM' : M'.toAddSubgroup.index ≠ 0) (S : Finset (Submodule O (Fin (r+1) → O)))
@@ -259,39 +253,33 @@ theorem fiber_card_le {r : ℕ} (I : Ideal O) (M' : Submodule O (Fin r → O))
         rfl
 
 /- English proof (translation)
-Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `σ _ C _`. Establish `hC : C ⊆ {⊤}` using `fun M _ => Finset.mem_singleton.mpr (Subsingleton.elim _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Consider the case `succ r ih`. Introduce `σ hσ C hC`. Use `set q : ℝ := (Nat.card (IsLocalRing.ResidueField O) : ℝ) with hqdef`. Establish `hσ' : (r : ℝ) - 1 < σ - 1` using `by push_cast at hσ; linarith`.
+Chain the equalities or inequalities of the calculation. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ0 : 0 < σ`. Establish `: (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Move the coercions through the operations in `at hσ`. Combine the linear equalities and inequalities to obtain the conclusion. Set `p : Submodule O (Fin (r+1) → O) → Ideal O × Submodule O (Fin r → O)` to `fun M => (M.map (headL r), M.comap (consL r))`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hidx : ∀ M : Submodule O (Fin (r+1) → O), M.toAddSubgroup.index = (p M).1.toAddSubgroup.index * (p M).2.toAddSubgroup.index` using `fun M => index_split M`. Establish `hC1 : ∀ x ∈ C.image p, x.1.toAddSubgroup.index ≠ 0 ∧ x.2.toAddSubgroup.index ≠ 0`. Introduce `x hx`. Take `⟨M, hM, rfl⟩` from `Finset.mem_image.mp hx`. Use `hC M hM` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hidx]`. Conclude with `⟨left_ne_zero_of_mul this, right_ne_zero_of_mul this⟩`. Use `set D1 := (C.image p).image Prod.fst`. Use `set D2 := (C.image p).image Prod.snd`. Establish `hD1 : ∀ I ∈ D1, I.toAddSubgroup.index ≠ 0`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `I hI`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.mp hI`. Conclude with `(hC1 x hx).1`. Establish `hD2 : ∀ N ∈ D2, N.toAddSubgroup.index ≠ 0`. Introduce `N hN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx, rfl⟩` from `Finset.mem_image.mp hN`. Conclude with `(hC1 x hx).2`. Establish `hq1 : (1 : ℝ) < q`. Use `Finite.one_lt_card (α := IsLocalRing.ResidueField O)` as an intermediate fact. Rewrite using `[hqdef]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hx1 : q ^ (-σ) < 1` using `Real.rpow_lt_one_of_one_lt_of_neg hq1 (by linarith)`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hterm : ∀ M ∈ C.filter (fun M => p M = x), (M.toAddSubgroup.index : ℝ) ^ (-σ) = (x.1.toAddSubgroup.index : ℝ) ^ (-σ) * (x.2.toAddSubgroup.index : ℝ) ^ (-σ)`. Introduce `M hM`. Rewrite `hM` using `[Finset.mem_filter]`. Rewrite using `[hidx M, hM.2, Nat.cast_mul, Real.mul_rpow (by positivity) (by positivity)]`. Rewrite using `[Finset.sum_congr rfl hterm, Finset.sum_const, nsmul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : ((C.filter (fun M => p M = x)).card : ℝ) ≤ x.2.toAddSubgroup.index`. Conclude with `fiber_card_le x.1 x.2 (hC1 x hx).2 _ (fun M hM => by` after adjusting the coercions. Rewrite `hM` using `[Finset.mem_filter]`. Rewrite using `[← hM.2]`. Conclude with `⟨rfl, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hpos2 : (0 : ℝ) < x.2.toAddSubgroup.index`. Conclude with `Nat.pos_of_ne_zero (hC1 x hx).2` after adjusting the coercions. Establish `hsplit : (x.2.toAddSubgroup.index : ℝ) ^ (-(σ - 1)) = x.2.toAddSubgroup.index * (x.2.toAddSubgroup.index : ℝ) ^ (-σ)`. Rewrite using `[show -(σ - 1) = 1 + -σ by ring, Real.rpow_add hpos2, Real.rpow_one]`. Rewrite using `[hsplit]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Check the signs of the components of the expression.
 
-Establish `ha : (0 : ℝ) ≤ (x.1.toAddSubgroup.index : ℝ) ^ (-σ)` using `by positivity`. Establish `hb : (0 : ℝ) ≤ (x.2.toAddSubgroup.index : ℝ) ^ (-σ)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (x.1.toAddSubgroup.index : ℝ) ^ (-σ) * ((x.2.toAddSubgroup.index : ℝ) * (x.2.toAddSubgroup.index : ℝ) ^ (-σ)) := by gcongr`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Use `_ ≤ ∑ x ∈ D1 ×ˢ D2, (x.1.toAddSubgroup.index : ℝ) ^ (-σ) * (x.2.toAddSubgroup.index : ℝ) ^ (-(σ - 1)) := by`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `x hx`. Conclude with `Finset.mem_product.mpr ⟨Finset.mem_image_of_mem _ hx, Finset.mem_image_of_mem _ hx⟩`. Introduce `_ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Check the signs of the components of the expression. Use `_ = (∑ I ∈ D1, (I.toAddSubgroup.index : ℝ) ^ (-σ)) * ∑ N ∈ D2, (N.toAddSubgroup.index : ℝ) ^ (-(σ - 1)) := by`. Rewrite using `[Finset.sum_mul_sum, Finset.sum_product]`. Use `_ ≤ (1 - q ^ (-σ))⁻¹ * ∏ i ∈ Finset.range r, (1 - q ^ ((i : ℝ) - (σ - 1)))⁻¹ := by`. Apply `mul_le_mul (sum_ideal_le σ hσ0 D1 hD1) (ih (σ - 1) hσ' D2 hD2)` to reduce the goal to its premises.
-
-Conclude with `Finset.sum_nonneg (fun _ _ => by positivity)`. Conclude with `(inv_pos.mpr (by linarith)).le`. Use `_ = ∏ i ∈ Finset.range (r + 1), (1 - q ^ ((i : ℝ) - σ))⁻¹ := by`. Rewrite using `[Finset.prod_range_succ', mul_comm]`. Use `congr 1`.
-
-Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `i _`. Use `congr 3`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem main_bound [Finite (IsLocalRing.ResidueField O)] : ∀ (r : ℕ) (σ : ℝ), (r : ℝ) - 1 < σ →
     ∀ C : Finset (Submodule O (Fin r → O)), (∀ M ∈ C, M.toAddSubgroup.index ≠ 0) →
@@ -399,7 +387,7 @@ theorem main_bound [Finite (IsLocalRing.ResidueField O)] : ∀ (r : ℕ) (σ : �
           · simp
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ r σ hσ C hC` and use `main_bound r σ hσ C hC`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_index_rpow_le : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Finite (IsLocalRing.ResidueField O)] (r : ℕ) (σ : ℝ), (r : ℝ) - 1 < σ →

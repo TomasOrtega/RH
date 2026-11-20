@@ -41,9 +41,9 @@ open scoped CategoryTheory.Obj
 set_option autoImplicit false
 
 /- English proof (translation)
-Establish `hw : φ₂ ≫ G.hom = (G₂.hom ≫ g) ≫ f` using `by rw [h₂.1.1.w, Category.assoc]`. Establish `e₁` using `h₁.1.1.lift_fst φ₂ (G₂.hom ≫ g) hw`. Establish `e₂` using `h₁.1.1.lift_snd φ₂ (G₂.hom ≫ g) hw`. Use `⟨_, e₁, h₁.1.cancel (h₂.1.congr rfl e₁.symm) e₂, fun a => h₁.1.1.hom_ext ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, e₁, h₂.2, Category.assoc, h₁.2, ← Category.assoc, e₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, e₂, Category.assoc, Over.w, e₂, Over.w_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem TP.exists_factor {O : Type} [CommRing O] {S S₁ S₂ : Scheme.{0}} {G : Over S} {G₁ : Over S₁} {G₂ : Over S₂}
     [GrpObj G] [GrpObj G₁] [GrpObj G₂] {i : OAct O G} {i₁ : OAct O G₁} {i₂ : OAct O G₂} {f : S₁ ⟶ S} {g : S₂ ⟶ S₁}
@@ -57,7 +57,7 @@ private theorem TP.exists_factor {O : Type} [CommRing O] {S S₁ S₂ : Scheme.{
   · rw [Category.assoc, e₂, Category.assoc, Over.w, e₂, Over.w_assoc]
 
 /- English proof (translation)
-Use `Over.OverMorphism.ext (hψ.1.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations. Establish `e : (i.act a).left ≫ q.left = q.left ≫ (j.act a).left` using `by rw [← Over.comp_left, h, Over.comp_left]`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, hψ.2, ← w, ← Category.assoc, hφ.2, Category.assoc, e, ← Category.assoc, w, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem TP.equivariant_of_pull {O : Type} [CommRing O] {S S' : Scheme.{0}} {G B : Over S} {G' B' : Over S'}
     [GrpObj G] [GrpObj B] [GrpObj G'] [GrpObj B'] {i : OAct O G} {i' : OAct O G'} {j : OAct O B} {j' : OAct O B'}
@@ -70,17 +70,15 @@ private theorem TP.equivariant_of_pull {O : Type} [CommRing O] {S S' : Scheme.{0
     Category.assoc, e, ← Category.assoc, w, Category.assoc]
 
 /- English proof (translation)
-Introduce `C _ K _ x hx`. Use `hx.1` as an intermediate fact. Use `hx.2` as an intermediate fact. Establish `hg : x (IsLocalRing.closedPoint K) = genericPoint C`. Establish `e : (IsLocalRing.closedPoint K : Sp K) = genericPoint (Sp K)` using `Subsingleton.elim _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `((genericPoint_spec (Sp K)).image x.continuous).eq ?_` and prove the remaining obligations. Rewrite using `[Set.image_univ, x.denseRange.closure_range]`. Conclude with `genericPoint_spec C`. Establish `h1 : IsIso (x.stalkMap (IsLocalRing.closedPoint K))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(ConcreteCategory.isIso_iff_bijective _).2 ⟨?_, x.stalkMap_surjective _⟩` and prove the remaining obligations. Establish `hF : IsField (C.presheaf.stalk (x (IsLocalRing.closedPoint K)))`. Rewrite using `[hg]`. Conclude with `Field.toIsField C.functionField`. Use `letI := hF.toField`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : ∀ z : Sp K, Nontrivial ((Sp K).presheaf.stalk z)` using `fun z => inferInstance`. Use `hN (IsLocalRing.closedPoint K)` as an intermediate fact. Conclude with `RingHom.injective _`. Establish `h2 : IsIso (Scheme.stalkClosedPointTo (R` using `CommRingCat.of K) x) := by`. Unfold `Scheme.stalkClosedPointTo`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `infer_instance`. Establish `hs : genericPoint C ⤳ x (IsLocalRing.closedPoint K)` using `(genericPoint_spec C).specializes trivial`. Use `⟨(inv (Scheme.stalkClosedPointTo (R := CommRingCat.of K) x) ≫ C.presheaf.stalkSpecializes hs).hom, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Spec.map (inv (Scheme.stalkClosedPointTo (R := CommRingCat.of K) x) ≫ C.presheaf.stalkSpecializes hs) ≫ x = C.fromSpecStalk (genericPoint C)`. Establish `h3` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := CommRingCat.of K) x`.
-
-Rewrite using `[← Scheme.SpecMap_stalkSpecializes_fromSpecStalk hs]`. Use `Eq.trans (congrArg (_ ≫ ·) h3.symm) ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Spec.map_comp, IsIso.hom_inv_id_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem TP.genpt : ∀ (C : Scheme.{0}) [IsIntegral C] (K : Type) [Field K] (x : Sp K ⟶ C), IsGen x →
     ∃ β : K →+* C.functionField, spMap β ≫ x = genPt C := by
@@ -114,9 +112,9 @@ private theorem TP.genpt : ∀ (C : Scheme.{0}) [IsIntegral C] (K : Type) [Field
   rw [← Category.assoc, ← Spec.map_comp, IsIso.hom_inv_id_assoc]
 
 /- English proof (translation)
-Introduce `S S' π Z K K₁ _ _ β x x₁ hx h Ω _ β₁ y hy`. Establish `hy' : y ≫ pullback.snd Z.hom π = spMap β₁ ≫ x₁` using `hy`. Take `⟨y₁, h₁, h₂⟩` from `h Ω β₁ (y ≫ pullback.fst Z.hom π) (by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hy', Category.assoc, hx])`. Use `⟨pullback.lift y₁ x₁ (h₁.trans hx.symm), pullback.lift_snd _ _ _, pullback.hom_ext ?_ ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, pullback.lift_fst, h₂]`. Rewrite using `[Category.assoc, pullback.lift_snd, hy']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem TP.ratpull : ∀ (S S' : Scheme.{0}) (π : S' ⟶ S) (Z : Over S) (K K₁ : Type) [Field K] [Field K₁] (β : K →+* K₁)
     (x : Sp K ⟶ S) (x₁ : Sp K₁ ⟶ S'), x₁ ≫ π = spMap β ≫ x → RatOver Z (spMap β ≫ x) →
@@ -130,9 +128,9 @@ private theorem TP.ratpull : ∀ (S S' : Scheme.{0}) (π : S' ⟶ S) (Z : Over S
   · rw [Category.assoc, pullback.lift_snd, hy']
 
 /- English proof (translation)
-Introduce `S T G B _ _ u q ⟨_, h₂, h₃, h₄, h₅⟩ _ hu`. Establish `hc : UniversallyClosed (η[B]).left` using `MorphismProperty.of_isPullback_of_descendsAlong (P := @UniversallyClosed) (Q := @Surjective ⊓ @Flat ⊓ @QuasiCompact) (h₅.map (Over.forget _)) ⟨⟨h₃, h₂⟩, h₄⟩ (inferInstanceAs (UniversallyClosed u.left))`. Establish `hi : IsImmersion (η[B]).left`. Establish `: IsImmersion ((η[B]).left ≫ B.hom)`. Rewrite using `[Over.w]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inferInstanceAs (IsImmersion (𝟙 S))`. Conclude with `IsImmersion.of_comp _ B.hom`. Establish `: IsClosedImmersion (η[B]).left` using `IsClosedImmersion.of_isPreimmersion _ (η[B]).left.isClosedMap.isClosed_range`. Conclude with `GlobalTheory.TorusQuotientGlue.isSeparated_of_unit B`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem TP.sepquot : ∀ (S : Scheme.{0}) (T G B : Over S) [GrpObj G] [GrpObj B] (u : T ⟶ G) (q : G ⟶ B), IsKer u q →
     LocallyOfFinitePresentation q.left → IsClosedImmersion u.left → IsSeparated B.hom := by
@@ -150,19 +148,15 @@ private theorem TP.sepquot : ∀ (S : Scheme.{0}) (T G B : Over S) [GrpObj G] [G
   exact GlobalTheory.TorusQuotientGlue.isSeparated_of_unit B
 
 /- English proof (translation)
-Introduce `p _ k _ _ S _ T G B _ _ _ u q hG ⟨_, hq, _, hsu, _, _, hc, hs, hsep, hqc, hg⟩`. Use `⟨hc, hs, hsep, hqc, hg, fun Ω _ _ x => ?_⟩` and prove the remaining obligations. Establish `h₂ : SmConn ((Over.pullback x).obj B)`. Use `⟨inferInstance, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show Smooth (pullback.snd B.hom x)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `infer_instance`. Use `show IsSeparated (pullback.snd B.hom x)`. Use `infer_instance`. Use `show QuasiCompact (pullback.snd B.hom x)`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show GeometricallyConnected (pullback.snd B.hom x)`. Use `infer_instance`. Use `GlobalTheory.T.nonempty_torusExtension_of_surjective_points' Ω ((Over.pullback x).obj G) ((Over.pullback x).obj B) h₂ (hG.fibres Ω x) ((Over.pullback x).map q) inferInstance fun y => ?_` and prove the remaining obligations. Use `hG.smooth` as an intermediate fact. Establish `: LocallyOfFiniteType (q.left ≫ B.hom)` using `by rw [Over.w]; infer_instance`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: LocallyOfFiniteType q.left` using `locallyOfFiniteType_of_comp _ B.hom`. Establish `sq` using `isPullback_pullback_map_left x q`. Establish `: Surjective ((Over.pullback x).map q).left` using `MorphismProperty.of_isPullback (P := @Surjective) sq hsu`. Establish `: LocallyOfFiniteType ((Over.pullback x).map q).left` using `MorphismProperty.of_isPullback (P := @LocallyOfFiniteType) sq inferInstance`. Set `s : pullback ((Over.pullback x).map q).left y.left ⟶ Sp Ω` to `pullback.snd _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: LocallyOfFiniteType s` using `inferInstanceAs (LocallyOfFiniteType (pullback.snd _ _))`. Establish `: Surjective s` using `inferInstanceAs (Surjective (pullback.snd _ _))`. Establish `: JacobsonSpace ↥(pullback ((Over.pullback x).map q).left y.left)` using `LocallyOfFiniteType.jacobsonSpace s`. Take `⟨z₀, -⟩` from `s.surjective (IsLocalRing.closedPoint Ω)`. Take `⟨z, -, hz⟩` from `nonempty_inter_closedPoints (Z := Set.univ) ⟨z₀, trivial⟩ isClosed_univ.isLocallyClosed`.
-
-Establish `hz₁ : pointOfClosedPoint s z hz ≫ s = 𝟙 _` using `pointOfClosedPoint_comp s z hz`. Establish `e : (pointOfClosedPoint s z hz ≫ pullback.fst _ _) ≫ ((Over.pullback x).map q).left = y.left`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`. Conclude with `(congrArg (· ≫ y.left) hz₁).trans (Category.id_comp _)`. Use `⟨Over.homMk (pointOfClosedPoint s z hz ≫ pullback.fst _ _) ?_, Over.OverMorphism.ext e⟩` and prove the remaining obligations.
-
-Rewrite using `[← Over.w ((Over.pullback x).map q), ← Category.assoc, e]`. Conclude with `Over.w y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem TP.semiab : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] (S : Scheme.{0}) [Algebra k Γ(S, ⊤)]
     (T G B : Over S) [GrpObj T] [GrpObj G] [GrpObj B] (u : T ⟶ G) (q : G ⟶ B), IsSemiAbelian G → IsQuot u q → IsSemiAbelian B := by
@@ -198,11 +192,11 @@ private theorem TP.semiab : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [C
   exact Over.w y
 
 /- English proof (translation)
-Introduce `O _ c S S' f G _ G' _ hc i i' φ hφ X _ u u' hT K K' _ _ β x x' hx ⟨G₀, _, i₀, φ₀, u₀, P, q, j, h₀, hT₀, hk, he, hr⟩`. Establish `: IsCommMonObj G'` using `GlobalTheory.PolPull.isCommMonObj_of_isGrpPullback hφ.1`. Take `⟨P', j', ψ, hψ, hr'⟩` from `UpperTheory.rosati_action_pullback O c _ _ (spMap β) P j hr`. Establish `h₁` using `exists_isActPull x' i'`. Establish `h₂` using `h₁.comp hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h₂` using `[hx]`. Take `⟨χ, hχ, hχ'⟩` from `TP.exists_factor h₀ h₂`. Take `⟨u'', hT'', -⟩` from `existsUnique_torusCompat (S' := Sp K') (G' := (Over.pullback x').obj G') h₁.1.1 u'`. Establish `h₃` using `hT''.trans hT`. Rewrite `h₃` using `[hx, ← hχ]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨q', hk', hq'⟩` from `hk.baseChange hχ'.1 hψ.1 (TorusCompat.of_comp_right h₀.1.1 hχ'.1.1.w h₃ hT₀)`. Conclude with `⟨_, _, _, _, u'', P', q', j', h₁, hT'', hk', TP.equivariant_of_pull hχ' hψ hq'.w he, hr'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem TP.torpolbc : ∀ (O : Type) [CommRing O] (c : O →+* O) (S S' : Scheme.{0}) (f : S' ⟶ S) (G : Over S) [GrpObj G] (G' : Over S') [GrpObj G'],
     IsCommMonObj G → ∀ (i : OAct O G) (i' : OAct O G') (φ : G'.left ⟶ G.left), IsActPull i' i f φ →
@@ -223,13 +217,13 @@ private theorem TP.torpolbc : ∀ (O : Type) [CommRing O] (c : O →+* O) (S S' 
   exact ⟨_, _, _, _, u'', P', q', j', h₁, hT'', hk', TP.equivariant_of_pull hχ' hψ hq'.w he, hr'⟩
 
 /- English proof (translation)
-Introduce `O _ _ c K Ω _ _ _ _ G _ hG i G' _ i' φ hφ ⟨T, P, e, j, hm, ha, hr⟩`. Set `_` to `T.addCommGroup`. Set `_` to `T.free`. Set `_` to `T.finite`. Set `_` to `T.grpB`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `hG.comm` as an intermediate fact. Take `⟨F, hF, G₀, _, i₀, φ₀, Y, _, _, _, u₀, B, _, q₀, j₀, ψ, h₀, hB, hu₀, hk₀, ha₀, hψ⟩` from `UpperTheory.split_torus_base_change_semiabelian O K Ω G hG i G' i' φ hφ T.X T.i P.A (T.q ≫ e.hom) j P.isAb T.i_hom ((isKer_torusExtension T).comp_iso e hm) ha`. Take `⟨F', hF', P₁, j₁, ψ₁, h₁, hr₁⟩` from `UpperTheory.rosati_polarised_descends_finite_field O c F Ω B hB j₀ P j ψ hψ hr`. Establish `: IsCommMonObj G₀` using `GlobalTheory.PolPull.isCommMonObj_of_isGrpPullback h₀.1`. Establish `h₂` using `exists_isActPull (spMap (algebraMap F F')) i₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₃` using `h₂.comp h₀`. Establish `hc : spMap (algebraMap F F') ≫ spMap (algebraMap K F) = spMap (algebraMap K F')`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite `h₃` using `[hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u₂, hT₂, -⟩` from `existsUnique_torusCompat (S' := Sp F') (G' := (Over.pullback (spMap (algebraMap F F'))).obj G₀) h₂.1.1 u₀`. Take `⟨q₂, hk₂, hq₂⟩` from `hk₀.baseChange h₂.1 h₁.1 hT₂`. Conclude with `⟨F', inferInstance, inferInstance, Module.Finite.trans F F', _, _, _, _, Y, _, inferInstance, inferInstance, u₂, P₁, q₂, j₁, h₃, hT₂.isMonHom h₂.1, hk₂, TP.equivariant_of_pull h₂ h₁ hq₂.w ha₀, hr₁⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem TP.poldesc : ∀ (O : Type) [CommRing O] [Module.Finite ℤ O] (c : O →+* O) (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω]
     [Algebra.IsAlgebraic K Ω] (G : Over (Sp K)) [GrpObj G], IsSemiAbelian G → ∀ (i : OAct O G) (G' : Over (Sp Ω)) [GrpObj G']
@@ -265,7 +259,7 @@ private theorem TP.poldesc : ∀ (O : Type) [CommRing O] [Module.Finite ℤ O] (
 namespace GlobalTheory.TorusPart
 
 /- English proof (translation)
-Use `h.isIntegral` as an intermediate fact. Use `h.smooth` as an intermediate fact. Establish `: LocallyOfFiniteType (strHom k C)` using `inferInstance`. Use `⟨NefCurveTest.smoothOfRelativeDimension_one _ h.dim_eq, h.isProjOver, ?_⟩` and prove the remaining obligations. Conclude with `geometricallyConnected_of_isAlgClosed _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem isCurve_of_isSmoothProjCurve {k : Type} [Field k] [IsAlgClosed k] {C : Scheme.{0}} [Algebra k Γ(C, ⊤)]
     (h : IsSmoothProjCurve k C) : IsCurve k C := by
@@ -276,7 +270,7 @@ private theorem isCurve_of_isSmoothProjCurve {k : Type} [Field k] [IsAlgClosed k
   exact geometricallyConnected_of_isAlgClosed _
 
 /- English proof (translation)
-Take `⟨hs, hp, hc⟩` from `h`. Establish `: IsIntegral C` using `GlobalTheory.LieSemineg.isIntegral_curve hs hc`. Conclude with `⟨⟨inferInstance, GlobalTheory.LieSemineg.dim_curve hs, hp⟩, SmoothOfRelativeDimension.smooth 1 _⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem isSmoothProjCurve_of_isCurve {k : Type} [Field k] {C : Scheme.{0}} [Algebra k Γ(C, ⊤)] (h : IsCurve k C) :
     IsSmoothProjCurve k C := by
@@ -285,17 +279,15 @@ private theorem isSmoothProjCurve_of_isCurve {k : Type} [Field k] {C : Scheme.{0
   exact ⟨⟨inferInstance, GlobalTheory.LieSemineg.dim_curve hs, hp⟩, SmoothOfRelativeDimension.smooth 1 _⟩
 
 /- English proof (translation)
-Take `⟨hcomm, hsm, hsep, hqc, hgc⟩` from `hG`. Take `⟨B, q, H⟩` from `UpperTheory.semiabelian_quotient_torus_invariants S G X u hu hc`. Establish `haff : IsAffineHom q.left` using `isAffineHom_of_forall_exists_isAffineOpen _ fun b => by`. Take `⟨V, hb, hV, hg, -⟩` from `H b`. Conclude with `⟨V, hb, hV, hg.1⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨hm, hf, hs, hsB, hfib⟩` from `GlobalTheory.T.locallyTrivial_torusQuotient_flat_surjective_cosets _ X G B u q hu haff fun b => by`. Take `⟨V, hb, hV, hg, h₁, h₂⟩` from `H b`. Conclude with `⟨V, hb, hV, h₁, h₂, hg.2⟩`. Take `⟨_, hcB, hq, hker⟩` from `GlobalTheory.grpObj_of_flat_coset_quotient _ G _ B u q hu hm hf hs inferInstance hfib`. Establish `hsB` using `hsB hsm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hw : q.left ≫ B.hom = G.hom` using `Over.w q`. Establish `hgB : GeometricallyConnected B.hom`. Establish `: GeometricallyConnected (q.left ≫ B.hom)` using `hw ▸ hgc`. Conclude with `GlobalTheory.TorusQuotientGlue.geometricallyConnected_of_comp q.left B.hom`. Establish `hqB : QuasiCompact B.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun U hU hK => ?_⟩` and prove the remaining obligations. Establish `h1` using `hqc.isCompact_preimage U hU hK`. Establish `e : q.left '' (G.hom ⁻¹' U) = B.hom ⁻¹' U`. Rewrite using `[← hw, Scheme.Hom.comp_base, TopCat.coe_comp, Set.preimage_comp, Set.image_preimage_eq _ q.left.surjective]`. Conclude with `e ▸ h1.image q.left.continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsq : Smooth q.left`. Use `MorphismProperty.of_isPullback_of_descendsAlong (P := @Smooth) (Q := @Surjective ⊓ @Flat ⊓ @QuasiCompact) ((H1.torsor_pullback u q hker).map (Over.forget _)).flip ⟨⟨‹_›, ‹_›⟩, inferInstanceAs (QuasiCompact q.left)⟩ ?_` and prove the remaining obligations. Conclude with `smooth_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback _ _) (H1.torus_dim _ X).smooth`. Establish `hcl : IsClosedImmersion u.left` using `UpperTheory.split_torus_closed_immersion S G hsep hqc X u hu hm hc`. Establish `hsepB : IsSeparated B.hom` using `TP.sepquot S _ G B u q ⟨hq, hf, hs, inferInstance, hker⟩ inferInstance hcl`.
-
-Conclude with `⟨B, _, q, ⟨hu, hq, hf, hs, haff, hker, hcB, hsB, hsepB, hqB, hgB⟩, hsq, hcl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_isQuot {S : Scheme.{0}} (G : Over S) [GrpObj G] (hG : SmConn G) (X : Type) [AddCommGroup X]
     [Module.Free ℤ X] [Module.Finite ℤ X] (u : splitTorus S X ⟶ G) [hu : IsMonHom u] (hc : GoodCover u) :
@@ -331,29 +323,29 @@ private theorem exists_isQuot {S : Scheme.{0}} (G : Over S) [GrpObj G] (hG : SmC
   exact ⟨B, _, q, ⟨hu, hq, hf, hs, haff, hker, hcB, hsB, hsepB, hqB, hgB⟩, hsq, hcl⟩
 
 /- English proof (translation)
-Introduce `g`. Establish `hs : SmoothOfRelativeDimension 1 (strHom k C₁)` using `hC₁.1`. Establish `: Smooth (strHom k C₁)` using `SmoothOfRelativeDimension.smooth 1 _`. Set `s₁` to `G₁.hom ≫ strHom k C₁`. Establish `: LocallyOfFiniteType s₁` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: JacobsonSpace G₁.left` using `LocallyOfFiniteType.jacobsonSpace s₁`. Take `⟨y, hy, hyc⟩` from `nonempty_inter_closedPoints (Z := closure {g}) ⟨g, subset_closure rfl⟩ isClosed_closure.isLocallyClosed`. Set `yp` to `pointOfClosedPoint s₁ y hyc`. Establish `hyp : yp ≫ s₁ = 𝟙 _` using `pointOfClosedPoint_comp s₁ y hyc`. Set `p₁` to `yp ≫ G₁.hom`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hp₁ : p₁ ≫ strHom k C₁ = 𝟙 _` using `by simpa [p₁, s₁] using hyp`. Set `p₀` to `p₁ ≫ π`. Establish `hp₀ : p₀ ≫ strHom k C₀ = 𝟙 _` using `by simp only [p₀, Category.assoc, hπ, hp₁]`. Set `y₁ : Over.mk p₁ ⟶ G₁` to `Over.homMk yp rfl`. Set `y₀ : Over.mk p₀ ⟶ G₀` to `Over.homMk (yp ≫ φ) (by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `(yp ≫ φ) ≫ G₀.hom = p₁ ≫ π`. Rewrite using `[Category.assoc, hφ.1.w, ← Category.assoc])`. Take `⟨m, g₀, w, hwW, hy₀⟩` from `hcov p₀ hp₀ y₀`. Set `Z'` to `(Over.pullback π).obj (Z m)`. Establish `hfl : Flat Z'.hom`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `(hZ m).1` as an intermediate fact. Conclude with `inferInstanceAs (Flat (pullback.snd (Z m).hom π))`. Establish `hlft : LocallyOfFiniteType Z'.hom`. Use `(hZ m).2.1` as an intermediate fact. Conclude with `inferInstanceAs (LocallyOfFiniteType (pullback.snd (Z m).hom π))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hg₀w : g₀.left ≫ (Z m).hom = p₁ ≫ π` using `Over.w g₀`. Set `g₀' : Over.mk p₁ ⟶ Z'` to `Over.homMk (pullback.lift g₀.left p₁ hg₀w) (pullback.lift_snd _ _ _)`. Take `⟨U, σ, p', hp'⟩` from `UpperTheory.flat_rational_section_extends k C₁ hC₁ K₁ x₁ hx₁ Z' hfl hlft (hrat m) k p₁ g₀'`. Take `⟨e, he, heφ⟩` from `grpPullback_iso (isGrpPullback_pullback G₀ π) hφ`. Set `σ₁ : Over.mk U.ι ⟶ G₁` to `σ ≫ (Over.pullback π).map (z m) ≫ e.hom`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hww : w.left ≫ G₀.hom = p₁ ≫ π` using `Over.w w`. Set `w₁ : Over.mk p₁ ⟶ G₁` to `(Over.homMk (pullback.lift w.left p₁ hww) (pullback.lift_snd _ _ _) : Over.mk p₁ ⟶ (Over.pullback π).obj G₀) ≫ e.hom`. Establish `hw₁ : w₁.left ≫ φ = w.left`. Simplify using `only [w₁, Over.comp_left, Category.assoc, heφ, Over.homMk_left, pullback.lift_fst]`. Establish `pt : Sp k` using `IsLocalRing.closedPoint k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨V, hwV, hV⟩` from `hW _ (hwW (Set.mem_univ pt))`. Establish `hV₁` using `UpperTheory.good_open_pullback C₀ C₁ π inferInstance G₀ G₁ φ hφ X u₀ u₁ hT V hV`. Establish `hmem : w₁.left pt ∈ φ ⁻¹ᵁ V`. Express the relevant statement in the definitionally equal form `φ (w₁.left pt) ∈ V`. Rewrite using `[← Scheme.Hom.comp_apply, hw₁]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hwV`. Take `⟨V', hV', hmem'⟩` from `UpperTheory.good_open_translate_section C₁ G₁ inferInstance X u₁ hu₁ _ hV₁ U σ₁ (Over.mk p₁) p' w₁ pt hmem`. Establish `key : (p' ≫ σ₁) * w₁ = y₁`. Establish `h₁ : (p' ≫ σ₁).left ≫ φ = (g₀ ≫ z m).left`. Establish `a : p'.left ≫ σ.left = g₀'.left` using `by rw [← Over.comp_left, hp']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [σ₁, Over.comp_left, Category.assoc, heφ]`. Rewrite using `[← Category.assoc p'.left, a, GlobalTheory.ExtUnique.pullback_map_left_fst]`. Simplify using `only [g₀', Over.homMk_left, pullback.lift_fst_assoc]`. Establish `h₂` using `hφ.2 (Over.mk p₁) (p' ≫ σ₁) w₁ (g₀ ≫ z m) w h₁.symm hw₁.symm`. Rewrite `h₂` using `[← hy₀]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `hφ.1.hom_ext ?_ ?_` and prove the remaining obligations. Conclude with `h₂.symm`. Rewrite using `[Over.w, Over.w]`. Use `⟨V', ?_, hV'⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hyV' : y ∈ V'`. Rewrite `hmem'` using `[key]`. Express the relevant statement in the definitionally equal form `yp pt ∈ V' at hmem'`. Rewrite `hmem'` using `[pointOfClosedPoint_apply s₁ y hyc pt]`. Then use the resulting hypothesis. Conclude with `(specializes_iff_mem_closure.2 hy).mem_open V'.isOpen hyV'`.
+A detailed English derivation is pending.
 -/
 private theorem goodCover_of_cover {k : Type} [Field k] [IsAlgClosed k] {C₀ C₁ : Scheme.{0}} [Algebra k Γ(C₀, ⊤)]
     [Algebra k Γ(C₁, ⊤)] (hC₁ : IsCurve k C₁) {K₁ : Type} [Field K₁] (x₁ : Sp K₁ ⟶ C₁) (hx₁ : IsGen x₁)
@@ -430,7 +422,7 @@ private theorem goodCover_of_cover {k : Type} [Field k] [IsAlgClosed k] {C₀ C�
   exact (specializes_iff_mem_closure.2 hy).mem_open V'.isOpen hyV'
 
 /- English proof (translation)
-Take `⟨h₁, h₂, h₃, h₄, h₅⟩` from `h`. Use `⟨h₁, h₂, h₃, h₄, ?_⟩` and prove the remaining obligations. Use `h₅.of_iso e.symm (Iso.refl _) (Iso.refl _) (Iso.refl _) (by simp) (toUnit_unique _ _) (by simp) (by simp)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 -/
 private theorem IsKer.precomp {S : Scheme.{0}} {T T' G B : Over S} [GrpObj G] [GrpObj B] {u : T ⟶ G} {q : G ⟶ B}
     (h : IsKer u q) (e : T' ≅ T) : IsKer (e.hom ≫ u) q := by
@@ -439,7 +431,7 @@ private theorem IsKer.precomp {S : Scheme.{0}} {T T' G B : Over S} [GrpObj G] [G
   refine h₅.of_iso e.symm (Iso.refl _) (Iso.refl _) (Iso.refl _) (by simp) (toUnit_unique _ _) (by simp) (by simp)
 
 /- English proof (translation)
-Establish `: IsMonHom (Iso.refl G).hom` using `inferInstanceAs (IsMonHom (𝟙 G))`. Conclude with `⟨isGrpPullback_of_iso (Iso.refl G), fun a => by simp⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem isActPull_id {O : Type} [CommRing O] {S : Scheme.{0}} {G : Over S} [GrpObj G] (i : OAct O G) :
     IsActPull i i (𝟙 S) (𝟙 G.left) := by
@@ -447,7 +439,7 @@ private theorem isActPull_id {O : Type} [CommRing O] {S : Scheme.{0}} {G : Over 
   exact ⟨isGrpPullback_of_iso (Iso.refl G), fun a => by simp⟩
 
 /- English proof (translation)
-Use `⟨h, fun a => hG.1.1.hom_ext ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hc, Category.assoc, hG.2]`. Rewrite using `[Category.assoc, Category.assoc, Over.w, h.1.w, Over.w_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem IsActPull.of_comp {O : Type} [CommRing O] {S S₁ S₂ : Scheme.{0}} {G : Over S} {G₁ : Over S₁} {G₂ : Over S₂}
     [GrpObj G] [GrpObj G₁] [GrpObj G₂] {i : OAct O G} {i₁ : OAct O G₁} {i₂ : OAct O G₂} {π : S₁ ⟶ S} {x : S₂ ⟶ S₁}
@@ -458,7 +450,7 @@ private theorem IsActPull.of_comp {O : Type} [CommRing O] {S S₁ S₂ : Scheme.
   · rw [Category.assoc, Category.assoc, Over.w, h.1.w, Over.w_assoc]
 
 /- English proof (translation)
-Establish `hw : φ ≫ G.hom = (G₂.hom ≫ g) ≫ f` using `by rw [h.1.1.w, Category.assoc]`. Use `⟨pullback.lift φ (G₂.hom ≫ g) hw, pullback.lift_fst _ _ _, ?_⟩` and prove the remaining obligations. Establish `hK` using `exists_isActPull f i`. Use `IsActPull.of_comp hK ((isGrpPullback_pullback G f).cancel (h.1.congr rfl (pullback.lift_fst _ _ _).symm) (pullback.lift_snd _ _ _)) fun a => ?_` and prove the remaining obligations. Rewrite using `[pullback.lift_fst, pullback.lift_fst_assoc, h.2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem IsActPull.cancel_pullback {O : Type} [CommRing O] {S S₁ S₂ : Scheme.{0}} {G : Over S} [GrpObj G]
     [IsCommMonObj G] {G₂ : Over S₂} [GrpObj G₂] {i : OAct O G} {i₂ : OAct O G₂} (f : S₁ ⟶ S) (g : S₂ ⟶ S₁)
@@ -473,37 +465,37 @@ private theorem IsActPull.cancel_pullback {O : Type} [CommRing O] {S S₁ S₂ :
   rw [pullback.lift_fst, pullback.lift_fst_assoc, h.2]
 
 /- English proof (translation)
-Introduce `_ _ E _ _ _ H q _ k _ _ _ C _ _ hC G _ hG i hPol`. Use `hG.comm` as an intermediate fact. Establish `hCv` using `isCurve_of_isSmoothProjCurve hC`. Use `hC.isIntegral` as an intermediate fact. Take `⟨G', _, i', φ, hφ, hPP⟩` from `hPol`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨φ', -, hφ'⟩` from `IsActPull.cancel_pullback (genPt C) _ hφ`. Establish `hGK` using `IsSemiAbelian.pullback (genPt C) G hG`. Take `⟨K', _, _, hfin, G₂, _, i₂, φ₂, X, _, _, _, u₂, P, q₂, j₂, h₂, hu₂, hk₂, he₂, hros⟩` from `TP.poldesc (𝓞 E) (H.bar : 𝓞 E →+* 𝓞 E) C.functionField (AlgebraicClosure C.functionField) _ hGK _ G' i' φ' hφ' hPP`. Take `⟨C₀, _, π₀, x₀, hC₀, hx₀, hπ₀, hfπ₀, hsπ₀, hxπ₀⟩` from `UpperTheory.finite_extension_curve_cover k C hCv C.functionField (genPt C) (isGen_fromSpecStalk C) K' hfin`. Establish `hC₀i : IsIntegral C₀` using `GlobalTheory.LieSemineg.isIntegral_curve hC₀.1 hC₀.2.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `G₀` to `(Over.pullback π₀).obj G`. Set `i₀` to `OAct.pullback π₀ G i`. Establish `hact₀ : IsActPull i₀ i π₀ (pullback.fst G.hom π₀)` using `exists_isActPull π₀ i`. Establish `hG₀ : IsSemiAbelian G₀` using `IsSemiAbelian.pullback π₀ G hG`. Use `hG₀.comm` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp` using `(h₂.comp (exists_isActPull (genPt C) i))`. Rewrite `hcomp` using `[← hxπ₀]`. Take `⟨φ₀', -, hφ₀'⟩` from `IsActPull.cancel_pullback π₀ x₀ hcomp`. Take `⟨e₂, he₂m, he₂φ⟩` from `grpPullback_iso hφ₀'.1 (isGrpPullback_pullback G₀ x₀)`. Take `⟨u, ψ, hu, hψ, hψu⟩` from `exists_torus_hom_extension k C₀ hC₀ K' x₀ hx₀ G₀ hG₀ X (u₂ ≫ e₂.hom)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e₃, he₃m, he₃ψ⟩` from `grpPullback_iso (SplitTorus.isGrpPullback_bcMap x₀ X) hψ`. Establish `hTC : TorusCompat x₀ φ₀' (e₃.hom ≫ u₂) u`. Rewrite using `[torusCompat_iff, ← he₃ψ, Category.assoc, hψu, Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, he₂φ]`. Establish `hTP₀ : TorPol (H.bar : 𝓞 E →+* 𝓞 E) i₀ u x₀` using `⟨G₂, _, i₂, φ₀', e₃.hom ≫ u₂, P, q₂, j₂, hφ₀', hTC, hk₂.precomp e₃, he₂, hros⟩`. Establish `hG₂c : IsCommMonObj G₂` using `GlobalTheory.PolPull.isCommMonObj_of_isGrpPullback hφ₀'.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hq₂m, hq₂f, hq₂s, hq₂c, hq₂k⟩` from `hk₂.precomp e₃`. Take `⟨O', h₁', h₂', h₃', hd⟩` from `GlobalTheory.T.exists_splitExtDatum_of_splitTorus_extension (Sp K') X G₂ P.A P.isAb q₂ (e₃.hom ≫ u₂) hq₂m inferInstance hq₂f hq₂s hq₂c hq₂k`. Take `⟨d, hdq, hdi⟩` from `hd P.isAb`. Establish `hwt : ∀ χ : X, ∃ (U' : G₂.left.Opens) (f' : Γ(G₂.left, U')), (U' : Set G₂.left).Nonempty ∧ IsUnit f' ∧ Wt (e₃.hom ≫ u₂) U' f' χ`. Introduce `χ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨V, hb, w, hw⟩` from `(TQ.ofGtDatum d).loc ((η[P.A]).left (IsLocalRing.closedPoint K')) χ`. Establish `: Surjective d.q.left` using `d.q_surjective`. Take `⟨g, hg⟩` from `d.q.left.surjective ((η[P.A]).left (IsLocalRing.closedPoint K'))`. Use `⟨_, w.val, ⟨g, ?_⟩, w.isUnit, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `d.q.left g ∈ V`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hg]`. Conclude with `hb`. Conclude with `hdi ▸ hw`. Use `hG₀.smooth` as an intermediate fact. Use `hG₀.quasiCompact` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hwf : ∀ (χ : X) (s : C₀), ∃ (U : G₀.left.Opens) (f : Γ(G₀.left, U)), (∃ y ∈ U, G₀.hom y = s) ∧ IsUnit f ∧ Wt u U f χ`. Introduce `χ s`. Take `⟨U', f', hne, hun, hw⟩` from `hwt χ`. Take `⟨U, f, hne', hun', hw'⟩` from `UpperTheory.split_torus_pullback_generic_fibre UpperTheory.wt_generic k C₀ hC₀ K' x₀ hx₀ G₀ hG₀ X u hu G₂ φ₀' (e₃.hom ≫ u₂) hφ₀'.1 hTC χ U' f' hne hun hw`. Conclude with `UpperTheory.torus_weight_unit_local UpperTheory.wt_generic k C₀ hC₀ G₀ hG₀ X u hu χ U f hne' hun' hw' s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsl` using `UpperTheory.weight_units_section_at_point k C₀ hC₀ G₀ hG₀ X u hu hwf`. Set `W : G₀.left.Opens` to `sSup {V | GoodOpen u V}`. Establish `hW : ∀ x ∈ W, ∃ V, x ∈ V ∧ GoodOpen u V`. Introduce `x hx`. Take `⟨V, hV, hxV⟩` from `TopologicalSpace.Opens.mem_sSup.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨V, hxV, hV⟩`. Establish `hWp : ∀ p : Sp k ⟶ C₀, p ≫ strHom k C₀ = 𝟙 _ → ∃ w : Over.mk p ⟶ G₀, ⊤ ≤ w.left ⁻¹ᵁ W` using `fun p hp => by`. Take `⟨V, w, hV, hw⟩` from `hsl p hp`. Conclude with `⟨w, hw.trans (w.left.preimage_mono (le_sSup hV))⟩`. Take `⟨n, Z, z, hZ, hcov⟩` from `UpperTheory.finite_cover_of_quasi_finite k C₀ hC₀ G₀ inferInstance inferInstance W hWp (UpperTheory.smooth_point_quasi_finite_neighbourhood k C₀ hC₀ G₀ inferInstance)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨K₁, _, _, hfin₁, hrat⟩` from `UpperTheory.quasi_finite_rational_after_extension C₀ n Z hZ K' x₀`. Take `⟨C₁, _, π₁, x₁, hC₁, hx₁, hπ₁, hfπ₁, hsπ₁, hxπ₁⟩` from `UpperTheory.finite_extension_curve_cover k C₀ hC₀ K' x₀ hx₀ K₁ hfin₁`. Set `G₁` to `(Over.pullback π₁).obj G₀`. Set `i₁` to `OAct.pullback π₁ G₀ i₀`. Establish `hact₁ : IsActPull i₁ i₀ π₁ (pullback.fst G₀.hom π₁)` using `exists_isActPull π₁ i₀`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG₁ : IsSemiAbelian G₁` using `IsSemiAbelian.pullback π₁ G₀ hG₀`. Use `hG₁.comm` as an intermediate fact. Use `hG₁.smooth` as an intermediate fact. Take `⟨u₁, hT₁, -⟩` from `existsUnique_torusCompat (S := C₀) (S' := C₁) (G' := G₁) (G := G₀) (f := π₁) (F := pullback.fst G₀.hom π₁) (isGrpPullback_pullback G₀ π₁).1 u`. Establish `hu₁ : IsMonHom u₁` using `TorusCompat.isMonHom (isGrpPullback_pullback G₀ π₁) hT₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrat₁ : ∀ m, RatOver ((Over.pullback π₁).obj (Z m)) x₁` using `fun m => TP.ratpull C₀ C₁ π₁ (Z m) K' K₁ (algebraMap K' K₁) x₀ x₁ hxπ₁ (hrat m)`. Establish `hgc : GoodCover u₁` using `goodCover_of_cover hC₁ x₁ hx₁ π₁ hπ₁ (pullback.fst G₀.hom π₁) (isGrpPullback_pullback G₀ π₁) u u₁ hT₁ W hW Z z hZ hcov hrat₁`. Establish `hsm₁ : SmConn G₁` using `⟨hG₁.comm, hG₁.smooth, hG₁.separated, hG₁.quasiCompact, hG₁.geomConnected⟩`. Take `⟨B, _, qB, hQ, hsq, hcl⟩` from `exists_isQuot G₁ hsm₁ X u₁ hgc`. Establish `hB : IsSemiAbelian B` using `TP.semiab q k C₁ (splitTorus C₁ X) G₁ B u₁ qB hG₁ hQ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hTP₁ : TorPol (H.bar : 𝓞 E →+* 𝓞 E) i₁ u₁ x₁` using `TP.torpolbc (𝓞 E) _ C₀ C₁ π₁ G₀ G₁ inferInstance i₀ i₁ _ hact₁ X u u₁ hT₁ K' K₁ (algebraMap K' K₁) x₀ x₁ hxπ₁ hTP₀`. Establish `hC₁i : IsIntegral C₁` using `GlobalTheory.LieSemineg.isIntegral_curve hC₁.1 hC₁.2.2`. Take `⟨β, hβ⟩` from `TP.genpt C₁ K₁ x₁ hx₁`. Establish `hTPg : TorPol (H.bar : 𝓞 E →+* 𝓞 E) i₁ u₁ (genPt C₁)` using `TP.torpolbc (𝓞 E) _ C₁ C₁ (𝟙 C₁) G₁ G₁ inferInstance i₁ i₁ (𝟙 _) (isActPull_id i₁) X u₁ u₁ (TorusCompat.refl u₁) K₁ C₁.functionField β x₁ (genPt C₁) (by rw [Category.comp_id, hβ]) hTP₁`. Use `hQ.2.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i', hi', hab⟩` from `UpperTheory.abelian_quotient_inherits_action (𝓞 E) _ C₁ G₁ B hG₁ hB i₁ X u₁ qB hu₁ (isKer_of_isQuot hQ) hTPg`. Take `⟨hepi, ⟨eL⟩⟩` from `UpperTheory.lie_quotient_kernel_torus C₁ G₁ B X u₁ qB hsm₁ hQ hgc`. Use `⟨C₁, inferInstance, hC₁i, π₁ ≫ π₀, isSmoothProjCurve_of_isCurve hC₁, ⟨inferInstance, inferInstance, by rw [Category.assoc, hπ₀, hπ₁]⟩, G₁, inferInstance, hG₁, i₁, _, hact₁.comp hact₀, B, inferInstance, hB, i', qB, hQ.2.1, hi', hepi, ⟨_, ⟨eL ≪≫ (isFrame_dlogChar C₁ (Module.finBasi …` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 private theorem main : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
   (q : ℕ) [Fact q.Prime] (k : Type) [Field k] [IsAlgClosed k] [CharP k q] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)] [IsIntegral C],
@@ -617,7 +609,7 @@ end GlobalTheory.TorusPart
 end TorusPartProof
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.TorusPart.main`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.exists_cover_semiabelian_polarization : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
   (q : ℕ) [Fact q.Prime] (k : Type) [Field k] [IsAlgClosed k] [CharP k q] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)] [IsIntegral C],

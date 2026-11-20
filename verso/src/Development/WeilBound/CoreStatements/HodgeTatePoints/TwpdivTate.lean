@@ -20,25 +20,25 @@ Both sides reduce to the same expression.
 theorem lvl_smul (n : ℕ) (a : ℤ_[p]) (x : G.Tate) : lvl G n (a • x) = digit n a • lvl G n x := rfl
 
 /- English proof (translation)
-Set `j : ℤ_[p] ⊗[ℤ] La →ₗ[ℤ_[p]] G.Tate` to `LinearMap.liftBaseChange ℤ_[p] τ.toIntLinearMap`. Establish `hj : ∀ (c : ℤ_[p]) a, j (c ⊗ₜ a) = c • τ a` using `fun c a => rfl`. Set `b` to `Module.Free.chooseBasis ℤ La`. Establish `key : ∀ (c : Module.Free.ChooseBasisIndex ℤ La → ℤ_[p]) n, (j (∑ i, c i ⊗ₜ b i)).conv n = (τ (∑ i, digit n (c i) • b i)).conv n`. Introduce `c n`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `lvl G n _ = lvl G n _`. Simplify using `only [map_sum, hj, lvl_smul, map_nsmul]`. Establish `hdiv : ∀ n (a a' : La), (∃ u : La, a - a' = (p ^ n) • u) ↔ ∀ i, ((b.repr a i : ℤ) : ZMod (p ^ n)) = (b.repr a' i : ℤ)`. Introduce `n a a'`. Simplify using `only [ZMod.intCast_eq_intCast_iff_dvd_sub]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu⟩ i`. Use `congrArg (fun x => b.repr x i) hu` as an intermediate fact. Simplify using `only [map_sub, map_nsmul, Finsupp.sub_apply, Finsupp.smul_apply, nsmul_eq_mul] at this`. Rewrite using `[dvd_sub_comm]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, this⟩`. Introduce `H choose u hu using fun i => dvd_sub_comm.1 (H i)`. Use `⟨b.equivFun.symm u, b.equivFun.injective (funext fun i => ?_)⟩` and prove the remaining obligations. Rewrite using `[map_nsmul, LinearEquiv.apply_symm_apply, map_sub]`. Simplify using `using hu i`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hrep : ∀ (k : Module.Free.ChooseBasisIndex ℤ La → ℕ) i, b.repr (∑ i, k i • b i) i = k i`. Introduce `k i`. Establish `: ∑ i, k i • b i = b.equivFun.symm fun i => (k i : ℤ)` using `by simp`. Rewrite using `[this, ← b.equivFun_apply, LinearEquiv.apply_symm_apply]`. Use `⟨LinearEquiv.ofBijective j ⟨?_, fun x => ?_⟩, fun a => (hj 1 a).trans (one_smul _ _)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Choose the witnesses or unpack the hypotheses as in `⟨c, rfl⟩ : ∃ c : Module.Free.ChooseBasisIndex ℤ La → ℤ_[p], z = ∑ i, c i ⊗ₜ b i := by`. Use `⟨(b.baseChange ℤ_[p]).repr z, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← (b.baseChange ℤ_[p]).sum_repr z]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[TensorProduct.smul_tmul']`. Establish `hc : ∀ i, c i = 0` using `fun i => PadicInt.ext_of_toZModPow.1 fun n => by`. Establish `h3` using `key c n`. Rewrite `h3` using `[hz, ← map_zero τ]`. Establish `h4` using `(hdiv n _ _).1 ((h1 n _ _).1 h3) i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[hrep]`. Rewrite using `[map_zero, ← cast_digit]`. Simplify using `using h4.symm`. Simplify using `[hc]`. Use `choose a ha using fun n => h2 n (x.conv n)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ∀ n, (τ (a (n + 1))).conv n = (τ (a n)).conv n` using `fun n => by`. Rewrite using `[← TateOver.compat_conv, ha, ha, TateOver.compat_conv]`. Establish `hd : ∀ i n, (p : ℤ) ^ n ∣ b.repr (a (n + 1)) i - b.repr (a n) i` using `fun i n => by`. Use `(hdiv n _ _).1 ((h1 n _ _).1 (hc n).symm) i` as an intermediate fact. Rewrite `this` using `[ZMod.intCast_eq_intCast_iff_dvd_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Use `⟨∑ i, PadicInt.ofIntSeq _ (PadicInt.isCauSeq_padicNorm_of_pow_dvd_sub (fun n => b.repr (a n) i) p (hd i)) ⊗ₜ b i, TateOver.ext_conv fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[key, ← ha, h1, hdiv]`. Introduce `i`. Rewrite using `[hrep, Int.cast_natCast, cast_digit, PadicInt.toZModPow_ofIntSeq_of_pow_dvd_sub (fun n => b.repr (a n) i) p (hd i)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tate_equiv {La : Type} [AddCommGroup La] [Module.Free ℤ La] [Module.Finite ℤ La] (τ : La →+ G.Tate)
     (h1 : ∀ n a a', (τ a).conv n = (τ a').conv n ↔ ∃ b : La, a - a' = (p ^ n) • b)

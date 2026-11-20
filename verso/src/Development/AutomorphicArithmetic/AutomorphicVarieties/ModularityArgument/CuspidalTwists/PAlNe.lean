@@ -5,9 +5,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V.Ws UpperTheory.V.Sd UpperTheory.V.Cu
 
 /- English proof (translation)
-Use `haveI : Algebra.IsAlgebraic F Ω := Algebra.IsAlgebraic.tower_top (K := ℚ) F`. Establish `e : ((E.fixingSubgroup.comap (resQ F) : Subgroup (G F Ω)) : Set (G F Ω)) = ⋂ x ∈ E, (MulAction.stabilizer (Ω ≃ₐ[F] Ω) x : Set (Ω ≃ₐ[F] Ω))`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, Subgroup.mem_comap, Set.mem_iInter, MulAction.mem_stabilizer_iff]`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `isClosed_biInter fun x _ => Subgroup.isClosed_of_isOpen _ (stabilizer_isOpen_of_isIntegral x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem closed_fix {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (F E : IntermediateField ℚ Ω) :
     IsClosed ((E.fixingSubgroup.comap (resQ F) : Subgroup (G F Ω)) : Set (G F Ω)) := by
@@ -22,11 +22,11 @@ private theorem closed_fix {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure �
   exact isClosed_biInter fun x _ => Subgroup.isClosed_of_isOpen _ (stabilizer_isOpen_of_isIntegral x)
 
 /- English proof (translation)
-Establish `ht : Filter.Tendsto (fun n : ℕ => ((ε (g ^ l ^ n) : ℤ_[l]ˣ) : ℤ_[l])) Filter.atTop (nhds 1)`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `h0 : Filter.Tendsto (fun n : ℕ => ((l : ℝ)⁻¹) ^ n) Filter.atTop (nhds 0)` using `tendsto_pow_atTop_nhds_zero_of_lt_one (by positivity) (inv_lt_one_of_one_lt₀ hl)`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun n => ?_) h0` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `dvd_sub_pow_of_dvd_sub hg n`. Rewrite `h2` using `[one_pow]`. Establish `h3` using `(pow_dvd_pow _ n.le_succ).trans h2`. Rewrite using `[map_pow, Units.val_pow_eq_pow_val, inv_pow, ← zpow_natCast, ← zpow_neg, PadicInt.norm_le_pow_iff_mem_span_pow, Ideal.mem_span_singleton]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh, hc⟩` from `hS.isCompact.exists_mapClusterPt (f := Filter.atTop) (u := fun n : ℕ => g ^ l ^ n) (Filter.tendsto_principal.2 (Filter.Eventually.of_forall hm))`. Use `⟨h, hh, Units.ext ?_⟩` and prove the remaining obligations. Establish `hc'` using `hc.continuousAt_comp (Units.continuous_val.comp hε).continuousAt`. Conclude with `eq_of_nhds_neBot (hc'.clusterPt.mono ht)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem lim_pt {Γ : Type} [Group Γ] [TopologicalSpace Γ] [CompactSpace Γ] (l : ℕ) [Fact l.Prime]
     (ε : Γ →* ℤ_[l]ˣ) (hε : Continuous ε) (S : Set Γ) (hS : IsClosed S) (g : Γ)
@@ -50,9 +50,9 @@ private theorem lim_pt {Γ : Type} [Group Γ] [TopologicalSpace Γ] [CompactSpac
   exact eq_of_nhds_neBot (hc'.clusterPt.mono ht)
 
 /- English proof (translation)
-Take `⟨-, -, hloc, -⟩` from `dvrFacts l c.O`. Establish `h` using `hD.om_bar g`. Simplify using `only [Raw.bar, hg, Units.val_one] at h`. Establish `h1 : residue c.O (algebraMap ℤ_[l] c.O ((cycZ ℚ Ω l g : ℤ_[l]) - 1)) = 0`. Rewrite using `[map_sub, map_sub, map_one, h, sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `h1` using `[residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff]`. Establish `h2 : (cycZ ℚ Ω l g : ℤ_[l]) - 1 ∈ maximalIdeal ℤ_[l]` using `fun hu => h1 (hu.map _)`. Rewrite `h2` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`. Then use the resulting hypothesis.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem dvd_of_om {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
     (D : Raw Ω c) (hD : D.Good) (g : G ℚ Ω) (hg : D.om g = 1) : (l : ℤ_[l]) ∣ (cycZ ℚ Ω l g : ℤ_[l]) - 1 := by
@@ -71,7 +71,7 @@ variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [h
   (T : Tower D)
 
 /- English proof (translation)
-Use `show residue c.O (((chi D T.pr 0 (resQ T.F g) * (chi D T.pr 1 (resQ T.F g))⁻¹) ^ (1 : ℤ) * (chi D T.pr 0 (resQ T.F g) * (chi D T.pr 2 (resQ T.F g))⁻¹) ^ (0 : ℤ) : c.Oˣ) : c.O) = _`. Rewrite using `[zpow_one, zpow_zero, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rb_al (g : G T.F Ω) :
     T.rb wAl g = residue c.O ((chi D T.pr 0 (resQ T.F g) * (chi D T.pr 1 (resQ T.F g))⁻¹ : c.Oˣ) : c.O) := by
@@ -80,7 +80,7 @@ private theorem rb_al (g : G T.F Ω) :
   rw [zpow_one, zpow_zero, mul_one]
 
 /- English proof (translation)
-Rewrite using `[rb_al, rb_al, h.pr]`. Apply the tactic sequence `try rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rb_le {T₀ : Tower D} (h : T₀.Le T) (g : G T.F Ω) : T.rb wAl g = T₀.rb wAl (resLe h.le g) := by
   rw [rb_al, rb_al, h.pr]
@@ -95,7 +95,7 @@ Both sides reduce to the same expression.
 private theorem eta_val (g : G T.F Ω) : (eta T g : ResidueField c.O) = T.rb wAl g := rfl
 
 /- English proof (translation)
-Rewrite using `[← Units.val_eq_one, eta_val]`. Distinguish the cases in `h : resQ T.F g ∈ K'.fixingSubgroup`. Conclude with `⟨fun _ => h, fun _ => hon g h⟩`. Rewrite using `[hoff g h]`. Conclude with `⟨fun e => absurd e hn, fun e => absurd e h⟩`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem eta_iff {K' : IntermediateField ℚ Ω}
     (hon : ∀ g : G T.F Ω, resQ T.F g ∈ K'.fixingSubgroup → T.rb wAl g = 1)
@@ -108,7 +108,7 @@ private theorem eta_iff {K' : IntermediateField ℚ Ω}
     exact ⟨fun e => absurd e hn, fun e => absurd e h⟩
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, eta_val, Units.val_one]`. Distinguish the cases in `h : resQ T.F g ∈ K'.fixingSubgroup`. Rewrite using `[hon g h, one_pow]`. Rewrite using `[hoff g h, neg_one_sq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem eta_sq {K' : IntermediateField ℚ Ω}
     (hon : ∀ g : G T.F Ω, resQ T.F g ∈ K'.fixingSubgroup → T.rb wAl g = 1)
@@ -120,13 +120,11 @@ private theorem eta_sq {K' : IntermediateField ℚ Ω}
   · rw [hoff g h, neg_one_sq]
 
 /- English proof (translation)
-Use `haveI : Algebra.IsAlgebraic T.F Ω := Algebra.IsAlgebraic.tower_top (K := ℚ) T.F`. Use `haveI : IsAlgClosure T.F Ω := ⟨IsAlgClosure.isAlgClosed ℚ, inferInstance⟩`. Use `haveI : IsGalois T.F Ω := {}`. Use `haveI : CompactSpace (G T.F Ω) := inferInstanceAs (CompactSpace (Ω ≃ₐ[T.F] Ω))`. Establish `hk'' : ∀ g, eta T g = 1 ↔ g ∈ K'.fixingSubgroup.comap (resQ T.F)` using `fun g => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Subgroup.mem_comap, hk']`. Establish `hc : Continuous fun h : G T.F Ω => g⁻¹ * h` using `continuous_mul_left _`. Establish `h0 : IsClosed (T.GalL : Set (G T.F Ω))` using `closed_fix T.F T.K`. Establish `hd : (l : ℤ_[l]) ∣ (cycZ T.F Ω l g : ℤ_[l]) - 1` using `dvd_of_om D hD (resQ T.F g) hg`. Take `⟨h, ⟨h1, h2⟩, h3⟩` from `lim_pt l (cycZ T.F Ω l) (continuous_cycZ T.F Ω l) _ (h0.inter ((closed_fix T.F K').preimage hc)) g hd (fun n => ⟨T.GalL.pow_mem hg' _, by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(hk'' _).1 ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `(hl.out.odd_of_ne_two hD.l_odd).pow (n := n)`. Rewrite using `[map_mul, map_inv, map_pow, hm, pow_succ, pow_mul, hsq g, one_pow, one_mul, inv_mul_cancel]⟩)`. Establish `h4 : eta T h = 1` using `(hk' h).2 (hne h ⟨h1, h3⟩)`. Establish `h5` using `(hk'' _).2 h2`.
-
-Rewrite `h5` using `[map_mul, h4, mul_one, map_inv, inv_eq_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem eta_om (hD : D.Good) (K' : IntermediateField ℚ Ω)
     (hk' : ∀ g, eta T g = 1 ↔ resQ T.F g ∈ K'.fixingSubgroup) (hsq : ∀ g, eta T g ^ 2 = 1)
@@ -151,13 +149,11 @@ private theorem eta_om (hD : D.Good) (K' : IntermediateField ℚ Ω)
   rwa [map_mul, h4, mul_one, map_inv, inv_eq_one] at h5
 
 /- English proof (translation)
-Establish `e : (T.fr ∅).rt wAl g = chi D T.pr 0 (resQ T.F g) * (chi D T.pr 1 (resQ T.F g))⁻¹` using `by show (chi D T.pr 0 (resQ T.F g) * (chi D T.pr 1 (resQ T.F g))⁻¹) ^ (1 : ℤ) * (chi D T.pr 0 (resQ T.F g) * (chi D T.pr 2 (resQ T.F g))⁻¹) ^ (0 : ℤ) = _`. Rewrite using `[zpow_zero, zpow_one, mul_one]`. Establish `e' : (T.fr ∅).rt wAl g = chi D T.pr 2 (resQ T.F g) * (chi D T.pr 3 (resQ T.F g))⁻¹`. Rewrite using `[e]`. Generalize the expression as in `resQ T.F g = s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Consider the cases of `T.pr`. Use `show D.al s * D.Psi s * (D.Psi s)⁻¹ = D.al s * 1⁻¹`. Rewrite using `[inv_one, mul_one, mul_inv_cancel_right]`. Use `show D.al s * 1⁻¹ = D.al s * D.Psi s * (D.Psi s)⁻¹`. Rewrite using `[inv_one, mul_one, mul_inv_cancel_right]`.
+Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[eta_val]`. Prove the components needed by the constructor for the conclusion. Use `show residue c.O _ * residue c.O _ = residue c.O _`. Rewrite using `[← map_mul, ← Units.val_mul, e, inv_mul_cancel_right]`. Use `show residue c.O _ * residue c.O _ = residue c.O _`.
-
-Rewrite using `[← map_mul, ← Units.val_mul, e', inv_mul_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eta_mul (g : G T.F Ω) :
     eta T g * Raw.bar (chi D T.pr 1) (resQ T.F g) = Raw.bar (chi D T.pr 0) (resQ T.F g) ∧
@@ -182,7 +178,7 @@ private theorem eta_mul (g : G T.F Ω) :
     rw [← map_mul, ← Units.val_mul, e', inv_mul_cancel_right]
 
 /- English proof (translation)
-Rewrite using `[← h, ← mul_assoc, ← Units.val_mul, ← pow_two, hsq g, Units.val_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem eta_mul' (hsq : ∀ g, eta T g ^ 2 = 1) (g : G T.F Ω) {u v : ResidueField c.O} (h : eta T g * u = v) :
     eta T g * v = u := by
@@ -196,16 +192,16 @@ Both sides reduce to the same expression.
 private theorem etaL_app (g : T.GalL) : etaL T g = eta T g := rfl
 
 /- English proof (translation)
-Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.pow_apply, MonoidHom.one_apply, etaL_app, hsq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem etaL_sq (hsq : ∀ g, eta T g ^ 2 = 1) : etaL T ^ 2 = 1 := by
   refine MonoidHom.ext fun g => ?_
   rw [MonoidHom.pow_apply, MonoidHom.one_apply, etaL_app, hsq]
 
 /- English proof (translation)
-Simplify using `only [etaL_app]`. Use `match i with`. Consider the case `0 => exact ⟨1, fun g => eta_mul' T hsq g (eta_mul T g).1⟩`. Consider the case `1 => exact ⟨0, fun g => (eta_mul T g).1⟩`. Consider the case `2 => exact ⟨3, fun g => eta_mul' T hsq g (eta_mul T g).2⟩`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `3 => exact ⟨2, fun g => (eta_mul T g).2⟩`.
+A detailed English derivation is pending.
 -/
 private theorem etaL_perm (hsq : ∀ g, eta T g ^ 2 = 1) (i : Fin 4) : ∃ j, ∀ g : T.GalL,
     etaL T g * Raw.bar (chi D T.pr i) (resQ T.F g) = Raw.bar (chi D T.pr j) (resQ T.F g) := by
@@ -219,15 +215,13 @@ private theorem etaL_perm (hsq : ∀ g, eta T g ^ 2 = 1) (i : Fin 4) : ∃ j, �
 end
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl d T hT hO`. Assume the negation of the conclusion as `hne`. Establish `hne' : ∀ g ∈ T.G', resQ T.F g ∈ d.K'.fixingSubgroup` using `fun g hg => by_contra fun h => hne ⟨g, hg, h⟩`. Establish `hon : ∀ g : G T.F Ω, resQ T.F g ∈ d.K'.fixingSubgroup → T.rb wAl g = 1` using `fun g hg => by`. Rewrite using `[rb_le T hT]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `d.quad.on (resLe hT.le g) hg`. Establish `hoff : ∀ g : G T.F Ω, resQ T.F g ∉ d.K'.fixingSubgroup → T.rb wAl g = -1` using `fun g hg => by`. Rewrite using `[rb_le T hT]`. Conclude with `d.quad.off (resLe hT.le g) hg`. Establish `hn : (-1 : ResidueField d.c.O) ≠ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨g, -, hg⟩` from `hO.g3 wAl (by decide)`. Distinguish the cases in `h : resQ T.F g ∈ d.K'.fixingSubgroup`. Conclude with `absurd (hon g h) hg`. Rewrite `hg` using `[hoff g h]`. Conclude with `hg`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsq` using `eta_sq T hon hoff`. Establish `key` using `hO.g3' (etaL T) (etaL_sq T hsq) (fun g hg => by rw [etaL_app]; exact eta_om T d.ctx.1 d.K' (eta_iff T hon hoff hn) hsq hne' g g.2 hg) (etaL_perm T hsq)`. Take `⟨g, hg, hg'⟩` from `hO.g3 wAl (by decide)`. Establish `h1` using `etaL_app T ⟨g, hg⟩`. Rewrite `h1` using `[key, MonoidHom.one_apply]`.
-
-Apply `hg'` to reduce the goal to its premises. Rewrite using `[← eta_val, ← h1, Units.val_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cu.alNe : AlNe := by
   intro Ω _ _ _ l hl d T hT hO

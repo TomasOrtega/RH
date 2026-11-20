@@ -31,9 +31,9 @@ end Claims
 def PairIntK : Prop := BigC fun _ ch C b => PairIntAt ch C b
 
 /- English proof (translation)
-Take `⟨CF0, h⟩` from `h`. Use `⟨CF0, fun CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, h⟩` from `h CF hCF`. Use `⟨C0, fun ε C hC => ?_⟩` and prove the remaining obligations. Take `⟨x0, h⟩` from `h ε C hC`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨x0, fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch h1 h2 h3 => ?_⟩` and prove the remaining obligations. Conclude with `hQ F ch C _ (h D large₂ he hx Γ Pl0 T A Ks R F hS ch h1 h2 h3)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem BigC.mono {Q Q' : ChQ} (h : BigC Q)
     (hQ : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
@@ -48,11 +48,9 @@ theorem BigC.mono {Q Q' : ChQ} (h : BigC Q)
   exact hQ F ch C _ (h D large₂ he hx Γ Pl0 T A Ks R F hS ch h1 h2 h3)
 
 /- English proof (translation)
-Take `⟨CF0, h⟩` from `h`. Take `⟨CF0', h'⟩` from `h'`. Use `⟨max CF0 CF0', fun CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, h⟩` from `h CF ((le_max_left _ _).trans hCF)`. Take `⟨C0', h'⟩` from `h' CF ((le_max_right _ _).trans hCF)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max C0 C0', fun ε C hC => ?_⟩` and prove the remaining obligations. Take `⟨x0, h⟩` from `h ε C ((le_max_left _ _).trans hC)`. Take `⟨x0', h'⟩` from `h' ε C ((le_max_right _ _).trans hC)`. Use `⟨max x0 x0', fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch h1 h2 h3 => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `h D large₂ he ((le_max_left _ _).trans hx) Γ Pl0 T A Ks R F hS ch h1 h2 h3`.
-
-Conclude with `h' D large₂ he ((le_max_right _ _).trans hx) Γ Pl0 T A Ks R F hS ch h1 h2 h3`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem BigC.and {Q Q' : ChQ} (h : BigC Q) (h' : BigC Q') : BigC fun F ch C b => Q F ch C b ∧ Q' F ch C b := by
   obtain ⟨CF0, h⟩ := h

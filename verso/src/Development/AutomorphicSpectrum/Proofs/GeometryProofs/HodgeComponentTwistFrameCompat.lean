@@ -7,9 +7,9 @@ open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.Chart
 namespace GlobalTheory.CompanionTheory.Ar.TwistInterior
 
 /- English proof (translation)
-Use `(PrimeSpectrum.le_iff_specializes (genPt (Spec.map φ) : PrimeSpectrum R) q).1 ?_` and prove the remaining obligations. Introduce `a ha`. Establish `hm : φ.hom a ∈ IsLocalRing.maximalIdeal Ω` using `ha`. Establish `h0 : φ.hom a = 0`. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hm (isUnit_iff_ne_zero.2 hne)`. Establish `: a = 0` using `hφ (h0.trans (map_zero φ.hom).symm)`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genPt_specializes_of_injective {Ω : Type} [Field Ω] {R : CommRingCat.{0}} [IsDomain R]
     (φ : R ⟶ CommRingCat.of Ω) (hφ : Function.Injective φ.hom) (q : Spec R) :
@@ -25,13 +25,13 @@ theorem genPt_specializes_of_injective {Ω : Type} [Field Ω] {R : CommRingCat.{
   exact zero_mem _
 
 /- English proof (translation)
-Take `⟨u', hu'⟩` from `hu`. Use `haveI := hdom p`. Establish `h' : ξ' (IsLocalRing.closedPoint Ω) ⤳ p` using `hall p`. Set `φ : X'.presheaf.stalk p ⟶ CommRingCat.of Ω` to `X'.presheaf.stalkSpecializes h' ≫ Scheme.stalkClosedPointTo ξ'`. Set `ξp : Sp Ω ⟶ Spec (X'.presheaf.stalk p)` to `Spec.map φ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hξp : ξp ≫ X'.fromSpecStalk p = ξ'`. Simplify using `only [ξp, φ]`. Rewrite using `[Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk]`. Conclude with `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ'`. Establish `hgp : ∀ q, genPt ξp ⤳ q` using `genPt_specializes_of_injective φ (hgen.inj ⟨p, hall p⟩)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxu : ξp ≫ u' = x'`. Rewrite using `[← cancel_mono j', Category.assoc, hu', ← Category.assoc, hξp, hf']`. Establish `heq : u' ≫ Ψ.inv ≫ j = X'.fromSpecStalk p ≫ e.hom ≫ f`. Use `GlobalTheory.T.eq_of_eq_generic_projective R (Spec (X'.presheaf.stalk p)) W sW Ω ξp _ _ hproj hgp ?_` and prove the remaining obligations. Establish `h1 : ξp ≫ u' ≫ Ψ.inv ≫ j = x ≫ j` using `by rw [reassoc_of% hxu, reassoc_of% hx]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ξp ≫ X'.fromSpecStalk p ≫ e.hom ≫ f = x ≫ j` using `by rw [reassoc_of% hξp, reassoc_of% hξ, hf]`. Rewrite using `[h1, h2]`. Use `haveI : IsIso (e.hom.stalkMap p) := inferInstance`. Use `⟨inv (Spec.map (e.hom.stalkMap p)) ≫ u' ≫ Ψ.inv, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, heq, ← Scheme.SpecMap_stalkMap_fromSpecStalk_assoc, IsIso.inv_hom_id_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_transfer {X X' W W' V : Scheme.{0}} {Ω : Type} [Field Ω] {R : Type} [CommRing R]
     (e : X' ≅ X) (ξ : Sp Ω ⟶ X) (ξ' : Sp Ω ⟶ X') (hξ : ξ' ≫ e.hom = ξ)
@@ -67,13 +67,13 @@ end GlobalTheory.CompanionTheory.Ar.TwistInterior
 namespace GlobalTheory.CompanionTheory.Ar.TwistInterior
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O O' _ _ β β' Y Y' g Φ n S Ω _ K _ J _ y A A' e x x' hβ hβ' hΦ hξ hf hf' hfst hsnd _ _ _ z`. Establish `hΦ' : Φ.inv ≫ Xo.s = Xo.s` using `(Iso.inv_comp_eq Φ).2 hΦ.symm`. Set `ΦF : Xo.XF c ≅ Xo.XF c` to `{ hom := pullback.lift (pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) ≫ Φ.hom) (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)) (by rw [Category.assoc, hΦ, pullback.condition]) inv := pullback.lift (pullback.fst Xo.s (spMap (Interm …`. Establish `hxx : x ≫ ΦF.hom = x'`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ΦF, Category.assoc, pullback.lift_fst, hfst]`. Simplify using `only [ΦF, Category.assoc, pullback.lift_snd, hsnd]`. Take `⟨hjY, hA⟩` from `GlobalTheory.T.hodge_cpt_interior_iff E H D l Xo c O β Y S Ω K J y A (z ≫ e.hom) hβ`. Take `⟨hjY', hA'⟩` from `GlobalTheory.T.hodge_cpt_interior_iff E H D l Xo c O' β' Y' S Ω K J y A' z hβ'`. Establish `hc : centre (z ≫ e.hom) = e.hom (centre z)` using `rfl`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hA, hA', hc]`. Prove the components needed by the constructor for the conclusion. Conclude with `lift_transfer e A.ξ A'.ξ hξ A'.tie.gen A'.all (fun p => (A'.normal p).1) Y.s Y.proj A.f A'.f Y.j Y'.j ΦF x x' (by rw [← hxx, Category.assoc, Iso.hom_inv_id, Category.comp_id]) hf hf' (centre z)`. Introduce `hu`. Establish `key` using `lift_transfer e.symm A'.ξ A.ξ (by rw [← hξ, Iso.symm_hom, Category.assoc, Iso.hom_inv_id, Category.comp_id]) A.tie.gen A.all (fun p => (A.normal p).1) Y'.s Y'.proj A'.f A.f Y'.j Y.j ΦF.symm x' x (by rw [Iso.symm_inv, hxx]) hf' hf (e.hom (centre z)) hu`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : e.symm.hom (e.hom (centre z)) = centre z`. Rewrite using `[Iso.symm_hom, ← Scheme.Hom.comp_apply, e.hom_inv_id]`. Both sides reduce to the same expression. Rewrite `key` using `[hp]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem interior_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (O O' : Type) [CommRing O] [CommRing O'] (β : O →+* c.F) (β' : O' →+* c.F)

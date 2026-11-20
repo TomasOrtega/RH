@@ -18,17 +18,17 @@ open GlobalTheory.VB (degOfRank)
 namespace GlobalTheory.CurveDevissage
 
 /- English proof (translation)
-Use `isNoetherian_of_isProjOver hp` as an intermediate fact. Establish `hL : ∀ i, ((![N] : Fin 1 → LB V) i).IsLB` using `fun i => by fin_cases i; exact hN`. Use `QCoh.devissage V (fun F => 0 ≤ interNum k F ![N]) (fun F hF => (interNum_eq_zero_of_isZero k hF hL).ge) (fun S hS h₁ h₃ p₁ p₃ => ?_) (fun Z hZ _ G hG => ?_) F hF` and prove the remaining obligations. Rewrite using `[interNum_shortExact hS hL (finiteCohTwists_of_isProjOver (algebraMap_eq_strHom k V) _ hp) (finiteCohTwists_of_isProjOver (algebraMap_eq_strHom k V) _ hp)]`. Conclude with `add_nonneg p₁ p₃`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `isIntegral_red hZ` as an intermediate fact. Use `letI := algebraΓAlong k (redι Z)`. Establish `hi` using `appTop_algebraMap_along k (redι Z)`. Establish `hpZ : IsProjOver (strHom k (Scheme.IdealSheafData.vanishingIdeal Z).subscheme)`. Rewrite using `[← comp_strHom hi]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ProjSpace.isProjOver_comp_of_isClosedImmersion _ hp`. Establish `hM` using `LB.isLB_pull hN (redι Z)`. Establish `e : (fun i => ((![N] : Fin 1 → LB V) i).pull (redι Z)) = ![N.pull (redι Z)]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Establish `e' : (fun _ : Fin 1 => N.pull (redι Z)) = ![N.pull (redι Z)]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[interNum_pushforward_of_isClosedImmersion hi G hL, e]`. Establish `hdZ : topologicalKrullDim (Scheme.IdealSheafData.vanishingIdeal Z).subscheme ≤ 1` using `(redι Z).isClosedEmbedding.isInducing.topologicalKrullDim_le.trans hd`. Break down `hdZ.eq_or_lt with h1 | h1` into its components or cases. Rewrite using `[VB.interNum_one_eq_genRank_mul k _ hpZ h1 G _ hM]`. Use `mul_nonneg (Nat.cast_nonneg _) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `h _ (redι Z) hi h1` as an intermediate fact. Rewrite `this` using `[topSelf_def, e']`. Then use the resulting hypothesis. Use `(interNum_eq_zero_of_isProjOver (algebraMap_eq_strHom k _) G hpZ ?_ fun i => by fin_cases i; exact hM).ge` and prove the remaining obligations. Rewrite using `[Fintype.card_fin]`. Conclude with `(QCoh.suppDim_le G).trans_lt h1`.
+A detailed English derivation is pending.
 -/
 theorem interNum_one_nonneg {k : Type} [Field k] {V : Scheme.{0}} [Algebra k Γ(V, ⊤)]
     (hp : IsProjOver (strHom k V)) (hd : topologicalKrullDim V ≤ 1) {N : LB V} (hN : N.IsLB)
@@ -70,9 +70,9 @@ theorem interNum_one_nonneg {k : Type} [Field k] {V : Scheme.{0}} [Algebra k Γ(
       exact (QCoh.suppDim_le G).trans_lt h1
 
 /- English proof (translation)
-Introduce `p _ V _ hp hd N hN h`. Use `Twist.isFiniteQC_twist (F := structureModule V) hN` as an intermediate fact. Establish `h1` using `interNum_one_nonneg hp hd hN (fun Z i _ _ _ _ hZ => h Z i hZ) (twist (structureModule V) N) this`. Establish `h2` using `interNum_twist_cons (ZMod p) (structureModule V) (P := ![]) hN isEmptyElim`. Establish `h3 : chi (ZMod p) (twist (structureModule V) N) = chi (ZMod p) (toMod N)` using `chi_congr _ (Twist.unitTwistIso N)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : interNum (ZMod p) (twist (structureModule V) N) ![N] = chi (ZMod p) (twist (structureModule V) N) - chi (ZMod p) (structureModule V)` using `h2.trans (congrArg₂ (· - ·) (interNum_of_isEmpty _ _ _) (interNum_of_isEmpty _ _ _))`. Rewrite using `[degOfRank]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem degOfRank_nonneg : ∀ (p : ℕ) [Fact p.Prime] (V : Scheme.{0}) [Algebra (ZMod p) Γ(V, ⊤)], IsProjOver (strHom (ZMod p) V) → topologicalKrullDim V ≤ 1 → ∀ N : LB V, N.IsLB → (∀ (Z : Scheme.{0}) (i : Z ⟶ V) [IsClosedImmersion i] [IsIntegral Z] [Algebra (ZMod p) Γ(Z, ⊤)], topologicalKrullDim Z = 1 → 0 ≤ topSelfIntersection (ZMod p) (N.pull i) 1) → 0 ≤ degOfRank (ZMod p) (toMod N) 1 := by
   intro p _ V _ hp hd N hN h

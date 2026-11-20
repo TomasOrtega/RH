@@ -13,23 +13,21 @@ noncomputable section
 namespace GlobalTheory.RatDarbSurj
 
 /- English proof (translation)
-Establish `hA : Function.Injective (algebraMap F (AF F))` using `AdeleRing.algebraMap_injective (𝓞 F) F`. Use `haveI : Nontrivial (AF F) := hA.nontrivial`. Establish `hR : Function.Injective (inclR (F` using `F) (E := E) (AF F)) := Algebra.TensorProduct.includeRight_injective hA`. Set `e' : Matrix (Fin n) (Fin d) E →ₗ[F] (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F)` to `{ toFun := fun x => M.co.e (incM F x) map_add' := fun x x' => by`. Rewrite using `[← map_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `i j`. Simplify using `[incM, Matrix.map_apply]`. Use the proof step `map_smul' := fun c x => by`. Establish `h : incM F (c • x) = algebraMap F (AF F) c • incM F x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `only [incM, Matrix.map_apply, Matrix.smul_apply]`. Rewrite using `[Algebra.smul_def, map_mul, Algebra.smul_def]`. Simplify using `[inclR, Algebra.TensorProduct.algebraMap_apply]`. Rewrite using `[h, map_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `ext i <;> simp [Algebra.smul_def] }`. Establish `he'_apply : ∀ x, e' x = M.co.e (incM F x)` using `fun x => rfl`. Establish `he' : Function.Injective e'` using `fun x x' h => by`. Rewrite `h` using `[he'_apply, he'_apply]`. Establish `h2` using `M.co.e.injective h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Introduce a local definition for the expression.
 
-Use extensionality with `i j`. Conclude with `hR (congrFun (congrFun h2 i) j)`. Set `j : (Fin n × Fin d → F) × (Fin n × Fin d → F) →ₗ[F] (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F)` to `((Algebra.linearMap F (AF F)).compLeft (Fin n × Fin d)).prodMap ((Algebra.linearMap F (AF F)).compLeft (Fin n × Fin d))`. Establish `hj_apply : ∀ y z : Fin n × Fin d → F, j (y, z) = (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i))` using `fun y z => rfl`. Establish `hj : Function.Injective j`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨y, z⟩ ⟨y', z'⟩ h`. Rewrite `h` using `[hj_apply, hj_apply, Prod.mk.injEq]`. Use `Prod.ext (funext fun i => hA (congrFun h.1 i)) (funext fun i => hA (congrFun h.2 i))` and prove the remaining obligations. Establish `hle : LinearMap.range e' ≤ LinearMap.range j`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨y, z, h⟩` from `hM.rat x`. Conclude with `⟨(y, z), by rw [hj_apply, he'_apply, h]⟩`. Establish `hE : Module.finrank F E = 2` using `hB.cm.2.2.1`. Establish `hfin : Module.finrank F (LinearMap.range e') = Module.finrank F (LinearMap.range j)`. Rewrite using `[LinearMap.finrank_range_of_inj he', LinearMap.finrank_range_of_inj hj, Module.finrank_matrix, hE, Module.finrank_prod, Module.finrank_fintype_fun_eq_card]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [Fintype.card_prod, Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree. Establish `heq` using `Submodule.eq_of_le_of_finrank_eq hle hfin`. Establish `hmem : j (y, z) ∈ LinearMap.range e'` using `heq ▸ LinearMap.mem_range_self j (y, z)`. Take `⟨x, hx⟩` from `hmem`.
-
-Conclude with `⟨x, by rw [← he'_apply, hx, hj_apply]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rat_surj (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (hB : B.IsGood σ) (hM : M.IsGood B.ψ)

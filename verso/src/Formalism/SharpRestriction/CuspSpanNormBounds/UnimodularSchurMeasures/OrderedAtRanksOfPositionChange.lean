@@ -12,13 +12,11 @@ open Formalism.MainNotions.S Formalism.MainNotions.CayleySignature Formalism.Bas
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Take `⟨-, hH2, -⟩` from `Formalism.QuantumDeterminants.hpkFacts k r`. Use `set Hm := Formalism.QuantumDeterminants.Hpk k r with hHm`. Use `set Y : CayleySignature.Mat k r := (t : ℂ) • X with hYdef`. Establish `hY : Yᴴ * Hm + Hm * Y = 0`. Establish `h1 : Yᴴ = (t : ℂ) • Xᴴ` using `by simp [hYdef, Matrix.conjTranspose_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Xᴴ * Hm + Hm * X = 0` using `hX`. Rewrite using `[h1, hYdef, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, h2, smul_zero]`. Establish `hinv : Hm⁻¹ = Hm` using `Matrix.inv_eq_right_inv hH2`. Establish `hYh : Yᴴ = Hm * (-Y) * Hm⁻¹`. Rewrite using `[hinv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h1 : Yᴴ * Hm = -(Hm * Y)` using `eq_neg_of_add_eq_zero_left hY`. Combine the equalities or inequalities in the displayed calculation. Establish `hu : IsUnit Hm` using `⟨⟨Hm, Hm, hH2, hH2⟩, rfl⟩`. Establish `hdet : IsUnit (NormedSpace.exp Y).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (Matrix.isUnit_exp Y)`. Use `show (NormedSpace.exp Y)ᴴ * Hm * NormedSpace.exp Y = Hm`.
-
-Rewrite using `[← Matrix.exp_conjTranspose, hYh, Matrix.exp_conj _ _ hu, hinv, Matrix.exp_neg]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exp_lie_algebra_mem_unitary (k r : ℕ) (X : CayleySignature.Mat k r) (hX : InLieHpk k r X) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • X) ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) := by
@@ -46,9 +44,9 @@ theorem exp_lie_algebra_mem_unitary (k r : ℕ) (X : CayleySignature.Mat k r) (h
     _ = Hm := by rw [Matrix.nonsing_inv_mul _ hdet, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r` using `hg`. Establish `hh' : hᴴ * Formalism.QuantumDeterminants.Hpk k r * h = Formalism.QuantumDeterminants.Hpk k r` using `hh`. Use `show (g * h)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (g * h) = Formalism.QuantumDeterminants.Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.QuantumDeterminants.Hpk k r := by rw [hg', hh']`.
+A detailed English derivation is pending.
 -/
 theorem mat_mul_mem_UH_Hpk {k r : ℕ} {g h : CayleySignature.Mat k r} (hg : g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r))
     (hh : h ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) : g * h ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) := by
@@ -65,7 +63,7 @@ variable {k r : ℕ} {H H' : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ
   [InnerProductSpace ℂ H']
 
 /- English proof (translation)
-Apply `U.injective` to reduce the goal to its premises. Rewrite using `[hU g hg, U.apply_symm_apply, U.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem intertwiner_symm_apply (σ : CayleySignature.Mat k r → (H →L[ℂ] H)) (σ' : CayleySignature.Mat k r → (H' →L[ℂ] H')) (U : H ≃ₗᵢ[ℂ] H')
     (hU : ∀ g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), ∀ x, U (σ g x) = σ' g (U x))
@@ -75,9 +73,9 @@ theorem intertwiner_symm_apply (σ : CayleySignature.Mat k r → (H →L[ℂ] H)
   rw [hU g hg, U.apply_symm_apply, U.apply_symm_apply]
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨Uo, F, hO, hmem, hF, hEq⟩` from `hx g₀ hg₀`. Use `⟨Uo, fun g => U.symm (F g), hO, hmem, ?_, fun g hg hin => ?_⟩` and prove the remaining obligations. Conclude with `((U.symm.contDiff).restrict_scalars ℝ).comp_contDiffOn hF`. Establish `h1 : σ' g x' = F g` using `hEq g hg hin show σ g (U.symm x') = U.symm (F g)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[intertwiner_symm_apply σ σ' U hU g hin, h1]`.
+A detailed English derivation is pending.
 -/
 theorem smooth_vectors_intertwiner_symm (σ : CayleySignature.Mat k r → (H →L[ℂ] H)) (σ' : CayleySignature.Mat k r → (H' →L[ℂ] H')) (U : H ≃ₗᵢ[ℂ] H')
     (hU : ∀ g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), ∀ x, U (σ g x) = σ' g (U x))
@@ -91,9 +89,9 @@ theorem smooth_vectors_intertwiner_symm (σ : CayleySignature.Mat k r → (H →
     rw [intertwiner_symm_apply σ σ' U hU g hin, h1]
 
 /- English proof (translation)
-Set `e : H' ≃L[ℝ] H` to `{ toLinearEquiv := U.symm.toLinearEquiv.restrictScalars ℝ continuous_toFun := U.symm.continuous continuous_invFun := U.continuous }`. Establish `he : ∀ y, e y = U.symm y` using `fun y => rfl`. Distinguish the cases in `hd : DifferentiableAt ℝ f 0`. Conclude with `((e : H' →L[ℝ] H).hasFDerivAt.comp_hasDerivAt 0 hd.hasDerivAt).deriv`. Establish `hd' : ¬ DifferentiableAt ℝ (fun t => U.symm (f t)) 0` using `fun h => hd ((e.comp_differentiableAt_iff (f := f) (x := 0)).1 h)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[deriv_zero_of_not_differentiableAt hd, deriv_zero_of_not_differentiableAt hd', map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem deriv_isometry_symm_zero (U : H ≃ₗᵢ[ℂ] H') (f : ℝ → H') :
     deriv (fun t => U.symm (f t)) 0 = U.symm (deriv f 0) := by
@@ -109,11 +107,9 @@ theorem deriv_isometry_symm_zero (U : H ≃ₗᵢ[ℂ] H') (f : ℝ → H') :
     rw [deriv_zero_of_not_differentiableAt hd, deriv_zero_of_not_differentiableAt hd', map_zero]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons X w ih`. Establish `ihw` using `ih (fun Y hY => hw Y (List.mem_cons_of_mem _ hY))`. Use `show dsig σ X (dsigW σ w (U.symm x')) = U.symm (dsig σ' X (dsigW σ' w x'))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ihw]`. Unfold `dsig`. Rewrite using `[← deriv_isometry_symm_zero U]`. Use `congr 1`. Use function extensionality and compare the values at `t`.
-
-Conclude with `intertwiner_symm_apply σ σ' U hU _ (exp_lie_algebra_mem_unitary k r X (hw X List.mem_cons_self) t) _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem derivative_word_intertwiner_symm (σ : CayleySignature.Mat k r → (H →L[ℂ] H)) (σ' : CayleySignature.Mat k r → (H' →L[ℂ] H')) (U : H ≃ₗᵢ[ℂ] H')
     (hU : ∀ g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), ∀ x, U (σ g x) = σ' g (U x))
@@ -132,17 +128,13 @@ theorem derivative_word_intertwiner_symm (σ : CayleySignature.Mat k r → (H �
     exact intertwiner_symm_apply σ σ' U hU _ (exp_lie_algebra_mem_unitary k r X (hw X List.mem_cons_self) t) _
 
 /- English proof (translation)
-Establish `hs` using `fun {x' : H'} (hx : x' ∈ smoothVecs (k := k) (r := r) σ') => smooth_vectors_intertwiner_symm σ σ' U hU hx`. Take `⟨b1, b2, b3, C, Ws, hWs, hbd⟩` from `hB`. Establish `hsum : ∀ (Ws : List (List (CayleySignature.Mat k r))), (∀ w ∈ Ws, ∀ X ∈ w, InLieHpk k r X) → ∀ v' : H', (Ws.map fun w => ‖dsigW (k` using `k) (r := r) σ w (U.symm v')‖) = (Ws.map fun w => ‖dsigW (k := k) (r := r) σ' w v'‖) := by`. Introduce `Ws hWs v'`. Use `List.map_congr_left fun w hw => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[derivative_word_intertwiner_symm σ σ' U hU w (hWs w hw), U.symm.norm_map]`. Use `⟨⟨fun v hv w hw => ?_, fun c v hv => ?_, fun h hh m hm v hv => ?_, C, Ws, hWs, fun v hv => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show B (U.symm (v + w)) = _`. Rewrite using `[map_add]`. Conclude with `b1 _ (hs hv) _ (hs hw)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show B (U.symm (c • v)) = _`. Rewrite using `[map_smul]`. Conclude with `b2 c _ (hs hv)`. Use `show B (U.symm (σ' (h * m) v)) = _`. Rewrite using `[← intertwiner_symm_apply σ σ' U hU _ (mat_mul_mem_UH_Hpk hh.1 hm.1)]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `b3 h hh m hm _ (hs hv)`. Rewrite using `[← hsum Ws hWs v]`. Conclude with `hbd _ (hs hv)`. Take `⟨C', Ws', hW', hbd'⟩` from `hO`. Use `⟨C', Ws', hW', fun v hv => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hsum Ws' (fun w hw => (hW' w hw).2) v]`. Conclude with `hbd' _ (hs hv)`. Take `⟨x, hx, hxne⟩` from `hne`. Use `⟨U x, ?_, by rwa [U.symm_apply_apply]⟩` and prove the remaining obligations. Use `smooth_vectors_intertwiner_symm σ' σ U.symm (fun g hg x' => (intertwiner_symm_apply σ σ' U hU g hg x').symm) hx` as an intermediate fact.
-
-Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem bessel_map_transport_sigma (σ : CayleySignature.Mat k r → (H →L[ℂ] H)) (σ' : CayleySignature.Mat k r → (H' →L[ℂ] H')) (U : H ≃ₗᵢ[ℂ] H')
     (hU : ∀ g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), ∀ x, U (σ g x) = σ' g (U x))
@@ -177,13 +169,11 @@ theorem bessel_map_transport_sigma (σ : CayleySignature.Mat k r → (H →L[ℂ
     simpa using this
 
 /- English proof (translation)
-Take `⟨b1, b2, b3, C, Ws, hWs, hbd⟩` from `hB`. Use `⟨⟨fun v hv w hw => ?_, fun c v hv => ?_, fun h hh m hm v hv => ?_, C, Ws, hWs, fun v hv => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show A (B (v + w)) = _`. Rewrite using `[b1 v hv w hw, map_add]`. Use `show A (B (c • v)) = _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[b2 c v hv, map_smul]`. Use `show A (B (σ (h * m) v)) = _`. Rewrite using `[b3 h hh m hm v hv, map_smul, hA h hh]`. Use `show ‖A (B v)‖ ≤ _`. Rewrite using `[A.norm_map]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hbd v hv`. Take `⟨C', Ws', hW', hbd'⟩` from `hO`. Conclude with `⟨C', Ws', hW', fun v hv => by show ‖A (B v)‖ ≤ _`. Rewrite using `[A.norm_map]`. Conclude with `hbd' v hv⟩`.
-
-Take `⟨x, hx, hxne⟩` from `hne`. Conclude with `⟨x, hx, fun h => hxne (A.injective (by rw [h, map_zero]))⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bessel_map_transport_pi (σ : CayleySignature.Mat k r → (H →L[ℂ] H)) {Vp Vp' : Type} [NormedAddCommGroup Vp] [InnerProductSpace ℂ Vp]
     [NormedAddCommGroup Vp'] [InnerProductSpace ℂ Vp'] (z : Fin (2 * r + k + 1) → ℂ) (ψ : CayleySignature.Mat k r → ℂ)
@@ -244,9 +234,9 @@ def PositionChange : Prop :=
       ∃ x ∈ smoothVecs (k := k) (r := r) σ, B' x ≠ 0
 
 /- English proof (translation)
-Introduce `k r u v b hu hl hsome z c hz hT hc H _ _ _ σ hσ Vp _ _ _ π hπ`. Take `⟨z0, c0, hz0, hT0, hc0, H0, i1, i2, i3, σ0, hσ0, Vp0, j1, j2, j3, π0, hπ0, B0, hB0, hO0, hne0⟩` from `hsome`. Take `⟨π1, hπ1, B1, hB1, hO1, hne1⟩` from `hP k r u v b hu hl z0 z c0 c hz0 hT0 hc0 hz hT hc ⟨hπ.choose, hπ.choose_spec.1⟩ H0 σ0 hσ0 Vp0 π0 hπ0 B0 _ hB0 hO0 hne0`. Take `⟨U, hU⟩` from `hD k r _ _ hl H0 σ0 hσ0 H σ hσ`. Take `⟨hB2, hO2, hne2⟩` from `bessel_map_transport_sigma σ0 σ U hU z _ π1 B1 _ hB1 hO1 hne1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hA⟩` from `hC k r z u hz hT hu Vp0 π1 hπ1 Vp π hπ`. Take `⟨hB3, hO3, hne3⟩` from `bessel_map_transport_pi σ z _ π1 π A hA _ _ hB2 hO2 hne2`. Conclude with `⟨_, hB3, hO3, hne3⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem local_transport_of_position_change (hD : DiscreteSeriesUniqueUpToUnitaryEquiv) (hC : HighestWeightUnique) (hP : PositionChange) : LocalTransport := by
   intro k r u v b hu hl hsome z c hz hT hc H _ _ _ σ hσ Vp _ _ _ π hπ
@@ -260,7 +250,7 @@ theorem local_transport_of_position_change (hD : DiscreteSeriesUniqueUpToUnitary
   exact ⟨_, hB3, hO3, hne3⟩
 
 /- English proof (translation)
-The claim follows from `ordered_at_ranks_of_tower_hyp D X C h3 h4 (local_transport_of_position_change hD hC hP)`.
+A detailed English derivation is pending.
 -/
 theorem ordered_at_ranks_of_position_change (D : D7) (X : ThetaX D) (C : ℝ) (h3 : PointsLemma D X) (h4 : Step4 D X) (hD : DiscreteSeriesUniqueUpToUnitaryEquiv)
     (hC : HighestWeightUnique) (hP : PositionChange) : OrderedAtRanks D C :=

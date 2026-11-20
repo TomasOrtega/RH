@@ -10,18 +10,18 @@ noncomputable section
 namespace GlobalTheory.TypePlace
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.IntegralNormSmallIdeal.exists_place_of_embedding c`.
+A detailed English derivation is pending.
 -/
 theorem exists_place {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [NumberField E] (c : E →+* PadicAlgCl l) :
     ∃ v : HeightOneSpectrum (𝓞 E), ((l : ℕ) : 𝓞 E) ∈ v.asIdeal ∧ ∀ x : 𝓞 E, x ∈ v.asIdeal ↔ ‖c (x : E)‖ < 1 :=
   _root_.GlobalTheory.IntegralNormSmallIdeal.exists_place_of_embedding c
 
 /- English proof (translation)
-Use `letI : Algebra E (PadicAlgCl l) := a.toAlgebra`. Use `haveI : IsScalarTower ℚ E (PadicAlgCl l) := IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)`. Set `φ : E →ₐ[ℚ] PadicAlgCl l` to `b.toRatAlgHom`. Set `σ : E ≃ₐ[ℚ] E` to `φ.restrictNormal' E`. Establish `hσ : ∀ y, a (σ y) = b y` using `fun y => φ.restrictNormal_commutes E y`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : σ⁻¹ • P = P`. Use extensionality with `y`. Rewrite using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem, inv_inv, ha, hb]`. Establish `e : ((σ • y : 𝓞 E) : E) = σ (y : E)` using `rfl`. Rewrite using `[e, hσ]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : σ = 1` using `inv_eq_one.1 (hP _ h1)`. Use extensionality with `x`. Rewrite using `[← hσ, h2]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eq_of_stabilizer_trivial {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [NumberField E] [IsGalois ℚ E]
     (a b : E →+* PadicAlgCl l) (P : Ideal (𝓞 E)) (ha : ∀ x : 𝓞 E, x ∈ P ↔ ‖a (x : E)‖ < 1)
@@ -43,7 +43,7 @@ theorem eq_of_stabilizer_trivial {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [
   rfl
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : H.galE H.conj = R.cc` using `H.galE_conjE`. Rewrite `h1` using `[h, H.galE_one]`. Establish `h2 : (1 : ℤˣ) = -1` using `congrArg (fun g : R.GG => g.1.2) h1`. Conclude with `absurd h2 (by decide)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem conj_ne_one {R : Ranks} (H : Host R) : H.conj ≠ 1 := by
   intro h
@@ -53,11 +53,11 @@ theorem conj_ne_one {R : Ranks} (H : Host R) : H.conj ≠ 1 := by
   exact absurd h2 (by decide)
 
 /- English proof (translation)
-Introduce `D i k hk`. Establish `hs : (placesOver D.host.E (D.nd.l i)).ncard = finrank ℚ D.host.E`. Rewrite using `[hk]`. Conclude with `D.nd.g_split k`. Use `haveI : IsGalois ℚ D.host.E := D.host.hostE_isGalois`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality.
 
-Use `⟨fun w hw => ⟨(GlobalTheory.TypeDegOne.degree_one D i k hk).2 w hw, fun w' hc he => ?_⟩, fun a b hab => ?_⟩` and prove the remaining obligations. Substitute `he` using the available equality. Establish `hP` using `(GlobalTheory.Mem.Chr.splitsC_place (p := D.nd.l i) Fact.out hs w' hw).2.2`. Use `conj_ne_one D.host (inv_eq_one.1 (hP _ ?_))` and prove the remaining obligations. Use extensionality with `y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem, inv_inv]`. Conclude with `(hc y (D.host.conj • y) rfl).symm`. Take `⟨v, hv, ha⟩` from `exists_place a`. Establish `hP` using `(GlobalTheory.Mem.Chr.splitsC_place (p := D.nd.l i) Fact.out hs v hv).2.2`. Conclude with `eq_of_stabilizer_trivial a b v.asIdeal ha (fun x => (ha x).trans (hab x)) hP`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem type_prime_places : ∀ (D : D7) (i : D.nd.Loc) (k : Fin 2), D.nd.l i = D.host.g k → (∀ (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)), finrank ℚ_[D.nd.l i] ↥(D.nbr i w hw).Kw.1 = 1 ∧ ∀ w', IsConjPl D.host w w' → w' ≠ w) ∧ ∀ a b : D.host.E →+* Om (D.nd.l i), (∀ x : 𝓞 D.host.E, ‖a x‖ < 1 ↔ ‖b x‖ < 1) → a = b := by
   intro D i k hk

@@ -50,14 +50,14 @@ section Basic
 variable {M : Type*} [AddCommGroup M] [Module ℂ M] {MM : Type*} [AddCommGroup MM] [Module ℂ MM]
 
 /- English proof (translation)
-Simplify using `[sT]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sT_single (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M) (w : List (Fin n × Fin n))
     (c : Fin n) (v : V) : sT E V (Finsupp.single (w, c) v) = Pi.single c (wordE E w v) := by
   simp [sT]
 
 /- English proof (translation)
-Simplify using `[sθ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sθ_single (V : Submodule ℂ M) (EM : Fin n → Fin n → Module.End ℂ MM) (φ : MM) (ℓ : V →ₗ[ℂ] ℂ)
     (w : List (Fin n × Fin n)) (c : Fin n) (v : V) :
@@ -65,39 +65,39 @@ theorem sθ_single (V : Submodule ℂ M) (EM : Fin n → Fin n → Module.End �
   simp [sθ]
 
 /- English proof (translation)
-Simplify using `[eeV, prj, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tensorAction_apply (E : Fin n → Fin n → Module.End ℂ M) (f : Fin n → M) (d : Fin n) :
     eeV E f d = ∑ c, E c d (f c) := by
   simp [eeV, prj, LinearMap.sum_apply]
 
 /- English proof (translation)
-Simplify using `[eeV, prj, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tensorAction_apply_dual (E : Fin n → Fin n → Module.End ℂ MM) (f : Fin n → MM) (d : Fin n) :
     eeV E f d = ∑ c, E c d (f c) := by
   simp [eeV, prj, LinearMap.sum_apply]
 
 /- English proof (translation)
-Simplify using `[wordE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wordAction_cons (E : Fin n → Fin n → Module.End ℂ M) (p : Fin n × Fin n) (w : List (Fin n × Fin n))
     (x : M) : wordE E (p :: w) x = E p.1 p.2 (wordE E w x) := by
   simp [wordE]
 
 /- English proof (translation)
-Simplify using `[wordE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wordAction_cons_dual (E : Fin n → Fin n → Module.End ℂ MM) (p : Fin n × Fin n) (w : List (Fin n × Fin n))
     (x : MM) : wordE E (p :: w) x = E p.1 p.2 (wordE E w x) := by
   simp [wordE]
 
 /- English proof (translation)
-Proceed by induction on `x using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `single p v`. Take `⟨w, c⟩` from `p`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `d'`. Rewrite using `[sT_single, tensorAction_apply]`. Simplify using `only [sES, Finsupp.lsum_single, LinearMap.sum_apply, Finset.sum_apply, Finsupp.lsingle_apply, map_sum, sT_single, wordAction_cons]`. Rewrite using `[Finset.sum_eq_single d', Finset.sum_eq_single c]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `c' _ hc'`. Simplify using `[Pi.single_apply, hc']`. Simplify using the standard rewrite rules. Introduce `d _ hd`. Simplify using `[Pi.single_apply, Ne.symm hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -120,11 +120,11 @@ theorem sT_sES (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M) 
     · simp
 
 /- English proof (translation)
-Proceed by induction on `x using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `single p v`. Take `⟨w, c⟩` from `p`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `d'`. Rewrite using `[sθ_single, tensorAction_apply_dual]`. Simplify using `only [sES, Finsupp.lsum_single, LinearMap.sum_apply, Finset.sum_apply, Finsupp.lsingle_apply, map_sum, sθ_single, wordAction_cons_dual]`. Rewrite using `[Finset.sum_eq_single d', Finset.sum_eq_single c]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `c' _ hc'`. Simplify using `[Pi.single_apply, hc']`. Simplify using the standard rewrite rules. Introduce `d _ hd`. Simplify using `[Pi.single_apply, Ne.symm hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -147,9 +147,9 @@ theorem sθ_sES (V : Submodule ℂ M) (EM : Fin n → Fin n → Module.End ℂ M
     · simp
 
 /- English proof (translation)
-Proceed by induction on `x using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [Finsupp.mapDomain_add, map_add, Pi.add_apply, hx, hy]`. Consider the case `single p v`. Take `⟨w, c⟩` from `p`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finsupp.mapDomain_single, sT_single, sT_single, wordAction_cons]`. Distinguish the cases in `h : c' = c`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem tensorWord_prepend (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M) (a b : Fin n)
     (x : KS (n := n) V) (c' : Fin n) :
@@ -166,17 +166,15 @@ theorem tensorWord_prepend (E : Fin n → Fin n → Module.End ℂ M) (V : Submo
     · simp [Pi.single_apply, h]
 
 /- English proof (translation)
-Set `S : Submodule ℂ M` to `{ carrier := {m | ∀ c, Pi.single c m ∈ LinearMap.range (sT E V)} add_mem' := by`. Introduce `x y hx hy c`. Rewrite using `[Pi.single_add]`. Conclude with `add_mem (hx c) (hy c)`. Use the proof step `zero_mem' := by intro c; simp`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `smul_mem' := by`. Introduce `r x hx c`. Rewrite using `[Pi.single_smul']`. Conclude with `Submodule.smul_mem _ r (hx c) }`. Establish `hVS : V ≤ S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `v hv c`. Use `⟨Finsupp.single ([], c) ⟨v, hv⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[sT_single]`. Simplify using `[wordE]`. Establish `hst : ∀ a b, ∀ v ∈ S, E a b v ∈ S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `a b m hm c`. Take `⟨x, hx⟩` from `hm c`. Use `⟨Finsupp.mapDomain (fun p : List (Fin n × Fin n) × Fin n => ((a, b) :: p.1, p.2)) x, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c'`. Rewrite using `[tensorWord_prepend, hx]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : c' = c`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Establish `hgen : genSub E V ≤ S` using `sInf_le ⟨hVS, hst⟩`.
-
-Establish `hmem : f ∈ LinearMap.range (sT E V)`. Rewrite using `[← Finset.univ_sum_single f]`. Conclude with `Submodule.sum_mem _ fun c _ => hgen (hf c) c`. Conclude with `hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sT_surj (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M) (f : Fin n → M)
     (hf : ∀ c, f c ∈ genSub E V) : ∃ x, sT E V x = f := by

@@ -15,15 +15,13 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a N : ℕ}
 open PExpFin in
 
 /- English proof (translation)
-Use `set y := Matrix.GeneralLinearGroup.map (pInf E) g`. Use `set k := Matrix.GeneralLinearGroup.map (pFin E) g`. Establish `hg : g = infGL E N y * finGL E N k` using `(infGL_mul_finGL g).symm`. Establish `e : ∀ t, aT E N r t * g = g * infGL E N (y⁻¹ * aInf E N r t * y)`. Introduce `t`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hg, aT, ← mul_assoc, ← map_mul]`. Use `congr 2`. Use `group`. Use `_ = g * infGL E N (y⁻¹ * aInf E N r t * y) := by`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, map_mul, mul_assoc, mul_assoc, infGL_comm, mul_assoc]`. Establish `e2 : (fun t : ℝ => F.1 (aT E N r t * g)) = chart F.1 g ∘ fun t : ℝ => toL (y⁻¹ * aInf E N r t * y).val`. Use function extensionality and compare the values at `t`. Rewrite using `[Function.comp_apply, chart_val, e]`. Rewrite using `[e2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(F.2 g).continuousOn.comp_continuous ?_ fun t => val_mem_invSet _` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun t : ℝ => (y⁻¹).val * Matrix.diagonal (fun (i : Fin N) (_ : InfinitePlace E) => Complex.exp (if (i : ℕ) < r then (t : ℂ) else 0)) * y.val`. Establish `hi : ∀ (i : Fin N) (t : ℝ), (if (i : ℕ) < r then (t : ℂ) else 0) = (if (i : ℕ) < r then 1 else 0) * t`. Introduce `i t`. Apply the tactic sequence `split_ifs <;> simp`.
-
-Repeatedly rewrite using `[hi]`. Use `fun_prop`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_aT (F : Sm E N) (r : ℕ) (g : GA E N) : Continuous fun t : ℝ => F.1 (aT E N r t * g) := by
   set y := Matrix.GeneralLinearGroup.map (pInf E) g
@@ -52,13 +50,13 @@ theorem continuous_aT (F : Sm E N) (r : ℕ) (g : GA E N) : Continuous fun t : �
   fun_prop
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `h`. Take `⟨q, hq⟩` from `Submodule.exists_isCompl π.V`. Set `P` to `Submodule.projectionOnto π.V q hq`. Establish `hP : ∀ φ (hφ : φ ∈ π.V), P φ = ⟨φ, hφ⟩` using `fun φ hφ => Submodule.projectionOnto_apply_left hq ⟨φ, hφ⟩`. Establish `hs : ∑ _ : Fin 1, a = a` using `by simp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hs, fun _ => 1, fun i => ?_, π'.V.subtype ∘ₗ T.toLinearMap ∘ₗ P, fun φ hφ => ?_, fun φ hφ h0 => ?_, fun o φ hφ => ?_⟩` and prove the remaining obligations. Establish `e : -spehExp 1 i + a * spehExp 1 i = 0` using `by simp [spehExp]`. Rewrite using `[e]`. Conclude with `⟨fun _ _ _ => rfl, fun _ => by simp [HChar.val, HChar.locK], fun _ => by simp [HChar.inf]⟩`. Rewrite using `[show (fun _ : Fin 1 => π'.twist 1) = fun _ => π' from funext fun _ => π'.twist_one, indForms_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(T (P φ)).2`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.subtype_apply, LinearEquiv.coe_coe, hP φ hφ] at h0`. Establish `h1 : T ⟨φ, hφ⟩ = 0` using `Subtype.ext h0`. Establish `h2 : (⟨φ, hφ⟩ : π.V) = 0` using `T.injective (h1.trans T.map_zero.symm)`. Conclude with `congrArg Subtype.val h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.subtype_apply, LinearEquiv.coe_coe, hP φ hφ, hP _ (π.stable o φ hφ)]`. Establish `e : (⟨act o φ, π.stable o φ hφ⟩ : π.V) = π.op o ⟨φ, hφ⟩` using `rfl`. Rewrite using `[e, hT]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ascEmb_one {π π' : CuspSub E a} (h : π.Iso π') : AscEmb π.V π' 1 := by
   obtain ⟨T, hT⟩ := h
@@ -88,19 +86,19 @@ end PDich
 
 open PExpFin PDich in
 /- English proof (translation)
-Introduce `E _ _ _ N hN V hV`. Take `⟨-, -, -, hDct⟩` from `hD E N`. Distinguish the cases in `hex : ∃ r, 0 < r ∧ r < N ∧ ∃ φ ∈ V, An.ctn r φ.1 ≠ 0`. Use `right`. Take `⟨r, hr, hrN, φ, hφ, hne⟩` from `hex`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hct, -⟩` from `hDct φ (hV.aut φ hφ) r hr hrN`. Establish `hcont : ∀ g, Continuous fun t => An.ctn r φ.1 (aT E N r t * g)`. Set `_ : MeasurableSpace (BlockIx N r → Ad E)` to `_root_.borel _`. Establish `_ : BorelSpace (BlockIx N r → Ad E)` using `⟨rfl⟩`. Take `⟨μ, 𝓕, hμ, h𝓕, e⟩` from `hct`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF, -⟩` from `GlobalTheory.CompanionTheory.CTSmooth.ct_smooth E N r φ (hV.aut φ hφ).left (hV.aut φ hφ).level μ 𝓕 hμ h𝓕`. Establish `e2 : An.ctn r φ.1 = F.1` using `e.trans (funext fun g => (hF g).symm)`. Introduce `g`. Rewrite using `[e2]`. Conclude with `PDich.continuous_aT F r g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, hp, hk, hroot⟩` from `hK (GA E N) (aT E N r) (An.ctn r φ.1) (fun u v => aT_add r u v) hcont (hT E N φ (hV.aut φ hφ) r hr hrN _ hct)`. Establish `hdeg : 0 < p.degree` using `hp.degree_pos.2 fun h1 => hne (funext fun g => by`. Use `hk g` as an intermediate fact. Rewrite `this` using `[h1]`. Simplify `this)` using `[aT_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `Complex.exists_root hdeg`. Take `⟨c, -, F, hF, hF0, hFe⟩` from `hroot z hz`. Conclude with `⟨r, hr, hrN, c, φ, hφ, An.ctn r φ.1, hct, F, hF, hF0, hFe⟩`. Use `left push Not at hex`. Establish `hcusp : ∀ φ ∈ V, IsCuspForm φ` using `fun φ hφ => ⟨hV.aut φ hφ, by`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `r hr hrN inst1 inst2 μ 𝓕 hμ hF g`. Take `rfl : inst1 = _root_.borel _` from `inst2.measurable_eq`. Take `⟨c, -, e⟩` from `(hDct φ (hV.aut φ hφ) r hr hrN).2 _ ⟨μ, 𝓕, hμ, hF, rfl⟩`. Use `congrFun e g` as an intermediate fact. Rewrite `this` using `[hex r hr hrN φ hφ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify `this⟩` using `[PositivityTheory.Affgl.CT.ct]`. Set `π : CuspSub E N` to `⟨V, hcusp, hV.stable, hV.ne_bot, hV.irred⟩`. Establish `hn : IsNormalised π` using `fun φ hφ => (hV.sqInt φ hφ).1`. Conclude with `⟨π, GlobalTheory.SpehPair.isUnitary_of_isNormalised hn, hn, fun π' hiso => ascEmb_one hiso⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dich_of (hD : Dict) (hT : FinTr) (hK : KillPoly) : Dich := by
   intro E _ _ _ N hN V hV

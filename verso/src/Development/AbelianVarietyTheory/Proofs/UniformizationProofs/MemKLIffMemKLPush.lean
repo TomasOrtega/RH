@@ -23,19 +23,17 @@ variable {S S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} {A' : Over S'} [GrpObj 
   {L : LB A.left} {L' : LB A'.left}
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hw`. Use `replace hw := (ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGen_iff w).1 hw`. Introduce `p`. Take `⟨V, hV, c, hc⟩` from `hx p`. Use `⟨V, hV, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `T : Over S` to `Over.mk (T'.hom ≫ f)`. Set `T₂ : Over S'` to `Over.mk ((fst T A).left ≫ T'.hom)`. Establish `sq : (snd T A).left ≫ A.hom = ((fst T A).left ≫ T'.hom) ≫ f` using `pullback.condition.symm.trans (Category.assoc _ _ _).symm`. Set `a : T₂ ⟶ T'` to `Over.homMk (fst T A).left rfl`. Set `b : T₂ ⟶ A'` to `Over.homMk (h.1.lift _ _ sq) (h.1.lift_snd _ _ _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hb : b.left ≫ φ = (snd T A).left` using `h.1.lift_fst _ _ _`. Establish `k₁ : (lift a b).left ≫ (fst T' A').left = (fst T A).left` using `congrArg (fun q => q.left) (lift_fst a b)`. Establish `k₂ : (lift a b).left ≫ (snd T' A').left ≫ φ = (snd T A).left` using `(Category.assoc _ _ _).symm.trans ((congrArg (fun q => q.left ≫ φ) (lift_snd a b)).trans hb)`. Establish `k₃ : (lift a b).left ≫ ((fst T' A' ≫ x) * snd T' A').left ≫ φ = ((fst T A ≫ pushPt h.1.w x) * snd T A).left`. Establish `e : lift a b ≫ ((fst T' A' ≫ x) * snd T' A') = (a ≫ x) * b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonObj.comp_mul, lift_fst_assoc, lift_snd]`. Set `j : Over.mk (T₂.hom ≫ f) ⟶ T ⊗ A` to `Over.homMk (𝟙 _) ((Category.id_comp _).trans ((Over.w (snd T A)).symm.trans sq))`. Establish `e₁` using `h.2 T₂ (a ≫ x) b (j ≫ fst T A ≫ pushPt h.1.w x) (j ≫ snd T A) ((Category.id_comp _).trans (Category.assoc _ _ _).symm) ((Category.id_comp _).trans hb.symm)`. Rewrite `e₁` using `[← MonObj.comp_mul, ← e]`. Conclude with `(Category.assoc _ _ _).symm.trans (e₁.symm.trans (Category.id_comp _))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Take `⟨n, hn⟩ : ∃ n : ((fst T A).left ⁻¹ᵁ V).toScheme ⟶ ((fst T' A').left ⁻¹ᵁ V).toScheme, n ≫ ((fst T' A').left ⁻¹ᵁ V).ι = ((fst T A).left ⁻¹ᵁ V).ι ≫ (lift a b).left` from `⟨IsOpenImmersion.lift _ (((fst T A).left ⁻¹ᵁ V).ι ≫ (lift a b).left) (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(congrArg (fun q => q y.1 ∈ V) k₁).mpr y.2), IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨c₁, h₁⟩` from `gen_chartPull (chartPullIn L' _ _ _) c hc`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c₂, h₂, -⟩` from `exists_up hw hL hL' c₁ h₁`. Use `gen_chartPull (chartPullOut L _ _ _ _ fun k => ?_) _ (ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen _ _ _ c₂ h₂ n)` and prove the remaining obligations. Use `show n ≫ (_ ≫ _) ≫ φ = _`. Rewrite using `[Category.assoc, ← Category.assoc n, hn, Category.assoc]`. Use `fin_cases k`.
-
-Use `exacts [congrArg (_ ≫ ·) k₃, congrArg (_ ≫ ·) k₂]`.
+A detailed English derivation is pending.
 -/
 theorem memKL_push (h : IsGrpPullback A' A f φ) (hL : L.IsLB) (hL' : L'.IsLB) (hw : LBIso L' (L.pull φ))
     {T' : Over S'} (x : T' ⟶ A') (hx : MemKL A' L' x) : MemKL A L (pushPt h.1.w x) := by
@@ -81,7 +79,7 @@ theorem memKL_push (h : IsGrpPullback A' A f φ) (hL : L.IsLB) (hL' : L'.IsLB) (
 end
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ h hL hL' hw _ x` and use `⟨memKL_push h hL hL' hw x, memKL_of_push h hL hL' hw x⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem memKL_iff_memKL_push : ∀ (S S' : Scheme.{0}) (f : S' ⟶ S) (A : Over S) (A' : Over S') [GrpObj A] [GrpObj A'] (φ : A'.left ⟶ A.left) (L : LB A.left) (L' : LB A'.left) (h : IsGrpPullback A' A f φ), L.IsLB → L'.IsLB → LBIso L' (L.pull φ) → ∀ (T' : Over S') (x : T' ⟶ A'), GlobalTheory.MemKL A' L' x ↔ GlobalTheory.MemKL A L (pushPt h.1.w x) :=
   fun _ _ _ _ _ _ _ _ _ _ h hL hL' hw _ x => ⟨memKL_push h hL hL' hw x, memKL_of_push h hL hL' hw x⟩

@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Establish `hk : IsUnit ((↑(l ^ k) : ℕ) : Γ(S, ⊤))`. Rewrite using `[Nat.cast_pow]`. Conclude with `hl.pow k`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (trHl l p w n i (pullHl l (sch.map p) n i x)).1 k = (d • x).1 k`. Rewrite using `[hHl l n i p w hw hl _ k]`. Conclude with `hDeg (l ^ k) n i p w d hw hk hd (x.1 k)`.
+A detailed English derivation is pending.
 -/
 private theorem trHl_pullHl (hHl : TrHl) (hDeg : TrDeg) (l : ℕ) [Fact l.Prime] (n i : ℤ) {Z S : Scheme.{0}} (p : Z ⟶ S)
     [IsFinite p] (w : Wt Z) (d : ℤ) (hw : IsWt p w) (hl : IsUnit (l : Γ(S, ⊤))) (hd : w.push p = Wt.const S d)
@@ -22,11 +22,11 @@ private theorem trHl_pullHl (hHl : TrHl) (hDeg : TrDeg) (l : ℕ) [Fact l.Prime]
   exact hDeg (l ^ k) n i p w d hw hk hd (x.1 k)
 
 /- English proof (translation)
-Introduce `hHl hDeg l _ n i Z S p _ w d hw hl hd`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `z`. Unfold `trHQ pullHQ`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul a y`. Rewrite using `[LinearMap.comp_apply, LinearMap.baseChange_tmul, LinearMap.baseChange_tmul, trHl_pullHl hHl hDeg l n i p w d hw hl hd y]`. Simplify using `only [TensorProduct.tmul_smul, LinearMap.smul_apply, LinearMap.id_apply]`. Conclude with `(Int.cast_smul_eq_zsmul ℚ_[l] d _).symm`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add u v hu hv`. Simplify using `only [map_add] at hu hv ⊢`. Rewrite using `[hu, hv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.trDegQ_of :
     TrHl → TrDeg → TrDegQ := by

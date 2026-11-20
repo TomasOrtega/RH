@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory.SummableExpNegAbsSum
 
 /- English proof (translation)
-Establish `h : Summable fun n : ℕ ↦ Real.exp (-(n : ℝ))` using `Real.summable_exp_neg_nat`. Use `Summable.of_nat_of_neg ?_ ?_` and prove the remaining obligations. Simplify using `using h`. Simplify using `using h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem summable_int : Summable fun n : ℤ ↦ Real.exp (-|(n : ℝ)|) := by
   have h : Summable fun n : ℕ ↦ Real.exp (-(n : ℝ)) := Real.summable_exp_neg_nat
@@ -12,13 +12,11 @@ theorem summable_int : Summable fun n : ℤ ↦ Real.exp (-|(n : ℝ)|) := by
   · simpa using h
 
 /- English proof (translation)
-Use `set g : ℤ → ℝ := fun n ↦ Real.exp (-|(n : ℝ)|) with hg`. Establish `hgpos : ∀ n, 0 ≤ g n` using `fun n => (Real.exp_pos _).le`. Establish `hgs : Summable g` using `summable_int`. Establish `hprod : ∀ m : ι → ℤ, Real.exp (-∑ i : ι, |(↑(m i) : ℝ)|) = ∏ i : ι, g (m i)`. Introduce `m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hg]`. Rewrite using `[← Real.exp_sum, Finset.sum_neg_distrib]`. Repeatedly rewrite using `[hprod]`. Use `summable_of_sum_le (c := ∏ _i : ι, ∑' n : ℤ, g n) (fun m => Finset.prod_nonneg fun i _ => hgpos _) fun s => ?_` and prove the remaining obligations. Use `set T : ι → Finset ℤ := fun i => s.image (fun m : ι → ℤ => m i) with hT`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsub : s ⊆ Fintype.piFinset T`. Introduce `m hm`. Rewrite using `[Fintype.mem_piFinset]`. Introduce `i`. Conclude with `Finset.mem_image_of_mem _ hm`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_le_prod (fun i _ => Finset.sum_nonneg fun _ _ => hgpos _) fun i _ => ?_` and prove the remaining obligations. Conclude with `hgs.sum_le_tsum _ fun _ _ => hgpos _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem summable_exp_neg_sum_abs {ι : Type} [inst : Fintype ι] :
     Summable fun (m : ι → ℤ) ↦ Real.exp (-∑ i : ι, |(↑(m i) : ℝ)|) := by

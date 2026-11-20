@@ -17,9 +17,9 @@ open GlobalTheory.ZM
 namespace GlobalTheory.PELFrom
 
 /- English proof (translation)
-Take `⟨n, f, hf⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.1 h`. Establish `hc : Countable (MvPolynomial (Fin n) ℤ)`. Rewrite using `[← Cardinal.mk_le_aleph0_iff]`. Use `(MvPolynomial.cardinalMk_le_max).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hf.countable`.
+A detailed English derivation is pending.
 -/
 theorem countable_of_finiteType (o : Type) [CommRing o] (h : Algebra.FiniteType ℤ o) : Countable o := by
   obtain ⟨n, f, hf⟩ := Algebra.FiniteType.iff_quotient_mvPolynomial''.1 h
@@ -30,13 +30,13 @@ theorem countable_of_finiteType (o : Type) [CommRing o] (h : Algebra.FiniteType 
   exact hf.countable
 
 /- English proof (translation)
-Introduce `hL _ E _ _ _ H D g J _ a w w' bas _ _ _ _ hcl N' o _ b em ρ _ hb S s t τ hτ K _ _ x`. Take `⟨β', hβ'⟩` from `Spec.map_surjective (x ≫ s)`. Take `⟨β, hβ⟩ : ∃ β : o →+* K, x ≫ s = spMap β` from `⟨β'.hom, hβ'.symm⟩`. Take `⟨tx, htx⟩` from `GlobalTheory.T.exists_thetaLevelAbelianScheme_pullback o g (N' ^ 2) J b S (Sp K) s (spMap β) x t hβ`. Take `⟨τx, hτx⟩` from `GlobalTheory.PELPull.isPEL_pull E H D g (N' ^ 2) J a bas o b ρ S (Sp K) s (spMap β) x t tx τ hβ htx hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨K₀, β₀, t₀, hβ₀, hcount, -, ht₀⟩` from `GlobalTheory.T.thetaLevel_object_descends_fg_subfield o g (N' ^ 2) J b K β tx`. Use `haveI : Countable K₀ := hcount (countable_of_finiteType o hb.2.1)`. Establish `hcomp : spMap β = spMap K₀.subtype ≫ spMap β₀`. Rewrite using `[← hβ₀, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨τ₀, hτ₀⟩` from `GlobalTheory.T.pelStructure_descends_field_extension hL E H D g (N' ^ 2) J a bas o b ρ K₀ K K₀.subtype β₀ (spMap β) t₀ tx τx hcl hcomp ht₀ hτx`. Take `⟨-, j, hj⟩` from `GlobalTheory.T.exists_ringHom_complex_comp_eq_of_countable_field o em K₀ β₀ hb.1 hb.2.1 hb.2.2`. Establish `hjc : spMap j ≫ spMap β₀ = spMap em`. Rewrite using `[← hj, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨tc, htc⟩` from `GlobalTheory.T.exists_thetaLevelAbelianScheme_pullback o g (N' ^ 2) J b (Sp K₀) (Sp ℂ) (spMap β₀) (spMap em) (spMap j) t₀ hjc`. Establish `hc` using `GlobalTheory.PELPull.isPEL_pull E H D g (N' ^ 2) J a bas o b ρ (Sp K₀) (Sp ℂ) (spMap β₀) (spMap em) (spMap j) t₀ tc τ₀ hjc htc hτ₀`. Unfold `FromC`. Rewrite using `[hβ]`. Conclude with `⟨K₀, inferInstance, β₀, K₀.subtype, j, t₀, tx, tc, hj, hcomp, htx, ht₀, htc, hc⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fromC_of_isPEL : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (g : ℕ) (J : Type) [Finite J] (a : J → 𝓞 E) (w w' : J) (bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] D.La), 1 ≤ D.p + D.q → IsSympBasis D bas → a w = H.w0 → a w' = H.bar H.w0 → Subring.closure (Set.range a) = ⊤ → ∀ (N' : ℕ) (o : Type) [CommRing o] (b : TBase o (N' ^ 2)) (em : o →+* ℂ) (ρ : o), em ρ = H.rt0 → ArBase em → ∀ (S : Scheme.{0}) (s : S ⟶ Sp o) (t : TObj g (N' ^ 2) J b s) (τ : SAB H S), IsPEL D a bas ρ t τ → ∀ (K : Type) [Field K] [CharZero K] (x : Sp K ⟶ S), FromC em (PELClass (b := b) D a bas ρ em) t x := by
   intro hL _ E _ _ _ H D g J _ a w w' bas _ _ _ _ hcl N' o _ b em ρ _ hb S s t τ hτ K _ _ x

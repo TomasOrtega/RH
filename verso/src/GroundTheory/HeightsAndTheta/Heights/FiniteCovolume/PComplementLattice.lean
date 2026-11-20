@@ -9,7 +9,7 @@ open NumberField GroundTheory.Automorphic Module
 noncomputable section
 
 /- English proof (translation)
-Use `⟨fun k hk x y hxy => ?_⟩` and prove the remaining obligations. Establish `hk' : (k : K) ≠ 0` using `Nat.cast_ne_zero.2 hk`. Establish `e : (k : K) • x = (k : K) • y`. Simplify `hxy` using `only [Nat.cast_smul_eq_nsmul]`. Conclude with `smul_right_injective V hk' e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isAddTorsionFree_of_module (K V : Type*) [Field K] [CharZero K] [AddCommGroup V]
     [Module K V] : IsAddTorsionFree V := by
@@ -20,9 +20,9 @@ theorem isAddTorsionFree_of_module (K V : Type*) [Field K] [CharZero K] [AddComm
   exact smul_right_injective V hk' e
 
 /- English proof (translation)
-Establish `h2 : H.toIntSubmodule.FG`. Use `Submodule.fg_of_fg_map_injective φ.toIntLinearMap hφ ?_` and prove the remaining obligations. Establish `: H.toIntSubmodule.map φ.toIntLinearMap = (H.map φ).toIntSubmodule`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `(Submodule.fg_iff_addSubgroup_fg _).2 hH`. Conclude with `(Submodule.fg_iff_addSubgroup_fg _).1 h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fg_of_fg_map_of_injective {A B : Type*} [AddCommGroup A] [AddCommGroup B]
     {H : AddSubgroup A} (φ : A →+ B) (hφ : Function.Injective φ) (hH : (H.map φ).FG) : H.FG := by
@@ -44,9 +44,7 @@ variable {W : Type*} [AddCommGroup W] [Module E W]
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `hk : La.relIndex (dualLattice h La) • y ∈ La`. Use `AddSubgroup.nsmul_index_mem (La.addSubgroupOf (dualLattice h La)) ⟨y, hy⟩` as an intermediate fact. Conclude with `AddSubgroup.mem_addSubgroupOf.1 this`. Take `⟨c, hc⟩` from `Nat.dvd_factorial (Nat.pos_of_ne_zero hLa.index_ne_zero) hLa.index_le`. Rewrite using `[hc, mul_comm, ← smul_smul]`.
-
-Conclude with `La.nsmul_mem hk c`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factorial_nsmul_mem_of_mem_dual {h : HermitianForm F E W} {D : ℕ} {La : AddSubgroup W}
     (hLa : IsDIntegral h D La) {y : W} (hy : y ∈ dualLattice h La) : D.factorial • y ∈ La := by
@@ -58,49 +56,45 @@ theorem factorial_nsmul_mem_of_mem_dual {h : HermitianForm F E W} {D : ℕ} {La 
   exact La.nsmul_mem hk c
 
 /- English proof (translation)
-Introduce `v₀ w₀ hvw h' hh' D n hn`. Use `⟨(D.factorial * n) ^ (finrank ℚ E * finrank E W), ?_⟩` and prove the remaining obligations. Introduce `La hLa hdec`. Use `set P : AddSubgroup (hypComplement h v₀ w₀) := La.comap (hypComplement h v₀ w₀).subtype.toAddMonoidHom with hP`. Take `⟨hvv, hww, hvw1⟩` from `hvw`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hwv1 : h.toSesq w₀ v₀ = 1`. Rewrite using `[← h.isSymm.eq v₀ w₀, hvw1, map_one]`. Establish `hsymm0 : ∀ x y : W, h.toSesq x y = 0 → h.toSesq y x = 0` using `fun x y hxy => by`. Rewrite using `[← h.isSymm.eq x y, hxy, map_zero]`. Establish `memP : ∀ x : (hypComplement h v₀ w₀), x ∈ P ↔ (x : W) ∈ La` using `fun x => Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `π₀ : W →ₗ[E] W` to `LinearMap.id - (h.toSesq w₀).smulRight v₀ - (h.toSesq v₀).smulRight w₀`. Establish `hπ₀ : ∀ x, π₀ x = x - h.toSesq w₀ x • v₀ - h.toSesq v₀ x • w₀` using `fun x => rfl`. Establish `hπ₀mem : ∀ x, π₀ x ∈ (hypComplement h v₀ w₀)`. Introduce `x`. Rewrite using `[hπ₀, mem_hypComplement]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> simp only [map_sub, map_smul, smul_eq_mul, hvv, hww, hvw1, hwv1] <;> ring`. Establish `hfix : ∀ y ∈ (hypComplement h v₀ w₀), π₀ y = y` using `fun y hy => by`. Rewrite `hy` using `[mem_hypComplement]`. Rewrite using `[hπ₀, hy.1, hy.2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hπv : π₀ v₀ = 0`. Rewrite using `[hπ₀, hwv1, hvv]`. Simplify using the standard rewrite rules. Establish `hπw : π₀ w₀ = 0`. Rewrite using `[hπ₀, hww, hvw1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hz : ∀ x ∈ La, ∃ a b : E, a • v₀ ∈ La ∧ b • w₀ ∈ La ∧ n • x - a • v₀ - b • w₀ ∈ (hypComplement h v₀ w₀) ∧ n • x - a • v₀ - b • w₀ ∈ La ∧ n • π₀ x = n • x - a • v₀ - b • w₀`. Introduce `x hx`. Take `⟨a, ha, b, hb, hmem⟩` from `hdec x hx`. Express the relevant statement in the definitionally equal form `a • v₀ ∈ La at ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `b • w₀ ∈ La at hb`. Use `⟨a, b, ha, hb, hmem, La.sub_mem (La.sub_mem (La.nsmul_mem hx n) ha) hb, ?_⟩` and prove the remaining obligations. Rewrite using `[← hfix _ hmem, map_sub, map_sub, map_nsmul, map_smul, map_smul, hπv, hπw]`. Simplify using the standard rewrite rules. Establish `hPlat : IsLattice E P`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun a x hx => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[memP]`. Conclude with `hLa.isLattice.smul_mem a _ hx`. Use `fg_of_fg_map_of_injective (hypComplement h v₀ w₀).subtype.toAddMonoidHom Subtype.val_injective ?_` and prove the remaining obligations. Conclude with `fg_of_le_fg (AddSubgroup.map_comap_le _ _) hLa.isLattice.fg`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `π : W →ₗ[E] (hypComplement h v₀ w₀)` to `π₀.codRestrict (hypComplement h v₀ w₀) hπ₀mem`. Establish `hrange : LinearMap.range π = ⊤` using `LinearMap.range_eq_top.2 fun y => ⟨y, Subtype.ext (hfix y y.2)⟩`. Rewrite using `[eq_top_iff, ← hrange, LinearMap.range_eq_map, ← hLa.isLattice.span_eq_top, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨a, b, -, -, -, hzLa, hkey⟩` from `hz x hx`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnE : (n : E) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Establish `hnx : (n : E) • π x ∈ P`. Rewrite using `[memP, Submodule.coe_smul_of_tower, Nat.cast_smul_eq_nsmul]`. Express the relevant statement in the definitionally equal form `n • π₀ x ∈ La`. Rewrite using `[hkey]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hzLa`. Establish `: π x = (n : E)⁻¹ • ((n : E) • π x)`. Rewrite using `[smul_smul, inv_mul_cancel₀ hnE, one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hnx)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPint : IsIntegralOn h' P` using `fun x hx y hy => by`. Rewrite using `[hh']`. Conclude with `hLa.integral _ hx _ hy`. Use `set N := D.factorial * n with hN`. Establish `hNpos : 0 < N` using `Nat.mul_pos (Nat.factorial_pos D) hn`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set G := dualLattice h' P with hG`. Establish `hPG : P ≤ G` using `fun x hx y hy => hPint x hx y hy`. Establish `hNG : G.map (nsmulAddMonoidHom N) ≤ P`. Introduce and unpack `_ ⟨y', hy', rfl⟩`. Establish `hdual : n • (y' : W) ∈ dualLattice h La`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Take `⟨a, b, -, -, hmem, hzLa, -⟩` from `hz x hx`. Establish `hy0` using `(mem_hypComplement.1 y'.2)`. Establish `e1 : h.toSesq (y' : W) v₀ = 0` using `hsymm0 _ _ hy0.1`. Establish `e2 : h.toSesq (y' : W) w₀ = 0` using `hsymm0 _ _ hy0.2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hnx : n • x = (n • x - a • v₀ - b • w₀) + a • v₀ + b • w₀` using `by abel`. Establish `key : h.toSesq (n • (y' : W)) x = h.toSesq (y' : W) (n • x - a • v₀ - b • w₀)`. Rewrite using `[map_nsmul, LinearMap.smul_apply, ← map_nsmul]`. Use `conv_lhs => rw [hnx]`. Rewrite using `[map_add, map_add, map_smul, map_smul, e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite using `[key]`. Use `hy' ⟨_, hmem⟩ hzLa` as an intermediate fact. Rewrite `this` using `[hh']`. Then use the resulting hypothesis. Establish `h2` using `factorial_nsmul_mem_of_mem_dual hLa hdual`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[nsmulAddMonoidHom_apply, memP, Submodule.coe_smul_of_tower, hN, ← smul_smul]`. Conclude with `h2`. Establish `: IsAddTorsionFree (hypComplement h v₀ w₀)` using `isAddTorsionFree_of_module E (hypComplement h v₀ w₀)`. Establish `hGfg : G.FG` using `fg_of_fg_map_of_injective (nsmulAddMonoidHom N) (AddSubgroup.nsmulAddMonoidHom_injective_of_isTorsionFree hNpos.ne') (fg_of_le_fg hNG hPlat.fg)`. Establish `: Module.Finite ℤ G.toIntSubmodule` using `Module.Finite.iff_fg.2 ((Submodule.fg_iff_addSubgroup_fg _).2 hGfg)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Module.Finite ℤ G` using `inferInstanceAs (Module.Finite ℤ G.toIntSubmodule)`. Establish `hrank : finrank ℤ G ≤ finrank ℚ E * finrank E W`. Use `letI : Module ℚ W := Module.compHom W (algebraMap ℚ E)`. Establish `: IsScalarTower ℚ E W` using `⟨fun q e w => by`. Express the relevant statement in the definitionally equal form `(q • e) • w = algebraMap ℚ E q • e • w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Establish `: Module.Finite ℚ W` using `Module.Finite.trans E W`. Set `b` to `Module.finBasis ℤ G`. Set `f : G →ₗ[ℤ] W` to `((hypComplement h v₀ w₀).subtype.toAddMonoidHom.comp G.subtype).toIntLinearMap`. Establish `hf : Function.Injective f` using `Subtype.val_injective.comp Subtype.val_injective`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hliZ : LinearIndependent ℤ (f ∘ b)` using `b.linearIndependent.map' f (LinearMap.ker_eq_bot.mpr hf)`. Establish `hliQ : LinearIndependent ℚ (f ∘ b)` using `(LinearIndependent.iff_fractionRing ℤ ℚ).mp hliZ`. Use `hliQ.fintype_card_le_finrank` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin, ← Module.finrank_mul_finrank ℚ E W]`. Conclude with `this`.
-
-Establish `hidx : P.relIndex G ≤ N ^ finrank ℤ G`. Rewrite using `[← AddSubgroup.relIndex_map_nsmul N G]`. Use `AddSubgroup.relIndex_le_of_le_left hNG ?_` and prove the remaining obligations. Rewrite using `[AddSubgroup.relIndex_map_nsmul]`. Check the signs of the components of the expression.
-
-Use `⟨hPlat, hPint, fun h0 => ?_, ?_⟩` and prove the remaining obligations. Use `AddSubgroup.relIndex_eq_zero_of_le_left hNG h0` as an intermediate fact. Rewrite `this` using `[AddSubgroup.relIndex_map_nsmul]`. Conclude with `(pow_ne_zero _ hNpos.ne') this`. Conclude with `hidx.trans (Nat.pow_le_pow_right hNpos hrank)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ComplementLattice.proof (h : HermitianForm F E W) [FiniteDimensional E W] :
     ComplementLattice.Statement h := by

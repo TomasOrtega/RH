@@ -18,11 +18,9 @@ def block (k r : ℕ) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) �
   (∀ i j : Fin (2 * r + k + 1), (i.val < r ∨ r + k < i.val) → g i j = if i = j then 1 else 0)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hU, h2, h3⟩`. Use `⟨hU, fun i j hj hi => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hjr : j.val < r`. Establish `e : eI k r ⟨j.val, hjr⟩ = j` using `Fin.ext rfl`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `h2 ⟨j.val, hjr⟩ i (by simp only [eI] at *; omega)` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this`. Conclude with `h3 i j (by omega) hj (by omega)`. Introduce and unpack `⟨hU, hc⟩`.
-
-Use `⟨hU, fun a i hi => ?_, fun i j h1 h2 h3 => ?_⟩` and prove the remaining obligations. Conclude with `hc i (eI k r a) (by simp only [eI]; omega) (by simp only [eI]; omega)`. Conclude with `hc i j h2 (by omega)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nset_iff (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     g ∈ Nset k r ↔ g ∈ UH (Hpk k r) ∧ col k r g := by
@@ -41,11 +39,11 @@ theorem nset_iff (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     · exact hc i j h2 (by omega)
 
 /- English proof (translation)
-Introduce `i j hj hi`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single j]`. Rewrite using `[hh j j hj (by omega), if_pos rfl, mul_one]`. Conclude with `hg i j hj hi`. Introduce `m _ hmj`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hm : j.val ≤ m.val ∨ r ≤ m.val`. Rewrite using `[hh m j hj hm, if_neg hmj, mul_zero]`. Use `push Not at hm`. Establish `hne : i ≠ m`. Introduce `e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Use linear arithmetic over natural numbers and integers.
 
-Substitute `e` using the available equality. Use linear arithmetic over natural numbers and integers. Rewrite using `[hg i m (by omega) (by omega), if_neg hne, zero_mul]`. Introduce `hj'`. Conclude with `absurd (Finset.mem_univ j) hj'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem col_mul {g h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : col k r g) (hh : col k r h) : col k r (g * h) := by
@@ -66,15 +64,15 @@ theorem col_mul {g h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     exact absurd (Finset.mem_univ j) hj'
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, ∀ i j : Fin (2 * r + k + 1), j.val < n → j.val ≤ r + k → (j.val ≤ i.val ∨ r ≤ i.val) → g' i j = if i = j then 1 else 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro i j h`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers.
 
-Consider the case `succ n ih`. Introduce `i j hjn hj hi`. Establish `e` using `congrFun (congrFun hm i) j`. Rewrite `e` using `[Matrix.mul_apply, Finset.sum_eq_single j]`. Rewrite `e` using `[hg j j hj (by omega), if_pos rfl, mul_one]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e, Matrix.one_apply]`. Introduce `m _ hmj`. Distinguish the cases in `hmc : j.val ≤ m.val ∨ r ≤ m.val`. Rewrite using `[hg m j hj hmc, if_neg hmj, mul_zero]`. Use `push Not at hmc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : i ≠ m`. Introduce `e`. Substitute `e` using the available equality. Use linear arithmetic over natural numbers and integers. Rewrite using `[ih i m (by omega) (by omega) (by omega), if_neg hne, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hj'`. Conclude with `absurd (Finset.mem_univ j) hj'`. Introduce `i j hj hi`. Conclude with `key (j.val + 1) i j (by omega) hj hi`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem col_of_left_inv {g g' : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : col k r g) (hm : g' * g = 1) : col k r g' := by
@@ -109,7 +107,7 @@ def tau (k r : ℕ) (i : Fin (2 * r + k + 1)) : Fin (2 * r + k + 1) :=
 def sgn (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℂ := if i.val = r + k then -1 else 1
 
 /- English proof (translation)
-Unfold `Hpk tau sgn`. Simplify using `only [Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hpk_row (i m : Fin (2 * r + k + 1)) :
     Hpk k r i m = if m = tau k r i then sgn k r i else 0 := by
@@ -118,9 +116,9 @@ theorem hpk_row (i m : Fin (2 * r + k + 1)) :
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (tau k r i)]`. Rewrite using `[hpk_row, if_pos rfl]`. Introduce `m _ hm`. Rewrite using `[hpk_row, if_neg hm, zero_mul]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 theorem hpk_mul_apply (A : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (i j : Fin (2 * r + k + 1)) : (Hpk k r * A) i j = sgn k r i * A (tau k r i) j := by
@@ -132,7 +130,7 @@ theorem hpk_mul_apply (A : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) �
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Unfold `tau`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tau_tau (i : Fin (2 * r + k + 1)) : tau k r (tau k r i) = i := by
   unfold tau
@@ -141,7 +139,7 @@ theorem tau_tau (i : Fin (2 * r + k + 1)) : tau k r (tau k r i) = i := by
   split_ifs <;> omega
 
 /- English proof (translation)
-Unfold `sgn tau`. Simplify using `only`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgn_tau (i : Fin (2 * r + k + 1)) : sgn k r (tau k r i) = sgn k r i := by
   unfold sgn tau
@@ -149,14 +147,14 @@ theorem sgn_tau (i : Fin (2 * r + k + 1)) : sgn k r (tau k r i) = sgn k r i := b
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgn_mul_self (i : Fin (2 * r + k + 1)) : sgn k r i * sgn k r i = 1 := by
   unfold sgn
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[hpk_mul_apply, hpk_row, tau_tau, sgn_tau, Matrix.one_apply]`. Distinguish the cases in `h : j = i`. Rewrite using `[if_pos h, if_pos h.symm, sgn_mul_self]`. Rewrite using `[if_neg h, if_neg (Ne.symm h), mul_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hpk_sq : Hpk k r * Hpk k r = 1 := by
   ext i j
@@ -166,7 +164,7 @@ theorem hpk_sq : Hpk k r * Hpk k r = 1 := by
   · rw [if_neg h, if_neg (Ne.symm h), mul_zero]
 
 /- English proof (translation)
-Apply `Matrix.isUnit_det_of_left_inverse (B := Hpk k r * gᴴ * Hpk k r)` to reduce the goal to its premises. Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hg', hpk_sq]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnit_of_uh {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : g ∈ UH (Hpk k r)) : IsUnit g.det := by
@@ -177,9 +175,9 @@ theorem isUnit_of_uh {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ
     _ = 1 := by rw [hg', hpk_sq]
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `hh' : hᴴ * Hpk k r * h = Hpk k r` using `hh`. Use `show (g * h)ᴴ * Hpk k r * (g * h) = Hpk k r`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [hg', hh']`.
+A detailed English derivation is pending.
 -/
 theorem uh_mul {g h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : g ∈ UH (Hpk k r)) (hh : h ∈ UH (Hpk k r)) : g * h ∈ UH (Hpk k r) := by
@@ -192,9 +190,9 @@ theorem uh_mul {g h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     _ = Hpk k r := by rw [hg', hh']
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `hu` using `isUnit_of_uh hg`. Use `show (g⁻¹)ᴴ * Hpk k r * g⁻¹ = Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[conjTranspose_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by`. Rewrite using `[Matrix.mul_nonsing_inv _ hu, conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uh_inv {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : g ∈ UH (Hpk k r)) : g⁻¹ ∈ UH (Hpk k r) := by
@@ -208,7 +206,7 @@ theorem uh_inv {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
         rw [Matrix.mul_nonsing_inv _ hu, conjTranspose_one, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite `*` using `[nset_iff]`. Conclude with `⟨uh_mul hg.1 hh.1, col_mul hg.2 hh.2⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_n_mul {g h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : g ∈ Nset k r) (hh : h ∈ Nset k r) : g * h ∈ Nset k r := by
@@ -216,7 +214,7 @@ theorem mem_n_mul {g h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
   exact ⟨uh_mul hg.1 hh.1, col_mul hg.2 hh.2⟩
 
 /- English proof (translation)
-Rewrite `*` using `[nset_iff]`. Conclude with `⟨uh_inv hg.1, col_of_left_inv hg.2 (Matrix.nonsing_inv_mul _ (isUnit_of_uh hg.1))⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_n_inv {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : g ∈ Nset k r) : g⁻¹ ∈ Nset k r := by
@@ -224,15 +222,15 @@ theorem mem_n_inv {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
   exact ⟨uh_inv hg.1, col_of_left_inv hg.2 (Matrix.nonsing_inv_mul _ (isUnit_of_uh hg.1))⟩
 
 /- English proof (translation)
-Establish `term : ∀ m : Fin (2 * r + k + 1), g i m * h m j = (if m = i then h i j else 0) + (if m = j then g i j else 0)`. Introduce `m`. Distinguish the cases in `hmi : m.val ≤ i.val`. Rewrite using `[hg i m (by omega) (Or.inl hmi)]`. Establish `hmj : m ≠ j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `e`. Substitute `e` using the available equality. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hmj, add_zero]`. Distinguish the cases in `e : m = i`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl, one_mul]`. Rewrite using `[if_neg (Ne.symm e), if_neg e, zero_mul]`. Rewrite using `[hh m j hj (by omega)]`. Establish `hm : m ≠ i`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `e`. Substitute `e` using the available equality. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hm, zero_add]`. Distinguish the cases in `e : m = j`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl, mul_one]`. Rewrite using `[if_neg e, if_neg e, mul_zero]`. Rewrite using `[Matrix.mul_apply, Finset.sum_congr rfl (fun m _ => term m), Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq', if_pos (Finset.mem_univ _), if_pos (Finset.mem_univ _), add_comm]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_apply_add {g h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : col k r g) (hh : col k r h) (i j : Fin (2 * r + k + 1)) (hir : i.val < r)
@@ -267,13 +265,13 @@ theorem mul_apply_add {g h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) 
     add_comm]
 
 /- English proof (translation)
-Unfold `ellA`. Distinguish the cases in `ha : a.val + 1 < r`. Rewrite using `[dif_pos ha, dif_pos ha, dif_pos ha]`. Conclude with `mul_apply_add hg hh _ _ (by simp only [eI]; omega) (by simp only [eI]; omega) (by simp only [eI]; omega) (by simp only [eI]; omega)`. Rewrite using `[dif_neg ha, dif_neg ha, dif_neg ha]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Distinguish the cases in `hzj : z j = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hzj, mul_zero, mul_zero, mul_zero, add_zero]`. Establish `hjW : r ≤ j.val ∧ j.val ≤ r + k`. Assume the negation of the conclusion as `hc`. Apply `hzj` to reduce the goal to its premises. Apply `hz` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[mul_apply_add hg hh _ _ (by simp only [eI]; omega) (by omega) (by simp only [eI]; omega) (by simp only [eI]; omega), add_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ellA_mul (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z)
     {g h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
@@ -299,9 +297,9 @@ theorem ellA_mul (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z)
         (by simp only [eI]; omega) (by simp only [eI]; omega), add_mul]
 
 /- English proof (translation)
-Establish `hs : (∑ a, c a * ellA k r z (g * h) a) = (∑ a, c a * ellA k r z g a) + ∑ a, c a * ellA k r z h a`. Rewrite using `[← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Rewrite using `[ellA_mul z hz ((nset_iff g).1 hg).2 ((nset_iff h).1 hh).2 a, mul_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Unfold `psiGen`. Rewrite using `[hs, Complex.add_re, Complex.ofReal_add, mul_add, Complex.exp_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiGen_mul (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (hz : inWb k r z)
     {g h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
@@ -316,7 +314,7 @@ theorem psiGen_mul (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (hz : i
   rw [hs, Complex.add_re, Complex.ofReal_add, mul_add, Complex.exp_add]
 
 /- English proof (translation)
-Unfold `psiGen`. Rewrite using `[mul_comm Complex.I]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiGen_norm (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ)
     (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) : ‖psiGen k r z c g‖ = 1 := by

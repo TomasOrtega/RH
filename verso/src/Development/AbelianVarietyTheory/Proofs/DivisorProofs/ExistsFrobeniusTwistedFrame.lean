@@ -28,7 +28,7 @@ Both sides reduce to the same expression.
 theorem psiR_tmul (a : Ainf p O) (l : Λ) : psiR (a ⊗ₜ[ℤ_[p]] l) = phiInv p O a ⊗ₜ l := rfl
 
 /- English proof (translation)
-Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a l => rw [hψ, psiR_tmul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem eq_psiR {ψ : RL p O Λ →+* RL p O Λ} (hψ : IsPsi ψ) (r : RL p O Λ) : ψ r = psiR r := by
   induction r using TensorProduct.induction_on with
@@ -37,7 +37,7 @@ theorem eq_psiR {ψ : RL p O Λ →+* RL p O Λ} (hψ : IsPsi ψ) (r : RL p O Λ
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a l => rw [psiR_tmul, phiR_tmul, PsiPhi.frobenius_phiInv']`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem phiR_psiR (r : RL p O Λ) : phiR (psiR r) = r := by
   induction r using TensorProduct.induction_on with
@@ -46,7 +46,7 @@ theorem phiR_psiR (r : RL p O Λ) : phiR (psiR r) = r := by
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a l => rw [phiR_tmul, psiR_tmul, PsiPhi.phiInv_frobenius']`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem psiR_phiR (r : RL p O Λ) : psiR (phiR r) = r := by
   induction r using TensorProduct.induction_on with
@@ -55,7 +55,7 @@ theorem psiR_phiR (r : RL p O Λ) : psiR (phiR r) = r := by
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x l => rw [TensorProduct.smul_tmul', phiR_tmul, phiR_tmul, TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, map_mul]`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem phiR_smul (a : Ainf p O) (r : RL p O Λ) :
     phiR (a • r) = WittVector.frobenius a • phiR r := by
@@ -66,7 +66,7 @@ theorem phiR_smul (a : Ainf p O) (r : RL p O Λ) :
   | add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]
 
 /- English proof (translation)
-Rewrite using `[map_mul, phiR_tmul, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phiR_one_tmul_mul (l : Λ) (r : RL p O Λ) :
     phiR (((1 : Ainf p O) ⊗ₜ[ℤ_[p]] l) * r) = ((1 : Ainf p O) ⊗ₜ[ℤ_[p]] l) * phiR r := by
@@ -114,11 +114,11 @@ namespace GlobalTheory.DetInv
 open Twist in
 
 /- English proof (translation)
-Introduce `p _ O _ _ _ Λ _ _ N h ψ ρ e hψ he`. Use `⟨twist e, fun l w => ?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[twist_apply, twist_apply]`. Establish `h1 : (fun i => phiR ((((1 : Ainf p O) ⊗ₜ[ℤ_[p]] l) • w) i)) = ((1 : Ainf p O) ⊗ₜ[ℤ_[p]] l) • fun i => phiR (w i)`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, phiR_one_tmul_mul]`. Rewrite using `[h1, he]`. Use function extensionality and compare the values at `j`. Use `RingHom.map_mulVec (phiInv p O) (ρ l) (e (fun i => phiR (w i))) j` as an intermediate fact. Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[twist_apply]`. Use function extensionality and compare the values at `j`. Simplify using `only [eq_psiR hψ, phiR_psiR]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame_twist : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] (Λ : Type) [CommRing Λ] [Algebra ℤ_[p] Λ] (N h : ℕ)

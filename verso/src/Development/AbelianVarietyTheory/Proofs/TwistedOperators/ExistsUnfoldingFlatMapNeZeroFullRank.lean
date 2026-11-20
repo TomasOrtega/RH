@@ -30,9 +30,7 @@ namespace GlobalTheory.AscFinNe
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Matrix.toLin' x₀)` using `by show Function.Injective x₀.mulVec`. Conclude with `mulVec_injective_iff.mpr h`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' x₀) (LinearMap.ker_eq_bot.2 hinj)`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← LinearMap.toMatrix'_toLin' x₀]`.
-
-Rewrite using `[← LinearMap.toMatrix'_comp, hg, LinearMap.toMatrix'_id]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem left_inv_of_li {n ρ : ℕ} (x₀ : Matrix (Fin n) (Fin ρ) D.host.E) (h : LinearIndependent D.host.E x₀.transpose) :
     ∃ L : Matrix (Fin ρ) (Fin n) D.host.E, L * x₀ = 1 := by
@@ -45,17 +43,17 @@ theorem left_inv_of_li {n ρ : ℕ} (x₀ : Matrix (Fin n) (Fin ρ) D.host.E) (h
   rw [← LinearMap.toMatrix'_comp, hg, LinearMap.toMatrix'_id]
 
 /- English proof (translation)
-Introduce `D ψ hψ V V₀ W W₀ ρ σ dV dW s x₀ y hx₀ p hp`. Take `⟨g, hgv, hg0⟩` from `hp.vac₀`. Take `⟨β₂, hβ₂, hβ₂y, hβ₂per, hβ₂supp⟩` from `GlobalTheory.T.exists_adelicBump_periodic_under_adjointLattice D V₀ W W₀ σ dW p.B₂ hp.b₂ y`. Take `⟨L, hL⟩` from `left_inv_of_li x₀ hx₀`. Take `⟨b, hb, hbx, hb01, hbsupp, hbper⟩` from `exists_bump_le (rat x₀) p.A₁ hp.a₁ _ (GlobalTheory.T.positiveRealPart_traceCharacter_mem_nhds D ψ hψ W.rank ρ (rat L) (rat x₀))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hpos : ∀ u : UX D ρ, b (rat x₀ ⬝ u.1.1) ≠ 0 → 0 < (star (psiUni ψ u.1)).re`. Introduce `u hu`. Take `⟨r, hr, hrU, hrA⟩` from `hbsupp _ hu`. Rewrite using `[GlobalTheory.T.genericCharacter_eq_realPartChar_on_bumpSupport D ψ V V₀ W W₀ ρ σ dV dW p x₀ L hL hp u r hr hrA]`. Simplify `hrU` using `only [Set.mem_setOf_eq, add_sub_cancel_left]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hcpt : HasCompactSupport (fun u : UX D ρ => b (rat x₀ ⬝ u.1.1))`. Use `HasCompactSupport.intro' (GlobalTheory.T.isCompact_unitriangular_of_rational_mul_mem_compact D W.rank ρ x₀ hx₀ _ (HasCompactSupport.isCompact (f := fun z => (b z : ℂ)) hb.supp)) ((isClosed_tsupport _).preimage (continuous_const.matrix_mul (Units.continuous_val.comp continuous_sub …` and prove the remaining obligations. Introduce `u hu`. Assume the negation of the conclusion as `h`. Conclude with `hu (subset_tsupport _ (by simpa using h))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨g', hg', hg'm⟩` from `GlobalTheory.T.mixedModelTarget_bump_mul_coreTheta_exists D ψ hψ V₀ W W₀ σ dW s.vT β₂ g hβ₂ hgv.1`. Take `⟨Φ, hΦ, hΦm⟩` from `GlobalTheory.T.exists_thetaFunction_mixedCoordinate_bump_mul_core D ψ hψ V V₀ W ρ dV s.vS (fun z => (b z : ℂ)) g' hb hg'`. Establish `hbper' : ∀ a ∈ p.A₁, ∀ z, (fun z => (b z : ℂ)) (z + a) = (fun z => (b z : ℂ)) z` using `fun a ha z => by`. Simplify using `only [hbper a ha z]`. Establish `hbsupp' : ∀ z, (fun z => (b z : ℂ)) z ≠ 0 → ∃ r : Mx D W.rank ρ, r.map (finPart D) = 0 ∧ z - (rat x₀ + r) ∈ p.A₁` using `fun z hz => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, -, hrA⟩` from `hbsupp z (by simpa using hz)`. Conclude with `⟨r, hr, hrA⟩`. Take `⟨hB₁, hB₂, hvac⟩` from `GlobalTheory.T.unfolding_conditions_from_second_mixedCoordinate D ψ hψ V V₀ W W₀ ρ σ dV dW s.vT p (rat x₀) y hp β₂ g g' hgv hg' hg'm hβ₂per hβ₂supp`. Take `⟨hA₁, hA₂⟩` from `GlobalTheory.T.class_conditions_isotropicHom_from_firstMixedCoordinate D ψ hψ V V₀ W W₀ ρ σ dV dW s.vS p (rat x₀) hp _ g' Φ hΦ hΦm hbper' hbsupp'`. Take `⟨hC₁, hC₂, hCv⟩` from `GlobalTheory.T.class_conditions_core_from_mixedCoordinateFunction D ψ hψ V V₀ W W₀ ρ σ dV dW s.vS p y _ g' Φ hg' hΦ hΦm hB₁ hB₂ hvac`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Φ, ⟨hΦ, hA₁, hA₂, hC₁, hC₂, hCv⟩, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.flatMap_productDatum_eq_unitriangularIntegral_bump D ψ hψ V V₀ W W₀ ρ σ dV dW s (rat x₀) y b β₂ g g' Φ hg0 hβ₂y hΦm hg'm (Complex.continuous_re.comp hb.cont |>.congr fun z => by simp) hbx (fun z => (hb01 z).1) hpos hcpt`.
+A detailed English derivation is pending.
 -/
 theorem flat_ne_zero : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (V V₀ W W₀ : HSp D) (ρ σ : ℕ) (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ) (s : Step ψ V V₀ W W₀ ρ σ) (x₀ : Matrix (Fin W.rank) (Fin ρ) D.host.E) (y : Mx D V₀.rank σ), LinearIndependent D.host.E x₀.transpose → ∀ p : Pieces V₀ W W₀ ρ σ, p.Is dV dW (rat x₀) ψ → ∃ Φ ∈ cls dV dW p (rat x₀) y ψ, flatS dV dW s (rat x₀) y Φ ≠ 0 := by
   intro D ψ hψ V V₀ W W₀ ρ σ dV dW s x₀ y hx₀ p hp

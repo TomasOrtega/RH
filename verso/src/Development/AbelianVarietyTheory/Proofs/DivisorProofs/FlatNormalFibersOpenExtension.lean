@@ -10,21 +10,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.RealMult
 
 /- English proof (translation)
-Introduce `F _ _ 𝔠 R₀ _ k s t N M sM U V hflat hnorm hcodim W hW hagree Y φ hY YC ψ hYC h δ`. Use `set d := s.val _ YC h δ - t.val _ YC h δ with hd`. It suffices to establish `hd0 : TensorProduct.comm ℤ R₀ Γ(M, W) d = 0 by`. Establish `: d = 0` using `by simpa using congrArg (TensorProduct.comm ℤ R₀ Γ(M, W)).symm hd0`. Conclude with `sub_eq_zero.mp this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `rTensor_eq_zero_of_restrict_affine_inf N M sM V hflat hnorm hcodim W hW R₀ _ ?_` and prove the remaining obligations. Introduce `W' hW' hle`. Set `ρ : Γ(M, W) →+* Γ(M, W')` to `(M.presheaf.map (homOfLE (hle.trans inf_le_left)).op).hom`. Set `τ' : R₀ ⊗[ℤ] Γ(M, W) →ₐ[R₀] R₀ ⊗[ℤ] Γ(M, W')` to `Algebra.TensorProduct.map (AlgHom.id R₀ R₀) ρ.toIntAlgHom`. Establish `hswap : ∀ x : R₀ ⊗[ℤ] Γ(M, W), LinearMap.rTensor R₀ ρ.toAddMonoidHom.toIntLinearMap (TensorProduct.comm ℤ R₀ Γ(M, W) x) = TensorProduct.comm ℤ R₀ Γ(M, W') (τ' x)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [τ']`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `LinearMap.rTensor R₀ ρ.toAddMonoidHom.toIntLinearMap _ = 0`. Rewrite using `[hswap]`. It suffices to establish `hτ : τ' d = 0 by rw [hτ, map_zero]`. Set `incR : Γ(M, W) →+* R₀ ⊗[ℤ] Γ(M, W)` to `(Algebra.TensorProduct.includeRight : Γ(M, W) →ₐ[ℤ] R₀ ⊗[ℤ] Γ(M, W)).toRingHom`. Set `incR' : Γ(M, W') →+* R₀ ⊗[ℤ] Γ(M, W')` to `(Algebra.TensorProduct.includeRight : Γ(M, W') →ₐ[ℤ] R₀ ⊗[ℤ] Γ(M, W')).toRingHom`.
+Reduce the argument to an intermediate assertion. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Y', φ', hY'⟩` from `Obj.exists_isPullBy U hW'.fromSpec`. Take `⟨YC', ψ', hYC'⟩` from `Obj.exists_isPullBy YC (spMap (τ' : R₀ ⊗[ℤ] Γ(M, W) →+* R₀ ⊗[ℤ] Γ(M, W')))`. Establish `hcomm : (τ' : R₀ ⊗[ℤ] Γ(M, W) →+* R₀ ⊗[ℤ] Γ(M, W')).comp incR = incR'.comp ρ`. Use extensionality with `x`. Simplify using `[τ', incR, incR']`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbase : spMap (τ' : R₀ ⊗[ℤ] Γ(M, W) →+* R₀ ⊗[ℤ] Γ(M, W')) ≫ spMap incR ≫ hW.fromSpec = spMap incR' ≫ hW'.fromSpec`. Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hcomm, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Use `congr 1`. Conclude with `hW.map_fromSpec hW' (homOfLE (hle.trans inf_le_left)).op`. Establish `hall` using `hYC'.comp (hYC.comp hY)`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hall` using `[hbase]`. Take `⟨ψ'', hψ'', -⟩` from `hall.cancel hY'`. Take `⟨δ', hδ', -⟩` from `hYC'.existsUnique_detGen _ δ`. Establish `h' : IsUnit ((6 : ℕ) : R₀ ⊗[ℤ] Γ(M, W'))` using `map_natCast τ' 6 ▸ h.map τ'`. Establish `heq` using `hagree W' hW' hle Y' φ' hY' (R₀ ⊗[ℤ] Γ(M, W')) incR' YC' ψ'' hψ'' h' δ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs` using `s.baseChange _ _ τ' YC h YC' h' ψ' δ δ' hYC' hδ'`. Establish `ht` using `t.baseChange _ _ τ' YC h YC' h' ψ' δ δ' hYC' hδ'`. Rewrite using `[hd, map_sub, ← hs, ← ht, heq, sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem rule_eq_on_extend_chart : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (R₀ : Type) [CommRing R₀] (k : ℕ)
     (s t : Rule (unitObj 𝔠 6) R₀ k) (N : ℕ) (M : Scheme.{0}) (sM : M ⟶ Sp (Localization.Away (N : ℤ)))

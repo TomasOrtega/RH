@@ -15,27 +15,23 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.KleimanNef
 
 /- English proof (translation)
-Introduce `hA hAmp hSP`. It suffices to establish `H : ∀ D : ℕ, ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k), IsArithVar p D → ∀ C : HermLB p, C.IsNef D → HtNef C D by`. Introduce `k _ X _ p D hX C hC`. Conclude with `H D k X p hX C hC`. Introduce `D`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `D using Nat.strong_induction_on with`. Consider the case `_ D ih`. Introduce `k _ X _ p hX C hC`. Establish `hng : ∀ (C : HermLB p) (h : X → ℝ), C.IsNef D → C.IsArithHeight h → ∀ z, z ≠ genericPoint X → 0 ≤ h z`. Introduce `C h hC hh z hz`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hcz : CharZero (X.residueField z)`. Use `swap`. Conclude with `GlobalTheory.T.arithHeight_nonneg_vertical_of_nefOnFibres k X p D hX C h (nefFib_of_isNef hC) hh z hcz`. Take `⟨Z, i, _, _, rfl⟩` from `exists_isClosedImmersion_genericPoint z`. Break down `hX.vertical_or_horizontal i with ⟨ℓ, hℓ, ⟨alg⟩⟩ | ⟨hc, e, he⟩` into its components or cases.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression.
 
-It suffices to derive a contradiction. Establish `hcz' : CharZero (Z.residueField (genericPoint Z))` using `(RingHom.charZero_iff (i.residueFieldMap (genericPoint Z)).hom.injective).1 hcz`. Set `f : ZMod ℓ →+* Z.residueField (genericPoint Z)` to `(Z.evaluation ⊤ (genericPoint Z) trivial).hom.comp (algebraMap (ZMod ℓ) Γ(Z, ⊤))`. Establish `h2` using `congrArg f (ZMod.natCast_self ℓ)`. Rewrite `h2` using `[map_natCast, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hℓ.out.ne_zero (by exact_mod_cast h2)`. Establish `hZ : IsArithVar (i ≫ p) e` using `hX.of_isClosedImmersion i hc he`. Establish `hamb` using `GlobalTheory.MixHt.isAmb_of_isArithVar hX`. Take `⟨-, -, -, -, hcl, hgd⟩` from `GlobalTheory.MixHt.hasDim_basic k X p hamb`. Establish `hd : GlobalTheory.MixHt.HasDim (i (genericPoint Z)) (e + 1)` using `(hcl Z i _ _).2 ((hgd Z _).2 he)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hco` using `GlobalTheory.DimCoheight.coheight_add_eq k X p hamb (D + 1) hX.dim_eq _ _ hd`. Establish `hne : Order.coheight (i (genericPoint Z)) ≠ 0`. Introduce `h0`. Rewrite `h0` using `[Order.coheight_eq_zero]`. Apply `hz` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `h1 : i (genericPoint Z) ≤ genericPoint X` using `genericPoint_specializes _`. Conclude with `(Specializes.antisymm (h0 h1) (genericPoint_specializes _)).eq`. Establish `heD : e < D`. Assume the negation of the conclusion as `hle`. Use `push_neg at hle`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨c, hc'⟩ : ∃ c : ℕ, Order.coheight (i (genericPoint Z)) = c := by`. Use `⟨(Order.coheight (i (genericPoint Z))).toNat, (ENat.coe_toNat fun ht => ?_).symm⟩` and prove the remaining obligations. Rewrite `hco` using `[ht, top_add]`. Conclude with `ENat.top_ne_coe _ hco`. Rewrite `hco`, `hne` using `[hc']`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `: c + (e + 1) = D + 1` using `by exact_mod_cast hco`. Establish `: c ≠ 0` using `by exact_mod_cast hne`. Use linear arithmetic over natural numbers and integers. Establish `hnef : (C.pull i rfl).IsNef e` using `GlobalTheory.T.hermitianLineBundle_isNef_pullback hA hSP k X Z p (i ≫ p) D e hX hZ i rfl C hC`. Conclude with `(ih e heD k Z (i ≫ p) hZ _ hnef).2 _ (hh.restrict hX i rfl) (genericPoint Z)`.
-
-Use `⟨hC.semiPos, fun h hh x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x = genericPoint X`. Substitute `hx` using the available equality. Break down `Nat.eq_zero_or_pos D with rfl | hD` into its components or cases. Use `((hh.isNef_iff hX).1 hC).2 X (𝟙 X) (by simpa using hX.dim_eq)` as an intermediate fact.
-
-Simplify using `using this`. Conclude with `GlobalTheory.T.arithKleiman_selfIntersection_nonneg hA hAmp k X p D hX hD hng C _ hC ⟨h, hh, rfl⟩`. Conclude with `hng C h hC hh x hx`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem htNef_of_isNef : GlobalTheory.Published.ArCalc → AmpleHS → SemiPull → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X]
     (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ C : HermLB p, C.IsNef D → HtNef C D := by

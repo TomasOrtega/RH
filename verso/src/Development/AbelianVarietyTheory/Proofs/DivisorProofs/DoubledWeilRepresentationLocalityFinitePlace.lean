@@ -16,11 +16,11 @@ noncomputable section
 namespace GlobalTheory.WeilLocalityDbl
 
 /- English proof (translation)
-Establish `hw0 : dd.e.symm (u • p, u • q) = u • dd.e.symm (p, q)`. Rewrite using `[← Prod.smul_mk, LinearEquiv.map_smul]`. Establish `hM : u • GlobalTheory.InertDbl.matD g = u • (1 : Matrix _ _ (AE F E))`. Rewrite using `[← sub_eq_zero, ← smul_sub]`. Conclude with `hg u hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hact : actB (cA σ) g (dd.e.symm (u • p, u • q)) = dd.e.symm (u • p, u • q)`. Rewrite using `[hw0]`. Use `show (u • dd.e.symm (p, q)) * (GlobalTheory.InertDbl.matD g)ᵀ = u • dd.e.symm (p, q)`. Rewrite using `[Matrix.smul_mul, ← Matrix.mul_smul, ← Matrix.transpose_smul, hM, Matrix.transpose_smul, Matrix.transpose_one, Matrix.mul_smul, Matrix.mul_one]`. Establish `h` using `hW.impl g (dd.e.symm (u • p, u • q)) Φ hΦ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h` using `[hact]`. Simplify `h` using `only [Darboux.rho, LinearEquiv.apply_symm_apply]`.
+A detailed English derivation is pending.
 -/
 theorem comm_off {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {a a' : ℕ}
     (B : Base F E) (G : Geo σ a a')
@@ -48,7 +48,7 @@ theorem comm_off {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   simpa only [Darboux.rho, LinearEquiv.apply_symm_apply] using h
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite using `[smul_add, hz u hu, hz' u hu, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private lemma at_add_divisor {F : Type} [Field F] [NumberField F] {κ : Type} (v : Pl F) {z z' : κ → AF F}
     (hz : At (evFin F v) z) (hz' : At (evFin F v) z') : At (evFin F v) (z + z') := by
@@ -56,7 +56,7 @@ private lemma at_add_divisor {F : Type} [Field F] [NumberField F] {κ : Type} (v
   rw [smul_add, hz u hu, hz' u hu, add_zero]
 
 /- English proof (translation)
-Introduce `u hu`. Use function extensionality and compare the values at `i`. Use `show u • GlobalTheory.LatVac.liftV v (t i) = 0`. Conclude with `GlobalTheory.LatVac.at_liftV v (t i) u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private lemma at_liftV' {F : Type} [Field F] [NumberField F] {κ : Type} (v : Pl F) (t : κ → Fv F v) :
     At (evFin F v) (fun i => GlobalTheory.LatVac.liftV v (t i)) := by
@@ -66,31 +66,29 @@ private lemma at_liftV' {F : Type} [Field F] [NumberField F] {κ : Type} (v : Pl
   exact GlobalTheory.LatVac.at_liftV v (t i) u hu
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hTr v dd omd hWS g hg φ hφ`. Establish `hW` using `hWS.2.1`. Take `⟨R, hR0, hR⟩` from `GlobalTheory.T.exists_complementary_adelicSchwartz_restFunction (F := F) (Fin a' × Fin (a + a') ⊕ Fin a' × Fin (a + a')) v`. Establish `hRφ` using `hR φ hφ`. Establish `htr : ∀ c : (Fin a' × Fin (a + a') ⊕ Fin a' × Fin (a + a')) → AF F, (∀ i, evFin F v (c i) = 0) → ∀ Φ ∈ schA F (Fin a' × Fin (a + a') ⊕ Fin a' × Fin (a + a')), omd g (fun x => Φ (x + c)) = fun x => omd g Φ (x + c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c hc Φ hΦ`. Establish `hu : evFin F v (1 - GlobalTheory.LatVac.liftV v (1 : Fv F v)) = 0`. Rewrite using `[map_sub, map_one, GlobalTheory.LatVac.evFin_liftV, sub_self]`. Establish `huc : (1 - GlobalTheory.LatVac.liftV v (1 : Fv F v)) • c = c`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show (1 - GlobalTheory.LatVac.liftV v (1 : Fv F v)) • c i = c i`. Rewrite using `[smul_eq_mul, sub_mul, one_mul, GlobalTheory.WeilLocalityW.liftV_one_mul, hc i, map_zero, sub_zero]`. Establish `h` using `comm_off B G dd omd hW v g hg _ hu c 0 Φ hΦ`. Rewrite `h` using `[huc, smul_zero]`. Establish `hs : ∀ Ψ : ((Fin a' × Fin (a + a') ⊕ Fin a' × Fin (a + a')) → AF F) → ℂ, GlobalTheory.WeilM.schr B.ψ (c, 0) Ψ = fun x => Ψ (x + c)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Ψ`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.WeilM.schr]`. Rewrite `h` using `[hs, hs]`. Conclude with `h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun t => (R 0)⁻¹ * omd g (tens (evFin F v) φ R) (fun i => GlobalTheory.LatVac.liftV v (t i)), ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : omd g (tens (evFin F v) φ R) ∈ schA F (Fin a' × Fin (a + a') ⊕ Fin a' × Fin (a + a'))` using `hW.pres g _ hRφ.2`. Conclude with `(SB _).smul_mem (R 0)⁻¹ (GlobalTheory.T.adelicSchwartz_restrict_finitePlace_mem_schwartzBruhat v _ h1)`. Introduce `r hr`. Use function extensionality and compare the values at `y`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨yv, hyv⟩ : ∃ yv : (Fin a' × Fin (a + a') ⊕ Fin a' × Fin (a + a')) → AF F, yv = fun i => GlobalTheory.LatVac.liftV v (evFin F v (y i))` from `⟨_, rfl⟩`. Take `⟨y', hy'⟩ : ∃ y' : (Fin a' × Fin (a + a') ⊕ Fin a' × Fin (a + a')) → AF F, y' = y - yv` from `⟨_, rfl⟩`. Establish `hatv : At (evFin F v) yv` using `by rw [hyv]; exact at_liftV' v _`. Establish `hev : ∀ i, evFin F v (yv i) = evFin F v (y i)`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hyv]`. Conclude with `GlobalTheory.LatVac.evFin_liftV v _`. Establish `hoff : ∀ i, evFin F v (y' i) = 0`. Introduce `i`. Rewrite using `[hy', Pi.sub_apply, map_sub, hev, sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : y' + yv = y` using `by rw [hy', sub_add_cancel]`. Establish `hry : r y = r y'` using `by rw [← hsum]; exact hr.1 y' yv hatv`. Establish `hD : R 0 • tens (evFin F v) φ r - r y' • (fun x => tens (evFin F v) φ R (x + -y')) ∈ schA F (Fin a' × Fin (a + a') ⊕ Fin a' × Fin (a + a'))` using `sub_mem (Submodule.smul_mem _ _ hr.2) (Submodule.smul_mem _ _ (GlobalTheory.T.adelicSchwartzSpace_translate_mem_of_mem (-y') _ hRφ.2))`. Establish `hvan : ∀ z, At (evFin F v) z → (R 0 • tens (evFin F v) φ r - r y' • (fun x => tens (evFin F v) φ R (x + -y'))) (y + z) = 0`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : r (y + z) = r y'`. Rewrite using `[← hsum, add_assoc]`. Conclude with `hr.1 y' (yv + z) (at_add_divisor v hatv hz)`. Establish `e2 : y + z + -y' = 0 + (yv + z)` using `by rw [← hsum]; abel`. Establish `e3 : R (y + z + -y') = R 0` using `by rw [e2]; exact hRφ.1 0 (yv + z) (at_add_divisor v hatv hz)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e4 : (fun i => evFin F v ((y + z + -y') i)) = fun i => evFin F v ((y + z) i)`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.neg_apply, map_add, map_neg, hoff, neg_zero, add_zero]`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, tens]`. Rewrite using `[e1, e3, e4]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hT` using `GlobalTheory.T.isometry_commuting_heisenberg_acts_fibrewise v B.ψ (omd g) hTr.base.std (GlobalTheory.T.standardAdelicAddChar_nontrivial_finitePlace B.ψ hTr.base.std) (fun Φ hΦ => hW.pres g Φ hΦ) (fun μ hμ Φ hΦ => hW.unit μ hμ g Φ hΦ) (fun u hu p q Φ hΦ => comm_off B G dd omd hW v …`. Establish `hoff' : ∀ i, evFin F v ((-y') i) = 0`. Introduce `i`. Rewrite using `[Pi.neg_apply, map_neg, hoff, neg_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hT` using `[map_sub, map_smul, map_smul, htr (-y') hoff' _ hRφ.2]`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul] at hT`. Establish `e5 : y + -y' = yv` using `by rw [← hsum]; abel`. Rewrite `hT` using `[e5, sub_eq_zero]`. Use `show omd g (tens (evFin F v) φ r) y = (R 0)⁻¹ * omd g (tens (evFin F v) φ R) (fun i => GlobalTheory.LatVac.liftV v (evFin F v (y i))) * r y`.
-
-Rewrite using `[← hyv, hry]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_mul_cancel_left₀ hR0]`. Use `_ = _ := by rw [hT]; ring`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locality : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

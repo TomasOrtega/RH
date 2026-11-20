@@ -9,21 +9,21 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 namespace GlobalTheory.EX
 
 /- English proof (translation)
-Introduce `eps he he' C hC`. Establish `hLa1 : 1 ≤ C.GK.La` using `hC.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 _ (by simp [FC.cMid])`. Take `⟨CN, x1, h1⟩` from `GlobalTheory.topCount_and_lambda_bounds eps he he'`. Take `⟨x2, h2⟩` from `GlobalTheory.const_mul_rpow_mul_log_pow_le_rpow eps (eps + eps / 100) (2 * C.GK.La * CN ^ 2) 2 (by linarith)`. Take `⟨x3, h3⟩` from `GlobalTheory.const_mul_rpow_mul_log_pow_le_rpow ((2 + 8 * eps + eps / 100) + -(eps / 8) + eps + (eps + eps / 100)) (-2 + (9 / 2 + 10 * eps)) 32 0 (by linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x4, h4⟩` from `GlobalTheory.const_mul_rpow_mul_log_pow_le_rpow (eps / 100 + (eps + eps / 100)) (-2 + (9 / 2 + 10 * eps)) 2 1 (by linarith)`. Use `⟨0, fun cD _ => ⟨0, fun ch _ => ⟨max (max (max x1 x2) (max x3 x4)) 1, ?_⟩⟩⟩` and prove the remaining obligations. Introduce `D L hε hx hV`. Simplify using `only [max_le_iff] at hx`. Take `⟨⟨⟨hx1, hx2⟩, hx3, hx4⟩, hone⟩` from `hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hpos : 0 < L.sc.x` using `by linarith`. Take `⟨hlo, hhi⟩` from `(h1 L.sc hε hx1).2.2 C.GK hLa1`. Rewrite `hlo`, `hhi` using `[← hV.La_eq]`. Establish `hup : L.LaG ≤ L.sc.x ^ (eps + eps / 100)`. Use `h2 _ hx2` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hhi` using `[hε]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨⟨hlo, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify `hup` using `only [szTh, hε]`. Establish `hn` using `hV.ranks.n_le`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Take `⟨-, -, ⟨hk, -⟩, -⟩` from `hV.ranks`. Establish `h3'` using `h3 _ hx3`. Establish `h4'` using `h4 _ hx4`. Simplify using `only [Real.rpow_add hpos, pow_zero, pow_one, mul_one] at h3' h4'`. Rewrite `h3'` using `[← Real.rpow_add hpos 2, ← Real.rpow_add hpos (2 + 8 * eps) (eps / 100), ← Real.rpow_add hpos (9 / 2), ← Real.rpow_add hpos eps (eps / 100)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4'` using `[← Real.rpow_add hpos (9 / 2), ← Real.rpow_add hpos eps (eps / 100)]`. Establish `hL0 : 0 ≤ L.LaG` using `le_trans (Real.rpow_pos_of_pos hpos _).le hlo`. Unfold `SizeRho szNst szTh Scale.delta1`. Rewrite `hn`, `hk`, the goal using `[hε]`. Establish `hkpos : (0 : ℝ) < D.R.k` using `lt_of_lt_of_le (Real.rpow_pos_of_pos hpos _) hk`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlog : 0 ≤ Real.log L.sc.x` using `Real.log_nonneg hone`. Rewrite using `[← add_div, div_le_iff₀ hkpos]`. Establish `hA : 4 * (2 * (D.R.n : ℝ) * L.sc.x ^ (-(eps / 8))) * L.sc.x ^ eps * L.LaG ≤ 4 * (2 * (2 * L.sc.x ^ (2 + 8 * eps + eps / 100)) * L.sc.x ^ (-(eps / 8))) * L.sc.x ^ eps * L.sc.x ^ (eps + eps / 100)` using `by gcongr`. Establish `hB : L.sc.x ^ (eps / 100) * Real.log L.sc.x * L.LaG ≤ L.sc.x ^ (eps / 100) * Real.log L.sc.x * L.sc.x ^ (eps + eps / 100)` using `by gcongr`. Establish `hK : L.sc.x ^ (-2 : ℝ) * L.sc.x ^ (9 / 2 + 10 * eps) ≤ L.sc.x ^ (-2 : ℝ) * D.R.k` using `by gcongr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `t`. Use `hV.bT_le t` as an intermediate fact. Unfold `szNst`. Conclude with `this`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem szRow_la_rho_bot : SzRow (fun _ _ L => SizeLa L ∧ SizeRho L ∧ SizeBot L) := by
   intro eps he he' C hC

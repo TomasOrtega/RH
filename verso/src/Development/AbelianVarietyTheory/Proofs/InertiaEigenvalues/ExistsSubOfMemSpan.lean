@@ -11,9 +11,9 @@ variable {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (φ : R →+* R
 def fixIn (U : Submodule R M) : Set M := {x | x ∈ U ∧ Φ x = x}
 
 /- English proof (translation)
-Take `⟨n, c, g, rfl⟩` from `Submodule.mem_span_set'.1 hy`. Use `choose b hb using fun i => hs (c i)`. Use `⟨∑ i, b i • (g i : M), U.sum_mem fun i _ => U.smul_mem _ (g i).2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΦ, (g i).2.2, ← sub_smul, hb]`.
+A detailed English derivation is pending.
 -/
 theorem exists_sub_of_mem_span (hΦ : ∀ r x, Φ (r • x) = φ r • Φ x) (hs : ∀ y, ∃ b, φ b - b = y)
     (U : Submodule R M) (y : M) (hy : y ∈ Submodule.span R (fixIn Φ U)) :
@@ -26,15 +26,15 @@ theorem exists_sub_of_mem_span (hΦ : ∀ r x, Φ (r • x) = φ r • Φ x) (hs
   rw [hΦ, (g i).2.2, ← sub_smul, hb]
 
 /- English proof (translation)
-Establish `h1 : U ⊓ LinearMap.ker f ≤ Submodule.span R (fixIn Φ U)` using `h0.trans (Submodule.span_mono fun x hx => ⟨hx.1.1, hx.2⟩)`. Establish `h2 : U.map f ≤ (Submodule.span R (fixIn Φ U)).map f`. Use `(hI (U.map f) ?_).trans ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨Φ x, hU x hx, hf x⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨⟨u, hu, rfl⟩, hfix⟩`. Establish `hmem : Φ u - u ∈ U ⊓ LinearMap.ker f` using `⟨U.sub_mem (hU u hu) hu, by`. Express the relevant statement in the definitionally equal form `f (Φ u - u) = 0`. Rewrite using `[map_sub, hf, hfix, sub_self]⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, hz, hz'⟩` from `exists_sub_of_mem_span φ Φ hΦ hs _ _ (h0 hmem)`. Use `⟨u - z, Submodule.subset_span ⟨U.sub_mem hu hz.1, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub]`. Conclude with `sub_eq_sub_iff_sub_eq_sub.2 hz'.symm`. Establish `: f z = 0` using `hz.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, this, sub_zero]`. Introduce `x hx`. Take `⟨s, hs', hsx⟩` from `h2 ⟨x, hx, rfl⟩`. Establish `hsU : s ∈ U` using `(Submodule.span_le.2 fun y hy => hy.1 : Submodule.span R (fixIn Φ U) ≤ U) hs'`. Establish `: x - s ∈ U ⊓ LinearMap.ker f` using `⟨U.sub_mem hx hsU, by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `f (x - s) = 0`. Rewrite using `[map_sub, hsx, sub_self]⟩`. Simplify using `using Submodule.add_mem _ (h1 this) hs'`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem le_span_step (hΦ : ∀ r x, Φ (r • x) = φ r • Φ x) (hs : ∀ y, ∃ b, φ b - b = y)
     (hI : ∀ I : Ideal R, (∀ x ∈ I, φ x ∈ I) → I ≤ Ideal.span {x | x ∈ I ∧ φ x = x})
@@ -68,15 +68,13 @@ theorem le_span_step (hΦ : ∀ r x, Φ (r • x) = φ r • Φ x) (hs : ∀ y, 
   simpa using Submodule.add_mem _ (h1 this) hs'
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite ι`. Establish `key : ∀ s : Finset ι, ∀ U : Submodule R M, (∀ x ∈ U, Φ x ∈ U) → (∀ x ∈ U, ∀ i ∉ s, f i x = 0) → U ≤ Submodule.span R (fixIn Φ U)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `U _ h x hx`. Rewrite using `[hinj x fun i => h x hx i (by simp)]`. Conclude with `Submodule.zero_mem _`. Consider the case `insert a s _ ih`. Introduce `U hU h`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `le_span_step φ Φ hΦ hs hI U hU (f a) (hf a) (ih _ ?_ ?_)` and prove the remaining obligations. Introduce `x hx`. Use `⟨hU x hx.1, ?_⟩` and prove the remaining obligations. Establish `: f a x = 0` using `hx.2`. Express the relevant statement in the definitionally equal form `f a (Φ x) = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hf, this, map_zero]`. Introduce `x hx i hi`. Distinguish the cases in `hia : i = a`. Substitute `hia` using the available equality. Conclude with `hx.2`.
-
-Conclude with `h x hx.1 i (by simp [hia, hi])`. Conclude with `key Finset.univ U hU fun _ _ i hi => absurd (Finset.mem_univ i) hi`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem le_span_fixIn (hΦ : ∀ r x, Φ (r • x) = φ r • Φ x) (hs : ∀ y, ∃ b, φ b - b = y)
     (hI : ∀ I : Ideal R, (∀ x ∈ I, φ x ∈ I) → I ≤ Ideal.span {x | x ∈ I ∧ φ x = x})
@@ -110,11 +108,11 @@ theorem le_span_fixIn (hΦ : ∀ r x, Φ (r • x) = φ r • Φ x) (hs : ∀ y,
 end Fixed
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis A T`. Use `le_span_fixIn φ.toRingHom (TensorProduct.map φ.toLinearMap (LinearMap.id : T →ₗ[A] T)).toAddMonoidHom ?_ hs hI (fun i => (b.baseChange R).coord i) ?_ ?_ U hU` and prove the remaining obligations. Introduce `r x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a t => simp [TensorProduct.smul_tmul']`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`. Introduce `i x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a t => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Introduce `x hx`. Conclude with `(b.baseChange R).ext_elem fun i => by simpa using hx i`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tensor_le_span {A R T : Type} [CommRing A] [CommRing R] [Algebra A R] [AddCommGroup T]
     [Module A T] [Module.Free A T] [Module.Finite A T] (φ : R →ₐ[A] R)
@@ -141,15 +139,13 @@ theorem tensor_le_span {A R T : Type} [CommRing A] [CommRing R] [Algebra A R] [A
     exact (b.baseChange R).ext_elem fun i => by simpa using hx i
 
 /- English proof (translation)
-Set `e` to `Algebra.TensorProduct.comm A W O`. Establish `hc : ∀ b : W ⊗[A] O, e (TensorProduct.map φ.toLinearMap LinearMap.id b) = Algebra.TensorProduct.map (AlgHom.id O O) φ (e b)`. Introduce `b`. Proceed by induction on `b using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a w => simp [e]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Set `U : Submodule W (W ⊗[A] O)` to `(I.comap e.toRingEquiv.toRingHom).restrictScalars W`. Establish `hUm : ∀ x, x ∈ U ↔ e x ∈ I` using `fun x => Iff.rfl`. Establish `h` using `tensor_le_span φ hs hI U fun x hx => by`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hUm, hc]`. Conclude with `hU _ hx`. Introduce `x hx`. Take `⟨y, rfl⟩` from `e.surjective x`. Establish `hy` using `h ((hUm y).2 hx)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction.
 
-Use `clear hx`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz => exact Ideal.subset_span ⟨hz.1, by rw [← hc, hz.2]⟩`. Consider the case `zero => simp`. Consider the case `add z w _ _ hz hw => rw [map_add]`.
-
-Conclude with `Ideal.add_mem _ hz hw`. Consider the case `smul a z _ hz => rw [Algebra.smul_def, map_mul]`. Conclude with `Ideal.mul_mem_left _ _ hz`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ideal_le_span {A W O : Type} [CommRing A] [CommRing W] [Algebra A W] [CommRing O]
     [Algebra A O] [Module.Free A O] [Module.Finite A O] (φ : W →ₐ[A] W)
@@ -180,31 +176,29 @@ theorem ideal_le_span {A W O : Type} [CommRing A] [CommRing W] [Algebra A W] [Co
   | smul a z _ hz => rw [Algebra.smul_def, map_mul]; exact Ideal.mul_mem_left _ _ hz
 
 /- English proof (translation)
-Establish `hMk : ∀ (k : ℕ) (m : M), ϖ ^ k • m = 0 → m = 0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro m h`. Simplify using `using h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ k ih => intro m h`. Rewrite `h` using `[pow_succ, mul_smul]`. Conclude with `hM _ (ih _ h)`. Rewrite using `[Module.Flat.iff_lift_lsmul_comp_subtype_injective]`. Introduce `I _`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `t ht`. Establish `key : ∀ i, e i • t = 0`. Introduce `i`. Distinguish the cases in `h : ∃ k : ℕ, e i * ϖ ^ k ∈ I`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression.
 
-Set `d : I` to `⟨e i * ϖ ^ Nat.find h, Nat.find_spec h⟩`. Establish `h1 : ∀ s : I ⊗[E] M, ∃ m : M, e i • s = d ⊗ₜ m`. Introduce `s`. Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a m`. Rewrite using `[TensorProduct.smul_tmul']`. Break down `hS i a with h0 | ⟨k, u, hu, hk⟩` into its components or cases. Establish `: e i • a = 0` using `Subtype.ext h0`. Conclude with `⟨0, by rw [this]; simp⟩`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hk' : e i * ϖ ^ k ∈ I`. Rewrite using `[← Ideal.mul_unit_mem_iff_mem I hu, ← hk]`. Conclude with `I.mul_mem_left _ a.2`. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le (Nat.find_min' h hk')`. Establish `: e i • a = (ϖ ^ j * u) • d` using `Subtype.ext (by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `e i * a = ϖ ^ j * u * (e i * ϖ ^ Nat.find h)`. Rewrite using `[hk]`. Use the proof step `ring)`. Conclude with `⟨(ϖ ^ j * u) • m, by rw [this, TensorProduct.smul_tmul]⟩`. Consider the case `add x y hx hy`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨m, hm⟩` from `hx`. Take `⟨m', hm'⟩` from `hy`. Conclude with `⟨m + m', by rw [smul_add, hm, hm', TensorProduct.tmul_add]⟩`. Take `⟨m, hm⟩` from `h1 t`. Establish `h2 : (d : E) • m = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (TensorProduct.lift ((LinearMap.lsmul E M).comp I.subtype)) hm` as an intermediate fact. Rewrite `this` using `[map_smul, ht, smul_zero]`. Simplify using `using this.symm`. Establish `h3 : e i • m = 0` using `hMk (Nat.find h) _ (by rw [← mul_smul, mul_comm]; exact h2)`. Establish `h4 : d = e i • d` using `Subtype.ext (by`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `e i * ϖ ^ Nat.find h = e i * (e i * ϖ ^ Nat.find h)`. Rewrite using `[← mul_assoc, hid])`. Rewrite using `[hm, h4, TensorProduct.smul_tmul, h3, TensorProduct.tmul_zero]`. Use `clear ht`. Proceed by induction on `t using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Consider the case `zero => simp`. Consider the case `tmul a m`. Rewrite using `[TensorProduct.smul_tmul']`. Break down `hS i a with h0 | ⟨k, u, hu, hk⟩` into its components or cases. Establish `: e i • a = 0` using `Subtype.ext h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Use `absurd ⟨k, ?_⟩ h` and prove the remaining obligations. Rewrite using `[← Ideal.mul_unit_mem_iff_mem I hu, ← hk]`. Conclude with `I.mul_mem_left _ a.2`.
-
-Consider the case `add x y hx hy => rw [smul_add, hx, hy, add_zero]`. Rewrite using `[← one_smul E t, ← he, Finset.sum_smul]`. Conclude with `Finset.sum_eq_zero fun i _ => key i`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_of_letters {E M ι : Type} [CommRing E] [AddCommGroup M] [Module E M] [Fintype ι]
     (e : ι → E) (he : ∑ i, e i = 1) (hid : ∀ i, e i * e i = e i) (ϖ : E)
@@ -271,17 +265,15 @@ theorem flat_of_letters {E M ι : Type} [CommRing E] [AddCommGroup M] [Module E 
   exact Finset.sum_eq_zero fun i _ => key i
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial E with hE | hE` into its components or cases. Use `haveI := Module.subsingleton E D`. Rewrite using `[Subsingleton.elim x 0]`. Conclude with `N.zero_mem`. Use `haveI : Nontrivial R := (FaithfulSMul.algebraMap_injective E R).nontrivial`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `b` to `Module.Free.chooseBasis E D`. Establish `hsp : ⊤ ≤ Submodule.span R (Set.range fun i => j (b i))`. Rewrite using `[← hspan, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[← b.sum_repr x, map_sum]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hj]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Set `c` to `basisOfTopLeSpanOfCardEqFinrank (fun i => j (b i)) hsp (by rw [← hrank inferInstance, Module.finrank_eq_card_chooseBasisIndex])`. Establish `hc : ∀ i, c i = j (b i)` using `fun i => by simp [c]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `F : M →ₗ[R] R ⊗[E] (D ⧸ N)` to `c.constr R fun i => (1 : R) ⊗ₜ N.mkQ (b i)`. Establish `hF : ∀ x, F (j x) = (1 : R) ⊗ₜ N.mkQ x`. Introduce `x`. Rewrite using `[← b.sum_repr x]`. Simplify using `only [map_sum, hj, map_smul, TensorProduct.tmul_sum]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hc, Module.Basis.constr_basis, algebraMap_smul, TensorProduct.tmul_smul]`. Establish `hker : Submodule.span R (j '' (N : Set D)) ≤ LinearMap.ker F`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
-
-Express the relevant statement in the definitionally equal form `F (j y) = 0`. Rewrite using `[hF, show N.mkQ y = 0 from (Submodule.Quotient.mk_eq_zero _).2 hy, TensorProduct.tmul_zero]`. Establish `h1 : (1 : R) ⊗ₜ[E] N.mkQ x = 0` using `(hF x).symm.trans (hker hx)`. Conclude with `(Submodule.Quotient.mk_eq_zero _).1 ((Module.FaithfullyFlat.one_tmul_eq_zero_iff E (D ⧸ N) _).1 h1)`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_of_mem_span_image {E R D M : Type} [CommRing E] [CommRing R] [Algebra E R]
     [Module.FaithfullyFlat E R] [AddCommGroup D]

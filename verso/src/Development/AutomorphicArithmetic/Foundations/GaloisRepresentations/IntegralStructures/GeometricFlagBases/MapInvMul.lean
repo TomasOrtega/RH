@@ -36,7 +36,7 @@ structure Steps : Prop where
   cont : TP.Sub.ContLeft
 
 /- English proof (translation)
-Rewrite using `[Multiset.map_map]`. Use `conv_rhs => rw [← Multiset.map_id R]`. Conclude with `Multiset.map_congr rfl fun x _ => by simp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_inv_mul (R : Multiset ℂ) (c : ℂˣ) : (R.map (· * ((c : ℂ))⁻¹)).map (· * (c : ℂ)) = R := by
   rw [Multiset.map_map]
@@ -44,19 +44,17 @@ theorem map_inv_mul (R : Multiset ℂ) (c : ℂˣ) : (R.map (· * ((c : ℂ))⁻
   exact Multiset.map_congr rfl fun x _ => by simp
 
 /- English proof (translation)
-Take `⟨dd, ρ, hc, hs, hp⟩` from `h.rep E Ω l P.H P.θ P.nice`. Take `⟨L, hL, -⟩` from `h.char E Ω l ι`. Take `⟨hχ, hcl⟩` from `hL P.κ P.m P.alg`. Establish `hES : ∀ w B, ((l : ℕ) : 𝓞 E) ∉ w.asIdeal → CongFor ι a P.H P.θ P.κ w B → ESAt ι (tw ρ (L P.κ P.m)) w (algSat a (normV w) B)`. Introduce and unpack `w B hw ⟨hu, ϑ, h1, h2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `h.twES E Ω l ι dd ρ _ hc hχ w _ (fun τ => -P.m τ) (hcl w hu) hw _ (h.es E Ω l ι P.H P.θ P.nice dd ρ hc hp w hw a ϑ _ ((h.cut E _ P.H P.θ P.nice w).2 a ϑ h1) h2)` as an intermediate fact. Rewrite `this` using `[map_inv_mul]`. Then use the resulting hypothesis. Establish `hHT : ∀ w, ((l : ℕ) : 𝓞 E) ∈ w.asIdeal → P.HTFor w → CrysAt (tw ρ (L P.κ P.m)) w ∧ JumpsOcc U ι (tw ρ (L P.κ P.m)) w`. Introduce and unpack `w hw ⟨hu, h1, h2⟩`. Establish `hg` using `(h.cut E _ P.H P.θ P.nice w).1 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h3 : ∀ τ : E →+* ℂ, ∃ σ : ℂ ≃+* ℂ, OverPl ι τ w → ∀ lam, HasWeightAt U τ lam → ∀ j ∈ GlobalTheory.RoadWGeo.wtJumps lam, HodgeAt (ι.trans σ) P.H P.θ (σ.toRingHom.comp τ) (j + P.m τ)` using `fun τ => by`. Distinguish the cases in `hτ : OverPl ι τ w`. Take `⟨σ, hσ⟩` from `h2 τ hτ`. Conclude with `⟨σ, fun _ => hσ⟩`. Conclude with `⟨RingEquiv.refl ℂ, fun h' => absurd h' hτ⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose σ hσ using h3`. Establish `hJ : JOcc ι ρ w fun τ j => HodgeAt (ι.trans (σ τ)) P.H P.θ ((σ τ).toRingHom.comp τ) j`. Introduce `Q AI hT A hA O _ _ _ Bw hj τ LL' τ' hi`. Conclude with `h.jump E Ω l (ι.trans (σ (ι.toRingHom.comp τ))) P.H P.θ P.nice dd ρ hc hp w hw hg Q AI hT A hA O Bw hj τ LL' τ' hi`. Use `⟨?_, h.jumpsOf E Ω l ι a dd U _ w _ ?_ (h.twJ E Ω l ι dd ρ _ hc hχ w _ (fun τ => -P.m τ) (hcl w hu) _ hJ)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨C, hC, -⟩` from `hg`. Conclude with `h.twCrys E Ω l ι dd ρ _ hc hχ w _ (fun τ => -P.m τ) (hcl w hu) (h.crys E Ω l P.H P.θ P.nice dd ρ hc hp w hw C hC)`. Introduce `τ hτ lam hl j hj`. Simplify `hσ τ hτ lam hl j hj` using `only [sub_neg_eq_add]`. Use `⟨dd, tw ρ (L P.κ P.m), ⟨(h.cont _ _ dd 0).2.2.1 ρ _ hc hχ, (h.ss _ _ dd 0).2.2 ρ _ hs, ?_, h.rich E Ω l ι a dd U _ v hv hlac (hHT v hv hP).2⟩, fun w hw hC B hB => hES w B hw (hC B hB), hHT, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨X, hX⟩` from `P.cong`. Conclude with `⟨X, fun w h1 h2 h3 B hB => hES w B h3 (hX w h1 h2 h3 B hB)⟩`. Introduce `w hw hC B hB`. Take `⟨hu, ϑ, h1, h2⟩` from `hC B hB`. Use `h.twPhi E Ω l ι dd ρ _ hc hχ w _ (fun τ => -P.m τ) (hcl w hu) _ (h.phi E Ω l ι P.H P.θ P.nice dd ρ hc hp w hw a ϑ _ ((h.cut E _ P.H P.θ P.nice w).2 a ϑ h1) h2)` as an intermediate fact.
-
-Rewrite `this` using `[map_inv_mul]`. Conclude with `h.phiOf E Ω l ι dd _ w a B (h.card E a U w B hB) this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pack.rep (h : Steps) {E : Type} (Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {a d : ℕ} {U : Submodule ℂ (UA E a → ℂ)} (P : Pack ι d U)
@@ -105,11 +103,11 @@ theorem Pack.rep (h : Steps) {E : Type} (Ω : Type) [Field E] [NumberField E] [I
     exact h.phiOf E Ω l ι dd _ w a B (h.card E a U w B hB) this
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a ha d hd x hx T hT w₀ v' h0 hv hap h1 S U hU hTy hS hsph hlac`. Take `⟨⟨P, hP0⟩, hA, hB⟩` from `hP E l ι a ha d hd x hx T hT w₀ v' h0 hv hap h1 S U hU hTy hS hsph`. Use `⟨?_, fun w hw hl hs => ?_, fun w hl hk ha0 hav hs => ?_⟩` and prove the remaining obligations. Take `⟨dd, ρ, hV, -⟩` from `P.rep h Ω hv hlac hP0`. Conclude with `⟨dd, ρ, hV⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨P, h1, h2⟩` from `hA w hw hl hs`. Take `⟨dd, ρ, hV, hE, -⟩` from `P.rep h Ω hv hlac h1`. Conclude with `⟨dd, ρ, hV, hE w hl h2⟩`. Take `⟨⟨P, h1, h2⟩, P', h1', h2'⟩` from `hB w hl hk ha0 hav hs`. Take `⟨dd, ρ, hV, -, hC, -⟩` from `P.rep h Ω hv hlac h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨dd', ρ', hV', -, -, hF⟩` from `P'.rep h Ω hv hlac h1'`. Conclude with `⟨⟨dd, ρ, hV, hC w hl h2⟩, dd', ρ', hV', hF w hl h2'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem geoOne_of (h : Steps) (hP : PackEx) : GeoOne := by
   intro E Ω _ _ _ _ _ _ l _ ι a ha d hd x hx T hT w₀ v' h0 hv hap h1 S U hU hTy hS hsph hlac

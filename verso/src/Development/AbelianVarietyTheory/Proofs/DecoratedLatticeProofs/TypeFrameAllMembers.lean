@@ -30,21 +30,21 @@ namespace GlobalTheory.Fam.MemberFrame
 open Formalism.MainNotions.S in
 
 /- English proof (translation)
-Establish `hH` using `h.1`. Establish `hyp : LocalBesselAndTopKernel.hyp D large₂ 3 C' Cl Cg cb Cu cT CT` using `⟨h.2.1, h.1, h.2.2⟩`. Establish `hL` using `Formalism.MainNotions.BridgeLemma.one_le_scale_log large₂`. Establish `hG` using `Formalism.L2.SG.ThmSOwn.gap_hypothesis_of_hypotheses hH (by linarith) h29`. Establish `hVV : ∀ τ, VV D τ = vand (lamSH D.R (D.hc τ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `τ`. Establish `hgap` using `Formalism.L2.SG.Pf.WuBL.gapAtLeast_of D.R (D.hc τ) (hG.2 τ)`. Establish `hds` using `GlobalTheory.dsig_eq_fdegHC_of_gap D hT τ _ (Formalism.L2.Col.lamSH_isHCParam (D.hc τ)) hgap (GlobalTheory.Core.Deg.CritVand.thrE_add_one_lt D.R hG.1)`. Establish `hanti` using `Formalism.MainNotions.BridgeLemma.szh_anti hH τ`. Establish `hSF : (0 : ℝ) < ∏ i ∈ Finset.range (2 * D.R.rS + D.R.k + 1), (i.factorial : ℝ)` using `Finset.prod_pos fun i _ => by exact_mod_cast Nat.factorial_pos i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `VV`. Rewrite using `[hds, Formalism.MainNotions.BridgeLemma.szh_fdegHC _ hanti, ← dimS_eq]`. Clear the denominators using the available nonvanishing facts. Establish `hg : LocalBesselAndTopKernel.MidVolumeChain D large₂ (1 / 3) 0`. Introduce `τ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hVV τ]`. Establish `h0 : 0 ≤ vand (lamSH D.R (D.hc τ))` using `Formalism.MainNotions.BridgeLemma.szh_vand_nonneg _ (Formalism.MainNotions.BridgeLemma.szh_anti hH τ)`. Establish `h1 : 1 ≤ Real.exp ((0 : ℝ) * D.R.k * D.R.m * large₂.sc.L)` using `Real.one_le_exp (by simp)`. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hD : UnitaryVolumeMass.cTvD D 1` using `Formalism.MainNotions.BridgeLemma.critical_level_lower_bound (C3' := 1) h40 (by norm_num) le_rfl hyp hg`. Establish `hA : UnitaryVolumeMass.cTvA D` using `Formalism.MainNotions.BridgeLemma.degree_ratio_product_formula D (Formalism.MainNotions.BridgeLemma.stMassRatio_of_siegel GlobalTheory.Mass.siegelMassRatio_holds D) hR (Formalism.MainNotions.BridgeLemma.sza_spl_of_data h.2.1) (Formalism.MainNotions.BridgeLemma.sza_g_ge hH)`. Establish `F` using `Formalism.MainNotions.BridgeLemma.tfFacts_of h`. Establish `hm : 2 * (1 : ℝ) ≤ D.R.m` using `by have := D.R.two_le_m; norm_num; exact_mod_cast this`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm40 : (40 : ℝ) ≤ D.R.m` using `le_trans h40 hH.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hk : 3 * Real.exp 8 ≤ (D.R.k : ℝ)`. Establish `e8 : Real.exp 8 ≤ 3 ^ 8`. Establish `h3 : Real.exp 1 ≤ 3` using `by have := Real.exp_one_lt_d9; linarith`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hf` using `Formalism.MainNotions.BridgeLemma.two_le_degree_bis D`. Establish `h5 : (40 : ℝ) ^ 5 ≤ (D.R.m : ℝ) ^ 5` using `pow_le_pow_left₀ (by norm_num) hm40 5`. Establish `hk' : 29 * (40 : ℝ) ^ 5 * 2 * 1 ≤ C' * (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L`. Establish `: 0 ≤ C'` using `by linarith`. Use `gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `F.hk` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `fun w => F.tframe (by linarith) hm hCu hA hD hk w`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem member_frame_of_standing_hypotheses_window_three {D : D7} {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT : ℝ} (hT : Formalism.BasicNotions.Ties D) (hR : LocalBesselAndTopKernel.FamilyMidVolume D)
     (h : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT 3) (h29 : 29 ≤ C') (h40 : 40 ≤ Cl)
@@ -95,11 +95,11 @@ theorem member_frame_of_standing_hypotheses_window_three {D : D7} {large₂ : Si
   exact fun w => F.tframe (by linarith) hm hCu hA hD hk w
 
 /- English proof (translation)
-Establish `h1 : Real.sqrt (s.x * s.delta1) ≤ (R.m : ℝ)` using `h.2.1.1`. Establish `hx0 : 0 < s.x` using `by linarith`. Establish `hx1 : 1 ≤ s.x` using `by linarith`. Establish `he0` using `s.eps_pos`. Establish `hL : 1 ≤ s.x ^ s.eps` using `Real.one_le_rpow hx1 he0.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (4 : ℝ) ≤ s.x ^ ((1 : ℝ) / 4)`. Combine the equalities or inequalities in the displayed calculation. Establish `hs : s.x ^ s.eps * s.x ^ ((1 : ℝ) / 4) ≤ Real.sqrt (s.x * s.delta1)`. Establish `e : s.x * s.delta1 = s.x ^ (1 + -(s.eps / 8))`. Unfold `Scale.delta1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Real.rpow_add hx0, Real.rpow_one]`. Rewrite using `[e, Real.sqrt_eq_rpow, ← Real.rpow_mul hx0.le, ← Real.rpow_add hx0]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hx1 (by linarith)`. Use `show 3 * s.x ^ s.eps ≤ (R.m : ℝ) - 1`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem three_L_le {s : Scale} {R : Ranks} (h : RankVal s R) (he : s.eps < 1 / 52) (hx : 256 ≤ s.x) :
     3 * s.L ≤ (R.m : ℝ) - 1 := by
@@ -122,7 +122,7 @@ theorem three_L_le {s : Scale} {R : Ranks} (h : RankVal s R) (he : s.eps < 1 / 5
   nlinarith
 
 /- English proof (translation)
-Establish `e : X.toD7.what₂.Dstar = X.B.Dstar` using `(X.toD7.Dstar_eq X.toD7.u₀).symm.trans (X.C.A_Dstar _)`. Rewrite using `[e, hO.sizes.2]`. Unfold `DsPre`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun τ _ => (hd τ).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem Dstar_eq_mass (K : Ctx) (X : Stages) (hO : K.Over X.B.toPre)
     (hd : ∀ τ, X.S.dsig τ = Vol.trueDsig X.B.R (X.B.hc τ)) :
@@ -135,9 +135,9 @@ theorem Dstar_eq_mass (K : Ctx) (X : Stages) (hO : K.Over X.B.toPre)
   exact Finset.prod_congr rfl fun τ _ => (hd τ).symm
 
 /- English proof (translation)
-Establish `h4` using `Formalism.MainNotions.StandardLattice.HarishChandraReduction.rankFormula_of_classNumber D Lv (GlobalTheory.ColClassNumber.classNumber_all D Lv)`. Introduce `V _ _ _ _ h L _`. Use `⟨fun hL u => ?_, fun hL => ?_⟩` and prove the remaining obligations. Establish `e` using `h4 (GlobalTheory.first_type_prime_large_of_record D) (Formalism.MainNotions.Ext.Lw.splitsF_g_all D) u (Formalism.MainNotions.Ext.Lw.splitsF_T_all D u) (Formalism.MainNotions.Ext.Lw.mu0Tie_of_sym C u)`. Establish `em : Formalism.HermitianLatticesTheory.mass h L = StandardLattice.massI D D.R.k` using `Formalism.MainNotions.J.mass_ortho_eq hL (Formalism.MainNotions.J.std_ortho D.host.E D.R.k)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[em, ← Formalism.MainNotions.J.idxColTie_holds D]`. Conclude with `e`. Establish `em : Formalism.HermitianLatticesTheory.mass h L = StandardLattice.massI D D.R.r` using `Formalism.MainNotions.J.mass_ortho_eq hL (Formalism.MainNotions.J.std_ortho D.host.E D.R.r)`. Rewrite using `[em, ← Formalism.MainNotions.J.idxRowTie_holds D, hD]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem admissible_ranks_of_mass_formula (D : D7) (Lv : LevelData D) (C : Formalism.L2.Forms.ColsTiedSym D)
     (hD : D.what₂.Dstar = StandardLattice.massI D D.R.r * StandardLattice.idxSig D (D.host.g 0) (D.host.g 1) * ∏ τ, D.dsig τ) :
@@ -156,14 +156,14 @@ theorem admissible_ranks_of_mass_formula (D : D7) (Lv : LevelData D) (C : Formal
 variable (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Bl.Prm hL)
 
 /- English proof (translation)
-The claim follows from `RowE.of_all fun _ K β _ b _ _ _ => admissible_ranks_of_mass_formula β.D β.O.ex.lev b.R.T.toTiedDataS.cols (Dstar_eq_mass K β.X β.c.isOver β.c.dsig_eq)`.
+A detailed English derivation is pending.
 -/
 theorem admissible_ranks_of_mass : GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (Bl.IsLinked p) (fun _ D _ _ _ => LocalBesselAndTopKernel.FamilyMidVolume D) :=
   RowE.of_all fun _ K β _ b _ _ _ =>
     admissible_ranks_of_mass_formula β.D β.O.ex.lev b.R.T.toTiedDataS.cols (Dstar_eq_mass K β.X β.c.isOver β.c.dsig_eq)
 
 /- English proof (translation)
-Use `⟨1, one_pos, fun eps C8 C5 c6 Cb _ _ he _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C _ _ _ => ⟨0, fun cD _ => ⟨0, fun ch _ _ => ⟨256, fun K hK hx β _ c b _ => ?_⟩⟩⟩⟩⟩` and prove the remaining obligations. Establish `hs : β.O.L.sc = K.s` using `β.sc`. Establish `hc : β.O.L.CGam = C.CGam` using `β.val.CGam_eq.trans (congrArg Inhab.FC.CGam hK.1)`. Establish `he' : K.s.eps = eps` using `hK.2.2.2.1`. Conclude with `⟨three_L_le β.val.ranks (by rw [hs, he']; exact he) (by rw [hs]; exact hx), hc⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem rank_at : GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (Bl.IsLinked p) (fun κ D O _ _ =>
     3 * O.L.sc.L ≤ (D.R.m : ℝ) - 1 ∧ O.L.CGam = κ.C.CGam) := by
@@ -175,9 +175,9 @@ theorem rank_at : GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (Bl.IsLinked p) (fun κ 
   exact ⟨three_L_le β.val.ranks (by rw [hs, he']; exact he) (by rw [hs]; exact hx), hc⟩
 
 /- English proof (translation)
-Establish `h` using `((((admissible_ranks_of_mass hL p).and (GlobalTheory.T.degree_hypothesis_all_members hL p (fun _ => 29) (fun _ => 0))).and (GlobalTheory.T.data_nonvanishing_all_members hL p)).and (GlobalTheory.T.rank_condition_all_members hL p)).and (rank_at hL p)`. Use `RowE.imp h ?_` and prove the remaining obligations. Introduce `κ K β c b _ _ _ H0`. Take `⟨⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, h5, h6⟩` from `H0`. Establish `hH : Formalism.MainNotions.S.StandingHypotheses β.D β.O.L (max 29 (8 * κ.C.CGam)) (max 0 40) (κ.C.P.CYL + 1) (1 / 4) 3 (1 / 2) κ.C.CTu` using `⟨h6 ▸ le_max_right _ _, h2.2⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `member_frame_of_standing_hypotheses_window_three β.p.pt.xa.ties h1 ⟨hH, GlobalTheory.Core.Diag.standingNumericalData_three_of_dataNW_rankMu _ h3 h4, by norm_num⟩ (le_max_left _ _) (le_max_right _ _) h5`.
+A detailed English derivation is pending.
 -/
 theorem tFrame_at : GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (Bl.IsLinked p)
     (fun _ D _ _ _ => Formalism.L2.SG.RowsConc.TFrameAt D) := by
@@ -192,7 +192,7 @@ theorem tFrame_at : GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (Bl.IsLinked p)
     (le_max_left _ _) (le_max_right _ _) h5
 
 /- English proof (translation)
-Introduce `hL p` and use `tFrame_at hL p`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem member_tFrameAt : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Bl.Prm hL),
     GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (Bl.IsLinked p) (fun _ D _ _ _ => Formalism.L2.SG.RowsConc.TFrameAt D) :=

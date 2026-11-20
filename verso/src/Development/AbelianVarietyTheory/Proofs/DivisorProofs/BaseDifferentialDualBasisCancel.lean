@@ -24,7 +24,7 @@ theorem d_zero_one_eq_dEps_I (f : E → ℂ) (b y : E) :
     d01 f b y = (1/2 : ℂ) * (fderiv ℝ f b y + Complex.I * fderiv ℝ f b (Complex.I • y)) := rfl
 
 /- English proof (translation)
-The claim follows from `((ContinuousLinearMap.apply ℝ ℂ x).hasFDerivAt).comp b hψ.hasFDerivAt`.
+A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_apply (ψ : E → ℂ) (b : E) (hψ : DifferentiableAt ℝ (fderiv ℝ ψ) b) (x : E) :
     HasFDerivAt (fun b' => fderiv ℝ ψ b' x)
@@ -32,7 +32,7 @@ theorem hasFDerivAt_apply (ψ : E → ℂ) (b : E) (hψ : DifferentiableAt ℝ (
   ((ContinuousLinearMap.apply ℝ ℂ x).hasFDerivAt).comp b hψ.hasFDerivAt
 
 /- English proof (translation)
-Establish `h` using `((hasFDerivAt_apply ψ b hψ x).sub ((hasFDerivAt_apply ψ b hψ (Complex.I • x)).const_mul Complex.I)).const_mul (1/2 : ℂ)`. Establish `e : (fun b' => d10 ψ b' x) = fun b' => (1/2 : ℂ) * (fderiv ℝ ψ b' x - Complex.I * fderiv ℝ ψ b' (Complex.I • x))` using `rfl`. Establish `h' : fderiv ℝ (fun b' => (1/2 : ℂ) * (fderiv ℝ ψ b' x - Complex.I * fderiv ℝ ψ b' (Complex.I • x))) b = _` using `h.fderiv`. Rewrite using `[e, h']`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fderiv_d10 (ψ : E → ℂ) (b : E) (hψ : DifferentiableAt ℝ (fderiv ℝ ψ) b) (x y : E) :
     fderiv ℝ (fun b' => d10 ψ b' x) b y = (1/2 : ℂ) * (fderiv ℝ (fderiv ℝ ψ) b y x -
@@ -47,7 +47,7 @@ theorem fderiv_d10 (ψ : E → ℂ) (b : E) (hψ : DifferentiableAt ℝ (fderiv 
   simp
 
 /- English proof (translation)
-Establish `h` using `((hasFDerivAt_apply ψ b hψ x).add ((hasFDerivAt_apply ψ b hψ (Complex.I • x)).const_mul Complex.I)).const_mul (1/2 : ℂ)`. Establish `e : (fun b' => d01 ψ b' x) = fun b' => (1/2 : ℂ) * (fderiv ℝ ψ b' x + Complex.I * fderiv ℝ ψ b' (Complex.I • x))` using `rfl`. Establish `h' : fderiv ℝ (fun b' => (1/2 : ℂ) * (fderiv ℝ ψ b' x + Complex.I * fderiv ℝ ψ b' (Complex.I • x))) b = _` using `h.fderiv`. Rewrite using `[e, h']`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -69,19 +69,19 @@ variable (ψ : E → ℂ) (b : E) (hψ : ContDiff ℝ 2 ψ)
 include hψ
 
 /- English proof (translation)
-The claim follows from `((hψ.fderiv_right (m := 1) (by norm_num)).differentiable (by norm_num)) b`.
+A detailed English derivation is pending.
 -/
 theorem diff_fderiv : DifferentiableAt ℝ (fderiv ℝ ψ) b :=
   ((hψ.fderiv_right (m := 1) (by norm_num)).differentiable (by norm_num)) b
 
 /- English proof (translation)
-The claim follows from `hψ.contDiffAt.isSymmSndFDerivAt (by simp) v w`.
+A detailed English derivation is pending.
 -/
 theorem symm2 (v w : E) : fderiv ℝ (fderiv ℝ ψ) b v w = fderiv ℝ (fderiv ℝ ψ) b w v :=
   hψ.contDiffAt.isSymmSndFDerivAt (by simp) v w
 
 /- English proof (translation)
-Establish `hd` using `diff_fderiv ψ b hψ`. Rewrite using `[d_one_zero_eq_dEps_neg_I, d_one_zero_eq_dEps_neg_I, fderiv_d10 ψ b hd, fderiv_d10 ψ b hd, fderiv_d10 ψ b hd, fderiv_d10 ψ b hd, symm2 ψ b hψ y x, symm2 ψ b hψ y (Complex.I • x), symm2 ψ b hψ (Complex.I • y) x, symm2 ψ b hψ (Complex.I • y) (Complex.I • x)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem d10_d10_symm (x y : E) :
     d10 (fun b' => d10 ψ b' x) b y = d10 (fun b' => d10 ψ b' y) b x := by
@@ -92,7 +92,7 @@ theorem d10_d10_symm (x y : E) :
   ring
 
 /- English proof (translation)
-Establish `hd` using `diff_fderiv ψ b hψ`. Rewrite using `[d_zero_one_eq_dEps_I, d_zero_one_eq_dEps_I, fderiv_d01 ψ b hd, fderiv_d01 ψ b hd, fderiv_d01 ψ b hd, fderiv_d01 ψ b hd, symm2 ψ b hψ y x, symm2 ψ b hψ y (Complex.I • x), symm2 ψ b hψ (Complex.I • y) x, symm2 ψ b hψ (Complex.I • y) (Complex.I • x)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem d01_d01_symm (x y : E) :
     d01 (fun b' => d01 ψ b' x) b y = d01 (fun b' => d01 ψ b' y) b x := by
@@ -103,7 +103,7 @@ theorem d01_d01_symm (x y : E) :
   ring
 
 /- English proof (translation)
-Establish `hd` using `diff_fderiv ψ b hψ`. Rewrite using `[d_zero_one_eq_dEps_I, d_one_zero_eq_dEps_neg_I, fderiv_d10 ψ b hd, fderiv_d10 ψ b hd, fderiv_d01 ψ b hd, fderiv_d01 ψ b hd, symm2 ψ b hψ y x, symm2 ψ b hψ y (Complex.I • x), symm2 ψ b hψ (Complex.I • y) x, symm2 ψ b hψ (Complex.I • y) (Complex.I • x)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem d01_d10_swap (x y : E) :
     d01 (fun b' => d10 ψ b' x) b y = d10 (fun b' => d01 ψ b' y) b x := by
@@ -116,11 +116,9 @@ theorem d01_d10_swap (x y : E) :
 end Coeff
 
 /- English proof (translation)
-Establish `h : ∑ i, ∑ j, T i j = -∑ i, ∑ j, T i j` using `by conv_lhs => rw [Finset.sum_comm]`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => hT i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (2 : ℂ) • ∑ i, ∑ j, T i j = 0`. Rewrite using `[two_smul]`. Use `nth_rewrite 1 [h]`. Conclude with `neg_add_cancel _`. Use `congrArg (fun v => (1/2 : ℂ) • v) h2` as an intermediate fact.
-
-Simplify `this` using `[smul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sum_sum_antisymm {M : Type} [AddCommGroup M] [Module ℂ M] (T : Fin n → Fin n → M)
     (hT : ∀ i j, T j i = -T i j) : ∑ i, ∑ j, T i j = 0 := by
@@ -136,7 +134,7 @@ theorem sum_sum_antisymm {M : Type} [AddCommGroup M] [Module ℂ M] (T : Fin n �
   simpa [smul_smul] using this
 
 /- English proof (translation)
-Simplify using `only [dBase_apply, ← Finset.sum_add_distrib]`. Apply `sum_sum_antisymm` to reduce the goal to its premises. Introduce `i j`. Rewrite using `[GlobalTheory.TorsionForm.Pullback.Tensorial.wedge_anticomm (dt g i) (dt g j), GlobalTheory.TorsionForm.Pullback.Tensorial.wedge_anticomm (dtb g i) (dt g j), GlobalTheory.TorsionForm.Pullback.Tensorial.wedge_anticomm (dt g i) (dtb g j), GlobalTheory.TorsionForm.Pullback.Tensorial …`. Use `module`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_sq_zero (β : Fin n → E) (ψ : E → ℂ) (b : E) (w : Ext (n + n + g)) (hψ : ContDiff ℝ 2 ψ) :
     ∑ i, (dBase β (fun b' => d10 ψ b' (β i)) b (wedge (dt g i) w) +

@@ -51,7 +51,7 @@ def quotIncl : (M' ⧸ K.comap M'.subtype) →ₗ[ℂ] M ⧸ K :=
   (K.comap M'.subtype).liftQ (K.mkQ ∘ₗ M'.subtype) fun x hx => by simpa using hx
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot]`. Conclude with `Submodule.ker_liftQ_eq_bot _ _ _ fun x hx => by simpa using hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotIncl_injective : Function.Injective (quotIncl M' K) := by
   rw [← LinearMap.ker_eq_bot]
@@ -70,33 +70,29 @@ namespace GlobalTheory.LeviHC.QuotMonic
 open Algebra in
 
 /- English proof (translation)
-Introduce `M _ _ M' K c p q hp hq hpp hqq hpq hM hK hc v hv hfin`. Use `set S := stabAlg M' K`. Establish `hpB : ∀ u, p u ∈ S` using `fun u x hx => ⟨(hM u x hx).2.1, fun hk => (hK u x hk).1⟩`. Establish `hqB : ∀ u, q u ∈ S` using `fun u x hx => ⟨(hM u x hx).2.2, fun hk => (hK u x hk).2⟩`. Establish `hcB : ∀ u, c u ∈ S` using `fun u x hx => ⟨(hM u x hx).1, fun hk => (K.sub_mem_iff_left (hK u _ (hK u x hk).2).1).1 (hc u x hx)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `pS : ℂ → S` to `fun u => ⟨p u, hpB u⟩`. Set `qS : ℂ → S` to `fun u => ⟨q u, hqB u⟩`. Set `cS : ℂ → S` to `fun u => ⟨c u, hcB u⟩`. Set `ρ` to `quotRep M' K`. Establish `poly : ∀ (r : ℂ → Module.End ℂ M) (hr : ∀ u, r u ∈ S), (∃ (d : ℕ) (a : ℕ → Module.End ℂ M), a d = 1 ∧ ∀ u, r u = ∑ i ∈ Finset.range (d + 1), u ^ i • a i) → ∃ (d : ℕ) (a : ℕ → Module.End ℂ (M' ⧸ K.comap M'.subtype)), a d = 1 ∧ ∀ u, ρ ⟨r u, hr u⟩ = ∑ i ∈ Finset.range (d + 1), u ^ i …`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r hr ⟨d, a, ha1, hra⟩`. Establish `haB : ∀ i < d + 1, a i ∈ S` using `fun i hi => (Subalgebra.mem_toSubmodule S).1 ((Submodule.span_le.2 (by rintro _ ⟨u, rfl⟩; exact hr u)) (coeff_mem_span hra hi))`. Set `a' : ℕ → S` to `fun i => if h : a i ∈ S then ⟨a i, h⟩ else 0`. Establish `ha' : ∀ i < d + 1, (a' i).1 = a i` using `fun i hi => by simp [a', haB i hi]`. Use `⟨d, fun i => ρ (a' i), ?_, fun u => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: a' d = 1` using `Subtype.ext ((ha' d (Nat.lt_succ_self d)).trans ha1) show ρ (a' d) = 1`. Rewrite using `[this, map_one]`. Establish `e : (⟨r u, hr u⟩ : S) = ∑ i ∈ Finset.range (d + 1), u ^ i • a' i`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `r u = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hra u]`. Rewrite using `[show ((∑ i ∈ Finset.range (d + 1), u ^ i • a' i : S) : Module.End ℂ M) = ∑ i ∈ Finset.range (d + 1), u ^ i • (a' i : Module.End ℂ M) from map_sum S.val.toLinearMap (fun i => u ^ i • a' i) _ |>.trans (Finset.sum_congr rfl fun i _ => map_smul S.val.toLinearMap _ _)]`. Conclude with `Finset.sum_congr rfl fun i hi => by rw [ha' i (Finset.mem_range.1 hi)]`. Rewrite using `[e, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => map_smul _ _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcS : ∀ u, ρ (cS u) = ρ (pS u) * ρ (qS u)` using `fun u => by`. Rewrite using `[← map_mul]`. Use `LinearMap.ext fun y => Submodule.Quotient.induction_on _ y fun x => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `x`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = Submodule.Quotient.mk _`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[Submodule.Quotient.eq]`. Simplify using `using hc u x hx`. Establish `hval : ∀ (r : ℂ → Module.End ℂ M) (hr : ∀ u, r u ∈ S), (adjoin ℂ (Set.range fun u => (⟨r u, hr u⟩ : S))).map S.val = adjoin ℂ (Set.range r)`. Introduce `r hr`. Rewrite using `[AlgHom.map_adjoin, ← Set.range_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `hrho : ∀ (s : ℂ → S), adjoin ℂ (Set.range fun u => ρ (s u)) = (adjoin ℂ (Set.range s)).map ρ`. Introduce `s`. Rewrite using `[AlgHom.map_adjoin, ← Set.range_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `set v' : M' ⧸ K.comap M'.subtype := Submodule.Quotient.mk ⟨v, hv⟩`. Establish `hj` using `quotIncl_injective (M' := M') (K := K)`. Establish `key` using `H (M' ⧸ K.comap M'.subtype) (fun u => ρ (pS u)) (fun u => ρ (qS u)) (poly p hpB hp) (poly q hqB hq) (fun u u' => (show Commute (pS u) (pS u') from Subtype.ext (hpp u u').eq).map ρ) (fun u u' => (show Commute (qS u) (qS u') from Subtype.ext (hqq u u').eq).map ρ) (fun u u' => (show …`. Use `haveI := key`. Unfold `FinMod`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Submodule.finiteDimensional_of_le (?_ : _ ≤ Submodule.map (quotIncl M' K) (Submodule.span ℂ {y | ∃ a ∈ adjoin ℂ (Set.range fun u => ρ (pS u)), y = a v'}))` and prove the remaining obligations. Rewrite using `[Submodule.map_span]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Rewrite `ha` using `[← hval p hpB]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb, rfl⟩` from `Subalgebra.mem_map.1 ha`. Use `Submodule.subset_span ⟨ρ b v', ⟨ρ b, ?_, rfl⟩, quotIncl_quotRep b v hv⟩` and prove the remaining obligations. Rewrite using `[hrho pS]`. Conclude with `Subalgebra.mem_map.2 ⟨b, hb, rfl⟩`. Use `haveI : FiniteDimensional ℂ (Submodule.span ℂ {y : M ⧸ K | ∃ a ∈ adjoin ℂ (Set.range c), y = K.mkQ (a v)}) := hfin set T := Submodule.span ℂ {y | ∃ a ∈ adjoin ℂ (Set.range fun u => ρ (pS u) * ρ (qS u)), y = a v'}`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hle : T.map (quotIncl M' K) ≤ Submodule.span ℂ {y : M ⧸ K | ∃ a ∈ adjoin ℂ (Set.range c), y = K.mkQ (a v)}`. Rewrite using `[Submodule.map_span]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨a, ha, rfl⟩, rfl⟩`. Establish `e : (fun u => ρ (pS u) * ρ (qS u)) = fun u => ρ (cS u)` using `funext fun u => (hcS u).symm`.
-
-Rewrite `ha` using `[e, hrho cS]`. Take `⟨b, hb, rfl⟩` from `Subalgebra.mem_map.1 ha`. Use `Submodule.subset_span ⟨b.1, ?_, quotIncl_quotRep b v hv⟩` and prove the remaining obligations. Rewrite using `[← hval c hcB]`. Conclude with `Subalgebra.mem_map.2 ⟨b, hb, rfl⟩`.
-
-Use `haveI := Submodule.finiteDimensional_of_le hle`. Conclude with `LinearEquiv.finiteDimensional (Submodule.equivMapOfInjective _ hj T).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monicFactorFiniteMod_of (H : MonicFactorFinite) : MonicFactorFiniteMod := by
   intro M _ _ M' K c p q hp hq hpp hqq hpq hM hK hc v hv hfin

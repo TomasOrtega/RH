@@ -5,33 +5,29 @@ open NumberField UpperTheory.V UpperTheory.V.KT UpperTheory.V.Af.BA
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `hR L _ _ N σ hσ`. Establish `hHR : ∀ (g : Fix N σ) (h : HR L N), (g : Gm L N) • (h : HS L N) ∈ HR L N` using `fun g h => ((hR L N σ hσ).2 h h.2).2 g g.2`. Establish `hinv : ∀ (g : Fix N σ) (h : HS L N), ((g⁻¹ : Fix N σ) : Gm L N) • (g : Gm L N) • h = h`. Introduce `g h`. Rewrite using `[← mul_smul, Subgroup.coe_inv, inv_mul_cancel, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv' : ∀ (g : Fix N σ) (h : HS L N), (g : Gm L N) • ((g⁻¹ : Fix N σ) : Gm L N) • h = h`. Introduce `g h`. Rewrite using `[← mul_smul, Subgroup.coe_inv, mul_inv_cancel, one_smul]`. Set `E : Fix N σ → (HR L N ≃L[ℝ] HR L N)` to `fun g => LinearEquiv.toContinuousLinearEquiv { toFun := fun h => ⟨(g : Gm L N) • (h : HS L N), hHR g h⟩ invFun := fun h => ⟨((g⁻¹ : Fix N σ) : Gm L N) • (h : HS L N), hHR g⁻¹ h⟩ map_add' := by`. Introduce `a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_add]`. Rewrite using `[← actL_apply, ← actL_apply, ← actL_apply, map_add]`. Use the proof step `map_smul' := by`. Introduce `c a`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_smul, RingHom.id_apply]`. Rewrite using `[← actL_apply, ← actL_apply, map_smul]`. Use `left_inv := by`. Introduce `h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hinv g h`. Use `right_inv := by`. Introduce `h`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hinv' g h }`. Establish `hE : ∀ (g : Fix N σ) (h : HR L N), ((E g h : HR L N) : HS L N) = (g : Gm L N) • (h : HS L N)` using `fun g h => rfl`. Set `π : Fix N σ → (NZ L N ≃ NZ L N)` to `fun g => { toFun := fun y => ⟨(g : Gm L N) • (y : Lat L N), smul_ne_zero_lat _ y.2⟩ invFun := fun y => ⟨((g⁻¹ : Fix N σ) : Gm L N) • (y : Lat L N), smul_ne_zero_lat _ y.2⟩ left_inv := by`. Introduce `y`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show ((g⁻¹ : Fix N σ) : Gm L N) • (g : Gm L N) • (y : Lat L N) = y`. Rewrite using `[← mul_smul, Subgroup.coe_inv, inv_mul_cancel, one_smul]`. Use `right_inv := by`. Introduce `y`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (g : Gm L N) • ((g⁻¹ : Fix N σ) : Gm L N) • (y : Lat L N) = y`. Rewrite using `[← mul_smul, Subgroup.coe_inv, mul_inv_cancel, one_smul] }`. Establish `hq : ∀ (g : Fix N σ) (y : NZ L N) (h : HR L N), (qr L N (π g y)) (E g h) = (qr L N y) h`. Introduce `g y h`. Rewrite using `[qr_apply, qr_apply, hE]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `show q ((g : Gm L N) • (h : HS L N)) ((g : Gm L N) • (y : Lat L N)) = q (h : HS L N) (y : Lat L N)`. Rewrite using `[q_smul, ← mul_smul, inv_mul_cancel, one_smul]`. Establish `hT : ∀ (g : Fix N σ) (k : HR L N), E g k ∈ Tr L N ↔ k ∈ Tr L N`. Introduce `g k`. Prove the components needed by the constructor for the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce `hk`. Express the relevant statement in the definitionally equal form `((E g k : HR L N) : HS L N) ∈ Psd L N at hk`. Rewrite `hk` using `[hE]`. Establish `h1` using `smul_mem_Psd ((g : Gm L N))⁻¹ hk`. Rewrite `h1` using `[← mul_smul, inv_mul_cancel, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1`. Introduce `hk show ((E g k : HR L N) : HS L N) ∈ Psd L N`. Rewrite using `[hE]`. Conclude with `smul_mem_Psd _ hk`. Establish `key` using `fun g => ConeExtensionAcyclic.simp_smul (E g) (π g) (hq g) (hT g)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `inst : MulAction (Fix N σ) (ConeExtensionAcyclic.Vert (qr L N))` to `{ smul := fun g v => ⟨E g v.1, (key g).1 v.1 v.2⟩ one_smul := by`. Introduce `v`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((1 : Fix N σ) : Gm L N) • ((v.1 : HR L N) : HS L N) = _`.
-
-Rewrite using `[OneMemClass.coe_one, one_smul]`. Use `mul_smul := by`. Introduce `g g' v`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Use `show ((g * g' : Fix N σ) : Gm L N) • ((v.1 : HR L N) : HS L N) = (g : Gm L N) • (g' : Gm L N) • ((v.1 : HR L N) : HS L N)`. Rewrite using `[Subgroup.coe_mul, mul_smul] }`. Use `⟨inst, fun g v => rfl, ?_⟩` and prove the remaining obligations. Introduce `n g t ht`. Conclude with `(key g).2 n t _ (fun j => rfl) ht`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.real_structure_action_of_real_involution :
     UpperTheory.V.Af.BA.ReInv → UpperTheory.V.Af.BA.ActRe := by

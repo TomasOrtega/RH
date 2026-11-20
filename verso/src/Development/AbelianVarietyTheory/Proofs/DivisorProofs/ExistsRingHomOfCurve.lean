@@ -24,19 +24,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CurveRootGeometry
 
 /- English proof (translation)
-Take `⟨κ, _, t, ht⟩` from `hs`. Establish `: Finite (O →+* k)` using `Finite.of_surjective t ht.exists_eq`. Establish `: PerfectRing k q` using `PerfectRing.ofSurjective k q (surjective_frobenius k q)`. Take `⟨H, rL, rH, D, g, hL, hH, h1, h2, hM, hD, hMD, hv, hsum⟩` from `hi`. Establish `cc (σ : O →+* k) : (σ.comp c).comp c = σ` using `RingHom.ext fun a => congrArg σ (hc a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `φ : Equiv.Perm (O →+* k)` to `{ toFun := fun σ => (frobenius k q).comp σ invFun := fun σ => ((frobeniusEquiv k q).symm : k →+* k).comp σ left_inv := fun σ => RingHom.ext fun a => (frobeniusEquiv k q).symm_apply_apply _ right_inv := fun σ => RingHom.ext fun a => (frobeniusEquiv k q).apply_symm_apply _ }`. Establish `hm0 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg _`. Establish `e1 (σ : O →+* k) : (deg k (lieSub i (scal C σ)) : ℝ) = m * deg k (lieSub i₀ (scal C₀ σ))`. Conclude with `hm.1 σ` after adjusting the coercions. Use `⟨k, inferInstance, inferInstance, inferInstance, C, inferInstance, inferInstance, hC, O →+* k, Fintype.ofFinite _, φ, fun σ => σ.comp c, fun σ => lieSub i (scal C (σ.comp c)), H, fun σ => rL (σ.comp c), rH, Lie G, D, g, te, cc, fun σ => hL _, hH, fun σ => ?_, fun σ => ?_, hM, hD, …` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [cc]`. Conclude with `h1 σ`. Simplify using `only [cc]`. Conclude with `h2 σ`. Simplify using `only [cc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PowerSumSmul.psum_smul, h0, e1]`. Simplify using `only [cc]`. Rewrite using `[PowerSumSmul.psum_smul, hN, e1, e1]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨d, hd, e⟩` from `hlo τ n a b d`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨_, ⟨S, s, hS, rfl⟩, e'⟩` from `hm.2 d hd`. Use `⟨S, s, hS, ?_⟩` and prove the remaining obligations. Rewrite using `[PowerSumSmul.psum_smul]`. Establish `: (m : ℝ) * d ≤ deg k S` using `by exact_mod_cast e'`. Conclude with `(mul_le_mul_of_nonneg_left e hm0).trans this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨d, hd, e⟩` from `hhi τ n a b`. Take `⟨_, ⟨S, s, hS, rfl⟩, e'⟩` from `hm.2 d hd`. Use `⟨S, s, hS, ?_⟩` and prove the remaining obligations. Simplify using `only [cc]`. Rewrite using `[PowerSumSmul.psum_smul, e1, e1]`.
-
-Establish `: (m : ℝ) * d ≤ deg k S` using `by exact_mod_cast e'`. Use `mul_le_mul_of_nonneg_left e hm0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem curveData_of_hasSeq {T : Type} [Fintype T] {N : ℕ} (q : ℕ) [Fact q.Prime] (j : ℕ) (r : T → Fin N → ℝ)
     {k : Type} [Field k] [IsAlgClosed k] [CharP k q] {O : Type} [CommRing O] (hs : Splits O k) {c : O →+* O}
@@ -94,7 +92,7 @@ theorem curveData_of_hasSeq {T : Type} [Fintype T] {N : ℕ} (q : ℕ) [Fact q.P
     linarith
 
 /- English proof (translation)
-Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `π.appTop (algebraMap k _ (σ a)) = algebraMap k _ (σ a)`. Rewrite using `[algebraMap_eq_strHom, algebraMap_eq_strHom, ← h, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem appTop_comp_scal {k O : Type} [Field k] [CommRing O] {C C' : Scheme.{0}} [Algebra k Γ(C, ⊤)]
     [Algebra k Γ(C', ⊤)] {π : C' ⟶ C} (h : π ≫ strHom k C = strHom k C') (σ : O →+* k) :
@@ -105,11 +103,11 @@ theorem appTop_comp_scal {k O : Type} [Field k] [CommRing O] {C C' : Scheme.{0}}
   rfl
 
 /- English proof (translation)
-Take `⟨κ, _, t, ht⟩` from `hs`. Take `⟨g, hω, hL⟩` from `exists_isVB_of_isSemiAbelian G`. Use `hL.isFiniteQC` as an intermediate fact. Use `⟨fun σ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨j, rfl⟩` from `ht.exists_eq σ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `isIso_lieSubBase hp.1 hp.2 ht hω j` as an intermediate fact. Establish `e` using `deg_congr k (asIso (lieSubBase (scal C (t j)) hp.1 hp.2))`. Rewrite `e` using `[appTop_comp_scal h]`. Rewrite using `[← e]`. Conclude with `((hm _ g hL).2 _ (eigenι _ _) ⟨inferInstance, ht.isFiniteQC_eigen _ j⟩).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨S, s, hS, rfl⟩`. Take `⟨h₁, h₂⟩` from `(hm _ g hL).2 S s hS`. Use `isIso_lieBase hp.1 hω` as an intermediate fact. Conclude with `⟨_, (h₁.comp (lieBase hp.1)).deg_mem, h₂.ge⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem degRel_of_scalesDeg {k O : Type} [Field k] [CommRing O] (hs : Splits O k) {C C' : Scheme.{0}}
     [Algebra k Γ(C, ⊤)] [IsIntegral C] [Algebra k Γ(C', ⊤)] [IsIntegral C'] {π : C' ⟶ C}
@@ -133,9 +131,9 @@ theorem degRel_of_scalesDeg {k O : Type} [Field k] [CommRing O] (hs : Splits O k
     exact ⟨_, (h₁.comp (lieBase hp.1)).deg_mem, h₂.ge⟩
 
 /- English proof (translation)
-Use `hC.isProperCurve.isProper` as an intermediate fact. Use `ProperFunctions.isIso_appTop_of_isAlgClosed (strHom k C)` as an intermediate fact. Set `β` to `(Scheme.ΓSpecIso (.of R)).inv ≫ s.appTop ≫ inv (strHom k C).appTop ≫ (Scheme.ΓSpecIso (.of k)).hom`. Use `⟨β.hom, ext_of_isAffine ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_appTop]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = (Spec.map β).appTop ≫ _`. Rewrite using `[← cancel_epi (Scheme.ΓSpecIso (.of R)).inv, ← Scheme.ΓSpecIso_inv_naturality_assoc]`. Simplify using `[β]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_ringHom_of_curve {k R : Type} [Field k] [IsAlgClosed k] [CommRing R] {C : Scheme.{0}} [Algebra k Γ(C, ⊤)]
     [IsIntegral C] (hC : IsProjCurve k C) (s : C ⟶ Sp R) : ∃ β : R →+* k, s = strHom k C ≫ spMap β := by
@@ -156,9 +154,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : Le
 include hd in
 
 /- English proof (translation)
-Establish `h : EigenSplit.IsSplitting fun τ : E →+* ℂ => β.comp (intEmb c τ)`. Use `EigenSplit.isSplitting_of_isDomain (fun σ τ h => ?_) (NumberField.Embeddings.card E ℂ) β ?_` and prove the remaining obligations. Conclude with `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun a => congrArg (fun f : 𝓞 E →+* 𝓞 c.F => (((f a : 𝓞 c.F) : c.F) : ℂ)) h)`. Rewrite using `[isUnit_iff_ne_zero, Ne, CharP.intCast_eq_zero_iff k q]`. Conclude with `fun h => hd (Int.natCast_dvd.1 h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations.
 
-Use `isSplitBy_of_injective h.injective ?_` and prove the remaining obligations. Rewrite using `[NumberField.Embeddings.card, RingOfIntegers.rank]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSplitBy_intEmb : IsSplitBy fun τ : E →+* ℂ => β.comp (intEmb c τ) := by
   have h : EigenSplit.IsSplitting fun τ : E →+* ℂ => β.comp (intEmb c τ) := by
@@ -171,7 +169,7 @@ theorem isSplitBy_intEmb : IsSplitBy fun τ : E →+* ℂ => β.comp (intEmb c �
   rw [NumberField.Embeddings.card, RingOfIntegers.rank]
 
 /- English proof (translation)
-Use `RingHom.ext fun a => RingOfIntegers.ext (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `starRingEnd ℂ (τ (a : E)) = τ ((H.bar a : 𝓞 E) : E)`. Rewrite using `[H.bar_eq, IsCMField.complexEmbedding_complexConj]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem intEmb_conjEmb (τ : E →+* ℂ) : intEmb c (conjEmb τ) = (intEmb c τ).comp (H.bar : 𝓞 E →+* 𝓞 E) := by
   refine RingHom.ext fun a => RingOfIntegers.ext (Subtype.ext ?_)
@@ -179,7 +177,7 @@ theorem intEmb_conjEmb (τ : E →+* ℂ) : intEmb c (conjEmb τ) = (intEmb c τ
   rw [H.bar_eq, IsCMField.complexEmbedding_complexConj]
 
 /- English proof (translation)
-Introduce `a` and use `by refine RingOfIntegers.ext ?_ change ((H.bar (H.bar a) : 𝓞 E) : E) = _ rw [H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bar_involutive (H : Host E) : Function.Involutive (H.bar : 𝓞 E →+* 𝓞 E) := fun a => by
   refine RingOfIntegers.ext ?_
@@ -189,11 +187,11 @@ theorem bar_involutive (H : Host E) : Function.Involutive (H.bar : 𝓞 E →+* 
 end Emb
 
 /- English proof (translation)
-Establish `e (m : ℕ) (hm : m < N) : PowerSumSmul.ext (r τ) m = if m < j then a m else -b (N - 1 - m)`. Simplify `h ⟨m, hm⟩` using `[PowerSumSmul.ext, hm]`. Establish `lo (n : ℕ) (h₁ : n ≤ j) : ∑ m ∈ Finset.range n, PowerSumSmul.ext (r τ) m = ∑ m ∈ Finset.range n, a m` using `Finset.sum_congr rfl fun m hm => by`. Use `Finset.mem_range.1 hm` as an intermediate fact. Rewrite using `[e m (by omega), if_pos (by omega)]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PowerSumSmul.psum_eq r τ hn]`. Use `⟨lo n, fun h₁ => ?_⟩` and prove the remaining obligations. Proceed by induction on `n, h₁ using Nat.le_induction with`. Consider the case `base => rw [lo j le_rfl]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `succ n h₁ ih`. Rewrite using `[Finset.sum_range_succ, ih (by omega), e n (by omega), if_neg (by omega), show N - n = (N - (n + 1)) + 1 by omega, Finset.sum_range_succ, show N - 1 - n = N - (n + 1) by omega]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psum_root {T : Type} [Fintype T] {N j : ℕ} (hj : j ≤ N) (r : T → Fin N → ℝ) (τ : T) (a b : ℕ → ℝ)
     (h : ∀ x : Fin N, r τ x = if (x : ℕ) < j then a x else -b (N - 1 - x)) (n : ℕ) (hn : n ≤ N) :
@@ -216,7 +214,7 @@ theorem psum_root {T : Type} [Fintype T] {N j : ℕ} (hj : j ≤ N) (r : T → F
     ring
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun x => hC.degPic (CechPic.pull f x)) (CechPic.cls_dual_add hL)`. Simplify using `only [map_add, map_zero] at e`. Conclude with `eq_neg_of_add_eq_zero_left e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem degLB_pull_dual {k : Type} [Field k] {C X : Scheme.{0}} [Algebra k Γ(C, ⊤)] [IsIntegral C] (hC : IsProjCurve k C)
     (f : C ⟶ X) {L : LB X} (hL : L.IsLB) : degLB k ((CechPic.dual L).pull f) = -degLB k (L.pull f) := by

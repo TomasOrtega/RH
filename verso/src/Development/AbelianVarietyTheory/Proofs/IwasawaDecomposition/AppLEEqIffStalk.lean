@@ -12,11 +12,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.KeyAtBC
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h Z r z j k hj hk`. Establish `hy : r z ∈ (L.pull F).U (fun _ => j) ⊓ L'.U k` using `⟨mem_pull.2 hj, hk⟩`. Establish `hle : (L.pull F).U (fun _ => j) ⊓ L'.U k ≤ F ⁻¹ᵁ (V ⊓ L.U j)` using `fun y hy => ⟨hV y, mem_pull.1 hy.1⟩`. Use `(gs_appLE F _ _ hle r z hy _).symm.trans ((congrArg (gs r z _) (h (fun _ => j) k hle)).trans ?_)` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[gs_mul _ z _ hy, gs_res _ z _ hy]`. Conclude with `congrArg (· * _) (gs_unit _ z _ hy _)`. Introduce `h j i hle`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Use `(gs_appLE F _ _ hle (𝟙 _) y hy _).trans ((h _ (𝟙 _) y _ i (mem_pull.1 hy.1) hy.2).trans ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gs_mul _ y _ hy, gs_res _ y _ hy]`. Conclude with `congrArg (· * _) (gs_unit _ y _ hy _).symm`.
+A detailed English derivation is pending.
 -/
 theorem appLE_eq_iff_stalk {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} (w : LB.Iso L' (L.pull F))
     {V : X.Opens} (hV : ∀ y, F y ∈ V) (s : ∀ j, Γ(X, V ⊓ L.U j)) (s' : L'.Sec) :
@@ -39,7 +39,7 @@ theorem appLE_eq_iff_stalk {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' �
     exact congrArg (· * _) (gs_unit _ y _ hy _).symm
 
 /- English proof (translation)
-Use `show π (F y) ∈ U`. Rewrite using `[← Scheme.Hom.comp_apply, e, Scheme.Hom.comp_apply]`. Conclude with `hz (Set.mem_univ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_comm {X X' T T' : Scheme.{0}} {F : X' ⟶ X} {π : X ⟶ T} {π' : X' ⟶ T'} {z : T' ⟶ T}
     (e : F ≫ π = π' ≫ z) {U : T.Opens} (hz : ⊤ ≤ z ⁻¹ᵁ U) (y : X') : F y ∈ π ⁻¹ᵁ U := by
@@ -48,7 +48,7 @@ theorem mem_of_comm {X X' T T' : Scheme.{0}} {F : X' ⟶ X} {π : X ⟶ T} {π' 
   exact hz (Set.mem_univ _)
 
 /- English proof (translation)
-Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_comp₀ {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (f' : R' →+* R'') :
     spMap (f'.comp f) = spMap f' ≫ spMap f := by
@@ -61,15 +61,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {x : KeyIn R} {x' : KeyIn R'}
 
 /- English proof (translation)
-Take `⟨φ, he, w, hg, hp, hw, hr, hs, hv⟩` from `h`. Take `⟨φ', he', w', hg', F', hp', hw', hr', hs', hF', hε', hv'⟩` from `h'`. Establish `g` using `(isGen_iff w).1 hw`. Establish `g'` using `(isGen_iff w').1 hw'`. Take `⟨w'', T⟩` from `exists_comp x.P.isLB w w' g g' Y.t.PP.isLB x'.P.isLB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `he'' : eSec x'.P.A ≫ φ' ≫ φ = (spMap f ≫ z) ≫ eSec Y.t.G`. Rewrite using `[← Category.assoc, he', Category.assoc, he, Category.assoc]`. Establish `hF : F' = dualMap f` using `KeyCancel.dualNumber_ringHom_ext (fun a => by`. Rewrite using `[hF']`. Apply the tactic sequence `ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use the proof step `(by`. Rewrite using `[hε']`. Apply the tactic sequence `ext <;> simp [dualMap])`. Establish `hq` using `hp'.comp hp`. Use `⟨φ' ≫ φ, he'', w'', hg'.trans hg, hq, (isGen_iff w'').2 (T.pgen_comp x.P.isLB g g'), ?_, ?_, fun i => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `r₀` using `(maps_iff w _ (fun _ => eSec Y.t.G) _ x.rig Y.t.PP.rig z _ (rigPull_le φ z he Y.t.PP.L) (fun _ => rfl)).1 hr`. Establish `r₁` using `(maps_iff w' _ (fun _ => eSec x.P.A) _ x'.rig x.rig (spMap f) _ (rigPull_le φ' (spMap f) he' x.P.L) (fun _ => rfl)).1 hr'`. Conclude with `(maps_iff w'' _ (fun _ => eSec Y.t.G) _ x'.rig Y.t.PP.rig (spMap f ≫ z) _ (rigPull_le (φ' ≫ φ) (spMap f ≫ z) he'' Y.t.PP.L) (fun _ => rfl)).2 (T.pmaps_comp x.P.isLB (fun _ => he') r₀ r₁)`. Use `(appLE_eq_iff_stalk w'' (mem_of_comm hq.1.w (le_preimage_comp _ hz)) M.θ x'.th).2 fun Z q y j k hj hk => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart x.P.isLB (φ' (q y))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a` using `(appLE_eq_iff_stalk w (mem_of_comm hp.1.w hz) M.θ x.th).1 hs Z (q ≫ φ') y j i hj hi`. Establish `b` using `(KeyCancel.appLE_eq_iff_stalk w' x.th x'.th).1 hs' Z q y i k hi hk`. Rewrite using `[T Z q y j i k hj hi hk, ← Category.assoc, a, b, Units.val_mul, _root_.mul_assoc]`. Rewrite using `[← Category.assoc, hv', Category.assoc, hv, FlagMod.ev_spMap f z M.U hz, FlagMod.dualMap_comp, spMap_comp₀, hF, Category.assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem keyAt_of_keyPB (h : KeyAt M z hz x) (h' : KeyPB x' x f) :
     KeyAt M (spMap f ≫ z) (le_preimage_comp _ hz) x' := by
@@ -107,19 +107,19 @@ theorem keyAt_of_keyPB (h : KeyAt M z hz x) (h' : KeyPB x' x f) :
     rfl
 
 /- English proof (translation)
-Take `⟨φ, he, w, hg, hc, hw, hr, hs, hv⟩` from `h`. Take `⟨φ'', he'', w'', hg'', hc'', hw'', hr'', hs'', hv''⟩` from `h'`. Establish `hp` using `hc.1`. Take `⟨φ', hφ, hw0⟩ : ∃ φ' : x'.P.A.left ⟶ x.P.A.left, φ' ≫ φ = φ'' ∧ φ' ≫ x.P.A.hom = x'.P.A.hom ≫ spMap f` from `⟨hp.lift φ'' (x'.P.A.hom ≫ spMap f) (by rw [hc''.1.w, Category.assoc]), hp.lift_fst _ _ _, hp.lift_snd _ _ _⟩`. Substitute `hφ` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Establish `he' : eSec x'.P.A ≫ φ' = spMap f ≫ eSec x.P.A`. Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, he'', Category.assoc, Category.assoc, he]`. Establish `a₁ : eSec x'.P.A ≫ x'.P.A.hom = 𝟙 _` using `Over.w η[x'.P.A]`. Establish `a₂ : eSec x.P.A ≫ x.P.A.hom = 𝟙 _` using `Over.w η[x.P.A]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hw0, ← Category.assoc, a₁, Category.assoc, a₂]`. Simplify using the standard rewrite rules. Establish `g` using `(isGen_iff w).1 hw`. Establish `g''` using `(isGen_iff w'').1 hw''`. Take `⟨w', T⟩` from `exists_cancel Y.t.PP.isLB w w'' g g'' x.P.isLB x'.P.isLB`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `r` using `(maps_iff w _ (fun _ => eSec Y.t.G) _ x.rig Y.t.PP.rig z _ (rigPull_le φ z he Y.t.PP.L) (fun _ => rfl)).1 hr`. Establish `r''` using `(maps_iff w'' _ (fun _ => eSec Y.t.G) _ x'.rig Y.t.PP.rig (spMap f ≫ z) _ (rigPull_le (φ' ≫ φ) (spMap f ≫ z) he'' Y.t.PP.L) (fun _ => rfl)).1 hr''`. Use `⟨φ', he', w', hg''.trans hg.symm, dualMap f, hc.cancel hc'' hw0, (isGen_iff w').2 (T.pgen_cancel Y.t.PP.isLB g g''), (maps_iff w' _ (fun _ => eSec x.P.A) _ x'.rig x.rig (spMap f) _ (rigPull_le φ' (spMap f) he' x.P.L) (fun _ => rfl)).2 (T.pmaps_cancel Y.t.PP.isLB (fun _ => he') r …` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_chart Y.t.PP.isLB (φ (φ' (q y)))`. Establish `a` using `(appLE_eq_iff_stalk w (mem_of_comm hp.w hz) M.θ x.th).1 hs Z (q ≫ φ') y j i hj hi`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `b` using `(appLE_eq_iff_stalk w'' (mem_of_comm hc''.1.w (le_preimage_comp _ hz)) M.θ x'.th).1 hs'' Z q y j k hj hk`. Rewrite `b` using `[T Z q y j i k hj hi hk, ← Category.assoc, a, Units.val_mul, _root_.mul_assoc]`. Conclude with `(Units.mul_right_inj _).1 b`. Apply the tactic sequence `ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Apply the tactic sequence `ext <;> simp [dualMap]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hv'', Category.assoc, hv, FlagMod.ev_spMap f z M.U hz, FlagMod.dualMap_comp, spMap_comp₀, Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[Category.assoc, hw0, ← Category.assoc, Over.w, Category.assoc, Over.w] show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem keyPB_of_keyAt (h : KeyAt M z hz x) (h' : KeyAt M (spMap f ≫ z) (le_preimage_comp _ hz) x') :
     KeyPB x' x f := by

@@ -58,15 +58,13 @@ theorem strictTransform_eq_saturation {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z
     Blowup.strictTransform π Z D = saturation (Z.comap π) (D.comap π) := rfl
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, rfl⟩`. Establish `hp : Scheme.Opens.ι (saturationOpens F T) p ∈ ((saturationOpens F T : (T.subscheme).Opens) : Set ↥(T.subscheme))`. Rewrite using `[← Scheme.Opens.range_ι]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.mem_range_self p`. Rewrite `hp` using `[coe_saturationOpens]`. Use `show T.subschemeι (Scheme.Opens.ι (saturationOpens F T) p) ∈ (T.support : Set ↥Y) \ (F.support : Set ↥Y)`. Use `⟨?_, hp⟩` and prove the remaining obligations. Rewrite using `[← Scheme.IdealSheafData.range_subschemeι]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Set.mem_range_self _`. Introduce and unpack `⟨hy1, hy2⟩`. Rewrite `hy1` using `[← Scheme.IdealSheafData.range_subschemeι]`. Take `⟨q, rfl⟩` from `hy1`. Establish `hq : q ∈ ((saturationOpens F T : (T.subscheme).Opens) : Set ↥(T.subscheme))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[coe_saturationOpens]`. Conclude with `hy2`. Rewrite `hq` using `[← Scheme.Opens.range_ι]`. Take `⟨p, hp⟩` from `hq`. Use `⟨p, ?_⟩` and prove the remaining obligations.
-
-Use `show T.subschemeι (Scheme.Opens.ι (saturationOpens F T) p) = T.subschemeι q`. Rewrite using `[hp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem range_saturationι {Y : Scheme.{u}} (F T : Y.IdealSheafData) :
     Set.range ⇑(saturationι F T) = (T.support : Set ↥Y) \ (F.support : Set ↥Y) := by
@@ -96,15 +94,15 @@ private theorem range_saturationι {Y : Scheme.{u}} (F T : Y.IdealSheafData) :
     rw [hp]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `U hU hUc`. Establish `hV` using `Scheme.Hom.isEmbedding (f := Scheme.Opens.ι V)`. Establish `hg` using `Scheme.Hom.isEmbedding (f := Scheme.Opens.ι (saturationOpens F T) ≫ T.subschemeι)`. Establish `hg'` using `Scheme.Hom.isEmbedding (f := Scheme.Opens.ι (saturationOpens (restrictIdeal F V) (restrictIdeal T V)) ≫ (restrictIdeal T V).subschemeι)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrange' : Set.range ⇑(saturationι (restrictIdeal F V) (restrictIdeal T V)) = ⇑(Scheme.Opens.ι V) ⁻¹' ((T.support : Set ↥Y) \ (F.support : Set ↥Y))`. Rewrite using `[range_saturationι, restrictIdeal_eq_comap_ι, restrictIdeal_eq_comap_ι, Set.preimage_sdiff]`. Use extensionality with `x`. Simplify using `only [Set.mem_sdiff, Set.mem_preimage, SetLike.mem_coe, Scheme.IdealSheafData.mem_support_comap]`. Establish `hUo : IsOpen (⇑(Scheme.Opens.ι V) '' U)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨W, hW, hWU⟩` from `hV.toIsInducing.isOpen_iff.mp hU`. Rewrite using `[← hWU, Set.image_preimage_eq_inter_range, Scheme.Opens.range_ι]`. Conclude with `hW.inter V.isOpen`. Establish `hUk : IsCompact (⇑(Scheme.Opens.ι V) '' U)` using `hUc.image hV.continuous`. Establish `hmain : IsCompact (⇑(saturationι F T) ⁻¹' (⇑(Scheme.Opens.ι V) '' U))` using `QuasiCompact.isCompact_preimage _ hUo hUk`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `himg : IsCompact (⇑(saturationι F T) '' (⇑(saturationι F T) ⁻¹' (⇑(Scheme.Opens.ι V) '' U)))` using `hmain.image hg.continuous`. Rewrite `himg` using `[Set.image_preimage_eq_inter_range, range_saturationι]`. Establish `h2 : IsCompact (⇑(Scheme.Opens.ι V) '' (U ∩ ⇑(Scheme.Opens.ι V) ⁻¹' ((T.support : Set ↥Y) \ (F.support : Set ↥Y))))`. Rewrite using `[Set.image_inter_preimage]`. Conclude with `himg`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hV.toIsInducing.isCompact_iff.mpr h2`. Establish `hfinal : IsCompact (⇑(saturationι (restrictIdeal F V) (restrictIdeal T V)) '' (⇑(saturationι (restrictIdeal F V) (restrictIdeal T V)) ⁻¹' U))`. Rewrite using `[Set.image_preimage_eq_inter_range, hrange']`. Conclude with `h3`. Conclude with `hg'.toIsInducing.isCompact_iff.mpr hfinal`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quasiCompact_saturationι_restrictIdeal {Y : Scheme.{u}} (F T : Y.IdealSheafData)
     [QuasiCompact (saturationι F T)] (V : Y.Opens) :
@@ -145,9 +143,9 @@ theorem quasiCompact_saturationι_restrictIdeal {Y : Scheme.{u}} (F T : Y.IdealS
   exact hg'.toIsInducing.isCompact_iff.mpr hfinal
 
 /- English proof (translation)
-Establish `: IsNoetherianRing Γ(Y, U)` using `IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`. Establish `: NoetherianSpace ↥U` using `noetherianSpace_of_isAffineOpen U hU`. Establish `h1 : IsCompact ((Subtype.val : ↥U → ↥Y) ⁻¹' S)` using `NoetherianSpace.isCompact _`. Establish `h2` using `h1.image continuous_subtype_val`. Establish `hsub : S ⊆ Set.range (Subtype.val : ↥U → ↥Y)` using `fun x hx => ⟨⟨x, hS hx⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[Set.image_preimage_eq_of_subset hsub]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem isCompact_of_subset_affineOpen {Y : Scheme.{u}} [IsLocallyNoetherian Y]
     {U : Y.Opens} (hU : IsAffineOpen U) {S : Set ↥Y} (hS : S ⊆ (U : Set ↥Y)) :
@@ -160,9 +158,9 @@ private theorem isCompact_of_subset_affineOpen {Y : Scheme.{u}} [IsLocallyNoethe
   rwa [Set.image_preimage_eq_of_subset hsub] at h2
 
 /- English proof (translation)
-Establish `h : (⨆ i : Y.affineOpens, (i : Y.Opens)) = ⊤` using `iSup_affineOpens_eq_top Y`. Establish `hy : y ∈ (⨆ i : Y.affineOpens, (i : Y.Opens))`. Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.mp hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨((i : Y.Opens) : Set ↥Y), (i : Y.Opens).isOpen, hi, fun S hS => isCompact_of_subset_affineOpen i.2 hS⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_isOpen_mem_forall_subset_isCompact {Y : Scheme.{u}}
     [IsLocallyNoetherian Y] (y : ↥Y) :
@@ -176,11 +174,9 @@ private theorem exists_isOpen_mem_forall_subset_isCompact {Y : Scheme.{u}}
     fun S hS => isCompact_of_subset_affineOpen i.2 hS⟩
 
 /- English proof (translation)
-Establish `key : ∀ y : ↥Y, ∃ V : Set ↥Y, IsOpen V ∧ y ∈ V ∧ ∀ S' ⊆ V, IsCompact S'` using `fun y => exists_isOpen_mem_forall_subset_isCompact y`. Use `choose V hVopen hVmem hVcomp using key`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover V hVopen (fun y _ => Set.mem_iUnion.2 ⟨y, hVmem y⟩)`. Establish `hEq : S = ⋃ y ∈ (t : Set ↥Y), (S ∩ V y)`. Use `Set.Subset.antisymm (fun x hx => ?_) (fun x hx => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hxy⟩` from `Set.mem_iUnion₂.1 (ht (hS hx))`. Conclude with `Set.mem_iUnion₂.2 ⟨y, Finset.mem_coe.2 hy, hx, hxy⟩`. Take `⟨y, -, hx1, -⟩` from `Set.mem_iUnion₂.1 hx`. Conclude with `hx1`. Rewrite using `[hEq]`.
-
-Conclude with `t.finite_toSet.isCompact_biUnion fun y _ => hVcomp y _ Set.inter_subset_right`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isCompact_of_subset_isCompact {Y : Scheme.{u}} [IsLocallyNoetherian Y]
     {K S : Set ↥Y} (hK : IsCompact K) (hS : S ⊆ K) : IsCompact S := by
@@ -199,9 +195,9 @@ private theorem isCompact_of_subset_isCompact {Y : Scheme.{u}} [IsLocallyNoether
   exact t.finite_toSet.isCompact_biUnion fun y _ => hVcomp y _ Set.inter_subset_right
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `U _ hUc`. Establish `hg` using `Scheme.Hom.isEmbedding (f := Scheme.Opens.ι (saturationOpens F T) ≫ T.subschemeι)`. Establish `hfinal : IsCompact (⇑(saturationι F T) '' (⇑(saturationι F T) ⁻¹' U))`. Rewrite using `[Set.image_preimage_eq_inter_range, range_saturationι]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isCompact_of_subset_isCompact hUc Set.inter_subset_left`. Conclude with `hg.toIsInducing.isCompact_iff.mpr hfinal`.
+A detailed English derivation is pending.
 -/
 theorem quasiCompact_saturationι_of_isLocallyNoetherian {Y : Scheme.{u}}
     [IsLocallyNoetherian Y] (F T : Y.IdealSheafData) :
@@ -216,7 +212,7 @@ theorem quasiCompact_saturationι_of_isLocallyNoetherian {Y : Scheme.{u}}
   exact hg.toIsInducing.isCompact_iff.mpr hfinal
 
 /- English proof (translation)
-Establish `hemb` using `Scheme.Hom.isEmbedding (f := Scheme.Opens.ι (saturationOpens F T) ≫ T.subschemeι)`. Establish `: NoetherianSpace ((saturationOpens F T).toScheme)` using `hemb.toIsInducing.noetherianSpace`. Conclude with `⟨fun U _ _ => NoetherianSpace.isCompact _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem quasiCompact_saturationι_of_noetherianSpace {Y : Scheme.{u}}
     [NoetherianSpace Y] (F T : Y.IdealSheafData) :
@@ -228,7 +224,7 @@ theorem quasiCompact_saturationι_of_noetherianSpace {Y : Scheme.{u}}
   exact ⟨fun U _ _ => NoetherianSpace.isCompact _⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Ideal.mem_comap, CommRingCat.hom_id, RingHom.id_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem ideal_comap_hom_id {R : CommRingCat.{u}} (I : Ideal R) :
     Ideal.comap (CommRingCat.Hom.hom (𝟙 R)) I = I := by
@@ -236,7 +232,7 @@ private theorem ideal_comap_hom_id {R : CommRingCat.{u}} (I : Ideal R) :
   simp only [Ideal.mem_comap, CommRingCat.hom_id, RingHom.id_apply]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 private theorem ker_comp_map_eqToHom {A : Scheme.{u}} {R : CommRingCat.{u}}
     {P Q : A.Opens} (e : P = Q) (φ : R ⟶ A.presheaf.obj (Opposite.op Q)) :
@@ -246,9 +242,9 @@ private theorem ker_comp_map_eqToHom {A : Scheme.{u}} {R : CommRingCat.{u}}
   simp
 
 /- English proof (translation)
-Establish `: QuasiCompact (m ∣_ V)` using `inferInstance`. Apply `Scheme.IdealSheafData.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `U`. Rewrite using `[Scheme.IdealSheafData.ideal_comap_of_isOpenImmersion, Scheme.Hom.ker_apply, Scheme.Hom.ker_apply, morphismRestrict_app]`. Use `Eq.trans ?_ (ker_comp_map_eqToHom _ _).symm` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Conclude with `ideal_comap_hom_id _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ker_comap_ι {A B : Scheme.{u}} (m : A ⟶ B) [QuasiCompact m]
     (V : B.Opens) : m.ker.comap V.ι = (m ∣_ V).ker := by
@@ -262,7 +258,7 @@ private theorem ker_comap_ι {A B : Scheme.{u}} (m : A ⟶ B) [QuasiCompact m]
   exact ideal_comap_hom_id _
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hf`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem quasiCompact_of_eq {A C : Scheme.{u}} {f g : A ⟶ C} (h : f = g)
     (hf : QuasiCompact g) : QuasiCompact f := by
@@ -270,9 +266,9 @@ private theorem quasiCompact_of_eq {A C : Scheme.{u}} {f g : A ⟶ C} (h : f = g
   exact hf
 
 /- English proof (translation)
-Rewrite using `[Scheme.IdealSheafData.le_def]`. Introduce `U`. Rewrite using `[Scheme.Hom.ker_apply, Scheme.Hom.ker_apply]`. Introduce `x hx`. Rewrite `hx` using `[RingHom.mem_ker]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : ((a ≫ m).app U.1).hom x = (a.app (m ⁻¹ᵁ U.1)).hom ((m.app U.1).hom x)` using `congrArg (fun φ => (CommRingCat.Hom.hom φ) x) (Scheme.Hom.comp_app a m U.1)`. Use `RingHom.mem_ker.mpr ?_` and prove the remaining obligations. Rewrite using `[key, hx]`. Conclude with `map_zero _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ker_le_ker_comp {A B C : Scheme.{u}} (a : A ⟶ B) (m : B ⟶ C)
     [QuasiCompact m] [QuasiCompact (a ≫ m)] : m.ker ≤ (a ≫ m).ker := by
@@ -288,9 +284,9 @@ private theorem ker_le_ker_comp {A B C : Scheme.{u}} (a : A ⟶ B) (m : B ⟶ C)
   exact map_zero _
 
 /- English proof (translation)
-Use `hu` as an intermediate fact. Use `hv` as an intermediate fact. Establish `h1 : QuasiCompact (a ≫ v)` using `quasiCompact_of_eq ha hu`. Establish `h2 : QuasiCompact (b ≫ u)` using `quasiCompact_of_eq hb hv`. Use `le_antisymm ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hb]`. Conclude with `ker_le_ker_comp b u`. Rewrite using `[← ha]`. Conclude with `ker_le_ker_comp a v`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ker_eq_ker_of_factorizations {A B C : Scheme.{u}} (u : A ⟶ C) (v : B ⟶ C)
     (hu : QuasiCompact u) (hv : QuasiCompact v) (a : A ⟶ B) (b : B ⟶ A)
@@ -306,13 +302,13 @@ private theorem ker_eq_ker_of_factorizations {A B C : Scheme.{u}} (u : A ⟶ C) 
     exact ker_le_ker_comp a v
 
 /- English proof (translation)
-Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem base_apply_congr {A B : Scheme.{u}} {φ ψ : A ⟶ B} (h : φ = ψ) (x : ↥A) :
     φ x = ψ x := by rw [h]
 
 /- English proof (translation)
-Rewrite using `[coe_saturationOpens]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_saturationOpens {Y : Scheme.{u}} (F T : Y.IdealSheafData)
     (z : ↥(T.subscheme)) :
@@ -322,7 +318,7 @@ private theorem mem_saturationOpens {Y : Scheme.{u}} (F T : Y.IdealSheafData)
   exact Iff.rfl
 
 /- English proof (translation)
-Establish `: IsClosedImmersion (T.subschemeι ∣_ V)` using `inferInstance`. Establish `hker : (T.subschemeι ∣_ V).ker = ((T.comap V.ι).subschemeι).ker`. Rewrite using `[Scheme.IdealSheafData.ker_subschemeι, ← ker_comap_ι, Scheme.IdealSheafData.ker_subschemeι]`. Use `⟨⟨IsClosedImmersion.lift (T.subschemeι ∣_ V) ((T.comap V.ι).subschemeι) hker.le, by simp⟩, ⟨IsClosedImmersion.lift ((T.comap V.ι).subschemeι) (T.subschemeι ∣_ V) hker.ge, by simp⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 private theorem exists_factorizations_subscheme_restrict {Y : Scheme.{u}} (T : Y.IdealSheafData)
     (V : Y.Opens) :
@@ -339,19 +335,17 @@ private theorem exists_factorizations_subscheme_restrict {Y : Scheme.{u}} (T : Y
     ⟨IsClosedImmersion.lift ((T.comap V.ι).subschemeι) (T.subschemeι ∣_ V) hker.ge, by simp⟩⟩
 
 /- English proof (translation)
-Take `⟨⟨p, hp⟩, -⟩` from `exists_factorizations_subscheme_restrict T V`. Establish `hdT : (Scheme.Opens.ι (saturationOpens (F.comap V.ι) (T.comap V.ι)) ≫ p ≫ Scheme.Opens.ι (T.subschemeι ⁻¹ᵁ V)) ≫ T.subschemeι = saturationι (F.comap V.ι) (T.comap V.ι) ≫ V.ι`. Rewrite using `[Category.assoc, Category.assoc, ← morphismRestrict_ι T.subschemeι V, ← Category.assoc p, hp, saturationι_eq_ι_comp_subschemeι (F.comap V.ι) (T.comap V.ι), Category.assoc]`. Establish `hrangeD : Set.range ⇑(Scheme.Opens.ι (saturationOpens (F.comap V.ι) (T.comap V.ι)) ≫ p ≫ Scheme.Opens.ι (T.subschemeι ⁻¹ᵁ V)) ⊆ Set.range ⇑(Scheme.Opens.ι (saturationOpens F T))`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Scheme.Opens.range_ι, mem_saturationOpens]`. Establish `hx : Scheme.Opens.ι (saturationOpens (F.comap V.ι) (T.comap V.ι)) x ∈ ((saturationOpens (F.comap V.ι) (T.comap V.ι) : ((T.comap V.ι).subscheme).Opens) : Set ↥((T.comap V.ι).subscheme))`. Rewrite using `[← Scheme.Opens.range_ι]`. Conclude with `Set.mem_range_self _`. Establish `key : T.subschemeι ((Scheme.Opens.ι (saturationOpens (F.comap V.ι) (T.comap V.ι)) ≫ p ≫ Scheme.Opens.ι (T.subschemeι ⁻¹ᵁ V)) x) = V.ι (saturationι (F.comap V.ι) (T.comap V.ι) x)` using `base_apply_congr hdT x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Introduce `hcon`. Use `(mem_saturationOpens (F.comap V.ι) (T.comap V.ι) _).mp hx ?_` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, Scheme.IdealSheafData.mem_support_comap]`. Conclude with `SetLike.mem_coe.mp hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩ : ∃ c : (saturationOpens (F.comap V.ι) (T.comap V.ι)).toScheme ⟶ (saturationOpens F T).toScheme, c ≫ Scheme.Opens.ι (saturationOpens F T) = Scheme.Opens.ι (saturationOpens (F.comap V.ι) (T.comap V.ι)) ≫ p ≫ Scheme.Opens.ι (T.subschemeι ⁻¹ᵁ V)` from `⟨IsOpenImmersion.lift (Scheme.Opens.ι (saturationOpens F T)) (Scheme.Opens.ι (saturationOpens (F.comap V.ι) (T.comap V.ι)) ≫ p ≫ Scheme.Opens.ι (T.subschemeι ⁻¹ᵁ V)) hrangeD, by simp⟩`. Establish `hc' : c ≫ saturationι F T = saturationι (F.comap V.ι) (T.comap V.ι) ≫ V.ι`. Establish `h0 : (c ≫ Scheme.Opens.ι (saturationOpens F T)) ≫ T.subschemeι = saturationι (F.comap V.ι) (T.comap V.ι) ≫ V.ι`. Rewrite using `[hc]`. Conclude with `hdT`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[saturationι_eq_ι_comp_subschemeι F T, ← Category.assoc]`. Conclude with `h0`. Establish `hrangeC : Set.range ⇑c ⊆ Set.range ⇑(Scheme.Opens.ι (saturationι F T ⁻¹ᵁ V))`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show saturationι F T (c x) ∈ ((V : Y.Opens) : Set ↥Y)`. Establish `key : saturationι F T (c x) = V.ι (saturationι (F.comap V.ι) (T.comap V.ι) x)` using `base_apply_congr hc' x`. Rewrite using `[key, ← Scheme.Opens.range_ι]`. Conclude with `Set.mem_range_self _`. Take `⟨a, ha⟩ : ∃ a : (saturationOpens (F.comap V.ι) (T.comap V.ι)).toScheme ⟶ (saturationι F T ⁻¹ᵁ V).toScheme, a ≫ Scheme.Opens.ι (saturationι F T ⁻¹ᵁ V) = c` from `⟨IsOpenImmersion.lift (Scheme.Opens.ι (saturationι F T ⁻¹ᵁ V)) c hrangeC, by simp⟩`.
-
-Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono V.ι, Category.assoc, morphismRestrict_ι, ← Category.assoc, ha]`. Conclude with `hc'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_comp_morphismRestrict_eq_saturationι {Y : Scheme.{u}}
     (F T : Y.IdealSheafData) (V : Y.Opens) :
@@ -417,17 +411,15 @@ private theorem exists_comp_morphismRestrict_eq_saturationι {Y : Scheme.{u}}
   exact hc'
 
 /- English proof (translation)
-Take `⟨-, ⟨q, hq⟩⟩` from `exists_factorizations_subscheme_restrict T V`. Establish `hrangeW : Set.range ⇑(Scheme.Opens.ι (saturationι F T ⁻¹ᵁ V) ≫ Scheme.Opens.ι (saturationOpens F T)) ⊆ Set.range ⇑(Scheme.Opens.ι (T.subschemeι ⁻¹ᵁ V))`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Establish `hy : Scheme.Opens.ι (saturationι F T ⁻¹ᵁ V) y ∈ ((saturationι F T ⁻¹ᵁ V : ((saturationOpens F T).toScheme).Opens) : Set ↥((saturationOpens F T).toScheme))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Opens.range_ι]`. Conclude with `Set.mem_range_self _`. Conclude with `hy`. Take `⟨w, hw⟩ : ∃ w : (saturationι F T ⁻¹ᵁ V).toScheme ⟶ (T.subschemeι ⁻¹ᵁ V).toScheme, w ≫ Scheme.Opens.ι (T.subschemeι ⁻¹ᵁ V) = Scheme.Opens.ι (saturationι F T ⁻¹ᵁ V) ≫ Scheme.Opens.ι (saturationOpens F T)` from `⟨IsOpenImmersion.lift (Scheme.Opens.ι (T.subschemeι ⁻¹ᵁ V)) (Scheme.Opens.ι (saturationι F T ⁻¹ᵁ V) ≫ Scheme.Opens.ι (saturationOpens F T)) hrangeW, by simp⟩`. Establish `hrangeQ : Set.range ⇑(w ≫ q) ⊆ Set.range ⇑(Scheme.Opens.ι (saturationOpens (F.comap V.ι) (T.comap V.ι)))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι, mem_saturationOpens, SetLike.mem_coe, Scheme.IdealSheafData.mem_support_comap]`. Establish `hy : Scheme.Opens.ι (saturationOpens F T) (Scheme.Opens.ι (saturationι F T ⁻¹ᵁ V) y) ∈ ((saturationOpens F T : (T.subscheme).Opens) : Set ↥(T.subscheme))`. Rewrite using `[← Scheme.Opens.range_ι]`. Conclude with `Set.mem_range_self _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : V.ι ((T.comap V.ι).subschemeι ((w ≫ q) y)) = T.subschemeι (Scheme.Opens.ι (saturationOpens F T) (Scheme.Opens.ι (saturationι F T ⁻¹ᵁ V) y))`. Establish `e1 : (T.comap V.ι).subschemeι ((w ≫ q) y) = (T.subschemeι ∣_ V) (w y)` using `base_apply_congr hq (w y)`. Establish `e2 : V.ι ((T.subschemeι ∣_ V) (w y)) = T.subschemeι (Scheme.Opens.ι (T.subschemeι ⁻¹ᵁ V) (w y))` using `base_apply_congr (morphismRestrict_ι T.subschemeι V) (w y)`. Establish `e3 : Scheme.Opens.ι (T.subschemeι ⁻¹ᵁ V) (w y) = Scheme.Opens.ι (saturationOpens F T) (Scheme.Opens.ι (saturationι F T ⁻¹ᵁ V) y)` using `base_apply_congr hw y`. Rewrite using `[e1, e2, e3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[key]`. Conclude with `(mem_saturationOpens F T _).mp hy`. Take `⟨b, hb0⟩ : ∃ b : (saturationι F T ⁻¹ᵁ V).toScheme ⟶ (saturationOpens (F.comap V.ι) (T.comap V.ι)).toScheme, b ≫ Scheme.Opens.ι (saturationOpens (F.comap V.ι) (T.comap V.ι)) = w ≫ q` from `⟨IsOpenImmersion.lift (Scheme.Opens.ι (saturationOpens (F.comap V.ι) (T.comap V.ι))) (w ≫ q) hrangeQ, by simp⟩`. Establish `hb' : (w ≫ q) ≫ ((T.comap V.ι).subschemeι ≫ V.ι) = Scheme.Opens.ι (saturationι F T ⁻¹ᵁ V) ≫ (Scheme.Opens.ι (saturationOpens F T) ≫ T.subschemeι)`. Rewrite using `[Category.assoc, ← Category.assoc q, hq, morphismRestrict_ι, ← Category.assoc w, hw, Category.assoc]`.
-
-Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono V.ι, saturationι_eq_ι_comp_subschemeι (F.comap V.ι) (T.comap V.ι), ← Category.assoc b, hb0, Category.assoc, morphismRestrict_ι]`. Conclude with `hb'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_comp_saturationι_eq_morphismRestrict {Y : Scheme.{u}}
     (F T : Y.IdealSheafData) (V : Y.Opens) :
@@ -495,7 +487,7 @@ private theorem exists_comp_saturationι_eq_morphismRestrict {Y : Scheme.{u}}
   exact hb'
 
 /- English proof (translation)
-Establish `hqcR` using `quasiCompact_saturationι_restrictIdeal F T V`. Rewrite using `[restrictIdeal_eq_comap_ι, saturation_eq_ker_saturationι, ker_comap_ι, saturation_eq_ker_saturationι]`. Take `⟨a, ha⟩` from `exists_comp_morphismRestrict_eq_saturationι F T V`. Take `⟨b, hb⟩` from `exists_comp_saturationι_eq_morphismRestrict F T V`. Conclude with `ker_eq_ker_of_factorizations _ _ inferInstance hqcR b a hb ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem restrictIdeal_saturation {Y : Scheme.{u}} (F T : Y.IdealSheafData)
     [QuasiCompact (saturationι F T)] (V : Y.Opens) :
@@ -507,9 +499,9 @@ theorem restrictIdeal_saturation {Y : Scheme.{u}} (F T : Y.IdealSheafData)
   exact ker_eq_ker_of_factorizations _ _ inferInstance hqcR b a hb ha
 
 /- English proof (translation)
-Establish `key : ∀ (x : ↥Y), x ∈ V.1 → (x ∈ F.support ↔ x ∉ Y.basicOpen t)`. Introduce `x hx`. Rewrite using `[F.mem_support_iff_of_mem hx, ht, Scheme.zeroLocus_span, Scheme.mem_zeroLocus_iff]`. Simplify using `only [Set.mem_singleton_iff, forall_eq]`. Use `le_antisymm (fun x hx => ?_) (le_inf (fun x hx => ?_) (Y.basicOpen_le t))` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx1 : x ∈ F.support.compl` using `hx.1`. Establish `hx2 : x ∈ V.1` using `hx.2`. Assume the negation of the conclusion as `hb`. Conclude with `hx1 ((key x hx2).mpr hb)`. Conclude with `fun hs => ((key x (Y.basicOpen_le t hx)).mp hs) hx`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem support_compl_inf_eq_basicOpen {Y : Scheme.{u}} (F : Y.IdealSheafData)
     (V : Y.affineOpens) (t : Γ(Y, V.1)) (ht : F.ideal V = Ideal.span {t}) :
@@ -526,7 +518,7 @@ private theorem support_compl_inf_eq_basicOpen {Y : Scheme.{u}} (F : Y.IdealShea
   · exact fun hs => ((key x (Y.basicOpen_le t hx)).mp hs) hx
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Conclude with `inf_le_right`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem image_preimage_ι_le {S : Scheme.{u}} (W V' : S.Opens) :
     Scheme.Opens.ι W ''ᵁ (Scheme.Opens.ι W ⁻¹ᵁ V') ≤ V' := by
@@ -534,7 +526,7 @@ private theorem image_preimage_ι_le {S : Scheme.{u}} (W V' : S.Opens) :
   exact inf_le_right
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem map_eq_zero_congr {S : Scheme.{u}} {A B P : S.Opens} (e : A = B) (hA : A ≤ P)
     (hB : B ≤ P) (z : Γ(S, P)) :
@@ -544,15 +536,15 @@ private theorem map_eq_zero_congr {S : Scheme.{u}} {A B P : S.Opens} (e : A = B)
   rfl
 
 /- English proof (translation)
-Use `hP.isLocalization_basicOpen s` as an intermediate fact. Establish `halg : ∀ z : Γ(S, P), algebraMap Γ(S, P) Γ(S, S.basicOpen s) z = (S.presheaf.map (homOfLE (S.basicOpen_le s)).op).hom z` using `fun _ => rfl`. Rewrite using `[← halg y]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : algebraMap Γ(S, P) Γ(S, S.basicOpen s) y = algebraMap Γ(S, P) Γ(S, S.basicOpen s) 0`. Rewrite using `[map_zero]`. Conclude with `hy`. Take `⟨c, hc⟩` from `(IsLocalization.eq_iff_exists (Submonoid.powers s) Γ(S, S.basicOpen s)).mp h0`. Take `⟨n, hn⟩` from `c.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[mul_zero]`. Rewrite `hc` using `[← hn]`. Conclude with `hc`. Introduce and unpack `⟨n, hn⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (algebraMap Γ(S, P) Γ(S, S.basicOpen s) s)` using `IsLocalization.map_units (M := Submonoid.powers s) Γ(S, S.basicOpen s) ⟨s, Submonoid.mem_powers s⟩`. Establish `h2` using `congrArg (algebraMap Γ(S, P) Γ(S, S.basicOpen s)) hn`. Rewrite `h2` using `[map_mul, map_pow, map_zero]`. Take `⟨v, hv⟩` from `hu.pow n`. Establish `h4 : (v : Γ(S, S.basicOpen s)) * algebraMap Γ(S, P) Γ(S, S.basicOpen s) y = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hv]`. Conclude with `h2`. Establish `h5` using `congrArg (fun z => ((v⁻¹ : (Γ(S, S.basicOpen s))ˣ) : Γ(S, S.basicOpen s)) * z) h4`. Simplify using `using h5`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem map_basicOpen_eq_zero_iff {S : Scheme.{u}} {P : S.Opens} (hP : IsAffineOpen P)
     (s y : Γ(S, P)) :
@@ -589,7 +581,7 @@ private theorem map_basicOpen_eq_zero_iff {S : Scheme.{u}} {P : S.Opens} (hP : I
     simpa using h5
 
 /- English proof (translation)
-Establish `: QuasiCompact T.subschemeι` using `inferInstance`. Rewrite using `[← Scheme.Hom.ker_apply, Scheme.IdealSheafData.ker_subschemeι]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ker_app_subschemeι {Y : Scheme.{u}} (T : Y.IdealSheafData) (U : Y.affineOpens) :
     RingHom.ker ((T.subschemeι.app U.1)).hom = T.ideal U := by
@@ -597,19 +589,17 @@ private theorem ker_app_subschemeι {Y : Scheme.{u}} (T : Y.IdealSheafData) (U :
   rw [← Scheme.Hom.ker_apply, Scheme.IdealSheafData.ker_subschemeι]
 
 /- English proof (translation)
-Establish `hPaff : IsAffineOpen (T.subschemeι ⁻¹ᵁ V.1)` using `V.2.preimage T.subschemeι`. Establish `hbasic : Scheme.Opens.ι (saturationOpens F T) ''ᵁ (Scheme.Opens.ι (saturationOpens F T) ⁻¹ᵁ (T.subschemeι ⁻¹ᵁ V.1)) = T.subscheme.basicOpen ((T.subschemeι.app V.1).hom t)`. Establish `h1 : (T.subschemeι ⁻¹ᵁ F.support.compl) ⊓ (T.subschemeι ⁻¹ᵁ V.1) = T.subschemeι ⁻¹ᵁ (F.support.compl ⊓ V.1)` using `rfl`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Use `show (T.subschemeι ⁻¹ᵁ F.support.compl) ⊓ (T.subschemeι ⁻¹ᵁ V.1) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, support_compl_inf_eq_basicOpen F V t ht, Scheme.preimage_basicOpen]`. Establish `hcongr : ∀ z : Γ(T.subscheme, T.subschemeι ⁻¹ᵁ V.1), ((Scheme.Opens.ι (saturationOpens F T)).app (T.subschemeι ⁻¹ᵁ V.1)).hom z = 0 ↔ (T.subscheme.presheaf.map (homOfLE (T.subscheme.basicOpen_le ((T.subschemeι.app V.1).hom t))).op).hom z = 0`. Introduce `z`. Establish `e1 : ((Scheme.Opens.ι (saturationOpens F T)).app (T.subschemeι ⁻¹ᵁ V.1)).hom z = (T.subscheme.presheaf.map (homOfLE (image_preimage_ι_le (saturationOpens F T) (T.subschemeι ⁻¹ᵁ V.1))).op).hom z` using `rfl`. Rewrite using `[e1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `map_eq_zero_congr hbasic _ _ z`. Establish `hS : f ∈ (saturation F T).ideal V ↔ ((saturationι F T).app V.1).hom f = 0`. Rewrite using `[saturation_eq_ker_saturationι, Scheme.Hom.ker_apply]`. Conclude with `RingHom.mem_ker`. Establish `hT : ∀ a : Γ(Y, V.1), a ∈ T.ideal V ↔ (T.subschemeι.app V.1).hom a = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a`. Rewrite using `[← ker_app_subschemeι T V]`. Conclude with `RingHom.mem_ker`. Establish `hmul : ∀ (n : ℕ) (a : Γ(Y, V.1)), (T.subschemeι.app V.1).hom (t ^ n * a) = ((T.subschemeι.app V.1).hom t) ^ n * ((T.subschemeι.app V.1).hom a)`. Introduce `n a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[map_mul, map_pow]`. Establish `main : ((Scheme.Opens.ι (saturationOpens F T)).app (T.subschemeι ⁻¹ᵁ V.1)).hom ((T.subschemeι.app V.1).hom f) = 0 ↔ ∃ n : ℕ, t ^ n * f ∈ T.ideal V`. Rewrite using `[hcongr ((T.subschemeι.app V.1).hom f), map_basicOpen_eq_zero_iff hPaff ((T.subschemeι.app V.1).hom t) ((T.subschemeι.app V.1).hom f)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨n, (hT _).mpr ?_⟩` and prove the remaining obligations. Rewrite using `[hmul]`. Conclude with `hn`. Introduce and unpack `⟨n, hn⟩`. Establish `h` using `(hT _).mp hn`.
-
-Rewrite `h` using `[hmul]`. Conclude with `⟨n, h⟩`. Conclude with `hS.trans main`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_saturation_ideal_iff {Y : Scheme.{u}} (F T : Y.IdealSheafData)
     [QuasiCompact (saturationι F T)] (V : Y.affineOpens) (t : Γ(Y, V.1))
@@ -663,15 +653,15 @@ theorem mem_saturation_ideal_iff {Y : Scheme.{u}} (F T : Y.IdealSheafData)
   exact hS.trans main
 
 /- English proof (translation)
-Establish `hsub : Ideal.span {t} * J ≤ J` using `Ideal.mul_le.2 (fun r _ s hs => J.mul_mem_left r hs)`. Establish `hdown : ∀ (n : ℕ) (g : Γ(Y, V.1)), t ^ n * g ∈ J → g ∈ J`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `g hg`. Simplify using `using hg`. Consider the case `succ m ih`. Introduce `g hg`. Use `hJ g (ih (t * g) ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hrw : t ^ m * (t * g) = t ^ (m + 1) * g` using `by ring`. Rewrite using `[hrw]`. Conclude with `hg`. Use extensionality with `f`. Rewrite using `[mem_saturation_ideal_iff F T V t ht f]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn⟩`. Rewrite `hn` using `[hTfactor]`. Conclude with `hdown n f (hsub hn)`. Introduce `hf`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[hTfactor, pow_one]`. Conclude with `Ideal.mul_mem_mul (Ideal.mem_span_singleton_self t) hf`.
+A detailed English derivation is pending.
 -/
 theorem saturation_ideal_eq_of_eq_mul {Y : Scheme.{u}} (F T : Y.IdealSheafData)
     [QuasiCompact (saturationι F T)] (V : Y.affineOpens) (t : Γ(Y, V.1))
@@ -705,7 +695,7 @@ theorem saturation_ideal_eq_of_eq_mul {Y : Scheme.{u}} (F T : Y.IdealSheafData)
     exact Ideal.mul_mem_mul (Ideal.mem_span_singleton_self t) hf
 
 /- English proof (translation)
-Establish `htm : t ^ m ∈ T.ideal V` using `hm (Ideal.mem_span_singleton_self _)`. Rewrite using `[Ideal.eq_top_iff_one, mem_saturation_ideal_iff F T V t ht 1]`. Conclude with `⟨m, by simpa using htm⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem saturation_ideal_eq_top_of_span_pow_le {Y : Scheme.{u}} (F T : Y.IdealSheafData)
     [QuasiCompact (saturationι F T)] (V : Y.affineOpens) (t : Γ(Y, V.1))
@@ -717,9 +707,9 @@ theorem saturation_ideal_eq_top_of_span_pow_le {Y : Scheme.{u}} (F T : Y.IdealSh
   exact ⟨m, by simpa using htm⟩
 
 /- English proof (translation)
-Use extensionality with `f`. Rewrite using `[mem_saturation_ideal_iff F T V t ht f]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn⟩`. Conclude with `((T.ideal V).unit_mul_mem_iff_mem (hu.pow n)).mp hn`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hf`. Conclude with `⟨0, by simpa using hf⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem saturation_ideal_eq_of_isUnit {Y : Scheme.{u}} (F T : Y.IdealSheafData)
     [QuasiCompact (saturationι F T)] (V : Y.affineOpens) (t : Γ(Y, V.1))
@@ -734,7 +724,7 @@ theorem saturation_ideal_eq_of_isUnit {Y : Scheme.{u}} (F T : Y.IdealSheafData)
     exact ⟨0, by simpa using hf⟩
 
 /- English proof (translation)
-Rewrite using `[strictTransform_eq_saturation π Z D, strictTransform_eq_saturation π' Z' D', hZ, hD]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem strictTransform_eq_of_comap_eq {X X' X₁ : Scheme.{u}} (π : X₁ ⟶ X) (π' : X₁ ⟶ X')
     (Z D : X.IdealSheafData) (Z' D' : X'.IdealSheafData)
@@ -743,7 +733,7 @@ theorem strictTransform_eq_of_comap_eq {X X' X₁ : Scheme.{u}} (π : X₁ ⟶ X
   rw [strictTransform_eq_saturation π Z D, strictTransform_eq_saturation π' Z' D', hZ, hD]
 
 /- English proof (translation)
-Use `strictTransform_eq_of_comap_eq (g ≫ U.ι) g Z D (restrictIdeal Z U) (restrictIdeal D U) ?_ ?_` and prove the remaining obligations. Simplify using `[restrictIdeal_eq_comap_ι, Scheme.IdealSheafData.comap_comp]`. Simplify using `[restrictIdeal_eq_comap_ι, Scheme.IdealSheafData.comap_comp]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem strictTransform_comp_ι {X V' : Scheme.{u}} (U : X.Opens) (g : V' ⟶ U.toScheme)
     (Z D : X.IdealSheafData) :
@@ -754,7 +744,7 @@ theorem strictTransform_comp_ι {X V' : Scheme.{u}} (U : X.Opens) (g : V' ⟶ U.
   · simp [restrictIdeal_eq_comap_ι, Scheme.IdealSheafData.comap_comp]
 
 /- English proof (translation)
-Establish `hqc : QuasiCompact (saturationι (Z.comap π) (D.comap π))` using `(inferInstance : QuasiCompact (strictTransformι π Z D))`. Rewrite using `[strictTransform_eq_saturation π Z D, strictTransform_eq_saturation (V.ι ≫ π) Z D, restrictIdeal_saturation (Z.comap π) (D.comap π) V, restrictIdeal_eq_comap_ι, restrictIdeal_eq_comap_ι, Scheme.IdealSheafData.comap_comp, Scheme.IdealSheafData.comap_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem restrictIdeal_strictTransform {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z D : X.IdealSheafData)
     [QuasiCompact (strictTransformι π Z D)] (V : X₁.Opens) :
@@ -766,7 +756,7 @@ theorem restrictIdeal_strictTransform {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z
     Scheme.IdealSheafData.comap_comp, Scheme.IdealSheafData.comap_comp]
 
 /- English proof (translation)
-Substitute `hF` using the available equality. Substitute `hT` using the available equality. Conclude with `h`.
+Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem quasiCompact_saturationι_congr {Y : Scheme.{u}}
     {F F' T T' : Y.IdealSheafData} (hF : F = F') (hT : T = T')
@@ -777,9 +767,9 @@ private theorem quasiCompact_saturationι_congr {Y : Scheme.{u}}
   exact h
 
 /- English proof (translation)
-Establish `hqc : QuasiCompact (saturationι (Z.comap π) (D.comap π))` using `(inferInstance : QuasiCompact (strictTransformι π Z D))`. Establish `h2 : QuasiCompact (saturationι (restrictIdeal (Z.comap π) V) (restrictIdeal (D.comap π) V))` using `quasiCompact_saturationι_restrictIdeal (Z.comap π) (D.comap π) V`. Establish `hZ : restrictIdeal (Z.comap π) V = Z.comap (V.ι ≫ π)`. Rewrite using `[restrictIdeal_eq_comap_ι, Scheme.IdealSheafData.comap_comp]`. Establish `hD : restrictIdeal (D.comap π) V = D.comap (V.ι ≫ π)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[restrictIdeal_eq_comap_ι, Scheme.IdealSheafData.comap_comp]`. Use `show QuasiCompact (saturationι (Z.comap (V.ι ≫ π)) (D.comap (V.ι ≫ π)))`. Conclude with `quasiCompact_saturationι_congr hZ hD h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quasiCompact_strictTransformι_comp_ι {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) [QuasiCompact (strictTransformι π Z D)] (V : X₁.Opens) :
@@ -797,7 +787,7 @@ theorem quasiCompact_strictTransformι_comp_ι {X X₁ : Scheme.{u}} (π : X₁ 
   exact quasiCompact_saturationι_congr hZ hD h2
 
 /- English proof (translation)
-Establish `hqc : QuasiCompact (saturationι (Z.comap π) (D.comap π))` using `(inferInstance : QuasiCompact (strictTransformι π Z D))`. Rewrite using `[strictTransform_eq_saturation π Z D]`. Conclude with `mem_saturation_ideal_iff (Z.comap π) (D.comap π) V t ht f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_strictTransform_ideal_iff {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z D : X.IdealSheafData)
     [QuasiCompact (strictTransformι π Z D)] (V : X₁.affineOpens) (t : Γ(X₁, V.1))
@@ -809,7 +799,7 @@ theorem mem_strictTransform_ideal_iff {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z
   exact mem_saturation_ideal_iff (Z.comap π) (D.comap π) V t ht f
 
 /- English proof (translation)
-Establish `hqc : QuasiCompact (saturationι (Z.comap π) (D.comap π))` using `(inferInstance : QuasiCompact (strictTransformι π Z D))`. Rewrite using `[strictTransform_eq_saturation π Z D]`. Conclude with `saturation_ideal_eq_of_isUnit (Z.comap π) (D.comap π) V t ht hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem strictTransform_ideal_eq_comap_of_isUnit {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) [QuasiCompact (strictTransformι π Z D)]
@@ -822,7 +812,7 @@ theorem strictTransform_ideal_eq_comap_of_isUnit {X X₁ : Scheme.{u}} (π : X�
   exact saturation_ideal_eq_of_isUnit (Z.comap π) (D.comap π) V t ht hu
 
 /- English proof (translation)
-Use `show QuasiCompact (saturationι (Z.comap π) (D.comap π))`. Conclude with `quasiCompact_saturationι_of_noetherianSpace (Z.comap π) (D.comap π)`.
+A detailed English derivation is pending.
 -/
 theorem quasiCompact_strictTransformι_of_noetherianSpace {X X₁ : Scheme.{u}}
     [NoetherianSpace X₁] (π : X₁ ⟶ X) (Z D : X.IdealSheafData) :

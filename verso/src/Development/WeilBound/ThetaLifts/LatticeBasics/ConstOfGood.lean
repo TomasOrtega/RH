@@ -14,7 +14,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullH
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
 
 /- English proof (translation)
-Introduce `z` and use `by obtain ⟨e, A, hA⟩ := h let q : Fin r ⊕ Fin s ≃ Fin n := finSumFinEquiv.trans (finCongr e) have := congrArg Matrix.det (show (Aᵀ.submatrix id q * M.submatrix q q) * (A.map star).submatrix q id = Matrix.fromBlocks 1 0 0 (-1) by rw [Matrix.submatrix_mul_equiv, Matrix.submatrix_mu …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_sig {M : Matrix (Fin n) (Fin n) ℂ} {r s : ℕ} (h : HasSig M r s) : M.det ≠ 0 := fun z => by
   obtain ⟨e, A, hA⟩ := h
@@ -27,7 +27,7 @@ theorem det_ne_zero_of_sig {M : Matrix (Fin n) (Fin n) ℂ} {r s : ℕ} (h : Has
 
 omit [NumberField E] in
 /- English proof (translation)
-Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Use `⟨fun i j => h.herm j i, fun z => det_ne_zero_of_sig (h.sig w) ?_⟩` and prove the remaining obligations. Rewrite `z` using `[Matrix.det_transpose]`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, z, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermND_transpose {B : Base F E} {X : Spc F E n} {r s : ℕ} (h : X.IsHerm σ B r s) : IsHermND σ X.Jᵀ := by
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
@@ -37,7 +37,7 @@ theorem hermND_transpose {B : Base F E} {X : Spc F E n} {r s : ℕ} (h : X.IsHer
 
 omit [NumberField E] in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(g.1ᵀ * incM F J * g.1.map (cA σ) = incM F J) ↔ (g.1.map (sigR (AF F) σ))ᵀ * (incM F J)ᵀ * g.1 = (incM F J)ᵀ`. Rewrite using `[← Matrix.transpose_inj, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, ← Matrix.mul_assoc, show (cA σ : AE F E → AE F E) = sigR (AF F) σ from funext cA_eq]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_UG_of {J : Matrix (Fin n) (Fin n) E} {g : GL (Fin n) (AE F E)} :
     g ∈ UG (cA σ) (incM F J) ↔ g ∈ HR (AF F) σ Jᵀ := by
@@ -54,11 +54,11 @@ def sec {A : Type} [CommRing A] (R : Matrix (Fin n) (Fin n) A) (h : R * R = R) :
     ring
 
 /- English proof (translation)
-Set `ι : HA (AF F) σ X.Jᵀ → UA σ X.J` to `fun x => ⟨HA.mat _ _ _ x, mem_UG_of.2 (show HR (AF F) σ X.Jᵀ from x).2⟩`. Establish `hι : Continuous ι` using `continuous_subtype_val.subtype_mk _`. Establish `z : ∀ t, evFin F v t = 0 → t * ε = 0` using `fun t ht => by`. Use `Prod.ext (funext fun w => (congrArg (t.1 w * ·) (hε.2.1 w (Finset.notMem_empty w))).trans (mul_zero _)) (FiniteAdeleRing.ext _ fun u => ?_)` and prove the remaining obligations. Distinguish the cases in `hu : u = v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hu` using the available equality. Conclude with `(congrArg (· * ε.2 u) ht).trans (zero_mul _)`. Conclude with `(congrArg (t.2 u * ·) (hε.2.2.2 u fun x => hu (Finset.mem_singleton.1 x))).trans (mul_zero _)`. Use `closure_minimal (t := ι ⁻¹' L) ?_ (hL.preimage hι) (hS F E σ hc n _ hn hJ ∅ {v} ε hε (GlobalTheory.Published.StrongApprox.not_isCompact_split σ hn hJ v ε (hε.2.2.1 v (Finset.mem_singleton_self v)) e e1 e2 e3) (⟨g.1, mem_UG_of.1 g.2⟩ : HR (AF F) σ X.Jᵀ) (GlobalTheory.Published.Str …` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, ⟨-, y, -, hy⟩, h, ⟨-, hh⟩, rfl⟩`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ι γ ∈ L` using `hr ⟨y, hy⟩`. Establish `h2 : ι h ∈ L` using `hv _ fun t ht => Matrix.ext fun i j => by`. Use `(congrArg (t • ·) (hh i j).symm).trans ?_` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def, smul_smul, z t ht, zero_smul, Matrix.zero_apply]`. Conclude with `mul_mem h1 h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem su_mem (hS : GlobalTheory.Published.StrongApproxSU) (hc : IsCMExt F E σ) {X : Spc F E n} (hJ : IsHermND σ X.Jᵀ) (hn : 2 ≤ n)
     (L : Subgroup (UA σ X.J)) (hL : IsClosed (L : Set (UA σ X.J))) (hr : ratU σ X.J ≤ L) {v : Pl F}
@@ -85,15 +85,15 @@ theorem su_mem (hS : GlobalTheory.Published.StrongApproxSU) (hc : IsCMExt F E σ
   exact mul_mem h1 h2
 
 /- English proof (translation)
-Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Establish `: Nonempty (Fin n)` using `⟨⟨0, by omega⟩⟩`. Establish `hσ` using `GlobalTheory.UnitaryHeckeBaseChange.sig_sig hc`. Take `⟨u, hu⟩` from `exists_aniso (σ : E →+* E) hσ Jᵀ (fun i j => hJ.1 j i) hJ.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ha` using `inv_mul_cancel₀ hu`. Establish `hb : (σ : E →+* E) (hsq (σ : E →+* E) Jᵀ u)⁻¹ = (hsq (σ : E →+* E) Jᵀ u)⁻¹`. Rewrite using `[map_inv₀, sigma_hsq (σ : E →+* E) hσ _ fun i j => hJ.1 j i]`. Generalize the expression as in `(hsq (σ : E →+* E) Jᵀ u)⁻¹ = b at ha hb`. Set `i : E →+* AE F E` to `inclR (F := F) (AF F)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Introduce a local definition for the expression.
 
-Establish `hR` using `proj_idem' _ _ _ _ ha`. Establish `hi : ∀ a, i ((σ : E →+* E) a) = sigR (AF F) σ (i a)` using `fun _ => rfl`. Establish `hA : i b * hsq (sigR (AF F) σ) (Jᵀ.map i) (fun k => i (u k)) = 1`. Rewrite using `[← hsq_map i (σ : E →+* E) _ hi, ← map_mul, ha, map_one]`. Establish `h1` using `proj_unitary (sigR (AF F) σ) (GlobalTheory.UnitaryHeckeBaseChange.cA_cA hc) (Jᵀ.map i) (fun a b => (hi _).symm.trans (congrArg i (hJ.1 b a))) _ _ hA (by rw [← hi, hb])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `det_proj' _ _ _ _ hA`. Rewrite `h1`, `h2` using `[← proj_map i (σ : E →+* E) (sigR (AF F) σ) hi]`. Generalize the expression as in `proj (σ : E →+* E) Jᵀ u b = R at hR h1 h2`. Establish `hR' : R.map i * R.map i = R.map i` using `by rw [← Matrix.map_mul, hR]`. Establish `cS : Continuous (sec _ hR')` using `continuous_const.add ((continuous_id.sub continuous_const).smul continuous_const)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨((Units.map (sec _ hR')).comp (normOne (cA σ)).subtype).codRestrict _ fun z => mem_UG_of.2 (h1 z.1 (by rw [← cA_eq, mul_comm]; exact mem_normOne.1 z.2)), ((Continuous.units_map _ cS).comp continuous_subtype_val).subtype_mk _, fun z => h2 _, fun z ⟨k, k0, hk⟩ => ⟨Units.map (sec _ …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `i ((1 : Matrix _ _ E) a b + (k - 1) * R a b) = (1 : Matrix _ _ (AE F E)) a b + (((z.1 : (AE F E)ˣ) : AE F E) - 1) * i (R a b)`. Rewrite using `[hk, map_add, map_mul, map_sub, map_one, Matrix.one_apply, Matrix.one_apply, apply_ite i, map_one, map_zero]`. Express the relevant statement in the definitionally equal form `t • (1 + (((z.1 : (AE F E)ˣ) : AE F E) - 1) • R.map i - 1) = 0`. Rewrite using `[add_sub_cancel_left, ← smul_assoc, ht, zero_smul]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_sec (hc : IsCMExt F E σ) {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ Jᵀ) (hn : 1 ≤ n) :
     ∃ S : normOne (cA σ) →* UA σ J, Continuous S ∧ (∀ z, (mat (S z)).det = (z.1 : (AE F E)ˣ)) ∧
@@ -132,7 +132,7 @@ theorem exists_sec (hc : IsCMExt F E σ) {J : Matrix (Fin n) (Fin n) E} (hJ : Is
 
 omit [NumberField E] in
 /- English proof (translation)
-Introduce `t ht` and use `by have : mat (g⁻¹ * u * g) - 1 = mat g⁻¹ * (mat u - 1) * mat g := by rw [mul_sub, sub_mul, mul_one] exact congrArg₂ (· - ·) rfl (Units.inv_mul g.1).symm rw [this, ← smul_mul_assoc, ← mul_smul_comm, hu t ht, mul_zero, zero_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conj_mem_UAt {X : Spc F E n} {R : Type} [Zero R] {ev : AF F → R} {u : UA σ X.J} (hu : u ∈ UAt σ X ev) (g : UA σ X.J) :
     g⁻¹ * u * g ∈ UAt σ X ev := fun t ht => by
@@ -142,11 +142,9 @@ theorem conj_mem_UAt {X : Spc F E n} {R : Type} [Zero R] {ev : AF F → R} {u : 
   rw [this, ← smul_mul_assoc, ← mul_smul_comm, hu t ht, mul_zero, zero_mul]
 
 /- English proof (translation)
-Take `⟨v, a, b, ε, e, hε, e1, e2, e3⟩` from `exists_split hH hc T`. Take `⟨S, cS, s1, s2, s3⟩` from `exists_sec hc hJ (by omega)`. Establish `hg : IsUnit (incM F X.J).det`. Rewrite using `[incM, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(IsUnit.mk0 _ (Matrix.det_transpose X.J ▸ hJ.2)).map _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `z : normOne (cA σ)` to `⟨_, det_mem_normOne ⟨fun a b => congrArg (inclR (F := F) (AF F)) (hJ.1 b a), hg⟩ g⟩`. Establish `h1 : S z ∈ L` using `normOne_mem hH hc T (L.comap S) (hL.preimage cS) (fun z h => hr (s2 z h)) (fun v a b z hz => hv v a b _ fun t ht => s3 z t (hz t ht)) z`. Establish `h2 : g * S z⁻¹ ∈ L` using `su_mem hS hc hJ hn L hL hr (hv v a b) hε e1 e2 e3 _ (by`. Rewrite using `[show mat (g * S z⁻¹) = mat g * mat (S z⁻¹) from rfl, Matrix.det_mul, s1]`. Conclude with `z.1.mul_inv)`.
-
-Simplify using `using mul_mem h2 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_of_good (hS : GlobalTheory.Published.StrongApproxSU) (hH : GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne) (hc : IsCMExt F E σ)
     [IsGalois ℚ E] {X : Spc F E n} (hJ : IsHermND σ X.Jᵀ) (hn : 2 ≤ n) (T : Finset (Pl F)) (L : Subgroup (UA σ X.J))
@@ -166,9 +164,9 @@ theorem mem_of_good (hS : GlobalTheory.Published.StrongApproxSU) (hH : GlobalThe
   simpa using mul_mem h2 h1
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n X r s hB hX hn T f hf hr hv g`. Use `hB.galois` as an intermediate fact. Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Set `L : Subgroup (UA σ X.J)` to `{ carrier := ⋂ g, {x | f (x * g) = f g} one_mem' := Set.mem_iInter.2 fun g => congrArg f (one_mul g) mul_mem' := fun {a b} ha hb => Set.mem_iInter.2 fun g => (congrArg f (mul_assoc a b g)).trans ((Set.mem_iInter.1 ha _).trans (Set.mem_iInter.1 hb _)) inv_mem' := fun {a} ha => Set …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `mem_of_good hS hH hB.cm (hermND_transpose hX) hn T L (isClosed_iInter fun g => isClosed_eq (hf.comp (continuous_mul_const g)) continuous_const) (fun γ h => Set.mem_iInter.2 (hr γ h)) (fun v a b u hu => Set.mem_iInter.2 fun g => (congrArg f (by group)).trans (hv v a b _ (conj_mem_ …` as an intermediate fact. Conclude with `(congrArg f (mul_one g)).symm.trans (Set.mem_iInter.1 this 1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem constOfGood_of (hS : GlobalTheory.Published.StrongApproxSU) (hH : GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne) : ConstOfGood := by
   intro F E _ _ _ _ _ σ B n X r s hB hX hn T f hf hr hv g

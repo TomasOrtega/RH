@@ -61,13 +61,13 @@ section Chart
 open GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram Filter
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `exists_nat_gt |b - a|`. Establish `hk0 : (0 : ℝ) < k` using `(abs_nonneg _).trans_lt hk`. Take `⟨m, hm⟩` from `Complex.exp_eq_exp_iff_exists_int.1 (h k (by exact_mod_cast hk0))`. Establish `hk1 : (k : ℂ) ≠ 0` using `by exact_mod_cast hk0.ne'`. Establish `hp : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ((b - a : ℝ) : ℂ) = ((m * k : ℝ) : ℂ)`. Use `push_cast`. Clear denominators, using `at hm` for the nonvanishing conditions. Take the linear combination `hm`. Establish `e' : b - a = m * k` using `by exact_mod_cast e`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `hk` using `[e', abs_mul, abs_of_pos hk0, mul_lt_iff_lt_one_left hk0]`. Establish `: m = 0`. Establish `: |m| < 1` using `by exact_mod_cast hk`. Conclude with `Int.abs_lt_one_iff.1 this`. Rewrite `e'` using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Int.cast_zero, zero_mul] at e'`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eq_of_exp_eq {a b : ℝ} (h : ∀ k : ℕ, 0 < k →
     Complex.exp (-(2 * Real.pi * Complex.I) * (a : ℂ) / k) = Complex.exp (-(2 * Real.pi * Complex.I) * (b : ℂ) / k)) :
@@ -91,23 +91,21 @@ theorem eq_of_exp_eq {a b : ℝ} (h : ∀ k : ℕ, 0 < k →
   linarith
 
 /- English proof (translation)
-Set `b : Fin a → Fin g → ℂ` to `fun i => (B i).map (Int.cast : ℤ → ℂ) *ᵥ fun i => (m' i : ℂ)`. Establish `hb : ∀ i, z₀ (Fin.castLE ha i) = 0 → b i = 0` using `fun i hi => funext fun k => by`. Use `congrArg (Int.cast : ℤ → ℂ) (congrFun (hm i hi) k)` as an intermediate fact. Simplify `this` using `[b, Matrix.mulVec, dotProduct]`. Establish `hper : ∀ z large₂, (period τ₀ B z large₂ *ᵥ fun i => (m' i : ℂ)) = (τ₀ z *ᵥ fun i => (m' i : ℂ)) + ∑ i, (large₂ i / (2 * Real.pi * Complex.I)) • b i` using `fun z large₂ => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `only [period, Matrix.add_mulVec, Matrix.sum_mulVec, Matrix.smul_mulVec, b]`. Set `G : (Fin n → ℂ) → Fin g → ℂ` to `fun z => Dn • ((fun i => (m i : ℂ)) + ((τ₀ z *ᵥ fun i => (m' i : ℂ)) + ∑ i, ((Complex.log (z₀ (Fin.castLE ha i)) + Complex.log (z (Fin.castLE ha i) / z₀ (Fin.castLE ha i))) / (2 * Real.pi * Complex.I)) • b i))`. Establish `hball : Metric.ball (0 : Fin n → ℂ) 1 = polydisc n 1`. Use extensionality with `z`. Simplify using `[polydisc, pi_norm_lt_iff one_pos]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hGc : ContinuousAt G z₀`. Use `ContinuousAt.const_smul (continuousAt_const.add (ContinuousAt.add (f := fun z => τ₀ z *ᵥ fun i => (m' i : ℂ)) ?_ ?_)) Dn` and prove the remaining obligations. Use `continuousAt_pi.2 fun k => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `tendsto_finset_sum _ fun l _ => ContinuousAt.mul ((hP.holo k l).continuousOn.continuousAt (hball ▸ Metric.isOpen_ball.mem_nhds hz₀)) continuousAt_const`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `tendsto_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : z₀ (Fin.castLE ha i) = 0`. Simplify using `only [hb i hi, smul_zero]`. Conclude with `tendsto_const_nhds`. Establish `c : ContinuousAt (fun z : Fin n → ℂ => Complex.log (z (Fin.castLE ha i) / z₀ (Fin.castLE ha i))) z₀` using `ContinuousAt.clog ((continuous_apply _).continuousAt.div_const _) (by simp [div_self hi])`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(((continuousAt_const (y := Complex.log (z₀ (Fin.castLE ha i)))).add c).div_const (2 * Real.pi * Complex.I)).smul (continuousAt_const (y := b i))`. Establish `hG₀ : G z₀ = Dn • ((fun i => (m i : ℂ)) + period τ₀ B z₀ (fun i => Complex.log (z₀ (Fin.castLE ha i))) *ᵥ fun i => (m' i : ℂ))`. Rewrite using `[hper]`. Use `congrArg (fun s => Dn • (_ + (_ + s))) (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hi : z₀ (Fin.castLE ha i) = 0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hb i hi]`. Simplify using `[div_self hi]`. Rewrite using `[← hG₀]`. Assume the negation of the conclusion as `hn`. Establish `h₁ : ∀ᶠ z in 𝓝 z₀, z ∈ Metric.ball (0 : Fin n → ℂ) 1 ∧ G z ∉ K z` using `(continuousAt_id.prodMk hGc).eventually (hK.2.2.1.mem_nhds (x := (z₀, G z₀)) ⟨hz₀, hn⟩)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h₂ : ∃ᶠ z in 𝓝 z₀, z ∈ Set.pi Set.univ fun _ : Fin n => ({0}ᶜ : Set ℂ)` using `mem_closure_iff_frequently.1 (dense_pi Set.univ (fun _ _ => dense_compl_singleton 0) z₀)`. Take `⟨z, hz, hz1, hzK⟩` from `(h₂.and_eventually h₁).exists`. Establish `hz' : ∀ k, z k ≠ 0` using `fun k => hz k trivial`. Use `h z hz1 (fun i => hz' _) (fun i => if z₀ (Fin.castLE ha i) = 0 then Complex.log (z (Fin.castLE ha i)) else Complex.log (z₀ (Fin.castLE ha i)) + Complex.log (z (Fin.castLE ha i) / z₀ (Fin.castLE ha i))) (fun i => by split_ifs with hi` as an intermediate fact. Conclude with `Complex.exp_log (hz' _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[Complex.exp_add, Complex.exp_log hi, Complex.exp_log (div_ne_zero (hz' _) hi), mul_div_cancel₀ _ hi]) m m'`. Use `hzK ?_` and prove the remaining obligations. Rewrite `this` using `[hper]`. Use `this using 5 with i` and compare the differences between its conclusion and the goal. Use `split_ifs with hi`.
-
-Simplify using `[hb i hi]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem limit_mem {n a g rk : ℕ} (ha : a ≤ n) {τ₀ : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ}
     {B : Fin a → Matrix (Fin g) (Fin g) ℤ} (hP : IsPeriodChart rk τ₀ B) {K : (Fin n → ℂ) → Set (Fin g → ℂ)}
@@ -176,25 +174,23 @@ theorem limit_mem {n a g rk : ℕ} (ha : a ≤ n) {τ₀ : (Fin n → ℂ) → M
   · rfl
 
 /- English proof (translation)
-Take `⟨ρ, C₁, hρ, hρ1, hC₁, hpure⟩` from `GlobalTheory.T.polydisc_uniform_hermitian_bound n a g rk ha τ₀ B d Dn hP hd hD`. Take `⟨htarget, -, -, hadd, hjoint, htan⟩` from `hE`. Establish `hsymm : ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, e.symm z ∈ e.source` using `fun z hz => e.map_target (htarget ▸ hz)`. Establish `hri : ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, e (e.symm z) = z` using `fun z hz => e.right_inv (htarget ▸ hz)`. Establish `hExpAt : ∀ y ∈ e.source, IsExpAt Z.t (y.1 ≫ genι Z) (ex y)` using `fun y hy => ⟨hadd y hy, (htan y hy).1, (htan y hy).2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzero : ∀ y ∈ e.source, ex y 0 = 1` using `fun y hy => by`. Use `hadd y hy 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`. Establish `hHol : IsHolTo (Metric.ball (0 : Fin n → ℂ) 1 ×ˢ Set.univ) (fun zw : (Fin n → ℂ) × (Fin g → ℂ) => (ex (e.symm zw.1) zw.2).left)` using `htarget ▸ hjoint`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `K : (Fin n → ℂ) → Set (Fin g → ℂ)` to `fun z => {w | ex (e.symm z) w = 1}`. Establish `hLF : IsLatFam (Metric.ball 0 1) K` using `isLatFam_ker _ _ _ Z.t n g (Metric.ball 0 1) (fun z => (e.symm z).1 ≫ genι Z) (fun z => ex (e.symm z)) Metric.isOpen_ball hHol fun z hz => hExpAt _ (hsymm z hz)`. Establish `hinner : ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, (∀ i, z (Fin.castLE ha i) ≠ 0) → Inner (e.symm z)` using `fun z hz hnz => (hin _ (hsymm z hz)).2 fun i => by rw [hri z hz]; exact hnz i`. Use `⟨U₁ ∩ (e.source ∩ e ⁻¹' Metric.ball 0 ρ), inter_mem hU₁ (inter_mem (e.open_source.mem_nhds hx₀) ((e.continuousAt hx₀).preimage_mem_nhds (by rw [h0]; exact Metric.ball_mem_nhds 0 hρ))), Real.pi * (C₁ * C₂), ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hy₁, hy₂, hy₃⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨z₀, hz₀, rfl⟩ : ∃ z₀ ∈ Metric.ball (0 : Fin n → ℂ) ρ, e.symm z₀ = y` from `⟨_, hy₃, e.left_inv hy₂⟩`. Establish `hz₁ : z₀ ∈ Metric.ball (0 : Fin n → ℂ) 1` using `Metric.ball_subset_ball hρ1 hz₀`. Introduce `φ m hφ n' hn' u Hm χ hA v v' W h₁ h₂`. Establish `hslice : IsHolTo Set.univ (fun w => (ex (e.symm z₀) w).left)`. Use `GlobalTheory.HolPeriods.isHolTo_comp (φ := fun w : Fin g → ℂ => (z₀, w)) hHol isOpen_univ ((differentiableOn_const z₀).prodMk differentiableOn_id) fun w _ => Set.mk_mem_prod hz₁ (Set.mem_univ w)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Take `⟨π, p₁, p₂, p₃, p₄⟩` from `GlobalTheory.T.exponential_map_holomorphic_uniformization _ _ _ Z.t _ g (ex (e.symm z₀)) (hExpAt _ hy₂) hslice φ m hφ n' hn' u Hm χ hA`. Take `⟨w, hw, -⟩` from `(htan _ hy₂).2 _ (isTan_tv v)`. Take `rfl` from `p₁ w v' W (h₁ ▸ hw) h₂`. Establish `key` using `hpure z₀ (fun k => (pi_norm_lt_iff hρ).1 (mem_ball_zero_iff.1 hz₀) k) (K z₀) n' π Hm hA.1 hA.2.1 p₂ p₃ ?_ ?_ w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[_root_.mul_assoc, _root_.mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (key.trans (mul_le_mul_of_nonneg_left (hm _ hy₁ v w hw) hC₁)) Real.pi_pos.le`. Introduce `v₁ hv₁ v₂ hv₂`. Take `⟨ζ₁, rfl, a₁, b₁⟩` from `hLF.2.2.2 z₀ hz₁ v₁ hv₁`. Take `⟨ζ₂, rfl, a₂, b₂⟩` from `hLF.2.2.2 z₀ hz₁ v₂ hv₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨ζ₁, ζ₂, a₁.continuousAt, a₂.continuousAt, rfl, rfl, ?_⟩` and prove the remaining obligations. Establish `c₁ : ∀ᶠ z in 𝓝 z₀, ζ₁ z ∈ K z` using `((continuousAt_id.prodMk a₁.continuousAt).eventually b₁).mono fun z h => h.2 rfl`. Establish `c₂ : ∀ᶠ z in 𝓝 z₀, ζ₂ z ∈ K z` using `((continuousAt_id.prodMk a₂.continuousAt).eventually b₂).mono fun z h => h.2 rfl`. Take `⟨δ, hδ, hB⟩` from `Metric.eventually_nhds_iff_ball.1 (((Metric.isOpen_ball.eventually_mem hz₁).and (c₁.and c₂)).and (a₁.eventually_analyticAt.and a₂.eventually_analyticAt))`. Use `filter_upwards [Metric.ball_mem_nhds z₀ hδ] with z hz hnz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz'` using `(hB z hz).1.1`. Use `eq_of_exp_eq fun k hk => ?_` and prove the remaining obligations. Establish `hol : ∀ ζ : (Fin n → ℂ) → Fin g → ℂ, (∀ b ∈ Metric.ball z₀ δ, AnalyticAt ℂ ζ b) → IsHolTo (Metric.ball z₀ δ) fun b => (ex (e.symm b) ((k : ℂ)⁻¹ • ζ b)).left` using `fun ζ hζ => by`. Use `GlobalTheory.HolPeriods.isHolTo_comp (φ := fun b => (b, (k : ℂ)⁻¹ • ζ b)) hHol Metric.isOpen_ball (differentiableOn_id.prodMk ((differentiableOn_const ((k : ℂ)⁻¹)).smul fun b hb => (hζ b hb).differentiableAt.differentiableWithinAt)) fun b hb => Set.mk_mem_prod (hB b hb).1.1 (Set. …` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `q₁` using `GlobalTheory.TorsionPairFam.cubWeil_const_of_isHolTo Z.X Z.t.G Z.t.PP Z.t.cub n k (Metric.ball z₀ δ) (fun b => (e.symm b).1 ≫ genι Z) (fun b => ex (e.symm b) ((k : ℂ)⁻¹ • ζ₁ b)) (fun b => ex (e.symm b) ((k : ℂ)⁻¹ • ζ₂ b)) (Units.mk0 _ (Complex.exp_ne_zero _)) z₀ z hk Metric.isOpe …`. Establish `q₂` using `(hcl _ (hsymm z hz') (hinner z hz' hnz)).1 k _ _ (Units.mk0 _ (Complex.exp_ne_zero _)) hk (hB z hz).1.2.1 (hB z hz).1.2.2 rfl`. Establish `q₃` using `congrArg Units.val (unitOn_injective (q₂.unique q₁))`. Rewrite `q₃` using `[hri z hz']`. Conclude with `q₃`.
-
-Use `⟨fun i => Complex.log (z₀ (Fin.castLE ha i)), fun i hi => Complex.exp_log hi, fun m₁ m₂ hm₂ => ?_⟩` and prove the remaining obligations. Use `limit_mem ha hP hLF Dn (fun z hz hnz large₂ hL m₁ m₂ => ?_) hz₁ m₁ m₂ hm₂` and prove the remaining obligations. Use `(hcl _ (hsymm z hz) (hinner z hz hnz)).2 large₂ (by rw [hri z hz]; exact hL) m₁ m₂` as an intermediate fact. Rewrite `this` using `[hri z hz]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem abLe_chart {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
@@ -285,9 +281,9 @@ theorem abLe_chart {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Recip
     rwa [hri z hz] at this
 
 /- English proof (translation)
-Introduce `D A N j S κ s x σ hσ y₀`. Choose the witnesses or unpack the hypotheses as in `⟨U', hU'⟩ : ∃ U' : Formalism.L2.PjFree.Unf (S.Xo κ.l) κ.c σ (S.Dw.p + S.Dw.q), Formalism.L2.PjFree.IsUnf U' := by`. Rewrite using `[S.rank_eq]`. Conclude with `⟨_, s.unif.law σ hσ⟩`. Take `⟨n, a, ha, g, rk, τ₀, B, e, ex, d, Dn, hP, hE, hx₀, h0, hd, hD, hin, hcl⟩` from `GlobalTheory.T.exists_uniformization_at_point _ _ _ _ _ _ _ _ _ s.T σ U' hσ hU' y₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨U₁, hU₁, C₂, -, hm⟩` from `GlobalTheory.T.exponential_chart_derivative_bound D A N j S κ s x σ n g e ex hE y₀ hx₀`. Conclude with `abLe_chart ha hP hE hx₀ h0 hd hD hin hcl (x.met σ) hU₁ hm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem abLe_local : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (σ : κ.c.F →+* ℂ), Formalism.L2.PjFree.GoodEmb κ.c σ → ∀ y₀ : CxPts (genStr s.T.Z) σ, ∃ U ∈ 𝓝 y₀, ∃ C : ℝ, ∀ y ∈ U, AbLe (x.met σ y) C := by
   intro D A N j S κ s x σ hσ y₀
@@ -302,13 +298,11 @@ theorem abLe_local : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : 
 end Chart
 
 /- English proof (translation)
-Introduce `p2 pH K _ _ P`. Take `⟨K₁, _, _, a₁, h₁⟩` from `GlobalTheory.T.semiabelian_model_after_extension pH.sieg 3 le_rfl (by decide) K P`. Take `⟨K₂, _, _, a₂, h₂⟩` from `GlobalTheory.T.semiabelian_model_after_extension pH.sieg 5 (by norm_num) (by decide) K P`. Use `haveI : IsAlgClosed Qb := (algebraicClosure.isAlgClosure ℚ ℂ).isAlgClosed`. Set `io : K →ₐ[ℚ] Qb` to `IsAlgClosed.lift`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `letI := a₁.toAlgebra`. Use `letI := a₂.toAlgebra`. Use `letI := (io : K →+* Qb).toAlgebra`. Use `haveI : Algebra.IsAlgebraic K K₁ := Algebra.IsAlgebraic.tower_top (K := ℚ) K`. Use `haveI : Algebra.IsAlgebraic K K₂ := Algebra.IsAlgebraic.tower_top (K := ℚ) K`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `i₁ : K₁ →ₐ[K] Qb` to `IsAlgClosed.lift`. Set `i₂ : K₂ →ₐ[K] Qb` to `IsAlgClosed.lift`. Take `⟨K', _, _, i, j₁, j₂, e₁, e₂⟩` from `exists_common (i₁ : K₁ →+* Qb) (i₂ : K₂ →+* Qb)`. Establish `e : j₁.comp a₁ = j₂.comp a₂` using `RingHom.ext fun a => i.injective (((RingHom.congr_fun e₁ _).trans (i₁.commutes a)).trans ((RingHom.congr_fun e₂ _).trans (i₂.commutes a)).symm)`. Use `⟨K', _, inferInstance, j₁.comp a₁, fun K'' _ _ j' A _ ψ hψ => ?_⟩` and prove the remaining obligations.
-
-Use `GlobalTheory.T.semiabelian_model_localization_transfer p2.p22 K'' A ((3 : ℕ) : 𝓞 K'') ((5 : ℕ) : 𝓞 K'') (by norm_num) (by norm_num) (Nat.Coprime.cast (by norm_num)) (h₁ K'' (j'.comp j₁) A ψ hψ) (h₂ K'' (j'.comp j₂) A ψ ?_)` and prove the remaining obligations. Rewrite `hψ` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_hasModel : Hypotheses2 → HypothesesH → ∀ (K : Type) [Field K] [NumberField K] (P : Out.PolAV (Sp K)), ∃ (K' : Type) (_ : Field K') (_ : NumberField K') (j : K →+* K'), ∀ (K'' : Type) [Field K''] [NumberField K''] (j' : K' →+* K'') (A : Over (Sp K'')) [GrpObj A] (ψ : A.left ⟶ P.A.left), IsGrpPullback A P.A (spMap (j'.comp j)) ψ → HasModel A := by
   intro p2 pH K _ _ P
@@ -336,9 +330,7 @@ section Bounds
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} (s : FinalTheorems S κ) (x : ToroidalCompactificationData s)
 
 /- English proof (translation)
-Use `haveI := CxPts.compactSpace σ (ProjSpace.isProjOver_pullback_snd _ s.T.Z.proj : IsProjOver (genStr s.T.Z))`. Use `choose U hU C hC using abLe_local D A N j S κ s x σ hσ`. Take `⟨T, -, hT⟩` from `isCompact_univ.elim_nhds_subcover U fun y _ => hU y`. Use `⟨∑ a ∈ T, |C a|, fun y => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hy⟩` from `Set.mem_iUnion₂.1 (hT (Set.mem_univ y))`.
-
-Conclude with `(hC a y hy).mono ((x.met_smooth σ).1 y) ((le_abs_self _).trans (Finset.single_le_sum (f := fun a => |C a|) (fun _ _ => abs_nonneg _) ha))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_abLe_good (σ : κ.c.F →+* ℂ) (hσ : Formalism.L2.PjFree.GoodEmb κ.c σ) :
     ∃ C : ℝ, ∀ y : CxPts (genStr s.T.Z) σ, AbLe (x.met σ y) C := by
@@ -352,13 +344,11 @@ theorem exists_abLe_good (σ : κ.c.F →+* ℂ) (hσ : Formalism.L2.PjFree.Good
     ((le_abs_self _).trans (Finset.single_le_sum (f := fun a => |C a|) (fun _ _ => abs_nonneg _) ha))
 
 /- English proof (translation)
-Distinguish the cases in `hσ : Formalism.L2.PjFree.GoodEmb κ.c σ`. Conclude with `exists_abLe_good s x σ hσ`. Establish `hg : Formalism.L2.PjFree.GoodEmb κ.c ((starRingEnd ℂ).comp σ)`. Use `Formalism.L2.PjFree.goodEmb_goodOf κ.c σ` as an intermediate fact. Unfold `Formalism.L2.PjFree.goodOf at this`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[if_neg hσ]`. Then use the resulting hypothesis. Take `⟨C, hC⟩` from `exists_abLe_good s x _ hg`. Use `⟨C, fun y' => ?_⟩` and prove the remaining obligations. Establish `cc : spMap (starRingEnd ℂ) ≫ spMap (starRingEnd ℂ) = 𝟙 (Sp ℂ)`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun a => Complex.conj_conj a))`. Set `y : CxPts (genStr s.T.Z) ((starRingEnd ℂ).comp σ)` to `⟨spMap (starRingEnd ℂ) ≫ y'.1, by`. Rewrite using `[Category.assoc, y'.2, ← Spec.map_comp]`. Use the proof step `rfl⟩`. Establish `e : y'.1 = spMap (starRingEnd ℂ) ≫ y.1` using `by show _ = _ ≫ _ ≫ _`.
-
-Rewrite using `[← Category.assoc, cc, Category.id_comp]`. Conclude with `GlobalTheory.T.hermitian_form_conjugate_points _ _ _ s.T.Z.t _ _ (by rw [e, Category.assoc]) (x.met _ y) (x.met σ y') (fun v v' h => x.met_conj _ _ y y' v v v' v' e h h) C (hC y)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_abLe_at (σ : κ.c.F →+* ℂ) : ∃ C : ℝ, ∀ y : CxPts (genStr s.T.Z) σ, AbLe (x.met σ y) C := by
   by_cases hσ : Formalism.L2.PjFree.GoodEmb κ.c σ
@@ -381,7 +371,7 @@ theorem exists_abLe_at (σ : κ.c.F →+* ℂ) : ∃ C : ℝ, ∀ y : CxPts (gen
     (fun v v' h => x.met_conj _ _ y y' v v v' v' e h h) C (hC y)
 
 /- English proof (translation)
-Use `choose C hC using exists_abLe_at s x`. Conclude with `⟨∑ σ, |C σ|, fun σ y => (hC σ y).mono ((x.met_smooth σ).1 y) ((le_abs_self _).trans (Finset.single_le_sum (f := fun a => |C a|) (fun _ _ => abs_nonneg _) (Finset.mem_univ σ)))⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_abLe : ∃ C : ℝ, ∀ σ (y : CxPts (genStr s.T.Z) σ), AbLe (x.met σ y) C := by
   choose C hC using exists_abLe_at s x
@@ -395,9 +385,9 @@ def TorLe (y : Sp Qb ⟶ gen s.T.Z) (C : ℝ) (K : Type) [Field K] [NumberField 
       ((C : ℂ) • gramOf (x.met σ' z) (fun i => bcTan σ hz (ε i)) - 1).PosSemidef
 
 /- English proof (translation)
-Use `posSemidef_iff_dotProduct_mulVec.2 ⟨?_, fun v => ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Conclude with `(hg.1 _ _).symm`. Rewrite using `[← form_sum]`. Distinguish the cases in `h0 : ∑ a, v a • u a = 0`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h0]`. Conclude with `(Complex.pos_iff.2 ⟨hg.2.1 _ h0, (Complex.conj_eq_iff_im.1 (hg.1 _ _).symm).symm⟩).le`.
+A detailed English derivation is pending.
 -/
 theorem gramOf_posSemidef {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {X : Scheme.{0}} {t : SAB H X} {z : Sp ℂ ⟶ X} {g : TanM z t.G →ₗ[ℂ] TanM z t.G →ₗ⋆[ℂ] ℂ} (hg : IsBlockMetric g)
@@ -413,9 +403,9 @@ theorem gramOf_posSemidef {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
 variable {s x} in
 
 /- English proof (translation)
-Take `⟨K₀, _, _, io₀, h⟩` from `h`. Use `⟨K₀, _, inferInstance, io₀, fun K _ _ io j hj yK hy => ?_⟩` and prove the remaining obligations. Take `⟨r, ε, h₁, h₂, h₃⟩` from `h K io j hj yK hy`. Use `⟨r, ε, h₁, h₂, fun σ σ' z hz => ?_⟩` and prove the remaining obligations. Establish `hd : (0 : ℂ) ≤ ((C' - C : ℝ) : ℂ)` using `Complex.zero_le_real.2 (sub_nonneg.2 hC)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(h₃ σ σ' z hz).add ((gramOf_posSemidef ((x.met_smooth σ').1 z) fun i => bcTan σ hz (ε i)).smul hd)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Use `module`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem large_torLe_mono {y : Sp Qb ⟶ gen s.T.Z} {C C' : ℝ} (h : Large y (TorLe s x y C)) (hC : C ≤ C') :
     Large y (TorLe s x y C') := by
@@ -430,11 +420,11 @@ theorem large_torLe_mono {y : Sp Qb ⟶ gen s.T.Z} {C C' : ℝ} (h : Large y (To
   module
 
 /- English proof (translation)
-Establish `hp` using `isProper_genStr s.T.Z`. Take `⟨W, _, π, r, u, hπ, hW, ha, hu, hg, k, _, g, T, hk, hT⟩` from `GlobalTheory.T.exists_finite_cover_torus_split p22 _ _ _ s.T.Z.t κ.c.F _ (genStr s.T.Z) (genι s.T.Z) hp a`. Establish `hcl` using `GlobalTheory.T.torus_embedding_closed_all_fibres ts W _ (ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsSemiAbelian.pullback (π ≫ genι s.T.Z) _ s.T.Z.t.semi) r u hu hg`. Take `⟨U, hU, hrk⟩` from `GlobalTheory.T.torus_extension_open_locus _ _ _ s.T.Z.t κ.c.F _ (genStr s.T.Z) (genι s.T.Z) hp k g T`. Take `⟨C, hC⟩` from `GlobalTheory.T.height_bound_torus_points D A N j S κ s x W π r u hπ hu hcl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨U, C, hk ▸ hU, fun y hy hay => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `GlobalTheory.T.algebraic_point_lifts_along_finite W _ π hπ y (ha ▸ hay)`. Take `⟨K₀, _, _, io₀, w₀, hw₀⟩` from `GlobalTheory.T.algebraic_point_defined_over_number_field κ.c.F W (π ≫ genStr s.T.Z) inferInstance w`. Use `Large.of_point io₀ (w₀ ≫ π) (by rw [← Category.assoc, hw₀, hw]) fun K _ _ io j _ => ?_` and prove the remaining obligations. Take `⟨ε, h₁, h₂⟩` from `hC K (spMap j ≫ w₀) _ (Category.assoc _ _ _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨r, ε, h₁, hT ▸ hrk y hy (hk ▸ hay), h₂⟩`.
+Supply the required witnesses or components.
 -/
 theorem torLe_step (p22 : GlobalTheory.Published.SemiAbelianHomExtension) (ts : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.TorusSaturated) (a : gen s.T.Z) :
     ∃ (U : (gen s.T.Z).Opens) (C : ℝ), a ∈ U ∧ ∀ y : Sp Qb ⟶ gen s.T.Z, y (IsLocalRing.closedPoint Qb) ∈ U →
@@ -453,17 +443,15 @@ theorem torLe_step (p22 : GlobalTheory.Published.SemiAbelianHomExtension) (ts : 
   exact ⟨r, ε, h₁, hT ▸ hrk y hy (hk ▸ hay), h₂⟩
 
 /- English proof (translation)
-Establish `hp` using `isProper_genStr s.T.Z`. Use `haveI : IsLocallyNoetherian (gen s.T.Z) := LocallyOfFiniteType.isLocallyNoetherian (genStr s.T.Z)`. Use `haveI : CompactSpace (gen s.T.Z) := QuasiCompact.compactSpace_of_compactSpace (genStr s.T.Z)`. Use `haveI : IsNoetherian (gen s.T.Z) := {}`. It suffices to establish `h : ∀ Z : TopologicalSpace.Closeds (gen s.T.Z), ∃ C : ℝ, ∀ y : Sp Qb ⟶ gen s.T.Z, y (IsLocalRing.closedPoint Qb) ∈ Z → Large y (TorLe s x y C) by`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨C, hC⟩` from `h ⊤`. Conclude with `⟨C, fun y => hC y trivial⟩`. Introduce `Z`. Proceed by induction on `Z using WellFoundedLT.induction with`. Consider the case `ind Z ih`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Break down `(Z : Set (gen s.T.Z)).eq_empty_or_nonempty with h0 | hne` into its components or cases. Conclude with `⟨0, fun y hy => absurd (show _ ∈ (Z : Set (gen s.T.Z)) from hy) (by simp [h0])⟩`. Distinguish the cases in `hirr : IsPreirreducible (Z : Set (gen s.T.Z))`. Take `⟨a, ha⟩` from `QuasiSober.sober (α := gen s.T.Z) ⟨hne, hirr⟩ Z.isClosed`. Take `⟨U, C₁, haU, h₁⟩` from `torLe_step s x p22 ts a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨C₂, h₂⟩` from `ih (Z ⊓ U.compl) (inf_lt_left.2 fun h => h ha.mem haU)`. Use `⟨max C₁ C₂, fun y hy => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hU : y (IsLocalRing.closedPoint Qb) ∈ U`. Conclude with `large_torLe_mono (h₁ y hU (ha.specializes hy)) (le_max_left _ _)`. Conclude with `large_torLe_mono (h₂ y ⟨hy, hU⟩) (le_max_right _ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hirr` using `[isPreirreducible_iff_isClosed_union_isClosed] at hirr push_neg`. Take `⟨Z₁, Z₂, c₁, c₂, hZ, n₁, n₂⟩` from `hirr`. Take `⟨C₁, h₁⟩` from `ih (Z ⊓ ⟨Z₁, c₁⟩) (inf_lt_left.2 n₁)`. Take `⟨C₂, h₂⟩` from `ih (Z ⊓ ⟨Z₂, c₂⟩) (inf_lt_left.2 n₂)`. Use `⟨max C₁ C₂, fun y hy => ?_⟩` and prove the remaining obligations.
-
-Break down `hZ hy with h | h` into its components or cases. Conclude with `large_torLe_mono (h₁ y ⟨hy, h⟩) (le_max_left _ _)`. Conclude with `large_torLe_mono (h₂ y ⟨hy, h⟩) (le_max_right _ _)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_torLe (p22 : GlobalTheory.Published.SemiAbelianHomExtension) (ts : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.TorusSaturated) :
     ∃ C : ℝ, ∀ y : Sp Qb ⟶ gen s.T.Z, Large y (TorLe s x y C) := by
@@ -499,17 +487,15 @@ theorem exists_torLe (p22 : GlobalTheory.Published.SemiAbelianHomExtension) (ts 
     · exact large_torLe_mono (h₂ y ⟨hy, h⟩) (le_max_right _ _)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨K₀, _, _, io₀, y₀, φ, m, hy, hφ⟩ : ∃ (K₀ : Type) (_ : Field K₀) (_ : NumberField K₀) (io₀ : K₀ →+* Qb) (y₀ : Sp K₀ ⟶ gen s.T.Z) (φ : Fib K₀) (m : CubeMap φ.G s.T.Z.t.G), spMap io₀ ≫ y₀ = y ∧ FibAt s.T.Z.t (y₀ ≫ genι s.T.Z) φ m := by`. Distinguish the cases in `hb : y (IsLocalRing.closedPoint Qb) ∈ genBd s.T.Z`. Conclude with `GlobalTheory.T.algebraic_point_fibre_over_number_field _ _ _ _ _ _ _ _ _ s.T y hb`. Establish `hp` using `isProper_genStr s.T.Z`. Take `⟨K₀, _, _, io₀, y₀, hy⟩` from `GlobalTheory.T.algebraic_point_defined_over_number_field κ.c.F _ (genStr s.T.Z) inferInstance y`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, m, hφ⟩` from `GlobalTheory.T.exists_fibre_of_number_field_point _ _ _ _ _ _ s.T.Z K₀ y₀ fun h => hb (by`. Rewrite using `[← hy]`. Conclude with `(Scheme.Hom.comp_apply (spMap io₀) y₀ _).symm ▸ (congrArg y₀ (Subsingleton.elim (α := PrimeSpectrum K₀) _ _) ▸ h :))`. Conclude with `⟨K₀, _, inferInstance, io₀, y₀, φ, m, hy, hφ⟩`. Take `⟨K₁, _, _, j₁, hM⟩` from `exists_hasModel p2 pH K₀ φ.P`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI := j₁.toAlgebra`. Use `letI := io₀.toAlgebra`. Use `haveI : Algebra.IsAlgebraic K₀ K₁ := Algebra.IsAlgebraic.tower_top (K := ℚ) K₀`. Use `haveI : IsAlgClosed Qb := (algebraicClosure.isAlgClosure ℚ ℂ).isAlgClosed`. Set `io₁ : K₁ →ₐ[K₀] Qb` to `IsAlgClosed.lift`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e₁ : (io₁ : K₁ →+* Qb).comp j₁ = io₀` using `RingHom.ext fun a => io₁.commutes a`. Use `Large.of_point (io₁ : K₁ →+* Qb) (spMap j₁ ≫ y₀) ?_ fun K _ _ io j _ => ?_` and prove the remaining obligations. Rewrite using `[← hy, ← e₁, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression. Take `⟨Q, ψ, hQ⟩` from `exists_isPolFibre abelianSchemeLaws_all.1.polBaseChange (j.comp j₁) φ.P`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨φ', m', χ, ψ', rfl, -, h₁, -⟩` from `GlobalTheory.T.fibre_change_of_polarized_field _ _ _ _ K₀ K (j.comp j₁) _ φ m hφ Q ψ hQ`. Use `⟨φ', m', ?_, hM K j _ ψ hQ.2.1⟩` and prove the remaining obligations. Establish `e : (spMap j ≫ spMap j₁ ≫ y₀) ≫ genι s.T.Z = spMap (j.comp j₁) ≫ y₀ ≫ genι s.T.Z`. Rewrite using `[← Category.assoc (spMap j), ← Spec.map_comp, Category.assoc]`. Both sides reduce to the same expression.
-
-Conclude with `e ▸ h₁`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem large_fibAt (p2 : Hypotheses2) (pH : HypothesesH) (y : Sp Qb ⟶ gen s.T.Z) : Large y fun K _ _ yK =>
     ∃ (φ : Fib K) (m : CubeMap φ.G s.T.Z.t.G), FibAt s.T.Z.t (yK ≫ genι s.T.Z) φ m ∧ HasModel φ.P.A := by
@@ -551,27 +537,25 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {K : Type} [Field K] [NumberField K] {xO : Sp (𝓞 K) ⟶ X} {xK : Sp K ⟶ X} (hx : spMap (algebraMap (𝓞 K) K) ≫ xO = xK)
 
 /- English proof (translation)
-Take `⟨G, _, θ, hG, hθ⟩` from `hM`. Use `haveI := φ.P.isAb.comm`. Take `⟨v, hv⟩` from `LieField.exists_isLieBasis_field K φ.P.A φ.P.g φ.P.smoothDim`. Take `⟨q, hq, hqm⟩` from `GlobalTheory.T.abelian_part_tangent_surjection _ _ _ _ K _ φ m hφ _ v hv`. Take `⟨hli, hker⟩` from `GlobalTheory.T.abelian_map_cochain_frame_independence _ _ _ _ K _ φ m hφ _ v hv q hqm r ε hε hrk`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hβ⟩ : ∃ β : (Fin n → K) ≃ₗ[K] TanM xK t.G, ∀ c, β c = ∑ i, c i • b i` from `⟨(Module.Basis.mk hb.1 hb.2.ge).equivFun.symm, fun c => by simp⟩`. Establish `hfull : Full (lieCoordLat t hx b)`. Take `⟨m, r, M, hr, hM, hL, -⟩` from `GlobalTheory.T.tangent_basis_integral_change t hx b hb`. Conclude with `GlobalTheory.CM.LieLattice.fg_and_span_eq_top _ r M hr (fun i => (hM i).2) hL`. Set `F : SemiFib K` to `SemiFib.mk φ.P G hG θ hθ v hv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h', hh'⟩` from `F.exists_isHerm`. Establish `hmem : ∀ c, c ∈ lieCoordLat t hx b ↔ ∃ w, bcTan (algebraMap (𝓞 K) K) hx w = β c` using `fun c => by`. Rewrite using `[hβ]`. Both sides reduce to the same expression. Establish `hsp : ∀ c, c ∈ Submodule.span K (Set.range fun i => β.symm (ε i)) ↔ β c ∈ Submodule.span K (Set.range ε)` using `fun c => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Submodule.mem_span_range_iff_exists_fun]`. Use `exists_congr fun a => ?_` and prove the remaining obligations. Rewrite using `[← β.injective.eq_iff, map_sum]`. Simplify using `only [map_smul, LinearEquiv.apply_symm_apply]`. Establish `hk : LinearMap.ker (q ∘ₗ β.toLinearMap) = Submodule.span K (Set.range fun i => β.symm (ε i))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `c`. Rewrite using `[hsp, ← hker, LinearMap.mem_ker, LinearMap.mem_ker, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Use `⟨F, h', r, fun i => β.symm (ε i), q ∘ₗ β.toLinearMap, hh', hfull, SemiFib.full_lieLat K F, hli.map' β.symm.toLinearMap β.symm.ker, hq.comp β.surjective, hk, ?_, ?_, fun σ => ?_⟩` and prove the remaining obligations. Use `le_antisymm ?_ (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `c ⟨hc, hc'⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hw⟩` from `(hmem c).1 hc`. Establish `hc'' : β c ∈ Submodule.span K (Set.range ε)` using `hker ▸ hc'`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hc''`. Use `choose a' ha' using GlobalTheory.T.integral_tangent_coefficients_integral ts _ _ _ _ K xO _ hx r ε hε a w (hw.trans ha.symm)`. Use `(Submodule.mem_span_range_iff_exists_fun (𝓞 K)).2 ⟨a', β.injective ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ha, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul K, ha', map_smul, LinearEquiv.apply_symm_apply]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `⟨(hmem _).2 ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `GlobalTheory.T.cochain_frame_extends_integrally p22 _ _ _ _ K xO _ hx r ε hε i`. Conclude with `(hk ▸ Submodule.subset_span ⟨i, rfl⟩ : β.symm (ε i) ∈ LinearMap.ker (q ∘ₗ β.toLinearMap))`. Introduce `c hc`. Take `⟨w, hw⟩` from `(hmem c).1 hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `GlobalTheory.T.semiabelian_integral_model_tangent p22 _ _ _ _ K xO _ hx φ m hφ G hG θ hθ v hv q hqm w` as an intermediate fact. Rewrite `this` using `[hw]`. Then use the resulting hypothesis. Take `⟨z, hz, g, hg, h₁, h₂, hh⟩` from `hC σ`. Establish `hgram : ∀ (n' : ℕ) (u : Fin n' → Fin n → K), h.gram σ u = gramOf g fun i => bcTan σ hz (β (u i))` using `fun n u => by`. Use extensionality with `a b`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [gramOf, HermFam.gram, of_apply, hβ, hh]`. Use `⟨?_, fun n u => ?_⟩` and prove the remaining obligations. Rewrite using `[hgram]`. Simplify `h₂` using `only [LinearEquiv.apply_symm_apply]`. Rewrite using `[hgram]`.
-
-Conclude with `GlobalTheory.T.semiabelian_lie_basis_comparison _ _ _ _ K _ φ m hφ G hG θ hθ v hv h' hh' q hqm σ _ hz _ _ hg h₁ n fun i => β (u i)`.
+A detailed English derivation is pending.
 -/
 theorem torusExt_of_fibAt (p22 : GlobalTheory.Published.SemiAbelianHomExtension) (ts : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.TorusSaturated) {φ : Fib K}
     {m : CubeMap φ.G t.G} (hφ : FibAt t xK φ m) (hM : HasModel φ.P.A) {r : ℕ} {ε : Fin r → TanM xK t.G}
@@ -642,13 +626,13 @@ section Main
 open Formalism.MainNotions GlobalTheory.TrueGeo GlobalTheory.CxPts GlobalTheory.Mean4 GlobalTheory.Mean4O
 
 /- English proof (translation)
-Introduce `p2 pH ts D O _ _ _ _ _ _ x P _`. Take `⟨C₁, h₁⟩` from `exists_abLe O.s x`. Take `⟨C₂, h₂⟩` from `exists_torLe O.s x p2.p22 ts`. Use `⟨max C₁ C₂, fun y _ => ?_⟩` and prove the remaining obligations. Take `⟨K₀, i₁, i₂, io₀, hK⟩` from `(large_fibAt O.s p2 pH y.y).and (large_torLe_mono (h₂ y.y) (le_max_right C₁ C₂))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨K₀, i₁, i₂, io₀, fun K _ _ io j hj L h hL => ?_⟩` and prove the remaining obligations. Take `⟨fK, yK, xO, hx, hio, e, b, -, hf, hb, rfl, hh⟩` from `hL`. Take `⟨⟨φ, m, hφ, hM⟩, r, ε, hε, hr, hgr⟩` from `hK K io j hj yK hio`. Establish `hio' : spMap io ≫ yK ≫ genι O.s.T.Z = y.y ≫ genι O.s.T.Z` using `by rw [← Category.assoc, hio]`. Establish `hrk : Module.finrank ℤ φ.X = r`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Q, ψ, hQ⟩` from `exists_isPolFibre abelianSchemeLaws_all.1.polBaseChange io φ.P`. Take `⟨φ', m', -, -, -, -, a₁, -, -, -, a₂⟩` from `GlobalTheory.T.fibre_change_of_polarized_field _ _ _ _ K Qb io _ φ m hφ Q ψ hQ`. Conclude with `a₂ ▸ GlobalTheory.T.fibre_character_rank_eq_torus_rank _ _ _ _ Qb _ φ' m' (hio' ▸ a₁) r hr`. Use `torusExt_of_fibAt hx p2.p22 ts hφ hM hε hrk (LieSmooth.tanBasis_and_eigFrame_of_baseChange y io fK yK hio hf e b hb).1 h fun σ => ?_` and prove the remaining obligations. Set `z : CxPts (genStr O.s.T.Z) (σ.comp fK)` to `⟨spMap σ ≫ yK, by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hf, ← Spec.map_comp]`. Use the proof step `rfl⟩`. Establish `hz : spMap σ ≫ yK ≫ genι O.s.T.Z = z.1 ≫ genι O.s.T.Z` using `(Category.assoc _ _ _).symm`. Conclude with `⟨_, hz, x.met _ z, (x.met_smooth _).1 z, (h₁ _ z).mono ((x.met_smooth _).1 z) (le_max_left _ _), hgr σ _ z hz, hh σ z rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem torusExt_structure : Hypotheses2 → HypothesesH → GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.TorusSaturated → OnObj fun D O _ _ H _ => ∀ (x : ToroidalCompactificationData O.s) (P : PolOf x O.Φ), O.CoreWith x P → ∃ C₀ : ℝ, ∀ y : Pt O.s, y ∉ H.int → ∃ (K₀ : Type) (_ : Field K₀) (_ : NumberField K₀) (io₀ : K₀ →+* Qb), ∀ (K : Type) [Field K] [NumberField K] (io : K →+* Qb) (j : K₀ →+* K), io.comp j = io₀ → ∀ (L : Submodule (𝓞 K) (Fin (D.R.f * O.N) → K)) (h : HermFam K (Fin (D.R.f * O.N) → K)), IsLieAtWith O x P y K io L h → ∃ (F : SemiFib K) (h' : HermFam K (Fin F.P₀.g → K)) (r : ℕ) (ε : Fin r → Fin (D.R.f * O.N) → K) (q : (Fin (D.R.f * O.N) → K) →ₗ[K] (Fin F.P₀.g → K)), F.IsHerm h' ∧ TorusExt h L ε q h' F.lieLat C₀ := by
   intro p2 pH ts D O _ _ _ _ _ _ x P _

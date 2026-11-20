@@ -4,23 +4,21 @@ import Mathlib.NumberTheory.Multiplicity
 open NumberField IsDedekindDomain UpperTheory.V UpperTheory.V.ZK UpperTheory.V.ZK.Ct
 
 /- English proof (translation)
-Use `haveI := Fact.mk hl`. Establish `hpow1 : 1 ≤ l ^ c` using `Nat.one_le_pow c l hl.pos`. Establish `hx1 : 1 < 1 + l ^ c` using `by omega`. Establish `hdvd : l ∣ (1 + l ^ c) - 1`. Rewrite using `[Nat.add_sub_cancel_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `dvd_pow_self l (by omega)`. Establish `hnd : ¬ l ∣ 1 + l ^ c`. Introduce `h`. Rewrite `h` using `[add_comm]`. Use `(Nat.dvd_add_right (dvd_pow_self l (by omega : c ≠ 0))).1 h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `hl.one_lt.ne' (Nat.dvd_one.1 this)`. Break down `hl.eq_two_or_odd' with rfl | hodd` into its components or cases. Take `⟨d, rfl⟩ : ∃ d, c = d + 2` from `⟨c - 2, by have := h2 rfl; omega⟩`. Establish `h4 : 2 ^ (d + 2) = 4 * 2 ^ d` using `by ring`. Establish `h` using `padicValNat.pow_two_sub_pow (x := 1 + 2 ^ (d + 2)) (y := 1) hx1 hdvd hnd (n := 2 * m) (by omega) (even_two_mul m)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[one_pow]`. Establish `hA : padicValNat 2 (1 + 2 ^ (d + 2) + 1) = 1`. Establish `e : 1 + 2 ^ (d + 2) + 1 = 2 * (1 + 2 * 2 ^ d)` using `by rw [h4]; ring`. Rewrite using `[e, padicValNat.mul (by norm_num) (by omega), padicValNat.self (by norm_num), padicValNat.eq_zero_of_not_dvd (by omega)]`. Establish `hB : padicValNat 2 (1 + 2 ^ (d + 2) - 1) = d + 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.add_sub_cancel_left, padicValNat.prime_pow]`. Establish `hC : padicValNat 2 (2 * m) = 1 + padicValNat 2 m`. Rewrite using `[padicValNat.mul (by norm_num) hm, padicValNat.self (by norm_num)]`. Establish `hxm : 1 < (1 + 2 ^ (d + 2)) ^ m` using `Nat.one_lt_pow hm hx1`. Take `⟨b, hb⟩ : ∃ b, (1 + 2 ^ (d + 2)) ^ m = b + 1` from `⟨_ - 1, (Nat.sub_add_cancel hxm.le).symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmod : (1 + 2 ^ (d + 2)) ^ m % 4 = 1`. Rewrite using `[Nat.pow_mod, h4]`. Establish `: (1 + 4 * 2 ^ d) % 4 = 1` using `by omega`. Rewrite using `[this, one_pow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hD : padicValNat 2 ((1 + 2 ^ (d + 2)) ^ m + 1) = 1`. Take `⟨q, hq⟩ : ∃ q, (1 + 2 ^ (d + 2)) ^ m + 1 = 2 * (2 * q + 1)` from `⟨((1 + 2 ^ (d + 2)) ^ m + 1) / 4, by omega⟩`. Rewrite using `[hq, padicValNat.mul (by norm_num) (by omega), padicValNat.self (by norm_num), padicValNat.eq_zero_of_not_dvd (by omega)]`. Establish `hfac : (1 + 2 ^ (d + 2)) ^ (2 * m) - 1 = ((1 + 2 ^ (d + 2)) ^ m - 1) * ((1 + 2 ^ (d + 2)) ^ m + 1)`. Rewrite using `[pow_mul', hb, Nat.add_sub_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (b + 1) ^ 2 = b * (b + 1 + 1) + 1` using `by ring`. Rewrite using `[this, Nat.add_sub_cancel]`. Rewrite `h` using `[hfac, padicValNat.mul (by omega) (by omega), hD, hA, hB, hC]`. Use linear arithmetic over natural numbers and integers. Use `padicValNat.pow_sub_pow hodd hx1 hdvd hnd hm` as an intermediate fact.
-
-Rewrite `this` using `[one_pow, Nat.add_sub_cancel_left, padicValNat.prime_pow]`. Then use the resulting hypothesis.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem padic_val_one_add_pow_sub_one (l c m : ℕ) (hl : l.Prime) (hc : 1 ≤ c) (h2 : l = 2 → 2 ≤ c)
     (hm : m ≠ 0) : padicValNat l ((1 + l ^ c) ^ m - 1) = c + padicValNat l m := by
@@ -72,9 +70,9 @@ private theorem padic_val_one_add_pow_sub_one (l c m : ℕ) (hl : l.Prime) (hc :
     rwa [one_pow, Nat.add_sub_cancel_left, padicValNat.prime_pow] at this
 
 /- English proof (translation)
-Introduce `l c ν E hl hc h2 hcν hE`. Use `haveI := Fact.mk hl`. Establish `hE0 : E ≠ 0` using `by omega`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: 2 ≤ 1 + l ^ c` using `by have := Nat.one_le_pow c l hl.pos; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.trans (Nat.le_self_pow hE0 _)`. Rewrite using `[Nat.factorization_def _ hl, Nat.factorization_def _ hl]`. Conclude with `padic_val_one_add_pow_sub_one l c E hl hc h2 hE0`. Rewrite using `[Nat.factorization_def _ hl, Nat.factorization_def _ hl, ← pow_mul, padic_val_one_add_pow_sub_one l c _ hl hc h2 (mul_ne_zero hE0 (pow_ne_zero _ hl.ne_zero)), padicValNat.mul hE0 (pow_ne_zero _ hl.ne_zero), padicValNat.prime_pow]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ZK.Ct.lte :
     ∀ l c ν E : ℕ, l.Prime → 1 ≤ c → (l = 2 → 2 ≤ c) → c ≤ ν → 1 ≤ E → 2 ≤ (1 + l ^ c) ^ E ∧ ((1 + l ^ c) ^ E - 1).factorization l = c + E.factorization l ∧ (((1 + l ^ c) ^ E) ^ l ^ (ν - c) - 1).factorization l = ν + E.factorization l := by

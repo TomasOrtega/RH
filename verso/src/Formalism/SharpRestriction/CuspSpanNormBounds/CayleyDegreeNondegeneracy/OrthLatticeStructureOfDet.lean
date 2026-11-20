@@ -19,11 +19,9 @@ variable {D : D7} {V : Type} [AddCommGroup V] [Module D.host.E V] [Module (𝓞 
 include hw₁ hgen in
 
 /- English proof (translation)
-Use `⟨{Submodule.Quotient.mk ⟨w₁, hw₁⟩}, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, Finset.coe_singleton]`. Introduce `q _`. Take `⟨⟨w, hw⟩, rfl⟩` from `Submodule.mkQ_surjective _ q`. Take `⟨a, ha⟩` from `hgen w hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `Submodule.mem_span_singleton.2 ⟨-a, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.mkQ_apply, Submodule.Quotient.eq, Submodule.mem_comap]`. Use `show (-a) • w₁ - w ∈ M`. Establish `e : (-a) • w₁ - w = -(w + a • w₁)` using `by rw [neg_smul]; abel`. Rewrite using `[e]`.
-
-Conclude with `M.neg_mem ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discriminant_one_generator : DiscGen h M 1 := by
   refine ⟨{Submodule.Quotient.mk ⟨w₁, hw₁⟩}, by simp, ?_⟩
@@ -41,31 +39,25 @@ theorem discriminant_one_generator : DiscGen h M 1 := by
 include hw₁ hgen hann in
 
 /- English proof (translation)
-Use `set P : Ideal (𝓞 D.host.E) := pE D.host.F D.host.E p with hP`. Use `set Md := Formalism.HermitianLatticesTheory.dual h M with hMd`. Use `set K : Submodule (𝓞 D.host.E) Md := (M ⊔ P • Md).comap Md.subtype with hK`. Establish `hTP : ((T : ℕ) : 𝓞 D.host.E) ∈ P`. Use `Ideal.mem_map_of_mem (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) hTp` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[map_natCast]`. Conclude with `this`. Establish `hstep : ∀ n ∈ P • Md, ∃ b ∈ P, n - b • w₁ ∈ M`. Introduce `n hn`. Use `Submodule.smul_induction_on hn ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `r hr w hw`. Take `⟨c, hc⟩` from `hgen w hw`. Use `⟨-(r * c), P.neg_mem (P.mul_mem_right _ hr), ?_⟩` and prove the remaining obligations. Establish `e : r • w - (-(r * c)) • w₁ = r • (w + c • w₁)`. Rewrite using `[neg_smul, sub_neg_eq_add, smul_add, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `M.smul_mem _ hc`. Introduce and unpack `x y ⟨b, hb, hx⟩ ⟨b', hb', hy⟩`. Use `⟨b + b', P.add_mem hb hb', ?_⟩` and prove the remaining obligations. Establish `e : x + y - (b + b') • w₁ = (x - b • w₁) + (y - b' • w₁)` using `by rw [add_smul]; abel`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Conclude with `M.add_mem hx hy`. Use `set φ : 𝓞 D.host.E →ₗ[𝓞 D.host.E] (Md ⧸ K) := LinearMap.toSpanSingleton (𝓞 D.host.E) (Md ⧸ K) (Submodule.Quotient.mk ⟨w₁, hw₁⟩) with hφ`. Establish `hφa : ∀ a, φ a = Submodule.Quotient.mk (a • (⟨w₁, hw₁⟩ : Md))` using `fun a => by`. Rewrite using `[hφ, LinearMap.toSpanSingleton_apply, Submodule.Quotient.mk_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective φ`. Introduce `q`. Take `⟨⟨w, hw⟩, rfl⟩` from `Submodule.mkQ_surjective _ q`. Take `⟨a, ha⟩` from `hgen w hw`. Use `⟨-a, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hφa, Submodule.mkQ_apply, Submodule.Quotient.eq, hK, Submodule.mem_comap]`. Use `show (-a) • w₁ - w ∈ M ⊔ P • Md`. Establish `e : (-a) • w₁ - w = -(w + a • w₁)` using `by rw [neg_smul]; abel`. Rewrite using `[e]`. Conclude with `Submodule.mem_sup_left (M.neg_mem ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hker : LinearMap.ker φ = P`. Use extensionality with `a`. Rewrite using `[LinearMap.mem_ker, hφa, Submodule.Quotient.mk_eq_zero, hK, Submodule.mem_comap]`. Use `show a • w₁ ∈ M ⊔ P • Md ↔ a ∈ P`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ha`. Take `⟨m, hm, n, hn, e⟩` from `Submodule.mem_sup.1 ha`. Take `⟨b, hb, hnb⟩` from `hstep n hn`. Establish `h1 : (a - b) • w₁ ∈ M`. Establish `: (a - b) • w₁ = m + (n - b • w₁)` using `by rw [sub_smul, ← e]; abel`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `M.add_mem hm hnb`. Take `⟨o, ho⟩` from `(hann _).1 h1`. Establish `: a = ((T : ℕ) : 𝓞 D.host.E) * o + b` using `by rw [← ho]; ring`. Rewrite using `[this]`.
-
-Conclude with `P.add_mem (P.mul_mem_right _ hTP) hb`. Introduce `ha`. Conclude with `Submodule.mem_sup_right (Submodule.smul_mem_smul ha hw₁)`. Establish `hcard : Nat.card (Md ⧸ K) = Ideal.absNorm p ^ 2`. Rewrite using `[← Nat.card_congr (φ.quotKerEquivOfSurjective hsurj).toEquiv, Nat.card_congr (Submodule.quotEquivOfEq _ _ hker).toEquiv, ← Formalism.MainNotions.BridgeLemma.absNorm_pE]`.
-
-Both sides reduce to the same expression. Establish `hq` using `Formalism.MainNotions.BridgeLemma.absNorm_ge_two p hp`. Use `show Nat.log (Ideal.absNorm p ^ 2) (Nat.card (Md ⧸ K)) = 1`. Rewrite using `[hcard]`. Use `Nat.log_pow (b := Ideal.absNorm p ^ 2) (by nlinarith) 1` as an intermediate fact.
-
-Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem corank_one_mod_prime_over (p : Ideal (𝓞 D.host.F)) (hp : p.IsMaximal) (hTp : ((T : ℕ) : 𝓞 D.host.F) ∈ p) :
     eP h M p = 1 := by
@@ -136,7 +128,7 @@ theorem corank_one_mod_prime_over (p : Ideal (𝓞 D.host.F)) (hp : p.IsMaximal)
 end Cyc
 
 /- English proof (translation)
-Introduce `hTp h3 hsp F0 he hz Λ hrow`. Take `⟨hΛ, hu, hlift, hconv⟩` from `hrow.2.1`. Take `⟨w₁, hw₁, hgen, hann⟩` from `dual_orthLattice_quotient_cyclic F0 he hz Λ hΛ hu hlift.1 hconv.2 hTp.ne_zero`. Conclude with `⟨orthLattice_isLattice F0 he hz Λ hΛ hu, orthLattice_isIntegral_of_unimodular Λ (lf D F0) hu, hdet hTp h3 hsp F0 he hz Λ hrow, discriminant_one_generator _ _ w₁ hw₁ hgen, fun p hp hTpp => corank_one_mod_prime_over _ _ (Tu D u) w₁ hw₁ hgen hann p hp hTpp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem orthLattice_structure_of_det (D : D7) (u : D.what₂.Word)
     (hdet : ForPrimeFlagLattice D u fun F0 Λ =>

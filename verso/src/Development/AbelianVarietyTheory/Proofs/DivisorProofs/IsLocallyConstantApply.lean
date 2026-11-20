@@ -12,9 +12,9 @@ variable (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω]
 abbrev LCRing (k : ℕ) : Type := LocallyConstant (Fin k → (Ω ≃ₐ[K] Ω)) Ω
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g₀`. Establish `hfd : FiniteDimensional K (IntermediateField.adjoin K {a})` using `IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral a)`. Establish `hopen : IsOpen {σ : Ω ≃ₐ[K] Ω | (g₀ i)⁻¹ * σ ∈ (IntermediateField.adjoin K {a}).fixingSubgroup}` using `(IntermediateField.fixingSubgroup_isOpen _).preimage (continuous_const.mul continuous_id)`. Establish `hmem : ∀ᶠ g in nhds g₀, g i ∈ {σ : Ω ≃ₐ[K] Ω | (g₀ i)⁻¹ * σ ∈ (IntermediateField.adjoin K {a}).fixingSubgroup}` using `((continuous_apply i).tendsto g₀).eventually (hopen.mem_nhds (by simp [one_mem]))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hmem] with g hg`. Establish `h1` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hg a (IntermediateField.mem_adjoin_simple_self K a)`. Establish `h2` using `congrArg (g₀ i) h1`. Simplify `h2` using `[AlgEquiv.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_apply [Algebra.IsAlgebraic K Ω] (k : ℕ) (i : Fin k) (a : Ω) :
     IsLocallyConstant (fun g : Fin k → (Ω ≃ₐ[K] Ω) => g i a) := by
@@ -50,7 +50,7 @@ def legHom [Algebra.IsAlgebraic K Ω] (k : ℕ) : Fin (k + 1) → (Ω →+* LCRi
 def baseHom (k : ℕ) : K →+* LCRing K Ω k := LocallyConstant.constRingHom.comp (algebraMap K Ω)
 
 /- English proof (translation)
-Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Both sides reduce to the same expression. Use extensionality with `c g`. Simplify using `[legHom, baseHom]`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem legHom_comp [Algebra.IsAlgebraic K Ω] (k : ℕ) (i : Fin (k + 1)) :
     (legHom K Ω k i).comp (algebraMap K Ω) = baseHom K Ω k := by
@@ -71,7 +71,7 @@ def ptHom (k : ℕ) (σ : Fin (k + 1) → (Ω ≃ₐ[K] Ω)) : LCRing K Ω k →
   ((σ 0 : Ω ≃ₐ[K] Ω) : Ω →+* Ω).comp (LocallyConstant.evalRingHom (tailG K Ω k σ))
 
 /- English proof (translation)
-Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Use extensionality with `a`. Simplify using `[ptHom, legHom]`. Use extensionality with `a`. Simplify using `[ptHom, legHom, tailG, AlgEquiv.mul_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ptHom_legHom [Algebra.IsAlgebraic K Ω] (k : ℕ) (σ : Fin (k + 1) → (Ω ≃ₐ[K] Ω)) (i : Fin (k + 1)) :
     (ptHom K Ω k σ).comp (legHom K Ω k i) = ((σ i : Ω ≃ₐ[K] Ω) : Ω →+* Ω) := by

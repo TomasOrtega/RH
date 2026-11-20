@@ -12,7 +12,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type} {A3 : FamI
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (b : Bool)
 
 /- English proof (translation)
-Establish `e : ((Tw.out (s` using `twAt D.what₂.embLL v) ((R.toCx3 F).wC b j v (cpt v.embedding c)) : R.toRealDat.WS F.lv2 b j (sgAt D.what₂.embLL v)) : (R.HW j (sgAt D.what₂.embLL v)).H) = ((∑ k, cj (twAt D.what₂.embLL v) (v.embedding (c k)) • (⟨R.toRealDat.bC F.lv2 b j _ k, Submodule.subset_span ⟨k, rfl⟩⟩ : R.to …`. Rewrite using `[e, Submodule.coe_sum, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, emb_eq D.what₂.embLL v, cj_cj, LinearMap.map_smulₛₗ, smul_comm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem wC_cpt (j : Fin D.R.m) (v : InfinitePlace D.what₂.LL) (c : Fin ((R.toCx3 F).dW b j) → D.what₂.LL) :
     ((Tw.out (s := twAt D.what₂.embLL v) ((R.toCx3 F).wC b j v (cpt v.embedding c)) :
@@ -31,13 +31,13 @@ theorem wC_cpt (j : Fin D.R.m) (v : InfinitePlace D.what₂.LL) (c : Fin ((R.toC
   rfl
 
 /- English proof (translation)
-Conclude with `(Real.sqrt_pos.2 (RealDat.nP_pos (F := F.lv2) b)).ne'` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem sqrt_ne : ((Real.sqrt (RealDat.nP F.lv2 b) : ℝ) : ℂ) ≠ 0 := by
   exact_mod_cast (Real.sqrt_pos.2 (RealDat.nP_pos (F := F.lv2) b)).ne'
 
 /- English proof (translation)
-Establish `e : (Tw.out (s` using `twAt D.what₂.embLL A3.A.v0) ((R.toCx3 F).w0C b j (cpt A3.A.v0.embedding c)) : (R.HW j (sg0 D A3.A)).H) = ((Real.sqrt (RealDat.nP F.lv2 b) : ℝ) : ℂ) • ((Tw.out (s := twAt D.what₂.embLL A3.A.v0) ((R.toCx3 F).wC b j A3.A.v0 (cpt A3.A.v0.embedding c)) : R.toRealDat.WS F.lv2 b j (sgAt …`. Rewrite using `[e, wC_cpt, smul_smul, Complex.ofReal_inv, mul_inv_cancel₀ (sqrt_ne F b), one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem liftWeight_complexPoint_eq_twist (j : Fin D.R.m) (c : Fin ((R.toCx3 F).dW b j) → D.what₂.LL) :
     (Tw.out (s := twAt D.what₂.embLL A3.A.v0) ((R.toCx3 F).w0C b j (cpt A3.A.v0.embedding c)) : (R.HW j (sg0 D A3.A)).H) =
@@ -49,9 +49,9 @@ theorem liftWeight_complexPoint_eq_twist (j : Fin D.R.m) (c : Fin ((R.toCx3 F).d
   rw [e, wC_cpt, smul_smul, Complex.ofReal_inv, mul_inv_cancel₀ (sqrt_ne F b), one_smul]
 
 /- English proof (translation)
-Establish `hs : sgAt D.what₂.embLL v = v.embedding` using `if_neg (R.hv0 ▸ hv)`. Establish `ht : twAt D.what₂.embLL v = false` using `if_pos hs.symm`. Establish `e : ⟪(R.toCx3 F).wC b j v (cpt v.embedding c), (R.toCx3 F).wC b j v (cpt v.embedding c')⟫_ℂ = cj (twAt D.what₂.embLL v) ⟪((Tw.out (s` using `twAt D.what₂.embLL v) ((R.toCx3 F).wC b j v (cpt v.embedding c)) : R.toRealDat.WS F.lv2 b j (sgAt D.what₂.embLL v)) : (R.HW j (sgAt D.what₂.embLL v)).H), ((Tw.out (s := twAt D.what₂.embLL v) ((R.toCx3 F).wC b j v (cpt v.embedding c')) : R.toRealDat.WS F.lv2 b j (sgAt D.what₂.embL …`. Rewrite using `[e, wC_cpt, wC_cpt, inner_smul_left, inner_smul_right, Complex.conj_ofReal, ← mul_assoc, ← Complex.ofReal_mul, ← mul_inv, Real.mul_self_sqrt (RealDat.nP_pos (F := F.lv2) b).le, hs]`. Generalize the expression as in `twAt D.what₂.embLL v = s at ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Substitute `ht` using the available equality. Simplify using `only [cj, RealDat.nP, Bool.false_eq_true, if_false]`. Simplify using `only [cond_false, RingHom.id_apply, Complex.ofReal_inv, Complex.ofReal_natCast]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem inner_wC (j : Fin D.R.m) {v : InfinitePlace D.what₂.LL} (hv : v ≠ A3.A.v0) (c c' : Fin ((R.toCx3 F).dW b j) → D.what₂.LL) :
     ⟪(R.toCx3 F).wC b j v (cpt v.embedding c), (R.toCx3 F).wC b j v (cpt v.embedding c')⟫_ℂ =
@@ -72,7 +72,7 @@ theorem inner_wC (j : Fin D.R.m) {v : InfinitePlace D.what₂.LL} (hv : v ≠ A3
   simp only [cond_false, RingHom.id_apply, Complex.ofReal_inv, Complex.ofReal_natCast]
 
 /- English proof (translation)
-Use `conv_rhs => rw [← (Pi.basisFun D.what₂.LL _).sum_repr x]`. Simplify using `only [CxData.tC, lin_apply, map_sum, map_smul, LinearMap.map_smulₛₗ, Pi.basisFun_repr, Pi.basisFun_apply, cpt, RingHom.id_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tC_cpt (cr : Crd A3.fam3.amb3 F.fc) (j : Fin D.R.m) (t : T0)
     (x : Fin ((lv (F.fc (R.toCx3 F).zs) b).dZ j t) → D.what₂.LL) :
@@ -83,9 +83,9 @@ theorem tC_cpt (cr : Crd A3.fam3.amb3 F.fc) (j : Fin D.R.m) (t : T0)
     RingHom.id_apply]
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T0 A3 Ks _ _ _ R F hT hR i`. Use `⟨fun x => ?_, fun v hv x y => ?_⟩` and prove the remaining obligations. Use `show (R.FW i).j (sg0 D A3.A) _ = _`. Use `(liftWeight_complexPoint_eq_twist R F false i _).symm.trans ?_` and prove the remaining obligations. Establish `h1` using `((R.toCx3 F).key_lift F.cr false hT hR i A3.A.μ0 x).trans (tC_cpt R F false F.cr i A3.A.μ0 x)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HW i (sg0 D A3.A)).H)) h1`. Rewrite using `[inner_wC R F false i hv]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem liftMat_isRatLift_inner : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type}
     {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]

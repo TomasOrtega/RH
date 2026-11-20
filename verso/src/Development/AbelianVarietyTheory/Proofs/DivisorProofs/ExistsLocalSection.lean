@@ -14,11 +14,11 @@ namespace GlobalTheory.DualExact
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-Take `⟨U, e, -, hxU, hle, he⟩` from `hG.exists_affine hx`. Use `choose T hT hxT a ha using fun i => exists_app_eq_of_epi φ (e i) hxU`. Set `U' : X.Opens` to `U ⊓ Finset.univ.inf T`. Establish `hx' : x ∈ U'` using `⟨hxU, by rw [Opens.coe_finset_inf]; simpa using hxT⟩`. Establish `hU' (i) : U' ≤ T i` using `inf_le_right.trans (Finset.inf_le (Finset.mem_univ i))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : U' ≤ U` using `inf_le_left`. Use `⟨U', hU.trans hle, hx', fun W h => (he.basis (h.trans hU)).constr Γ(X, W) fun i => resM F (h.trans (hU' i)) (a i), fun W W' h h' t => ?_, fun W h t => ?_⟩` and prove the remaining obligations. Simplify using `only [Module.Basis.constr_apply_fintype, Module.Basis.equivFun_apply, map_sum, resM_smul, resM_resM]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← he.repr_resM (h.trans hU) h']`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← appLinear_apply]`. Simplify using `only [Module.Basis.constr_apply_fintype, Module.Basis.equivFun_apply, map_sum, map_smul, appLinear_apply, app_resM, ha, resM_resM]`. Use `conv_rhs => rw [← (he.basis (h.trans hU)).sum_repr t]`. Simplify using `only [IsFrame.basis_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_local_section {F G : X.Modules} (φ : F ⟶ G) [Epi φ] {s : ℕ} (hG : IsVB G s)
     {V : X.Opens} {x : X} (hx : x ∈ V) :
@@ -47,11 +47,11 @@ theorem exists_local_section {F G : X.Modules} (φ : F ⟶ G) [Epi φ] {s : ℕ}
     simp only [IsFrame.basis_apply]
 
 /- English proof (translation)
-Use `(QCoh.exact_iff_stalkLinear S).2 fun x t => ⟨fun ht => ?_, ?_⟩` and prove the remaining obligations. Take `⟨V, hV, t, rfl⟩` from `S.X₂.presheaf.exists_germ_eq t`. Rewrite `ht` using `[QCoh.stalkLinear_germ, ← map_zero (S.X₃.presheaf.germ V x hV).hom]`. Take `⟨V', hV', i₁, i₂, e⟩` from `S.X₃.presheaf.germ_eq x hV hV _ _ ht`. Establish `e' : resM S.X₃ i₁.le (S.g.app V t) = 0` using `e.trans (map_zero _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨U, hU, hxU, HU⟩` from `H V' x hV'`. Take `⟨u, hu⟩` from `HU (resM S.X₂ (hU.trans i₁.le) t) (by`. Rewrite using `[app_resM, ← resM_resM i₁.le hU, e', map_zero])`. Conclude with `⟨S.X₁.presheaf.germ U x hxU u, by rw [QCoh.stalkLinear_germ, hu, germ_resM]⟩`. Introduce and unpack `⟨u, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← LinearMap.comp_apply, ← QCoh.stalkLinear_comp, S.zero, QCoh.stalkLinear_zero, LinearMap.zero_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exact_of_locally (S : ShortComplex X.Modules)
     (H : ∀ (V : X.Opens) (x : X), x ∈ V → ∃ U : X.Opens, U ≤ V ∧ x ∈ U ∧
@@ -70,19 +70,19 @@ theorem exact_of_locally (S : ShortComplex X.Modules)
       LinearMap.zero_apply]
 
 /- English proof (translation)
-Introduce `X S s hS h₃`. Use `hS.mono_f` as an intermediate fact. Use `hS.epi_g` as an intermediate fact. Establish `hex (W : X.Opens) (t : Γ(S.X₂, W)) (ht : S.g.app W t = 0) : ∃ u, S.f.app W u = t` using `(QCoh.exact_app_of_exact_of_mono hS.exact W t).1 ht`. Establish `hz (W : X.Opens) (u : Γ(S.X₁, W)) : S.g.app W (S.f.app W u) = 0` using `(QCoh.exact_app_of_exact_of_mono hS.exact W _).2 ⟨u, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj (W : X.Opens) : Function.Injective (appLinear S.f W)` using `QCoh.injective_app_of_mono S.f W`. Use `ShortComplex.ShortExact.mk' (exact_of_locally _ fun V x hx => ?_) (mono_dualMap S.g) (QCoh.epi_of_locally_app_surjective _ fun V x hx => ?_)` and prove the remaining obligations. Take `⟨U, hU, hxU, σ, hσ, hg⟩` from `exists_local_section S.g h₃ hx`. Use `⟨U, hU, hxU, fun (l : Γ(dual S.X₂, U)) (hl : (dualMap S.f).app U l = 0) => ⟨dualMk (fun W h => dualApp l h ∘ₗ σ W h) fun W W' h h' t => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hσ W W' h h', dualApp_resM]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `dual_ext fun W h t => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `dualApp l h (σ W h (S.g.app W t)) = _`. Take `⟨u, hu⟩` from `hex W (t - σ W h (S.g.app W t)) (by rw [map_sub, hg, sub_self])`. Use `dualApp_dualMap S.f l h u` as an intermediate fact. Rewrite `this` using `[hl, hu, map_sub, dualApp_zero, LinearMap.zero_apply, eq_comm, sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Take `⟨U, hU, hxU, σ, hσ, hg⟩` from `exists_local_section S.g h₃ hx`. Set `ρ (W : X.Opens) (h : W ≤ U) : Γ(S.X₂, W) →ₗ[Γ(X, W)] Γ(S.X₁, W)` to `LinearMap.codRestrictOfInjective (LinearMap.id - σ W h ∘ₗ appLinear S.g W) (appLinear S.f W) (hinj W) fun t => hex W _ (by`. Express the relevant statement in the definitionally equal form `S.g.app W (t - σ W h (S.g.app W t)) = 0`. Rewrite using `[map_sub, hg, sub_self])`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hρ (W : X.Opens) (h : W ≤ U) (t : Γ(S.X₂, W)) : S.f.app W (ρ W h t) = t - σ W h (S.g.app W t)` using `LinearMap.codRestrictOfInjective_comp_apply _ (appLinear S.f W) _ _ t`. Use `⟨U, hxU, hU, fun (l : Γ(dual S.X₁, U)) => ⟨dualMk (fun W h => dualApp l h ∘ₗ ρ W h) fun W W' h h' t => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, ← dualApp_resM]`. Use `congr 1`. Apply `hinj W'` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[appLinear_apply, appLinear_apply, app_resM, hρ, hρ, map_sub, app_resM, hσ W W' h h']`. Use `dual_ext fun W h u => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `dualApp l h (ρ W h (S.f.app W u)) = _`. Use `congr 1`. Apply `hinj W` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[appLinear_apply, appLinear_apply, hρ, hz, map_zero, sub_zero]`.
+A detailed English derivation is pending.
 -/
 theorem shortExact_dual : ∀ (X : Scheme.{0}) (S : ShortComplex X.Modules) (s : ℕ),
     S.ShortExact → IsVB S.X₃ s → (ShortComplex.mk (dualMap S.g) (dualMap S.f)

@@ -12,7 +12,7 @@ namespace GlobalTheory.CompanionTheory.PerfFil
 variable {l : ℕ} [Fact l.Prime] (A : PAlg l)
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `ACris.exists_natCast_mul_eq_pow (K := ℂ_[l]) (p := l) hn hk`. Use `⟨algebraMap A.W A.Acr0 (A.sW w), ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun t => algebraMap A.W A.Acr0 (A.sW t)) hw`. Simplify using `using h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_natCast_mul_eq_l_pow {n k : ℕ} (hn : n ≠ 0) (hk : n.factorization l ≤ k) :
     ∃ w : A.Acr0, (n : A.Acr0) * w = (l : A.Acr0) ^ k := by
@@ -22,9 +22,9 @@ theorem exists_natCast_mul_eq_l_pow {n k : ℕ} (hn : n ≠ 0) (hk : n.factoriza
   simpa using h
 
 /- English proof (translation)
-Take `⟨-, -, hf, -⟩` from `GlobalTheory.T.crystalline_filtration_multiplicative A`. Use `⟨(Nat.uniformBell k j : A.Acr0) * A.dxi0 (k * j), Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨k * j, Nat.mul_pos (Nat.pos_of_ne_zero hk) (Nat.pos_of_ne_zero hj), rfl⟩), ?_⟩` and prove the remaining obligations. Establish `hnz` using `A.acris_torsion_free (j.factorial ^ k) (pow_ne_zero k j.factorial_ne_zero)`. Use `(mul_cancel_left_mem_nonZeroDivisors hnz).1 ?_` and prove the remaining obligations. Establish `h1 : ((j.factorial ^ k : ℕ) : A.Acr0) * ((k.factorial : A.Acr0) * ((Nat.uniformBell k j : A.Acr0) * A.dxi0 (k * j))) = ((k * j).factorial : A.Acr0) * A.dxi0 (k * j)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Nat.uniformBell_mul_eq k hj]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, hf, pow_mul', ← hf j]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -47,11 +47,11 @@ theorem exists_divided_power_of_dividedXi {j k : ℕ} (hj : j ≠ 0) (hk : k ≠
   ring
 
 /- English proof (translation)
-Establish `hv : k.factorial.factorization l ≤ k - 1`. Rewrite using `[Nat.factorization_def _ Fact.out]`. Establish `h` using `sub_one_mul_padicValNat_factorial_lt_of_ne_zero (p := l) hk`. Establish `h2 : 1 ≤ l - 1` using `Nat.le_sub_of_add_le (Fact.out : l.Prime).two_le`. Establish `h3 : padicValNat l k.factorial ≤ (l - 1) * padicValNat l k.factorial` using `Nat.le_mul_of_pos_left _ h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨w, hw⟩` from `exists_natCast_mul_eq_l_pow A k.factorial_ne_zero hv`. Use `⟨(l : A.Acr0) * w, Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _), ?_⟩` and prove the remaining obligations. Take `⟨m, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hk`. Rewrite using `[mul_left_comm, hw]`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Nat.succ_eq_add_one, Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_l_pow {k : ℕ} (hk : k ≠ 0) :
     ∃ y ∈ Ideal.span {(l : A.Acr0)}, (k.factorial : A.Acr0) * y = (l : A.Acr0) ^ k := by
@@ -75,14 +75,14 @@ Both sides reduce to the same expression.
 theorem filtration_one_eq_span_dividedXi : A.Fil0 1 = Ideal.span {z | ∃ k, 1 ≤ k ∧ z = A.dxi0 k} := rfl
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_union]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pFil0_eq : A.PFil0 = Ideal.span ({(l : A.Acr0)} ∪ {z | ∃ k, 1 ≤ k ∧ z = A.dxi0 k}) := by
   rw [Ideal.span_union]
   rfl
 
 /- English proof (translation)
-Rewrite using `[filtration_one_eq_span_dividedXi]`. Use `GlobalTheory.CompanionTheory.DivPow.pdI_span A.acris_torsion_free _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, rfl⟩ k hk`. Conclude with `exists_divided_power_of_dividedXi A (by omega) hk`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem filtration_one_has_divided_powers : R.PdI (A.Fil0 1) := by
   rw [filtration_one_eq_span_dividedXi]
@@ -91,9 +91,9 @@ theorem filtration_one_has_divided_powers : R.PdI (A.Fil0 1) := by
   exact exists_divided_power_of_dividedXi A (by omega) hk
 
 /- English proof (translation)
-Rewrite using `[pFil0_eq]`. Use `GlobalTheory.CompanionTheory.DivPow.pdI_span A.acris_torsion_free _ ?_` and prove the remaining obligations. Rewrite using `[← pFil0_eq]`. Introduce and unpack `x (rfl | ⟨j, hj, rfl⟩) k hk`. Take `⟨y, hy, e⟩` from `exists_l_pow A hk`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, (le_sup_left : _ ≤ A.PFil0) hy, e⟩`. Take `⟨y, hy, e⟩` from `exists_divided_power_of_dividedXi A (by omega : j ≠ 0) hk`. Conclude with `⟨y, (le_sup_right : _ ≤ A.PFil0) hy, e⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pdI_pFil0 : R.PdI A.PFil0 := by
   rw [pFil0_eq]
@@ -106,9 +106,7 @@ theorem pdI_pFil0 : R.PdI A.PFil0 := by
     exact ⟨y, (le_sup_right : _ ≤ A.PFil0) hy, e⟩
 
 /- English proof (translation)
-Take `⟨h0, -, -, hm, -⟩` from `GlobalTheory.T.crystalline_filtration_multiplicative A`. Proceed by induction on `k with`. Consider the case `zero => rw [h0]`. Conclude with `Submodule.mem_top`. Consider the case `succ k ih => rw [pow_succ]`.
-
-Conclude with `hm k 1 (Ideal.mul_mem_mul ih hx)`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pow_mem_filtration_of_mem_one {x : A.Acr0} (hx : x ∈ A.Fil0 1) (k : ℕ) : x ^ k ∈ A.Fil0 k := by
   obtain ⟨h0, -, -, hm, -⟩ := GlobalTheory.T.crystalline_filtration_multiplicative A
@@ -117,9 +115,9 @@ theorem pow_mem_filtration_of_mem_one {x : A.Acr0} (hx : x ∈ A.Fil0 1) (k : �
   | succ k ih => rw [pow_succ]; exact hm k 1 (Ideal.mul_mem_mul ih hx)
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simpa using h`. Consider the case `succ N ih`. Use `ih (GlobalTheory.T.crystalline_filtration_saturated A r _ ?_)` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← pow_succ']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem mem_filtration_of_prime_pow_mul_mem (r N : ℕ) (z : A.Acr0) (h : (l : A.Acr0) ^ N * z ∈ A.Fil0 r) :
     z ∈ A.Fil0 r := by
@@ -131,7 +129,7 @@ theorem mem_filtration_of_prime_pow_mul_mem (r N : ℕ) (z : A.Acr0) (h : (l : A
     exact h
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `exists_natCast_mul_eq_l_pow A k.factorial_ne_zero le_rfl`. Use `mem_filtration_of_prime_pow_mul_mem A k (k.factorial.factorization l) y ?_` and prove the remaining obligations. Rewrite using `[← hw, mul_right_comm, e, mul_comm]`. Conclude with `Ideal.mul_mem_left _ _ (pow_mem_filtration_of_mem_one A hx k)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_filtration_of_factorial_mul_eq_pow {x : A.Acr0} (hx : x ∈ A.Fil0 1) (k : ℕ) (y : A.Acr0)
     (e : (k.factorial : A.Acr0) * y = x ^ k) : y ∈ A.Fil0 k := by
@@ -141,7 +139,7 @@ theorem mem_filtration_of_factorial_mul_eq_pow {x : A.Acr0} (hx : x ∈ A.Fil0 1
   exact Ideal.mul_mem_left _ _ (pow_mem_filtration_of_mem_one A hx k)
 
 /- English proof (translation)
-Introduce `A` and use `⟨filtration_one_has_divided_powers A, pdI_pFil0 A, fun _ hx k y e => mem_filtration_of_factorial_mul_eq_pow A hx k y e⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem pdI_main : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l), R.PdI (A.Fil0 1) ∧ R.PdI A.PFil0 ∧
     ∀ x ∈ A.Fil0 1, ∀ (k : ℕ) (y : A.Acr0), (k.factorial : A.Acr0) * y = x ^ k → y ∈ A.Fil0 k :=

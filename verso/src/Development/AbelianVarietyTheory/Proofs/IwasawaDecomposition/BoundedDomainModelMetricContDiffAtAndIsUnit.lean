@@ -18,7 +18,7 @@ open scoped ComplexOrder
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Use `ContDiff.sum (fun σ _ => ?_)` and prove the remaining obligations. Conclude with `contDiff_const.mul (contDiff_prod (fun i _ => hF _ _))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiff_det {m : Type*} [Fintype m] [DecidableEq m] {k : WithTop ℕ∞}
     {F : E → Matrix m m ℂ} (hF : ∀ a b, ContDiff ℝ k (fun x => F x a b)) :
@@ -28,9 +28,9 @@ theorem contDiff_det {m : Type*} [Fintype m] [DecidableEq m] {k : WithTop ℕ∞
   exact contDiff_const.mul (contDiff_prod (fun i _ => hF _ _))
 
 /- English proof (translation)
-Simplify using `only [Matrix.adjugate_apply]`. Use `contDiff_det (fun a b => ?_)` and prove the remaining obligations. Distinguish the cases in `hab : a = j`. Substitute `hab` using the available equality. Simplify using `only [Matrix.updateRow_self]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `contDiff_const`. Simplify using `only [Matrix.updateRow_ne hab]`. Conclude with `hF a b`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_adjugate_apply {m : Type*} [Fintype m] [DecidableEq m] {k : WithTop ℕ∞}
     {F : E → Matrix m m ℂ} (hF : ∀ a b, ContDiff ℝ k (fun x => F x a b)) (i j : m) :
@@ -42,7 +42,7 @@ theorem contDiff_adjugate_apply {m : Type*} [Fintype m] [DecidableEq m] {k : Wit
   · simp only [Matrix.updateRow_ne hab]; exact hF a b
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_one_sub_mul_comm]`. Conclude with `hz.det_pos.ne'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_one_sub_mul_conjTranspose_ne_zero {p q : ℕ} (z : Matrix (Fin p) (Fin q) ℂ)
     (hz : (1 - zᴴ * z).PosDef) : (1 - z * zᴴ).det ≠ 0 := by
@@ -56,11 +56,9 @@ namespace GlobalTheory.ModelMetricReg
 open scoped ComplexOrder
 
 /- English proof (translation)
-Establish `hz : ∀ c : ι × Fin p × Fin q, ContDiff ℝ 2 (fun w : ReciprocityTheory.L2DbarEstimates.V n => GlobalTheory.UnifDens.flatL h w c)`. Introduce `c`. Establish `hL : ContDiff ℝ 2 (fun w : ReciprocityTheory.L2DbarEstimates.V n => GlobalTheory.UnifDens.flatL h w)` using `((GlobalTheory.UnifDens.flatL h).contDiff).restrict_scalars ℝ`. Conclude with `(contDiff_apply ℝ ℂ c).comp hL`. Simplify using `only [hP, Matrix.sub_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, unflat, Matrix.of_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `contDiff_const.sub (ContDiff.sum (fun k _ => ?_))` and prove the remaining obligations. Establish `hs : ContDiff ℝ 2 (fun w : ReciprocityTheory.L2DbarEstimates.V n => star (GlobalTheory.UnifDens.flatL h w (τ, b, k)))`. Use `(Complex.conjCLE.contDiff (n := 2)).comp (hz (τ, b, k))` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Simplify using `[Function.comp, Complex.conjCLE_apply, Complex.star_def]`.
-
-Conclude with `(hz (τ, a, k)).mul hs`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_hP_entry (ι : Type) [Fintype ι] (p q n : ℕ)
     (h : Fintype.card (ι × Fin p × Fin q) = n) (τ : ι) (a b : Fin p) :
@@ -81,11 +79,11 @@ theorem contDiff_hP_entry (ι : Type) [Fintype ι] (p q n : ℕ)
   exact (hz (τ, a, k)).mul hs
 
 /- English proof (translation)
-Introduce `ι _ p q n h v hv τ`. Establish `hpos : (1 - (unflat (GlobalTheory.UnifDens.flatL h v) τ)ᴴ * unflat (GlobalTheory.UnifDens.flatL h v) τ).PosDef` using `hv τ`. Establish `hne : (hP (unflat (GlobalTheory.UnifDens.flatL h v) τ)).det ≠ 0` using `det_one_sub_mul_conjTranspose_ne_zero _ hpos`. Use `⟨fun a b => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have hE := contDiff_hP_entry ι p q n h τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hdet` using `contDiff_det (F := fun w : ReciprocityTheory.L2DbarEstimates.V n => hP (unflat (GlobalTheory.UnifDens.flatL h w) τ)) hE`. Establish `hadj` using `contDiff_adjugate_apply (F := fun w : ReciprocityTheory.L2DbarEstimates.V n => hP (unflat (GlobalTheory.UnifDens.flatL h w) τ)) hE b a`. Simplify using `only [Matrix.transpose_apply, Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv']`. Conclude with `(hdet.contDiffAt.inv hne).mul hadj.contDiffAt`. Rewrite using `[Matrix.det_transpose, Matrix.det_nonsing_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ring.inverse_eq_inv']`. Conclude with `(inv_ne_zero hne).isUnit`.
+A detailed English derivation is pending.
 -/
 theorem invT_contDiffAt_and_isUnit : ∀ (ι : Type) [Fintype ι] (p q n : ℕ) (h : Fintype.card (ι × Fin p × Fin q) = n) (v : ReciprocityTheory.L2DbarEstimates.V n), GlobalTheory.UnifDens.flatL h v ∈ DomFlat ι p q → ∀ τ : ι, MContDiffAt 2 (fun w => ((hP (unflat (GlobalTheory.UnifDens.flatL h w) τ))⁻¹)ᵀ) v ∧ IsUnit (((hP (unflat (GlobalTheory.UnifDens.flatL h v) τ))⁻¹)ᵀ).det := by
   intro ι _ p q n h v hv τ

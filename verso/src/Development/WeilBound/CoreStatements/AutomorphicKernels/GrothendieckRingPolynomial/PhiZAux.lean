@@ -16,7 +16,7 @@ set_option synthInstance.maxHeartbeats 400000
 namespace PositivityTheory.Groth.GrothendieckPhiBijection
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil => exact List.Perm.refl _`. Consider the case `left _ ih => exact ih.cons _`. Consider the case `right _ ih => exact (ih.cons _).trans List.perm_middle.symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem interleave_perm {T : Type*} {u v w : List T} (h : Zc.Comb.Interleave u v w) : w.Perm (u ++ v) := by
   induction h with
@@ -25,7 +25,7 @@ theorem interleave_perm {T : Type*} {u v w : List T} (h : Zc.Comb.Interleave u v
   | right _ ih => exact (ih.cons _).trans List.perm_middle.symm
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil => exact List.Perm.refl _`. Consider the case `cons _ hi ih => rw [List.flatten_cons]`. Conclude with `(interleave_perm hi).trans (ih.append_left _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem shuffle_perm {T : Type*} {us : List (List T)} {w : List T} (h : Zc.Comb.Shuffle us w) :
     w.Perm us.flatten := by
@@ -36,7 +36,7 @@ theorem shuffle_perm {T : Type*} {us : List (List T)} {w : List T} (h : Zc.Comb.
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[decW, Segment.ms, ← Fin.univ_val_map]`. Establish `: (fun i : Fin Γ.len => Γ.term i.rev) = Γ.term ∘ (Fin.revPerm : Equiv.Perm (Fin Γ.len))` using `rfl`. Rewrite using `[this, ← Multiset.map_map, Multiset.map_univ_val_equiv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_decW (Γ : Segment k) : ((decW Γ : List (IrrGL k)) : Multiset (IrrGL k)) = Γ.ms := by
   rw [decW, Segment.ms, ← Fin.univ_val_map]
@@ -44,7 +44,7 @@ theorem coe_decW (Γ : Segment k) : ((decW Γ : List (IrrGL k)) : Multiset (IrrG
   rw [this, ← Multiset.map_map, Multiset.map_univ_val_equiv]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [msupp]`. Consider the case `cons Γ L ih`. Rewrite using `[List.map_cons, List.flatten_cons, ← Multiset.coe_add, ih, coe_decW, ← Multiset.cons_coe, msupp, msupp, Multiset.cons_bind]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_flatten_decW (L : List (Segment k)) :
     (((L.map decW).flatten : List (IrrGL k)) : Multiset (IrrGL k)) = msupp (L : Multiset (Segment k)) := by
@@ -55,7 +55,7 @@ theorem coe_flatten_decW (L : List (Segment k)) :
       Multiset.cons_bind]
 
 /- English proof (translation)
-Take `⟨L, rfl, hL⟩` from `h`. Rewrite using `[Multiset.coe_eq_coe.2 (shuffle_perm hL), coe_flatten_decW]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_eq_msupp_of_inShW {𝔫 : Multiset (Segment k)} {w : List (IrrGL k)} (h : InShW 𝔫 w) :
     (w : Multiset (IrrGL k)) = msupp 𝔫 := by
@@ -63,7 +63,7 @@ theorem coe_eq_msupp_of_inShW {𝔫 : Multiset (Segment k)} {w : List (IrrGL k)}
   rw [Multiset.coe_eq_coe.2 (shuffle_perm hL), coe_flatten_decW]
 
 /- English proof (translation)
-Take `⟨h, y, hd, ⟨Δ, hΔ, hL⟩, hcos⟩` from `hx`. Establish `h1 : Wd (prodIrr y hd) w` using `GlobalTheory.T.word_occurs_of_subquotient _ _ (isSmooth_prodIrr y hd) hcos.isSubquotient w hw`. Establish `h2` using `GlobalTheory.T.segment_product_word_in_shuffle hA hj y hd Δ hL w hc h1`. Rewrite `h2` using `[hΔ.1]`. Conclude with `coe_eq_msupp_of_inShW h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem msupp_eq_of_isL (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hj : LSegJacquet k) {𝔫 : Multiset (Segment k)}
     {x : IrrGL k} (hx : IsL 𝔫 x.rep) (w : List (IrrGL k)) (hc : ∀ c ∈ w, c.IsCusp) (hw : Wd x.rep w) :
@@ -75,7 +75,7 @@ theorem msupp_eq_of_isL (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (h
   exact coe_eq_msupp_of_inShW h2
 
 /- English proof (translation)
-Unfold `jmL at h`. Use `split_ifs at h with hd`. Conclude with `⟨hd, by rw [h]; exact one_ne_zero⟩`. Conclude with `absurd h zero_ne_one`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem wd_of_jmL_eq_one {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] {π : Representation ℂ (GL (Fin N) k) V}
     {w : List (IrrGL k)} (h : jmL w π = 1) : Wd π w := by
@@ -85,9 +85,9 @@ theorem wd_of_jmL_eq_one {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] {�
   · exact absurd h zero_ne_one
 
 /- English proof (translation)
-Establish `hc : ∀ c ∈ List.ofFn Δ.term, c.IsCusp`. Introduce `c hc`. Take `⟨a, rfl⟩` from `List.mem_ofFn.1 hc`. Conclude with `Δ.isCusp_term a`. Use `msupp_eq_of_isL hA hj h𝔫 (List.ofFn Δ.term) hc (wd_of_jmL_eq_one (hS Z hZ Δ).1)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this, Segment.ms, Fin.univ_val_map]`.
+A detailed English derivation is pending.
 -/
 theorem msupp_seg (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hj : LSegJacquet k)
     (Z : ∀ Δ : Segment k, IrrCl (GL (Fin (Δ.len * Δ.d)) k)) (hZ : IsSegmentClass k Z) (hS : JSeg k) (Δ : Segment k)
@@ -100,11 +100,11 @@ theorem msupp_seg (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hj : LS
   rw [← this, Segment.ms, Fin.univ_val_map]
 
 /- English proof (translation)
-Establish `hlen : Γ.len = Δ.len` using `by rw [← Segment.card_ms, h, Segment.card_ms]`. Establish `mem_first : ∀ D : Segment k, D.first ∈ D.ms` using `fun D => Segment.mem_ms.2 (Segment.mem_carrier.2 ⟨0, D.len_pos, by simp⟩)`. Establish `hΓ : Γ.first ∈ Δ.ms` using `by rw [← h]; exact mem_first Γ`. Establish `hΔ : Δ.first ∈ Γ.ms` using `by rw [h]; exact mem_first Δ`. Take `⟨a, -, ha⟩` from `Segment.mem_carrier.1 (Segment.mem_ms.1 hΓ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b, -, hb⟩` from `Segment.mem_carrier.1 (Segment.mem_ms.1 hΔ)`. Establish `h0 : Δ.first.nu ((a + b : ℕ) : ℂ) = Δ.first.nu ((0 : ℕ) : ℂ)`. Rewrite using `[Nat.cast_zero, IrrGL.nu_zero, Nat.cast_add, ← IrrGL.nu_nu, ha, hb]`. Establish `hab` using `GlobalTheory.T.cuspidal_twist_injective hA Δ.first Δ.isCusp_first _ _ h0`. Establish `ha0 : a = 0` using `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `ha0` using the available equality. Use `Segment.ext_first ?_ hlen` and prove the remaining obligations. Rewrite using `[← ha]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem seg_eq_of_ms_eq (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {Γ Δ : Segment k} (h : Γ.ms = Δ.ms) : Γ = Δ := by
   have hlen : Γ.len = Δ.len := by rw [← Segment.card_ms, h, Segment.card_ms]
@@ -124,13 +124,13 @@ theorem seg_eq_of_ms_eq (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {�
   simp
 
 /- English proof (translation)
-Introduce `Γ hΓ`. Establish `hle : Γ.ms ≤ Δ.ms` using `by rw [← hM]; exact Multiset.le_bind M hΓ`. Establish `hcard` using `Multiset.card_le_card hle`. Rewrite `hcard` using `[Segment.card_ms, Segment.card_ms]`. Use `lt_of_le_of_ne hcard fun heq => hne ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hms : Γ.ms = Δ.ms` using `Multiset.eq_of_le_of_card_le hle (by rw [Segment.card_ms, Segment.card_ms, heq])`. Establish `hΓΔ` using `seg_eq_of_ms_eq hA hms`. Take `⟨M', rfl⟩` from `Multiset.exists_cons_of_mem hΓ`. Establish `h2 : msupp M' = 0`. Establish `h3 : Γ.ms + msupp M' = Δ.ms` using `by rw [← hM, msupp, msupp, Multiset.cons_bind]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[hms]`. Simplify using `using h3`. Establish `h3 : M' = 0`. Use `Multiset.eq_zero_of_forall_notMem fun Γ' hΓ' => ?_` and prove the remaining obligations. Establish `h4 : Γ'.ms ≤ msupp M'` using `Multiset.le_bind M' hΓ'`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h4` using `[h2, Multiset.le_zero]`. Establish `h5` using `congrArg Multiset.card h4`. Rewrite `h5` using `[Segment.card_ms, Multiset.card_zero]`. Conclude with `Γ'.len_pos.ne' h5`. Rewrite using `[h3, hΓΔ, Multiset.cons_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem len_lt_of_msupp (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {Δ : Segment k} {M : Multiset (Segment k)}
     (hM : msupp M = Δ.ms) (hne : M ≠ {Δ}) : ∀ Γ ∈ M, Γ.len < Δ.len := by
@@ -156,9 +156,9 @@ theorem len_lt_of_msupp (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {�
   rw [h3, hΓΔ, Multiset.cons_zero]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h, Finsupp.toMultiset_single, one_nsmul]`. Use `_ = Finsupp.single Δ 1 := Finsupp.toMultiset_toFinsupp _`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Rewrite using `[Finsupp.toMultiset_single, one_nsmul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toMultiset_eq_single_iff (s : Segment k →₀ ℕ) (Δ : Segment k) :
     Finsupp.toMultiset s = {Δ} ↔ s = Finsupp.single Δ 1 := by
@@ -173,9 +173,9 @@ theorem toMultiset_eq_single_iff (s : Segment k →₀ ℕ) (Δ : Segment k) :
     rw [Finsupp.toMultiset_single, one_nsmul]
 
 /- English proof (translation)
-Establish `h1 : (Finset.univ.val.map fun a => (MvPolynomial.X (Γ a) : MvPolynomial (Segment k) ℤ)) = (Finset.univ.val.map Γ).map MvPolynomial.X`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression. Rewrite using `[Finset.prod_eq_multiset_prod, h1, hΓ, Finset.prod_multiset_map_count, Finsupp.toFinset_toMultiset]`. Simplify using `only [Finsupp.count_toMultiset]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `MvPolynomial.prod_X_pow_eq_monomial`.
+A detailed English derivation is pending.
 -/
 theorem prod_X_of_map (s : Segment k →₀ ℕ) {h : ℕ} (Γ : Fin h → Segment k)
     (hΓ : Finset.univ.val.map Γ = Finsupp.toMultiset s) :
@@ -189,7 +189,7 @@ theorem prod_X_of_map (s : Segment k →₀ ℕ) {h : ℕ} (Γ : Fin h → Segme
   exact MvPolynomial.prod_X_pow_eq_monomial
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Finsupp.toMultiset s).toList.length, fun a => (Finsupp.toMultiset s).toList.get a, by rw [Fin.univ_val_map, List.ofFn_get, Multiset.coe_toList]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_enum (s : Segment k →₀ ℕ) :
     ∃ (h : ℕ) (Γ : Fin h → Segment k), Finset.univ.val.map Γ = Finsupp.toMultiset s :=
@@ -204,7 +204,7 @@ def Jh (W : List (IrrGL k)) : GrothGL k →+ ℤ where
 def ell (Δ : Segment k) : GrothGL k →+ ℤ := ∑ S ∈ vSets Δ, (-1 : ℤ) ^ S.card • Jh (vWord Δ S)
 
 /- English proof (translation)
-Simplify using `only [ell, AddMonoidHom.finsetSum_apply, AddMonoidHom.smul_apply, smul_eq_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ell_apply (Δ : Segment k) (a : GrothGL k) :
     ell Δ a = ∑ S ∈ vSets Δ, (-1 : ℤ) ^ S.card * J (vWord Δ S) a := by
@@ -212,20 +212,20 @@ theorem ell_apply (Δ : Segment k) (a : GrothGL k) :
   rfl
 
 /- English proof (translation)
-Unfold `J sg`. Rewrite using `[Finsupp.sum_single_index (zero_mul _), one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem J_sg (W : List (IrrGL k)) (x : IrrGL k) : J W (sg x) = ((jmL W x.rep).toNat : ℤ) := by
   unfold J sg
   rw [Finsupp.sum_single_index (zero_mul _), one_mul]
 
 /- English proof (translation)
-Simplify using `[vWord, List.ofFn_eq_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vWord_empty (Δ : Segment k) : vWord Δ ∅ = List.ofFn Δ.term := by
   simp [vWord, List.ofFn_eq_map]
 
 /- English proof (translation)
-Introduce `w hw`. Take `⟨a, -, rfl⟩` from `List.mem_map.1 hw`. Conclude with `Δ.isCusp_term a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cusp_vWord (Δ : Segment k) (S : Finset (Fin Δ.len)) : ∀ w ∈ vWord Δ S, w.IsCusp := by
   intro w hw
@@ -233,9 +233,9 @@ theorem cusp_vWord (Δ : Segment k) (S : Finset (Fin Δ.len)) : ∀ w ∈ vWord 
   exact Δ.isCusp_term a
 
 /- English proof (translation)
-Rewrite using `[ell_apply, Finset.sum_eq_single (∅ : Finset (Fin Δ.len))]`. Rewrite using `[J_sg, vWord_empty, h1]`. Simplify using the standard rewrite rules. Introduce `S hS hne`. Rewrite using `[J_sg, h0 S hS hne]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `h; exact absurd (by simp [vSets]) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 -/
 theorem ell_sg {Δ : Segment k} {x : IrrGL k} (h1 : jmL (List.ofFn Δ.term) x.rep = 1)
     (h0 : ∀ S ∈ vSets Δ, S ≠ ∅ → jmL (vWord Δ S) x.rep = 0) : ell Δ (sg x) = 1 := by
@@ -247,9 +247,9 @@ theorem ell_sg {Δ : Segment k} {x : IrrGL k} (h1 : jmL (List.ofFn Δ.term) x.re
 open Classical in
 
 /- English proof (translation)
-Use `hAlt Δ h Γ` as an intermediate fact. Rewrite using `[ell_apply]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[(hJ (vWord Δ S) N _ (prodIrr (fun a => Lseg (Γ a)) hd) (isSmooth_prodIrr _ hd) (GlobalTheory.T.product_irreducible_finite_length hA _ hd)).2, GlobalTheory.T.segment_product_jacquet_shuffle_count hA hj Γ (fun a => Lseg (Γ a)) hd (fun i => hL (Γ i)) (vWord Δ S) (cusp_vWord Δ S)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ell_prod (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hj : LSegJacquet k) (hJ : JCls k) (hAlt : AltSum k)
     (Lseg : Segment k → IrrGL k) (hL : ∀ Δ, IsLSeg Δ (Lseg Δ).rep) (Δ : Segment k) {h N : ℕ}
@@ -267,9 +267,9 @@ theorem ell_prod (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hj : LSe
   simp
 
 /- English proof (translation)
-Introduce `t ht`. Take `⟨d, hd, htd⟩` from `(MvPolynomial.mem_vars_iff_mem_support t).1 ht`. Establish `hcd` using `MvPolynomial.mem_support_iff.1 hd`. Rewrite `hcd` using `[MvPolynomial.coeff_sub, MvPolynomial.coeff_monomial]`. Establish `hde : d ≠ Finsupp.single Δ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Simplify using `at hcd`. Rewrite `hcd` using `[if_neg (Ne.symm hde), sub_zero]`. Establish `hne : Finsupp.toMultiset d ≠ {Δ}` using `fun h => hde ((toMultiset_eq_single_iff d Δ).1 h)`. Conclude with `len_lt_of_msupp hA (hp d (MvPolynomial.mem_support_iff.2 hcd)) hne t ((Finsupp.mem_toMultiset d t).2 htd)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vars_lt (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {Δ : Segment k} (p : MvPolynomial (Segment k) ℤ)
     (hp : ∀ s ∈ p.support, msupp (Finsupp.toMultiset s) = Δ.ms) :

@@ -4,7 +4,7 @@ import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.SupportExist
 open ReciprocityTheory.Ty.Fin
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FinGLChar.hcChar | exact GlobalTheory.CompanionTheory.FinGLChar.hcChar | (intros; apply GlobalTheory.CompanionTheory.FinGLChar.hcChar <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.harish_chandra_character : ReciprocityTheory.Ty.Fin.St.HCChar := by
   first | exact @GlobalTheory.CompanionTheory.FinGLChar.hcChar | exact GlobalTheory.CompanionTheory.FinGLChar.hcChar | (intros; apply GlobalTheory.CompanionTheory.FinGLChar.hcChar <;> assumption)

@@ -7,9 +7,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisCochains.Loc
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module UpperTheory.V UpperTheory.V.Fr UpperTheory.V.GC
 
 /- English proof (translation)
-Establish `hx : x - (PadicInt.zmodRepr x : ℤ_[l]) ∈ IsLocalRing.maximalIdeal ℤ_[l]` using `PadicInt.sub_zmodRepr_mem x`. Establish `h1 : PadicInt.toZMod (x - (PadicInt.zmodRepr x : ℤ_[l])) = 0`. Rewrite using `[← RingHom.mem_ker, PadicInt.ker_toZMod]`. Conclude with `hx`. Establish `h2 : PadicInt.toZModPow 1 (x - (PadicInt.zmodRepr x : ℤ_[l])) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← RingHom.mem_ker, PadicInt.ker_toZModPow, pow_one, ← PadicInt.maximalIdeal_eq_span_p]`. Conclude with `hx`. Rewrite `h1`, `h2` using `[map_sub, sub_eq_zero]`. Rewrite using `[h1, h2]`. Simplify using `only [map_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cast_toZModPow_one (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [CharP k l] (x : ℤ_[l]) :
     ZMod.castHom (dvd_pow_self l one_ne_zero) k (PadicInt.toZModPow 1 x) =
@@ -24,11 +24,11 @@ private theorem cast_toZModPow_one (l : ℕ) [Fact l.Prime] (k : Type) [Field k]
   simp only [map_natCast]
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `hmax : (Ideal.span {(l : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.1 hl).irreducible`. Establish `hsum` using `Ideal.sum_ramification_inertia_eq_finrank (Ideal.span {(l : ℤ)}) (𝓞 F)`. Rewrite `hsum` using `[RingOfIntegers.rank]`. Establish `hover : ∀ v, (pl v).asIdeal ∈ (Ideal.span {(l : ℤ)}).primesOver (𝓞 F)` using `fun v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨(pl v).isPrime, ⟨hmax.eq_of_le (Ideal.comap_ne_top _ (pl v).isPrime.ne_top) ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.mem_comap]`. Simplify using `using hm v`. Set `e : V → (Ideal.span {(l : ℤ)}).primesOver (𝓞 F)` to `fun v => ⟨(pl v).asIdeal, hover v⟩`. Establish `he : Function.Injective e` using `fun a b h => hi (HeightOneSpectrum.ext (congrArg Subtype.val h))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← hsum]`. Use `le_trans (le_of_eq ?_) (Finset.sum_le_sum_of_subset (Finset.subset_univ (Finset.univ.map ⟨e, he⟩)))` and prove the remaining obligations. Rewrite using `[Finset.sum_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem sum_deg (l : ℕ) [Fact l.Prime] (F : Type) [Field F] [NumberField F] {V : Type} [Fintype V]
     (pl : V → HeightOneSpectrum (𝓞 F)) (hi : Function.Injective pl) (hm : ∀ v, ((l : ℕ) : 𝓞 F) ∈ (pl v).asIdeal) :
@@ -56,9 +56,9 @@ variable {k G H M : Type} [CommRing k] [Group G] [TopologicalSpace G] [Group H] 
   [AddCommGroup M] [Module k M] [TopologicalSpace M] [DiscreteTopology M]
 
 /- English proof (translation)
-Introduce `x`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `⟨Submodule.Quotient.mk ⟨z.1 ∘ r, z.2.1.comp hr, fun g h => ?_⟩, ?_⟩` and prove the remaining obligations. Use `z.2.2 (r g) (r h)` as an intermediate fact. Simplify using `only [MonoidHom.comp_apply, h1] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, map_mul, this]`. Use `congrArg Submodule.Quotient.mk (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `z.1 (r (j g)) = z.1 g`. Rewrite using `[h2]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem resH1_surjective_of_isomorphism (τ : Representation k H M) (j : G →* H) (hj : Continuous j) (r : H →* G) (hr : Continuous r)
     (h1 : ∀ x, j (r x) = x) (h2 : ∀ x, r (j x) = x) : Function.Surjective (resH1 τ j hj) := by
@@ -73,9 +73,9 @@ private theorem resH1_surjective_of_isomorphism (τ : Representation k H M) (j :
     rw [h2]
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨c, hc, hz⟩` from `(separated_dvr_second_cohomology_mem _ _).1 ((Submodule.Quotient.mk_eq_zero _).1 hx)`. Use `(Submodule.Quotient.mk_eq_zero _).2 ((separated_dvr_second_cohomology_mem _ _).2 ⟨c ∘ r, hc.comp hr, funext fun p => ?_⟩)` and prove the remaining obligations. Use `congrFun hz (r p.1, r p.2)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `τ (j (r p.1)) (c (r p.2)) - c (r p.1 * r p.2) + c (r p.1) = q (z.1 (a (r p.1), a (r p.2))) at this`. Rewrite `this` using `[hab, hab, h1, h1, ← map_mul]`. Conclude with `this`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ker_le {Γ W : Type} [Group Γ] [TopologicalSpace Γ] [AddCommGroup W] [Module k W] [TopologicalSpace W]
     [DiscreteTopology W] (ρ : Representation k Γ W) (τ : Representation k H M) (j : G →* H) (r : H →* G)
@@ -93,9 +93,9 @@ private theorem ker_le {Γ W : Type} [Group Γ] [TopologicalSpace Γ] [AddCommGr
   exact this
 
 /- English proof (translation)
-Use `continuous_prod_of_discrete_right.2 fun m => ?_` and prove the remaining obligations. Use `IsLocallyConstant.continuous ((IsLocallyConstant.iff_exists_open _).2 fun g => ?_)` and prove the remaining obligations. Use `⟨(fun x => g⁻¹ * x) ⁻¹' (ρ.ker : Set G), h.preimage (by fun_prop), by simp, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx' : ρ (g⁻¹ * x) = 1` using `hx`. Establish `: ρ x = ρ g` using `by rw [← mul_inv_cancel_left g x, map_mul, hx', mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [this]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem contAct [IsTopologicalGroup G] (ρ : Representation k G M) (h : IsOpen (ρ.ker : Set G)) :
     ContAction ρ := by
@@ -109,37 +109,35 @@ private theorem contAct [IsTopologicalGroup G] (ρ : Representation k G M) (h : 
 end
 
 /- English proof (translation)
-Introduce `hP F Ω _ _ _ _ _ l _ k _ _ Φ S K π ι A pl e c hL E W _ _ _ _ _ _ ρ b hop hb hdual`. Use `letI : TopologicalSpace W := ⊥`. Use `haveI : DiscreteTopology W := ⟨rfl⟩`. Use `letI : ∀ v, TopologicalSpace (W ⧸ b v) := fun _ => ⊥`. Use `haveI : ∀ v, DiscreteTopology (W ⧸ b v) := fun _ => ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ : ContAction ρ` using `contAct ρ hop`. Establish `hpl : ∀ v, ((l : ℕ) : 𝓞 F) ∈ (pl v).asIdeal` using `fun v => (hL.loc.mem _).1 ⟨v, rfl⟩`. Set `u0 : Φ.V → S` to `fun v => ⟨pl v, hL.g.above _ (hpl v)⟩`. Establish `hu0 : Function.Bijective u0` using `⟨fun x y h => hL.loc.inj (congrArg Subtype.val h), fun w => by`. Take `⟨v, hv⟩` from `(hL.loc.mem w.1).2 (hL.only w.1 w.2)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `⟨v, Subtype.ext hv⟩⟩`. Set `u : S ≃ Φ.V` to `(Equiv.ofBijective u0 hu0).symm`. Establish `hu : ∀ w : S, pl (u w) = w.1` using `fun w => congrArg Subtype.val (u.symm_apply_apply w)`. Establish `hA : ∀ w : S, IsPlaceOver (A (u w)) w.1` using `fun w => hu w ▸ hL.loc.isOver (u w)`. Establish `hc : ∀ w : InfinitePlace F, IsCCAt w (c (e.symm w))` using `fun w => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hL.cc (e.symm w)`. Establish `hcyc : ∀ g, Φ.om E (π g) = cycF F Ω l E g` using `fun g => by`. Apply `Units.ext` to reduce the goal to its premises. Use `cast_toZModPow_one l E (cycZ F Ω l g : ℤ_[l])` as an intermediate fact. Simplify using `only [Frame.om, cycF, cycMod, MonoidHom.comp_apply, hL.eps, Units.coe_map]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this.symm`. Establish `hD : Loc.H0dual (cycF F Ω l E) (ρ.comp π) = ⊥`. Use `(Submodule.eq_bot_iff _).2 fun f hf => hdual f fun g X => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `hL.g.onto g`. Rewrite using `[hcyc]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hf g X`. Set `j : ∀ v, Φ.Gv v →* Dec (F` to `F) (A v) := fun v => (ι v).codRestrict _ fun s => by rw [← hL.loc.range]; exact ⟨s, rfl⟩`. Establish `hjc : ∀ v, Continuous (j v)` using `fun v => (hL.loc.cont v).subtype_mk _`. Establish `hjb : ∀ v, Function.Bijective (j v)` using `fun v => ⟨fun x y h => hL.loc.ι_inj v (congrArg Subtype.val h), fun x => by`. Establish `hx : x.1 ∈ (ι v).range` using `by rw [hL.loc.range]; exact x.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `hx`. Conclude with `⟨s, Subtype.ext hs⟩⟩`. Set `r : ∀ v, Dec (F` to `F) (A v) →* Φ.Gv v := fun v => (MulEquiv.ofBijective (j v) (hjb v)).symm.toMonoidHom`. Establish `hrc : ∀ v, Continuous (r v)` using `fun v => Continuous.continuous_symm_of_equiv_compact_to_t2 (f := (MulEquiv.ofBijective (j v) (hjb v)).toEquiv) (hjc v)`. Establish `h1 : ∀ v x, j v (r v x) = x` using `fun v => (MulEquiv.ofBijective (j v) (hjb v)).apply_symm_apply`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ v x, r v (j v x) = x` using `fun v => (MulEquiv.ofBijective (j v) (hjb v)).symm_apply_apply`. Set `d : ∀ v, Dec (F` to `F) (A v) →* Φ.Γ := fun v => π.comp (Dec (F := F) (A v)).subtype`. Establish `hdc : ∀ v, Continuous (d v)` using `fun v => hL.g.cont.comp continuous_subtype_val`. Establish `hdj : ∀ v s, Φ.loc v s = d v (j v s)` using `hL.loc_eq`. Establish `hlc : ∀ v, Continuous (Φ.loc v)` using `fun v => ((hdc v).comp (hjc v)).congr fun s => (hdj v s).symm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Set `τ : ∀ v, Representation E (Dec (F` to `F) (A v)) (W ⧸ b v) := fun v => Representation.quotient (ρ.comp (d v)) (b v) fun g X hX => by`. Use `hb v (r v g) X hX` as an intermediate fact. Rewrite `this` using `[hdj, h1]`. Conclude with `this`. Establish `hτq : ∀ v s m, (b v).mkQ (ρ (d v s) m) = τ v s ((b v).mkQ m)` using `fun _ _ _ => rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hσq : ∀ v s m, (b v).mkQ (ρ (Φ.loc v s) m) = ((τ v).comp (j v)) s ((b v).mkQ m)` using `fun v s m => by`. Rewrite using `[hdj]`. Both sides reduce to the same expression. Establish `hτ : ∀ v, ContAction (τ v)` using `fun v => by`. Use `continuous_prod_of_discrete_right.2 fun m => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, rfl⟩` from `(b v).mkQ_surjective m`. Conclude with `(continuous_of_discreteTopology (f := (b v).mkQ)).comp (hρ.comp ((hdc v).prodMk continuous_const))`. Establish `hE` using `fun v => locEuler hP.lf hP.lt hP.le F Ω l (pl v) (A v) (hL.loc.isOver v) E (W ⧸ b v) (τ v) (hτ v)`. Establish `hon` using `fun v => resH1_surjective_of_isomorphism (τ v) (j v) (hjc v) (r v) (hrc v) (h1 v) (h2 v)`. Take `⟨f1, f2, -⟩` from `H2_galois_quotient_eq hP F Ω l hL.real S K Φ.Γ π hL.g E W ρ hρ _ hc _ hA`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hO` using `H2_galois_quotient_surjective hP F Ω l hL.real S K Φ.Γ π hL.g E W ρ hρ _ hc _ hA hD (fun w => W ⧸ b (u w)) (fun w => τ (u w)) (fun w => (b (u w)).mkQ) (fun w => hτq (u w)) fun w => (b (u w)).mkQ_surjective`. Establish `hC` using `coneCount l Φ.Γ Φ.V Φ.Gv Φ.loc hlc E W ρ hρ (fun v => W ⧸ b v) (fun v => (τ v).comp (j v)) (fun v => (b v).mkQ) hσq (fun v => (b v).mkQ_surjective) f1 f2 fun v => haveI := (hE v).1`. Use the proof step `Module.Finite.of_surjective _ (hon v)`. Establish `hbq : (fun v => LinearMap.ker (b v).mkQ) = b` using `funext fun v => Submodule.ker_mkQ _`. Rewrite `hC` using `[hbq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨-, g2, hC⟩` from `hC`. Use `⟨g2, ?_⟩` and prove the remaining obligations. Establish `hK` using `Submodule.finrank_mono (s := ⨅ v, LinearMap.ker (compatiblePairH2 ρ ((τ v).comp (j v)) (Φ.loc v) (hlc v) (b v).mkQ continuous_of_discreteTopology (hσq v))) (t := ⨅ w : S, LinearMap.ker (compatiblePairH2 ρ (τ (u w)) (π.comp (Dec (F := F) (A (u w))).subtype) (hdc (u w)) (b (u w)).m …`. Establish `s2 : ∑ w : S, finrank E (H2 (τ (u w))) = ∑ v, finrank E (H2 (τ v))` using `u.sum_comp fun v => finrank E (H2 (τ v))`. Establish `sR : ∑ w : InfinitePlace F, finrank E (LinearMap.ker (ρ (π (c (e.symm w))) - 1)) = ∑ w, finrank E (LinearMap.ker (ρ (Φ.cw w) - 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[e.symm.sum_comp fun w => finrank E (LinearMap.ker (ρ (π (c w)) - 1))]`. Conclude with `Finset.sum_congr rfl fun w _ => by rw [hL.cw]`. Establish `hloc : ∀ v, finrank E (H1 ((τ v).comp (j v))) + Φ.dv v * finrank E (b v) ≤ finrank E (H0 ((τ v).comp (j v))) + finrank E (H2 (τ v)) + locDeg (pl v) * finrank E W` using `fun v => by haveI := (hE v).1`. Establish `a1` using `LinearMap.finrank_le_finrank_of_surjective (hon v)`. Establish `a2` using `(hE v).2.2.1 (hpl v)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `a3 : H0 ((τ v).comp (j v)) = H0 (τ v)` using `le_antisymm (fun m hm g => by have := hm (r v g); rwa [MonoidHom.comp_apply, h1] at this) fun m hm g => hm (j v g)`. Rewrite using `[a3, hL.dv, ← (b v).finrank_quotient_add_finrank, mul_add]`. Use linear arithmetic over natural numbers and integers. Establish `hsum` using `Finset.sum_le_sum fun v (_ : v ∈ Finset.univ) => hloc v`. Rewrite `hsum` using `[Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_add_distrib, ← Finset.sum_mul]`.
-
-Establish `hdeg` using `Nat.mul_le_mul_right (finrank E W) (sum_deg l F pl hL.loc.inj hpl)`. Rewrite `hO` using `[s2, sR]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GC.ec :
     Hypotheses₂ → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [CharP k l] (Φ : Fr.Frame l k) (S : Finset (HeightOneSpectrum (𝓞 F))) (K : Subgroup (G F Ω)) (π : G F Ω →* Φ.Γ) (ι : ∀ v, Φ.Gv v →* G F Ω) (A : Φ.V → ValuationSubring Ω) (pl : Φ.V → HeightOneSpectrum (𝓞 F)) (e : Φ.Inf ≃ InfinitePlace F) (c : Φ.Inf → G F Ω), FLink l Φ S K π ι A pl e c → Φ.EC := by

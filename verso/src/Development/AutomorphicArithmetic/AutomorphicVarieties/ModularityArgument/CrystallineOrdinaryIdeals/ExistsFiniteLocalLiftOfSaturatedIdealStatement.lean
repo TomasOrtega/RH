@@ -5,69 +5,59 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.T
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module UpperTheory.V.Loc UpperTheory.V.U3 UpperTheory.V.Alg IsLocalRing Polynomial Topology
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `l _ O _ _ R _ _ _ J d _ hreg B _ _ _ _ _ _ _ _ f hJf`. Set `M0 : Ideal R` to `(IsLocalRing.maximalIdeal B).comap f`. Set `RM` to `Localization.AtPrime M0`. Establish `hgu : ∀ y : M0.primeCompl, IsUnit ((f : R →+* B) (y : R))`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy` using `Ideal.mem_primeCompl_iff.1 y.2`. Assume the negation of the conclusion as `h`. Conclude with `hy (show (y : R) ∈ M0 from (IsLocalRing.mem_maximalIdeal _).2 h)`. Set `g : RM →+* B` to `IsLocalization.lift (M := M0.primeCompl) (S := RM) (g := (f : R →+* B)) hgu`. Establish `hg : ∀ r : R, g (algebraMap R RM r) = f r` using `fun r => IsLocalization.lift_eq hgu r`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `α : O →+* RM` to `(algebraMap R RM).comp (algebraMap O R)`. Set `ψ : ℤ_[l] →+* RM` to `α.comp (algebraMap ℤ_[l] O)`. Establish `hfψ : ∀ y : ℤ_[l], g (ψ y) = algebraMap ℚ_[l] B (algebraMap ℤ_[l] ℚ_[l] y)`. Introduce `y`. Use `show g (algebraMap R RM (algebraMap O R (algebraMap ℤ_[l] O y))) = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hg, f.commutes, ← IsScalarTower.algebraMap_apply ℤ_[l] O B y, ← IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] B y]`. Establish `hψu : ∀ y : nonZeroDivisors ℤ_[l], IsUnit (ψ y)`. Introduce `y`. Establish `hy0 : algebraMap ℤ_[l] ℚ_[l] y ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `nonZeroDivisors.coe_ne_zero y ((IsFractionRing.injective ℤ_[l] ℚ_[l]) (h.trans (map_zero _).symm))`. Establish `hr : IsUnit (f (algebraMap O R (algebraMap ℤ_[l] O y)))`. Rewrite using `[← hg]`. Use `(isUnit_iff_ne_zero.2 hy0).map (algebraMap ℚ_[l] B)` as an intermediate fact. Rewrite `this` using `[← hfψ y]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Conclude with `(IsLocalization.AtPrime.isUnit_to_map_iff RM M0 _).2 (Ideal.mem_primeCompl_iff.2 (fun h => ((IsLocalRing.mem_maximalIdeal _).1 h) hr))`. Set `φ : ℚ_[l] →+* RM` to `IsLocalization.lift (M := nonZeroDivisors ℤ_[l]) (S := ℚ_[l]) hψu`. Establish `hφ : ∀ y : ℤ_[l], φ (algebraMap ℤ_[l] ℚ_[l] y) = ψ y` using `fun y => IsLocalization.lift_eq hψu y`. Establish `hgφ : g.comp φ = algebraMap ℚ_[l] B`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `IsLocalization.ringHom_ext (nonZeroDivisors ℤ_[l])` to reduce the goal to its premises. Use extensionality with `y`. Simplify using `only [RingHom.comp_apply, hφ, hfψ]`. Use `haveI : IsArtinianRing B := IsArtinianRing.of_finite ℚ_[l] B`. Take `⟨N0, hN0⟩` from `(isArtinianRing_iff_isNilpotent_maximalIdeal B).1 this`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmaxg : ∀ x ∈ IsLocalRing.maximalIdeal RM ^ N0, g x = 0`. Introduce `x hx`. Rewrite `hx` using `[← IsLocalization.AtPrime.map_eq_maximalIdeal M0 RM, ← Ideal.map_pow]`. Establish `hle : Ideal.map (algebraMap R RM) (M0 ^ N0) ≤ RingHom.ker g`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `r hr`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, hg]`. Establish `h1 : f r ∈ (M0 ^ N0).map f` using `Ideal.mem_map_of_mem f hr`. Rewrite `h1` using `[Ideal.map_pow]`. Establish `h2 : (M0.map f) ^ N0 ≤ IsLocalRing.maximalIdeal B ^ N0` using `Ideal.pow_right_mono Ideal.map_comap_le N0`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h3` using `h2 h1`. Rewrite `h3` using `[hN0, Submodule.zero_eq_bot, Ideal.mem_bot]`. Conclude with `h3`. Conclude with `RingHom.mem_ker.1 (hle hx)`. Set `J' : Ideal RM` to `J.map (algebraMap R RM)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hJg : ∀ x ∈ J', g x = 0`. Introduce `x hx`. Establish `hle : J' ≤ RingHom.ker g`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `r hr`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, hg]`. Conclude with `RingHom.mem_ker.1 (hJf hr)`. Conclude with `RingHom.mem_ker.1 (hle hx)`. Establish `hreg' : ∀ a : RM, algebraMap R RM d * a ∈ J' → a ∈ J'`. Introduce `a ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective M0.primeCompl a`. Simplify using `only at ha ⊢`. Rewrite `ha` using `[IsLocalization.mul_mk'_eq_mk'_of_mul, IsLocalization.mk'_mem_map_algebraMap_iff]`. Take `⟨t, ht, htJ⟩` from `ha`. Rewrite using `[IsLocalization.mk'_mem_map_algebraMap_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨t, ht, hreg _ ?_⟩` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Conclude with `htJ`. Take `⟨k, hk⟩` from `Ideal.exists_pow_inf_eq_pow_smul (IsLocalRing.maximalIdeal RM) (Submodule.span RM {Ideal.Quotient.mk J' (algebraMap R RM d)})`. Establish `hkey : ∀ c : RM, algebraMap R RM d * c ∈ J' ⊔ IsLocalRing.maximalIdeal RM ^ (N0 + k) → g c = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `c hc`. Take `⟨j, hj, y, hy, hjy⟩` from `Submodule.mem_sup.1 hc`. Establish `hx1 : Ideal.Quotient.mk J' (algebraMap R RM d * c) ∈ (IsLocalRing.maximalIdeal RM ^ (N0 + k)) • (⊤ : Submodule RM (RM ⧸ J'))`. Rewrite using `[Ideal.smul_top_eq_map, Submodule.restrictScalars_mem, ← hjy, map_add, Ideal.Quotient.eq_zero_iff_mem.2 hj, zero_add]`. Conclude with `Ideal.mem_map_of_mem _ hy`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx2 : Ideal.Quotient.mk J' (algebraMap R RM d * c) ∈ Submodule.span RM {Ideal.Quotient.mk J' (algebraMap R RM d)}`. Establish `: Ideal.Quotient.mk J' (algebraMap R RM d * c) = c • Ideal.Quotient.mk J' (algebraMap R RM d)`. Rewrite using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, mul_comm c]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hx3` using `hk (N0 + k) (by omega)`. Establish `h5 : Ideal.Quotient.mk J' (algebraMap R RM d * c) ∈ IsLocalRing.maximalIdeal RM ^ (N0 + k - k) • (IsLocalRing.maximalIdeal RM ^ k • ⊤ ⊓ Submodule.span RM {Ideal.Quotient.mk J' (algebraMap R RM d)})`. Rewrite using `[← hx3]`. Conclude with `Submodule.mem_inf.2 ⟨hx1, hx2⟩`. Rewrite `h5` using `[Nat.add_sub_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx4 : Ideal.Quotient.mk J' (algebraMap R RM d * c) ∈ IsLocalRing.maximalIdeal RM ^ N0 • Submodule.span RM {Ideal.Quotient.mk J' (algebraMap R RM d)}` using `Submodule.smul_mono le_rfl inf_le_right h5`. Take `⟨a, ha, hav⟩` from `Submodule.mem_smul_span_singleton.1 hx4`. Establish `hdiff : algebraMap R RM d * (c - a) ∈ J'`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, mul_sub, map_sub, ← hav, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, mul_comm a, sub_self]`. Establish `hca : c - a ∈ J'` using `hreg' _ hdiff`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Establish `hc : c = (c - a) + a` using `by ring`. Rewrite using `[hc, map_add, hJg _ hca, hmaxg _ ha, add_zero]`. Set `I : Ideal RM` to `J' ⊔ IsLocalRing.maximalIdeal RM ^ (N0 + k)`. Establish `hIg : ∀ x ∈ I, g x = 0`. Introduce `x hx`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j, hj, y, hy, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[map_add, hJg _ hj, hmaxg _ (Ideal.pow_le_pow_right (by omega) hy), add_zero]`. Establish `hIne : I ≠ ⊤`. Introduce `h`. Establish `h1 : (1 : RM) ∈ I` using `by rw [h]; exact Submodule.mem_top`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `hIg 1 h1` as an intermediate fact. Simplify using `at this`. Use `haveI : Nontrivial (RM ⧸ I) := Ideal.Quotient.nontrivial_iff.2 hIne`. Use `haveI hloc : IsLocalRing (RM ⧸ I) := IsLocalRing.of_surjective' (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective`. Use `letI aQ : Algebra ℚ_[l] (RM ⧸ I) := ((Ideal.Quotient.mk I).comp φ).toAlgebra`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `letI aO : Algebra O (RM ⧸ I) := ((Ideal.Quotient.mk I).comp α).toAlgebra`. Use `letI aZ : Algebra ℤ_[l] (RM ⧸ I) := ((Ideal.Quotient.mk I).comp ψ).toAlgebra`. Use `haveI t1 : @IsScalarTower ℤ_[l] O (RM ⧸ I) _ aO.toSMul aZ.toSMul := IsScalarTower.of_algebraMap_eq (fun x => rfl)`. Use `haveI t2 : IsScalarTower ℤ_[l] ℚ_[l] (RM ⧸ I) := IsScalarTower.of_algebraMap_eq (fun x => by show Ideal.Quotient.mk I (ψ x) = Ideal.Quotient.mk I (φ (algebraMap ℤ_[l] ℚ_[l] x))`. Rewrite using `[hφ])`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `f' : R →ₐ[O] (RM ⧸ I)` to `{ (Ideal.Quotient.mk I).comp (algebraMap R RM) with commutes' := fun o => rfl }`. Set `q : (RM ⧸ I) →ₐ[ℚ_[l]] B` to `{ Ideal.Quotient.lift I g hIg with commutes' := fun c => by show Ideal.Quotient.lift I g hIg (Ideal.Quotient.mk I (φ c)) = algebraMap ℚ_[l] B c`. Rewrite using `[Ideal.Quotient.lift_mk]`. Conclude with `RingHom.congr_fun hgφ c }`. Establish `hmaxQ : IsLocalRing.maximalIdeal (RM ⧸ I) ≤ (IsLocalRing.maximalIdeal RM).map (Ideal.Quotient.mk I)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Apply `Ideal.mem_map_of_mem` to reduce the goal to its premises. Assume the negation of the conclusion as `hy`. Simplify using `only [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not] at hx hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hx (hy.map _)`. Establish `hnil : IsLocalRing.maximalIdeal (RM ⧸ I) ^ (N0 + k) = ⊥`. Rewrite using `[eq_bot_iff]`. Combine the equalities or inequalities in the displayed calculation. Use `haveI hart : IsArtinianRing (RM ⧸ I) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[isArtinianRing_iff_isNilpotent_maximalIdeal]`. Conclude with `⟨N0 + k, by rw [hnil]; rfl⟩`. Establish `hfin : Module.Finite ℚ_[l] (RM ⧸ I)` using `by haveI : Module.Finite ℚ_[l] ((RM ⧸ I) ⧸ Ring.jacobson (RM ⧸ I)) := by`. Rewrite using `[IsLocalRing.ringJacobson_eq_maximalIdeal]`. Establish `hle : IsLocalRing.maximalIdeal (RM ⧸ I) ≤ (IsLocalRing.maximalIdeal B).comap q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Establish `hx0 : x ^ (N0 + k) = 0`. Use `Ideal.pow_mem_pow hx (N0 + k)` as an intermediate fact.
-
-Rewrite `this` using `[hnil]`. Conclude with `(Ideal.mem_bot).1 this`. Use `hu.pow (N0 + k)` as an intermediate fact. Rewrite `this` using `[← map_pow, hx0, map_zero]`. Conclude with `not_isUnit_zero this`.
-
-Establish `hcomap : (IsLocalRing.maximalIdeal B).comap (q : (RM ⧸ I) →+* B) ≤ IsLocalRing.maximalIdeal (RM ⧸ I)` using `IsLocalRing.le_maximalIdeal (Ideal.comap_ne_top _ (Ideal.IsMaximal.ne_top inferInstance))`. Establish `hinj : Function.Injective (Ideal.quotientMap (IsLocalRing.maximalIdeal B) (q : (RM ⧸ I) →+* B) hle)` using `Ideal.quotientMap_injective' hcomap`. Use `haveI : Module.Finite ℚ_[l] (B ⧸ IsLocalRing.maximalIdeal B) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ ℚ_[l] (IsLocalRing.maximalIdeal B)).toLinearMap (Ideal.Quotient.mkₐ_surjective ℚ_[l] (IsLocalRing.maximalIdeal B))`. Conclude with `Module.Finite.of_injective (Ideal.quotientMapₐ (IsLocalRing.maximalIdeal B) q hle).toLinearMap hinj`. Conclude with `IsSemiprimaryRing.finite_of_isArtinian ℚ_[l] (RM ⧸ I) (RM ⧸ I)`.
-
-Use `⟨RM ⧸ I, inferInstance, hloc, aQ, hfin, aO, aZ, t1, t2, f', q, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[RingHom.mem_ker]`. Use `show Ideal.Quotient.mk I (algebraMap R RM x) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`.
-
-Conclude with `Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hx)`. Introduce `a show Ideal.Quotient.lift I g hIg (Ideal.Quotient.mk I (algebraMap R RM a)) = f a`. Rewrite using `[Ideal.Quotient.lift_mk, hg]`. Introduce `b hb`. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective b`.
-
-Use `show Ideal.Quotient.lift I g hIg (Ideal.Quotient.mk I c) = 0`. Rewrite using `[Ideal.Quotient.lift_mk]`. Apply `hkey` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_mul]`. Conclude with `hb`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.exists_finite_local_lift_of_saturated_ideal : ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [Algebra ℤ_[l] O] (R : Type) [CommRing R] [Algebra O R] [IsNoetherianRing R] (J : Ideal R) (d : R), (l : R) ∣ d → (∀ a, d * a ∈ J → a ∈ J) → ∀ (B : Type) [CommRing B] [IsLocalRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [Algebra O B] [Algebra ℤ_[l] B] [IsScalarTower ℤ_[l] O B] [IsScalarTower ℤ_[l] ℚ_[l] B] (f : R →ₐ[O] B), J ≤ RingHom.ker f → ∃ (B' : Type) (_ : CommRing B') (_ : IsLocalRing B') (_ : Algebra ℚ_[l] B') (_ : Module.Finite ℚ_[l] B') (_ : Algebra O B') (_ : Algebra ℤ_[l] B') (_ : IsScalarTower ℤ_[l] O B') (_ : IsScalarTower ℤ_[l] ℚ_[l] B') (f' : R →ₐ[O] B') (q : B' →ₐ[ℚ_[l]] B), J ≤ RingHom.ker f' ∧ (∀ a, q (f' a) = f a) ∧ ∀ b, f' d * b = 0 → q b = 0 := by
   intro l _ O _ _ R _ _ _ J d _ hreg B _ _ _ _ _ _ _ _ f hJf

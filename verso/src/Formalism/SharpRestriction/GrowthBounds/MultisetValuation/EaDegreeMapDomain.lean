@@ -24,19 +24,17 @@ variable {f} (hf : Function.Injective f)
 include hf
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[ea_coeff_resV, MvPowerSeries.coeff_mul, MvPowerSeries.coeff_mul]`. Repeatedly rewrite using `[ea_coeff_resV]`. Use `symm`. Use `Finset.sum_nbij' (fun q => (q.1.mapDomain f, q.2.mapDomain f)) (fun q => (q.1.comapDomain f hf.injOn, q.2.comapDomain f hf.injOn)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q hq`. Rewrite `hq`, the goal using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[← Finsupp.mapDomain_add, hq]`. Introduce `q hq`. Rewrite `hq`, the goal using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← Finsupp.comapDomain_add_of_injective hf, hq, Finsupp.comapDomain_mapDomain f hf]`. Introduce `q _`. Simplify using `only [Finsupp.comapDomain_mapDomain f hf]`. Introduce `q hq`. Rewrite `hq` using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : ∀ m : ι →₀ ℕ, m ≤ n.mapDomain f → (↑m.support : Set ι) ⊆ Set.range f`. Introduce `m hm x hx`. Establish `hx' : x ∈ (n.mapDomain f).support`. Rewrite `hx` using `[Finset.mem_coe, Finsupp.mem_support_iff]`. Rewrite using `[Finsupp.mem_support_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hm x` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 (Finsupp.mapDomain_support hx')`. Conclude with `⟨y, rfl⟩`. Establish `h1 : q.1 ≤ n.mapDomain f` using `hq ▸ le_self_add`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h2 : q.2 ≤ n.mapDomain f` using `hq ▸ le_add_self`. Use `ext1`. Conclude with `Finsupp.mapDomain_comapDomain f hf _ (hs _ h1)`. Conclude with `Finsupp.mapDomain_comapDomain f hf _ (hs _ h2)`. Introduce `q _`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ea_resV_mul (a b : MvPowerSeries ι R) : resV f (a * b) = resV f a * resV f b := by
   classical
@@ -74,11 +72,9 @@ theorem ea_resV_mul (a b : MvPowerSeries ι R) : resV f (a * b) = resV f a * res
     rfl
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[ea_coeff_resV, MvPowerSeries.coeff_C, MvPowerSeries.coeff_C]`. Establish `h : n.mapDomain f = 0 ↔ n = 0`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finsupp.mapDomain_injective hf (by rw [h, Finsupp.mapDomain_zero])`. Introduce and unpack `rfl`. Conclude with `Finsupp.mapDomain_zero`. Distinguish the cases in `hn : n = 0`. Rewrite using `[if_pos (h.2 hn), if_pos hn]`.
-
-Rewrite using `[if_neg (mt h.1 hn), if_neg hn]`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ea_resV_C (c : R) : resV f (MvPowerSeries.C c : MvPowerSeries ι R) = MvPowerSeries.C c := by
   classical
@@ -110,7 +106,7 @@ theorem ea_resHom_apply (a : MvPowerSeries ι R) : ea_resHom hf a = resV f a := 
 
 omit hf in
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[ea_coeff_resV]`. Simplify using `only [atPi, MvPowerSeries.coeff_apply, resV, Finsupp.degree_mapDomain]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ea_resV_atPi (vp : R) (a : MvPowerSeries ι R) : resV f (atPi vp a) = atPi vp (resV f a) := by
   ext n
@@ -120,9 +116,9 @@ theorem ea_resV_atPi (vp : R) (a : MvPowerSeries ι R) : resV f (atPi vp a) = at
 end Res
 
 /- English proof (translation)
-Establish `h : (fun x => MvPowerSeries.C vp * (MvPowerSeries.X x : MvPowerSeries σ R)) = (Function.const σ vp) • MvPowerSeries.X`. Use function extensionality and compare the values at `x`. Simplify using `[MvPowerSeries.smul_eq_C_mul]`. Rewrite using `[h, ← MvPowerSeries.rescale_eq_subst]`. Use extensionality with `n`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[MvPowerSeries.coeff_rescale]`. Simplify using `only [Finsupp.prod, Function.const_apply, Finset.prod_pow_eq_pow_sum, atPi, MvPowerSeries.coeff_apply, Finsupp.degree]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ea_atPi_subst {σ R : Type} [CommRing R] (vp : R) (a : MvPowerSeries σ R) :
     MvPowerSeries.subst (fun x => MvPowerSeries.C vp * (MvPowerSeries.X x : MvPowerSeries σ R)) a = atPi vp a := by
@@ -138,9 +134,9 @@ theorem ea_atPi_subst {σ R : Type} [CommRing R] (vp : R) (a : MvPowerSeries σ 
   rfl
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `hd : d ≤ (s : ℕ) + 2 * ν * d` using `le_add_left (Nat.le_mul_of_pos_left d (by have := NeZero.pos ν; omega))`. Use `show ((((s : ℕ) + 2 * ν * d - d) % (2 * ν) : ℕ) : ZMod (2 * ν)) = ((s : ℕ) : ZMod (2 * ν)) - (d : ZMod (2 * ν))`. Establish `h0 : ((2 * ν : ℕ) : ZMod (2 * ν)) = 0` using `ZMod.natCast_self _`. Rewrite using `[ZMod.natCast_mod, Nat.cast_sub hd]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at h0 ⊢`. Rewrite using `[h0]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ea_eS_posSub {n' ν : ℕ} [NeZero ν] (hn : n' = 2 * ν) (s : Fin n') (d : ℕ) :
     ea_eS hn (posSub s d) = ea_eS hn s - (d : ZMod (2 * ν)) := by
@@ -157,7 +153,7 @@ theorem ea_eS_posSub {n' ν : ℕ} [NeZero ν] (hn : n' = 2 * ν) (s : Fin n') (
 variable {p : ℕ} [hp : Fact p.Prime] (X : Sys p)
 
 /- English proof (translation)
-Introduce `y z h`. Simplify using `only [ea_eps, Sigma.mk.inj_iff, heq_eq_eq, Prod.mk.injEq, true_and] at h`. Take `⟨h1, h2, h3⟩` from `h`. Conclude with `Prod.ext ((ea_e X v).symm.injective h1) (Prod.ext h2 h3)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ea_eps_inj (v : X.Pl) (j : ℕ) : Function.Injective (ea_eps X v j) := by
   intro y z h
@@ -166,13 +162,13 @@ theorem ea_eps_inj (v : X.Pl) (j : ℕ) : Function.Injective (ea_eps X v j) := b
   exact Prod.ext ((ea_e X v).symm.injective h1) (Prod.ext h2 h3)
 
 /- English proof (translation)
-Establish `key : ∀ l : ℕ, ea_eps X v j (ea_e X v s - 2 * (l : ZMod _), a, b) = (⟨v, (posSub s (2 * l), a, b)⟩ : X.ZA j)`. Introduce `l`. Simplify using `only [ea_eps, Sigma.mk.injEq, heq_eq_eq, Prod.mk.injEq, true_and, and_true]`. Rewrite using `[Equiv.symm_apply_eq]`. Simplify using `only [ea_e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ea_eS_posSub]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use extensionality with `n`. Rewrite using `[ea_coeff_resV]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Sys.sSA, Formalism.InvariantFactorPaths.G7.sPos, MvPowerSeries.coeff_apply, Finsupp.degree_mapDomain]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Establish `hs : (Finsupp.single (⟨v, (posSub s (2 * l), a, b)⟩ : X.ZA j) (p ^ (2 * l))) = Finsupp.mapDomain (ea_eps X v j) (Finsupp.single (ea_e X v s - 2 * (l : ZMod _), (a, b)) ((p ^ 2) ^ l))`. Rewrite using `[Finsupp.mapDomain_single, key l, pow_mul]`. Establish `hiff : Finsupp.mapDomain (ea_eps X v j) n = Finsupp.single (⟨v, (posSub s (2 * l), a, b)⟩ : X.ZA j) (p ^ (2 * l)) ↔ n = Finsupp.single (ea_e X v s - 2 * (l : ZMod _), (a, b)) ((p ^ 2) ^ l)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hs]`. Conclude with `(Finsupp.mapDomain_injective (ea_eps_inj X v j)).eq_iff`. Distinguish the cases in `h : n = Finsupp.single (ea_e X v s - 2 * (l : ZMod _), (a, b)) ((p ^ 2) ^ l)`. Rewrite using `[if_pos (hiff.2 h), if_pos h]`. Rewrite using `[if_neg (mt hiff.1 h), if_neg h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ea_res_sSA (K' : Type) [Field K'] (v : X.Pl) (j : ℕ) (s : Fin (X.G.P.n' v)) (a : Fin (NN X.G.P.m X.t j))
     (b : Fin (NN X.G.P.m X.t (j + 1))) :
@@ -203,9 +199,9 @@ theorem ea_res_sSA (K' : Type) [Field K'] (v : X.Pl) (j : ℕ) (s : Fin (X.G.P.n
   · rw [if_neg (mt hiff.1 h), if_neg h]
 
 /- English proof (translation)
-Rewrite using `[← ea_resHom_apply (ea_eps_inj X v j)]`. Simplify using `only [Sys.hhA, map_sum, map_mul, map_pow, ea_resHom_apply, ea_resV_C (ea_eps_inj X v j), ea_res_sSA]`. Simplify using `only [Formalism.InvariantFactorPaths.G7.hhS, Fintype.sum_prod_type]`. Use `Fintype.sum_equiv (ea_e X v) _ _ (fun s => ?_)` and prove the remaining obligations. Rewrite using `[Equiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ea_e, ea_eS_posAdd, Nat.cast_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ea_res_hhA (K' : Type) [Field K'] (v : X.Pl) (j : ℕ) (u : Fin (X.G.P.n' v) → K') :
     resV (ea_eps X v j) (X.hhA K' j v u) = Formalism.InvariantFactorPaths.G7.hhS p fun s => u ((ea_e X v).symm s) := by
@@ -218,9 +214,9 @@ theorem ea_res_hhA (K' : Type) [Field K'] (v : X.Pl) (j : ℕ) (u : Fin (X.G.P.n
   simp only [ea_e, ea_eS_posAdd, Nat.cast_one]
 
 /- English proof (translation)
-Introduce `v j K' _ _ vp u F hF`. Take `⟨g, hg, hc⟩` from `hF`. Rewrite using `[ea_atPi_subst, ← ea_resV_atPi, ← ea_res_hhA]`. Use `⟨fun i => resV (ea_eps X v j) (g i), fun i n => ?_, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[ea_coeff_resV]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hg i _`. Rewrite using `[ea_coeff_resV, hc, Finsupp.degree_mapDomain]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [← ea_resHom_apply (ea_eps_inj X v j), ← map_pow, ← map_mul]`. Rewrite using `[ea_resHom_apply, ea_coeff_resV]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ea_brClass : ea_BrClass X := by
   intro v j K' _ _ vp u F hF

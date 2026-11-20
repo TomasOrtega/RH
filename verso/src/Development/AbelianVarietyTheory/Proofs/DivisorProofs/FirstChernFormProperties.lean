@@ -22,7 +22,7 @@ open scoped Classical
 namespace GlobalTheory.LineForm
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX σ`. Use `⟨fun L M => ⟨(GlobalTheory.T.firstChern_real_closed k X p D hX σ L).1, (GlobalTheory.T.firstChern_real_closed k X p D hX σ L).2.1, (GlobalTheory.T.firstChern_real_closed k X p D hX σ L).2.2, GlobalTheory.T.firstChern_tensor_add k X p D hX σ L M, GlobalTheory.T.firstChern_dual_neg …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem basicForms : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ) (hX : IsRegVar p D) (σ : k →+* ℂ),
     (∀ L M : HermLB p, (hX.atlas σ).IsRealForm 1 (fld _ (c1F hX σ L)) ∧ (hX.atlas σ).del (fld _ (c1F hX σ L)) = 0 ∧

@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.ModelFacts
 
 /- English proof (translation)
-Establish `hv : ValuativeCriterion f`. Rewrite `hp` using `[IsProper.eq_valuativeCriterion]`. Conclude with `hp.1.1.1`. Set `S : ValuativeCommSq f` to `{ R := W, K := FractionRing W, i₁ := y, i₂ := s, commSq := ⟨h⟩ }`. Take `⟨U⟩` from `hv S`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨U.default.l, U.default.fac_left.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_extend {X B : Scheme.{0}} (f : X ⟶ B) (hp : IsProper f) {W : Type} [CommRing W] [IsDomain W]
     [ValuationRing W] (y : Sp (FractionRing W) ⟶ X) (s : Sp W ⟶ B) (h : y ≫ f = jK W ≫ s) :
@@ -36,9 +36,9 @@ theorem exists_extend {X B : Scheme.{0}} (f : X ⟶ B) (hp : IsProper f) {W : Ty
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Take `⟨PP', cub, sym, adj, prim, m₂, hm₂⟩` from `sabPull Out.CubePf.cubePull (y ≫ Y.j) Y.t`. Take `⟨m₃, -⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ Y.m m₂`. Establish `h₂ : LBIso PP'.L (Y.t.PP.L.pull m₂.φ)` using `m₂.lin.imp fun _ h => h.1`. Rewrite `h₂` using `[hm₂]`. Establish `h₃ : LBIso PP'.L (Y.oF.t.PP.L.pull m₃.φ)` using `m₃.lin.imp fun _ h => h.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hL` using `LB.isLB_pull Y.t.PP.isLB (pullback.fst Y.t.G.hom (y ≫ Y.j))`. Conclude with `⟨MorphismProperty.of_isPullback (P := @IsProper) m₃.cart.1 Y.oF.proper, amplePt _ _ y _ _ m₃.φ m₃.cart _ _ Y.oF.t.PP.isLB hL (LBIso.trans hL PP'.isLB (LB.isLB_pull Y.oF.t.PP.isLB _) h₂.symm h₃) Y.oF.ample Y.oF.ktriv⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem polAt_open {D : Datum H} {l : Geo.Tor.Level H} {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O]
     {β : O →+* c.F} (Y : Model Xo c β) {K : Type} [Field K] (y : Sp K ⟶ Xo.XF c) : PolAt Y.t (y ≫ Y.j) := by
@@ -53,7 +53,7 @@ theorem polAt_open {D : Datum H} {l : Geo.Tor.Level H} {Xo : Moduli D l} {c : Co
       (LBIso.trans hL PP'.isLB (LB.isLB_pull Y.oF.t.PP.isLB _) h₂.symm h₃) Y.oF.ample Y.oF.ktriv⟩
 
 /- English proof (translation)
-Take `⟨w, g, r, -⟩` from `(isPullCubical_iff m.cm t.cub t'.cub).1 m.lin`. Rewrite `r` using `[m.base]`. Conclude with `⟨w, m.cart, (isGen_iff w).2 g, t'.PP.rigGen, r⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_rigPull {S S' : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {χ : S' ⟶ S} (m : SABMap t' t χ) :
     ∃ ω : LB.Iso t'.PP.L (t.PP.L.pull m.φ), RigPull t'.G t.G χ m.φ ω t'.PP.rig t.PP.rig := by
@@ -62,7 +62,7 @@ theorem exists_rigPull {S S' : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {χ : S
   exact ⟨w, m.cart, (isGen_iff w).2 g, t'.PP.rigGen, r⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y`. Use `⟨fun W _ _ _ y s h => exists_extend Y.s (projProper O _ _ Y.proj) y s h, fun K _ y => polAt_open Y y, ?_, ?_⟩` and prove the remaining obligations. Use `Y.t.semi.smooth infer_instance` as an intermediate fact. Introduce and unpack `S t χ m L rfl`. Conclude with `exists_rigPull m`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem model_facts : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β), (∀ (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] (y : Sp (FractionRing W) ⟶ Y.X) (s : Sp W ⟶ Sp O), y ≫ Y.s = jK W ≫ s → ∃ χ : Sp W ⟶ Y.X, y = jK W ≫ χ) ∧ (∀ (K : Type) [Field K] (y : Sp K ⟶ Xo.XF c), PolAt Y.t (y ≫ Y.j)) ∧ Flat Y.t.G.hom ∧ ∀ (S : Scheme.{0}) (t : SAB H S) (χ : S ⟶ Y.X) (m : SABMap t Y.t χ) (L : RigLB t.G), L = t.PP → ∃ ω : LB.Iso L.L (Y.t.PP.L.pull m.φ), RigPull t.G Y.t.G χ m.φ ω L.rig Y.t.PP.rig := by
   intro E _ _ _ H D l Xo c O _ β Y

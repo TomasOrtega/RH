@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Project
 open PositivityTheory.Rg.Tf.Geo
 
 /- English proof (translation)
-Establish `hs : (Matrix.toLin' M).charpoly.Separable` using `by rwa [Matrix.charpoly_toLin']`. Take `⟨w, hw⟩` from `GroundTheory.Automorphic.exists_linearIndependent_pow_apply _ hs`. Rewrite `hw` using `[Module.finrank_fin_fun]`. Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[← isUnit_iff_ne_zero, ← Matrix.isUnit_iff_isUnit_det, ← Matrix.linearIndependent_cols_iff_isUnit]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hcol : (GroundTheory.Automorphic.krylov M w).col = fun j : Fin n => (Matrix.toLin' M ^ (j : ℕ)) w` using `by ext1 j`. Rewrite using `[GroundTheory.Automorphic.krylov_col, ← Matrix.toLin'_pow, Matrix.toLin'_apply]`. Rewrite using `[hcol]`. Conclude with `hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_krylov_det_ne_zero {k : Type*} [Field k] [Infinite k] {n : ℕ}
     (M : Matrix (Fin n) (Fin n) k) (h : M.charpoly.Separable) :
@@ -25,11 +25,11 @@ private theorem exists_krylov_det_ne_zero {k : Type*} [Field k] [Infinite k] {n 
   exact hw
 
 /- English proof (translation)
-Establish `: {g : GL (Fin n) k | (g : Matrix (Fin n) (Fin n) k).charpoly = P} = ⋂ a : k, {g : GL (Fin n) k | (Matrix.scalar (Fin n) a - (g : Matrix (Fin n) (Fin n) k)).det = P.eval a}`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl a`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Matrix.eval_charpoly]`. Introduce `h`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `a`. Rewrite using `[Matrix.eval_charpoly]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h a`. Rewrite using `[this]`. Use `isClosed_iInter fun a => isClosed_eq ?_ continuous_const` and prove the remaining obligations. Conclude with `(continuous_const.sub Units.continuous_val).matrix_det`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem isClosed_charpoly_eq {k : Type*} [NontriviallyNormedField k] [Infinite k] {n : ℕ}
     (P : Polynomial k) : IsClosed {g : GL (Fin n) k | (g : Matrix (Fin n) (Fin n) k).charpoly = P} := by
@@ -50,7 +50,7 @@ private theorem isClosed_charpoly_eq {k : Type*} [NontriviallyNormedField k] [In
   exact (continuous_const.sub Units.continuous_val).matrix_det
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [GroundTheory.Automorphic.krylov, Matrix.of_apply]`. Conclude with `(continuous_apply i).comp (((Units.continuous_val.pow _)).matrix_mulVec continuous_const)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem continuous_krylov {k : Type*} [NontriviallyNormedField k] {n : ℕ} (v : Fin n → k) :
     Continuous fun g : GL (Fin n) k => GroundTheory.Automorphic.krylov (g : Matrix (Fin n) (Fin n) k) v := by
@@ -59,9 +59,9 @@ private theorem continuous_krylov {k : Type*} [NontriviallyNormedField k] {n : �
   exact (continuous_apply i).comp (((Units.continuous_val.pow _)).matrix_mulVec continuous_const)
 
 /- English proof (translation)
-Establish `hT : ((B⁻¹ * γ * B : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = T`. Rewrite using `[Units.val_mul, Units.val_mul, mul_assoc, hB, ← mul_assoc]`. Simplify using the standard rewrite rules. Establish `h1 : g * U = U * (B⁻¹ * γ * B)`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Units.val_mul, Units.val_mul, hT, hU]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem conj_of_compM {k : Type*} [Field k] {n : ℕ} (γ g B U : GL (Fin n) k)
     (T : Matrix (Fin n) (Fin n) k)
@@ -78,7 +78,7 @@ private theorem conj_of_compM {k : Type*} [Field k] {n : ℕ} (γ g B U : GL (Fi
     _ = (B * U⁻¹)⁻¹ * γ * (B * U⁻¹) := by group
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.ProjectiveLineOf.p1_holds`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.G.p1_holds :
     P1 :=

@@ -20,7 +20,7 @@ def ratMap (F G : Type) [Field F] [Field G] [Algebra F G] : RatFunc F →+* RatF
     exact (Polynomial.map_eq_zero_iff (algebraMap F G).injective).1 h1)
 
 /- English proof (translation)
-Establish `e1 : algebraMap F (RatFunc F) f = algebraMap F[X] (RatFunc F) (C f) / algebraMap F[X] (RatFunc F) 1`. Rewrite using `[map_one, div_one, RatFunc.algebraMap_C, RatFunc.algebraMap_eq_C]`. Rewrite using `[e1, ratMap, RatFunc.liftRingHom_apply_div]`. Simplify using `[RatFunc.algebraMap_C, RatFunc.algebraMap_eq_C]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma ratMap_algebraMap (F G : Type) [Field F] [Field G] [Algebra F G] (f : F) :
     ratMap F G (algebraMap F (RatFunc F) f) = algebraMap G (RatFunc G) (algebraMap F G f) := by
@@ -30,7 +30,7 @@ lemma ratMap_algebraMap (F G : Type) [Field F] [Field G] [Algebra F G] (f : F) :
   simp [RatFunc.algebraMap_C, RatFunc.algebraMap_eq_C]
 
 /- English proof (translation)
-Establish `key : ∀ p : G[X], algebraMap (RatFunc G) L (algebraMap G[X] (RatFunc G) p) = aeval (algebraMap (RatFunc G) L RatFunc.X) p`. Introduce `p`. Rewrite using `[aeval_algebraMap_apply, RatFunc.aeval_X_left_eq_algebraMap]`. Rewrite using `[← RatFunc.num_div_denom x, map_div₀, key, key]`. Conclude with `div_mem (algebra_adjoin_le_adjoin G _ (aeval_mem_adjoin_singleton G _)) (algebra_adjoin_le_adjoin G _ (aeval_mem_adjoin_singleton G _))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mem_adjoin_of_ratFunc {G L : Type} [Field G] [Field L] [Algebra (RatFunc G) L] [Algebra G L]
     [IsScalarTower G (RatFunc G) L] (x : RatFunc G) :
@@ -44,7 +44,7 @@ lemma mem_adjoin_of_ratFunc {G L : Type} [Field G] [Field L] [Algebra (RatFunc G
     (algebra_adjoin_le_adjoin G _ (aeval_mem_adjoin_singleton G _))
 
 /- English proof (translation)
-Rewrite using `[transcendental_iff_injective]`. Introduce `p q h`. Rewrite `h` using `[aeval_algebraMap_apply, aeval_algebraMap_apply, RatFunc.aeval_X_left_eq_algebraMap, RatFunc.aeval_X_left_eq_algebraMap]`. Conclude with `RatFunc.algebraMap_injective G ((algebraMap (RatFunc G) L).injective h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma transc_X_image {G L : Type} [Field G] [Field L] [Algebra (RatFunc G) L] [Algebra G L]
     [IsScalarTower G (RatFunc G) L] : Transcendental G (algebraMap (RatFunc G) L RatFunc.X) := by
@@ -55,7 +55,7 @@ lemma transc_X_image {G L : Type} [Field G] [Field L] [Algebra (RatFunc G) L] [A
   exact RatFunc.algebraMap_injective G ((algebraMap (RatFunc G) L).injective h)
 
 /- English proof (translation)
-Set `c : RatFunc G →+* G⟮algebraMap (RatFunc G) L RatFunc.X⟯` to `(algebraMap (RatFunc G) L).codRestrict _ mem_adjoin_of_ratFunc`. Use `letI : Algebra (RatFunc G) G⟮algebraMap (RatFunc G) L RatFunc.X⟯ := c.toAlgebra`. Use `haveI : IsScalarTower (RatFunc G) G⟮algebraMap (RatFunc G) L RatFunc.X⟯ L := IsScalarTower.of_algebraMap_eq (fun x => rfl)`. Conclude with `Module.Finite.of_restrictScalars_finite (RatFunc G) _ L`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 lemma finite_over_adjoin {G L : Type} [Field G] [Field L] [Algebra (RatFunc G) L] [Algebra G L]
     [IsScalarTower G (RatFunc G) L] [Module.Finite (RatFunc G) L] :
@@ -71,13 +71,11 @@ end LateralTheory.E.LeafBaseChangeFieldPf
 
 open LateralTheory.E.LeafBaseChangeFieldPf in
 /- English proof (translation)
-Introduce `F G K _ _ _ _ _ t ht hfin`. Set `e` to `RatFunc.algEquivOfTranscendental t ht`. Set `h : F⟮t⟯ →+* RatFunc G` to `(ratMap F G).comp e.symm.toRingHom`. Use `letI : Algebra F⟮t⟯ (RatFunc G) := h.toAlgebra`. Use `haveI : Nontrivial (TensorProduct F⟮t⟯ (RatFunc G) K) := Algebra.TensorProduct.nontrivial_of_algebraMap_injective_of_isDomain _ _ _ h.injective (algebraMap F⟮t⟯ K).injective`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩` from `Ideal.exists_maximal (TensorProduct F⟮t⟯ (RatFunc G) K)`. Use `letI : Field (TensorProduct F⟮t⟯ (RatFunc G) K ⧸ M) := Ideal.Quotient.field M`. Use `haveI : Module.Finite (RatFunc G) (TensorProduct F⟮t⟯ (RatFunc G) K) := Module.Finite.base_change F⟮t⟯ (RatFunc G) K`. Use `haveI : Module.Finite (RatFunc G) (TensorProduct F⟮t⟯ (RatFunc G) K ⧸ M) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ (RatFunc G) M).toLinearMap Ideal.Quotient.mk_surjective`. Use `haveI : IsScalarTower G (RatFunc G) (TensorProduct F⟮t⟯ (RatFunc G) K ⧸ M) := inferInstance`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨TensorProduct F⟮t⟯ (RatFunc G) K ⧸ M, inferInstance, inferInstance, algebraMap (RatFunc G) _ RatFunc.X, (Ideal.Quotient.mk M).comp (Algebra.TensorProduct.includeRight (R := F⟮t⟯) (A := RatFunc G) (B := K)).toRingHom, transc_X_image, finite_over_adjoin, ?_⟩` and prove the remaining obligations. Use extensionality with `f`. Establish `h1 : h (algebraMap F F⟮t⟯ f) = algebraMap G (RatFunc G) (algebraMap F G f)` using `by show ratMap F G (e.symm (algebraMap F F⟮t⟯ f)) = _`. Rewrite using `[AlgEquiv.commutes]`. Conclude with `ratMap_algebraMap F G f`.
-
-Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, IsScalarTower.algebraMap_apply F F⟮t⟯ K, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes, IsScalarTower.algebraMap_apply F⟮t⟯ (RatFunc G)]`. Rewrite using `[RingHom.comp_apply, IsScalarTower.algebraMap_apply G (RatFunc G) (TensorProduct F⟮t⟯ (RatFunc G) K ⧸ M), ← h1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem LateralTheory.E.LeafBaseChangeFieldPf.LeafBaseChangeField_of : LateralTheory.E.LeafCurveVCut.LeafBaseChangeField := by
   intro F G K _ _ _ _ _ t ht hfin

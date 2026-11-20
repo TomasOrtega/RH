@@ -17,13 +17,13 @@ section Algebra
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : Subalgebra o Ω) {J : Type} [Fintype J] [DecidableEq J]
 
 /- English proof (translation)
-Establish `h1 : L * (L⁻¹ᵀ)ᵀ = 1` using `by rw [transpose_transpose, mul_nonsing_inv _ (Ne.isUnit hL)]`. Establish `h2 : L⁻¹ᵀ * Lᵀ = 1` using `by rw [← transpose_mul, mul_nonsing_inv _ (Ne.isUnit hL), transpose_one]`. Rewrite `h` using `[dotDual_span_rows S h1]`. Establish `hG : G.det ≠ 0`. Establish `h3 : ∀ i, ∃ c : J → Ω, c ᵥ* (t⁻¹ • G) = L⁻¹ᵀ i` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, -, hc⟩` from `(mem_span_rows S _ (L⁻¹ᵀ i)).1 (h.ge (Submodule.subset_span ⟨i, rfl⟩))`. Conclude with `⟨c, hc⟩`. Use `choose c hc using h3`. Establish `h4 : Matrix.of c * (t⁻¹ • G) = L⁻¹ᵀ`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrFun (hc i) j`. Introduce `h0`. Establish `h5` using `congrArg det h2`. Rewrite `h5` using `[← h4, det_mul, det_mul, det_smul, h0]`. Simplify using `at h5`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hG, ?_⟩` and prove the remaining obligations. Rewrite using `[← dotDual_span_rows S (smul_mul_smul_inv hG ht), h, dotDual_span_rows S h2]`.
+A detailed English derivation is pending.
 -/
 theorem dual_dual {G L : Matrix J J Ω} {t : Ω} (ht : t ≠ 0) (hL : L.det ≠ 0)
     (h : Submodule.span S (Set.range (t⁻¹ • G : Matrix J J Ω)) = dotDual S (Submodule.span S (Set.range L))) :
@@ -47,9 +47,9 @@ theorem dual_dual {G L : Matrix J J Ω} {t : Ω} (ht : t ≠ 0) (hL : L.det ≠ 
   rw [← dotDual_span_rows S (smul_mul_smul_inv hG ht), h, dotDual_span_rows S h2]
 
 /- English proof (translation)
-Use `set G₀ : Matrix J J S := Matrix.of fun i j => (⟨G i j, hG i j⟩ : S)`. Establish `e : G = S.val.toRingHom.mapMatrix G₀` using `rfl`. Establish `hd : (G₀.det : Ω) = G.det` using `by rw [e, ← RingHom.map_det]; rfl`. Establish `hu : IsUnit G₀.det` using `IsUnit.of_mul_eq_one ⟨_, h1⟩ (Subtype.ext (by show (G₀.det : Ω) * G.det⁻¹ = 1`. Rewrite using `[hd, mul_inv_cancel₀ h0]))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨G₀⁻¹, mul_nonsing_inv _ hu, Matrix.inv_eq_right_inv ?_⟩` and prove the remaining obligations. Use `congrArg S.val.toRingHom.mapMatrix (mul_nonsing_inv _ hu)` as an intermediate fact. Rewrite `this` using `[map_mul, map_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inv {G : Matrix J J Ω} (hG : ∀ i j, G i j ∈ S) (h0 : G.det ≠ 0) (h1 : G.det⁻¹ ∈ S) :
     ∃ C : Matrix J J S, (Matrix.of fun i j => (⟨G i j, hG i j⟩ : S)) * C = 1 ∧ G⁻¹ = C.map S.val := by
@@ -65,16 +65,16 @@ theorem exists_inv {G : Matrix J J Ω} (hG : ∀ i j, G i j ∈ S) (h0 : G.det �
   exact this
 
 /- English proof (translation)
-Rewrite using `[det_apply']`. Conclude with `sum_mem fun σ _ => mul_mem (intCast_mem _ _) (prod_mem fun i _ => hG _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem {G : Matrix J J Ω} (hG : ∀ i j, G i j ∈ S) : G.det ∈ S := by
   rw [det_apply']
   exact sum_mem fun σ _ => mul_mem (intCast_mem _ _) (prod_mem fun i _ => hG _ _)
 
 /- English proof (translation)
-Establish `e : (fun i : J => (Pi.single i (1 : Ω) : J → Ω)) = (1 : Matrix J J Ω)`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`. Rewrite using `[e]`. Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(mem_span_rows S _ _).2 ⟨A i, hA i, vecMul_one _⟩`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(mem_span_rows S _ _).2 ⟨B i, hB i, by rw [← h]; rfl⟩`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem span_eq_std {A B : Matrix J J Ω} (hA : ∀ i j, A i j ∈ S) (hB : ∀ i j, B i j ∈ S) (h : B * A = 1) :
     Submodule.span S (Set.range A) = Submodule.span S (Set.range fun i => Pi.single i (1 : Ω)) := by
@@ -97,16 +97,16 @@ variable {p : ℕ} [Fact p.Prime] {J : Type} [Fintype J] [DecidableEq J]
 def OA (p : ℕ) [Fact p.Prime] : Subalgebra ℤ (PadicAlgCl p) := subalgebraOfSubring (OO p).toSubring
 
 /- English proof (translation)
-The claim follows from `mem_OO_iff x`.
+A detailed English derivation is pending.
 -/
 theorem mem_OA (x : PadicAlgCl p) : x ∈ OA p ↔ ‖x‖ ≤ 1 := mem_OO_iff x
 
 omit [DecidableEq J] in
 
 /- English proof (translation)
-Use `(Submodule.mem_span_range_iff_exists_fun (OO p) (v := (B : J → J → PadicAlgCl p))).trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨fun i => c i, fun i => (mem_OO_iff _).1 (c i).2, by rw [vecMul_eq_sum]; rfl⟩`. Introduce and unpack `⟨c, hc, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨fun i => ⟨c i, (mem_OO_iff _).2 (hc i)⟩, by rw [vecMul_eq_sum]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_span_OO (B : Matrix J J (PadicAlgCl p)) (v : J → PadicAlgCl p) :
     v ∈ Submodule.span (OO p) (Set.range B) ↔ ∃ c : J → PadicAlgCl p, (∀ i, ‖c i‖ ≤ 1) ∧ c ᵥ* B = v := by
@@ -120,18 +120,18 @@ theorem mem_span_OO (B : Matrix J J (PadicAlgCl p)) (v : J → PadicAlgCl p) :
 omit [DecidableEq J] in
 
 /- English proof (translation)
-Simplify using `only [mem_span_OO, mem_span_rows, mem_OA]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_span_OA (B : Matrix J J (PadicAlgCl p)) (v : J → PadicAlgCl p) :
     v ∈ Submodule.span (OA p) (Set.range B) ↔ v ∈ Submodule.span (OO p) (Set.range B) := by
   simp only [mem_span_OO, mem_span_rows, mem_OA]
 
 /- English proof (translation)
-Establish `ht' : 0 < ‖t‖` using `norm_pos_iff.2 ht`. Take `⟨h1, h2⟩` from `dual_dual (OA p) (G := G) ht hL (by`. Use extensionality with `w`. Establish `e1 : w ∈ Submodule.span (OA p) (Set.range (t⁻¹ • G : Matrix J J _)) ↔ t • w ∈ Submodule.span (OO p) (Set.range G)`. Rewrite using `[mem_span_OA, mem_span_OO, mem_span_OO]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `exists_congr fun c => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[vecMul_smul, inv_smul_eq_iff₀ ht]`. Rewrite using `[e1, h]`. Use `forall_congr' fun v => ?_` and prove the remaining obligations. Rewrite using `[mem_span_OA, mem_OA, smul_dotProduct, smul_eq_mul, norm_mul, mul_le_iff_le_one_right ht', dotProduct_comm])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Rewrite using `[← mem_span_OA, h2, mem_span_OA]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem dual_dual_OO {G L : Matrix J J (PadicAlgCl p)} {t : PadicAlgCl p} (ht : t ≠ 0) (hL : L.det ≠ 0)
     (h : ∀ w, w ∈ Submodule.span (OO p) (Set.range G) ↔
@@ -164,7 +164,7 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : RatModel o Ω
 omit [DecidableEq J] in
 
 /- English proof (translation)
-Use extensionality with `j`. Use `map_sum (RatModel.valHomOf y ξ h) (fun i => (⟨c i, hc i⟩ : M.O ξ) * ⟨B i j, hB i j⟩) Finset.univ` as an intermediate fact. Simplify using `only [map_mul, RatModel.valHomOf_apply] at this`. Simplify `this` using `[vecMul, dotProduct]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem val_vecMul (h : ∀ w, y w ⤳ ξ) {c : J → Ω} {B : Matrix J J Ω} (hc : ∀ i, c i ∈ M.O ξ)
     (hB : ∀ i j, B i j ∈ M.O ξ) :
@@ -175,7 +175,7 @@ theorem val_vecMul (h : ∀ w, y w ⤳ ξ) {c : J → Ω} {B : Matrix J J Ω} (h
   simpa [vecMul, dotProduct] using this
 
 /- English proof (translation)
-Use `set B₀ : Matrix J J (M.O ξ) := Matrix.of fun i j => ⟨B i j, hB i j⟩`. Establish `e : B = (M.O ξ).val.toRingHom.mapMatrix B₀` using `rfl`. Establish `hd : (B₀.det : Ω) = B.det` using `by rw [e, ← RingHom.map_det]; rfl`. Rewrite using `[← hd, ← RatModel.valHomOf_apply y ξ h, RingHom.map_det]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem val_det (h : ∀ w, y w ⤳ ξ) {B : Matrix J J Ω} (hB : ∀ i j, B i j ∈ M.O ξ) :
     M.val y B.det = (B.map (M.val y)).det := by
@@ -186,9 +186,9 @@ theorem val_det (h : ∀ w, y w ⤳ ξ) {B : Matrix J J Ω} (hB : ∀ i j, B i j
   rfl
 
 /- English proof (translation)
-Rewrite `h0` using `[← val_det (RatModel.specializes_of_range_eq h) hB]`. Establish `hu` using `(RatModel.isUnit_O_iff _).1 ((RatModel.val_ne_zero_iff h ⟨_, det_mem _ hB⟩).1 h0)`. Take `⟨C, hC, e⟩` from `exists_inv (M.O ξ) hB hu.1 hu.2`. Use `⟨fun i j => e ▸ (C i j).2, (Matrix.inv_eq_right_inv ?_).symm⟩` and prove the remaining obligations. Use `congrArg (RatModel.valHom y ξ h).mapMatrix hC` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, map_one]`. Rewrite using `[e]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_inv (h : Set.range y = {ξ}) {B : Matrix J J Ω} (hB : ∀ i j, B i j ∈ M.O ξ)
     (h0 : (B.map (M.val y)).det ≠ 0) :
@@ -210,9 +210,9 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : RatModel o Ω
   {p : ℕ} [Fact p.Prime] {y : Sp (OO p) ⟶ M.Z} {z ξ : M.Z}
 
 /- English proof (translation)
-Establish `hs : ξ ⤳ z`. Take `⟨w, rfl⟩ : ξ ∈ Set.range (gPt p ≫ y)` from `hξ ▸ rfl`. Conclude with `RatModel.gPt_specializes h w`. Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, rfl⟩` from `(mem_span_rows _ _ _).1 hv`. Conclude with `(mem_span_OO _ _).2 ⟨_, fun i => RatModel.norm_val_le_one h (hc i), (val_vecMul (RatModel.specializes_of_range_eq hξ) (fun i => RatModel.O_le_of_specializes hs (hc i)) hB).symm⟩`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨B i, Submodule.subset_span ⟨i, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem span_val_image (h : y (cPt p) = z) (hξ : Set.range (gPt p ≫ y) = {ξ}) {B : Matrix J J Ω}
     (hB : ∀ i j, B i j ∈ M.O ξ) :
@@ -233,9 +233,9 @@ theorem span_val_image (h : y (cPt p) = z) (hξ : Set.range (gPt p ≫ y) = {ξ}
 end Spec
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ X`. Use `b.ext_elem fun i => ?_` and prove the remaining obligations. It suffices to derive a contradiction. Take `⟨x', hx⟩` from `h (b i)`. Establish `e` using `congrArg (fun v => b.repr v i) hx`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [map_nsmul, Finsupp.smul_apply, Module.Basis.repr_self, Finsupp.single_eq_same, nsmul_eq_mul] at e`. Use `Int.eq_one_of_mul_eq_one_right (by positivity) e` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem eq_zero_of_divisible {X : Type} [AddCommGroup X] [Module.Free ℤ X] {m : ℕ} (hm : 2 ≤ m)
     (h : ∀ x : X, ∃ x', m • x' = x) (x : X) : x = 0 := by
@@ -254,15 +254,13 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω
   {R' : Subalgebra o Ω} {hR : S.R ≤ R'} {n a : ℕ} {GG : Fin n → S.J → R'}
 
 /- English proof (translation)
-Establish `hξ` using `RatModel.range_eq_singleton (gPt p ≫ y) (IsLocalRing.closedPoint _)`. Use `set ξ := (gPt p ≫ y) (IsLocalRing.closedPoint _)`. Establish `hξU : ξ ∈ U₀` using `hc.2 ⟨_, rfl⟩`. Establish `hle : R' ≤ M.O ξ` using `hR'.trans (RatModel.ringOn_le_O hξU)`. Set `y' : R' →+* PadicAlgCl p` to `(RatModel.valHom _ ξ hξ).comp (Subalgebra.inclusion hle).toRingHom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `rfl : y₀ = y'.comp (Subalgebra.inclusion hR).toRingHom` from `RingHom.ext fun x => hat x`. Establish `h1` using `hgen y' τ fun b => RatModel.norm_val_le_one hc.1 ((M.O z).algebraMap_mem b)`. Establish `h2 : Submodule.span (OO p) (Set.range fun k j => y' (GG k j)) = Submodule.span (OO p) (Set.range ((Matrix.of fun i j => (GG (k i) j : Ω)).map (M.val (gPt p ≫ y))))`. Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨m, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← span_val_image (B := Matrix.of fun i j => (GG (k i) j : Ω)) hc.1 hξ fun i j => hle (GG (k i) j).2]`. Use `Submodule.subset_span ⟨fun j => (GG m j : Ω), ?_, rfl⟩` and prove the remaining obligations. Establish `e` using `span_eq_span_minor (M.O z) (fun m j => (GG m j : Ω)) k hk.1 hk.2 one_ne_zero one_ne_zero (by simp) (by simp)`. Simplify using `only [div_one, inv_one, one_smul] at e`. Conclude with `e.le (Submodule.subset_span ⟨m, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨k i, rfl⟩`. Establish `ht0 : t ≠ 0` using `norm_pos_iff.1 (ht ▸ pow_pos τ.δ_pos a)`. Rewrite `h1` using `[h2, hE, ← ht]`. Rewrite using `[hE]`.
-
-Conclude with `dual_dual_OO ht0 hL h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem at_test (hR' : R' ≤ M.ringOn U₀) {z : M.Z} {p : ℕ} [Fact p.Prime] {y : Sp (OO p) ⟶ M.Z}
     {y₀ : S.R →+* PadicAlgCl p} (τ : S.Test p y₀) (hc : M.Cen U₀ z y) (hat : S.At M y y₀)
@@ -301,11 +299,11 @@ theorem at_test (hR' : R' ≤ M.ringOn U₀) {z : M.Z} {p : ℕ} [Fact p.Prime] 
   exact dual_dual_OO ht0 hL h1
 
 /- English proof (translation)
-Take `⟨B, l, α, hB, hdet, -, hl, -, -, hE⟩` from `GlobalTheory.ZH.exists_adapted_basis_testLattice o Ω S p y₀ τ h`. Use `⟨Matrix.of fun i j => l i * B i j, ?_, hE, fun hker i j => ?_⟩` and prove the remaining obligations. Rewrite using `[det_mul_column]`. Use `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun i _ => norm_pos_iff.1 (hl i ▸ Real.exp_pos _)) ?_` and prove the remaining obligations. Conclude with `norm_pos_iff.1 (hdet ▸ one_pos)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : α i = 0`. Use `eq_zero_of_divisible (m := S.r * S.N) (by nlinarith [S.N_ge, S.r_pos]) (fun x => ?_) _` and prove the remaining obligations. Take `⟨g, hg⟩` from `τ.yy_onto (QuotientAddGroup.mk x)`. Establish `: g ∈ τ.yy.ker` using `hker ▸ AddSubgroup.mem_top g`. Rewrite `this` using `[AddMonoidHom.mem_ker, hg, QuotientAddGroup.eq_zero_iff]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `h1 : ‖l i‖ = 1` using `by rw [hl, h0]; simp`. Rewrite using `[Matrix.of_apply, norm_mul, h1, _root_.one_mul]`. Conclude with `hB i j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basis [ArithBase o Ω] {p : ℕ} [Fact p.Prime] {y₀ : S.R →+* PadicAlgCl p} (τ : S.Test p y₀)
     (h : ∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1) :
@@ -334,37 +332,31 @@ namespace GlobalTheory.ZH
 open MinorBundle
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ _ S M U₀ R' hR n a GG hO hR' hLL hT hS hgen hd`. Use `haveI : NeZero (S.r * S.N) := ⟨by nlinarith [S.N_ge, S.r_pos]⟩`. Use `choose x₀ hx₀ using hO.div`. Use `choose k hk using id hd`. Establish `hpow : ∀ {z : M.Z} {x x' : S.Gam}, M.Div S.th x z → S.th x' ^ a / S.th x ^ a ∈ M.O z` using `fun h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← div_pow]`. Conclude with `pow_mem (h.2 _) a`. Take `⟨EE, hEE⟩` from `exists_lat_dual o Ω M S.J n (fun m j => (GG m j : Ω)) (fun z => S.th (x₀ z) ^ a) (fun z => ⟨pow_ne_zero _ (hx₀ z).1, ⟨_, M.isOpen_setOf_div S.th (x₀ z)⟩, hx₀ z, fun x hx => ⟨hpow (hx₀ x), hpow hx⟩⟩) hd`. Establish `hmin : ∀ (z : M.Z) (x : S.Gam) (l : S.J → Fin n), M.Div S.th x z → M.Div (fun k : S.J → Fin n => Matrix.det (Matrix.of fun i j => (GG (k i) j : Ω))) l z → Submodule.span (M.O z) (Set.range fun m j => (GG m j : Ω) / S.th x ^ a) = Submodule.span (M.O z) (Set.range ((S.th (x₀ z) ^ a …` using `fun z x l hx hl => span_eq_span_minor (M.O z) (fun m j => (GG m j : Ω)) l hl.1 hl.2 (pow_ne_zero _ hx.1) (pow_ne_zero _ (hx₀ z).1) (hpow (hx₀ z)) (hpow hx)`. Establish `hE : ∀ (z : M.Z) (l : S.J → Fin n), M.Div (fun k : S.J → Fin n => Matrix.det (Matrix.of fun i j => (GG (k i) j : Ω))) l z → EE.E z = Submodule.span (M.O z) (Set.range (S.th (x₀ z) ^ a • (Matrix.of fun i j => (GG (l i) j : Ω))⁻¹ᵀ : Matrix S.J S.J Ω))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z l hl`. Take `⟨U, b, hz, hb, hU⟩` from `EE.loc z`. Rewrite using `[hU z hz]`. Use `(dual_dual (M.O z) (pow_ne_zero _ (hx₀ z).1) hb ?_).2.symm` and prove the remaining obligations. Rewrite using `[← hmin z _ l (hx₀ z) hl, ← hU z hz]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `w`. Rewrite using `[hEE]`. Conclude with `forall₂_congr fun v _ => by rw [dotProduct_comm]`. Establish `hval : ∀ (z : M.Z) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z), M.Cen U₀ z y → ∀ x, M.val (gPt p ≫ y) (S.th x ^ a) = M.val (gPt p ≫ y) (S.th x) ^ a` using `fun z p _ y hc x => map_pow (RatModel.valHom _ _ (RatModel.range_eq_singleton (gPt p ≫ y) (IsLocalRing.closedPoint _))) ⟨S.th x, RatModel.ringOn_le_O (hc.2 ⟨_, rfl⟩) (hO.le (S.th_mem x))⟩ a`. Establish `hint : ∀ (z : M.Z) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z) (y₀ : S.R →+* PadicAlgCl p), M.Cen U₀ z y → S.At M y y₀ → ∀ b : o, ‖y₀ (algebraMap o S.R b)‖ ≤ 1` using `fun z p _ y y₀ hc hat b => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hat]`. Conclude with `RatModel.norm_val_le_one hc.1 ((M.O z).algebraMap_mem b)`. Establish `hclosed : ∀ z ∈ U₀, IsClosed ({z} : Set M.Z) → (Matrix.det (Matrix.of fun i j => (GG (k z i) j : Ω)))⁻¹ ∈ M.O z`. Introduce `z hz hcl`. Take `⟨p, _, y, hc⟩` from `(hLL.1 U₀ le_rfl hO.ne z hcl).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y₀, hat, hy₀, ⟨τ⟩⟩` from `hT z p y hc`. Take `⟨hsup, hH⟩` from `hS z p y y₀ τ hc hat`. Take `⟨L, hL, hEL, hL1⟩` from `exists_basis τ hy₀`. Establish `hth : ∀ x, S.th x ∈ M.O z` using `fun x => RatModel.ringOn_le_O hz (hO.le (S.th_mem x))`. Establish `hthi : ∀ x, S.th x ≠ 0 → (S.th x)⁻¹ ∈ M.O z` using `fun x hx => RatModel.ringOn_le_O hz (hO.th_unit x hx)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hker : τ.yy.ker = ⊤`. Rewrite using `[← hH, eq_top_iff, ← S.supp]`. Conclude with `AddSubgroup.closure_mono fun x hx => ⟨hx, fun x' => by`. Rewrite using `[div_eq_mul_inv]`. Conclude with `mul_mem (hth x') (hthi x hx)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hδ : τ.δ = 1` using `((hsup _).1 (hx₀ z)).symm.trans ((RatModel.norm_val_eq_one_iff hc.1 (hth _)).2 ((RatModel.isUnit_O_iff _).2 ⟨(hx₀ z).1, hthi _ (hx₀ z).1⟩))`. Take `⟨h0, hsp⟩` from `at_test hR' τ hc hat (hgen p) (hk z) (t := 1) (by simp [hδ]) hL hEL`. Establish `hG : ∀ i j, (Matrix.of fun i j => (GG (k z i) j : Ω)) i j ∈ M.O z` using `fun i j => RatModel.ringOn_le_O hz (hR' (GG _ _).2)`. Use `set G := Matrix.of fun i j => (GG (k z i) j : Ω)`. Establish `hinv : ∀ i j, (G.map (M.val (gPt p ≫ y)))⁻¹ᵀ i j ∈ OA p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `i j`. Use `hsp.le (Submodule.subset_span ⟨i, rfl⟩)` as an intermediate fact. Rewrite `this` using `[hEL, mem_span_OO, one_smul]`. Take `⟨c, hc1, hc2⟩` from `this`. Rewrite using `[← hc2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `sum_mem fun m _ => mul_mem ((mem_OA _).2 (hc1 m)) ((mem_OA _).2 (hL1 hker m j))`. Establish `h1` using `(mem_OA _).1 (det_mem _ hinv)`. Rewrite `h1` using `[det_transpose, det_nonsing_inv, Ring.inverse_eq_inv', norm_inv, ← val_det (RatModel.gPt_specializes hc.1) hG]`. Rewrite `h0` using `[← val_det (RatModel.gPt_specializes hc.1) hG]`. Establish `h2` using `RatModel.norm_val_le_one hc.1 (det_mem _ hG)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `(inv_le_one₀ (norm_pos_iff.2 h0)).1 h1`. Conclude with `((RatModel.isUnit_O_iff _).1 ((RatModel.norm_val_eq_one_iff hc.1 (det_mem _ hG)).1 (le_antisymm h2 h3))).2`. Use `⟨EE, ⟨fun z hz => ?_, fun z p _ y y₀ τ hc hat => ?_⟩, fun z x hx w => ?_⟩` and prove the remaining obligations. Use `haveI := hLL.2`. Take `⟨z', ⟨hz'U, hz'⟩, hcl⟩` from `nonempty_inter_closedPoints (Z := (U₀ : Set M.Z) ∩ closure {z}) ⟨z, hz, subset_closure rfl⟩ (U₀.isOpen.isLocallyClosed.inter isClosed_closure.isLocallyClosed)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs : z ⤳ z'` using `specializes_iff_mem_closure.2 hz'`. Establish `hG : ∀ i j, (Matrix.of fun i j => (GG (k z' i) j : Ω)) i j ∈ M.O z` using `fun i j => RatModel.ringOn_le_O hz (hR' (GG _ _).2)`. Take `⟨C, -, hC⟩` from `exists_inv (M.O z) hG (hk z').1 (RatModel.O_le_of_specializes hs (hclosed z' hz'U hcl))`. Rewrite using `[hE z _ ((hk z').of_specializes hs)]`. Establish `hA` using `congrArg transpose (smul_mul_smul_inv (hk z').1 (pow_ne_zero a (hx₀ z).1))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hA` using `[transpose_mul, transpose_transpose, transpose_one]`. Use `span_eq_std (M.O z) (fun i j => ?_) (fun i j => ?_) (mul_eq_one_comm.1 hA)` and prove the remaining obligations. Rewrite using `[hC]`. Conclude with `mul_mem (pow_mem (RatModel.ringOn_le_O hz (hO.le (S.th_mem _))) a) (C j i).2`. Rewrite using `[← inv_pow]`.
-
-Conclude with `mul_mem (pow_mem (RatModel.ringOn_le_O hz (hO.th_unit _ (hx₀ z).1)) a) (hG j i)`. Take `⟨L, hL, hEL, -⟩` from `exists_basis τ (hint z p y y₀ hc hat)`. Take `⟨h0, hsp⟩` from `at_test hR' τ hc hat (hgen p) (hk z) (t := M.val (gPt p ≫ y) (S.th (x₀ z) ^ a)) (by rw [hval z p y hc, norm_pow, ((hS z p y y₀ τ hc hat).1 _).1 (hx₀ z)]) hL hEL`. Establish `hξ` using `RatModel.range_eq_singleton (gPt p ≫ y) (IsLocalRing.closedPoint _)`. Use `set ξ := (gPt p ≫ y) (IsLocalRing.closedPoint _)`.
-
-Establish `hξU : ξ ∈ U₀` using `hc.2 ⟨_, rfl⟩`. Establish `hG : ∀ i j, (Matrix.of fun i j => (GG (k z i) j : Ω)) i j ∈ M.O ξ` using `fun i j => RatModel.ringOn_le_O hξU (hR' (GG _ _).2)`. Take `⟨h1, h2⟩` from `val_inv hξ hG h0`. Establish `hθ : S.th (x₀ z) ^ a ∈ M.O ξ` using `pow_mem (RatModel.ringOn_le_O hξU (hO.le (S.th_mem _))) a`. Rewrite using `[hE z _ (hk z), span_val_image (B := S.th (x₀ z) ^ a • (Matrix.of fun i j => (GG (k z i) j : Ω))⁻¹ᵀ) hc.1 hξ fun i j => mul_mem hθ (h1 j i), ← hsp, ← h2]`.
-
-Use `congr 2`. Use extensionality with `i j`. Conclude with `RatModel.val_mul (RatModel.specializes_of_range_eq hξ) hθ (h1 j i)`. Rewrite using `[hmin z x _ hx (hk z), ← hmin z _ _ (hx₀ z) (hk z)]`. Conclude with `hEE z w`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isEE_of_hasDiv_minors : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (M : RatModel o Ω) (U₀ : M.Z.Opens) (R' : Subalgebra o Ω) (hR : S.R ≤ R') (n a : ℕ) (GG : Fin n → S.J → R'), S.Over₀ M U₀ → R' ≤ M.ringOn U₀ → ((∀ U₁ : M.Z.Opens, U₁ ≤ U₀ → (U₁ : Set M.Z).Nonempty → ∀ z : M.Z, IsClosed ({z} : Set M.Z) → (∃ (p : ℕ) (_ : Fact p.Prime) (y : Sp (OO p) ⟶ M.Z), M.Cen U₁ z y) ∧ ∀ φ ∈ M.ringOn U₁, (∀ (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z), M.Cen U₁ z y → ‖M.val (gPt p ≫ y) φ‖ ≤ 1) → φ ∈ M.O z) ∧ JacobsonSpace M.Z) → (∀ (z : M.Z) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z), M.Cen U₀ z y → ∃ y₀ : S.R →+* PadicAlgCl p, S.At M y y₀ ∧ (∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1) ∧ Nonempty (S.Test p y₀)) → (∀ (z : M.Z) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z) (y₀ : S.R →+* PadicAlgCl p) (τ : S.Test p y₀), M.Cen U₀ z y → S.At M y y₀ → (∀ x, x ∈ S.supI M z ↔ ‖M.val (gPt p ≫ y) (S.th x)‖ = τ.δ) ∧ S.HH M z = τ.yy.ker) → (∀ (p : ℕ) [Fact p.Prime] (y' : R' →+* PadicAlgCl p) (τ : S.Test p (y'.comp (Subalgebra.inclusion hR).toRingHom)), (∀ b : o, ‖y' (algebraMap o R' b)‖ ≤ 1) → ∀ w : S.J → PadicAlgCl p, w ∈ Submodule.span (OO p) (Set.range fun k j => y' (GG k j)) ↔ ∀ v ∈ τ.E, ‖w ⬝ᵥ v‖ ≤ τ.δ ^ a) → M.HasDiv (fun k : S.J → Fin n => Matrix.det (Matrix.of fun i j => (GG (k i) j : Ω))) → ∃ EE : M.Lat S.J, S.IsEE M U₀ EE ∧ ∀ z : M.Z, ∀ x₀ ∈ S.supI M z, ∀ w : S.J → Ω, w ∈ Submodule.span (M.O z) (Set.range fun k j => (GG k j : Ω) / S.th x₀ ^ a) ↔ ∀ v ∈ EE.E z, w ⬝ᵥ v ∈ M.O z := by
   intro o Ω _ _ _ _ S M U₀ R' hR n a GG hO hR' hLL hT hS hgen hd

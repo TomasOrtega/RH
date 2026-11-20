@@ -21,16 +21,16 @@ namespace GlobalTheory.KeyQuot
 open TopologicalSpace Opposite
 
 /- English proof (translation)
-Simplify using `only [gs_eq f y U h, map_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gs_prod {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) {K : Type} [Fintype K]
     (a : K → Γ(X, U)) : gs f y U (∏ k, a k) = ∏ k, gs f y U (a k) := by
   simp only [gs_eq f y U h, map_prod]
 
 /- English proof (translation)
-Establish `l : ∀ (j : K → L.ι) (k : K), LB.wchart L φ j ≤ φ k ⁻¹ᵁ L.U (j k)` using `fun _ k _ hy => Set.mem_iInter.1 hy k`. Set `a : ∀ j : K → L.ι, Γ(Y, LB.wchart L φ j)` to `fun j => ∏ k, (Y.presheaf.map (homOfLE (l j k)).op).hom (((φ k).app (L.U (j k))).hom (th.f (j k)))`. Establish `v : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (j : K → L.ι), r z ∈ LB.wchart L φ j → gs r z (LB.wchart L φ j) (a j) = ∏ k, gs (r ≫ φ k) z (L.U (j k)) (th.f (j k))` using `fun Z r z j hj => (gs_prod r z _ hj _).trans (Finset.prod_congr rfl fun k _ => (gs_res r z (l j k) hj _).trans (gs_pull r (φ k) z _ (l j k hj) _))`. Use `⟨⟨a, fun j j' => fn_ext fun y hy => ?_⟩, fun Z r z J hJ => v Z r z _ (hJ.mem φ r)⟩` and prove the remaining obligations. Use `((gs_res (𝟙 Y) y _ hy _).trans (v _ _ y j hy.1)).trans (Eq.trans ?_ ((gs_mul (𝟙 Y) y _ hy _ _).trans (congrArg₂ (· * ·) ((gs_unit (𝟙 Y) y _ hy _).trans (congrArg Units.val (gm_linComb L φ _ (𝟙 Y) y j j' hy.1 hy.2))) ((gs_res (𝟙 Y) y _ hy _).trans (v _ _ y j' hy.2)))).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Units.coe_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[zpow_one]`. Conclude with `gs_compat th (𝟙 Y ≫ φ k) y (l j k hy.1) (l j' k hy.2)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_boxSec {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (th : L.Sec) :
     ∃ t : LB.Sec (LB.LinComb L φ (fun _ => 1)), ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) J, Good L z J →
@@ -54,9 +54,9 @@ theorem exists_boxSec {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ :
   exact gs_compat th (𝟙 Y ≫ φ k) y (l j k hy.1) (l j' k hy.2)
 
 /- English proof (translation)
-Introduce `X Y L hL K₁ K₂ _ _ φ ψ e th w hw`. Take `⟨t, ht⟩` from `exists_boxSec L φ th`. Establish `hu` using `DVR.invGen_isGen _ _ _ _ hw`. Take `⟨s, hs⟩` from `exists_sec hL (φ' := ψ) (ε' := fun _ => e) (by`. Introduce `U _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Category.id_comp, zpow_one, zpow_neg, Finset.prod_inv_distrib, mul_inv, mul_inv_cancel_left, inv_inv]) (pullMulSec t (𝟙 Y) _ hu)`. Use `⟨s, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hs Z r z J hJ, sval_pullMulSec t (𝟙 Y) _ hu r z hJ, Category.comp_id, ht Z r z J hJ, val_inv, mul_left_comm, Units.mul_inv, _root_.mul_one]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_sec_quot : ∀ (X Y : Scheme.{0}) (L : LB X), L.IsLB → ∀ (K₁ K₂ : Type) [Fintype K₁] [Fintype K₂] (φ : K₁ → (Y ⟶ X)) (ψ : K₂ → (Y ⟶ X)) (e : ℤ) (th : L.Sec) (w : LB.Gen (LB.LinComb L (K := K₁ ⊕ K₂) (Sum.elim φ ψ) (Sum.elim (fun _ => 1) (fun _ => -e)))), w.IsGen → ∃ s : LB.Sec (LB.LinComb L ψ (fun _ => e)), ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) J, Good L z J → ∏ k, gs (r ≫ φ k) z (L.U (J (r ≫ φ k))) (th.f (J (r ≫ φ k))) = (val w r z J).val * sval s r z J := by
   intro X Y L hL K₁ K₂ _ _ φ ψ e th w hw

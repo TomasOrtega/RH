@@ -8,7 +8,7 @@ section
 namespace UpperTheory.GalC.Tr
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N
 /- English proof (translation)
-Introduce `_` and use `trivial`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem no_g4_restrict_alt {D : D7} {c : CutD D} (_ : _root_.Formalism.MainNotions.SumRepresentations.provisionFortyOne D) (_ : ∀ i, UpperTheory.GalS.UnusedSlot55 D.nd D.naut i) :
     ∀ i, UpperTheory.GalS.UnusedSlot55 (cut D c).nd (cut D c).naut i := fun _ => trivial

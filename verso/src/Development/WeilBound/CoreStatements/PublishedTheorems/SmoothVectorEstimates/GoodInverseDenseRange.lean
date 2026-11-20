@@ -12,9 +12,7 @@ def GoodInv (B : Type) [CommRing B] [TopologicalSpace B] : Prop :=
   IsOpen {x : B | IsUnit x} ∧ ∀ x : B, IsUnit x → ContinuousAt Ring.inverse x
 
 /- English proof (translation)
-Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `e : {x : K | IsUnit x} = {x | x ≠ 0}` using `by ext x; exact isUnit_iff_ne_zero`. Rewrite using `[e]`. Conclude with `isOpen_ne`. Rewrite using `[Ring.inverse_eq_inv']`.
-
-Conclude with `continuousAt_inv₀ hx.ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodInv_field (K : Type) [Field K] [TopologicalSpace K] [ContinuousInv₀ K] [T1Space K] :
     GoodInv K := by
@@ -25,13 +23,11 @@ theorem goodInv_field (K : Type) [Field K] [TopologicalSpace K] [ContinuousInv�
     exact continuousAt_inv₀ hx.ne_zero
 
 /- English proof (translation)
-Establish `hU : {x : ∀ i, K i | IsUnit x} = ⋂ i, (fun x : ∀ i, K i => x i) ⁻¹' {y | IsUnit y}`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage]`. Conclude with `Pi.isUnit_iff`. Establish `hO : IsOpen {x : ∀ i, K i | IsUnit x}`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU]`. Conclude with `isOpen_iInter_of_finite fun i => (h i).1.preimage (continuous_apply i)`. Use `⟨hO, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx' : ∀ i, IsUnit (x i)` using `Pi.isUnit_iff.1 hx`. Establish `hc : ContinuousAt (fun y : ∀ i, K i => fun i => Ring.inverse (y i)) x` using `continuousAt_pi.2 fun i => ((h i).2 _ (hx' i)).comp (continuous_apply i).continuousAt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hc.congr ?_` and prove the remaining obligations. Use `filter_upwards [hO.mem_nhds hx] with y hy`. Establish `hy' : ∀ i, IsUnit (y i)` using `Pi.isUnit_iff.1 hy`. Establish `h1 : y * (fun i => Ring.inverse (y i)) = 1` using `funext fun i => Ring.mul_inverse_cancel _ (hy' i)`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Ring.inverse_mul_cancel _ hy, one_mul]`. Use `_ = Ring.inverse y := by rw [mul_assoc, h1, mul_one]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodInv_pi {ι : Type} [Fintype ι] {K : ι → Type} [∀ i, CommRing (K i)] [∀ i, TopologicalSpace (K i)]
     (h : ∀ i, GoodInv (K i)) : GoodInv (∀ i, K i) := by
@@ -52,13 +48,11 @@ theorem goodInv_pi {ι : Type} [Fintype ι] {K : ι → Type} [∀ i, CommRing (
     _ = Ring.inverse y := by rw [mul_assoc, h1, mul_one]
 
 /- English proof (translation)
-Establish `hU : {x : A × C | IsUnit x} = Prod.fst ⁻¹' {y | IsUnit y} ∩ Prod.snd ⁻¹' {y | IsUnit y}`. Use extensionality with `x`. Conclude with `Prod.isUnit_iff`. Establish `hO : IsOpen {x : A × C | IsUnit x}`. Rewrite using `[hU]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hA.1.preimage continuous_fst).inter (hC.1.preimage continuous_snd)`. Use `⟨hO, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx'` using `Prod.isUnit_iff.1 hx`. Establish `hc : ContinuousAt (fun y : A × C => (Ring.inverse y.1, Ring.inverse y.2)) x` using `((hA.2 _ hx'.1).comp continuousAt_fst).prodMk ((hC.2 _ hx'.2).comp continuousAt_snd)`. Use `hc.congr ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hO.mem_nhds hx] with y hy`. Establish `hy'` using `Prod.isUnit_iff.1 hy`. Establish `h1 : y * (Ring.inverse y.1, Ring.inverse y.2) = 1` using `Prod.ext (Ring.mul_inverse_cancel _ hy'.1) (Ring.mul_inverse_cancel _ hy'.2)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Ring.inverse_mul_cancel _ hy, one_mul]`.
-
-Use `_ = Ring.inverse y := by rw [mul_assoc, h1, mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodInv_prod {A C : Type} [CommRing A] [TopologicalSpace A] [CommRing C] [TopologicalSpace C]
     (hA : GoodInv A) (hC : GoodInv C) : GoodInv (A × C) := by
@@ -80,23 +74,19 @@ theorem goodInv_prod {A C : Type} [CommRing A] [TopologicalSpace A] [CommRing C]
     _ = Ring.inverse y := by rw [mul_assoc, h1, mul_one]
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial B with hs | hs` into its components or cases. Introduce `M`. Establish `: Subsingleton (GL (Fin a) B)`. Use `⟨fun u v => Units.ext ?_⟩` and prove the remaining obligations. Use extensionality with `i k`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Conclude with `Subsingleton.elim _ _`. Conclude with `subset_closure ⟨1, Subsingleton.elim _ _⟩`. Introduce `M`. Rewrite using `[mem_closure_iff]`. Introduce `o ho hMo`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨O, hO, rfl⟩` from `isOpen_induced_iff.1 ho`. Set `f : Matrix (Fin a) (Fin a) B → Matrix (Fin a) (Fin a) B × (Matrix (Fin a) (Fin a) B)ᵐᵒᵖ` to `fun P => (P, MulOpposite.op P⁻¹)`. Establish `hdet : IsUnit (M.val.det)` using `(Matrix.isUnit_iff_isUnit_det _).1 M.isUnit`. Establish `hinv : ContinuousAt (fun P : Matrix (Fin a) (Fin a) B => P⁻¹) M.val`. Establish `e : (fun P : Matrix (Fin a) (Fin a) B => P⁻¹) = fun P => Ring.inverse P.det • P.adjugate`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `P`. Conclude with `Matrix.inv_def P`. Rewrite using `[e]`. Conclude with `((hB.2 _ hdet).comp (continuous_id.matrix_det).continuousAt).smul (continuous_id.matrix_adjugate).continuousAt`. Establish `hf : ContinuousAt f M.val` using `continuousAt_id.prodMk (MulOpposite.continuous_op.continuousAt.comp hinv)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfM : f M.val = Units.embedProduct _ M`. Simplify using `only [f, Units.embedProduct_apply, Matrix.coe_units_inv]`. Establish `hN : f ⁻¹' O ∩ {P | IsUnit P.det} ∈ 𝓝 M.val`. Use `Filter.inter_mem (hf.preimage_mem_nhds (hO.mem_nhds ?_)) ?_` and prove the remaining obligations. Rewrite using `[hfM]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hMo`. Conclude with `(hB.1.preimage (continuous_id.matrix_det)).mem_nhds hdet`. Establish `hd : DenseRange fun Q : Matrix (Fin a) (Fin a) K => Q.map j` using `DenseRange.piMap fun _ => DenseRange.piMap fun _ => hj`. Take `⟨Q, hQO, hQd⟩` from `hd.mem_nhds hN`. Establish `hQ : IsUnit Q.det`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `isUnit_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Establish `: IsUnit (j Q.det)` using `by rw [RingHom.map_det]; exact hQd`. Rewrite `this` using `[h0, map_zero]`. Conclude with `not_isUnit_zero this`. Set `γ : GL (Fin a) K` to `((Matrix.isUnit_iff_isUnit_det Q).2 hQ).unit`.
-
-Use `⟨GeneralLinearGroup.map j γ, ?_, γ, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Units.embedProduct _ (GeneralLinearGroup.map j γ) ∈ O`. Establish `e : Units.embedProduct _ (GeneralLinearGroup.map j γ) = f (Q.map j)`. Simplify using `only [f, Units.embedProduct_apply, Matrix.coe_units_inv]`. Both sides reduce to the same expression.
-
-Rewrite using `[e]`. Conclude with `hQO`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem denseRange_mapGL {K B : Type} [Field K] [CommRing B] [TopologicalSpace B] [IsTopologicalRing B]
     (hB : GoodInv B) (j : K →+* B) (hj : DenseRange j) (a : ℕ) :
@@ -151,11 +141,11 @@ def jS (S : Finset (Pl E)) : E →+* BS S :=
   RingHom.prod (RingHom.pi fun v : S => algebraMap E (v.1.adicCompletion E)) ((pInf E).comp (algebraMap E (Ad E)))
 
 /- English proof (translation)
-Establish `hd` using `GroundTheory.Global.denseRange_algebraMap_prod_pi (K := E) S (Finset.univ : Finset (InfinitePlace E))`. Set `h : ((v : S) → v.1.adicCompletion E) × ((w : (Finset.univ : Finset (InfinitePlace E))) → w.1.Completion) → BS S` to `fun p => (p.1, fun w => InfinitePlace.Completion.ringEquivComplexOfIsComplex (IsTotallyComplex.isComplex w) (p.2 ⟨w, Finset.mem_univ w⟩))`. Establish `hc : Continuous h` using `continuous_fst.prodMk (continuous_pi fun w => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp ((continuous_apply _).comp continuous_snd))`. Establish `hs : Function.Surjective h`. Introduce and unpack `⟨p, c⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `⟨(p, fun w => (InfinitePlace.Completion.ringEquivComplexOfIsComplex (IsTotallyComplex.isComplex w.1)).symm (c w.1)), ?_⟩` and prove the remaining obligations. Conclude with `Prod.ext rfl (funext fun w => RingEquiv.apply_symm_apply _ _)`. Use `hs.denseRange.comp hd hc using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Use `Prod.ext rfl (funext fun w => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem denseRange_jS (S : Finset (Pl E)) : DenseRange (jS S) := by
   classical
@@ -178,7 +168,7 @@ theorem denseRange_jS (S : Finset (Pl E)) : DenseRange (jS S) := by
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `goodInv_prod (goodInv_pi fun _ => goodInv_field _) (goodInv_pi fun _ => goodInv_field ℂ)`.
+A detailed English derivation is pending.
 -/
 theorem goodInv_BS (S : Finset (Pl E)) : GoodInv (BS S) :=
   goodInv_prod (goodInv_pi fun _ => goodInv_field _) (goodInv_pi fun _ => goodInv_field ℂ)
@@ -187,7 +177,7 @@ def ρS (S : Finset (Pl E)) : Ad E →+* BS S :=
   RingHom.prod (RingHom.pi fun v : S => (pLoc E v.1).comp (pFin E)) (pInf E)
 
 /- English proof (translation)
-Use extensionality with `x`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Both sides reduce to the same expression.
 -/
 theorem ρS_comp (S : Finset (Pl E)) : (ρS S).comp (algebraMap E (Ad E)) = jS S := by
   ext x
@@ -195,7 +185,7 @@ theorem ρS_comp (S : Finset (Pl E)) : (ρS S).comp (algebraMap E (Ad E)) = jS S
   · rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Continuous fun y : InfiniteAdeleRing E × Af E => (infEq E).symm y.1`. Conclude with `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp ((continuous_apply w).comp continuous_fst)`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem continuous_pInf : Continuous (pInf E) := by
   change Continuous fun y : InfiniteAdeleRing E × Af E => (infEq E).symm y.1
@@ -204,7 +194,7 @@ theorem continuous_pInf : Continuous (pInf E) := by
       ((continuous_apply w).comp continuous_fst)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Continuous fun y : Ad E => ((fun v : S => pLoc E v.1 (pFin E y)), pInf E y)`. Use `Continuous.prodMk (continuous_pi fun v => ?_) continuous_pInf` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun y : InfiniteAdeleRing E × Af E => (y.2 : Af E) v.1`. Conclude with `(RestrictedProduct.continuous_eval v.1).comp continuous_snd`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem continuous_ρS (S : Finset (Pl E)) : Continuous (ρS S) := by
   change Continuous fun y : Ad E => ((fun v : S => pLoc E v.1 (pFin E y)), pInf E y)
@@ -219,7 +209,7 @@ def fSr (S : Finset (Pl E)) (p : (v : S) → v.1.adicCompletion E) : (w : Pl E) 
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Unfold `fSr`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fSr_of_mem (S : Finset (Pl E)) (p : (v : S) → v.1.adicCompletion E) {w : Pl E} (h : w ∈ S) :
     fSr S p w = p ⟨w, h⟩ := by
@@ -228,7 +218,7 @@ theorem fSr_of_mem (S : Finset (Pl E)) (p : (v : S) → v.1.adicCompletion E) {w
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Unfold `fSr`. Rewrite using `[dif_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fSr_of_not_mem (S : Finset (Pl E)) (p : (v : S) → v.1.adicCompletion E) {w : Pl E} (h : w ∉ S) :
     fSr S p w = 0 := by
@@ -237,7 +227,7 @@ theorem fSr_of_not_mem (S : Finset (Pl E)) (p : (v : S) → v.1.adicCompletion E
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Distinguish the cases in `h : w ∈ S`. Rewrite using `[Pi.mul_apply, fSr_of_mem S _ h, fSr_of_mem S _ h, fSr_of_mem S _ h]`. Both sides reduce to the same expression. Rewrite using `[Pi.mul_apply, fSr_of_not_mem S _ h, fSr_of_not_mem S _ h, fSr_of_not_mem S _ h, zero_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem fSr_mul (S : Finset (Pl E)) (p q : (v : S) → v.1.adicCompletion E) : fSr S (p * q) = fSr S p * fSr S q := by
   funext w
@@ -247,7 +237,7 @@ theorem fSr_mul (S : Finset (Pl E)) (p q : (v : S) → v.1.adicCompletion E) : f
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Distinguish the cases in `h : w ∈ S`. Rewrite using `[Pi.add_apply, fSr_of_mem S _ h, fSr_of_mem S _ h, fSr_of_mem S _ h]`. Both sides reduce to the same expression. Rewrite using `[Pi.add_apply, fSr_of_not_mem S _ h, fSr_of_not_mem S _ h, fSr_of_not_mem S _ h, zero_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem fSr_add (S : Finset (Pl E)) (p q : (v : S) → v.1.adicCompletion E) : fSr S (p + q) = fSr S p + fSr S q := by
   funext w
@@ -257,7 +247,7 @@ theorem fSr_add (S : Finset (Pl E)) (p q : (v : S) → v.1.adicCompletion E) : f
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Distinguish the cases in `h : w ∈ S`. Rewrite using `[fSr_of_mem S _ h]`. Both sides reduce to the same expression. Rewrite using `[fSr_of_not_mem S _ h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -269,7 +259,7 @@ theorem fSr_zero (S : Finset (Pl E)) : fSr S 0 = 0 := by
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Introduce `v hv`. Rewrite using `[fSr_of_not_mem S p hv]`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fSr_int (S : Finset (Pl E)) (p : (v : S) → v.1.adicCompletion E) :
     ∀ v ∈ (↑S : Set (Pl E))ᶜ, fSr S p v ∈ (v.adicCompletionIntegers E : Set (v.adicCompletion E)) := by
@@ -279,9 +269,9 @@ theorem fSr_int (S : Finset (Pl E)) (p : (v : S) → v.1.adicCompletion E) :
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Use `continuous_pi fun w => ?_` and prove the remaining obligations. Distinguish the cases in `h : w ∈ S`. Establish `: (fun p : (v : S) → v.1.adicCompletion E => fSr S p w) = fun p => p ⟨w, h⟩`. Use function extensionality and compare the values at `fun p => fSr_of_mem S p h`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_apply _`. Establish `: (fun p : (v : S) → v.1.adicCompletion E => fSr S p w) = fun _ => 0`. Use function extensionality and compare the values at `fun p => fSr_of_not_mem S p h`. Rewrite using `[this]`. Conclude with `continuous_const`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_fSr (S : Finset (Pl E)) : Continuous (fSr S) := by
   refine continuous_pi fun w => ?_
@@ -301,7 +291,7 @@ def fS (S : Finset (Pl E)) : ((v : S) → v.1.adicCompletion E) →ₙ+* Af E wh
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Set `g : ((v : S) → v.1.adicCompletion E) → RestrictedProduct (fun v : Pl E => v.adicCompletion E) (fun v => (v.adicCompletionIntegers E : Set (v.adicCompletion E))) (𝓟 (↑S : Set (Pl E))ᶜ)` to `fun p => ⟨fSr S p, Filter.eventually_principal.2 (fSr_int S p)⟩`. Establish `hg : Continuous g` using `RestrictedProduct.continuous_rng_of_principal.2 (continuous_fSr S)`. Establish `hle : (cofinite : Filter (Pl E)) ≤ 𝓟 (↑S : Set (Pl E))ᶜ` using `Filter.le_principal_iff.2 S.finite_toSet.compl_mem_cofinite`. Conclude with `(RestrictedProduct.continuous_inclusion hle).comp hg`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_fS (S : Finset (Pl E)) : Continuous (fS S) := by
   let g : ((v : S) → v.1.adicCompletion E) →
@@ -320,19 +310,19 @@ def σS (S : Finset (Pl E)) : BS S →ₙ+* Ad E where
   map_add' _ _ := Prod.ext (map_add (infEq E) _ _) (map_add (fS S) _ _)
 
 /- English proof (translation)
-The claim follows from `((continuous_infEq E).comp continuous_snd).prodMk ((continuous_fS S).comp continuous_fst)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_σS (S : Finset (Pl E)) : Continuous (σS S) :=
   ((continuous_infEq E).comp continuous_snd).prodMk ((continuous_fS S).comp continuous_fst)
 
 /- English proof (translation)
-The claim follows from `(infEq E).symm_apply_apply b.2`.
+A detailed English derivation is pending.
 -/
 theorem pInf_σS (S : Finset (Pl E)) (b : BS S) : pInf E (σS S b) = b.2 :=
   (infEq E).symm_apply_apply b.2
 
 /- English proof (translation)
-The claim follows from `fSr_of_mem S b.1 hw`.
+A detailed English derivation is pending.
 -/
 theorem pLoc_σS (S : Finset (Pl E)) (b : BS S) (w : Pl E) (hw : w ∈ S) :
     pLoc E w (pFin E (σS S b)) = b.1 ⟨w, hw⟩ :=
@@ -343,15 +333,15 @@ end PositivityTheory.jumpWindows.GoodInverseDenseRange
 namespace PositivityTheory.jumpWindows
 
 /- English proof (translation)
-Introduce `_ E _ _ _ a S`. Rewrite using `[dense_iff_inter_open]`. Introduce and unpack `U hU ⟨x, hx⟩`. Use `set ρ := GoodInverseDenseRange.ρS S`. Use `set σ := GoodInverseDenseRange.σS S`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous (cornerGL a σ)` using `Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map (GoodInverseDenseRange.continuous_σS S)))`. Establish `hρ : Continuous (GeneralLinearGroup.map ρ : GL (Fin a) (Ad E) → GL (Fin a) (GoodInverseDenseRange.BS S))` using `Continuous.units_map _ (continuous_id.matrix_map (GoodInverseDenseRange.continuous_ρS S))`. Use `set H : GL (Fin a) (GoodInverseDenseRange.BS S) → GA E a := fun z => x * cornerGL a σ ((GeneralLinearGroup.map ρ x)⁻¹ * z) with hHdef`. Establish `hH : Continuous H` using `continuous_const.mul (hc.comp (continuous_const.mul continuous_id))`. Establish `hHx : H (GeneralLinearGroup.map ρ x) = x` using `by simp [hHdef]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨γ, hγ⟩` from `(GoodInverseDenseRange.denseRange_mapGL (GoodInverseDenseRange.goodInv_BS S) (GoodInverseDenseRange.jS S) (GoodInverseDenseRange.denseRange_jS S) a).exists_mem_open (hU.preimage hH) ⟨_, show H (GeneralLinearGroup.map ρ x) ∈ U by rw [hHx]; exact hx⟩`. Establish `e : GeneralLinearGroup.map (GoodInverseDenseRange.jS S) γ = GeneralLinearGroup.map ρ (ratGL E a γ)`. Rewrite using `[← GoodInverseDenseRange.ρS_comp]`. Both sides reduce to the same expression. Rewrite `hγ` using `[Set.mem_preimage, e]`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨_, hγ, γ, (ratGL E a γ)⁻¹ * H (GeneralLinearGroup.map ρ (ratGL E a γ)), by group, ?_, ?_⟩` and prove the remaining obligations. Establish `key1 : ∀ z, cInf (cornerGL a σ z) = GeneralLinearGroup.map (RingHom.snd _ _) z` using `fun z => map_cornerGL_of_hom _ _ _ (GoodInverseDenseRange.pInf_σS S) z`. Establish `key2 : ∀ y : GA E a, GeneralLinearGroup.map (RingHom.snd _ _) (GeneralLinearGroup.map ρ y) = cInf y` using `fun y => rfl`. Simplify using `only [hHdef, map_mul, map_inv, key1, key2]`. Use `group`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `w hw`. Establish `key1 : ∀ z, cLoc w (cornerGL a σ z) = GeneralLinearGroup.map ((Pi.evalRingHom (fun v : S => v.1.adicCompletion E) ⟨w, hw⟩).comp (RingHom.fst _ _)) z` using `fun z => map_cornerGL_of_hom _ _ _ (fun b => GoodInverseDenseRange.pLoc_σS S b w hw) z`. Establish `key2 : ∀ y : GA E a, GeneralLinearGroup.map ((Pi.evalRingHom (fun v : S => v.1.adicCompletion E) ⟨w, hw⟩).comp (RingHom.fst _ _)) (GeneralLinearGroup.map ρ y) = cLoc w y` using `fun y => rfl`. Simplify using `only [hHdef, map_mul, map_inv, key1, key2]`. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem good_inverse_of_G0 : G0 → WeakApproximationGL := by
   intro _ E _ _ _ a S

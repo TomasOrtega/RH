@@ -10,9 +10,9 @@ open DividedPowers GlobalTheory.Cris GlobalTheory.PDA
 namespace GlobalTheory.PDA
 
 /- English proof (translation)
-Establish `h1` using `Nat.uniformBell_mul_eq n hN`. Establish `h2` using `Nat.uniformBell_mul_eq m (Nat.mul_ne_zero hn hN)`. Establish `h3` using `Nat.uniformBell_mul_eq m hn`. Establish `h4` using `Nat.uniformBell_mul_eq (m * n) hN`. Establish `hpos : 0 < m.factorial * n.factorial ^ m * N.factorial ^ (m * n)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Nat.eq_of_mul_eq_mul_right hpos ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h3, h4]`. Use `_ = m.uniformBell n * (m * n).uniformBell N * (m.factorial * n.factorial ^ m * N.factorial ^ (m * n)) := by ring`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uniformBell_comp_coeff (m : ℕ) {n N : ℕ} (hn : n ≠ 0) (hN : N ≠ 0) :
     n.uniformBell N ^ m * m.uniformBell (n * N) = m.uniformBell n * (m * n).uniformBell N := by
@@ -31,13 +31,13 @@ theorem uniformBell_comp_coeff (m : ℕ) {n N : ℕ} (hn : n ≠ 0) (hN : N ≠ 
     _ = m.uniformBell n * (m * n).uniformBell N * (m.factorial * n.factorial ^ m * N.factorial ^ (m * n)) := by ring
 
 /- English proof (translation)
-Introduce `B _ Q`. Take `⟨γ, hγ, he⟩` from `GlobalTheory.T.exists_isPreDividedPowers_augmentationIdeal B Q`. Establish `hcomp : ∀ x ∈ Set.range (fun k : ℕ ↦ Q.e (k + 1)), ∀ m n : ℕ, n ≠ 0 → γ m (γ n x) = (m.uniformBell n : Q.P) * γ (m * n) x`. Introduce and unpack `_ ⟨k, rfl⟩ m n hn`. Take `⟨j, hj⟩ : ∃ j, n * (k + 1) = j + 1` from `⟨n * (k + 1) - 1, by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `: 0 < n * (k + 1)` using `Nat.mul_pos (Nat.pos_of_ne_zero hn) k.succ_pos`. Use the proof step `omega⟩`. Establish `hmem : Q.e (n * (k + 1)) ∈ Q.aug` using `hj ▸ Q.e_succ_mem_aug j`. Establish `key` using `congrArg (Nat.cast (R := Q.P)) (uniformBell_comp_coeff m hn k.succ_ne_zero)`. Move the coercions through the operations in `at key`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[he n k, hγ.mul m _ _ hmem, hj, he m j, ← hj, he (m * n) k, ← Nat.mul_assoc]`. Take the linear combination `key * Q.e (m * n * (k + 1))`. Take `⟨δ, hδ⟩` from `GlobalTheory.T.exists_dividedPowers_of_comp_on_generators Q.P Q.aug γ (Set.range fun k : ℕ ↦ Q.e (k + 1)) hγ rfl hcomp`. Use `⟨δ, fun n ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[hδ]`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `he n 0` as an intermediate fact. Simplify `this` using `[Nat.uniformBell_one_right]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_dividedPowers_aug : ∀ (B : Type) [CommRing B] (Q : PDPoly B),
     ∃ η : DividedPowers Q.aug, ∀ n : ℕ, η.dpow n (Q.e 1) = Q.e n := by

@@ -25,7 +25,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 section Model
 
 /- English proof (translation)
-The claim follows from `| 0 => Inhab.isProjOver_id R | n + 1 => ProjSpace.isProjOver_pullback h (isProjOver_powObj A h n)`.
+A detailed English derivation is pending.
 -/
 theorem isProjOver_powObj {R : Type} [CommRing R] (A : Over (Sp R)) (h : IsProjOver A.hom) :
     ∀ n, IsProjOver (Out.powObj A n).hom
@@ -43,12 +43,12 @@ open RankZero
 end Zero
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem topAmpExists_iff_topAmpSt : TopAmpExists ↔ GlobalTheory.LN.TopAmpSt := Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h E _ _ _ H D hD Xo n hn => let ⟨J, k, T, hJ, a⟩ := h E H D hD Xo n hn; ⟨J, hJ, T, k, a⟩, fun h E _ _ _ H D hD Xo n hn => let ⟨J, hJ, T, k, a⟩ := h E H D hD Xo n hn; ⟨J, k, T, hJ, a⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem topAmpExists_iff_topExists : TopAmpExists ↔ TopExists :=
   ⟨fun h E _ _ _ H D hD Xo n hn => let ⟨J, k, T, hJ, a⟩ := h E H D hD Xo n hn; ⟨J, hJ, T, k, a⟩,

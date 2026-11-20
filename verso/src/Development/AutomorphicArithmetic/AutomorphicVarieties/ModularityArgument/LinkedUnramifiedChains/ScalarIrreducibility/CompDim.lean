@@ -10,17 +10,17 @@ set_option linter.overlappingInstances false
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp IsLocalRing UpperTheory.V UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Af UpperTheory.V.Pr UpperTheory.V.Alg UpperTheory.V.J
 
 /- English proof (translation)
-Proceed by induction on `E using WithBot.recBotCoe with`. Consider the case `bot`. Rewrite `h4` using `[WithBot.bot_add, le_bot_iff]`. Rewrite `h1` using `[h4, WithBot.add_bot]`. Conclude with `absurd h1.symm (WithBot.natCast_ne_bot _)`.
+Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Consider the case `coe E`. Proceed by induction on `D using WithBot.recBotCoe with`. Consider the case `bot`. Rewrite `h1` using `[WithBot.add_bot]`. Conclude with `absurd h1.symm (WithBot.natCast_ne_bot _)`.
+Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `coe D`. Establish `h1' : h + D = ((N + 1 : ℕ) : ℕ∞)` using `by exact_mod_cast h1`. Establish `h4' : D ≤ E + ((1 : ℕ) : ℕ∞)` using `by exact_mod_cast h4`. Establish `: ((1 + a : ℕ) : ℕ∞) ≤ E`. Proceed by induction on `E using ENat.recTopCoe with`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `top => exact le_top`. Consider the case `coe e`. Proceed by induction on `D using ENat.recTopCoe with`. Consider the case `top => simp at h4'`. Consider the case `coe d`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `h using ENat.recTopCoe with`. Consider the case `top => simp at h2`. Consider the case `coe k`. Establish `a1 : k + d = N + 1` using `by exact_mod_cast h1'`. Establish `a2 : k ≤ N'` using `by exact_mod_cast h2`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a4 : d ≤ e + 1` using `by exact_mod_cast h4'`. Establish `: 1 + a ≤ e` using `by omega`. Conclude with `this` after adjusting the coercions. Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 private theorem dim_arith {h : ℕ∞} {D E : WithBot ℕ∞} {N N' a : ℕ}
     (h1 : (h : WithBot ℕ∞) + D = ((N + 1 : ℕ) : WithBot ℕ∞)) (h2 : h ≤ (N' : ℕ∞)) (h3 : N = N' + (a + 1))
@@ -56,11 +56,9 @@ private theorem dim_arith {h : ℕ∞} {D E : WithBot ℕ∞} {N N' a : ℕ}
       exact_mod_cast this
 
 /- English proof (translation)
-Use `letI := f.toAlgebra`. Use `haveI : Module.Flat A R := hf`. Use `haveI : Algebra.HasGoingDown A R := Algebra.HasGoingDown.of_flat`. Use `haveI : P.IsPrime := hP.1.1`. Use `haveI : (Q.comap f).IsPrime := Ideal.IsPrime.comap f`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : Q.LiesOver (Q.comap f) := ⟨rfl⟩`. Take `⟨Q', -, hQ', hl⟩` from `Ideal.exists_ideal_le_liesOver_of_le (p := P) (q := Q.comap f) Q h`. Take `⟨P', hP', hle⟩` from `Ideal.exists_minimalPrimes_le (I := (⊥ : Ideal R)) (J := Q') bot_le`. Use `⟨P', hP', ?_⟩` and prove the remaining obligations. Establish `e : Q'.comap f = P` using `hl.over.symm`.
-
-Establish `h1 : P'.comap f ≤ P` using `e ▸ Ideal.comap_mono hle`. Use `haveI : P'.IsPrime := hP'.1.1`. Conclude with `le_antisymm h1 (hP.2 ⟨Ideal.IsPrime.comap f, bot_le⟩ h1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem min_below {A R : Type} [CommRing A] [CommRing R] (f : A →+* R) (hf : f.Flat) (Q : Ideal R)
     (hQ : Q.IsPrime) (P : Ideal A) (hP : P ∈ minimalPrimes A) (h : P ≤ Q.comap f) :
@@ -80,15 +78,13 @@ private theorem min_below {A R : Type} [CommRing A] [CommRing R] (f : A →+* R)
   exact le_antisymm h1 (hP.2 ⟨Ideal.IsPrime.comap f, bot_le⟩ h1)
 
 /- English proof (translation)
-Introduce `l _ c _ F C₀ n hF hn S q x L Q hO hTI P hP hPq`. Take `⟨hQ, hQq, -, -⟩` from `hO`. Establish `hflat` using `(Fr.loc_flat hF hn S x L).1`. Take `⟨P', hP', hc⟩` from `min_below (L.ι : S.A →+* L.R) hflat Q hQ P hP (by`. Establish `: Q.comap (L.ι : S.A →+* L.R) = q` using `hQq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hPq)`. Establish `hPp : P'.IsPrime` using `hP'.1.1`. Establish `him : L.im P' = P` using `hc`. Establish `hoff : S.u.OffTri P` using `⟨fun h => hTI.1.1 (h.trans hPq), fun h => hTI.1.2 (h.trans hPq)⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htd : S.td (L.im P') ≤ ((1 : ℕ) : Cardinal)`. Rewrite using `[him, Nat.cast_one]`. Conclude with `Fr.fibre hF hn S P hP.1.1 hoff`. Establish `hdim` using `(Fr.loc_dim hF hn S x L).1 P' hPp 1 htd`. Establish `hπ : L.π P' = S.π P` using `by show S.π (L.im P') = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[him]`. Rewrite `hdim` using `[hπ]`. Take `⟨N, N', p, f, hN, hs, hk⟩` from `Fr.pres hF hn S x L`. Take `⟨e1, e2⟩` from `htPres L.O' N N' L.R (p : MvPowerSeries (Fin N) L.O' →+* L.R) f hs hk P' hPp`. Establish `h0 : P'.height = 0` using `Ideal.height_eq_zero_iff.mpr hP'`.
-
-Rewrite `e2` using `[h0, zero_add]`. Conclude with `dim_arith e1 e2 (by rw [hN]) hdim`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.J.compDim :
     ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) [Fr.IsCoef l c.O] (F : Fr.Frame l (ResidueField c.O)) (C₀ n : ℕ), F.Ok C₀ → (n = 2 ∨ n = 3) →

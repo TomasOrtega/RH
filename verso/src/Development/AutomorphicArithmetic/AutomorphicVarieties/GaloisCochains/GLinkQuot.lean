@@ -73,7 +73,7 @@ structure FLink {k : Type} [Field k] (Φ : Fr.Frame l k) (S : Finset (HeightOneS
   K_Ψ : ∀ g ∈ K, Φ.Ψ (π g) = 1
 
 /- English proof (translation)
-Use `⟨hl, hS, h1, h2, h3, ?_, QuotientGroup.mk'_surjective _, QuotientGroup.ker_mk' _⟩` and prove the remaining obligations. Conclude with `continuous_quot_mk`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gLink_quot (hl : l ≠ 2) {S : Finset (HeightOneSpectrum (𝓞 F))} (hS : ContainsAbove S l) {K : Subgroup (G F Ω)}
     (h1 : K.Normal) (h2 : IsOpen (K : Set (G F Ω))) (h3 : ¬ l ∣ K.index)

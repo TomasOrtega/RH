@@ -4,19 +4,19 @@ open SchwartzMap
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `M`. Use `⟨M (fun _ => 0) • g, N.smul_mem _ hg, fun x => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : (fun _ : Fin 0 => x) = (fun _ => 0)` using `Subsingleton.elim _ _`. Rewrite using `[h, SchwartzMap.smul_apply, smul_eq_mul]`. Consider the case `succ j ih`. Introduce `M`. Set `b` to `Module.finBasis ℝ V`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `key : ∀ i, ∃ f ∈ N, ∀ x, f x = ((b.coord i x : ℝ) : ℂ) * ((M.curryLeft (b i)) (fun _ => x) * g x)`. Introduce `i`. Take `⟨f, hf, hfx⟩` from `ih (M.curryLeft (b i))`. Take `⟨f₁, hf₁, hf₁x⟩` from `hN f hf (b.coord i)`. Conclude with `⟨f₁, hf₁, fun x => by rw [hf₁x, hfx]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose F hF hFx using key`. Use `⟨∑ i, F i, N.sum_mem (fun i _ => hF i), fun x => ?_⟩` and prove the remaining obligations. Establish `hcons : (fun _ : Fin (j+1) => x) = Fin.cons x (fun _ : Fin j => x)`. Apply the tactic sequence `funext i; refine Fin.cases ?_ ?_ i <;> simp`. Establish `hlin : M.curryLeft x = ∑ i, b.repr x i • M.curryLeft (b i)` using `by conv_lhs => rw [← b.sum_repr x]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Establish `hx : M (fun _ => x) = ∑ i, ((b.coord i x : ℝ) : ℂ) * (M.curryLeft (b i)) (fun _ => x)`. Rewrite using `[hcons, ← ContinuousMultilinearMap.curryLeft_apply, hlin, ContinuousMultilinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ContinuousMultilinearMap.smul_apply, Module.Basis.coord_apply, Complex.real_smul]`. Establish `hs : (∑ i, F i) x = ∑ i, F i x`. Simplify using the standard rewrite rules. Rewrite using `[hs, hx, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hFx, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem schwartz_submodule_multilinear_mem (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (N : Submodule ℂ (SchwartzMap V ℂ)) (g : SchwartzMap V ℂ) (hg : g ∈ N)

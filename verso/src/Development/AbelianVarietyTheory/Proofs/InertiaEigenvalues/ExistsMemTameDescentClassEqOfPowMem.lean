@@ -9,7 +9,7 @@ namespace GlobalTheory.LcImage
 open PowerSeries GlobalTheory.BK GlobalTheory.IndefiniteRowSideFullHecke.ImagePolynomialAction
 
 /- English proof (translation)
-Rewrite using `[← map_intCast (algebraMap ℚ_[l] K), norm_algebraMap']`. Conclude with `le_antisymm (Padic.norm_int_le_one u) (not_lt.1 fun h => hu (Padic.norm_intCast_lt_one_iff.1 h))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_intCast_eq_one {K : Type} [NormedField K] (l : ℕ) [Fact l.Prime]
     [NormedAlgebra ℚ_[l] K] {u : ℤ} (hu : ¬ (l : ℤ) ∣ u) : ‖(u : K)‖ = 1 := by
@@ -18,15 +18,15 @@ theorem norm_intCast_eq_one {K : Type} [NormedField K] (l : ℕ) [Fact l.Prime]
     (not_lt.1 fun h => hu (Padic.norm_intCast_lt_one_iff.1 h))
 
 /- English proof (translation)
-Take `⟨v, hvdef⟩ : ∃ v, padicValInt l r = v` from `⟨_, rfl⟩`. Establish `hdv` using `padicValInt_dvd (p := l) r`. Rewrite `hdv`, `hm` using `[hvdef]`. Take `⟨u, hu⟩` from `hdv`. Establish `hpr : (l : ℕ).Prime` using `Fact.out`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu' : ¬ (l : ℤ) ∣ u`. Introduce and unpack `⟨k, rfl⟩`. Establish `h` using `(padicValInt_dvd_iff (p := l) (v + 1) r).1 ⟨k, by rw [hu, pow_succ]; ring⟩`. Use linear arithmetic over natural numbers and integers. Establish `hl0 : (l : K) ≠ 0` using `natCast_ne_zero' l hpr.ne_zero`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hu0 : (u : K) ≠ 0`. Introduce `h`. Use `norm_intCast_eq_one (K := K) l hu'` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `set t : K := (l : K) ^ (m - v) * (u : K)⁻¹ with ht`. Take `⟨t', ht'⟩` from `(IsUnitBall.mem_range_iff (O := O) t).2 (by`. Rewrite using `[ht, norm_mul, norm_pow, norm_inv, norm_intCast_eq_one l hu', inv_one, mul_one, norm_l l]`. Conclude with `pow_le_one₀ (by positivity) (inv_le_one_of_one_le₀ (by exact_mod_cast hpr.one_le)))`. Use `⟨t', ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht', ht, hu]`. Use `push_cast`. Rewrite using `[mul_comm ((l : K) ^ v), ← mul_assoc, mul_assoc _ _ (u : K), inv_mul_cancel₀ hu0, mul_one, ← pow_add, Nat.sub_add_cancel hm]`.
+A detailed English derivation is pending.
 -/
 theorem exists_mul_intCast_eq {O K : Type} [CommRing O] [NormedField K] [Algebra O K]
     [IsUnitBall O K] (l : ℕ) [Fact l.Prime] [NormedAlgebra ℚ_[l] K] {r : ℤ} (hr : r ≠ 0)
@@ -58,17 +58,17 @@ theorem exists_mul_intCast_eq {O K : Type} [CommRing O] [NormedField K] [Algebra
     mul_one, ← pow_add, Nat.sub_add_cancel hm]
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D U N hJ hU hN hηH hl h10 c w hw hc`. Take `⟨-, hVal, hInt⟩` from `GlobalTheory.T.breuilKisinDescent_monodromy_image_valuation O K l e a ι η H D U N hJ hU hN hηH`. Take `⟨-, hR0, hv, hcard, hcard'⟩` from `hVal hl`. Take `⟨z, hz, hRz⟩` from `hInt h10 (c : ℤ) (D.LcZ ⟨w, hw⟩) ⟨_, rfl⟩ (by`. Rewrite using `[zpow_natCast, D.coe_LcZ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc)`. Rewrite `hz` using `[zpow_natCast]`. Establish `hRz' : (((polyR l e U η).eval 0 : ℤ) : K) • D.Lc w = D.Lc z`. Simplify using `using congrArg Subtype.val hRz`. Take `⟨t, ht⟩` from `exists_mul_intCast_eq (O := O) (K := K) l hR0 (m := (N + 1) * η) (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx1 : t • ((l : K) ^ c • (z : D.Pol)) ∈ D.Z` using `D.Z.smul_mem t hz`. Establish `hLx1 : D.Lc (t • ((l : K) ^ c • (z : D.Pol))) = (l : K) ^ (c + (N + 1) * η) • D.Lc w`. Rewrite using `[← algebraMap_smul K t, map_smul, map_smul, ← hRz', smul_smul, smul_smul, pow_add]`. Use `congr 1`. Rewrite using `[← ht]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨z'', hz'', hv''⟩` from `(GlobalTheory.T.prime_pow_divisibility_of_descentDatum O K l e a ι η H D).1 _ hx1`. Establish `hz3 : z'' ∈ (D.desc.Y η).map (D.cls.restrictScalars O)`. Rewrite using `[Descent.map_Y]`. Conclude with `hz''`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y'', hy'', rfl⟩` from `hz3`. Use `⟨(X : K⟦X⟧) ^ e • y'', (Descent.mem_Y' _).2 ⟨y'', hy'', rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : D.cls ((X : K⟦X⟧) ^ e • y'') = (l : K) ^ η • (t • ((l : K) ^ c • (z : D.Pol)))`. Rewrite using `[hv'']`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[h1, map_smul, hLx1, smul_smul, ← pow_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_mem_Y'_Lc_cls_eq : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] (η H : ℕ) (D : BKDat O K l e a ι η H) (U : Finset ℤ) (N : ℕ), D.jumps ⊆ U → U ⊆ Finset.Icc (-(η : ℤ)) H → U.card ≤ N + 1 → η < H → H + η < l → 10 * H + 2 ≤ l → ∀ c : ℕ, ∀ w ∈ D.Zl, (l : K) ^ c • D.Lc w ∈ D.Z → ∃ y ∈ D.Y', D.Lc (D.cls y) = (l : K) ^ (c + η + (N + 1) * η) • D.Lc w := by
   intro O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D U N hJ hU hN hηH hl h10 c w hw hc

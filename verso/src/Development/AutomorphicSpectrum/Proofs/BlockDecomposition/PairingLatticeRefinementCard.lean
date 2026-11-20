@@ -13,11 +13,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {d : ℕ} {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Rewrite using `[AddSubmonoidClass.coe_finsetSum, Finset.sum_apply]`. Use `show (ind L c a).1 y = ∑ s ∈ S, (ind L' (c + s) a).1 y`. Simplify using `only [ind_apply]`. Establish `e : ∀ s, y - (c + s) = y - c - s` using `fun s => by abel`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [e]`. Distinguish the cases in `hy : y - c ∈ L.sub`. Take `⟨s, ⟨hs, hys⟩, hu⟩` from `hS.2 _ hy`. Rewrite using `[if_pos hy, Finset.sum_eq_single s, if_pos hys]`. Introduce `t ht hts`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `if_neg fun hm => hts (hu t ⟨ht, hm⟩)`. Conclude with `fun hn => (hn hs).elim`. Rewrite using `[if_neg hy]`. Use `(Finset.sum_eq_zero fun s hs => if_neg fun hm => hy ?_).symm` and prove the remaining obligations. Simplify using `using L.sub.add_mem (h hm) (hS.1 s hs)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ind_eq_sum_reps {L' L : COSub k d} {S : Finset (Fin d → k)} (h : L'.sub ≤ L.sub) (hS : IsReps L' L S)
     (c : Fin d → k) (a : V) : ind L c a = ∑ s ∈ S, ind L' (c + s) a := by
@@ -39,15 +39,15 @@ theorem ind_eq_sum_reps {L' L : COSub k d} {S : Finset (Fin d → k)} (h : L'.su
     simpa using L.sub.add_mem (h hm) (hS.1 s hs)
 
 /- English proof (translation)
-Establish `h1 : ∀ y, y ∈ L.sub → ∃ s, s ∈ S ∧ y - s ∈ L'.sub` using `fun y hy => (hS.2 y hy).exists`. Use `choose! rep hrepS hrep using h1`. Establish `uniq : ∀ y ∈ L.sub, ∀ s ∈ S, y - s ∈ L'.sub → rep y = s` using `fun y hy s hs hys => (hS.2 y hy).unique ⟨hrepS y hy, hrep y hy⟩ ⟨hs, hys⟩`. Establish `hshift : ∀ t ∈ S, ∑ s ∈ S, mL B L' (x + s - t) a a' = ∑ s ∈ S, mL B L' (x + s) a a'`. Introduce `t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `htL` using `hS.1 t ht`. Establish `hm : ∀ s ∈ S, s - t ∈ L.sub` using `fun s hs => L.sub.sub_mem (hS.1 s hs) htL`. Establish `hp : ∀ s ∈ S, s + t ∈ L.sub` using `fun s hs => L.sub.add_mem (hS.1 s hs) htL`. Use `Finset.sum_nbij' (fun s => rep (s - t)) (fun s => rep (s + t)) (fun s hs => hrepS _ (hm s hs)) (fun s hs => hrepS _ (hp s hs)) (fun s hs => ?_) (fun s hs => ?_) (fun s hs => ?_)` and prove the remaining obligations. Use `uniq _ (L.sub.add_mem (hS.1 _ (hrepS _ (hm s hs))) htL) s hs ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `L'.sub.neg_mem (hrep _ (hm s hs))` as an intermediate fact. Establish `e : rep (s - t) + t - s = -(s - t - rep (s - t))` using `by abel`. Rewrite using `[e]` and apply the resulting hypothesis. Use `uniq _ (L.sub.sub_mem (hS.1 _ (hrepS _ (hp s hs))) htL) s hs ?_` and prove the remaining obligations. Use `L'.sub.neg_mem (hrep _ (hp s hs))` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : rep (s + t) - t - s = -(s + t - rep (s + t))` using `by abel`. Rewrite using `[e]` and apply the resulting hypothesis. Establish `e : x + s - t = x + rep (s - t) + (s - t - rep (s - t))` using `by abel`. Rewrite using `[e, mL_add_mem B L' _ (hrep _ (hm s hs))]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mL, ← ind_eq_sum_reps h hS, ← ind_eq_sum_reps h hS]`. Use `_ = ∑ t ∈ S, ∑ s ∈ S, mL B L' (x + s - t) a a' := by`. Simplify using `only [map_sum, LinearMap.sum_apply, B_ind_ind B hT, zero_add]`. Use `_ = (S.card : ℂ) * ∑ s ∈ S, mL B L' (x + s) a a' := by`. Rewrite using `[Finset.sum_congr rfl hshift, Finset.sum_const, nsmul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mL_refine (B : SchF k d V →ₗ[ℂ] SchF k d V' →ₗ[ℂ] ℂ)
     (hT : ∀ x f f', B (shiftF x f) (shiftF x f') = B f f') (L' L : COSub k d) (S : Finset (Fin d → k))

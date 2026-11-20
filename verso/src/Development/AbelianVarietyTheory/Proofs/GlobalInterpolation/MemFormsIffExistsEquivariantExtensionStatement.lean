@@ -5,7 +5,7 @@ open Formalism.BasicNotions Classical NumberField GlobalTheory.LvT
 open Formalism.MainNotions.product_first_zeroth_parts (Ow tops wsum ten blk nfAll CSpan IntSpan Nm_succ wSh cTw)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LvT.PtModel.mem_Fi_iff_exists_isExt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FMemFormsIffExistsEquivariantExtension.lean&line=9#L9)
 -/

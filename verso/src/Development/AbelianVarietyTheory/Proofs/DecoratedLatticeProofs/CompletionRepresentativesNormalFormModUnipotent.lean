@@ -12,9 +12,7 @@ noncomputable section
 namespace GlobalTheory.TwNormalReps
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[le_uniformizer_iff]`. Conclude with `(hϖ _).2 le_rfl`. Take `⟨x, hx⟩` from `ValuativeRel.valuation_surjective (uniformizer k)`. Rewrite using `[← hx]`.
-
-Conclude with `(hϖ x).1 (by rw [hx]; exact uniformizer_lt_one)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_unif_of {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {ϖ : kˣ} (hϖ : GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ) : valuation k (ϖ : k) = uniformizer k := by
@@ -25,7 +23,7 @@ theorem val_unif_of {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [
     exact (hϖ x).1 (by rw [hx]; exact uniformizer_lt_one)
 
 /- English proof (translation)
-Take `⟨e, -, he⟩` from `hg`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[he]`. Use extensionality with `i l`. Simplify using `[toLoc, Pi.single_apply, e.injective.eq_iff, Matrix.one_apply]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem isGL_one {X : Fields} {R : Ranks} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {ι : X.E →+* k} {j c : ℕ} {g : GL (XIx (Fin R.k) (Fin R.t) j ⊕ Fin c) k}
@@ -37,15 +35,15 @@ theorem isGL_one {X : Fields} {R : Ranks} {k : Type} [Field k] [ValuativeRel k] 
   simp [toLoc, Pi.single_apply, e.injective.eq_iff, Matrix.one_apply]
 
 /- English proof (translation)
-Introduce `X Pr R Ch sel S₀ mu cst σ₀ P k _ _ _ _ ι s W _ _ ν hν hcst hAt L G hL hIdx hstep`. Use `haveI := hν.1`. Establish `hϖ` using `val_unif_of W.unif`. Establish `hb : ∀ j c h, latOf ((W.T s R).bas j c h) = latOf 1` using `fun _ _ _ => rfl`. Establish `H : (∀ j c h x, (W.T s R).Phi j c h x ≠ 0 → IntM x) ∧ (∀ j c h x y, MaxM y → (W.T s R).Phi j c h (x + y) = (W.T s R).Phi j c h x) ∧ ∀ j c h, ((W.T s R).lev j c h).J ≤ KO k _` using `GlobalTheory.Proof.TwistSupportPeriodicLevels.ofTwist_support_periodic_levels k s _ _ _ _ W.δ W.tame W.η _ _ (fun _ _ _ => rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hs, hp, -⟩` from `H`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `c h al g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg` using `[hL.zero_h]`. Take `rfl` from `isGL_one hg`. Conclude with `⟨1, one_mem _, by rw [one_mul]; exact normal_one hb c h⟩`. Consider the case `succ j ih`. Introduce `c h al g' hg'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨al', g, hg, hf⟩` from `hstep j c h al g' hg'`. Take `⟨r, hr, e', z', he', hz', hl⟩` from `ih (c + 1) (by omega) al' g hg`. Rewrite `hl` using `[lat_bas hb, ← nfBasis_one]`. Take `⟨x₀, h0⟩` from `Function.ne_iff.1 (GlobalTheory.FlatSourceStable.flat_ne_zero_of_mem_R k _ _ c W.ψ ν _ _ g g' hf r hr)`. Take `⟨r₂, hr₂, e, z, he, hz, hl₂⟩` from `step_normal (NormalForm.normalFormModN k) hϖ W.cond he' hz' (hl ▸ om_supp (hs _ _ _) (r * g) g') (hl ▸ om_per hϖ (hp _ _ _) (r * g) g') h0`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨r₂, hr₂, e, z, he, hz, by rw [lat_bas hb]; exact hl₂⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_normal_rep : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S₀ : Set ℕ) (mu : Tup X.F X.E X.K S₀) (cst : LocCst X (rowSG Pr sel mu)) (σ₀ : X.K →+* ℂ) (P : rowSG Pr sel mu) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : X.E →+* k) (s : ℕ) (W : TwData k) [MeasurableSpace k] [BorelSpace k] (ν : Measure k), IsUnitVol ν → cst.Ok → AtTwist (R := R) sel mu cst σ₀ P ι s W → ∀ (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (G : ChGlob X R.m), L.Ok Ch sel mu cst G s → IdxProd sel mu cst L → (∀ j c (h : j + 1 + c = s) (b : L.β (j + 1)) (g' : GL (XIx (Fin R.k) (Fin R.t) (j + 1) ⊕ Fin (c + 1)) k), IsGL ι (L.h (j + 1) b P) g' → ∃ (al : L.β j) (g : GL (XIx (Fin R.k) (Fin R.t) (j) ⊕ Fin (c + 1 + 1)) k), IsGL ι (L.h j al P) g ∧ flat W.ψ ν ((W.T s R).mu (j + 1)) ((W.T s R).Phi j (c + 1) (by omega)) g g' ≠ 0) → ∀ j c (h : j + c = s) (al : L.β j) (g : GL (XIx (Fin R.k) (Fin R.t) (j) ⊕ Fin (c + 1)) k), IsGL ι (L.h j al P) g → ∃ r ∈ GlobalTheory.RootEx.R k (XIx (Fin R.k) (Fin R.t) (j)) (c + 1) 1, GlobalTheory.IndefiniteRowSideFullHecke.NormalRepresentationLattice.IsNormalRep (W.T s R) W.ϖ j c h (r * g) := by
   intro X Pr R Ch sel S₀ mu cst σ₀ P k _ _ _ _ ι s W _ _ ν hν hcst hAt L G hL hIdx hstep

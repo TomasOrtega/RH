@@ -8,7 +8,7 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 open Filter Polynomial
 
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hid : i ≤ d` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`. Establish `hpow : Q ^ d = Q ^ (d - i) * Q ^ i` using `by rw [← pow_add, Nat.sub_add_cancel hid]`. Rewrite using `[hpow, div_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -23,11 +23,11 @@ theorem MixedTopAlgebra.clear_den (d : ℕ) (m : ℕ → ℝ) (Q x : ℝ) (hQ : 
   field_simp
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_range_succ, Nat.choose_self, Nat.sub_self, pow_zero, Finset.mul_sum]`. Simplify using `only [Nat.cast_one, one_mul, mul_one]`. Use `add_le_add (Finset.sum_le_sum fun i hi => ?_) le_rfl` and prove the remaining obligations. Establish `hid : i < d` using `Finset.mem_range.mp hi`. Establish `hpow : Q * Q ^ (d - 1 - i) = Q ^ (d - i)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Break down `Nat.eq_zero_or_pos i with rfl | hi0` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Establish `hmi : 0 ≤ m i` using `hm i hi0 hid.le`. Establish `hc : ((d - 1).choose i : ℝ) ≤ (d.choose i : ℝ)`. Conclude with `Nat.choose_le_choose i (Nat.sub_le d 1)` after adjusting the coercions. Use `gcongr`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem MixedTopAlgebra.sum_ge (d : ℕ) (m : ℕ → ℝ) (hm : ∀ i, 1 ≤ i → i ≤ d → 0 ≤ m i)
     (Q x : ℝ) (hQ : 0 ≤ Q) (hx : 0 ≤ x) :
@@ -52,31 +52,29 @@ theorem MixedTopAlgebra.sum_ge (d : ℕ) (m : ℕ → ℝ) (hm : ∀ i, 1 ≤ i 
         gcongr
 
 /- English proof (translation)
-Introduce `d m hd hm hmd hST`. Use `set P : Polynomial ℝ := ∑ i ∈ Finset.range (d + 1), C ((d.choose i : ℝ) * m i) * X ^ i with hPdef`. Establish `heval : ∀ t : ℝ, P.eval t = ∑ i ∈ Finset.range (d + 1), (d.choose i : ℝ) * m i * t ^ i`. Introduce `t`. Simplify using `[P, eval_finsetSum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : P.eval 0 = m 0`. Rewrite using `[heval, Finset.sum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Simplify using `[zero_pow hi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Simplify using `at h`. Rewrite using `[← h0]`. Use `hP d P (m d) hmd ?_ ?_` and prove the remaining obligations. Introduce `t ht hPt`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp⟩ : ∃ p : ℕ, (p : ℤ) = t.num` from `⟨t.num.toNat, Int.toNat_of_nonneg (Rat.num_nonneg.mpr ht.le)⟩`. Establish `hp1 : 1 ≤ p`. Establish `: 0 < t.num` using `Rat.num_pos.mpr ht`. Use linear arithmetic over natural numbers and integers. Establish `hq0 : (0 : ℝ) < (t.den : ℝ)` using `by exact_mod_cast t.den_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htq : (t : ℝ) = (p : ℝ) / (t.den : ℝ)`. Rewrite using `[Rat.cast_def, ← hp]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hS` using `MixedTopAlgebra.clear_den d m (t.den : ℝ) (p : ℝ) hq0.ne'`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hS` using `[← htq, ← heval]`. Establish `hSpos : 0 < ∑ i ∈ Finset.range (d + 1), (d.choose i : ℝ) * (t.den : ℝ) ^ (d - i) * (p : ℝ) ^ i * m i`. Rewrite using `[← hS]`. Check the signs of the components of the expression. Establish `hT` using `hST t.den p t.den_pos hp1 hSpos`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hge` using `MixedTopAlgebra.sum_ge d m hm (t.den : ℝ) (p : ℝ) hq0.le (by positivity)`. Establish `hqd : (0 : ℝ) < (t.den : ℝ) ^ d` using `by positivity`. Establish `hmt : (t.den : ℝ) ^ d * (m d * (t : ℝ) ^ d) = (p : ℝ) ^ d * m d`. Rewrite using `[htq, div_pow]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_of_mul_le_mul_left ?_ hqd` and prove the remaining obligations. Rewrite using `[hmt, hS]`. Use polynomial arithmetic with `[mul_nonneg hq0.le hT]`. Establish `hlow : ∀ t : ℝ, 0 ≤ t → m 0 + m d * t ^ d ≤ P.eval t`. Introduce `t ht`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsub : ({0, d} : Finset ℕ) ⊆ Finset.range (d + 1)`. Introduce `i hi`. Simplify using `at hi`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heval]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_pair (by omega)]; simp`. Use `_ ≤ _ := Finset.sum_le_sum_of_subset_of_nonneg hsub fun i hi hi' => by`. Establish `h1 : 1 ≤ i` using `by simp at hi'; omega`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Use `hm i h1 (by simp at hi; omega)` as an intermediate fact. Check the signs of the components of the expression. Use `filter_upwards [eventually_ge_atTop (max 1 ((|m 0| + 1) / m d))] with t ht`. Establish `ht1 : 1 ≤ t` using `le_of_max_le_left ht`. Establish `ht2 : (|m 0| + 1) / m d ≤ t` using `le_of_max_le_right ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `htd : t ≤ t ^ d`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : |m 0| + 1 ≤ m d * t` using `by rw [div_le_iff₀ hmd] at ht2; linarith`. Establish `h4 : m d * t ≤ m d * t ^ d` using `mul_le_mul_of_nonneg_left htd hmd.le`. Establish `h5` using `hlow t (by linarith)`.
-
-Combine the linear relations using `[neg_abs_le (m 0)]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem MixedTopAlgebra.proof (hP : PolyNonnegAtZero.Statement) : MixedTopAlgebra.Statement := by
   intro d m hd hm hmd hST

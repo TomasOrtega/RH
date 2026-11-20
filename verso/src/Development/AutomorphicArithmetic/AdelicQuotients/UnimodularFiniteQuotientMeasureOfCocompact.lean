@@ -7,11 +7,9 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Loc PositivityTheory.Rg.
 open scoped ENNReal NumberField.AdeleRing TensorProduct
 
 /- English proof (translation)
-Introduce `T _ _ _ _ _ _ _ _ Λ _ ν _ hC`. Take `⟨C, hC, h⟩` from `hC`. Use `haveI : CompactSpace (RightCosetSpace Λ) := by`. Use `⟨(hC.image (RightCosetSpace.continuous_mk Λ)).of_isClosed_subset isClosed_univ ?_⟩` and prove the remaining obligations. Introduce `x _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨t, rfl⟩` from `RightCosetSpace.mk_surjective Λ x`. Take `⟨g, hg, y, hy, rfl⟩` from `h t`. Conclude with `⟨y, hy, (RightCosetSpace.mk_mul_of_mem hg y).symm⟩`. Use `haveI hr : ν.IsMulRightInvariant := RightCosetSpace.isMulRightInvariant_of_compactSpace Λ ν`. Use `haveI := RightCosetSpace.isFiniteMeasure (Γ := Λ) ν`.
-
-Conclude with `⟨hr, ⟨RightCosetSpace.inv_eq_self_of_isMulRightInvariant ν⟩, measure_lt_top _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.unimodular_finite_quotientMeasure_of_cocompact :
     ∀ (T : Type) [Group T] [TopologicalSpace T] [IsTopologicalGroup T] [LocallyCompactSpace T] [T2Space T] [SecondCountableTopology T] [MeasurableSpace T] [BorelSpace T] (Λ : Subgroup T) [DiscreteTopology Λ] (ν : Measure T) [ν.IsHaarMeasure],

@@ -26,20 +26,20 @@ def phi (x : KeyIn K) {l N : ℕ} (b : Fin N → RR x l) (v : Fin N → K) (c : 
     Γ(x.P.A.left, x.P.L.U c) := ∑ k, cst x.P.A.hom (x.P.L.U c) (v k) * lf x (b k) c
 
 /- English proof (translation)
-Simplify using `only [phi, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phi_add (x : KeyIn K) {l N : ℕ} (b : Fin N → RR x l) (v w : Fin N → K) (c) :
     phi x b (v + w) c = phi x b v c + phi x b w c := by
   simp only [phi, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [phi, Pi.zero_apply, map_zero, zero_mul, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phi_zero (x : KeyIn K) {l N : ℕ} (b : Fin N → RR x l) (c) : phi x b 0 c = 0 := by
   simp only [phi, Pi.zero_apply, map_zero, zero_mul, Finset.sum_const_zero]
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty, phi_zero]`. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, phi_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem phi_sum (x : KeyIn K) {l N : ℕ} (b : Fin N → RR x l) {A : Type} (S : Finset A)
     (v : A → Fin N → K) (c) : phi x b (∑ i ∈ S, v i) c = ∑ i ∈ S, phi x b (v i) c := by
@@ -64,22 +64,22 @@ def sec (x : KeyIn K) {l N : ℕ} (b : Fin N → RR x l) (v : Fin N → K) : RR 
     exact h'
 
 /- English proof (translation)
-The claim follows from `(hb (sec x b v)).unique (fun _ => rfl) h`.
+A detailed English derivation is pending.
 -/
 theorem phi_inj (x : KeyIn K) {l N : ℕ} {b : Fin N → RR x l} (hb : IsBasis x b) {v w : Fin N → K}
     (h : ∀ c, phi x b v c = phi x b w c) : v = w :=
   (hb (sec x b v)).unique (fun _ => rfl) h
 
 /- English proof (translation)
-The claim follows from `(hb y).exists`.
+A detailed English derivation is pending.
 -/
 theorem phi_surj (x : KeyIn K) {l N : ℕ} {b : Fin N → RR x l} (hb : IsBasis x b) (y : RR x l) :
     ∃ v, ∀ c, lf x y c = phi x b v c := (hb y).exists
 
 /- English proof (translation)
-Establish `h : ∀ k, lf x (s i) c * lf x (b (j + 1) k) c = ∑ k', cst x.P.A.hom (x.P.L.U c) (m i j (j + 1) k' k) * lf x (b j k') c` using `fun k => hm i j hj k c`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [phi, Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Use `_ = ∑ k, cst x.P.A.hom (x.P.L.U c) (v k) * (lf x (s i) c * lf x (b (j + 1) k) c) := by`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [h, Finset.mul_sum]`. Use `_ = _ := by`. Simplify using `only [phi, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phi_mulVec (x : KeyIn K) {n l : ℕ} {s : Fin x.P.g → RR x n}
     {b : ∀ j, Fin ((l - j * n) ^ x.P.g) → RR x (l - j * n)} {m} (hm : IsMul x l s b m)
@@ -101,9 +101,9 @@ theorem phi_mulVec (x : KeyIn K) {n l : ℕ} {s : Fin x.P.g → RR x n}
         exact Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Establish `e : (⨆ (i' : Fin g) (_ : i' < i), LinearMap.range (M i').mulVecLin) = ⨆ i' ∈ Finset.univ.filter (· < i), LinearMap.range (M i').mulVecLin`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite using `[e, Submodule.mem_iSup_finset_iff_exists_sum]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, h⟩ choose t ht using fun i' => (q i').2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨t, h.symm.trans (Finset.sum_congr rfl fun i' _ => (ht i').symm)⟩` and prove the remaining obligations. Introduce and unpack `⟨t, h⟩`. Conclude with `⟨fun i' => ⟨(M i').mulVec (t i'), t i', rfl⟩, h.symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_iff {g : ℕ} {a b : ℕ} (i : Fin g) (M : Fin g → Matrix (Fin a) (Fin b) K) (y : Fin a → K) :
     y ∈ (⨆ (i' : Fin g) (_ : i' < i), LinearMap.range (M i').mulVecLin) ↔
@@ -120,17 +120,17 @@ theorem mem_iff {g : ℕ} {a b : ℕ} (i : Fin g) (M : Fin g → Matrix (Fin a) 
     exact ⟨fun i' => ⟨(M i').mulVec (t i'), t i', rfl⟩, h.symm⟩
 
 /- English proof (translation)
-Introduce `K _ x n l s b m _ hb hm hreg`. Use `GlobalTheory.T.koszul_exact_inl_nonempty_of_graded_regular K x.P.g (fun j => (l - j * n) ^ x.P.g) m ?_ ?_` and prove the remaining obligations. Introduce `i i' j hj`. Use `Matrix.ext_of_mulVec_single fun k => ?_` and prove the remaining obligations. Use `phi_inj x (hb j (by omega)) fun c => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, phi_mulVec x hm i (by omega), phi_mulVec x hm i' (by omega), phi_mulVec x hm i' (by omega), phi_mulVec x hm i (by omega)]`. Expand and normalize the polynomial expressions, which then agree. Introduce `i j y hj hy`. Establish `hjg : j < x.P.g` using `by omega`. Take `⟨t, ht⟩` from `(mem_iff i (fun i' => m i' j (j + 1)) _).1 hy`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `(mem_iff i (fun i' => m i' (j + 1) (j + 2)) _).2 ?_` and prove the remaining obligations. Take `⟨tb, htb⟩` from `hreg i j hj (sec x (b (j + 1)) y) (fun i' => sec x (b (j + 1)) (t i')) (fun c => by`. Express the relevant statement in the definitionally equal form `lf x (s i) c * phi x (b (j + 1)) y c = ∑ i' ∈ Finset.univ.filter (· < i), lf x (s i') c * phi x (b (j + 1)) (t i') c`. Rewrite using `[← phi_mulVec x hm i hjg, ht, phi_sum]`. Conclude with `Finset.sum_congr rfl fun i' _ => phi_mulVec x hm i' hjg _ _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htb' : ∀ c, phi x (b (j + 1)) y c = ∑ i' ∈ Finset.univ.filter (· < i), lf x (s i') c * lf x (tb i') c` using `htb`. Distinguish the cases in `h2 : j + 2 ≤ x.P.g`. Use `choose u hu using fun i' => phi_surj x (hb (j + 2) h2) (tb i')`. Use `⟨u, phi_inj x (hb (j + 1) (by omega)) fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[htb', phi_sum]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i' _ => ?_` and prove the remaining obligations. Rewrite using `[hu]`. Conclude with `(phi_mulVec x hm i' (j := j + 1) (by omega) _ _).symm`. Establish `he : Finset.univ.filter (· < i) = ∅`. Use `Finset.filter_eq_empty_iff.2 fun i' _ h => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (i' : ℕ) < i` using `h`. Use linear arithmetic over natural numbers and integers. Use `⟨0, phi_inj x (hb (j + 1) (by omega)) fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[htb', he, Finset.sum_empty, Finset.sum_empty, phi_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem koszul_exact_of_regular : ∀ (K : Type) [CommRing K] (x : KeyIn K) (n l : ℕ) (s : Fin x.P.g → RR x n) (b : ∀ j, Fin ((l - j * n) ^ x.P.g) → RR x (l - j * n)) (m), x.P.g * n < l → (∀ j ≤ x.P.g, IsBasis x (b j)) → IsMul x l s b m → (∀ (i : Fin x.P.g) (j : ℕ), j + 1 + i ≤ x.P.g → ∀ (y : RR x (l - (j + 1) * n)) (ta : Fin x.P.g → RR x (l - (j + 1) * n)), (∀ c, (show Γ(x.P.A.left, x.P.L.U c) from (s i).f c) * (show Γ(x.P.A.left, x.P.L.U c) from y.f c) = ∑ i' ∈ Finset.univ.filter (· < i), (show Γ(x.P.A.left, x.P.L.U c) from (s i').f c) * (show Γ(x.P.A.left, x.P.L.U c) from (ta i').f c)) → ∃ tb : Fin x.P.g → RR x (l - (j + 2) * n), ∀ c, (show Γ(x.P.A.left, x.P.L.U c) from y.f c) = ∑ i' ∈ Finset.univ.filter (· < i), (show Γ(x.P.A.left, x.P.L.U c) from (s i').f c) * (show Γ(x.P.A.left, x.P.L.U c) from (tb i').f c)) → ∀ v : KIx x.P.g 0 (fun j => (l - j * n) ^ x.P.g) → K, (kosD m (fun _ => 0)).mulVec v = 0 → ∃ w, ∀ p, p.1 ≠ ∅ → v (.inl p) = (kosD (d := 0) m (fun _ => 0)).mulVec w (.inl p) := by
   intro K _ x n l s b m _ hb hm hreg

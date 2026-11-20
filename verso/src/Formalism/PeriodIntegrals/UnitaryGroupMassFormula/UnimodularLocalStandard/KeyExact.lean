@@ -7,7 +7,7 @@ namespace PI.UnitaryGroupMassFormula.UnimodLocStd
 open PI.ULS
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Simplify using `[stdH, matH, Matrix.smul_apply, Matrix.one_apply, Pi.single_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[stdH, matH, Matrix.smul_apply, Matrix.one_apply, Pi.single_apply, apply_ite (starRingEnd ℂ), mul_ite]`. Expand and normalize the polynomial expressions, which then agree.
+Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem sum_sum_sub_isotropic_shift_eq_of_conj_eq_neg (L : PeriodPair) (m : Type) [Fintype m] [DecidableEq m] (i₀ : m) (φ : ℂ)
     (g : m → ℂ) :
@@ -21,7 +21,7 @@ private theorem sum_sum_sub_isotropic_shift_eq_of_conj_eq_neg (L : PeriodPair) (
     ring
 
 /- English proof (translation)
-Simplify using `only [map_add, map_sub, map_smul, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.map_smulₛₗ, smul_eq_mul, hrc]`. Apply `mul_left_cancel₀ hN` to reduce the goal to its premises. Take the linear combination `(N₁ * (1 - 2 * rc + rc ^ 2)) * hww + (N₁ * rc ^ 2) * hff + (rc - rc ^ 2) * hX + (κ * (rc - 1)) * hrD`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem H_affine_combination_eq_of_quadratic_relation {m : Type} [Fintype m] [DecidableEq m] (H : PI.ULS.Sesq (m → ℂ))
     (f w : m → ℂ) (κ rc Q N₁ γ ε : ℂ) (hN : N₁ ≠ 0)
@@ -35,11 +35,11 @@ private theorem H_affine_combination_eq_of_quadratic_relation {m : Type} [Fintyp
     (rc - rc ^ 2) * hX + (κ * (rc - 1)) * hrD
 
 /- English proof (translation)
-Take `⟨h4, -, -, -⟩` from `h`. Establish `hs : ((Real.sqrt d : ℝ) : ℂ) ^ 2 = d`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Simplify using the standard rewrite rules. Establish `h4' : (4:ℂ) * a * c = (b:ℂ)^2 + d` using `by exact_mod_cast h4`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc : conj (cmTheta b d) = ((b:ℂ) - Complex.I * (Real.sqrt d : ℝ)) / 2`. Simplify using `[cmTheta, map_div₀, Complex.conj_ofReal, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [cmTheta]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [cmTheta]`. Take the linear combination `(-((Real.sqrt d : ℝ) : ℂ)^2/4) * Complex.I_sq + (1/4) * hs - (1/4) * h4'`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem cmTheta_add_conj_and_mul_conj (a : ℕ) (b c : ℤ) (d : ℕ) (h : CmOK a b c d) :
     cmTheta b d + conj (cmTheta b d) = b ∧ cmTheta b d * conj (cmTheta b d) = (a:ℂ) * c := by
@@ -57,17 +57,15 @@ private theorem cmTheta_add_conj_and_mul_conj (a : ℕ) (b c : ℤ) (d : ℕ) (h
     linear_combination (-((Real.sqrt d : ℝ) : ℂ)^2/4) * Complex.I_sq + (1/4) * hs - (1/4) * h4'
 
 /- English proof (translation)
-Introduce `hdvd`. Establish `hp : Prime (l:ℤ)` using `Nat.prime_iff_prime_int.mp hl`. Establish `hne : (l:ℤ) ^ g ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hl.ne_zero)`. Establish `h1 : (l:ℤ) ^ 3 ∣ ((M₄:ℤ) * n₁ * Q₀) * (2 * (2 * q + (l:ℤ) ^ k * p))`. Establish `e1 : (l:ℤ) ^ (g + 3) = (l:ℤ) ^ g * (l:ℤ) ^ 3` using `pow_add _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : 2 * ((l ^ g * M₄ * n₁ : ℕ) : ℤ) * Q₀ * (2 * q + (l:ℤ) ^ k * p) = (l:ℤ) ^ g * (((M₄:ℤ) * n₁ * Q₀) * (2 * (2 * q + (l:ℤ) ^ k * p)))` using `by push_cast; ring`. Rewrite `hdvd` using `[e1, e2]`. Conclude with `(mul_dvd_mul_iff_left hne).mp hdvd`. Establish `hnd : ¬ (l:ℤ) ∣ ((M₄:ℤ) * n₁ * Q₀)`. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hp.dvd_or_dvd h with h | h` into its components or cases. Break down `hp.dvd_or_dvd h with h | h` into its components or cases. Conclude with `hM (Int.natCast_dvd_natCast.mp h)`. Conclude with `hn (Int.natCast_dvd_natCast.mp h)`. Conclude with `hQ h`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hp.pow_dvd_of_dvd_mul_left 3 hnd h1`. Establish `h3 : (l:ℤ) ^ 3 ∣ 2 * (l:ℤ) ^ k * p` using `Dvd.dvd.mul_right (Dvd.dvd.mul_left (pow_dvd_pow _ hk) _) _`. Establish `h4 : (l:ℤ) ^ 3 ∣ q * 4`. Establish `e3 : q * 4 = 2 * (2 * q + (l:ℤ) ^ k * p) - 2 * (l:ℤ) ^ k * p` using `by ring`. Rewrite using `[e3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `dvd_sub h2 h3`. Establish `h5` using `hp.pow_dvd_of_dvd_mul_left 3 hq h4`. Establish `h6` using `Int.le_of_dvd (by norm_num) h5`. Establish `hl2 : (2:ℤ) ≤ l` using `by exact_mod_cast hl.two_le`. Establish `h7 : (2:ℤ) ^ 3 ≤ (l:ℤ) ^ 3` using `by gcongr`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem not_pow_dvd_two_mul_mul_of_not_dvd (l : ℕ) (hl : Nat.Prime l) (g k : ℕ) (hk : 3 ≤ k) (M₄ n₁ : ℕ)
     (hM : ¬ l ∣ M₄) (hn : ¬ l ∣ n₁) (Q₀ p q : ℤ) (hQ : ¬ (l:ℤ) ∣ Q₀) (hq : ¬ (l:ℤ) ∣ q) :
@@ -103,7 +101,7 @@ private theorem not_pow_dvd_two_mul_mul_of_not_dvd (l : ℕ) (hl : Nat.Prime l) 
   linarith
 
 /- English proof (translation)
-Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg z`. Simplify `h` using `[natCast_zsmul]`. Simplify `h` using `[natCast_zsmul]`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem natAbs_smul_mem_of_zsmul_mem {V : Type} [AddCommGroup V] (Λ : AddSubgroup V) (z : ℤ) (v : V)
     (h : z • v ∈ Λ) : z.natAbs • v ∈ Λ := by
@@ -112,7 +110,7 @@ private theorem natAbs_smul_mem_of_zsmul_mem {V : Type} [AddCommGroup V] (Λ : A
   · simpa [natCast_zsmul] using h
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.sub_apply]`. Simplify using `only [zsmul_eq_mul, nsmul_eq_mul, smul_eq_mul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -127,67 +125,57 @@ private theorem zsmul_affine_combination_eq {m : Type} (w f : m → ℂ) (E₀ P
   ring
 
 /- English proof (translation)
-Introduce `a b c d ha hd lam hlam m _ _ Λ l x y T i₀ hK`. Take `⟨hcm, -, -, hr1, hr2, hl, hQ, hi₀, -⟩` from `hK`. Establish `hl1 : l ≠ 1` using `hl.one_lt.ne'`. Take `⟨g, M₄, hM₄, hM₁⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hr1 l hl1`. Take `⟨h, M₃, hM₃, hM₂⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hr2 l hl1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨g + h + 3, fun k hk w hw => ?_⟩` and prove the remaining obligations. Take `⟨⟨n₁, hn₁, hn₁w⟩, hzero, p, q, hlq, hHw⟩` from `hw`. Take `⟨hθs, hθp⟩` from `cmTheta_add_conj_and_mul_conj a b c d hcm`. Use `set L := cmL a b d ha hd lam hlam with hLdef`. Use `set θ := cmTheta b d with hθdef`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `set φ : ℂ := lam * (↑x * ↑a + ↑y * θ) with hφ`. Establish `hf : fvec a b d lam x y i₀ = Pi.single i₀ φ` using `rfl`. Rewrite `hHw`, the goal using `[hf]`. Establish `hω1 : L.ω₁ = lam * a` using `rfl`. Establish `hω2 : L.ω₂ = lam * θ` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hwstd : (relIdx (stdLat L m) Λ) • (n₁ • w) ∈ stdLat L m` using `AddSubgroup.nsmul_relIndex_mem (stdLat L m) hn₁w`. Rewrite `hwstd` using `[hM₁]`. Establish `hw0` using `(AddSubgroup.mem_pi _).mp hwstd i₀ (Set.mem_univ _)`. Take `⟨α, β, hαβ⟩` from `PeriodPair.mem_lattice.mp hw0`. Use `set N₁ : ℕ := l ^ g * M₄ * n₁ with hN₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hwi : (N₁:ℂ) * w i₀ = lam * (α * a + β * θ)`. Establish `e : ((l ^ g * M₄) • n₁ • w) i₀ = (N₁:ℂ) * w i₀`. Simplify using `[hN₁, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← e, ← hαβ, hω1, hω2]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hfΛ : (relIdx Λ (stdLat L m)) • (Pi.single i₀ φ) ∈ Λ`. Apply `AddSubgroup.nsmul_relIndex_mem Λ` to reduce the goal to its premises. Rewrite using `[stdLat, AddSubgroup.mem_pi]`. Introduce `i _`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Simplify using `only [Pi.single_eq_same]`. Conclude with `PeriodPair.mem_lattice.mpr ⟨x, y, by rw [hω1, hω2, hφ]; ring⟩`. Simplify using `[Pi.single_eq_of_ne hi]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hfΛ` using `[hM₂]`. Use `set A : ℂ := ((area L : ℂ))⁻¹ with hA`. Use `set Q₀ : ℤ := ↑a * x ^ 2 + b * x * y + c * y ^ 2 with hQ₀`. Use `set γ : ℤ := 2 * α * x * a + (α * y + β * x) * b + 2 * β * y * c with hγ`. Use `set κ : ℂ := A * (lam * conj lam * a) with hκ`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcφ : conj φ = conj lam * (x * a + y * conj θ)` using `by simp [hφ]`. Establish `hff : stdH L m (Pi.single i₀ φ) (Pi.single i₀ φ) = κ * Q₀`. Rewrite using `[(sum_sum_sub_isotropic_shift_eq_of_conj_eq_neg L m i₀ φ _).1]`. Simplify using `only [Pi.single_eq_same]`. Rewrite using `[hcφ, hφ, hκ, hQ₀]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `push_cast`. Take the linear combination `(A * lam * conj lam * x * y * a) * hθs + (A * lam * conj lam * y ^ 2) * hθp`. Establish `hwc : (N₁:ℂ) * conj (w i₀) = conj lam * (α * a + β * conj θ)`. Use `congrArg (starRingEnd ℂ) hwi` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hX : (N₁:ℂ) * (stdH L m (Pi.single i₀ φ) w + stdH L m w (Pi.single i₀ φ)) = κ * γ`. Rewrite using `[(sum_sum_sub_isotropic_shift_eq_of_conj_eq_neg L m i₀ φ w).1, (sum_sum_sub_isotropic_shift_eq_of_conj_eq_neg L m i₀ φ w).2, hcφ, hφ, hκ, hγ]`. Use `push_cast`. Take the linear combination `(A * lam * (x * a + y * θ)) * hwc + (A * conj lam * (x * a + y * conj θ)) * hwi + (A * lam * conj lam * a * (x * β + y * α)) * hθs + (A * lam * conj lam * 2 * β * y) * hθp`. Establish `hww : stdH L m w w = κ * Q₀ * (1 + (l:ℂ) ^ k * p / q)` using `by rw [hHw, hff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hsum` using `not_pow_dvd_two_mul_mul_of_not_dvd l hl g k (by omega) M₄ n₁ hM₄ hn₁ Q₀ p q hQ hlq`. Choose the witnesses or unpack the hypotheses as in `⟨w', γ', hw'Λ, hw'z, hw'w, hw'X, hndv⟩ : ∃ (w' : m → ℂ) (γ' : ℤ), n₁ • w' ∈ Λ ∧ (∀ j ∈ T, w' j = 0) ∧ stdH L m w' w' = κ * Q₀ * (1 + (l:ℂ) ^ k * p / q) ∧ (N₁:ℂ) * (stdH L m (Pi.single i₀ φ) w' + stdH L m w' (Pi.single i₀ φ)) = κ * γ' ∧ ¬ (l:ℤ) ^ (g + 3) ∣ (N₁:ℤ) * Q₀ * (2 * q + ( …`. Distinguish the cases in `hE : (l:ℤ) ^ (g + 3) ∣ (N₁:ℤ) * Q₀ * (2 * q + (l:ℤ) ^ k * p) - γ * q`. Use `⟨-w, -γ, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_neg]`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `neg_mem hn₁w`. Introduce `j hj`. Simplify using `[hzero j hj]`. Simplify using `[hww]`. Simplify using `only [map_neg, LinearMap.neg_apply]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `push_cast`. Take the linear combination `-hX`. Introduce `hE'`. Apply `hsum` to reduce the goal to its premises. Establish `e : 2 * ((l ^ g * M₄ * n₁ : ℕ) : ℤ) * Q₀ * (2 * q + (l:ℤ) ^ k * p) = ((N₁:ℤ) * Q₀ * (2 * q + (l:ℤ) ^ k * p) - γ * q) + ((N₁:ℤ) * Q₀ * (2 * q + (l:ℤ) ^ k * p) - (-γ) * q)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hN₁]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `dvd_add hE hE'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨w, γ, hn₁w, hzero, hww, hX, hE⟩`. Use `set E : ℤ := (N₁:ℤ) * Q₀ * (2 * q + (l:ℤ) ^ k * p) - γ' * q with hEdef`. Establish `hE0 : E ≠ 0` using `fun h0 => hndv (h0 ▸ dvd_zero _)`. Take `⟨j, e₀, he₀, hEabs⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (Int.natAbs_ne_zero.mpr hE0) l hl1`. Establish `hj : j ≤ g + 2`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hj`. Apply `hndv` to reduce the goal to its premises. Establish `h1 : l ^ (g + 3) ∣ E.natAbs` using `hEabs ▸ Dvd.dvd.mul_right (pow_dvd_pow l (by omega)) _`. Establish `h2 : ((l ^ (g + 3) : ℕ) : ℤ) ∣ E` using `Int.natCast_dvd.mpr h1`. Simplify using `using h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set E₀ : ℤ := E.sign * e₀ with hE₀def`. Establish `hEE : E = (l:ℤ) ^ j * E₀` using `by conv_lhs => rw [← Int.sign_mul_natAbs E, hEabs]`. Rewrite using `[hE₀def]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE₀ : ¬ (l:ℤ) ∣ E₀`. Introduce `hd'`. Apply `he₀` to reduce the goal to its premises. Establish `h1` using `Int.natCast_dvd.mp hd'`. Rewrite `h1` using `[hE₀def, Int.natAbs_mul, Int.natAbs_sign_of_ne_zero hE0, one_mul, Int.natAbs_natCast]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hE₀ne : (E₀:ℂ) ≠ 0`. Establish `: E₀ ≠ 0` using `fun h0 => hE₀ (h0 ▸ dvd_zero _)`. Conclude with `this` after adjusting the coercions. Establish `hqne : (q:ℂ) ≠ 0`. Establish `: q ≠ 0` using `fun h0 => hlq (h0 ▸ dvd_zero _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `this` after adjusting the coercions. Establish `hN₁ne : (N₁:ℂ) ≠ 0`. Establish `hM₄0 : M₄ ≠ 0` using `by rintro rfl; exact hM₄ (dvd_zero _)`. Establish `hn₁0 : n₁ ≠ 0` using `by rintro rfl; exact hn₁ (dvd_zero _)`. Establish `: N₁ ≠ 0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hN₁]`. Conclude with `mul_ne_zero (mul_ne_zero (pow_ne_zero _ hl.ne_zero) hM₄0) hn₁0`. Conclude with `this` after adjusting the coercions. Use `set t := k - j - h with ht`. Establish `hkj : k - j = t + h` using `by omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `set P : ℤ := Q₀ * p * N₁ with hP`. Use `set rc : ℂ := (l:ℂ) ^ (k - j) * P / E₀ with hrcdef`. Establish `hrc : conj rc = rc`. Rewrite using `[hrcdef]`. Simplify using `[map_div₀]`.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrD : rc * (N₁ * (2 * (Q₀:ℂ) + Q₀ * ((l:ℂ) ^ k * p / q)) - γ') = N₁ * Q₀ * ((l:ℂ) ^ k * p / q)`. Establish `hEc : (E:ℂ) = (l:ℂ) ^ j * E₀` using `by exact_mod_cast hEE`. Establish `hEc2 : (E:ℂ) = N₁ * Q₀ * (2 * q + (l:ℂ) ^ k * p) - γ' * q`. Rewrite using `[hEdef]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hpow : (l:ℂ) ^ k = (l:ℂ) ^ (k - j) * (l:ℂ) ^ j`. Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : (N₁:ℂ) * (2 * (Q₀:ℂ) + Q₀ * ((l:ℂ) ^ k * p / q)) - γ' = (l:ℂ) ^ j * E₀ / q`. Rewrite using `[← hEc, hEc2]`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Rewrite using `[e1, hrcdef, hP, hpow]`.
-
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Use `⟨w' + rc • (Pi.single i₀ φ - w'), ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hmem : (E₀ * n₁ * M₃ : ℤ) • (w' + rc • (Pi.single i₀ φ - w')) ∈ Λ`.
-
-Establish `key : (E₀ * n₁ * M₃ : ℤ) • (w' + rc • (Pi.single i₀ φ - w')) = (M₃ * E₀ - (l:ℤ) ^ (k - j) * P * M₃) • (n₁ • w') + ((l:ℤ) ^ t * P * n₁) • ((l ^ h * M₃) • Pi.single i₀ φ)`. Rewrite using `[hrcdef, hkj]`. Conclude with `zsmul_affine_combination_eq w' (Pi.single i₀ φ) E₀ P n₁ M₃ l t h hE₀ne`. Rewrite using `[key]`. Conclude with `add_mem (AddSubgroup.zsmul_mem _ hw'Λ _) (AddSubgroup.zsmul_mem _ hfΛ _)`.
-
-Use `⟨(E₀ * n₁ * M₃).natAbs, ?_, natAbs_smul_mem_of_zsmul_mem Λ _ _ hmem⟩` and prove the remaining obligations. Introduce `hd'`. Establish `hp : Prime (l:ℤ)` using `Nat.prime_iff_prime_int.mp hl`. Establish `h1 : (l:ℤ) ∣ E₀ * n₁ * M₃` using `Int.natCast_dvd.mpr hd'`. Break down `hp.dvd_or_dvd h1 with h2 | h2` into its components or cases.
-
-Break down `hp.dvd_or_dvd h2 with h3 | h3` into its components or cases. Conclude with `hE₀ h3`. Conclude with `hn₁ (Int.natCast_dvd_natCast.mp h3)`. Conclude with `hM₃ (Int.natCast_dvd_natCast.mp h2)`. Introduce `j' hj'`.
-
-Establish `hne : j' ≠ i₀` using `fun h' => hi₀ (h' ▸ hj')`. Simplify using `[hw'z j' hj', Pi.single_eq_of_ne hne]`. Rewrite using `[H_affine_combination_eq_of_quadratic_relation (stdH L m) (Pi.single i₀ φ) w' κ rc Q₀ N₁ γ' ((l:ℂ) ^ k * p / q) hN₁ne hff hw'w hw'X hrc hrD, hff]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem keyExact : KeyExact := by
   intro a b c d ha hd lam hlam m _ _ Λ l x y T i₀ hK

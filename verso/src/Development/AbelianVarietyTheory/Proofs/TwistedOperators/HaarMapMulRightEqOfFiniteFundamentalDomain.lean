@@ -6,15 +6,13 @@ open scoped Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace N := hNc.locallyCompactSpace`. Use `haveI : SecondCountableTopology N := TopologicalSpace.Subtype.secondCountableTopology (N : Set H)`. Use `haveI : Countable (Γ.subgroupOf N) := by`. Use `Function.Injective.countable (f := fun x : Γ.subgroupOf N => (⟨((x : N) : H), x.2⟩ : Γ)) ?_` and prove the remaining obligations. Introduce `a b h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : ((a : N) : H) = ((b : N) : H)` using `congrArg (fun y : Γ => (y : H)) h`. Conclude with `Subtype.ext (Subtype.ext h')`. Use `haveI : (κ.map (· * n₀)).IsHaarMeasure := Measure.isHaarMeasure_map_mul_right κ n₀`. Establish `hc` using `Measure.isMulLeftInvariant_eq_smul (κ.map (· * n₀)) κ`. Use `set c := Measure.haarScalarFactor (κ.map (· * n₀)) κ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h𝓝' : IsFundamentalDomain (Γ.subgroupOf N) ((· * n₀) ⁻¹' 𝓝) κ`. Use `h𝓝.preimage_of_equiv (quasiMeasurePreserving_mul_right κ n₀) (e := id) bijective_id ?_` and prove the remaining obligations. Introduce `g x`. Simplify using `only [id, Subgroup.smul_def, smul_eq_mul, mul_assoc]`. Establish `hm : κ ((· * n₀) ⁻¹' 𝓝) = κ 𝓝` using `h𝓝'.measure_eq h𝓝`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : κ 𝓝 ≠ 0` using `h𝓝.measure_ne_zero (NeZero.ne κ)`. Establish `hmap : (κ.map (· * n₀)) 𝓝 = κ ((· * n₀) ⁻¹' 𝓝)` using `MeasurableEquiv.map_apply (MeasurableEquiv.mulRight n₀) 𝓝`. Establish `h1 : (c : ENNReal) * κ 𝓝 = 1 * κ 𝓝`. Combine the equalities or inequalities in the displayed calculation. Establish `hc1 : c = 1`.
-
-Use `(ENNReal.mul_left_inj h0 hfin).1 h1` as an intermediate fact. Conclude with `this` after adjusting the coercions. Rewrite using `[hc, hc1, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haar_map_mul_right_eq_of_fundamentalDomain (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     [LocallyCompactSpace H] [SecondCountableTopology H] [T2Space H] [MeasurableSpace H] [BorelSpace H]

@@ -29,13 +29,13 @@ def resB (A : C ⥤ CommAlgCat.{0} R) {U V : ObjectProperty C} (h : V ≤ U) {k 
   fun σ => b (σ ⋙ ObjectProperty.ιOfLE h)
 
 /- English proof (translation)
-Introduce `_ hT` and use `hT i (Finset.mem_univ i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem capS_le_univ {ι : Type} [Fintype ι] (U : ι → ObjectProperty C) (i : ι) : capS U Finset.univ ≤ U i :=
   fun _ hT => hT i (Finset.mem_univ i)
 
 /- English proof (translation)
-Introduce `_ hT α _` and use `hT α (Finset.mem_univ α)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem capS_univ_le {ι : Type} [Fintype ι] [DecidableEq ι] (U : ι → ObjectProperty C) (S : Finset ι) :
     capS U Finset.univ ≤ capS U S :=

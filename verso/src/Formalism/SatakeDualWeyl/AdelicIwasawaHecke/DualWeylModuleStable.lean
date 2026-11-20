@@ -8,9 +8,9 @@ open MvPolynomial
 namespace Formalism.UG.P
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i, j⟩`. Simplify using `only [Formalism.GradedWeylDivisibility.rowAct, AlgHom.comp_apply, aeval_X, map_sum, map_mul, aeval_C, algebraMap_eq, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Use `first`. Consider the case `exact Finset.sum_comm`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [Finset.sum_comm])`.
+A detailed English derivation is pending.
 -/
 theorem wact_rowAct_mul (R : Type) [CommRing R] (r n : ℕ) (A B : Matrix (Fin r) (Fin r) R) :
     Formalism.GradedWeylDivisibility.rowAct R (n := n) (A * B) = (Formalism.GradedWeylDivisibility.rowAct R (n := n) B).comp (Formalism.GradedWeylDivisibility.rowAct R A) := by
@@ -23,7 +23,7 @@ theorem wact_rowAct_mul (R : Type) [CommRing R] (r n : ℕ) (A B : Matrix (Fin r
   | (rw [Finset.sum_comm])
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i, j⟩`. Simplify using `[Formalism.GradedWeylDivisibility.rowAct, Matrix.one_apply, apply_ite C, ite_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem wact_rowAct_one (R : Type) [CommRing R] (r n : ℕ) :
     Formalism.GradedWeylDivisibility.rowAct R (n := n) (1 : Matrix (Fin r) (Fin r) R) = AlgHom.id R _ := by
@@ -32,9 +32,9 @@ theorem wact_rowAct_one (R : Type) [CommRing R] (r n : ℕ) :
   simp [Formalism.GradedWeylDivisibility.rowAct, Matrix.one_apply, apply_ite C, ite_mul]
 
 /- English proof (translation)
-Introduce `R _ r n g h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.UG.dwAct]`. Rewrite using `[mul_inv_rev, Units.val_mul, wact_rowAct_mul]`. Simplify using `only [Formalism.UG.dwAct, inv_one, Units.val_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `wact_rowAct_one R r n`.
+A detailed English derivation is pending.
 -/
 theorem dual_weyl_action_mul : Formalism.UG.DwActMul := by
   intro R _ r n g h
@@ -45,9 +45,9 @@ theorem dual_weyl_action_mul : Formalism.UG.DwActMul := by
     exact wact_rowAct_one R r n
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => first`. Consider the case `simpa using isWeightedHomogeneous_C w (1 : R)`. Consider the case `simpa using isWeightedHomogeneous_one R w`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[pow_succ, succ_nsmul]`. Conclude with `ih.mul h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isWeightedHomogeneous_pow' {σ R M : Type*} [CommRing R] [AddCommMonoid M] {w : σ → M}
     {φ : MvPolynomial σ R} {m : M} (h : IsWeightedHomogeneous w φ m) (k : ℕ) :
@@ -62,11 +62,11 @@ private theorem isWeightedHomogeneous_pow' {σ R M : Type*} [CommRing R] [AddCom
     exact ih.mul h
 
 /- English proof (translation)
-Rewrite using `[← mem_weightedHomogeneousSubmodule, f.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule]`. Establish `hdw : Finsupp.weight w d = m` using `hf (mem_support_iff.mp hd)`. Establish `hprod : IsWeightedHomogeneous w (φ (d.prod fun n e => X n ^ e)) (Finsupp.weight w d)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finsupp.prod, map_prod, Finsupp.weight_apply, Finsupp.sum]`. Apply `IsWeightedHomogeneous.prod` to reduce the goal to its premises. Introduce `v _`. Rewrite using `[map_pow]`. Conclude with `isWeightedHomogeneous_pow' (hφ v) (d v)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hC : φ (C (coeff d f)) = C (coeff d f)`. Rewrite using `[← MvPolynomial.algebraMap_eq]`. Conclude with `φ.commutes _`. Rewrite using `[monomial_eq, map_mul, hC, ← hdw, ← zero_add (Finsupp.weight w d)]`. Conclude with `(isWeightedHomogeneous_C w _).mul hprod`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isWeightedHomogeneous_algHom_apply {σ R M : Type*} [CommRing R] [AddCommMonoid M] (w : σ → M)
     (φ : MvPolynomial σ R →ₐ[R] MvPolynomial σ R)
@@ -89,21 +89,21 @@ private theorem isWeightedHomogeneous_algHom_apply {σ R M : Type*} [CommRing R]
   exact (isWeightedHomogeneous_C w _).mul hprod
 
 /- English proof (translation)
-Introduce `R _ r n ν g f hf`. Unfold `Formalism.UG.dwAct`. Generalize the expression as in `((g⁻¹ : GL (Fin r) R) : Matrix (Fin r) (Fin r) R) = M`. Unfold `Formalism.GradedWeylDivisibility.dualWeyl at hf ⊢`. Rewrite `hf`, the goal using `[Submodule.mem_inf]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨hw, hk⟩` from `hf`. Prove the components needed by the constructor for the conclusion. Rewrite `hw`, the goal using `[mem_weightedHomogeneousSubmodule]`. Apply `isWeightedHomogeneous_algHom_apply _ _ _ f ν hw` to reduce the goal to its premises. Introduce `v`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Formalism.GradedWeylDivisibility.rowAct, aeval_X]`. Rewrite using `[← mem_weightedHomogeneousSubmodule]`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule]`. Establish `h1` using `(isWeightedHomogeneous_C (Formalism.GradedWeylDivisibility.colW r n) (M v.1 b)).mul (isWeightedHomogeneous_X R (Formalism.GradedWeylDivisibility.colW r n) (b, v.2))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[zero_add]`. Conclude with `h1`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, AlgHom.toLinearMap_apply, sub_eq_zero] at hk ⊢`. Introduce `l j hlj`. Establish `h1 : (Formalism.GradedWeylDivisibility.colAddGen R (r` using `r) l j).comp (Formalism.GradedWeylDivisibility.rowAct R (n := n) M) = (aeval (fun o : Option (Fin r × Fin n) => o.elim (X none) (fun v => ∑ b : Fin r, C (M v.1 b) * X (some (b, v.2))))).comp (Formalism.GradedWeylDivisibility.colAddGen R (r := r) l j) := by`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i, k⟩`. Distinguish the cases in `hkj : k = j`. Substitute `hkj` using the available equality. Simplify using `only [AlgHom.comp_apply, Formalism.GradedWeylDivisibility.rowAct, Formalism.GradedWeylDivisibility.colAddGen, aeval_X, map_sum, map_mul, aeval_C, map_add, if_true, Option.elim, algebraMap_eq]`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Formalism.GradedWeylDivisibility.rowAct, Formalism.GradedWeylDivisibility.colAddGen, hkj]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : (aeval (fun o : Option (Fin r × Fin n) => o.elim (X none) (fun v => ∑ b : Fin r, C (M v.1 b) * X (some (b, v.2))))).comp (rename (R` using `R) (some : Fin r × Fin n → Option (Fin r × Fin n))) = (rename (R := R) (some : Fin r × Fin n → Option (Fin r × Fin n))).comp (Formalism.GradedWeylDivisibility.rowAct R (n := n) M) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i, k⟩`. Simplify using `[Formalism.GradedWeylDivisibility.rowAct]`. Establish `e1` using `DFunLike.congr_fun h1 f`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `DFunLike.congr_fun h2 f`. Simplify using `only [AlgHom.comp_apply] at e1 e2`. Rewrite using `[e1, hk l j hlj, e2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_weyl_module_stable : Formalism.UG.DwStable := by
   intro R _ r n ν g f hf

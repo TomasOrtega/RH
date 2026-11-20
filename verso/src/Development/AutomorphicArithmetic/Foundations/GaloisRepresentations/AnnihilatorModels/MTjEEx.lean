@@ -11,19 +11,19 @@ attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-Introduce `hTri hPE hPK hUW hLP hLPush p _ D O _ _ _ _ f b N r w _ hS M j c T hF 𝔞 ρ hsup hu E π hπ mπ`. Establish `h3` using `hS.three`. Establish `hcop` using `hS.cop`. Take `⟨Z, s, g, pb⟩ : ∃ (Z : Scheme.{0}) (s : Z ⟶ E.X) (g : Z ⟶ T.Y), IsPullback s g π T.s` from `⟨_, _, _, IsPullback.of_hasPullback π T.s⟩`. Take `⟨o, ⟨ms⟩⟩` from `GlobalTheory.T.exists_harrisTaylorObject_pullback p D O b N E.X Z E.s s E.univ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m₁, hm₁⟩` from `GlobalTheory.HTQuotRigid.objMap_comp_φ ms mπ`. Establish `hx : (s ≫ π) ≫ M.s = s ≫ E.s` using `by rw [Category.assoc, hπ]`. Take `⟨P⟩` from `hPE p D O b N h3 hcop M r w j c T Z (s ≫ π) (s ≫ E.s) hx o m₁ g pb.w.symm`. Take `⟨l, hl, hlm⟩` from `hLP p D O b N E.X Z E.s (s ≫ E.s) s E.univ o ms 𝔞 ρ E.lv E.isLev`. Establish `hK : ∀ (X : Over Z) (g' : X ⟶ o.A), UKer r o P.ψ X g' → KilledBy o w g'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `X g' ⟨h1, e, h2⟩`. Set `g₀ : (Over.mk (X.hom ≫ g) : Over T.Y) ⟶ T.o.A` to `Over.homMk (g'.left ≫ P.m₀.φ) (by`. Establish `hw` using `P.m₀.cart.1.w`. Establish `hg` using `Over.w g'`. Simplify using `only [Category.assoc, hw, Over.mk_hom]`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Category.assoc, hg])`. Take `⟨Ha, -, Hc⟩` from `(hPK p D O b N T.Y Z (T.s ≫ M.s) (s ≫ E.s) g T.o T.o' o P.o' P.m₀ P.m' T.ψ P.ψ P.sq).1 X (Over.mk (X.hom ≫ g)) rfl g' g₀ (by simp [g₀])`. Conclude with `(Hc w).2 (hUW p D O f b N r w hS M j c T hF _ g₀ ⟨Ha.1 h1, e, (Hc _).1 h2⟩)`. Establish `hl'` using `hLPush p D O b N r w 𝔞 ρ hsup hu Z (s ≫ E.s) c o P.o' P.ψ P.isog hK l hl`. Take `⟨t, ⟨ht, mt, hlev⟩, -⟩` from `E.rep Z (s ≫ E.s) P.o' _ hl'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n₁, hn₁⟩` from `GlobalTheory.HTQuotRigid.objMap_comp_φ mt mπ`. Take `⟨n₂, hn₂⟩` from `GlobalTheory.HTQuotRigid.objMap_comp_φ P.m' T.mt`. Establish `e : t ≫ π = g ≫ T.t` using `(M.rep Z (s ≫ E.s) P.o').unique ⟨by rw [Category.assoc, hπ, ht], ⟨n₁⟩⟩ ⟨by rw [Category.assoc, ← T.st, ← Category.assoc, ← pb.w, Category.assoc, hπ], ⟨n₂⟩⟩`. Establish `hφ : ∀ (f₁ f₂ : Z ⟶ M.X) (_ : f₁ = f₂) (a : ObjMap P.o' M.univ f₁) (a' : ObjMap P.o' M.univ f₂), a.φ = a'.φ`. Introduce and unpack `f₁ _ rfl a a'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hTri p D O b N h3 hcop Z M.X M.X _ M.s M.s P.o' M.univ M.univ f₁ (𝟙 _)).1 a a'`. Use `⟨{ Z := Z, s := s, t := t, g := g, pb := pb, tπ := e, o := o, o' := P.o', ms := ms, mt := mt, ψ := P.ψ, isog := P.isog, tj := P.tj, m₀ := P.m₀, m' := P.m', sq := P.sq, tri := P.tri.trans hm₁, tri' := hn₂.symm.trans ((hφ _ _ e.symm n₂ n₁).trans hn₁), lev := ?_ }⟩` and prove the remaining obligations. Introduce `y l' hl''`. Establish `hll : l' = l y`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `ms.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[hl'', hlm]`. Rewrite using `[Over.w l', Over.w (l y)]`. Substitute `hll` using the available equality. Conclude with `hlev y`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.tjEEx_of :
     ObjTri → PulledEx → PullKer → UKerW → LevPull → LevPush → TjEEx := by

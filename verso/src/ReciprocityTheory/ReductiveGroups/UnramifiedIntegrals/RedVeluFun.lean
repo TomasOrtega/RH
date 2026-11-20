@@ -9,11 +9,11 @@ open Formalism.L2.Th1.CM Formalism.L2.Th1.F
 namespace ReciprocityTheory.ChartRestriction.L1
 
 /- English proof (translation)
-Establish `hne` using `Formalism.L2.Th1.E.AddThm.P_sub_ne L z P hz hP hp hm`. Establish `hP' : -P ∉ L.lattice` using `fun h => hP (by simpa using L.lattice.neg_mem h)`. Establish `h1` using `Formalism.L2.Th1.E.AddThm.P_add L z P hz hP hp hm`. Establish `h2` using `Formalism.L2.Th1.E.AddThm.P_add L z (-P) hz hP' (by simpa [sub_eq_add_neg] using hm) (by simpa using hp)`. Rewrite `h2` using `[L.weierstrassP_neg, L.derivWeierstrassP_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hY` using `L.derivWeierstrassP_sq z hz`. Establish `hy` using `L.derivWeierstrassP_sq P hP`. Rewrite using `[L.weierstrassP_neg, h1, h2]`. Unfold `fW fW'`. Generalize the expression as in `L.weierstrassP z = X at *`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `L.weierstrassP P = x at *`. Generalize the expression as in `L.derivWeierstrassP z = Y at *`. Generalize the expression as in `L.derivWeierstrassP P = y at *`. Clear the denominators using the available nonvanishing facts. Take the linear combination `4 * hY + 4 * hy`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem velu_pair (L : PeriodPair) (z P : ℂ) (hz : z ∉ L.lattice) (hP : P ∉ L.lattice)
     (hp : z + P ∉ L.lattice) (hm : z - P ∉ L.lattice) :
@@ -38,13 +38,13 @@ theorem velu_pair (L : PeriodPair) (z P : ℂ) (hz : z ∉ L.lattice) (hP : P �
   linear_combination 4 * hY + 4 * hy
 
 /- English proof (translation)
-Take `⟨hK, hdisj⟩` from `hT.kerReps`. Establish `hzL : z ∉ L.lattice` using `fun h => hz (hs z h)`. Rewrite using `[isogenyP L α _ hα hs hK z hz, Finset.sum_union hdisj, Finset.sum_image (by intro a _ b _ h; exact neg_injective h)]`. Simplify using `only [veluFun, xsOf]`. Rewrite using `[Finset.sum_image (by intro a ha b hb h; exact hT.injOn ha hb h)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun P hP => ?_` and prove the remaining obligations. Take `⟨hαP, h2P⟩` from `hT.1 P hP`. Establish `hPL : P ∉ L.lattice` using `fun h => h2P (by rw [two_mul]; exact L.lattice.add_mem h h)`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp : z + P ∉ L.lattice` using `fun h => hz (by`. Use `L.lattice.sub_mem (hs _ h) hαP` as an intermediate fact. Rewrite using `[mul_add, add_sub_cancel_right] at this)` and apply the resulting hypothesis. Establish `hm : z - P ∉ L.lattice` using `fun h => hz (by`. Use `L.lattice.add_mem (hs _ h) hαP` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_sub, sub_add_cancel] at this)` and apply the resulting hypothesis. Conclude with `velu_pair L z P hzL hPL hp hm`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem velu_fun (L : PeriodPair) (α : ℂ) (T : Finset ℂ) (hα : α ≠ 0) (hs : MulStable L α)
     (hT : IsHalfReps L α T) (z : ℂ) (hz : α * z ∉ L.lattice) :

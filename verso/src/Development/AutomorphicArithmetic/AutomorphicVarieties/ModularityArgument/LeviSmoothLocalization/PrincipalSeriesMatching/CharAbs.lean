@@ -7,21 +7,19 @@ open NumberField IsDedekindDomain Polynomial UpperTheory.V UpperTheory.V.Z.Gam U
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `hiff : ∀ x y : v.adicCompletion K, ValuativeRel.valuation (v.adicCompletion K) x ≤ ValuativeRel.valuation (v.adicCompletion K) y ↔ Valued.v x ≤ Valued.v y`. Introduce `x y`. Use `letI : (Valued.v : Valuation (v.adicCompletion K) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Conclude with `ValuativeRel.isEquiv _ _ x y`. Establish `hlt1 : ∀ x : v.adicCompletion K, ValuativeRel.valuation (v.adicCompletion K) x < 1 ↔ Valued.v x < 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `h` using `hiff 1 x`. Rewrite `h` using `[map_one, map_one]`. Rewrite using `[lt_iff_not_ge, lt_iff_not_ge, h]`. Establish `hdisc : ∀ a : WithZero (Multiplicative ℤ), a < 1 → a ≤ WithZero.exp (-1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a h`. Break down `eq_or_ne a 0 with rfl | ha` into its components or cases. Conclude with `zero_le'`. Rewrite `h`, the goal using `[← WithZero.exp_log ha]`. Rewrite `h` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hexp : WithZero.exp (-1 : ℤ) < 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπ : Valued.v ((Formalism.L2.Host.atFin v (Formalism.L2.Host.unif v) : (v.adicCompletion K)ˣ) : v.adicCompletion K) = WithZero.exp (-1)` using `Formalism.L2.Host.unif_spec v`. Establish `hex : ∃ p : (v.adicCompletion K)ˣ, ValuativeRel.valuation (v.adicCompletion K) (p : v.adicCompletion K) < 1 ∧ ∀ x : v.adicCompletion K, ValuativeRel.valuation (v.adicCompletion K) x < 1 → ValuativeRel.valuation (v.adicCompletion K) x ≤ ValuativeRel.valuation (v.adicCompletion K) …`. Use `⟨Formalism.L2.Host.atFin v (Formalism.L2.Host.unif v), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hlt1, hπ]`. Conclude with `hexp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Rewrite using `[hiff, hπ]`. Conclude with `hdisc _ ((hlt1 x).1 hx)`. Take `⟨hu1, hu2⟩` from `Classical.epsilon_spec hex`. Unfold `Formalism.L2.Host.IsUnifAt UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.unif`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `hdisc _ ((hlt1 _).1 hu1)`. Rewrite using `[← hπ, ← hiff]`. Apply `hu2` to reduce the goal to its premises. Rewrite using `[hlt1, hπ]`.
-
-Conclude with `hexp`.
+A detailed English derivation is pending.
 -/
 private theorem isUnifAt_unif {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) :
     Formalism.L2.Host.IsUnifAt v (UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.unif (v.adicCompletion K)) := by
@@ -72,7 +70,7 @@ private theorem isUnifAt_unif {K : Type} [Field K] [NumberField K] (v : HeightOn
     exact hexp
 
 /- English proof (translation)
-Introduce `K _ _ χ`. Use `⟨-(GlobalTheory.HeckeNormPow.toQC χ).exponent, fun v => ⟨GlobalTheory.HeckeComp.smooth_loc χ v, ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `(GlobalTheory.HeckeNormPow.toQC χ).norm_apply (GroundTheory.Global.IdeleClassGroup.mk K (GroundTheory.Global.IdeleGroup.finiteEmbedding v (UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.unif (v.adicCompletion K))))`. Rewrite `h1` using `[GroundTheory.Global.IdeleClassGroup.ideleModule_mk, GroundTheory.Global.ideleModule_finiteEmbedding_of_uniformizer (isUnifAt_unif v), Real.inv_rpow (by positivity), ← Real.rpow_neg (by positivity)]`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.charAbs :
     UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.CharAbs := by

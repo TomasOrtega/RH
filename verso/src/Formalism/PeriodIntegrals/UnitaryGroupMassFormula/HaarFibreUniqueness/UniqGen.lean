@@ -14,7 +14,7 @@ variable {V : Type} [TopologicalSpace V] [T2Space V] [LocallyCompactSpace V]
   [TotallyDisconnectedSpace V]
 
 /- English proof (translation)
-Take `⟨s, hs, hsW, hsc⟩` from `local_compact_nhds (hW.mem_nhds hx)`. Take `⟨K, hKmem, hxK, hKsub⟩` from `(loc_compact_Haus_tot_disc_of_zero_dim (H := V)).exists_subset_of_mem_open (mem_interior_iff_mem_nhds.2 hs) isOpen_interior`. Establish `hKc : IsClopen K` using `hKmem`. Conclude with `⟨K, hsc.of_isClosed_subset hKc.1 (hKsub.trans interior_subset), hKc.2, hxK, hKsub.trans (interior_subset.trans hsW)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_compact_open {W : Set V} (hW : IsOpen W) {x : V} (hx : x ∈ W) :
     ∃ K, IsCompact K ∧ IsOpen K ∧ x ∈ K ∧ K ⊆ W := by
@@ -28,11 +28,11 @@ theorem exists_compact_open {W : Set V} (hW : IsOpen W) {x : V} (hx : x ∈ W) :
 variable [SecondCountableTopology V]
 
 /- English proof (translation)
-Use `choose K hK using fun x : W => exists_compact_open hW x.2`. Take `⟨T, hTc, hTU⟩` from `TopologicalSpace.isOpen_iUnion_countable K (fun x => (hK x).2.1)`. Use `⟨K '' T, hTc.image K, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, _, rfl⟩`. Conclude with `⟨(hK x).1, (hK x).2.1, (hK x).2.2.2⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sUnion_image, hTU]`. Use extensionality with `y`. Simplify using `only [mem_iUnion]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hy⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hK x).2.2.2 hy`. Introduce `hy`. Conclude with `⟨⟨y, hy⟩, (hK ⟨y, hy⟩).2.2.1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem open_eq_countable_union {W : Set V} (hW : IsOpen W) :
     ∃ T : Set (Set V), T.Countable ∧ (∀ K ∈ T, IsCompact K ∧ IsOpen K ∧ K ⊆ W) ∧ ⋃₀ T = W := by
@@ -53,19 +53,17 @@ theorem open_eq_countable_union {W : Set V} (hW : IsOpen W) :
 variable [MeasurableSpace V] [BorelSpace V]
 
 /- English proof (translation)
-Establish `key : ∀ O, IsOpen O → O ⊆ U → m O = m' O`. Introduce `O hO hOU`. Take `⟨T, hTc, hT, hTO⟩` from `open_eq_countable_union hO`. Break down `T.eq_empty_or_nonempty with he | hne` into its components or cases. Rewrite using `[← hTO, he, sUnion_empty, measure_empty, measure_empty]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, rfl⟩` from `hTc.exists_eq_range hne`. Establish `hacc : ∀ n, IsCompact (accumulate g n) ∧ IsOpen (accumulate g n) ∧ accumulate g n ⊆ U`. Introduce `n`. Establish `hg : ∀ k, IsCompact (g k) ∧ IsOpen (g k) ∧ g k ⊆ O` using `fun k => hT _ ⟨k, rfl⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[accumulate_def]`. Conclude with `(finite_le_nat n).isCompact_biUnion fun k _ => (hg k).1`. Rewrite using `[accumulate_def]`. Conclude with `isOpen_biUnion fun k _ => (hg k).2.1`. Rewrite using `[accumulate_def]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `iUnion₂_subset fun k _ => (hg k).2.2.trans hOU`. Rewrite using `[← hTO, sUnion_range, measure_iUnion_eq_iSup_accumulate, measure_iUnion_eq_iSup_accumulate]`. Use `congr 1`. Use function extensionality and compare the values at `n`. Conclude with `(hK _ (hacc n).1 (hacc n).2.1 (hacc n).2.2).2`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hres : m.restrict U = m'.restrict U`. Take `⟨T, hTc, hT, hTU⟩` from `open_eq_countable_union hU`. Rewrite using `[← hTU]`. Use `(Measure.restrict_sUnion_congr hTc).2 fun K hKT => ?_` and prove the remaining obligations. Take `⟨hKc, hKo, hKU⟩` from `hT K hKT`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hfin, heq⟩` from `hK K hKc hKo hKU`. Use `haveI : IsFiniteMeasure (m.restrict K) := ⟨by rw [Measure.restrict_apply_univ]; exact hfin⟩`. Use `ext_of_generate_finite {s | IsOpen s} BorelSpace.measurable_eq isPiSystem_isOpen ?_ ?_` and prove the remaining obligations. Introduce `O hO`. Rewrite using `[Measure.restrict_apply hO.measurableSet, Measure.restrict_apply hO.measurableSet]`.
-
-Conclude with `key _ (hO.inter hKo) (inter_subset_right.trans hKU)`. Rewrite using `[Measure.restrict_apply_univ, Measure.restrict_apply_univ, heq]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem measure_ext_of_compactOpen {U : Set V} (hU : IsOpen U) (m m' : Measure V)
     (h0 : m Uᶜ = 0) (h0' : m' Uᶜ = 0)
@@ -116,15 +114,13 @@ variable {V X Y : Type} [TopologicalSpace V] [T2Space V] [LocallyCompactSpace V]
   [SecondCountableTopology X]
 
 /- English proof (translation)
-Establish `hKcl : IsClopen K` using `⟨hKc.isClosed, hKo⟩`. Establish `hKm : MeasurableSet K` using `hKo.measurableSet`. Establish `hcont : Continuous (K.indicator (1 : V → ℝ))` using `hKcl.continuous_indicator continuous_const`. Establish `hcs : HasCompactSupport (K.indicator (1 : V → ℝ))` using `HasCompactSupport.intro hKc fun x hx => by simp [hx]`. Establish `hts : tsupport (K.indicator (1 : V → ℝ)) ⊆ U` using `(closure_minimal (support_indicator_subset) hKcl.1).trans hKU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hint, hco⟩` from `h.2.2 _ hcont hcs hts`. Establish `hEq : (fun b => ∫ v, K.indicator (1 : V → ℝ) v ∂(fib b)) = fun b => (fib b K).toReal`. Use function extensionality and compare the values at `b`. Rewrite using `[integral_indicator_one hKm]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨fun b => ?_, ?_⟩` and prove the remaining obligations. Establish `hfi` using `(hint b (mem_univ b)).2`. Establish `hl : ∫⁻ x, ‖K.indicator (1 : V → ℝ) x‖ₑ ∂(fib b) = fib b K`. Rewrite using `[← lintegral_indicator_one hKm]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `x`. Apply the tactic sequence `by_cases hx : x ∈ K <;> simp [hx]`. Rewrite using `[← hl]`. Conclude with `hfi`. Rewrite using `[← hEq]`.
-
-Conclude with `continuousOn_univ.1 hco`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fib_compactOpen {μ : Measure V} {ν : Measure X} {f : V → Y} {ι : X → Y} {U : Set V}
     {fib : X → Measure V} (h : IsFibreFamily μ f ι U ν Set.univ fib) {K : Set V}
@@ -158,17 +154,15 @@ variable (μ : Measure V) (ν : Measure X) [IsFiniteMeasureOnCompacts ν] [ν.Is
   (f : V → Y) (ι : X → Y) (U : Set V)
 
 /- English proof (translation)
-Establish `hm : MeasurableSet (K ∩ f ⁻¹' (ι '' S))` using `hKm.inter (hA S hS)`. Rewrite using `[h.2.1 _ (measurable_one.indicator hm), ← lintegral_indicator hS]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[lintegral_indicator_one hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hC` using `h.1 b`. Distinguish the cases in `hb : b ∈ S`. Rewrite using `[indicator_of_mem hb]`. Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Apply `measure_mono` to reduce the goal to its premises. Introduce `v hv`. Distinguish the cases in `hv' : v ∈ f ⁻¹' {ι b} ∩ U`. Use `left`. Conclude with `⟨hv, ⟨b, hb, hv'.1.symm⟩⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `right`. Conclude with `hv'`. Use `_ ≤ fib b (K ∩ f ⁻¹' (ι '' S)) + fib b (f ⁻¹' {ι b} ∩ U)ᶜ := measure_union_le _ _`. Use `_ = fib b (K ∩ f ⁻¹' (ι '' S)) := by rw [hC, add_zero]`. Conclude with `measure_mono inter_subset_left`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz : fib b (K ∩ f ⁻¹' (ι '' S)) = 0`. Apply `measure_mono_null _ hC` to reduce the goal to its premises. Introduce `v hv hvC`. Take `⟨b', hb', he⟩` from `hv.2`. Establish `: ι b' = ι b` using `he.trans hvC.1`.
-
-Rewrite `hb'` using `[hι this]`. Conclude with `hb hb'`. Rewrite using `[hz]`. Simplify using `[hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fib_setLIntegral (hA : ∀ S : Set X, MeasurableSet S → MeasurableSet (f ⁻¹' (ι '' S)))
     (hι : Function.Injective ι) {fib : X → Measure V} (h : IsFibreFamily μ f ι U ν Set.univ fib)
@@ -205,17 +199,15 @@ theorem fib_setLIntegral (hA : ∀ S : Set X, MeasurableSet S → MeasurableSet 
     simp [hb]
 
 /- English proof (translation)
-Establish `hKeq : ∀ K, IsCompact K → IsOpen K → K ⊆ U → ∀ b, fib b K = fib' b K`. Introduce `K hKc hKo hKU`. Establish `hK1` using `fib_compactOpen h hKc hKo hKU`. Establish `hK2` using `fib_compactOpen h' hKc hKo hKU`. Establish `hKm : MeasurableSet K` using `hKo.measurableSet`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm1 : Measurable (fun b => fib b K)`. Establish `: (fun b => fib b K) = fun b => ENNReal.ofReal ((fib b K).toReal)`. Use function extensionality and compare the values at `b`. Rewrite using `[ENNReal.ofReal_toReal (hK1.1 b).ne]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hK1.2.measurable.ennreal_ofReal`. Establish `hm2 : Measurable (fun b => fib' b K)`. Establish `: (fun b => fib' b K) = fun b => ENNReal.ofReal ((fib' b K).toReal)`. Use function extensionality and compare the values at `b`. Rewrite using `[ENNReal.ofReal_toReal (hK2.1 b).ne]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hK2.2.measurable.ennreal_ofReal`. Establish `hae : (fun b => fib b K) =ᵐ[ν] fun b => fib' b K` using `ae_eq_of_forall_setLIntegral_eq_of_sigmaFinite hm1 hm2 fun S hS _ => by`. Rewrite using `[fib_setLIntegral μ ν f ι U hA hι h hKm S hS, fib_setLIntegral μ ν f ι U hA hι h' hKm S hS]`. Establish `hae' : (fun b => (fib b K).toReal) =ᵐ[ν] fun b => (fib' b K).toReal` using `hae.mono fun b hb => by simp only at hb ⊢; rw [hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `heq` using `(hK1.2.ae_eq_iff_eq ν hK2.2).1 hae'`. Introduce `b`. Conclude with `(ENNReal.toReal_eq_toReal_iff' (hK1.1 b).ne (hK2.1 b).ne).1 (congrFun heq b)`. Use function extensionality and compare the values at `b`. Establish `h0 : fib b Uᶜ = 0` using `measure_mono_null (compl_subset_compl.2 inter_subset_right) (h.1 b)`.
-
-Establish `h0' : fib' b Uᶜ = 0` using `measure_mono_null (compl_subset_compl.2 inter_subset_right) (h'.1 b)`. Conclude with `measure_ext_of_compactOpen hU (fib b) (fib' b) h0 h0' fun K hKc hKo hKU => ⟨(fib_compactOpen h hKc hKo hKU).1 b, hKeq K hKc hKo hKU b⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fib_unique (hA : ∀ S : Set X, MeasurableSet S → MeasurableSet (f ⁻¹' (ι '' S)))
     (hι : Function.Injective ι) (hU : IsOpen U) (fib fib' : X → Measure V)

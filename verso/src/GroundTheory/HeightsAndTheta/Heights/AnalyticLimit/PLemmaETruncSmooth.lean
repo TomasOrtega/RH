@@ -17,9 +17,9 @@ open ReciprocityTheory.AnForm.M (FinHolAtlas LocPot IsPotential IsPsh pot_contDi
 noncomputable section
 
 /- English proof (translation)
-Establish `hR : ContDiff ℝ n (regMax (ι` using `Fin 2) η) := ((regMax_thm (Fin 2)).1 η hη).1.of_le hn`. Establish `hin : ContDiffAt ℝ n (fun z => ![a z, c]) y`. Use `contDiffAt_pi.2 fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Simplify using `using ha`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using contDiffAt_const`. Conclude with `(hR.comp_contDiffAt y hin).sub contDiffAt_const`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_regMax_trunc {D : ℕ} {n : WithTop ℕ∞} (hn : n ≤ ∞) {a : (Fin D → ℂ) → ℝ}
     {y : Fin D → ℂ} (c : ℝ) {η : ℝ} (hη : 0 < η) (ha : ContDiffAt ℝ n a y) :
@@ -33,17 +33,15 @@ theorem contDiffAt_regMax_trunc {D : ℕ} {n : WithTop ℕ∞} (hn : n ≤ ∞) 
   exact (hR.comp_contDiffAt y hin).sub contDiffAt_const
 
 /- English proof (translation)
-Establish `haAt : ContDiffAt ℝ 2 a y` using `ha.contDiffAt (hO.mem_nhds hy)`. Establish `hT` using `contDiffAt_regMax_trunc (WithTop.coe_le_coe.mpr le_top) c hη haAt`. Establish `e1 : levi (fun z => f z + (regMax η ![a z, c] - η)) y w = levi f y w + 1 * levi (fun z => regMax η ![a z, c] - η) y w`. Rewrite using `[← levi_add_smul 1 hf hT w]`. Simplify using `only [one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2 : levi (fun z => regMax η ![a z, c] - η) y w = levi (fun z => regMax η (fun j => (![a, fun _ => c] : Fin 2 → (Fin D → ℂ) → ℝ) j z)) y w`. Establish `: (fun z => regMax η ![a z, c] - η) = fun z => regMax η (fun j => (![a, fun _ => c] : Fin 2 → (Fin D → ℂ) → ℝ) j z) + (-η)`. Use function extensionality and compare the values at `z`. Rewrite using `[sub_eq_add_neg]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> rfl`. Rewrite using `[this, levi_add_const]`. Establish `e3 : levi (fun z => f z + a z) y w = levi f y w + 1 * levi a y w`. Rewrite using `[← levi_add_smul 1 hf haAt w]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [one_mul]`. Establish `hR` using `regMaxLevi_thm D (Fin 2) η O ![a, fun _ => c] hO hη (fun j => by fin_cases j`. Conclude with `ha`. Conclude with `contDiffOn_const) y hy w (-levi f y w)`. Use the proof step `(fun j => by fin_cases j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show -levi f y w ≤ levi a y w`. Combine the linear equalities and inequalities to obtain the conclusion. Use `show -levi f y w ≤ levi (fun _ => c) y w`. Rewrite using `[levi_const]`. Use the proof step `linarith)`.
-
-Rewrite using `[e1, e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem levi_regMax_trunc {D : ℕ} {O : Set (Fin D → ℂ)} (hO : IsOpen O) {f a : (Fin D → ℂ) → ℝ}
     {y : Fin D → ℂ} (hy : y ∈ O) (c : ℝ) {η : ℝ} (hη : 0 < η) (hf : ContDiffAt ℝ 2 f y)
@@ -85,17 +83,15 @@ theorem levi_regMax_trunc {D : ℕ} {O : Set (Fin D → ℂ)} (hO : IsOpen O) {f
   linarith
 
 /- English proof (translation)
-Establish `hE1 : ∀ j y, y ∈ (A.chart j).target → (A.chart j).symm y ∈ W → ∀ᶠ z in 𝓝 y, v ((A.chart j).symm z) = regMax η ![u ((A.chart j).symm z), c] - η`. Introduce `j y hy hyW`. Use `filter_upwards [((A.chart j).isOpen_inter_preimage_symm hW).mem_nhds ⟨hy, hyW⟩] with z hz`. Conclude with `hvW _ hz.2`. Establish `hE2 : ∀ j y, y ∈ (A.chart j).target → (A.chart j).symm y ∉ W → ∃ κ : ℝ, ∀ᶠ z in 𝓝 y, v ((A.chart j).symm z) = κ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `j y hy hyW`. Take `⟨N, hN, hpN, κ, hκ⟩` from `hvC _ hyW`. Conclude with `⟨κ, by filter_upwards [((A.chart j).isOpen_inter_preimage_symm hN).mem_nhds ⟨hy, hpN⟩] with z hz`. Conclude with `hκ _ hz.2⟩`. Establish `hOW : ∀ j, IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' W)` using `fun j => (A.chart j).isOpen_inter_preimage_symm hW`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `⟨fun j y hy => ?_, fun x j y hy w => ?_⟩` and prove the remaining obligations. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Distinguish the cases in `hyW : (A.chart j).symm y ∈ W`. Conclude with `(contDiffAt_regMax_trunc le_rfl c hη ((hu j).contDiffAt ((hOW j).mem_nhds ⟨hy.1, hyW⟩))).congr_of_eventuallyEq (hE1 j y hy.1 hyW)`. Take `⟨κ, hκ⟩` from `hE2 j y hy.1 hyW`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `contDiffAt_const.congr_of_eventuallyEq hκ`. Establish `hyU : (A.chart j).symm y ∈ Om.pot.U x` using `hy.2.1`. Establish `hf` using `pot_contDiffAt_two Om.isPot x j hy.1 hyU`. Establish `h1 : 0 ≤ levi (Om.pot.φ x ∘ (A.chart j).symm) y w` using `Om.isPsh x j y ⟨hy.1, hyU⟩ w`. Use `show 0 ≤ levi (fun z => Om.pot.φ x ((A.chart j).symm z) + v ((A.chart j).symm z)) y w`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hyW : (A.chart j).symm y ∈ W`. Establish `hcg : (fun z => Om.pot.φ x ((A.chart j).symm z) + v ((A.chart j).symm z)) =ᶠ[𝓝 y] fun z => (Om.pot.φ x ∘ (A.chart j).symm) z + (regMax η ![(u ∘ (A.chart j).symm) z, c] - η)` using `by filter_upwards [hE1 j y hy.1 hyW] with z hz`. Simplify using `only [Function.comp, hz]`. Rewrite using `[levi_congr hcg]`. Conclude with `levi_regMax_trunc (hOW j) ⟨hy.1, hyW⟩ c hη hf (contDiffOn_infty.1 (hu j) 2) w h1 (hnn x j y ⟨hy.1, hyW, hyU, Set.mem_univ _⟩ w)`.
-
-Take `⟨κ, hκ⟩` from `hE2 j y hy.1 hyW`. Establish `hcg : (fun z => Om.pot.φ x ((A.chart j).symm z) + v ((A.chart j).symm z)) =ᶠ[𝓝 y] fun z => (Om.pot.φ x ∘ (A.chart j).symm) z + κ` using `by filter_upwards [hκ] with z hz`. Simplify using `only [Function.comp, hz]`. Rewrite using `[levi_congr hcg, levi_add_const]`. Conclude with `h1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trunc_smooth_psh {D : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas D X)
     (Om : KaehlerForm A) {W : Set X} (hW : IsOpen W) {u : X → ℝ} (hu : A.SmoothOn W u)

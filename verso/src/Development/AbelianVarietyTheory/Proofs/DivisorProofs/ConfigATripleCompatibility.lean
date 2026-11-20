@@ -12,9 +12,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace GlobalTheory.ThKStepA
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `μ 𝓕 _ _ _ h`. Simplify using the standard rewrite rules. Introduce `t m _ h`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `t m _ h`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem split2_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {a a' d₁ : ℕ} {W : Spc F E (a + a')} (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (X : Chars F E) :
@@ -28,7 +28,7 @@ theorem split2_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
     simp
 
 /- English proof (translation)
-Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Set `τ : E →+* ℂ` to `(B.emb w).1`. Establish `hcm : ∀ z : E, τ (σ z) = star (τ z)` using `fun z => hB.cm.2.2.2 τ z`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hcm, hcm, star_star]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_sigma {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : Base F E) (hB : B.IsGood σ) (z : E) : σ (σ z) = z := by
@@ -43,11 +43,11 @@ end GlobalTheory.ThKStepA
 open GlobalTheory.ThKStepA in
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' X om om' om₁ om₁' hC hT hT₁ e' he' Φ' hΦ' hI`. Take `⟨C, hC0, hC'⟩` from `(GlobalTheory.T.constant_terms_vanish hKP).2 F E σ B b a' G G₁ H H' hC e' he'`. Take `⟨fa, hs, hfa⟩` from `hC' X om om' om₁ om₁' hT hT₁ Φ' hΦ'`. Rewrite `hs` using `[hI]`. Take `⟨hfa0, -⟩` from `GlobalTheory.T.split_functions_adapted_plane hKP F E σ B (b + 2) a' G.W (b + a') G₁.W H' 0 (b + 1) _ _ _ _ X hT.base hT.geo.lt hT.geo.hW hT₁.geo.hW hC.hH' 0 fa 0 0 0 hs (split2_zero G₁.W H' X)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `h₁`. Take `⟨m, hm, -⟩` from `GlobalTheory.PlaneLeviExt.levi_existsUnique F E σ B _ _ G.W G₁.W H' 0 (b + 1) _ _ _ _ (sigma_sigma B hT.base) hT.geo.hW hT₁.geo.hW hC.hH' h₁`. Establish `key` using `hfa h₁ m hm 1`. Rewrite `key` using `[mul_one, hfa0]`. Establish `h11 : om' (1, 1) = 1` using `map_one om'`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[h11, Module.End.one_apply]`. Use `(mul_eq_zero.mp key.symm).resolve_left hC0` as an intermediate fact. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem GlobalTheory.ThK.stepA_vanish : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')) (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)

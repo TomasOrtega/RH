@@ -19,67 +19,59 @@ open scoped GlobalTheory.VacAny
 open GlobalTheory.SympChange in
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ hunr hnt κ _ _`. Establish `hsp : ∀ {R : Type} [CommRing R] [Algebra F R] (w : (κ → R) × (κ → R)), spAct (weylM (F` using `F) (κ := κ)) w = (w.2, -w.1) := by`. Introduce `R _ _ w`. Use extensionality with `k`. Simplify using `[spAct, weylM, Matrix.fromBlocks_map, Matrix.mulVec, dotProduct, Matrix.fromBlocks, Matrix.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[spAct, weylM, Matrix.fromBlocks_map, Matrix.mulVec, dotProduct, Matrix.fromBlocks, Matrix.one_apply]`. Establish `hSB` using `fun v => GlobalTheory.T.local_fourier_schwartz_stable F ψ hψ v (hnt v) κ`. Establish `hInv` using `fun v => GlobalTheory.T.local_fourier_double_reflection F ψ hψ v (hnt v) κ`. Establish `hLaw` using `GlobalTheory.T.local_fourier_schrodinger_intertwine F ψ hψ`. Establish `hInd` using `fun v => GlobalTheory.T.local_lattice_indicator_fourier F ψ hψ v κ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsmV : ∀ v (c : ℂ) (φ : (κ → Fv F v) → ℂ), fourV ψ v (c • φ) = c • fourV ψ v φ`. Introduce `v c φ`. Use function extensionality and compare the values at `y`. Simplify using `only [fourV, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul c _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0V : ∀ v, fourV ψ v (0 : (κ → Fv F v) → ℂ) = 0`. Introduce `v`. Use function extensionality and compare the values at `y`. Simplify using `[fourV]`. Use `choose C hC using fun v : Pl F => Submodule.exists_isCompl (SB (κ → Fv F v))`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `P : ∀ v : Pl F, ((κ → Fv F v) → ℂ) →ₗ[ℂ] ((κ → Fv F v) → ℂ)` to `fun v => (SB (κ → Fv F v)).subtype ∘ₗ Submodule.linearProjOfIsCompl _ (C v) (hC v)`. Establish `hPmem : ∀ v φ, P v φ ∈ SB (κ → Fv F v)` using `fun v φ => (Submodule.linearProjOfIsCompl _ (C v) (hC v) φ).2`. Establish `hPid : ∀ v, ∀ φ ∈ SB (κ → Fv F v), P v φ = φ` using `fun v φ hφ => congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left (hC v) ⟨φ, hφ⟩)`. Set `ev : ∀ v : Pl F, ((κ → Fv F v) → ℂ) →ₗ[ℂ] ((κ → Fv F v) → ℂ)` to `fun v => { toFun := fun φ => fourV ψ v (P v φ) map_add' := fun φ χ => by`. Rewrite using `[map_add]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hSB v).2.1 _ (hPmem v φ) _ (hPmem v χ)`. Use the proof step `map_smul' := fun c φ => by`. Rewrite using `[map_smul, RingHom.id_apply]`. Conclude with `hsmV v c _ }`. Establish `hev : ∀ v, ∀ φ ∈ SB (κ → Fv F v), ev v φ = fourV ψ v φ` using `fun v φ hφ => by show fourV ψ v (P v φ) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hPid v φ hφ]`. Establish `hneg : ∀ v, ∀ φ ∈ SB (κ → Fv F v), (fun x => φ (-x)) ∈ SB (κ → Fv F v)` using `fun v φ hφ => ⟨hφ.1.comp_continuous continuous_neg, hφ.2.comp_homeomorph (Homeomorph.neg _)⟩`. Establish `hmap : ∀ v, (SB (κ → Fv F v)).map (ev v) = SB _`. Introduce `v`. Apply `le_antisymm` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Rewrite using `[hev v φ hφ]`. Conclude with `(hSB v).1 φ hφ`. Introduce `φ hφ`. Establish `h1` using `hneg v φ hφ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨fourV ψ v (fun x => φ (-x)), (hSB v).1 _ h1, ?_⟩` and prove the remaining obligations. Rewrite using `[hev v _ ((hSB v).1 _ h1), hInv v _ h1]`. Simplify using the standard rewrite rules. Establish `hinj : ∀ v, ∀ φ ∈ SB (κ → Fv F v), ev v φ = 0 → φ = 0`. Introduce `v φ hφ h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[hev v φ hφ]`. Establish `h2` using `hInv v φ hφ`. Rewrite `h2` using `[h, h0V]`. Use function extensionality and compare the values at `x`. Establish `h3` using `congrFun h2 (-x)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [Pi.zero_apply, neg_neg] at h3`. Conclude with `h3.symm`. Take `⟨ei, hsurj, hei, hcont⟩` from `GlobalTheory.T.finite_fourier_transform_surjective_integral F κ`. Take `⟨μ, hμ, hprod⟩` from `GlobalTheory.T.exists_haar_adelic_integral_formula F ψ hψ hunr hnt κ`. Use `haveI := hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use `haveI : BorelSpace (AF F) := ⟨rfl⟩`. Establish `hspan` using `GlobalTheory.T.schwartz_adelic_eq_span_pure F κ`. Set `fA : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ` to `fun Φ y => ∫ x, Φ x * ψ (x ⬝ᵥ y) ∂μ`. Establish `hpure : ∀ (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ), (∀ v, φ v ∈ SB _) → (∀ᶠ v in cofinite, φ v = indO v) → ∀ y, Integrable (fun x => pure f φ x * ψ (x ⬝ᵥ y)) μ ∧ fA (pure f φ) y = pure (ei f) (fun v => fourV ψ v (φ v)) y`. Introduce `f φ hφ hae y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.schwartz_bruhat_restricted_product_char F ψ hψ hunr κ f φ y hφ hae`. Establish `e : (fun x => pure f φ x * ψ (x ⬝ᵥ y)) = fun x => (fun z => f z * eInf z (fun i => evI F (y i))) (fun i => evI F (x i)) * ∏ᶠ v, (fun z => φ v z * GlobalTheory.LatVac.psiAt ψ v (z ⬝ᵥ fun i => evFin F v (y i))) (fun i => evFin F v (x i))`. Use function extensionality and compare the values at `h3`. Take `⟨hc, hi⟩` from `hcont f (fun i => evI F (y i))`. Take `⟨j1, j2⟩` from `hprod _ _ hc hi h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨e ▸ j1, ?_⟩` and prove the remaining obligations. Use `show (∫ x, pure f φ x * ψ (x ⬝ᵥ y) ∂μ) = _`. Rewrite using `[e, j2, ← hei]`. Both sides reduce to the same expression. Establish `hint : ∀ Φ ∈ schA F κ, ∀ y, Integrable (fun x => Φ x * ψ (x ⬝ᵥ y)) μ`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `Φ hΦ y`. Rewrite `hΦ` using `[hspan]`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, φ, hφ, hae, rfl⟩` from `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(hpure f φ hφ hae y).1`. Consider the case `zero => simp`. Consider the case `add Φ Ψ _ _ h1 h2`. Use `(h1.add h2).congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `[add_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `smul c Φ _ h => simpa [mul_assoc] using h.const_mul c`. Establish `hadd : ∀ Φ ∈ schA F κ, ∀ Ψ ∈ schA F κ, fA (Φ + Ψ) = fA Φ + fA Ψ`. Introduce `Φ hΦ Ψ hΨ`. Use function extensionality and compare the values at `y`. Simplify using `only [fA, Pi.add_apply, add_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `integral_add (hint Φ hΦ y) (hint Ψ hΨ y)`. Establish `hsmul : ∀ (c : ℂ) (Φ : (κ → AF F) → ℂ), fA (c • Φ) = c • fA Φ`. Introduce `c Φ`. Use function extensionality and compare the values at `y`. Simplify using `only [fA, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `integral_const_mul c _`. Establish `hkeep : ∀ Φ ∈ schA F κ, fA Φ ∈ schA F κ`. Introduce `Φ hΦ`. Rewrite `hΦ`, the goal using `[hspan]`. Proceed by induction on `hΦ using Submodule.span_induction with`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mem Φ h`. Take `⟨f, φ, hφ, hae, rfl⟩` from `h`. Establish `e : fA (pure f φ) = pure (ei f) (fun v => fourV ψ v (φ v))` using `funext fun y => (hpure f φ hφ hae y).2`. Rewrite using `[e]`. Use `Submodule.subset_span ⟨ei f, fun v => fourV ψ v (φ v), fun v => (hSB v).1 _ (hφ v), ?_, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `filter_upwards [hae, hunr] with v h1 h2`. Rewrite using `[h1, (hInd v).2 h2]`. Consider the case `zero`. Establish `: fA 0 = 0` using `by funext y; simp [fA]`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Consider the case `add Φ Ψ hΦ hΨ h1 h2`. Rewrite using `[hadd Φ (hspan ▸ hΦ) Ψ (hspan ▸ hΨ)]`. Conclude with `add_mem h1 h2`. Consider the case `smul c Φ _ h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hsmul]`. Conclude with `Submodule.smul_mem _ c h`. Establish `hlawA : ∀ w Φ, fA (schr ψ w Φ) = schr ψ (w.2, -w.1) (fA Φ)`. Introduce `w Φ`. Use function extensionality and compare the values at `y`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Simplify using `only [fA, schr]`. Establish `h1` using `integral_add_right_eq_self (μ := μ) (fun z => ψ ((z - w.1) ⬝ᵥ w.2 + ⅟(2 : AF F) * (w.1 ⬝ᵥ w.2)) * Φ z * ψ ((z - w.1) ⬝ᵥ y)) w.1`. Simplify using `only [add_sub_cancel_right] at h1`. Rewrite using `[h1, ← integral_const_mul]`. Use `congr 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Establish `h2 : (⅟(2 : AF F)) + ⅟2 = 1` using `invOf_two_add_invOf_two`. Establish `key : ((z - w.1) ⬝ᵥ w.2 + ⅟(2 : AF F) * (w.1 ⬝ᵥ w.2)) + (z - w.1) ⬝ᵥ y = (y ⬝ᵥ -w.1 + ⅟2 * (w.2 ⬝ᵥ -w.1)) + z ⬝ᵥ (y + w.2)`. Simplify using `only [sub_dotProduct, dotProduct_add, dotProduct_neg]`. Rewrite using `[dotProduct_comm w.2 w.1, dotProduct_comm y w.1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(w.1 ⬝ᵥ w.2) * h2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[AddChar.map_add_eq_mul ψ ((z - w.1) ⬝ᵥ w.2 + ⅟(2 : AF F) * (w.1 ⬝ᵥ w.2)) ((z - w.1) ⬝ᵥ y)]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[key, AddChar.map_add_eq_mul ψ (y ⬝ᵥ -w.1 + ⅟2 * (w.2 ⬝ᵥ -w.1)) (z ⬝ᵥ (y + w.2))]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨D, hD⟩` from `Submodule.exists_isCompl (schA F κ)`. Set `Q : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)` to `(schA F κ).subtype ∘ₗ Submodule.linearProjOfIsCompl _ D hD`. Establish `hQmem : ∀ Φ, Q Φ ∈ schA F κ` using `fun Φ => (Submodule.linearProjOfIsCompl _ D hD Φ).2`.
-
-Establish `hQid : ∀ Φ ∈ schA F κ, Q Φ = Φ` using `fun Φ hΦ => congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left hD ⟨Φ, hΦ⟩)`. Set `e : ((κ → AF F) → ℂ) →ₗ[ℂ] (κ → AF F) → ℂ` to `{ toFun := fun Φ => fA (Q Φ) map_add' := fun Φ Ψ => by rw [map_add]; exact hadd _ (hQmem Φ) _ (hQmem Ψ) map_smul' := fun c Φ => by rw [map_smul, RingHom.id_apply]; exact hsmul c _ }`. Establish `he : ∀ Φ ∈ schA F κ, e Φ = fA Φ` using `fun Φ hΦ => by show fA (Q Φ) = _`. Rewrite using `[hQid Φ hΦ]`. Use `⟨e, ei, ev, hsurj, fun Φ hΦ => ?_, fun w Φ hΦ => ?_, hmap, hinj, fun v w φ hφ => ?_, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[he Φ hΦ]`. Conclude with `hkeep Φ hΦ`. Rewrite using `[he _ (GlobalTheory.T.schrodinger_preserves_schwartz F ψ hψ κ w Φ hΦ), he Φ hΦ, hlawA, hsp]`. Rewrite using `[hsp, hev v _ ((hSB v).2.2 w φ hφ), hev v φ hφ, hLaw v κ w φ]`. Use `filter_upwards [hunr] with v hv`.
-
-Rewrite using `[hev v _ (hInd v).1, (hInd v).2 hv]`. Introduce `f φ hφ hae`. Establish `hm : pure f φ ∈ schA F κ`. Rewrite using `[hspan]`. Conclude with `Submodule.subset_span ⟨f, φ, hφ, hae, rfl⟩`.
-
-Establish `e2 : (fun v => ev v (φ v)) = fun v => fourV ψ v (φ v)` using `funext fun v => hev v _ (hφ v)`. Rewrite using `[he _ hm, e2]`. Conclude with `funext fun y => (hpure f φ hφ hae y).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.WeylFour.weyl_hasOp : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ →
     (∀ᶠ v in cofinite, PsiUnr ψ v) → (∀ v : Pl F, ∃ x, psiLoc ψ v x ≠ 1) → ∀ (κ : Type) [Fintype κ] [DecidableEq κ],

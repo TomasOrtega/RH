@@ -11,7 +11,7 @@ open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR GlobalTheory.Compan
 namespace GlobalTheory.CompanionTheory.Ar.Num
 
 /- English proof (translation)
-Establish `h` using `hG (mem_support_iff.mp hμ)`. Establish `hw : Finsupp.weight (1 : σ → ℕ) μ = μ.sum fun _ => id`. Simplify using `[Finsupp.weight_apply, Finsupp.sum]`. Rewrite `h` using `[hw]`. Simplify `h` using `[classList, Multiset.length_toList, Finsupp.card_toMultiset]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem classList_length_of_mem_support {K σ : Type} (cls : σ → K → ℤ) {m : ℕ}
     {G : MvPolynomial σ ℝ} (hG : G.IsHomogeneous m) {μ : σ →₀ ℕ} (hμ : μ ∈ G.support) :
@@ -23,7 +23,7 @@ theorem classList_length_of_mem_support {K σ : Type} (cls : σ → K → ℤ) {
   simpa [classList, Multiset.length_toList, Finsupp.card_toMultiset] using h
 
 /- English proof (translation)
-Simplify using `[psum, map_sum, map_pow, rename_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_X_inr_pow_eq {σ : Type} {r : ℕ} (e : Fin r → σ) (k : ℕ) :
     (∑ a, X (Sum.inr (e a)) ^ k : MvPolynomial (σ ⊕ σ) ℝ) =
@@ -31,17 +31,17 @@ theorem sum_X_inr_pow_eq {σ : Type} {r : ℕ} (e : Fin r → σ) (k : ℕ) :
   simp [psum, map_sum, map_pow, rename_X]
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hP σ _ T hT r e hv k m hk hkm Gs hGs`. Establish `hfib` using `(GlobalTheory.T.fibre_component_divisor_properties O ϖ hϖ K ι P d hP).2.2`. Unfold `LocPair.val`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `hZc : ∀ W, ratDiv P (T.f i) (T.g i) W ≠ 0 → IsFibreComp P W` using `hfib _ _ _ (hT i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hfin : (Function.support (ratDiv P (T.f i) (T.g i))).Finite`. Use `(Ideal.finite_minimalPrimes_of_isNoetherianRing (MRing ι O) (P ⊔ (IsLocalRing.maximalIdeal O).map (C : O →+* MRing ι O))).subset ?_` and prove the remaining obligations. Introduce `W hW`. Conclude with `(hZc W hW).1`. Rewrite using `[GlobalTheory.T.cycle_number_mul_expand O K ι (σ ⊕ σ) (ratDiv P (T.f i) (T.g i)) (Sum.elim T.x T.x') _ (Gs i) []]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun μ hμ => ?_` and prove the remaining obligations. Establish `hlen : ((classList (Sum.elim T.x T.x') μ ++ []).length) + k = d`. Rewrite using `[List.append_nil, classList_length_of_mem_support _ (hGs i) hμ]`. Use linear arithmetic over natural numbers and integers. Establish `hcomp : Sum.elim T.x T.x' ∘ (Sum.inr ∘ e) = T.x' ∘ e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules. Rewrite using `[sum_X_inr_pow_eq, (GlobalTheory.T.cycle_number_rename).1 O K ι (Fin r) (σ ⊕ σ) (Sum.inr ∘ e), hcomp, (cycNum_int_and_comb O K ι (Fin r) (T.x' ∘ e) (classList (Sum.elim T.x T.x') μ ++ [])).1 (ratDiv P (T.f i) (T.g i)) hfin (psum (Fin r) ℤ k)]`. Establish `hzero : cycEval (fun W => classNum (T.x' ∘ e) (psum (Fin r) ℤ k) (classList (Sum.elim T.x T.x') μ ++ []) W) (ratDiv P (T.f i) (T.g i)) = 0`. Unfold `cycEval`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_eq_zero_of_forall_eq_zero fun W => ?_` and prove the remaining obligations. Distinguish the cases in `hW : ratDiv P (T.f i) (T.g i) W = 0`. Simplify using `[hW]`. Use `beta_reduce`. Rewrite using `[hv W (hZc W hW) k hk _ hlen, mul_zero]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hzero]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem val_psum_mul_eq_zero : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O), Irreducible ϖ → ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι O)) (d : ℕ), IsModelOver P d → ∀ (σ : Type) [Fintype σ] (T : LocPair ι O σ), T.IsVert P ϖ → ∀ (r : ℕ) (e : Fin r → σ), PowerSumsVanish P d (T.x' ∘ e) → ∀ k m : ℕ, 1 ≤ k → k + m = d → ∀ Gs : σ → MvPolynomial (σ ⊕ σ) ℝ, (∀ i, (Gs i).IsHomogeneous m) → T.val P (fun i => (∑ a, X (Sum.inr (e a)) ^ k) * Gs i) = 0 := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ P d hP σ _ T hT r e hv k m hk hkm Gs hGs

@@ -15,13 +15,13 @@ open GlobalTheory.Dict
 namespace GlobalTheory.Dict
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h1` using `h (Pi.single i 1) (Pi.single j 1)`. Establish `hs : star (Pi.single j 1 : Fin g → ℂ) = (Pi.single j 1 : Fin g → ℂ)`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = j`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hk]`. Establish `e : hermForm H0 (Pi.single i 1) (Pi.single j 1) = H0 i j`. Unfold `hermForm`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hs]`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Rewrite `h1` using `[e]`. Rewrite using `[← h1]`. Simplify using `[hermForm, Matrix.mulVec, dotProduct, Matrix.mul_apply, Pi.single_apply, Finset.mul_sum, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_comm.trans (Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => (mul_assoc _ _ _).symm)`.
+A detailed English derivation is pending.
 -/
 private theorem herm_mulVec_mulVec' {g : ℕ} (H0 H1 B : Matrix (Fin g) (Fin g) ℂ)
     (h : ∀ z w, hermForm H1 (B *ᵥ z) (B *ᵥ w) = hermForm H0 z w) :
@@ -44,19 +44,19 @@ private theorem herm_mulVec_mulVec' {g : ℕ} (H0 H1 B : Matrix (Fin g) (Fin g) 
   exact Finset.sum_comm.trans (Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => (mul_assoc _ _ _).symm)
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g bas idx n hs hn x hx hu Hm hH`. Establish `hG : ∀ a b, cc (X.Gm a b) = X.Gm b a` using `X.4`. Establish `hA : x ∈ GG X.Ψ X.Gm X.p0`. Unfold `Data.dom at hx`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨x₀, b, hb, ho, hbd, rfl⟩` from `(GlobalTheory.UnitFrames.unit_frame_eq_orthonormal_mul_triangular E r X.p0 X.Ψ X.Gm hG).1 x hA hu`. Establish `ho' : X.IsOrtho x₀` using `ho`. Establish `hone : (1 : Matrix (Fin g) (Fin g) ℂ).map conj = 1`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij]`. Establish `h1 : Hm = GlobalTheory.ThFr.Hm X bas idx (rmul x₀ b)`. Establish `h` using `herm_mulVec_mulVec' Hm (GlobalTheory.ThFr.Hm X bas idx (rmul x₀ b)) 1 (by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z w`. Rewrite using `[Matrix.one_mulVec, Matrix.one_mulVec, hH, GlobalTheory.ThFr.hermForm_Hm]`. Use the proof step `rfl)`. Rewrite using `[h, hone, Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one]`. Establish `h0 : GlobalTheory.ThFr.Hm X bas idx x₀ = ((GlobalTheory.ThFr.borMat X b).submatrix idx idx)ᵀ * GlobalTheory.ThFr.Hm X bas idx (rmul x₀ b) * ((GlobalTheory.ThFr.borMat X b).submatrix idx idx).map conj` using `herm_mulVec_mulVec' _ _ _ (fun z w => GlobalTheory.ThFr.hermForm_Hm_rmul (bas := bas) (idx := idx) (x := x₀) (hb := hb) z w)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet0` using `GlobalTheory.ThFr.det_Hm_of_isOrtho (idx := idx) (hs := hs) (ho := ho')`. Establish `hnB : ‖((GlobalTheory.ThFr.borMat X b).submatrix idx idx).det‖ = 1`. Rewrite using `[GlobalTheory.ThFr.det_borMat hb idx, norm_prod]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `p _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Unfold `GlobalTheory.ThFr.rowFac`. Apply the tactic sequence `split_ifs <;> simp [hbd]`. Establish `hc : (((GlobalTheory.ThFr.borMat X b).submatrix idx idx).map conj).det = conj ((GlobalTheory.ThFr.borMat X b).submatrix idx idx).det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : ((GlobalTheory.ThFr.borMat X b).submatrix idx idx).det * conj ((GlobalTheory.ThFr.borMat X b).submatrix idx idx).det = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hnB]`. Evaluate the numerical expressions. Rewrite using `[h1, ← hdet0, h0, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hc]`. Take the linear combination `(-(GlobalTheory.ThFr.Hm X bas idx (rmul x₀ b)).det) * hm`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem det_hx_of_isUnitFr : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ x ∈ X.dom, IsUnitFr X x → ∀ Hm : Matrix (Fin g) (Fin g) ℂ, (∀ z w, hermForm Hm z w = hx X bas idx x z w) → Hm.det = ((∏ τ : X.Ψ, X.c τ ^ r : ℝ) : ℂ) := by
   intro E _ _ _ r X g bas idx n hs hn x hx hu Hm hH

@@ -18,7 +18,7 @@ variable {F : Type*} [Field F] [IsAlgClosed F] [DecidableEq F] {A B : Weierstras
   [A.IsElliptic] [B.IsElliptic]
 
 /- English proof (translation)
-Establish `h0 : vcHom C hC ≠ 0` using `fun h ↦ vcPt_ne_zero C hC (congrArg Subtype.val h)`. Rewrite using `[homPt, dif_neg h0, Isogeny.pointHom_apply]`. Conclude with `pointMap_eq_vcPoint C hC _ (isogOfHom_val _ h0) R`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homPt_vcHom (C : VariableChange F) (hC : C • A = B) (R : A.toAffine.Point) :
     homPt (vcHom C hC) R = vcPoint C hC R := by
@@ -29,13 +29,11 @@ theorem homPt_vcHom (C : VariableChange F) (hC : C • A = B) (R : A.toAffine.Po
 variable {A' B' : WeierstrassCurve F} [A'.IsElliptic] [B'.IsElliptic]
 
 /- English proof (translation)
-Use `set Q := vcHom V hV`. Use `set R := vcHom V'⁻¹ (inv_smul_eq_of_smul_eq V' hV')`. Use `set Q' := vcHom V⁻¹ (inv_smul_eq_of_smul_eq V hV)`. Use `set R' := vcHom V' hV'`. Establish `e1 : homConst B A Q' * homConst A B Q = 1` using `homConst_vcHom_mul_inv V hV`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Establish `e2 : homConst B' A' R * homConst A' B' R' = 1` using `homConst_vcHom_mul_inv V' hV'`. Use extensionality with `z`. Simplify using `only [SetLike.mem_coe, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨homConst A' B' R' * z * homConst B A Q', homConstSet_le_mul Q' R' hz, ?_⟩` and prove the remaining obligations. Take the linear combination `(homConst A B Q * homConst B A Q' * z) * e2 + z * e1`. Introduce and unpack `⟨w, hw, rfl⟩`. Use `homConstSet_le_mul Q R hw` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
-
-Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem homConstSet_conj (V : VariableChange F) (hV : V • A = B) (V' : VariableChange F)
     (hV' : V' • A' = B') :
@@ -67,7 +65,7 @@ variable {K : Type*} [Field K] [NumberField K] (σ₀ : K →+* ℂ) (hK : finra
   [IsTotallyComplex K]
 
 /- English proof (translation)
-Use extensionality with `α`. Use `show (∀ l ∈ L.lattice, α * l ∈ L.lattice) ↔ (∀ l ∈ L'.lattice, α * l ∈ L'.lattice)`. Rewrite using `[h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latticeEnd_eq_of_lattice_eq {L L' : PeriodPair} (h : L.lattice = L'.lattice) :
     latticeEnd L = latticeEnd L' := by
@@ -78,7 +76,7 @@ theorem latticeEnd_eq_of_lattice_eq {L L' : PeriodPair} (h : L.lattice = L'.latt
 include hK in
 
 /- English proof (translation)
-Rewrite using `[latticeEnd_eq_of_lattice_eq (L' := idealPeriodPair σ₀ hK 𝔞) (h.trans (lattice_idealPeriodPair σ₀ hK 𝔞).symm), latticeEnd_idealPeriodPair]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem latticeEnd_eq_cmRing_of_lattice_eq {L : PeriodPair} {𝔞 : (FractionalIdeal (𝓞 K)⁰ K)ˣ}
     (h : L.lattice = idealLattice σ₀ 𝔞) : latticeEnd L = cmRing σ₀ := by
@@ -88,17 +86,15 @@ theorem latticeEnd_eq_cmRing_of_lattice_eq {L : PeriodPair} {𝔞 : (FractionalI
 include hK in
 
 /- English proof (translation)
-Establish `hP` using `lattice_idealPeriodPair σ₀ hK J`. Establish `hPend` using `latticeEnd_idealPeriodPair σ₀ hK J`. Establish `hne : ∃ z, z ∉ idealLattice σ₀ J`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1 : (Real.sqrt 2 : ℂ) * (idealPeriodPair σ₀ hK J).ω₁ ∉ (idealPeriodPair σ₀ hK J).lattice` using `sqrt_two_mul_notMem _`. Rewrite `h1` using `[hP]`. Conclude with `h1 (h _)`. Take `⟨z₀, hz₀⟩` from `hne`. Establish `hc0 : c ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hz₀ ((hc z₀).2 (by rw [zero_mul]; exact zero_mem _))`. Establish `mult : ∀ d : ℂ, (∀ l ∈ idealLattice σ₀ J, d * l ∈ idealLattice σ₀ J) → d ∈ cmRing σ₀`. Introduce `d hd`. Rewrite using `[← hPend]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `l hl`. Rewrite `hl`, the goal using `[hP]`. Conclude with `hd l hl`. Take `⟨a, ha⟩` from `(mem_cmRing σ₀).1 (mult c fun l hl ↦ (hc l).1 hl)`. Take `⟨b, hb⟩` from `(mem_cmRing σ₀).1 (mult c⁻¹ fun l hl ↦ (hc _).2 (by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc, mul_inv_cancel₀ hc0, one_mul]`. Conclude with `hl))`. Establish `hinj : Function.Injective (σ₀.comp (algebraMap (𝓞 K) K))` using `σ₀.injective.comp (IsFractionRing.injective (𝓞 K) K)`. Establish `hab : a * b = 1` using `hinj (by`. Simplify using `only [RingHom.comp_apply, map_mul, map_one]`.
-
-Rewrite using `[ha, hb, mul_inv_cancel₀ hc0])`. Conclude with `⟨⟨a, b, hab, by rw [mul_comm]; exact hab⟩, ha.symm⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unit_of_forall_mem_iff (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) {c : ℂ}
     (hc : ∀ z, z ∈ idealLattice σ₀ J ↔ c * z ∈ idealLattice σ₀ J) :
@@ -135,21 +131,19 @@ theorem exists_unit_of_forall_mem_iff (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) {c
 include hK in
 
 /- English proof (translation)
-Use `set Q := vcHom V hV`. Use `set R := vcHom V'⁻¹ (inv_smul_eq_of_smul_eq V' hV')`. Use `set c := homConst A' (weierstrassCurve L') R * homConst (weierstrassCurve L) A Q`. Establish `hset` using `homConstSet_conj V hV V' hV'`. Use `set Φ := homComp R (homComp φ.toHom Q)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hΦ : homConst _ _ Φ = c * invConst φ`. Rewrite using `[homConst_homComp, homConst_homComp, homConst_toHom]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc0 : c ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `e` using `homConst_vcHom_mul_inv V' hV'`. Establish `e'` using `homConst_vcHom_mul_inv V hV`. Simplify using `only [c, mul_eq_zero] at h0`. Break down `h0 with h0 | h0` into its components or cases. Rewrite `e` using `[h0, zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `zero_ne_one e`. Rewrite `e'` using `[h0, mul_zero]`. Conclude with `zero_ne_one e'`. Establish `hΦ0 : Φ ≠ 0`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (homConst _ _) h` as an intermediate fact. Rewrite `this` using `[hΦ, map_zero]`. Conclude with `mul_ne_zero hc0 (invConst_ne_zero φ) this`. Use `set ψ := isogOfHom Φ hΦ0`. Establish `hψc : invConst ψ = c * invConst φ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← homConst_toHom, isogOfHom_toHom, hΦ]`. Establish `hLend` using `latticeEnd_eq_cmRing_of_lattice_eq σ₀ hK hL`. Establish `hL'' : L'.lattice = idealLattice σ₀ ↑(𝔟⁻¹)⁻¹ * L.lattice`. Rewrite using `[hL', inv_inv, hL, Units.val_mul, idealLattice_mul]`. Establish `hψ : (homConstSet (weierstrassCurve L) (weierstrassCurve L') : Set ℂ) = (invConst ψ * ·) '' idealLattice σ₀ ↑(𝔟⁻¹)⁻¹`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[inv_inv, hset, hφ, Set.image_image, hψc]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree. Take `⟨u, -, hu⟩` from `exists_unit_of_homConstSet_eq σ₀ hK L L' hLend 𝔟⁻¹ hL'' ψ hψ`.
-
-Use `⟨u, fun z ↦ ?_⟩` and prove the remaining obligations. Establish `h1` using `hu z`. Rewrite `h1` using `[isogOfHom_toHom, TateCharpoly.homPt_homComp, TateCharpoly.homPt_homComp, AddMonoidHom.comp_apply, AddMonoidHom.comp_apply, homPt_vcHom, homPt_vcHom, homPt_toHom, Isogeny.pointHom_apply]`. Establish `h2` using `congrArg (vcPoint V' hV') h1`. Rewrite `h2` using `[vcPoint_vcPoint_of_eq_inv V'⁻¹ V' (inv_inv V').symm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_unit_pointMap_vcPoint (𝔞 𝔟 : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (L L' : PeriodPair)
     (hL : L.lattice = idealLattice σ₀ 𝔞) (hL' : L'.lattice = idealLattice σ₀ ↑(𝔟 * 𝔞))

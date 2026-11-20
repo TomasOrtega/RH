@@ -9,9 +9,9 @@ namespace GlobalTheory.NormSheafDescent
 open MvPolynomial in
 
 /- English proof (translation)
-Rewrite using `[Ideal.eq_top_iff_one]`. Apply `Ideal.subset_span` to reduce the goal to its premises. Use `⟨1, fun _ => 1, fun _ => Submodule.mem_top, Finsupp.single 0 (Module.finrank K L), ?_⟩` and prove the remaining obligations. Establish `hform : GlobalTheory.NormSheaf.normForm K L (fun _ : Fin 1 => algebraMap B L 1) = X 0 ^ Module.finrank K L`. Unfold `GlobalTheory.NormSheaf.normForm`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `[Fin.sum_univ_one, map_one, Matrix.det_smul]`. Rewrite using `[hform, coeff_X_pow]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem normIdeal_top (A K L B : Type) [CommRing A] [Field K] [Field L] [Algebra A K] [Algebra K L]
     [FiniteDimensional K L] [CommRing B] [Algebra B L] :
@@ -27,9 +27,9 @@ theorem normIdeal_top (A K L B : Type) [CommRing A] [Field K] [Field L] [Algebra
   simp
 
 /- English proof (translation)
-Establish `hV : IsAffineOpen V.1` using `V.2`. Establish `hempty : X.zeroLocus (U` using `V.1) (I.ideal V : Set Γ(X, V.1)) ∩ V.1 = ∅ := by`. Use extensionality with `x`. Simplify using `only [Set.mem_inter_iff, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce `hx hxV`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h x ((Scheme.IdealSheafData.mem_support_iff_of_mem hxV).2 hx) hxV`. Rewrite `hempty` using `[← hV.fromSpec_image_zeroLocus]`. Establish `h0 : PrimeSpectrum.zeroLocus (I.ideal V : Set Γ(X, V.1)) = ∅` using `Set.image_eq_empty.mp hempty`. Rewrite `h0` using `[PrimeSpectrum.zeroLocus_empty_iff_eq_top]`. Conclude with `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideal_eq_top_of_forall_not_mem {X : Scheme.{0}} (I : X.IdealSheafData) (V : X.affineOpens)
     (h : ∀ x ∈ I.support, x ∉ V.1) : I.ideal V = ⊤ := by
@@ -45,11 +45,9 @@ theorem ideal_eq_top_of_forall_not_mem {X : Scheme.{0}} (I : X.IdealSheafData) (
   exact h0
 
 /- English proof (translation)
-Introduce `Y Z π _ _ hK hfd I U hU`. Unfold `famIdeal`. Use `split_ifs with h`. Establish `hV : I.ideal ⟨π ⁻¹ᵁ U.1, U.2.preimage π⟩ = ⊤` using `ideal_eq_top_of_forall_not_mem I _ (fun y hy hyV => hU y hy hyV)`. Simplify using `only [hV]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Equip the data with the indicated structure.
 
-Use `letI := fieldK π hK`. Use `letI := algKL π`. Use `letI := algAK π U.1 h`. Use `letI := algBL π U.1 h`. Conclude with `normIdeal_top _ _ _ _`.
-
-Both sides reduce to the same expression.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem famIdeal_eq_top_of_disjoint : ∀ (Y Z : Scheme.{0}) (π : Y ⟶ Z) [IsFinite π] [IsIntegral Y]
     (hK : IsField (Z.presheaf.stalk (GlobalTheory.NormSheafDescent.genPt π)))

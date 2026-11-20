@@ -33,63 +33,63 @@ Both sides reduce to the same expression.
 theorem algebraMap_doubleDual_apply (a : ℂ) : algebraMap ℂ D2 a = TrivSqZeroExt.inl (TrivSqZeroExt.inl a) := rfl
 
 /- English proof (translation)
-Simplify using `[q, r1, r2, dualMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem q_snd (a : D2) : (q a).snd = (r1 a).snd + (r2 a).snd := by
   simp [q, r1, r2, dualMap]
 
 /- English proof (translation)
-Apply the tactic sequence `ext a <;> simp [q, i1, TrivSqZeroExt.algebraMap_eq_inl, algebraMap_doubleDual_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem quotient_inclusion_one : q.comp i1 = RingHom.id _ := by
   ext a <;> simp [q, i1, TrivSqZeroExt.algebraMap_eq_inl, algebraMap_doubleDual_apply]
 /- English proof (translation)
-Apply the tactic sequence `ext a <;> simp [q, i2, dualMap, TrivSqZeroExt.algebraMap_eq_inl, algebraMap_doubleDual_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem quotient_inclusion_two : q.comp i2 = RingHom.id _ := by
   ext a <;> simp [q, i2, dualMap, TrivSqZeroExt.algebraMap_eq_inl, algebraMap_doubleDual_apply]
 /- English proof (translation)
-Apply the tactic sequence `ext a <;> simp [r1, i1, TrivSqZeroExt.algebraMap_eq_inl, algebraMap_doubleDual_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem retraction_one_inclusion_one : r1.comp i1 = RingHom.id _ := by
   ext a <;> simp [r1, i1, TrivSqZeroExt.algebraMap_eq_inl, algebraMap_doubleDual_apply]
 /- English proof (translation)
-Apply the tactic sequence `ext a <;> simp [r1, i2, dualMap, GlobalTheory.CompanionTheory.Ar.epsMul, TrivSqZeroExt.algebraMap_eq_inl, algebraMap_doubleDual_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem retraction_one_inclusion_two : r1.comp i2 = GlobalTheory.CompanionTheory.Ar.epsMul 0 := by
   ext a <;> simp [r1, i2, dualMap, GlobalTheory.CompanionTheory.Ar.epsMul, TrivSqZeroExt.algebraMap_eq_inl, algebraMap_doubleDual_apply]
 /- English proof (translation)
-Apply the tactic sequence `ext a <;> simp [r2, i1, dualMap, GlobalTheory.CompanionTheory.Ar.epsMul, TrivSqZeroExt.algebraMap_eq_inl, algebraMap_doubleDual_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem retraction_two_inclusion_one : r2.comp i1 = GlobalTheory.CompanionTheory.Ar.epsMul 0 := by
   ext a <;> simp [r2, i1, dualMap, GlobalTheory.CompanionTheory.Ar.epsMul, TrivSqZeroExt.algebraMap_eq_inl, algebraMap_doubleDual_apply]
 /- English proof (translation)
-Apply the tactic sequence `ext a <;> simp [r2, i2, dualMap, TrivSqZeroExt.algebraMap_eq_inl, algebraMap_doubleDual_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem retraction_two_inclusion_two : r2.comp i2 = RingHom.id _ := by
   ext a <;> simp [r2, i2, dualMap, TrivSqZeroExt.algebraMap_eq_inl, algebraMap_doubleDual_apply]
 /- English proof (translation)
-Apply the tactic sequence `ext a <;> simp [i1, TrivSqZeroExt.algebraMap_eq_inl, algebraMap_doubleDual_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inclusion_one_algebraMap : i1.comp (algebraMap ℂ (DualNumber ℂ)) = algebraMap ℂ D2 := by
   ext a <;> simp [i1, TrivSqZeroExt.algebraMap_eq_inl, algebraMap_doubleDual_apply]
 /- English proof (translation)
-Apply the tactic sequence `ext a <;> simp [i2, dualMap, TrivSqZeroExt.algebraMap_eq_inl, algebraMap_doubleDual_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inclusion_two_algebraMap : i2.comp (algebraMap ℂ (DualNumber ℂ)) = algebraMap ℂ D2 := by
   ext a <;> simp [i2, dualMap, TrivSqZeroExt.algebraMap_eq_inl, algebraMap_doubleDual_apply]
 /- English proof (translation)
-Apply the tactic sequence `ext a <;> simp [q, TrivSqZeroExt.algebraMap_eq_inl, algebraMap_doubleDual_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem q_alg : q.comp (algebraMap ℂ D2) = algebraMap ℂ (DualNumber ℂ) := by
   ext a <;> simp [q, TrivSqZeroExt.algebraMap_eq_inl, algebraMap_doubleDual_apply]
 /- English proof (translation)
-Apply the tactic sequence `ext a <;> simp [r1, TrivSqZeroExt.algebraMap_eq_inl, algebraMap_doubleDual_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem retraction_one_algebraMap : r1.comp (algebraMap ℂ D2) = algebraMap ℂ (DualNumber ℂ) := by
   ext a <;> simp [r1, TrivSqZeroExt.algebraMap_eq_inl, algebraMap_doubleDual_apply]
 /- English proof (translation)
-Apply the tactic sequence `ext a <;> simp [r2, dualMap, TrivSqZeroExt.algebraMap_eq_inl, algebraMap_doubleDual_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem retraction_two_algebraMap : r2.comp (algebraMap ℂ D2) = algebraMap ℂ (DualNumber ℂ) := by
   ext a <;> simp [r2, dualMap, TrivSqZeroExt.algebraMap_eq_inl, algebraMap_doubleDual_apply]
@@ -128,43 +128,43 @@ def retractionTwo : epsAt x ⟶ W2 x := Over.homMk (spMap r2) (by
   rw [← Category.assoc, LieTangent.spec_comp, retraction_two_algebraMap])
 
 /- English proof (translation)
-Rewrite using `[CommRingCat.ofHom_id, Spec.map_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spec_id' : Spec.map (CommRingCat.ofHom (RingHom.id (DualNumber ℂ))) = 𝟙 _ := by
   rw [CommRingCat.ofHom_id, Spec.map_id]
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (by show spMap q ≫ spMap i1 = 𝟙 _ rw [LieTangent.spec_comp, quotient_inclusion_one, spec_id'])`.
+A detailed English derivation is pending.
 -/
 theorem quotient_projection_one : mQ x ≫ p1 x = 𝟙 _ := Over.OverMorphism.ext (by
   show spMap q ≫ spMap i1 = 𝟙 _
   rw [LieTangent.spec_comp, quotient_inclusion_one, spec_id'])
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (by show spMap q ≫ spMap i2 = 𝟙 _ rw [LieTangent.spec_comp, quotient_inclusion_two, spec_id'])`.
+A detailed English derivation is pending.
 -/
 theorem quotient_projection_two : mQ x ≫ p2 x = 𝟙 _ := Over.OverMorphism.ext (by
   show spMap q ≫ spMap i2 = 𝟙 _
   rw [LieTangent.spec_comp, quotient_inclusion_two, spec_id'])
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (by show spMap r1 ≫ spMap i1 = 𝟙 _ rw [LieTangent.spec_comp, retraction_one_inclusion_one, spec_id'])`.
+A detailed English derivation is pending.
 -/
 theorem retraction_one_projection_one : retractionOne x ≫ p1 x = 𝟙 _ := Over.OverMorphism.ext (by
   show spMap r1 ≫ spMap i1 = 𝟙 _
   rw [LieTangent.spec_comp, retraction_one_inclusion_one, spec_id'])
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (by show spMap r1 ≫ spMap i2 = Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.epsMul 0)) rw [LieTangent.spec_comp, retraction_one_inclusion_two])`.
+A detailed English derivation is pending.
 -/
 theorem retraction_one_projection_two : retractionOne x ≫ p2 x = LieTangent.epsScale x 0 := Over.OverMorphism.ext (by
   show spMap r1 ≫ spMap i2 = Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.epsMul 0))
   rw [LieTangent.spec_comp, retraction_one_inclusion_two])
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (by show spMap r2 ≫ spMap i1 = Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.epsMul 0)) rw [LieTangent.spec_comp, retraction_two_inclusion_one])`.
+A detailed English derivation is pending.
 -/
 theorem retraction_two_projection_one : retractionTwo x ≫ p1 x = LieTangent.epsScale x 0 := Over.OverMorphism.ext (by
   show spMap r2 ≫ spMap i1 = Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.epsMul 0))
   rw [LieTangent.spec_comp, retraction_two_inclusion_one])
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (by show spMap r2 ≫ spMap i2 = 𝟙 _ rw [LieTangent.spec_comp, retraction_two_inclusion_two, spec_id'])`.
+A detailed English derivation is pending.
 -/
 theorem retraction_two_projection_two : retractionTwo x ≫ p2 x = 𝟙 _ := Over.OverMorphism.ext (by
   show spMap r2 ≫ spMap i2 = 𝟙 _
@@ -172,9 +172,9 @@ theorem retraction_two_projection_two : retractionTwo x ≫ p2 x = 𝟙 _ := Ove
 
 omit [GrpObj G] in
 /- English proof (translation)
-Set `pr : epsAt x ⟶ Over.mk x` to `Over.homMk (Spec.map (CommRingCat.ofHom (algebraMap ℂ (DualNumber ℂ)))) rfl`. Establish `e : LieTangent.epsScale x 0 = pr ≫ LieTangent.epsZero x` using `Over.OverMorphism.ext (by show Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.epsMul 0)) = Spec.map (CommRingCat.ofHom (algebraMap ℂ (DualNumber ℂ))) ≫ Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom)`. Rewrite using `[LieTangent.spec_comp]`. Use `congr 2`. Apply the tactic sequence `ext a <;> simp [GlobalTheory.CompanionTheory.Ar.epsMul, TrivSqZeroExt.algebraMap_eq_inl])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[e, Category.assoc, (LieTangent.isTanAt_iff _).1 hv, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem scale0 [GrpObj G] {v : epsAt x ⟶ G} (hv : IsTanAt G x v) : LieTangent.epsScale x 0 ≫ v = 1 := by
   let pr : epsAt x ⟶ Over.mk x := Over.homMk (Spec.map (CommRingCat.ofHom (algebraMap ℂ (DualNumber ℂ)))) rfl
@@ -190,20 +190,20 @@ theorem scale0 [GrpObj G] {v : epsAt x ⟶ G} (hv : IsTanAt G x v) : LieTangent.
 def V2 (v v' : epsAt x ⟶ G) : W2 x ⟶ G := (p1 x ≫ v) * (p2 x ≫ v')
 
 /- English proof (translation)
-Rewrite using `[V2, comp_mul, ← Category.assoc, ← Category.assoc, quotient_projection_one, quotient_projection_two, Category.id_comp, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem quotient_tangent_product (v v' : epsAt x ⟶ G) : mQ x ≫ V2 x v v' = v * v' := by
   rw [V2, comp_mul, ← Category.assoc, ← Category.assoc, quotient_projection_one, quotient_projection_two, Category.id_comp, Category.id_comp]
 
 /- English proof (translation)
-Rewrite using `[V2, comp_mul, ← Category.assoc, ← Category.assoc, retraction_one_projection_one, retraction_one_projection_two, Category.id_comp, scale0 x hv', _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem retraction_one_tangent_sum {v v' : epsAt x ⟶ G} (hv' : IsTanAt G x v') : retractionOne x ≫ V2 x v v' = v := by
   rw [V2, comp_mul, ← Category.assoc, ← Category.assoc, retraction_one_projection_one, retraction_one_projection_two, Category.id_comp, scale0 x hv',
     _root_.mul_one]
 
 /- English proof (translation)
-Rewrite using `[V2, comp_mul, ← Category.assoc, ← Category.assoc, retraction_two_projection_one, retraction_two_projection_two, Category.id_comp, scale0 x hv, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem retraction_two_tangent_sum {v v' : epsAt x ⟶ G} (hv : IsTanAt G x v) : retractionTwo x ≫ V2 x v v' = v' := by
   rw [V2, comp_mul, ← Category.assoc, ← Category.assoc, retraction_two_projection_one, retraction_two_projection_two, Category.id_comp, scale0 x hv,

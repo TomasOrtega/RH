@@ -19,9 +19,9 @@ local notation "ι" => algebraMap (𝓞 F) (𝓞 K)
 
 omit [FiniteDimensional K V] in
 /- English proof (translation)
-Take `⟨z, hz⟩` from `(Submodule.mem_one).1 (hLi y hy y hy)`. Establish `hzc : conjO K z = z`. Apply `IsFractionRing.injective (𝓞 K) K` to reduce the goal to its premises. Rewrite using `[WA.algebraMap_conjO, hz, Cell.form_self_star hs y]`. Take `⟨a, ha⟩` from `(conjO_eq_iff_mem_range hF z).1 hzc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, by rw [ha, hz]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_norm_int (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm)
     {L : Submodule (𝓞 K) V} (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) {y : V} (hy : y ∈ L) :
@@ -34,19 +34,17 @@ theorem exists_norm_int (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (hs
   exact ⟨a, by rw [ha, hz]⟩
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `traceDeterminantCongruences.exists_trace_one hK hF h𝔭 1`. Establish `hc' : c + conjO K c - 1 ∈ extP K 𝔭 ^ 1` using `hc`. Rewrite `hc'` using `[pow_one]`. Establish `hEm : ι (a - 1) ∈ extP K 𝔭 ^ N` using `localizedQuotients.ι_mem_pow ha1`. Establish `hEc : conjO K (ι (a - 1)) = ι (a - 1)` using `idealPowerSpanBounds.conjO_map hF (a - 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨ν, hν⟩ : ∃ ν : 𝓞 F, ι ν = conjO K (1 - ι (a - 1) * c) * (1 - ι (a - 1) * c) := by`. Establish `: conjO K (conjO K (1 - ι (a - 1) * c) * (1 - ι (a - 1) * c)) = conjO K (1 - ι (a - 1) * c) * (1 - ι (a - 1) * c)`. Rewrite using `[map_mul, WA.conjO_conjO, mul_comm]`. Conclude with `(conjO_eq_iff_mem_range hF _).1 this`. Establish `ha' : ι a = 1 + ι (a - 1)` using `by rw [map_sub, map_one]; ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(1 - ι (a - 1) * c) • y, L.smul_mem _ hy, ν * a, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul K (1 - ι (a - 1) * c) y]`. Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, RingHom.id_apply, smul_eq_mul, starRingEnd_apply]`. Rewrite using `[ha, map_mul, hν, map_mul, map_mul, WA.algebraMap_conjO]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← idealPowerSpanBounds.mem_pow_iff (K := K) 𝔭 (N + 1) (ν * a - 1)]`. Establish `key : ι (ν * a - 1) = ι (a - 1) * (-(c + conjO K c - 1)) + ι (a - 1) * ι (a - 1) * (conjO K c * c - (c + conjO K c) + ι (a - 1) * conjO K c * c)`. Rewrite using `[map_sub (algebraMap (𝓞 F) (𝓞 K)) (ν * a) 1, map_mul, hν, ha', map_one, map_sub, map_one, map_mul, hEc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.add_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_mul hEm ((Ideal.neg_mem_iff _).2 hc')`. Use `Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Use `Ideal.pow_le_pow_right (by omega : N + 1 ≤ N + N) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pow_add]`. Conclude with `Ideal.mul_mem_mul hEm hEm`. Establish `: (1 - ι (a - 1) * c) • y - y = (-(ι (a - 1) * c)) • y`. Rewrite using `[sub_smul, one_smul, neg_smul]`. Normalize the expressions using the abelian group laws.
-
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem_smul ((Ideal.neg_mem_iff _).2 (Ideal.mul_mem_right _ _ hEm)) hy`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem newton (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K}
     {L : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {N : ℕ} (hN : 1 ≤ N) {y : V}
@@ -89,9 +87,9 @@ theorem newton (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF
     exact Submodule.smul_mem_smul ((Ideal.neg_mem_iff _).2 (Ideal.mul_mem_right _ _ hEm)) hy
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => exact ⟨y, hy, a, ha, by simpa using ha1, by simp⟩`. Consider the case `succ j ih`. Take `⟨y1, hy1, a1, hh1, h1, hd1⟩` from `ih`. Take `⟨y2, hy2, a2, hh2, h2, hd2⟩` from `newton hK hF h𝔭 (by omega : 1 ≤ k + j) hy1 hh1 h1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨y2, hy2, a2, hh2, by simpa only [add_assoc] using h2, ?_⟩` and prove the remaining obligations. Establish `: y2 - y = (y2 - y1) + (y1 - y)` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mono_left (Ideal.pow_le_pow_right (by omega)) hd2) hd1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem newton_iter (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K}
     {L : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {k : ℕ} (hk : 1 ≤ k) {y : V}
@@ -109,13 +107,11 @@ theorem newton_iter (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : I
     exact Submodule.add_mem _ (Submodule.smul_mono_left (Ideal.pow_le_pow_right (by omega)) hd2) hd1
 
 /- English proof (translation)
-Use `haveI := h𝔭.isPrime`. Take `⟨a, ha⟩` from `exists_norm_int hF hs hLi hy`. Establish `hI0 : WCA.InI 𝔭 k (algebraMap (𝓞 K) K (ι (a - 1)))`. Use `Cell.congrP_iff_inI.1 hyy` as an intermediate fact. Rewrite `this` using `[ha, ← map_one (algebraMap (𝓞 K) K), ← map_sub, ← map_one (algebraMap (𝓞 F) (𝓞 K)), ← map_sub]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `ha1 : a - 1 ∈ 𝔭 ^ k` using `(Cell.inI_ι h𝔭).1 hI0`. Take `⟨v, hv⟩` from `Cell.exists_near h𝔭 hF hs hL hLi (n := 1) one_ne_zero ⟨x₀, by rw [h1, map_one, map_one]⟩`. Take `⟨y', hy', a', ha', ha1', hd'⟩` from `newton_iter hK hF h𝔭 hk hy ha ha1 v`. Establish `hI : WCA.InI 𝔭 (v + k) (h y' y' - algebraMap (𝓞 K) K (ι 1))`. Rewrite using `[ha', ← map_sub, ← map_sub]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(Cell.inI_ι h𝔭).2 (by rw [add_comm]; exact ha1')`. Take `⟨z, hz0, hz1, hzd⟩` from `hv k hk y' ((WCA.inL_zero_iff h𝔭.isPrime).2 (localizedQuotients.le_locF 𝔭 L hy')) hI`. Use `⟨z, (WCA.inL_zero_iff h𝔭.isPrime).1 hz0, by rw [hz1, map_one, map_one], ?_⟩` and prove the remaining obligations. Establish `: z - y = (z - y') + (y' - y)` using `by abel`. Rewrite using `[this]`.
-
-Conclude with `Submodule.add_mem _ (WCA.InL.mem h𝔭.isPrime hzd) (Submodule.smul_mono le_rfl (localizedQuotients.le_locF 𝔭 L) hd')`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_exact_lift (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}

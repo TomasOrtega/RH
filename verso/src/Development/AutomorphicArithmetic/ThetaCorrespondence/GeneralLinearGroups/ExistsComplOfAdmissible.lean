@@ -11,23 +11,21 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SocleOfMultipli
 open Filter Topology GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult UpperTheory.Lit.Cas
 
 /- English proof (translation)
-Take `⟨B, hsym, hpos, hinv⟩` from `hun`. Use `⟨GlobalTheory.CompanionTheory.UnitSemisimple.orth ρ B hinv W, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv hv'`. Establish `h0 : B v v = 0` using `hv' v hv`. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `hpos v hne` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`. Introduce `v`. Take `⟨K, hKo, hKc, hKU⟩` from `hbasis {g | ρ g v = v} ((hs v).mem_nhds (by simp))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hmap : (fixed W.toRepresentation K).map W.toSubmodule.subtype = W.toSubmodule ⊓ fixed ρ K`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Establish `hy' : y ∈ fixed W.toRepresentation K` using `hy`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨y.2, ?_⟩` and prove the remaining obligations. Use `show (y : V) ∈ fixed ρ K`. Rewrite `hy'`, the goal using `[GlobalTheory.CompanionTheory.UnitSemisimple.mem_fixed_iff]`. Introduce `k hk`. Use `congrArg Subtype.val (hy' k hk)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `this`. Introduce and unpack `⟨hxW, hx⟩`. Establish `hx' : x ∈ fixed ρ K` using `hx`. Use `⟨⟨x, hxW⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show (⟨x, hxW⟩ : W.toSubmodule) ∈ fixed W.toRepresentation K`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hx'`, the goal using `[GlobalTheory.CompanionTheory.UnitSemisimple.mem_fixed_iff]`. Introduce `k hk`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hx' k hk`. Establish `hfd0 : FiniteDimensional ℂ (fixed W.toRepresentation K)` using `hW.2 K hKo hKc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfd : FiniteDimensional ℂ (W.toSubmodule ⊓ fixed ρ K : Submodule ℂ V)`. Rewrite using `[← hmap]`. Use `infer_instance`. Take `⟨t, ht⟩` from `(Submodule.fg_iff_finiteDimensional _).mpr hfd`. Take `⟨w, hw, hperp⟩` from `GlobalTheory.CompanionTheory.UnitSemisimple.exists_proj_finset B hpos t v`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hw`, `hperp` using `[ht]`. Use `⟨w, hw.1, ?_⟩` and prove the remaining obligations. Use `show ∀ x ∈ W.toSubmodule, B (v - w) x = 0`. Introduce `x hx`. Use `GlobalTheory.CompanionTheory.UnitSemisimple.orthogonal_of_fixed ρ B hinv K hKc W (v - w) ?_ hperp x hx (hs x)` and prove the remaining obligations.
-
-Introduce `k hk`. Establish `hv : ρ k v = v` using `hKU hk`. Establish `hw' : ρ k w = w` using `(GlobalTheory.CompanionTheory.UnitSemisimple.mem_fixed_iff ρ K w).mp hw.2 k hk`. Simplify using `[map_sub, hv, hw']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_compl_of_admissible {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
@@ -81,47 +79,41 @@ private theorem exists_compl_of_admissible {G V : Type} [Group G] [TopologicalSp
     simp [map_sub, hv, hw']
 
 /- English proof (translation)
-Establish `hGL` using `hBZ k`. Establish `hnz : ∀ A : Subrepresentation π, A ≠ ⊥ → ∃ v, v ∈ A.toSubmodule ∧ v ≠ 0`. Introduce `A hA`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hA` to reduce the goal to its premises. Apply `Subrepresentation.ext` to reduce the goal to its premises. Use `show A.toSubmodule = ⊥`. Rewrite using `[Submodule.eq_bot_iff]`. Conclude with `hcon`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `key : ∀ A : Subrepresentation π, IsAtom A → A = ⊤`. Introduce `A hA`. Assume the negation of the conclusion as `hAt`. Establish `hAirr : A.toRepresentation.IsIrreducible` using `GlobalTheory.ClassFin.isIrreducible_toRepresentation_of_isAtom A hA`. Establish `hAs : IsSmooth A.toRepresentation`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `v`. Establish `hset : {g | A.toRepresentation g v = v} = {g | π g v = v}`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq]`. Conclude with `Subtype.ext_iff`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hset]`. Conclude with `hs v`. Establish `hAad : IsAdmissible A.toRepresentation` using `hGL.1 (Fin N) _ A.toRepresentation hAs hAirr`. Take `⟨A', hdis, hcod⟩` from `exists_compl_of_admissible π (GlobalTheory.CompanionTheory.SmGL.exists_compact_open_subgroup_subset k N) hs hun A hAad`. Establish `hc : IsCompl A'.toSubmodule A.toSubmodule`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx' hx`. Conclude with `hdis x hx hx'`. Rewrite using `[Submodule.codisjoint_iff_exists_add_eq]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Take `⟨w, hw, hzw⟩` from `hcod z`. Conclude with `⟨z - w, w, hzw, hw, by abel⟩`. Set `P` to `A'.toSubmodule.projectionOnto A.toSubmodule hc`. Establish `hPv : ∀ v w, w ∈ A.toSubmodule → (hm : v - w ∈ A'.toSubmodule) → P v = ⟨v - w, hm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v w hw hm`. Establish `hv : v = w + (v - w)` using `by abel`. Establish `h0 : P w = 0` using `Submodule.linearProjOfIsCompl_apply_right hc ⟨w, hw⟩`. Establish `h1 : P (v - w) = ⟨v - w, hm⟩` using `Submodule.linearProjOfIsCompl_apply_left hc ⟨v - w, hm⟩`. Use `conv_lhs => rw [hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, h0, zero_add, h1]`. Establish `hPeq : ∀ g v, P (π g v) = A'.toRepresentation g (P v)`. Introduce `g v`. Take `⟨w, hw, hzw⟩` from `hcod v`. Establish `hm2 : π g v - π g w ∈ A'.toSubmodule`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← map_sub]`. Conclude with `A'.apply_mem_toSubmodule g hzw`. Rewrite using `[hPv v w hw hzw, hPv (π g v) (π g w) (A.apply_mem_toSubmodule g hw) hm2]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show π g v - π g w = π g (v - w)`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[map_sub]`. Set `p : π.IntertwiningMap A'.toRepresentation` to `⟨P, fun g => LinearMap.ext fun v => hPeq g v⟩`. Set `ι : A.toRepresentation.IntertwiningMap π` to `⟨A.toSubmodule.subtype, fun g => LinearMap.ext fun v => rfl⟩`. Establish `hsurj : Function.Surjective p`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `⟨y, Submodule.linearProjOfIsCompl_apply_left hc y⟩`. Establish `hexact : Function.Exact ι p`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hy' : y ∈ A.toSubmodule` using `(Submodule.linearProjOfIsCompl_apply_eq_zero_iff hc).mp hy`. Conclude with `⟨⟨y, hy'⟩, rfl⟩`. Introduce and unpack `⟨z, rfl⟩`. Conclude with `Submodule.linearProjOfIsCompl_apply_right hc z`. Establish `hex` using `GlobalTheory.CompanionTheory.SocleJm.jhMult_jac_exact e hρ ι p hs Subtype.val_injective hsurj hexact`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, haA, ha0⟩` from `hnz A hA.1`. Establish `hA1` using `hone A a haA ha0`. Establish `hnt : ∃ v, v ∉ A.toSubmodule`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hAt` to reduce the goal to its premises. Apply `Subrepresentation.ext` to reduce the goal to its premises. Use `show A.toSubmodule = ⊤`. Rewrite using `[Submodule.eq_top_iff']`. Conclude with `hcon`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Take `⟨v, hv⟩` from `hnt`. Take `⟨w, hw, hzw⟩` from `hcod v`. Establish `hvw : v - w ≠ 0`. Introduce `h0`. Apply `hv` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[sub_eq_zero]`. Rewrite using `[h0]`. Conclude with `hw`. Establish `hA2` using `hone A' (v - w) hzw hvw`. Establish `h2 : 1 + 1 ≤ jhMult ρ (jac e π)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hex]`. Conclude with `add_le_add hA1 hA2`. Establish `h3` using `h2.trans hjm`. Evaluate the numerical expressions using `at h3`. Establish `hwf` using `((hasFiniteLength_iff_wellFounded π).mp hfl).2`.
-
-Use `haveI : IsAtomic (Subrepresentation π) := isAtomic_of_orderBot_wellFounded_lt hwf.wf`. Use `haveI : Nontrivial (Subrepresentation π) := by`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Use `⟨⟨⊥, ⊤, ?_⟩⟩` and prove the remaining obligations. Introduce `h`.
-
-Establish `h'` using `congrArg Subrepresentation.toSubmodule h`. Establish `hmem : v ∈ (⊤ : Subrepresentation π).toSubmodule` using `Submodule.mem_top`. Rewrite `hmem` using `[← h']`. Conclude with `hv ((Submodule.mem_bot ℂ).mp hmem)`. Use `⟨fun T => ?_⟩` and prove the remaining obligations.
-
-Break down `eq_bot_or_exists_atom_le T with hT | ⟨A, hA, hAT⟩` into its components or cases. Conclude with `Or.inl hT`. Use `right`. Rewrite `hAT` using `[key A hA]`. Conclude with `top_le_iff.mp hAT`.
+A detailed English derivation is pending.
 -/
 private theorem isIrreducible_of_occurs (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) {k : Type} [Field k]
     [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {s N : ℕ} {d : Fin s → ℕ}
@@ -241,7 +233,7 @@ private theorem isIrreducible_of_occurs (hBZ : GlobalTheory.Published.BernsteinZ
     exact top_le_iff.mp hAT
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.CompanionTheory.SocleJm.nontrivial_indSp e hρ hsρ`. Use `isIrreducible_of_occurs hBZ e hρ (parInd e ρ) (isSmooth_parInd _ _) ((hBZ k).2.2.1 _ _ _ e _ ρ hsρ (hasFiniteLength_of_isIrreducible hρ)) hun (fun T v hv hv0 => ?_) hjm` and prove the remaining obligations. Set `ιT : T.toRepresentation.IntertwiningMap (parInd e ρ)` to `⟨T.toSubmodule.subtype, fun _ => rfl⟩`. Conclude with `GlobalTheory.CompanionTheory.SocleJm.one_le_jhMult_jac e hρ ιT ⟨⟨v, hv⟩, hv0⟩`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 private theorem isIrreducible_parInd (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) {k : Type} [Field k]
     [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {s N : ℕ} {d : Fin s → ℕ}
@@ -256,9 +248,7 @@ private theorem isIrreducible_parInd (hBZ : GlobalTheory.Published.BernsteinZele
   exact GlobalTheory.CompanionTheory.SocleJm.one_le_jhMult_jac e hρ ιT ⟨⟨v, hv⟩, hv0⟩
 
 /- English proof (translation)
-Introduce `hBZ k _ _ _ _ x y N hd hx hy hjm`. Establish `hρ : (piTensor fun a => (![x, y] a).rep).IsIrreducible` using `GlobalTheory.CompanionTheory.SocleJm.isIrreducible_piTensor (fun k _ _ _ _ n V _ _ π => (hBZ k).1 (Fin n) V π) ![x, y]`. Establish `hsρ : IsSmooth (piTensor fun a => (![x, y] a).rep)` using `isSmooth_piTensor fun a => (![x, y] a).2.rep.smooth`. Establish `hu : ∀ a, IsUnitarisable (![x, y] a).rep` using `fun a => by fin_cases a`. Conclude with `hx`.
-
-Conclude with `hy`. Conclude with `isIrreducible_parInd hBZ _ hρ hsρ (GlobalTheory.SmGL.UnitInd.isUnitarisable_multiProd _ hu) hjm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Mix.ss :
     GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (x y : IrrGL k) (N : ℕ) (hd : ∑ a, (![x, y] a).1 = N), IsUnitarisable x.rep → IsUnitarisable y.rep → jm ![x, y] hd (prodIrr ![x, y] hd) ≤ 1 → (prodIrr ![x, y] hd).IsIrreducible := by

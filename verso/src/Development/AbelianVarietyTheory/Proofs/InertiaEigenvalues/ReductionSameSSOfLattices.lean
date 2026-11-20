@@ -9,7 +9,7 @@ open scoped LaurentSeries PowerSeries
 namespace GlobalTheory.TopSteps
 
 /- English proof (translation)
-Introduce `_ L L' _ hlam` and use `lattice_reduction_sameSS hlam L L'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem reduction_sameSS_of_lattices :
     ∀ {G LL O V : Type} [Group G] [Field LL] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]

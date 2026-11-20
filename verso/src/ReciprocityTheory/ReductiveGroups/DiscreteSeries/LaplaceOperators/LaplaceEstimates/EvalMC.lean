@@ -16,7 +16,7 @@ variable {𝒰 : Type*} [Ring 𝒰] [Algebra ℂ 𝒰] {n : ℕ}
 def actU (E : Fin n → Fin n → 𝒰) (X : Matrix (Fin n) (Fin n) ℂ) : 𝒰 := ∑ i, ∑ j, X i j • E i j
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_four_swap_pairs_alt {β : Type*} [AddCommMonoid β] (f : Fin n → Fin n → Fin n → Fin n → β) :
     ∑ k, ∑ l, ∑ i, ∑ j, f i j k l = ∑ i, ∑ j, ∑ k, ∑ l, f i j k l := by
@@ -27,7 +27,7 @@ theorem sum_four_swap_pairs_alt {β : Type*} [AddCommMonoid β] (f : Fin n → F
         (Finset.sum_congr rfl fun k _ => Finset.sum_comm).trans Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [actU, Finset.sum_mul, Finset.mul_sum, smul_mul_smul_comm]`. Conclude with `sum_four_swap_pairs_alt (fun i j k l => (X i j * Y k l) • (E i j * E k l))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actU_mul (E : Fin n → Fin n → 𝒰) (X Y : Matrix (Fin n) (Fin n) ℂ) :
     actU E X * actU E Y = ∑ i, ∑ j, ∑ k, ∑ l, (X i j * Y k l) • (E i j * E k l) := by
@@ -35,13 +35,13 @@ theorem actU_mul (E : Fin n → Fin n → 𝒰) (X Y : Matrix (Fin n) (Fin n) �
   exact sum_four_swap_pairs_alt (fun i j k l => (X i j * Y k l) • (E i j * E k l))
 
 /- English proof (translation)
-Rewrite using `[actU_mul, actU_mul, ← sum_four_swap_pairs_alt (fun i j k l => (Y i j * X k l) • (E i j * E k l))]`. Simplify using `only [← Finset.sum_sub_distrib]`. Establish `h1 : ∀ i j k l, (X i j * Y k l) • (E i j * E k l) - (Y k l * X i j) • (E k l * E i j) = (X i j * Y k l) • ((if j = k then E i l else 0) - (if l = i then E k j else 0))`. Introduce `i j k l`. Rewrite using `[← hE i j k l, mul_comm (Y k l), smul_sub]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h1, smul_sub, Finset.sum_sub_distrib, smul_ite, smul_zero]`. Simplify using `only [actU, Matrix.sub_apply, Matrix.mul_apply, sub_smul, Finset.sum_sub_distrib, Finset.sum_smul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hj : ∀ j, ∑ k, ∑ l, (if j = k then (X i j * Y k l) • E i l else 0) = ∑ l, (X i j * Y j l) • E i l`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `j`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl fun j _ => hj j, Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hl : ∀ i j k, ∑ l, (if l = i then (X i j * Y k l) • E k j else 0) = (Y k i * X i j) • E k j`. Introduce `i j k`. Simplify using `[mul_comm]`. Simplify using `only [hl]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem actU_bracket (E : Fin n → Fin n → 𝒰) (hE : GlRelR E) (X Y : Matrix (Fin n) (Fin n) ℂ) :
     actU E X * actU E Y - actU E Y * actU E X = actU E (X * Y - Y * X) := by
@@ -67,14 +67,14 @@ theorem actU_bracket (E : Fin n → Fin n → 𝒰) (hE : GlRelR E) (X Y : Matri
       _ = ∑ k, ∑ j, ∑ i, (Y k i * X i j) • E k j := Finset.sum_congr rfl fun k _ => Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `[actU, sub_smul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actU_sub (E : Fin n → Fin n → 𝒰) (X Y : Matrix (Fin n) (Fin n) ℂ) :
     actU E (X - Y) = actU E X - actU E Y := by
   simp [actU, sub_smul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `[actU, smul_smul, Finset.smul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actU_smul (E : Fin n → Fin n → 𝒰) (c : ℂ) (X : Matrix (Fin n) (Fin n) ℂ) :
     actU E (c • X) = c • actU E X := by
@@ -90,11 +90,11 @@ theorem frameAB_eq_actU (A B : Matrix (Fin n) (Fin n) ℂ) (E : Fin n → Fin n 
     frameAB A B E a b = actU E (Matrix.of fun i j => A a i * B j b) := rfl
 
 /- English proof (translation)
-Establish `h : ∑ l, A c l * B l b = if b = c then 1 else 0`. Use `congrFun (congrFun hAB c) b` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[this]`. Distinguish the cases in `hbc : b = c`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hbc` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hbc, Ne.symm hbc]`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [h]; ring`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem frameX_mul (A B : Matrix (Fin n) (Fin n) ℂ) (hAB : A * B = 1) (a b c d : Fin n) :
     (Matrix.of fun i j => A a i * B j b) * (Matrix.of fun i j => A c i * B j d) =
@@ -113,9 +113,9 @@ theorem frameX_mul (A B : Matrix (Fin n) (Fin n) ℂ) (hAB : A * B = 1) (a b c d
     _ = _ := by rw [h]; ring
 
 /- English proof (translation)
-Introduce `a b c d`. Simplify using `only [frameAB_eq_actU]`. Rewrite using `[actU_bracket E hE, frameX_mul A B hAB, frameX_mul A B hAB, actU_sub, actU_smul, actU_smul]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem frameAB_glRel (A B : Matrix (Fin n) (Fin n) ℂ) (hAB : A * B = 1) (E : Fin n → Fin n → 𝒰)
     (hE : GlRelR E) : GlRelR (frameAB A B E) := by
@@ -129,11 +129,11 @@ theorem frameAB_glRel (A B : Matrix (Fin n) (Fin n) ℂ) (hAB : A * B = 1) (E : 
 variable {𝒰 : Type*} [Ring 𝒰] [Algebra ℂ 𝒰] {n : ℕ}
 
 /- English proof (translation)
-Apply the tactic sequence `have h1 : capEntry (frameAB A B E) x a b = ∑ i, ∑ j, (A a i * B j b) • capEntry E x i j := by`. Simplify using `only [capEntry, frameAB, smul_add, Finset.sum_add_distrib]`. Use `congr 1`. Simplify using `only [smul_ite, smul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[← Finset.sum_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: (∑ i, A a i * B i b) = if a = b then 1 else 0`. Rewrite using `[← Matrix.mul_apply, hAB, Matrix.one_apply]`. Apply the tactic sequence `rw [this]; split_ifs <;> simp`. Rewrite using `[h1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem capEntry_frameAB (A B : Matrix (Fin n) (Fin n) ℂ) (hAB : A * B = 1) (E : Fin n → Fin n → 𝒰)
     (x : ℂ) (a b : Fin n) :
@@ -153,9 +153,9 @@ theorem capEntry_frameAB (A B : Matrix (Fin n) (Fin n) ℂ) (hAB : A * B = 1) (E
   rw [smul_smul]
 
 /- English proof (translation)
-Proceed by induction on `p with`. Consider the case `zero => intro c X`. Simplify using the standard rewrite rules. Consider the case `succ p ih`. Introduce `c X`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[List.ofFn_succ, List.prod_cons, ih (fun j => c j.succ) (fun j => X j.succ), Finset.sum_mul_sum, ← (Fin.consEquiv fun _ : Fin (p + 1) => κ).sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun t _ => Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.consEquiv_apply, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ, List.ofFn_succ, List.prod_cons, smul_mul_smul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem prod_ofFn_sum {κ : Type*} [Fintype κ] (p : ℕ) : ∀ (c : Fin p → κ → ℂ) (X : Fin p → κ → 𝒰),
     (List.ofFn fun j => ∑ t, c j t • X j t).prod =
@@ -174,7 +174,7 @@ def prodIT (E : Fin n → Fin n → 𝒰) {p : ℕ} (x : ℂ) (ι τ : Fin p →
   (List.ofFn fun j : Fin p => capEntry E (x - ((j : ℕ) : ℂ)) (ι j) (τ j)).prod
 
 /- English proof (translation)
-Unfold `cminor prodIT`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[← Int.cast_smul_eq_zsmul ℂ]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cminor_eq_sum_prodIT (E : Fin n → Fin n → 𝒰) {p : ℕ} (R C : Fin p → Fin n) (x : ℂ) :
     cminor E R C x = ∑ σ : Equiv.Perm (Fin p), ((Equiv.Perm.sign σ : ℤˣ) : ℂ) • prodIT E x (R ∘ σ) C := by
@@ -184,13 +184,13 @@ theorem cminor_eq_sum_prodIT (E : Fin n → Fin n → 𝒰) {p : ℕ} (R C : Fin
   rfl
 
 /- English proof (translation)
-Rewrite using `[cminor_eq_sum_prodIT]`. Establish `h1 : ∀ σ : Equiv.Perm (Fin p), prodIT (frameAB A B E) x (R ∘ σ) C = ∑ ι : Fin p → Fin n, ∑ τ : Fin p → Fin n, ((∏ j, A (R (σ j)) (ι j)) * ∏ j, B (τ j) (C j)) • prodIT E x ι τ`. Introduce `σ`. Unfold `prodIT`. Simplify using `only [Function.comp_apply, capEntry_frameAB A B hAB]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[prod_ofFn_sum]`. Use `Finset.sum_congr rfl fun ι _ => ?_` and prove the remaining obligations. Rewrite using `[prod_ofFn_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h1, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun ι _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [smul_smul]`. Rewrite using `[← Finset.sum_smul, Matrix.det_apply', Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.submatrix_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -229,11 +229,11 @@ def precompEquiv {p m : ℕ} (σ : Equiv.Perm (Fin p)) : (Fin p → Fin m) ≃ (
   right_inv ι := by funext j; simp
 
 /- English proof (translation)
-Simplify using `only [cminor_eq_sum_prodIT, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Establish `key : ∀ σ : Equiv.Perm (Fin p), ∑ ρ : Fin p → Fin n, ((A.submatrix R ρ).det * ((Equiv.Perm.sign σ : ℤˣ) : ℂ)) • prodIT E x (ρ ∘ σ) τ = ∑ ι : Fin p → Fin n, (A.submatrix R ι).det • prodIT E x ι τ`. Introduce `σ`. Use `Fintype.sum_equiv (precompEquiv σ) _ _ (fun ρ => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: A.submatrix R (ρ ∘ σ) = (A.submatrix R ρ).submatrix id σ` using `rfl`. Simplify using `only [precompEquiv, Equiv.coe_fn_mk, this, Matrix.det_permute']`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun σ _ => key σ), Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, Finset.smul_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun ι _ => ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem row_collapse (E : Fin n → Fin n → 𝒰) {p : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (R τ : Fin p → Fin n)
     (x : ℂ) :
@@ -255,9 +255,9 @@ theorem row_collapse (E : Fin n → Fin n → 𝒰) {p : ℕ} (A : Matrix (Fin n
   rw [← Nat.cast_smul_eq_nsmul ℂ, smul_smul]
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply', Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Establish `key : ∀ σ : Equiv.Perm (Fin p), ∑ τ : Fin p → Fin n, (((Equiv.Perm.sign σ : ℤˣ) : ℂ) * ∏ l, B.submatrix τ C (σ l) l) • cminor E ρ τ x = ∑ τ : Fin p → Fin n, (∏ j, B (τ j) (C j)) • cminor E ρ τ x`. Introduce `σ`. Use `Fintype.sum_equiv (precompEquiv σ) _ _ (fun τ => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [precompEquiv, Equiv.coe_fn_mk, Matrix.submatrix_apply, Function.comp_apply]`. Rewrite using `[cminor_perm_cols E hE ρ τ σ x, ← Int.cast_smul_eq_zsmul ℂ, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun σ _ => key σ), Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, Nat.cast_smul_eq_nsmul ℂ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem col_collapse (E : Fin n → Fin n → 𝒰) (hE : GlRelR E) {p : ℕ} (B : Matrix (Fin n) (Fin n) ℂ)
     (ρ C : Fin p → Fin n) (x : ℂ) :
@@ -277,15 +277,15 @@ theorem col_collapse (E : Fin n → Fin n → 𝒰) (hE : GlRelR E) {p : ℕ} (B
     Fintype.card_fin, Nat.cast_smul_eq_nsmul ℂ]
 
 /- English proof (translation)
-Use `set f : ℂ := ((p.factorial : ℕ) : ℂ)`. Establish `h1 : cminor (frameAB A B E) R C x = ∑ τ : Fin p → Fin n, (∏ j, B (τ j) (C j)) • ∑ ι : Fin p → Fin n, (A.submatrix R ι).det • prodIT E x ι τ`. Rewrite using `[cminor_frameAB_expand A B hAB, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun ι _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, mul_comm]`. Establish `h2 : f • cminor (frameAB A B E) R C x = ∑ ρ : Fin p → Fin n, (A.submatrix R ρ).det • ∑ τ : Fin p → Fin n, (∏ j, B (τ j) (C j)) • cminor E ρ τ x`. Rewrite using `[h1, Finset.smul_sum]`. Establish `e1 : ∀ τ : Fin p → Fin n, f • ((∏ j, B (τ j) (C j)) • ∑ ι : Fin p → Fin n, (A.submatrix R ι).det • prodIT E x ι τ) = (∏ j, B (τ j) (C j)) • ∑ ρ : Fin p → Fin n, (A.submatrix R ρ).det • cminor E ρ τ x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ`. Rewrite using `[smul_comm, row_collapse]`. Rewrite using `[Finset.sum_congr rfl (fun τ _ => e1 τ)]`. Simplify using `only [Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun ρ _ => Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`. Rewrite using `[mul_smul, h2, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, col_collapse E hE B ρ C x, Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cminor_frameAB_cb (E : Fin n → Fin n → 𝒰) (hE : GlRelR E) (A B : Matrix (Fin n) (Fin n) ℂ)
     (hAB : A * B = 1) {p : ℕ} (R C : Fin p → Fin n) (x : ℂ) :
@@ -318,23 +318,21 @@ theorem cminor_frameAB_cb (E : Fin n → Fin n → 𝒰) (hE : GlRelR E) (A B : 
   rw [smul_smul]
 
 /- English proof (translation)
-Establish `hR : ((m.factorial : ℕ) : ℂ) • ∑ c : Fin (m + 1), F c.succAbove = ∑ q : Fin (m + 1) × Equiv.Perm (Fin m), F (q.1.succAbove ∘ q.2)`. Rewrite using `[Fintype.sum_prod_type, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [hperm, Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin]`. Rewrite using `[Nat.cast_smul_eq_nsmul ℂ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hR]`. Use `symm`. Use `Finset.sum_bij_ne_zero (fun q _ _ => q.1.succAbove ∘ q.2) (fun _ _ _ => Finset.mem_univ _) ?_ ?_ (fun _ _ _ => rfl)` and prove the remaining obligations. Introduce and unpack `⟨c, σ⟩ _ _ ⟨c', σ'⟩ _ _ h`. Establish `hc : c = c'`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hr : Set.range (c.succAbove ∘ σ) = Set.range (c'.succAbove ∘ σ')` using `by rw [h]`. Rewrite `hr` using `[Set.range_comp, Set.range_comp, Equiv.range_eq_univ, Equiv.range_eq_univ, Set.image_univ, Set.image_univ, Fin.range_succAbove, Fin.range_succAbove]`. Simplify using `using hr`. Substitute `hc` using the available equality. Establish `hs : σ = σ'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Establish an intermediate fact.
 
-Use extensionality with `j`. Use `congrFun h j` as an intermediate fact. Simplify using `only [Function.comp_apply] at this`. Rewrite using `[Fin.succAbove_right_inj.mp this]`. Rewrite using `[hs]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `ρ _ hρ`. Establish `hi : Function.Injective ρ`. Assume the negation of the conclusion as `hni`. Conclude with `hρ (hinj ρ hni)`. Establish `hns : ¬ Function.Surjective ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hs`. Use `Fintype.card_le_of_surjective ρ hs` as an intermediate fact. Simplify using `at this`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, ∀ j, ρ j ≠ c := by`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push Not at hcon`. Conclude with `hns fun c => by obtain ⟨j, hj⟩ := hcon c; exact ⟨j, hj⟩`. Establish `ht : ∀ j, ∃ t : Fin m, c.succAbove t = ρ j` using `fun j => Fin.exists_succAbove_eq (hc j)`. Use `choose t ht using ht`. Establish `tinj : Function.Injective t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i j hij`. Apply `hi` to reduce the goal to its premises. Rewrite using `[← ht i, ← ht j, hij]`. Establish `tbij : Function.Bijective t` using `Finite.injective_iff_bijective.mp tinj`. Use `⟨(c, Equiv.ofBijective t tbij), Finset.mem_univ _, ?_, ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [Function.comp_def, Equiv.ofBijective_apply, ht]`. Conclude with `hρ`. Use function extensionality and compare the values at `j`. Simplify using `[ht]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_symm_inj {X : Type*} [AddCommGroup X] [Module ℂ X] {m : ℕ} (F : (Fin m → Fin (m + 1)) → X)
     (hperm : ∀ ρ (σ : Equiv.Perm (Fin m)), F (ρ ∘ σ) = F ρ)

@@ -13,9 +13,9 @@ namespace CompanionTheory.D.Upq.Sm
 open PI CompanionTheory.D.Upq.ModEx
 
 /- English proof (translation)
-Take `⟨F, hF⟩` from `exists_contMDiffMap_forall_mem_convex_of_local (n := ⊤) 𝓘(ℝ, E) (t := fun a => {v | a ∈ A → v = f a}) (fun a v hv w hw s t _ _ hst ha => by rw [hv ha, hw ha, ← add_smul, hst, one_smul]) (fun a => by`. Distinguish the cases in `ha : a ∈ A`. Take `⟨U, F, hU, haU, hF, hfF⟩` from `hf a ha`. Conclude with `⟨U, hU.mem_nhds haU, F, hF.contMDiffOn, fun y hy hyA => (hfF y hy hyA).symm⟩`. Conclude with `⟨Aᶜ, hA.isOpen_compl.mem_nhds ha, fun _ => 0, contMDiffOn_const, fun y hy hyA => absurd hyA hy⟩)`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨F, F.contMDiff.contDiff, fun a ha => hF a ha⟩`.
+Supply the required witnesses or components.
 -/
 theorem SmOn.exists_contDiff {E V : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [NormedAddCommGroup V] [NormedSpace ℝ V] {A : Set E} {f : E → V}
@@ -32,11 +32,11 @@ theorem SmOn.exists_contDiff {E V : Type*} [NormedAddCommGroup E] [NormedSpace �
   exact ⟨F, F.contMDiff.contDiff, fun a ha => hF a ha⟩
 
 /- English proof (translation)
-Take `⟨R, hR0, hR⟩` from `hc.isCompact.isBounded.subset_closedBall_lt 0 (0 : E)`. Set `χ : ContDiffBump (0 : E)` to `⟨R, R + 1, hR0, by linarith⟩`. Establish `h` using `contDiffOn_convolution_right_with_param_comp (𝕜 := ℝ) (μ := μ) (n := ⊤) (ContinuousLinearMap.lsmul ℝ ℂ : ℂ →L[ℝ] V →L[ℝ] V) (s := (univ : Set P)) (v := fun _ => (0 : E)) contDiffOn_const (f := f) (g := fun p x => χ x • F (p, -x)) (k := Metric.closedBall 0 (R + 1)) isOpen_univ (is …`. Rewrite using `[χ.zero_of_le_dist (not_lt.1 fun h => hx (Metric.mem_closedBall.2 h.le)), zero_smul])`. Use the proof step `(hf.integrable_of_hasCompactSupport hc).locallyIntegrable`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `(((χ.contDiff.comp contDiff_snd).smul (hF.comp (contDiff_fst.prodMk contDiff_snd.neg))).contDiffOn)`. Rewrite `h` using `[contDiffOn_univ]`. Use `h using 2 with p` and compare the differences between its conclusion and the goal. Rewrite using `[convolution_def]`. Use `integral_congr_ae (Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [zero_sub, neg_neg, ContinuousLinearMap.lsmul_apply]`. Distinguish the cases in `ht : t ∈ tsupport f`. Rewrite using `[χ.one_of_mem_closedBall (by simpa using hR ht), one_smul]`. Rewrite using `[image_eq_zero_of_notMem_tsupport ht, zero_smul, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiff_integral_param {P E V : Type} [NormedAddCommGroup P] [NormedSpace ℝ P]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E]
@@ -73,7 +73,7 @@ section Group
 variable {μ : Measure (MG G hG)} [IsFiniteMeasureOnCompacts μ] {φ : MG G hG → ℂ}
 
 /- English proof (translation)
-The claim follows from `(hφ.smul hf).integrable_of_hasCompactSupport hc.smul_right`.
+A detailed English derivation is pending.
 -/
 theorem integrable_csmul {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] (hφ : Continuous φ)
     (hc : HasCompactSupport φ) {f : MG G hG → V} (hf : Continuous f) :
@@ -81,7 +81,7 @@ theorem integrable_csmul {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] 
   (hφ.smul hf).integrable_of_hasCompactSupport hc.smul_right
 
 /- English proof (translation)
-The claim follows from `| [], _ => rfl | X :: W, hXW => by have hW : LieW G W := fun Y hY => hXW Y (List.mem_cons_of_mem _ hY) have hX := hXW X List.mem_cons_self rw [dsW_cons, dsW_integral h hv hφ hc hW] have e : ∀ t, σ (ex X t) (∫ g, φ g • dsW σ W (σ g.mat v) ∂μ) = ∫ g, φ g • σ (ex X t) (dsW σ W (σ g. …`.
+A detailed English derivation is pending.
 -/
 theorem dsW_integral (h : RepOn G σ) {v : H} (hv : IsSm G σ v) (hφ : Continuous φ)
     (hc : HasCompactSupport φ) : ∀ {W : List (Mat n)}, LieW G W →
@@ -110,19 +110,17 @@ theorem dsW_integral (h : RepOn G σ) {v : H} (hv : IsSm G σ v) (hφ : Continuo
     simp [ex_zero, h.map_one]
 
 /- English proof (translation)
-Set `J : H → ι → H` to `fun v i => dsW σ (W i) v`. Set `S₀ : Submodule ℂ ((ι → H) × V)` to `{ carrier := {q | ∃ x, IsSm G σ x ∧ q = (J x, B x)} add_mem' := by`. Introduce and unpack `_ _ ⟨a, ha, rfl⟩ ⟨b, hb, rfl⟩`. Conclude with `⟨a + b, ha.add hb, Prod.ext (funext fun i => (dsW_add h ha hb (hW i)).symm) (hadd a ha b hb).symm⟩`. Use the proof step `zero_mem' := ⟨0, IsSm.zero, Prod.ext (funext fun i => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (dsW_smul h (IsSm.zero (G := G) (σ := σ)) 0 (hW i)).symm) (by`. Simplify using `using (hsmul 0 0 IsSm.zero).symm)⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c _ ⟨a, ha, rfl⟩`. Conclude with `⟨c • a, ha.smul c, Prod.ext (funext fun i => (dsW_smul h ha c (hW i)).symm) (hsmul c a ha).symm⟩ }`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbd : ∀ q ∈ S₀.topologicalClosure, ‖q.2‖ ≤ C * ∑ i, ‖q.1 i‖` using `fun q hq => closure_minimal (t := {q : (ι → H) × V | ‖q.2‖ ≤ C * ∑ i, ‖q.1 i‖}) (by rintro _ ⟨a, ha, rfl⟩; exact hB a ha) (isClosed_le (by fun_prop) (by fun_prop)) hq`. Establish `hJc : Continuous fun g : MG G hG => J (σ g.mat v)` using `continuous_pi fun i => continuous_orbit h hv (hW i)`. Establish `hBc : Continuous fun g : MG G hG => B (σ g.mat v)`. Use `continuous_iff_continuousAt.2 fun g₀ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, tendsto_iff_norm_sub_tendsto_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hT : Continuous fun g : MG G hG => C * ∑ i, ‖dsW σ (W i) (σ g.mat v) - dsW σ (W i) (σ g₀.mat v)‖` using `continuous_const.mul (continuous_finset_sum _ fun i _ => ((continuous_orbit h hv (hW i)).sub continuous_const).norm)`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun g => ?_) (by simpa using hT.tendsto g₀)` and prove the remaining obligations. Conclude with `hbd ((J (σ g.mat v), B (σ g.mat v)) - (J (σ g₀.mat v), B (σ g₀.mat v))) (S₀.le_topologicalClosure (sub_mem ⟨_, hv.apply h g.mem, rfl⟩ ⟨_, hv.apply h g₀.mem, rfl⟩))`. Establish `hi1` using `integrable_csmul (μ := μ) hφ hc hJc`. Establish `hi2` using `integrable_csmul (μ := μ) hφ hc hBc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ∫ g, φ g • (J (σ g.mat v), B (σ g.mat v)) ∂μ ∈ S₀.topologicalClosure` using `integral_mem_of_isClosed _ S₀.isClosed_topologicalClosure fun g => Submodule.smul_mem _ _ (S₀.le_topologicalClosure ⟨_, hv.apply h g.mem, rfl⟩)`. Simplify using `only [Prod.smul_mk] at h1`. Rewrite `h1` using `[integral_pair hi1 hi2]`. Establish `h2 : ∫ g, φ g • J (σ g.mat v) ∂μ = J (∫ g, φ g • σ g.mat v ∂μ)` using `by ext1 i`. Use `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : ι => H) i).integral_comp_comm hi1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [ContinuousLinearMap.proj_apply, Pi.smul_apply] at this`. Rewrite using `[← this]`. Conclude with `(dsW_integral h hv hφ hc (hW i)).symm`. Rewrite `h1` using `[h2]`. Establish `h3` using `hbd _ (sub_mem (S₀.le_topologicalClosure ⟨_, hy, rfl⟩) h1)`.
-
-Simplify `h3` using `[sub_eq_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem map_integral_of_bound (h : RepOn G σ) {v : H} (hv : IsSm G σ v) (hφ : Continuous φ)
     (hc : HasCompactSupport φ) (hy : IsSm G σ (∫ g, φ g • σ g.mat v ∂μ)) {V : Type}
@@ -182,11 +180,11 @@ theorem map_integral_of_bound (h : RepOn G σ) {v : H} (hv : IsSm G σ v) (hφ :
 end Group
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨fun _ hK => Quot.IsHaarOnM.lt_top_of_isCompact hG hμ hK⟩`. Take `⟨F, hF, hFv⟩` from `SmOn.exists_contDiff hv hG.1`. Establish `hae : ∀ᵐ g ∂μ, Matrix.of g ∈ G` using `hμ.2.2.1`. Establish `h1` using `contDiff_integral_param (P := Mat n) (E := MtM n) (μ := μ) hf hc (F := fun q => F (q.1 * Matrix.of q.2)) (hF.comp contDiff_mul)`. Use `(SmOn.of_contDiff h1).congr fun a ha => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hi : Integrable (fun g : MtM n => f g • σ (Matrix.of g) v) μ`. Establish `hFc : Continuous fun g : MtM n => F (Matrix.of g)` using `hF.continuous`. Use `((hf.smul hFc).integrable_of_hasCompactSupport hc.smul_right).congr ?_` and prove the remaining obligations. Use `filter_upwards [hae] with g hg`. Rewrite using `[← hFv _ hg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← (σ a).integral_comp_comm hi]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with g hg`. Rewrite using `[map_smul, hFv _ (h.mul_mem _ ha _ hg), h.apply_mul ha hg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSm_integral (hG : IsMatGroup G) (h : RepOn G σ) {v : H} (hv : IsSm G σ v)
     {μ : Measure (MtM n)} (hμ : IsHaarOnM G μ) {f : MtM n → ℂ} (hf : Continuous f)
@@ -210,13 +208,13 @@ theorem isSm_integral (hG : IsMatGroup G) (h : RepOn G σ) {v : H} (hv : IsSm G 
 open PI.UpqRep in
 
 /- English proof (translation)
-Introduce `k r ε lam H _ _ _ σ Wp _ _ _ _ μG B _ hσ hμ hadd hsmul ⟨C, Ws, hWs, hB⟩ x hx f hf hc`. Take `⟨P, ⟨⟨hP, hPJ⟩, -⟩, -, -, ⟨⟨h1, hm⟩, -, -⟩, -⟩` from `hσ`. Establish `hG : PI.IsMatGroup (UH (Hpk k r))` using `PI.QuotSetU.UnitaryGroupMassFormula.unitary_hermitian_group k r`. Establish `h : RepOn (UH (Hpk k r)) σ` using `repOn_of_conj hP hPJ h1 hm`. Establish `hy` using `isSm_integral hG h hx hμ hf hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hy, ?_⟩` and prove the remaining obligations. Establish `hι` using `MG.measurableEmbedding_toM (hG := hG)`. Establish `hmap` using `Quot.map_comap_toM hG (μ := μG) hμ.2.2.1`. Use `set μ' := μG.comap (MG.toM (hG := hG)) with hμ'`. Use `haveI : IsFiniteMeasureOnCompacts μ' := ⟨fun K hK => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hμ', hι.comap_apply]`. Conclude with `Quot.IsHaarOnM.lt_top_of_isCompact hG hμ (hK.image (MG.continuous_mat (hG := hG)))⟩`. Rewrite `hy`, the goal using `[← hmap, hι.integral_map]`. Rewrite using `[hι.integral_map]`. Use `map_integral_of_bound (hG := hG) (φ := fun g => f g.toM) h hx (hf.comp MG.continuous_mat) (hc.comp_isClosedEmbedding MG.isClosedEmbedding_mat) hy hadd hsmul (ι := Fin Ws.length) (W := Ws.get) (fun i X hX t => ex_mem_of_lie (hWs _ (List.get_mem _ _) X hX) t) (C := C) fun y hy => ? …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `(hB y hy).trans_eq ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `only [dsigW_eq', List.get_eq_getElem]`. Conclude with `(Fin.sum_univ_fun_getElem Ws fun W => ‖dsW σ W y‖).symm`.
+A detailed English derivation is pending.
 -/
 theorem intertwiner_commute : Formalism.FourierDecayAlt.ThreeDimData.IntCommute := by
   intro k r ε lam H _ _ _ σ Wp _ _ _ _ μG B _ hσ hμ hadd hsmul ⟨C, Ws, hWs, hB⟩ x hx f hf hc

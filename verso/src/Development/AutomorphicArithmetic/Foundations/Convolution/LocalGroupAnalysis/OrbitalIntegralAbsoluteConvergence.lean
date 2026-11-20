@@ -4,13 +4,13 @@ open MeasureTheory
 open scoped ENNReal
 
 /- English proof (translation)
-Take `⟨C, hC, hs⟩` from `hC`. Take `⟨C', hC', hs'⟩` from `h C hC`. Establish `hc : Continuous fun x => Φ x * ((ρ x : ℝ) : ℂ)` using `hΦ.mul (Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp hρ))`. Establish `hk : HasCompactSupport fun x => Φ x * ((ρ x : ℝ) : ℂ)`. Use `HasCompactSupport.intro hC' fun x hx => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Establish `h1 : Φ x ≠ 0` using `left_ne_zero_of_mul hne`. Establish `h2 : ρ x ≠ 0`. Introduce `h0`. Conclude with `hne (by simp [h0])`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨t, y, hy, rfl⟩` from `hs x h1`. Conclude with `hx (hs' t y hy h2)`. Establish `hi` using `(hc.integrable_of_hasCompactSupport (μ := μ) hk).2`. Unfold `HasFiniteIntegral at hi`. Use `hi using 3 with x` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[enorm_mul]`. Use `congr 1`. Simplify using `[enorm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem finite_fiber_integral {X T : Type} [Group X] [TopologicalSpace X] [T2Space X] [MeasurableSpace X] [BorelSpace X] [Group T]
     (μ : Measure X) [IsFiniteMeasureOnCompacts μ] (i : T →* X) (Φ : X → ℂ) (ρ : X → NNReal) (hΦ : Continuous Φ)
@@ -38,7 +38,7 @@ private theorem finite_fiber_integral {X T : Type} [Group X] [TopologicalSpace X
   simp [enorm]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Conclude with `((Measure.measurePreserving_inv ν).prod (Measure.measurePreserving_inv ν')).map_eq`.
+Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 private theorem prod_isInvInvariant {T T' : Type} [Group T] [MeasurableSpace T] [MeasurableInv T] [Group T'] [MeasurableSpace T']
     [MeasurableInv T'] (ν : Measure T) (ν' : Measure T') [SFinite ν] [SFinite ν'] [ν.IsInvInvariant] [ν'.IsInvInvariant] :
@@ -47,19 +47,19 @@ private theorem prod_isInvInvariant {T T' : Type} [Group T] [MeasurableSpace T] 
   exact ((Measure.measurePreserving_inv ν).prod (Measure.measurePreserving_inv ν')).map_eq
 
 /- English proof (translation)
-Introduce `h1 h2 X T X' T' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ _ ν _ μ' _ ν' _ _ _ _ _ i i' hi hi' Φ Φ' hΦ hΦ' hinv hinv' hC hC'`. Take `⟨ρ, hρ, hn, hs⟩` from `h2 X T ν i hi`. Take `⟨ρ', hρ', hn', hs'⟩` from `h2 X' T' ν' i' hi'`. Establish `f1` using `finite_fiber_integral μ i Φ ρ hΦ hρ hC hs`. Establish `f2` using `finite_fiber_integral μ' i' Φ' ρ' hΦ' hρ' hC' hs'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `h1 X X T μ ν (MonoidHom.id X) i measurable_id hi.continuous Φ _ hΦ.measurable hinv hn f1`. Establish `e2` using `h1 X' X' T' μ' ν' (MonoidHom.id X') i' measurable_id hi'.continuous Φ' _ hΦ'.measurable hinv' hn' f2`. Use `haveI := prod_isInvInvariant ν ν'`. Establish `hn3 : IsNormAlong id (fun t : T × T' => (i t.1, i' t.2)) (ν.prod ν') (fun x : X × X' => (ρ x.1 : ℝ≥0∞) * (ρ' x.2 : ℝ≥0∞))`. Use `⟨(hn.1.comp measurable_fst).mul (hn'.1.comp measurable_snd), fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a1 : Measurable fun t => (ρ (i t * x.1) : ℝ≥0∞)` using `hn.1.comp (hi.continuous.mul continuous_const).measurable`. Establish `a2 : Measurable fun t => (ρ' (i' t * x.2) : ℝ≥0∞)` using `hn'.1.comp (hi'.continuous.mul continuous_const).measurable`. Use `lintegral_prod_mul (μ := ν) (ν := ν') a1.aemeasurable a2.aemeasurable` as an intermediate fact. Establish `b1` using `hn.2 x.1`. Establish `b2` using `hn'.2 x.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [id] at b1 b2`. Rewrite `this` using `[b1, b2, mul_one]`. Conclude with `this`. Establish `f3 : ∫⁻ x : X × X', ‖Φ x.1 * Φ' x.2‖ₑ * ((ρ x.1 : ℝ≥0∞) * (ρ' x.2 : ℝ≥0∞)) ∂(μ.prod μ') < ⊤`. Establish `a1 : Measurable fun x => ‖Φ x‖ₑ * (ρ x : ℝ≥0∞)` using `hΦ.measurable.enorm.mul hn.1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : Measurable fun x => ‖Φ' x‖ₑ * (ρ' x : ℝ≥0∞)` using `hΦ'.measurable.enorm.mul hn'.1`. Use `lintegral_prod_mul (μ := μ) (ν := μ') a1.aemeasurable a2.aemeasurable` as an intermediate fact. Use `lt_of_eq_of_lt ?_ (this ▸ ENNReal.mul_lt_top f1 f2)` and prove the remaining obligations. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[enorm_mul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e3` using `h1 (X × X') (X × X') (T × T') (μ.prod μ') (ν.prod ν') (MonoidHom.id _) (i.prodMap i') measurable_id (hi.continuous.prodMap hi'.continuous) (fun x => Φ x.1 * Φ' x.2) _ ((hΦ.measurable.comp measurable_fst).mul (hΦ'.measurable.comp measurable_snd)) (fun t x => by show Φ (i t.1 * x.1 …`. Rewrite using `[hinv, hinv']) hn3 f3`. Use `e3.trans (Eq.trans ?_ (congrArg₂ (· * ·) e1 e2).symm)` and prove the remaining obligations. Rewrite using `[← integral_prod_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [MonoidHom.id_apply, ENNReal.toReal_mul, Complex.ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.G.orbitalIntegral_absolute_convergence :
     Q1 → Q2 → Q3 := by

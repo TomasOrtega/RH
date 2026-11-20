@@ -14,7 +14,7 @@ section mats
 variable {j : ℕ}
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Matrix.single_apply, zfull_apply, Fin.ext_iff, Fin.val_last, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | ring1`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zfull_sub (W : Matrix (Fin j) (Fin j) ℂ) (σ τ : ℂ) :
     zfull W σ = zfull W τ + (σ - τ) • Matrix.single (Fin.last j) (Fin.last j) (1 : ℂ) := by
@@ -25,9 +25,9 @@ theorem zfull_sub (W : Matrix (Fin j) (Fin j) ℂ) (σ τ : ℂ) :
   split_ifs <;> first | (exfalso; omega) | ring1
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.last j)]`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Simplify using `only [Matrix.smul_apply, Matrix.single_apply, zfull_apply, Fin.ext_iff, Fin.val_last, smul_eq_mul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> (try simp only [true_and, and_true] at *) <;> first | (exfalso; omega) | ring1`. Introduce `c _ hc`. Rewrite using `[Matrix.single_apply, if_neg (fun h => hc h.1.symm), mul_zero]`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem zfull_mul_single_last (W : Matrix (Fin j) (Fin j) ℂ) (σ : ℂ) :
     zfull W σ * Matrix.single (Fin.last j) (Fin.last j) (1 : ℂ) = σ • Matrix.single (Fin.last j) (Fin.last j) (1 : ℂ) := by
@@ -41,9 +41,9 @@ theorem zfull_mul_single_last (W : Matrix (Fin j) (Fin j) ℂ) (σ : ℂ) :
   · simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.last j)]`. Simplify using `only [Matrix.single_apply, G.wMat, Matrix.of_apply]`. Apply the tactic sequence `by_cases ha : a = Fin.last j <;> by_cases hb : b = (Fin.last j).rev <;>`. Simplify using `[ha, hb, Fin.rev_eq_iff, eq_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Introduce `c _ hc`. Simplify using `[Matrix.single_apply, Ne.symm hc]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem single_last_mul_w :
     Matrix.single (Fin.last j) (Fin.last j) (1 : ℂ) * G.wMat (j + 1) =
@@ -57,7 +57,7 @@ theorem single_last_mul_w :
   · simp
 
 /- English proof (translation)
-Rewrite using `[← single_last_mul_w, ← Matrix.mul_assoc, zfull_mul_single_last, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zfull_mul_single_rev (W : Matrix (Fin j) (Fin j) ℂ) (σ : ℂ) :
     zfull W σ * Matrix.single (Fin.last j) (Fin.last j).rev (1 : ℂ) =
@@ -79,7 +79,7 @@ def M2 (k r j : ℕ) (hj : j + 1 ≤ r) : B.Mat k r :=
     (U.blk3 0 0 (Matrix.single (Fin.last j) (Fin.last j) 1 * G.wMat (j + 1)) 0 0 0 0 0 0)
 
 /- English proof (translation)
-Rewrite using `[level_point_eq_block_three, level_point_eq_block_three, zfull_conjTranspose_inv hZ hτ', zfull_conjTranspose_inv hZ hτ, zfull_sub _ (star τ')⁻¹ (star τ)⁻¹, zfull_sub Z τ' τ]`. Unfold `M1 M2`. Rewrite using `[← castM_smul', ← castM_smul', ← castM_add', ← castM_add', smul_block_three, smul_block_three, Ux4.block3_add, Ux4.block3_add]`. Use `congr 1`. Apply the tactic sequence `congr 1 <;> simp only [smul_zero, add_zero, zero_add, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem x0_sub_tau_formula (hj : j + 1 ≤ r) {Z : Matrix (Fin j) (Fin j) ℂ} (hZ : Z.det ≠ 0) {τ τ' : ℂ} (hτ : τ ≠ 0)
     (hτ' : τ' ≠ 0) (γ : B.Mat k (r - (j + 1))) :
@@ -94,13 +94,13 @@ theorem x0_sub_tau_formula (hj : j + 1 ≤ r) {Z : Matrix (Fin j) (Fin j) ℂ} (
     Matrix.mul_smul]
 
 /- English proof (translation)
-Rewrite using `[level_point_eq_block_three, hM_blk, ← castM_mul', Ux4.block3_mul, zfull_conjTranspose_inv hZ hτ]`. Unfold `M1 M2`. Rewrite using `[← castM_smul', ← castM_smul', ← castM_sub']`. Use `congr 1`. Rewrite using `[smul_block_three, smul_block_three]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `Ux4.ext_eB fun p q => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, Ux4.block3_apply, Ux4.block3_apply, Ux4.block3_apply]`. Apply the tactic sequence `rcases p with ((a | a) | a) <;> rcases q with ((b | b) | b) <;>`. Simplify using `only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.fromCols_apply_inl, Matrix.fromCols_apply_inr, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matr …`. Rewrite using `[Matrix.mul_smul, Matrix.mul_assoc, show G.wMat (j + 1) * Matrix.single (Fin.last j).rev (Fin.last j).rev (1 : ℂ) = Matrix.single (Fin.last j) (Fin.last j).rev 1 from by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use extensionality with `c d`. Rewrite using `[Ux3.wMat_mul_apply]`. Simplify using `only [Matrix.single_apply, Fin.rev_rev, Fin.rev_inj], zfull_mul_single_rev, ← single_last_mul_w]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Matrix.mul_smul, Matrix.mul_assoc, zfull_mul_single_last, Matrix.mul_smul]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem x0_mul_torus_element (hj : j + 1 ≤ r) {Z : Matrix (Fin j) (Fin j) ℂ} (hZ : Z.det ≠ 0) {τ : ℂ} (hτ : τ ≠ 0)
     (γ : B.Mat k (r - (j + 1))) (s : ℂ) :
@@ -140,19 +140,19 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r j : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hM_lie hj _ _ s, fun _ ha => absurd ha (Nat.not_lt_zero _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem hM_inLie (hj : j + 1 ≤ r) (s : ℂ) : Q.inLieLev k r 0 (hM k r j hj (Fin.last j) (Fin.last j) s) :=
   ⟨hM_lie hj _ _ s, fun _ ha => absurd ha (Nat.not_lt_zero _)⟩
 
 /- English proof (translation)
-Establish `hc : HasFDerivAt (⇑Complex.conjCLE) (Complex.conjCLE : ℂ →L[ℝ] ℂ) τ` using `Complex.conjCLE.hasFDerivAt`. Establish `hτc : Complex.conjCLE τ ≠ 0` using `by simpa using hτ`. Establish `hi0 : HasFDerivAt (fun y : ℂ => y⁻¹) (ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ) (-((Complex.conjCLE τ) ^ 2)⁻¹)) (Complex.conjCLE τ)` using `hasFDerivAt_inv hτc`. Establish `hi` using `(hi0.restrictScalars ℝ).comp τ hc`. Establish `h1` using `((hasFDerivAt_id (𝕜 := ℝ) τ).sub_const τ).smul_const (M1 k r j hj)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(hi.sub_const ((star τ)⁻¹)).smul_const (M2 k r j hj)`. Establish `h3` using `(h1.add h2).const_add (x0 k r j hj Z τ γ)`. Use `⟨_, h3.congr_of_eventuallyEq ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [isOpen_ne.mem_nhds hτ] with τ' hτ'`. Rewrite using `[x0_sub_tau_formula hj hZ hτ hτ' γ]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Complex.conjCLE_apply, Complex.star_def, add_assoc]`. Rewrite using `[x0_mul_torus_element hj hZ hτ γ s]`. Express the relevant statement in the definitionally equal form `(s * τ) • M1 k r j hj + ((starRingEnd ℂ (s * τ)) * (-((starRingEnd ℂ τ) ^ 2)⁻¹)) • M2 k r j hj = _`. Rewrite using `[sub_eq_add_neg, ← neg_smul]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Simplify using `only [Complex.star_def]`. Establish `: (starRingEnd ℂ) τ ≠ 0` using `by simpa using hτ`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_x0_in_tau (hj : j + 1 ≤ r) {Z : Matrix (Fin j) (Fin j) ℂ} (hZ : Z.det ≠ 0) {τ : ℂ} (hτ : τ ≠ 0)
     (γ : B.Mat k (r - (j + 1))) (s : ℂ) :
@@ -181,11 +181,11 @@ theorem hasFDerivAt_x0_in_tau (hj : j + 1 ≤ r) {Z : Matrix (Fin j) (Fin j) ℂ
     field_simp
 
 /- English proof (translation)
-Establish `hxG : x0 k r j hj Z τ γ ∈ Q.Glev k r 0` using `SingleEntryHermitianProducts.glev0 (x0_GV hj hZ hτ hγ)`. Take `⟨U, F, hU, hxU, hF, hFU⟩` from `hS _ ⟨hxG, hx⟩`. Establish `hd : DifferentiableAt ℝ F (x0 k r j hj Z τ γ)` using `(hF.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hxU)`. Establish `hrd` using `(Formalism.FourierDecayAlt.P.Qx2.hasDeriv_ext hU hxU hxG (hM_inLie hj s) hd hFU).deriv`. Take `⟨L, hL, hLv⟩` from `hasFDerivAt_x0_in_tau hj hZ hτ γ s`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcomp : HasFDerivAt (fun τ' => F (x0 k r j hj Z τ' γ)) ((fderiv ℝ F (x0 k r j hj Z τ γ)).comp L) τ` using `hd.hasFDerivAt.comp τ hL`. Establish `hev : (fun τ' => Ψ (x0 k r j hj Z τ' γ)) =ᶠ[𝓝 τ] fun τ' => F (x0 k r j hj Z τ' γ)`. Establish `hmem : ∀ᶠ τ' in 𝓝 τ, x0 k r j hj Z τ' γ ∈ U` using `hL.continuousAt.preimage_mem_nhds (hU.mem_nhds hxU)`. Use `filter_upwards [hmem, isOpen_ne.mem_nhds hτ] with τ' h1 h2`. Conclude with `hFU _ h1 (SingleEntryHermitianProducts.glev0 (x0_GV hj hZ h2 hγ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `RdV`. Rewrite using `[hrd, (hcomp.congr_of_eventuallyEq hev).fderiv, ContinuousLinearMap.comp_apply, hLv]`.
+A detailed English derivation is pending.
 -/
 theorem rdV_torus (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (hj : j + 1 ≤ r) (Dm : Set (Q.Mx k r))
     (Ψ : Q.Mx k r → E) (Z : Matrix (Fin j) (Fin j) ℂ) (τ : ℂ) (γ : B.Mat k (r - (j + 1)))
@@ -215,7 +215,7 @@ section scal
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Establish `hw : w = (w.re : ℝ) • (1 : ℂ) + (w.im : ℝ) • Complex.I`. Apply the tactic sequence `apply Complex.ext <;> simp <;> norm_num`. Use `conv_lhs => rw [hw]`. Rewrite using `[map_add, map_smul, map_smul, Complex.coe_smul, Complex.coe_smul]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_decomp (D : ℂ →L[ℝ] E) (w : ℂ) : D w = (w.re : ℂ) • D 1 + (w.im : ℂ) • D Complex.I := by
   have hw : w = (w.re : ℝ) • (1 : ℂ) + (w.im : ℝ) • Complex.I := by
@@ -224,13 +224,13 @@ theorem lin_decomp (D : ℂ →L[ℝ] E) (w : ℂ) : D w = (w.re : ℂ) • D 1 
   rw [map_add, map_smul, map_smul, Complex.coe_smul, Complex.coe_smul]
 
 /- English proof (translation)
-Rewrite using `[one_div, mul_inv, Complex.inv_I]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem half_I : (1 / (2 * Complex.I) : ℂ) = -Complex.I / 2 := by
   rw [one_div, mul_inv, Complex.inv_I]; ring
 
 /- English proof (translation)
-Rewrite using `[lin_decomp D (1 / 2 * τ), lin_decomp D (-Complex.I / 2 * τ)]`. Apply the tactic sequence `match_scalars <;> apply Complex.ext <;> simp <;> ring`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem torus_id (D : ℂ →L[ℝ] E) (τ : ℂ) :
     D (1 / 2 * τ) + Complex.I • D (-Complex.I / 2 * τ) = τ • ((1 / 2 : ℂ) • (D 1 - Complex.I • D Complex.I)) := by
@@ -238,7 +238,7 @@ theorem torus_id (D : ℂ →L[ℝ] E) (τ : ℂ) :
   match_scalars <;> apply Complex.ext <;> simp <;> ring
 
 /- English proof (translation)
-Rewrite using `[lin_decomp D (-1 / 2 * τ), lin_decomp D (-Complex.I / 2 * τ)]`. Apply the tactic sequence `match_scalars <;> apply Complex.ext <;> simp <;> ring`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem starTorus_id (D : ℂ →L[ℝ] E) (τ : ℂ) :
     D (-1 / 2 * τ) + Complex.I • D (-Complex.I / 2 * τ) =
@@ -253,7 +253,7 @@ section final
 variable {k r j : ℕ}
 
 /- English proof (translation)
-Unfold `hpart1 hM`. Rewrite using `[Formalism.FourierDecayAlt.P.Qx2.hpk_inv, SingleEntryHermitianProducts.single_conjT, star_one, SingleEntryHermitianProducts.hpk_mul_single_eI, single_mul_hpk_eI, smul_sub]`. Establish `h2 : star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Rewrite using `[h2]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hpart1_EE (hj : j + 1 ≤ r) :
     hpart1 (Hpk k r) (Matrix.single (eI k r ⟨j, by omega⟩) (eI k r ⟨j, by omega⟩) (1 : ℂ)) =
@@ -265,7 +265,7 @@ theorem hpart1_EE (hj : j + 1 ≤ r) :
   rfl
 
 /- English proof (translation)
-Unfold `hpart2 hM`. Rewrite using `[Formalism.FourierDecayAlt.P.Qx2.hpk_inv, SingleEntryHermitianProducts.single_conjT, star_one, SingleEntryHermitianProducts.hpk_mul_single_eI, single_mul_hpk_eI, smul_add, half_I]`. Establish `h2 : star (-Complex.I / 2 : ℂ) = -(-Complex.I / 2)`. Apply the tactic sequence `apply Complex.ext <;> simp <;> norm_num`. Rewrite using `[h2, neg_smul, sub_neg_eq_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -281,9 +281,9 @@ theorem hpart2_EE (hj : j + 1 ≤ r) :
   rfl
 
 /- English proof (translation)
-Unfold `hpart1 hM`. Rewrite using `[Formalism.FourierDecayAlt.P.Qx2.hpk_inv, SingleEntryHermitianProducts.single_conjT, star_one, SingleEntryHermitianProducts.hpk_mul_single_esI, single_mul_hpk_esI]`. Establish `h2 : star (-1 / 2 : ℂ) = -1 / 2`. Apply the tactic sequence `apply Complex.ext <;> norm_num`. Rewrite using `[h2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `p q`. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, Fin.val_last]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hpart1_SS (hj : j + 1 ≤ r) :
     hpart1 (Hpk k r) (Matrix.single (esI k r ⟨j, by omega⟩) (esI k r ⟨j, by omega⟩) (1 : ℂ)) =
@@ -298,9 +298,9 @@ theorem hpart1_SS (hj : j + 1 ≤ r) :
   ring
 
 /- English proof (translation)
-Unfold `hpart2 hM`. Rewrite using `[Formalism.FourierDecayAlt.P.Qx2.hpk_inv, SingleEntryHermitianProducts.single_conjT, star_one, SingleEntryHermitianProducts.hpk_mul_single_esI, single_mul_hpk_esI, half_I]`. Establish `h2 : star (-Complex.I / 2 : ℂ) = Complex.I / 2`. Apply the tactic sequence `apply Complex.ext <;> simp <;> norm_num`. Rewrite using `[h2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `p q`. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply, smul_eq_mul, Fin.val_last]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hpart2_SS (hj : j + 1 ≤ r) :
     hpart2 (Hpk k r) (Matrix.single (esI k r ⟨j, by omega⟩) (esI k r ⟨j, by omega⟩) (1 : ℂ)) =
@@ -315,9 +315,7 @@ theorem hpart2_SS (hj : j + 1 ≤ r) :
   ring
 
 /- English proof (translation)
-Introduce `E _ _ k r j hj Dm Ψ Z τ γ hD hS hZ hτ hγ hx`. Use `show EabH (Hpk k r) _ _ Ψ _ = _`. Unfold `EabH`. Rewrite using `[hpart1_EE hj, hpart2_EE hj, rdV_torus E hj Dm Ψ Z τ γ hS hZ hτ hγ hx, rdV_torus E hj Dm Ψ Z τ γ hS hZ hτ hγ hx]`. Unfold `PBP.dz`.
-
-Conclude with `torus_id _ τ`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem torus_action_x0 : TorusDirectionAtBasePoint := by
   intro E _ _ k r j hj Dm Ψ Z τ γ hD hS hZ hτ hγ hx
@@ -329,9 +327,7 @@ theorem torus_action_x0 : TorusDirectionAtBasePoint := by
   exact torus_id _ τ
 
 /- English proof (translation)
-Introduce `E _ _ k r j hj Dm Ψ Z τ γ hD hS hZ hτ hγ hx`. Use `show EabH (Hpk k r) _ _ Ψ _ = _`. Unfold `EabH`. Rewrite using `[hpart1_SS hj, hpart2_SS hj, rdV_torus E hj Dm Ψ Z τ γ hS hZ hτ hγ hx, rdV_torus E hj Dm Ψ Z τ γ hS hZ hτ hγ hx]`. Unfold `PBP.dzb`.
-
-Conclude with `starTorus_id _ τ`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem star_torus_x0 : ConjugateTorusDirectionAtBasePoint := by
   intro E _ _ k r j hj Dm Ψ Z τ γ hD hS hZ hτ hγ hx

@@ -11,23 +11,21 @@ open scoped BigOperators Pointwise
 namespace GlobalTheory.InertResidue
 
 /- English proof (translation)
-Use `letI : Algebra (ZMod q) k := ZMod.algebra k q`. Use `haveI := Fintype.ofFinite k`. Set `σ : k ≃ₐ[ZMod q] k` to `{ toFun := s, invFun := s, left_inv := hs, right_inv := hs, map_mul' := map_mul s, map_add' := map_add s, commutes' := fun c => RingHom.congr_fun (Subsingleton.elim (s.comp (algebraMap (ZMod q) k)) _) c }`. Establish `hσ : ∀ x, σ x = s x` using `fun _ => rfl`. Prove the components needed by the constructor for the conclusion.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨j, hj⟩, e⟩` from `(FiniteField.bijective_frobeniusAlgEquivOfAlgebraic_pow (ZMod q) k).2 σ set φ := FiniteField.frobeniusAlgEquivOfAlgebraic (ZMod q) k with hφ`. Express the relevant statement in the definitionally equal form `φ ^ j = σ at e`. Establish `ho : orderOf φ = Module.finrank (ZMod q) k` using `FiniteField.orderOf_frobeniusAlgEquivOfAlgebraic (ZMod q) k`. Establish `h2 : φ ^ (2 * j) = 1`. Rewrite using `[two_mul, pow_add, e]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Conclude with `hs x`. Establish `hsq : (φ r) ^ 2 = r ^ 2` using `by rw [← map_pow, hr, map_intCast]`. Establish `hev : ∀ i, (φ ^ (2 * i)) r = r`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `i with`. Consider the case `zero => rfl`. Consider the case `succ i ih`. Rewrite using `[mul_add, pow_add, AlgEquiv.mul_apply, mul_one, sq, AlgEquiv.mul_apply]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 hsq with h | h` into its components or cases.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, h, ih]`. Rewrite using `[h, map_neg, h, neg_neg, ih]`. Establish `hodd : Odd j`. Break down `Nat.even_or_odd' j with ⟨i, rfl | rfl⟩` into its components or cases. Conclude with `absurd (by rw [← hsr, ← hσ, ← e, hev]) hne`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨i, rfl⟩`. Use `⟨j, hodd, ?_⟩` and prove the remaining obligations. Establish `hd` using `orderOf_dvd_of_pow_eq_one h2`. Rewrite `hd` using `[ho]`. Establish `hn : Module.finrank (ZMod q) k = 2 * j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨c, hc⟩` from `hd`. Establish `hj0` using `hodd.pos`. Break down `c with _ | _ | c` into its components or cases. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use polynomial arithmetic with `[Nat.zero_le (Module.finrank (ZMod q) k * c)]`. Rewrite using `[Module.natCard_eq_pow_finrank (K := ZMod q), hn, Nat.card_zmod]`. Introduce and unpack `⟨c, hc⟩`. Establish `h1 : r ^ 2 = (algebraMap (ZMod q) k c) ^ 2` using `by rw [hr, sq, ← map_mul, ← hc, map_intCast]`. Apply `hne` to reduce the goal to its premises.
-
-Rewrite using `[← hsr, ← hσ]`. Apply the tactic sequence `rcases sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h <;> rw [h] <;> simp`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem card_of_involution {k : Type} [Field k] [Finite k] {q : ℕ} [Fact q.Prime] [CharP k q] (s : k →+* k)
     (hs : ∀ x, s (s x) = x) {r : k} {m : ℤ} (hr : r ^ 2 = m) (hsr : s r = -r) (hne : -r ≠ r) :
@@ -77,13 +75,13 @@ theorem card_of_involution {k : Type} [Field k] [Finite k] {q : ℕ} [Fact q.Pri
     rcases sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h <;> rw [h] <;> simp
 
 /- English proof (translation)
-Establish `hint : IsIntegral ℤ b`. Use `IsIntegral.of_pow (n := 2) two_pos ?_` and prove the remaining obligations. Rewrite using `[hb]`. Conclude with `(isIntegral_natCast n).neg`. Establish `hconj : D.host.conj b = -b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `D.host.φ₀.injective` to reduce the goal to its premises. Establish `h1 : D.host.φ₀ (D.host.conj b) = starRingEnd ℂ (D.host.φ₀ b)` using `D.host.conjE_apply D.host.φ₀ b`. Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg _`. Establish `h2 : (D.host.φ₀ b) ^ 2 = (Complex.I * (Real.sqrt n : ℂ)) ^ 2`. Rewrite using `[← map_pow, hb, map_neg, map_natCast, mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt hn0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[h1, map_neg]`. Apply the tactic sequence `rcases sq_eq_sq_iff_eq_or_eq_neg.1 h2 with h | h <;> rw [h] <;> simp`. Use `⟨⟨b, hint⟩, RingOfIntegers.ext ?_, RingOfIntegers.ext hconj⟩` and prove the remaining obligations. Establish `: (((-(n : ℤ) : ℤ) : 𝓞 D.host.E) : D.host.E) = ((-(n : ℤ) : ℤ) : D.host.E)` using `map_intCast (algebraMap (𝓞 D.host.E) D.host.E) _`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Use `push_cast`. Conclude with `hb`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem exists_root (D : D7) (n : ℕ) (b : D.host.E) (hb : b ^ 2 = -(n : D.host.E)) :
     ∃ r : 𝓞 D.host.E, r ^ 2 = ((-(n : ℤ) : ℤ) : 𝓞 D.host.E) ∧ D.host.conj • r = -r := by
@@ -110,15 +108,15 @@ theorem exists_root (D : D7) (n : ℕ) (b : D.host.E) (hb : b ^ 2 = -(n : D.host
   exact hb
 
 /- English proof (translation)
-Introduce `h2`. Establish `hw : D.host.conj • (Formalism.L2.Pj.w0E D) = 1 - Formalism.L2.Pj.w0E D`. Rewrite using `[← Formalism.L2.Pj.conj_w0E D]`. Conclude with `RingOfIntegers.ext (Formalism.L2.Pj.barE_eq_conj D (Formalism.L2.Pj.w0E D)).symm`. Establish `hsq` using `Formalism.L2.Pj.w0E_sq D`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, Formalism.L2.Pj.mE D = 2 * k := by`. Establish `h1` using `D.host.hyp.2.2.2.1`. Establish `h3` using `Formalism.L2.Pj.mE_spec D`. Conclude with `⟨Formalism.L2.Pj.mE D / 2, by omega⟩`. Rewrite `hsq` using `[hk]`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at hsq`. Use `set w := Formalism.L2.Pj.w0E D`. Establish `hm : w * (1 - w) ∈ P`. Establish `: w * (1 - w) = k * 2` using `by linear_combination -hsq`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.mul_mem_left _ h2`. Apply `hP.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Break down `hP.mem_or_mem hm with h | h` into its components or cases. Establish `h'` using `hsP _ h`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h'` using `[hw]`. Simplify using `using P.add_mem h h'`. Establish `h'` using `hsP _ h`. Rewrite `h'` using `[smul_sub, smul_one, hw]`. Simplify using `using P.add_mem h h'`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem two_not_mem (D : D7) {P : Ideal (𝓞 D.host.E)} (hP : P.IsPrime) (hsP : ∀ x ∈ P, D.host.conj • x ∈ P) :
     (2 : 𝓞 D.host.E) ∉ P := by
@@ -148,19 +146,15 @@ theorem two_not_mem (D : D7) {P : Ideal (𝓞 D.host.E)} (hP : P.IsPrime) (hsP :
     simpa using P.add_mem h h'
 
 /- English proof (translation)
-Establish `hsP : ∀ x ∈ P, D.host.conj • x ∈ P` using `fun x hx => by`. Rewrite using `[← hfix]`. Conclude with `Ideal.smul_mem_pointwise_smul _ _ _ hx`. Take `⟨r, hr, hsr⟩` from `exists_root D n b hb`. Use `haveI := Fact.mk hq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Use `letI := Ideal.Quotient.field P`. Use `haveI : Finite (𝓞 D.host.E ⧸ P) := Ideal.finiteQuotientOfFreeOfNeBot P (Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField _))`. Use `haveI : CharP (𝓞 D.host.E ⧸ P) q := (CharP.charP_iff_prime_eq_zero hq).2 (by`. Rewrite using `[← map_natCast (Ideal.Quotient.mk P), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hqP)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `c` to `MulSemiringAction.toRingHom _ (𝓞 D.host.E) D.host.conj`. Set `s : 𝓞 D.host.E ⧸ P →+* 𝓞 D.host.E ⧸ P` to `Ideal.quotientMap P c hsP`. Establish `hs : ∀ x, s (Ideal.Quotient.mk P x) = Ideal.Quotient.mk P (D.host.conj • x)` using `fun _ => rfl`. Establish `h` using `card_of_involution (q := q) s (r := Ideal.Quotient.mk P r) (m := -(n : ℤ)) (fun x => by`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[hs, hs, smul_smul, VacInt.conj_mul_self, one_smul])`. Use the proof step `(by rw [← map_pow, hr, map_intCast]) (by rw [hs, hsr, map_neg])`. Use the proof step `(fun h => by`. Rewrite `h` using `[← map_neg, Ideal.Quotient.eq]`. Establish `h2 : 2 * r ∈ P`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `P.neg_mem h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `(hP.isPrime.mem_or_mem h2).resolve_left (two_not_mem D hP.isPrime hsP)`. Establish `hnP : (n : 𝓞 D.host.E) ∈ P`.
-
-Use `P.neg_mem (hr ▸ P.pow_mem_of_mem h3 2 two_pos)` as an intermediate fact. Simplify using `using this`. Take `⟨u, v, huv⟩ : IsCoprime (q : 𝓞 D.host.E) (n : 𝓞 D.host.E)` from `hc.cast`. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one P).2 (huv ▸ P.add_mem (P.mul_mem_left u hqP) (P.mul_mem_left v hnP))))`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
-
-Move the coercions through the operations in `at h`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem card_of_root (D : D7) {P : Ideal (𝓞 D.host.E)} (hP : P.IsMaximal) (hfix : D.host.conj • P = P) {q : ℕ}
     (hq : q.Prime) (hqP : (q : 𝓞 D.host.E) ∈ P) (n : ℕ) (hc : Nat.Coprime q n) (b : D.host.E)
@@ -201,9 +195,9 @@ theorem card_of_root (D : D7) {P : Ideal (𝓞 D.host.E)} (hP : P.IsMaximal) (hf
   exact h
 
 /- English proof (translation)
-Use `letI := Ideal.Quotient.field P`. Use `haveI : Finite (𝓞 D.host.E ⧸ P) := Ideal.finiteQuotientOfFreeOfNeBot P (Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField _))`. Use `haveI := Fintype.ofFinite (𝓞 D.host.E ⧸ P)`. Take `⟨q, hc, n, hq, hn⟩` from `FiniteField.card' (𝓞 D.host.E ⧸ P)`. Use `⟨q, n, hq, ?_, ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `CharP.cast_eq_zero _ q`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_eq_fintype_card, hn]`.
+A detailed English derivation is pending.
 -/
 theorem exists_prime (D : D7) {P : Ideal (𝓞 D.host.E)} (hP : P.IsMaximal) :
     ∃ q n : ℕ, q.Prime ∧ (q : 𝓞 D.host.E) ∈ P ∧ Ideal.absNorm P = q ^ n := by
@@ -218,19 +212,17 @@ theorem exists_prime (D : D7) {P : Ideal (𝓞 D.host.E)} (hP : P.IsMaximal) :
   · rw [Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_eq_fintype_card, hn]
 
 /- English proof (translation)
-Introduce `D P hP`. Take `⟨q, n, hq, hqP, hn⟩` from `exists_prime D hP`. Establish `hP0 : P ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField _)`. Distinguish the cases in `hfix : D.host.conj • P = P`. Establish `hin : InertQ D q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `VacInt.conj_smul_ne D hq h P hP.isPrime hqP hfix`. Take `⟨hq₁, hd, hq8, hd16, -⟩` from `D.host.hyp`. Establish `hd' : q ≠ D.host.d → _` using `fun h => card_of_root D hP hfix hq hqP D.host.d ((Nat.coprime_primes hq hd).2 h) (D.host.sqd) (D.host.sqd_sq)`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf, hN⟩ : ∃ f, Odd f ∧ Ideal.absNorm P = q ^ (2 * f) := by`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : q = D.host.d`. Use `exfalso haveI := hP.isPrime haveI : P.LiesOver (Ideal.span {(q : ℤ)}) := by`. Use `⟨Ideal.IsMaximal.eq_of_le (PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.1 hq).irreducible) (Ideal.IsPrime.ne_top inferInstance) ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.mem_comap, map_natCast]`. Conclude with `hqP`.
+It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `D.host.der.decompConj q hq (h ▸ Dvd.intro_left _ rfl) P (MulAction.mem_stabilizer_iff.2 hfix)`. Conclude with `(hd' h).1`. Use `⟨?_, fun _ => ⟨?_, q, f, hq, hin, ?_, hqP, hf, hN, fun h => (hd' h).2⟩, fun h => absurd hfix h⟩` and prove the remaining obligations. Introduce `p _ _`. Rewrite using `[hN, Nat.factorization_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `[Nat.even_mul]`. Establish `hf0 : 2 * f ≠ 0` using `by have := hf.pos; omega`. Rewrite using `[hN, sgn, hlf, Nat.primeFactors_prime_pow hf0 hq, Finset.filter_singleton, if_pos hin, Finset.sum_singleton, Nat.factorization_pow_self hq, Nat.mul_div_cancel_left _ two_pos, hf.neg_one_pow]`. Introduce and unpack `rfl`. Conclude with `two_not_mem D hP.isPrime (fun x hx => by rw [← hfix]; exact Ideal.smul_mem_pointwise_smul _ _ _ hx) (by exact_mod_cast hqP)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hall : ∀ p : ℕ, (p : 𝓞 D.host.E) ∈ P → ¬ InertQ D p` using `fun p hp h => hfix (h P hP.isPrime hP0 hp)`. Establish `h0 : ∀ p : ℕ, InertQ D p → (Ideal.absNorm P).factorization p = 0` using `fun p hp => by`. Rewrite using `[hn, hq.factorization_pow, Finsupp.single_eq_of_ne]`. Introduce and unpack `rfl`. Conclude with `hall _ hqP hp`.
-
-Use `⟨fun p _ hp => by rw [h0 p hp]; exact Even.zero, fun h => absurd h hfix, fun _ => ⟨?_, fun p _ hp => hall p hp⟩⟩` and prove the remaining obligations. Rewrite using `[← sgn_one (D := D)]`. Conclude with `sgn_congr fun p _ hp => by rw [h0 p hp]; simp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_prime : ∀ (D : D7) (P : Ideal (𝓞 D.host.E)), P.IsMaximal → Ev D (Ideal.absNorm P) ∧ (D.host.conj • P = P → sgn D (Ideal.absNorm P) = -1 ∧ ∃ q f : ℕ, q.Prime ∧ InertQ D q ∧ q ≠ 2 ∧ (q : 𝓞 D.host.E) ∈ P ∧ Odd f ∧ Ideal.absNorm P = q ^ (2 * f) ∧ (q ≠ D.host.d → ¬ IsSquare (-(D.host.d : ZMod q)))) ∧ (D.host.conj • P ≠ P → sgn D (Ideal.absNorm P) = 1 ∧ ∀ q : ℕ, q.Prime → (q : 𝓞 D.host.E) ∈ P → ¬ InertQ D q) := by
   intro D P hP

@@ -12,11 +12,11 @@ open GlobalTheory.DefLift
 namespace GlobalTheory.MinorHarmonic
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p k hp`. Establish `h : ∀ a b : σ, MvPolynomial.pderiv a (MvPolynomial.pderiv b (MvPolynomial.X k : MvPolynomial σ R)) = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce `a b`. Rewrite using `[MvPolynomial.pderiv_X]`. Distinguish the cases in `hk : k = b`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne hk]`. Simplify using `only [Derivation.leibniz, map_add, smul_eq_mul, hp, h]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pderiv_comm {σ R : Type*} [CommRing R] (i j : σ) (f : MvPolynomial σ R) :
     MvPolynomial.pderiv i (MvPolynomial.pderiv j f) = MvPolynomial.pderiv j (MvPolynomial.pderiv i f) := by
@@ -52,7 +52,7 @@ def ker {σ : Type*} (v : σ) : Subring (MvPolynomial σ ℂ) where
     simp [ha]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply']`. Conclude with `S.sum_mem fun σ _ => S.mul_mem (intCast_mem S _) (S.prod_mem fun i _ => h _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem {R : Type*} [CommRing R] (S : Subring R) {k : ℕ} (M : Matrix (Fin k) (Fin k) R)
     (h : ∀ i j, M i j ∈ S) : M.det ∈ S := by
@@ -62,9 +62,7 @@ theorem det_mem {R : Type*} [CommRing R] (S : Subring R) {k : ℕ} (M : Matrix (
 variable {D : D7} {m n : ℕ}
 
 /- English proof (translation)
-Unfold `varF`. Use `split_ifs with h1`. Use `show MvPolynomial.pderiv _ _ = 0`. Apply `MvPolynomial.pderiv_X_of_ne` to reduce the goal to its premises. Introduce `he`.
-
-Simplify using `only [Prod.mk.injEq] at he`. Conclude with `h he.1 (congrArg Fin.val he.2.1) (congrArg Fin.val he.2.2)`. Conclude with `Subring.zero_mem _`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem varF_mem (τ τ' : D.what₂.Tau) (a : Fin m) (c : Fin n) (i j : ℕ)
     (h : τ' = τ → i = a → j = c → False) :
@@ -80,11 +78,11 @@ theorem varF_mem (τ τ' : D.what₂.Tau) (a : Fin m) (c : Fin n) (i j : ℕ)
   · exact Subring.zero_mem _
 
 /- English proof (translation)
-Unfold `delta deltaAt`. Use `Subring.prod_mem _ fun τ' _ => Subring.mul_mem _ ?_ ?_` and prove the remaining obligations. Use `Subring.prod_mem _ fun i hi => Subring.pow_mem _ ?_ _` and prove the remaining obligations. Use `det_mem _ _ fun α β => varF_mem τ τ' a c _ _ ?_` and prove the remaining obligations. Introduce and unpack `rfl h1 h2`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Finset.mem_range.1 hi` as an intermediate fact. Use `α.2` as an intermediate fact. Use `β.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `Subring.prod_mem _ fun i hi => Subring.pow_mem _ ?_ _` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use `det_mem _ _ fun α β => varF_mem τ τ' a c _ _ ?_` and prove the remaining obligations. Introduce and unpack `rfl h1 h2`. Use `Finset.mem_range.1 hi` as an intermediate fact. Use `hpq τ'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem delta_mem (p q : D.what₂.Tau → ℕ) (ap am : D.what₂.Tau → ℕ → ℕ) (hpq : ∀ τ, p τ + q τ ≤ n)
     (τ : D.what₂.Tau) (a : Fin m) (c : Fin n)
@@ -107,9 +105,9 @@ theorem delta_mem (p q : D.what₂.Tau → ℕ) (ap am : D.what₂.Tau → ℕ �
     omega
 
 /- English proof (translation)
-Introduce `D m n p q ap am hpq τ a b ha hb`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Break down `lt_or_ge (c : ℕ) (p τ) with hc | hc` into its components or cases. Rewrite using `[pderiv_comm]`. Establish `: MvPolynomial.pderiv (τ, a, c) (delta p q ap am : PolF D m n) = 0` using `delta_mem p q ap am hpq τ a c (Or.inr ⟨ha, hc⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, map_zero]`. Establish `: MvPolynomial.pderiv (τ, b, c) (delta p q ap am : PolF D m n) = 0` using `delta_mem p q ap am hpq τ b c (Or.inl ⟨hb, hc⟩)`. Rewrite using `[this, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem laplacian_delta : ∀ (D : D7) (m n : ℕ) (p q : D.what₂.Tau → ℕ) (ap am : D.what₂.Tau → ℕ → ℕ), (∀ τ, p τ + q τ ≤ n) → ∀ τ (a b : Fin m), p τ ≤ (a : ℕ) → (b : ℕ) < p τ → ∑ c : Fin n, MvPolynomial.pderiv (τ, a, c) (MvPolynomial.pderiv (τ, b, c) (delta p q ap am : PolF D m n)) = 0 := by
   intro D m n p q ap am hpq τ a b ha hb

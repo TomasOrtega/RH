@@ -36,7 +36,7 @@ def rallisF (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (μ : Measure (WO (Vc D
     ∫ z in R.fdW i, star (val R i v x z) * val R i v y (z * g) ∂(R.νW i)
 
 /- English proof (translation)
-Establish `h1` using `i.2`. Rewrite using `[D.sp.W_rank _ (by omega) (by omega), D.sp.V_rank _ (by omega) (by omega)]`. Use `(D.R.rank_add_five_le : D.R.r + 5 ≤ D.R.t)` as an intermediate fact. Unfold `Ranks.nV`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/

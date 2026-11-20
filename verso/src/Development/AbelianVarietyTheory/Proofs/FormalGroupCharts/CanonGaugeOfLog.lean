@@ -19,7 +19,7 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Reciprocity
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hlog` and use `have hcob := FormalCocycle.exists_coboundary_of_symm_cocycle hlog ChartInv.exists_isInvPair have huniq := AdditiveSeries.eq_zero_of_additive_of_pderiv canonGauge_of_steps exists_formalBiext_map exists_regauge (GaugeFirstLaw.exists_gauge_first_law hcob huniq) (SecondLawGauge.exist …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem canonGauge_of_log : LogSt → CanonGaugeSt := fun hlog =>
   have hcob := FormalCocycle.exists_coboundary_of_symm_cocycle hlog ChartInv.exists_isInvPair

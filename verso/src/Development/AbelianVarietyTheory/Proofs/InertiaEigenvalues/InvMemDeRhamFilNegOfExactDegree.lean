@@ -11,7 +11,7 @@ open Classical
 namespace GlobalTheory.FilInv
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using PD.one_mem`. Consider the case `succ n ih`. Rewrite using `[pow_succ, Nat.cast_succ, add_mul, one_mul]`. Conclude with `PD.Fil_mul _ _ _ _ ih hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mem_Fil {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
     [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
@@ -27,15 +27,15 @@ theorem pow_mem_Fil {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K�
     exact PD.Fil_mul _ _ _ _ ih hx
 
 /- English proof (translation)
-Introduce `l _ P AI T K a u v huv hu hu1`. Take `⟨s, hs, hts⟩` from `GlobalTheory.TopSteps.CrysRules.exists_inverse_fontaineElement_mem_fil_neg_one T K`. Establish `ht` using `(P.PD K).mem_filtration_one`. Choose the witnesses or unpack the hypotheses as in `⟨w, w', hw, hw', hww⟩ : ∃ w w' : P.R.BdR, w ∈ (P.PD K).Fil (-a) ∧ w' ∈ (P.PD K).Fil a ∧ w * w' = 1 := by`. Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨s ^ n, ((P.PD K).ι (P.PD K).t) ^ n, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using pow_mem_Fil (P.PD K) hs n`. Simplify using `using pow_mem_Fil (P.PD K) ht n`. Rewrite using `[← mul_pow, mul_comm, hts, one_pow]`. Use `⟨((P.PD K).ι (P.PD K).t) ^ n, s ^ n, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using pow_mem_Fil (P.PD K) ht n`. Simplify using `using pow_mem_Fil (P.PD K) hs n`. Rewrite using `[← mul_pow, hts, one_pow]`. Establish `hx0 : u * w ∈ (P.PD K).Fil 0`. Simplify using `using (P.PD K).Fil_mul _ _ _ _ hu hw`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hx1 : u * w ∉ (P.PD K).Fil 1`. Introduce `h`. Apply `hu1` to reduce the goal to its premises. Use `(P.PD K).Fil_mul _ _ _ _ h hw'` as an intermediate fact. Rewrite `this` using `[mul_assoc, hww, mul_one, add_comm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨y, hy, hxy⟩` from `((GlobalTheory.Per.TiedField.tied_field l P AI T).2.2.2.2) K _ hx0 hx1`. Establish `hv : v = w * y`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hv]`. Simplify using `using (P.PD K).Fil_mul _ _ _ _ hw hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inv_mem_Fil_neg : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K : FinExt l) (a : ℤ) (u v : P.R.BdR), u * v = 1 → u ∈ (P.PD K).Fil a → u ∉ (P.PD K).Fil (a + 1) → v ∈ (P.PD K).Fil (-a) := by
   intro l _ P AI T K a u v huv hu hu1

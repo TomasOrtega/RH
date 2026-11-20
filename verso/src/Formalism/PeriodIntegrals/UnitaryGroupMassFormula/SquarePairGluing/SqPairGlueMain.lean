@@ -12,19 +12,17 @@ open Formalism.L2.PairingIndexBounds.Eq.SqG
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {N : ℕ}
 
 /- English proof (translation)
-Introduce `hprime hf`. Take `⟨Q, hQdef⟩ : ∃ Q : ℕ → ℤ, Q = fun p => ∏ q ∈ S.erase p, ((q : ℤ) ^ K)` from `⟨_, rfl⟩`. Establish `hcop : ∀ p ∈ S, ∃ a b : ℤ, a * (p : ℤ) ^ K + b * Q p = 1`. Introduce `p hp`. Establish `h : IsCoprime ((p : ℤ) ^ K) (Q p)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hQdef]`. Apply `IsCoprime.prod_right` to reduce the goal to its premises. Introduce `q hq`. Apply `IsCoprime.pow` to reduce the goal to its premises. Conclude with `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes (hprime p hp) (hprime q (Finset.mem_of_mem_erase hq))).2 (Finset.ne_of_mem_erase hq).symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h`. Use `choose! a b hab using hcop`. Use `⟨∑ q ∈ S, (b q * Q q) • f q, ?_, ?_⟩` and prove the remaining obligations. Conclude with `sum_mem fun q hq => zsmul_mem (hf q hq) _`. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiv : ∀ q ∈ S.erase p, ∃ t : ℤ, Q q = (p : ℤ) ^ K * t`. Introduce `q hq`. Establish `hm : p ∈ S.erase q` using `Finset.mem_erase.2 ⟨(Finset.ne_of_mem_erase hq).symm, hp⟩`. Establish `hd` using `Finset.dvd_prod_of_mem (fun r : ℕ => ((r : ℤ) ^ K)) hm`. Rewrite using `[hQdef]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hd`. Use `choose! t ht using hdiv`. Use `⟨(-a p) • f p + ∑ q ∈ S.erase p, (b q * t q) • f q, add_mem (zsmul_mem (hf p hp) _) (sum_mem fun q hq => zsmul_mem (hf q (Finset.mem_of_mem_erase hq)) _), ?_⟩` and prove the remaining obligations. Establish `hsplit` using `Finset.add_sum_erase S (fun q => (b q * Q q) • f q) hp`. Rewrite using `[← hsplit]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e1 : b p * Q p = 1 + (p : ℤ) ^ K * (-a p)` using `by linear_combination hab p hp`. Establish `e2 : ∑ q ∈ S.erase p, (b q * Q q) • f q = ((p : ℤ) ^ K) • ∑ q ∈ S.erase p, (b q * t q) • f q`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ht q hq]`.
-
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, e1, add_smul, one_smul, smul_add, smul_smul, add_assoc]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crt_exists (R : Subring (Matrix (Fin N) (Fin N) E)) (f : ℕ → Matrix (Fin N) (Fin N) E) (K : ℕ)
     (S : Finset ℕ) : (∀ p ∈ S, p.Prime) → (∀ p ∈ S, f p ∈ R) →
@@ -69,25 +67,23 @@ theorem crt_exists (R : Subring (Matrix (Fin N) (Fin N) E)) (f : ℕ → Matrix 
     rw [e2, e1, add_smul, one_smul, smul_add, smul_smul, add_assoc]
 
 /- English proof (translation)
-Introduce `hP E _ _ _ hCM N L' L'' hN hL' hL'' n hn`. Establish `hloc` using `hP E hCM N L' L'' hN hL' hL'' n hn`. Unfold `PI.SqPair.PLocal at hloc`. Use `choose! f hf1 hf2 hf3 using hloc`. Establish `hstar : ∀ x ∈ lam L' L'', xᴴ ∈ lam L' L''` using `fun x hx => conjTranspose_mem_lam hL' hL'' hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨D, hD0, hD⟩` from `exists_den hL' hL'' hn`. Take `⟨e, heR, he⟩` from `crt_exists (lam L' L'') f D D.primeFactors (fun p hp => Nat.prime_of_mem_primeFactors hp) (fun p hp => ⟨hf1 p (Nat.prime_of_mem_primeFactors hp), hf2 p (Nat.prime_of_mem_primeFactors hp)⟩)`. Use `⟨e, heR.1, heR.2, ?_⟩` and prove the remaining obligations. Introduce `M hM y hy`. Establish `himg : ∀ r ∈ lam L' L'', r *ᵥ y ∈ L' ∨ r *ᵥ y ∈ L''`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r hr`. Break down `hy with hy | hy` into its components or cases. Conclude with `Or.inl (hr.1 y hy)`. Conclude with `Or.inr (hr.2 y hy)`. Establish `key : M *ᵥ y ∈ yg L' L'' n`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mem_of_local` to reduce the goal to its premises. Introduce `p hp`. Distinguish the cases in `hpD : p ∣ D`. Establish `hpS : p ∈ D.primeFactors` using `Nat.mem_primeFactors.mpr ⟨hp, hpD, hD0.ne'⟩`. Take `⟨d, hdR, hed⟩` from `he p hpS`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hM` using `[hed]`. Take `⟨M', hM', r, hrR, hMr⟩` from `mset_cong hstar ⟨hf1 p hp, hf2 p hp⟩ hdR ((p : ℤ) ^ D) M hM`. Take `⟨s, hps, m, hm1, hm2, hsm⟩` from `hf3 p hp M' hM' y hy`. Establish `hs : s • (M' *ᵥ y) ∈ yg L' L'' n`. Rewrite using `[← Int.cast_smul_eq_zsmul E, hsm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨m, hm1, hm2, rfl⟩`. Establish `hr : (D : ℤ) • (r *ᵥ y) ∈ yg L' L'' n` using `hD _ (himg r hrR)`. Take `⟨a, D', hpD', hDa⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hD0.ne' p hp.ne_one`. Establish `ha : a ≤ D`. Establish `h1 : p ^ a ≤ D` using `Nat.le_of_dvd hD0 ⟨D', hDa⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : a < p ^ a` using `Nat.lt_pow_self hp.one_lt`. Use linear arithmetic over natural numbers and integers. Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Use `⟨s * D', ?_, ?_⟩` and prove the remaining obligations. Introduce `hdvd`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hpZ.dvd_or_dvd hdvd with h | h` into its components or cases. Conclude with `hps h`. Conclude with `hpD' (Int.natCast_dvd_natCast.mp h)`. Establish `e1 : (s * (D' : ℤ)) • (M *ᵥ y) = (D' : ℤ) • (s • (M' *ᵥ y)) + (s * (p : ℤ) ^ (D - a)) • ((D : ℤ) • (r *ᵥ y))`. Establish `hpow : (p : ℤ) ^ D = (p : ℤ) ^ (D - a) * (p : ℤ) ^ a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_add, Nat.sub_add_cancel ha]`. Establish `hDZ : (D : ℤ) = (p : ℤ) ^ a * (D' : ℤ)` using `by rw [hDa]; push_cast; ring`. Rewrite using `[hMr, add_mulVec, smul_mulVec, hpow, hDZ]`. Use `module`. Rewrite using `[e1]`.
-
-Conclude with `(yg L' L'' n).add_mem ((yg L' L'' n).zsmul_mem hs _) ((yg L' L'' n).zsmul_mem hr _)`. Use `⟨D, fun h => hpD (Int.natCast_dvd_natCast.mp h), ?_⟩` and prove the remaining obligations. Conclude with `hD _ (himg M (mset_sub hstar heR M hM))`. Take `⟨m, h1, h2, h3⟩` from `key`. Conclude with `⟨m, h1, h2, h3⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sqPairGlue_main : PI.SqPair.PLocalAll → SplitPairGen := by
   intro hP E _ _ _ hCM N L' L'' hN hL' hL'' n hn

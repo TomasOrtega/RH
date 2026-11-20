@@ -11,7 +11,7 @@ section Alg
 variable (k : Type) [Field k]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `GlobalTheory.BZMir.blockMat k n (GlobalTheory.BZMir.glEmbMat k n (g : Matrix (Fin n) (Fin n) k)) i j = (g : Matrix (Fin n) (Fin n) k) i j`. Simplify using `[GlobalTheory.BZMir.blockMat, GlobalTheory.BZMir.glEmbMat]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem mirProj_levi (n : ℕ) (g : GL (Fin n) k) : mirabolicProjection k n (levi k n g) = g := by
   apply Units.ext
@@ -21,9 +21,9 @@ theorem mirProj_levi (n : ℕ) (g : GL (Fin n) k) : mirabolicProjection k n (lev
   simp [GlobalTheory.BZMir.blockMat, GlobalTheory.BZMir.glEmbMat]
 
 /- English proof (translation)
-Rewrite `hu` using `[GlobalTheory.BZMir.MirUin, Subgroup.mem_subgroupOf, GlobalTheory.BZMir.MirU, MonoidHom.mem_range]`. Take `⟨v, hv⟩` from `hu`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `GlobalTheory.BZMir.blockMat k n ((u : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) i j = (1 : Matrix (Fin n) (Fin n) k) i j`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[GlobalTheory.BZMir.blockMat, ← hv]`. Express the relevant statement in the definitionally equal form `((1 : Matrix (Fin (n + 1)) (Fin (n + 1)) k) + GlobalTheory.BZMir.colMat k n (Multiplicative.toAdd v)) (Fin.castSucc i) (Fin.castSucc j) = (1 : Matrix (Fin n) (Fin n) k) i j`. Simplify using `[GlobalTheory.BZMir.colMat, Matrix.one_apply, Fin.castSucc_ne_last]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem mirProj_eq_one_of_mem (n : ℕ) (u : Mir k n) (hu : u ∈ MirUin k n) : mirabolicProjection k n u = 1 := by
   rw [GlobalTheory.BZMir.MirUin, Subgroup.mem_subgroupOf, GlobalTheory.BZMir.MirU,
@@ -40,11 +40,11 @@ theorem mirProj_eq_one_of_mem (n : ℕ) (u : Mir k n) (hu : u ∈ MirUin k n) : 
   simp [GlobalTheory.BZMir.colMat, Matrix.one_apply, Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Establish `hrow : ∀ j, ((y : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.last n) j = GlobalTheory.BZMir.eLast k n j` using `fun j => congrFun ((GlobalTheory.BZMir.mem_Mir_iff k (y : GL (Fin (n + 1)) k)).1 y.2) j`. Establish `hblock : ∀ i j : Fin n, ((y : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.castSucc i) (Fin.castSucc j) = (1 : Matrix (Fin n) (Fin n) k) i j` using `fun i j => congrArg (fun g : GL (Fin n) k => (g : Matrix (Fin n) (Fin n) k) i j) hy`. Rewrite using `[GlobalTheory.BZMir.MirUin, Subgroup.mem_subgroupOf, GlobalTheory.BZMir.MirU, MonoidHom.mem_range]`. Use `⟨Multiplicative.ofAdd fun i => ((y : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.castSucc i) (Fin.last n), ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `((1 : Matrix (Fin (n + 1)) (Fin (n + 1)) k) + GlobalTheory.BZMir.colMat k n (fun i => ((y : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.castSucc i) (Fin.last n))) i j = ((y : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) i j`. Rewrite using `[Matrix.add_apply, GlobalTheory.BZMir.colMat]`. Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last i with ⟨i, rfl⟩ | rfl <;>`. Break down `Fin.eq_castSucc_or_eq_last j with ⟨j, rfl⟩ | rfl` into its components or cases.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[Matrix.one_apply, Fin.castSucc_ne_last, hblock]`. Simplify using `[Matrix.one_apply, Fin.castSucc_ne_last]`. Simplify using `[Matrix.one_apply, Fin.castSucc_ne_last, (Fin.castSucc_ne_last _).symm, hrow, GlobalTheory.BZMir.eLast]`. Simplify using `[hrow, GlobalTheory.BZMir.eLast]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mem_of_mirProj_eq_one (n : ℕ) (y : Mir k n) (hy : mirabolicProjection k n y = 1) : y ∈ MirUin k n := by
   have hrow : ∀ j, ((y : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.last n) j =
@@ -86,7 +86,7 @@ theorem psiMinus_mk {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (τ : R
     psiMinus k τ g (Submodule.Quotient.mk v) = Submodule.Quotient.mk (τ (levi k n g) v) := rfl
 
 /- English proof (translation)
-Rewrite using `[Submodule.Quotient.eq]`. Use `Submodule.subset_span ⟨⟨u, hu⟩, v, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem mk_act_unip {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (τ : Representation ℂ (Mir k n) V)
     (u : Mir k n) (hu : u ∈ MirUin k n) (v : V) :
@@ -96,9 +96,7 @@ theorem mk_act_unip {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (τ : R
   simp
 
 /- English proof (translation)
-Establish `hu : (levi k n (mirabolicProjection k n x))⁻¹ * x ∈ MirUin k n` using `mem_of_mirProj_eq_one k n _ (by rw [map_mul, map_inv, mirProj_levi, inv_mul_cancel])`. Establish `hx : x = levi k n (mirabolicProjection k n x) * ((levi k n (mirabolicProjection k n x))⁻¹ * x)` using `by group`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← hx]`. Use `_ = psiMinus k τ (mirabolicProjection k n x) (Submodule.Quotient.mk (τ ((levi k n (mirabolicProjection k n x))⁻¹ * x) v)) := rfl`.
-
-Use `_ = _ := by rw [mk_act_unip τ _ hu v]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_act {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (τ : Representation ℂ (Mir k n) V)
     (x : Mir k n) (v : V) :
@@ -114,7 +112,7 @@ theorem mk_act {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (τ : Repres
     _ = _ := by rw [mk_act_unip τ _ hu v]
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨u, v, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, map_sub, MonoidHom.one_apply, Units.val_one, one_smul, Representation.IntertwiningMap.toLinearMap_apply, Representation.IntertwiningMap.isIntertwining]`. Rewrite using `[show psiPlus k σ (u : Mir k n) = σ (mirabolicProjection k n u) from rfl, mirProj_eq_one_of_mem k n _ u.2, map_one, Module.End.one_apply, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem twKer_le_ker {n : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (τ : Representation ℂ (Mir k n) V) (σ : Representation ℂ (GL (Fin n) k) W)

@@ -28,7 +28,7 @@ section Generic
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, add_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pure_add {κ : Type} [Fintype κ] (f g : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ)
     (φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ) :
@@ -36,7 +36,7 @@ theorem pure_add {κ : Type} [Fintype κ] (f g : GlobalTheory.IndefiniteRowSideF
   funext x; simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, add_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pure_smul {κ : Type} [Fintype κ] (c : ℂ) (f : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ)
     (φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ) :
@@ -44,22 +44,18 @@ theorem pure_smul {κ : Type} [Fintype κ] (c : ℂ) (f : GlobalTheory.Indefinit
   funext x; simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pure_zero {κ : Type} [Fintype κ] (φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (0 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ) φ = 0 := by
   funext x; simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure]
 
 /- English proof (translation)
-Use `le_antisymm ?_ hrev` and prove the remaining obligations. Establish `hmem : ∀ f ∈ M.Pol ψ τ, ∀ φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (Fin n × Fin d → Fv F v) → ℂ, (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) → (∀ᶠ v in Filter.cofinite, φ v = M.vac v) → T (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) …` using `fun f hf φ h1 h2 => hT _ (hsub (Submodule.subset_span ⟨f, φ, hf, h1, h2, rfl⟩))`. Establish `hG : ∀ f₀, M.IsGauss ψ τ f₀ → f₀ ∈ M.Pol ψ τ` using `fun f₀ h => Submodule.mem_sInf.2 fun N hN => hN.1 f₀ h`. Establish `hC : ∀ u, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) u → ∀ f ∈ M.Pol ψ τ, ∀ f₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d), GlobalTheory.IndefiniteRowSideFullHe …` using `fun u hu f hf f₁ hA => Submodule.mem_sInf.2 fun N hN => hN.2 u hu f (Submodule.mem_sInf.1 hf N hN) f₁ hA`. Set `N : Submodule ℂ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d))` to `{ carrier := {f | f ∈ M.Pol ψ τ ∧ ∀ φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (Fin n × Fin d → Fv F v) → ℂ, (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) → (∀ᶠ v in Filter.cofinite, φ v = M.vac v) → T (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels …`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[pure_add, map_add]`. Conclude with `Alg.add_mem (hf.2 φ h1 h2) (hg.2 φ h1 h2)⟩`. Use the proof step `zero_mem' := ⟨(M.Pol ψ τ).zero_mem, fun φ _ _ => by rw [pure_zero, map_zero]; exact Alg.zero_mem⟩`. Use the proof step `smul_mem' := fun c f hf => ⟨(M.Pol ψ τ).smul_mem c hf.1, fun φ h1 h2 => by`. Rewrite using `[pure_smul, map_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Alg.smul_mem c (hf.2 φ h1 h2)⟩ }`. Establish `hPN : M.Pol ψ τ ≤ N` using `sInf_le ⟨fun f₀ h => ⟨hG f₀ h, fun φ h1 h2 => by`. Rewrite using `[hmem f₀ (hG f₀ h) φ h1 h2]`. Conclude with `hvac f₀ φ h h1 h2⟩,`. Use `fun u hu f hf f₁ hA => ⟨hC u hu f hf.1 f₁ hA, fun φ h1 h2 => by`.
-
-Rewrite using `[hmem f₁ (hC u hu f hf.1 f₁ hA) φ h1 h2]`. Conclude with `hder f φ u f₁ hf.1 hu hA h1 h2 (by rw [← hmem f hf.1 φ h1 h2]; exact hf.2 φ h1 h2)⟩⟩`. Rewrite using `[Submodule.map_le_iff_le_comap]`. Unfold `GlobalTheory.TripleAssembly.darbAlg`. Rewrite using `[Submodule.span_le]`.
-
-Introduce and unpack `Φ ⟨f, φ, hf, h1, h2, rfl⟩`. Conclude with `(hPN hf).2 φ h1 h2`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem map_eq {n d : ℕ} {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Z : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d}
     (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Z) (ψ : AddChar (AF F) ℂ) (τ : ∀ w : InfinitePlace F, GlobalTheory.AdelicU.EmbOver (E := E) w)
@@ -115,15 +111,15 @@ end GlobalTheory.DarbImage
 namespace GlobalTheory.DarbImage
 
 /- English proof (translation)
-Introduce `hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB R Rf hM`. Establish `hG : Γ.M.IsGood Bs.ψ` using `hM.triple.geo.hM`. Establish `hG' : Γ.M'.IsGood Bs.ψ` using `hM.triple.geo.hM'`. Establish `hs` using `GlobalTheory.T.darbouxModelAlgebraicVectors_le_adelicSchwartz D.sp.cm.sig Γ.V Γ.W Γ.M Bs.ψ Bs.emb hG`. Establish `hs'` using `GlobalTheory.T.darbouxModelAlgebraicVectors_le_adelicSchwartz D.sp.cm.sig Γ.V' Γ.W Γ.M' Bs.ψ Bs.emb hG'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun T hT => ?_, fun T hT => ?_⟩` and prove the remaining obligations. Use `map_eq Γ.M Bs.ψ Bs.emb _ T _ hs hT (GlobalTheory.T.seesaw_weil_doubling_factor hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB R Rf hM) (fun f φ u f₁ hf hu hA h1 h2 hin => ?_) ?_` and prove the remaining obligations. Take `⟨L, hLc, hLf, hL⟩` from `GlobalTheory.T.seesaw_weil_zeta_unramified hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB R Rf hM f φ u f₁ hf hu hA h1 h2`. Rewrite using `[hL]`. Conclude with `GlobalTheory.T.fockAlgebraicThetaVectors_stable_lineDerivative D ψ θ hψ hθ true W X A B _ hin L hLc hLf`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[algF, Submodule.span_le]`. Introduce and unpack `q ⟨g, P, hg, rfl⟩`. Take `⟨Φ, hΦ, hΦe⟩` from `GlobalTheory.T.seesaw_weil_zeta_global hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB R Rf hM g P hg`. Conclude with `⟨Φ, hΦ, by rw [hT Φ (hs hΦ), hΦe]⟩`. Use `map_eq Γ.M' Bs.ψ Bs.emb _ T _ hs' hT (GlobalTheory.T.seesaw_weil_zeta_nonvanishing hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB R Rf hM) (fun f φ u f₁ hf hu hA h1 h2 hin => ?_) ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hLc, hLf, hL⟩` from `GlobalTheory.T.seesaw_weil_zeta_continuation hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB R Rf hM f φ u f₁ hf hu hA h1 h2`. Rewrite using `[hL]`. Conclude with `GlobalTheory.T.fockAlgebraicThetaVectors_stable_lineDerivative D ψ θ hψ hθ false W₁ X A₁ B _ hin L hLc hLf`. Rewrite using `[algF, Submodule.span_le]`. Introduce and unpack `q ⟨g, P, hg, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨Φ, hΦ, hΦe⟩` from `GlobalTheory.T.exists_darbAlg_thO_eq_fockF' hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB R Rf hM g P hg`. Conclude with `⟨Φ, hΦ, by rw [hT Φ (hs' hΦ), hΦe]⟩`.
+A detailed English derivation is pending.
 -/
 theorem thetaImage : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

@@ -14,21 +14,19 @@ open GlobalTheory.OrbitSep
 namespace GlobalTheory.GenFrac
 
 /- English proof (translation)
-Introduce `X V _ W hWV ρW h`. Use `set η := genericPoint V.toScheme with hη`. Establish `hx : V.ι η ∈ W.1`. Establish `h1` using `congrArg (fun f : Spec (V.toScheme.presheaf.stalk η) ⟶ X => f (IsLocalRing.closedPoint (V.toScheme.presheaf.stalk η))) h`. Establish `h3 : (V.toScheme.fromSpecStalk η ≫ V.ι) (IsLocalRing.closedPoint (V.toScheme.presheaf.stalk η)) = V.ι η` using `congrArg V.ι (Scheme.fromSpecStalk_closedPoint (x := η))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1.trans h3]`. Establish `h2 : Set.range (W.2.fromSpec) = (W.1 : Set X)` using `W.2.range_fromSpec`. Rewrite using `[← SetLike.mem_coe, ← h2]`. Conclude with `⟨_, rfl⟩`. Establish `he : CommRingCat.ofHom ρW = X.presheaf.germ W.1 (V.ι η) hx ≫ V.ι.stalkMap η`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Spec.map_injective` to reduce the goal to its premises. Establish `hW : IsAffineOpen W.1` using `W.2`. Use `haveI : IsOpenImmersion hW.fromSpec := hW.isOpenImmersion_fromSpec`. Rewrite using `[← cancel_mono hW.fromSpec, Spec.map_comp, Category.assoc]`. Use `Eq.trans h ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Scheme.SpecMap_stalkMap_fromSpecStalk, ← W.2.fromSpecStalk_eq_fromSpecStalk hx]`. Both sides reduce to the same expression. Establish `he' : ∀ a, ρW a = V.ι.stalkMap η (X.presheaf.germ W.1 (V.ι η) hx a)` using `fun a => congrArg (fun f : Γ(X, W.1) ⟶ V.toScheme.presheaf.stalk η => f a) he`. Establish `hbij : Function.Bijective (V.ι.stalkMap η)` using `ConcreteCategory.bijective_of_isIso _`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiso : IsIso (V.ι.app W.1)` using `V.ι.isIso_app W.1 (by simpa using hWV)`. Establish `hinj1 : Function.Injective (V.ι.app W.1)` using `(ConcreteCategory.bijective_of_isIso _).1`. Establish `hinj2` using `germ_injective_of_isIntegral V.toScheme (U := V.ι ⁻¹ᵁ W.1) η hx`. Introduce `a b hab`. Rewrite `hab` using `[he', he', Scheme.Hom.germ_stalkMap_apply, Scheme.Hom.germ_stalkMap_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Conclude with `hinj1 (hinj2 hab)`. Take `⟨y, rfl⟩` from `hbij.2 x`. Use `letI : Algebra Γ(X, W.1) (X.presheaf.stalk (V.ι η)) := (X.presheaf.germ W.1 (V.ι η) hx).hom.toAlgebra`. Use `haveI : IsLocalization.AtPrime (X.presheaf.stalk (V.ι η)) (W.2.primeIdealOf ⟨V.ι η, hx⟩).asIdeal := W.2.isLocalization_stalk ⟨V.ι η, hx⟩`. Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.surj (W.2.primeIdealOf ⟨V.ι η, hx⟩).asIdeal.primeCompl y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hu` using `IsLocalization.map_units (X.presheaf.stalk (V.ι η)) b`. Use `⟨a, b, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[he']`. Conclude with `(hu.map (V.ι.stalkMap η).hom).ne_zero`. Rewrite using `[he', he']`.
-
-Conclude with `(map_mul (V.ι.stalkMap η).hom _ _).symm.trans (congrArg (V.ι.stalkMap η) hab)`.
+A detailed English derivation is pending.
 -/
 theorem injective_and_frac : ∀ (X : Scheme.{0}) (V : X.Opens) [IsIntegral V.toScheme] (W : X.affineOpens), W.1 ≤ V → ∀ (ρW : Γ(X, W.1) →+* V.toScheme.functionField), spMap ρW ≫ GlobalTheory.LogKS.chart W = V.toScheme.fromSpecStalk (genericPoint V.toScheme) ≫ V.ι → Function.Injective ρW ∧ ∀ x : V.toScheme.functionField, ∃ a b : Γ(X, W.1), ρW b ≠ 0 ∧ x * ρW b = ρW a := by
   intro X V _ W hWV ρW h

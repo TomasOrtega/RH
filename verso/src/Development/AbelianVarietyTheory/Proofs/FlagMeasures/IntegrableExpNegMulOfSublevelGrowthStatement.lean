@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegrableExpNegMulO
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.integrable_exp_neg_mul_of_sublevel_growth` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FIntegrableExpNegMulOfSublevelGrowth.lean&line=7#L7)
 -/

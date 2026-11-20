@@ -9,15 +9,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SqLift
 
 /- English proof (translation)
-Use `haveI : IsMonHom (inv σ) := { one_hom := by rw [← cancel_mono σ]; simp mul_hom := by`. Rewrite using `[← cancel_mono σ]`. Simplify using `only [Category.assoc, IsMonHom.mul_hom, tensorHom_comp_tensorHom_assoc, IsIso.inv_hom_id] }`. Establish `mK : IsMor (dp0 R) (X.hom ≫ 𝟙 _) κ (A₀.hom ≫ spMap π) (RingHom.id R) (σ.left ≫ j)` using `IsMor.of_dividedPowersZeroIdeal (s := X.hom ≫ 𝟙 _) κ (s' := A₀.hom ≫ spMap π) (σ := RingHom.id R) (φ := σ.left ≫ j) (by rw [Cris.spMap_id, Category.comp_id, Category.comp_id, w])`. Establish `mJ : IsMor (dp0 R) (X.hom ≫ 𝟙 _) κ (B₀.hom ≫ spMap π) (RingHom.id R) j` using `IsMor.of_dividedPowersZeroIdeal (s := X.hom ≫ 𝟙 _) κ (s' := B₀.hom ≫ spMap π) (σ := RingHom.id R) (φ := j) (by rw [Cris.spMap_id, Category.comp_id, Category.comp_id, wj])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ a, (homMor κ (spMap π) σ).isMor.pull1 (mJ.pull1 a) = mK.pull1 a` using `fun a ↦ IsMor.pullback1_comp _ _ _ (fun _ ↦ rfl) rfl a`. Establish `key' : ∀ a, (homMor κ (spMap π) (inv σ)).isMor.pull1 (mK.pull1 a) = mJ.pull1 a` using `fun a ↦ IsMor.pullback1_comp _ _ _ (fun _ ↦ rfl) (by rw [← Category.assoc, ← Over.comp_left, IsIso.inv_hom_id, Over.id_left, Category.id_comp]) a`. Establish `back : ∀ c : prim κ (spMap π) A₀, primPull κ (spMap π) σ (primPull κ (spMap π) (inv σ) c) = c` using `fun c ↦ by`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(homMor κ (spMap π) σ).isMor.pull1 ((homMor κ (spMap π) (inv σ)).isMor.pull1 c.1) = c.1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsMor.pullback1_comp _ _ (IsMor.id κ (A₀.hom ≫ spMap π)) (fun _ ↦ rfl) (by rw [← Over.comp_left, IsIso.hom_inv_id, Over.id_left])]`. Conclude with `IsMor.pullCohomologyOne_id _ _`. Simplify using `only [schemeFil, primitiveCrystalHodgeLiftClasses, Submodule.mem_dualAnnihilator, Submodule.mem_comap, Submodule.mem_map, Submodule.subtype_apply, push_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `H c ⟨a, ha, e⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `H _ ⟨a, ha, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mK.pull1 a = _`. Rewrite using `[← key, e]`. Both sides reduce to the same expression. Introduce and unpack `H c ⟨a, ha, e⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `H (primPull κ (spMap π) (inv σ) c) ⟨a, ha, ?_⟩` as an intermediate fact. Rewrite `this` using `[back]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `mJ.pull1 a = (homMor κ (spMap π) (inv σ)).isMor.pull1 c.1`. Rewrite using `[← key', e]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem schemeFil_comp_iso (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (κ : DividedPowers I) (π : R →+* R₀)
     (A₀ B₀ : Over (Sp R₀)) [GrpObj A₀] [GrpObj B₀] (σ : A₀ ⟶ B₀) [IsMonHom σ] [IsIso σ] (X : Over (Sp R)) (j : B₀.left ⟶ X.left)

@@ -10,9 +10,9 @@ open scoped Real ModularForm UpperHalfPlane
 noncomputable section
 
 /- English proof (translation)
-Establish `hvol : volume.real (fundamentalDomain Complex.basisOneI) = 1`. Rewrite using `[← Complex.toBasis_orthonormalBasisOneI, measureReal_congr (fundamentalDomain_ae_parallelepiped _ volume)]`. Rewrite using `[measureReal_def, OrthonormalBasis.coe_toBasis, OrthonormalBasis.volume_parallelepiped]`. Simplify using the standard rewrite rules. Unfold `latticeArea`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[ZLattice.covolume_eq_det_mul_measureReal _ _ (latticeOfTau τ).latticeBasis Complex.basisOneI, hvol, mul_one, Module.Basis.det_apply, Matrix.det_fin_two]`. Simplify using `[Module.Basis.toMatrix_apply, Complex.coe_basisOneI_repr, abs_of_pos τ.im_pos]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem latticeArea_latticeOfTau (τ : ℍ) : latticeArea (latticeOfTau τ).lattice = τ.im := by
   have hvol : volume.real (fundamentalDomain Complex.basisOneI) = 1 := by
@@ -26,11 +26,11 @@ theorem latticeArea_latticeOfTau (τ : ℍ) : latticeArea (latticeOfTau τ).latt
   simp [Module.Basis.toMatrix_apply, Complex.coe_basisOneI_repr, abs_of_pos τ.im_pos]
 
 /- English proof (translation)
-Introduce `τ`. Establish `hy : 0 < τ.im` using `τ.im_pos`. Establish `hη : η (τ : ℂ) ≠ 0` using `ModularForm.eta_ne_zero (z := (τ : ℂ)) τ.im_pos`. Establish `hn : 0 < ‖η (τ : ℂ)‖` using `norm_pos_iff.2 hη`. Establish `h1 : ‖((2 * π : ℝ) : ℂ) ^ 12 * η (τ : ℂ) ^ 24‖ = ((2 * π) ^ 2 * ‖η (τ : ℂ)‖ ^ 4) ^ 6`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, norm_pow, norm_pow, Complex.norm_real, Real.norm_of_nonneg (by positivity)]`. Expand and normalize the polynomial expressions, which then agree. Establish `h6 : (1 / 6 : ℝ) * Real.log (((2 * π) ^ 2 * ‖η (τ : ℂ)‖ ^ 4) ^ 6) = Real.log ((2 * π) ^ 2 * ‖η (τ : ℂ)‖ ^ 4)`. Rewrite using `[Real.log_pow]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `logPeriod`. Rewrite using `[latticeArea_latticeOfTau, hΔ τ, h1, h6, ← Real.log_mul (by positivity) (by positivity)]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

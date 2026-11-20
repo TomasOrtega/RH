@@ -7,7 +7,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FiniteAdelicComparison.
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FiniteAdelicComparison.LocLift
 
 /- English proof (translation)
-The claim follows from `PI.FinKW.finK_of PI.FinKW.LocTo.mem_local_lattice_iff (PI.FinKW.memLocFrom_of PI.FinKW.local_vector_injective) PI.FinKW.local_vector_lift`.
+A detailed English derivation is pending.
 -/
 theorem adelic_compact_finite_places : PI.AdBridgeSteps.FinK :=
   PI.FinKW.finK_of PI.FinKW.LocTo.mem_local_lattice_iff (PI.FinKW.memLocFrom_of PI.FinKW.local_vector_injective)

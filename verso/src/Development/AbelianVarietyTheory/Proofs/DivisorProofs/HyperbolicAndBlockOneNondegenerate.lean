@@ -15,21 +15,21 @@ noncomputable section
 namespace GlobalTheory.EtC.GmAicDeg1
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Substitute `hi` using the available equality. Conclude with `Iff.rfl`.
+Substitute using the available equality. Substitute using the available equality. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem cast_eq_zero_iff {q : ℕ} {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (x : Ht q E n i) :
     x.cast hn hi = 0 ↔ x = 0 := by
   subst hn; subst hi; exact Iff.rfl
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Substitute `hi` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_nsmul {q : ℕ} {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (k : ℕ) (x : Ht q E n i) :
     (k • x).cast hn hi = k • x.cast hn hi := by
   subst hn; subst hi; rfl
 
 /- English proof (translation)
-Introduce `U ⟨x⟩` and use `by have h := (hq.map (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom).map (show U ⟶ Spec (CommRingCat.of A) from x).appTop.hom simpa only [map_natCast] using h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inv_sp (q : ℕ) (A : Type) [CommRing A] (hq : IsUnit (q : A)) : Inv q (sp A) := fun U ⟨x⟩ => by
   have h := (hq.map (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom).map
@@ -37,9 +37,9 @@ theorem inv_sp (q : ℕ) (A : Type) [CommRing A] (hq : IsUnit (q : A)) : Inv q (
   simpa only [map_natCast] using h
 
 /- English proof (translation)
-Take `⟨k, f, hf⟩` from `LaurentPolynomial.exists_T_pow w`. Establish `h : Polynomial.toLaurent (f ^ q) = Polynomial.toLaurent (Polynomial.X ^ (n + k * q) : Polynomial T)`. Rewrite using `[map_pow, hf, mul_pow, ← hw, Polynomial.toLaurent_X_pow, LaurentPolynomial.T_pow, ← LaurentPolynomial.T_add]`. Use `congr 1`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `congrArg Polynomial.natDegree (Polynomial.toLaurent_injective h)`. Rewrite `h2` using `[Polynomial.natDegree_pow, Polynomial.natDegree_X_pow]`. Establish `h3 : q ∣ n + k * q` using `⟨f.natDegree, h2.symm⟩`. Conclude with `(Nat.dvd_add_left (dvd_mul_left q k)).mp h3`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dvd_of_T_eq_pow {T : Type} [CommRing T] [IsDomain T] (q n : ℕ) (w : LaurentPolynomial T)
     (hw : (LaurentPolynomial.T (n : ℤ) : LaurentPolynomial T) = w ^ q) : q ∣ n := by
@@ -55,9 +55,9 @@ theorem dvd_of_T_eq_pow {T : Type} [CommRing T] [IsDomain T] (q n : ℕ) (w : La
   exact (Nat.dvd_add_left (dvd_mul_left q k)).mp h3
 
 /- English proof (translation)
-Establish `hadd : ∀ u v : (Γ(X, ⊤))ˣ, IsUnit (q : Γ(X, ⊤)) → kum q (u * v) = kum q u + kum q v ∧ kum q (u ^ q) = 0` using `fun u v h => (GlobalTheory.T.chernClass_kummerClass_additive q).2 u v h`. Establish `h1 : kum q (1 : (Γ(X, ⊤))ˣ) = 0`. Establish `h` using `(hadd 1 1 hX).1`. Rewrite `h` using `[mul_one]`. Simplify using `using h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, zero_smul, h1]`. Consider the case `succ m ih => rw [pow_succ, (hadd _ _ hX).1, ih, succ_nsmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem kum_pow (q : ℕ) [NeZero q] {X : Scheme.{0}} (hX : IsUnit (q : Γ(X, ⊤))) (u : (Γ(X, ⊤))ˣ) (m : ℕ) :
     kum q (u ^ m) = m • kum q u := by
@@ -72,7 +72,7 @@ theorem kum_pow (q : ℕ) [NeZero q] {X : Scheme.{0}} (hX : IsUnit (q : Γ(X, �
   | succ m ih => rw [pow_succ, (hadd _ _ hX).1, ih, succ_nsmul]
 
 /- English proof (translation)
-Simplify using `[laurentVar, laurentVarUnit]`.
+Simplify using the standard rewrite rules.
 -/
 theorem laurentVar_val (T : Type) [CommRing T] :
     (Scheme.ΓSpecIso (CommRingCat.of (LaurentPolynomial T))).hom.hom ((laurentVar T : Γ(Spec (CommRingCat.of (LaurentPolynomial T)), ⊤))) =
@@ -84,17 +84,17 @@ end GlobalTheory.EtC.GmAicDeg1
 namespace GlobalTheory.EtC.GmAicDeg1
 
 /- English proof (translation)
-Take `⟨e⟩` from `GlobalTheory.T.nonempty_ht_zero_addEquiv_zmod_of_sh q T (GlobalTheory.GenusTwoPureComparison.Cmp.sh_of_aic hT) hq 0`. Establish `hrep : ∀ x : Ht q (sp T) 0 0, x = (e x).val • e.symm 1` using `fun x => by`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_nsmul, AddEquiv.apply_symm_apply, nsmul_one, ZMod.natCast_zmod_val]`. Establish `hqL : IsUnit (q : LaurentPolynomial T)` using `by simpa using hq.map (LaurentPolynomial.C : T →+* LaurentPolynomial T)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hqΓ` using `GmPhiNat.isUnit_gamma q T hq`. Establish `hκ : ∀ (m : ℕ) (x : Ht q (sp T) 0 0), cup q (pull _ (spMap (LaurentPolynomial.C : T →+* LaurentPolynomial T)) (tw q 0) 0 (m • x)) (kum q (laurentVar T)) = m • cup q (pull _ (spMap (LaurentPolynomial.C : T →+* LaurentPolynomial T)) (tw q 0) 0 x) (kum q (laurentVar T))`. Introduce `m x`. Rewrite using `[map_nsmul, map_nsmul, AddMonoidHom.nsmul_apply]`. Establish `hone : pull _ (spMap (LaurentPolynomial.C : T →+* LaurentPolynomial T)) (tw q 0) 0 (one q (sp T)) = one q (sp (LaurentPolynomial T))` using `(GlobalTheory.T.cup_chern_kummer_pullback_naturality q).2.1 _ (inv_sp q T hq)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hunit` using `(GlobalTheory.T.cupProduct_gradedCommRingAxioms_hold q (sp (LaurentPolynomial T))).1 (inv_sp q _ hqL) (kum q (laurentVar T))`. Establish `h1` using `hκ (e (one q (sp T))).val (e.symm 1)`. Rewrite `h1` using `[← hrep, hone, hunit]`. Establish `h2` using `hκ (e b).val (e.symm 1)`. Rewrite `h2` using `[← hrep, hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : (e b).val • (kum q (laurentVar T)).cast (by ring) (by ring) = (0 : Ht q (sp (LaurentPolynomial T)) (0 + 1) (0 + 1))`. Rewrite using `[h1, smul_smul, mul_comm, ← smul_smul, ← h2, smul_zero]`. Rewrite `h3` using `[← cast_nsmul, cast_eq_zero_iff]`. Establish `h5 : kum q (laurentVar T ^ (e b).val) = 0` using `by rw [kum_pow q hqΓ, h3]`. Take `⟨v, hv⟩` from `GlobalTheory.T.eq_pow_of_kummerClassOfUnit_eq_zero q (LaurentPolynomial T) hqL _ h5`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h6` using `congrArg (fun u : (Γ(Spec (CommRingCat.of (LaurentPolynomial T)), ⊤))ˣ => (Scheme.ΓSpecIso (CommRingCat.of (LaurentPolynomial T))).hom.hom (u : Γ(Spec (CommRingCat.of (LaurentPolynomial T)), ⊤))) hv`. Simplify using `only [Units.val_pow_eq_pow_val, map_pow] at h6`. Rewrite `h6` using `[laurentVar_val, LaurentPolynomial.T_pow, mul_one]`. Establish `h7` using `dvd_of_T_eq_pow q (e b).val _ h6`. Establish `h8 : (e b).val = 0` using `Nat.eq_zero_of_dvd_of_lt h7 (ZMod.val_lt _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h8` using `[ZMod.val_eq_zero]`. Conclude with `e.map_eq_zero_iff.1 h8`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_cup_kum (q : ℕ) [NeZero q] (T : Type) [CommRing T] [IsDomain T] [IsLocalRing T] (hT : AIC T)
     (hq : IsUnit (q : T)) (b : Ht q (sp T) 0 0)
@@ -133,13 +133,13 @@ theorem eq_zero_of_cup_kum (q : ℕ) [NeZero q] (T : Type) [CommRing T] [IsDomai
   exact e.map_eq_zero_iff.1 h8
 
 /- English proof (translation)
-Introduce `q _ T _ _ _ hT hq i`. Establish `hinj : Function.Injective (gmPhi q T i)`. Use `(injective_iff_map_eq_zero _).2 fun a ha => ?_` and prove the remaining obligations. Simplify using `only [gmPhi, AddMonoidHom.coe_mk, ZeroHom.coe_mk] at ha`. Rewrite `ha` using `[cast_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z : T, Polynomial.aeval z (Polynomial.cyclotomic q ℤ) = 0 := by`. Take `⟨a, ha⟩` from `hT (Polynomial.cyclotomic q T) (Polynomial.cyclotomic.monic q T) (by rw [Polynomial.natDegree_cyclotomic]; exact Nat.totient_pos.2 (NeZero.pos q))`. Conclude with `⟨a, by rw [Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]; exact ha⟩`. Set `ζ : Prim q Γ(Spec (CommRingCat.of T), ⊤)` to `Prim.map (Scheme.ΓSpecIso (CommRingCat.of T)).inv.hom ⟨z, hq, hz⟩`. Set `τ` to `Untwist.twistEquiv ζ (inv_sp q T hq) 0 (i - 1) 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hτ : τ a = 0`. Apply `eq_zero_of_cup_kum q T hT hq` to reduce the goal to its premises. Use `show cup q (pull _ _ _ 0 ((cup q (rootClass (0 - (i - 1)) ζ) a).cast (zero_add 0) (by ring))) (kum q (laurentVar T)) = 0`. Rewrite using `[GmPhiNat.pull_cast, Untwist.cup_cast_left, cast_eq_zero_iff, (GlobalTheory.T.cup_chern_kummer_pullback_naturality q).1, (GlobalTheory.T.cupProduct_gradedCommRingAxioms_hold q _).2.1, cast_eq_zero_iff, ha, map_zero]`. Conclude with `τ.map_eq_zero_iff.1 hτ`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e0⟩` from `GlobalTheory.T.nonempty_ht_zero_addEquiv_zmod_of_sh q T (GlobalTheory.GenusTwoPureComparison.Cmp.sh_of_aic hT) hq (i - 1)`. Take `⟨e1⟩` from `(GlobalTheory.T.tateTwistCohomology_laurent_absIntClosedLocalDomain q T hT hq 1 i).2`. Use `haveI : Finite (Ht q (sp (LaurentPolynomial T)) 1 i) := Finite.of_equiv _ e1.symm.toEquiv`. Conclude with `hinj.bijective_of_nat_card_le (by rw [Nat.card_congr e0.toEquiv, Nat.card_congr e1.toEquiv])`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (q : ℕ) [NeZero q] (T : Type) [CommRing T] [IsDomain T] [IsLocalRing T], AIC T → IsUnit (q : T) →
     ∀ i : ℤ, Function.Bijective (gmPhi q T i) := by
@@ -168,7 +168,7 @@ theorem main : ∀ (q : ℕ) [NeZero q] (T : Type) [CommRing T] [IsDomain T] [Is
 end GlobalTheory.EtC.GmAicDeg1
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.EtC.GmAicDeg1.main`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.gmPhi_bijective_of_aic : ∀ (q : ℕ) [NeZero q] (T : Type) [CommRing T] [IsDomain T] [IsLocalRing T],
     AIC T → IsUnit (q : T) → ∀ i : ℤ, Function.Bijective (gmPhi q T i) :=

@@ -29,7 +29,7 @@ def MuOneR (B : Ker.Base D cc δ) : Prop :=
         (TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D N) L'') S₂ S₃ = 1
 
 /- English proof (translation)
-The claim follows from `formV_herm' _ _ _ _ sd₁ := (hL.1 N N' _ _ a1).1 sd₂ := (hL.1 N N' _ _ a2).1 sd₃ := (hL.1 N N' _ _ a3).1 sc₁ := (hL.1 N N' _ _ a1).2 sc₂ := (hL.1 N N' _ _ a2).2 sc₃ := (hL.1 N N' _ _ a3).2 i₁₂ := (hL.2 N N' _ _ _ _ a1 a2).1 i₂₁ := (hL.2 N N' _ _ _ _ a1 a2).2 i₁₃ := (hL.2 N N' _ _ …`.
+A detailed English derivation is pending.
 -/
 theorem tripleData_of {B : Ker.Base D cc δ} (hL : B.LatAll) {N N' : ℕ}
     {L₁ L₂ L₃ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L₁' L₂' L₃' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
@@ -51,9 +51,9 @@ theorem tripleData_of {B : Ker.Base D cc δ} (hL : B.LatAll) {N N' : ℕ}
   i₃₂ := (hL.2 N N' _ _ _ _ a2 a3).2
 
 /- English proof (translation)
-Introduce `N N' L L₁ hN hN' h1 h2 G hG`. Take `⟨S₂, S₃, hS₂, hS₃, hμ⟩` from `hM N N' L L₁ hN hN' h1 h2`. Establish `hT` using `tripleData_of hL (admissible_of_integral_conj_le hN hN' (sd0 N) (sd0 N')) (admissible_of_integral_conj_le hN hN' h1 (sd0 N')) (admissible_of_integral_conj_le hN hN' h2 (sd0 N'))`. Use function extensionality and compare the values at `v`. Use `tripleFormula _ _ _ _ _ _ hT S₂ S₃ hS₂ hS₃ G (fun x hx z => hG.2 x hx z) v` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `this` using `[hμ, one_mul]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem left_move_triangles_of_unit {B : Ker.Base D cc δ} (hL : B.LatAll) (hM : MuOneL B) : Tr0L D B.tor := by
   intro N N' L L₁ hN hN' h1 h2 G hG
@@ -65,9 +65,9 @@ theorem left_move_triangles_of_unit {B : Ker.Base D cc δ} (hL : B.LatAll) (hM :
   exact this
 
 /- English proof (translation)
-Introduce `N N' L' L'' hN hN' h1 h2 G hG`. Take `⟨S₂, S₃, hS₂, hS₃, hμ⟩` from `hM N N' L' L'' hN hN' h1 h2`. Establish `hT` using `tripleData_of hL (admissible_of_integral_conj_le hN hN' (sd0 N) (sd0 N')) (admissible_of_integral_conj_le hN hN' (sd0 N) h1) (admissible_of_integral_conj_le hN hN' (sd0 N) h2)`. Use function extensionality and compare the values at `v`. Use `tripleFormula _ _ _ _ _ _ hT S₂ S₃ hS₂ hS₃ G (fun x hx z => hG.2 x hx z) v` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `this` using `[hμ, one_mul]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem right_move_triangles_of_unit {B : Ker.Base D cc δ} (hL : B.LatAll) (hM : MuOneR B) : Tr0R D B.tor := by
   intro N N' L' L'' hN hN' h1 h2 G hG

@@ -11,7 +11,7 @@ open scoped ComplexOrder
 namespace GlobalTheory.MovedVacuum
 
 /- English proof (translation)
-Take `⟨e, κ, he, hκ, rfl⟩` from `hG`. Take `⟨μ, hμ, h⟩` from `GlobalTheory.TripleIntertwiner.triple_constant D cc dl hc a b _ _ _ (Or.inl ⟨_, e, he, rfl⟩) (Or.inr ⟨L, L', hL, hL', rfl⟩) (Or.inr ⟨L₁, L₁', hL₁, hL₁', rfl⟩) _ (GlobalTheory.VacuumMove.pullbackOrthonormal_normalizedTheta_mem_thetaSpace D (GlobalTheory.InducedType.induced_type D) …`. Use `⟨e, κ * μ, he, GlobalTheory.VacuumMove.mod1All_mul hκ hμ, funext fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.VacuumMove.Iop_mul, mul_assoc κ μ]`. Conclude with `congrArg (κ * ·) (congrFun h z)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isVacuum_thetaIntertwiner_selfDual (D : D7) (cc : Ideal (𝓞 D.host.K)) (dl t0 : ℂ) (hc : StandardLatticesGL3.Crv D cc dl)
     (ht : GL3Theta.IsTwoTorsionPointUnkilled D (TaylorLogMetric.lamOf D cc dl) t0) {a b : ℕ}
@@ -30,14 +30,14 @@ theorem isVacuum_thetaIntertwiner_selfDual (D : D7) (cc : Ideal (𝓞 D.host.K))
   exact congrArg (κ * ·) (congrFun h z)
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Conclude with `GlobalTheory.SeamSelfDual.isSDLat_pi D.host.E n`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem sd_stdL (D : D7) (n : ℕ) : StandardLatticesGL3.SD D (StandardLatticesGL3.stdL D n) := by
   letI := D.host.cmStar
   exact GlobalTheory.SeamSelfDual.isSDLat_pi D.host.E n
 
 /- English proof (translation)
-Introduce `D cc dl B t0 hc ht a b L L' hL hL' h0`. Conclude with `isVacuum_thetaIntertwiner_selfDual D cc dl t0 hc ht hL (sd_stdL D b) hL hL' (isVacuum_thetaIntertwiner_selfDual D cc dl t0 hc ht (sd_stdL D a) (sd_stdL D b) hL (sd_stdL D b) h0)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isVacuum_movedThetaVacuum : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (dl : ℂ) (B : Base D cc dl) (t0 : ℂ), StandardLatticesGL3.Crv D cc dl → GL3Theta.IsTwoTorsionPointUnkilled D (TaylorLogMetric.lamOf D cc dl) t0 → ∀ (a b : ℕ) (L : Submodule (𝓞 D.host.E) (Fin a → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin b → D.host.E)), StandardLatticesGL3.SD D L → StandardLatticesGL3.SD D L' → StandardLatticesGL3.ThetaVectorUpToUnits D (TaylorLogMetric.tor0 D cc dl) t0 (StandardLatticesGL3.stdL D a) (StandardLatticesGL3.stdL D b) (B.thZero a b) → StandardLatticesGL3.ThetaVectorUpToUnits D (TaylorLogMetric.tor0 D cc dl) t0 L L' (B.thMoved a b L L') := by
   intro D cc dl B t0 hc ht a b L L' hL hL' h0

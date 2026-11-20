@@ -20,22 +20,22 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.SplitEigenfunct
 namespace UpperTheory.ConvolutionTheory.RankTwoDescent
 
 /- English proof (translation)
-The claim follows from `maj latSum decE`.
+A detailed English derivation is pending.
 -/
 theorem maj_holds : Maj := maj latSum decE
 
 /- English proof (translation)
-The claim follows from `meanZero decE`.
+A detailed English derivation is pending.
 -/
 theorem meanZero_holds : MeanZero := meanZero decE
 
 /- English proof (translation)
-The claim follows from `f0Eq maj_holds thCont meanZero_holds (rank1 decE maj_holds orb1)`.
+A detailed English derivation is pending.
 -/
 theorem thetaConstantTerm_eq : ThetaLiftEqAnisotropicPart := f0Eq maj_holds thCont meanZero_holds (rank1 decE maj_holds orb1)
 
 /- English proof (translation)
-The claim follows from `rev thetaConstantTerm_eq (coef maj_holds thCont) (thetaPairing_constantTerm_cuspidal maj_holds thCont thetaConstantTerm_eq (coef maj_holds thCont)) dens (fub maj_holds thCont) (coefPer decE maj_holds orbS momKill (orbFn orbS))`.
+A detailed English derivation is pending.
 -/
 theorem rev_holds : Rev :=
   rev thetaConstantTerm_eq (coef maj_holds thCont) (thetaPairing_constantTerm_cuspidal maj_holds thCont thetaConstantTerm_eq (coef maj_holds thCont)) dens (fub maj_holds thCont)

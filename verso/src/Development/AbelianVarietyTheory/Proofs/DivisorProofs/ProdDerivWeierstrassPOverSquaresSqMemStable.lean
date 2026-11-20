@@ -10,13 +10,13 @@ open NumberField IsDedekindDomain WeierstrassCurve GlobalTheory GlobalTheory.Pub
 open scoped IntermediateField BigOperators Topology
 
 /- English proof (translation)
-Introduce `p F L t hp h4 h3 hD`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply `GlobalTheory.T.mem_intermediateField_of_forall_complexAut_fixed F` to reduce the goal to its premises. Introduce `σ hσ`. Rewrite using `[map_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Break down `GlobalTheory.T.prodDerivWeierstrassPOverSquares_conj p F L t hp h4 h3 hD σ hσ with ⟨h, _⟩ | h` into its components or cases. Rewrite using `[h]`. Rewrite using `[h, neg_sq]`. Introduce `hmem σ hσ`. Break down `GlobalTheory.T.prodDerivWeierstrassPOverSquares_conj p F L t hp h4 h3 hD σ hσ with ⟨_, he⟩ | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `he`. It suffices to derive a contradiction. Establish `hne` using `(GlobalTheory.T.prodDerivWeierstrassPOverSquares_ne_zero p F L t hp h4 h3 hD).2`. Establish `hfix : σ (sqProd p L t) = sqProd p L t` using `hσ _ hmem`. Rewrite `h` using `[hfix]`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (2 : ℂ) * sqProd p L t = 0` using `by linear_combination h`. Break down `mul_eq_zero.mp h2 with h2 | h2` into its components or cases. Evaluate the numerical expressions using `at h2`. Conclude with `hne h2`.
+Separate the alternatives or extract the components of the hypothesis. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CMModel.sqProd_sq_mem_and_stable : ∀ (p : ℕ) (F : IntermediateField ℚ ℂ) (L : PeriodPair) (t : ℂ),
     p.Prime → p % 4 = 3 → 3 < p → Datum p F L t →

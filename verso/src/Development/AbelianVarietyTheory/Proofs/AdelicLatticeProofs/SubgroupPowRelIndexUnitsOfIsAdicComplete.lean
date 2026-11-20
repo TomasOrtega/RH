@@ -9,13 +9,13 @@ open scoped WithZero TensorProduct
 namespace GlobalTheory.CNorm
 
 /- English proof (translation)
-Establish `h1 : pTor p U = Nat.card (powMonoidHom p : U →* U).ker`. Unfold `pTor`. Use `Nat.card_congr { toFun := fun x => ⟨⟨x.1, x.2.1⟩, Subtype.ext x.2.2⟩ invFun := fun y => ⟨y.1.1, y.1.2, congrArg Subtype.val y.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }` and prove the remaining obligations. Establish `h2 : pIdx p U = (powMonoidHom p : U →* U).range.index`. Unfold `pIdx pows Subgroup.relIndex`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, h⟩`. Conclude with `⟨⟨y, hy⟩, Subtype.ext h⟩`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, h⟩`. Conclude with `⟨y.1, y.2, congrArg Subtype.val h⟩`. Establish `h3` using `(powMonoidHom p : U →* U).range.card_mul_index`. Establish `h4` using `(powMonoidHom p : U →* U).ker.card_mul_index`. Rewrite `h4` using `[Subgroup.index_ker]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5 : Nat.card (powMonoidHom p : U →* U).range ≠ 0` using `Nat.card_pos.ne'`. Use `⟨h1 ▸ Nat.card_pos.ne', ?_⟩` and prove the remaining obligations. Rewrite using `[h1, h2]`. Apply `Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero h5)` to reduce the goal to its premises. Rewrite using `[h3, ← h4, mul_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pIdx_eq_pTor_of_finite_group (p : ℕ) {G : Type} [CommGroup G] [Finite G]
     (U : Subgroup G) : pTor p U ≠ 0 ∧ pIdx p U = pTor p U := by
@@ -45,13 +45,13 @@ theorem pIdx_eq_pTor_of_finite_group (p : ℕ) {G : Type} [CommGroup G] [Finite 
   rw [h3, ← h4, mul_comm]
 
 /- English proof (translation)
-Introduce `p O _ _ _ π hp hπ hc hfin`. Use `haveI : Finite (O ⧸ Ideal.span {(p : O) * π}) := Nat.finite_of_card_ne_zero hfin`. Establish `hp0 : (p : O) ≠ 0` using `Nat.cast_ne_zero.mpr hp.ne'`. Take `⟨hd1, hd2⟩` from `GlobalTheory.T.subgroupPowImage_unitsCongruentOneMod_of_isAdicComplete p O π hp hπ hc`. Establish `hle : Ideal.span {(p : O) * π} ≤ Ideal.span {π}` using `Ideal.span_singleton_le_span_singleton.mpr (Dvd.intro_left _ rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle' : Ideal.span {(p : O) * π} ≤ Ideal.span {(p : O)}` using `Ideal.span_singleton_le_span_singleton.mpr (Dvd.intro _ rfl)`. Establish `hs` using `GlobalTheory.T.relIndex_oneUnits_mul_eq_card_quotient' O ((p : O) * π) p (mul_ne_zero hp0 hπ) (Dvd.intro _ rfl) (hle.trans (IsAdicComplete.le_jacobson_bot _))`. Establish `hk : pIdx p (oneUnits ((p : O) * π)) = Nat.card (O ⧸ Ideal.span {(p : O)})`. Unfold `pIdx`. Rewrite using `[hd1, ← hs, sq, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Finite (O ⧸ Ideal.span {(p : O)}) := Finite.of_surjective _ (Ideal.Quotient.factor_surjective hle')`. Establish `hk0 : Nat.card (O ⧸ Ideal.span {(p : O)}) ≠ 0` using `Nat.card_pos.ne'`. Set `g : Oˣ →* (O ⧸ Ideal.span {(p : O) * π})ˣ` to `Units.map (Ideal.Quotient.mk (Ideal.span {(p : O) * π}) : O →* O ⧸ Ideal.span {(p : O) * π})`. Establish `hker : g.ker = oneUnits ((p : O) * π)` using `rfl`. Take `⟨hr1, hr2⟩` from `pIdx_eq_pTor_of_finite_group p g.range`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨-, h2, h3⟩` from `GlobalTheory.T.powIndex_torsion_ker_range_mul p _ _ g (by rw [hker, hk]; exact hk0) (by rw [hker, hd2]; exact one_ne_zero) (by rw [hr2]; exact hr1) hr1`. Use `⟨h2, ?_⟩` and prove the remaining obligations. Rewrite `h3` using `[hker, hd2, hk, hr2, mul_one, mul_right_comm]`. Conclude with `Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero hr1) h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pIdx_units_of_isAdicComplete : ∀ (p : ℕ) (O : Type) [CommRing O] [IsDomain O] [CharZero O] (π : O), 0 < p → π ≠ 0 → IsAdicComplete (Ideal.span {π}) O → Nat.card (O ⧸ Ideal.span {(p : O) * π}) ≠ 0 → pTor p (⊤ : Subgroup Oˣ) ≠ 0 ∧ pIdx p (⊤ : Subgroup Oˣ) = Nat.card (O ⧸ Ideal.span {(p : O)}) * pTor p (⊤ : Subgroup Oˣ) := by
   intro p O _ _ _ π hp hπ hc hfin

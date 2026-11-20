@@ -20,15 +20,13 @@ namespace GlobalTheory.SpecSpan
 open Classical in
 
 /- English proof (translation)
-Establish `hθ : ∀ s : Finset τs, IsThetaFunO B.F.ψ S T (∑ τ ∈ s, c τ • f τ)` using `fun s => by`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `GlobalTheory.OrientedHeis.theta_zero`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Conclude with `GlobalTheory.OrientedHeis.theta_add (GlobalTheory.OrientedHeis.theta_smul _ (hf a)) ih`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Use function extensionality and compare the values at `g`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[series_apply]`. Express the relevant statement in the definitionally equal form `ω (h, g) (pureTensorO B.F.ψ B.F.θ S T (fun _ => 1) B.F.sT (fun τ => (B.F.BS τ).val) B.F.BT 0 P) 0 = 0`. Rewrite using `[GlobalTheory.FockFiniteHeis.pureTensorO_zero _ _ _ _ hB.frame.vac.1 hB.frame.vac.2.inf, map_zero]`. Both sides reduce to the same expression. Consider the case `insert a s ha ih`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`. Use function extensionality and compare the values at `g`. Simplify using `only [series_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Express the relevant statement in the definitionally equal form `ω (h, g) (pureTensorO B.F.ψ B.F.θ S T (fun _ => 1) B.F.sT (fun τ => (B.F.BS τ).val) B.F.BT (c a • f a + ∑ τ ∈ s, c τ • f τ) P) 0 = c a * ω (h, g) (pureTensorO B.F.ψ B.F.θ S T (fun _ => 1) B.F.sT (fun τ => (B.F.BS τ).val) B.F.BT (f a) P) 0 + ω (h, g) (pureTensorO B.F.ψ B.F.θ S T ( …`. Rewrite using `[GlobalTheory.FockFiniteHeis.pureTensorO_lin _ _ _ _ hB.frame.vac.1 hB.frame.vac.2.inf _ _ _ _ _ (hf a) (hθ s), map_add, map_smul]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem series_sum {D : D7} {S T : HSp D} (B : Base S T) (hB : B.Good) (ω : PairRep S T) {τs : Type} (s : Finset τs)
     (c : τs → ℂ) (f : τs → WO S T → ℂ) (hf : ∀ τ, IsThetaFunO B.F.ψ S T (f τ)) (h : GA D S) (P : PolF D T.rank S.rank) :
@@ -57,7 +55,7 @@ theorem series_sum {D : D7} {S T : HSp D} (B : Base S T) (hB : B.Good) (ω : Pai
     rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.GalLift.Vec.theta_of_thetaAt hB.frame.vac.1 hB.frame.vac.2.inf (Base.isThetaAt_vecAt hB hQ φ) hB.frame.vac.2.theta`.
+A detailed English derivation is pending.
 -/
 theorem theta_vecAt {D : D7} {S T : HSp D} {B : Base S T} (hB : B.Good) {Q : Finset (Pl D.host.E)} (hQ : B.admitted Q)
     (φ : ∀ PP : ↥Q, Matrix (Fin T.rank) (Fin S.rank) (kP PP.1) → ℂ) : IsThetaFunO B.F.ψ S T (B.vecAt Q φ) :=
@@ -66,15 +64,15 @@ theorem theta_vecAt {D : D7} {S T : HSp D} {B : Base S T} (hB : B.Good) {Q : Fin
 open Classical in
 
 /- English proof (translation)
-Set `φ : (∀ PP, ι PP) → ∀ PP : ↥t.Q, Matrix (Fin T.rank) (Fin S.rank) (kP PP.1) → ℂ` to `fun τ PP y => flat (t.resC PP.1) (y * (g PP (τ PP) : Matrix (Fin S.rank) (Fin S.rank) (kP PP.1)))`. Establish `hvec : B.vecAt t.Q loc = ∑ τ : (∀ PP, ι PP), (∏ PP, a PP (τ PP)) • B.vecAt t.Q (φ τ)`. Establish `e1 : B.locFn t.Q loc = ∑ τ : (∀ PP, ι PP), (∏ PP, a PP (τ PP)) • B.locFn t.Q (φ τ)`. Use function extensionality and compare the values at `y`. Simplify using `only [Base.locFn, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hloc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `B.F.vecL B.G _ (B.locFn t.Q loc) = ∑ τ : (∀ PP, ι PP), (∏ PP, a PP (τ PP)) • B.F.vecL B.G _ (B.locFn t.Q (φ τ))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e1, map_sum]`. Simplify using `only [map_smul]`. Rewrite using `[hvec, series_sum B hB ω _ _ _ (fun τ => theta_vecAt hB hQ (φ τ)), map_sum]`. Use `Submodule.sum_mem _ fun τ _ => ?_` and prove the remaining obligations. Take `⟨hQτ, hsupp, hmove⟩` from `GlobalTheory.T.thetaSeries_integralSourceTranslation_right_mul D S T B hB hS ω hω t.Q hQ (fun PP => g PP (τ PP))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e2 : series B.F ω (B.vecAt t.Q (φ τ)) h P = series B.F ω (B.vecFlat t) (h * hQτ) P` using `hmove (fun PP => flat (t.resC PP.1)) h P`. Rewrite using `[map_smul, e2]`. Establish `hmem : ∏ PP, a PP (τ PP) ∈ O` using `Subring.prod_mem _ fun PP _ => ha PP (τ PP)`. Establish `e3 : (∏ PP, a PP (τ PP)) • twistBy T t.chi (series B.F ω (B.vecFlat t) (h * hQτ) P) = (⟨_, hmem⟩ : O) • twistBy T t.chi (series B.F ω (B.vecFlat t) (h * hQτ) P)` using `rfl`. Rewrite using `[e3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨hQτ, hsupp, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem twist_series_mem_span {D : D7} {S T : HSp D} (B : Base S T) (hB : B.Good) (hS : S.SigOK) (ω : PairRep S T)
     (hω : B.IsWeil 1 ω) (t : Twist D Circle) (hQ : B.admitted t.Q) (O : Subring ℂ) (ι : ↥t.Q → Type) [∀ PP, Fintype (ι PP)]
@@ -115,21 +113,21 @@ namespace GlobalTheory.SpecSpan
 open Classical in
 
 /- English proof (translation)
-Establish `hterm : ∀ U : Planes k r n, ∑ a : C, (ν (Multiplicative.ofAdd a) : ℂ) * (((univTerm β κ y U).coeff a : ℚ) : ℂ) = (ν (κ (c U)) : ℂ) * flat (ν.comp κ) (y * (g U : Matrix (Fin n) (Fin n) k))`. Introduce `U`. Unfold `univTerm`. Distinguish the cases in `hC : Compl U.1 y`. Rewrite using `[dif_pos hC]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : dU β U y ≠ 0` using `(dU_ne_zero_iff β U y).2 hC`. Establish `hdet : (topL r (y * (g U : Matrix (Fin n) (Fin n) k))).det ≠ 0`. Introduce `h0`. Apply `hd` to reduce the goal to its premises. Rewrite using `[hg, h0, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [AddMonoidAlgebra.coeff_single, Finsupp.single_apply]`. Rewrite using `[Finset.sum_eq_single (Multiplicative.toAdd (κ (Units.mk0 _ hd)))]`. Rewrite using `[if_pos rfl, Rat.cast_one, mul_one, flat_of_isUnit (ν.comp κ) (u := Units.mk0 _ hdet) rfl]`. Establish `e : Units.mk0 _ hd = c U * Units.mk0 _ hdet` using `Units.ext (by simp [hg])`. Rewrite using `[ofAdd_toAdd, e, map_mul, map_mul, Units.val_mul, MonoidHom.comp_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a _ ha`. Rewrite using `[if_neg (Ne.symm ha), Rat.cast_zero, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[dif_neg hC]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : dU β U y = 0`. Assume the negation of the conclusion as `h`. Conclude with `hC ((dU_ne_zero_iff β U y).1 h)`. Establish `hdet : ¬ IsUnit (topL r (y * (g U : Matrix (Fin n) (Fin n) k))).det`. Rewrite using `[isUnit_iff_ne_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h0`. Rewrite `hd` using `[hg]`. Conclude with `h0 ((mul_eq_zero.1 hd).resolve_left (c U).ne_zero)`. Rewrite using `[flat_of_not_isUnit _ hdet, mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hcoef : ∀ a : C, univCoef β κ a y = ((Nat.card k : ℚ) ^ (r * (n - r)))⁻¹ * ∑ U : Planes k r n, (univTerm β κ y U).coeff a`. Introduce `a`. Rewrite using `[univCoef, univ, AddMonoidAlgebra.coeff_smul, Finsupp.smul_apply, smul_eq_mul, AddMonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply]`. Use `congr 1`. Conclude with `Finset.sum_congr (by congr; exact Subsingleton.elim _ _) fun _ _ => rfl`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hcoef, Rat.cast_mul, Rat.cast_inv, Rat.cast_pow, Rat.cast_natCast, Rat.cast_sum]`. Rewrite using `[Finset.sum_congr rfl fun U _ => (by rw [mul_assoc, ← hterm U] : ((Nat.card k : ℂ) ^ (r * (n - r)))⁻¹ * (ν (κ (c U)) : ℂ) * flat (ν.comp κ) (y * (g U : Matrix (Fin n) (Fin n) k)) = ((Nat.card k : ℂ) ^ (r * (n - r)))⁻¹ * ∑ a : C, (ν (Multiplicative.ofAdd a) : ℂ) * (((univTerm β κ …`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun U _ => Finset.sum_congr rfl fun a _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem univ_spec {k : Type} [Field k] [Finite k] {r n : ℕ} {C : Type} [AddCommGroup C] [Fintype C]
     [Fintype (Planes k r n)] (β : DetBases k r n) (κ : kˣ →* Multiplicative C) (ν : Multiplicative C →* ℂˣ)
@@ -185,23 +183,21 @@ end GlobalTheory.SpecSpan
 namespace GlobalTheory.SpecSpan
 
 /- English proof (translation)
-Introduce `D N X ρ hρ Y hY i j b k Q M χ hT _ s h P _ _`. Establish `hA : admissibleConjugatePairPlaces X i Q M = Q` using `GlobalTheory.T.admissibleConjugatePairPlaces_eq_of_twOK Y hY i k Q M χ hT`. Take `⟨-, hadm, -⟩` from `GlobalTheory.TwistGood.tw_good D N X ρ hρ i j b k Q (χ.comp (Y.delU i Q M)) hT`. Establish `hS : (Vc D j).SigOK` using `D.sp.V_sig _`. Use `haveI : ∀ PP : Pl D.host.E, Fintype (Planes (kP PP) (Wc D j).rank (Vc D j).rank) := fun PP => Fintype.ofFinite _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose gC cC hgc using fun (PP : Pl D.host.E) (U : Planes (kP PP) (Wc D j).rank (Vc D j).rank) => GlobalTheory.T.quotientRowsExteriorDet_eq_const_mul_topBlockDet (kP PP) (Wc D j).rank (Vc D j).rank (ρ.β j PP) U`. Establish `key : ∀ (Q₀ : Finset (Pl D.host.E)), Q₀ = (ρ.tw i b k Q (χ.comp (Y.delU i Q M))).Q → ∀ (loc : ∀ PP : ↥Q₀, Matrix (Fin (Wc D j).rank) (Fin (Vc D j).rank) (kP PP.1) → ℂ) (a : ∀ PP : ↥Q₀, Planes (kP PP.1) (Wc D j).rank (Vc D j).rank → ℂ), (∀ PP u, a PP u ∈ (ρ.eOk i b k).range) → (∀ …`. Introduce `Q₀ hQ₀`. Substitute `hQ₀` using the available equality. Introduce `loc a ha hloc`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `twist_series_mem_span (ρ.B i j b) (hρ.base i j b) hS (ρ.om i j b 1) (hρ.weil_base i j b) _ hadm _ (fun PP => Planes (kP PP.1) (Wc D j).rank (Vc D j).rank) a ha (fun PP u => gC PP.1 u) loc hloc h P`. Set `ν : ∀ PP : ↥(half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M)), Multiplicative (ZMod (X.l i ^ M)) →* ℂˣ` to `fun PP => (Units.map (ρ.eOk i b k).toMonoidHom).comp (χ.comp (AddMonoidHom.toMultiplicative ((spread Y i Q M (ρ.ch i)).comp (AddMonoidHom.single (fun _ : ↥(half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M)) => ZMod (X.l i ^ M)) PP))))`. Establish `hν : ∀ PP a, (ν PP (Multiplicative.ofAdd a) : ℂ) = ρ.eOk i b k ((χ (Multiplicative.ofAdd (spread Y i Q M (ρ.ch i) (Pi.single PP a))) : (X.Ok i k)ˣ) : X.Ok i k)`. Introduce `PP a`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `hres : ∀ PP : ↥(half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M)), (ν PP).comp ((univOf Y i (admissibleConjugatePairPlaces X i Q M) M ρ.rc).kap PP.1) = (ρ.tw i b k Q (χ.comp (Y.delU i Q M))).resC PP.1`. Introduce `PP`. Use extensionality with `x`. Rewrite using `[GlobalTheory.T.residueCharacter_twist_universalChar_at_chosen_place ρ hρ Y hY i b k Q M χ hT PP x, MonoidHom.comp_apply, ← hν, ofAdd_toAdd]`. Establish `hnS : ∀ PP : ↥(half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M)), PP.1 ∉ X.S0 i` using `fun PP => Finset.disjoint_left.1 hT.2.1 (admissibleConjugatePairPlaces_subset i Q M (mem_half.1 PP.2).1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `qi : Pl D.host.E → ℂ` to `fun PP => ((Nat.card (kP PP) : ℂ) ^ ((Wc D j).rank * ((Vc D j).rank - (Wc D j).rank)))⁻¹`. Establish `hqi : ∀ PP : ↥(half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M)), qi PP.1 ∈ (ρ.eOk i b k).range`. Introduce `PP`. Take `⟨w, hw⟩` from `GlobalTheory.T.isUnit_card_residueField_off_exceptional_places X i k PP.1 (hnS PP)`. Use `⟨((w⁻¹ ^ ((Wc D j).rank * ((Vc D j).rank - (Wc D j).rank)) : (X.Ok i k)ˣ) : X.Ok i k), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ρ.eOk i b k (w : X.Ok i k) = (Nat.card (kP PP.1) : ℂ)` using `by rw [hw, map_natCast]`. Establish `e' : ρ.eOk i b k (w : X.Ok i k) ≠ 0`. Introduce `h0`. Conclude with `w.ne_zero ((map_eq_zero_iff _ (ρ.eOk_injective i b k)).1 h0)`. Establish `e2 : ρ.eOk i b k ((w⁻¹ : (X.Ok i k)ˣ) : X.Ok i k) = (Nat.card (kP PP.1) : ℂ)⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← e]`. Conclude with `eq_inv_of_mul_eq_one_left (by rw [← map_mul, Units.inv_mul, map_one])`. Use `show _ = ((Nat.card (kP PP.1) : ℂ) ^ ((Wc D j).rank * ((Vc D j).rank - (Wc D j).rank)))⁻¹`. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, e2, inv_pow]`. Use `key _ (by show half _ _ = half _ _; rw [hA]) (specLoc ρ Y i j b k Q M χ) (fun PP U => qi PP.1 * (ν PP ((univOf Y i (admissibleConjugatePairPlaces X i Q M) M ρ.rc).kap PP.1 (cC PP.1 U)) : ℂ)) ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `PP U`. Use `Subring.mul_mem _ (hqi PP) ?_` and prove the remaining obligations. Conclude with `⟨_, rfl⟩`. Introduce `PP y`. Use `univ_spec (ρ.β j PP.1) ((univOf Y i (admissibleConjugatePairPlaces X i Q M) M ρ.rc).kap PP.1) (ν PP) (gC PP.1) (cC PP.1) (hgc PP.1) y` as an intermediate fact.
-
-Rewrite `this` using `[hres PP]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem specSer_mem_span : ∀ {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N} (ρ : Setup X), ρ.Good →
   ∀ (Y : NExp D.R D.host D.what₂ D.LL0 N X), GlobalTheory.UnivChar.IsUnivChar Y →

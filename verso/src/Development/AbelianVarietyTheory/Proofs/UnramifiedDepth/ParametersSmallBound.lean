@@ -5,7 +5,7 @@ open Formalism.UnitaryBoundIntegral Formalism.IncomingBounds
 namespace GlobalTheory.FlowParameters
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_comm, Finset.sum_comm (s := Finset.univ)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `Equiv.sum_comp (Equiv.subRight (i : ZMod d)) (fun a => x a i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma sum_inflow (d : ℕ) [NeZero d] (x : ZMod d → ℕ → ℝ) (s : Finset ℕ) :
     ∑ a : ZMod d, ∑ i ∈ s, x (a - (i : ZMod d)) i = ∑ a, ∑ i ∈ s, x a i := by
@@ -14,7 +14,7 @@ lemma sum_inflow (d : ℕ) [NeZero d] (x : ZMod d → ℕ → ℝ) (s : Finset �
   exact Equiv.sum_comp (Equiv.subRight (i : ZMod d)) (fun a => x a i)
 
 /- English proof (translation)
-Unfold `flowVal`. Rewrite using `[← sum_inflow]`. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Establish `h1` using `hx.2 a`. Establish `h2 : 0 ≤ ∑ i ∈ oddLevels d, (l : ℝ) ^ i * x a i` using `Finset.sum_nonneg fun i _ => mul_nonneg (by positivity) (hx.1 a i)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -29,7 +29,7 @@ lemma flowVal_le_sum (l d : ℕ) [NeZero d] (D : ZMod d → ℝ) (x : ZMod d →
   linarith
 
 /- English proof (translation)
-Use `le_csSup ⟨∑ a, D a, ?_⟩ ⟨x, hx, rfl⟩` and prove the remaining obligations. Introduce and unpack `t ⟨z, hz, rfl⟩`. Conclude with `flowVal_le_sum l d D z hz`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma flowVal_le_maxFlow (l d : ℕ) [NeZero d] (D : ZMod d → ℝ) (x : ZMod d → ℕ → ℝ)
     (hx : IsFlow l d D x) : flowVal d x ≤ maxFlow l d D := by
@@ -38,13 +38,13 @@ lemma flowVal_le_maxFlow (l d : ℕ) [NeZero d] (D : ZMod d → ℝ) (x : ZMod d
   exact flowVal_le_sum l d D z hz
 
 /- English proof (translation)
-Use `csSup_le ⟨_, fun _ _ => 0, ⟨fun _ _ => le_rfl, fun s => ?_⟩, rfl⟩ ?_` and prove the remaining obligations. Simplify using `using mul_nonneg hc (hD s)`. Introduce and unpack `t ⟨x, hx, rfl⟩`. Break down `hc.eq_or_lt with rfl | hc'` into its components or cases. Simplify using `using flowVal_le_sum l d _ x hx`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hz : IsFlow l d D (fun a i => c⁻¹ * x a i)`. Use `⟨fun s i => mul_nonneg (by positivity) (hx.1 s i), fun s => ?_⟩` and prove the remaining obligations. Establish `h` using `hx.2 s`. Establish `e : (∑ i ∈ oddLevels d, (l : ℝ) ^ i * (c⁻¹ * x s i)) + (∑ i ∈ oddLevels d, c⁻¹ * x (s - (i : ZMod d)) i) = c⁻¹ * ((∑ i ∈ oddLevels d, (l : ℝ) ^ i * x s i) + (∑ i ∈ oddLevels d, x (s - (i : ZMod d)) i))`. Rewrite using `[mul_add, Finset.mul_sum, Finset.mul_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[e, inv_mul_le_iff₀ hc']`. Conclude with `h`. Establish `h` using `flowVal_le_maxFlow l d D _ hz`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : flowVal d (fun a i => c⁻¹ * x a i) = c⁻¹ * flowVal d x`. Simplify using `only [flowVal, Finset.mul_sum]`. Rewrite `h` using `[e, inv_mul_le_iff₀ hc']`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma maxFlow_smul_le (l d : ℕ) [NeZero d] (c : ℝ) (hc : 0 ≤ c) (D : ZMod d → ℝ) (hD : 0 ≤ D) :
     maxFlow l d (fun a => c * D a) ≤ c * maxFlow l d D := by
@@ -72,21 +72,21 @@ lemma maxFlow_smul_le (l d : ℕ) [NeZero d] (c : ℝ) (hc : 0 ≤ c) (D : ZMod 
     exact h
 
 /- English proof (translation)
-Introduce `l d _ hl hd n m θ S W ys y u mon cCH cMON cB eB hW _ hval _ hS hzero _ hmon hsplit hB hCH hMON`. Establish `hl' : (3 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hg : 0 ≤ gam l` using `div_nonneg (by positivity) (by nlinarith)`. Establish `hn : (0 : ℝ) ≤ n` using `by positivity`. Establish `hscale` using `maxFlow_smul_le l d n hn W hW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWsum : ∑ a, W a = (∑ a, ∑ i ∈ oddLevels d, (l : ℝ) ^ i * y a i) + (∑ a, ∑ i ∈ oddLevels d, (y a i : ℝ)) + (∑ a, u a) + ∑ a, mon a`. Rewrite using `[Finset.sum_congr rfl fun a _ => hsplit a, Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_add_distrib, sum_inflow d (fun a i => (y a i : ℝ))]`. Establish `hBsum : ∑ a, ∑ i ∈ oddLevels d, cB a i ≤ n * gam l * (∑ a, ∑ i ∈ oddLevels d, (l : ℝ) ^ i * y a i) + (n * gam l - n) * (∑ a, ∑ i ∈ oddLevels d, (y a i : ℝ)) + ∑ a, ∑ i ∈ oddLevels d, eB a i`. Simplify using `only [Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun a _ => Finset.sum_le_sum fun i hi => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `hB a i hi` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hCHsum : ∑ a, cCH a ≤ n * gam l * (∑ a, u a) + m * (∑ a, u a) / ((l : ℝ) - 1)`. Use `(Finset.sum_le_sum fun a _ => hCH a).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hMONsum : ∑ a, cMON a ≤ (∑ a, mon a) / ((l : ℝ) - 1)`. Rewrite using `[Finset.sum_div]`. Conclude with `Finset.sum_le_sum fun a _ => hMON a`. Establish `hround : flowVal d ys ≤ (∑ a, ∑ i ∈ oddLevels d, (y a i : ℝ)) + S * (((Finset.univ : Finset (ZMod d)) ×ˢ oddLevels d).filter (fun p => ys p.1 p.2 ≠ 0)).card`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.card_filter, Nat.cast_sum, Finset.mul_sum, Finset.sum_product, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ys a i = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Use `hS a i` as an intermediate fact. Simplify using `only [ne_eq, h, not_false_eq_true, if_true, Nat.cast_one, mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmonsum : 0 ≤ n * gam l * ∑ a, mon a` using `mul_nonneg (mul_nonneg hn hg) (Finset.sum_nonneg fun a _ => hmon a)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `mul_le_mul_of_nonneg_left (hval.trans hround) hn`. Establish `h2 : gam l * ∑ a, (n : ℝ) * W a = n * gam l * ∑ a, W a`. Rewrite using `[← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `congrArg (fun t => n * gam l * t) hWsum`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Fnum`. Rewrite using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sizeDataSmall : ParametersSmall := by
   intro l d _ hl hd n m θ S W ys y u mon cCH cMON cB eB hW _ hval _ hS hzero _ hmon hsplit

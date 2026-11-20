@@ -21,9 +21,9 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : �
   {B : Vert.Model O}
 
 /- English proof (translation)
-Rewrite using `[VB.pullback_map_smulHom]`. Establish `hp : IsUnit ((Scheme.Hom.appTop B.gen.ι).hom (B.const (p : O)))` using `RingedSpace.isUnit_of_isUnit_germ _ _ _ fun x _ => (Scheme.mem_basicOpen_top _ _ x).1 ((Scheme.preimage_basicOpen_top B.gen.ι _).le (B.gen_le_basicOpen (natCast_ne_zero O p) x.2))`. Take `⟨u, hu⟩` from `h`. Establish `hc : B.const (p : O) = (p : Γ(B.X, ⊤))` using `map_natCast _ p`. Rewrite `hp` using `[hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpow : IsUnit (((Scheme.Hom.appTop B.gen.ι).hom π) ^ (p - 1))`. Rewrite using `[← map_pow, hu, map_mul]`. Conclude with `(u.isUnit.map _).mul hp`. Establish `hπ` using `(isUnit_pow_iff (Nat.sub_ne_zero_of_lt (Fact.out : p.Prime).one_lt)).1 hpow`. Conclude with `(isUnit_iff_isIso _).1 (hπ.map (smulEnd _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_genRes_smulHom_of_root (E : B.X.Modules) {π : Γ(B.X, ⊤)} (h : IsRootOfP p π (p - 1)) :
     IsIso (B.genRes.map (smulHom E π)) := by
@@ -45,39 +45,37 @@ end GlobalTheory.ChainPeriod
 open GlobalTheory.ChainPeriod in
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ B hB ι φ o Ch hper k La hLa τ`. Establish `hp0 : (p : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`. Establish `hiso_pi : ∀ τ, IsIso (B.genRes.map (smulHom (Ch.lw τ).E' Ch.π))` using `fun τ => isIso_genRes_smulHom_of_root _ Ch.π_root`. Establish `hiso_wl : ∀ τ, IsIso (B.genRes.map (Ch.wl τ))`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := (Ch.lw τ).iso`. Use `haveI h2 := hiso_pi τ`. Rewrite `h2` using `[← Ch.lw_wl τ, Functor.map_comp]`. Conclude with `IsIso.of_isIso_comp_left (B.genRes.map (Ch.lw τ).ψ) (B.genRes.map (Ch.wl τ))`. Set `Ppi : ι → Pres B` to `fun τ => ⟨(Ch.lw τ).r, (Ch.lw τ).E', (Ch.lw τ).E', (Ch.lw τ).vb', (Ch.lw τ).vb', smulHom _ Ch.π, hiso_pi τ⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Pwl : ι → Pres B` to `fun τ => ⟨(Ch.lw τ).r, (Ch.lw τ).E', (Ch.lw τ).E, (Ch.lw τ).vb', (Ch.lw τ).vb, Ch.wl τ, hiso_wl τ⟩`. Set `Pp : ι → Pres B` to `fun τ => ⟨(Ch.lw τ).r, (Ch.lw τ).E', (Ch.lw τ).E', (Ch.lw τ).vb', (Ch.lw τ).vb', smulHom _ (B.const (p : O)), Vert.Model.isIso_genRes_map_smulHom _ (natCast_ne_zero O p)⟩`. Establish `hPp : ∀ τ, (Pp τ).ck p k = La τ` using `fun τ => by rw [hLa]; rfl`. Establish `hpi : ∀ τ, (Ppi τ).ck p k = (Pwl τ).ck p k + (Ch.lw τ).ck p k`. Introduce `τ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(GlobalTheory.T.ck_additive_composition O p B hB _ _ _ (haveI := hiso_wl τ; Vert.Model.GenIso.ofHom (Ch.wl τ)) (haveI := (Ch.lw τ).iso; Vert.Model.GenIso.ofHom (Ch.lw τ).ψ) (Ch.lw τ).r k (Ch.lw τ).vb' (Ch.lw τ).vb (Ch.lw τ).vb').1` as an intermediate fact. Use `Eq.trans ?_ this` and prove the remaining obligations. Establish `heq : (@Vert.Model.GenIso.ofHom _ _ _ _ _ _ _ (smulHom _ Ch.π) (hiso_pi τ)) = ((haveI` using `hiso_wl τ; Vert.Model.GenIso.ofHom (Ch.wl τ)) ≪≫ (haveI := (Ch.lw τ).iso; Vert.Model.GenIso.ofHom (Ch.lw τ).ψ)) := by`. Use `Iso.ext ((Iso.inv_eq_inv _ _).1 ?_)` and prove the remaining obligations. Simplify using `only [Vert.Model.GenIso.ofHom, Iso.trans_inv, Iso.symm_inv, asIso_hom]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Functor.map_comp, Ch.lw_wl]`. Use `show ckP p (@Vert.Model.GenIso.ofHom _ _ _ _ _ _ _ (smulHom _ Ch.π) (hiso_pi τ)) _ k = _`. Rewrite using `[heq]`. Establish `hbd : ∀ τ, (((p - 1 : ℕ) : ℚ)) • (Ppi τ).ck p k = La τ`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hLa τ]`. Conclude with `(GlobalTheory.T.ck_root_multiplication_scaling O p B hB (Ppi τ) Ch.π (p - 1) (Iso.refl _) Ch.π_root (Category.id_comp _).symm k).1`. Establish `hc3 : ∀ τ, (Ch.q 0 τ).ck p k = (Pwl τ).ck p k + (Ch.oo τ).ck p k` using `fun τ => GlobalTheory.T.ck_additive_extension O p B hB (Pwl τ) _ _ (Ch.c3 τ) k`. Establish `hq0 : ∀ τ, (Ch.q 0 τ).ck p k = (Ch.oo τ).ck p k - (Ch.lw τ).ck p k + ((p : ℚ) - 1)⁻¹ • La τ`. Introduce `τ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hp1 : ((p - 1 : ℕ) : ℚ) = (p : ℚ) - 1`. Rewrite using `[Nat.cast_sub (Fact.out : p.Prime).one_le, Nat.cast_one]`. Establish `hne : (p : ℚ) - 1 ≠ 0` using `sub_ne_zero.2 (by exact_mod_cast (Fact.out : p.Prime).one_lt.ne')`. Rewrite using `[← hbd τ, hp1, smul_smul, inv_mul_cancel₀ hne, one_smul, hpi τ, hc3 τ]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hl : ∀ n < o, ∀ τ, (Ch.l n 0 τ).ck p k = ((p : ℚ) ^ ((n + 1) * k))⁻¹ • La (φ^[n + 1] τ)`. Introduce `n hn τ`. Establish `hi : ∀ i ≤ n + 1, (Ch.l n i τ).ck p k = ((p : ℚ) ^ k) ^ i • (Ch.l n 0 τ).ck p k`. Introduce `i hi`. Proceed by induction on `i with`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `succ i ih`. Establish `hfr` using `Ch.l_frob n hn i (by omega) τ`. Rewrite using `[GlobalTheory.T.ck_frobenius_scaling O p B hB _ _ Ch.g Ch.g_root hfr.1 hfr.2 k, ih (by omega), smul_smul, ← pow_succ']`. Establish `hlast : (Ch.l n (n + 1) τ).ck p k = La (φ^[n + 1] τ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hPp]`. Use `GlobalTheory.T.ck_presentation_invariant O p B hB _ _ ?_ k` and prove the remaining obligations. Take `⟨e⟩` from `Ch.l_last n hn τ`. Establish `hc : B.const (p : O) = (p : Γ(B.X, ⊤))` using `map_natCast _ p`. Use `show Nonempty (_ ≅ cokernel (smulHom _ (B.const (p : O))))`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hc]`. Conclude with `⟨e⟩`. Rewrite `hlast` using `[hi (n + 1) le_rfl]`. Rewrite using `[← hlast, smul_smul, ← pow_mul, mul_comm k, inv_mul_cancel₀ (pow_ne_zero _ hp0), one_smul]`. Establish `hq : ∀ m ≤ o, ∀ τ, (Ch.q m τ).ck p k = ((p : ℚ) ^ (m * k))⁻¹ • (Ch.q 0 (φ^[m] τ)).ck p k`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro _ τ`. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `hm τ`. Establish `hfr` using `Ch.q_frob m (by omega) τ`. Establish `e` using `GlobalTheory.T.ck_frobenius_scaling O p B hB _ _ Ch.g Ch.g_root hfr.1 hfr.2 k`. Rewrite `e` using `[ih (by omega) (φ τ)]`. Establish `hpk : (p : ℚ) ^ k ≠ 0` using `pow_ne_zero _ hp0`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Function.iterate_succ_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, inv_mul_cancel₀ hpk, one_smul]`. Use `_ = _ := by`. Rewrite using `[← e, smul_smul, ← mul_inv, ← pow_add, show k + m * k = (m + 1) * k by ring]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : ∀ m ≤ o, ∀ τ, (Ch.q 0 τ).ck p k = (Ch.q m τ).ck p k + ∑ n ∈ Finset.range m, (Ch.l n 0 τ).ck p k`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro _ τ`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `succ m ih`. Introduce `hm τ`. Rewrite using `[ih (by omega) τ, GlobalTheory.T.ck_additive_extension O p B hB _ _ _ (Ch.step m (by omega) τ) k, Finset.sum_range_succ]`. Normalize the expressions using the abelian group laws. Rewrite using `[← hq0 τ]`.
-
-Establish `h` using `hsum o le_rfl τ`. Rewrite `h` using `[hq o le_rfl τ, hper τ, Finset.sum_congr rfl (fun n hn => hl n (Finset.mem_range.1 hn) τ)]`. Rewrite using `[sub_smul, one_smul]`. Use `nth_rewrite 1 [h]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.MixedLocalChains.Chain.ck_period : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (ι : Type) (φ : ι → ι) (o : ℕ) (Ch : Chain p B φ o), (∀ τ, φ^[o] τ = τ) → ∀ (k : ℕ) (La : ι → PicSym B.X →ₗ[ℚ] ℚ), (∀ τ, La τ = ckP p (GlobalTheory.Vert.Model.GenIso.smul (Ch.lw τ).E' (p : O) (GlobalTheory.Vert.natCast_ne_zero O p)) (Ch.lw τ).r k) → ∀ τ, (1 - ((p : ℚ) ^ (o * k))⁻¹) • ((Ch.oo τ).ck p k - (Ch.lw τ).ck p k + ((p : ℚ) - 1)⁻¹ • La τ) = ∑ n ∈ Finset.range o, ((p : ℚ) ^ ((n + 1) * k))⁻¹ • La (φ^[n + 1] τ) := by
   intro O _ _ _ p _ _ _ B hB ι φ o Ch hper k La hLa τ

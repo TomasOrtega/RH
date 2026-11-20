@@ -21,16 +21,16 @@ def evK (k : ℕ) : MonoidAlgebra ℤ (muSub l) →ₐ[ℤ] ℂ_[l] :=
   MonoidAlgebra.lift ℤ ℂ_[l] (muSub l) ((muSub l).subtype.comp (powMonoidHom k))
 
 /- English proof (translation)
-Simplify using `[evK]`.
+Simplify using the standard rewrite rules.
 -/
 lemma evK_of (k : ℕ) (g : muSub l) :
     evK l k (MonoidAlgebra.of ℤ (muSub l) g) = (g : ℂ_[l]) ^ k := by
   simp [evK]
 
 /- English proof (translation)
-Proceed by induction on `r using MonoidAlgebra.induction_on with`. Consider the case `of g`. Rewrite using `[evK_of]`. Conclude with `Subring.pow_mem _ (Subring.subset_closure g.2) k`. Consider the case `add x y hx hy`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `Subring.add_mem _ hx hy`. Consider the case `smul a x hx`. Rewrite using `[zsmul_eq_mul, map_mul, map_intCast]`. Conclude with `Subring.mul_mem _ (intCast_mem _ a) hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma evK_mem (k : ℕ) (r : MonoidAlgebra ℤ (muSub l)) : evK l k r ∈ ringA l := by
   induction r using MonoidAlgebra.induction_on with
@@ -45,9 +45,9 @@ lemma evK_mem (k : ℕ) (r : MonoidAlgebra ℤ (muSub l)) : evK l k r ∈ ringA 
     exact Subring.mul_mem _ (intCast_mem _ a) hx
 
 /- English proof (translation)
-Establish `h1 : Polynomial.aeval ζ P = 0`. Rewrite using `[Polynomial.aeval_def]`. Conclude with `h`. Establish `hd : minpoly ℤ ζ ∣ P` using `minpoly.isIntegrallyClosed_dvd (hζ.isIntegral hn) h1`. Rewrite `hd` using `[hζ.minpoly_eq_pow_coprime hcop]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, rfl⟩` from `hd`. Establish `h2 : Polynomial.aeval (ζ ^ k) (minpoly ℤ (ζ ^ k)) = 0` using `minpoly.aeval _ _`. Rewrite `h2` using `[Polynomial.aeval_def]`. Rewrite using `[Polynomial.eval₂_mul]`. Conclude with `mul_eq_zero_of_left h2 _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma eval_pow_coprime {K : Type*} [Field K] [CharZero K] {n k : ℕ} {ζ : K} (hζ : IsPrimitiveRoot ζ n)
     (hn : 0 < n) (hcop : Nat.Coprime k n) (P : Polynomial ℤ)
@@ -64,15 +64,15 @@ lemma eval_pow_coprime {K : Type*} [Field K] [CharZero K] {n k : ℕ} {ζ : K} (
   exact mul_eq_zero_of_left h2 _
 
 /- English proof (translation)
-Proceed by induction on `r using MonoidAlgebra.induction_on with`. Consider the case `of g`. Take `⟨n, hn, hln, hg⟩` from `g.2`. Use `⟨n, hn, hln, fun m hnm hm ζ hζ => ?_⟩` and prove the remaining obligations. Establish `hgm : (g : ℂ_[l]) ^ m = 1`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨c, rfl⟩` from `hnm`. Rewrite using `[pow_mul, hg, one_pow]`. Establish `: NeZero m` using `⟨hm.ne'⟩`. Take `⟨i, -, hi⟩` from `hζ.eq_pow_of_pow_eq_one hgm`. Use `⟨Polynomial.X ^ i, fun k => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[evK_of, ← hi, Polynomial.eval₂_pow, Polynomial.eval₂_X, ← pow_mul, ← pow_mul, mul_comm]`. Consider the case `add x y hx hy`. Take `⟨n, hn, hln, hP⟩` from `hx`. Take `⟨n', hn', hln', hP'⟩` from `hy`. Use `⟨n * n', Nat.mul_pos hn hn', fun h => ?_, fun m hnm hm ζ hζ => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Break down `(Fact.out : l.Prime).dvd_mul.mp h with h | h exacts [hln h, hln' h]` into its components or cases. Take `⟨P, hP⟩` from `hP m (dvd_trans (dvd_mul_right _ _) hnm) hm ζ hζ`. Take `⟨P', hP'⟩` from `hP' m (dvd_trans (dvd_mul_left _ _) hnm) hm ζ hζ`. Conclude with `⟨P + P', fun k => by rw [Polynomial.eval₂_add, map_add, hP, hP']⟩`. Consider the case `smul a x hx`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨n, hn, hln, hP⟩` from `hx`. Use `⟨n, hn, hln, fun m hnm hm ζ hζ => ?_⟩` and prove the remaining obligations. Take `⟨P, hP⟩` from `hP m hnm hm ζ hζ`. Conclude with `⟨Polynomial.C a * P, fun k => by`. Rewrite using `[Polynomial.eval₂_mul, Polynomial.eval₂_C, hP, zsmul_eq_mul, map_mul, map_intCast, eq_intCast]⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 lemma exists_poly (r : MonoidAlgebra ℤ (muSub l)) :
     ∃ n : ℕ, 0 < n ∧ ¬ l ∣ n ∧ ∀ m : ℕ, n ∣ m → 0 < m → ∀ ζ : ℂ_[l], IsPrimitiveRoot ζ m →
@@ -105,11 +105,11 @@ lemma exists_poly (r : MonoidAlgebra ℤ (muSub l)) :
       rw [Polynomial.eval₂_mul, Polynomial.eval₂_C, hP, zsmul_eq_mul, map_mul, map_intCast, eq_intCast]⟩
 
 /- English proof (translation)
-Take `⟨n, hn, hln, hP⟩` from `exists_poly l r`. Establish `: NeZero n` using `⟨hn.ne'⟩`. Establish `: NeZero (n : ℂ_[l])` using `⟨Nat.cast_ne_zero.mpr hn.ne'⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot ℂ_[l] n`. Take `⟨P, hP⟩` from `hP n dvd_rfl hn ζ hζ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1 : P.eval₂ (Int.castRingHom ℂ_[l]) ζ = 0`. Use `hP 1` as an intermediate fact. Rewrite `this` using `[pow_one]`. Rewrite using `[this, h]`. Establish `hcop : Nat.Coprime l n` using `((Fact.out : l.Prime).coprime_iff_not_dvd).mpr hln`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hP l]`. Conclude with `eval_pow_coprime hζ hn hcop P h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma evK_ker (r : MonoidAlgebra ℤ (muSub l)) (h : evK l 1 r = 0) : evK l l r = 0 := by
   obtain ⟨n, hn, hln, hP⟩ := exists_poly l r
@@ -134,7 +134,7 @@ Both sides reduce to the same expression.
 lemma evA_coe (k : ℕ) (r : MonoidAlgebra ℤ (muSub l)) : ((evA l k r : ringA l) : ℂ_[l]) = evK l k r := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[evA_coe, evK_of]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma evA_of (k : ℕ) (g : muSub l) :
     evA l k (MonoidAlgebra.of ℤ (muSub l) g) = (⟨g, Subring.subset_closure g.2⟩ : ringA l) ^ k := by
@@ -143,9 +143,9 @@ lemma evA_of (k : ℕ) (g : muSub l) :
   rfl
 
 /- English proof (translation)
-Establish `hle : ringA l ≤ (evK l 1).toRingHom.range`. Use `Subring.closure_le.mpr fun g hg => ?_` and prove the remaining obligations. Use `⟨MonoidAlgebra.of ℤ (muSub l) ⟨g, hg⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evK l 1 _ = g`. Rewrite using `[evK_of, pow_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨x, hx⟩`. Take `⟨r, hr⟩` from `hle hx`. Conclude with `⟨r, Subtype.ext hr⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma evA_surj : Function.Surjective (evA l 1) := by
   have hle : ringA l ≤ (evK l 1).toRingHom.range := by
@@ -158,7 +158,7 @@ lemma evA_surj : Function.Surjective (evA l 1) := by
   exact ⟨r, Subtype.ext hr⟩
 
 /- English proof (translation)
-Introduce `r hr`. Rewrite `hr`, the goal using `[RingHom.mem_ker]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[evA_coe]`. Conclude with `evK_ker l r (by rw [← evA_coe, hr]; rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma evA_ker : RingHom.ker (evA l 1) ≤ RingHom.ker (evA l l) := by
   intro r hr
@@ -168,7 +168,7 @@ lemma evA_ker : RingHom.ker (evA l 1) ≤ RingHom.ker (evA l l) := by
   exact evK_ker l r (by rw [← evA_coe, hr]; rfl)
 
 /- English proof (translation)
-Establish `: ((a - a ^ l : ℤ) : ZMod l) = 0`. Use `push_cast`. Rewrite using `[ZMod.pow_card, sub_self]`. Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mp this`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma int_fermat (a : ℤ) : ∃ c : ℤ, a - a ^ l = (l : ℤ) * c := by
   have : ((a - a ^ l : ℤ) : ZMod l) = 0 := by
@@ -177,13 +177,13 @@ lemma int_fermat (a : ℤ) : ∃ c : ℤ, a - a ^ l = (l : ℤ) * c := by
   exact (ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mp this
 
 /- English proof (translation)
-Proceed by induction on `r using MonoidAlgebra.induction_on with`. Consider the case `of g`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[evA_of, evA_of, pow_one, sub_self, mul_zero]`. Consider the case `add x y hx hy`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨u, hu⟩` from `hx`. Take `⟨v, hv⟩` from `hy`. Take `⟨w, hw⟩` from `exists_add_pow_prime_eq (Fact.out : l.Prime) (evA l 1 x) (evA l 1 y)`. Use `⟨u + v - evA l 1 x * evA l 1 y * w, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add, hw]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `hu + hv`. Consider the case `smul a x hx`. Take `⟨u, hu⟩` from `hx`. Take `⟨c, hc⟩` from `int_fermat l a`. Establish `hc' : (a : ringA l) - (a : ringA l) ^ l = (l : ringA l) * (c : ringA l)`.
+Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `congrArg (Int.cast : ℤ → ringA l) hc` after adjusting the coercions. Use `⟨(a : ringA l) * u + (c : ringA l) * evA l 1 x ^ l, ?_⟩` and prove the remaining obligations. Rewrite using `[zsmul_eq_mul, map_mul, map_mul, map_intCast, map_intCast, mul_pow]`. Take the linear combination `(a : ringA l) * hu + (evA l 1 x ^ l) * hc'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma evA_congr (r : MonoidAlgebra ℤ (muSub l)) :
     ∃ y : ringA l, evA l l r - evA l 1 r ^ l = (l : ringA l) * y := by
@@ -208,11 +208,9 @@ lemma evA_congr (r : MonoidAlgebra ℤ (muSub l)) :
     linear_combination (a : ringA l) * hu + (evA l 1 x ^ l) * hc'
 
 /- English proof (translation)
-Introduce `l _`. Use `⟨(evA l 1).liftOfSurjective (evA_surj l) ⟨evA l l, evA_ker l⟩, fun ζ hζ => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : evA l 1 (MonoidAlgebra.of ℤ (muSub l) ⟨ζ, hζ⟩) = ζ`. Rewrite using `[evA_of, pow_one]`. Use `conv_lhs => rw [← h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.liftOfSurjective_comp_apply]`. Express the relevant statement in the definitionally equal form `evA l l _ = _`. Rewrite using `[evA_of]`. Take `⟨r, rfl⟩` from `evA_surj l x`. Rewrite using `[RingHom.liftOfSurjective_comp_apply]`.
-
-Conclude with `evA_congr l r`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobenius_on_ring_a : FrobA := by
   intro l _

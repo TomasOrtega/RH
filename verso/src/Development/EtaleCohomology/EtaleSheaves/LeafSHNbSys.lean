@@ -38,11 +38,11 @@ def LeafSHHens : Prop := ∀ {B : Scheme.{0}} (U : B.Etale) (x : U.left) (Ω : T
   SH c.pt
 
 /- English proof (translation)
-Introduce `_ q _ k _ hq B U s0 x`. Take `⟨Ω, _, _, s, J, _, _, D, c, hc, V, a, l, e, t, hP⟩` from `hS U x`. Take `⟨hs, he, hl, hcomp, ht, -, hcof, -⟩` from `id hP`. Use `⟨J, inferInstance, inferInstance, D, c, hc, V, a, fun j => (l j ≫ e j) default, e, t, he, ?_, ?_, hcomp, ht, hH U x Ω s D c hc V a l e t hP (hL U x Ω s D c hc V a l e t hP), ?_⟩` and prove the remaining obligations. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hs, ← hl j]`. Both sides reduce to the same expression. Introduce `j`. Use `hq.map (Spec.preimage (e j ≫ (a j).left ≫ s0)).hom` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `U' b y' hy'`. Take `⟨l', hl', -⟩` from `Scheme.exists_fac_of_etale_of_isSepClosed b.left s y' (hy'.trans hs.symm)`. Take `⟨j, g, hg, -⟩` from `hcof U' b l' hl'`. Conclude with `⟨j, g, hg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LeafSHNb_of (hS : LeafSHNbSys) (hL : LeafSHLoc) (hH : LeafSHHens) : LeafSHNb := by
   intro _ q _ k _ hq B U s0 x

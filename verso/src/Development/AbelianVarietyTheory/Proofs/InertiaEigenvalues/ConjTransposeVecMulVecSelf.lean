@@ -6,21 +6,21 @@ namespace GlobalTheory.UnitWitt
 variable {E : Type} [Field E] [StarRing E] {r : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[mulVec, vecMulVec, dotProduct, Finset.mul_sum, mul_comm, mul_left_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vecMulVec_mulVec_eq (w v z : Fin r → E) : vecMulVec w v *ᵥ z = (v ⬝ᵥ z) • w := by
   ext i
   simp [mulVec, vecMulVec, dotProduct, Finset.mul_sum, mul_comm, mul_left_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[vecMulVec, conjTranspose_apply, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conjTranspose_vecMulVec_self (w : Fin r → E) : (vecMulVec w (star w))ᴴ = vecMulVec w (star w) := by
   ext i j
   simp [vecMulVec, conjTranspose_apply, mul_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [mul_apply, vecMulVec_apply, Matrix.smul_apply, smul_eq_mul, dotProduct, Pi.star_apply, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vecMulVec_self_mul (w : Fin r → E) :
     vecMulVec w (star w) * vecMulVec w (star w) = (star w ⬝ᵥ w) • vecMulVec w (star w) := by
@@ -31,11 +31,11 @@ theorem vecMulVec_self_mul (w : Fin r → E) :
   ring
 
 /- English proof (translation)
-Rewrite using `[mem_unitaryGroup_iff']`. Establish `hs : star (1 - a⁻¹ • vecMulVec w (star w)) = 1 - (star a)⁻¹ • vecMulVec w (star w)`. Rewrite using `[star_sub, star_one, star_smul, star_inv₀]`. Use `congr 2`. Conclude with `conjTranspose_vecMulVec_self w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `ha' : star a ≠ 0` using `by simpa using ha`. Rewrite using `[hs]`. Establish `key : (star a)⁻¹ + a⁻¹ - (star a)⁻¹ * a⁻¹ * (star w ⬝ᵥ w) = 0`. Rewrite using `[hN]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sub_mul, mul_sub, mul_sub, one_mul, mul_one, one_mul, smul_mul_smul_comm, vecMulVec_self_mul, smul_smul, sub_smul, add_smul]`. Normalize the expressions using the abelian group laws. Use `_ = 1 := by rw [key, zero_smul, sub_zero]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem refl_mem (w : Fin r → E) (a : E) (ha : a ≠ 0) (hN : star w ⬝ᵥ w = a + star a) :
     (1 - a⁻¹ • vecMulVec w (star w)) ∈ unitaryGroup (Fin r) E := by
@@ -56,7 +56,7 @@ theorem refl_mem (w : Fin r → E) (a : E) (ha : a ≠ 0) (hN : star w ⬝ᵥ w 
     _ = 1 := by rw [key, zero_smul, sub_zero]
 
 /- English proof (translation)
-Establish `h1 : (a⁻¹ • vecMulVec w (star w)) *ᵥ u = a⁻¹ • (vecMulVec w (star w) *ᵥ u)`. Use extensionality with `i`. Simplify using `[mulVec, dotProduct, Finset.mul_sum, mul_assoc]`. Rewrite using `[sub_mulVec, one_mulVec, h1, vecMulVec_mulVec_eq, ha, smul_smul, inv_mul_cancel₀ ha0, one_smul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem refl_mulVec (w u : Fin r → E) (a : E) (ha : star w ⬝ᵥ u = a) (ha0 : a ≠ 0) :
     (1 - a⁻¹ • vecMulVec w (star w)) *ᵥ u = u - w := by
@@ -65,15 +65,15 @@ theorem refl_mulVec (w u : Fin r → E) (a : E) (ha : star w ⬝ᵥ u = a) (ha0 
   rw [sub_mulVec, one_mulVec, h1, vecMulVec_mulVec_eq, ha, smul_smul, inv_mul_cancel₀ ha0, one_smul]
 
 /- English proof (translation)
-Simplify using `[dotProduct, star_sum, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_dot (x y : Fin r → E) : star (star x ⬝ᵥ y) = star y ⬝ᵥ x := by
   simp [dotProduct, star_sum, mul_comm]
 
 /- English proof (translation)
-Establish `hN : star (u - v) ⬝ᵥ (u - v) = star (u - v) ⬝ᵥ u + star (star (u - v) ⬝ᵥ u)`. Rewrite using `[star_dot]`. Simplify using `only [star_sub, sub_dotProduct, dotProduct_sub]`. Rewrite using `[← hc]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨⟨_, refl_mem (u - v) _ ha hN⟩, ?_⟩` and prove the remaining obligations. Use `show (1 - (star (u - v) ⬝ᵥ u)⁻¹ • vecMulVec (u - v) (star (u - v))) *ᵥ u = v`. Rewrite using `[refl_mulVec (u - v) u _ rfl ha]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_of_ne (u v : Fin r → E) (hc : star u ⬝ᵥ u = star v ⬝ᵥ v) (ha : star (u - v) ⬝ᵥ u ≠ 0) :
     ∃ g : unitaryGroup (Fin r) E, g.1 *ᵥ u = v := by
@@ -88,13 +88,11 @@ theorem exists_of_ne (u v : Fin r → E) (hc : star u ⬝ᵥ u = star v ⬝ᵥ v
   abel
 
 /- English proof (translation)
-Distinguish the cases in `ha : star (u - v) ⬝ᵥ u = 0`. Establish `hvu : star v ⬝ᵥ u = star u ⬝ᵥ u`. Rewrite `ha` using `[star_sub, sub_dotProduct, sub_eq_zero]`. Conclude with `ha.symm`. Establish `hc' : star (-u) ⬝ᵥ (-u) = star v ⬝ᵥ v` using `by simpa using hc`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : star (-u - v) ⬝ᵥ (-u) ≠ 0`. Establish `: star (-u - v) ⬝ᵥ (-u) = 2 * (star u ⬝ᵥ u)`. Simplify using `only [star_sub, star_neg, sub_dotProduct, neg_dotProduct, dotProduct_neg, hvu]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_ne_zero h2 h0`. Take `⟨g, hg⟩` from `exists_of_ne (-u) v hc' ha'`. Use `⟨⟨-g.1, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_unitaryGroup_iff', star_neg, neg_mul_neg]`. Conclude with `mem_unitaryGroup_iff'.1 g.2`.
-
-Use `show (-g.1) *ᵥ u = v`. Rewrite using `[← hg, neg_mulVec, mulVec_neg]`. Conclude with `exists_of_ne u v hc ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitary_mulVec (h2 : (2 : E) ≠ 0) (u v : Fin r → E) (hc : star u ⬝ᵥ u = star v ⬝ᵥ v)
     (h0 : star u ⬝ᵥ u ≠ 0) : ∃ g : unitaryGroup (Fin r) E, g.1 *ᵥ u = v := by
@@ -117,9 +115,9 @@ theorem exists_unitary_mulVec (h2 : (2 : E) ≠ 0) (u v : Fin r → E) (hc : sta
 end GlobalTheory.UnitWitt
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ hU r u v hc h0`. Use `haveI : CharZero F := hU.charZero`. Establish `h2 : (2 : E) ≠ 0`. Introduce `h`. Apply `(two_ne_zero : (2 : F) ≠ 0)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(algebraMap F E).injective` to reduce the goal to its premises. Rewrite using `[map_ofNat, map_zero]`. Conclude with `h`. Conclude with `GlobalTheory.UnitWitt.exists_unitary_mulVec h2 u v hc h0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.unitary_transitive_of_norm : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] [Unram F E] (r : ℕ) (u v : Fin r → E), star u ⬝ᵥ u = star v ⬝ᵥ v →

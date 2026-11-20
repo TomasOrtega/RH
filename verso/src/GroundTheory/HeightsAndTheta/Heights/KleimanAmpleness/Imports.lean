@@ -7,7 +7,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization
 
 /- English proof (translation)
-The claim follows from `CechPointVanish.proof CechConstVanish.full CechPointEval.full`.
+A detailed English derivation is pending.
 -/
 theorem CechPointVanish.full : CechPointVanish.Statement :=
   CechPointVanish.proof CechConstVanish.full CechPointEval.full

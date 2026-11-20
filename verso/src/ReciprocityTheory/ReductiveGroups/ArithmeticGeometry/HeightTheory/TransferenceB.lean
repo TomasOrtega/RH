@@ -5,25 +5,21 @@ namespace ReciprocityTheory.ChartRestriction.G.T0
 open Module Submodule
 
 /- English proof (translation)
-Use `choose m hm using hint`. Establish `hPI` using `IsPrincipalIdealRing.principal (Ideal.span (Set.range m))`. Take `⟨g, hg⟩` from `Submodule.IsPrincipal.principal (Ideal.span (Set.range m))`. Establish `hgI : g ∈ Ideal.span (Set.range m)`. Rewrite using `[hg]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.mem_span_singleton_self g`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hgI`. Simplify using `only [smul_eq_mul] at hc`. Establish `hdiv : ∀ j, ∃ a : ℤ, a * g = m j`. Introduce `j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hj : m j ∈ Ideal.span (Set.range m)` using `Ideal.subset_span ⟨j, rfl⟩`. Rewrite `hj` using `[hg]`. Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 hj`. Conclude with `⟨a, by simpa using ha⟩`. Use `choose a ha using hdiv`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hne : ∃ j, m j ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hy1` to reduce the goal to its premises. Establish `h0 : ∀ x, inner ℝ y1 x = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[← b.sum_repr x, inner_sum]`. Simplify using `[inner_smul_right, hm, hcon]`. Conclude with `inner_self_eq_zero.1 (h0 y1)`. Establish `hg0 : g ≠ 0`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Take `⟨j, hj⟩` from `hne`. Conclude with `hj (by rw [← ha j, mul_zero])`. Establish `hgR : (g : ℝ) ≠ 0` using `Int.cast_ne_zero.2 hg0`. Use `⟨(g : ℝ)⁻¹ • y1, ∑ i, c i • b i, (Submodule.mem_span_range_iff_exists_fun ℤ).2 ⟨c, rfl⟩, smul_ne_zero (inv_ne_zero hgR) hy1, fun j => ⟨a j, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[real_inner_smul_left, hm, ← ha j]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[norm_smul, norm_inv, Real.norm_eq_abs]`. Establish `h1 : (1 : ℝ) ≤ |(g : ℝ)|`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Int.cast_abs]`. Conclude with `Int.one_le_abs hg0` after adjusting the coercions. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (inv_le_one_of_one_le₀ h1)`. Rewrite using `[inner_sum]`. Repeatedly rewrite using `[← Int.cast_smul_eq_zsmul ℝ, real_inner_smul_right, real_inner_smul_left, hm]`.
-
-Establish `h2 : ∑ i, (c i : ℝ) * ((g : ℝ)⁻¹ * (m i : ℝ)) = (g : ℝ)⁻¹ * ((∑ i, c i * m i : ℤ) : ℝ)`. Use `push_cast`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[h2, hc]`. Conclude with `inv_mul_cancel₀ hgR`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gtC_prim {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] {n : ℕ}
     (b : Basis (Fin n) ℝ E) (y1 : E) (hy1 : y1 ≠ 0)
@@ -82,27 +78,25 @@ theorem gtC_prim {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] {n
     exact inv_mul_cancel₀ hgR
 
 /- English proof (translation)
-Establish `hintL : ∀ v ∈ span ℤ (Set.range b), ∃ k : ℤ, inner ℝ y0 v = k`. Introduce `v hv`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hv`. Use `choose k hk using hint`. Use `⟨∑ i, c i * k i, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inner_sum]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Int.cast_smul_eq_zsmul ℝ, real_inner_smul_right, hk]`. Establish `hPW : ∀ v : EuclideanSpace ℝ (Fin (m + 1)), v - inner ℝ y0 v • xu ∈ (ℝ ∙ y0)ᗮ`.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Rewrite using `[Submodule.mem_orthogonal_singleton_iff_inner_right, inner_sub_right, real_inner_smul_right, h1, mul_one, sub_self]`. Establish `hPL : ∀ v ∈ span ℤ (Set.range b), v - inner ℝ y0 v • xu ∈ span ℤ (Set.range b)`. Introduce `v hv`. Take `⟨k, hk⟩` from `hintL v hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, Int.cast_smul_eq_zsmul]`. Conclude with `sub_mem hv (Submodule.smul_mem _ k hxu)`. Set `K : Submodule ℤ (ℝ ∙ y0)ᗮ` to `(span ℤ (Set.range b)).comap (((ℝ ∙ y0)ᗮ).subtype.restrictScalars ℤ)`. Establish `hKmem : ∀ x : (ℝ ∙ y0)ᗮ, x ∈ K ↔ (x : EuclideanSpace ℝ (Fin (m + 1))) ∈ span ℤ (Set.range b)` using `fun x => Iff.rfl`. Establish `: DiscreteTopology K`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `f : K → span ℤ (Set.range b)` to `fun x => ⟨((x : (ℝ ∙ y0)ᗮ) : EuclideanSpace ℝ (Fin (m + 1))), (hKmem x).1 x.2⟩`. Use `DiscreteTopology.of_continuous_injective (f := f) ((continuous_subtype_val.comp continuous_subtype_val).subtype_mk _) ?_` and prove the remaining obligations. Introduce `x y hxy`. Establish `hv` using `congrArg Subtype.val hxy`. Conclude with `Subtype.ext (Subtype.ext hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: IsZLattice ℝ K`. Use `⟨eq_top_iff.2 fun w _ => ?_⟩` and prove the remaining obligations. Establish `hw0 : inner ℝ y0 (w : EuclideanSpace ℝ (Fin (m + 1))) = 0` using `Submodule.mem_orthogonal_singleton_iff_inner_right.1 w.2`. Establish `hw0' : ∑ j, b.repr (w : EuclideanSpace ℝ (Fin (m + 1))) j * inner ℝ y0 (b j) = 0`. Rewrite using `[← hw0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Use `conv_rhs => rw [← b.sum_repr (w : EuclideanSpace ℝ (Fin (m + 1)))]`. Rewrite using `[inner_sum]`. Repeatedly rewrite using `[real_inner_smul_right]`. Establish `hsum : w = ∑ j, b.repr (w : EuclideanSpace ℝ (Fin (m + 1))) j • (⟨b j - inner ℝ y0 (b j) • xu, hPW (b j)⟩ : (ℝ ∙ y0)ᗮ)`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, smul_sub, Finset.sum_sub_distrib]`. Repeatedly rewrite using `[smul_smul]`. Rewrite using `[← Finset.sum_smul, hw0', zero_smul, sub_zero, b.sum_repr]`. Rewrite using `[hsum]`. Use `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `(hKmem _).2 (hPL (b j) (Submodule.subset_span ⟨j, rfl⟩))`. Establish `: Fact (Module.finrank ℝ (EuclideanSpace ℝ (Fin (m + 1))) = m + 1)` using `⟨finrank_euclideanSpace_fin⟩`. Establish `hrank : Module.finrank ℤ K = m`. Rewrite using `[ZLattice.rank ℝ K, Submodule.finrank_orthogonal_span_singleton (n := m) hy0]`. Set `bK : Basis (Fin m) ℤ K` to `Module.finBasisOfFinrankEq ℤ K hrank`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨bK.ofZLatticeBasis ℝ K, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[Basis.ofZLatticeBasis_span]`. Conclude with `(hKmem x).1 hx`. Introduce `v hv`.
-
-Use `⟨⟨v - inner ℝ y0 v • xu, hPW v⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[Basis.ofZLatticeBasis_span]`. Conclude with `(hKmem _).2 (hPL v hv)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gtD_lat {m : ℕ} (b : Basis (Fin (m + 1)) ℝ (EuclideanSpace ℝ (Fin (m + 1))))
     (y0 xu : EuclideanSpace ℝ (Fin (m + 1))) (hy0 : y0 ≠ 0) (hxu : xu ∈ span ℤ (Set.range b))

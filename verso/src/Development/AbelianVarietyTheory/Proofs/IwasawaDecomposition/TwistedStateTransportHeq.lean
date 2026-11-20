@@ -17,9 +17,9 @@ namespace GlobalTheory.HeightCounting.Up
 open GlobalTheory.Mem.R3.Tr
 
 /- English proof (translation)
-Introduce `hL K B f T w P x l N`. Take `⟨m, hm, hc, hh⟩` from `GlobalTheory.T.exists_movedData_laterStagesWithNewTwist x N`. Take `⟨r, hp, hrep, hj, he⟩` from `GlobalTheory.T.exists_normalisedReading_transported_newTwist x N m hm hc hh`. Take `⟨l', h1, h2, h3, h4, h5, h6, h7⟩` from `GlobalTheory.T.read_package_twist_heq hL x l N m hm hc hh r hp hrep hj he`. Use `⟨stTw x N m hc hh r hp, l', rfl, ?_, h1, h2, h3, h4, h5, h6, h7⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show HEq m.z.R.toRealDat.toLevCh _`. Rewrite using `[hm]`. Conclude with `(by with_unfolding_all exact ((HEq.refl (datTw x N).R.toRealDat.toLevCh) :))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restage_copy : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w} (x : St P) (l : LI hL x) (N : TwNew (Dof x)), ∃ (x' : St P) (l' : LI hL x'), x'.o = oTw x N ∧ HEq x'.m.z.R.toRealDat.toLevCh (GlobalTheory.Mem.R3.Tr.levCh (a := x.o.Z) (oTw x N).Z x.m.z.R.toRealDat.toLevCh) ∧ HEq l'.a.A.row (N.row l.a.A.row) ∧ HEq l'.Pq l.Pq ∧ HEq l'.rat.S (N.rat l.rat.S) ∧ HEq l'.rat.In.Sb l.rat.In.Sb ∧ HEq l'.rat.In.hL l.rat.In.hL ∧ HEq l'.rat.In.eig l.rat.In.eig ∧ HEq l'.rat.In.θ l.rat.In.θ := by
   intro hL K B f T w P x l N

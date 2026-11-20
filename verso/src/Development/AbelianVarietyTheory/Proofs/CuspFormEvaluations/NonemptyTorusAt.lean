@@ -16,9 +16,9 @@ open scoped ContDiff
 namespace GlobalTheory.ThetaWeight
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨A, -⟩` from `GlobalTheory.torusAtExists E r X.toData (fun φ => by`. Take `⟨u, hu, h⟩` from `X.EF_perf (-φ)`. Use `⟨u, hu, fun v => ?_⟩` and prove the remaining obligations. Establish `h1` using `h v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[EFf, neg_mul, map_neg, AddMonoidHom.neg_apply, Int.cast_neg]`. Conclude with `neg_injective h1) w0 hw x hx`. Conclude with `⟨A⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_torusAt {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : DataX E r)
     (w0 : 𝓞 E) (hw : ∀ u ∈ X.Λ, ∀ v ∈ X.Λ, ∃ k : ℤ,
@@ -35,17 +35,17 @@ theorem nonempty_torusAt {E : Type} [Field E] [NumberField E] [IsCMField E] {r :
   exact ⟨A⟩
 
 /- English proof (translation)
-Introduce `hT E _ _ _ r X hiso ⟨hw, hf1, hf2, hrd, hm⟩`. Choose the witnesses or unpack the hypotheses as in `⟨ps, hps⟩ : ∃ ps : Frame X.Ψ r → ℝ, ∀ x ∈ X.dom, ∃ A : TorusAt X.toData x, ps x = Real.log (∑ᶠ (a : Fin A.T.r → Vsp A.T.dim) (_ : a ∈ {a : Fin A.T.r → Vsp A.T.dim | (∀ j, a j ∈ ZSpan.fundamentalDomain A.T.b) ∧ (∀ j, ((5 : ℂ) ^ 2) • a j ∈ A.T.L) ∧ ∀ x ∈ A.T.L, ∃ c : Fin A.T.r → 𝓞 …`. Take `⟨w0, hw0⟩` from `hw`. Establish `h : ∀ x : Frame X.Ψ r, ∃ t : ℝ, x ∈ X.dom → ∃ A : TorusAt X.toData x, t = Real.log (∑ᶠ (a : Fin A.T.r → Vsp A.T.dim) (_ : a ∈ {a : Fin A.T.r → Vsp A.T.dim | (∀ j, a j ∈ ZSpan.fundamentalDomain A.T.b) ∧ (∀ j, ((5 : ℂ) ^ 2) • a j ∈ A.T.L) ∧ ∀ x ∈ A.T.L, ∃ c : Fin A.T.r → 𝓞 E, ∃ y ∈ …`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hx : x ∈ X.dom`. Take `⟨A⟩` from `nonempty_torusAt X w0 hw0 x hx`. Conclude with `⟨_, fun _ => ⟨A, rfl⟩⟩`. Conclude with `⟨0, fun h => absurd h hx⟩`. Use `choose ps hps using h`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨ps, hps⟩`. Take `⟨h1, h2⟩` from `GlobalTheory.T.log_theta_sum_invariant_smooth_alt E r X hiso hw ps hps`. Use `⟨ps, h1, h2, GlobalTheory.T.levi_log_theta_sum_alt E r X hiso hw ps hps, ?_⟩` and prove the remaining obligations. Take `⟨C, A', -, hC⟩` from `GlobalTheory.ThetaSumBound.growth_decay hT E r X hiso hf1 hf2 hrd hm`. Use `⟨⟨C, A', fun x hx => ?_⟩, fun η hη _ => ⟨C, A', fun x hx ξ hξ ht => ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hA⟩` from `hps x hx`. Rewrite using `[hA]`. Conclude with `(hC x hx A (GlobalTheory.TupleSumPos.tuple_sum_pos E r X x A)).1`. Take `⟨A, hA⟩` from `hps x hx`. Rewrite using `[hA]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `((hC x hx A (GlobalTheory.TupleSumPos.tuple_sum_pos E r X x A)).2 ξ hξ).trans ?_` and prove the remaining obligations. Establish `ht0 : 0 ≤ ⨅ τ, X.tt ξ x τ` using `Real.iInf_nonneg fun τ => zero_le_one.trans (ht τ)`. Establish `ha : 0 ≤ 1 / (2 * (5 : ℝ) ^ 4 * |(NumberField.discr E : ℝ)| ^ ((1 : ℝ) / X.Ψ.card))`. Check the signs of the components of the expression. Generalize the expression as in `1 / (2 * (5 : ℝ) ^ 4 * |(NumberField.discr E : ℝ)| ^ ((1 : ℝ) / X.Ψ.card)) = a at ha ⊢`.
+Establish an intermediate fact. Check the signs of the components of the expression. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `⨅ τ, X.tt ξ x τ = t at ht0 ⊢`. Use `mul_nonneg (mul_nonneg (mul_nonneg Real.pi_pos.le hη.le) ha) ht0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_weight : TStatement → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : DataX E r), (∃ ξ : Fin r → E, X.toData.IsIso ξ) → ((∃ w0 : 𝓞 E, ∀ u ∈ X.Λ, ∀ v ∈ X.Λ, ∃ k : ℤ, Algebra.trace ℚ E (X.ξ0 * herm X.Gm u (((w0 : E) - cc (w0 : E)) • v)) - Algebra.trace ℚ E (X.ξ0 * herm X.Gm u v) = 2 * k) ∧ (PT.f E : ℝ) ≤ PT.rd E ∧ (PT.f E : ℝ) ^ 2 ≤ PT.rd E ∧ 16 ≤ PT.rd E ∧ ∃ m : ℕ, 1 ≤ m ∧ m ^ 4 ≤ PT.f E ∧ (X.p0 ≤ m ∨ r - X.p0 ≤ m)) → ∃ ps : Frame X.Ψ r → ℝ, IsInvFn X.toData ps ∧ (∀ x0 ∈ X.dom, ContDiffOn ℝ ∞ (fun z => ps (cpt X.toData x0 z)) {z | cpt X.toData x0 z ∈ X.dom}) ∧ (∀ x0 ∈ X.dom, ∀ z, cpt X.toData x0 z ∈ X.dom → ∀ ξ : Fin (nd X.toData) → ℂ, -((r : ℝ) / 2 * leviM X.toData (phla X.toData (fun _ j => if X.p0 ≤ (j : ℕ) then 1 else -1)) x0 z ξ) ≤ leviM X.toData ps x0 z ξ) ∧ cfwM X.toData ps (1 / (2 * (5 : ℝ) ^ 4 * |(NumberField.discr E : ℝ)| ^ ((1 : ℝ) / X.Ψ.card))) := by
   intro hT E _ _ _ r X hiso ⟨hw, hf1, hf2, hrd, hm⟩

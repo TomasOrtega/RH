@@ -28,20 +28,20 @@ def row (S T : HSp D) (ξ : Fin T.rank → D.host.E) (y : WO S T) : Fin S.rank �
   fun j => ∑ c, ∑ d, incA D (star (ξ c) * T.gram c d) * y d j
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun _ _ => mul_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem along_add (a b : Fin S.rank → AE D) : along S T ξ (a + b) = along S T ξ a + along S T ξ b :=
   Matrix.ext fun _ _ => mul_add _ _ _
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun _ _ => mul_zero _`.
+A detailed English derivation is pending.
 -/
 theorem along_zero : along S T ξ 0 = 0 := Matrix.ext fun _ _ => mul_zero _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Establish `h1 : ∑ c, ∑ d, star (ξ c) * T.gram c d * ξ d = 0`. Rewrite using `[← h.2]`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `h2` using `congrArg (fun x => incA D x * a j) h1`. Simplify using `only [map_sum, Finset.sum_mul, map_zero, zero_mul] at h2`. Use `Eq.trans (Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_) h2` and prove the remaining obligations. Rewrite using `[RingHom.map_mul _ _ (ξ d), mul_assoc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem row_along (h : IsoVec T ξ) (a : Fin S.rank → AE D) : row S T ξ (along S T ξ a) = 0 := by
   funext j
@@ -56,9 +56,9 @@ theorem row_along (h : IsoVec T ξ) (a : Fin S.rank → AE D) : row S T ξ (alon
   rfl
 
 /- English proof (translation)
-Unfold `hO row`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [map_sum, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[RingHom.map_mul (cA D), GlobalTheory.DualPairCheck.cA_incA, star_mul', star_star, GlobalTheory.DualPairCheck.gram_star, RingHom.map_mul]`. Express the relevant statement in the definitionally equal form `_ * (incA D (ξ c) * a i) = _`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hO_along (a : Fin S.rank → AE D) (y : WO S T) :
     hO S T (along S T ξ a) y = ∑ i, ∑ j, incA D (S.gram⁻¹ i j) * cA D (row S T ξ y j) * a i := by
@@ -72,22 +72,22 @@ theorem hO_along (a : Fin S.rank → AE D) (y : WO S T) :
   ring
 
 /- English proof (translation)
-Simplify using `only [symplO, hO_along, h, Pi.zero_apply, RingHom.map_zero, mul_zero, zero_mul, Finset.sum_const_zero, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplO_along {y : WO S T} (h : row S T ξ y = 0) (a : Fin S.rank → AE D) : symplO S T (along S T ξ a) y = 0 := by
   simp only [symplO, hO_along, h, Pi.zero_apply, RingHom.map_zero, mul_zero, zero_mul, Finset.sum_const_zero, map_zero]
 
 /- English proof (translation)
-Rewrite using `[symplOH, symplO_along (row_along h b), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_along (h : IsoVec T ξ) (a b : Fin S.rank → AE D) :
     symplOH S T (along S T ξ a) (along S T ξ b) = 0 := by
   rw [symplOH, symplO_along (row_along h b), mul_zero]
 
 /- English proof (translation)
-Establish `e : actO S T 1 z y = HMul.hMul (matHom T z).1 y`. Unfold `actO`. Rewrite using `[inv_one]`. Conclude with `Matrix.mul_one _`. Rewrite using `[e, hz, Matrix.add_mul, Matrix.one_mul, add_comm, Matrix.smul_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `t * ∑ d, incA D (ξ i * ∑ c, star (ξ c) * T.gram c d) * y d j = incA D (ξ i) * (t * row S T ξ y j)`. Rewrite using `[row, Finset.sum_comm, mul_left_comm, Finset.mul_sum]`. Simplify using `only [RingHom.map_mul _ (ξ i), map_sum, Finset.sum_mul, Finset.mul_sum, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actO_transv {z : GA D T} {t : AE D} (hz : (matHom T z).1 = 1 + t • (nilM T ξ).map (incA D)) (y : WO S T) :
     actO S T 1 z y = along S T ξ (t • row S T ξ y) + y := by
@@ -103,7 +103,7 @@ theorem actO_transv {z : GA D T} {t : AE D} (hz : (matHom T z).1 = 1 + t • (ni
   simp only [RingHom.map_mul _ (ξ i), map_sum, Finset.sum_mul, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Take `⟨t, -, e⟩` from `exists_skew h hz`. Rewrite using `[actO_transv e, row_along h, smul_zero, along_zero, zero_add]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_along (h : IsoVec T ξ) {z : GA D T} (hz : z ∈ ZI T ξ) (a : Fin S.rank → AE D) :
     actO S T 1 z (along S T ξ a) = along S T ξ a := by
@@ -111,11 +111,11 @@ theorem actO_along (h : IsoVec T ξ) {z : GA D T} (hz : z ∈ ZI T ξ) (a : Fin 
   rw [actO_transv e, row_along h, smul_zero, along_zero, zero_add]
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty D.what₂.Tau` from `⟨D.eTau.symm 1⟩`. Establish `hinv : (gramAt D S τ)⁻¹ = (S.gram⁻¹).map (tauE D τ)` using `Matrix.inv_eq_right_inv (by`. Rewrite using `[gramAt, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ (GlobalTheory.LatVac.gram_det_isUnit S), Matrix.map_one _ (map_zero _) (map_one _)])`. Establish `hs : ∀ x, tauE D τ (star x) = star (tauE D τ x)` using `GlobalTheory.FockCompare.tauE_star τ`. Establish `h` using `(hS τ).inv.dotProduct_mulVec_pos (x := fun i => tauE D τ (star (m i))) fun h0 => hm (funext fun i => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrFun h0 i` as an intermediate fact. Simplify using `using this)`. Introduce `h0`. Use `h.ne' ?_` and prove the remaining obligations. Rewrite using `[← (tauE D τ).map_zero, ← h0, hinv]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [dotProduct, Matrix.mulVec, map_sum, map_mul, hs, Pi.star_apply, star_star, Matrix.map_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_ne_zero (hS : ∀ τ, (gramAt D S τ).PosDef) {m : Fin S.rank → D.host.E} (hm : m ≠ 0) :
     ∑ i, ∑ j, S.gram⁻¹ i j * star (m j) * m i ≠ 0 := by
@@ -134,7 +134,7 @@ theorem norm_ne_zero (hS : ∀ τ, (gramAt D S τ).PosDef) {m : Fin S.rank → D
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Use `haveI : Module.Finite D.host.F D.host.E := Module.finite_of_finrank_pos (by rw [D.sp.cm.deg2]; norm_num)`. Establish `h2 : ∀ x, incA D x = (1 : AF D.host.F) ⊗ₜ[D.host.F] x` using `fun x => rfl`. Rewrite using `[h2, h2, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, GlobalTheory.LatVac.trace_tmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_three (s : AF D.host.F) (a b c : D.host.E) :
     Algebra.trace (AF D.host.F) (AE D) (incA D a * ((s ⊗ₜ[D.host.F] b : AE D) * incA D c)) =
@@ -144,7 +144,7 @@ theorem trace_three (s : AF D.host.F) (a b c : D.host.E) :
   rw [h2, h2, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, GlobalTheory.LatVac.trace_tmul]
 
 /- English proof (translation)
-Rewrite using `[mul_left_comm, mul_assoc, ← map_mul, ← map_mul, show q⁻¹ * (1 / 2 * (2 • q)) = 1 by rw [nsmul_eq_mul]; push_cast; field_simp, map_one, mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem cancel_two {F R : Type} [Field F] [CharZero F] [CommRing R] [Algebra F R] (p : R) {q : F} (hq : q ≠ 0) :
     algebraMap F R (1 / 2) * (p * algebraMap F R q⁻¹ * algebraMap F R (2 • q)) = p := by
@@ -154,19 +154,17 @@ theorem cancel_two {F R : Type} [Field F] [CharZero F] [CommRing R] [Algebra F R
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Use `haveI : Module.Finite D.host.F D.host.E := Module.finite_of_finrank_pos (by rw [D.sp.cm.deg2]; norm_num)`. Take `⟨m, hm⟩ : ∃ m : Fin S.rank → D.host.E, ∀ j, row S T ξ (ratW T S x) j = incA D (m j)` from `⟨fun j => ∑ c, ∑ d, star (ξ c) * T.gram c d * x d j, fun j => by`. Simplify using `only [map_sum, RingHom.map_mul _ _ (x _ _)]`. Use the proof step `rfl⟩`. Establish `hm0 : m ≠ 0` using `fun h0 => hx (funext fun j => by rw [hm, h0, Pi.zero_apply, RingHom.map_zero]; rfl)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN` using `norm_ne_zero hS hm0`. Establish `hNs : star (∑ i, ∑ j, S.gram⁻¹ i j * star (m j) * m i) = ∑ i, ∑ j, S.gram⁻¹ i j * star (m j) * m i`. Simplify using `only [star_sum, star_mul', star_star, gramInv_star]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Establish `hh : ∀ t : AE D, hO S T (along S T ξ (t • row S T ξ (ratW T S x))) (ratW T S x) = t * incA D (∑ i, ∑ j, S.gram⁻¹ i j * star (m j) * m i)` using `fun t => by`. Simplify using `only [hO_along, Pi.smul_apply, hm, GlobalTheory.DualPairCheck.cA_incA, map_sum, RingHom.map_mul, Finset.mul_sum, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Generalize the expression as in `∑ i, ∑ j, S.gram⁻¹ i j * star (m j) * m i = N at hN hNs hh`. Establish `hx0` using `GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg D`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨q, hq⟩` from `(D.sp.cm.fixed (D.host.xi0 * (D.host.xi0 * N))).1 (by`. Rewrite using `[star_mul', star_mul', hx0, hNs, neg_mul, neg_mul, mul_neg, neg_neg])`. Establish `hq0 : q ≠ 0` using `fun h0 => by`. Rewrite `hq` using `[h0, map_zero]`. Conclude with `mul_ne_zero (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D) (mul_ne_zero (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D) hN) hq.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `Formalism.L2.G.Triv.exists_place (F := D.host.F) 2 Nat.prime_two`. Take `⟨e, e1, e2, e3, -⟩` from `GlobalTheory.SplitIdem.exists_split_idempotent D v (by exact_mod_cast hv)`. Take `⟨y, hy⟩` from `GlobalTheory.StdCharLocal.psiV_ne_one D ψ hψ v`. Take `⟨s, hs1, hs2⟩ : ∃ s : AF D.host.F, pairA D.host.F 0 (singleV D.host.F v 1) * s = s ∧ ψ (algebraMap D.host.F _ (1 / 2) * (s * algebraMap D.host.F _ (2 • q))) ≠ 1` from `⟨GlobalTheory.SplitIdem.placeHom D.host.F v y * algebraMap D.host.F _ q⁻¹, (mul_assoc _ _ _).symm.trans (congrArg (· * _) (((GlobalTheory.SplitIdem.placeHom D.host.F v).map_mul' 1 y).symm.trans (congrArg _ (one_mul y)))), by rw [cancel_two _ hq0]; exact hy⟩`. Take `⟨z, hz⟩ : ∃ z : GA D T, (matHom T z).1 = 1 + (s ⊗ₜ[D.host.F] D.host.xi0 : AE D) • (nilM T ξ).map (incA D)` from `⟨tv (AF D.host.F) D.sp.cm.sig (nilM_sq h) (nilM_adj T ξ) _ (skew_tmul _ _ hx0 s), rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨e, ⟨e1, e2, v, _, ⟨_, rfl, GlobalTheory.SplitIdem.evalV_singleV_same _ v 1, fun w hw => GlobalTheory.SplitIdem.evalV_singleV_ne _ v 1 hw⟩, e3⟩, z, Subgroup.subset_closure ⟨_, by rw [hz, add_sub_cancel_left]⟩, fun i j => ?_, _, actO_transv hz _, ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.Theta.mt, hz, add_sub_cancel_left, e3, Matrix.smul_apply, smul_eq_mul, ← mul_assoc]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(pairA D.host.F 0 (singleV D.host.F v 1) ⊗ₜ[D.host.F] (1 : D.host.E)) * _ = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, hs1]`.
-
-Rewrite using `[symplOH, symplO, hh, trace_three, ← hq, Algebra.trace_algebraMap, D.sp.cm.deg2]`. Conclude with `hs2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_transv (hψ : IsStdChar D ψ (-1)) (hS : ∀ τ, (gramAt D S τ).PosDef) (h : IsoVec T ξ)
     (x : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (hx : row S T ξ (ratW T S x) ≠ 0) :
@@ -216,7 +214,7 @@ theorem exists_transv (hψ : IsStdChar D ψ (-1)) (hS : ∀ τ, (gramAt D S τ).
     exact hs2
 
 /- English proof (translation)
-Establish `h : symplOH S T 0 w = 0`. Use `symplOH_add_left (S := S) (T := T) 0 0 w` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.1 this`. Rewrite using `[heisO, h, ψ.map_zero_eq_one, one_mul, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heisO_at_zero (w : WO S T) (g : WO S T → ℂ) : heisO ψ S T w g 0 = g w := by
   have h : symplOH S T 0 w = 0 := by
@@ -226,7 +224,7 @@ theorem heisO_at_zero (w : WO S T) (g : WO S T → ℂ) : heisO ψ S T w g 0 = g
   rw [heisO, h, ψ.map_zero_eq_one, one_mul, zero_add]
 
 /- English proof (translation)
-Rewrite using `[heisO, add_comm, hg.quasi, ← mul_assoc, ← ψ.map_add_eq_mul, symplOH, symplOH, symplO_skew w, mul_neg, neg_neg, ← add_mul, ← map_add, add_halves, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem heisO_rat {g : WO S T → ℂ} (hg : IsThetaFunO ψ S T g) (x : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (w : WO S T) :
     heisO ψ S T (ratW T S x) g w = ψ (symplO S T w (ratW T S x)) * g w := by
@@ -234,7 +232,7 @@ theorem heisO_rat {g : WO S T → ℂ} (hg : IsThetaFunO ψ S T g) (x : Matrix (
     ← map_add, add_halves, map_one, one_mul]
 
 /- English proof (translation)
-Rewrite using `[symplOH, ← add_mul, ← map_add, add_halves, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_eq_add (x y : WO S T) : symplO S T x y = symplOH S T x y + symplOH S T x y := by
   rw [symplOH, ← add_mul, ← map_add, add_halves, map_one, one_mul]
@@ -243,7 +241,7 @@ def alongHom (S T : HSp D) (ξ : Fin T.rank → D.host.E) : (Fin S.rank → AE D
   AddMonoidHom.mk' (along S T ξ) along_add
 
 /- English proof (translation)
-Establish `: IsModuleTopology (AF D.host.F) (AE D)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AE D)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Conclude with `continuous_pi fun i => continuous_pi fun j => continuous_const.mul (continuous_apply j)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_along : Continuous (along S T ξ) := by
   have : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩
@@ -251,7 +249,7 @@ theorem continuous_along : Continuous (along S T ξ) := by
   exact continuous_pi fun i => continuous_pi fun j => continuous_const.mul (continuous_apply j)
 
 /- English proof (translation)
-Introduce `a b e` and use `funext fun j => by obtain ⟨i, hi⟩ := Function.ne_iff.1 h have h1 : incA D (ξ i) * a j = incA D (ξ i) * b j := congrFun (congrFun e i) j exact ((Ne.isUnit hi).map (incA D)).mul_left_cancel h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem along_injective (h : ξ ≠ 0) : Function.Injective (along S T ξ) := fun a b e => funext fun j => by
   obtain ⟨i, hi⟩ := Function.ne_iff.1 h
@@ -259,7 +257,7 @@ theorem along_injective (h : ξ ≠ 0) : Function.Injective (along S T ξ) := fu
   exact ((Ne.isUnit hi).map (incA D)).mul_left_cancel h1
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `hγ`. Establish `hx' : ratW T S x = along S T ξ γ` using `hx`. Use `hg.quasi x (along S T ξ y)` as an intermediate fact. Rewrite `this` using `[hx', symplOH_along h, neg_zero, ψ.map_zero_eq_one, one_mul, ← along_add]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem periodic (h : IsoVec T ξ) {g : WO S T → ℂ} (hg : IsThetaFunO ψ S T g) {γ : Fin S.rank → AE D}
     (hγ : γ ∈ (ratL T S).comap (alongHom S T ξ)) (y : Fin S.rank → AE D) :
@@ -272,7 +270,7 @@ theorem periodic (h : IsoVec T ξ) {g : WO S T → ℂ} (hg : IsThetaFunO ψ S T
 variable {χS χT : (AE D)ˣ →* Circle} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
 
 /- English proof (translation)
-Rewrite using `[hW.om_heis _ _ _ _ hg, actO_along h hz, heisO_at_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem om_along (hW : IsWeilDatumO ψ S T χS χT om) (h : IsoVec T ξ) {z : GA D T} (hz : z ∈ ZI T ξ) {g : WO S T → ℂ}
     (hg : IsThetaFunO ψ S T g) (a : Fin S.rank → AE D) :
@@ -280,13 +278,13 @@ theorem om_along (hW : IsWeilDatumO ψ S T χS χT om) (h : IsoVec T ξ) {z : GA
   rw [hW.om_heis _ _ _ _ hg, actO_along h hz, heisO_at_zero]
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem om_mul (z z' : GA D T) (g : WO S T → ℂ) : om (1, z * z') g = om (1, z) (om (1, z') g) := by
   rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]
 
 /- English proof (translation)
-Establish `hg'` using `hW.om_pres (1, z) g hg`. Rewrite using `[om_mul, ← om_along hW h hz hg', hW.om_aut 1 (one_mem _) γ hγ _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hW.std hg' _), heisO_at_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem om_rat_along (hW : IsWeilDatumO ψ S T χS χT om) (h : IsoVec T ξ) {γ : GA D T} (hz : γ ∈ ZI T ξ) (hγ : γ ∈ GQ T)
     (z : GA D T) {g : WO S T → ℂ} (hg : IsThetaFunO ψ S T g) (a : Fin S.rank → AE D) :
@@ -296,11 +294,11 @@ theorem om_rat_along (hW : IsWeilDatumO ψ S T χS χT om) (h : IsoVec T ξ) {γ
     heisO_at_zero]
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `hW.std.2.1`. Take `⟨⟨e, he⟩, -⟩` from `transvection_group D θ T hθ ξ h`. Take `⟨K, hK, hKx⟩` from `GlobalTheory.AdeleCocompact.exists_compact_adele D.host.F`. Take `⟨C, hC⟩` from `GlobalTheory.WeilSupBound.exists_sup_bound D ψ S T χS χT om hW f hf ((fun a => ((1 : GA D S), (e (Multiplicative.ofAdd a) : GA D T))) '' K) (hK.image (continuous_const.prodMk (continuous_subtype_val.comp (e.continuous.comp continuous_ofAdd))))`. Use `⟨C, fun z a => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, rfl⟩` from `e.surjective z`. Take `⟨x, hx⟩` from `hKx s.toAdd`. Establish `e1 : e s = e (Multiplicative.ofAdd (algebraMap _ _ x)) * e (Multiplicative.ofAdd (s.toAdd - algebraMap _ _ x))`. Rewrite using `[← map_mul, ← ofAdd_add, add_sub_cancel, ofAdd_toAdd]`. Rewrite using `[e1, Subgroup.coe_mul, om_rat_along hW h (SetLike.coe_mem _) ((he (Multiplicative.ofAdd (algebraMap _ _ x))).2 ⟨x, rfl⟩) _ hf]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hC _ ⟨_, hx, rfl⟩ _`.
+A detailed English derivation is pending.
 -/
 theorem exists_bound (hW : IsWeilDatumO ψ S T χS χT om) (h : IsoVec T ξ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     ∃ C : ℝ, ∀ z : ZI T ξ, ∀ a, ‖om (1, (z : GA D T)) f (along S T ξ a)‖ ≤ C := by
@@ -319,9 +317,9 @@ theorem exists_bound (hW : IsWeilDatumO ψ S T χS χT om) (h : IsoVec T ξ) {f 
   exact hC _ ⟨_, hx, rfl⟩ _
 
 /- English proof (translation)
-Take `⟨e, he, z, hz, hs, b, hb, hu⟩` from `exists_transv hW.std hS h x hx`. Take `⟨r, hr, H⟩` from `GlobalTheory.T.splitPlaceTransvection_acts_positively_invariant_forms D ψ S T χS χT om hW ξ h e he z hz hs`. Use `⟨z, hz, ψ (symplOH S T (along S T ξ b) (ratW T S x)) * r, fun h1 => hu ?_, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg norm h1`. Rewrite `h2` using `[norm_mul, hW.std.1.2.1, one_mul, norm_one, Complex.norm_real, Real.norm_of_nonneg hr.le]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2, Complex.ofReal_one, mul_one]`. Then use the resulting hypothesis. Rewrite using `[mul_assoc, ← H ℓ hℓ _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hW.std hg _), hW.om_heis _ _ _ _ hg, hb, ← hℓ b _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hW.std (hW.om_pres _ _ hg) _), heisO_heisO, map_smul, smul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_eigen (hW : IsWeilDatumO ψ S T χS χT om) (hS : ∀ τ, (gramAt D S τ).PosDef) (h : IsoVec T ξ)
     (ℓ : (WO S T → ℂ) →ₗ[ℂ] ℂ) (hℓ : ∀ a f, IsThetaFunO ψ S T f → ℓ (heisO ψ S T (along S T ξ a) f) = ℓ f)
@@ -340,37 +338,31 @@ theorem exists_eigen (hW : IsWeilDatumO ψ S T χS χT om) (hS : ∀ τ, (gramAt
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT om hW hS ξ h μ 𝓕 hμ h𝓕 f hf a`. Establish `hψ` using `hW.std`. Take `⟨θ, hθ⟩` from `hψ.2.1`. Use `haveI : Module.Finite D.host.F D.host.E := Module.finite_of_finrank_pos (by rw [D.sp.cm.deg2]; norm_num)`. Establish `: IsTopologicalGroup (GA D T)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: BorelSpace (GA D T)` using `⟨rfl⟩`. Establish `: Countable (GQ T)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig T.gram`. Establish `: BorelSpace (ZI T ξ)` using `Subtype.borelSpace (ZI T ξ : Set (GA D T))`. Establish `: Countable ((GQ T).subgroupOf (ZI T ξ))` using `Function.Injective.countable (f := fun γ : (GQ T).subgroupOf (ZI T ξ) => (⟨γ.1.1, γ.2⟩ : GQ T)) fun a b h => Subtype.ext (Subtype.ext (congrArg (fun x : GQ T => (x : GA D T)) h))`. Take `⟨⟨ε, -⟩, -⟩` from `transvection_group D θ T hθ ξ h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfin` using `((GlobalTheory.TransvMeasure.transvection_measure D θ T hθ ξ h).2.1 μ 𝓕 hμ h𝓕).2`. Establish `hc : ∀ a b : ZI T ξ, a * b = b * a` using `fun a b => by`. Take `⟨a, rfl⟩` from `ε.surjective a`. Take `⟨b, rfl⟩` from `ε.surjective b`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: LocallyCompactSpace (AF D.host.F)` using `GlobalTheory.AdelicUnitaryTop.locallyCompact_adele _`. Establish `: SecondCountableTopology (AF D.host.F)` using `GlobalTheory.AdelicUnitaryTop.secondCountable_adele _`. Establish `: T2Space (AF D.host.F)` using `GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField _`. Establish `: IsModuleTopology (AF D.host.F) (AE D)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AE D)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := D.host.F) (E := D.host.E) (AF D.host.F)`. Establish `: LocallyCompactSpace (AE D)` using `e.isClosedEmbedding.locallyCompactSpace`. Establish `: SecondCountableTopology (AE D)` using `e.secondCountableTopology`. Establish `: T2Space (AE D)` using `e.isEmbedding.t2Space`. Use `letI : MeasurableSpace (Fin S.rank → AE D) := borel _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `: BorelSpace (Fin S.rank → AE D)` using `⟨rfl⟩`. Set `Γ` to `(ratL T S).comap (alongHom S T ξ)`. Establish `: DiscreteTopology (ratL T S)` using `(GlobalTheory.AdelicMatrixLattice.lattice D T S).2.2.2.2.1`. Establish `: DiscreteTopology Γ` using `DiscreteTopology.of_continuous_injective (β := ratL T S) (f := fun γ => ⟨along S T ξ γ.1, γ.2⟩) ((continuous_along.comp continuous_subtype_val).subtype_mk _) fun a b e => Subtype.ext (along_injective h.1 (congrArg Subtype.val e))`. Take `⟨K, hK, hx⟩` from `GlobalTheory.AdelicMatrixLattice.cocompact_tensor (F := D.host.F) (E := D.host.E) (AF D.host.F) (GlobalTheory.AdeleCocompact.exists_compact_adele D.host.F)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose c hcK using hx`. Establish `hK' : IsCompact (Set.univ.pi fun _ : Fin S.rank => K)` using `isCompact_univ_pi fun _ => hK`. Establish `hcov : ∀ y : Fin S.rank → AE D, ∃ γ ∈ Γ, γ + y ∈ Set.univ.pi fun _ : Fin S.rank => K` using `fun y => ⟨fun j => incA D (c (y j)), ⟨vecMulVec ξ fun j => c (y j), Matrix.ext fun _ _ => RingHom.map_mul (incA D) _ _⟩, fun j _ => hcK (y j)⟩`. Establish `: Countable Γ` using `GlobalTheory.countable_of_discrete_addSubgroup Γ`. Take `⟨G, -, -, hG⟩` from `GlobalTheory.exists_isAddFundamentalDomain_addSubgroup Γ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ν, hν⟩ : ∃ ν : Measure (Fin S.rank → AE D), ν.IsAddHaarMeasure` from `⟨Measure.addHaar, inferInstance⟩`. Establish `: IsFiniteMeasure (ν.restrict G)` using `isFiniteMeasure_restrict.2 (measure_addFundamentalDomain_lt_top_of_cocompact Γ hK' hcov ν (hG ν)).ne`. Establish `hint : ∀ g, IsThetaFunO ψ S T g → Integrable (fun y => g (along S T ξ y)) (ν.restrict G)` using `fun g hg => by`. Take `⟨B, hB⟩` from `theta_bounded hψ hg`. Conclude with `Integrable.of_bound (hg.cont.comp continuous_along).aestronglyMeasurable B (.of_forall fun _ => hB _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `N : Submodule ℂ (WO S T → ℂ)` to `{ carrier := {g | IsThetaFunO ψ S T g} add_mem' := theta_add zero_mem' := theta_zero smul_mem' := fun a _ hg => theta_smul a hg }`. Take `⟨ℓ, hℓ⟩` from `LinearMap.exists_extend (p := N) (V' := ℂ) { toFun := fun g => ∫ y in G, g.1 (along S T ξ y) ∂ν map_add' := fun p q => integral_add (hint _ p.2) (hint _ q.2) map_smul' := fun c p => integral_smul c fun y => p.1 (along S T ξ y) }`. Use `replace hℓ : ∀ g, IsThetaFunO ψ S T g → ℓ g = ∫ y in G, g (along S T ξ y) ∂ν := fun g hg => LinearMap.congr_fun hℓ ⟨g, hg⟩`. Establish `hinv : ∀ b g, IsThetaFunO ψ S T g → ℓ (heisO ψ S T (along S T ξ b) g) = ℓ g` using `fun b g hg => by`. Rewrite using `[hℓ _ hg, hℓ _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hg _), ← GlobalTheory.AverageConst.setIntegral_add_left add_comm Γ ν (hG ν) (fun y => g (along S T ξ y)) (fun γ hγ y => periodic h hg hγ y) b]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `integral_congr_ae (.of_forall fun y => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ψ (symplOH S T (along S T ξ y) (along S T ξ b)) * g (along S T ξ y + along S T ξ b) = g (along S T ξ (b + y))`. Rewrite using `[symplOH_along h, ψ.map_zero_eq_one, one_mul, ← along_add, add_comm y]`. Take `⟨C, hC⟩` from `exists_bound hW h hf`. Establish `key` using `GlobalTheory.AverageConst.average_const Γ hK' hcov (fun (x : Matrix (Fin T.rank) (Fin S.rank) D.host.E) y => ψ (symplO S T (along S T ξ y) (ratW T S x))) (fun x => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [symplO_eq_add]`. Conclude with `hψ.1.1.comp ((continuous_symplOH continuous_along continuous_const).add (continuous_symplOH continuous_along continuous_const)))`. Use the proof step `(fun x y y' => by rw [← ψ.map_add_eq_mul, along_add, symplO_eq_add, symplO_eq_add, symplO_eq_add, symplOH_add_left, add_add_add_comm])`. Use the proof step `(fun x x' y => by`. Rewrite using `[← ψ.map_add_eq_mul, show ratW T S (x + x') = ratW T S x + ratW T S x' from Matrix.map_add _ (incA D).map_add _ _, symplO_eq_add, symplO_eq_add, symplO_eq_add, symplOH_add_right, add_add_add_comm])`.
+Prove the first alternative. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(fun y => by`. Rewrite using `[symplO_along (funext fun j => by simp [row, ratW]), ψ.map_zero_eq_one])`. Use the proof step `(fun _ _ => hψ.1.2.1 _)`. Use the proof step `(fun y => (Iff.intro (fun H _ ⟨x, e⟩ => e ▸ H x) fun H x => H _ ⟨x, rfl⟩).trans (GlobalTheory.RatAnnih.ratL_annihilator D ψ hψ S T _))`. Use `ν (hG ν) hc _ μ h𝓕 hfin (fun z y => om (1, (z : GA D T)) f (along S T ξ y))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun y => (hW.om_cont f hf _).comp (continuous_const.prodMk continuous_subtype_val))`. Use the proof step `(fun z => (hW.om_pres _ f hf).cont.comp continuous_along) hC`. Use the proof step `(fun γ hγ z y => om_rat_along hW h γ.2 hγ _ hf y)`. Use the proof step `(fun γ hγ z y => periodic h (hW.om_pres _ f hf) hγ y)`. Use the proof step `(fun x => by`.
-
-Distinguish the cases in `hx : row S T ξ (ratW T S x) = 0`. Conclude with `Or.inl fun y => by rw [symplO_along hx, ψ.map_zero_eq_one]`. Take `⟨z₁, hz, c, hc1, H⟩` from `exists_eigen hW hS h ℓ hinv x hx`. Use `Or.inr ⟨⟨z₁, hz⟩, c, hc1, fun z => ?_⟩` and prove the remaining obligations. Establish `h1` using `hW.om_pres (1, (z : GA D T)) f hf`.
-
-Establish `h2` using `hW.om_pres (1, z₁) _ h1`. Use `H _ h1` as an intermediate fact. Rewrite `this` using `[hℓ _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ h1 _), hℓ _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ h2 _)]`. Simplify `this) a` using `only [heisO_rat h1, heisO_rat h2, Subgroup.coe_mul, om_mul]`. Simplify using `only [along_zero] at key`.
-
-Rewrite using `[← key]`. Conclude with `integral_congr_ae (.of_forall fun z => om_along hW h z.2 hf a)`.
+A detailed English derivation is pending.
 -/
 theorem constantTerm_heisO_along : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → (∀ τ, (gramAt D S τ).PosDef) → ∀ ξ, IsoVec T ξ → ∀ (μ : Measure (ZI T ξ)) (𝓕 : Set (ZI T ξ)), μ.IsHaarMeasure → IsFundamentalDomain ((GQ T).subgroupOf (ZI T ξ)) 𝓕 μ → ∀ f, IsThetaFunO ψ S T f → ∀ a, ∫ z in 𝓕, om (1, (z : GA D T)) (heisO ψ S T (along S T ξ a) f) 0 ∂μ = ∫ z in 𝓕, om (1, (z : GA D T)) f 0 ∂μ := by
   intro D ψ S T χS χT om hW hS ξ h μ 𝓕 hμ h𝓕 f hf a

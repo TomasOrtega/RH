@@ -19,15 +19,15 @@ def EntryBd {n : ℕ} (f : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n)
 variable {n : ℕ} {f : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ}
 
 /- English proof (translation)
-Unfold `Formalism.REAL.hs`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem hs_nonneg (g : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ Formalism.REAL.hs g := by
   unfold Formalism.REAL.hs; positivity
 
 /- English proof (translation)
-Use `⟨1, fun g i j => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖g i j‖ ^ 2 ≤ Formalism.REAL.hs g`. Unfold `Formalism.REAL.hs`. Use `le_trans ?_ (Finset.single_le_sum (f := fun i => ∑ j, ‖g i j‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j => ‖g i j‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ j)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[sq_nonneg (‖g i j‖ - 1), hs_nonneg g]`.
+A detailed English derivation is pending.
 -/
 theorem entryBd_id : EntryBd (fun g : Matrix (Fin n) (Fin n) ℂ => g) := by
   refine ⟨1, fun g i j => ?_⟩
@@ -39,18 +39,16 @@ theorem entryBd_id : EntryBd (fun g : Matrix (Fin n) (Fin n) ℂ => g) := by
   nlinarith [sq_nonneg (‖g i j‖ - 1), hs_nonneg g]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Conclude with `⟨c, fun g i j => by simpa [conjTranspose_apply] using hc g j i⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem EntryBd.conjTranspose (h : EntryBd f) : EntryBd fun g => (f g)ᴴ := by
   obtain ⟨c, hc⟩ := h
   exact ⟨c, fun g i j => by simpa [conjTranspose_apply] using hc g j i⟩
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Use `⟨(∑ i, ∑ k, ‖P i k‖) * |c|, fun g i j => ?_⟩` and prove the remaining obligations. Establish `h0` using `hs_nonneg g`. Use `show ‖(P * f g) i j‖ ≤ _`. Rewrite using `[Matrix.mul_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left ((hc g k j).trans (mul_le_mul_of_nonneg_right (le_abs_self c) (by linarith))) (norm_nonneg _)`. Use `_ = (∑ k, ‖P i k‖) * (|c| * (1 + Formalism.REAL.hs g)) := by rw [Finset.sum_mul]`.
-
-Use `_ ≤ (∑ i, ∑ k, ‖P i k‖) * (|c| * (1 + Formalism.REAL.hs g)) := mul_le_mul_of_nonneg_right (Finset.single_le_sum (f := fun i => ∑ k, ‖P i k‖) (fun _ _ => by positivity) (Finset.mem_univ i)) (by positivity)`. Use `_ = _ := by ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EntryBd.const_mul (h : EntryBd f) (P : Matrix (Fin n) (Fin n) ℂ) : EntryBd fun g => P * f g := by
   obtain ⟨c, hc⟩ := h
@@ -70,15 +68,15 @@ theorem EntryBd.const_mul (h : EntryBd f) (P : Matrix (Fin n) (Fin n) ℂ) : Ent
     _ = _ := by ring
 
 /- English proof (translation)
-Simplify using `using (h.conjTranspose.const_mul Pᴴ).conjTranspose`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem EntryBd.mul_const (h : EntryBd f) (P : Matrix (Fin n) (Fin n) ℂ) : EntryBd fun g => f g * P := by
   simpa using (h.conjTranspose.const_mul Pᴴ).conjTranspose
 
 /- English proof (translation)
-Establish `h1 : A.fr τ * (A.fr τ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (A.fr_unit τ))`. Establish `hk' : kᴴ * Formalism.REAL.Jm (A.ε τ) * k = Formalism.REAL.Jm (A.ε τ)` using `hk`. Establish `h3 : ((A.fr τ)⁻¹)ᴴ * (A.fr τ)ᴴ = 1` using `by rw [← conjTranspose_mul, h1, conjTranspose_one]`. Use `show _ᴴ * _ * _ = _`. Rewrite using `[← A.fr_gram τ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem frame_mem {D : D7} {V : HSp D} (A : GlobalTheory.ChainFr.Fr V) (τ : D.what₂.Tau)
     {k : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hk : k ∈ Formalism.MainNotions.S.UJset (A.ε τ)) :
@@ -93,17 +91,17 @@ theorem frame_mem {D : D7} {V : HSp D} (A : GlobalTheory.ChainFr.Fr V) (τ : D.w
     _ = _ := by rw [h1, h3, Matrix.mul_one, Matrix.mul_one, hk']
 
 /- English proof (translation)
-Introduce `D θ hθ V A τ`. Take `⟨d, hd⟩` from `GlobalTheory.Grow.height_le_normInf_pow V hθ`. Establish `b1` using `(entryBd_id.const_mul (A.fr τ)⁻¹).mul_const (A.fr τ)`. Take `⟨c2, h2⟩` from `(b1.conjTranspose.const_mul (gramAt D V τ)⁻¹).mul_const (gramAt D V τ)`. Take `⟨c1, h1⟩` from `b1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨(∑ _ρ : D.what₂.Tau, ∑ _i : Fin V.rank, ∑ _j : Fin V.rank, (|c1| + |c2| + 2)) ^ d, d, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hu` using `frame_mem A τ hg`. Establish `s1` using `GlobalTheory.PointAtPlaceHom.atTau_spec hθ V τ hu`. Establish `s2` using `GlobalTheory.PointAtPlaceHom.isAtTau_inv V τ hu s1`. Establish `h0` using `hs_nonneg g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hd _ s1.1).trans ?_` and prove the remaining obligations. Rewrite using `[← mul_pow]`. Use `pow_le_pow_left₀ (by unfold normInf; positivity) ?_ d` and prove the remaining obligations. Unfold `normInf`. Simplify using `only [Finset.sum_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_le_sum fun ρ _ => Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Establish `a1` using `mul_nonneg (abs_nonneg c1) h0`. Establish `a2` using `mul_nonneg (abs_nonneg c2) h0`. Distinguish the cases in `e : ρ = τ`. Substitute `e` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[s1.2.1, s2.2.1]`. Establish `e1` using `(h1 g i j).trans (mul_le_mul_of_nonneg_right (le_abs_self c1) (by linarith))`. Establish `e2` using `(h2 g i j).trans (mul_le_mul_of_nonneg_right (le_abs_self c2) (by linarith))`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[s1.2.2 ρ e, s2.2.2 ρ e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: ‖(1 : Matrix (Fin V.rank) (Fin V.rank) ℂ) i j‖ ≤ 1`. Apply the tactic sequence `rw [Matrix.one_apply]; split_ifs <;> simp`. Use polynomial arithmetic with `[abs_nonneg c1, abs_nonneg c2]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem height_elt_le : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (A : GlobalTheory.ChainFr.Fr V) (τ : D.what₂.Tau), ∃ (C : ℝ) (m : ℕ), ∀ g ∈ Formalism.MainNotions.S.UJset (A.ε τ), GlobalTheory.Grow.height V (A.elt θ τ g) ≤ C * (1 + Formalism.REAL.hs g) ^ m := by
   intro D θ hθ V A τ

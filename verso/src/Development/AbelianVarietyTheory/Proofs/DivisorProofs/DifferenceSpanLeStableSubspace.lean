@@ -13,11 +13,9 @@ open GlobalTheory.PrinTwo
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `ha : valuation k (a : k) ≠ 0` using `by simp`. Rewrite `h` using `[map_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[inv_mul_cancel_left₀ ha]`. Use `_ ≤ (valuation k (a : k))⁻¹ * (valuation k (a : k) * valuation k u) := by gcongr`. Use `_ = valuation k u := by rw [inv_mul_cancel_left₀ ha]`. Introduce `h`. Rewrite using `[map_mul, map_mul]`.
-
-Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_mul_le_val_mul_iff (a : kˣ) (w u : k) :
     valuation k ((a : k) * w) ≤ valuation k ((a : k) * u) ↔ valuation k w ≤ valuation k u := by
@@ -33,9 +31,9 @@ theorem val_mul_le_val_mul_iff (a : kˣ) (w u : k) :
     rw [map_mul, map_mul]; gcongr
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `MulArchimedean.arch (valuation k z / valuation k (s : k)) ht`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hs : valuation k (s : k) ≠ 0` using `by simp`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[div_mul_cancel₀ _ hs]`. Use `_ ≤ valuation k (t : k) ^ n * valuation k (s : k) := by gcongr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow (t : kˣ) (ht : 1 < valuation k (t : k)) (z : k) (s : kˣ) :
     ∃ n : ℕ, valuation k z ≤ valuation k (((t ^ n * s : kˣ)) : k) := by
@@ -48,7 +46,7 @@ theorem exists_pow (t : kˣ) (ht : 1 < valuation k (t : k)) (z : k) (s : kˣ) :
     _ ≤ valuation k (t : k) ^ n * valuation k (s : k) := by gcongr
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ball_iff {c x : k} {r : kˣ} :
     x ∈ ball c r ↔ valuation k (x - c) ≤ valuation k (r : k) := Iff.rfl
@@ -60,7 +58,7 @@ theorem elemDiff_apply (c c' : k) (r : kˣ) (x : k) :
     elemDiff c c' r x = (ball c r).indicator 1 x - (ball c' r).indicator 1 x := rfl
 
 /- English proof (translation)
-Simplify using `only [Set.indicator_apply, mem_ball_iff, Pi.one_apply]`. Rewrite using `[show x + y - c = x - (c - y) by ring]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem indicator_ball_shift (c y x : k) (r : kˣ) :
     (ball c r).indicator (1 : k → ℂ) (x + y) = (ball (c - y) r).indicator 1 x := by
@@ -69,16 +67,16 @@ theorem indicator_ball_shift (c y x : k) (r : kˣ) :
   rw [show x + y - c = x - (c - y) by ring]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [elemDiff_apply, indicator_ball_shift]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem elemDiff_shift (c c' y : k) (r : kˣ) :
     (fun x => elemDiff c c' r (x + y)) = elemDiff (c - y) (c' - y) r := by
   funext x; simp only [elemDiff_apply, indicator_ball_shift]
 
 /- English proof (translation)
-Simplify using `only [Set.indicator_apply, mem_ball_iff, Pi.one_apply]`. Establish `h1 : (a : k) * x - c = (a : k) * (x - ((a⁻¹ : kˣ) : k) * c)`. Rewrite using `[mul_sub, ← mul_assoc, Units.mul_inv, one_mul]`. Establish `h2 : (r : k) = (a : k) * ((a⁻¹ * r : kˣ) : k)`. Rewrite using `[Units.val_mul, ← mul_assoc, Units.mul_inv, one_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : valuation k ((a : k) * x - c) ≤ valuation k (r : k) ↔ valuation k (x - ((a⁻¹ : kˣ) : k) * c) ≤ valuation k ((a⁻¹ * r : kˣ) : k)`. Rewrite using `[h1, h2, val_mul_le_val_mul_iff]`. Simplify using `only [key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem indicator_ball_dilate (c x : k) (r a : kˣ) :
     (ball c r).indicator (1 : k → ℂ) ((a : k) * x) =
@@ -95,7 +93,7 @@ theorem indicator_ball_dilate (c x : k) (r a : kˣ) :
   simp only [key]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [elemDiff_apply, indicator_ball_dilate]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem elemDiff_dilate (c c' : k) (r a : kˣ) :
     (fun x => elemDiff c c' r ((a : k) * x)) =
@@ -103,25 +101,23 @@ theorem elemDiff_dilate (c c' : k) (r a : kˣ) :
   funext x; simp only [elemDiff_apply, indicator_ball_dilate]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [mem_ball_iff, h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ball_congr (c : k) {r r' : kˣ} (h : valuation k (r : k) = valuation k (r' : k)) :
     ball c r = ball c r' := by
   ext x; simp only [mem_ball_iff, h]
 
 /- English proof (translation)
-Simplify using `only [elemDiff, ball_congr c h, ball_congr c' h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem elemDiff_congr (c c' : k) {r r' : kˣ} (h : valuation k (r : k) = valuation k (r' : k)) :
     elemDiff c c' r = elemDiff c c' r' := by
   simp only [elemDiff, ball_congr c h, ball_congr c' h]
 
 /- English proof (translation)
-Establish `hb : ball c r = ball c' r`. Use extensionality with `x`. Simplify using `only [mem_ball_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show x - c' = (x - c) - (c' - c) by ring]`. Conclude with `(valuation k).map_sub_le hx h`. Introduce `hx`. Rewrite using `[show x - c = (x - c') + (c' - c) by ring]`. Conclude with `(valuation k).map_add_le hx h`.
-
-Simplify using `[elemDiff, hb]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem elemDiff_eq_zero {c c' : k} {r : kˣ} (h : valuation k (c' - c) ≤ valuation k (r : k)) :
     elemDiff c c' r = 0 := by
@@ -138,7 +134,7 @@ theorem elemDiff_eq_zero {c c' : k} {r : kˣ} (h : valuation k (c' - c) ≤ valu
   simp [elemDiff, hb]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.ball_indicator_smaller_balls_sum k s S h`.
+A detailed English derivation is pending.
 -/
 theorem decomp (s S : kˣ) (h : valuation k (s : k) ≤ valuation k (S : k)) :
     ∃ T : Finset k, T.Nonempty ∧ (∀ t ∈ T, valuation k t ≤ valuation k (S : k)) ∧
@@ -146,53 +142,47 @@ theorem decomp (s S : kˣ) (h : valuation k (s : k) ≤ valuation k (S : k)) :
   GlobalTheory.T.ball_indicator_smaller_balls_sum k s S h
 
 /- English proof (translation)
-Introduce `k _ _ _ _ W hT hD y r c hc hry hW`. Establish `shift : ∀ (e e' : k) (s : kˣ) (y' : k), elemDiff e e' s ∈ W → elemDiff (e - y') (e' - y') s ∈ W`. Introduce `e e' s y' h`. Rewrite using `[← elemDiff_shift]`. Conclude with `hT _ h y'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `dil : ∀ (e e' : k) (s a : kˣ), elemDiff e e' s ∈ W → elemDiff (((a⁻¹ : kˣ) : k) * e) (((a⁻¹ : kˣ) : k) * e') (a⁻¹ * s) ∈ W`. Introduce `e e' s a h`. Rewrite using `[← elemDiff_dilate]`. Conclude with `hD _ h a`. Establish `hy : elemDiff 0 y r ∈ W`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `W.smul_mem c⁻¹ hW` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis. Establish `add : ∀ (s : kˣ) (z z' : k), elemDiff 0 z s ∈ W → elemDiff 0 z' s ∈ W → elemDiff 0 (z + z') s ∈ W`. Introduce `s z z' h h'`. Establish `h2` using `shift 0 z' s (-z) h'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [zero_sub, neg_neg, sub_neg_eq_add, zero_add] at h2`. Establish `: elemDiff 0 (z + z') s = elemDiff 0 z s + elemDiff z (z' + z) s`. Use function extensionality and compare the values at `x`. Simplify using `only [elemDiff_apply, Pi.add_apply, add_comm z' z]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `W.add_mem h h2`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hry`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set t : kˣ := Units.mk0 y hy0 * r⁻¹ with ht_def`. Establish `ht_val : (t : k) = y * (r : k)⁻¹` using `by simp [t]`. Establish `hty : y = (t : k) * (r : k)` using `by rw [ht_val]; field_simp`. Establish `ht1 : 1 < valuation k (t : k)`. Assume the negation of the conclusion as `hle`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `push_neg at hle`. Establish `: valuation k y ≤ valuation k (r : k)`. Rewrite using `[hty, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd hry (not_lt.mpr this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sphere : ∀ z : k, valuation k z = valuation k y → elemDiff 0 z r ∈ W`. Introduce `z hz`. Establish `hz0 : z ≠ 0` using `by rintro rfl; rw [map_zero] at hz; exact hy0 ((map_eq_zero _).mp hz.symm)`. Use `set a : kˣ := Units.mk0 y hy0 * (Units.mk0 z hz0)⁻¹`. Establish `h` using `dil 0 y r a hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha1 : ((a⁻¹ : kˣ) : k) * y = z` using `by simp [a]; field_simp`. Establish `hva : valuation k ((a⁻¹ * r : kˣ) : k) = valuation k (r : k)`. Simplify using `only [a, Units.val_mul, map_mul, mul_inv_rev, inv_inv, Units.val_inv_eq_inv_val, Units.val_mk0, map_inv₀, hz]`. Rewrite using `[mul_inv_cancel₀ (by simpa using hy0), one_mul]`. Rewrite `h` using `[mul_zero, ha1, elemDiff_congr 0 z hva]`. Then use the resulting hypothesis.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `G1 : ∀ z : k, valuation k z ≤ valuation k y → elemDiff 0 z r ∈ W`. Introduce `z hz`. Break down `hz.lt_or_eq with hlt | heq` into its components or cases. Establish `h1 : valuation k (z - y) = valuation k y` using `(valuation k).map_sub_eq_of_lt_right hlt`. Use `add r (z - y) y (sphere _ h1) hy` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Conclude with `sphere z heq`. Establish `G2 : ∀ (s : kˣ) (w : k), valuation k w ≤ valuation k ((t * s : kˣ) : k) → elemDiff 0 w s ∈ W`. Introduce `s w hw`. Use `set a : kˣ := r * s⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hay : (a : k) * ((t * s : kˣ) : k) = y`. Simplify using `only [a, Units.val_mul, Units.val_inv_eq_inv_val, ht_val]`. Clear the denominators using the available nonvanishing facts. Establish `hz : valuation k ((a : k) * w) ≤ valuation k y`. Rewrite using `[← hay, val_mul_le_val_mul_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Conclude with `hw`. Establish `h` using `dil 0 ((a : k) * w) r a (G1 _ hz)`. Establish `har : a⁻¹ * r = s` using `by simp [a]`. Rewrite `h` using `[mul_zero, ← mul_assoc, Units.inv_mul, one_mul, har]`. Then use the resulting hypothesis. Establish `G3 : ∀ (s : kˣ) (z : k), elemDiff 0 z (t * s) ∈ W → elemDiff 0 z s ∈ W`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `s z hz`. Establish `hsS : valuation k (s : k) ≤ valuation k ((t * s : kˣ) : k)`. Rewrite using `[Units.val_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨T, hTne, hTv, hdec⟩` from `decomp s (t * s) hsS`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hE : ∀ u ∈ T, elemDiff u (z + u) s - elemDiff 0 z s ∈ W`. Introduce `u hu`. Establish `h1` using `G2 s u (hTv u hu)`. Establish `h2` using `shift 0 u s (-z) h1`. Simplify using `only [zero_sub, neg_neg, sub_neg_eq_add, zero_add] at h2`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: elemDiff u (z + u) s - elemDiff 0 z s = elemDiff z (u + z) s - elemDiff 0 u s`. Use function extensionality and compare the values at `x`. Simplify using `only [elemDiff_apply, Pi.sub_apply, add_comm u z]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Conclude with `W.sub_mem h2 h1`. Establish `hsum : elemDiff 0 z (t * s) = ∑ u ∈ T, elemDiff u (z + u) s`. Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [elemDiff_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hdec 0 x, hdec z x, ← Finset.sum_sub_distrib]`. Simplify using `only [zero_add]`. Establish `hcard : T.card • elemDiff 0 z s ∈ W`. Establish `: T.card • elemDiff 0 z s = ∑ u ∈ T, elemDiff u (z + u) s - ∑ u ∈ T, (elemDiff u (z + u) s - elemDiff 0 z s)`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[this, ← hsum]`. Conclude with `W.sub_mem hz (W.sum_mem hE)`. Establish `hc0 : (T.card : ℂ) ≠ 0` using `by exact_mod_cast hTne.card_pos.ne'`. Rewrite `hcard` using `[← Nat.cast_smul_eq_nsmul ℂ]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `W.smul_mem (T.card : ℂ)⁻¹ hcard` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Then use the resulting hypothesis. Establish `G4 : ∀ (n : ℕ) (s : kˣ) (z : k), elemDiff 0 z (t ^ n * s) ∈ W → elemDiff 0 z s ∈ W`. Introduce `n`. Proceed by induction on `n with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Consider the case `zero => intro s z h`. Simplify using `using h`. Consider the case `succ n ih`. Introduce `s z h`. Rewrite `h` using `[pow_succ, mul_assoc]`.
-
-Conclude with `G3 s z (ih (t * s) z h)`. Establish `G5 : ∀ (z : k) (s : kˣ), elemDiff 0 z s ∈ W`. Introduce `z s`. Take `⟨n, hn⟩` from `exists_pow t ht1 z s`. Use `G4 n s z ?_` and prove the remaining obligations.
-
-Rewrite using `[elemDiff_eq_zero (by simpa using hn)]`. Conclude with `W.zero_mem`. Rewrite using `[elemSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨⟨e, e', s⟩, rfl⟩`. Use `shift 0 (e' - e) s (-e) (G5 _ _)` as an intermediate fact.
-
-Apply the tactic sequence `have he : elemDiff e e' s = elemDiff (0 - -e) (e' - e - -e) s := by congr 1 <;> ring`. Use `show elemDiff e e' s ∈ W`. Rewrite using `[he]`. Conclude with `this`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem elemSpan_le : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (W : Submodule ℂ (k → ℂ)),

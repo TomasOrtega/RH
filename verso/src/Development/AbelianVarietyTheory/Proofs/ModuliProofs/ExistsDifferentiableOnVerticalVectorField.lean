@@ -16,7 +16,7 @@ open GlobalTheory.KS
 namespace GlobalTheory.KS.VertField
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Use `fun_prop`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableAt_det {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ}
     (M : E → Matrix (Fin g) (Fin g) ℂ) (z₀ : E) (h : ∀ i j, DifferentiableAt ℂ (fun z => M z i j) z₀) :
@@ -25,7 +25,7 @@ theorem differentiableAt_det {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ 
   fun_prop
 
 /- English proof (translation)
-Simplify using `only [Matrix.adjugate_apply]`. Use `differentiableAt_det (fun z => (M z).updateRow j (Pi.single i 1)) z₀ fun k l => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hk : k = j <;> simp [Matrix.updateRow_apply, hk, h k l]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem differentiableAt_adjugate_apply {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ}
     (M : E → Matrix (Fin g) (Fin g) ℂ) (z₀ : E) (h : ∀ i j, DifferentiableAt ℂ (fun z => M z i j) z₀)
@@ -35,11 +35,11 @@ private theorem differentiableAt_adjugate_apply {E : Type} [NormedAddCommGroup E
   by_cases hk : k = j <;> simp [Matrix.updateRow_apply, hk, h k l]
 
 /- English proof (translation)
-Establish `hd : DifferentiableAt ℂ (fun z => (M z).det) z₀` using `differentiableAt_det M z₀ h`. Establish `hne : ∀ᶠ z in nhds z₀, (M z).det ≠ 0` using `hd.continuousAt.eventually_ne hdet`. Establish `heq : w =ᶠ[nhds z₀] fun z => ((M z).det)⁻¹ • ((M z).adjugate.mulVec (b z))` using `by filter_upwards [hne, hw] with z hz hzw`. Rewrite using `[← hzw, Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec, smul_smul, inv_mul_cancel₀ hz, one_smul]`. Use `DifferentiableAt.congr_of_eventuallyEq ?_ heq` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[differentiableAt_pi]`. Introduce `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct]`. Establish `hadj` using `differentiableAt_adjugate_apply M z₀ h i`. Establish `hi` using `hd.inv hdet`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fun_prop`.
+A detailed English derivation is pending.
 -/
 theorem differentiableAt_of_mulVec {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ}
     (M : E → Matrix (Fin g) (Fin g) ℂ) (b w : E → Fin g → ℂ) (z₀ : E)
@@ -61,9 +61,9 @@ theorem differentiableAt_of_mulVec {E : Type} [NormedAddCommGroup E] [NormedSpac
   fun_prop
 
 /- English proof (translation)
-Establish `hpre : (x ≫ φ) ⁻¹ᵁ U = x ⁻¹ᵁ φ ⁻¹ᵁ U` using `by simp`. Unfold `valAt'`. Distinguish the cases in `h : ⊤ ≤ x ⁻¹ᵁ φ ⁻¹ᵁ U`. Rewrite using `[dif_pos (by rwa [hpre]), dif_pos h]`. Unfold `valAt`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression. Rewrite using `[dif_neg (by rwa [hpre]), dif_neg h]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem valAt'_comp {X Y : Scheme.{0}} (x : Sp ℂ ⟶ X) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)) :
     valAt' (x ≫ φ) U f = valAt' x (φ ⁻¹ᵁ U) ((φ.app U).hom f) := by
@@ -77,9 +77,9 @@ theorem valAt'_comp {X Y : Scheme.{0}} (x : Sp ℂ ⟶ X) (φ : X ⟶ Y) (U : Y.
   · rw [dif_neg (by rwa [hpre]), dif_neg h]
 
 /- English proof (translation)
-Establish `hcomp : ∀ z, ((u.ex z).left ≫ m) ⁻¹ᵁ W = (u.ex z).left ⁻¹ᵁ m ⁻¹ᵁ W` using `fun z => by simp`. Establish `hdom : dom u m W = {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ m ⁻¹ᵁ W}`. Use extensionality with `z`. Simplify using `only [dom, Set.mem_ofPred_eq, hcomp]`. Establish `hfn : fn u m W f = fun z => valAt' (u.ex z).left (m ⁻¹ᵁ W) ((m.app W).hom f)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Conclude with `valAt'_comp _ _ _ _`. Rewrite using `[hdom, hfn]`. Conclude with `u.8 (m ⁻¹ᵁ W) ((m.app W).hom f)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_dom_and_differentiableOn_fn {g : ℕ} {A₀ : Over (Sp ℂ)} [GrpObj A₀] {L₀ : LB A₀.left}
     (u : HolUnif A₀ L₀ g) {X : Scheme.{0}} (m : A₀.left ⟶ X) (W : X.Opens) (f : Γ(X, W)) :
@@ -95,9 +95,9 @@ theorem isOpen_dom_and_differentiableOn_fn {g : ℕ} {A₀ : Over (Sp ℂ)} [Grp
   exact u.8 (m ⁻¹ᵁ W) ((m.app W).hom f)
 
 /- English proof (translation)
-Establish `hv : v = ∑ a, v a • (Pi.single a 1 : Fin g → ℂ)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [hv]`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem clm_apply_eq_sum_single_mul {g : ℕ} (L : (Fin g → ℂ) →L[ℂ] ℂ) (v : Fin g → ℂ) :
     L v = ∑ a, L (Pi.single a 1) * v a := by
@@ -110,15 +110,13 @@ private theorem clm_apply_eq_sum_single_mul {g : ℕ} (L : (Fin g → ℂ) →L[
   rw [map_smul, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Introduce `P₀ u Hm χ hU R _ x₀ X p m hsm hpb n B G s hB hGd hs hhol`. Establish `key : ∀ z ∈ B, ∃ v : Fin P₀.g → ℂ, ∀ W f, G z ∈ dom u m W → s z W f = fderiv ℂ (fn u m W f) (G z) v` using `fun z hz => (GlobalTheory.T.existsUnique_uniformising_vector_vertical_tangent P₀ u Hm χ hU R x₀ X p m hsm hpb (G z) (s z) (hs z hz).1 (hs z hz).2).exists`. Use `choose! w hw using key`. Use `⟨w, fun z₁ hz₁ => ?_, hw⟩` and prove the remaining obligations. Use `DifferentiableAt.differentiableWithinAt ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨W, t, hW, hdet⟩` from `exists_fibre_coords P₀ u Hm χ hU R x₀ X p m hsm hpb (G z₁)`. Establish `hD : IsOpen (dom u m W)` using `(isOpen_dom_and_differentiableOn_fn u m W 0).1`. Establish `hV : IsOpen {z ∈ B | G z ∈ dom u m W}` using `hB.inter (hD.preimage hGd.continuous)`. Establish `hz₁V : z₁ ∈ {z ∈ B | G z ∈ dom u m W}` using `⟨hz₁, hW⟩`. Establish `hT : Matrix.transpose (Matrix.of fun b a => fderiv ℂ (fn u m W (t b)) (G z₁) (Pi.single a 1)) = Matrix.of fun a b => fderiv ℂ (fn u m W (t b)) (G z₁) (Pi.single a 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Both sides reduce to the same expression. Use `differentiableAt_of_mulVec (fun z => Matrix.of fun b a => fderiv ℂ (fn u m W (t b)) (G z) (Pi.single a 1)) (fun z b => s z W (t b)) w z₁ (fun b a => ?_) (fun b => ?_) ?_ ?_` and prove the remaining obligations. Establish `h1` using `((GlobalTheory.cauchyRiemann_iff_differentiableOn_complex P₀.g (dom u m W) (fn u m W (t b)) hD).2 (isOpen_dom_and_differentiableOn_fn u m W (t b)).2).2 (Pi.single a 1)`. Conclude with `(h1.differentiableAt (hD.mem_nhds hW)).comp z₁ (hGd z₁)`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `(hhol W (t b)).differentiableAt (hV.mem_nhds hz₁V)`. Rewrite using `[← Matrix.det_transpose, hT]`. Conclude with `hdet`. Use `filter_upwards [hV.mem_nhds hz₁V] with z hz`. Use extensionality with `b`.
-
-Conclude with `((hw z hz.1 W (t b) hz.2).trans (clm_apply_eq_sum_single_mul _ _)).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_differentiableOn_vertical : ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀.A P₀.L P₀.g) (Hm : Matrix (Fin P₀.g) (Fin P₀.g) ℂ) (χ : u.Λ → ℂ), GoodU u Hm χ → ∀ (R : Type) [CommRing R] (x₀ : R →+* ℂ) (X : Scheme.{0}) (p : X ⟶ Sp R) (m : P₀.A.left ⟶ X), Smooth p → IsPullback m P₀.A.hom p (spMap x₀) → ∀ (n : ℕ) (B : Set (Fin n → ℂ)) (G : (Fin n → ℂ) → (Fin P₀.g → ℂ)) (s : (Fin n → ℂ) → ∀ W : X.Opens, Γ(X, W) → ℂ), IsOpen B → Differentiable ℂ G → (∀ z ∈ B, PtDer ((u.ex (G z)).left ≫ m) (s z) ∧ ∀ r, s z ⊤ (constFn p ⊤ r) = 0) → (∀ W f, DifferentiableOn ℂ (fun z => s z W f) {z ∈ B | G z ∈ dom u m W}) → ∃ w : (Fin n → ℂ) → (Fin P₀.g → ℂ), DifferentiableOn ℂ w B ∧ ∀ z ∈ B, ∀ W f, G z ∈ dom u m W → s z W f = fderiv ℂ (fn u m W f) (G z) (w z) := by
   intro P₀ u Hm χ hU R _ x₀ X p m hsm hpb n B G s hB hGd hs hhol

@@ -14,9 +14,9 @@ namespace GlobalTheory.CompanionTheory.RealCountG.DualComm
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hx : ∀ x y, (Matrix.single a b c : Matrix (Fin n) (Fin n) ℂ) x y • Δ x y = if y = b then (if x = a then c • Δ a b else 0) else 0`. Introduce `x y`. Distinguish the cases in `h1 : x = a`. Distinguish the cases in `h2 : y = b`. Substitute `h1` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h2` using the available equality. Simplify using `[Matrix.single_apply]`. Simplify using `[Matrix.single_apply, h1, h2, Ne.symm h2]`. Simplify using `[Matrix.single_apply, h1, Ne.symm h1]`. Simplify using `only [hx, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_single_smul {W : Type*} [AddCommGroup W] [Module ℂ W] (Δ : Fin n → Fin n → W) (a b : Fin n) (c : ℂ) :
     ∑ x, ∑ y, (Matrix.single a b c : Matrix (Fin n) (Fin n) ℂ) x y • Δ x y = c • Δ a b := by
@@ -33,11 +33,11 @@ theorem sum_single_smul {W : Type*} [AddCommGroup W] [Module ℂ W] (Δ : Fin n 
   simp only [hx, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Establish `h1` using `h (Matrix.single a b 1 - Matrix.single b a 1) (by`. Rewrite using `[Matrix.conjTranspose_sub, Matrix.conjTranspose_single, Matrix.conjTranspose_single, star_one, neg_sub])`. Establish `h2` using `h (Matrix.single a b Complex.I + Matrix.single b a Complex.I) (by`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_single, Matrix.conjTranspose_single]`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> ring)`. Simplify using `only [Matrix.sub_apply, Matrix.add_apply, sub_smul, add_smul, Finset.sum_sub_distrib, Finset.sum_add_distrib, sum_single_smul, one_smul] at h1 h2`. Rewrite `h1` using `[sub_eq_zero]`. Rewrite `h2` using `[← h1, ← two_smul ℂ, smul_smul, smul_eq_zero]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `h2 with h2 | h2` into its components or cases. Conclude with `absurd h2 (mul_ne_zero two_ne_zero Complex.I_ne_zero)`. Conclude with `h2`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_skew {W : Type*} [AddCommGroup W] [Module ℂ W] (Δ : Fin n → Fin n → W)
     (h : ∀ X : Matrix (Fin n) (Fin n) ℂ, Xᴴ = -X → ∑ x, ∑ y, X x y • Δ x y = 0) (a b : Fin n) : Δ a b = 0 := by
@@ -58,7 +58,7 @@ theorem eq_zero_of_skew {W : Type*} [AddCommGroup W] [Module ℂ W] (Δ : Fin n 
   · exact h2
 
 /- English proof (translation)
-Use extensionality with `v`. Establish `h` using `congrArg (fun f : E.V →L[ℂ] E.V => f v) (hT k)`. Express the relevant statement in the definitionally equal form `T (E.ρ k v) = E.ρ k (T v) at h`. Simplify using `[dualT, h]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem dualT_comp_rho (E : KMod n) (T : E.V →L[ℂ] E.V) (hT : ∀ k, T * E.ρ k = E.ρ k * T)
     (k : Matrix.unitaryGroup (Fin n) ℂ) (ξ : E.V →L[ℂ] ℂ) :
@@ -69,13 +69,13 @@ theorem dualT_comp_rho (E : KMod n) (T : E.V →L[ℂ] E.V) (hT : ∀ k, T * E.�
   simp [dualT, h]
 
 /- English proof (translation)
-Establish `hmem : ∀ t : ℝ, NormedSpace.exp ((t : ℂ) • X) ∈ Matrix.unitaryGroup (Fin n) ℂ`. Introduce `t`. Establish `hc : Commute ((t : ℂ) • X) (-((t : ℂ) • X))` using `(Commute.refl _).neg_right`. Establish `hs : ((t : ℂ) • X)ᴴ = -((t : ℂ) • X)`. Rewrite using `[Matrix.conjTranspose_smul, hX, smul_neg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, ← Matrix.exp_conjTranspose, hs, ← Matrix.exp_add_of_commute _ _ hc, add_neg_cancel, NormedSpace.exp_zero]`. Set `γ : ℝ → Matrix.unitaryGroup (Fin n) ℂ` to `fun t => ⟨NormedSpace.exp ((t : ℂ) • X), hmem t⟩`. Establish `hγ : ∀ t : ℝ, (γ t).1 = NormedSpace.exp ((t : ℂ) • X)` using `fun t => rfl`. Establish `h1` using `hG.2 X γ hX hγ ξ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hG.2 X γ hX hγ (dualT E T ξ)`. Establish `h3 : HasDerivAt (fun t : ℝ => dualT E T (ξ ∘L E.ρ (γ t)⁻¹)) (dualT E T (∑ a, ∑ b, X a b • G a b ξ)) 0` using `((dualT E T).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`. Establish `hfun : (fun t : ℝ => dualT E T (ξ ∘L E.ρ (γ t)⁻¹)) = fun t : ℝ => dualT E T ξ ∘L E.ρ (γ t)⁻¹`. Use function extensionality and compare the values at `t`. Conclude with `dualT_comp_rho E T hT (γ t)⁻¹ ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[hfun]`. Conclude with `h3.unique h2`.
+A detailed English derivation is pending.
 -/
 theorem dualT_sum (E : KMod n) (T : E.V →L[ℂ] E.V) (hT : ∀ k, T * E.ρ k = E.ρ k * T)
     (G : Fin n → Fin n → Module.End ℂ (E.V →L[ℂ] ℂ)) (hG : IsDualFam E G)
@@ -104,9 +104,9 @@ theorem dualT_sum (E : KMod n) (T : E.V →L[ℂ] E.V) (hT : ∀ k, T * E.ρ k =
   exact h3.unique h2
 
 /- English proof (translation)
-Introduce `n E T hT G hG a b ξ`. Establish `h` using `eq_zero_of_skew (fun a b => dualT E T (G a b ξ) - G a b (dualT E T ξ)) ?_ a b`. Conclude with `sub_eq_zero.mp h`. Introduce `X hX`. Simplify using `only [smul_sub, Finset.sum_sub_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_eq_zero, ← dualT_sum E T hT G hG X hX ξ]`. Simplify using `only [map_sum, map_smul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dualT_G : ∀ {n : ℕ} (E : KMod n) (T : E.V →L[ℂ] E.V), (∀ k, T * E.ρ k = E.ρ k * T) →
     ∀ G : Fin n → Fin n → Module.End ℂ (E.V →L[ℂ] ℂ), IsDualFam E G →

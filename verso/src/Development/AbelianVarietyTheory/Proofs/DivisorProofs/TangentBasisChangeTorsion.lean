@@ -14,19 +14,19 @@ set_option autoImplicit false
 namespace GlobalTheory.HtGen.DlogClose
 
 /- English proof (translation)
-Introduce `E _ _ _ H X _ t hX p hp x g g' e e' he he' c h h' hD hD' a a' w hw hw' hL`. Establish `hn : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹`. Rewrite using `[← map_natCast (algebraMap ℚ_[p] ℂ_[p]), norm_algebraMap', Padic.norm_p]`. Establish `hp2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hp.out.two_le`. Take `⟨x', hx', vO, hv, hs⟩` from `GlobalTheory.ShFam.Pad.HTBound.htBound E H X t p ℂ_[p] hn x (fun x' hx' => GlobalTheory.LineNorm.WedgeMax.ext_intO hX x x' hx') w hL p (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hn, ← Real.rpow_neg_one]`. Use `Real.rpow_le_rpow_of_exponent_le (by linarith) (neg_le_neg ?_)` and prove the remaining obligations. Rewrite using `[div_le_one (by linarith)]`. Use the proof step `linarith)`. Take `rfl` from `GlobalTheory.LineNorm.WedgeMax.ext_intO hX x x' hx'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hbv, hb⟩` from `GlobalTheory.HTLevel.coords he hw _ hv hs`. Take `⟨b', hbv', hb'⟩` from `GlobalTheory.HTLevel.coords he' hw' _ hv hs`. Take `⟨u, hu⟩` from `GlobalTheory.HTLevel.red_ex (Ideal.span {(p : ↥(intO ℂ_[p])) ^ 2}) hv`. Establish `h1` using `hD b vO hbv u hu`. Establish `h2` using `hD' b' vO hbv' u hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h1, Ideal.Quotient.eq]`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 h2`. Establish `hp0 : (p : ℂ_[p]) ≠ 0` using `Nat.cast_ne_zero.2 hp.out.ne_zero`. Establish `h3 : ∑ i, (h i : ℂ_[p]) * a i - ∑ i, (h' i : ℂ_[p]) * a' i = (r : ℂ_[p]) * p`. Apply `mul_left_cancel₀ hp0` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `congrArg (intO ℂ_[p]).subtype hr` as an intermediate fact. Simplify using `only [map_mul, map_pow, map_natCast, map_sum, map_sub, Subring.subtype_apply, hb, hb'] at this`. Establish `e1 : ∑ i, (h i : ℂ_[p]) * ((p : ℂ_[p]) * a i) = (p : ℂ_[p]) * ∑ i, (h i : ℂ_[p]) * a i`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by ring`. Establish `e2 : ∑ i, (h' i : ℂ_[p]) * ((p : ℂ_[p]) * a' i) = (p : ℂ_[p]) * ∑ i, (h' i : ℂ_[p]) * a' i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by ring`. Rewrite `this` using `[e1, e2]`. Take the linear combination `(-1 : ℂ_[p]) * this`. Rewrite using `[h3, norm_mul, hn]`. Establish `hr1 : ‖(r : ℂ_[p])‖ ≤ 1` using `r.2`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpi : (p : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem dlog_sub_norm_lt_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) [IsLocallyNoetherian X] (t : SAB H X), X.IsSeparated → ∀ (p : ℕ) [Fact p.Prime] (x : Sp ↥(intO ℂ_[p]) ⟶ X) (g g' : ℕ) (e : Fin g → (Sp (DualNumber ↥(intO ℂ_[p])) ⟶ t.G.left)) (e' : Fin g' → (Sp (DualNumber ↥(intO ℂ_[p])) ⟶ t.G.left)), IsTanBasis t x e → IsTanBasis t x e' → ∀ (c : TorsChar t x (p ^ 2)) (h : Fin g → ↥(intO ℂ_[p])) (h' : Fin g' → ↥(intO ℂ_[p])), DlogIs t p 2 c e h → DlogIs t p 2 c e' h' → ∀ (a : Fin g → ℂ_[p]) (a' : Fin g' → ℂ_[p]) (w : Sp (DualNumber ℂ_[p]) ⟶ t.G.left), IsCombAtG t (spMap (intO ℂ_[p]).subtype ≫ x) (fun i => spMap (dualMap (intO ℂ_[p]).subtype) ≫ e i) a w → IsCombAtG t (spMap (intO ℂ_[p]).subtype ≫ x) (fun i => spMap (dualMap (intO ℂ_[p]).subtype) ≫ e' i) a' w → w ∈ latHT t p (spMap (intO ℂ_[p]).subtype ≫ x) → ‖∑ i, (h i : ℂ_[p]) * a i - ∑ i, (h' i : ℂ_[p]) * a' i‖ < 1 := by
   intro E _ _ _ H X _ t hX p hp x g g' e e' he he' c h h' hD hD' a a' w hw hw' hL

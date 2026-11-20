@@ -51,9 +51,9 @@ namespace GlobalTheory.BottomLoc
 open GlobalTheory.BottomIPData
 
 /- English proof (translation)
-Take `⟨ν, 𝓕, hν, h𝓕⟩` from `GlobalTheory.ConstRatio.exists_meas V`. Establish `: BorelSpace (GA D V)` using `⟨rfl⟩`. Establish `h𝓕' : IsFundamentalDomain (GQ V) 𝓕 m` using `h𝓕.mono (Measure.absolutelyContinuous_isHaarMeasure m ν)`. Use `⟨((m 𝓕).toReal : ℂ), ?_, fun g => ?_⟩` and prove the remaining obligations. Conclude with `Complex.ofReal_ne_zero.2 (ENNReal.toReal_ne_zero.2 ⟨h𝓕'.measure_ne_zero (NeZero.ne m), (GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol V m _ hm h𝓕').ne⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : rcoef m (fun _ => (1 : ℂ)) (fun _ => 1) g = ∫ _ in 𝓕, (1 : ℂ) * conj (1 : ℂ) ∂m` using `GlobalTheory.AutomorphicL2Unitary.pet_eq h𝓕' (fun _ _ _ => rfl) (fun _ _ _ => rfl)`. Rewrite using `[e]`. Simplify using `[Measure.real]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem rcoef_one {D : D7} (V : HSp D) (m : Measure (GA D V)) (hm : m.IsHaarMeasure) :
     ∃ c : ℂ, c ≠ 0 ∧ ∀ g, rcoef m (fun _ => (1 : ℂ)) (fun _ => 1) g = c := by
@@ -72,9 +72,9 @@ private def topPol (D : D7) {a d : ℕ} (h : a ≤ d) (n : D.what₂.Tau → ℕ
   ∏ τ, (Matrix.of fun i i' : Fin a => (MvPolynomial.X (τ, Fin.castLE h i, i') : MvPolynomial (FVar D d a) ℂ)).det ^ n τ
 
 /- English proof (translation)
-Introduce `h0`. Use `congrArg (MvPolynomial.eval fun p : FVar D d a => if p.2.1.1 = p.2.2.1 then (1 : ℂ) else 0) h0` as an intermediate fact. Rewrite `this` using `[topPol, map_prod, map_zero, Finset.prod_eq_one]`. Conclude with `one_ne_zero this`. Introduce `τ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, RingHom.map_det]`. Establish `e : (MvPolynomial.eval fun p : FVar D d a => if p.2.1.1 = p.2.2.1 then (1 : ℂ) else 0).mapMatrix (Matrix.of fun i i' : Fin a => (MvPolynomial.X (τ, Fin.castLE h i, i') : MvPolynomial (FVar D d a) ℂ)) = 1`. Use extensionality with `i i'`. Simplify using `[Matrix.one_apply, Fin.ext_iff]`. Rewrite using `[e, Matrix.det_one, one_pow]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem topPol_ne_zero (D : D7) {a d : ℕ} (h : a ≤ d) (n : D.what₂.Tau → ℕ) : topPol D h n ≠ 0 := by
   intro h0
@@ -90,11 +90,11 @@ private theorem topPol_ne_zero (D : D7) {a d : ℕ} (h : a ≤ d) (n : D.what₂
     rw [e, Matrix.det_one, one_pow]
 
 /- English proof (translation)
-Unfold `topPol`. Establish `key : ∀ (τ : D.what₂.Tau) (r : Fin a → Fin d), GlobalTheory.CompactHowe.substF (fun _ => (1 : Matrix (Fin d) (Fin d) ℂ)) g (Matrix.of fun i i' : Fin a => (MvPolynomial.X (τ, r i, i') : MvPolynomial (D.what₂.Tau × Fin d × Fin a) ℂ)).det = MvPolynomial.C (g τ).det * (Matrix.of fun …`. Introduce `τ r`. Rewrite using `[AlgHom.map_det, RingHom.map_det (MvPolynomial.C : ℂ →+* MvPolynomial (D.what₂.Tau × Fin d × Fin a) ℂ), mul_comm, ← Matrix.det_mul]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext1 i i'`. Simplify using `only [AlgHom.mapMatrix_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.mul_apply, GlobalTheory.CompactHowe.substF_X, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single (r i)]`. Simplify using `[mul_comm]`. Introduce `b _ hb`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[hb]`. Simplify using the standard rewrite rules. Rewrite using `[map_prod, MvPolynomial.smul_eq_C_mul, map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, key τ (Fin.castLE h), mul_pow, map_pow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem substF_topPol (D : D7) {a d : ℕ} (h : a ≤ d) (n : D.what₂.Tau → ℕ)
     (g : D.what₂.Tau → Matrix (Fin a) (Fin a) ℂ) :
@@ -123,7 +123,7 @@ private theorem substF_topPol (D : D7) {a d : ℕ} (h : a ≤ d) (n : D.what₂.
   rw [map_pow, key τ (Fin.castLE h), mul_pow, map_pow]
 
 /- English proof (translation)
-Rewrite using `[inv_one, Matrix.one_mul, Matrix.mul_one, Matrix.inv_eq_left_inv h]`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem conj_transpose_inv {m : ℕ} {u : Matrix (Fin m) (Fin m) ℂ} (h : uᴴ * u = 1) :
     (((1 : Matrix (Fin m) (Fin m) ℂ)⁻¹ * u * 1)⁻¹)ᵀ.map (starRingEnd ℂ) = u := by
@@ -135,13 +135,13 @@ variable {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} 
   {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt hX.is.isVac.1 hX.is.isVac.2.inf (hX.is.fst t) hX.is.isVac.2.theta`.
+A detailed English derivation is pending.
 -/
 private theorem f_theta (hX : IsBottomTri W i j X) (t : T) : IsThetaFunO W.ψ (GlobalTheory.Grid.neg A) WW (X.f t) :=
   GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt hX.is.isVac.1 hX.is.isVac.2.inf (hX.is.fst t) hX.is.isVac.2.theta
 
 /- English proof (translation)
-The claim follows from `have ho := GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum (hX.is.idem t) GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt hX.is.isVac.1.1.1 hX.is.isVac.2.inf ho.infPart_eq ho.conj.infPart_eq (hX.is.fst t) hX.is.isVac.2.theta (f_theta hX t) (hX.is.isVac.2.fock τ)`.
+A detailed English derivation is pending.
 -/
 private theorem f_fock (hX : IsBottomTri W i j X) (t : T) (τ : D.what₂.Tau) :
     IsFockVacAt (heisO W.ψ (GlobalTheory.Grid.neg A) WW) W.θ τ (cplxO (-X.rA.s τ) (X.rW.s τ)) (X.f t) :=
@@ -152,21 +152,19 @@ private theorem f_fock (hX : IsBottomTri W i j X) (t : T) (τ : D.what₂.Tau) :
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `h` using `isBottomTri_is hX`. Establish `hθ : IsInfFam W.θ` using `h.isVac.2.inf`. Establish `hW` using `h.weil t`. Establish `hf` using `f_theta hX t`. Establish `hv : ∀ ρ, IsFockVacAt (heisO W.ψ (GlobalTheory.Grid.neg A) WW) W.θ ρ (cplxO (-1) 1) (X.f t)` using `fun ρ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `f_fock hX t ρ` as an intermediate fact. Simplify `this` using `[(hX.std.2.2 ρ).1, (hX.stdW.2.2 ρ).1]`. Establish `hgA : ∀ τ, gramAt D A τ = 1` using `fun τ => by rw [gramAt, hX.std.1]; simp`. Establish `hgW : ∀ τ, gramAt D WW τ = 1` using `fun τ => by rw [gramAt, hX.stdW.1]; simp`. Establish `e1 : (fun τ => -X.rA.s τ) = fun _ => (-1 : Matrix (Fin A.rank) (Fin A.rank) ℂ)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun τ => by rw [(hX.std.2.2 τ).1]`. Establish `e2 : X.rW.s = fun _ => 1` using `funext fun τ => (hX.stdW.2.2 τ).1`. Establish `e3 : X.rA.B = fun _ => 1` using `funext fun τ => (hX.std.2.2 τ).2`. Establish `e4 : X.rW.B = fun _ => 1` using `funext fun τ => (hX.stdW.2.2 τ).2`. Rewrite using `[e1, e2, e3, e4]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose a ha using fun τ => GlobalTheory.SplitCharExp.exists_hasInfExp D W.θ _ _ τ hθ hW.hecS hW.resS`. Use `choose e he using fun τ => GlobalTheory.SplitParity.exists_int_add_half D _ _ τ _ hW.hecS hW.resS (ha τ)`. Set `k₀ : GA D A` to `GlobalTheory.Grid.ofSgn true A k`. Establish `hu : ∀ τ, (compAt W.θ τ (Formalism.L2.Theta.mt A k₀))ᴴ * compAt W.θ τ (Formalism.L2.Theta.mt A k₀) = 1` using `fun τ => by`. Establish `e : (compAt W.θ τ (Formalism.L2.Theta.mt A k₀)).conjTranspose * (gramAt D A τ) * compAt W.θ τ (Formalism.L2.Theta.mt A k₀) = gramAt D A τ` using `GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ A k₀ τ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `e` using `[hgA, Matrix.mul_one]`. Then use the resulting hypothesis. Establish `key` using `GlobalTheory.FockRealNeg.om_pureTensorO_neg D W.ψ W.θ A WW _ _ ((X.ω t).toSgn true) hW hθ (fun _ => 1) (fun _ => 1) (fun τ => by rw [hgA]; simp) (fun τ => by rw [hgW]; simp) a (fun τ => (n τ : ℚ) + (WW.rank : ℚ) / 2) ha hn (fun τ => e τ - A.rank) (fun τ => -(n τ : ℤ)) (fun τ => b …`. Establish `c1 : ∀ τ, compAt W.θ τ (Formalism.L2.Theta.mt WW 1) = 1` using `fun τ => GlobalTheory.JointHarm.compAt_mt_one' W.θ τ WW`. Establish `ck : ∀ τ, compAt W.θ τ (Formalism.L2.Theta.mt (GlobalTheory.ChiGrid.negSp A) k) = compAt W.θ τ (Formalism.L2.Theta.mt A k₀)` using `fun τ => rfl`. Establish `s1 : (fun τ => (((fun _ => (1 : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)) τ)⁻¹ * compAt W.θ τ (Formalism.L2.Theta.mt WW 1) * (fun _ => (1 : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)) τ).map (starRingEnd ℂ)) = fun _ => 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `τ`. Use `show ((1 : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)⁻¹ * compAt W.θ τ (Formalism.L2.Theta.mt WW 1) * 1).map (starRingEnd ℂ) = 1`. Rewrite using `[c1, inv_one, Matrix.one_mul, Matrix.one_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `s2 : (fun τ => (((((fun _ => (1 : Matrix (Fin A.rank) (Fin A.rank) ℂ)) τ)⁻¹ * compAt W.θ τ (Formalism.L2.Theta.mt (GlobalTheory.ChiGrid.negSp A) k) * (fun _ => (1 : Matrix (Fin A.rank) (Fin A.rank) ℂ)) τ)⁻¹)ᵀ).map (starRingEnd ℂ)) = fun τ => compAt W.θ τ (Formalism.L2.Theta.mt A …`. Use function extensionality and compare the values at `fun τ => conj_transpose_inv (hu τ)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `key` using `[s1, s2, substF_topPol, map_smul, smul_smul, ← Finset.prod_mul_distrib]`. Establish `hone : (∏ τ, (compAt W.θ τ (Formalism.L2.Theta.mt (GlobalTheory.ChiGrid.negSp A) k)).det ^ (-(n τ : ℤ)) * (compAt W.θ τ (Formalism.L2.Theta.mt WW 1)).det ^ (e τ - A.rank) * (compAt W.θ τ (Formalism.L2.Theta.mt A k₀)).det ^ n τ) = 1`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Establish `hne : (compAt W.θ τ (Formalism.L2.Theta.mt A k₀)).det ≠ 0` using `(Matrix.isUnit_det_of_left_inverse (hu τ)).ne_zero`. Rewrite using `[ck, c1, Matrix.det_one, _root_.one_zpow, mul_one, _root_.zpow_neg, zpow_natCast, inv_mul_cancel₀ (pow_ne_zero _ hne)]`.
-
-Rewrite `key` using `[hone, one_smul]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem real_fix (hX : IsBottomTri W i j X) (t : T) (hr : A.rank ≤ WW.rank) (n : D.what₂.Tau → ℕ)
     (hn : ∀ τ, HasInfExp D (betaB G i j / alphaB L i j t) τ ((n τ : ℚ) + (WW.rank : ℚ) / 2))
@@ -223,13 +221,13 @@ private theorem real_fix (hX : IsBottomTri W i j X) (t : T) (hr : A.rank ≤ WW.
   exact key
 
 /- English proof (translation)
-Establish `hW` using `(isBottomTri_is hX).weil t`. Establish `hd : WW.rank = SqNum.botBig D i j + SqNum.botSmall D i j` using `by rw [← hX.is.rank, hX.rank, hX.rank']`. Establish `key : ∀ τ, ∃ n : ℕ, HasInfExp D (betaB G i j / alphaB L i j t) τ ((n : ℚ) + (WW.rank : ℚ) / 2)` using `fun τ => by`. Take `⟨h1, h2, h3⟩` from `h τ`. Establish `h4` using `GlobalTheory.RealQuot.hasInfExp_div D _ _ τ _ _ h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `GlobalTheory.SplitParity.exists_int_add_half D _ _ τ _ hW.hecT hW.resT h4`. Rewrite `h3` using `[← hd]`. Establish `h5 : (WW.rank : ℤ) ≤ e`. Establish `: ((WW.rank : ℤ) : ℚ) ≤ (e : ℚ)` using `by push_cast; linarith`. Conclude with `this` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(e - WW.rank).toNat, ?_⟩` and prove the remaining obligations. Establish `h6 : (((e - WW.rank).toNat : ℕ) : ℚ) = (e : ℚ) - WW.rank`. Use `Int.toNat_of_nonneg (sub_nonneg.2 h5)` as an intermediate fact. Conclude with `congrArg (fun z : ℤ => (z : ℚ)) this` after adjusting the coercions. Use `h4 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h6, he]`. Expand and normalize the polynomial expressions, which then agree. Use `choose n hn using key`. Conclude with `⟨n, hn⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_weights (hX : IsBottomTri W i j X) (t : T) {a b : D.what₂.Tau → ℚ}
     (h : ∀ τ, HasInfExp D (alphaB L i j t) τ (a τ) ∧ HasInfExp D (betaB G i j) τ (b τ) ∧
@@ -255,13 +253,11 @@ private theorem exists_weights (hX : IsBottomTri W i j X) (t : T) {a b : D.what�
   exact ⟨n, hn⟩
 
 /- English proof (translation)
-Establish `hS : v ∉ sfB G t` using `fun h => by`. Take `⟨w, hw, e⟩` from `Finset.mem_image.1 h`. Conclude with `hv w hw e`. Establish `h0 : v ∉ G.pl.S0` using `fun h => by`. Establish `hw : G.pl.w v ∈ locPl G t`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `locPl GlobalTheory.ChiGrid.Places.W0`. Conclude with `Finset.mem_union_left _ (Finset.mem_image_of_mem _ h)`. Conclude with `hv _ hw (G.pl.under_w h)`. Establish `h1 : 1 ≤ D.R.m - (i : ℕ)` using `by have := i.2; omega`. Establish `h2 : D.R.m - (i : ℕ) ≤ D.R.m` using `Nat.sub_le _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hχ : GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D (G.ch.chi (D.R.m - i)) v` using `GlobalTheory.SeeSaw.LevelTest.charUnramAt_of fun w hw => (GlobalTheory.LFun.unrAt_iff_of_chrEq (G.ch.chi_eq _ h1 h2) w).2 (G.ch.unr _ h1 h2 w (by rwa [hw]))`. Establish `hη : GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D L.eta v` using `GlobalTheory.SeeSaw.LevelTest.charUnramAt_of fun w _ => (GlobalTheory.LFun.unrAt_iff_of_chrEq hL.eta w).2 (L.C.isEta.unr w)`. Use `⟨fun x a b c d => ?_, GlobalTheory.SeeSaw.LevelTest.charUnramAt_of fun w hw => hu w ?_⟩` and prove the remaining obligations. Rewrite using `[betaB, MonoidHom.mul_apply, MonoidHom.pow_apply, hχ x a b c d, hη x a b c d, one_pow, one_mul]`. Use `show w.under (𝓞 D.host.F) ∉ sfB G t`.
-
-Rewrite using `[hw]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem chars_unram {μ₀ : T} (hL : L.Is μ₀) (t : T)
     (hu : GlobalTheory.LFun.UnrOff (betaB G i j / alphaB L i j t) ((sfB G t : Finset (FinPl D)) : Set (FinPl D)))
@@ -289,15 +285,15 @@ private theorem chars_unram {μ₀ : T} (hL : L.Is μ₀) (t : T)
     rwa [hw]
 
 /- English proof (translation)
-Establish `h` using `isBottomTri_is hX`. Establish `hW : IsWeilDatumO W.ψ (GlobalTheory.Grid.neg A) WW (betaB G i j) (betaB G i j / alphaB L i j t) ((X.ω t).toSgn true)` using `h.weil t`. Establish `sdA : IsSelfDualC (GlobalTheory.Grid.neg A) X.rA.Λ` using `GlobalTheory.RowTest.isSelfDualC_neg' h.rigA.1`. Establish `sdW : IsSelfDualC WW X.rW.Λ` using `h.rigW.1`. Establish `he` using `h.idem t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hloc : ∀ v, proj D.sp.cm.sig (GlobalTheory.Grid.neg A).gram v k ∈ stabLoc D.sp.cm.sig (GlobalTheory.Grid.neg A).gram X.rA.Λ v` using `fun v => hk' v (Finset.notMem_empty v)`. Establish `hSt : Lev.finE (GlobalTheory.Grid.neg A) k ∈ Formalism.L2.DIV.St X.rA.β` using `(GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D (GlobalTheory.Grid.neg A) X.rA.β X.rA.Λ h.rigA.2.1 k).2 hloc`. Establish `hid : ∀ w ∈ locPl G t, Formalism.L2.NTheta.IsIdemAt (GlobalTheory.RowVacScalar.idemAt w) w` using `fun w hw => by`. Take `⟨⟨es, hes, -⟩, -⟩` from `he`. Conclude with `Classical.epsilon_spec (p := fun e : AE D => Formalism.L2.NTheta.IsIdemAt e w) ⟨es w, hes w hw⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hvac` using `GlobalTheory.LatStabScalar.om_eq_prod_splitFac hW sdA sdW (locPl G t) hid (GlobalTheory.LevelPlaces.under_injOn he) (chars_unram hL t hu) k hk 1 (one_mem _) ((mem_levelOpen_iff_latHat D.sp.cm.sig (GlobalTheory.Grid.neg A).gram sdA.1.fg k).1 (mem_levelOpen.2 hloc)) ((mem_levelOpen …`. Establish `hy` using `UpperTheory.isUnitDet_prod_detIdl_of_mem_St D (GlobalTheory.Grid.neg A) X.rA.β (X.e t) (locPl G t) he k hSt`. Establish `hΦ` using `UpperTheory.stdFst_actO_of_mem_stabilizer D (GlobalTheory.Grid.neg A) WW X.rA.β X.rW.β (alphaB L i j t / betaB G i j) (X.e t) (locPl G t) (X.ideal (locPl G) t) he k hSt _ hy`. Establish `d1 : ∀ w, GlobalTheory.RowVacScalar.detIdl (GlobalTheory.RowVacScalar.idemAt w) WW 1 = 1` using `fun w => by`. Apply the tactic sequence `unfold GlobalTheory.RowVacScalar.detIdl; split_ifs <;> simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hc : (∏ w ∈ locPl G t, ((splitFacO (betaB G i j) (betaB G i j / alphaB L i j t) (GlobalTheory.RowVacScalar.detIdl (GlobalTheory.RowVacScalar.idemAt w) (GlobalTheory.Grid.neg A) k) (GlobalTheory.RowVacScalar.detIdl (GlobalTheory.RowVacScalar.idemAt w) WW 1) : Circle) : ℂ)) = (((al …`. Rewrite using `[map_prod]`. Use `Eq.trans ?_ (map_prod Circle.coeHom _ _).symm` and prove the remaining obligations. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[d1, splitFacO, map_one, mul_one, MonoidHom.div_apply, MonoidHom.div_apply, inv_div]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite `hvac` using `[hc]`. Establish `key` using `GlobalTheory.SchrMove.smul_om_eq D W.ψ (GlobalTheory.Grid.neg A) WW X.rA.Λ X.rW.Λ _ _ _ hW sdA sdW (X.e t) (GlobalTheory.PlaceDatum.idemSum_mul_self he) (GlobalTheory.PlaceDatum.infPart_idemSum he) k 1 (GlobalTheory.StabLatInv.mem_latO_iff_actO_mem D _ WW _ _ _ _ sdA sdW h.rigA.2 …`. Conclude with `smul_right_injective _ (Circle.coe_ne_zero _) key`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem fin_fix {μ₀ : T} (hL : L.Is μ₀) (hX : IsBottomTri W i j X) (t : T)
     (hu : GlobalTheory.LFun.UnrOff (betaB G i j / alphaB L i j t) ((sfB G t : Finset (FinPl D)) : Set (FinPl D)))
@@ -344,9 +340,9 @@ private theorem fin_fix {μ₀ : T} (hL : L.Is μ₀) (hX : IsBottomTri W i j X)
   exact smul_right_injective _ (Circle.coe_ne_zero _) key
 
 /- English proof (translation)
-Establish `h` using `isBottomTri_is hX`. Establish `sdA : IsSelfDualC (GlobalTheory.Grid.neg A) X.rA.Λ` using `GlobalTheory.RowTest.isSelfDualC_neg' h.rigA.1`. Establish `sdW : IsSelfDualC WW X.rW.Λ` using `h.rigW.1`. Establish `he` using `h.idem t`. Take `⟨K, hK, hC⟩` from `GlobalTheory.PlaceDatum.exists_nsmul_of_frMapO (S := GlobalTheory.Grid.neg A) sdA.1 sdW.1 X.rA.β X.rW.β`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.stdFst_isSB (h.weil' t).hecT.1 he (GlobalTheory.ConstRatio.ideal_ne_bot X (locPl G) t) A WW X.rA.β X.rW.β _ (GlobalTheory.PlaceDatum.exists_den_frMapO (S := GlobalTheory.Grid.neg A) sdA.1.fg sdW.1.fg X.rA.β X.rW.β) ⟨K, h …`.
+A detailed English derivation is pending.
 -/
 private theorem std_isSB (hX : IsBottomTri W i j X) (t : T) :
     IsSBHalf (X.e t) (latO (GlobalTheory.Grid.neg A) WW X.rA.Λ X.rW.Λ fun _ => True)
@@ -361,9 +357,9 @@ private theorem std_isSB (hX : IsBottomTri W i j X) (t : T) :
     ⟨K, hK, fun u hu => hC u (GlobalTheory.PlaceDatum.infPart_of_half (GlobalTheory.PlaceDatum.infPart_idemSum he) hu)⟩
 
 /- English proof (translation)
-Establish `h` using `isBottomTri_is hX`. Establish `sdA : IsSelfDualC (GlobalTheory.Grid.neg A) X.rA.Λ` using `GlobalTheory.RowTest.isSelfDualC_neg' h.rigA.1`. Establish `he` using `h.idem t`. Take `⟨⟨Tm, hTm⟩, hall⟩` from `h.fst t`. Take `⟨x, hx⟩` from `UpperTheory.exists_stdFst_ne_zero_of_rank_le D A WW X.rA.β X.rW.β (alphaB L i j t / betaB G i j) (X.e t) (locPl G t) (X.ideal (locPl G) t) (h.rank ▸ Nat.le_add_right _ _) he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hall Tm hTm]`. Conclude with `GlobalTheory.PlaceModelInj.placeModel_ne_zero D W.ψ (GlobalTheory.Grid.neg A) WW X.rA.Λ X.rW.Λ (X.e t) X.vac _ Tm h.isVac.1 sdA h.rigW.1 (GlobalTheory.PlaceDatum.idemSum_mul_self he) he.2 (GlobalTheory.PlaceDatum.infPart_idemSum he) hTm (GlobalTheory.Core.Rk.IP.Model.isSphOff_of_ …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem f_ne_zero (hX : IsBottomTri W i j X) (t : T) : X.f t ≠ 0 := by
   have h := isBottomTri_is hX
@@ -378,7 +374,7 @@ private theorem f_ne_zero (hX : IsBottomTri W i j X) (t : T) : X.f t ≠ 0 := by
     (GlobalTheory.Core.Rk.IP.Model.isSphOff_of_vac h.isVac ∅).2.2 (std_isSB hX t) fun h0 => hx (congrFun h0 x)
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.FockSph.isFockVec_pureTensorO (S := GlobalTheory.Grid.neg A) (T := WW) (sS := fun τ => -X.rA.s τ) (sT := X.rW.s) hX.is.isVac.1 hX.is.isVac.2.inf (fun τ => GlobalTheory.Grid.isCartanInv_sgn true A τ (hX.is.rigA.2.2 τ).1) (fun τ => (hX.is.rigW.2.2 τ).1) X.rA.B X.rW.B …`.
+A detailed English derivation is pending.
 -/
 private theorem pt_theta (hX : IsBottomTri W i j X) (t : T) (P : PolF D WW.rank A.rank) :
     IsThetaFunO W.ψ (GlobalTheory.Grid.neg A) WW
@@ -388,7 +384,7 @@ private theorem pt_theta (hX : IsBottomTri W i j X) (t : T) (P : PolF D WW.rank 
     (fun τ => (hX.is.rigW.2.2 τ).1) X.rA.B X.rW.B (f_theta hX t) (f_fock hX t) P).1
 
 /- English proof (translation)
-Establish `e : (GlobalTheory.Grid.neg A).gram = -A.gram` using `GlobalTheory.Grid.neg_gram A`. Rewrite using `[gramAt, e, hX.std.1]`. Use extensionality with `a b`. Simplify using `[Matrix.one_apply, apply_ite]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem gramAt_neg (hX : IsBottomTri W i j X) (τ : D.what₂.Tau) : gramAt D (GlobalTheory.Grid.neg A) τ = -1 := by
   have e : (GlobalTheory.Grid.neg A).gram = -A.gram := GlobalTheory.Grid.neg_gram A
@@ -397,11 +393,11 @@ private theorem gramAt_neg (hX : IsBottomTri W i j X) (τ : D.what₂.Tau) : gra
   simp [Matrix.one_apply, apply_ite]
 
 /- English proof (translation)
-Establish `h` using `isBottomTri_is hX`. Use `choose pW hpW using fun τ => (h.rigW.2.2 τ).2`. Establish `hA : ∀ τ, IsONBasis (gramAt D (GlobalTheory.Grid.neg A) τ) (-X.rA.s τ) (X.rA.B τ) 0` using `fun τ => by`. Use `⟨fun _ => -1, fun a => Or.inr ⟨rfl, Nat.zero_le _⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[gramAt_neg hX, (hX.std.2.2 τ).2]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Simplify using `[Matrix.one_apply, Matrix.diagonal_apply, apply_ite]`. Rewrite using `[(hX.std.2.2 τ).1, (hX.std.2.2 τ).2]`. Use extensionality with `a b`. Simplify using `[Matrix.one_apply, Matrix.diagonal_apply, apply_ite]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinj` using `GlobalTheory.FockPolyInj.pureTensorO_injective_of_on W.ψ W.θ (GlobalTheory.Grid.neg A) WW h.isVac.1 h.isVac.2.inf (fun τ => -X.rA.s τ) X.rA.B X.rW.s X.rW.B (fun _ => 0) pW hA hpW (X.f t) (f_theta hX t) (f_fock hX t) (f_ne_zero hX t)`. Conclude with `fun h0 => hP (hinj (h0.trans (map_zero _).symm))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem pt_ne_zero (hX : IsBottomTri W i j X) (t : T) {P : PolF D WW.rank A.rank} (hP : P ≠ 0) :
     pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (X.f t) P ≠ 0 := by
@@ -420,11 +416,11 @@ private theorem pt_ne_zero (hX : IsBottomTri W i j X) (t : T) {P : PolF D WW.ran
   exact fun h0 => hP (hinj (h0.trans (map_zero _).symm))
 
 /- English proof (translation)
-Establish `h` using `isBottomTri_is hX`. Establish `hW : IsWeilDatumO W.ψ (GlobalTheory.Grid.neg A) WW (betaB G i j) (betaB G i j / alphaB L i j t) ((X.ω t).toSgn true)` using `h.weil t`. Establish `sdA : IsSelfDualC (GlobalTheory.Grid.neg A) X.rA.Λ` using `GlobalTheory.RowTest.isSelfDualC_neg' h.rigA.1`. Establish `he` using `h.idem t`. Establish `hint : ∀ v, (∀ PP ∈ locPl G t, PP.under (𝓞 D.host.F) ≠ v) → proj D.sp.cm.sig (GlobalTheory.Grid.neg A).gram v g ∈ stabLoc D.sp.cm.sig (GlobalTheory.Grid.neg A).gram X.rA.Λ v` using `fun v hv => hg v fun hm => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w, hw, e⟩` from `Finset.mem_image.1 hm`. Conclude with `hv w hw e`. Establish `hsupp` using `fun x hx => by_contra fun hx' => hn fun v _ => (GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D (GlobalTheory.Grid.neg A) X.rA.β X.rA.Λ h.rigA.2.1 g).1 (UpperTheory.finiteComponent_mem_stabilizer_of_standardSection_ne_zero D (GlobalTheory.Grid.neg A) WW X.rA. …`. Take `⟨n, a, y, h0, h1, h2⟩` from `GlobalTheory.T.heisenberg_fix_and_kill_theta_off_support_move D W.ψ (GlobalTheory.Grid.neg A) WW hW.std X.rA.Λ X.rW.Λ sdA h.rigW.1 (locPl G t) (X.e t) he X.vac _ (X.f t) (std_isSB hX t) (h.fst t) g hsupp`. Establish `k1` using `GlobalTheory.FockFiniteHeis.heis_comb_pureTensorO D W.ψ W.θ (GlobalTheory.Grid.neg A) WW hW.std h.isVac.2.inf (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (X.f t) (f_theta hX t) n a y (fun l => (h0 l).1) P`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k2` using `GlobalTheory.FockFiniteHeis.heis_comb_pureTensorO D W.ψ W.θ (GlobalTheory.Grid.neg A) WW hW.std h.isVac.2.inf (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (X.f t) (f_theta hX t) n (fun l => conj (a l)) (fun l => actO (GlobalTheory.Grid.neg A) WW g⁻¹ 1 (-(y l))) (fun l => (h0 l).2) P`. Conclude with `GlobalTheory.T.weilMatrixCoefficient_eq_zero_of_heisenberg_relations D W.ψ (GlobalTheory.Grid.neg A) WW _ _ _ hW ν 𝓕 hν _ (pt_theta hX t P) g n a y (k1.1.trans (by rw [h1])) (k2.1.trans (by rw [h2]; exact k2.2))`.
+A detailed English derivation is pending.
 -/
 private theorem wcoef_off (hX : IsBottomTri W i j X) (t : T) {ν : Measure (WO (GlobalTheory.Grid.neg A) WW)} {𝓕 : Set (WO (GlobalTheory.Grid.neg A) WW)}
     (hν : IsCovolOne (ratL WW (GlobalTheory.Grid.neg A)) ν 𝓕) (P : PolF D WW.rank A.rank) {g : GA D (GlobalTheory.Grid.neg A)}
@@ -457,9 +453,9 @@ private theorem wcoef_off (hX : IsBottomTri W i j X) (t : T) {ν : Measure (WO (
     (k1.1.trans (by rw [h1])) (k2.1.trans (by rw [h2]; exact k2.2))
 
 /- English proof (translation)
-Establish `h1 : ∀ τ, frameInv W.θ (GlobalTheory.Grid.neg A) a τ = -1` using `fun τ => by`. Establish `h3` using `ha' τ`. Rewrite `h3` using `[gramAt_neg hX, (hX.std.2.2 τ).1, neg_mul_neg, Matrix.mul_one, Matrix.mul_one]`. Rewrite using `[frameInv, mul_eq_one_comm.1 h3, gramAt_neg hX, Matrix.one_mul]`. Use extensionality with `g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[SetLike.mem_coe, mem_levelAll]`. Use `⟨fun hg => ⟨fun v => hg v (Finset.notMem_empty v), (placeOf_bijective D).2.forall.2 fun τ => ?_⟩, fun hg v _ => hg.1 v⟩` and prove the remaining obligations. Use `(ha.mem_stabArch_iff hX.is.isVac.2.inf τ g).2 ?_` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `Commute.neg_one_right _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem openOff_eq (hX : IsBottomTri W i j X) (Λ : Lat (GlobalTheory.Grid.neg A)) {a : GL (Fin (GlobalTheory.Grid.neg A).rank) (AE D)}
     (ha : IsMaj (GlobalTheory.Grid.neg A) a)
@@ -482,29 +478,27 @@ end GlobalTheory.BottomLoc
 open GlobalTheory.BottomIPData GlobalTheory.BottomLoc in
 
 /- English proof (translation)
-Establish `H0 : GBig fun {_} _ Lc _ _ μ₀ _ _ _ => Lc.Is μ₀` using `⟨0, fun _ _ _ => ⟨0, 0, fun _ _ _ _ _ _ _ _ _ _ hL _ => hL⟩⟩`. Use `gbig_mono (gbig_and H0 (gbig_and GlobalTheory.T.unramifiedInnerProductData_definiteBottom_largeGrids GlobalTheory.T.exists_bottomInfinityExponents_gap_largeGrids)) ?_` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b ⟨hL, H1, H2⟩ W i j A A' WW X hX t cA a νW 𝓕W hP`. Establish `h` using `isBottomTri_is hX`. Establish `hr : A.rank ≤ WW.rank` using `h.rank ▸ Nat.le_add_right _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ea, eb, hab⟩` from `H2 W i j`. Take `⟨n, hn⟩` from `exists_weights hX t (hab t)`. Use `⟨topPol D hr n, fun m hm => ?_⟩` and prove the remaining obligations. Establish `hU` using `H1 W i j A A' WW X hX t (topPol D hr n)`. Establish `hoff` using `fun g => wcoef_off (g := g) hX t hP.covol (topPol D hr n)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hth` using `pt_theta hX t (topPol D hr n)`. Establish `hne` using `pt_ne_zero hX t (topPol_ne_zero D hr n)`. Establish `hfix : ∀ g ∈ openOff (GlobalTheory.Grid.neg A) X.rA.Λ ∅, (X.ω t).toSgn true (g, 1) (pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (X.f t) (topPol D hr n)) = pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s X …`. Introduce `g hg`. Establish `hk` using `GlobalTheory.LevelNbhd.finPartG_mem_GfC (GlobalTheory.Grid.neg A) g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hk' : GlobalTheory.LevelNbhd.finPartG (GlobalTheory.Grid.neg A) g ∈ openOff (GlobalTheory.Grid.neg A) X.rA.Λ ∅` using `fun v hv => by`. Rewrite using `[GlobalTheory.SuppLevO.proj_finPartG]`. Conclude with `hg v hv`. Establish `e : ((g, 1) : GA D (GlobalTheory.Grid.neg A) × GA D WW) = (GlobalTheory.LevelNbhd.finPartG (GlobalTheory.Grid.neg A) g, 1) * ((GlobalTheory.LevelNbhd.finPartG (GlobalTheory.Grid.neg A) g)⁻¹ * g, 1)` using `by simp`. Rewrite using `[e, map_mul, Module.End.mul_apply, real_fix hX t hr n hn (GlobalTheory.LevelNbhd.inv_finPartG_mul_mem_GinfC _ g), GlobalTheory.OrientedHeis.om_fin_pureTensorO W.ψ _ WW _ _ _ hP.weil W.θ h.isVac.2.inf _ hk 1 (one_mem _) _ _ _ _ _ _ (f_theta hX t), fin_fix hL hX t hU.unr hk hk']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (X.f t) (topPol D hr n) = Φ at hoff hth hne hfix ⊢`. Take `⟨c, hc, hrc⟩` from `rcoef_one (GlobalTheory.Grid.neg A) m hm`. Use `set c₀ : ℂ := GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.ip (GlobalTheory.Grid.neg A) WW νW 𝓕W Φ Φ with hc₀`. Establish `hc0 : c₀ ≠ 0`. Establish `h'` using `GlobalTheory.RawLift.VecNonzero.thetaInner_self_ne_zero hP.weil.std hth hne hP.covol`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : c₀ = GlobalTheory.RawLift.thetaIP νW 𝓕W Φ Φ`. Simplify using `only [hc₀, GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.ip, GlobalTheory.RawLift.thetaIP, mul_comm (Φ _), Complex.star_def]`. Rewrite using `[e]` and apply the resulting hypothesis. Establish `hon : ∀ g ∈ openOff (GlobalTheory.Grid.neg A) X.rA.Λ ∅, wcoef ((X.ω t).toSgn true) νW 𝓕W Φ Φ g = c₀` using `fun g hg => by`. Simplify using `only [wcoef, hfix g hg, hc₀]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK` using `openOff_eq hX X.rA.Λ hP.maj hP.maj_eq`. Use `haveI : Submodule.IsLattice D.host.E X.rA.Λ := hU.sdA.1`. Establish `hhgt : ∀ g ∈ openOff (GlobalTheory.Grid.neg A) X.rA.Λ ∅, GlobalTheory.Core.Rk.IP.hgtL (GlobalTheory.Grid.neg A) X.rA.Λ a g = 1`. Rewrite using `[hK]`. Introduce `g hg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `hgtAd_mul (Q := (dblSp (GlobalTheory.Grid.neg A)).gram) (L := X.rA.Λ) (a := a) (isCMExt_host D) 1 (k := io (GlobalTheory.Grid.neg A) (g, 1)) ((ioH_mem_KAd _).2 ⟨hg, one_mem _⟩)` as an intermediate fact. Simplify `this` using `[GlobalTheory.Core.Rk.IP.hgtL]`. Establish `hKc : IsCompact (openOff (GlobalTheory.Grid.neg A) X.rA.Λ ∅)`. Rewrite using `[hK]`. Conclude with `isCompact_levelAll (isCMExt_host D) _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKo : IsOpen (openOff (GlobalTheory.Grid.neg A) X.rA.Λ ∅)` using `GlobalTheory.Core.Rk.IP.isOpen_openOff _ _ hU.sdA _`. Establish `hOm : MeasurableSet (openOff (GlobalTheory.Grid.neg A) X.rA.Λ (sfB G t))` using `(GlobalTheory.Core.Rk.IP.isOpen_openOff _ _ hU.sdA _).measurableSet`. Establish `hsub : openOff (GlobalTheory.Grid.neg A) X.rA.Λ ∅ ⊆ openOff (GlobalTheory.Grid.neg A) X.rA.Λ (sfB G t)` using `fun g hg v _ => hg v (Finset.notMem_empty v)`. Establish `hI : ∀ s : ℂ, Set.EqOn (integrand ((X.ω t).toSgn true) m νW 𝓕W X.rA.Λ a Φ Φ (fun _ => 1) (fun _ => 1) s) ((openOff (GlobalTheory.Grid.neg A) X.rA.Λ ∅).indicator fun _ => c₀ * c) (openOff (GlobalTheory.Grid.neg A) X.rA.Λ (sfB G t))`. Introduce `s g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hg' : g ∈ openOff (GlobalTheory.Grid.neg A) X.rA.Λ ∅`. Rewrite using `[Set.indicator_of_mem hg']`. Simplify using `only [integrand, hon g hg', hhgt g hg', hrc, one_npow, mul_one]`. Rewrite using `[Set.indicator_of_notMem hg']`. Simplify using `only [integrand, hoff g hg hg', zero_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨(A'.rank : ℝ) / 2 - 1, by linarith, ?_⟩, ?_⟩` and prove the remaining obligations. Use `IntegrableOn.congr_fun ?_ (hI _).symm hOm` and prove the remaining obligations. Conclude with `((integrable_indicator_iff hKo.measurableSet).2 (integrableOn_const hKc.measure_ne_top)).integrableOn`. Simplify using `only [← GlobalTheory.Core.Rk.IP.integrand_sZero _ m νW 𝓕W X.rA.Λ a]`. Rewrite using `[setIntegral_congr_fun hOm (hI _), setIntegral_indicator hKo.measurableSet, Set.inter_eq_right.2 hsub, setIntegral_const]`.
-
-Use `smul_ne_zero ?_ (mul_ne_zero hc0 hc)` and prove the remaining obligations. Conclude with `ENNReal.toReal_ne_zero.2 ⟨(hKo.measure_pos m ⟨1, GlobalTheory.Core.Rk.IP.one_mem_openOff _ _ _⟩).ne', hKc.measure_ne_top⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.definiteBottom_localDoublingIntegral_converges : GBig fun {D} T Lc _ G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (A A' WW : HSp D) (X : Tri T A A' WW),
   IsBottomTri W i j X → ∀ t : T, ∀ (cA : CptF (GlobalTheory.Grid.neg A)) (a : GL (Fin (GlobalTheory.Grid.neg A).rank) (AE D)) (νW : Measure (WO (GlobalTheory.Grid.neg A) WW)) (𝓕W : Set (WO (GlobalTheory.Grid.neg A) WW)), Pair W.ψ W.θ (GlobalTheory.Grid.neg A) WW (GlobalTheory.BottomIPData.betaB G i j) (GlobalTheory.BottomIPData.betaB G i j / GlobalTheory.BottomIPData.alphaB Lc i j t) (fun τ => -X.rA.s τ) X.rW.s A'.rank cA a ((X.ω t).toSgn true) νW 𝓕W →

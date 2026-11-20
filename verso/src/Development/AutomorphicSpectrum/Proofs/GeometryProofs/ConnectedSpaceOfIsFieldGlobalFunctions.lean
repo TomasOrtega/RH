@@ -13,15 +13,13 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 namespace GlobalTheory.CompanionTheory.Ar.Approx
 
 /- English proof (translation)
-Establish `hne : Nonempty Z`. Assume the negation of the conclusion as `hZ`. Establish `hb : (⊤ : Z.Opens) = ⊥`. Use extensionality with `x`. Conclude with `(hZ ⟨x⟩).elim`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hs : Subsingleton Γ(Z, ⊤)`. Rewrite using `[hb]`. Use `infer_instance`. Take `⟨a, b, hab⟩` from `h.exists_pair_ne`. Conclude with `hab (Subsingleton.elim a b)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hp : PreconnectedSpace Z`. Use `preconnectedSpace_iff_clopen.2 fun U hU => ?_` and prove the remaining obligations. Take `⟨e, he, hUe⟩` from `GlobalTheory.exists_idempotent_basicOpen_eq_of_isClopen Z U hU`. Distinguish the cases in `h0 : e = 0`. Use `left`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hUe, h0, Z.basicOpen_zero]`. Both sides reduce to the same expression. Use `right`. Take `⟨b, hb⟩` from `h.mul_inv_cancel h0`. Establish `h1 : e = 1`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hUe, h1, Z.basicOpen_of_isUnit isUnit_one]`. Both sides reduce to the same expression. Conclude with `{ toPreconnectedSpace := hp, toNonempty := hne }`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem connectedSpace_of_isField_globalFunctions (Z : Scheme.{0}) (h : IsField Γ(Z, ⊤)) :
     ConnectedSpace Z := by
@@ -53,11 +51,9 @@ theorem connectedSpace_of_isField_globalFunctions (Z : Scheme.{0}) (h : IsField 
   exact { toPreconnectedSpace := hp, toNonempty := hne }
 
 /- English proof (translation)
-Introduce `K _ X p _ _ _`. Use `⟨fun L _ y Z a q H => ?_⟩` and prove the remaining obligations. Establish `hy : Flat y`. Take `⟨φ, rfl⟩` from `Spec.map_surjective y`. Rewrite using `[Flat.SpecMap_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `algebraize [φ.hom]`. Conclude with `inferInstanceAs (Module.Flat K L)`. Establish `hq : IsIso q.appTop` using `GlobalTheory.ProperFunctions.isIso_appTop_of_isPullback H`. Set `e₁ : Γ(Spec (.of L), ⊤) ≃+* Γ(Z, ⊤)` to `(asIso q.appTop).commRingCatIsoToRingEquiv`. Set `e₂ : Γ(Spec (.of L), ⊤) ≃+* L` to `(Scheme.ΓSpecIso (.of L)).commRingCatIsoToRingEquiv`.
-
-Establish `hL : IsField Γ(Spec (.of L), ⊤)` using `MulEquiv.isField (Field.toIsField L) e₂.toMulEquiv`. Conclude with `connectedSpace_of_isField_globalFunctions Z (MulEquiv.isField hL e₁.symm.toMulEquiv)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geometricallyConnected_of_isIso_appTop :
     ∀ (K : Type) [Field K] (X : Scheme.{0}) (p : X ⟶ Sp K), QuasiCompact p → QuasiSeparated p →

@@ -13,9 +13,7 @@ open ReciprocityTheory.ChartRestriction.G.Semi
 variable {X Y Z : Scheme.{0}} {L : LB X} {K K' : Type} [Fintype K] [Fintype K']
 
 /- English proof (translation)
-Use `ext`. Use `show ((h ≫ ψ).app U).hom x.val = (h.app _).hom ((ψ.app U).hom x.val)`. Use `first`. Consider the case `rfl`. Consider the case `(rw [Scheme.Hom.comp_app]; rfl)`.
-
-Consider the case `simp`.
+By extensionality, compare the relevant components. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma pullU_comp_eq_pullU_pullU (h : Z ⟶ Y) (ψ : Y ⟶ X) (U : X.Opens) (x : Γ(X, U)ˣ) :
     pullU (h ≫ ψ) U x = pullU h (ψ ⁻¹ᵁ U) (pullU ψ U x) := by
@@ -27,7 +25,7 @@ lemma pullU_comp_eq_pullU_pullU (h : Z ⟶ Y) (ψ : Y ⟶ X) (U : X.Opens) (x : 
   | simp
 
 /- English proof (translation)
-Use `show (Y.presheaf.map (homOfLE hle).op ≫ h.app V).hom x = (h.app U ≫ Z.presheaf.map (homOfLE ((Opens.map h.base).monotone hle)).op).hom x`. Rewrite using `[Scheme.Hom.naturality]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma app_rs (h : Z ⟶ Y) {U V : Y.Opens} (hle : V ≤ U) (x : Γ(Y, U)) :
     (h.app V).hom (rs hle x) = rs ((Opens.map h.base).monotone hle) ((h.app U).hom x) := by
@@ -37,9 +35,9 @@ lemma app_rs (h : Z ⟶ Y) {U V : Y.Opens} (hle : V ≤ U) (x : Γ(Y, U)) :
   rfl
 
 /- English proof (translation)
-Introduce `z hz`. Use `show h.base z ∈ (LB.wchart L φ j : Set Y)`. Establish `hz' : z ∈ (LB.wchart L (fun k => h ≫ φ k) j : Set Z)` using `hz`. Simplify using `only [LB.wchart, TopologicalSpace.Opens.coe_mk, Set.mem_iInter, Set.mem_preimage] at hz' ⊢`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Use `first`. Consider the case `exact hz' k`. Consider the case `simpa using hz' k`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma wchart_comp_le (φ : K → (Y ⟶ X)) (h : Z ⟶ Y) (j : K → L.ι) :
     LB.wchart L (fun k => h ≫ φ k) j ≤ h ⁻¹ᵁ LB.wchart L φ j := by
@@ -53,9 +51,9 @@ lemma wchart_comp_le (φ : K → (Y ⟶ X)) (h : Z ⟶ Y) (j : K → L.ι) :
   | simpa using hz' k
 
 /- English proof (translation)
-Use `ext`. Use `show ((h ≫ ψ).appLE U V hA).hom x.val = (h.appLE W V hB).hom ((ψ.appLE U W hC).hom x.val)`. Rewrite using `[← CommRingCat.comp_apply]`. Use `first`. Consider the case `rw [Scheme.Hom.appLE_comp_appLE]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `rw [Scheme.appLE_comp_appLE]`. Consider the case `simp [Scheme.Hom.appLE_comp_appLE]`. Consider the case `rfl`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma res_pullU_comp' (h : Z ⟶ Y) (ψ : Y ⟶ X) {U : X.Opens} {W : Y.Opens} {V : Z.Opens}
     (hC : W ≤ ψ ⁻¹ᵁ U) (hB : V ≤ h ⁻¹ᵁ W) (hA : V ≤ (h ≫ ψ) ⁻¹ᵁ U) (x : Γ(X, U)ˣ) :
@@ -70,7 +68,7 @@ lemma res_pullU_comp' (h : Z ⟶ Y) (ψ : Y ⟶ X) {U : X.Opens} {W : Y.Opens} {
   | rfl
 
 /- English proof (translation)
-Rewrite using `[map_prod, map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow, map_zpow, res_pullU_comp' h (ψ k) (hW k) hV (hV' k)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma prod_pull_generic (h : Z ⟶ Y) (ψ : K → (Y ⟶ X)) (a b : K → L.ι) (W : Y.Opens)
     (hW : ∀ k, W ≤ ψ k ⁻¹ᵁ (L.U (a k) ⊓ L.U (b k))) (V : Z.Opens) (hV : V ≤ h ⁻¹ᵁ W)
@@ -82,7 +80,7 @@ lemma prod_pull_generic (h : Z ⟶ Y) (ψ : K → (Y ⟶ X)) (a b : K → L.ι) 
   rw [map_zpow, map_zpow, res_pullU_comp' h (ψ k) (hW k) hV (hV' k)]
 
 /- English proof (translation)
-Conclude with `prod_pull_generic h φ i j (LB.wchart L φ i ⊓ LB.wchart L φ j) (fun k => le_inf (inf_le_left.trans (LB.wchart_le L φ i k)) (inf_le_right.trans (LB.wchart_le L φ j k))) (LB.wchart L (fun k => h ≫ φ k) i ⊓ LB.wchart L (fun k => h ≫ φ k) j) (le_inf (inf_le_left.trans (wchart_comp_le …`.
+A detailed English derivation is pending.
 -/
 lemma linComb_g_comp (φ : K → (Y ⟶ X)) (ε : K → ℤ) (h : Z ⟶ Y) (i j : K → L.ι) :
     (LB.LinComb L (fun k => h ≫ φ k) ε).g i j =
@@ -97,13 +95,11 @@ lemma linComb_g_comp (φ : K → (Y ⟶ X)) (ε : K → ℤ) (h : Z ⟶ Y) (i j 
       (inf_le_right.trans (LB.wchart_le L (fun k => h ≫ φ k) j k))) ε
 
 /- English proof (translation)
-Establish `hrr : ∀ {A B C : Z.Opens} (h1 : C ≤ B) (h2 : B ≤ A) (x : Γ(Z, A)), rs h1 (rs h2 x) = rs (h1.trans h2) x`. Introduce `A B C h1 h2 x`. Use `show (Z.presheaf.map (homOfLE h2).op ≫ Z.presheaf.map (homOfLE h1).op).hom x = _`. Rewrite using `[← Functor.map_comp]`. Apply the tactic sequence `try rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm : ∀ {A B : Z.Opens} (h1 : B ≤ A) (x y : Γ(Z, A)), rs h1 (x * y) = rs h1 x * rs h1 y`. Introduce `A B h1 x y`. Use `show (Z.presheaf.map (homOfLE h1).op).hom (x * y) = _`. Rewrite using `[map_mul]`. Apply the tactic sequence `try rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hl : (Wi ⊓ Wj) ≤ h ⁻¹ᵁ (Ui ⊓ Uj)` using `le_inf (inf_le_left.trans hi) (inf_le_right.trans hj)`. Establish `e1 : rs (inf_le_left : Wi ⊓ Wj ≤ Wi) (rs hi ((h.app Ui).hom fi)) = rs hl ((h.app (Ui ⊓ Uj)).hom (rs (inf_le_left : Ui ⊓ Uj ≤ Ui) fi))`. Rewrite using `[app_rs, hrr, hrr]`. Establish `e2 : rs (inf_le_right : Wi ⊓ Wj ≤ Wj) (rs hj ((h.app Uj).hom fj)) = rs hl ((h.app (Ui ⊓ Uj)).hom (rs (inf_le_right : Ui ⊓ Uj ≤ Uj) fj))`. Rewrite using `[app_rs, hrr, hrr]`.
-
-Rewrite using `[e1, e2, hc, map_mul, hm, hg']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma app_compat_generic (h : Z ⟶ Y) {Ui Uj : Y.Opens} {Wi Wj : Z.Opens} (hi : Wi ≤ h ⁻¹ᵁ Ui)
     (hj : Wj ≤ h ⁻¹ᵁ Uj) (fi : Γ(Y, Ui)) (fj : Γ(Y, Uj)) (g : Γ(Y, Ui ⊓ Uj)ˣ)
@@ -148,11 +144,11 @@ def genSec {M : LB Y} (t : LB.Gen M) (ht : t.IsGen) : LB.Sec M where
   compat i j := congrArg Units.val (ht i j)
 
 /- English proof (translation)
-Establish `hrU : ∀ {A B C : Y.Opens} (h1 : C ≤ B) (h2 : B ≤ A) (x : Γ(Y, A)ˣ), res h1 (res h2 x) = res (h1.trans h2) x`. Introduce `A B C h1 h2 x`. Use `ext`. Use `show (Y.presheaf.map (homOfLE h2).op ≫ Y.presheaf.map (homOfLE h1).op).hom x.val = _`. Rewrite using `[← Functor.map_comp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `try rfl`. Rewrite using `[Fintype.prod_sum_type, map_prod, map_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow, hrU]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow, hrU]`.
+A detailed English derivation is pending.
 -/
 lemma prod_sum_generic (ψ : K ⊕ K' → (Y ⟶ X)) (a b : K ⊕ K' → L.ι) (ε : K ⊕ K' → ℤ) (V W W' : Y.Opens)
     (hV : ∀ k, V ≤ ψ k ⁻¹ᵁ (L.U (a k) ⊓ L.U (b k)))
@@ -177,9 +173,7 @@ lemma prod_sum_generic (ψ : K ⊕ K' → (Y ⟶ X)) (a b : K ⊕ K' → L.ι) (
     rw [map_zpow, hrU]
 
 /- English proof (translation)
-Introduce `z hz`. Establish `hz' : z ∈ (LB.wchart L (Sum.elim φ φ') j : Set Y)` using `hz`. Use `show z ∈ (LB.wchart L φ (j ∘ Sum.inl) : Set Y)`. Simplify using `only [LB.wchart, TopologicalSpace.Opens.coe_mk, Set.mem_iInter, Set.mem_preimage] at hz' ⊢`. Introduce `k`.
-
-Conclude with `hz' (Sum.inl k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma wchart_inl (φ : K → (Y ⟶ X)) (φ' : K' → (Y ⟶ X)) (j : K ⊕ K' → L.ι) :
     LB.wchart L (Sum.elim φ φ') j ≤ LB.wchart L φ (j ∘ Sum.inl) := by
@@ -191,9 +185,7 @@ lemma wchart_inl (φ : K → (Y ⟶ X)) (φ' : K' → (Y ⟶ X)) (j : K ⊕ K' �
   exact hz' (Sum.inl k)
 
 /- English proof (translation)
-Introduce `z hz`. Establish `hz' : z ∈ (LB.wchart L (Sum.elim φ φ') j : Set Y)` using `hz`. Use `show z ∈ (LB.wchart L φ' (j ∘ Sum.inr) : Set Y)`. Simplify using `only [LB.wchart, TopologicalSpace.Opens.coe_mk, Set.mem_iInter, Set.mem_preimage] at hz' ⊢`. Introduce `k`.
-
-Conclude with `hz' (Sum.inr k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma wchart_inr (φ : K → (Y ⟶ X)) (φ' : K' → (Y ⟶ X)) (j : K ⊕ K' → L.ι) :
     LB.wchart L (Sum.elim φ φ') j ≤ LB.wchart L φ' (j ∘ Sum.inr) := by
@@ -205,7 +197,7 @@ lemma wchart_inr (φ : K → (Y ⟶ X)) (φ' : K' → (Y ⟶ X)) (j : K ⊕ K' �
   exact hz' (Sum.inr k)
 
 /- English proof (translation)
-Use `(prod_sum_generic (Sum.elim φ φ') i j (Sum.elim ε ε') _ _ _ (fun k => le_inf (inf_le_left.trans (LB.wchart_le L (Sum.elim φ φ') i k)) (inf_le_right.trans (LB.wchart_le L (Sum.elim φ φ') j k))) (fun k => le_inf (inf_le_left.trans (LB.wchart_le L φ (i ∘ Sum.inl) k)) (inf_le_right.t …` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 lemma linComb_g_sum (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ) (i j : K ⊕ K' → L.ι) :
     (LB.LinComb L (Sum.elim φ φ') (Sum.elim ε ε')).g i j =
@@ -229,15 +221,13 @@ lemma linComb_g_sum (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶
   rfl
 
 /- English proof (translation)
-Establish `hrr : ∀ {A B C : Y.Opens} (h1 : C ≤ B) (h2 : B ≤ A) (x : Γ(Y, A)), rs h1 (rs h2 x) = rs (h1.trans h2) x`. Introduce `A B C h1 h2 x`. Use `show (Y.presheaf.map (homOfLE h2).op ≫ Y.presheaf.map (homOfLE h1).op).hom x = _`. Rewrite using `[← Functor.map_comp]`. Apply the tactic sequence `try rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm : ∀ {A B : Y.Opens} (h1 : B ≤ A) (x y : Γ(Y, A)), rs h1 (x * y) = rs h1 x * rs h1 y`. Introduce `A B h1 x y`. Use `show (Y.presheaf.map (homOfLE h1).op).hom (x * y) = _`. Rewrite using `[map_mul]`. Apply the tactic sequence `try rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hres : ∀ {A B : Y.Opens} (h1 : B ≤ A) (u : Γ(Y, A)ˣ), ((res h1 u : Γ(Y, B)ˣ) : Γ(Y, B)) = rs h1 (u : Γ(Y, A))` using `fun _ _ => rfl`. Establish `hl : Wi ⊓ Wj ≤ Ui ⊓ Uj` using `le_inf (inf_le_left.trans hi) (inf_le_right.trans hj)`. Establish `hl' : Wi ⊓ Wj ≤ Ui' ⊓ Uj'` using `le_inf (inf_le_left.trans hi') (inf_le_right.trans hj')`. Establish `e1 : rs (inf_le_left : Wi ⊓ Wj ≤ Wi) (rs hi fi) = rs hl (rs (inf_le_left : Ui ⊓ Uj ≤ Ui) fi)`. Rewrite using `[hrr, hrr]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : rs (inf_le_left : Wi ⊓ Wj ≤ Wi) (rs hi' fi') = rs hl' (rs (inf_le_left : Ui' ⊓ Uj' ≤ Ui') fi')`. Rewrite using `[hrr, hrr]`. Establish `e3 : rs (inf_le_right : Wi ⊓ Wj ≤ Wj) (rs hj fj) = rs hl (rs (inf_le_right : Ui ⊓ Uj ≤ Uj) fj)`. Rewrite using `[hrr, hrr]`. Establish `e4 : rs (inf_le_right : Wi ⊓ Wj ≤ Wj) (rs hj' fj') = rs hl' (rs (inf_le_right : Ui' ⊓ Uj' ≤ Uj') fj')`.
-
-Rewrite using `[hrr, hrr]`. Rewrite using `[hm, hm, e1, e2, e3, e4, hc, hc', hm, hm, hG, Units.val_mul, hres, hres]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma mul_compat_generic {Ui Uj Ui' Uj' Wi Wj : Y.Opens} (hi : Wi ≤ Ui) (hi' : Wi ≤ Ui') (hj : Wj ≤ Uj)
     (hj' : Wj ≤ Uj') (fi : Γ(Y, Ui)) (fj : Γ(Y, Uj)) (fi' : Γ(Y, Ui')) (fj' : Γ(Y, Uj'))

@@ -11,7 +11,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.LocGL
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ 𝔪 x χ hχ h`. Conclude with `(h.tw χ hχ).of_equiv (x.twEquiv χ hχ)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isL_map_tw_of_isL : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [CharZero k] (𝔪 : Multiset (Segment k)) (x : IrrGL k) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ),

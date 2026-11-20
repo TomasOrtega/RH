@@ -19,7 +19,7 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (s : Γ(X, U)ˣ) :
     res h₂ (res h₁ s) = res (h₂.trans h₁) s := by
@@ -29,7 +29,7 @@ theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W �
   rfl
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`. Establish `: (homOfLE h).op = 𝟙 _` using `rfl`. Rewrite using `[this, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_self {X : Scheme.{0}} {U : X.Opens} (h : U ≤ U) (s : Γ(X, U)ˣ) : res h s = s := by
   ext
@@ -39,7 +39,7 @@ theorem res_self {X : Scheme.{0}} {U : X.Opens} (h : U ≤ U) (s : Γ(X, U)ˣ) :
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun e => by have := congrArg (res h') e rwa [res_res, res_res, res_self, res_self] at this, fun e => e ▸ rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem res_eq_iff {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) (h' : U ≤ V) (s t : Γ(X, U)ˣ) :
     res h s = res h t ↔ s = t :=
@@ -52,11 +52,11 @@ section Bundle
 variable {X X' Y : Scheme.{0}} (L : LB X) (L' : LB X') (F : X' ⟶ X)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨b⟩` from `b`. Take `⟨c⟩` from `c`. Use `congr 1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `j`. Use `h j j (fun _ _ _ => rfl) (fun _ _ _ => rfl) (fun _ _ _ => rfl)` as an intermediate fact. Conclude with `(res_eq_iff _ (le_inf le_rfl le_rfl) _ _).1 this`. Introduce and unpack `rfl j j' _ _ h`. Take `rfl : j = j'` from `funext fun k => h k k rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem corr_iff_eq (p : Y ⟶ X) (n : ℤ)
     (b c : LB.Gen (LB.LinComb L (K := PUnit) (fun _ => p) (fun _ => n))) :
@@ -74,9 +74,9 @@ theorem corr_iff_eq (p : Y ⟶ X) (n : ℤ)
     rfl
 
 /- English proof (translation)
-Substitute `hp` using the available equality. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, hc⟩ j j'`. Take `rfl` from `(corr_iff_eq L _ n b c).1 hc`. Conclude with `hb (fun _ => j) j'`.
+Substitute using the available equality. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨c, fun jN jL => h (jN PUnit.unit) jL, (corr_iff_eq L _ n c c).2 rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mapsAt_iff (w : LB.Iso L' (L.pull F)) (p' : Y ⟶ X') (p : Y ⟶ X) (hp : p' ≫ F = p) (n : ℤ)
     (a : LB.Gen (LB.LinComb L' (K := PUnit) (fun _ => p') (fun _ => n)))
@@ -93,7 +93,7 @@ theorem exists_mapsAt_iff (w : LB.Iso L' (L.pull F)) (p' : Y ⟶ X') (p : Y ⟶ 
     exact ⟨c, fun jN jL => h (jN PUnit.unit) jL, (corr_iff_eq L _ n c c).2 rfl⟩
 
 /- English proof (translation)
-Substitute `hp` using the available equality. Substitute `hq` using the available equality. Take `rfl` from `TorusExt.gen_ext_val hL hb hc hv`. Conclude with `h`.
+Substitute using the available equality. Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem carriesAt_congr (hL : L.IsLB) {w : LB.Iso L' (L.pull F)} {p' : Y ⟶ X'} {p q : Y ⟶ X} (hp : p' ≫ F = p)
     (hq : p' ≫ F = q) {n : ℤ} {a : LB.Gen (LB.LinComb L' (K := PUnit) (fun _ => p') (fun _ => n))}
@@ -114,9 +114,9 @@ section Grp
 variable {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G']
 
 /- English proof (translation)
-Establish `key : ∀ (j : L.ι) (j' : L'.ι), (res (inf_le_left : _ ⊓ (L'.pull (eSec G')).U (fun _ => j') ≤ _) ((rigPullOf F f he L r).s (fun _ _ => j)) = @id (Γ((𝟙_ (Over S')).left, ((L.pull F).pull (eSec G')).U (fun _ _ => j) ⊓ (L'.pull (eSec G')).U (fun _ => j'))ˣ) ((LB.linCombIso w (K` using `PUnit) (fun _ => eSec G') (fun _ => 1)).s (fun _ _ => j, fun _ => j')) * res inf_le_right (r'.s (fun _ => j'))) ↔ res (GlobalTheory.IndefiniteRowSideFullHecke.RigidPullbackIdentification.chart_le_target L L' F (eSec G') (f ≫ eSec G) he j j') ((LB.pullGen L _ _ r f).s (fun _ => j) …`. Introduce `j j'`. Establish `h₁ : ((L.pull F).pull (eSec G')).U (fun _ _ => j) ⊓ (L'.pull (eSec G')).U (fun _ => j') ≤ eSec G' ⁻¹ᵁ (LB.div (L.pull F) L').U (fun _ => j, j')` using `fun y hy => ⟨Set.mem_iInter.1 hy.1 PUnit.unit, Set.mem_iInter.1 hy.2 PUnit.unit⟩`. Establish `h₂ : eSec G' ⁻¹ᵁ (LB.div (L.pull F) L').U (fun _ => j, j') ≤ ((L.pull F).pull (eSec G')).U (fun _ _ => j) ⊓ (L'.pull (eSec G')).U (fun _ => j')` using `fun y hy => ⟨Set.mem_iInter.2 fun _ => hy.1, Set.mem_iInter.2 fun _ => hy.2⟩`. Rewrite using `[← res_eq_iff h₁ h₂, map_mul, map_zpow]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.congr ?_ (congrArg₂ (· * ·) (Fintype.prod_unique fun _ : PUnit => res h₁ (pullU (eSec G') _ (w.s (fun _ => j, j'))) ^ (1 : ℤ)) ?_)` and prove the remaining obligations. Conclude with `(res_res _ _ _).trans ((res_res _ _ _).trans (res_res _ _ _)).symm`. Conclude with `(res_res _ _ _).symm`. Conclude with `⟨fun h j j' => (key j j').1 (h (fun _ _ => j, fun _ => j')), fun h p => (key (p.1 PUnit.unit PUnit.unit) (p.2 PUnit.unit)).2 (h _ _)⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rig_iff [IsCommMonObj G] [IsCommMonObj G'] (F : G'.left ⟶ G.left) (f : S' ⟶ S)
     (he : eSec G' ≫ F = f ≫ eSec G) (L : LB G.left) (L' : LB G'.left) (w : LB.Iso L' (L.pull F))
@@ -148,15 +148,13 @@ theorem rig_iff [IsCommMonObj G] [IsCommMonObj G'] (F : G'.left ⟶ G.left) (f :
     fun h p => (key (p.1 PUnit.unit PUnit.unit) (p.2 PUnit.unit)).2 (h _ _)⟩
 
 /- English proof (translation)
-Establish `m : ∀ (T : Over S') (x y : T ⟶ G') (x₀ y₀ : Over.mk (T.hom ≫ f) ⟶ G), x₀.left = x.left ≫ F → y₀.left = y.left ≫ F → (lift x₀ y₀).left = (lift x y).left ≫ pullback.map G'.hom G'.hom G.hom G.hom F F f cart.w.symm cart.w.symm`. Introduce `T x y x₀ y₀ hx hy`. Apply `pullback.hom_ext` to reduce the goal to its premises. Establish `e₁ : (lift x₀ y₀).left ≫ pullback.fst G.hom G.hom = x₀.left` using `congrArg (·.left) (lift_fst x₀ y₀)`. Establish `e₂ : (lift x y).left ≫ pullback.fst G'.hom G'.hom = x.left` using `congrArg (·.left) (lift_fst x y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `e₁.trans (hx.trans ?_)` and prove the remaining obligations. Rewrite using `[← e₂, Category.assoc, Category.assoc]`. Conclude with `congrArg _ (pullback.lift_fst _ _ _).symm`. Establish `e₁ : (lift x₀ y₀).left ≫ pullback.snd G.hom G.hom = y₀.left` using `congrArg (·.left) (lift_snd x₀ y₀)`. Establish `e₂ : (lift x y).left ≫ pullback.snd G'.hom G'.hom = y.left` using `congrArg (·.left) (lift_snd x y)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `e₁.trans (hy.trans ?_)` and prove the remaining obligations. Rewrite using `[← e₂, Category.assoc, Category.assoc]`. Conclude with `congrArg _ (pullback.lift_snd _ _ _).symm`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `h.2 _ (fst G' G') (snd G' G') (pushPt cart.w _) (pushPt cart.w _) rfl rfl`. Establish `e'` using `m _ (fst G' G') (snd G' G') (pushPt cart.w _) (pushPt cart.w _) rfl rfl`. Rewrite `e` using `[Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp, Over.comp_left, e', lift_fst_snd, Over.id_left]`. Conclude with `e.symm.trans (congrArg (· ≫ _) (Category.id_comp _))`. Introduce `h`.
-
-Use `⟨cart, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Hom.mul_def, Hom.mul_def, Over.comp_left, Over.comp_left, m T x y x₀ y₀ hx hy, Category.assoc]`. Conclude with `(Category.assoc _ _ _).trans (congrArg _ h.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGrpPullback_iff {f : S' ⟶ S} {F : G'.left ⟶ G.left} (cart : IsPullback F G'.hom G.hom f) :
     IsGrpPullback G' G f F ↔ (μ[G']).left ≫ F =
@@ -206,7 +204,7 @@ def PsiCarried (p : PullIdent φ D D') (o : OpenChoice φ D) : Prop :=
 def toOpenChoice (h : IsPullDeg φ D D') : OpenChoice φ D := ⟨h.W, h.psiW, h.g, h.g_comm⟩
 
 /- English proof (translation)
-The claim follows from `(exists_mapsAt_iff D.P.L D'.P.L _ h.w _ _ _ (-1) _ _).1 (h.psi_pr χ)`.
+A detailed English derivation is pending.
 -/
 theorem psi_pr_carries (h : IsPullDeg φ D D') (χ : D'.X) :
     CarriesAt D.P.L D'.P.L (h.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ)) h.w (D'.xK χ)
@@ -242,7 +240,7 @@ Both sides reduce to the same expression.
 @[simp] theorem toIdent_xe (h : IsPullDeg φ D D') : (toIdent h).xe = h.xe := rfl
 
 /- English proof (translation)
-Take `⟨e, me, he⟩` from `grpPullback_iso ((isGrpPullback_iff p.cart).2 p.F_mul) (isGrpPullback_pullback D.P.A (specOf φ))`. Take `⟨F, cart, F₁, Fm, w, wg, wr, xe, ce, wp⟩` from `p`. Simplify using `only at he`. Substitute `he` using the available equality. Conclude with `⟨⟨e, me, w, wg, F₁, (rig_iff _ _ F₁ _ _ w D.rig D'.rig).2 wr, xe, ce, o.1, o.2.1, o.2.2.1, o.2.2.2, fun χ => (exists_mapsAt_iff D.P.L D'.P.L _ w _ _ _ (-1) _ _).2 (H χ)⟩, rfl, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_toIdent_eq (p : PullIdent φ D D') (o : OpenChoice φ D) (H : PsiCarried p o) :
     ∃ h : IsPullDeg φ D D', toIdent h = p ∧ toOpenChoice h = o := by
@@ -255,7 +253,7 @@ theorem exists_toIdent_eq (p : PullIdent φ D D') (o : OpenChoice φ D) (H : Psi
     fun χ => (exists_mapsAt_iff D.P.L D'.P.L _ w _ _ _ (-1) _ _).2 (H χ)⟩, rfl, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Iso.ext (Over.OverMorphism.ext (pullback.hom_ext h ((Over.w e.hom).trans (Over.w e'.hom).symm)))`.
+A detailed English derivation is pending.
 -/
 theorem iso_eq_of_comp_eq {e e' : D'.P.A ≅ (Over.pullback (specOf φ)).obj D.P.A}
     (h : e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ) = e'.hom.left ≫ pullback.fst D.P.A.hom (specOf φ)) :
@@ -263,11 +261,11 @@ theorem iso_eq_of_comp_eq {e e' : D'.P.A ≅ (Over.pullback (specOf φ)).obj D.P
   Iso.ext (Over.OverMorphism.ext (pullback.hom_ext h ((Over.w e.hom).trans (Over.w e'.hom).symm)))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `⟨iso_eq_of_comp_eq (congrArg PullIdent.F H), ?_, congrArg PullIdent.xe H⟩` and prove the remaining obligations. Use `show HEq (toIdent h).w (toIdent h').w`. Rewrite using `[H]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e', m', w', wg', he', wr', xe', cp', W', pW', g', gc', pp'⟩` from `h'`. Take `⟨e, m, w, wg, he₀, wr, xe, cp, W, pW, g, gc, pp⟩` from `h`. Introduce and unpack `⟨he, hw, hx⟩`. Simplify using `only at he hw hx`. Substitute `he` using the available equality.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `hx` using the available equality. Take `rfl` from `eq_of_heq hw`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem toIdent_eq_iff (h h' : IsPullDeg φ D D') :
     toIdent h = toIdent h' ↔ h.e = h'.e ∧ HEq h.w h'.w ∧ h.xe = h'.xe := by
@@ -286,9 +284,9 @@ theorem toIdent_eq_iff (h h' : IsPullDeg φ D D') :
     rfl
 
 /- English proof (translation)
-Take `⟨he, hw, hx⟩` from `(toIdent_eq_iff h h').1 H`. Take `⟨e', m', w', wg', he', wr', xe', cp', W', pW', g', gc', pp'⟩` from `h'`. Take `⟨e, m, w, wg, he₀, wr, xe, cp, W, pW, g, gc, pp⟩` from `h`. Simplify using `only at he hw hx`. Substitute `he` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality.
 
-Substitute `hx` using the available equality. Take `rfl` from `eq_of_heq hw`. Consider the cases of `H'`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem eq_of_toIdent_eq {h h' : IsPullDeg φ D D'} (H : toIdent h = toIdent h')
     (H' : toOpenChoice h = toOpenChoice h') : h = h' := by
@@ -303,7 +301,7 @@ theorem eq_of_toIdent_eq {h h' : IsPullDeg φ D D'} (H : toIdent h = toIdent h')
   rfl
 
 /- English proof (translation)
-Take `⟨W, ψW, g, hg, H⟩` from `p.w_psi`. Introduce `χ`. Use `carriesAt_congr _ _ _ D.P.isLB _ _ (H χ) (DVR.pullGen_isGen _ _ _ _ (ψW.psi_gen _) _) (DVR.pullGen_isGen _ _ _ _ (o.2.1.psi_gen _) _) fun y J hJ => ?_` and prove the remaining obligations. Conclude with `(val_pull hJ _ _ _).trans ((ArcSpecialise.psiOn_agree ψW o.2.1 (p.xe χ) (𝟙 _ ≫ g) (𝟙 _ ≫ o.2.2.1) (by rw [Category.assoc, Category.assoc, hg, o.2.2.2]) hJ).trans (val_pull hJ _ _ _).symm)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem psiCarried_all (p : PullIdent φ D D') (o : OpenChoice φ D) : PsiCarried p o := by
   obtain ⟨W, ψW, g, hg, H⟩ := p.w_psi
@@ -314,7 +312,7 @@ theorem psiCarried_all (p : PullIdent φ D D') (o : OpenChoice φ D) : PsiCarrie
     (by rw [Category.assoc, Category.assoc, hg, o.2.2.2]) hJ).trans (val_pull hJ _ _ _).symm)
 
 /- English proof (translation)
-Introduce `p` and use `by obtain ⟨W, ψW, g, hg, H⟩ := p.w_psi obtain ⟨h, e, -⟩ := exists_toIdent_eq p ⟨W, ψW, g, hg⟩ H exact ⟨h, e⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toIdent_surjective : Function.Surjective (toIdent : IsPullDeg φ D D' → PullIdent φ D D') := fun p => by
   obtain ⟨W, ψW, g, hg, H⟩ := p.w_psi
@@ -322,7 +320,7 @@ theorem toIdent_surjective : Function.Surjective (toIdent : IsPullDeg φ D D' �
   exact ⟨h, e⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨h⟩ => ⟨toIdent h⟩, fun ⟨p⟩ => let ⟨h, _⟩ := toIdent_surjective p; ⟨h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_iff : Nonempty (IsPullDeg φ D D') ↔ Nonempty (PullIdent φ D D') :=
   ⟨fun ⟨h⟩ => ⟨toIdent h⟩, fun ⟨p⟩ => let ⟨h, _⟩ := toIdent_surjective p; ⟨h⟩⟩

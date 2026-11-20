@@ -18,13 +18,13 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] 
   (σ : E →ₐ[F] E) (a : ℕ)
 
 /- English proof (translation)
-Simplify using `[sigR, Algebra.TensorProduct.algebraMap_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_algebraMap (c : R) : sigR R σ (algebraMap R (R ⊗[F] E) c) = algebraMap R _ c := by
   simp [sigR, Algebra.TensorProduct.algebraMap_apply]
 
 /- English proof (translation)
-Introduce `i j`. Establish `h` using `hS i j`. Simplify using `only [Matrix.smul_apply]`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, h, sigR_algebraMap]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_mem_HermR (c : R) (S : Matrix (Fin a) (Fin a) (R ⊗[F] E)) (hS : S ∈ HermR R σ a) :
     c • S ∈ HermR R σ a := by
@@ -111,11 +111,11 @@ def FrameH : Prop :=
       (∀ y, y = ∑ j, pairHerm (Fv F v) σ a (β j) y • β' j)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J ψ v a hS`. Take `⟨hCM, hJ, hψ, hstd⟩` from `hS`. Establish `hc : Continuous (psiV F ψ v)` using `continuous_psiV ψ hψ.1 v`. Establish `hadd` using `psiV_add ψ v`. Establish `hn : ∀ r, ‖psiV F ψ v r‖ = 1` using `fun r => hψ.2.1 _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnt` using `hP ψ v hψ hstd hCM.1`. Prove the components needed by the constructor for the conclusion. Take `⟨ι, _, β, β', h1, h2⟩` from `hW σ J v a hCM hJ`. Take `⟨ha, hs, hsym, hcont⟩` from `hWf σ J v a hCM hJ`. Take `⟨μ, hμ⟩` from `hA v _ hc hadd hn hnt (BR (Fv F v) σ J) ha hs hsym hcont β β' h1 h2`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨μ, hμ⟩`. Take `⟨ι, _, β, β', h1, h2⟩` from `hH σ v a hCM`. Take `⟨ha, hs, hsym, hcont⟩` from `hHf σ v a hCM`. Take `⟨μ, hμ⟩` from `hA v _ hc hadd hn hnt (pairHerm (Fv F v) σ a) ha hs hsym hcont β β' h1 h2`. Conclude with `⟨μ, hμ⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sdEx_of (hP : PsiNT) (hA : AbsSd) (hWf : BRFacts) (hW : FrameW) (hHf : HermFacts)
     (hH : FrameH) : SdEx := by

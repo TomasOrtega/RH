@@ -15,21 +15,21 @@ def ps {r k : ℕ} (m : Fin r × Fin k →₀ ℕ) (a : ℕ) (t : Fin k) : ℕ :
   ∑ b : Fin r, if b.val < a then m (b, t) else 0
 
 /- English proof (translation)
-Simplify using `only [Interlaced, InterlacedAt, ps, Finset.sum_filter, zero_add, Nat.lt_succ_iff, Fin.le_def, Fin.lt_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem interlaced_iff {r k : ℕ} (m : Fin r × Fin k →₀ ℕ) :
     Interlaced m ↔ ∀ l j : Fin k, j.val = l.val + 1 → ∀ a : Fin r, ps m (a.val + 1) j ≤ ps m a.val l := by
   simp only [Interlaced, InterlacedAt, ps, Finset.sum_filter, zero_add, Nat.lt_succ_iff, Fin.le_def, Fin.lt_def]
 
 /- English proof (translation)
-Simplify using `[ps]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ps_zero {r k : ℕ} (m : Fin r × Fin k →₀ ℕ) (t : Fin k) : ps m 0 t = 0 := by simp [ps]
 
 /- English proof (translation)
-Establish `: m (a, t) = ∑ b : Fin r, if b = a then m (b, t) else 0` using `by simp`. Rewrite using `[this, ps, ps, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : b = a`. Substitute `h` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `h' : b.val ≠ a.val` using `fun e => h (Fin.ext e)`. Rewrite using `[if_neg h]`. Apply the tactic sequence `split_ifs <;> omega`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ps_succ {r k : ℕ} (m : Fin r × Fin k →₀ ℕ) (a : Fin r) (t : Fin k) :
     ps m (a.val + 1) t = ps m a.val t + m (a, t) := by
@@ -43,13 +43,13 @@ theorem ps_succ {r k : ℕ} (m : Fin r × Fin k →₀ ℕ) (a : Fin r) (t : Fin
     split_ifs <;> omega
 
 /- English proof (translation)
-Simplify using `[ps]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ps_top {r k : ℕ} (m : Fin r × Fin k →₀ ℕ) (t : Fin k) : ps m r t = ∑ b, m (b, t) := by
   simp [ps]
 
 /- English proof (translation)
-The claim follows from `| 0, _ => ps_zero m _ | t + 1, ht => by have h1 := (interlaced_iff m).1 hm ⟨t, by omega⟩ ⟨t + 1, ht⟩ rfl ⟨t, by omega⟩ have h2 := ps_diag m hm t (by omega) simp only at h1 omega`.
+A detailed English derivation is pending.
 -/
 theorem ps_diag {r : ℕ} (m : Fin r × Fin r →₀ ℕ) (hm : Interlaced m) :
     ∀ (t : ℕ) (ht : t < r), ps m t ⟨t, ht⟩ = 0
@@ -61,11 +61,11 @@ theorem ps_diag {r : ℕ} (m : Fin r × Fin r →₀ ℕ) (hm : Interlaced m) :
     omega
 
 /- English proof (translation)
-Consider the cases of `r with`. Consider the case `zero => intro a`. Conclude with `a.elim0`. Consider the case `succ r`. Use `Fin.antitone_iff_succ_le.2 fun i => ?_` and prove the remaining obligations.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `(interlaced_iff m).1 hm i.castSucc i.succ (by simp) i.succ`. Establish `h2` using `ps_succ m i.succ i.succ`. Establish `h3` using `ps_succ m i.castSucc i.castSucc`. Establish `h4 : ps m i.succ.val i.succ = 0` using `ps_diag m hm _ i.succ.2`. Establish `h5 : ps m i.castSucc.val i.castSucc = 0` using `ps_diag m hm _ i.castSucc.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.val_succ, Fin.val_castSucc] at *`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem diag_anti {r : ℕ} (m : Fin r × Fin r →₀ ℕ) (hm : Interlaced m) :
     Antitone fun t : Fin r => m (t, t) := by
@@ -91,7 +91,7 @@ theorem res_apply {n : ℕ} (m : Fin (n + 1) × Fin (n + 1) →₀ ℕ) (a t : F
     res m (a, t) = m (a.castSucc, t.castSucc) := rfl
 
 /- English proof (translation)
-Establish `: ¬ n < a` using `by omega`. Simplify using `[ps, Fin.sum_univ_castSucc, res_apply, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem ps_res {n : ℕ} (m : Fin (n + 1) × Fin (n + 1) →₀ ℕ) (a : ℕ) (ha : a ≤ n) (t : Fin n) :
     ps (res m) a t = ps m a t.castSucc := by
@@ -99,7 +99,7 @@ theorem ps_res {n : ℕ} (m : Fin (n + 1) × Fin (n + 1) →₀ ℕ) (a : ℕ) (
   simp [ps, Fin.sum_univ_castSucc, res_apply, this]
 
 /- English proof (translation)
-Rewrite `hm`, the goal using `[interlaced_iff]`. Introduce `l j hj a`. Rewrite using `[ps_res _ _ (by omega), ps_res _ _ (by omega)]`. Conclude with `hm l.castSucc j.castSucc hj a.castSucc`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_interlaced {n : ℕ} (m : Fin (n + 1) × Fin (n + 1) →₀ ℕ) (hm : Interlaced m) :
     Interlaced (res m) := by
@@ -112,9 +112,9 @@ def subDiag {n : ℕ} (m : Fin n × Fin n →₀ ℕ) (c : ℕ) : Fin n × Fin n
   Finsupp.equivFunOnFinite.symm fun v => m v - if v.1 = v.2 then c else 0
 
 /- English proof (translation)
-Establish `e : subDiag m c (a, t) = m (a, t) - if a = t then c else 0` using `rfl`. Rewrite using `[e]`. Use `split_ifs with h`. Substitute `h` using the available equality. Use `hc a` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem subDiag_add {n : ℕ} (m : Fin n × Fin n →₀ ℕ) (c : ℕ) (hc : ∀ t, c ≤ m (t, t)) (a t : Fin n) :
     subDiag m c (a, t) + (if a = t then c else 0) = m (a, t) := by
@@ -127,9 +127,9 @@ theorem subDiag_add {n : ℕ} (m : Fin n × Fin n →₀ ℕ) (c : ℕ) (hc : �
   · simp
 
 /- English proof (translation)
-Establish `: (if t.val < a then c else 0) = ∑ b : Fin n, if b = t then (if t.val < a then c else 0) else 0` using `by simp`. Rewrite using `[this, ps, ps, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `subDiag_add m c hc b t` as an intermediate fact. Distinguish the cases in `h : b = t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `only [if_true] at this ⊢`. Apply the tactic sequence `split_ifs <;> omega`. Apply the tactic sequence `simp only [if_neg h] at this ⊢ split_ifs <;> omega`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ps_subDiag {n : ℕ} (m : Fin n × Fin n →₀ ℕ) (c : ℕ) (hc : ∀ t, c ≤ m (t, t)) (a : ℕ) (t : Fin n) :
     ps (subDiag m c) a t + (if t.val < a then c else 0) = ps m a t := by
@@ -145,9 +145,9 @@ theorem ps_subDiag {n : ℕ} (m : Fin n × Fin n →₀ ℕ) (c : ℕ) (hc : ∀
     split_ifs <;> omega
 
 /- English proof (translation)
-Rewrite `hm`, the goal using `[interlaced_iff]`. Introduce `l j hj a`. Establish `h1` using `hm l j hj a`. Establish `h2` using `ps_subDiag m c hc (a.val + 1) j`. Establish `h3` using `ps_subDiag m c hc a.val l`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs at h2 h3 <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem subDiag_interlaced {n : ℕ} (m : Fin n × Fin n →₀ ℕ) (c : ℕ) (hc : ∀ t, c ≤ m (t, t))
     (hm : Interlaced m) : Interlaced (subDiag m c) := by
@@ -159,7 +159,7 @@ theorem subDiag_interlaced {n : ℕ} (m : Fin n × Fin n →₀ ℕ) (c : ℕ) (
   split_ifs at h2 h3 <;> omega
 
 /- English proof (translation)
-Establish `h0 : 0 < N` using `t.pos`. Use `lam.anti (show t ≤ ⟨N - 1, by omega⟩ from Fin.le_def.2 (by have := t.2; simp only; omega))` as an intermediate fact. Simplify using `only [DomWeight.natW, DomWeight.detShift, dif_pos h0]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem natW_cast {N : ℕ} (lam : DomWeight N) (t : Fin N) :
     (lam.natW t : ℤ) = lam.w t - lam.detShift := by
@@ -169,23 +169,21 @@ theorem natW_cast {N : ℕ} (lam : DomWeight N) (t : Fin N) :
   omega
 
 /- English proof (translation)
-Take `⟨m, hm, hcol⟩` from `m`. Establish `hup : ∀ t : Fin n, lam.detShift + ps m n t.castSucc ≤ lam.w t.castSucc` using `fun t => by`. Establish `h1` using `ps_succ m (Fin.last n) t.castSucc`. Establish `h2` using `ps_top m t.castSucc`. Establish `h3` using `hcol t.castSucc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `natW_cast lam t.castSucc`. Simplify using `only [Fin.val_last] at h1`. Use linear arithmetic over natural numbers and integers. Establish `hlo : ∀ t : Fin n, lam.w t.succ ≤ lam.detShift + ps m n t.castSucc` using `fun t => by`. Establish `h1` using `(interlaced_iff m).1 hm t.castSucc t.succ (by simp) (Fin.last n)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `ps_top m t.succ`. Establish `h3` using `hcol t.succ`. Establish `h4` using `natW_cast lam t.succ`. Simplify using `only [Fin.val_last] at h1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Set `mu : DomWeight n` to `⟨fun t => lam.detShift + ps m n t.castSucc, fun i j hij => by`. Break down `hij.eq_or_lt with rfl | hlt` into its components or cases. Conclude with `le_rfl`. Conclude with `(hup j).trans ((lam.anti (Fin.le_def.2 (by simpa using hlt))).trans (hlo i))⟩`. Establish `hI : Interlace rfl lam mu` using `fun i => ⟨hup i, hlo i⟩`.
+Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `res_interlaced m hm`. Establish `hc' : ∀ h0 : 0 < n, mu.detShift - lam.detShift = (res m (⟨n - 1, by omega⟩, ⟨n - 1, by omega⟩) : ℕ)` using `fun h0 => by`. Establish `h1` using `ps_succ (res m) ⟨n - 1, by omega⟩ ⟨n - 1, by omega⟩`. Establish `h2` using `ps_diag (res m) hr (n - 1) (by omega)`. Establish `h3` using `ps_res m n le_rfl ⟨n - 1, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h4 : mu.detShift = lam.detShift + ps m n (Fin.castSucc ⟨n - 1, by omega⟩)`. Simplify using `only [DomWeight.detShift, dif_pos h0, mu]`. Establish `h5 : n - 1 + 1 = n` using `by omega`. Simplify using `only [h5] at h1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ t, (mu.detShift - lam.detShift).toNat ≤ res m (t, t)` using `fun t => by`. Establish `h0 : 0 < n` using `t.pos`. Rewrite using `[hc' h0, Int.toNat_natCast]`. Conclude with `diag_anti _ hr (Fin.le_def.2 (by have := t.2; simp only; omega))`. Use `⟨⟨⟨mu, hI⟩, subDiag (res m) _, subDiag_interlaced _ _ hc hr, fun t => ?_⟩, fun _ => rfl, fun a t => subDiag_add _ _ hc a t⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `ps_subDiag _ _ hc n t`. Rewrite `h1` using `[if_pos t.2, ps_top, ps_res m n le_rfl]`. Establish `h2` using `natW_cast mu t`. Establish `h3 : mu.w t = lam.detShift + ps m n t.castSucc` using `rfl`. Establish `h4` using `hc' t.pos`.
-
-Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_image (n : ℕ) (lam : DomWeight (n + 1)) (m : ssIdx (n + 1) (n + 1) lam.natW) :
     ∃ x : (Σ mu : Below rfl lam, ssIdx n n mu.1.natW),
@@ -244,15 +242,15 @@ namespace GlobalTheory.Branching
 open SsInj
 
 /- English proof (translation)
-Introduce `n N h lam`. Substitute `h` using the available equality. Use `choose F hF1 hF2 using exists_image n lam`. Use `⟨F, fun m m' e => ?_⟩` and prove the remaining obligations. Establish `hin : ∀ a t : Fin n, m.1 (a.castSucc, t.castSucc) = m'.1 (a.castSucc, t.castSucc)` using `fun a t => by`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hF2 m a t, ← hF2 m' a t, e]`. Establish `hlast : ∀ x : ssIdx (n + 1) (n + 1) lam.natW, ∀ a, x.1 (a, Fin.last n) = 0` using `fun x a => by`. Establish `h1` using `x.2.2 (Fin.last n)`. Establish `h2 : lam.natW (Fin.last n) = 0`. Simplify using `[DomWeight.natW, DomWeight.detShift, Fin.last]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2]`. Conclude with `Finset.sum_eq_zero_iff.1 h1 a (Finset.mem_univ a)`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `⟨a, t⟩`. Proceed by induction on `t using Fin.lastCases with`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `last => rw [hlast, hlast]`. Consider the case `cast t`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `cast a => exact hin a t`. Consider the case `last`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `m.2.2 t.castSucc`. Establish `h2` using `m'.2.2 t.castSucc`. Rewrite `h1`, `h2` using `[Fin.sum_univ_castSucc]`. Simplify using `only [hin] at h1`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_ssIdx_injective : ∀ (n N : ℕ) (h : n + 1 = N) (lam : DomWeight N),
     ∃ F : ssIdx N N lam.natW → (Σ mu : Below h lam, ssIdx n n mu.1.natW), Function.Injective F := by

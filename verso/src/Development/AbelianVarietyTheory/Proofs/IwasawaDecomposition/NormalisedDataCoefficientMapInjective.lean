@@ -18,9 +18,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.R3.Rw.OmExt
 
 /- English proof (translation)
-Consider the cases of `hW`. Consider the cases of `hn`. Consider the cases of `hp`. Consider the cases of `hH`. Consider the cases of `hy`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Conclude with `⟨HEq.rfl, HEq.rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem heq_val {Γ W W' : Type} (n : NormedAddCommGroup W) (p : InnerProductSpace ℂ W) (n' : NormedAddCommGroup W')
     (p' : InnerProductSpace ℂ W') (hW : HEq W' W) (hn : HEq n' n) (hp : HEq p' p) (H : HMod (Γ → W)) (H' : HMod (Γ → W'))
@@ -29,7 +29,7 @@ theorem heq_val {Γ W W' : Type} (n : NormedAddCommGroup W) (p : InnerProductSpa
   exact ⟨HEq.rfl, HEq.rfl⟩
 
 /- English proof (translation)
-Consider the cases of `hW`. Consider the cases of `hn`. Consider the cases of `hp`. Consider the cases of `h`. Conclude with `HEq.rfl`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem heq_app {K V W W' : Type} [Field K] [AddCommGroup V] [Module K V] {σ : K →+* ℂ}
     (n : NormedAddCommGroup W) (p : InnerProductSpace ℂ W) (n' : NormedAddCommGroup W') (p' : InnerProductSpace ℂ W')
@@ -52,7 +52,7 @@ def RepsOver (D : D7) (i : Fin D.R.m) (Pg Q : Finset (Formalism.L2.DIV.Pl D.host
       gam k = Nat.card (Bridge.stab (Bridge.ratF (Vc D i)) J' (fin _ (h k)))
 
 /- English proof (translation)
-Consider the cases of `hP`. Consider the cases of `hβ`. Substitute `hQ₁ hQ₂` using the available equality. Conclude with `H`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem repsOver_cast {D : D7} {i : Fin D.R.m} {Pg₁ Pg₂ Q₁ Q₂ : Finset (Formalism.L2.DIV.Pl D.host.E)} {β₁ β₂} {K' : Type} [Field K'] {bad : ℕ}
     {Cl : Type} {h : Cl → GA D (Vc D i)} {J' Lh gam} {vol : K'} (hP : HEq Pg₂ Pg₁) (hQ₁ : Q₁ = ∅) (hQ₂ : Q₂ = ∅) (hβ : HEq β₂ β₁)
@@ -61,13 +61,11 @@ theorem repsOver_cast {D : D7} {i : Fin D.R.m} {Pg₁ Pg₂ Q₁ Q₂ : Finset (
   exact H
 
 /- English proof (translation)
-Establish `hL : ∀ u : VV L lam, cL u = 0 → u = 0` using `fun u hu => by`. Establish `e` using `(bVV L lam).sum_repr u`. Rewrite `hu` using `[← e, map_sum]`. Simplify using `only [LinearMap.map_smulₛₗ] at hu`. Use `Fintype.linearIndependent_iff.1 hli _ hu` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(bVV L lam).repr.injective (Finsupp.ext fun i => by`. Rewrite using `[map_zero]`. Conclude with `σL.injective ((this i).trans (map_zero _).symm))`. Use `(injective_iff_map_eq_zero _).2 fun v hv => ?_` and prove the remaining obligations. Set `q` to `(RingEquiv.ofBijective jL ⟨jL.injective, s⟩).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : jL.comp q.toRingHom = RingHom.id K` using `RingHom.ext fun x => (RingEquiv.ofBijective jL ⟨jL.injective, s⟩).apply_symm_apply x`. Take `⟨a, a1, a2⟩` from `hc ⟨_, GlobalTheory.Proof.TensorMapDescent.map_mem_VV q.toRingHom lam _ v.2⟩`. Establish `e : a = v` using `Subtype.ext (a1.trans (by rw [MvPolynomial.map_map, h1, MvPolynomial.map_id]))`. Substitute `e` using the available equality. Establish `h0` using `hL _ (a2.symm.trans hv)`.
-
-Rewrite `a1` using `[h0]`. Conclude with `Subtype.ext (a1.trans (map_zero _))`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inj_of_li {L K I W : Type} [Field L] [CharZero L] [Field K] [Fintype I] [AddCommGroup W] [Module ℂ W] {n : ℕ} (lam : I → DomWeight n)
     {σL : L →+* ℂ} {σK : K →+* ℂ} (jL : L →+* K) (s : Function.Surjective jL)
@@ -92,7 +90,7 @@ theorem inj_of_li {L K I W : Type} [Field L] [CharZero L] [Field K] [Fintype I] 
   exact Subtype.ext (a1.trans (map_zero _))
 
 /- English proof (translation)
-Establish `sj : Function.Surjective O.jL` using `fun y => by`. Take `⟨x, hx⟩` from `hOF.le y.2`. Conclude with `⟨x, Subtype.ext ((RingHom.congr_fun hO.lift.field x).trans hx)⟩`. Take `⟨g, r, c0L, hT, hbc⟩` from `hO.lift.c0`. Conclude with `inj_of_li (lamV D i) O.jL sj hbc (hT.mapL i).2.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem normalisedData_coefficientMap_injective {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {C : Core D} [Algebra C.Q.c.F D.what₂.LL] {R : RealDat D A C.Q.c.F} {i : Fin D.R.m}
@@ -107,27 +105,25 @@ theorem normalisedData_coefficientMap_injective {D : D7} {G : Type} [Group G] [F
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `hQ` using `GlobalTheory.RefPins.places_ref R hL`. Establish `hQ'` using `GlobalTheory.RefPins.places_ref R' hL'`. Take `⟨c₃, hs, c0₃, io₃, hw₃, h₀, J₀, hB, hS, hor, -⟩` from `h`. Take `⟨B', C', W', V', S', N', G'⟩` from `X'`. Break down `B' with ⟨P'⟩` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Express the relevant statement in the definitionally equal form `P' = X.B.toPre at hP`. Substitute `hP` using the available equality. Take `⟨⟨⟨H', l', c', Dw', Xo', eO'⟩, U', V'', dict', mu', Kf', pb'⟩, cE', chiW', x₀', iota'⟩` from `T'`. Simplify using `only at eH el ec eD eX`. Take `rfl` from `eq_of_heq eH`.
+Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `eq_of_heq el`. Take `rfl` from `eq_of_heq ec`. Take `rfl` from `eq_of_heq eD`. Take `rfl` from `eq_of_heq eX`. Take `rfl : i = i'` from `Fin.ext hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `@⟨c'', hle, jL, hV, c0', lev, dδ, Cl', fCl, bad, Lh, La, Nc, gam, vol, ep, BB, epF, io, hw, φ, w, U₂, dict₂, xi, thAd, Plc⟩` from `O'`. Take `⟨s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, -, -, s15, -, -, s18, -, -, -⟩` from `hS`. Simplify using `only [bc, merge] at s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s15 s18 hor`. Take `rfl` from `eq_of_heq s1`. Substitute `s4` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Substitute `s6` using the available equality. Take `rfl` from `eq_of_heq s3`. Take `rfl` from `eq_of_heq s5`. Take `rfl` from `eq_of_heq s7`. Take `rfl` from `eq_of_heq s8`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `eq_of_heq s9`. Take `rfl` from `eq_of_heq s10`. Take `rfl` from `eq_of_heq s11`. Take `rfl` from `eq_of_heq s12`. Take `rfl` from `eq_of_heq s15`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `eq_of_heq s18`. Use `⟨s2, c'', hs, HEq.rfl, fun h J hr => ⟨(by with_unfolding_all exact (h :)), (by with_unfolding_all exact (J :)), ?_, fun x₀ x hx y' hy => ?_⟩⟩` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact ((repsOver_cast (D := X.toD7) (Pg₂ := R'.Pg) (Q₂ := R'.Q A'.μ0) (β₂ := (R'.βV)) ePg hQ hQ' ((eβV)) (show RepsOver X.toD7 i R.Pg (R.Q A.μ0) R.βV _ h J _ _ _ from repsR_map (incF O.c' c'' hs) hr)) : _))`. Use `choose x' hx' using fun k => GlobalTheory.FieldBCModel.exists_over hs (lamV X.toD7 i) (x k)`. Use `⟨(by with_unfolding_all exact (x' :)), ?_, fun a n f hf hfx f' e => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k`. Establish `hv` using `heq_val (Γ := Bridge.Gf (Vc X.toD7 i)) (R.cV i).nW (R.cV i).iW (R'.cV i).nW (R'.cV i).iW eW en ei (R.HV i A.μ0) ((by with_unfolding_all exact ((R'.HV i A'.μ0) :))) ((by with_unfolding_all exact (eHV :))) (jVx R i A.μ0 x₀) ((by with_unfolding_all exact (y' :))) ((by with_unfolding …`. Break down `hor with hc | hp` into its components or cases. Establish `ha` using `heq_app (V := VsV X.toD7 i c''.F) (σ := inC c'') (R.cV i).nW (R.cV i).iW (R'.cV i).nW (R'.cV i).iW eW en ei ((by with_unfolding_all exact (c0' :))) c0₃ ((by with_unfolding_all exact (hc :))) (x' k)`. Conclude with `(by with_unfolding_all exact ((eq_of_heq (hv.1.trans ((heq_of_eq ((hx k).trans (hB.c0 _ _ (hx' k)).symm)).trans ha.symm))) :))`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `h0 : (R.HV i A.μ0).e (jVx R i A.μ0 x₀) (fin _ (h k)) = 0`. Rewrite using `[hp x₀]`. Unfold `jVx`. Rewrite using `[map_zero, map_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : x k = 0` using `hinj (((hx k).symm.trans h0).trans (map_zero _).symm)`. Establish `h2 : x' k = 0` using `Subtype.ext ((hx' k).trans (by rw [h1]; exact map_zero _))`. Establish `h3` using `eq_of_heq (hv.1.trans ((heq_of_eq h0).trans hv.2.symm))`. Establish `h4 : ∀ c : VsV X.toD7 i c''.F →ₛₗ[inC c''] (R'.cV i).W, 0 = c (x' k)` using `fun c => by rw [h2, map_zero]`. Conclude with `(by with_unfolding_all exact ((h3.trans (h4 ((c0')))) : _))`.
-
-Take `rfl` from `eq_of_heq e`. Conclude with `(by with_unfolding_all exact ((isThClsD_covBC_one hs (O.dδ ()) rfl _ _ _ _ _ _ O.io io x x' (fun k => hB.io _ _ (hx' k)) (hO.cov ()).1.2.2.2.2.2.2.2.1 hf hfx) :))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem omOver_of_isBCOf (X X' : Stages) (hP : X'.B.toPre = X.B.toPre)
     {G : Type} [Group G] [Fintype G] {Pl0 T0 Pl0' T0' : Type} {A : FamIn X.toD7.what₂.LL G Pl0 T0 X.toD7.R.m}

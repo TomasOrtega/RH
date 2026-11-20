@@ -7,15 +7,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.OddResidueBounds.C
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5 UpperTheory.V.Odd
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ D e N _ ρ hcyc he hpro hlN a ha hodd`. Take `⟨z, hz, hcong⟩` from `Odd.congr l (Gq ρ) N (piQ ρ)⁻¹ e a ha hodd hlN`. Use `⟨z, hz, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `(Z1_H1_qz_twist_l_power_torsion E Ω l D (e : ℤ)).2 x`. Take `⟨m₁, hm₁⟩` from `hcong r`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hal : a.Coprime (N * l)` using `Nat.Coprime.mul_right ha (Nat.Coprime.coprime_dvd_right hlN ha)`. Take `⟨m₂, hm₂⟩` from `resKill E Ω l D e N ρ hcyc a hodd hal x hx`. Use `set m := max m₁ m₂`. Use `haveI : NeZero (N * l ^ m) := ⟨Nat.mul_ne_zero (NeZero.ne N) (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)⟩`. Establish `hNM : N ∣ N * l ^ m` using `Dvd.intro _ rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hw⟩` from `hm₁ m (le_max_left _ _) (N * l ^ m) hNM rfl`. Establish `hres` using `hm₂ m (le_max_right _ _) (N * l ^ m) hNM rfl`. Rewrite `hres` using `[hw]`. Establish `hzero : ((actRep D (e : ℤ) ρ).asAlgebraHom ((l : ℤ_[l]) ^ r • w)) x = 0`. Rewrite using `[map_smul, LinearMap.smul_apply, ← LinearMap.map_smul, hr, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he0 : (e : ℤ) ≠ 0` using `by omega`. Establish `htot` using `totKill E Ω l D (e : ℤ) N he0 hpro (((actRep D (e : ℤ) ρ).asAlgebraHom z) x) (fun u hu => by`. Establish `h1` using `hres u hu`. Rewrite using `[map_add, LinearMap.add_apply, hzero, add_zero] at h1)` and apply the resulting hypothesis. Rewrite using `[map_nsmul]`.
-
-Conclude with `htot`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Odd.zKill :
     ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (D : LData E Ω l) (e : ℕ) (N : ℕ) [NeZero N] (ρ : (ZMod N)ˣ →* (E ≃ₐ[ℚ] E)), IsCycAct Ω N ρ → 1 ≤ e → Procyc E Ω l → l ∣ N → ∀ (a : ℕ) (ha : a.Coprime N), Odd a → ∃ z : MonoidAlgebra ℤ_[l] (Gq ρ), IsInt l z (yEl (e + 1) a ha (piQ ρ)⁻¹) ∧ ∀ x ∈ Sha D (e : ℤ), (actRep D (e : ℤ) ρ).asAlgebraHom z (N.totient • x) = 0 := by

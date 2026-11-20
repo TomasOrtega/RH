@@ -10,13 +10,11 @@ open scoped TensorProduct NNReal Matrix
 namespace GlobalTheory.TraceIntStd
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ x h`. Establish `h1` using `h (pairA F 0 1) rfl (fun v => by show ‖Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (sndA F (pairA F 0 1))‖ ≤ 1`. Rewrite using `[show sndA F (pairA F 0 1) = 1 from rfl, map_one, norm_one])`. Establish `e : algebraMap F (AF F) x * pairA F 0 1 = pairA F 0 (algebraMap F (Af F) x)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show algebraMap F (Ainf F) x * 0 = 0`. Conclude with `mul_zero _`. Use `show algebraMap F (Af F) x * 1 = algebraMap F (Af F) x`. Conclude with `mul_one _`. Rewrite `h1` using `[e, GlobalTheory.PsiNontriv.isStd_fin_rat hψ, Complex.exp_eq_one_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨n, hn⟩` from `h1`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hne : (2 * Real.pi * Complex.I : ℂ) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Establish `h2 : ((Algebra.trace ℚ F x : ℚ) : ℂ) = ((n : ℚ) : ℂ)`.
-
-Use `hn` as an intermediate fact. Rewrite `this` using `[mul_comm (2 * Real.pi * Complex.I : ℂ)]`. Use `push_cast`. Conclude with `mul_right_cancel₀ hne this`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem trace_int_of_isStd : ∀ {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ x : F,
     (∀ t : AF F, t.1 = 0 → (∀ v, ‖evFin F v t‖ ≤ 1) → ψ (algebraMap F (AF F) x * t) = 1) →

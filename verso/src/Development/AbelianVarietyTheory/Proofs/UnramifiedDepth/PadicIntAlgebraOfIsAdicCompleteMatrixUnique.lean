@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.ChF
 
 /- English proof (translation)
-Establish `hd : ∀ n : ℕ, ringChar (O ⧸ I ^ n) ∣ p ^ n` using `fun n => by`. Apply `ringChar.dvd` to reduce the goal to its premises. Rewrite using `[← map_natCast (Ideal.Quotient.mk (I ^ n)), Ideal.Quotient.eq_zero_iff_mem, Nat.cast_pow]`. Conclude with `Ideal.pow_mem_pow hp n`. Use `⟨IsAdicComplete.liftRingHom I (fun n => (ZMod.castHom (hd n) (O ⧸ I ^ n)).comp (PadicInt.toZModPow n)) ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m n hle`. Rewrite using `[← PadicInt.zmod_cast_comp_toZModPow m n hle, ← RingHom.comp_assoc, ← RingHom.comp_assoc]`. Use `congr 1`. Conclude with `RingHom.ext_zmod _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem nonempty_padicInt_ringHom (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O]
     (I : Ideal O) [IsAdicComplete I O] (hp : (p : O) ∈ I) : Nonempty (ℤ_[p] →+* O) := by
@@ -21,13 +21,13 @@ private theorem nonempty_padicInt_ringHom (p : ℕ) [Fact p.Prime] (O : Type) [C
   exact RingHom.ext_zmod _ _
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus (I := Ideal.span {(p : O)}) inferInstance _ fun k => ?_` and prove the remaining obligations. Take `⟨d, hd⟩` from `Ideal.mem_span_singleton.mp (PadicInt.appr_spec k c)`. Establish `hc : c = (c.appr k : ℤ_[p]) + ((p ^ k : ℕ) : ℤ_[p]) * d`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_pow, ← hd]`. Expand and normalize the polynomial expressions, which then agree. Establish `h : f c - g c = (p ^ k : ℕ) • (f d - g d)`. Rewrite using `[hc]`. Simplify using `only [map_add, map_mul, map_natCast, nsmul_eq_mul, mul_sub]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Establish `h' : f c i j - g c i j = (p : O) ^ k * (f d i j - g d i j)`. Use `congrFun (congrFun h i) j` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, Matrix.smul_apply, Matrix.sub_apply, nsmul_eq_mul, Nat.cast_pow]`. Conclude with `this`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, h']`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+A detailed English derivation is pending.
 -/
 private theorem padicInt_ringHom_matrix_ext (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O]
     [IsHausdorff (Ideal.span {(p : O)}) O] (n : ℕ)
@@ -50,7 +50,7 @@ private theorem padicInt_ringHom_matrix_ext (p : ℕ) [Fact p.Prime] (O : Type) 
   exact Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-Introduce `p _ O _ _`. Use `⟨?_, fun n f c => ?_⟩` and prove the remaining obligations. Take `⟨φ⟩` from `nonempty_padicInt_ringHom p O _ (Ideal.mem_span_singleton_self _)`. Conclude with `⟨φ.toAlgebra⟩`. Rewrite using `[padicInt_ringHom_matrix_ext p O n f ((algebraMap O (Matrix (Fin n) (Fin n) O)).comp (algebraMap ℤ_[p] O)) c, RingHom.comp_apply, Algebra.algebraMap_eq_smul_one (A := Matrix (Fin n) (Fin n) O)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem padicInt_algebra_of_isAdicComplete_and_matrix_unique :
     ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [IsAdicComplete (Ideal.span {(p : O)}) O],

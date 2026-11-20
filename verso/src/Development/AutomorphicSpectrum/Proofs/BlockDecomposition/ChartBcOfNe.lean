@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.ChartBc
 
 /- English proof (translation)
-Introduce `O R R' _ _ _ I I' γ γ' p X q κ κ' σ m hp hu hg V d c`. Conclude with `chart_bc m hu hg (fun h => absurd h hp) c`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem chart_bc_of_ne : ∀ {O R R' : Type} [CommRing O] [CommRing R] [CommRing R'] {I : Ideal R} {I' : Ideal R'}
     {γ : DividedPowers I} {γ' : DividedPowers I'} {p : ℕ} {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)}

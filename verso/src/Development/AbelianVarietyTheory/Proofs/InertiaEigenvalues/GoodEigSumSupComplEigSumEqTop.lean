@@ -6,9 +6,9 @@ open Formalism.BasicNotions Formalism.ConjugateSelfDual ReciprocityTheory.Gal Re
 namespace GlobalTheory.EtaJoin
 
 /- English proof (translation)
-Introduce `D i hZ hS`. Rewrite using `[eq_top_iff, ← D.nd.prMt_span i, Submodule.span_le]`. Introduce and unpack `_ ⟨y, rfl⟩`. Establish `hy : y ∈ ratSub D (D.nd.mu i) (D.nd.j i) (Idx.Z0 D (D.nd.mu i) (D.nd.j i)) ⊔ ratSub D (D.nd.mu i) (D.nd.j i) (Idx.Z0 D (D.nd.mu i) (D.nd.j i))ᗮ`. Unfold `ZRat at hZ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hZ]`. Conclude with `Submodule.mem_top`. Take `⟨u, hu, u', hu', rfl⟩` from `Submodule.mem_sup.1 hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (hS.1 u hu) (hS.2 u' hu')`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigSum_good_sup_compl_eq_top : ∀ (D : D7) (i : D.nd.Loc), ZRat D (D.nd.mu i) (D.nd.j i) → SpecPr D i →
     D.nd.eigSum i ↑(D.nd.Zgood i) ⊔ D.nd.eigSum i (↑(D.nd.Zgood i))ᶜ = ⊤ := by

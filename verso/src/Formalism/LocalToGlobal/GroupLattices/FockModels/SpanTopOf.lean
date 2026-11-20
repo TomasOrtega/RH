@@ -27,41 +27,41 @@ def Rel (u : Module.End K (VK K k ν)) (U : Module.End K (PK K k)) : Prop :=
   ∀ x : VK K k ν, ((u x : VK K k ν) : PK K k) = U x
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem rel_EV (a b : Fin k) : Rel (EV K k ν a b) (DL K a b) := fun _ => rfl
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem rel_one : Rel (1 : Module.End K (VK K k ν)) 1 := fun _ => rfl
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem rel_zero : Rel (0 : Module.End K (VK K k ν)) 0 := fun _ => rfl
 
 /- English proof (translation)
-Introduce `x` and use `by rw [Module.End.mul_apply, Module.End.mul_apply, h1, h2]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rel_mul {u u' : Module.End K (VK K k ν)} {U U' : Module.End K (PK K k)} (h1 : Rel u U)
     (h2 : Rel u' U') : Rel (u * u') (U * U') := fun x => by
   rw [Module.End.mul_apply, Module.End.mul_apply, h1, h2]
 
 /- English proof (translation)
-Introduce `x` and use `by rw [LinearMap.sub_apply, LinearMap.sub_apply, AddSubgroupClass.coe_sub, h1, h2]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rel_sub {u u' : Module.End K (VK K k ν)} {U U' : Module.End K (PK K k)} (h1 : Rel u U)
     (h2 : Rel u' U') : Rel (u - u') (U - U') := fun x => by
   rw [LinearMap.sub_apply, LinearMap.sub_apply, AddSubgroupClass.coe_sub, h1, h2]
 
 /- English proof (translation)
-Introduce `x` and use `by rw [LinearMap.smul_apply, LinearMap.smul_apply, Submodule.coe_smul, h1]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rel_smul (c : K) {u : Module.End K (VK K k ν)} {U : Module.End K (PK K k)} (h1 : Rel u U) :
     Rel (c • u) (c • U) := fun x => by
   rw [LinearMap.smul_apply, LinearMap.smul_apply, Submodule.coe_smul, h1]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => rw [pow_zero, pow_zero]`. Conclude with `rel_one`. Consider the case `succ j ih => rw [pow_succ, pow_succ]`. Conclude with `rel_mul ih h1`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rel_pow {u : Module.End K (VK K k ν)} {U : Module.End K (PK K k)} (h1 : Rel u U) (j : ℕ) :
     Rel (u ^ j) (U ^ j) := by
@@ -70,7 +70,7 @@ theorem rel_pow {u : Module.End K (VK K k ν)} {U : Module.End K (PK K k)} (h1 :
   | succ j ih => rw [pow_succ, pow_succ]; exact rel_mul ih h1
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact rel_one`. Consider the case `cons i l ih => rw [List.map_cons, List.map_cons, List.prod_cons, List.prod_cons]`. Conclude with `rel_mul (h i) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rel_list {I : Type} (l : List I) (f : I → Module.End K (VK K k ν)) (g : I → Module.End K (PK K k))
     (h : ∀ i, Rel (f i) (g i)) : Rel (l.map f).prod (l.map g).prod := by
@@ -79,13 +79,13 @@ theorem rel_list {I : Type} (l : List I) (f : I → Module.End K (VK K k ν)) (g
   | cons i l ih => rw [List.map_cons, List.map_cons, List.prod_cons, List.prod_cons]; exact rel_mul (h i) ih
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => Subtype.ext ((h1 x).trans (h2 x).symm)`.
+A detailed English derivation is pending.
 -/
 theorem rel_inj {u u' : Module.End K (VK K k ν)} {U : Module.End K (PK K k)} (h1 : Rel u U) (h2 : Rel u' U) :
     u = u' := LinearMap.ext fun x => Subtype.ext ((h1 x).trans (h2 x).symm)
 
 /- English proof (translation)
-Introduce `x`. Establish `h1 : Rel (divPowE (EV K k ν) a b j) (((j.factorial : K)⁻¹) • (DL K a b) ^ j)` using `rel_smul _ (rel_pow (rel_EV a b) j)`. Rewrite using `[h1 x, LinearMap.smul_apply, ← sw_pow_ne K a b hab, smul_smul, inv_mul_cancel₀ (by exact_mod_cast j.factorial_ne_zero), one_smul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rel_divPow [CharZero K] (a b : Fin k) (hab : a ≠ b) (j : ℕ) :
     Rel (divPowE (EV K k ν) a b j) (rowDivL K a b j) := by
@@ -97,7 +97,7 @@ theorem rel_divPow [CharZero K] (a b : Fin k) (hab : a ≠ b) (j : ℕ) :
   rfl
 
 /- English proof (translation)
-Introduce `x`. Establish `h1 : Rel (binomE (EV K k ν) a j) (((j.factorial : K)⁻¹) • ((List.range j).map fun i : ℕ => DL K (n` using `k) a a - (i : K) • (1 : Module.End K (PK K k))).prod) := rel_smul _ (rel_list _ _ _ fun i => rel_sub (rel_EV a a) (rel_smul _ rel_one))`. Rewrite using `[h1 x, LinearMap.smul_apply, ← sw_pow_eq K a, smul_smul, inv_mul_cancel₀ (by exact_mod_cast j.factorial_ne_zero), one_smul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rel_binom [CharZero K] (a : Fin k) (j : ℕ) :
     Rel (binomE (EV K k ν) a j) (rowDivL K a a j) := by
@@ -110,11 +110,11 @@ theorem rel_binom [CharZero K] (a : Fin k) (j : ℕ) :
   rfl
 
 /- English proof (translation)
-Unfold `UZmon at hu`. Proceed by induction on `hu using Submonoid.closure_induction with`. Consider the case `mem u hu`. Break down `hu with ⟨a, b, j, hab, rfl⟩ | ⟨a, j, rfl⟩` into its components or cases. Conclude with `⟨[(a, b, j)], fun x => rel_divPow a b hab j x⟩`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨[(a, a, j)], fun x => rel_binom a j x⟩`. Consider the case `one => exact ⟨[], fun x => rfl⟩`. Consider the case `mul u v _ _ hu hv`. Take `⟨w1, h1⟩` from `hu`. Take `⟨w2, h2⟩` from `hv`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨w1 ++ w2, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, h1, h2]`. Simplify using `[applyWord, List.foldr_append]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rel_mon [CharZero K] (u : Module.End K (VK K k ν)) (hu : u ∈ UZmon (EV K k ν)) :
     ∃ w, ∀ x : VK K k ν, ((u x : VK K k ν) : PK K k) = applyWord K w x := by
@@ -133,9 +133,9 @@ theorem rel_mon [CharZero K] (u : Module.End K (VK K k ν)) (hu : u ∈ UZmon (E
     simp [applyWord, List.foldr_append]
 
 /- English proof (translation)
-Unfold `weightSp`. Rewrite using `[Submodule.mem_iInf]`. Introduce `a`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Submodule.coe_smul, Int.cast_natCast, ← sw_euler K a μ _ hx]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem wt_mem (x : VK K k ν) (μ : Fin k → ℕ) (hx : IsWeightedHomogeneous (rowW k k) (x : PK K k) μ) :
     x ∈ weightSp (EV K k ν) (fun a => (μ a : ℤ)) := by
@@ -148,7 +148,7 @@ theorem wt_mem (x : VK K k ν) (μ : Fin k → ℕ) (hx : IsWeightedHomogeneous 
   rfl
 
 /- English proof (translation)
-Take `⟨b, hb, -⟩` from `sSBasis K k k ν`. Establish `: Finite ↥(ssIdx k k ν)` using `(sSIdxFinite k k ν).to_subtype`. Establish `h` using `FiniteDimensional.span_of_finite K (Set.finite_range b)`. Rewrite `h` using `[hb.2.1]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_VK : FiniteDimensional K (VK K k ν) := by
   obtain ⟨b, hb, -⟩ := sSBasis K k k ν
@@ -158,7 +158,7 @@ theorem fin_VK : FiniteDimensional K (VK K k ν) := by
   exact h
 
 /- English proof (translation)
-Rewrite using `[← comap_span_coe (O := K) (Kf := K) (dualWeyl K k k ν) f, hf, eq_top_iff]`. Introduce `x _`. Conclude with `x.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem span_top_of {I : Type} (f : I → VK K k ν)
     (hf : Submodule.span K (Set.range fun i => (f i : PK K k)) = dualWeyl K k k ν) :
@@ -168,11 +168,11 @@ theorem span_top_of {I : Type} (f : I → VK K k ν)
   exact x.2
 
 /- English proof (translation)
-Use `fin_VK (K := K) (k := k) (ν := ν)` as an intermediate fact. Use `⟨fun a b c d => ?_, fun x => ⟨⊤, inferInstance, trivial, fun _ _ _ _ => trivial⟩, ?_⟩` and prove the remaining obligations. Apply `rel_inj (U := DL K a b * DL K c d - DL K c d * DL K a b)` to reduce the goal to its premises. Conclude with `rel_sub (rel_mul (rel_EV a b) (rel_EV c d)) (rel_mul (rel_EV c d) (rel_EV a b))`. Rewrite using `[sw_rel]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `refine rel_sub ?_ ?_ <;> split_ifs <;> first | exact rel_EV _ _ | exact rel_zero`. Take `⟨b, hb, -⟩` from `sSBasis K k k ν`. Establish `hm : ∀ i, b i ∈ dualWeyl K k k ν` using `fun i => by`. Rewrite using `[← hb.2.1]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[eq_top_iff, ← span_top_of (fun i => (⟨b i, hm i⟩ : VK K k ν)) hb.2.1, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.mem_iSup_of_mem _ (wt_mem _ (rowWt i.1) (hb.2.2 i))`.
+A detailed English derivation is pending.
 -/
 theorem isGLRep : IsGLRep (EV K k ν) := by
   have := fin_VK (K := K) (k := k) (ν := ν)
@@ -195,16 +195,16 @@ def hwV (hν : Antitone ν) : VK K k ν := ⟨hw K le_rfl ν, hwMem K k k le_rfl
 variable {K k ν}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[rowNu]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rowNu_self : rowNu (r := k) ν = ν := by
   funext a
   simp [rowNu]
 
 /- English proof (translation)
-Use `⟨fun h => hwNe K k k le_rfl ν (congrArg Subtype.val h), ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Use `wt_mem (hwV K k ν hν) (rowNu (r := k) ν) (hwRowWeight K k k le_rfl ν hν)` as an intermediate fact. Rewrite `this` using `[rowNu_self]`. Then use the resulting hypothesis. Apply `Subtype.ext show Dop K a b (hw K le_rfl ν) = 0` to reduce the goal to its premises. Rewrite using `[sw_Dop_rowDiv]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hwRaise K k k le_rfl ν a b 1 hab le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem isHWV (hν : Antitone ν) : IsHWV (EV K k ν) (fun a => (ν a : ℤ)) (hwV K k ν hν) := by
   refine ⟨fun h => hwNe K k k le_rfl ν (congrArg Subtype.val h), ?_, fun a b hab => ?_⟩
@@ -216,9 +216,9 @@ theorem isHWV (hν : Antitone ν) : IsHWV (EV K k ν) (fun a => (ν a : ℤ)) (h
     exact hwRaise K k k le_rfl ν a b 1 hab le_rfl
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => intro x hx`. Simplify using `using hx`. Consider the case `cons g l ih`. Introduce `x hx`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[List.prod_cons, Module.End.mul_apply]`. Conclude with `h g (List.mem_cons_self) _ (ih (fun g' hg' => h g' (List.mem_cons_of_mem _ hg')) x hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_list {V : Type} [AddCommGroup V] [Module K V] (T : Submodule K V) (l : List (Module.End K V))
     (h : ∀ g ∈ l, ∀ x ∈ T, g x ∈ T) : ∀ x ∈ T, l.prod x ∈ T := by
@@ -230,25 +230,23 @@ theorem stab_list {V : Type} [AddCommGroup V] [Module K V] (T : Submodule K V) (
     exact h g (List.mem_cons_self) _ (ih (fun g' hg' => h g' (List.mem_cons_of_mem _ hg')) x hx)
 
 /- English proof (translation)
-Use `set T := Submodule.span K {x | ∃ u ∈ Umon (EV K k ν), x = u (hwV K k ν hν)} with hT`. Establish `hE : ∀ a b, ∀ x ∈ T, EV K k ν a b x ∈ T`. Introduce `a b`. Establish `h1 : T ≤ T.comap (EV K k ν a b)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨u, hu, rfl⟩`. Conclude with `Submodule.subset_span ⟨EV K k ν a b * u, Submonoid.mul_mem _ (Submonoid.subset_closure ⟨(a, b), rfl⟩) hu, rfl⟩`. Conclude with `fun x hx => h1 hx`. Establish `hdiv : ∀ a b j, ∀ x ∈ T, divPowE (EV K k ν) a b j x ∈ T`. Introduce `a b j x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `divPowE`. Rewrite using `[LinearMap.smul_apply, ← List.prod_replicate]`. Conclude with `Submodule.smul_mem _ _ (stab_list T _ (fun g hg => by`. Rewrite using `[List.eq_of_mem_replicate hg]`. Conclude with `hE a b) x hx)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hbin : ∀ a j, ∀ x ∈ T, binomE (EV K k ν) a j x ∈ T`. Introduce `a j x hx`. Unfold `binomE`. Rewrite using `[LinearMap.smul_apply]`. Use `Submodule.smul_mem _ _ (stab_list T _ (fun g hg => ?_) x hx)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨i, -, rfl⟩` from `List.mem_map.1 hg`. Introduce `y hy`. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`. Conclude with `Submodule.sub_mem _ (hE a a y hy) (Submodule.smul_mem _ _ hy)`. Establish `hw : ∀ w, ∃ y ∈ T, (y : PK K k) = applyWord K w (hw K le_rfl ν)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => exact ⟨hwV K k ν hν, Submodule.subset_span ⟨1, Submonoid.one_mem _, rfl⟩, rfl⟩`. Consider the case `cons c w ih`. Take `⟨a, b, j⟩` from `c`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy, hyw⟩` from `ih`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Use `⟨binomE (EV K k ν) a j y, hbin a j y hy, ?_⟩` and prove the remaining obligations. Rewrite using `[rel_binom a j y, hyw]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `⟨divPowE (EV K k ν) a b j y, hdiv a b j y hy, ?_⟩` and prove the remaining obligations. Rewrite using `[rel_divPow a b hab j y, hyw]`. Both sides reduce to the same expression. Use `choose f hfT hf using hw`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Submodule.span K (Set.range fun w => (f w : PK K k)) = dualWeyl K k k ν`. Use `Eq.trans ?_ (sw_weyl_eq K k k le_rfl ν hν)` and prove the remaining obligations. Unfold `weyl`. Use `congr 2`. Use function extensionality and compare the values at `w`.
-
-Conclude with `hf w`. Rewrite using `[eq_top_iff, ← span_top_of f h2, Submodule.span_le]`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `hfT w`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem gen_top [CharZero K] (hν : Antitone ν) :
     Submodule.span K {x | ∃ u ∈ Umon (EV K k ν), x = u (hwV K k ν hν)} = ⊤ := by
@@ -303,7 +301,7 @@ theorem gen_top [CharZero K] (hν : Antitone ν) :
   exact hfT w
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isGLRep, fun a b hab => by show ((ν b : ℕ) : ℤ) ≤ ((ν a : ℕ) : ℤ) exact_mod_cast hν hab, isHWV hν, gen_top hν⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIrrHW [CharZero K] (hν : Antitone ν) :
     IsIrrHW (EV K k ν) (fun a => (ν a : ℤ)) (hwV K k ν hν) :=

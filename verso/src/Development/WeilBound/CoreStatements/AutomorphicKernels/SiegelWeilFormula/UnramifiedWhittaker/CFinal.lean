@@ -18,12 +18,12 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosetMeasureFor
 namespace PositivityTheory.SiegelWeilFormula.Gunr
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.unramified_formula_polynomial_gen GlobalTheory.T.unramified_local_formula`.
+A detailed English derivation is pending.
 -/
 theorem unrPoly : PositivityTheory.SiegelWeilFormula.Gen.UnrPoly := GlobalTheory.T.unramified_formula_polynomial_gen GlobalTheory.T.unramified_local_formula
 
 /- English proof (translation)
-The claim follows from `locC_of_steps unrPoly GlobalTheory.T.coset_integral_unramified GlobalTheory.T.tsum_exhaustion_unramified GlobalTheory.T.multiplicity_power_formula GlobalTheory.T.multiplicity_bound_unramified GlobalTheory.T.level_characters_unramified GlobalTheory.T.integral_hermitian_volume_one …`.
+A detailed English derivation is pending.
 -/
 theorem locC : LocC :=
   locC_of_steps unrPoly GlobalTheory.T.coset_integral_unramified GlobalTheory.T.tsum_exhaustion_unramified GlobalTheory.T.multiplicity_power_formula GlobalTheory.T.multiplicity_bound_unramified GlobalTheory.T.level_characters_unramified GlobalTheory.T.integral_hermitian_volume_one GlobalTheory.T.level_joint_reduction GlobalTheory.T.multiplicity_level_formula GlobalTheory.T.character_level_formula GlobalTheory.T.level_exhaustion GlobalTheory.T.class_level_formula GlobalTheory.T.integral_hermitian_invariance GlobalTheory.T.coset_measure_formula

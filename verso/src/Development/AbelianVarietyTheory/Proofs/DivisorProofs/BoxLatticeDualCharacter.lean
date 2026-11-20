@@ -20,23 +20,23 @@ noncomputable section
 namespace GlobalTheory.BoxLattice
 
 /- English proof (translation)
-Introduce `F _ _ κ _ ψ hψ a ha z hz u hu`. Establish `hdual : ∀ i, ∀ b : 𝓞 F, ψ (pairA F 0 (algebraMap F (Af F) ((b : F) * (a * z i)))) = 1`. Introduce `i b`. Take `⟨k, hk⟩` from `hz (ratInf F κ (Pi.single i (a * (b : F)))) ⟨Pi.single i b, funext fun j => by`. Distinguish the cases in `h : j = i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[ratInf]`. Simplify using `[ratInf, Pi.single_eq_of_ne h]⟩`. Establish `h1` using `psi_fin_rat (κ := κ) hψ (Pi.single i (a * (b : F))) z`. Establish `e : ratFin F κ (Pi.single i (a * (b : F))) ⬝ᵥ ratFin F κ z = algebraMap F (Af F) ((b : F) * (a * z i))`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ratFin F κ (Pi.single i (a * (b : F))) = Pi.single i (algebraMap F (Af F) (a * (b : F)))`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[ratFin]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[ratFin, Pi.single_eq_of_ne h]`. Rewrite using `[e2, single_dotProduct]`. Simplify using `only [ratFin, ← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `h1` using `[e, hk]`. Rewrite using `[h1, Complex.exp_eq_one_iff]`. Conclude with `⟨k, by push_cast; ring⟩`. Use `set t : κ → Af F := fun i => algebraMap F (Af F) a⁻¹ * u i with ht`. Establish `hti : ∀ i (v : HeightOneSpectrum (𝓞 F)), t i v ∈ v.adicCompletionIntegers F`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i v`. Establish `h` using `hu i v`. Establish `e : t i v = (algebraMap F (v.adicCompletion F) a)⁻¹ * (u i) v` using `by show (algebraMap F (Af F) a⁻¹ * u i) v = _`. Rewrite using `[← map_inv₀ (algebraMap F (v.adicCompletion F))]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h`. Establish `hsum : u ⬝ᵥ ratFin F κ z = ∑ i, t i * algebraMap F (Af F) (a * z i)`. Simplify using `only [dotProduct, ratFin]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [ht, map_mul]`. Rewrite using `[show algebraMap F (Af F) a⁻¹ * u i * (algebraMap F (Af F) a * algebraMap F (Af F) (z i)) = (algebraMap F (Af F) a⁻¹ * algebraMap F (Af F) a) * (u i * algebraMap F (Af F) (z i)) by ring, ← map_mul, inv_mul_cancel₀ ha, map_one, one_mul]`. Set `P : Af F →+ AF F` to `{ toFun := pairA F 0, map_zero' := rfl, map_add' := GlobalTheory.AnnCompactStd.pairA_zero_add }`. Establish `hP : ∀ y, pairA F 0 y = P y` using `fun _ => rfl`. Rewrite using `[hsum, hP, map_sum]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction.
 
-Establish `hone : ∀ i, ψ (P (t i * algebraMap F (Af F) (a * z i))) = 1` using `fun i => GlobalTheory.IntDense.addChar_eq_one_of_integral F ψ hψ.1 (a * z i) (hdual i) (t i) (hti i)`. Proceed by induction on `(Finset.univ : Finset κ) using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, AddChar.map_add_eq_mul, hone j, ih, one_mul]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem psi_fin_scaledInt_dot : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (ψ : AddChar (AF F) ℂ), IsStd ψ →
     ∀ a : F, a ≠ 0 → ∀ z : κ → F, (∀ l ∈ boxLat F κ a, ∃ k : ℤ, GlobalTheory.VacLn.trPair F κ l (ratInf F κ z) = k) →

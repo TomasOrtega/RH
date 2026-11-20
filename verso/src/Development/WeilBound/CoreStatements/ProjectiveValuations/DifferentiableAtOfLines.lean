@@ -9,41 +9,35 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.Riem
 open scoped Real
 
 /- English proof (translation)
-Take `⟨r, hr, hrU⟩` from `Metric.isOpen_iff.mp hU τ₀ hτ₀`. Take `⟨t₁, ht₁, hgt₁⟩` from `hne (r / 2) (by linarith)`. Use `set v : Fin k → ℂ := t₁ - τ₀ with hvdef`. Establish `hv : ‖v‖ < r / 2`. Rewrite using `[hvdef, ← dist_eq_norm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ht₁`. Establish `hline : ∀ τ ∈ ball τ₀ (r / 4), ∀ z : ℂ, ‖z‖ < 3 / 2 → τ + z • v ∈ U`. Introduce `τ hτ z hz`. Apply `hrU` to reduce the goal to its premises. Rewrite `hτ`, the goal using `[mem_ball, dist_eq_norm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ‖τ + z • v - τ₀‖ ≤ ‖τ - τ₀‖ + ‖z‖ * ‖v‖`. Rewrite using `[← norm_smul]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ‖z‖ * ‖v‖ ≤ 3 / 2 * (r / 2)` using `mul_le_mul hz.le hv.le (norm_nonneg _) (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlined : ∀ (τ : Fin k → ℂ) (z : ℂ), DifferentiableAt ℂ (fun z : ℂ => τ + z • v) z`. Introduce `τ z`. Use `fun_prop`. Establish `hga : ∀ τ ∈ ball τ₀ (r / 4), AnalyticOnNhd ℂ (fun z : ℂ => g (τ + z • v)) (ball 0 (3 / 2))`. Introduce `τ hτ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `DifferentiableOn.analyticOnNhd (fun z hz => ?_) isOpen_ball` and prove the remaining obligations. Establish `h1 : DifferentiableAt ℂ g (τ + z • v)` using `hg.differentiableAt (hU.mem_nhds (hline τ hτ z (mem_ball_zero_iff.mp hz)))`. Conclude with `(h1.comp z (hlined τ z)).differentiableWithinAt`. Establish `hiso : ∀ τ ∈ ball τ₀ (r / 4), ∀ z₁ ∈ ball (0 : ℂ) (3 / 2), g (τ + z₁ • v) ≠ 0 → ∀ z₀ ∈ ball (0 : ℂ) (3 / 2), ∀ᶠ z in 𝓝[≠] z₀, g (τ + z • v) ≠ 0` using `fun τ hτ z₁ hz₁ h z₀ hz₀ => (hga τ hτ z₀ hz₀).eventually_eq_zero_or_eventually_ne_zero.resolve_left fun h' => h ((hga τ hτ).eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_ball _ _).isPreconnected hz₀ h' hz₁)`. Establish `hτ₀b : τ₀ ∈ ball τ₀ (r / 4)` using `mem_ball_self (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `h0 : (0 : ℂ) ∈ ball (0 : ℂ) (3 / 2)` using `mem_ball_self (by norm_num)`. Establish `h1 : (1 : ℂ) ∈ ball (0 : ℂ) (3 / 2)`. Rewrite using `[mem_ball_zero_iff]`. Evaluate the numerical expressions. Take `⟨ε, hε, hεφ⟩ : ∃ ε > 0, ∀ z : ℂ, dist z 0 < ε → z ≠ 0 → g (τ₀ + z • v) ≠ 0` from `Metric.eventually_nhds_iff.mp (eventually_nhdsWithin_iff.mp (hiso τ₀ hτ₀b 1 h1 (by simpa [hvdef] using hgt₁) 0 h0))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ρ : ℝ := min ε 1 / 2 with hρdef`. Establish `hm : 0 < min ε 1` using `lt_min hε one_pos`. Establish `hρ : 0 < ρ` using `by positivity`. Establish `hρε : ρ < ε`. Use `min_le_left ε 1` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hρ1 : ρ < 3 / 2`. Use `min_le_right ε 1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hO' : IsOpen (U ∩ {t | g t ≠ 0})` using `hg.continuousOn.isOpen_inter_preimage hU isOpen_compl_singleton`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hsph₀ : ∀ z ∈ sphere (0 : ℂ) ρ, τ₀ + z • v ∈ U ∩ {t | g t ≠ 0}`. Introduce `z hz`. Establish `hz' : ‖z‖ = ρ` using `mem_sphere_zero_iff_norm.mp hz`. Use `⟨hline τ₀ hτ₀b z (by linarith), hεφ z (by rw [dist_zero_right]; linarith) ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hz'` using `[norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hev : ∀ᶠ τ in 𝓝 τ₀, ∀ z ∈ sphere (0 : ℂ) ρ, τ + z • v ∈ U ∩ {t | g t ≠ 0}`. Use `(isCompact_sphere (0 : ℂ) ρ).eventually_forall_of_forall_eventually fun z hz => ?_` and prove the remaining obligations. Establish `hPc : Continuous fun p : (Fin k → ℂ) × ℂ => p.1 + p.2 • v` using `by fun_prop`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hPc.continuousAt.preimage_mem_nhds (hO'.mem_nhds (hsph₀ z hz))`. Take `⟨δ₀, hδ₀, hδ₀K⟩` from `Metric.eventually_nhds_iff.mp hev`. Use `set δ : ℝ := min (δ₀ / 2) (r / 8) with hδdef`. Establish `hδ : 0 < δ` using `by positivity`. Establish `hδcl : closedBall τ₀ δ ⊆ ball τ₀ δ₀` using `closedBall_subset_ball (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `min_le_left (δ₀ / 2) (r / 8)` as an intermediate fact. Use the proof step `linarith)`. Establish `hδr : ball τ₀ δ ⊆ ball τ₀ (r / 4)` using `ball_subset_ball (by`. Use `min_le_right (δ₀ / 2) (r / 8)` as an intermediate fact. Use the proof step `linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hK : ∀ τ ∈ closedBall τ₀ δ, ∀ z ∈ sphere (0 : ℂ) ρ, τ + z • v ∈ U ∩ {t | g t ≠ 0}` using `fun τ hτ => hδ₀K (hδcl hτ)`. Establish `hdiff` using `differentiableOn_circleAverage hO hf hρ.le fun τ hτ z hz => hgO _ (hK τ hτ z hz).1 (hK τ hτ z hz).2`. Use `(((hdiff.const_mul I).const_mul (2 * π * I : ℂ)⁻¹).differentiableAt (ball_mem_nhds τ₀ hδ)).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [ball_mem_nhds τ₀ hδ] with τ hτ`. Establish `hτr` using `hδr hτ`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hρs : (ρ : ℂ) ∈ sphere (0 : ℂ) ρ` using `by simp [abs_of_pos hρ]`. Establish `hρb : (ρ : ℂ) ∈ ball (0 : ℂ) (3 / 2)` using `by simpa [abs_of_pos hρ] using hρ1`. Establish `hin : ∀ z, τ + z • v ∈ O → DifferentiableAt ℂ (fun z : ℂ => f (τ + z • v)) z` using `fun z hz => (hf.differentiableAt (hO.mem_nhds hz)).comp z (hlined τ z)`. Establish `hH : ∀ z₀ ∈ ball (0 : ℂ) (3 / 2), DifferentiableAt ℂ (fun z : ℂ => f (τ + z • v)) z₀`. Introduce `z₀ hz₀`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hz : τ + z₀ • v ∈ O`. Conclude with `hin z₀ hz`. Establish `e₁ : ∀ᶠ z in 𝓝[≠] z₀, τ + z • v ∈ O` using `by filter_upwards [hiso τ hτr ρ hρb (hK τ (ball_subset_closedBall hτ) ρ hρs).2 z₀ hz₀, mem_nhdsWithin_of_mem_nhds (isOpen_ball.mem_nhds hz₀)] with z h h'`. Conclude with `hgO _ (hline τ hτr z (mem_ball_zero_iff.mp h')) h`. Establish `t₁ : Tendsto (fun w : ℂ => z₀ + w) (𝓝[≠] 0) (𝓝[≠] z₀)` using `tendsto_nhdsWithin_iff.2 ⟨by`.
-
-Simplify using `using ((continuous_add_left z₀).tendsto 0).mono_left (nhdsWithin_le_nhds (s := {0}ᶜ)),`. Use the proof step `eventually_mem_nhdsWithin.mono fun w hw => by simpa using hw⟩`. Establish `t₂ : Tendsto (fun z : ℂ => z - z₀) (𝓝[≠] z₀) (𝓝[≠] 0)` using `tendsto_nhdsWithin_iff.2 ⟨by`. Simplify using `using ((continuous_sub_right z₀).tendsto z₀).mono_left (nhdsWithin_le_nhds (s := {z₀}ᶜ)),`. Use the proof step `eventually_mem_nhdsWithin.mono fun w hw => by simpa [sub_eq_zero] using hw⟩`.
-
-Establish `e₂` using `hl _ (hline τ hτr z₀ (mem_ball_zero_iff.mp hz₀)) hz v ((t₁.eventually e₁).mono fun w hw => by rwa [add_smul, ← add_assoc] at hw)`. Establish `e₃ : Tendsto (fun z : ℂ => f (τ + z • v)) (𝓝[≠] z₀) (𝓝 (f (τ + z₀ • v)))` using `(e₂.comp t₂).congr fun z => by simp only [Function.comp_apply, add_assoc, ← add_smul, add_sub_cancel]`. Conclude with `(analyticAt_of_differentiable_on_punctured_nhds_of_continuousAt (e₁.mono hin) (continuousAt_iff_punctured_nhds.2 e₃)).differentiableAt`. Establish `hcl : closedBall (0 : ℂ) ρ ⊆ ball 0 (3 / 2)` using `closedBall_subset_ball hρ1`. Establish `hC` using `two_pi_I_inv_smul_circleIntegral_sub_inv_smul_of_differentiable_on_off_countable (s := ∅) countable_empty (mem_ball_self hρ) (fun z hz => (hH z (hcl hz)).continuousAt.continuousWithinAt) (fun z hz => hH z (hcl (ball_subset_closedBall hz.1)))`.
-
-Simplify using `only [sub_zero, zero_smul, add_zero] at hC`. Rewrite `hC` using `[circleIntegral_inv_smul_eq hρ.ne' (fun z => f (τ + z • v)), smul_eq_mul]`. Conclude with `hC.symm`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem differentiableAt_of_lines {k : ℕ} {U O : Set (Fin k → ℂ)} {g f : (Fin k → ℂ) → ℂ}
     (hU : IsOpen U) (hO : IsOpen O) (hg : DifferentiableOn ℂ g U) (hgO : ∀ t ∈ U, g t ≠ 0 → t ∈ O)

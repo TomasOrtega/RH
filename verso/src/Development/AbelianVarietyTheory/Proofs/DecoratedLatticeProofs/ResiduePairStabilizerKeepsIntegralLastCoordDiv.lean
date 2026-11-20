@@ -13,17 +13,15 @@ open GlobalTheory.AdForm
 namespace GlobalTheory.PairKeep
 
 /- English proof (translation)
-Establish `hq` using `q.ne_zero`. Establish `hvq : valuation k ((q.1 : 𝒪[k]) : k) ≠ 0` using `by simpa using hq`. Establish `hτ0 : τ ≠ 0`. Introduce `h`. Rewrite `hτ` using `[h, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hvq hτ.symm`. Establish `hc0 : c ≠ 0`. Introduce `h`. Rewrite `hc` using `[h, map_zero]`. Conclude with `zero_ne_one hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[IsLocalRing.residue_eq_zero_iff, q.mem_max_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht⟩`. Establish `h1 : ((q.1 : 𝒪[k]) : k) / (c * τ) ∈ 𝒪[k]`. Rewrite using `[Valuation.mem_integer_iff, map_div₀, map_mul, hc, hτ, one_mul, div_self hvq]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨_, mul_mem h1 t.2, ?_⟩` and prove the remaining obligations. Establish `h2 : c * x = ((q.1 : 𝒪[k]) : k) * (t : k)` using `by rw [← hs, ht]; rfl`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h2`. Introduce and unpack `⟨t, ht, rfl⟩`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (c * τ) / ((q.1 : 𝒪[k]) : k) ∈ 𝒪[k]`. Rewrite using `[Valuation.mem_integer_iff, map_div₀, map_mul, hc, hτ, one_mul, div_self hvq]`. Use `⟨⟨_, mul_mem h1 ht⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`. Express the relevant statement in the definitionally equal form `_ = ((q.1 : 𝒪[k]) : k) * (c * τ / ((q.1 : 𝒪[k]) : k) * t)`.
-
-Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem res_zero_iff {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (c τ : k) (q : Unif k) (hτ : valuation k τ = valuation k ((q.1 : 𝒪[k]) : k)) (hc : valuation k c = 1)
@@ -53,25 +51,23 @@ theorem res_zero_iff {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] 
     field_simp
 
 /- English proof (translation)
-Introduce `k _ _ _ _ m' m hm b b' hbb hb'b P hP c τ q hτ hc hval g hg`. Substitute `hm` using the available equality. Simplify using `only [finCongr_refl, Matrix.reindex_refl_refl]`. Establish `hmul : ∀ g₁ g₂ : GL (Fin m') k, g₁ * g₂ = 1 → (b * g₁.val * b') * (b * g₂.val * b') = 1`. Introduce `g₁ g₂ h`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : g₁.val * g₂.val = 1` using `by rw [← Units.val_mul, h, Units.val_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hb'b, Matrix.mul_one, h', Matrix.mul_one, hbb]`. Establish `hb' : ∀ (g : GL (Fin m') k) (u : Fin m' → k), b' *ᵥ ((b * g.val * b') *ᵥ u) = g • (b' *ᵥ u)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g u`. Express the relevant statement in the definitionally equal form `_ = g.val *ᵥ (b' *ᵥ u)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hb'b, Matrix.one_mul]`. Establish `hlat : ∀ u : Fin m' → k, b' *ᵥ u ∈ P.lat ↔ ∀ r, u r ∈ 𝒪[k]`. Introduce `u`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP, Matrix.mulVec_mulVec, hbb, Matrix.one_mulVec]`. Establish `hint : ∀ g : GL (Fin m') k, g • P = P → ∀ u : Fin m' → k, (∀ r, u r ∈ 𝒪[k]) → ∀ r, ((b * g.val * b') *ᵥ u) r ∈ 𝒪[k]`. Introduce `g hg u hu`. Rewrite using `[← hlat, hb']`. Use `((P.hasVal_fn ⟨_, (hlat u).2 hu⟩).gl_smul g)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hg]`. Conclude with `this.mem`. Establish `hlast : ∀ g : GL (Fin m') k, g • P = P → ∀ u : Fin m' → k, ((∀ r, u r ∈ 𝒪[k]) ∧ ∀ r0 : Fin m', r0.1 + 1 = m' → ∃ s ∈ 𝒪[k], u r0 = τ * s) → ((∀ r, ((b * g.val * b') *ᵥ u) r ∈ 𝒪[k]) ∧ ∀ r0 : Fin m', r0.1 + 1 = m' → ∃ s ∈ 𝒪[k], ((b * g.val * b') *ᵥ u) r0 = τ * s)`. Introduce `g hg u ⟨hu, hu'⟩`. Use `⟨hint g hg u hu, fun r0 hr0 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hv⟩` from `hval u hu r0 hr0`. Take `⟨s', hs', hv'⟩` from `hval _ (hint g hg u hu) r0 hr0`. Establish `h1` using `hv.gl_smul g`. Rewrite `h1` using `[hg, ← hb']`. Rewrite using `[← res_zero_iff c τ q hτ hc _ s' hs', hv'.unique h1, res_zero_iff c τ q hτ hc _ s hs]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hu' r0 hr0`. Establish `htr : ∀ g : GL (Fin m') k, g • P = P → ∀ u : Fin m' → k, (∀ r, u r ∈ 𝒪[k]) → ∀ r, ((b * g.val * b')ᵀ *ᵥ u) r ∈ 𝒪[k]`. Introduce `g hg u hu r`. Establish `h1` using `hint g hg (Pi.single r 1) (fun j => by`. Rewrite using `[Pi.single_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Use `split_ifs`. Use `exacts [one_mem _, zero_mem _])`. Rewrite `h1` using `[Matrix.mulVec_single_one]`. Express the relevant statement in the definitionally equal form `∑ j, (b * g.val * b')ᵀ r j * u j ∈ 𝒪[k]`. Conclude with `sum_mem fun j _ => mul_mem (h1 j) (hu j)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hg' : g⁻¹ • P = P` using `by rw [inv_smul_eq_iff, hg]`. Use `⟨hmul _ _ (mul_inv_cancel g), fun u => ⟨hlast g hg u, fun h => ?_⟩, fun u => ⟨htr _ hg' u, fun h => ?_⟩⟩` and prove the remaining obligations. Use `hlast _ hg' _ h` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, hmul _ _ (inv_mul_cancel g), Matrix.one_mulVec]`. Then use the resulting hypothesis. Use `htr _ hg _ h` as an intermediate fact.
-
-Rewrite `this` using `[Matrix.mulVec_mulVec, ← Matrix.transpose_mul, hmul _ _ (inv_mul_cancel g), Matrix.transpose_one, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem keep : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (m' m : ℕ) (hm : m' = m) (b b' : Matrix (Fin m') (Fin m') k), b * b' = 1 → b' * b = 1 →

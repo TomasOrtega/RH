@@ -6,19 +6,17 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ ϖ ρ κ l P hP i₀ g h1 h2`. Establish `hs : simpleSum (g : GL (Fin κ ⊕ Fin l) k) = 0`. Unfold `simpleSum`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hij`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Conclude with `h2 j hij`. Establish `hne : i ≠ j`. Introduce `e`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Use linear arithmetic over natural numbers and integers.
 
-Substitute `e` using the available equality. Use linear arithmetic over natural numbers and integers. Rewrite using `[h1 _ _ (by simpa using hi)]`. Simplify using `[hne]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hu : superSum Fin.val (g : GL (Fin κ ⊕ Fin l) k).val.toBlocks₁₁ = 0`. Unfold `superSum`. Use `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with hab`. Establish `hne : a ≠ b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Use linear arithmetic over natural numbers and integers.
 
-Introduce `e`. Substitute `e` using the available equality. Use linear arithmetic over natural numbers and integers. Rewrite using `[Matrix.toBlocks₁₁]`. Simplify using `only [Matrix.of_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[h1 _ _ (by simp)]`. Simplify using `[hne]`. Both sides reduce to the same expression. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hP.2 g, hs, hu]`.
-
-Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lam_purerow : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (ϖ : kˣ) (ρ κ l : ℕ) (P : TypeDatum k (Fin κ ⊕ Fin l)), GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsSymLevel ψ ϖ ρ P → ∀ (i₀ : Fin l) (g : P.J), (∀ a b, a ≠ Sum.inr i₀ → (g : GL (Fin κ ⊕ Fin l) k).val a b = (1 : Matrix (Fin κ ⊕ Fin l) (Fin κ ⊕ Fin l) k) a b) → (∀ i : Fin l, i.val = i₀.val + 1 → (g : GL (Fin κ ⊕ Fin l) k).val (Sum.inr i₀) (Sum.inr i) = 0) → P.lam g = 1 := by
   intro k _ _ _ _ ψ ϖ ρ κ l P hP i₀ g h1 h2

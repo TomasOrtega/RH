@@ -19,9 +19,9 @@ section Gen
 variable {G : Type} [Group G] {om : G →* Module.End ℂ ((κ → AF F) → ℂ)} {omv : G →* Module.End ℂ ((κ → Fv F v) → ℂ)}
 
 /- English proof (translation)
-Introduce `l _ φ hφ`. Take `⟨r₀, x₀, hr₀, h₁⟩` from `PositivityTheory.ThKH.Locrep.exists_base κ v`. Establish `key : (fun g => l (omv g φ)) = fun g => (l ∘ₗ PositivityTheory.ThKH.Locrep.res v x₀) (om g (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v) φ r₀))`. Use function extensionality and compare the values at `g`. Rewrite using `[LinearMap.comp_apply, ← PositivityTheory.ThKH.Locrep.eq_of_acts v h₁ (hr₀ φ hφ) (ho g φ hφ).2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Conclude with `h _ (PositivityTheory.ThKH.Locrep.res_adm v x₀ l) _ (hr₀ φ hφ).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cont_loc [TopologicalSpace G] (ho : IsLocOm v om omv) (h : IsContOn (adeleClass F) om) :
     IsContOn (sbClass (Fv F v)) omv := by
@@ -36,17 +36,15 @@ theorem cont_loc [TopologicalSpace G] (ho : IsLocOm v om omv) (h : IsContOn (ade
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField in
 /- English proof (translation)
-Introduce `μ hμ g φ hφ`. Set `_ : MeasurableSpace (κ → AF F)` to `borel _`. Establish `: BorelSpace (κ → AF F)` using `⟨rfl⟩`. Set `_ : MeasurableSpace (κ → Fv F v)` to `borel _`. Establish `: BorelSpace (κ → Fv F v)` using `⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨Φ₀, hΦ₀, hc0, hcs, h0⟩` from `GlobalTheory.CompanionTheory.SplitRatio.exists_schA_compact F κ`. Establish `hev : Continuous ⇑(PositivityTheory.ThKH.Locrep.evA κ v)` using `continuous_pi fun i => (PositivityTheory.ThKH.Locrep.continuous_evFin' v).comp (continuous_apply i)`. Establish `hin : Continuous ⇑(PositivityTheory.ThKH.Locrep.inA κ v)` using `continuous_pi fun i => (GlobalTheory.VacAny.continuous_atPlace v).comp (continuous_apply i)`. Take `⟨c, hc, hfac⟩` from `exists_factor (PositivityTheory.ThKH.Locrep.evA_inA v) hev hin (MeasureTheory.Measure.addHaar : MeasureTheory.Measure (κ → AF F)) μ hc0 hcs h0`. Set `r : (κ → AF F) → ℂ` to `fun x => Φ₀ (PositivityTheory.ThKH.Locrep.putA v x 0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hT : ∀ φ' : (κ → Fv F v) → ℂ, PositivityTheory.ThKH.Locrep.Pm (PositivityTheory.ThKH.Locrep.evA κ v) (PositivityTheory.ThKH.Locrep.inA κ v) φ' 0 Φ₀ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v) φ' r` using `fun φ' => rfl`. Establish `hrest : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (evFin F v) φ r`. Use `⟨fun x z hz => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [r, PositivityTheory.ThKH.Locrep.putA_add v hz]`. Rewrite using `[← hT]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `PositivityTheory.ThKH.Locrep.PA_mem v hφ 0 hΦ₀`. Establish `hom : om g (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v) φ r) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v) (omv g φ) r` using `(ho g φ hφ).2 r hrest`. Establish `e1` using `hfac φ hφ.1.continuous`. Establish `e2` using `hfac (omv g φ) (ho g φ hφ).1.1.continuous`. Establish `e3` using `h MeasureTheory.Measure.addHaar inferInstance g _ hrest.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1`, `e2` using `[hT]`. Rewrite `e3` using `[hom]`. Establish `hc' : (c : ENNReal) ≠ 0` using `by exact_mod_cast hc`. Use `(ENNReal.mul_right_inj hc' ENNReal.coe_ne_top).mp ?_` and prove the remaining obligations. Rewrite using `[← e1, ← e2]`.
-
-Conclude with `e3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_loc (ho : IsLocOm v om omv) (h : IsUnitaryOn (adeleClass F) om) : IsUnitaryOn (sbClass (Fv F v)) omv := by
   intro μ hμ g φ hφ
@@ -91,17 +89,17 @@ variable [IsModuleTopology (Fv F v) (Ev E v)] {JA : Matrix α α (AE F E)} {JB :
 
 omit [DecidableEq α] in
 /- English proof (translation)
-Take `⟨hs, dd, omd, hdd, ⟨hlagr, hus, hsr⟩, hbox⟩` from `hw`. Take `⟨ddv, omdv, hlocd, hddv, hsd, hsrv, hboxv⟩` from `dbl_loc hψ hA hB h ho hdd hus.toIsSplitting hsr hbox`. Use `⟨⟨split_loc hψ hB h hs.toIsSplitting ho, unit_loc ho ?_, cont_loc ho ?_⟩, ddv, omdv, hddv, ⟨?_, ⟨hsd, unit_loc hlocd ?_, cont_loc hlocd ?_⟩, hsrv⟩, hboxv⟩` and prove the remaining obligations. Conclude with `fun μ hμ g φ hφ => hs.unit μ hμ _ φ hφ`. Conclude with `fun l hl φ hφ => (hs.cont l hl φ hφ).comp (continuous_liftU hB)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Take `⟨h1, Cx, Mx, h2, h3, h4⟩` from `hlagr`. Establish `hD : (GlobalTheory.WeilM.diagCols β : Matrix (β ⊕ β) β (AE F E)).map (compFin F E v) = GlobalTheory.WeilM.diagCols β`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> simp [GlobalTheory.WeilM.diagCols, Matrix.one_apply, apply_ite]`. Establish `hF : ∀ X : Matrix (β ⊕ β) β (AE F E), ((GlobalTheory.WeilM.diagCols β).fromCols X).map (compFin F E v) = (GlobalTheory.WeilM.diagCols β).fromCols (X.map (compFin F E v))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `X`. Rewrite using `[← hD]`. Use extensionality with `i j`. Apply the tactic sequence `rcases j with j | j <;> rfl`. Use `⟨?_, Cx.map (compFin F E v), Mx.map (compFin F E v), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `congrArg (fun M => M.map (compFin F E v)) h1`. Simplify using `only [Matrix.map_mul, Matrix.transpose_map, compM_cA, hD, comp_dbl hB, Matrix.map_zero, map_zero] at e`. Conclude with `e`. Establish `e` using `congrArg (fun M => M.map (compFin F E v)) h2`. Simplify using `only [Matrix.map_mul, Matrix.transpose_map, compM_cA, comp_dbl hB, Matrix.map_zero, map_zero] at e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `e`. Establish `e` using `congrArg (fun M => M.map (compFin F E v)) h3`. Simplify using `only [Matrix.map_mul, hF, Matrix.map_one, map_zero, map_one] at e`. Conclude with `e`. Establish `e` using `congrArg (fun M => M.map (compFin F E v)) h4`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Simplify using `only [Matrix.map_mul, hF, Matrix.map_one, map_zero, map_one] at e`. Conclude with `e`. Conclude with `fun μ hμ g φ hφ => hus.unit μ hμ _ φ hφ`. Conclude with `fun l hl φ hφ => (hus.cont l hl φ hφ).comp (continuous_liftU _)`.
+A detailed English derivation is pending.
 -/
 theorem uweilB_loc (hψ : IsStd ψ) (hA : JA.map (compFin F E v) = JAv) (hB : JB.map (compFin F E v) = JBv) (h : IsLocD co dv)
     (ho : IsLocOm v (om.comp (liftU hB)) omv) {χ : Chr F E} (hw : IsUWeilB (cA σ) (adeleClass F) ψ (-1) JA JB co χ om) :
@@ -144,9 +142,9 @@ theorem uweilB_loc (hψ : IsStd ψ) (hA : JA.map (compFin F E v) = JAv) (hB : JB
   · exact fun l hl φ hφ => (hus.cont l hl φ hφ).comp (continuous_liftU _)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d B X W M om χX χW hP hw v _ i2 _`. Take `rfl : i2 = GlobalTheory.VacAny.invTwoV v` from `Subsingleton.elim _ _`. Establish `hψ` using `hP.base.std`. Take `⟨dv, omv, hd, ho, o1, o2, h⟩` from `locPair_core (v := v) hψ hw`. Take `⟨w1, ⟨d', hd', w2⟩, w3⟩` from `hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨dv', hdv'⟩` from `exists_locD (comp_incM (v := v) W.J) (comp_incM X.J) d'`. Establish `hc : Continuous ((liftU (σ` using `σ) (comp_incM (v := v) X.J)).prodMap (liftU (σ := σ) (comp_incM (v := v) W.J))) := Continuous.prodMap (continuous_liftU (σ := σ) (comp_incM (v := v) X.J)) (continuous_liftU (σ := σ) (comp_incM (v := v) W.J))`. Use `⟨_, dv, _, _, omv, h, uweilB_loc hψ (comp_incM X.J) (comp_incM W.J) hd o1 w1, ⟨dv', fun x => ?_, uweilB_loc hψ (comp_incM W.J) (comp_incM X.J) hdv' o2 w2⟩, cont_loc ho (w3.comp hc)⟩` and prove the remaining obligations. Rewrite using `[← comp_up v x, ← Matrix.transpose_map, hdv', hd, hd']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem locUPairEx : PositivityTheory.ThKF.LocUPairEx := by
   intro F E _ _ _ _ _ σ n d B X W M om χX χW hP hw v _ i2 _

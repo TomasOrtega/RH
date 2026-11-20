@@ -18,7 +18,7 @@ namespace Asm
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `h` using `(Matrix.isUnit_iff_isUnit_det P).mp hP.1`. Conclude with `⟨Matrix.mul_nonsing_inv P h, Matrix.nonsing_inv_mul P h⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem cay_unit {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayley k r ε P) :
     P * P⁻¹ = 1 ∧ P⁻¹ * P = 1 := by
@@ -26,7 +26,7 @@ theorem cay_unit {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : Formali
   exact ⟨Matrix.mul_nonsing_inv P h, Matrix.nonsing_inv_mul P h⟩
 
 /- English proof (translation)
-Establish `h1` using `(cay_unit hP).1`. Rewrite using `[← hP.2, Matrix.mul_assoc (Pᴴ * Formalism.REAL.Jm ε), h1, Matrix.mul_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cay_left {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayley k r ε P) :
     Pᴴ * Jm ε = Formalism.QuantumDeterminants.Hpk k r * P⁻¹ := by
@@ -35,7 +35,7 @@ theorem cay_left {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : Formali
   rfl
 
 /- English proof (translation)
-Establish `h1` using `(cay_unit hP).1`. Establish `h2 : (P⁻¹)ᴴ * Pᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_one]`. Rewrite using `[← hP.2, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cay_right {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayley k r ε P) :
     Jm ε * P = (P⁻¹)ᴴ * Formalism.QuantumDeterminants.Hpk k r := by
@@ -46,9 +46,9 @@ theorem cay_right {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : Formal
   rfl
 
 /- English proof (translation)
-Establish `h1` using `(cay_unit hP).1`. Establish `hR` using `cay_right hP`. Establish `hg' : gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r` using `hg`. Establish `hPJP : Pᴴ * Jm ε * P = Formalism.QuantumDeterminants.Hpk k r` using `hP.2`. Use `show (P * g * P⁻¹)ᴴ * Jm ε * (P * g * P⁻¹) = Jm ε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Jm ε := by`. Rewrite using `[hPJP, hg', ← hR, Matrix.mul_assoc, h1, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cay_mem {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayley k r ε P)
     {g : Mat k r} (hg : g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) : inUJ ε (P * g * P⁻¹) := by
@@ -66,15 +66,13 @@ theorem cay_mem {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : Formalis
 open scoped Matrix.Norms.Operator in
 
 /- English proof (translation)
-Establish `hL` using `cay_left hP`. Establish `hR` using `cay_right hP`. Use `set H := Formalism.QuantumDeterminants.Hpk k r with hH`. Establish `hlie : Yᴴ * H + H * Y = 0`. Establish `hc : ∀ t : ℝ, NormedSpace.exp (t • Yᴴ) * H * NormedSpace.exp (t • Y) = H`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Establish `h : (NormedSpace.exp ((t : ℂ) • Y))ᴴ * H * NormedSpace.exp ((t : ℂ) • Y) = H` using `(hY t).1`. Establish `e1 : (NormedSpace.exp ((t : ℂ) • Y))ᴴ = NormedSpace.exp (t • Yᴴ)`. Rewrite using `[← Matrix.exp_conjTranspose, Matrix.conjTranspose_smul, Complex.star_def, Complex.conj_ofReal, Complex.coe_smul]`. Rewrite using `[← e1, ← Complex.coe_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hd1` using `hasDerivAt_exp_smul_const' (𝕂 := ℝ) Yᴴ (0 : ℝ)`. Establish `hd2` using `hasDerivAt_exp_smul_const' (𝕂 := ℝ) Y (0 : ℝ)`. Establish `hf` using `(hd1.mul_const H).mul hd2`. Establish `h0` using `hf.unique ((hasDerivAt_const (0 : ℝ) H).congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => hc t))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 
-Simplify using `using h0`. Use `show (P * Y * P⁻¹)ᴴ * Jm ε + Jm ε * (P * Y * P⁻¹) = 0`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (P⁻¹)ᴴ * (Yᴴ * H + H * Y) * P⁻¹ := by`.
-
-Rewrite using `[hL, hR]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hlie, Matrix.mul_zero, Matrix.zero_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cay_inG {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayley k r ε P)
     {Y : Mat k r} (hY : Y ∈ Formalism.MainNotions.S.lieOf (Formalism.QuantumDeterminants.Nset k r)) : inG ε (P * Y * P⁻¹) := by
@@ -107,7 +105,7 @@ theorem cay_inG {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : Formalis
     _ = 0 := by rw [hlie, Matrix.mul_zero, Matrix.zero_mul]
 
 /- English proof (translation)
-Rewrite using `[map_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sub, Complex.conj_conj, neg_sub]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_sum_sub {ι : Type*} (s : Finset ι) (a : ι → ℂ) :
     starRingEnd ℂ (∑ i ∈ s, (a i - starRingEnd ℂ (a i))) = -∑ i ∈ s, (a i - starRingEnd ℂ (a i)) := by
@@ -116,7 +114,7 @@ theorem conj_sum_sub {ι : Type*} (s : Finset ι) (a : ι → ℂ) :
   rw [map_sub, Complex.conj_conj, neg_sub]
 
 /- English proof (translation)
-Rewrite using `[Complex.re_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.sub_re, Complex.conj_re, sub_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem re_sum_sub {ι : Type*} (s : Finset ι) (a : ι → ℂ) :
     (∑ i ∈ s, (a i - starRingEnd ℂ (a i))).re = 0 := by
@@ -125,16 +123,16 @@ theorem re_sum_sub {ι : Type*} (s : Finset ι) (a : ι → ℂ) :
   rw [Complex.sub_re, Complex.conj_re, sub_self]
 
 /- English proof (translation)
-Unfold `S7.hs`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem hs_nonneg {m : ℕ} (X : Matrix (Fin m) (Fin m) ℂ) : 0 ≤ S7.hs X := by
   unfold S7.hs
   positivity
 
 /- English proof (translation)
-Unfold `S7.hs`. Rewrite using `[EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _), Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.sum_bool]`. Simplify using `only [Formalism.MainNotions.S.unrealify, Complex.sq_norm, Complex.normSq_mk, Real.norm_eq_abs, sq_abs]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hs_unreal {m : ℕ} (x : EuclideanSpace ℝ (Fin m × Fin m × Bool)) :
     S7.hs (Formalism.MainNotions.S.unrealify x) = ‖x‖ ^ 2 := by
@@ -149,9 +147,9 @@ theorem hs_unreal {m : ℕ} (x : EuclideanSpace ℝ (Fin m × Fin m × Bool)) :
   ring
 
 /- English proof (translation)
-Establish `hq : ((S7.q0 ε : ℕ) : ℝ) = min (pOf ε : ℝ) (qOf ε : ℝ)`. Simplify using `[S7.q0]`. Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `hm : (0 : ℝ) ≤ min (pOf ε : ℝ) (qOf ε : ℝ)` using `le_min (Nat.cast_nonneg _) (Nat.cast_nonneg _)`. Establish `hs : 0 ≤ Real.sqrt (2 * min (pOf ε : ℝ) (qOf ε : ℝ))` using `Real.sqrt_nonneg _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnm` using `mul_nonneg hn hm`. Rewrite using `[hq]`. Unfold `hNeed`. Use `lt_max_of_lt_right (lt_max_of_lt_left ?_)` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem eight_n_q0_lt_needed_gap {n : ℕ} (ε : Fin n → Bool) : 8 * (n : ℝ) * (S7.q0 ε : ℝ) < hNeed ε := by
   have hq : ((S7.q0 ε : ℕ) : ℝ) = min (pOf ε : ℝ) (qOf ε : ℝ) := by
@@ -167,7 +165,7 @@ theorem eight_n_q0_lt_needed_gap {n : ℕ} (ε : Fin n → Bool) : 8 * (n : ℝ)
   nlinarith
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hG`. Use `⟨h1, h, h2, lt_trans ?_ h3⟩` and prove the remaining obligations. Unfold `hNeed`. Use `lt_max_of_lt_left ?_` and prove the remaining obligations. Use `le_max_right (3 * (n : ℝ) / 2) (1 + (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ))` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -181,7 +179,7 @@ theorem stdGap_of {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} {h : ℝ
   linarith
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_inner_w {n : ℕ} {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : S7.KType ε Λ) (A : T.V →L[ℂ] T.V) :
     ‖⟪T.w, A T.w⟫_ℂ‖ ≤ ‖A‖ := by
@@ -193,16 +191,16 @@ def chart (k r : ℕ) (x : Formalism.MainNotions.S.lieE (Formalism.QuantumDeterm
   fun i j => NormedSpace.exp (Formalism.MainNotions.S.unrealify (x : EuclideanSpace ℝ _)) i j
 
 /- English proof (translation)
-Use `open scoped Matrix.Norms.Operator in`. Conclude with `NormedSpace.exp_continuous`.
+A detailed English derivation is pending.
 -/
 theorem exp_mat_continuous : Continuous (NormedSpace.exp : Mat k r → Mat k r) := by
   open scoped Matrix.Norms.Operator in
   exact NormedSpace.exp_continuous
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun x : Formalism.MainNotions.S.lieE (Formalism.QuantumDeterminants.Nset k r) => (x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool)) (i, j, false)` using `(EuclideanSpace.proj (i, j, false)).continuous.comp continuous_subtype_val`. Establish `h2 : Continuous fun x : Formalism.MainNotions.S.lieE (Formalism.QuantumDeterminants.Nset k r) => (x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool)) (i, j, true)` using `(EuclideanSpace.proj (i, j, true)).continuous.comp continuous_subtype_val`. Establish `h3 : Continuous fun x : Formalism.MainNotions.S.lieE (Formalism.QuantumDeterminants.Nset k r) => ((x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool)) (i, j, false) : ℂ) + ((x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool)) (i, j, true) …` using `(Complex.continuous_ofReal.comp h1).add ((Complex.continuous_ofReal.comp h2).mul continuous_const)`. Use `h3.congr fun x => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `apply Complex.ext <;> simp [Formalism.MainNotions.S.unrealify]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unreal_continuous :
     Continuous fun x : Formalism.MainNotions.S.lieE (Formalism.QuantumDeterminants.Nset k r) =>
@@ -223,7 +221,7 @@ theorem unreal_continuous :
   apply Complex.ext <;> simp [Formalism.MainNotions.S.unrealify]
 
 /- English proof (translation)
-The claim follows from `exp_mat_continuous.comp unreal_continuous`.
+A detailed English derivation is pending.
 -/
 theorem exp_unreal_continuous :
     Continuous fun x : Formalism.MainNotions.S.lieE (Formalism.QuantumDeterminants.Nset k r) =>
@@ -231,9 +229,9 @@ theorem exp_unreal_continuous :
   exp_mat_continuous.comp unreal_continuous
 
 /- English proof (translation)
-Establish `hcont : Continuous (chart k r)` using `continuous_pi fun i => continuous_pi fun j => (continuous_apply j).comp ((continuous_apply i).comp exp_unreal_continuous)`. Use `hcont.measurableEmbedding ?_` and prove the remaining obligations. Introduce `x y hxy`. Establish `h1 : NormedSpace.exp (Formalism.MainNotions.S.unrealify (x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool))) = NormedSpace.exp (Formalism.MainNotions.S.unrealify (y : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool)))`. Use extensionality with `i j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `congrFun (congrFun hxy i) j`. Establish `h2` using `hinj _ (hunr x) _ (hunr y) h1`. Conclude with `Subtype.ext ((unrealL (2 * r + k + 1)).injective h2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chart_embedding
     (hinj : ∀ Y ∈ Formalism.MainNotions.S.lieOf (Formalism.QuantumDeterminants.Nset k r), ∀ Y' ∈ Formalism.MainNotions.S.lieOf (Formalism.QuantumDeterminants.Nset k r),
@@ -287,7 +285,7 @@ theorem conjL_apply (P : Mat k r) (x : Formalism.MainNotions.S.lieE (Formalism.Q
     conjL P x = P * Formalism.MainNotions.S.unrealify (x : EuclideanSpace ℝ _) * P⁻¹ := rfl
 
 /- English proof (translation)
-Use `show -(1 / 2 : ℂ) * trace (dMat d * (X * partNM ε d X - partNM ε d X * X)) = qForm ε d X / 2`. Unfold `qForm`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem bracketB_apply {n : ℕ} (ε : Fin n → Bool) (d : Fin n → ℝ) (X : Matrix (Fin n) (Fin n) ℂ) :
     bracketB ε d X X = qForm ε d X / 2 := by
@@ -299,87 +297,79 @@ end Asm
 
 open Asm in
 /- English proof (translation)
-Introduce `hB1 hB3 hB4 hB5 hB6 hB7a hB7b hLamT hPsi hLink`. Introduce `k r u v b hk hHC hIl hH`. Take `⟨huHC, hq0, hlin, hWwt, t₁, ht₁⟩` from `hLamT k r u v b hk hHC hIl hH`. Take `⟨P, hP, hPW, htr, hpsi⟩` from `hB1 k r hk`. Take `⟨hinj, -, hunr, hNhaar, -⟩` from `hB4 k r`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c5, hc5, hmaj⟩` from `hB5 k r (parEps k r) P hP`. Take `⟨μW, hμW, hμW1⟩` from `hB7a k r`. Take `⟨Hπ, iπ1, iπ2, π', hπ'⟩` from `HW.highest_weight_exists k u huHC`. Establish `hT : ∀ t : ℕ, t₁ ≤ t → Nonempty (S7.KType (parEps k r) (lowK (parEps k r) (lamT k r u b t)))` using `fun t ht => HW.kType_exists _ _ (ht₁ t ht).1`. Establish `hMu : ∀ t : ℕ, t₁ ≤ t → ∃ μ : Fin (2 * r + k + 1) → ℤ, S7.IsMu (lamT k r u b t) μ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t ht`. Use `choose m hm using (ht₁ t ht).1.2`. Use `⟨fun a => m a + (((2 * r + k + 1 : ℕ) : ℤ) - 1 - ((a : ℕ) : ℤ)), fun a => ?_⟩` and prove the remaining obligations. Establish `h1` using `hm a`. Simplify using `only [rho]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at h1 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Use `choose μ hμ using hMu`. Establish `hGap : ∀ t (ht : t₁ ≤ t), GapAtLeast (parEps k r) (lamT k r u b t) ((t : ℝ) / 2)` using `fun t ht => (ht₁ t ht).2.2.1`. Establish `h8 : ∀ t (ht : t₁ ≤ t), 8 * ((2 * r + k + 1 : ℕ) : ℝ) * (S7.q0 (parEps k r) : ℝ) < (t : ℝ) / 2` using `fun t ht => (eight_n_q0_lt_needed_gap _).trans (ht₁ t ht).2.2.2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPF : ∀ t (ht : t₁ ≤ t), IsPsiFor (parEps k r) (lamT k r u b t) (Classical.choice (hT t ht)) (S7.PsiM (Classical.choice (hT t ht)) (μ t ht)) ∧ ContinuousOn (S7.PsiM (Classical.choice (hT t ht)) (μ t ht)) (UJset (parEps k r))` using `fun t ht => hPsi _ _ _ _ _ _ (ht₁ t ht).1 (hμ t ht) (hGap t ht) hq0 (h8 t ht)`. Establish `hU : ∀ x : Formalism.MainNotions.S.lieE (Formalism.QuantumDeterminants.Nset k r), Formalism.MainNotions.S.unrealify (x : EuclideanSpace ℝ _) ∈ Formalism.MainNotions.S.lieOf (Formalism.QuantumDeterminants.Nset k r)` using `hunr`. Establish `hexpN : ∀ x : Formalism.MainNotions.S.lieE (Formalism.QuantumDeterminants.Nset k r), NormedSpace.exp (Formalism.MainNotions.S.unrealify (x : EuclideanSpace ℝ _)) ∈ Formalism.QuantumDeterminants.Nset k r`. Introduce `x`. Simplify using `using hU x 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgU : ∀ x : Formalism.MainNotions.S.lieE (Formalism.QuantumDeterminants.Nset k r), P * NormedSpace.exp (Formalism.MainNotions.S.unrealify (x : EuclideanSpace ℝ _)) * P⁻¹ ∈ UJset (parEps k r)` using `fun x => cay_mem hP (hexpN x).1`. Establish `hτre : ∀ x : Formalism.MainNotions.S.lieE (Formalism.QuantumDeterminants.Nset k r), (trace (dMat (dNode k r) * conjL P x)).re = 0`. Introduce `x`. Rewrite using `[conjL_apply, htr _ (hU x)]`. Conclude with `re_sum_sub _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hτconj : ∀ x : Formalism.MainNotions.S.lieE (Formalism.QuantumDeterminants.Nset k r), starRingEnd ℂ (trace (dMat (dNode k r) * conjL P x)) = -trace (dMat (dNode k r) * conjL P x)`. Introduce `x`. Rewrite using `[conjL_apply, htr _ (hU x)]`. Conclude with `conj_sum_sub _ _`. Establish `hτc : Continuous fun x : Formalism.MainNotions.S.lieE (Formalism.QuantumDeterminants.Nset k r) => trace (dMat (dNode k r) * conjL P x)` using `(continuous_const.matrix_mul ((continuous_const.matrix_mul unreal_continuous).matrix_mul continuous_const)).matrix_trace`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f : ℕ → Formalism.MainNotions.S.lieE (Formalism.QuantumDeterminants.Nset k r) → ℂ` to `fun t x => if ht : t₁ ≤ t then ⟪(Classical.choice (hT t ht)).w, S7.PsiM (Classical.choice (hT t ht)) (μ t ht) (P * NormedSpace.exp (Formalism.MainNotions.S.unrealify (x : EuclideanSpace ℝ _)) * P⁻¹) (Classical.choice (hT t ht)).w⟫_ℂ * Complex.exp (-((t : ℂ) * trace (dMat (dNode k …`. Establish `hfe : ∀ t (ht : t₁ ≤ t) x, f t x = ⟪(Classical.choice (hT t ht)).w, S7.PsiM (Classical.choice (hT t ht)) (μ t ht) (P * NormedSpace.exp (Formalism.MainNotions.S.unrealify (x : EuclideanSpace ℝ _)) * P⁻¹) (Classical.choice (hT t ht)).w⟫_ℂ * Complex.exp (-((t : ℂ) * trace (dMat (dNo …` using `fun t ht x => dif_pos ht`. Establish `hgc : Continuous fun x : Formalism.MainNotions.S.lieE (Formalism.QuantumDeterminants.Nset k r) => P * NormedSpace.exp (Formalism.MainNotions.S.unrealify (x : EuclideanSpace ℝ _)) * P⁻¹` using `(continuous_const.matrix_mul exp_unreal_continuous).matrix_mul continuous_const`. Establish `hPc : ∀ t (ht : t₁ ≤ t), Continuous fun x : Formalism.MainNotions.S.lieE (Formalism.QuantumDeterminants.Nset k r) => S7.PsiM (Classical.choice (hT t ht)) (μ t ht) (P * NormedSpace.exp (Formalism.MainNotions.S.unrealify (x : EuclideanSpace ℝ _)) * P⁻¹)` using `fun t ht => (hPF t ht).2.comp_continuous hgc hgU`. Establish `hfc : ∀ t (ht : t₁ ≤ t), Continuous (f t)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `t ht`. Establish `: f t = fun x => _` using `funext (hfe t ht)`. Rewrite using `[this]`. Conclude with `(continuous_const.inner ((hPc t ht).clm_apply continuous_const)).mul (Complex.continuous_exp.comp (continuous_const.mul hτc).neg)`. Establish `hbound : ∀ t (ht : t₁ ≤ t) (x : Formalism.MainNotions.S.lieE (Formalism.QuantumDeterminants.Nset k r)), ‖S7.PsiM (Classical.choice (hT t ht)) (μ t ht) (P * NormedSpace.exp (Formalism.MainNotions.S.unrealify (x : EuclideanSpace ℝ _)) * P⁻¹)‖ ≤ (1 + ‖x‖ ^ 2) ^ (-(c5 / 16 * (t : ℝ)) …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `t ht x`. Take `⟨κ, X, hX, hkX⟩` from `S7.polar_exists (hgU x)`. Establish `hdec` using `S7.psiM_dec (Classical.choice (hT t ht)) (μ t ht) (hμ t ht) (ht₁ t ht).1 (hGap t ht) hq0 κ hX`. Establish `hm` using `hmaj _ (hU x) κ X hX hkX`. Rewrite `hm` using `[hs_unreal]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hxn : ‖(x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool))‖ = ‖x‖` using `rfl`. Rewrite `hm` using `[hxn]`. Rewrite using `[hkX]`. Use `hdec.trans ?_` and prove the remaining obligations. Establish `h1p : 0 < 1 + ‖x‖ ^ 2` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite using `[Real.rpow_def_of_pos h1p]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `h2` using `mul_le_mul_of_nonneg_left hm (show (0 : ℝ) ≤ (t : ℝ) / 16 by positivity)`. Use polynomial arithmetic with `[h2]`. Establish `hbd : ∀ᶠ t : ℕ in atTop, ∀ x, ‖f t x‖ ≤ (1 + 1 * ‖x‖ ^ 2) ^ (-(c5 / 16 * (t : ℝ)))` using `by filter_upwards [eventually_ge_atTop t₁] with t ht x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hfe t ht x, one_mul, norm_mul, Complex.norm_exp]`. Establish `hre : (-((t : ℂ) * trace (dMat (dNode k r) * conjL P x))).re = 0`. Simplify using `[Complex.mul_re, hτre x]`. Rewrite using `[hre, Real.exp_zero, mul_one]`. Conclude with `(norm_inner_w _ _).trans (hbound t ht x)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `B` to `(bracketB (parEps k r) (dNode k r)).compl₁₂ (conjL P) (conjL P)`. Establish `hBx : ∀ x, B x x = qForm (parEps k r) (dNode k r) (conjL P x) / 2` using `fun x => bracketB_apply _ _ _`. Establish `hlim : ∀ x, Tendsto (fun t : ℕ => f t ((Real.sqrt t)⁻¹ • x)) atTop (𝓝 (Complex.exp (-(B x x))))`. Introduce `x`. Take `⟨C, hC⟩` from `hB3 (2 * r + k + 1) (parEps k r) (dNode k r) (lowK (parEps k r) (lamT k r u b 0)) (Real.sqrt (S7.hs (conjL P x)))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlimC : Tendsto (fun t : ℕ => C / Real.sqrt t) atTop (𝓝 0)` using `tendsto_const_nhds.div_atTop (Real.tendsto_sqrt_atTop.comp tendsto_natCast_atTop_atTop)`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Use `squeeze_zero' (Eventually.of_forall fun _ => norm_nonneg _) ?_ hlimC` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop t₁, eventually_ge_atTop 1] with t ht ht1`. Establish `ht1' : (1 : ℝ) ≤ t` using `by exact_mod_cast ht1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨H, i1, i2, σ, w, hsm, hcoef⟩` from `hLink _ _ _ (Classical.choice (hT t ht)) (S7.PsiM (Classical.choice (hT t ht)) (μ t ht)) (stdGap_of (ht₁ t ht).2) (hPF t ht).1`. Establish `hY` using `cay_inG hP (hU x)`. Establish `hB3'` using `hC t ht1' H σ _ w hsm (hlin t) (conjL P x) hY (Real.sq_sqrt (hs_nonneg _)).symm.le`. Establish `hus : Formalism.MainNotions.S.unrealify ((((Real.sqrt t)⁻¹ • x : Formalism.MainNotions.S.lieE (Formalism.QuantumDeterminants.Nset k r))) : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool)) = ((((Real.sqrt t)⁻¹ : ℝ) : ℂ)) • Formalism.MainNotions.S.unrealify (x : …`. Rewrite using `[Submodule.coe_smul, Complex.coe_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(unrealL (2 * r + k + 1)).map_smul _ _`. Establish `hcj : P * NormedSpace.exp ((((Real.sqrt t)⁻¹ : ℝ) : ℂ) • Formalism.MainNotions.S.unrealify (x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool))) * P⁻¹ = NormedSpace.exp ((((Real.sqrt t)⁻¹ : ℝ) : ℂ) • conjL P x)`. Rewrite using `[← Matrix.exp_conj _ _ hP.1, conjL_apply, Matrix.mul_smul, Matrix.smul_mul]`. Establish `hmem : NormedSpace.exp ((((Real.sqrt t)⁻¹ : ℝ) : ℂ) • conjL P x) ∈ UJset (parEps k r)`. Rewrite using `[← hcj]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `cay_mem hP (hU x _).1`. Establish `hτs : trace (dMat (dNode k r) * conjL P ((Real.sqrt t)⁻¹ • x)) = (((Real.sqrt t)⁻¹ : ℝ) : ℂ) * trace (dMat (dNode k r) * conjL P x)`. Rewrite using `[map_smul, Matrix.mul_smul, Matrix.trace_smul, Complex.real_smul]`. Establish `hts : (t : ℂ) * (((Real.sqrt t)⁻¹ : ℝ) : ℂ) = ((Real.sqrt t : ℝ) : ℂ)`. Establish `h` using `Real.div_sqrt (x := (t : ℝ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[div_eq_mul_inv]`. Conclude with `h` after adjusting the coercions. Establish `hfx : f t ((Real.sqrt t)⁻¹ • x) = ⟪w, σ (NormedSpace.exp ((((Real.sqrt t)⁻¹ : ℝ) : ℂ) • conjL P x)) w⟫_ℂ * Complex.exp (-((Real.sqrt t : ℂ) * trace (dMat (dNode k r) * conjL P x)))`. Rewrite using `[hfe t ht, hus, hcj, ← hcoef _ hmem, hτs, ← mul_assoc, hts]`. Rewrite using `[hfx, hBx, show -(qForm (parEps k r) (dNode k r) (conjL P x) / 2) = -qForm (parEps k r) (dNode k r) (conjL P x) / 2 by ring]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hB3'`. Establish `hm : ∀ᶠ t : ℕ in atTop, AEStronglyMeasurable (f t) volume` using `by filter_upwards [eventually_ge_atTop t₁] with t ht`. Conclude with `(hfc t ht).aestronglyMeasurable`. Establish `hγ : 0 < c5 / 16` using `by positivity`. Establish `hev` using `hB6 (Formalism.MainNotions.S.lieE (Formalism.QuantumDeterminants.Nset k r)) volume f hm B hlim one_pos hγ hbd`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Take `⟨N₂, hN₂⟩` from `exists_nat_gt ((Module.finrank ℝ (Formalism.MainNotions.S.lieE (Formalism.QuantumDeterminants.Nset k r)) : ℝ) / (2 * (c5 / 16)))`. Take `⟨t₀, ht₀⟩` from `Filter.eventually_atTop.mp (hev.and (eventually_ge_atTop (max (max t₁ N₂) 1)))`. Use `⟨t₀, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨⟨-, hne⟩, htm⟩` from `ht₀ t ht`. Establish `htt : t₁ ≤ t` using `le_trans (le_max_left _ _) (le_trans (le_max_left _ _) htm)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `htN : N₂ ≤ t` using `le_trans (le_max_right _ _) (le_trans (le_max_left _ _) htm)`. Establish `ht1 : 1 ≤ t` using `le_trans (le_max_right _ _) htm`. Use `haveI : Nontrivial Hπ := hπ'.1`. Use `haveI hFD : FiniteDimensional ℂ Hπ := hπ'.2.1`. Use `haveI hCS : CompleteSpace Hπ := FiniteDimensional.complete ℂ Hπ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `πm : Mat k r → (Hπ →L[ℂ] Hπ)` to `fun g => π' (Matrix.of fun i j : Fin k => g (Formalism.QuantumDeterminants.wI k r i.castSucc) (Formalism.QuantumDeterminants.wI k r j.castSucc))`. Establish `hblk : ∀ h : Matrix (Fin k) (Fin k) ℂ, πm (Formalism.MainNotions.S.blockW k r h) = π' h`. Introduce `h`. Use `show π' _ = π' h`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i j`. Simplify using `[Formalism.MainNotions.S.blockW, Formalism.QuantumDeterminants.wI]`. Establish `hπb : (fun h => πm (Formalism.MainNotions.S.blockW k r h)) = π'` using `funext hblk`. Establish `hHCU : Formalism.MainNotions.S.IsHCTypeU k u (fun h => πm (Formalism.MainNotions.S.blockW k r h))` using `by rw [hπb]; exact hπ'`. Take `⟨v0, -, hv0, hwt⟩` from `hπ'.2.2.2.2.2.2.1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Set `ξ : Hπ` to `((‖v0‖⁻¹ : ℝ) : ℂ) • v0`. Establish `hξn : ‖ξ‖ = 1`. Simplify using `only [ξ]`. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by positivity), inv_mul_cancel₀ (norm_ne_zero_iff.mpr hv0)]`. Establish `hξw : Formalism.MainNotions.S.IsWtOn (Formalism.MainNotions.S.UJset (Formalism.MainNotions.S.allPos k)) (fun h => πm (Formalism.MainNotions.S.blockW k r h)) (Formalism.QuantumDeterminants.lowK (Formalism.MainNotions.S.allPos k) u) ξ`.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hπb]`. Introduce `θ _`. Establish `hθK : Matrix.diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I)) ∈ Formalism.REAL.Kset (Formalism.MainNotions.S.allPos k)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[Pi.star_apply, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.norm_exp_ofReal_mul_I]`. Simplify using the standard rewrite rules. Simplify using `only [Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `a`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [ξ]`. Rewrite using `[ContinuousLinearMap.map_smul, hwt θ hθK, smul_comm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinWb : Formalism.QuantumDeterminants.inWb k r (z0 k r)`. Introduce `i hi`. Use `show (Pi.single (Formalism.QuantumDeterminants.wI k r (Fin.last k)) (1 : ℂ) : Fin (2 * r + k + 1) → ℂ) i = 0`. Rewrite using `[Pi.single_apply, if_neg]`. Introduce `hh`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `hh` using the available equality. Simplify using `only [Formalism.QuantumDeterminants.wI, Fin.val_last] at hi`. Use linear arithmetic over natural numbers and integers. Establish `key : ∀ (H : Mat k r) (i : Fin (2 * r + k + 1)), Formalism.QuantumDeterminants.herm H (Formalism.QuantumDeterminants.bvec i) (Formalism.QuantumDeterminants.bvec i) = H i i`. Introduce `H i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show Formalism.QuantumDeterminants.herm H (Formalism.QuantumDeterminants.bvec i) (Formalism.QuantumDeterminants.bvec i) = ∑ j, star (Formalism.QuantumDeterminants.bvec i j) * (H *ᵥ Formalism.QuantumDeterminants.bvec i) j from rfl]`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by simp [Formalism.QuantumDeterminants.bvec, Pi.single_apply, hj]) (by simp)]`. Simplify using `[Formalism.QuantumDeterminants.bvec, Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `hTz1 : Formalism.QuantumDeterminants.Tz k r (z0 k r) = 1`. Rewrite using `[Formalism.QuantumDeterminants.Tz, z0, key]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Formalism.QuantumDeterminants.Hpk, Formalism.QuantumDeterminants.wI]`. Establish `hone : (1 : Mat k r) ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `by show (1 : Mat k r)ᴴ * Formalism.QuantumDeterminants.Hpk k r * 1 = Formalism.QuantumDeterminants.Hpk k r`. Simplify using the standard rewrite rules. Establish `hframe : Formalism.MainNotions.S.IsFrameW k r (z0 k r) 1`. Use `⟨hone, fun a => ⟨Matrix.one_mulVec _, Matrix.one_mulVec _⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Matrix.one_mulVec, hTz1, Real.sqrt_one]`. Simplify using `[z0]`. Establish `hHCW : Formalism.MainNotions.S.IsHCTypeW k r (z0 k r) u πm`. Use `⟨1, hframe, ?_⟩` and prove the remaining obligations. Establish `: (fun h => πm (1 * Formalism.MainNotions.S.blockW k r h * 1⁻¹)) = fun h => πm (Formalism.MainNotions.S.blockW k r h)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `h`. Rewrite using `[inv_one, Matrix.mul_one, Matrix.one_mul]`. Rewrite using `[this]`. Conclude with `hHCU`. Establish `hcne : ∀ a, cBase r (t : ℝ) a ≠ 0`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Establish `: (t : ℂ) ≠ 0` using `by exact_mod_cast (by omega : t ≠ 0)`. Simplify using `[cBase, Complex.I_ne_zero, this]`. Establish `hemb` using `chart_embedding hinj hU`. Establish `hμN : Formalism.MainNotions.S.haarLie (Formalism.QuantumDeterminants.Nset k r) 1 = Measure.map (chart k r) volume`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Formalism.MainNotions.S.haarLie, one_smul]`. Both sides reduce to the same expression. Establish `hI : ∫ m, psiCoef (Classical.choice (hT t htt)) (μ t htt) P (Classical.choice (hT t htt)).w (Classical.choice (hT t htt)).w (Matrix.of m) * starRingEnd ℂ (Formalism.MainNotions.S.psiGen k r (z0 k r) (cBase r t) (Matrix.of m)) ∂(Formalism.MainNotions.S.haarLie (Formalism.QuantumDe …`. Rewrite using `[hμN, hemb.integral_map]`. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hfe t htt x]`. Use `show ⟪(Classical.choice (hT t htt)).w, S7.PsiM (Classical.choice (hT t htt)) (μ t htt) (P * NormedSpace.exp (Formalism.MainNotions.S.unrealify (x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool))) * P⁻¹) (Classical.choice (hT t htt)).w⟫_ℂ * starRingEnd ℂ (For …`. Use `congr 1`. Rewrite using `[hpsi _ (hU x) (t : ℝ), ← Complex.exp_conj, map_mul, Complex.conj_ofReal, ← conjL_apply, hτconj x]`. Use `congr 1`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hint2 : Integrable (fun m : Formalism.QuantumDeterminants.Mt k r => ‖S7.PsiM (Classical.choice (hT t htt)) (μ t htt) (P * Matrix.of m * P⁻¹)‖) (Formalism.MainNotions.S.haarLie (Formalism.QuantumDeterminants.Nset k r) 1)`. Rewrite using `[hμN, hemb.integrable_map_iff]`. Establish `hfr : (Module.finrank ℝ (Formalism.MainNotions.S.lieE (Formalism.QuantumDeterminants.Nset k r)) : ℝ) < 2 * (c5 / 16) * t`.
-
-Establish `h1` using `(div_lt_iff₀ (by positivity : (0 : ℝ) < 2 * (c5 / 16))).mp hN₂`. Establish `h2 : (N₂ : ℝ) ≤ t` using `by exact_mod_cast htN`. Use the polynomial consequences of the given equalities and inequalities. Use `Integrable.mono' (integrable_rpow_neg_one_add_norm_sq (μ := volume) hfr) ((hPc t htt).norm.aestronglyMeasurable) (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Rewrite using `[Function.comp_apply, norm_norm]`.
-
-Conclude with `(hbound t htt x).trans (le_of_eq (by congr 1; ring))`. Establish `h7` using `hB7b k r (parEps k r) (lowK (parEps k r) (lamT k r u b t)) (Classical.choice (hT t htt)) (μ t htt) P u (cBase r t) Hπ πm ξ μW (Formalism.MainNotions.S.haarLie (Formalism.QuantumDeterminants.Nset k r) 1) hk hP hPW hHCU hξn hξw (hWwt t) hμW hμW1 hNhaar.1 (hPF t htt).2 hint2`. Use `⟨Classical.choice (hT t htt), μ t htt, P, z0 k r, cBase r t, Hπ, iπ1, iπ2, hCS, πm, μW, Formalism.MainNotions.S.haarLie (Formalism.QuantumDeterminants.Nset k r) 1, hμ t htt, hP, ⟨hinWb, by rw [hTz1]; norm_num, hcne, hHCW, hμW, hNhaar⟩, (Classical.choice (hT t htt)).w, (Classical. …` and prove the remaining obligations. Introduce `h0`. Rewrite `h7` using `[h0, inner_zero_right, hI]`.
-
-Establish `hfr : (Module.finrank ℂ Hπ : ℂ) ≠ 0` using `by exact_mod_cast (Module.finrank_pos (R := ℂ) (M := Hπ)).ne'`. Break down `mul_eq_zero.mp h7.symm with h | h` into its components or cases. Conclude with `inv_ne_zero hfr h`. Conclude with `hne h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem assembly : AssemblyStatement := by
   intro hB1 hB3 hB4 hB5 hB6 hB7a hB7b hLamT hPsi hLink

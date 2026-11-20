@@ -12,29 +12,25 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.VolBr GlobalTheory.HSNef
 
 /- English proof (translation)
-Introduce `hAr hHS k _ X _ p D hX hD C h hA hS hH hnn`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `hg : 0 < gdeg C D` using `GlobalTheory.T.geometricDegree_pos_of_ample_semiPositive hAr hHS k X p D hX C hA hS`. Use `set c := h (genericPoint X) with hcdef`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g := gdeg C D with hgdef`. Establish `hD' : (1 : ℝ) ≤ D` using `by exact_mod_cast hD`. Use `set x : ℝ := -c / g with hx`. Establish `hx0 : 0 < x` using `div_pos (by linarith) hg`. Establish `hxg : x * g = -c` using `by rw [hx]; field_simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `set u : ℝ := x * (D + 2) / (2 * (D + 1)) with hu`. Establish `hu0 : 0 ≤ u` using `by rw [hu]; positivity`. Use `set α : ℝ := c + ((D : ℝ) + 1) * u * g with hα`. Establish `hαv : α = -c * D / 2`. Rewrite using `[hα, hu]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `((D : ℝ) + 2) * hxg`. Establish `hα0 : 0 < α` using `by rw [hαv]; have : 0 < -c := by linarith`. Check the signs of the components of the expression. Establish `hcu : c + u * g < 0`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : c + u * g = c * D / (2 * (D + 1))`. Rewrite using `[hu]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `((D : ℝ) + 2) * hxg`. Rewrite using `[e]; exact div_neg_of_neg_of_pos (by nlinarith) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set C' := C.shift (fun _ => u) fun _ => rfl with hC'`. Establish `hself : C.IsSelfInter c` using `⟨h, hH, rfl⟩`. Establish `hα' : C'.IsSelfInter α` using `hAr.arShift k X p D hX C c u hself`. Establish `hA' : IsAmpleLB C'.B` using `hA`. Establish `hS' : C'.SemiPos D` using `hS.shift _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨P, hPL, -⟩` from `exists_pair C' C'`. Establish `hrep : P.Rep 1 0 C'` using `hPL ▸ (GlobalTheory.VolBr.Pair.rep_base k X p P).1`. Establish `hfac : (0 : ℝ) < ((D + 1).factorial : ℝ)` using `by positivity`. Establish `hε : 0 < α / (2 * ((D + 1).factorial : ℝ))` using `by positivity`. Take `⟨m, hm, hm0⟩` from `((GlobalTheory.T.log_count_radius_one_lower_bound_ample_semiPos hHS k X p D hX P 1 0 0 0 C' α hrep hA' hS' hα' _ hε).and (eventually_gt_atTop 0)).exists`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hcoef : α / ((D + 1).factorial : ℝ) - α / (2 * ((D + 1).factorial : ℝ)) = α / (2 * ((D + 1).factorial : ℝ))` using `by field_simp; ring`. Rewrite `hm` using `[hcoef]`. Establish `hlc : 0 < P.lc ((m : ℤ) * 1) ((m : ℤ) * 0) 1`. Establish `: (0 : ℝ) < (m : ℝ) ^ (D + 1)` using `by positivity`. Use `mul_pos hε this` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using lt_of_lt_of_le this hm`. Establish `hn : 1 < (P.Bl ((m : ℤ) * 1) ((m : ℤ) * 0) 1).ncard`. Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Establish `: ((P.Bl ((m : ℤ) * 1) ((m : ℤ) * 0) 1).ncard : ℝ) ≤ 1` using `by exact_mod_cast hle`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `absurd hlc (not_lt.2 (Real.log_nonpos (Nat.cast_nonneg _) this))`. Establish `hfin : (P.Bl ((m : ℤ) * 1) ((m : ℤ) * 0) 1).Finite` using `Set.finite_of_ncard_ne_zero (by omega)`. Establish `henc : 1 < ((C'.pow m).smallSec).encard`. Rewrite using `[(GlobalTheory.VolBr.SmallBall.main k X p P 1 0 C' hrep 0 m).2.1, ← hfin.cast_ncard_eq]`. Conclude with `hn` after adjusting the coercions.
-
-Take `⟨a, b, ha, hb, hab⟩` from `Set.one_lt_encard_iff.1 henc`. Establish `hex : ∃ s ∈ (C'.pow m).smallSec, s ≠ 0`. Distinguish the cases in `ha0 : a = 0`. Conclude with `⟨b, hb, fun hb0 => hab (ha0.trans hb0.symm)⟩`. Conclude with `⟨a, ha, ha0⟩`.
-
-Use `GlobalTheory.T.height_add_mul_geometricDegree_nonneg_of_smallSection hAr k X p D hX hD C h hS hH hnn m u hm0 hu0 hex` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HSNef.height_generic_nonneg_of_ample : GlobalTheory.Published.ArCalc → AmpleHS → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → 1 ≤ D → ∀ (C : HermLB p) (h : X → ℝ), IsAmpleLB C.B → C.SemiPos D → C.IsArithHeight h → (∀ z, z ≠ genericPoint X → 0 ≤ h z) → 0 ≤ h (genericPoint X) := by
   intro hAr hHS k _ X _ p D hX hD C h hA hS hH hnn

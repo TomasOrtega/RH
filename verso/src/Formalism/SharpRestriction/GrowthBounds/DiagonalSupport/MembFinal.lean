@@ -8,7 +8,7 @@ noncomputable section
 namespace Formalism.MainNotions.Proposition5Numerics
 
 /- English proof (translation)
-The claim follows from `membership_of_three_parts restValBdG restXXG_b restDdG_holds D CLa Ck Crk Cdeg`.
+A detailed English derivation is pending.
 -/
 theorem restMemb (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) : RestMemb D CLa Ck Crk Cdeg :=
   membership_of_three_parts restValBdG restXXG_b restDdG_holds D CLa Ck Crk Cdeg

@@ -7,15 +7,13 @@ namespace CompanionTheory.WaveGrid.WEnd
 open Formalism.FourierDecayAlt BranchingSupport
 
 /- English proof (translation)
-Take `⟨hc, hds⟩` from `hR`. Take `⟨-, -, -, -, -, -, -, -, -, -, hgap, hok, -, h2, -⟩` from `hN`. Use `⟨hc, hds, h / 4, ?_, hok⟩` and prove the remaining obligations. Introduce `a c hac`. Use `show h / 4 ≤ |(lam a + (ν a : ℝ)) - (lam c + (ν c : ℝ))|`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hab : ∀ x : Fin (2 * r + k + 1), |((ν x : ℤ) : ℝ)| ≤ q0`. Introduce `x`. Establish `h1 : (ν x).natAbs ≤ ∑ i, (ν i).natAbs` using `Finset.single_le_sum (f := fun i => (ν i).natAbs) (fun i _ => Nat.zero_le _) (Finset.mem_univ x)`. Establish `h3 : ((ν x).natAbs : ℝ) ≤ q0` using `by exact_mod_cast h1.trans hν`. Rewrite using `[← Int.cast_abs, ← Int.natCast_natAbs]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h3` after adjusting the coercions. Establish `hg` using `hgap a c hac`. Establish `hq : (0 : ℝ) ≤ q0` using `Nat.cast_nonneg _`. Establish `e1` using `le_abs_self ((lam a + (ν a : ℝ)) - (lam c + (ν c : ℝ)))`. Establish `e2` using `neg_abs_le ((lam a + (ν a : ℝ)) - (lam c + (ν c : ℝ)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `le_abs_self ((ν a : ℤ) : ℝ)`. Establish `e4` using `neg_abs_le ((ν a : ℤ) : ℝ)`. Establish `e5` using `le_abs_self ((ν c : ℤ) : ℝ)`. Establish `e6` using `neg_abs_le ((ν c : ℤ) : ℝ)`. Establish `key : |lam a - lam c| ≤ |(lam a + (ν a : ℝ)) - (lam c + (ν c : ℝ))| + |((ν a : ℤ) : ℝ)| + |((ν c : ℤ) : ℝ)|` using `abs_le.mpr ⟨by linarith, by linarith⟩`.
-
-Combine the linear relations using `[hab a, hab c]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isDG_of_num {k r : ℕ} {lam : Fin (2 * r + k + 1) → ℝ} {u : ℕ → ℝ} {b bv ga h : ℝ} {q0 : ℕ} {R : Rep k r}
     (hN : Num k r lam u b bv ga h q0) {ν : Fin (2 * r + k + 1) → ℤ} (hν : n1 ν ≤ q0)
@@ -46,13 +44,13 @@ theorem isDG_of_num {k r : ℕ} {lam : Fin (2 * r + k + 1) → ℝ} {u : ℕ →
   linarith [hab a, hab c]
 
 /- English proof (translation)
-Unfold `In91`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `k r lam u b bv ga h q0 R0 hN hDS`. Establish `h0 : R0.IsDS (PI.BesselPeriodGGP.eps48 k r) (fun a => lam a + (((0 : Fin (2 * r + k + 1) → ℤ) a : ℤ) : ℝ))`. Simplify using `using hDS`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨R, hR, -⟩` from `Gp91.WG.family_through_discreteSeries H k r lam u b bv ga h q0 R0 0 hN (isDG_of_num hN (ν := 0) (by simp [BranchingSupport.n1]) h0)`. Use `⟨R, ?_⟩` and prove the remaining obligations. Introduce `ν hν`. Conclude with `⟨(hR ν hν).hc, (hR ν hν).ds⟩`. Introduce `C hC P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 hN hN' hT hT' a R0 f hf`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun ν₀ hq hDS => ?_, fun j hj hq hDS => ?_⟩` and prove the remaining obligations. Establish `hν : BranchingSupport.n1 ν₀ ≤ q0` using `((Nat.le_add_right _ _).trans (Nat.le_add_right _ _)).trans hq`. Conclude with `Gp91.WG.bigCellDerivativeExpansion_of_isDS_of_coefOf H C hC P Wp Wq p lam b bv ga h q0 a R0 f ν₀ hN hN' hT hT' hq (isDG_of_num hN hν hDS) hf`. Establish `h0 : R0.IsDS (PI.BesselPeriodGGP.eps48 P.k P.r) (fun s => lam s + (((0 : Fin (2 * P.r + P.k + 1) → ℤ) s : ℤ) : ℝ))`. Simplify using `using hDS`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hg` using `isDG_of_num hN (ν := 0) (by simp [BranchingSupport.n1]) h0`. Establish `hg' : R0.IsDG (PI.BesselPeriodGGP.eps48 P.k P.r) lam` using `by simpa using hg`. Conclude with `Gp91.WG.momL_le H C hC P Wp Wq p lam b bv ga h q0 a R0 f j hj hN hN' hT hT' hq hg' hf`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wave_inputs_of_hypotheses_global (H : HypsG) : In91 := by
   unfold In91

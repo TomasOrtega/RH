@@ -23,15 +23,15 @@ def Corr (p : LocF.PP Lc n) (r : LocF.PP Lc' n) : Prop :=
 variable {e}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => e.symm (y a), funext fun a => (e.apply_symm_apply _).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem vec_surj (e : Lc'.K ≃+* Lc.K) (y : Fin n → Lc.K) : ∃ x : Fin n → Lc'.K, y = fun a => e (x a) :=
   ⟨fun a => e.symm (y a), funext fun a => (e.apply_symm_apply _).symm⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `pp_ext (fun x => (h x).1.symm.trans (h' x).1) fun x _ => (h x).2.symm.trans (h' x).2`. Introduce and unpack `rfl`. Use `pp_ext (fun y => ?_) fun y _ => ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `vec_surj e y`. Conclude with `(h x).1.trans (h' x).1.symm`. Take `⟨x, rfl⟩` from `vec_surj e y`. Conclude with `(h x).2.trans (h' x).2.symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Corr.eq_iff {p p' : LocF.PP Lc n} {r r' : LocF.PP Lc' n} (h : Corr e p r) (h' : Corr e p' r') : p = p' ↔ r = r' := by
   constructor
@@ -45,15 +45,15 @@ theorem Corr.eq_iff {p p' : LocF.PP Lc n} {r r' : LocF.PP Lc' n} (h : Corr e p r
       exact (h x).2.trans (h' x).2.symm
 
 /- English proof (translation)
-Establish `hk : ∀ x : Fin n → Lc'.K, (fun a => e (x a)) ∈ p'.ker ↔ x ∈ r'.ker` using `fun x => and_congr (h' x).1 (by rw [(h' x).2])`. Establish `hs : ∀ x : Fin n → Lc'.K, ((q : Lc.K)⁻¹ • fun a => e (x a)) = fun a => e (((q : Lc'.K)⁻¹ • x) a)` using `fun x => by`. Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules. Establish `key : ∀ x : Fin n → Lc'.K, (p.1.f (fun a => e (x a)) = 1 ∧ p.IsUp (fun a => e (x a)) p') ↔ (r.1.f x = 1 ∧ r.IsUp x r')`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x`. Unfold `LocF.PP.IsUp`. Rewrite using `[(h x).2, (h x).1, hs, (h' _).2]`. Use `and_congr Iff.rfl (and_congr Iff.rfl (and_congr ?_ Iff.rfl))` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hh`. Use extensionality with `z`. Rewrite using `[← hk, hh]`. Conclude with `(h z).1`. Introduce `hh`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Take `⟨z, rfl⟩` from `vec_surj e y`. Rewrite using `[hk, hh]`. Conclude with `(h z).1.symm`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨y, hy⟩`. Take `⟨x, rfl⟩` from `vec_surj e y`. Conclude with `⟨x, (key x).1 hy⟩`. Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨_, (key x).2 hx⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Corr.inc_iff {p p' : LocF.PP Lc n} {r r' : LocF.PP Lc' n} (h : Corr e p r) (h' : Corr e p' r') :
     p.Inc p' ↔ r.Inc r' := by
@@ -92,13 +92,13 @@ variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {n : ℕ}
   {ST : Finset (HeightOneSpectrum (𝓞 E))} {A : TDat S ST} {T : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun P => ⟨sp.T_mem P.1 P.2, sp.T_nsq P.1 P.2⟩, fun P Q => sp.nonconj P.1 P.2 Q.1 Q.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem tAt (sp : Split A T) : TAt T ST :=
   ⟨fun P => ⟨sp.T_mem P.1 P.2, sp.T_nsq P.1 P.2⟩, fun P Q => sp.nonconj P.1 P.2 Q.1 Q.2⟩
 
 /- English proof (translation)
-The claim follows from `sp.ext b d d' ho (deco_ext (tAt sp) (ht.ok b d) (ht.ok b d') (fun w hw => sp.off_lat b d d' ho w fun P hP => hw ⟨P, hP⟩) hp)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_pair (sp : Split A T) (ht : A.Tied T) {b : S.β} {d d' : S.D b} (ho : (sp.off b).r d d')
     (hp : ∀ P, pair ((tAt sp).unif P) _ (ht.ok b d) = pair ((tAt sp).unif P) _ (ht.ok b d')) : d = d' :=
@@ -106,34 +106,34 @@ theorem eq_of_pair (sp : Split A T) (ht : A.Tied T) {b : S.β} {d d' : S.D b} (h
     (fun w hw => sp.off_lat b d d' ho w fun P hP => hw ⟨P, hP⟩) hp)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem pair_eq_of_deco {P : ST} (h : Unif T P.1) {d d' : Deco E n ST ∅} (hd : d.Ok) (e : d = d') :
     pair h d hd = pair h d' (e ▸ hd) := by subst e; rfl
 
 /- English proof (translation)
-Take `⟨x, hx, hf, rfl⟩` from `h`. Conclude with `sp.off_up b d P x hx hf`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem above_off (sp : Split A T) {b : S.β} {P : ST} {d d₁ : S.D b} (h : Above A b P d d₁) : (sp.off b).r d d₁ := by
   obtain ⟨x, hx, hf, rfl⟩ := h
   exact sp.off_up b d P x hx hf
 
 /- English proof (translation)
-Establish `h` using `tAt sp`. Establish `hd` using `ht.ok b d`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, hf, rfl⟩`. Establish `e` using `ht.up_deco b d P x hx hf`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨fun Q hQ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pair_eq_of_deco _ _ e]`. Conclude with `pair_up_ne h hd hQ hx _`. Rewrite using `[pair_eq_of_deco _ (ht.ok b (A.up b d P x)) e]`. Use `⟨x, hf, le_locP _ _ hx, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Rewrite using `[mem_pair_ker _ (h.ne P), hd.dnN_up P (h.move P) (h.unif P).mem (h.unif P).nsq hx hf]`. Both sides reduce to the same expression. Use `hd.up_f_inv P (h.move P) (h.unif P).mem (h.unif P).nsq hx hf` as an intermediate fact. Rewrite `this` using `[map_natCast]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `this`. Introduce and unpack `⟨h1, x, hf, hp⟩`. Establish `hx : x ∈ localization₂ P.1.asIdeal (A.N b d)` using `hp.1`. Take `⟨x', hx', hr⟩` from `redL_surj (redL (A.N b d) P.1 x)`. Establish `hx'' : x' ∈ localization₂ P.1.asIdeal (A.N b d)` using `le_locP _ _ hx'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf' : A.f b d P x' = 1`. Establish `hneg : (-1 : GlobalTheory.LvT.Inh.valO P.1) • x ∈ localization₂ P.1.asIdeal (A.N b d)` using `(locO P.1 _).smul_mem _ hx`. Establish `h0 : redL (A.N b d) P.1 (x' + (-1 : GlobalTheory.LvT.Inh.valO P.1) • x) = 0`. Rewrite using `[redL_add hx'' hneg, redL_smul _ hx, hr, map_neg, map_one, neg_one_smul, add_neg_cancel]`. Establish `h2` using `inv_smul_mem_of_redL (h.unif P) ((localization₂ _ _).add_mem hx'' hneg) h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `hd.f_smul P (T : 𝓞 E) _ h2`. Rewrite `h3` using `[Ideal.Quotient.eq_zero_iff_mem.2 (h.unif P).mem, zero_mul, ← algebraMap_smul E (T : 𝓞 E), map_natCast, smul_inv_smul₀ (h.unif P).ne_zero]`. Establish `e : x' = (x' + (-1 : GlobalTheory.LvT.Inh.valO P.1) • x) + x` using `by rw [neg_one_smul]; abel`. Establish `h4` using `hd.f_add P _ ((localization₂ _ _).add_mem hx'' hneg) _ hx`. Rewrite `h4` using `[← e, h3, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h4.trans hf`. Use `⟨x', hx', hf', ?_⟩` and prove the remaining obligations. Establish `e` using `ht.up_deco b d P x' hx' hf'`. Use `eq_of_pair sp ht ((sp.off b).trans ((sp.off b).symm ho) (sp.off_up b d P x' hx' hf')) fun Q => ?_` and prove the remaining obligations. Rewrite using `[pair_eq_of_deco _ (ht.ok b (A.up b d P x')) e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hQ : Q = P`. Substitute `hQ` using the available equality. Conclude with `(pair_up h hd Q hx' hf' hr hp _).symm`. Rewrite using `[h1 Q hQ]`. Conclude with `(pair_up_ne h hd hQ hx' _).symm`.
+A detailed English derivation is pending.
 -/
 theorem above_iff (sp : Split A T) (ht : A.Tied T) {b : S.β} (P : ST) {d d₁ : S.D b} (ho : (sp.off b).r d d₁) :
     Above A b P d d₁ ↔
@@ -189,7 +189,7 @@ variable {D : D7} {u : D.what₂.Word} {B : Built.Dat D u} {i : ℕ} {sp : Split
   (R : B.Real i sp M)
 
 /- English proof (translation)
-Introduce `x` and use `⟨R.pt_L b d P x, R.pt_f b d P x⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem corr_pt (b : (B.I.S i).β) (d : (B.I.S i).D b) (P : B.ch.A.vT) :
     Corr (Lc := M.Lc P) (Lc' := locF ((tAt sp).unif (B.pr P))) (R.iK P) ((R.pt b d).2 P)
@@ -197,14 +197,14 @@ theorem corr_pt (b : (B.I.S i).β) (d : (B.I.S i).D b) (P : B.ch.A.vT) :
   fun x => ⟨R.pt_L b d P x, R.pt_f b d P x⟩
 
 /- English proof (translation)
-Use `(R.fst 1 b d d').2 ⟨1, map_one _, map_one _, by rwa [one_smul]⟩` as an intermediate fact. Rewrite `this` using `[map_one, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem fst_of_off {b : (B.I.S i).β} {d d' : (B.I.S i).D b} (h : (sp.off b).r d d') : (R.pt b d).1 = (R.pt b d').1 := by
   have := (R.fst 1 b d d').2 ⟨1, map_one _, map_one _, by rwa [one_smul]⟩
   rwa [map_one, one_smul] at this
 
 /- English proof (translation)
-Take `⟨ζ, b₁, d₁, rfl⟩` from `R.surj p`. Take `rfl` from `R.idx ζ b₁ b d₁ d h`. Take `⟨g, h1, h2, h3⟩` from `(R.fst ζ b₁ d₁ d).1 h`. Conclude with `⟨_, h3, (R.inj ζ b₁ d₁ _).2 ⟨g, h1, h2, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pt {b : (B.I.S i).β} (d : (B.I.S i).D b) {p : M.Pt} (h : p.1 = (R.pt b d).1) :
     ∃ d', (sp.off b).r d' d ∧ p = R.pt b d' := by
@@ -214,16 +214,16 @@ theorem exists_pt {b : (B.I.S i).β} (d : (B.I.S i).D b) {p : M.Pt} (h : p.1 = (
   exact ⟨_, h3, (R.inj ζ b₁ d₁ _).2 ⟨g, h1, h2, rfl⟩⟩
 
 /- English proof (translation)
-The claim follows from `eq_of_pair sp (B.hJ.tied i) ho fun (P : B.ch.A.vT) => ((corr_pt R b d P).eq_iff (corr_pt R b d' P)).1 (by rw [h])`.
+A detailed English derivation is pending.
 -/
 theorem pt_inj {b : (B.I.S i).β} {d d' : (B.I.S i).D b} (ho : (sp.off b).r d d') (h : R.pt b d = R.pt b d') : d = d' :=
   eq_of_pair sp (B.hJ.tied i) ho fun (P : B.ch.A.vT) =>
     ((corr_pt R b d P).eq_iff (corr_pt R b d' P)).1 (by rw [h])
 
 /- English proof (translation)
-Rewrite using `[above_iff sp (B.hJ.tied i) (B.pr v) ho]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h2, h3⟩`. Conclude with `⟨fun (Q : B.ch.A.vT) hQ => ((corr_pt R b d' Q).eq_iff (corr_pt R b d Q)).1 (h2 Q hQ), ((corr_pt R b d v).inc_iff (corr_pt R b d' v)).1 h3⟩`. Introduce and unpack `⟨h2, h3⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨(fst_of_off R ho).symm, fun Q hQ => ((corr_pt R b d' Q).eq_iff (corr_pt R b d Q)).2 (h2 Q hQ), ((corr_pt R b d v).inc_iff (corr_pt R b d' v)).2 h3⟩`.
+Supply the required witnesses or components.
 -/
 theorem inc_iff {b : (B.I.S i).β} (v : B.ch.A.vT) {d d' : (B.I.S i).D b} (ho : (sp.off b).r d d') :
     M.Inc v (R.pt b d) (R.pt b d') ↔ Above (B.J.A i) b (B.pr v) d d' := by
@@ -237,11 +237,11 @@ theorem inc_iff {b : (B.I.S i).β} (v : B.ch.A.vT) {d d' : (B.I.S i).D b} (ho : 
       ((corr_pt R b d v).inc_iff (corr_pt R b d' v)).2 h3⟩
 
 /- English proof (translation)
-Establish `hs` using `(inc_finite_stable D u _ i M v).2.1`. Use extensionality with `p₁`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `(hs g⁻¹ _ _).1 h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h'` using `[inv_smul_smul]`. Take `⟨d', ho, e⟩` from `exists_pt R d h'.1`. Rewrite `h'` using `[e]`. Conclude with `⟨d', (inc_iff R v ((sp.off b).symm ho)).1 h', by beta_reduce; rw [← e, smul_inv_smul]⟩`. Introduce and unpack `⟨d', h, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `(hs g _ _).1 ((inc_iff R v (above_off sp h)).2 h)`.
+A detailed English derivation is pending.
 -/
 theorem above_image (g : M.G) {b : (B.I.S i).β} (v : B.ch.A.vT) (d : (B.I.S i).D b) :
     {p₁ | M.Inc v (g • R.pt b d) p₁} = (fun d₁ => g • R.pt b d₁) '' {d₁ | Above (B.J.A i) b (B.pr v) d d₁} := by
@@ -258,11 +258,11 @@ theorem above_image (g : M.G) {b : (B.I.S i).β} (v : B.ch.A.vT) (d : (B.I.S i).
     exact (hs g _ _).1 ((inc_iff R v (above_off sp h)).2 h)
 
 /- English proof (translation)
-Establish `hs` using `(inc_finite_stable D u _ i M v).2.1`. Use extensionality with `p₀`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `(hs g⁻¹ _ _).1 h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h'` using `[inv_smul_smul]`. Take `⟨d', ho, e⟩` from `exists_pt R d h'.1.symm`. Rewrite `h'` using `[e]`. Conclude with `⟨d', (inc_iff R v ho).1 h', by beta_reduce; rw [← e, smul_inv_smul]⟩`. Introduce and unpack `⟨d', h, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `(hs g _ _).1 ((inc_iff R v (above_off sp h)).2 h)`.
+A detailed English derivation is pending.
 -/
 theorem below_image (g : M.G) {b : (B.I.S i).β} (v : B.ch.A.vT) (d : (B.I.S i).D b) :
     {p₀ | M.Inc v p₀ (g • R.pt b d)} = (fun d₀ => g • R.pt b d₀) '' {d₀ | Above (B.J.A i) b (B.pr v) d₀ d} := by
@@ -279,14 +279,14 @@ theorem below_image (g : M.G) {b : (B.I.S i).β} (v : B.ch.A.vT) (d : (B.I.S i).
     exact (hs g _ _).1 ((inc_iff R v (above_off sp h)).2 h)
 
 /- English proof (translation)
-Introduce `_ h _ h' e` and use `pt_inj R ((sp.off b).trans ((sp.off b).symm (above_off sp h)) (above_off sp h')) (MulAction.injective g e)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem above_injOn (g : M.G) {b : (B.I.S i).β} (v : B.ch.A.vT) (d : (B.I.S i).D b) :
     Set.InjOn (fun d₁ => g • R.pt b d₁) {d₁ | Above (B.J.A i) b (B.pr v) d d₁} := fun _ h _ h' e =>
   pt_inj R ((sp.off b).trans ((sp.off b).symm (above_off sp h)) (above_off sp h')) (MulAction.injective g e)
 
 /- English proof (translation)
-Introduce `_ h _ h' e` and use `pt_inj R ((sp.off b).trans (above_off sp h) ((sp.off b).symm (above_off sp h'))) (MulAction.injective g e)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem below_injOn (g : M.G) {b : (B.I.S i).β} (v : B.ch.A.vT) (d : (B.I.S i).D b) :
     Set.InjOn (fun d₀ => g • R.pt b d₀) {d₀ | Above (B.J.A i) b (B.pr v) d₀ d} := fun _ h _ h' e =>
@@ -294,7 +294,7 @@ theorem below_injOn (g : M.G) {b : (B.I.S i).β} (v : B.ch.A.vT) (d : (B.I.S i).
 
 include R in
 /- English proof (translation)
-The claim follows from `Set.Finite.of_finite_image (above_image R 1 v d ▸ ((inc_finite_stable D u _ i M v).1 _).1) (above_injOn R 1 v d)`.
+A detailed English derivation is pending.
 -/
 theorem above_finite {b : (B.I.S i).β} (v : B.ch.A.vT) (d : (B.I.S i).D b) :
     {d₁ | Above (B.J.A i) b (B.pr v) d d₁}.Finite :=
@@ -302,7 +302,7 @@ theorem above_finite {b : (B.I.S i).β} (v : B.ch.A.vT) (d : (B.I.S i).D b) :
 
 include R in
 /- English proof (translation)
-The claim follows from `Set.Finite.of_finite_image (below_image R 1 v d ▸ ((inc_finite_stable D u _ i M v).1 _).2) (below_injOn R 1 v d)`.
+A detailed English derivation is pending.
 -/
 theorem below_finite {b : (B.I.S i).β} (v : B.ch.A.vT) (d : (B.I.S i).D b) :
     {d₀ | Above (B.J.A i) b (B.pr v) d₀ d}.Finite :=
@@ -310,13 +310,13 @@ theorem below_finite {b : (B.I.S i).β} (v : B.ch.A.vT) (d : (B.I.S i).D b) :
 
 include R in
 /- English proof (translation)
-Establish `hv : M.Val = Submodule.span ℂ (Set.range (B.ev i))` using `R.val_eq.trans (span_evV B.emb 1 (B.lam i) D.what₂.embLL).symm`. Use extensionality with `⟨y, hy⟩`. Establish `key : ∀ y ∈ Submodule.span ℂ (Set.range (B.ev i)), ∀ hy : y ∈ M.Val, f ⟨y, hy⟩ = g ⟨y, hy⟩`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨F, rfl⟩` from `hx`. Conclude with `fun hy => h F _ rfl`. Consider the case `zero => exact fun hy => (map_zero f).trans (map_zero g).symm`. Consider the case `add x y hx hy ihx ihy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. Treat this case separately.
 
-Introduce `hxy`. Establish `hx' : x ∈ M.Val` using `hv ▸ hx`. Establish `hy' : y ∈ M.Val` using `hv ▸ hy`. Conclude with `(map_add f ⟨x, hx'⟩ ⟨y, hy'⟩).trans ((congrArg₂ (· + ·) (ihx hx') (ihy hy')).trans (map_add g _ _).symm)`. Consider the case `smul c x hx ih`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hc`. Establish `hx' : x ∈ M.Val` using `hv ▸ hx`. Conclude with `(map_smul f c ⟨x, hx'⟩).trans ((congrArg (c • ·) (ih hx')).trans (map_smul g c _).symm)`. Conclude with `key y (hv ▸ hy) hy`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_ext {W : Type} [AddCommGroup W] [Module ℂ W] (f g : M.Val →ₗ[ℂ] W)
     (h : ∀ (F : B.V i) (y : M.Val), y.1 = B.ev i F → f y = g y) : f = g := by
@@ -344,15 +344,15 @@ theorem val_ext {W : Type} [AddCommGroup W] [Module ℂ W] (f g : M.Val →ₗ[�
 end Real
 
 /- English proof (translation)
-Introduce `v p p' y`. Take `⟨ζ, b, d, rfl⟩` from `R.surj p`. Take `⟨ζ', b', d', rfl⟩` from `R'.surj p'`. Generalize the expression as in `R.zeta ζ = g`. Generalize the expression as in `R'.zeta ζ' = g'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨y, rfl⟩ : ∃ y₀, y = M.act g y₀` from `⟨M.act g⁻¹ y, by rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]⟩`. Establish `f1` using `above_finite R' v d'`. Establish `f0` using `below_finite R v d`. Rewrite using `[above_image R' g' v d', below_image R g v d, finsum_mem_image (above_injOn R' g' v d'), finsum_mem_image (below_injOn R g v d), finsum_mem_eq_finite_toFinset_sum _ f1, finsum_mem_eq_finite_toFinset_sum _ f0]`. Simplify using `only [K.src, ht g']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_sum, ← map_sum, ← map_smul]`. Use `congr 1`. Use `val_ext R (∑ d₁ ∈ f1.toFinset, K.k (R.pt b d) (R'.pt b' d₁)) (((B.ch.A.T : ℂ) ^ ((D.R.t + 1) / 2)) • ∑ d₀ ∈ f0.toFinset, K.k (R.pt b d₀) (R'.pt b' d')) (fun F y hy => ?_)` as an intermediate fact. Simplify `LinearMap.congr_fun this y` using `only [LinearMap.sum_apply, LinearMap.smul_apply]`. Establish `h` using `hu b b' d d' (B.pr v) F`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h` using `[finsum_mem_eq_finite_toFinset_sum _ f1, finsum_mem_eq_finite_toFinset_sum _ f0]`. Establish `h2` using `congrArg (evV B.emb (1 : Matrix (Fin (D.R.N (i + 1))) (Fin (D.R.N (i + 1))) B.E) (B.lam (i + 1)) D.what₂.embLL) h`. Rewrite `h2` using `[LinearMap.map_smulₛₗ, map_sum, map_sum, map_pow, map_natCast]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.sum_apply, Submodule.coe_smul, Submodule.coe_sum, Submodule.coe_sum, Finset.sum_congr rfl fun d₁ _ => hk b b' d d₁ F y hy, Finset.sum_congr rfl fun d₀ _ => hk b b' d₀ d' F y hy]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem ukLaw_of_kerUK (D : D7) (u : D.what₂.Word) (B : Built.Dat D u) (i : ℕ) (sp : Split (B.J.A i) B.J.T)
     (sp' : Split (B.J.A (i + 1)) B.J.T) (M : PtModel B.ch i) (M' : PtModel B.ch (i + 1)) (R : B.Real i sp M)

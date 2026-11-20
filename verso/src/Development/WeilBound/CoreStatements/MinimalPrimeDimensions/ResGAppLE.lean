@@ -17,7 +17,7 @@ namespace PullbackComparison
 variable {Y Z : Scheme.{0}} (i : Y ⟶ Z)
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.appLE_map i e (homOfLE h).op]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem resG_appLE {U : Z.Opens} {V V' : Y.Opens} (e : V ≤ i ⁻¹ᵁ U) (h : V' ≤ V) (a : Γ(Z, U)) :
     resG Y h ((i.appLE U V e).hom a) = (i.appLE U V' (h.trans e)).hom a := by
@@ -25,7 +25,7 @@ theorem resG_appLE {U : Z.Opens} {V V' : Y.Opens} (e : V ≤ i ⁻¹ᵁ U) (h : 
   rfl
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.map_appLE i e (homOfLE h).op]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem appLE_resG {U U' : Z.Opens} {V : Y.Opens} (e : V ≤ i ⁻¹ᵁ U') (h : U' ≤ U) (e' : V ≤ i ⁻¹ᵁ U) (a : Γ(Z, U)) :
     (i.appLE U' V e).hom (resG Z h a) = (i.appLE U V e').hom a := by
@@ -33,7 +33,7 @@ theorem appLE_resG {U U' : Z.Opens} {V : Y.Opens} (e : V ≤ i ⁻¹ᵁ U') (h :
   rfl
 
 /- English proof (translation)
-Simplify using `only [algX, RingHom.comp_apply]`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE i p ⊤ U V (by simp) e]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem algX_comp {R : Type} [CommRing R] (p : Z ⟶ Sp R) {U : Z.Opens} {V : Y.Opens} (e : V ≤ i ⁻¹ᵁ U) (a : R) :
     algX (i ≫ p) V a = (i.appLE U V e).hom (algX p U a) := by
@@ -42,7 +42,7 @@ theorem algX_comp {R : Type} [CommRing R] (p : Z ⟶ Sp R) {U : Z.Opens} {V : Y.
   rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[Scheme.Hom.appLE_eq_app]`. Conclude with `i.app_surjective U hU`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surj_appLE [IsClosedImmersion i] {U : Z.Opens} (hU : IsAffineOpen U) {V : Y.Opens} (e : V = i ⁻¹ᵁ U) :
     Function.Surjective (i.appLE U V e.le).hom := by
@@ -51,7 +51,7 @@ theorem surj_appLE [IsClosedImmersion i] {U : Z.Opens} (hU : IsAffineOpen U) {V 
   exact i.app_surjective U hU
 
 /- English proof (translation)
-Use `Eq.trans ?_ (Scheme.evaluation_naturality_apply i y (e hy) a).symm` and prove the remaining obligations. Simplify using `only [Scheme.Hom.appLE, Scheme.evaluation, LocallyRingedSpace.evaluation, CommRingCat.comp_apply]`. Rewrite using `[TopCat.Presheaf.germ_res_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_appLE {U : Z.Opens} {V : Y.Opens} (e : V ≤ i ⁻¹ᵁ U) (y : Y) (hy : y ∈ V) (a : Γ(Z, U)) :
     (Y.evaluation V y hy).hom ((i.appLE U V e).hom a) =
@@ -65,31 +65,29 @@ end PullbackComparison
 open PullbackComparison
 
 /- English proof (translation)
-Introduce `R _ Z Y p B m s i _ hE`. Establish `hAR : ∀ {U U' : Z.Opens} {W : Y.Opens} (e : W ≤ i ⁻¹ᵁ U') (h : U' ≤ U) (a : Γ(Z, U)), (i.appLE U' W e).hom (resG Z h a) = (i.appLE U W (fun y hy => h (e hy))).hom a` using `fun e h a => appLE_resG i e h _ a`. Establish `hf : ∀ (t : B.Sec) (J : (B.pull i).ι), (GlobalTheory.secPull t i).f J = (i.appLE (B.U (J PUnit.unit)) ((B.pull i).U J) (GlobalTheory.LB.pull_U i J).le).hom (t.f (J PUnit.unit))`. Introduce `t J`. Simplify using `only [GlobalTheory.secPull, GlobalTheory.chartSec_f]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Use `⟨⟨LB.isLB_pull hE.isLB i, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `h : i y ∈ ⨆ k, nonzeroLocus (s k)` using `by rw [hE.cover]; trivial`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h`, the goal using `[TopologicalSpace.Opens.mem_iSup]`. Take `⟨k, hk⟩` from `h`. Conclude with `⟨k, by rw [GlobalTheory.nonzeroLocus_secPull]; exact hk⟩`. Introduce `k`. Take `⟨hAff, t, hsurj, hrel⟩` from `hE.chart k`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hV : nonzeroLocus (GlobalTheory.secPull (s k) i) = i ⁻¹ᵁ nonzeroLocus (s k)` using `GlobalTheory.nonzeroLocus_secPull _ _`. Use `⟨by rw [hV]; exact hAff.preimage i, fun j => (i.appLE _ _ hV.le).hom (t j), ?_, ?_⟩` and prove the remaining obligations. Establish `hcomp : eval₂Hom (algX (i ≫ p) (nonzeroLocus (GlobalTheory.secPull (s k) i))) (fun j => (i.appLE _ _ hV.le).hom (t j)) = (i.appLE _ _ hV.le).hom.comp (eval₂Hom (algX p (nonzeroLocus (s k))) t)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [RingHom.comp_apply, MvPolynomial.eval₂Hom_C]`. Conclude with `algX_comp i p hV.le a`. Introduce `j`. Simplify using `only [RingHom.comp_apply, MvPolynomial.eval₂Hom_X']`. Rewrite using `[hcomp]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(surj_appLE i hAff hV).comp hsurj`. Introduce `j J`. Establish `hle : nonzeroLocus (GlobalTheory.secPull (s k) i) ⊓ (B.pull i).U J ≤ i ⁻¹ᵁ (nonzeroLocus (s k) ⊓ B.U (J PUnit.unit))`. Introduce `y hy`. Conclude with `⟨hV.le hy.1, (GlobalTheory.LB.pull_U i J).le hy.2⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key` using `congrArg (i.appLE _ _ hle).hom (hrel j (J PUnit.unit))`. Simplify using `only [map_mul, hAR] at key`. Simplify using `only [hf, resG_appLE]`. Conclude with `key`. Introduce `y`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hker : ∀ (J : (B.pull i).ι) (h : y ∈ (B.pull i).U J), RingHom.ker (coneHom (i ≫ p) (fun k => GlobalTheory.secPull (s k) i) y J h) = RingHom.ker (coneHom p s (i y) (J PUnit.unit) ((GlobalTheory.LB.pull_U i J).le h))`. Introduce `J h`. Establish `heq : coneHom (i ≫ p) (fun k => GlobalTheory.secPull (s k) i) y J h = (Polynomial.mapRingHom (i.residueFieldMap y).hom).comp (coneHom p s (i y) (J PUnit.unit) ((GlobalTheory.LB.pull_U i J).le h))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [coneHom, RingHom.comp_apply, MvPolynomial.eval₂Hom_C, Polynomial.coe_mapRingHom, Polynomial.map_C]`. Rewrite using `[algX_comp i p (GlobalTheory.LB.pull_U i J).le a]`. Use `congr 1`. Conclude with `eval_appLE i (GlobalTheory.LB.pull_U i J).le y h _`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [coneHom, RingHom.comp_apply, MvPolynomial.eval₂Hom_X', Polynomial.coe_mapRingHom, Polynomial.map_mul, Polynomial.map_X, Polynomial.map_C]`. Rewrite using `[hf]`. Use `congr 2`. Conclude with `eval_appLE i (GlobalTheory.LB.pull_U i J).le y h _`. Rewrite using `[heq]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `RingHom.ker_comp_of_injective _ (Polynomial.map_injective _ (i.residueFieldMap y).hom.injective)`. Apply `le_antisymm` to reduce the goal to its premises. Use `le_iInf₂ fun j hj => ?_` and prove the remaining obligations. Set `J : (B.pull i).ι` to `fun _ => j`. Establish `hJ : y ∈ (B.pull i).U J` using `(GlobalTheory.LB.pull_U i J).ge hj`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(iInf₂_le J hJ).trans_eq (hker J hJ)`. Use `le_iInf₂ fun J hJ => ?_` and prove the remaining obligations. Rewrite using `[hker J hJ]`. Conclude with `iInf₂_le (J PUnit.unit) ((GlobalTheory.LB.pull_U i J).le hJ)`. Introduce `u su hc J`.
-
-Rewrite using `[hf, hc (J PUnit.unit), map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← algX_comp, hf]`.
+A detailed English derivation is pending.
 -/
 theorem stPull : StPull := by
   intro R _ Z Y p B m s i _ hE

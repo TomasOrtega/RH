@@ -14,13 +14,13 @@ namespace PI.UnitaryGroupMassFormula.CntFormula.UG
 open Formalism.HermitianLattices.Ext.L3.WA
 
 /- English proof (translation)
-Introduce `K _ _ _ V _ _ _ _ _ h hK hs hnd L M hLl hMl hLu hMu p hp`. Establish `hstar : ∀ r : 𝓞 K, star (algebraMap (𝓞 K) K r) ∈ Set.range (algebraMap (𝓞 K) K)` using `PI.UG.W.star_mem_range K`. Establish `huL` using `(Formalism.HermitianLatticesTheory.locDual (𝓞 K) K V h hs hstar L hLl.fg).2.mp hLu p hp`. Establish `huM` using `(Formalism.HermitianLatticesTheory.locDual (𝓞 K) K V h hs hstar M hMl.fg).2.mp hMu p hp`. Establish `hS` using `isHermSemilocal_locRing hK hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL'` using `isSelfDualMod_loc hLl hp.isPrime huL`. Establish `hM'` using `isSelfDualMod_loc hMl hp.isPrime huM`. Take `⟨g, hg, hiff⟩` from `exists_isom_selfDual hS hs hnd (fun w y hyw hw hy => hP K hK p hp V h hs w y hyw hw hy) hL' hM'`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Use extensionality with `w`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `(hiff v).1 hv`. Introduce `hw`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g.symm w, (hiff _).2 ?_, by simp⟩` and prove the remaining obligations. Simplify using `using hw`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem unimodOneGenus_of (hP : PairUnitLoc) : PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.UnimodOneGenus := by
   intro K _ _ _ V _ _ _ _ _ h hK hs hnd L M hLl hMl hLu hMu p hp
@@ -44,7 +44,7 @@ theorem unimodOneGenus_of (hP : PairUnitLoc) : PI.UnitaryGroupMassFormula.CntFor
     simpa using hw
 
 /- English proof (translation)
-The claim follows from `unimodOneGenus_of pair_unit_local`.
+A detailed English derivation is pending.
 -/
 theorem unimodular_one_genus : PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.UnimodOneGenus :=
   unimodOneGenus_of pair_unit_local

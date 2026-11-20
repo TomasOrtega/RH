@@ -9,7 +9,7 @@ section fockForm
 variable {p : ℕ} [Fact p.Prime] {σ : Type}
 
 /- English proof (translation)
-Unfold `fock`. Use `Finset.sum_subset hs fun m _ hm => ?_` and prove the remaining obligations. Establish `h0 : F.coeff m = 0` using `by simpa using hm`. Rewrite using `[h0, zero_mul, zero_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_eq_sum' (F G : MvPolynomial σ ℚ_[p]) (s : Finset (σ →₀ ℕ)) (hs : F.support ⊆ s) :
     fock p F G = ∑ m ∈ s, F.coeff m * G.coeff m * (m.prod fun _ k => (k.factorial : ℚ_[p])) := by
@@ -19,7 +19,7 @@ theorem fock_eq_sum' (F G : MvPolynomial σ ℚ_[p]) (s : Finset (σ →₀ ℕ)
   rw [h0, zero_mul, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[fock_eq_sum' F G (F.support ∪ G.support) Finset.subset_union_left, fock_eq_sum' G F (F.support ∪ G.support) Finset.subset_union_right]`. Conclude with `Finset.sum_congr rfl fun m _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_symm' (F G : MvPolynomial σ ℚ_[p]) : fock p F G = fock p G F := by
   classical
@@ -28,7 +28,7 @@ theorem fock_symm' (F G : MvPolynomial σ ℚ_[p]) : fock p F G = fock p G F := 
   exact Finset.sum_congr rfl fun m _ => by ring
 
 /- English proof (translation)
-Unfold `fock`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fock_add_right' (F G G' : MvPolynomial σ ℚ_[p]) : fock p F (G + G') = fock p F G + fock p F G' := by
   unfold fock
@@ -38,7 +38,7 @@ theorem fock_add_right' (F G G' : MvPolynomial σ ℚ_[p]) : fock p F (G + G') =
   ring
 
 /- English proof (translation)
-Unfold `fock`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fock_smul_right' (c : ℚ_[p]) (F G : MvPolynomial σ ℚ_[p]) : fock p F (c • G) = c * fock p F G := by
   unfold fock
@@ -48,43 +48,43 @@ theorem fock_smul_right' (c : ℚ_[p]) (F G : MvPolynomial σ ℚ_[p]) : fock p 
   ring
 
 /- English proof (translation)
-Rewrite using `[fock_symm', fock_add_right', fock_symm' F, fock_symm' F']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_add_left' (F F' G : MvPolynomial σ ℚ_[p]) : fock p (F + F') G = fock p F G + fock p F' G := by
   rw [fock_symm', fock_add_right', fock_symm' F, fock_symm' F']
 
 /- English proof (translation)
-Rewrite using `[fock_symm', fock_smul_right', fock_symm']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_smul_left' (c : ℚ_[p]) (F G : MvPolynomial σ ℚ_[p]) : fock p (c • F) G = c * fock p F G := by
   rw [fock_symm', fock_smul_right', fock_symm']
 
 /- English proof (translation)
-Simplify using `[fock]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fock_zero_left' (G : MvPolynomial σ ℚ_[p]) : fock p 0 G = 0 := by
   simp [fock]
 
 /- English proof (translation)
-Simplify using `[fock]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fock_zero_right' (F : MvPolynomial σ ℚ_[p]) : fock p F 0 = 0 := by
   simp [fock]
 
 /- English proof (translation)
-Rewrite using `[← neg_one_smul ℚ_[p] G, fock_smul_right', neg_one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_neg_right' (F G : MvPolynomial σ ℚ_[p]) : fock p F (-G) = -fock p F G := by
   rw [← neg_one_smul ℚ_[p] G, fock_smul_right', neg_one_mul]
 
 /- English proof (translation)
-Rewrite using `[fock_symm', fock_neg_right', fock_symm']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_neg_left' (F G : MvPolynomial σ ℚ_[p]) : fock p (-F) G = -fock p F G := by
   rw [fock_symm', fock_neg_right', fock_symm']
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp [fock_zero_left']`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, fock_add_left', ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem fock_sum_left' {ι : Type} (t : Finset ι) (F : ι → MvPolynomial σ ℚ_[p]) (G : MvPolynomial σ ℚ_[p]) :
     fock p (∑ i ∈ t, F i) G = ∑ i ∈ t, fock p (F i) G := by
@@ -94,7 +94,7 @@ theorem fock_sum_left' {ι : Type} (t : Finset ι) (F : ι → MvPolynomial σ �
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, fock_add_left', ih]
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp [fock_zero_right']`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, fock_add_right', ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem fock_sum_right' {ι : Type} (t : Finset ι) (F : MvPolynomial σ ℚ_[p]) (G : ι → MvPolynomial σ ℚ_[p]) :
     fock p F (∑ i ∈ t, G i) = ∑ i ∈ t, fock p F (G i) := by
@@ -104,20 +104,20 @@ theorem fock_sum_right' {ι : Type} (t : Finset ι) (F : MvPolynomial σ ℚ_[p]
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, fock_add_right', ih]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.prod]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => by exact_mod_cast Nat.factorial_ne_zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem facProd_ne_zero (m : σ →₀ ℕ) : (m.prod fun _ k => (k.factorial : ℚ_[p])) ≠ 0 := by
   rw [Finsupp.prod]
   exact Finset.prod_ne_zero_iff.2 fun i _ => by exact_mod_cast Nat.factorial_ne_zero _
 
 /- English proof (translation)
-Establish `hs1 : (m + Finsupp.single i 1).support ⊆ insert i m.support`. Introduce `x hx`. Distinguish the cases in `h : x = i`. Rewrite using `[h]`. Conclude with `Finset.mem_insert_self _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.mem_insert_of_mem` to reduce the goal to its premises. Rewrite `hx`, the goal using `[Finsupp.mem_support_iff]`. Establish `h1 : (Finsupp.single i 1 : σ →₀ ℕ) x = 0` using `by simp [Finsupp.single_apply, Ne.symm h]`. Simplify `hx` using `[h1]`. Establish `hs2 : m.support ⊆ insert i m.support` using `Finset.subset_insert _ _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.prod_of_support_subset _ hs1 _ (by simp), Finsupp.prod_of_support_subset _ hs2 _ (by simp), ← Finset.mul_prod_erase _ _ (Finset.mem_insert_self i m.support), ← Finset.mul_prod_erase _ _ (Finset.mem_insert_self i m.support), ← mul_assoc]`. Use `congr 1`. Simplify using `[Nat.factorial_succ]`. Use `Finset.prod_congr rfl fun x hx => ?_` and prove the remaining obligations. Establish `hx' : x ≠ i` using `Finset.ne_of_mem_erase hx`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (Finsupp.single i 1 : σ →₀ ℕ) x = 0` using `by simp [Finsupp.single_apply, Ne.symm hx']`. Rewrite using `[Finsupp.add_apply, h1, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem facProd_add_single (m : σ →₀ ℕ) (i : σ) :
     ((m + Finsupp.single i 1).prod fun _ k => (k.factorial : ℚ_[p])) =
@@ -145,7 +145,7 @@ theorem facProd_add_single (m : σ →₀ ℕ) (i : σ) :
     rw [Finsupp.add_apply, h1, add_zero]
 
 /- English proof (translation)
-Unfold `fock`. Rewrite using `[support_X_mul, Finset.sum_map]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [addLeftEmbedding_apply]`. Rewrite using `[coeff_X_mul, coeff_pderiv, add_comm (Finsupp.single i 1) m, facProd_add_single]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -160,7 +160,7 @@ theorem fock_X_mul' (i : σ) (g h : MvPolynomial σ ℚ_[p]) :
   ring
 
 /- English proof (translation)
-Rewrite using `[fock_symm', fock_eq_sum' _ _ {m} support_monomial_subset, Finset.sum_singleton, coeff_monomial, if_pos rfl]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fock_monomial_right (F : MvPolynomial σ ℚ_[p]) (m : σ →₀ ℕ) (a : ℚ_[p]) :
     fock p F (monomial m a) = F.coeff m * a * (m.prod fun _ k => (k.factorial : ℚ_[p])) := by
@@ -170,7 +170,7 @@ theorem fock_monomial_right (F : MvPolynomial σ ℚ_[p]) (m : σ →₀ ℕ) (a
   ring
 
 /- English proof (translation)
-Use extensionality with `m`. Establish `h1` using `h (monomial m 1)`. Rewrite `h1` using `[fock_monomial_right, mul_one]`. Rewrite using `[coeff_zero]`. Conclude with `(mul_eq_zero.1 h1).resolve_right (facProd_ne_zero m)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_nondeg (F : MvPolynomial σ ℚ_[p]) (h : ∀ G, fock p F G = 0) : F = 0 := by
   ext m
@@ -180,7 +180,7 @@ theorem fock_nondeg (F : MvPolynomial σ ℚ_[p]) (h : ∀ G, fock p F G = 0) : 
   exact (mul_eq_zero.1 h1).resolve_right (facProd_ne_zero m)
 
 /- English proof (translation)
-Unfold `fock`. Use `Finset.sum_eq_zero fun m hm => ?_` and prove the remaining obligations. Establish `h0 : G.coeff m = 0` using `by simpa using h m hm`. Rewrite using `[h0, mul_zero, zero_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_disjoint (F G : MvPolynomial σ ℚ_[p]) (h : ∀ m ∈ F.support, m ∉ G.support) : fock p F G = 0 := by
   unfold fock
@@ -189,11 +189,9 @@ theorem fock_disjoint (F G : MvPolynomial σ ℚ_[p]) (h : ∀ m ∈ F.support, 
   rw [h0, mul_zero, zero_mul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩ m`. Simplify using `only [AlgHom.toLinearMap_apply, mapAlgHom_apply, coeff_map]`. Conclude with `PadicInt.norm_le_one _`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ m ∈ x.support, monomial m (⟨x.coeff m, h m⟩ : ℤ_[p]), ?_⟩` and prove the remaining obligations. Simplify using `only [AlgHom.toLinearMap_apply, map_sum, mapAlgHom_apply, map_monomial]`. Use `conv_rhs => rw [x.as_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `erw [map_monomial]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem intPol_iff_norm (x : MvPolynomial σ ℚ_[p]) : x ∈ IntPol p σ ↔ ∀ m, ‖x.coeff m‖ ≤ 1 := by
   constructor
@@ -211,11 +209,11 @@ theorem intPol_iff_norm (x : MvPolynomial σ ℚ_[p]) : x ∈ IntPol p σ ↔ �
 end fockForm
 
 /- English proof (translation)
-Introduce `p _ N r LL j c d F G`. Establish `key : ∀ (a b : Fin N × Fin r) (F G : MvPolynomial (Fin N × Fin r) ℚ_[p]), fock p (X a * pderiv b F) G = fock p F (X b * pderiv a G)`. Introduce `a b F G`. Rewrite using `[fock_X_mul', fock_symm' F, fock_X_mul', fock_symm']`. Unfold `glAct`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[LinearMap.sum_apply, LinearMap.sum_apply, fock_sum_left', fock_sum_right']`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with h1 h2`. Simplify using `using key (i, c) (i, d) F G`. Simplify using `[fock_neg_left', fock_neg_right', key]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[fock_zero_left', fock_zero_right']`.
+A detailed English derivation is pending.
 -/
 theorem fischerAdjointness_holds : FockAdj := by
   intro p _ N r LL j c d F G
@@ -236,17 +234,17 @@ section divided
 variable {K A : Type} [Field K] [CharZero K] [CommRing A] [Algebra K A]
 
 /- English proof (translation)
-Set `dd : ℕ → A → A` to `fun k f => ((k.factorial : K))⁻¹ • (D ^ k) f`. Establish `hdd : ∀ k f, dd k f = ((k.factorial : K))⁻¹ • (D ^ k) f` using `fun _ _ => rfl`. Establish `hD1 : ∀ k f, D (dd k f) = ((k + 1 : ℕ) : K) • dd (k + 1) f`. Introduce `k f`. Rewrite using `[hdd, hdd, map_smul, pow_succ', Module.End.mul_apply, smul_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Nat.factorial_succ, Nat.cast_mul]`. Establish `h1 : ((k.factorial : ℕ) : K) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero k`. Establish `h2 : ((k + 1 : ℕ) : K) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero k`. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Use `show dd k (f * g) = ∑ ij ∈ antidiagonal k, dd ij.1 f * dd ij.2 g`. Proceed by induction on `k with`. Consider the case `zero => simp [hdd]`. Consider the case `succ k ih`. Establish `hk : ((k + 1 : ℕ) : K) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero k`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : dd (k + 1) (f * g) = ((k + 1 : ℕ) : K)⁻¹ • D (dd k (f * g))`. Rewrite using `[hD1, smul_smul, inv_mul_cancel₀ hk, one_smul]`. Rewrite using `[hL, ih, map_sum]`. Simplify using `only [hD, hD1, mul_smul_comm, Finset.sum_add_distrib]`. Rewrite using `[inv_smul_eq_iff₀ hk]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsplit : ((k + 1 : ℕ) : K) • ∑ ij ∈ antidiagonal (k + 1), dd ij.1 f * dd ij.2 g = ∑ ij ∈ antidiagonal (k + 1), ((ij.2 : ℕ) : K) • (dd ij.1 f * dd ij.2 g) + ∑ ij ∈ antidiagonal (k + 1), ((ij.1 : ℕ) : K) • (dd ij.1 f * dd ij.2 g)`. Rewrite using `[Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun ij hij => ?_` and prove the remaining obligations. Establish `hij' : ij.1 + ij.2 = k + 1` using `by simpa using hij`. Rewrite using `[← add_smul, ← Nat.cast_add, add_comm ij.2, hij']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsplit, Finset.Nat.sum_antidiagonal_succ', Finset.Nat.sum_antidiagonal_succ]`. Simplify using `only [Nat.cast_zero, zero_smul, zero_add]`. Use `congr 1`. Use `Finset.sum_congr rfl fun ij _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divPow_mul (D : A →ₗ[K] A) (hD : ∀ a b, D (a * b) = a * D b + b * D a) (k : ℕ) (f g : A) :
     ((k.factorial : K))⁻¹ • (D ^ k) (f * g) =
@@ -291,7 +289,7 @@ section glDivided
 variable {p : ℕ} [Fact p.Prime] {N r : ℕ}
 
 /- English proof (translation)
-Unfold `glAct`. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem glAct_eq_sum_X_mul_pderiv (LL : Letters N) (j : ℕ) (c d : Fin r)
     (F : MvPolynomial (Fin N × Fin r) ℚ_[p]) :
@@ -304,7 +302,7 @@ private theorem glAct_eq_sum_X_mul_pderiv (LL : Letters N) (j : ℕ) (c d : Fin 
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[glAct_eq_sum_X_mul_pderiv, Finset.sum_eq_single i]`. Apply the tactic sequence `split_ifs <;> simp_all [pderiv_X, Pi.single_apply]`. Apply the tactic sequence `intro k _ hk split_ifs <;> simp [pderiv_X, Pi.single_apply, hk, Ne.symm hk]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem glAct_X_apply (LL : Letters N) (j : ℕ) (c d : Fin r) (i : Fin N) (e : Fin r) :
     glAct p LL j c d (X (i, e)) = if (i : ℕ) < j then
@@ -319,7 +317,7 @@ private theorem glAct_X_apply (LL : Letters N) (j : ℕ) (c d : Fin r) (i : Fin 
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Rewrite using `[glAct_eq_sum_X_mul_pderiv]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glAct_C' (LL : Letters N) (j : ℕ) (c d : Fin r) (a : ℚ_[p]) : glAct p LL j c d (C a) = 0 := by
   rw [glAct_eq_sum_X_mul_pderiv]
@@ -327,7 +325,7 @@ theorem glAct_C' (LL : Letters N) (j : ℕ) (c d : Fin r) (a : ℚ_[p]) : glAct 
   split_ifs <;> simp
 
 /- English proof (translation)
-Take `⟨i, e⟩` from `v`. Rewrite using `[glAct_X_apply]`. Apply the tactic sequence `split_ifs <;> simp_all [glAct_X_apply, hcd, Ne.symm hcd]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glAct_glAct_X (LL : Letters N) (j : ℕ) (c d : Fin r) (hcd : c ≠ d) (v : Fin N × Fin r) :
     glAct p LL j c d (glAct p LL j c d (X v)) = 0 := by
@@ -336,16 +334,16 @@ theorem glAct_glAct_X (LL : Letters N) (j : ℕ) (c d : Fin r) (hcd : c ≠ d) (
   split_ifs <;> simp_all [glAct_X_apply, hcd, Ne.symm hcd]
 
 /- English proof (translation)
-The claim follows from `LinearMap.mem_range.2 ⟨X w, by simp⟩`.
+A detailed English derivation is pending.
 -/
 private theorem X_mem_intPol (w : Fin N × Fin r) :
     (X w : MvPolynomial (Fin N × Fin r) ℚ_[p]) ∈ IntPol p (Fin N × Fin r) :=
   LinearMap.mem_range.2 ⟨X w, by simp⟩
 
 /- English proof (translation)
-Take `⟨i, e⟩` from `v`. Rewrite using `[glAct_X_apply]`. Apply the tactic sequence `split_ifs <;> first`. Consider the case `exact X_mem_intPol _`. Consider the case `exact Submodule.zero_mem _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Submodule.neg_mem _ (X_mem_intPol _)`.
+Treat this case separately.
 -/
 theorem glAct_X_int (LL : Letters N) (j : ℕ) (c d : Fin r) (v : Fin N × Fin r) :
     glAct p LL j c d (X v) ∈ IntPol p (Fin N × Fin r) := by
@@ -357,7 +355,7 @@ theorem glAct_X_int (LL : Letters N) (j : ℕ) (c d : Fin r) (v : Fin N × Fin r
     | exact Submodule.neg_mem _ (X_mem_intPol _)
 
 /- English proof (translation)
-Break down `k with _ | _ | k` into its components or cases. Simplify using `using X_mem_intPol v`. Simplify using `using glAct_X_int LL j c d v`. Rewrite using `[pow_succ, Module.End.mul_apply, pow_succ, Module.End.mul_apply, glAct_glAct_X LL j c d hcd v, map_zero, smul_zero]`. Conclude with `Submodule.zero_mem _`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divPow_X_int (LL : Letters N) (j : ℕ) (c d : Fin r) (hcd : c ≠ d) (v : Fin N × Fin r) (k : ℕ) :
     ((k.factorial : ℚ_[p]))⁻¹ • ((glAct p LL j c d) ^ k) (X v) ∈ IntPol p (Fin N × Fin r) := by
@@ -369,7 +367,7 @@ theorem divPow_X_int (LL : Letters N) (j : ℕ) (c d : Fin r) (hcd : c ≠ d) (v
     exact Submodule.zero_mem _
 
 /- English proof (translation)
-Break down `k with _ | k` into its components or cases. Simplify using `only [Nat.factorial_zero, Nat.cast_one, inv_one, one_smul, pow_zero, Module.End.one_apply]`. Conclude with `LinearMap.mem_range.2 ⟨C a, by simp⟩`. Rewrite using `[pow_succ, Module.End.mul_apply, glAct_C', map_zero, smul_zero]`. Conclude with `Submodule.zero_mem _`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divPow_C_int (LL : Letters N) (j : ℕ) (c d : Fin r) (a : ℤ_[p]) (k : ℕ) :
     ((k.factorial : ℚ_[p]))⁻¹ • ((glAct p LL j c d) ^ k) (C (algebraMap ℤ_[p] ℚ_[p] a)) ∈ IntPol p (Fin N × Fin r) := by
@@ -382,7 +380,7 @@ theorem divPow_C_int (LL : Letters N) (j : ℕ) (c d : Fin r) (a : ℤ_[p]) (k :
 end glDivided
 
 /- English proof (translation)
-Rewrite using `[glAct_eq_sum_X_mul_pderiv, glAct_eq_sum_X_mul_pderiv, glAct_eq_sum_X_mul_pderiv, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [Derivation.leibniz] <;> ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem glAct_mul_eq_mul_glAct_add_mul_glAct {p : ℕ} [Fact p.Prime] {N r : ℕ} (LL : Letters N) (j : ℕ) (c d : Fin r)
     (a b : MvPolynomial (Fin N × Fin r) ℚ_[p]) :
@@ -393,17 +391,13 @@ private theorem glAct_mul_eq_mul_glAct_add_mul_glAct {p : ℕ} [Fact p.Prime] {N
   split_ifs <;> simp [Derivation.leibniz] <;> ring
 
 /- English proof (translation)
-Introduce `p _ N r LL j c d hcd k x hx`. Take `⟨y, rfl⟩` from `LinearMap.mem_range.1 hx`. Set `Pr : MvPolynomial (Fin N × Fin r) ℚ_[p] → Prop` to `fun z => ∀ k : ℕ, ((k.factorial : ℚ_[p]))⁻¹ • ((glAct p LL j c d) ^ k) z ∈ IntPol p (Fin N × Fin r)`. Establish `hmul : ∀ u w, Pr u → Pr w → Pr (u * w)`. Introduce `u w hu hw k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[divPow_mul (glAct p LL j c d) (glAct_mul_eq_mul_glAct_add_mul_glAct LL j c d) k u w]`. Use `Submodule.sum_mem _ fun ij _ => ?_` and prove the remaining obligations. Take `⟨u', hu'⟩` from `LinearMap.mem_range.1 (hu ij.1)`. Take `⟨w', hw'⟩` from `LinearMap.mem_range.1 (hw ij.2)`. Conclude with `LinearMap.mem_range.2 ⟨u' * w', by rw [← hu', ← hw']; simp⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hadd : ∀ u w, Pr u → Pr w → Pr (u + w)`. Introduce `u w hu hw k`. Rewrite using `[map_add, smul_add]`. Conclude with `Submodule.add_mem _ (hu k) (hw k)`. Establish `hall : ∀ y : MvPolynomial (Fin N × Fin r) ℤ_[p], Pr (MvPolynomial.map (algebraMap ℤ_[p] ℚ_[p]) y)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `y`. Proceed by induction on `y using MvPolynomial.induction_on`. Use `next a =>`. Rewrite using `[map_C]`. Conclude with `fun k => divPow_C_int LL j c d a k`.
-
-Use `next u w hu hw =>`. Rewrite using `[map_add]`. Conclude with `hadd _ _ hu hw`. Use `next u v hu =>`. Rewrite using `[map_mul, map_X]`.
-
-Conclude with `hmul _ _ hu (fun k => divPow_X_int LL j c d hcd v k)`. Conclude with `hall y k`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divided_integral_holds : DivInt := by
   intro p _ N r LL j c d hcd k x hx

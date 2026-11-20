@@ -12,9 +12,9 @@ open GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.K5 GlobalTheory.KummerEisens
 namespace GlobalTheory.Glue
 
 /- English proof (translation)
-Introduce `Ω _ _ _ p _ Ωl _ _ j x`. Establish `hx : IsAlgebraic ℚ x` using `Algebra.IsAlgebraic.isAlgebraic x`. Establish `hz : IsAlgebraic ℤ x` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ Ω).2 hx`. Take `⟨P, hP, hPx⟩` from `hz`. Use `⟨P.map (Int.castRingHom ℤ_[p]), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Polynomial.map_ne_zero_iff (RingHom.injective_int _)).2 hP`. Rewrite using `[Polynomial.map_map, Polynomial.aeval_def, Polynomial.eval₂_map]`. Establish `e1 : (algebraMap (O0 p) Ωl).comp ((algebraMap ℤ_[p] (O0 p)).comp (Int.castRingHom ℤ_[p])) = j.comp (algebraMap ℤ Ω)` using `RingHom.ext_int _ _`. Rewrite using `[e1, ← Polynomial.hom_eval₂, ← Polynomial.aeval_def, hPx, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAlgZp_map_of_algebraic : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (p : ℕ) [Fact p.Prime] (Ωl : Type) [Field Ωl] [Algebra (O0 p) Ωl] (j : Ω →+* Ωl) (x : Ω), IsAlgZp p (j x) := by
   intro Ω _ _ _ p _ Ωl _ _ j x
@@ -28,17 +28,15 @@ theorem isAlgZp_map_of_algebraic : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [
     rw [e1, ← Polynomial.hom_eval₂, ← Polynomial.aeval_def, hPx, map_zero]
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε l n hl`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Establish `hkey : ∀ m : ℕ, ε (zt ε l m) = Complex.exp (2 * Real.pi * Complex.I / ((l ^ m : ℕ) : ℂ))`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : l ^ m ≠ 0` using `pow_ne_zero _ hl.ne'`. Establish `hw : Complex.exp (2 * Real.pi * Complex.I * (((1 / (l : ℚ) ^ m : ℚ)) : ℂ)) = Complex.exp (2 * Real.pi * Complex.I / ((l ^ m : ℕ) : ℂ))`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : NeZero ((l ^ m : ℕ) : Ω) := ⟨by exact_mod_cast hN⟩`. Use `haveI : NeZero (l ^ m) := ⟨hN⟩`. Take `⟨z, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ m)`. Establish `hz' : IsPrimitiveRoot (ε z) (l ^ m)` using `hz.map_of_injective ε.injective`. Establish `hp` using `Complex.isPrimitiveRoot_exp (l ^ m) hN`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, -, hi⟩` from `hz'.eq_pow_of_pow_eq_one hp.pow_eq_one`. Establish `hex : ∃ y, ε y = Complex.exp (2 * Real.pi * Complex.I * (((1 / (l : ℚ) ^ m : ℚ)) : ℂ))` using `⟨z ^ i, by rw [map_pow, hi, hw]⟩`. Use `show ε (Function.invFun ε _) = _`. Rewrite using `[Function.invFun_eq hex, hw]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[← IsPrimitiveRoot.map_iff_of_injective (f := ε) ε.injective, hkey]`. Conclude with `Complex.isPrimitiveRoot_exp _ (pow_ne_zero _ hl.ne')`. Apply `ε.injective` to reduce the goal to its premises. Rewrite using `[map_pow, hkey, hkey, ← Complex.exp_nat_mul]`. Use `congr 1`.
-
-Establish `: (l : ℂ) ≠ 0` using `by exact_mod_cast hl.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem zt_prim_and_pow : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (l n : ℕ), 0 < l → IsPrimitiveRoot (zt ε l n) (l ^ n) ∧ zt ε l (n + 1) ^ l = zt ε l n := by
   intro Ω _ _ _ ε l n hl
@@ -72,11 +70,11 @@ theorem zt_prim_and_pow : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClos
     ring
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X _ p _ _ A hA`. Set `Ωl` to `AlgebraicClosure (FractionRing (O0 p))`. Establish `hcl : IsClo p Ωl` using `GlobalTheory.K5.Basic.isClo_algebraicClosure p`. Use `haveI : CharZero Ωl := GlobalTheory.K5.Basic.charZero_of_isClo hcl`. Use `haveI : IsAlgClosed Ωl := hcl.clo`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `j0 : Ω →+* Ωl` to `(IsAlgClosed.lift : Ω →ₐ[ℚ] Ωl).toRingHom`. Take `⟨B, hBp, hB⟩` from `GlobalTheory.T.exists_valuationSubring_pullback_integral_elements p Ωl hcl j0`. Take `⟨σ, hσ⟩` from `GlobalTheory.T.exists_algEquiv_map_valuationSubring_over_prime p A B hA hBp`. Set `j : Ω →+* Ωl` to `j0.comp σ.toRingEquiv.toRingHom`. Establish `hint : ∀ x, x ∈ A ↔ IsInt p (j x)` using `fun x => (hσ x).symm.trans (hB _)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hl : 0 < p` using `(Fact.out : p.Prime).pos`. Set `T0` to `(GlobalTheory.K5.Basic.nonempty_tower hcl).some`. Set `T : GlobalTheory.K5.Tower p Ωl` to `{ ζ := fun n => j (zt ε p n), qq := T0.qq, prim := fun n => (zt_prim_and_pow ε p n hl).1.map_of_injective j.injective, ζpow := fun n => by simp only [← map_pow, (zt_prim_and_pow ε p n hl).2], q0 := T0.q0, qpow := T0.qpow }`. Use `⟨Ωl, inferInstance, inferInstance, hcl, T, j, ?_⟩` and prove the remaining obligations. Conclude with `{ int := hint, alg := isAlgZp_map_of_algebraic p Ωl j, root := fun n => rfl, dense := GlobalTheory.T.exists_algebraicNumber_congr_mod_prime_pow p A Ωl hcl j hint, down := GlobalTheory.T.exists_algClosure_automorphism_restricting_local p A Ωl hcl j hint, up := fun n s hs => Global …`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_cusp_embedding : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : GlobalTheory.KZ.Tower Ω ε), (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)) →
   ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∀ (A : ValuationSubring Ω), ((p : ℕ) : Ω) ∈ A.nonunits → ∃ (Ωl : Type) (_ : Field Ωl) (_ : Algebra (O0 p) Ωl), IsClo p Ωl ∧ ∃ (T : GlobalTheory.K5.Tower p Ωl) (j : Ω →+* Ωl), IsCusp ε A T j := by

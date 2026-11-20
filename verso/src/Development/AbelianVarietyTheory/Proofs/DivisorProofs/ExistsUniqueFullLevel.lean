@@ -17,13 +17,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Establish `hU : Subsingleton (Sp k)` using `by show Subsingleton (PrimeSpectrum k); infer_instance`. Take `⟨p⟩ : Nonempty (Sp k)` from `by show Nonempty (PrimeSpectrum k); infer_instance`. Establish `hp : ∀ V : (Over.mk x).left.Opens, p ∈ V → V = ⊤`. Introduce `V hV`. Apply `TopologicalSpace.Opens.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `y`. Conclude with `⟨fun _ => trivial, fun _ => (Subsingleton.elim (α := Sp k) p y) ▸ hV⟩`. Establish `H` using `GlobalTheory.ThetaGroupTest.weilIs_unique_of_local p hp hL h h'`. Establish `hinj : Function.Injective (Units.map ((⊤ : (Over.mk x).left.Opens).ι.appTop.hom.toMonoidHom))`. Apply `Units.map_injective` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `haveI : IsIso ((⊤ : (Over.mk x).left.Opens).ι.app ⊤) := Scheme.Hom.isIso_app _ _ (by simp)`. Conclude with `(ConcreteCategory.bijective_of_isIso ((⊤ : (Over.mk x).left.Opens).ι.app ⊤)).1`. Establish `H2 : unitOn c = unitOn c'` using `hinj H`. Unfold `unitOn at H2`. Establish `hinj2 : Function.Injective (Units.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom.toMonoidHom)`.
-
-Apply `Units.map_injective` to reduce the goal to its premises. Conclude with `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of k)).inv).1`. Conclude with `hinj2 H2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem weilIs_unitOn_unique {S : Scheme.{0}} (G : Over S) [GrpObj G] {L : LB G.left} (hL : L.IsLB)
     {k : Type} [Field k] (x : Sp k ⟶ S) (n : ℤ) (g g' : Over.mk x ⟶ G) (c c' : kˣ)
@@ -50,9 +48,9 @@ theorem weilIs_unitOn_unique {S : Scheme.{0}} (G : Over S) [GrpObj G] {L : LB G.
   exact hinj2 H2
 
 /- English proof (translation)
-Take `⟨-, I, hIA, hetaA, heta⟩` from `o.geom k x β hx`. Establish `hzA' : z ^ (l.M' / l.A) = I.ζ l.A` using `Units.ext (by rw [Units.val_pow_eq_pow_val, hzA, hIA])`. Take `⟨ev, hev, hA, hM⟩` from `GlobalTheory.T.exists_fullSymplecticLevelStructure_of_tateIso l I hz hzA'`. Establish `hi : Induces l (fun a => toUnit _ ≫ o.etaA a) (fun a => toUnit _ ≫ o.eta a) ev` using `⟨fun a => (hA a).trans (hetaA a).symm, fun a ha => (hM a ha).trans (heta a ha).symm⟩`. Use `⟨ev, ⟨hev, hi⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `ev' ⟨h1, h2⟩`. Use `GlobalTheory.T.isFullSymplecticLevelStructure_unique_of_levels l (fun g g' c c' => weilIs_unitOn_unique o.t.G o.t.PP.isLB x _ g g' c c') hz hev hi h1 h2` as an intermediate fact. Conclude with `this.symm`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_unique_fullLevel {D : Datum H} {l : Level H} {B : Type} [CommRing B] {b : Base l B}
     {S : Scheme.{0}} {s : S ⟶ Sp B} (o : Obj D l b s) (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ S)

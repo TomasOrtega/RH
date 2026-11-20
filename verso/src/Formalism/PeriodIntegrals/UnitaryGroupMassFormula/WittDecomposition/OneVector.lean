@@ -11,13 +11,13 @@ def qrefl (v : V) (a : K) : V →ₗ[K] V :=
   LinearMap.id - (a⁻¹ • (B v)).smulRight v
 
 /- English proof (translation)
-Simplify using `[qrefl, LinearMap.smulRight_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 lemma qrefl_apply (v : V) (a : K) (z : V) : qrefl B v a z = z - (a⁻¹ * B v z) • v := by
   simp [qrefl, LinearMap.smulRight_apply, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[qrefl_apply, qrefl_apply, map_sub, map_smul, smul_eq_mul, hv, sub_sub, ← add_smul]`. Establish `h : b⁻¹ * B v z + a⁻¹ * (B v z - b⁻¹ * B v z * (a + b)) = 0`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, zero_smul, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 lemma qrefl_qrefl (v : V) (a b : K) (ha : a ≠ 0) (hb : b ≠ 0) (hv : B v v = a + b) (z : V) :
     qrefl B v a (qrefl B v b z) = z := by
@@ -28,9 +28,9 @@ lemma qrefl_qrefl (v : V) (a b : K) (ha : a ≠ 0) (hb : b ≠ 0) (hv : B v v = 
   rw [h, zero_smul, sub_zero]
 
 /- English proof (translation)
-Establish `ha' : star a ≠ 0` using `star_ne_zero.2 ha`. Establish `key : ∀ p q r : K, p - a⁻¹ * q * r - (star a)⁻¹ * r * q + (star a)⁻¹ * r * (a⁻¹ * q) * (a + star a) = p`. Introduce `p q r`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[qrefl_apply, qrefl_apply]`. Simplify using `only [map_sub, map_smulₛₗ, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, map_smul, starRingEnd_apply, RingHom.id_apply, star_mul', star_inv₀, hB, hv]`. Take the linear combination `key (B z w) (B v w) (B z v)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma qrefl_isometry (hB : ∀ x y, star (B x y) = B y x) (v : V) (a : K) (ha : a ≠ 0)
     (hv : B v v = a + star a) (z w : V) :
@@ -53,11 +53,9 @@ def qreflEquiv (v : V) (a : K) (ha : a ≠ 0) (hv : B v v = a + star a) : V ≃�
       (by rw [hv, add_comm]) z)
 
 /- English proof (translation)
-Establish `hv : B (x - y) (x - y) = B (x - y) x + star (B (x - y) x)`. Rewrite using `[hB]`. Simplify using `only [map_sub, LinearMap.sub_apply]`. Rewrite using `[← hxy]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Apply the tactic sequence `refine ⟨qreflEquiv B (x - y) (B (x - y) x) ha hv, fun z w => qrefl_isometry B hB (x - y) _ ha hv z w, ?_, fun z hz1 hz2 => ?_⟩`. Use `show qrefl B (x - y) (B (x - y) x) x = y`. Rewrite using `[qrefl_apply, inv_mul_cancel₀ ha, one_smul, sub_sub_cancel]`. Use `show qrefl B (x - y) (B (x - y) x) z = z`. Rewrite using `[qrefl_apply]`.
-
-Simplify using `only [map_sub, LinearMap.sub_apply, hz1, hz2, sub_zero, mul_zero, zero_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma oneVector_generic (hB : ∀ x y, star (B x y) = B y x) (x y : V) (hxy : B x x = B y y)
     (ha : B (x - y) x ≠ 0) :
@@ -79,19 +77,17 @@ lemma oneVector_generic (hB : ∀ x y, star (B x y) = B y x) (x y : V) (hxy : B 
 end
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ B hB x y hxy hx0`. Distinguish the cases in `ha : B (x - y) x ≠ 0`. Conclude with `oneVector_generic B hB x y hxy ha`. Use `push_neg at ha`. Establish `hyx : B y x = B x x`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h : B (x - y) x = B x x - B y x` using `by simp only [map_sub, LinearMap.sub_apply]`. Rewrite `ha` using `[h]`. Conclude with `(sub_eq_zero.1 ha).symm`. Establish `hxy' : B x x = B (-y) (-y)` using `by simp [hxy]`. Establish `ha2 : B (x - -y) x ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[sub_neg_eq_add, map_add, LinearMap.add_apply, hyx]`. Introduce `h`. Apply `hx0` to reduce the goal to its premises. Establish `h2 : (2 : K) * B x x = 0` using `by rw [two_mul]; exact h`. Conclude with `(mul_eq_zero.1 h2).resolve_left two_ne_zero`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g1, hg1, hg1x, hg1z⟩` from `oneVector_generic B hB x (-y) hxy' ha2`. Establish `hyy : B y y ≠ 0` using `hxy ▸ hx0`. Establish `ha0 : B y y / 2 ≠ 0` using `div_ne_zero hyy two_ne_zero`. Establish `hstar : star (B y y / 2) = B y y / 2` using `by rw [star_div₀, hB, star_ofNat]`. Establish `hv : B y y = B y y / 2 + star (B y y / 2)` using `by rw [hstar]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : (B y y / 2)⁻¹ * B y y = 2` using `by field_simp`. Use `⟨g1.trans (qreflEquiv B y (B y y / 2) ha0 hv), fun z w => ?_, ?_, fun z hz1 hz2 => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearEquiv.trans_apply]`. Establish `hq : ∀ u, qreflEquiv B y (B y y / 2) ha0 hv u = qrefl B y (B y y / 2) u` using `fun _ => rfl`. Apply the tactic sequence `rw [hq, hq, qrefl_isometry B hB y _ ha0 hv, hg1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearEquiv.trans_apply, hg1x] show qrefl B y (B y y / 2) (-y) = y`. Rewrite using `[qrefl_apply, map_neg, mul_neg, neg_smul, sub_neg_eq_add, h2, two_smul]`. Normalize the expressions using the abelian group laws. Simplify using `only [LinearEquiv.trans_apply]`. Rewrite using `[hg1z z hz1 (by rw [map_neg, LinearMap.neg_apply, hz2, neg_zero])]`.
-
-Use `show qrefl B y (B y y / 2) z = z`. Rewrite using `[qrefl_apply, hz2, mul_zero, zero_smul, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_vector_holds : OneVector := by
   intro K V _ _ _ _ _ B hB x y hxy hx0

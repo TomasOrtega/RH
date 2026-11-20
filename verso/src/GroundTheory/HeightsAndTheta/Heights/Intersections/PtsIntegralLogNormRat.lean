@@ -19,9 +19,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)]
 
 /- English proof (translation)
-Establish `hJ : IsMultiHomogIdeal (Ideal.span {h} : Ideal (MRing ι))` using `⟨{h}, fun f hf => by rw [Set.mem_singleton_iff.mp hf]; exact hh, rfl⟩`. Establish `hJP : ¬ (Ideal.span {h} : Ideal (MRing ι)) ≤ P`. Rewrite using `[Ideal.span_singleton_le_iff_mem]` and apply the resulting hypothesis. Establish `hnull` using `projB_null Ψ hP hΨ hJ hJP`. Use `ae_iff.mpr (measure_mono_null (fun y hy => ?_) hnull)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.mem_ofPred_eq, not_forall, not_not] at hy`. Take `⟨z, hz, hzy, hz0⟩` from `hy`. Use `⟨z, hz, ⟨hz.1, fun q hq => ?_⟩, hzy⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hq`. Simplify using `[hz0]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem ae_eval_ne_zero {P : Ideal (MRing ι)} {e : ℕ} {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)}
     (hP : IsArithVar P (e + 1)) (hΨ : IsGoodProj P Ψ) {h : MRing ι} (hh : ∃ a, IsMultiHomog h a)
@@ -41,17 +41,15 @@ theorem ae_eval_ne_zero {P : Ideal (MRing ι)} {e : ℕ} {Ψ : (((k : K) → ι 
   simp [hz0]
 
 /- English proof (translation)
-Establish `hAB` using `isSmoothHerm_tensor hA hB`. Take `⟨α, -, hfα, hfP⟩` from `id hf`. Take `⟨β, -, hgβ, hgP⟩` from `id hg`. Unfold `ptsIntegral`. Use `split_ifs with hΨ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hΨg : IsGoodProj P hΨ.choose` using `hΨ.choose_spec`. Unfold `ptsIntegralAt`. Rewrite using `[← integral_sub (hInt K ι P n _ L _ f hP hΨg hL hAB hf) (hInt K ι P n _ L _ g hP hΨg hL hB hg)]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_eval_ne_zero hP hΨg ⟨α, hfα⟩ hfP, ae_eval_ne_zero hP hΨg ⟨β, hgβ⟩ hgP] with y hyf hyg`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← finsum_mem_sub_distrib _ _ (fibreFinite K ι P n _ hP hΨg y)]`. Use `finsum_mem_congr rfl fun w _ => ?_` and prove the remaining obligations. Unfold `sheetDensity`. Use `split_ifs with hγ`. Establish `hs` using `hγ.choose_spec.2.self_of_nhds set z := hγ.choose y`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : z ∈ mcPts P` using `hs.2.1`. Establish `hf0` using `norm_pos_iff.mpr (hyf z hz hs.2.2)`. Establish `hg0` using `norm_pos_iff.mpr (hyg z hz hs.2.2)`. Establish `hA0` using `A.pos z hz.1`. Establish `hB0` using `B.pos z hz.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_mul]`. Use `congr 1`. Use `show Real.log (‖eval z (map (Int.castRingHom ℂ) f)‖ / ‖eval z (map (Int.castRingHom ℂ) g)‖ / A.h z) = Real.log (‖eval z (map (Int.castRingHom ℂ) f)‖ / (A.h z * B.h z)) - Real.log (‖eval z (map (Int.castRingHom ℂ) g)‖ / B.h z)`. Rewrite using `[Real.log_div hf0.ne' (mul_pos hA0 hB0).ne', Real.log_mul hA0.ne' hB0.ne', Real.log_div hg0.ne' hB0.ne', Real.log_div (div_pos hf0 hg0).ne' hA0.ne', Real.log_div hf0.ne' hg0.ne']`. Expand and normalize the polynomial expressions, which then agree.
-
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ptsIntegral_logNormRat (hInt : PtsIntegrableStatement) {P : Ideal (MRing ι)} {n : ℕ}
     {L : Fin n → HermLine ι} {A B : HermLine ι} {f g : MRing ι} (hP : IsArithVar P (n + 1))
@@ -94,11 +92,11 @@ theorem ptsIntegral_logNormRat (hInt : PtsIntegrableStatement) {P : Ideal (MRing
   · simp
 
 /- English proof (translation)
-Establish `e : A'.h = A.h ∘ fun z' p => z' (v p)` using `funext h.2`. Unfold `IsSmoothHerm`. Rewrite using `[e]`. Use `hA.comp (contDiff_pi.2 fun p => contDiff_apply ℝ ℂ (v p)).contDiffOn ?_` and prove the remaining obligations. Introduce `z' hz'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_ofPred_eq] at hz' ⊢`. Introduce `k`. Take `⟨i', hi'⟩` from `hz' (κ k)`. Take `⟨p, hp⟩` from `hv.2.2.2 ⟨κ k, i'⟩ ⟨k, rfl⟩`. Establish `h2 : p.1 = k` using `hv.1 (by rw [← hv.2.2.1 p, hp])`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨pk, pi⟩` from `p`. Simplify using `only at h2`. Substitute `h2` using the available equality. Conclude with `⟨pi, by rw [hp]; exact hi'⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem isSmoothHerm_pull {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v)
     {A : HermLine ι} {A' : HermLine ι'} (hA : IsSmoothHerm A) (h : IsPullHerm κ v A A') :
@@ -121,7 +119,7 @@ theorem isSmoothHerm_pull {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')}
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k'`. Simplify using `only [pullDeg, Pi.add_apply]`. Unfold `Function.extend`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pullDeg_add (κ : K → K') (a b : K → ℤ) : pullDeg κ (a + b) = pullDeg κ a + pullDeg κ b := by
   funext k'
@@ -132,7 +130,7 @@ theorem pullDeg_add (κ : K → K') (a b : K → ℤ) : pullDeg κ (a + b) = pul
 omit [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)] in
 
 /- English proof (translation)
-Use `⟨?_, fun z' => ?_⟩` and prove the remaining obligations. Use `show A'.a + B'.a = pullDeg κ (A.a + B.a)`. Rewrite using `[pullDeg_add, hA.1, hB.1]`. Use `show A'.h z' * B'.h z' = A.h _ * B.h _`. Rewrite using `[hA.2, hB.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullHerm_tensor {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} {A B : HermLine ι}
     {A' B' : HermLine ι'} (hA : IsPullHerm κ v A A') (hB : IsPullHerm κ v B B') :
@@ -147,7 +145,7 @@ omit [Fintype K] [∀ k, Fintype (ι k)] in
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single k']`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_block (F : (Σ k', ι' k') → ℕ) (k' : K') :
     ∑ i, F ⟨k', i⟩ = ∑ q, if q.1 = k' then F q else 0 := by
@@ -159,15 +157,15 @@ theorem sum_block (F : (Σ k', ι' k') → ℕ) (k' : K') :
   · simp
 
 /- English proof (translation)
-Introduce `m' hm' k'`. Rewrite `hm'` using `[support_rename_of_injective hv.2.1, Finset.mem_image]`. Take `⟨m, hm, rfl⟩` from `hm'`. Rewrite using `[sum_block]`. Establish `h1 : (∑ q, if q.1 = k' then Finsupp.mapDomain v m q else 0) = ∑ p, if κ p.1 = k' then m p else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finsupp.sum_mapDomain_index_inj (h := fun (q : Σ k', ι' k') (n : ℕ) => if q.1 = k' then n else 0) (s := m) hv.2.1` as an intermediate fact. Rewrite `this` using `[Finsupp.sum_fintype _ _ (by simp), Finsupp.sum_fintype _ _ (by simp)]`. Simplify `this` using `[hv.2.2.1]`. Establish `h2 : (∑ p : Σ k, ι k, if κ p.1 = k' then m p else 0) = ∑ k, if κ k = k' then α k else 0`. Rewrite using `[Fintype.sum_sigma]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `split_ifs with hk`. Conclude with `hs m hm k`. Simplify using the standard rewrite rules. Use `h1.trans h2` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : ∃ k, κ k = k'`. Take `⟨k, rfl⟩` from `h`. Rewrite using `[hv.1.extend_apply, Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hv.1.ne hb]`. Simplify using the standard rewrite rules. Rewrite using `[Function.extend_apply' _ _ _ h]`. Use `(Finset.sum_eq_zero fun k _ => ?_).symm` and prove the remaining obligations. Rewrite using `[if_neg fun hk => h ⟨k, hk⟩]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_rename {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v)
     {s : MRing ι} {α : K → ℕ} (hs : IsMultiHomog s α) :
@@ -206,19 +204,19 @@ end ArithmeticIntersectionIntegral
 open ArithmeticIntersectionIntegral in
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v P' n G J L L' A A' f g hv hP' hP hJ hL hLL' hA hAA' hfg`. Take `⟨α, β, hf, hg, hfP, hgP, hαβ⟩` from `hfg`. Establish `hB : IsSmoothHerm (HermLine.sqMetric (ι` using `ι) β) := isSmoothHerm_sqMetric β`. Establish `hBB'` using `IndefiniteRowSideFullHecke.Inter.isPullHerm_pullHerm hv (HermLine.sqMetric (ι := ι) β)`. Establish `hB'` using `isSmoothHerm_pull hv hB hBB'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA'` using `isSmoothHerm_pull hv hA hAA'`. Establish `hL' : ∀ j, IsSmoothHerm (L' j)` using `fun j => isSmoothHerm_pull hv (hL j) (hLL' j)`. Establish `hfs : IsSectionOn (imageZ v P') (A.tensor (HermLine.sqMetric β)) f`. Use `⟨α, fun k => ?_, hf, hfP⟩` and prove the remaining obligations. Use `show A.a k + (β k : ℤ) = α k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hαβ k]`. Expand and normalize the polynomial expressions, which then agree. Establish `hgs : IsSectionOn (imageZ v P') (HermLine.sqMetric (ι` using `ι) β) g := ⟨β, fun k => rfl, hg, hgP⟩`. Establish `hfs' : IsSectionOn P' (A'.tensor (IndefiniteRowSideFullHecke.Inter.pullHerm hv (HermLine.sqMetric β))) (rename v f)`. Use `⟨Function.extend κ α 0, fun k' => ?_, isMultiHomog_rename hv hf, fun h => hfP (Ideal.mem_comap.mpr h)⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show A'.a k' + pullDeg κ (fun k => (β k : ℤ)) k' = _`. Rewrite using `[hAA'.1, pullDeg, pullDeg]`. Distinguish the cases in `h : ∃ k, κ k = k'`. Take `⟨k, rfl⟩` from `h`. Rewrite using `[hv.1.extend_apply, hv.1.extend_apply, hv.1.extend_apply, ← hαβ k]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Function.extend_apply' _ _ _ h, Function.extend_apply' _ _ _ h, Function.extend_apply' _ _ _ h]`. Simplify using the standard rewrite rules. Establish `hgs' : IsSectionOn P' (IndefiniteRowSideFullHecke.Inter.pullHerm hv (HermLine.sqMetric (ι` using `ι) β)) (rename v g) := by`. Use `⟨Function.extend κ β 0, fun k' => ?_, isMultiHomog_rename hv hg, fun h => hgP (Ideal.mem_comap.mpr h)⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `show pullDeg κ (fun k => (β k : ℤ)) k' = _`. Rewrite using `[pullDeg]`. Distinguish the cases in `h : ∃ k, κ k = k'`. Take `⟨k, rfl⟩` from `h`. Rewrite using `[hv.1.extend_apply, hv.1.extend_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.extend_apply' _ _ _ h, Function.extend_apply' _ _ _ h]`. Simplify using the standard rewrite rules. Rewrite using `[ptsIntegral_logNormRat hInt hP' hL' hA' hB' hfs' hgs', ptsIntegral_logNormRat hInt hP hL hA hB hfs hgs, hSec K ι K' ι' κ v P' n G J L L' _ _ f hv hP' hP hJ hL hLL' (isSmoothHerm_tensor hA hB) (isPullHerm_tensor hAA' hBB') hfs, hSec K ι K' ι' κ v P' n G J L L' _ _ g hv hP' hP hJ …`.
+A detailed English derivation is pending.
 -/
 theorem ArithmeticIntersectionIntegral.proof (hInt : PtsIntegrableStatement) (hSec : IntersectionWithSection.Statement) : ArithmeticIntersectionIntegral.Statement := by
   intro K _ ι _ K' _ ι' _ κ v P' n G J L L' A A' f g hv hP' hP hJ hL hLL' hA hAA' hfg

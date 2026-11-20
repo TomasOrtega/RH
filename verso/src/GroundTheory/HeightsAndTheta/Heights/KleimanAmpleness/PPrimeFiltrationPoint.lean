@@ -11,13 +11,13 @@ noncomputable section
 universe u v w
 
 /- English proof (translation)
-Introduce `S _ _ N pp _ _ hX`. Use `⟨1, fun c hc f hf => ?_⟩` and prove the remaining obligations. Establish `hle : Ideal.span ((X : Fin (N + 1) → Poly S N) '' Set.univ) ≤ pp`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, -, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hX i`. Apply `hle` to reduce the goal to its premises. Rewrite using `[mem_ideal_span_X_image]`. Introduce `m hm`. Assume the negation of the conclusion as `h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push Not at h`. Establish `hm0 : m = 0`. Use extensionality with `i`. Conclude with `h i (Set.mem_univ _)`. Establish `hdeg` using `hf (mem_support_iff.mp hm)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `hdeg` using `[hm0]`. Simplify using `at hdeg`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem PrimeFiltration.Irrelevant.proof : PrimeFiltration.Irrelevant.Statement.{u} := by
   intro S _ _ N pp _ _ hX
@@ -45,9 +45,9 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
   {x : Fin (N + 1) → Ω} {j : Fin (N + 1)}
 
 /- English proof (translation)
-Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce `hf`. Rewrite using `[← sum_homogeneousComponent f]`. Conclude with `J.sum_mem fun d _ => (h _ d (homogeneousComponent_isHomogeneous d f)).mp (hI f hf d)`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hf`. Rewrite using `[← sum_homogeneousComponent f]`. Conclude with `I.sum_mem fun d _ => (h _ d (homogeneousComponent_isHomogeneous d f)).mpr (hJ f hf d)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideal_eq_of_isHomogeneous {I J : Ideal (Poly S N)}
     (hI : ∀ p ∈ I, ∀ d : ℕ, homogeneousComponent d p ∈ I)
@@ -63,9 +63,9 @@ theorem ideal_eq_of_isHomogeneous {I J : Ideal (Poly S N)}
     exact I.sum_mem fun d _ => (h _ d (homogeneousComponent_isHomogeneous d f)).mpr (hJ f hf d)
 
 /- English proof (translation)
-Establish `hs' : s ∈ Submonoid.closure {(X j : Poly S N)}`. Establish `: ((fun i => (X i : Poly S N)) '' ((({j} : Finset (Fin (N + 1))) : Set (Fin (N + 1))))) = {X j}` using `by simp`. Rewrite using `[← this]`. Conclude with `hs`. Take `⟨n, rfl⟩` from `Submonoid.mem_closure_singleton.mp hs'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨n, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_X_pow_of_mem_monos_single {s : Poly S N} (hs : s ∈ monos {j}) :
     ∃ n : ℕ, s = X j ^ n := by
@@ -78,7 +78,7 @@ theorem exists_eq_X_pow_of_mem_monos_single {s : Poly S N} (hs : s ∈ monos {j}
   exact ⟨n, rfl⟩
 
 /- English proof (translation)
-Take `⟨n, rfl⟩` from `exists_eq_X_pow_of_mem_monos_single hs`. Conclude with `fun h => hX (hpp.mem_of_pow_mem n h)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem notMem_of_mem_monos_single {pp : Ideal (Poly S N)} [hpp : pp.IsPrime]
     (hX : (X j : Poly S N) ∉ pp) {s : Poly S N} (hs : s ∈ monos {j}) : s ∉ pp := by
@@ -86,11 +86,11 @@ theorem notMem_of_mem_monos_single {pp : Ideal (Poly S N)} [hpp : pp.IsPrime]
   exact fun h => hX (hpp.mem_of_pow_mem n h)
 
 /- English proof (translation)
-Establish `h0 : aeval x s ≠ 0` using `eval_ne_zero_of_mem_monos (singleChart hj) hs`. Establish `h0' : aeval x s' ≠ 0` using `eval_ne_zero_of_mem_monos (singleChart hj) hs'`. Rewrite `h` using `[div_eq_div_iff h0' h0]`. Establish `h2 : (s' * G).IsHomogeneous (D + e)`. Rewrite using `[add_comm D e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs'e.mul hGD`. Establish `hF : s * f - s' * G ∈ primeOf (S` using `S) x := by`. Rewrite using `[mem_primeOf_of_isHomogeneous x ((hsD.mul hf).sub h2)]`. Simplify using `only [map_sub, map_mul]`. Take the linear combination `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h3 : s * f ∈ pp`. Use `pp.add_mem (hle hF) (pp.mul_mem_left s' hG)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Conclude with `(hpp.mem_or_mem h3).resolve_left (notMem_of_mem_monos_single hX hs)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_of_div_eq (hj : x j ≠ 0) {pp : Ideal (Poly S N)} [hpp : pp.IsPrime]
     (hle : primeOf (S := S) x ≤ pp) (hX : (X j : Poly S N) ∉ pp) {f s' G s : Poly S N} {e D : ℕ}
@@ -135,7 +135,7 @@ def chartPrimeIdeal (hj : x j ≠ 0) (pp : Ideal (Poly S N)) :
     rw [hc, ha, map_mul, map_mul, div_mul_div_comm]
 
 /- English proof (translation)
-Rewrite using `[chartPrime, Ideal.span_le]`. Introduce `a ha`. Conclude with `ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem chartPrime_le_chartPrimeIdeal (hj : x j ≠ 0) (pp : Ideal (Poly S N)) :
     chartPrime pp hj ≤ chartPrimeIdeal x hj pp := by
@@ -144,9 +144,7 @@ theorem chartPrime_le_chartPrimeIdeal (hj : x j ≠ 0) (pp : Ideal (Poly S N)) :
   exact ha
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨G, t, D, hG, ht, hGD, htD, hat⟩` from `chartPrime_le_chartPrimeIdeal hj pp h`. Conclude with `mem_of_div_eq hj hle hX hf hs hse hG hGD ht htD (ha.symm.trans hat)`. Introduce `h`.
-
-Conclude with `Ideal.subset_span ⟨f, s, e, h, hs, hf, hse, ha⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_chartPrime_iff (hj : x j ≠ 0) {pp : Ideal (Poly S N)} [pp.IsPrime]
     (hle : primeOf (S := S) x ≤ pp) (hX : (X j : Poly S N) ∉ pp) {a : chartRing S x (singleChart hj)}
@@ -160,7 +158,7 @@ theorem mem_chartPrime_iff (hj : x j ≠ 0) {pp : Ideal (Poly S N)} [pp.IsPrime]
     exact Ideal.subset_span ⟨f, s, e, h, hs, hf, hse, ha⟩
 
 /- English proof (translation)
-Rewrite using `[← aeval_div_of_isHomogeneous hf j]`. Express the relevant statement in the definitionally equal form `(chartRing S x (singleChart hj)).val _ = _`. Rewrite using `[comp_aeval_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_aeval_ratio (hj : x j ≠ 0) {f : Poly S N} {e : ℕ} (hf : f.IsHomogeneous e) :
     ((aeval (ratio (S := S) hj) f : chartRing S x (singleChart hj)) : Ω) = aeval x f / x j ^ e := by
@@ -170,7 +168,7 @@ theorem coe_aeval_ratio (hj : x j ≠ 0) {f : Poly S N} {e : ℕ} (hf : f.IsHomo
   rfl
 
 /- English proof (translation)
-Rewrite using `[coe_aeval_ratio hj hf, map_pow, aeval_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_aeval_ratio' (hj : x j ≠ 0) {f : Poly S N} {e : ℕ} (hf : f.IsHomogeneous e) :
     ((aeval (ratio (S := S) hj) f : chartRing S x (singleChart hj)) : Ω) =
@@ -180,13 +178,13 @@ theorem coe_aeval_ratio' (hj : x j ≠ 0) {f : Poly S N} {e : ℕ} (hf : f.IsHom
 end PointLemmas
 
 /- English proof (translation)
-Introduce `S _ _ Ω _ _ N x pp hpp hhom hle j hj hX`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.isPrime_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_chartPrime_iff (f := 1) (s := 1) hj hle hX (isHomogeneous_one _ _) (one_mem _) (isHomogeneous_one _ _) (by simp)]`. Conclude with `(Ideal.ne_top_iff_one pp).mp hpp.ne_top`. Introduce `a b hab`. Take `⟨f, s, e, hs, hf, hse, ha⟩` from `a.2`. Take `⟨g, t, d, ht, hg, htd, hb⟩` from `b.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hab' : ((a * b : chartRing S x (singleChart hj)) : Ω) = aeval x (f * g) / aeval x (s * t)`. Rewrite using `[Subalgebra.coe_mul, ha, hb, map_mul, map_mul, div_mul_div_comm]`. Rewrite `hab` using `[mem_chartPrime_iff hj hle hX (hf.mul hg) (mul_mem hs ht) (hse.mul htd) hab']`. Rewrite using `[mem_chartPrime_iff hj hle hX hf hs hse ha, mem_chartPrime_iff hj hle hX hg ht htd hb]`. Conclude with `hpp.mem_or_mem hab`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `K' _ _ ψ hker`. Apply `ideal_eq_of_isHomogeneous (fun p hp d => homogeneousComponent_mem_primeOf _ hp d) hhom` to reduce the goal to its premises. Introduce `f e hf`. Rewrite using `[mem_primeOf_of_isHomogeneous _ hf, ← comp_aeval_apply, ← RingHom.mem_ker, hker]`. Conclude with `mem_chartPrime_iff hj hle hX hf (pow_mem (X_mem_monos (Finset.mem_singleton_self j)) e) (isHomogeneous_X_pow j e) (coe_aeval_ratio' hj hf)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PrimeFiltration.Point.proof : PrimeFiltration.Point.Statement.{u, w} := by
   intro S _ _ Ω _ _ N x pp hpp hhom hle j hj hX

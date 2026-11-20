@@ -29,7 +29,7 @@ def idealExp (n : HeightOneSpectrum (𝓞 L) → ℤ) : FractionalIdeal (𝓞 L)
   ∏ᶠ v : HeightOneSpectrum (𝓞 L), (v.asIdeal : FractionalIdeal (𝓞 L)⁰ L) ^ n v
 
 /- English proof (translation)
-Use `finprod_induction (fun I : FractionalIdeal (𝓞 L)⁰ L => I ≠ 0) one_ne_zero (fun _ _ => mul_ne_zero) fun v => zpow_ne_zero _ ?_` and prove the remaining obligations. Simplify using `using v.ne_bot`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem idealExp_ne_zero (n : HeightOneSpectrum (𝓞 L) → ℤ) : idealExp n ≠ 0 := by
   refine finprod_induction (fun I : FractionalIdeal (𝓞 L)⁰ L => I ≠ 0) one_ne_zero
@@ -37,20 +37,18 @@ theorem idealExp_ne_zero (n : HeightOneSpectrum (𝓞 L) → ℤ) : idealExp n �
   simpa using v.ne_bot
 
 /- English proof (translation)
-The claim follows from `FractionalIdeal.count_finprod L v _ (Filter.eventually_cofinite.2 h)`.
+A detailed English derivation is pending.
 -/
 theorem count_idealExp {n : HeightOneSpectrum (𝓞 L) → ℤ} (h : {v | n v ≠ 0}.Finite) (v : HeightOneSpectrum (𝓞 L)) :
     FractionalIdeal.count L v (idealExp n) = n v :=
   FractionalIdeal.count_finprod L v _ (Filter.eventually_cofinite.2 h)
 
 /- English proof (translation)
-Establish `hle : A ≤ (I : Submodule (𝓞 L) L)` using `fun x hx => (GlobalTheory.Idele.mem_iff_valuation_le hI x).2 (h1 x hx)`. Set `J : FractionalIdeal (𝓞 L)⁰ L` to `⟨A, FractionalIdeal.isFractional_of_le hle⟩`. Establish `hJ : J ≠ 0`. Introduce `h0`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (𝓞 L)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, e⟩` from `h2 ⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField L)⟩`. Establish `hx' : x ∈ J` using `hx`. Rewrite `hx'` using `[h0, FractionalIdeal.mem_zero_iff]`. Rewrite `e` using `[hx', map_zero]`. Conclude with `exp_ne_zero e.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: I ≤ J` using `GlobalTheory.Idele.le_of_count_le hI hJ fun w => by`. Take `⟨x, hx, e⟩` from `h2 w`. Use `(GlobalTheory.Idele.mem_iff_valuation_le hJ x).1 hx w` as an intermediate fact. Rewrite `this` using `[e, exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
-
-Conclude with `le_antisymm hle this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem eq_coe_of_val {A : Submodule (𝓞 L) L} {I : FractionalIdeal (𝓞 L)⁰ L} (hI : I ≠ 0)
     (h1 : ∀ x ∈ A, ∀ w : HeightOneSpectrum (𝓞 L), w.valuation L x ≤ exp (-FractionalIdeal.count L w I))
@@ -74,9 +72,9 @@ theorem eq_coe_of_val {A : Submodule (𝓞 L) L} {I : FractionalIdeal (𝓞 L)�
   exact le_antisymm hle this
 
 /- English proof (translation)
-Take `⟨y, hy, e⟩` from `GlobalTheory.Idele.exists_mem_valuation_eq hI w`. Establish `hy0 : y ≠ 0` using `fun h => by rw [h, map_zero] at e; exact exp_ne_zero e.symm`. Use `IsLeast.csInf_eq ⟨⟨Units.mk0 y hy0, hy, by simp [ordF, e]⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `n ⟨k, hk, rfl⟩`. Establish `h0 : w.valuation L (k : L) ≠ 0` using `by simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `(GlobalTheory.Idele.mem_iff_valuation_le hI _).1 hk w` as an intermediate fact. Rewrite `this` using `[← exp_log h0, exp_le_exp]`. Unfold `ordF`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ordSub_coe {I : FractionalIdeal (𝓞 L)⁰ L} (hI : I ≠ 0) (w : HeightOneSpectrum (𝓞 L)) :
     ordSub w (I : Submodule (𝓞 L) L) = FractionalIdeal.count L w I := by
@@ -91,11 +89,11 @@ theorem ordSub_coe {I : FractionalIdeal (𝓞 L)⁰ L} (hI : I ≠ 0) (w : Heigh
   omega
 
 /- English proof (translation)
-Establish `hun : IsUnit 𝔞` using `IsUnit.of_mul_eq_one 𝔟 hb`. Take `⟨J, rfl⟩ : ∃ J : FractionalIdeal (𝓞 L)⁰ L, (J : Submodule (𝓞 L) L) = 𝔞` from `⟨⟨_, FractionalIdeal.isFractional_of_fg (Submodule.fg_of_isUnit hun)⟩, rfl⟩`. Establish `hJz : J ^ n = FractionalIdeal.spanSingleton (𝓞 L)⁰ z`. Apply `FractionalIdeal.coeToSubmodule_injective` to reduce the goal to its premises. Simplify `h1` using `only [FractionalIdeal.coe_pow, FractionalIdeal.coe_spanSingleton]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hJ : J ≠ 0` using `fun h0 => by`. Rewrite `hJz` using `[h0, zero_pow hn.ne', eq_comm, FractionalIdeal.spanSingleton_eq_zero_iff]`. Conclude with `hz hJz`. Rewrite using `[GlobalTheory.Idele.eq_of_count_eq hI hJ fun Q => ?_]`. Establish `f` using `h2 Q`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `f` using `[GlobalTheory.Idele.valuation_eq_exp_neg_count Q hz, ← hJz, FractionalIdeal.count_pow, ← exp_nsmul, exp_inj, nsmul_eq_mul, mul_neg, neg_inj]`. Conclude with `(mul_left_cancel₀ (by exact_mod_cast hn.ne') f).symm`.
+A detailed English derivation is pending.
 -/
 theorem coe_eq_of_pow {𝔞 𝔟 : Submodule (𝓞 L) L} (hb : 𝔞 * 𝔟 = 1) {I : FractionalIdeal (𝓞 L)⁰ L} (hI : I ≠ 0) {z : L}
     (hz : z ≠ 0) {n : ℕ} (hn : 0 < n) (h1 : 𝔞 ^ n = Submodule.span (𝓞 L) {z})
@@ -117,9 +115,9 @@ theorem coe_eq_of_pow {𝔞 𝔟 : Submodule (𝓞 L) L} (hb : 𝔞 * 𝔟 = 1) 
   exact (mul_left_cancel₀ (by exact_mod_cast hn.ne') f).symm
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.SpanValuationBound.main`. Consider the case `exact _root_.GlobalTheory.SpanValuationBound.main`. Consider the case `(apply _root_.GlobalTheory.SpanValuationBound.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SpanValuationBound.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.SpanValuationBound.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SpanValuationBound.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem val_le_of_span {S : Set L} (w : HeightOneSpectrum (𝓞 L)) {γ : ℤᵐ⁰} (h : ∀ x ∈ S, w.valuation L x ≤ γ) :
     ∀ x ∈ Submodule.span (𝓞 L) S, w.valuation L x ≤ γ := by
@@ -137,7 +135,7 @@ def detFI (M : Submodule (𝓞 L) (Fin N → L)) (h : M.FG) : FractionalIdeal (�
   ⟨detSub M, isFractional_detSub M h⟩
 
 /- English proof (translation)
-Take `⟨x, hx, hd⟩` from `Formalism.L2.LamCM.A2.exists_det_ne M hs`. Introduce `h0`. Establish `: (Matrix.of x).det ∈ detFI M h` using `det_mem_detSub x hx`. Rewrite `this` using `[h0, FractionalIdeal.mem_zero_iff]`. Conclude with `hd this`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detFI_ne_zero {M : Submodule (𝓞 L) (Fin N → L)} (h : M.FG)
     (hs : Submodule.span L (M : Set (Fin N → L)) = ⊤) : detFI M h ≠ 0 := by
@@ -148,7 +146,7 @@ theorem detFI_ne_zero {M : Submodule (𝓞 L) (Fin N → L)} (h : M.FG)
   exact hd this
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Idele.mem_iff_valuation_le (detFI_ne_zero h hs) _).1 (det_mem_detSub x hx) w`.
+A detailed English derivation is pending.
 -/
 theorem val_det_le {M : Submodule (𝓞 L) (Fin N → L)} (h : M.FG)
     (hs : Submodule.span L (M : Set (Fin N → L)) = ⊤) (w : HeightOneSpectrum (𝓞 L)) {x : Fin N → Fin N → L}
@@ -156,11 +154,11 @@ theorem val_det_le {M : Submodule (𝓞 L) (Fin N → L)} (h : M.FG)
   (GlobalTheory.Idele.mem_iff_valuation_le (detFI_ne_zero h hs) _).1 (det_mem_detSub x hx) w
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨y, hy, e⟩` from `GlobalTheory.Idele.exists_mem_valuation_eq (detFI_ne_zero h hs) w`. Establish `: w.valuation L y ≤ exp (-FractionalIdeal.count L w (detFI M h) - 1)`. Use `val_le_of_span w ?_ y hy` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `h1` using `lt_of_le_of_ne (val_det_le h hs w hx) fun e => hne ⟨x, hx, e⟩`. Break down `eq_or_ne (w.valuation L (Matrix.of x).det) 0 with h0 | h0` into its components or cases. Simplify using `[h0]`. Rewrite `h1` using `[← exp_log h0, exp_lt_exp]`. Rewrite using `[← exp_log h0, exp_le_exp]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `this` using `[e, exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exists_val_det_eq {M : Submodule (𝓞 L) (Fin N → L)} (h : M.FG)
     (hs : Submodule.span L (M : Set (Fin N → L)) = ⊤) (w : HeightOneSpectrum (𝓞 L)) :
@@ -181,7 +179,7 @@ theorem exists_val_det_eq {M : Submodule (𝓞 L) (Fin N → L)} (h : M.FG)
   omega
 
 /- English proof (translation)
-Establish `: (Matrix.of fun i => γ.mulVec (x i)) = Matrix.of x * γ.transpose`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, mul_comm]`. Rewrite using `[this, Matrix.det_mul, Matrix.det_transpose, mul_comm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_of_mulVec' {A : Type} [CommRing A] (γ : Matrix (Fin N) (Fin N) A) (x : Fin N → Fin N → A) :
     (Matrix.of fun i => γ.mulVec (x i)).det = γ.det * (Matrix.of x).det := by
@@ -191,21 +189,21 @@ theorem det_of_mulVec' {A : Type} [CommRing A] (γ : Matrix (Fin N) (Fin N) A) (
   rw [this, Matrix.det_mul, Matrix.det_transpose, mul_comm]
 
 /- English proof (translation)
-Establish `hn` using `detFI_ne_zero h hs`. Establish `hn'` using `detFI_ne_zero h' hs'`. Establish `hc : ∀ w, FractionalIdeal.count L w (detFI M' h' * (detFI M h)⁻¹) = FractionalIdeal.count L w (detFI M' h') - FractionalIdeal.count L w (detFI M h)` using `fun w => by`. Rewrite using `[FractionalIdeal.count_mul L w hn' (inv_ne_zero hn), FractionalIdeal.count_inv, sub_eq_add_neg]`. Use `eq_coe_of_val (mul_ne_zero hn' (inv_ne_zero hn)) (fun z hz w => val_le_of_span w ?_ z hz) fun w => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨A, hA, rfl⟩`. Take `⟨x, hx, e⟩` from `exists_val_det_eq h hs w`. Establish `h1` using `val_det_le h' hs' w (x := fun i => A.mulVec (x i)) fun i => hA _ (hx i)`. Rewrite `h1` using `[det_of_mulVec', map_mul, e, ← le_div_iff₀ (zero_lt_iff.2 exp_ne_zero), ← exp_sub]`. Rewrite using `[hc]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `h1 using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Take `⟨x, hx, e⟩` from `exists_val_det_eq h hs w`. Take `⟨y, hy, e'⟩` from `exists_val_det_eq h' hs' w`. Take `⟨s, hsm, es⟩` from `GlobalTheory.Idele.exists_mem_valuation_eq (inv_ne_zero hn) w`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `es` using `[FractionalIdeal.count_inv, neg_neg]`. Establish `hd : (Matrix.of x).det ≠ 0` using `fun h0 => by rw [h0, map_zero] at e; exact exp_ne_zero e.symm`. Establish `hd' : IsUnit (Matrix.of x).transpose.det` using `by rw [Matrix.det_transpose]; exact hd.isUnit`. Use `⟨_, Submodule.subset_span ⟨(s * (Matrix.of x).det) • ((Matrix.of y).transpose * (Matrix.of x).transpose⁻¹), fun v hv => ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `e1 : ((s * (Matrix.of x).det) • ((Matrix.of y).transpose * (Matrix.of x).transpose⁻¹)).mulVec v = ∑ i, (s * ((Matrix.of x).updateRow i v).det) • y i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Matrix.smul_mulVec, ← Matrix.mulVec_mulVec, mul_smul, ← Matrix.mulVec_smul, ← Matrix.det_transpose, Matrix.det_smul_inv_mulVec_eq_cramer _ _ hd']`. Use extensionality with `j`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.cramer_transpose_apply, Finset.mul_sum, mul_comm, mul_left_comm]`. Rewrite using `[e1]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : ((Matrix.of x).updateRow i v).det ∈ detFI M h` using `det_mem_detSub (Function.update x i v) fun j => by`. Break down `eq_or_ne j i with rfl | hj` into its components or cases. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne hj]`. Conclude with `hx j`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `FractionalIdeal.mul_mem_mul hsm hm`. Rewrite `h1` using `[inv_mul_cancel₀ hn, FractionalIdeal.mem_one_iff]`. Take `⟨r, hr⟩` from `h1`. Rewrite using `[← hr, algebraMap_smul]`. Conclude with `M'.smul_mem r (hy i)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Matrix.det_smul, Matrix.det_mul, Matrix.det_nonsing_inv, Matrix.det_transpose, Matrix.det_transpose, Ring.inverse_eq_inv', map_mul, map_mul, map_pow, map_mul, map_inv₀, es, e, e', hc, ← exp_add, add_neg_cancel, exp_zero, one_pow, one_mul, ← exp_neg, ← exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem span_det_eq {M M' : Submodule (𝓞 L) (Fin N → L)} (h : M.FG)
     (hs : Submodule.span L (M : Set (Fin N → L)) = ⊤) (h' : M'.FG)
@@ -266,7 +264,7 @@ open Formalism.L2.Herm Formalism.UG
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
 
 /- English proof (translation)
-Take `⟨ι, h1, h2, -⟩` from `GlobalTheory.AdeleBaseChange.exists_finiteAdele_baseChange_equiv F E`. Use `⟨(Valued.v : Valuation (Q.adicCompletion E) ℤᵐ⁰).comap ((evalV E Q).toRingHom.comp ι.toRingHom), fun x => ?_, fun y hy => (h2 y).1 hy Q⟩` and prove the remaining obligations. Use `show Valued.v (ι (x ⊗ₜ[F] 1) Q) = _`. Rewrite using `[h1, GlobalTheory.Idele.adele_algebraMap_apply, GlobalTheory.Idele.valued_algebraMap]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_valuation (F : Type) [Field F] [NumberField F] [Algebra F E] (Q : HeightOneSpectrum (𝓞 E)) :
     ∃ ν : Valuation (E ⊗[F] Af F) ℤᵐ⁰, (∀ x : E, ν (inclE (F := F) (Af F) x) = Q.valuation E x) ∧
@@ -281,7 +279,7 @@ variable {Q : HeightOneSpectrum (𝓞 E)} {ν : Valuation (E ⊗[F] Af F) ℤᵐ
   (h1 : ∀ x : E, ν (inclE (F := F) (Af F) x) = Q.valuation E x) (h2 : ∀ y ∈ intAf F E, ν y ≤ 1)
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_inclE (x : Fin N → Fin N → E) :
     (Matrix.of fun i j => inclE (F := F) (Af F) (x i j)).det = inclE (F := F) (Af F) (Matrix.of x).det := by
@@ -291,11 +289,11 @@ theorem det_inclE (x : Fin N → Fin N → E) :
 include h1 h2
 
 /- English proof (translation)
-Use `choose n c m e using fun i => Submodule.mem_span_set'.1 (hy i)`. Use `choose x hx ex using fun i k => (m i k).2`. Establish `e1 : (Matrix.of y).det = Matrix.detRowAlternating.toMultilinearMap fun i => ∑ k, (c i k : E ⊗[F] Af F) • fun j => inclE (F` using `F) (Af F) (x i k j) := by show Matrix.detRowAlternating.toMultilinearMap y = _`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e i]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [← ex i k]; rfl`. Rewrite using `[e1, MultilinearMap.map_sum]`. Use `ν.map_sum_le fun r _ => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ, smul_eq_mul, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(mul_le_of_le_one_left' (h2 _ (prod_mem fun i _ => (c i (r i)).2))).trans ?_` and prove the remaining obligations. Establish `e2` using `det_inclE (F := F) fun i => x i (r i)`. Establish `e3` using `congrArg ν e2`. Rewrite `e3` using `[h1]`. Conclude with `e3.trans_le (val_det_le h hs Q fun i => hx i (r i))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_det_hat_le {M : Submodule (𝓞 E) (Fin N → E)} (h : M.FG)
     (hs : Submodule.span E (M : Set (Fin N → E)) = ⊤) {y : Fin N → Fin N → E ⊗[F] Af F}
@@ -319,7 +317,7 @@ theorem val_det_hat_le {M : Submodule (𝓞 E) (Fin N → E)} (h : M.FG)
   exact e3.trans_le (val_det_le h hs Q fun i => hx i (r i))
 
 /- English proof (translation)
-Take `⟨x, hx, e⟩` from `exists_val_det_eq h hs Q`. Establish `h3` using `val_det_hat_le h1 h2 h' hs' (y := fun i => A.mulVec fun j => inclE (F := F) (Af F) (x i j)) fun i => hA _ (Submodule.subset_span ⟨x i, hx i, rfl⟩)`. Rewrite `h3` using `[det_of_mulVec', map_mul, det_inclE, h1, e]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem val_det_mul_le {M M' : Submodule (𝓞 E) (Fin N → E)} (h : M.FG)
     (hs : Submodule.span E (M : Set (Fin N → E)) = ⊤) (h' : M'.FG)
@@ -332,11 +330,11 @@ theorem val_det_mul_le {M M' : Submodule (𝓞 E) (Fin N → E)} (h : M.FG)
   rwa [det_of_mulVec', map_mul, det_inclE, h1, e] at h3
 
 /- English proof (translation)
-Establish `a` using `val_det_mul_le h1 h2 h hs h' hs' (A := (g : Matrix (Fin N) (Fin N) (E ⊗[F] Af F))) fun v hv => (hg _).2 (by`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec])` and apply the resulting hypothesis. Establish `b` using `val_det_mul_le h1 h2 h' hs' h hs (A := ((g⁻¹ : GL (Fin N) (E ⊗[F] Af F)) : Matrix _ _ _)) fun v hv => (hg _).1 hv`. Establish `c : ν (g : Matrix (Fin N) (Fin N) (E ⊗[F] Af F)).det * ν ((g⁻¹ : GL (Fin N) (E ⊗[F] Af F)) : Matrix (Fin N) (Fin N) (E ⊗[F] Af F)).det = 1`. Rewrite using `[← map_mul, ← Matrix.det_mul, Units.mul_inv, Matrix.det_one, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `a0` using `left_ne_zero_of_mul_eq_one c`. Establish `b0` using `right_ne_zero_of_mul_eq_one c`. Rewrite `a` using `[← exp_log a0, ← exp_add, exp_le_exp]`. Rewrite `b` using `[← exp_log b0, ← exp_add, exp_le_exp]`. Rewrite `c` using `[← exp_log a0, ← exp_log b0, ← exp_add, ← exp_zero, exp_inj]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← exp_log a0, exp_inj, FractionalIdeal.count_mul E Q (detFI_ne_zero h' hs') (inv_ne_zero (detFI_ne_zero h hs)), FractionalIdeal.count_inv]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem val_det_of_carries {M M' : Submodule (𝓞 E) (Fin N → E)} (h : M.FG)
     (hs : Submodule.span E (M : Set (Fin N → E)) = ⊤) (h' : M'.FG)
@@ -362,11 +360,11 @@ theorem val_det_of_carries {M M' : Submodule (𝓞 E) (Fin N → E)} (h : M.FG)
 variable [StarRing E]
 
 /- English proof (translation)
-Establish `key : ∀ u ∈ IntegralUnitGroup hc, ν (u : Matrix (Fin 1) (Fin 1) (E ⊗[F] Af F)).det ≤ 1` using `fun u hu => by`. Take `⟨r, hr⟩` from `(hu.2 fun _ => 1).1 (fun i _ => ⟨1, rfl⟩) 0 trivial`. Rewrite using `[Matrix.det_fin_one]`. Establish `: (u : Matrix (Fin 1) (Fin 1) (E ⊗[F] Af F)) 0 0 = algebraMap _ (E ⊗[F] Af F) r`. Simplify `hr.symm` using `[Matrix.mulVec, dotProduct]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[this]`. Conclude with `h2 _ r.2`. Establish `c : ν (u : Matrix (Fin 1) (Fin 1) (E ⊗[F] Af F)).det * ν ((u⁻¹ : GL (Fin 1) (E ⊗[F] Af F)) : Matrix (Fin 1) (Fin 1) (E ⊗[F] Af F)).det = 1`. Rewrite using `[← map_mul, ← Matrix.det_mul, Units.mul_inv, Matrix.det_one, map_one]`. Use `le_antisymm (key u hu) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← c]`. Conclude with `mul_le_of_le_one_right' (key _ (inv_mem hu))`.
+A detailed English derivation is pending.
 -/
 theorem val_det_of_mem_int (hc : Formalism.BasicNotions.CMData F E) {u : GL (Fin 1) (E ⊗[F] Af F)} (hu : u ∈ IntegralUnitGroup hc) :
     ν (u : Matrix (Fin 1) (Fin 1) (E ⊗[F] Af F)).det = 1 := by
@@ -387,9 +385,9 @@ theorem val_det_of_mem_int (hc : Formalism.BasicNotions.CMData F E) {u : GL (Fin
 omit h1 h2 in
 
 /- English proof (translation)
-Use `⟨⟨Matrix.GeneralLinearGroup.scalar (Fin 1) (unitaryOneRationalAdele F z), ?_⟩, Units.ext ?_⟩` and prove the remaining obligations. Use `show cT _ _ * _ * _ = _`. Use extensionality with `i j`. Establish `hz : star (z : E) * z = 1` using `z.2.1`. Take `rfl : i = 0` from `Subsingleton.elim _ _`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : j = 0` from `Subsingleton.elim _ _`. Simplify using `[cT, Matrix.mul_apply, unitaryOneRationalAdele, inclE, sigR, Formalism.BasicNotions.CMData.sig]`. Rewrite using `[starRingEnd_apply, hz]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_u1Af (hc : Formalism.BasicNotions.CMData F E) (z : unitary E) : ∃ x : unitaryOneFiniteAdeles hc,
     Matrix.GeneralLinearGroup.det (x : GL (Fin 1) (E ⊗[F] Af F)) = unitaryOneRationalAdele F z := by
@@ -406,13 +404,13 @@ theorem exists_u1Af (hc : Formalism.BasicNotions.CMData F E) (z : unitary E) : �
 omit h1 h2 in
 
 /- English proof (translation)
-Substitute `hU` using the available equality. Take `⟨u, hu, rfl⟩` from `hk`. Use `replace hu : (u : GL (Fin 1) (E ⊗[F] Af F)) ∈ IntegralUnitGroup hc := hu`. Take `⟨y, hy⟩` from `exists_u1Af hc z`. Rewrite `e` using `[ht y hy]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : ((y⁻¹ * x ^ n : unitaryOneFiniteAdeles hc) : GL (Fin 1) (E ⊗[F] Af F)) ∈ IntegralUnitGroup hc`. Establish `h1` using `hker (y⁻¹ * x ^ n * u⁻¹) (by`. Rewrite using `[map_mul, map_mul, map_pow, e, map_inv, map_inv, inv_mul_cancel_left, mul_inv_cancel])`. Establish `h2` using `mul_mem h1 hu`. Rewrite `h2` using `[← Subgroup.coe_mul, inv_mul_cancel_right]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨ν, h1, h2⟩` from `exists_valuation F Q`. Establish `a` using `val_det_of_carries h1 h2 h hs h' hs' hg`. Establish `b` using `val_det_of_mem_int h1 h2 hc hint`. Establish `c : ((y : GL (Fin 1) (E ⊗[F] Af F)) : Matrix (Fin 1) (Fin 1) _).det * (((y⁻¹ * x ^ n : unitaryOneFiniteAdeles hc) : GL (Fin 1) (E ⊗[F] Af F)) : Matrix (Fin 1) (Fin 1) _).det = (g : Matrix (Fin N) (Fin N) (E ⊗[F] Af F)).det ^ n`. Rewrite using `[← Matrix.det_mul, ← Units.val_mul, ← Subgroup.coe_mul, mul_inv_cancel_left, Subgroup.coe_pow, Units.val_pow_eq_pow_val, Matrix.det_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg (fun t : (E ⊗[F] Af F)ˣ => (t : E ⊗[F] Af F) ^ n) hx`. Establish `d : ((y : GL (Fin 1) (E ⊗[F] Af F)) : Matrix (Fin 1) (Fin 1) _).det = inclE (F` using `F) (Af F) (z : E) := congrArg Units.val hy`. Establish `f` using `congrArg ν c`. Rewrite `f` using `[map_mul, b, mul_one, d, h1, map_pow, a]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem val_eq_pow (hc : Formalism.BasicNotions.CMData F E) {G : Type} [Group G] (dt : unitaryOneFiniteAdeles hc →* G)
     (hker : ∀ x : unitaryOneFiniteAdeles hc, dt x = 1 → (x : GL (Fin 1) (E ⊗[F] Af F)) ∈ IntegralUnitGroup hc) {z : unitary E} {x : unitaryOneFiniteAdeles hc}
@@ -457,20 +455,20 @@ def bar (w : HeightOneSpectrum (𝓞 H.E)) : HeightOneSpectrum (𝓞 H.E) :=
   (existsUnique_conjPl H.conj.toRingEquiv w).choose
 
 /- English proof (translation)
-The claim follows from `(existsUnique_conjPl H.conj.toRingEquiv w).choose_spec.1 x`.
+A detailed English derivation is pending.
 -/
 theorem val_bar (w : HeightOneSpectrum (𝓞 H.E)) (x : H.E) : (bar H w).valuation H.E (H.conj x) = w.valuation H.E x :=
   (existsUnique_conjPl H.conj.toRingEquiv w).choose_spec.1 x
 
 /- English proof (translation)
-Rewrite using `[conjPl_main.2.1 R H w w']`. Conclude with `⟨(existsUnique_conjPl H.conj.toRingEquiv w).choose_spec.2 w', fun h => h ▸ val_bar H w⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isConjPl_iff (w w' : HeightOneSpectrum (𝓞 H.E)) : IsConjPl H w w' ↔ w' = bar H w := by
   rw [conjPl_main.2.1 R H w w']
   exact ⟨(existsUnique_conjPl H.conj.toRingEquiv w).choose_spec.2 w', fun h => h ▸ val_bar H w⟩
 
 /- English proof (translation)
-Use `letI := H.cmStar`. Establish `hs : ∀ x : H.E, star x = H.conj x` using `bridge_star_holds R H`. Rewrite using `[← hs, ← hs, star_star]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_conj (x : H.E) : H.conj (H.conj x) = x := by
   letI := H.cmStar
@@ -478,13 +476,13 @@ theorem conj_conj (x : H.E) : H.conj (H.conj x) = x := by
   rw [← hs, ← hs, star_star]
 
 /- English proof (translation)
-Rewrite using `[← val_bar H w, conj_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_conj (w : HeightOneSpectrum (𝓞 H.E)) (x : H.E) : w.valuation H.E (H.conj x) = (bar H w).valuation H.E x := by
   rw [← val_bar H w, conj_conj]
 
 /- English proof (translation)
-The claim follows from `((existsUnique_conjPl H.conj.toRingEquiv (bar H w)).choose_spec.2 w fun x => val_conj H w x).symm`.
+A detailed English derivation is pending.
 -/
 theorem bar_bar (w : HeightOneSpectrum (𝓞 H.E)) : bar H (bar H w) = w :=
   ((existsUnique_conjPl H.conj.toRingEquiv (bar H w)).choose_spec.2 w fun x => val_conj H w x).symm
@@ -492,9 +490,9 @@ theorem bar_bar (w : HeightOneSpectrum (𝓞 H.E)) : bar H (bar H w) = w :=
 def expo (a : Ideles H.E) (w : HeightOneSpectrum (𝓞 H.E)) : ℤ := log (valAt (bar H w) a) - log (valAt w a)
 
 /- English proof (translation)
-Establish `h` using `finite_valAt_ne_one a`. Use `(h.union (h.image (bar H))).subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_union, not_or, Set.mem_setOf_eq, not_not] at hn`. Establish `h2 : valAt (bar H w) a = 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h3`. Conclude with `hn.2 ⟨bar H w, h3, bar_bar H w⟩`. Conclude with `hw (by simp [expo, hn.1, h2])`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem expo_finite (a : Ideles H.E) : {w | expo H a w ≠ 0}.Finite := by
   have h := finite_valAt_ne_one a
@@ -507,14 +505,14 @@ theorem expo_finite (a : Ideles H.E) : {w | expo H a w ≠ 0}.Finite := by
   exact hw (by simp [expo, hn.1, h2])
 
 /- English proof (translation)
-Simplify using `only [expo, map_mul, log_mul (valAt_ne_zero _ _) (valAt_ne_zero _ _)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem expo_mul (a b : Ideles H.E) (w : HeightOneSpectrum (𝓞 H.E)) : expo H (a * b) w = expo H a w + expo H b w := by
   simp only [expo, map_mul, log_mul (valAt_ne_zero _ _) (valAt_ne_zero _ _)]
   ring
 
 /- English proof (translation)
-Simplify using `[expo, bar_bar]`.
+Simplify using the standard rewrite rules.
 -/
 theorem expo_bar (a : Ideles H.E) (w : HeightOneSpectrum (𝓞 H.E)) : expo H a (bar H w) = -expo H a w := by
   simp [expo, bar_bar]
@@ -530,22 +528,22 @@ def normIdeal : Ideles H.E →* FractionalIdeal (𝓞 H.E)⁰ H.E where
         count_idealExp (expo_finite H _), count_idealExp (expo_finite H _), expo_mul]
 
 /- English proof (translation)
-The claim follows from `idealExp_ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem normIdeal_ne_zero (a : Ideles H.E) : normIdeal H a ≠ 0 := idealExp_ne_zero _
 
 /- English proof (translation)
-The claim follows from `count_idealExp (expo_finite H a) w`.
+A detailed English derivation is pending.
 -/
 theorem count_normIdeal (a : Ideles H.E) (w : HeightOneSpectrum (𝓞 H.E)) :
     FractionalIdeal.count H.E w (normIdeal H a) = expo H a w := count_idealExp (expo_finite H a) w
 
 /- English proof (translation)
-Rewrite using `[mem_KD_sup_unitIdl_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h w w' hw`. Take `rfl` from `(isConjPl_iff H w w').1 hw`. Use `count_normIdeal H a w` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[h, FractionalIdeal.count_one, expo, eq_comm, sub_eq_zero]`. Rewrite using `[← valAt_apply, ← valAt_apply, ← exp_log (valAt_ne_zero w a), ← this, exp_log (valAt_ne_zero _ a)]`. Introduce `h`. Use `GlobalTheory.Idele.eq_of_count_eq (normIdeal_ne_zero H a) one_ne_zero fun w => ?_` and prove the remaining obligations. Use `h w _ ((isConjPl_iff H w _).2 rfl)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[← valAt_apply, ← valAt_apply]`. Rewrite using `[count_normIdeal, FractionalIdeal.count_one, expo, this, sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem normIdeal_eq_one_iff (a : Ideles H.E) : normIdeal H a = 1 ↔ a ∈ KD H ⊔ unitIdl H.E := by
   rw [mem_KD_sup_unitIdl_iff]
@@ -575,7 +573,7 @@ theorem classIdeal_mk (a : Ideles H.E) :
     classIdeal H (QuotientGroup.mk (QuotientGroup.mk a)) = normIdeal H a := rfl
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `QuotientGroup.mk_surjective x`. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective t`. Conclude with `⟨a, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mk_mk (x : DtT H ⧸ UOT H) : ∃ a : Ideles H.E, x = QuotientGroup.mk (QuotientGroup.mk a) := by
   obtain ⟨t, rfl⟩ := QuotientGroup.mk_surjective x
@@ -583,7 +581,7 @@ theorem exists_mk_mk (x : DtT H ⧸ UOT H) : ∃ a : Ideles H.E, x = QuotientGro
   exact ⟨a, rfl⟩
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_one _).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `exists_mk_mk H x`. Rewrite `hx` using `[classIdeal_mk, normIdeal_eq_one_iff, ← QuotientGroup.comap_map_mk']`. Conclude with `(QuotientGroup.eq_one_iff _).2 hx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classIdeal_injective : Function.Injective (classIdeal H) := by
   refine (injective_iff_map_eq_one _).2 fun x hx => ?_
@@ -592,11 +590,11 @@ theorem classIdeal_injective : Function.Injective (classIdeal H) := by
   exact (QuotientGroup.eq_one_iff _).2 hx
 
 /- English proof (translation)
-Establish `e : (∏ᶠ w : HeightOneSpectrum (𝓞 H.E), localIdele H.E w (atFin w (unif w)) ^ (n w).toNat) = ∏ w ∈ hf.toFinset, localIdele H.E w (atFin w (unif w)) ^ ((n w).toNat : ℤ)`. Simplify using `only [zpow_natCast]`. Use `finprod_eq_prod_of_mulSupport_subset _ fun v hv => ?_` and prove the remaining obligations. Rewrite using `[Set.Finite.coe_toFinset]`. Introduce `h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hv (by simp [h0])`. Establish `h1 : ∀ v, log (valAt v (∏ w ∈ hf.toFinset, localIdele H.E w (atFin w (unif w)) ^ ((n w).toNat : ℤ))) = -((n v).toNat : ℤ)` using `fun v => by`. Rewrite using `[valAt_prod, log_exp]`. Use `split_ifs with h`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: n v = 0` using `by simpa using h`. Simplify using `[this]`. Rewrite using `[e, expo, h1, h1, hn]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem expo_pos_part {n : HeightOneSpectrum (𝓞 H.E) → ℤ} (hf : {w | n w ≠ 0}.Finite) (hn : ∀ w, n (bar H w) = -n w)
     (w : HeightOneSpectrum (𝓞 H.E)) :
@@ -620,21 +618,21 @@ theorem expo_pos_part {n : HeightOneSpectrum (𝓞 H.E) → ℤ} (hf : {w | n w 
   omega
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨𝔟, hb, h⟩`. Establish `hu : IsUnit 𝔞` using `IsUnit.of_mul_eq_one 𝔟 h`. Establish `hv : IsUnit 𝔟` using `IsUnit.of_mul_eq_one 𝔞 (by rw [mul_comm]; exact h)`. Set `I : FractionalIdeal (𝓞 H.E)⁰ H.E` to `⟨𝔞, FractionalIdeal.isFractional_of_fg (Submodule.fg_of_isUnit hu)⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `J : FractionalIdeal (𝓞 H.E)⁰ H.E` to `⟨𝔟, FractionalIdeal.isFractional_of_fg (Submodule.fg_of_isUnit hv)⟩`. Establish `hIJ : I * J = 1`. Apply `FractionalIdeal.coeToSubmodule_injective` to reduce the goal to its premises. Simplify using `only [FractionalIdeal.coe_mul, FractionalIdeal.coe_one]`. Conclude with `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hI` using `left_ne_zero_of_mul_eq_one hIJ`. Establish `hJ` using `right_ne_zero_of_mul_eq_one hIJ`. Establish `hn : ∀ w, FractionalIdeal.count H.E (bar H w) I = -FractionalIdeal.count H.E w I` using `fun w => by`. Establish `h1` using `FractionalIdeal.count_mul H.E w hI hJ`. Rewrite `h1` using `[hIJ, FractionalIdeal.count_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, ex⟩` from `GlobalTheory.Idele.exists_mem_valuation_eq hI (bar H w)`. Take `⟨y, hy, ey⟩` from `GlobalTheory.Idele.exists_mem_valuation_eq hJ w`. Establish `hx' : H.conj x ∈ J` using `(hb _).2 (by rw [conj_conj]; exact hx)`. Establish `hy' : H.conj y ∈ I` using `(hb _).1 hy`. Establish `h2` using `(GlobalTheory.Idele.mem_iff_valuation_le hJ _).1 hx' w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(GlobalTheory.Idele.mem_iff_valuation_le hI _).1 hy' (bar H w)`. Rewrite `h2` using `[val_conj, ex, exp_le_exp]`. Rewrite `h3` using `[val_bar, ey, exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Use `⟨QuotientGroup.mk (QuotientGroup.mk (∏ᶠ w : HeightOneSpectrum (𝓞 H.E), localIdele H.E w (atFin w (unif w)) ^ (FractionalIdeal.count H.E w I).toNat)), ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[classIdeal_mk, GlobalTheory.Idele.eq_of_count_eq (normIdeal_ne_zero H _) hI fun w => by`. Rewrite using `[count_normIdeal, expo_pos_part H (Filter.eventually_cofinite.1 (FractionalIdeal.finite_factors I)) hn]]`. Both sides reduce to the same expression. Introduce and unpack `⟨x, rfl⟩`. Take `⟨a, rfl⟩` from `exists_mk_mk H x`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[classIdeal_mk]`. Establish `h0` using `normIdeal_ne_zero H a`. Use `⟨((normIdeal H a)⁻¹ : FractionalIdeal (𝓞 H.E)⁰ H.E), fun x => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[FractionalIdeal.mem_coe, FractionalIdeal.mem_coe, GlobalTheory.Idele.mem_iff_valuation_le h0, GlobalTheory.Idele.mem_iff_valuation_le (inv_ne_zero h0)]`. Simplify using `only [FractionalIdeal.count_inv, count_normIdeal, val_conj]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun h w => ?_, fun h w => ?_⟩` and prove the remaining obligations. Simplify `h (bar H w)` using `[expo_bar]`. Simplify `h (bar H w)` using `[expo_bar, bar_bar]`. Rewrite using `[← FractionalIdeal.coe_mul, mul_inv_cancel₀ h0, FractionalIdeal.coe_one]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normOne_iff (𝔞 : Submodule (𝓞 H.E) H.E) :
     (∃ 𝔟 : Submodule (𝓞 H.E) H.E, (∀ x, x ∈ 𝔟 ↔ H.conj x ∈ 𝔞) ∧ 𝔞 * 𝔟 = 1) ↔
@@ -682,11 +680,11 @@ theorem normOne_iff (𝔞 : Submodule (𝓞 H.E) H.E) :
     · rw [← FractionalIdeal.coe_mul, mul_inv_cancel₀ h0, FractionalIdeal.coe_one]
 
 /- English proof (translation)
-Use `letI := H.cmStar`. Introduce `z`. Take `⟨k, hk⟩` from `GlobalTheory.Mem.Col2.exists_eq_div_conj H z`. Establish `hz : (z : H.E) ≠ 0` using `fun h => k.ne_zero (by rw [← hk, h, zero_mul])`. Rewrite using `[← GlobalTheory.Mem.Col2.isRationalUnitaryDeterminantMap_rationalUnitary H k z hk, classIdeal_mk]`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.Idele.eq_of_count_eq (normIdeal_ne_zero H _) (FractionalIdeal.spanSingleton_ne_zero_iff.2 hz) fun w => ?_` and prove the remaining obligations. Establish `hv : ∀ v : HeightOneSpectrum (𝓞 H.E), valAt v (diagUnits H.E k) = v.valuation H.E (k : H.E)` using `fun v => GlobalTheory.Idele.valued_algebraMap v (k : H.E)`. Establish `h1` using `congrArg (fun x => log (w.valuation H.E x)) hk`. Simplify using `only [map_mul, val_conj] at h1`. Rewrite `h1` using `[log_mul (by simpa using hz) (by simp), GlobalTheory.Idele.valuation_eq_exp_neg_count w hz, log_exp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[count_normIdeal, expo, hv, hv]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem classIdeal_e1T : letI := H.cmStar
     ∀ z : unitary H.E, classIdeal H (QuotientGroup.mk (e1T H z)) = FractionalIdeal.spanSingleton (𝓞 H.E)⁰ (z : H.E) := by
@@ -705,13 +703,13 @@ theorem classIdeal_e1T : letI := H.cmStar
   omega
 
 /- English proof (translation)
-Use `letI := H.cmStar`. Introduce `L L'`. Establish `hn` using `detFI_ne_zero L.2.1 L.2.2.1`. Establish `hn'` using `detFI_ne_zero L'.2.1 L'.2.2.1`. Rewrite using `[relDetT, classIdeal_mk]`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.Idele.eq_of_count_eq (normIdeal_ne_zero H _) (mul_ne_zero hn' (inv_ne_zero hn)) fun w => ?_` and prove the remaining obligations. Rewrite using `[count_normIdeal, expo_pos_part H (n := fun w => ordSub w (detSub L'.1) - ordSub w (detSub L.1)), FractionalIdeal.count_mul _ w hn' (inv_ne_zero hn), FractionalIdeal.count_inv, ← ordSub_coe hn, ← ordSub_coe hn', sub_eq_add_neg]`. Both sides reduce to the same expression. Use `((ordSub_detSub_lattice _ N L.1 L.2.1 L.2.2.1).1.union (ordSub_detSub_lattice _ N L'.1 L'.2.1 L'.2.2.1).1).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [Set.mem_union, not_or, Set.mem_setOf_eq, not_not] at h`. Conclude with `hv (by simp [h.1, h.2])`. Introduce `v`. Establish `h1` using `ordSub_detSub_selfDual R H N L v _ ((isConjPl_iff H v _).2 rfl)`. Establish `h2` using `ordSub_detSub_selfDual R H N L' v _ ((isConjPl_iff H v _).2 rfl)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem classIdeal_relDetT (N : ℕ) : letI := H.cmStar
     ∀ L L' : SDLat H.E N, classIdeal H (relDetT H N L.1 L'.1) = detFI L'.1 L'.2.1 * (detFI L.1 L.2.1)⁻¹ := by
@@ -744,14 +742,14 @@ open Formalism.MainNotions.TaylorLogMetric Formalism.L2.Herm Formalism.UG
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-The claim follows from `span_det_eq L.2.1 L.2.2.1 L'.2.1 L'.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem detId_eq (D : D7) {N : ℕ} (L L' : SDLat D.host.E N) : detId D L.1 L'.1 =
     ((detFI L'.1 L'.2.1 * (detFI L.1 L.2.1)⁻¹ : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) : IdE D) :=
   span_det_eq L.2.1 L.2.2.1 L'.2.1 L'.2.2.1
 
 /- English proof (translation)
-Use `⟨fun x y h => e.symm.injective (classIdeal_injective _ (FractionalIdeal.coeToSubmodule_injective h)), fun 𝔞 => (normOne_iff D.host 𝔞).trans ⟨fun ⟨x, hx⟩ => ⟨e x, by simpa using hx⟩, fun ⟨x, hx⟩ => ⟨_, hx⟩⟩, fun x y => ?_, fun z => ?_, fun N L L' => ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, FractionalIdeal.coe_mul]`. Simplify using `only [h1, e.symm_apply_apply, classIdeal_e1T D.host z, FractionalIdeal.coe_spanSingleton]`. Simplify using `only [h2, e.symm_apply_apply, classIdeal_relDetT D.host N L L', detId_eq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pinned_of_equiv (D : D7) (e : DtT D.host ⧸ UOT D.host ≃* D.Dt ⧸ D.UO)
     (h1 : ∀ z, QuotientGroup.mk (D.e1Dt z) = e (QuotientGroup.mk (e1T D.host z)))
@@ -765,11 +763,11 @@ theorem pinned_of_equiv (D : D7) (e : DtT D.host ⧸ UOT D.host ≃* D.Dt ⧸ D.
   · simp only [h2, e.symm_apply_apply, classIdeal_relDetT D.host N L L', detId_eq]
 
 /- English proof (translation)
-Take `⟨h, z, hh, k, hk, e⟩` from `Formalism.MainNotions.GL3Theta.powRatAll_of D idl hp (GlobalTheory.KernelScalarUnit.normOne_pow D) (dt x)`. Take `⟨hinj, hN, hmul, hz, hdet⟩` from `hp`. Establish `e' : (QuotientGroup.mk (dt x) : D.Dt ⧸ D.UO) ^ h = QuotientGroup.mk (D.e1Dt z)`. Rewrite using `[← QuotientGroup.mk_pow, e, QuotientGroup.mk_mul_of_mem _ hk]`. Take `⟨𝔟, -, hb⟩` from `(hN _).2 ⟨QuotientGroup.mk (dt x), rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hJz : idl (QuotientGroup.mk (dt x)) ^ h = Submodule.span (𝓞 D.host.E) {(z : D.host.E)}`. Take `⟨n, rfl⟩ : ∃ n, h = n + 1` from `⟨h - 1, by omega⟩`. Rewrite using `[← hz, ← e', Formalism.MainNotions.GL3Theta.idl_pow hmul]`. Establish `hz0 : (z : D.host.E) ≠ 0` using `right_ne_zero_of_mul_eq_one z.2.1`. Use `hinj ((hdet N L L').trans ((detId_eq D L L').trans ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `coe_eq_of_pow hb (mul_ne_zero (detFI_ne_zero L'.2.1 L'.2.2.1) (inv_ne_zero (detFI_ne_zero L.2.1 L.2.2.1))) hz0 hh hJz (val_eq_pow hc dt hker hUO hk (hrat z) e L.2.1 L.2.2.1 L'.2.1 L'.2.2.1 hg hx)`.
+A detailed English derivation is pending.
 -/
 theorem relDet_eq_of_pinned (D : D7) (idl : D.Dt ⧸ D.UO → IdE D) (hp : RelDetPinned D idl)
     (hc : Formalism.BasicNotions.CMData D.host.F D.host.E) (dt : unitaryOneFiniteAdeles hc →* D.Dt)
@@ -797,9 +795,9 @@ theorem relDet_eq_of_pinned (D : D7) (idl : D.Dt ⧸ D.UO → IdE D) (hp : RelDe
 open GlobalTheory.Mem.Col2 in
 
 /- English proof (translation)
-Set `e : DtQ D.host SQ ⧸ UOQ D.host SQ ≃* D.Dt ⧸ D.UO` to `QuotientGroup.congr _ _ ε hU.symm`. Establish `he : ∀ t, e (QuotientGroup.mk t) = QuotientGroup.mk (ε t)` using `fun _ => rfl`. Establish `hm : ∀ t, (modEquiv D.host SQ).symm (toDtTMod D.host SQ t) = t` using `(modEquiv D.host SQ).symm_apply_apply`. Use `⟨_, pinned_of_equiv D ((modEquiv D.host SQ).symm.trans e) (fun z => ?_) fun N L L' => ?_⟩` and prove the remaining obligations. Rewrite using `[MulEquiv.trans_apply, ← toDtT_e1Q D.host SQ z, ← toDtTMod_mk, hm, he, h1]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht⟩` from `QuotientGroup.mk_surjective (relDetQ D.host SQ N L.1 L'.1)`. Rewrite using `[MulEquiv.trans_apply, ← toDtTMod_relDetQ D.host SQ, hm, h2 N L L' t ht.symm, ← ht, he]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pinned_of_finer (D : D7) (SQ : Finset (HeightOneSpectrum (𝓞 D.host.E))) (ε : DtQ D.host SQ ≃* D.Dt)
     (hU : D.UO = (UOQ D.host SQ).map ε.toMonoidHom) (h1 : ∀ z, D.e1Dt z = ε (e1Q D.host SQ z))

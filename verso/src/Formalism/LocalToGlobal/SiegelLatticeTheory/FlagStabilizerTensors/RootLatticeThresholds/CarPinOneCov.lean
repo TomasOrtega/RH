@@ -17,7 +17,7 @@ open Formalism.L2.SG.Pf.Carrier Formalism.L2.SG.Pf.CarrierT Formalism.L2.SG.Pf.B
 variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] in
 
 /- English proof (translation)
-Use `pinCov_carrierInTc X C u u' e he hv CA de de' l grid grid1 a b ξ ξ' _ c ν' m₀ Θ TP A₀ Mo ?_` and prove the remaining obligations. Introduce `j γ μRv ν hH`. Establish `hP` using `pinHyp_at X C u u' e he hv CA de de' l grid grid1 a b ξ ξ' _ c ν' m₀ Θ TP A₀ Mo j γ μRv ν hH`. Conclude with `pinAt_one C hB hJ large₂ hCl hH0 u u' (e (plE D j)) hTT (hW j) (hA j) hT hT' (a j) (b j) (ξ j) (ξ' j) (hpin1 j) (hscl j) (hcO j) Ac hAc (hCC j) γ μRv ν hP`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pinCov_ccOne (hJ : PI.BesselMapUniq.BesselMapUniq) (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT C0 : ℝ}
     (hCl : 1000 ≤ Cl) (hH0 : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0)

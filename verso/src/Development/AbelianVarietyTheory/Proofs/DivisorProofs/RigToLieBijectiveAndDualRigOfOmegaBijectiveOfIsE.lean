@@ -11,9 +11,9 @@ namespace GlobalTheory
 namespace PDivGroup
 
 /- English proof (translation)
-Introduce `p _ k _ _ _ h G hG`. Take `⟨h1, h2⟩` from `GlobalTheory.T.subsingleton_invariantDifferentials_of_etale p k G hG`. Use `⟨⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, G.rigToLie_surjective h⟩, ⟨G.dual.rigOfOmega_injective_of_eq_zero h, fun y => ?_⟩⟩` and prove the remaining obligations. Take `⟨w, rfl⟩` from `(G.exact_rigOfOmega_rigToLie h x).1 hx`. Rewrite using `[Subsingleton.elim w 0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `(G.dual.exact_rigOfOmega_rigToLie h y).1 ?_` and prove the remaining obligations. Conclude with `LinearMap.ext fun w => by rw [Subsingleton.elim w 0, map_zero, LinearMap.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rigToLie_bijective_and_dual_rigOfOmega_bijective_of_isEt :
     ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p] (h : (p : k) = 0)

@@ -9,27 +9,25 @@ noncomputable section
 namespace PositivityTheory.Xgf
 
 /- English proof (translation)
-The claim follows from `star_star τ`.
+A detailed English derivation is pending.
 -/
 theorem complexEmbedding_conjugate_conjugate {E : Type} [Field E] (τ : E →+* ℂ) :
     ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ := star_star τ
 
 /- English proof (translation)
-Set `g : Matrix I J ℂ × (I → ℂ) → ℝ` to `fun p => (star p.2 ⬝ᵥ (((C + p.1) * M * (C + p.1)ᴴ) *ᵥ p.2)).re`. Establish `hg : Continuous g`. Use `Complex.continuous_re.comp ?_` and prove the remaining obligations. Use `Continuous.dotProduct (continuous_star.comp continuous_snd) ?_` and prove the remaining obligations. Use `Continuous.matrix_mulVec ?_ continuous_snd` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Continuous.matrix_mul ?_ ?_` and prove the remaining obligations. Conclude with `(continuous_const.add continuous_fst).matrix_mul continuous_const`. Conclude with `(continuous_const.add continuous_fst).matrix_conjTranspose`. Establish `hK : IsCompact (Metric.sphere (0 : I → ℂ) 1)` using `isCompact_sphere 0 1`. Establish `key : ∀ᶠ D in nhds (0 : Matrix I J ℂ), ∀ u ∈ Metric.sphere (0 : I → ℂ) 1, 0 < g (D, u)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hK.eventually_forall_of_forall_eventually` to reduce the goal to its premises. Introduce `u hu`. Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hu`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : 0 < g (0, u)`. Establish `hp` using `h.dotProduct_mulVec_pos hu0`. Establish `hp'` using `(Complex.lt_def.mp hp).1`. Simplify `hp'` using `[g]`. Conclude with `hg.continuousAt.eventually (lt_mem_nhds h0)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [key] with D hD`. Establish `hH : ((C + D) * M * (C + D)ᴴ).IsHermitian` using `isHermitian_mul_mul_conjTranspose _ hM`. Rewrite using `[Matrix.posDef_iff_dotProduct_mulVec]`. Use `⟨hH, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hr : 0 < ‖x‖` using `norm_pos_iff.mpr hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set u : I → ℂ := ((‖x‖⁻¹ : ℝ) : ℂ) • x with hu_def`. Establish `hu : u ∈ Metric.sphere (0 : I → ℂ) 1`. Rewrite using `[mem_sphere_zero_iff_norm, hu_def, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr hr), inv_mul_cancel₀ hr.ne']`. Establish `hx' : x = ((‖x‖ : ℝ) : ℂ) • u`. Rewrite using `[hu_def, smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ hr.ne', Complex.ofReal_one, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hpos` using `hD u hu`. Rewrite using `[Complex.lt_def]`. Use `⟨?_, (hH.im_star_dotProduct_mulVec_self x).symm⟩` and prove the remaining obligations. Rewrite using `[hx', star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct]`. Simplify using `only [smul_eq_mul, Complex.star_def, Complex.conj_ofReal, Complex.re_ofReal_mul, Complex.zero_re]`.
-
-Conclude with `mul_pos hr (mul_pos hr hpos)`.
+A detailed English derivation is pending.
 -/
 private theorem eventually_posDef_add_mul_conjTranspose {I J : Type} [Fintype I] [Fintype J] [DecidableEq I]
     (C : Matrix I J ℂ) (M : Matrix J J ℂ) (hM : M.IsHermitian) (h : (C * M * Cᴴ).PosDef) :
@@ -74,23 +72,21 @@ private theorem eventually_posDef_add_mul_conjTranspose {I J : Type} [Fintype I]
   exact mul_pos hr (mul_pos hr hpos)
 
 /- English proof (translation)
-Introduce `E _ _ Ψ I J _ _ _ _ M C X₀ n hn hΨ hpos`. Take `⟨B, hB⟩` from `exists_integer_near_conj_vector E`. Set `f : ℕ → I → J → (E →+* ℂ) → ℂ` to `fun k i j τ => ((k : ℂ) * C τ i j - τ (X₀ i j : E)) / n`. Set `c : ℕ → I → J → (E →+* ℂ) → ℂ` to `fun k i j σ => if σ ∈ Ψ then f k i j σ else if ComplexEmbedding.conjugate σ ∈ Ψ then starRingEnd ℂ (f k i j (ComplexEmbedding.conjugate σ)) else 0`. Establish `hc : ∀ k i j σ, c k i j (ComplexEmbedding.conjugate σ) = starRingEnd ℂ (c k i j σ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `k i j σ`. Distinguish the cases in `h1 : σ ∈ Ψ`. Establish `h2 : ComplexEmbedding.conjugate σ ∉ Ψ` using `hΨ σ h1`. Simplify using `[c, h1, h2, complexEmbedding_conjugate_conjugate]`. Distinguish the cases in `h2 : ComplexEmbedding.conjugate σ ∈ Ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `[c, h1, h2]`. Simplify using `[c, h1, h2, complexEmbedding_conjugate_conjugate]`. Use `choose a ha using fun (k : ℕ) (i : I) (j : J) => hB (c k i j) (hc k i j)`. Set `D : ℕ → (E →+* ℂ) → Matrix I J ℂ` to `fun k τ => Matrix.of fun i j => ((n : ℂ) / k) * (τ (a k i j : E) - c k i j τ)`. Establish `hX : ∀ k : ℕ, k ≠ 0 → ∀ τ ∈ Ψ, ((X₀ + n • Matrix.of (a k)).map fun x => τ (x : E)) = (k : ℂ) • (C τ + D k τ)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk τ hτ`. Use extensionality with `i j`. Establish `hk' : (k : ℂ) ≠ 0` using `by exact_mod_cast hk`. Establish `hn' : (n : ℂ) ≠ 0` using `by exact_mod_cast hn`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.of_apply, D, c, f, if_pos hτ, smul_eq_mul]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Simplify using `only [map_add, map_nsmul, nsmul_eq_mul, map_mul, map_natCast]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hD : ∀ τ, Filter.Tendsto (fun k : ℕ => D k τ) Filter.atTop (nhds 0)`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ`. Use `tendsto_pi_nhds.mpr (fun i => tendsto_pi_nhds.mpr (fun j => ?_))` and prove the remaining obligations. Establish `hb : Filter.Tendsto (fun k : ℕ => (n : ℝ) * B / k) Filter.atTop (nhds 0)` using `tendsto_const_div_atTop_nhds_zero_nat _`. Use `squeeze_zero_norm' (Filter.Eventually.of_forall fun k => ?_) hb` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [D, Matrix.of_apply, norm_mul, norm_div, Complex.norm_natCast]`. Use `_ ≤ ((n : ℝ) / k) * B := mul_le_mul_of_nonneg_left (ha k i j τ) (by positivity)`. Use `_ = (n : ℝ) * B / k := by ring`. Establish `hev : ∀ τ ∈ Ψ, ∀ᶠ k in Filter.atTop, ((C τ + D k τ) * M τ * (C τ + D k τ)ᴴ).PosDef` using `fun τ hτ => (hD τ).eventually (eventually_posDef_add_mul_conjTranspose (C τ) (M τ) (hpos τ hτ).1 (hpos τ hτ).2)`. Establish `hall : ∀ᶠ k in Filter.atTop, ∀ τ ∈ Ψ, ((C τ + D k τ) * M τ * (C τ + D k τ)ᴴ).PosDef` using `(Filter.eventually_all_finite (Set.toFinite Ψ)).mpr hev`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk1, hk2⟩` from `(hall.and (Filter.eventually_ne_atTop 0)).exists`. Use `⟨Matrix.of (a k), fun τ hτ => ?_⟩` and prove the remaining obligations. Rewrite using `[hX k hk2 τ hτ]`. Establish `hkpos : (0 : ℂ) < (k : ℂ)` using `by exact_mod_cast Nat.pos_of_ne_zero hk2`. Establish `h2` using `(hk1 τ hτ).smul (mul_pos hkpos hkpos)`.
-
-Use `h2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Matrix.conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, star_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_integral_posDef_perturbation : ∀ (E : Type) [Field E] [NumberField E] (Ψ : Set (E →+* ℂ)) (I J : Type) [Fintype I] [Fintype J] [DecidableEq I] [DecidableEq J] (M : (E →+* ℂ) → Matrix J J ℂ) (C : (E →+* ℂ) → Matrix I J ℂ) (X₀ : Matrix I J (𝓞 E)) (n : ℕ), n ≠ 0 → (∀ τ ∈ Ψ, ComplexEmbedding.conjugate τ ∉ Ψ) → (∀ τ ∈ Ψ, (M τ).IsHermitian ∧ (C τ * M τ * (C τ)ᴴ).PosDef) → ∃ Y : Matrix I J (𝓞 E), ∀ τ ∈ Ψ, (((X₀ + n • Y).map fun a => τ (a : E)) * M τ * ((X₀ + n • Y).map fun a => τ (a : E))ᴴ).PosDef := by
   intro E _ _ Ψ I J _ _ _ _ M C X₀ n hn hΨ hpos

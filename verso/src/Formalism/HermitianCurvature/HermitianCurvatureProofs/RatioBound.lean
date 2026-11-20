@@ -16,7 +16,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   (p : KB.Pl P Wp Wq) (j : ℕ) (hj : j ≤ P.r) (w : List C.Letter) (ys : List ℝ) {ε : ℝ}
 
 /- English proof (translation)
-The claim follows from `PBG.pairJ_sesq_left P p.T (M.sgn P p.l0) ⟨j, by omega⟩ w ys x₁ x₂ y c (PBG.decV_of_nice h₁) (PBG.decV_of_nice h₂) (PBG.decV_of_nice hy)`.
+A detailed English derivation is pending.
 -/
 theorem pj_sl (x₁ x₂ : Wd.Ix (Fin (KB.plusW ys w).length) → B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp))
     (y : Wd.Ix (Fin (KB.minusW ys w).length) → B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp)) (c : ℂ)
@@ -27,7 +27,7 @@ theorem pj_sl (x₁ x₂ : Wd.Ix (Fin (KB.plusW ys w).length) → B.Mat P.k (P.r
     (PBG.decV_of_nice h₂) (PBG.decV_of_nice hy)
 
 /- English proof (translation)
-The claim follows from `PBG.pairJ_sesq_right P p.T (M.sgn P p.l0) ⟨j, by omega⟩ w ys x y₁ y₂ c (PBG.decV_of_nice hx) (PBG.decV_of_nice h₁) (PBG.decV_of_nice h₂)`.
+A detailed English derivation is pending.
 -/
 theorem pj_sr (x : Wd.Ix (Fin (KB.plusW ys w).length) → B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp))
     (y₁ y₂ : Wd.Ix (Fin (KB.minusW ys w).length) → B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp)) (c : ℂ)
@@ -38,7 +38,7 @@ theorem pj_sr (x : Wd.Ix (Fin (KB.plusW ys w).length) → B.Mat P.k (P.r - j) �
     (PBG.decV_of_nice h₁) (PBG.decV_of_nice h₂)
 
 /- English proof (translation)
-Establish `h` using `pj_sl p j hj w ys 0 0 y 1 nv_zero nv_zero hy`. Simplify using `only [one_smul, add_zero, one_mul] at h`. Take the linear combination `-h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem pj_zero_l (y : Wd.Ix (Fin (KB.minusW ys w).length) → B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp))
     (hy : NV (p.T.bs j) ε y) : KB.pairJ (p.form j hj w) ys 0 y = 0 := by
@@ -47,7 +47,7 @@ theorem pj_zero_l (y : Wd.Ix (Fin (KB.minusW ys w).length) → B.Mat P.k (P.r - 
   linear_combination -h
 
 /- English proof (translation)
-Establish `h` using `pj_sr p j hj w ys x 0 0 1 hx nv_zero nv_zero`. Simplify using `only [one_smul, add_zero, map_one, one_mul] at h`. Take the linear combination `-h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem pj_zero_r (x : Wd.Ix (Fin (KB.plusW ys w).length) → B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp))
     (hx : NV (p.T.bs j) ε x) : KB.pairJ (p.form j hj w) ys x 0 = 0 := by
@@ -56,7 +56,7 @@ theorem pj_zero_r (x : Wd.Ix (Fin (KB.plusW ys w).length) → B.Mat P.k (P.r - j
   linear_combination -h
 
 /- English proof (translation)
-Establish `h1` using `pj_sl p j hj w ys 0 x (d • y) c nv_zero hx (nv_smul d hy)`. Establish `h2` using `pj_sr p j hj w ys x 0 y d hx nv_zero hy`. Rewrite `h1` using `[zero_add, pj_zero_l p j hj w ys _ (nv_smul d hy), zero_add]`. Rewrite `h2` using `[zero_add, pj_zero_r p j hj w ys x hx, zero_add]`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -81,7 +81,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   {f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} {χ : ℝ → ℝ} {A₀ : ℝ}
 
 /- English proof (translation)
-Unfold `uB`. Rewrite using `[dif_pos hh]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem uB_pos (S : C.HidaSetting E Wp Wq) (p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v)))
     (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) (v : Fin S.f) (ε : ℝ) (j : ℕ)
@@ -91,7 +91,7 @@ theorem uB_pos (S : C.HidaSetting E Wp Wq) (p : ∀ v, KB.Pl (D.parOf S v) (Wp (
   unfold uB; rw [dif_pos hh]
 
 /- English proof (translation)
-Unfold `uB`. Rewrite using `[dif_neg hh]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem uB_neg (S : C.HidaSetting E Wp Wq) (p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v)))
     (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) (v : Fin S.f) (ε : ℝ) (j : ℕ)
@@ -99,7 +99,7 @@ theorem uB_neg (S : C.HidaSetting E Wp Wq) (p : ∀ v, KB.Pl (D.parOf S v) (Wp (
   unfold uB; rw [dif_neg hh]
 
 /- English proof (translation)
-Use `PBG.waveG_add_smul Bs s w 0 x c` as an intermediate fact. Rewrite `this` using `[zero_add, PBG.waveG_zero, zero_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem waveG_smul' {k ρ : ℕ} {Wp' Wq' : Type} [NormedAddCommGroup Wp'] [InnerProductSpace ℂ Wp']
     [NormedAddCommGroup Wq'] [InnerProductSpace ℂ Wq'] (Bs : B.RealPlaceData k ρ Wp' Wq') (s : ℂ) (w : List C.Letter)
@@ -109,23 +109,21 @@ theorem waveG_smul' {k ρ : ℕ} {Wp' Wq' : Type} [NormedAddCommGroup Wp'] [Inne
   rwa [zero_add, PBG.waveG_zero, zero_add] at this
 
 /- English proof (translation)
-Establish `hgpos` using `g_pos_of_built hB`. Distinguish the cases in `hloc : D.IsLocPt h j ∧ D.IsLocPt h' j`. Take `⟨hh, hh'⟩` from `hloc`. Establish `hH : D.IsLocPt (stdS S h) j` using `(PBD.isLocPt_toStd_iff _ _ hgpos h 1 j).2 hh`. Establish `hH' : D.IsLocPt (stdS S h') j` using `(PBD.isLocPt_toStd_iff _ _ hgpos h' 1 j).2 hh'`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg` using `hDW (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (p v) (F v ε) j hj a (stdS S h) (stdS S h') hH hH' K grid s LinearMap.id (fun ε x hx => hx) (hF v ε hε) hinj`. Simplify using `only [LinearMap.id_apply, onOld_id] at hdeg`. Use `set Dh : ℂ := (((√(nnS S h) / bS S h : ℝ) : ℂ)) with hDh`. Use `set Dh' : ℂ := (((√(nnS S h') / bS S h' : ℝ) : ℂ)) with hDh'`. Rewrite using `[uB_pos S p F v ε j hj a h hh, uB_pos S p F v ε j hj a h' hh', waveG_smul']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ε2, hε2, hs, hs'⟩` from `nv_pair (slv_nv (p v) (hF v ε hε) j hj a (stdS S h) hH) (slv_nv (p v) (hF v ε hε) j hj a (stdS S h') hH')`. Establish `hws` using `PBFV.waveG_nice ((p v).T.bs j) ε2 s a _ hs`. Rewrite using `[form_smul_l (p v) j hj a _ _ _ hws (nv_smul _ hs'), form_smul_r (p v) j hj a _ _ _ hws hs']`. Establish `hL : s ^ K * (Dh * (conj Dh' * (p v).form j hj a (KB.waveG ((p v).T.bs j) s a (KB.slv (p v).T (F v ε) j hj a (stdS S h) ((stdS_size S h).trans hh.2))) (KB.slv (p v).T (F v ε) j hj a (stdS S h') ((stdS_size S h').trans hh'.2)))) = Dh * conj Dh' * (s ^ K * (p v).form j hj a (KB.wav …`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hL, hdeg, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Use `set ys := List.ofFn fun b => grid b (n b) with hys`. Take `⟨ε3, hε3, hp, hm⟩` from `nv_pair (slv_nv (p v) (hF v ε hε) j hj (KB.plusW ys a) (stdS S h) hH) (slv_nv (p v) (hF v ε hε) j hj (KB.minusW ys a) (stdS S h') hH')`. Establish `hwp` using `PBFV.waveG_nice ((p v).T.bs j) ε3 s _ _ hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[uB_pos S p F v ε j hj (KB.plusW ys a) h hh, uB_pos S p F v ε j hj (KB.minusW ys a) h' hh', waveG_smul', pj_smul (p v) j hj a ys _ _ _ _ hwp hm]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : uB S p F v ε j hj a h = 0 ∨ uB S p F v ε j hj a h' = 0`. Distinguish the cases in `hh : D.IsLocPt h j`. Conclude with `Or.inr (uB_neg S p F v ε j hj a h' fun hh' => hloc ⟨hh, hh'⟩)`.
+Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the first alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Or.inl (uB_neg S p F v ε j hj a h hh)`. Take `⟨ε1, hε1, hx, hx'⟩` from `nv_pair (uB_nv hB F hF v ε hε j hj a h) (uB_nv hB F hF v ε hε j hj a h')`. Establish `hwx` using `PBFV.waveG_nice ((p v).T.bs j) ε1 s a _ hx`. Establish `lhs0 : (p v).form j hj a (KB.waveG ((p v).T.bs j) s a (uB S p F v ε j hj a h)) (uB S p F v ε j hj a h') = 0`. Break down `h0 with h0 | h0` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, PBG.waveG_zero, form_zero_l (p v) j hj a _ hx']`. Rewrite using `[h0, form_zero_r (p v) j hj a _ hwx]`. Rewrite using `[lhs0, mul_zero]`. Use `symm`. Use `Finset.sum_eq_zero fun n _ => ?_` and prove the remaining obligations.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `set ys := List.ofFn fun b => grid b (n b) with hys`. Take `⟨ε3, hε3, hp, hm⟩` from `nv_pair (uB_nv hB F hF v ε hε j hj (KB.plusW ys a) h) (uB_nv hB F hF v ε hε j hj (KB.minusW ys a) h')`. Establish `hwp` using `PBFV.waveG_nice ((p v).T.bs j) ε3 s _ _ hp`. Distinguish the cases in `hh : D.IsLocPt h j`. Rewrite using `[uB_neg S p F v ε j hj (KB.minusW ys a) h' fun hh' => hloc ⟨hh, hh'⟩, pj_zero_r (p v) j hj a ys _ hwp, mul_zero]`.
-
-Rewrite using `[uB_neg S p F v ε j hj (KB.plusW ys a) h hh, PBG.waveG_zero, pj_zero_l (p v) j hj a ys _ hm, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_uB (hDW : KB.DegWave) (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀)
     (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)))
@@ -199,7 +197,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   {f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} {χ : ℝ → ℝ} {A₀ : ℝ}
 
 /- English proof (translation)
-Establish `hgpos` using `g_pos_of_built hB`. Establish `hrd` using `PBD.rd_pos' E`. Unfold `ΓS`. Conclude with `PBD.gamLev_pos _ _ _ _ (by unfold D.kapG; positivity) (by unfold D.deG; positivity) _`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gam_pos (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (j : ℕ) : 0 < ΓS S j := by
   have hgpos := g_pos_of_built hB
@@ -214,9 +212,7 @@ def uY (S : C.HidaSetting E Wp Wq) (p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v))
   if h ∈ Y then uB S p F v ε j hj w h else 0
 
 /- English proof (translation)
-Take `⟨ε0, hε0, hall⟩` from `nv_common Y (uB S p F v ε j hj w) (fun h _ => uB_nv hB F hF v ε hε j hj w h)`. Use `⟨ε0, hε0, fun h => ?_⟩` and prove the remaining obligations. Unfold `uY`. Use `split_ifs with hh`. Conclude with `hall h hh`.
-
-Conclude with `nv_zero`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem uY_nv (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀)
     (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)))
@@ -231,7 +227,7 @@ theorem uY_nv (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀)
   · exact nv_zero
 
 /- English proof (translation)
-Unfold `uY`. Rewrite using `[if_pos hh]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem uY_mem (S : C.HidaSetting E Wp Wq) (p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v)))
     (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) (v : Fin S.f) (ε : ℝ) (j : ℕ)
@@ -240,11 +236,11 @@ theorem uY_mem (S : C.HidaSetting E Wp Wq) (p : ∀ v, KB.Pl (D.parOf S v) (Wp (
   unfold uY; rw [if_pos hh]
 
 /- English proof (translation)
-Establish `hB'` using `hB`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hv⟩` from `hB'`. Take `⟨hl0, -, -, -, -⟩` from `hv v`. Establish `hw' : KB.CutWord (D.parOf S v) (p v).l0 w` using `by rw [hl0]; exact hw`. Take `⟨ε0, hε0, hu⟩` from `uY_nv hB F hF v ε hε j hj w Y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set c0 : ℝ := 1 / (ΓS S j * S.sizeAt v w) with hc0`. Establish `hc0n : 0 ≤ c0`. Use `gam_pos hB j` as an intermediate fact. Use `sizeAt_nonneg S v w` as an intermediate fact. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Use `set Dv := NV ((p v).T.bs j) ε0 (S := Fin w.length) with hDv`. Establish `hG` using `gram_psd Dv (fun x y => (c0 : ℂ) * (p v).form j hj w x y) nv_zero (fun x y hx hy => nv_add hx hy) (fun c x hx => nv_smul c hx) (fun x₁ x₂ y c h₁ h₂ hy => by simp only [form_sl (p v) j hj w x₁ x₂ y c h₁ h₂ hy]; ring) (fun x y₁ y₂ c hx h₁ h₂ => by simp only [form_sr (p v) j hj w x …`. Use `psd_congr (fun x hx y hy => ?_) hG` and prove the remaining obligations. Use `show (c0 : ℂ) * (p v).form j hj w (uY S p F v ε j hj w Y x) (uY S p F v ε j hj w Y y) = _`. Rewrite using `[uY_mem S p F v ε j hj w Y x hx, uY_mem S p F v ε j hj w Y y hy, gN_uB hB F hF v ε hε j hj w x y]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gN_psd (hA : P5.ThmPActual) (hFP : FormPos) (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀)
     (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)))
@@ -273,11 +269,11 @@ theorem gN_psd (hA : P5.ThmPActual) (hFP : FormPos) (hB : KB.IsLeadingFormSettin
   rw [uY_mem S p F v ε j hj w Y x hx, uY_mem S p F v ε j hj w Y y hy, gN_uB hB F hF v ε hε j hj w x y]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[PBA.blockPSD_iff]`. Use `psd_congr (fun x hx y hy => ?_) h` and prove the remaining obligations. Consider the cases of `x with`. Consider the case `inl x`. Consider the cases of `y with`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Consider the case `inl y => exact ha x (Finset.inl_mem_disjSum.1 hx) y (Finset.inl_mem_disjSum.1 hy)`. Consider the case `inr y => exact hw x (Finset.inl_mem_disjSum.1 hx) y (Finset.inr_mem_disjSum.1 hy)`. Consider the case `inr x`. Consider the cases of `y with`. Consider the case `inl y => show conj (w y x) = conj (w' y x)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Rewrite using `[hw y (Finset.inl_mem_disjSum.1 hy) x (Finset.inr_mem_disjSum.1 hx)]`. Consider the case `inr y => exact hb x (Finset.inr_mem_disjSum.1 hx) y (Finset.inr_mem_disjSum.1 hy)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem blockPSD_congr {α : Type} {Y : Finset α} {a a' b b' w w' : α → α → ℂ}
     (ha : ∀ x ∈ Y, ∀ y ∈ Y, a x y = a' x y) (hw : ∀ x ∈ Y, ∀ y ∈ Y, w x y = w' x y)
@@ -299,7 +295,7 @@ theorem blockPSD_congr {α : Type} {Y : Finset α} {a a' b b' w w' : α → α �
 end kern
 
 /- English proof (translation)
-The claim follows from `|∏ b, F7.lagCo (grid b) (n b)| / F7.thGrid grid n = ∏ b, ∑ i, |F7.lagCo (grid b) i| := by have hs : ∀ b, 0 < ∑ i, |F7.lagCo (grid b) i| := fun b => lt_of_lt_of_le (abs_pos.2 (PBD.lagCo_ne_zero _ (hinj b) (n b))) (Finset.single_le_sum (f := fun i => |F7.lagCo (grid b) i|) (fun i _ …`.
+A detailed English derivation is pending.
 -/
 theorem lam_div_theta {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ) (hinj : ∀ b, Function.Injective (grid b))
     (n : Fin K → Fin (d + 1)) :
@@ -317,11 +313,11 @@ theorem lam_div_theta {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ) (hinj :
   field_simp [(hl b).ne', (hs b).ne']
 
 /- English proof (translation)
-Establish `hQ : 0 < ∏ b, qv (ys b)` using `Finset.prod_pos fun b _ => hq b`. Establish `hPp : 0 < ∏ b, |Pv (ys b)|` using `Finset.prod_pos fun b _ => abs_pos.2 (hP b)`. Establish `hPm : 0 < ∏ b, |Pv (ys b + 1)|` using `Finset.prod_pos fun b _ => abs_pos.2 (hP' b)`. Establish `e : (Λ * T ^ K * (1 / (Γ * sa))) ^ 2 / ((∏ b, qv (ys b)) * (1 / (Γ * ((∏ b, |Pv (ys b)|) * sa))) * (1 / (Γ * ((∏ b, |Pv (ys b + 1)|) * sa)))) = (Λ * T ^ K) ^ 2 * ∏ b, (|Pv (ys b) * Pv (ys b + 1)| / qv (ys b))`. Rewrite using `[Finset.prod_div_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [abs_mul, Finset.prod_mul_distrib]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Establish `hprod : ∏ b, (|Pv (ys b) * Pv (ys b + 1)| / qv (ys b)) ≤ (B ^ 2) ^ K`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h0 : 0 ≤ Λ * T ^ K * B ^ K` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem ratio_bound {K : ℕ} (ys : Fin K → ℝ) (Pv qv : ℝ → ℝ) (Λ T Γ sa B Xc : ℝ) (hΓ : 0 < Γ) (hsa : 0 < sa)
     (hq : ∀ b, 0 < qv (ys b)) (hP : ∀ b, Pv (ys b) ≠ 0) (hP' : ∀ b, Pv (ys b + 1) ≠ 0)

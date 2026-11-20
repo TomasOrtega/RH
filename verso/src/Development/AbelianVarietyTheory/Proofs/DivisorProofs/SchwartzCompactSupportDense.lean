@@ -7,7 +7,7 @@ open scoped SchwartzMap
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V _ _ _ f`. Conclude with `schwartz_dense_hasCompactSupport f`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem schwartz_mem_closure_hasCompactSupport :
     ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (f : SchwartzMap V ℂ),

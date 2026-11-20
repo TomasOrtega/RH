@@ -16,13 +16,9 @@ noncomputable section
 namespace GlobalTheory.FlagPtDescent
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Use `haveI hcl : IsAlgClosure ℚ Qb := algebraicClosure.isAlgClosure ℚ ℂ`. Use `haveI : IsAlgClosed Qb := hcl.isAlgClosed`. Use `haveI : CharZero K := RingHom.charZero io`. Use `haveI : Algebra.IsAlgebraic ℚ Qb := hcl.isAlgebraic`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `haveI : Algebra.IsAlgebraic K Qb := Algebra.IsAlgebraic.tower_top (K := ℚ) K`. Use `haveI : IsAlgClosure K Qb := ⟨inferInstance, inferInstance⟩`. Use `haveI : IsGalois K Qb := IsAlgClosure.isGalois K Qb`. Establish `hmem : ∀ r, ψ r ∈ io.range` using `fun r => by`. Establish `h1 : ψ r ∈ (⊥ : IntermediateField K Qb)` using `(InfiniteGalois.mem_bot_iff_fixed (ψ r)).2 fun γ => RingHom.congr_fun (h γ.toRingEquiv (RingHom.ext fun a => γ.commutes a)) r`.
-
-Take `⟨a, ha⟩` from `IntermediateField.mem_bot.1 h1`. Conclude with `⟨a, ha⟩`. Set `e : K ≃+* io.range` to `RingEquiv.ofBijective io.rangeRestrict ⟨fun a b hab => io.injective (congrArg Subtype.val hab), io.rangeRestrict_surjective⟩`. Use `⟨e.symm.toRingHom.comp (ψ.codRestrict io.range hmem), RingHom.ext fun r => ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val (e.apply_symm_apply (ψ.codRestrict io.range hmem r))` as an intermediate fact.
-
-Conclude with `this`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_factor_of_fixed {K : Type} [Field K] (io : K →+* Qb) {R : Type} [CommRing R] (ψ : R →+* Qb)
     (h : ∀ γ : Qb ≃+* Qb, (γ : Qb →+* Qb).comp io = io → (γ : Qb →+* Qb).comp ψ = ψ) :
@@ -56,13 +52,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
 
 /- English proof (translation)
-Take `⟨f', hf'⟩` from `f.exists_isMap ψK hφ hx`. Establish `hφL : φL = io.comp fK` using `by rw [hT.2.1, hφ]; rfl`. Establish `hxL : xL = spMap io ≫ xK`. Rewrite using `[hT.1, hx, ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, Category.assoc]`. Take `⟨f'', hf''⟩` from `f'.exists_isMap io hφL hxL`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hff : f.IsMap (io.comp ψK) f''` using `fun τ i => by`. Rewrite using `[hf'' τ i, hf' τ i, GlobalTheory.GradedPieces.dual_comp]`. Establish `key` using `fun τ => hT.co τ hff`. Establish `hm` using `fun τ => EigFrame.IsMap.co τ hf'' hg hxL`. Establish `hz : ∀ τ a i, i < a → f'.co g τ a i = 0` using `fun τ a i h => io.injective (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_zero, ← Matrix.map_apply (f := io), ← hm τ]`. Conclude with `(key τ).1 a i h)`. Establish `hd : ∀ τ i, f'.co g τ i i ≠ 0` using `fun τ i h0 => (t' τ i).ne_zero (by`. Rewrite using `[← (key τ).2 i, hm τ, Matrix.map_apply, h0, map_zero])`. Use `⟨fun τ i => Units.mk0 _ (hd τ i), hx, hφ, fun τ i => ⟨fun a => f'.co g τ a i, rfl, fun k hk => hz τ k i hk, ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← funext (hf' τ)]`. Conclude with `f'.co_spec g τ i`.
+A detailed English derivation is pending.
 -/
 theorem tri_descent {R K L : Type} [CommRing R] [Field K] [Field L] {φ₁ : c.F →+* R} {x₁ : Sp R ⟶ Z.X}
     (f : EigFrame Z φ₁ x₁) (ψK : R →+* K) (io : K →+* L) {fK : c.F →+* K} {xK : Sp K ⟶ Z.X} (g : EigFrame Z fK xK)
@@ -93,25 +89,23 @@ namespace GlobalTheory.LieSmooth
 open GlobalTheory.FlagPtDescent
 
 /- English proof (translation)
-Introduce `D A N j S κ s Φ y K _ _ io fK yK hy hstr g hg`. Use `haveI : IsAlgClosed Qb := (algebraicClosure.isAlgClosure ℚ ℂ).isAlgClosed`. Take `⟨p₀, hp₀π, hp₀c, hp₀b⟩` from `liesUnder_basePt Φ y`. Establish `hfK : y.fK = io.comp fK` using `EigLoc.spMap_inj (by`. Rewrite using `[← y.y_over, ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, ← hstr, ← hy, Category.assoc])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfix : ∀ γ : Qb ≃+* Qb, (γ : Qb →+* Qb).comp io = io → spMap (γ : Qb →+* Qb) ≫ p₀ = p₀`. Introduce `γ hγ`. Establish `hyγ : y.y = spMap (γ : Qb →+* Qb) ≫ y.y`. Rewrite using `[← hy, ← Category.assoc, ← ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, hγ]`. Establish `hfr : y.frame.IsMap (γ : Qb →+* Qb) y.frame` using `fun τ i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg τ i, GlobalTheory.GradedPieces.dual_comp, hγ]`. Establish `hc` using `GlobalTheory.GalCarryBC.carries_map _ (γ : Qb →+* Qb) hp₀c hfr (by rw [hfK, ← RingHom.comp_assoc, hγ]) (by rw [← Category.assoc, ← hyγ])`. Take `⟨_, _, hu⟩` from `Φ.lifts Qb y.fK y.y y.y_over y.frame`. Establish `h1` using `hu ⟨compPt s y, spMap (γ : Qb →+* Qb) ≫ p₀⟩ ⟨by rw [Category.assoc, hp₀π, ← hyγ], hc⟩`. Establish `h2` using `hu ⟨compPt s y, p₀⟩ ⟨hp₀π, hp₀c⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `eq_of_heq (Sigma.mk.inj (h1.trans h2.symm)).2`. Take `⟨y₁, ψ, φ₁, f, t, t', hp₀, hf0, hfy⟩` from `hp₀c`. Establish `hψ : ∀ γ : Qb ≃+* Qb, (γ : Qb →+* Qb).comp io = io → (γ : Qb →+* Qb).comp ψ = ψ`. Introduce `γ hγ`. Apply `EigLoc.spMap_inj` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Mono (stalkPt (Φ.C (compPt s y)).Y y₁) := inferInstanceAs (Mono (Scheme.fromSpecStalk _ y₁))`. Apply `(cancel_mono (stalkPt (Φ.C (compPt s y)).Y y₁)).1` to reduce the goal to its premises. Rewrite using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, Category.assoc, ← hp₀, hfix γ hγ]`. Take `⟨ψK, hψK⟩` from `exists_factor_of_fixed io ψ hψ`. Establish `hp₀' : p₀ = spMap io ≫ spMap ψK ≫ stalkPt (Φ.C (compPt s y)).Y y₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hp₀, ← hψK, ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, Category.assoc]`. Use `haveI : Epi (spMap io) := Flat.epi_of_flat_of_surjective _`. Establish `hπ : (spMap ψK ≫ stalkPt (Φ.C (compPt s y)).Y y₁) ≫ (Φ.C (compPt s y)).π = yK`. Apply `(cancel_epi (spMap io)).1` to reduce the goal to its premises. Rewrite using `[hy, ← hp₀π, hp₀']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Category.assoc]`. Use `⟨spMap ψK ≫ stalkPt (Φ.C (compPt s y)).Y y₁, hπ, ?_, ?_⟩` and prove the remaining obligations. Establish `hφ : fK = ψK.comp φ₁`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `io.injective` to reduce the goal to its premises. Use `RingHom.congr_fun hfy.2.1 a` as an intermediate fact. Rewrite `this` using `[hfK, ← hψK]`. Conclude with `this`. Establish `hx : yK ≫ genι s.T.Z = spMap ψK ≫ stalkPt (Φ.C (compPt s y)).Y y₁ ≫ (Φ.C (compPt s y)).π ≫ genι s.T.Z`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[← hπ]`. Simplify using `only [Category.assoc]`. Rewrite `hfy` using `[← hψK]`. Take `⟨t'', ht''⟩` from `tri_descent f ψK io g hg hfy hφ hx`. Conclude with `⟨y₁, ψK, φ₁, f, t, t'', rfl, hf0, ht''⟩`.
-
-Rewrite using `[← hp₀b, hp₀'] show (spMap ψK ≫ stalkPt _ y₁) (IsLocalRing.closedPoint K) = (spMap io ≫ spMap ψK ≫ stalkPt _ y₁) (IsLocalRing.closedPoint Qb) show _ = (spMap ψK ≫ stalkPt _ y₁) ((spMap io) (IsLocalRing.closedPoint Qb))`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem basePt_definedOver : ∀ {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} (Φ : s.Flag) (y : Pt s) {K : Type} [Field K] [NumberField K] (io : K →+* Qb) (fK : κ.c.F →+* K) (yK : Sp K ⟶ gen s.T.Z), spMap io ≫ yK = y.y → yK ≫ genStr s.T.Z = spMap fK → ∀ g : EigFrame s.T.Z fK (yK ≫ genι s.T.Z), g.IsMap io y.frame → ∃ p : Sp K ⟶ (Φ.C (compPt s y)).Y.X, p ≫ (Φ.C (compPt s y)).π = yK ∧ (Φ.C (compPt s y)).Carries p g ∧ below p = basePt Φ y := by
   intro D A N j S κ s Φ y K _ _ io fK yK hy hstr g hg

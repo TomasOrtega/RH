@@ -19,13 +19,13 @@ section Places
 variable {R : Ranks} {H : Host R}
 
 /- English proof (translation)
-The claim follows from `(HalfPlaces.isConjPl_iff H w w').trans (Chr.conjPl_iff_smul H.conj w w').symm`.
+A detailed English derivation is pending.
 -/
 theorem isConjPl_iff_conjPl (w w' : PlE H) : IsConjPl H w w' ↔ Chr.ConjPl H.conj.toRingEquiv w w' :=
   (HalfPlaces.isConjPl_iff H w w').trans (Chr.conjPl_iff_smul H.conj w w').symm
 
 /- English proof (translation)
-Take `⟨c, hc, hcm, -⟩` from `GlobalTheory.Mem.HostCM.host_cm R H`. Rewrite using `[Chr.under_eq_iff_conjPl c hcm.rank hcm.ne, isConjPl_iff_conjPl]`. Establish `e : c.toRingEquiv = H.conj.toRingEquiv` using `RingEquiv.ext hc`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem under_eq_iff (w w' : PlE H) : w'.under (𝓞 H.F) = w.under (𝓞 H.F) ↔ w' = w ∨ IsConjPl H w w' := by
   obtain ⟨c, hc, hcm, -⟩ := GlobalTheory.Mem.HostCM.host_cm R H
@@ -34,7 +34,7 @@ theorem under_eq_iff (w w' : PlE H) : w'.under (𝓞 H.F) = w.under (𝓞 H.F) �
   rw [e]
 
 /- English proof (translation)
-Use `show algebraMap (𝓞 H.F) (𝓞 H.E) ((p : ℕ) : 𝓞 H.F) ∈ w.asIdeal ↔ _`. Rewrite using `[map_natCast]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem under_mem {p : ℕ} {w : PlE H} : w.under (𝓞 H.F) ∈ placesOver H.F p ↔ w ∈ placesOver H.E p := by
   show algebraMap (𝓞 H.F) (𝓞 H.E) ((p : ℕ) : 𝓞 H.F) ∈ w.asIdeal ↔ _
@@ -42,7 +42,7 @@ theorem under_mem {p : ℕ} {w : PlE H} : w.under (𝓞 H.F) ∈ placesOver H.F 
   rfl
 
 /- English proof (translation)
-Use `v.isPrime` as an intermediate fact. Take `⟨⟨W, hW, hWv⟩⟩` from `(inferInstance : Nonempty (v.asIdeal.primesOver (𝓞 H.E)))`. Conclude with `⟨⟨W, hW, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot W⟩, HeightOneSpectrum.ext hWv.over.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_under (v : HeightOneSpectrum (𝓞 H.F)) : ∃ w : PlE H, w.under (𝓞 H.F) = v := by
   have := v.isPrime
@@ -50,7 +50,7 @@ theorem exists_under (v : HeightOneSpectrum (𝓞 H.F)) : ∃ w : PlE H, w.under
   exact ⟨⟨W, hW, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot W⟩, HeightOneSpectrum.ext hWv.over.symm⟩
 
 /- English proof (translation)
-Establish `h1` using `P.pb_over k`. Rewrite `h1` using `[← (show w.under (𝓞 H.K) = P.pb k from h)]`. Establish `h2 : algebraMap (𝓞 H.K) (𝓞 H.E) ((H.g k : ℕ) : 𝓞 H.K) ∈ w.asIdeal` using `h1`. Rewrite `h2` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem div_over (P : PiBar H) {k : Fin 2} {w : PlE H} (h : P.Div k w) : w ∈ placesOver H.E (H.g k) := by
   have h1 := P.pb_over k
@@ -59,7 +59,7 @@ theorem div_over (P : PiBar H) {k : Fin 2} {w : PlE H} (h : P.Div k w) : w ∈ p
   rwa [map_natCast] at h2
 
 /- English proof (translation)
-The claim follows from `((Chr.splitsC_main R H (H.g k) (H.g_prime k) hs w hw).2.2.2 (P.pb k) (P.pb_over k) w' ((isConjPl_iff_conjPl w w').1 h)).2`.
+A detailed English derivation is pending.
 -/
 theorem div_iff_not_div (P : PiBar H) {k : Fin 2} (hs : (placesOver H.E (H.g k)).ncard = Module.finrank ℚ H.E)
     {w w' : PlE H} (hw : w ∈ placesOver H.E (H.g k)) (h : IsConjPl H w w') : P.Div k w ↔ ¬ P.Div k w' :=
@@ -67,7 +67,7 @@ theorem div_iff_not_div (P : PiBar H) {k : Fin 2} (hs : (placesOver H.E (H.g k))
     ((isConjPl_iff_conjPl w w').1 h)).2
 
 /- English proof (translation)
-Introduce `h` and use `(div_iff_not_div P hs (div_over P hw) h).1 hw hw'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isConjPl (P : PiBar H) {k : Fin 2} (hs : (placesOver H.E (H.g k)).ncard = Module.finrank ℚ H.E)
     {w w' : PlE H} (hw : P.Div k w) (hw' : P.Div k w') : ¬ IsConjPl H w w' :=
@@ -77,16 +77,16 @@ def below {p : ℕ} {I : Type} (pl : I → PlE H) (h : ∀ i, pl i ∈ placesOve
   ⟨(pl i).under (𝓞 H.F), under_mem.2 (h i)⟩
 
 /- English proof (translation)
-Introduce `i j e` and use `((under_eq_iff (pl j) (pl i)).1 (congrArg Subtype.val e)).elim (fun e => h1 e) fun e => absurd e (h2 j i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem below_injective {p : ℕ} {I : Type} (pl : I → PlE H) (h : ∀ i, pl i ∈ placesOver H.E p)
     (h1 : Function.Injective pl) (h2 : ∀ i j, ¬ IsConjPl H (pl i) (pl j)) : Function.Injective (below pl h) :=
   fun i j e => ((under_eq_iff (pl j) (pl i)).1 (congrArg Subtype.val e)).elim (fun e => h1 e) fun e => absurd e (h2 j i)
 
 /- English proof (translation)
-Take `⟨e, h, h1, h2, h3⟩` from `HalfPlaces.exists_places_cover H hp hs`. Establish `hb : Function.Bijective (below e h)`. Use `⟨below_injective e h h1 h2, fun v => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `exists_under v.1`. Take `⟨i, hi⟩` from `h3 w (under_mem.1 (hw ▸ v.2))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨i, Subtype.ext (((under_eq_iff (e i) w).2 hi).symm.trans hw)⟩`. Rewrite using `[← Nat.card_eq_of_bijective _ hb, Nat.card_eq_fintype_card, Fintype.card_fin]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_placesOver {p : ℕ} (hp : p.Prime) (hs : (placesOver H.E p).ncard = Module.finrank ℚ H.E) :
     Nat.card (placesOver H.F p) = R.f := by
@@ -99,7 +99,7 @@ theorem card_placesOver {p : ℕ} (hp : p.Prime) (hs : (placesOver H.E p).ncard 
   rw [← Nat.card_eq_of_bijective _ hb, Nat.card_eq_fintype_card, Fintype.card_fin]
 
 /- English proof (translation)
-Establish `hc` using `card_placesOver hp hs`. Use `haveI : Finite (placesOver H.F p) := Nat.finite_of_card_ne_zero (hc ▸ (GaloisStage.f_pos R).ne')`. Conclude with `(Nat.bijective_iff_injective_and_card _).2 ⟨below_injective pl h h1 h2, by rw [hc, Nat.card_eq_fintype_card, hI]⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem below_bijective {p : ℕ} (hp : p.Prime) (hs : (placesOver H.E p).ncard = Module.finrank ℚ H.E)
     {I : Type} [Fintype I] (hI : Fintype.card I = R.f) (pl : I → PlE H) (h : ∀ i, pl i ∈ placesOver H.E p)
@@ -110,11 +110,11 @@ theorem below_bijective {p : ℕ} (hp : p.Prime) (hs : (placesOver H.E p).ncard 
     ⟨below_injective pl h h1 h2, by rw [hc, Nat.card_eq_fintype_card, hI]⟩
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `exists_under v.1`. Establish `hex : ∃ w : PlE H, P.Div k w ∧ w.under (𝓞 H.F) = v`. Distinguish the cases in `h : P.Div k w`. Conclude with `⟨w, h, hw⟩`. Take `⟨w', hw', -⟩` from `Chr.existsUnique_conjPl H.conj.toRingEquiv w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hc` using `(isConjPl_iff_conjPl w w').2 hw'`. Use `⟨w', ?_, ((under_eq_iff w w').2 (Or.inr hc)).trans hw⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h'`. Conclude with `h ((div_iff_not_div P hs (under_mem.1 (hw ▸ v.2)) hc).2 h')`. Take `⟨a, ha⟩` from `hex`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, ha, fun b hb => ?_⟩` and prove the remaining obligations. Conclude with `((under_eq_iff a b).1 (hb.2.trans ha.2.symm)).elim id fun e => absurd e (not_isConjPl P hs ha.1 hb.1)`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_div (P : PiBar H) {k : Fin 2} (hs : (placesOver H.E (H.g k)).ncard = Module.finrank ℚ H.E)
     (v : placesOver H.F (H.g k)) : ∃! w : PlE H, P.Div k w ∧ w.under (𝓞 H.F) = v := by
@@ -135,19 +135,19 @@ def above (P : PiBar H) {k : Fin 2} (hs : (placesOver H.E (H.g k)).ncard = Modul
     (v : placesOver H.F (H.g k)) : PlE H := (existsUnique_div P hs v).choose
 
 /- English proof (translation)
-The claim follows from `(existsUnique_div P hs v).choose_spec.1.1`.
+A detailed English derivation is pending.
 -/
 theorem above_div (P : PiBar H) {k : Fin 2} (hs : (placesOver H.E (H.g k)).ncard = Module.finrank ℚ H.E)
     (v : placesOver H.F (H.g k)) : P.Div k (above P hs v) := (existsUnique_div P hs v).choose_spec.1.1
 
 /- English proof (translation)
-The claim follows from `(existsUnique_div P hs v).choose_spec.1.2`.
+A detailed English derivation is pending.
 -/
 theorem above_under (P : PiBar H) {k : Fin 2} (hs : (placesOver H.E (H.g k)).ncard = Module.finrank ℚ H.E)
     (v : placesOver H.F (H.g k)) : (above P hs v).under (𝓞 H.F) = v := (existsUnique_div P hs v).choose_spec.1.2
 
 /- English proof (translation)
-Introduce `v v' e` and use `Subtype.ext (by rw [← above_under P hs v, e, above_under])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem above_injective (P : PiBar H) {k : Fin 2} (hs : (placesOver H.E (H.g k)).ncard = Module.finrank ℚ H.E) :
     Function.Injective (above P hs) :=
@@ -165,13 +165,13 @@ def charLab (L : LabelDatum g) (ω : (ZMod g)ˣ →* ℂˣ) : (ZMod g)ˣ :=
   Units.mk0 (GLp.Model.isCharLab_exists L ω).choose (GLp.Model.isCharLab_exists L ω).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(GLp.Model.isCharLab_exists L ω).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem isCharLab_charLab (L : LabelDatum g) (ω : (ZMod g)ˣ →* ℂˣ) : IsCharLab L ω (charLab L ω) :=
   (GLp.Model.isCharLab_exists L ω).choose_spec
 
 /- English proof (translation)
-Use `⟨Units.ne_zero _, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.pow_apply, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, map_pow, map_pow, (isCharLab_charLab L ω).2 u hu]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCharLab_pow (L : LabelDatum g) (ω : (ZMod g)ˣ →* ℂˣ) (n : ℕ) :
     IsCharLab L (ω ^ n) ((charLab L ω ^ n : (ZMod g)ˣ) : ZMod g) := by
@@ -180,7 +180,7 @@ theorem isCharLab_pow (L : LabelDatum g) (ω : (ZMod g)ˣ →* ℂˣ) (n : ℕ) 
     (isCharLab_charLab L ω).2 u hu]
 
 /- English proof (translation)
-Take `⟨u, hu, ho⟩` from `GLp.Model.exists_gen L`. Set `T : (ZMod g)ˣ →* ℂ` to `L.teich.comp ((algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)).toMonoidHom.comp (Units.coeHom _))`. Establish `hT : Function.Injective T` using `fun a b e => Units.ext <| (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)).injective (L.teich_inj _ _ (by simp) (by simp) e)`. Establish `e : T (charLab L ω) = (ω u : ℂ)` using `((isCharLab_charLab L ω).2 u hu).symm`. Rewrite using `[← orderOf_injective T hT, e, orderOf_units, orderOf_injective ω h, ho]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem orderOf_charLab (L : LabelDatum g) {ω : (ZMod g)ˣ →* ℂˣ} (h : Function.Injective ω) :
     orderOf (charLab L ω) = g - 1 := by
@@ -192,9 +192,9 @@ theorem orderOf_charLab (L : LabelDatum g) {ω : (ZMod g)ˣ →* ℂˣ} (h : Fun
   rw [← orderOf_injective T hT, e, orderOf_units, orderOf_injective ω h, ho]
 
 /- English proof (translation)
-Take `⟨u, hu, ho⟩` from `GLp.Model.exists_gen L`. Establish `htop : Subgroup.zpowers u = ⊤`. Apply `Subgroup.eq_top_of_card_eq` to reduce the goal to its premises. Rewrite using `[Nat.card_zpowers, ho, Nat.card_eq_fintype_card, ZMod.card_units]`. Take `⟨m, rfl⟩ : ∃ m : ℕ, u ^ m = a` from `mem_powers_iff_mem_zpowers.2 (htop ▸ Subgroup.mem_top a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hcp : (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) c) ^ (g ^ 1 - 1) = 1`. Rewrite using `[← map_pow, pow_one, ZMod.pow_card_sub_one_eq_one hc.1, map_one]`. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, hu, LabelModel.thetaOf_pow g L one_pos hcp, map_pow, Units.val_pow_eq_pow_val, hc.2 u hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaOf_of_isCharLab (L : LabelDatum g) {χ : (ZMod g)ˣ →* ℂˣ} {c : ZMod g} (hc : IsCharLab L χ c)
     (a : (ZMod g)ˣ) : thetaOf L 1 (algebraMap (ZMod g) _ c) (algebraMap (ZMod g) _ (a : ZMod g)) = ((χ a : ℂˣ) : ℂ) := by

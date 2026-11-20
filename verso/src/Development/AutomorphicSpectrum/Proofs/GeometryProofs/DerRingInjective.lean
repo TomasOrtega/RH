@@ -23,14 +23,14 @@ Both sides reduce to the same expression.
 theorem augPart_coe (f : B) : ((augPart ε f : RingHom.ker ε) : B) = f - algebraMap R B (ε f) := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[augPart_coe, RingHom.mem_ker.mp f.2, map_zero, sub_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem augPart_of_mem (f : RingHom.ker ε) : augPart ε f.1 = f := by
   apply Subtype.ext
   rw [augPart_coe, RingHom.mem_ker.mp f.2, map_zero, sub_zero]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_add, augPart_coe, map_add]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem augPart_add (f g : B) : augPart ε (f + g) = augPart ε f + augPart ε g := by
   apply Subtype.ext
@@ -38,9 +38,9 @@ theorem augPart_add (f g : B) : augPart ε (f + g) = augPart ε f + augPart ε g
   abel
 
 /- English proof (translation)
-Establish `h : augPart ε (r • f) = algebraMap R B r • augPart ε f`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hr : algebraMap R R r = r` using `rfl`. Simplify using `only [Submodule.coe_smul, augPart_coe, smul_eq_mul, Algebra.smul_def, map_mul, AlgHom.commutes, hr]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h, map_smul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem augPart_smul (r : R) (f : B) : (RingHom.ker ε).toCotangent (augPart ε (r • f)) =
     r • (RingHom.ker ε).toCotangent (augPart ε f) := by
@@ -53,9 +53,9 @@ theorem augPart_smul (r : R) (f : B) : (RingHom.ker ε).toCotangent (augPart ε 
   rw [h, map_smul, algebraMap_smul]
 
 /- English proof (translation)
-Establish `hab : ((augPart ε f : B) * (augPart ε g : B)) ∈ RingHom.ker ε` using `Ideal.mul_mem_left _ _ (augPart ε g).2`. Establish `hdec : augPart ε (f * g) = ⟨(augPart ε f : B) * (augPart ε g : B), hab⟩ + algebraMap R B (ε f) • augPart ε g + algebraMap R B (ε g) • augPart ε f`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_add, Submodule.coe_smul, augPart_coe, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h0 : (RingHom.ker ε).toCotangent ⟨(augPart ε f : B) * (augPart ε g : B), hab⟩ = 0`. Rewrite using `[Ideal.toCotangent_eq_zero, pow_two]`. Conclude with `Ideal.mul_mem_mul (augPart ε f).2 (augPart ε g).2`. Rewrite using `[hdec, map_add, map_add, h0, zero_add, map_smul, map_smul, algebraMap_smul, algebraMap_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem augPart_mul (f g : B) : (RingHom.ker ε).toCotangent (augPart ε (f * g)) =
     (ε f) • (RingHom.ker ε).toCotangent (augPart ε g) + (ε g) • (RingHom.ker ε).toCotangent (augPart ε f) := by
@@ -100,7 +100,7 @@ theorem derRing_apply (ψ : (RingHom.ker ε).Cotangent →ₗ[R] V) (f : B) : de
     TrivSqZeroExt.inl (ε f) + TrivSqZeroExt.inr (ψ ((RingHom.ker ε).toCotangent (augPart ε f))) := rfl
 
 /- English proof (translation)
-Rewrite using `[derRing_apply, augPart_of_mem, RingHom.mem_ker.mp f.2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem derRing_of_mem (ψ : (RingHom.ker ε).Cotangent →ₗ[R] V) (f : RingHom.ker ε) :
     derRing ε ψ f.1 = TrivSqZeroExt.inr (ψ ((RingHom.ker ε).toCotangent f)) := by
@@ -108,7 +108,7 @@ theorem derRing_of_mem (ψ : (RingHom.ker ε).Cotangent →ₗ[R] V) (f : RingHo
   simp
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Take `⟨y, rfl⟩` from `Ideal.toCotangent_surjective (RingHom.ker ε) x`. Establish `hy` using `congrArg TrivSqZeroExt.snd (DFunLike.congr_fun h y.1)`. Simplify `hy` using `[derRing_of_mem]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem derRing_injective {ψ ψ' : (RingHom.ker ε).Cotangent →ₗ[R] V} (h : derRing ε ψ = derRing ε ψ') : ψ = ψ' := by
   apply LinearMap.ext
@@ -125,7 +125,7 @@ variable (R : Type) [CommRing R] (V : Type) [AddCommGroup V] [Module R V]
 abbrev opMod : Module Rᵐᵒᵖ V := Module.compHom V ((RingHom.id R).fromOpposite fun _ _ => mul_comm _ _)
 
 /- English proof (translation)
-Conclude with `@IsCentralScalar.mk R V _ (opMod R V).toSMul (fun _ _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem opCentral : @IsCentralScalar R V _ (opMod R V).toSMul := by
   exact @IsCentralScalar.mk R V _ (opMod R V).toSMul (fun _ _ => rfl)
@@ -147,19 +147,19 @@ def kap : TrivSqZeroExt R (R ⧸ I) →ₐ[R] DualNumber (R ⧸ I) where
     refine TrivSqZeroExt.ext ?_ ?_ <;> simp [TrivSqZeroExt.algebraMap_eq_inl']
 
 /- English proof (translation)
-Apply the tactic sequence `refine TrivSqZeroExt.ext ?_ ?_ <;> simp [kap]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kap_inr (q : R ⧸ I) : kap I (TrivSqZeroExt.inr q) = TrivSqZeroExt.inr q := by
   refine TrivSqZeroExt.ext ?_ ?_ <;> simp [kap]
 
 /- English proof (translation)
-Apply the tactic sequence `refine TrivSqZeroExt.ext ?_ ?_ <;> simp [kap, TrivSqZeroExt.algebraMap_eq_inl']`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kap_algebraMap (r : R) : kap I (algebraMap R _ r) = algebraMap (R ⧸ I) (DualNumber (R ⧸ I)) (Ideal.Quotient.mk I r) := by
   refine TrivSqZeroExt.ext ?_ ?_ <;> simp [kap, TrivSqZeroExt.algebraMap_eq_inl']
 
 /- English proof (translation)
-Apply the tactic sequence `refine TrivSqZeroExt.ext ?_ ?_ <;> simp [kap, dualMap]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kap_map (a : DualNumber R) : kap I (TrivSqZeroExt.map (Ideal.Quotient.mkₐ R I).toLinearMap a) =
     dualMap (Ideal.Quotient.mk I) a := by

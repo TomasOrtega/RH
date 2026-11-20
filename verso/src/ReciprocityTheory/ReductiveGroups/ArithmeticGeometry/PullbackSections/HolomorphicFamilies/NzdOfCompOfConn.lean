@@ -10,17 +10,17 @@ namespace ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf
 open NumberField Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.BasicNotions Formalism.MainNotions
 
 /- English proof (translation)
-Introduce `D T h j hj w F σ hσ hne w' G hFG`. Establish `hFc : (F : T.R j) ∈ T.C j w` using `cutR_le T.C j w F.2`. Establish `hGc : (G : T.R j) ∈ T.C j w'` using `cutR_le T.C j w' G.2`. Establish `hmem : (F : T.R j) * (G : T.R j) ∈ cutR T.C j (WeightAlgebra.wadd w w')`. Rewrite using `[cutR_eq T.C hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.toLawsCore.mul j hj w w' _ hFc _ hGc`. Establish `hval : (F : T.R j) * (G : T.R j) = 0`. Establish `h1 : incG deg (cutR T.C j) w F * incG deg (cutR T.C j) w' G = 0` using `hFG`. Rewrite `h1` using `[incG_mul deg (cutR T.C j) (deg_wadd w w') F G hmem]`. Establish `h2` using `incG_inj deg (cutR T.C j) _ (h1.trans (map_zero _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg Subtype.val h2`. Establish `hU` using `h.unf j hj σ hσ`. Establish `hrd : rdU (T.U j σ) (F : T.R j) * rdU (T.U j σ) (G : T.R j) = 0`. Rewrite using `[← rdU_mul, hval, map_zero]`. Establish `hFs` using `fun k => (hU.2.2.2.2.1 _ _ (dom_wtA w) _ (cusp_le_sec _ _ _ _ _ hFc) k).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGs` using `fun k => (hU.2.2.2.2.1 _ _ (dom_wtA w') _ (cusp_le_sec _ _ _ _ _ hGc) k).1`. Establish `hG0 : ∀ k, ∀ y ∈ ((T.U j σ).X k).dom, rdU (T.U j σ) (G : T.R j) k y = 0`. Introduce `k`. Take `⟨x0, hx0, hx0ne⟩` from `hne k`. Conclude with `eq_zero_of_mul_eq_zero (FourierCoefficientDomain.isOpen_dom _) (hc _ _ _) (hFs k) (hGs k) (fun y _ => congrFun (congrFun hrd k) y) hx0 hx0ne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hsup : supN (T.U j σ).X (laU (T.U j σ) (wtA w') w'.n) (rdU (T.U j σ) (G : T.R j)) = 0`. Unfold `supN supE`. Establish `h0 : ∀ p : FPt (T.U j σ).X, ENNReal.ofReal (((T.U j σ).X p.1).pnorm (laU (T.U j σ) (wtA w') w'.n p.1) (rdU (T.U j σ) (G : T.R j) p.1) p.2) = 0`. Introduce `p`. Unfold `Data.pnorm`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hG0 p.1 p.2 p.2.2]`. Simplify using the standard rewrite rules. Simplify using `[h0]`. Conclude with `Subtype.ext (h.supDef j hj _ _ (dom_wtA w') σ hσ _ hGc hsup)`.
+A detailed English derivation is pending.
 -/
 theorem nzdOfComp_of_conn
     (hc : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r), IsPreconnected X.dom) :

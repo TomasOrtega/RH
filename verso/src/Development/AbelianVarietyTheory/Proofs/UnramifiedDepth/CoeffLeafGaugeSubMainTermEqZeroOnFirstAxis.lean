@@ -14,9 +14,9 @@ def VanishesOnFirstAxis (F : MvPowerSeries (ι ⊕ ι') C) : Prop :=
   ∀ μ : ι ⊕ ι' →₀ ℕ, (∀ b, μ (Sum.inr b) = 0) → MvPowerSeries.coeff μ F = 0
 
 /- English proof (translation)
-Introduce `μ hμ`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `Finset.sum_eq_zero fun p hp => ?_` and prove the remaining obligations. Establish `hp'` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`. Rewrite using `[h p.2, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `b`. Establish `h1` using `hμ b`. Rewrite `h1` using `[← hp', Finsupp.add_apply]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem VanishesOnFirstAxis.mul_left {F : MvPowerSeries (ι ⊕ ι') C} (h : VanishesOnFirstAxis F)
     (G : MvPowerSeries (ι ⊕ ι') C) : VanishesOnFirstAxis (G * F) := by
@@ -31,7 +31,7 @@ theorem VanishesOnFirstAxis.mul_left {F : MvPowerSeries (ι ⊕ ι') C} (h : Van
   omega
 
 /- English proof (translation)
-Introduce `μ hμ`. Rewrite using `[map_smul, h μ hμ, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem VanishesOnFirstAxis.smul {F : MvPowerSeries (ι ⊕ ι') C} (h : VanishesOnFirstAxis F)
     (c : C) : VanishesOnFirstAxis (c • F) := by
@@ -39,7 +39,7 @@ theorem VanishesOnFirstAxis.smul {F : MvPowerSeries (ι ⊕ ι') C} (h : Vanishe
   rw [map_smul, h μ hμ, smul_zero]
 
 /- English proof (translation)
-Introduce `μ hμ`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun x _ => h x μ hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem VanishesOnFirstAxis.sum {α : Type} (s : Finset α) {F : α → MvPowerSeries (ι ⊕ ι') C}
     (h : ∀ x, VanishesOnFirstAxis (F x)) : VanishesOnFirstAxis (∑ x ∈ s, F x) := by
@@ -48,9 +48,9 @@ theorem VanishesOnFirstAxis.sum {α : Type} (s : Finset α) {F : α → MvPowerS
   exact Finset.sum_eq_zero fun x _ => h x μ hμ
 
 /- English proof (translation)
-Introduce `μ hμ`. Rewrite using `[MvPowerSeries.coeff_X, if_neg]`. Introduce `h`. Establish `h1` using `hμ b`. Rewrite `h1` using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at h1`.
+Simplify using the standard rewrite rules.
 -/
 theorem vanishes_X_inr (b : ι') :
     VanishesOnFirstAxis (MvPowerSeries.X (Sum.inr b) : MvPowerSeries (ι ⊕ ι') C) := by
@@ -62,7 +62,7 @@ theorem vanishes_X_inr (b : ι') :
   simp at h1
 
 /- English proof (translation)
-Take `⟨K, rfl⟩` from `hd`. Rewrite using `[mul_comm]`. Conclude with `h.mul_left K`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem VanishesOnFirstAxis.of_dvd {F G : MvPowerSeries (ι ⊕ ι') C} (h : VanishesOnFirstAxis F)
     (hd : F ∣ G) : VanishesOnFirstAxis G := by
@@ -71,7 +71,7 @@ theorem VanishesOnFirstAxis.of_dvd {F G : MvPowerSeries (ι ⊕ ι') C} (h : Van
   exact h.mul_left K
 
 /- English proof (translation)
-The claim follows from `(VanishesOnFirstAxis.sum _ fun b => VanishesOnFirstAxis.sum _ fun _ => ((vanishes_X_inr b).mul_left _).smul _).smul _`.
+A detailed English derivation is pending.
 -/
 theorem vanishes_mainM [Fintype ι] [Fintype ι'] (V : VF C) (i : ℕ) (Φ : ι' → ι → C) :
     VanishesOnFirstAxis (mainM V i Φ) :=
@@ -79,13 +79,11 @@ theorem vanishes_mainM [Fintype ι] [Fintype ι'] (V : VF C) (i : ℕ) (Φ : ι'
     ((vanishes_X_inr b).mul_left _).smul _).smul _
 
 /- English proof (translation)
-Introduce `μ hμ`. Unfold `RowData.hM hPullW`. Rewrite using `[MvPowerSeries.coeff_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero (by`. Introduce `w`. Simplify using `[map_sum]))]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `finsum_eq_zero_of_forall_eq_zero fun ν => ?_` and prove the remaining obligations. Distinguish the cases in `hν : ∀ w ∈ ν.support, w.1 = g`. Rewrite using `[X.hL_axes g _ _ ν (Or.inl hν), zero_smul]`. Use `push Not at hν`. Take `⟨w, hw, hg⟩` from `hν`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : VanishesOnFirstAxis ((∑ c : ι, toW g (e c) w • (MvPowerSeries.X (Sum.inl c) : MvPowerSeries (ι ⊕ ι') C)) + ∑ b : ι', toW (1 - g) (v' b) w • (MvPowerSeries.X (Sum.inr b) : MvPowerSeries (ι ⊕ ι') C))`. Establish `h0 : ∀ c, toW g (e c) w = 0` using `fun c => by simp [toW, hg]`. Simplify using `only [h0, zero_smul, Finset.sum_const_zero, zero_add]`. Conclude with `VanishesOnFirstAxis.sum _ fun b => (vanishes_X_inr b).smul _`. Rewrite using `[h1.of_dvd _ μ hμ, smul_zero]`.
-
-Unfold `Finsupp.prod`. Conclude with `(dvd_pow_self _ (Finsupp.mem_support_iff.1 hw)).trans (Finset.dvd_prod_of_mem _ hw)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem vanishes_hM {V : VF C} {d : ℕ} [NeZero d] {I J : Fin 2 → Type} [∀ g, Fintype (I g)]
     [∀ g, Fintype (J g)] (X : RowData C V d I J) (g : Fin 2) (a : ZMod d) (i : ℕ)
@@ -113,7 +111,7 @@ theorem vanishes_hM {V : VF C} {d : ℕ} [NeZero d] {I J : Fin 2 → Type} [∀ 
     exact (dvd_pow_self _ (Finsupp.mem_support_iff.1 hw)).trans (Finset.dvd_prod_of_mem _ hw)
 
 /- English proof (translation)
-Introduce `C _ V d _ I J _ _ X g a i ι ι' _ _ e v' Φ μ hμ`. Rewrite using `[map_sub, vanishes_hM X g a i e v' μ hμ, vanishes_mainM V i Φ μ hμ, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_hM_sub_mainM_eq_zero : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [NeZero d]
     (I J : Fin 2 → Type) [∀ g, Fintype (I g)] [∀ g, Fintype (J g)] (X : RowData C V d I J)

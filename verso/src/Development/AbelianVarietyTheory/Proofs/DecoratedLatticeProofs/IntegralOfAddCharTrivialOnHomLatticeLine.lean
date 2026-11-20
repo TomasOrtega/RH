@@ -15,14 +15,14 @@ open GlobalTheory.FinPl.SuppShift
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, Matrix.single_mul_mul_single, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem single_mul_mul_single {ρ : ℕ} (M : Mx D ρ ρ) (i : Fin ρ) :
     (Matrix.single i i 1 : Mx D ρ ρ) ⬝ (M ⬝ (Matrix.single i i 1 : Mx D ρ ρ)) = Matrix.single i i (M i i) := by
   rw [← Matrix.mul_assoc, Matrix.single_mul_mul_single, one_mul, mul_one]
 
 /- English proof (translation)
-Establish `h : adj (dW.pY ⬝ x) = adj x ⬝ (gA W ⬝ dW.jX)`. Rewrite using `[dW.pY_eq, adj_mul, adj_mul, adj_adj, adj_gA]`. Rewrite using `[pairS, ← Matrix.mul_assoc (gA W), ← Matrix.mul_assoc, ← h, Matrix.trace_mul_single, op_smul_eq_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pairS_single {W W₀ : HSp D} {ρ : ℕ} (dW : HypDec W W₀ ρ) (i : Fin ρ) (c : AE D) (x : Mx D W.rank ρ) :
     pairS W (dW.jX ⬝ (Matrix.single i i c : Mx D ρ ρ)) x = cA D ((dW.pY ⬝ x) i i) * c := by
@@ -34,21 +34,19 @@ theorem pairS_single {W W₀ : HSp D} {ρ : ℕ} (dW : HypDec W W₀ ρ) (i : Fi
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D ψ hψ V V₀ W W₀ ρ dV dW LV LV₀ LW LW₀ v _ hV hW hmV hmW hcols i c hc1 hyp`. Establish `hU : SelfDualAt.cP (· = v) • dV.extX W (dW.jX ⬝ (Matrix.single i i c : Mx D ρ ρ)) ∈ latO V W (LV : Set _) (LW : Set _) (· = v)`. Use `(SelfDualAt.latO_ann_at D ψ hψ V W LV LW hV hW (· = v) _ fun k l => ?_).2 fun u hu => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, Algebra.smul_def]`. Conclude with `Ideal.mul_mem_right _ _ (eps_idAt v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hux` using `LatMem.latO_mxAt hu`. Establish `hfixu : SelfDualAt.cP (· = v) • u = u`. Use extensionality with `k l`. Rewrite using `[Matrix.smul_apply, Algebra.smul_def]`. Conclude with `eps_mul (hux k l)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hπ` using `sandwich_latO hV hW (dW.jY ⬝ (Matrix.single i i 1 : Mx D ρ ρ) ⬝ dW.pY) (fun z hz => by`. Rewrite using `[← Matrix.mulVec_mulVec, single_mulVec', one_mul]`. Conclude with `((hmW z).1 hz).2.1 i)`. Use the proof step `(dV.jY ⬝ (Matrix.single i i 1 : Mx D ρ ρ) ⬝ dV.pY) (fun z hz => by`. Rewrite using `[← Matrix.mulVec_mulVec, single_mulVec', one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `((hmV z).1 hz).2.1 i) hu`. Establish `e : dW.jY ⬝ (Matrix.single i i 1 : Mx D ρ ρ) ⬝ dW.pY ⬝ (u ⬝ (dV.jY ⬝ (Matrix.single i i 1 : Mx D ρ ρ) ⬝ dV.pY)) = dV.extY W (dW.jY ⬝ (Matrix.single i i ((dW.pY ⬝ (u ⬝ dV.jY)) i i) : Mx D ρ ρ))`. Rewrite using `[HypDec.extY_apply, ← single_mul_mul_single]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite `hπ` using `[e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hyp _ (mxAt_mul_left dW.pY (mxAt_mul_right hux dV.jY) i i) hπ`. Rewrite `h1` using `[symplO_eq, hO_extX, pairS_single, HypDec.extY_apply, Matrix.mul_assoc, dV.pY_jY, Matrix.mul_one, ← Matrix.mul_assoc dW.pY dW.jY, dW.pY_jY, Matrix.one_mul, Matrix.single_apply_same]`. Rewrite using `[← SelfDualAt.symplO_smul_swap, hfixu, symplO_eq, hO_extX, pairS_single]`. Conclude with `h1`. Establish `hint : finPart D c ∈ intAE D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `int_of_stable dV hV hmV i hc1 fun a ha => ?_` and prove the remaining obligations. Establish `ha'` using `idAt_of_colMul dV ha`. Establish `h` using `LatMem.latO_maps hV hU ha`. Establish `e : (SelfDualAt.cP (· = v) • dV.extX W (dW.jX ⬝ (Matrix.single i i c : Mx D ρ ρ))) *ᵥ colMul dV.jX i a = colMul dW.jX i (c * a)`. Establish `e0 : SelfDualAt.cP (· = v) • dV.extX W (dW.jX ⬝ (Matrix.single i i c : Mx D ρ ρ)) = eps v • dV.extX W (dW.jX ⬝ (Matrix.single i i c : Mx D ρ ρ))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `k l`. Rewrite using `[Matrix.smul_apply, Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[e0, Matrix.smul_mulVec, HypDec.extX_apply, ← Matrix.mulVec_mulVec, single_mulVec', pX_colMul, ← colMul_mul, eps_mul (Ideal.mul_mem_left _ _ ha')]`. Rewrite `h` using `[e]`.
-
-Conclude with `(hcols i _ (Ideal.mul_mem_left _ _ ha')).2 h`. Use `⟨hc1, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_sub]`. Conclude with `sub_mem hint (int_of_idem (one_mul 1))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_of_psi_line : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (V V₀ W W₀ : HSp D) (ρ : ℕ) (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ ρ) (LV : Lat V) (LV₀ : Lat V₀) (LW : Lat W) (LW₀ : Lat W₀) (v : Pl D), Tame D v → IsSelfDualC V LV → IsSelfDualC W LW → MonoAt dV LV LV₀ v → MonoAt dW LW LW₀ v → ColsAt dV dW.jX LV LW v → ∀ (i : Fin ρ) (c : AE D), c - 1 ∈ idAt D (· = v) → (∀ b ∈ idAt D (· = v), dV.extY W (dW.jY ⬝ Matrix.single i i b) ∈ latO V W (LV : Set _) (LW : Set _) (· = v) → ψ (symplO V W (dV.extX W (dW.jX ⬝ Matrix.single i i c)) (dV.extY W (dW.jY ⬝ Matrix.single i i b))) = 1) → c - 1 ∈ intAt D (· = v) := by
   intro D ψ hψ V V₀ W W₀ ρ dV dW LV LV₀ LW LW₀ v _ hV hW hmV hmW hcols i c hc1 hyp

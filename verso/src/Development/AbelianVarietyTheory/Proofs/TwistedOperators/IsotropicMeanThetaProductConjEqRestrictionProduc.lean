@@ -17,19 +17,19 @@ variable {D : D7}
 local infixl:70 " ⬝ " => HMul.hMul
 
 /- English proof (translation)
-Use `set P : Mx D r V.rank := GlobalTheory.MixModel.rat (adj D C * V.gram) with hP`. Use `set Q : Mx D V'.rank V.rank := GlobalTheory.MixModel.rat (V'.gram⁻¹ * adj D B * V.gram) with hQ`. Establish `hG` using `GlobalTheory.MixModel.gram_conjTranspose V`. Establish `hG'` using `GlobalTheory.MixModel.gramInv_conjTranspose V'`. Establish `hU` using `GlobalTheory.MixModel.gram_isUnit_det V`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC0 : adj D C * V.gram * C = 0` using `hs.frame.2.2`. Establish `hO : adj D C * V.gram * B = 0` using `hs.orth`. Establish `k1 : P ⬝ GlobalTheory.MixModel.giA V ⬝ GlobalTheory.MixModel.adj P = 0`. Rewrite using `[hP, ← GlobalTheory.MixModel.rat_conjTranspose, GlobalTheory.MixModel.giA, ← GlobalTheory.MixModel.rat_mul, ← GlobalTheory.MixModel.rat_mul]`. Establish `: adj D C * V.gram * V.gram⁻¹ * (adj D C * V.gram)ᴴ = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Cᴴ * V.gram * V.gram⁻¹ * (Cᴴ * V.gram)ᴴ = 0`. Express the relevant statement in the definitionally equal form `Cᴴ * V.gram * C = 0 at hC0`. Rewrite using `[Matrix.conjTranspose_mul, hG, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc (Cᴴ * V.gram), ← Matrix.mul_assoc V.gram⁻¹, Matrix.nonsing_inv_mul _ hU, Matrix.one_mul, hC0]`. Rewrite using `[this, GlobalTheory.MixModel.rat_zero]`. Establish `k2 : P ⬝ GlobalTheory.MixModel.giA V ⬝ GlobalTheory.MixModel.adj Q = 0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hP, hQ, ← GlobalTheory.MixModel.rat_conjTranspose, GlobalTheory.MixModel.giA, ← GlobalTheory.MixModel.rat_mul, ← GlobalTheory.MixModel.rat_mul]`. Establish `: adj D C * V.gram * V.gram⁻¹ * (V'.gram⁻¹ * adj D B * V.gram)ᴴ = 0`. Express the relevant statement in the definitionally equal form `Cᴴ * V.gram * V.gram⁻¹ * (V'.gram⁻¹ * Bᴴ * V.gram)ᴴ = 0`. Express the relevant statement in the definitionally equal form `Cᴴ * V.gram * B = 0 at hO`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, hG, hG', Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc (Cᴴ * V.gram), ← Matrix.mul_assoc V.gram⁻¹, Matrix.nonsing_inv_mul _ hU, Matrix.one_mul, ← Matrix.mul_assoc, hO, Matrix.zero_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, GlobalTheory.MixModel.rat_zero]`. Establish `e1 : isoPart V W C (q₀.map (incA D)) = GlobalTheory.MixModel.rat q₀ ⬝ P` using `rfl`. Establish `e2 : isoPart V W C a + midPart V V' W B x = a ⬝ P + x ⬝ Q` using `rfl`. Establish `k3 : P ⬝ GlobalTheory.MixModel.giA V ⬝ GlobalTheory.MixModel.adj (a ⬝ P + x ⬝ Q) = 0`. Rewrite using `[GlobalTheory.MixModel.adj_add, GlobalTheory.MixModel.adj_mul, GlobalTheory.MixModel.adj_mul, Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, k1, k2, Matrix.zero_mul, Matrix.zero_mul, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.MixModel.symplOH_eq, GlobalTheory.MixModel.hO_eq_trace, e1, e2]`. Establish `e3 : GlobalTheory.MixModel.giA V ⬝ (GlobalTheory.MixModel.adj (a ⬝ P + x ⬝ Q) ⬝ (GlobalTheory.MixModel.gA W ⬝ (GlobalTheory.MixModel.rat q₀ ⬝ P))) = (GlobalTheory.MixModel.giA V ⬝ GlobalTheory.MixModel.adj (a ⬝ P + x ⬝ Q) ⬝ GlobalTheory.MixModel.gA W ⬝ GlobalTheory.MixModel.rat q …`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e3, Matrix.trace_mul_comm]`. Establish `e4 : P ⬝ (GlobalTheory.MixModel.giA V ⬝ GlobalTheory.MixModel.adj (a ⬝ P + x ⬝ Q) ⬝ GlobalTheory.MixModel.gA W ⬝ GlobalTheory.MixModel.rat q₀) = (P ⬝ GlobalTheory.MixModel.giA V ⬝ GlobalTheory.MixModel.adj (a ⬝ P + x ⬝ Q)) ⬝ (GlobalTheory.MixModel.gA W ⬝ GlobalTheory.MixModel.rat …`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e4, k3, Matrix.zero_mul, Matrix.trace_zero, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem symplOH_iso_mid {V V' W : HSp D} {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) D.host.E}
     {B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E} (hs : IsIsoSplit V V' C B)
@@ -75,7 +75,7 @@ theorem symplOH_iso_mid {V V' W : HSp D} {r : ℕ} {C : Matrix (Fin V.rank) (Fin
   rw [e4, k3, Matrix.zero_mul, Matrix.trace_zero, map_zero]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨q₀, rfl⟩ a`. Establish `e3 : (incA D).toAddMonoidHom.mapMatrix q₀ = q₀.map (incA D)` using `rfl`. Establish `hadd : isoPart V W C (q₀.map (incA D) + a) = isoPart V W C (q₀.map (incA D)) + isoPart V W C a` using `Matrix.add_mul _ _ _`. Establish `hrat : ratW W V (q₀ * (adj D C * V.gram)) = isoPart V W C (q₀.map (incA D))` using `Matrix.map_mul`. Rewrite using `[e3, hadd, add_assoc, ← hrat, hf.quasi, hrat, symplOH_iso_mid hs, neg_zero, AddChar.map_zero_eq_one, one_mul]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem iso_periodic {V V' W : HSp D} {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) D.host.E}
     {B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E} (hs : IsIsoSplit V V' C B) {ψ : AddChar (AF D.host.F) ℂ}
@@ -94,25 +94,19 @@ end GlobalTheory.IsoMeanProd
 namespace GlobalTheory.IsoMeanProd
 
 /- English proof (translation)
-Introduce `D V V' W r C B hs ψ hψ μ 𝓨 hμ μ' 𝓕' hμ' h𝓕' F G hF hG`. Establish `hμ1 : IsCovolOne (GlobalTheory.MixModel.ratMx D W.rank r) μ 𝓨` using `hμ`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.MixModel.lattice_Mx D W.rank r`. Take `⟨j1, j2, j3, j4, j5, -⟩` from `GlobalTheory.MixModel.lattice_Mx D W.rank V'.rank`. Use `haveI : BorelSpace (Mx D W.rank r) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : BorelSpace (WO V' W) := ⟨rfl⟩`. Use `haveI hfin1 : IsFiniteMeasure (μ.restrict 𝓨) := ⟨by rw [Measure.restrict_apply_univ, hμ.2.2]; exact ENNReal.one_lt_top⟩`. Use `haveI : IsFiniteMeasure (μ'.restrict 𝓕') := ⟨by rw [Measure.restrict_apply_univ]; exact lt_top_iff_ne_top.2 (GlobalTheory.Size.measure_dom hμ' h𝓕').2⟩`. Use `haveI hsf1 : SigmaFinite (μ.restrict 𝓨) := @IsFiniteMeasure.toSigmaFinite _ _ _ hfin1`. Use `haveI : SFinite (μ.restrict 𝓨) := @instSFiniteOfSigmaFinite _ _ _ hsf1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : SigmaFinite (μ'.restrict 𝓕') := inferInstance`. Use `haveI : SFinite (μ'.restrict 𝓕') := inferInstance`. Take `⟨cF, hcF⟩` from `GlobalTheory.WeilVacMove.exists_bound hψ hF`. Take `⟨cG, hcG⟩` from `GlobalTheory.WeilVacMove.exists_bound hψ hG`. Establish `ciso : Continuous (fun y : Mx D W.rank r => isoPart V W C y)` using `continuous_id.matrix_mul continuous_const`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `cmid : Continuous (fun x : WO V' W => midPart V V' W B x)` using `continuous_id.matrix_mul continuous_const`. Take `⟨H, hH⟩ : ∃ H : Mx D W.rank r → Mx D W.rank r → WO V' W → ℂ, H = fun y y' x => F (isoPart V W C (y + y') + midPart V V' W B x) * star (G (isoPart V W C y' + midPart V V' W B x))` from `⟨_, rfl⟩`. Establish `hHb : ∀ y y' x, ‖H y y' x‖ ≤ cF * cG`. Introduce `y y' x`. Rewrite using `[hH, norm_mul, norm_star]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul (hcF _) (hcG _) (norm_nonneg _) ((norm_nonneg _).trans (hcF 0))`. Establish `hHc : Continuous fun p : Mx D W.rank r × Mx D W.rank r × WO V' W => H p.1 p.2.1 p.2.2`. Rewrite using `[hH]`. Conclude with `(hF.cont.comp ((ciso.comp (continuous_fst.add continuous_snd.fst)).add (cmid.comp continuous_snd.snd))).mul (continuous_star.comp (hG.cont.comp ((ciso.comp continuous_snd.fst).add (cmid.comp continuous_snd.snd))))`. Establish `hint : ∀ {X : Type} [TopologicalSpace X] [MeasurableSpace X] [OpensMeasurableSpace X] (ν : Measure X) [IsFiniteMeasure ν] (g : X → ℂ), Continuous g → (∀ z, ‖g z‖ ≤ cF * cG) → Integrable g ν` using `fun ν _ g hg hb => Integrable.of_bound hg.aestronglyMeasurable _ (Filter.Eventually.of_forall hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hI1 : ∀ y, Integrable (Function.uncurry fun y' x => H y y' x) ((μ.restrict 𝓨).prod (μ'.restrict 𝓕'))` using `fun y => hint _ _ (hHc.comp (continuous_const.prodMk continuous_id)) fun z => hHb _ _ _`. Establish `hI3 : Integrable (fun q : (Mx D W.rank r × WO V' W) × Mx D W.rank r => H q.1.1 q.2 q.1.2) (((μ.restrict 𝓨).prod (μ'.restrict 𝓕')).prod (μ.restrict 𝓨))` using `hint _ _ (hHc.comp (continuous_fst.fst.prodMk (continuous_snd.prodMk continuous_fst.snd))) fun z => hHb _ _ _`. Establish `hI2 : Integrable (Function.uncurry fun y x => ∫ y', H y y' x ∂(μ.restrict 𝓨)) ((μ.restrict 𝓨).prod (μ'.restrict 𝓕'))` using `hI3.integral_prod_left`. Establish `hI4 : ∀ x, Integrable (Function.uncurry fun y y' => H y y' x) ((μ.restrict 𝓨).prod (μ.restrict 𝓨))` using `fun x => hint _ _ (hHc.comp (continuous_fst.prodMk (continuous_snd.prodMk continuous_const))) fun z => hHb _ _ _`. Establish `step4 : ∀ x y', ∫ y in 𝓨, H y y' x ∂μ = res V V' W C B μ 𝓨 F x * star (G (isoPart V W C y' + midPart V V' W B x))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Introduce `x y'`. Rewrite using `[hH]`. Simplify using `only`. Rewrite using `[integral_mul_const]`. Use `congr 1`.
-
-Conclude with `GlobalTheory.MixModel.covolOne_integral_add hμ1 (fun a => F (isoPart V W C a + midPart V V' W B x)) (iso_periodic hs hF x) y'`. Establish `step5 : ∀ x, ∫ y' in 𝓨, res V V' W C B μ 𝓨 F x * star (G (isoPart V W C y' + midPart V V' W B x)) ∂μ = res V V' W C B μ 𝓨 F x * star (res V V' W C B μ 𝓨 G x)`. Introduce `x`. Rewrite using `[integral_const_mul]`. Use `congr 1`.
-
-Conclude with `integral_conj`. Establish `e0 : ∀ y y' x, F (isoPart V W C (y + y') + midPart V V' W B x) * star (G (isoPart V W C y' + midPart V V' W B x)) = H y y' x`. Introduce `y y' x`. Rewrite using `[hH]`. Simplify using `only [e0]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mean_iso_mul_star : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), IsIsoSplit V V' C B → ∀ (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (ratMx D W.rank r) μ 𝓨 → ∀ (μ' : Measure (WO V' W)) (𝓕' : Set (WO V' W)), μ'.IsAddHaarMeasure → IsAddFundamentalDomain (ratL W V') 𝓕' μ' → ∀ F G, IsThetaFunO ψ V W F → IsThetaFunO ψ V W G → ∫ y in 𝓨, ∫ y' in 𝓨, ∫ x in 𝓕', F (isoPart V W C (y + y') + midPart V V' W B x) * star (G (isoPart V W C y' + midPart V V' W B x)) ∂μ' ∂μ ∂μ = ∫ x in 𝓕', res V V' W C B μ 𝓨 F x * star (res V V' W C B μ 𝓨 G x) ∂μ' := by
   intro D V V' W r C B hs ψ hψ μ 𝓨 hμ μ' 𝓕' hμ' h𝓕' F G hF hG

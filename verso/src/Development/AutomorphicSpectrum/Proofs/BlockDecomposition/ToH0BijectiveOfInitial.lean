@@ -36,11 +36,11 @@ def toH0 : F.obj D →ₗ[R] CH.H F 0 where
     exact (cls_congr (map_smul _ r x) _ _).trans this
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, -⟩` from `CrystallineSemistableComparison.P.initial F D hD`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `h` using `((CrystallineSemistableComparison.P.cls_surj (CH.cx F) 0).2.1 _ (h1 x)).1 hx`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h'` using `h2 x ((Submodule.mem_bot R).1 h)`. Rewrite `h'` using `[one_smul]`. Then use the resulting hypothesis. Introduce `c`. Take `⟨f, hf, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (CH.cx F) 0).1 c`. Take `⟨x, hx⟩` from `h3 f hf`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[one_smul]`. Conclude with `⟨x, cls_congr hx _ _⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem toH0_bijective_of_initial : Function.Bijective (toH0 F hD) := by
   obtain ⟨h1, h2, h3, -⟩ := CrystallineSemistableComparison.P.initial F D hD
@@ -58,9 +58,9 @@ theorem toH0_bijective_of_initial : Function.Bijective (toH0 F hD) := by
 
 include hD in
 /- English proof (translation)
-Take `⟨-, -, -, hex⟩` from `CrystallineSemistableComparison.P.initial F D hD`. Establish `key : ∀ x : CH.H F (j + 1), x = 0`. Introduce `x`. Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (CH.cx F) (j + 1)).1 x`. Use `((CrystallineSemistableComparison.P.cls_surj (CH.cx F) (j + 1)).2.1 a ha).2 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy⟩` from `hex j a ha`. Rewrite `hy` using `[one_smul]`. Conclude with `⟨y, hy⟩`. Conclude with `⟨fun x y => by rw [key x, key y]⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem H_succ_sub (j : ℕ) : Subsingleton (CH.H F (j + 1)) := by
   obtain ⟨-, -, -, hex⟩ := CrystallineSemistableComparison.P.initial F D hD
@@ -83,11 +83,11 @@ section Base
 variable {C C' : Type 1} [Category.{0} C] [Category.{0} C'] {Φ : PDF R C} {Φ' : PDF R' C'} {σ : R →+* R'} (m : SMor Φ Φ' σ)
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `zero`. Use `tens_transfer (fun i => LinearEquiv.ofBijective (toH0 (sq (a i) (b i)) hD) (toH0_bijective_of_initial _ hD)) (LinearEquiv.ofBijective (toH0 (sq a' b') hD') (toH0_bijective_of_initial _ hD')).toAddEquiv _ _ (fun i n x => ?_) h` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(m.sqC (ν i n) (ha i n) (hb i n)).hom.mapH 0 (toH0 (sq (a i) (b i)) hD x) = toH0 (sq a' b') hD' _`. Establish `h1` using `(CrystallineSemistableComparison.P.initial (sq (a i) (b i)) D hD).1 x`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Use `(CrystallineSemistableComparison.P.mapH_cls _ 0 _ h1 (CrystallineSemistableComparison.CechClassBoundaries.cyc _ _ h1)).trans (cls_congr (funext fun s => ?_) _ _)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(m.sqC (ν i n) (ha i n) (hb i n)).τ _ (((sq (a i) (b i)).map (hD.to (m.G.obj (s.obj (Fin.last 0))))).hom x) = ((sq a' b').map (hD'.to (s.obj (Fin.last 0)))).hom ((m.sqC (ν i n) (ha i n) (hb i n)).τ D' (((sq (a i) (b i)).map e).hom x))`. Rewrite using `[← (m.sqC (ν i n) (ha i n) (hb i n)).nat]`. Use `congr 1`. Establish `h2` using `congrArg (fun t => ((sq (a i) (b i)).map t).hom x) (hD.hom_ext (hD.to (m.G.obj (s.obj (Fin.last 0)))) (e ≫ m.G.map (hD'.to (s.obj (Fin.last 0)))))`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `only [Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply] at h2`. Conclude with `h2`. Consider the case `succ j => exact tens_zero (fun i => H_succ_sub _ hD j) (H_succ_sub _ hD' j) _`.
+Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem base_case {D : C} {D' : C'} (hD : Limits.IsInitial D) (hD' : Limits.IsInitial D') (e : D ⟶ m.G.obj D')
     (ν : ∀ i, N i → R') (a b : ι → IdF Φ.A) (a' b' : IdF Φ'.A) (ha : ∀ i n, m.LeC (ν i n) (a i) a')
@@ -123,13 +123,11 @@ variable [Algebra R R'] [∀ i, Module.Flat R (N i)] {C C' : Type 1} [Category.{
   (hρ : ∀ T, Function.Injective (m.ρ T)) (ν : ∀ i, N i →ₗ[R] R')
 
 /- English proof (translation)
-Establish `hle : r - 1 ≤ r` using `by omega`. Use `choose β hinj hex hsurj hform using fun i => GlobalTheory.T.filtration_critical_comparison_map Q E (a i) (b i) r (hQ i).le ((hQ i).ca r le_rfl) ((hQ i).ca _ hle) ((hQ i).cb r le_rfl) ((hQ i).cb _ hle)`. Take `⟨β', hinj', hex', hsurj', hform'⟩` from `GlobalTheory.T.filtration_critical_comparison_map Q' E' a' b' r hQ'.le (hQ'.ca r le_rfl) (hQ'.ca _ hle) (hQ'.cb r le_rfl) (hQ'.cb _ hle)`. Establish `sI` using `fun i => CrystallineSemistableComparison.P.ses_cochains (alpha Q (a i r) (b i r)) (β i) (hinj i) (hex i) (hsurj i)`. Establish `sP` using `CrystallineSemistableComparison.P.ses_cochains (alpha Q' (a' r) (b' r)) β' hinj' hex' hsurj'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : ∀ r₀, (r₀ = r ∨ r₀ = r - 1) → ∀ j, Tens R (N` using `N) (M := fun i => (CH.cx (Cut.P0 Q ⋙ Cut.U E ⋙ sq (a i r₀) (b i r₀))).H j) (M' := (CH.cx (Cut.P0 Q' ⋙ Cut.U E' ⋙ sq (a' r₀) (b' r₀))).H j) fun i n x => (mP m E E' e he hρ Q Q' (ν i n) (ha i n r₀) (hb i n r₀)).hom.mapH j x := by`. Introduce `r₀ hr₀ j`. Conclude with `tens_transfer (fun i => LinearEquiv.ofBijective ((CH.Mor.restrict (sq ((a i r₀).res (Cut.U E)) ((b i r₀).res (Cut.U E))) (Cut.P0 Q)).pull j) (CrystallineSemistableComparison.P.adj _ (Cut.P0 Q) (Cut.inc E) (Cut.adj Q) j)) ((LinearEquiv.ofBijective ((CH.Mor.restrict (sq ((a' r₀).re …`. Establish `hPt` using `tens_les (K := fun i => CH.cx (Pt.U E ⋙ sq (a i r) (b i r))) (L := fun i => CH.cx (Cut.P0 Q ⋙ Cut.U E ⋙ sq (a i r) (b i r))) (M := fun i => CH.cx (Cut.P0 Q ⋙ Cut.U E ⋙ sq (a i (r - 1)) (b i (r - 1)))) (K' := CH.cx (Pt.U E' ⋙ sq (a' r) (b' r))) (L' := CH.cx (Cut.P0 Q' ⋙ Cut.U E' ⋙ …`. Set `u` to `fun i => LinearEquiv.ofBijective ((CH.Mor.restrict (sq (a i r) (b i r)) (Pt.U E)).pull j) (CrystallineSemistableComparison.P.adj _ (Pt.U E) (Pt.S E) (Pt.adj E) j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `u'` to `LinearEquiv.ofBijective ((CH.Mor.restrict (sq (a' r) (b' r)) (Pt.U E')).pull j) (CrystallineSemistableComparison.P.adj _ (Pt.U E') (Pt.S E') (Pt.adj E') j)`. Use `tens_transfer (fun i => (u i).symm) u'.toAddEquiv.symm _ _ (fun i n x => ?_) hPt` and prove the remaining obligations. Take `⟨z, rfl⟩` from `(u i).surjective x`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Use `symm`.
-
-Use `(AddEquiv.symm_apply_eq u'.toAddEquiv).2 ?_` and prove the remaining obligations. Conclude with `pull_U m E E' e (ν i n) (ha i n r) (hb i n r) j z`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem step (a b : ι → ℤ → IdF Φ.A) (a' b' : ℤ → IdF Φ'.A) (r : ℤ) (hQ : ∀ i, Q.Ladder (a i) (b i) r)
     (hQ' : Q'.Ladder a' b' r) (ha : ∀ i n r', m.LeC (ν i n) (a i r') (a' r')) (hb : ∀ i n r', m.LeC (ν i n) (b i r') (b' r'))
@@ -192,18 +190,16 @@ section Main
 variable [Algebra R R'] [∀ i, Module.Flat R (N i)]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.le, fun r' hr' => h.ca r' (hr'.trans hr), fun r' hr' => h.cb r' (hr'.trans hr)⟩`.
+Supply the required witnesses or components.
 -/
 theorem ladder_mono {C : Type 1} [Category.{0} C] {Φ : PDF R C} {Q : Poly Φ} {a b : ℤ → IdF Φ.A} {r r₀ : ℤ}
     (h : Q.Ladder a b r) (hr : r₀ ≤ r) : Q.Ladder a b r₀ :=
   ⟨h.le, fun r' hr' => h.ca r' (hr'.trans hr), fun r' hr' => h.cb r' (hr'.trans hr)⟩
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `C C' _ _ Φ Φ' m Q Q' E E' e he hρ a b a' b' r hQ hQ' ha hb h j`. Conclude with `base_case m (Frame.initial E) (Frame.initial E') e (fun i n => ν i n) (fun i => a i r) (fun i => b i r) (a' r) (b' r) (fun i n => ha i n r) (fun i n => hb i n r) (h r (by simp) le_rfl) j`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `succ d ih`. Introduce `C C' _ _ Φ Φ' m Q Q' E E' e he hρ a b a' b' r hQ hQ' ha hb h j`. Use `step m Q Q' E E' e he hρ ν a b a' b' r hQ hQ' ha hb (fun r₀ hr₀ j => ?_) j` and prove the remaining obligations. Apply the tactic sequence `have hle : r₀ ≤ r := by rcases hr₀ with rfl | rfl <;> omega`. Apply the tactic sequence `have hlo : r - 1 ≤ r₀ := by rcases hr₀ with rfl | rfl <;> omega`.
-
-Conclude with `ih (m1 m E E' e he hρ) (Cut.Q1 Q) (Cut.Q1 Q') (Cut.E1 E) (Cut.E1 E') (e1 m E E' e he hρ) (fr1 m E E' e he hρ) (fun T => hρ T.T) (fun i r => (a i r).res (Cut.U E)) (fun i r => (b i r).res (Cut.U E)) (fun r => (a' r).res (Cut.U E')) (fun r => (b' r).res (Cut.U E')) r₀ (fun i => Cut …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem main (ν : ∀ i, N i →ₗ[R] R') : ∀ (d : ℕ) {C C' : Type 1} [Category.{0} C] [Category.{0} C']
     {Φ : PDF R C} {Φ' : PDF R' C'} (m : SMor Φ Φ' (algebraMap R R')) (Q : Poly Φ) (Q' : Poly Φ')
@@ -236,7 +232,7 @@ theorem main (ν : ∀ i, N i →ₗ[R] R') : ∀ (d : ℕ) {C C' : Type 1} [Cat
 end Main
 
 /- English proof (translation)
-Introduce `R R' _ _ _ C C' _ _ Φ Φ' m Q Q' d E E' e he hρ ι _ _ N _ _ _ ν a b a' b' r hQ hQ' ha hb h j`. Conclude with `main ν d m Q Q' E E' e he hρ a b a' b' r hQ hQ' ha hb h j`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem local_base_change : ∀ {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {C C' : Type 1} [Category.{0} C] [Category.{0} C']
     {Φ : PDF R C} {Φ' : PDF R' C'} (m : SMor Φ Φ' (algebraMap R R')) (Q : Poly Φ) (Q' : Poly Φ') {d : ℕ} (E : Frame Φ d)

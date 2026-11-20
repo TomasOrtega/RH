@@ -15,9 +15,9 @@ namespace GlobalTheory.FunObj.StdDatum
 variable {D : D7}
 
 /- English proof (translation)
-Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨b, hb, t, ht, rfl⟩` from `hy`. Conclude with `AddSubgroup.subset_closure ⟨b, hb, s * t, mul_mem hs ht, by ring⟩`. Consider the case `zero => rw [mul_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add _ _ _ _ h1 h2 => rw [mul_add]`. Conclude with `add_mem h1 h2`. Consider the case `neg _ _ h => rw [mul_neg]`. Conclude with `neg_mem h`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mul_mem_hatId {𝔪 : Ideal (𝓞 D.host.E)} {s x : AE D} (hs : s ∈ OhE D) (hx : x ∈ hatId D 𝔪) :
     s * x ∈ hatId D 𝔪 := by
@@ -30,16 +30,16 @@ theorem mul_mem_hatId {𝔪 : Ideal (𝓞 D.host.E)} {s x : AE D} (hs : s ∈ Oh
   | neg _ _ h => rw [mul_neg]; exact neg_mem h
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `mul_mem_hatId hs hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_hatId_mul {𝔪 : Ideal (𝓞 D.host.E)} {s x : AE D} (hs : s ∈ OhE D) (hx : x ∈ hatId D 𝔪) :
     x * s ∈ hatId D 𝔪 := by
   rw [mul_comm]; exact mul_mem_hatId hs hx
 
 /- English proof (translation)
-Introduce `i j`. Establish `hi` using `(mem_intG k').1 hk'`. Establish `e : (((k * k' : GA D N) : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) - 1 = ((((k : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) - 1) * ((k' : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D))) + ((((k' : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D))) - 1)`. Simplify using `only [Subgroup.coe_mul, Units.val_mul, sub_mul, one_mul]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[e, Matrix.add_apply, Matrix.mul_apply]`. Conclude with `add_mem (sum_mem fun l _ => mem_hatId_mul (hi l j).1 (h i l)) (h' i j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congOne_mul {𝔪 : Ideal (𝓞 D.host.E)} {N : ℕ} {k k' : GA D N} (hk' : k' ∈ intG D N)
     (h : CongOne D 𝔪 k) (h' : CongOne D 𝔪 k') : CongOne D 𝔪 (k * k') := by
@@ -54,9 +54,9 @@ theorem congOne_mul {𝔪 : Ideal (𝓞 D.host.E)} {N : ℕ} {k k' : GA D N} (hk
   exact add_mem (sum_mem fun l _ => mem_hatId_mul (hi l j).1 (h i l)) (h' i j)
 
 /- English proof (translation)
-Introduce `i j`. Establish `hi` using `(mem_intG k).1 hk`. Establish `e : (((k⁻¹ : GA D N) : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) - 1 = -((((k : GL (Fin N) (AE D))⁻¹ : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) * ((((k : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D))) - 1))`. Rewrite using `[Subgroup.coe_inv, mul_sub, Units.inv_mul, mul_one, neg_sub]`. Rewrite using `[e, Matrix.neg_apply, Matrix.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `neg_mem (sum_mem fun l _ => mul_mem_hatId (hi i l).2 (h l j))`.
+A detailed English derivation is pending.
 -/
 theorem congOne_inv {𝔪 : Ideal (𝓞 D.host.E)} {N : ℕ} {k : GA D N} (hk : k ∈ intG D N)
     (h : CongOne D 𝔪 k) : CongOne D 𝔪 k⁻¹ := by
@@ -70,7 +70,7 @@ theorem congOne_inv {𝔪 : Ideal (𝓞 D.host.E)} {N : ℕ} {k : GA D N} (hk : 
   exact neg_mem (sum_mem fun l _ => mul_mem_hatId (hi i l).2 (h l j))
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [OneMemClass.coe_one, Units.val_one, sub_self, Matrix.zero_apply]`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem congOne_one (𝔪 : Ideal (𝓞 D.host.E)) (N : ℕ) : CongOne D 𝔪 (1 : GA D N) := by
   intro i j
@@ -78,9 +78,9 @@ theorem congOne_one (𝔪 : Ideal (𝓞 D.host.E)) (N : ℕ) : CongOne D 𝔪 (1
   exact zero_mem _
 
 /- English proof (translation)
-Introduce `D 𝔪 N k`. Use `⟨fun h => ?_, fun h => Subgroup.subset_closure h⟩` and prove the remaining obligations. Proceed by induction on `h using Subgroup.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `one => exact ⟨one_mem _, congOne_one 𝔪 N⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul x y _ _ hx hy => exact ⟨mul_mem hx.1 hy.1, congOne_mul hy.1 hx.2 hy.2⟩`. Consider the case `inv x _ hx => exact ⟨inv_mem hx.1, congOne_inv hx.1 hx.2⟩`.
+Treat this case separately. Treat this case separately.
 -/
 theorem mem_congLev_iff : ∀ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (N : ℕ) (k : GA D N),
     k ∈ congLev D 𝔪 N ↔ k ∈ intG D N ∧ CongOne D 𝔪 k := by

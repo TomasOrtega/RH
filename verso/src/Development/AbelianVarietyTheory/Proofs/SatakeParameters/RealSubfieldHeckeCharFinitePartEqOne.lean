@@ -10,9 +10,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele (ideleMa
 namespace GlobalTheory.HeckeFinTriv
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [Nat.cast_zero, map_zero]`. Conclude with `zero_le`. Consider the case `succ n ih`. Rewrite using `[Nat.cast_succ]`.
-
-Conclude with `Valuation.map_add_le _ ih (by rw [map_one])`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valued_natCast_le_one {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) (n : ℕ) :
     Valued.v (n : v.adicCompletion K) ≤ 1 := by
@@ -23,7 +21,7 @@ theorem valued_natCast_le_one {K : Type} [Field K] [NumberField K] (v : HeightOn
     exact Valuation.map_add_le _ ih (by rw [map_one])
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `h`. Rewrite using `[Nat.cast_mul, map_mul]`. Conclude with `mul_le_of_le_one_right' (valued_natCast_le_one v k)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valued_natCast_le_of_dvd {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) {M N : ℕ}
     (h : M ∣ N) : Valued.v (N : v.adicCompletion K) ≤ Valued.v (M : v.adicCompletion K) := by
@@ -32,29 +30,27 @@ theorem valued_natCast_le_of_dvd {K : Type} [Field K] [NumberField K] (v : Heigh
   exact mul_le_of_le_one_right' (valued_natCast_le_one v k)
 
 /- English proof (translation)
-Introduce `E _ _ _ ψ M hlev hns w₀ N hMN b hb`. Establish `he : ∀ w : HeightOneSpectrum (𝓞 E), (w.under (𝓞 (maximalRealSubfield E))).asIdeal.ramificationIdx' w.asIdeal ≠ 0` using `fun w => Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver w.asIdeal (w.under (𝓞 (maximalRealSubfield E))).ne_bot`. Establish `hc : ∀ w : HeightOneSpectrum (𝓞 E), (ideleMap (maximalRealSubfield E) E b).val.2 w = finiteCompletionMap (maximalRealSubfield E) E w (b.val.2 (w.under (𝓞 (maximalRealSubfield E))))` using `fun w => rfl`. Establish `hs : ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)), ∃ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 (maximalRealSubfield E)) = v` using `fun v => by haveI := v.isPrime`. Take `⟨⟨P, hP, hP'⟩⟩` from `(inferInstance : Nonempty (v.asIdeal.primesOver (𝓞 E)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨P, hP, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P⟩, HeightOneSpectrum.ext hP'.over.symm⟩`. Establish `hunit : ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)), Valued.v (b.val.2 v) = 1` using `fun v => by`. Take `⟨w, rfl⟩` from `hs v`. Establish `h` using `hb.1 w`. Express the relevant statement in the definitionally equal form `Valued.v ((ideleMap (maximalRealSubfield E) E b).val.2 w) = 1 at h`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h` using `[hc, GlobalTheory.UpIdeleMod.valued_finiteCompletionMap, pow_eq_one_iff_of_nonneg zero_le (he w)]`. Conclude with `h`. Establish `hcong : ∀ w : HeightOneSpectrum (𝓞 E), GlobalTheory.UnitaryBC.IsSplitAt w → w ≠ w₀ → Valued.v (b.val.2 (w.under (𝓞 (maximalRealSubfield E))) - 1) ≤ Valued.v (N : (w.under (𝓞 (maximalRealSubfield E))).adicCompletion (maximalRealSubfield E))` using `fun w h1 h2 => by`. Establish `h` using `hb.2 w ⟨h1, h2⟩`. Express the relevant statement in the definitionally equal form `Valued.v ((ideleMap (maximalRealSubfield E) E b).val.2 w - 1) ≤ _ at h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[hc, ← map_one (finiteCompletionMap (maximalRealSubfield E) E w), ← map_sub, ← map_natCast (finiteCompletionMap (maximalRealSubfield E) E w), GlobalTheory.UpIdeleMod.valued_finiteCompletionMap, GlobalTheory.UpIdeleMod.valued_finiteCompletionMap, pow_le_pow_iff_left₀ zero_le zero_ …`. Then use the resulting hypothesis. Use `GlobalTheory.Mem.LocTriv.eq_one_of_local (maximalRealSubfield E) ψ.1 ψ.2.1 (GlobalTheory.Mem.Chr.finPartI (maximalRealSubfield E) b) (GlobalTheory.Mem.Chr.finPartI_mem_unitIdl.2 hunit) (fun w => by rw [GlobalTheory.Mem.Chr.finPartI_fst]; rfl) ?_` and prove the remaining obligations. Introduce `v x hx`. Rewrite `hx` using `[GlobalTheory.Mem.Chr.finPartI_snd]`. Establish `hxu : Valued.v (x : v.adicCompletion (maximalRealSubfield E)) = 1` using `by rw [hx]; exact hunit v`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hu : ψ.UnrAt v`. Conclude with `hu x hxu`. Take `⟨w, hw⟩` from `hs v`. Establish `hsp : GlobalTheory.UnitaryBC.IsSplitAt w`. Assume the negation of the conclusion as `hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hu (hw ▸ hns w hn)`. Take `⟨u, hu1, hu2⟩` from `hsp`. Establish `hsp' : ∃ w' : HeightOneSpectrum (𝓞 E), GlobalTheory.UnitaryBC.IsSplitAt w' ∧ w' ≠ w₀ ∧ w'.under (𝓞 (maximalRealSubfield E)) = v`. Distinguish the cases in `h0 : w = w₀`. Use `⟨u, ⟨w, fun e => hu1 e.symm, hu2.symm⟩, h0 ▸ hu1, hu2.trans hw⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨w, ⟨u, hu1, hu2⟩, h0, hw⟩`. Take `⟨w', hw'1, hw'2, rfl⟩` from `hsp'`. Establish `hxc : Valued.v ((x : (w'.under (𝓞 (maximalRealSubfield E))).adicCompletion (maximalRealSubfield E)) - 1) ≤ Valued.v ((M : (maximalRealSubfield E)) : (w'.under (𝓞 (maximalRealSubfield E))).adicCompletion (maximalRealSubfield E))`. Rewrite using `[hx]`. Use `(hcong w' hw'1 hw'2).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e : ((M : (maximalRealSubfield E)) : (w'.under (𝓞 (maximalRealSubfield E))).adicCompletion (maximalRealSubfield E)) = (M : (w'.under (𝓞 (maximalRealSubfield E))).adicCompletion (maximalRealSubfield E))`. Rewrite using `[← map_natCast (algebraMap (maximalRealSubfield E) ((w'.under (𝓞 (maximalRealSubfield E))).adicCompletion (maximalRealSubfield E))) M]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `valued_natCast_le_of_dvd _ hMN`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Apply `hlev` to reduce the goal to its premises. Introduce `P`. Distinguish the cases in `hP : P = w'.under (𝓞 (maximalRealSubfield E))`. Substitute `hP` using the available equality. Rewrite using `[GlobalTheory.HeckeProduct.localIdele_snd_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `hxu`. Rewrite using `[GlobalTheory.HeckeProduct.localIdele_snd_ne (maximalRealSubfield E) _ _ hP]`. Conclude with `map_one _`. Introduce `w`. Rewrite using `[GlobalTheory.HeckeProduct.localIdele_fst]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `P`. Distinguish the cases in `hP : P = w'.under (𝓞 (maximalRealSubfield E))`. Substitute `hP` using the available equality. Rewrite using `[GlobalTheory.HeckeProduct.localIdele_snd_self]`.
-
-Conclude with `hxc`. Rewrite using `[GlobalTheory.HeckeProduct.localIdele_snd_ne (maximalRealSubfield E) _ _ hP, sub_self, map_zero]`. Conclude with `zero_le`.
+A detailed English derivation is pending.
 -/
 theorem finPart_eq_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (ψ : HChar (maximalRealSubfield E)) (M : ℕ), (∀ a : Ideles (maximalRealSubfield E), a ∈ GlobalTheory.Mem.Chr.unitIdl (maximalRealSubfield E) → (∀ w, (a : AdeleRing (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E)).1 w = 1) → (∀ P : HeightOneSpectrum (𝓞 (maximalRealSubfield E)), Valued.v ((a : AdeleRing (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E)).2 P - 1) ≤ Valued.v ((M : maximalRealSubfield E) : P.adicCompletion (maximalRealSubfield E))) → ψ.1 a = 1) → (∀ w : HeightOneSpectrum (𝓞 E), ¬ GlobalTheory.UnitaryBC.IsSplitAt w → ψ.UnrAt (w.under (𝓞 (maximalRealSubfield E)))) → ∀ (w₀ : HeightOneSpectrum (𝓞 E)) (N : ℕ), M ∣ N → ∀ b : Ideles (maximalRealSubfield E), ideleMap (maximalRealSubfield E) E b ∈ levT E {w | GlobalTheory.UnitaryBC.IsSplitAt w ∧ w ≠ w₀} N → ψ.1 (GlobalTheory.Mem.Chr.finPartI (maximalRealSubfield E) b) = 1 := by
   intro E _ _ _ ψ M hlev hns w₀ N hMN b hb

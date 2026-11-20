@@ -24,7 +24,7 @@ namespace GlobalTheory.GSep.GMem
 variable {I : Type} {X₁ : GSet} {z₁ : X₁.M.Z} {act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)}
 
 /- English proof (translation)
-Take `⟨K₁, hK₁, hl₁⟩` from `h₁`. Take `⟨K₂, hK₂, hl₂⟩` from `h₂`. Use `⟨K₁.trans K₂, fun a mu => ?_, fun a mu h => hl₂ a _ (hl₁ a mu h)⟩` and prove the remaining obligations. Simplify using `only [AddEquiv.trans_apply, hK₁, hK₂]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem LatTo.trans
     {V₀ : Type} [CommRing V₀] [IsDomain V₀] [IsLocalRing V₀] {ev₀ : X₁.M.Z.presheaf.stalk z₁ →+* V₀}
@@ -41,9 +41,9 @@ theorem LatTo.trans
   simp only [AddEquiv.trans_apply, hK₁, hK₂]
 
 /- English proof (translation)
-Take `⟨K, hK, hl⟩` from `h`. Establish `y₀` using `GlobalTheory.T.thetaLabels_surjective_hom_lattice_mod_level I X₁ z₁ act V₀ ev₀ X₀ t₀ δ₀ 𝔪₀`. Establish `y₁` using `GlobalTheory.T.thetaLabels_surjective_hom_lattice_mod_level I X₁ z₁ act V ev X t δ 𝔪`. Use `⟨K.symm, fun a mu => K.injective ?_, fun a mu' h => ?_⟩` and prove the remaining obligations. Rewrite using `[K.apply_symm_apply, hK, K.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨mu, hmu⟩` from `y₀.1 a`. Take `⟨w, hw⟩` from `(y₁.2.2.1 a (K mu) mu' (hl a mu hmu)).1 h`. Use `(y₀.2.2.1 a mu (K.symm mu') hmu).2 ⟨K.symm w, ?_⟩` and prove the remaining obligations. Rewrite using `[hw, map_add, K.symm_apply_apply, map_nsmul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem LatTo.symm
     {V₀ : Type} [CommRing V₀] [IsDomain V₀] [IsLocalRing V₀] {ev₀ : X₁.M.Z.presheaf.stalk z₁ →+* V₀}
@@ -70,7 +70,7 @@ open GlobalTheory.GSep GlobalTheory.GSep.GMem
 variable {I : Type} {X₁ : GSet} {z₁ : X₁.M.Z} {act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(ξ ≫ πY) (closedPoint V) = z₁`. Rewrite using `[h]`. Express the relevant statement in the definitionally equal form `X₁.M.Z.fromSpecStalk z₁ (spMap ev (closedPoint V)) = z₁`. Rewrite using `[show spMap ev (closedPoint V) = closedPoint _ from IsLocalRing.comap_closedPoint ev]`. Conclude with `Scheme.fromSpecStalk_closedPoint`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closed_over {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {ev : X₁.M.Z.presheaf.stalk z₁ →+* V}
     [IsLocalHom ev] {Y : Scheme.{0}} {πY : Y ⟶ X₁.M.Z} {ξ : Sp V ⟶ Y}
@@ -82,23 +82,21 @@ theorem closed_over {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {ev : X
   exact Scheme.fromSpecStalk_closedPoint
 
 /- English proof (translation)
-Take `⟨Y, πY, hY⟩` from `GlobalTheory.T.exists_semiAbelianExtendingModel_above_thetaSystem X₁`. Establish `lift : ∀ {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {ev : X₁.M.Z.presheaf.stalk z₁ →+* V} {X : Type} [AddCommGroup X] {t : X → V} {δ : I → X → X} (𝔪 : GMem X₁ z₁ act V ev X t δ), ∃ (V' : Type) (_ : CommRing V') (_ : IsDomain V') (_ : IsLocalRing V') (_ : IsDiscreteValua …`. Introduce `V _ _ _ ev X _ t δ 𝔪`. Take `⟨V₁, _, _, _, _, j₁, hcn₁, hj₁, hl₁⟩` from `GlobalTheory.CompleteNormalDvr.exists_dvr_isCN V 𝔪.cn`. Use `haveI := 𝔪.loc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hl₁`. Take `⟨V₂, _, _, _, _, j₂, ξ, hcn₂, hj₂, hl₂, hξ⟩` from `GlobalTheory.T.exists_trait_lift_to_semiAbelianModel X₁ z₁ Y πY hY V₁ (j₁.comp ev) inferInstance hcn₁`. Use `haveI := hl₂`. Establish `hj : Function.Injective (j₂.comp j₁)` using `hj₂.comp hj₁`. Take `⟨𝔫, -, hyy⟩` from `GlobalTheory.T.uniformisedMember_baseChange_injective_localHom I X₁ z₁ act V ev X t δ 𝔪 V₂ (j₂.comp j₁) (IsFractionRing.map (K := FractionRing V) (L := FractionRing V₂) hj) hcn₂ hj inferInstance (fun v => IsLocalization.map_eq _ v)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨V₂, inferInstance, inferInstance, inferInstance, inferInstance, (j₂.comp j₁).comp ev, _, 𝔫, ξ, ?_, AddEquiv.refl _, fun _ _ => rfl, hyy⟩` and prove the remaining obligations. Rewrite using `[hξ, RingHom.comp_assoc]`. Take `⟨W₀, _, _, _, _, e₀, s₀, 𝔫₀, ξ₀, hξ₀, a₀⟩` from `lift 𝔪₀`. Take `⟨W₁, _, _, _, _, e₁, s₁, 𝔫₁, ξ₁, hξ₁, a₁⟩` from `lift 𝔪`. Set `P : Y.Z → Prop` to `fun y => ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] [IsDiscreteValuationRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (t : X → V) (δ : I → X → X) (𝔠 : GMem X₁ z₁ act V ev X t δ) (ξc : Sp V ⟶ Y.Z), ξc ≫ πY = spMap ev ≫ X₁.M.Z.fromSpecStalk z …`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `step : ∀ a b : Y.Z, πY a = z₁ → πY b = z₁ → a ⤳ b → (P a ↔ P b)`. Introduce `a b ha hb hab`. Take `⟨Va, _, _, _, _, eva, Xa, _, ta, δa, 𝔠a, ξa, hξa, hca, -⟩` from `GlobalTheory.T.exists_thetaMember_through_model_point I X₁ z₁ act hact Y πY hY a ha`. Take `⟨Vb, _, _, _, _, evb, Xb, _, tb, δb, 𝔠b, ξb, hξb, hcb, -⟩` from `GlobalTheory.T.exists_thetaMember_through_model_point I X₁ z₁ act hact Y πY hY b hb`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hP V _ _ _ _ ev X _ t δ 𝔠 ξc hξc hc`. Establish `h1` using `hP Va eva Xa ta δa 𝔠a ξa hξa hca`. Establish `h2` using `GlobalTheory.T.thetaMembers_lattices_iso_of_specializes_dvr I X₁ z₁ act hact Y πY hY Va eva Xa ta δa 𝔠a ξa V ev X t δ 𝔠 ξc hξa hξc (by rw [hca, hc]; exact hab)`. Conclude with `h1.trans h2`. Introduce `hP V _ _ _ _ ev X _ t δ 𝔠 ξc hξc hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hP Vb evb Xb tb δb 𝔠b ξb hξb hcb`. Establish `h2` using `GlobalTheory.T.thetaMembers_lattices_iso_of_specializes_dvr I X₁ z₁ act hact Y πY hY V ev X t δ 𝔠 ξc Vb evb Xb tb δb 𝔠b ξb hξc hξb (by rw [hc, hcb]; exact hab)`. Conclude with `h1.trans h2.symm`. Establish `key : ∀ y y' : Y.Z, Relation.EqvGen (fun a b : Y.Z => πY a = z₁ ∧ πY b = z₁ ∧ a ⤳ b) y y' → (P y ↔ P y')`. Introduce `y y' h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `h with`. Consider the case `rel a b hr => exact step a b hr.1 hr.2.1 hr.2.2`. Consider the case `refl => exact Iff.rfl`. Consider the case `symm _ _ _ ih => exact ih.symm`. Consider the case `trans _ _ _ _ _ ih1 ih2 => exact ih1.trans ih2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI := 𝔫₀.loc`. Use `haveI := 𝔫₁.loc`. Establish `c₀ : πY (ξ₀ (closedPoint W₀)) = z₁` using `closed_over hξ₀`. Establish `c₁ : πY (ξ₁ (closedPoint W₁)) = z₁` using `closed_over hξ₁`. Establish `P0 : P (ξ₀ (closedPoint W₀))`.
-
-Introduce `V _ _ _ _ ev X _ t δ 𝔠 ξc hξc hc`. Conclude with `GlobalTheory.T.thetaMembers_lattices_iso_of_specializes_dvr I X₁ z₁ act hact Y πY hY W₀ e₀ X₀ s₀ δ₀ 𝔫₀ ξ₀ V ev X t δ 𝔠 ξc hξ₀ hξc (by rw [hc])`. Establish `P1` using `(key _ _ (GlobalTheory.T.fibre_points_joined_by_specialisation_chain X₁ z₁ Y πY hY _ _ c₀ c₁)).1 P0`. Conclude with `a₀.trans ((P1 W₁ e₁ X s₁ δ 𝔫₁ ξ₁ hξ₁ rfl).trans a₁.symm)`.
+A detailed English derivation is pending.
 -/
 theorem latTo_all (hact : IsAct X₁ act)
     {V₀ : Type} [CommRing V₀] [IsDomain V₀] [IsLocalRing V₀] {ev₀ : X₁.M.Z.presheaf.stalk z₁ →+* V₀}
@@ -166,7 +164,7 @@ theorem latTo_all (hact : IsAct X₁ act)
   exact a₀.trans ((P1 W₁ e₁ X s₁ δ 𝔫₁ ξ₁ hξ₁ rfl).trans a₁.symm)
 
 /- English proof (translation)
-Introduce `I X₁ z₁ act hact V₀ _ _ _ ev₀ X₀ _ t₀ δ₀ 𝔪₀ V _ _ _ ev X _ t δ 𝔪`. Conclude with `latTo_all hact 𝔪₀ 𝔪`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_latTo_of_members : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), GlobalTheory.GSep.IsAct X₁ act → ∀ (V₀ : Type) [CommRing V₀] [IsDomain V₀] [IsLocalRing V₀] (ev₀ : X₁.M.Z.presheaf.stalk z₁ →+* V₀) (X₀ : Type) [AddCommGroup X₀] (t₀ : X₀ → V₀) (δ₀ : I → X₀ → X₀) (𝔪₀ : GlobalTheory.GSep.GMem X₁ z₁ act V₀ ev₀ X₀ t₀ δ₀) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (t : X → V) (δ : I → X → X) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ), 𝔪₀.LatTo 𝔪 := by
   intro I X₁ z₁ act hact V₀ _ _ _ ev₀ X₀ _ t₀ δ₀ 𝔪₀ V _ _ _ ev X _ t δ 𝔪

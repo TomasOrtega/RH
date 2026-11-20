@@ -21,17 +21,15 @@ noncomputable section
 namespace GlobalTheory.Poinc.DescentPow
 
 /- English proof (translation)
-Take `⟨T, ι', j, ξ, hint, hj, hloc, hξ, hT⟩` from `GlobalTheory.T.classicalPoint_factors_through_siegelModuli_trait g n F Z i hi W8 X₁ Y πY p y hy`. Establish `hgen : gPt p ≫ y = spMap ι' ≫ jK T.V ≫ ξ`. Rewrite using `[← hξ, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `v`. Conclude with `hj v`. Use `⟨⟨y ≫ πY, ?_, T, ι', hint, ?_⟩, rfl, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_apply]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz`. Rewrite using `[← Category.assoc, ← Category.assoc, hgen]`. Simplify using `only [Category.assoc]`. Rewrite using `[hT]`. Take `⟨a, ha, hI⟩` from `hord T ξ hT`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ξ (closedPoint T.V) = y (cPt p)`. Rewrite using `[← hξ, Scheme.Hom.comp_apply]`. Conclude with `congrArg ξ (IsLocalRing.comap_closedPoint j).symm`. Rewrite `hf` using `[← hc]`. Establish `key` using `GlobalTheory.T.norm_localEquation_eq_uniformiser_pow_classicalPoint _ _ Y D T.V T.ϖ a ξ p ι' j hint hj hI f hf`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `key` using `[hξ]`. Establish `hpos : 0 < ‖ι' (algebraMap T.V (FractionRing T.V) T.ϖ)‖`. Use `norm_pos_iff.2 ?_` and prove the remaining obligations. Rewrite using `[map_ne_zero, Ne, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `T.irr.ne_zero`.
-
-Use `show _ = Real.exp (-(-Real.log ‖ι' (algebraMap T.V (FractionRing T.V) T.ϖ)‖ * (ι * φ.evalZ T.β)))`. Rewrite using `[key, ← ha, neg_mul, neg_neg, mul_comm, Real.exp_nat_mul, Real.exp_log hpos]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cTrait_norm_eqAt {g n : ℕ} {F : SFam g n (zetaAway n)} {Z : Scheme.{0}} {i : F.X ⟶ Z} (hi : IsOpenImmersion i)
     {W8 : Matrix (Fin 8) (Fin 8) ℤ} (X₁ : Setup F W8 i) (Y : RatModel X₁.o₁ X₁.Ω₁) (πY : Y.Z ⟶ X₁.M.Z)
@@ -70,7 +68,7 @@ theorem exists_cTrait_norm_eqAt {g n : ℕ} {F : SFam g n (zetaAway n)} {Z : Sch
     rw [key, ← ha, neg_mul, neg_neg, mul_comm, Real.exp_nat_mul, Real.exp_log hpos]
 
 /- English proof (translation)
-Establish `hs : πY ((gPt q ≫ y) (closedPoint (PadicAlgCl q))) ⤳ z` using `hz ▸ (RatModel.gPt_specializes (M := Y) rfl _).map πY.continuous`. Use `hHom.val_comp (gPt q ≫ y) (closedPoint (PadicAlgCl q)) (RatModel.O_le_of_specializes hs ha)` as an intermediate fact. Rewrite using `[← Category.assoc]`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_comp_of_centre {g n : ℕ} {F : SFam g n (zetaAway n)} {Z : Scheme.{0}} {i : F.X ⟶ Z}
     {W8 : Matrix (Fin 8) (Fin 8) ℤ} (X₁ : Setup F W8 i) (Y : RatModel X₁.o₁ X₁.Ω₁) (πY : Y.Z ⟶ X₁.M.Z)
@@ -84,37 +82,35 @@ theorem val_comp_of_centre {g n : ℕ} {F : SFam g n (zetaAway n)} {Z : Scheme.{
   exact this.symm
 
 /- English proof (translation)
-Introduce `g n hg hn hodd F Z z i hθ φ hφ W8 hE hθi X₁ ι Y πY D hι hP hHom hprop hnorm hsupp hord`. Establish `hi : IsOpenImmersion i` using `hθ.2.2.1`. Take `⟨d, hd, hA⟩` from `GlobalTheory.T.exists_approxPoincareSeries_at_thetaSetup_points g n F W8 Z i X₁ hE hθi hg φ hφ`. Take `⟨k, hk⟩ : ι ∣ Nat.lcm ι d` from `Nat.dvd_lcm_left ι d`. Take `⟨m, hm⟩ : d ∣ Nat.lcm ι d` from `Nat.dvd_lcm_right ι d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hL0 : 0 < Nat.lcm ι d` using `Nat.lcm_pos hι hd`. Establish `hk0 : 0 < k` using `Nat.pos_of_ne_zero fun h => by rw [h, mul_zero] at hk; omega`. Establish `hm0 : 0 < m` using `Nat.pos_of_ne_zero fun h => by rw [h, mul_zero] at hm; omega`. Establish `hAL : ApproxAt X₁ φ (Nat.lcm ι d)` using `hm ▸ GlobalTheory.T.hasApproxPoincareSeries_nat_multiple g n F W8 Z i X₁ φ d m hm0 hA`. Establish `hord' : ∀ (T : Trait F) (ξ : Sp T.V ⟶ Y.Z), jK T.V ≫ ξ ≫ πY ≫ X₁.π = T.y ≫ i → ∃ a : ℕ, (a : ℝ) = (Nat.lcm ι d : ℕ) * φ.evalZ T.β ∧ idlAlong (D.nsmul k).idealSheaf ξ = Ideal.span {T.ϖ ^ a}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `T ξ h`. Take `⟨a, ha, hI⟩` from `hord T ξ h`. Use `⟨k * a, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hk]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[ha]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[GlobalTheory.TorRef.Scale.idlAlong_nsmul, hI, Ideal.span_singleton_pow, ← pow_mul, mul_comm a k]`. Establish `hsub : ∀ y ∈ (D.nsmul k).idealSheaf.support, y ∈ D.idealSheaf.support`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨j, hj⟩` from `D.exists_mem y`. Rewrite `hy` using `[(D.nsmul k).mem_support_iff j hj]`. Rewrite using `[D.mem_support_iff j hj]`. Introduce `h`. Apply `hy` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `y ∈ Y.Z.basicOpen (D.f j ^ k)`. Rewrite using `[Scheme.basicOpen_pow _ _ hk0]`. Conclude with `h`. Set `U : Y.Z.Opens` to `(πY ≫ X₁.π) ⁻¹ᵁ i.opensRange`. Establish `hmemU : ∀ y : Y.Z, y ∈ U ↔ X₁.π (πY y) ∈ Set.range i` using `fun y => by show (πY ≫ X₁.π) y ∈ Set.range i ↔ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.comp_apply]`. Establish `hU : (U : Set Y.Z).Nonempty`. Use `⟨Y.pt (closedPoint X₁.Ω₁), (hmemU _).2 ?_⟩` and prove the remaining obligations. Establish `e : Y.pt ≫ πY ≫ X₁.π = spMap (AlgHom.id X₁.o₁ X₁.Ω₁).toRingHom ≫ spMap X₁.S.R.val.toRingHom ≫ X₁.u ≫ i`. Rewrite using `[← Category.assoc, hHom, Category.assoc, X₁.comp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e'` using `congrArg (fun h : Sp X₁.Ω₁ ⟶ Z => h (closedPoint X₁.Ω₁)) e`. Simplify using `only [Scheme.Hom.comp_apply] at e'`. Conclude with `⟨_, e'.symm⟩`. Establish `hDU : ∀ x ∈ (D.nsmul k).idealSheaf.support, x ∉ U` using `fun x hx hxU => hsupp x (hsub x hx) ((hmemU x).1 hxU)`. Establish `hrange : ∀ {q : ℕ} [Fact q.Prime] (y : Sp (OO q) ⟶ Y.Z), Set.range (gPt q ≫ y) ⊆ U → Set.range (gPt q ≫ y ≫ πY ≫ X₁.π) ⊆ Set.range i`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `q _ y hy _ ⟨w, rfl⟩`. Use `(hmemU _).1 (hy ⟨w, rfl⟩)` as an intermediate fact. Simplify `this` using `only [← Category.assoc, Scheme.Hom.comp_apply]`. Take `⟨J, hJ⟩` from `GlobalTheory.T.exists_idealSheaf_pullback_eq_divisor_of_approx X₁.o₁ X₁.Ω₁ X₁.M Y πY hHom hprop (@GlobalTheory.IsNormalScheme.pred _ X₁.normal) hnorm U (D.nsmul k) hU hDU (by`. Introduce `z₀ _ x hxz hx`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, y₀, hcen⟩` from `GlobalTheory.T.exists_classicalPoint_centred_closedPoint_arithmetic _ _ Y x hx U hU`. Take `⟨c₀, hc₀y, hc₀⟩` from `exists_cTrait_norm_eqAt hi X₁ Y πY φ (Nat.lcm ι d) (D.nsmul k) hord' p y₀ (hrange y₀ hcen.2) z₀ (by rw [hcen.1, hxz])`. Use `⟨p, hp, y₀, hcen, fun e => ?_⟩` and prove the remaining obligations. Take `⟨f, hf0, hfall⟩` from `hAL p z₀ c₀ e`. Establish `hfO : X₁.M.stalkHom z₀ f ∈ X₁.M.O z₀` using `(X₁.M.stalkEquiv z₀ f).2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨X₁.M.stalkHom z₀ f, hfO, fun f' hf' => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hc₀ f' (hcen.1 ▸ hf'), val_comp_of_centre X₁ Y πY hHom y₀ (by rw [hcen.1, hxz]) hfO, ← hf0] show _ = ‖X₁.M.val (gPt p ≫ c₀.y) _‖`. Rewrite using `[hc₀y]`. Introduce `q hq y hyz hyU f' hf'`. Establish `hpq : p = q` using `GlobalTheory.T.prime_eq_of_classicalPoint_same_centre X₁.M.Z p q (y₀ ≫ πY) (y ≫ πY) (by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, hcen.1, hxz, hyz])`. Substitute `hpq` using the available equality. Take `⟨c, hcy, hc⟩` from `exists_cTrait_norm_eqAt hi X₁ Y πY φ (Nat.lcm ι d) (D.nsmul k) hord' p y (hrange y hyU) z₀ hyz`. Establish `hcv : ∀ a, c.val a = Y.val (gPt p ≫ y) (X₁.M.stalkHom z₀ a)` using `fun a => by`. Rewrite using `[val_comp_of_centre X₁ Y πY hHom y hyz (a := X₁.M.stalkHom z₀ a) (X₁.M.stalkEquiv z₀ a).2]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show X₁.M.val (gPt p ≫ c.y) _ = _`. Rewrite using `[hcy]`. Break down `hfall c with h1 | ⟨h, hh, h2⟩` into its components or cases. Use `left`. Rewrite using `[← hcv, hc f' hf']`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `h1`. Use `right`. Use `⟨X₁.M.stalkHom z₀ h, ⟨(X₁.M.stalkEquiv z₀ h).2, ?_⟩, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne push_neg at hne`. Apply `(IsLocalRing.mem_maximalIdeal _).1 hh` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu : IsUnit (X₁.M.stalkEquiv z₀ h)` using `(RatModel.isUnit_O_iff _).2 ⟨hne.1, hne.2⟩`. Conclude with `(MulEquiv.isUnit_map (X₁.M.stalkEquiv z₀)).1 hu`. Rewrite using `[← hcv, ← hcv]`. Conclude with `h2)`. Use `⟨Nat.lcm ι d, J, hL0, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hJ]`. Introduce `y hy`. Conclude with `hsupp y (hsub y hy)`. Rewrite using `[hJ]`. Conclude with `hord'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_idealSheaf_comap_orders : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (z : Z ⟶ Sp (cycAway n)) (i : F.X ⟶ Z), IsThetaCompact F z i → ∀ φ : InvFun ℤ, IsPolFan id g φ → ∀ W8 : Matrix (Fin 8) (Fin 8) ℤ, IsE8 W8 → ThetaInt F W8 i → ∀ (X₁ : Setup F W8 i) (ι : ℕ) (Y : RatModel X₁.o₁ X₁.Ω₁) (πY : Y.Z ⟶ X₁.M.Z) (D : GlobalTheory.EffCartierData Y.Z), 1 ≤ ι → IsProjOver X₁.M.s → X₁.M.IsHom Y (AlgHom.id X₁.o₁ X₁.Ω₁) πY → IsProper πY → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Y.Z → (∀ y ∈ D.idealSheaf.support, X₁.π (πY y) ∉ Set.range i) → (∀ (T : Trait F) (ξ : Sp T.V ⟶ Y.Z), jK T.V ≫ ξ ≫ πY ≫ X₁.π = T.y ≫ i → ∃ a : ℕ, (a : ℝ) = ι * φ.evalZ T.β ∧ idlAlong D.idealSheaf ξ = Ideal.span {T.ϖ ^ a}) → ∃ (ι' : ℕ) (J₁ : X₁.M.Z.IdealSheafData), 1 ≤ ι' ∧ (∀ y ∈ (J₁.comap πY).support, X₁.π (πY y) ∉ Set.range i) ∧ ∀ (T : Trait F) (ξ : Sp T.V ⟶ Y.Z), jK T.V ≫ ξ ≫ πY ≫ X₁.π = T.y ≫ i → ∃ a : ℕ, (a : ℝ) = ι' * φ.evalZ T.β ∧ idlAlong (J₁.comap πY) ξ = Ideal.span {T.ϖ ^ a} := by
   intro g n hg hn hodd F Z z i hθ φ hφ W8 hE hθi X₁ ι Y πY D hι hP hHom hprop hnorm hsupp hord

@@ -13,53 +13,39 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW.FibScale
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hR n μ ν m hμ hν hm g hg τ hτ a c hmu hnu S`. Take `⟨hTR, hLC, hSC, hT2, -⟩` from `id hR`. Use `haveI := hTR`. Use `haveI := hLC`. Use `haveI := hSC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hT2`. Take `⟨hTK, hLK, hSK, hTK2, -, -, -, hBor, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ R`. Use `haveI := hTK`. Use `haveI := hLK`. Use `haveI := hSK`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hTK2`. Use `haveI := hBor n M`. Take `⟨hLH, hSH, hT2H, hBH, hG⟩` from `GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hσ R n`. Use `haveI := hLH`. Use `haveI := hSH`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := hT2H`. Use `haveI := hBH`. Take `⟨G, hGc, hGe⟩` from `hG M J hJ`. Take `⟨halg, hcomp, hone, hmem, -⟩` from `GlobalTheory.CompanionTheory.SW.GramAlg.gram_algebra F E σ hσ M J hJ R n`. Establish `hKu` using `GlobalTheory.CompanionTheory.SW.KUnits.units_val_isOpenEmbedding F E σ hσ R hR`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hg1 : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv g hg`. Establish `hg2 : g⁻¹ * g = 1` using `Matrix.nonsing_inv_mul g hg`. Establish `hgi : IsUnit (g⁻¹).det` using `Matrix.isUnit_nonsing_inv_det g hg`. Establish `hrc : ∀ h : Matrix (Fin n) (Fin n) (R ⊗[F] E), Continuous fun X : Fin n → Fin M → R ⊗[F] E => rmul R X h`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `continuous_pi fun b => continuous_pi fun i => ?_` and prove the remaining obligations. Simplify using `only [rmul]`. Use `continuous_finset_sum _ fun k _ => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun Y : Fin n → Fin M → R ⊗[F] E => Y k i` using `(continuous_apply i).comp (continuous_apply k)`. Conclude with `h1.mul continuous_const`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `e : (Fin n → Fin M → R ⊗[F] E) ≃ₜ (Fin n → Fin M → R ⊗[F] E)` to `{ toFun := fun X => rmul R X g invFun := fun X => rmul R X g⁻¹ left_inv := fun X => by simp only [hcomp, hg1, hone] right_inv := fun X => by simp only [hcomp, hg2, hone] continuous_toFun := hrc g continuous_invFun := hrc g⁻¹ }`. Establish `hc1 : cT (sigR R σ) (1 : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = 1`. Unfold `cT`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`. Establish `key : ∀ (h h' A : Matrix (Fin n) (Fin n) (R ⊗[F] E)), h * h' = 1 → cT (sigR R σ) h' * (cT (sigR R σ) h * A * h) * h' = A`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h h' A hh`. Establish `h1 : cT (sigR R σ) h' * cT (sigR R σ) h = 1`. Rewrite using `[← cT_mul, hh, hc1]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ = A := by rw [h1, hh, Matrix.one_mul, Matrix.mul_one]`. Set `τ' : HermR R σ n → HermR R σ n` to `fun S => ⟨cT (sigR R σ) g⁻¹ * (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * g⁻¹, hmem S g⁻¹⟩`. Establish `hcj : ∀ h : Matrix (Fin n) (Fin n) (R ⊗[F] E), Continuous fun S : HermR R σ n => cT (sigR R σ) h * (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * h` using `fun h => (continuous_const.matrix_mul continuous_subtype_val).matrix_mul continuous_const`. Set `τh : HermR R σ n ≃ₜ HermR R σ n` to `{ toFun := τ invFun := τ' left_inv := fun S => Subtype.ext (by show cT (sigR R σ) g⁻¹ * ((τ S : HermR R σ n) : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * g⁻¹ = S`. Rewrite using `[hτ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `key _ _ _ hg1)`. Use `right_inv := fun S => Subtype.ext (by`. Rewrite using `[hτ]`. Conclude with `key _ _ _ hg2)`. Use `continuous_toFun := by`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Topology.IsInducing.subtypeVal.continuous_iff.2 ?_` and prove the remaining obligations. Conclude with `(hcj g).congr fun S => (hτ S).symm`. Use `continuous_invFun := (hcj g⁻¹).subtype_mk _ }`. Set `B : Set (HermR R σ n)` to `{S | IsUnit (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det}`. Establish `hBo : IsOpen B`.
+Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: B = (fun S : HermR R σ n => (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det) ⁻¹' Set.range (Units.val : (R ⊗[F] E)ˣ → R ⊗[F] E)`. Use extensionality with `S`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hKu.isOpen_range.preimage continuous_subtype_val.matrix_det`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : ∀ h A : Matrix (Fin n) (Fin n) (R ⊗[F] E), IsUnit h.det → IsUnit A.det → IsUnit (cT (sigR R σ) h * A * h).det`. Introduce `h A hh hA`. Establish `h1 : (cT (sigR R σ) h).det = sigR R σ h.det`. Rewrite using `[RingHom.map_det]`. Simplify using `[cT, Matrix.det_transpose]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Matrix.det_mul, Matrix.det_mul, h1]`. Conclude with `((hh.map (sigR R σ)).mul hA).mul hh`. Establish `hBτ : τh '' B = B`. Use extensionality with `S'`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨S, hS, rfl⟩ show IsUnit ((τ S : HermR R σ n) : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det`. Rewrite using `[hτ]`. Conclude with `hdet _ _ hg hS`. Introduce `hS'`. Conclude with `⟨τh.symm S', hdet _ _ hgi hS', τh.apply_symm_apply _⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hU : G ⁻¹' B = {X | IsUnit (gramR R σ J X).det}`. Use extensionality with `X`. Use `show IsUnit _ ↔ IsUnit _`. Rewrite using `[hGe]`. Establish `hfam : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ (gramR R σ J) Subtype.val (G ⁻¹' B) ν B m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hU]`. Conclude with `hm`. Establish `hcomm : ∀ X, G (e X) = τh (G X)`. Introduce `X`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Use `show ((G (rmul R X g) : HermR R σ n) : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = ((τ (G X) : HermR R σ n) : Matrix (Fin n) (Fin n) (R ⊗[F] E))`. Rewrite using `[← hGe, hτ, ← hGe]`. Conclude with `halg X g`. Establish `htr` using `GlobalTheory.CompanionTheory.SW.isFibreFamily_transport _ _ _ μ ν (gramR R σ J) G Subtype.val Subtype.val_injective hGc hGe _ (gramR R σ J) G hGc hGe e τh hcomm B hBo m hfam`. Rewrite `htr` using `[hBτ, hU]`.
-
-Establish `hmu' : μ.map e = a • μ` using `hmu`. Establish `hnu' : ν.map τh = c • ν` using `hnu`. Rewrite `htr` using `[hmu', hnu']`. Establish `hnew : IsGramFib R σ J n (a • μ) (c • ν) (fun b => (m (τh.symm b)).map e)` using `htr`. Establish `ha0 : a ≠ 0`.
-
-Introduce and unpack `rfl`. Establish `h0 : μ.map e = 0` using `by rw [hmu', zero_smul]`. Establish `h1 : (μ.map e) Set.univ = μ Set.univ`. Rewrite using `[e.measurableEmbedding.map_apply, Set.preimage_univ]`. Rewrite `h1` using `[h0]`.
-
-Conclude with `(isOpen_univ.measure_pos μ Set.univ_nonempty).ne h1`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Establish `h0 : ν.map τh = 0` using `by rw [hnu', zero_smul]`. Establish `h1 : (ν.map τh) Set.univ = ν Set.univ`.
-
-Rewrite using `[τh.measurableEmbedding.map_apply, Set.preimage_univ]`. Rewrite `h1` using `[h0]`. Conclude with `(isOpen_univ.measure_pos ν Set.univ_nonempty).ne h1`. Use `haveI hμa : (a • μ).IsAddHaarMeasure := Measure.IsAddHaarMeasure.nnreal_smul μ ha0`. Use `haveI hνc : (c • ν).IsAddHaarMeasure := Measure.IsAddHaarMeasure.nnreal_smul ν hc0`.
-
-Establish `hres` using `GlobalTheory.T.gram_fiber_measures_scaling F E σ hσ M J hJ R hR n μ ν m hμ hν hm a c ha0 hc0`. Establish `huq` using `GlobalTheory.T.gram_fiber_measures_unique F E σ hσ M J hJ R hR n (a • μ) (c • ν) _ hμa hνc hres _ hnew (τ S)`. Establish `hs : τh.symm (τ S) = S` using `τh.symm_apply_apply S`. Simplify using `only [hs] at huq`. Establish `hfin : (m S).map (fun X => rmul R X g) = (a / c) • m (τ S)` using `huq.symm`.
-
-Rewrite using `[hfin, smul_smul, mul_div_cancel₀ a hc0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fib_rmul : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ (n : ℕ), ∀ (μ : Measure (Fin n → Fin M → R ⊗[F] E)) (ν : Measure (HermR R σ n)) (m : HermR R σ n → Measure (Fin n → Fin M → R ⊗[F] E)), μ.IsAddHaarMeasure → ν.IsAddHaarMeasure → IsGramFib R σ J n μ ν m → ∀ (g : Matrix (Fin n) (Fin n) (R ⊗[F] E)), IsUnit g.det → ∀ τ : HermR R σ n → HermR R σ n, (∀ S, (τ S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = cT (sigR R σ) g * S * g) → ∀ a c : ℝ≥0, μ.map (fun X => rmul R X g) = a • μ → ν.map τ = c • ν → ∀ S, a • m (τ S) = c • (m S).map (fun X => rmul R X g) := by
   intro F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hR n μ ν m hμ hν hm g hg τ hτ a c hmu hnu S

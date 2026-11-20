@@ -16,13 +16,13 @@ open ReciprocityTheory.ChartRestriction.G.Geo (MRing HermLine IsSmoothHerm IsAri
   ptsIntegralAt sheetDensity fibre maDensity mixedDisc cxHessian pot segre mcPts goodProjExists)
 
 /- English proof (translation)
-Establish `hH : fderiv ℝ (fderiv ℝ (φ 0)) y = 0`. Rewrite using `[(h.fderiv (𝕜 := ℝ)).fderiv_eq]`. Simplify using the standard rewrite rules. Establish `hC : cxHessian (φ 0) y = 0`. Use extensionality with `a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[cxHessian, hH]`. Establish `hU : (fun k => cxHessian (φ k) y) = Function.update (fun k => cxHessian (φ k) y) 0 ((0 : ℂ) • (0 : Matrix (Fin (D + 1)) (Fin (D + 1)) ℂ))`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = 0`. Substitute `hk` using the available equality.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hC]`. Simplify using `[Function.update_of_ne hk]`. Establish `hM : mixedDisc (fun k => cxHessian (φ k) y) = 0`. Establish `hdef : mixedDisc (fun k => cxHessian (φ k) y) = ReciprocityTheory.AnForm.mdisc (fun k => cxHessian (φ k) y)`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Rewrite using `[hdef, hU, ReciprocityTheory.AnForm.A.mdisc_update_smul, zero_mul]`. Simplify using `[maDensity, hM]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem maDensity_eq_zero_of_eventuallyEq_zero {D : ℕ} (φ : Fin (D + 1) → (Fin (D + 1) → ℂ) → ℝ)
     (y : Fin (D + 1) → ℂ) (h : φ 0 =ᶠ[𝓝 y] 0) : maDensity φ y = 0 := by
@@ -46,23 +46,21 @@ theorem maDensity_eq_zero_of_eventuallyEq_zero {D : ℕ} (φ : Fin (D + 1) → (
   simp [maDensity, hM]
 
 /- English proof (translation)
-Introduce `K _ _ ι _ P e m σ i L g δ G Φ hP hL hg hδ hsupp hgerm`. Establish `hex : ∃ Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1 + 1) → ℂ), IsGoodProj P Ψ` using `goodProjExists K ι P (e + 1) hP`. Establish `hpts : ptsIntegral P (pot L) g = ptsIntegralAt P hex.choose (pot L) g`. Unfold `ptsIntegral`. Rewrite using `[dif_pos hex]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpts]`. Distinguish the cases in `hne : ∃ z ∈ mcPts P, segre z i ≠ 0`. Take `⟨Ψ, hΨ, hΨ0⟩` from `hGood K ι P (e + 1) i hP hne`. Rewrite using `[hIndep K ι P (e + 1) _ Ψ L g hP hex.choose_spec hΨ hL hg]`. Conclude with `hChart K ι P e m σ i L g Ψ G Φ hP hL hg hΨ hΨ0 hgerm`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push Not at hne`. Establish `hset : segreChartSet P σ i = ∅`. Use extensionality with `x`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨z, hz, hzi, -⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hzi` using `[hne z hz]`. Conclude with `zero_ne_one hzi`. Establish `hcomp : segreChartComponents P σ i = ∅`. Use extensionality with `J`. Simplify using `only [mem_segreChartComponents, Finset.notMem_empty, iff_false]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `hJ`. Establish `htop : segreChartIdeal P σ i = ⊤`. Rewrite using `[segreChartIdeal, hset]`. Conclude with `MvPolynomial.vanishingIdeal_empty`. Rewrite `hJ` using `[htop]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hJ.1.1.ne_top (top_le_iff.1 hJ.1.2)`. Rewrite using `[hcomp, Finset.sum_empty]`. Establish `hin : ∀ z ∈ mcPts P, ‖segre z i‖ < δ * ‖segre z‖`. Introduce `z hz`. Rewrite using `[hne z hz, norm_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `choose j hj using hz.1`. Establish `hj' : segre z j ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hj k`. Conclude with `mul_pos hδ (norm_pos_iff.2 fun h0 => hj' (congrFun h0 j))`. Establish `hterm : ∀ y w, sheetDensity P hex.choose (pot L) g y w = 0`. Introduce `y w`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Unfold `sheetDensity`. Use `split_ifs with hγ`. Establish `hs : IsSheet P hex.choose y w hγ.choose` using `hγ.choose_spec`. Break down `hsupp with hg0 | hp0` into its components or cases. Rewrite using `[hg0 _ (hin _ hs.2.self_of_nhds.2.1), zero_mul]`.
-
-Rewrite using `[maDensity_eq_zero_of_eventuallyEq_zero _ _ ?_, mul_zero] filter_upwards [hs.2] with y' hy'`. Conclude with `hp0 _ (hin _ hy'.2.1)`. Both sides reduce to the same expression. Unfold `ptsIntegralAt`. Simplify using `[hterm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem SegreChartIntegral.proof (hGood : SegreCoordGoodProj.Statement)
     (hIndep : PtsIntegralProjIndep.Statement) (hChart : PtsIntegralSegreChartProj.Statement) :

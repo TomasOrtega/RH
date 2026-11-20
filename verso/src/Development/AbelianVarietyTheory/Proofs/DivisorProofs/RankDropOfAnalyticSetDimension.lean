@@ -8,15 +8,15 @@ open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory.Indefinite
 noncomputable section
 
 /- English proof (translation)
-Introduce `d X _ _ _ A m Λ σ hΛ Z n hZ hreg hZbd L s hL hs hsZ hcomp Y _ _ _ B μ hμ hrange r W e hsnc k hk0 hki w hw χ a hχ hwχ hWχ`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_lt]`. Take `⟨n', rfl⟩ : ∃ n', n = n' + 1` from `⟨n - 1, by have := a.2; omega⟩`. Take `⟨i, hi⟩` from `hki`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hσ : ∀ i, IsSection A (Λ i) (σ i)` using `fun i => (hΛ i).2`. Establish `hVT : ∀ w' ∈ W k, μ w' ∈ Z ∩ boundary σ ∩ {y | s y y = 0}`. Introduce `w' hw'`. Establish `h0` using `jointSNC_vanish hsnc (i := 0) hk0 hw'`. Establish `h1` using `jointSNC_vanish hsnc (i := i.succ) hi hw'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Fin.cons_zero, Fin.cons_succ] at h0 h1`. Conclude with `⟨⟨hrange ▸ ⟨w', rfl⟩, i, h1⟩, h0⟩`. Establish `hpiece` using `hasHoloImm_of_rank A B μ hμ (W k) _ hVT w χ a hχ hw hwχ hWχ (by simpa using hlt)`. Take `⟨hP1, hP2, hP3⟩` from `GlobalTheory.AnDim.immersedPieces hP d X A`. Establish `hbd` using `isAnalyticSubset_boundary hσ`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hZB` using `isAnalyticSubset_inter hZ.1 hbd`. Take `⟨hfin, hunion⟩` from `hP3 _ hZB`. Rewrite `hpiece` using `[hunion]`. Take `⟨C, hC, hCp⟩` from `hasHoloImm_of_finite_closed_cover hfin (fun C hC => isClosed_of_isAnalyticSubset hC.1.1.1) hpiece`. Establish `hCs : ¬ C ⊆ {y | s y y = 0}`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hyC, hy⟩` from `hcomp C hC`. Conclude with `fun h => hy (h hyC)`. Establish `hCn` using `hP2 C _ n' hC.1.1 (isAnalyticSubset_zero hs) hCs hCp`. Establish `hZn` using `hP2 Z (boundary σ) (n' + 1) hZ hbd hZbd (hCn.mono hC.1.2)`. Conclude with `hP1 Z (n' + 1) hZ hreg hZn`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rankDrop_of_analyticSetDimension (hP : GlobalTheory.Published.AnalyticSetDimension) :
     ∀ (d : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X]

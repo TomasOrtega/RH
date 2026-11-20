@@ -11,22 +11,22 @@ namespace Formalism.L2.Th1.C
 open Formalism.L2.Th1.A (logSer expSer wpReg xS xPlus)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_unitBall_iff {K : Type} [NormedField K] [IsUltrametricDist K] (x : K) :
     x ∈ Formalism.G.unitBall K ↔ ‖x‖ ≤ 1 := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_unitBall_iff, norm_inv, h, inv_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mem_unitBall {K : Type} [NormedField K] [IsUltrametricDist K] {x : K} (h : ‖x‖ = 1) :
     x⁻¹ ∈ Formalism.G.unitBall K := by
   rw [mem_unitBall_iff, norm_inv, h, inv_one]
 
 /- English proof (translation)
-Establish `hc : CoeffIn (Formalism.G.unitBall K) W` using `hW`. Take `⟨hlp, -, -, hfg, -⟩` from `curveFrame K (Formalism.G.unitBall K) W hc`. Establish `hph0 : PowerSeries.constantCoeff (Formalism.L2.Th1.B.phO s2 (wpReg W) (logSer W)) = 0` using `(phOIsPh K (wpReg W) (logSer W) s2 hlp.1 hlp.2.1).2.1`. Take `⟨hlaw, hinv, -⟩` from `Formalism.L2.Th1.A.bridgeLaw K W hW`. Establish `hu` using `(Formalism.L2.Th1.B.f1O K (Formalism.L2.Th1.A.g₂ W) (Formalism.L2.Th1.A.g₃ W) s2 (W.b₂ / 12) (wpReg W) (logSer W) (Formalism.L2.Th1.A.iSer W) (xS W) (Formalism.L2.Th1.A.fgl W) (Formalism.L2.Th1.A.bridgeWp K W) hlaw hinv (Formalism.L2.Th1.A.bridgeCurve K W hW) h2).2.2.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨hc, ⟨hlp, hfg, hph0⟩, (first_level_from_universal_law K (Formalism.L2.Th1.A.fgl W) (logSer W) (expSer W) _ hlp hlaw hph0 hu).2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem curve_frame_unit_ball (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K]
     (h2 : ‖(2 : K)‖ = 1) (W : WeierstrassCurve K) (hW : Formalism.L2.Th1.A.IntModel W) (s2 : K) :
@@ -45,13 +45,13 @@ theorem curve_frame_unit_ball (K : Type) [NormedField K] [IsUltrametricDist K] [
     (first_level_from_universal_law K (Formalism.L2.Th1.A.fgl W) (logSer W) (expSer W) _ hlp hlaw hph0 hu).2.2⟩
 
 /- English proof (translation)
-Introduce `K _ _ _ h2 W hW s2 O _ _ _ τ hτ hstar hsa h2O hsum Dn hDn hdata`. Take `⟨hc, hfr, hF1⟩` from `curve_frame_unit_ball K h2 W hW s2`. Establish `h2R : (2 : K)⁻¹ ∈ Formalism.G.unitBall K` using `inv_mem_unitBall h2`. Establish `hall` using `(curveEndoAll K (Formalism.G.unitBall K) (unitBallClosed K) h2R W hc s2 hF1 O τ hτ hstar hsa h2O hsum Dn hDn (by`. Introduce `α hα`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ι, iF, neg, xP, yP, h1, hx, hy, hN, hn, hb, hs⟩` from `hdata α hα`. Conclude with `⟨ι, iF, neg, xP, yP, h1, hx, hy, hN, hn.le, inv_mem_unitBall hn, hb, hs⟩)).1`. Establish `hm1 : PhNormAt (Formalism.G.unitBall K) (logSer W) (expSer W) (Formalism.L2.Th1.B.phO s2 (wpReg W) (logSer W)) (-1) (-1)`. Establish `h` using `(hall (-1)).2.1`. Simplify `h` using `only [star_neg, star_one, map_neg, map_one]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨hall, (jetsShape K (Formalism.G.unitBall K) _ _ _ hfr hF1 hm1 h2R).1, ?_⟩` and prove the remaining obligations. Introduce `α hα`. Establish `hne : τ α ≠ τ (star α)`. Introduce `h`. Rewrite `hα` using `[h, sub_self, norm_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one hα`. Conclude with `(jetsUnramified K (Formalism.G.unitBall K) _ _ _ (τ α) (τ (star α)) hfr hF1 hm1 h2R (hall α).2.2.1 (inv_mem_unitBall hα) hne).2`.
+A detailed English derivation is pending.
 -/
 theorem curve_endomorphisms_unit_ball : CurveEndoUnitBall := by
   intro K _ _ _ h2 W hW s2 O _ _ _ τ hτ hstar hsa h2O hsum Dn hDn hdata

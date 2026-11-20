@@ -14,25 +14,25 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.KerValRat
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `D.R.t_odd`. Establish `hc : ((i * (D.R.t + 1) / 2 : ℕ) : ℝ) = (i : ℝ) * ((a : ℝ) + 1)`. Rewrite using `[ha, show i * (2 * a + 1 + 1) = 2 * (i * (a + 1)) by ring, Nat.mul_div_cancel_left _ (by norm_num)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `ht : (D.R.t : ℝ) = 2 * a + 1` using `by rw [ha]; push_cast; ring`. Establish `h1` using `congrArg (Rat.cast : ℚ → ℝ) (M.lam_eq i hi.le τ r)`. Establish `h2` using `congrArg (Rat.cast : ℚ → ℝ) ((D.chTw u μ).sSharp_eq i hi τ)`. Establish `h3` using `GlobalTheory.PdvKm.nuT_real u i hi τ r`. Establish `he` using `D.hcW_e u τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-It suffices to establish `key : (((lamTG M i τ).w r : ℤ) : ℝ) + (((D.chTw u μ).sSharp i τ : ℤ) : ℝ) = ((nuT D u i τ r : ℕ) : ℝ) by`. Conclude with `key` after adjusting the coercions. Rewrite using `[h3]`. Establish `e0 : (lamTG M i τ).w r = (M.lam i τ).w r - ((i * (D.R.t + 1) / 2 : ℕ) : ℤ)` using `rfl`. Establish `hl : (((lamTG M i τ).w r : ℤ) : ℝ) = ((((M.lam i τ).w r : ℤ) : ℚ) : ℝ) - (i : ℝ) * ((a : ℝ) + 1)`.
+Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e0, Int.cast_sub, Int.cast_natCast, hc, Rat.cast_intCast]`. Establish `hs : (((D.chTw u μ).sSharp i τ : ℤ) : ℝ) = ((((D.chTw u μ).sSharp i τ : ℤ) : ℚ) : ℝ)` using `by rw [Rat.cast_intCast]`. Rewrite using `[hl, hs, h1, h2]`. Establish `hw : DV.wSz D (i + 1) τ = (((D.hcW u τ).e ⟨i, hi⟩ : ℚ) : ℝ)`. Unfold `DV.wSz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos ⟨by omega, by omega⟩, he]`. Both sides reduce to the same expression. Unfold `DV.nuRow`. Rewrite using `[hw]`. Unfold `DV.srcPar sExp' Ranks.N`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hk : r.1 < D.R.k`. Rewrite using `[dif_pos hk, dif_pos hk]`. Unfold `hcToWeightQ rhoVec`. Use `push_cast`. Rewrite using `[ht]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[dif_neg hk, dif_neg hk]`. Establish `hr` using `r.2`. Unfold `Ranks.N at hr`. Establish `hb : (r.1 - D.R.k) / (D.R.t + 1) < i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.div_lt_iff_lt_mul (by omega)]`. Conclude with `Nat.sub_lt_left_of_lt_add (by omega) hr`. Establish `hbm : (r.1 - D.R.k) / (D.R.t + 1) < D.R.m` using `by omega`. Rewrite using `[dif_pos hbm]`. Establish `hdm` using `Nat.div_add_mod (r.1 - D.R.k) (D.R.t + 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr' : (r.1 : ℝ) = D.R.k + (D.R.t + 1) * (((r.1 - D.R.k) / (D.R.t + 1) : ℕ) : ℝ) + (((r.1 - D.R.k) % (D.R.t + 1) : ℕ) : ℝ)`. Establish `: r.1 = D.R.k + ((D.R.t + 1) * ((r.1 - D.R.k) / (D.R.t + 1)) + (r.1 - D.R.k) % (D.R.t + 1))` using `by omega`. Use `conv_lhs => rw [this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Unfold `wG`. Use `push_cast`. Rewrite using `[hr', ht]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lamTG_add_sSharp {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {A : ColumnsAtT D.R C}
     {P : PeriodMap D.R C} (M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A P)
@@ -92,7 +92,7 @@ namespace GlobalTheory.KerValRat
 
 open GlobalTheory.PdvKm in
 /- English proof (translation)
-Establish `h` using `lamTG_add_sSharp M μ i hi τ (lastI D i)`. Unfold `DomWeight.detShift`. Rewrite using `[dif_pos (N_pos D i)]`. Use `show (lamTG M i τ).w (lastI D i) = _`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem detShift_lamTG {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {A : ColumnsAtT D.R C}
     {P : PeriodMap D.R C} (M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A P)
@@ -106,9 +106,9 @@ theorem detShift_lamTG {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what
 
 open GlobalTheory.PdvKm in
 /- English proof (translation)
-Establish `h0 : (M.lam i τ).natW r = (lamTG M i τ).natW r` using `by show _ = (Formalism.L2.Forms.shW (M.lam i τ) _).natW r`. Rewrite using `[Formalism.L2.Forms.natW_shW]`. Rewrite using `[h0]`. Establish `h1` using `lamTG_add_sSharp M D.what₂.mu0 i hi τ r`. Establish `h2` using `detShift_lamTG M D.what₂.mu0 i hi τ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : nuT D u i τ (lastI D i) ≤ nuT D u i τ r` using `antitone_kernelChain_nuT D u i τ hi (show r ≤ lastI D i by rw [Fin.le_def]; simp only [lastI]; omega)`. Unfold `DomWeight.natW`. Rewrite using `[h2]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem natW_lamTG {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {A : ColumnsAtT D.R C}
     {P : PeriodMap D.R C} (M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A P)
@@ -132,29 +132,27 @@ namespace GlobalTheory.KerValRat
 
 open GlobalTheory.PdvKm in
 /- English proof (translation)
-Establish `hne : ∀ (z : (D.chTw u μ).Y i) τ, ((eY z).1 τ).det ≠ 0` using `fun z τ => by`. Rewrite using `[← hfrm z, ← (O u μ).frm_de i hi.le z τ]`. Conclude with `(D.chTw u μ).de_ne i z τ`. Establish `hev : ∀ z, evC O u μ i v z = (∏ τ, (((eY z).1 τ).det) ^ (-(twB D u μ i τ))) * MvPolynomial.eval₂ D.what₂.embLL (fun k => (eY z).1 k.1 k.2.1 k.2.2) (secC O u μ i v : MvPolynomial (GL3Theta.FrV D (D.R.N i)) D.what₂.LL)`. Introduce `z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[evC_sec]`. Use `show (∏ τ, ((D.chTw u μ).de i z τ) ^ (-(twB D u μ i τ))) * GL3Theta.evFr D (MvPolynomial.map D.what₂.embLL (secC O u μ i v : MvPolynomial (GL3Theta.FrV D (D.R.N i)) D.what₂.LL)) ((O u μ).frm i z) = _`. Simplify using `only [(O u μ).frm_de i hi.le z, hfrm z, evFr_map]`. Establish `hfn : ∀ (Q : MvPolynomial (D.what₂.Tau × Fin (D.R.N i) × Fin (D.R.N i)) ℂ) z, fnOf (gramC (gramN D i hi.le) (embT D)) (shiftOf (lamTG M i)) 1 Q (eY z) = (∏ τ, ((eY z).1 τ).det ^ (lamTG M i τ).detShift) * MvPolynomial.eval (fun x => (eY z).1 x.1 x.2.1 x.2.2) Q`. Introduce `Q z`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `show (∏ τ, ((1 : D.what₂.Tau → Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) ℂ) τ * (eY z).1 τ).det ^ _) * MvPolynomial.eval (fun x => ((1 : D.what₂.Tau → Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) ℂ) x.1 * (eY z).1 x.1) x.2.1 x.2.2) Q = _`. Simplify using `only [Pi.one_apply, one_mul]`. Both sides reduce to the same expression. Use `haveI hLL : Infinite D.what₂.LL := Infinite.of_injective (fun n : ℕ => (n : D.what₂.LL)) (fun a b h => by`. Use `congrArg D.what₂.embLL h` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Simplify using `only [map_natCast] at this`. Conclude with `this)` after adjusting the coercions. Establish `hmem : (secC O u μ i v : MvPolynomial (GL3Theta.FrV D (D.R.N i)) D.what₂.LL) ∈ polV D u i` using `(secC O u μ i v).2`. Break down `i with _ | j` into its components or cases. Establish `h0 : 0 < D.R.m` using `hi`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk : ∀ τ r, nuT D u 0 τ (lastI D 0) ≤ nuT D u 0 τ r` using `fun τ r => antitone_kernelChain_nuT D u 0 τ h0 (show r ≤ lastI D 0 by rw [Fin.le_def]; simp only [lastI]; omega)`. Take `⟨P0, hP0, hQe⟩` from `frameWeightPolyDivByDet_proof D.what₂.LL D.what₂.Tau (D.R.N 0) (nuT D u 0) (fun τ => nuT D u 0 τ (lastI D 0)) hk _ hmem`. Use `⟨MvPolynomial.map D.what₂.embLL P0, GlobalTheory.LevelHecke.map_mem_ratSpan (M.lam 0) ?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[VV_eq_WtPol]`. Establish `e : (fun τ r => (M.lam 0 τ).natW r) = fun τ r => nuT D u 0 τ r - nuT D u 0 τ (lastI D 0)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `fun τ => funext fun r => natW_lamTG M 0 h0 τ r`. Rewrite using `[e]`. Conclude with `hP0`. Establish `hd : ∀ τ, MvPolynomial.eval₂ D.what₂.embLL (fun k : GL3Theta.FrV D (D.R.N 0) => (eY z).1 k.1 k.2.1 k.2.2) (frDet D.what₂.LL (D.R.N 0) τ) = ((eY z).1 τ).det`. Introduce `τ`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← MvPolynomial.eval_map, Formalism.L2.Ker.map_frDet, Formalism.L2.Ker.eval_frDet]`. Both sides reduce to the same expression. Rewrite using `[hev, hfn, hQe, MvPolynomial.eval_map, MvPolynomial.eval₂_mul, MvPolynomial.eval₂_prod]`. Simplify using `only [MvPolynomial.eval₂_pow, hd]`. Establish `hs : ∀ τ, (lamTG M 0 τ).detShift = ((nuT D u 0 τ (lastI D 0) : ℕ) : ℤ) - twB D u μ 0 τ` using `fun τ => detShift_lamTG M μ 0 h0 τ`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hs]`. Rewrite using `[prod_zpow_split _ (hne z) _ (fun τ => nuT D u 0 τ (lastI D 0))]`. Expand and normalize the polynomial expressions, which then agree. Establish `hj : j < D.R.m` using `by omega`. Use `⟨MvPolynomial.map D.what₂.embLL (secC O u μ (j + 1) v : MvPolynomial (GL3Theta.FrV D (D.R.N (j + 1))) D.what₂.LL), GlobalTheory.LevelHecke.map_mem_ratSpan (M.lam (j + 1)) ?_, fun z => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[VV_eq_WtPol]`. Establish `e : (fun τ r => (M.lam (j + 1) τ).natW r) = extNu (D.R.N (j + 1)) (nuT D u j)`. Use function extensionality and compare the values at `τ r`. Rewrite using `[natW_lamTG M (j + 1) hi τ r, ← natW_succ (antitone_kernelChain_nuT D) u j hj τ r]`. Establish `h1` using `clause1 (antitone_kernelChain_nuT D) u (j + 1) hi τ r`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : nn D u (j + 1) τ = nuT D u (j + 1) τ (lastI D (j + 1))` using `by unfold nn; rw [if_pos hi]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`. Conclude with `hmem`. Rewrite using `[hev, hfn, MvPolynomial.eval_map]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[detShift_lamTG M μ (j + 1) hi τ]`. Establish `h1` using `last_real u μ j hi τ`.
-
-Use `show -((D.chTw u μ).sDiv j τ) = _`. Establish `h2 : ((nuT D u (j + 1) τ (lastI D (j + 1)) : ℕ) : ℤ) = (D.chTw u μ).sSharp (j + 1) τ - (D.chTw u μ).sDiv j τ`. Conclude with `h1` after adjusting the coercions. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem evC_ratSpan_gen {D : D7} (O : ∀ u μ, GL3Theta.LiftObj D (D.chTw u μ)) (u : D.what₂.Word) (μ : D.what₂.Tup)
     {A : ColumnsAtT D.R (D.chTw u μ)} {P : PeriodMap D.R (D.chTw u μ)}
@@ -234,7 +232,7 @@ end GlobalTheory.KerValRat
 namespace GlobalTheory.KerValRat
 
 /- English proof (translation)
-Introduce `B X I hOk hPins l Z Y O hQ hS u μ i hi eY hId v`. Conclude with `evC_ratSpan_gen O u μ (I.fm l u μ) i hi eY (fun y => (hS.frm u μ i y).trans (hId y).symm) v`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem evC_ratSpan : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (Y : DivX (I.rec7 l Z)) (O : ∀ u a, GL3Theta.LiftObj (I.rec7 l Z) ((I.rec7 l Z).chTw u a)), I.QpIs Y.Qp → I.StdO l Z Y.Qp O → ∀ (u : B.Word) (μ : I.ι) (i : ℕ) (hi : i < B.R.m) (eY : (I.chain l u μ).Y i ≃ Formalism.L2.Forms.Fr (I.rec7 l Z) i hi.le), I.IdY l Z u μ i hi.le eY → ∀ v : ValQ O u μ i, ∃ P ∈ Formalism.L2.Forms.RatSpan (I.rec7 l Z) ((I.fm l u μ).lam i), ∀ z, evC O u μ i v z = fnOf (gramC (gramN (I.rec7 l Z) i hi.le) (embT (I.rec7 l Z))) (shiftOf (lamTG (I.fm l u μ) i)) 1 P (eY z) := by
   intro B X I hOk hPins l Z Y O hQ hS u μ i hi eY hId v

@@ -17,7 +17,7 @@ noncomputable abbrev gU (R : Type) [CommRing R] : Rˣ →* (Γ(Spec (CommRingCat
   Units.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom.toMonoidHom
 
 /- English proof (translation)
-Rewrite using `[← pull_comp, ← Functor.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pull_spMap_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (φ : R →+* S) (ψ : S →+* T)
     {q : ℕ} {n i : ℤ} (x : Ht q (sp R) n i) :
@@ -25,9 +25,9 @@ theorem pull_spMap_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (�
   rw [← pull_comp, ← Functor.map_comp, ← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Establish `hq' : IsUnit (q : Γ(Spec (CommRingCat.of R), ⊤))`. Simplify using `using hq.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom`. Rewrite using `[(hnat q).2.2.2 _ _ hq']`. Use `congr 1`. Use `ext`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Establish `h` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ)`. Establish `h2` using `congrArg (fun g => g.hom (v : R)) h`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h2`. Simplify using `using h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pull_kum_gU (hnat : DivisorNaturality) (q : ℕ) [NeZero q] {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S)
     (hq : IsUnit (q : R)) (v : Rˣ) :
@@ -45,33 +45,29 @@ theorem pull_kum_gU (hnat : DivisorNaturality) (q : ℕ) [NeZero q] {R S : Type}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `q _ k B _ _ _ _ _ _ hq f _ A' _ _ hA' w`. Establish `hqB : IsUnit (q : B)` using `by simpa using hq.map (algebraMap k B)`. Establish `hqA : IsUnit (q : A')` using `by simpa using hqB.map (algebraMap B A')`. Use `haveI : Algebra.Etale B A' := hA'.1`. Use `set SB : Submonoid B := (IsUnit.submonoid (B ⧸ Ideal.span {f})).comap (Ideal.Quotient.mk (Ideal.span {f})).toMonoidHom ⊔ Submonoid.powers f with hSB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set M : Submonoid A' := Algebra.algebraMapSubmonoid A' SB with hM`. Establish `hfM : (algebraMap B A' f) ∈ M` using `⟨f, Submonoid.mem_sup_right (Submonoid.mem_powers f), rfl⟩`. Set `φf : Localization.Away (algebraMap B A' f) →+* Localization M` to `IsLocalization.Away.lift (algebraMap B A' f) (IsLocalization.map_units (Localization M) (⟨(algebraMap B A' f), hfM⟩ : M))`. Establish `hφf : φf.comp (algebraMap A' _) = algebraMap A' (Localization M)` using `IsLocalization.Away.lift_comp _ _`. Use `haveI := GlobalTheory.T.subsingleton_pic_etale_localization_unitsModulo B f A'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hqL : IsUnit (q : Localization M)` using `by simpa using hqA.map (algebraMap A' (Localization M))`. Take `⟨u, hu⟩` from `GlobalTheory.T.exists_unit_kummer_eq_of_picard_torsionFree q (Localization M) hqL (fun c _ => Subsingleton.elim _ _) (pull _ (spMap φf) _ _ w)`. Set `u₀ : (Localization M)ˣ` to `Units.map (Scheme.ΓSpecIso (CommRingCat.of (Localization M))).hom.hom.toMonoidHom u`. Establish `hu₀ : gU _ u₀ = u` using `by ext; simp [u₀]`. Take `⟨m₀, hm₀, v, hv⟩` from `GlobalTheory.T.exists_away_unit_map_eq A' M u₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hm₁ : (algebraMap B A' f) * m₀ ∈ M` using `M.mul_mem hfM hm₀`. Establish `hunit1 : IsUnit (algebraMap A' (Localization.Away ((algebraMap B A' f) * m₀)) ((algebraMap B A' f) * m₀))` using `IsLocalization.Away.algebraMap_isUnit _`. Set `α : Localization.Away (algebraMap B A' f) →+* Localization.Away ((algebraMap B A' f) * m₀)` to `IsLocalization.Away.lift (algebraMap B A' f) (isUnit_of_mul_isUnit_left (by simpa using hunit1))`. Set `β : Localization.Away m₀ →+* Localization.Away ((algebraMap B A' f) * m₀)` to `IsLocalization.Away.lift m₀ (isUnit_of_mul_isUnit_right (by simpa using hunit1))`. Set `φ₁ : Localization.Away ((algebraMap B A' f) * m₀) →+* Localization M` to `IsLocalization.Away.lift ((algebraMap B A' f) * m₀) (IsLocalization.map_units (Localization M) (⟨_, hm₁⟩ : M))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hα : α.comp (algebraMap A' _) = algebraMap A' _` using `IsLocalization.Away.lift_comp _ _`. Establish `hβ : β.comp (algebraMap A' _) = algebraMap A' _` using `IsLocalization.Away.lift_comp _ _`. Establish `hφ₁ : φ₁.comp (algebraMap A' _) = algebraMap A' _` using `IsLocalization.Away.lift_comp _ _`. Establish `hqm₀ : IsUnit (q : Localization.Away m₀)` using `by simpa using hqA.map (algebraMap A' _)`. Establish `hqm₁ : IsUnit (q : Localization.Away ((algebraMap B A' f) * m₀))` using `by simpa using hqA.map (algebraMap A' _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnat` using `GlobalTheory.T.cup_chern_kummer_pullback_naturality`. Use `set y := pull _ (spMap α) _ _ w - kum q (gU _ (Units.map β.toMonoidHom v)) with hy`. Establish `hy0 : pull _ (spMap φ₁) _ _ y = 0`. Rewrite using `[hy, map_sub, ← pull_spMap_comp, pull_kum_gU hnat q _ hqm₁]`. Establish `e1 : φ₁.comp α = φf` using `IsLocalization.ringHom_ext (Submonoid.powers (algebraMap B A' f)) (by rw [RingHom.comp_assoc, hα, hφ₁, hφf])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e2 : Units.map φ₁.toMonoidHom (Units.map β.toMonoidHom v) = u₀`. Rewrite using `[← hv (φ₁.comp β) (by rw [RingHom.comp_assoc, hβ, hφ₁])]; ext; rfl`. Rewrite using `[e1, e2, hu₀, hu, sub_self]`. Take `⟨m', hm', hψ⟩` from `GlobalTheory.T.tateTwistCohomology_class_dies_on_localizationAway GlobalTheory.T.etaleCohomology_twisted_filtered_colimit_continuity q A' M 1 1 hqA ((algebraMap B A' f) * m₀) hm₁ y φ₁ hφ₁ hy0`. Take `⟨b, hb, hbm⟩` from `M.mul_mem hm₁ hm'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨s, hs, t, ht, rfl⟩` from `Submonoid.mem_sup.1 hb`. Take `⟨n, rfl⟩` from `ht`. Establish `hs' : IsUnit (Ideal.Quotient.mk (Ideal.span {f}) s)` using `hs`. Use `⟨Localization.Away (algebraMap B A' s), inferInstance, inferInstance, inferInstance, inferInstance, GlobalTheory.T.isExcisionNbhd_away_of_isUnit_mod' B A' f s hA' hs', ?_⟩` and prove the remaining obligations. Use `set A₂ := Localization.Away (algebraMap B A' s)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set g : A' →+* Localization.Away (algebraMap B A₂ f) := (algebraMap A₂ _).comp (algebraMap A' A₂) with hg`. Establish `hgu : IsUnit (g ((algebraMap B A' f) * m₀ * m'))`. Rewrite using `[← hbm]`. Simplify using `only [map_mul, map_pow]`. Use `IsUnit.mul ?_ (IsUnit.pow _ ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `(IsLocalization.Away.algebraMap_isUnit (algebraMap B A' s)).map (algebraMap A₂ _)`. Establish `: g (algebraMap B A' f) = algebraMap A₂ (Localization.Away (algebraMap B A₂ f)) (algebraMap B A₂ f)`. Rewrite using `[hg, RingHom.comp_apply, ← IsScalarTower.algebraMap_apply B A' A₂ f]`. Rewrite using `[this]`. Conclude with `IsLocalization.Away.algebraMap_isUnit _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `χ : Localization.Away ((algebraMap B A' f) * m₀ * m') →+* Localization.Away (algebraMap B A₂ f)` to `IsLocalization.Away.lift ((algebraMap B A' f) * m₀ * m') hgu`. Establish `hχ : χ.comp (algebraMap A' _) = g` using `IsLocalization.Away.lift_comp _ _`. Establish `hunit2 : IsUnit (algebraMap A' (Localization.Away ((algebraMap B A' f) * m₀ * m')) ((algebraMap B A' f) * m₀ * m'))` using `IsLocalization.Away.algebraMap_isUnit _`. Set `ψ : Localization.Away ((algebraMap B A' f) * m₀) →+* Localization.Away ((algebraMap B A' f) * m₀ * m')` to `IsLocalization.Away.lift ((algebraMap B A' f) * m₀) (isUnit_of_mul_isUnit_left (by simpa using hunit2))`. Establish `hψc : ψ.comp (algebraMap A' _) = algebraMap A' _` using `IsLocalization.Away.lift_comp _ _`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hqm₂ : IsUnit (q : Localization.Away ((algebraMap B A' f) * m₀ * m'))` using `by simpa using hqA.map (algebraMap A' _)`. Use `clear_value χ ψ β α`. Use `⟨gU _ (Units.map (χ.comp (ψ.comp β)).toMonoidHom v), fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `e3 : φ = χ.comp (ψ.comp α)` using `IsLocalization.ringHom_ext (Submonoid.powers (algebraMap B A' f)) (by rw [hφ, RingHom.comp_assoc, RingHom.comp_assoc, hα, hψc, hχ])`. Establish `hw : pull _ (spMap α) _ _ w = y + kum q (gU _ (Units.map β.toMonoidHom v))`.
-
-Rewrite using `[hy, sub_add_cancel]`. Substitute `e3` using the available equality. Rewrite using `[pull_spMap_comp, pull_spMap_comp, hw]`. Establish `hψy` using `hψ ψ hψc`. Rewrite using `[map_add (pull _ (spMap ψ) _ _)]`.
-
-Rewrite using `[hψy, zero_add]`. Rewrite using `[pull_kum_gU hnat q ψ hqm₁]`. Establish `key : pull _ (spMap χ) _ _ (kum q (gU _ (Units.map ψ.toMonoidHom (Units.map β.toMonoidHom v)))) = kum q (gU _ (Units.map χ.toMonoidHom (Units.map ψ.toMonoidHom (Units.map β.toMonoidHom v))))` using `pull_kum_gU hnat q χ hqm₂ _`. Use `key.trans ?_` and prove the remaining obligations. Conclude with `congrArg (kum q) (congrArg (gU _) (Units.ext rfl))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_kummer_on_finer_nbhd : ∀ (q : ℕ) [NeZero q] (k B : Type) [Field k] [IsAlgClosed k] [CommRing B] [IsDedekindDomain B] [Algebra k B] [Algebra.FiniteType k B], IsUnit (q : k) → ∀ f : B, f ≠ 0 → ∀ (A' : Type) [CommRing A'] [Algebra B A'], IsExcisionNbhd B A' f → ∀ w : Ht q (sp (Localization.Away (algebraMap B A' f))) 1 1, ∃ (A₂ : Type) (_ : CommRing A₂) (_ : Algebra B A₂) (_ : Algebra A' A₂) (_ : IsScalarTower B A' A₂), IsExcisionNbhd B A₂ f ∧ ∃ c : (Γ(Spec (CommRingCat.of (Localization.Away (algebraMap B A₂ f))), ⊤))ˣ, ∀ φ : Localization.Away (algebraMap B A' f) →+* Localization.Away (algebraMap B A₂ f), φ.comp (algebraMap A' _) = (algebraMap A₂ _).comp (algebraMap A' A₂) → pull _ (spMap φ) _ _ w = kum q c := by
   intro q _ k B _ _ _ _ _ _ hq f _ A' _ _ hA' w

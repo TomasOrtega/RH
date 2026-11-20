@@ -21,11 +21,9 @@ open scoped ComplexOrder Classical
 namespace GlobalTheory.BotClassFin
 variable {D : D7}
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X _ _ _ hX J hJ`. Establish `hg : WW.gram = 1` using `hX.stdW.1`. Establish `hV : ∀ τ, (gramAt D WW τ).PosDef`. Introduce `τ`. Establish `: gramAt D WW τ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `gramAt`. Rewrite using `[hg]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite using `[this]`. Conclude with `Matrix.PosDef.one`.
-
-Conclude with `exists_reps_of_open WW hV J hJ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bottomClass_exists_finite_reps : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
@@ -62,7 +60,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.BotClassFin.bottomClass_exists_finite_reps | exact _root_.GlobalTheory.BotClassFin.bottomClass_exists_finite_reps | (intros; apply _root_.GlobalTheory.BotClassFin.bottomClass_exists_finite_reps <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.bottomClasses_finite : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

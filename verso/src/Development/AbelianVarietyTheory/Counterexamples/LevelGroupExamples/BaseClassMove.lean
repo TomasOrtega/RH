@@ -15,15 +15,15 @@ open Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor NumberField Mv
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
 /- English proof (translation)
-Establish `ht : ∀ m, (unitLat E n).TrivAt m` using `fun m => ⟨1, by simp, by simp [unitLat], by simp [unitLat]⟩`. Use `⟨fun v => ⟨fun hv w hw => ?_, fun hv => ?_⟩, ht _, ht _⟩` and prove the remaining obligations. Use `Subring.sum_mem _ fun j _ => Subring.mul_mem _ ?_ ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `Submodule.mem_one.1 (hv j trivial)`. Conclude with `⟨H.bar a, by rw [← ha]; exact H.bar_eq a⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, ha⟩` from `Submodule.mem_one.1 (hw j trivial)`. Conclude with `⟨a, ha⟩`. Introduce `j _`. Establish `h` using `hv (Pi.single j 1) (fun i _ => by`. Distinguish the cases in `hi : i = j`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `hi` using the available equality. Simplify using `using Submodule.one_le.1 le_rfl`. Simplify using `[Pi.single_eq_of_ne hi])`. Simplify using `only [Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`. Take `⟨a, ha⟩` from `h`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `Submodule.mem_one.2 ⟨H.bar a, ?_⟩` and prove the remaining obligations. Use `H.bar_eq a` as an intermediate fact. Express the relevant statement in the definitionally equal form `((H.bar a : 𝓞 E) : E) = v j`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `IsCMField.complexConj E (algebraMap _ _ a) = _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[ha, IsCMField.complexConj_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem latAdm_unit (l : Level H) (bad n : ℕ) : LatAdm l bad (unitLat E n) := by
   have ht : ∀ m, (unitLat E n).TrivAt m := fun m => ⟨1, by simp, by simp [unitLat], by simp [unitLat]⟩
@@ -50,13 +50,13 @@ theorem latAdm_unit (l : Level H) (bad n : ℕ) : LatAdm l bad (unitLat E n) := 
 variable (Xo : Moduli Dw l) (c : Coeff l)
 
 /- English proof (translation)
-Establish `key : ∀ (S' : Type) [CommRing S'] [Algebra c.F S'] (φ : S →ₐ[c.F] S') (a b d : c.F) (T : S'), φ v = algebraMap c.F S' (β⁻¹ * a * b * d) * T ↔ φ (algebraMap c.F S β * v) = algebraMap c.F S' (1⁻¹ * a * b * d) * T`. Introduce `S' _ _ φ a b d T`. Establish `hu : algebraMap c.F S' β * algebraMap c.F S' β⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hβ, map_one]`. Simplify using `only [map_mul, AlgHom.commutes, inv_one, map_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h]`. Take the linear combination `(algebraMap c.F S' a * algebraMap c.F S' b * algebraMap c.F S' d * T) * hu`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take the linear combination `(algebraMap c.F S' β⁻¹) * h - φ v * hu`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨S', _, _, φ, y', z, tp, F, h1, h2, h3, h4, h5, h6, h7⟩`. Conclude with `⟨S', _, _, φ, y', z, tp, F, h1, h2, h3, h4, h5, h6, (key S' φ _ _ _ _).1 h7⟩`. Introduce and unpack `⟨S', _, _, φ, y', z, tp, F, h1, h2, h3, h4, h5, h6, h7⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨S', _, _, φ, y', z, tp, F, h1, h2, h3, h4, h5, h6, (key S' φ _ _ _ _).2 h7⟩`.
+Supply the required witnesses or components.
 -/
 theorem shortValAt_beta (nab : NabV Xo c) {n : ℕ} (w : (Fin n → LevQ Dw l) → c.F) (Λ : GenLat E n) (β : c.F)
     (hβ : β ≠ 0) (N : ℕ) (P : MvPolynomial (LtN Dw n) c.F) {S : Type} [CommRing S] [Algebra c.F S]
@@ -79,7 +79,7 @@ theorem shortValAt_beta (nab : NabV Xo c) {n : ℕ} (w : (Fin n → LevQ Dw l) �
     exact ⟨S', _, _, φ, y', z, tp, F, h1, h2, h3, h4, h5, h6, (key S' φ _ _ _ _).2 h7⟩
 
 /- English proof (translation)
-Establish `e : (unitLat E n).Ln = (unitLat E n).La` using `inf_idem _`. Use `⟨one_ne_zero, ?_, fun σ => ?_⟩` and prove the remaining obligations. Unfold `BetaIs`. Rewrite using `[e, ← Submodule.one_eq_span, one_mul]`. Rewrite using `[e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -90,9 +90,9 @@ theorem isBeta_unit (n : ℕ) : IsBeta Dw c (unitLat E n) 1 := by
   · rw [e]; simp
 
 /- English proof (translation)
-Establish `hM : l.M ∣ l.M'` using `Nat.dvd_lcm_left _ _`. Establish `h0 : l.M' ≠ 0` using `Nat.lcm_ne_zero (by have := l.three_le; omega) l.A_pos.ne'`. Unfold `zetaM`. Rewrite using `[← pow_mul, Nat.div_mul_cancel hM]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(Complex.isPrimitiveRoot_exp l.M' h0).pow_eq_one`.
+A detailed English derivation is pending.
 -/
 theorem zetaM_pow : zetaM c ^ l.M = 1 := by
   have hM : l.M ∣ l.M' := Nat.dvd_lcm_left _ _

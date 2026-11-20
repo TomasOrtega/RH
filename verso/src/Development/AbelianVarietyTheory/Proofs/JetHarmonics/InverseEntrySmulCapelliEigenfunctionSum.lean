@@ -14,7 +14,7 @@ namespace GlobalTheory
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `g₀ _`. Use `⟨Set.univ, fun g => Formalism.FourierDecayAlt.P.JCx2.mnLinInv (Pi.single j 1) c g, isOpen_univ, trivial, (Formalism.FourierDecayAlt.P.JCx2.mnLinInv (Pi.single j 1) c).contDiff.contDiffOn, fun g _ hg => ?_⟩` and prove the remaining obligations. Use `show g⁻¹ c j = Matrix.mulVec (Hpk k r * g.conjTranspose * Hpk k r) (Pi.single j 1) c`. Rewrite using `[← Formalism.FourierDecayAlt.P.JCx2.mn_inv_gv hg]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ckOn_inv_entry (k r : ℕ) (c j : Fin (2 * r + k + 1)) :
     B.CkOn ⊤ (B.GV k r) (fun y : B.Mat k r => y⁻¹ c j) := by
@@ -26,7 +26,7 @@ theorem ckOn_inv_entry (k r : ℕ) (c j : Fin (2 * r + k + 1)) :
   simp
 
 /- English proof (translation)
-Establish `hg : Formalism.FourierDecayAlt.P.JCx2.pdGood Wp Wq 1 (fun g : B.Mat k r => g⁻¹ c j)` using `Formalism.FourierDecayAlt.P.JCx2.pd_good_congr (fun g _ => by simp) (Formalism.FourierDecayAlt.P.JCx2.pd_good_inv (Wp := Wp) (Wq := Wq) (Pi.single j 1) c)`. Take `⟨K, -, hK⟩` from `hg.2 (A - 1) m`. Take `⟨b, hb⟩` from `hF`. Conclude with `⟨K * b, hK F b (by rw [Nat.cast_one, sub_add_cancel]; exact hb)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inCC_inv_entry_smul {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (c j : Fin (2 * r + k + 1)) {A : ℝ} {m : ℕ}
@@ -40,19 +40,19 @@ theorem inCC_inv_entry_smul {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [
   exact ⟨K * b, hK F b (by rw [Nat.cast_one, sub_add_cancel]; exact hb)⟩
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ lam A i j f hlam hf heig`. Take `⟨V, W, _, _, _, _, E, E', ι, ev, mul, hE, hE', hι, hq, hsm, hext, hcc, hex, -, hqC, hmul⟩` from `GlobalTheory.capelli_module_model k r Wp Wq lam A`. Take `⟨w, hw⟩` from `hex f hf heig`. Set `x : Fin (2 * r + k + 1) → Module.End ℂ V` to `fun c => mul (fun y : B.Mat k r => y⁻¹ c j)`. Apply the tactic sequence `have hx : ∀ c v, ∀ g ∈ B.GV k r, ev (x c v) g = g⁻¹ c j • ev v g := fun c => (hmul _ (ckOn_inv_entry k r c j)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcomm : ∀ a b c, E a b * x c = x c * E a b - if a = c then x b else 0`. Introduce `a b c`. Use extensionality with `v`. Use `hext _ _ fun g hg => ?_` and prove the remaining obligations. Apply the tactic sequence `have h1 := (hmul _ (ckOn_inv_entry k r c j)).2 a b v g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [GlobalTheory.eh_inv_entry k r a b c j g hg] at h1`. Rewrite using `[Module.End.mul_apply, LinearMap.sub_apply, map_sub, Pi.sub_apply, Module.End.mul_apply, hx _ _ g hg]`. Use `h1.trans ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[hx _ _ g hg, neg_smul, sub_eq_add_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hinj : Function.Injective (fun s => ((lam s : ℂ) - (((2 * r + k + 1) : ℕ) - 1 : ℂ) / 2))`. Introduce `s t h`. Apply `hlam` to reduce the goal to its premises. Establish `h' : (lam s : ℂ) = lam t` using `sub_left_inj.1 h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `h'` after adjusting the coercions. Take `⟨v, hv1, hv2⟩` from `GlobalTheory.covector_multiplier_shift V W _ E E' ι x _ hE hE' hι hinj hq hcomm i w`. Use `⟨fun t => ev (∑ a, x a (ι (v t a))), fun t => ⟨hsm _, fun m => ?_⟩, fun t Y g hg => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `Formalism.FourierDecayAlt.P.JCx2.sq_inCC_sum (A := A - 1) (m := m) Finset.univ (fun a (g : B.Mat k r) => g⁻¹ a j • ev (ι (v t a)) g) (fun a _ => inCC_inv_entry_smul a j (hcc (v t a) m))`. Use `⟨b, Formalism.FourierDecayAlt.P.JCx2.mn_ccle_congr (fun g hg => ?_) hb⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Rewrite using `[map_sum, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun a _ => (hx _ _ g hg).symm`. Rewrite using `[← hqC _ _ g hg, hv2, map_smul, Pi.smul_apply]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`. Rewrite using `[← hw g hg, ← hx i _ g hg, hv1, map_sum, Finset.sum_apply]`.
+A detailed English derivation is pending.
 -/
 theorem inv_entry_smul_eigen_split : ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (lam : Fin (2 * r + k + 1) → ℝ) (A : ℝ) (i j : Fin (2 * r + k + 1)) (f : B.Mat k r → (Wq →L[ℂ] Wp)), Function.Injective lam → (B.CkOn ⊤ (B.GV k r) (f) ∧ ∀ m : ℕ, B.InCC (A) m (f)) → (∀ Y : ℝ, ∀ g ∈ B.GV k r, Q.CV k r (Y : ℂ) (f) g = ((∏ s, (Y + lam s) : ℝ) : ℂ) • (f) g) → ∃ Fi : Fin (2 * r + k + 1) → B.Mat k r → (Wq →L[ℂ] Wp), (∀ t, (B.CkOn ⊤ (B.GV k r) (Fi t) ∧ ∀ m : ℕ, B.InCC (A - 1) m (Fi t))) ∧ (∀ t, (∀ Y : ℝ, ∀ g ∈ B.GV k r, Q.CV k r (Y : ℂ) (Fi t) g = ((∏ s, (Y + (lam s - if s = t then 1 else 0)) : ℝ) : ℂ) • (Fi t) g)) ∧ ∀ g ∈ B.GV k r, g⁻¹ i j • f g = ∑ t, Fi t g := by
   intro k r Wp Wq _ _ _ _ _ _ lam A i j f hlam hf heig

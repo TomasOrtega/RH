@@ -29,7 +29,7 @@ namespace GlobalTheory.StdAtPrimeLat
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Set `ev : FiniteAdeleRing (𝓞 E) E →+* Q.adicCompletion E` to `RestrictedProduct.evalRingHom _ Q`. Establish `hev : ∀ x : FiniteAdeleRing (𝓞 E) E, x Q = ev x` using `fun _ => rfl`. Rewrite using `[hev, map_mul, Valuation.map_mul, ← hev, ← hev]`. Use `mul_le_one' ?_ hz` and prove the remaining obligations. Conclude with `(GlobalTheory.CharLocProd.val_algebraMap Q (c : E)).trans_le (Q.valuation_le_one c)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem val_intMul_le_one (c : 𝓞 E) (z : FiniteAdeleRing (𝓞 E) E) (Q : HeightOneSpectrum (𝓞 E))
     (hz : Valued.v (z Q) ≤ 1) :
@@ -41,11 +41,11 @@ theorem val_intMul_le_one (c : 𝓞 E) (z : FiniteAdeleRing (𝓞 E) E) (Q : Hei
   exact (GlobalTheory.CharLocProd.val_algebraMap Q (c : E)).trans_le (Q.valuation_le_one c)
 
 /- English proof (translation)
-Set `ev : FiniteAdeleRing (𝓞 E) E →+* Q.adicCompletion E` to `RestrictedProduct.evalRingHom _ Q`. Establish `hev : ∀ x : FiniteAdeleRing (𝓞 E) E, x Q = ev x` using `fun _ => rfl`. Establish `e : (((algebraMap E (FiniteAdeleRing (𝓞 E) E) (c : E)) * (m : FiniteAdeleRing (𝓞 E) E)) • (M *ᵥ y)) i = ∑ j, algebraMap E (FiniteAdeleRing (𝓞 E) E) (c : E) * (((m : FiniteAdeleRing (𝓞 E) E) * M i j) * y j)`. Rewrite using `[Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hev, map_sum]`. Use `Valuation.map_sum_le _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hev]`. Use `val_intMul_le_one c _ Q ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hev, map_mul, Valuation.map_mul, ← hev, ← hev]`. Conclude with `mul_le_one' (hM i j Q) (hy j Q)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_smul_mulVec_le_one {n : ℕ} (M : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E)) (m : ℕ)
     (hM : ∀ i j (Q : HeightOneSpectrum (𝓞 E)), Valued.v ((((m : FiniteAdeleRing (𝓞 E) E) * M i j)) Q) ≤ 1)
@@ -72,21 +72,19 @@ end GlobalTheory.StdAtPrimeLat
 open GlobalTheory.StdAtPrimeLat in
 
 /- English proof (translation)
-Introduce `D ι h1 h2 V hL p g hA hB`. Take `⟨m₁, hm₁, hA⟩` from `hA`. Take `⟨m₂, hm₂, hB⟩` from `hB`. Use `set A := (Matrix.GeneralLinearGroup.map ι.toRingHom g.1).1 with hAdef`. Use `set B := (Matrix.GeneralLinearGroup.map ι.toRingHom g.1)⁻¹.1 with hBdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAB : A * B = 1` using `Units.mul_inv _`. Establish `memH` using `fun x => GlobalTheory.ClassScalarValue.mem_hLat ι h1 h2 V hL g x`. Establish `memS : ∀ x : Fin V.rank → D.host.E, x ∈ Formalism.L2.Pj.stdLat D.host.E V.rank ↔ ∀ i Q, Valued.v ((fun j => algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E) (x j)) i Q) ≤ 1`. Introduce `x`. Rewrite using `[← hL, GlobalTheory.ClassScalarValue.mem_hLat ι h1 h2 V hL 1 x]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hsm : ∀ (r : 𝓞 D.host.E) (x : Fin V.rank → D.host.E), (fun j => algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E) ((r • x) j)) = algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E) (r : D.host.E) • fun j => algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.hos …` using `fun r x => funext fun j => map_mul _ (r : D.host.E) (x j)`. Use `⟨m₁ * m₂, Nat.Coprime.mul hm₁ hm₂, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.smul_le]`. Introduce `r hr x hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.1 hr`. Rewrite using `[memS, hsm]`. Rewrite `hx` using `[memH]`. Establish `ex : (fun j => algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E) (x j)) = A *ᵥ (B *ᵥ fun j => algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E) (x j))`. Rewrite using `[Matrix.mulVec_mulVec, hAB, Matrix.one_mulVec]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `ec : algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E) ((a * ((m₁ * m₂ : ℕ) : 𝓞 D.host.E) : 𝓞 D.host.E) : D.host.E) = algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E) ((a * (m₂ : 𝓞 D.host.E) : 𝓞 D.host.E) : D.host.E) * (m₁ : FiniteAdeleRing (𝓞 D.host.E) D.hos …`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `i Q`. Rewrite using `[ec, ex]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `val_smul_mulVec_le_one A m₁ hA _ hx _ i Q`. Rewrite using `[Submodule.smul_le]`. Introduce `r hr x hx`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.1 hr`. Rewrite using `[memH, hsm]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite `hx` using `[memS]`. Establish `ec : algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E) ((a * ((m₁ * m₂ : ℕ) : 𝓞 D.host.E) : 𝓞 D.host.E) : D.host.E) = algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E) ((a * (m₁ : 𝓞 D.host.E) : 𝓞 D.host.E) : D.host.E) * (m₂ : FiniteAdeleRing (𝓞 D.host.E) D.hos …`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `i Q`.
-
-Rewrite using `[ec, Matrix.mulVec_smul]`. Conclude with `val_smul_mulVec_le_one B m₂ hB _ hx _ i Q`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.StdAtPrimeLat.trivAt_hLat_of_bnd : ∀ (D : D7) (ι : (Af D.host.F ⊗[D.host.F] D.host.E) ≃+* FiniteAdeleRing (𝓞 D.host.E) D.host.E), (∀ x : D.host.E, ι ((1 : Af D.host.F) ⊗ₜ[D.host.F] x) = algebraMap D.host.E _ x) → (∀ y, y ∈ intAE D ↔ ∀ P : HeightOneSpectrum (𝓞 D.host.E), Valued.v (ι y P) ≤ 1) → ∀ (V : HSp D), Bridge.hLat V 1 = Formalism.L2.Pj.stdLat D.host.E V.rank → ∀ (p : ℕ) (g : Bridge.Gf V), Bnd p (Matrix.GeneralLinearGroup.map ι.toRingHom g.1).1 → Bnd p (Matrix.GeneralLinearGroup.map ι.toRingHom g.1)⁻¹.1 → (⟨Bridge.hLat V g⟩ : GenLat D.host.E V.rank).TrivAt p := by
   intro D ι h1 h2 V hL p g hA hB

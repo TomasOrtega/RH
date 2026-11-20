@@ -22,13 +22,13 @@ namespace GlobalTheory.SecThroughIso
 open ReciprocityTheory.ChartRestriction.G.DVR
 
 /- English proof (translation)
-Introduce `Y X₁ X₂ L₁ L₂ f₁ f₂ w hw h₁ h₂ k σ'`. Set `t : LB.Sec (LB.LinComb L₁ (K` to `Fin 1) (fun _ => f₁) (fun _ => (k : ℤ))) := TG.pullSec' L₁ (fun _ => 𝟙 X₁) (fun _ => (k : ℤ)) σ' f₁ (fun _ => f₁) (fun _ => (Category.comp_id _).symm)`. Use `⟨secOfIso (u := flatIso L₁ L₂ f₁ f₂ w (fun _ : Fin 1 => (k : ℤ))) t (flatIso_isGen L₁ L₂ f₁ f₂ w hw _) (linComb_isLB _ h₂ _ _) (linComb_isLB _ h₁ _ _), ?_⟩` and prove the remaining obligations. Introduce `y i j hi hj`. Establish `hz : (𝟙 Y) y ∈ (LB.LinComb L₂ (K` using `Fin 1) (fun _ => f₂) (fun _ => (k : ℤ))).U (fun _ => i) ⊓ (LB.LinComb L₁ (K := Fin 1) (fun _ => f₁) (fun _ => (k : ℤ))).U (fun _ => j) := ⟨Set.mem_iInter.2 fun _ => hi, Set.mem_iInter.2 fun _ => hj⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `ps_gs_secOfIso (flatIso L₁ L₂ f₁ f₂ w (fun _ : Fin 1 => (k : ℤ))) t (flatIso_isGen L₁ L₂ f₁ f₂ w hw _) (linComb_isLB _ h₂ _ _) (linComb_isLB _ h₁ _ _) (fun _ => i) (fun _ => j) (𝟙 Y) y hz`. Establish `hw' : (𝟙 Y) y ∈ ((L₂.pull f₂).div (L₁.pull f₁)).U (fun _ => i, fun _ => j)` using `⟨Set.mem_iInter.2 fun _ => hi, Set.mem_iInter.2 fun _ => hj⟩`. Establish `e1 : gm (𝟙 Y) y _ ((flatIso L₁ L₂ f₁ f₂ w (fun _ : Fin 1 => (k : ℤ))).s (fun _ => j, fun _ => i)) = gm (𝟙 Y) y _ (w.s (fun _ => i, fun _ => j)) ^ (-(k : ℤ))` using `by show gm (𝟙 Y) y _ (∏ k' : Fin 1, res (flat_le L₁ L₂ f₁ f₂ (fun _ => j, fun _ => i) k') (w.s (fun _ => i, fun _ => j)) ^ (-(k : ℤ))) = _`. Rewrite using `[map_prod, Fin.prod_univ_one, map_zpow]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `gm_res _ y _ (show (𝟙 Y) y ∈ LB.wchart L₁ (fun _ : Fin 1 => f₁) (fun _ => j) ⊓ LB.wchart L₂ (fun _ : Fin 1 => f₂) (fun _ => i) from ⟨hz.2, hz.1⟩) _`. Establish `e2 : gs (𝟙 Y) y _ (t.f fun _ => j) = gs f₁ y _ (σ'.f fun _ => j)`. Simplify using `only [t]`. Rewrite using `[TG.pullSec'_f]`. Use `(gs_res _ y _ hz.2 _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(gs_pull (𝟙 Y) f₁ y _ (Set.mem_iInter.2 fun _ => hj) _).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Both sides reduce to the same expression. Rewrite using `[e, e1, e2, gs_unit _ y _ hw', zpow_neg, inv_inv, zpow_natCast, Units.val_pow_eq_pow_val]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_of_iso : ∀ (Y X₁ X₂ : Scheme.{0}) (L₁ : LB X₁) (L₂ : LB X₂) (f₁ : Y ⟶ X₁) (f₂ : Y ⟶ X₂)
     (w : LB.Iso (L₁.pull f₁) (L₂.pull f₂)), w.IsGen → L₁.IsLB → L₂.IsLB → ∀ (k : ℕ) (σ' : SecM (𝟙 X₁) L₁ k),

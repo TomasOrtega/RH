@@ -7,7 +7,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ExplicitFormula.Continu
 namespace PI.EF
 
 /- English proof (translation)
-Introduce and unpack `κ _ ⟨C1, hC1, hH⟩ ⟨C2, hC2, hL⟩`. Conclude with `⟨21 * C1 + 8 * C2, by positivity, PK.sidesBound_of hC1.le hC2.le hH hL⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem perron_gluing_sides : GlueSides := by
   rintro κ _ ⟨C1, hC1, hH⟩ ⟨C2, hC2, hL⟩

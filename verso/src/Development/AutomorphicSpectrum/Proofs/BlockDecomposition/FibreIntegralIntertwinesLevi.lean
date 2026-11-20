@@ -20,9 +20,9 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.BZPsiPG.FibUnip
 
 /- English proof (translation)
-Take `⟨_, h2, h3, _⟩` from `SmIntEl.smInt_properties (X := X) (W := Z) (W' := Z) μ`. Establish `hl' : IsLocallyConstant (φ ∘ fun v => v + m)` using `hl.comp_continuous (continuous_add_right m)`. Establish `hc' : HasCompactSupport (φ ∘ fun v => v + m)` using `hc.comp_homeomorph (Homeomorph.addRight m)`. Establish `e1 : smInt μ (T ∘ (φ ∘ fun v => v + m)) = T (smInt μ (φ ∘ fun v => v + m))` using `h2 T _ hl' hc'`. Establish `e2 : smInt μ (φ ∘ fun v => v + m) = smInt μ φ` using `h3 (fun v => v + m) φ (MeasureTheory.measurePreserving_add_right μ m) hl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem map_smInt_translate {X Z Z' : Type} [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X]
     [MeasurableSpace X] [BorelSpace X] [AddCommGroup Z] [Module ℂ Z] [AddCommGroup Z'] [Module ℂ Z']
@@ -45,7 +45,7 @@ theorem map_smInt_translate {X Z Z' : Type} [AddCommGroup X] [TopologicalSpace X
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `induction j using Fin.addCases <;> simp [midV]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem midV_add (i t : ℕ) (v m : Fin t → k) :
     midV k i t (v + m) = midV k i t v + midV k i t m := by
@@ -53,7 +53,7 @@ theorem midV_add (i t : ℕ) (v m : Fin t → k) :
   induction j using Fin.addCases <;> simp [midV]
 
 /- English proof (translation)
-Establish `e : midV k i t v + (topV k i t x + midV k i t m) = topV k i t x + midV k i t (v + m)`. Rewrite using `[midV_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[mul_assoc, levi_mul_uM, hy, ← mul_assoc, ← uM_add, e, uM_add, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_uM_eq (i t : ℕ) (g : GL (Fin (i + t)) k) (y : Fin (i + t) → k) (x : Fin i → k) (m v : Fin t → k)
     (hy : (g : Matrix (Fin (i + t)) (Fin (i + t)) k).mulVec y = topV k i t x + midV k i t m) :
@@ -66,9 +66,9 @@ theorem mul_uM_eq (i t : ℕ) (g : GL (Fin (i + t)) k) (y : Fin (i + t) → k) (
 variable {i t : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add, map_add, map_add, ha, hb]`. Consider the case `tmul a b`. Establish `hq : (twKer τ (MirUin k i) 1).mkQ (τ (uM k i x) a) = (twKer τ (MirUin k i) 1).mkQ a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `(Submodule.Quotient.eq _).2 (Submodule.subset_span ⟨⟨_, uM_mem k i x⟩, a, ?_⟩)` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[extTensor_tmul]`. Simplify using `only [clT, LinearMap.rTensor_tmul, map_one, Module.End.one_apply]`. Conclude with `congrArg (· ⊗ₜ[ℂ] b) hq`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem clT_extTensor (τ : Representation ℂ (Mir k i) V) (σ : Representation ℂ (GL (Fin t) k) W)
     (x : Fin i → k) (z : V ⊗[ℂ] W) :
@@ -87,7 +87,7 @@ theorem clT_extTensor (τ : Representation ℂ (Mir k i) V) (σ : Representation
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `Exists.elim (GlobalTheory.T.unipotent_top_mem_parabolic k i t x) fun hmem hproj => ?_` and prove the remaining obligations. Establish `e1 : fibV (prodPG τ σ (uM k (i + t) y) f) g v = f.1.1.1 (uM k (i + t) (midV k i t v) * levi k (i + t) g * uM k (i + t) y)` using `rfl`. Establish `e2` using `f.1.1.2 ⟨_, hmem⟩ (uM k (i + t) (midV k i t (v + m)) * levi k (i + t) g)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem fibV_prodPG (τ : Representation ℂ (Mir k i) V) (σ : Representation ℂ (GL (Fin t) k) W)
     (f : cIndSpace (HPG k i t) (hRep τ σ)) (g : GL (Fin (i + t)) k) (y : Fin (i + t) → k)
@@ -106,7 +106,7 @@ theorem fibV_prodPG (τ : Representation ℂ (Mir k i) V) (σ : Representation �
         congrArg (fun a => extTensor τ σ a (fibV f g (v + m))) hproj
 
 /- English proof (translation)
-Establish `hlc` using `GlobalTheory.T.fibre_function_locally_constant_compact k i t τ σ hτ hσ f g`. Establish `hfun : fibV (prodPG τ σ (uM k (i + t) y) f) g = fun v => (extTensor τ σ (uM k i x, 1)) (fibV f g (v + m))`. Use function extensionality and compare the values at `fun v => fibV_prodPG τ σ f g y x m v hxm`. Establish `h1 : clT τ W (smInt μ (fibV (prodPG τ σ (uM k (i + t) y) f) g)) = clT τ W (smInt μ fun v => (extTensor τ σ (uM k i x, 1)) (fibV f g (v + m)))` using `congrArg (fun φ => clT τ W (smInt μ φ)) hfun`. Conclude with `h1.trans (map_smInt_translate μ (clT τ W) (extTensor τ σ (uM k i x, 1)) (clT_extTensor τ σ x) (fibV f g) m hlc.1 hlc.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fibInt_col (τ : Representation ℂ (Mir k i) V) (σ : Representation ℂ (GL (Fin t) k) W)
     (hτ : IsSmooth τ) (hσ : IsSmooth σ) [MeasurableSpace (Fin t → k)] [BorelSpace (Fin t → k)]
@@ -128,7 +128,7 @@ theorem fibInt_col (τ : Representation ℂ (Mir k i) V) (σ : Representation �
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ i t V W _ _ _ _ τ σ hτ hσ _ _ μ _ f u hu g`. Use `Exists.elim (exists_uM_of_mem k (i + t) hu) fun y hy => ?_` and prove the remaining obligations. Use `Exists.elim (exists_top_mid k i t ((g : Matrix (Fin (i + t)) (Fin (i + t)) k).mulVec y)) fun x hx => ?_` and prove the remaining obligations. Use `Exists.elim hx fun m hxm => ?_` and prove the remaining obligations. Conclude with `(congrArg (fun u' => fibInt μ (prodPG τ σ u' f) g) hy).trans (fibInt_col τ σ hτ hσ μ f y g x m hxm)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fibInt_unip : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (τ : Representation ℂ (Mir k i) V) (σ : Representation ℂ (GL (Fin t) k) W), IsSmooth τ → IsSmooth σ → ∀ [MeasurableSpace (Fin t → k)] [BorelSpace (Fin t → k)] (μ : MeasureTheory.Measure (Fin t → k)) [μ.IsAddHaarMeasure], ∀ (f : cIndSpace (HPG k i t) (hRep τ σ)) (u : Mir k (i + t)), u ∈ MirUin k (i + t) → ∀ g : GL (Fin (i + t)) k, fibInt μ (prodPG τ σ u f) g = fibInt μ f g := by
   intro k _ _ _ _ i t V W _ _ _ _ τ σ hτ hσ _ _ μ _ f u hu g

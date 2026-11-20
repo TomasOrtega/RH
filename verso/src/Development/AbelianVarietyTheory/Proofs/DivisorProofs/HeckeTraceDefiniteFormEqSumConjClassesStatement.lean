@@ -6,7 +6,7 @@ open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMi
 open scoped TensorProduct Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.HeckeTrace.dform_trace_eq) | (exact GlobalTheory.HeckeTrace.dform_trace_eq) | (intros; apply GlobalTheory.HeckeTrace.dform_trace_eq <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.heckeTrace_definiteForm_eq_sum_conjClasses : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), G.a = 1 →
   ∀ (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (ξ : Representation ℂ (G.Cˣ × ℚˣ) V)

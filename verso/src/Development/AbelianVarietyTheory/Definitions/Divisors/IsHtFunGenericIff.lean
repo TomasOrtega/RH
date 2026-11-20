@@ -43,14 +43,14 @@ def IsIntFun {p : X ⟶ Sp k} (L : ι → HermLB p) (f : ∀ σ : k →+* ℂ, C
     ∀ (P : MvPolynomial ι ℝ) (d : ℕ), d ≠ D → P.IsHomogeneous d → Λ P = 0
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isHtFun_generic_iff [IsIntegral X] {p : X ⟶ Sp k} (L : ι → HermLB p) (D : ℕ) (Φ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) :
     IsHtFun L (genericPoint X) (D + 1) Φ ↔ IsArFun L D Φ :=
   Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isIntFun_one_iff {p : X ⟶ Sp k} (L : ι → HermLB p) (D : ℕ) (Λ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) :
     IsIntFun L (fun _ _ => 1) D Λ ↔ IsGeoFun L D Λ :=
@@ -61,7 +61,7 @@ def vdmPol (r e : ℕ) : MvPolynomial (Option (Fin r)) ℝ :=
     (∏ i : Fin r, ∏ i' ∈ Finset.Ioi i, (MvPolynomial.X (some i') - MvPolynomial.X (some i))) * MvPolynomial.X none ^ e
 
 /- English proof (translation)
-Simplify using `[vdmPol]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vdmPol_one (e : ℕ) : vdmPol 1 e = MvPolynomial.X (some 0) ^ 2 * MvPolynomial.X none ^ e := by
   simp [vdmPol]
@@ -160,7 +160,7 @@ theorem lam_B (R : ℝ) : (M.lam R).B = M.lamB :=
   rfl
 
 /- English proof (translation)
-The claim follows from `M.lam_B 0 ▸ ((M.lam 0).pow m).isLB`.
+A detailed English derivation is pending.
 -/
 theorem isLB_pow (m : ℕ) : (lbPow M.lamB m).IsLB :=
   M.lam_B 0 ▸ ((M.lam 0).pow m).isLB

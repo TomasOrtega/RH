@@ -6,13 +6,11 @@ open ReciprocityTheory.DiscreteGroups.LocalClassField Matrix GlobalTheory.LKRes
 namespace GlobalTheory.LKRes
 
 /- English proof (translation)
-Establish `hle : intKQ p K r ≤ (intKQ p K r).comap (sigKQ p K r).toRingHom`. Use `(Subring.closure_le).2 ?_` and prove the remaining obligations. Introduce and unpack `x (⟨a, rfl⟩ | ⟨b, rfl⟩)`. Use `show sigKQ p K r (inclK p K r a) ∈ intKQ p K r`. Establish `: sigKQ p K r (inclK p K r a) = inclK p K r a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `DFunLike.congr_fun (Algebra.TensorProduct.map_comp_includeLeft (AlgHom.id ℚ_[p] K) (frobQ p r)) (a : K)`. Rewrite using `[this]`. Conclude with `Subring.subset_closure (Or.inl ⟨a, rfl⟩)`. Use `show sigKQ p K r (inclQ p K r b) ∈ intKQ p K r`. Establish `hb : GlobalTheory.LKLoc.frobR p (Q0 p) r b ∈ GlobalTheory.LKLoc.intR p (Q0 p) r` using `GlobalTheory.T.frobenius_preserves_integer_ring p (Q0 p) r b b.2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `: sigKQ p K r (inclQ p K r b) = inclQ p K r (⟨_, hb⟩ : GlobalTheory.LKLoc.intR p (Q0 p) r)`. Simplify using `[sigKQ, inclQ, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Subring.subset_closure (Or.inr ⟨_, rfl⟩)`.
-
-Conclude with `fun x hx => hle hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem sigKQ_mem_intKQ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (r : ℕ) :
     ∀ x ∈ intKQ p K r, sigKQ p K r x ∈ intKQ p K r := by
@@ -35,7 +33,7 @@ theorem sigKQ_mem_intKQ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] 
   exact fun x hx => hle hx
 
 /- English proof (translation)
-Introduce `p _ K n r g hg`. Take `⟨h, rfl⟩` from `hg`. Set `f : intKQ p K r →+* intKQ p K r` to `(sigKQ p K r).toRingHom.restrict (intKQ p K r) (intKQ p K r) (sigKQ_mem_intKQ p K r)`. Use `⟨GeneralLinearGroup.map f h, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
 Both sides reduce to the same expression.
 -/

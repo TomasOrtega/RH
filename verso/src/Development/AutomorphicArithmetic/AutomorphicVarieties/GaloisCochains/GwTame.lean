@@ -7,7 +7,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisCochains.Dec
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module UpperTheory.V UpperTheory.V.Fr UpperTheory.V.GC
 
 /- English proof (translation)
-Use `(Submodule.Quotient.mk_eq_zero _).trans ((mem_coboundaries1 _ _).trans ⟨fun ⟨m, hm⟩ j hj => ?_, fun h => ⟨0, fun j => ?_⟩⟩)` and prove the remaining obligations. Conclude with `(hm ⟨j, hj⟩).trans (sub_eq_zero.2 (hJ j hj m))`. Rewrite using `[map_zero, sub_zero]`. Conclude with `h j.1 j.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ch_ur {R D M : Type} [CommRing R] [Group D] [TopologicalSpace D] [AddCommGroup M] [Module R M]
     [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation R D M) (J : Subgroup D) (hJ : ∀ j ∈ J, ∀ m, ρ j m = m)
@@ -18,19 +18,17 @@ private theorem ch_ur {R D M : Type} [CommRing R] [Group D] [TopologicalSpace D]
     exact h j.1 j.2
 
 /- English proof (translation)
-Use `haveI : Module.Finite k M := Module.Finite.of_finite`. Set `σ : Representation k (Dec (F` to `F) A) M := ρ.comp (Dec (F := F) A).subtype`. Take `⟨f1, -, -, e1, -⟩` from `locEuler hF hT hE F Ω l v A hA k M σ (Continuous.comp hρ ((continuous_subtype_val.comp continuous_fst).prodMk continuous_snd))`. Take `⟨f2, e2⟩` from `tameEq hF hT hE F Ω l v A hA hv K ho hi k M ρ hρ fun g hg => hK g hg.2`. Set `i : (Ine (F` to `F) A ⊓ K : Subgroup (G F Ω)) → Dec (F := F) A := fun j => ⟨j.1, Ine_le_Dec A j.2.1⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hi' : ∀ j m, σ (i j) m = m` using `fun j m => LinearMap.congr_fun (hK _ j.2.2) m`. Set `r : Z1 σ →ₗ[k] eqHom ρ (Dec (F` to `F) A) (Ine (F := F) A ⊓ K) := { toFun := fun z => ⟨fun j => z.1 (i j), (IsLocallyConstant.iff_continuous _).2 (z.2.1.comp (continuous_subtype_val.subtype_mk _)), fun a b => (z.2.2 (i a) (i b)).trans (by rw [hi']), fun d hd j j' h => by`. Establish `e : i j' * ⟨d, hd⟩ = ⟨d, hd⟩ * i j` using `Subtype.ext (by show j'.1 * d = d * j.1`. Rewrite using `[h, inv_mul_cancel_right])`. Establish `e'` using `congrArg z.1 e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e'` using `[z.2.2, z.2.2, hi', add_comm]`. Conclude with `add_left_cancel e'⟩`. Use the proof step `map_add' := fun _ _ => rfl`. Use the proof step `map_smul' := fun _ _ => rfl }`. Set `r' : H1 σ →ₗ[k] eqHom ρ (Dec (F` to `F) A) (Ine (F := F) A ⊓ K) := Submodule.liftQ _ r fun z hz => by`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 hz`. Conclude with `Subtype.ext (funext fun j => (hm (i j)).trans (sub_eq_zero.2 (hi' j m)))`. Establish `hker : LinearMap.ker r' ≤ H1ur σ ((Ine (F` using `F) A ⊓ K).subgroupOf (Dec (F := F) A)) := by`. Introduce `x hx`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(ch_ur σ _ (fun j hj m => hi' ⟨j.1, hj⟩ m) z).2 fun j hj => ?_` and prove the remaining obligations. Conclude with `congrFun (congrArg Subtype.val (show r z = 0 from hx)) ⟨j.1, hj⟩`. Establish `h1` using `r'.finrank_range_add_finrank_ker`. Establish `h2` using `Submodule.finrank_mono hker`. Establish `h3` using `(LinearMap.range r').finrank_le`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers.
 
-Establish `h4` using `e1 hv`. Express the relevant statement in the definitionally equal form `Nat.card (H0 σ) ≤ Nat.card (H1ur σ ((Ine (F := F) A ⊓ K).subgroupOf (Dec (F := F) A)))`. Rewrite using `[Module.natCard_eq_pow_finrank (K := k) (V := H0 σ), Module.natCard_eq_pow_finrank (K := k) (V := H1ur σ ((Ine (F := F) A ⊓ K).subgroupOf (Dec (F := F) A)))]`. Use `Nat.pow_le_pow_right Nat.card_pos ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = finrank k (H2 σ) at e2`.
-
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 private theorem ch_low (hF : LocalFiniteness) (hT : LocalTateDuality) (hE : LocalEulerChar) {F Ω : Type} [Field F] [NumberField F]
     [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (v : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω)
@@ -78,11 +76,9 @@ private theorem ch_low (hF : LocalFiniteness) (hT : LocalTateDuality) (hE : Loca
   omega
 
 /- English proof (translation)
-Use `haveI : IsGalois F Ω := IsAlgClosure.isGalois F Ω`. Use `haveI : CompactSpace (Dec (F := F) A) := isCompact_iff_compactSpace.1 (isClosed_Dec A).isCompact`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `replace hx := (ch_ur _ ((Ine (F := F) A ⊓ K).subgroupOf (Dec (F := F) A)) (fun j hj m => LinearMap.congr_fun (hK j hj.2).1 m) x).1 hx`. Take `⟨γ, -, h1, h2⟩` from `decZhat F Ω v A hA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `haveI : ((Ine (F := F) A ⊓ K).subgroupOf (Dec (F := F) A)).Normal := ⟨fun n hn g => ⟨conj_mem_Ine g.2 hn.1, Subgroup.Normal.conj_mem inferInstance _ hn.2 _⟩⟩`. Take `⟨b, hb1, -, hb2⟩` from `H2_unramified_inflation l (Dec (F := F) A) k k ((charRep μ).comp φ) hμ ((Ine (F := F) A).subgroupOf (Dec (F := F) A)) ((Ine (F := F) A ⊓ K).subgroupOf (Dec (F := F) A)) γ (fun g hg => hg.1) (((isClosed_Ine A).inter (K.isClosed_of_isOpen ho)).preimage continuous_subtype_val) (by`. Rewrite using `[Subgroup.relIndex_subgroupOf (Ine_le_Dec A), Subgroup.inf_relIndex_left]`. Conclude with `fun h => hi (h.trans (Subgroup.relIndex_dvd_index_of_normal _ _)))`. Use the proof step `(fun j hj => LinearMap.ext fun m => by simp [(hK j hj.2).2]) h1 h2`.
-
-Use the proof step `(cupCocycleZ1Z1 ((twDual μ ρ).comp φ) (ρ.comp φ) ((charRep μ).comp φ) evalPair.flip continuous_of_discreteTopology (fun g y x => evalPair_equiv μ ρ (φ g) x y) hρ y x)`. Use the proof step `(fun s t j hj j' hj' => by show y.1 (s * j) (ρ (φ (s * j)) (x.1 (t * j'))) = y.1 s (ρ (φ s) (x.1 t))`. Rewrite using `[y.2.2, x.2.2, hy j hj, hx j' hj', map_zero, map_zero, add_zero, add_zero, map_mul, map_mul, (hK j hj.2).1, mul_one])`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ((separated_dvr_second_cohomology_mem _ _).2 ⟨b, (IsLocallyConstant.iff_continuous _).1 hb1, funext fun p => (hb2 p.1 p.2).symm⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ch_cup {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime]
     (v : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω) (hA : IsPlaceOver A v) (K : Subgroup (G F Ω)) [K.Normal]
@@ -121,29 +117,23 @@ private theorem ch_cup {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algeb
 open scoped Classical in
 
 /- English proof (translation)
-Use `haveI : Fact (l ^ 1).Prime := ⟨by rw [pow_one]; exact Fact.out⟩`. Use `haveI : CharP (ZMod (l ^ 1)) l := CharP.congr (l ^ 1) (pow_one l)`. Set `L : LocCond ρ (locFam S' A)` to `fun v => if v.1 ∈ S then ⊥ else H1ur (ρ.comp (locFam S' A v)) ((Ine (F := F) (A v) ⊓ K).subgroupOf (Dec (F := F) (A v)))`. Establish `hc' : ∀ v, ContAction (ρ.comp (locFam S' A v))` using `fun v => hρ.comp' (continuous_locFam S' A v)`. Establish `gw` using `P.gw F Ω l 1 M S' ρ one_pos hl hS' hρ μ hμ A hA c (fun w _ => hc w) L`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, f1, -⟩` from `P.gf F Ω l 1 M S' ρ one_pos hS' hρ`. Establish `f2 : ∀ v, Finite (H1 (ρ.comp (locFam S' A v)))` using `fun v => (P.lf F Ω l 1 M (A v) _ v.1 one_pos (hA v) (hc' v)).2.1`. Use `haveI : Finite (TDual (ZMod (l ^ 1)) M) := (DFunLike.finite _ : Finite (M →ₗ[ZMod (l ^ 1)] ZMod (l ^ 1)))`. Establish `ha : 0 < archH0Card S' ρ c`. Use `Nat.mul_pos (Finset.prod_pos fun w _ => ?_) (Nat.pow_pos Nat.card_pos)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Nonempty {m : M // ρ (toGS Ω _ (c w)) m = m} := ⟨⟨0, map_zero _⟩⟩`. Conclude with `Nat.card_pos`. Establish `hmem : ∀ x, (Submodule.Quotient.mk (f x) : H1 (twDual μ ρ)) ∈ Sel (twDual μ ρ) (locFam S' A) (continuous_locFam S' A) (perpCond μ ρ (locFam S' A) hc' L)`. Introduce `x`. Rewrite using `[mem_Sel]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Introduce `v`. Rewrite using `[mem_perpCond]`. Introduce `y hy`. Distinguish the cases in `hv : v.1 ∈ S`. Simplify using `only [L, if_pos hv, Submodule.mem_bot] at hy`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hy, map_zero]`. Simplify using `only [L, if_neg hv] at hy`. Conclude with `ch_cup l v.1 (A v) (hA v) K ho hi (ZMod (l ^ 1)) M μ ρ (locFam S' A v) (hc' v) ((GlobalTheory.Published.PoitouTate.contAction_charRep hμ).comp' (continuous_locFam S' A v)) (fun g hg => hK g.1 hg) (restrictCocycles1 _ _ (continuous_locFam S' A v) (f x)) (fun g hg => hf' x v hv g.1 …`. Establish `hpos : 0 < Nat.card (Sel ρ (locFam S' A) (continuous_locFam S' A) L) * Nat.card (H0 (twDual μ ρ)) * (∏ v : S', Nat.card (H0 (ρ.comp (locFam S' A v)))) * archH0Card S' ρ c` using `Nat.mul_pos (Nat.mul_pos (Nat.mul_pos Nat.card_pos Nat.card_pos) (Finset.prod_pos fun v _ => Nat.card_pos)) ha`. Use `haveI : Finite (Sel (twDual μ ρ) (locFam S' A) (continuous_locFam S' A) (perpCond μ ρ (locFam S' A) hc' L)) := by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Nat.finite_of_card_ne_zero fun h => ?_` and prove the remaining obligations. Rewrite `hpos` using `[gw, h, zero_mul, zero_mul]`. Conclude with `lt_irrefl _ hpos`. Establish `hinj : Function.Injective fun x => (⟨_, hmem x⟩ : Sel (twDual μ ρ) (locFam S' A) (continuous_locFam S' A) (perpCond μ ρ (locFam S' A) hc' L))` using `fun a b h => hf (congrArg Subtype.val h)`. Use `⟨Finite.of_injective _ hinj, (Nat.card_le_card_of_injective _ hinj).trans ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (∏ v : S', Nat.card (H0 (ρ.comp (locFam S' A v)))) ≤ (∏ v : S', if v.1 ∈ S then Nat.card (H0 (ρ.comp (locFam S' A v))) else 1) * ∏ v : S', Nat.card (L v)`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod' fun v _ => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v.1 ∈ S`. Rewrite using `[if_pos hv]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Nat.le_mul_of_pos_right _ Nat.card_pos`. Simplify using `only [L, if_neg hv, one_mul]`. Conclude with `ch_low P.lf P.lt P.le l v.1 (A v) (hA v) (fun h => hv (hS _ h)) K ho hi (ZMod (l ^ 1)) M (ρ.comp (toGS Ω _)) (hρ.comp' (continuous_toGS Ω _)) fun g hg => (hK g hg).1`. Establish `h2 : Nat.card (Sel ρ (locFam S' A) (continuous_locFam S' A) L) ≤ Nat.card {y : H1 ρ // ∃ z : Z1 ρ, Submodule.Quotient.mk z = y ∧ ∀ v : S', ∀ g ∈ Ine (F` using `F) (A v) ⊓ K, z.1 (toGS Ω _ g) = 0} := by`. Use `Nat.card_le_card_of_injective (fun y => ⟨y.1, ?_⟩) fun a b h => Subtype.ext (Subtype.mk.inj h)` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `y`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Use `⟨z, rfl, fun v g hg => ?_⟩` and prove the remaining obligations. Establish `h3 : resH1 ρ _ (continuous_locFam S' A v) (Submodule.Quotient.mk z) ∈ H1ur (ρ.comp (locFam S' A v)) ((Ine (F` using `F) (A v) ⊓ K).subgroupOf (Dec (F := F) (A v))) := by`. Use `(mem_Sel _ _ _ _ _).1 hy v` as an intermediate fact.
-
-Distinguish the cases in `hv : v.1 ∈ S`. Simplify using `only [L, if_pos hv, Submodule.mem_bot] at this`. Rewrite using `[this]`. Conclude with `zero_mem _`. Simplify `this` using `only [L, if_neg hv]`.
-
-Conclude with `(ch_ur _ ((Ine (F := F) (A v) ⊓ K).subgroupOf (Dec (F := F) (A v))) (fun j hj m => LinearMap.congr_fun (hK j.1 hj.2).1 m) (restrictCocycles1 ρ _ (continuous_locFam S' A v) z)).1 h3 ⟨g, Ine_le_Dec _ hg.1⟩ hg`. Establish `h3 : 0 < ∏ v : S', Nat.card (L v)` using `Finset.prod_pos fun v _ => Nat.card_pos`. Establish `h4 : 0 < Nat.card (H0 ρ)` using `Nat.card_pos`. Use `Nat.le_of_mul_le_mul_right ?_ h3` and prove the remaining obligations. Use `(Nat.mul_le_mul_right _ (Nat.le_mul_of_pos_right _ h4)).trans (gw.ge.trans ?_)` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GC.gwTame (P : Hypotheses₂) {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ)
     [Fact l.Prime] (hl : l ≠ 2) (S S' : Finset (HeightOneSpectrum (𝓞 F))) (hS : ContainsAbove S l) (hS' : ContainsAbove S' l)

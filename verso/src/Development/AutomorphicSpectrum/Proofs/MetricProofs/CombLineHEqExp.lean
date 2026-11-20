@@ -6,7 +6,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 namespace GlobalTheory.CompanionTheory.Ar.Small
 
 /- English proof (translation)
-Break down `j with _ | ⟨a, i⟩` into its components or cases. Express the relevant statement in the definitionally equal form `s / (R.kA : ℝ) = 0 / (R.kA : ℝ) - s * ((-1) / (R.kA : ℝ))`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `-(lam a i - s * nu a i) = -lam a i - s * -nu a i`. Expand and normalize the polynomial expressions, which then agree.
+Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coef_sub_smul {Ψ : Type} [Fintype Ψ] {N : ℕ} (R : RootModel Ψ N) (lam nu : Wt Ψ N) (s : ℝ)
     (j : Option (Ψ × Fin N)) :
@@ -18,7 +18,7 @@ theorem coef_sub_smul {Ψ : Type} [Fintype Ψ] {N : ℕ} (R : RootModel Ψ N) (l
     ring
 
 /- English proof (translation)
-Break down `j with _ | r` into its components or cases. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(R.x t r).a = (R.x 1 r).a`. Rewrite using `[R.x_deg, R.x_deg]`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem line_a_eq {Ψ : Type} [Fintype Ψ] {N : ℕ} (R : RootModel Ψ N) (t : ℝ) (j : Option (Ψ × Fin N)) :
     (R.line t j).a = (R.line 1 j).a := by
@@ -28,7 +28,7 @@ theorem line_a_eq {Ψ : Type} [Fintype Ψ] {N : ℕ} (R : RootModel Ψ N) (t : �
     rw [R.x_deg, R.x_deg]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.CompanionTheory.Ar.Top.combLine, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[line_a_eq R t j]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem combLine_line_a {Ψ : Type} [Fintype Ψ] {N : ℕ} (R : RootModel Ψ N) (t : ℝ)
     (m : Option (Ψ × Fin N) → ℤ) (x : R.K) :
@@ -38,7 +38,7 @@ theorem combLine_line_a {Ψ : Type} [Fintype Ψ] {N : ℕ} (R : RootModel Ψ N) 
   rw [line_a_eq R t j]
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.Ar.Small.FinBounds at h ⊢`. Introduce `z hz hu`. Take `⟨r₁, r', rτ, rσ, E, φ, h1, h2, h3, h4, heq, rest⟩` from `h z hz hu`. Use `⟨r₁, r', rτ, rσ, E, φ, h1, h2, h3, h4, ?_, rest⟩` and prove the remaining obligations. Rewrite using `[pow_mul, pow_mul, pow_mul, pow_mul, heq, mul_pow, mul_pow]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem FinBounds.mul_nat {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
     {y : (Σ k, ι k) → Ω} {I : Type} [Fintype I] {w : I → Ω} {a₁ a' aτ aσ : K → ℤ} {τ σ : Ω}
@@ -52,9 +52,9 @@ theorem FinBounds.mul_nat {K : Type} [Fintype K] {ι : K → Type} [∀ k, Finty
   rw [pow_mul, pow_mul, pow_mul, pow_mul, heq, mul_pow, mul_pow]
 
 /- English proof (translation)
-Establish `hpos : ∀ j, 0 < (R.line t j).h z` using `fun j => (R.line t j).pos z hz`. Simplify using `only [GlobalTheory.CompanionTheory.Ar.Top.combLine, GlobalTheory.CompanionTheory.Ar.Top.RootModel.weight]`. Rewrite using `[Finset.mul_sum, Real.exp_sum]`. Use `Finset.prod_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[← Real.rpow_intCast, Real.rpow_def_of_pos (hpos j), hm j]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem combLine_h_eq_exp {Ψ : Type} [Fintype Ψ] {N : ℕ} (R : RootModel Ψ N) (t : ℝ) (lam : Wt Ψ N) (s : ℝ)
     (q : ℕ) (m : Option (Ψ × Fin N) → ℤ) (hm : ∀ j, (m j : ℝ) = q * R.coef lam s j)
@@ -69,35 +69,33 @@ theorem combLine_h_eq_exp {Ψ : Type} [Fintype Ψ] {N : ℕ} (R : RootModel Ψ N
   ring
 
 /- English proof (translation)
-Introduce `Ψ _ N R Λ G lam nu n' n₀ q₀ μ k a₁ aτ aσ τ σ ε u S e a b c A P R₀ cinf cc C s₀ κ h₁ h' hτ hσ ρ hq₀ hμ hn' hn₀ hdeg hτ0 hσ0 hε0 hεint hu hS hc0 hcS hcge hfin hκ harch hC hs₀ hmain hcinf hcc`. Establish `hq₀' : (0:ℝ) < q₀` using `by exact_mod_cast hq₀`. Establish `hμ' : (0:ℝ) < μ` using `by exact_mod_cast hμ`. Establish `h8μ : (0:ℝ) < 8 * μ` using `by linarith`. Take `⟨N₀, hN₀, hN₀1⟩ : ∃ N₀ : ℕ, (q₀:ℝ) / (8 * μ) / s₀ < N₀ ∧ 1 ≤ N₀` from `⟨⌈(q₀:ℝ) / (8 * μ) / s₀⌉₊ + 1, by push_cast; linarith [Nat.le_ceil ((q₀:ℝ) / (8 * μ) / s₀)], by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨C, hC, fun n => (q₀:ℝ) / (8 * μ) / ((n + N₀ : ℕ) : ℝ), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `n`. Establish `hpos : (0:ℝ) < ((n + N₀ : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 0 < n + N₀)`. Conclude with `div_pos (div_pos hq₀' h8μ) hpos`. Conclude with `(tendsto_const_div_atTop_nhds_zero_nat ((q₀:ℝ) / (8 * μ))).comp (tendsto_add_atTop_nat N₀)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions.
 
-Introduce `n`. Simplify using `only`. Establish `htN : N₀ ≤ n + N₀` using `by omega`. Generalize the expression as in `n + N₀ = t at htN ⊢`. Establish `ht' : (0:ℝ) < t` using `by exact_mod_cast (by omega : 0 < t)`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : (0:ℝ) ≤ t` using `ht'.le`. Establish `hspos : 0 < (q₀:ℝ) / (8 * μ) / t` using `div_pos (div_pos hq₀' h8μ) ht'`. Establish `hsle : (q₀:ℝ) / (8 * μ) / t ≤ s₀`. Rewrite using `[div_le_iff₀ ht']`. Establish `h1 : (q₀:ℝ) / (8 * μ) / s₀ < t` using `lt_of_lt_of_le hN₀ (by exact_mod_cast htN)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2` using `(div_lt_iff₀ hs₀).mp h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hqs : ((8 * μ * t : ℕ) : ℝ) * ((q₀:ℝ) / (8 * μ) / t) = q₀`. Establish `hμne : (μ:ℝ) ≠ 0` using `hμ'.ne'`. Establish `htne : (t:ℝ) ≠ 0` using `ht'.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hm : ∀ j, ((((8 * μ * t : ℕ) : ℤ) * n' j - n₀ j : ℤ) : ℝ) = ((8 * μ * t : ℕ) : ℝ) * R.coef (lam - ((q₀:ℝ) / (8 * μ) / t) • nu) ((q₀:ℝ) / (8 * μ) / t) j`. Introduce `j`. Rewrite using `[coef_sub_smul, ← hn' j]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `hn₀ j`. Establish `hqs'` using `hqs`. Move the coercions through the operations in `at h0 hqs' ⊢`. Take the linear combination `(-1:ℝ) * h0 + R.coef nu (-1) j * hqs'`. Use `⟨8 * μ * t, fun j => ((8 * μ * t : ℕ) : ℤ) * n' j - n₀ j, Nat.mul_pos (Nat.mul_pos (by norm_num) hμ) (by omega), hm, ⟨?_⟩⟩` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `GlobalTheory.CompanionTheory.Ar.Small.SectionInputs.mk a₁ (combLine (R.line 1) n').a aτ aσ (combLine (R.line 1) n₀).a τ σ ε (3 * μ * t) (k * t) 1 u S e a b c A P R₀ κ cinf G.L_deg ?_ ?_ (by ring) hτ0 hσ0 hε0 hεint hu hS hc0 hcS ?_ ?_ hκ ?_ ?_ hcc` and prove the remaining obligations. Introduce `x`. Establish `h0` using `hdeg x`. Move the coercions through the operations in `at h0 ⊢`. Take the linear combination `(t:ℤ) * h0`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[combLine_line_a R 1 n' x, combLine_line_a R 1 n₀ x, combLine_line_a R _ _ x, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Introduce `p hp`. Combine the equalities or inequalities in the displayed calculation. Introduce `p _`. Conclude with `(hfin p).mul_nat t`. Introduce `sg`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Unfold `GlobalTheory.CompanionTheory.Ar.Small.ArchBounds`. Introduce `z hz hlies hu'`. Take `⟨p1, p2, p3, p4, hpow, hv, hτv, hσv⟩` from `harch sg z hz hlies hu'`. Use `⟨h₁ z, h' z, hτ z, hσ z, ρ z, p1, p2, p3, p4, ?_, hv, hτv, hσv, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_mul (h₁ z) (8 * μ) t, pow_mul (h' z) (8 * μ) t, pow_mul (hτ z) (3 * μ) t, pow_mul (hσ z) k t, hpow, mul_pow, mul_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Distinguish the cases in `hx0 : x = 0`. Rewrite using `[hx0, norm_zero, pow_one, zero_mul]`. Check the signs of the components of the expression. Establish `hM` using `combLine_h_eq_exp R (scale ((q₀:ℝ) / (8 * μ) / t)) (lam - ((q₀:ℝ) / (8 * μ) / t) • nu) ((q₀:ℝ) / (8 * μ) / t) (8 * μ * t) _ hm z hz.1`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmn` using `hmain _ hspos hsle z hz hu' x hx hx0`. Establish `hxpos : 0 < ‖x‖` using `norm_pos_iff.mpr hx0`. Establish `hq0 : (0:ℝ) ≤ ((8 * μ * t : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `hq1 : ((8 * μ * t : ℕ) : ℝ) * ((q₀:ℝ) / (8 * μ) / t / q₀) = 1`. Rewrite using `[← mul_div_assoc, hqs, div_self hq₀'.ne']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `mul_le_mul_of_nonneg_left hmn hq0`. Rewrite `key` using `[mul_add, ← mul_assoc, hq1, one_mul, mul_add]`. Establish `hexp : Real.exp (((8 * μ * t : ℕ) : ℝ) * Real.log (h' z)) = h' z ^ (8 * μ * t)`. Rewrite using `[Real.exp_nat_mul, Real.exp_log p2]`. Rewrite using `[hM, pow_one, ← hexp, ← Real.exp_add, ← Real.exp_log hxpos, ← Real.exp_add]`.
-
-Conclude with `Real.exp_le_exp.mpr key`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem hasInputs_of_data : ∀ (Ψ : Type) [Fintype Ψ] (N : ℕ) (R : RootModel Ψ N) (Λ : ℝ) (G : GenModel R Λ) (lam nu : Wt Ψ N) (n' n₀ : Option (Ψ × Fin N) → ℤ) (q₀ μ k : ℕ) (a₁ aτ aσ : R.K → ℤ) (τ σ ε : R.Ω) (u : MRing R.ι) (S : Finset ℕ) (e a b c : ℕ → ℝ) (A P R₀ cinf cc C s₀ : ℝ) (κ : (G.F →+* ℂ) → ℝ) (h₁ h' hτ hσ ρ : ((Σ k, R.ι k) → ℂ) → ℝ), 0 < q₀ → 0 < μ → (∀ j, (n' j : ℝ) = R.coef lam 0 j) → (∀ j, (n₀ j : ℝ) = q₀ * R.coef nu (-1) j) → (∀ x, ((8 * μ : ℕ) : ℤ) * a₁ x = ((8 * μ : ℕ) : ℤ) * (combLine (R.line 1) n').a x + ((3 * μ : ℕ) : ℤ) * aτ x + k * aσ x) → τ ≠ 0 → σ ≠ 0 → ε ≠ 0 → ε ∈ chartLatNm R.y (combLine (R.line 1) n₀).a 1 → IsFormOff (mCoordIdeal R.y) u → (∀ p ∈ S, p.Prime) → (∀ p, 0 ≤ c p) → (∀ p, p ∉ S → c p = 0) → (∀ p : ℕ, p.Prime → (((8 * μ : ℕ) : ℝ) * (e p + a p) + k * b p) * Real.log p ≤ ((8 * μ : ℕ) : ℝ) * c p) → (∀ (p : ℕ) [Fact p.Prime], FinBounds R.y G.w a₁ (combLine (R.line 1) n').a aτ aσ τ σ (8 * μ) (3 * μ) k u p (e p) (a p) (b p)) → (∀ sg, κ (NumberField.ComplexEmbedding.conjugate sg) = κ sg) → (∀ sg : G.F →+* ℂ, ∀ z ∈ mcPts (mCoordIdeal R.y), LiesOver R.y sg z → aeval z u ≠ 0 → 0 < h₁ z ∧ 0 < h' z ∧ 0 < hτ z ∧ 0 < hσ z ∧ h₁ z ^ (8 * μ) = h' z ^ (8 * μ) * hτ z ^ (3 * μ) * hσ z ^ k ∧ (∀ v : G.I → ℂ, (∀ i, HasVal R.y a₁ (G.w i) z (v i)) → v ≠ 0 ∧ Real.exp (-(A + 3 * ρ z) / 2) * h₁ z ≤ G.L.h fun x => v x.2) ∧ ValLe R.y aτ τ z (Real.exp (4 * (2 * P - ρ z) + R₀) * hτ z) ∧ ValLe R.y aσ σ z (Real.exp (κ sg) * hσ z)) → 0 ≤ C → 0 < s₀ → (∀ s : ℝ, 0 < s → s ≤ s₀ → ∀ z ∈ mcPts (mCoordIdeal R.y), aeval z u ≠ 0 → ∀ x : ℂ, HasVal R.y (combLine (R.line 1) n₀).a ε z x → x ≠ 0 → s / q₀ * Real.log ‖x‖ + R.weight (scale s) (lam - s • nu) s z ≤ C * s + Real.log (h' z)) → ((8 * μ : ℕ) : ℝ) * (A / 2 + 3 * P) + ((3 * μ : ℕ) : ℝ) * R₀ + k * embMean κ ≤ ((8 * μ : ℕ) : ℝ) * cinf → ∑ p ∈ S, c p + cinf ≤ cc → G.HasInputs (fun s => lam - s • nu) cc := by
   intro Ψ _ N R Λ G lam nu n' n₀ q₀ μ k a₁ aτ aσ τ σ ε u S e a b c A P R₀ cinf cc C s₀ κ h₁ h' hτ hσ ρ

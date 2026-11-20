@@ -7,13 +7,13 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.CellDens
 
 /- English proof (translation)
-Rewrite using `[ENNReal.tendsto_nhds ENNReal.one_ne_top]`. Introduce `ε hε`. Establish `hfc : Tendsto f (𝓝 c) (𝓝 1)` using `by rw [← h1]; exact hf`. Establish `hev` using `(ENNReal.tendsto_nhds ENNReal.one_ne_top).1 hfc ε hε`. Take `⟨δ, hδ, hball⟩` from `Metric.eventually_nhds_iff_ball.1 hev`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [Ioo_mem_nhdsGT hδ] with ρ hρ`. Establish `hV : volume (Metric.ball c ρ) = volume (Metric.ball (0 : Fin r → ℂ) ρ)` using `Measure.addHaar_ball_center volume c ρ`. Establish `hpos : volume (Metric.ball c ρ) ≠ 0` using `(Metric.measure_ball_pos volume c hρ.1).ne'`. Establish `hfin : volume (Metric.ball c ρ) ≠ ⊤` using `measure_ball_lt_top.ne`. Establish `hsub : ∀ x ∈ Metric.ball c ρ, f x ∈ Set.Icc (1 - ε) (1 + ε)` using `fun x hx => hball x (Metric.ball_subset_ball hρ.2.le hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlo : (1 - ε) * volume (Metric.ball c ρ) ≤ ∫⁻ x in Metric.ball c ρ, f x`. Rewrite using `[← setLIntegral_const]`. Conclude with `setLIntegral_mono' measurableSet_ball fun x hx => (hsub x hx).1`. Establish `hhi : ∫⁻ x in Metric.ball c ρ, f x ≤ (1 + ε) * volume (Metric.ball c ρ)`. Rewrite using `[← setLIntegral_const]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `setLIntegral_mono' measurableSet_ball fun x hx => (hsub x hx).2`. Rewrite using `[← hV]`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem tendsto_mean_ball_of_continuousAt {r : ℕ} (c : Fin r → ℂ) (f : (Fin r → ℂ) → ℝ≥0∞)
     (hf : ContinuousAt f c) (h1 : f c = 1) :
@@ -47,9 +47,9 @@ theorem tendsto_mean_ball_of_continuousAt {r : ℕ} (c : Fin r → ℂ) (f : (Fi
       _ = 1 + ε := ENNReal.mul_div_cancel_right hpos hfin
 
 /- English proof (translation)
-Introduce `k r`. Apply `tendsto_mean_ball_of_continuousAt` to reduce the goal to its premises. Use `(ENNReal.continuous_ofReal.comp ?_).continuousAt` and prove the remaining obligations. Unfold `Formalism.FourierDecayAlt.B2.cWeight`. Use `fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.FourierDecayAlt.B2.cWeight`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tendsto_mean_cWeight : ∀ (k r : ℕ), Tendsto (fun ρ : ℝ => (∫⁻ x in Metric.ball (fun _ => 1 : Fin r → ℂ) ρ, ENNReal.ofReal (Formalism.FourierDecayAlt.B2.cWeight k r x)) / volume (Metric.ball (0 : Fin r → ℂ) ρ)) (𝓝[>] 0) (𝓝 1) := by
   intro k r

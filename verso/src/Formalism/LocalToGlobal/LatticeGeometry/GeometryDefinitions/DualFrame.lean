@@ -15,37 +15,33 @@ variable {R K V : Type*} [CommRing R] [IsDedekindDomain R] [Field K] [StarRing K
   [IsScalarTower R K V]
 
 /- English proof (translation)
-Establish `hsp : Submodule.span K (L : Set V) = ⊤` using `hL.span_eq_top`. Take `⟨s, hsL, hspan, hli⟩` from `exists_linearIndependent K (L : Set V)`. Use `haveI : Fintype s := (LinearIndependent.setFinite hli).fintype`. Set `b : Module.Basis s K V` to `Module.Basis.mk hli (by rw [Subtype.range_coe, hspan, hsp])`. Establish `hbL : ∀ j, b j ∈ L` using `fun j => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show b j = (j : V) from Module.Basis.mk_apply hli _ j]`. Conclude with `hsL j.2`. Take `⟨bs, hbs⟩` from `Formalism.HermitianLatticesTheory.dualLattice_dualBasis h hnd b`. Establish `hbs' : ∀ j k, h (bs j) (b k) = if k = j then 1 else 0` using `fun j k => by`. Apply the tactic sequence `rw [← hs.eq (b k) (bs j), hbs k j]; split_ifs <;> simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcoord : ∀ z : V, z = ∑ j, h (bs j) z • b j`. Establish `hlin : (LinearMap.id : V →ₗ[K] V) = ∑ j, (h (bs j)).smulRight (b j)`. Apply `b.ext` to reduce the goal to its premises. Introduce `k`. Simplify using `[LinearMap.smulRight_apply, hbs']`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `z`. Simplify using `using congrArg (fun F : V →ₗ[K] V => F z) hlin`. Use `haveI : Module.Finite R L := Module.Finite.iff_fg.2 hL.fg`. Use `haveI : Module.Flat R L := by`. Rewrite using `[IsDedekindDomain.flat_iff_torsion_eq_bot, eq_bot_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨a, hax⟩` from `(Submodule.mem_torsion_iff x).1 hx`. Establish `ha0 : algebraMap R K (a : R) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors a.2`. Establish `h1 : algebraMap R K (a : R) • (x : V) = 0`. Rewrite using `[algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `congrArg Subtype.val hax` as an intermediate fact. Simplify `this` using `[Submonoid.smul_def]`. Rewrite using `[Submodule.mem_bot]`. Conclude with `Subtype.ext ((smul_eq_zero.1 h1).resolve_left ha0)`. Use `haveI : Module.FinitePresentation R L := Module.finitePresentation_of_finite R L`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Module.Projective R L := Module.Flat.projective_of_finitePresentation`. Take `⟨n, π, hπ⟩` from `Module.Finite.exists_fin' R L`. Take `⟨sec, hsec⟩` from `Module.projective_lifting_property π LinearMap.id hπ`. Set `g : Fin n → V` to `fun i => (π (fun j => if i = j then 1 else 0) : V)`. Set `fi : Fin n → L →ₗ[R] R` to `fun i => (LinearMap.proj i).comp sec`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hzL : ∀ z : L, (z : V) = ∑ i, fi i z • g i`. Introduce `z`. Establish `h1 : π (sec z) = z` using `LinearMap.congr_fun hsec z`. Combine the equalities or inequalities in the displayed calculation. Set `w : Fin n → V` to `fun i => ∑ j, star (algebraMap R K (fi i ⟨b j, hbL j⟩)) • bs j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hw_b : ∀ i k, h (w i) (b k) = algebraMap R K (fi i ⟨b k, hbL k⟩)`. Introduce `i k`. Simplify using `only [w, map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, hbs', smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[starRingEnd_apply, star_star]`. Establish `hw_L : ∀ i (z : L), h (w i) z = algebraMap R K (fi i z)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i z`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors R) Finset.univ (fun j => h (bs j) (z : V))`. Use `choose a ha using fun j => hd j (Finset.mem_univ j)`. Establish `hdzV : (d : R) • (z : V) = ∑ j, a j • b j` using `by conv_lhs => rw [hcoord (z : V)]`. Rewrite using `[Finset.smul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_assoc, ← ha j, algebraMap_smul]`. Establish `hdz : (d : R) • z = ∑ j, a j • (⟨b j, hbL j⟩ : L)` using `Subtype.ext (by simp [hdzV])`. Establish `hd0 : algebraMap R K (d : R) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors d.2`. Establish `L1 : algebraMap R K d * h (w i) z = ∑ j, algebraMap R K (a j) * algebraMap R K (fi i ⟨b j, hbL j⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← smul_eq_mul, ← LinearMap.map_smul, algebraMap_smul, hdzV, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul K (a j) (b j), LinearMap.map_smul, hw_b, smul_eq_mul]`. Establish `L2 : algebraMap R K d * algebraMap R K (fi i z) = ∑ j, algebraMap R K (a j) * algebraMap R K (fi i ⟨b j, hbL j⟩)`. Rewrite using `[← map_mul, ← smul_eq_mul, ← LinearMap.map_smul, hdz, map_sum, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul, smul_eq_mul, map_mul]`. Conclude with `mul_left_cancel₀ hd0 (L1.trans L2.symm)`. Use `⟨n, g, w, fun i => (π _).2, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply]`. Introduce `y hy`. Rewrite using `[Submodule.mem_one, ← hs.eq (w i) y, hw_L i ⟨y, hy⟩]`. Take `⟨r, hr⟩` from `hstar (fi i ⟨y, hy⟩)`. Conclude with `⟨r, by rw [hr]; rfl⟩`.
-
-Establish `hlin : (LinearMap.id : V →ₗ[K] V) = ∑ i, (h (w i)).smulRight (g i)`. Apply `LinearMap.ext_on hsp` to reduce the goal to its premises. Introduce `z hz`. Simplify using `only [LinearMap.id_apply, LinearMap.sum_apply, LinearMap.smulRight_apply]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[show h (w i) z = h (w i) ((⟨z, hz⟩ : L) : V) from rfl, hw_L i ⟨z, hz⟩, algebraMap_smul]`. Introduce `z`. Simplify using `using congrArg (fun F : V →ₗ[K] V => F z) hlin`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem dual_frame (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : h.IsSymm) (hnd : h.Nondegenerate)
     (hstar : ∀ r : R, star (algebraMap R K r) ∈ Set.range (algebraMap R K))
@@ -151,7 +147,7 @@ section Coord
 variable {K : Type} [Field K] [StarRing K]
 
 /- English proof (translation)
-Simplify using `[Formalism.DivisionValues.hform, Formalism.UG.hform, Matrix.toLinearMapₛₗ₂'_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hform_eq {n : ℕ} (H : Matrix (Fin n) (Fin n) K) (x y : Fin n → K) :
     Formalism.DivisionValues.hform H x y = Formalism.UG.hform (starRingEnd K) H x y := by
@@ -162,9 +158,9 @@ def IsFrame {n k : ℕ} (H : Matrix (Fin n) (Fin n) K) (g w : Fin k → Fin n �
   ∀ a b, ∑ i, g i a * ∑ c, star (w i c) * H c b = if a = b then 1 else 0
 
 /- English proof (translation)
-Introduce `a b`. Establish `key` using `congrFun (h (Pi.single b 1)) a`. Rewrite `key` using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, hform_eq, Formalism.UG.hform, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, starRingEnd_apply] at key`. Rewrite using `[key]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem isFrame_of {n k : ℕ} (H : Matrix (Fin n) (Fin n) K) (g w : Fin k → Fin n → K)
     (h : ∀ z : Fin n → K, z = ∑ i, Formalism.DivisionValues.hform H (w i) z • g i) : IsFrame H g w := by
@@ -177,11 +173,11 @@ theorem isFrame_of {n k : ℕ} (H : Matrix (Fin n) (Fin n) K) (g w : Fin k → F
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Establish `e1 : ∀ d, φ (∑ i, g i a * ∑ c, star (w i c) * H c d) = if a = d then 1 else 0` using `fun d => by`. Apply the tactic sequence `rw [hf a d]; split_ifs <;> simp`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Formalism.UG.hform, Matrix.map_apply, hσ]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem IsFrame.map {n k : ℕ} {H : Matrix (Fin n) (Fin n) K} {g w : Fin k → Fin n → K} (hf : IsFrame H g w)
     {A : Type} [CommRing A] (φ : K →+* A) (σ : A →+* A) (hσ : ∀ x, σ (φ x) = φ (star x)) (z : Fin n → A) :

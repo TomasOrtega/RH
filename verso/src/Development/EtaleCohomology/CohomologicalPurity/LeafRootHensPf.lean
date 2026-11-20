@@ -6,9 +6,9 @@ open Polynomial
 namespace LateralTheory.CohomologicalPurity.Hz
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `(Ideal.Quotient.mk_surjective (hx.unit⁻¹ : (B ⧸ J)ˣ).1)`. Establish `h1 : Ideal.Quotient.mk J (x * y) = Ideal.Quotient.mk J 1`. Rewrite using `[map_mul, hy, map_one]`. Conclude with `hx.mul_val_inv`. Establish `h2 : x * y - 1 ∈ J` using `Ideal.Quotient.eq.mp h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : IsUnit (x * y)` using `Ideal.isUnit_of_sub_one_mem_jacobson_bot _ (hJ h2)`. Conclude with `isUnit_of_mul_isUnit_left h3`.
+A detailed English derivation is pending.
 -/
 theorem hens_isUnit_of_mk {B : Type} [CommRing B] (J : Ideal B) (hJ : J ≤ Ideal.jacobson ⊥) (x : B)
     (hx : IsUnit (Ideal.Quotient.mk J x)) : IsUnit x := by
@@ -20,7 +20,7 @@ theorem hens_isUnit_of_mk {B : Type} [CommRing B] (J : Ideal B) (hJ : J ≤ Idea
   exact isUnit_of_mul_isUnit_left h3
 
 /- English proof (translation)
-Apply `hens_isUnit_of_mk J hJ` to reduce the goal to its premises. Establish `: Ideal.Quotient.mk J x = Ideal.Quotient.mk J y` using `Ideal.Quotient.eq.mpr hxy`. Rewrite using `[this]` and apply the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem hens_isUnit_of_sub {B : Type} [CommRing B] (J : Ideal B) (hJ : J ≤ Ideal.jacobson ⊥) (x y : B)
     (hxy : x - y ∈ J) (hy : IsUnit (Ideal.Quotient.mk J y)) : IsUnit x := by
@@ -29,7 +29,7 @@ theorem hens_isUnit_of_sub {B : Type} [CommRing B] (J : Ideal B) (hJ : J ≤ Ide
   rwa [this]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `Polynomial.sub_dvd_eval_sub x y p`. Rewrite using `[hk]`. Conclude with `J.mul_mem_right k h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hens_eval_sub_mem {B : Type} [CommRing B] (J : Ideal B) (p : B[X]) (x y : B) (h : x - y ∈ J) :
     p.eval x - p.eval y ∈ J := by
@@ -37,7 +37,7 @@ theorem hens_eval_sub_mem {B : Type} [CommRing B] (J : Ideal B) (p : B[X]) (x y 
   rw [hk]; exact J.mul_mem_right k h
 
 /- English proof (translation)
-Establish `h : C (f.eval a) + (X - C a) * (f /ₘ (X - C a)) = f`. Rewrite using `[← Polynomial.modByMonic_X_sub_C_eq_C_eval]`. Conclude with `Polynomial.modByMonic_add_div f _`. Use `conv_rhs => rw [← h]`. Simplify using `[derivative_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hens_q_eval {A : Type} [CommRing A] (f : A[X]) (a : A) (hf : f.Monic) :
     (f /ₘ (X - C a)).eval a = f.derivative.eval a := by
@@ -47,23 +47,21 @@ theorem hens_q_eval {A : Type} [CommRing A] (f : A[X]) (a : A) (hf : f.Monic) :
   simp [derivative_mul]
 
 /- English proof (translation)
-Introduce `A B _ _ I J hJ ψ hIJ f a hf hfa hu`. Establish `hjac` using `hJ.jac`. Establish `hmk : ∀ x : A, IsUnit (Ideal.Quotient.mk I x) → IsUnit (Ideal.Quotient.mk J (ψ x))`. Introduce `x hx`. Use `hx.map (Ideal.quotientMap J ψ hIJ)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[Ideal.quotientMap_mk]`. Establish `hder : ∀ z : B, (f.map ψ).derivative.eval z = (f.derivative.map ψ).eval z`. Introduce `z`. Rewrite using `[Polynomial.derivative_map]`. Establish `e0 : ∀ (p : A[X]), (p.map ψ).eval (ψ a) = ψ (p.eval a)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `p`. Rewrite using `[Polynomial.eval_map, Polynomial.eval₂_at_apply]`. Establish `hev0 : (f.map ψ).eval (ψ a) ∈ J` using `by rw [e0]; exact hIJ hfa`. Establish `hu0 : IsUnit (Ideal.Quotient.mk J ((f.map ψ).derivative.eval (ψ a)))`. Rewrite using `[hder, e0]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmk _ hu`. Take `⟨c, hc, hca⟩` from `hJ.is_henselian (f.map ψ) (hf.map ψ) (ψ a) hev0 hu0`. Establish `hc1 : IsUnit ((f.derivative.map ψ).eval c)`. Apply `hens_isUnit_of_sub J hjac _ (ψ (f.derivative.eval a)) _ (hmk _ hu)` to reduce the goal to its premises. Rewrite using `[← e0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hens_eval_sub_mem J _ c (ψ a) hca`. Establish `hc2 : IsUnit (((f /ₘ (X - C a)).map ψ).eval c)`. Apply `hens_isUnit_of_sub J hjac _ (ψ (f.derivative.eval a)) _ (hmk _ hu)` to reduce the goal to its premises. Rewrite using `[← hens_q_eval f a hf, ← e0]`. Conclude with `hens_eval_sub_mem J _ c (ψ a) hca`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨c, hc, hca, hc1, hc2, ?_⟩` and prove the remaining obligations. Introduce `c' hc' hc'a`. Establish `hd : c' - c ∈ J`. Use `J.sub_mem hc'a hca` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `Polynomial.binomExpansion (f.map ψ) c (c' - c)`. Rewrite `hk` using `[add_sub_cancel, hc'.eq_zero, hc.eq_zero, zero_add]`. Establish `hfac : (c' - c) * ((f.map ψ).derivative.eval c + k * (c' - c)) = 0`. Rewrite using `[hk]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hunit : IsUnit ((f.map ψ).derivative.eval c + k * (c' - c))`. Apply `hens_isUnit_of_sub J hjac _ ((f.map ψ).derivative.eval c)` to reduce the goal to its premises. Rewrite using `[add_sub_cancel_left]`. Conclude with `J.mul_mem_left k hd`. Rewrite using `[hder]`.
-
-Conclude with `hc1.map _`. Establish `: c' - c = 0` using `(hunit.mul_left_eq_zero).mp hfac`. Conclude with `sub_eq_zero.mp this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LeafRootHens_of : LeafRootHens := by
   intro A B _ _ I J hJ ψ hIJ f a hf hfa hu

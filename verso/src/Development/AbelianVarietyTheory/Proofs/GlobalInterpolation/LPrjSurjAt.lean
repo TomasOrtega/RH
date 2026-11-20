@@ -6,7 +6,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Pk Forma
 namespace GlobalTheory.Fc.R1.ZLAt
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Mem.LiftProjOnto.lPrj_surjective D b.P.Gp b.P.Pl0 b.P.T b.P.A3.A b.P.P0 b.P.ψ0 (b.P.A3.fam3.toSub2 b.P.Zs) k b.P.A3.A.μ0 _ _ _ b.C.ok1.ok2 (b.P.tied.div.mt.forms k b.P.A3.A.μ0)`.
+A detailed English derivation is pending.
 -/
 theorem lPrj_surj_at {D : D7} {O : Obj D} {c : ℝ} (b : Bundle D O c) (k : Fin D.R.m) :
     Function.Surjective (Formalism.L2.DIV.lPrj D b.P.A3.A b.P.P0 b.P.ψ0 (b.P.A3.fam3.toSub2 b.P.Zs) k b.P.A3.A.μ0).mulVec :=
@@ -14,7 +14,7 @@ theorem lPrj_surj_at {D : D7} {O : Obj D} {c : ℝ} (b : Bundle D O c) (k : Fin 
     b.P.A3.A.μ0 _ _ _ b.C.ok1.ok2 (b.P.tied.div.mt.forms k b.P.A3.A.μ0)
 
 /- English proof (translation)
-Introduce `Q Lk _`. Use `Row.of_sel fun 𝒜 σ _ => ?_` and prove the remaining obligations. Use `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ hc => ⟨0, fun x hx _ _ i k => ?_⟩⟩⟩` and prove the remaining obligations. Conclude with `lPrj_surj_at (σ Fm (GlobalTheory.Cp.d3_a hc) x hx i) k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem row_zL : ∀ (Q : V4.Slot) (Lk : LkT Bundle), R1.PeriodAdmissibilityAtBundlePoints Q Lk → R1.LZeroConditionAtBundlePoints Q Lk := by
   intro Q Lk _

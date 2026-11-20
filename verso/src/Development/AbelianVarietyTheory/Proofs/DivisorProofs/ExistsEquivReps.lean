@@ -11,11 +11,9 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.ResLine
 
 /- English proof (translation)
-Use `choose ρ hρ hu using hT`. Establish `key : ∀ (a b : Γ), a * b = 1 → ∀ i : T, ρ (ρ (i.1 * a) * b) = i.1`. Introduce `a b hab i`. Use `symm`. Use `hu _ _ ⟨i.2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Λ.inv_mem (hρ (i.1 * a)).2` as an intermediate fact. Establish `e : ρ (i.1 * a) * b * i.1⁻¹ = (i.1 * a * (ρ (i.1 * a))⁻¹)⁻¹`. Rewrite using `[eq_inv_of_mul_eq_one_right hab]`. Use `group`. Rewrite using `[e, Subgroup.coe_inv]`.
-
-Conclude with `this`. Conclude with `⟨⟨fun i => ⟨ρ (i.1 * γ), (hρ _).1⟩, fun i => ⟨ρ (i.1 * γ⁻¹), (hρ _).1⟩, fun i => Subtype.ext (key γ γ⁻¹ (mul_inv_cancel _) i), fun i => Subtype.ext (key γ⁻¹ γ (inv_mul_cancel _) i)⟩, fun i => (hρ _).2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_equiv_reps {G : Type} [Group G] (Γ Λ : Subgroup G) (T : Set Γ)
     (hT : ∀ γ : Γ, ∃! t, t ∈ T ∧ ((γ * t⁻¹ : Γ) : G) ∈ Λ) (γ : Γ) :
@@ -35,13 +33,13 @@ theorem exists_equiv_reps {G : Type} [Group G] (Γ Λ : Subgroup G) (T : Set Γ)
     fun i => (hρ _).2⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X Y L a h D T hT`. Establish `h3 : ∀ γ ∈ (ratPts σ J ⊓ lineGrp σ J (col X)), ∀ g, h (γ * g) = h g`. Introduce and unpack `γ ⟨hγ, l, hl⟩ g`. Rewrite using `[(GlobalTheory.T.height_function_scaling_parabolic F E σ n J r X Y L a h D).2 γ l hl g, (GlobalTheory.T.levi_normalizes_unipotent_radical_bis F E σ n J r X Y D.cm D.herm D.witt).2.2.2.2.2 γ hγ l hl]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h4 : ∀ γ : ratPts σ J, ∃! t, t ∈ T ∧ ((γ * t⁻¹ : ratPts σ J) : GAd σ J) ∈ (ratPts σ J ⊓ lineGrp σ J (col X))`. Introduce `γ`. Take `⟨t, ⟨ht, hl⟩, hu⟩` from `hT γ`. Conclude with `⟨t, ⟨ht, (γ * t⁻¹).2, hl⟩, fun s hs => hu s ⟨hs.1, hs.2.2⟩⟩`. Use `⟨fun γ hγ => ?_, ?_, h3, h4⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨π, hπ⟩` from `exists_equiv_reps _ _ T h4 ⟨γ, hγ⟩`. Use `⟨π, fun i g => ?_⟩` and prove the remaining obligations. Rewrite using `[← h3 _ (hπ i) ((π i).1.1 * g)]`. Use `congr 1`. Simplify using `[mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Take `⟨t, ⟨ht, hl⟩, -⟩` from `h4 1`. Use `⟨⟨t, ht⟩, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← h3 _ hl (t.1 * g)]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem reps_perm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E)) (a : GL (Fin n) (AF F ⊗[F] E)) (h : GAd σ J → ℝ), Data σ J X Y L a h → ∀ T, IsReps σ J (col X) T → (∀ γ ∈ ratPts σ J, ∃ π : T ≃ T, ∀ (i : T) g, h (i.1.1 * (γ * g)) = h ((π i).1.1 * g)) ∧ (∃ i : T, ∀ g, h (i.1.1 * g) = h g) ∧ (∀ γ ∈ (ratPts σ J ⊓ lineGrp σ J (col X)), ∀ g, h (γ * g) = h g) ∧ ∀ γ : ratPts σ J, ∃! t, t ∈ T ∧ ((γ * t⁻¹ : ratPts σ J) : GAd σ J) ∈ (ratPts σ J ⊓ lineGrp σ J (col X)) := by
   intro F E _ _ _ _ _ σ n J r X Y L a h D T hT

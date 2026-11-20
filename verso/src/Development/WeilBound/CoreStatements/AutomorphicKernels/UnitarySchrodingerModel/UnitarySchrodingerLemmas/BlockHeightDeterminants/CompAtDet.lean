@@ -16,11 +16,9 @@ open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hcm` using `(GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm).1`. Use `haveI := hcm.1`. Establish `hw : ∀ τ : D.what₂.Tau, absEw D.host.F D.host.E (InfinitePlace.mk ((tauE D τ).comp (algebraMap D.host.F D.host.E))) (unitInf D.host.F D.host.E _ x) = ‖θ τ (infPart D (x : AE D))‖₊ ^ 2`. Introduce `τ`. Set `t' : GlobalTheory.AdelicU.EmbOver D.host.E (InfinitePlace.mk ((tauE D τ).comp (algebraMap D.host.F D.host.E)))` to `⟨tauE D τ, (InfinitePlace.embedding_mk_eq_of_isReal (InfinitePlace.isReal_mk_iff.1 (IsTotallyReal.isReal _))).symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[absEw_eq_sq hcm t', GlobalTheory.AutFunCompare.isInfEmb_unique _ _ _ (hθ τ) (GlobalTheory.AdelicU.isInfEmb_infProj t')]`. Conclude with `congrArg (fun z : ℂ => ‖z‖₊ ^ 2) (GlobalTheory.HalfModTorus.compInf_eq _ t' _)`. Rewrite using `[← (GlobalTheory.CMTypePlaces.places_bijective D).prod_comp (fun w => absEw D.host.F D.host.E w (unitInf D.host.F D.host.E w x))]`. Simplify using `only [hw]`. Use `push_cast`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem prod_absEw {θ : InfFam D} (hθ : IsInfFam θ) (x : (AE D)ˣ) :
     ((∏ w' : InfinitePlace D.host.F, absEw D.host.F D.host.E w' (unitInf D.host.F D.host.E w' x) : ℝ≥0) : ℝ) =
@@ -43,7 +41,7 @@ theorem prod_absEw {θ : InfFam D} (hθ : IsInfFam θ) (x : (AE D)ˣ) :
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((θ τ).comp (infPart D)) a.1.det = _`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem compAt_det (θ : InfFam D) (τ : D.what₂.Tau) {n : ℕ} (a : GL (Fin n) (AE D)) :
     θ τ (infPart D ((Matrix.GeneralLinearGroup.det a : (AE D)ˣ) : AE D)) = (compAt θ τ a.1).det := by
@@ -52,13 +50,13 @@ theorem compAt_det (θ : InfFam D) (τ : D.what₂.Tau) {n : ℕ} (a : GL (Fin n
   rfl
 
 /- English proof (translation)
-Introduce `D n θ hθ w hw nb hnb b p k hp hk hwk a ha`. Take `⟨m, u, b0, rfl, hm, hu⟩` from `GlobalTheory.StdUnn.LeftInvSect.exists_levi_unip hp a ha`. Establish `hloc : ∀ τ, ‖(compAt θ τ a.1).det‖ ^ 2 * (1 + compAt θ τ b.1 * compAt θ τ b.1).det.re = 1`. Introduce `τ`. Establish `e : compAt θ τ (mat w * mat (nb b)) = compAt θ τ (mat m * mat u * mat k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (fun g => compAt θ τ (mat g)) hwk` as an intermediate fact. Conclude with `this`. Rewrite `e` using `[compAt_mul, compAt_mul, compAt_mul, hw, hnb b, hm, hu]`. Simplify using `only [component_block_matrix, compAt_zero, compAt_one, compAt_neg, GlobalTheory.VacKInf.LeviFix.compAt_adj' hθ] at e`. Use `local_det (compAt θ τ a.1) (compAt θ τ (a⁻¹).1) (compAt θ τ b.1) (compAt θ τ b0) (compAt θ τ (mat k)) (compAt_K_unitary θ hθ n k hk τ) ?_ ?_ e` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← compAt_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, compAt_one]`. Establish `hb : adj b.1 = b.1` using `b.2`. Rewrite using `[← GlobalTheory.VacKInf.LeviFix.compAt_adj' hθ, hb]`. Rewrite using `[prod_absEw hθ]`. Unfold `PositivityTheory.SiegelWeilFormula.Gen.nuInf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hm' : ∀ τ, (PositivityTheory.SiegelWeilFormula.Gen.matInf b.1).map (θ τ) = compAt θ τ b.1` using `fun τ => by ext i j; rfl`. Simplify using `only [inv_one, Units.val_one, Matrix.one_mul, Matrix.conjTranspose_one, Matrix.mul_one, hm']`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun τ _ => by rw [compAt_det]; exact hloc τ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hwInf : PositivityTheory.PfSWUS.SwFockk.HWInf := by
   intro D n θ hθ w hw nb hnb b p k hp hk hwk a ha

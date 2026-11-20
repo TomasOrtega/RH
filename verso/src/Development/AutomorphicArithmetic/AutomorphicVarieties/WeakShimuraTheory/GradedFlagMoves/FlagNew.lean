@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.Sgn
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [adj_apply, sgn, Fin.rev, Matrix.mul_apply, Fin.sum_univ_four] <;> ring`. Apply the tactic sequence `intro i fin_cases i <;> simp`. Apply the tactic sequence `intro i j h fin_cases i <;> fin_cases j <;> simp at h ⊢`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem lowMk {R : Type} [CommRing R] (x y z t : R) :
     IsLow (!![1, 0, 0, 0; -x, 1, 0, 0; -y, -t, 1, 0; -z, -(y + t * x), x, 1] : M4 R) := by
@@ -18,7 +18,7 @@ private theorem lowMk {R : Type} [CommRing R] (x y z t : R) :
     fin_cases i <;> fin_cases j <;> simp at h ⊢
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem adjMk {R : Type} [CommRing R] (x y z t : R) :
     adj (!![1, 0, 0, 0; -x, 1, 0, 0; -y, -t, 1, 0; -z, -(y + t * x), x, 1] : M4 R) =
@@ -27,11 +27,9 @@ private theorem adjMk {R : Type} [CommRing R] (x y z t : R) :
   fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev] <;> ring
 
 /- English proof (translation)
-Establish `e1` using `congrFun (congrFun h 3) 1`. Establish `e2` using `congrFun (congrFun h 3) 2`. Simplify using `[adj_apply, Matrix.mul_apply, Fin.sum_univ_four, sgn, Fin.rev, h1, h2, h3] at e1 e2`. Establish `h31 : w 3 1 = 0`. Break down `e1 with e1 | e1` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd e1 h0`. Conclude with `e1`. Establish `h32 : w 3 2 = 0`. Break down `e2 with e2 | e2` into its components or cases. Conclude with `absurd e2 h0`.
-
-Conclude with `e2`. Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all <;> omega`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem upOf {k : Type} [Field k] {ν : k} {w : M4 k} (h : IsGSp ν w) (h0 : w 0 0 ≠ 0)
     (h1 : w 1 0 = 0) (h2 : w 2 0 = 0) (h3 : w 3 0 = 0) (h4 : w 2 1 = 0) : IsUp w := by
@@ -50,19 +48,19 @@ private theorem upOf {k : Type} [Field k] {ν : k} {w : M4 k} (h : IsGSp ν w) (
   fin_cases i <;> fin_cases j <;> simp_all <;> omega
 
 /- English proof (translation)
-Take `⟨x, hx⟩ : ∃ x : k, x * u 0 0 + u 1 0 = 0` from `⟨-u 1 0 / u 0 0, by field_simp; ring⟩`. Take `⟨t, ht⟩ : ∃ t : k, t * u 1 1 + u 2 1 = 0` from `⟨-u 2 1 / u 1 1, by field_simp; ring⟩`. Take `⟨y, hy⟩ : ∃ y : k, (y + t * x) * u 0 0 + t * u 1 0 + u 2 0 = 0` from `⟨-(t * u 1 0 + u 2 0) / u 0 0 - t * x, by field_simp; ring⟩`. Take `⟨z, hz⟩ : ∃ z : k, z * u 0 0 + y * u 1 0 - x * u 2 0 + u 3 0 = 0` from `⟨(x * u 2 0 - y * u 1 0 - u 3 0) / u 0 0, by field_simp; ring⟩`. Establish `hl` using `lowMk x y z t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨_, hl, ?_, ?_⟩` and prove the remaining obligations. Establish `hinv : adj (!![1, 0, 0, 0; -x, 1, 0, 0; -y, -t, 1, 0; -z, -(y + t * x), x, 1] : M4 k) * !![1, 0, 0, 0; -x, 1, 0, 0; -y, -t, 1, 0; -z, -(y + t * x), x, 1] = 1`. Simplify `hl.1` using `[IsGSp]`. Establish `hinv'` using `mul_eq_one_comm.mp hinv`. Establish `hG : IsGSp 1 (adj (!![1, 0, 0, 0; -x, 1, 0, 0; -y, -t, 1, 0; -z, -(y + t * x), x, 1] : M4 k))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `IsGSp`. Rewrite using `[(grp k).2.1]`. Simplify using `using hinv'`. Establish `hP` using `(grp k).2.2.2.2.2.2.2.1 1 ν _ _ hG hu`. Rewrite `hP` using `[one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hP`, the goal using `[adjMk]`. Apply `upOf hP` to reduce the goal to its premises. Simplify `h0` using `[Matrix.mul_apply, Fin.sum_univ_four]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four]`. Take the linear combination `hx`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `[Matrix.mul_apply, Fin.sum_univ_four]`. Take the linear combination `hy`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four]`. Take the linear combination `hz`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, h01]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Take the linear combination `ht`. Introduce `h21`. Establish `: t = 0`. Rewrite `ht` using `[h21, add_zero]`. Break down `mul_eq_zero.mp ht with h | h` into its components or cases.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h`. Conclude with `absurd h h1`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem core {k : Type} [Field k] {ν : k} {u : M4 k} (hu : IsGSp ν u) (h0 : u 0 0 ≠ 0) (h1 : u 1 1 ≠ 0)
     (h01 : u 0 1 = 0) : ∃ n' : M4 k, IsLow n' ∧ IsUp (adj n' * u) ∧ (u 2 1 = 0 → n' 2 1 = 0) := by
@@ -106,25 +104,25 @@ private theorem core {k : Type} [Field k] {ν : k} {u : M4 k} (hu : IsGSp ν u) 
     simp [this]
 
 /- English proof (translation)
-Introduce `k _ ν X n hν hX hn hS`. Take `⟨hn1, hnd, hnu⟩` from `hn`. Establish `hu : IsGSp ν (X * n)`. Use `(grp k).2.2.2.2.2.2.2.1 ν 1 X n hX hn1` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `key : X 0 1 = 0 ∧ X 0 2 = 0 ∧ X 0 3 = 0 ∧ X 1 3 = 0 ∧ X 2 3 = 0 ∧ X 1 2 * X 2 1 = 0 ∧ X 1 2 * n 2 1 = 0`. Break down `hS with ⟨hA, hB⟩ | hA` into its components or cases. Use `⟨hA 0 1 (by decide) (by decide), hA 0 2 (by decide) (by decide), hA 0 3 (by decide) (by decide), hA 1 3 (by decide) (by decide), hA 2 3 (by decide) (by decide), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hA 2 1 (by decide) (by decide), mul_zero]`. Rewrite using `[hB 2 1 (by decide) (by decide), mul_zero]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hA 0 1 (by decide) (by decide), hA 0 2 (by decide) (by decide), hA 0 3 (by decide) (by decide), hA 1 3 (by decide) (by decide), hA 2 3 (by decide) (by decide), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hA 1 2 (by decide) (by decide), zero_mul]`. Rewrite using `[hA 1 2 (by decide) (by decide), zero_mul]`. Take `⟨z01, z02, z03, z13, z23, c1, c2⟩` from `key`. Establish `n01 : n 0 1 = 0` using `hnu 0 1 (by decide)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `n11 : n 1 1 = 1` using `hnd 1`. Establish `n00 : n 0 0 = 1` using `hnd 0`. Establish `d0` using `congrFun (congrFun hX 0) 0`. Establish `d1` using `congrFun (congrFun hX 1) 1`. Simplify using `[adj_apply, Matrix.mul_apply, Fin.sum_univ_four, sgn, Fin.rev, z01, z02, z03, z13, z23] at d0 d1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `x00 : X 0 0 ≠ 0`. Introduce `h`. Rewrite `d0` using `[h]`. Simplify using `at d0`. Conclude with `hν d0.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `x11 : X 1 1 ≠ 0`. Introduce `h`. Apply `hν` to reduce the goal to its premises. Rewrite using `[← d1, h]`. Take the linear combination `-c1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h00 : (X * n) 0 0 ≠ 0`. Simplify `x00` using `[Matrix.mul_apply, Fin.sum_univ_four, z01, z02, z03, n00]`. Establish `h11 : (X * n) 1 1 ≠ 0`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, z13, n01, n11]`. Rewrite using `[c2, add_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `x11`. Establish `h01 : (X * n) 0 1 = 0`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, z01, z02, z03, n01]`. Take `⟨n', hl, hup, h21⟩` from `core hu h00 h11 h01`. Use `⟨n', hl, by rwa [← mul_assoc] at hup, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨hA, hB⟩`. Establish `e21 : (X * n) 2 1 = 0`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, z23, n01, n11, hA 2 1 (by decide) (by decide), hB 2 1 (by decide) (by decide)]`. Establish `m21` using `h21 e21`. Introduce `i j hij hw`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first`. Consider the case `exact absurd rfl hij`. Consider the case `exact hl.2.2 _ _ (by decide)`. Consider the case `exact m21`. Consider the case `exact absurd (by decide) hw`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Rt.flagNew :
     ∀ (k : Type) [Field k] (ν : k) (X n : M4 k), ν ≠ 0 → IsGSp ν X → IsLow n → ((SuppM nP X ∧ SuppM qQ n) ∨ SuppM nM X) →

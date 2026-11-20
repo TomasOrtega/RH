@@ -18,11 +18,11 @@ namespace GlobalTheory.HTLine
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Establish `hC : IsOpen (irreducibleComponent z)` using `GlobalTheory.IsNormalScheme.isOpen_of_mem_irreducibleComponents (irreducibleComponent_mem_irreducibleComponents z)`. Take `⟨U, hU, hzU, hle⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (x := z) (U := V ⊓ ⟨irreducibleComponent z, hC⟩) ⟨hz, mem_irreducibleComponent⟩`. Establish `hpre : IsPreirreducible (U : Set X)` using `(isIrreducible_irreducibleComponent (x := z)).2.open_subset U.2 fun q hq => (hle hq).2`. Establish `hirr : IsIrreducible (U : Set X)` using `⟨⟨z, hzU⟩, hpre⟩`. Establish `: IrreducibleSpace U.toScheme` using `Subtype.irreducibleSpace hirr`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Nonempty U` using `⟨⟨z, hzU⟩⟩`. Establish `: IsIntegral U.toScheme` using `GlobalTheory.IsNormalScheme.isIntegral_of_irreducibleSpace _`. Establish `: Nonempty (Spec Γ(X, U))` using `⟨hU.isoSpec.hom ⟨z, hzU⟩⟩`. Establish `: IsIntegral (Spec Γ(X, U))` using `isIntegral_of_isOpenImmersion hU.isoSpec.inv`. Establish `hd : IsDomain Γ(X, U)` using `(affine_isIntegral_iff _).1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨U, hU, hd, hzU, fun q hq => (hle hq).1, (GlobalTheory.IsNormalScheme.spec_iff_of_isDomain _).1 (GlobalTheory.IsNormalScheme.spec_of_isAffineOpen hU)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_affine_domain {X : Scheme.{0}} [GlobalTheory.IsNormalScheme X] [IsLocallyNoetherian X] (V : X.Opens) {z : X}
     (hz : z ∈ V) : ∃ (U : X.Opens) (hU : IsAffineOpen U) (_ : IsDomain Γ(X, U)),
@@ -44,11 +44,11 @@ theorem exists_affine_domain {X : Scheme.{0}} [GlobalTheory.IsNormalScheme X] [I
     (GlobalTheory.IsNormalScheme.spec_iff_of_isDomain _).1 (GlobalTheory.IsNormalScheme.spec_of_isAffineOpen hU)⟩
 
 /- English proof (translation)
-Introduce `q' _`. Establish `hg : (spMap (algebraMap Γ(X, U) (FractionRing Γ(X, U))) q') ⤳ hU.primeIdealOf ⟨q, hq⟩`. Use `(PrimeSpectrum.le_iff_specializes _ _).1 ?_` and prove the remaining obligations. Establish `e : (PrimeSpectrum.comap (algebraMap Γ(X, U) (FractionRing Γ(X, U))) q').asIdeal = ⊥`. Set `q₀ : PrimeSpectrum (FractionRing Γ(X, U))` to `q'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `q₀.isPrime` as an intermediate fact. Express the relevant statement in the definitionally equal form `Ideal.comap _ q₀.asIdeal = ⊥`. Rewrite using `[Ideal.eq_bot_of_prime q₀.asIdeal]`. Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective _ _)`. Express the relevant statement in the definitionally equal form `(PrimeSpectrum.comap (algebraMap Γ(X, U) (FractionRing Γ(X, U))) q').asIdeal ≤ _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `bot_le`. Establish `h2` using `hg.map hU.fromSpec.continuous`. Rewrite `h2` using `[hU.fromSpec_primeIdealOf ⟨q, hq⟩]`. Conclude with `h2.mem_open V.2 hV`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_mem {X : Scheme.{0}} {U V : X.Opens} (hU : IsAffineOpen U) [IsDomain Γ(X, U)] {q : X} (hq : q ∈ U)
     (hV : q ∈ V) : ⊤ ≤ (spMap (algebraMap Γ(X, U) (FractionRing Γ(X, U))) ≫ hU.fromSpec) ⁻¹ᵁ V := by
@@ -69,7 +69,7 @@ theorem gen_mem {X : Scheme.{0}} {U V : X.Opens} (hU : IsAffineOpen U) [IsDomain
   exact h2.mem_open V.2 hV
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Establish `B` using `GlobalTheory.T.isTanBasis_of_unique_combination E H X t R x n v h2 h3`. Conclude with `⟨fun i => GlobalTheory.LieMet.isTan_map ρ rfl (h2 i), fun u hu => B.2 _ ρ u hu⟩`.
+Substitute using the available equality. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem tan_restrict {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}}
     (t : SAB H X) {R S : Type} [CommRing R] [CommRing S] (ρ : R →+* S) {x : Sp R ⟶ X} {x' : Sp S ⟶ X}
@@ -85,9 +85,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
 /- English proof (translation)
-Use `GlobalTheory.ProjBlowup.isDiscreteValuationRing_coeff Z.i.c hp.ne_zero hW` as an intermediate fact. Use `isProper_str (Z.i.c.V W) Z.n` as an intermediate fact. Establish `: LocallyOfFiniteType Z.s`. Unfold `Pre.s`. Use `infer_instance`.
-
-Conclude with `LocallyOfFiniteType.isLocallyNoetherian Z.s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isLocallyNoetherian_model (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i₀) : IsLocallyNoetherian Z.X := by
   have := GlobalTheory.ProjBlowup.isDiscreteValuationRing_coeff Z.i.c hp.ne_zero hW
@@ -100,9 +98,9 @@ theorem isLocallyNoetherian_model (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits)
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Establish `ex : spMap ρ ≫ hU₀.fromSpec ≫ Z.π = hU.fromSpec ≫ Z.π` using `by rw [← Category.assoc, eρ]`. Use `⟨fun σ => ?_, fun k _ φ hr => ?_⟩` and prove the remaining obligations. Take `⟨n, v, e, h1, h2, h3⟩` from `hfr.1 σ`. Take `⟨b1, b2⟩` from `tan_restrict (Y Z.i).t ρ ex h2 h3`. Conclude with `⟨n, _, e, fun i => congrArg (spMap (dualMap ρ) ≫ ·) (h1 i), b1, b2⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `e1 : spMap (φ.comp ρ) ≫ hU₀.fromSpec = spMap φ ≫ hU.fromSpec`. Rewrite using `[← eρ, ← Category.assoc, ModelRelProbe.spMap_comp]`. Rewrite using `[Vecs.bc_bc, ← e1]`. Conclude with `hfr.2 k _ (by rwa [e1])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intFrame_restrict (Z : Mdl Y i₀) {U₀ U : Z.X.Opens} (hU₀ : IsAffineOpen U₀) (hU : IsAffineOpen U)
     (ρ : Γ(Z.X, U₀) →+* Γ(Z.X, U)) (eρ : spMap ρ ≫ hU₀.fromSpec = hU.fromSpec) {w₀ : Vecs Dw (Y Z.i).t Γ(Z.X, U₀)}
@@ -118,7 +116,7 @@ theorem intFrame_restrict (Z : Mdl Y i₀) {U₀ U : Z.X.Opens} (hU₀ : IsAffin
     exact hfr.2 k _ (by rwa [e1])
 
 /- English proof (translation)
-Establish `ex : spMap ρ ≫ hU₀.fromSpec ≫ Z.π = hU.fromSpec ≫ Z.π` using `by rw [← Category.assoc, eρ]`. Take `⟨σ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Take `⟨n, v, -, -, h2, h3⟩` from `hfr.1 σ`. Take `⟨b1, b2⟩` from `tan_restrict (Y Z.i).t ρ ex h2 h3`. Conclude with `⟨n, _, GlobalTheory.T.isTanBasis_of_unique_combination E H _ _ _ _ n _ b1 b2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_tanBasis (Z : Mdl Y i₀) {U₀ U : Z.X.Opens} (hU₀ : IsAffineOpen U₀) (hU : IsAffineOpen U)
     (ρ : Γ(Z.X, U₀) →+* Γ(Z.X, U)) (eρ : spMap ρ ≫ hU₀.fromSpec = hU.fromSpec) {w₀ : Vecs Dw (Y Z.i).t Γ(Z.X, U₀)}
@@ -131,11 +129,11 @@ theorem exists_tanBasis (Z : Mdl Y i₀) {U₀ U : Z.X.Opens} (hU₀ : IsAffineO
   exact ⟨n, _, GlobalTheory.T.isTanBasis_of_unique_combination E H _ _ _ _ n _ b1 b2⟩
 
 /- English proof (translation)
-Take `⟨β, eβ⟩ : ∃ β : ↥(Z.i.c.V W) →+* Γ(Z.X, U), spMap β = hU.fromSpec ≫ Z.s` from `⟨(Spec.preimage (hU.fromSpec ≫ Z.s)).hom, Spec.map_preimage _⟩`. Take `⟨q, hqU, hqo⟩` from `Z.dense.inter_open_nonempty U U.2 ⟨z, hzU⟩`. Establish `hqo' : q ∈ ⋃ a, ((Z.U a).1 : Set Z.X)` using `by rw [Z.cover]; exact hqo`. Take `⟨a, hqa⟩` from `Set.mem_iUnion.1 hqo'`. Take `⟨φ, hφ⟩` from `Pull.exists_fromSpec (Z.U a).2 _ (gen_mem hU hqU hqa)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hφ' : spMap φ ≫ Z.chart a = spMap (algebraMap Γ(Z.X, U) (FractionRing Γ(Z.X, U))) ≫ hU.fromSpec` using `hφ`. Take `⟨y, hy⟩` from `Pull.exists_open_lift Z hφ'`. Use `⟨β, y, ?_, by rw [hy, Category.assoc]⟩` and prove the remaining obligations. Establish `cs` using `Pull.affineOpenChart_comp_structure_eq_spMap Z hφ'`. Rewrite `cs` using `[Z.π_s, Category.assoc, ← eβ, ModelRelProbe.spMap_comp, ModelRelProbe.spMap_comp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (algebraMap Γ(Z.X, U) (FractionRing Γ(Z.X, U))).comp β = (φ.comp (Z.alg a)).comp (Z.i.c.V W).subtype` using `congrArg CommRingCat.Hom.hom (Spec.map_injective (a₁ := CommRingCat.ofHom _) (a₂ := CommRingCat.ofHom _) cs)`. Use `Function.Injective.of_comp (f := algebraMap Γ(Z.X, U) (FractionRing Γ(Z.X, U))) ?_` and prove the remaining obligations. Establish `e' : (⇑(algebraMap Γ(Z.X, U) (FractionRing Γ(Z.X, U))) ∘ ⇑β) = ⇑((φ.comp (Z.alg a)).comp (Z.i.c.V W).subtype)` using `congrArg DFunLike.coe e`. Rewrite using `[e']`. Conclude with `(φ.comp (Z.alg a)).injective.comp (Z.i.c.V W).subtype_injective`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coeff_gen (Z : Mdl Y i₀) {U : Z.X.Opens} (hU : IsAffineOpen U) [IsDomain Γ(Z.X, U)] {z : Z.X} (hzU : z ∈ U) :
     ∃ (β : ↥(Z.i.c.V W) →+* Γ(Z.X, U)) (y : Sp (FractionRing Γ(Z.X, U)) ⟶ (Xo Z.i.l).XF Z.i.c), Function.Injective β ∧
@@ -160,9 +158,9 @@ theorem exists_coeff_gen (Z : Mdl Y i₀) {U : Z.X.Opens} (hU : IsAffineOpen U) 
   exact (φ.comp (Z.alg a)).injective.comp (Z.i.c.V W).subtype_injective
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W Y i₀ hp hW Z hDR z`. Establish `hN : GlobalTheory.IsNormalScheme Z.X` using `Z.normal`. Use `isLocallyNoetherian_model hp hW Z` as an intermediate fact. Take `⟨U₀, hU₀, w₀, hz, hfr⟩` from `hDR.2 z`. Take `⟨U, hU, hd, hzU, hle, hic⟩` from `exists_affine_domain U₀ hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, eρ⟩ : ∃ ρ : Γ(Z.X, U₀) →+* Γ(Z.X, U), spMap ρ ≫ hU₀.fromSpec = hU.fromSpec` from `⟨(Z.X.presheaf.map (homOfLE hle).op).hom, hU₀.map_fromSpec hU _⟩`. Take `⟨g, e, he⟩` from `exists_tanBasis Z hU₀ hU ρ eρ hfr`. Take `⟨β, y, hβ, hy⟩` from `exists_coeff_gen Z hU hzU`. Conclude with `⟨U, hU, hd, w₀.bc ρ, g, e, β, y, hzU, hic, hβ, intFrame_restrict Z hU₀ hU ρ eρ hfr, he, hy⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_small_chart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p), p.Prime → (p : ℂ) ∈ W.nonunits → ∀ (Z : Mdl Y i₀), HasDR Z → ∀ z : Z.X, ∃ (U : Z.X.Opens) (hU : IsAffineOpen U) (_ : IsDomain Γ(Z.X, U)) (w : Vecs Dw (Y Z.i).t Γ(Z.X, U)) (g : ℕ) (e : Fin g → (Sp (DualNumber Γ(Z.X, U)) ⟶ (Y Z.i).t.G.left)) (β : ↥(Z.i.c.V W) →+* Γ(Z.X, U)) (y : Sp (FractionRing Γ(Z.X, U)) ⟶ (Xo Z.i.l).XF Z.i.c), z ∈ U ∧ IsIntegrallyClosed Γ(Z.X, U) ∧ Function.Injective β ∧ IntFrame Z hU w ∧ GlobalTheory.LineNorm.IsTanBasis (Y Z.i).t (R := Γ(Z.X, U)) (hU.fromSpec ≫ Z.π) e ∧ spMap (algebraMap Γ(Z.X, U) (FractionRing Γ(Z.X, U))) ≫ hU.fromSpec ≫ Z.π = y ≫ (Y Z.i).j := by
   intro E _ _ _ H Dw Xo p W Y i₀ hp hW Z hDR z

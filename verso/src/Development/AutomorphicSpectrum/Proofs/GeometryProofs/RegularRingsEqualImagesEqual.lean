@@ -12,11 +12,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.SncBase
 
 /- English proof (translation)
-Use `haveI : IsLocalRing (regAt ξ p) := (regAt_isLocalRing_isFractionRing_stalk X Ω ξ hg p).1`. Set `φ : A →+* regAt ξ p` to `RingHom.codRestrict A.val.toRingHom (regAt ξ p) (fun s => hA s s.2)`. Use `⟨Ideal.comap φ (IsLocalRing.maximalIdeal _), inferInstance, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Take `⟨t, ht⟩` from `h.exists_right_inv`. Establish `e : (s : Ω) * (t : Ω) = 1` using `congrArg Subtype.val ht`. Use `⟨left_ne_zero_of_mul_eq_one e, hA s s.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← eq_inv_of_mul_eq_one_right e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `t.2`. Introduce and unpack `⟨h0, -, h2⟩`. Use `IsUnit.of_mul_eq_one (⟨(s : Ω)⁻¹, h2⟩ : regAt ξ p) (Subtype.ext ?_)` and prove the remaining obligations. Conclude with `mul_inv_cancel₀ h0`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_prime_nonunitAt {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X)
     (hg : IsCptGen ξ) (p : Cpt ξ) {o : Type} [CommRing o] [Algebra o Ω] (A : Subalgebra o Ω)
@@ -38,7 +38,7 @@ theorem exists_prime_nonunitAt {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spe
     exact mul_inv_cancel₀ h0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ha.1, h ha.2.1, h ha.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem unitAt_of_le {X X' : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X)
     (ξ' : Spec (CommRingCat.of Ω) ⟶ X') (p : Cpt ξ) (p' : Cpt ξ') (h : regAt ξ p ≤ regAt ξ' p') {a : Ω}
@@ -46,21 +46,19 @@ theorem unitAt_of_le {X X' : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (Comm
   ⟨ha.1, h ha.2.1, h ha.2.2⟩
 
 /- English proof (translation)
-Introduce `P X₁ X₂ Ω _ ξ₀ ξ₁ ξ₂ f₁ f₂ o _ _ κ u hu g₁ g₂ e₁ e₂ p₁ p₂ hR`. Establish `dom : ∀ {X : Scheme.{0}} (ξ : Spec (CommRingCat.of Ω) ⟶ X) (f : X ⟶ P), ξ ≫ f = ξ₀ → Dominates ξ ξ₀ f (RingHom.id Ω)`. Introduce `X ξ f e`. Establish `: Spec.map (CommRingCat.ofHom (RingHom.id Ω)) = 𝟙 _`. Rewrite using `[show CommRingCat.ofHom (RingHom.id Ω) = 𝟙 (CommRingCat.of Ω) from rfl, Spec.map_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show ξ ≫ f = Spec.map (CommRingCat.ofHom (RingHom.id Ω)) ≫ ξ₀`. Rewrite using `[this, Category.id_comp, e]`. Take `⟨h₁, r₁, n₁⟩` from `RegAtDom.regAt_dominates P Ω ξ₀ X₁ Ω ξ₁ f₁ (RingHom.id Ω) (dom ξ₁ f₁ e₁) p₁`. Take `⟨h₂, r₂, n₂⟩` from `RegAtDom.regAt_dominates P Ω ξ₀ X₂ Ω ξ₂ f₂ (RingHom.id Ω) (dom ξ₂ f₂ e₂) p₂`. Use `set a₁ : Cpt ξ₀ := ⟨f₁ p₁.1, h₁⟩ with ha₁`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a₂ : Cpt ξ₀ := ⟨f₂ p₂.1, h₂⟩ with ha₂`. Establish `l₁ : regAt ξ₀ a₁ ≤ regAt ξ₁ p₁` using `fun a ha => r₁ a ha`. Establish `l₂ : regAt ξ₀ a₂ ≤ regAt ξ₁ p₁` using `fun a ha => hR ▸ r₂ a ha`. Establish `m₁ : ∀ a ∈ regAt ξ₀ a₁, unitAt ξ₁ p₁ a → unitAt ξ₀ a₁ a` using `n₁ g₁`. Establish `m₂ : ∀ a ∈ regAt ξ₀ a₂, unitAt ξ₁ p₁ a → unitAt ξ₀ a₂ a` using `fun a ha h => n₂ g₂ a ha ⟨h.1, hR ▸ h.2.1, hR ▸ h.2.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c₁, hc₁⟩` from `hu.cover a₁`. Take `⟨c, hc⟩` from `hu.cover a₂`. Establish `hq : unitAt ξ₀ a₁ (u c / u c₁)`. Use `m₁ _ (hc₁.2 c) ⟨div_ne_zero hc.1 hc₁.1, l₁ (hc₁.2 c), ?_⟩` and prove the remaining obligations. Rewrite using `[inv_div]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `l₂ (hc.2 c₁)`. Establish `hin : InChart ξ₀ u c a₁`. Use `⟨hc.1, fun j => ?_⟩` and prove the remaining obligations. Establish `: u j / u c = u j / u c₁ * (u c / u c₁)⁻¹`. Use `hc₁.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hc.1` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `mul_mem (hc₁.2 j) hq.2.2`. Use `set A := Algebra.adjoin o (Set.range fun j => u j / u c) with hA`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `A₁ : ∀ s ∈ A, s ∈ regAt ξ₀ a₁` using `fun s hs => (hu.ring c hc.1 s).1 hs a₁ hin`. Establish `A₂ : ∀ s ∈ A, s ∈ regAt ξ₀ a₂` using `fun s hs => (hu.ring c hc.1 s).1 hs a₂ hc`. Take `⟨I, hI, hI₁⟩` from `exists_prime_nonunitAt ξ₀ hu.gen a₁ A A₁`. Establish `hI₂ : ∀ s : A, s ∉ I ↔ unitAt ξ₀ a₂ (s : Ω)` using `fun s => by`. Rewrite using `[hI₁ s]`.
-
-Conclude with `⟨fun h => m₂ _ (A₂ s s.2) (unitAt_of_le ξ₀ ξ₁ a₁ p₁ l₁ h), fun h => m₁ _ (A₁ s s.2) (unitAt_of_le ξ₀ ξ₁ a₂ p₁ l₂ h)⟩`. Establish `e` using `(GlobalTheory.T.prime_chart_existsUnique_point P Ω ξ₀ o κ u hu c hc.1 I hI).unique ⟨hin, hI₁⟩ ⟨hc, hI₂⟩`. Conclude with `congrArg Subtype.val e`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem image_eq_of_regAt_eq :
     ∀ (P X₁ X₂ : Scheme.{0}) (Ω : Type) [Field Ω] (ξ₀ : Sp Ω ⟶ P) (ξ₁ : Sp Ω ⟶ X₁) (ξ₂ : Sp Ω ⟶ X₂) (f₁ : X₁ ⟶ P)

@@ -11,21 +11,21 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.Frames
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c S _ _ y y' y''`. Establish `hid : y.x = spMap (RingHom.id S) ≫ y.x`. Establish `: spMap (RingHom.id S) = 𝟙 (Sp S)` using `Spec.map_id _`. Rewrite using `[this, Category.id_comp]`. Take `⟨-, h2, -, h4⟩` from `GlobalTheory.T.scaledBaseChange_fibreSection_calculus E H Dw l Xo S S S (RingHom.id S) (RingHom.id S) y.x y.x y.x hid hid`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨N, _, _, v, ρ, hinj, htan, hcomb, -, -⟩` from `GlobalTheory.T.exists_tangent_module_universal_group E H Dw l Xo S y.x`. Establish `hb : ∀ τ i, ∃ m, v m = y.u τ i` using `fun τ i => (htan _).1 (y.tan τ i)`. Use `choose b hb using hb`. Establish `hu : ∀ τ, y.u τ = fun i => v (b τ i)` using `fun τ => funext fun i => (hb τ i).symm`. Use `⟨⟨rfl, fun τ i => ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu τ, hcomb]`. Simplify using `[Matrix.one_apply]`. Rewrite using `[h2]`. Introduce `i`. Rewrite using `[(h4 1 1 i).2.2, _root_.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `g g' a a' ⟨hx, hc, hs⟩ ⟨hx', hc', hs'⟩`. Take `⟨x', xo', u', t', e', b', s', gen'⟩` from `y'`. Take `⟨x'', xo'', u'', t'', e'', b'', s'', gen''⟩` from `y''`. Simplify using `only at hx hx' hc hc' hs hs'`. Substitute `hx'` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `hx` using the available equality. Use `⟨rfl, fun τ i => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : u' τ = fun j => v (∑ k, g τ j k • b τ k)`. Use function extensionality and compare the values at `j`. Use `hc τ j` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hu τ, hcomb]`. Conclude with `this`. Establish `h3` using `hc' τ i`. Rewrite `h3` using `[h1, hcomb]`. Simplify using `only`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hu τ, hcomb, h3]`. Use `congr 1`. Simplify using `only [Matrix.mul_apply, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Conclude with `Finset.sum_comm`. Simplify using `only`.
+Simplify using the standard rewrite rules. Simplify by unfolding definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hs`, `hs'`, the goal using `[h2]`. Introduce `i`. Rewrite using `[hs' i, hs i, (h4 a' a i).1, _root_.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem frChg_refl_and_comp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (S : Type) [CommRing S] [Algebra c.F S] (y y' y'' : FrPt Xo c S), FrChg (fun _ => 1) 1 y y ∧ ∀ (g g' : (∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S)) (a a' : S), FrChg g a y y' → FrChg g' a' y' y'' → FrChg (fun τ => g' τ * g τ) (a' * a) y y'' := by
   intro E _ _ _ H Dw l Xo c S _ _ y y' y''

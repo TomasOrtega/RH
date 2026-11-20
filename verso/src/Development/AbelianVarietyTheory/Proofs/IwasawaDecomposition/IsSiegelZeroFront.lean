@@ -29,7 +29,7 @@ def actMat (b : Module.Basis (Fin n) ℤ X) : O →+* Matrix (Fin n) (Fin n) ℤ
   ((LinearMap.toMatrixAlgEquiv b).toRingEquiv.toRingHom).comp (Module.toModuleEnd ℤ X)
 
 /- English proof (translation)
-Use `show LinearMap.toMatrixAlgEquiv b (Module.toModuleEnd ℤ X c) i j = _`. Rewrite using `[LinearMap.toMatrixAlgEquiv_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem actMat_apply (b : Module.Basis (Fin n) ℤ X) (c : O) (i j : Fin n) : actMat b c i j = b.repr (c • b j) i := by
   show LinearMap.toMatrixAlgEquiv b (Module.toModuleEnd ℤ X c) i j = _

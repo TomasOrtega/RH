@@ -20,7 +20,7 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Sp
   [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Use `⟨measurable_one.indicator hDm, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[lintegral_count]`. Take `⟨h₀, h₁, hu⟩` from `hD g`. Rewrite using `[tsum_eq_single h₀ (fun h hh => indicator_of_notMem (fun hm => hh (hu h hm)) _), indicator_of_mem h₁]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isQuotNormaliser_indicator (H : Subgroup G) {D : Set G} (hDm : MeasurableSet D)
     (hD : ∀ g : G, ∃! h : H, (h : G) * g ∈ D) :
@@ -33,7 +33,7 @@ theorem isQuotNormaliser_indicator (H : Subgroup G) {D : Set G} (hDm : Measurabl
   rfl
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.CompanionTheory.QuotUnfold.count_isInvInvariant H`. Rewrite using `[GlobalTheory.CompanionTheory.QuotNorm.quotIntegral_eq hf hfH (isQuotNormaliser_indicator H hDm hD)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases hg : g ∈ D <;> simp [hg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem quotIntegral_eq_indicator {μ : Measure G} [μ.IsMulLeftInvariant] [SFinite μ] (H : Subgroup G)
     [Countable H] {D : Set G} (hDm : MeasurableSet D) (hD : ∀ g : G, ∃! h : H, (h : G) * g ∈ D)
@@ -45,13 +45,11 @@ theorem quotIntegral_eq_indicator {μ : Measure G} [μ.IsMulLeftInvariant] [SFin
   by_cases hg : g ∈ D <;> simp [hg]
 
 /- English proof (translation)
-Establish `hsub : D ∩ {x | ∃ h : H, (h : G)⁻¹ * x ∈ S} ⊆ ⋃ h : H, (D ∩ (fun x => (h : G)⁻¹ * x) ⁻¹' S)`. Introduce and unpack `x ⟨hx, h, hh⟩`. Conclude with `mem_iUnion.2 ⟨h, hx, hh⟩`. Establish `e : ∀ h : H, μ (D ∩ (fun x => (h : G)⁻¹ * x) ⁻¹' S) = μ ((fun x => (h : G) * x) ⁻¹' D ∩ S)`. Introduce `h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← measure_preimage_mul μ (h : G) (D ∩ (fun x => (h : G)⁻¹ * x) ⁻¹' S)]`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hdisj : Pairwise (Function.onFun Disjoint fun h : H => (fun x => (h : G) * x) ⁻¹' D ∩ S)`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h h' hne`. Use `Set.disjoint_left.2 fun x hx hx' => hne ?_` and prove the remaining obligations. Take `⟨h₀, -, hu⟩` from `hD x`. Conclude with `(hu h hx.1).trans (hu h' hx'.1).symm`. Establish `hmeas : ∀ h : H, MeasurableSet ((fun x => (h : G) * x) ⁻¹' D ∩ S)` using `fun h => (measurable_const_mul (h : G) hDm).inter hS`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem measure_domain_inter_le {μ : Measure G} [μ.IsMulLeftInvariant] (H : Subgroup G) [Countable H]
     {D S : Set G} (hDm : MeasurableSet D) (hD : ∀ g : G, ∃! h : H, (h : G) * g ∈ D) (hS : MeasurableSet S) :
@@ -81,7 +79,7 @@ theorem measure_domain_inter_le {μ : Measure G} [μ.IsMulLeftInvariant] (H : Su
     _ ≤ μ S := measure_mono (iUnion_subset fun _ => inter_subset_right)
 
 /- English proof (translation)
-Unfold `quotIntegral`. Use `split_ifs`. Simplify using `only [mul_assoc]`. Conclude with `integral_const_mul _ _`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quotIntegral_const_mul (μ : Measure G) (H : Subgroup G) (μH : Measure H) (c : ℂ) (f : G → ℂ) :
     quotIntegral μ H μH (fun x => c * f x) = c * quotIntegral μ H μH f := by
@@ -101,9 +99,9 @@ variable {G₁ G₂ : Type*} [Group G₁] [TopologicalSpace G₁] [IsTopological
   [SecondCountableTopology G₂] [MeasurableSpace G₂] [BorelSpace G₂]
 
 /- English proof (translation)
-Take `⟨a, ha, ua⟩` from `h₁ g.1`. Take `⟨b, hb, ub⟩` from `h₂ g.2`. Use `⟨⟨((a : G₁), (b : G₂)), ⟨a.2, b.2⟩⟩, ⟨ha, hb⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨x, y⟩, hx, hy⟩ ⟨m₁, m₂⟩`. Establish `e₁` using `ua ⟨x, hx⟩ m₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e₂` using `ub ⟨y, hy⟩ m₂`. Use `Subtype.ext (Prod.ext ?_ ?_)` and prove the remaining obligations. Conclude with `congrArg Subtype.val e₁`. Conclude with `congrArg Subtype.val e₂`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem prod_domain {H₁ : Subgroup G₁} {H₂ : Subgroup G₂} {D₁ : Set G₁} {D₂ : Set G₂}
     (h₁ : ∀ g : G₁, ∃! h : H₁, (h : G₁) * g ∈ D₁) (h₂ : ∀ g : G₂, ∃! h : H₂, (h : G₂) * g ∈ D₂)
@@ -119,31 +117,27 @@ theorem prod_domain {H₁ : Subgroup G₁} {H₂ : Subgroup G₂} {D₁ : Set G�
   · exact congrArg Subtype.val e₂
 
 /- English proof (translation)
-Take `⟨D₁, d₁, u₁⟩` from `GlobalTheory.CompanionTheory.QuotUnfold.exists_strict_domain H₁`. Take `⟨D₂, d₂, u₂⟩` from `GlobalTheory.CompanionTheory.QuotUnfold.exists_strict_domain H₂`. Use `haveI : Countable (H₁.prod H₂) := Function.Injective.countable (f := fun z : H₁.prod H₂ => ((⟨z.1.1, z.2.1⟩ : H₁), (⟨z.1.2, z.2.2⟩ : H₂))) (by`. Introduce and unpack `⟨⟨a, b⟩, h⟩ ⟨⟨c, d⟩, h'⟩ e`. Simplify using `only [Prod.mk.injEq, Subtype.mk.injEq] at e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (Prod.ext e.1 e.2))`. Establish `hFx : ∀ y, Measurable fun x => F (x, y)` using `fun y => hF.comp measurable_prodMk_right`. Establish `hFy : ∀ x, Measurable fun y => F (x, y)` using `fun x => hF.comp measurable_prodMk_left`. Establish `hi : ∀ y, quotIntegral μ₁ H₁ Measure.count (fun x => F (x, y)) = ∫ x, D₁.indicator (fun x => F (x, y)) x ∂μ₁` using `fun y => quotIntegral_eq_indicator H₁ d₁ u₁ (hFx y) fun h hh x => i₁ h hh x y`. Establish `hj : ∀ x, quotIntegral μ₂ H₂ Measure.count (fun y => F (x, y)) = ∫ y, D₂.indicator (fun y => F (x, y)) y ∂μ₂` using `fun x => quotIntegral_eq_indicator H₂ d₂ u₂ (hFy x) fun h hh y => i₂ h hh x y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set f : G₁ × G₂ → ℂ := (D₁ ×ˢ D₂).indicator F with hf`. Establish `hfm : Measurable f` using `hF.indicator (d₁.prod d₂)`. Establish `hT : quotIntegral (μ₁.prod μ₂) (H₁.prod H₂) Measure.count F = ∫ z, f z ∂(μ₁.prod μ₂)` using `quotIntegral_eq_indicator _ (d₁.prod d₂) (prod_domain u₁ u₂) hF fun h hh z => by`. Take `⟨a, b⟩` from `z`. Take `⟨c, e⟩` from `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show F (c * a, e * b) = _`. Rewrite using `[i₁ c hh.1, i₂ e hh.2]`. Establish `hint : Integrable f (μ₁.prod μ₂)` using `by set T₁ := D₁ ∩ {x | ∃ h : H₁, (h : G₁)⁻¹ * x ∈ S₁} set T₂ := D₂ ∩ {x | ∃ h : H₂, (h : G₂)⁻¹ * x ∈ S₂}`. Establish `hsupp : Function.support f ⊆ T₁ ×ˢ T₂`. Introduce and unpack `⟨x, y⟩ hz`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz' : (x, y) ∈ D₁ ×ˢ D₂`. Assume the negation of the conclusion as `hn`. Conclude with `hz (indicator_of_notMem hn _)`. Establish `hne : F (x, y) ≠ 0`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz (by simp [hf, indicator_of_mem hz', h0])`. Take `⟨p, q⟩` from `hS x y hne`. Conclude with `⟨⟨hz'.1, p⟩, ⟨hz'.2, q⟩⟩`. Use `(integrableOn_iff_integrable_of_support_subset hsupp).1 ?_` and prove the remaining obligations. Use `Measure.integrableOn_of_bounded (M := M) ?_ hfm.aestronglyMeasurable (Filter.Eventually.of_forall fun z => (norm_indicator_le_norm_self _ _).trans (hM z))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Measure.prod_prod]`. Conclude with `ENNReal.mul_ne_top (ne_top_of_le_ne_top f₁ (measure_domain_inter_le H₁ d₁ u₁ m₁)) (ne_top_of_le_ne_top f₂ (measure_domain_inter_le H₂ d₂ u₂ m₂))`. Establish `hA : Measurable fun y => ∫ x, D₁.indicator (fun x => F (x, y)) x ∂μ₁`. Establish `h0 : Measurable (fun z : G₁ × G₂ => D₁.indicator (fun x => F (x, z.2)) z.1)`. Establish `: (fun z : G₁ × G₂ => D₁.indicator (fun x => F (x, z.2)) z.1) = (D₁ ×ˢ (univ : Set G₂)).indicator F`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Apply the tactic sequence `by_cases hz : z.1 ∈ D₁ <;> simp [indicator, hz]`. Rewrite using `[this]`. Conclude with `hF.indicator (d₁.prod MeasurableSet.univ)`. Conclude with `(h0.stronglyMeasurable.integral_prod_left' (μ := μ₁)).measurable`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hB : Measurable fun x => ∫ y, D₂.indicator (fun y => F (x, y)) y ∂μ₂`. Establish `h0 : Measurable (fun z : G₁ × G₂ => D₂.indicator (fun y => F (z.1, y)) z.2)`. Establish `: (fun z : G₁ × G₂ => D₂.indicator (fun y => F (z.1, y)) z.2) = ((univ : Set G₁) ×ˢ D₂).indicator F`. Use function extensionality and compare the values at `z`. Apply the tactic sequence `by_cases hz : z.2 ∈ D₂ <;> simp [indicator, hz]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this]`. Conclude with `hF.indicator (MeasurableSet.univ.prod d₂)`. Conclude with `(h0.stronglyMeasurable.integral_prod_right' (ν := μ₂)).measurable`. Prove the components needed by the constructor for the conclusion. Simplify using `only [hi]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hT, quotIntegral_eq_indicator H₂ d₂ u₂ hA (fun h hh y => by simp only [i₂ h hh]), integral_prod_symm f hint]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ D₂`. Simplify using `only [indicator_of_mem hy]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
-
-Apply the tactic sequence `by_cases hx : x ∈ D₁ <;> simp [hf, indicator, hx, hy]`. Simplify using `[hf, indicator, hy]`. Simplify using `only [hj]`. Rewrite using `[hT, quotIntegral_eq_indicator H₁ d₁ u₁ hB (fun h hh x => by simp only [i₁ h hh]), integral_prod f hint]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
-
-Distinguish the cases in `hx : x ∈ D₁`. Simplify using `only [indicator_of_mem hx]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases hy : y ∈ D₂ <;> simp [hf, indicator, hx, hy]`. Simplify using `[hf, indicator, hx]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quotIntegral_prod {μ₁ : Measure G₁} [μ₁.IsMulLeftInvariant] [SFinite μ₁]
     {μ₂ : Measure G₂} [μ₂.IsMulLeftInvariant] [SFinite μ₂]
@@ -247,7 +241,7 @@ section Rational
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Establish `hinv : ((ratGL E n t)⁻¹ : GA E n) = ratGL E n t⁻¹` using `(map_inv _ _).symm`. Rewrite using `[thetaR_val, hinv]`. Conclude with `conjAd_algebraMap _`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaA_ratGL_eq (t : GL (Fin n) E) : thetaA E n (ratGL E n t) = ratGL E n (thetaE E n t) := by
   refine Units.ext ?_
@@ -257,21 +251,21 @@ theorem thetaA_ratGL_eq (t : GL (Fin n) E) : thetaA E n (ratGL E n t) = ratGL E 
   exact conjAd_algebraMap _
 
 /- English proof (translation)
-Simplify using `only [twConj, map_mul, map_inv, thetaA_ratGL_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twConj_ratGL (γ d : GL (Fin n) E) :
     twConj (thetaA E n) (ratGL E n γ) (ratGL E n d) = ratGL E n (twConj (thetaE E n) γ d) := by
   simp only [twConj, map_mul, map_inv, thetaA_ratGL_eq]
 
 /- English proof (translation)
-Simplify using `only [twConj, map_mul, _root_.mul_inv_rev, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twConj_mul' {G : Type*} [Group G] (θ : Monoid.End G) (a b d : G) :
     twConj θ (a * b) d = twConj θ b (twConj θ a d) := by
   simp only [twConj, map_mul, _root_.mul_inv_rev, mul_assoc]
 
 /- English proof (translation)
-Take `⟨t, ht, rfl⟩` from `hh`. Use `twConj_mul_left _ _ ?_ x` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `twConj (thetaA E n) (ratGL E n t) (ratGL E n d) = ratGL E n d`. Rewrite using `[twConj_ratGL]`. Conclude with `congrArg _ ht`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twConj_ratCent (d : GL (Fin n) E) {h : GA E n} (hh : h ∈ ratCent d) (x : GA E n) :
     twConj (thetaA E n) (h * x) (ratGL E n d) = twConj (thetaA E n) x (ratGL E n d) := by
@@ -282,7 +276,7 @@ theorem twConj_ratCent (d : GL (Fin n) E) {h : GA E n} (hh : h ∈ ratCent d) (x
   exact congrArg _ ht
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.CompanionTheory.KerTwFin.discreteTopology_range (E := E) (n := n)`. Conclude with `DiscreteTopology.of_subset (s := ((ratGL E n).range : Set (GA E n))) GlobalTheory.CompanionTheory.KerTwFin.discreteTopology_range (by rintro _ ⟨t, -, rfl⟩; exact ⟨t, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem discreteTopology_ratCent (d : GL (Fin n) E) : DiscreteTopology (ratCent d) := by
   haveI := GlobalTheory.CompanionTheory.KerTwFin.discreteTopology_range (E := E) (n := n)
@@ -290,7 +284,7 @@ theorem discreteTopology_ratCent (d : GL (Fin n) E) : DiscreteTopology (ratCent 
     GlobalTheory.CompanionTheory.KerTwFin.discreteTopology_range (by rintro _ ⟨t, -, rfl⟩; exact ⟨t, rfl⟩)
 
 /- English proof (translation)
-Use `haveI := discreteTopology_ratCent d`. Use `haveI := GlobalTheory.CuspRep.CuspidalL2GL.secondCountableTopology_GA E n`. Conclude with `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem countable_ratCent (d : GL (Fin n) E) : Countable (ratCent d) := by
   haveI := discreteTopology_ratCent d
@@ -298,23 +292,21 @@ theorem countable_ratCent (d : GL (Fin n) E) : Countable (ratCent d) := by
   exact TopologicalSpace.separableSpace_iff_countable.1 inferInstance
 
 /- English proof (translation)
-The claim follows from `(continuous_inv.mul continuous_const).mul GlobalTheory.CompanionTheory.KerTwFin.continuous_thetaA`.
+A detailed English derivation is pending.
 -/
 theorem continuous_twConj (δ : GA E n) : Continuous fun x : GA E n => twConj (thetaA E n) x δ :=
   (continuous_inv.mul continuous_const).mul GlobalTheory.CompanionTheory.KerTwFin.continuous_thetaA
 
 /- English proof (translation)
-Take `⟨-, -, C, hC, hcov⟩` from `hM E n τ`. Establish `hKc : IsCompact (C * K * (thetaA E n '' C)⁻¹)` using `(hC.mul hK).mul (hC.image GlobalTheory.CompanionTheory.KerTwFin.continuous_thetaA).inv`. Establish `hfin` using `GlobalTheory.CompanionTheory.KerTwFin.finite_ratGL_mem hKc`. Set `pick : GL (Fin n) E → GL (Fin n) E` to `fun δ => if h : ∃ γ, twConj (thetaE E n) γ d = δ then h.choose else 1`. Use `⟨⋃ δ ∈ {δ : GL (Fin n) E | ratGL E n δ ∈ C * K * (thetaA E n '' C)⁻¹}, (fun c => ratGL E n (pick δ) * c) '' C, hfin.isCompact_biUnion fun δ _ => hC.image (continuous_const.mul continuous_id), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx hxK`. Take `⟨_, ⟨γ, rfl⟩, c, hc, rfl⟩` from `Set.mem_mul.1 (hcov hx)`. Use `set δ := twConj (thetaE E n) γ d with hδ`. Establish `hk : twConj (thetaA E n) c (ratGL E n δ) ∈ K`. Rewrite using `[hδ, ← twConj_ratGL, ← twConj_mul']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hxK`. Establish `hδK : ratGL E n δ ∈ C * K * (thetaA E n '' C)⁻¹`. Establish `e : ratGL E n δ = c * twConj (thetaA E n) c (ratGL E n δ) * (thetaA E n c)⁻¹`. Simplify using `only [twConj]`. Use `group`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Set.mul_mem_mul (Set.mul_mem_mul hc hk) (Set.inv_mem_inv.2 (mem_image_of_mem _ hc))`. Establish `hex : ∃ γ, twConj (thetaE E n) γ d = δ` using `⟨γ, rfl⟩`. Establish `hp : twConj (thetaE E n) (pick δ) d = δ`. Simplify using `only [pick, dif_pos hex]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hex.choose_spec`. Use `set p := pick δ with hpdef`. Establish `ht : γ * p⁻¹ ∈ twCent (thetaE E n) d`. Express the relevant statement in the definitionally equal form `twConj (thetaE E n) (γ * p⁻¹) d = d`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `⟨⟨ratGL E n (γ * p⁻¹), ⟨_, ht, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Use `mem_iUnion₂.2 ⟨δ, hδK, c, hc, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_inv, _root_.mul_inv_rev, inv_inv]`. Use `group`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_compact_cover (hM : Mahler) (τ : ℝ) (d : GL (Fin n) E) {K : Set (GA E n)} (hK : IsCompact K) :
     ∃ S : Set (GA E n), IsCompact S ∧ ∀ x ∈ cutSet E n τ, twConj (thetaA E n) x (ratGL E n d) ∈ K →
@@ -365,7 +357,7 @@ section Main
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-Establish `h` using `(hM E n τ).2.1 t x`. Distinguish the cases in `hx : x ∈ cutSet E n τ`. Simplify using `[chiT, hx, h.2 hx]`. Simplify using `[chiT, hx, mt h.1 hx]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem chiT_ratGL (hM : Mahler) {n : ℕ} (τ : ℝ) (t : GL (Fin n) E) (x : GA E n) :
     chiT τ (ratGL E n t * x) = chiT τ x := by
@@ -375,35 +367,27 @@ theorem chiT_ratGL (hM : Mahler) {n : ℕ} (τ : ℝ) (t : GL (Fin n) E) (x : GA
   · simp [chiT, hx, mt h.1 hx]
 
 /- English proof (translation)
-Introduce `E _ _ _ a b _ _ _ _ μ₁ _ μ₂ _ τ r φ d₁ d₂ hφ`. Use `haveI := GlobalTheory.CuspRep.CuspidalL2GL.t2Space_GA E a`. Use `haveI := GlobalTheory.CuspRep.CuspidalL2GL.t2Space_GA E b`. Use `haveI := GlobalTheory.CuspRep.CuspidalL2GL.secondCountableTopology_GA E a`. Use `haveI := GlobalTheory.CuspRep.CuspidalL2GL.secondCountableTopology_GA E b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := GlobalTheory.CuspRep.CuspidalL2GL.locallyCompactSpace_GA E a`. Use `haveI := GlobalTheory.CuspRep.CuspidalL2GL.locallyCompactSpace_GA E b`. Use `haveI := discreteTopology_ratCent d₁`. Use `haveI := discreteTopology_ratCent d₂`. Use `haveI := countable_ratCent d₁`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := countable_ratCent d₂`. Establish `c₁ : Measurable (chiT τ : GA E a → ℂ)` using `measurable_one.indicator (hM E a τ).1.measurableSet`. Establish `c₂ : Measurable (chiT τ : GA E b → ℂ)` using `measurable_one.indicator (hM E b τ).1.measurableSet`. Use `set t₁ : GA E a → GA E a := fun x => twConj (thetaA E a) x (ratGL E a d₁) with ht₁`. Use `set t₂ : GA E b → GA E b := fun y => twConj (thetaA E b) y (ratGL E b d₂) with ht₂`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ct₁ : Continuous t₁` using `continuous_twConj _`. Establish `ct₂ : Continuous t₂` using `continuous_twConj _`. Use `set F : GA E a × GA E b → ℂ := fun z => chiT τ z.1 * chiT τ z.2 * φ (t₁ z.1, t₂ z.2) with hFdef`. Establish `hFm : Measurable F` using `((c₁.comp measurable_fst).mul (c₂.comp measurable_snd)).mul (hφ.cont.comp ((ct₁.comp continuous_fst).prodMk (ct₂.comp continuous_snd))).measurable`. Establish `i₁ : ∀ h ∈ ratCent d₁, ∀ x y, F (h * x, y) = F (x, y)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `h hh x y`. Establish `e₁ : chiT τ (h * x) = chiT τ x`. Take `⟨t, -, rfl⟩` from `hh`. Conclude with `chiT_ratGL hM τ t x`. Simplify using `only [hFdef, ht₁, e₁, twConj_ratCent d₁ hh x]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `i₂ : ∀ h ∈ ratCent d₂, ∀ x y, F (x, h * y) = F (x, y)`. Introduce `h hh x y`. Establish `e₂ : chiT τ (h * y) = chiT τ y`. Take `⟨t, -, rfl⟩` from `hh`. Conclude with `chiT_ratGL hM τ t y`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [hFdef, ht₂, e₂, twConj_ratCent d₂ hh y]`. Take `⟨B, hB⟩` from `hφ.supp.exists_bound_of_continuous hφ.cont`. Establish `hchi : ∀ {n : ℕ} (x : GA E n), ‖chiT τ x‖ ≤ 1`. Introduce `n x`. Apply the tactic sequence `by_cases hx : x ∈ cutSet E n τ <;> simp [chiT, hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hbd : ∀ z, ‖F z‖ ≤ B`. Introduce `z`. Simplify using `only [hFdef, norm_mul]`. Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hB (t₁ z.1, t₂ z.2))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hchi _`. Conclude with `hchi _`. Conclude with `hB _`. Use `_ = B := by ring`. Establish `hK₁ : IsCompact (Prod.fst '' tsupport φ)` using `hφ.supp.isCompact.image continuous_fst`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hK₂ : IsCompact (Prod.snd '' tsupport φ)` using `hφ.supp.isCompact.image continuous_snd`. Take `⟨S₁, s₁, hS₁⟩` from `exists_compact_cover hM τ d₁ hK₁`. Take `⟨S₂, s₂, hS₂⟩` from `exists_compact_cover hM τ d₂ hK₂`. Establish `hS : ∀ x y, F (x, y) ≠ 0 → (∃ h : ratCent d₁, (h : GA E a)⁻¹ * x ∈ S₁) ∧ ∃ h : ratCent d₂, (h : GA E b)⁻¹ * y ∈ S₂`. Introduce `x y hne`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : x ∈ cutSet E a τ`. Assume the negation of the conclusion as `hn`. Conclude with `hne (by simp [hFdef, chiT, hn])`. Establish `hy : y ∈ cutSet E b τ`. Assume the negation of the conclusion as `hn`.
-
-Conclude with `hne (by simp [hFdef, chiT, hn])`. Establish `hφ0 : φ (t₁ x, t₂ y) ≠ 0` using `fun h0 => hne (by simp [hFdef, h0])`. Establish `hmem` using `subset_tsupport _ hφ0`. Conclude with `⟨hS₁ x hx ⟨_, hmem, rfl⟩, hS₂ y hy ⟨_, hmem, rfl⟩⟩`. Establish `key` using `quotIntegral_prod (μ₁ := μ₁) (μ₂ := μ₂) (ratCent d₁) (ratCent d₂) hFm i₁ i₂ hbd s₁.isClosed.measurableSet s₂.isClosed.measurableSet s₁.measure_lt_top.ne s₂.measure_lt_top.ne hS`.
-
-Use `⟨key.1.trans ?_, key.2.trans ?_⟩` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[cutTerm, ← quotIntegral_const_mul]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `x`. Simplify using `only [hFdef]`. Expand and normalize the polynomial expressions, which then agree. Use `congr 1`. Use function extensionality and compare the values at `x`.
-
-Rewrite using `[cutTerm, ← quotIntegral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `only [hFdef]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sliceTerm_of (hM : Mahler) : SliceTerm := by
   intro E _ _ _ a b _ _ _ _ μ₁ _ μ₂ _ τ r φ d₁ d₂ hφ

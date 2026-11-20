@@ -14,7 +14,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.SiegTanShift
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem spMap_comp_spMap' {A A' B : Type} [CommRing A] [CommRing A'] [CommRing B] (f : A →+* B) (g : A' →+* A) :
     spMap f ≫ spMap g = spMap (f.comp g) := by
@@ -22,12 +22,12 @@ theorem spMap_comp_spMap' {A A' B : Type} [CommRing A] [CommRing A'] [CommRing B
   rfl
 
 /- English proof (translation)
-The claim follows from `Spec.map_id _`.
+A detailed English derivation is pending.
 -/
 theorem spMap_id' (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 (Sp A) := Spec.map_id _
 
 /- English proof (translation)
-The claim follows from `haveI : Nontrivial (TrivSqZeroExt K (K × K)) := TrivSqZeroExt.inl_injective.nontrivial IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => by simp only [TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.fst_sub, TrivSqZeroExt.fst_one] exact IsLocalRing.isUnit_or_isUnit_one_sub …`.
+A detailed English derivation is pending.
 -/
 theorem isLocalRing_sq (K : Type) [Field K] : IsLocalRing (TrivSqZeroExt K (K × K)) :=
   haveI : Nontrivial (TrivSqZeroExt K (K × K)) := TrivSqZeroExt.inl_injective.nontrivial
@@ -36,47 +36,47 @@ theorem isLocalRing_sq (K : Type) [Field K] : IsLocalRing (TrivSqZeroExt K (K ×
     exact IsLocalRing.isUnit_or_isUnit_one_sub_self _
 
 /- English proof (translation)
-Use `haveI : Module.Finite K (TrivSqZeroExt K (K × K)) := inferInstanceAs (Module.Finite K (K × (K × K)))`. Conclude with `IsArtinianRing.of_finite K _`.
+A detailed English derivation is pending.
 -/
 theorem isArtinianRing_sq (K : Type) [Field K] : IsArtinianRing (TrivSqZeroExt K (K × K)) := by
   haveI : Module.Finite K (TrivSqZeroExt K (K × K)) := inferInstanceAs (Module.Finite K (K × (K × K)))
   exact IsArtinianRing.of_finite K _
 
 /- English proof (translation)
-The claim follows from `e ▸ hc`.
+A detailed English derivation is pending.
 -/
 theorem pbEq {h k : ℕ} {B B' : Type} [CommRing B] [CommRing B'] {ζ : B} {ζ' : B'} {S S' : Scheme.{0}}
     {s : S ⟶ Sp B} {s' : S' ⟶ Sp B'} {c' : SiegPre h k ζ' s'} {c : SiegPre h k ζ s} {f f' : S' ⟶ S}
     (hc : SiegPB c' c f) (e : f = f') : SiegPB c' c f' := e ▸ hc
 
 /- English proof (translation)
-Introduce `g n h3 hodd K _ r β G hG lam κ κ' t c₃ c₁ hκ h₁ h₂ h₃`. Substitute `hκ` using the available equality. Establish `pull : ∀ {S S' : Scheme.{0}} (s : S ⟶ Sp (cycAway n)) (s' : S' ⟶ Sp (cycAway n)) (f : S' ⟶ S), f ≫ s = s' → ∀ c : SiegPre g n (zetaAway n) s, c.Principal → ∃ c' : SiegPre g n (zetaAway n) s', SiegPB c' c f ∧ c'.Principal`. Introduce `S S' s s' f hf c hc`. Establish `hf' : f ≫ s = s' ≫ spMap (RingHom.id (cycAway n))` using `by rw [spMap_id', Category.comp_id]; exact hf`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `pr` using `GlobalTheory.SiegelRingChange.siegPre_pull_ringChange g n (cycAway n) (cycAway n) (zetaAway n) (zetaAway n) (RingHom.id _) S S' s s' f rfl hf'`. Take `⟨c', hcc⟩` from `pr.1 c`. Conclude with `⟨c', hcc, pr.2.1 c c' hcc hc⟩`. Establish `base : ∀ {R R' : Type} [CommRing R] [CommRing R'] [Algebra K R] [Algebra K R'] (f : R →ₐ[K] R'), spMap f.toRingHom ≫ spMap ((algebraMap K R).comp β) = spMap ((algebraMap K R').comp β)`. Introduce `R R' _ _ _ _ f`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[spMap_comp_spMap', ← RingHom.comp_assoc]`. Use `congr 2`. Use extensionality with `x`. Simplify using the standard rewrite rules. Set `Φ` to `TrivSqZeroExt.map (LinearMap.prod κ' (t • lam))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `p₁` to `TrivSqZeroExt.map (LinearMap.fst K K K)`. Set `p₂` to `TrivSqZeroExt.map (LinearMap.snd K K K)`. Set `ι₁` to `TrivSqZeroExt.map (LinearMap.inl K K K)`. Set `sm` to `TrivSqZeroExt.map (LinearMap.fst K K K + LinearMap.snd K K K)`. Set `mt` to `TrivSqZeroExt.map (t • LinearMap.id : K →ₗ[K] K)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `cst : TrivSqZeroExt K (Fin r → K) →+* DualNumber K` to `(algebraMap K (DualNumber K)).comp (TrivSqZeroExt.fstHom K K (Fin r → K)).toRingHom`. Set `cD : DualNumber K →+* DualNumber K` to `(algebraMap K (DualNumber K)).comp (TrivSqZeroExt.fstHom K K K).toRingHom`. Establish `e1 : p₁.toRingHom.comp Φ.toRingHom = dirMap κ'`. Apply the tactic sequence `ext x <;> simp [p₁, Φ, dirMap]`. Establish `e2 : p₂.toRingHom.comp Φ.toRingHom = dirMap (t • lam)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `ext x <;> simp [p₂, Φ, dirMap]`. Establish `e3 : mt.toRingHom.comp (dirMap lam) = dirMap (t • lam)`. Apply the tactic sequence `ext x <;> simp [mt, dirMap]`. Establish `e4 : mt.toRingHom.comp cst = cst`. Apply the tactic sequence `ext x <;> simp [mt, cst]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e6 : p₁.toRingHom.comp ι₁.toRingHom = RingHom.id _`. Apply the tactic sequence `ext x <;> simp [p₁, ι₁]`. Establish `e7 : p₂.toRingHom.comp ι₁.toRingHom = cD`. Apply the tactic sequence `ext x <;> simp [p₂, ι₁, cD]`. Establish `e8 : sm.toRingHom.comp Φ.toRingHom = dirMap (κ' + t • lam)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `ext x <;> simp [sm, Φ, dirMap]`. Establish `e9 : sm.toRingHom.comp ι₁.toRingHom = RingHom.id _`. Apply the tactic sequence `ext x <;> simp [sm, ι₁]`. Establish `e10 : cD.comp (dirMap κ') = cst`. Apply the tactic sequence `ext x <;> simp [cD, cst, dirMap]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hconst : constPt (spMap (dirMap lam)) = spMap cst`. Simplify using `only [constPt, spMap_comp_spMap']`. Use `congr 1`. Take `⟨c', hc', hc'p⟩` from `pull _ _ (spMap (dirMap κ')) (base (TrivSqZeroExt.map κ')) G hG`. Take `⟨H, hH, hHp⟩` from `pull _ _ (spMap Φ.toRingHom) (base Φ) G hG`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨H'', hH'', hH''p⟩` from `pull _ _ (spMap ι₁.toRingHom) (base ι₁) c' hc'p`. Take `⟨C1, hC1, -⟩` from `pull _ (spMap p₁.toRingHom ≫ spMap ((algebraMap K (TrivSqZeroExt K (K × K))).comp β)) (spMap p₁.toRingHom) rfl H hHp`. Take `⟨C2, hC2, -⟩` from `pull _ (spMap p₂.toRingHom ≫ spMap ((algebraMap K (TrivSqZeroExt K (K × K))).comp β)) (spMap p₂.toRingHom) rfl H hHp`. Establish `hC1G : SiegPB C1 G (spMap (dirMap κ'))` using `pbEq (GlobalTheory.SiegelPullComp.pb_comp hH hC1) (by rw [spMap_comp_spMap', e1])`. Establish `hC1c' : SiegPB C1 c' (𝟙 _)` using `GlobalTheory.SiegelPullComp.pb_cancel hc' (pbEq hC1G (by rw [Category.id_comp]))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC1H'' : SiegPB C1 H'' (spMap p₁.toRingHom)` using `GlobalTheory.SiegelPullComp.pb_cancel hH'' (pbEq hC1c' (by rw [spMap_comp_spMap', e6, spMap_id']))`. Establish `hC2G : SiegPB C2 G (spMap (dirMap (t • lam)))` using `pbEq (GlobalTheory.SiegelPullComp.pb_comp hH hC2) (by rw [spMap_comp_spMap', e2])`. Establish `h₂' : SiegPB c₃ G (spMap cst)` using `pbEq h₂ hconst`. Establish `hC2m : SiegPB C2 c₃ (spMap mt.toRingHom)` using `GlobalTheory.SiegelPullComp.pb_cancel h₁ (pbEq hC2G (by rw [spMap_comp_spMap', e3]))`. Establish `hC2Gc : SiegPB C2 G (spMap cst)` using `pbEq (GlobalTheory.SiegelPullComp.pb_comp h₂' hC2m) (by rw [spMap_comp_spMap', e4])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC2c₃ : SiegPB C2 c₃ (𝟙 _)` using `GlobalTheory.SiegelPullComp.pb_cancel h₂' (pbEq hC2Gc (by rw [Category.id_comp]))`. Establish `hc₃c' : SiegPB c₃ c' (spMap cD)` using `GlobalTheory.SiegelPullComp.pb_cancel hc' (pbEq h₂' (by rw [spMap_comp_spMap', e10]))`. Establish `hC2c' : SiegPB C2 c' (spMap cD)` using `pbEq (GlobalTheory.SiegelPullComp.pb_comp hc₃c' hC2c₃) (by rw [Category.id_comp])`. Establish `hC2H'' : SiegPB C2 H'' (spMap p₂.toRingHom)` using `GlobalTheory.SiegelPullComp.pb_cancel hH'' (pbEq hC2c' (by rw [spMap_comp_spMap', e7]))`. Establish `hpb` using `GlobalTheory.T.trivial_square_zero_extension_pullback K (K × K) K K (LinearMap.fst K K K) (LinearMap.snd K K K) ⟨fun a b hab => by simpa using hab, fun y => ⟨y, by simp⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective (CommRingCat.ofHom (TrivSqZeroExt.fstHom K K K).toRingHom)` using `fun x => ⟨TrivSqZeroExt.inl x, rfl⟩`. Establish `hHH : SiegPB H'' H (𝟙 _)` using `GlobalTheory.T.principalSiegelObject_determined_over_artinianPinch g n h3 hodd (CommRingCat.of (TrivSqZeroExt K (K × K))) (CommRingCat.of (DualNumber K)) (CommRingCat.of (DualNumber K)) (CommRingCat.of K) _ _ _ _ hpb (isLocalRing_sq K) (isArtinianRing_sq K) hsurj hsurj (CommRingC …`. Establish `hc₁H : SiegPB c₁ H (spMap sm.toRingHom)` using `GlobalTheory.SiegelPullComp.pb_cancel hH (pbEq h₃ (by rw [spMap_comp_spMap', e8]))`. Establish `hc₁H'' : SiegPB c₁ H'' (spMap sm.toRingHom)` using `GlobalTheory.SiegelPullComp.pb_cancel hHH (pbEq hc₁H (by rw [Category.comp_id]))`. Establish `hc₁c' : SiegPB c₁ c' (𝟙 _)` using `pbEq (GlobalTheory.SiegelPullComp.pb_comp hH'' hc₁H'') (by rw [spMap_comp_spMap', e9, spMap_id'])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `pbEq (GlobalTheory.SiegelPullComp.pb_comp hc' hc₁c') (by rw [Category.id_comp])`.
+A detailed English derivation is pending.
 -/
 theorem shift : ∀ (g n : ℕ), 3 ≤ n → Odd n → ∀ (K : Type) [Field K] (r : ℕ) (β : cycAway n →+* K) (G : SiegPre g n (zetaAway n) (spMap ((algebraMap K (TrivSqZeroExt K (Fin r → K))).comp β))), G.Principal → ∀ (lam κ κ' : (Fin r → K) →ₗ[K] K) (t : K) (c₃ c₁ : SiegPre g n (zetaAway n) (spMap ((algebraMap K (DualNumber K)).comp β))), κ = κ' + t • lam → SiegPB c₃ G (spMap (dirMap lam)) → SiegPB c₃ G (constPt (spMap (dirMap lam))) → SiegPB c₁ G (spMap (dirMap κ)) → SiegPB c₁ G (spMap (dirMap κ')) := by
   intro g n h3 hodd K _ r β G hG lam κ κ' t c₃ c₁ hκ h₁ h₂ h₃

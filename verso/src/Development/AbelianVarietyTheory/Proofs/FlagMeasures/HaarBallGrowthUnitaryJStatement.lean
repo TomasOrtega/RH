@@ -6,7 +6,7 @@ open MeasureTheory Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalis
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.BallVol.ballVol` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FHaarBallGrowthUnitaryJ.lean&line=145#L145)
 -/

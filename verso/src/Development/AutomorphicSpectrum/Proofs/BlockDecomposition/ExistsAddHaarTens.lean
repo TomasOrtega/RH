@@ -12,9 +12,9 @@ open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory
 namespace GlobalTheory.CompanionTheory.LocHaar
 
 /- English proof (translation)
-Establish `key : ∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers D.host.F), ∃ μ : Measure (Fin n → HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v ⊗[D.host.F] D.host.E), μ.IsAddHaarMeasure`. Introduce `v`. Take `⟨tr, lc, sc, t2, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv D.host.F v`. Take `⟨h1, h2, h3, h4, h5⟩` from `Formalism.IndefR.Eqv.G5.tens_facts (F := D.host.F) (E := D.host.E) (HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v) D.sp.cm.deg2`. Conclude with `⟨Measure.addHaar, inferInstance⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose lamG h using key`. Conclude with `⟨lamG, h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_addHaar_tens (D : D7) (n : ℕ) :
     ∃ lamG : ∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers D.host.F),

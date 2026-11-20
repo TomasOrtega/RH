@@ -7,21 +7,21 @@ open Formalism.MainNotions Formalism.BasicNotions Formalism.MainNotions.G Classi
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `⟨3, fun x hx hx1 i => ?_⟩` and prove the remaining obligations. Establish `hK` using `(Fm.sizes x hx1 i).2.2.1.1`. Establish `hsx` using `Fm.L_x x i hx1`. Establish `he` using `(Fm.L x i).sc.eps_pos`. Establish `he'` using `(Fm.L x i).sc.eps_lt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx3 : (3 : ℝ) ≤ x` using `hx`. Establish `hx0 : (0 : ℝ) < x` using `by linarith`. Rewrite `hK` using `[hsx]`. Establish `h4 : x ^ (4 : ℕ) ≤ ((Fm.D x i).R.k : ℝ)`. Use `le_trans ?_ hK` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Real.rpow_natCast]`. Apply `Real.rpow_le_rpow_of_exponent_le (by linarith)` to reduce the goal to its premises. Unfold `szTh`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hL : (Fm.L x i).sc.L ≤ x`. Unfold `Scale.L`. Rewrite using `[hsx]`. Combine the equalities or inequalities in the displayed calculation. Establish `hL0 : 0 ≤ (Fm.L x i).sc.L`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Unfold `Scale.L`. Rewrite using `[hsx]`. Check the signs of the components of the expression. Establish `hla : Real.log (Fm.L x i).sc.a = Real.log x + (Fm.L x i).sc.L`. Unfold `Scale.a Scale.b`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hsx, Real.log_mul hx0.ne' (Real.exp_pos _).ne', Real.log_exp]`. Establish `hlx : Real.log x ≤ x` using `(Real.log_le_sub_one_of_pos hx0).trans (by linarith)`. Establish `hlx0 : 0 ≤ Real.log x` using `Real.log_nonneg (by linarith)`. Establish `h5 : 1 ≤ Real.log 5`. Rewrite using `[Real.le_log_iff_exp_le (by norm_num)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb : Real.logb 5 ((Fm.L x i).sc.a ^ 2) ≤ 4 * x`. Rewrite using `[Real.logb, Real.log_pow, hla]`. Use `push_cast`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `(div_le_self (by linarith) h5).trans (by linarith)` and prove the remaining obligations. Establish `h27 : 27 ≤ x ^ 3`. Combine the equalities or inequalities in the displayed calculation. Establish `: 27 * x ≤ x ^ 4`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

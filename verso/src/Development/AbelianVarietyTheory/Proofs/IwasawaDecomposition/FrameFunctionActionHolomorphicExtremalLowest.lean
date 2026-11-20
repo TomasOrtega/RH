@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.JointHarm
 
 /- English proof (translation)
-Proceed by induction on `u using Finset.induction_on with`. Consider the case `empty => simpa using differentiableOn_const _`. Consider the case `insert a u ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `(h a).mul ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vhol_diff_prod {E κ : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {s : Set E} (u : Finset κ)
     (f : κ → E → ℂ) (h : ∀ i, DifferentiableOn ℂ (f i) s) :
@@ -25,7 +25,7 @@ theorem vhol_diff_prod {E κ : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] 
     exact (h a).mul ih
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Use `DifferentiableOn.fun_sum fun σ _ => DifferentiableOn.const_mul ?_ _` and prove the remaining obligations. Conclude with `vhol_diff_prod _ (fun i z => A z (σ i) i) fun i => h _ _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem vhol_diff_det {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {n : ℕ} {s : Set E}
     (A : E → Matrix (Fin n) (Fin n) ℂ) (h : ∀ i j, DifferentiableOn ℂ (fun z => A z i j) s) :
@@ -35,9 +35,9 @@ theorem vhol_diff_det {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {n :
   exact vhol_diff_prod _ (fun i z => A z (σ i) i) fun i => h _ _
 
 /- English proof (translation)
-Simplify using `only [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul, Matrix.adjugate_apply]`. Use `((vhol_diff_det A h).inv h0).mul (vhol_diff_det _ fun a b => ?_)` and prove the remaining obligations. Distinguish the cases in `ha : a = j`. Simplify using `only [Matrix.updateRow_apply, if_pos ha]`. Conclude with `differentiableOn_const _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.updateRow_apply, if_neg ha]`. Conclude with `h a b`.
+A detailed English derivation is pending.
 -/
 theorem vhol_diff_inv {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {n : ℕ} {s : Set E}
     (A : E → Matrix (Fin n) (Fin n) ℂ) (h : ∀ i j, DifferentiableOn ℂ (fun z => A z i j) s)
@@ -54,13 +54,11 @@ theorem vhol_diff_inv {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {n :
 variable {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `y using MvPolynomial.induction_on generalizing x with`. Consider the case `C a`. Simplify using `only [MvPolynomial.algHom_C]`. Conclude with `differentiableOn_const _`. Consider the case `add p q hp hq`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add]`. Conclude with `(hp x).add (hq x)`. Consider the case `mul_X p v hp`. Establish `e1 : ∀ z, Formalism.GradedWeylDivisibility.blockAct ℂ (U z) (p * MvPolynomial.X v) = ∑ b : Fin n, U z v.1 v.2.1 b • (MvPolynomial.X (v.1, (b, v.2.2)) * Formalism.GradedWeylDivisibility.blockAct ℂ (U z) p)`. Introduce `z`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, blockAct_X, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e1, map_sum, map_smul, ← fockL_pderiv_X, smul_eq_mul]`.
-
-Conclude with `DifferentiableOn.fun_sum fun b _ => (h _ _ _).mul (hp _)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vhol_diff_fock {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {s : Set E}
     (U : E → ι → Matrix (Fin n) (Fin n) ℂ) (h : ∀ τ i j, DifferentiableOn ℂ (fun z => U z τ i j) s)
@@ -84,11 +82,11 @@ theorem vhol_diff_fock {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {s 
     exact DifferentiableOn.fun_sum fun b _ => (h _ _ _).mul (hp _)
 
 /- English proof (translation)
-Rewrite `hx` using `[fockL_apply, fockS]`. Establish `e : ∀ m, star (x.coeff m) * x.coeff m * (mfact m : ℂ) = ((Complex.normSq (x.coeff m) * (mfact m : ℝ) : ℝ) : ℂ)`. Introduce `m`. Rewrite using `[Complex.ofReal_mul, Complex.normSq_eq_conj_mul_self]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [e] at hx`. Rewrite `hx` using `[← Complex.ofReal_sum, Complex.ofReal_eq_zero, Finset.sum_eq_zero_iff_of_nonneg fun m _ => mul_nonneg (Complex.normSq_nonneg _) (Nat.cast_nonneg _)]`. Use extensionality with `m`. Assume the negation of the conclusion as `hm`. Establish `h1` using `hx m (MvPolynomial.mem_support_iff.2 hm)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2 : 0 < mfact m` using `Finset.prod_pos fun k _ => Nat.factorial_pos _`. Break down `mul_eq_zero.1 h1 with h | h` into its components or cases. Conclude with `hm (Complex.normSq_eq_zero.1 h)`. Conclude with `h2.ne' (by exact_mod_cast h)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem vhol_aniso {σ : Type} (x : MvPolynomial σ ℂ) (hx : fockL x x = 0) : x = 0 := by
   rw [fockL_apply, fockS] at hx
@@ -109,7 +107,7 @@ theorem vhol_aniso {σ : Type} (x : MvPolynomial σ ℂ) (hx : fockL x x = 0) : 
   · exact h2.ne' (by exact_mod_cast h)
 
 /- English proof (translation)
-Unfold `vact`. Simplify using `only [Pi.one_apply, Matrix.det_one, _root_.one_zpow, Finset.prod_const_one, one_smul, inv_one, blockAct_one]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem vhol_one (lam : ι → DomWeight n) : vact lam 1 = 1 := by
   unfold vact
@@ -117,9 +115,9 @@ theorem vhol_one (lam : ι → DomWeight n) : vact lam 1 = 1 := by
   rfl
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `F`. Use `congrArg (fun φ => φ F) (blockAct_comp (fun τ => (a τ)⁻¹) (fun τ => (b τ)⁻¹))` as an intermediate fact. Simplify using `only [AlgHom.comp_apply] at this`. Simplify using `only [vact, Pi.mul_apply, Matrix.det_mul, mul_zpow, Finset.prod_mul_distrib, Matrix.mul_inv_rev, Module.End.mul_apply, LinearMap.smul_apply, AlgHom.toLinearMap_apply, map_smul, smul_smul, this]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vhol_mul (lam : ι → DomWeight n) (a b : ι → Matrix (Fin n) (Fin n) ℂ) :
     vact lam (a * b) = vact lam a * vact lam b := by
@@ -132,7 +130,7 @@ theorem vhol_mul (lam : ι → DomWeight n) (a b : ι → Matrix (Fin n) (Fin n)
   rw [mul_comm]
 
 /- English proof (translation)
-Simplify using `only [vact, LinearMap.smul_apply, AlgHom.toLinearMap_apply, LinearMap.map_smulₛₗ, map_smul, fockL_blockAct_adj, Matrix.conjTranspose_nonsing_inv, Matrix.det_conjTranspose, starRingEnd_apply, star_prod, star_zpow₀, RingHom.id_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vhol_adj (lam : ι → DomWeight n) (a : ι → Matrix (Fin n) (Fin n) ℂ) (x y : Pol ℂ ι n) :
     fockL (vact lam a x) y = fockL x (vact lam (fun τ => (a τ)ᴴ) y) := by
@@ -141,7 +139,7 @@ theorem vhol_adj (lam : ι → DomWeight n) (a : ι → Matrix (Fin n) (Fin n) �
     star_zpow₀, RingHom.id_apply]
 
 /- English proof (translation)
-Unfold `vact actP trAct`. Rewrite using `[detTw_eq]`. Simplify using `only [invTrK_coe, Matrix.transpose_transpose, Matrix.det_transpose, Matrix.coe_units_inv, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', _root_.zpow_neg, _root_.inv_zpow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vhol_units (lam : ι → DomWeight n) (G : ι → GL (Fin n) ℂ) :
     vact lam (fun τ => (G τ : Matrix (Fin n) (Fin n) ℂ)) = actP lam (invTrK G) := by
@@ -151,13 +149,13 @@ theorem vhol_units (lam : ι → DomWeight n) (G : ι → GL (Fin n) ℂ) :
     Matrix.det_nonsing_inv, Ring.inverse_eq_inv', _root_.zpow_neg, _root_.inv_zpow]
 
 /- English proof (translation)
-Establish `e : (Pi.mulSingle τ (g : Matrix (Fin n) (Fin n) ℂ) : ι → Matrix (Fin n) (Fin n) ℂ) = fun σ => ((Pi.mulSingle τ g : ι → GL (Fin n) ℂ) σ : Matrix (Fin n) (Fin n) ℂ)`. Use function extensionality and compare the values at `σ`. Distinguish the cases in `hσ : σ = τ`. Substitute `hσ` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hσ]`. Rewrite using `[e, vhol_units, actTen]`. Unfold `ten`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ τ), ← Finset.mul_prod_erase _ (fun σ => Formalism.GradedWeylDivisibility.blockEmb ℂ σ (extremal ℂ n (lam σ))) (Finset.mem_univ τ), ← smul_mul_assoc]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← map_smul, ← h] show Formalism.GradedWeylDivisibility.blockEmb ℂ τ (sqAct ℂ n (lam τ) (inside₂ ℂ n ((Pi.mulSingle τ g : ι → GL (Fin n) ℂ) τ)) _) = _`. Rewrite using `[Pi.mulSingle_eq_same]`. Use `Finset.prod_congr rfl fun σ hσ => ?_` and prove the remaining obligations. Use `congrArg (Formalism.GradedWeylDivisibility.blockEmb ℂ σ) ?_` and prove the remaining obligations. Use `(factSqHighestWeight ℂ n (lam σ)).2 _ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[invTrK_coe, Pi.mulSingle_eq_of_ne (Finset.ne_of_mem_erase hσ)]`. Simplify using `using Matrix.blockTriangular_one`. Introduce `a`. Rewrite using `[invTrK_coe, Pi.mulSingle_eq_of_ne (Finset.ne_of_mem_erase hσ)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vhol_ext (lam : ι → DomWeight n) (τ : ι) (g : GL (Fin n) ℂ) (c : ℂ)
     (h : sqAct ℂ n (lam τ) (inside₂ ℂ n g) (extremal ℂ n (lam τ)) = c • extremal ℂ n (lam τ)) :
@@ -188,11 +186,11 @@ theorem vhol_ext (lam : ι → DomWeight n) (τ : ι) (g : GL (Fin n) ℂ) (c : 
       simp
 
 /- English proof (translation)
-Establish `h1 : gᵀ.BlockTriangular id` using `fun i j hij => (h j i).1 hij`. Establish `hu : IsUnit gᵀ` using `(Matrix.isUnit_transpose g).2 hg`. Take `⟨inst⟩` from `hu.nonempty_invertible`. Establish `h2 : (gᵀ)⁻¹.BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular h1`. Rewrite `h2` using `[← Matrix.transpose_nonsing_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨h2, fun a => ?_⟩` and prove the remaining obligations. Establish `h3` using `congrFun (congrFun (Matrix.mul_nonsing_inv g ((Matrix.isUnit_iff_isUnit_det g).1 hg)) a) a`. Rewrite `h3` using `[Matrix.mul_apply, Finset.sum_eq_single a, (h a a).2 rfl, one_mul, Matrix.one_apply_eq]`. Conclude with `h3`. Introduce `b _ hb`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_or_gt_of_ne hb with hlt | hlt` into its components or cases. Establish `: g⁻¹ b a = 0` using `h2 (i := a) (j := b) hlt`. Rewrite using `[this, mul_zero]`. Rewrite using `[(h a b).1 hlt, zero_mul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vhol_lo_inv (g : Matrix (Fin n) (Fin n) ℂ) (hg : IsUnit g) (h : IsLoUni g) :
     (g⁻¹)ᵀ.BlockTriangular id ∧ ∀ a, g⁻¹ a a = 1 := by
@@ -213,29 +211,25 @@ theorem vhol_lo_inv (g : Matrix (Fin n) (Fin n) ℂ) (hg : IsUnit g) (h : IsLoUn
   · simp
 
 /- English proof (translation)
-Introduce `ι _ n lam`. Use `⟨⟨vhol_aniso, vhol_one lam, fun a b _ _ => vhol_mul lam a b, fun τ => ⟨vhol_aniso, ?_, fun a _ b _ => ?_, fun g _ x y => ?_, fun x y => ?_⟩⟩, fun τ => ⟨fun g hg hl => ?_, fun θ => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show vact lam (Pi.mulSingle τ 1) = 1`. Rewrite using `[Pi.mulSingle_one, vhol_one]`. Use `show vact lam (Pi.mulSingle τ (a * b)) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.mulSingle_mul, vhol_mul]`. Use `show fockL (vact lam (Pi.mulSingle τ g) x) y = fockL x (vact lam (Pi.mulSingle τ gᴴ) y)`. Rewrite using `[vhol_adj]`. Use `congrArg (fun u => fockL x (vact lam u y)) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `σ`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hσ : σ = τ`. Substitute `hσ` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hσ]`. Establish `h1 : ∀ σ i j, DifferentiableOn ℂ (fun g : Fin n → Fin n → ℂ => (Pi.mulSingle τ (Matrix.of g) : ι → Matrix (Fin n) (Fin n) ℂ) σ i j) {g | Matrix.of g ∈ GlobalTheory.Dec.KC (allPos n)}`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `σ i j`. Distinguish the cases in `hσ : σ = τ`. Substitute `hσ` using the available equality. Simplify using `only [Pi.mulSingle_eq_same, Matrix.of_apply]`. Use `fun_prop`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [Pi.mulSingle_eq_of_ne hσ]`. Conclude with `differentiableOn_const _`. Establish `h0 : ∀ σ, ∀ g ∈ {g : Fin n → Fin n → ℂ | Matrix.of g ∈ GlobalTheory.Dec.KC (allPos n)}, ((Pi.mulSingle τ (Matrix.of g) : ι → Matrix (Fin n) (Fin n) ℂ) σ).det ≠ 0`. Introduce `σ g hg`. Distinguish the cases in `hσ : σ = τ`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `hσ` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 hg.1).ne_zero`. Rewrite using `[Pi.mulSingle_eq_of_ne hσ]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [vact, LinearMap.smul_apply, AlgHom.toLinearMap_apply, map_smul, smul_eq_mul]`. Use `DifferentiableOn.mul (vhol_diff_prod _ (fun σ (g : Fin n → Fin n → ℂ) => ((Pi.mulSingle τ (Matrix.of g) : ι → Matrix (Fin n) (Fin n) ℂ) σ).det ^ (-(lam σ).detShift)) fun σ => ?_) (vhol_diff_fock _ (fun σ => vhol_diff_inv _ (h1 σ) (h0 σ)) x y)` and prove the remaining obligations. Conclude with `(vhol_diff_det _ (h1 σ)).zpow (Or.inl (h0 σ))`. Take `⟨h2, h3⟩` from `vhol_lo_inv g hg.1 hl`. Take `⟨G, rfl⟩` from `hg.1`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Use `vhol_ext lam τ G 1 (by` as an intermediate fact. Rewrite using `[one_smul]`. Use `(factSqHighestWeight ℂ n (lam τ)).2 _ ?_ ?_` and prove the remaining obligations. Simplify `h2` using `[inside₂]`. Simplify `h3)` using `[inside₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Set `t : Fin n → ℂˣ` to `fun a => Units.mk0 (Complex.exp ((θ a : ℂ) * Complex.I)) (Complex.exp_ne_zero _)`. Establish `e1 : ((diagGL ℂ n t : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) = Matrix.diagonal fun a => Complex.exp ((θ a : ℂ) * Complex.I)` using `rfl`. Establish `e2 : inside₂ ℂ n (diagGL ℂ n t) = diagGL ℂ n t⁻¹`. Apply `Units.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `Matrix.diagonal_transpose _`. Use `show vact lam (Pi.mulSingle τ _) _ = _`. Rewrite using `[← e1]`. Apply `vhol_ext` to reduce the goal to its premises. Rewrite using `[e2, (factSqHighestWeight ℂ n (lam τ)).1]`.
-
-Use `congr 1`. Rewrite using `[Complex.ofReal_sum, Finset.sum_mul, Complex.exp_sum, Units.coe_prod]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [t, Pi.inv_apply, Units.val_zpow_eq_zpow_val, Units.val_inv_eq_inv_val, Units.val_mk0, ← Complex.exp_neg, ← Complex.exp_int_mul]`. Use `congr 1`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `Finset.prod_ne_zero_iff.2 fun τ _ h => Formalism.GradedWeylDivisibility.hwNe ℂ n n le_rfl (lam τ).natW ?_` and prove the remaining obligations. Conclude with `MvPolynomial.rename_injective (fun v : Fin n × Fin n => (τ, v)) (fun _ _ h => congrArg Prod.snd h) (h.trans (map_zero _).symm)`. Conclude with `Submodule.subset_span ⟨fun τ => extremal ℂ n (lam τ), fun τ => Formalism.GradedWeylDivisibility.hwMem ℂ n n le_rfl _ (natW_antitone (lam τ)), rfl⟩`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem vact_isHolFam_isBotFam : ∀ (ι : Type) [Fintype ι] (n : ℕ) (lam : ι → DomWeight n),
     IsHolFam (fun _ => allPos n) fockL (vact lam) ∧

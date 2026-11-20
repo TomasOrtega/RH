@@ -20,7 +20,7 @@ namespace GlobalTheory.ProjSpace
 variable {R : Type} [CommRing R] {M : ℕ} {Y Z : Scheme.{0}} {L L' : LB Y}
 
 /- English proof (translation)
-Establish `h : W ≤ Y.basicOpen (a.f k)` using `(le_inf ha hk).trans (nonzeroLocus_inf_chart a k).le`. Use `(Y.toRingedSpace.isUnit_res_basicOpen (a.f k)).map (resG Y h)` as an intermediate fact. Conclude with `(congrArg IsUnit (resG_resG (Y.basicOpen_le (a.f k)) h (a.f k))).mp this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_resG_sec (a : L.Sec) (k : L.ι) {W : Y.Opens} (ha : W ≤ nonzeroLocus a) (hk : W ≤ L.U k) :
     IsUnit (resG Y hk (a.f k)) := by
@@ -29,7 +29,7 @@ theorem isUnit_resG_sec (a : L.Sec) (k : L.ι) {W : Y.Opens} (ha : W ≤ nonzero
   exact (congrArg IsUnit (resG_resG (Y.basicOpen_le (a.f k)) h (a.f k))).mp this
 
 /- English proof (translation)
-Use `Y.basicOpen_of_isUnit h` as an intermediate fact. Rewrite `this` using `[Scheme.basicOpen_res]`. Conclude with `(this.ge.trans inf_le_right).trans (basicOpen_le_nonzeroLocus a k)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_nonzeroLocus_of_isUnit (a : L.Sec) (k : L.ι) {W : Y.Opens} (hk : W ≤ L.U k)
     (h : IsUnit (resG Y hk (a.f k))) : W ≤ nonzeroLocus a := by
@@ -38,7 +38,7 @@ theorem le_nonzeroLocus_of_isUnit (a : L.Sec) (k : L.ι) {W : Y.Opens} (hk : W �
   exact (this.ge.trans inf_le_right).trans (basicOpen_le_nonzeroLocus a k)
 
 /- English proof (translation)
-The claim follows from `ext_germ fun y hy => by obtain ⟨k, hk⟩ := exists_chart_of_mem_nonzeroLocus (ha hy) have hm : y ∈ W ⊓ L.U k := ⟨hy, hk⟩ have := congrArg (Y.presheaf.germ (W ⊓ L.U k) y hm).hom (h k) rwa [germ_resG, germ_resG] at this`.
+A detailed English derivation is pending.
 -/
 theorem ext_charts (a : L.Sec) {W : Y.Opens} (ha : W ≤ nonzeroLocus a) {r r' : Γ(Y, W)}
     (h : ∀ k, resG Y (inf_le_left : W ⊓ L.U k ≤ W) r = resG Y inf_le_left r') : r = r' :=
@@ -49,11 +49,11 @@ theorem ext_charts (a : L.Sec) {W : Y.Opens} (ha : W ≤ nonzeroLocus a) {r r' :
     rwa [germ_resG, germ_resG] at this
 
 /- English proof (translation)
-Establish `loc : ∀ k, ∃ c : Γ(Y, nonzeroLocus a ⊓ L.U k), resG Y inf_le_right (b.f k) = c * resG Y inf_le_right (a.f k)` using `fun k => ((isUnit_resG_sec a k inf_le_left inf_le_right).dvd).imp fun c hc => hc.trans (mul_comm _ _)`. Use `choose c hc using loc`. Take `⟨r, hr, -⟩` from `Y.sheaf.existsUnique_gluing' (fun k => nonzeroLocus a ⊓ L.U k) (nonzeroLocus a) (fun _ => homOfLE inf_le_left) (fun y hy => (exists_chart_of_mem_nonzeroLocus hy).elim fun k hk => Opens.mem_iSup.2 ⟨k, hy, hk⟩) c (fun k l => by`. Establish `hk : nonzeroLocus a ⊓ L.U k ⊓ (nonzeroLocus a ⊓ L.U l) ≤ L.U k` using `inf_le_left.trans inf_le_right`. Establish `hl : nonzeroLocus a ⊓ L.U k ⊓ (nonzeroLocus a ⊓ L.U l) ≤ L.U l` using `inf_le_right.trans inf_le_right`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁` using `congrArg (resG Y (inf_le_left : _ ⊓ (nonzeroLocus a ⊓ L.U l) ≤ _)) (hc k)`. Establish `e₂` using `congrArg (resG Y (inf_le_right : (nonzeroLocus a ⊓ L.U k) ⊓ _ ≤ _)) (hc l)`. Rewrite `e₁`, `e₂` using `[map_mul, resG_resG, resG_resG]`. Use `(isUnit_resG_sec a k (inf_le_left.trans inf_le_left) hk).mul_right_cancel (e₁.symm.trans ?_)` and prove the remaining obligations. Rewrite using `[sec_compat b k l hk hl, sec_compat a k l hk hl, e₂]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `mul_left_comm _ _ _)`. Conclude with `⟨r, fun k => (hc k).trans (congrArg (· * _) (hr k).symm)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_secRatio (a b : L.Sec) : ∃ r : Γ(Y, nonzeroLocus a), ∀ k,
     resG Y (inf_le_right : nonzeroLocus a ⊓ L.U k ≤ L.U k) (b.f k) =
@@ -79,7 +79,7 @@ theorem exists_secRatio (a b : L.Sec) : ∃ r : Γ(Y, nonzeroLocus a), ∀ k,
 def secRatio (a b : L.Sec) : Γ(Y, nonzeroLocus a) := (exists_secRatio a b).choose
 
 /- English proof (translation)
-The claim follows from `(exists_secRatio a b).choose_spec k`.
+A detailed English derivation is pending.
 -/
 theorem secRatio_spec (a b : L.Sec) (k : L.ι) :
     resG Y (inf_le_right : nonzeroLocus a ⊓ L.U k ≤ L.U k) (b.f k) =
@@ -87,7 +87,7 @@ theorem secRatio_spec (a b : L.Sec) (k : L.ι) :
   (exists_secRatio a b).choose_spec k
 
 /- English proof (translation)
-Use `congrArg (resG Y (le_inf ha hk)) (secRatio_spec a b k)` as an intermediate fact. Rewrite `this` using `[map_mul, resG_resG, resG_resG, resG_resG]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem secRatio_on (a b : L.Sec) (k : L.ι) {W : Y.Opens} (ha : W ≤ nonzeroLocus a) (hk : W ≤ L.U k) :
     resG Y hk (b.f k) = resG Y ha (secRatio a b) * resG Y hk (a.f k) := by
@@ -95,7 +95,7 @@ theorem secRatio_on (a b : L.Sec) (k : L.ι) {W : Y.Opens} (ha : W ≤ nonzeroLo
   rwa [map_mul, resG_resG, resG_resG, resG_resG] at this
 
 /- English proof (translation)
-The claim follows from `ext_charts a ha fun k => by refine (isUnit_resG_sec a k (inf_le_left.trans ha) inf_le_right).mul_right_cancel ?_ rw [← h k, resG_resG] exact secRatio_on a b k _ _`.
+A detailed English derivation is pending.
 -/
 theorem eq_resG_secRatio (a b : L.Sec) {W : Y.Opens} (ha : W ≤ nonzeroLocus a) {r : Γ(Y, W)}
     (h : ∀ k, resG Y (inf_le_right : W ⊓ L.U k ≤ L.U k) (b.f k) =
@@ -106,7 +106,7 @@ theorem eq_resG_secRatio (a b : L.Sec) {W : Y.Opens} (ha : W ≤ nonzeroLocus a)
     exact secRatio_on a b k _ _
 
 /- English proof (translation)
-The claim follows from `(eq_resG_secRatio a b le_rfl h).trans (resG_self _ _)`.
+A detailed English derivation is pending.
 -/
 theorem eq_secRatio (a b : L.Sec) {r : Γ(Y, nonzeroLocus a)}
     (h : ∀ k, resG Y (inf_le_right : nonzeroLocus a ⊓ L.U k ≤ L.U k) (b.f k) =
@@ -114,13 +114,13 @@ theorem eq_secRatio (a b : L.Sec) {r : Γ(Y, nonzeroLocus a)}
   (eq_resG_secRatio a b le_rfl h).trans (resG_self _ _)
 
 /- English proof (translation)
-The claim follows from `(eq_secRatio a a fun _ => by rw [map_one, one_mul]).symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem secRatio_self (a : L.Sec) : secRatio a a = 1 :=
   (eq_secRatio a a fun _ => by rw [map_one, one_mul]).symm
 
 /- English proof (translation)
-The claim follows from `eq_resG_secRatio a c ha fun k => by rw [map_mul, resG_resG, resG_resG, secRatio_on b c k (inf_le_left.trans hb), secRatio_on a b k (inf_le_left.trans ha)] ring`.
+A detailed English derivation is pending.
 -/
 theorem secRatio_mul_secRatio (a b c : L.Sec) {W : Y.Opens} (ha : W ≤ nonzeroLocus a)
     (hb : W ≤ nonzeroLocus b) :
@@ -131,11 +131,11 @@ theorem secRatio_mul_secRatio (a b c : L.Sec) {W : Y.Opens} (ha : W ≤ nonzeroL
     ring
 
 /- English proof (translation)
-Establish `key : ∀ y (hy : y ∈ nonzeroLocus a), y ∈ Y.basicOpen (secRatio a b) ↔ y ∈ nonzeroLocus b`. Introduce `y hy`. Take `⟨k, hk⟩` from `exists_chart_of_mem_nonzeroLocus hy`. Establish `hm : y ∈ nonzeroLocus a ⊓ L.U k` using `⟨hy, hk⟩`. Establish `e` using `congrArg (Y.presheaf.germ _ y hm).hom (secRatio_spec a b k)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[map_mul, germ_resG, germ_resG, germ_resG]`. Establish `hu` using `(Y.mem_basicOpen _ y hk).1 ((mem_nonzeroLocus_iff a k hk).1 hy)`. Rewrite using `[mem_nonzeroLocus_iff b k hk, Y.mem_basicOpen _ y hk, Y.mem_basicOpen _ y hy]`. Use `Iff.trans ?_ (iff_of_eq (congrArg IsUnit e)).symm` and prove the remaining obligations. Rewrite using `[IsUnit.mul_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h => ⟨h, hu⟩, fun h => h.1⟩`. Use extensionality with `y`. Conclude with `⟨fun h => ⟨Y.basicOpen_le _ h, (key y (Y.basicOpen_le _ h)).1 h⟩, fun h => (key y h.1).2 h.2⟩`.
+Supply the required witnesses or components. By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem basicOpen_secRatio (a b : L.Sec) :
     Y.basicOpen (secRatio a b) = nonzeroLocus a ⊓ nonzeroLocus b := by
@@ -154,7 +154,7 @@ theorem basicOpen_secRatio (a b : L.Sec) :
   exact ⟨fun h => ⟨Y.basicOpen_le _ h, (key y (Y.basicOpen_le _ h)).1 h⟩, fun h => (key y h.1).2 h.2⟩
 
 /- English proof (translation)
-The claim follows from `hs self _ := secRatio_self _ mul _ _ _ := secRatio_mul_secRatio _ _ _ _ _ basicOpen_le _ _ := (basicOpen_secRatio _ _).le.trans inf_le_right`.
+A detailed English derivation is pending.
 -/
 theorem isCoordFamily_secRatio {s : Fin (M + 1) → L.Sec} (hs : ⨆ i, nonzeroLocus (s i) = ⊤) :
     IsCoordFamily (fun i => nonzeroLocus (s i)) (fun i j => secRatio (s i) (s j)) where
@@ -171,19 +171,19 @@ section
 variable (f : Y ⟶ Sp R) (s : Fin (M + 1) → L.Sec) (hs : ⨆ i, nonzeroLocus (s i) = ⊤)
 
 /- English proof (translation)
-The claim follows from `(isCoordFamily_secRatio hs).toHom_str f`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem toProj_str : toProj f s hs ≫ PSpace.str R M = f :=
   (isCoordFamily_secRatio hs).toHom_str f
 
 /- English proof (translation)
-The claim follows from `(isCoordFamily_secRatio hs).toHom_preimage f i`.
+A detailed English derivation is pending.
 -/
 theorem toProj_preimage_chart (i : Fin (M + 1)) : toProj f s hs ⁻¹ᵁ chart R M i = nonzeroLocus (s i) :=
   (isCoordFamily_secRatio hs).toHom_preimage f i
 
 /- English proof (translation)
-The claim follows from `(isCoordFamily_secRatio hs).pullRatio_toHom f i j`.
+A detailed English derivation is pending.
 -/
 theorem pullRatio_toProj (i j : Fin (M + 1)) :
     pullRatio (toProj f s hs) (nonzeroLocus (s i)) i (toProj_preimage_chart f s hs i).ge j =
@@ -191,7 +191,7 @@ theorem pullRatio_toProj (i j : Fin (M + 1)) :
   (isCoordFamily_secRatio hs).pullRatio_toHom f i j
 
 /- English proof (translation)
-Rewrite using `[← pullRatio_toProj f s hs, resG_pullRatio]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pullRatio_toProj_on (i j : Fin (M + 1)) {W : Y.Opens} (h : W ≤ toProj f s hs ⁻¹ᵁ chart R M i) :
     pullRatio (toProj f s hs) W i h j =
@@ -199,7 +199,7 @@ theorem pullRatio_toProj_on (i j : Fin (M + 1)) {W : Y.Opens} (h : W ≤ toProj 
   rw [← pullRatio_toProj f s hs, resG_pullRatio]
 
 /- English proof (translation)
-Rewrite using `[pullRatio_toProj_on]`. Conclude with `secRatio_on _ _ k _ hk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_eq_pullRatio_toProj_mul (i j : Fin (M + 1)) (k : L.ι) {W : Y.Opens}
     (h : W ≤ toProj f s hs ⁻¹ᵁ chart R M i) (hk : W ≤ L.U k) :
@@ -210,11 +210,11 @@ theorem sec_eq_pullRatio_toProj_mul (i j : Fin (M + 1)) (k : L.ι) {W : Y.Opens}
 variable {f s}
 
 /- English proof (translation)
-Use `hom_ext (hφ.trans (toProj_str f s hs).symm) fun y => ?_` and prove the remaining obligations. Take `⟨W, hy, k, hk, i, hi, u, e⟩` from `H y`. Establish `hu : resG Y hk ((s i).f k) = u` using `by rw [e i, pullRatio_self, mul_one]`. Establish `hyi : y ∈ nonzeroLocus (s i)`. Take `⟨j, hj⟩` from `Opens.mem_iSup.1 (hs.ge (Set.mem_univ y))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `(Y.mem_basicOpen _ y (hk hy)).1 ((mem_nonzeroLocus_iff _ k (hk hy)).1 hj)`. Establish `h2` using `congrArg (Y.presheaf.germ W y hy).hom (e j)`. Rewrite `h2` using `[← hu, map_mul, germ_resG, germ_resG]`. Conclude with `(mem_nonzeroLocus_iff _ k (hk hy)).2 ((Y.mem_basicOpen _ y (hk hy)).2 (isUnit_of_mul_isUnit_left ((congrArg IsUnit h2).mp h1)))`. Establish `h₂ : W ⊓ nonzeroLocus (s i) ≤ toProj f s hs ⁻¹ᵁ chart R M i` using `inf_le_right.trans (toProj_preimage_chart f s hs i).ge`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨W ⊓ nonzeroLocus (s i), ⟨hy, hyi⟩, i, inf_le_left.trans hi, h₂, fun j => ?_⟩` and prove the remaining obligations. Use `(isUnit_resG_sec (s i) k inf_le_right (inf_le_left.trans hk)).mul_right_cancel ?_` and prove the remaining obligations. Establish `e'` using `congrArg (resG Y (inf_le_left : W ⊓ nonzeroLocus (s i) ≤ W)) (e j)`. Rewrite `e'` using `[← hu, map_mul, resG_resG, resG_resG, resG_pullRatio]`. Rewrite using `[← sec_eq_pullRatio_toProj_mul f s hs i j k h₂, e', mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_toProj_of_locally {φ : Y ⟶ PSpace R M} (hφ : φ ≫ PSpace.str R M = f)
     (H : ∀ y : Y, ∃ (W : Y.Opens) (_ : y ∈ W) (k : L.ι) (hk : W ≤ L.U k) (i : Fin (M + 1))
@@ -239,7 +239,7 @@ theorem eq_toProj_of_locally {φ : Y ⟶ PSpace R M} (hφ : φ ≫ PSpace.str R 
   rw [← sec_eq_pullRatio_toProj_mul f s hs i j k h₂, e', mul_comm]
 
 /- English proof (translation)
-Use `hom_ext (hφ.trans (toProj_str f s hs).symm) fun y => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (hs.ge (Set.mem_univ y))`. Conclude with `⟨_, hi, i, h i, (toProj_preimage_chart f s hs i).ge, fun j => (H i j).trans (pullRatio_toProj f s hs i j).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem eq_toProj_of_pullRatio {φ : Y ⟶ PSpace R M} (hφ : φ ≫ PSpace.str R M = f)
     (h : ∀ i, nonzeroLocus (s i) ≤ φ ⁻¹ᵁ chart R M i)
@@ -253,7 +253,7 @@ theorem eq_toProj_of_pullRatio {φ : Y ⟶ PSpace R M} (hφ : φ ≫ PSpace.str 
 end
 
 /- English proof (translation)
-The claim follows from `resG_resG _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem resG_secPull_coord (φ : Y ⟶ PSpace R M) (j : Fin (M + 1)) (i : PUnit → Fin (M + 1)) {W : Y.Opens}
     (h : W ≤ ((O1 R M).pull φ).U i) :
@@ -262,7 +262,7 @@ theorem resG_secPull_coord (φ : Y ⟶ PSpace R M) (j : Fin (M + 1)) (i : PUnit 
   resG_resG _ _ _
 
 /- English proof (translation)
-Establish `hW : W ≤ φ ⁻¹ᵁ (chart R M (i ⟨⟩) ⊓ chart R M (j ⟨⟩))` using `le_inf (hi.trans (pull_U (O1 R M) φ i).le) (hj.trans (pull_U (O1 R M) φ j).le)`. Use `(congrArg (fun u => resG Y (le_inf hi hj) (Units.val u)) (pull_g (O1 R M) φ i j)).trans ?_` and prove the remaining obligations. Conclude with `(resG_resG _ _ _).trans (appLE_ratioOn inf_le_left hW)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem restrict_pullback_O1_transition (φ : Y ⟶ PSpace R M) (i j : PUnit → Fin (M + 1)) {W : Y.Opens}
     (hi : W ≤ ((O1 R M).pull φ).U i) (hj : W ≤ ((O1 R M).pull φ).U j) :
@@ -274,7 +274,7 @@ theorem restrict_pullback_O1_transition (φ : Y ⟶ PSpace R M) (i j : PUnit →
   exact (resG_resG _ _ _).trans (appLE_ratioOn inf_le_left hW)
 
 /- English proof (translation)
-Simplify using `only [nonzeroLocus_secPull]`. Rewrite using `[← Scheme.Hom.preimage_iSup, hs]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem iSup_nonzeroLocus_secPull {s : Fin (M + 1) → L.Sec} (hs : ⨆ i, nonzeroLocus (s i) = ⊤) (g : Z ⟶ Y) :
     ⨆ i, nonzeroLocus (secPull (s i) g) = ⊤ := by
@@ -287,7 +287,7 @@ section
 variable (f : Y ⟶ Sp R) (s : Fin (M + 1) → L.Sec) (hs : ⨆ i, nonzeroLocus (s i) = ⊤)
 
 /- English proof (translation)
-The claim follows from `(pull_U (O1 R M) _ i).trans (toProj_preimage_chart f s hs _)`.
+A detailed English derivation is pending.
 -/
 theorem pullback_O1_toProj_chart (i : PUnit → Fin (M + 1)) :
     ((O1 R M).pull (toProj f s hs)).U i = nonzeroLocus (s (i ⟨⟩)) :=
@@ -305,7 +305,7 @@ theorem val_toProjIso (k : L.ι) (i : PUnit → Fin (M + 1)) :
       resG Y inf_le_left ((s (i ⟨⟩)).f k) := rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨k, i⟩`. Conclude with `(sec_eq_pullRatio_toProj_mul f s hs (i ⟨⟩) j k _ inf_le_left).trans ((mul_comm _ _).trans (congrArg (_ * ·) (resG_secPull_coord (toProj f s hs) j i inf_le_right).symm))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem secMaps_toProjIso (j : Fin (M + 1)) :
     SecMaps (toProjIso f s hs) (secPull (coord R M j) (toProj f s hs)) (s j) := by
@@ -314,11 +314,11 @@ theorem secMaps_toProjIso (j : Fin (M + 1)) :
     (congrArg (_ * ·) (resG_secPull_coord (toProj f s hs) j i inf_le_right).symm))
 
 /- English proof (translation)
-Introduce and unpack `⟨p, q⟩ ⟨p', q'⟩`. Set `A` to `(O1 R M).pull (toProj f s hs)`. Establish `hp : L.U p ⊓ A.U q ⊓ (L.U p' ⊓ A.U q') ≤ L.U p` using `inf_le_left.trans inf_le_left`. Establish `hq : L.U p ⊓ A.U q ⊓ (L.U p' ⊓ A.U q') ≤ A.U q` using `inf_le_left.trans inf_le_right`. Establish `hp' : L.U p ⊓ A.U q ⊓ (L.U p' ⊓ A.U q') ≤ L.U p'` using `inf_le_right.trans inf_le_left`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq' : L.U p ⊓ A.U q ⊓ (L.U p' ⊓ A.U q') ≤ A.U q'` using `inf_le_right.trans inf_le_right`. Establish `key : res (le_inf hp hq) (@id (Γ(Y, L.U p ⊓ A.U q)ˣ) ((toProjIso f s hs).s (p, q))) * res (le_inf hq hq') (A.g q q') = res (le_inf hp hp') (L.g p p') * res (le_inf hp' hq') (@id (Γ(Y, L.U p' ⊓ A.U q')ˣ) ((toProjIso f s hs).s (p', q')))`. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `resG Y (le_inf hp hq) (resG Y inf_le_left ((s (q ⟨⟩)).f p)) * resG Y (le_inf hq hq') (A.g q q').val = resG Y (le_inf hp hp') (L.g p p').val * resG Y (le_inf hp' hq') (resG Y inf_le_left ((s (q' ⟨⟩)).f p'))`. Rewrite using `[resG_resG, resG_resG, ← sec_compat _ p p' hp hp']`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (_ * ·) (restrict_pullback_O1_transition (toProj f s hs) q q' hq hq')).trans ((mul_comm _ _).trans (sec_eq_pullRatio_toProj_mul f s hs (q ⟨⟩) (q' ⟨⟩) p _ hp).symm)`. Express the relevant statement in the definitionally equal form `res (le_inf hp hq) (@id (Γ(Y, L.U p ⊓ A.U q)ˣ) ((toProjIso f s hs).s (p, q))) = res (le_inf hp hp') (L.g p p') * (res (le_inf hq hq') (A.g q q'))⁻¹ * res (le_inf hp' hq') (@id (Γ(Y, L.U p' ⊓ A.U q')ˣ) ((toProjIso f s hs).s (p', q')))`. Rewrite using `[mul_right_comm, ← key, mul_inv_cancel_right]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toProjIso_isGen : (toProjIso f s hs).IsGen := by
   rintro ⟨p, q⟩ ⟨p', q'⟩
@@ -342,15 +342,15 @@ theorem toProjIso_isGen : (toProjIso f s hs).IsGen := by
   rw [mul_right_comm, ← key, mul_inv_cancel_right]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨toProjIso f s hs, toProjIso_isGen f s hs⟩`.
+Supply the required witnesses or components.
 -/
 theorem lbIso_pullback_O1_toProj : LBIso ((O1 R M).pull (toProj f s hs)) L :=
   ⟨toProjIso f s hs, toProjIso_isGen f s hs⟩
 
 /- English proof (translation)
-Take `⟨w⟩` from `w`. Use `congrArg LB.Gen.mk (funext ?_)` and prove the remaining obligations. Introduce and unpack `⟨k, i⟩`. Establish `e` using `hw (i ⟨⟩) (k, i)`. Establish `e'` using `(resG_secPull_coord (toProj f s hs) (i ⟨⟩) i (inf_le_right : L.U k ⊓ _ ≤ _)).trans pullRatio_self`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Units.ext (e.trans ((congrArg (_ * ·) e').trans (mul_one _))).symm`.
+A detailed English derivation is pending.
 -/
 theorem eq_toProjIso {w : LB.Iso ((O1 R M).pull (toProj f s hs)) L}
     (hw : ∀ j, SecMaps w (secPull (coord R M j) (toProj f s hs)) (s j)) : w = toProjIso f s hs := by
@@ -367,13 +367,13 @@ variable {f s}
 include hs in
 
 /- English proof (translation)
-The claim follows from `(Opens.mem_iSup.1 (hs.ge (Set.mem_univ y))).elim fun _ h => exists_chart_of_mem_nonzeroLocus h`.
+A detailed English derivation is pending.
 -/
 theorem exists_chart_of_iSup_nonzeroLocus (y : Y) : ∃ k, y ∈ L.U k :=
   (Opens.mem_iSup.1 (hs.ge (Set.mem_univ y))).elim fun _ h => exists_chart_of_mem_nonzeroLocus h
 
 /- English proof (translation)
-Use `eq_toProj_of_locally hs hφ fun y => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart_of_iSup_nonzeroLocus hs y`. Take `⟨i, hi⟩` from `exists_mem_chart R M (φ y)`. Establish `hi' : y ∈ ((O1 R M).pull φ).U fun _ => i` using `(pull_U (O1 R M) φ fun _ => i).ge hi`. Conclude with `⟨L.U k ⊓ ((O1 R M).pull φ).U fun _ => i, ⟨hk, hi'⟩, k, inf_le_left, i, _, _, fun j => (hw j (k, fun _ => i)).trans (congrArg (_ * ·) (resG_secPull_coord φ j (fun _ => i) inf_le_right))⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem eq_toProj_of_secMaps {φ : Y ⟶ PSpace R M} (hφ : φ ≫ PSpace.str R M = f)
     {w : LB.Iso ((O1 R M).pull φ) L} (hw : ∀ j, SecMaps w (secPull (coord R M j) φ) (s j)) :
@@ -392,11 +392,11 @@ section
 variable {f : Y ⟶ Sp R} {s : Fin (M + 1) → L.Sec} (hs : ⨆ i, nonzeroLocus (s i) = ⊤)
 
 /- English proof (translation)
-Use `(eq_toProj_of_locally ht (by rw [Category.assoc, toProj_str]) fun z => ?_).symm` and prove the remaining obligations. Take `⟨W, hz, k, hk, l, hl, u, e⟩` from `H z`. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (hs.ge (Set.mem_univ (g z)))`. Establish `h₁ : nonzeroLocus (s i) ⊓ L.U k ≤ toProj f s hs ⁻¹ᵁ chart R M i` using `inf_le_left.trans (toProj_preimage_chart f s hs i).ge`. Establish `h₂ : W ⊓ g ⁻¹ᵁ nonzeroLocus (s i) ≤ g ⁻¹ᵁ (nonzeroLocus (s i) ⊓ L.U k)` using `le_inf inf_le_right (inf_le_left.trans hk)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨W ⊓ g ⁻¹ᵁ nonzeroLocus (s i), ⟨hz, hi⟩, l, inf_le_left.trans hl, i, h₂.trans (g.preimage_mono h₁), resG Z inf_le_left u * (g.appLE _ _ (inf_le_left.trans hk)).hom ((s i).f k), fun j => ?_⟩` and prove the remaining obligations. Establish `e₁` using `congrArg (resG Z (inf_le_left : W ⊓ g ⁻¹ᵁ nonzeroLocus (s i) ≤ W)) (e j)`. Establish `e₂` using `congrArg (g.appLE _ _ h₂).hom (sec_eq_pullRatio_toProj_mul f s hs i j k h₁ inf_le_right)`. Rewrite `e₁` using `[map_mul, resG_resG, resG_appLE]`. Rewrite `e₂` using `[map_mul, appLE_resG, appLE_resG, appLE_pullRatio]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e₁, e₂, mul_assoc, mul_comm (pullRatio _ _ _ _ _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toProj_eq_comp_of_locally (g : Z ⟶ Y) {B : LB Z} {t : Fin (M + 1) → B.Sec}
     (ht : ⨆ i, nonzeroLocus (t i) = ⊤)
@@ -420,7 +420,7 @@ theorem toProj_eq_comp_of_locally (g : Z ⟶ Y) {B : LB Z} {t : Fin (M + 1) → 
   rw [e₁, e₂, mul_assoc, mul_comm (pullRatio _ _ _ _ _)]
 
 /- English proof (translation)
-The claim follows from `toProj_eq_comp_of_locally (f := f) hs (𝟙 Y) ht H`.
+A detailed English derivation is pending.
 -/
 theorem toProj_eq_of_locally {t : Fin (M + 1) → L'.Sec} (ht : ⨆ i, nonzeroLocus (t i) = ⊤)
     (H : ∀ y : Y, ∃ (W : Y.Opens) (_ : y ∈ W) (k : L.ι) (hk : W ≤ L.U k) (l : L'.ι) (hl : W ≤ L'.U l)
@@ -431,13 +431,13 @@ theorem toProj_eq_of_locally {t : Fin (M + 1) → L'.Sec} (ht : ⨆ i, nonzeroLo
 include hs in
 
 /- English proof (translation)
-Simplify using `only [nonzeroLocus_secScale, Y.basicOpen_of_isUnit u.isUnit, top_inf_eq, hs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem iSup_nonzeroLocus_secScale (u : Γ(Y, ⊤)ˣ) : ⨆ i, nonzeroLocus (secScale u.val (s i)) = ⊤ := by
   simp only [nonzeroLocus_secScale, Y.basicOpen_of_isUnit u.isUnit, top_inf_eq, hs]
 
 /- English proof (translation)
-The claim follows from `toProj_eq_of_locally hs _ fun y => (exists_chart_of_iSup_nonzeroLocus hs y).elim fun k hk => ⟨L.U k, hk, k, le_rfl, k, le_rfl, resG Y le_top u.val, fun _ => (resG_self _ _).trans (congrArg (_ * ·) (resG_self _ _).symm)⟩`.
+A detailed English derivation is pending.
 -/
 theorem toProj_secScale (u : Γ(Y, ⊤)ˣ) :
     toProj f (fun i => secScale u.val (s i)) (iSup_nonzeroLocus_secScale hs u) = toProj f s hs :=
@@ -446,7 +446,7 @@ theorem toProj_secScale (u : Γ(Y, ⊤)ˣ) :
       (resG_self _ _).trans (congrArg (_ * ·) (resG_self _ _).symm)⟩
 
 /- English proof (translation)
-Use `toProj_eq_of_locally hs ht fun y => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart_of_iSup_nonzeroLocus hs y`. Take `⟨l, hl⟩` from `exists_chart_of_iSup_nonzeroLocus ht y`. Conclude with `⟨L'.U l ⊓ L.U k, ⟨hl, hk⟩, k, inf_le_right, l, inf_le_left, _, fun j => hw j (l, k)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem toProj_eq_of_secMaps {t : Fin (M + 1) → L'.Sec} (ht : ⨆ i, nonzeroLocus (t i) = ⊤)
     {w : LB.Iso L L'} (hw : ∀ j, SecMaps w (s j) (t j)) : toProj f t ht = toProj f s hs := by
@@ -458,14 +458,14 @@ theorem toProj_eq_of_secMaps {t : Fin (M + 1) → L'.Sec} (ht : ⨆ i, nonzeroLo
 include hs in
 
 /- English proof (translation)
-The claim follows from `(iSup_congr fun i => ((hw i).nonzeroLocus_eq hL hL').symm).trans hs`.
+A detailed English derivation is pending.
 -/
 theorem iSup_nonzeroLocus_of_secMaps (hL : L.IsLB) (hL' : L'.IsLB) {t : Fin (M + 1) → L'.Sec}
     {w : LB.Iso L L'} (hw : ∀ j, SecMaps w (s j) (t j)) : ⨆ i, nonzeroLocus (t i) = ⊤ :=
   (iSup_congr fun i => ((hw i).nonzeroLocus_eq hL hL').symm).trans hs
 
 /- English proof (translation)
-The claim follows from `toProj_eq_comp_of_locally hs g _ fun z => (exists_chart_of_iSup_nonzeroLocus hs (g z)).elim fun k hk => ⟨g ⁻¹ᵁ L.U k, hk, k, le_rfl, fun _ => k, (pull_U L g fun _ => k).ge, 1, fun _ => (resG_resG _ _ _).trans (one_mul _).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem toProj_secPull (g : Z ⟶ Y) :
     toProj (g ≫ f) (fun i => secPull (s i) g) (iSup_nonzeroLocus_secPull hs g) = g ≫ toProj f s hs :=
@@ -474,7 +474,7 @@ theorem toProj_secPull (g : Z ⟶ Y) :
       (resG_resG _ _ _).trans (one_mul _).symm⟩
 
 /- English proof (translation)
-The claim follows from `(toProj_eq_of_secMaps (iSup_nonzeroLocus_secPull hs g) ht hw).trans (toProj_secPull hs g)`.
+A detailed English derivation is pending.
 -/
 theorem toProj_eq_comp_of_secMaps (g : Z ⟶ Y) {B : LB Z} {t : Fin (M + 1) → B.Sec}
     (ht : ⨆ i, nonzeroLocus (t i) = ⊤) {w : LB.Iso (L.pull g) B}
@@ -486,7 +486,7 @@ end
 variable (R M) in
 
 /- English proof (translation)
-The claim follows from `(eq_toProj_of_locally _ (Category.id_comp _) fun y => (exists_mem_chart R M y).elim fun i hi => ⟨chart R M i, hi, i, le_rfl, i, le_rfl, 1, fun _ => (one_mul _).symm⟩).symm`.
+A detailed English derivation is pending.
 -/
 theorem toProj_coord :
     toProj (PSpace.str R M) (coord R M) (iSup_nonzeroLocus_coord R M) = 𝟙 (PSpace R M) :=
@@ -494,7 +494,7 @@ theorem toProj_coord :
     ⟨chart R M i, hi, i, le_rfl, i, le_rfl, 1, fun _ => (one_mul _).symm⟩).symm
 
 /- English proof (translation)
-Rewrite using `[toProj_secPull (iSup_nonzeroLocus_coord R M), toProj_coord, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toProj_secPull_coord (φ : Y ⟶ PSpace R M) :
     toProj (φ ≫ PSpace.str R M) (fun i => secPull (coord R M i) φ)
@@ -502,7 +502,7 @@ theorem toProj_secPull_coord (φ : Y ⟶ PSpace R M) :
   rw [toProj_secPull (iSup_nonzeroLocus_coord R M), toProj_coord, Category.comp_id]
 
 /- English proof (translation)
-Establish `e : pullRatio (baseChange M c) (chart R' M i) i (baseChange_preimage_chart M c i).ge j = ratio R' M i j` using `congrArg (resG _ (baseChange_preimage_chart M c i).ge) (baseChange_app_ratioOn c le_rfl j)`. Rewrite using `[← appLE_pullRatio (hi := (baseChange_preimage_chart M c i).ge) φ h', e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pullRatio_comp_baseChange {R' : Type} [CommRing R'] (c : R →+* R') (φ : Y ⟶ PSpace R' M)
     {W : Y.Opens} {i : Fin (M + 1)} (h : W ≤ (φ ≫ baseChange M c) ⁻¹ᵁ chart R M i)
@@ -515,7 +515,7 @@ theorem pullRatio_comp_baseChange {R' : Type} [CommRing R'] (c : R →+* R') (φ
   rfl
 
 /- English proof (translation)
-Establish `h : ∀ i, nonzeroLocus (s i) ≤ (toProj f s hs ≫ baseChange M c) ⁻¹ᵁ chart R M i` using `fun i => by`. Rewrite using `[Scheme.Hom.comp_preimage, baseChange_preimage_chart, toProj_preimage_chart]`. Use `eq_toProj_of_pullRatio hs ?_ h fun i j => ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, baseChange_str, toProj_str_assoc]`. Conclude with `(pullRatio_comp_baseChange c _ _ _ j).trans (pullRatio_toProj f s hs i j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toProj_baseChange {R' : Type} [CommRing R'] (c : R →+* R') (f : Y ⟶ Sp R')
     (s : Fin (M + 1) → L.Sec) (hs : ⨆ i, nonzeroLocus (s i) = ⊤) :
@@ -527,7 +527,7 @@ theorem toProj_baseChange {R' : Type} [CommRing R'] (c : R →+* R') (f : Y ⟶ 
   · exact (pullRatio_comp_baseChange c _ _ _ j).trans (pullRatio_toProj f s hs i j)
 
 /- English proof (translation)
-Rewrite using `[isClosedImmersion_iff_pullRatio _ (toProj_preimage_chart f s hs), toProj_str]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[funext (pullRatio_toProj f s hs i)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isClosedImmersion_toProj_iff (f : Y ⟶ Sp R) (s : Fin (M + 1) → L.Sec)
     (hs : ⨆ i, nonzeroLocus (s i) = ⊤) :
@@ -538,9 +538,9 @@ theorem isClosedImmersion_toProj_iff (f : Y ⟶ Sp R) (s : Fin (M + 1) → L.Sec
   rw [funext (pullRatio_toProj f s hs i)]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hs, H⟩`. Use `⟨hs, (isClosedImmersion_toProj_iff f s hs).2 fun i => ⟨(H i).1, ?_⟩⟩` and prove the remaining obligations. Take `⟨r, hr, hsurj⟩` from `(H i).2`. Take `rfl : r = fun j => secRatio (s i) (s j)` from `funext fun j => eq_secRatio _ _ (hr j)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hsurj`. Introduce and unpack `⟨hs, H⟩`. Establish `H'` using `(isClosedImmersion_toProj_iff f s hs).1 H`. Conclude with `⟨hs, fun i => ⟨(H' i).1, _, fun j => secRatio_spec (s i) (s j), (H' i).2⟩⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem veryAmpleBy_iff (f : Y ⟶ Sp R) (s : Fin (M + 1) → L.Sec) :
     VeryAmpleBy f L s ↔ ∃ hs : ⨆ i, nonzeroLocus (s i) = ⊤, IsClosedImmersion (toProj f s hs) := by
@@ -555,7 +555,7 @@ theorem veryAmpleBy_iff (f : Y ⟶ Sp R) (s : Fin (M + 1) → L.Sec) :
     exact ⟨hs, fun i => ⟨(H' i).1, _, fun j => secRatio_spec (s i) (s j), (H' i).2⟩⟩
 
 /- English proof (translation)
-Take `⟨hs, H⟩` from `(veryAmpleBy_iff f s).1 h`. Conclude with `⟨M, toProj f s hs, H, toProj_str f s hs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isProjOver_of_veryAmpleBy {f : Y ⟶ Sp R} {s : Fin (M + 1) → L.Sec} (h : VeryAmpleBy f L s) :
     IsProjOver f := by
@@ -563,7 +563,7 @@ theorem isProjOver_of_veryAmpleBy {f : Y ⟶ Sp R} {s : Fin (M + 1) → L.Sec} (
   exact ⟨M, toProj f s hs, H, toProj_str f s hs⟩
 
 /- English proof (translation)
-The claim follows from `(veryAmpleBy_iff _ _).2 ⟨iSup_nonzeroLocus_secPull (iSup_nonzeroLocus_coord R M) φ, by rwa [toProj_secPull_coord]⟩`.
+A detailed English derivation is pending.
 -/
 theorem veryAmpleBy_secPull_coord (φ : Y ⟶ PSpace R M) [IsClosedImmersion φ] :
     VeryAmpleBy (φ ≫ PSpace.str R M) ((O1 R M).pull φ) fun i => secPull (coord R M i) φ :=
@@ -571,7 +571,7 @@ theorem veryAmpleBy_secPull_coord (φ : Y ⟶ PSpace R M) [IsClosedImmersion φ]
     rwa [toProj_secPull_coord]⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, _, _, _, h⟩`. Conclude with `isProjOver_of_veryAmpleBy h`. Introduce and unpack `⟨N, φ, _, rfl⟩`. Conclude with `⟨_, LB.isLB_pull (O1_isLB R N) φ, N, _, veryAmpleBy_secPull_coord φ⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isProjBy_iff_isProjOver (f : Y ⟶ Sp R) : IsProjBy f ↔ IsProjOver f := by
   constructor
@@ -581,11 +581,9 @@ theorem isProjBy_iff_isProjOver (f : Y ⟶ Sp R) : IsProjBy f ↔ IsProjOver f :
     exact ⟨_, LB.isLB_pull (O1_isLB R N) φ, N, _, veryAmpleBy_secPull_coord φ⟩
 
 /- English proof (translation)
-Use `and_congr_right fun _ => forall_congr' fun i => and_congr_right fun _ => exists_congr fun r => and_congr_right fun _ => ?_` and prove the remaining obligations. Establish `h : eval₂Hom (cst (q ≫ e) (nonzeroLocus (s i))) r = (eval₂Hom (q.appLE ⊤ (nonzeroLocus (s i)) le_top).hom r).comp (MvPolynomial.map (baseRingHom e ⊤).hom)`. Use `ringHom_ext (fun a => ?_) (fun j => by simp)` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, map_C, eval₂Hom_C, eval₂Hom_C]`. Conclude with `congrArg (fun ψ => ψ.hom a) (baseRingHom_appLE e q ⊤ (nonzeroLocus (s i)) le_top).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsIso (baseRingHom e ⊤)`. Rewrite using `[baseRingHom_top]`. Establish `: IsIso e.appTop` using `inferInstanceAs (IsIso (e.app ⊤))`. Use `infer_instance`. Rewrite using `[h, RingHom.coe_comp]`.
-
-Conclude with `Function.Surjective.of_comp_iff _ (map_surjective _ (ConcreteCategory.bijective_of_isIso (baseRingHom e ⊤)).2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem veryAmpleBy_comp_iff {T : Scheme.{0}} (q : Y ⟶ T) (e : T ⟶ Sp R) [IsIso e] (s : Fin (M + 1) → L.Sec) :
     VeryAmpleBy (q ≫ e) L s ↔
@@ -611,7 +609,7 @@ theorem veryAmpleBy_comp_iff {T : Scheme.{0}} (q : Y ⟶ T) (e : T ⟶ Sp R) [Is
     (map_surjective _ (ConcreteCategory.bijective_of_isIso (baseRingHom e ⊤)).2)
 
 /- English proof (translation)
-Take `⟨N, φ, _, e⟩` from `h`. Conclude with `⟨N, inv g ≫ φ, inferInstance, by rw [Category.assoc, e, IsIso.inv_hom_id_assoc]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isProjOver_of_isIso_comp (g : Z ⟶ Y) [IsIso g] {f : Y ⟶ Sp R} (h : IsProjOver (g ≫ f)) :
     IsProjOver f := by
@@ -623,7 +621,7 @@ section Group
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Take `⟨N, -, M, s, H⟩` from `h U hU`. Conclude with `isProjOver_of_veryAmpleBy ((veryAmpleBy_comp_iff (R := Γ(S, U)) (A.hom ∣_ U) hU.isoSpec.hom s).2 H)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isProjOver_morphismRestrict_of_relAmple {S : Scheme.{0}} {A : Over S} [GrpObj A] {B : LB A.left}
     (h : RelAmple A B) {U : S.Opens} (hU : IsAffineOpen U) :
@@ -632,7 +630,7 @@ theorem isProjOver_morphismRestrict_of_relAmple {S : Scheme.{0}} {A : Over S} [G
   exact isProjOver_of_veryAmpleBy ((veryAmpleBy_comp_iff (R := Γ(S, U)) (A.hom ∣_ U) hU.isoSpec.hom s).2 H)
 
 /- English proof (translation)
-The claim follows from `forall₂_congr fun U hU => exists₂_congr fun _ s => (veryAmpleBy_comp_iff (R := Γ(S, U)) (A.hom ∣_ U) hU.isoSpec.hom s).symm.trans (veryAmpleBy_iff _ s)`.
+A detailed English derivation is pending.
 -/
 theorem veryAmpleAt_iff {S : Scheme.{0}} (A : Over S) [GrpObj A] (B : LB A.left) (N : ℕ) :
     VeryAmpleAt A B N ↔ ∀ (U : S.Opens) (hU : IsAffineOpen U), ∃ (M : ℕ)
@@ -642,7 +640,7 @@ theorem veryAmpleAt_iff {S : Scheme.{0}} (A : Over S) [GrpObj A] (B : LB A.left)
     (veryAmpleBy_comp_iff (R := Γ(S, U)) (A.hom ∣_ U) hU.isoSpec.hom s).symm.trans (veryAmpleBy_iff _ s)
 
 /- English proof (translation)
-The claim follows from `forall₂_congr fun U hU => exists_congr fun _ => and_congr_right fun _ => exists₂_congr fun _ s => (veryAmpleBy_comp_iff (R := Γ(S, U)) (A.hom ∣_ U) hU.isoSpec.hom s).symm.trans (veryAmpleBy_iff _ s)`.
+A detailed English derivation is pending.
 -/
 theorem relAmple_iff {S : Scheme.{0}} (A : Over S) [GrpObj A] (B : LB A.left) :
     RelAmple A B ↔ ∀ (U : S.Opens) (hU : IsAffineOpen U), ∃ N : ℕ, 1 ≤ N ∧ ∃ (M : ℕ)
@@ -652,9 +650,9 @@ theorem relAmple_iff {S : Scheme.{0}} (A : Over S) [GrpObj A] (B : LB A.left) :
     (veryAmpleBy_comp_iff (R := Γ(S, U)) (A.hom ∣_ U) hU.isoSpec.hom s).symm.trans (veryAmpleBy_iff _ s)
 
 /- English proof (translation)
-Take `⟨N, -, M, s, H⟩` from `h ⊤ (isAffineOpen_top _)`. Establish `: IsIso (⊤ : (Sp R).Opens).ι` using `inferInstanceAs (IsIso (Sp R).topIso.hom)`. Establish `: IsIso (A.hom ⁻¹ᵁ ⊤).ι` using `inferInstanceAs (IsIso A.left.topIso.hom)`. Establish `h'` using `isProjOver_of_veryAmpleBy ((veryAmpleBy_comp_iff (A.hom ∣_ ⊤) (⊤ : (Sp R).Opens).ι s).2 H)`. Rewrite `h'` using `[morphismRestrict_ι]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isProjOver_of_isIso_comp _ h'`.
+A detailed English derivation is pending.
 -/
 theorem isProjOver_of_relAmple {A : Over (Sp R)} [GrpObj A] {B : LB A.left} (h : RelAmple A B) :
     IsProjOver A.hom := by
@@ -666,7 +664,7 @@ theorem isProjOver_of_relAmple {A : Over (Sp R)} [GrpObj A] {B : LB A.left} (h :
   exact isProjOver_of_isIso_comp _ h'
 
 /- English proof (translation)
-The claim follows from `isProjOver_of_relAmple P.ample`.
+A detailed English derivation is pending.
 -/
 theorem isProjOver_polAV (P : PolAV (Sp R)) : IsProjOver P.A.hom :=
   isProjOver_of_relAmple P.ample
@@ -674,7 +672,7 @@ theorem isProjOver_polAV (P : PolAV (Sp R)) : IsProjOver P.A.hom :=
 end Group
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨toProj_str f s hs, ⟨toProj_preimage_chart f s hs, fun i j k => (secRatio_spec (s i) (s j) k).trans (congrArg (resG Y inf_le_left · * _) (pullRatio_toProj f s hs i j).symm)⟩, ⟨toProjIso f s hs, ⟨toProjIso_isGen f s hs, secMaps_toProjIso f s hs⟩, fun _ hw => eq_toProjIso f s hs hw …`.
+Supply the required witnesses or components.
 -/
 theorem toProj_spec (f : Y ⟶ Sp R) (s : Fin (M + 1) → L.Sec) (hs : ⨆ i, nonzeroLocus (s i) = ⊤) :
     toProj f s hs ≫ PSpace.str R M = f ∧
@@ -707,7 +705,7 @@ theorem toProj_spec (f : Y ⟶ Sp R) (s : Fin (M + 1) → L.Sec) (hs : ⨆ i, no
     isProjOver_polAV⟩
 
 /- English proof (translation)
-The claim follows from `(veryAmpleBy_iff _ _).2 ⟨iSup_nonzeroLocus_coord R M, by rw [toProj_coord]; infer_instance⟩`.
+A detailed English derivation is pending.
 -/
 example : VeryAmpleBy (PSpace.str R M) (O1 R M) (coord R M) :=
   (veryAmpleBy_iff _ _).2 ⟨iSup_nonzeroLocus_coord R M, by rw [toProj_coord]; infer_instance⟩

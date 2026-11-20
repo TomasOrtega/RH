@@ -11,55 +11,49 @@ open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob UpperT
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `Γ G V _ _ _ _ ι W S U hSn hcomm hΓ ψ hψΓ hψU`. Establish `wd : ∀ (γ γ' : Γ) (s s' : S) (u u' : G), u ∈ U → u' ∈ U → ι γ * s * u = ι γ' * s' * u' → W γ (ψ s) = W γ' (ψ s')`. Introduce `γ γ' s s' u u' hu hu' h`. Establish `hv : u * u'⁻¹ ∈ U` using `U.mul_mem hu (U.inv_mem hu')`. Establish `h1 : ι (γ'⁻¹ * γ) * s * (u * u'⁻¹) = s'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_inv]`. Rewrite using `[show (ι γ')⁻¹ * ι γ * ↑s * (u * u'⁻¹) = (ι γ')⁻¹ * (ι γ * ↑s * u) * u'⁻¹ by group, h]`. Use `group`. Establish `hδ : ι (γ'⁻¹ * γ) ∈ S`. Apply `hΓ (γ'⁻¹ * γ) (u * u'⁻¹) hv` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e : ι (γ'⁻¹ * γ) * (u * u'⁻¹) = ↑s' * ((u * u'⁻¹)⁻¹ * (↑s)⁻¹ * (u * u'⁻¹))`. Rewrite using `[← h1]`. Use `group`. Rewrite using `[e]`. Apply `S.mul_mem s'.2` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc` using `hSn.conj_mem _ (S.inv_mem s.2) (u * u'⁻¹)⁻¹`. Rewrite `hc` using `[inv_inv]`. Conclude with `hc`. Establish `hvS : u * u'⁻¹ ∈ S`. Establish `e : u * u'⁻¹ = (ι (γ'⁻¹ * γ) * ↑s)⁻¹ * ↑s'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h1]`. Use `group`. Rewrite using `[e]`. Conclude with `S.mul_mem (S.inv_mem (S.mul_mem hδ s.2)) s'.2`. Establish `e1 : s' = ⟨ι (γ'⁻¹ * γ) * s, S.mul_mem hδ s.2⟩ * ⟨u * u'⁻¹, hvS⟩`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_mk]`. Conclude with `h1.symm`. Rewrite using `[e1, hψU ⟨u * u'⁻¹, hvS⟩ hv, hψΓ (γ'⁻¹ * γ) s ⟨ι (γ'⁻¹ * γ) * s, S.mul_mem hδ s.2⟩ rfl, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`. Take `⟨P, hP⟩ : ∃ P : G → Prop, ∀ g, P g ↔ ∃ γ : Γ, ∃ s : S, ∃ u ∈ U, g = ι γ * s * u` from `⟨_, fun _ => Iff.rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ, hΦ⟩ : ∃ Φ : G → V, ∀ g, Φ g = if h : P g then W ((hP g).1 h).choose (ψ ((hP g).1 h).choose_spec.choose) else 0` from `⟨_, fun _ => rfl⟩`. Establish `Φ_spec : ∀ (γ : Γ) (s : S) (u : G), u ∈ U → Φ (ι γ * s * u) = W γ (ψ s)`. Introduce `γ s u hu`. Establish `h : P (ι γ * s * u)` using `(hP _).2 ⟨γ, s, u, hu, rfl⟩`. Rewrite using `[hΦ, dif_pos h]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨u0, hu0, e⟩` from `((hP _).1 h).choose_spec.choose_spec`. Conclude with `wd _ _ _ _ _ _ hu0 hu e.symm`. Establish `Φ_neg : ∀ g, ¬ P g → Φ g = 0` using `fun g h => by rw [hΦ, dif_neg h]`. Establish `hUinv : ∀ u ∈ U, ∀ g : G, Φ (g * u) = Φ g`. Introduce `u hu g`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hg : P g`. Take `⟨γ, s, u0, hu0, rfl⟩` from `(hP g).1 hg`. Rewrite using `[show ι γ * ↑s * u0 * u = ι γ * ↑s * (u0 * u) by group, Φ_spec _ _ _ (U.mul_mem hu0 hu), Φ_spec _ _ _ hu0]`. Rewrite using `[Φ_neg _ hg, Φ_neg]`. Introduce `h'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `hg` to reduce the goal to its premises. Take `⟨γ, s, u1, hu1, e⟩` from `(hP _).1 h'`. Use `(hP g).2 ⟨γ, s, u1 * u⁻¹, U.mul_mem hu1 (U.inv_mem hu), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← e]`. Use `group`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨Φ, ?_, ?_, hUinv, ?_⟩` and prove the remaining obligations. Introduce `g`. Establish `h` using `Φ_spec 1 g 1 U.one_mem`. Simplify using `using h`. Introduce `γ g`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hg : P g`. Take `⟨δ, s, u, hu, rfl⟩` from `(hP g).1 hg`. Rewrite using `[show ι γ * (ι δ * ↑s * u) = ι (γ * δ) * ↑s * u by rw [map_mul]; group, Φ_spec _ _ _ hu, Φ_spec _ _ _ hu, map_mul, Module.End.mul_apply]`. Rewrite using `[Φ_neg _ hg, map_zero, Φ_neg]`. Introduce `h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `hg` to reduce the goal to its premises. Take `⟨δ, s, u, hu, e⟩` from `(hP _).1 h'`. Use `(hP g).2 ⟨γ⁻¹ * δ, s, u, hu, ?_⟩` and prove the remaining obligations. Establish `e2 : g = (ι γ)⁻¹ * (ι γ * g)` using `by group`. Rewrite using `[e2, e, map_mul, map_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `group`. Introduce `a c hfin hz heig`. Take `⟨hfinS, hmem, -, R, hR1, hR2, hR3⟩` from `dcSub G V S U a hfin hz hSn`. Establish `hψU' : ∀ u ∈ U.subgroupOf S, ∀ g : S, ψ (g * u) = ψ g` using `fun u hu g => hψU u (Subgroup.mem_subgroupOf.1 hu) g`. Establish `hval : ∀ x ∈ U, ∀ g : G, dcF U (↑a) Φ g = ∑ r ∈ R, Φ (g * (x⁻¹ * ↑r * x))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx g`. Set `e : S ↪ G` to `⟨fun r => x⁻¹ * ↑r * x, fun r1 r2 h => Subtype.ext (by simpa using h)⟩`. Establish `h1 : ∀ y ∈ R.map e, y ∈ DC U (↑a)`. Introduce `y hy`. Take `⟨r, hr, rfl⟩` from `Finset.mem_map.1 hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, w, hw, h⟩` from `(hmem r).1 (hR1 r hr)`. Use `⟨x⁻¹ * v, U.mul_mem (U.inv_mem hx) hv, w * x, U.mul_mem hw hx, ?_⟩` and prove the remaining obligations. Use `show x⁻¹ * ↑r * x = _`. Rewrite using `[h]`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `h2 : ∀ y ∈ DC U (↑a), ∃! r, r ∈ R.map e ∧ r⁻¹ * y ∈ U`. Introduce `y hy`. Establish `hxy : x * y ∈ DC U (↑a)`. Take `⟨v, hv, w, hw, rfl⟩` from `hy`. Conclude with `⟨x * v, U.mul_mem hx hv, w, hw, by group⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨r, ⟨hr, hry⟩, huniq⟩` from `hR3 _ hxy`. Use `⟨x⁻¹ * ↑r * x, ⟨Finset.mem_map_of_mem e hr, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `e3 : (x⁻¹ * ↑r * x)⁻¹ * y = x⁻¹ * ((↑r)⁻¹ * (x * y))` using `by group`. Rewrite using `[e3]`. Conclude with `U.mul_mem (U.inv_mem hx) hry`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Introduce and unpack `y' ⟨hy', hy'y⟩`. Take `⟨r1, hr1, rfl⟩` from `Finset.mem_map.1 hy'`. Establish `hr1y : (↑r1 : G)⁻¹ * (x * y) ∈ U`. Establish `e4 : (↑r1 : G)⁻¹ * (x * y) = x * ((x⁻¹ * ↑r1 * x)⁻¹ * y)` using `by group`. Rewrite using `[e4]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `U.mul_mem hx hy'y`. Rewrite using `[huniq r1 ⟨hr1, hr1y⟩]`. Both sides reduce to the same expression. Rewrite using `[(dcBasic G V U a hfin Φ hUinv).2.2.2.2 (R.map e) h1 h2 g, Finset.sum_map]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[Pi.smul_apply]`. Distinguish the cases in `hg : P g`. Take `⟨γ, s, u, hu, rfl⟩` from `(hP g).1 hg`. Rewrite using `[hval u hu, Φ_spec γ s u hu]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e5 : ∀ r : S, Φ (ι γ * ↑s * u * (u⁻¹ * ↑r * u)) = W γ (ψ (s * r))`. Introduce `r`. Rewrite using `[show ι γ * ↑s * u * (u⁻¹ * ↑r * u) = ι γ * ↑(s * r) * u by`. Simplify using `only [Subgroup.coe_mul]`. Use the proof step `group, Φ_spec _ _ _ hu]`.
-
-Rewrite using `[Finset.sum_congr rfl (fun r _ => e5 r), ← map_sum (W γ), ← (dcBasic S V (U.subgroupOf S) a hfinS ψ hψU').2.2.2.2 R hR1 hR2 s, heig, Pi.smul_apply, map_smul]`. Rewrite using `[hval 1 U.one_mem, Φ_neg _ hg, smul_zero]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `r _`. Apply `Φ_neg` to reduce the goal to its premises.
-
-Introduce `h'`. Apply `hg` to reduce the goal to its premises. Take `⟨γ, s, u, hu, e⟩` from `(hP _).1 h'`. Use `(hP g).2 ⟨γ, s * ⟨u * (↑r)⁻¹ * u⁻¹, hSn.conj_mem _ (S.inv_mem r.2) u⟩, u, hu, ?_⟩` and prove the remaining obligations. Establish `e6 : g = g * (1⁻¹ * ↑r * 1) * (↑r)⁻¹` using `by group`.
-
-Rewrite using `[e6, e]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_mk]`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.So.extF :
     UpperTheory.V.Z.Sym.So.ExtF := by

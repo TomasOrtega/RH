@@ -24,14 +24,14 @@ theorem key {S T : HSp D} (ω : GlobalTheory.Grid.WRep S T) (p : GA D S × GA D 
     GlobalTheory.AdjTr.conjRep ω p F = cj id ((ω.toSgn true) ((ofSgn true S).symm p.1, p.2) (cj id F)) := rfl
 
 /- English proof (translation)
-Unfold `actO`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem actO_negS' (S T : HSp D) (g : GA D (negSp S)) (h : GA D T) (w : WO S T) :
     actO (negSp S) T g h w = actO S T (ofSgn true S g) h w := by
   unfold actO; rfl
 
 /- English proof (translation)
-Unfold `GQ HFinIn HFin at *`. Use `erw [Subgroup.mem_subgroupOf] at h ⊢`. Apply the tactic sequence `convert h using 2 <;> first | rfl | exact (GlobalTheory.ConjWeil.UJ_neg _ _)`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem ofSgn_symm_mem_GQ (S : HSp D) (γ : GA D S) (h : γ ∈ GQ S) : (ofSgn true S).symm γ ∈ GQ (negSp S) := by
   unfold GQ HFinIn HFin at *
@@ -41,25 +41,21 @@ theorem ofSgn_symm_mem_GQ (S : HSp D) (γ : GA D S) (h : γ ∈ GQ S) : (ofSgn t
 open GlobalTheory.ConjWeil in
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT ω hw`. Express the relevant statement in the definitionally equal form `IsWeilDatumO ψ (negSp S) T χS χT (ω.toSgn true) at hw`. Establish `I` using `GlobalTheory.CjNeg.theta_heis_neg D ψ hw.std S T`. Establish `thS : ∀ f : WO S T → ℂ, IsThetaFunO ψ S T f ↔ IsThetaFunO ψ (negSp S) T (cj id f)` using `fun f => (I.1 f).2.symm`. Establish `hz2 : ∀ (w : WO S T) (X : WO S T → ℂ), heisO ψ S T w (cj id X) = cj id (heisO ψ (negSp S) T w X)` using `fun w X => by`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (cj id) (I.2 w (cj id X)).2` as an intermediate fact. Rewrite `this` using `[cj_id_cj_id, cj_id_cj_id]`. Conclude with `this.symm`. Establish `hz1 : ∀ (w : WO S T) (f : WO S T → ℂ), heisO ψ (negSp S) T w (cj id f) = cj id (heisO ψ S T w f)` using `fun w f => (I.2 w f).2`. Use `{ std := hw.std hecS := hecke_inv hw.hecS hecT := hecke_inv hw.hecT resS := resEta_inv hw.resS resT := resEta_inv hw.resT om_pres := ?_ om_heis := ?_ om_aut := ?_ om_cont := ?_ om_unit := ?_ om_split := ?_ }` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p f hf`. Rewrite using `[key, thS, cj_id_cj_id]`. Conclude with `hw.om_pres _ _ ((thS f).1 hf)`. Introduce `g h w₀ f hf`. Rewrite using `[key, key, ← hz1, hw.om_heis _ _ _ _ ((thS f).1 hf), hz2, actO_negS']`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Introduce `γ hγ γ' hγ' f hf`. Rewrite using `[key]`. Use `show starRingEnd ℂ ((ω.toSgn true) ((ofSgn true S).symm γ, γ') (cj id f) 0) = f 0`. Rewrite using `[hw.om_aut _ (ofSgn_symm_mem_GQ S γ hγ) γ' hγ' _ ((thS f).1 hf)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show starRingEnd ℂ (starRingEnd ℂ (f 0)) = f 0`. Simplify using the standard rewrite rules. Introduce `f hf w`. Establish `hc` using `hw.om_cont _ ((thS f).1 hf) w`. Simplify using `only [key]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Complex.continuous_conj.comp (hc.comp (((continuous_ofSgn_symm true S).comp continuous_fst).prodMk continuous_snd))`. Introduce `μ 𝓕 hμ hF p f hf`. Establish `hu` using `hw.om_unit μ 𝓕 hμ hF ((ofSgn true S).symm p.1, p.2) (cj id f) ((thS f).1 hf)`. Simplify using `only [key, cj_id_apply, enorm_conj] at hu ⊢`. Conclude with `hu`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `e he g h hg hh x y hx hy`. Take `⟨r, hr, H⟩` from `hw.om_split e he ((ofSgn true S).symm g) h (by unfold SuppAt; exact hg) hh x y (by unfold IsDetAt; exact hx) hy`. Use `⟨r, hr, fun ℓ hℓ f hf => ?_⟩` and prove the remaining obligations. Set `ℓ' : (WO S T → ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun f => starRingEnd ℂ (ℓ (cj id f)) map_add' := fun a b => by`. Establish `: cj id (a + b) = cj id a + cj id b` using `by funext z; simp [cj_id_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_add, map_add]`. Use the proof step `map_smul' := fun c a => by`. Establish `: cj id (c • a) = starRingEnd ℂ c • cj id a` using `by funext z; simp [cj_id_apply]`. Rewrite using `[this, map_smul, smul_eq_mul, map_mul, Complex.conj_conj]`. Use `rfl }`.
-
-Establish `h1 : starRingEnd ℂ (ℓ (cj id ((ω.toSgn true) ((ofSgn true S).symm g, h) (cj id f)))) = (r : ℂ) * (splitFacO χS χT x y : ℂ) * starRingEnd ℂ (ℓ (cj id (cj id f)))` using `H ℓ' (fun u hu f' hf' => by show starRingEnd ℂ (ℓ (cj id (heisO ψ (negSp S) T u f'))) = starRingEnd ℂ (ℓ (cj id f'))`. Rewrite using `[← hz2, hℓ u hu (cj id f') ((thS (cj id f')).2 (by rwa [cj_id_cj_id]))]) (cj id f) ((thS f).1 hf)`. Rewrite `h1` using `[cj_id_cj_id, ← key ω (g, h) f]`. Rewrite using `[splitFacO_inv]`. Establish `h2` using `congrArg (starRingEnd ℂ) h1`.
-
-Simplify using `only [map_mul, Complex.conj_conj, Complex.conj_ofReal] at h2`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weil_conjRep_of_neg : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle)
     (ω : GlobalTheory.Grid.WRep S T), GlobalTheory.Grid.IsWeil ψ true S T χS χT ω → IsWeilDatumO ψ S T χS⁻¹ χT⁻¹ (GlobalTheory.AdjTr.conjRep ω) := by

@@ -23,43 +23,43 @@ variable {d : SD σ} (L : LD d)
 def uN (u : Fin L.n → AE F E) : Matrix (Fin d.n) (Fin d.n) (AE F E) := ∑ j, Matrix.single L.i₀ (L.em j) (u j)
 
 /- English proof (translation)
-The claim follows from `(L.rng (L.em j)).2 ⟨j, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem em_ne (j : Fin L.n) : L.em j ≠ L.i₀ := (L.rng (L.em j)).2 ⟨j, rfl⟩
 
 /- English proof (translation)
-Simplify using `only [uN, Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_eq_zero fun j _ => Finset.sum_eq_zero fun k _ => by simp [em_ne L]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem uN_mul (u v : Fin L.n → AE F E) : uN L u * uN L v = 0 := by
   simp only [uN, Finset.sum_mul, Finset.mul_sum]
   exact Finset.sum_eq_zero fun j _ => Finset.sum_eq_zero fun k _ => by simp [em_ne L]
 
 /- English proof (translation)
-Simplify using `only [uN, Pi.add_apply, Matrix.single_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem uN_add (u v : Fin L.n → AE F E) : uN L (u + v) = uN L u + uN L v := by
   simp only [uN, Pi.add_apply, Matrix.single_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[uN]`.
+Simplify using the standard rewrite rules.
 -/
 theorem uN_zero : uN L 0 = 0 := by
   simp [uN]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := ((cA σ : AE F E →ₐ[AF F] AE F E) : AE F E →+* AE F E))`.
+A detailed English derivation is pending.
 -/
 theorem mapc_mulU {ι : Type} [Fintype ι] (X Y : Matrix ι ι (AE F E)) : (X * Y).map (cA σ) = X.map (cA σ) * Y.map (cA σ) :=
   Matrix.map_mul (f := ((cA σ : AE F E →ₐ[AF F] AE F E) : AE F E →+* AE F E))
 
 /- English proof (translation)
-The claim follows from `Matrix.map_add _ (map_add _) _ _`.
+A detailed English derivation is pending.
 -/
 theorem mapc_add {ι κ : Type} (X Y : Matrix ι κ (AE F E)) : (X + Y).map (cA σ) = X.map (cA σ) + Y.map (cA σ) :=
   Matrix.map_add _ (map_add _) _ _
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem mapc_one {ι : Type} [DecidableEq ι] : (1 : Matrix ι ι (AE F E)).map (cA σ) = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
@@ -70,11 +70,11 @@ def uZ (u : Fin L.n → AE F E) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin 
   Matrix.fromBlocks (1 + uN L u) 0 0 (uD L u)
 
 /- English proof (translation)
-Establish `h1 : (1 + uN L u) * (1 + uN L v) = 1 + uN L (u + v)`. Rewrite using `[uN_add, add_mul, mul_add, mul_add, uN_mul]`. Simplify using `only [one_mul, mul_one, add_zero]`. Normalize the expressions using the abelian group laws. Establish `h2 : uD (σ` using `σ) L u * uD L v = uD L (u + v) := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Simplify using `only [uD, uN_add, mapc_add, Matrix.transpose_add]`. Establish `: ((uN L u).map (cA σ))ᵀ * ((uN L v).map (cA σ))ᵀ = 0`. Rewrite using `[← Matrix.transpose_mul, ← mapc_mulU, uN_mul, Matrix.map_zero _ (map_zero _), Matrix.transpose_zero]`. Rewrite using `[sub_mul, mul_sub, mul_sub, this]`. Simplify using `only [one_mul, mul_one, sub_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Simplify using `only [uZ, Matrix.fromBlocks_multiply, h1, h2, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]`.
+Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
 -/
 theorem uZ_mul (u v : Fin L.n → AE F E) : uZ L u * uZ L v = uZ L (u + v) := by
   have h1 : (1 + uN L u) * (1 + uN L v) = 1 + uN L (u + v) := by
@@ -91,7 +91,7 @@ theorem uZ_mul (u v : Fin L.n → AE F E) : uZ L u * uZ L v = uZ L (u + v) := by
   simp only [uZ, Matrix.fromBlocks_multiply, h1, h2, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]
 
 /- English proof (translation)
-Simplify using `[uZ, uD, uN_zero, Matrix.fromBlocks_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem uZ_zero : uZ (σ := σ) L 0 = 1 := by
   simp [uZ, uD, uN_zero, Matrix.fromBlocks_one]
@@ -100,11 +100,11 @@ def Qa (ε : ℤˣ) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E
   Matrix.fromBlocks 0 1 (inclR (F := F) (E := E) (AF F) ((ε : ℤ) : E) • 1) 0
 
 /- English proof (translation)
-Establish `hσ` using `kfour.sigma_sigma_of_good d.ok.good`. Establish `hcc` using `GlobalTheory.EisBL.DoubledUnipotentRadical.cA_cA σ hσ`. Establish `hD : (uD (σ` using `σ) L u).map (cA σ) = 1 - (uN L u)ᵀ := by`. Use extensionality with `i j`. Simplify using `only [uD, Matrix.map_apply, Matrix.sub_apply, Matrix.transpose_apply, map_sub, hcc, Matrix.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `k1 : (1 + uN L u)ᵀ * (1 - (uN L u)ᵀ) = 1`. Rewrite using `[Matrix.transpose_add, Matrix.transpose_one, add_mul, one_mul, mul_sub, mul_one, ← Matrix.transpose_mul, uN_mul, Matrix.transpose_zero, sub_zero]`. Normalize the expressions using the abelian group laws. Establish `k2 : (uD (σ` using `σ) L u)ᵀ * (1 + uN L u).map (cA σ) = 1 := by`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite using `[uD, Matrix.transpose_sub, Matrix.transpose_one, Matrix.transpose_transpose, mapc_add, mapc_one, sub_mul, one_mul, mul_add, mul_one, ← mapc_mulU, uN_mul, Matrix.map_zero _ (map_zero _), add_zero]`. Normalize the expressions using the abelian group laws. Simplify using `only [uZ, Qa, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_map, hD, Matrix.transpose_zero, Matrix.map_zero _ (map_zero _), Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, k1]`. Use `congr 1`. Rewrite using `[Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, k2]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem uZ_unitary (ε : ℤˣ) (u : Fin L.n → AE F E) : (uZ L u)ᵀ * Qa (d := d) ε * (uZ L u).map (cA σ) = Qa ε := by
   have hσ := kfour.sigma_sigma_of_good d.ok.good
@@ -134,9 +134,9 @@ section Pts
 variable {d : SD σ} (L : LD d)
 
 /- English proof (translation)
-Establish `hF` using `SiegelEisensteinSeries.Grp.frame_adelic (F := F) hε`. Establish `hZ' : Zᵀ * Matrix.fromBlocks 0 1 (inclR (F` using `F) (E := E) (AF F) ((ε : ℤ) : E) • 1) 0 * Z.map (cA σ) = Matrix.fromBlocks 0 1 (inclR (F := F) (E := E) (AF F) ((ε : ℤ) : E) • 1) 0 := hZ`. Establish `h1 : (incM F (d.b⁻¹).1)ᵀ * (incM F d.b.1)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, SiegelEisensteinSeries.Grp.incM_mul_inv, Matrix.transpose_one]`. Establish `h2 : (incM F d.b.1).map (cA σ) * (incM F (d.b⁻¹).1).map (cA σ) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← SiegelEisensteinSeries.Grp.map_cA_mul, SiegelEisensteinSeries.Grp.incM_mul_inv, mapc_one]`. Rewrite using `[SiegelEisensteinSeries.Grp.map_cA_mul, SiegelEisensteinSeries.Grp.map_cA_mul, Matrix.transpose_mul, Matrix.transpose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem conj_mem {ε : ℤˣ} (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0)
     (Z : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) (hZ : Zᵀ * Qa (d := d) ε * Z.map (cA σ) = Qa ε) :
@@ -161,11 +161,11 @@ theorem conj_mem {ε : ℤˣ} (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matri
     _ = dbl (incM F d.Y.J) := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hF` using `SiegelEisensteinSeries.Grp.frame_adelic (F := F) hε`. Establish `hU : (mat2 x)ᵀ * dbl (incM F d.Y.J) * (mat2 x).map (cA σ) = dbl (incM F d.Y.J)` using `x.2`. Rewrite `hU` using `[SiegelEisensteinSeries.Grp.matrix_eq_frame_conjugate d.b x]`. Establish `h1 : (incM F d.b.1)ᵀ * (incM F (d.b⁻¹).1)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, SiegelEisensteinSeries.Grp.incM_inv_mul, Matrix.transpose_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (incM F (d.b⁻¹).1).map (cA σ) * (incM F d.b.1).map (cA σ) = 1`. Rewrite using `[← SiegelEisensteinSeries.Grp.map_cA_mul, SiegelEisensteinSeries.Grp.incM_inv_mul, mapc_one]`. Unfold `Qa`. Rewrite using `[← hF]`. Use `conv_rhs => rw [← hU]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SiegelEisensteinSeries.Grp.map_cA_mul, SiegelEisensteinSeries.Grp.map_cA_mul, Matrix.transpose_mul, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h2, Matrix.mul_one, ← Matrix.mul_assoc (incM F d.b.1)ᵀ (incM F (d.b⁻¹).1)ᵀ, h1, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitary_of_mem {ε : ℤˣ} (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0)
     (x : d.G) : (inFrame d.b x)ᵀ * Qa (d := d) ε * (inFrame d.b x).map (cA σ) = Qa ε := by
@@ -192,7 +192,7 @@ def uU (u : Fin L.n → AE F E) : GL (Fin d.n ⊕ Fin d.n) (AE F E) where
     rw [uZ_mul, neg_add_cancel, uZ_zero, Matrix.mul_one, SiegelEisensteinSeries.Grp.incM_mul_inv])
 
 /- English proof (translation)
-Take `⟨ε, hε⟩` from `d.ok.frame.1`. Conclude with `conj_mem hε _ (uZ_unitary L ε u)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem uU_mem (u : Fin L.n → AE F E) : uU L u ∈ UG (cA σ) (dbl (incM F d.Y.J)) := by
   obtain ⟨ε, hε⟩ := d.ok.frame.1
@@ -201,7 +201,7 @@ theorem uU_mem (u : Fin L.n → AE F E) : uU L u ∈ UG (cA σ) (dbl (incM F d.Y
 def unipotentPoint (u : Fin L.n → AE F E) : d.G := ⟨uU L u, uU_mem L u⟩
 
 /- English proof (translation)
-Use `show incM F (d.b⁻¹).1 * (incM F d.b.1 * uZ L u * incM F (d.b⁻¹).1) * incM F d.b.1 = uZ L u`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[SiegelEisensteinSeries.Grp.incM_inv_mul, Matrix.mul_one, ← Matrix.mul_assoc, SiegelEisensteinSeries.Grp.incM_inv_mul, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inFrame_unipotentPoint (u : Fin L.n → AE F E) : inFrame d.b (unipotentPoint L u) = uZ L u := by
   show incM F (d.b⁻¹).1 * (incM F d.b.1 * uZ L u * incM F (d.b⁻¹).1) * incM F d.b.1 = uZ L u
@@ -209,34 +209,34 @@ theorem inFrame_unipotentPoint (u : Fin L.n → AE F E) : inFrame d.b (unipotent
   rw [SiegelEisensteinSeries.Grp.incM_inv_mul, Matrix.mul_one, ← Matrix.mul_assoc, SiegelEisensteinSeries.Grp.incM_inv_mul, Matrix.one_mul]
 
 /- English proof (translation)
-Use `kfour.inFrame_injective d.b ?_` and prove the remaining obligations. Rewrite using `[SiegelEisensteinSeries.Grp.inFrame_mul, inFrame_unipotentPoint, inFrame_unipotentPoint, inFrame_unipotentPoint, uZ_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem unipotentPoint_add (u v : Fin L.n → AE F E) : unipotentPoint L (u + v) = unipotentPoint L u * unipotentPoint L v := by
   refine kfour.inFrame_injective d.b ?_
   rw [SiegelEisensteinSeries.Grp.inFrame_mul, inFrame_unipotentPoint, inFrame_unipotentPoint, inFrame_unipotentPoint, uZ_mul]
 
 /- English proof (translation)
-Use `kfour.inFrame_injective d.b ?_` and prove the remaining obligations. Rewrite using `[SiegelEisensteinSeries.Grp.inFrame_one, inFrame_unipotentPoint, uZ_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem unipotentPoint_zero : unipotentPoint L 0 = 1 := by
   refine kfour.inFrame_injective d.b ?_
   rw [SiegelEisensteinSeries.Grp.inFrame_one, inFrame_unipotentPoint, uZ_zero]
 
 /- English proof (translation)
-Simplify using `only [uN, Matrix.smul_single, smul_eq_mul, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem uN_eq_sum (u : Fin L.n → AE F E) : uN L u = ∑ j, u j • Matrix.single L.i₀ (L.em j) (1 : AE F E) := by
   simp only [uN, Matrix.smul_single, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Rewrite using `[show uN L = fun u => ∑ j, u j • Matrix.single L.i₀ (L.em j) (1 : AE F E) from funext (uN_eq_sum L)]`. Conclude with `continuous_finsetSum _ fun j _ => (continuous_apply j).smul continuous_const`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_uN : Continuous (uN L) := by
   rw [show uN L = fun u => ∑ j, u j • Matrix.single L.i₀ (L.em j) (1 : AE F E) from funext (uN_eq_sum L)]
   exact continuous_finsetSum _ fun j _ => (continuous_apply j).smul continuous_const
 
 /- English proof (translation)
-Establish `hD : Continuous (uD (σ` using `σ) L) := continuous_const.sub (((continuous_uN L).matrix_map (GlobalTheory.EisBL.DoubledGroupTopology.continuous_cA σ)).matrix_transpose)`. Conclude with `(continuous_const.add (continuous_uN L)).matrix_fromBlocks continuous_const continuous_const hD`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_uZ : Continuous (uZ (σ := σ) L) := by
   have hD : Continuous (uD (σ := σ) L) :=
@@ -244,7 +244,7 @@ theorem continuous_uZ : Continuous (uZ (σ := σ) L) := by
   exact (continuous_const.add (continuous_uN L)).matrix_fromBlocks continuous_const continuous_const hD
 
 /- English proof (translation)
-Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `(continuous_const.matrix_mul (continuous_uZ L)).matrix_mul continuous_const`. Conclude with `(continuous_const.matrix_mul ((continuous_uZ L).comp continuous_neg)).matrix_mul continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_unipotentPoint : Continuous (unipotentPoint (σ := σ) L) := by
   refine Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _
@@ -252,7 +252,7 @@ theorem continuous_unipotentPoint : Continuous (unipotentPoint (σ := σ) L) := 
   · exact (continuous_const.matrix_mul ((continuous_uZ L).comp continuous_neg)).matrix_mul continuous_const
 
 /- English proof (translation)
-Establish `h'` using `congrArg Matrix.toBlocks₁₂ h`. Simplify `h'` using `[Qa, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _)]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem projected_block_upper_sum {ε : ℤˣ} (A D : Matrix (Fin d.n) (Fin d.n) (AE F E))
     (h : (Matrix.fromBlocks A 0 0 D)ᵀ * Qa (d := d) ε * (Matrix.fromBlocks A 0 0 D).map (cA σ) = Qa ε) :
@@ -262,13 +262,13 @@ theorem projected_block_upper_sum {ε : ℤˣ} (A D : Matrix (Fin d.n) (Fin d.n)
     Matrix.map_zero _ (map_zero _)] using h'
 
 /- English proof (translation)
-Take `⟨ε, hε⟩` from `d.ok.frame.1`. Establish `hσ` using `kfour.sigma_sigma_of_good d.ok.good`. Establish `hcc` using `GlobalTheory.EisBL.DoubledUnipotentRadical.cA_cA σ hσ`. Use function extensionality and compare the values at `u`. Take `⟨a', ha'⟩` from `h.1 u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use `kfour.inFrame_injective d.b ?_` and prove the remaining obligations. Rewrite using `[inFrame_unipotentPoint, ha']`. Establish `e1` using `projected_block_upper_sum _ _ (ha' ▸ unitary_of_mem hε (uM u))`. Establish `e2` using `projected_block_upper_sum _ _ (uZ_unitary L ε u)`. Establish `e3 : a'.map (cA σ) = (uD L u).map (cA σ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1' : a'.map (cA σ) * (1 + uN L u)ᵀ = 1` using `mul_eq_one_comm.1 e1`. Combine the equalities or inequalities in the displayed calculation. Establish `e4 : a' = uD L u`. Use extensionality with `i j`. Use `congrArg (cA σ) (congrFun (congrFun e3 i) j)` as an intermediate fact.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify `this` using `[hcc]`. Rewrite using `[e4]`. Both sides reduce to the same expression.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem uM_eq {uM : (Fin L.n → AE F E) → d.G} {ν 𝓤} (h : L.UData uM ν 𝓤) : uM = unipotentPoint L := by
   obtain ⟨ε, hε⟩ := d.ok.frame.1
@@ -303,11 +303,11 @@ Both sides reduce to the same expression.
 theorem incV_apply {k : ℕ} (e : Fin k → E) (i : Fin k) : GlobalTheory.ThK.incV F e i = inclR (F := F) (AF F) (e i) := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Proceed by induction on `h using AddSubgroup.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact ⟨0, funext fun i => by rw [incV_apply]; simp⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨X, rfl⟩` from `hx`. Take `⟨Z, rfl⟩` from `hy`. Conclude with `⟨X + Z, funext fun i => by simp [incV_apply, map_add]⟩`. Consider the case `neg x _ hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨X, rfl⟩` from `hx`. Conclude with `⟨-X, funext fun i => by simp [incV_apply, map_neg]⟩`. Introduce and unpack `⟨X, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨X, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_ratV (v : Fin L.n → AE F E) : v ∈ L.ratV ↔ ∃ e, GlobalTheory.ThK.incV F e = v := by
   constructor
@@ -326,13 +326,13 @@ theorem mem_ratV (v : Fin L.n → AE F E) : v ∈ L.ratV ↔ ∃ e, GlobalTheory
     exact AddSubgroup.subset_closure ⟨X, rfl⟩
 
 /- English proof (translation)
-Take `⟨V, hV, hV0⟩` from `kfour.exists_nhds_inclR (F := F) (E := E)`. Establish `hW : (⋂ i, (fun M : Fin L.n → AE F E => M i) ⁻¹' V) ∈ 𝓝 (0 : Fin L.n → AE F E)`. Use `Filter.iInter_mem.2 fun i => ?_` and prove the remaining obligations. Conclude with `(continuous_apply i).continuousAt.preimage_mem_nhds (by simpa using hV)`. Take `⟨O, hOW, hO, h0⟩` from `mem_nhds_iff.1 hW`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `discreteTopology_of_isOpen_singleton_zero ?_` and prove the remaining obligations. Use `hO.preimage (continuous_subtype_val (p := fun x => x ∈ L.ratV)) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `⟨x, hx⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : x = 0` using `congrArg Subtype.val (Set.mem_singleton_iff.1 h)`. Substitute `h1` using the available equality. Conclude with `h0`. Introduce `h`. Take `⟨X, rfl⟩` from `(mem_ratV L _).1 hx`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h2 : X = 0`. Use function extensionality and compare the values at `i`. Conclude with `hV0 _ (Set.mem_iInter.1 (hOW h) i)`. Substitute `h2` using the available equality. Conclude with `Set.mem_singleton_iff.2 (Subtype.ext (funext fun i => show inclR (F := F) (AF F) ((0 : Fin L.n → E) i) = 0 by simp))`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ratV_discrete : DiscreteTopology L.ratV := by
   obtain ⟨V, hV, hV0⟩ := kfour.exists_nhds_inclR (F := F) (E := E)
@@ -357,7 +357,7 @@ theorem ratV_discrete : DiscreteTopology L.ratV := by
     exact Set.mem_singleton_iff.2 (Subtype.ext (funext fun i => show inclR (F := F) (AF F) ((0 : Fin L.n → E) i) = 0 by simp))
 
 /- English proof (translation)
-Take `⟨C, hC, hCx⟩` from `kfour.exists_compact_AE (F := F) (E := E)`. Use `⟨Set.univ.pi fun _ => C, isCompact_univ_pi fun _ => hC, fun x => ?_⟩` and prove the remaining obligations. Use `choose e he using fun i => hCx (x i)`. Conclude with `⟨GlobalTheory.ThK.incV F e, (mem_ratV L _).2 ⟨e, rfl⟩, fun i _ => he i⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ratV_cocompact : ∃ K : Set (Fin L.n → AE F E), IsCompact K ∧ ∀ x, ∃ γ ∈ L.ratV, γ + x ∈ K := by
   obtain ⟨C, hC, hCx⟩ := kfour.exists_compact_AE (F := F) (E := E)
@@ -366,7 +366,7 @@ theorem ratV_cocompact : ∃ K : Set (Fin L.n → AE F E), IsCompact K ∧ ∀ x
   exact ⟨GlobalTheory.ThK.incV F e, (mem_ratV L _).2 ⟨e, rfl⟩, fun i _ => he i⟩
 
 /- English proof (translation)
-Use `haveI := ratV_discrete L`. Take `⟨K, hK, hc⟩` from `ratV_cocompact L`. Take `⟨ν, 𝓤, hν, h𝓤, h1⟩` from `(GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact (Fin L.n → AE F E) L.ratV K hK hc).1`. Conclude with `⟨unipotentPoint L, ν, 𝓤, fun u => ⟨uD L u, inFrame_unipotentPoint L u⟩, hν, h𝓤, h1⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_udata : ∃ uM ν 𝓤, L.UData uM ν 𝓤 := by
   haveI := ratV_discrete L
@@ -384,15 +384,15 @@ variable (d : SD σ)
 def Sw (w : InfinitePlace F) : Set (AE F E) := {z | (∀ w', w' ≠ w → piInf (d.B.emb w') z = 0) ∧ finOne F • z = 0}
 
 /- English proof (translation)
-The claim follows from `Prod.ext (by change (0 : InfiniteAdeleRing F) * a.1 = 0; rw [zero_mul]) (by change (1 : Af F) * a.2 = 0; rw [ha, mul_zero])`.
+A detailed English derivation is pending.
 -/
 theorem finOne_mul {a : AF F} (ha : a.2 = 0) : finOne F * a = 0 :=
   Prod.ext (by change (0 : InfiniteAdeleRing F) * a.1 = 0; rw [zero_mul]) (by change (1 : Af F) * a.2 = 0; rw [ha, mul_zero])
 
 /- English proof (translation)
-Use `⟨fun w' hw' => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[St.piInf_smul, (hs k).2 w' hw', map_zero, zero_mul]`. Rewrite using `[Finset.smul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, finOne_mul (hs k).1, zero_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_mem_Sw (w : InfinitePlace F) (s : Fin (Module.finrank F E) → AF F) (hs : ∀ k, (s k).2 = 0 ∧ ∀ w', w' ≠ w → (s k).1 w' = 0) :
     ∑ k, s k • kfour.bsA F E k ∈ Sw d w := by
@@ -405,13 +405,13 @@ theorem sum_mem_Sw (w : InfinitePlace F) (s : Fin (Module.finrank F E) → AF F)
     rw [smul_smul, finOne_mul (hs k).1, zero_smul]
 
 /- English proof (translation)
-Establish `hA` using `GlobalTheory.T.dense_rationals_plus_single_place_adeles F w`. Set `Φ : (Fin (Module.finrank F E) → AF F) → AE F E` to `fun a => ∑ k, a k • kfour.bsA F E k`. Establish `hΦc : Continuous Φ` using `continuous_finsetSum _ fun k _ => (continuous_apply k).smul continuous_const`. Establish `hΦs : Function.Surjective Φ` using `fun z => ⟨fun k => (kfour.bsA F E).repr z k, (kfour.bsA F E).sum_repr z⟩`. Establish `hd : Dense (Set.univ.pi fun _ : Fin (Module.finrank F E) => (Set.range (algebraMap F (AF F)) + {a : AF F | a.2 = 0 ∧ ∀ w', w' ≠ w → a.1 w' = 0}))` using `dense_pi _ fun k _ => hA`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hΦs.denseRange.dense_image hΦc hd).mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Use `choose x hx s hs hxs using fun k => Set.mem_add.1 (ha k (Set.mem_univ k))`. Use `choose q hq using hx`. Use `⟨∑ k, q k • kfour.bsE F E k, ∑ k, s k • kfour.bsA F E k, sum_mem_Sw d w s hs, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : inclR (F` using `F) (AF F) (∑ k, q k • kfour.bsE F E k) = ∑ k, algebraMap F (AF F) (q k) • kfour.bsA F E k := by`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, algebraMap_smul, kfour.inclR_eq, TensorProduct.tmul_smul]`. Rewrite using `[h1, ← Finset.sum_add_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← add_smul, hq, hxs]`.
+A detailed English derivation is pending.
 -/
 theorem dense_Sw (w : InfinitePlace F) : Dense {z : AE F E | ∃ e : E, ∃ s ∈ Sw d w, inclR (F := F) (AF F) e + s = z} := by
   have hA := GlobalTheory.T.dense_rationals_plus_single_place_adeles F w
@@ -435,7 +435,7 @@ theorem dense_Sw (w : InfinitePlace F) : Dense {z : AE F E | ∃ e : E, ∃ s �
   rw [← add_smul, hq, hxs]
 
 /- English proof (translation)
-Use `(dense_pi Set.univ fun j _ => dense_Sw d w).mono ?_` and prove the remaining obligations. Introduce `v hv`. Use `choose e s hs hes using fun j => hv j (Set.mem_univ j)`. Conclude with `⟨e, s, hs, funext fun j => hes j⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dense_vec (k : ℕ) (w : InfinitePlace F) :
     Dense {v : Fin k → AE F E | ∃ e : Fin k → E, ∃ s : Fin k → AE F E, (∀ j, s j ∈ Sw d w) ∧ GlobalTheory.ThK.incV F e + s = v} := by
@@ -451,7 +451,7 @@ section Real
 variable {d : SD σ} (L : LD d)
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [SD.cw, uN, Matrix.map_apply, Matrix.sum_apply, map_sum, Matrix.single_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cw_uN (w' : InfinitePlace F) (u : Fin L.n → AE F E) :
     d.cw w' (uN L u) = ∑ j, Matrix.single L.i₀ (L.em j) (piInf (d.B.emb w') (u j)) := by
@@ -461,15 +461,15 @@ theorem cw_uN (w' : InfinitePlace F) (u : Fin L.n → AE F E) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [uN, Finset.smul_sum, Matrix.smul_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fin_uN (u : Fin L.n → AE F E) : finOne F • uN L u = ∑ j, Matrix.single L.i₀ (L.em j) (finOne F • u j) := by
   simp only [uN, Finset.smul_sum, Matrix.smul_single]
 
 /- English proof (translation)
-Establish `e1 : d.cw w' (1 + uN L u) = 1 + d.cw w' (uN L u)`. Rewrite using `[SD.cw, Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _)]`. Both sides reduce to the same expression. Establish `e2 : d.cw w' (uD L u) = 1 - ((d.cw w' (uN L u)).map star)ᵀ`. Rewrite using `[SD.cw, uD, Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _), ← Matrix.transpose_map, Place.map_cA d.cm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[uZ, ← e1, ← e2]`. Simplify using `only [SD.cw, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _)]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cw_uZ (w' : InfinitePlace F) (u : Fin L.n → AE F E) :
     d.cw w' (uZ L u) = Matrix.fromBlocks (1 + d.cw w' (uN L u)) 0 0 (1 - ((d.cw w' (uN L u)).map star)ᵀ) := by
@@ -484,7 +484,7 @@ theorem cw_uZ (w' : InfinitePlace F) (u : Fin L.n → AE F E) :
   simp only [SD.cw, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _)]
 
 /- English proof (translation)
-Rewrite using `[uZ, uD, Matrix.fromBlocks_smul, smul_zero, smul_add, smul_sub, Krd.map_cA_smul, Matrix.transpose_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fin_uZ (u : Fin L.n → AE F E) :
     finOne F • uZ L u = Matrix.fromBlocks (finOne F • 1 + finOne F • uN L u) 0 0
@@ -494,21 +494,19 @@ theorem fin_uZ (u : Fin L.n → AE F E) :
 end Real
 
 /- English proof (translation)
-Establish `h0` using `Krd.zeta_ne R.hζ`. Use `set Z := d.cw w (uZ L u) with hZdef`. Use `set Z' := d.cw w (uZ L (-u)) with hZ'def`. Establish `hZZ : Z * Z' = 1` using `by rw [hZdef, hZ'def, ← Krd.cw_mul, uZ_mul, add_neg_cancel, uZ_zero, Krd.cw_one]`. Establish `hZZ' : Z' * Z = 1` using `by rw [hZdef, hZ'def, ← Krd.cw_mul, uZ_mul, neg_add_cancel, uZ_zero, Krd.cw_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hq : d.cw w (Qa (d` using `d) R.ε) = Krd.Qc d.n R.ε := by`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [Qa, Krd.Qc, SD.cw, Matrix.one_apply] <;> split_ifs <;> simp`. Establish `hQ : Zᵀ * Krd.Qc d.n R.ε * Z.map star = Krd.Qc d.n R.ε`. Establish `h` using `congrArg (d.cw w) (uZ_unitary L R.ε u)`. Rewrite `h` using `[Krd.cw_mul, Krd.cw_mul, Krd.cw_transpose, Place.cw_cA, hq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `h`. Set `y : GR d.n` to `⟨⟨dZ d.n R.ζ * Z * dZ d.n R.ζ⁻¹, dZ d.n R.ζ * Z' * dZ d.n R.ζ⁻¹, by`. Rewrite using `[show dZ d.n R.ζ * Z * dZ d.n R.ζ⁻¹ * (dZ d.n R.ζ * Z' * dZ d.n R.ζ⁻¹) = dZ d.n R.ζ * Z * (dZ d.n R.ζ⁻¹ * dZ d.n R.ζ) * Z' * dZ d.n R.ζ⁻¹ by simp only [Matrix.mul_assoc], Krd.dZ_inv_mul h0, Matrix.mul_one, Matrix.mul_assoc (dZ d.n R.ζ), hZZ, Matrix.mul_one, Krd.dZ_mul_inv h0], by`. Rewrite using `[show dZ d.n R.ζ * Z' * dZ d.n R.ζ⁻¹ * (dZ d.n R.ζ * Z * dZ d.n R.ζ⁻¹) = dZ d.n R.ζ * Z' * (dZ d.n R.ζ⁻¹ * dZ d.n R.ζ) * Z * dZ d.n R.ζ⁻¹ by simp only [Matrix.mul_assoc], Krd.dZ_inv_mul h0, Matrix.mul_one, Matrix.mul_assoc (dZ d.n R.ζ), hZZ', Matrix.mul_one, Krd.dZ_mul_inv h0]⟩,`. Use the proof step `Krd.inG_conj R.hζ Z hQ⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `⟨y, kfour.inFrame_injective d.b ?_⟩` and prove the remaining obligations. Rewrite using `[inFrame_unipotentPoint]`. Use `Place.cw_ext d (fun w' => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `hw' : w' = w`. Substitute `hw'` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `R.at_w w' y`. Establish `h2 : dZ d.n R.ζ * d.cw w' (inFrame d.b (R.ι w' y)) = dZ d.n R.ζ * Z`. Rewrite using `[h1]`. Use `show dZ d.n R.ζ * Z * dZ d.n R.ζ⁻¹ * dZ d.n R.ζ = dZ d.n R.ζ * Z`. Rewrite using `[Matrix.mul_assoc, Krd.dZ_inv_mul h0, Matrix.mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `congrArg (fun M => dZ d.n R.ζ⁻¹ * M) h2`. Simplify using `only [← Matrix.mul_assoc, Krd.dZ_inv_mul h0, Matrix.one_mul] at h3`. Conclude with `h3.symm`. Establish `hN : d.cw w' (uN L u) = 0`. Rewrite using `[cw_uN]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_eq_zero fun j _ => by rw [(hu j).1 w' hw', Matrix.single_zero]`. Rewrite using `[R.off_w w w' y hw', cw_uZ, hN]`. Simplify using `[Matrix.fromBlocks_one]`. Establish `hN : finOne F • uN L u = 0`. Rewrite using `[fin_uN]`.
-
-Conclude with `Finset.sum_eq_zero fun j _ => by rw [(hu j).2, Matrix.single_zero]`. Rewrite using `[R.off_f w y, fin_uZ, hN]`. Simplify using `only [Matrix.map_zero _ (map_zero _), Matrix.transpose_zero, sub_zero, add_zero]`. Use `conv_rhs => rw [← Matrix.fromBlocks_one, Matrix.fromBlocks_smul, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_iota {d : SD σ} (R : RD d) (L : LD d) (w : InfinitePlace F) (u : Fin L.n → AE F E) (hu : ∀ j, u j ∈ Sw d w) :
     ∃ y, unipotentPoint L u = R.ι w y := by
@@ -557,19 +555,15 @@ theorem exists_iota {d : SD σ} (R : RD d) (L : LD d) (w : InfinitePlace F) (u :
     conv_rhs => rw [← Matrix.fromBlocks_one, Matrix.fromBlocks_smul, smul_zero]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d R L`. Use `⟨exists_udata L, ?_⟩` and prove the remaining obligations. Introduce `uM ν 𝓤 hU w φ hφ hrat hw u x`. Establish `he` using `uM_eq L hU`. Substitute `he` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Use `haveI := (kfour.doubled_group_topological_properties σ d.Y).1`. Set `S : AddSubgroup (Fin L.n → AE F E)` to `{ carrier := {u | ∀ x, φ (unipotentPoint L u * x) = φ x} add_mem' := fun {a b} ha hb x => by show φ (unipotentPoint L (a + b) * x) = φ x`. Rewrite using `[unipotentPoint_add, mul_assoc, ha, hb]`. Use the proof step `zero_mem' := fun x => by show φ (unipotentPoint L 0 * x) = φ x`. Rewrite using `[unipotentPoint_zero, one_mul]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `neg_mem' := fun {a} ha x => by show φ (unipotentPoint L (-a) * x) = φ x`. Use `ha (unipotentPoint L (-a) * x)` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← unipotentPoint_add, add_neg_cancel, unipotentPoint_zero, one_mul]`. Conclude with `this.symm }`. Establish `hS : IsClosed (S : Set (Fin L.n → AE F E))`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `: (S : Set (Fin L.n → AE F E)) = ⋂ x, {u | φ (unipotentPoint L u * x) = φ x}`. Use extensionality with `u`. Simplify using `only [Set.mem_iInter, Set.mem_setOf_eq]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `isClosed_iInter fun x => isClosed_eq (hφ.comp ((continuous_unipotentPoint L).mul continuous_const)) continuous_const`. Establish `hT : {v : Fin L.n → AE F E | ∃ e : Fin L.n → E, ∃ s : Fin L.n → AE F E, (∀ j, s j ∈ Sw d w) ∧ GlobalTheory.ThK.incV F e + s = v} ⊆ S`. Introduce and unpack `_ ⟨e, s, hs, rfl⟩`. Use `S.add_mem (fun x => hrat _ ((mem_ratV L _).2 ⟨e, rfl⟩) x) ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `exists_iota R L w s hs`.
-
-Conclude with `fun x => hw s y hy x`. Establish `hu : u ∈ S`. Establish `h1` using `closure_minimal hT hS`. Rewrite `h1` using `[(dense_vec d L.n w).closure_eq]`. Conclude with `h1 (Set.mem_univ u)`.
-
-Conclude with `hu x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uEx : UEx := by
   intro F E _ _ _ _ _ σ d R L

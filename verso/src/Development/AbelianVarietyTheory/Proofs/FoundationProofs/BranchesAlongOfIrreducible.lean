@@ -15,15 +15,13 @@ open scoped DirectSum
 namespace GlobalTheory.Branching
 
 /- English proof (translation)
-Establish `iso : Nonempty ((sumRep ι h lam).Equiv (resRep ι h lam))`. Use `GlobalTheory.nonempty_directSum_equiv_of_finrank_le ℂ H (Below h lam) _ (fun mu => nablaSq ℂ n mu.1) (fun mu => smallRep ι mu.1) _ (fun mu => hirr mu.1) (fun i j hij => hz i.1 j.1 fun e => hij (Subtype.ext e)) (fun mu => ?_) (GlobalTheory.Branching.finrank_le_finrank_directSum_be …` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `GlobalTheory.Branching.exists_intertwining_ne_zero n N h lam mu.1 mu.2`. Use `⟨⟨φ.toLinearMap, fun y => φ.isIntertwining' (ι y)⟩, fun e => hφ ?_⟩` and prove the remaining obligations. Establish `e'` using `congrArg Representation.IntertwiningMap.toLinearMap e`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Representation.IntertwiningMap.ext e'`. Use `⟨iso, fun mu => ?_⟩` and prove the remaining obligations. Use `letI : Fintype (Below h lam) := Fintype.ofFinite _`. Establish `hm` using `(GlobalTheory.IntertwinerSum.finrank_intertwiningMap_directSum ℂ H (Below h lam) _ _ (fun mu => nablaSq ℂ n mu.1) (fun mu => smallRep ι mu.1) (smallRep ι mu) (resRep ι h lam) iso).1`. Establish `h0 : ∀ nu : DomWeight n, mu ≠ nu → Module.finrank ℂ ((smallRep ι mu).IntertwiningMap (smallRep ι nu)) = 0` using `fun nu hne => by`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Subsingleton ((smallRep ι mu).IntertwiningMap (smallRep ι nu))` using `⟨fun a b => (hz mu nu hne a).trans (hz mu nu hne b).symm⟩`. Conclude with `Module.finrank_zero_of_subsingleton`. Use `⟨fun hI => ?_, fun hI => ?_⟩` and prove the remaining obligations. Unfold `mult`. Rewrite using `[hm, Finset.sum_eq_single (⟨mu, hI⟩ : Below h lam)]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hirr mu` as an intermediate fact. Conclude with `Representation.IsIrreducible.finrank_intertwiningMap_self _`. Introduce `b _ hb`. Conclude with `h0 b.1 fun e => hb (Subtype.ext e.symm)`. Simplify using the standard rewrite rules.
-
-Unfold `mult`. Rewrite using `[hm]`. Conclude with `Finset.sum_eq_zero fun b _ => h0 b.1 fun e => hI (e ▸ b.2)`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem branchesAlong_of_irreducible {H : Type} [Group H] {n N : ℕ} (ι : H →* GL (Fin n) ℂ) (h : n + 1 = N) (lam : DomWeight N)
     (hirr : ∀ mu : DomWeight n, (smallRep ι mu).IsIrreducible)
@@ -59,7 +57,7 @@ theorem branchesAlong_of_irreducible {H : Type} [Group H] {n N : ℕ} (ι : H �
     exact Finset.sum_eq_zero fun b _ => h0 b.1 fun e => hI (e ▸ b.2)
 
 /- English proof (translation)
-Use `GlobalTheory.Branching.isIrreducible_smallRep_unitary n mu` as an intermediate fact. Take `⟨f, hf, h0⟩` from `GlobalTheory.Branching.exists_ne_zero_map_eq_zero_of_weight_ne n mu nu hne ⟨φ.toLinearMap, fun g => LinearMap.ext fun f => GlobalTheory.Branching.intertwining_gl_of_unitary n mu nu φ g f⟩`. Use `(Representation.IsIrreducible.injective_or_eq_zero φ).resolve_left fun hi => hf (hi ?_)` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intertwining_unitary_eq_zero (n : ℕ) (mu nu : DomWeight n) (hne : mu ≠ nu)
     (φ : (smallRep (unitaryIncl n) mu).IntertwiningMap (smallRep (unitaryIncl n) nu)) : φ = 0 := by
@@ -70,9 +68,9 @@ theorem intertwining_unitary_eq_zero (n : ℕ) (mu nu : DomWeight n) (hne : mu �
   rw [map_zero]; exact h0
 
 /- English proof (translation)
-Establish `hU` using `GlobalTheory.Branching.isIrreducible_smallRep_unitary n mu`. Set `r : Subrepresentation (smallRep (MonoidHom.id (GL (Fin n) ℂ)) mu) → Subrepresentation (smallRep (unitaryIncl n) mu)` to `fun S => ⟨S.toSubmodule, fun u _ hv => S.apply_mem_toSubmodule (unitaryIncl n u) hv⟩`. Establish `hnt : Nontrivial (Subrepresentation (smallRep (MonoidHom.id (GL (Fin n) ℂ)) mu))` using `⟨⊥, ⊤, fun e => bot_ne_top (congrArg Subrepresentation.toSubmodule e)⟩`. Use `⟨fun S => ?_⟩` and prove the remaining obligations. Break down `eq_bot_or_eq_top (r S) with e | e` into its components or cases.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `e'` using `congrArg Subrepresentation.toSubmodule e`. Conclude with `Or.inl (Subrepresentation.ext e')`. Establish `e'` using `congrArg Subrepresentation.toSubmodule e`. Conclude with `Or.inr (Subrepresentation.ext e')`.
+Establish an intermediate fact. Prove the first alternative. Establish an intermediate fact. Prove the second alternative.
 -/
 theorem isIrreducible_smallRep_id (n : ℕ) (mu : DomWeight n) : (smallRep (MonoidHom.id (GL (Fin n) ℂ)) mu).IsIrreducible := by
   have hU := GlobalTheory.Branching.isIrreducible_smallRep_unitary n mu
@@ -88,7 +86,7 @@ theorem isIrreducible_smallRep_id (n : ℕ) (mu : DomWeight n) : (smallRep (Mono
     exact Or.inr (Subrepresentation.ext e')
 
 /- English proof (translation)
-Use `intertwining_unitary_eq_zero n mu nu hne ⟨φ.toLinearMap, fun u => φ.isIntertwining' (unitaryIncl n u)⟩` as an intermediate fact. Establish `e'` using `congrArg Representation.IntertwiningMap.toLinearMap this`. Conclude with `Representation.IntertwiningMap.ext e'`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem intertwining_id_eq_zero (n : ℕ) (mu nu : DomWeight n) (hne : mu ≠ nu)
     (φ : (smallRep (MonoidHom.id (GL (Fin n) ℂ)) mu).IntertwiningMap (smallRep (MonoidHom.id (GL (Fin n) ℂ)) nu)) :
@@ -98,7 +96,7 @@ theorem intertwining_id_eq_zero (n : ℕ) (mu nu : DomWeight n) (hne : mu ≠ nu
   exact Representation.IntertwiningMap.ext e'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨branchesAlong_of_irreducible _ h lam (isIrreducible_smallRep_id n) (intertwining_id_eq_zero n), branchesAlong_of_irreducible _ h lam (isIrreducible_smallRep_unitary n) (intertwining_unitary_eq_zero n)⟩`.
+Supply the required witnesses or components.
 -/
 theorem branchesAlong_all (n N : ℕ) (h : n + 1 = N) (lam : DomWeight N) :
     BranchesAlong (MonoidHom.id (GL (Fin n) ℂ)) h lam ∧ BranchesAlong (unitaryIncl n) h lam :=
@@ -113,11 +111,11 @@ instance finite_cointertwining {H : Type} [Group H] {n N : ℕ} (ι : H →* GL 
   exact FiniteDimensional.of_injective L fun _ _ e => Representation.IntertwiningMap.ext e
 
 /- English proof (translation)
-Establish `iso` using `(branchesAlong_of_irreducible ι h lam hirr hz).1`. Use `letI : Fintype (Below h lam) := Fintype.ofFinite _`. Establish `hm` using `(GlobalTheory.IntertwinerSum.finrank_intertwiningMap_directSum ℂ H (Below h lam) _ _ (fun mu => nablaSq ℂ n mu.1) (fun mu => smallRep ι mu.1) (smallRep ι mu) (resRep ι h lam) iso).2`. Establish `h0 : ∀ nu : DomWeight n, nu ≠ mu → Module.finrank ℂ ((smallRep ι nu).IntertwiningMap (smallRep ι mu)) = 0` using `fun nu hne => by`. Establish `: Subsingleton ((smallRep ι nu).IntertwiningMap (smallRep ι mu))` using `⟨fun a b => (hz nu mu hne a).trans (hz nu mu hne b).symm⟩`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Module.finrank_zero_of_subsingleton`. Use `⟨fun hI => ?_, fun hI => ?_⟩` and prove the remaining obligations. Rewrite using `[hm, Finset.sum_eq_single (⟨mu, hI⟩ : Below h lam)]`. Use `hirr mu` as an intermediate fact. Conclude with `Representation.IsIrreducible.finrank_intertwiningMap_self _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Conclude with `h0 b.1 fun e => hb (Subtype.ext e)`. Simplify using the standard rewrite rules. Rewrite using `[hm]`. Conclude with `Finset.sum_eq_zero fun b _ => h0 b.1 fun e => hI (e ▸ b.2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comult_of_irreducible {H : Type} [Group H] {n N : ℕ} (ι : H →* GL (Fin n) ℂ) (h : n + 1 = N)
     (lam : DomWeight N) (hirr : ∀ mu : DomWeight n, (smallRep ι mu).IsIrreducible)
@@ -146,7 +144,7 @@ theorem comult_of_irreducible {H : Type} [Group H] {n N : ℕ} (ι : H →* GL (
     exact Finset.sum_eq_zero fun b _ => h0 b.1 fun e => hI (e ▸ b.2)
 
 /- English proof (translation)
-The claim follows from `comult_of_irreducible _ h lam (isIrreducible_smallRep_id n) (intertwining_id_eq_zero n) mu`.
+A detailed English derivation is pending.
 -/
 theorem comult_id (n N : ℕ) (h : n + 1 = N) (lam : DomWeight N) (mu : DomWeight n) :
     (Interlace h lam mu → Module.finrank ℂ ((resRep (MonoidHom.id (GL (Fin n) ℂ)) h lam).IntertwiningMap
@@ -156,7 +154,7 @@ theorem comult_id (n N : ℕ) (h : n + 1 = N) (lam : DomWeight N) (mu : DomWeigh
   comult_of_irreducible _ h lam (isIrreducible_smallRep_id n) (intertwining_id_eq_zero n) mu
 
 /- English proof (translation)
-The claim follows from `comult_of_irreducible _ h lam (isIrreducible_smallRep_unitary n) (intertwining_unitary_eq_zero n) mu`.
+A detailed English derivation is pending.
 -/
 theorem comult_unitary (n N : ℕ) (h : n + 1 = N) (lam : DomWeight N) (mu : DomWeight n) :
     (Interlace h lam mu → Module.finrank ℂ ((resRep (unitaryIncl n) h lam).IntertwiningMap
@@ -170,7 +168,7 @@ end GlobalTheory.Branching
 namespace GlobalTheory.Published
 
 /- English proof (translation)
-Introduce `n N h _ lam` and use `GlobalTheory.Branching.branchesAlong_all n N h lam`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weylBranching_holds : WeylBranching := fun n N h _ lam => GlobalTheory.Branching.branchesAlong_all n N h lam
 

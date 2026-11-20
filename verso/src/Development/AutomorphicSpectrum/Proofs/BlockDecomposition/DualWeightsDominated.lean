@@ -15,7 +15,7 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 namespace GlobalTheory.CompanionTheory.RealCountG.TopeG
 
 /- English proof (translation)
-Unfold `cPoly`. Rewrite using `[AddMonoidAlgebra.coeff_sum, Finsupp.finset_sum_apply]`. Simplify using `only [AddMonoidAlgebra.coeff_single, Finsupp.single_apply]`. Rewrite using `[Finset.sum_ite_eq']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cPoly_coeff {n : ℕ} (s : Finset (Fin n → ℤ)) (c : (Fin n → ℤ) → ℂ) (μ : Fin n → ℤ) :
     (cPoly s c).coeff μ = if μ ∈ s then c μ else 0 := by
@@ -26,9 +26,9 @@ theorem cPoly_coeff {n : ℕ} (s : Finset (Fin n → ℤ)) (c : (Fin n → ℤ) 
   rw [Finset.sum_ite_eq']
 
 /- English proof (translation)
-Establish `h1 : (dualT E 1 : (E.V →L[ℂ] ℂ) →ₗ[ℂ] (E.V →L[ℂ] ℂ)) = LinearMap.id`. Use extensionality with `ξ v`. Simplify using `[dualT]`. Rewrite using `[h1]`. Unfold `trOn`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos (fun x hx => by simpa using hx)]`. Establish `h2 : (LinearMap.id : (E.V →L[ℂ] ℂ) →ₗ[ℂ] (E.V →L[ℂ] ℂ)).restrict (fun x (hx : x ∈ S) => hx) = LinearMap.id`. Use extensionality with `x`. Both sides reduce to the same expression. Rewrite using `[h2, LinearMap.trace_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem trOn_dualT_id {n : ℕ} (E : KMod n) (S : Submodule ℂ (E.V →L[ℂ] ℂ)) :
     trOn S (dualT E 1 : (E.V →L[ℂ] ℂ) →ₗ[ℂ] (E.V →L[ℂ] ℂ)) = Module.finrank ℂ S := by
@@ -43,11 +43,9 @@ theorem trOn_dualT_id {n : ℕ} (E : KMod n) (S : Submodule ℂ (E.V →L[ℂ] �
   rw [h2, LinearMap.trace_id]
 
 /- English proof (translation)
-Introduce `n lam hlam E T hT`. Establish `hspan` using `GlobalTheory.T.dual_weight_spaces_span E`. Establish `hind` using `GlobalTheory.CompanionTheory.RealCount.Tope.wtDual_iSupIndep E`. Establish `hfin : Set.Finite {μ | wtDual E μ ≠ ⊥}` using `WellFoundedGT.finite_ne_bot_of_iSupIndep hind`. Use `set s := hfin.toFinset with hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ μ, wtDual E μ ≠ ⊥ → μ ∈ s` using `fun μ h => by simpa [hs] using h`. Take `⟨h1, -⟩` from `GlobalTheory.T.weight_polynomial_trace_identity lam E T hT hspan hind s hmem`. Use `⟨hspan, fun μ hμ => GlobalTheory.T.dominance_of_weyl_character_coeff lam hlam _ h1 μ ?_⟩` and prove the remaining obligations. Rewrite using `[cPoly_coeff, if_pos (hmem μ hμ), trOn_dualT_id]`. Establish `: Module.finrank ℂ (wtDual E μ) ≠ 0` using `fun h0 => hμ (Submodule.finrank_eq_zero.1 h0)`.
-
-Conclude with `this` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem topeG : ∀ {n : ℕ} (lam : Fin n → ℤ), Antitone lam → ∀ (E : KMod n) (T : E.V →L[ℂ] E.V), IsLefK lam E T →
     (⨆ μ, wtDual E μ) = ⊤ ∧ ∀ μ, wtDual E μ ≠ ⊥ → DomLE (wtR μ) (m0 lam) := by

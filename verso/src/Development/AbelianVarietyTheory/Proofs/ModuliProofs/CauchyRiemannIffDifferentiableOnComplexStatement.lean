@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CauchyRiemannIffDiff
 open Complex Matrix
 open scoped ContDiff BigOperators Real
 /- English proof (citation)
-Apply `GlobalTheory.cauchyRiemann_iff_differentiableOn_complex` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FCauchyRiemannIffDifferentiableOnComplex.lean&line=40#L40)
 -/

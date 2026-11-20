@@ -28,7 +28,7 @@ variable {D : D7} {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : SideA D cf jE
   {tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E}
 
 /- English proof (translation)
-Take `⟨Sp, hA, hs⟩` from `hb`. Conclude with `⟨{ Sp with iq_big := fun i z hz => Sp.iq_big i z (h _ hz) }, hA, hs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem built_anti {big big' : D.what₂.places.Pl → Finset ℂ} {L : LocAll (lay0 D)} (h : ∀ w, big' w ⊆ big w)
     (hb : GlobalTheory.CoefDuty.Built A M C tup big L) : GlobalTheory.CoefDuty.Built A M C tup big' L := by
@@ -36,14 +36,14 @@ theorem built_anti {big big' : D.what₂.places.Pl → Finset ℂ} {L : LocAll (
   exact ⟨{ Sp with iq_big := fun i z hz => Sp.iq_big i z (h _ hz) }, hA, hs⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨b, hb⟩ := hP; ⟨b, fun L hL => h L (hb L hL)⟩`.
+A detailed English derivation is pending.
 -/
 theorem evO_mono_loc {P Q : D7 → Prop} (h : ∀ L : LocAll (lay0 D), P (withLoc L) → Q (withLoc L))
     (hP : GlobalTheory.CoefDuty.EvO A M C tup P) : GlobalTheory.CoefDuty.EvO A M C tup Q :=
   let ⟨b, hb⟩ := hP; ⟨b, fun L hL => h L (hb L hL)⟩
 
 /- English proof (translation)
-Take `⟨b1, h1⟩` from `hP`. Take `⟨b2, h2⟩` from `hQ`. Conclude with `⟨fun w => b1 w ∪ b2 w, fun L hL => ⟨h1 L (built_anti (fun w => Finset.subset_union_left) hL), h2 L (built_anti (fun w => Finset.subset_union_right) hL)⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem evO_and {P Q : D7 → Prop} (hP : GlobalTheory.CoefDuty.EvO A M C tup P) (hQ : GlobalTheory.CoefDuty.EvO A M C tup Q) :
     GlobalTheory.CoefDuty.EvO A M C tup fun D' => P D' ∧ Q D' := by
@@ -56,21 +56,21 @@ theorem evO_and {P Q : D7 → Prop} (hP : GlobalTheory.CoefDuty.EvO A M C tup P)
 end Loc
 
 /- English proof (translation)
-The claim follows from `hp.trans (StepW.of_all fun _ _ _ _ _ _ _ H P x => h _ _ _ _ _ P x (H P x))`.
+A detailed English derivation is pending.
 -/
 theorem allSt_mono {p q : ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (P : Pre2 K w), St P → Prop}
     (h : ∀ K B f T w P x, p K B f T w P x → q K B f T w P x) (hp : AllSt p) : AllSt q :=
   hp.trans (StepW.of_all fun _ _ _ _ _ _ _ H P x => h _ _ _ _ _ P x (H P x))
 
 /- English proof (translation)
-The claim follows from `(StepW.and hp hq).trans (StepW.of_all fun _ _ _ _ _ _ _ H P x => ⟨H.1 P x, H.2 P x⟩)`.
+A detailed English derivation is pending.
 -/
 theorem allSt_and {p q : ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (P : Pre2 K w), St P → Prop}
     (hp : AllSt p) (hq : AllSt q) : AllSt fun K B f T w P x => p K B f T w P x ∧ q K B f T w P x :=
   (StepW.and hp hq).trans (StepW.of_all fun _ _ _ _ _ _ _ H P x => ⟨H.1 P x, H.2 P x⟩)
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.AdmissibleThreePrime.residual_irreducible_of_theorem_three_prime D ⟨R.a.tieLab, GlobalTheory.AdmTame.main D R.a.tie0 R.a.a2 R.a.a5 (GlobalTheory.TieLabAt.main hL D I.P).2.1⟩ R.a.a5 (GlobalTheory.BrauerNesbittIrr.litBNIrr _) R.c.rho R.c.dz`.
+A detailed English derivation is pending.
 -/
 theorem rhoBar_of_rows (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7)
     (I : GlobalTheory.NRows.Inputs hL D) (R : GlobalTheory.NRows.Rows D) : AutomorphicSideWildInertia.ResidualIrreducibleGood D :=
@@ -79,7 +79,7 @@ theorem rhoBar_of_rows (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7)
     R.a.a5 (GlobalTheory.BrauerNesbittIrr.litBNIrr _) R.c.rho R.c.dz
 
 /- English proof (translation)
-Establish `R : GlobalTheory.NRows.Rows D` using `GlobalTheory.T.rows_of_inputs_and_jumps hPr hc dec hL D I hJ`. Establish `h1 : SumRepresentations.Conclusion1 D` using `I.Conclusion1 (GlobalTheory.T.parts_give_dimension D) R.a R.b`. Conclude with `⟨h1.1, rhoBar_of_rows hL D I R, h1.2.2, (SumRepresentations.multiplicity_statement_iff_reduced D I.isot h1.2.2).2 (GlobalTheory.T.reduced_form_of_local_inputs hL D I R)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem galois_statements_at_of_inputs {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (hPr : GlobalTheory.NRows.Hypotheses₂) (hc : GlobalTheory.Published.HarishChandraFinite)
     (dec : GlobalTheory.Published.CuspRapidDecay) (I : GlobalTheory.NRows.Inputs hL D) (hJ : JumpsCard D.nd D.naut) :
@@ -93,9 +93,9 @@ end PointStatements
 open PointStatements in
 
 /- English proof (translation)
-Introduce `hP hX hL`. Establish `h` using `allSt_and (allSt_and (allSt_and (GlobalTheory.T.coefficient_duty_inputs_all_states hL hP hX) (GlobalTheory.HeightCounting.JumpsSt.main hL hP hX.ht)) (GlobalTheory.HeightCounting.Up.ptSt_eigSpan hL hP)) (GlobalTheory.T.admissible_and_lam_used_all_states hP hX)`. Use `allSt_mono (fun K B f T w P x H l => ?_) h` and prove the remaining obligations. Take `⟨⟨⟨hI, hJ⟩, hE⟩, hS⟩` from `H`. Use `evO_mono_loc ?_ (evO_and (evO_and (hI l) (hJ l)) (hE l))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `L ⟨⟨hI', hJ'⟩, hE'⟩`. Conclude with `⟨fun ho => galois_statements_at_of_inputs hP.what₂ hP.hc hP.decay (hI' ho).some (hJ' ho), hE', hS.1⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem pointStatements_of_hypotheses : PrN → GlobalTheory.NRows.HypothesesX → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, PtSt hL := by
   intro hP hX hL

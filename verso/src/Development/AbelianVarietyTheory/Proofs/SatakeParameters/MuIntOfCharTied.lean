@@ -10,19 +10,19 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.MuIntegral
 
 /- English proof (translation)
-Introduce `D C nch Tp hT i τ z hz`. Establish `hj` using `D.nd.j_range i`. Set `j : Fin D.R.m` to `⟨D.nd.j i - 1, by omega⟩`. Establish `hjj : j.1 + 1 = D.nd.j i` using `by simp only [j]; omega`. Establish `hmu` using `hT.muC i j hjj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsTotallyComplex D.host.E := D.sp.cm.cmUnram.1`. Take `⟨n, hn, ho⟩` from `Tp.xi_fin (D.nd.mu i)`. Establish `hinf : (Tp.tup (D.nd.mu i) j).HasInfQ (Formalism.L2.Host.embPsi D.host) (fun g => -Formalism.L2.Host.eExp D j g)` using `(C.isMu0 j).inf.mul_triv (GlobalTheory.TypeValues.inf_eq_one _ hn ho)`. Rewrite `hinf` using `[← hmu]`. Establish `key` using `hT.infG _ _ hinf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρ⟩` from `(GlobalTheory.VolRatioCheck.place_bijective D).2 (InfinitePlace.mk τ)`. Take `⟨m, hm⟩` from `(D.hc (D.eTau.symm (D.eTau ρ))).e_int j`. Establish `hm' : Formalism.L2.Host.eExp D j (D.eTau ρ) = m` using `hm`. Break down `InfinitePlace.mk_eq_iff.1 hρ with h | h` into its components or cases. Establish `ht : τ = Formalism.L2.Host.embPsi D.host (D.eTau ρ)` using `h.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[ht, (key (D.eTau ρ)).1]`. Use `⟨-m, ?_⟩` and prove the remaining obligations. Simplify using `only [Multiset.mem_singleton, Set.mem_singleton_iff] at hz`. Rewrite using `[hz, hm']`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `ht : τ = (starRingEnd ℂ).comp (Formalism.L2.Host.embPsi D.host (D.eTau ρ))`. Rewrite using `[← h]`. Use extensionality with `x`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[ht, (key (D.eTau ρ)).2]`. Use `⟨m, ?_⟩` and prove the remaining obligations. Simplify using `only [Multiset.mem_singleton, Set.mem_singleton_iff] at hz`. Rewrite using `[hz, hm']`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem muInt_of_charTied : ∀ (D : D7) (C : Formalism.L2.Host.CharFrame D) (nch : NChoice D) (Tp : Formalism.L2.Host.TupTied D C nch), Formalism.L2.Host.NCharTied D C nch Tp → MuInt D.nd D.naut := by
   intro D C nch Tp hT i τ z hz

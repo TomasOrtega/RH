@@ -17,9 +17,7 @@ variable {p : ℕ} [Fact p.Prime] (X : Sys p)
 def dgQ (K : Type) [Field K] (p k r : ℕ) : Matrix (Fin k) (Fin k) K := Matrix.diagonal fun c => if c.val < r then (p : K)⁻¹ else 1
 
 /- English proof (translation)
-Unfold `dgQ`. Rewrite using `[Matrix.det_diagonal]`. Use `Finset.prod_ne_zero_iff.2 fun c _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `inv_ne_zero hp`.
-
-Conclude with `one_ne_zero`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dgQ_det_ne (K : Type) [Field K] (p k r : ℕ) (hp : (p : K) ≠ 0) : (dgQ K p k r).det ≠ 0 := by
   unfold dgQ
@@ -30,11 +28,11 @@ theorem dgQ_det_ne (K : Type) [Field K] (p k r : ℕ) (hp : (p : K) ≠ 0) : (dg
   · exact one_ne_zero
 
 /- English proof (translation)
-Unfold `mF dgQ DgX`. Use extensionality with `a c`. Simplify using `only [Matrix.submatrix_apply, Matrix.map_apply, Matrix.diagonal_apply]`. Distinguish the cases in `hac : a = c`. Substitute `hac` using the available equality.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[if_pos rfl, if_pos rfl]`. Establish `: ((finCongr (rank_eq X (j + 1)).symm) a).val = a.val` using `rfl`. Rewrite using `[this]`. Use `split_ifs`. Rewrite using `[map_inv₀, map_inv₀, map_natCast, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_one, map_one]`. Rewrite using `[if_neg hac, if_neg (fun h => hac ((finCongr (rank_eq X (j + 1)).symm).injective h)), map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mF_dgQ (j : ℕ) (b : BX X) (i0 : X.Pl → ℕ) :
     mF X (j + 1) b (dgQ (X.G.P.Qq b.1) p _ (i0 b.1)) = DgX X X.G.Kf j i0 b.1 := by
@@ -52,17 +50,17 @@ theorem mF_dgQ (j : ℕ) (b : BX X) (i0 : X.Pl → ℕ) :
   · rw [if_neg hac, if_neg (fun h => hac ((finCongr (rank_eq X (j + 1)).symm).injective h)), map_zero, map_zero]
 
 /- English proof (translation)
-Introduce `p _ X j L' L'' i0 h2 h4`. Establish `key : ∀ v : X.Pl, ∃ g' h' : GL (Fin ((X.Pj (j + 1)).m + 1)) (X.G.P.Qq v), X.latAt v (j + 1) L'' = colSpan (X.G.P.W v) (g' : Matrix _ _ (X.G.P.Qq v)) ∧ X.latAt v (j + 1) L' = colSpan (X.G.P.W v) (h' : Matrix _ _ (X.G.P.Qq v)) ∧ (h' : Matrix (Fin ((X.Pj (j + 1)).m + 1)) (Fin ((X.Pj …`. Introduce `v`. Establish `hS` using `X.G.P.setting v`. Use `hS.frac_alt` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : (p : X.G.P.Qq v) ≠ 0` using `pQ_ne hS.p_unif`. Break down `h4 v with ⟨h0, hL⟩ | ⟨_, he⟩` into its components or cases. Take `⟨g, hg, hgL⟩` from `h2 v`. Establish `h0' : i0 v = 0` using `h0`. Use `⟨Matrix.nonsingInvUnit g hg, Matrix.nonsingInvUnit g hg, ?_, hgL, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show L'' v = _`. Rewrite using `[hL]`. Conclude with `hgL`. Establish `: dgQ (X.G.P.Qq v) p ((X.Pj (j + 1)).m + 1) (i0 v) = 1`. Unfold `dgQ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0']`. Simplify using the standard rewrite rules. Rewrite using `[this, mul_one]`. Take `⟨g, hg, hsrc, htgt⟩` from `Formalism.L2.G.Model.edgeBasis hS _ _ _ he`. Establish `hd : IsUnit (g * dgQ (X.G.P.Qq v) p ((X.Pj (j + 1)).m + 1) (i0 v)).det`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Matrix.det_mul]`. Conclude with `hg.mul (isUnit_iff_ne_zero.2 (dgQ_det_ne _ _ _ _ hp0))`. Conclude with `⟨Matrix.nonsingInvUnit g hg, Matrix.nonsingInvUnit _ hd, hsrc, htgt, rfl⟩`. Use `choose g' h' h1 h2' h3 using key`. Use `⟨g', h', h1, h2', fun b => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[h3 b.1, ← mF_dgQ X j b i0]`. Unfold `mF`. Rewrite using `[Matrix.submatrix_mul_equiv]`. Use `congr 1`. Conclude with `Matrix.map_mul (f := (X.G.P.ι b.1).comp (X.G.P.σ b.1 ^ b.2.val : X.G.P.Qq b.1 ≃+* X.G.P.Qq b.1).toRingHom)`.
+A detailed English derivation is pending.
 -/
 theorem frame_edge_identity_holds : XEdge := by
   intro p _ X j L' L'' i0 h2 h4

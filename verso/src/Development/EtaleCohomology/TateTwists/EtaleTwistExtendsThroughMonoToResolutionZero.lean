@@ -16,13 +16,11 @@ def EtaleTwistExtendsThroughMonoToResolutionZero : Prop :=
     ∃ e : M ⟶ (res _ (tw q 1)).X 0, j ≫ e = resι _ (tw q 1)
 
 /- English proof (translation)
-Introduce `q _`. Apply `pick_spec` to reduce the goal to its premises. Take `⟨M, j, hj, s, hs1, hs2⟩` from `h1 q`. Take `⟨e, he⟩` from `h2 q M j hj`. Use `⟨fun U v => Sec.map e (s U v), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `V U g v hq show Sec.res g (Sec.map e (s U v)) = Sec.map e (s V _)`. Rewrite using `[← hs1 V U g v hq]`. Conclude with `(LinearMap.congr_fun (congrArg ModuleCat.Hom.hom (e.hom.naturality g.op)) (s U v)).symm`. Introduce `U ζ v w h show Sec.map e (s U w) = Sec.map e (s U v) + _`. Rewrite using `[hs2 U ζ v w h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (e.hom.app (op U)).hom (_ + _) = _`. Rewrite using `[map_add]`. Use `congr 1`. Unfold `resGen`. Rewrite using `[← he]`.
-
-Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem etale_kummer_torsor_class_exists_of_tors_and_ext (h1 : EtaleKummerSectionsIntoTwistEmbeddingExist) (h2 : EtaleTwistExtendsThroughMonoToResolutionZero) : EtaleKummerTriangleExists := by
   intro q _

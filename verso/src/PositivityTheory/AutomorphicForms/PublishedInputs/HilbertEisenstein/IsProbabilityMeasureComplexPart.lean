@@ -14,7 +14,7 @@ def gP (a b : ℝ) : ℂ :=
   ((a : ℂ) + I * (b : ℂ)) * Complex.exp (-(Real.pi : ℂ) * ((a : ℂ) ^ 2 + (b : ℂ) ^ 2))
 
 /- English proof (translation)
-Unfold `gP realGaussian`. Rewrite using `[show -(Real.pi : ℂ) * ((a : ℂ) ^ 2 + (b : ℂ) ^ 2) = -(Real.pi : ℂ) * (a : ℂ) ^ 2 + -(Real.pi : ℂ) * (b : ℂ) ^ 2 by ring, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gP_eq (a b : ℝ) :
     gP a b = (a : ℂ) * realGaussian a * realGaussian b +
@@ -25,20 +25,20 @@ theorem gP_eq (a b : ℝ) :
   ring
 
 /- English proof (translation)
-Unfold `gP`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_gP : Continuous fun p : ℝ × ℝ => gP p.1 p.2 := by
   unfold gP
   fun_prop
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.comp (Real.continuous_fourierChar.comp (by fun_prop))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_charR (a : ℝ) : Continuous fun t : ℝ => ((𝐞 (-(t * a)) : Circle) : ℂ) :=
   continuous_subtype_val.comp (Real.continuous_fourierChar.comp (by fun_prop))
 
 /- English proof (translation)
-Use `hf.norm.mono' ((continuous_charR a).aestronglyMeasurable.mul hf.aestronglyMeasurable) ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun t => by simp [Circle.norm_coe]`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integrable_charR_mul {f : ℝ → ℂ} (hf : Integrable f) (a : ℝ) :
     Integrable (fun t : ℝ => ((𝐞 (-(t * a)) : Circle) : ℂ) * f t) := by
@@ -46,7 +46,7 @@ theorem integrable_charR_mul {f : ℝ → ℂ} (hf : Integrable f) (a : ℝ) :
   exact Filter.Eventually.of_forall fun t => by simp [Circle.norm_coe]
 
 /- English proof (translation)
-Establish `h` using `congrFun fourier_realGaussian a`. Rewrite `h` using `[Real.fourier_real_eq]`. Simplify `h` using `only [Circle.smul_def, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem integral_charR_even (a : ℝ) :
     ∫ t : ℝ, ((𝐞 (-(t * a)) : Circle) : ℂ) * realGaussian t = realGaussian a := by
@@ -55,7 +55,7 @@ theorem integral_charR_even (a : ℝ) :
   simpa only [Circle.smul_def, smul_eq_mul] using h
 
 /- English proof (translation)
-Establish `h` using `congrFun fourier_realGaussianOdd a`. Rewrite `h` using `[Real.fourier_real_eq]`. Simplify `h` using `only [Circle.smul_def, smul_eq_mul, realGaussianOdd, realGaussian]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem integral_charR_odd (a : ℝ) :
     ∫ t : ℝ, ((𝐞 (-(t * a)) : Circle) : ℂ) * ((t : ℂ) * realGaussian t) =
@@ -65,9 +65,9 @@ theorem integral_charR_odd (a : ℝ) :
   simpa only [Circle.smul_def, smul_eq_mul, realGaussianOdd, realGaussian] using h
 
 /- English proof (translation)
-Establish `hsplit : ∀ p : ℝ × ℝ, ((𝐞 (-(p.1 * a + p.2 * b)) : Circle) : ℂ) * gP p.1 p.2 = (((𝐞 (-(p.1 * a)) : Circle) : ℂ) * ((p.1 : ℂ) * realGaussian p.1)) * (((𝐞 (-(p.2 * b)) : Circle) : ℂ) * realGaussian p.2) + I * ((((𝐞 (-(p.1 * a)) : Circle) : ℂ) * realGaussian p.1) * (((𝐞 (-(p.2 * b)) …`. Introduce `p`. Rewrite using `[neg_add, AddChar.map_add_eq_mul, Circle.coe_mul, gP_eq]`. Expand and normalize the polynomial expressions, which then agree. Establish `hodd : Integrable (fun t : ℝ => (t : ℂ) * realGaussian t)` using `integrable_realGaussianOdd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Repeatedly rewrite using `[hsplit]`. Rewrite using `[Measure.volume_eq_prod, integral_add ((integrable_charR_mul hodd a).mul_prod (integrable_charR_mul integrable_realGaussian b)) (((integrable_charR_mul integrable_realGaussian a).mul_prod (integrable_charR_mul hodd b)).const_mul I), integral_const_mul, integral_prod_mul (fun t : …`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_place (a b : ℝ) :
     ∫ p : ℝ × ℝ, ((𝐞 (-(p.1 * a + p.2 * b)) : Circle) : ℂ) * gP p.1 p.2 = -I * gP a b := by
@@ -95,19 +95,19 @@ theorem integral_place (a b : ℝ) :
 variable (F : Type) [Field F] [NumberField F]
 
 /- English proof (translation)
-Rewrite using `[selfDualMeasure, IsTotallyReal.nrComplexPlaces_eq_zero, pow_zero, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem selfDualMeasure_eq_volume [IsTotallyReal F] : selfDualMeasure F = volume := by
   rw [selfDualMeasure, IsTotallyReal.nrComplexPlaces_eq_zero, pow_zero, one_smul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun w => not_isComplex_iff_isReal.mpr (IsTotallyReal.isReal w.1) w.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isEmpty_complexPlaces [IsTotallyReal F] : IsEmpty {w : InfinitePlace F // IsComplex w} :=
   ⟨fun w => not_isComplex_iff_isReal.mpr (IsTotallyReal.isReal w.1) w.2⟩
 
 /- English proof (translation)
-Use `haveI := isEmpty_complexPlaces F`. Establish `h : (volume : Measure ({w : InfinitePlace F // IsComplex w} → ℂ)) = Measure.dirac isEmptyElim`. Rewrite using `[volume_pi, Measure.pi_of_empty]`. Rewrite using `[h]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProbabilityMeasure_complexPart [IsTotallyReal F] :
     IsProbabilityMeasure (volume : Measure ({w : InfinitePlace F // IsComplex w} → ℂ)) := by
@@ -122,11 +122,9 @@ def proj2 (x : Fin 2 → mixedSpace F) : {w : InfinitePlace F // IsReal w} → �
   fun w => ((x 0).1 w, (x 1).1 w)
 
 /- English proof (translation)
-Use `haveI := isProbabilityMeasure_complexPart F`. Establish `h1` using `measurePreserving_finTwoArrow (volume : Measure (mixedSpace F))`. Establish `hf : MeasurePreserving (Prod.fst : mixedSpace F → ({w : InfinitePlace F // IsReal w} → ℝ)) volume volume`. Rewrite using `[Measure.volume_eq_prod]`. Conclude with `measurePreserving_fst`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hf.prod hf`. Establish `h3` using `(volume_measurePreserving_arrowProdEquivProdArrow ℝ ℝ {w : InfinitePlace F // IsReal w}).symm`. Establish `h : proj2 F = (MeasurableEquiv.arrowProdEquivProdArrow ℝ ℝ {w : InfinitePlace F // IsReal w}).symm ∘ Prod.map Prod.fst Prod.fst ∘ MeasurableEquiv.finTwoArrow`. Use function extensionality and compare the values at `x w`. Both sides reduce to the same expression.
-
-Rewrite using `[h, GroundTheory.Automorphic.Adele2.mixedMeasure2, selfDualMeasure_eq_volume]`. Conclude with `h3.comp (h2.comp h1)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurePreserving_proj2 [IsTotallyReal F] :
     MeasurePreserving (proj2 F) (GroundTheory.Automorphic.Adele2.mixedMeasure2 F) volume := by
@@ -148,7 +146,7 @@ theorem measurePreserving_proj2 [IsTotallyReal F] :
   exact h3.comp (h2.comp h1)
 
 /- English proof (translation)
-The claim follows from `(Fintype.prod_equiv (Equiv.subtypeUnivEquiv fun v => IsTotallyReal.isReal v) _ _ fun _ => rfl).symm`.
+A detailed English derivation is pending.
 -/
 theorem arch_eq_prod [IsTotallyReal F] (x₀ x₁ : mixedSpace F) :
     arch (toR F x₀) (toR F x₁) = ∏ w : {w : InfinitePlace F // IsReal w}, gP (x₀.1 w) (x₁.1 w) :=
@@ -156,7 +154,7 @@ theorem arch_eq_prod [IsTotallyReal F] (x₀ x₁ : mixedSpace F) :
     fun _ => rfl).symm
 
 /- English proof (translation)
-Use `haveI := isEmpty_complexPlaces F`. Rewrite using `[GroundTheory.Automorphic.Adele2.mixedPairing2, Fin.sum_univ_two, mixedTraceForm_apply', mixedTraceForm_apply']`. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, add_zero]`. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_neg_distrib, addChar_map_finsetSum]`. Conclude with `map_prod Circle.coeHom _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_pairing_eq_prod [IsTotallyReal F] (x y : Fin 2 → mixedSpace F) :
     ((𝐞 (-GroundTheory.Automorphic.Adele2.mixedPairing2 F x y) : Circle) : ℂ) =
@@ -170,11 +168,11 @@ theorem char_pairing_eq_prod [IsTotallyReal F] (x y : Fin 2 → mixedSpace F) :
   exact map_prod Circle.coeHom _ _
 
 /- English proof (translation)
-Use `set f : {w : InfinitePlace F // IsReal w} → ℝ × ℝ → ℂ := fun w p => ((𝐞 (-(p.1 * (y 0).1 w + p.2 * (y 1).1 w)) : Circle) : ℂ) * gP p.1 p.2 with hfdef`. Establish `hpt : ∀ x : Fin 2 → mixedSpace F, 𝐞 (-GroundTheory.Automorphic.Adele2.mixedPairing2 F x y) • arch (toR F (x 0)) (toR F (x 1)) = ∏ w, f w (proj2 F x w)`. Introduce `x`. Rewrite using `[Circle.smul_def, smul_eq_mul, char_pairing_eq_prod, arch_eq_prod, ← Finset.prod_mul_distrib]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hcont : Continuous fun z : {w : InfinitePlace F // IsReal w} → ℝ × ℝ => ∏ w, f w (z w)`. Use `continuous_finsetProd _ fun w _ => ?_` and prove the remaining obligations. Simplify using `only [hfdef]`. Use `Continuous.mul ?_ (continuous_gP.comp (continuous_apply w))` and prove the remaining obligations. Conclude with `continuous_subtype_val.comp (Real.continuous_fourierChar.comp (by fun_prop))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[GroundTheory.Automorphic.Adele2.mixedFourier2]`. Repeatedly rewrite using `[hpt]`. Rewrite using `[← integral_map (measurePreserving_proj2 F).aemeasurable hcont.aestronglyMeasurable, (measurePreserving_proj2 F).map_eq, integral_fintype_prod_volume_eq_prod f]`. Simplify using `only [hfdef, integral_place]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, arch_eq_prod, Fintype.card_congr (Equiv.subtypeUnivEquiv fun v : InfinitePlace F => IsTotallyReal.isReal v)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mixedFourier2_arch [IsTotallyReal F] (y : Fin 2 → mixedSpace F) :
     GroundTheory.Automorphic.Adele2.mixedFourier2 F (fun u => arch (toR F (u 0)) (toR F (u 1))) y =

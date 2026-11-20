@@ -13,16 +13,16 @@ open DCalcH DCalcBH DCalcDH DCalcEH
 variable {m n : ℕ}
 
 /- English proof (translation)
-The claim follows from `fF_hasDeriv c X P u t`.
+A detailed English derivation is pending.
 -/
 theorem hasDeriv (c : ℝ) (X : Fin n → ℝ) (P : PX m n) (u : Fin m → Fin n → ℂ) (t : ℝ) :
     HasDerivAt (fun t => fF c X P u t) (fF c X (dil c X P) u t) t :=
   fF_hasDeriv c X P u t
 
 /- English proof (translation)
-Establish `hcv : Convex ℝ (Set.Icc (s - 1) (s + 1))` using `convex_Icc _ _`. Establish `hs : s ∈ Set.Icc (s - 1) (s + 1)` using `⟨by linarith, by linarith⟩`. Establish `hsh : s + h ∈ Set.Icc (s - 1) (s + 1)`. Rewrite using `[abs_le] at hh; exact ⟨by linarith [hh.1], by linarith [hh.2]⟩`. Use `hcv.norm_image_sub_le_of_norm_hasDerivWithin_le (f := fun t => fF c X P u t) (fun t _ => (hasDeriv c X P u t).hasDerivWithinAt) hB hs hsh` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify `this` using `[Real.norm_eq_abs]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem quot_le (c : ℝ) (X : Fin n → ℝ) (P : PX m n) (u : Fin m → Fin n → ℂ) (s B : ℝ)
     (hB : ∀ t ∈ Set.Icc (s - 1) (s + 1), ‖fF c X (dil c X P) u t‖ ≤ B) (h : ℝ) (hh : |h| ≤ 1) :
@@ -36,23 +36,19 @@ theorem quot_le (c : ℝ) (X : Fin n → ℝ) (P : PX m n) (u : Fin m → Fin n 
   simpa [Real.norm_eq_abs] using this
 
 /- English proof (translation)
-Take `⟨K, a, hK, ha, hb⟩` from `fF_bound c hc X (dil c X P) s`. It suffices to establish `key : Tendsto (fun h : ℝ => ∫ u, ‖(fF c X P u (s + h) - fF c X P u s) / (h : ℂ) - fF c X (dil c X P) u s‖ ^ 2) (𝓝[≠] 0) (𝓝 (∫ _u : Fin m → Fin n → ℂ, (0 : ℝ))) by simpa using key`. Use `tendsto_integral_filter_of_dominated_convergence (fun u => (2 * K) ^ 2 * Real.exp (-(2 * a * sqN u))) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `Eventually.of_forall fun h => ?_` and prove the remaining obligations. Use `Continuous.aestronglyMeasurable ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `fF_cont c X P (s + h)`. Establish `h2` using `fF_cont c X P s`. Establish `h3` using `fF_cont c X (dil c X P) s`. Use `fun_prop`. Establish `hev : ∀ᶠ h in 𝓝[≠] (0 : ℝ), |h| ≤ 1 ∧ h ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(eventually_nhdsWithin_of_eventually_nhds ?_).and self_mem_nhdsWithin` and prove the remaining obligations. Use `filter_upwards [Metric.ball_mem_nhds (0 : ℝ) one_pos] with h hh`. Rewrite `hh` using `[Metric.mem_ball, Real.dist_eq, sub_zero]`. Conclude with `hh.le`. Use `filter_upwards [hev] with h ⟨hh, h0⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Eventually.of_forall fun u => ?_` and prove the remaining obligations. Establish `hB : ∀ t ∈ Set.Icc (s - 1) (s + 1), ‖fF c X (dil c X P) u t‖ ≤ K * Real.exp (-(a * sqN u))` using `fun t ht => hb u t ht`. Establish `hq` using `quot_le c X P u s _ hB h hh`. Establish `hhpos : 0 < |h|` using `abs_pos.2 h0`. Establish `e1 : ‖(fF c X P u (s + h) - fF c X P u s) / (h : ℂ)‖ ≤ K * Real.exp (-(a * sqN u))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[norm_div, Complex.norm_real, Real.norm_eq_abs, div_le_iff₀ hhpos]`. Conclude with `hq`. Establish `e2 : ‖fF c X (dil c X P) u s‖ ≤ K * Real.exp (-(a * sqN u))` using `hb u s ⟨by linarith, by linarith⟩`. Establish `e3 : ‖(fF c X P u (s + h) - fF c X P u s) / (h : ℂ) - fF c X (dil c X P) u s‖ ≤ 2 * K * Real.exp (-(a * sqN u))`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 
-Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, ← Real.exp_nat_mul]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(integrable_gauss (2 * a) (by positivity)).const_mul _`. Use `Eventually.of_forall fun u => ?_` and prove the remaining obligations. Establish `: Tendsto (fun h : ℝ => (fF c X P u (s + h) - fF c X P u s) / (h : ℂ) - fF c X (dil c X P) u s) (𝓝[≠] 0) (𝓝 0)`. Establish `h2` using `(hasDeriv c X P u s).tendsto_slope_zero`. Establish `h3` using `h2.sub_const (fF c X (dil c X P) u s)`.
-
-Rewrite `h3` using `[sub_self]`. Use `h3.congr' (Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Use `show h⁻¹ • (fF c X P u (s + h) - fF c X P u s) - fF c X (dil c X P) u s = (fF c X P u (s + h) - fF c X P u s) / (h : ℂ) - fF c X (dil c X P) u s`. Rewrite using `[Complex.real_smul, Complex.ofReal_inv, div_eq_inv_mul]`. Use `(this.norm).pow 2` as an intermediate fact.
-
-Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem l2conv (c : ℝ) (hc : 0 < c) (X : Fin n → ℝ) (P : PX m n) (s : ℝ) :
     Tendsto (fun h : ℝ => ∫ u, ‖(fF c X P u (s + h) - fF c X P u s) / (h : ℂ) - fF c X (dil c X P) u s‖ ^ 2)

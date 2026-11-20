@@ -8,17 +8,15 @@ open Formalism.L2.Fam.NPC Formalism.L2.Fam.NPC.BaseC GlobalTheory.HeckeLocN
 namespace GlobalTheory.GenHypOut
 
 /- English proof (translation)
-Establish `hov : NG.OverPl v s.v` using `GlobalTheory.LocLevel.overPl_of_isConjPl hc`. Take `⟨_, hl, hS, hvQ, _, _⟩` from `hv`. Establish `hp : v ∉ placesOver D.host.E (if D.what₂.places.resChar w = D.host.pde then D.host.pde' else D.host.pde)` using `fun h => hS ⟨Or.inr (Or.inr h), hl⟩`. Introduce and unpack `(⟨w', hov', kk, hk⟩ | hq)`. Apply `hS` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨?_, hl⟩` and prove the remaining obligations. Establish `hvk` using `GlobalTheory.LocLevel.mem_placesOver_of_overPl' hov hov' hk`. Use `fin_cases kk`. Conclude with `Or.inl hvk`. Conclude with `Or.inr (Or.inl hvk)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the first alternative. Prove the second alternative. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `htw : D.what₂.muAt w ≠ D.what₂.mu0`. Take `⟨w', hov', hw'⟩` from `GlobalTheory.FitHecke.qPl_sub tp w htw j hq`. Break down `hw' with hQ' | hp'` into its components or cases. Conclude with `hvQ (hQ w w' v hQ' ⟨s.v, hov', hov⟩)`. Conclude with `hp (GlobalTheory.LocLevel.mem_placesOver_of_overPl' hov hov' hp')`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `htw` using `[not_not]`. Take `⟨hg, w', hov', hu⟩` from `hq`. Apply `hu` to reduce the goal to its premises. Unfold `TupTied.tup`. Rewrite using `[tp.xi_tw, tp.psi_un w htw]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `HChar.UnrAt.mul ((cf.isMu0 j).unr w' fun kk hk => hg ⟨w', hov', kk, hk⟩) (HChar.UnrAt.mul ?_ (((isPsi_one (D.what₂.places.resChar w)).ram w').2 (Finset.notMem_empty _)))` and prove the remaining obligations. Establish `hnp : w' ∉ placesOver D.host.E (if D.what₂.places.resChar w = D.host.pde then D.host.pde' else D.host.pde)` using `fun h => hp (GlobalTheory.LocLevel.mem_placesOver_of_overPl' hov hov' h)`. Unfold `CharFrame.delAt`. Use `split_ifs with h`. Conclude with `cf.isDel'.unr w' fun h' => hnp (by rw [if_pos h]; exact h')`.
-
-Conclude with `cf.isDel.unr w' fun h' => hnp (by rw [if_neg h]; exact h')`.
+A detailed English derivation is pending.
 -/
 theorem not_mem_bad (D : D7) (cf : CharFrame D) (C : NChoice D) (tp : TupTied D cf C) (hQ : QOver C)
     (w : D.what₂.places.Pl) (j : Fin D.R.m) (v : PlE D.host) (k : ℕ) (s : SplitPlace D.host.E)
@@ -57,7 +55,7 @@ theorem not_mem_bad (D : D7) (cf : CharFrame D) (C : NChoice D) (tp : TupTied D 
       · exact cf.isDel.unr w' fun h' => hnp (by rw [if_neg h]; exact h')
 
 /- English proof (translation)
-Introduce `D cf M C tp hM hQ w j h1 h2`. Take `⟨j', rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`. Use `⟨gPl D ∪ qPl D (tp.tup (D.what₂.muTw w) ⟨j', by omega⟩), hM.hyp w ⟨j', by omega⟩, ?_⟩` and prove the remaining obligations. Introduce `v k s hv hc`. Conclude with `not_mem_bad D cf C tp hQ w _ v k s hv hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem genHyp : ∀ (D : D7) (cf : CharFrame D) (M : MtFam D) (C : NChoice D) (tp : TupTied D cf C),
     MtInput D M tp.tup C.Q → QOver C → GenHyp M C.Q := by

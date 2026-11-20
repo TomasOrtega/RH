@@ -12,7 +12,7 @@ noncomputable section
 namespace PI.EF
 
 /- English proof (translation)
-The claim follows from `localLemma_of hLI (localAbstract_of hDF hDL) ⟨7, max 300000 53946, by norm_num, lt_max_of_lt_left (by norm_num), lGrowth_of hLB (zetaGrowth_of hZB)⟩ zeroLocus hZW`.
+A detailed English derivation is pending.
 -/
 theorem localLemma_of_helpers (hZW : PI.ZerosWindow) (hDF : PI.DiscFactor) (hDL : PI.DiscLog)
     (hLB : PI.LBoundRight) (hZB : PI.ZetaBoundRight) (hLI : PI.LInvRight) :
@@ -22,7 +22,7 @@ theorem localLemma_of_helpers (hZW : PI.ZerosWindow) (hDF : PI.DiscFactor) (hDL 
       lGrowth_of hLB (zetaGrowth_of hZB)⟩ zeroLocus hZW
 
 /- English proof (translation)
-The claim follows from `explicitFormula_of_local hZW (localLemma_of_helpers hZW hDF hDL hLB hZB hLI) perron_gluing_sides`.
+A detailed English derivation is pending.
 -/
 theorem explicitFormula_main (hZW : PI.ZerosWindow) (hDF : PI.DiscFactor) (hDL : PI.DiscLog)
     (hLB : PI.LBoundRight) (hZB : PI.ZetaBoundRight) (hLI : PI.LInvRight) : PI.ExplicitFormula :=

@@ -18,7 +18,7 @@ def hL (v : Fin r → ℂ) : (Fin r → ℂ) →ₗ[ℂ] ℂ where
   map_smul' c u := by simp [hermC_smul_left]
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hle : Submodule.span ℂ s ≤ LinearMap.ker (hL τ G v)` using `Submodule.span_le.mpr (fun z hz => LinearMap.mem_ker.mpr (h z hz))`. Conclude with `LinearMap.mem_ker.mp (hle hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem perp_span {s : Set (Fin r → ℂ)} {v : Fin r → ℂ} (h : ∀ y ∈ s, hermC τ G y v = 0) :
     ∀ y ∈ Submodule.span ℂ s, hermC τ G y v = 0 := by
@@ -28,11 +28,11 @@ theorem perp_span {s : Set (Fin r → ℂ)} {v : Fin r → ℂ} (h : ∀ y ∈ s
   exact LinearMap.mem_ker.mp (hle hy)
 
 /- English proof (translation)
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => simp [hermC]`. Consider the case `add x y _ _ hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `e : hermC τ G v (x + y) = hermC τ G v x + hermC τ G v y`. Simplify using `only [hermC, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`. Rewrite using `[e, hx, hy, add_zero]`. Consider the case `smul c x _ hx`. Establish `e : hermC τ G v (c • x) = conj c * hermC τ G v x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hx, mul_zero]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem perp_span_right (hG : ∀ a b, cc (G a b) = G b a) {s : Set (Fin r → ℂ)} {v : Fin r → ℂ}
     (h : ∀ y ∈ s, hermC τ G v y = 0) : ∀ y ∈ Submodule.span ℂ s, hermC τ G v y = 0 := by
@@ -52,13 +52,13 @@ theorem perp_span_right (hG : ∀ a b, cc (G a b) = G b a) {s : Set (Fin r → �
     rw [e, hx, mul_zero]
 
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, hj, rfl⟩` from `hx`. Use `⟨Pi.single j 1, fun i hi => ?_, ?_⟩` and prove the remaining obligations. Establish `hij : i ≠ j` using `fun e => hi (e ▸ hj)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[Pi.single_apply, hij]`. Simplify using `[Pi.single_apply]`. Consider the case `zero => exact ⟨0, fun _ _ => rfl, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨w, hw, rfl⟩` from `hx`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨w', hw', rfl⟩` from `hy`. Use `⟨w + w', fun i hi => by simp [hw i hi, hw' i hi], ?_⟩` and prove the remaining obligations. Simplify using `[add_smul, Finset.sum_add_distrib]`. Consider the case `smul c x _ hx`. Take `⟨w, hw, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨c • w, fun i hi => by simp [hw i hi], ?_⟩` and prove the remaining obligations. Simplify using `[Finset.smul_sum, smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem coef_of_mem {n : ℕ} (Y : Fin n → Fin r → ℂ) (S : Set (Fin n)) {v : Fin r → ℂ}
     (hv : v ∈ Submodule.span ℂ (Y '' S)) :
@@ -83,7 +83,7 @@ theorem coef_of_mem {n : ℕ} (Y : Fin n → Fin r → ℂ) (S : Set (Fin n)) {v
     simp [Finset.smul_sum, smul_smul]
 
 /- English proof (translation)
-Use `Submodule.sum_mem _ (fun j _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hj : j ∈ S`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, hj, rfl⟩)`. Rewrite using `[hw j hj, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_mem_of {n : ℕ} (Y : Fin n → Fin r → ℂ) (S : Set (Fin n)) (w : Fin n → ℂ)
     (hw : ∀ j, j ∉ S → w j = 0) : ∑ j, w j • Y j ∈ Submodule.span ℂ (Y '' S) := by
@@ -97,11 +97,11 @@ variable (hG : ∀ a b, cc (G a b) = G b a)
 include hG
 
 /- English proof (translation)
-Establish `hτ : ∀ a b, conj (τ (G a b)) = τ (G b a)`. Introduce `a b`. Rewrite using `[← hG a b]`. Use `first`. Consider the case `exact (NumberField.IsCMField.complexEmbedding_complexConj τ (G a b)).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (IsCMField.complexEmbedding_complexConj τ (G a b)).symm`. Consider the case `(simp only [cc]; exact (NumberField.IsCMField.complexEmbedding_complexConj τ (G a b)).symm)`. Consider the case `(simp [cc])`. Establish `hc : conj (hermC τ G v v) = hermC τ G v v`. Simplify using `only [hermC, map_sum, map_mul, Complex.conj_conj]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))` and prove the remaining obligations. Rewrite using `[hτ]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `Complex.conj_eq_iff_im.mp hc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hC_self_im (v : Fin r → ℂ) : (hermC τ G v v).im = 0 := by
   have hτ : ∀ a b, conj (τ (G a b)) = τ (G b a) := by
@@ -121,89 +121,77 @@ theorem hC_self_im (v : Fin r → ℂ) : (hermC τ G v v).im = 0 := by
   exact Complex.conj_eq_iff_im.mp hc
 
 /- English proof (translation)
-Take `⟨ε, hε⟩ : ∃ ε : Fin n → ℂ, ε = fun c : Fin n => (if (c : ℕ) < p then 1 else -1 : ℂ)` from `⟨fun c : Fin n => (if (c : ℕ) < p then 1 else -1 : ℂ), rfl⟩`. Establish `hτ : ∀ a b, conj (τ (G a b)) = τ (G b a)`. Introduce `a b`. Rewrite using `[← hG a b]`. Use `first`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `exact (NumberField.IsCMField.complexEmbedding_complexConj τ (G a b)).symm`. Consider the case `exact (IsCMField.complexEmbedding_complexConj τ (G a b)).symm`. Consider the case `(simp only [cc]; exact (NumberField.IsCMField.complexEmbedding_complexConj τ (G a b)).symm)`. Consider the case `(simp [cc])`. Establish `csym : ∀ u w, conj (hermC τ G u w) = hermC τ G w u`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u w`. Simplify using `only [hermC, map_sum, map_mul, Complex.conj_conj]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))` and prove the remaining obligations. Rewrite using `[hτ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `smulL : ∀ (c : ℂ) u w, hermC τ G (c • u) w = c * hermC τ G u w` using `fun c u w => map_smul (hL τ G w) c u`. Establish `subL : ∀ u u' w, hermC τ G (u - u') w = hermC τ G u w - hermC τ G u' w` using `fun u u' w => map_sub (hL τ G w) u u'`. Establish `sumL : ∀ (s : Finset (Fin n)) (f : Fin n → Fin r → ℂ) w, hermC τ G (∑ a ∈ s, f a) w = ∑ a ∈ s, hermC τ G (f a) w` using `fun s f w => map_sum (hL τ G w) f s`. Establish `smulR : ∀ (c : ℂ) u w, hermC τ G u (c • w) = conj c * hermC τ G u w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c u w`. Rewrite using `[← csym, smulL, map_mul, csym]`. Establish `cross : ∀ a c : Fin n, ¬((a : ℕ) < p ↔ (c : ℕ) < p) → ∀ u ∈ Submodule.span ℂ (Y '' {j | ((j : ℕ) < p ↔ (a : ℕ) < p)}), ∀ w ∈ Submodule.span ℂ (Y '' {j | ((j : ℕ) < p ↔ (c : ℕ) < p)}), hermC τ G u w = 0`. Introduce `a c hac u hu w hw`. Use `perp_span τ G ?_ u hu` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨j, hj, rfl⟩`. Use `perp_span_right τ G hG ?_ w hw` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Simplify using `only [Set.mem_setOf_eq] at hj hk`. Distinguish the cases in `hjp : (j : ℕ) < p`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hkp : p ≤ (k : ℕ)`. Assume the negation of the conclusion as `hkp`. Conclude with `hac ⟨fun _ => hk.mp (not_le.mp hkp), fun _ => hj.mp hjp⟩`. Conclude with `horth j k hjp hkp`. Establish `hkp : (k : ℕ) < p`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hkp`. Conclude with `hac ⟨fun ha => absurd (hj.mpr ha) hjp, fun hc => absurd (hk.mpr hc) hkp⟩`. Rewrite using `[← csym, horth k j hkp (not_lt.mp hjp), map_zero]`. Establish `step : ∀ m : ℕ, m ≤ n → ∃ g : Fin n → Fin r → ℂ, (∀ c a : Fin n, (c : ℕ) < m → (a : ℕ) < m → hermC τ G (g c) (g a) = if c = a then ε c else 0) ∧ (∀ c : Fin n, (c : ℕ) < m → g c ∈ Submodule.span ℂ (Y '' {j | (j : ℕ) ≤ c ∧ ((j : ℕ) < p ↔ (c : ℕ) < p)})) ∧ (∀ j : Fin n, (j : ℕ) < m …`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `m with`. Consider the case `zero => exact fun _ => ⟨0, fun c _ h => absurd h (Nat.not_lt_zero _), fun c h => absurd h (Nat.not_lt_zero _), fun j h => absurd h (Nat.not_lt_zero _)⟩`. Consider the case `succ m ih`. Introduce `hmn`. Take `⟨g, horg, hspg, hspY⟩` from `ih (Nat.le_of_succ_le hmn)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Use `set c₀ : Fin n := ⟨m, hmn⟩ with hc₀`. Use `set T : Finset (Fin n) := Finset.univ.filter (fun a : Fin n => (a : ℕ) < m) with hT`. Use `set v : Fin r → ℂ := Y c₀ - ∑ a ∈ T, (ε a * hermC τ G (Y c₀) (g a)) • g a with hv`. Establish `hεsq : ∀ a, ε a * ε a = 1`. Introduce `a`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hε]`. Simplify using `only`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hvg : ∀ a ∈ T, hermC τ G v (g a) = 0`. Introduce `a ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `ham : (a : ℕ) < m` using `(Finset.mem_filter.mp ha).2`. Rewrite using `[hv, subL, sumL]`. Establish `: ∀ b ∈ T, hermC τ G ((ε b * hermC τ G (Y c₀) (g b)) • g b) (g a) = if b = a then hermC τ G (Y c₀) (g a) else 0`. Introduce `b hb`. Rewrite using `[smulL, horg b a (Finset.mem_filter.mp hb).2 ham]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with hba`. Rewrite using `[hba, mul_comm (ε a), mul_assoc, hεsq, mul_one]`. Rewrite using `[mul_zero]`. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_ite_eq' T a, if_pos ha, sub_self]`. Use `set S₀ : Set (Fin n) := {j | (j : ℕ) ≤ c₀ ∧ ((j : ℕ) < p ↔ (c₀ : ℕ) < p)} with hS₀`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hgS : ∀ a ∈ T, ((a : ℕ) < p ↔ (c₀ : ℕ) < p) → g a ∈ Submodule.span ℂ (Y '' S₀)`. Introduce `a ha hblk`. Establish `ham : (a : ℕ) < m` using `(Finset.mem_filter.mp ha).2`. Use `Submodule.span_mono (Set.image_mono ?_) (hspg a ham)` and prove the remaining obligations. Introduce and unpack `j ⟨hj1, hj2⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨le_trans hj1 (le_of_lt ham), hj2.trans hblk⟩`. Establish `hcoef0 : ∀ a ∈ T, ¬((a : ℕ) < p ↔ (c₀ : ℕ) < p) → hermC τ G (Y c₀) (g a) = 0`. Introduce `a ha hblk`. Establish `ham : (a : ℕ) < m` using `(Finset.mem_filter.mp ha).2`. Use `cross c₀ a (fun h => hblk h.symm) (Y c₀) (Submodule.subset_span ⟨c₀, Iff.rfl, rfl⟩) (g a) (Submodule.span_mono (Set.image_mono ?_) (hspg a ham))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `j ⟨_, hj2⟩`. Conclude with `hj2`. Establish `hvS : v ∈ Submodule.span ℂ (Y '' S₀)`. Rewrite using `[hv]`. Use `Submodule.sub_mem _ (Submodule.subset_span ⟨c₀, ⟨le_refl _, Iff.rfl⟩, rfl⟩) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ (fun a ha => ?_)` and prove the remaining obligations. Distinguish the cases in `hblk : ((a : ℕ) < p ↔ (c₀ : ℕ) < p)`. Conclude with `Submodule.smul_mem _ _ (hgS a ha hblk)`. Rewrite using `[hcoef0 a ha hblk, mul_zero, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hv0 : v ≠ 0`. Introduce `hv0`. Establish `hY : Y c₀ = ∑ a ∈ T, (ε a * hermC τ G (Y c₀) (g a)) • g a`. Rewrite `hv0` using `[hv]`. Conclude with `sub_eq_zero.mp hv0`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hin : Y c₀ ∈ Submodule.span ℂ (Y '' {j | (j : ℕ) < m})`. Rewrite using `[hY]`. Use `Submodule.sum_mem _ (fun a ha => Submodule.smul_mem _ _ ?_)` and prove the remaining obligations. Establish `ham : (a : ℕ) < m` using `(Finset.mem_filter.mp ha).2`. Use `Submodule.span_mono (Set.image_mono ?_) (hspg a ham)` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `j ⟨hj1, _⟩`. Conclude with `lt_of_le_of_lt hj1 ham`. Establish `hnot : c₀ ∉ {j : Fin n | (j : ℕ) < m}`. Simplify using `[hc₀]`. Use `first`.
+Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Consider the case `exact hind.not_mem_span_image hnot hin`. Consider the case `exact hind.notMem_span_image hnot hin`. Establish `hsign : 0 < (ε c₀ * hermC τ G v v).re`. Take `⟨w, hw, hvw⟩` from `coef_of_mem Y S₀ hvS`. Establish `hw0 : w ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Apply `hv0` to reduce the goal to its premises. Rewrite using `[hvw]`. Simplify using the standard rewrite rules. Rewrite using `[hε]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Prove the first alternative.
 
-Simplify using `only`. Distinguish the cases in `hcp : (c₀ : ℕ) < p`. Rewrite using `[if_pos hcp, one_mul, hvw]`. Use `hpos w (fun j hj => hw j ?_) hw0` and prove the remaining obligations. Introduce and unpack `⟨_, hj2⟩`.
+Prove the second alternative. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `absurd (hj2.mpr hcp) (not_lt.mpr hj)`. Rewrite using `[if_neg hcp, hvw]`. Use `hneg w (fun j hj => hw j ?_) hw0` as an intermediate fact. Simplify using `only [neg_mul, one_mul, Complex.neg_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `⟨_, hj2⟩`. Conclude with `hcp (hj2.mp hj)`. Use `set t : ℝ := (ε c₀ * hermC τ G v v).re with ht`. Establish `hvv : hermC τ G v v = ε c₀ * (t : ℂ)`. Establish `hεc : ε c₀ = 1 ∨ ε c₀ = -1`.
+Chain the equalities or inequalities of the calculation. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hε]`. Simplify using `only`. Use `split_ifs`. Conclude with `Or.inl rfl`. Conclude with `Or.inr rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `him` using `hC_self_im τ G hG v`. Apply `Complex.ext` to reduce the goal to its premises. Apply the tactic sequence `rcases hεc with h | h <;> simp [ht, h]`. Apply the tactic sequence `rcases hεc with h | h <;> simp [ht, h, him]`. Use `set s : ℂ := (((Real.sqrt t)⁻¹ : ℝ) : ℂ) with hs`.
+Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Establish `hss : s * (conj s * (ε c₀ * (t : ℂ))) = ε c₀`. Establish `hr : ((Real.sqrt t)⁻¹ * ((Real.sqrt t)⁻¹ * t) : ℝ) = 1`. Rewrite using `[← mul_assoc, ← mul_inv, Real.mul_self_sqrt hsign.le, inv_mul_cancel₀ hsign.ne']`. Rewrite using `[hs, Complex.conj_ofReal]`. Establish `hc : ((Real.sqrt t)⁻¹ : ℂ) * (((Real.sqrt t)⁻¹ : ℂ) * (t : ℂ)) = 1`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hr` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ε c₀ := by rw [hc, mul_one]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨Function.update g c₀ (s • v), ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hlt : ∀ c : Fin n, (c : ℕ) < m + 1 → c ≠ c₀ → (c : ℕ) < m`. Introduce `c hc hne`. Establish `: (c : ℕ) ≠ m` using `fun h => hne (Fin.ext h)`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTm : ∀ c : Fin n, (c : ℕ) < m → c ∈ T` using `fun c hc => Finset.mem_filter.mpr ⟨Finset.mem_univ _, hc⟩`. Introduce `c a hc ha`. Apply the tactic sequence `by_cases hc0 : c = c₀ <;> by_cases ha0 : a = c₀`. Substitute `hc0` using the available equality. Substitute `ha0` using the available equality.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Function.update_self, smulL, smulR, hvv, hss, if_pos rfl]`. Substitute `hc0` using the available equality. Rewrite using `[Function.update_self, Function.update_of_ne ha0, smulL, hvg a (hTm a (hlt a ha ha0)), mul_zero, if_neg (Ne.symm ha0)]`. Substitute `ha0` using the available equality. Rewrite using `[Function.update_self, Function.update_of_ne hc0, smulR, ← csym, hvg c (hTm c (hlt c hc hc0)), map_zero, mul_zero, if_neg hc0]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne hc0, Function.update_of_ne ha0]`. Conclude with `horg c a (hlt c hc hc0) (hlt a ha ha0)`. Introduce `c hc`. Distinguish the cases in `hc0 : c = c₀`. Substitute `hc0` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Function.update_self]`. Conclude with `Submodule.smul_mem _ _ hvS`. Rewrite using `[Function.update_of_ne hc0]`. Establish `: (c : ℕ) ≠ m` using `fun h => hc0 (Fin.ext h)`. Conclude with `hspg c (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `j hj`. Distinguish the cases in `hj0 : j = c₀`. Substitute `hj0` using the available equality. Establish `hY : Y c₀ = s⁻¹ • (s • v) + ∑ a ∈ T, (ε a * hermC τ G (Y c₀) (g a)) • g a`. Establish `hs0 : s ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hs]`. Conclude with `(inv_pos.mpr (Real.sqrt_pos.mpr hsign)).ne'` after adjusting the coercions. Rewrite using `[smul_smul, inv_mul_cancel₀ hs0, one_smul, hv, sub_add_cancel]`. Rewrite using `[hY]`. Use `Submodule.add_mem _ (Submodule.smul_mem _ _ (Submodule.subset_span ⟨c₀, ⟨le_refl _, Iff.rfl⟩, Function.update_self _ _ _⟩)) ?_` and prove the remaining obligations.
-
-Use `Submodule.sum_mem _ (fun a ha => ?_)` and prove the remaining obligations. Establish `ham : (a : ℕ) < m` using `(Finset.mem_filter.mp ha).2`. Establish `hac : a ≠ c₀` using `fun h => by rw [h] at ham; exact lt_irrefl _ ham`. Distinguish the cases in `hblk : ((a : ℕ) < p ↔ (c₀ : ℕ) < p)`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, ⟨le_of_lt ham, hblk⟩, ?_⟩)` and prove the remaining obligations.
-
-Conclude with `Function.update_of_ne hac _ _`. Rewrite using `[hcoef0 a ha hblk, mul_zero, zero_smul]`. Conclude with `Submodule.zero_mem _`. Establish `hjm : (j : ℕ) < m`. Establish `: (j : ℕ) ≠ m` using `fun h => hj0 (Fin.ext h)`.
-
-Use linear arithmetic over natural numbers and integers. Use `Submodule.span_mono ?_ (hspY j hjm)` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `hcc : c ≠ c₀`.
-
-Introduce `h`. Rewrite `hc` using `[h]`. Conclude with `absurd (lt_of_le_of_lt hc.1 hjm) (lt_irrefl _)`. Conclude with `Function.update_of_ne hcc _ _`. Take `⟨g, horg, hspg, hspY⟩` from `step n le_rfl`.
-
-Use `⟨g, fun c a => ?_, fun c hc => ?_, fun c => ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[horg c a c.isLt a.isLt, hε]`. Use `Submodule.span_mono (Set.image_mono ?_) (hspg c c.isLt)` and prove the remaining obligations. Introduce and unpack `j ⟨_, hj2⟩`. Conclude with `hj2.mpr hc`.
-
-Use `Submodule.span_mono (Set.image_subset_range _ _) (hspg c c.isLt)` and prove the remaining obligations. Take `⟨β, hβ, hYβ⟩` from `coef_of_mem g _ (hspY j j.isLt)`. Use `⟨β, fun c hc => hβ c ?_, hYβ⟩` and prove the remaining obligations. Introduce and unpack `⟨_, h2⟩`. Conclude with `hc h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem gs_exists {n : ℕ} (p : ℕ) (Y : Fin n → Fin r → ℂ) (hind : LinearIndependent ℂ Y)
     (horth : ∀ j k : Fin n, (j : ℕ) < p → p ≤ (k : ℕ) → hermC τ G (Y j) (Y k) = 0)

@@ -12,7 +12,7 @@ open Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.TermOp F
 namespace Formalism.L2.SG.Pf.KernelOfEmbedding
 
 /- English proof (translation)
-The claim follows from `ampCov_of Formalism.L2.SG.Pf.ratPt_holds Formalism.L2.SG.Closed.ChiTrivialC_holds Y`.
+A detailed English derivation is pending.
 -/
 theorem AmpCov_holds {D : D7} {X : HidaSetting D} (Y : Formalism.L2.SG.Full.Full X) : AmpCov Y :=
   ampCov_of Formalism.L2.SG.Pf.ratPt_holds Formalism.L2.SG.Closed.ChiTrivialC_holds Y

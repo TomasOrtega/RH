@@ -4,9 +4,9 @@ open GlobalTheory GlobalTheory.LogDR
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_antidiagonal_choose_succ_mul (fun i j => (⇑D)^[i] a * (⇑D)^[j] b) n, Function.iterate_succ_apply', ih, map_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun ij hij => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hij` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `hc : (n.choose ij.2 : R) = (n.choose ij.1 : R)`. Rewrite using `[← hij, Nat.choose_symm_add]`. Rewrite using `[hc, Derivation.leibniz, Derivation.leibniz, Derivation.map_natCast, smul_zero, add_zero, Function.iterate_succ_apply', Function.iterate_succ_apply']`. Simplify using `only [smul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

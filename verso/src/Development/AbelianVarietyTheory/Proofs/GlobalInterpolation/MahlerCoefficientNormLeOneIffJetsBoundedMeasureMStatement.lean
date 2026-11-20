@@ -5,7 +5,7 @@ open GlobalTheory.MomOne GlobalTheory.MomN PowerSeries
 open scoped ComplexConjugate
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.MomCrit.momInt_iff_norm_mahler_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FMahlerCoefficientNormLeOneIffJetsBoundedMeasureM.lean&line=217#L217)
 -/

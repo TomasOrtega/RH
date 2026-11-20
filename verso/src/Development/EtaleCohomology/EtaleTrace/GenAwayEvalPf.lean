@@ -9,7 +9,7 @@ namespace LateralTheory.EtaleTrace.Cov.GenInPf
 variable {k : Type} [Field k] {N : ℕ}
 
 /- English proof (translation)
-Rewrite using `[IsAffineOpen.fromSpec, Iso.inv_comp_eq, Proj.awayι, ← Category.assoc, ← Category.assoc]`. Establish `e : (Proj.isAffineOpen_basicOpen (A k N) f hf hd).isoSpec.hom ≫ Spec.map (Proj.awayToSection (A k N) f) = (Proj.basicOpenIsoSpec (A k N) f hf hd).hom`. Rewrite using `[Proj.basicOpenIsoSpec_hom, Proj.basicOpenToSpec, IsAffineOpen.isoSpec_hom]`. Rewrite using `[e, Iso.hom_inv_id, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem fromSpec_eq {f : MvPolynomial (Fin (N + 1)) k} {d : ℕ} (hf : f ∈ A k N d) (hd : 0 < d) :
     (Proj.isAffineOpen_basicOpen (A k N) f hf hd).fromSpec =
@@ -21,11 +21,11 @@ theorem fromSpec_eq {f : MvPolynomial (Fin (N + 1)) k} {d : ℕ} (hf : f ∈ A k
   rw [e, Iso.hom_inv_id, Category.id_comp]
 
 /- English proof (translation)
-Establish `hU` using `Proj.isAffineOpen_basicOpen (A k N) f hf hd`. Establish `key : hU.fromSpec ≫ Proj.toSpecZero (A k N) = Spec.map (CommRingCat.ofHom (HomogeneousLocalization.fromZeroRingHom _ _) ≫ Proj.awayToSection (A k N) f)`. Rewrite using `[fromSpec_eq hf hd, Category.assoc, Proj.awayι_toSpecZero, Spec.map_comp]`. Establish `h1 : (Proj.toSpecZero (A k N)).appLE ⊤ (Proj.basicOpen (A k N) f) le_top ≫ hU.fromSpec.appLE _ ⊤ hU.fromSpec_preimage_self.ge = (hU.fromSpec ≫ Proj.toSpecZero (A k N)).appLE ⊤ ⊤ (by simp)` using `Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _`. Simplify using `only [key] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3 : hU.fromSpec.appLE _ ⊤ hU.fromSpec_preimage_self.ge = (Scheme.ΓSpecIso _).inv`. Rewrite using `[Scheme.Hom.appLE, hU.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Conclude with `(congrArg (_ ≫ ·) ((congrArg _ (Subsingleton.elim _ (𝟙 _))).trans ((Spec _).presheaf.map_id _))).trans (Category.comp_id _)`. Establish `h4 : ∀ {R S : CommRingCat.{0}} (g : R ⟶ S) e, (Spec.map g).appLE ⊤ ⊤ e = (Spec.map g).appTop` using `fun _ _ => rfl`. Rewrite `h1` using `[h3, h4]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono (Scheme.ΓSpecIso _).inv, Category.assoc, h1, Scheme.ΓSpecIso_inv_naturality]`.
+A detailed English derivation is pending.
 -/
 theorem constSecC {f : MvPolynomial (Fin (N + 1)) k} {d : ℕ} (hf : f ∈ A k N d) (hd : 0 < d) :
     (Scheme.ΓSpecIso (CommRingCat.of (A k N 0))).inv ≫
@@ -48,11 +48,11 @@ theorem constSecC {f : MvPolynomial (Fin (N + 1)) k} {d : ℕ} (hf : f ∈ A k N
   rw [← cancel_mono (Scheme.ΓSpecIso _).inv, Category.assoc, h1, Scheme.ΓSpecIso_inv_naturality]
 
 /- English proof (translation)
-Substitute `hp` using the available equality. Establish `hC` using `constSecC (X_mem k N i) one_pos`. Establish `e1 : kHom (ι ≫ PNto k N) = ((Scheme.ΓSpecIso (CommRingCat.of k)).inv ≫ (ι ≫ PNto k N).appLE ⊤ (ι ⁻¹ᵁ Proj.basicOpen (A k N) (MvPolynomial.X i)) le_top ≫ X.presheaf.germ _ (genericPoint X) h).hom`. Rewrite using `[kHom, ← X.presheaf.germ_res (homOfLE (le_top : ι ⁻¹ᵁ Proj.basicOpen (A k N) (MvPolynomial.X i) ≤ ⊤)) _ h]`. Both sides reduce to the same expression.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : (ι ≫ PNto k N).appLE ⊤ (ι ⁻¹ᵁ Proj.basicOpen (A k N) (MvPolynomial.X i)) le_top = (PNto k N).appLE ⊤ (Proj.basicOpen (A k N) (MvPolynomial.X i)) le_top ≫ ι.appLE (Proj.basicOpen (A k N) (MvPolynomial.X i)) _ le_rfl` using `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).symm`. Establish `e3 : (PNto k N).appLE ⊤ (Proj.basicOpen (A k N) (MvPolynomial.X i)) le_top = (Spec.map (CommRingCat.ofHom (algebraMap k (A k N 0)))).appTop ≫ (Proj.toSpecZero (A k N)).appLE ⊤ (Proj.basicOpen (A k N) (MvPolynomial.X i)) le_top` using `Scheme.Hom.comp_appLE _ _ _ _ _`. Establish `e4 : ι.appLE (Proj.basicOpen (A k N) (MvPolynomial.X i)) _ le_rfl = ι.app _` using `Scheme.Hom.appLE_eq_app _`. Establish `e5 : (Scheme.ΓSpecIso (CommRingCat.of k)).inv ≫ (ι ≫ PNto k N).appLE ⊤ (ι ⁻¹ᵁ Proj.basicOpen (A k N) (MvPolynomial.X i)) le_top = CommRingCat.ofHom (algebraMap k (A k N 0)) ≫ (CommRingCat.ofHom (HomogeneousLocalization.fromZeroRingHom _ _) ≫ Proj.awayToSection (A k N) (MvPolynomi …`. Rewrite using `[e2, e3, e4, ← hC]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `n` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap k (A k N 0)))`. Simplify using `only [Category.assoc] at n ⊢`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) n.symm).trans (by simp only [Category.assoc]))`. Rewrite using `[e1, ← Category.assoc, e5]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem kHom_eq {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ S k) (ι : X ⟶ PN k N) (hp : ι ≫ PNto k N = p)
     (i : Fin (N + 1)) (h : genericPoint X ∈ ι ⁻¹ᵁ Proj.basicOpen (A k N) (MvPolynomial.X i)) (c : k) :
@@ -85,11 +85,11 @@ theorem kHom_eq {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ S k) (ι : X ⟶ PN k
   rfl
 
 /- English proof (translation)
-Use `conv_lhs => rw [g.as_sum]`. Use `conv_rhs => rw [g.as_sum]`. Rewrite using `[← coe_eval₂Hom, map_sum, ← coe_eval₂Hom, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Establish `hd` using `hg (mem_support_iff.mp hs)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [coe_eval₂Hom, eval₂_monomial, Finsupp.prod]`. Rewrite using `[mul_assoc]`. Use `congr 1`. Establish `hm : m = ∑ j ∈ s.support, s j`. Rewrite using `[← hd]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finsupp.weight_apply, Finsupp.sum]`. Rewrite using `[hm, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun j _ => by rw [← mul_pow, hab]`.
+A detailed English derivation is pending.
 -/
 theorem eval₂_mul_pow {σ R L : Type} [CommSemiring R] [CommRing L] (F : R →+* L) (a b : σ → L) (t : L)
     (hab : ∀ j, a j * t = b j) {m : ℕ} {g : MvPolynomial σ R} (hg : g.IsHomogeneous m) :
@@ -109,13 +109,13 @@ theorem eval₂_mul_pow {σ R L : Type} [CommSemiring R] [CommRing L] (F : R →
   exact Finset.prod_congr rfl fun j _ => by rw [← mul_pow, hab]
 
 /- English proof (translation)
-Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Set `vH : HomogeneousLocalization (A k N) (Submonoid.powers (X i : MvPolynomial (Fin (N + 1)) k)) →+* Localization (Submonoid.powers (X i : MvPolynomial (Fin (N + 1)) k))` to `{ toFun := fun y => y.val, map_one' := HomogeneousLocalization.val_one, map_mul' := HomogeneousLocalization.val_mul, map_zero' := HomogeneousLocalization.val_zero, map_add' := HomogeneousLocalization.val_add }`. Express the relevant statement in the definitionally equal form `_ = vH _`. Rewrite using `[eval₂_comp_left]`. Establish `hgh : g.IsHomogeneous m` using `by simpa using (mem_homogeneousSubmodule _ _).1 hg`.
+Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set L := Localization (Submonoid.powers (X i : MvPolynomial (Fin (N + 1)) k))`. Establish `hF : vH.comp ((HomogeneousLocalization.fromZeroRingHom (A k N) _).comp (algebraMap k (A k N 0))) = (algebraMap (MvPolynomial (Fin (N + 1)) k) L).comp C`. Use extensionality with `c`. Simplify using `[vH, HomogeneousLocalization.fromZeroRingHom]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hab : ∀ j, (vH ∘ fun j => HomogeneousLocalization.Away.mk (A k N) (X_mem k N i) 1 (X j) (X_mem' k N j)) j * algebraMap (MvPolynomial (Fin (N + 1)) k) L (X i) = algebraMap (MvPolynomial (Fin (N + 1)) k) L (X j)`. Introduce `j`. Simplify using `only [Function.comp_apply, vH, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, HomogeneousLocalization.Away.val_mk, Localization.mk_eq_mk']`. Simplify using `only [pow_one]`. Conclude with `IsLocalization.mk'_spec _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `eval₂_mul_pow ((algebraMap (MvPolynomial (Fin (N + 1)) k) L).comp C) _ _ _ hab hgh`. Rewrite using `[hF, HomogeneousLocalization.Away.val_mk, Localization.mk_eq_mk', IsLocalization.mk'_eq_iff_eq_mul]`. Express the relevant statement in the definitionally equal form `_ = _ * algebraMap (MvPolynomial (Fin (N + 1)) k) L (X i ^ m)`. Rewrite using `[map_pow, key]`. Conclude with `(congrArg _ (eval₂_eta g)).symm.trans (eval₂_comp_left _ _ _ _)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_eq_eval (i : Fin (N + 1)) (m : ℕ) (g : MvPolynomial (Fin (N + 1)) k) (hg : g ∈ A k N (m • 1)) :
     HomogeneousLocalization.Away.mk (A k N) (X_mem k N i) m g hg =
@@ -150,9 +150,9 @@ theorem mk_eq_eval (i : Fin (N + 1)) (m : ℕ) (g : MvPolynomial (Fin (N + 1)) k
   exact (congrArg _ (eval₂_eta g)).symm.trans (eval₂_comp_left _ _ _ _)
 
 /- English proof (translation)
-Introduce `k _ X _ p N ι hp i h m g hg`. Set `φ : HomogeneousLocalization.Away (A k N) (MvPolynomial.X i) →+* X.functionField` to `(X.presheaf.germ _ (genericPoint X) h).hom.comp ((ι.app _).hom.comp (Proj.awayToSection (A k N) (MvPolynomial.X i)).hom)`. Establish `e : away ι (MvPolynomial.X i) (X_mem k N i) h m g hg = φ (HomogeneousLocalization.Away.mk (A k N) (X_mem k N i) m g hg)` using `rfl`. Rewrite using `[e, mk_eq_eval, eval₂_comp_left]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `c`. Conclude with `(kHom_eq p ι hp i h c).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem GenAwayEval_of : GenAwayEval := by
   intro k _ X _ p N ι hp i h m g hg

@@ -6,7 +6,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.Chart
 open scoped ComplexOrder ENNReal Matrix
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 /- English proof (citation)
-Apply `GlobalTheory.FinCovol.compactSpace_unitary_of_definite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTorusHaarMeasure%2FCompactSpaceRealUnitaryGroupOfDefinite.lean&line=15#L15)
 -/

@@ -67,7 +67,7 @@ def lowIdx (D T : ℕ) : Finset (Fin D → ℕ) :=
   (Fintype.piFinset fun _ : Fin D => Finset.range T).filter fun al => ∑ i, al i + D < T
 
 /- English proof (translation)
-Simplify using `only [lowIdx, Finset.mem_filter, Fintype.mem_piFinset, Finset.mem_range, and_iff_right_iff_imp]`. Introduce `h i`. Use `Finset.single_le_sum (f := al) (fun j _ => Nat.zero_le _) (Finset.mem_univ i)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem mem_lowIdx {D T : ℕ} {al : Fin D → ℕ} : al ∈ lowIdx D T ↔ ∑ i, al i + D < T := by
   simp only [lowIdx, Finset.mem_filter, Fintype.mem_piFinset, Finset.mem_range, and_iff_right_iff_imp]
@@ -88,7 +88,7 @@ def InLowSpan (X : Data E r) (T : ℕ) (w0 : Frame X.Ψ r → ℂ) (s : Fin (nd 
   ∃ c : (Fin (nd X) → ℕ) → Fin del → ℂ, ∀ x ∈ X.dom, f x = lowComb T w0 s t c x
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Distinguish the cases in `h : τ ∈ X.Ψ`. Conclude with `⟨⟨τ, h⟩⟩`. Use `(X.cmType τ).not.1 h` as an intermediate fact. Conclude with `⟨⟨_, not_not.1 this⟩⟩`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem nonempty_cmType (X : Data E r) : Nonempty X.Ψ := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -104,16 +104,16 @@ theorem tt_eq (X : Data E r) (ξ : Fin r → E) (x : Frame X.Ψ r) (τ : X.Ψ) :
     X.tt ξ x τ = 1 / hf X ξ x τ := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨le_rfl, ⟨fun _ _ _ _ => rfl, fun _ _ _ _ => rfl⟩, 0, fun _ _ => ⟨0, fun _ _ _ _ _ => by simp⟩, 0, fun _ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem admissible_zero (X : Data E r) : Admissible X (fun _ => 0) 0 :=
   ⟨le_rfl, ⟨fun _ _ _ _ => rfl, fun _ _ _ _ => rfl⟩, 0,
     fun _ _ => ⟨0, fun _ _ _ _ _ => by simp⟩, 0, fun _ _ => by simp⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `h : mat (nmat X 0) τ = 1`. Use extensionality with `a b`. Simplify using `only [mat, nmat, Matrix.of_apply, Matrix.one_apply]`. Use `split_ifs with h1 h2`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `absurd h2 h1.ne'`. Apply the tactic sequence `all_goals first | rfl | simp`. Simplify using `only [cpt, rmul, h, Matrix.mul_one]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cpt_zero (X : Data E r) (x0 : Frame X.Ψ r) : cpt X x0 0 = x0 := by
   funext τ
@@ -127,21 +127,19 @@ theorem cpt_zero (X : Data E r) (x0 : Frame X.Ψ r) : cpt X x0 0 = x0 := by
   rfl
 
 /- English proof (translation)
-Establish `hE : IsEmpty (Ent X)` using `⟨fun p => absurd p.2.2 (by rw [Subsingleton.elim p.2.1.2 p.2.1.1]; exact lt_irrefl _)⟩`. Establish `hnd : nd X = 0` using `Fintype.card_eq_zero`. Establish `hF : IsEmpty (Fin (nd X))` using `by rw [hnd]; infer_instance`. Establish `hV : Subsingleton (V (nd X))` using `⟨fun u v => by ext i; exact hF.elim i⟩`. Establish `hsame : ∀ x ∈ X.dom, SamePt X x0 x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `ha : ∀ τ, x0 τ 0 0 ≠ 0` using `fun τ => by simpa [mat] using (h0 τ).1`. Establish `hb : ∀ τ, x τ 0 0 ≠ 0` using `fun τ => by simpa [mat] using (hx τ).1`. Use `⟨1, X.Γ.one_mem, fun τ _ _ => x τ 0 0 / x0 τ 0 0, fun τ => ⟨?_, fun a c h => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify `⟨hb τ, ha τ⟩` using `[mat]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `absurd h (by rw [Subsingleton.elim c a]; exact lt_irrefl _)`. Use function extensionality and compare the values at `τ a c`. Rewrite using `[Subsingleton.elim a 0, Subsingleton.elim c 0]`. Use `ha τ` as an intermediate fact. Simplify using `[lact, rmul, mat, Matrix.mul_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `x τ 0 0 = ∑ j : Fin 1, x0 τ 0 j * (x τ 0 0 / x0 τ 0 0)`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton, Fin.default_eq_zero]`. Clear the denominators using the available nonvanishing facts. Establish `hχ : ∀ γ ∈ X.Γ, X.χ 0 γ = 1`. Introduce `γ hγ`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn, h⟩` from `X.χ_fin 0`. Establish `hne : X.χ 0 γ ≠ 0` using `fun e => by`. Use `h γ hγ` as an intermediate fact. Rewrite `this` using `[e, zero_pow hn.ne']`. Conclude with `zero_ne_one this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `X.χ_add 0 0 γ hγ`. Rewrite `h2` using `[add_zero]`. Conclude with `(mul_right_eq_self₀.1 h2.symm).resolve_right hne`. Establish `hp : ∀ x, X.pnorm 0 (fun _ => 1) x = 1` using `fun x => by simp [Data.pnorm]`. Use `⟨fun _ => ⟨differentiableOn_const _, fun x _ b _ => by simp [bchar], fun γ hγ x _ => by simp [hχ γ hγ]⟩, ⟨fun _ => 1, fun _ _ => by simp⟩, fun _ => ⟨fun _ => 0, fun _ _ => by simp⟩, fun x _ => by simp [famNorm, hp], Nat.one_pos, fun _ => h0, fun _ _ _ => Subsingleton.elim _ _, fu …` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use `hasFDerivAt_of_subsingleton (𝕜 := ℂ) (zMap X (fun _ => 1) (fun _ _ => 0) x0) 0` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `v i`. Conclude with `hF.elim i`. Unfold `famNorm`.
-
-Rewrite using `[Fintype.sum_option]`. Simplify using `[hp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isFlat_rank_one (X : Data E 1) (x0 : Frame X.Ψ 1) (h0 : x0 ∈ X.dom) :
     IsFlat X 0 (fun _ : Fin 1 => fun _ => 1) (fun _ => 1) (fun _ _ => 0) (fun _ : Fin 1 => x0) := by

@@ -8,17 +8,17 @@ open scoped ENNReal
 open MeasureTheory
 
 /- English proof (translation)
-Establish `hu : Continuous u` using `continuous_iff_continuousAt.2 fun t => (h t).continuousAt`. Establish `hd : ∀ t : ℝ, HasDerivAt (fun s : ℝ => ((s : ℂ) - 1) * u s ^ 2) (u t ^ 2 + ((t : ℂ) - 1) * (2 * u t * u' t)) t`. Introduce `t`. Establish `h1 : HasDerivAt (fun s : ℝ => (s : ℂ) - 1) 1 t` using `(Complex.ofRealCLM.hasDerivAt (x := t)).sub_const 1`. Establish `h2 : HasDerivAt (fun s : ℝ => u s ^ 2) (2 * u t * u' t) t`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using (h t).fun_pow 2`. Simplify using `using h1.fun_mul h2`. Establish `hc : Continuous fun t : ℝ => u t ^ 2 + ((t : ℂ) - 1) * (2 * u t * u' t)` using `by fun_prop`. Establish `e` using `intervalIntegral.integral_eq_sub_of_hasDerivAt (a := 0) (b := 1) (fun t _ => hd t) (hc.intervalIntegrable 0 1)`. Rewrite `e` using `[intervalIntegral.integral_of_le zero_le_one]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e' : u 0 ^ 2 = ∫ t in Set.Ioc (0 : ℝ) 1, (u t ^ 2 + ((t : ℂ) - 1) * (2 * u t * u' t))`. Rewrite using `[e]`. Simplify using the standard rewrite rules. Rewrite using `[← enorm_pow, e', ← lintegral_const_mul' _ _ (by simp)]`. Use `(enorm_integral_le_lintegral_enorm _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans (setLIntegral_mono' measurableSet_Ioc fun t ht => ?_) (setLIntegral_le_lintegral _ _)` and prove the remaining obligations. Establish `h1 : ‖(t : ℂ) - 1‖ ≤ 1`. Rewrite using `[← Complex.ofReal_one, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs, abs_le]`. Apply the tactic sequence `constructor <;> linarith [ht.1, ht.2]`. Establish `h2 : ‖u t ^ 2 + ((t : ℂ) - 1) * (2 * u t * u' t)‖ ≤ 2 * (‖u t‖ ^ 2 + ‖u' t‖ ^ 2)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_pow, norm_mul, norm_mul, norm_mul, Complex.norm_two]`. Establish `: ‖(t : ℂ) - 1‖ * (2 * ‖u t‖ * ‖u' t‖) ≤ 1 * (2 * ‖u t‖ * ‖u' t‖)` using `by gcongr`. Use polynomial arithmetic with `[sq_nonneg (‖u t‖ - ‖u' t‖), sq_nonneg ‖u' t‖]`. Rewrite using `[← ofReal_norm, ← ofReal_norm, ← ofReal_norm, ← ENNReal.ofReal_pow (norm_nonneg _), ← ENNReal.ofReal_pow (norm_nonneg _), ← ENNReal.ofReal_add (by positivity) (by positivity), ← ENNReal.ofReal_ofNat, ← ENNReal.ofReal_mul (by norm_num)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.ofReal_le_ofReal h2`.
+A detailed English derivation is pending.
 -/
 theorem oneD (u u' : ℝ → ℂ) (hu' : Continuous u') (h : ∀ t, HasDerivAt u (u' t) t) :
     ‖u 0‖ₑ ^ 2 ≤ 2 * ∫⁻ t, (‖u t‖ₑ ^ 2 + ‖u' t‖ₑ ^ 2) := by
@@ -51,7 +51,7 @@ theorem oneD (u u' : ℝ → ℂ) (hu' : Continuous u') (h : ∀ t, HasDerivAt u
   exact ENNReal.ofReal_le_ofReal h2
 
 /- English proof (translation)
-Establish `hp` using `(volume_preserving_piFinSuccAbove (fun _ : Fin (D + 1) => ℝ) 0).symm`. Rewrite using `[← hp.lintegral_comp hG, Measure.volume_eq_prod, lintegral_prod (fun a => G ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin (D + 1) => ℝ) 0).symm a)) (hG.comp (MeasurableEquiv.measurable _)).aemeasurable]`. Use `lintegral_congr fun s => lintegral_congr fun t => congrArg G ?_` and prove the remaining obligations. Simplify using `[MeasurableEquiv.piFinSuccAbove, Fin.insertNthEquiv, Fin.insertNth_zero']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem lintegral_fin_succ {D : ℕ} (G : (Fin (D + 1) → ℝ) → ℝ≥0∞) (hG : Measurable G) :
     ∫⁻ t, G t = ∫⁻ s : ℝ, ∫⁻ t : Fin D → ℝ, G (Fin.cons s t) := by
@@ -69,7 +69,7 @@ def sumSq (dd : W → (X → ℂ) → X → ℂ) (L : List (List W)) (Θ : X →
 
 omit [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X] in
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact h`. Consider the case `cons w l ih => exact hd w _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem foldr_mem {S : Set (X → ℂ)} {dd : W → (X → ℂ) → X → ℂ} (hd : ∀ w, ∀ Θ ∈ S, dd w Θ ∈ S) (l : List W) {Θ : X → ℂ}
     (h : Θ ∈ S) : l.foldr dd Θ ∈ S := by
@@ -79,26 +79,26 @@ theorem foldr_mem {S : Set (X → ℂ)} {dd : W → (X → ℂ) → X → ℂ} (
 
 omit [AddCommGroup X] [IsTopologicalAddGroup X] in
 /- English proof (translation)
-The claim follows from `continuous_list_sum L fun l _ => (ENNReal.continuous_pow 2).comp (hS _ (foldr_mem hd l h)).enorm`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sumSq {S : Set (X → ℂ)} (hS : ∀ Θ ∈ S, Continuous Θ) {dd : W → (X → ℂ) → X → ℂ}
     (hd : ∀ w, ∀ Θ ∈ S, dd w Θ ∈ S) (L : List (List W)) {Θ : X → ℂ} (h : Θ ∈ S) : Continuous (sumSq dd L Θ) :=
   continuous_list_sum L fun l _ => (ENNReal.continuous_pow 2).comp (hS _ (foldr_mem hd l h)).enorm
 
 /- English proof (translation)
-Proceed by induction on `D with`. Consider the case `zero`. Introduce `ws e _ _`. Use `⟨[[]], fun Θ _ x => ?_⟩` and prove the remaining obligations. Simplify using `[sumSq, volume_pi]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Consider the case `succ D ih`. Introduce `ws e he hder`. Take `⟨L, hL⟩` from `ih (fun i => ws i.succ) (fun i => e i.succ) (fun i => he _) (fun i => hder _)`. Use `⟨L ++ L.map (· ++ [ws 0]), fun Θ hΘ x => ?_⟩` and prove the remaining obligations. Establish `hΘ'` using `hd (ws 0) Θ hΘ`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hline : Continuous fun s => x + e 0 s` using `continuous_const.add (he 0)`. Establish `h1` using `oneD (fun s => Θ (x + e 0 s)) (fun s => dd (ws 0) Θ (x + e 0 s)) ((hS _ hΘ').comp hline) fun t => by`. Establish `h` using `hder 0 Θ hΘ (x + e 0 t)`. Establish `h' : HasDerivAt (fun r => Θ (x + e 0 t + e 0 r)) (dd (ws 0) Θ (x + e 0 t)) (t - t)` using `by rwa [sub_self]`. Establish `h''` using `h'.comp_sub_const t t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h''.congr_of_eventuallyEq (Filter.Eventually.of_forall fun r => ?_)` and prove the remaining obligations. Simplify using `only [map_sub]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Simplify using `only [map_zero, add_zero] at h1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
 
-Establish `hsum : ∀ y, sumSq dd (L ++ L.map (· ++ [ws 0])) Θ y = sumSq dd L Θ y + sumSq dd L (dd (ws 0) Θ) y` using `fun y => by`. Simplify using `[sumSq, List.map_map, Function.comp_def, List.foldr_append]`. Establish `hc : ∀ {D : ℕ} (e : Fin D → ℝ →+ X), (∀ i, Continuous (e i)) → ∀ x : X, Continuous fun t : Fin D → ℝ => x + ∑ i, e i (t i)` using `fun e he x => continuous_const.add (continuous_finsetSum _ fun i _ => (he i).comp (continuous_apply i))`. Establish `hm : ∀ {D : ℕ} (e : Fin D → ℝ →+ X), (∀ i, Continuous (e i)) → ∀ (x : X) (L : List (List W)), Measurable fun t : Fin D → ℝ => sumSq dd L Θ (x + ∑ i, e i (t i))` using `fun e he x L => ((continuous_sumSq hS hd L hΘ).comp (hc e he x)).measurable`. Rewrite using `[lintegral_fin_succ _ (hm e he x _)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[pow_succ', mul_assoc]`. Use `gcongr`. Rewrite using `[← lintegral_const_mul' _ _ (by simp)]`. Use `lintegral_mono fun s => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(add_le_add (hL Θ hΘ _) (hL _ hΘ' _)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← mul_add, ← lintegral_add_left (hm (fun i => e i.succ) (fun i => he _) _ _)]`. Use `congr 1`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Simplify using `only [hsum, Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ, add_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sobAbs {S : Set (X → ℂ)} (hS : ∀ Θ ∈ S, Continuous Θ) {dd : W → (X → ℂ) → X → ℂ}
     (hd : ∀ w, ∀ Θ ∈ S, dd w Θ ∈ S) (D : ℕ) : ∀ (ws : Fin D → W) (e : Fin D → ℝ →+ X), (∀ i, Continuous (e i)) →
@@ -146,7 +146,7 @@ theorem sobAbs {S : Set (X → ℂ)} (hS : ∀ Θ ∈ S, Continuous Θ) {dd : W 
 
 omit [AddCommGroup X] [IsTopologicalAddGroup X] in
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [sumSq]`. Consider the case `cons l L ih`. Rewrite using `[List.map_cons, List.sum_cons, ← ih, ← lintegral_add_left ((hS _ (foldr_mem hd l h)).measurable.enorm.pow_const 2)]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lintegral_sumSq [MeasurableSpace X] [BorelSpace X] (μ : Measure X) {S : Set (X → ℂ)} (hS : ∀ Θ ∈ S, Continuous Θ)
     {dd : W → (X → ℂ) → X → ℂ} (hd : ∀ w, ∀ Θ ∈ S, dd w Θ ∈ S) (L : List (List W)) {Θ : X → ℂ} (h : Θ ∈ S) :

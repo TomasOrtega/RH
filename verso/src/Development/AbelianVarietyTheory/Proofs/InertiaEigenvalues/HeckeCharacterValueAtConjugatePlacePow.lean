@@ -18,21 +18,19 @@ open Classical
 namespace GlobalTheory.ConjLocVal
 
 /- English proof (translation)
-Introduce `D PP e ϖ c χ n y he h1 h2 hc hU hy`. Take `⟨⟨e1, e2, v, ε, hε, e3⟩, e4⟩` from `Formalism.IndefR.Fin.LevelGroupLemmas.isIdemAt_conj he`. Establish `hpl : Formalism.L2.JoinChr.IsPlIdem D (cA D e) (Formalism.L2.DIV.conjPl PP)` using `⟨e1, ⟨v, ε, hε, Or.inl ⟨e2, e3⟩⟩, e4⟩`. Establish `hϖ0 : ϖ ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `h2 (zero_mem _)`. Establish `hϖE : (ϖ : D.host.E) ≠ 0` using `by exact_mod_cast hϖ0`. Establish `hs0 : star (ϖ : D.host.E) ≠ 0` using `star_ne_zero.2 hϖE`. Use `set k : D.host.Eˣ := Units.mk0 (star (ϖ : D.host.E)) hs0 with hk`. Establish `hy' : (y : AE D) = Formalism.L2.JoinChr.locE D (cA D e) ((k ^ n : D.host.Eˣ) : D.host.E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hy, Formalism.L2.JoinChr.locE, Units.val_pow_eq_pow_val, map_pow]`. Both sides reduce to the same expression. Rewrite using `[hc.2 _ _ hpl (k ^ n) y hy', map_pow, Units.val_pow_eq_pow_val]`. Use `congr 1`. Establish `hmem : Formalism.L2.DIV.starO ϖ ∈ (Formalism.L2.DIV.conjPl PP).asIdeal` using `by show Formalism.L2.DIV.starO (Formalism.L2.DIV.starO ϖ) ∈ PP.asIdeal`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Formalism.L2.DIV.starO_starO]`. Conclude with `h1`. Establish `hnsq : Formalism.L2.DIV.starO ϖ ∉ (Formalism.L2.DIV.conjPl PP).asIdeal ^ 2`. Introduce `hm`. Establish `hm'` using `Ideal.le_comap_pow (f := Formalism.L2.DIV.starOHom) (K := PP.asIdeal) 2 hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `hm'` using `[Ideal.mem_comap]`. Apply `h2` to reduce the goal to its premises. Establish `: Formalism.L2.DIV.starOHom (Formalism.L2.DIV.starO ϖ) = ϖ` using `Formalism.L2.DIV.starO_starO ϖ`. Rewrite `hm'` using `[this]`. Then use the resulting hypothesis. Establish `hunif : Formalism.L2.Host.IsUnifAt (Formalism.L2.DIV.conjPl PP) (Formalism.L2.Host.atFin (Formalism.L2.DIV.conjPl PP) k)` using `by show Valued.v (((star (ϖ : D.host.E) : D.host.E)) : (Formalism.L2.DIV.conjPl PP).adicCompletion D.host.E) = _`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', ← Formalism.L2.DIV.starO_coe, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `GlobalTheory.LatIntFacts.intValuation_uniformiser _ hmem hnsq`. Establish `hval : χ.loc (Formalism.L2.DIV.conjPl PP) (Formalism.L2.Host.atFin (Formalism.L2.DIV.conjPl PP) k) = χ.val (Formalism.L2.DIV.conjPl PP)`. Establish `hu : Formalism.L2.Host.IsUnitAt (Formalism.L2.DIV.conjPl PP) (Formalism.L2.Host.atFin (Formalism.L2.DIV.conjPl PP) k * (Formalism.L2.Host.atFin (Formalism.L2.DIV.conjPl PP) (Formalism.L2.Host.unif (Formalism.L2.DIV.conjPl PP)))⁻¹)`. Establish `h2'` using `Formalism.L2.Host.unif_spec (Formalism.L2.DIV.conjPl PP)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `Formalism.L2.Host.IsUnitAt`. Unfold `Formalism.L2.Host.IsUnifAt at hunif h2'`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, hunif, h2']`. Conclude with `mul_inv_cancel₀ (by simp)`. Establish `h3` using `hU _ hu`.
-
-Rewrite `h3` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `h3`. Use `show ((χ.loc (Formalism.L2.DIV.conjPl PP) (Formalism.L2.Host.atFin (Formalism.L2.DIV.conjPl PP) k) : ℂˣ) : ℂ) = _`. Rewrite using `[hval]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem value_at_conj_place : ∀ (D : D7) (PP : Pl D.host.E) (e : AE D) (ϖ : 𝓞 D.host.E) (c : (AE D)ˣ →* Circle) (χ : Formalism.L2.Host.HChar D.host.E) (n : ℕ) (y : (AE D)ˣ), Formalism.L2.NTheta.IsIdemAt e PP → ϖ ∈ PP.asIdeal → ϖ ∉ PP.asIdeal ^ 2 → ChrEq c χ → χ.UnrAt (Formalism.L2.DIV.conjPl PP) → (y : AE D) = 1 + cA D e * (incA D (star (ϖ : D.host.E)) ^ n - 1) → ((c y : Circle) : ℂ) = ((χ.val (Formalism.L2.DIV.conjPl PP) : ℂˣ) : ℂ) ^ n := by
   intro D PP e ϖ c χ n y he h1 h2 hc hU hy

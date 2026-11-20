@@ -18,21 +18,19 @@ open Formalism.G (unitBall)
 namespace GlobalTheory.ThLoc
 
 /- English proof (translation)
-Establish `hN0 : normInt d m n ≠ 0`. Introduce `h`. Apply `hN` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `dvd_zero _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨S, neg, hcard, hker, hnegP, hE, hprod, hs2C⟩` from `D.CurveNormEndomorphisms.cdata L hmod hCM m n hN0`. Establish `hpN : ¬ p ∣ (S.card + 1)`. Introduce `h`. Apply `hN` to reduce the goal to its premises. Rewrite using `[← hcard]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h` after adjusting the coercions. Establish `hpt : ∀ P : S, E.ptW p L ι W (P : ℂ) = .some _ _ (E.AnaSysW.nonsing hU (P : ℂ) (hker P).2)`. Introduce `P`. Unfold `E.ptW`. Rewrite using `[dif_pos ⟨(hker P).2, E.AnaSysW.nonsing hU (P : ℂ) (hker P).2⟩]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hint : ∀ P : S, ‖E.AnaSysW.xc p L ι W P‖ ≤ 1 ∧ ‖E.AnaSysW.yc p L ι W P‖ ≤ 1`. Introduce `P`. Establish `h` using `E.TransW.ptW_int E.analytic_point_map_add E.analytic_point_eq_zero_iff hU hW (P : ℂ) (S.card + 1) hpN (hker P).1 (hker P).2`. Rewrite `h` using `[hpt P]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨S, neg, fun P => E.AnaSysW.xc p L ι W P, fun P => E.AnaSysW.yc p L ι W P, ?_, fun P => (hint P).1, fun P => (hint P).2, ?_, ?_⟩` and prove the remaining obligations. Apply `D.CurveNormEndomorphisms.endoCurve_of_endoZ (RingHom.id ℂ_[p]) W (wF := fun P : S => PowerSeries.map (ι : ℂ →+* ℂ_[p]) (F.taylor0 (fun z => L.weierstrassP (z + (P : ℂ)))))` to reduce the goal to its premises. Introduce `P`. Conclude with `(E.AnaSysW.nonsing hU (P : ℂ) (hker P).2).1`. Introduce `P`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Simplify using `only [E.AnaSysW.xc, (hnegP P).1]`. Simplify using `only [WeierstrassCurve.Affine.negY, E.AnaSysW.xc, E.AnaSysW.yc]`. Rewrite using `[(hnegP P).2, (hnegP P).1, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `D.CurveNormEndomorphisms.isEndoZ_map (ι : ℂ →+* ℂ_[p]) hE`. Simplify using `only [PowerSeries.map_id, RingHom.id_apply, E.AnaSysW.xc, sub_add_cancel]`. Rewrite using `[E.weierstrass_series_eq_transported p L ι W hU]`. Conclude with `h`. Rewrite using `[← map_mul, hprod, Fintype.card_coe]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[← map_sub, ← map_mul, ← map_mul, hs2C, map_sum]`. Simplify using `[E.AnaSysW.xc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem endoDatum_of_model (d : ℕ) (L : PeriodPair) (hmod : d % 4 = 3) (hCM : HasCMBy d L)
     (p : ℕ) [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) (W : WeierstrassCurve ℂ_[p]) (hU : Unif p L ι W)
@@ -90,27 +88,25 @@ theorem endoDatum_of_model (d : ℕ) (L : PeriodPair) (hmod : d % 4 = 3) (hCM : 
     simp [E.AnaSysW.xc]
 
 /- English proof (translation)
-Establish `hnorm : normInt d (-1) 2 = d`. Take `⟨k, hk⟩ : ∃ k : ℤ, (d : ℤ) + 1 = 4 * k` from `⟨((d : ℤ) + 1) / 4, by omega⟩`. Establish `hdiv : ((d : ℤ) + 1) / 4 = k` using `by omega`. Unfold `normInt`. Rewrite using `[hdiv]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `-hk`. Establish `hN : ¬ ((3 : ℕ) : ℤ) ∣ normInt d (-1) 2`. Rewrite using `[hnorm]`. Use linear arithmetic over natural numbers and integers. Take `⟨S, neg, xP, yP, hE, hx, hy, hprod, hs⟩` from `endoDatum_of_model d L hmod hCM 3 ι W hU hW (-1) 2 hN`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Use `set al := ι (((-1 : ℤ) : ℂ) + ((2 : ℤ) : ℂ) * omegaK d) with hal`. Use `set albar := ι (((-1 : ℤ) : ℂ) + ((2 : ℤ) : ℂ) * (1 - omegaK d)) with halbar`. Establish `hsum : al + albar = ((0 : ℤ) : ℂ_[3])`. Rewrite using `[hal, halbar, ← map_add]`. Establish `e : (((-1 : ℤ) : ℂ) + ((2 : ℤ) : ℂ) * omegaK d) + (((-1 : ℤ) : ℂ) + ((2 : ℤ) : ℂ) * (1 - omegaK d)) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Simplify using the standard rewrite rules. Establish `hsq : al ^ 2 = -(d : ℂ_[3])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hal, ← map_pow]`. Establish `e : (((-1 : ℤ) : ℂ) + ((2 : ℤ) : ℂ) * omegaK d) ^ 2 = -(d : ℂ)`. Use `push_cast`. Take the linear combination `4 * D.CurveNormEndomorphisms.omega_sq d`. Rewrite using `[e, map_neg, map_natCast]`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ‖(2 : ℂ_[3])‖ = 1` using `Top.OrthogonalGaussModelNormLemmas.norm_two 3 (by norm_num)`. Establish `hal1 : ‖al‖ = 1`. Establish `h1` using `congrArg norm hsq`. Rewrite `h1` using `[norm_pow, norm_neg, E.ScaledModelNorms.norm_nat 3 (show ¬ 3 ∣ d by omega)]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiff : ‖al - albar‖ = 1`. Establish `e : al - albar = 2 * al`. Use `hsum` as an intermediate fact. Move the coercions through the operations in `at this`. Take the linear combination `-this`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e, norm_mul, h2, hal1, one_mul]`. Establish `hb : ‖(al ^ 2 - 1) * (W.b₂ / 12)‖ ≤ 1`. Take `⟨k, hk⟩ : ∃ k : ℕ, d + 1 = 3 * k` from `⟨(d + 1) / 3, by omega⟩`. Establish `hk' : (d : ℂ_[3]) + 1 = 3 * (k : ℂ_[3])` using `by exact_mod_cast hk`. Establish `e : (al ^ 2 - 1) * (W.b₂ / 12) = -((k : ℂ_[3]) * W.b₂) / 2 ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hsq]`. Take the linear combination `(-W.b₂ / 12) * hk'`. Establish `hb2 : ‖W.b₂‖ ≤ 1`. Establish `hm : W.b₂ ∈ unitBall ℂ_[3]`. Take `⟨a1, a2, -⟩` from `Top.OrthogonalGaussModelNormLemmas.coeffIn hW`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `WeierstrassCurve.b₂`. Conclude with `add_mem (pow_mem a1 2) (mul_mem (ofNat_mem _ 4) a2)`. Conclude with `hm`. Rewrite using `[e, norm_div, norm_pow, h2, one_pow, div_one, norm_neg, norm_mul]`. Conclude with `mul_le_one₀ (IsUltrametricDist.norm_natCast_le_one _ k) (norm_nonneg _) hb2`.
-
-Establish `h` using `G.curveJetsUnramThm ℂ_[3] W (Top.OrthogonalGaussModelNormLemmas.coeffIn hW) h2 (ι (F.s2 L)) al albar 0 S neg xP yP hE hx hy hprod hal1 hsum hdiff hb hs i hi`. Unfold `E.phW`. Rewrite using `[← E.weierstrass_series_eq_transported 3 L ι W hU]`. Conclude with `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jets_phW_three (d : ℕ) (L : PeriodPair) (hmod : d % 4 = 3) (h3 : d % 3 = 2) (hCM : HasCMBy d L)
     (ι : ℂ ≃+* ℂ_[3]) (W : WeierstrassCurve ℂ_[3]) (hU : Unif 3 L ι W) (hW : IntCurve W)
@@ -174,11 +170,9 @@ theorem jets_phW_three (d : ℕ) (L : PeriodPair) (hmod : d % 4 = 3) (h3 : d % 3
   exact h
 
 /- English proof (translation)
-Establish `hl2' : ¬ p ∣ 2` using `fun h => hp2 ((Nat.prime_dvd_prime_iff_eq Fact.out Nat.prime_two).1 h)`. Establish `h2t : ((2 : ℕ) : ℂ) * (ω₀ / 2) ∈ L.lattice` using `by simpa using E.TransW.half_mem hω 1`. Take `⟨hc1, -⟩` from `E.analytic_translate_model p L ι W hU hW (ω₀ / 2) 2 (by norm_num) hl2' h2t hω2`. Establish `hN2 : ¬ p ∣ 2 * N` using `fun h => ((Nat.Prime.dvd_mul Fact.out).1 h).elim hl2' hlN`. Establish `m3 : ((2 * N : ℕ) : ℂ) * (s + ω₀ / 2) ∈ L.lattice`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_add]`. Conclude with `add_mem (E.TransW.two_mem hNs) (E.TransW.half_mem hω N)`. Establish `hsim` using `(E.TransW.hW_sim p L ι W (ω₀ / 2) s (2 * N) (by omega) (E.TransW.two_mem hNs) (E.TransW.half_mem hω N) hω2).mul_left (B.fExp (E.phW p L ι W))`. Use `(hsim.gaussOne ?_).1` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← E.TransW.gW_eq]`.
-
-Conclude with `E.Tor.gaussOne_C_mul (by rw [norm_inv, hc1, inv_one]) (E.TransW.gW_gauss E.analytic_translate_system_model E.analytic_point_map_add E.analytic_point_eq_zero_iff hU hW _ (2 * N) hN2 m3)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intS_exp_mul_translate (p : ℕ) [Fact p.Prime] (hp2 : p ≠ 2) (L : PeriodPair) (ι : ℂ ≃+* ℂ_[p])
     (W : WeierstrassCurve ℂ_[p]) (hU : Unif p L ι W) (hW : IntCurve W) (ω₀ : ℂ) (hω : ω₀ ∈ L.lattice)
@@ -200,13 +194,13 @@ theorem intS_exp_mul_translate (p : ℕ) [Fact p.Prime] (hp2 : p ≠ 2) (L : Per
     (E.TransW.gW_gauss E.analytic_translate_system_model E.analytic_point_map_add E.analytic_point_eq_zero_iff hU hW _ (2 * N) hN2 m3)
 
 /- English proof (translation)
-Introduce `d L hd8 hd3 hCM ι W hU hW ω₀ hω h1 _ n _ κ _ r s N hr hN h3N hs`. Establish `hω2 : ω₀ / 2 ∉ L.lattice` using `fun h => h1 (hCM _ h)`. Take `⟨hlp, -, -, -, hu⟩` from `C.curveFrame ℂ_[3] (unitBall ℂ_[3]) W (Top.OrthogonalGaussModelNormLemmas.coeffIn hW)`. Establish `hph : PowerSeries.constantCoeff (E.phW 3 L ι W) = 0` using `E.AnaSysW.cc_phW 3 L ι W`. Take `⟨e1, hInt⟩` from `E.prodInt ℂ_[3] κ n (E.phW 3 L ι W) r (fun k i => B.fExp (E.phW 3 L ι W) * E.inW 3 ι W (F.opU L (s k i) (F.th0 L (ω₀ / 2)))) hph hr (fun k i => intS_exp_mul_translate 3 (by norm_num) L ι W hU hW ω₀ hω hω2 (s k i) N hN h3N (hs k i))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key` using `(G.kernelTwo ℂ_[3] _ _ _ hlp hu hph (jets_phW_three d L (by omega) hd3 hCM ι W hU hW) n (fun _ => 1) (fun _ => by simp) _ (fun m => hInt m)).1`. Take `⟨hl0, -, hv0, -, hlv⟩` from `hlp`. Rewrite `key` using `[Top.KJ.phSum_one]`. Express the relevant statement in the definitionally equal form `Formalism.DworkPowerSeriesWeights.JetsIntegral (G.toZ _ (Formalism.DworkPowerSeriesWeights.mvExp _ * _)) at key`. Rewrite `key` using `[← e1, Top.KJ.toZ_thetaProd hv0]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `key using 1` and compare the differences between its conclusion and the goal. Unfold `Top.thetaZ`. Use `congr 1`. Use function extensionality and compare the values at `k i`. Express the relevant statement in the definitionally equal form `_ = PowerSeries.subst _ (B.fExp (-(E.phW 3 L ι W)) * _)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← mul_assoc, ← B.fExp_add (by rw [map_neg]; exact neg_eq_zero.2 hph) hph, neg_add_cancel, B.ParO.fExp_zero, one_mul]`. Unfold `E.inW`. Rewrite using `[PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hl0) (PowerSeries.HasSubst.of_constantCoeff_zero' hv0), hlv]`. Conclude with `(PowerSeries.X_subst _).symm`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaZJetsThree : ThetaZJetsThree := by
   intro d L hd8 hd3 hCM ι W hU hW ω₀ hω h1 _ n _ κ _ r s N hr hN h3N hs

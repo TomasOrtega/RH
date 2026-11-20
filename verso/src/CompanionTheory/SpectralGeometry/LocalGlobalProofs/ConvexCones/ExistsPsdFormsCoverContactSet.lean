@@ -10,13 +10,13 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.CompanionTheory.Ar.Fan
 
 /- English proof (translation)
-Establish `hfin : Module.Finite ℤ X` using `Module.Finite.trans O X`. Take `⟨s, hs⟩` from `Module.projective_def'.1 (inferInstance : Module.Projective O X)`. Establish `hinj : Function.Injective s` using `fun x y h => by`. Use `congrArg (Finsupp.linearCombination O id) h` as an intermediate fact. Simplify using `using (LinearMap.congr_fun hs x).symm.trans (this.trans (LinearMap.congr_fun hs y))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `htf : Module.IsTorsionFree ℤ X` using `Module.IsTorsionFree.of_smul_eq_zero fun r x hx => by`. Distinguish the cases in `hr : r = 0`. Conclude with `Or.inl hr`. Use `Or.inr (hinj ?_)` and prove the remaining obligations. Rewrite using `[map_zero]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `c`. Establish `h1 : r • s x = 0`. Rewrite using `[← map_zsmul s r x, hx, map_zero]`. Establish `h2 : r • (s x c) = 0` using `by simpa using DFunLike.congr_fun h1 c`. Rewrite `h2` using `[zsmul_eq_mul]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : (r : O) ≠ 0` using `by exact_mod_cast hr`. Simplify using `using (mul_eq_zero.1 h2).resolve_left h3`. Conclude with `⟨hfin, Module.free_of_finite_type_torsion_free'⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem finite_free_int_of_projective (O : Type) [CommRing O] [IsDomain O] [CharZero O] [Module.Finite ℤ O]
     (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X] :
@@ -41,9 +41,9 @@ theorem finite_free_int_of_projective (O : Type) [CommRing O] [IsDomain O] [Char
   exact ⟨hfin, Module.free_of_finite_type_torsion_free'⟩
 
 /- English proof (translation)
-Take `⟨k, ⟨eq⟩⟩` from `Finite.exists_equiv_fin T`. Use `⟨k, fun j => m' (eq.symm j), fun j => u' (eq.symm j), fun j => hsym _, fun j => hnn _, ?_⟩` and prove the remaining obligations. Introduce and unpack `B ⟨t, ht⟩`. Use `⟨eq t, ?_⟩` and prove the remaining obligations. Establish `key : ∀ t', t' = t → B ∈ rcone (u' t')`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `_ rfl`. Conclude with `ht`. Conclude with `key _ (eq.symm_apply_apply t)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_fin_reindex {T : Type} [Finite T] {X : Type} [AddCommGroup X] (m' : T → ℕ)
     (u' : ∀ t, Fin (m' t) → LinearMap.BilinForm ℤ X) (hsym : ∀ t i y z, u' t i y z = u' t i z y)
@@ -63,7 +63,7 @@ theorem exists_fin_reindex {T : Type} [Finite T] {X : Type} [AddCommGroup X] (m'
 variable {O : Type} [CommRing O] {X : Type} [AddCommGroup X] [Module O X]
 
 /- English proof (translation)
-Introduce `n x hx c hc`. Set `eZ : X ≃ₗ[ℤ] X` to `e.toAddEquiv.toIntLinearEquiv`. Establish `h1 : LinearIndependent ℤ (fun i => e (x i))` using `hx.map' eZ.toLinearMap eZ.ker`. Simplify using `using hB n _ h1 c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isPosDef_pullR (e : X ≃ₗ[O] X) {B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ} (hB : IsPosDef B) :
     IsPosDef (pullR e.toLinearMap B) := by
@@ -73,7 +73,7 @@ theorem isPosDef_pullR (e : X ≃ₗ[O] X) {B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ}
   simpa using hB n _ h1 c hc
 
 /- English proof (translation)
-Introduce `x`. Use `hy (e x)` as an intermediate fact. Simplify `this` using `[pullR_apply, map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isMin2_pullR (e : X ≃ₗ[O] X) {B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ} {y : X} (hy : IsMin2 B y) :
     IsMin2 (pullR e.toLinearMap B) (e.symm y) := by
@@ -82,13 +82,13 @@ theorem isMin2_pullR (e : X ≃ₗ[O] X) {B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ} {
   simpa [pullR_apply, map_add] using this
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar X _ _ _ _ ι _ a hR ha`. Take `⟨hfin, hfree⟩` from `finite_free_int_of_projective O X`. Take `⟨k, n, P, hsym, hnn, hcov⟩` from `hR`. Use `choose F hF hmin using fun j => finite_isMin2 X (n j) (P j) (hsym j) (hnn j)`. Establish `hU : (⋃ j, F j).Finite` using `Set.finite_iUnion hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS` using `finite_addHom_of_covers2 X ι a ha _ hU`. Set `S : Set (X →+ X)` to `{f : X →+ X | ∀ i, f (a i) ∈ ⋃ j, F j}`. Establish `hSf : Finite S` using `hS`. Set `form : ∀ (t : (Fin k) × S), Fin (n t.1) → LinearMap.BilinForm ℤ X` to `fun t i => (P t.1 i).compl₁₂ t.2.1.toIntLinearMap t.2.1.toIntLinearMap`. Take `⟨K, m, u, h1, h2, h3⟩` from `exists_fin_reindex (T := Fin k × S) (fun t => n t.1) form (fun t i y z => hsym _ _ _ _) (fun t i y => hnn _ _ _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨K, m, u, h1, h2, fun B hB hpos => h3 B ?_⟩` and prove the remaining obligations. Take `⟨e, j, c, hc, hE⟩` from `hcov B hB.1`. Set `f : X →+ X` to `e.symm.toLinearMap.toAddMonoidHom`. Establish `hf : f ∈ S` using `fun i => Set.mem_iUnion.2 ⟨j, hmin j _ ⟨c, hc, hE⟩ (isPosDef_pullR e hpos) _ (isMin2_pullR e (hB.2 i))⟩`. Use `⟨(j, ⟨f, hf⟩), c, hc, LinearMap.ext₂ fun y z => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h4` using `LinearMap.congr_fun₂ hE (f y) (f z)`. Simplify `h4` using `[f, form, LinearMap.sum_apply]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_rcone_cover_contact : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O)
     (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X] (ι : Type) [Finite ι] (a : ι → X),

@@ -22,7 +22,7 @@ def rmulT {D : D7} (X : HidaSetting D) (a : MfI X) (Y : TupI X) : TupI X :=
   fun b i => ∑ c, a c b * Y c i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b i`. Simplify using `[rmulT, Matrix.one_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rmulT_one {D : D7} (X : HidaSetting D) (Y : TupI X) : rmulT X 1 Y = Y := by
   funext b i
@@ -59,13 +59,13 @@ def HermLF : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ 
     PushHyp X u' ψ hT μinf νinf fibInf → ∃ V ∈ 𝓝 (TI X u' hT), νinf V < ⊤
 
 /- English proof (translation)
-Establish `key : ∀ g₁ g₂ : Y → ENNReal, ContinuousAt g₁ x → ContinuousAt g₂ x → (∀ S ⊆ Ω, MeasurableSet S → ∫⁻ y in S, g₁ y ∂ν = ∫⁻ y in S, g₂ y ∂ν) → ¬ g₁ x < g₂ x`. Introduce `g₁ g₂ c₁ c₂ hS hlt`. Take `⟨c, hc1, hc2⟩` from `exists_between hlt`. Take `⟨d, hd1, hd2⟩` from `exists_between hc2`. Establish `e1 : g₁ ⁻¹' Set.Iio c ∈ 𝓝 x` using `c₁ (Iio_mem_nhds hc1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : g₂ ⁻¹' Set.Ioi d ∈ 𝓝 x` using `c₂ (Ioi_mem_nhds hd2)`. Take `⟨U, hUsub, hUo, hxU⟩` from `mem_nhds_iff.1 (inter_mem (inter_mem hΩ hV) (inter_mem e1 e2))`. Establish `hUm : MeasurableSet U` using `hUo.measurableSet`. Establish `hpos : ν U ≠ 0` using `(hUo.measure_pos ν ⟨x, hxU⟩).ne'`. Establish `hfin : ν U ≠ ⊤` using `(lt_of_le_of_lt (measure_mono fun y hy => (hUsub hy).1.2) hVf).ne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `le1 : ∫⁻ y in U, g₁ y ∂ν ≤ ∫⁻ _ in U, c ∂ν` using `lintegral_mono_ae ((ae_restrict_iff' hUm).2 (Eventually.of_forall fun y hy => le_of_lt (hUsub hy).2.1))`. Establish `le2 : ∫⁻ _ in U, d ∂ν ≤ ∫⁻ y in U, g₂ y ∂ν` using `lintegral_mono_ae ((ae_restrict_iff' hUm).2 (Eventually.of_forall fun y hy => le_of_lt (hUsub hy).2.2))`. Rewrite `le1`, `le2` using `[setLIntegral_const]`. Establish `hcd : c * ν U < d * ν U` using `ENNReal.mul_left_strictMono hpos hfin hd1`. Establish `hSU` using `hS U (fun y hy => (hUsub hy).1.1) hUm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd (le2.trans ((le_of_eq hSU.symm).trans le1)) (not_le.2 hcd)`. Break down `lt_trichotomy (f₁ x) (f₂ x) with hl | he | hg` into its components or cases. Conclude with `absurd hl (key f₁ f₂ h₁ h₂ h)`. Conclude with `he`. Conclude with `absurd hg (key f₂ f₁ h₂ h₁ fun S hS hm => (h S hS hm).symm)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem eq_of_setLIntegral {Y : Type} [TopologicalSpace Y] [MeasurableSpace Y] [OpensMeasurableSpace Y]
     (ν : Measure Y) [ν.IsOpenPosMeasure] {x : Y} {Ω V : Set Y} (hΩ : Ω ∈ 𝓝 x) (hV : V ∈ 𝓝 x) (hVf : ν V < ⊤)
@@ -96,33 +96,29 @@ theorem eq_of_setLIntegral {Y : Type} [TopologicalSpace Y] [MeasurableSpace Y] [
   · exact absurd hg (key f₂ f₁ h₂ h₁ fun S hS hm => (h S hS hm).symm)
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hH`. Take `⟨Ω, a, KT, hΩ, ha1, hac, hKT, hKc, hPol⟩` from `hP X u' ψ hT μinf νinf fibInf hH`. Establish `hK0 : 0 < KVal X u'` using `hK X u' ψ hT μinf νinf fibInf hH`. Take `⟨φ, hφc, hφm, hφs, hφU, hφ0, hIpos, hIfin, hIc⟩` from `hC X u' ψ hT μinf νinf fibInf hH a ha1 hac`. Take `⟨V, hV, hVf⟩` from `hL X u' ψ hT μinf νinf fibInf hH`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfib` using `hH.2.2.2.2.2.2`. Establish `: νinf.IsAddHaarMeasure` using `hH.2.2.2.2.2.1.1`. Establish `: BorelSpace (HmI X)` using `⟨rfl⟩`. Establish `hΦm : Measurable fun y => ENNReal.ofReal (φ y)` using `ENNReal.measurable_ofReal.comp hφm`. Set `Ff : HmI X → ENNReal` to `fun T => ∫⁻ y, ENNReal.ofReal (φ y) ∂(fibInf T)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Fp : HmI X → ENNReal` to `fun T => (ENNReal.ofReal (KT T))⁻¹ * ∫⁻ g, ENNReal.ofReal (φ (g • rmulT X (a T) (Y0 X u'))) ∂X.measG.μGinf`. Establish `step1 : ∀ S ⊆ Ω, MeasurableSet S → ∫⁻ T in S, Ff T ∂νinf = ∫⁻ T in S, Fp T ∂νinf`. Introduce `S hSΩ hS`. Establish `hGS` using `hG X S hS`. Establish `c2` using `hfib.2.1 ((gramR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J ⁻¹' (Subtype.val '' S)).indicator fun y => ENNReal.ofReal (φ y)) (hΦm.indicator hGS)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `c2` using `[lintegral_indicator hGS, Measure.restrict_restrict hGS, hPol _ hΦm S hSΩ hS]`. Establish `inner : ∀ b, ∫⁻ v, (gramR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J ⁻¹' (Subtype.val '' S)).indicator (fun y => ENNReal.ofReal (φ y)) v ∂(fibInf b) = S.indicator Ff b`. Introduce `b`. Establish `hae : ∀ᵐ y ∂(fibInf b), y ∈ gramR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J ⁻¹' {Subtype.val b} ∩ IndI X` using `ae_iff.2 (hfib.1 b)`. Distinguish the cases in `hb : b ∈ S`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Set.indicator_of_mem hb Ff]`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hae] with y hy`. Establish `hy1` using `Set.mem_singleton_iff.1 (Set.mem_preimage.1 hy.1)`. Conclude with `Set.indicator_of_mem (Set.mem_preimage.2 (show gramR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J y ∈ Subtype.val '' S from ⟨b, hb, hy1.symm⟩)) _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Set.indicator_of_notMem hb Ff]`. Combine the equalities or inequalities in the displayed calculation. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hae] with y hy`. Establish `hy1` using `Set.mem_singleton_iff.1 (Set.mem_preimage.1 hy.1)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `Set.indicator_of_notMem ?_ _` and prove the remaining obligations. Introduce and unpack `⟨c, hc, hcy⟩`. Establish `hcb : c = b` using `Subtype.val_injective (hcy.trans hy1)`. Conclude with `hb (hcb ▸ hc)`. Use `_ = 0 := lintegral_zero`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `b`. Conclude with `(inner b).symm`. Use `_ = ∫⁻ T in S, Fp T ∂νinf := c2.symm`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `c3` using `hfib.2.2 φ hφc hφs hφU`. Establish `hFfeq : Ff = fun T => ENNReal.ofReal (∫ v, φ v ∂(fibInf T))`. Use function extensionality and compare the values at `T`. Conclude with `(ofReal_integral_eq_lintegral_ofReal (c3.1 T (Set.mem_univ _)) (Eventually.of_forall fun y => hφ0 y)).symm`. Establish `hFfc : ContinuousAt Ff (TI X u' hT)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hFfeq]`. Conclude with `(ENNReal.continuous_ofReal.comp (continuousOn_univ.1 c3.2)).continuousAt`. Establish `hKinv : (ENNReal.ofReal (KT (TI X u' hT)))⁻¹ ≠ ⊤`. Rewrite using `[hKT]`. Conclude with `ENNReal.inv_ne_top.2 (ENNReal.ofReal_pos.2 hK0).ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI1 : ∫⁻ g, ENNReal.ofReal (φ (g • rmulT X (a (TI X u' hT)) (Y0 X u'))) ∂X.measG.μGinf ≠ ⊤`. Rewrite using `[ha1, rmulT_one]`. Conclude with `hIfin.ne`. Establish `hKc' : ContinuousAt (fun T => (ENNReal.ofReal (KT T))⁻¹) (TI X u' hT)` using `tendsto_inv_iff.2 (ENNReal.continuous_ofReal.continuousAt.comp hKc)`. Establish `hFpc : ContinuousAt Fp (TI X u' hT)` using `ENNReal.Tendsto.mul hKc' (Or.inr hI1) hIc (Or.inr hKinv)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `heq : Ff (TI X u' hT) = Fp (TI X u' hT)` using `eq_of_setLIntegral νinf hΩ hV hVf hFfc hFpc step1`. Establish `hFp0 : Fp (TI X u' hT) = (ENNReal.ofReal (KVal X u'))⁻¹ * ∫⁻ g, ENNReal.ofReal (φ (g • Y0 X u')) ∂X.measG.μGinf` using `by show (ENNReal.ofReal (KT (TI X u' hT)))⁻¹ * _ = _`. Rewrite using `[hKT, ha1, rmulT_one]`. Establish `hmap : ∫⁻ y, ENNReal.ofReal (φ y) ∂(X.measG.μGinf.map (orbM X u')) = ∫⁻ g, ENNReal.ofReal (φ (g • Y0 X u')) ∂X.measG.μGinf` using `lintegral_map hΦm (hO X u')`. Establish `hk0 : ENNReal.ofReal (KVal X u') ≠ 0` using `(ENNReal.ofReal_pos.2 hK0).ne'`.
-
-Establish `hkT : ENNReal.ofReal (KVal X u') ≠ ⊤` using `ENNReal.ofReal_ne_top`. Establish `hF : ∫⁻ y, ENNReal.ofReal (φ y) ∂(fibInf (TI X u' hT)) = (ENNReal.ofReal (KVal X u'))⁻¹ * ∫⁻ g, ENNReal.ofReal (φ (g • Y0 X u')) ∂X.measG.μGinf` using `heq.trans hFp0`. Use `⟨fun y => ENNReal.ofReal (φ y), hΦm, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hF]`. Conclude with `ENNReal.mul_pos (ENNReal.inv_ne_zero.2 hkT) hIpos.ne'`.
-
-Rewrite using `[hF]`. Conclude with `ENNReal.mul_lt_top (ENNReal.inv_lt_top.2 (ENNReal.ofReal_pos.2 hK0)) hIfin`. Rewrite using `[hF, hmap, ← mul_assoc, ENNReal.mul_inv_cancel hk0 hkT, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem constTest_of (hG : GramMeas) (hO : OrbMeas) (hK : KPos) (hP : PolarLoc) (hC : PushCont) (hL : HermLF) :
     ConstTest := by

@@ -14,29 +14,29 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedSpace ℝ 
   [IsScalarTower ℝ ℂ V] {m l : Type} [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l]
 
 /- English proof (translation)
-Rewrite using `[secondForm_eq, secondForm_eq, secondForm_eq, conn_add_vec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem secondForm_add_vec (H : V → Matrix (m ⊕ l) (m ⊕ l) ℂ) (z ξ ξ' : V) :
     secondForm H z (ξ + ξ') = secondForm H z ξ + secondForm H z ξ' := by
   rw [secondForm_eq, secondForm_eq, secondForm_eq, conn_add_vec]; rfl
 
 /- English proof (translation)
-Rewrite using `[secondForm_eq, secondForm_eq, conn_smul_vec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem secondForm_smul_vec (H : V → Matrix (m ⊕ l) (m ⊕ l) ℂ) (z : V) (c : ℂ) (ξ : V) :
     secondForm H z (c • ξ) = c • secondForm H z ξ := by
   rw [secondForm_eq, secondForm_eq, conn_smul_vec]; rfl
 
 /- English proof (translation)
-Establish `h1 : MContDiffAt 1 H z` using `h.isHermFrame.one hz`. Establish `hp : ∀ᶠ x in 𝓝 z, (H x).PosDef` using `Filter.eventually_of_mem (h.isOpen.mem_nhds hz) h.posDef`. Establish `hS : (subGram (H z)).IsHermitian` using `(posDef_subGram hp.self_of_nhds).isHermitian`. Establish `hQ : (quotGram (H z)).IsHermitian` using `(posDef_quotGram hp.self_of_nhds).isHermitian`. Establish `e : ∀ ξ η, extTrace H z ξ η = kappa * (secondForm H z ξ * secondFormAdj H z η).trace` using `extTrace_eq h1 hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨fun x x' y => ?_, fun c x y => ?_, fun x y y' => ?_, fun c x y => ?_⟩, fun ξ η => ?_, fun ξ => ?_⟩` and prove the remaining obligations. Simplify using `only [e, secondForm_add_vec, Matrix.add_mul, trace_add, mul_add]`. Simplify using `only [e, secondForm_smul_vec, Matrix.smul_mul, trace_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e, secondFormAdj, adj, secondForm_add_vec, conjTranspose_add, Matrix.mul_add, Matrix.add_mul, trace_add, mul_add]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `only [e, secondFormAdj, adj, secondForm_smul_vec, conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, trace_smul, smul_eq_mul, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Establish `hk : conj kappa = -kappa`. Rewrite using `[kappa, map_div₀, map_mul, conj_I, Complex.conj_ofReal, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `ht : conj (secondForm H z ξ * secondFormAdj H z η).trace = (secondForm H z η * secondFormAdj H z ξ).trace`. Rewrite using `[← Complex.star_def, ← trace_conjTranspose]`. Simplify using `only [secondFormAdj, adj, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_nonsing_inv, hS.transpose.eq, hQ.transpose.eq, Matrix.mul_assoc]`. Rewrite using `[trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, e, map_mul, hk, ht, neg_mul]`. Establish `: diagVal (fun _ _ : V => (0 : ℂ)) ξ = 0` using `by simp [diagVal]`. Rewrite using `[this]`. Conclude with `diagVal_extTrace_nonneg h1 hp ξ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNonnegForm_extTrace {U : Set V} {H : V → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : V}
     (h : IsPosFrame U H) (hz : z ∈ U) : IsNonnegForm (extTrace H z) := by

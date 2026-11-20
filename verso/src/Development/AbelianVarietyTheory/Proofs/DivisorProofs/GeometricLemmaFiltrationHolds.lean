@@ -4,7 +4,7 @@ import CompanionTheory.AutomorphicTheory.TemperedLocalSpectra.LocalGeometry.Impo
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `CompanionTheory.Geo.geometricLemmaFiltration`.
+A detailed English derivation is pending.
 -/
 theorem geometricLemmaFiltration_holds : GlobalTheory.Published.GeometricLemmaFiltration :=
   CompanionTheory.Geo.geometricLemmaFiltration

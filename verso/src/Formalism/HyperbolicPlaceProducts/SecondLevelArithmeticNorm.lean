@@ -10,23 +10,23 @@ import Formalism.HyperbolicPlaceProducts.SubgroupIndexCounts.DedekindLFunctions
 namespace Formalism.SLP.Final
 
 /- English proof (translation)
-The claim follows from `Formalism.SLP.P.card_range_nsmul_mul_card_le`.
+A detailed English derivation is pending.
 -/
 theorem torsionIndex : Formalism.SLP.TorsionIndex := Formalism.SLP.P.card_range_nsmul_mul_card_le
 /- English proof (translation)
-The claim follows from `Formalism.SLP.P.sesquilinear_determinant_holds`.
+A detailed English derivation is pending.
 -/
 theorem sesqDet : Formalism.SLP.SesqDet := Formalism.SLP.P.sesquilinear_determinant_holds
 /- English proof (translation)
-The claim follows from `Formalism.SLP.P.pow_primeFactors_length_le`.
+A detailed English derivation is pending.
 -/
 theorem omegaPow : Formalism.SLP.OmegaPow := Formalism.SLP.P.pow_primeFactors_length_le
 /- English proof (translation)
-The claim follows from `Formalism.SLP.P.card_submodules_of_index_le`.
+A detailed English derivation is pending.
 -/
 theorem submoduleIndexCountO : Formalism.SLP.SubmoduleIndexCountO := Formalism.SLP.P.card_submodules_of_index_le
 /- English proof (translation)
-The claim follows from `Formalism.SLP.P.card_submodules_le_of_dedekind`.
+A detailed English derivation is pending.
 -/
 theorem submoduleCountDed : Formalism.SLP.SubmoduleCountDed := Formalism.SLP.P.card_submodules_le_of_dedekind
 

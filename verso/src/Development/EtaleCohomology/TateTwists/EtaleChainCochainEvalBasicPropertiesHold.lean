@@ -8,7 +8,7 @@ namespace LateralTheory.EtaleFoundations.EvB
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Simplify using `[ev]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ev_add {E : Spc} {I : Cx R} {n : ℤ} (α β : Cochain ((chains R).obj E) I n) p s h U x :
     ev (α + β) p s h U x = ev α p s h U x + ev β p s h U x := by
@@ -18,14 +18,14 @@ noncomputable def evHom {E : Spc} {I : Cx R} {n : ℤ} (p : ℕ) (s : ℤ) (h : 
   AddMonoidHom.mk' (fun α => ev α p s h U x) (fun α β => ev_add α β p s h U x)
 
 /- English proof (translation)
-Simplify using `[ev, Cochain.comp_v _ _ (add_zero n) _ s s h (add_zero s)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ev_compHom {E : Spc} {I J : Cx R} {n : ℤ} (m : I ⟶ J) (α : Cochain ((chains R).obj E) I n) p s h U x :
     ev (α.comp (Cochain.ofHom m) (add_zero n)) p s h U x = Sec.map (m.f s) (ev α p s h U x) := by
   simp [ev, Cochain.comp_v _ _ (add_zero n) _ s s h (add_zero s)]
 
 /- English proof (translation)
-Apply `HomologicalComplex.isZero_extend_X` to reduce the goal to its premises. Introduce `j hj`. Express the relevant statement in the definitionally equal form `-(j : ℤ) = a at hj`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers.
 -/
 theorem isZero_pos {E : Spc} (a : ℤ) (ha : 0 < a) : IsZero (((chains R).obj E).X a) := by
   apply HomologicalComplex.isZero_extend_X
@@ -34,9 +34,9 @@ theorem isZero_pos {E : Spc} (a : ℤ) (ha : 0 < a) : IsZero (((chains R).obj E)
   omega
 
 /- English proof (translation)
-Apply `Sheaf.hom_ext` to reduce the goal to its premises. Apply `sheafify_hom_ext _ _ _ F.cond` to reduce the goal to its premises. Use extensionality with `U : 2`. Apply `ModuleCat.free_hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨x⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Use `hφ U.unop x` as an intermediate fact. Simplify using `only [freeGen] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem free_ext {P : PSh} {F : Shv R} (φ ψ : (free R).obj P ⟶ F)
     (hφ : ∀ U x, Sec.map φ (freeGen R P U x) = Sec.map ψ (freeGen R P U x)) : φ = ψ := by
@@ -50,7 +50,7 @@ theorem free_ext {P : PSh} {F : Shv R} (φ ψ : (free R).obj P ⟶ F)
   exact this
 
 /- English proof (translation)
-Use `congrArg (fun f => ModuleCat.Hom.hom f y) (φ.hom.naturality g.op)` as an intermediate fact. Simplify using `using this.symm`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sec_nat {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (y : Sec F U) :
     Sec.res g (Sec.map φ y) = Sec.map φ (Sec.res g y) := by
@@ -58,9 +58,9 @@ theorem sec_nat {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (y
   simpa using this.symm
 
 /- English proof (translation)
-Establish `key` using `fun y => congrArg (fun f => ModuleCat.Hom.hom f y) ((toSheafify Scheme.etaleTopology ((freeP R).obj P)).naturality g.op)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at key`. Unfold `freeGen`. Use `((key _).symm).trans ?_` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `simp only [freeP, ModuleCat.freeMk, ModuleCat.free, Functor.whiskeringRight_obj_map, Functor.comp_map, Functor.whiskerRight_app, uliftFunctor_map] <;> try (erw [Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]; rfl)`. Apply the tactic sequence `all_goals simp [freeP, ModuleCat.freeMk, ModuleCat.free, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem freeGen_res (P : PSh) {V U : Scheme.{0}} (g : V ⟶ U) x :
     Sec.res g (freeGen R P U x) = freeGen R P V (P.map g.op x) := by
@@ -74,9 +74,9 @@ theorem freeGen_res (P : PSh) {V U : Scheme.{0}} (g : V ⟶ U) x :
   all_goals simp [freeP, ModuleCat.freeMk, ModuleCat.free, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]
 
 /- English proof (translation)
-Establish `key` using `fun y => congrArg (fun f => ModuleCat.Hom.hom (NatTrans.app f (op U)) y) (toSheafify_naturality Scheme.etaleTopology ((freeP R).map f))`. Simplify using `only [NatTrans.comp_app, ModuleCat.hom_comp, LinearMap.comp_apply] at key`. Unfold `freeGen`. Use `((key _).symm).trans ?_` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `simp only [freeP, ModuleCat.freeMk, ModuleCat.free, Functor.whiskeringRight_obj_map, Functor.comp_map, Functor.whiskerRight_app, uliftFunctor_map] <;> try (erw [Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]; rfl)`. Apply the tactic sequence `all_goals simp [freeP, ModuleCat.freeMk, ModuleCat.free, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem freeGen_map {P Q : PSh} (f : P ⟶ Q) U x :
     Sec.map ((free R).map f) (freeGen R P U x) = freeGen R Q U (f.app (op U) x) := by
@@ -90,7 +90,7 @@ theorem freeGen_map {P Q : PSh} (f : P ⟶ Q) U x :
   all_goals simp [freeP, ModuleCat.freeMk, ModuleCat.free, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]
 
 /- English proof (translation)
-Simplify using `[chainsXIso, chains, chainsN, HomologicalComplex.extendMap_f _ _ (show ComplexShape.embeddingDownNat.f p = -(p:ℤ) from rfl)]`. Use `erw [Iso.inv_hom_id_assoc]`. Apply the tactic sequence `try rfl`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chainsXIso_nat {E' E : Spc} (f : E' ⟶ E) (p : ℕ) :
     (chainsXIso R E' p).inv ≫ ((chains R).map f).f (-(p:ℤ)) =
@@ -100,7 +100,7 @@ theorem chainsXIso_nat {E' E : Spc} (f : E' ⟶ E) (p : ℕ) :
   try rfl
 
 /- English proof (translation)
-Use `sec_nat ((chainsXIso R E p).inv ≫ α.v _ _ h) g (freeGen R _ U x)` as an intermediate fact. Rewrite `this` using `[freeGen_res]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_res {E : Spc} {I : Cx R} {n : ℤ} (α : Cochain ((chains R).obj E) I n) p s h (V U : Scheme.{0}) (g : V ⟶ U) (x : Sx E p U) :
     Sec.res g (ev α p s h U x) = ev α p s h V (x.res g) := by
@@ -109,9 +109,9 @@ theorem ev_res {E : Spc} {I : Cx R} {n : ℤ} (α : Cochain ((chains R).obj E) I
   exact this
 
 /- English proof (translation)
-Apply `Cochain.ext` to reduce the goal to its premises. Introduce `a b hab`. Distinguish the cases in `ha : 0 < a`. Conclude with `(isZero_pos a ha).eq_of_src _ _`. Take `⟨k, rfl⟩ : ∃ k : ℕ, a = -(k : ℤ)` from `⟨(-a).toNat, by omega⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_epi (chainsXIso R E k).inv]`. Conclude with `free_ext _ _ (fun U x => hαβ k b hab U x)`.
+A detailed English derivation is pending.
 -/
 theorem ev_ext {E : Spc} {I : Cx R} {n : ℤ} (α β : Cochain ((chains R).obj E) I n)
     (hαβ : ∀ p s h U x, ev α p s h U x = ev β p s h U x) : α = β := by
@@ -124,9 +124,9 @@ theorem ev_ext {E : Spc} {I : Cx R} {n : ℤ} (α β : Cochain ((chains R).obj E
   exact free_ext _ _ (fun U x => hαβ k b hab U x)
 
 /- English proof (translation)
-Establish `e1 : ((Cochain.ofHom ((chains R).map f)).comp α (zero_add n)).v (-(p:ℤ)) s h = ((chains R).map f).f (-(p:ℤ)) ≫ α.v (-(p:ℤ)) s h`. Rewrite using `[Cochain.comp_v _ _ (zero_add n) (-(p:ℤ)) (-(p:ℤ)) s (add_zero _) h, Cochain.ofHom_v]`. Unfold `ev`. Rewrite using `[e1, ← Category.assoc, chainsXIso_nat, Category.assoc]`. Use `freeGen_map (R := R) (f.app (op (SimplexCategory.mk p))) U x` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Sec.map] at this`. Simplify using `[this, Sx.map]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ev_pull {E E' : Spc} {I : Cx R} {n : ℤ} (f : E' ⟶ E) (α : Cochain ((chains R).obj E) I n) p s h U (x : Sx E' p U) :
     ev ((Cochain.ofHom ((chains R).map f)).comp α (zero_add n)) p s h U x = ev α p s h U (x.map f) := by
@@ -142,7 +142,7 @@ theorem ev_pull {E E' : Spc} {I : Cx R} {n : ℤ} (f : E' ⟶ E) (α : Cochain (
 end LateralTheory.EtaleFoundations.EvB
 
 /- English proof (translation)
-Introduce `R _ E I n`. Use `⟨fun α β p s h U x => ?_, fun α p s h V U g x => LateralTheory.EtaleFoundations.EvB.ev_res α p s h V U g x, fun α β hαβ => LateralTheory.EtaleFoundations.EvB.ev_ext α β hαβ, fun f α p s h U x => LateralTheory.EtaleFoundations.EvB.ev_pull f α p s h U x, fun m α p s h U x => Latera …` and prove the remaining obligations. Establish `H` using `LateralTheory.EtaleFoundations.EvB.evHom (I := I) (n := n) (E := E) p s h U x`. Conclude with `⟨map_add (LateralTheory.EtaleFoundations.EvB.evHom p s h U x) α β, map_sub (LateralTheory.EtaleFoundations.EvB.evHom p s h U x) α β, map_zero (LateralTheory.EtaleFoundations.EvB.evHom (I := I) (n := n) p s h U x), fun c => map_zsmul (LateralTheory.EtaleFoundations.EvB.evHom p s h …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem LateralTheory.EtaleFoundations.etale_chain_cochain_eval_basic_properties_hold : LateralTheory.EtaleFoundations.EtaleCochainEvaluationLinear := by
   intro R _ E I n

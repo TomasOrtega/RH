@@ -13,7 +13,7 @@ open Classical
 namespace GlobalTheory.PolDenseTriple
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' h`. Conclude with `GlobalTheory.T.polynomialFock_dense_archimedeanSchwartz F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ (GlobalTheory.ThK.Check.isPair_of_isTriple h).1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pol_dense_triple : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

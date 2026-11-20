@@ -6,23 +6,21 @@ open NumberField IsDedekindDomain Neutral.HilbertClassField
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A g hg`. Establish `hint : ∀ x : 𝓞 E, algebraMap E Ω (x : E) ∈ A` using `fun x => ReciprocityTheory.ChartRestriction.L1.mem_of_isIntegral A ((NumberField.RingOfIntegers.isIntegral_coe x).algebraMap)`. Set `φ : 𝓞 E →+* A` to `RingHom.codRestrict ((algebraMap E Ω).comp (algebraMap (𝓞 E) E)) A hint`. Set `I : Ideal (𝓞 E)` to `Ideal.comap φ (IsLocalRing.maximalIdeal A)`. Establish `hI : ∀ x : 𝓞 E, algebraMap E Ω (x : E) ∈ A.nonunits ↔ x ∈ I`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[ValuationSubring.mem_nonunits_iff_exists_mem_maximalIdeal, Ideal.mem_comap]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h⟩`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨hint x, h⟩`. Distinguish the cases in `hbot : I = ⊥`. Use `left`. Establish `hE : ∀ y : E, algebraMap E Ω y ∈ A`.
+Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) y`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hbn : algebraMap E Ω (algebraMap (𝓞 E) E b) ∉ A.nonunits`. Rewrite using `[show algebraMap (𝓞 E) E b = (b : E) from rfl, hI, hbot, Ideal.mem_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hb0`. Establish `hbinv : (algebraMap E Ω (algebraMap (𝓞 E) E b))⁻¹ ∈ A`. Rewrite `hbn` using `[ValuationSubring.mem_nonunits_iff_or]`. Use `push_neg at hbn`. Conclude with `hbn.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_div₀, div_eq_mul_inv]`. Conclude with `mul_mem (hint a) hbinv`. Establish `hall : ∀ x : Ω, x ∈ A`. Introduce `x`. Establish `hx : IsIntegral E x` using `((IsAlgClosure.isAlgebraic (R := E) (K := Ω)).isAlgebraic x).isIntegral`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p, hpm, hp⟩` from `hx`. Set `ψ : E →+* A` to `RingHom.codRestrict (algebraMap E Ω) A hE`. Establish `hcomp : (algebraMap A Ω).comp ψ = algebraMap E Ω` using `by ext; rfl`. Establish `h1 : IsIntegral A x` using `⟨p.map ψ, hpm.map ψ, by rw [Polynomial.eval₂_map, hcomp]; exact hp⟩`. Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := A) (K := Ω)).mp h1`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← hy]`. Conclude with `y.2`. Use extensionality with `x`. Establish `h` using `hg.2 x (hall x)`. Rewrite `h` using `[ValuationSubring.mem_nonunits_iff_or]`.
-
-Break down `h with h | h` into its components or cases. Simplify `h` using `[sub_eq_zero]`. Conclude with `absurd (hall _) h`. Use `right`. Conclude with `⟨⟨I, Ideal.IsPrime.comap φ, hbot⟩, fun x => hI x⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inertiaEl_eq_one_or_liesAbove : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] (A : ValuationSubring Ω) (g : Ω ≃ₐ[E] Ω),

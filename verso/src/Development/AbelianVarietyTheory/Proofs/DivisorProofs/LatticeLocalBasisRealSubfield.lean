@@ -13,7 +13,7 @@ namespace GlobalTheory.FrameDual
 open ReciprocityTheory.ChartRestriction.G.FD
 
 /- English proof (translation)
-Simplify using `only [herm, Matrix.vecMul, dotProduct, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_eq_dot {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
@@ -22,9 +22,9 @@ theorem herm_eq_dot {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Use `set σ : E →+* E := ((IsCMField.complexConj E).toAlgHom : E →+* E)`. Rewrite using `[herm_eq_dot]`. Establish `h1 : (fun b => cc ((P *ᵥ z) b)) = (P.map σ) *ᵥ (fun k => cc (z k))`. Use function extensionality and compare the values at `b`. Conclude with `RingHom.map_mulVec σ P z b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[h1, Matrix.dotProduct_mulVec, ← Matrix.vecMul_transpose P w, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul, ← Matrix.vecMul_transpose]`. Use `congr 2`. Simplify using `[Formalism.UG.cT, Matrix.transpose_mul, Matrix.mul_assoc, σ]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem herm_mulVec {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (G P : Matrix (Fin r) (Fin r) E) (w z : Fin r → E) :
@@ -42,9 +42,9 @@ theorem herm_mulVec {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
   simp [Formalism.UG.cT, Matrix.transpose_mul, Matrix.mul_assoc, σ]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.AdelicU.stdLattice, Formalism.UG.stdLat, Submodule.mem_pi, Set.mem_univ, true_implies, LinearMap.mem_range, Algebra.linearMap_apply]`. Use `forall_congr' fun i => ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Rewrite using `[← hy]`. Conclude with `y.isIntegral_coe`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨⟨x i, h⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem memStd {E : Type} [Field E] {r : ℕ} {x : Fin r → E} :
     x ∈ GlobalTheory.AdelicU.stdLattice E r ↔ ∀ i, IsIntegral ℤ (x i) := by
@@ -58,7 +58,7 @@ theorem memStd {E : Type} [Field E] {r : ℕ} {x : Fin r → E} :
     exact ⟨⟨x i, h⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `s.isIntegral_coe.algebraMap`.
+A detailed English derivation is pending.
 -/
 theorem int_coe {E : Type} [Field E] [NumberField E] [IsCMField E]
     (s : 𝓞 (maximalRealSubfield E)) :
@@ -66,7 +66,7 @@ theorem int_coe {E : Type} [Field E] [NumberField E] [IsCMField E]
   s.isIntegral_coe.algebraMap
 
 /- English proof (translation)
-The claim follows from `(IsCMField.complexConj_eq_self_iff E _).2 (s : maximalRealSubfield E).2`.
+A detailed English derivation is pending.
 -/
 theorem cc_coe {E : Type} [Field E] [NumberField E] [IsCMField E]
     (s : 𝓞 (maximalRealSubfield E)) :
@@ -74,7 +74,7 @@ theorem cc_coe {E : Type} [Field E] [NumberField E] [IsCMField E]
   (IsCMField.complexConj_eq_self_iff E _).2 (s : maximalRealSubfield E).2
 
 /- English proof (translation)
-The claim follows from `h.map ((IsCMField.complexConj E).toAlgHom : E →+* E).toIntAlgHom`.
+A detailed English derivation is pending.
 -/
 theorem int_cc {E : Type} [Field E] [NumberField E] [IsCMField E] {x : E}
     (h : IsIntegral ℤ x) : IsIntegral ℤ (cc x) :=
@@ -87,9 +87,9 @@ namespace GlobalTheory.FrameDual
 open ReciprocityTheory.ChartRestriction.G.FD
 
 /- English proof (translation)
-Establish `hz : (fun k => cc ((b • Pi.single i 1 : Fin r → E) k)) = Pi.single i b`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[hb]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hk, cc]`. Rewrite using `[hz, dotProduct_single, Matrix.mulVec_smul, Matrix.mulVec_single_one]`. Simplify using `[smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dot_single {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (M : Matrix (Fin r) (Fin r) E) (a b : E) (hb : cc b = b) (i j : Fin r) :
@@ -103,11 +103,11 @@ theorem dot_single {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
   simp [smul_eq_mul]
 
 /- English proof (translation)
-Take `⟨si, hsi, hPi⟩` from `h1 i`. Take `⟨sj, hsj, hPj⟩` from `h1 j`. Use `⟨sj * si, fun h => (v.isPrime.mem_or_mem h).elim hsj hsi, ?_⟩` and prove the remaining obligations. Establish `hcol : ∀ (c : E) (k : Fin r), (c • fun i => P i k) = P *ᵥ (c • Pi.single k 1)`. Introduce `c k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Establish `hint` using `(hΛ.2.2.2.2 _).2 hPj _ hPi`. Rewrite `hint` using `[hcol, hcol, herm_mulVec, dot_single _ _ _ (cc_coe si)]`. Use `hint using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem part1 {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     {G : Matrix (Fin r) (Fin r) E} {Λ : Submodule (𝓞 E) (Fin r → E)} (hΛ : SelfDualLat G Λ)
@@ -136,19 +136,15 @@ namespace GlobalTheory.FrameDual
 open ReciprocityTheory.ChartRestriction.G.FD
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hFG`. Establish `hmem : ∀ g ∈ S, ∃ s : 𝓞 (maximalRealSubfield E), s ∉ v.asIdeal ∧ algebraMap (maximalRealSubfield E) E s • Q *ᵥ g ∈ GlobalTheory.AdelicU.stdLattice E r` using `fun g hg => h2 g (hS ▸ Submodule.subset_span hg)`. Use `choose sf hsf hsfm using hmem`. Use `⟨∏ g ∈ S.attach, sf g.1 g.2, ?_, ?_⟩` and prove the remaining obligations. Introduce `h haveI := v.isPrime`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g, -, hg⟩` from `Ideal.IsPrime.prod_mem_iff.1 h`. Conclude with `hsf g.1 g.2 hg`. Use `set c : E := algebraMap (maximalRealSubfield E) E ((∏ g ∈ S.attach, sf g.1 g.2 : 𝓞 (maximalRealSubfield E)) : maximalRealSubfield E) with hc`. Set `T : Submodule (𝓞 E) (Fin r → E)` to `{ carrier := {y | ∀ k, IsIntegral ℤ (c * (Q *ᵥ y) k)} add_mem' := by`. Introduce `a b ha hb k`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, Matrix.mulVec_add, Pi.add_apply, mul_add] at *`. Conclude with `(ha k).add (hb k)`. Use the proof step `zero_mem' := by`. Introduce `k`. Simplify using `[isIntegral_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `smul_mem' := by`. Introduce `a y hy k`. Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[← algebraMap_smul E a y, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, mul_left_comm]`. Conclude with `a.isIntegral_coe.mul (hy k) }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Establish `hle : Submodule.span (𝓞 E) (S : Set (Fin r → E)) ≤ T`. Rewrite using `[Submodule.span_le]`. Introduce `g hg k`. Establish `hsplit : c = algebraMap (maximalRealSubfield E) E ((∏ h ∈ S.attach.erase ⟨g, hg⟩, sf h.1 h.2 : 𝓞 (maximalRealSubfield E)) : maximalRealSubfield E) * algebraMap (maximalRealSubfield E) E (sf g hg)`. Rewrite using `[hc, ← Finset.prod_erase_mul _ _ (Finset.mem_attach S ⟨g, hg⟩)]`.
-
-Move the coercions through the operations in `[map_mul]`. Both sides reduce to the same expression. Establish `h3` using `(memStd.1 (hsfm g hg)) k`. Rewrite `h3` using `[Pi.smul_apply, smul_eq_mul]`. Use `show IsIntegral ℤ (c * (Q *ᵥ g) k)`.
-
-Rewrite using `[hsplit, mul_assoc]`. Conclude with `(int_coe _).mul h3`. Introduce `y hy k`. Conclude with `hle (hS ▸ hy) k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem uniform {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     {Λ : Submodule (𝓞 E) (Fin r → E)} (hFG : Λ.FG)
@@ -210,23 +206,19 @@ namespace GlobalTheory.FrameDual
 open ReciprocityTheory.ChartRestriction.G.FD
 
 /- English proof (translation)
-Use `set Pm : Matrix (Fin r) (Fin r) E := (P : Matrix (Fin r) (Fin r) E) with hPm`. Use `set Q : Matrix (Fin r) (Fin r) E := ((P⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) with hQ`. Use `set σ : E →+* E := ((IsCMField.complexConj E).toAlgHom : E →+* E) with hσ`. Use `set H := Formalism.UG.cT σ Pm * Gᵀ * Pm with hH`. Establish `hPQ : Pm * Q = 1` using `Units.mul_inv P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hQP : Q * Pm = 1` using `Units.inv_mul P`. Establish `hP : Pm.det ≠ 0`. Use `congrArg Matrix.det hPQ` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `left_ne_zero_of_mul_eq_one this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdet : H.det ≠ 0`. Establish `hm : (Pm.map σ).det = σ Pm.det` using `by rw [RingHom.map_det]; rfl`. Rewrite using `[hH, Matrix.det_mul, Matrix.det_mul, Formalism.UG.cT, Matrix.det_transpose, Matrix.det_transpose, hm]`. Conclude with `mul_ne_zero (mul_ne_zero ((map_ne_zero σ).2 hP) hΛ.2.1) hP`. Take `⟨s₀, hs₀, hU⟩` from `uniform hΛ.2.2.1 v Q h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c₀ : E := algebraMap (maximalRealSubfield E) E s₀ with hc₀`. Use `set w : Fin r → E := H⁻¹ *ᵥ Pi.single j 1 with hw`. Establish `hHw : H *ᵥ w = Pi.single j 1`. Rewrite using `[hw, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hdet), Matrix.one_mulVec]`. Use `set x : Fin r → E := Pm *ᵥ (c₀ • w) with hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hxΛ : x ∈ Λ`. Use `(hΛ.2.2.2.2 x).1 fun y hy => ?_` and prove the remaining obligations. Establish `hy' : y = Pm *ᵥ (Q *ᵥ y)` using `by rw [Matrix.mulVec_mulVec, hPQ, Matrix.one_mulVec]`. Establish `e1 : herm G x y = herm G (Pm *ᵥ (c₀ • w)) (Pm *ᵥ (Q *ᵥ y))` using `by rw [← hy']`. Rewrite using `[e1, herm_mulVec, Matrix.mulVec_smul, hHw, smul_dotProduct, single_dotProduct, one_mul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : cc (c₀ * (Q *ᵥ y) j) = c₀ * cc ((Q *ᵥ y) j)`. Unfold `cc`. Rewrite using `[map_mul]`. Use `congr 1`. Conclude with `cc_coe s₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `int_cc (hU y hy j)`. Take `⟨s', hs', hmem⟩` from `h2 x hxΛ`. Establish `hQx : Q *ᵥ x = c₀ • w` using `by rw [hx, Matrix.mulVec_mulVec, hQP, Matrix.one_mulVec]`. Establish `hI` using `memStd.1 hmem i`.
-
-Rewrite `hI` using `[hQx, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul]`. Establish `hwi : w i = H⁻¹ i j`. Rewrite using `[hw, Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Use `⟨s' * s₀, fun h => (v.isPrime.mem_or_mem h).elim hs' hs₀, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hwi]`. Use `hI using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hc₀]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem part2 {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     {G : Matrix (Fin r) (Fin r) E} {Λ : Submodule (𝓞 E) (Fin r → E)} (hΛ : SelfDualLat G Λ)
@@ -287,7 +279,7 @@ theorem part2 {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 end GlobalTheory.FrameDual
 
 /- English proof (translation)
-Introduce `E _ _ _ r G Λ hΛ v P h1 h2 i j`. Conclude with `⟨GlobalTheory.FrameDual.part1 hΛ v (P : Matrix (Fin r) (Fin r) E) h1 i j, GlobalTheory.FrameDual.part2 hΛ v P h2 i j⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.FrameDual.gram_integral_at : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)), SelfDualLat G Λ → ∀ (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (P : GL (Fin r) E), (∀ j, ∃ s : 𝓞 (maximalRealSubfield E), s ∉ v.asIdeal ∧ (algebraMap (maximalRealSubfield E) E s • fun i => (P : Matrix (Fin r) (Fin r) E) i j) ∈ Λ) → (∀ x ∈ Λ, ∃ s : 𝓞 (maximalRealSubfield E), s ∉ v.asIdeal ∧ algebraMap (maximalRealSubfield E) E s • ((P⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ x ∈ GlobalTheory.AdelicU.stdLattice E r) → ∀ (i j : Fin r), (∃ s : 𝓞 (maximalRealSubfield E), s ∉ v.asIdeal ∧ IsIntegral ℤ (algebraMap (maximalRealSubfield E) E s * (Formalism.UG.cT ((IsCMField.complexConj E).toAlgHom : E →+* E) (P : Matrix (Fin r) (Fin r) E) * Gᵀ * (P : Matrix (Fin r) (Fin r) E)) i j)) ∧ (∃ s : 𝓞 (maximalRealSubfield E), s ∉ v.asIdeal ∧ IsIntegral ℤ (algebraMap (maximalRealSubfield E) E s * (Formalism.UG.cT ((IsCMField.complexConj E).toAlgHom : E →+* E) (P : Matrix (Fin r) (Fin r) E) * Gᵀ * (P : Matrix (Fin r) (Fin r) E))⁻¹ i j)) := by
   intro E _ _ _ r G Λ hΛ v P h1 h2 i j

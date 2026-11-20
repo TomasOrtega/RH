@@ -19,7 +19,7 @@ def comb (t : ∀ k, ι k) (s : ∀ k : K ⊕ K', Sum.elim ι ι' k) : ∀ k : K
   | .inr k => s (.inr k)
 
 /- English proof (translation)
-Simplify using `only [mseg, Fintype.prod_sum_type, map_prod]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mseg_join (φ : Ω →ₐ[O] Ω₁) (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω₁)
     (s : ∀ k : K ⊕ K', Sum.elim ι ι' k) :
@@ -29,7 +29,7 @@ theorem mseg_join (φ : Ω →ₐ[O] Ω₁) (x : (Σ k, ι k) → Ω) (z : (Σ k
   rfl
 
 /- English proof (translation)
-Simplify using `only [chartMon, Fintype.prod_sum_type, pullDeg, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, zpow_zero, Finset.prod_const_one, mul_one, map_prod, map_zpow₀]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem chartMon_join (φ : Ω →ₐ[O] Ω₁) (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω₁)
     (s : ∀ k : K ⊕ K', Sum.elim ι ι' k) (a : K → ℤ) :
@@ -40,11 +40,11 @@ theorem chartMon_join (φ : Ω →ₐ[O] Ω₁) (x : (Σ k, ι k) → Ω) (z : (
   rfl
 
 /- English proof (translation)
-Establish `hw : mseg z (fun k => s (.inr k)) ≠ 0`. Rewrite `hs` using `[mseg_join]`. Conclude with `right_ne_zero_of_mul hs`. Establish `hle : chartRing O (mseg x) (restrictChart s) ≤ (chartRing O (mseg (joinCoord (fun p => φ (x p)) z)) s).comap φ`. Unfold `chartRing`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Algebra.adjoin_le` to reduce the goal to its premises. Introduce and unpack `_ ⟨t, rfl⟩`. Establish `h : φ (mseg x t / mseg x (restrictChart s)) = mseg (joinCoord (fun p => φ (x p)) z) (comb t s) / mseg (joinCoord (fun p => φ (x p)) z) s`. Rewrite using `[mseg_join φ x z (comb t s), mseg_join φ x z s, map_div₀]`. Conclude with `(mul_div_mul_right _ _ hw).symm`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `div_mem_chartRing (o := O) (mseg (joinCoord (fun p => φ (x p)) z)) s (comb t s)`. Rewrite `h2` using `[← h]`. Conclude with `h2`. Conclude with `hle hr`.
+A detailed English derivation is pending.
 -/
 theorem map_mem (φ : Ω →ₐ[O] Ω₁) (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω₁)
     (s : ∀ k : K ⊕ K', Sum.elim ι ι' k) (hs : mseg (joinCoord (fun p => φ (x p)) z) s ≠ 0)
@@ -68,15 +68,15 @@ theorem map_mem (φ : Ω →ₐ[O] Ω₁) (x : (Σ k, ι k) → Ω) (z : (Σ k, 
   exact hle hr
 
 /- English proof (translation)
-Establish `hx : mseg x (restrictChart s) ≠ 0`. Rewrite `hs` using `[mseg_join]`. Introduce `h`. Conclude with `left_ne_zero_of_mul hs (by rw [h, map_zero])`. Rewrite using `[hB s hs, chartMon_join, ← map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨c, hc, e, he, rfl⟩` from `hw`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, rfl⟩` from `(hA _ hx e).1 he`. Use `⟨c * φ r, mul_mem hc (map_mem φ x z s hs r hr), ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, map_mul, mul_assoc]`. Consider the case `zero => exact ⟨0, zero_mem _, by rw [zero_mul]⟩`. Consider the case `add w₁ w₂ _ _ h₁ h₂`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨r₁, hr₁, rfl⟩` from `h₁`. Take `⟨r₂, hr₂, rfl⟩` from `h₂`. Conclude with `⟨r₁ + r₂, add_mem hr₁ hr₂, by rw [add_mul]⟩`. Consider the case `neg w _ h`. Take `⟨r, hr, rfl⟩` from `h`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨-r, neg_mem hr, by rw [neg_mul]⟩`. Introduce and unpack `⟨r, hr, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨r, hr, _, (hA _ hx _).2 ⟨1, one_mem _, (one_mul _).symm⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem main [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)]
     (φ : Ω →ₐ[O] Ω₁) (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω₁) (u : Ω) (a : K → ℤ)

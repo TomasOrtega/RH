@@ -12,16 +12,16 @@ noncomputable def incl {R S : Type} [CommRing R] [CommRing S] (d n : ℕ) (e : R
   (glPiEquiv d n e).symm.toMonoidHom.comp (MonoidHom.mulSingle (fun _ => GL (Fin n) S) i)
 
 /- English proof (translation)
-Simplify using `[incl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem glPiEquiv_incl {R S : Type} [CommRing R] [CommRing S] (d n : ℕ) (e : R ≃+* (Fin (d + 1) → S))
     (i : Fin (d + 1)) (g : GL (Fin n) S) : glPiEquiv d n e (incl d n e i g) = Pi.mulSingle i g := by
   simp [incl]
 
 /- English proof (translation)
-Simplify using `only [Subgroup.mem_centralizer_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Use `congrArg (fun x => glPiEquiv d n e x i) h` as an intermediate fact. Simplify `this` using `[map_mul]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Apply `(glPiEquiv d n e).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Simplify `h i` using `[map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_centralizer_iff_comp {R S : Type} [CommRing R] [CommRing S] (d n : ℕ) (e : R ≃+* (Fin (d + 1) → S))
     (N z : GL (Fin n) R) :
@@ -37,7 +37,7 @@ theorem mem_centralizer_iff_comp {R S : Type} [CommRing R] [CommRing S] (d n : �
     simpa [map_mul] using h i
 
 /- English proof (translation)
-Establish `h : (glPiEquiv d n e N i).val = ((Pi.evalRingHom (fun _ => S) i).comp (e : R →+* _)).mapMatrix N.val`. Use extensionality with `a b`. Both sides reduce to the same expression. Rewrite using `[h, RingHom.mapMatrix_apply, Matrix.charpoly_map]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_comp {R S : Type} [CommRing R] [CommRing S] (d n : ℕ) (e : R ≃+* (Fin (d + 1) → S))
     (N : GL (Fin n) R) (i : Fin (d + 1)) :
@@ -48,27 +48,25 @@ theorem charpoly_comp {R S : Type} [CommRing R] [CommRing S] (d n : ℕ) (e : R 
   rw [h, RingHom.mapMatrix_apply, Matrix.charpoly_map]
 
 /- English proof (translation)
-Introduce `R S _ _ d n e A B hAB hS N hN`. Use `set ψ := glPiEquiv d n e with hψ`. Establish `hNi : ∀ i, (ψ N i).val.charpoly.Separable` using `fun i => by`. Rewrite using `[hψ, charpoly_comp]`. Conclude with `hN.map`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose Gs hGs1 hGs2 using fun i => hS (ψ N i) (hNi i)`. Establish `hinclC : ∀ i g, g ∈ Subgroup.centralizer {ψ N i} → incl d n e i g ∈ Subgroup.centralizer {N}`. Introduce `i g hg`. Rewrite using `[mem_centralizer_iff_comp d n e]`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[glPiEquiv_incl]`. Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Simplify using `using hg`. Rewrite using `[Pi.mulSingle_eq_of_ne hij]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem _`. Establish `hinclA : ∀ i g, g ∈ (GeneralLinearGroup.map (n` using `Fin n) B.subtype).range → incl d n e i g ∈ (GeneralLinearGroup.map (n := Fin n) A.subtype).range := by`. Introduce `i g hg`. Rewrite using `[glPiEquiv_mem_iff d n e A B hAB]`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[glPiEquiv_incl]`. Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Simplify using `using hg`. Rewrite using `[Pi.mulSingle_eq_of_ne hij]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `one_mem _`. Use `⟨Finset.univ.biUnion (fun i => (Gs i).image (incl d n e i)), ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Simplify using `only [Finset.mem_biUnion, Finset.mem_univ, true_and, Finset.mem_image] at hg`. Take `⟨i, g', hg', rfl⟩` from `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hinclC i g' (hGs1 i g' hg')`. Introduce `z hz set K := Subgroup.closure (((Finset.univ.biUnion (fun i => (Gs i).image (incl d n e i)) : Finset _) : Set (GL (Fin n) R)) ∪ ((Subgroup.centralizer {N} ⊓ (GeneralLinearGroup.map (n := Fin n) A.subtype).range : Subgroup _) : Set (GL (Fin n) R))) with hK`. Establish `hpi : ψ z ∈ Subgroup.pi Set.univ (fun i => Subgroup.closure (((Gs i : Set (GL (Fin n) S))) ∪ ((Subgroup.centralizer {ψ N i} ⊓ (GeneralLinearGroup.map (n` using `Fin n) B.subtype).range : Subgroup _) : Set (GL (Fin n) S)))) := by`. Introduce `i _`. Conclude with `hGs2 i ((mem_centralizer_iff_comp d n e N z).1 hz i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : Subgroup.pi Set.univ (fun i => Subgroup.closure (((Gs i : Set (GL (Fin n) S))) ∪ ((Subgroup.centralizer {ψ N i} ⊓ (GeneralLinearGroup.map (n` using `Fin n) B.subtype).range : Subgroup _) : Set (GL (Fin n) S)))) ≤ K.map ψ.toMonoidHom := by`. Rewrite using `[Subgroup.pi_le_iff]`. Introduce `i`. Rewrite using `[MonoidHom.map_closure, Subgroup.closure_le]`. Introduce and unpack `_ ⟨g, hg, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[SetLike.mem_coe, Subgroup.mem_map_equiv]`. Establish `: (MonoidHom.mulSingle (fun _ => GL (Fin n) S) i) g = ψ (incl d n e i g)`. Rewrite using `[hψ, glPiEquiv_incl]`. Both sides reduce to the same expression. Rewrite using `[this, MulEquiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `Subgroup.subset_closure` to reduce the goal to its premises. Break down `hg with hg | hg` into its components or cases. Use `left`. Simplify using `only [Finset.coe_biUnion, Finset.coe_univ, Set.mem_univ, Set.iUnion_true, Set.mem_iUnion, Finset.coe_image, Set.mem_image, Finset.mem_coe]`. Conclude with `⟨i, g, hg, rfl⟩`.
-
-Use `right`. Conclude with `⟨hinclC i g hg.1, hinclA i g hg.2⟩`. Use `hle hpi` as an intermediate fact. Rewrite `this` using `[Subgroup.mem_map_equiv, MulEquiv.symm_apply_apply]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem centralizer_fg_of_pi : ∀ (R S : Type) [CommRing R] [CommRing S] (d n : ℕ) (e : R ≃+* (Fin (d + 1) → S))
     (A : Subring R) (B : Subring S), (∀ x : R, x ∈ A ↔ ∀ i, e x i ∈ B) →

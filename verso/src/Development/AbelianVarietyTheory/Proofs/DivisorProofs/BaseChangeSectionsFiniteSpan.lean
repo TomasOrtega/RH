@@ -30,7 +30,7 @@ open scoped TensorProduct
 variable {X Y : Scheme.{0}}
 
 /- English proof (translation)
-Use `GlobalTheory.LB.sec_ext fun j => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.LB.coord_ofSec, SecOn.coord_pullLE, GlobalTheory.LB.coord_ofSec, GlobalTheory.LB.appLE_resG]`. Conclude with `GlobalTheory.LB.resG_appLE π _ _ (s.f (j PUnit.unit))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofSec_secPull {L : LB X} (s : L.Sec) (π : Y ⟶ X) (V : X.Opens) :
     GlobalTheory.LB.ofSec (secPull s π) (π ⁻¹ᵁ V) =
@@ -40,7 +40,7 @@ theorem ofSec_secPull {L : LB X} (s : L.Sec) (π : Y ⟶ X) (V : X.Opens) :
   exact GlobalTheory.LB.resG_appLE π _ _ (s.f (j PUnit.unit))
 
 /- English proof (translation)
-Use `GlobalTheory.LB.sec_ext fun j => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.LB.coord_smul, GlobalTheory.LB.coord_ofSec, GlobalTheory.LB.coord_ofSec, LB.smul_f, map_mul, GlobalTheory.resG_resG]`. Conclude with `congrArg (· * _) (GlobalTheory.resG_resG _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofSec_smul {L : LB X} (a : Γ(X, ⊤)) (s : L.Sec) (V : X.Opens) :
     GlobalTheory.LB.ofSec (a • s) V = rs X (le_top : V ≤ ⊤) a • GlobalTheory.LB.ofSec s V := by
@@ -56,7 +56,7 @@ abbrev secModule {k : Type} [Field k] (S : LinSys k) : Module k S.L.Sec :=
 attribute [local instance] secModule
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a g s => by show (algebraMap k Γ(S.Y, ⊤) a * g) • s = algebraMap k Γ(S.Y, ⊤) a • (g • s) rw [mul_smul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem secTower {k : Type} [Field k] (S : LinSys k) : IsScalarTower k Γ(S.Y, ⊤) S.L.Sec :=
   ⟨fun a g s => by
@@ -66,7 +66,7 @@ theorem secTower {k : Type} [Field k] (S : LinSys k) : IsScalarTower k Γ(S.Y, �
 attribute [local instance] secTower
 
 /- English proof (translation)
-Take `⟨N, i, hi, e⟩` from `hS.proj`. Use `ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str k N` as an intermediate fact. Rewrite using `[← e]`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProper_str {k : Type} [Field k] {S : LinSys k} (hS : S.IsVariety) : IsProper S.str := by
   obtain ⟨N, i, hi, e⟩ := hS.proj
@@ -75,7 +75,7 @@ theorem isProper_str {k : Type} [Field k] {S : LinSys k} (hS : S.IsVariety) : Is
   infer_instance
 
 /- English proof (translation)
-Establish `hfin : Module.Finite k (coh (twist (structureModule S.Y) S.L) 0)` using `finite_coh_zero_twist_of_isProjOver (f := S.str) (fun _ => rfl) hS.proj S.isLB`. Conclude with `Module.Finite.equiv ((cohZeroTwistEquiv S.L).restrictScalars k)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_sec {k : Type} [Field k] {S : LinSys k} (hS : S.IsVariety) : Module.Finite k S.L.Sec := by
   have hfin : Module.Finite k (coh (twist (structureModule S.Y) S.L) 0) :=
@@ -83,7 +83,7 @@ theorem finite_sec {k : Type} [Field k] {S : LinSys k} (hS : S.IsVariety) : Modu
   exact Module.Finite.equiv ((cohZeroTwistEquiv S.L).restrictScalars k)
 
 /- English proof (translation)
-Use `isProper_str hS` as an intermediate fact. Rewrite using `[← lineBundleGlobalSectionsDim_eq_finrank, ← lineBundleGlobalSectionsDim_eq_finrank, lineBundleGlobalSectionsDim_def, lineBundleGlobalSectionsDim_def]`. Conclude with `FieldChangeInter.hdim_pull (S.isPullback_baseChange E) S.isLB 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_baseChange (S : LinSys F) (hS : S.IsVariety) :
     Module.finrank E (S.baseChange E).L.Sec = Module.finrank F S.L.Sec := by
@@ -101,7 +101,7 @@ def resTo {R : Type} [CommRing R] (f : X ⟶ Spec (CommRingCat.of R)) (L : LB X)
       GlobalTheory.LB.coord_ofSec, GlobalTheory.LB.coord_ofSec, LB.add_f, map_add]
 
 /- English proof (translation)
-The claim follows from `ofSec_smul _ s V`.
+A detailed English derivation is pending.
 -/
 theorem resTo_smul {R : Type} [CommRing R] (f : X ⟶ Spec (CommRingCat.of R)) (L : LB X) (V : X.Opens)
     (a : R) (s : L.Sec) :
@@ -110,7 +110,7 @@ theorem resTo_smul {R : Type} [CommRing R] (f : X ⟶ Spec (CommRingCat.of R)) (
   ofSec_smul _ s V
 
 /- English proof (translation)
-The claim follows from `congrArg (SecOnR.of _ _ _) (ofSec_secPull s (S.bcFst E) V)`.
+A detailed English derivation is pending.
 -/
 theorem resTo_secPull (S : LinSys F) (E : Type) [Field E] [Algebra F E] (V : S.Y.Opens) (s : S.L.Sec) :
     resTo (S.baseChange E).str (S.baseChange E).L (S.bcFst E ⁻¹ᵁ V) (secPull s (S.bcFst E)) =
@@ -121,25 +121,21 @@ def pullSecs (S : LinSys F) (E : Type) [Field E] [Algebra F E] {n : ℕ} (b : Fi
     Fin n → (S.baseChange E).L.Sec := fun j => secPull (b j) (S.bcFst E)
 
 /- English proof (translation)
-Use `isProper_str hS` as an intermediate fact. Use `haveI : CompactSpace S.Y := QuasiCompact.compactSpace_of_compactSpace S.str`. Take `⟨m, D, hD, hc⟩` from `GlobalTheory.exists_fin_affine_cover (X := S.Y) (V := ⊤) isCompact_univ`. Establish `H` using `S.isPullback_baseChange E`. Set `R : (Fin n → F) →ₗ[F] (∀ i, SecOnR S.str S.L (D i))` to `LinearMap.pi fun i => ∑ j, (LinearMap.proj j).smulRight (resTo S.str S.L (D i) (b j))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hRi : ∀ u i, R u i = resTo S.str S.L (D i) (∑ j, u j • b j)` using `fun u i => by`. Rewrite using `[map_sum]`. Simplify using `only [R, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smulRight_apply, LinearMap.proj_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => (resTo_smul S.str S.L (D i) (u j) (b j)).symm`. Establish `hR : Function.Injective R`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(injective_iff_map_eq_zero R).2 fun u hu => ?_` and prove the remaining obligations. Establish `h2 : ∑ j, u j • b j = 0`. Use `(SecOn.ofSec_bijective (M := S.L) (V := ⊤) rfl).injective ?_` and prove the remaining obligations. Use `SecOn.ext_of_cover D (fun _ => le_top) hc.ge fun a => ?_` and prove the remaining obligations. Rewrite using `[SecOn.restrict_ofSec, SecOn.restrict_ofSec]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `(hRi u a).symm.trans (congrFun hu a)` as an intermediate fact. Conclude with `this.trans (map_zero (resTo S.str S.L (D a))).symm`. Use function extensionality and compare the values at `j`. Conclude with `Fintype.linearIndependent_iff.1 hb u h2 j`. Set `Bc : ∀ i, E ⊗[F] SecOnR S.str S.L (D i) →ₗ[E] SecOnR (S.baseChange E).str (S.baseChange E).L (S.bcFst E ⁻¹ᵁ D i)` to `fun i => SecOnR.baseChangeHom S.L H.w (D i) (S.bcFst E ⁻¹ᵁ D i) le_rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBc : ∀ i, Function.Bijective (Bc i)` using `fun i => SecOnR.baseChangeHom_bijective S.isLB H (hD i) rfl`. Set `Φ : (Fin n → E) →ₗ[E] ∀ i, SecOnR (S.baseChange E).str (S.baseChange E).L (S.bcFst E ⁻¹ᵁ D i)` to `LinearMap.pi (fun i => Bc i ∘ₗ LinearMap.proj i) ∘ₗ (TensorProduct.piRight F E E fun i => SecOnR S.str S.L (D i)).toLinearMap ∘ₗ R.baseChange E ∘ₗ (TensorProduct.piScalarRight F E E (Fin n)).symm.toLinearMap`. Establish `hΦ : Function.Injective Φ`. Establish `h1 : Function.Injective (R.baseChange E)`. Rewrite using `[LinearMap.baseChange_eq_ltensor]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Module.Flat.lTensor_preserves_injective_linearMap R hR`. Establish `h2 : Function.Injective (LinearMap.pi (fun i => Bc i ∘ₗ LinearMap.proj i) : (∀ i, E ⊗[F] SecOnR S.str S.L (D i)) →ₗ[E] _)` using `fun x y h => funext fun i => (hBc i).1 (congrFun h i)`. Conclude with `h2.comp ((TensorProduct.piRight F E E fun i => SecOnR S.str S.L (D i)).injective.comp (h1.comp (TensorProduct.piScalarRight F E E (Fin n)).symm.injective))`. Establish `hΦc : ∀ c : Fin n → E, Φ c = fun i => resTo (S.baseChange E).str (S.baseChange E).L (S.bcFst E ⁻¹ᵁ D i) (∑ j, c j • pullSecs S E b j)`. Introduce `c`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Use `conv_lhs => rw [← Finset.univ_sum_single c]`. Rewrite using `[map_sum]`. Use function extensionality and compare the values at `i`. Rewrite using `[Finset.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Φ, LinearMap.comp_apply, LinearEquiv.coe_coe, TensorProduct.piScalarRight_symm_single, LinearMap.baseChange_tmul, TensorProduct.piRight_apply, TensorProduct.piRightHom_tmul, LinearMap.pi_apply, LinearMap.proj_apply, Bc, SecOnR.baseChangeHom_tmul]`. Express the relevant statement in the definitionally equal form `SecOnR.baseChangeHom S.L H.w (D i) (S.bcFst E ⁻¹ᵁ D i) le_rfl (c j ⊗ₜ[F] R (Pi.single j 1) i) = _`. Rewrite using `[SecOnR.baseChangeHom_tmul, hRi]`. Establish `hs : ∑ k, (Pi.single j (1 : F) : Fin n → F) k • b k = b j`. Rewrite using `[Finset.sum_eq_single j (fun k _ hk => by rw [Pi.single_eq_of_ne hk, zero_smul]) (fun h => absurd (Finset.mem_univ j) h), Pi.single_eq_same, one_smul]`.
-
-Rewrite using `[hs, ← resTo_secPull]`. Conclude with `(resTo_smul _ _ _ (c j) _).symm`. Use `Fintype.linearIndependent_iff.2 fun c hc => ?_` and prove the remaining obligations. Establish `h0 : Φ c = Φ 0`. Rewrite using `[hΦc, hc, map_zero]`.
-
-Use function extensionality and compare the values at `i`. Conclude with `map_zero _`. Conclude with `congrFun (hΦ h0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem linearIndependent_secPull (S : LinSys F) (hS : S.IsVariety) {n : ℕ} (b : Fin n → S.L.Sec)
     (hb : LinearIndependent F b) :
@@ -211,9 +207,9 @@ theorem linearIndependent_secPull (S : LinSys F) (hS : S.IsVariety) {n : ℕ} (b
   exact congrFun (hΦ h0)
 
 /- English proof (translation)
-Introduce `F E _ _ _ S hS`. Use `haveI := finite_sec hS`. Use `haveI : Module.Finite E (S.baseChange E).L.Sec := finite_sec (hS.baseChange E)`. Set `B` to `Module.finBasis F S.L.Sec`. Use `⟨_, B, fun t => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hli` using `linearIndependent_secPull (E := E) S hS B B.linearIndependent`. Establish `hsp` using `hli.span_eq_top_of_card_eq_finrank' (by rw [Fintype.card_fin, finrank_baseChange S hS])`. Establish `ht : t ∈ Submodule.span E (Set.range (pullSecs S E B))` using `hsp ▸ Submodule.mem_top`. Take `⟨u, hu⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 ht`. Conclude with `⟨u, hu⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pullSecs_spanning : ∀ (F E : Type) [Field F] [Field E] [Algebra F E] (S : LinSys F),
     S.IsVariety → ∃ (n : ℕ) (b : Fin n → S.L.Sec), ∀ t : (S.baseChange E).L.Sec, ∃ u : Fin n → E,

@@ -6,7 +6,7 @@ open UpperTheory.Gal.Gen (IsLevel fixedBy)
 open UpperTheory.Gal.Wt
 
 /- English proof (translation)
-Use extensionality with `g`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 private theorem RU_mul' {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ} (x : UA E a) (φ ψ : UA E a → ℂ) :
     RU E a x (fun g => φ g * ψ g) = RU E a x φ * RU E a x ψ := by
@@ -14,15 +14,15 @@ private theorem RU_mul' {E : Type} [Field E] [NumberField E] [IsCMField E] {a : 
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ a φ ψ hφ hψ`. Use `⟨hφ.cont.mul hψ.cont, fun γ hγ g => ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ (γ * g) * ψ (γ * g) = φ g * ψ g`. Rewrite using `[hφ.left γ hγ, hψ.left γ hγ]`. Use `isOpen_stab_of_mem_nhds ((RU E a).comp (finU E a).subtype) (fun g => φ g * ψ g) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Filter.mem_of_superset ((hφ.level.inter hψ.level).mem_nhds ⟨?_, ?_⟩) fun k hk => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `RU E a 1 φ = φ`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `RU E a 1 ψ = ψ`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Establish `h1 : RU E a k φ = φ` using `hk.1`. Establish `h2 : RU E a k ψ = ψ` using `hk.2`. Express the relevant statement in the definitionally equal form `RU E a k (fun g => φ g * ψ g) = fun g => φ g * ψ g`. Rewrite using `[RU_mul', h1, h2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `haveI := hφ.kfin haveI := hψ.kfin`. Establish `f1 : (Submodule.span ℂ (Set.range fun k : infU E a => RU E a k φ)).FG` using `Submodule.fg_iff_finiteDimensional _ |>.2 inferInstance`. Establish `f2 : (Submodule.span ℂ (Set.range fun k : infU E a => RU E a k ψ)).FG` using `Submodule.fg_iff_finiteDimensional _ |>.2 inferInstance`. Use `haveI : FiniteDimensional ℂ ↥(Submodule.span ℂ (Set.range fun k : infU E a => RU E a k φ) * Submodule.span ℂ (Set.range fun k : infU E a => RU E a k ψ)) := Submodule.fg_iff_finiteDimensional _ |>.1 (f1.mul f2)`. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ (Set.range fun k : infU E a => RU E a k φ) * Submodule.span ℂ (Set.range fun k : infU E a => RU E a k ψ)) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Express the relevant statement in the definitionally equal form `RU E a k (fun g => φ g * ψ g) ∈ _`. Rewrite using `[RU_mul']`. Conclude with `Submodule.mul_mem_mul (Submodule.subset_span ⟨k, rfl⟩) (Submodule.subset_span ⟨k, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Wt.autMul_of :
     UpperTheory.Gal.Wt.AutMul := by

@@ -20,13 +20,13 @@ noncomputable section
 namespace GlobalTheory.ShareOn.UnipLevel
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b h`. Rewrite using `[pow_zero, Matrix.one_apply, if_neg]`. Introduce `hab`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[hab]`. Use linear arithmetic over natural numbers and integers. Consider the case `succ m ih`. Introduce `a b h`. Rewrite using `[pow_succ, Matrix.mul_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : b ≤ j`. Rewrite using `[hS j b hj, mul_zero]`. Establish `hj' : (j : ℕ) < a + m`. Establish `: (j : ℕ) < b` using `Fin.lt_def.1 (not_le.1 hj)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[ih a j hj', zero_mul]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_apply_eq_zero_of_strict {K : Type} [CommRing K] {n : ℕ} (S : Matrix (Fin n) (Fin n) K)
     (hS : ∀ a b : Fin n, b ≤ a → S a b = 0) (m : ℕ) :
@@ -56,49 +56,43 @@ set_option maxHeartbeats 800000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex Csz p r hr i u k v hU x`. Take `⟨v'⟩` from `GlobalTheory.ShareOn.nonempty_place D`. Establish `hlev : Formalism.IndefR.FWT.LevIs (R2 p) i (Formalism.IndefR.FWT.iotaW p.T i) p.T.Q.l.M (Mfr p.T.Q.l) (fun g => liftLa (r.lev i g))` using `hr.level v' i`. Establish `hL` using `hr.laws v'`. Establish `hι : LatEmb (Wc D i) (Formalism.IndefR.FWT.iotaW p.T i)` using `GlobalTheory.TraceLattice.latEmb_iotaW hL i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβ : IsSDFrame (Wc D i) ((R2 p).βW i) ((R2 p).ΛW i) 1` using `p.charW.base.lev.βW i`. Take `⟨plg, iso, hplg, -, -, hG⟩` from `p.grpRecPin`. Establish `hrk : D.R.r = (p.T.Q.Dw ((i : ℕ) + 1)).p + (p.T.Q.Dw ((i : ℕ) + 1)).q` using `(hL.j.unf _ ⟨Nat.le_add_left _ _, i.2⟩ _ (r.used v').full.toCore.good_σ₀).1`. Use `set PPs := plg ⟨k, v⟩ with hPPs`. Take `⟨φ, hφs, hφk⟩` from `GlobalTheory.T.lattice_coordinates_mod_prime_selfDual_stabilizer D (Wc D i) ((R2 p).βW i) ((R2 p).ΛW i) hβ _ _ hι PPs.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, hκ, hκa⟩` from `hlev u`. Establish `hMbP : p.T.Q.l.Mb ≤ PPs.1.asIdeal`. Rewrite using `[hr.half]`. Conclude with `Ideal.prod_le_inf.trans (Finset.inf_le PPs.2)`. Establish `hM : ((p.T.Q.l.M : ℕ) : 𝓞 D.host.E) ∈ PPs.1.asIdeal` using `hMbP (GlobalTheory.LevDesc.natCast_M_mem _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSt : Lev.finE (Wc D i) κ ∈ St ((R2 p).βW i)` using `parLev_St hκ.2.1`. Establish `hkill : ∀ c ∈ PPs.1.asIdeal, ∀ y, φ (c • y) = 0`. Introduce `c hc y`. Rewrite using `[map_smul]`. Use function extensionality and compare the values at `j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Pi.smul_apply, Pi.zero_apply, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem.2 hc, zero_mul]`. Establish `hcop : p.T.Q.l.Mb ⊔ Mfr p.T.Q.l = ⊤` using `p.T.Q.l.coprime`. Take `⟨c₁, hc₁, w, hw, hcw⟩` from `Submodule.mem_sup.1 (hcop ▸ Submodule.mem_top : (1 : 𝓞 D.host.E) ∈ p.T.Q.l.Mb ⊔ Mfr p.T.Q.l)`. Use `set f := liftLa (r.lev i u) with hf`. Use `set N : Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) (kP PPs.1) := (redFn ((R2 p).βW i) PPs.1 (Lev.finE (Wc D i) κ)).1 with hN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfφ : ∀ a, φ (f a) = N *ᵥ φ a`. Introduce `a`. Establish `ha : a = c₁ • a + w • a` using `by rw [← add_smul, hcw, one_smul]`. Establish `h1` using `hφk κ hSt p.T.Q.l.M hM (w • a) (f (w • a)) (hκa (w • a) (Submodule.smul_mem_smul hw Submodule.mem_top))`. Establish `h2 : φ (w • a) = φ a` using `by conv_rhs => rw [ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, hkill c₁ (hMbP hc₁), zero_add]`. Establish `h3 : φ (f a) = φ (f (w • a))` using `by conv_lhs => rw [ha]`. Rewrite using `[map_add, map_add, map_smul, hkill c₁ (hMbP hc₁), zero_add]`. Rewrite using `[h3, h1, h2]`. Establish `hrank : (Wc D i).rank = D.R.r` using `Formalism.IndefR.FWT.rank_Wc i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5 : (R2 p).eG u PPs = upperLeftBlock ((R2 p).datWp i (R2 p).triv).hr (redFn ((R2 p).βW i) PPs.1 (Lev.finE (Wc D i) κ))` using `(congrFun hκ.2.2 PPs).symm`. Establish `h6` using `upper_block_val_submatrix ((R2 p).datWp i (R2 p).triv).hr (blockTri_blkOf_le _ _ (parLev_g hκ.2.1 PPs.2))`. Establish `h7 : (R2 p).eG u PPs = Formalism.UG.bc (iso ⟨k, v⟩ : ZMod (D.host.g k) →+* kP PPs.1) ((p.R.eG.trans p.cG) u ⟨k, v⟩)` using `hG u ⟨k, v⟩`. Rewrite `h6` using `[← h5, h7]`. Establish `hsub : ∀ a' b' : Fin D.R.r, N (Fin.castLE ((R2 p).datWp i (R2 p).triv).hr a') (Fin.castLE ((R2 p).datWp i (R2 p).triv).hr b') = iso ⟨k, v⟩ ((((p.R.eG.trans p.cG) u ⟨k, v⟩ : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g k))) a' b')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a' b'`. Use `congrFun (congrFun h6 a') b'` as an intermediate fact. Conclude with `this.symm`. Establish `hstrict : ∀ a b : Fin (Wc D i).rank, b ≤ a → (N - 1) a b = 0`. Introduce `a b hab`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `ha' : (a : ℕ) < D.R.r` using `hrank ▸ a.2`. Establish `hb' : (b : ℕ) < D.R.r` using `hrank ▸ b.2`. Establish `e1 : N a b = iso ⟨k, v⟩ ((((p.R.eG.trans p.cG) u ⟨k, v⟩ : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g k))) ⟨a, ha'⟩ ⟨b, hb'⟩)` using `hsub ⟨a, ha'⟩ ⟨b, hb'⟩`. Rewrite using `[Matrix.sub_apply, e1]`. Break down `lt_or_eq_of_le hab with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[(hU ⟨a, ha'⟩ ⟨b, hb'⟩).1 h, map_zero, Matrix.one_apply_ne (ne_of_gt h), sub_zero]`. Establish `hab' : (⟨a, ha'⟩ : Fin D.R.r) = ⟨b, hb'⟩` using `by ext; show (a : ℕ) = b; rw [h]`. Rewrite using `[(hU ⟨a, ha'⟩ ⟨b, hb'⟩).2 hab', map_one, h, Matrix.one_apply_eq, sub_self]`. Establish `hnil : (N - 1) ^ D.R.r = 0`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[Matrix.zero_apply]`. Conclude with `pow_apply_eq_zero_of_strict _ hstrict D.R.r a b (by have := b.2; omega)`. Establish `hpow : ∀ (m : ℕ) a, φ (((f - LinearMap.id : Module.End (𝓞 D.host.E) (p.T.Q.Dw ((i : ℕ) + 1)).La) ^ m) a) = ((N - 1) ^ m) *ᵥ φ a`. Introduce `m`. Proceed by induction on `m with`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `zero => intro a`. Rewrite using `[pow_zero, pow_zero, Module.End.one_apply, Matrix.one_mulVec]`. Consider the case `succ m ih`. Introduce `a`. Rewrite using `[pow_succ, Module.End.mul_apply, ih, pow_succ, ← Matrix.mulVec_mulVec, LinearMap.sub_apply, LinearMap.id_apply, map_sub, hfφ, Matrix.sub_mulVec, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hker : ∀ y, φ y = 0 → y ∈ PPs.1.asIdeal • (⊤ : Submodule (𝓞 D.host.E) (p.T.Q.Dw ((i : ℕ) + 1)).La)`. Introduce `y hy`. Use `haveI : NeZero (D.host.g k) := ⟨(D.host.g_prime k).ne_zero⟩`. Use `haveI hfin : Finite (kP PPs.1) := Finite.of_equiv _ (iso ⟨k, v⟩).toEquiv`. Use `haveI : Finite (𝓞 D.host.E ⧸ PPs.1.asIdeal) := hfin`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `haveI := (p.T.Q.Dw ((i : ℕ) + 1)).fin`. Use `haveI := (p.T.Q.Dw ((i : ℕ) + 1)).proj`. Establish `hle : PPs.1.asIdeal • (⊤ : Submodule (𝓞 D.host.E) (p.T.Q.Dw ((i : ℕ) + 1)).La) ≤ LinearMap.ker φ`. Rewrite using `[Submodule.smul_le]`. Introduce `c hc z _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hkill c hc z`. Set `ψ` to `(PPs.1.asIdeal • (⊤ : Submodule (𝓞 D.host.E) (p.T.Q.Dw ((i : ℕ) + 1)).La)).liftQ φ hle`. Establish `hψs : Function.Surjective ψ`. Introduce `z`. Take `⟨y', rfl⟩` from `hφs z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `⟨Submodule.Quotient.mk y', rfl⟩`. Establish `hc0 : Nat.card (kP PPs.1) ≠ 0` using `Nat.card_pos.ne'`. Establish `hN1 : Nat.card ((p.T.Q.Dw ((i : ℕ) + 1)).La ⧸ PPs.1.asIdeal • (⊤ : Submodule (𝓞 D.host.E) (p.T.Q.Dw ((i : ℕ) + 1)).La)) = Nat.card (kP PPs.1) ^ (Wc D i).rank`. Rewrite using `[GlobalTheory.natCard_quot_smul_top_of_projective, (p.T.Q.Dw ((i : ℕ) + 1)).rank, ← hrk, hrank]`. Establish `hN2 : Nat.card (Fin (Wc D i).rank → kP PPs.1) = Nat.card (kP PPs.1) ^ (Wc D i).rank`.
+Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.card_fun, Nat.card_eq_fintype_card (α := Fin _), Fintype.card_fin]`. Use `haveI : Finite ((p.T.Q.Dw ((i : ℕ) + 1)).La ⧸ PPs.1.asIdeal • (⊤ : Submodule (𝓞 D.host.E) (p.T.Q.Dw ((i : ℕ) + 1)).La)) := Nat.finite_of_card_ne_zero (by rw [hN1]; exact pow_ne_zero _ hc0)`. Establish `hb` using `hψs.bijective_of_nat_card_le (by rw [hN1, hN2])`. Establish `h0 : ψ (Submodule.Quotient.mk y) = ψ 0`. Rewrite using `[map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hy`. Conclude with `(Submodule.Quotient.mk_eq_zero _).1 (hb.1 h0)`. Establish `hmk : ∀ (m : ℕ) a, ((((r.lev i u).toLinearMap - LinearMap.id : Module.End (𝓞 D.host.E) (LaMod (p.T.Q.Dw ((i : ℕ) + 1)) p.T.Q.l)) ^ m) ((p.T.Q.l.Mb • (⊤ : Submodule (𝓞 D.host.E) (p.T.Q.Dw ((i : ℕ) + 1)).La)).mkQ a)) = (p.T.Q.l.Mb • (⊤ : Submodule (𝓞 D.host.E) (p.T.Q.Dw ((i : ℕ) + …`. Introduce `m`. Proceed by induction on `m with`.
-
-Consider the case `zero => intro a`. Both sides reduce to the same expression. Consider the case `succ m ih`. Introduce `a`. Rewrite using `[pow_succ, Module.End.mul_apply, LinearMap.sub_apply, LinearMap.id_apply, LinearEquiv.coe_coe, hf, ← liftLa_spec, ← map_sub, ← hf, ih, pow_succ, Module.End.mul_apply, LinearMap.sub_apply, LinearMap.id_apply]`.
-
-Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hP : ((plg ⟨k, v⟩ : ↥p.R.Pg) : Pl D.host.E) = D.naut.plGw k v` using `hplg ⟨k, v⟩`. Rewrite using `[← hP, ← hPPs]`. Establish `hx` using `hmk D.R.r a`. Rewrite `hx` using `[Submodule.mkQ_apply]`.
-
-Rewrite using `[hx]`. Use `GlobalTheory.LevDesc.map_mem_smul_top _ (hker _ ?_)` and prove the remaining obligations. Rewrite using `[hpow, hnil, Matrix.zero_mulVec]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levUnip_mod_place : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
     {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz) (r : TwoRuns p.T p.P.Gp),

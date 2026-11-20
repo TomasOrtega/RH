@@ -16,7 +16,7 @@ open Set GlobalTheory.ChartGlue
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {d : ℕ}
 
 /- English proof (translation)
-Establish `e : c.e ∘ c.e.symm =ᶠ[𝓝 (c.e y)] id` using `eventually_of_mem (c.e.open_target.mem_nhds (c.e.map_source hy)) fun v hv => c.e.right_inv hv`. Use function extensionality and compare the values at `b`. Simplify using `only [AlgChart.dtrans, e.fderiv_eq, fderiv_id, ContinuousLinearMap.id_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem dtrans_self (c : AlgChart p σ d) {y : CxPts p σ} (hy : y ∈ c.e.source) (ξ : Fin d → ℂ) :
     c.dtrans c y ξ = ξ := by
@@ -26,11 +26,11 @@ theorem dtrans_self (c : AlgChart p σ d) {y : CxPts p σ} (hy : y ∈ c.e.sourc
   simp only [AlgChart.dtrans, e.fderiv_eq, fderiv_id, ContinuousLinearMap.id_apply]
 
 /- English proof (translation)
-Establish `ho` using `isOpen_over c.e c'.e.open_source`. Establish `ho'` using `isOpen_over c'.e c''.e.open_source`. Establish `h1 : DifferentiableAt ℂ (c'.e ∘ c.e.symm) (c.e y)` using `(c.holo_trans c').differentiableAt (ho.mem_nhds (mem_over c.e hy hy'))`. Establish `e1 : (c'.e ∘ c.e.symm) (c.e y) = c'.e y` using `congrArg c'.e (c.e.left_inv hy)`. Establish `h2 : DifferentiableAt ℂ (c''.e ∘ c'.e.symm) ((c'.e ∘ c.e.symm) (c.e y))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Conclude with `(c'.holo_trans c'').differentiableAt (ho'.mem_nhds (mem_over c'.e hy' hy''))`. Establish `e : (c''.e ∘ c'.e.symm) ∘ (c'.e ∘ c.e.symm) =ᶠ[𝓝 (c.e y)] c''.e ∘ c.e.symm` using `eventually_of_mem (ho.mem_nhds (mem_over c.e hy hy')) fun v hv => by`. Simplify using `only [Function.comp_apply, c'.e.left_inv hv.2]`. Establish `hc` using `fderiv_comp (c.e y) h2 h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[e.fderiv_eq]`. Use function extensionality and compare the values at `b`. Simplify using `only [AlgChart.dtrans, hc, e1, ContinuousLinearMap.comp_apply]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dtrans_dtrans (c c' c'' : AlgChart p σ d) {y : CxPts p σ} (hy : y ∈ c.e.source) (hy' : y ∈ c'.e.source)
     (hy'' : y ∈ c''.e.source) (ξ : Fin d → ℂ) :
@@ -70,7 +70,7 @@ structure IsExphOn (a : ChartForm p σ d) (E : ChartMap p σ d) (W : Set (CxPts 
     iteratedDeriv n (fun t : ℝ => c.e (E c y (t • ξ.ofLp))) 0 = jet (matIn a c) n (c.e y, ξ)
 
 /- English proof (translation)
-The claim follows from `h.trans cont c v hv hW' ξ hξ := h.cont c v hv (hW hW') ξ (hξ.trans_le hε) smooth c c' v hv hW' ξ hξ := h.smooth c c' v hv (hW hW') ξ (hξ.trans_le hε) zero c y hy hW' := h.zero c y hy (hW hW') jets c y hy hW' := h.jets c y hy (hW hW')`.
+A detailed English derivation is pending.
 -/
 theorem IsExphOn.mono {a : ChartForm p σ d} {E : ChartMap p σ d} {W W' : Set (CxPts p σ)} {ε ε' : ℝ}
     (h : IsExphOn a E W ε) (hW : W' ⊆ W) (hε : ε' ≤ ε) : IsExphOn a E W' ε' where
@@ -81,7 +81,7 @@ theorem IsExphOn.mono {a : ChartForm p σ d} {E : ChartMap p σ d} {W W' : Set (
   jets c y hy hW' := h.jets c y hy (hW hW')
 
 /- English proof (translation)
-The claim follows from `rfl cont _ _ _ h := h.elim smooth _ _ _ _ h := h.elim zero _ _ _ h := h.elim jets _ _ _ h := h.elim`.
+A detailed English derivation is pending.
 -/
 theorem isExphOn_empty (a : ChartForm p σ d) (ε : ℝ) : IsExphOn a (fun _ y _ => y) ∅ ε where
   trans _ _ _ _ _ _ := rfl

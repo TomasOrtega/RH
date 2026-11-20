@@ -13,7 +13,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Giv
 open ReciprocityTheory.ChartRestriction.G.Geo
 
 /- English proof (translation)
-Introduce `hHS hBig`. Establish `a0 : SuccessiveMinimaLowerBound` using `GroundTheory.Heights₂.Heights.ForSecondHalf.Z1.of_moriwakiHS hHS`. Conclude with `⟨GroundTheory.Heights₂.Heights.ForSecondHalf.G1.full, a0, GroundTheory.Heights₂.Heights.ForSecondHalf.Z2.proof hBig, GroundTheory.Heights₂.Heights.ForSecondHalf.BigLineBundleMoriwaki.of_moriwakiBig hBig, GroundTheory.Heights₂.Heights.LowerBoundFree.ZhangLowerX.proof a0, GroundThe …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem hsLinks_of_moriwaki :
     ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiHSStatement → ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiBigStatement →

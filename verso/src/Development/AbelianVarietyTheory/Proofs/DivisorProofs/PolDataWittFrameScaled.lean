@@ -16,7 +16,7 @@ namespace GlobalTheory.ThK.CuspCompV
 open GlobalTheory.StdPar
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Take `⟨f', hf', hne, -⟩` from `h`. Use `hne ((Submodule.mem_bot ℂ).1 ((Submodule.span_le.2 ?_) hf'))` and prove the remaining obligations. Introduce and unpack `_ ⟨u, a, -, rfl⟩`. Conclude with `(Submodule.mem_bot ℂ).2 rfl`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isExponent_ne_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}
@@ -28,7 +28,7 @@ theorem isExponent_ne_zero {F E : Type} [Field F] [NumberField F] [Field E] [Num
   exact (Submodule.mem_bot ℂ).2 rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isAutOn_const σ J X Y S K 0, fun _ _ _ _ _ _ _ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCuspOn_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}
@@ -36,7 +36,7 @@ theorem isCuspOn_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   ⟨isAutOn_const σ J X Y S K 0, fun _ _ _ _ _ _ _ _ => by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isCuspOn_zero S' K, 0, hφ.2 S' h, fun _ _ _ _ _ _ _ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCuspComp_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}
@@ -45,7 +45,7 @@ theorem isCuspComp_zero {F E : Type} [Field F] [NumberField F] [Field E] [Number
   ⟨isCuspOn_zero S' K, 0, hφ.2 S' h, fun _ _ _ _ _ _ _ _ => by simp⟩
 
 /- English proof (translation)
-Take `⟨h1, _, _, hint⟩` from `h`. Conclude with `⟨h1, φc, h1.1.isConstAlong_self, fun ψ hψ μ 𝓕 a b g g' => ⟨(hint ψ hψ μ 𝓕 a b g g').2.1, (hint ψ hψ μ 𝓕 a b g g').2.1, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isCuspComp_self_of_isCuspComp {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}
@@ -56,11 +56,11 @@ theorem isCuspComp_self_of_isCuspComp {F E : Type} [Field F] [NumberField F] [Fi
     ⟨(hint ψ hψ μ 𝓕 a b g g').2.1, (hint ψ hψ μ 𝓕 a b g g').2.1, rfl⟩⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hKP hT c hc hcσ Φ hΦ r Xf Yf hW K hK hA S hS`. Establish `hcm : IsCMExt F E σ` using `hT.base.cm`. Establish `hJ : IsHermND σ (c • G.W.J.map σ)` using `GlobalTheory.ThK.SqIntHerm.isHermND_smul_map F E σ B _ G.W _ _ hT.geo.hW c hc hcσ`. Establish `HL` using `hKP.automorphicFormsUnitary.2`. Take `⟨φc, hφc, -⟩` from `(HL F E σ hcm _ _ hJ r Xf Yf hW K hK ∅ _ (isAutOn_empty.2 hA)).1 S (Finset.empty_subset S)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h0 : φc = 0`. Conclude with `h0 ▸ hφc`. It suffices to derive a contradiction. Establish `hL` using `HL F E σ hcm _ _ hJ r Xf Yf hW K hK S φc hφc.1.1`. Take `⟨S', hSS', s, ψ, hψ, hexp⟩` from `hL.2.2 h0`.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_or_ssubset_of_subset hSS' with e | hss` into its components or cases. Substitute `e` using the available equality. Take `rfl : ψ = φc` from `(hL.1 S le_rfl).unique hψ (isCuspComp_self_of_isCuspComp hφc)`. Conclude with `hS (GlobalTheory.T.witt_frame_theta_integral_bound F E σ hσ B a a' G X om om' hKP hT c hc hcσ Φ hΦ r Xf Yf hW K hK hA S s ⟨ψ, hφc, hexp⟩)`. Conclude with `isExponent_ne_zero hexp ((hL.1 S' hSS').unique hψ (isCuspComp_zero hφc.1 hss))`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cuspComp_eq_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

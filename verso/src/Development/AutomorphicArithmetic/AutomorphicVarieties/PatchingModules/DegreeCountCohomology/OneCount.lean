@@ -16,13 +16,13 @@ private theorem chRep_apply {A D M : Type} [CommRing A] [Group D] [AddCommGroup 
     (g : D) (y : M) : chRep M χ g y = (χ g : A) • y := rfl
 
 /- English proof (translation)
-Set `f : (A ⧸ I) →ₗ[A] (A ⧸ I)` to `a • LinearMap.id`. Establish `h1` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.ker f)`. Establish `h2` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.range f)`. Rewrite `h1` using `[Nat.card_congr (f.quotKerEquivRange).toEquiv]`. Establish `h3 : Nat.card (LinearMap.ker f) = Nat.card ((A ⧸ I) ⧸ LinearMap.range f)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `Nat.eq_of_mul_eq_mul_left (Nat.card_pos (α := LinearMap.range f))` to reduce the goal to its premises. Rewrite using `[← h2, mul_comm, ← h1]`. Establish `h4 : Nat.card S ≤ Nat.card (LinearMap.ker f)` using `Nat.card_le_card_of_injective _ (Submodule.inclusion_injective (show S ≤ LinearMap.ker f from hS))`. Set `p : A →ₗ[A] ((A ⧸ I) ⧸ LinearMap.range f)` to `(LinearMap.range f).mkQ.comp (Submodule.mkQ I)`. Establish `hp : J ≤ LinearMap.ker p`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `y hy`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton.1 (h hy)`. Use `(Submodule.Quotient.mk_eq_zero _).2 ⟨Submodule.mkQ I c, ?_⟩` and prove the remaining obligations. Conclude with `(map_smul (Submodule.mkQ I) a c).symm`. Establish `hs : Function.Surjective (Submodule.liftQ J p hp)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Take `⟨c, rfl⟩` from `((Submodule.mkQ_surjective (LinearMap.range f)).comp (Submodule.mkQ_surjective I)) y`. Conclude with `⟨Submodule.mkQ J c, rfl⟩`. Conclude with `h4.trans (h3.le.trans (Nat.card_le_card_of_surjective _ hs))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem ker_le {A : Type} [CommRing A] (I J : Ideal A) [Finite (A ⧸ I)] [Finite (A ⧸ J)] (a : A)
     (h : J ≤ Ideal.span {a}) (S : Submodule A (A ⧸ I)) (hS : ∀ y ∈ S, a • y = 0) :
@@ -49,19 +49,19 @@ private theorem ker_le {A : Type} [CommRing A] (I J : Ideal A) [Finite (A ⧸ I)
   exact h4.trans (h3.le.trans (Nat.card_le_card_of_surjective _ hs))
 
 /- English proof (translation)
-Introduce `l _ F n x D _ _ _ ε d χ hL hχ ⟨g₀, hg₀⟩`. Take `⟨C, hC⟩` from `IsDiscreteValuationRing.associated_pow_irreducible (sub_ne_zero.2 hg₀) (PowerSeries.X_irreducible (R := x.K))`. Use `⟨C, fun m => ?_⟩` and prove the remaining obligations. Take `⟨hfin, hcard, -⟩` from `finAm l F n x m 0`. Take `⟨hfinC, hcardC, -⟩` from `finAm l F n x C 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, hτ, hlin⟩` from `pair1 l F n x m`. Set `e : D →* x.Aˣ` to `(Units.map (algebraMap ℤ_[l] x.A).toMonoidHom).comp ε`. Establish `he : ∀ g, (e g : x.A) = algebraMap ℤ_[l] x.A (ε g : ℤ_[l])` using `fun _ => rfl`. Set `χ' : D →* x.Aˣ` to `e * χ⁻¹`. Establish `hχ' : ∀ g, (χ g : x.A) * χ' g = e g` using `fun g => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_mul]`. Use `congr 1`. Simplify using `[χ']`. Set `b : x.Am m →+ x.Am m →+ ZMod l` to `(AddMonoidHom.mul (R := x.Am m)).compr₂ τ`. Establish `hb : ∀ y z, b y z = τ (y * z)` using `fun _ _ => rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hLC : LC (chRep (x.Am m) χ)` using `fun y => by`. Establish `h1` using `hχ m`. Establish `hI : IsLocalRing.maximalIdeal x.A ^ m ≤ Ideal.span {x.t ^ m}`. Rewrite using `[PowerSeries.maximalIdeal_eq_span_X, Ideal.span_singleton_pow]`. Conclude with `h1.comp (fun u => Ideal.Quotient.factor hI u * y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hD : IsDualPair ε (chRep (x.Am m) χ) (chRep (x.Am m) χ') b` using `{ left := fun y h => hτ y h right := fun y h => hτ y fun z => by rw [mul_comm]; exact h z equiv := fun g y z => by`. Rewrite using `[hb, hb, chRep_apply, chRep_apply, smul_mul_smul_comm, hχ', he, Algebra.smul_def, hlin]`. Use `rfl }`. Take `⟨hf, hc⟩` from `hL x.A (x.Am m) (x.Am m) _ _ b hLC hD`. Establish `hinv : Nat.card (chRep (x.Am m) χ').invariants ≤ Nat.card (x.Am C)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ker_le _ _ _ ((Ideal.span_singleton_le_iff_mem _).2 (Ideal.mem_span_singleton.2 hC.dvd)) _ fun y hy => ?_` and prove the remaining obligations. Establish `h1 : (χ' g₀ : x.A) • y = y` using `hy g₀`. Rewrite using `[← he, ← hχ', sub_smul, mul_smul, h1, sub_self]`. Use `⟨hf, ?_⟩` and prove the remaining obligations. Establish `h2 : {z : D → x.Am m | IsLocallyConstant z ∧ ∀ g h, z (g * h) = z g + (χ g : x.A) • z h}.ncard = Nat.card (Zl (chRep (x.Am m) χ))` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, hc, hcard, ← pow_mul, pow_add, ← hcardC]`. Conclude with `Nat.mul_le_mul_left _ hinv`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.oneCount :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (n : ℕ) (x : NP F n) (D : Type) [Group D] [TopologicalSpace D] [IsTopologicalGroup D] (ε : D →* ℤ_[l]ˣ) (d : ℕ) (χ : D →* x.Aˣ), LocCount D ε d → AdicCont (IsLocalRing.maximalIdeal x.A) (fun g => (χ g : x.A)) → (∃ g, (χ g : x.A) ≠ algebraMap ℤ_[l] x.A (ε g : ℤ_[l])) → ∃ C : ℕ, ∀ m, {z : D → x.Am m | IsLocallyConstant z ∧ ∀ g h, z (g * h) = z g + (χ g : x.A) • z h}.Finite ∧ {z : D → x.Am m | IsLocallyConstant z ∧ ∀ g h, z (g * h) = z g + (χ g : x.A) • z h}.ncard ≤ Nat.card x.K ^ (m * (1 + d) + C) := by

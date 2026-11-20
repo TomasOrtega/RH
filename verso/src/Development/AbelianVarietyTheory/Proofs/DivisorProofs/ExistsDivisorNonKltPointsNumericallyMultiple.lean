@@ -23,11 +23,11 @@ namespace GlobalTheory.AmpleStep
 variable {X : Scheme.{0}} [IsIntegral X]
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `D.exists_isEqn x`. Rewrite `hf`, the goal using `[he.generatesAt_iff]`. Rewrite `hu` using `[he.vanishesAt_iff]`. Take `⟨a, ha, hae⟩` from `hf`. Take `⟨b, hb, hbe⟩` from `hu`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨a + b, ?_, by rw [map_add, hae, hbe, add_mul]⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Establish `h1 : a + b ∈ IsLocalRing.maximalIdeal _` using `(IsLocalRing.mem_maximalIdeal _).2 hn`. Establish `h2 : a ∈ IsLocalRing.maximalIdeal _`. Use `Ideal.sub_mem _ h1 hb` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 h2 ha`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem generatesAt_add_vanishesAt {D : CartierDiv X} {x : X} {f u : X.functionField}
     (hf : D.GeneratesAt x f) (hu : D.VanishesAt x u) : D.GeneratesAt x (f + u) := by
@@ -45,7 +45,7 @@ theorem generatesAt_add_vanishesAt {D : CartierDiv X} {x : X} {f u : X.functionF
   exact (IsLocalRing.mem_maximalIdeal _).1 h2 ha
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => rw [zero_nsmul]`. Conclude with `CartierDiv.eff_zero`. Consider the case `succ r ih => rw [succ_nsmul]`. Conclude with `ih.add hD`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eff_nsmul {D : CartierDiv X} (hD : D.Eff) (r : ℕ) : (r • D).Eff := by
   induction r with
@@ -55,9 +55,9 @@ theorem eff_nsmul {D : CartierDiv X} (hD : D.Eff) (r : ℕ) : (r • D).Eff := b
 variable [IsLocallyNoetherian X]
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero`. Establish `h₀` using `CartierDiv.mult_add (0 : CartierDiv X) 0 z`. Rewrite `h₀` using `[add_zero]`. Rewrite using `[zero_nsmul]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use linear arithmetic over natural numbers and integers. Consider the case `succ r ih => rw [succ_nsmul, CartierDiv.mult_add, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Treat this case separately. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mult_nsmul (E : CartierDiv X) (r : ℕ) (z : X) : (r • E).mult z = r * E.mult z := by
   induction r with
@@ -74,21 +74,21 @@ end GlobalTheory.AmpleStep
 open GlobalTheory.AmpleStep in
 
 /- English proof (translation)
-Introduce `hP X _ _ _ p n hp hn Δ m G A D P z k h hΔ hklt hm hG hA hD hPz hk hdim hz hh hnum`. Take `⟨l₁, hl₁⟩` from `GlobalTheory.GeneralLift.exists_lift_klt hP X p n hp hn Δ D m G A z hm hG hD hA`. Take `⟨l, hll, hhl, f₀, hf₀, hgen, δ₀, hδ0, hδ1, hnk⟩` from `GlobalTheory.T.exists_global_section_angehrnSiu_inductive_step hP X p n hp hn Δ m G A D P z k h hΔ hklt hm hG hA hD hPz hk hdim hz hh hnum l₁`. Take `⟨u, hu, huz, hukl⟩` from `hl₁ l hll f₀ hf₀`. Establish `hgz : (l • A).GeneratesAt z (f₀ + u)` using `generatesAt_add_vanishesAt hgen huz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `g : X.functionFieldˣ` to `Units.mk0 (f₀ + u) hgz.ne_zero`. Establish `hgv : (g : X.functionField) = f₀ + u` using `rfl`. Establish `hEeff : (CartierDiv.principal g + l • A).Eff` using `CartierDiv.mem_sections_iff_eff.1 (hgv ▸ Submodule.add_mem _ hf₀ hu)`. Establish `hl0 : (0 : ℚ) < l` using `hh.trans hhl`. Establish `hlpos : 0 < l` using `by exact_mod_cast hl0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(h / l) • qWeil (CartierDiv.principal g + l • A) 1, δ₀, hδ0, hδ1, ?_, ?_, fun δ hδ hδ' x hx => hnk u hu huz g hgv δ hδ hδ' x hx, ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨a, b, ha0, hb0, hab⟩ : ∃ a b : ℕ, 0 < a ∧ 0 < b ∧ h = a / b := by`. Establish `hnum0 : 0 < h.num` using `Rat.num_pos.2 hh`. Use `⟨h.num.toNat, h.den, by omega, h.den_pos, ?_⟩` and prove the remaining obligations. Establish `e1 : ((h.num.toNat : ℕ) : ℚ) = (h.num : ℚ)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: ((h.num.toNat : ℕ) : ℤ) = h.num` using `Int.toNat_of_nonneg hnum0.le`. Conclude with `this` after adjusting the coercions. Rewrite using `[e1, Rat.num_div_den]`. Use `⟨b * l, a • (CartierDiv.principal g + l • A), Nat.mul_pos hb0 hlpos, eff_nsmul hEeff a, ?_, fun C hC => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, qWeil, mult_nsmul, hab]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hcls : cls (toLB (a • (CartierDiv.principal g + l • A))) (isLB_toLB _) = (a * l) • cls (toLB A) (isLB_toLB A) + 0 • cls (toLB A) (isLB_toLB A)`. Rewrite using `[← toPic_apply, ← toPic_apply]`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[map_nsmul, toPic_principal, smul_smul, mul_comm]`. Establish `e` using `interNumRed_of_cls_eq_nsmul_add ℂ X p hp _ _ _ (isLB_toLB _) (isLB_toLB A) (isLB_toLB A) (a * l) 0 C hC hcls`. Rewrite using `[e, hab]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hoff : Off (qWeil (CartierDiv.principal g + l • A) 1) z` using `(off_qWeil_iff_notMem_supp X _ 1 z hEeff one_pos).2 (by`. Take `⟨e, he⟩` from `(l • A).exists_isEqn z`. Rewrite using `[CartierDiv.notMem_supp_iff, ((CartierDiv.isEqn_principal g z).add he).generatesAt_iff, one_mul, Units.val_mul, hgv]`. Conclude with `(he.generatesAt_iff).1 hgz)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `w hw`. Simplify using `[hoff w hw]`. Introduce `y hy a ha hk'`. Conclude with `hukl g hgv y hy a (h / l) ha ((div_lt_one hl0).2 hhl) hk'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AmpleStep.exists_divisor : GlobalTheory.Published.Principalisation → ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X]
     (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → letI := algebraΓOfHom p;

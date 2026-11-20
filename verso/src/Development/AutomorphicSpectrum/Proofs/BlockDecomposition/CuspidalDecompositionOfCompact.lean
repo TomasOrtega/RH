@@ -12,19 +12,19 @@ open NumberField MeasureTheory Topology GlobalTheory.AutomorphicL2Unitary Global
 namespace GlobalTheory.CompanionTheory.CuspGL
 
 /- English proof (translation)
-Introduce `E _ _ _ a μ _ _`. Establish `: BorelSpace (GA E a)` using `GlobalTheory.CuspRep.CuspidalL2GL.borelSpace_GA E a`. Establish `: LocallyCompactSpace (GA E a)` using `GlobalTheory.CuspRep.CuspidalL2GL.locallyCompactSpace_GA E a`. Establish `: T2Space (GA E a)` using `GlobalTheory.CuspRep.CuspidalL2GL.t2Space_GA E a`. Establish `: CompleteSpace (L2cusp μ)` using `GlobalTheory.CuspRep.CuspidalL2GL.completeSpace_L2cusp μ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU` using `GlobalTheory.CuspRep.CuspidalL2GL.isUnitaryRep_Rcusp μ`. Use `GlobalTheory.CuspSpectrum.isDiscreteSum_of_repOp hU μ fun v hv => ?_` and prove the remaining obligations. Establish `hpos : 0 < ‖v‖` using `norm_pos_iff.mpr hv`. Establish `cc : Continuous fun g => inner ℂ v ((Rcusp μ g) v)` using `continuous_const.inner (hU.continuous_apply v)`. Establish `h1pos : 0 < (inner ℂ v ((Rcusp μ 1) v)).re`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_one, ContinuousLinearMap.one_apply]`. Establish `h3 : RCLike.re (inner ℂ v v) = ‖v‖ ^ 2` using `inner_self_eq_norm_sq v`. Establish `h4 : (inner ℂ v v).re = ‖v‖ ^ 2` using `h3`. Rewrite using `[h4]`. Conclude with `pow_pos hpos 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hN : {g | 0 < (inner ℂ v ((Rcusp μ g) v)).re} ∈ 𝓝 (1 : GA E a)` using `(isOpen_lt continuous_const (Complex.continuous_re.comp cc)).mem_nhds h1pos`. Take `⟨φ, hφc, hφs, hφ0, hφ1, hφN⟩` from `GlobalTheory.CompanionTheory.Bump.exists_nonneg_bump (1 : GA E a) _ hN`. Establish `hfc : Continuous fun g => (φ g : ℂ)` using `Complex.continuous_ofReal.comp hφc`. Establish `hfs : HasCompactSupport fun g => (φ g : ℂ)` using `hφs.comp_left Complex.ofReal_zero`. Use `⟨fun g => (φ g : ℂ), hfc, hfs, hc E a μ _ hfc hfs, fun h0 => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key` using `hU.inner_repOp (μ := μ) hfc hfs v v`. Rewrite `key` using `[h0, inner_zero_right]`. Establish `hint : Integrable (fun g => (φ g : ℂ) * inner ℂ v ((Rcusp μ g) v)) μ` using `(hfc.mul cc).integrable_of_hasCompactSupport hfs.mul_right`. Establish `h8` using `Complex.reCLM.integral_comp_comm hint`. Simplify using `only [Complex.reCLM_apply, Complex.re_ofReal_mul] at h8`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h8` using `[← key, Complex.zero_re]`. Establish `h9 : 0 < ∫ g, φ g * (inner ℂ v ((Rcusp μ g) v)).re ∂μ`. Use `Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 1) (hφc.mul (Complex.continuous_re.comp cc)) hφs.mul_right (fun g => ?_) (mul_ne_zero hφ1 h1pos.ne')` and prove the remaining obligations. Distinguish the cases in `hg : φ g = 0`. Simplify using `[hg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `mul_nonneg (hφ0 g) (hφN hg).le`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem cuspDiscreteDecompositionGL_of_compact
     (hc : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (μ : Measure (GA E a)) [μ.IsHaarMeasure]

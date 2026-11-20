@@ -9,7 +9,7 @@ namespace GlobalTheory.Hk3.HoweDuality
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[mem_intVec]`. Introduce `i`. Express the relevant statement in the definitionally equal form `(∑ j, M i j * v j) ∈ Formalism.UG.intL L`. Conclude with `sum_mem fun j _ => mul_mem (hM i j) (hv j)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_intVec_of_int {a b : ℕ} {M : Matrix (Fin a) (Fin b) L}
     (hM : ∀ i j, M i j ∈ Formalism.UG.intL L) {v : Fin b → L} (hv : v ∈ intVec L b) :
@@ -20,7 +20,7 @@ theorem mulVec_mem_intVec_of_int {a b : ℕ} {M : Matrix (Fin a) (Fin b) L}
   exact sum_mem fun j _ => mul_mem (hM i j) (hv j)
 
 /- English proof (translation)
-Take `⟨g0, rfl⟩` from `hg`. Conclude with `((g0 : Matrix (Fin n) (Fin n) (Formalism.UG.intL L)) i j).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem entry_mem_of_mem_GLint {n : ℕ} {g : GL (Fin n) L} (hg : g ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L))
     (i j : Fin n) : (g : Matrix (Fin n) (Fin n) L) i j ∈ Formalism.UG.intL L := by
@@ -28,7 +28,7 @@ theorem entry_mem_of_mem_GLint {n : ℕ} {g : GL (Fin n) L} (hg : g ∈ Formalis
   exact ((g0 : Matrix (Fin n) (Fin n) (Formalism.UG.intL L)) i j).2
 
 /- English proof (translation)
-Establish `hf : (fun v : intVec L b => (QuotientAddGroup.mk (Matrix.mulVec (x + u) (v : Fin b → L)) : (Fin a → L) ⧸ intVec L a)) = fun v : intVec L b => (QuotientAddGroup.mk (Matrix.mulVec x (v : Fin b → L)) : (Fin a → L) ⧸ intVec L a)`. Use function extensionality and compare the values at `v`. Rewrite using `[Matrix.add_mulVec, QuotientAddGroup.mk_add, (QuotientAddGroup.eq_zero_iff _).2 (mulVec_mem_intVec_of_int ((mem_intMat u).1 hu) v.2), add_zero]`. Unfold `latIdx`. Rewrite using `[hf]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem latIdx_add_int {a b : ℕ} (x u : Matrix (Fin a) (Fin b) L) (hu : u ∈ intMat L a b) :
     latIdx (x + u) = latIdx x := by
@@ -53,13 +53,13 @@ theorem quotMul_mk {a : ℕ} (M : Matrix (Fin a) (Fin a) L) (hM : ∀ i j, M i j
     quotMul M hM (QuotientAddGroup.mk v) = QuotientAddGroup.mk (M.mulVec v) := rfl
 
 /- English proof (translation)
-Establish `h1` using `entry_mem_of_mem_GLint hh`. Establish `h2` using `entry_mem_of_mem_GLint (inv_mem hh)`. Establish `hinj : Function.Injective (quotMul (h : Matrix (Fin a) (Fin a) L) h1)`. Establish `hl : Function.LeftInverse (quotMul ((h⁻¹ : GL (Fin a) L) : Matrix (Fin a) (Fin a) L) h2) (quotMul (h : Matrix (Fin a) (Fin a) L) h1)`. Introduce `q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H v`. Rewrite using `[quotMul_mk, quotMul_mk, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `hl.injective`. Establish `hr : (Set.range fun v : intVec L b => (QuotientAddGroup.mk (Matrix.mulVec ((h : Matrix (Fin a) (Fin a) L) * x) (v : Fin b → L)) : (Fin a → L) ⧸ intVec L a)) = quotMul (h : Matrix (Fin a) (Fin a) L) h1 '' Set.range fun v : intVec L b => (QuotientAddGroup.mk (Matrix.mulVec x (v : F …`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Set.range_comp]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Simplify using `only [Function.comp_apply, quotMul_mk, Matrix.mulVec_mulVec]`. Unfold `latIdx`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr, Nat.card_image_of_injective hinj]`.
+A detailed English derivation is pending.
 -/
 theorem latIdx_GLint_mul {a b : ℕ} (x : Matrix (Fin a) (Fin b) L) (h : GL (Fin a) L)
     (hh : h ∈ Formalism.UG.GLint (Fin a) (Formalism.UG.intL L)) :
@@ -88,7 +88,7 @@ theorem latIdx_GLint_mul {a b : ℕ} (x : Matrix (Fin a) (Fin b) L) (h : GL (Fin
   rw [hr, Nat.card_image_of_injective hinj]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ x` and use `⟨fun u hu => latIdx_add_int x u hu, fun h hh => latIdx_GLint_mul x h hh⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem latIdx_invariance : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (a b : ℕ) (x : Matrix (Fin a) (Fin b) L),
     (∀ u ∈ GlobalTheory.Hk3.HoweDuality.intMat L a b, GlobalTheory.Hk3.HoweDuality.latIdx (x + u) = GlobalTheory.Hk3.HoweDuality.latIdx x) ∧

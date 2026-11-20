@@ -7,11 +7,11 @@ open scoped Formalism.Per
 namespace GlobalTheory.MemLoc
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ, ih]`. Establish `h` using `(Commute.one_right D).add_pow n`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [one_pow, mul_one] at h`. Rewrite using `[h]`. Repeatedly rewrite using `[Nat.choose_succ_succ', add_smul]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_range_succ (fun j => n.choose (j + 1) • D ^ j) n, Nat.choose_succ_self, zero_smul, add_zero, add_comm]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[nsmul_eq_mul, Nat.cast_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem geom_sum_add_one_eq_sum_choose {R : Type*} [Ring R] (D : R) (n : ℕ) :
     ∑ i ∈ Finset.range n, (D + 1) ^ i = ∑ j ∈ Finset.range n, n.choose (j + 1) • D ^ j := by
@@ -30,37 +30,35 @@ theorem geom_sum_add_one_eq_sum_choose {R : Type*} [Ring R] (D : R) (n : ℕ) :
     rw [nsmul_eq_mul, Nat.cast_comm]
 
 /- English proof (translation)
-Introduce `x hx`. Use `set M := max (s ^ (l - 1)) ‖((l : ℕ) : Om l)‖ with hM`. Establish `hpowS : ∀ (i : ℕ), ∀ y ∈ S, (σ ^ i) y ∈ S`. Introduce `i`. Proceed by induction on `i with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => intro y hy`. Simplify using `using hy`. Consider the case `succ i ih => intro y hy`. Rewrite using `[pow_succ', AlgEquiv.mul_apply]`. Conclude with `hS _ (ih y hy)`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `T : AddMonoid.End (Om l)` to `AddMonoidHom.mk' (fun y => σ y) (fun a b => map_add σ a b)`. Establish `hT : ∀ (i : ℕ) (y : Om l), (T ^ i) y = (σ ^ i) y`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro y`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `succ i ih => intro y`. Rewrite using `[pow_succ', pow_succ', AlgEquiv.mul_apply, ← ih]`. Both sides reduce to the same expression. Establish `hD : ∀ (j : ℕ), ∀ y ∈ S, ((T - 1) ^ j) y ∈ S ∧ ‖((T - 1) ^ j) y‖ ≤ s ^ j * ‖y‖`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro y hy; rw [pow_zero]; exact ⟨hy, by rw [pow_zero, one_mul]; exact le_rfl⟩`. Consider the case `succ j ih`. Introduce `y hy`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2⟩` from `ih y hy`. Rewrite using `[pow_succ']`. Express the relevant statement in the definitionally equal form `σ (((T - 1) ^ j) y) - ((T - 1) ^ j) y ∈ S ∧ ‖σ (((T - 1) ^ j) y) - ((T - 1) ^ j) y‖ ≤ s ^ (j + 1) * ‖y‖`. Use `⟨S.sub_mem (hS _ h1) h1, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnat : ∀ n : ℕ, ‖((n : ℕ) : Om l)‖ ≤ 1`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_succ]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ih norm_one.le)`. Establish `key` using `geom_sum_add_one_eq_sum_choose (T - 1) l`. Rewrite `key` using `[sub_add_cancel]`. Establish `hsum : ∑ i ∈ Finset.range l, (σ ^ i) x = ∑ j ∈ Finset.range l, l.choose (j + 1) • ((T - 1) ^ j) x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `ev : AddMonoid.End (Om l) →+ Om l` to `{ toFun := fun f => f x, map_zero' := rfl, map_add' := fun _ _ => rfl }`. Establish `h` using `congrArg ev key`. Simplify using `only [map_sum, map_nsmul] at h`. Combine the equalities or inequalities in the displayed calculation. Establish `hbound : ‖∑ i ∈ Finset.range l, (σ ^ i) x‖ ≤ M * ‖x‖`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hsum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg (le_max_of_le_right (norm_nonneg _)) (norm_nonneg _)) fun j hj => ?_` and prove the remaining obligations. Take `⟨-, hle⟩` from `hD j x hx`. Establish `hsj : s ^ j ≤ 1` using `pow_le_one₀ hs0 hs1`. Rewrite using `[nsmul_eq_mul, norm_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.lt_or_ge (j + 1) l with hlt | hge` into its components or cases. Take `⟨m, hm⟩` from `(Fact.out : l.Prime).dvd_choose_self (Nat.succ_ne_zero j) hlt`. Rewrite using `[hm, Nat.cast_mul, norm_mul]`. Establish `h3 : ‖((T - 1) ^ j) x‖ ≤ 1 * ‖x‖` using `hle.trans (mul_le_mul_of_nonneg_right hsj (norm_nonneg _))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_one, one_mul]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_right _ _) (norm_nonneg _)`. Establish `hjl : j = l - 1` using `by have := Finset.mem_range.mp hj; omega`. Establish `hc : l.choose (j + 1) = 1`. Rewrite using `[show j + 1 = l by have := Finset.mem_range.mp hj; omega, Nat.choose_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hc, Nat.cast_one, norm_one, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hjl]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (norm_nonneg _)`. Use `set y := ∑ i ∈ Finset.range l, (σ ^ i) x with hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hyS : y ∈ S` using `S.sum_mem fun i _ => hpowS i x hx`. Establish `htel : (σ ^ l) x - x = σ y - y`. Rewrite using `[hy, map_sum, ← Finset.sum_sub_distrib]`. Establish `h` using `Finset.sum_range_sub (fun i => (σ ^ i) x) l`. Simplify using `only [pow_zero, AlgEquiv.one_apply] at h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[pow_succ', AlgEquiv.mul_apply]`. Use `⟨hbound, ?_⟩` and prove the remaining obligations. Rewrite using `[htel]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem norm_geom_sum_galois_le (l : ℕ) [Fact l.Prime] (σ : GQ l) (S : AddSubgroup (Om l)) (s : ℝ)
     (hs0 : 0 ≤ s) (hs1 : s ≤ 1) (hS : ∀ x ∈ S, σ x ∈ S) (hσ : ∀ x ∈ S, ‖σ x - x‖ ≤ s * ‖x‖) :

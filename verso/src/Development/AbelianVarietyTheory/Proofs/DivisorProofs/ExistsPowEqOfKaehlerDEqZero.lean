@@ -6,17 +6,15 @@ open TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p hp k _ _ hk K _ _ f hf`. Assume the negation of the conclusion as `hne`. Establish `hK : (p : K) = 0`. Use `congrArg (algebraMap k K) hk` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `haveI : CharP K p := (CharP.charP_iff_prime_eq_zero hp.out).2 hK`. Set `F : Subfield K` to `(frobenius K p).fieldRange`. Establish `hF : ∀ y : K, y ^ p ∈ F` using `fun y => ⟨y, by simp [frobenius_def]⟩`. Establish `hfF : f ∉ F`. Introduce and unpack `⟨h, hh⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `hne ⟨h, by simpa [frobenius_def] using hh⟩`. Take `⟨L, hFL, hfL, htop⟩` from `GlobalTheory.T.exists_maximal_subfield_missing_elem_expOne p K F hF f hfF`. Take `⟨D, hD⟩` from `GlobalTheory.T.exists_derivation_eq_one_of_pow_mem' p K L f hfL (hFL (hF f)) htop`. Establish `hkL : ∀ a : k, algebraMap k K a ∈ L`. Introduce `a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb⟩` from `IsAlgClosed.exists_pow_nat_eq a hp.out.pos`. Rewrite using `[← hb, map_pow]`. Conclude with `hFL (hF _)`. Establish `hD0 : ∀ a : k, D (algebraMap k K a) = 0` using `fun a => D.map_algebraMap (⟨_, hkL a⟩ : L)`. Set `D' : Derivation k K K` to `Derivation.mk' { toFun := D map_add' := fun x y => map_add D x y map_smul' := fun a x => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Algebra.smul_def, RingHom.id_apply, Derivation.leibniz, hD0, smul_eq_mul]`. Simplify using `}`. Use the proof step `(fun a b => D.leibniz a b)`. Establish `h1 : D' f = 1` using `hD`. Establish `h2` using `D'.liftKaehlerDifferential_comp_D f`.
-
-Rewrite `h2` using `[hf, map_zero, h1]`. Conclude with `zero_ne_one h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_of_kaehler_D_eq_zero : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [IsAlgClosed k] (hk : (p : k) = 0) (K : Type) [Field K] [Algebra k K] (f : K), KaehlerDifferential.D k K f = 0 → ∃ h : K, h ^ p = f := by
   intro p hp k _ _ hk K _ _ f hf

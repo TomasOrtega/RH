@@ -18,20 +18,20 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TorusFormPf
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_real_embedding_ordering`.
+A detailed English derivation is pending.
 -/
 theorem embOfCM : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ),
     IsCMType φ → ∀ (e₀ : Fin (Module.finrank ℚ (FR E)) ≃ I),
     ∃ e : Fin (Module.finrank ℚ (FR E)) ≃ (FR E →+* ℝ), ∀ j (x : FR E), (e j x : ℂ) = φ (e₀ j) (x : E) := GlobalTheory.T.exists_real_embedding_ordering
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.real_embeddings_linearly_independent`.
+A detailed English derivation is pending.
 -/
 theorem realEmb_indep : ∀ (F : Type) [Field F] [NumberField F] (a : (F →+* ℝ) → ℝ),
     (∀ x : 𝓞 F, ∑ τ, a τ * τ (x : F) = 0) → a = 0 := GlobalTheory.T.real_embeddings_linearly_independent
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.diagonal_appell_humbert_real_mult`.
+A detailed English derivation is pending.
 -/
 theorem riemannForm_of_unif : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F)
     (X : Obj F 𝔠 (Sp ℂ)) (c : 𝔠.elt), IsTotPos (c : F) →
@@ -47,7 +47,7 @@ theorem riemannForm_of_unif : ∀ (F : Type) [Field F] [NumberField F] [IsTotall
       (∀ t ∈ dualLat 𝔠, t ∈ Submodule.span (𝓞 F) {t | ∃ l l' : u.Λ, t = P l l'}) := GlobalTheory.T.diagonal_appell_humbert_real_mult
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.alternating_pairing_on_lattice`.
+A detailed English derivation is pending.
 -/
 theorem steinitz_sympl : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (c : Ideal (OF E)) (y : (Af E)ˣ), c ≠ ⊥ →
     ∀ (𝔞 𝔟 : FracId (FR E)) (P : E → E → FR E),
@@ -61,7 +61,7 @@ theorem steinitz_sympl : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
         P ((m : E) * ω₁ + (β : E) * ω₂) ((m' : E) * ω₁ + (β' : E) * ω₂) = β * m' - m * β' := GlobalTheory.T.alternating_pairing_on_lattice
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.rescaled_uniformization`.
+A detailed English derivation is pending.
 -/
 theorem holUnif_rescale : ∀ (A : Over (Sp ℂ)) [GrpObj A] (Lb : LB A.left) (g : ℕ) (u : HolUnif A Lb g) (lam : Fin g → ℂ),
     (∀ j, lam j ≠ 0) → ∃ u' : HolUnif A Lb g, (∀ w, u'.ex w = u.ex (fun j ↦ lam j * w j)) ∧
@@ -74,7 +74,7 @@ end GlobalTheory.TorusFormPf
 namespace GlobalTheory.TorusFormPf
 
 /- English proof (translation)
-Simplify using `only [lattice, Set.mem_setOf_eq, map_add, add_mul] at *`. Conclude with `Subring.add_mem _ hx hx'`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lattice_add {E : Type} [Field E] [NumberField E] {c : Ideal (OF E)} {y : (Af E)ˣ} {x x' : E}
     (hx : x ∈ lattice c y) (hx' : x' ∈ lattice c y) : x + x' ∈ lattice c y := by
@@ -82,7 +82,7 @@ theorem lattice_add {E : Type} [Field E] [NumberField E] {c : Ideal (OF E)} {y :
   exact Subring.add_mem _ hx hx'
 
 /- English proof (translation)
-Use `mul_mem_lattice (algebraMap_mem_orderC c a) hx` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Apply the tactic sequence `first | rfl | simp [IsScalarTower.algebraMap_apply (OF E) (FR E) E] | exact (IsScalarTower.algebraMap_apply (OF E) (FR E) E a).symm`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem lattice_smul {E : Type} [Field E] [NumberField E] {c : Ideal (OF E)} {y : (Af E)ˣ} {x : E}
     (a : 𝓞 (FR E)) (hx : x ∈ lattice c y) : ((a : FR E) : E) * x ∈ lattice c y := by
@@ -91,83 +91,77 @@ theorem lattice_smul {E : Type} [Field E] [NumberField E] {c : Ideal (OF E)} {y 
   first | rfl | simp [IsScalarTower.algebraMap_apply (OF E) (FR E) E] | exact (IsScalarTower.algebraMap_apply (OF E) (FR E) E a).symm
 
 /- English proof (translation)
-Introduce `E _ _ _ I _ 𝔞 𝔟 φ c y hCM hc z hz X U`. Take `⟨e, he⟩` from `embOfCM E I φ hCM U.e`. Establish `hreal : ∀ j (x : FR E), starRingEnd ℂ (φ (U.e j) (x : E)) = φ (U.e j) (x : E)`. Introduce `j x`. Rewrite using `[← he]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Complex.conj_ofReal _`. Use `set D : E → Fin (Module.finrank ℚ (FR E)) → ℂ := fun x j ↦ defCoord φ z x (U.e j) with hD`. Establish `hDadd : ∀ x x', D (x + x') = D x + D x'`. Introduce `x x'`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hD, defCoord, map_add, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hDsmul : ∀ (a : FR E) x, D ((a : E) * x) = fun j ↦ (e j a : ℂ) * D x j`. Introduce `a x`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hD, defCoord, map_mul]`. Rewrite using `[hreal j a, ← he]`. Expand and normalize the polynomial expressions, which then agree. Establish `hact : ∀ (a : 𝓞 (FR E)) w, U.u.ex (fun j ↦ (e j (a : FR E) : ℂ) * w j) = U.u.ex w ≫ X.rm.act a`. Introduce `a w`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify `U.act a w` using `only [he]`. Take `⟨χ, hAH⟩` from `U.ah`. Take `⟨P, hPalt, hPadd, hPsmul, hPtr, hPmem, hPspan⟩` from `riemannForm_of_unif (FR E) (𝔞 * 𝔟⁻¹) X U.c U.pos U.u e hact (fun j ↦ U.h (U.e j)) χ hAH`. Establish `hDmem : ∀ x ∈ lattice c y, D x ∈ U.u.Λ` using `fun x hx ↦ (U.lat _).2 ⟨x, hx, rfl⟩`. Set `PL : E → E → FR E` to `fun x x' ↦ if hx : x ∈ lattice c y ∧ x' ∈ lattice c y then P ⟨D x, hDmem x hx.1⟩ ⟨D x', hDmem x' hx.2⟩ else 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPL : ∀ x (hx : x ∈ lattice c y) x' (hx' : x' ∈ lattice c y), PL x x' = P ⟨D x, hDmem x hx⟩ ⟨D x', hDmem x' hx'⟩`. Introduce `x hx x' hx'`. Simplify using `only [PL, dif_pos (And.intro hx hx')]`. Take `⟨ω₁, ω₂, hL, hPω⟩` from `steinitz_sympl E c y hc 𝔞 𝔟 PL (by intro x hx x' hx'; rw [hPL x hx x' hx', hPL x' hx' x hx]; exact hPalt _ _) (by`. Introduce `x₁ h₁ x₂ h₂ x' h'`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hPL _ (lattice_add h₁ h₂) x' h', hPL x₁ h₁ x' h', hPL x₂ h₂ x' h', ← hPadd]`. Use `congr 1`. Conclude with `Subtype.ext (hDadd x₁ x₂))`. Use the proof step `(by`. Introduce `a x hx x' hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hPL _ (lattice_smul a hx) x' hx', hPL x hx x' hx']`. Conclude with `hPsmul a _ _ _ (hDsmul (a : FR E) x))`. Use the proof step `(by intro x hx x' hx'; rw [hPL x hx x' hx']; exact hPmem _ _)`. Use the proof step `(by`. Introduce `t ht`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hPspan t ht` as an intermediate fact. Use `Submodule.span_mono ?_ this` and prove the remaining obligations. Introduce and unpack `s ⟨l, l', rfl⟩`. Take `⟨x, hx, hxl⟩` from `(U.lat l).1 l.2`. Take `⟨x', hx', hxl'⟩` from `(U.lat l').1 l'.2`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨x, hx, x', hx', ?_⟩` and prove the remaining obligations. Rewrite using `[hPL x hx x' hx']`. Apply the tactic sequence `congr 1 <;> apply Subtype.ext <;> assumption)`. Use `set A : Fin (Module.finrank ℚ (FR E)) → ℂ := D ω₁ with hA`. Use `set B : Fin (Module.finrank ℚ (FR E)) → ℂ := D ω₂ with hB`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hDlin : ∀ m β : FR E, D ((m : E) * ω₁ + (β : E) * ω₂) = fun j ↦ (e j m : ℂ) * A j + (e j β : ℂ) * B j`. Introduce `m β`. Rewrite using `[hDadd, hDsmul, hDsmul]`. Both sides reduce to the same expression. Establish `hmemL : ∀ m ∈ dualLat 𝔞, ∀ β ∈ 𝔟.elt, (m : E) * ω₁ + (β : E) * ω₂ ∈ lattice c y` using `fun m hm β hβ ↦ (hL _).2 ⟨m, hm, β, hβ, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨β₀, hβ₀, hβ₀0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (fun h ↦ 𝔟.ne_zero (FractionalIdeal.coeToSubmodule_eq_bot.1 h))`. Establish `hdual0 : dualLat 𝔞 ≠ 0` using `FractionalIdeal.dual_ne_zero ℤ ℚ 𝔞.ne_zero`. Take `⟨m₀, hm₀, hm₀0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (fun h ↦ hdual0 (FractionalIdeal.coeToSubmodule_eq_bot.1 h))`. Establish `h0a : (0 : FR E) ∈ dualLat 𝔞` using `(dualLat 𝔞 : Submodule (𝓞 (FR E)) (FR E)).zero_mem`. Establish `h0b : (0 : FR E) ∈ 𝔟.elt` using `𝔟.elt.zero_mem`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hkey : ∀ x : 𝓞 (FR E), ∑ j, e j (x : FR E) * ((e j β₀ * e j m₀) * (U.h (U.e j) * (B j * starRingEnd ℂ (A j)).im - 2 * e j (U.c : FR E))) = 0`. Introduce `x`. Establish `hxβ : (x : FR E) * β₀ ∈ 𝔟.elt`. Use `𝔟.elt.smul_mem x hβ₀` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `m1` using `hmemL 0 h0a _ hxβ`. Establish `m2` using `hmemL m₀ hm₀ 0 h0b`. Establish `htr` using `hPtr ⟨_, hDmem _ m1⟩ ⟨_, hDmem _ m2⟩`. Rewrite `htr` using `[← hPL _ m1 _ m2, hPω 0 h0a _ hxβ m₀ hm₀ 0 h0b, GlobalTheory.trace_eq_sum_realEmbeddings, ← e.sum_comp]`. Simplify using `only [hDlin, Complex.im_sum] at htr`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Establish `hl : ∀ j, ((U.h (U.e j) : ℂ) * ((((e j 0 : ℝ) : ℂ) * A j + ((e j ((x : FR E) * β₀) : ℝ) : ℂ) * B j) * starRingEnd ℂ (((e j m₀ : ℝ) : ℂ) * A j + ((e j 0 : ℝ) : ℂ) * B j))).im = e j (x : FR E) * (e j β₀ * e j m₀ * (U.h (U.e j) * (B j * starRingEnd ℂ (A j)).im))`. Introduce `j`. Establish `: (U.h (U.e j) : ℂ) * ((((e j 0 : ℝ) : ℂ) * A j + ((e j ((x : FR E) * β₀) : ℝ) : ℂ) * B j) * starRingEnd ℂ (((e j m₀ : ℝ) : ℂ) * A j + ((e j 0 : ℝ) : ℂ) * B j)) = ((U.h (U.e j) * e j (x : FR E) * e j β₀ * e j m₀ : ℝ) : ℂ) * (B j * starRingEnd ℂ (A j))`. Simplify using `only [map_zero, map_mul, map_add, Complex.ofReal_zero, Complex.conj_ofReal, zero_mul, zero_add, add_zero]`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.im_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hl] at htr`. Rewrite `htr` using `[← sub_eq_zero, Finset.mul_sum, ← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← htr]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_sub, map_zero, mul_zero, sub_zero]`. Expand and normalize the polynomial expressions, which then agree. Establish `hk : ∀ j, U.h (U.e j) * (B j * starRingEnd ℂ (A j)).im = 2 * e j (U.c : FR E)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hz` using `realEmb_indep (FR E) (fun σ ↦ (e (e.symm σ) β₀ * e (e.symm σ) m₀) * (U.h (U.e (e.symm σ)) * (B (e.symm σ) * starRingEnd ℂ (A (e.symm σ))).im - 2 * e (e.symm σ) (U.c : FR E))) (by`. Introduce `x`. Rewrite using `[← e.sum_comp]`. Simplify using `only [Equiv.symm_apply_apply]`. Rewrite using `[← hkey x]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun j _ ↦ by ring)`. Introduce `j`. Use `congrFun hz (e j)` as an intermediate fact. Simplify using `only [Equiv.symm_apply_apply, Pi.zero_apply] at this`. Establish `hne : e j β₀ * e j m₀ ≠ 0` using `mul_ne_zero ((map_ne_zero _).2 hβ₀0) ((map_ne_zero _).2 hm₀0)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(mul_eq_zero.1 this).resolve_left hne` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hhpos : ∀ j, 0 < U.h (U.e j)`. Introduce `j`. Establish `hne : (Pi.single j (1 : ℂ) : Fin (Module.finrank ℚ (FR E)) → ℂ) ≠ 0` using `fun h ↦ by simpa using congrFun h j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hAH.2.1 _ hne` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_diagonal, dotProduct, Pi.single_apply]`. Establish `hIm : ∀ j, 0 < (B j * starRingEnd ℂ (A j)).im`. Introduce `j`. Establish `hc` using `U.pos (e j)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 < U.h (U.e j) * (B j * starRingEnd ℂ (A j)).im` using `by rw [hk j]; linarith`. Conclude with `pos_of_mul_pos_right this (le_of_lt (hhpos j))`. Establish `hA0 : ∀ j, A j ≠ 0`. Introduce `j h`. Use `hIm j` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[h]`. Simplify using `at this`. Use `set τ : (FR E →+* ℝ) → ℂ := fun σ ↦ B (e.symm σ) / A (e.symm σ) with hτdef`. Use `set lam : Fin (Module.finrank ℚ (FR E)) → ℂ := fun j ↦ A j / (2 * Real.pi * Complex.I) with hlamdef`. Establish `hτ : ∀ j, τ (e j) = B j / A j` using `by intro j; simp [hτdef]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `h2pi : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero, Complex.I_ne_zero]`. Establish `hlam : ∀ j, lam j ≠ 0` using `fun j ↦ div_ne_zero (hA0 j) h2pi`. Establish `hτim : ∀ j, (τ (e j)).im = (B j * starRingEnd ℂ (A j)).im / Complex.normSq (A j)`. Introduce `j`. Rewrite using `[hτ, Complex.div_im]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Complex.mul_im, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨u', hex, hAH', hdiff⟩` from `holUnif_rescale X.A (X.diag U.c) _ U.u lam hlam`. Establish `hform : ∀ m β : FR E, (fun j ↦ lam j * (2 * Real.pi * Complex.I * ((e j m : ℂ) + (e j β : ℂ) * τ (e j)))) = D ((m : E) * ω₁ + (β : E) * ω₂)`. Introduce `m β`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[hDlin]`. Use function extensionality and compare the values at `j`. Rewrite using `[hτ]`. Simplify using `only [hlamdef]`. Establish `hAj` using `hA0 j`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Establish `hlat : ∀ w, w ∈ U.u.Λ ↔ ∃ m ∈ dualLat 𝔞, ∃ β ∈ 𝔟.elt, w = fun j ↦ lam j * (2 * Real.pi * Complex.I * ((e j m : ℂ) + (e j β : ℂ) * τ (e j)))`. Introduce `w`. Rewrite using `[U.lat]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨m, hm, β, hβ, rfl⟩` from `(hL x).1 hx`. Conclude with `⟨m, hm, β, hβ, (hform m β).symm⟩`. Introduce and unpack `⟨m, hm, β, hβ, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `⟨_, hmemL m hm β hβ, hform m β⟩`. Use `⟨e, τ, lam, he, fun σ ↦ ?_, hlam, hlat, ?_⟩` and prove the remaining obligations. Use `hτim (e.symm σ)` as an intermediate fact. Simplify using `only [Equiv.apply_symm_apply] at this`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `div_pos (hIm _) (Complex.normSq_pos.2 (hA0 _))`. Introduce `δ hδ`. Use `⟨U.c, u', U.pos, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w`. Establish `hk' : w ∈ u'.Λ ↔ (fun j ↦ lam j * w j) ∈ U.u.Λ` using `by rw [← u'.ker, ← U.u.ker, hex]`.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hk', hlat]`. Use `exists_congr fun m ↦ and_congr_right fun _ ↦ exists_congr fun β ↦ and_congr_right fun _ ↦ ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `mul_left_cancel₀ (hlam j) (congrFun h j)`. Introduce `h`. Rewrite using `[h]`. Introduce `a w`. Rewrite using `[hex, hex, ← hact]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Expand and normalize the polynomial expressions, which then agree. Take `⟨χ', h'⟩` from `hAH' (fun j ↦ U.h (U.e j)) χ hAH`. Use `⟨χ', ?_⟩` and prove the remaining obligations.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hm : (fun i ↦ (((2 * e i (U.c : FR E) / (4 * Real.pi ^ 2 * (τ (e i)).im)) : ℝ) : ℂ)) = fun j ↦ ((U.h (U.e j) * ‖lam j‖ ^ 2 : ℝ) : ℂ)`. Use function extensionality and compare the values at `j`. Use `congr 1`. Establish `hn : ‖lam j‖ ^ 2 = Complex.normSq (A j) / (4 * Real.pi ^ 2)`. Rewrite using `[hlamdef, norm_div, div_pow, Complex.sq_norm]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[Complex.norm_mul, abs_of_pos Real.pi_pos]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hn, hτim, ← hk j]`. Use `hIm j` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Complex.normSq_pos.2 (hA0 j)` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[hm]`. Conclude with `h'`. Introduce `v W hW`.
-
-Establish `hW' : ∀ i, U.u.IsDiff (fun j ↦ lam j * W i j) (v i).hom` using `fun i ↦ (hdiff _ _).1 (hW i)`. Rewrite using `[hδ v (Matrix.of fun i j ↦ lam j * W i j) hW']`. Establish `hdet : (Matrix.of fun i j ↦ lam j * W i j).det = W.det * ∏ j, lam j`. Establish `: (Matrix.of fun i j ↦ lam j * W i j) = W * Matrix.diagonal lam`. Use extensionality with `i j`.
-
-Simplify using `[Matrix.mul_diagonal, mul_comm]`. Rewrite using `[this, Matrix.det_mul, Matrix.det_diagonal]`. Rewrite using `[hdet]`. Establish `hprod : ∏ j, lam j ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j _ ↦ hlam j`. Establish `hΩ : (GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.omegaFactor 𝔞 : ℂ) = ((Real.sqrt |(discr (FR E) : ℝ)| * (FractionalIdeal.absNorm (𝔞 : FractionalIdeal (𝓞 (FR E))⁰ (FR E)) : ℝ) : ℝ) : ℂ)`.
-
-Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.omegaFactor, GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF, GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.nrm, Real.sqrt_eq_rpow]`. Rewrite using `[hΩ]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem torusForm : TorusForm := by
   intro E _ _ _ I _ 𝔞 𝔟 φ c y hCM hc z hz X U

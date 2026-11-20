@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
 
 /- English proof (translation)
-Rewrite using `[Fin.prod_univ_four]`. Apply the tactic sequence `simp [DegPre.gtφ, DegPre.gtε] <;> rfl`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem prod_gt (b : TF (R := R) F ⟶ D.P.A) (χ : D.X) {U : Type} [CommGroup U] (h : ((TF (R := R) F).left ⟶ D.P.A.left) → U) :
     ∏ i, h (DegPre.gtφ D F b χ i) ^ DegPre.gtε i =
@@ -20,11 +20,11 @@ theorem prod_gt (b : TF (R := R) F ⟶ D.P.A) (χ : D.X) {U : Type} [CommGroup U
   simp [DegPre.gtφ, DegPre.gtε] <;> rfl
 
 /- English proof (translation)
-Establish `h0 : D.c 0 = 1`. Establish `e` using `D.c_add 0 0`. Rewrite `e` using `[add_zero]`. Establish `e' : D.c 0 * D.c 0 = D.c 0 * 1`. Rewrite using `[_root_.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e.symm`. Conclude with `_root_.mul_left_cancel e'`. Unfold `cP`. Rewrite using `[h0]`. Use `first`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Reduce the equality to equality of the corresponding arguments.
 
-Consider the case `simp`. Consider the case `(rw [Hom.one_def, Hom.one_def, ← Category.assoc]`. Use `congr 1`. Conclude with `toUnit_unique _ _)`.
+A detailed English derivation is pending.
 -/
 theorem cPoint_zero (T : Over (Spec (CommRingCat.of R))) : cP D T 0 = 1 := by
   have h0 : D.c 0 = 1 := by
@@ -43,7 +43,7 @@ theorem cPoint_zero (T : Over (Spec (CommRingCat.of R))) : cP D T 0 = 1 := by
      exact toUnit_unique _ _)
 
 /- English proof (translation)
-Unfold `DegPre.cubAt`. Use `(val_pull (hJ := hJ) ..).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem val_cubAt {y : (TF (R := R) F).left} {J} (hJ : Good D.P.L y J) (x x' w : TF (R := R) F ⟶ D.P.A) :
     val (DegPre.cubAt D F x x' w) (𝟙 _) y J = th D y J x x' w := by
@@ -53,11 +53,9 @@ theorem val_cubAt {y : (TF (R := R) F).left} {J} (hJ : Good D.P.L y J) (x x' w :
   rfl
 
 /- English proof (translation)
-Use `choose s hs hsv using fun χ => exists_gen D.P.isLB (hF χ) (v χ) (hv χ)`. Use `⟨{ b := b, s := s, isGen := hs, s_zero := ?_, mult := ?_ }, rfl, ?_⟩` and prove the remaining obligations. Use `corr_of_val D.P.isLB (fun y J hy => ?_)` and prove the remaining obligations. Use `(hsv 0 _ (𝟙 _) y J hy).trans ?_` and prove the remaining obligations. Conclude with `(h₀ y J hy).trans (val_one _).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `χ χ'`. Use `corr_of_val D.P.isLB (fun y J hy => ?_)` and prove the remaining obligations. Use `(val_mul (hJ := hy) ..).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (val_mul (hJ := hy) ..).symm` and prove the remaining obligations. Rewrite using `[val_cubAt hy, hsv (χ + χ') _ (𝟙 _) y J hy, hsv χ _ (𝟙 _) y J hy, hsv χ' _ (𝟙 _) y J hy]`.
-
-Conclude with `hm χ χ' y J hy`. Introduce `χ y J hy`. Conclude with `hsv χ _ (𝟙 _) y J hy`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_gt (b : TF (R := R) F ⟶ D.P.A) {K : Type} [Fintype K] {φ : D.X → K → ((TF (R := R) F).left ⟶ D.P.A.left)}
     {ε : K → ℤ} (v : ∀ χ, LB.Gen (LB.LinComb D.P.L (φ χ) ε)) (hv : ∀ χ, (v χ).IsGen)
@@ -81,11 +79,11 @@ theorem exists_gt (b : TF (R := R) F ⟶ D.P.A) {K : Type} [Fintype K] {φ : D.X
     exact hsv χ _ (𝟙 _) y J hy
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hb, hs⟩`. Use `⟨hb, fun χ y J hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← val_cubAt hy]`. Use `(val_mul (hJ := hy) ..).symm.trans ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(val_corr (hJ := hy) (hs χ) _).trans ?_` and prove the remaining obligations. Conclude with `val_mul (hJ := hy) ..`. Introduce and unpack `⟨hb, hs⟩`. Use `⟨hb, fun χ => corr_of_val D.P.isLB (fun y J hy => ?_)⟩` and prove the remaining obligations. Use `(val_mul (hJ := hy) ..).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (val_mul (hJ := hy) ..).symm` and prove the remaining obligations. Rewrite using `[val_cubAt hy]`. Conclude with `hs χ y J hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdd_iff (g g' g'' : GtPtF D F) : g.IsAdd g' g'' ↔ g''.b = g.b * g'.b ∧ ∀ χ y J, Good D.P.L y J →
     val (g''.s χ) (𝟙 _) y J * th D y J (cP D _ χ) g.b g'.b = val (g.s χ) (𝟙 _) y J * val (g'.s χ) (𝟙 _) y J := by
@@ -104,7 +102,7 @@ theorem isAdd_iff (g g' g'' : GtPtF D F) : g.IsAdd g' g'' ↔ g''.b = g.b * g'.b
     exact hs χ y J hy
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hb, hs⟩`. Conclude with `⟨hb, fun χ y J hy => (val_corr (hJ := hy) (hs χ) (𝟙 _)).trans (val_one _)⟩`. Introduce and unpack `⟨hb, hs⟩`. Conclude with `⟨hb, fun χ => corr_of_val D.P.isLB (fun y J hy => (hs χ y J hy).trans (val_one _).symm)⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isZero_iff (g : GtPtF D F) : g.IsZero ↔ g.b = 1 ∧ ∀ χ y J, Good D.P.L y J → val (g.s χ) (𝟙 _) y J = 1 := by
   constructor
@@ -114,9 +112,9 @@ theorem isZero_iff (g : GtPtF D F) : g.IsZero ↔ g.b = 1 ∧ ∀ χ y J, Good D
     exact ⟨hb, fun χ => corr_of_val D.P.isLB (fun y J hy => (hs χ y J hy).trans (val_one _).symm)⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hb, hs⟩`. Use `⟨hb, fun χ y J hy => ?_⟩` and prove the remaining obligations. Use `(val_corr (hJ := hy) (hs χ) _).trans ?_` and prove the remaining obligations. Conclude with `val_pull (hJ := hy) ..`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨hb, hs⟩`. Use `⟨hb, fun χ => corr_of_val D.P.isLB (fun y J hy => ?_)⟩` and prove the remaining obligations. Use `(hs χ y J hy).trans ?_` and prove the remaining obligations. Conclude with `(val_pull (hJ := hy) ..).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isIota_iff (x : D.X) (g : GtPtF D F) : GtPtF.IsIota x g ↔ g.b = cP D _ x ∧ ∀ χ y J, Good D.P.L y J →
     val (g.s χ) (𝟙 _) y J = val (D.tau x χ) (𝟙 _ ≫ jFK (R := R) F) y J := by
@@ -131,9 +129,9 @@ theorem isIota_iff (x : D.X) (g : GtPtF D F) : GtPtF.IsIota x g ↔ g.b = cP D _
     exact (val_pull (hJ := hy) ..).symm
 
 /- English proof (translation)
-Establish `hm : lift x (lift x' 1) = lift x x' ≫ faceMap (G` using `D.P.A) 2 := by`. Simplify using `[faceMap, x2, pzero, Hom.one_def]`. Use `Eq.trans ?_ ((val_corr (hJ := hJ) (D.cub.face 2) (lift x x').left).trans (val_one _))` and prove the remaining obligations. Use `Eq.trans ?_ (val_pull (hJ := hJ) ..).symm` and prove the remaining obligations. Use `show val D.cub.t (lift x (lift x' 1)).left y J = _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, Over.comp_left]`. Apply the tactic sequence `all_goals rfl`.
+A detailed English derivation is pending.
 -/
 private lemma th_eq_one' {y : (TF (R := R) F).left} {J} (hJ : Good D.P.L y J)
     (x x' : TF (R := R) F ⟶ D.P.A) : th D y J x x' 1 = 1 := by
@@ -146,13 +144,11 @@ private lemma th_eq_one' {y : (TF (R := R) F).left} {J} (hJ : Good D.P.L y J)
   all_goals rfl
 
 /- English proof (translation)
-Establish `hgen : (LB.oneGen D.P.L (Y` using `(TF (R := R) F).left)).IsGen := by`. Introduce `i j`. Use `first`. Consider the case `exact (_root_.one_mul _).symm`. Consider the case `(simp only [LB.oneGen, LB.LinComb, Finset.univ_eq_empty, Finset.prod_empty]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `(_root_.one_mul _).symm)`. Consider the case `(simp [LB.oneGen, LB.LinComb]`. Rewrite using `[_root_.one_mul])`. Take `⟨g, hb, hg⟩` from `exists_gt (D := D) (F := F) (1 : TF (R := R) F ⟶ D.P.A) (K := PEmpty) (φ := fun _ => PEmpty.elim) (ε := PEmpty.elim) (fun _ => LB.oneGen D.P.L) (fun _ => hgen) (fun χ => by`. Introduce `U _ h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prod_gt]`. Use the proof step `simp)`. Use the proof step `(fun y J _ => val_one _)`. Use the proof step `(fun χ χ' y J hy => by`. Rewrite using `[th_eq_one' hy]`.
-
-Use `congr 1`. Conclude with `(val_one _).symm)`. Conclude with `⟨g, (isZero_iff g).2 ⟨hb, fun χ y J hy => (hg χ y J hy).trans (val_one _)⟩⟩`.
+Reduce the equality to equality of the corresponding arguments. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_zero_gt : ∃ g : GtPtF D F, g.IsZero := by
   have hgen : (LB.oneGen D.P.L (Y := (TF (R := R) F).left)).IsGen := by
@@ -177,9 +173,9 @@ theorem exists_zero_gt : ∃ g : GtPtF D F, g.IsZero := by
   exact ⟨g, (isZero_iff g).2 ⟨hb, fun χ y J hy => (hg χ y J hy).trans (val_one _)⟩⟩
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `exists_zero_gt (D := D) (F := F)`. Take `⟨hb, hv⟩` from `(isZero_iff h).1 hh`. Use `⟨0, by simp, h, (isIota_iff 0 h).2 ⟨hb.trans (cPoint_zero _).symm, fun χ y J hJ => ?_⟩, (isAdd_iff _ _ _).2 ⟨by rw [hb, _root_.mul_one], fun χ y J hJ => ?_⟩⟩` and prove the remaining obligations. Establish `C : IsCub (th D (T` using `TF (R := R) F) y J) := isCub_cubV D.cub hJ`. Establish `t` using `tau_mul (𝟙 (TF (R := R) F)) hJ hB 0 0 χ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `t` using `[add_zero, cPoint_zero, C.face, _root_.mul_one]`. Conclude with `(hv χ y J hJ).trans (mul_eq_left.1 t.symm).symm`. Establish `C : IsCub (th D (T` using `TF (R := R) F) y J) := isCub_cubV D.cub hJ`. Rewrite using `[hv χ y J hJ, hb, C.face₃]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qk_equiv_refl (hB : D.TauBimult) {k : ℕ} (q : QkPt D F k) : QkPt.Equiv D F q q := by
   obtain ⟨h, hh⟩ := exists_zero_gt (D := D) (F := F)
@@ -196,39 +192,33 @@ theorem qk_equiv_refl (hB : D.TauBimult) {k : ℕ} (q : QkPt D F k) : QkPt.Equiv
 variable {O : Type} [CommRing O] [StarRing O] [Module O D.X]
 
 /- English proof (translation)
-Use `oa.onB.hom a` as an intermediate fact. Use `oa.onB.hom (star a)` as an intermediate fact. Establish `hr` using `oa.onB.rosati (star a)`. Establish `hbal` using `oa.tau_bal (star a)`. Rewrite `hr`, `hbal` using `[star_star]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u, hu, u₀⟩` from `exists_ros hG D.P.isAb D.P.isLB _ _ hr`. Establish `cf : ∀ (T) (x : O) χ, cP D T (x • χ) = cP D T χ ≫ oa.onB.act x` using `fun T x χ => by`. Rewrite using `[cP, oa.c_lin, ← Category.assoc]`. Both sides reduce to the same expression. Establish `ra` using `fun {y : (TF (R := R) F).left} {J} (hJ : Good D.P.L y J) => ros_add D.cub hG D.P.isAb _ _ u hu u₀ (T := TF (R := R) F) hJ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `vu : ∀ {y : (TF (R` using `R) F).left} {J}, Good D.P.L y J → ∀ x w : TF (R := R) F ⟶ D.P.A, val (LB.pullGen D.P.L _ _ u (lift x w).left) (𝟙 _) y J = val₂ u y J x w := fun hJ x w => by`. Rewrite using `[val_pull hJ, Category.id_comp]`. Both sides reduce to the same expression. Establish `u₁ : ∀ {y : (TF (R` using `R) F).left} {J}, Good D.P.L y J → ∀ w, val₂ u y J 1 w = 1 := fun {y J} hJ w => by`. Establish `C : IsCub (cubV D.cub y J)` using `isCub_cubV D.cub hJ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `(ra hJ 1 1 w).1`. Rewrite `e` using `[_root_.mul_one, MonObj.one_comp, C.face, C.face, _root_.mul_one, _root_.one_mul]`. Conclude with `mul_eq_left.1 e.symm`. Establish `u₂ : ∀ {y : (TF (R` using `R) F).left} {J}, Good D.P.L y J → ∀ w, val₂ u y J w 1 = 1 := fun {y J} hJ w => by`. Establish `C : IsCub (cubV D.cub y J)` using `isCub_cubV D.cub hJ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `(ra hJ 1 1 w).2`. Rewrite `e` using `[_root_.mul_one, MonObj.one_comp, C.face₃, C.face₃, _root_.mul_one, _root_.one_mul]`. Conclude with `mul_eq_left.1 e.symm`. Establish `ex : ∀ g : GtPtF D F, ∃ g' : GtPtF D F, g'.b = g.b ≫ oa.onB.act a ∧ ∀ χ y J, Good D.P.L y J → val (g'.s χ) (𝟙 _) y J = val (g.s (star a • χ)) (𝟙 _) y J * val₂ u y J (cP D _ χ) g.b`. Introduce `g`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `vv : ∀ χ y J, Good D.P.L y J → val (LB.mulGen D.P.L _ _ _ _ (g.s (star a • χ)) (LB.pullGen D.P.L _ _ u (lift (cP D _ χ) g.b).left)) (𝟙 _) y J = val (g.s (star a • χ)) (𝟙 _) y J * val₂ u y J (cP D _ χ) g.b` using `fun χ y J hJ => (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (vu hJ _ _))`. Take `⟨g', hb, hv⟩` from `exists_gt (g.b ≫ oa.onB.act a) (fun χ => LB.mulGen D.P.L _ _ _ _ (g.s (star a • χ)) (LB.pullGen D.P.L _ _ u (lift (cP D _ χ) g.b).left)) (fun χ => mulGen_isGen _ _ _ _ _ _ _ (g.isGen _) (pullGen_isGen _ _ _ _ hu _)) (fun χ U _ h => by`. Use `(prod_sum₂ (K := Fin 4) (K' := Fin 6) (U := U) _ (prod_gt g.b (star a • χ) h) (prod_ros _ _ (cP D _ χ) g.b h)).trans ?_` and prove the remaining obligations. Rewrite using `[prod_gt, cf]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel) (fun y J hJ => by`. Rewrite using `[vv 0 y J hJ, smul_zero, cPoint_zero, u₁ hJ, _root_.mul_one]`. Conclude with `(val_corr hJ g.s_zero _).trans (val_one _)) (fun χ χ' y J hJ => by`. Establish `e₁` using `(ra hJ (cP D _ χ) (cP D _ χ') g.b).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₂` using `gt_mul (𝟙 (TF (R := R) F)) hJ g (star a • χ) (star a • χ')`. Rewrite `e₂` using `[Category.id_comp, cf, cf, Over.id_left]`. Rewrite using `[vv _ y J hJ, vv _ y J hJ, vv _ y J hJ, smul_add, cPoint_add, _root_.mul_assoc]`. Use `(congrArg _ e₁).trans ?_` and prove the remaining obligations. Rewrite using `[← _root_.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg (· * _) e₂).trans (mul_mul_mul_comm _ _ _ _))`. Conclude with `⟨g', hb, fun χ y J hJ => (hv χ y J hJ).trans (vv χ y J hJ)⟩`. Use `choose act hb hv using ex`. Establish `add : ∀ g g' g'' : GtPtF D F, g.IsAdd g' g'' → (act g).IsAdd (act g') (act g'')` using `fun g g' g'' h => by`. Take `⟨b₁, v₁⟩` from `(isAdd_iff _ _ _).1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(isAdd_iff _ _ _).2 ⟨by rw [hb, hb, hb, b₁, MonObj.mul_comp], fun χ y J hJ => ?_⟩` and prove the remaining obligations. Establish `e₁` using `(ra hJ g.b g'.b (cP D _ χ)).2`. Establish `e₂` using `v₁ (star a • χ) y J hJ`. Rewrite `e₂` using `[cf]`. Rewrite `e₁` using `[← b₁]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[hv _ _ y J hJ, hv _ _ y J hJ, hv _ _ y J hJ, hb, hb, _root_.mul_assoc]`. Use `(congrArg _ e₁).trans ?_` and prove the remaining obligations. Rewrite using `[← _root_.mul_assoc]`. Conclude with `(congrArg (· * _) e₂).trans (mul_mul_mul_comm _ _ _ _)`. Take `⟨h, ⟨gs, g₀, gst, gl⟩, hι⟩` from `p.eq`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨ιb, ιv⟩` from `(isIota_iff _ _).1 hι`. Set `q : QkPt D F k` to `⟨a • p.y, act p.g, act h, ⟨fun i => act (gs i), by`. Take `⟨z₁, z₂⟩` from `(isZero_iff _).1 g₀`. Conclude with `(isZero_iff _).2 ⟨by rw [hb, z₁, MonObj.one_comp], fun χ y J hJ => by`. Rewrite using `[hv _ _ y J hJ, z₂ _ y J hJ, z₁, u₂ hJ, _root_.mul_one]⟩,`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `fun i => add _ _ _ (gst i), congrArg act gl⟩, (isIota_iff _ _).2 ⟨by rw [hb, ιb, cf], fun χ y J hJ => by`. Set `κ : TF (R` to `R) F ⟶ TK R := Over.homMk (𝟙 _ ≫ jFK (R := R) F) (by`. Rewrite using `[Category.id_comp]`. Use the proof step `rfl)`. Establish `e` using `(val_mul hJ _ _ _).symm.trans (val_corr hJ (hbal u hu u₀ χ p.y) κ.left)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e' : val (LB.pullGen D.P.L _ _ u (D.pt2 χ p.y)) κ.left y J = val₂ u y J (cP D _ χ) (cP D _ p.y)`. Rewrite using `[val_pull hJ, val₂, ← comp_cP D κ, ← comp_cP D κ p.y, ← comp_lift]`. Both sides reduce to the same expression. Rewrite using `[hv _ _ y J hJ, ιv _ y J hJ, ιb, ← e']`. Conclude with `(congrArg₂ (· * ·) (tau_symm (𝟙 (TF (R := R) F)) hJ _ _) rfl).trans (e.trans (tau_symm (𝟙 (TF (R := R) F)) hJ _ _))⟩⟩`.
-
-Use `⟨q, q, rfl, ⟨hb _, fun u' hu' u₀' χ => corr_of_val D.P.isLB fun y J hJ => ?_⟩, qk_equiv_refl hB q⟩` and prove the remaining obligations. Use `(val_mul hJ _ _ _).trans (Eq.trans (congrArg₂ (· * ·) rfl ?_) (hv p.g χ y J hJ).symm)` and prove the remaining obligations. Rewrite using `[val_pull hJ, Category.id_comp]`. Establish `z2 : zero2 D.P.A ≫ (snd D.P.A D.P.A).left ≫ D.P.A.hom = 𝟙 _`. Rewrite using `[Over.w]`.
-
-Conclude with `Over.w (lift η[D.P.A] η[D.P.A])`. Conclude with `gen_unique D.P.isLB _ (zero2 D.P.A) z2 (surj_comp (surj_snd hG D.P.isAb _) (hG _ _ D.P.isAb).2) hu' hu (fun y I hI => by`. Establish `a₁` using `val_corr hI u₀' (𝟙 _)`. Establish `a₂` using `val_corr hI u₀ (𝟙 _)`. Rewrite `a₁`, `a₂` using `[val_pull hI, Category.id_comp]`.
-
-Conclude with `a₁.trans a₂.symm) _ _ y J hJ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qkAct_exists (hG : GlobalFnsSt) (hB : D.TauBimult) (oa : D.OAct O) {k : ℕ} (a : O) (p : QkPt D F k) :
     ∃ p', QkAct oa a p p' := by

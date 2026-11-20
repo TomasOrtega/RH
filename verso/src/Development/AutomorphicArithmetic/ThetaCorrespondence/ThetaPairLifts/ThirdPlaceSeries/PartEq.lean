@@ -15,11 +15,11 @@ variable {Γ : Type} [Group Γ] {K : Type} [Field K]
 end Alg
 variable (D : D7) (i : D.nd.Loc)
 /- English proof (translation)
-Establish `h3` using `_root_.GlobalTheory.HeckeCharacterEquality.hecke_character_equality_of_realisation`. Break down `p with ⟨a, π, d⟩` into its components or cases. Simplify using `only at ha hd`. Substitute `ha hd` using the available equality. Establish `hu00 : u 0 ≠ 0` using `fun h => hu0 (funext fun j => by rw [Fin.fin_one_eq_zero j]; exact h)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h00 : ∀ g, ((Rk g : GL _ _) : Matrix (Fin 1) (Fin 1) (Qbar (D.nd.l i))) 0 0 = iotaOQ D.nd D.naut i (chi1 D.nd i g)` using `fun g => by`. Use `congrFun (hu g) 0` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_one, Pi.smul_apply, smul_eq_mul] at this`. Conclude with `mul_right_cancel₀ hu00 this`. Establish `hπ` using `h3 D hA i π (D.naut.tw (D.naut.muC i) D.naut.etaTinv) _ Rk hR.2.2 (h4 D hA i hg Rk h00)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hπ` using the available equality. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eq_one_twist_t_of_mulVec_eigen (_h3 : _root_.GlobalTheory.StringRepresentationDecomposition.HeckeCharEqOfLAdicRealisation') (h4 : _root_.GlobalTheory.StringRepresentationDecomposition.MuCharacterCondition) (hA : _root_.Formalism.MainNotions.SumRepresentations.AdmissibleDatum D) (hg : HG D.nd D.naut i)
     (p : Part D.naut.CG) (Rk : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* GL (Fin p.a) (Qbar (D.nd.l i)))

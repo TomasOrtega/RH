@@ -14,7 +14,7 @@ namespace GlobalTheory.Mem.R3.Rw.RatExt
 open Formalism.IndefR.Mult Formalism.IndefR.Datum GlobalTheory.Mem.R3.Rw.LiftExt
 
 /- English proof (translation)
-Establish `e : v = ∑ k, s k • u k` using `hinj (by rw [eq_of_heq hv, map_sum]; simp only [map_smul])`. Rewrite using `[e, map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [map_smul, eq_of_heq (hp k)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comb_gen {E E' : Type} [AddCommGroup E] [Module ℂ E] [AddCommGroup E'] [Module ℂ E'] (Y : HMod E) (X : HMod E')
     (g : Y.H →ₗ[ℂ] X.H) (hinj : Function.Injective Y.e) (v : Y.H) {n : ℕ} (s : Fin n → ℂ) (u : Fin n → Y.H)
@@ -29,35 +29,23 @@ variable {B B' : Base} {C : Cols B} {C' : Cols B'} {a : Late B C} {a' : Late B' 
   {V W : HSp a.D} {V' W' : HSp a'.D} {S : a.D.what₂.Tau → SPar} {S' : a'.D.what₂.Tau → SPar} {M : DSModel W S} {M' : DSModel W' S'}
 
 /- English proof (translation)
-Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at hP`. Substitute `hP` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (W')) ((by with_unfolding_all exact ((W) :))) (W')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (W')) (W') (((W))) (((hW)))).symm : _))`.
+Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Use `clear (hW)`. Substitute `e))` using the available equality. Take `⟨H', s', l', ε', f', _, _, _, _⟩` from `M'`. Name the introduced variables `n' i' _ _ _ _`. Take `⟨h1, h2, h3, h4, h5, h6, h7⟩` from `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify using `only at h1 h2 h3 h4 h5 h6 h7`. Use the proof step `( (`. Establish `e : @Eq (type_of% (H')) ((by with_unfolding_all exact ((M.H) :))) (H')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (H')) (H') (((M.H))) (((h1)))).symm : _))`. Use `clear (h1)`. Substitute `e))` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Use the proof step `( (`. Establish `e : @Eq (type_of% (n')) ((by with_unfolding_all exact ((M.nacg) :))) (n')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (n')) (n') (((M.nacg))) (((h2)))).symm : _))`. Use `clear (h2)`. Substitute `e))` using the available equality. Use the proof step `( (`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `e : @Eq (type_of% (i')) ((by with_unfolding_all exact ((M.ips) :))) (i')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (i')) (i') (((M.ips))) (((h3)))).symm : _))`. Use `clear (h3)`. Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (s')) ((by with_unfolding_all exact ((M.σ) :))) (s')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (s')) (s') (((M.σ))) (((h4)))).symm : _))`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Use `clear (h4)`. Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (l')) ((by with_unfolding_all exact ((M.lam) :))) (l')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (l')) (l') (((M.lam))) (((h5)))).symm : _))`. Use `clear (h5)`.
+Simplify by unfolding definitions. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (ε')) ((by with_unfolding_all exact ((M.ε) :))) (ε')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (ε')) (ε') (((M.ε))) (((h6)))).symm : _))`. Use `clear (h6)`. Substitute `e))` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Use the proof step `( (`. Establish `e : @Eq (type_of% (f')) ((by with_unfolding_all exact ((M.fr) :))) (f')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (f')) (f') (((M.fr))) (((h7)))).symm : _))`. Use `clear (h7)`. Substitute `e))` using the available equality. Use the proof step `( (`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `e : @Eq (type_of% (V')) ((by with_unfolding_all exact ((V) :))) (V')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (V')) (V') (((V))) (((hV)))).symm : _))`. Use `clear (hV)`. Substitute `e))` using the available equality. Take `⟨W₁, ρ₁⟩` from `c'`. Name the introduced variables `nW' iW' _`.
-
-Simplify using `only at c1 c2 c3 c4`. Use the proof step `( (`. Establish `e : @Eq (type_of% (W₁)) ((by with_unfolding_all exact ((c.W) :))) (W₁)` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (W₁)) (W₁) (((c.W))) (((c1)))).symm : _))`. Use `clear (c1)`. Substitute `e))` using the available equality.
-
-Use the proof step `( (`. Establish `e : @Eq (type_of% (nW')) ((by with_unfolding_all exact ((c.nW) :))) (nW')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (nW')) (nW') (((c.nW))) (((c3)))).symm : _))`. Use `clear (c3)`. Substitute `e))` using the available equality. Use the proof step `( (`.
-
-Establish `e : @Eq (type_of% (iW')) ((by with_unfolding_all exact ((c.iW) :))) (iW')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (iW')) (iW') (((c.iW))) (((c4)))).symm : _))`. Use `clear (c4)`. Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (ρ₁)) ((by with_unfolding_all exact ((c.ρ) :))) (ρ₁)` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (ρ₁)) (ρ₁) (((c.ρ))) (((c2)))).symm : _))`.
-
-Use `clear (c2)`. Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (Y')) ((by with_unfolding_all exact ((Y) :))) (Y')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (Y')) (Y') (((Y))) (((hY)))).symm : _))`. Use `clear (hY)`.
-
-Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (X')) ((by with_unfolding_all exact ((X) :))) (X')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (X')) (X') (((X))) (((hX)))).symm : _))`. Use `clear (hX)`. Substitute `e))` using the available equality.
-
-Use the proof step `( (`. Establish `e : @Eq (type_of% (g')) ((by with_unfolding_all exact ((g) :))) (g')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (g')) (g') (((g))) (((hg)))).symm : _))`. Use `clear (hg)`. Substitute `e))` using the available equality. Conclude with `(by with_unfolding_all exact ((comb_gen Y X g hinj ((v)) s u ((hv)) ((p)) ((hp))) : _))`.
+A detailed English derivation is pending.
 -/
 private theorem comb_of (hP : B'.toPre = B.toPre) (hV : HEq V' V) (hW : HEq W' W) (h : DSTie M' M) {c : CoefA V} {c' : CoefA V'}
     (c1 : HEq c'.W c.W) (c2 : HEq c'.ρ c.ρ) (c3 : HEq c'.nW c.nW) (c4 : HEq c'.iW c.iW)
@@ -144,7 +132,7 @@ private theorem comb_of (hP : B'.toPre = B.toPre) (hV : HEq V' V) (hW : HEq W' W
 end Comparison₂
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Take `rfl` from `eq_of_heq hF`. Take `rfl : i = i'` from `Fin.ext h`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 private theorem apply_eq {m m' : ℕ} (hm : m' = m) {F : Fin m → ℕ} {F' : Fin m' → ℕ} (hF : HEq F' F) {i : Fin m} {i' : Fin m'}
     (h : (i : ℕ) = i') : F i = F' i' := by
@@ -164,13 +152,13 @@ variable {B B' : Base} {C : Cols B} {C' : Cols B'} {a : Late B C} {a' : Late B' 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `s : a.D.what₂.embLL = sg0 a.D A` using `(sgAt_mk _ R.hv0).symm`. Establish `s' : a'.D.what₂.embLL = sg0 a'.D A'` using `(sgAt_mk _ R'.hv0).symm`. Establish `hM0 : DSTie (R'.MW i' (sg0 a'.D A')) (R.MW i (sg0 a.D A))` using `s ▸ s' ▸ hM`. Establish `hHW0 : HEq (R'.HW i' (sg0 a'.D A')) (R.HW i (sg0 a.D A))` using `s ▸ s' ▸ hHW`. Establish `hc : (sg0 a'.D A').comp ι = sg0 a.D A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← s, ← s']`. Conclude with `RingHom.ext hι`. Establish `hmv : ∀ (σ₁ σ₂ : a.D.what₂.LL →+* ℂ), σ₁ = σ₂ → ∀ y, HEq ((R.FW i).j σ₁ y) ((R.FW i).j σ₂ y)`. Introduce `σ₁ σ₂ e y`. Substitute `e` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `HEq.rfl`. Establish `hn0 : R.nW i = R'.nW i'` using `apply_eq (LiftExt.m_eq hP) hn h`. Use `choose y hy using fun k => hr i (x k) (R.jV i t (x k)) (hjV (x k))`. Use `⟨∑ k, b k • GeoFW.crdMap ι hn0 (y k), ?_⟩` and prove the remaining obligations. Use `((map_sum _ _ _).trans (Finset.sum_congr rfl fun k _ => LinearMap.map_smulₛₗ _ _ _)).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `comb_of hP (vc_heq hP h) (wc_heq hP h) hM0 c1 c2 c3 c4 hHV hHW0 hg hinj v (fun k => sg0 a'.D A' (b k)) (fun k => R.jV i t (x k)) ?_ (fun k => (R'.FW i').j (sg0 a'.D A') (GeoFW.crdMap ι hn0 (y k))) fun k => ?_` and prove the remaining obligations. Use `(heq_of_eq hv).trans (hx.trans (heq_of_eq ?_))` and prove the remaining obligations. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact ((congrArg₂ (fun (c : ℂ) (q : Bridge.Gf (Vc a.D i) → (R.cV i).W) => c • q) (DFunLike.congr_fun s' (b k)) (hjV (x k)).symm) :))`. Conclude with `((hj _ _ _ (GeoFW.crdOver_crdMap ι hn0 (y k))).trans (hmv _ _ hc _)).trans (heq_of_eq (hy k))`.
+A detailed English derivation is pending.
 -/
 private theorem rat_of (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D.R.m} (h : (i : ℕ) = i') {t : T0} {t' : T0'}
     (c1 : HEq (R'.cV i').W (R.cV i).W) (c2 : HEq (R'.cV i').ρ (R.cV i).ρ) (c3 : HEq (R'.cV i').nW (R.cV i).nW)
@@ -209,11 +197,9 @@ end GlobalTheory.Mem.R3.Rw.RatExt
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Ks _ _ _ Xg tr z Wt' R' hE hS hJ hr i' x' v hv`. Use `letI := z.alg`. Establish `hP : B'.toPre = B.toPre` using `hE.1`. Establish `hm` using `LiftExt.m_eq (a := Z) (a' := Z') hP`. Set `i : Fin (w.st Z).toD7.R.m` to `Fin.cast hm i'`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h : (i : ℕ) = i'` using `rfl`. Set `ι : (w.st Z).toD7.what₂.LL →+* (w'.st Z').toD7.what₂.LL` to `(B'.embLL.rangeRestrictFieldEquiv.symm : B'.embLL.fieldRange →+* B'.LL).comp (B.embLL.codRestrict B'.embLL.fieldRange fun x => hE.2.2.2 ⟨x, rfl⟩)`. Establish `hι : ∀ x, (w'.st Z').toD7.what₂.embLL (ι x) = (w.st Z).toD7.what₂.embLL x` using `fun x => congrArg Subtype.val (B'.embLL.rangeRestrictFieldEquiv.apply_symm_apply ⟨B.embLL x, hE.2.2.2 ⟨x, rfl⟩⟩)`. Use `obt ⟨⟨-, -, -, -, -, hn, -, -, -, -, -, -, h1, -⟩, h2⟩ := hS`. Use `obt ⟨c1, c2, c3, c4, -, -, -, m1, m2, m3, m4, m5, m6, m7, -, hHW, -, -, hWι⟩ := h1 i i' h`.
-
-Use `obt ⟨-, -, hHV, -, hg, -, -⟩ := h2 i i' h`. Use `obt ⟨n, b, x, hx⟩ := hJ i i' h x'`. Establish `hb` using `z.pins.char.base.models`. Conclude with `RatExt.rat_of (a := Z) (a' := Z') (R := z.R.toRealDat) (R' := R'.toRealDat) hP h c1 c2 c3 c4 ⟨m1, m2, m3, m4, m5, m6, m7⟩ hHW hHV hg hn ι hι (fun σ' => ((hWι ι hι).1 σ').2.2.2) (hb.HV i _).1 (hb.jV i _) hr x' b x hx v hv`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.referenceTuple_rationalForm_lifts_algebraic_enlarged : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'}
   {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl}

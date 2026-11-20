@@ -15,19 +15,17 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.L2.SG.HidaS
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D X u x y hx hy v`. Use `set a := rv X.B.I v (X.crd x) with ha`. Use `set b := rv X.B.I v (X.crd y) with hb`. Establish `hbe : ∀ c, hJ (X.B.I.ε v) (eV X v c) b = 0`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show hJ (X.B.I.ε v) (rv X.B.I v (X.crd (X.eX c))) (rv X.B.I v (X.crd y)) = 0`. Rewrite using `[Formalism.L2.SG.Pf.hJ_crd, (hy c).1]`. Simplify using the standard rewrite rules. Establish `hbf : ∀ c, hJ (X.B.I.ε v) (ProductExactness.pV X v c) b = 0`. Introduce `c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `show hJ (X.B.I.ε v) (rv X.B.I v (X.crd (X.fY c))) (rv X.B.I v (X.crd y)) = 0`. Rewrite using `[Formalism.L2.SG.Pf.hJ_crd, (hy c).2]`. Simplify using the standard rewrite rules. Establish `hdec` using `decomp (nX X) (ProductExactness.Tw_pos u) (fX_ee X v) (fX_ff X v) (fX_ef X v) (fX_ww X u v) (fX_ew X u v) (fX_fw X u v) (fX_ez X u v) (fX_fz X u v) (frame_real_z_z_eq_neg X u v) (fX_zw X u v) b hbe hbf`. Establish `hab : hJ (X.B.I.ε v) a b = ∑ c, hJ (X.B.I.ε v) a (X.wfr u v c) * star (hJ (X.B.I.ε v) b (X.wfr u v c)) + hJ (X.B.I.ε v) a (ProductExactness.zV X u v) * star (hJ (X.B.I.ε v) b (ProductExactness.zV X u v)) * (-(1 / ((Tw u : ℝ) : ℂ)))` using `by conv_lhs => rw [hdec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fr_add_r, fr_sum_r, fr_smul_r]`. Use `congr 1`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[fr_smul_r, hJ_swap (X.B.I.ε v) (X.wfr u v c) b, star_star]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hJ_swap (X.B.I.ε v) (ProductExactness.zV X u v) b, star_star]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← Formalism.L2.SG.Pf.hJ_crd, ← ha, ← hb, hab, Fin.sum_univ_castSucc]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hj : (Fin.castSucc j).val < D.R.k` using `j.isLt`. Simplify using `only [rowV, gC, dif_pos hj, if_pos hj, mul_one]`. Both sides reduce to the same expression. Establish `hl : ¬ (Fin.last D.R.k).val < D.R.k` using `by simp`. Simplify using `only [rowV, gC, dif_neg hl, if_neg hl]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rowParseval_holds : RowParseval := by
   intro D X u x y hx hy v

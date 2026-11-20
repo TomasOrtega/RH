@@ -9,9 +9,9 @@ namespace GlobalTheory.Mem.GaussPhase
 variable {σ : Type} [Fintype σ] [DecidableEq σ]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.DifferentiableDet.differentiableAt_det`. Consider the case `exact _root_.GlobalTheory.DifferentiableDet.differentiableAt_det`. Consider the case `(apply _root_.GlobalTheory.DifferentiableDet.differentiableAt_det <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.DifferentiableDet.differentiableAt_det <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.DifferentiableDet.differentiableAt_det <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.DifferentiableDet.differentiableAt_det ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem differentiableAt_det (M : ℝ → Matrix σ σ ℂ) (t : ℝ)
     (hM : ∀ i j, DifferentiableAt ℝ (fun s => M s i j) t) :
@@ -25,11 +25,11 @@ theorem differentiableAt_det (M : ℝ → Matrix σ σ ℂ) (t : ℝ)
   | (intros; exact _root_.GlobalTheory.DifferentiableDet.differentiableAt_det ..)
 
 /- English proof (translation)
-Establish `hadj : DifferentiableAt ℝ (fun s => (M s).adjugate i j) t`. Use `differentiableAt_det (fun s => (M s).updateRow j (Pi.single i 1)) t (by` as an intermediate fact. Introduce `a b`. Distinguish the cases in `h : a = j`. Simplify using `only [updateRow_apply, h, if_true]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `differentiableAt_const _`. Simplify using `only [updateRow_apply, h, if_false]`. Conclude with `hM a b)`. Simplify `this` using `only [adjugate_apply]`. Use `((differentiableAt_det M t hM).fun_inv hne).mul hadj` as an intermediate fact.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `this.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `[Matrix.inv_def, Ring.inverse_eq_inv']`.
+A detailed English derivation is pending.
 -/
 theorem differentiableAt_inv_apply (M : ℝ → Matrix σ σ ℂ) (t : ℝ)
     (hM : ∀ i j, DifferentiableAt ℝ (fun s => M s i j) t) (hne : (M t).det ≠ 0) (i j : σ) :
@@ -49,7 +49,7 @@ theorem differentiableAt_inv_apply (M : ℝ → Matrix σ σ ℂ) (t : ℝ)
 
 omit [DecidableEq σ] in
 /- English proof (translation)
-Simplify using `only [dotProduct]`. Conclude with `HasDerivAt.fun_sum fun k _ => (hasDerivAt_pi.mp h k).const_mul _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_dot (x : σ → ℂ) {w : ℝ → σ → ℂ} {w' : σ → ℂ} {t : ℝ} (h : HasDerivAt w w' t) :
     HasDerivAt (fun s => x ⬝ᵥ w s) (x ⬝ᵥ w') t := by
@@ -58,7 +58,7 @@ theorem hasDerivAt_dot (x : σ → ℂ) {w : ℝ → σ → ℂ} {w' : σ → �
 
 omit [DecidableEq σ] in
 /- English proof (translation)
-The claim follows from `hasDerivAt_pi.mpr fun i => hasDerivAt_dot (S i) h`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_mulVec (S : Matrix σ σ ℂ) {w : ℝ → σ → ℂ} {w' : σ → ℂ} {t : ℝ}
     (h : HasDerivAt w w' t) : HasDerivAt (fun s => S *ᵥ w s) (S *ᵥ w') t :=
@@ -66,32 +66,32 @@ theorem hasDerivAt_mulVec (S : Matrix σ σ ℂ) {w : ℝ → σ → ℂ} {w' : 
 
 omit [DecidableEq σ] in
 /- English proof (translation)
-Rewrite using `[dotProduct_mulVec, ← mulVec_transpose, hS]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dot_symm {S : Matrix σ σ ℂ} (hS : Sᵀ = S) (a b : σ → ℂ) :
     (S *ᵥ a) ⬝ᵥ b = a ⬝ᵥ (S *ᵥ b) := by
   rw [dotProduct_mulVec, ← mulVec_transpose, hS]
 
 /- English proof (translation)
-Introduce `w u`. Establish `hof : HasDerivAt (fun s : ℝ => (s : ℂ)) 1 t` using `Complex.ofRealCLM.hasDerivAt`. Use `set M : ℝ → Matrix σ σ ℂ := fun s => 1 - ((s : ℂ) ^ 2) • (T * S) with hMdef`. Establish `hM : ∀ i j, DifferentiableAt ℝ (fun s => M s i j) t`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hMdef, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `(differentiableAt_const _).fun_sub ((hof.differentiableAt.fun_pow 2).mul_const _)`. Establish `hne : (M t).det ≠ 0` using `hu.ne_zero`. Establish `hev : ∀ᶠ s in nhds t, (M s).det ≠ 0` using `(differentiableAt_det M t hM).continuousAt.eventually_ne hne`. Establish `hwd : DifferentiableAt ℝ w t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `differentiableAt_pi.mpr fun i => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `DifferentiableAt ℝ (fun s => ∑ k, (M s)⁻¹ i k * (y k + (s : ℂ) * (T *ᵥ x) k)) t`. Conclude with `DifferentiableAt.fun_sum fun k _ => (differentiableAt_inv_apply M t hM hne i k).fun_mul ((differentiableAt_const _).fun_add (hof.differentiableAt.mul_const _))`. Take `⟨w', hw⟩ : ∃ w', HasDerivAt w w' t` from `⟨_, hwd.hasDerivAt⟩`. Establish `hU : HasDerivAt u ((t : ℂ) • S *ᵥ w' + S *ᵥ w t) t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `(hof.fun_smul (hasDerivAt_mulVec S hw)).const_add x` as an intermediate fact. Simplify `this` using `only [one_smul]`. Use `set u' := (t : ℂ) • S *ᵥ w' + S *ᵥ w t with hu'`. Establish `hkey : ∀ s, (M s).det ≠ 0 → w s = y + (s : ℂ) • T *ᵥ u s`. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : M s *ᵥ w s = y + (s : ℂ) • T *ᵥ x`. Express the relevant statement in the definitionally equal form `M s *ᵥ ((M s)⁻¹ *ᵥ _) = _`. Rewrite using `[mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hs), one_mulVec]`. Simplify using `only [hMdef, sub_mulVec, one_mulVec, smul_mulVec] at h1`. Simplify using `only [u, mulVec_add, mulVec_smul, mulVec_mulVec, smul_add, smul_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← add_assoc, ← h1, pow_two, sub_add_cancel]`. Establish `hw2 : HasDerivAt w ((t : ℂ) • T *ᵥ u' + T *ᵥ u t) t`. Use `(hof.fun_smul (hasDerivAt_mulVec T hU)).const_add y` as an intermediate fact. Simplify using `only [one_smul] at this`. Use `this.congr_of_eventuallyEq ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hev] with s hs using hkey s hs`. Establish `hw' : w' = (t : ℂ) • T *ᵥ u' + T *ᵥ u t` using `hw.unique hw2`. Establish `hx : x = u t - (t : ℂ) • S *ᵥ w t` using `by simp [u]`. Establish `hy : y = w t - (t : ℂ) • T *ᵥ u t` using `by rw [eq_sub_iff_add_eq]; exact (hkey t hne).symm`. Establish `hmain` using `(hof.div_const 2).fun_mul ((hasDerivAt_dot x hw).fun_add (hasDerivAt_dot y hU))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hmain.congr_deriv ?_` and prove the remaining obligations. Establish `e1 : x ⬝ᵥ w t = u t ⬝ᵥ w t - t * (w t ⬝ᵥ S *ᵥ w t)` using `by conv_lhs => rw [hx]`. Rewrite using `[sub_dotProduct, smul_dotProduct, dot_symm hS, smul_eq_mul]`. Establish `e2 : y ⬝ᵥ u t = u t ⬝ᵥ w t - t * (u t ⬝ᵥ T *ᵥ u t)` using `by conv_lhs => rw [hy]`. Rewrite using `[sub_dotProduct, smul_dotProduct, dot_symm hT, smul_eq_mul, dotProduct_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : x ⬝ᵥ w' = u t ⬝ᵥ w' - t * (w t ⬝ᵥ S *ᵥ w')` using `by conv_lhs => rw [hx]`. Rewrite using `[sub_dotProduct, smul_dotProduct, dot_symm hS, smul_eq_mul]`. Establish `e4 : y ⬝ᵥ u' = w t ⬝ᵥ u' - t * (u t ⬝ᵥ T *ᵥ u')` using `by conv_lhs => rw [hy]`. Rewrite using `[sub_dotProduct, smul_dotProduct, dot_symm hT, smul_eq_mul]`. Establish `e5 : w t ⬝ᵥ u' = t * (w t ⬝ᵥ S *ᵥ w') + w t ⬝ᵥ S *ᵥ w t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hu', dotProduct_add, dotProduct_smul, smul_eq_mul]`. Establish `e6 : u t ⬝ᵥ w' = t * (u t ⬝ᵥ T *ᵥ u') + u t ⬝ᵥ T *ᵥ u t` using `by conv_lhs => rw [hw']`. Rewrite using `[dotProduct_add, dotProduct_smul, smul_eq_mul]`. Rewrite using `[e1, e2, e3, e4, e5, e6]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_phase (σ : Type) [Fintype σ] [DecidableEq σ] (S T : Matrix σ σ ℂ)
     (x y : σ → ℂ) (t : ℝ) (hS : Sᵀ = S) (hT : Tᵀ = T)

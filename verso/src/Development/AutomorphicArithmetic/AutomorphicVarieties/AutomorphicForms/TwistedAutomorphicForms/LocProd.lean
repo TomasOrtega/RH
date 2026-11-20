@@ -16,7 +16,7 @@ private noncomputable def UpperTheory.V.Af.Tw.infPart (K : Type) [Field K] [Numb
   map_mul' _ _ := rfl
 
 /- English proof (translation)
-Simplify using `only [localIdele, finiteSingle, Units.coe_map, MonoidHom.coe_mk, OneHom.coe_mk]`. Conclude with `RestrictedProduct.mulSingle_eq_same _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Af.Tw.loc_same {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K))
     (x : (v.adicCompletion K)ˣ) : (localIdele K v x).val.2 v = x := by
@@ -25,7 +25,7 @@ private theorem UpperTheory.V.Af.Tw.loc_same {K : Type} [Field K] [NumberField K
   exact RestrictedProduct.mulSingle_eq_same _ _ _
 
 /- English proof (translation)
-Simplify using `only [localIdele, finiteSingle, Units.coe_map, MonoidHom.coe_mk, OneHom.coe_mk]`. Conclude with `RestrictedProduct.mulSingle_eq_of_ne _ _ h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Af.Tw.loc_ne {K : Type} [Field K] [NumberField K] {v w : HeightOneSpectrum (𝓞 K)}
     (h : w ≠ v) (x : (v.adicCompletion K)ˣ) : (localIdele K v x).val.2 w = 1 := by
@@ -34,19 +34,17 @@ private theorem UpperTheory.V.Af.Tw.loc_ne {K : Type} [Field K] [NumberField K] 
   exact RestrictedProduct.mulSingle_eq_of_ne _ _ h
 
 /- English proof (translation)
-Unfold `UpperTheory.V.Af.Tw.LocProd`. Introduce `F L _ _ _ _ _ v x`. Set `y : ∀ w : HeightOneSpectrum (𝓞 L), (w.adicCompletion L)ˣ` to `fun w => Units.map (finiteCompletionMap F L w).toMonoidHom (Units.map (UpperTheory.V.Af.Tw.compAt F (HeightOneSpectrum.under (𝓞 F) w)) (localIdele F v x))`. Establish `hy : ∀ w, ((y w : (w.adicCompletion L)ˣ) : w.adicCompletion L) = finiteCompletionMap F L w ((localIdele F v x).val.2 (HeightOneSpectrum.under (𝓞 F) w))` using `fun w => rfl`. Establish `hmem : ∀ w : HeightOneSpectrum (𝓞 L), w ∈ aboveF F v ↔ HeightOneSpectrum.under (𝓞 F) w = v` using `fun w => by`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `aboveF`. Simplify using the standard rewrite rules. Establish `key : ∀ a b : AdeleRing (𝓞 L) L, UpperTheory.V.Af.Tw.infPart L a = UpperTheory.V.Af.Tw.infPart L b → (∀ w, UpperTheory.V.Af.Tw.compAt L w a = UpperTheory.V.Af.Tw.compAt L w b) → a = b` using `fun a b h1 h2 => Prod.ext h1 (RestrictedProduct.ext _ _ h2)`. Use `⟨y, ?_, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Units.coe_prod]`. Apply `key` to reduce the goal to its premises. Rewrite using `[map_prod]`. Establish `h1 : ∀ w, UpperTheory.V.Af.Tw.infPart L ((localIdele L w (y w)).val) = 1` using `fun w => rfl`. Simplify using `only [h1, Finset.prod_const_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show infiniteAdeleMap F L 1 = 1`. Conclude with `map_one _`. Introduce `w'`. Rewrite using `[map_prod]`. Use `show finiteCompletionMap F L w' ((localIdele F v x).val.2 (HeightOneSpectrum.under (𝓞 F) w')) = ∏ w ∈ aboveF F v, (localIdele L w (y w)).val.2 w'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hw' : HeightOneSpectrum.under (𝓞 F) w' = v`. Rewrite using `[Finset.prod_eq_single w']`. Rewrite using `[UpperTheory.V.Af.Tw.loc_same, hy]`. Introduce `b _ hb`. Conclude with `UpperTheory.V.Af.Tw.loc_ne (Ne.symm hb) _`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd ((hmem w').mpr hw') h`. Rewrite using `[UpperTheory.V.Af.Tw.loc_ne hw', map_one, Finset.prod_eq_one]`. Introduce `b hb`. Conclude with `UpperTheory.V.Af.Tw.loc_ne (fun h => hw' (by rw [h]; exact (hmem b).mp hb)) _`.
-
-Introduce `hunr hx w hw`. Substitute `hw` using the available equality. Unfold `IsUnifAt at hx ⊢`. Rewrite using `[hy, UpperTheory.V.Af.Tw.loc_same, GlobalTheory.UpIdeleMod.valued_finiteCompletionMap, hunr w rfl, pow_one]`. Conclude with `hx`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Tw.locProd :
     UpperTheory.V.Af.Tw.LocProd := by

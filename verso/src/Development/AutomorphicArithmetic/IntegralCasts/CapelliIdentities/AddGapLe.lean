@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `r d hd k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `i j h`. Establish `hij : j = i` using `Fin.ext (by simpa using h)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `i j h`. Establish `hj` using `j.isLt`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : (i : ℕ) + k < r` using `by omega`. Establish `h1` using `ih i ⟨(i : ℕ) + k, hm⟩ rfl`. Establish `h2 : d j < d ⟨(i : ℕ) + k, hm⟩` using `hd (by`. Rewrite using `[Fin.lt_def]`. Simplify using `only`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `omega)`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yoa4.add_gap_le :
     ∀ {r : ℕ} {d : Fin r → ℕ}, StrictAnti d → ∀ (k : ℕ) (i j : Fin r), (↑j : ℕ) = (↑i : ℕ) + k → d j + k ≤ d i := by

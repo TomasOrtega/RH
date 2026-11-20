@@ -32,7 +32,7 @@ variable {X X' T : Scheme.{0}} {K : Type} [Fintype K] {L' : LB X'} {L : LB X} {�
 end Bundles
 
 /- English proof (translation)
-Take `⟨z, hy, g, hι, hadd⟩` from `e`. Use `fun w₀ hw₀ => ⟨(h w₀ hw₀).1, fun θ hθ => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, H⟩` from `(h w₀ hw₀).2 θ hθ`. Take `⟨w₂, hw₂, H₂⟩` from `QkShift.qk_shift globalFns_holds R D.toPre D.tau_bimult F k hk p q z g hy hι hadd w hw`. Conclude with `⟨w₂, hw₂, fun t t' s s' a b c => H₂ s s' (H t t' s s' a b c)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem qkToAkU_of_equiv {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
     {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G]

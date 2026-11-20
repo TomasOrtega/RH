@@ -10,7 +10,7 @@ namespace UpperTheory.Esk.ActionsPreserveMeasuresLemmas
 open UpperTheory.Esk
 
 /- English proof (translation)
-Use `⟨measurable_of_countable f, ?_⟩` and prove the remaining obligations. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply (measurable_of_countable f) hs, Measure.count_apply hs, Measure.count_apply ((Set.to_countable _).measurableSet)]`. Use `congr 1`. Conclude with `Set.encard_preimage_of_injective_subset_range hf.1 (hf.2.range_eq ▸ Set.subset_univ s)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem count_pres {α : Type} [MeasurableSpace α] [MeasurableSingletonClass α] [Countable α] (f : α → α)
     (hf : Function.Bijective f) : MeasurePreserving f Measure.count Measure.count := by
@@ -22,7 +22,7 @@ theorem count_pres {α : Type} [MeasurableSpace α] [MeasurableSingletonClass α
   exact Set.encard_preimage_of_injective_subset_range hf.1 (hf.2.range_eq ▸ Set.subset_univ s)
 
 /- English proof (translation)
-Establish `: Countable (Matrix (Fin 2) (Fin 2) F)` using `inferInstanceAs (Countable (Fin 2 → Fin 2 → F))`. Establish `: Countable (GL (Fin 2) F)` using `Function.Injective.countable (f := fun g : GL (Fin 2) F => (g : Matrix (Fin 2) (Fin 2) F)) fun a b h => Units.ext h`. Conclude with `QuotientGroup.mk_surjective.countable`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem countable_PG (F : Type) [Field F] [Countable F] : Countable (PG F) := by
   have : Countable (Matrix (Fin 2) (Fin 2) F) := inferInstanceAs (Countable (Fin 2 → Fin 2 → F))
@@ -40,27 +40,23 @@ end UpperTheory.Esk.ActionsPreserveMeasuresLemmas
 
 open UpperTheory.Esk.ActionsPreserveMeasuresLemmas in
 /- English proof (translation)
-Introduce `h1 h2 h3 F I Gf _ _ _ D ax`. Establish `: SigmaFinite (volume : Measure P)` using `h1.1`. Establish `: (volume : Measure P).IsOpenPosMeasure` using `h1.2.1`. Establish `: Countable F` using `ax.cF`. Establish `hPG : Countable (PG F)` using `countable_PG F`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Countable D.Om` using `ax.cO`. Establish `: Countable D.Cj` using `hPG`. Establish `hXs : SigmaFinite (volume : Measure D.Xs)` using `show SigmaFinite (Measure.pi fun _ : I => (volume : Measure P)) from inferInstance`. Establish `presX : ∀ γ : PG F, MeasurePreserving (fun z : D.Xs => γ • z) volume volume`. Introduce `γ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective γ`. Simplify using `only [smulX]`. Conclude with `measurePreserving_pi (fun _ : I => (volume : Measure P)) (fun _ : I => (volume : Measure P)) (fun v => (h1.2.2 (D.r v g)).2)`. Establish `contX : ∀ γ : PG F, Continuous fun z : D.Xs => γ • z`. Introduce `γ`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective γ`. Simplify using `only [smulX]`. Conclude with `continuous_pi fun v => (h1.2.2 (D.r v g)).1.comp (continuous_apply v)`. Use `⟨hPG, hXs, presX, ?_, ?_, contX, inferInstanceAs (BorelSpace (I → P)), ?_⟩` and prove the remaining obligations. Introduce `γ`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(count_pres (fun ω : D.Om => γ • ω) (MulAction.bijective γ)).prod (presX γ)`. Introduce `γ`. Conclude with `(count_pres (fun ω : D.Cj × D.Om => γ • ω) (MulAction.bijective γ)).prod (presX γ)`. Introduce `δ hδ`. Establish `hk : Continuous fun p : P × P => kap p.1 p.2` using `h3.2.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk1 : ∀ z : P, Continuous fun w => kap z w` using `fun z => hk.comp (continuous_const.prodMk continuous_id)`. Use `set U : Set P := {w | δ < kap iP w} with hU`. Establish `hUo : IsOpen U` using `isOpen_lt continuous_const (hk1 iP)`. Establish `hUp : 0 < volume U` using `hUo.measure_pos volume ⟨iP, by show δ < kap iP iP`. Rewrite using `[h3.2.1 iP]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hδ⟩`. Take `⟨c0, hc0, hc0U⟩` from `ENNReal.lt_iff_exists_nnreal_btwn.1 hUp`. Establish `hS : ∀ z : P, MeasurableSet {w | δ ≤ kap z w}` using `fun z => measurableSet_le measurable_const (hk1 z).measurable`. Establish `hball : ∀ z : P, (c0 : ℝ≥0∞) ≤ volume {w | δ ≤ kap z w}`. Introduce `z`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, -, -, hg⟩` from `h3.2.2.2.2.2 z`. Establish `hf` using `(h1.2.2 g).2`. Establish `hpre : (fun w : P => g • w) ⁻¹' {w | δ ≤ kap z w} = {w | δ ≤ kap iP w}`. Use extensionality with `w`. Use `show δ ≤ kap z (g • w) ↔ δ ≤ kap iP w`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hg, h2.2.2.2.1 g iP w]`. Rewrite using `[← hf.measure_preimage (hS z).nullMeasurableSet, hpre]`. Use `hc0U.le.trans (measure_mono fun w hw => ?_)` and prove the remaining obligations. Conclude with `le_of_lt (show δ < kap iP w from hw)`. Use `⟨c0 ^ Fintype.card I, pow_pos (by exact_mod_cast hc0) _, fun z => ?_⟩` and prove the remaining obligations.
-
-Establish `hset : {w : X I | Near δ z w} = Set.univ.pi fun v => {w | δ ≤ kap (z v) w}`. Use extensionality with `w`. Simplify using `[Near, Set.mem_pi]`. Rewrite using `[hset]`. Use `⟨MeasurableSet.univ_pi fun v => hS (z v), ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[volume_pi, Measure.pi_pi, ENNReal.coe_pow, ← Finset.card_univ, ← Finset.prod_const]`. Conclude with `Finset.prod_le_prod' fun v _ => hball (z v)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Esk.actions_preserve_measures_proof : UpperTheory.Esk.B1a → UpperTheory.Esk.B1b → UpperTheory.Esk.B1c → UpperTheory.Esk.E0a := by
   intro h1 h2 h3 F I Gf _ _ _ D ax

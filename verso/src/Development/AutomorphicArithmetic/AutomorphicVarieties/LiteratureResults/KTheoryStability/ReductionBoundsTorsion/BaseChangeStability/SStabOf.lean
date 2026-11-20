@@ -9,13 +9,13 @@ open scoped TensorProduct
 namespace PositivityTheory.KB
 
 /- English proof (translation)
-Introduce `hC hB R _ _ k n n' h hn`. Take `⟨θ, hsurj, hker, hnat⟩` from `hB k`. Use `StabilizationIso.isIso_stab R (k + 1) n (by omega) n' h` as an intermediate fact. Take `⟨hinj, hsur⟩` from `StabilizationIso.baseChange_bijective (grpHMap (stab R n n' h) (k + 1))`. Establish `hcyc : ∀ z : Chn (GL (Fin n) R) (k + 1), IsCyc z → IsCyc (cmap (stab R n n' h) (k + 1) z)` using `fun z hz => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `IsCyc at hz ⊢`. Rewrite using `[hC.2.1, hz, map_zero]`. Use `⟨fun z hz hb => ?_, fun z' hz' => ?_⟩` and prove the remaining obligations. Establish `e` using `hnat _ _ (stab R n n' h) ⟨z, LinearMap.mem_ker.2 hz⟩ ⟨_, LinearMap.mem_ker.2 (hcyc z hz)⟩ rfl`. Rewrite `e` using `[(hker _ _).2 hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(hker _ ⟨z, LinearMap.mem_ker.2 hz⟩).1 (hinj ?_)` and prove the remaining obligations. Rewrite using `[← e, map_zero]`. Take `⟨y, hy⟩` from `hsur (θ _ ⟨z', LinearMap.mem_ker.2 hz'⟩)`. Take `⟨w, rfl⟩` from `hsurj _ y`. Use `⟨w.1, LinearMap.mem_ker.1 w.2, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `hnat _ _ (stab R n n' h) w ⟨_, LinearMap.mem_ker.2 (hcyc w.1 (LinearMap.mem_ker.1 w.2))⟩ rfl`. Conclude with `(hker _ (⟨_, LinearMap.mem_ker.2 (hcyc w.1 (LinearMap.mem_ker.1 w.2))⟩ - ⟨z', LinearMap.mem_ker.2 hz'⟩)).1 (by rw [map_sub, e, hy, sub_self])`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sStab_of : SChain → SBridge → SStab := by
   intro hC hB R _ _ k n n' h hn

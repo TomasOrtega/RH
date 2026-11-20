@@ -9,9 +9,9 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open Topology Filter
 
 /- English proof (translation)
-Introduce `σ _ w k p hp hP`. Take `⟨d, A, ℓ, N, c, δ, hpres, hδ⟩` from `h₁ σ w k p hp hP`. Establish `hδa : AnalyticAt ℂ δ (A w)` using `hpres.2.1`. Establish `hdiv` using `hpres.2.2.2.2.2.1`. Use `⟨d, A, ℓ, N, δ, hδa, hδ, ?_, h₂ σ w k p d A ℓ N c δ hp hpres⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g hg`. Take `⟨M, a, ha, h, hh, hev⟩` from `hdiv g hg`. Conclude with `⟨M, a, h, ha, hh, hev⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem PrimeGermCanonicalCover.proof (h₁ : PrimeGermPrimitivePresentation.Statement)
     (h₂ : PrimitivePresentationCover.Statement) : PrimeGermCanonicalCover.Statement := by

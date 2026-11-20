@@ -10,15 +10,15 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.LeviCont
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n n₁ J J₁ x y ι hspan f hf`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Establish `hcA : Continuous (cA σ)` using `IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap`. Establish `hu : Continuous fun p : (AE F E)ˣ × UA σ J₁ => ((p.1 : (AE F E)ˣ) : AE F E)` using `Units.continuous_val.comp continuous_fst`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hui : Continuous fun p : (AE F E)ˣ × UA σ J₁ => (((p.1⁻¹ : (AE F E)ˣ)) : AE F E)` using `Units.continuous_val.comp (continuous_inv.comp continuous_fst)`. Establish `hm : Continuous fun p : (AE F E)ˣ × UA σ J₁ => mat p.2` using `(Units.continuous_val.comp continuous_subtype_val).comp continuous_snd`. Establish `hcol : ∀ i, Continuous fun p => f p *ᵥ Pi.single i 1`. Introduce `i`. Take `⟨a, b, w, hw⟩` from `hspan (Pi.single i 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `heq : ∀ p, f p *ᵥ Pi.single i 1 = a • ((p.1 : AE F E) • incV F x) + incM F ι *ᵥ (mat p.2 *ᵥ w) + b • (cA σ ((p.1⁻¹ : (AE F E)ˣ) : AE F E) • incV F y)`. Introduce `p`. Take `⟨h1, h2, h3⟩` from `hf p`. Rewrite using `[hw, Matrix.mulVec_add, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, h1, h2, Matrix.mulVec_mulVec, h3, ← Matrix.mulVec_mulVec]`. Repeatedly rewrite using `[heq]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : Continuous fun p : (AE F E)ˣ × UA σ J₁ => a • ((p.1 : AE F E) • incV F x)` using `(continuous_const (y := a)).smul (hu.smul (continuous_const (y := incV F x)))`. Establish `c2a : Continuous fun p : (AE F E)ˣ × UA σ J₁ => mat p.2 *ᵥ w` using `Continuous.matrix_mulVec hm (continuous_const : Continuous fun _ : (AE F E)ˣ × UA σ J₁ => w)`. Establish `c2 : Continuous fun p : (AE F E)ˣ × UA σ J₁ => incM F ι *ᵥ (mat p.2 *ᵥ w)` using `Continuous.matrix_mulVec (continuous_const : Continuous fun _ : (AE F E)ˣ × UA σ J₁ => incM F ι) c2a`. Establish `c3 : Continuous fun p : (AE F E)ˣ × UA σ J₁ => b • (cA σ ((p.1⁻¹ : (AE F E)ˣ) : AE F E) • incV F y)` using `(continuous_const (y := b)).smul ((hcA.comp hui).smul (continuous_const (y := incV F y)))`. Conclude with `(c1.add c2).add c3`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `continuous_pi fun r => continuous_pi fun i => ?_` and prove the remaining obligations. Establish `: ∀ p, f p r i = (f p *ᵥ Pi.single i 1) r` using `fun p => by simp [Matrix.mulVec_single_one]`. Repeatedly rewrite using `[this]`. Conclude with `(continuous_apply r).comp (hcol i)`.
+A detailed English derivation is pending.
 -/
 theorem levi_continuous : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n n₁ : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (J₁ : Matrix (Fin n₁) (Fin n₁) E) (x y : Fin n → E) (ι : Matrix (Fin n) (Fin n₁) E),

@@ -7,27 +7,23 @@ namespace GlobalTheory.AlmostEt
 open Polynomial
 
 /- English proof (translation)
-Introduce `L _ v G _ _ _ hinv N i hi hN σ hσ r hr`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `haveI := Fintype.ofFinite G`. Use `set n := Fintype.card N with hn_def`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : n ≠ 0` using `Fintype.card_ne_zero`. Use `set t : ℝ≥0 := max i (r ^ ((n : ℝ)⁻¹)) with ht_def`. Establish `ht1 : t < 1` using `max_lt hi (NNReal.rpow_lt_one hr (by positivity))`. Establish `hrt : r ≤ t ^ n`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨x, -, hx1, hxt⟩` from `hσ t ht1`. Establish `hfac : ∀ τ : N, v (x - σ • ((τ : G) • x)) = v (σ • x - x)`. Introduce `τ`. Establish `h1 : v (σ • x - σ • ((τ : G) • x)) < v (x - σ • x)`. Rewrite using `[← smul_sub, hinv, Valuation.map_sub_swap, Valuation.map_sub_swap v x]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_of_le_of_lt (le_trans (hN τ τ.2 x hx1) (le_max_left _ _)) hxt`. Establish `h2 : x - σ • ((τ : G) • x) = (x - σ • x) + (σ • x - σ • ((τ : G) • x))` using `by ring`. Rewrite using `[h2, Valuation.map_add_eq_of_lt_left v h1, Valuation.map_sub_swap]`. Use `set P : L[X] := ∏ τ : N, (X - C ((τ : G) • x)) with hP_def`. Establish `hint : ∀ τ : N, (τ : G) • x ∈ v.integer` using `fun τ => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Valuation.mem_integer_iff, hinv]`. Conclude with `hx1`. Use `set Q : (v.integer)[X] := ∏ τ : N, (X - C (⟨(τ : G) • x, hint τ⟩ : v.integer)) with hQ_def`. Establish `hPQ : P = Q.map (v.integer.subtype)`. Simplify using `[hP_def, hQ_def, Polynomial.map_prod]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hcint : ∀ k, v (P.coeff k) ≤ 1`. Introduce `k`. Rewrite using `[hPQ, coeff_map]`. Conclude with `(Q.coeff k).2`. Establish `hcfix : ∀ k, P.coeff k ∈ Fix L N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k m`. Establish `hmap : P.map (MulSemiringAction.toRingHom G L (m : G)) = P`. Rewrite using `[hP_def, Polynomial.map_prod]`. Simplify using `only [Polynomial.map_sub, map_X, map_C, MulSemiringAction.toRingHom_apply, smul_smul]`. Conclude with `Fintype.prod_equiv (Equiv.mulLeft m) _ _ (fun τ => by simp)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun p => p.coeff k) hmap` as an intermediate fact. Establish `h' : (m : G) • P.coeff k = P.coeff k` using `by simpa [coeff_map] using this`. Conclude with `h'`. Establish `hPx : P.eval x = 0`. Rewrite using `[hP_def, eval_prod]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ 1) (by simp)`. Establish `hPσx : (P.map (MulSemiringAction.toRingHom G L σ)).eval x = ∏ τ : N, (x - σ • ((τ : G) • x))`. Simplify using `[hP_def, Polynomial.map_prod, eval_prod]`. Establish `hdiff : v ((P.map (MulSemiringAction.toRingHom G L σ) - P).eval x) ≤ r`. Rewrite using `[eval_eq_sum, Polynomial.sum_def]`.
-
-Apply `Valuation.map_sum_le` to reduce the goal to its premises. Introduce `k _`. Rewrite using `[map_mul, map_pow, coeff_sub, coeff_map, MulSemiringAction.toRingHom_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hdiff` using `[eval_sub, hPx, sub_zero, hPσx, map_prod]`.
-
-Simplify using `only [hfac, Finset.prod_const, Finset.card_univ] at hdiff`. Use `pow_lt_pow_left₀ hxt zero_le hn` as an intermediate fact. Conclude with `absurd (lt_of_le_of_lt (hdiff.trans hrt) this) (lt_irrefl _)`.
+A detailed English derivation is pending.
 -/
 theorem moves_fix_of_moves : ∀ (L : Type) [Field L] (v : Valuation L ℝ≥0) (G : Type) [Group G]
     [MulSemiringAction G L] [Finite G], (∀ (g : G) (x : L), v (g • x) = v x) →

@@ -32,7 +32,7 @@ theorem sop_apply (A : H₁ →L[ℂ] H₁) (B : H₂ →L[ℂ] H₂) (x : WithL
     sop A B x = toLp 2 (A (ofLp x).1, B (ofLp x).2) := rfl
 
 /- English proof (translation)
-Rewrite using `[WithLp.prod_norm_eq_of_L2, WithLp.prod_norm_eq_of_L2]`. Use `show √(‖A (ofLp x).1‖ ^ 2 + ‖B (ofLp x).2‖ ^ 2) = √(‖(ofLp x).1‖ ^ 2 + ‖(ofLp x).2‖ ^ 2)`. Rewrite using `[hA, hB]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sop {A : H₁ →L[ℂ] H₁} {B : H₂ →L[ℂ] H₂} (hA : ∀ v, ‖A v‖ = ‖v‖)
     (hB : ∀ v, ‖B v‖ = ‖v‖) (x : WithLp 2 (H₁ × H₂)) : ‖sop A B x‖ = ‖x‖ := by
@@ -41,20 +41,20 @@ theorem norm_sop {A : H₁ →L[ℂ] H₁} {B : H₂ →L[ℂ] H₂} (hA : ∀ v
   rw [hA, hB]
 
 /- English proof (translation)
-Use extensionality with `x`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem sop_one : sop (1 : H₁ →L[ℂ] H₁) (1 : H₂ →L[ℂ] H₂) = 1 := by
   ext x; rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem sop_comp (A A' : H₁ →L[ℂ] H₁) (B B' : H₂ →L[ℂ] H₂) :
     sop (A.comp A') (B.comp B') = (sop A B).comp (sop A' B') := by
   ext x; rfl
 
 /- English proof (translation)
-Simplify using `only [sop_apply, WithLp.ofLp_toLp]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sop_neg_comm (A : H₁ →L[ℂ] H₁) (B : H₂ →L[ℂ] H₂) (x : WithLp 2 (H₁ × H₂)) :
     sop 1 (-1) (sop A B x) = sop A B (sop 1 (-1) x) := by
@@ -97,19 +97,19 @@ theorem lift_ofP (F₁ : Module.End ℂ D₁) (F₂ : Module.End ℂ D₂) (p : 
     lift F₁ F₂ (ofP p) = ofP (F₁ p.1, F₂ p.2) := rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem lift_mul (F₁ G₁ : Module.End ℂ D₁) (F₂ G₂ : Module.End ℂ D₂) :
     lift (F₁ * G₁) (F₂ * G₂) = lift F₁ F₂ * lift G₁ G₂ := LinearMap.ext fun _ => rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem lift_sub (F₁ G₁ : Module.End ℂ D₁) (F₂ G₂ : Module.End ℂ D₂) :
     lift (F₁ - G₁) (F₂ - G₂) = lift F₁ F₂ - lift G₁ G₂ := LinearMap.ext fun _ => rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem lift_zero : lift (0 : Module.End ℂ D₁) (0 : Module.End ℂ D₂) = 0 :=
   LinearMap.ext fun _ => rfl
@@ -129,9 +129,9 @@ def sE (E₁ : Fin n → Fin n → Module.End ℂ D₁) (E₂ : Fin n → Fin n 
   fun a b => lift (E₁ a b) (E₂ a b)
 
 /- English proof (translation)
-Establish `h : ∀ a b, X a b • sE E₁ E₂ a b = liftL (X a b • (E₁ a b, E₂ a b))`. Introduce `a b`. Rewrite using `[map_smul]`. Both sides reduce to the same expression. Unfold `actM`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Simplify using `only [h, ← map_sum]`. Rewrite using `[liftL_apply]`. Use `congr 1`. Simplify using `[Prod.fst_sum]`. Simplify using `[Prod.snd_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem actM_sE (E₁ : Fin n → Fin n → Module.End ℂ D₁) (E₂ : Fin n → Fin n → Module.End ℂ D₂)
     (X : Matrix (Fin n) (Fin n) ℂ) : actM (sE E₁ E₂) X = lift (actM E₁ X) (actM E₂ X) := by
@@ -145,9 +145,9 @@ theorem actM_sE (E₁ : Fin n → Fin n → Module.End ℂ D₁) (E₂ : Fin n �
   · simp [Prod.snd_sum]
 
 /- English proof (translation)
-Establish `h : ∀ a b, sE E₁ E₂ a b * sE E₁ E₂ b a = liftL (E₁ a b * E₁ b a, E₂ a b * E₂ b a)`. Introduce `a b`. Rewrite using `[liftL_apply]`. Conclude with `(lift_mul _ _ _ _).symm`. Unfold `casimir`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, ← map_sum]`. Rewrite using `[liftL_apply]`. Use `congr 1`. Simplify using `[Prod.fst_sum]`. Simplify using `[Prod.snd_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem casimir_sE (E₁ : Fin n → Fin n → Module.End ℂ D₁) (E₂ : Fin n → Fin n → Module.End ℂ D₂) :
     casimir (sE E₁ E₂) = lift (casimir E₁) (casimir E₂) := by
@@ -170,11 +170,9 @@ def sσ (σ₁ : Matrix (Fin n) (Fin n) ℂ → (H₁ →L[ℂ] H₁)) (σ₂ : 
   fun g => sop (σ₁ g) (σ₂ g)
 
 /- English proof (translation)
-Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show sop (σ₁ 1) (σ₂ 1) = 1`. Rewrite using `[h₁.1.1, h₂.1.1]`. Conclude with `sop_one`. Introduce `a ha b hb show sop (σ₁ (a * b)) (σ₂ (a * b)) = (sop (σ₁ a) (σ₂ a)).comp (sop (σ₁ b) (σ₂ b))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h₁.1.2 a ha b hb, h₂.1.2 a ha b hb, sop_comp]`. Introduce `g hg v`. Conclude with `norm_sop (h₁.2.1 g hg) (h₂.2.1 g hg) v`. Introduce `v`. Establish `hc` using `((h₁.2.2 (ofLp v).1).prodMk (h₂.2.2 (ofLp v).2))`.
-
-Conclude with `(WithLp.prod_continuous_toLp 2 H₁ H₂).comp_continuousOn hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isURepOn_sσ {G : Set (Matrix (Fin n) (Fin n) ℂ)} (h₁ : IsURepOn G σ₁) (h₂ : IsURepOn G σ₂) :
     IsURepOn G (sσ σ₁ σ₂) := by
@@ -191,13 +189,11 @@ theorem isURepOn_sσ {G : Set (Matrix (Fin n) (Fin n) ℂ)} (h₁ : IsURepOn G �
     exact (WithLp.prod_continuous_toLp 2 H₁ H₂).comp_continuousOn hc
 
 /- English proof (translation)
-Introduce `a b c d`. Establish `e1` using `hD₁.glRep a b c d`. Establish `e2` using `hD₂.glRep a b c d`. Use `show lift (E₁ a b) (E₂ a b) * lift (E₁ c d) (E₂ c d) - lift (E₁ c d) (E₂ c d) * lift (E₁ a b) (E₂ a b) = (if b = c then lift (E₁ a d) (E₂ a d) else 0) - (if d = a then lift (E₁ c b) (E₂ c b) else 0)`. Rewrite using `[← lift_mul, ← lift_mul, ← lift_sub, e1, e2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> rw [lift_sub] <;> simp only [lift_zero]`. Use `kStable := by`. Introduce `k hk v hv`. Conclude with `⟨hD₁.kStable k hk _ hv.1, hD₂.kStable k hk _ hv.2⟩`. Use `deriv := by`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `X hX v`. Establish `h1` using `hD₁.deriv X hX (toP v).1`. Establish `h2` using `hD₂.deriv X hX (toP v).2`. Establish `h3` using `(WithLp.prodContinuousLinearEquiv 2 ℝ H₁ H₂).symm.toContinuousLinearMap.hasFDerivAt.comp_hasDerivAt (0 : ℝ) (h1.prodMk h2)`. Rewrite using `[actM_sE]`.
-
-Conclude with `h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDerivedOn_sσ {D₁ : Submodule ℂ H₁} {D₂ : Submodule ℂ H₂}
     {E₁ : Fin n → Fin n → Module.End ℂ D₁} {E₂ : Fin n → Fin n → Module.End ℂ D₂}

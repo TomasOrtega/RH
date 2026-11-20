@@ -7,13 +7,11 @@ open Filter Topology Set Metric GlobalTheory.Cont
 namespace PositivityTheory.Rg.Rsw.Kplug
 
 /- English proof (translation)
-Introduce `k g p hp hk`. Establish `hG` using `hp.has_fpower_series_iterate_dslope_fslope k`. Establish `hval : ∀ j, (Function.swap dslope s₀)^[j] g s₀ = p.coeff j` using `fun j => by`. Rewrite using `[← (hp.has_fpower_series_iterate_dslope_fslope j).coeff_zero 1]`. Use `FormalMultilinearSeries.coeff_iterate_fslope (p := p) j 0` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[zero_add]`. Conclude with `this`. Establish `hz : ∀ j < k, (Function.swap dslope s₀)^[j] g s₀ = 0` using `fun j hj => by`. Rewrite using `[hval j, hk j hj]`. Establish `heq` using `pow_sub_smul_iterate_dslope_of_zero k hz`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Tendsto ((Function.swap dslope s₀)^[k] g) (𝓝[≠] s₀) (𝓝 (p.coeff k))`. Rewrite using `[← hval k]`. Conclude with `hG.continuousAt.tendsto.mono_left nhdsWithin_le_nhds`. Use `hc.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with s hs`.
-
-Establish `hne : (s - s₀) ^ k ≠ 0` using `pow_ne_zero _ (sub_ne_zero.mpr hs)`. Rewrite using `[← heq s, smul_eq_mul, mul_div_cancel_left₀ _ hne]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem k2b2_tendsto {s₀ : ℂ} : ∀ (k : ℕ) {g : ℂ → ℂ} {p : FormalMultilinearSeries ℂ ℂ ℂ}, HasFPowerSeriesAt g p s₀ →
     (∀ i < k, p.coeff i = 0) → Tendsto (fun s => g s / (s - s₀) ^ k) (𝓝[≠] s₀) (𝓝 (p.coeff k)) := by
@@ -36,7 +34,7 @@ theorem k2b2_tendsto {s₀ : ℂ} : ∀ (k : ℕ) {g : ℂ → ℂ} {p : FormalM
   rw [← heq s, smul_eq_mul, mul_div_cancel_left₀ _ hne]
 
 /- English proof (translation)
-The claim follows from `cauchyPowerSeries_apply f c R n 1`.
+A detailed English derivation is pending.
 -/
 theorem k2b2_cps (f : ℂ → ℂ) (c : ℂ) (R : ℝ) (n : ℕ) :
     (cauchyPowerSeries f c R).coeff n =
@@ -44,45 +42,41 @@ theorem k2b2_cps (f : ℂ → ℂ) (c : ℂ) (R : ℝ) (n : ℕ) :
   cauchyPowerSeries_apply f c R n 1
 
 /- English proof (translation)
-Introduce `h e U d s₀ ε σ hU hRD he hd hrad hED hres`. Take `⟨hε, hball, hdne⟩` from `hrad`. Use `set c : ℂ := (2 * ↑Real.pi * Complex.I)⁻¹ * ∮ (z : ℂ) in C(s₀, ε), (z - s₀) ^ (1 - 1) * (e z / Polynomial.eval z d) with hc`. Use `set H : ℂ → ℂ := fun z => e z / Polynomial.eval z d with hH`. Establish `hs₀U : s₀ ∈ U` using `hball (mem_closedBall_self hε.le)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdan : ∀ z, AnalyticAt ℂ (fun z => Polynomial.eval z d) z` using `fun z => Differentiable.analyticAt (Polynomial.differentiable d) z`. Establish `hean : AnalyticOnNhd ℂ e U` using `he.analyticOnNhd hU`. Establish `hHmer : ∀ z ∈ U, MeromorphicAt H z` using `fun z hz => (hean z hz).meromorphicAt.div (hdan z).meromorphicAt`. Establish `hext : IsExtAt h s₀ H`. Use `⟨U, hs₀U, hRD, hHmer, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨M, hM⟩` from `((Polynomial.finite_setOf_isRoot hd).image Complex.re).bddAbove`. Use `⟨max σ M, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hz' : max σ M < z.re` using `hz`. Establish `hdz : Polynomial.eval z d ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: z.re ≤ M` using `hM ⟨z, h0, rfl⟩`. Conclude with `absurd hz' (not_lt.mpr (le_max_of_le_right this))`. Simplify using `only [hH, hED z (lt_of_le_of_lt (le_max_left _ _) hz')]`. Clear the denominators using the available nonvanishing facts. Establish `hT : Tendsto (fun s => (s - s₀) * H s) (𝓝[≠] s₀) (𝓝 c)`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Take `⟨q, hdq, hndvd⟩` from `d.exists_eq_pow_rootMultiplicity_mul_and_not_dvd hd s₀`. Generalize the expression as in `hm : Polynomial.rootMultiplicity s₀ d = m at hdq`. Establish `hq0 : q.eval s₀ ≠ 0` using `fun h0 => hndvd (Polynomial.dvd_iff_isRoot.mpr h0)`. Establish `hdeval : ∀ z, Polynomial.eval z d = (z - s₀) ^ m * q.eval z` using `fun z => by`. Use `congrArg (Polynomial.eval z) hdq` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using this`. Establish `hqne : ∀ z ∈ closedBall s₀ ε, q.eval z ≠ 0`. Introduce `z hz h0`. Distinguish the cases in `hzs : z = s₀`. Conclude with `hq0 (hzs ▸ h0)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hdne z hz hzs (by rw [hdeval, h0, mul_zero])`. Use `set F : ℂ → ℂ := fun z => e z / q.eval z with hF`. Establish `hFd : DifferentiableOn ℂ F (closedBall s₀ ε)` using `(he.mono hball).div q.differentiable.differentiableOn hqne`. Use `set R : NNReal := ε.toNNReal with hRdef`. Establish `hR : (R : ℝ) = ε` using `Real.coe_toNNReal _ hε.le`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hRpos : 0 < R` using `Real.toNNReal_pos.mpr hε`. Establish `hFps` using `(show DifferentiableOn ℂ F (closedBall s₀ (R : ℝ)) by rw [hR]; exact hFd).hasFPowerSeriesOnBall hRpos`. Establish `hcf : ∀ j, j + 1 ≤ m → (cauchyPowerSeries F s₀ (R : ℝ)).coeff j = (2 * ↑Real.pi * Complex.I)⁻¹ * ∮ (z : ℂ) in C(s₀, ε), (z - s₀) ^ (m - 1 - j) * (e z / Polynomial.eval z d)`. Introduce `j hj`. Rewrite using `[k2b2_cps, hR, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Apply `circleIntegral.integral_congr hε.le` to reduce the goal to its premises. Introduce `z hz`. Establish `hzs : z - s₀ ≠ 0` using `sub_ne_zero.mpr (ne_of_mem_sphere hz hε.ne')`. Take `⟨r, hr⟩ : ∃ r, m = r + j + 1` from `⟨m - 1 - j, by omega⟩`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `hr' : m - 1 - j = r` using `by omega`. Simplify using `only [smul_eq_mul, hdeval, hF, hr', hr]`. Distinguish the cases in `hqz : q.eval z = 0`. Simplify using `[hqz]`. Generalize the expression as in `z - s₀ = w at hzs ⊢`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Generalize the expression as in `e z = a`. Generalize the expression as in `Polynomial.eval z q = b at hqz ⊢`. Rewrite using `[show r + j + 1 - 1 - j = r by omega, pow_succ, pow_add, one_div, inv_pow]`. Clear the denominators using the available nonvanishing facts. Establish `hFan` using `hFps.hasFPowerSeriesAt`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.eq_zero_or_pos m with hm0 | hmpos` into its components or cases. Establish `hc0 : c = 0`. Establish `hI : ∮ (z : ℂ) in C(s₀, ε), (z - s₀) ^ (1 - 1) * (e z / Polynomial.eval z d) = ∮ (z : ℂ) in C(s₀, ε), F z`. Apply `circleIntegral.integral_congr hε.le` to reduce the goal to its premises. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hdeval, hm0, hF]`. Rewrite using `[hc, hI, Complex.circleIntegral_eq_zero_of_differentiable_on_off_countable hε.le Set.countable_empty hFd.continuousOn, mul_zero]`. Introduce `z hz`. Conclude with `hFd.differentiableAt (Filter.mem_of_superset (isOpen_ball.mem_nhds hz.1) ball_subset_closedBall)`. Rewrite using `[hc0]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hlim : Tendsto (fun s => (s - s₀) * F s) (𝓝 s₀) (𝓝 ((s₀ - s₀) * F s₀))` using `((continuous_id.sub continuous_const).continuousAt.mul hFan.continuousAt).tendsto`. Rewrite `hlim` using `[sub_self, zero_mul]`. Use `(hlim.mono_left nhdsWithin_le_nhds).congr' (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `[hH, hF, hdeval, hm0]`. Take `⟨n, rfl⟩ : ∃ n, m = n + 1` from `⟨m - 1, by omega⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcoef : ∀ i < n, (cauchyPowerSeries F s₀ (R : ℝ)).coeff i = 0`. Introduce `i hi`. Rewrite using `[hcf i (by omega)]`. Use `hres (n + 1 - i) (by omega)` as an intermediate fact. Rewrite `this` using `[show n + 1 - i - 1 = n + 1 - 1 - i by omega]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hlim` using `k2b2_tendsto n hFan hcoef`. Rewrite `hlim` using `[hcf n (by omega), show n + 1 - 1 - n = 1 - 1 by omega]`. Use `hlim.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with s hs`. Establish `hw : s - s₀ ≠ 0` using `sub_ne_zero.mpr hs`.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hH, hF, hdeval]`. Distinguish the cases in `hqs : Polynomial.eval s q = 0`. Simplify using `[hqs]`. Rewrite using `[pow_succ]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Use `⟨⟨H, hext, 0, by simp, ?_⟩, ⟨H, hext, ?_⟩⟩` and prove the remaining obligations. Use `hT.congr' ?_ filter_upwards [self_mem_nhdsWithin] with s hs` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hmer : MeromorphicAt ((fun s => s - s₀) * H) s₀` using `(by fun_prop : MeromorphicAt (fun s => s - s₀) s₀).mul (hHmer s₀ hs₀U)`. Establish `h0 : 0 ≤ meromorphicOrderAt ((fun s => s - s₀) * H) s₀` using `(tendsto_nhds_iff_meromorphicOrderAt_nonneg hmer).mp ⟨c, hT⟩`.
-
-Rewrite `h0` using `[meromorphicOrderAt_mul (by fun_prop) (hHmer s₀ hs₀U), meromorphicOrderAt_id_sub_const]`. Consider the cases of `ho : meromorphicOrderAt H s₀ with`. Consider the case `top => exact le_top`. Consider the case `coe n`. Rewrite `h0` using `[ho]`.
-
-Establish `: (0 : WithTop ℤ) ≤ ((1 + n : ℤ) : WithTop ℤ)` using `by exact_mod_cast h0`. Establish `h1 : (0 : ℤ) ≤ 1 + n` using `by exact_mod_cast this`. Conclude with `(by omega : (-(1 : ℕ) : ℤ) ≤ n)` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuation_pole_order : PositivityTheory.Rg.Rsw.Kplug.K2 := by
   intro h e U d s₀ ε σ hU hRD he hd hrad hED hres

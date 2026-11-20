@@ -14,13 +14,13 @@ variable {k : Type} [Field k] [Finite k]
 def cols {M a : ℕ} (P : Matrix (Fin M) (Fin a) k) : Fin a → Fin M → k := fun j i ↦ P i j
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h v hv`. Use function extensionality and compare the values at `j`. Use `h v ?_ j` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Use `congrFun hv i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply] at this`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, cols, Pi.zero_apply]`. Rewrite using `[← this]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl (fun j _ => mul_comm _ _)`. Introduce `h g hg i`. Establish `hPg : P *ᵥ g = 0`. Use function extensionality and compare the values at `r`. Use `congrFun hg r` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, cols, Pi.zero_apply] at this`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl (fun j _ => mul_comm _ _)`. Conclude with `congrFun (h g hPg) i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linInd_cols_iff {M a : ℕ} (P : Matrix (Fin M) (Fin a) k) :
     LinearIndependent k (cols P) ↔ ∀ v : Fin a → k, P *ᵥ v = 0 → v = 0 := by
@@ -46,9 +46,9 @@ theorem linInd_cols_iff {M a : ℕ} (P : Matrix (Fin M) (Fin a) k) :
     exact congrFun (h g hPg) i
 
 /- English proof (translation)
-Establish `hker : LinearMap.ker (Matrix.toLin' P) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `v hv`. Rewrite `hv` using `[Matrix.toLin'_apply]`. Conclude with `(linInd_cols_iff P).1 hP v hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' P) hker`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg LinearMap.toMatrix' hg`. Rewrite `h1` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_left_inv {M a : ℕ} (P : Matrix (Fin M) (Fin a) k)
     (hP : LinearIndependent k (cols P)) : ∃ L : Matrix (Fin a) (Fin M) k, L * P = 1 := by
@@ -63,7 +63,7 @@ theorem exists_left_inv {M a : ℕ} (P : Matrix (Fin M) (Fin a) k)
   rwa [LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id] at h1
 
 /- English proof (translation)
-Rewrite using `[linInd_cols_iff]`. Introduce `v hv`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 -/
 theorem linInd_of_left_inv {M a : ℕ} (W : Matrix (Fin a) (Fin M) k) (P : Matrix (Fin M) (Fin a) k)
     (h : W * P = 1) : LinearIndependent k (cols P) := by
@@ -74,13 +74,13 @@ theorem linInd_of_left_inv {M a : ℕ} (W : Matrix (Fin a) (Fin M) k) (P : Matri
     _ = 0 := by rw [hv, Matrix.mulVec_zero]
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `exists_left_inv P hP`. Set `f : Matrix (Fin a) (Fin M) k →ₗ[k] Matrix (Fin a) (Fin a) k` to `{ toFun := fun D => D * P map_add' := fun D E => Matrix.add_mul D E P map_smul' := fun c D => Matrix.smul_mul c D P }`. Establish `hf : ∀ D, f D = D * P` using `fun D => rfl`. Establish `hsurj : LinearMap.range f = ⊤`. Rewrite using `[LinearMap.range_eq_top]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `E`. Conclude with `⟨E * L, by rw [hf, Matrix.mul_assoc, hL, Matrix.mul_one]⟩`. Establish `hrk` using `LinearMap.finrank_range_add_finrank_ker f`. Rewrite `hrk` using `[hsurj, finrank_top]`. Simplify using `only [Module.finrank_matrix, Fintype.card_fin, Module.finrank_self, mul_one] at hrk`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hker : Module.finrank k (LinearMap.ker f) = a * M - a * a` using `by omega`. Establish `e : {W : Matrix (Fin a) (Fin M) k // W * P = 1} ≃ LinearMap.ker f` using `{ toFun := fun W => ⟨W.1 - L, by rw [LinearMap.mem_ker, hf, Matrix.sub_mul, W.2, hL, sub_self]⟩ invFun := fun D => ⟨D.1 + L, by`. Establish `hD` using `D.2`. Rewrite `hD` using `[LinearMap.mem_ker, hf]`. Rewrite using `[Matrix.add_mul, hD, hL, zero_add]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `left_inv := fun W => by ext1; simp`. Use `right_inv := fun D => by ext1; simp }`. Rewrite using `[Nat.card_congr e, Module.natCard_eq_pow_finrank (K := k), hker, Nat.mul_sub_left_distrib]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_left_inv {M a : ℕ} (P : Matrix (Fin M) (Fin a) k)
     (hP : LinearIndependent k (cols P)) :
@@ -111,9 +111,9 @@ theorem card_left_inv {M a : ℕ} (P : Matrix (Fin M) (Fin a) k)
   rw [Nat.card_congr e, Module.natCard_eq_pow_finrank (K := k), hker, Nat.mul_sub_left_distrib]
 
 /- English proof (translation)
-Establish `: Fintype k` using `Fintype.ofFinite k`. Set `e : {WP : Matrix (Fin a) (Fin M) k × Matrix (Fin M) (Fin a) k // WP.1 * WP.2 = 1} ≃ Σ P : {P : Matrix (Fin M) (Fin a) k // LinearIndependent k (cols P)}, {W : Matrix (Fin a) (Fin M) k // W * P.1 = 1}` to `{ toFun := fun x ↦ ⟨⟨x.1.2, linInd_of_left_inv x.1.1 x.1.2 x.2⟩, ⟨x.1.1, x.2⟩⟩ invFun := fun y ↦ ⟨(y.2.1, y.1.1), y.2.2⟩ left_inv := fun x ↦ rfl right_inv := fun y ↦ rfl }`. Rewrite using `[Nat.card_congr e, Nat.card_sigma]`. Repeatedly rewrite using `[fun P : {P : Matrix (Fin M) (Fin a) k // LinearIndependent k (cols P)} ↦ card_left_inv P.1 P.2]`. Rewrite using `[Finset.sum_const, Finset.card_univ, smul_eq_mul]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Set `e2 : {P : Matrix (Fin M) (Fin a) k // LinearIndependent k (cols P)} ≃ {s : Fin a → Fin M → k // LinearIndependent k s}` to `{ toFun := fun P ↦ ⟨cols P.1, P.2⟩ invFun := fun s ↦ ⟨fun i j ↦ s.1 j i, s.2⟩ left_inv := fun P ↦ rfl right_inv := fun s ↦ rfl }`. Rewrite using `[← Nat.card_eq_fintype_card, Nat.card_congr e2, card_linearIndependent (by rw [Module.finrank_fin_fun]; exact ha), Module.finrank_fin_fun, Nat.card_eq_fintype_card]`.
+Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_pairs {M a : ℕ} (ha : a ≤ M) :
     Nat.card {WP : Matrix (Fin a) (Fin M) k × Matrix (Fin M) (Fin a) k // WP.1 * WP.2 = 1} =
@@ -156,7 +156,7 @@ def U1 (X : Fin a → Fin M → k × k) : Matrix (Fin a) (Fin M) k := fun r i �
 def V1 (X : Fin a → Fin M → k × k) : Matrix (Fin a) (Fin M) k := fun r i ↦ (X r i).2
 
 /- English proof (translation)
-Unfold `ffH`. Simplify using `[Prod.fst_sum, swapR]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem ffH_fst (J : Matrix (Fin M) (Fin M) (k × k)) (x y : Fin M → k × k) :
     (ffH (swapR k) J x y).1 = ∑ i, ∑ j, (x i).2 * (J i j).1 * (y j).1 := by
@@ -164,7 +164,7 @@ theorem ffH_fst (J : Matrix (Fin M) (Fin M) (k × k)) (x y : Fin M → k × k) :
   simp [Prod.fst_sum, swapR]
 
 /- English proof (translation)
-Unfold `ffH`. Simplify using `[Prod.snd_sum, swapR]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem ffH_snd (J : Matrix (Fin M) (Fin M) (k × k)) (x y : Fin M → k × k) :
     (ffH (swapR k) J x y).2 = ∑ i, ∑ j, (x i).1 * (J i j).2 * (y j).2 := by
@@ -172,7 +172,7 @@ theorem ffH_snd (J : Matrix (Fin M) (Fin M) (k × k)) (x y : Fin M → k × k) :
   simp [Prod.snd_sum, swapR]
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp [ffGram]`. Consider the case `(unfold ffGram; simp)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem ffGram_apply (J : Matrix (Fin M) (Fin M) (k × k))
     (X : Fin a → Fin M → k × k) (r s : Fin a) :
@@ -183,7 +183,7 @@ private theorem ffGram_apply (J : Matrix (Fin M) (Fin M) (k × k))
   | (unfold ffGram; simp)
 
 /- English proof (translation)
-Rewrite using `[ffGram_apply, ffH_fst]`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, V1, U1, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem fst_ffGram_eq_V1_mul_map_fst (J : Matrix (Fin M) (Fin M) (k × k)) (X : Fin a → Fin M → k × k)
     (r s : Fin a) :
@@ -193,9 +193,9 @@ private theorem fst_ffGram_eq_V1_mul_map_fst (J : Matrix (Fin M) (Fin M) (k × k
   exact Finset.sum_comm
 
 /- English proof (translation)
-Rewrite using `[ffGram_apply, ffGram_apply, ffH_fst, ffH_snd]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun x _ => Finset.sum_congr rfl (fun y _ => ?_))` and prove the remaining obligations. Establish `h` using `congrArg Prod.fst (hJ x y)`. Rewrite `h` using `[Prod.fst_swap]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem snd_ffGram_eq_fst_ffGram_swap (J : Matrix (Fin M) (Fin M) (k × k)) (hJ : ∀ i j, (J j i).swap = J i j)
     (X : Fin a → Fin M → k × k) (r s : Fin a) :
@@ -209,11 +209,11 @@ private theorem snd_ffGram_eq_fst_ffGram_swap (J : Matrix (Fin M) (Fin M) (k × 
   ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Use `Matrix.ext fun r s => ?_` and prove the remaining obligations. Rewrite using `[fst_ffGram_eq_V1_mul_map_fst]`. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `h`. Establish `hf : ∀ r s, (ffGram (swapR k) J X r s).1 = (T r s).1` using `fun r s => by`. Rewrite using `[← fst_ffGram_eq_V1_mul_map_fst]`. Conclude with `congrFun (congrFun h r) s`. Use `Matrix.ext fun r s => Prod.ext (hf r s) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[snd_ffGram_eq_fst_ffGram_swap J hJ X, hf s r]`. Establish `h2` using `congrArg Prod.snd (hT r s)`. Rewrite `h2` using `[Prod.snd_swap]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_iff (J : Matrix (Fin M) (Fin M) (k × k)) (hJ : ∀ i j, (J j i).swap = J i j)
     (T : Matrix (Fin a) (Fin a) (k × k)) (hT : ∀ i j, (T j i).swap = T i j)
@@ -236,19 +236,17 @@ theorem gram_iff (J : Matrix (Fin M) (Fin M) (k × k)) (hJ : ∀ i j, (J j i).sw
     exact h2
 
 /- English proof (translation)
-Establish `hJ1 : IsUnit (J.map Prod.fst).det`. Establish `h1` using `(Prod.isUnit_iff.mp hJd).1`. Rewrite `h1` using `[show J.det.1 = (J.map Prod.fst).det from RingHom.map_det (RingHom.fst k k) J]`. Then use the resulting hypothesis. Establish `hT1 : IsUnit (T.map Prod.fst).det`. Establish `h1` using `(Prod.isUnit_iff.mp hTd).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[show T.det.1 = (T.map Prod.fst).det from RingHom.map_det (RingHom.fst k k) T]`. Then use the resulting hypothesis. Establish `e : {X : Fin a → Fin M → k × k // ffGram (swapR k) J X = T} ≃ {WP : Matrix (Fin a) (Fin M) k × Matrix (Fin M) (Fin a) k // WP.1 * WP.2 = 1}` using `{ toFun := fun X => ⟨((T.map Prod.fst)⁻¹ * V1 X.1, J.map Prod.fst * (U1 X.1)ᵀ), by`. Establish `h` using `(gram_iff J hJ T hT X.1).1 X.2`. Use `show (T.map Prod.fst)⁻¹ * V1 X.1 * (J.map Prod.fst * (U1 X.1)ᵀ) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (V1 X.1), h, Matrix.nonsing_inv_mul _ hT1]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `invFun := fun WP => ⟨fun r i => ((((J.map Prod.fst)⁻¹ * WP.1.2)ᵀ) r i, (T.map Prod.fst * WP.1.1) r i), by`. Rewrite using `[gram_iff J hJ T hT]`. Establish `hU : U1 (fun r i => ((((J.map Prod.fst)⁻¹ * WP.1.2)ᵀ) r i, (T.map Prod.fst * WP.1.1) r i)) = ((J.map Prod.fst)⁻¹ * WP.1.2)ᵀ` using `rfl`. Establish `hV : V1 (fun r i => ((((J.map Prod.fst)⁻¹ * WP.1.2)ᵀ) r i, (T.map Prod.fst * WP.1.1) r i)) = T.map Prod.fst * WP.1.1` using `rfl`. Rewrite using `[hU, hV, Matrix.transpose_transpose, Matrix.mul_assoc, ← Matrix.mul_assoc (J.map Prod.fst), Matrix.mul_nonsing_inv _ hJ1, Matrix.one_mul, Matrix.mul_assoc, WP.2, Matrix.mul_one]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `left_inv := fun X => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `r i`. Apply `Prod.ext` to reduce the goal to its premises. Use `show (((J.map Prod.fst)⁻¹ * (J.map Prod.fst * (U1 X.1)ᵀ))ᵀ) r i = (X.1 r i).1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hJ1, Matrix.one_mul, Matrix.transpose_transpose]`. Both sides reduce to the same expression. Use `show (T.map Prod.fst * ((T.map Prod.fst)⁻¹ * V1 X.1)) r i = (X.1 r i).2`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hT1, Matrix.one_mul]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `right_inv := fun WP => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Use `show (T.map Prod.fst)⁻¹ * (T.map Prod.fst * WP.1.1) = WP.1.1`. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hT1, Matrix.one_mul]`.
-
-Use `show J.map Prod.fst * (((J.map Prod.fst)⁻¹ * WP.1.2)ᵀ)ᵀ = WP.1.2`. Rewrite using `[Matrix.transpose_transpose, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hJ1, Matrix.one_mul] }`. Rewrite using `[Nat.card_congr e, card_pairs ha]`.
+A detailed English derivation is pending.
 -/
 theorem fFSplit_nat (M a : ℕ) (ha : a ≤ M)
     (J : Matrix (Fin M) (Fin M) (k × k)) (hJ : ∀ i j, (J j i).swap = J i j) (hJd : IsUnit J.det)
@@ -301,9 +299,9 @@ theorem fFSplit_nat (M a : ℕ) (ha : a ≤ M)
 end FiniteFieldSplitting
 
 /- English proof (translation)
-Unfold `FFSplit`. Introduce `k _ _ M a ha J hJ hJd T hT hTd`. Establish `h` using `FiniteFieldSplitting.fFSplit_nat M a ha J hJ hJd T hT hTd`. Simplify using `only [FiniteFieldSplitting.swapR] at h`. Rewrite using `[h, Nat.cast_mul, Nat.cast_prod, Nat.cast_pow]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Establish `h1 : 1 ≤ Nat.card k` using `Nat.card_pos`. Establish `hi : (i : ℕ) ≤ M` using `by have := i.isLt; omega`. Rewrite using `[Nat.cast_sub (Nat.pow_le_pow_right h1 hi), Nat.cast_pow, Nat.cast_pow]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fFSplit_holds : FFSplit := by
   unfold FFSplit

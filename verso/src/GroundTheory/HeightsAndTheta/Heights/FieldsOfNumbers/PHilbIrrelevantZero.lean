@@ -19,11 +19,11 @@ variable {F : Type u} [Field F] {K : Type} [Fintype K] [DecidableEq K] {ι : K �
 omit [Fintype K] in
 
 /- English proof (translation)
-Rewrite using `[f.as_sum]`. Use `Ideal.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Establish `hw` using `hf (mem_support_iff.mp hd)`. Rewrite `hw` using `[GroundTheory.Heights₂.Heights.Bridge.weight_blockWeight]`. Establish `hsum : ∑ i, d ⟨k, i⟩ ≠ 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrFun hw k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨i, -, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hsum`. Establish `hle : Finsupp.single (⟨k, i⟩ : Σ k, ι k) 1 ≤ d`. Rewrite using `[Finsupp.single_le_iff]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[← tsub_add_cancel_of_le hle, monomial_add_single, pow_one]`. Conclude with `Ideal.mul_mem_left _ _ (hk i)`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_isMultiHomog_of_block_le {I : Ideal (MRing ι F)} {k : K}
     (hk : ∀ i : ι k, (X ⟨k, i⟩ : MRing ι F) ∈ I) {b : K → ℕ} (hb : 1 ≤ b k)
@@ -43,11 +43,9 @@ theorem mem_of_isMultiHomog_of_block_le {I : Ideal (MRing ι F)} {k : K}
   exact Ideal.mul_mem_left _ _ (hk i)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, ∀ i : ι k, (X ⟨k, i⟩ : MRing ι F) ∈ I := by`. Assume the negation of the conclusion as `h`. Conclude with `hI fun k => by`. Assume the negation of the conclusion as `h'`. Conclude with `h ⟨k, fun i => by`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h''`. Conclude with `h' ⟨i, h''⟩⟩`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Rewrite using `[Submodule.mem_bot]`.
-
-Establish `: f ∈ I` using `mem_of_isMultiHomog_of_block_le hk (hm k) ((mem_weightedHomogeneousSubmodule _ _ _ _).mp hf)`. Simplify using `using (Ideal.Quotient.eq_zero_iff_mem).mpr this`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gradedPiece_eq_bot_of_not_isRelevant {I : Ideal (MRing ι F)} (hI : ¬ IsRelevant I)
     {m : K → ℕ} (hm : ∀ k, 1 ≤ m k) : gradedPiece I m = ⊥ := by
@@ -68,9 +66,9 @@ theorem gradedPiece_eq_bot_of_not_isRelevant {I : Ideal (MRing ι F)} (hI : ¬ I
 end
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ I hI`. Use `filter_upwards [Filter.eventually_ge_atTop (1 : K → ℤ)] with m hm`. Establish `hpos : ∀ k, 0 ≤ m k` using `fun k => le_trans zero_le_one (hm k)`. Unfold `hilbFn`. Rewrite using `[if_pos hpos, gradedPiece_eq_bot_of_not_isRelevant hI (m := fun k => (m k).toNat)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `k`. Use `hm k` as an intermediate fact. Simplify using `only [Pi.one_apply] at this`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem HilbIrrelevantZero.proof : HilbIrrelevantZero.Statement.{u} := by
   intro F _ K _ _ ι _ I hI

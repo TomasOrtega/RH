@@ -8,7 +8,7 @@ section Powers
 variable {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
 /- English proof (translation)
-Proceed by induction on `m generalizing a b with`. Consider the case `zero => simp [PositivityTheory.RgBcC.RealD.epow, Matrix.one_apply]`. Consider the case `succ m ih`. Simplify using `only [PositivityTheory.RgBcC.RealD.epow, pow_succ', Matrix.mul_apply, Matrix.of_apply, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem epowLeft_eq_pow (E : Fin n → Fin n → Module.End ℂ V) (m : ℕ) (a b : Fin n) :
     PositivityTheory.RgBcC.RealD.epow E m a b =
@@ -19,7 +19,7 @@ theorem epowLeft_eq_pow (E : Fin n → Fin n → Module.End ℂ V) (m : ℕ) (a 
     simp only [PositivityTheory.RgBcC.RealD.epow, pow_succ', Matrix.mul_apply, Matrix.of_apply, ih]
 
 /- English proof (translation)
-Proceed by induction on `m generalizing a b with`. Consider the case `zero => simp [Formalism.REAL.epow, Matrix.one_apply]`. Consider the case `succ m ih`. Simplify using `only [Formalism.REAL.epow, pow_succ, Matrix.mul_apply, Matrix.of_apply, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem epowRight_eq_pow (E : Fin n → Fin n → Module.End ℂ V) (m : ℕ) (a b : Fin n) :
     Formalism.REAL.epow E m a b =
@@ -30,7 +30,7 @@ theorem epowRight_eq_pow (E : Fin n → Fin n → Module.End ℂ V) (m : ℕ) (a
     simp only [Formalism.REAL.epow, pow_succ, Matrix.mul_apply, Matrix.of_apply, ih]
 
 /- English proof (translation)
-Simplify using `only [Formalism.REAL.etr, PositivityTheory.RgBcC.RealD.gelA, epowLeft_eq_pow, epowRight_eq_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem etr_eq_gelA (E : Fin n → Fin n → Module.End ℂ V) (m : ℕ) :
     Formalism.REAL.etr E m = PositivityTheory.RgBcC.RealD.gelA E m := by

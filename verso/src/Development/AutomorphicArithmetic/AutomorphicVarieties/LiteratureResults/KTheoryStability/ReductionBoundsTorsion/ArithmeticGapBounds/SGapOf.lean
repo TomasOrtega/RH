@@ -11,7 +11,7 @@ namespace PositivityTheory.KB
 
 open SpectralGap in
 /- English proof (translation)
-The claim follows from `sGap_of_parts (gapAbs_of hilb_holds design_holds unfold_holds aeConst_holds) unfold_holds arith_holds dens_holds`.
+A detailed English derivation is pending.
 -/
 theorem sGap_of : SGap :=
   sGap_of_parts (gapAbs_of hilb_holds design_holds unfold_holds aeConst_holds) unfold_holds arith_holds dens_holds

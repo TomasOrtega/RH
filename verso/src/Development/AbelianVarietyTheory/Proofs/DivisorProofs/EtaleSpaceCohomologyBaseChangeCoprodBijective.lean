@@ -8,7 +8,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC.BcCoprod
 
 /- English proof (translation)
-Simplify using `only [bc, pullback.map]`. Conclude with `pullback.lift_fst _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bc_map_fst {E : Spc} {S : Scheme.{0}} (p : E ⟶ sch.obj S) {V U : Over S} (g : V ⟶ U) :
     (bc p).map g ≫ (pullback.fst p (sch.map U.hom) : (bc p).obj U ⟶ E) = pullback.fst p (sch.map V.hom) := by
@@ -16,7 +16,7 @@ theorem bc_map_fst {E : Spc} {S : Scheme.{0}} (p : E ⟶ sch.obj S) {V U : Over 
   exact pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Simplify using `only [bc, pullback.map]`. Conclude with `pullback.lift_snd _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bc_map_snd {E : Spc} {S : Scheme.{0}} (p : E ⟶ sch.obj S) {V U : Over S} (g : V ⟶ U) :
     (bc p).map g ≫ (pullback.snd p (sch.map U.hom) : (bc p).obj U ⟶ _) = pullback.snd p (sch.map V.hom) ≫ sch.map g.left := by
@@ -24,9 +24,7 @@ theorem bc_map_snd {E : Spc} {S : Scheme.{0}} (p : E ⟶ sch.obj S) {V U : Over 
   exact pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Establish `h2 : sch.map g.left ≫ sch.map U.hom = sch.map V.hom`. Rewrite using `[← sch.map_comp, Over.w g]`. Establish `outer : IsPullback ((bc p).map g ≫ (pullback.fst p (sch.map U.hom) : (bc p).obj U ⟶ E)) (pullback.snd p (sch.map V.hom)) p (sch.map g.left ≫ sch.map U.hom)`. Rewrite using `[bc_map_fst p g, h2]`. Conclude with `IsPullback.of_hasPullback p (sch.map V.hom)`.
-
-Conclude with `IsPullback.of_right outer (bc_map_snd p g) (IsPullback.of_hasPullback p (sch.map U.hom))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_bc {E : Spc} {S : Scheme.{0}} (p : E ⟶ sch.obj S) {V U : Over S} (g : V ⟶ U) :
     IsPullback ((bc p).map g) (pullback.snd p (sch.map V.hom)) (pullback.snd p (sch.map U.hom)) (sch.map g.left) := by
@@ -39,7 +37,7 @@ theorem isPullback_bc {E : Spc} {S : Scheme.{0}} (p : E ⟶ sch.obj S) {V U : Ov
   exact IsPullback.of_right outer (bc_map_snd p g) (IsPullback.of_hasPullback p (sch.map U.hom))
 
 /- English proof (translation)
-Introduce `R _ F S E p U ι V j hc n`. Use `GlobalTheory.T.etaleSpaceCohomology_levelwise_coproduct_bijective R F ((bc p).obj U) ι (fun i => (bc p).obj (V i)) (fun i => (bc p).map (j i)) (fun k => ?_) n` and prove the remaining obligations. Use `GlobalTheory.T.freeEtaleSheaf_presheaf_over_coproduct_eq_sum R U.left ι (fun i => (V i).left) (fun i => (j i).left) hc (((bc p).obj U).obj k) ((pullback.snd p (sch.map U.hom)).app k) (fun i => ((bc p).obj (V i)).obj k) (fun i => ((bc p).map (j i)).app k) (fun i => (pullback.snd p …` and prove the remaining obligations. Conclude with `(isPullback_bc p (j i)).map ((evaluation _ _).obj k)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] (F : Shv R) (S : Scheme.{0}) (E : Spc) (p : E ⟶ sch.obj S) (U : Over S) (ι : Type) (V : ι → Over S) (j : ∀ i, V i ⟶ U), IsColimit (Cofan.mk U.left (fun i => (j i).left)) → ∀ n : ℤ, Function.Bijective (fun (x : H R ((bc p).obj U) F n) (i : ι) => pull R ((bc p).map (j i)) F n x) := by
   intro R _ F S E p U ι V j hc n

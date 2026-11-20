@@ -5,13 +5,13 @@ open NumberField TensorProduct
 namespace PositivityTheory.UnitarySelfGeneration
 
 /- English proof (translation)
-Establish `hM : IsUnit (g.map σ).det`. Establish `e : σ g.det = (g.map σ).det` using `AlgHom.map_det σ g`. Rewrite using `[← e]`. Conclude with `hg.map σ`. Use `⟨Matrix.toLinearEquiv' (g.map σ) (Matrix.invertibleOfIsUnitDet (g.map σ) hM), fun x y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs : (fun j => σ (Matrix.mulVec (g.map σ) y j)) = Matrix.mulVec g (fun k => σ (y k))`. Use extensionality with `j`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul, hσ]`. Establish `key : ∀ u w : Fin N → R, ∑ i, ∑ j, u i * A i j * w j = dotProduct u (Matrix.mulVec A w)`. Introduce `u w`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`. Establish `hT : (A * g).transpose * g.map σ = 1`. Rewrite using `[← Matrix.transpose_transpose (g.map σ), ← Matrix.transpose_mul, ← Matrix.mul_assoc, h, Matrix.transpose_one]`. Express the relevant statement in the definitionally equal form `∑ i, ∑ j, Matrix.mulVec (g.map σ) x i * A i j * σ (Matrix.mulVec (g.map σ) y j) = _`. Rewrite using `[key _ (fun j => σ (Matrix.mulVec (g.map σ) y j)), hs, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, Matrix.mulVec_mulVec, hT, Matrix.one_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[dotProduct]`.
+A detailed English derivation is pending.
 -/
 theorem hermitian_form_standard_basis (Z R : Type) [CommRing Z] [CommRing R] [Algebra Z R] (σ : R →ₐ[Z] R) (hσ : ∀ r, σ (σ r) = r)
     (N : ℕ) (A g : Matrix (Fin N) (Fin N) R) (hg : IsUnit g.det) (h : (g.map σ).transpose * A * g = 1) :
@@ -37,9 +37,9 @@ theorem hermitian_form_standard_basis (Z R : Type) [CommRing Z] [CommRing R] [Al
   simp [dotProduct]
 
 /- English proof (translation)
-Introduce `Z R _ _ _ σ hσ lam hlam hbij N hstd ψ ψ' hψ0 hψb hψs hψ'0 hψ'b hψ's`. Take `⟨A, hAh, hAu, hAψ⟩` from `tw_g_herm Z R σ hσ lam hlam hbij N ψ hψ0 hψb hψs`. Take `⟨A', hA'h, hA'u, hA'ψ⟩` from `tw_g_herm Z R σ hσ lam hlam hbij N ψ' hψ'0 hψ'b hψ's`. Take `⟨g, hg, hgA⟩` from `hstd A hAh hAu`. Take `⟨g', hg', hgA'⟩` from `hstd A' hA'h hA'u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ⟩` from `hermitian_form_standard_basis Z R σ hσ N A g hg hgA`. Take `⟨φ', hφ'⟩` from `hermitian_form_standard_basis Z R σ hσ N A' g' hg' hgA'`. Use `⟨φ.symm.trans φ', fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, hA'ψ, hφ', ← hφ, φ.apply_symm_apply, φ.apply_symm_apply, ← hAψ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tw_g_std : ∀ (Z R : Type) [CommRing Z] [CommRing R] [Algebra Z R] (σ : R →ₐ[Z] R), (∀ r, σ (σ r) = r) → ∀ lam : R →ₗ[Z] Z, (∀ r, lam (σ r) = -lam r) → Function.Bijective (fun r : R => lam.comp (LinearMap.mulLeft Z r)) → ∀ (N : ℕ), (∀ A : Matrix (Fin N) (Fin N) R, (A.map σ).transpose = A → IsUnit A.det → ∃ g : Matrix (Fin N) (Fin N) R, IsUnit g.det ∧ (g.map σ).transpose * A * g = 1) → ∀ ψ ψ' : LinearMap.BilinForm Z (Fin N → R), (∀ x, ψ x x = 0) → Function.Bijective ψ → (∀ (a : R) x y, ψ (a • x) y = ψ x (σ a • y)) → (∀ x, ψ' x x = 0) → Function.Bijective ψ' → (∀ (a : R) x y, ψ' (a • x) y = ψ' x (σ a • y)) → ∃ φ : (Fin N → R) ≃ₗ[R] (Fin N → R), ∀ x y, ψ' (φ x) (φ y) = ψ x y := by
   intro Z R _ _ _ σ hσ lam hlam hbij N hstd ψ ψ' hψ0 hψb hψs hψ'0 hψ'b hψ's

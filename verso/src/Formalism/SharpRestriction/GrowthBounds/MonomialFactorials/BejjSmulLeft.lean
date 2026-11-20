@@ -12,15 +12,15 @@ section Gen
 variable (p : ℕ) [Fact p.Prime] {V : Type} [AddCommGroup V] [Module ℚ_[p] V] [Module ℤ_[p] V]
 
 /- English proof (translation)
-Use `⟨Module.finrank ℚ_[p] W, ?_⟩` and prove the remaining obligations. Introduce and unpack `n ⟨x, y, hx, hy, hxy⟩`. Establish `hpD : (p : ℚ_[p]) ^ D ≠ 0` using `zpow_ne_zero _ (by exact_mod_cast (Fact.out : p.Prime).ne_zero)`. Establish `hz : ∀ v, be 0 v = 0`. Introduce `v`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hsm 0 0 v`. Set `x' : Fin n → W` to `fun i => ⟨x i, hLW _ (hx i)⟩`. Establish `hli : LinearIndependent ℚ_[p] x'`. Rewrite using `[linearIndependent_iff']`. Introduce `s g hg i hi`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg' : ∑ j ∈ s, g j • x j = 0`. Use `congrArg Subtype.val hg` as an intermediate fact. Simplify `this` using `[x']`. Establish `h1` using `congrArg (fun u => be u (y i)) hg'`. Rewrite `h1` using `[hsum n s (fun j => g j • x j) (y i), hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hsm, hxy] at h1`. Rewrite `h1` using `[Finset.sum_eq_single i]`. Simplify `h1` using `[hpD]`. Introduce `j _ hj`. Simplify using `[hj]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd hi h`. Simplify using `using hli.fintype_card_le_finrank`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gc_bdd_gen (be : V → V → ℚ_[p]) (hsm : ∀ (c : ℚ_[p]) u v, be (c • u) v = c * be u v)
     (hsum : ∀ (n : ℕ) (s : Finset (Fin n)) (f : Fin n → V) v, be (∑ i ∈ s, f i) v = ∑ i ∈ s, be (f i) v)
@@ -54,9 +54,9 @@ theorem gc_bdd_gen (be : V → V → ℚ_[p]) (hsm : ∀ (c : ℚ_[p]) u v, be (
   simpa using hli.fintype_card_le_finrank
 
 /- English proof (translation)
-Establish `hgc : Formalism.GM.M.goodCount p be L₁ D ≤ Formalism.GM.M.goodCount p be L D`. Unfold `Formalism.GM.M.goodCount`. Apply `csSup_le_csSup hb` to reduce the goal to its premises. Conclude with `⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0⟩`. Introduce and unpack `n ⟨x, y, hx, hy, h⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨x, y, fun i => hle (hx i), fun i => hle (hy i), h⟩`. Unfold `Formalism.GM.M.bad`. Rewrite using `[hn]`. Use linear arithmetic over natural numbers and integers.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem bad_le_sub (be : V → V → ℚ_[p]) (L L₁ : Submodule ℤ_[p] V) (hle : L₁ ≤ L) (D : ℤ) (n₁ : ℕ)
     (hn : Module.finrank ℤ_[p] L₁ = n₁)
@@ -80,7 +80,7 @@ section Level
 variable (p : ℕ) [Fact p.Prime] {N r : ℕ} [NeZero r] (G : Formalism.GM.M.BlockData N)
 
 /- English proof (translation)
-Unfold `Formalism.GM.M.fockK`. Apply `Finset.sum_subset hs` to reduce the goal to its premises. Introduce `m _ hm`. Establish `h0 : F.coeff m = 0` using `by simpa using hm`. Rewrite using `[h0, zero_mul, zero_mul]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem fockK_eq_lemma {k σ : Type} [Field k] (F G : MvPolynomial σ k) (s : Finset (σ →₀ ℕ))
     (hs : F.support ⊆ s) :
@@ -92,9 +92,9 @@ private theorem fockK_eq_lemma {k σ : Type} [Field k] (F G : MvPolynomial σ k)
   rw [h0, zero_mul, zero_mul]
 
 /- English proof (translation)
-Unfold `bejj`. Rewrite using `[map_smul, fockK_eq_lemma _ v _ MvPolynomial.support_smul]`. Unfold `Formalism.GM.M.fockK`. Rewrite using `[mul_div_assoc', Finset.mul_sum]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl (fun m _ => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bejj_smul_left (j : Fin G.T.t → ℕ) (jp : ℕ) (c : ℚ_[p]) (u v : MvPolynomial (Formalism.GM.M.BVar N r G.T.t) ℚ_[p]) :
     bejj p (r := r) G j jp (c • u) v = c * bejj p (r := r) G j jp u v := by
@@ -108,9 +108,9 @@ theorem bejj_smul_left (j : Fin G.T.t → ℕ) (jp : ℕ) (c : ℚ_[p]) (u v : M
   ring
 
 /- English proof (translation)
-Unfold `bejj`. Rewrite using `[map_sum, ← Finset.sum_div]`. Use `congr 1`. Use `set S := (∑ i ∈ s, G.phiAll p (r := r) j jp (f i)).support ∪ s.biUnion (fun i => (G.phiAll p (r := r) j jp (f i)).support) with hS`. Rewrite using `[fockK_eq_lemma _ v S Finset.subset_union_left]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl (fun i hi => fockK_eq_lemma (G.phiAll p (r := r) j jp (f i)) v S ((Finset.subset_biUnion_of_mem (fun i => (G.phiAll p (r := r) j jp (f i)).support) hi).trans Finset.subset_union_right))]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun m _ => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_sum, Finset.sum_mul, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bejj_sum_left (j : Fin G.T.t → ℕ) (jp : ℕ) {ι : Type} (s : Finset ι)
     (f : ι → MvPolynomial (Formalism.GM.M.BVar N r G.T.t) ℚ_[p]) (v : MvPolynomial (Formalism.GM.M.BVar N r G.T.t) ℚ_[p]) :
@@ -130,7 +130,7 @@ theorem bejj_sum_left (j : Fin G.T.t → ℕ) (jp : ℕ) {ι : Type} (s : Finset
   rw [MvPolynomial.coeff_sum, Finset.sum_mul, Finset.sum_mul]
 
 /- English proof (translation)
-Take `⟨W, hW, hLW⟩` from `exists_fd_Ljj p (r := r) G j jp`. Use `haveI := hW`. Conclude with `gc_bdd_gen p (bejj p (r := r) G j jp) (bejj_smul_left p G j jp) (fun n s f v => bejj_sum_left p G j jp s f v) (Ljj p (r := r) G j jp) W hLW D`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem bejj_bdd (j : Fin G.T.t → ℕ) (jp : ℕ) (D : ℤ) :
     BddAbove {n | ∃ x y : Fin n → MvPolynomial (Formalism.GM.M.BVar N r G.T.t) ℚ_[p],
@@ -173,15 +173,15 @@ def RestWin (CM : ℝ) : Prop :=
 variable {C0 CE1 CE2 X}
 
 /- English proof (translation)
-Introduce `dl hdl aTop haTop x hx`. Take `⟨n₁, e, he, hli, horth, hval, hn1, hrk⟩` from `hO dl hdl aTop haTop x hx`. Establish `hwin` using `hW dl hdl aTop haTop x hx n₁ e he hli horth hval`. Establish `hspan : Submodule.span ℤ_[X.p] (Set.range e) ≤ Ljj X.p (r` using `X.r) (gB C0 CE1 CE2 X aTop 0 x.1) x.2.1 x.2.2 := Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨a, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `he a)`. Establish `hrank : Module.finrank ℤ_[X.p] (Submodule.span ℤ_[X.p] (Set.range e)) = n₁`. Rewrite using `[finrank_span_eq_card hli, Fintype.card_fin]`. Establish `hstep : ∀ aPlus ∈ X.winA, (bLvl C0 CE1 CE2 X aTop aPlus x.1 x.2 ⌊X.L.Y * D1r C0 CE1 CE2 X CM⌋ : ℝ) ≤ ((Module.finrank ℤ_[X.p] (Ljj X.p (r` using `X.r) (gB C0 CE1 CE2 X aTop 0 x.1) x.2.1 x.2.2) - n₁ : ℕ) : ℝ) + (Formalism.GM.M.bad X.p (bejj X.p (r := X.r) (gB C0 CE1 CE2 X aTop aPlus x.1) x.2.1 x.2.2) (Submodule.span ℤ_[X.p] (Set.range e)) ⌊X.L.Y * D1r C0 CE1 CE2 X CM⌋ : ℝ) := by`. Introduce `aPlus _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `bad_le_sub X.p (bejj X.p (r := X.r) (gB C0 CE1 CE2 X aTop aPlus x.1) x.2.1 x.2.2) (Ljj X.p (r := X.r) (gB C0 CE1 CE2 X aTop aPlus x.1) x.2.1 x.2.2) (Submodule.span ℤ_[X.p] (Set.range e)) hspan ⌊X.L.Y * D1r C0 CE1 CE2 X CM⌋ n₁ hrank (bejj_bdd X.p (r := X.r) (gB C0 CE1 CE2 X aTop a …`. Establish `h' : bLvl C0 CE1 CE2 X aTop aPlus x.1 x.2 ⌊X.L.Y * D1r C0 CE1 CE2 X CM⌋ ≤ (Module.finrank ℤ_[X.p] (Ljj X.p (r` using `X.r) (gB C0 CE1 CE2 X aTop 0 x.1) x.2.1 x.2.2) - n₁) + Formalism.GM.M.bad X.p (bejj X.p (r := X.r) (gB C0 CE1 CE2 X aTop aPlus x.1) x.2.1 x.2.2) (Submodule.span ℤ_[X.p] (Set.range e)) ⌊X.L.Y * D1r C0 CE1 CE2 X CM⌋ := h`. Conclude with `h'` after adjusting the coercions. Use `(Finset.sum_le_sum hstep).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((Module.finrank ℤ_[X.p] (Ljj X.p (r` using `X.r) (gB C0 CE1 CE2 X aTop 0 x.1) x.2.1 x.2.2) - n₁ : ℕ) : ℝ) ≤ (Formalism.GM.M.bad X.p (bePhi X.p (r := X.r) (gB C0 CE1 CE2 X aTop 0 x.1) x.2.1 x.2.2) (Ljj X.p (r := X.r) (gB C0 CE1 CE2 X aTop 0 x.1) x.2.1 x.2.2) ⌊D1r C0 CE1 CE2 X CM⌋ : ℝ) := by`. Conclude with `(by omega)` after adjusting the coercions. Establish `hc : (0 : ℝ) ≤ 5 / X.L.Y` using `div_nonneg (by norm_num) hY.le`. Establish `h2 : 5 / X.L.Y * (n₁ : ℝ) ≤ 5 / X.L.Y * (Module.finrank ℤ_[X.p] (Ljj X.p (r` using `X.r) (gB C0 CE1 CE2 X aTop 0 x.1) x.2.1 x.2.2) : ℝ) := mul_le_mul_of_nonneg_left (by exact_mod_cast hn1) hc`. Establish `hcard : (0 : ℝ) ≤ (X.winA.card : ℝ)` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h3` using `mul_le_mul_of_nonneg_left h1 hcard`. Establish `h4` using `mul_le_mul_of_nonneg_left h2 hcard`. Use polynomial arithmetic with `[hwin, h3, h4]`.
+A detailed English derivation is pending.
 -/
 theorem restPlusB_of (CM : ℝ) (hY : 0 < X.L.Y) (hO : RestOrth C0 CE1 CE2 X CM) (hW : RestWin C0 CE1 CE2 X CM) :
     RestPlusB C0 CE1 CE2 X CM := by

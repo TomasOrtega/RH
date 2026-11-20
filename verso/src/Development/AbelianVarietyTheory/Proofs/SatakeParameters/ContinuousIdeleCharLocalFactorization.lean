@@ -13,11 +13,11 @@ namespace GlobalTheory.HeckeSplit
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Establish `h : ∀ v : HeightOneSpectrum (𝓞 L), ∃ x : (v.adicCompletion L)ˣ, Valued.v (x : v.adicCompletion L) = 1 ∧ (‖((χ (localIdele L v x) : ℂˣ) : ℂ) - 1‖ < 1 / 2 → UnrAt χ v)` using `fun v => by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `(hc 1 (map_one _)).2 fun x hx => Units.ext (GlobalTheory.CharConductor.eq_one_of_pow_near_one fun m => ?_)` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, ← map_pow]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hc _ ?_).1` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, hx, one_pow]`. Use `choose x hx hx' using h`. Establish `hc : Continuous fun a : Ideles L => ‖((χ a : ℂˣ) : ℂ) - 1‖` using `((Units.continuous_val.comp hχ).sub continuous_const).norm`. Establish `h0 : Tendsto (fun v => localIdele L v (x v)) cofinite (𝓝 1)` using `GlobalTheory.Mem.UnrAe.tendsto_localIdele x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(hc.tendsto 1).comp h0`. Establish `h2` using `h1.eventually_lt_const (u := 1 / 2) (by simp)`. Conclude with `h2.mono fun v hv => hx' v hv`.
+A detailed English derivation is pending.
 -/
 theorem eventually_unrAt (χ : Ideles L →* ℂˣ) (hχ : Continuous χ) :
     ∀ᶠ v in Filter.cofinite, UnrAt χ v := by
@@ -40,17 +40,17 @@ theorem eventually_unrAt (χ : Ideles L →* ℂˣ) (hχ : Continuous χ) :
   exact h2.mono fun v hv => hx' v hv
 
 /- English proof (translation)
-Establish `hc : Continuous fun a : (v.adicCompletion L)ˣ => ‖((χ (localIdele L v a) : ℂˣ) : ℂ) - 1‖` using `((Units.continuous_val.comp (hχ.comp (GlobalTheory.Mem.UnrAe.continuous_localIdele v))).sub continuous_const).norm`. Establish `h0 : {a : (v.adicCompletion L)ˣ | ‖((χ (localIdele L v a) : ℂˣ) : ℂ) - 1‖ < 1 / 2} ∈ 𝓝 1` using `(isOpen_lt hc continuous_const).mem_nhds (by simp)`. Rewrite `h0` using `[Units.isEmbedding_val₀.nhds_eq_comap, mem_comap]`. Take `⟨t, ht, hsub⟩` from `h0`. Take `⟨γ, hγ⟩` from `Valued.mem_nhds.mp ht`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hγ0 : MonoidWithZeroHom.ValueGroup₀.embedding γ.1 ≠ 0` using `by simp`. Use `⟨(1 - WithZero.log (MonoidWithZeroHom.ValueGroup₀.embedding γ.1)).toNat + 1, fun x hx1 => ?_⟩` and prove the remaining obligations. Establish `hlt : Valued.v ((x : v.adicCompletion L) - 1) < 1`. Use `hx1.trans_lt ?_` and prove the remaining obligations. Rewrite using `[← WithZero.exp_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `WithZero.exp_lt_exp.mpr (by omega)`. Establish `hx' : Valued.v (x : v.adicCompletion L) = 1`. Use `Valuation.map_one_add_of_lt _ hlt` as an intermediate fact. Simplify using `using this`. Use `Units.ext (GlobalTheory.CharConductor.eq_one_of_pow_near_one fun m => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, ← map_pow]`. Apply `hsub` to reduce the goal to its premises. Apply `hγ` to reduce the goal to its premises. Simplify using `only [Set.mem_ofPred_eq, Valuation.restrict_lt_iff_lt_embedding, Units.val_pow_eq_pow_val, Units.val_one]`. Establish `h1 : Valued.v ((x : v.adicCompletion L) ^ m - 1) ≤ Valued.v ((x : v.adicCompletion L) - 1)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Establish `e : (x : v.adicCompletion L) ^ (m + 1) - 1 = x ^ m * (x - 1) + (x ^ m - 1)` using `by ring`. Rewrite using `[e]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Valuation.map_add_le _ ?_ ih` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, hx', one_pow, one_mul]`. Use `(h1.trans hx1).trans_lt ?_` and prove the remaining obligations. Use `conv_rhs => rw [← WithZero.exp_log hγ0]`. Conclude with `WithZero.exp_lt_exp.mpr (by omega)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_level (χ : Ideles L →* ℂˣ) (hχ : Continuous χ) (v : HeightOneSpectrum (𝓞 L)) :
     ∃ n : ℕ, ∀ x : (v.adicCompletion L)ˣ,
@@ -93,7 +93,7 @@ def truncIdele (x : Ideles L) (T : Finset (HeightOneSpectrum (𝓞 L))) : Ideles
   infIdele L (infPart L x) * ∏ v ∈ T, localIdele L v (finPart L v x)
 
 /- English proof (translation)
-Simplify using `only [truncIdele, map_inv, Finset.prod_inv_distrib, ← mul_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem truncIdele_inv (x : Ideles L) (T : Finset (HeightOneSpectrum (𝓞 L))) :
     truncIdele x⁻¹ T = (truncIdele x T)⁻¹ := by
@@ -101,7 +101,7 @@ theorem truncIdele_inv (x : Ideles L) (T : Finset (HeightOneSpectrum (𝓞 L))) 
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[truncIdele, map_mul, finPart_infIdele, one_mul, map_prod]`. Use `split_ifs with h`. Rewrite using `[Finset.prod_eq_single_of_mem v h fun w _ hw => finPart_localIdele_ne L hw.symm _, finPart_localIdele]`. Conclude with `Finset.prod_eq_one fun w hw => finPart_localIdele_ne L (v := w) (w := v) (fun e => h (by rw [e]; exact hw)) _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPart_truncIdele (x : Ideles L) (T : Finset (HeightOneSpectrum (𝓞 L)))
     (v : HeightOneSpectrum (𝓞 L)) :
@@ -113,7 +113,7 @@ theorem finPart_truncIdele (x : Ideles L) (T : Finset (HeightOneSpectrum (𝓞 L
   · exact Finset.prod_eq_one fun w hw => finPart_localIdele_ne L (v := w) (w := v) (fun e => h (by rw [e]; exact hw)) _
 
 /- English proof (translation)
-Rewrite using `[truncIdele, map_mul, infPart_infIdele, map_prod, Finset.prod_eq_one fun v _ => infPart_localIdele L v _, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem infPart_truncIdele (x : Ideles L) (T : Finset (HeightOneSpectrum (𝓞 L))) :
     infPart L (truncIdele x T) = infPart L x := by
@@ -121,9 +121,9 @@ theorem infPart_truncIdele (x : Ideles L) (T : Finset (HeightOneSpectrum (𝓞 L
     Finset.prod_eq_one fun v _ => infPart_localIdele L v _, mul_one]
 
 /- English proof (translation)
-Use `Prod.ext ?_ (Subtype.ext (funext fun v => ?_))` and prove the remaining obligations. Conclude with `congrArg (fun u : (InfiniteAdeleRing L)ˣ => (u : InfiniteAdeleRing L)) (infPart_truncIdele x T)`. Establish `h` using `congrArg (fun u : (v.adicCompletion L)ˣ => (u : v.adicCompletion L)) (finPart_truncIdele x T v)`. Use `h.trans ?_` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ T`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [hv, if_true]`. Conclude with `(if_pos hv).symm`. Simplify using `only [hv, if_false]`. Conclude with `(if_neg hv).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coe_truncIdele (x : Ideles L) (T : Finset (HeightOneSpectrum (𝓞 L))) :
     ((truncIdele x T : Ideles L) : AdeleRing (𝓞 L) L) =
@@ -139,9 +139,9 @@ theorem coe_truncIdele (x : Ideles L) (T : Finset (HeightOneSpectrum (𝓞 L))) 
     · simp only [hv, if_false]; exact (if_neg hv).symm
 
 /- English proof (translation)
-Establish `h : ∀ x : Ideles L, Tendsto (fun T => ((truncIdele x T : Ideles L) : AdeleRing (𝓞 L) L)) atTop (𝓝 (x : AdeleRing (𝓞 L) L))` using `fun x => by`. Simplify using `only [coe_truncIdele]`. Conclude with `tendsto_const_nhds.prodMk_nhds (GlobalTheory.HeckeProduct.tendsto_cut _)`. Rewrite using `[Units.isEmbedding_embedProduct.tendsto_nhds_iff]`. Use `(h x).prodMk_nhds ((MulOpposite.continuous_op.tendsto _).comp ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `h x⁻¹`. Simplify using `only [truncIdele_inv] at h2`. Conclude with `h2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tendsto_truncIdele (x : Ideles L) :
     Tendsto (truncIdele x) atTop (𝓝 x) := by
@@ -156,9 +156,9 @@ theorem tendsto_truncIdele (x : Ideles L) :
   exact h2
 
 /- English proof (translation)
-Establish `h1` using `(hχ.tendsto x).comp (tendsto_truncIdele x)`. Use `tendsto_nhds_unique h1 (tendsto_const_nhds.congr' ?_)` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop S] with T hT`. Express the relevant statement in the definitionally equal form `_ = χ (truncIdele x T)`. Rewrite using `[truncIdele, map_mul, map_prod]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `Finset.prod_subset hT fun v _ hv => hS v hv`.
+A detailed English derivation is pending.
 -/
 theorem char_eq_prod_local (χ : Ideles L →* ℂˣ) (hχ : Continuous χ) (x : Ideles L)
     (S : Finset (HeightOneSpectrum (𝓞 L)))
@@ -174,7 +174,7 @@ theorem char_eq_prod_local (χ : Ideles L →* ℂˣ) (hχ : Continuous χ) (x :
   exact Finset.prod_subset hT fun v _ hv => hS v hv
 
 /- English proof (translation)
-Introduce `_ _ _ χ hχ` and use `⟨eventually_unrAt χ hχ, exists_level χ hχ, fun x S hS => char_eq_prod_local χ hχ x S hS⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem continuous_char_factor : ∀ (L : Type) [Field L] [NumberField L] (χ : Ideles L →* ℂˣ), Continuous χ → (∀ᶠ v in Filter.cofinite, UnrAt χ v) ∧ (∀ v : HeightOneSpectrum (𝓞 L), ∃ n : ℕ, ∀ x : (v.adicCompletion L)ˣ, Valued.v ((x : v.adicCompletion L) - 1) ≤ WithZero.exp (-(n : ℤ)) → χ (localIdele L v x) = 1) ∧ ∀ (x : Ideles L) (S : Finset (HeightOneSpectrum (𝓞 L))), (∀ v ∉ S, χ (localIdele L v (finPart L v x)) = 1) → χ x = χ (infIdele L (infPart L x)) * ∏ v ∈ S, χ (localIdele L v (finPart L v x)) :=
   fun _ _ _ χ hχ => ⟨eventually_unrAt χ hχ, exists_level χ hχ, fun x S hS => char_eq_prod_local χ hχ x S hS⟩

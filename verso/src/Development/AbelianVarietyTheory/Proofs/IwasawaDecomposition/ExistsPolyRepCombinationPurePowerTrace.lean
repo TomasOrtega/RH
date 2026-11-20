@@ -21,7 +21,7 @@ def Virt (m : ι → ℕ) (g : ℕ → Mat m S → S) : Prop :=
     ∀ (A : Mat m S) (b : ℕ), ∑ j, c j • (ρ j).ptr b A = g b A
 
 /- English proof (translation)
-Take `⟨J, _, ρ, c, hc⟩` from `hg`. Use `⟨J, inferInstance, ρ, fun j => r * c j, fun A b => ?_⟩` and prove the remaining obligations. Simplify using `only [← hc, Finset.smul_sum, smul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem virt_smul (r : ℝ) {g : ℕ → Mat m S → S} (hg : Virt m g) : Virt m (fun b A => r • g b A) := by
   obtain ⟨J, _, ρ, c, hc⟩ := hg
@@ -29,7 +29,7 @@ theorem virt_smul (r : ℝ) {g : ℕ → Mat m S → S} (hg : Virt m g) : Virt m
   simp only [← hc, Finset.smul_sum, smul_smul]
 
 /- English proof (translation)
-Use `choose J hJ ρ c hc using hg`. Use `⟨Σ a, J a, inferInstance, fun x => ρ x.1 x.2, fun x => c x.1 x.2, fun A b => ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.sum_sigma]`. Simplify using `only [hc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem virt_fsum {α : Type} [Fintype α] (g : α → ℕ → Mat m S → S) (hg : ∀ a, Virt m (g a)) :
     Virt m (fun b A => ∑ a, g a b A) := by
@@ -39,7 +39,7 @@ theorem virt_fsum {α : Type} [Fintype α] (g : α → ℕ → Mat m S → S) (h
   simp only [hc]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.T.two_mul_trace_exteriorSquareDerivation_pow (ρ.lie A) b`. Establish `e1 : (ρ.tensor ρ).ptr b A = ((kron (ρ.lie A) 1 + kron 1 (ρ.lie A)) ^ b).trace` using `congrArg (fun L => (L ^ b).trace) (GlobalTheory.T.polynomialMatrixFamilyRep_lie_tensorProduct ρ ρ A)`. Establish `e2 : ρ.wedge2.ptr b A = ((wedge2Lie (ρ.lie A)) ^ b).trace` using `congrArg (fun L => (L ^ b).trace) (GlobalTheory.T.polynomialMatrixFamilyRep_lie_exteriorSquare ρ A)`. Establish `e3 : ρ.ptr b A = ((ρ.lie A) ^ b).trace` using `rfl`. Take the linear combination `e1 - 2 * e2 - h - 2 ^ b * e3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ptr_tensor_sub_wedge2 (ρ : PolyRep m) (A : Mat m S) (b : ℕ) :
     (ρ.tensor ρ).ptr b A - 2 * ρ.wedge2.ptr b A = 2 ^ b * ρ.ptr b A := by
@@ -52,9 +52,9 @@ theorem ptr_tensor_sub_wedge2 (ρ : PolyRep m) (A : Mat m S) (b : ℕ) :
   linear_combination e1 - 2 * e2 - h - 2 ^ b * e3
 
 /- English proof (translation)
-Take `⟨J, _, ρ, c, hc⟩` from `hg`. Use `⟨J ⊕ J, inferInstance, Sum.elim (fun j => (ρ j).tensor (ρ j)) (fun j => (ρ j).wedge2), Sum.elim c (fun j => -2 * c j), fun A b => ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[← hc, Finset.smul_sum, ← Finset.sum_add_distrib]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h` using `ptr_tensor_sub_wedge2 (ρ j) A b`. Simplify using `only [Algebra.smul_def, map_mul, map_neg, map_pow, map_ofNat]`. Take the linear combination `(algebraMap ℝ S (c j)) * h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem virt_double {g : ℕ → Mat m S → S} (hg : Virt m g) :
     Virt m (fun b A => (2 : ℝ) ^ b • g b A) := by
@@ -70,7 +70,7 @@ theorem virt_double {g : ℕ → Mat m S → S} (hg : Virt m g) :
   linear_combination (algebraMap ℝ S (c j)) * h
 
 /- English proof (translation)
-Use `⟨Unit, inferInstance, fun _ => proj m τ, fun _ => 1, fun A b => ?_⟩` and prove the remaining obligations. Simplify using `only [PolyRep.ptr, lie_proj_model, one_smul, Finset.univ_unique, Finset.sum_singleton]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem virt_proj (τ : ι) : Virt m (fun b (A : Mat m S) => ((A τ) ^ b).trace) := by
   refine ⟨Unit, inferInstance, fun _ => proj m τ, fun _ => 1, fun A b => ?_⟩
@@ -78,9 +78,9 @@ theorem virt_proj (τ : ι) : Virt m (fun b (A : Mat m S) => ((A τ) ^ b).trace)
   rfl
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero => simpa using virt_proj (m := m) (S := S) τ`. Consider the case `succ a ih`. Establish `e : (fun b (A : Mat m S) => ((2 : ℝ) ^ (a + 1)) ^ b • ((A τ) ^ b).trace) = fun b A => (2 : ℝ) ^ b • (((2 : ℝ) ^ a) ^ b • ((A τ) ^ b).trace)`. Use function extensionality and compare the values at `b A`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[smul_smul, pow_succ, mul_pow, mul_comm]`. Rewrite using `[e]`. Conclude with `virt_double ih`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem virt_pow (τ : ι) (a : ℕ) :
     Virt m (fun b (A : Mat m S) => ((2 : ℝ) ^ a) ^ b • ((A τ) ^ b).trace) := by
@@ -95,9 +95,9 @@ theorem virt_pow (τ : ι) (a : ℕ) :
     exact virt_double ih
 
 /- English proof (translation)
-Use `set V := Matrix.vandermonde (fun a : Fin (n + 1) => (2 : ℝ) ^ (a : ℕ)) with hV`. Establish `hinj : Function.Injective (fun a : Fin (n + 1) => (2 : ℝ) ^ (a : ℕ))`. Introduce `a a' h`. Conclude with `Fin.ext ((pow_right_strictMono₀ one_lt_two).injective h)`. Establish `hdet : IsUnit V.det` using `isUnit_iff_ne_zero.mpr (Matrix.det_vandermonde_ne_zero_iff.mpr hinj)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set δ : Fin (n + 1) → ℝ := fun b => if (b : ℕ) = i then 1 else 0 with hδ`. Use `⟨δ ᵥ* V⁻¹, fun b => ?_⟩` and prove the remaining obligations. Establish `h : (δ ᵥ* V⁻¹) ᵥ* V = δ`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hdet, Matrix.vecMul_one]`. Conclude with `congrFun h b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_vandermonde_solution (n i : ℕ) : ∃ x : Fin (n + 1) → ℝ, ∀ b : Fin (n + 1),
     ∑ a, x a * ((2 : ℝ) ^ (a : ℕ)) ^ (b : ℕ) = if (b : ℕ) = i then 1 else 0 := by
@@ -113,11 +113,9 @@ theorem exists_vandermonde_solution (n i : ℕ) : ∃ x : Fin (n + 1) → ℝ, �
   exact congrFun h b
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `exists_vandermonde_solution n i`. Take `⟨J, hJ, ρ, c, hc⟩` from `virt_fsum (m := m) (S := S) (fun a : Fin (n + 1) => fun b A => x a • (((2 : ℝ) ^ (a : ℕ)) ^ b • ((A τ) ^ b).trace)) (fun a => virt_smul (x a) (virt_pow τ a))`. Use `⟨J, hJ, ρ, c, fun A b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Establish `h` using `hx ⟨b, Nat.lt_succ_of_le hb⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [smul_smul, ← Finset.sum_smul] at h ⊢`. Rewrite using `[h]`. Use `split_ifs with hbi`. Substitute `hbi` using the available equality. Conclude with `one_smul ℝ _`.
-
-Conclude with `zero_smul ℝ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_pure_power_trace {ι : Type} [Fintype ι] (m : ι → ℕ) (n : ℕ) (S : Type) [CommRing S]
     [Algebra ℝ S] (τ : ι) (i : ℕ) (_hi : 1 ≤ i) :

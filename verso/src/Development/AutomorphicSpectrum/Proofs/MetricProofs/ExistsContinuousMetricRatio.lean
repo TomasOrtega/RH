@@ -16,9 +16,9 @@ section General
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
 /- English proof (translation)
-Introduce `t ht`. Take `⟨j, hj⟩` from `A.cover t`. Establish `h1 : AnalyticAt ℂ (f ∘ (A.chart j).symm) (A.chart j t)` using `h j _ ⟨(A.chart j).map_source hj, by simpa [(A.chart j).left_inv hj] using ht⟩`. Establish `h2 : ContinuousAt ((f ∘ (A.chart j).symm) ∘ A.chart j) t` using `ContinuousAt.comp h1.continuousAt ((A.chart j).continuousAt hj)`. Establish `h3 : ((f ∘ (A.chart j).symm) ∘ A.chart j) =ᶠ[𝓝 t] f` using `by filter_upwards [(A.chart j).open_source.mem_nhds hj] with u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[(A.chart j).left_inv hu]`. Conclude with `(h2.congr h3).continuousWithinAt`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem holoOn_continuousOn {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X} {U : Set X}
     {f : X → ℂ} (hU : IsOpen U) (h : A.HoloOn U f) : ContinuousOn f U := by
@@ -34,13 +34,11 @@ theorem holoOn_continuousOn {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHo
   exact (h2.congr h3).continuousWithinAt
 
 /- English proof (translation)
-Use `choose r hr hpr using M.surj`. Establish `key : ∀ z ∈ mcPts P, F (r (M.proj z)) = F z`. Introduce `z hz`. Take `⟨c, hc, e⟩` from `(M.fibre _ (hr _) z hz).1 (hpr _)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x => F (r x), ?_, key⟩` and prove the remaining obligations. Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Take `⟨U, hU, hx, s, hs, hh⟩` from `M.sections x`. Establish `hsc : ContinuousOn s U` using `continuousOn_pi.2 fun p => holoOn_continuousOn hU (hh p)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp : ContinuousOn (F ∘ s) U` using `hF.comp hsc fun y hy => (hs y hy).1.1`. Use `(hcomp.continuousAt (hU.mem_nhds hx)).congr ?_` and prove the remaining obligations. Use `filter_upwards [hU.mem_nhds hx] with y hy`. Establish `h` using `key (s y) (hs y hy).1`. Rewrite `h` using `[(hs y hy).2]`.
-
-Conclude with `h.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_continuous_descent {P : Ideal (MRing J)} {d : ℕ} (M : CxModel P d)
     (F : ((Σ k, J k) → ℂ) → ℝ) (hF : ContinuousOn F {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0})
@@ -65,7 +63,7 @@ theorem exists_continuous_descent {P : Ideal (MRing J)} {d : ℕ} (M : CxModel P
   exact h.symm
 
 /- English proof (translation)
-Establish `h1 : A.h (torusSmul c z) = (∏ k, ‖c k‖ ^ A.a k) * A.h z` using `A.smul c z hc`. Establish `h2 : ∀ k, ‖c k‖ ^ A.a k ≠ 0` using `fun k => zpow_ne_zero _ (norm_ne_zero_iff.mpr (hc k))`. Rewrite using `[h1, Real.log_mul (Finset.prod_ne_zero_iff.mpr fun k _ => h2 k) (A.pos z hz).ne', Real.log_prod (fun k _ => h2 k)]`. Simplify using `only [Real.log_zpow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem log_h_torusSmul (A : HermLine J) {c : K → ℂ} (hc : ∀ k, c k ≠ 0) {z : (Σ k, J k) → ℂ}
     (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
@@ -77,7 +75,7 @@ theorem log_h_torusSmul (A : HermLine J) {c : K → ℂ} (hc : ∀ k, c k ≠ 0)
   simp only [Real.log_zpow]
 
 /- English proof (translation)
-The claim follows from `ContinuousOn.log hA.continuousOn fun z hz => (A.pos z hz).ne'`.
+A detailed English derivation is pending.
 -/
 theorem log_h_continuousOn {A : HermLine J} (hA : IsSmoothHerm A) :
     ContinuousOn (fun z => Real.log (A.h z)) {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} :=
@@ -86,17 +84,17 @@ theorem log_h_continuousOn {A : HermLine J} (hA : IsSmoothHerm A) :
 end General
 
 /- English proof (translation)
-Introduce `K _ J _ II Ψ _ Ω _ _ W _ _ D Hd M S B Nb hNb hdeg`. Establish `hA : ∀ p, ∃ A : HermLine J, p ∈ D.SB B → A.a = D.vdeg p ∧ IsSmoothHerm A ∧ ∀ z ∈ mcPts (mCoordIdeal D.y), A.h z = D.vertFactor p z`. Introduce `p`. Distinguish the cases in `hp : p ∈ D.SB B`. Take `⟨A, h1, h2, -, h3⟩` from `(GlobalTheory.T.vertical_factor_smooth_hermitian_metric K J II Ψ Ω W D p (Finset.mem_of_mem_filter p hp)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨A, fun _ => ⟨h1, h2, h3⟩⟩`. Conclude with `⟨S.ref, fun h => absurd h hp⟩`. Use `choose A hA using hA`. Establish `hdegk : ∀ k, (Nb.a k : ℝ) = (S.ref.a k : ℝ) + ∑ p ∈ D.SB B, ((A p).a k : ℝ)`. Introduce `k`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `href : S.ref.a = Hd.aMu` using `S.ref_deg`. Establish `hs : ∑ p ∈ D.SB B, (A p).a k = ∑ p ∈ D.SB B, D.vdeg p k` using `Finset.sum_congr rfl fun p hp => by rw [(hA p hp).1]`. Establish `: Nb.a k = S.ref.a k + ∑ p ∈ D.SB B, (A p).a k`. Rewrite using `[hdeg, href, hs]`. Simplify using `[muTwDeg, Finset.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Use `push_cast`. Both sides reduce to the same expression. Take `⟨κ, hκ, hκe⟩` from `exists_continuous_descent M (fun z => Real.log (Nb.h z) - Real.log (S.ref.h z) - ∑ p ∈ D.SB B, Real.log ((A p).h z)) (((log_h_continuousOn hNb).sub (log_h_continuousOn S.ref_smooth)).sub (continuousOn_finset_sum _ fun p hp => log_h_continuousOn (hA p hp).2.1)) (by`. Introduce `c hc z hz`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hb` using `hz.1`. Simplify using `only [log_h_torusSmul _ hc hb, Finset.sum_add_distrib]`. Rewrite using `[Finset.sum_comm (s := D.SB B)]`. Simplify using `only [hdegk, add_mul, Finset.sum_add_distrib, Finset.sum_mul]`. Use the proof step `ring)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨κ, hκ, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[hκe z hz]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun p hp => by rw [(hA p hp).2.2 z hz]`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem logDiff_descends : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : Ψ → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (D : ComponentData II Ψ K J Ω W) (Hd : HodgeData D) (M : XModel D) (S : LogLogRegularisationSetting M D.Xo (muLine Hd)) (B : ℕ) (Nb : HermLine J), IsSmoothHerm Nb → Nb.a = muTwDeg Hd B → ∃ κ : M.Xc → ℝ, Continuous κ ∧ ∀ z ∈ mcPts (mCoordIdeal D.y), κ (M.proj z) = Real.log (Nb.h z) - Real.log (S.ref.h z) - ∑ p ∈ D.SB B, Real.log (D.vertFactor p z) := by
   intro K _ J _ II Ψ _ Ω _ _ W _ _ D Hd M S B Nb hNb hdeg

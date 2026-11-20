@@ -6,41 +6,37 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.CovSat
 
 /- English proof (translation)
-Introduce `l _ Γ _ a m ρs t h1 hst`. Set `E : Submodule ℤ_[l] (Fin m → Matrix (Fin a) (Fin a) (Om l))` to `Submodule.span ℤ_[l] (Set.range (GlobalTheory.TraceConjugationCover.tup ρs))`. Set `Λ` to `GlobalTheory.TraceConjugationCover.latL t 0`. Establish `hsumE : ∀ H : Γ →₀ ℤ_[l], (H.sum fun g c => zOm l c • GlobalTheory.TraceConjugationCover.tup ρs g) ∈ E`. Introduce `H`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finsupp.mem_span_range_iff_exists_finsupp]`. Conclude with `⟨H, by simp only [GlobalTheory.TraceConjugationCover.zOm_smul]⟩`. Establish `hEsum : ∀ x ∈ E, ∃ H' : Γ →₀ ℤ_[l], x = H'.sum fun g c => zOm l c • GlobalTheory.TraceConjugationCover.tup ρs g`. Introduce `x hx`. Take `⟨H', hH'⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 hx`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨H', by rw [← hH']; simp only [GlobalTheory.TraceConjugationCover.zOm_smul]⟩`. Establish `hc : ∀ (n : ℕ) (w : Fin m → Matrix (Fin a) (Fin a) (Om l)), (l : Om l) ^ n • w = (l : ℤ_[l]) ^ n • w`. Introduce `n w`. Rewrite using `[← GlobalTheory.TraceConjugationCover.zOm_smul, map_pow, map_natCast]`. Establish `hsingle : ∀ k, ∀ z ∈ t k, Pi.single k z ∈ Λ`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k z hz`. Conclude with `Submodule.subset_span (Set.mem_iUnion.2 ⟨k, z, hz, by simp⟩)`. Establish `hlat : ∀ M, ∀ x ∈ GlobalTheory.TraceConjugationCover.latL t M, ∃ y ∈ Λ, x = ((l : ℤ_[l]) ^ M) • y`. Introduce `M x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨k, hk⟩` from `Set.mem_iUnion.1 hx`. Take `⟨z, hz, rfl⟩` from `hk`. Use `⟨Pi.single k z, hsingle k z hz, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i : 1`. Distinguish the cases in `hi : i = k`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hi]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, Λ.zero_mem, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨x', hx', rfl⟩` from `hx`. Take `⟨y', hy', rfl⟩` from `hy`. Conclude with `⟨x' + y', Λ.add_mem hx' hy', by rw [smul_add]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `smul c x _ hx`. Take `⟨x', hx', rfl⟩` from `hx`. Conclude with `⟨c • x', Λ.smul_mem c hx', by rw [smul_comm]⟩`. Establish `hspan : ∀ k (c : Matrix (Fin a) (Fin a) (Om l) → ℤ_[l]), (∑ y ∈ t k, zOm l (c y) • y) ∈ Submodule.span ℤ_[l] (t k : Set (Matrix (Fin a) (Fin a) (Om l)))`. Introduce `k c`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun y hy => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.TraceConjugationCover.zOm_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hy)`. Establish `hρ : ∀ k g, ((ρs k g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) ∈ Submodule.span ℤ_[l] (t k : Set (Matrix (Fin a) (Fin a) (Om l)))`. Introduce `k g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c', hc'⟩` from `h1 k`. Rewrite using `[← mul_one ((ρs k g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)), ← hc', Finset.mul_sum]`. Use `Submodule.sum_mem _ fun y hy => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul]`. Take `⟨c'', hc''⟩` from `hst k g y hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hc'', GlobalTheory.TraceConjugationCover.zOm_smul]`. Conclude with `Submodule.smul_mem _ _ (hspan k c'')`. Establish `hspanΛ : ∀ k, Submodule.span ℤ_[l] (t k : Set (Matrix (Fin a) (Fin a) (Om l))) ≤ Λ.comap (LinearMap.single ℤ_[l] (fun _ : Fin m => Matrix (Fin a) (Fin a) (Om l)) k)`. Introduce `k`. Rewrite using `[Submodule.span_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Conclude with `hsingle k z hz`. Establish `hEΛ : E ≤ Λ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Finset.univ_sum_single (GlobalTheory.TraceConjugationCover.tup ρs g)]`. Conclude with `Submodule.sum_mem _ fun k _ => hspanΛ k (hρ k g)`. Establish `hfg : Λ.FG` using `Submodule.fg_span (Set.finite_iUnion fun k => (t k).finite_toSet.image _)`. Use `haveI : IsNoetherian ℤ_[l] Λ := isNoetherian_of_fg_of_noetherian Λ hfg`. Set `f : ℕ →o Submodule ℤ_[l] Λ` to `⟨fun v => (E.comap Λ.subtype).comap (((l : ℤ_[l]) ^ v) • LinearMap.id), by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v w hvw y hy`. Simplify using `only [Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply, map_smul, Submodule.subtype_apply] at hy ⊢`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hvw`. Rewrite using `[pow_add, mul_comm, mul_smul]`. Conclude with `E.smul_mem _ hy⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf : ∀ v (y : Λ), y ∈ f v ↔ ((l : ℤ_[l]) ^ v) • (y : Fin m → Matrix (Fin a) (Fin a) (Om l)) ∈ E`. Introduce `v y`. Use `show y ∈ (E.comap Λ.subtype).comap (((l : ℤ_[l]) ^ v) • LinearMap.id) ↔ _`. Simplify using `only [Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply, map_smul, Submodule.subtype_apply]`. Take `⟨u, hu⟩` from `monotone_stabilizes_iff_noetherian.2 inferInstance f`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨u, fun N M hNM H hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hyΛ, hxy⟩` from `hlat M _ hx`. Establish `hyM : (⟨y, hyΛ⟩ : Λ) ∈ f M`. Rewrite using `[hf]`. Use `show ((l : ℤ_[l]) ^ M) • y ∈ E`.
-
-Rewrite using `[← hxy]`. Conclude with `hsumE H`. Rewrite `hyM` using `[← hu M (by omega), hf]`. Establish `hz : ((l : ℤ_[l]) ^ (M - N - u)) • (((l : ℤ_[l]) ^ u) • y) ∈ E` using `E.smul_mem _ hyM`. Take `⟨H', hH'⟩` from `hEsum _ hz`.
-
-Use `⟨H', ?_⟩` and prove the remaining obligations. Rewrite using `[hxy, ← hH', hc, smul_smul, smul_smul, ← pow_add, ← pow_add]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem satA : ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] (a m : ℕ) (ρs : Fin m → (Γ →* GL (Fin a) (Om l))) (t : Fin m → Finset (Matrix (Fin a) (Fin a) (Om l))), (∀ k, ∃ c' : Matrix (Fin a) (Fin a) (Om l) → ℤ_[l], ∑ y ∈ t k, zOm l (c' y) • y = 1) → (∀ k g, ∀ x ∈ t k, ∃ c' : Matrix (Fin a) (Fin a) (Om l) → ℤ_[l], ((ρs k g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) * x = ∑ y ∈ t k, zOm l (c' y) • y) → ∃ u : ℕ, ∀ N M : ℕ, N + u ≤ M → ∀ H : Γ →₀ ℤ_[l], (H.sum fun g c => zOm l c • GlobalTheory.TraceConjugationCover.tup ρs g) ∈ GlobalTheory.TraceConjugationCover.latL t M → ∃ H' : Γ →₀ ℤ_[l], (H.sum fun g c => zOm l c • GlobalTheory.TraceConjugationCover.tup ρs g) = (l : Om l) ^ N • (H'.sum fun g c => zOm l c • GlobalTheory.TraceConjugationCover.tup ρs g) := by
   intro l _ Γ _ a m ρs t h1 hst

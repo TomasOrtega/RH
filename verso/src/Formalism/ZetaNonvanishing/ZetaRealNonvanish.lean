@@ -14,35 +14,33 @@ def e (n : ℕ) (s : ℂ) : ℂ :=
 def F (s : ℂ) : ℂ := ∑' n, e n s
 
 /- English proof (translation)
-Use `set x : ℝ := (n : ℝ) + 1 with hxdef`. Establish `hx0 : 0 < x` using `by positivity`. Use `set ℓ := Real.log x with hℓ`. Use `set ℓ' := Real.log (x + 1) with hℓ'`. Use `set L := ℓ' - ℓ with hL`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set a : ℂ := 1 - s with ha`. Establish `c1 : ∀ w : ℂ, ((n : ℂ) + 1) ^ w = exp ((ℓ : ℂ) * w)`. Introduce `w`. Establish `h1 : ((n : ℂ) + 1) = ((x : ℝ) : ℂ)` using `by rw [hxdef]; push_cast; ring`. Rewrite using `[h1, cpow_def_of_ne_zero (by exact_mod_cast hx0.ne'), ← Complex.ofReal_log hx0.le]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `c2 : ∀ w : ℂ, ((n : ℂ) + 2) ^ w = exp ((ℓ' : ℂ) * w)`. Introduce `w`. Establish `h1 : ((n : ℂ) + 2) = ((x + 1 : ℝ) : ℂ)` using `by rw [hxdef]; push_cast; ring`. Rewrite using `[h1, cpow_def_of_ne_zero (by exact_mod_cast (by linarith : (0:ℝ) < x + 1).ne'), ← Complex.ofReal_log (by linarith)]`. Establish `hE1 : exp ((ℓ : ℂ) * -s) = exp ((ℓ : ℂ) * a) * ((x : ℂ))⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `: (ℓ : ℂ) * -s = (ℓ : ℂ) * a + -(ℓ : ℂ)` using `by rw [ha]; ring`. Rewrite using `[this, Complex.exp_add, Complex.exp_neg, ← Complex.ofReal_exp, hℓ, Real.exp_log hx0]`. Establish `hE2 : exp ((ℓ' : ℂ) * a) = exp ((ℓ : ℂ) * a) * exp (a * (L : ℂ))`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hL]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `key : e n s = exp ((ℓ : ℂ) * a) * (-(exp (a * (L : ℂ)) - 1 - a * (L : ℂ)) + a * (((x : ℂ))⁻¹ - (L : ℂ)))`. Unfold `e`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← ha, c1, c1, c2, hE1, hE2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hLle : L ≤ x⁻¹`. Use `Real.log_le_sub_one_of_pos (x := (x + 1) / x) (by positivity)` as an intermediate fact. Rewrite `this` using `[Real.log_div (by linarith) hx0.ne']`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hL, hℓ, hℓ']`. Combine the equalities or inequalities in the displayed calculation. Establish `hLge : (x + 1)⁻¹ ≤ L`. Use `Real.one_sub_inv_le_log_of_pos (x := (x + 1) / x) (by positivity)` as an intermediate fact. Rewrite `this` using `[Real.log_div (by linarith) hx0.ne']`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hL, hℓ, hℓ']`. Combine the equalities or inequalities in the displayed calculation. Establish `hL0 : 0 ≤ L` using `le_trans (by positivity) hLge`. Establish `hd : x⁻¹ - L ≤ (x ^ 2)⁻¹`. Establish `h3 : x⁻¹ - (x + 1)⁻¹ = (x * (x + 1))⁻¹` using `by field_simp; ring`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : (x * (x + 1))⁻¹ ≤ (x ^ 2)⁻¹` using `inv_anti₀ (by positivity) (by nlinarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hna : 0 ≤ ‖a‖` using `norm_nonneg _`. Establish `hnX : ‖exp ((ℓ : ℂ) * a)‖ = Real.exp (ℓ * (1 - s.re))`. Rewrite using `[Complex.norm_exp]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[ha]`. Simplify using the standard rewrite rules. Establish `hnaL : ‖a * (L : ℂ)‖ = ‖a‖ * L`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hL0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : ‖a * (L : ℂ)‖ ≤ 1`. Rewrite using `[hnaL]`. Combine the equalities or inequalities in the displayed calculation. Establish `hexp` using `Complex.norm_exp_sub_one_sub_id_le hz`. Establish `hsq : ‖a * (L : ℂ)‖ ^ 2 ≤ ‖a‖ ^ 2 * (x ^ 2)⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hnaL, mul_pow, ← inv_pow]`. Use `gcongr`. Establish `hlin : ‖a * (((x : ℂ))⁻¹ - (L : ℂ))‖ ≤ ‖a‖ * (x ^ 2)⁻¹`. Establish `: ((x : ℂ))⁻¹ - (L : ℂ) = ((x⁻¹ - L : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[this, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by linarith)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left hd hna`. Establish `hx2 : x ^ 2 = Real.exp (2 * ℓ)`. Rewrite using `[show 2 * ℓ = ℓ + ℓ by ring, Real.exp_add, hℓ, Real.exp_log hx0]; ring`. Rewrite using `[key, norm_mul, hnX]`. Combine the equalities or inequalities in the displayed calculation.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_neg]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = (‖a‖ ^ 2 + ‖a‖) * (Real.exp (ℓ * (1 - s.re)) * (x ^ 2)⁻¹) := by ring`. Use `_ = (‖a‖ ^ 2 + ‖a‖) * x ^ (-1 - s.re) := by`.
-
-Use `congr 1`. Rewrite using `[Real.rpow_def_of_pos hx0, hx2, ← Real.exp_neg, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 lemma e_bound (n : ℕ) (s : ℂ) (hs : ‖1 - s‖ ≤ (n : ℝ) + 1) :
     ‖e n s‖ ≤ (‖1 - s‖ ^ 2 + ‖1 - s‖) * ((n : ℝ) + 1) ^ (-1 - s.re) := by
@@ -123,7 +121,7 @@ lemma e_bound (n : ℕ) (s : ℂ) (hs : ‖1 - s‖ ≤ (n : ℝ) + 1) :
         ring
 
 /- English proof (translation)
-Use `norm_cpow_eq_rpow_re_of_pos hk w` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 lemma norm_cpow_nat (n : ℕ) (k : ℝ) (hk : 0 < (n : ℝ) + k) (w : ℂ) :
     ‖((n : ℂ) + (k : ℂ)) ^ w‖ = ((n : ℝ) + k) ^ w.re := by
@@ -131,13 +129,11 @@ lemma norm_cpow_nat (n : ℕ) (k : ℝ) (hk : 0 < (n : ℝ) + k) (w : ℂ) :
   push_cast at this; exact this
 
 /- English proof (translation)
-Establish `h1` using `norm_cpow_nat n 1 (by positivity) (-s)`. Establish `h2` using `norm_cpow_nat n 1 (by positivity) (1 - s)`. Establish `h3` using `norm_cpow_nat n 2 (by positivity) (1 - s)`. Move the coercions through the operations in `at h1 h2 h3`. Establish `hx : (1 : ℝ) ≤ (n : ℝ) + 1` using `by have := n.cast_nonneg (α := ℝ); linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `b1 : ((n : ℝ) + 1) ^ (-s).re ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos hx (by simp; linarith)`. Establish `b2 : ((n : ℝ) + 1) ^ (1 - s).re ≤ (n : ℝ) + 1`. Combine the equalities or inequalities in the displayed calculation. Establish `b3 : ((n : ℝ) + 2) ^ (1 - s).re ≤ (n : ℝ) + 2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Unfold `e`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `norm_add_le _ _`.
-
-Use `_ ≤ ‖1 - s‖ * 1 + ((n : ℝ) + 1) + ((n : ℝ) + 2) := by`. Rewrite using `[norm_mul, h1, h2, h3]`. Use `gcongr`. Use `_ = ‖1 - s‖ + 2 * ((n : ℝ) + 1) + 1 := by ring`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma e_crude (n : ℕ) (s : ℂ) (hs : 0 < s.re) :
     ‖e n s‖ ≤ ‖1 - s‖ + 2 * ((n : ℝ) + 1) + 1 := by
@@ -169,7 +165,7 @@ lemma e_crude (n : ℕ) (s : ℂ) (hs : 0 < s.re) :
     _ = ‖1 - s‖ + 2 * ((n : ℝ) + 1) + 1 := by ring
 
 /- English proof (translation)
-Establish `h1 : (n : ℂ) + 1 ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero n`. Establish `h2 : (n : ℂ) + 2 ≠ 0` using `by exact_mod_cast (by omega : n + 2 ≠ 0)`. Introduce `s`. Unfold `e`. Use `fun_prop (disch := simp [h1, h2])`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma e_differentiable (n : ℕ) : Differentiable ℂ (e n) := by
   have h1 : (n : ℂ) + 1 ≠ 0 := by exact_mod_cast Nat.succ_ne_zero n
@@ -179,21 +175,21 @@ lemma e_differentiable (n : ℕ) : Differentiable ℂ (e n) := by
   fun_prop (disch := simp [h1, h2])
 
 /- English proof (translation)
-Use `set δ := s₀.re / 2 with hδ`. Use `set R := ‖1 - s₀‖ + 1 with hR`. Establish `hδ0 : 0 < δ` using `by positivity`. Establish `hR0 : 0 ≤ R` using `by positivity`. Use `⟨min δ 1, lt_min hδ0 one_pos, fun n => (R ^ 2 + R) * ((n : ℝ) + 1) ^ (-1 - δ) + (if (n : ℝ) + 1 < R then R + 2 * ((n : ℝ) + 1) + 1 else 0), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Summable.add ?_ ?_` and prove the remaining obligations. Use `Summable.mul_left _ ?_` and prove the remaining obligations. Use `(summable_nat_add_iff 1).mpr (Real.summable_nat_rpow.mpr (by linarith : -1 - δ < -1))` as an intermediate fact. Use `this.congr (fun n => ?_)` and prove the remaining obligations. Use `push_cast`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Reduce the conclusion to the remaining proof obligations.
 
-Put the polynomial expressions in normal form. Use `summable_of_ne_finset_zero (s := Finset.range ⌈R⌉₊) (fun n hn => ?_)` and prove the remaining obligations. Rewrite `hn` using `[Finset.mem_range, not_lt]`. Establish `: R ≤ (n : ℝ)` using `(Nat.le_ceil R).trans (by exact_mod_cast hn)`. Rewrite using `[if_neg (by linarith)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `n w hw`. Rewrite `hw` using `[Metric.mem_ball, dist_eq_norm]`. Establish `hwr : ‖w - s₀‖ < δ` using `lt_of_lt_of_le hw (min_le_left _ _)`. Establish `hw1 : ‖w - s₀‖ < 1` using `lt_of_lt_of_le hw (min_le_right _ _)`. Establish `hre : δ < w.re`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Complex.abs_re_le_norm (w - s₀)` as an intermediate fact. Rewrite `this` using `[Complex.sub_re]`. Use `(abs_le.mp this).1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnorm : ‖1 - w‖ ≤ R`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hx : (1 : ℝ) ≤ (n : ℝ) + 1` using `by have := n.cast_nonneg (α := ℝ); linarith`. Establish `hfirst : 0 ≤ (R ^ 2 + R) * ((n : ℝ) + 1) ^ (-1 - δ)` using `by positivity`. Use `show ‖e n w‖ ≤ (R ^ 2 + R) * ((n : ℝ) + 1) ^ (-1 - δ) + (if (n : ℝ) + 1 < R then R + 2 * ((n : ℝ) + 1) + 1 else 0)`. Distinguish the cases in `hc : (n : ℝ) + 1 < R`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[if_pos hc]`. Use `e_crude n w (by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[if_neg hc, add_zero] replace hc := not_lt.mp hc`. Use `(e_bound n w (hnorm.trans hc)).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : ((n : ℝ) + 1) ^ (-1 - w.re) ≤ ((n : ℝ) + 1) ^ (-1 - δ)` using `Real.rpow_le_rpow_of_exponent_le hx (by linarith)`. Establish `hq : ‖1 - w‖ ^ 2 + ‖1 - w‖ ≤ R ^ 2 + R`. Use `norm_nonneg (1 - w)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Conclude with `mul_le_mul hq hp (by positivity) (by positivity)`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma e_dom (s₀ : ℂ) (h : 0 < s₀.re) : ∃ r > 0, ∃ u : ℕ → ℝ, Summable u ∧
     ∀ n : ℕ, ∀ w ∈ Metric.ball s₀ r, ‖e n w‖ ≤ u n := by
@@ -245,7 +241,7 @@ lemma e_dom (s₀ : ℂ) (h : 0 < s₀.re) : ∃ r > 0, ∃ u : ℕ → ℝ, Sum
       exact mul_le_mul hq hp (by positivity) (by positivity)
 
 /- English proof (translation)
-Take `⟨r, hr, u, hu, hb⟩` from `e_dom s₀ h`. Establish `hd : DifferentiableOn ℂ F (Metric.ball s₀ r)` using `differentiableOn_tsum_of_summable_norm hu (fun n => (e_differentiable n).differentiableOn) Metric.isOpen_ball hb`. Conclude with `hd.differentiableAt (Metric.ball_mem_nhds s₀ hr)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma F_differentiableAt (s₀ : ℂ) (h : 0 < s₀.re) : DifferentiableAt ℂ F s₀ := by
   obtain ⟨r, hr, u, hu, hb⟩ := e_dom s₀ h
@@ -255,32 +251,30 @@ lemma F_differentiableAt (s₀ : ℂ) (h : 0 < s₀.re) : DifferentiableAt ℂ F
   exact hd.differentiableAt (Metric.ball_mem_nhds s₀ hr)
 
 /- English proof (translation)
-Take `⟨r, hr, u, hu, hb⟩` from `e_dom s h`. Conclude with `Summable.of_norm_bounded hu (fun n => hb n s (Metric.mem_ball_self hr))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma summable_e (s : ℂ) (h : 0 < s.re) : Summable (fun n => e n s) := by
   obtain ⟨r, hr, u, hu, hb⟩ := e_dom s h
   exact Summable.of_norm_bounded hu (fun n => hb n s (Metric.mem_ball_self hr))
 
 /- English proof (translation)
-Establish `hS` using `summable_e s (by linarith)`. Establish `hz : riemannZeta s = ∑' n : ℕ, 1 / ((n : ℂ) + 1) ^ s` using `zeta_eq_tsum_one_div_nat_add_one_cpow h`. Establish `hA : Summable (fun n : ℕ => (1 - s) * ((n : ℂ) + 1) ^ (-s))`. Use `(summable_nat_add_iff 1).mpr (Complex.summable_one_div_nat_cpow.mpr h)` as an intermediate fact. Use `(this.mul_left (1 - s)).congr (fun n => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Rewrite using `[cpow_neg, one_div]`. Establish `hB : Summable (fun n : ℕ => ((n : ℂ) + 1) ^ (1 - s) - ((n : ℂ) + 2) ^ (1 - s))`. Use `(hS.sub hA).congr (fun n => ?_)` and prove the remaining obligations. Simplify using `only [e]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hp : ∀ N : ℕ, ∑ n ∈ Finset.range N, (((n : ℂ) + 1) ^ (1 - s) - ((n : ℂ) + 2) ^ (1 - s)) = 1 - ((N : ℂ) + 1) ^ (1 - s)`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => simp`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ N ih => rw [Finset.sum_range_succ, ih]`. Use `push_cast`. Put the polynomial expressions in normal form. Establish `hlim0 : Tendsto (fun N : ℕ => ((N : ℂ) + 1) ^ (1 - s)) atTop (𝓝 0)`. Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`.
+Treat this case separately. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ∀ N : ℕ, ‖((N : ℂ) + 1) ^ (1 - s)‖ = ((N : ℝ) + 1) ^ (1 - s.re)`. Introduce `N`. Use `norm_cpow_nat N 1 (by positivity) (1 - s)` as an intermediate fact. Move the coercions through the operations in `at this`. Simplify using `using this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts.
 
-Repeatedly rewrite using `[e1]`. Establish `hN : Tendsto (fun N : ℕ => (N : ℝ) + 1) atTop atTop` using `tendsto_atTop_add_const_right _ 1 tendsto_natCast_atTop_atTop`. Use `(tendsto_rpow_neg_atTop (y := s.re - 1) (by linarith)).comp hN` as an intermediate fact. Use `this.congr (fun N => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, neg_sub]`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `htB : ∑' n : ℕ, (((n : ℂ) + 1) ^ (1 - s) - ((n : ℂ) + 2) ^ (1 - s)) = 1`. Establish `ht` using `hB.hasSum.tendsto_sum_nat`. Rewrite `ht` using `[hp]`. Establish `hlim : Tendsto (fun N : ℕ => 1 - ((N : ℂ) + 1) ^ (1 - s)) atTop (𝓝 1)`. Simplify using `using tendsto_const_nhds.sub hlim0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `tendsto_nhds_unique ht hlim`. Unfold `F`. Combine the equalities or inequalities in the displayed calculation. Use `tsum_congr (fun n => ?_)` and prove the remaining obligations. Simplify using `only [e]`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = (1 - s) * riemannZeta s + 1 := by`. Rewrite using `[hA.tsum_add hB, htB, tsum_mul_left, hz]`. Use `congr 2`. Use `tsum_congr (fun n => ?_)` and prove the remaining obligations.
-
-Rewrite using `[cpow_neg, one_div]`. Use `_ = 1 + (1 - s) * riemannZeta s := by ring`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma F_eq (s : ℂ) (h : 1 < s.re) : F s = 1 + (1 - s) * riemannZeta s := by
   have hS := summable_e s (by linarith)
@@ -328,13 +322,11 @@ lemma F_eq (s : ℂ) (h : 1 < s.re) : F s = 1 + (1 - s) * riemannZeta s := by
     _ = 1 + (1 - s) * riemannZeta s := by ring
 
 /- English proof (translation)
-Establish `hU : IsOpen {s : ℂ | 0 < s.re}` using `isOpen_lt continuous_const continuous_re`. Establish `hF : AnalyticOnNhd ℂ (fun s => 1 - F s) {s : ℂ | 0 < s.re}`. Rewrite using `[Complex.analyticOnNhd_iff_differentiableOn hU]`. Introduce `z hz`. Conclude with `((F_differentiableAt z hz).const_sub 1).differentiableWithinAt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hZ : AnalyticOnNhd ℂ riemannZeta₁ {s : ℂ | 0 < s.re}` using `fun z _ => differentiable_riemannZeta₁.analyticAt z`. Establish `hpc : IsPreconnected {s : ℂ | 0 < s.re}` using `(convex_halfSpace_re_gt 0).isPreconnected`. Establish `h2 : (2 : ℂ) ∈ {s : ℂ | 0 < s.re}` using `by simp`. Establish `hev : riemannZeta₁ =ᶠ[𝓝 (2 : ℂ)] (fun s => 1 - F s)`. Establish `ho : {s : ℂ | 1 < s.re} ∈ 𝓝 (2 : ℂ)` using `(isOpen_lt continuous_const continuous_re).mem_nhds (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [ho] with s hs`. Establish `hs1 : s ≠ 1` using `by rintro rfl; simp at hs`. Rewrite using `[F_eq s hs, riemannZeta_eq_inv_sub_mul hs1]`. Establish `hne : s - 1 ≠ 0` using `sub_ne_zero.mpr hs1`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Conclude with `hZ.eqOn_of_preconnected_of_eventuallyEq hF hpc h2 hev h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma riemannZetaOne_eq_one_sub_of_re_pos (s : ℂ) (h : 0 < s.re) : riemannZeta₁ s = 1 - F s := by
   have hU : IsOpen {s : ℂ | 0 < s.re} := isOpen_lt continuous_const continuous_re
@@ -361,7 +353,7 @@ def er (n : ℕ) (σ : ℝ) : ℝ :=
   (1 - σ) * ((n : ℝ) + 1) ^ (-σ) + ((n : ℝ) + 1) ^ (1 - σ) - ((n : ℝ) + 2) ^ (1 - σ)
 
 /- English proof (translation)
-Establish `p1 : (0 : ℝ) ≤ (n : ℝ) + 1` using `by positivity`. Establish `p2 : (0 : ℝ) ≤ (n : ℝ) + 2` using `by positivity`. Simplify using `only [er, e, Complex.ofReal_sub, Complex.ofReal_add, Complex.ofReal_mul, Complex.ofReal_one, Complex.ofReal_cpow p1, Complex.ofReal_cpow p2, Complex.ofReal_neg, Complex.ofReal_natCast, Complex.ofReal_ofNat]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 lemma e_ofReal (n : ℕ) (σ : ℝ) : e n σ = (er n σ : ℂ) := by
   have p1 : (0 : ℝ) ≤ (n : ℝ) + 1 := by positivity
@@ -371,11 +363,11 @@ lemma e_ofReal (n : ℕ) (σ : ℝ) : e n σ = (er n σ : ℂ) := by
     Complex.ofReal_ofNat]
 
 /- English proof (translation)
-Establish `hx0 : 0 < (n : ℝ) + 1` using `by positivity`. Establish `hi : 0 < ((n : ℝ) + 1)⁻¹` using `inv_pos.mpr hx0`. Establish `h2 : (n : ℝ) + 2 = ((n : ℝ) + 1) * (1 + ((n : ℝ) + 1)⁻¹)` using `by field_simp; ring`. Establish `hb` using `rpow_one_add_le_one_add_mul_self (s := ((n : ℝ) + 1)⁻¹) (by linarith) (p := 1 - σ) (by linarith) (by linarith)`. Establish `hm : ((n : ℝ) + 2) ^ (1 - σ) = ((n : ℝ) + 1) ^ (1 - σ) * (1 + ((n : ℝ) + 1)⁻¹) ^ (1 - σ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2, Real.mul_rpow hx0.le (by positivity)]`. Establish `hs : ((n : ℝ) + 1) ^ (-σ) = ((n : ℝ) + 1) ^ (1 - σ) * ((n : ℝ) + 1)⁻¹`. Rewrite using `[show -σ = (1 - σ) - 1 by ring, Real.rpow_sub_one hx0.ne', div_eq_mul_inv]`. Establish `hxp : 0 < ((n : ℝ) + 1) ^ (1 - σ)` using `Real.rpow_pos_of_pos hx0 _`. Use `mul_le_mul_of_nonneg_left hb hxp.le` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `er`. Rewrite using `[hm, hs]`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma er_nonneg (n : ℕ) (σ : ℝ) (h0 : 0 < σ) (h1 : σ < 1) : 0 ≤ er n σ := by
   have hx0 : 0 < (n : ℝ) + 1 := by positivity
@@ -394,11 +386,11 @@ lemma er_nonneg (n : ℕ) (σ : ℝ) (h0 : 0 < σ) (h1 : σ < 1) : 0 ≤ er n σ
   nlinarith
 
 /- English proof (translation)
-Establish `hy0 : 0 < (n : ℝ) + 2` using `by positivity`. Establish `hyi : ((n : ℝ) + 2)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (by have := n.cast_nonneg (α := ℝ); linarith)`. Establish `h2 : (n : ℝ) + 1 = ((n : ℝ) + 2) * (1 + -((n : ℝ) + 2)⁻¹)` using `by field_simp; ring`. Establish `hb` using `rpow_one_add_le_one_add_mul_self (s := -((n : ℝ) + 2)⁻¹) (by linarith) (p := 1 - σ) (by linarith) (by linarith)`. Establish `hpos : 0 ≤ 1 + -((n : ℝ) + 2)⁻¹` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : ((n : ℝ) + 1) ^ (1 - σ) = ((n : ℝ) + 2) ^ (1 - σ) * (1 + -((n : ℝ) + 2)⁻¹) ^ (1 - σ)`. Rewrite using `[h2, Real.mul_rpow hy0.le hpos]`. Establish `hs : ((n : ℝ) + 2) ^ (-σ) = ((n : ℝ) + 2) ^ (1 - σ) * ((n : ℝ) + 2)⁻¹`. Rewrite using `[show -σ = (1 - σ) - 1 by ring, Real.rpow_sub_one hy0.ne', div_eq_mul_inv]`. Establish `hyp : 0 < ((n : ℝ) + 2) ^ (1 - σ)` using `Real.rpow_pos_of_pos hy0 _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left hb hyp.le` as an intermediate fact. Unfold `er`. Rewrite using `[hm, hs]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma er_le (n : ℕ) (σ : ℝ) (h0 : 0 < σ) (h1 : σ < 1) :
     er n σ ≤ (1 - σ) * (((n : ℝ) + 1) ^ (-σ) - ((n : ℝ) + 2) ^ (-σ)) := by
@@ -419,13 +411,13 @@ lemma er_le (n : ℕ) (σ : ℝ) (h0 : 0 < σ) (h1 : σ < 1) :
   nlinarith
 
 /- English proof (translation)
-Use `Real.tsum_le_of_sum_range_le (fun n => er_nonneg n σ h0 h1) (fun N => ?_)` and prove the remaining obligations. Set `a : ℕ → ℝ` to `fun i => ((i : ℝ) + 1) ^ (-σ)`. Establish `ha : ∀ i : ℕ, a (i + 1) = ((i : ℝ) + 2) ^ (-σ)`. Introduce `i`. Simplify using `only [a]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum (fun i _ => ?_)` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ha]`. Conclude with `er_le i σ h0 h1`. Use `_ = (1 - σ) * (a 0 - a N) := by rw [← Finset.mul_sum, Finset.sum_range_sub']`. Use `_ ≤ 1 - σ := by`. Establish `: 0 ≤ a N` using `by simp only [a]; positivity`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `ha0 : a 0 = 1` using `by simp [a]`. Rewrite using `[ha0]`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 lemma tsum_er_le (σ : ℝ) (h0 : 0 < σ) (h1 : σ < 1) : ∑' n, er n σ ≤ 1 - σ := by
   refine Real.tsum_le_of_sum_range_le (fun n => er_nonneg n σ h0 h1) (fun N => ?_)
@@ -445,11 +437,11 @@ end ZRN
 
 open ZRN in
 /- English proof (translation)
-Introduce `σ h0 h1`. Establish `hσ1 : (σ : ℂ) ≠ 1`. Introduce `h`. Use `congrArg Complex.re h` as an intermediate fact. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[riemannZeta_eq_inv_sub_mul hσ1]`. Use `mul_ne_zero (inv_ne_zero (sub_ne_zero.mpr hσ1)) ?_` and prove the remaining obligations. Rewrite using `[riemannZetaOne_eq_one_sub_of_re_pos _ (by simpa using h0), F]`. Repeatedly rewrite using `[e_ofReal]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[← Complex.ofReal_tsum]`. Use `tsum_er_le σ h0 h1` as an intermediate fact. Introduce `h`. Establish `h'` using `congrArg Complex.re h`. Simplify using `at h'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

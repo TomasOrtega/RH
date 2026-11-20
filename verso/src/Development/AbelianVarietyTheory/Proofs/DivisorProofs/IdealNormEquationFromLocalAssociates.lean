@@ -6,25 +6,25 @@ namespace GlobalTheory.CmIdealGlue
 variable {Λ : Type} [CommRing Λ]
 
 /- English proof (translation)
-Rewrite using `[← nsmul_one, TensorProduct.smul_tmul, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natCast_tmul (ℓ : ℕ) [Fact ℓ.Prime] (n : ℕ) (b : Λ) :
     ((n : ℤ_[ℓ]) ⊗ₜ[ℤ] b) = (1 : ℤ_[ℓ]) ⊗ₜ[ℤ] ((n : Λ) * b) := by
   rw [← nsmul_one, TensorProduct.smul_tmul, nsmul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[← Algebra.TensorProduct.includeLeftRingHom_apply, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natCast_eq (ℓ : ℕ) [Fact ℓ.Prime] (n : ℕ) :
     ((n : ℤ_[ℓ] ⊗[ℤ] Λ)) = (n : ℤ_[ℓ]) ⊗ₜ[ℤ] (1 : Λ) := by
   rw [← Algebra.TensorProduct.includeLeftRingHom_apply, map_natCast]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `tmul z b`. Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.mp (PadicInt.appr_spec k z)`. Use `⟨(PadicInt.appr z k : Λ) * b, w ⊗ₜ[ℤ] b, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz : z = (PadicInt.appr z k : ℤ_[ℓ]) + (ℓ : ℤ_[ℓ]) ^ k * w` using `by rw [mul_comm, hw]; ring`. Use `conv_lhs => rw [hz]`. Establish `hl : ((ℓ : ℤ_[ℓ] ⊗[ℤ] Λ)) ^ k = ((ℓ : ℤ_[ℓ]) ^ k) ⊗ₜ[ℤ] (1 : Λ)`. Rewrite using `[natCast_eq, Algebra.TensorProduct.tmul_pow, one_pow]`. Rewrite using `[TensorProduct.add_tmul, natCast_tmul, hl, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y hx hy`. Take `⟨a, r, rfl⟩` from `hx`. Take `⟨a', r', rfl⟩` from `hy`. Conclude with `⟨a + a', r + r', by rw [TensorProduct.tmul_add]; ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_decomp (ℓ : ℕ) [Fact ℓ.Prime] (k : ℕ) (x : ℤ_[ℓ] ⊗[ℤ] Λ) :
     ∃ a : Λ, ∃ r : ℤ_[ℓ] ⊗[ℤ] Λ, x = (1 : ℤ_[ℓ]) ⊗ₜ[ℤ] a + ((ℓ : ℤ_[ℓ] ⊗[ℤ] Λ) ^ k) * r := by
@@ -44,7 +44,7 @@ theorem exists_decomp (ℓ : ℕ) [Fact ℓ.Prime] (k : ℕ) (x : ℤ_[ℓ] ⊗[
     exact ⟨a + a', r + r', by rw [TensorProduct.tmul_add]; ring⟩
 
 /- English proof (translation)
-Establish `h : IsUnit (n : ℤ_[ℓ])` using `PadicInt.isUnit_iff.mpr (PadicInt.norm_natCast_eq_one_iff.mpr ((Nat.Prime.coprime_iff_not_dvd hℓ.out).mpr hn))`. Simplify using `using h.map (Algebra.TensorProduct.includeLeftRingHom : ℤ_[ℓ] →+* ℤ_[ℓ] ⊗[ℤ] Λ)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_natCast (ℓ : ℕ) [hℓ : Fact ℓ.Prime] (n : ℕ) (hn : ¬ ℓ ∣ n) :
     IsUnit (n : ℤ_[ℓ] ⊗[ℤ] Λ) := by
@@ -53,7 +53,7 @@ theorem isUnit_natCast (ℓ : ℕ) [hℓ : Fact ℓ.Prime] (n : ℕ) (hn : ¬ �
   simpa using h.map (Algebra.TensorProduct.includeLeftRingHom : ℤ_[ℓ] →+* ℤ_[ℓ] ⊗[ℤ] Λ)
 
 /- English proof (translation)
-Rewrite using `[eq_intCast, Int.cast_natCast, ← map_natCast (Ideal.Quotient.mk _), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem castRingHom_pow_eq_zero (ℓ k : ℕ) :
     (Int.castRingHom (Λ ⧸ Ideal.span {((ℓ ^ k : ℕ) : Λ)})) ((ℓ ^ k : ℕ) : ℤ) = 0 := by
@@ -74,20 +74,20 @@ noncomputable def toQuot (ℓ : ℕ) [Fact ℓ.Prime] (k : ℕ) :
     (fun _ _ => Commute.all _ _)).toRingHom
 
 /- English proof (translation)
-Simplify using `[toQuot]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toQuot_tmul (ℓ : ℕ) [Fact ℓ.Prime] (k : ℕ) (a : Λ) :
     toQuot ℓ k ((1 : ℤ_[ℓ]) ⊗ₜ[ℤ] a) = Ideal.Quotient.mk _ a := by
   simp [toQuot]
 
 /- English proof (translation)
-Take `⟨k, n, hn, hmn⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hm.ne' ℓ hℓ.out.one_lt.ne'`. Use `⟨n, Nat.pos_of_ne_zero (by rintro rfl; simp at hmn; omega), hn, ?_⟩` and prove the remaining obligations. Establish `h1` using `Ideal.mem_map_of_mem (toQuot (Λ := Λ) ℓ k) hx`. Rewrite `h1` using `[Ideal.map_map]`. Establish `hcomp : (toQuot (Λ` using `Λ) ℓ k).comp (Algebra.TensorProduct.includeRight : Λ →ₐ[ℤ] ℤ_[ℓ] ⊗[ℤ] Λ).toRingHom = Ideal.Quotient.mk _ := by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `a`. Simplify using `[toQuot_tmul]`. Rewrite `h1` using `[hcomp]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, toQuot_tmul] at h1`. Take `⟨j, hj, hjx⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).mp h1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.mp (Ideal.Quotient.eq.mp hjx.symm)`. Establish `: (n : Λ) * x = n * j + t * m`. Rewrite using `[hmn, Nat.cast_mul]`. Establish `: x = j + t * ((ℓ ^ k : ℕ) : Λ)` using `by rw [ht]; ring`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `J.add_mem (J.mul_mem_left _ hj) (J.mul_mem_left _ hmJ)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coprime_mul_mem (J : Ideal Λ) (m : ℕ) (hm : 0 < m) (hmJ : (m : Λ) ∈ J) (x : Λ)
     (ℓ : ℕ) [hℓ : Fact ℓ.Prime]
@@ -114,19 +114,15 @@ theorem exists_coprime_mul_mem (J : Ideal Λ) (m : ℕ) (hm : 0 < m) (hmJ : (m :
   exact J.add_mem (J.mul_mem_left _ hj) (J.mul_mem_left _ hmJ)
 
 /- English proof (translation)
-Establish `hex : ∃ g : ℕ, 0 < g ∧ (g : Λ) * x ∈ J` using `⟨m, hm, J.mul_mem_right _ hmJ⟩`. Use `set g := Nat.find hex with hg`. Take `⟨hg0, hgJ⟩` from `Nat.find_spec hex`. Establish `hdvd : ∀ n : ℕ, 0 < n → (n : Λ) * x ∈ J → g ∣ n`. Introduce `n hn hnJ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hgcd0 : 0 < Nat.gcd g n` using `Nat.gcd_pos_of_pos_left _ hg0`. Establish `hgcdJ : ((Nat.gcd g n : ℕ) : Λ) * x ∈ J`. Establish `e` using `Nat.gcd_eq_gcd_ab g n`. Establish `e' : ((Nat.gcd g n : ℕ) : Λ) = (g : Λ) * ((Nat.gcdA g n : ℤ) : Λ) + (n : Λ) * ((Nat.gcdB g n : ℤ) : Λ)`. Use `congrArg (fun z : ℤ => (z : Λ)) e` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite using `[e', add_mul]`. Use `J.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm (g : Λ), mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `J.mul_mem_left _ hgJ`. Rewrite using `[mul_comm (n : Λ), mul_assoc]`. Conclude with `J.mul_mem_left _ hnJ`. Establish `hle : g ≤ Nat.gcd g n` using `Nat.find_min' hex ⟨hgcd0, hgcdJ⟩`. Establish `hge : Nat.gcd g n ≤ g` using `Nat.le_of_dvd hg0 (Nat.gcd_dvd_left g n)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `: Nat.gcd g n = g` using `le_antisymm hge hle`. Rewrite using `[← this]`. Conclude with `Nat.gcd_dvd_right g n`. Establish `hg1 : g = 1`. Assume the negation of the conclusion as `hne`.
-
-Establish `hp : (Nat.minFac g).Prime` using `Nat.minFac_prime hne`. Use `haveI : Fact (Nat.minFac g).Prime := ⟨hp⟩`. Take `⟨n, hn0, hnd, hnJ⟩` from `exists_coprime_mul_mem J m hm hmJ x (Nat.minFac g) (hx _)`. Conclude with `hnd ((Nat.minFac_dvd g).trans (hdvd n hn0 hnJ))`. Rewrite `hgJ` using `[← hg, hg1, Nat.cast_one, one_mul]`.
-
-Conclude with `hgJ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_map (J : Ideal Λ) (m : ℕ) (hm : 0 < m) (hmJ : (m : Λ) ∈ J) (x : Λ)
     (hx : ∀ (ℓ : ℕ) [Fact ℓ.Prime], (Algebra.TensorProduct.includeRight : Λ →ₐ[ℤ] ℤ_[ℓ] ⊗[ℤ] Λ) x ∈
@@ -164,14 +160,14 @@ theorem mem_of_forall_map (J : Ideal Λ) (m : ℕ) (hm : 0 < m) (hmJ : (m : Λ) 
   exact hgJ
 
 /- English proof (translation)
-Rewrite using `[← Algebra.TensorProduct.includeRight_apply (R := ℤ) (A := ℤ_[ℓ]), map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natCast_eq_tmul (ℓ : ℕ) [Fact ℓ.Prime] (n : ℕ) :
     (n : ℤ_[ℓ] ⊗[ℤ] Λ) = (1 : ℤ_[ℓ]) ⊗ₜ[ℤ] (n : Λ) := by
   rw [← Algebra.TensorProduct.includeRight_apply (R := ℤ) (A := ℤ_[ℓ]), map_natCast]
 
 /- English proof (translation)
-Rewrite using `[Ideal.mem_span_singleton]`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.mp hmD`. Take `⟨u, hu⟩` from `h`. Use `⟨e * u * ((1 : ℤ_[ℓ]) ⊗ₜ[ℤ] t), ?_⟩` and prove the remaining obligations. Rewrite using `[natCast_eq_tmul, ← ht, ← one_mul (1 : ℤ_[ℓ]), ← Algebra.TensorProduct.tmul_mul_tmul, ← hu]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -190,46 +186,42 @@ noncomputable def glued (δ : ∀ (ℓ : ℕ) [Fact ℓ.Prime], ℤ_[ℓ] ⊗[�
     (Algebra.TensorProduct.includeRight : Λ →ₐ[ℤ] ℤ_[ℓ] ⊗[ℤ] Λ).toRingHom
 
 /- English proof (translation)
-Simplify using `[glued, Ideal.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_glued (δ : ∀ (ℓ : ℕ) [Fact ℓ.Prime], ℤ_[ℓ] ⊗[ℤ] Λ) (x : Λ) :
     x ∈ glued δ ↔ ∀ (ℓ : ℕ) [Fact ℓ.Prime], (1 : ℤ_[ℓ]) ⊗ₜ[ℤ] x ∈ Ideal.span {δ ℓ} := by
   simp [glued, Ideal.mem_iInf]
 
 /- English proof (translation)
-Introduce `Λ _ c D m hm hmD δ hδ`. Establish `hmδ : ∀ (ℓ : ℕ) [Fact ℓ.Prime], (m : ℤ_[ℓ] ⊗[ℤ] Λ) ∈ Ideal.span {δ ℓ}` using `fun ℓ _ => natCast_mem_span_of_assoc ℓ hmD (hδ ℓ)`. Establish `hmN : (m : Λ) ∈ glued δ`. Rewrite using `[mem_glued]`. Introduce `ℓ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← natCast_eq_tmul]`. Conclude with `hmδ ℓ`. Establish `hloc : ∀ (ℓ : ℕ) [Fact ℓ.Prime], (glued δ).map (Algebra.TensorProduct.includeRight : Λ →ₐ[ℤ] ℤ_[ℓ] ⊗[ℤ] Λ).toRingHom = Ideal.span {δ ℓ}`. Introduce `ℓ hℓ`. Apply `le_antisymm` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite `hx` using `[mem_glued]`. Simplify using `using hx ℓ`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, n, hn, hmn⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hm.ne' ℓ hℓ.out.one_lt.ne'`. Take `⟨a, r, hdec⟩` from `exists_decomp ℓ k (δ ℓ)`. Establish `hnu : IsUnit (n : ℤ_[ℓ] ⊗[ℤ] Λ)` using `isUnit_natCast ℓ n hn`. Establish `hna : (n : Λ) * a ∈ glued δ`. Rewrite using `[mem_glued]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ℓ' hℓ'`. Rewrite using `[Ideal.mem_span_singleton]`. Establish `hm'` using `hmδ ℓ'`. Rewrite `hm'` using `[Ideal.mem_span_singleton, hmn, Nat.cast_mul]`. Establish `e : (1 : ℤ_[ℓ']) ⊗ₜ[ℤ] ((n : Λ) * a) = (n : ℤ_[ℓ'] ⊗[ℤ] Λ) * ((1 : ℤ_[ℓ']) ⊗ₜ[ℤ] a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[natCast_eq_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Rewrite using `[e]`. Distinguish the cases in `h : ℓ' = ℓ`. Substitute `h` using the available equality. Establish `hk : δ ℓ' ∣ ((ℓ' ^ k : ℕ) : ℤ_[ℓ'] ⊗[ℤ] Λ)` using `(IsUnit.dvd_mul_right hnu).mp hm'`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (1 : ℤ_[ℓ']) ⊗ₜ[ℤ] a = δ ℓ' - ((ℓ' ^ k : ℕ) : ℤ_[ℓ'] ⊗[ℤ] Λ) * r`. Rewrite using `[hdec]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Dvd.dvd.mul_left (dvd_sub dvd_rfl (hk.mul_right r)) _`. Establish `hku : IsUnit ((ℓ ^ k : ℕ) : ℤ_[ℓ'] ⊗[ℤ] Λ)` using `isUnit_natCast ℓ' _ (fun hd => h ((Nat.prime_dvd_prime_iff_eq hℓ'.out hℓ.out).mp (hℓ'.out.dvd_of_dvd_pow hd)))`. Establish `: δ ℓ' ∣ (n : ℤ_[ℓ'] ⊗[ℤ] Λ)` using `(IsUnit.dvd_mul_left hku).mp hm'`. Conclude with `this.mul_right _`. Establish `h1 : (n : ℤ_[ℓ] ⊗[ℤ] Λ) * ((1 : ℤ_[ℓ]) ⊗ₜ[ℤ] a) ∈ (glued δ).map (Algebra.TensorProduct.includeRight : Λ →ₐ[ℤ] ℤ_[ℓ] ⊗[ℤ] Λ).toRingHom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `Ideal.mem_map_of_mem (Algebra.TensorProduct.includeRight : Λ →ₐ[ℤ] ℤ_[ℓ] ⊗[ℤ] Λ).toRingHom hna` as an intermediate fact. Simplify `this` using `[natCast_eq_tmul, Algebra.TensorProduct.tmul_mul_tmul]`. Establish `h2 : ((ℓ ^ k : ℕ) : ℤ_[ℓ] ⊗[ℤ] Λ) * (n : ℤ_[ℓ] ⊗[ℤ] Λ) ∈ (glued δ).map (Algebra.TensorProduct.includeRight : Λ →ₐ[ℤ] ℤ_[ℓ] ⊗[ℤ] Λ).toRingHom`. Use `Ideal.mem_map_of_mem (Algebra.TensorProduct.includeRight : Λ →ₐ[ℤ] ℤ_[ℓ] ⊗[ℤ] Λ).toRingHom hmN` as an intermediate fact. Rewrite `this` using `[map_natCast, hmn, Nat.cast_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `h1'` using `(Ideal.unit_mul_mem_iff_mem _ hnu).mp h1`. Establish `h2'` using `(Ideal.mul_unit_mem_iff_mem _ hnu).mp h2`. Rewrite using `[hdec]`. Move the coercions through the operations in `at h2'`.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Ideal.add_mem _ h1' (Ideal.mul_mem_right _ _ h2')`. Use `⟨glued δ, ?_, hloc⟩` and prove the remaining obligations. Establish `hJ1 : ∀ (ℓ : ℕ) [Fact ℓ.Prime], (glued δ * (glued δ).map c).map (Algebra.TensorProduct.includeRight : Λ →ₐ[ℤ] ℤ_[ℓ] ⊗[ℤ] Λ).toRingHom = Ideal.span {(1 : ℤ_[ℓ]) ⊗ₜ[ℤ] D}`. Introduce `ℓ _`. Establish `hc : (Algebra.TensorProduct.includeRight : Λ →ₐ[ℤ] ℤ_[ℓ] ⊗[ℤ] Λ).toRingHom.comp c = (Algebra.TensorProduct.map (AlgHom.id ℤ_[ℓ] ℤ_[ℓ]) c.toIntAlgHom).toRingHom.comp (Algebra.TensorProduct.includeRight : Λ →ₐ[ℤ] ℤ_[ℓ] ⊗[ℤ] Λ).toRingHom`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a`. Simplify using the standard rewrite rules. Rewrite using `[Ideal.map_mul, Ideal.map_map, hc, ← Ideal.map_map, hloc ℓ, Ideal.map_span, Set.image_singleton, Ideal.span_singleton_mul_span_singleton]`. Take `⟨u, hu⟩` from `hδ ℓ`. Rewrite using `[← hu, Ideal.span_singleton_mul_right_unit u.isUnit]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hJ2 : ∀ (ℓ : ℕ) [Fact ℓ.Prime], (Ideal.span {D}).map (Algebra.TensorProduct.includeRight : Λ →ₐ[ℤ] ℤ_[ℓ] ⊗[ℤ] Λ).toRingHom = Ideal.span {(1 : ℤ_[ℓ]) ⊗ₜ[ℤ] D}`. Introduce `ℓ _`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Apply `mem_of_forall_map _ m hm hmD x` to reduce the goal to its premises. Introduce `ℓ _`. Rewrite using `[hJ2 ℓ, ← hJ1 ℓ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Ideal.mem_map_of_mem _ hx`. Introduce `x hx`. Establish `hmm : (((m * m : ℕ)) : Λ) ∈ glued δ * (glued δ).map c`. Rewrite using `[Nat.cast_mul]`. Use `Ideal.mul_mem_mul hmN ?_` and prove the remaining obligations.
-
-Use `Ideal.mem_map_of_mem c hmN` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Apply `mem_of_forall_map _ (m * m) (Nat.mul_pos hm hm) hmm x` to reduce the goal to its premises. Introduce `ℓ _`. Rewrite using `[hJ1 ℓ, ← hJ2 ℓ]`.
-
-Conclude with `Ideal.mem_map_of_mem _ hx`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue : ∀ (Λ : Type) [CommRing Λ] (c : Λ →+* Λ) (D : Λ) (m : ℕ), 0 < m → (m : Λ) ∈ Ideal.span {D} →
     ∀ (δ : ∀ (ℓ : ℕ) [Fact ℓ.Prime], ℤ_[ℓ] ⊗[ℤ] Λ),

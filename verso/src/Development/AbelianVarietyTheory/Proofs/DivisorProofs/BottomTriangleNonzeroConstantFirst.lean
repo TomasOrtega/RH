@@ -37,13 +37,13 @@ open scoped ComplexOrder
 open GlobalTheory.DefiniteClassAvg in
 
 /- English proof (translation)
-Establish `hJo : IsOpen (((Formalism.L2.DIV.St X.rA'.β).comap (Lev.finE A') : Subgroup (GA D A')) : Set (GA D A'))`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.ThetaIntegrand.eventually_princ A' X.rA'.β ∅] with κ h1`. Conclude with `h1.2.1`. Establish `hV : ∀ φ : D.host.E →+* ℂ, (A'.gram.map φ).PosDef` using `fun φ => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hstd.1, Matrix.map_one φ (map_zero φ) (map_one φ)]`. Conclude with `Matrix.PosDef.one`. Set `V' : HSp D` to `{ A' with sig := fun _ => (A'.rank, 0) }`. Establish `hS' : V'.SigOK` using `fun τ => GlobalTheory.Proof.GenusMassSignature.hasSignature_of_posDef (hV τ)`. Establish `hD' : V'.IsDefinite` using `fun τ => Or.inl rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hGc : IsCompact (GinfC A' : Set (GA D A'))` using `Formalism.IndefR.Eqv.isCompact_GinfC (V := V') hS' hD'`. Establish `hLc : IsCompact ((Lev.levA A' (Formalism.L2.DIV.St X.rA'.β) : Subgroup (GA D A')) : Set (GA D A'))`. Take `⟨C, hC, hCm⟩` from `GlobalTheory.ParahoricCompact.exists_compact A' X.rA'.β`. Use `hC.of_isClosed_subset ((GlobalTheory.Ker.CongTop.isClosed_GfC A').inter (Subgroup.isClosed_of_isOpen _ hJo)) fun k hk => ?_` and prove the remaining obligations. Take `⟨hk1, hk2⟩` from `Lev.mem_levA.1 hk`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `hCm k hk1 hk2`. Use `⟨hJo, (hLc.mul hGc).of_isClosed_subset (Subgroup.isClosed_of_isOpen _ hJo) ?_⟩` and prove the remaining obligations. Introduce `k hk`. Conclude with `⟨finPart A' k, finPart_mem_levA A' hk, realPart A' k, realPart_mem A' k, finPart_mul_realPart A' k⟩`.
+A detailed English derivation is pending.
 -/
 theorem openCompact {D : D7} {T : Type} {A A' WW : HSp D} (X : Tri T A A' WW) (hstd : X.rA'.IsStd) :
     IsOpen (((Formalism.L2.DIV.St X.rA'.β).comap (Lev.finE A') : Subgroup (GA D A')) : Set (GA D A')) ∧
@@ -72,23 +72,21 @@ theorem openCompact {D : D7} {T : Type} {A A' WW : HSp D} (X : Tri T A A' WW) (h
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hPr hK hM hI hB`. Take `⟨c1, h1⟩` from `GlobalTheory.T.bottom_triangle_level_fixes_vector hPr hK hM hI hB`. Take `⟨c2, h2⟩` from `GlobalTheory.T.bottom_pair_modular_twist_identity hPr hK hM hI hB`. Use `⟨max c1 c2, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C1, x1, h1⟩` from `h1 ε CF (le_trans (le_max_left _ _) hCF)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨C2, x2, h2⟩` from `h2 ε CF (le_trans (le_max_right _ _) hCF)`. Use `⟨max C1 C2, max x1 x2, fun C hC0 D large₂ he hx hR T Lc μ₀ hL G => ?_⟩` and prove the remaining obligations. Establish `h1` using `h1 C (le_trans (le_max_left _ _) hC0) D large₂ he (le_trans (le_max_left _ _) hx) hR T Lc μ₀ hL G`. Establish `h2` using `h2 C (le_trans (le_max_right _ _) hC0) D large₂ he (le_trans (le_max_right _ _) hx) hR T Lc μ₀ hL G`. Introduce `W hψ i j A A' WW X δ t0 hX`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hJo, hJc⟩` from `openCompact X hX.std'`. Use `haveI : X.m'.IsHaarMeasure := hX.is.meas'.1`. Establish `hJtop : X.m' ((Formalism.L2.DIV.St X.rA'.β).comap (Lev.finE A') : Subgroup (GA D A')) ≠ ⊤` using `hJc.measure_lt_top.ne`. Establish `hJ0 : X.m' ((Formalism.L2.DIV.St X.rA'.β).comap (Lev.finE A') : Subgroup (GA D A')) ≠ 0` using `(hJo.measure_pos X.m' ⟨1, Subgroup.one_mem _⟩).ne'`. Use `⟨((X.m' ((Formalism.L2.DIV.St X.rA'.β).comap (Lev.finE A') : Subgroup (GA D A'))).toReal : ℂ), by exact_mod_cast (ENNReal.toReal_pos hJ0 hJtop).ne', fun s Q P P' hP ea ed h g hg gx hgx T' => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hu, hcard⟩` from `GlobalTheory.T.standardLattice_doubleCosetClasses_stabilisers A' X.rA' hX.is.rigA' hX.std' ea gx hgx`. Use `haveI : Finite (GlobalTheory.NormSum.Cls D P'.a (GlobalTheory.NormSum.intG D P'.a)) := (GlobalTheory.NormSum.cls_finite_card_le D P'.a).1`. Use `letI : Fintype (GlobalTheory.NormSum.Cls D P'.a (GlobalTheory.NormSum.intG D P'.a)) := Fintype.ofFinite _`. Establish `hfin : ∀ x, {γ : GA D A' | γ ∈ GQ A' ∧ (gx x)⁻¹ * γ * gx x ∈ ((Formalism.L2.DIV.St X.rA'.β).comap (Lev.finE A') : Subgroup (GA D A'))}.Finite` using `fun x => by`. Establish `h1` using `GlobalTheory.InnerClassSum.finite_stab_of_measure X.m' (GQ A') _ hX.is.meas'.2 hJ0 hJtop (gx x)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `him : {γ : GA D A' | γ ∈ GQ A' ∧ (gx x)⁻¹ * γ * gx x ∈ ((Formalism.L2.DIV.St X.rA'.β).comap (Lev.finE A') : Subgroup (GA D A'))} = Subtype.val '' {γ : GQ A' | (gx x)⁻¹ * (γ : GA D A') * gx x ∈ ((Formalism.L2.DIV.St X.rA'.β).comap (Lev.finE A') : Subgroup (GA D A'))}`. Use extensionality with `γ`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image, Subtype.exists, exists_and_right, exists_eq_right]`. Conclude with `⟨fun h => ⟨h.1, h.2⟩, fun ⟨h, h'⟩ => ⟨h, h'⟩⟩`. Rewrite using `[him]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.image _`. Establish `hl` using `GlobalTheory.SqTower.Normal.ker'_left hX.is s (GlobalTheory.BotFormula.minorF ea ed T') g`. Establish `hr : ∀ k ∈ ((Formalism.L2.DIV.St X.rA'.β).comap (Lev.finE A') : Subgroup (GA D A')), ∀ x, X.ker' W.ψ W.θ s (GlobalTheory.BotFormula.minorF ea ed T') g (x * k) = X.ker' W.ψ W.θ s (GlobalTheory.BotFormula.minorF ea ed T') g x`. Rewrite using `[GlobalTheory.Mass.Levels.comap_finE]`. Use `GlobalTheory.DefiniteClassSum.invariant_sup ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `k hk x`. Take `⟨hk1, -⟩` from `Lev.mem_levA.1 hk`. Establish `hW : IsWeilDatumO W.ψ A' WW _ _ (X.ω' s)` using `hX.is.weil' s`. Establish `hf' : IsThetaFunO W.ψ A' WW (X.f' s)` using `GlobalTheory.GalLift.Vec.theta_of_thetaAt hX.is.isVac.1 hX.is.isVac.2.inf (hX.is.snd s) hX.is.isVac'.2.theta`. Use `show X.ω' s (x * k, g) _ 0 = X.ω' s (x, g) _ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e : ((x * k, g) : GA D A' × GA D WW) = (x, g) * (k, 1)` using `by simp`. Rewrite using `[e, map_mul, Module.End.mul_apply, GlobalTheory.OrientedHeis.om_fin_pureTensorO W.ψ A' WW _ _ _ hW W.θ hX.is.isVac'.2.inf k hk1 1 (GfC WW).one_mem _ _ _ _ _ _ hf', h1 W hψ i j A A' WW X hX s k hk]`. Introduce `k hk x`. Conclude with `h2 W hψ i j A A' WW X δ t0 hX s Q P P' hP ea ed T' g k hk x`. Take `⟨-, -, heq⟩` from `GlobalTheory.Ker.integral_fundamentalDomain_eq_sum_doubleCoset (GA D A') X.m' (GQ A') _ X.fd' hX.is.meas'.2 hJo hJtop _ gx hu hfin _ hl hr`.
-
-Rewrite using `[Tri.I', heq, finsum_eq_sum_of_fintype]`. Use `congr 1`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[hcard x]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classSum_small : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →

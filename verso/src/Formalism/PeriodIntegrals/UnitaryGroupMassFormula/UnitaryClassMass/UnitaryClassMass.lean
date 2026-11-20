@@ -11,18 +11,18 @@ noncomputable section
 namespace PI.UnitaryGroupMassFormula.UJClassMass
 
 /- English proof (translation)
-The claim follows from `tensLocX_of local_integral_of_substitution`.
+A detailed English derivation is pending.
 -/
 theorem tensor_localization : TensLoc := tensLocX_of local_integral_of_substitution
 
 /- English proof (translation)
-The claim follows from `hermitian_approximation_of_parts local_switching_lattice tensor_localization lattices_close_locally wPlace bcU gramOK`.
+A detailed English derivation is pending.
 -/
 theorem hermitian_approximation : HermApprox :=
   hermitian_approximation_of_parts local_switching_lattice tensor_localization lattices_close_locally wPlace bcU gramOK
 
 /- English proof (translation)
-The claim follows from `uJClassMass_of_herm hermitian_approximation`.
+A detailed English derivation is pending.
 -/
 theorem unitary_class_mass : PI.UJClassMass2.UJClassMass :=
   uJClassMass_of_herm hermitian_approximation

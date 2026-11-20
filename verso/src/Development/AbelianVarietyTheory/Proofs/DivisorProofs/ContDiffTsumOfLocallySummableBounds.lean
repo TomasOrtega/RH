@@ -5,25 +5,23 @@ open scoped ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `choose u hus hub using hu`. Establish `hinf : ((⊤ : ℕ∞) : WithTop ℕ∞) = ∞` using `rfl`. Rewrite `hf`, the goal using `[hinf]`. Rewrite using `[contDiff_infty]`. Introduce `n`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `t₀`. Set `ρ : ContDiffBump t₀` to `⟨1/2, 1, by norm_num, by norm_num⟩`. Use `set R : ℝ := ‖t₀‖ + 1 with hR`. Set `ρc : (Fin k → ℝ) → ℂ` to `fun t => ((ρ t : ℝ) : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρc : ContDiff ℝ ∞ ρc` using `Complex.ofRealCLM.contDiff.comp ρ.contDiff`. Establish `hρcs : HasCompactSupport ρc` using `ρ.hasCompactSupport.comp_left Complex.ofReal_zero`. Establish `hB : ∀ j : ℕ, ∃ B, ∀ x, ‖iteratedFDeriv ℝ j ρc x‖ ≤ B` using `fun j => (hρc.continuous_iteratedFDeriv (by exact_mod_cast le_top)).bounded_above_of_compact_support (hρcs.iteratedFDeriv j)`. Use `choose B hB using hB`. Establish `hsupp : ∀ j x, x ∉ Metric.closedBall t₀ 1 → iteratedFDeriv ℝ j ρc x = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `j x hx`. Assume the negation of the conclusion as `h`. Establish `hx1 : x ∈ tsupport ρc` using `support_iteratedFDeriv_subset j h`. Establish `h2 : tsupport ρc ⊆ tsupport (ρ : (Fin k → ℝ) → ℝ)` using `tsupport_comp_subset Complex.ofReal_zero _`. Rewrite `h2` using `[ρ.tsupport_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `hx (h2 hx1)`. Establish `hunonneg : ∀ m i, 0 ≤ u m R i` using `fun m i => (norm_nonneg _).trans (hub m R i 0 (by rw [norm_zero, hR]; positivity))`. Establish `hB0 : ∀ j, 0 ≤ B j` using `fun j => (norm_nonneg _).trans (hB j 0)`. Set `v : ℕ → ι → ℝ` to `fun m i => ∑ j ∈ Finset.range (m + 1), (m.choose j : ℝ) * B j * u (m - j) R i`. Establish `hv : ∀ m, Summable (v m)` using `fun m => by`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `summable_sum` to reduce the goal to its premises. Introduce `j _`. Conclude with `(hus (m - j) R).mul_left _`. Establish `hbound : ∀ m i x, ‖iteratedFDeriv ℝ m (fun y => ρc y * f i y) x‖ ≤ v m i`. Introduce `m i x`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `(norm_iteratedFDeriv_mul_le hρc (hf i) x (by exact_mod_cast le_top)).trans ?_` and prove the remaining obligations. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `j _`. Distinguish the cases in `hx : x ∈ Metric.closedBall t₀ 1`. Establish `hxR : ‖x‖ ≤ R`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hx` using `[Metric.mem_closedBall, dist_eq_norm]`. Use `norm_sub_norm_le x t₀` as an intermediate fact. Rewrite using `[hR]`. Combine the linear equalities and inequalities to obtain the conclusion. Apply `mul_le_mul _ (hub _ _ _ _ hxR) (norm_nonneg _) (mul_nonneg (by positivity) (hB0 j))` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left (hB j x) (by positivity)`. Rewrite using `[hsupp j x hx, norm_zero, mul_zero, zero_mul]`. Conclude with `mul_nonneg (mul_nonneg (by positivity) (hB0 j)) (hunonneg _ _)`. Establish `hsm : ContDiff ℝ ((n : ℕ∞) : WithTop ℕ∞) (fun t => ∑' i, ρc t * f i t)` using `contDiff_tsum (fun i => (hρc.mul (hf i)).of_le (by exact_mod_cast le_top)) (fun m _ => hv m) (fun m i x _ => hbound m i x)`. Establish `heq : (fun t => ∑' i, f i t) =ᶠ[nhds t₀] (fun t => ∑' i, ρc t * f i t)` using `by filter_upwards [Metric.closedBall_mem_nhds t₀ (by norm_num : (0:ℝ) < 1/2)] with t ht`.
-
-Rewrite using `[tsum_mul_left]`. Establish `h1 : ρ t = 1` using `ρ.one_of_mem_closedBall ht`. Simplify using `[ρc, h1]`. Conclude with `(hsm.contDiffAt).congr_of_eventuallyEq heq`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_tsum_of_locally_summable_bounds {k : ℕ} {ι : Type} (f : ι → (Fin k → ℝ) → ℂ)
     (hf : ∀ i, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (f i))

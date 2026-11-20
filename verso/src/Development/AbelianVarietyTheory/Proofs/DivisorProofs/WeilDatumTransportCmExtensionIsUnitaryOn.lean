@@ -8,7 +8,7 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 namespace GlobalTheory.WeilAdmCMUnit
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isUnitaryOn_weilDatum_transport_adelicSchwartz`.
+A detailed English derivation is pending.
 -/
 theorem isUnitaryOn_transport : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

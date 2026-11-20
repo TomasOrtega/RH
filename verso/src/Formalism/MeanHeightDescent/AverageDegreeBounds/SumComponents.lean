@@ -6,39 +6,37 @@ open Finset
 namespace Formalism.ExtensionFiltration
 
 /- English proof (translation)
-Introduce `ι _ _ T D A cs X cc z ρ R1 R2 Bn δ' h δ dc degc hD hT hA hcs hX hcc hz0 hz1 hρ0 hρ1 hR1 hR2 hBn hδ' hδ hdc hh hdeg havg`. Establish `ha0 : 0 ≤ T - 3 * D - 4` using `by linarith`. Establish `hT0 : 0 ≤ T` using `by linarith`. Establish `hK0 : 0 ≤ A * Real.log (max A 1)` using `mul_nonneg hA.le (Real.log_nonneg (le_max_right _ _))`. Establish `hlog : ∀ x : ℝ, 0 ≤ x → A * Real.log (2 + x) ≤ x + A * Real.log (max A 1) + 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hpos : 0 < 2 + x` using `by linarith`. Break down `le_or_gt 1 A with h1 | h1` into its components or cases. Rewrite using `[max_eq_left h1]`. Establish `h2 : Real.log ((2 + x) / A) ≤ (2 + x) / A - 1` using `Real.log_le_sub_one_of_pos (div_pos hpos hA)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[Real.log_div hpos.ne' hA.ne']`. Establish `h3 : A * (Real.log (2 + x) - Real.log A) ≤ A * ((2 + x) / A - 1)` using `mul_le_mul_of_nonneg_left h2 hA.le`. Establish `h4 : A * ((2 + x) / A - 1) = 2 + x - A`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[max_eq_right h1.le, Real.log_one, mul_zero]`. Establish `h2 : Real.log (2 + x) ≤ 2 + x - 1` using `Real.log_le_sub_one_of_pos hpos`. Combine the linear relations using `[mul_le_mul_of_nonneg_left h2 hA.le, mul_nonneg (sub_nonneg.2 h1.le) (by linarith : (0:ℝ) ≤ 1 + x)]`. Use `set N : ℝ := (T - 3 * D - 4) * cs + 2 * cs * (3 * D + 4) + (A * Real.log (max A 1) + 2) + R1 + 2 * z * R2 with hN`. Establish `hwpos : ∀ c, 0 < Bn * δ c` using `fun c => mul_pos hBn (by linarith [(hδ c).1])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hper : ∀ c, Bn * δ c * ((T - 3 * D - 4) * (h c + cs) - N) ≤ degc c`. Introduce `c`. Establish `habs : |h c| ≤ h c + 2 * cs`. Apply the tactic sequence `rcases abs_cases (h c) with ⟨h1, _⟩ | ⟨h1, _⟩ <;> linarith [hh c]`. Establish `hl` using `hlog |h c| (abs_nonneg _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : (3 * D + 4) * |h c| ≤ (3 * D + 4) * (h c + 2 * cs)` using `mul_le_mul_of_nonneg_left habs (by linarith)`. Establish `hf : (T - 3 * D - 4) * (h c + cs) - N ≤ T * h c - 3 * (D + 1) * |h c| - A * Real.log (2 + |h c|) - R1 - 2 * z * R2`. Establish `e : (T - 3 * D - 4) * (h c + cs) - N = T * h c - (3 * D + 4) * (h c + 2 * cs) - (A * Real.log (max A 1) + 2) - R1 - 2 * z * R2`. Rewrite using `[hN]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Use `set W : ℝ := ∑ c, Bn * δ c with hWdef`. Use `set S : ℝ := ∑ c, dc c with hSdef`.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set n : ℝ := (Fintype.card ι : ℝ) with hndef`. Use `set m : ℝ := max 0 ((1 - ρ) * cs - X - cc) with hmdef`. Establish `hn : 0 < n` using `by rw [hndef]; exact_mod_cast Fintype.card_pos`. Establish `hm0 : 0 ≤ m` using `le_max_left _ _`. Establish `hmge : (1 - ρ) * cs - X - cc ≤ m` using `le_max_right _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum1 : ∑ c, Bn * δ c * ((T - 3 * D - 4) * (h c + cs) - N) ≤ ∑ c, degc c` using `Finset.sum_le_sum (fun c _ => hper c)`. Establish `hsplit : ∑ c, Bn * δ c * ((T - 3 * D - 4) * (h c + cs) - N) = ∑ c, Bn * δ c * ((T - 3 * D - 4) * (h c + cs)) - N * W`. Rewrite using `[hWdef, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl (fun c _ => by ring)`. Establish `hlow : Bn * δ' * ((T - 3 * D - 4) * ∑ c, (h c + cs)) ≤ ∑ c, Bn * δ c * ((T - 3 * D - 4) * (h c + cs))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `c _`. Establish `h1 : 0 ≤ (T - 3 * D - 4) * (h c + cs)` using `mul_nonneg ha0 (by linarith [hh c])`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left (hδ c).1 hBn.le) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `havg' : m * n ≤ ∑ c, (h c + cs)` using `(le_div_iff₀ hn).1 havg`. Establish `hδρ : ∀ c, (1 - ρ) * δ c ≤ δ'`. Introduce `c`. Establish `h1` using `(hδ c).2`. Rewrite `h1` using `[le_div_iff₀ (by linarith)]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hW : (1 - ρ) * W ≤ n * (Bn * δ')`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hWdef, Finset.mul_sum]; exact Finset.sum_congr rfl (fun c _ => by ring)`. Use `_ ≤ ∑ _c : ι, Bn * δ' := Finset.sum_le_sum (fun c _ => mul_le_mul_of_nonneg_left (hδρ c) hBn.le)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `_ = n * (Bn * δ') := by rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Establish `hWS : W ≤ S` using `Finset.sum_le_sum (fun c _ => (hdc c).1)`. Establish `hW0 : 0 < W` using `Finset.sum_pos (fun c _ => hwpos c) Finset.univ_nonempty`. Establish `hS0 : 0 < S` using `lt_of_lt_of_le hW0 hWS`. Establish `e1 : Bn * δ' * ((T - 3 * D - 4) * (m * n)) ≤ Bn * δ' * ((T - 3 * D - 4) * ∑ c, (h c + cs))` using `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left havg' ha0) (mul_nonneg hBn.le hδ'.le)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (T - 3 * D - 4) * m * ((1 - ρ) * W) ≤ (T - 3 * D - 4) * m * (n * (Bn * δ'))` using `mul_le_mul_of_nonneg_left hW (mul_nonneg ha0 hm0)`. Establish `hmain : W * ((T - 3 * D - 4) * m * (1 - ρ) - N) ≤ ∑ c, degc c`. Combine the linear relations using `[hsum1, hsplit, hlow, e1, e2]`. Establish `hm1 : (1 - 2 * ρ) * cs - X - cc ≤ (1 - ρ) * m`. Combine the linear relations using `[mul_le_mul_of_nonneg_left hmge (by linarith : (0:ℝ) ≤ 1 - ρ), mul_nonneg (mul_nonneg hρ0 hρ0) hcs, mul_nonneg hρ0 (by linarith : (0:ℝ) ≤ X + cc)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hm2 : (T - 3 * D - 4) * ((1 - 2 * ρ) * cs - X - cc) ≤ (T - 3 * D - 4) * ((1 - ρ) * m)` using `mul_le_mul_of_nonneg_left hm1 ha0`. Establish `hm3 : (T - 3 * D - 4) * (2 * ρ * cs + X + cc) ≤ T * (2 * ρ * cs + X + cc)` using `mul_le_mul_of_nonneg_right (by linarith) (by positivity)`. Establish `hcsTz : 0 ≤ cs * T * z` using `mul_nonneg (mul_nonneg hcs hT0) hz0`. Establish `hzR : 0 ≤ z * R2` using `mul_nonneg hz0 hR2`. Establish `hPN : -(T * (X + cc)) - cs * (6 * D + 10 + T * (z + 2 * ρ)) - (A * Real.log (max A 1) + 4) - R1 - 2 * z * R2 ≤ (T - 3 * D - 4) * m * (1 - ρ) - N`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hN]`. Combine the linear relations using `[hm2, hm3, hcsTz]`. Establish `hL : -(T * (X + cc)) - cs * (6 * D + 10 + T * (z + 2 * ρ)) - (A * Real.log (max A 1) + 4) - R1 - 2 * z * R2 ≤ 0`. Combine the linear relations using `[mul_nonneg hT0 (by linarith : (0:ℝ) ≤ X + cc), mul_nonneg hcs (by positivity : (0:ℝ) ≤ 6 * D + 10 + T * (z + 2 * ρ))]`. Rewrite using `[le_div_iff₀ hS0]`.
-
-Distinguish the cases in `hq : 0 ≤ (T - 3 * D - 4) * m * (1 - ρ) - N`. Combine the linear relations using `[mul_nonneg hW0.le hq, mul_le_mul_of_nonneg_right hL hS0.le]`. Establish `h1` using `mul_le_mul_of_nonpos_right hWS (le_of_lt (not_le.1 hq))`. Establish `h2` using `mul_le_mul_of_nonneg_right hPN hS0.le`. Combine the linear relations using `[h1, h2, hmain]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sumComponents' : SumComponents := by
   intro ι _ _ T D A cs X cc z ρ R1 R2 Bn δ' h δ dc degc hD hT hA hcs hX hcc hz0 hz1 hρ0 hρ1

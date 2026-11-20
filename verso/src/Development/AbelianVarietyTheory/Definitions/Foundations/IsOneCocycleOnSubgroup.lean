@@ -111,18 +111,18 @@ Both sides reduce to the same expression.
 @[simp] theorem fam_apply {S : Type*} (f : S → M →ₗ[R] M') (m : S → M) (s : S) : fam f m s = f s (m s) := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ _ _ => by simp, fun _ _ _ _ => by simp [d1]⟩`.
+Supply the required witnesses or components.
 -/
 example (ρ : Representation R G M) (H : Subgroup G) : IsTwoCocycleOnSubgroup ρ H 0 ∧ Cob ρ H 0 0 :=
   ⟨fun _ _ _ _ _ _ => by simp, fun _ _ _ _ => by simp [d1]⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 example (ρ : Representation R G M) (H : Subgroup G) (b : G → M) : Cob ρ H (d1 ρ b) b := fun _ _ _ _ => rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => one_ne_zero, fun g s => by simp⟩`.
+Supply the required witnesses or components.
 -/
 example {F Ω : Type*} [Field F] [Field Ω] [Algebra F Ω] {S : Type*} [MulAction (Ω ≃ₐ[F] Ω) S] (N : ℕ) :
     Roots (F := F) N (fun _ : S => (1 : Ω)) := ⟨fun _ => one_ne_zero, fun g s => by simp⟩

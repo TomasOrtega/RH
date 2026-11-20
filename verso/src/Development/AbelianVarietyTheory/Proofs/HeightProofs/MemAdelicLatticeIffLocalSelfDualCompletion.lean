@@ -11,7 +11,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 omit [NumberField F] [NumberField E] in
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`. Consider the case `tmul a e => simp [Algebra.TensorProduct.basis_repr_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem repr_map {R R' ι : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R']
     (φ : R →ₐ[F] R') (b : Module.Basis ι F E) (z : R ⊗[F] E) (k : ι) :
@@ -25,9 +25,9 @@ theorem repr_map {R R' ι : Type} [CommRing R] [Algebra F R] [CommRing R'] [Alge
 omit [NumberField E] in
 
 /- English proof (translation)
-Set `b` to `Module.Basis.ofVectorSpace F E`. Apply `(Algebra.TensorProduct.basis (Af F) b).repr.injective` to reduce the goal to its premises. Use `Finsupp.ext fun k => FiniteAdeleRing.ext _ fun v => ?_` and prove the remaining obligations. Establish `h1` using `repr_map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) b z k`. Establish `h2` using `repr_map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) b z' k`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h v, h2]`. Conclude with `h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_components (z z' : Af F ⊗[F] E)
     (h : ∀ v : HeightOneSpectrum (𝓞 F),
@@ -44,9 +44,9 @@ theorem ext_components (z z' : Af F ⊗[F] E)
 variable [StarRing E]
 
 /- English proof (translation)
-Use `V.standardTuple_isLattice` as an intermediate fact. Establish `: Module.Finite (𝓞 E) V.L0` using `Module.Finite.iff_fg.2 V.standardTuple_isLattice.fg`. Establish `: Module.Finite ℤ V.L0` using `Module.Finite.trans (𝓞 E) V.L0`. Take `⟨k, s, hs⟩` from `Module.Finite.exists_fin (R := ℤ) (M := V.L0)`. Use `⟨k, fun j => s j, fun j => (s j).2, fun w hw => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (⟨w, hw⟩ : V.L0) ∈ Submodule.span ℤ (Set.range s)` using `hs ▸ Submodule.mem_top`. Take `⟨n, hn⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 this`. Use `⟨n, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hn` as an intermediate fact. Simplify using `using this.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_generators (V : HSpace E) :
     ∃ (k : ℕ) (x : Fin k → V.V), (∀ j, x j ∈ V.L0) ∧
@@ -63,9 +63,9 @@ theorem exists_generators (V : HSpace E) :
   simpa using this.symm
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.MiscellaneousLemmas.main`. Consider the case `exact _root_.GlobalTheory.MiscellaneousLemmas.main`. Consider the case `(apply _root_.GlobalTheory.MiscellaneousLemmas.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.MiscellaneousLemmas.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.MiscellaneousLemmas.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.MiscellaneousLemmas.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_coeff (V : HSpace E) {k : ℕ} (x : Fin k → V.V)
     (hx : ∀ w ∈ V.L0, ∃ n : Fin k → ℤ, w = ∑ j, n j • x j) (v : HeightOneSpectrum (𝓞 F))
@@ -81,21 +81,19 @@ theorem exists_coeff (V : HSpace E) {k : ℕ} (x : Fin k → V.V)
   | (intros; exact _root_.GlobalTheory.MiscellaneousLemmas.main ..)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ V y`. Prove the components needed by the constructor for the conclusion. Introduce `hy v`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨a, ha, x, hx, rfl⟩` from `hy`. Use `AddSubgroup.subset_closure ⟨_, ha v, _, hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[V.frame.repr_sum_self]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `zero`. Simplify using `only [Pi.zero_apply, map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz`. Simplify using `only [Pi.add_apply, map_add]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Conclude with `add_mem hy hz`. Consider the case `neg y _ hy`. Simplify using `only [Pi.neg_apply, map_neg]`. Conclude with `neg_mem hy`. Introduce `h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨k, x, hxL, hx⟩` from `exists_generators V`. Use `choose a ha ea using fun v => exists_coeff V x hx v _ (h v)`. Set `A : Fin k → Af F` to `fun j => ⟨fun v => a v j, Filter.Eventually.of_forall fun v => ha v j⟩`. Establish `hA : ∀ j v, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (A j) = a v j` using `fun _ _ => rfl`. Establish `e : y = ∑ j, fun i => A j ⊗ₜ[F] V.frame.repr (x j) i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Apply `ext_components` to reduce the goal to its premises. Introduce `v`. Rewrite using `[ea v i, Finset.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.TensorProduct.map_tmul, hA]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `sum_mem fun j _ => AddSubgroup.subset_closure ⟨A j, fun v => ha v j, fun i => V.frame.repr (x j) i, ?_, rfl⟩` and prove the remaining obligations. Use `show ∑ i, V.frame.repr (x j) i • V.frame i ∈ V.L0`.
-
-Rewrite using `[V.frame.sum_repr]`. Conclude with `hxL j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_latHat_iff :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]

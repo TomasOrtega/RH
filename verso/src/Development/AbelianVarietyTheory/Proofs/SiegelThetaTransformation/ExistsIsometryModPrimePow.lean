@@ -14,7 +14,7 @@ namespace GlobalTheory.IsomModN
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Set `y : FiniteAdeleRing (𝓞 K) K` to `⟨fun v => (c v : v.adicCompletion K), Filter.Eventually.of_forall fun v => (c v).2⟩`. Take `⟨s, a, ha, h⟩` from `(GlobalTheory.AdLat.strong_approximation_mod_nat K n hn).2 y fun v => (c v).2`. Use `⟨s, fun v => ⟨⟨a v, ha v⟩, Subtype.ext ?_⟩⟩` and prove the remaining obligations. Conclude with `congrArg (fun t : FiniteAdeleRing (𝓞 K) K => t v) h`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_approx_int {K : Type} [Field K] [NumberField K] {n : ℕ} (hn : 0 < n)
     (c : ∀ v : HeightOneSpectrum (𝓞 K), v.adicCompletionIntegers K) :
@@ -32,34 +32,32 @@ def vec (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) : (Fin r → E) �
   map_add' _ _ := funext fun _ => map_add _ _ _
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem vec_mem (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) {L : Submodule (𝓞 E) (Fin r → E)} {x : Fin r → E} (hx : x ∈ L) :
     vec v x ∈ locLattice v L := Submodule.subset_span ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-The claim follows from `funext fun _ => map_mul (locEmb v) _ _`.
+A detailed English derivation is pending.
 -/
 theorem vec_smul (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (c : 𝓞 E) (x : Fin r → E) :
     vec v (c • x) = locEmb v c • vec v x := funext fun _ => map_mul (locEmb v) _ _
 
 /- English proof (translation)
-Rewrite using `[vec_smul, locEmb_algebraMap, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vec_smul_real (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (s : 𝓞 (maximalRealSubfield E)) (x : Fin r → E) :
     vec v (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s • x) = algebraMap (𝓞 (maximalRealSubfield E)) (v.adicCompletionIntegers (maximalRealSubfield E)) s • vec v x := by
   rw [vec_smul, locEmb_algebraMap, algebraMap_smul]
 
 /- English proof (translation)
-Use `haveI : Module.Finite (𝓞 E) L := Module.Finite.iff_fg.2 hL`. Use `haveI : Module.Finite ℤ L := Module.Finite.trans (𝓞 E) L`. Take `⟨m, t, ht⟩` from `Module.Finite.exists_fin (R := ℤ) (M := L)`. Establish `h1 : ∀ v, z v ∈ Submodule.span (v.adicCompletionIntegers (maximalRealSubfield E)) (Set.range fun i => vec v (t i : Fin r → E))`. Introduce `v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `(Submodule.span_le.2 ?_ : locLattice v L ≤ _) (hz v)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hx' : (⟨x, hx⟩ : L) ∈ Submodule.span ℤ (Set.range t)` using `ht ▸ Submodule.mem_top`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hx'`. Establish `e : x = ∑ i, c i • (t i : Fin r → E)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg Subtype.val hc` as an intermediate fact. Simplify using `using this.symm`. Express the relevant statement in the definitionally equal form `vec v x ∈ _`. Rewrite using `[e, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zsmul]`. Conclude with `zsmul_mem (Submodule.subset_span (Set.mem_range_self i)) _`. Use `choose c hc using fun v => (Submodule.mem_span_range_iff_exists_fun _).1 (h1 v)`. Use `choose s hs using fun i => exists_approx_int hn (fun v => c v i)`. Use `⟨∑ i, algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) (s i) • (t i : Fin r → E), L.sum_mem fun i _ => L.smul_mem _ (t i).2, fun v => ?_⟩` and prove the remaining obligations.
-
-Use `choose a ha using fun i => hs i v`. Use `⟨∑ i, a i • vec v (t i : Fin r → E), Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (vec_mem v (t i).2), ?_⟩` and prove the remaining obligations. Rewrite using `[← hc v, map_sum, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ha i, vec_smul_real, add_smul, smul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_approx {L : Submodule (𝓞 E) (Fin r → E)} (hL : L.FG) {n : ℕ} (hn : 0 < n)
     (z : ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)), Fin r → LocAlg v) (hz : ∀ v, z v ∈ locLattice v L) :
@@ -93,9 +91,9 @@ theorem exists_approx {L : Submodule (𝓞 E) (Fin r → E)} (hL : L.FG) {n : �
   rw [ha i, vec_smul_real, add_smul, smul_assoc]
 
 /- English proof (translation)
-Establish `hn' : (n : E) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Use `⟨(n : E)⁻¹ • x, (mem_iff_forall_mem_locLattice hL _).2 fun v => ?_, ?_⟩` and prove the remaining obligations. Take `⟨u, hu, e⟩` from `hx v`. Use `hu using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrFun e i` as an intermediate fact. Express the relevant statement in the definitionally equal form `locEmb v (x i) = n • u i at this`. Express the relevant statement in the definitionally equal form `locEmb v ((n : E)⁻¹ * x i) = u i`. Rewrite using `[map_mul, this, nsmul_eq_mul, ← mul_assoc, ← map_natCast (locEmb v), ← map_mul, inv_mul_cancel₀ hn', map_one, one_mul]`. Rewrite using `[← Nat.cast_smul_eq_nsmul E, smul_smul, mul_inv_cancel₀ hn', one_smul]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_div {L : Submodule (𝓞 E) (Fin r → E)} (hL : ReciprocityTheory.MultiplicativeHeights.IsLattice L) {n : ℕ} (hn : 0 < n)
     {x : Fin r → E} (hx : ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)), ∃ u ∈ locLattice v L, vec v x = n • u) :
@@ -132,11 +130,11 @@ def rel (L L' : Submodule (𝓞 E) (Fin r → E)) (γ : ∀ v : HeightOneSpectru
     rw [smul_comm]
 
 /- English proof (translation)
-Use `haveI : Module.Finite (𝓞 E) L := Module.Finite.iff_fg.2 hL`. Use `haveI : Module.FinitePresentation (𝓞 E) L := Module.finitePresentation_of_finite _ _`. Use `haveI : Module.Projective (𝓞 E) L := Module.Flat.projective_of_finitePresentation`. Establish `hsurj : Function.Surjective ((LinearMap.fst (𝓞 E) L L').comp (rel L L' γ n).subtype)`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, h⟩` from `exists_approx hL' hn (fun v => γ v *ᵥ vec v (a : Fin r → E)) fun v => hγ v _ (vec_mem v a.2)`. Conclude with `⟨⟨(a, ⟨b, hb⟩), h⟩, rfl⟩`. Take `⟨s, hs⟩` from `Module.projective_lifting_property _ LinearMap.id hsurj`. Use `⟨(LinearMap.snd (𝓞 E) L L').comp ((rel L L' γ n).subtype.comp s), fun a v => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, e⟩` from `(s a).2 v`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Establish `ha : (s a).1.1 = a` using `LinearMap.congr_fun hs a`. Rewrite `e` using `[ha]`. Conclude with `⟨w, hw, e⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_linear_approx {L L' : Submodule (𝓞 E) (Fin r → E)} (hL : L.FG) (hL' : L'.FG) {n : ℕ}
     (hn : 0 < n) (γ : ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)), Matrix (Fin r) (Fin r) (LocAlg v))
@@ -166,7 +164,7 @@ section Herm
 variable (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (G : Matrix (Fin r) (Fin r) E)
 
 /- English proof (translation)
-Rewrite using `[herm_eq_dotProduct, RingHom.map_dotProduct, hermLoc]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_vecMul (locEmb v) G x i).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem hermLoc_vec (x y : Fin r → E) : hermLoc v G (vec v x) (vec v y) = locEmb v (herm G x y) := by
   rw [herm_eq_dotProduct, RingHom.map_dotProduct, hermLoc]
@@ -175,28 +173,28 @@ theorem hermLoc_vec (x y : Fin r → E) : hermLoc v G (vec v x) (vec v y) = locE
   exact (RingHom.map_vecMul (locEmb v) G x i).symm
 
 /- English proof (translation)
-Simplify using `only [hermLoc, Matrix.add_vecMul, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermLoc_add_left (x x' y : Fin r → LocAlg v) :
     hermLoc v G (x + x') y = hermLoc v G x y + hermLoc v G x' y := by
   simp only [hermLoc, Matrix.add_vecMul, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `only [hermLoc, dotProduct, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermLoc_add_right (x y y' : Fin r → LocAlg v) :
     hermLoc v G x (y + y') = hermLoc v G x y + hermLoc v G x y' := by
   simp only [hermLoc, dotProduct, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hermLoc, Matrix.smul_vecMul, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermLoc_smul_left (c : v.adicCompletionIntegers (maximalRealSubfield E)) (x y : Fin r → LocAlg v) :
     hermLoc v G (c • x) y = c • hermLoc v G x y := by
   simp only [hermLoc, Matrix.smul_vecMul, smul_dotProduct]
 
 /- English proof (translation)
-Simplify using `only [hermLoc, dotProduct, Pi.smul_apply, Algebra.smul_def, map_mul, locConj_algebraMap', Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermLoc_smul_right (c : v.adicCompletionIntegers (maximalRealSubfield E)) (x y : Fin r → LocAlg v) :
     hermLoc v G x (c • y) = c • hermLoc v G x y := by
@@ -205,21 +203,21 @@ theorem hermLoc_smul_right (c : v.adicCompletionIntegers (maximalRealSubfield E)
   exact Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_smul_eq_nsmul (v.adicCompletionIntegers (maximalRealSubfield E)), hermLoc_smul_left, Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hermLoc_nsmul_left (n : ℕ) (x y : Fin r → LocAlg v) :
     hermLoc v G (n • x) y = n • hermLoc v G x y := by
   rw [← Nat.cast_smul_eq_nsmul (v.adicCompletionIntegers (maximalRealSubfield E)), hermLoc_smul_left, Nat.cast_smul_eq_nsmul]
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_smul_eq_nsmul (v.adicCompletionIntegers (maximalRealSubfield E)), hermLoc_smul_right, Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hermLoc_nsmul_right (n : ℕ) (x y : Fin r → LocAlg v) :
     hermLoc v G x (n • y) = n • hermLoc v G x y := by
   rw [← Nat.cast_smul_eq_nsmul (v.adicCompletionIntegers (maximalRealSubfield E)), hermLoc_smul_right, Nat.cast_smul_eq_nsmul]
 
 /- English proof (translation)
-Establish `: (fun i => locConj v ((γ *ᵥ y) i)) = γ.map (locConj v) *ᵥ fun i => locConj v (y i)`. Use function extensionality and compare the values at `fun i => RingHom.map_mulVec (locConj v) γ y i`. Rewrite using `[hermLoc, hermLoc, this, h, Matrix.dotProduct_mulVec, ← Matrix.vecMul_transpose, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermLoc_mulVec {G' : Matrix (Fin r) (Fin r) E} {γ : Matrix (Fin r) (Fin r) (LocAlg v)}
     (h : G'.map (locEmb v) = γᵀ * G.map (locEmb v) * γ.map (locConj v)) (x y : Fin r → LocAlg v) :
@@ -230,17 +228,15 @@ theorem hermLoc_mulVec {G' : Matrix (Fin r) (Fin r) E} {γ : Matrix (Fin r) (Fin
     ← Matrix.vecMul_transpose, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨x, hx, rfl⟩` from `hx`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Take `⟨y, hy, rfl⟩` from `hy`. Use `vec_mem v (h x hx y hy) using 2` and compare the differences between its conclusion and the goal. Conclude with `hermLoc_vec v G x y`. Consider the case `zero`. Use `zero_mem (locLattice v M) using 2` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `[hermLoc]`. Consider the case `add y z _ _ hy hz`. Use `add_mem hy hz using 2` and compare the differences between its conclusion and the goal. Conclude with `hermLoc_add_right v G _ y z`. Consider the case `smul c y _ hy`.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately.
 
-Use `Submodule.smul_mem _ c hy using 2` and compare the differences between its conclusion and the goal. Conclude with `hermLoc_smul_right v G c _ y`. Consider the case `zero`. Use `zero_mem (locLattice v M) using 2` and compare the differences between its conclusion and the goal. Simplify using `[hermLoc]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately.
 
-Consider the case `add x z _ _ hx hz`. Use `add_mem hx hz using 2` and compare the differences between its conclusion and the goal. Conclude with `hermLoc_add_left v G x z y`. Consider the case `smul c x _ hx`. Use `Submodule.smul_mem _ c hx using 2` and compare the differences between its conclusion and the goal.
-
-Conclude with `hermLoc_smul_left v G c x y`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem hermLoc_mem {L : Submodule (𝓞 E) (Fin r → E)} {M : Submodule (𝓞 E) (Fin 1 → E)}
     (h : ∀ x ∈ L, ∀ y ∈ L, (fun _ => herm G x y) ∈ M) {x y : Fin r → LocAlg v}
@@ -276,19 +272,19 @@ theorem hermLoc_mem {L : Submodule (𝓞 E) (Fin r → E)} {M : Submodule (𝓞 
 end Herm
 
 /- English proof (translation)
-Use `choose γ hγ using hγ`. Take `⟨f, hf⟩` from `exists_linear_approx hL.1 hL'.1 hn (fun v => (γ v).1) fun v x hx => ((hγ v).2 x).1 hx`. Establish `hinv : ∀ v (x : Fin r → LocAlg v), (γ v).1 *ᵥ (((γ v)⁻¹).1 *ᵥ x) = x` using `fun v x => by`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `hinv' : ∀ v (x : Fin r → LocAlg v), ((γ v)⁻¹).1 *ᵥ ((γ v).1 *ᵥ x) = x` using `fun v x => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Establish `hback : ∀ v, ∀ x ∈ locLattice v L', ((γ v)⁻¹).1 *ᵥ x ∈ locLattice v L` using `fun v x hx => ((hγ v).2 _).2 (by rwa [hinv])`. Use `⟨f, ⟨fun a => ⟨?_, ?_⟩, fun a' => ?_⟩, fun a a' => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨e, he⟩`. Take `⟨y, hy, e⟩` from `exists_div hL hn (x := a) fun v => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, eu⟩` from `hf a v`. Use `⟨_, hback v _ (add_mem (vec_mem v e.2) hu), ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_smul, ← hinv' v (vec v a), eu, he, Submodule.coe_smul_of_tower, map_nsmul, smul_add]`. Conclude with `⟨⟨y, hy⟩, Subtype.ext e⟩`. Introduce and unpack `⟨e, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨f e, map_nsmul _ _ _⟩`. Take `⟨b, hb, h1⟩` from `exists_approx hL.1 hn (fun v => ((γ v)⁻¹).1 *ᵥ vec v (a' : Fin r → E)) fun v => hback v _ (vec_mem v a'.2)`. Take `⟨y, hy, e⟩` from `exists_div hL' hn (x := a' - f ⟨b, hb⟩) fun v => by`. Take `⟨u, hu, eu⟩` from `hf ⟨b, hb⟩ v`. Take `⟨w, hw, ew⟩` from `h1 v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, add_mem hu (((hγ v).2 _).1 hw), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, ← hinv v (vec v a'), ew, Matrix.mulVec_add, eu, Matrix.mulVec_smul, smul_add]`. Normalize the expressions using the abelian group laws. Conclude with `⟨⟨b, hb⟩, ⟨y, hy⟩, Subtype.ext (sub_eq_iff_eq_add'.1 e)⟩`. Take `⟨m, hm, e⟩` from `exists_div hM hn (x := fun _ => herm G' (f a) (f a') - herm G a a') fun v => by`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, eu⟩` from `hf a v`. Take `⟨u', hu', eu'⟩` from `hf a' v`. Establish `hγa` using `((hγ v).2 _).1 (vec_mem v a'.2)`. Use `⟨_, neg_mem (add_mem (hermLoc_mem v G' h (vec_mem v (f a).2) hu') (hermLoc_mem v G' h hu hγa)), funext fun i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `locEmb v (herm G' (f a) (f a') - herm G a a') = n • -(hermLoc v G' (vec v (f a)) u' + hermLoc v G' u ((γ v).1 *ᵥ vec v a'))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, ← hermLoc_vec, ← hermLoc_vec, ← hermLoc_mulVec v G' (hγ v).1, eu, hermLoc_add_left, hermLoc_nsmul_left]`. Use `conv_lhs => rw [eu', hermLoc_add_right, hermLoc_nsmul_right, ← eu']`. Rewrite using `[smul_neg, smul_add]`. Normalize the expressions using the abelian group laws. Conclude with `⟨m, hm, congrFun e 0⟩`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isometry_mod {G G' : Matrix (Fin r) (Fin r) E} {L L' : Submodule (𝓞 E) (Fin r → E)}
     (hL : ReciprocityTheory.MultiplicativeHeights.IsLattice L) (hL' : ReciprocityTheory.MultiplicativeHeights.IsLattice L') {M : Submodule (𝓞 E) (Fin 1 → E)}
@@ -340,11 +336,9 @@ theorem exists_isometry_mod {G G' : Matrix (Fin r) (Fin r) E} {L L' : Submodule 
 omit [IsCMField E] in
 
 /- English proof (translation)
-Use `⟨Submodule.fg_pi fun _ => FractionalIdeal.fg_of_isNoetherianRing le_rfl I, ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨m, hm, hm0⟩ : ∃ m ∈ I, m ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hI (FractionalIdeal.eq_zero_iff.2 h)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations. Establish `: z = (z 0 / m) • fun _ : Fin 1 => m`. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`. Simplify using `[hm0]`.
-
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span fun _ _ => hm)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_ideal {I : FractionalIdeal (𝓞 E)⁰ E} (hI : I ≠ 0) :
     ReciprocityTheory.MultiplicativeHeights.IsLattice (Submodule.pi Set.univ fun _ : Fin 1 => (I : Submodule (𝓞 E) E)) := by

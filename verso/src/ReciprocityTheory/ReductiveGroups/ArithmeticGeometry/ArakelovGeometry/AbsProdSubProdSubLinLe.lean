@@ -9,7 +9,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo MvPolynomial
 section Scalar
 
 /- English proof (translation)
-The claim follows from `|∏ i ∈ s, y i| ≤ Y ^ s.card := by rw [Finset.abs_prod] calc ∏ i ∈ s, |y i| ≤ ∏ _i ∈ s, Y := Finset.prod_le_prod (fun _ _ => abs_nonneg _) hy _ = Y ^ s.card := Finset.prod_const Y`.
+A detailed English derivation is pending.
 -/
 theorem abs_prod_le_pow {α : Type*} (s : Finset α) (y : α → ℝ) {Y : ℝ} (hy : ∀ i ∈ s, |y i| ≤ Y) :
     |∏ i ∈ s, y i| ≤ Y ^ s.card := by
@@ -18,9 +18,9 @@ theorem abs_prod_le_pow {α : Type*} (s : Finset α) (y : α → ℝ) {Y : ℝ} 
     _ = Y ^ s.card := Finset.prod_const Y
 
 /- English proof (translation)
-Rewrite using `[← Finset.card_erase_of_mem hi, ← Finset.card_union_of_disjoint (Finset.disjoint_filter.mpr fun j _ h1 h2 => lt_asymm h1 h2)]`. Use `Finset.card_le_card fun j hj => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_union, Finset.mem_filter] at hj`. Rewrite using `[Finset.mem_erase]`. Break down `hj with ⟨hj, h⟩ | ⟨hj, h⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨ne_of_lt h, hj⟩`. Conclude with `⟨ne_of_gt h, hj⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem card_filter_lt_add_gt {α : Type*} [LinearOrder α] (s : Finset α) {i : α} (hi : i ∈ s) :
     (s.filter (· < i)).card + (s.filter (i < ·)).card ≤ s.card - 1 := by
@@ -34,7 +34,7 @@ theorem card_filter_lt_add_gt {α : Type*} [LinearOrder α] (s : Finset α) {i :
   · exact ⟨ne_of_gt h, hj⟩
 
 /- English proof (translation)
-Establish `h` using `Finset.prod_add_ordered s y (fun i => -ε i)`. Simplify using `only [← sub_eq_add_neg] at h`. Rewrite using `[h]`. Simplify using `only [neg_mul, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prod_sub_eq_sum {α : Type*} [LinearOrder α] (s : Finset α) (y ε : α → ℝ) :
     ∏ i ∈ s, y i - ∏ i ∈ s, (y i - ε i) =
@@ -46,7 +46,7 @@ theorem prod_sub_eq_sum {α : Type*} [LinearOrder α] (s : Finset α) (y ε : α
   ring
 
 /- English proof (translation)
-The claim follows from `|∏ i ∈ s, y i - ∏ i ∈ s, (y i - ε i)| ≤ s.card * E * (Y + E) ^ (s.card - 1) := by rw [prod_sub_eq_sum] have hYE : 1 ≤ Y + E := by linarith calc |∑ i ∈ s, ε i * (∏ j ∈ s with j < i, (y j - ε j)) * ∏ j ∈ s with i < j, y j| ≤ ∑ i ∈ s, |ε i * (∏ j ∈ s with j < i, (y j - ε j)) * ∏ j ∈ …`.
+A detailed English derivation is pending.
 -/
 theorem abs_prod_sub_prod_le {α : Type*} [LinearOrder α] (s : Finset α) (y ε : α → ℝ) {Y E : ℝ}
     (hY : 1 ≤ Y) (hE : 0 ≤ E) (hy : ∀ i ∈ s, |y i| ≤ Y) (hε : ∀ i ∈ s, |ε i| ≤ E) :
@@ -74,7 +74,7 @@ theorem abs_prod_sub_prod_le {α : Type*} [LinearOrder α] (s : Finset α) (y ε
     _ ≤ E * (Y + E) ^ (s.card - 1) := by gcongr <;> first | exact hYE | omega
 
 /- English proof (translation)
-The claim follows from `|∏ i ∈ s, y i - ∏ i ∈ s, (y i - ε i) - ∑ i ∈ s, ε i * (∏ j ∈ s with j < i, y j) * ∏ j ∈ s with i < j, y j| ≤ s.card * ((s.card - 1 : ℕ) : ℝ) * E ^ 2 * (Y + E) ^ (s.card - 2) := by rw [prod_sub_eq_sum, ← Finset.sum_sub_distrib] have hYE : 1 ≤ Y + E := by linarith calc |∑ i ∈ s, (ε …`.
+A detailed English derivation is pending.
 -/
 theorem abs_prod_sub_prod_sub_lin_le {α : Type*} [LinearOrder α] (s : Finset α) (y ε : α → ℝ) {Y E : ℝ}
     (hY : 1 ≤ Y) (hE : 0 ≤ E) (hy : ∀ i ∈ s, |y i| ≤ Y) (hε : ∀ i ∈ s, |ε i| ≤ E) :
@@ -120,11 +120,11 @@ theorem abs_prod_sub_prod_sub_lin_le {α : Type*} [LinearOrder α] (s : Finset �
 end Scalar
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_update_of_mem (Finset.mem_univ i), mul_assoc, ← Finset.prod_union (Finset.disjoint_filter.mpr fun j _ h1 h2 => lt_asymm h1 h2)]`. Use `congr 2`. Use extensionality with `j`. Simplify using `only [Finset.mem_sdiff, Finset.mem_univ, Finset.mem_singleton, true_and, Finset.mem_union, Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Break down `lt_or_gt_of_ne h with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr h`. Introduce and unpack `(h | h)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components.
 
-Conclude with `ne_of_lt h`. Conclude with `ne_of_gt h`.
+A detailed English derivation is pending.
 -/
 theorem prod_update_split {n : ℕ} (g : Fin n → ℝ) (i : Fin n) (t : ℝ) :
     ∏ j, Function.update g i t j = t * (∏ j with j < i, g j) * ∏ j with i < j, g j := by
@@ -153,9 +153,9 @@ def SymmAt (n : ℕ) (V : Ideal (MRing ι)) : Prop :=
   ∀ (a : Fin n → K → ℤ) (σ : Equiv.Perm (Fin n)), geoNum n V (a ∘ σ) = geoNum n V a
 
 /- English proof (translation)
-Simplify using `only [geoNum, Fin.snoc_last, Fin.init_snoc]`. Use `split_ifs with h`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `[uv, Pi.single_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem geoNum_snoc (n : ℕ) (V : Ideal (MRing ι)) (u : Fin n → K → ℤ) (b : K → ℤ) :
     geoNum (n + 1) V (Fin.snoc u b) = ∑ k, b k * geoNum (n + 1) V (Fin.snoc u (uv k)) := by
@@ -167,11 +167,11 @@ theorem geoNum_snoc (n : ℕ) (V : Ideal (MRing ι)) (u : Fin n → K → ℤ) (
   · simp
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero => exact i.elim0`. Consider the case `succ m => set σ := Equiv.swap i (Fin.last m)`. Establish `key : ∀ w : K → ℤ, geoNum (m + 1) V (Function.update v i w) = geoNum (m + 1) V (Fin.snoc (Fin.init (v ∘ σ)) w)`. Introduce `w`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hS (Function.update v i w) σ, Function.update_comp_equiv]`. Rewrite using `[show σ.symm i = Fin.last m by simp [σ]]`. Use `conv_lhs => rw [← Fin.snoc_init_self (v ∘ σ)]`. Rewrite using `[Fin.update_snoc_last]`. Rewrite using `[key z, geoNum_snoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[key]`.
+A detailed English derivation is pending.
 -/
 theorem geoNum_update (n : ℕ) (V : Ideal (MRing ι)) (hS : SymmAt n V) (v : Fin n → K → ℤ)
     (i : Fin n) (z : K → ℤ) :
@@ -206,11 +206,11 @@ def geoML (n : ℕ) (V : Ideal (MRing ι)) (hS : SymmAt n V) :
     simp [mul_assoc]
 
 /- English proof (translation)
-Establish `h1 : v = fun i => ∑ k, v i k • uv k`. Use function extensionality and compare the values at `i`. Use extensionality with `k'`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `(geoML n V hS).map_sum (fun i k => v i k • uv k)` as an intermediate fact.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `conv_lhs => rw [h1]`. Express the relevant statement in the definitionally equal form `geoML n V hS _ = _`. Rewrite using `[this]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ, smul_eq_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem geoNum_expand (n : ℕ) (V : Ideal (MRing ι)) (hS : SymmAt n V) (v : Fin n → K → ℤ) :
     geoNum n V v = ∑ r : Fin n → K, (∏ i, v i (r i)) * geoNum n V (fun i => uv (r i)) := by
@@ -229,13 +229,13 @@ theorem geoNum_expand (n : ℕ) (V : Ideal (MRing ι)) (hS : SymmAt n V) (v : Fi
 def nrm (z : K → ℤ) : ℝ := ∑ k, |(z k : ℝ)|
 
 /- English proof (translation)
-The claim follows from `Finset.single_le_sum (f := fun k => |(z k : ℝ)|) (fun _ _ => abs_nonneg _) (Finset.mem_univ k)`.
+A detailed English derivation is pending.
 -/
 theorem abs_le_nrm (z : K → ℤ) (k : K) : |(z k : ℝ)| ≤ nrm z :=
   Finset.single_le_sum (f := fun k => |(z k : ℝ)|) (fun _ _ => abs_nonneg _) (Finset.mem_univ k)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => abs_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem nrm_nonneg (z : K → ℤ) : 0 ≤ nrm z := Finset.sum_nonneg fun _ _ => abs_nonneg _
 
@@ -243,13 +243,13 @@ def coefB (n : ℕ) (V : Ideal (MRing ι)) : ℝ :=
   ∑ r : Fin n → K, |(geoNum n V (fun i => uv (r i)) : ℝ)|
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => abs_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem coefB_nonneg (n : ℕ) (V : Ideal (MRing ι)) : 0 ≤ coefB n V :=
   Finset.sum_nonneg fun _ _ => abs_nonneg _
 
 /- English proof (translation)
-Rewrite using `[geoNum_expand n V hS v]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem geoNum_expand_real (n : ℕ) (V : Ideal (MRing ι)) (hS : SymmAt n V) (v : Fin n → K → ℤ) :
     (geoNum n V v : ℝ) =
@@ -259,7 +259,7 @@ theorem geoNum_expand_real (n : ℕ) (V : Ideal (MRing ι)) (hS : SymmAt n V) (v
   rfl
 
 /- English proof (translation)
-The claim follows from `|(geoNum n V (fun _ => x) : ℝ) - geoNum n V (fun _ => x - c)| ≤ coefB n V * (n * nrm c * (nrm x + 1 + nrm c) ^ (n - 1)) := by rw [geoNum_expand_real n V hS, geoNum_expand_real n V hS, ← Finset.sum_sub_distrib, coefB, Finset.sum_mul] refine (Finset.abs_sum_le_sum_abs _ _).trans (F …`.
+A detailed English derivation is pending.
 -/
 theorem geoNum_shift_est (n : ℕ) (V : Ideal (MRing ι)) (hS : SymmAt n V) (x c : K → ℤ) :
     |(geoNum n V (fun _ => x) : ℝ) - geoNum n V (fun _ => x - c)| ≤
@@ -277,9 +277,9 @@ theorem geoNum_shift_est (n : ℕ) (V : Ideal (MRing ι)) (hS : SymmAt n V) (x c
   exact this
 
 /- English proof (translation)
-Rewrite using `[← hS _ (Equiv.swap i (Fin.last m)), Function.update_comp_equiv]`. Rewrite using `[show (Equiv.swap i (Fin.last m)).symm i = Fin.last m by simp]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Simplify using `[Fin.snoc_castSucc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem geoNum_update_eq_snoc (m : ℕ) (V : Ideal (MRing ι)) (hS : SymmAt (m + 1) V) (x e : K → ℤ)
     (i : Fin (m + 1)) :
@@ -293,7 +293,7 @@ theorem geoNum_update_eq_snoc (m : ℕ) (V : Ideal (MRing ι)) (hS : SymmAt (m +
   · simp [Fin.snoc_castSucc]
 
 /- English proof (translation)
-The claim follows from `|(geoNum (m + 1) V (fun _ => x) : ℝ) - geoNum (m + 1) V (fun _ => x - uv b) - (m + 1) * geoNum (m + 1) V (Fin.snoc (fun _ => x) (uv b))| ≤ coefB (m + 1) V * ((m + 1) * m * (nrm x + 2) ^ (m + 1 - 2)) := by have hlin : ((m + 1 : ℕ) : ℝ) * geoNum (m + 1) V (Fin.snoc (fun _ => x) (uv …`.
+A detailed English derivation is pending.
 -/
 theorem geoNum_diff_est (m : ℕ) (V : Ideal (MRing ι)) (hS : SymmAt (m + 1) V) (x : K → ℤ) (b : K) :
     |(geoNum (m + 1) V (fun _ => x) : ℝ) - geoNum (m + 1) V (fun _ => x - uv b) -

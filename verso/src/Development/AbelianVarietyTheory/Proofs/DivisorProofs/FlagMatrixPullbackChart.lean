@@ -25,7 +25,7 @@ def baseCLM : V (d + 1) →L[ℂ] V 1 :=
   (EuclideanSpace.proj (𝕜 := ℂ) (e.symm none)).smulRight (EuclideanSpace.single 0 1)
 
 /- English proof (translation)
-Use extensionality with `j`. Take `rfl : j = 0` from `Subsingleton.elim _ _`. Simplify using `[baseCLM, base]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem baseCLM_apply (v : V (d + 1)) : baseCLM e v = base e v := by
   ext j
@@ -33,7 +33,7 @@ theorem baseCLM_apply (v : V (d + 1)) : baseCLM e v = base e v := by
   simp [baseCLM, base]
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `e.symm.surjective j`. Apply the tactic sequence `rcases s with _ | s <;> simp [baseCLM, baseDiag]`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem baseCLM_single (j : Fin (d + 1)) :
     baseCLM e (EuclideanSpace.single j 1) = (baseDiag (e j) : ℂ) • EuclideanSpace.single 0 1 := by
@@ -41,13 +41,13 @@ theorem baseCLM_single (j : Fin (d + 1)) :
   rcases s with _ | s <;> simp [baseCLM, baseDiag]
 
 /- English proof (translation)
-Simplify using `only [← baseCLM_apply] at h hp ⊢`. Establish `hs (c : ℂ) (ξ : V 1) : secondForm K (baseCLM e v) (c • ξ) = c • secondForm K (baseCLM e v) ξ`. Rewrite using `[secondForm_eq, secondForm_eq, conn_smul_vec]`. Both sides reduce to the same expression. Establish `hn` using `trace_mul_adj_nonneg (posDef_subGram hp.self_of_nhds) (posDef_quotGram hp.self_of_nhds) (secondForm K (baseCLM e v) (EuclideanSpace.single 0 1))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e₁ : -Complex.I * kappa = ((1 / (2 * Real.pi) : ℝ) : ℂ)`. Rewrite using `[kappa, ← mul_div_assoc, neg_mul, Complex.I_mul_I]`. Simplify using the standard rewrite rules. Establish `hk : kappa ≠ 0`. Rewrite using `[kappa]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `div_ne_zero Complex.I_ne_zero (mul_ne_zero two_ne_zero (Complex.ofReal_ne_zero.2 Real.pi_ne_zero))`. Use extensionality with `j l`. Rewrite using `[formMat, of_apply, extTrace_comp_holo h hp (baseCLM e).contDiff.contDiffAt, ContinuousLinearMap.fderiv, baseCLM_single, baseCLM_single, diagVal, extTrace_eq h hp, extTrace_eq h hp, ← mul_assoc (-Complex.I), e₁, Complex.re_ofReal_mul, mul_div_cancel_left₀ _ hk, secondFormAdj, sec …`. Establish `e₂ (t : ℝ) : Real.pi * (2 * (1 / (2 * Real.pi) * t)) = t`. Use `Real.pi_ne_zero` as an intermediate fact.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e₂, ← Complex.eq_re_of_ofReal_le hn]`. Take `⟨s, rfl⟩` from `e.symm.surjective j`. Take `⟨t, rfl⟩` from `e.symm.surjective l`. Apply the tactic sequence `rcases s with _ | s <;> rcases t with _ | t <;> simp [baseDiag, adj, diagonal_apply]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem formMat_extTrace_base {m l : Type} [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l]
     {K : V 1 → Matrix (m ⊕ l) (m ⊕ l) ℂ} {v : V (d + 1)} (h : MContDiffAt 1 K (base e v))
@@ -78,9 +78,9 @@ theorem formMat_extTrace_base {m l : Type} [Fintype m] [Fintype l] [DecidableEq 
   rcases s with _ | s <;> rcases t with _ | t <;> simp [baseDiag, adj, diagonal_apply]
 
 /- English proof (translation)
-Establish `hd` using `((H.gram a.frame ha).mContDiffAt c hy).of_le (j := 1) (by norm_cast)`. Establish `hp` using `h.eventually_posDef hS a c hy ha`. Rewrite `hd`, `hp` using `[← he]`. Rewrite using `[bcMat, Met.bcForm_eq (h := h') hS' a' _ c' H' hz ha' (Met.exists_adapted hS' h₁' h₃' z).choose_spec, Met.bcDens_eq hS h₁ h₃ a c H hy ha, Met.bcForm, Met.bcForm, extTrace_congr hg, ← he]`. Establish `key` using `formMat_extTrace_base e hd hp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem bcMat_eq_of_gram {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k} {σ : k →+* ℂ}
     {S : ShortComplex X.Modules} {S' : ShortComplex Y.Modules}
@@ -104,13 +104,13 @@ theorem bcMat_eq_of_gram {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ S
 end Analysis
 
 /- English proof (translation)
-Introduce `k _ B Y q p π w ι _ r d e σ E s h H m c c' hc y hy`. Take `⟨hs, -, hb⟩` from `hc`. Establish `hy' : PtsOver.map π w (spMap σ) y ∈ c.e.source` using `(hs ▸ hy).1`. Rewrite using `[flagMat, Finset.mul_sum, Complex.ofReal_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `Met.exists_adapted (VMetric.stepSeq_shortExact m i) (m.isVB i.castSucc) (m.isVB_gr i) (PtsOver.map π w (spMap σ) y)`. Establish `ha' : y ∈ ptsIn p σ (π ⁻¹ᵁ a.U)` using `ha`. Establish `H₁ : (h.stepMet m i).IsCInf` using `H.restrict _ _`. Establish `H₂ : ((h.pull π w).stepMet (m.pull π) i).IsCInf` using `(H.pull π w).restrict _ _`. Establish `hn` using `(ChartGlue.isOpen_over c'.e (isOpen_ptsIn (π ⁻¹ᵁ a.U))).mem_nhds (ChartGlue.mem_over c'.e hy ha')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `bcMat_eq_of_gram e _ _ _ _ _ _ (H₁ σ) (H₂ σ) a (VMetric.pullStep m π i a) c c' hy' hy ha ha' (hb y hy) ?_` and prove the remaining obligations. Use `filter_upwards [hn] with v hv`. Establish `h₁` using `c'.e.map_target hv.1`. Establish `h₂` using `hb _ h₁`. Rewrite `h₂` using `[c'.e.right_inv hv.1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h₃ : PtsOver.map π w (spMap σ) (c'.e.symm v) ∈ c.e.source` using `(hs ▸ h₁).1`. Rewrite using `[h₂, c.e.left_inv h₃]`. Conclude with `VMetric.gram_pullStep h w a hv.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flagMat_pull_cell : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (π : Y ⟶ B) (w : π ≫ q = p) (ι : Type) [Fintype ι] (r : ι → ℕ) (d : ℕ) (e : Fin (d + 1) ≃ Option (Σ a, Low (r a))) (σ : k →+* ℂ) (E : B.Modules) (s : ℕ) (h : VMetric q E s), h.IsCInf → ∀ (m : Vert.Flag E s) (c : AlgChart q σ 1) (c' : AlgChart p σ (d + 1)), IsCell e π w c c' → ∀ y ∈ c'.e.source, flagMat (h.pull π w) (m.pull π) σ c' y = ((Real.pi * ∑ i, ((h.stepMet m i).met σ).bcDens (VMetric.stepSeq_shortExact m i) (m.isVB i.castSucc) (m.isVB_gr i) c (PtsOver.map π w (spMap σ) y) : ℝ) : ℂ) • diagonal fun j => (baseDiag (e j) : ℂ) := by
   intro k _ B Y q p π w ι _ r d e σ E s h H m c c' hc y hy

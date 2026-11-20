@@ -12,9 +12,9 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Fo
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Distinguish the cases in `h : DifferentiableAt ℝ φ t`. Conclude with `(L.hasFDerivAt.comp_hasDerivAt t h.hasDerivAt).deriv`. Establish `h' : ¬ DifferentiableAt ℝ (fun s => L (φ s)) t`. Introduce `hd`. Apply `h` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hφ : (fun s => M (L (φ s))) = φ` using `funext fun s => hML (φ s)`. Rewrite using `[← hφ]`. Conclude with `M.differentiableAt.comp t hd`. Rewrite using `[deriv_zero_of_not_differentiableAt h, deriv_zero_of_not_differentiableAt h', map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma deriv_comp_of_leftInv {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (L : E →L[ℝ] F) (M : F →L[ℝ] E) (hML : ∀ x, M (L x) = x) (φ : ℝ → E) (t : ℝ) :
@@ -47,11 +47,11 @@ lemma rho_eq (D : RealPlaceData k r Wp Wq) (p : SS k r) (φ : Mat k r → (Wq �
     rho D p φ x = sandw (D.π (Matrix.of p.1.1)) (D.π' (Matrix.of p.2.1)⁻¹) (φ (sgs p x)) := rfl
 
 /- English proof (translation)
-Establish `h1` using `hp.1`. Establish `h3` using `hp.2.2.1`. Establish `u1` using `WeylGroupFacts.isUnit_of_uh h1.1`. Establish `u3` using `WeylGroupFacts.isUnit_of_uh h3.1`. Establish `e1 : (D.π (Matrix.of p.1.1)⁻¹).comp (D.π (Matrix.of p.1.1)) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← D.π_rep.2 _ (WeylGroupFacts.uw_inv h1) _ h1, Matrix.nonsing_inv_mul _ u1, D.π_rep.1]`. Establish `e3 : (D.π' (Matrix.of p.2.1)⁻¹).comp (D.π' (Matrix.of p.2.1)) = 1`. Rewrite using `[← D.π'_rep.2 _ (WeylGroupFacts.uw_inv h3) _ h3, Matrix.nonsing_inv_mul _ u3, D.π'_rep.1]`. Establish `re : ∀ (P1 P2 : Wp →L[ℂ] Wp) (Q1 Q2 : Wq →L[ℂ] Wq) (B : Wq →L[ℂ] Wp), P1.comp ((P2.comp (B.comp Q2)).comp Q1) = (P1.comp P2).comp (B.comp (Q2.comp Q1))` using `by intros; ext; rfl`. Simplify using `only [sandw_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[re, e1, e3]`. Use `ext`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 lemma sandw_leftInv (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) (A : Wq →L[ℂ] Wp) :
     sandw (D.π (Matrix.of p.1.1)⁻¹) (D.π' (Matrix.of p.2.1))
@@ -72,7 +72,7 @@ lemma sandw_leftInv (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) (
   ext; rfl
 
 /- English proof (translation)
-Unfold `sgs sL sR`. Rewrite using `[Matrix.mul_inv_rev]`. Simplify using `only [Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma sgs_eq' (p : SS k r) (x : Mat k r) : sgs p x = (sL p)⁻¹ * x * sR p := by
   unfold sgs sL sR
@@ -80,23 +80,23 @@ lemma sgs_eq' (p : SS k r) (x : Mat k r) : sgs p x = (sL p)⁻¹ * x * sR p := b
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-The claim follows from `WeylGroupFacts.isUnit_of_uh (WeylGroupFacts.uh_mul hp.2.1.1 hp.1.1)`.
+A detailed English derivation is pending.
 -/
 lemma isUnit_sL (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) : IsUnit (sL p).det :=
   WeylGroupFacts.isUnit_of_uh (WeylGroupFacts.uh_mul hp.2.1.1 hp.1.1)
 
 /- English proof (translation)
-The claim follows from `WeylGroupFacts.isUnit_of_uh (WeylGroupFacts.uh_mul hp.2.2.2.1 hp.2.2.1.1)`.
+A detailed English derivation is pending.
 -/
 lemma isUnit_sR (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) : IsUnit (sR p).det :=
   WeylGroupFacts.isUnit_of_uh (WeylGroupFacts.uh_mul hp.2.2.2.1 hp.2.2.1.1)
 
 /- English proof (translation)
-Establish `hu : IsUnit (sR p)` using `(Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_sR D hp)`. Rewrite using `[sgs_eq', sgs_eq']`. Unfold `AdR`. Establish `hc : ((t : ℂ) • ((sR p)⁻¹ * X * sR p)) = (sR p)⁻¹ * ((t : ℂ) • X) * sR p`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Use `first`. Consider the case `rw [Matrix.exp_conj' _ _ hu]`. Consider the case `rw [Matrix.exp_conj' ℂ _ _ hu]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ (isUnit_sR D hp)]`.
+A detailed English derivation is pending.
 -/
 lemma sgs_curveR (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) (X g : Mat k r) (t : ℝ) :
     sgs p (g * NormedSpace.exp ((t : ℂ) • X)) = sgs p g * NormedSpace.exp ((t : ℂ) • AdR p X) := by
@@ -113,11 +113,11 @@ lemma sgs_curveR (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) (X g
   rw [Matrix.mul_nonsing_inv_cancel_left _ _ (isUnit_sR D hp)]
 
 /- English proof (translation)
-Establish `hu : IsUnit (sL p)` using `(Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_sL D hp)`. Rewrite using `[sgs_eq', sgs_eq']`. Unfold `AdL`. Establish `hc : -((t : ℂ) • ((sL p)⁻¹ * X * sL p)) = (sL p)⁻¹ * (-((t : ℂ) • X)) * sL p`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_smul, Matrix.smul_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Use `first`. Consider the case `rw [Matrix.exp_conj' _ _ hu]`. Consider the case `rw [Matrix.exp_conj' ℂ _ _ hu]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ (isUnit_sL D hp)]`.
+A detailed English derivation is pending.
 -/
 lemma sgs_curveL (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) (X g : Mat k r) (t : ℝ) :
     sgs p (NormedSpace.exp (-((t : ℂ) • X)) * g) = NormedSpace.exp (-((t : ℂ) • AdL p X)) * sgs p g := by
@@ -134,7 +134,7 @@ lemma sgs_curveL (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) (X g
   rw [Matrix.mul_nonsing_inv_cancel_left _ _ (isUnit_sL D hp)]
 
 /- English proof (translation)
-Unfold `RdV`. Simplify using `only [rho_eq, sgs_curveR D hp]`. Conclude with `deriv_comp_of_leftInv _ _ (sandw_leftInv D hp) _ 0`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma rdV_rho (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) (X : Mat k r) (φ : Mat k r → (Wq →L[ℂ] Wp))
     (g : Mat k r) : RdV X (rho D p φ) g = rho D p (RdV (AdR p X) φ) g := by
@@ -143,7 +143,7 @@ lemma rdV_rho (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) (X : Ma
   exact deriv_comp_of_leftInv _ _ (sandw_leftInv D hp) _ 0
 
 /- English proof (translation)
-Unfold `LdV`. Simplify using `only [rho_eq, sgs_curveL D hp]`. Conclude with `deriv_comp_of_leftInv _ _ (sandw_leftInv D hp) _ 0`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma ldV_rho (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) (X : Mat k r) (φ : Mat k r → (Wq →L[ℂ] Wp))
     (g : Mat k r) : LdV X (rho D p φ) g = rho D p (LdV (AdL p X) φ) g := by
@@ -152,7 +152,7 @@ lemma ldV_rho (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) (X : Ma
   exact deriv_comp_of_leftInv _ _ (sandw_leftInv D hp) _ 0
 
 /- English proof (translation)
-The claim follows from `| [], _ => rfl | X :: v, φ => by funext g show RdV X (Rw v (rho D p φ)) g = rho D p (RdV (AdR p X) (Rw (v.map (AdR p)) φ)) g rw [rw_rho D hp v φ, rdV_rho D hp]`.
+A detailed English derivation is pending.
 -/
 lemma rw_rho (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) :
     ∀ (v : List (Mat k r)) (φ : Mat k r → (Wq →L[ℂ] Wp)), Rw v (rho D p φ) = rho D p (Rw (v.map (AdR p)) φ)
@@ -163,7 +163,7 @@ lemma rw_rho (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) :
     rw [rw_rho D hp v φ, rdV_rho D hp]
 
 /- English proof (translation)
-The claim follows from `| [], _ => rfl | X :: u, φ => by funext g show LdV X (u.foldr LdV (rho D p φ)) g = rho D p (LdV (AdL p X) ((u.map (AdL p)).foldr LdV φ)) g rw [lw_rho D hp u φ, ldV_rho D hp]`.
+A detailed English derivation is pending.
 -/
 lemma lw_rho (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) :
     ∀ (u : List (Mat k r)) (φ : Mat k r → (Wq →L[ℂ] Wp)),
@@ -175,7 +175,7 @@ lemma lw_rho (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) :
     rw [lw_rho D hp u φ, ldV_rho D hp]
 
 /- English proof (translation)
-Use `show u.foldr LdV (Rw v (rho D p f)) = rho D p ((u.map (AdL p)).foldr LdV (Rw (v.map (AdR p)) f))`. Rewrite using `[rw_rho D hp v f, lw_rho D hp u]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dLR_rho (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) (u v : List (Mat k r))
     (f : Mat k r → (Wq →L[ℂ] Wp)) : dLR u v (rho D p f) = rho D p (dLR (u.map (AdL p)) (v.map (AdR p)) f) := by
@@ -183,7 +183,7 @@ theorem dLR_rho (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) (u v 
   rw [rw_rho D hp v f, lw_rho D hp u]
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ D m f p hp _ u v _ _ _ g _`. Conclude with `congrFun (dLR_rho D hp u v f) g`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.Formalism.FourierDecayAlt.P.rewrite_rho_action : RwRho := by
   intro k r Wp Wq _ _ _ _ D m f p hp _ u v _ _ _ g _

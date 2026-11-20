@@ -18,7 +18,7 @@ def coordForm (m : ℕ) : (Fin m → 𝓞 E) →ₗ[ℤ] (Fin m → 𝓞 E) →�
     (by intro n y z; simp only [Finset.smul_sum, Pi.smul_apply]; refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_; rw [zsmul_eq_mul, zsmul_eq_mul]; simp [mul_left_comm])
 
 /- English proof (translation)
-Rewrite using `[← Complex.ofReal_re (Complex.normSq _), ← Complex.mul_conj, map_sum, Finset.sum_mul_sum, Complex.re_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Complex.conj_ofReal, show (c a : ℂ) * u a * ((c b : ℂ) * conj (u b)) = ((c a * c b : ℝ) : ℂ) * (u a * conj (u b)) by push_cast; ring, Complex.re_ofReal_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem sum_sum_mul_re {ι : Type} [Fintype ι] (c : ι → ℝ) (u : ι → ℂ) :
     ∑ a, ∑ b, c a * c b * (u a * conj (u b)).re = Complex.normSq (∑ a, (c a : ℂ) * u a) := by
@@ -31,9 +31,9 @@ theorem sum_sum_mul_re {ι : Type} [Fintype ι] (c : ι → ℝ) (u : ι → ℂ
     Complex.re_ofReal_mul]
 
 /- English proof (translation)
-Use `⟨fun y z => ?_, fun a y z => ?_⟩` and prove the remaining obligations. Simplify using `only [coordForm, LinearMap.mk₂_apply]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.conj_re, map_mul, Complex.conj_conj, mul_comm]`. Simplify using `only [coordForm, LinearMap.mk₂_apply, Pi.smul_apply, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `push_cast`. Simplify using `only [H.bar_eq, IsCMField.complexEmbedding_complexConj, map_mul, Complex.conj_conj]`. Put the polynomial expressions in normal form.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 -/
 theorem coordForm_mem [IsCMField E] (H : Host E) (m : ℕ) : coordForm (E := E) m ∈ realForms H.bar (Fin m → 𝓞 E) := by
   refine ⟨fun y z => ?_, fun a y z => ?_⟩
@@ -47,15 +47,15 @@ theorem coordForm_mem [IsCMField E] (H : Host E) (m : ℕ) : coordForm (E := E) 
     ring_nf
 
 /- English proof (translation)
-Rewrite using `[isPosDef_iff_basis (Pi.basis fun _ : Fin m => RingOfIntegers.basis E)]`. Introduce `c hc`. Establish `hw : ∀ k (τ : E →+* ℂ), ∑ a, (c a : ℂ) * τ (((Pi.basis fun _ : Fin m => RingOfIntegers.basis E) a k : 𝓞 E) : E) = ∑ j, (c ⟨k, j⟩ : ℂ) * τ (RingOfIntegers.basis E j : E)`. Introduce `k τ`. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single k]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => by simp [Pi.basis_apply]`. Introduce `k' _ hk'`. Conclude with `Finset.sum_eq_zero fun j _ => by simp [Pi.basis_apply, Pi.single_apply, Ne.symm hk']`. Simplify using the standard rewrite rules. Establish `hsum : ∑ a, ∑ a', c a * c a' * coordForm m ((Pi.basis fun _ : Fin m => RingOfIntegers.basis E) a) ((Pi.basis fun _ : Fin m => RingOfIntegers.basis E) a') = ∑ k, ∑ τ : E →+* ℂ, Complex.normSq (∑ j, (c ⟨k, j⟩ : ℂ) * τ (RingOfIntegers.basis E j : E))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 
-Repeatedly rewrite using `[← hw, ← sum_sum_mul_re]`. Simplify using `only [coordForm, LinearMap.mk₂_apply, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsum]`. Establish `hnn : ∀ k ∈ Finset.univ, 0 ≤ ∑ τ : E →+* ℂ, Complex.normSq (∑ j, (c ⟨k, j⟩ : ℂ) * τ (RingOfIntegers.basis E j : E))` using `fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `lt_of_le_of_ne (Finset.sum_nonneg hnn) fun h0 => hc ?_` and prove the remaining obligations. Establish `h1` using `(Finset.sum_eq_zero_iff_of_nonneg hnn).1 h0.symm`. Use extensionality with `⟨k, j⟩`. Establish `h2 : ∀ τ : E →+* ℂ, ∑ j, (c ⟨k, j⟩ : ℂ) * τ (RingOfIntegers.basis E j : E) = 0` using `fun τ => Complex.normSq_eq_zero.1 ((Finset.sum_eq_zero_iff_of_nonneg fun _ _ => Complex.normSq_nonneg _).1 (h1 k (Finset.mem_univ _)) τ (Finset.mem_univ _))`. Establish `h3 : ∑ j, (c ⟨k, j⟩ : ℂ) • canonicalEmbedding.latticeBasis E j = 0`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Use extensionality with `τ`. Simplify `h2 τ` using `[canonicalEmbedding.latticeBasis_apply, integralBasis_apply, canonicalEmbedding.apply_at]`. Use `Fintype.linearIndependent_iff.1 (canonicalEmbedding.latticeBasis E).linearIndependent _ h3 j` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coordForm_posDef (m : ℕ) : IsPosDef (coordForm (E := E) m) := by
   classical
@@ -99,9 +99,9 @@ theorem coordForm_posDef (m : ℕ) : IsPosDef (coordForm (E := E) m) := by
   simpa using this
 
 /- English proof (translation)
-Introduce `E _ _ _ H X _ _ _ _`. Take `⟨m, f, hf⟩` from `Module.Finite.exists_fin' (𝓞 E) X`. Take `⟨s, hs⟩` from `Module.projective_lifting_property f LinearMap.id hf`. Establish `hinj : Function.Injective s` using `Function.LeftInverse.injective (g := f) fun x => LinearMap.congr_fun hs x`. Use `⟨pullR s (coordForm m), ⟨fun y z => (coordForm_mem H m).1 _ _, fun a y z => ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [pullR_apply, map_smul]`. Conclude with `(coordForm_mem H m).2 a _ _`. Introduce `n x hx c hc`. Conclude with `coordForm_posDef m n (s ∘ x) (hx.map' s.toAddMonoidHom.toIntLinearMap (LinearMap.ker_eq_bot.2 hinj)) c hc`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_posDef_realForm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Type) [AddCommGroup X]
     [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X],

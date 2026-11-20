@@ -18,7 +18,7 @@ variable {nb : nA σ d.Y d.b → d.G} {uM : (Fin L.n → AE F E) → d.G} {nb' :
   {cM : (Fin L.n → AE F E) × AF F → d.G} {δ : E}
 
 /- English proof (translation)
-The claim follows from `I.inj_core h hp hpr h' h'' e`.
+A detailed English derivation is pending.
 -/
 theorem inj_core (h : Hyp L nb uM nb' w₁ cM δ) {p : d.G} (hp : p ∈ par2 σ d.Y) (hpr : p ∈ rat2 σ d.Y) {c c' : Cr L}
     {γ' γ'' : G2 σ L.Y} (h' : γ' ∈ rat2 σ L.Y) (h'' : γ'' ∈ rat2 σ L.Y)
@@ -27,7 +27,7 @@ theorem inj_core (h : Hyp L nb uM nb' w₁ cM δ) {p : d.G} (hp : p ∈ par2 σ 
   I.inj_core h hp hpr h' h'' e
 
 /- English proof (translation)
-Conclude with `parabolic_conj_weyl_crossing h hp hpr c`.
+A detailed English derivation is pending.
 -/
 theorem conj_par (h : Hyp L nb uM nb' w₁ cM δ) {p' : G2 σ L.Y} (hp : p' ∈ par2 σ L.Y) (hpr : p' ∈ rat2 σ L.Y) (c : Cr L) :
     ∃ p ∈ par2 σ d.Y, p ∈ rat2 σ d.Y ∧ ∃ c₂ : Cr L, w₁ * (cM c.1 * L.j p') = p * (w₁ * cM c₂.1) := by

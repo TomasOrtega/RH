@@ -10,7 +10,7 @@ namespace PI.WGL
 open Formalism.BasicNotions MvPolynomial
 
 /- English proof (translation)
-The claim follows from `ioExists_of' h3 h4 hx`.
+A detailed English derivation is pending.
 -/
 theorem ioExists_of (h3 : PI.HwIrred) (h4 : PI.GTBranch) (hx : XiFacts) : IoExists :=
   ioExists_of' h3 h4 hx

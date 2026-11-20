@@ -15,7 +15,7 @@ variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C]
   {F : Type} [Field F] [Fintype F] [DecidableEq F] {N : Type} [AddCommGroup N] [Module F N]
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Use `Fintype.one_lt_card (α := F)` as an intermediate fact. Simplify using `[hc] at this`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem f_ne_zero {p f : ℕ} (hc : Fintype.card F = p ^ f) : f ≠ 0 := by
   rintro rfl
@@ -23,11 +23,11 @@ theorem f_ne_zero {p f : ℕ} (hc : Fintype.card F = p ^ f) : f ≠ 0 := by
   simp [hc] at this
 
 /- English proof (translation)
-Establish `hf` using `f_ne_zero (F := F) hc`. Establish `h1 : 1 ≤ p ^ f` using `hc ▸ Fintype.card_pos`. Establish `hcard : (Fintype.card Fˣ : C) = (p : C) ^ f - 1`. Rewrite using `[Fintype.card_units, hc, Nat.cast_sub h1, Nat.cast_pow, Nat.cast_one]`. Establish `hlt : v ((p : C) ^ f) < v (1 : C)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_pow, map_one]`. Conclude with `pow_lt_one₀ zero_le hp hf`. Establish `hval : v (Fintype.card Fˣ : C) = 1`. Rewrite using `[hcard, Valuation.map_sub_eq_of_lt_right _ hlt, map_one]`. Establish `h0 : (Fintype.card Fˣ : C) ≠ 0` using `fun h => by simp [h] at hval`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h0, hv.exists_of_le_one ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀, hval, inv_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inv_card {p f : ℕ} {v : Valuation C NNReal} (hv : v.Integers R)
     (hp : v (p : C) < 1) (hc : Fintype.card F = p ^ f) :
@@ -46,7 +46,7 @@ theorem exists_inv_card {p f : ℕ} {v : Valuation C NNReal} (hv : v.Integers R)
   rw [map_inv₀, hval, inv_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[proj, Algebra.smul_def, hw, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem proj_eq_smul {w : R} (hw : algebraMap R C w = (Fintype.card Fˣ : C)⁻¹)
     (χ : MulChar F R) (g : N → C) :
@@ -55,7 +55,7 @@ theorem proj_eq_smul {w : R} (hw : algebraMap R C w = (Fintype.card Fˣ : C)⁻�
   simp [proj, Algebra.smul_def, hw, Finset.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[proj_eq_smul hw]`. Conclude with `S.smul_mem _ (S.sum_mem fun a _ => S.smul_mem _ (h a))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_mem {w : R} (hw : algebraMap R C w = (Fintype.card Fˣ : C)⁻¹)
     (S : Submodule R (N → C)) (χ : MulChar F R) (g : N → C)
@@ -79,9 +79,9 @@ Both sides reduce to the same expression.
 theorem projL_apply (χ : MulChar F R) (g : N → C) : projL χ g = proj χ g := rfl
 
 /- English proof (translation)
-Establish `h` using `Finset.sum_map (Finset.univ : Finset Fˣ) ⟨((↑) : Fˣ → F), Units.val_injective⟩ (fun a => ψ a)`. Simplify using `only [Function.Embedding.coeFn_mk] at h`. Rewrite using `[← h]`. Use `Finset.sum_subset (Finset.subset_univ _) fun a _ ha => ?_` and prove the remaining obligations. Use `MulChar.map_nonunit ψ fun hu => ha ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.mem_map.2 ⟨hu.unit, Finset.mem_univ _, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem sum_units_eq (ψ : MulChar F R) : ∑ a : Fˣ, ψ (a : F) = ∑ a : F, ψ a := by
   have h := Finset.sum_map (Finset.univ : Finset Fˣ) ⟨((↑) : Fˣ → F), Units.val_injective⟩ (fun a => ψ a)
@@ -92,9 +92,7 @@ theorem sum_units_eq (ψ : MulChar F R) : ∑ a : Fˣ, ψ (a : F) = ∑ a : F, �
   exact Finset.mem_map.2 ⟨hu.unit, Finset.mem_univ _, rfl⟩
 
 /- English proof (translation)
-Establish `hne : χ⁻¹ * ψ ≠ 1` using `fun h' => h (inv_mul_eq_one.1 h')`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [MulChar.mul_apply]`. Use `_ = 0 := by`. Rewrite using `[sum_units_eq]`.
-
-Conclude with `MulChar.sum_eq_zero_of_ne_one hne`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orth_ne [IsDomain R] {χ ψ : MulChar F R} (h : χ ≠ ψ) :
     ∑ a : Fˣ, χ⁻¹ (a : F) * ψ (a : F) = 0 := by
@@ -106,15 +104,15 @@ theorem orth_ne [IsDomain R] {χ ψ : MulChar F R} (h : χ ≠ ψ) :
         exact MulChar.sum_eq_zero_of_ne_one hne
 
 /- English proof (translation)
-Rewrite using `[← MulChar.mul_apply, inv_mul_cancel, MulChar.one_apply_coe]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mul_apply (χ : MulChar F R) (a : Fˣ) : χ⁻¹ (a : F) * χ (a : F) = 1 := by
   rw [← MulChar.mul_apply, inv_mul_cancel, MulChar.one_apply_coe]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [proj, he, Pi.zero_apply]`. Establish `hs : ∑ a : Fˣ, algebraMap R C (χ⁻¹ (a : F)) * (algebraMap R C (ψ (a : F)) * e x) = algebraMap R C (∑ a : Fˣ, χ⁻¹ (a : F) * ψ (a : F)) * e x`. Rewrite using `[map_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun a _ => by rw [map_mul, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, orth_ne h, map_zero, zero_mul, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem proj_eigen_ne [IsDomain R] {χ ψ : MulChar F R} (h : χ ≠ ψ) (e : N → C)
     (he : ∀ (a : F) x, e (a • x) = algebraMap R C (ψ a) * e x) : proj χ e = 0 := by
@@ -127,7 +125,7 @@ theorem proj_eigen_ne [IsDomain R] {χ ψ : MulChar F R} (h : χ ≠ ψ) (e : N 
   rw [hs, orth_ne h, map_zero, zero_mul, mul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [proj, he]`. Establish `hterm : ∀ a : Fˣ, algebraMap R C (χ⁻¹ (a : F)) * (algebraMap R C (χ (a : F)) * e x) = e x` using `fun a => by rw [← mul_assoc, ← map_mul, inv_mul_apply, map_one, one_mul]`. Simplify using `only [hterm, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ h0, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem proj_eigen_self (h0 : (Fintype.card Fˣ : C) ≠ 0) (χ : MulChar F R) (e : N → C)
     (he : ∀ (a : F) x, e (a • x) = algebraMap R C (χ a) * e x) : proj χ e = e := by
@@ -139,11 +137,11 @@ theorem proj_eigen_self (h0 : (Fintype.card Fˣ : C) ≠ 0) (χ : MulChar F R) (
   rw [← mul_assoc, inv_mul_cancel₀ h0, one_mul]
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Simplify using `only [proj, zero_smul, smul_zero, hg, mul_zero, Finset.sum_const_zero, MulChar.map_zero, map_zero, zero_mul]`. Take `⟨u, rfl⟩` from `(Ne.isUnit ha)`. Simplify using `only [proj]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_left_comm]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Use `Fintype.sum_equiv (Equiv.mulRight u) _ _ fun b => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulRight, Units.val_mul, mul_smul, map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `key : algebraMap R C (χ (u : F)) * algebraMap R C (χ⁻¹ (u : F)) = 1`. Rewrite using `[← map_mul, mul_comm, inv_mul_apply, map_one]`. Take the linear combination `(-(algebraMap R C (χ⁻¹ (b : F)) * g ((b : F) • (u : F) • x))) * key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem proj_smul_apply (χ : MulChar F R) (g : N → C) (hg : g 0 = 0) (a : F) (x : N) :
     proj χ g (a • x) = algebraMap R C (χ a) * proj χ g x := by
@@ -163,7 +161,7 @@ theorem proj_smul_apply (χ : MulChar F R) (g : N → C) (hg : g 0 = 0) (a : F) 
     linear_combination (-(algebraMap R C (χ⁻¹ (b : F)) * g ((b : F) • (u : F) • x))) * key
 
 /- English proof (translation)
-Rewrite using `[pInt, Submodule.mem_span_singleton, Ideal.mem_span_singleton']`. Use `exists_congr fun a => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, ← map_natCast (algebraMap R C) p, ← map_mul]`. Conclude with `hinj.eq_iff`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_pInt_iff (hinj : Function.Injective (algebraMap R C)) (p : ℕ) (r : R) :
     algebraMap R C r ∈ pInt (C := C) R p ↔ r ∈ Ideal.span {(p : R)} := by
@@ -173,7 +171,7 @@ theorem mem_pInt_iff (hinj : Function.Injective (algebraMap R C)) (p : ℕ) (r :
   exact hinj.eq_iff
 
 /- English proof (translation)
-Simplify using `[pFun, Submodule.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_pFun {p : ℕ} {X : Type} {g : X → C} :
     g ∈ pFun R p X ↔ ∀ x, g x ∈ pInt (C := C) R p := by
@@ -182,7 +180,7 @@ theorem mem_pFun {p : ℕ} {X : Type} {g : X → C} :
 end general
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Finset.sum_Icc_succ_top (by omega), ih, Finset.sum_range_succ, mul_add, pow_succ']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_Icc_pow_eq_mul_sum_range {R : Type} [CommRing R] (ζ : R) (n : ℕ) :
     ∑ m ∈ Finset.Icc 1 n, ζ ^ m = ζ * ∑ m ∈ Finset.range n, ζ ^ m := by
@@ -192,7 +190,7 @@ private theorem sum_Icc_pow_eq_mul_sum_range {R : Type} [CommRing R] (ζ : R) (n
     rw [Finset.sum_Icc_succ_top (by omega), ih, Finset.sum_range_succ, mul_add, pow_succ']
 
 /- English proof (translation)
-Rewrite using `[sum_Icc_pow_eq_mul_sum_range]`. Establish `h` using `geom_sum_mul ζ n`. Rewrite `h` using `[hn, sub_self]`. Rewrite using `[(mul_eq_zero.1 h).resolve_right (sub_ne_zero.2 h1), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_Icc_pow_eq_zero_of_root_of_unity_ne_one {R : Type} [CommRing R] [IsDomain R] (ζ : R) (n : ℕ)
     (hn : ζ ^ n = 1) (h1 : ζ ≠ 1) : ∑ m ∈ Finset.Icc 1 n, ζ ^ m = 0 := by
@@ -202,7 +200,7 @@ private theorem sum_Icc_pow_eq_zero_of_root_of_unity_ne_one {R : Type} [CommRing
   rw [(mul_eq_zero.1 h).resolve_right (sub_ne_zero.2 h1), mul_zero]
 
 /- English proof (translation)
-Introduce `f hf`. Establish `h1` using `(Submodule.mem_inf.1 hf).1`. Establish `h2 : f 0 = 0` using `by simpa using LinearMap.mem_ker.1 (Submodule.mem_inf.1 hf).2`. Use `Submodule.mem_inf.2 ⟨hA a f h1, LinearMap.mem_ker.2 ?_⟩` and prove the remaining obligations. Simplify `h2` using `[smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem comp_smul_mem_augIdeal_of_fStable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C]
     {F : Type} [Field F] {N : Type} [AddCommGroup N] [Module F N] (A : Submodule R (N → C))
@@ -214,9 +212,7 @@ private theorem comp_smul_mem_augIdeal_of_fStable {C : Type} [Field C] {R : Type
   simpa [smul_zero] using h2
 
 /- English proof (translation)
-Set `L : (N → C) →ₗ[R] (N → C)` to `LinearMap.funLeft R C (fun x : N => a • x)`. Establish `hle : sqIdeal (augIdeal A) ≤ (sqIdeal (augIdeal A)).comap L`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, f', hf', rfl⟩`. Conclude with `Submodule.subset_span ⟨L f, comp_smul_mem_augIdeal_of_fStable A hA a f hf, L f', comp_smul_mem_augIdeal_of_fStable A hA a f' hf', rfl⟩`.
-
-Conclude with `hle hg`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem comp_smul_mem_sqIdeal_of_fStable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C]
     {F : Type} [Field F] {N : Type} [AddCommGroup N] [Module F N] (A : Submodule R (N → C))
@@ -231,27 +227,25 @@ private theorem comp_smul_mem_sqIdeal_of_fStable {C : Type} [Field C] {R : Type}
   exact hle hg
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv hp F _ _ _ _ f hc N _ _ _ _ AA hFS σ hσ g hg`. Establish `hinj : Function.Injective (algebraMap R C)` using `hv.hom_inj`. Use `haveI : IsDomain R := Function.Injective.isDomain (algebraMap R C) hinj`. Take `⟨h0, w, hw⟩` from `exists_inv_card (F := F) hv hp hc`. Establish `hgA : g ∈ AA.carrier` using `(Submodule.mem_inf.1 hg).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg0 : g 0 = 0` using `by simpa using LinearMap.mem_ker.1 (Submodule.mem_inf.1 hg).2`. Use `⟨fun χ => ⟨proj_mem hw AA.carrier χ g (fun a => hFS a g hgA), fun a x => proj_smul_apply χ g hg0 a x⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨hord, -, -, -, hsep⟩` from `FundGen.main p C v R hv hp F f hc σ hσ`. Establish `hcardU : Fintype.card Fˣ = p ^ f - 1` using `by rw [Fintype.card_units, hc]`. Establish `hσq : σ ^ (p ^ f - 1) = 1` using `hord ▸ pow_orderOf_eq_one σ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : ∀ a : Fˣ, ∑ m ∈ Finset.Icc 1 (p ^ f - 1), (σ ^ m)⁻¹ (a : F) = if a = 1 then ((p ^ f - 1 : ℕ) : R) else 0`. Introduce `a`. Establish `hpow : ∀ m : ℕ, (σ ^ m)⁻¹ (a : F) = (σ⁻¹ (a : F)) ^ m` using `fun m => by`. Rewrite using `[← inv_pow, MulChar.pow_apply_coe]`. Simplify using `only [hpow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Use `split_ifs with ha`. Substitute `ha` using the available equality. Simplify using the standard rewrite rules. Use `sum_Icc_pow_eq_zero_of_root_of_unity_ne_one _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[← MulChar.pow_apply_coe, inv_pow, hσq, inv_one, MulChar.one_apply_coe]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h1`. Establish `hne : (a : F) ≠ 1` using `fun h => ha (Units.val_eq_one.1 h)`. Establish `hs` using `hsep (a : F) 1 hne`. Establish `hsa : σ (a : F) = 1`. Use `inv_mul_apply σ a` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h1, one_mul]`. Then use the resulting hypothesis. Rewrite `hs` using `[hsa, MulChar.map_one, sub_self, map_zero, map_zero]`. Conclude with `zero_ne_one hs`. Use function extensionality and compare the values at `x`. Establish `hsum : (∑ m ∈ Finset.Icc 1 (p ^ f - 1), proj (σ ^ m) g) x = ((Fintype.card Fˣ : C))⁻¹ * ∑ a : Fˣ, algebraMap R C (∑ m ∈ Finset.Icc 1 (p ^ f - 1), (σ ^ m)⁻¹ (a : F)) * g ((a : F) • x)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_apply]`. Simplify using `only [proj]`. Rewrite using `[← Finset.mul_sum, Finset.sum_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sum, Finset.sum_mul]`. Rewrite using `[hsum]`. Simplify using `only [hz, apply_ite (algebraMap R C), ite_mul, map_zero, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, Units.val_one, one_smul, map_natCast]`. Rewrite using `[← hcardU, inv_mul_cancel_left₀ h0]`. Introduce `haf χ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hA : g ∈ AA.carrier` using `(Submodule.mem_inf.1 haf).1`. Establish `hadd : ∀ x y, g (x + y) - g x - g y ∈ pInt (C` using `C) R p := (Submodule.mem_inf.1 haf).2`. Use `proj_mem hw _ χ g fun a => Submodule.mem_inf.2 ⟨hFS a g hA, fun x y => ?_⟩` and prove the remaining obligations. Simplify `hadd (a • x) (a • y)` using `[smul_add]`. Introduce `K hK χ`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨hA, hinv⟩` from `hK`. Use `proj_mem hw _ χ g fun a => ⟨hFS a g hA, fun y k hk => ?_⟩` and prove the remaining obligations. Simplify using `only [smul_add]`. Conclude with `hinv (a • y) (a • k) (K.smul_mem a hk)`. Introduce `hsq χ`.
-
-Conclude with `proj_mem hw _ χ g fun a => comp_smul_mem_sqIdeal_of_fStable AA.carrier hFS a g hsq`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem proj_props : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (F : Type) [Field F] [Fintype F] [DecidableEq F] [CharP F p] (f : ℕ), Fintype.card F = p ^ f → ∀ (N : Type) [AddCommGroup N] [Module F N] [Fintype N] [DecidableEq N] (AA : HopfOrder (C := C) R N), FStable F AA.carrier → ∀ σ : MulChar F R, IsFund p σ → ∀ g ∈ augIdeal AA.carrier, (∀ χ : MulChar F R, proj χ g ∈ eig AA.carrier χ) ∧ g = ∑ m ∈ Finset.Icc 1 (p ^ f - 1), proj (σ ^ m) g ∧ (g ∈ afFun p AA.carrier → ∀ χ : MulChar F R, proj χ g ∈ afFun p AA.carrier) ∧ (∀ K : Submodule F N, g ∈ invFun AA.carrier K.toAddSubgroup → ∀ χ : MulChar F R, proj χ g ∈ invFun AA.carrier K.toAddSubgroup) ∧ (g ∈ sqIdeal (augIdeal AA.carrier) → ∀ χ : MulChar F R, proj χ g ∈ sqIdeal (augIdeal AA.carrier)) := by
   intro p _ C _ _ _ v R _ _ hv hp F _ _ _ _ f hc N _ _ _ _ AA hFS σ hσ g hg
@@ -312,21 +306,19 @@ theorem proj_props : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClo
     exact proj_mem hw _ χ g fun a => comp_smul_mem_sqIdeal_of_fStable AA.carrier hFS a g hsq
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv hp F _ _ _ _ f hc N _ _ _ _ AA hFS g hg χ hχ`. Establish `hinj : Function.Injective (algebraMap R C)` using `hv.hom_inj`. Use `haveI : IsDomain R := Function.Injective.isDomain (algebraMap R C) hinj`. Take `⟨σ, hσ⟩` from `fund_ex p C v R hv hp F f hc`. Take `⟨-, -, hfrob, -, -⟩` from `FundGen.main p C v R hv hp F f hc σ hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, w, hw⟩` from `exists_inv_card (F := F) hv hp hc`. Establish `hgA : g ∈ AA.carrier` using `(Submodule.mem_inf.1 hg).1`. Establish `hadd : ∀ x y, g (x + y) - g x - g y ∈ pInt (C` using `C) R p := (Submodule.mem_inf.1 hg).2`. Establish `hint : ∀ y, ∃ r : R, algebraMap R C r = g y` using `AA.le_int hgA`. Rewrite using `[mem_pFun]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Use `choose l hl using fun a : F => hint (a • x)`. Establish `hladd : ∀ a b : F, l (a + b) - l a - l b ∈ Ideal.span {(p : R)}`. Introduce `a b`. Rewrite using `[← mem_pInt_iff hinj, map_sub, map_sub, hl, hl, hl, add_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hadd _ _`. Take `⟨β, hβ, -⟩` from `moore p C v R hv hp F f hc σ hσ l hladd`. Establish `key : ∑ a : Fˣ, χ⁻¹ (a : F) * l a ∈ Ideal.span {(p : R)}`. Establish `hsplit : ∀ a : Fˣ, χ⁻¹ (a : F) * l a = χ⁻¹ (a : F) * (l a - ∑ n : Fin f, β n * (σ ^ p ^ (n : ℕ)) (a : F)) + ∑ n : Fin f, χ⁻¹ (a : F) * (β n * (σ ^ p ^ (n : ℕ)) (a : F))` using `fun a => by`. Rewrite using `[← Finset.mul_sum, ← mul_add, sub_add_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl fun a _ => hsplit a, Finset.sum_add_distrib]`. Use `Ideal.add_mem _ (Ideal.sum_mem _ fun a _ => Ideal.mul_mem_left _ _ (hβ a)) ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Ideal.sum_mem _ fun n _ => ?_` and prove the remaining obligations. Establish `hne : χ ≠ σ ^ p ^ (n : ℕ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Conclude with `hχ (hfrob n)`. Establish `hpull : ∑ a : Fˣ, χ⁻¹ (a : F) * (β n * (σ ^ p ^ (n : ℕ)) (a : F)) = β n * ∑ a : Fˣ, χ⁻¹ (a : F) * (σ ^ p ^ (n : ℕ)) (a : F)`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => mul_left_comm _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hpull, orth_ne hne, mul_zero]`. Conclude with `Ideal.zero_mem _`. Establish `hval : proj χ g x = algebraMap R C (w * ∑ a : Fˣ, χ⁻¹ (a : F) * l a)`. Simplify using `only [proj]`. Rewrite using `[← hw, map_mul, map_sum]`.
-
-Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hl]`. Rewrite using `[hval, mem_pInt_iff hinj]`. Conclude with `Ideal.mul_mem_left _ _ key`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_nf : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (F : Type) [Field F] [Fintype F] [DecidableEq F] [CharP F p] (f : ℕ), Fintype.card F = p ^ f → ∀ (N : Type) [AddCommGroup N] [Module F N] [Fintype N] [DecidableEq N] (AA : HopfOrder (C := C) R N), FStable F AA.carrier → ∀ g ∈ afFun p AA.carrier, ∀ χ : MulChar F R, ¬ IsFund p χ → proj χ g ∈ pFun R p N := by
   intro p _ C _ _ _ v R _ _ hv hp F _ _ _ _ f hc N _ _ _ _ AA hFS g hg χ hχ

@@ -7,21 +7,21 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open Finset Comb
 
 /- English proof (translation)
-Introduce `r s l hs hls hr a`. Establish `ha` using `a.isLt`. Distinguish the cases in `hpos : 1 ≤ hookShape r (s + 1) l a`. Rewrite using `[if_pos hpos]`. Distinguish the cases in `ha0 : (a : ℕ) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_neg (show ¬ ((a : ℕ) = l ∧ 1 ≤ l) by omega), add_zero]`. Distinguish the cases in `hl : l < s`. Rewrite using `[if_pos ⟨ha0, hl⟩]`. Establish `heq : Function.update (hookShape r (s + 1) l) a (hookShape r (s + 1) l a - 1) = hookShape r s l`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.update_apply, hookShape, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> omega`. Rewrite using `[heq]`. Rewrite using `[if_neg (show ¬ ((a : ℕ) = 0 ∧ l < s) by omega), latticeWords_eq_empty_of_not_antitone, Finset.card_empty]`. Introduce `hanti`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key` using `hanti (show a ≤ (⟨1, by omega⟩ : Fin r) from Fin.le_iff_val_le_val.mpr (by show (a : ℕ) ≤ 1; omega))`. Simplify using `only [Function.update_apply, hookShape, Fin.ext_iff] at key`. Apply the tactic sequence `split_ifs at key <;> omega`. Establish `hal : (a : ℕ) ≤ l`. Simplify using `only [hookShape] at hpos`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs at hpos <;> omega`. Rewrite using `[if_neg (show ¬ ((a : ℕ) = 0 ∧ l < s) by omega), zero_add]`. Distinguish the cases in `hal' : (a : ℕ) = l`. Rewrite using `[if_pos ⟨hal', by omega⟩]`. Establish `heq : Function.update (hookShape r (s + 1) l) a (hookShape r (s + 1) l a - 1) = hookShape r s (l - 1)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Function.update_apply, hookShape, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> omega`. Rewrite using `[heq]`. Rewrite using `[if_neg (show ¬ ((a : ℕ) = l ∧ 1 ≤ l) by omega), latticeWords_eq_empty_of_not_antitone, Finset.card_empty]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `hanti`. Establish `key` using `hanti (show a ≤ (⟨(a : ℕ) + 1, by omega⟩ : Fin r) from Fin.le_iff_val_le_val.mpr (by show (a : ℕ) ≤ (a : ℕ) + 1; omega))`. Simplify using `only [Function.update_apply, hookShape, Fin.ext_iff] at key`. Apply the tactic sequence `split_ifs at key <;> omega`. Rewrite using `[if_neg hpos]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `hla : l < (a : ℕ)`. Simplify using `only [hookShape] at hpos`. Apply the tactic sequence `split_ifs at hpos <;> omega`. Rewrite using `[if_neg (show ¬ ((a : ℕ) = 0 ∧ l < s) by omega), if_neg (show ¬ ((a : ℕ) = l ∧ 1 ≤ l) by omega)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem CombHookBranch.unconditional : CombHookBranch.Statement := by
   intro r s l hs hls hr a
@@ -77,7 +77,7 @@ theorem CombHookBranch.unconditional : CombHookBranch.Statement := by
       if_neg (show ¬ ((a : ℕ) = l ∧ 1 ≤ l) by omega)]
 
 /- English proof (translation)
-The claim follows from `CombHookBranch.unconditional`.
+A detailed English derivation is pending.
 -/
 theorem CombHookBranch.proof (_h1 : CombHookShapeFacts.Statement) : CombHookBranch.Statement :=
   CombHookBranch.unconditional

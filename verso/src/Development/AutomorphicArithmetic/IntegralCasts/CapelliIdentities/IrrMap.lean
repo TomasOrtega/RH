@@ -162,21 +162,19 @@ noncomputable def UpperTheory.Reformulated.B.Qi38.mapRep :
         r
 
 /- English proof (translation)
-Establish `key : ∀ A : Matrix (Fin n) (Fin n) E, ∀ v ∈ N, (A.map f).mulVec v ∈ N`. Introduce `A v hv`. Establish `hA : A ∈ Submodule.span E (Set.range r)` using `by rw [hr]; exact Submodule.mem_top`. Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Take `⟨g, rfl⟩` from `hx`. Conclude with `hN g v hv`. Consider the case `zero`. Rewrite using `[Matrix.map_zero _ (map_zero f), Matrix.zero_mulVec]`. Conclude with `N.zero_mem`.
+Extract witnesses or component facts from the available result. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y _ _ hx hy`. Rewrite using `[Matrix.map_add _ (map_add f), Matrix.add_mulVec]`. Conclude with `N.add_mem hx hy`. Consider the case `smul a x _ hx`. Establish `h : (a • x).map f = f a • x.map f`.
+Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[h, Matrix.smul_mulVec]`. Conclude with `N.smul_mem _ hx`. Use `or_iff_not_imp_left.2 fun hne => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff N).1 hne`. Take `⟨j, hj⟩` from `Function.ne_iff.1 hv0`. Establish `hj' : v j ≠ 0` using `hj`. Rewrite using `[eq_top_iff]`. Introduce `w _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Finset.univ_sum_single w]`. Use `N.sum_mem fun i _ => ?_` and prove the remaining obligations. Establish `h1` using `N.smul_mem (w i * (v j)⁻¹) (key (Matrix.single i j 1) v hv)`. Establish `h2 : (w i * (v j)⁻¹) • ((Matrix.single i j (1 : E)).map f).mulVec v = Pi.single i (w i)`. Rewrite using `[Matrix.map_single, map_one, Matrix.single_mulVec]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use extensionality with `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[hj']`. Simplify using `[hk]`.
-
-Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.Qi38.aux {Γ E E' : Type} [Field E] [Field E'] (f : E →+* E') {n : Nat}
     (r : Γ → Matrix (Fin n) (Fin n) E) (hr : Submodule.span E (Set.range r) = ⊤)
@@ -220,7 +218,7 @@ private theorem UpperTheory.Reformulated.B.Qi38.aux {Γ E E' : Type} [Field E] [
   rwa [h2] at h1
 
 /- English proof (translation)
-Introduce `Γ E E' _ _ _ f n r hr N hN`. Conclude with `UpperTheory.Reformulated.B.Qi38.aux f (fun g => r g) hr N hN`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qi38.irr_map :
     ∀ {Γ E E' : Type} [inst : Group Γ] [inst_1 : Field E] [inst_2 : Field E']

@@ -38,7 +38,7 @@ def CartierStatement : Prop :=
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Rewrite using `[← CutByFormField.vecCons_comp_finRotate]`. Conclude with `FieldNumbers.IntNumSymm.proof F K ι V (n + 1) _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intNum_snoc {F : Type u} [Field F] (V : Ideal (MRing ι F)) {n : ℕ} (L : Fin n → K → ℤ)
     (b : K → ℤ) :
@@ -49,14 +49,14 @@ theorem intNum_snoc {F : Type u} [Field F] (V : Ideal (MRing ι F)) {n : ℕ} (L
 variable {O : Type u} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-The claim follows from `intNum_snoc _ L b`.
+A detailed English derivation is pending.
 -/
 theorem vNum_snoc (W : Ideal (MRing ι O)) {n : ℕ} (L : Fin n → K → ℤ) (b : K → ℤ) :
     vNum W (Fin.snoc (α := fun _ => K → ℤ) L b) = vNum W (Matrix.vecCons b L) :=
   intNum_snoc _ L b
 
 /- English proof (translation)
-Rewrite using `[Objects.redEval_eq_cycEval]`. Use `congr 1`. Use function extensionality and compare the values at `W`. Conclude with `Objects.divO_eq_ratDiv P f g W`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem redEval_divO (J : Ideal (MRing ι (IsLocalRing.ResidueField O)) → ℤ)
     (P : Ideal (MRing ι O)) (f g : MRing ι O) :
@@ -68,9 +68,9 @@ theorem redEval_divO (J : Ideal (MRing ι (IsLocalRing.ResidueField O)) → ℤ)
   exact Objects.divO_eq_ratDiv P f g W
 
 /- English proof (translation)
-Establish `hmin : W ∈ (P ⊔ Ideal.span {f}).minimalPrimes ∧ IsRelevant W`. Assume the negation of the conclusion as `h`. Conclude with `hW (by unfold divCycle; rw [dif_neg h])`. Establish `hWp : W.IsPrime` using `hmin.1.1.1`. Establish `hWh : IsMultiHomogIdeal W` using `(Objects.isMultiHomogIdeal_iff W).mpr (ReciprocityTheory.ChartRestriction.G.AI.I1.cyc_isMultiHomogIdeal_of_mem_minimalPrimes ((Objects.isMultiHomogIdeal_iff P).mp hP.multiProj.multiHomog) ((Objects.isMultiHomog_iff f a).mp hf) hmin.1)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hpr, -, hrel, -⟩` from `SpecialIdealCorresp.proof O ϖ hϖ K ι P W hWp hϖW`. Use `⟨(Objects.isMultiProjPrime_iff _).mp ⟨hpr, SpecialIdealMultiHomog.proof O K ι W hWh, hrel.mp hmin.2⟩, ?_⟩` and prove the remaining obligations. Use `SpecialQuotDim.proof O ϖ hϖ K ι W hϖW` as an intermediate fact. Rewrite `this` using `[hDim O ϖ hϖ K ι P d hP a f hf hfP W hW hϖW]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProjVarF_specialIdeal (hDim : ComponentDim.Statement.{u}) {ϖ : O} (hϖ : Irreducible ϖ)
     {P : Ideal (MRing ι O)} {d : ℕ} (hP : IsModelOver P d) {a : K → ℕ} {f : MRing ι O}
@@ -93,11 +93,11 @@ theorem isProjVarF_specialIdeal (hDim : ComponentDim.Statement.{u}) {ϖ : O} (h�
   exact this
 
 /- English proof (translation)
-Unfold `cycEval`. Use `finsum_congr fun W => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : ratDiv P f g W = 0`. Rewrite using `[h0, zero_mul, zero_mul]`. Establish `hϖW` using `hD.vertical W h0`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨α, β, hα, hβ, -⟩` from `hD.degrees`. Establish `hV : ReciprocityTheory.ChartRestriction.G.AI.I1.IsProjVarF (specialIdeal W) (n + 1)`. Distinguish the cases in `hf : divCycle P f W = 0`. Establish `hg : divCycle P g W ≠ 0` using `fun hg => h0 (by rw [ratDiv, hf, hg, sub_zero])`. Conclude with `isProjVarF_specialIdeal hDim hϖ hP hβ hD.den_not_mem hg hϖW`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Conclude with `isProjVarF_specialIdeal hDim hϖ hP hα hD.num_not_mem hf hϖW`. Simplify using `only`. Rewrite using `[Numbers.agree_of hBase hCut FieldNumbers.ExistsForm.proof FieldNumbers.DivCycleSupport.proof Iκ hI (specialIdeal W) (n + 1) M hV]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cycEval_family (hBase : FieldNumbers.IntNumBase.Statement.{u})
     (hCut : FieldNumbers.CutRational.Statement.{u}) (hDim : ComponentDim.Statement.{u}) {ϖ : O}
@@ -126,7 +126,7 @@ theorem cycEval_family (hBase : FieldNumbers.IntNumBase.Statement.{u})
 end VerticalDivisorsCommuting
 
 /- English proof (translation)
-Introduce `H O _ _ _ ϖ hϖ K _ _ ι _ P d hP b b' f g f' g' hD hD' L`. Establish `h` using `H O ϖ hϖ K ι P d b b' f g f' g' L (fun V _ M => intNum _ V M) ((Objects.isModelOver_iff P _).mp hP) hD hD' (hN _ K ι)`. Simplify using `only [VerticalDivisorsCommuting.redEval_divO, VerticalDivisorsCommuting.intNum_snoc] at h`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem VerticalDivisorsCommuting.cartier_imp (hN : Numbers.Statement.{u}) :
     VerticalDivisorsCommuting.CartierStatement.{u} → VerticalDivisorsCommute.Statement.{u} := by
@@ -137,7 +137,7 @@ theorem VerticalDivisorsCommuting.cartier_imp (hN : Numbers.Statement.{u}) :
   exact h
 
 /- English proof (translation)
-Introduce `H O _ _ _ ϖ hϖ K _ _ ι _ P n b b' f g f' g' L Iκ hP hD hD' hI`. Establish `hP'` using `(Objects.isModelOver_iff P _).mpr hP`. Rewrite using `[VerticalDivisorsCommuting.redEval_divO, VerticalDivisorsCommuting.redEval_divO, VerticalDivisorsCommuting.cycEval_family hBase hCut hDim hϖ hP' hD Iκ hI (Fin.snoc (α := fun _ => K → ℤ) L b'), VerticalDivisorsCommuting.cycEval_family hBase hCut hDim hϖ hP' hD' Iκ hI (Fin.snoc (α …`. Simplify using `only [VerticalDivisorsCommuting.vNum_snoc]`. Conclude with `H O ϖ hϖ K ι P n hP' b b' f g f' g' hD hD' L`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem VerticalDivisorsCommuting.imp_cartier (hBase : FieldNumbers.IntNumBase.Statement.{u})
     (hCut : FieldNumbers.CutRational.Statement.{u}) (hDim : ComponentDim.Statement.{u}) :
@@ -151,7 +151,7 @@ theorem VerticalDivisorsCommuting.imp_cartier (hBase : FieldNumbers.IntNumBase.S
   exact H O ϖ hϖ K ι P n hP' b b' f g f' g' hD hD' L
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨VerticalDivisorsCommuting.imp_cartier hBase hCut hDim, VerticalDivisorsCommuting.cartier_imp (Numbers.proof hBase hCut)⟩`.
+Supply the required witnesses or components.
 -/
 theorem VerticalDivisorsCommuting.equiv (hBase : FieldNumbers.IntNumBase.Statement.{u})
     (hCut : FieldNumbers.CutRational.Statement.{u}) (hDim : ComponentDim.Statement.{u}) :

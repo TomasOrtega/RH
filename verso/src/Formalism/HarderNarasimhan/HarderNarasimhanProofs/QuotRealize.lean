@@ -18,7 +18,7 @@ variable {E F M : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [Finit
   [NormedAddCommGroup F] [InnerProductSpace ℝ F] [FiniteDimensional ℝ F] [AddCommGroup M]
 
 /- English proof (translation)
-Establish `h0 : ‖g (m - m')‖ = 0` using `by rw [← hn, map_sub, h, sub_self, norm_zero]`. Rewrite `h0` using `[norm_eq_zero, map_sub, sub_eq_zero]`. Conclude with `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_norm_eq (f : M →+ E) (g : M →+ F) (hn : ∀ m, ‖f m‖ = ‖g m‖) {m m' : M}
     (h : f m = f m') : g m = g m' := by
@@ -46,7 +46,7 @@ def transport (f : M →+ E) (g : M →+ F) (L1 : Submodule ℤ E) (L2 : Submodu
     exact eq_of_norm_eq f g hn (by rw [hs, map_add, hy, hz]; rfl)
 
 /- English proof (translation)
-Use `show g ((h1 y).1 y.2).choose = g m`. Conclude with `eq_of_norm_eq f g hn (((h1 y).1 y.2).choose_spec.trans hm.symm)`.
+A detailed English derivation is pending.
 -/
 theorem transport_apply (f : M →+ E) (g : M →+ F) (L1 : Submodule ℤ E) (L2 : Submodule ℤ F)
     (h1 : ∀ y, y ∈ L1 ↔ ∃ m, f m = y) (h2 : ∀ y, y ∈ L2 ↔ ∃ m, g m = y)
@@ -56,15 +56,15 @@ theorem transport_apply (f : M →+ E) (g : M →+ F) (L1 : Submodule ℤ E) (L2
   exact eq_of_norm_eq f g hn (((h1 y).1 y.2).choose_spec.trans hm.symm)
 
 /- English proof (translation)
-Establish `hn' : ∀ m, ‖g m‖ = ‖f m‖` using `fun m => (hn m).symm`. Set `φ` to `transport f g L1 L2 h1 h2 hn`. Set `ψ` to `transport g f L2 L1 h2 h1 hn'`. Set `e : L1 ≃+ L2` to `{ toFun := φ invFun := ψ map_add' := φ.map_add left_inv := fun y => by`. Take `⟨m, hm⟩` from `(h1 _).1 y.2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[transport_apply g f L2 L1 h2 h1 hn' (φ y) m (transport_apply f g L1 L2 h1 h2 hn y m hm).symm, hm]`. Use `right_inv := fun y => by`. Take `⟨m, hm⟩` from `(h2 _).1 y.2`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[transport_apply f g L1 L2 h1 h2 hn (ψ y) m (transport_apply g f L2 L1 h2 h1 hn' y m hm).symm, hm] }`. Set `bL` to `Module.finBasis ℤ L1`. Rewrite using `[Formalism.F.covolEqGram E L1 _ bL, Formalism.F.covolEqGram F L2 _ (bL.map e.toIntLinearEquiv)]`. Use `congr 2`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Take `⟨mi, hmi⟩` from `(h1 _).1 (bL i).2`. Take `⟨mj, hmj⟩` from `(h1 _).1 (bL j).2`. Establish `hi : ((bL.map e.toIntLinearEquiv) i : F) = g mi`. Rewrite using `[Basis.map_apply]`. Conclude with `transport_apply f g L1 L2 h1 h2 hn _ mi hmi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hj : ((bL.map e.toIntLinearEquiv) j : F) = g mj`. Rewrite using `[Basis.map_apply]`. Conclude with `transport_apply f g L1 L2 h1 h2 hn _ mj hmj`. Simplify using `only [Matrix.gram_apply]`. Rewrite using `[hi, hj, ← hmi, ← hmj, real_inner_eq_norm_add_mul_self_sub_norm_mul_self_sub_norm_mul_self_div_two, real_inner_eq_norm_add_mul_self_sub_norm_mul_self_sub_norm_mul_self_div_two, ← map_add, ← map_add, hn, hn, hn]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covol_eq_of_norm_eq (f : M →+ E) (g : M →+ F) (L1 : Submodule ℤ E) (L2 : Submodule ℤ F)
     [DiscreteTopology L1] [DiscreteTopology L2]
@@ -109,13 +109,13 @@ section Psi
 variable {P ι : Type*} [Fintype P] [DecidableEq P] [Fintype ι]
 
 /- English proof (translation)
-Rewrite using `[PiLp.inner_apply]`. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, PiLp.inner_apply, Complex.re_sum, Fintype.sum_prod_type, Finset.sum_eq_single u]`. Rewrite using `[Fintype.sum_prod_type]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Simplify using `[PlaceDecomposition.psi, Fin.sum_univ_two, Complex.mul_re]`. Introduce `w _ hw`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce and unpack `⟨i, k⟩ -`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Simplify using `[PlaceDecomposition.psi, hw]`. Introduce `hu`. Conclude with `absurd (Finset.mem_univ u) hu`. Rewrite using `[if_neg h]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨w, i, k⟩ -`. Distinguish the cases in `hw : w = u`. Substitute `hw` using the available equality. Simplify using `[PlaceDecomposition.psi, h]`. Simplify using `[PlaceDecomposition.psi, hw]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inner_psi_psi (u v : P) (y z : ι → ℂ) :
     inner ℝ (PlaceDecomposition.psi u y) (PlaceDecomposition.psi (ι := ι) v z) =
@@ -143,7 +143,7 @@ theorem inner_psi_psi (u v : P) (y z : ι → ℂ) :
     · simp [PlaceDecomposition.psi, hw]
 
 /- English proof (translation)
-Simplify using `[sum_inner, inner_sum, inner_psi_psi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inner_sum_psi (y z : P → ι → ℂ) :
     inner ℝ (∑ u, PlaceDecomposition.psi u (y u)) (∑ v, PlaceDecomposition.psi (ι := ι) v (z v)) =
@@ -153,7 +153,7 @@ theorem inner_sum_psi (y z : P → ι → ℂ) :
 end Psi
 
 /- English proof (translation)
-Introduce and unpack `x ⟨y, hy, rfl⟩`. Conclude with `⟨y, h hy, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem zl_mono {R V E : Type*} [Ring R] [AddCommGroup V] [Module R V] [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] (ρ : V →+ E) {N N' : Submodule R V}
@@ -162,13 +162,13 @@ theorem zl_mono {R V E : Type*} [Ring R] [AddCommGroup V] [Module R V] [NormedAd
   exact ⟨y, h hy, rfl⟩
 
 /- English proof (translation)
-Establish `hdim : Module.finrank ℂ (LinearMap.range T) = Fintype.card κ`. Rewrite using `[LinearMap.finrank_range_of_inj hT, Module.finrank_fintype_fun_eq_card]`. Set `e : LinearMap.range T ≃ₗᵢ[ℂ] EuclideanSpace ℂ κ` to `((stdOrthonormalBasis ℂ (LinearMap.range T)).reindex (Fintype.equivFinOfCardEq hdim.symm).symm).repr`. Set `f : (κ → ℂ) →ₗ[ℂ] (κ → ℂ)` to `(WithLp.linearEquiv 2 ℂ (κ → ℂ)).toLinearMap ∘ₗ e.toLinearEquiv.toLinearMap ∘ₗ T.rangeRestrict`. Establish `hf : ∀ z, ‖(WithLp.toLp 2 (f z) : EuclideanSpace ℂ κ)‖ = ‖T z‖`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `z`. Simplify using `[f, LinearIsometryEquiv.norm_map]`. Establish `hinj : Function.Injective f`. Introduce `z w hzw`. Apply `hT` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : T.rangeRestrict z = T.rangeRestrict w`. Apply `e.injective` to reduce the goal to its premises. Use `congrArg (WithLp.toLp 2) hzw` as an intermediate fact. Simplify `this` using `[f]`. Simplify using `using congrArg Subtype.val h1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨LinearMap.toMatrix' f, ?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.det_toMatrix'] first`. Consider the case `simpa using (LinearEquiv.ofInjectiveEndo f hinj).isUnit_det'`. Consider the case `exact (LinearEquiv.ofInjectiveEndo f hinj).isUnit_det'`. Rewrite using `[LinearMap.toMatrix'_mulVec, Formalism.HN.PlaceOperatorNorms.cnorm_eq, hf]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_mat {κ ι : Type} [Fintype κ] [DecidableEq κ] [Fintype ι]
     (T : (κ → ℂ) →ₗ[ℂ] EuclideanSpace ℂ ι) (hT : Function.Injective T) :
@@ -210,7 +210,7 @@ def pv (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (U : Submod
   Submodule.span ℂ ((fun y => (WithLp.equiv 2 (ι → ℂ)).symm (Formalism.HermitianLatticesTheory.fcoord b X v y)) '' (U : Set V))
 
 /- English proof (translation)
-Establish `h1 : Formalism.HermitianLatticesTheory.vecAt b v (a • x) = v.embedding a • Formalism.HermitianLatticesTheory.vecAt b v x`. Use function extensionality and compare the values at `i`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt]`. Simplify using `only [Formalism.HermitianLatticesTheory.fcoord, h1, Matrix.mulVec_smul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem fcoord_smul_harder_narasimhan (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (v : InfinitePlace K) (a : K) (x : V) :
@@ -221,7 +221,7 @@ private theorem fcoord_smul_harder_narasimhan (b : Basis ι K V) (X : InfinitePl
   simp only [Formalism.HermitianLatticesTheory.fcoord, h1, Matrix.mulVec_smul]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [Formalism.HermitianLatticesTheory.fcoord_zero]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, Formalism.HermitianLatticesTheory.fcoord_add, ih, fcoord_smul_harder_narasimhan]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem fcoord_finset_sum_smul {κ : Type} (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (v : InfinitePlace K) (s : Finset κ) (r : κ → K) (c : κ → V) :
@@ -234,11 +234,11 @@ private theorem fcoord_finset_sum_smul {κ : Type} (b : Basis ι K V) (X : Infin
       rw [Finset.sum_insert ha, Finset.sum_insert ha, Formalism.HermitianLatticesTheory.fcoord_add, ih, fcoord_smul_harder_narasimhan]
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => rw [Formalism.HermitianLatticesTheory.fcoord_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Formalism.HermitianLatticesTheory.fcoord_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`. Establish `h1 : Formalism.HermitianLatticesTheory.vecAt b v (a • x) = v.embedding a • Formalism.HermitianLatticesTheory.vecAt b v x`. Use function extensionality and compare the values at `i`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : Formalism.HermitianLatticesTheory.fcoord b X v (a • x) = v.embedding a • Formalism.HermitianLatticesTheory.fcoord b X v x`. Simplify using `only [Formalism.HermitianLatticesTheory.fcoord, h1, Matrix.mulVec_smul]`. Rewrite using `[h2]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fcoord_mem_span (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (S : Submodule (𝓞 K) V) (v : InfinitePlace K) {y : V}
@@ -258,9 +258,9 @@ theorem fcoord_mem_span (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι
       exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨y, hy, rfl⟩` from `hw`. Simplify using `using fcoord_mem_span b X S v hy`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => simpa using Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => simpa using Submodule.smul_mem _ a hx`.
+Treat this case separately. Treat this case separately.
 -/
 theorem pv_le (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (S : Submodule (𝓞 K) V) (v : InfinitePlace K) (z : EuclideanSpace ℂ ι)
@@ -275,9 +275,9 @@ theorem pv_le (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
   | smul a x _ hx => simpa using Submodule.smul_mem _ a hx
 
 /- English proof (translation)
-Establish `h1` using `pv_le b X S v z hz`. Establish `h2 : WithLp.ofLp z ∈ Submodule.span ℝ (Formalism.HermitianLatticesTheory.fcoord b X v '' (S : Set V))`. Rewrite using `[← PlaceDecomposition.span_real_eq_complex b X S v]`. Conclude with `h1`. Establish `h3` using `Submodule.mem_map_of_mem (f := PlaceDecomposition.psi v) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[← PlaceDecomposition.piece_eq_map b X S v]`. Conclude with `(Submodule.mem_inf.1 h3).1`.
+A detailed English derivation is pending.
 -/
 theorem psi_mem [DecidableEq (InfinitePlace K)] (b : Basis ι K V)
     (X : InfinitePlace K → Matrix ι ι ℂ) (S : Submodule (𝓞 K) V) (v : InfinitePlace K)
@@ -292,9 +292,9 @@ theorem psi_mem [DecidableEq (InfinitePlace K)] (b : Basis ι K V)
   exact (Submodule.mem_inf.1 h3).1
 
 /- English proof (translation)
-Establish `h : pv b X U v = (Submodule.span ℂ (Formalism.HermitianLatticesTheory.fcoord b X v '' (U : Set V))).map ((WithLp.linearEquiv 2 ℂ (ι → ℂ)).symm : (ι → ℂ) →ₗ[ℂ] EuclideanSpace ℂ ι)`. Rewrite using `[Submodule.map_span, Set.image_image]`. Both sides reduce to the same expression. Rewrite using `[h, LinearEquiv.finrank_map_eq]`. Use `PlaceDecomposition.finrank_span_complex b X hX (U.restrictScalars (𝓞 K)) v` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Submodule.coe_restrictScalars]`. Rewrite using `[this, rkK, Submodule.coe_restrictScalars, Submodule.span_eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_pv (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) (U : Submodule K V) (v : InfinitePlace K) :
@@ -308,15 +308,15 @@ theorem finrank_pv (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
   rw [this, rkK, Submodule.coe_restrictScalars, Submodule.span_eq]
 
 /- English proof (translation)
-Establish `hf : ∀ j, Formalism.HermitianLatticesTheory.fcoord b X v (b j) = (X v)⁻¹ *ᵥ Pi.single j 1`. Introduce `j`. Simplify using `only [Formalism.HermitianLatticesTheory.fcoord]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Formalism.HermitianLatticesTheory.vecAt]`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt, Finsupp.single_apply, Pi.single_apply, h, Ne.symm h]`. Establish `key : ∀ j, (WithLp.equiv 2 (ι → ℂ)).symm (Formalism.HermitianLatticesTheory.fcoord b X v (b j)) ∈ pv b X ⊤ v` using `fun j => Submodule.subset_span ⟨b j, Submodule.mem_top, rfl⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[eq_top_iff]`. Introduce and unpack `z -`. Establish `hz : z = ∑ j, (X v *ᵥ WithLp.ofLp z) j • (WithLp.equiv 2 (ι → ℂ)).symm (Formalism.HermitianLatticesTheory.fcoord b X v (b j))`. Establish `e : WithLp.ofLp z = (X v)⁻¹ *ᵥ (X v *ᵥ WithLp.ofLp z)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (hX v), Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `(WithLp.equiv 2 (ι → ℂ)).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Simplify using `only [hf]`. Use `conv_lhs => rw [WithLp.equiv_apply, e]`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply, Finset.sum_apply, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (key j)`.
+A detailed English derivation is pending.
 -/
 theorem pv_top (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) (v : InfinitePlace K) : pv b X ⊤ v = ⊤ := by
@@ -345,21 +345,19 @@ theorem pv_top (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
   exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (key j)
 
 /- English proof (translation)
-Use `set W := Submodule.span ℝ (zl (Formalism.HermitianLatticesTheory.realize b X) S : Set (EuclideanSpace ℝ (InfinitePlace K × ι × Fin 2))) with hW`. Use `set P := fun v => pv b X (Submodule.span K (S : Set V)) v with hP`. Set `cv : InfinitePlace K → EuclideanSpace ℂ ι` to `fun v => (P v)ᗮ.starProjection (WithLp.toLp 2 (Formalism.HermitianLatticesTheory.fcoord b X v x))`. Set `r` to `∑ v, PlaceDecomposition.psi v (WithLp.ofLp (cv v))`. Establish `hρ : ∀ y : V, Formalism.HermitianLatticesTheory.realize b X y = ∑ v, PlaceDecomposition.psi v (Formalism.HermitianLatticesTheory.fcoord b X v y)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Rewrite using `[← PlaceDecomposition.sum_prj (Formalism.HermitianLatticesTheory.realize b X y)]`. Conclude with `Finset.sum_congr rfl fun v _ => PlaceDecomposition.prj_realize b X v y`. Establish `hr_orth : r ∈ Wᗮ`. Rewrite using `[Submodule.mem_orthogonal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨s, hs, rfl⟩` from `hu`. Rewrite using `[hρ s, inner_sum_psi]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_eq_zero fun v _ => ?_` and prove the remaining obligations. Establish `h1 : WithLp.toLp 2 (Formalism.HermitianLatticesTheory.fcoord b X v s) ∈ P v` using `Submodule.subset_span ⟨s, Submodule.subset_span hs, rfl⟩`. Establish `h2 : cv v ∈ (P v)ᗮ` using `Submodule.starProjection_apply_mem _ _`. Rewrite using `[show (WithLp.toLp 2 (WithLp.ofLp (cv v)) : EuclideanSpace ℂ ι) = cv v from rfl, Submodule.inner_right_of_mem_orthogonal h1 h2, Complex.zero_re]`. Consider the case `zero => exact inner_zero_left _`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add u w _ _ h1 h2 => rw [inner_add_left, h1, h2, add_zero]`. Consider the case `smul a u _ h => rw [real_inner_smul_left, h, mul_zero]`. Establish `hdiff : Formalism.HermitianLatticesTheory.realize b X x - r ∈ W`. Rewrite using `[hρ x, ← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun v _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_sub]`. Establish `hz : Formalism.HermitianLatticesTheory.fcoord b X v x - WithLp.ofLp (cv v) = WithLp.ofLp ((P v).starProjection (WithLp.toLp 2 (Formalism.HermitianLatticesTheory.fcoord b X v x)))`. Simplify using `only [cv, Submodule.starProjection_orthogonal_val, WithLp.ofLp_sub, sub_sub_cancel]`. Rewrite using `[hz]`. Conclude with `psi_mem b X S v _ (Submodule.starProjection_apply_mem _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hproj : Wᗮ.starProjection (Formalism.HermitianLatticesTheory.realize b X x) = r`. Apply `Submodule.eq_starProjection_of_mem_orthogonal hr_orth` to reduce the goal to its premises. Rewrite using `[Submodule.orthogonal_orthogonal]`. Conclude with `hdiff`. Rewrite using `[hproj, ← real_inner_self_eq_norm_sq, inner_sum_psi]`.
-
-Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[show (WithLp.toLp 2 (WithLp.ofLp (cv v)) : EuclideanSpace ℂ ι) = cv v from rfl]`. Establish `h` using `inner_self_eq_norm_sq (𝕜 := ℂ) (cv v)`. Rewrite `h` using `[RCLike.re_to_complex]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_norm_sq [DecidableEq (InfinitePlace K)] (b : Basis ι K V)
     (X : InfinitePlace K → Matrix ι ι ℂ) (S : Submodule (𝓞 K) V) (x : V) :
@@ -425,7 +423,7 @@ def tv (v : InfinitePlace K) : (κ → ℂ) →ₗ[ℂ] EuclideanSpace ℂ ι :=
     (fun k => (pv b X U v)ᗮ.starProjection (WithLp.toLp 2 (Formalism.HermitianLatticesTheory.fcoord b X v (c k))))
 
 /- English proof (translation)
-Apply `(Submodule.Quotient.eq U).mp` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `U.mkQ x = U.mkQ (∑ k, b''.repr (U.mkQ x) k • c k)`. Rewrite using `[map_sum]`. Simplify using `only [LinearMap.map_smul, hc]`. Conclude with `(b''.sum_repr (U.mkQ x)).symm`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sub_mem_of_lift (hc : ∀ k, U.mkQ (c k) = b'' k) (x : V) :
     x - ∑ k, b''.repr (U.mkQ x) k • c k ∈ U := by
@@ -436,13 +434,11 @@ theorem sub_mem_of_lift (hc : ∀ k, U.mkQ (c k) = b'' k) (x : V) :
   exact (b''.sum_repr (U.mkQ x)).symm
 
 /- English proof (translation)
-Use `set r := b''.repr (U.mkQ x) with hr`. Set `L : (ι → ℂ) →ₗ[ℂ] EuclideanSpace ℂ ι` to `((pv b X U v)ᗮ.starProjection).toLinearMap ∘ₗ (WithLp.linearEquiv 2 ℂ (ι → ℂ)).symm.toLinearMap`. Establish `hL : ∀ w, L w = (pv b X U v)ᗮ.starProjection (WithLp.toLp 2 w)` using `fun w => rfl`. Establish `hm : WithLp.toLp 2 (Formalism.HermitianLatticesTheory.fcoord b X v (x - ∑ k, r k • c k)) ∈ pv b X U v` using `Submodule.subset_span ⟨_, sub_mem_of_lift U b'' c hc x, rfl⟩`. Establish `h0 : L (Formalism.HermitianLatticesTheory.fcoord b X v (x - ∑ k, r k • c k)) = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL]`. Use `first`. Consider the case `exact (Submodule.starProjection_apply_eq_zero_iff _).mpr (Submodule.le_orthogonal_orthogonal _ hm)`. Consider the case `exact (Submodule.starProjection_eq_zero_iff _).mpr (Submodule.le_orthogonal_orthogonal _ hm)`. Consider the case `simp [Submodule.le_orthogonal_orthogonal _ hm]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `simpa using Submodule.le_orthogonal_orthogonal _ hm`. Establish `hsplit : Formalism.HermitianLatticesTheory.fcoord b X v x = Formalism.HermitianLatticesTheory.fcoord b X v (x - ∑ k, r k • c k) + ∑ k, v.embedding (r k) • Formalism.HermitianLatticesTheory.fcoord b X v (c k)`. Rewrite using `[← fcoord_finset_sum_smul, ← Formalism.HermitianLatticesTheory.fcoord_add, sub_add_cancel]`. Rewrite using `[← hL, hsplit, map_add, h0, zero_add, map_sum, tv, Fintype.linearCombination_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_smul, hL]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_eq_tv (hc : ∀ k, U.mkQ (c k) = b'' k) (v : InfinitePlace K) (x : V) :
     (pv b X U v)ᗮ.starProjection (WithLp.toLp 2 (Formalism.HermitianLatticesTheory.fcoord b X v x)) =
@@ -468,15 +464,13 @@ theorem proj_eq_tv (hc : ∀ k, U.mkQ (c k) = b'' k) (v : InfinitePlace K) (x : 
   rw [map_smul, hL]
 
 /- English proof (translation)
-Establish `: FiniteDimensional K V` using `Module.Finite.of_basis b`. Establish `hle : (pv b X U v)ᗮ ≤ LinearMap.range (tv b X U c v)`. Introduce `w hw`. Establish `hw' : (pv b X U v)ᗮ.starProjection w = w` using `Submodule.starProjection_eq_self_iff.2 hw`. Establish `htop : w ∈ pv b X ⊤ v` using `by rw [pv_top b X hX v]; trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap : (pv b X ⊤ v).map ((pv b X U v)ᗮ.starProjection : EuclideanSpace ℂ ι →L[ℂ] EuclideanSpace ℂ ι).toLinearMap ≤ LinearMap.range (tv b X U c v)`. Unfold `pv`. Rewrite using `[Submodule.map_span_le]`. Introduce and unpack `_ ⟨y, -, rfl⟩`. Conclude with `LinearMap.mem_range.2 ⟨_, (proj_eq_tv b X U b'' c hc v y).symm⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hw']`. Conclude with `hmap ⟨w, htop, rfl⟩`. Establish `h1` using `Submodule.finrank_mono hle`. Establish `h2` using `Submodule.finrank_add_finrank_orthogonal (pv b X U v)`. Rewrite `h2` using `[finrank_pv b X hX, finrank_euclideanSpace]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `Submodule.finrank_quotient_add_finrank U`. Rewrite `h3` using `[Module.finrank_eq_card_basis b, Module.finrank_eq_card_basis b'']`. Establish `h4` using `LinearMap.finrank_range_add_finrank_ker (tv b X U c v)`. Rewrite `h4` using `[Module.finrank_fintype_fun_eq_card]`. Establish `h5 : finrank ℂ (LinearMap.ker (tv b X U c v)) = 0` using `by omega`.
-
-Rewrite using `[← LinearMap.ker_eq_bot]`. Conclude with `Submodule.finrank_eq_zero.1 h5`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tv_injective (hX : ∀ v, IsUnit (X v).det) (hc : ∀ k, U.mkQ (c k) = b'' k)
     (v : InfinitePlace K) : Function.Injective (tv b X U c v) := by
@@ -512,37 +506,35 @@ end Main
 end QuotientRealization
 
 /- English proof (translation)
-Introduce `K V ι _ _ _ _ _ _ _ _ _ _ b X hX A S hA hSat`. Establish `hfinV : FiniteDimensional K V` using `Module.Finite.of_basis b`. Use `set U := Submodule.span K (S : Set V) with hU`. Set `κ` to `Fin (finrank K (V ⧸ U))`. Set `b'' : Basis κ K (V ⧸ U)` to `Module.finBasis K (V ⧸ U)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsurj : ∀ k, ∃ y, U.mkQ y = b'' k` using `fun k => U.mkQ_surjective _`. Use `choose c hc using hsurj`. Establish `hM` using `fun v => QuotientRealization.exists_mat (QuotientRealization.tv b X U c v) (QuotientRealization.tv_injective b X U b'' c hX hc v)`. Use `choose M hMu hMn using hM`. Set `X'' : InfinitePlace K → Matrix κ κ ℂ` to `fun v => (M v)⁻¹`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hX'' : ∀ v, IsUnit (X'' v).det` using `fun v => Matrix.isUnit_nonsing_inv_det _ (hMu v)`. Establish `hnorm : ∀ v (x : V), Formalism.HermitianLatticesTheory.normAt b'' X'' v (U.mkQ x) = ‖(QuotientRealization.pv b X U v)ᗮ.starProjection (WithLp.toLp 2 (Formalism.HermitianLatticesTheory.fcoord b X v x))‖`. Introduce `v x`. Rewrite using `[QuotientRealization.proj_eq_tv b X U b'' c hc v x, ← hMn v]`. Simplify using `only [Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.fcoord, X'', Matrix.nonsing_inv_nonsing_inv _ (hMu v)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Use `⟨κ, inferInstance, inferInstance, b'', X'', hX'', hnorm, ?_⟩` and prove the remaining obligations. Introduce `N hSN hNA`. Establish `hNfg : N.FG` using `Submodule.FG.of_le hA hNA`. Use `set N'' := N.map (U.mkQ.restrictScalars (𝓞 K)) with hN''`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hUle : U ≤ Submodule.span K (N : Set V)` using `Submodule.span_mono hSN`. Establish `hrk : rkK N'' + rkK S = rkK N`. Establish `hspan : Submodule.span K (N'' : Set (V ⧸ U)) = (Submodule.span K (N : Set V)).map U.mkQ`. Rewrite using `[hN'', Submodule.map_coe]`. Conclude with `Submodule.span_image U.mkQ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `W` to `Submodule.span K (N : Set V)`. Set `fW : W →ₗ[K] V ⧸ U` to `U.mkQ ∘ₗ W.subtype`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker fW`. Establish `hr : LinearMap.range fW = W.map U.mkQ`. Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : LinearMap.ker fW = U.comap W.subtype`. Rewrite using `[LinearMap.ker_comp, Submodule.ker_mkQ]`. Rewrite `h1` using `[hr, hk, (Submodule.comapSubtypeEquivOfLe hUle).finrank_eq]`. Unfold `rkK`. Rewrite using `[hspan]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression.
 
-Conclude with `h1`. Establish `hrkR : ((rkK N : ℝ) - rkK S) = rkK N''`. Rewrite using `[← hrk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ρ` to `Formalism.HermitianLatticesTheory.realize b X`. Set `ρ''` to `Formalism.HermitianLatticesTheory.realize b'' X''`. Establish `hNlat` using `place_lattice_structure K V ι b X hX N hNfg`. Establish `hN''lat` using `place_lattice_structure K (V ⧸ U) κ b'' X'' hX'' N'' (hNfg.map _)`. Establish `: DiscreteTopology (zl ρ N)` using `hNlat.1.2`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hsatN : Formalism.F.IsSaturated (zl ρ N) (zl ρ S)` using `⟨QuotientRealization.zl_mono ρ hSN, fun x hx hxs => hSat.2.2 x (QuotientRealization.zl_mono ρ hNA hx) hxs⟩`. Establish `: DiscreteTopology (Formalism.F.quot (zl ρ N) (zl ρ S))` using `(Formalism.F.degQuot _ _ _ inferInstance hsatN).1`. Establish `: DiscreteTopology (zl ρ'' N'')` using `hN''lat.1.2`. Set `W` to `Submodule.span ℝ (zl ρ S : Set (EuclideanSpace ℝ (InfinitePlace K × ι × Fin 2)))`. Set `f : N →+ EuclideanSpace ℝ (InfinitePlace K × ι × Fin 2)` to `(Wᗮ.starProjection.toLinearMap.toAddMonoidHom).comp (ρ.comp N.subtype.toAddMonoidHom)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Set `g : N →+ EuclideanSpace ℝ (InfinitePlace K × κ × Fin 2)` to `ρ''.comp ((U.mkQ.toAddMonoidHom).comp N.subtype.toAddMonoidHom)`. Establish `h1 : ∀ y, y ∈ Formalism.F.quot (zl ρ N) (zl ρ S) ↔ ∃ m : N, f m = y`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `⟨⟨x, hx⟩, rfl⟩`. Introduce and unpack `⟨⟨x, hx⟩, rfl⟩`. Conclude with `⟨ρ x, ⟨x, hx, rfl⟩, rfl⟩`. Establish `h2 : ∀ y, y ∈ zl ρ'' N'' ↔ ∃ m : N, g m = y`. Introduce `y`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨⟨x, hx⟩, rfl⟩`. Introduce and unpack `⟨⟨x, hx⟩, rfl⟩`. Conclude with `⟨U.mkQ x, ⟨x, hx, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hn : ∀ m, ‖f m‖ = ‖g m‖`. Introduce and unpack `⟨x, hx⟩`. Establish `hsq : ‖f ⟨x, hx⟩‖ ^ 2 = ‖g ⟨x, hx⟩‖ ^ 2` using `by show ‖Wᗮ.starProjection (ρ x)‖ ^ 2 = ‖ρ'' (U.mkQ x)‖ ^ 2`. Rewrite using `[QuotientRealization.proj_norm_sq b X S x, PlaceOperatorNorms.norm_sq_realize]`. Simplify using `only [hnorm]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 hsq`. Establish `hcov` using `QuotientRealization.covol_eq_of_norm_eq f g _ _ h1 h2 hn`. Establish `hht : htQ b X N S = ht b'' X'' N''`. Unfold `htQ ht`.
-
-Rewrite using `[hcov, hrkR, ← Nat.cast_mul, Real.rpow_natCast]`. Use `⟨hht, ?_⟩` and prove the remaining obligations. Unfold `sizeQ size`. Rewrite using `[hht, hrkR]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotient_lattice_realization : QuotRealize := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX A S hA hSat

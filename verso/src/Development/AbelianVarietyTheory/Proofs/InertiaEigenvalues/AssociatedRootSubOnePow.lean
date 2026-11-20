@@ -31,7 +31,7 @@ open PowerSeries in
 variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [CharZero O] [Algebra ℤ_[l] O] in
 omit [Algebra ℤ_[l] O] [IsDomain O] [CharZero O] [Fact l.Prime] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.CycFr.lvl`. Simplify using `[map_sum]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.CycFr.constantCoeff_lvl (k : ℕ) :
     constantCoeff (_root_.GlobalTheory.CycFr.lvl l O k) = (l : O) := by
@@ -42,7 +42,7 @@ open PowerSeries in
 variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [CharZero O] [Algebra ℤ_[l] O] in
 omit [IsDomain O] [CharZero O] in
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.CycFr.act_nat_X]`. Establish `h` using `_root_.GlobalTheory.CycFr.mul_lvl (l := l) (O := O) 0`. Simplify using `only [pow_zero, pow_one, zero_add, add_sub_cancel_left] at h`. Conclude with `h.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CycFr.act_l_X :
     _root_.GlobalTheory.CycFr.act O (l : ℤ_[l]) X = X * _root_.GlobalTheory.CycFr.lvl l O 0 := by
@@ -55,9 +55,9 @@ open PowerSeries in
 variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [CharZero O] [Algebra ℤ_[l] O] in
 omit [Algebra ℤ_[l] O] [CharZero O] in
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Establish `h0 : (l : IsLocalRing.ResidueField O) = 0`. Rewrite using `[← map_natCast (IsLocalRing.residue O), IsLocalRing.residue_eq_zero_iff]`. Conclude with `hl`. Use `haveI : CharP (IsLocalRing.ResidueField O) l := (CharP.charP_iff_prime_eq_zero hp).2 h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, map_one]`. Establish `h1 : (IsLocalRing.residue O ζ - 1) ^ l = 0`. Rewrite using `[sub_pow_char, ← map_pow, hζ, map_one, one_pow, sub_self]`. Conclude with `(pow_eq_zero_iff hp.ne_zero).mp h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CycFr.sub_one_mem_max [IsLocalRing O] (hl : ¬ IsUnit (l : O)) (ζ : O)
     (hζ : ζ ^ l = 1) : ζ - 1 ∈ IsLocalRing.maximalIdeal O := by
@@ -75,9 +75,9 @@ open PowerSeries in
 variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [CharZero O] [Algebra ℤ_[l] O] in
 omit [Algebra ℤ_[l] O] [CharZero O] [Fact l.Prime] in
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `_root_.GlobalTheory.NB.LT.exists_algEquiv_X_add_C (IsLocalRing.maximalIdeal O) x hx`. Establish `hσC : ∀ d : O, σ (C d) = C d` using `fun d => by`. Simplify using `using _root_.GlobalTheory.CycFr.algHom_C σ.toAlgHom d`. Establish `hXσ : σ (X - C x) = X` using `by rw [map_sub, hσ, hσC]; ring`. Use `⟨?_, fun d hd => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: Prime (σ (X - C x))` using `by rw [hXσ]; exact X_prime`. Conclude with `(MulEquiv.prime_iff σ.toMulEquiv).mp this`. Establish `h` using `map_dvd σ hd`. Rewrite `h` using `[hXσ, hσC, X_dvd_iff, constantCoeff_C]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CycFr.prime_X_sub_C [IsLocalRing O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (x : O) (hx : x ∈ IsLocalRing.maximalIdeal O) :
@@ -105,13 +105,13 @@ end Fields
 open PowerSeries in
 variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [CharZero O] [Algebra ℤ_[l] O] in
 /- English proof (translation)
-Establish `hinv : ∀ δ ∈ Δ, _root_.GlobalTheory.CycFr.act O (δ : ℤ_[l]) (_root_.GlobalTheory.CycFr.act O c (j X)) = _root_.GlobalTheory.CycFr.act O c (j X)`. Introduce `δ hδ`. Rewrite using `[_root_.GlobalTheory.CycFr.act_comm, (hr (j X)).1 ⟨X, rfl⟩ δ hδ]`. Take `⟨y, hy⟩` from `(hr _).2 hinv`. Establish `hy0 : constantCoeff y = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← _root_.GlobalTheory.CycFr.constantCoeff_algHom j hX y, hy, _root_.GlobalTheory.CycFr.constantCoeff_act, _root_.GlobalTheory.CycFr.constantCoeff_algHom j hX, constantCoeff_X]`. Establish `hs : HasSubst y` using `HasSubst.of_constantCoeff_zero hy0`. Use `⟨substAlgHom hs, fun a => ?_⟩` and prove the remaining obligations. Establish `hX' : X ∣ _root_.GlobalTheory.CycFr.act O c (j X)`. Take `⟨v, hv⟩` from `hX`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hv, map_mul]`. Conclude with `dvd_mul_of_dvd_left (_root_.GlobalTheory.CycFr.X_dvd_act_X c) _`. Establish `key : j.comp (substAlgHom hs) = (_root_.GlobalTheory.CycFr.act O c).comp j`. Apply `_root_.GlobalTheory.CycFr.algHom_ext_X` to reduce the goal to its premises. Simplify using `only [AlgHom.comp_apply, coe_substAlgHom, subst_X hs, hy]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `hX'`. Simplify using `only [AlgHom.comp_apply, coe_substAlgHom, subst_X hs, hy]`. Conclude with `congrArg (fun f => f a) key`.
+A detailed English derivation is pending.
 -/
 private lemma exists_descent_of_cyclotomic_action {Δ : Subgroup ℤ_[l]ˣ} {j : O⟦X⟧ →ₐ[O] O⟦X⟧}
     (hr : ∀ a, (∃ b, j b = a) ↔ ∀ δ ∈ Δ, _root_.GlobalTheory.CycFr.act O (δ : ℤ_[l]) a = a)
@@ -142,9 +142,9 @@ private lemma exists_descent_of_cyclotomic_action {Δ : Subgroup ℤ_[l]ˣ} {j :
 open PowerSeries in
 variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [CharZero O] [Algebra ℤ_[l] O] in
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Establish `hjb : j b ≠ 0` using `fun h0 => hb (hinj (by rw [h0, map_zero]))`. Establish `hinvc : ∀ δ ∈ Δ, _root_.GlobalTheory.CycFr.act O (δ : ℤ_[l]) c = c`. Introduce `δ hδ`. Establish `ha` using `(hr (j a)).1 ⟨a, rfl⟩ δ hδ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hb'` using `(hr (j b)).1 ⟨b, rfl⟩ δ hδ`. Rewrite `ha` using `[hc, map_mul, hb']`. Conclude with `mul_left_cancel₀ hjb ha`. Take `⟨c', rfl⟩` from `(hr c).2 hinvc`. Conclude with `⟨c', hinj (by rw [hc, map_mul])⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma dvd_of_invariant_map_dvd {Δ : Subgroup ℤ_[l]ˣ} {j : O⟦X⟧ →ₐ[O] O⟦X⟧}
     (hinj : Function.Injective j)
@@ -164,9 +164,9 @@ private lemma dvd_of_invariant_map_dvd {Δ : Subgroup ℤ_[l]ˣ} {j : O⟦X⟧ �
 open PowerSeries in
 variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [CharZero O] [Algebra ℤ_[l] O] in
 /- English proof (translation)
-Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Rewrite `h` using `[map_zero, associated_zero_iff_eq_zero]`. Rewrite using `[hinj (h.trans (map_zero j).symm)]`. Establish `ha : a ≠ 0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `h` using `[map_zero]`. Conclude with `hb (hinj ((associated_zero_iff_eq_zero _).1 h.symm ▸ (map_zero j).symm))`. Conclude with `associated_of_dvd_dvd (dvd_of_invariant_map_dvd hinj hr ha h.dvd) (dvd_of_invariant_map_dvd hinj hr hb h.symm.dvd)`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma associated_of_associated_invariant_map {Δ : Subgroup ℤ_[l]ˣ} {j : O⟦X⟧ →ₐ[O] O⟦X⟧}
     (hinj : Function.Injective j)
@@ -186,13 +186,11 @@ private lemma associated_of_associated_invariant_map {Δ : Subgroup ℤ_[l]ˣ} {
 open PowerSeries in
 variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [CharZero O] [Algebra ℤ_[l] O] in
 /- English proof (translation)
-Establish `hg : u ^ d - 1 = (u - 1) * ∑ i ∈ Finset.range d, u ^ i` using `(mul_geom_sum u d).symm`. Establish `hS : IsUnit (∑ i ∈ Finset.range d, u ^ i)`. Establish `hdiv : (l : ℤ_[l]) ∣ ∑ i ∈ Finset.range d, u ^ i - d`. Establish `: ∑ i ∈ Finset.range d, u ^ i - d = ∑ i ∈ Finset.range d, (u ^ i - 1)`. Rewrite using `[Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `Finset.dvd_sum fun i _ => hu.symm.dvd.trans (by simpa using sub_dvd_pow_sub_pow u 1 i)`. Take `⟨m, hm⟩` from `hdiv`. Assume the negation of the conclusion as `hnu`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hmem : ∑ i ∈ Finset.range d, u ^ i ∈ IsLocalRing.maximalIdeal ℤ_[l]` using `(IsLocalRing.mem_maximalIdeal _).mpr hnu`. Rewrite `hmem` using `[← PadicInt.ker_toZMod, RingHom.mem_ker]`. Establish `h1 : ∑ i ∈ Finset.range d, u ^ i = d + l * m` using `by linear_combination hm`. Rewrite `hmem` using `[h1, map_add, map_mul, map_natCast, map_natCast, ZMod.natCast_self, zero_mul, add_zero, ZMod.natCast_eq_zero_iff]`. Conclude with `Nat.not_dvd_of_pos_of_lt hd0 hdl hmem`.
-
-Rewrite using `[hg]`. Conclude with `(associated_mul_unit_left _ _ hS).trans hu`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma associated_pow_sub_one_prime_of_lt_prime {l : ℕ} [Fact l.Prime] (u : ℤ_[l])
     (hu : Associated (u - 1) (l : ℤ_[l])) {d : ℕ} (hd0 : 0 < d) (hdl : d < l) :
@@ -220,151 +218,133 @@ open PowerSeries in
 variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [CharZero O] [Algebra ℤ_[l] O] in
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Establish `hd : 0 < Nat.card Δ` using `Nat.card_pos`. Take `⟨e, ϖ, hed, hϖ, hϖsub, hprod, hroot⟩` from `_root_.GlobalTheory.CycRoots.exists_roots Δ ξ hl2 hl hζ hξ hinv`. Establish `hξX : X ∣ ξ` using `(dvd_pow_self X hd.ne').trans hξ.symm.dvd`. Establish `hξ0 : constantCoeff ξ = 0` using `X_dvd_iff.mp hξX`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : HasSubst ξ` using `HasSubst.of_constantCoeff_zero hξ0`. Use `set j : O⟦X⟧ →ₐ[O] O⟦X⟧ := substAlgHom hs with hjdef`. Establish `hjX : j X = ξ` using `by rw [hjdef, coe_substAlgHom, subst_X hs]`. Establish `hjC : ∀ c : O, j (C c) = C c` using `fun c => by`. Simplify using `using _root_.GlobalTheory.CycFr.algHom_C j c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨hinj, hr⟩` from `_root_.GlobalTheory.CycFr.injective_and_range_eq_invariants Δ j (hjX ▸ hξ) (by rw [hjX]; exact hinv)`. Establish `hXj : X ∣ j X` using `hjX ▸ hξX`. Take `⟨φ, hφ⟩` from `exists_descent_of_cyclotomic_action hr hXj (l : ℤ_[l])`. Take `⟨γ, hγ⟩` from `exists_descent_of_cyclotomic_action hr hXj (u : ℤ_[l])`. Establish `hϖmem : ∀ τ, ϖ τ ∈ IsLocalRing.maximalIdeal O`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu'`. Conclude with `hl ((hϖ τ).isUnit_iff.mp (hu'.pow _))`. Use `choose lev hlev using fun τ => _root_.GlobalTheory.NB.LT.exists_algEquiv_X_add_C (IsLocalRing.maximalIdeal O) (ϖ τ) (hϖmem τ)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set E : O⟦X⟧ := ∏ τ, (X - C (ϖ τ)) with hEdef`. Establish `hjE : j E = ∏ τ, (ξ - C (ϖ τ))`. Rewrite using `[hEdef, map_prod]`. Conclude with `Finset.prod_congr rfl fun τ _ => by rw [map_sub, hjX, hjC]`. Establish `hjEassoc : Associated (j E) (_root_.GlobalTheory.CycFr.lvl l O 0)` using `hjE ▸ hprod`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcomm : ∀ a, φ (γ a) = γ (φ a)` using `fun a => hinj (by`. Rewrite using `[hφ, hγ, hγ, hφ, _root_.GlobalTheory.CycFr.act_comm])`. Establish `hφX : ∃ v : O⟦X⟧ˣ, φ X = (v : O⟦X⟧) * X * E ^ Nat.card Δ`. Establish `hA : Associated (j (φ X)) (j (X * E ^ Nat.card Δ))`. Take `⟨w, hw⟩` from `hξ.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hφ, hjX, ← hw, map_mul, map_pow, _root_.GlobalTheory.CycFr.act_l_X, map_mul, map_pow, hjX, ← hw]`. Establish `hu1 : IsUnit (_root_.GlobalTheory.CycFr.act O (l : ℤ_[l]) (w : O⟦X⟧))` using `w.isUnit.map _`. Use `(associated_mul_unit_left _ _ hu1).trans ?_` and prove the remaining obligations. Rewrite using `[mul_pow]`. Conclude with `(associated_mul_unit_right _ _ w.isUnit).mul_mul hjEassoc.symm.pow_pow`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨c, hc⟩` from `associated_of_associated_invariant_map hinj hr hA`. Use `⟨c⁻¹, ?_⟩` and prove the remaining obligations. Establish `h1 : φ X = X * E ^ Nat.card Δ * ((c⁻¹ : O⟦X⟧ˣ) : O⟦X⟧)`. Rewrite using `[← hc, mul_assoc, Units.mul_inv, mul_one]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hγX : ∃ κ : O⟦X⟧ˣ, γ X = X * (1 + (κ : O⟦X⟧) * E) ∧ constantCoeff (1 + (κ : O⟦X⟧) * E) = algebraMap ℤ_[l] O u ^ Nat.card Δ`. Take `⟨w, hw⟩` from `hξ.symm`. Establish `hlvl0 : (1 + X : O⟦X⟧) ^ l - 1 = X * _root_.GlobalTheory.CycFr.lvl l O 0`. Rewrite using `[← _root_.GlobalTheory.CycFr.act_l_X, _root_.GlobalTheory.CycFr.act_nat_X]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hXlvl : ¬ X ∣ _root_.GlobalTheory.CycFr.lvl l O 0`. Rewrite using `[X_dvd_iff, _root_.GlobalTheory.CycFr.constantCoeff_lvl]`. Conclude with `Nat.cast_ne_zero.mpr hp.ne_zero`. Establish `hdiff : X ^ Nat.card Δ * _root_.GlobalTheory.CycFr.lvl l O 0 ∣ _root_.GlobalTheory.CycFr.act O (u : ℤ_[l]) ξ - ξ`. Establish `h1` using `_root_.GlobalTheory.CycFr.dvd_act_sub (O := O) 1 (u : ℤ_[l]) 1 (by rw [pow_one]; exact hu.symm.dvd) ξ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[_root_.GlobalTheory.CycFr.act_one, pow_one, hlvl0]`. Take `⟨z, hz⟩` from `h1`. Establish `h2 : X ^ Nat.card Δ ∣ _root_.GlobalTheory.CycFr.act O (u : ℤ_[l]) ξ - ξ`. Use `dvd_sub ?_ hξ.symm.dvd` and prove the remaining obligations. Rewrite using `[← hw, map_mul, map_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `dvd_mul_of_dvd_left (pow_dvd_pow_of_dvd (_root_.GlobalTheory.CycFr.X_dvd_act_X _) _) _`. Rewrite `h2` using `[hz]`. Take `⟨d', hd'⟩ : ∃ d', Nat.card Δ = d' + 1` from `⟨Nat.card Δ - 1, by omega⟩`. Rewrite `h2` using `[hd', pow_succ', mul_assoc]`. Establish `h3` using `(mul_dvd_mul_iff_left (X_ne_zero (R := O))).mp h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, hy⟩` from `(X_prime (R := O)).pow_dvd_of_dvd_mul_left d' hXlvl h3`. Establish `h5 : X ^ Nat.card Δ * _root_.GlobalTheory.CycFr.lvl l O 0 ∣ X * _root_.GlobalTheory.CycFr.lvl l O 0 * z` using `⟨y, by rw [hd', hy]; ring⟩`. Conclude with `h5.trans (dvd_of_eq hz.symm)`. Establish `hE0 : E ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `hjEassoc.symm`. Rewrite `h` using `[h0, map_zero, associated_zero_iff_eq_zero]`. Establish `h'` using `congrArg constantCoeff h`. Rewrite `h'` using `[_root_.GlobalTheory.CycFr.constantCoeff_lvl, map_zero]`. Conclude with `(Nat.cast_ne_zero.mpr hp.ne_zero) h'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hXE : X * E ∣ γ X - X`. Apply `dvd_of_invariant_map_dvd hinj hr (mul_ne_zero X_ne_zero hE0)` to reduce the goal to its premises. Establish `hA : Associated (j (X * E)) (X ^ Nat.card Δ * _root_.GlobalTheory.CycFr.lvl l O 0)`. Rewrite using `[map_mul, hjX]`. Conclude with `hξ.mul_mul hjEassoc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hA.dvd.trans ?_` and prove the remaining obligations. Rewrite using `[map_sub, hγ, hjX]`. Conclude with `hdiff`. Take `⟨κ', hκ'⟩` from `hXE`. Establish `hγX' : γ X = X * (1 + κ' * E)` using `by linear_combination hκ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨V, hV, hV0⟩` from `_root_.GlobalTheory.CycFr.exists_act_X (O := O) (u : ℤ_[l])`. Establish `hcc : constantCoeff (1 + κ' * E) = algebraMap ℤ_[l] O u ^ Nat.card Δ`. Establish `h1` using `congrArg j hγX'`. Rewrite `h1` using `[hγ, hjX, map_mul, hjX, ← hw, map_mul, map_pow, hV, mul_pow, mul_assoc, mul_assoc]`. Establish `h2` using `mul_left_cancel₀ (pow_ne_zero _ X_ne_zero) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `congrArg constantCoeff h2`. Rewrite `h3` using `[map_mul, map_mul, map_pow, hV0, _root_.GlobalTheory.CycFr.constantCoeff_act, _root_.GlobalTheory.CycFr.constantCoeff_algHom j hXj]`. Establish `hw0 : IsUnit (constantCoeff (w : O⟦X⟧))` using `w.isUnit.map _`. Conclude with `(mul_right_cancel₀ hw0.ne_zero (by rw [h3, mul_comm])).symm`. Establish `hκunit : IsUnit (constantCoeff κ')`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hEl : Associated (constantCoeff E) (l : O)`. Use `hjEassoc.map constantCoeff` as an intermediate fact. Rewrite `this` using `[_root_.GlobalTheory.CycFr.constantCoeff_algHom j hXj, _root_.GlobalTheory.CycFr.constantCoeff_lvl]`. Then use the resulting hypothesis. Establish `hul : Associated (algebraMap ℤ_[l] O u ^ Nat.card Δ - 1) (l : O)`. Establish `he1 : 0 < e`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Break down `Nat.eq_zero_or_pos e with h | h` into its components or cases. Rewrite `hed` using `[h, zero_mul]`. Use `hp.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdl : Nat.card Δ < l`. Use `Nat.le_mul_of_pos_left (Nat.card Δ) he1` as an intermediate fact. Use `hp.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `(associated_pow_sub_one_prime_of_lt_prime (u : ℤ_[l]) hu hd hdl).map (algebraMap ℤ_[l] O)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `h1 : constantCoeff κ' * constantCoeff E = algebraMap ℤ_[l] O u ^ Nat.card Δ - 1`. Rewrite using `[← hcc, map_add, map_one, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨a, ha⟩` from `hEl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨b, hb⟩` from `hul`. Establish `hl0 : (l : O) ≠ 0` using `Nat.cast_ne_zero.mpr hp.ne_zero`. Establish `hne : algebraMap ℤ_[l] O u ^ Nat.card Δ - 1 ≠ 0`. Introduce `h0`. Rewrite `hb` using `[h0, zero_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hl0 hb.symm`. Establish `h2 : constantCoeff κ' * ↑b = ↑a`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Take the linear combination `constantCoeff κ' * hb + (a : O) * h1 - constantCoeff κ' * ha`. Establish `h3 : constantCoeff κ' = ↑(a * b⁻¹)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, ← h2, mul_assoc, Units.mul_inv, mul_one]`. Rewrite using `[h3]`. Conclude with `Units.isUnit _`. Use `⟨(isUnit_iff_constantCoeff.mpr hκunit).unit, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using hγX'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using hcc`. Take `⟨v, hv⟩` from `hφX`. Take `⟨κ, hκ, hκ0⟩` from `hγX`. Establish `he : 0 < e`. Break down `Nat.eq_zero_or_pos e with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hed` using `[h, zero_mul]`. Use `hp.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Establish `hroot' : ∃ x : O, Associated (x ^ (l - 1)) (l : O)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ζ, w, hζτ, hw, -⟩` from `hroot ⟨0, he⟩`. Establish `hmem` using `_root_.GlobalTheory.CycFr.sub_one_mem_max hl ζ hζτ.pow_eq_one`. Take `⟨σ, hσ⟩` from `_root_.GlobalTheory.NB.LT.exists_algEquiv_X_add_C (IsLocalRing.maximalIdeal O) _ hmem`. Establish `hσC : ∀ c : O, σ (C c) = C c` using `fun c => by`. Simplify using `using _root_.GlobalTheory.CycFr.algHom_C σ.toAlgHom c`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hX' : σ (X - C (ζ - 1)) = X` using `by rw [map_sub, hσ, hσC]; ring`. Establish `h1 : constantCoeff (σ ξ) = ϖ ⟨0, he⟩`. Establish `h0` using `congrArg (fun b => constantCoeff (σ b)) hw`. Rewrite `h0` using `[map_mul σ, hX', map_mul, constantCoeff_X, zero_mul, map_sub, map_sub, hσC, constantCoeff_C]`. Conclude with `sub_eq_zero.mp h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w', hw'⟩` from `hξ.symm`. Rewrite `h1` using `[← hw', map_mul, map_pow, hσ, map_mul, map_pow, map_add, constantCoeff_X, constantCoeff_C, zero_add]`. Establish `hunit : IsUnit (constantCoeff (σ (w' : O⟦X⟧)))` using `(PowerSeries.isUnit_iff_constantCoeff).mp (w'.isUnit.map σ)`. Use `⟨ζ - 1, ?_⟩` and prove the remaining obligations. Establish `h2 : Associated ((ζ - 1) ^ Nat.card Δ) (ϖ ⟨0, he⟩)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ϖ ⟨0, he⟩ = (ζ - 1) ^ Nat.card Δ * constantCoeff (σ (w' : O⟦X⟧))`. Conclude with `h1.symm`. Rewrite using `[this]`. Conclude with `associated_mul_unit_right _ _ hunit`. Rewrite using `[← hed, mul_comm, pow_mul]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Conclude with `(h2.pow_pow).trans (hϖ ⟨0, he⟩)`. Establish `hχ : Associated (algebraMap ℤ_[l] O u - 1) (l : O)`. Use `hu.map (algebraMap ℤ_[l] O)` as an intermediate fact. Simplify using `using this`. Establish `hunits` using `_root_.GlobalTheory.NB.LT.EE_basic (O := O) hp hl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hEEinj, hEEX, hEEc, hEEd, hEEs⟩` from `hunits`. Establish `hEunit : IsUnit (algebraMap O⟦X⟧ (_root_.GlobalTheory.NB.LT.EE O l) E)`. Rewrite using `[hEdef, map_prod]`. Use `IsUnit.prod_univ_iff.mpr fun τ => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `hEEX`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set y := ((x⁻¹ : (_root_.GlobalTheory.NB.LT.EE O l)ˣ) : _root_.GlobalTheory.NB.LT.EE O l)`. Use `set t := algebraMap O⟦X⟧ (_root_.GlobalTheory.NB.LT.EE O l) (C (ϖ τ)) * y`. Establish `hsplit : algebraMap O⟦X⟧ (_root_.GlobalTheory.NB.LT.EE O l) (X - C (ϖ τ)) = algebraMap O⟦X⟧ (_root_.GlobalTheory.NB.LT.EE O l) X * (t * (-1) + 1)`. Rewrite using `[map_sub, ← hx]`. Simplify using `only [t, y]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Take the linear combination `(algebraMap O⟦X⟧ (_root_.GlobalTheory.NB.LT.EE O l) (C (ϖ τ))) * Units.mul_inv x`. Rewrite using `[hsplit]`. Use `(hx ▸ x.isUnit).mul (Ideal.mem_jacobson_bot.mp ?_ (-1))` and prove the remaining obligations. Establish `he : 0 < e`. Break down `Nat.eq_zero_or_pos e with h | h` into its components or cases.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (Fin.elim0 (h ▸ τ)) id`. Conclude with `h`. Apply `(Ideal.isRadical_jacobson (⊥ : Ideal (_root_.GlobalTheory.NB.LT.EE O l))) ⟨e, ?_⟩` to reduce the goal to its premises. Apply `IsAdicComplete.le_jacobson_bot (Ideal.span {(l : _root_.GlobalTheory.NB.LT.EE O l)})` to reduce the goal to its premises. Take `⟨c, hc⟩` from `hϖ τ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Establish `hϖl : ϖ τ ^ e = (l : O) * ((c⁻¹ : Oˣ) : O)` using `by rw [← hc, mul_assoc, Units.mul_inv, mul_one]`. Establish `hmem : algebraMap O⟦X⟧ (_root_.GlobalTheory.NB.LT.EE O l) (C (ϖ τ ^ e)) ∈ Ideal.span {(l : _root_.GlobalTheory.NB.LT.EE O l)}`. Rewrite using `[hϖl, map_mul, map_mul, map_natCast, map_natCast]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span rfl)`. Rewrite using `[mul_pow, ← map_pow, ← map_pow]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.mul_mem_right _ _ hmem`. Establish `hφunit : IsUnit (algebraMap O⟦X⟧ (_root_.GlobalTheory.NB.LT.EE O l) (φ X))`. Rewrite using `[hv, map_mul, map_mul, map_pow]`. Conclude with `((v.isUnit.map _).mul hEEX).mul (hEunit.pow _)`. Establish `hγunit : IsUnit (algebraMap O⟦X⟧ (_root_.GlobalTheory.NB.LT.EE O l) (γ X))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : IsUnit (1 + (κ : O⟦X⟧) * E)`. Rewrite using `[PowerSeries.isUnit_iff_constantCoeff, hκ0]`. Conclude with `((u.isUnit.map (algebraMap ℤ_[l] O)).pow _)`. Rewrite using `[hκ, map_mul]`. Conclude with `hEEX.mul (h1.map _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨φE, hφE⟩` from `_root_.GlobalTheory.NB.LT.exists_EE_extension φ hφunit`. Take `⟨γE, hγE⟩` from `_root_.GlobalTheory.NB.LT.exists_EE_extension γ hγunit`. Establish `hφk : ∀ k b, j ((φ ^ k) b) = _root_.GlobalTheory.CycFr.act O ((l : ℤ_[l]) ^ k) (j b)`. Introduce `k`. Proceed by induction on `k with`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero => intro b`. Simplify using `[_root_.GlobalTheory.CycFr.act_one]`. Consider the case `succ k ih`. Introduce `b`. Rewrite using `[pow_succ', AlgHom.mul_apply, hφ, ih, ← _root_.GlobalTheory.CycFr.act_mul, pow_succ']`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hγk : ∀ k b, j ((γ ^ k) b) = _root_.GlobalTheory.CycFr.act O ((u : ℤ_[l]) ^ k) (j b)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro b`. Simplify using `[_root_.GlobalTheory.CycFr.act_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `succ k ih`. Introduce `b`. Rewrite using `[pow_succ', AlgHom.mul_apply, hγ, ih, ← _root_.GlobalTheory.CycFr.act_mul, pow_succ']`. Establish `hEk : ∀ k, Associated (j ((φ ^ k) E)) (_root_.GlobalTheory.CycFr.lvl l O k)`. Introduce `k`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hφk, ← _root_.GlobalTheory.CycFr.act_l_pow_lvl]`. Conclude with `hjEassoc.map (_root_.GlobalTheory.CycFr.act O ((l : ℤ_[l]) ^ k))`. Establish `hEk0 : ∀ k, (φ ^ k) E ≠ 0`. Introduce `k h0`. Establish `h` using `(hEk k).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h` using `[h0, map_zero, associated_zero_iff_eq_zero]`. Establish `h'` using `congrArg constantCoeff h`. Rewrite `h'` using `[_root_.GlobalTheory.CycFr.constantCoeff_lvl, map_zero]`. Conclude with `(Nat.cast_ne_zero.mpr hp.ne_zero) h'`. Establish `hred : ∀ k a, (φ ^ k) E ∣ a ^ 2 → (φ ^ k) E ∣ a`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `k a h`. Apply `dvd_of_invariant_map_dvd hinj hr (hEk0 k)` to reduce the goal to its premises. Use `(hEk k).dvd.trans ?_` and prove the remaining obligations. Apply `_root_.GlobalTheory.CycFr.Red.lvl_dvd_of_dvd_sq hl` to reduce the goal to its premises. Rewrite using `[← map_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hEk k).symm.dvd.trans (map_dvd j h)`. Establish `htriv : ∀ k a, (φ ^ k) E ∣ (γ ^ l ^ k) a - a`. Introduce `k a`. Apply `dvd_of_invariant_map_dvd hinj hr (hEk0 k)` to reduce the goal to its premises. Use `(hEk k).dvd.trans ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_sub, hγk]`. Establish `hlu : (l : ℤ_[l]) ^ (k + 1) ∣ (u : ℤ_[l]) ^ l ^ k - 1 ^ l ^ k` using `dvd_sub_pow_of_dvd_sub hu.symm.dvd k`. Rewrite `hlu` using `[one_pow]`. Establish `h1` using `_root_.GlobalTheory.CycFr.dvd_act_sub (O := O) (k + 1) _ _ hlu (j a)`. Rewrite `h1` using `[_root_.GlobalTheory.CycFr.act_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(Dvd.intro_left _ (_root_.GlobalTheory.CycFr.mul_lvl k)).trans h1` and prove the remaining obligations. Establish `hjC' : ∀ c : O, j (C c) = C c` using `hjC`. Establish `hγC : ∀ c : O, γ (C c) = C c` using `fun c => by`. Simplify using `using _root_.GlobalTheory.CycFr.algHom_C γ c`. Establish `hchilev : ∀ τ, ∃ W, γ (X - C (ϖ τ)) = (X - C (ϖ τ)) * W ∧ constantCoeff (lev τ W) = ((Units.map (algebraMap ℤ_[l] O).toMonoidHom u : Oˣ) : O)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `τ`. Take `⟨ζ, w, hζτ, hw, hndvd⟩` from `hroot τ`. Establish `hmem` using `_root_.GlobalTheory.CycFr.sub_one_mem_max hl ζ hζτ.pow_eq_one`. Take `⟨σ', hσ'⟩` from `_root_.GlobalTheory.NB.LT.exists_algEquiv_X_add_C (IsLocalRing.maximalIdeal O) _ hmem`. Establish `hσ'C : ∀ c : O, σ' (C c) = C c` using `fun c => by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using _root_.GlobalTheory.CycFr.algHom_C σ'.toAlgHom c`. Establish `hσC : ∀ c : O, lev τ (C c) = C c` using `fun c => by`. Simplify using `using _root_.GlobalTheory.CycFr.algHom_C (lev τ).toAlgHom c`. Establish `hσinv : (lev τ).symm X = X - C (ϖ τ)`. Apply `(lev τ).injective` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[AlgEquiv.apply_symm_apply, map_sub, hlev, hσC]`. Expand and normalize the polynomial expressions, which then agree. Establish `hA : ∀ b, constantCoeff (σ' (j b)) = constantCoeff (lev τ b)`. Introduce `b`. Use `set g : O⟦X⟧ →ₐ[O] O⟦X⟧ := σ'.toAlgHom.comp (j.comp (lev τ).symm.toAlgHom) with hg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgX : X ∣ g X`. Simplify using `only [hg, AlgHom.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe]`. Use `show X ∣ σ' (j ((lev τ).symm X))`. Rewrite using `[hσinv, map_sub, hjX, hjC, hw, map_mul, map_sub, hσ', hσ'C, add_sub_cancel_right]`. Conclude with `dvd_mul_right _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_root_.GlobalTheory.CycFr.constantCoeff_algHom g hgX (lev τ b)` as an intermediate fact. Simplify `this` using `[hg]`. Establish `hB2 : ∀ (c c' : ℤ_[l]) b, (l : ℤ_[l]) ∣ c - c' → constantCoeff (σ' (_root_.GlobalTheory.CycFr.act O c b)) = constantCoeff (σ' (_root_.GlobalTheory.CycFr.act O c' b))`. Introduce `c c' b hcc`. Establish `h1` using `_root_.GlobalTheory.CycFr.dvd_act_sub (O := O) 1 c c' (by rw [pow_one]; exact hcc) b`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[pow_one]`. Take `⟨q, hq⟩` from `h1`. Establish `h2` using `congrArg (fun y => constantCoeff (σ' y)) hq`. Simplify using `only [map_sub, map_mul, map_pow, map_add, map_one, hσ', hσ'C, constantCoeff_X, constantCoeff_C, zero_add, add_sub_cancel_left, hζτ.pow_eq_one, sub_self, zero_mul] at h2`. Rewrite `h2` using `[add_sub_cancel, hζτ.pow_eq_one, sub_self, zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.mp h2`. Establish `hB : ∀ b, constantCoeff (σ' (_root_.GlobalTheory.CycFr.act O (u : ℤ_[l]) b)) = constantCoeff (σ' b)`. Introduce `b`. Rewrite using `[hB2 (u : ℤ_[l]) 1 b hu.symm.dvd, _root_.GlobalTheory.CycFr.act_one]`. Establish `hval : constantCoeff (lev τ (γ X)) = ϖ τ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hA, hγ, hjX, hB, ← hjX, hA, hlev, map_add, constantCoeff_X, constantCoeff_C, zero_add]`. Establish `hdvd` using `_root_.GlobalTheory.CycFr.dvd_sub_C_of_shift (ϖ τ) (lev τ) (hlev τ) (γ X)`. Rewrite `hdvd` using `[hval]`. Take `⟨W, hW⟩` from `hdvd`. Use `⟨W, by rw [map_sub, hγC, hW], ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set P : O⟦X⟧ := X - C (ζ - 1) with hP`. Establish `hPσ : σ' P = X` using `by rw [hP, map_sub, hσ', hσ'C]; ring`. Establish `hP0 : P ≠ 0` using `fun h0 => by`. Use `congrArg σ' h0` as an intermediate fact. Rewrite `this` using `[hPσ, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `X_ne_zero this`. Establish `hevP : constantCoeff (σ' (_root_.GlobalTheory.CycFr.act O (u : ℤ_[l]) P)) = 0`. Rewrite using `[hB, hPσ, constantCoeff_X]`. Choose the witnesses or unpack the hypotheses as in `⟨Q, hQ⟩ : P ∣ _root_.GlobalTheory.CycFr.act O (u : ℤ_[l]) P := by`. Use `_root_.GlobalTheory.CycFr.dvd_sub_C_of_shift (ζ - 1) σ' hσ' (_root_.GlobalTheory.CycFr.act O (u : ℤ_[l]) P)` as an intermediate fact.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite `this` using `[hevP, map_zero, sub_zero]`. Then use the resulting hypothesis. Establish `hQval : constantCoeff (σ' Q) = algebraMap ℤ_[l] O u`. Establish `hd1` using `congrArg (fun y => constantCoeff (σ' (d⁄dX O y))) hQ`. Establish `hdP : d⁄dX O P = 1` using `by rw [hP, map_sub, derivative_X, derivative_C, sub_zero]`. Rewrite `hd1` using `[Derivation.leibniz, hdP, smul_eq_mul, smul_eq_mul, mul_one, map_add, map_mul, hPσ, map_add, map_mul, constantCoeff_X, zero_mul, zero_add]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hd1, hP]`. Simplify using `only [map_sub, _root_.GlobalTheory.CycFr.act_X, _root_.GlobalTheory.CycFr.act_C, derivative_C, Derivation.map_one_eq_zero, sub_zero, map_zero, _root_.GlobalTheory.CycFr.derivative_bin, map_mul, hσ'C, constantCoeff_C]`. Rewrite using `[← _root_.GlobalTheory.CycFr.act_one_add_X, hB2 ((u : ℤ_[l]) - 1) ((0 : ℕ) : ℤ_[l]) _ (by rw [Nat.cast_zero, sub_zero]; exact hu.symm.dvd), _root_.GlobalTheory.CycFr.act_one_add_X, _root_.GlobalTheory.CycFr.bin_nat, pow_zero, map_one, map_one, mul_one]`. Establish `hrel : Q * _root_.GlobalTheory.CycFr.act O (u : ℤ_[l]) w = w * j W`. Apply `mul_left_cancel₀ hP0` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `congrArg j hW`. Rewrite `h1` using `[map_sub, hγ, hjX, hjC, map_mul, map_sub, hjX, hjC]`. Establish `h2 : _root_.GlobalTheory.CycFr.act O (u : ℤ_[l]) ξ - C (ϖ τ) = _root_.GlobalTheory.CycFr.act O (u : ℤ_[l]) (ξ - C (ϖ τ))`. Rewrite using `[map_sub, _root_.GlobalTheory.CycFr.act_C]`. Rewrite `h1` using `[h2, hw, map_mul, hQ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `h1`. Establish `hev` using `congrArg (fun y => constantCoeff (σ' y)) hrel`. Simplify using `only [map_mul, hB, hA] at hev`. Establish `hw0 : constantCoeff (σ' w) ≠ 0`. Introduce `h0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hndvd` to reduce the goal to its premises. Use `_root_.GlobalTheory.CycFr.dvd_sub_C_of_shift (ζ - 1) σ' hσ' w` as an intermediate fact. Rewrite `this` using `[h0, map_zero, sub_zero]`. Then use the resulting hypothesis. Rewrite `hev` using `[hQval]`. Use `show constantCoeff (lev τ W) = algebraMap ℤ_[l] O u`.
-
-Conclude with `mul_right_cancel₀ hw0 (by linear_combination -hev)`. Establish `hγφk : ∀ k b, γ ((φ ^ k) b) = (φ ^ k) (γ b)` using `fun k b => hinj (by`. Rewrite using `[hγ, hφk, hφk, hγ, _root_.GlobalTheory.CycFr.act_comm])`. Establish `hEγ : E ∣ γ E` using `by choose Wc hWc _ using hchilev`. Rewrite using `[hEdef, map_prod]`.
-
-Use `⟨∏ τ, Wc τ, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun τ _ => hWc τ`. Establish `hinvk : ∀ k (e1 : e = 1) a, (φ ^ k) E ∣ γ a - a → ∃ c, (φ ^ k) E ∣ a - C c`. Introduce `k he1 a h`.
-
-Establish `hcard : Nat.card Δ = l - 1` using `by rw [he1, one_mul] at hed; exact hed`. Establish `hstab : ∀ x, (φ ^ k) E ∣ x → (φ ^ k) E ∣ γ x`. Introduce and unpack `x ⟨y, rfl⟩`. Rewrite using `[map_mul, hγφk]`. Conclude with `dvd_mul_of_dvd_left (map_dvd (φ ^ k) hEγ) _`.
-
-Establish `hm : ∀ m, (φ ^ k) E ∣ (γ ^ m) a - a`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`.
-
-Establish `: (γ ^ (m + 1)) a - a = γ ((γ ^ m) a - a) + (γ a - a)`. Rewrite using `[pow_succ', AlgHom.mul_apply, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `dvd_add (hstab _ ih) h`.
-
-Establish `hall : ∀ a' : ℕ, ¬ l ∣ a' → _root_.GlobalTheory.CycFr.lvl l O k ∣ _root_.GlobalTheory.CycFr.act O (a' : ℤ_[l]) (j a) - j a`. Introduce `a' ha'`. Take `⟨δ, hδ, m, hδm⟩` from `_root_.GlobalTheory.PadicUnitGen.exists_root_mul_pow_approx Δ (u : ℤ_[l]) hl2 hcard hu (k + 1) a' ha'`. Establish `h1` using `_root_.GlobalTheory.CycFr.dvd_act_sub (O := O) (k + 1) _ _ hδm (j a)`. Establish `h2 : _root_.GlobalTheory.CycFr.act O ((δ : ℤ_[l]) * (u : ℤ_[l]) ^ m) (j a) = j ((γ ^ m) a)`.
-
-Rewrite using `[_root_.GlobalTheory.CycFr.act_mul, ← hγk]`. Conclude with `(hr _).1 ⟨_, rfl⟩ δ hδ`. Rewrite `h1` using `[h2]`. Establish `h3 : _root_.GlobalTheory.CycFr.act O (a' : ℤ_[l]) (j a) - j a = (_root_.GlobalTheory.CycFr.act O (a' : ℤ_[l]) (j a) - j ((γ ^ m) a)) + j ((γ ^ m) a - a)` using `by rw [map_sub]; ring`. Rewrite using `[h3]`.
-
-Use `dvd_add ((Dvd.intro_left _ (_root_.GlobalTheory.CycFr.mul_lvl k)).trans h1) ?_` and prove the remaining obligations. Conclude with `(hEk k).symm.dvd.trans (map_dvd j (hm m))`. Take `⟨c, hc⟩` from `_root_.GlobalTheory.CycFr.exists_const_of_lvl_invariant hl k (j a) hall`. Use `⟨c, dvd_of_invariant_map_dvd hinj hr (hEk0 k) ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, hjC]`.
-
-Conclude with `(hEk k).dvd.trans hc`. Use `⟨{ prime := hp odd := hl2 l_nonunit := hl root := hroot' e := e s := Nat.card Δ es := hed ϖ := ϖ ϖ_val := hϖ ϖ_sub := hϖsub E := E E_def := rfl φ := φ γ := γ comm := hcomm u := v φ_X := hv κ := κ γ_X := hκ χ := Units.map (algebraMap ℤ_[l] O).toMonoidHom u χ_gen := by simpa using …` and prove the remaining obligations. Take `⟨ζ, w, hζτ, hw, -⟩` from `hroot τ`. Conclude with `⟨ζ, hζτ, ⟨w, hw⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CycFr.exists_frame [IsDiscreteValuationRing O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O]

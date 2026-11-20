@@ -16,19 +16,17 @@ noncomputable section
 namespace GlobalTheory.LevRead
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ i, ∃ x ∈ U, P i x ≠ 0`. Use `swap`. Use `push_neg at h`. Use `⟨1, by simp, fun i x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hg i x hx, h i x hx]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Take `⟨i₀, x₀, hx₀, hne⟩` from `h`. Establish `hcont : ContinuousAt (P i₀) x₀` using `(hP i₀).continuousOn.continuousAt (hU.mem_nhds hx₀)`. Establish `hnb : ∀ᶠ y in nhds x₀, y ∈ U ∧ P i₀ y ≠ 0` using `(hU.eventually_mem hx₀).and (hcont.eventually_ne hne)`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.1 hnb`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hx₀b : x₀ ∈ Metric.ball x₀ ε` using `Metric.mem_ball_self hε`. Set `q : V → ℂ` to `fun y => P₂ i₀ y * (P i₀ y)⁻¹`. Establish `hqd : DifferentiableOn ℂ q (Metric.ball x₀ ε)` using `((hP₂ i₀).mono (fun y hy => (hball y hy).1)).mul (((hP i₀).mono (fun y hy => (hball y hy).1)).inv (fun y hy => (hball y hy).2))`. Establish `hqg : ∀ y ∈ Metric.ball x₀ ε, q y = g y` using `fun y hy => by`. Simplify using `only [q]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hg i₀ y (hball y hy).1, mul_assoc, mul_inv_cancel₀ (hball y hy).2, mul_one]`. Establish `hmax : IsMaxOn (norm ∘ q) (Metric.ball x₀ ε) x₀` using `fun y hy => by`. Simplify using `only [Set.mem_setOf_eq, Function.comp_apply]`. Rewrite using `[hqg y hy, hqg x₀ hx₀b, hg1 _ (hball y hy).1, hg1 _ (hball x₀ hx₀b).1]`. Establish `heq` using `Complex.eqOn_of_isPreconnected_of_isMaxOn_norm (convex_ball x₀ ε).isPreconnected Metric.isOpen_ball hqd hx₀b hmax`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨g x₀, hg1 x₀ hx₀, fun i => ?_⟩` and prove the remaining obligations. Establish `hzero : ∀ y ∈ U, (fun y => P₂ i y - g x₀ * P i y) y = 0`. Use `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.eq_zero_of_eventually hU hc ((hP₂ i).sub ((hP i).const_mul (g x₀))) hx₀ ?_` and prove the remaining obligations. Use `filter_upwards [Metric.ball_mem_nhds x₀ hε] with y hy`. Establish `e : g y = g x₀`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hqg y hy, ← hqg x₀ hx₀b]`. Conclude with `heq hy`. Simplify using `only [Pi.zero_apply]`. Rewrite using `[hg i y (hball y hy).1, e]`. Expand and normalize the polynomial expressions, which then agree.
-
-Introduce `x hx`. Use `hzero x hx` as an intermediate fact. Simplify using `only at this`. Conclude with `sub_eq_zero.1 this`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_const_mul_of_norm_one {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {ι : Type*} (U : Set V)
     (hU : IsOpen U) (hc : IsPreconnected U) (P₂ P : ι → V → ℂ) (g : V → ℂ)
@@ -73,15 +71,13 @@ theorem eq_const_mul_of_norm_one {V : Type} [NormedAddCommGroup V] [NormedSpace 
   exact sub_eq_zero.1 this
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨U, hU, subset_rfl, hne, by simp⟩`. Consider the case `insert i s _ ih`. Take `⟨W, hWo, hWU, hWn, hW⟩` from `ih`. Distinguish the cases in `h : ∃ x ∈ U, P i x ≠ 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Establish `hw : ∃ w ∈ W, P i w ≠ 0`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Take `⟨x₀, hx₀⟩` from `hWn`. Establish `hz` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.eq_zero_of_eventually hU hc (hP i) (hWU hx₀) (Filter.eventuallyEq_of_mem (hWo.mem_nhds hx₀) (fun y hy => hno y hy))`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hx0⟩` from `h`. Conclude with `hx0 (hz x hx)`. Take `⟨w, hwW, hw0⟩` from `hw`. Use `⟨W ∩ P i ⁻¹' {0}ᶜ, ((hP i).continuousOn.mono hWU).isOpen_inter_preimage hWo isOpen_compl_singleton, Set.inter_subset_left.trans hWU, ⟨w, hwW, hw0⟩, fun i' hi' hex x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi' with rfl | hi'` into its components or cases.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hx.2`. Conclude with `hW i' hi' hex x hx.1`. Use `⟨W, hWo, hWU, hWn, fun i' hi' hex x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi' with rfl | hi'` into its components or cases. Conclude with `absurd hex h`.
-
-Conclude with `hW i' hi' hex x hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_open_ne_zero {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {ι : Type*} (U : Set V)
     (hU : IsOpen U) (hc : IsPreconnected U) (hne : U.Nonempty) (P : ι → V → ℂ)
@@ -113,15 +109,15 @@ theorem exists_open_ne_zero {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V
       · exact hW i' hi' hex x hx
 
 /- English proof (translation)
-Distinguish the cases in `hne : U.Nonempty`. Use `swap`. Conclude with `⟨1, by simp, fun i x hx => absurd ⟨x, hx⟩ hne⟩`. Establish `hone : ∀ i, ∃ u : ℂ, ∀ x ∈ U, P₂ i x = u * P i x` using `fun i => by`. Take `⟨u, -, hu⟩` from `eq_const_mul_of_norm_one (ι := Unit) U hU hc (fun _ => P₂ i) (fun _ => P i) (fun x => g x ^ m i) (fun _ => hP₂ i) (fun _ => hP i) (fun x hx => by rw [norm_pow, hg1 x hx, one_pow]) (fun _ => hg i)`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨u, hu ()⟩`. Set `C : ι → Set ℂ` to `fun i => ⋂ x ∈ U, {t : ℂ | P₂ i x = t ^ m i * P i x}`. Establish `hC : ∀ i, IsClosed (C i)` using `fun i => isClosed_biInter fun x _ => isClosed_eq continuous_const ((continuous_pow _).mul continuous_const)`. Establish `hfin : ∀ s : Finset ι, (Metric.sphere (0 : ℂ) 1 ∩ ⋂ i ∈ s, C i).Nonempty`. Introduce `s`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨W, -, hWU, ⟨x₀, hx₀⟩, hW⟩` from `exists_open_ne_zero U hU hc hne P hP s`. Use `⟨g x₀, by simpa using hg1 x₀ (hWU hx₀), Set.mem_iInter₂.2 fun i hi => Set.mem_iInter₂.2 fun x hx => ?_⟩` and prove the remaining obligations. Use `show P₂ i x = g x₀ ^ m i * P i x`. Distinguish the cases in `h : ∃ x ∈ U, P i x ≠ 0`. Take `⟨u, hu⟩` from `hone i`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnz` using `hW i hi h x₀ hx₀`. Establish `e : u = g x₀ ^ m i` using `mul_right_cancel₀ hnz ((hu x₀ (hWU hx₀)).symm.trans (hg i x₀ (hWU hx₀)))`. Rewrite using `[hu x hx, e]`. Use `push_neg at h`. Rewrite using `[hg i x hx, h x hx]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Take `⟨u, hu1, hu⟩` from `(isCompact_sphere (0 : ℂ) 1).inter_iInter_nonempty C hC hfin`. Use `⟨u, by simpa using hu1, fun i x hx => ?_⟩` and prove the remaining obligations. Conclude with `Set.mem_iInter₂.1 (Set.mem_iInter.1 hu i) x hx`.
+A detailed English derivation is pending.
 -/
 theorem eq_pow_mul_of_norm_one {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {ι : Type*} (U : Set V)
     (hU : IsOpen U) (hc : IsPreconnected U) (m : ι → ℕ) (P₂ P : ι → V → ℂ) (g : V → ℂ)
@@ -164,33 +160,31 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
   { (inferInstance : CommRing (CAt σ)), (inferInstanceAs (Field ℂ) : Field (CAt σ)) with }
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (IsAlgClosed ℂ)`.
+A detailed English derivation is pending.
 -/
 theorem algClosedAt {K : Type} [Field K] (σ : K →+* ℂ) : @IsAlgClosed (CAt σ) (fieldAt σ) :=
   inferInstanceAs (IsAlgClosed ℂ)
 
 /- English proof (translation)
-Set `G : Frame X₂.Ψ r → Frame X.Ψ r` to `fun x τ => ((δ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x ⟨τ.1, (hΨ τ.1).2 τ.2⟩ : Matrix (Fin r) (Fin r) ℂ)`. Establish `hGrel : ∀ x, GlobalTheory.LevModel.Moved X₂ X δ x (G x)` using `fun x τ h₂ h₁ => rfl`. Establish `hGdom : ∀ x ∈ X₂.dom, G x ∈ X.dom` using `fun x hx => hdom x hx (G x) (hGrel x)`. Establish `hGdiff : Differentiable ℂ G`. Use `differentiable_pi.2 fun τ => differentiable_pi.2 fun a => differentiable_pi.2 fun b => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [G, mat, Matrix.mul_apply, Matrix.of_apply, Matrix.map_apply]`. Use `fun_prop`. Establish `hPd : ∀ i, DifferentiableOn ℂ (fun x => Q i (G x)) X₂.dom` using `fun i => (hQ i).1.comp hGdiff.differentiableOn hGdom`. Establish `hg : ∀ x ∈ X₂.dom, ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ i : ι, Q₂ i x = c ^ m i * Q i (G x)`. Introduce `x hxd`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hyd, hyo⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.exists_borel_orthonormal_move X₂ hxd`. Take `⟨t, hmod, hrd⟩` from `hpt (rmul x b) hyd (G (rmul x b)) (hGrel _)`. Establish `ht1 : ‖t‖ = 1` using `hmod (fun τ i => ReciprocityTheory.ChartRestriction.G.PullbackSections.norm_diagonal_minor_one _ hyo τ i)`. Use `⟨t, ht1, fun i => ?_⟩` and prove the remaining obligations. Set `b₁ : Frame X.Ψ r` to `fun τ => b ⟨τ.1, (hΨ τ.1).2 τ.2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hb₁ : b₁ ∈ Bor X.Ψ r` using `fun τ => hb ⟨τ.1, (hΨ τ.1).2 τ.2⟩`. Establish `e1` using `hrd i`. Establish `e2 : Q₂ i (rmul x b) = bchar (la₂ i) b * Q₂ i x` using `(hQ₂ i).2.1 x hxd b hb`. Establish `e3 : G (rmul x b) = rmul (G x) b₁`. Use function extensionality and compare the values at `τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [G, rmul, b₁, mat]`. Conclude with `(Matrix.mul_assoc ((δ : Matrix (Fin r) (Fin r) E).map τ.1) (mat x ⟨τ.1, (hΨ τ.1).2 τ.2⟩) (mat b ⟨τ.1, (hΨ τ.1).2 τ.2⟩)).symm`. Establish `e4 : Q i (rmul (G x) b₁) = bchar (la i) b₁ * Q i (G x)` using `(hQ i).2.1 (G x) (hGdom x hxd) b₁ hb₁`. Establish `e5 : bchar (la₂ i) b = bchar (la i) b₁`. Unfold `bchar`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fintype.prod_equiv (Equiv.subtypeEquivRight (fun τ => hΨ τ)) _ _ (fun τ => ?_)` and prove the remaining obligations. Use `Finset.prod_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[hla i τ.1 τ.2 ((hΨ τ.1).1 τ.2) a]`. Both sides reduce to the same expression. Establish `e6 : bchar (la₂ i) b ≠ 0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `bchar`. Use `Finset.prod_ne_zero_iff.2 fun τ _ => Finset.prod_ne_zero_iff.2 fun a _ => zpow_ne_zero _ ?_` and prove the remaining obligations. Establish `hdet : (mat b τ).det ≠ 0` using `(hb τ).1`. Rewrite `hdet` using `[Matrix.det_of_upperTriangular (M := mat b τ) (fun a c h => (hb τ).2 a c h)]`. Simplify `Finset.prod_ne_zero_iff.1 hdet a (Finset.mem_univ _)` using `[mat]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_left_cancel₀ e6` to reduce the goal to its premises. Rewrite using `[← e2, e1, e3, e4, ← e5]`. Expand and normalize the polynomial expressions, which then agree. Set `g : Frame X₂.Ψ r → ℂ` to `fun x => if h : x ∈ X₂.dom then (hg x h).choose else 1`. Establish `hg1 : ∀ x ∈ X₂.dom, ‖g x‖ = 1` using `fun x h => by`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [g, dif_pos h]`. Conclude with `(hg x h).choose_spec.1`. Establish `hgr : ∀ i : ι, ∀ x ∈ X₂.dom, Q₂ i x = g x ^ m i * Q i (G x)` using `fun i x h => by`. Simplify using `only [g, dif_pos h]`. Conclude with `(hg x h).choose_spec.2 i`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨u, hu1, hu⟩` from `eq_pow_mul_of_norm_one X₂.dom (ReciprocityTheory.ChartRestriction.G.FD.FourierCoefficientDomain.isOpen_dom _) (ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.flag_domain_frames_connected r X₂).isPreconnected m Q₂ (fun i x => Q i (G x)) g (fun i => (hQ₂ i).1) hPd hg1 hgr`. Use `⟨u, hu1, fun i x hxd x' hm => ?_⟩` and prove the remaining obligations. Establish `hx' : x' = G x`. Use function extensionality and compare the values at `τ`. Conclude with `hm τ.1 ((hΨ τ.1).2 τ.2) τ.2`.
-
-Rewrite using `[hx']`. Conclude with `hu i x hxd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_of_pointwise (X₂ X : Data E r) (δ : GL (Fin r) E) (hΨ : ∀ τ : E →+* ℂ, τ ∈ X₂.Ψ ↔ τ ∈ X.Ψ) {ι : Type}
     (m : ι → ℕ) (la₂ : ι → Wt X₂.Ψ r) (la : ι → Wt X.Ψ r)
@@ -265,9 +259,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
 
 /- English proof (translation)
-Unfold `wchar`. Rewrite using `[Fintype.prod_option]`. Establish `h1 : ∀ i : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)), ((GlobalTheory.LevModel.genScal (Dw` using `Dw) t (some i) : Sˣ) : S) = 1 := by`. Introduce `i`. Simplify using `[GlobalTheory.LevModel.genScal]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h2 : ((GlobalTheory.LevModel.genScal (Dw` using `Dw) t none : Sˣ) : S) = t := by`. Simplify using `[GlobalTheory.LevModel.genScal]`. Simplify using `only [h1, h2, one_pow, Finset.prod_const_one, mul_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem wchar_genScal {S : Type} [CommRing S] (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (t : Sˣ) :
     wchar (ex Dw a n) (GlobalTheory.LevModel.genScal (Dw := Dw) t) = (t : S) ^ n := by
@@ -283,7 +277,7 @@ theorem wchar_genScal {S : Type} [CommRing S] (a : (E →+* ℂ) × ℕ → ℕ)
   rfl
 
 /- English proof (translation)
-Rewrite using `[hP k hk y₂ y hov, GlobalTheory.ThetaSumDescent.evR_frBor hf hb, wchar_genScal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evR_pull_genScal {k : Type} [Field k] [IsAlgClosed k] [Algebra c.F k] (d : DeltaDat Xo c 0) [Algebra d.c₂.F k]
     (hk : ∀ a : c.F, algebraMap d.c₂.F k (d.eF a) = algebraMap c.F k a) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c}
@@ -293,7 +287,7 @@ theorem evR_pull_genScal {k : Type} [Field k] [IsAlgClosed k] [Algebra c.F k] (d
   rw [hP k hk y₂ y hov, GlobalTheory.ThetaSumDescent.evR_frBor hf hb, wchar_genScal]
 
 /- English proof (translation)
-Unfold `laU`. Rewrite using `[hp, hrel]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem laU_eq {l₂ : Level H} {Xo₂ : Moduli Dw l₂} {c₂ : Coeff l₂} {σ₂ : c₂.F →+* ℂ} {σ : c.F →+* ℂ}
     (U₂ : Unf Xo₂ c₂ σ₂ r) (U : Unf Xo c σ r) (k₂ : U₂.Comp) (k : U.Comp) (hp : (U₂.X k₂).p0 = (U.X k).p0)
@@ -303,9 +297,9 @@ theorem laU_eq {l₂ : Level H} {Xo₂ : Moduli Dw l₂} {c₂ : Coeff l₂} {σ
   rw [hp, hrel]
 
 /- English proof (translation)
-Take `⟨hx', t, hmod, hy⟩` from `hOver x hx x' hm`. Use `letI a₁ : Algebra c.F (CAt σ₂) := (σ₂.comp (d.eF : c.F →+* d.c₂.F)).toAlgebra`. Take `⟨y, hb, hov⟩` from `hy`. Use `⟨t, hmod, fun a n f hf g hP => ?_⟩` and prove the remaining obligations. Establish `r2 : rdU U₂ g k₂ x = toC (evR d.Xo₂ d.c₂ g (U₂.un k₂ ⟨x, hx⟩))` using `dif_pos hx`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `r1 : rdU U f k x' = toC (evR Xo c f (U.un k ⟨x', hx'⟩))` using `dif_pos hx'`. Rewrite using `[r2, r1]`. Conclude with `@evR_pull_genScal E _ _ _ H Dw l Xo c ℂ _ _ a₁ d (inferInstanceAs (Algebra d.c₂.F (CAt σ₂))) (fun _ => rfl) a n f hf g hP t _ _ _ hb hov`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem read_pointwise (d : DeltaDat Xo c 0) (σ₂ : d.c₂.F →+* ℂ) (U : Unf Xo c (σ₂.comp (d.eF : c.F →+* d.c₂.F)) r)
     (U₂ : Unf d.Xo₂ d.c₂ σ₂ r) (k₂ : U₂.Comp) (k : U.Comp) (δ : GL (Fin r) E)
@@ -327,11 +321,11 @@ theorem read_pointwise (d : DeltaDat Xo c 0) (σ₂ : d.c₂.F →+* ℂ) (U : U
 end Point
 
 /- English proof (translation)
-Introduce `D j H Dw l Xo c U dict d U₂ dict₂ hL hL₂ _ σ₂ hσ₂ k₂ k δ _ _ hOver`. Establish `hσ : GoodEmb c (σ₂.comp (d.eF : c.F →+* d.c₂.F))` using `hσ₂`. Establish `hU₂ : IsUnf (U₂ σ₂)` using `hL₂.unf σ₂ hσ₂`. Establish `hU₁ : IsUnf (U (σ₂.comp (d.eF : c.F →+* d.c₂.F)))` using `hL.unf _ hσ`. Establish `hrel : relab d.c₂ σ₂ = relab c (σ₂.comp (d.eF : c.F →+* d.c₂.F))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ`. Use extensionality with `x`. Both sides reduce to the same expression. Establish `hΨ : ∀ τ : D.host.E →+* ℂ, τ ∈ ((U₂ σ₂).X k₂).Ψ ↔ τ ∈ ((U (σ₂.comp (d.eF : c.F →+* d.c₂.F))).X k).Ψ` using `fun τ => by rw [(hU₂.2.1 k₂).2 τ, (hU₁.2.1 k).2 τ]`. Set `ι` to `{p : ((D.host.E →+* ℂ) × ℕ → ℕ) × ℕ × Rul Xo c × Rul d.Xo₂ d.c₂ // Dom p.1 p.2.1 ∧ p.2.2.1 ∈ sec Xo c p.1 p.2.1 ∧ p.2.2.2 ∈ sec d.Xo₂ d.c₂ p.1 p.2.1 ∧ Pull d p.2.2.1 p.2.2.2}`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨u, hu1, hu⟩` from `exists_pow_of_pointwise ((U₂ σ₂).X k₂) ((U (σ₂.comp (d.eF : c.F →+* d.c₂.F))).X k) δ hΨ (ι := ι) (fun i => i.1.2.1) (fun i => laU (U₂ σ₂) i.1.1 i.1.2.1 k₂) (fun i => laU (U (σ₂.comp (d.eF : c.F →+* d.c₂.F))) i.1.1 i.1.2.1 k) (fun i τ h₂ h₁ a => laU_eq (U₂ σ₂) (U (σ₂.comp (d.eF : …`. Take `⟨t, hmod, ht⟩` from `read_pointwise d σ₂ (U (σ₂.comp (d.eF : c.F →+* d.c₂.F))) (U₂ σ₂) k₂ k δ hOver x hx x' hm`. Conclude with `⟨t, hmod, fun i => ht i.1.1 i.1.2.1 i.1.2.2.1 i.2.2.1 i.1.2.2.2 i.2.2.2.2⟩)`. Use `⟨u, hu1, fun a n hDom f hf g hg hP x x' hxd hm _ => ?_⟩` and prove the remaining obligations. Conclude with `hu ⟨(a, n, f, g), hDom, hf, hg, hP⟩ x hxd x' hm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem reading_pull : ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r) (d : DeltaDat Xo c 0) (U₂ : ∀ σ : d.c₂.F →+* ℂ, Unf d.Xo₂ d.c₂ σ D.R.r) (dict₂ : ∀ σ : d.c₂.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U₂ σ).X k).Ψ D.R.r), Laws D j Xo c U dict → Laws D j d.Xo₂ d.c₂ U₂ dict₂ → d.IsLev → ∀ σ₂, GoodEmb d.c₂ σ₂ → ∀ (k₂ : (U₂ σ₂).Comp) (k : (U (σ₂.comp (d.eF : c.F →+* d.c₂.F))).Comp) (δ : GL (Fin D.R.r) D.host.E), ((U₂ σ₂).X k₂).Gm = ((U (σ₂.comp (d.eF : c.F →+* d.c₂.F))).X k).Gm → (∀ v w, herm ((U₂ σ₂).X k₂).Gm ((δ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).mulVec v) ((δ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).mulVec w) = herm ((U₂ σ₂).X k₂).Gm v w) → GlobalTheory.LevModel.Over d σ₂ (U (σ₂.comp (d.eF : c.F →+* d.c₂.F))) (U₂ σ₂) k₂ k δ → ∃ t : ℂ, ‖t‖ = 1 ∧ ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → ∀ f ∈ sec Xo c a n, ∀ g ∈ sec d.Xo₂ d.c₂ a n, Pull d f g → ∀ (x : Frame ((U₂ σ₂).X k₂).Ψ D.R.r) (x' : Frame ((U (σ₂.comp (d.eF : c.F →+* d.c₂.F))).X k).Ψ D.R.r), x ∈ ((U₂ σ₂).X k₂).dom → GlobalTheory.LevModel.Moved ((U₂ σ₂).X k₂) ((U (σ₂.comp (d.eF : c.F →+* d.c₂.F))).X k) δ x x' → Even n → rdU (U₂ σ₂) g k₂ x = t ^ n * rdU (U (σ₂.comp (d.eF : c.F →+* d.c₂.F))) f k x' := by
   intro D j H Dw l Xo c U dict d U₂ dict₂ hL hL₂ _ σ₂ hσ₂ k₂ k δ _ _ hOver

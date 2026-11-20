@@ -18,9 +18,9 @@ namespace PositivityTheory.Rg.BcB.F.RS
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `h1 : Valued.v ϖ ≠ 0` using `by rw [hϖ]; exact WithZero.coe_ne_zero`. Unfold `ordL`. Rewrite using `[dif_neg h1]`. Establish `e : WithZero.unzero h1 = Multiplicative.ofAdd (-1 : ℤ)`. Rewrite using `[← WithZero.coe_inj, WithZero.coe_unzero, hϖ]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, toAdd_ofAdd, neg_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ordL_unif {w : Pl E} {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) : ordL ϖ = 1 := by
   have h1 : Valued.v ϖ ≠ 0 := by rw [hϖ]; exact WithZero.coe_ne_zero
@@ -31,9 +31,9 @@ theorem ordL_unif {w : Pl E} {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) : 
   rw [e, toAdd_ofAdd, neg_neg]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.BCT.InertChar.ord_eq_ordL]`. Establish `: Valued.v ((((-1 : (w.adicCompletion E)ˣ)) : w.adicCompletion E)) = 1` using `by simp`. Establish `h1 : Valued.v ((((-1 : (w.adicCompletion E)ˣ)) : w.adicCompletion E)) ≠ 0` using `by rw [this]; exact one_ne_zero`. Unfold `ordL`. Rewrite using `[dif_neg h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e : WithZero.unzero h1 = 1`. Rewrite using `[← WithZero.coe_inj, WithZero.coe_unzero, this]`. Both sides reduce to the same expression. Rewrite using `[e, toAdd_one, neg_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_neg_one' {w : Pl E} : GlobalTheory.SmGL.ord (w.adicCompletion E) (-1) = 0 := by
   rw [GlobalTheory.BCT.InertChar.ord_eq_ordL]
@@ -46,7 +46,7 @@ theorem ord_neg_one' {w : Pl E} : GlobalTheory.SmGL.ord (w.adicCompletion E) (-1
   rw [e, toAdd_one, neg_zero]
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.BCT.InertChar.ord_eq_ordL w (1 : (w.adicCompletion E)ˣ)`. Establish `h2` using `GlobalTheory.SmGL.ord_mul (w.adicCompletion E) 1 1`. Rewrite `h2` using `[mul_one]`. Rewrite `h1` using `[Units.val_one]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ordL_one' {w : Pl E} : ordL (1 : w.adicCompletion E) = 0 := by
   have h1 := GlobalTheory.BCT.InertChar.ord_eq_ordL w (1 : (w.adicCompletion E)ˣ)
@@ -56,7 +56,7 @@ theorem ordL_one' {w : Pl E} : ordL (1 : w.adicCompletion E) = 0 := by
   omega
 
 /- English proof (translation)
-Use `Formalism.UG.P.fIwasawa_ordL_mul (x / y) y (div_ne_zero hx hy) hy` as an intermediate fact. Rewrite `this` using `[div_mul_cancel₀ x hy]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ordL_div' {w : Pl E} {x y : w.adicCompletion E} (hx : x ≠ 0) (hy : y ≠ 0) :
     ordL (x / y) = ordL x - ordL y := by

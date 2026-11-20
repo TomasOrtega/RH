@@ -30,9 +30,9 @@ theorem twist_g (L₂ L : HolLineBundle A) (m : ℕ) (j k : Fin A.n) (x : X) :
     (twist L₂.toIndefiniteRowSideFullHecke L.toIndefiniteRowSideFullHecke m).g j k x = L₂.g j k x * L.g j k x ^ m := rfl
 
 /- English proof (translation)
-Use extensionality with `u`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨h1, h3, fun j k x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[h2 j k x hx, twist_g, jac_eq_jacDet]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨h1, fun j k x hx => ?_, h2⟩` and prove the remaining obligations. Rewrite using `[h3 j k x hx, twist_g, jac_eq_jacDet]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem topSections_eq_topForms (L₂ L : HolLineBundle A) (m : ℕ) :
     topSections A L₂ L m = topForms (twist L₂.toIndefiniteRowSideFullHecke L.toIndefiniteRowSideFullHecke m) := by
@@ -46,7 +46,7 @@ theorem topSections_eq_topForms (L₂ L : HolLineBundle A) (m : ℕ) :
     rw [h3 j k x hx, twist_g, jac_eq_jacDet]; ring
 
 /- English proof (translation)
-Establish `h : ‖a * b ^ m‖ ^ 2 = ‖a‖ ^ 2 * (‖b‖ ^ 2) ^ m` using `by rw [norm_mul, norm_pow]; ring`. Rewrite using `[h, Real.log_mul (pow_ne_zero _ (norm_ne_zero_iff.2 ha)) (pow_ne_zero _ (pow_ne_zero _ (norm_ne_zero_iff.2 hb))), Real.log_pow (‖b‖ ^ 2) m]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem log_normSq_mul_pow {a b : ℂ} (ha : a ≠ 0) (hb : b ≠ 0) (m : ℕ) :
     Real.log (‖a * b ^ m‖ ^ 2) = Real.log (‖a‖ ^ 2) + m * Real.log (‖b‖ ^ 2) := by
@@ -55,7 +55,7 @@ theorem log_normSq_mul_pow {a b : ℂ} (ha : a ≠ 0) (hb : b ≠ 0) (m : ℕ) :
     (pow_ne_zero _ (pow_ne_zero _ (norm_ne_zero_iff.2 hb))), Real.log_pow (‖b‖ ^ 2) m]
 
 /- English proof (translation)
-Use `⟨fun j l => (hψ.1 j l).add (contDiffOn_const.mul (hφ.1 j l)), fun j k x hx => ?_⟩` and prove the remaining obligations. Use `show ψ j x + m * φ j x = ψ k x + m * φ k x + Real.log (‖L₂.g j k x * L.g j k x ^ m‖ ^ 2)`. Rewrite using `[log_normSq_mul_pow (L₂.ne_zero j k x hx) (L.ne_zero j k x hx), hψ.2 j k x hx, hφ.2 j k x hx]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isWeight_wAdd {L₂ L : IndefiniteRowSideFullHecke.HilbertSamuel.Bergman.HolLineBundle A}
     {ψ φ : Fin A.n → X → ℝ} (hψ : IndefiniteRowSideFullHecke.HilbertSamuel.Bergman.IsWeight L₂ ψ)
@@ -67,9 +67,9 @@ theorem isWeight_wAdd {L₂ L : IndefiniteRowSideFullHecke.HilbertSamuel.Bergman
   ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h j x hx`. Take `⟨i, hi⟩` from `h x`. Use `⟨i, fun h0 => hi ?_⟩` and prove the remaining obligations. Take `⟨-, -, hc⟩` from `he i`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hc (chartIdx A x) j x ⟨Classical.choose_spec (A.cover x), hx⟩, h0, mul_zero]`. Introduce `h x`. Conclude with `h _ x (Classical.choose_spec (A.cover x))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem noCommonZero_iff {N : ℕ} (L : IndefiniteRowSideFullHecke.HilbertSamuel.Bergman.HolLineBundle A)
     (e : Fin N → Fin A.n → X → ℂ) (he : ∀ i, e i ∈ IndefiniteRowSideFullHecke.HilbertSamuel.Bergman.sectionSpace L 1) :
@@ -84,7 +84,7 @@ theorem noCommonZero_iff {N : ℕ} (L : IndefiniteRowSideFullHecke.HilbertSamuel
     exact h _ x (Classical.choose_spec (A.cover x))
 
 /- English proof (translation)
-Rewrite using `[HolLineBundle.sections_eq_sectionSpace]`. Conclude with `hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_sections_of_holLineBundle_equiv (L : IndefiniteRowSideFullHecke.HilbertSamuel.Bergman.HolLineBundle A)
     {f : Fin A.n → X → ℂ} (hf : f ∈ IndefiniteRowSideFullHecke.HilbertSamuel.Bergman.sectionSpace L 1) :
@@ -96,7 +96,7 @@ section FS
 variable {Y : Type} [TopologicalSpace Y] (d : FSData A Y)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j x`. Simplify using `[sPow, IndefiniteRowSideFullHecke.EffectiveHS.FSData.monoSec, Finset.prod_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sPow_eq_monoSec (s : Fin D → Fin d.W.n → ℂ) (α : Fin D → ℕ) :
     sPow (fun i => d.W.sec (s i)) α = d.monoSec s α := by
@@ -125,7 +125,7 @@ def toEmbDatum [T2Space X] (d : FSData A Y) (hA : IsAlgCover A) : EmbDatum D whe
   gen₂ := (noCommonZero_iff d.L₂ d.W₂.e d.W₂.mem).2 d.gen₂
 
 /- English proof (translation)
-Unfold `IndefiniteRowSideFullHecke.EffectiveHS.HermSpace.sec`. Rewrite using `[Finset.sum_eq_single i (fun b _ hb => by rw [Pi.single_eq_of_ne hb, zero_smul]) (fun h => absurd (Finset.mem_univ i) h), Pi.single_eq_same, one_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sec_single {B : Submodule ℂ (Fin A.n → X → ℂ)} (H : HermSpace B) (i : Fin H.n) :
     H.sec (Pi.single i 1) = H.e i := by
@@ -158,7 +158,7 @@ def toTwistWeight (d : HSData A Y) :
   psh j y hy w := (d.pshA j j).2 y ⟨hy, (A.chart j).map_target hy⟩ w
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.2 (Set.range_subset_iff.2 (d.V j).mem)`.
+A detailed English derivation is pending.
 -/
 theorem space_le_topForms (d : HSData A Y) (j : ℕ) :
     (d.V j).space ≤ topForms (twist d.L₂ d.L (D + j)) :=
@@ -188,7 +188,7 @@ def toSpaceDatum [T2Space X] [SecondCountableTopology X] (hN : TopFormNormEqInte
     exact (h2 F hF).trans_eq (congrArg _ e.symm)
 
 /- English proof (translation)
-Unfold `Pspace IndefiniteRowSideFullHecke.EffectiveHS.HSData.Pσ`. Use `congr 1`. Use extensionality with `f`. Simplify using `only [Set.mem_ofPred_eq, sPow_eq_monoSec]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem pspace_eq_Pσ (d : HSData A Y) (s : Fin D → Fin d.W.n → ℂ) :
     Pspace (fun i => d.W.sec (s i)) (d.V D).space d.T = d.Pσ s := by

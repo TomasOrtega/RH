@@ -9,55 +9,47 @@ open Formalism.MainNotions.S Module
 open ValuativeRel
 
 /- English proof (translation)
-Use `haveI : NoZeroDivisors E := ⟨fun {a b} hab => by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨u, hu⟩` from `hE a hne.1`. Apply `hne.2` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `congrArg (fun t => (↑u⁻¹ : E) * t) hab`. Simplify using `only [mul_zero, ← mul_assoc] at h2`. Rewrite using `[← hu, Units.inv_mul, one_mul] at h2⟩` and apply the resulting hypothesis. Use `haveI : IsDomain E := NoZeroDivisors.to_isDomain E`. Take `⟨hfg, hspan, hdual⟩` from `hΛ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact.
 
-Use `haveI : Module.Finite M.L.O Λ := Module.Finite.iff_fg.mpr hfg`. Use `haveI : NoZeroSMulDivisors M.L.O Λ := ⟨fun {r x} h => by`. Distinguish the cases in `hr : r = 0`. Conclude with `Or.inl hr`. Use `right`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hr' : (r : E) ≠ 0` using `fun h0 => hr (Subtype.ext h0)`. Take `⟨u, hu⟩` from `hE _ hr'`. Establish `h1 : (r : E) • (x : V) = 0`. Use `congrArg Subtype.val h` as an intermediate fact. Simplify `this` using `[Submodule.coe_smul, Subring.smul_def]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `h2` using `congrArg (fun v => (↑u⁻¹ : E) • v) h1`. Simplify using `only [smul_zero, smul_smul] at h2`. Rewrite `h2` using `[← hu, Units.inv_mul, one_smul]`. Simplify using `using h2⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `haveI : Module.Free M.L.O Λ := Module.free_of_finite_type_torsion_free'`. Set `B` to `Module.Free.chooseBasis M.L.O Λ`. Set `bb : Module.Free.ChooseBasisIndex M.L.O Λ → V` to `fun i => (B i : V)`. Establish `hexp : ∀ (x : V) (hx : x ∈ Λ), x = ∑ i, ((B.repr ⟨x, hx⟩ i : M.L.O) : E) • bb i`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg Subtype.val (B.sum_repr ⟨x, hx⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Subring.smul_def] at h2`. Conclude with `h2.symm`. Establish `hli : LinearIndependent E bb`. Rewrite using `[Fintype.linearIndependent_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `g hg i`. Use `choose s hsO hs using fun j => hden (g j)`. Use `set t := ∏ j, s j with ht`. Establish `htO : t ∈ M.L.O` using `Subring.prod_mem _ fun j _ => hsO j`. Establish `ht0 : t ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun j _ => (hs j).1`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `htg : ∀ j, t * g j ∈ M.L.O`. Introduce `j`. Establish `e : t * g j = (∏ j' ∈ Finset.univ.erase j, s j') * (s j * g j)`. Rewrite using `[ht, ← Finset.mul_prod_erase _ _ (Finset.mem_univ j)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `M.L.O.mul_mem (Subring.prod_mem _ fun j' _ => hsO j') (hs j).2`. Set `g' : Module.Free.ChooseBasisIndex M.L.O Λ → M.L.O` to `fun j => ⟨t * g j, htg j⟩`. Establish `hsum : ∑ j, g' j • B j = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Subring.smul_def, Submodule.coe_zero]`. Establish `: ∑ j, (t * g j) • bb j = t • ∑ j, g j • bb j`. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [smul_smul]`. Simplify `this` using `[g', bb, hg]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h0` using `Fintype.linearIndependent_iff.mp B.linearIndependent g' hsum i`. Establish `h0' : t * g i = 0` using `congrArg Subtype.val h0`. Conclude with `(mul_eq_zero.mp h0').resolve_left ht0`. Establish `hsp : ⊤ ≤ Submodule.span E (Set.range bb)`. Rewrite using `[← hspan]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce `x hx`. Rewrite using `[hexp x hx]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Set `BE` to `Basis.mk hli hsp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcard : Module.finrank E V = Fintype.card (Module.Free.ChooseBasisIndex M.L.O Λ)` using `Module.finrank_eq_card_basis BE`. Set `eι` to `Fintype.equivFinOfCardEq hcard.symm`. Set `b : Fin (Module.finrank E V) → V` to `fun k => bb (eι.symm k)`. Establish `hbΛ : ∀ k, b k ∈ Λ` using `fun k => (B (eι.symm k)).2`. Establish `hlib : LinearIndependent E b` using `hli.comp _ eι.symm.injective`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hexpb : ∀ x ∈ Λ, ∃ c : Fin (Module.finrank E V) → E, (∀ k, c k ∈ M.L.O) ∧ x = ∑ k, c k • b k`. Introduce `x hx`. Use `⟨fun k => ((B.repr ⟨x, hx⟩ (eι.symm k) : M.L.O) : E), fun k => Subtype.property _, ?_⟩` and prove the remaining obligations. Conclude with `(hexp x hx).trans (Equiv.sum_comp eι.symm (fun i => ((B.repr ⟨x, hx⟩ i : M.L.O) : E) • bb i)).symm`. Use `⟨b, hbΛ, hlib, hexpb, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set G : Matrix (Fin (Module.finrank E V)) (Fin (Module.finrank E V)) E := Matrix.of (fun k l => H.h (b k) (b l)) with hG`. Establish `hdet0 : G.det ≠ 0`. Introduce `hd`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_vecMul_eq_zero_iff.mpr hd`. Use `set x := ∑ k, v k • b k with hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hxb : ∀ l, H.h x (b l) = 0`. Introduce `l`. Rewrite using `[hx, flb_h_sum_left]`. Use `congrFun hv l` as an intermediate fact. Simplify `this` using `[Matrix.vecMul, dotProduct, hG]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx0 : x = 0`. Apply `H.nondeg` to reduce the goal to its premises. Introduce `y`. Establish `hy` using `BE.sum_repr y`. Rewrite using `[← hy, flb_h_sum_right]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i _`. Establish `: BE i = b (eι i)` using `by simp [BE, b]`. Rewrite using `[this, hxb, mul_zero]`. Apply `hv0` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `k`. Conclude with `Fintype.linearIndependent_iff.mp hlib v hx0.symm.symm k`. Establish `hdet : IsUnit G.det` using `hE _ hdet0`. Use `⟨G⁻¹, ?_, Matrix.nonsing_inv_mul G hdet⟩` and prove the remaining obligations. Establish `hQG` using `Matrix.nonsing_inv_mul G hdet`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `k m`. Use `set d := ∑ m', G⁻¹ k m' • b m' with hd`. Establish `hdb : ∀ l, H.h d (b l) = if k = l then 1 else 0`. Introduce `l`. Rewrite using `[hd, flb_h_sum_left]`.
-
-Use `congrFun (congrFun hQG k) l` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, hG, Matrix.one_apply]`. Establish `hdΛ : d ∈ Λ`. Rewrite using `[hdual]`. Introduce `y hy`.
-
-Take `⟨c, hcO, rfl⟩` from `hexpb y hy`. Rewrite using `[flb_h_sum_right]`. Simplify using `only [hdb, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Conclude with `flb_cj_mem M.L (hcO k)`. Take `⟨c', hc'O, hc'⟩` from `hexpb d hdΛ`.
-
-Establish `hz : ∑ m', (G⁻¹ k m' - c' m') • b m' = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[← hd, ← hc', sub_self]`. Use `Fintype.linearIndependent_iff.mp hlib _ hz m` as an intermediate fact. Rewrite using `[sub_eq_zero.mp this]`.
-
-Conclude with `hc'O m`.
+A detailed English derivation is pending.
 -/
 theorem flb_main {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E]
     [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Loc.Model F E)
@@ -198,11 +190,9 @@ theorem flb_main {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [C
   exact hc'O m
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ M hF hc hE V _ _ H Λ hΛ`. Use `haveI := hF`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[F]`. Take `⟨-, hden0, hfac⟩` from `h1 F E M.L hF hc hE ϖ hϖ`. Establish `hnt : Nontrivial E` using `Module.nontrivial_of_finrank_pos (R := F) (by rw [M.L.rank]; norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `flb_main M hE hnt ?_ (flb_pid M.L.O _ (flb_int_mem M.L ϖ) hfac) V H Λ hΛ` and prove the remaining obligations. Introduce `x`. Take `⟨c, hc0, hcx⟩` from `hden0 x`. Use `⟨_, flb_int_mem M.L c, ?_, hcx⟩` and prove the remaining obligations. Establish `hcF : (c : F) ≠ 0` using `by exact_mod_cast hc0`.
-
-Conclude with `(map_ne_zero_iff _ (algebraMap F E).injective).mpr hcF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem flatBasis_of (h1 : FLocO) : FLatBasis := by
   intro F E _ _ _ _ _ _ _ M hF hc hE V _ _ H Λ hΛ

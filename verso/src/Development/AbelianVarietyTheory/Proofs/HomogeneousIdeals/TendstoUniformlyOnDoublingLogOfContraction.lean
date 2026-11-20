@@ -12,9 +12,9 @@ variable {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
   [NormedAddCommGroup F] [NormedSpace ℂ F]
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hf`. Establish `h1` using `hp.isBigO_sub_partialSum_pow 2`. Establish `h2 : L = continuousMultilinearCurryFin1 ℂ E F (p 1)` using `hL.unique hp.hasFDerivAt`. Use `h1.congr_left fun x => ?_` and prove the remaining obligations. Simplify using `[FormalMultilinearSeries.partialSum, Finset.sum_range_succ, hp.coeff_zero, h0, h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use extensionality with `i`. Simplify using `[Fin.snoc]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem isBigO_sub_linear_sq_of_analyticAt {f : E → F} {L : E →L[ℂ] F} (hf : AnalyticAt ℂ f 0)
     (h0 : f 0 = 0) (hL : HasFDerivAt f L 0) :
@@ -29,7 +29,7 @@ theorem isBigO_sub_linear_sq_of_analyticAt {f : E → F} {L : E →L[ℂ] F} (hf
   simp [Fin.snoc]
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `h.bound`. Simplify using `using hC.self_of_nhds`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem map_zero_of_isBigO_sq {f : E → F} {L : E →L[ℂ] F}
     (h : (fun x => f x - L x) =O[𝓝 0] fun x => ‖x‖ ^ 2) : f 0 = 0 := by
@@ -37,7 +37,7 @@ theorem map_zero_of_isBigO_sq {f : E → F} {L : E →L[ℂ] F}
   simpa using hC.self_of_nhds
 
 /- English proof (translation)
-Rewrite using `[hasFDerivAt_iff_isLittleO_nhds_zero]`. Simplify using `only [zero_add, map_zero_of_isBigO_sq h, sub_zero]`. Conclude with `h.trans_isLittleO (isLittleO_norm_pow_id one_lt_two)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_of_isBigO_sq {f : E → F} {L : E →L[ℂ] F}
     (h : (fun x => f x - L x) =O[𝓝 0] fun x => ‖x‖ ^ 2) : HasFDerivAt f L 0 := by
@@ -58,9 +58,9 @@ variable {ε : V → V} {r C : ℝ}
 
 omit [NormedSpace ℂ V] in
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Establish `h1 : (5 / 8 : ℝ) ^ j * ‖x‖ ≤ ‖x‖` using `mul_le_of_le_one_left (norm_nonneg _) (pow_le_one₀ (by norm_num) (by norm_num))`. Establish `h2 : ε^[j] x ∈ ball (0 : V) r`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hx`, the goal using `[mem_ball_zero_iff]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Function.iterate_succ_apply', pow_succ]`. Combine the linear relations using `[hc _ h2]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem norm_iterate_le_of_contraction (hc : ∀ x ∈ ball (0 : V) r, ‖ε x‖ ≤ 5 / 8 * ‖x‖)
     {x : V} (hx : x ∈ ball (0 : V) r) (j : ℕ) : ‖ε^[j] x‖ ≤ (5 / 8) ^ j * ‖x‖ := by
@@ -77,7 +77,7 @@ theorem norm_iterate_le_of_contraction (hc : ∀ x ∈ ball (0 : V) r, ‖ε x�
 
 omit [NormedSpace ℂ V] in
 /- English proof (translation)
-The claim follows from `(norm_iterate_le_of_contraction hc hx j).trans (mul_le_of_le_one_left (norm_nonneg _) (pow_le_one₀ (by norm_num) (by norm_num)))`.
+A detailed English derivation is pending.
 -/
 theorem norm_iterate_le_self_of_contraction (hc : ∀ x ∈ ball (0 : V) r, ‖ε x‖ ≤ 5 / 8 * ‖x‖)
     {x : V} (hx : x ∈ ball (0 : V) r) (j : ℕ) : ‖ε^[j] x‖ ≤ ‖x‖ :=
@@ -86,7 +86,7 @@ theorem norm_iterate_le_self_of_contraction (hc : ∀ x ∈ ball (0 : V) r, ‖�
 
 omit [NormedSpace ℂ V] in
 /- English proof (translation)
-The claim follows from `mem_ball_zero_iff.mpr ((norm_iterate_le_self_of_contraction hc hx j).trans_lt (mem_ball_zero_iff.mp hx))`.
+A detailed English derivation is pending.
 -/
 theorem iterate_mem_ball_of_contraction (hc : ∀ x ∈ ball (0 : V) r, ‖ε x‖ ≤ 5 / 8 * ‖x‖)
     {x : V} (hx : x ∈ ball (0 : V) r) (j : ℕ) : ε^[j] x ∈ ball (0 : V) r :=
@@ -94,11 +94,9 @@ theorem iterate_mem_ball_of_contraction (hc : ∀ x ∈ ball (0 : V) r, ‖ε x�
     ((norm_iterate_le_self_of_contraction hc hx j).trans_lt (mem_ball_zero_iff.mp hx))
 
 /- English proof (translation)
-Establish `h1` using `hC _ (iterate_mem_ball_of_contraction hc hx j)`. Establish `h2` using `norm_iterate_le_of_contraction hc hx j`. Establish `e : (2 : ℂ) ^ (j + 1) • ε^[j + 1] x - (2 : ℂ) ^ j • ε^[j] x = (2 : ℂ) ^ (j + 1) • (ε (ε^[j] x) - (2 : ℂ)⁻¹ • ε^[j] x)`. Rewrite using `[Function.iterate_succ_apply', smul_sub, smul_smul, pow_succ (2 : ℂ) j, mul_inv_cancel_right₀ two_ne_zero]`. Rewrite using `[dist_comm, dist_eq_norm, e, norm_smul, norm_pow, Complex.norm_two]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `h1.trans (by gcongr)`. Use `_ = 2 * C * ‖x‖ ^ 2 * (2 * (5 / 8) ^ 2) ^ j := by`. Rewrite using `[mul_pow, mul_pow, ← pow_mul, ← pow_mul, mul_comm j 2]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ = _ := by norm_num`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dist_two_pow_smul_iterate_succ_le (hc : ∀ x ∈ ball (0 : V) r, ‖ε x‖ ≤ 5 / 8 * ‖x‖)
     (hC0 : 0 ≤ C) (hC : ∀ x ∈ ball (0 : V) r, ‖ε x - (2 : ℂ)⁻¹ • x‖ ≤ C * ‖x‖ ^ 2)
@@ -124,7 +122,7 @@ theorem dist_two_pow_smul_iterate_succ_le (hc : ∀ x ∈ ball (0 : V) r, ‖ε 
 variable [CompleteSpace V]
 
 /- English proof (translation)
-The claim follows from `(cauchySeq_of_le_geometric (25 / 32) (2 * C * ‖x‖ ^ 2) (by norm_num) (dist_two_pow_smul_iterate_succ_le hc hC0 hC hx)).tendsto_limUnder`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_doublingLog_of_contraction (hc : ∀ x ∈ ball (0 : V) r, ‖ε x‖ ≤ 5 / 8 * ‖x‖)
     (hC0 : 0 ≤ C) (hC : ∀ x ∈ ball (0 : V) r, ‖ε x - (2 : ℂ)⁻¹ • x‖ ≤ C * ‖x‖ ^ 2)
@@ -134,7 +132,7 @@ theorem tendsto_doublingLog_of_contraction (hc : ∀ x ∈ ball (0 : V) r, ‖ε
     (dist_two_pow_smul_iterate_succ_le hc hC0 hC hx)).tendsto_limUnder
 
 /- English proof (translation)
-Use `(dist_le_of_le_geometric_of_tendsto (25 / 32) (2 * C * ‖x‖ ^ 2) (by norm_num) (dist_two_pow_smul_iterate_succ_le hc hC0 hC hx) (tendsto_doublingLog_of_contraction hc hC0 hC hx) j).trans_eq ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dist_doublingLog_le_of_contraction (hc : ∀ x ∈ ball (0 : V) r, ‖ε x‖ ≤ 5 / 8 * ‖x‖)
     (hC0 : 0 ≤ C) (hC : ∀ x ∈ ball (0 : V) r, ‖ε x - (2 : ℂ)⁻¹ • x‖ ≤ C * ‖x‖ ^ 2)
@@ -146,9 +144,9 @@ theorem dist_doublingLog_le_of_contraction (hc : ∀ x ∈ ball (0 : V) r, ‖ε
   ring
 
 /- English proof (translation)
-Rewrite using `[Metric.tendstoUniformlyOn_iff]`. Introduce `η hη`. Establish `h0 : Tendsto (fun j : ℕ => 64 / 7 * C * r ^ 2 * (25 / 32 : ℝ) ^ j) atTop (𝓝 0)`. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one (r := (25 / 32 : ℝ)) (by norm_num) (by norm_num)).const_mul (64 / 7 * C * r ^ 2)`. Use `filter_upwards [h0.eventually (gt_mem_nhds hη)] with j hj x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dist_comm]`. Use `((dist_doublingLog_le_of_contraction hc hC0 hC hx j).trans ?_).trans_lt hj` and prove the remaining obligations. Use `(mem_ball_zero_iff.mp hx).le` as an intermediate fact. Use `gcongr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tendstoUniformlyOn_doublingLog_of_contraction
     (hc : ∀ x ∈ ball (0 : V) r, ‖ε x‖ ≤ 5 / 8 * ‖x‖)
@@ -169,9 +167,9 @@ theorem tendstoUniformlyOn_doublingLog_of_contraction
 omit [CompleteSpace V] in
 
 /- English proof (translation)
-Take `⟨C, hC0, hC⟩` from `h.exists_nonneg`. Establish `h1` using `(h.trans_isLittleO (isLittleO_norm_pow_id one_lt_two)).bound (c := 1 / 8) (by norm_num)`. Take `⟨r, hr, hball⟩` from `Metric.eventually_nhds_iff_ball.mp (hC.bound.and h1)`. Use `⟨r, hr, C, hC0, fun x hx => ?_, fun x hx => by simpa using (hball x hx).1⟩` and prove the remaining obligations. Establish `h2` using `(hball x hx).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3 : ‖(2 : ℂ)⁻¹ • x‖ = 1 / 2 * ‖x‖` using `by simp [norm_smul]`. Establish `h4` using `norm_le_norm_sub_add (ε x) ((2 : ℂ)⁻¹ • x)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exists_ball_contraction
     (h : (fun x => ε x - (2 : ℂ)⁻¹ • x) =O[𝓝 0] fun x => ‖x‖ ^ 2) :
@@ -188,9 +186,9 @@ theorem exists_ball_contraction
   linarith
 
 /- English proof (translation)
-Take `⟨r, hr, C, hC0, hc, hC⟩` from `exists_ball_contraction h`. Use `IsBigO.of_bound (64 / 7 * C) ?_` and prove the remaining obligations. Use `filter_upwards [ball_mem_nhds 0 hr] with x hx`. Use `dist_doublingLog_le_of_contraction hc hC0 hC hx 0` as an intermediate fact. Rewrite `this` using `[dist_comm, dist_eq_norm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem isBigO_doublingLog_sub
     (h : (fun x => ε x - (2 : ℂ)⁻¹ • x) =O[𝓝 0] fun x => ‖x‖ ^ 2) :
@@ -203,9 +201,9 @@ theorem isBigO_doublingLog_sub
   simpa using this
 
 /- English proof (translation)
-Take `⟨r, hr, C, hC0, hc, hC⟩` from `exists_ball_contraction h`. Take `⟨s, hs, hsa⟩` from `Metric.eventually_nhds_iff_ball.mp ha.eventually_analyticAt`. Establish `h1 : ball (0 : V) (min r s) ⊆ ball 0 r` using `ball_subset_ball (min_le_left _ _)`. Establish `h2 : ball (0 : V) (min r s) ⊆ ball 0 s` using `ball_subset_ball (min_le_right _ _)`. Establish `hc' : ∀ x ∈ ball (0 : V) (min r s), ‖ε x‖ ≤ 5 / 8 * ‖x‖` using `fun x hx => hc x (h1 hx)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ∀ j : ℕ, DifferentiableOn ℂ ε^[j] (ball 0 (min r s))` using `fun j => DifferentiableOn.iterate (fun x hx => (hsa x (h2 hx)).differentiableAt.differentiableWithinAt) (fun x hx => iterate_mem_ball_of_contraction hc' hx 1) j`. Use `SCV.analyticAt_of_differentiableOn (SCV.differentiableOn_of_tendstoLocallyUniformlyOn isOpen_ball ((tendstoUniformlyOn_doublingLog_of_contraction hc hC0 hC).mono h1).tendstoLocallyUniformlyOn (Eventually.of_forall fun j => (hd j).const_smul _)) (ball_mem_nhds 0 (lt_min hr hs))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem analyticAt_doublingLog [FiniteDimensional ℂ V] (ha : AnalyticAt ℂ ε 0)
     (h : (fun x => ε x - (2 : ℂ)⁻¹ • x) =O[𝓝 0] fun x => ‖x‖ ^ 2) :
@@ -231,7 +229,7 @@ section Extension
 variable {V A : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] [AddCommGroup A]
 
 /- English proof (translation)
-Establish `: Tendsto (fun j : ℕ => (2⁻¹ : ℝ) ^ j • v) atTop (𝓝 0)`. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one (r := (2⁻¹ : ℝ)) (by norm_num) (by norm_num)).smul_const v`. Conclude with `this.eventually hs`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem eventually_half_pow_smul_mem {s : Set V} (hs : s ∈ 𝓝 (0 : V)) (v : V) :
     ∀ᶠ j : ℕ in atTop, (2⁻¹ : ℝ) ^ j • v ∈ s := by
@@ -241,9 +239,9 @@ private theorem eventually_half_pow_smul_mem {s : Set V} (hs : s ∈ 𝓝 (0 : V
   exact this.eventually hs
 
 /- English proof (translation)
-Use extensionality with `v`. Take `⟨j, hj⟩` from `(eventually_half_pow_smul_mem h v).exists`. Establish `hv : v = (2 ^ j : ℕ) • (2⁻¹ : ℝ) ^ j • v`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℝ, smul_smul]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hv, map_nsmul, map_nsmul, show e _ = e' _ from hj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem addMonoidHom_eq_of_eventuallyEq {e e' : V →+ A} (h : e =ᶠ[𝓝 0] e') : e = e' := by
   ext v
@@ -254,17 +252,17 @@ theorem addMonoidHom_eq_of_eventuallyEq {e e' : V →+ A} (h : e =ᶠ[𝓝 0] e'
   rw [hv, map_nsmul, map_nsmul, show e _ = e' _ from hj]
 
 /- English proof (translation)
-Take `⟨r, hr, hball⟩` from `Metric.eventually_nhds_iff_ball.mp hg`. Establish `hadd : ∀ x ∈ ball (0 : V) r, ∀ y ∈ ball (0 : V) r, g (x + y) = g x + g y` using `fun x hx y hy => hball (x, y) (by rw [← Prod.mk_zero_zero, ← ball_prod_same]; exact ⟨hx, hy⟩)`. Establish `hhalf : ∀ x ∈ ball (0 : V) r, (2⁻¹ : ℝ) • x ∈ ball (0 : V) r`. Introduce `x hx`. Rewrite `hx`, the goal using `[mem_ball_zero_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[norm_smul]`. Evaluate the numerical expressions. Combine the linear relations using `[norm_nonneg x]`. Establish `hstep : ∀ x ∈ ball (0 : V) r, ∀ k : ℕ, (2⁻¹ : ℝ) ^ k • x ∈ ball (0 : V) r ∧ (2 ^ k : ℕ) • g ((2⁻¹ : ℝ) ^ k • x) = g x`. Introduce `x hx k`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero => simpa using hx`. Consider the case `succ k ih`. Establish `h1` using `hhalf _ ih.1`. Rewrite using `[pow_succ' (2⁻¹ : ℝ), mul_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, mul_smul, two_smul, ← hadd _ h1 _ h1, ← add_smul]`. Evaluate the numerical expressions. Simplify using `using ih.2`. Establish `hex : ∀ v : V, ∃ j : ℕ, (2⁻¹ : ℝ) ^ j • v ∈ ball (0 : V) r` using `fun v => (eventually_half_pow_smul_mem (ball_mem_nhds 0 hr) v).exists`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Set `e : V → A` to `fun v => (2 ^ Nat.find (hex v) : ℕ) • g ((2⁻¹ : ℝ) ^ Nat.find (hex v) • v)`. Establish `he : ∀ (v : V) (j : ℕ), (2⁻¹ : ℝ) ^ j • v ∈ ball (0 : V) r → e v = (2 ^ j : ℕ) • g ((2⁻¹ : ℝ) ^ j • v)`. Introduce `v j hj`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le (Nat.find_min' (hex v) hj)`. Rewrite using `[pow_add, mul_smul, add_comm, pow_add, mul_smul, (hstep _ (Nat.find_spec (hex v)) k).2]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨AddMonoidHom.mk' e fun v w => ?_, ?_⟩` and prove the remaining obligations. Take `⟨j, h1, h2, h3⟩` from `((eventually_half_pow_smul_mem (ball_mem_nhds 0 hr) v).and ((eventually_half_pow_smul_mem (ball_mem_nhds 0 hr) w).and (eventually_half_pow_smul_mem (ball_mem_nhds 0 hr) (v + w)))).exists`. Rewrite using `[he _ j h1, he _ j h2, he _ j h3, smul_add, hadd _ h1 _ h2, smul_add]`. Use `filter_upwards [ball_mem_nhds 0 hr] with v hv`. Simplify `hv)` using `using he v 0 (by simpa`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_addMonoidHom_eventuallyEq {g : V → A}
     (hg : ∀ᶠ p in 𝓝 (0 : V × V), g (p.1 + p.2) = g p.1 + g p.2) :

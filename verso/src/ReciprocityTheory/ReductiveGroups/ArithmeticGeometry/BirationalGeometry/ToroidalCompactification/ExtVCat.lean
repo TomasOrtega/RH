@@ -14,15 +14,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eta_eq_one (M : Over S) [MonObj M] : (η[M] : 𝟙_ (Over S) ⟶ M) = 1 := by
   rw [Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]
 
 /- English proof (translation)
-Unfold `psum`. Proceed by induction on `((List.finRange n).filter (· ∈ I)) with`. Consider the case `nil`. Simplify using `only [List.foldr_nil, pzero]`. Rewrite using `[← Category.assoc, toUnit_unique (g ≫ toUnit T) (toUnit T')]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `cons a l ih`. Simplify using `only [List.foldr_cons]`. Rewrite using `[padd, padd, ← Category.assoc, comp_lift, ih]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_psum {n : ℕ} {T T' : Over S} (g : T' ⟶ T) (x : Fin n → (T ⟶ G)) (I : Finset (Fin n)) :
     g ≫ psum G x I = psum G (fun k => g ≫ x k) I := by
@@ -36,9 +36,9 @@ theorem comp_psum {n : ℕ} {T T' : Over S} (g : T' ⟶ T) (x : Fin n → (T ⟶
     rw [padd, padd, ← Category.assoc, comp_lift, ih]
 
 /- English proof (translation)
-Unfold `psum`. Proceed by induction on `((List.finRange n).filter (· ∈ I)) with`. Consider the case `nil => simp only [List.foldr_nil, pzero]`. Both sides reduce to the same expression. Consider the case `cons a l ih`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Simplify using `only [List.foldr_cons]`. Rewrite using `[ih]`. Use `show (1 : T ⟶ G) * 1 = 1`. Conclude with `_root_.mul_one _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psum_one {n : ℕ} {T : Over S} (I : Finset (Fin n)) : psum G (fun _ => (1 : T ⟶ G)) I = 1 := by
   unfold psum
@@ -51,9 +51,7 @@ theorem psum_one {n : ℕ} {T : Over S} (I : Finset (Fin n)) : psum G (fun _ => 
     exact _root_.mul_one _
 
 /- English proof (translation)
-Use `fin_cases k`. Use `show (1 : 𝟙_ (Over S) ⟶ G3 G) ≫ fst _ _ = 1`. Conclude with `MonObj.one_comp _`. Use `show (1 : 𝟙_ (Over S) ⟶ G3 G) ≫ (snd _ _ ≫ fst _ _) = 1`. Rewrite using `[← Category.assoc, MonObj.one_comp, MonObj.one_comp]`.
-
-Use `show (1 : 𝟙_ (Over S) ⟶ G3 G) ≫ (snd _ _ ≫ snd _ _) = 1`. Rewrite using `[← Category.assoc, MonObj.one_comp, MonObj.one_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_comp_proj_three (k : Fin 3) : (1 : 𝟙_ (Over S) ⟶ G3 G) ≫ x3 G k = 1 := by
   fin_cases k
@@ -65,7 +63,7 @@ theorem one_comp_proj_three (k : Fin 3) : (1 : 𝟙_ (Over S) ⟶ G3 G) ≫ x3 G
     rw [← Category.assoc, MonObj.one_comp, MonObj.one_comp]
 
 /- English proof (translation)
-Use `show (η[G3 G]).left ≫ (psum G (x3 G) I.down).left = (η[G]).left`. Rewrite using `[← Over.comp_left, eta_eq_one, eta_eq_one, comp_psum]`. Simplify using `only [one_comp_proj_three]`. Rewrite using `[psum_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eSec_thφ (I : thK) : eSec (G3 G) ≫ thφ G (x3 G) I = eSec G := by
   show (η[G3 G]).left ≫ (psum G (x3 G) I.down).left = (η[G]).left
@@ -74,7 +72,7 @@ theorem eSec_thφ (I : thK) : eSec (G3 G) ≫ thφ G (x3 G) I = eSec G := by
   rw [psum_one]
 
 /- English proof (translation)
-Use `fin_cases k`. Use `show (1 : 𝟙_ (Over S) ⟶ G2 G) ≫ fst _ _ = 1`. Conclude with `MonObj.one_comp _`. Use `show (1 : 𝟙_ (Over S) ⟶ G2 G) ≫ snd _ _ = 1`. Conclude with `MonObj.one_comp _`.
+A detailed English derivation is pending.
 -/
 theorem one_comp_proj_two (k : Fin 2) : (1 : 𝟙_ (Over S) ⟶ G2 G) ≫ x2 G k = 1 := by
   fin_cases k
@@ -84,7 +82,7 @@ theorem one_comp_proj_two (k : Fin 2) : (1 : 𝟙_ (Over S) ⟶ G2 G) ≫ x2 G k
     exact MonObj.one_comp _
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[lift_fst, MonObj.one_comp]`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[lift_snd, lift_fst, Category.assoc, MonObj.one_comp]`. Rewrite using `[lift_snd, lift_snd, Category.assoc, MonObj.one_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_one_one : lift (1 : 𝟙_ (Over S) ⟶ G) (lift (1 : 𝟙_ (Over S) ⟶ G) 1) = (1 : 𝟙_ (Over S) ⟶ G3 G) := by
   apply CartesianMonoidalCategory.hom_ext
@@ -94,11 +92,9 @@ theorem lift_one_one : lift (1 : 𝟙_ (Over S) ⟶ G) (lift (1 : 𝟙_ (Over S)
     · rw [lift_snd, lift_snd, Category.assoc, MonObj.one_comp]
 
 /- English proof (translation)
-Use `show (η[G2 G]).left ≫ (faceMap G i).left = (η[G3 G]).left`. Rewrite using `[← Over.comp_left, eta_eq_one, eta_eq_one]`. Use `congr 1`. Establish `hp : (1 : 𝟙_ (Over S) ⟶ G2 G) ≫ pzero G (G2 G) = 1`. Rewrite using `[pzero, ← Category.assoc, toUnit_unique ((1 : 𝟙_ (Over S) ⟶ G2 G) ≫ toUnit _) (toUnit _)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `fin_cases i`. Use `show (1 : 𝟙_ (Over S) ⟶ G2 G) ≫ lift (pzero G _) (lift (x2 G 0) (x2 G 1)) = 1`. Rewrite using `[comp_lift, comp_lift, hp, one_comp_proj_two, one_comp_proj_two, lift_one_one]`. Use `show (1 : 𝟙_ (Over S) ⟶ G2 G) ≫ lift (x2 G 0) (lift (pzero G _) (x2 G 1)) = 1`.
-
-Rewrite using `[comp_lift, comp_lift, hp, one_comp_proj_two, one_comp_proj_two, lift_one_one]`. Use `show (1 : 𝟙_ (Over S) ⟶ G2 G) ≫ lift (x2 G 0) (lift (x2 G 1) (pzero G _)) = 1`. Rewrite using `[comp_lift, comp_lift, hp, one_comp_proj_two, one_comp_proj_two, lift_one_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eSec_face (i : Fin 3) : eSec (G2 G) ≫ (faceMap G i).left = eSec (G3 G) := by
   show (η[G2 G]).left ≫ (faceMap G i).left = (η[G3 G]).left
@@ -115,11 +111,11 @@ theorem eSec_face (i : Fin 3) : eSec (G2 G) ≫ (faceMap G i).left = eSec (G3 G)
     rw [comp_lift, comp_lift, hp, one_comp_proj_two, one_comp_proj_two, lift_one_one]
 
 /- English proof (translation)
-Set `J : ((𝟙_ (Over S)).left ⟶ G.left) → L.L.ι` to `fun χ => if χ = eSec G then q₀ else (exists_chart L.isLB (χ z)).choose`. Establish `hJ : Good L.L z J` using `fun χ => by`. Distinguish the cases in `h : χ = eSec G`. Substitute `h` using the available equality. Simplify using `only [J, if_pos rfl]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `hq₀`. Simplify using `only [J, if_neg h]`. Conclude with `(exists_chart L.isLB (χ z)).choose_spec`. Establish `hv` using `val_corr hJ (c.face 0) (eSec (G2 G))`. Establish `hv2 : val (φ` using `thφ G (x3 G)) (ε := thε) c.t (eSec (G2 G) ≫ (faceMap G 0).left) z J = 1 := (val_pull hJ (φ := thφ G (x3 G)) (ε := thε) c.t (faceMap G 0).left (eSec (G2 G))).symm.trans (hv.trans (val_one _))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : ∀ I, J ((eSec (G2 G) ≫ (faceMap G 0).left) ≫ thφ G (x3 G) I) = q₀` using `fun I => by`. Rewrite using `[eSec_face, eSec_thφ]`. Simplify using `[J]`. Rewrite `hv2` using `[val_of (φ := thφ G (x3 G)) (ε := thε) c.t _ z J (fun _ => q₀) hm, eSec_face]`. Conclude with `hv2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cub_at_one {L : RigLB G} (c : CubicalStr G L) (z : (𝟙_ (Over S)).left) (q₀ : L.L.ι)
     (hq₀ : eSec G z ∈ L.L.U q₀) :

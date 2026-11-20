@@ -12,21 +12,21 @@ open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 /- English proof (translation)
-Set `G : Module.End R M → Prop` to `fun q => (∀ (f : Module.End R M) v, q (f v) = f (q v)) ∧ (∀ y ∈ Y, q y ∈ Y) ∧ ∃ W : Submodule ℂ M, FiniteDimensional ℂ W ∧ ∀ y ∈ Y, y - q y ∈ W`. Establish `g1 : G 1` using `⟨fun _ _ => rfl, fun _ h => h, ⊥, inferInstance, fun y _ => by simp⟩`. Establish `gm : ∀ p q, G p → G q → G (p * q)`. Introduce and unpack `p q ⟨a, b, W, hW, c⟩ ⟨a', b', W', hW', c'⟩`. Use `⟨fun f v => by rw [Module.End.mul_apply, Module.End.mul_apply, a', a], fun y hy => b _ (b' y hy), W ⊔ W', inferInstance, fun y hy => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.add_mem_sup (c _ (b' y hy)) (c' y hy)` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel']`. Then use the resulting hypothesis. Establish `g2 : ∀ p q v w, G p → G q → p v = 0 → q w = 0 → (p * q) v = 0 ∧ (p * q) w = 0` using `fun p q v w hp _ hv hw => ⟨by rw [Module.End.mul_apply, hp.1, hv, map_zero], by rw [Module.End.mul_apply, hw, map_zero]⟩`. Establish `h1 : ∀ v : M, ∃ q, G q ∧ q v = 0`. Introduce `v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv : v ∈ ⨆ c : isotypicComponents R M, c.1` using `by rw [← sSup_eq_iSup', sSup_isotypicComponents]; trivial`. Proceed by induction on `hv using Submodule.iSup_induction' with`. Consider the case `mem c x hx`. Take `⟨c, hc⟩` from `c`. Take `⟨W, hW, h⟩` from `hY c hc`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨1 - CompactRep.isoProj hc, ⟨fun f v => ?_, fun y hy => Y.sub_mem hy (CompactRep.isoProj_mem hc Y hy), W, hW, fun y hy => by simpa using h y hy⟩, ?_⟩` and prove the remaining obligations. Simplify using `[CompactRep.isoProj_comm hc f v]`. Simplify using `[CompactRep.isoProj_apply_of_mem hc hx]`. Consider the case `zero => exact ⟨1, g1, rfl⟩`. Consider the case `add x y _ _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Take `⟨p, hp, hx⟩` from `hx`. Take `⟨q, hq, hy⟩` from `hy`. Take `⟨a, b⟩` from `g2 p q x y hp hq hx hy`. Conclude with `⟨p * q, gm p q hp hq, by rw [map_add, a, b, add_zero]⟩`. Establish `h2 : ∃ q, G q ∧ ∀ t ∈ T, q t = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨1, g1, by simp⟩`. Consider the case `insert v T _ ih`. Take `⟨p, hp, hx⟩` from `h1 v`. Take `⟨q, hq, hy⟩` from `ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨p * q, gm p q hp hq, fun t ht => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 ht with rfl | ht` into its components or cases. Conclude with `(g2 p q t 0 hp hq hx (map_zero _)).1`. Conclude with `(g2 p q v t hp hq hx (hy t ht)).2`. Take `⟨q, ⟨a, -, W, hW, c⟩, hq⟩` from `h2`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨W, hW, fun x hx h => ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `jacobson_density (R := R) (M := M) { toFun := q, map_add' := map_add q, map_smul' := fun f v => a f v } (insert x T)`. Establish `h0 : q x = 0` using `(hr x (Finset.mem_insert_self _ _)).trans (h r fun t ht => (hr t (Finset.mem_insert_of_mem ht)).symm.trans (hq t ht))`. Simplify `c x hx` using `[h0]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem admissible_finite_window {R M : Type*} [Ring R] [AddCommGroup M] [Module ℂ M] [Module R M]
     [IsSemisimpleModule R M] (Y : Submodule R M)
@@ -82,9 +82,9 @@ private theorem admissible_finite_window {R M : Type*} [Ring R] [AddCommGroup M]
   simpa [h0] using c x hx
 
 /- English proof (translation)
-Establish `hfd : FiniteDimensional ℂ (Submodule.span ℂ (Set.range f))` using `Submodule.finiteDimensional_of_le (Submodule.span_le.2 (Set.range_subset_iff.2 hf))`. Take `⟨s, hs, hsp⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset _).1 (Module.Finite.iff_fg.1 hfd)`. Take `⟨T, hT⟩` from `Finset.subset_set_image_iff.1 (show (s : Set F) ⊆ f '' Set.univ by rwa [Set.image_univ])`. Use `⟨T, fun l hl i => ?_⟩` and prove the remaining obligations. Establish `: Submodule.span ℂ (Set.range f) ≤ LinearMap.ker l`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hsp, Submodule.span_le, ← hT.2]`. Introduce `x hx`. Take `⟨j, hj, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `hl j hj`. Conclude with `this (Submodule.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem finite_dim_tested_on_finset {ι F : Type*} [AddCommGroup F] [Module ℂ F] (B : Submodule ℂ F) [FiniteDimensional ℂ B]
     (f : ι → F) (hf : ∀ i, f i ∈ B) : ∃ T : Finset ι, ∀ l : F →ₗ[ℂ] ℂ, (∀ i ∈ T, l (f i) = 0) → ∀ i, l (f i) = 0 := by
@@ -102,11 +102,11 @@ private theorem finite_dim_tested_on_finset {ι F : Type*} [AddCommGroup F] [Mod
   exact this (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Set `B : Submodule ℂ (G → ℂ)` to `⨅ k : G, A.comap (LinearMap.funLeft ℂ ℂ fun x => k * e x)`. Establish `hB : ∀ a, a ∈ B ↔ ∀ k, (fun x => a (k * e x)) ∈ A` using `fun a => Submodule.mem_iInf _`. Set `L : B →ₗ[ℂ] (G ⧸ U → A)` to `LinearMap.pi fun c => LinearMap.codRestrict A ((LinearMap.funLeft ℂ ℂ fun x => c.out * e x) ∘ₗ B.subtype) fun a => (hB a).1 a.2 _`. Use `⟨B, FiniteDimensional.of_injective L ((injective_iff_map_eq_zero _).2 fun a ha => ?_), fun a => (hB a).2⟩` and prove the remaining obligations. Use extensionality with `g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul U g`. Take `⟨x, hx⟩` from `he u⁻¹`. Use `congrFun (congrArg Subtype.val (congrFun ha (g : G ⧸ U))) x` as an intermediate fact. Express the relevant statement in the definitionally equal form `a.1 (_ * (e x : G)) = 0 at this`. Rewrite `this` using `[hu, hx]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem admissible_induced_finite {G : Type*} [Group G] (U : Subgroup G) [U.FiniteIndex] {X : Type*} (e : X → U)
     (A : Submodule ℂ (X → ℂ)) [FiniteDimensional ℂ A] (he : Function.Surjective e) :
@@ -125,7 +125,7 @@ private theorem admissible_induced_finite {G : Type*} [Group G] (U : Subgroup G)
   simpa using this
 
 /- English proof (translation)
-Set `L : Module.Dual ℂ B →ₗ[ℂ] (X → ℂ)` to `LinearMap.pi fun x => Module.Dual.eval ℂ B ⟨f x, hf x⟩`. Use `Submodule.finiteDimensional_of_le (S₂ := LinearMap.range L) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨LinearMap.proj y ∘ₗ B.subtype, rfl⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem finite_dim_translates {X Y : Type*} (B : Submodule ℂ (Y → ℂ)) [FiniteDimensional ℂ B] (f : X → Y → ℂ)
     (hf : ∀ x, f x ∈ B) : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun y => fun x => f x y)) := by
@@ -135,7 +135,7 @@ private theorem finite_dim_translates {X Y : Type*} (B : Submodule ℂ (Y → �
   exact ⟨LinearMap.proj y ∘ₗ B.subtype, rfl⟩
 
 /- English proof (translation)
-The claim follows from `have := CompactRep.isSemisimpleModule_asModule hσ admissible_finite_window (R := MonoidAlgebra ℂ C) (M := σ.asModule) (Subrepresentation.subrepresentationSubmoduleOrderIso (⟨Y, hY⟩ : Subrepresentation σ)) (fun c hc => ⟨_, hf c hc, fun y hy => ⟨⟨y, hy⟩, rfl⟩⟩) T`.
+A detailed English derivation is pending.
 -/
 private theorem admissible_k_finite_window {C X : Type*} [Group C] [TopologicalSpace C] [IsTopologicalGroup C] [CompactSpace C] [T2Space C]
     [AddCommGroup X] [Module ℂ X] {σ : Representation ℂ C X} (hσ : CompactRep.IsKFinite σ) (Y : Submodule ℂ X)
@@ -150,21 +150,19 @@ private theorem admissible_k_finite_window {C X : Type*} [Group C] [TopologicalS
     (fun c hc => ⟨_, hf c hc, fun y hy => ⟨⟨y, hy⟩, rfl⟩⟩) T
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `finite_dim_tested_on_finset B (ι := {Φ : π.carrier // ∀ g : AdelicGLn.AdelicGL K n, (fun k : KG K n => Φ.1.1 (g * k.1.1)) ∈ B} × AdelicGLn.AdelicGL K n) (fun p k => p.1.1.1.1 (p.2 * k.1.1)) fun p => p.1.2 p.2`. Set `j : ∀ k ∈ (maxCompact : Subgroup (AdelicGLn.AdelicGL K n)), KG K n` to `fun k hk => ⟨⟨k, maxCompact_le_normOneGL hk⟩, hk⟩`. Use `choose O hO hO' using fun Φ : π.carrier => AutomorphicForm.exists_openSubgroup_rightInvariant Φ.1.2.1.isSmooth Φ.1.2.1.isKFinite`. Set `H : Subgroup (AdelicGLn.FiniteAdelicGL K n)` to `AdelicGLn.integralFiniteGL K n ⊓ ⨅ p ∈ T, (O p.1.1).toSubgroup`. Establish `hHo : IsOpen (H : Set (AdelicGLn.FiniteAdelicGL K n))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [H, Subgroup.coe_inf, Subgroup.coe_iInf]`. Conclude with `(AdelicGLn.isOpen_integralFiniteGL K n).inter (isOpen_biInter_finset fun p _ => (O p.1.1).isOpen)`. Establish `hHc : IsCompact (H : Set (AdelicGLn.FiniteAdelicGL K n))` using `(AdelicGLn.isCompact_integralFiniteGL K n).of_isClosed_subset (H.isClosed_of_isOpen hHo) fun _ h => h.1`. Set `σ` to `π.toModule.gk.σ`. Take `⟨W, hW, h⟩` from `admissible_k_finite_window π.toModule.gk.isKFinite (fixedVectors π.toModule.τ H) (fun k y hy g hg => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Module.End.mul_apply, ← π.toModule.comm_σ, Module.End.mul_apply, hy g hg])`. Use the proof step `(π.isAdmissible.2 H hHc hHo) (T.image fun p => p.1.1)`. Use `⟨W, hW, fun Φ hΦ => h Φ (fun u hu => ?_) fun r hr => ?_⟩` and prove the remaining obligations. Use `Subtype.ext (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Use `hT (LinearMap.proj (φ := fun _ => ℂ) (j _ (finEmb_mem_maxCompact hu.1)) - LinearMap.proj (R := ℂ) (φ := fun _ : KG K n => ℂ) 1) (fun p hp => ?_) (⟨Φ, hΦ⟩, g)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Φ.1.1 (g * finEmb K n u) - Φ.1.1 (g * 1) = 0 at this`. Rewrite `this` using `[mul_one, sub_eq_zero]`. Conclude with `this`. Express the relevant statement in the definitionally equal form `p.1.1.1.1 (p.2 * finEmb K n u) - p.1.1.1.1 (p.2 * 1) = 0`. Rewrite using `[mul_one, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `hO' p.1.1 p.2 u (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hu.2 p) hp)`. Establish `key : ∀ r : MonoidAlgebra ℂ (archCompact K n), ∃ l : (KG K n → ℂ) →ₗ[ℂ] ℂ, ∀ (Ψ : π.carrier) g, (σ.asAlgebraHom r Ψ).1.1 g = l fun k => Ψ.1.1 (g * k.1.1)`. Introduce `r`. Proceed by induction on `r using MonoidAlgebra.induction_on with`. Consider the case `of k => exact ⟨LinearMap.proj (j _ k.2), fun Ψ g => by rw [Representation.asAlgebraHom_of]; rfl⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add a b ha hb`. Take `⟨l, hl⟩` from `ha`. Take `⟨l', hl'⟩` from `hb`. Conclude with `⟨l + l', fun Ψ g => by rw [map_add, LinearMap.add_apply, LinearMap.add_apply, ← hl, ← hl']; rfl⟩`. Consider the case `smul c a ha`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨l, hl⟩` from `ha`. Conclude with `⟨c • l, fun Ψ g => by rw [map_smul, LinearMap.smul_apply, LinearMap.smul_apply, ← hl]; rfl⟩`. Take `⟨l, hl⟩` from `key r`. Express the relevant statement in the definitionally equal form `σ.asAlgebraHom r Φ = 0`. Use `Subtype.ext (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations.
-
-Rewrite using `[hl]`. Use `hT l (fun p hp => ?_) (⟨Φ, hΦ⟩, g)` and prove the remaining obligations. Establish `h0 : σ.asAlgebraHom r p.1.1 = 0` using `hr _ (Finset.mem_image_of_mem _ hp)`. Conclude with `(hl p.1.1 p.2).symm.trans (by rw [h0]; rfl)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem admissible_cusp_forms_finite {K : Type} [Field K] [NumberField K] {n : ℕ} (π : CuspidalAutomorphicRepresentation K n)
     (B : Submodule ℂ (KG K n → ℂ)) [FiniteDimensional ℂ B] :
@@ -221,19 +219,19 @@ private theorem admissible_cusp_forms_finite {K : Type} [Field K] [NumberField K
     exact (hl p.1.1 p.2).symm.trans (by rw [h0]; rfl)
 
 /- English proof (translation)
-Introduce `K _ _ _ μ _ τ hτ U hU ⟨O, hO, hUO⟩ 𝒜 h𝒜 _`. Establish `hK : CompactSpace (KG K 2)` using `isCompact_iff_compactSpace.1 ((blkLaws (K := K)).2.2.2.2.2.2.2.2.2.2.2 2).1`. Establish `hUo : IsOpen ((U.subgroupOf (KG K 2) : Subgroup (KG K 2)) : Set (KG K 2))`. Use `hO.preimage (continuous_subtype_val : Continuous ((↑) : KG K 2 → G1 K 2)) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Conclude with `hUO g g.2`. Establish `: Finite (KG K 2 ⧸ U.subgroupOf (KG K 2))` using `Subgroup.quotient_finite_of_isOpen _ hUo`. Establish `: (U.subgroupOf (KG K 2)).FiniteIndex` using `Subgroup.finiteIndex_of_finite_quotient`. Take `⟨B, hB, hB'⟩` from `admissible_induced_finite (U.subgroupOf (KG K 2)) (Subgroup.subgroupOfEquivOfLe hU).symm 𝒜 (Subgroup.subgroupOfEquivOfLe hU).symm.surjective`. Take `⟨hcs, hI, hirr⟩` from `UpperTheory.ConvolutionTheory.Dp.sumT K 2 μ τ ⟨hτ.le, hτ.closed, hτ.inv, hτ.ne, hτ.irr⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `π` to `CuspidalAutomorphicRepresentation.ofSummand _ hI hirr (summandCuspForms_ne_bot μ _ hI hirr)`. Take `⟨W, hW, hW'⟩` from `admissible_cusp_forms_finite π B`. Set `E : Submodule ℂ (G1 K 2 → ℂ)` to `{ carrier := {φ | Continuous φ ∧ (∃ v ∈ τ, Reps μ v φ) ∧ ∀ m, (fun u : U => φ (m * u)) ∈ 𝒜} zero_mem' := ⟨continuous_const, ⟨0, τ.zero_mem, by filter_upwards [(quasiMeasurePreserving_mk (Gam K 2) μ).ae (Lp.coeFn_zero ℂ 2 (quotientMeasure (Gam K 2) μ))] with y e using e⟩, fun _ => …`. Introduce and unpack `a b ⟨h1, ⟨v, hv, h2⟩, h3⟩ ⟨h1', ⟨v', hv', h2'⟩, h3'⟩`. Use `⟨h1.add h1', ⟨v + v', τ.add_mem hv hv', ?_⟩, fun m => 𝒜.add_mem (h3 m) (h3' m)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [(quasiMeasurePreserving_mk (Gam K 2) μ).ae (Lp.coeFn_add v v'), h2, h2'] with y e p q`. Rewrite using `[e, Pi.add_apply, p, q, Pi.add_apply]`. Use the proof step `smul_mem' := by`. Introduce and unpack `c a ⟨h1, ⟨v, hv, h2⟩, h3⟩`. Use `⟨h1.const_smul c, ⟨c • v, τ.smul_mem c hv, ?_⟩, fun m => 𝒜.smul_mem c (h3 m)⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `filter_upwards [(quasiMeasurePreserving_mk (Gam K 2) μ).ae (Lp.coeFn_smul c v), h2] with y e p`. Rewrite using `[e, Pi.smul_apply, p, Pi.smul_apply] }`. Establish `hsl : ∀ φ ∈ E, ∀ m : G1 K 2, (fun k : KG K 2 => φ (m * k)) ∈ B` using `fun φ hφ m => hB' _ fun k => by`. Use `hφ.2.2 (m * k) using 2 with u` and compare the differences between its conclusion and the goal. Rewrite using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Establish `hE` using `fun φ (hφ : φ ∈ E) => cuspIrr_kFinite_rep_eq_centralCuspForm μ τ hτ φ hφ.1 hφ.2.1 (finite_dim_translates B (fun m k => φ (m * k)) (hsl φ hφ))`. Set `res : π.carrier →ₗ[ℂ] (G1 K 2 → ℂ)` to `LinearMap.funLeft ℂ ℂ Subtype.val ∘ₗ (cuspForms K 2).subtype ∘ₗ π.carrier.subtype`. Use `⟨E, Submodule.finiteDimensional_of_le (S₂ := W.map res) fun φ hφ => ?_, fun φ hφ => (hE φ hφ).1, fun φ a b c => ⟨a, b, c⟩⟩` and prove the remaining obligations. Take `⟨-, Φ, h1, h2, h3⟩` from `hE φ hφ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨Φ, h1, h3⟩, hW' _ fun g => ?_, funext h2⟩` and prove the remaining obligations. Take `⟨s, y, hy, rfl⟩` from `exists_centralSection_mul_mem_normOneGL g`. Use `hsl φ hφ ⟨y, hy⟩ using 2 with k` and compare the differences between its conclusion and the goal. Rewrite using `[mul_assoc, ← h2]`. Conclude with `mem_centralCuspForms.1 h1 s _`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.adm :
     ∀ {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (τ : Submodule ℂ (L2 μ₂)), CuspIrr μ₂ τ → ∀ U : Subgroup (G1 K 2), U ≤ KG K 2 → (∃ O : Set (G1 K 2), IsOpen O ∧ ∀ g ∈ KG K 2, g ∈ U ↔ g ∈ O) →

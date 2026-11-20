@@ -16,7 +16,7 @@ namespace GlobalTheory.LFun.SatConj
 open ComplexConjugate
 
 /- English proof (translation)
-Simplify using `only [Multiset.esymm, Multiset.powersetCard_map, Multiset.map_map, map_multiset_sum]`. Use `congr 1`. Use `Multiset.map_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `[map_multiset_prod]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem esymm_map_conj (s : Multiset ℂ) (j : ℕ) : (s.map (starRingEnd ℂ)).esymm j = conj (s.esymm j) := by
   simp only [Multiset.esymm, Multiset.powersetCard_map, Multiset.map_map, map_multiset_sum]
@@ -25,11 +25,11 @@ theorem esymm_map_conj (s : Multiset ℂ) (j : ℕ) : (s.map (starRingEnd ℂ)).
   simp [map_multiset_prod]
 
 /- English proof (translation)
-Establish `hz : conj (((j : ℂ) * ((n : ℂ) - j)) / 2) = ((j : ℂ) * ((n : ℂ) - j)) / 2`. Rewrite using `[map_div₀, map_mul, map_sub, Complex.conj_natCast, Complex.conj_natCast, map_ofNat]`. Establish `harg : (q : ℂ).arg ≠ Real.pi`. Rewrite using `[Complex.natCast_arg]`. Conclude with `Real.pi_pos.ne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : conj ((q : ℂ) ^ (((j : ℂ) * ((n : ℂ) - j)) / 2)) = (q : ℂ) ^ (((j : ℂ) * ((n : ℂ) - j)) / 2)`. Use `Complex.conj_cpow (q : ℂ) (((j : ℂ) * ((n : ℂ) - j)) / 2) harg` as an intermediate fact. Rewrite `this` using `[hz, Complex.conj_natCast]`. Conclude with `this.symm`. Establish `hm : ((B.map star).map fun b : ℂˣ => (b : ℂ)) = (B.map fun b : ℂˣ => (b : ℂ)).map (starRingEnd ℂ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Multiset.map_map]`. Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `[Units.coe_star]`. Rewrite using `[GlobalTheory.LFun.satEig, GlobalTheory.LFun.satEig, map_mul, hp, hm, esymm_map_conj]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_satEig (q n : ℕ) (B : Multiset ℂˣ) (j : ℕ) :
     conj (GlobalTheory.LFun.satEig q n B j) = GlobalTheory.LFun.satEig q n (B.map star) j := by
@@ -48,7 +48,7 @@ theorem conj_satEig (q n : ℕ) (B : Multiset ℂˣ) (j : ℕ) :
   rw [GlobalTheory.LFun.satEig, GlobalTheory.LFun.satEig, map_mul, hp, hm, esymm_map_conj]
 
 /- English proof (translation)
-Unfold `Formalism.UG.Tj`. Rewrite using `[Set.indicator_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem conj_Tj {L : Type} [Field L] (n : ℕ) (O : Subring L) (ϖ : L) (j : ℕ) (g : GL (Fin n) L) :
     conj (Formalism.UG.Tj ℂ n O ϖ j g) = Formalism.UG.Tj ℂ n O ϖ j g := by
@@ -63,9 +63,9 @@ variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {
   {ρ' : Representation ℂ (GL (Fin n) (w.adicCompletion E)) W}
 
 /- English proof (translation)
-Take `⟨h0, hfix, hcard, hT⟩` from `h`. Use `⟨fun e => h0 (J.map_eq_zero_iff.1 e), GlobalTheory.LGrp.mem_fixed.2 fun k hk => by` and prove the remaining obligations. Rewrite using `[hJ, GlobalTheory.LGrp.mem_fixed.1 hfix k hk], by simp [hcard], fun ϖ hϖ j hj => ?_⟩`. Establish `hfin` using `GlobalTheory.LFun.finite_heckeVec (Formalism.UG.Final.GLintComm E w n) (GlobalTheory.LFun.Tj_mem_hecke hϖ j) ρ x`. Establish `e1 : GlobalTheory.LFun.heckeVec ρ' (GlobalTheory.LFun.KGL w n) (Formalism.UG.Tj ℂ n (Formalism.UG.Ov E w) ϖ j) (J x) = J (GlobalTheory.LFun.heckeVec ρ (GlobalTheory.LFun.KGL w n) (Formalism.UG.Tj ℂ n (Formalism.UG.Ov E w) ϖ j) x)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.LFun.heckeVec, GlobalTheory.LFun.heckeVec]`. Use `(finsum_congr fun c => ?_).trans (AddMonoidHom.map_finsum (J.toLinearMap.toAddMonoidHom) hfin).symm` and prove the remaining obligations. Simplify using `[hJ, conj_Tj]`. Rewrite using `[e1, hT ϖ hϖ j hj, LinearEquiv.map_smulₛₗ, conj_satEig]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSatVecGL_conj (J : V ≃ₗ⋆[ℂ] W) (hJ : ∀ g x, ρ' g (J x) = J (ρ g x)) {x : V} {B : Multiset ℂˣ}
     (h : GlobalTheory.LFun.IsSatVecGL w ρ x B) : GlobalTheory.LFun.IsSatVecGL w ρ' (J x) (B.map star) := by
@@ -86,9 +86,9 @@ end GlobalTheory.LFun.SatConj
 open GlobalTheory.LFun.SatConj in
 
 /- English proof (translation)
-Introduce `E _ _ w n V W _ _ _ _ ρ ρ' J hJ B hB`. Establish `hJs : ∀ g y, ρ g (J.symm y) = J.symm (ρ' g y)` using `fun g y => by`. Apply `J.injective` to reduce the goal to its premises. Rewrite using `[← hJ, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Take `⟨x, hx⟩` from `hB.exists_vec`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨(Submodule.ne_bot_iff _).2 ⟨J x, (isSatVecGL_conj J hJ hx).2.1, (isSatVecGL_conj J hJ hx).1⟩, fun y hy h0 => ?_⟩` and prove the remaining obligations. Establish `hy' : J.symm y ∈ GlobalTheory.PRep.fixed ρ (GlobalTheory.LFun.KGL w n)` using `GlobalTheory.LGrp.mem_fixed.2 fun k hk => by`. Rewrite using `[hJs, GlobalTheory.LGrp.mem_fixed.1 hy k hk]`. Use `isSatVecGL_conj J hJ (hB.2 _ hy' fun e => h0 (by simpa using congrArg J e))` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem GlobalTheory.LFun.hasSatGL_of_conjIntertwiner : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) (V W : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V) (ρ' : Representation ℂ (GL (Fin n) (w.adicCompletion E)) W) (J : V ≃ₗ⋆[ℂ] W), (∀ g x, ρ' g (J x) = J (ρ g x)) → ∀ B : Multiset ℂˣ, GlobalTheory.LFun.HasSatGL w ρ B → GlobalTheory.LFun.HasSatGL w ρ' (B.map star) := by
   intro E _ _ w n V W _ _ _ _ ρ ρ' J hJ B hB

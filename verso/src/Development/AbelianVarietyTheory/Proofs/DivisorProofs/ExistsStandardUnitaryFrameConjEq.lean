@@ -11,7 +11,7 @@ namespace GlobalTheory.FrameTransport.Onto
 open scoped TensorProduct
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [RingHom.map_zero, RingHom.map_zero, RingHom.map_zero]`. Consider the case `add a b ha hb => rw [RingHom.map_add, RingHom.map_add, ha, hb, RingHom.map_add, RingHom.map_add]`. Consider the case `tmul a e => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem swapAE_sigR (D : D7) (z : TensorProduct D.host.F (Af D.host.F) D.host.E) :
     Lev.swapAE D (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Af D.host.F) D.sp.cm.sig z) =
@@ -22,7 +22,7 @@ theorem swapAE_sigR (D : D7) (z : TensorProduct D.host.F (Af D.host.F) D.host.E)
   | tmul a e => rfl
 
 /- English proof (translation)
-Use `show Lev.swapAE D (GlobalTheory.BotFormula.toAfE D (StandardLatticesGL3.sgA D y)) = _`. Rewrite using `[GlobalTheory.BotFormula.toAfE_sgA]`. Conclude with `swapAE_sigR D _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adSwap_sgA (D : D7) (y : StandardLatticesGL3.AE D) :
     adSwap D (StandardLatticesGL3.sgA D y) = Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) (adSwap D y) := by
@@ -49,7 +49,7 @@ end GlobalTheory.FrameTransport.Onto
 namespace GlobalTheory.FrameTransport.Onto
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `(sigR_inclEAf D (A j i)).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem cT_map_inclEAf (D : D7) {n : ℕ} (A : Matrix (Fin n) (Fin n) D.host.E) :
     (Formalism.UG.cT (↑D.sp.cm.sig) A).map (inclEAf D) =
@@ -58,7 +58,7 @@ theorem cT_map_inclEAf (D : D7) {n : ℕ} (A : Matrix (Fin n) (Fin n) D.host.E) 
   exact (sigR_inclEAf D (A j i)).symm
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `adSwap_sgA D (A j i)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem cT_map_adSwap (D : D7) {n : ℕ} (A : Matrix (Fin n) (Fin n) (StandardLatticesGL3.AE D)) :
     (Formalism.UG.cT (StandardLatticesGL3.sgA D) A).map (adSwap D) =
@@ -67,7 +67,7 @@ theorem cT_map_adSwap (D : D7) {n : ℕ} (A : Matrix (Fin n) (Fin n) (StandardLa
   exact adSwap_sgA D (A j i)
 
 /- English proof (translation)
-Establish `h2 : Formalism.UG.cT s Pi * Formalism.UG.cT s P = 1` using `by rw [← Formalism.UG.cT_mul, hPPi, Formalism.UG.cT_one]`. Establish `hJ : J = Formalism.UG.cT s Pi * Pi`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Formalism.UG.cT_mul, Formalism.UG.cT_mul, ← hP]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem conj_unitary {R : Type} [CommRing R] (s : R →+* R) {n : ℕ} (J P Pi M : Matrix (Fin n) (Fin n) R)
     (hPPi : P * Pi = 1) (hP : Formalism.UG.cT s P * J * P = 1) (hM : Formalism.UG.cT s M * J * M = J) :
@@ -82,17 +82,15 @@ theorem conj_unitary {R : Type} [CommRing R] (s : R →+* R) {n : ℕ} (J P Pi M
     _ = _ := by rw [← hJ, hM]
 
 /- English proof (translation)
-Introduce `D V fr hfr M hM`. Set `P : GL (Fin V.rank) (Lev.EAf D)` to `Formalism.UG.bc (inclEAf D) fr`. Set `N : GL (Fin V.rank) (Lev.EAf D)` to `P⁻¹ * M * P`. Set `h0 : GL (Fin V.rank) (StandardLatticesGL3.AE D)` to `Formalism.UG.bc (adSwapEquiv D).symm.toRingHom N`. Establish `hbc : Formalism.UG.bc (adSwap D) h0 = N`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `i j`. Use `show adSwap D ((adSwapEquiv D).symm _) = _`. Rewrite using `[← adSwapEquiv_apply, RingEquiv.apply_symm_apply]`. Establish `hbcm : h0.val.map (adSwap D) = N.val` using `congrArg Units.val hbc`. Establish `hPPi : P.val * (P⁻¹).val = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfr' : Formalism.UG.cT (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) P.val * V.gram.map (inclEAf D) * P.val = 1`. Use `congrArg (fun X => X.map (inclEAf D)) hfr` as an intermediate fact. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)] at this`. Rewrite `this` using `[cT_map_inclEAf]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : Formalism.UG.cT (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) N.val * N.val = 1`. Establish `hNv : N.val = (P⁻¹).val * M.val * P.val` using `by simp only [N, Units.val_mul]`. Rewrite using `[hNv]`. Conclude with `conj_unitary _ _ _ _ _ hPPi hfr' hM`. Use `⟨⟨h0, ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Use `show Formalism.UG.cT (StandardLatticesGL3.sgA D) h0.val * (1 : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (Formalism.UG.inclE (F := ℚ) (IsDedekindDomain.FiniteAdeleRing (𝓞 ℚ) ℚ)) * h0.val = (1 : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (Formalism.UG.inclE (F := ℚ) (IsDe …`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`. Apply `Matrix.map_injective (adSwapEquiv D).injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(Formalism.UG.cT (StandardLatticesGL3.sgA D) h0.val * h0.val).map (adSwap D) = (1 : Matrix (Fin V.rank) (Fin V.rank) (StandardLatticesGL3.AE D)).map (adSwap D)`. Rewrite using `[Matrix.map_mul, cT_map_adSwap, hbcm, hN, Matrix.map_one _ (map_zero _) (map_one _)]`.
-
-Use `show frConj fr h0 = M`. Rewrite using `[frConj_apply, hbc]`. Use `show P * (P⁻¹ * M * P) * P⁻¹ = M`. Use `group`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FrameTransport.exists_frConj_eq : ∀ {D : D7} (V : HSp D) (fr : GL (Fin V.rank) D.host.E), Formalism.UG.cT (↑D.sp.cm.sig) (fr : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * V.gram * (fr : Matrix (Fin V.rank) (Fin V.rank) D.host.E) = 1 → ∀ M : GL (Fin V.rank) (Lev.EAf D), M ∈ UA D.sp.cm V.gram → ∃ h : StandardLatticesGL3.GA D V.rank, GlobalTheory.FrameTransport.frConj fr h.1 = M := by
   intro D V fr hfr M hM

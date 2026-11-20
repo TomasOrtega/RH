@@ -17,7 +17,7 @@ theorem index_toAddSubgroup (a : Ideal (𝓞 K)) :
     (Submodule.toAddSubgroup a).index = Ideal.absNorm a := rfl
 
 /- English proof (translation)
-Establish `hle : Submodule.toAddSubgroup (𝔱 * a) ≤ Submodule.toAddSubgroup a` using `(Submodule.toAddSubgroup_le _ _).2 Ideal.mul_le_right`. Establish `h` using `AddSubgroup.relIndex_mul_index hle`. Rewrite `h` using `[index_toAddSubgroup, index_toAddSubgroup, map_mul]`. Establish `hne : Ideal.absNorm a ≠ 0` using `fun h0 => ha (Ideal.absNorm_eq_zero_iff.1 h0)`. Conclude with `Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero hne) h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relIndex_mul_ideal (𝔱 a : Ideal (𝓞 K)) (ha : a ≠ ⊥) :
     (Submodule.toAddSubgroup (𝔱 * a)).relIndex (Submodule.toAddSubgroup a) =
@@ -30,9 +30,9 @@ theorem relIndex_mul_ideal (𝔱 a : Ideal (𝓞 K)) (ha : a ≠ ⊥) :
   exact Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero hne) h
 
 /- English proof (translation)
-Rewrite using `[den, Ideal.mem_torsionOf_iff, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨o, ho⟩` from `h 0`. Conclude with `Submodule.mem_one.2 ⟨o, by simpa [Algebra.smul_def] using ho⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Take `⟨o, ho⟩` from `Submodule.mem_one.1 h`. Introduce `i`. Conclude with `⟨o, by simpa [Algebra.smul_def] using ho⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_den_iff (x : K) (a : 𝓞 K) :
     a ∈ den K x ↔ (a : K) * x ∈ (1 : Submodule (𝓞 K) K) := by
@@ -47,17 +47,17 @@ theorem mem_den_iff (x : K) (a : 𝓞 K) :
     exact ⟨o, by simpa [Algebra.smul_def] using ho⟩
 
 /- English proof (translation)
-Use `set H := (Submodule.toAddSubgroup (Ideal.span {d})).addSubgroupOf (Submodule.toAddSubgroup B) with hH`. Set `g : 𝓞 K →+ Submodule.toAddSubgroup B` to `{ toFun := fun r => ⟨r * e, B.mul_mem_left r heB⟩ map_zero' := by ext; simp map_add' := fun r s => by ext; simp [add_mul] }`. Set `f : 𝓞 K →+ (Submodule.toAddSubgroup B) ⧸ H` to `(QuotientAddGroup.mk' H).comp g`. Establish `hdK : (d : K) ≠ 0` using `by simpa using hd`. Establish `hker : f.ker = Submodule.toAddSubgroup (den K x)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `r`. Rewrite using `[AddMonoidHom.mem_ker]`. Express the relevant statement in the definitionally equal form `(QuotientAddGroup.mk (g r) : _ ⧸ H) = 0 ↔ r ∈ den K x`. Rewrite using `[QuotientAddGroup.eq_zero_iff, hH, AddSubgroup.mem_addSubgroupOf, mem_den_iff]`. Express the relevant statement in the definitionally equal form `r * e ∈ Ideal.span {d} ↔ _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_span_singleton', Submodule.mem_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨o, ho⟩`. Use `⟨o, ?_⟩` and prove the remaining obligations. Use `congrArg (fun y : 𝓞 K => (y : K)) ho` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, hex] at this`. Apply `mul_left_cancel₀ hdK` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(d : K) * (o : K) = _`. Take the linear combination `this`. Introduce and unpack `⟨o, ho⟩`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨o, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Establish `ho' : (o : K) = (r : K) * x` using `ho`. Simplify using `only [map_mul, hex, ho']`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hidx : (den K x).toAddSubgroup.index = Nat.card f.range`. Rewrite using `[← hker]`. Conclude with `AddSubgroup.index_ker f`. Establish `hfinite : Finite ((Submodule.toAddSubgroup B) ⧸ H)` using `Nat.finite_of_card_ne_zero hfin`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem absNorm_den_le (x : K) (d e : 𝓞 K) (hd : d ≠ 0) (hex : (e : K) = (d : K) * x)
     (B : Ideal (𝓞 K)) (hdB : Ideal.span {d} ≤ B) (heB : e ∈ B)
@@ -102,19 +102,17 @@ theorem absNorm_den_le (x : K) (d e : 𝓞 K) (hd : d ≠ 0) (hex : (e : K) = (d
     _ = _ := rfl
 
 /- English proof (translation)
-Take `⟨s, hs𝔱, hs⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h𝔱`. Take `⟨𝔰, h𝔰⟩` from `Ideal.dvd_span_singleton.2 hs𝔱`. Establish `hsK : (s : K) ≠ 0` using `by simpa using hs`. Establish `h𝔰0 : 𝔰 ≠ ⊥`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `h𝔰` using `[Ideal.mul_bot]`. Conclude with `hs (Ideal.span_singleton_eq_bot.1 h𝔰)`. Establish `hle : Ideal.span {d} * 𝔰 ≤ (𝔱 * a) * 𝔰`. Rewrite using `[Ideal.span_singleton_mul_le_iff]`. Introduce `u hu`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem : ∀ v ∈ 𝔱, (v : K) * ((u : K) / s) ∈ (1 : Submodule (𝓞 K) K)`. Introduce `v hv`. Establish `hvu : v * u ∈ Ideal.span {s}`. Rewrite using `[h𝔰]`. Conclude with `Ideal.mul_mem_mul hv hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 hvu`. Use `Submodule.mem_one.2 ⟨r, ?_⟩` and prove the remaining obligations. Use `congrArg (fun y : 𝓞 K => (y : K)) hr` as an intermediate fact. Simplify using `only [map_mul] at this`. Express the relevant statement in the definitionally equal form `(r : K) = _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `this`. Take `⟨y, hya, hy⟩` from `H _ hmem`. Establish `heq : d * u = s * y`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [map_mul, hy]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[heq, mul_right_comm 𝔱 a 𝔰, ← h𝔰, mul_comm s y]`. Conclude with `Ideal.mul_mem_mul hya (Ideal.mem_span_singleton_self s) |> fun h => by`. Rewrite `h` using `[mul_comm a]`. Then use the resulting hypothesis.
-
-Rewrite `hle`, the goal using `[← Ideal.dvd_iff_le]`. Conclude with `(mul_dvd_mul_iff_right h𝔰0).1 hle`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_le_mul (𝔱 a : Ideal (𝓞 K)) (h𝔱 : 𝔱 ≠ ⊥) (d : 𝓞 K) (hd : d ≠ 0)
     (H : ∀ b : K, (∀ u ∈ 𝔱, (u : K) * b ∈ (1 : Submodule (𝓞 K) K)) →
@@ -153,39 +151,37 @@ theorem span_le_mul (𝔱 a : Ideal (𝓞 K)) (h𝔱 : 𝔱 ≠ ⊥) (d : 𝓞 K
   exact (mul_dvd_mul_iff_right h𝔰0).1 hle
 
 /- English proof (translation)
-Introduce `K _ _ 𝔱 h𝔱 c hfg h1 hinv t w x ht hw hx`. Take `⟨d, hd0, hint⟩` from `FractionalIdeal.isFractional_of_fg (S := nonZeroDivisors (𝓞 K)) hfg`. Establish `hd : d ≠ 0` using `nonZeroDivisors.ne_zero hd0`. Establish `hdK : (d : K) ≠ 0` using `by simpa using hd`. Establish `hint' : ∀ b ∈ c, ∃ y : 𝓞 K, (y : K) = (d : K) * b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b hb`. Take `⟨y, hy⟩` from `hint b hb`. Conclude with `⟨y, by simpa [Algebra.smul_def] using hy⟩`. Set `g : 𝓞 K →ₗ[𝓞 K] K` to `LinearMap.toSpanSingleton (𝓞 K) K ((d : K)⁻¹)`. Establish `hg : ∀ y : 𝓞 K, g y = (y : K) * (d : K)⁻¹` using `fun y => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[g, LinearMap.toSpanSingleton_apply, Algebra.smul_def]`. Set `a : Ideal (𝓞 K)` to `c.comap g`. Establish `hmema : ∀ y : 𝓞 K, y ∈ a ↔ (y : K) * (d : K)⁻¹ ∈ c` using `fun y => by`. Express the relevant statement in the definitionally equal form `g y ∈ c ↔ _`. Rewrite using `[hg]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hga : ∀ b ∈ c, ∃ y ∈ a, (y : K) = (d : K) * b`. Introduce `b hb`. Take `⟨y, hy⟩` from `hint' b hb`. Use `⟨y, (hmema y).2 ?_, hy⟩` and prove the remaining obligations. Rewrite using `[hy]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hb using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts. Establish `hda : d ∈ a`. Rewrite using `[hmema, mul_inv_cancel₀ hdK]`. Conclude with `h1 (Submodule.one_le.1 le_rfl)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha0 : a ≠ ⊥` using `fun h => hd (by simpa [h] using hda)`. Establish `hdle : Ideal.span {d} ≤ 𝔱 * a` using `span_le_mul 𝔱 a h𝔱 d hd fun b hb => hga b (hinv b hb)`. Establish `hBa : 𝔱 * a ≤ a` using `Ideal.mul_le_right`. Establish `hinj : Function.Injective g.toAddMonoidHom`. Introduce `y z hyz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `g y = g z at hyz`. Rewrite `hyz` using `[hg, hg]`. Conclude with `RingOfIntegers.coe_injective (mul_right_cancel₀ (inv_ne_zero hdK) hyz)`. Establish `hc : c.toAddSubgroup = (Submodule.toAddSubgroup a).map g.toAddMonoidHom`. Use extensionality with `b`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hb`. Take `⟨y, hya, hy⟩` from `hga b hb`. Use `⟨y, hya, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g y = b`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hg, hy]`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨y, hya, rfl⟩`. Conclude with `hya`. Establish `hone : (1 : Submodule (𝓞 K) K).toAddSubgroup = (Submodule.toAddSubgroup (Ideal.span {d})).map g.toAddMonoidHom`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `b`. Prove the components needed by the constructor for the conclusion. Introduce `hb`. Take `⟨o, ho⟩` from `Submodule.mem_one.1 hb`. Use `⟨o * d, Ideal.mem_span_singleton'.2 ⟨o, rfl⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `g (o * d) = b`. Rewrite using `[hg, ← ho]`. Simplify using `only [map_mul]`. Express the relevant statement in the definitionally equal form `(o : K) * d * _ = o`. Clear the denominators using the available nonvanishing facts.
+Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨o, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Use `Submodule.mem_one.2 ⟨o, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(o : K) = g (o * d)`. Rewrite using `[hg]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Simplify using `only [map_mul]`. Clear the denominators using the available nonvanishing facts. Establish `hidx : idx K c = (Submodule.toAddSubgroup (Ideal.span {d})).relIndex (Submodule.toAddSubgroup a)`. Rewrite using `[idx, hc, hone, AddSubgroup.relIndex_map_map_of_injective _ _ hinj]`. Establish `hdB : Submodule.toAddSubgroup (Ideal.span {d}) ≤ Submodule.toAddSubgroup (𝔱 * a)` using `(Submodule.toAddSubgroup_le _ _).2 hdle`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hBa' : Submodule.toAddSubgroup (𝔱 * a) ≤ Submodule.toAddSubgroup a` using `(Submodule.toAddSubgroup_le _ _).2 hBa`. Establish `hfin : (Submodule.toAddSubgroup (Ideal.span {d})).relIndex (Submodule.toAddSubgroup (𝔱 * a)) ≠ 0`. Introduce `h0`. Establish `h` using `AddSubgroup.relIndex_mul_index hdB`. Rewrite `h` using `[h0, zero_mul, index_toAddSubgroup]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hd (Ideal.span_singleton_eq_bot.1 (Ideal.absNorm_eq_zero_iff.1 h.symm))`. Take `⟨yw, hywa, hyw⟩` from `hga w hw`. Take `⟨o, ho⟩` from `Submodule.mem_one.1 hx`. Establish `ho' : (o : K) = (t : K) * w - x` using `ho`. Establish `heK : ((t * yw - d * o : 𝓞 K) : K) = (d : K) * x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_sub, map_mul, hyw, ho']`. Expand and normalize the polynomial expressions, which then agree. Establish `heB : t * yw - d * o ∈ 𝔱 * a` using `Ideal.sub_mem _ (Ideal.mul_mem_mul ht hywa) (hdle (Ideal.mem_span_singleton'.2 ⟨o, mul_comm _ _⟩))`. Establish `hden` using `absNorm_den_le x d _ hd heK (𝔱 * a) hdle heB hfin`. Rewrite using `[hidx, ← AddSubgroup.relIndex_mul_relIndex _ _ _ hdB hBa', relIndex_mul_ideal 𝔱 a ha0, mul_comm]`.
-
-Conclude with `Nat.mul_le_mul_right _ hden`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_mul_den_le_idx : ∀ (K : Type) [Field K] [NumberField K] (𝔱 : Ideal (𝓞 K)),
     𝔱 ≠ ⊥ → ∀ c : Submodule (𝓞 K) K, c.FG → (1 : Submodule (𝓞 K) K) ≤ c →

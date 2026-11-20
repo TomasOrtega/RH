@@ -24,13 +24,13 @@ noncomputable def ratioLine (m₀ m₁ : ConeMetric ℂ (Ix κ)) : HermLine (Glo
     simp
 
 /- English proof (translation)
-Establish `hsd : ∀ (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) y w, sheetDensity P Ψ φ (fun z => -g z) y w = -sheetDensity P Ψ φ g y w`. Introduce `Ψ y w`. Unfold `sheetDensity`. Apply the tactic sequence `split_ifs <;> ring`. Unfold `ptsIntegral`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Use `split_ifs with h`. Unfold `ptsIntegralAt`. Rewrite using `[← MeasureTheory.integral_neg]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hsd]`. Rewrite using `[finsum_mem_def, finsum_mem_def, ← finsum_neg_distrib]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Apply the tactic sequence `by_cases hw : w ∈ fibre P h.choose y <;> simp [Set.indicator_of_mem, Set.indicator_of_notMem, hw]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem tele_ptsIntegral_neg {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] {e : ℕ}
     (P : Ideal (MRing ι)) (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ) (g : ((Σ k, ι k) → ℂ) → ℝ) :
@@ -54,9 +54,9 @@ theorem tele_ptsIntegral_neg {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, 
   · simp
 
 /- English proof (translation)
-Introduce `m hm k`. Establish `h0 : m = 0`. Assume the negation of the conclusion as `hne`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_one, if_neg (Ne.symm hne)]`. Conclude with `hm rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `h0` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tele_one_homog {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] :
     IsMultiHomog (1 : MRing ι) (0 : K → ℕ) := by
@@ -70,9 +70,9 @@ theorem tele_one_homog {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintyp
   simp
 
 /- English proof (translation)
-Use extensionality with `W`. Simplify using `only [divSupp, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨hW, -⟩`. Establish `h1` using `hW.1`. Rewrite `h1` using `[Ideal.span_singleton_one, sup_top_eq]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.1.ne_top (top_le_iff.1 h1.2)`.
+A detailed English derivation is pending.
 -/
 theorem tele_divSupp_one {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
     (P : Ideal (MRing ι)) : divSupp P 1 = ∅ := by
@@ -84,13 +84,13 @@ theorem tele_divSupp_one {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fint
   exact h1.1.ne_top (top_le_iff.1 h1.2)
 
 /- English proof (translation)
-Take `⟨-, -, h3⟩` from `hI Unit (GlobalTheory κ)`. Establish `hP1 : (1 : MRing (GlobalTheory κ)) ∉ P`. Introduce `h1`. Establish `htop : P = ⊤` using `(Ideal.eq_top_iff_one P).2 h1`. Establish `h4` using `hP.2.2.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[htop]`. Use `haveI : Subsingleton (MRing (GlobalTheory κ) ⧸ (⊤ : Ideal (MRing (GlobalTheory κ)))) := Ideal.Quotient.subsingleton_iff.2 rfl`. Rewrite `h4` using `[ringKrullDim_eq_bot_of_subsingleton]`. Conclude with `WithBot.bot_ne_coe h4`. Rewrite using `[h3 P n L B 1 0 hP hL hB (fun k => by rw [hB0]; simp) tele_one_homog hP1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `recR`. Rewrite using `[tele_divSupp_one, finsum_mem_empty, zero_sub]`. Unfold `arInt`. Establish `hln : logNorm B 1 = fun z => -Real.log (B.h z)`. Use function extensionality and compare the values at `z`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[logNorm, Real.log_inv]`. Rewrite using `[hln, tele_ptsIntegral_neg, neg_neg]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fam_degZero (I : AllFam) (hI : I.IsFamily) {P : Ideal (MRing (GlobalTheory κ))} {n : ℕ}
     (hP : IsArithVar P (n + 1)) (L : Fin n → HermLine (GlobalTheory κ)) (hL : ∀ j, IsSmoothHerm (L j))
@@ -117,7 +117,7 @@ theorem fam_degZero (I : AllFam) (hI : I.IsFamily) {P : Ideal (MRing (GlobalTheo
   rfl
 
 /- English proof (translation)
-Take `⟨a, h, _, _⟩` from `A`. Take `⟨a', h', _, _⟩` from `B`. Simplify using `only at ha hh`. Substitute `ha` using the available equality. Substitute `hh` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Substitute using the available equality.
 
 Both sides reduce to the same expression.
 -/
@@ -131,16 +131,16 @@ theorem tele_herm_ext {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype
   rfl
 
 /- English proof (translation)
-Establish `h` using `m.smul 0 0`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tele_rho_zero (m : ConeMetric ℂ (Ix κ)) : m.ρ 0 = 0 := by
   have h := m.smul 0 0
   simpa using h
 
 /- English proof (translation)
-Apply `tele_herm_ext` to reduce the goal to its premises. Use `show (1 : Unit → ℤ) = 1 + 0`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `z show m₁.ρ z = m₀.ρ z * (m₁.ρ z / m₀.ρ z)`. Distinguish the cases in `hz : z = 0`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hz` using the available equality. Rewrite using `[tele_rho_zero, tele_rho_zero]`. Simplify using the standard rewrite rules. Rewrite using `[mul_div_cancel₀ _ (m₀.pos z hz).ne']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tele_ofCone_tensor (m₀ m₁ : ConeMetric ℂ (Ix κ)) :
     HermLine.ofCone m₁ = (HermLine.ofCone m₀).tensor (ratioLine m₀ m₁) := by
@@ -156,7 +156,7 @@ theorem tele_ofCone_tensor (m₀ m₁ : ConeMetric ℂ (Ix κ)) :
     · rw [mul_div_cancel₀ _ (m₀.pos z hz).ne']
 
 /- English proof (translation)
-Use `show ContDiffOn ℝ _ m.ρ _`. Use `hm.mono fun z hz h0 => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz ()`. Conclude with `hi (congrFun h0 _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tele_smooth_ofCone {m : ConeMetric ℂ (Ix κ)} (hm : IsSmoothMetric m) :
     IsSmoothHerm (HermLine.ofCone m) := by
@@ -166,9 +166,7 @@ theorem tele_smooth_ofCone {m : ConeMetric ℂ (Ix κ)} (hm : IsSmoothMetric m) 
   exact hi (congrFun h0 _)
 
 /- English proof (translation)
-Establish `hsub : {z : Ix κ → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} ⊆ {z | z ≠ 0}`. Introduce `z hz h0`. Take `⟨i, hi⟩` from `hz ()`. Conclude with `hi (congrFun h0 _)`. Use `show ContDiffOn ℝ _ (fun z => m₁.ρ z / m₀.ρ z) _`.
-
-Conclude with `(h₁.mono hsub).div (h₀.mono hsub) fun z hz => (m₀.pos z (hsub hz)).ne'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tele_smooth_ratio {m₀ m₁ : ConeMetric ℂ (Ix κ)} (h₀ : IsSmoothMetric m₀)
     (h₁ : IsSmoothMetric m₁) : IsSmoothHerm (ratioLine m₀ m₁) := by
@@ -183,7 +181,7 @@ def tele_perm {n : ℕ} (i : Fin (n + 1)) : Equiv.Perm (Fin (n + 1)) :=
   finSuccEquivLast.trans (finSuccEquiv' i).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `Fin.lastCases ?_ (fun k => ?_) j` and prove the remaining obligations. Simplify using `[tele_perm]`. Simplify using `[tele_perm]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem tele_comp_perm {α : Type*} {n : ℕ} (F : Fin (n + 1) → α) (i : Fin (n + 1)) :
     F ∘ tele_perm i = Fin.snoc (F ∘ i.succAbove) (F i) := by
@@ -196,9 +194,9 @@ def tele_fam (m₀ m₁ : ConeMetric ℂ (Ix κ)) (N i : ℕ) : Fin N → HermLi
   fun j => if j.val < i then HermLine.ofCone m₁ else HermLine.ofCone m₀
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp, tele_fam]`. Establish `hv : (Fin.succAbove (⟨i, hi⟩ : Fin (D + 1)) j).val = if j.val < i then j.val else j.val + 1`. Unfold `Fin.succAbove`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> simp_all [Fin.lt_def] <;> omega`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hv]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tele_fam_succAbove (m₀ m₁ : ConeMetric ℂ (Ix κ)) (D i : ℕ) (hi : i < D + 1) (k : ℕ)
     (hk : k = i ∨ k = i + 1) :
@@ -212,7 +210,7 @@ theorem tele_fam_succAbove (m₀ m₁ : ConeMetric ℂ (Ix κ)) (D i : ℕ) (hi 
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Unfold `tele_fam`. Use `split_ifs`. Conclude with `tele_smooth_ofCone h₁`. Conclude with `tele_smooth_ofCone h₀`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem tele_fam_smooth {m₀ m₁ : ConeMetric ℂ (Ix κ)} (h₀ : IsSmoothMetric m₀)
     (h₁ : IsSmoothMetric m₁) (N i : ℕ) (j : Fin N) : IsSmoothHerm (tele_fam m₀ m₁ N i j) := by
@@ -222,19 +220,17 @@ theorem tele_fam_smooth {m₀ m₁ : ConeMetric ℂ (Ix κ)} (h₀ : IsSmoothMet
   · exact tele_smooth_ofCone h₀
 
 /- English proof (translation)
-Establish `h₀ : IsSmoothMetric m₀` using `hg₀.semipos.1`. Establish `h₁ : IsSmoothMetric m₁` using `hg₁.semipos.1`. Establish `hP` using `hg₀.arith`. Take `⟨hperm, hadd, -⟩` from `hI Unit (GlobalTheory κ)`. Take `⟨F, hF⟩ : ∃ F : ℕ → ℝ, F = fun i => I Unit (GlobalTheory κ) (coordIdeal ℤ x) (D + 1) (tele_fam m₀ m₁ (D + 1) i)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hF0 : F 0 = top I x m₀ D`. Rewrite using `[hF, top]`. Use `show I Unit (GlobalTheory κ) (coordIdeal ℤ x) (D + 1) (tele_fam m₀ m₁ (D + 1) 0) = _`. Use `congr 1`. Apply the tactic sequence `try (funext j; simp [tele_fam])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hFD : F (D + 1) = top I x m₁ D`. Rewrite using `[hF, top]`. Use `show I Unit (GlobalTheory κ) (coordIdeal ℤ x) (D + 1) (tele_fam m₀ m₁ (D + 1) (D + 1)) = _`. Use `congr 1`. Apply the tactic sequence `try (funext j; simp [tele_fam, j.isLt])`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hstep : ∀ i ∈ Finset.range (D + 1), F (i + 1) - F i = ptsIntegral (ι` using `GlobalTheory κ) (coordIdeal ℤ x) (mixPot m₀ m₁ D i) (logRatio m₀ m₁) := by`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`. Establish `hsm : ∀ k j, IsSmoothHerm (tele_fam m₀ m₁ (D + 1) k j)` using `tele_fam_smooth h₀ h₁ (D + 1)`. Establish `hσ : ∀ k, F k = I Unit (GlobalTheory κ) (coordIdeal ℤ x) (D + 1) (tele_fam m₀ m₁ (D + 1) k ∘ tele_perm ⟨i, hi⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[hF]`. Conclude with `(hperm _ _ _ _ hP (hsm k)).symm`. Rewrite using `[hσ (i + 1), hσ i, tele_comp_perm, tele_comp_perm, tele_fam_succAbove m₀ m₁ D i hi (i + 1) (Or.inr rfl), tele_fam_succAbove m₀ m₁ D i hi i (Or.inl rfl)]`. Establish `e1 : tele_fam m₀ m₁ (D + 1) (i + 1) ⟨i, hi⟩ = HermLine.ofCone m₁` using `by simp [tele_fam]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately.
 
-Establish `e2 : tele_fam m₀ m₁ (D + 1) i ⟨i, hi⟩ = HermLine.ofCone m₀` using `by simp [tele_fam]`. Rewrite using `[e1, e2, tele_ofCone_tensor m₀ m₁, hadd _ _ _ _ _ hP (tele_fam_smooth h₀ h₁ D i) (tele_smooth_ofCone h₀) (tele_smooth_ratio h₀ h₁), add_sub_cancel_left, fam_degZero I hI hP (tele_fam m₀ m₁ D i) (tele_fam_smooth h₀ h₁ D i) (ratioLine m₀ m₁) (tele_smooth_ratio h₀ h₁) rfl]`. Use `congr 1`. Apply the tactic sequence `all_goals first`. Consider the case `rfl`.
-
-Consider the case `(funext j z`. Simplify using `only [pot, mixPot, tele_fam]`. Apply the tactic sequence `split_ifs <;> rfl)`. Rewrite using `[← hFD, ← hF0, ← Finset.sum_range_sub F (D + 1)]`. Conclude with `Finset.sum_congr rfl hstep`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_sub_top (I : AllFam) (hI : I.IsFamily) {x : Ix κ → Ω} {m₀ m₁ : ConeMetric ℂ (Ix κ)}
     {μ : Measure (Ix κ → ℂ)} (hg₀ : IsGood D x m₀ μ) (hg₁ : IsGood D x m₁ μ) :

@@ -15,7 +15,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AmpleGen
 
 /- English proof (translation)
-Simplify using `only [mul_zpow, ← zpow_mul, zpow_add]`. Conclude with `_root_.mul_mul_mul_comm _ _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zpow_two_var {G : Type*} [CommGroup G] (x y : G) (a b c d a' b' : ℤ) :
     (x ^ a * y ^ b) ^ a' * (x ^ c * y ^ d) ^ b' = x ^ (a * a' + c * b') * y ^ (b * a' + d * b') := by
@@ -23,7 +23,7 @@ theorem zpow_two_var {G : Type*} [CommGroup G] (x y : G) (a b c d a' b' : ℤ) :
   exact _root_.mul_mul_mul_comm _ _ _ _
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `ofNat n => simp only [Int.ofNat_eq_natCast, zpow_natCast, comp_pow]`. Consider the case `negSucc n => simp only [zpow_negSucc, GrpObj.comp_inv, comp_pow]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem comp_zpow_hom {C : Type*} [Category C] [CartesianMonoidalCategory C] {G X Y : C} [GrpObj G]
     (f : X ⟶ Y) (g : Y ⟶ G) (n : ℤ) : f ≫ g ^ n = (f ≫ g) ^ n := by
@@ -32,7 +32,7 @@ theorem comp_zpow_hom {C : Type*} [Category C] [CartesianMonoidalCategory C] {G 
   | negSucc n => simp only [zpow_negSucc, GrpObj.comp_inv, comp_pow]
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, psiMap_fst, psiMap_fst, comp_mul, comp_zpow_hom, comp_zpow_hom, psiMap_fst, psiMap_snd, zpow_two_var]`. Rewrite using `[Category.assoc, psiMap_snd, psiMap_snd, comp_mul, comp_zpow_hom, comp_zpow_hom, psiMap_fst, psiMap_snd, zpow_two_var]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiMap_comp {K : Type} [Field K] (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A]
     (a b c d a' b' c' d' : ℤ) :
@@ -45,7 +45,7 @@ theorem psiMap_comp {K : Type} [Field K] (A : Over (Sp K)) [GrpObj A] [IsCommMon
       psiMap_snd, zpow_two_var]
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[psiMap_fst, Out.mulA, pow_comp, Category.id_comp, zpow_zero, _root_.mul_one, zpow_natCast]`. Rewrite using `[psiMap_snd, Out.mulA, pow_comp, Category.id_comp, zpow_zero, _root_.one_mul, zpow_natCast]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiMap_diag {K : Type} [Field K] (A : Over (Sp K)) [GrpObj A] (n : ℕ) :
     psiMap A n 0 0 n = Out.mulA (A ⊗ A) n := by
@@ -54,9 +54,7 @@ theorem psiMap_diag {K : Type} [Field K] (A : Over (Sp K)) [GrpObj A] (n : ℕ) 
   · rw [psiMap_snd, Out.mulA, pow_comp, Category.id_comp, zpow_zero, _root_.one_mul, zpow_natCast]
 
 /- English proof (translation)
-Establish `hgs : IsSeparated g` using `MorphismProperty.of_postcomp (W' := ⊤) @IsSeparated g p trivial (by rw [hg]; infer_instance)`. Use `haveI : LocallyOfFiniteType (g ≫ p) := by rw [hg]; infer_instance`. Use `haveI : LocallyOfFiniteType g := locallyOfFiniteType_of_comp g p`. Use `haveI : FormallyUnramified (g ≫ f) := by rw [h2]; infer_instance`. Use `haveI : FormallyUnramified g := FormallyUnramified.of_comp g f`.
-
-Use `haveI : Etale (f ≫ g) := by rw [h1]; infer_instance`. Use `haveI : IsFinite (f ≫ g) := by rw [h1]; infer_instance`. Conclude with `⟨MorphismProperty.of_postcomp @IsFinite (W' := @IsSeparated) f g hgs inferInstance, Etale.of_comp f g⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_etale_of_comp_eq {X S : Scheme.{0}} (p : X ⟶ S) [IsSeparated p]
     [LocallyOfFiniteType p] (f g m : X ⟶ X) [IsFinite m] [Etale m] (hg : g ≫ p = p)
@@ -73,7 +71,7 @@ theorem finite_etale_of_comp_eq {X S : Scheme.{0}} (p : X ⟶ S) [IsSeparated p]
     Etale.of_comp f g⟩
 
 /- English proof (translation)
-Break down `Int.natAbs_eq d with h | h` into its components or cases. Conclude with `⟨1, by rw [_root_.one_mul]; exact h⟩`. Conclude with `⟨-1, by rw [h]; ring_nf; simp⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_sign_mul (d : ℤ) : ∃ s : ℤ, s * d = (d.natAbs : ℤ) := by
   rcases Int.natAbs_eq d with h | h
@@ -81,21 +79,15 @@ theorem exists_sign_mul (d : ℤ) : ∃ s : ℤ, s * d = (d.natAbs : ℤ) := by
   · exact ⟨-1, by rw [h]; ring_nf; simp⟩
 
 /- English proof (translation)
-Introduce `K _ _ A _ hA a₁ b₁ a₂ b₂ hd`. Use `haveI := hA.comm`. Use `set n := (a₁ * b₂ - b₁ * a₂).natAbs with hn_def`. Establish `hn : (n : K) ≠ 0`. Break down `Int.natAbs_eq (a₁ * b₂ - b₁ * a₂) with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[h, Int.cast_natCast]`. Conclude with `hd`. Rewrite `hd` using `[h, Int.cast_neg, Int.cast_natCast, neg_ne_zero]`. Conclude with `hd`. Use `haveI hAA : IsAbelianScheme (A ⊗ A) := AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hfin, -, het, r, hr0, -, hall, -⟩` from `GlobalTheory.AbelianMulFin.mulA_finite_locallyFree K (A ⊗ A) n hn`. Take `⟨s, hs⟩` from `exists_sign_mul (a₁ * b₂ - b₁ * a₂)`. Rewrite `hs` using `[← hn_def]`. Use `set ψ := psiMap A a₁ b₁ a₂ b₂ with hψ`. Use `set ψ' := psiMap A (s * b₂) (-(s * b₁)) (-(s * a₂)) (s * a₁) with hψ'`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h1 : ψ ≫ ψ' = Out.mulA (A ⊗ A) n`. Rewrite using `[hψ, hψ', psiMap_comp, ← psiMap_diag]`. Apply the tactic sequence `congr 1 <;> push_cast <;> first | ring1 | linear_combination hs`. Establish `h2 : ψ' ≫ ψ = Out.mulA (A ⊗ A) n`. Rewrite using `[hψ, hψ', psiMap_comp, ← psiMap_diag]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply the tactic sequence `congr 1 <;> push_cast <;> first | ring1 | linear_combination hs`. Establish `h1' : ψ.left ≫ ψ'.left = (Out.mulA (A ⊗ A) n).left` using `by rw [← Over.comp_left, h1]`. Establish `h2' : ψ'.left ≫ ψ.left = (Out.mulA (A ⊗ A) n).left` using `by rw [← Over.comp_left, h2]`. Use `haveI := hAA.proper`. Use `haveI := hAA.smooth`.
-
-Use `haveI := hAA.geomConnected`. Take `⟨hψfin, hψet⟩` from `finite_etale_of_comp_eq (A ⊗ A).hom ψ.left ψ'.left _ (Over.w ψ') h1' h2'`. Take `⟨hψ'fin, hψ'et⟩` from `finite_etale_of_comp_eq (A ⊗ A).hom ψ'.left ψ.left _ (Over.w ψ) h2' h1'`. Use `haveI : ConnectedSpace (A ⊗ A).left := GeometricallyConnected.connectedSpace (A ⊗ A).hom (A ⊗ A).hom.isOpenMap`. Set `o : (A ⊗ A).left` to `Classical.arbitrary _`.
-
-Use `set r' := ψ.left.finrank o with hr'`. Establish `hall' : ∀ y, ψ.left.finrank y = r'` using `fun y => (Scheme.Hom.isLocallyConstant_finrank ψ.left).apply_eq_of_preconnectedSpace y o`. Use `⟨hψfin, inferInstance, inferInstance, r', hall', fun h0 => hr0 ?_⟩` and prove the remaining obligations. Establish `e` using `GlobalTheory.FinrankComp.finrank_comp_of_const ψ.left ψ'.left r' hall' o`. Rewrite `e` using `[h1', hall o]`.
-
-Rewrite using `[e, Nat.cast_mul, h0, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiMap_finite_locallyFree : ∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (Sp K))
     [GrpObj A], IsAbelianScheme A → ∀ a₁ b₁ a₂ b₂ : ℤ, ((a₁ * b₂ - b₁ * a₂ : ℤ) : K) ≠ 0 →

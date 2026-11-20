@@ -9,7 +9,7 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter
 open MvPolynomial TensorProduct
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp [MvPolynomial.algebraMap_eq]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p s hp => simp only [map_mul, hp, map_X, aeval_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem RelBaseChange.aeval_map {F F' : Type} [Field F] [Field F'] [Algebra F F'] {σ τ : Type}
     (g : σ → MvPolynomial τ F) (p : MvPolynomial σ F) :
@@ -21,21 +21,19 @@ theorem RelBaseChange.aeval_map {F F' : Type} [Field F] [Field F'] [Algebra F F'
   | mul_X p s hp => simp only [map_mul, hp, map_X, aeval_X]
 
 /- English proof (translation)
-Introduce `F F' _ _ _ σ τ g`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `p hp`. Rewrite `hp` using `[RingHom.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`. Use `erw [RelBaseChange.aeval_map g p, hp, map_zero]`. Introduce `x hx`. Rewrite `hx` using `[RingHom.mem_ker]`. Set `Φ : MvPolynomial σ F →ₗ[F] MvPolynomial τ F` to `(aeval g).toLinearMap`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `eσ` to `MvPolynomial.algebraTensorAlgEquiv (σ := σ) F F'`. Set `eτ` to `MvPolynomial.algebraTensorAlgEquiv (σ := τ) F F'`. Establish `key : ∀ y : F' ⊗[F] MvPolynomial σ F, eτ (AlgebraTensorModule.lTensor F' F' Φ y) = aeval (fun s => MvPolynomial.map (algebraMap F F') (g s)) (eσ y)`. Introduce `y`. Proceed by induction on `y with`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Consider the case `tmul a p`. Simplify using `only [AlgebraTensorModule.lTensor_tmul, eσ, eτ, algebraTensorAlgEquiv_tmul, map_smul, RelBaseChange.aeval_map, Φ, AlgHom.toLinearMap_apply]`. Establish `hy : eσ.symm x ∈ LinearMap.ker (AlgebraTensorModule.lTensor F' F' Φ)`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.mem_ker]`. Apply `eτ.injective` to reduce the goal to its premises. Rewrite using `[key, AlgEquiv.apply_symm_apply, hx, map_zero]`. Rewrite `hy` using `[Module.Flat.ker_lTensor_eq]`. Take `⟨z, hz⟩` from `hy`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx' : x = eσ (AlgebraTensorModule.lTensor F' F' (LinearMap.ker Φ).subtype z)`. Rewrite using `[hz, AlgEquiv.apply_symm_apply]`. Rewrite using `[hx']`. Use `clear hz hx'`. Proceed by induction on `z with`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add y z hy hz => rw [map_add, map_add]`. Conclude with `Ideal.add_mem _ hy hz`. Consider the case `tmul a k`. Simplify using `only [AlgebraTensorModule.lTensor_tmul, Submodule.coe_subtype, eσ, algebraTensorAlgEquiv_tmul, MvPolynomial.smul_eq_C_mul]`.
-
-Use `Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ ?_)` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker]`. Conclude with `k.2`.
+Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RelBaseChange.proof : RelBaseChange.Statement := by
   intro F F' _ _ _ σ τ g

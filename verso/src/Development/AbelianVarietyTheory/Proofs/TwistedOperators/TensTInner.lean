@@ -22,9 +22,7 @@ def Wsub (R : RealDat D A Ks) (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
   ((MP R).sm τ).map ((c τ).toLinearEquiv.toLinearMap)
 
 /- English proof (translation)
-Take `⟨w, hw, hwy⟩` from `Submodule.mem_map.1 y.2`. Establish `: (c τ).symm (y : X.B.H (X.pl.symm τ)) = w`. Rewrite using `[← hwy]`. Conclude with `(c τ).symm_apply_apply w`. Rewrite using `[this]`.
-
-Conclude with `hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm_mem_sm (R : RealDat D A Ks) (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
     (c : ∀ τ, (MP R).H τ ≃ₗᵢ⋆[ℂ] X.B.H (X.pl.symm τ)) (τ : D.what₂.Tau) (y : Wsub R X c τ) :
@@ -57,7 +55,7 @@ end GlobalTheory.RowEvalHH
 namespace GlobalTheory.RowEvalHH
 
 /- English proof (translation)
-Unfold `tensT`. Rewrite using `[X.B.tens_spec.1]`. Rewrite using `[← Equiv.prod_comp X.pl.symm]`. Simplify using `only [Equiv.piCongrLeft_apply_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tensT_inner {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (a b : ∀ τ, X.B.H (X.pl.symm τ)) :
     ⟪tensT X a, tensT X b⟫_ℂ = ∏ τ, ⟪a τ, b τ⟫_ℂ := by
@@ -67,7 +65,7 @@ theorem tensT_inner {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (a 
   simp only [Equiv.piCongrLeft_apply_apply]
 
 /- English proof (translation)
-Establish `: Set.range (tensT X) = Set.range X.B.tens` using `(Equiv.piCongrLeft X.B.H X.pl.symm).surjective.range_comp X.B.tens`. Rewrite using `[this]`. Conclude with `X.B.tens_spec.2.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensT_dense {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) :
     Dense (Submodule.span ℂ (Set.range (tensT X)) : Set X.B.Hs) := by
@@ -77,9 +75,9 @@ theorem tensT_dense {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) :
   exact X.B.tens_spec.2.2
 
 /- English proof (translation)
-Unfold `tensT`. Use `congr 1`. Establish `: (fun τ => X.B.w (X.pl.symm τ)) = (Equiv.piCongrLeft X.B.H X.pl.symm).symm X.B.w`. Use function extensionality and compare the values at `τ`. Rewrite using `[Equiv.piCongrLeft_symm_apply]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Equiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tensT_w {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) :
     tensT X (fun τ => X.B.w (X.pl.symm τ)) = X.B.tens X.B.w := by
@@ -95,7 +93,7 @@ end GlobalTheory.RowEvalHH
 namespace GlobalTheory.RowEvalHH
 
 /- English proof (translation)
-Unfold `Wsub`. Rewrite using `[Submodule.map_coe]`. Conclude with `(c τ).surjective.denseRange.dense_image (c τ).continuous (Formalism.IndefR.SchurOrthogonalityAlt.sm_dense (MP R) τ)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Wsub_dense {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)

@@ -12,7 +12,7 @@ namespace GlobalTheory.ConjPlaceOff
 open Formalism.HermitianLattices.Ext.L3
 
 /- English proof (translation)
-Apply `D.host.φ₀.injective` to reduce the goal to its premises. Use `letI := D.host.isCMField_hostE`. Use `show D.host.φ₀ (IsCMField.complexConj D.host.E x) = _`. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_eq_hostConj (D : D7) (x : D.host.E) : star x = D.host.conj x := by
   apply D.host.φ₀.injective
@@ -21,9 +21,9 @@ theorem star_eq_hostConj (D : D7) (x : D.host.E) : star x = D.host.conj x := by
   rw [NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h x`. Conclude with `h x (conjO D.host.E x) (by rw [conjO_coe, star_eq_hostConj])`. Introduce `h x y hy`. Establish `: y = conjO D.host.E x` using `RingOfIntegers.ext (by rw [hy, conjO_coe, star_eq_hostConj])`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `this` using the available equality. Conclude with `h x`.
+A detailed English derivation is pending.
 -/
 theorem isConjPl_iff (D : D7) (P Q : PlE D.host) :
     IsConjPl D.host P Q ↔ ∀ x : 𝓞 D.host.E, x ∈ P.asIdeal ↔ conjO D.host.E x ∈ Q.asIdeal := by
@@ -49,20 +49,20 @@ noncomputable def conjPl (D : D7) (P : PlE D.host) : PlE D.host where
     rw [Ideal.mem_bot, ← conjO_conjO (K := D.host.E) x, this, map_zero]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_conjPl (D : D7) (P : PlE D.host) (x : 𝓞 D.host.E) :
     x ∈ (conjPl D P).asIdeal ↔ conjO D.host.E x ∈ P.asIdeal := Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_conjPl, mem_conjPl, conjO_conjO]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjPl_conjPl (D : D7) (P : PlE D.host) : conjPl D (conjPl D P) = P := by
   ext x
   rw [mem_conjPl, mem_conjPl, conjO_conjO]
 
 /- English proof (translation)
-Rewrite using `[isConjPl_iff]`. Introduce `x`. Rewrite using `[mem_conjPl, conjO_conjO]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isConjPl_conjPl (D : D7) (P : PlE D.host) : IsConjPl D.host P (conjPl D P) := by
   rw [isConjPl_iff]
@@ -70,7 +70,7 @@ theorem isConjPl_conjPl (D : D7) (P : PlE D.host) : IsConjPl D.host P (conjPl D 
   rw [mem_conjPl, conjO_conjO]
 
 /- English proof (translation)
-Rewrite using `[isConjPl_iff]`. Introduce `x`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem isConjPl_conjPl' (D : D7) (P : PlE D.host) : IsConjPl D.host (conjPl D P) P := by
   rw [isConjPl_iff]
@@ -78,16 +78,16 @@ theorem isConjPl_conjPl' (D : D7) (P : PlE D.host) : IsConjPl D.host (conjPl D P
   rfl
 
 /- English proof (translation)
-The claim follows from `conjIdeal_eq_comap _`.
+A detailed English derivation is pending.
 -/
 theorem conjIdeal_eq (D : D7) (P : PlE D.host) :
     Formalism.HermitianLatticesTheory.conjIdeal (K := D.host.E) P.asIdeal = (conjPl D P).asIdeal :=
   conjIdeal_eq_comap _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, h⟩`. Conclude with `⟨x, hx, h _ (by rw [conjO_coe, star_eq_hostConj])⟩`. Introduce and unpack `⟨x, hx, h⟩`. Use `⟨x, hx, fun y hy => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: y = conjO D.host.E x` using `RingOfIntegers.ext (by rw [hy, conjO_coe, star_eq_hostConj])`. Rewrite using `[this]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSplitPl_iff (D : D7) (P : PlE D.host) :
     IsSplitPl D.host P ↔ ∃ x : 𝓞 D.host.E, x ∈ P.asIdeal ∧ conjO D.host.E x ∉ P.asIdeal := by
@@ -100,7 +100,7 @@ theorem isSplitPl_iff (D : D7) (P : PlE D.host) :
     rw [this]; exact h
 
 /- English proof (translation)
-Take `⟨x, hx, hcx⟩` from `(isSplitPl_iff D P).1 h`. Introduce `he`. Apply `hcx` to reduce the goal to its premises. Rewrite using `[← mem_conjPl, he]`. Conclude with `hx`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjPl_ne_of_split (D : D7) {P : PlE D.host} (h : IsSplitPl D.host P) :
     (conjPl D P).asIdeal ≠ P.asIdeal := by
@@ -111,9 +111,9 @@ theorem conjPl_ne_of_split (D : D7) {P : PlE D.host} (h : IsSplitPl D.host P) :
   exact hx
 
 /- English proof (translation)
-Take `⟨x, hx, hcx⟩` from `(isSplitPl_iff D P).1 h`. Rewrite using `[isSplitPl_iff]`. Use `⟨conjO D.host.E x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_conjPl, conjO_conjO]`. Conclude with `hx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_conjPl, conjO_conjO]`. Conclude with `hcx`.
+A detailed English derivation is pending.
 -/
 theorem isSplitPl_conjPl (D : D7) {P : PlE D.host} (h : IsSplitPl D.host P) :
     IsSplitPl D.host (conjPl D P) := by
@@ -124,11 +124,11 @@ theorem isSplitPl_conjPl (D : D7) {P : PlE D.host} (h : IsSplitPl D.host P) :
   · rw [mem_conjPl, conjO_conjO]; exact hcx
 
 /- English proof (translation)
-Establish `hP'S : conjPl D P ∉ S0` using `fun h => hPS (hS0 _ _ h (isConjPl_conjPl' D P))`. Establish `hne` using `conjPl_ne_of_split D hP`. Use `⟨conjPl D P, isConjPl_conjPl D P, isSplitPl_conjPl D hP, hP'S, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨by rw [conjIdeal_eq]; exact hne, fun h => hPS (hb _ (by exact_mod_cast h)), ?_⟩` and prove the remaining obligations. Introduce `Q hQ he`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `he` using `[conjIdeal_eq]`. Establish `: Q = conjPl D P` using `HeightOneSpectrum.ext he`. Conclude with `hP'S (this ▸ hb Q (by exact_mod_cast hQ))`. Use `⟨by rw [conjIdeal_eq, conjPl_conjPl]; exact hne.symm, fun h => hP'S (hb _ (by exact_mod_cast h)), ?_⟩` and prove the remaining obligations. Introduce `Q hQ he`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `he` using `[conjIdeal_eq, conjPl_conjPl]`. Establish `: Q = P` using `HeightOneSpectrum.ext he`. Conclude with `hPS (this ▸ hb Q (by exact_mod_cast hQ))`. Conclude with `fun h => hPS (h2 h)`. Conclude with `fun h => hP'S (h2 h)`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem exists_conj_off (D : D7) (S0 : Finset (PlE D.host)) (Sb : Finset (Formalism.L2.DIV.Pl D.host.E))
     (P : PlE D.host)

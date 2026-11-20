@@ -9,11 +9,11 @@ namespace Formalism.L2.Indef.Tree.DepthCond
 open Formalism.L2.DIV Formalism.BasicNotions
 
 /- English proof (translation)
-Introduce `e₁ e₂ x E h1 h2 hE`. Establish `he1 : (0 : ℝ) < e₁` using `by exact_mod_cast h1`. Establish `he2 : (0 : ℝ) < e₂` using `by exact_mod_cast h2`. Establish `hc : (⌈(e₂ : ℝ) * x⌉ : ℝ) < (e₂ : ℝ) * x + 1` using `Int.ceil_lt_add_one _`. Establish `hE' : (E : ℝ) ≤ (e₁ : ℝ) * (⌈(e₂ : ℝ) * x⌉ : ℝ)` using `by exact_mod_cast hE`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : (E : ℝ) < (e₁ : ℝ) * ((e₂ : ℝ) * x + 1)` using `lt_of_le_of_lt hE' (mul_lt_mul_of_pos_left hc he1)`. Rewrite using `[div_lt_iff₀ (mul_pos he1 he2)]`. Establish `heq : (x + 1 / (e₂ : ℝ)) * ((e₁ : ℝ) * (e₂ : ℝ)) = (e₁ : ℝ) * ((e₂ : ℝ) * x + 1)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[heq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hlt`.
+A detailed English derivation is pending.
 -/
 theorem rounding_condition_holds : RoundCore := by
   intro e₁ e₂ x E h1 h2 hE
@@ -30,9 +30,9 @@ theorem rounding_condition_holds : RoundCore := by
   exact hlt
 
 /- English proof (translation)
-Introduce `g T ν D D' hg hT hν hTD hD'`. Establish `hg1 : 0 < g - 1` using `by linarith`. Establish `h1 : T * ν ≤ T * (D / (g - 1))` using `mul_le_mul_of_nonneg_left hν hT`. Establish `h2 : T * (D / (g - 1)) = T * D / (g - 1)` using `by ring`. Establish `h3 : T * D / (g - 1) ≤ D' / (g - 1)` using `div_le_div_of_nonneg_right hTD hg1.le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : D' / (g - 1) < 1 / 2`. Rewrite using `[div_lt_iff₀ hg1]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem nu_level_condition_holds : NuLevelCore := by
   intro g T ν D D' hg hT hν hTD hD'
@@ -46,7 +46,7 @@ theorem nu_level_condition_holds : NuLevelCore := by
   linarith
 
 /- English proof (translation)
-Introduce `e T ν s n X he hT hTν hs hX`. Establish `he' : 1 / e ≤ 1 / 2` using `one_div_le_one_div_of_le (by norm_num) he`. Establish `hexp : T * (ν + 1) = T * ν + T` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem level_condition_holds : LevelCore := by
   intro e T ν s n X he hT hTν hs hX
@@ -55,9 +55,9 @@ theorem level_condition_holds : LevelCore := by
   linarith
 
 /- English proof (translation)
-Introduce `l T ν s s' D D' C k B X hl hT hν hs' hTD hD' hCk hB hX`. Establish `hl1 : 0 < l - 1` using `by linarith`. Establish `h1 : T * ν ≤ T * (D / (l - 1))` using `mul_le_mul_of_nonneg_left hν hT`. Establish `h2 : T * (D / (l - 1)) = T * D / (l - 1)` using `by ring`. Establish `h3 : T * D / (l - 1) ≤ D' / (l - 1)` using `div_le_div_of_nonneg_right hTD hl1.le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : C * k * B ≤ (l - 1) * B` using `mul_le_mul_of_nonneg_right hCk hB`. Establish `h5 : D' / (l - 1) ≤ B`. Rewrite using `[div_le_iff₀ hl1]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hexp : T * (ν + s + 1) = T * ν + T * s + T` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -75,17 +75,15 @@ theorem ramification_condition_holds : RamCore := by
   linarith
 
 /- English proof (translation)
-Introduce `Nd j p`. Use `⟨fun h => ?_, fun h0 h1 h => ?_, fun h0 h1 h2 hq hd => ?_⟩` and prove the remaining obligations. Unfold `NumDatum.FjP`. Rewrite using `[if_pos h]`. Establish `hc : Nd.cls p = PrimeClass.ram2 ∨ Nd.cls p = PrimeClass.ramQ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `NumDatum.cls primeClass`. Distinguish the cases in `hs : p ∈ Nd.H.small`. Use `left`. Rewrite using `[if_pos hs]`. Use `right`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg hs, if_pos (h.resolve_left hs)]`. Unfold `NumDatum.FjP`. Apply the tactic sequence `rw [if_neg (by rintro (h' | h') <;> contradiction)]`. Apply the tactic sequence `rcases hc with hc | hc <;> simp [hc]`. Establish `hs : p ∉ Nd.H.small`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hmem`. Establish `hdv : p ∣ Nd.H.QS` using `Nat.dvd_of_mem_primeFactors hmem`. Establish `hpr : p.Prime` using `Nat.prime_of_mem_primeFactors hmem`. Establish `hQd : Nat.Coprime Nd.H.QS Nd.H.d` using `Nat.Coprime.coprime_dvd_right (dvd_mul_left _ _) Nd.H.QS_coprime`. Rewrite `hdv`, `hpr` using `[hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Nat.not_prime_one (Nat.Coprime.eq_one_of_dvd hQd.symm hdv ▸ hpr)`. Establish `hc : Nd.cls p = PrimeClass.ramD`. Unfold `NumDatum.cls primeClass`. Rewrite using `[if_neg hs, if_neg hq, if_pos hd]`. Unfold `NumDatum.FjP`.
-
-Apply the tactic sequence `rw [if_neg (by rintro (h' | h') <;> contradiction), if_pos hc]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem content_prime_condition_holds : FjPCore := by
   intro Nd j p
@@ -116,13 +114,13 @@ theorem content_prime_condition_holds : FjPCore := by
     rw [if_neg (by rintro (h' | h') <;> contradiction), if_pos hc]
 
 /- English proof (translation)
-Introduce `Nd j b hk hw`. Establish `hk1 : (0 : ℝ) ≤ ((Nd.R.k : ℝ) - 1) / 2`. Establish `: (1 : ℝ) ≤ Nd.R.k` using `by exact_mod_cast hk`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum0 : 0 ≤ ∑ t : Nd.R.A, min (Nd.w j (false, t)) (Nd.w j (true, t))` using `Finset.sum_nonneg fun t _ => le_min (hw t).1 (hw t).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hsumle : ∑ t : Nd.R.A, min (Nd.w j (false, t)) (Nd.w j (true, t)) ≤ ∑ _t : Nd.R.A, 2 * b` using `Finset.sum_le_sum fun t _ => (hw t).2.2`. Establish `hcard : ∑ _t : Nd.R.A, 2 * b = (Nd.R.n : ℝ) * (2 * b)`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `congr 2`. Simplify using `only [Formalism.BasicNotions.Ranks.n, Formalism.HC.Frame.A]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `first`. Consider the case `exact Fintype.card_fin _`. Consider the case `simp [Formalism.HC.Idx]`. Consider the case `exact ZMod.card _`. Establish `h1` using `mul_le_mul_of_nonneg_left (hsumle.trans hcard.le) hk1`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `mul_nonneg hk1 hsum0`. Unfold `NumDatum.FRamD`. Apply the tactic sequence `constructor <;> nlinarith`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem ramified_discriminant_condition_holds : FRamDCore := by
   intro Nd j b hk hw

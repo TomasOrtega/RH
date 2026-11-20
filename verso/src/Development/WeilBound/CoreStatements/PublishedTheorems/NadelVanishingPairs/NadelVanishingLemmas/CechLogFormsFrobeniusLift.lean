@@ -20,30 +20,30 @@ noncomputable section
 namespace GlobalTheory.DI
 
 /- English proof (translation)
-Simplify using `only [latSec, AddSubgroup.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_latSec_iff {X : Scheme.{0}} {V : Type} [AddCommGroup V] (M : X → AddSubgroup V) (U : X.Opens)
     (v : V) : v ∈ latSec M U ↔ ∀ y ∈ U, v ∈ M y := by
   simp only [latSec, AddSubgroup.mem_iInf]
 
 /- English proof (translation)
-Introduce `v hv` and use `(mem_latSec_iff M U' v).2 fun y hy => (mem_latSec_iff M U v).1 hv y (h hy)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem latSec_anti {X : Scheme.{0}} {V : Type} [AddCommGroup V] (M : X → AddSubgroup V) {U U' : X.Opens}
     (h : U' ≤ U) : latSec M U ≤ latSec M U' := fun v hv =>
   (mem_latSec_iff M U' v).2 fun y hy => (mem_latSec_iff M U v).1 hv y (h hy)
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.closure_mono fun _ ⟨b, hb, v, hv, e⟩ => ⟨b, hB hb, v, fun k => hL (hv k), e⟩`.
+A detailed English derivation is pending.
 -/
 theorem forms_le_of_subset_of_subset {K : Type} [CommRing K] {V : Type} [AddCommGroup V] [Module K V] {B B' : Set K}
     {L L' : Set V} (q : ℕ) (hB : B ⊆ B') (hL : L ⊆ L') : forms B L q ≤ forms B' L' q :=
   AddSubgroup.closure_mono fun _ ⟨b, hb, v, hv, e⟩ => ⟨b, hB hb, v, fun k => hL (hv k), e⟩
 
 /- English proof (translation)
-Establish `key` using `hf.2 z 0 (by rw [hF]; ring)`. Rewrite `key` using `[map_zero, map_zero, add_zero, hz]`. Establish `hp` using `(Fact.out : p.Prime)`. Establish `e1 : ((g : K)⁻¹) ^ p * (g : K) ^ (p - 1) = (g : K)⁻¹`. Establish `hg : (g : K) ≠ 0` using `g.ne_zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, hn⟩ : ∃ n, p = n + 1` from `⟨p - 1, by have := hp.one_lt; omega⟩`. Rewrite using `[hn, Nat.add_sub_cancel, pow_succ, mul_comm ((g : K)⁻¹ ^ n), mul_assoc, ← mul_pow, inv_mul_cancel₀ hg, one_pow, mul_one]`. Simplify using `only [dlog, dK, Units.val_inv_eq_inv_val]`. Rewrite using `[hf.1, key, smul_smul, e1]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem f_dlog_of_frob {K Kt : Type} [Field K] [CommRing Kt] (p : ℕ) [Fact p.Prime] [CharP K p]
     (π : Kt →+* K) (F : Kt →+* Kt) (f : Ω[K⁄ℤ] →+ Ω[K⁄ℤ]) (hf : IsF p π F f) (g : Kˣ) (z : Kt)
@@ -64,27 +64,21 @@ end GlobalTheory.DI
 namespace GlobalTheory.DI
 
 /- English proof (translation)
-Introduce `p _ X _ _ Z ι _ U n x W G H hnp hgen hcoord hW hlift hEff hdT hCart a b hHyp`. Take `⟨Kt, _, π, F, hπ, hF, hz, hlog⟩` from `hlift`. Use `choose f hf using fun i => exists_isF_of_flatLift p π (F i) hπ (hF i)`. Use `choose h hh using fun i j => exists_isH_of_isFrob p π (F i) (F j) hπ (hF i) (hF j)`. Establish `hd` using `GlobalTheory.T.exterior_derivative_is_differential X.functionField`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdat` using `isDatum_of_frobenius_lifts p π F (extD X.functionField) f h hπ hF hd hf hh`. Use `choose γ hγ using fun i => exists_isGamma p (f i) (hf i).1`. Establish `hWmono : ∀ s t : Finset ι, s.Nonempty → s ⊆ t → W t ≤ W s`. Introduce `s t hs hst y hy`. Conclude with `(hW s hs y).2 fun i hi => (hW t (hs.mono hst) y).1 hy i (hst hi)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hgenW : ∀ s : Finset ι, s.Nonempty → genericPoint X ∈ W s` using `fun s hs => (hW s hs _).2 fun i _ => hgen i`. Establish `hNuniv : ∀ a' (s : Finset ι), s.Nonempty → logSec Z G a' (W s) ≤ forms (Set.univ : Set X.functionField) (Set.univ : Set Ω[X.functionField⁄ℤ]) a'`. Introduce `a' s hs v hv`. Use `(mem_latSec_iff _ _ v).1 hv _ (hgenW s hs)` as an intermediate fact. Conclude with `forms_le_of_subset_of_subset a' (Set.subset_univ _) (Set.subset_univ _) this`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `GlobalTheory.T.splitting_local_integrality (K := X.functionField) (V := Ω[X.functionField⁄ℤ]) p (extD X.functionField) f h γ (P := X) (fun s => {y | ∀ i ∈ s, y ∈ U i}) (fun y => locRing y) (fun y => {c | G.RegularAt y c}) (fun y => dlog '' {g | LogUnit Z y g}) (fun q s => logSec …` and prove the remaining obligations. Introduce `q s t hs hst`. Conclude with `latSec_anti _ (hWmono s t hs hst)`. Introduce `q s t hs hst`. Conclude with `latSec_anti _ (hWmono s t hs hst)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q s v hv`. Conclude with `hdT q s v hv`. Introduce `a' s hs`. Conclude with `hNuniv a' s hs`. Introduce `a' s hs hpa`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i, -⟩` from `id hs`. Rewrite using `[eq_bot_iff]`. Use `(hNuniv a' s hs).trans (le_of_eq ?_)` and prove the remaining obligations. Conclude with `spanForms_eq_bot_of_lt_card X.functionField n (x i) _ _ a' (hcoord i) (by omega)`. Introduce `a' s hs y hy v hv`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `(mem_latSec_iff _ _ v).1 hv y ((hW s hs y).2 hy)`. Introduce `q s v hs _ hv`. Use `(mem_latSec_iff _ _ v).2 fun y hy => ?_` and prove the remaining obligations. Conclude with `forms_le_of_subset_of_subset q (GlobalTheory.T.regular_functions_pth_power_twist p G H y hEff) subset_rfl (hv y ((hW s hs y).1 hy))`. Introduce and unpack `s y hy i hi _ ⟨g, hg, rfl⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hfi, -⟩` from `divided_frob_logForm p π F f h s (locRing y) (g : X.functionField) hf hh (hlog y s hy g hg)`. Take `⟨w, hwA, hw⟩` from `hfi i hi`. Establish `e : dlog g = ((g : X.functionField))⁻¹ • KaehlerDifferential.D ℤ X.functionField g`. Simplify using `only [dlog, dK, Units.val_inv_eq_inv_val]`. Rewrite using `[e, hw g.ne_zero, map_add, ← e]`.
-
-Conclude with `AddSubgroup.add_mem _ ((GlobalTheory.T.log_forms_generated_dlog Z y).2 g hg) ((GlobalTheory.T.log_forms_generated_dlog Z y).1 w hwA)`. Introduce and unpack `s y hy i hi j hj _ ⟨g, hg, rfl⟩`. Take `⟨-, hhij⟩` from `divided_frob_logForm p π F f h s (locRing y) (g : X.functionField) hf hh (hlog y s hy g hg)`. Establish `e : dlog g = ((g : X.functionField))⁻¹ • KaehlerDifferential.D ℤ X.functionField g`. Simplify using `only [dlog, dK, Units.val_inv_eq_inv_val]`.
-
-Rewrite using `[e]`. Conclude with `hhij i hi j hj`. Introduce `s j hj`. Use `hCart s j hj (γ j) ⟨(hγ j).1, fun l => ?_⟩` and prove the remaining obligations. Take `⟨z, hzx, hzF⟩` from `hz j l`.
-
-Rewrite using `[(hγ j).2, f_dlog_of_frob p π (F j) (f j) (hf j) (x j l) z hzx hzF]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decomp_of_isLifted : ∀ (p : ℕ) [Fact p.Prime] {X : Scheme.{0}} [IsIntegral X] [CharP X.functionField p] (Z : Set X) {ι : Type} [LinearOrder ι] (U : ι → X.Opens) {n : ℕ} (x : ι → Fin n → X.functionFieldˣ) (W : Finset ι → X.Opens) (G H : CartierDiv X), n < p → (∀ i, genericPoint X ∈ U i) → (∀ i, IsCoord (x i)) → (∀ s : Finset ι, s.Nonempty → ∀ y, y ∈ W s ↔ ∀ i ∈ s, y ∈ U i) → IsLifted p Z U x → (H - p • G).Eff → (∀ q (s : Finset ι) η, η ∈ logSec Z H q (W s) → extD _ η ∈ logSec Z H (q + 1) (W s)) → (∀ (s : Finset ι), ∀ j ∈ s, ∀ γ, IsCartierMap p (x j) γ → CartierAt (extD _) γ (fun a => logSec Z G a (W s)) (fun a => logSec Z H a (W s))) → ∀ a b, HypZero (extD _) (fun q s => logSec Z H q (W s)) (a + b) → CechZero (fun s => logSec Z G a (W s)) b := by
   intro p _ X _ _ Z ι _ U n x W G H hnp hgen hcoord hW hlift hEff hdT hCart a b hHyp

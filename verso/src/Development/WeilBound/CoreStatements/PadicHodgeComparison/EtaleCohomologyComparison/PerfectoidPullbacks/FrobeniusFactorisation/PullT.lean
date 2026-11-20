@@ -18,7 +18,7 @@ namespace CrystallineSemistableComparison.Pb
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Ideal.quotientMap _ (Mid.wn r n) (Mid.im_le r n) (Wc.res l r.k n (r.ρ x)) = _`. Rewrite using `[← hw, Wc.res_coeff, Ideal.quotientMap_mk, Mid.wn_mk]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem κm_eq (r : Res l K) (n : ℕ) (x : OK l K) (w : WittVector l r.k) (hw : WittVector.constantCoeff w = r.ρ x) :
     Mid.κm r n x = Ideal.Quotient.mk _ ((base l).cris n (r.w w)) := by
@@ -26,7 +26,7 @@ theorem κm_eq (r : Res l K) (n : ℕ) (x : OK l K) (w : WittVector l r.k) (hw :
   rw [← hw, Wc.res_coeff, Ideal.quotientMap_mk, Mid.wn_mk]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => by obtain ⟨w, hw⟩ := WittVector.constantCoeff_surjective l (r.ρ x) rw [RingHom.comp_apply, κm_eq r m x w hw, κm_eq r n x w hw, Ideal.quotientMap_mk, B.red_cris]`.
+A detailed English derivation is pending.
 -/
 theorem red_κm (r : Res l K) {m n : ℕ} (h : n ≤ m) :
     (Ideal.quotientMap _ ((base l).red h) (B.red_le true h)).comp (Mid.κm r m) = Mid.κm r n := RingHom.ext fun x => by
@@ -34,7 +34,7 @@ theorem red_κm (r : Res l K) {m n : ℕ} (h : n ≤ m) :
   rw [RingHom.comp_apply, κm_eq r m x w hw, κm_eq r n x w hw, Ideal.quotientMap_mk, B.red_cris]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => by obtain ⟨w, hw⟩ := WittVector.constantCoeff_surjective l (r.ρ x) rw [RingHom.comp_apply, κm_eq r n x w hw, Ideal.quotientMap_mk, galBase_cris, hσ]`.
+A detailed English derivation is pending.
 -/
 theorem gal_κm (r : Res l K) (σ : Gal(PadicAlgCl l/K)) (hσ : ∀ w, ACris.galCris σ (r.w w) = r.w w) (n : ℕ) :
     (Ideal.quotientMap _ (galBase σ n) (B.gal_le σ true n)).comp (Mid.κm r n) = Mid.κm r n := RingHom.ext fun x => by

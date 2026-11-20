@@ -19,19 +19,19 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [NormedAddC
 def lev (r i : ℕ) : Fin (r + 1) := ⟨min i r, by omega⟩
 
 /- English proof (translation)
-The claim follows from `Fin.ext (by simp [lev]; omega)`.
+A detailed English derivation is pending.
 -/
 theorem lev_castSucc (i : ℕ) (h : i < r) : (⟨i, h⟩ : Fin r).castSucc = lev r i := Fin.ext (by simp [lev]; omega)
 /- English proof (translation)
-The claim follows from `Fin.ext (by simp [lev]; omega)`.
+A detailed English derivation is pending.
 -/
 theorem lev_succ (i : ℕ) (h : i < r) : (⟨i, h⟩ : Fin r).succ = lev r (i + 1) := Fin.ext (by simp [lev]; omega)
 /- English proof (translation)
-The claim follows from `Fin.ext (by simp [lev])`.
+A detailed English derivation is pending.
 -/
 theorem lev_r : lev r r = Fin.last r := Fin.ext (by simp [lev])
 /- English proof (translation)
-The claim follows from `Fin.ext (by simp [lev])`.
+A detailed English derivation is pending.
 -/
 theorem lev_zero : lev r 0 = 0 := Fin.ext (by simp [lev])
 
@@ -44,34 +44,34 @@ def Kn (z z' : Fin (2 * r + k + 1) → ℂ) (Φ : Fn k r (Wq →L[ℂ] Wp)) (i :
 termination_by r - i
 
 /- English proof (translation)
-Rewrite using `[Dn, dif_pos h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Dn_lt (z z' : Fin (2 * r + k + 1) → ℂ) {i : ℕ} (h : i < r) :
     Dn z z' i = D0 k r ⟨i, h⟩ (Dn z z' (i + 1)) := by
   rw [Dn, dif_pos h]
 
 /- English proof (translation)
-Rewrite using `[Dn, dif_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Dn_ge (z z' : Fin (2 * r + k + 1) → ℂ) {i : ℕ} (h : ¬ i < r) : Dn z z' i = Qx8.Dp k r z z' := by
   rw [Dn, dif_neg h]
 
 /- English proof (translation)
-Rewrite using `[Kn, dif_pos h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Kn_lt (z z' : Fin (2 * r + k + 1) → ℂ) (Φ : Fn k r (Wq →L[ℂ] Wp)) {i : ℕ} (h : i < r) :
     Kn z z' Φ i = JxF ⟨i, h⟩ z z' (Kn z z' Φ (i + 1)) := by
   rw [Kn, dif_pos h]
 
 /- English proof (translation)
-Rewrite using `[Kn, dif_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Kn_ge (z z' : Fin (2 * r + k + 1) → ℂ) (Φ : Fn k r (Wq →L[ℂ] Wp)) {i : ℕ} (h : ¬ i < r) :
     Kn z z' Φ i = Φ := by
   rw [Kn, dif_neg h]
 
 /- English proof (translation)
-Use `⟨fun c hc => ?_, fun c₀ hc₀ g₀ hg₀ => ?_⟩` and prove the remaining obligations. Establish `h` using `Qx8.slice_FF hz hz' hΦ hc`. Conclude with `⟨h.2.1, h.2.2.1, h.2.2.2⟩`. Take `⟨U, F, hU, hx, hF, hΦF⟩` from `hΦ.2.1 (c₀, g₀) ⟨hc₀, hg₀.1, hg₀.2⟩`. Conclude with `⟨U, F, hU, hx, hF, fun x hx _ hg _ => hΦF x hx hg⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem famR {z z' : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
     (hz : inWb k r z) (hz' : inWb k r z') {Φ : Fn k r (Wq →L[ℂ] Wp)} (hΦ : Φ ∈ RadSp k r z z' π π') :
@@ -83,11 +83,11 @@ theorem famR {z z' : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (Wp →L[ℂ]
     exact ⟨U, F, hU, hx, hF, fun x hx _ hg _ => hΦF x hx hg⟩
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_`. Simplify using `only [Nat.sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[lev_r, Dn_ge z z' (lt_irrefl r), Kn_ge z z' Φ (lt_irrefl r)]`. Conclude with `⟨Qx8.Dp_dom k r z z', famR hz hz' hΦ⟩`. Consider the case `succ j ih`. Introduce `hj`. Take `⟨hD, hF⟩` from `ih (by omega)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hi : r - (j + 1) < r` using `by omega`. Establish `e : r - j = r - (j + 1) + 1` using `by omega`. Rewrite `hD`, `hF` using `[e, ← lev_succ _ hi]`. Rewrite using `[← lev_castSucc _ hi, Dn_lt z z' hi, Kn_lt z z' Φ hi]`. Conclude with `⟨descended_set_is_domain _ hD, famStep hz hz' _ hF⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem allLev {z z' : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
     (hz : inWb k r z) (hz' : inWb k r z') {Φ : Fn k r (Wq →L[ℂ] Wp)} (hΦ : Φ ∈ RadSp k r z z' π π') :
@@ -112,21 +112,21 @@ theorem allLev {z z' : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (Wp →L[�
 def mix (i : ℕ) (c d : Fin r → ℂ) : Fin r → ℂ := fun a => if a.val < i then c a else d a
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_ X hX`. Establish `hm : mix 0 c d = d` using `funext fun a => by simp [mix]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hX`, the goal using `[lev_zero]`. Rewrite using `[Qx6.wCell_zero, Matrix.one_mul, hm]`. Conclude with `⟨hX, rfl⟩`. Consider the case `succ i ih`. Introduce `hi X hX`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlt : i < r` using `by omega`. Take `⟨l, hl⟩ : ∃ l : Fin r, l = ⟨i, hlt⟩` from `⟨_, rfl⟩`. Establish `hli : l.val = i` using `by rw [hl]`. Establish `hcs : l.castSucc = lev r i` using `by rw [hl]; exact lev_castSucc i hlt`. Establish `hsc : l.succ = lev r (i + 1)` using `by rw [hl]; exact lev_succ i hlt`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDi : Dn z z' i = D0 k r l (Dn z z' (i + 1))` using `by rw [hl]; exact Dn_lt z z' hlt`. Establish `hKi : Kn z z' Φ i = JxF l z z' (Kn z z' Φ (i + 1))` using `by rw [hl]; exact Kn_lt z z' Φ hlt`. Rewrite `hX`, the goal using `[← hsc]`. Establish `hcl : c l ≠ 0` using `hc l`. Establish `hX' : w1 k r l (c l) * X ∈ Glev k r (lev r i) ∩ Dn z z' i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hcs, hDi]`. Conclude with `⟨glev_mul (weyl_cell_mem_level_group (l := l) hcl) (glev_succ_le hX.1), (w1_mul_mem_descended_set_iff l _ hcl hX.1).2 hX.2⟩`. Take `⟨hmem, hval⟩` from `ih (by omega) _ hX'`. Establish `hmix : Function.update (mix i c d) l (c l) = mix (i + 1) c d`. Use function extensionality and compare the values at `a`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `ha : a = l`. Substitute `ha` using the available equality. Simplify using `[mix, hli]`. Establish `hne : a.val ≠ i` using `fun h => ha (Fin.ext (by rw [h, hli]))`. Simplify using `only [mix, Function.update_apply, ha, if_false]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h1 : a.val < i`. Rewrite using `[if_pos h1, if_pos (by omega)]`. Rewrite using `[if_neg h1, if_neg (by omega)]`. Rewrite using `[Qx6.wCell_succ, Matrix.mul_assoc, hcs]`. Use `⟨hmem, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hval, hKi, descended_function_apply_w1_mul hz hz' l _ _ hcl hX.1, hmix]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vals {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : inWb k r z') (Φ : Fn k r (Wq →L[ℂ] Wp))
     (d : Fin r → ℂ) {c : Fin r → ℂ} (hc : c ∈ OmX r) :
@@ -178,11 +178,11 @@ namespace Formalism.FourierDecayAlt.P.CutMP.JA.SA
 open Formalism.FourierDecayAlt.P.CutMP.JA.SA.Desc
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ k r z z' π π' hz hz' Φ hΦ`. Establish `hall` using `allLev (π := π) (π' := π') hz hz' hΦ r le_rfl`. Rewrite `hall` using `[Nat.sub_self, lev_zero]`. Take `⟨hD, hF⟩` from `hall`. Use `⟨Dn z z' 0, hD, Kn z z' Φ 0 (fun _ => 1), famD_FFl hD.1 hF (fun _ => one_ne_zero), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `c hc g hg hGG`. Establish `hv` using `vals hz hz' Φ (fun _ => 1) hc r le_rfl g ⟨by rw [lev_r]; exact hg, by rw [Dn_ge z z' (lt_irrefl r)]; exact hGG⟩`. Rewrite `hv` using `[lev_r]`. Establish `hm : mix r c (fun _ => 1) = c` using `funext fun a => by simp [mix, a.isLt]`. Rewrite `hv` using `[hm, Kn_ge z z' Φ (lt_irrefl r)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨hv.1.2, hv.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem self_adjoint_descent_holds : SADescend := by
   intro Wp Wq _ _ _ _ k r z z' π π' hz hz' Φ hΦ

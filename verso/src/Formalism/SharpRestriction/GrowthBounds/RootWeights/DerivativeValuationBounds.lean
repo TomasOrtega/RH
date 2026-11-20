@@ -54,15 +54,15 @@ def flt_L (A : Type*) [CommRing A] (e : ℤ) : flt_Fil (LaurentPolynomial A) whe
     exact h.trans (hf k hk)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem flt_L_mem {A : Type*} [CommRing A] {e t : ℤ} {f : LaurentPolynomial A} :
     f ∈ (flt_L A e).F t ↔ ∀ k : ℤ, f.coeff k ≠ 0 → t ≤ e * k := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[flt_L_mem]`. Introduce `k hk`. Rewrite `hk` using `[LaurentPolynomial.C_apply]`. Use `split_ifs at hk with h`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `absurd rfl hk`.
+A detailed English derivation is pending.
 -/
 theorem flt_L_C {A : Type*} [CommRing A] (e : ℤ) (a : A) : LaurentPolynomial.C a ∈ (flt_L A e).F 0 := by
   rw [flt_L_mem]
@@ -73,9 +73,7 @@ theorem flt_L_C {A : Type*} [CommRing A] (e : ℤ) (a : A) : LaurentPolynomial.C
   · exact absurd rfl hk
 
 /- English proof (translation)
-Rewrite using `[flt_L_mem]`. Introduce `m hm`. Rewrite `hm` using `[LaurentPolynomial.T_apply]`. Use `split_ifs at hm with h`. Rewrite using `[h]`.
-
-Conclude with `absurd rfl hm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_mem_laurentFiltration {A : Type*} [CommRing A] (e k : ℤ) : (LaurentPolynomial.T k : LaurentPolynomial A) ∈ (flt_L A e).F (e * k) := by
   rw [flt_L_mem]
@@ -121,15 +119,13 @@ def flt_lift {B : Type*} [CommRing B] {σ : Type*} (Fl : flt_Fil B) (wt : (σ �
     exact Fl.anti (by linarith) (hP m)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem flt_lift_mem {B : Type*} [CommRing B] {σ : Type*} {Fl : flt_Fil B} {wt : (σ →₀ ℕ) →+ ℤ} {t : ℤ}
     {P : MvPolynomial σ B} : P ∈ (flt_lift Fl wt).F t ↔ ∀ m, coeff m P ∈ Fl.F (t - wt m) := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[flt_lift_mem]`. Introduce `m'`. Rewrite using `[MvPolynomial.coeff_monomial]`. Use `split_ifs with h`. Substitute `h` using the available equality.
-
-Conclude with `ha`. Conclude with `(Fl.F _).zero_mem`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem flt_monomial_mem {B : Type*} [CommRing B] {σ : Type*} {Fl : flt_Fil B} {wt : (σ →₀ ℕ) →+ ℤ} {t : ℤ}
     {m : σ →₀ ℕ} {a : B} (ha : a ∈ Fl.F (t - wt m)) : monomial m a ∈ (flt_lift Fl wt).F t := by
@@ -142,7 +138,7 @@ theorem flt_monomial_mem {B : Type*} [CommRing B] {σ : Type*} {Fl : flt_Fil B} 
   · exact (Fl.F _).zero_mem
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.C_apply]`. Conclude with `flt_monomial_mem (by rw [_root_.map_zero, sub_zero]; exact ha)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flt_C_mem {B : Type*} [CommRing B] {σ : Type*} {Fl : flt_Fil B} {wt : (σ →₀ ℕ) →+ ℤ} {t : ℤ}
     {a : B} (ha : a ∈ Fl.F t) : (C a : MvPolynomial σ B) ∈ (flt_lift Fl wt).F t := by
@@ -150,9 +146,9 @@ theorem flt_C_mem {B : Type*} [CommRing B] {σ : Type*} {Fl : flt_Fil B} {wt : (
   exact flt_monomial_mem (by rw [_root_.map_zero, sub_zero]; exact ha)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using Fl.one_mem`. Consider the case `succ k ih`. Rewrite using `[pow_succ]`. Establish `e1 : ((k + 1 : ℕ) : ℤ) * t = (k : ℤ) * t + t` using `by push_cast; ring`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Conclude with `Fl.mul_mem ih ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flt_pow_mem {B : Type*} [CommRing B] (Fl : flt_Fil B) {t : ℤ} {a : B} (ha : a ∈ Fl.F t) (k : ℕ) :
     a ^ k ∈ Fl.F (k * t) := by
@@ -165,11 +161,9 @@ theorem flt_pow_mem {B : Type*} [CommRing B] (Fl : flt_Fil B) {t : ℤ} {a : B} 
     exact Fl.mul_mem ih ha
 
 /- English proof (translation)
-Proceed by induction on `m using Finsupp.induction`. Use `next =>`. Rewrite using `[← MvPolynomial.C_apply, _root_.map_one, _root_.map_one, _root_.map_zero]`. Conclude with `Fl'.one_mem`. Use `next a k f _ _ ih =>`.
+Proceed by induction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : monomial (Finsupp.single a k + f) (1 : B₀) = X a ^ k * monomial f 1`. Rewrite using `[MvPolynomial.X_pow_eq_monomial, MvPolynomial.monomial_mul, one_mul]`. Establish `e2 : wt (Finsupp.single a k) = (k : ℤ) * wt (Finsupp.single a 1)`. Rewrite using `[← nsmul_eq_mul, ← _root_.map_nsmul, Finsupp.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[e1, _root_.map_mul, _root_.map_pow, _root_.map_add, e2]`.
-
-Conclude with `Fl'.mul_mem (flt_pow_mem Fl' (hX a) k) ih`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flt_hom_monomial {B₀ B' : Type*} [CommRing B₀] [CommRing B'] {σ : Type*} (Fl' : flt_Fil B')
     (φ : MvPolynomial σ B₀ →+* B') (wt : (σ →₀ ℕ) →+ ℤ)
@@ -188,9 +182,9 @@ theorem flt_hom_monomial {B₀ B' : Type*} [CommRing B₀] [CommRing B'] {σ : T
     exact Fl'.mul_mem (flt_pow_mem Fl' (hX a) k) ih
 
 /- English proof (translation)
-Rewrite using `[P.as_sum, _root_.map_sum]`. Use `(Fl'.F t).sum_mem fun m _ => ?_` and prove the remaining obligations. Establish `e : monomial m (coeff m P) = C (coeff m P) * monomial m 1`. Rewrite using `[MvPolynomial.C_mul_monomial, mul_one]`. Rewrite using `[e, _root_.map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `Fl'.mul_mem (hC _ _ ((flt_lift_mem.1 hP) m)) (flt_hom_monomial Fl' φ wt hX m)`. Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem flt_hom_mem {B₀ B' : Type*} [CommRing B₀] [CommRing B'] {σ : Type*} (Fl : flt_Fil B₀) (Fl' : flt_Fil B')
     (φ : MvPolynomial σ B₀ →+* B') (wt : (σ →₀ ℕ) →+ ℤ)
@@ -209,11 +203,11 @@ abbrev laurentCoeffFiltration (R : Type*) [CommRing R] (n : ℕ) (σ : Type*) (e
   flt_lift (flt_L (GLCoord R n) e) 0
 
 /- English proof (translation)
-Simplify using `only [sDegs]`. Rewrite using `[Finset.mem_biUnion]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, -, hk⟩`. Conclude with `⟨m, Finsupp.mem_support_iff.1 hk⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨m, hm⟩`. Use `⟨m, ?_, Finsupp.mem_support_iff.2 hm⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.mem_support_iff]`. Introduce `h0`. Apply `hm` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem flt_mem_sDegs {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
     (G : MvPolynomial (ι × Fin n) R) (k : ℤ) :
@@ -232,9 +226,9 @@ theorem flt_mem_sDegs {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Lett
     simp
 
 /- English proof (translation)
-Simplify using `only [valS]`. Rewrite using `[Finset.le_inf_iff]`. Simplify using `only [laurentCoeffFiltration, flt_lift_mem, flt_L_mem, AddMonoidHom.zero_apply, sub_zero, one_mul, WithTop.coe_le_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `h m k hk`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h k ((flt_mem_sDegs LL S _ G k).2 ⟨m, hk⟩)`. Introduce `h k hk`. Take `⟨m, hm⟩` from `(flt_mem_sDegs LL S _ G k).1 hk`. Conclude with `h m k hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem flt_le_valS {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (G : MvPolynomial (ι × Fin n) R) (t : ℤ) :
@@ -250,9 +244,9 @@ theorem flt_le_valS {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] (
     exact h m k hm
 
 /- English proof (translation)
-Simplify using `only [lam1S]`. Rewrite using `[Finset.sup_le_iff]`. Simplify using `only [laurentCoeffFiltration, flt_lift_mem, flt_L_mem, AddMonoidHom.zero_apply, sub_zero, WithBot.coe_le_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `h m k hk`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `h k ((flt_mem_sDegs LL S _ G k).2 ⟨m, hk⟩)`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `h k hk`. Take `⟨m, hm⟩` from `(flt_mem_sDegs LL S _ G k).1 hk`. Establish `h1` using `h m k hm`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -272,11 +266,11 @@ theorem flt_lam1S_le {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] 
     linarith
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `top`. Proceed by induction on `b with`. Consider the case `top => simp`. Consider the case `coe y`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-It suffices to derive a contradiction. Establish `h1` using `WithTop.coe_le_coe.1 (h (y + N + 1) le_top)`. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `coe x`. Establish `hx` using `h x le_rfl`.
+It suffices to derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `b with`. Consider the case `top => simp`. Consider the case `coe y`. Rewrite using `[← WithTop.coe_add]`. Conclude with `WithTop.coe_le_coe.2 (by have h1 := WithTop.coe_le_coe.1 hx; linarith)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flt_withTop_le {a b : WithTop ℤ} {N : ℤ}
     (h : ∀ t : ℤ, (t : WithTop ℤ) ≤ a → ((t - N : ℤ) : WithTop ℤ) ≤ b) : a ≤ b + (N : WithTop ℤ) := by
@@ -297,11 +291,11 @@ theorem flt_withTop_le {a b : WithTop ℤ} {N : ℤ}
       exact WithTop.coe_le_coe.2 (by have h1 := WithTop.coe_le_coe.1 hx; linarith)
 
 /- English proof (translation)
-Proceed by induction on `b with`. Consider the case `bot`. Proceed by induction on `a with`. Consider the case `bot => simp`. Consider the case `coe x`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-It suffices to derive a contradiction. Establish `h1` using `WithBot.coe_le_coe.1 (h (x - N - 1) bot_le)`. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `coe y`. Establish `h1` using `h y le_rfl`.
+It suffices to derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[← WithBot.coe_add]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flt_withBot_le {a b : WithBot ℤ} {N : ℤ}
     (h : ∀ M : ℤ, b ≤ (M : WithBot ℤ) → a ≤ ((M + N : ℤ) : WithBot ℤ)) : a ≤ b + (N : WithBot ℤ) := by
@@ -319,15 +313,15 @@ theorem flt_withBot_le {a b : WithBot ℤ} {N : ℤ}
     exact h1
 
 /- English proof (translation)
-Establish `key : (∀ s : ℤ, (s : WithTop ℤ) ≤ c) → c = ⊤`. Introduce `hs`. Proceed by induction on `c with`. Consider the case `top => rfl`. Consider the case `coe z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h1` using `WithTop.coe_le_coe.1 (hs (z + 1))`. Use linear arithmetic over natural numbers and integers. Proceed by induction on `a with`. Consider the case `top`. Establish `hc : c = ⊤` using `key fun s => by`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `b with`. Consider the case `top => simpa using h s 0 le_top le_top`. Consider the case `coe y => simpa using h (s - y) y le_top le_rfl`. Simplify using `[hc]`. Consider the case `coe x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Proceed by induction on `b with`. Consider the case `top`. Establish `hc : c = ⊤` using `key fun s => by simpa using h x (s - x) le_rfl le_top`. Simplify using `[hc]`. Consider the case `coe y`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[← WithTop.coe_add]`. Conclude with `h x y le_rfl le_rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flt_withTop_add_le {a b c : WithTop ℤ}
     (h : ∀ t u : ℤ, (t : WithTop ℤ) ≤ a → (u : WithTop ℤ) ≤ b → ((t + u : ℤ) : WithTop ℤ) ≤ c) : a + b ≤ c := by
@@ -355,15 +349,15 @@ theorem flt_withTop_add_le {a b c : WithTop ℤ}
       exact h x y le_rfl le_rfl
 
 /- English proof (translation)
-Establish `key : (∀ s : ℤ, c ≤ (s : WithBot ℤ)) → c = ⊥`. Introduce `hs`. Proceed by induction on `c with`. Consider the case `bot => rfl`. Consider the case `coe z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h1` using `WithBot.coe_le_coe.1 (hs (z - 1))`. Use linear arithmetic over natural numbers and integers. Proceed by induction on `a with`. Consider the case `bot`. Establish `hc : c = ⊥` using `key fun s => by`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `b with`. Consider the case `bot => simpa using h s 0 bot_le bot_le`. Consider the case `coe y => simpa using h (s - y) y bot_le le_rfl`. Simplify using `[hc]`. Consider the case `coe x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Proceed by induction on `b with`. Consider the case `bot`. Establish `hc : c = ⊥` using `key fun s => by simpa using h x (s - x) le_rfl bot_le`. Simplify using `[hc]`. Consider the case `coe y`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[← WithBot.coe_add]`. Conclude with `h x y le_rfl le_rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flt_withBot_le_add {a b c : WithBot ℤ}
     (h : ∀ t u : ℤ, a ≤ (t : WithBot ℤ) → b ≤ (u : WithBot ℤ) → c ≤ ((t + u : ℤ) : WithBot ℤ)) : c ≤ a + b := by
@@ -391,7 +385,7 @@ theorem flt_withBot_le_add {a b c : WithBot ℤ}
       exact h x y le_rfl le_rfl
 
 /- English proof (translation)
-Establish `h1` using `flt_withTop_le (a := min (valS LL S F) (valS LL S G)) (b := valS LL S (F + G)) (N := 0) fun t ht => by`. Rewrite using `[sub_zero, flt_le_valS, _root_.map_add]`. Conclude with `AddSubgroup.add_mem _ ((flt_le_valS LL S F t).1 (ht.trans (min_le_left _ _))) ((flt_le_valS LL S G t).1 (ht.trans (min_le_right _ _)))`. Simplify using `using h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem flt_valS_add {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (F G : MvPolynomial (ι × Fin n) R) : min (valS LL S F) (valS LL S G) ≤ valS LL S (F + G) := by
@@ -403,7 +397,7 @@ theorem flt_valS_add {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] 
   simpa using h1
 
 /- English proof (translation)
-Establish `h1` using `flt_withBot_le (a := lam1S LL S (F + G)) (b := max (lam1S LL S F) (lam1S LL S G)) (N := 0) fun M hM => by`. Rewrite using `[add_zero, flt_lam1S_le, _root_.map_add]`. Conclude with `AddSubgroup.add_mem _ ((flt_lam1S_le LL S F M).1 ((le_max_left _ _).trans hM)) ((flt_lam1S_le LL S G M).1 ((le_max_right _ _).trans hM))`. Simplify using `using h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem flt_lam1S_add {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (F G : MvPolynomial (ι × Fin n) R) : lam1S LL S (F + G) ≤ max (lam1S LL S F) (lam1S LL S G) := by
@@ -415,7 +409,7 @@ theorem flt_lam1S_add {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n]
   simpa using h1
 
 /- English proof (translation)
-Use `flt_withTop_add_le fun t u ht hu => ?_` and prove the remaining obligations. Rewrite using `[flt_le_valS, _root_.map_mul]`. Conclude with `(laurentCoeffFiltration R n _ 1).mul_mem ((flt_le_valS LL S F t).1 ht) ((flt_le_valS LL S G u).1 hu)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flt_valS_mul_ge {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (F G : MvPolynomial (ι × Fin n) R) : valS LL S F + valS LL S G ≤ valS LL S (F * G) := by
@@ -424,7 +418,7 @@ theorem flt_valS_mul_ge {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero 
   exact (laurentCoeffFiltration R n _ 1).mul_mem ((flt_le_valS LL S F t).1 ht) ((flt_le_valS LL S G u).1 hu)
 
 /- English proof (translation)
-Use `flt_withBot_le_add fun t u ht hu => ?_` and prove the remaining obligations. Rewrite using `[flt_lam1S_le, _root_.map_mul]`. Establish `h1` using `(laurentCoeffFiltration R n _ (-1)).mul_mem ((flt_lam1S_le LL S F t).1 ht) ((flt_lam1S_le LL S G u).1 hu)`. Rewrite `h1` using `[← neg_add]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem flt_lam1S_mul_le {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (F G : MvPolynomial (ι × Fin n) R) : lam1S LL S (F * G) ≤ lam1S LL S F + lam1S LL S G := by
@@ -434,13 +428,11 @@ theorem flt_lam1S_mul_le {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero
   rwa [← neg_add] at h1
 
 /- English proof (translation)
-Simplify using `only [twistMat]`. Rewrite using `[Matrix.mul_apply]`. Use `AddSubgroup.sum_mem _ fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_diagonal]`. Establish `h1 : gL R n b x ∈ (flt_L (GLCoord R n) e).F 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [gL, Matrix.map_apply]`. Conclude with `flt_L_C e _`. Establish `h3 : gLinv R n x c ∈ (flt_L (GLCoord R n) e).F 0`. Simplify using `only [gLinv, Matrix.map_apply]`. Conclude with `flt_L_C e _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (if x = j then LaurentPolynomial.T k else 1 : GLLaurent R n) ∈ (flt_L (GLCoord R n) e).F t` using `by split_ifs`. Conclude with `(flt_L _ e).anti hk (T_mem_laurentFiltration e k)`. Conclude with `(flt_L _ e).anti h0 (flt_L _ e).one_mem`. Establish `h4` using `(flt_L _ e).mul_mem ((flt_L _ e).mul_mem h1 h2) h3`. Rewrite `h4` using `[zero_add, add_zero]`.
-
-Conclude with `h4`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flt_twistMat_mem (R : Type*) [CommRing R] (n : ℕ) (j : Fin n) (k e t : ℤ) (h0 : t ≤ 0) (hk : t ≤ e * k)
     (b c : Fin n) : twistMat R n j k b c ∈ (flt_L (GLCoord R n) e).F t := by
@@ -469,7 +461,7 @@ def flt_cost {ι : Type*} {n : ℕ} (LL : Letters ι) (S : Set ι) (b : Bool) : 
 
 open Classical in
 /- English proof (translation)
-Simplify using `only [flt_cost, Finsupp.liftAddHom_apply_single]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem flt_cost_single {ι : Type*} {n : ℕ} (LL : Letters ι) (S : Set ι) (b : Bool) (v : ι × Fin n) (k : ℕ) :
     flt_cost LL S b (Finsupp.single v k) = if v.1 ∈ S ∧ LL.vec v.1 = b then (k : ℤ) else 0 := by
@@ -477,7 +469,7 @@ theorem flt_cost_single {ι : Type*} {n : ℕ} (LL : Letters ι) (S : Set ι) (b
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [flt_cost, vecDeg, Finsupp.liftAddHom_apply, Finsupp.sum, Nat.cast_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem flt_cost_vecDeg {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (al : ι × Fin n →₀ ℕ) :
     flt_cost LL S true al = (vecDeg LL S al : ℤ) := by
@@ -486,7 +478,7 @@ theorem flt_cost_vecDeg {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (al
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [flt_cost, covDeg, Finsupp.liftAddHom_apply, Finsupp.sum, Nat.cast_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem flt_cost_covDeg {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (al : ι × Fin n →₀ ℕ) :
     flt_cost LL S false al = (covDeg LL S al : ℤ) := by
@@ -497,13 +489,13 @@ theorem flt_cost_covDeg {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (al
 def flt_compat (e : ℤ) (bm : Bool) : Prop := (e = 1 ∧ bm = false) ∨ (e = -1 ∧ bm = true)
 
 /- English proof (translation)
-Establish `hmon : ∀ (w : ι × Fin n) (a : GLLaurent R n) (s : ℤ), a ∈ (flt_L (GLCoord R n) e).F s → C a * X w ∈ (laurentCoeffFiltration R n (ι × Fin n) e).F s`. Introduce `w a s ha`. Rewrite using `[MvPolynomial.C_mul_X_eq_monomial]`. Conclude with `flt_monomial_mem (by rw [AddMonoidHom.zero_apply, sub_zero]; exact ha)`. Simplify using `only [twistSub, eval₂Hom_X', AddMonoidHom.neg_apply, flt_cost_single]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hS : v.1 ∈ S`. Rewrite using `[if_pos hS]`. Consider the cases of `hv : LL.vec v.1`. Rewrite using `[if_neg Bool.false_ne_true]`. Use `AddSubgroup.sum_mem _ fun b _ => hmon _ _ _ (flt_twistMat_mem R n j (-1) e _ ?_ ?_ _ _)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `all_goals rcases h with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> simp [hS]`. Rewrite using `[if_pos rfl]`. Use `AddSubgroup.sum_mem _ fun b _ => hmon _ _ _ (flt_twistMat_mem R n j 1 e _ ?_ ?_ _ _)` and prove the remaining obligations. Apply the tactic sequence `all_goals rcases h with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> simp [hS]`. Rewrite using `[if_neg hS, if_neg (fun h' => hS h'.1), neg_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hmon v 1 0 (flt_L _ e).one_mem`.
+A detailed English derivation is pending.
 -/
 theorem flt_twistX_mem {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
     {e : ℤ} {bm : Bool} (h : flt_compat e bm) (v : ι × Fin n) :
@@ -528,7 +520,7 @@ theorem flt_twistX_mem {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Let
     simpa using hmon v 1 0 (flt_L _ e).one_mem
 
 /- English proof (translation)
-Establish `h1` using `flt_hom_monomial _ (twistSub (R := R) LL S j) (-flt_cost LL S bm) (flt_twistX_mem LL S j h) al`. Rewrite `h1` using `[AddMonoidHom.neg_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem flt_twist_monomial_mem {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
     {e : ℤ} {bm : Bool} (h : flt_compat e bm) (al : ι × Fin n →₀ ℕ) :
@@ -537,11 +529,11 @@ theorem flt_twist_monomial_mem {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (
   rwa [AddMonoidHom.neg_apply] at h1
 
 /- English proof (translation)
-Establish `key : ∀ a b, (gL R n * gLinv R n) a b = LaurentPolynomial.C (IsLocalization.Away.invSelf (genMat R n).det * algebraMap _ (GLCoord R n) ((genMat R n * (genMat R n).adjugate) a b))`. Introduce `a b`. Simplify using `only [gL, gLinv, Matrix.mul_apply, Matrix.map_apply, ← _root_.map_mul, _root_.map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[_root_.map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use extensionality with `a b`. Rewrite using `[key, Matrix.mul_adjugate, Matrix.smul_apply, Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_eq_mul, mul_one, mul_comm, IsLocalization.Away.mul_invSelf, _root_.map_one]`. Rewrite using `[smul_zero, _root_.map_zero, mul_zero, _root_.map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flt_gL_mul_gLinv (R : Type*) [CommRing R] (n : ℕ) : gL R n * gLinv R n = 1 := by
   have key : ∀ a b, (gL R n * gLinv R n) a b = LaurentPolynomial.C
@@ -560,11 +552,11 @@ theorem flt_gL_mul_gLinv (R : Type*) [CommRing R] (n : ℕ) : gL R n * gLinv R n
   · rw [smul_zero, _root_.map_zero, mul_zero, _root_.map_zero]
 
 /- English proof (translation)
-Establish `key : ∀ a b, (gLinv R n * gL R n) a b = LaurentPolynomial.C (IsLocalization.Away.invSelf (genMat R n).det * algebraMap _ (GLCoord R n) (((genMat R n).adjugate * genMat R n) a b))`. Introduce `a b`. Simplify using `only [gL, gLinv, Matrix.mul_apply, Matrix.map_apply, ← _root_.map_mul, _root_.map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[_root_.map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use extensionality with `a b`. Rewrite using `[key, Matrix.adjugate_mul, Matrix.smul_apply, Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_eq_mul, mul_one, mul_comm, IsLocalization.Away.mul_invSelf, _root_.map_one]`. Rewrite using `[smul_zero, _root_.map_zero, mul_zero, _root_.map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flt_gLinv_mul_gL (R : Type*) [CommRing R] (n : ℕ) : gLinv R n * gL R n = 1 := by
   have key : ∀ a b, (gLinv R n * gL R n) a b = LaurentPolynomial.C
@@ -583,9 +575,9 @@ theorem flt_gLinv_mul_gL (R : Type*) [CommRing R] (n : ℕ) : gLinv R n * gL R n
   · rw [smul_zero, _root_.map_zero, mul_zero, _root_.map_zero]
 
 /- English proof (translation)
-Establish `hD : (Matrix.diagonal (fun a => if a = j then LaurentPolynomial.T k else 1) * Matrix.diagonal (fun a => if a = j then LaurentPolynomial.T (-k) else 1) : Matrix (Fin n) (Fin n) (GLLaurent R n)) = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Use `split_ifs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LaurentPolynomial.T_add]`. Simplify using the standard rewrite rules. Rewrite using `[mul_one]`. Simplify using `only [twistMat, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (gLinv R n) (gL R n), flt_gLinv_mul_gL, Matrix.one_mul, ← Matrix.mul_assoc (Matrix.diagonal _) (Matrix.diagonal _), hD, Matrix.one_mul, flt_gL_mul_gLinv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flt_twistMat_mul (R : Type*) [CommRing R] (n : ℕ) (j : Fin n) (k : ℤ) :
     twistMat R n j k * twistMat R n j (-k) = 1 := by
@@ -611,43 +603,39 @@ def flt_g (R : Type*) [CommRing R] {σ : Type*} (m be : σ →₀ ℕ) : MvPolyn
 
 open Classical in
 /- English proof (translation)
-Simplify using `only [flt_g]`. Establish `hX : ∀ (s : σ →₀ ℕ) (c : R), monomial s c * X a = monomial (s + Finsupp.single a 1) c` using `fun s c => by`. Rewrite using `[← pow_one (X a), MvPolynomial.X_pow_eq_monomial, MvPolynomial.monomial_mul, mul_one]`. Rewrite using `[hX]`. Distinguish the cases in `h : a ∈ be.support`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h]`. Establish `hba : be a ≠ 0` using `Finsupp.mem_support_iff.1 h`. Take `⟨b, hb⟩ : ∃ b, be a = b + 1` from `⟨be a - 1, by omega⟩`. Take `⟨Q, hQ⟩ : ∃ Q, Q = ∏ k ∈ be.support.erase a, (m k).choose (be k)` from `⟨_, rfl⟩`. Establish `hP0 : (be.prod fun k j => ((m + Finsupp.single a 1 : σ →₀ ℕ) k).choose j) = (m a + 1).choose (be a) * Q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hQ]`. Simplify using `only [Finsupp.prod]`. Rewrite using `[← Finset.mul_prod_erase _ _ h]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.prod_congr rfl fun k hk => by`. Establish `hka : a ≠ k` using `Ne.symm (Finset.ne_of_mem_erase hk)`. Simplify using `[Finsupp.single_apply, hka]`. Establish `hP1 : (be.prod fun k j => (m k).choose j) = (m a).choose (be a) * Q`. Rewrite using `[hQ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finsupp.prod]`. Rewrite using `[← Finset.mul_prod_erase _ _ h]`. Establish `hsub : (be - Finsupp.single a 1).support ⊆ be.support` using `fun k hk => Finsupp.mem_support_iff.2 fun h0 => (Finsupp.mem_support_iff.1 hk) (by simp [h0])`. Establish `hP2 : ((be - Finsupp.single a 1).prod fun k j => (m k).choose j) = (m a).choose (be a - 1) * Q`. Rewrite using `[hQ, Finsupp.prod_of_support_subset _ hsub _ (fun _ _ => Nat.choose_zero_right _), ← Finset.mul_prod_erase _ _ h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using the standard rewrite rules. Conclude with `Finset.prod_congr rfl fun k hk => by`. Establish `hka : a ≠ k` using `Ne.symm (Finset.ne_of_mem_erase hk)`. Simplify using `[Finsupp.single_apply, hka]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : Q ≠ 0 → ∀ k, k ≠ a → be k ≤ m k`. Introduce `hQ0 k hk`. Rewrite `hQ0` using `[hQ]`. Distinguish the cases in `hks : k ∈ be.support`. Establish `h1` using `(Finset.prod_ne_zero_iff.1 hQ0) k (Finset.mem_erase.2 ⟨hk, hks⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Conclude with `h1 (Nat.choose_eq_zero_of_lt hlt)`. Establish `h0 : be k = 0`. Assume the negation of the conclusion as `h0`.
+Assume the negation of the conclusion and derive a contradiction. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hks (Finsupp.mem_support_iff.2 h0)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hP0, hP1, hP2, hb, Nat.choose_succ_succ, Nat.add_sub_cancel]`. Distinguish the cases in `h1 : (m a).choose (b + 1) * Q = 0`. Rewrite using `[h1, Nat.cast_zero, MvPolynomial.monomial_zero, zero_add]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h2 : (m a).choose b * Q = 0`. Rewrite using `[add_mul, h1, h2]`. Simplify using the standard rewrite rules. Establish `hx : m + Finsupp.single a 1 - be = m - (be - Finsupp.single a 1)` using `Finsupp.ext fun k => by`. Simplify using `only [Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply, Finsupp.single_apply]`.
+Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hka`. Substitute `hka` using the available equality. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish `hc : ((m a).choose b + (m a).choose (b + 1)) * Q = (m a).choose b * Q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[add_mul, h1, add_zero]`. Rewrite using `[hx, hc]`. Establish `hQ0 : Q ≠ 0` using `right_ne_zero_of_mul h1`. Establish `hab : b + 1 ≤ m a`. Assume the negation of the conclusion as `hlt`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `push_neg at hlt`. Conclude with `h1 (by rw [Nat.choose_eq_zero_of_lt hlt, zero_mul])`. Establish `hx1 : m + Finsupp.single a 1 - be = m - be + Finsupp.single a 1` using `Finsupp.ext fun k => by`. Simplify using `only [Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply, Finsupp.single_apply]`. Use `split_ifs with hka`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Substitute `hka` using the available equality. Use linear arithmetic over natural numbers and integers. Establish `h3` using `hle hQ0 k (Ne.symm hka)`. Use linear arithmetic over natural numbers and integers. Establish `hx2 : m - (be - Finsupp.single a 1) = m - be + Finsupp.single a 1` using `Finsupp.ext fun k => by`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply, Finsupp.single_apply]`. Use `split_ifs with hka`. Substitute `hka` using the available equality. Use linear arithmetic over natural numbers and integers. Establish `h3` using `hle hQ0 k (Ne.symm hka)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hx1, hx2, ← _root_.map_add (monomial (m - be + Finsupp.single a 1)), ← Nat.cast_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, add_zero]`.
+Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hba : be a = 0`. Assume the negation of the conclusion as `h0`. Conclude with `h (Finsupp.mem_support_iff.2 h0)`. Establish `hx : m + Finsupp.single a 1 - be = m - be + Finsupp.single a 1` using `Finsupp.ext fun k => by`. Simplify using `only [Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply, Finsupp.single_apply]`.
-
-Use `split_ifs with hka`. Substitute `hka` using the available equality. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish `hp : (be.prod fun k j => ((m + Finsupp.single a 1 : σ →₀ ℕ) k).choose j) = be.prod fun k j => (m k).choose j`.
-
-Simplify using `only [Finsupp.prod]`. Conclude with `Finset.prod_congr rfl fun k hk => by`. Establish `hka : a ≠ k` using `fun h' => h (by rw [h']; exact hk)`. Simplify using `[Finsupp.single_apply, hka]`. Rewrite using `[hx, hp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flt_g_pascal (R : Type*) [CommRing R] {σ : Type*} (m be : σ →₀ ℕ) (a : σ) :
     flt_g R (m + Finsupp.single a 1) be =
@@ -752,25 +740,23 @@ theorem flt_g_pascal (R : Type*) [CommRing R] {σ : Type*} (m be : σ →₀ ℕ
     rw [hx, hp]
 
 /- English proof (translation)
-It suffices to establish `H : ∀ d : ℕ, ∀ m : σ →₀ ℕ, (m.sum fun _ e => e) = d → ∀ be, coeff be (flt_tay R σ (monomial m 1)) = flt_g R m be from H _ m rfl`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `m hm be`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm0 : m = 0`. Use extensionality with `k`. Simplify using `only [Finsupp.coe_zero, Pi.zero_apply]`. Assume the negation of the conclusion as `hk`. Establish `h1 : m k ≤ m.sum fun _ e => e`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Simplify using `only [Finsupp.sum]`. Conclude with `Finset.single_le_sum (f := fun k => m k) (fun _ _ => Nat.zero_le _) (Finsupp.mem_support_iff.2 hk)`. Use linear arithmetic over natural numbers and integers. Substitute `hm0` using the available equality. Rewrite using `[← MvPolynomial.C_apply, _root_.map_one, _root_.map_one, MvPolynomial.coeff_one, flt_g, zero_tsub]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `[← MvPolynomial.C_apply]`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, be k ≠ 0 := by`. Assume the negation of the conclusion as `hne`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at hne`. Conclude with `h (by ext k; simp [hne k])`. Establish `h0 : (be.prod fun k j => ((0 : σ →₀ ℕ) k).choose j) = 0` using `Finset.prod_eq_zero (Finsupp.mem_support_iff.2 hk) (by simp [Nat.choose_eq_zero_of_lt (Nat.pos_of_ne_zero hk)])`. Rewrite using `[h0, Nat.cast_zero, MvPolynomial.monomial_zero]`. Consider the case `succ d ih`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `m hm be`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, m a ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `h0 : m = 0` using `by ext k; simp [hne k]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Substitute `h0` using the available equality. Simplify using `at hm`. Establish `hm' : m - Finsupp.single a 1 + Finsupp.single a 1 = m`. Use extensionality with `k`. Simplify using `only [Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply, Finsupp.single_apply]`.
+Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish `hsum : ((m - Finsupp.single a 1).sum fun _ e => e) = d`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hm`. Rewrite `h1` using `[← hm', Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl), Finsupp.sum_single_index rfl]`. Use linear arithmetic over natural numbers and integers. Establish `e1 : monomial (m - Finsupp.single a 1 + Finsupp.single a 1) (1 : R) = monomial (m - Finsupp.single a 1) 1 * X a`. Rewrite using `[← pow_one (X a), MvPolynomial.X_pow_eq_monomial, MvPolynomial.monomial_mul, one_mul]`.
-
-Establish `e2 : flt_tay R σ (X a) = C (X a) + X a`. Simplify using `only [flt_tay, eval₂Hom_X']`. Rewrite using `[← hm', e1, _root_.map_mul, flt_g_pascal, e2, mul_add, MvPolynomial.coeff_add, mul_comm _ (C (X a)), MvPolynomial.coeff_C_mul, MvPolynomial.coeff_mul_X', ih _ hsum be, ih _ hsum (be - Finsupp.single a 1)]`. Apply the tactic sequence `all_goals (first | ring | (split_ifs <;> ring))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem flt_tay_monomial (R : Type*) [CommRing R] {σ : Type*} (m : σ →₀ ℕ) :
     ∀ be, coeff be (flt_tay R σ (monomial m 1)) = flt_g R m be := by
@@ -830,13 +816,11 @@ theorem flt_tay_monomial (R : Type*) [CommRing R] {σ : Type*} (m : σ →₀ �
     all_goals (first | ring | (split_ifs <;> ring))
 
 /- English proof (translation)
-Use `conv_lhs => rw [F.as_sum]`. Rewrite using `[_root_.map_sum, MvPolynomial.coeff_sum]`. Simplify using `only [divDer]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `e1 : monomial m (coeff m F) = C (coeff m F) * monomial m 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.C_mul_monomial, mul_one]`. Establish `e2 : flt_tay R σ (C (coeff m F)) = C (C (coeff m F))`. Simplify using `only [flt_tay, eval₂Hom_C, RingHom.coe_comp, Function.comp_apply]`. Rewrite using `[e1, _root_.map_mul, e2, MvPolynomial.coeff_C_mul, flt_tay_monomial, flt_g, MvPolynomial.C_mul_monomial]`. Use `split_ifs with h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hex : ∃ k, m k < be k`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Conclude with `h fun k => hne k`.
-
-Take `⟨k, hk⟩` from `hex`. Establish `h0 : (be.prod fun k j => (m k).choose j) = 0` using `Finset.prod_eq_zero (Finsupp.mem_support_iff.2 (by omega)) (Nat.choose_eq_zero_of_lt hk)`. Rewrite using `[h0, Nat.cast_zero, mul_zero, MvPolynomial.monomial_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flt_tay_coeff (R : Type*) [CommRing R] {σ : Type*} (F : MvPolynomial σ R) (be : σ →₀ ℕ) :
     coeff be (flt_tay R σ F) = divDer be F := by
@@ -872,9 +856,9 @@ def flt_Th {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters ι) (S 
      else X w)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.mul_sum, Finset.sum_mul, _root_.map_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun b _ => by ring`. Use `_ = ∑ c, C (C ((Q * P) c d)) * Y c := by`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_apply, _root_.map_sum]`. Use `_ = Y d := by`. Rewrite using `[h]`. Simplify using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_C_C_mul_sum_of_mul_eq_one {B : Type*} [CommRing B] {σ' σ'' : Type*} {n : ℕ} (P Q : Matrix (Fin n) (Fin n) B)
     (h : Q * P = 1) (Y : Fin n → MvPolynomial σ' (MvPolynomial σ'' B)) (d : Fin n) :
@@ -891,19 +875,19 @@ theorem sum_C_C_mul_sum_of_mul_eq_one {B : Type*} [CommRing B] {σ' σ'' : Type*
         simp [Matrix.one_apply]
 
 /- English proof (translation)
-Establish `h1 : twistMat R n j (-1) * twistMat R n j 1 = 1`. Simplify using `using flt_twistMat_mul R n j (-1)`. Establish `h2 : (twistMat R n j 1).transpose * (twistMat R n j (-1)).transpose = 1`. Rewrite using `[← Matrix.transpose_mul, h1, Matrix.transpose_one]`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun v => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [RingHom.comp_apply, flt_tay, flt_Th, twistSub, eval₂Hom_C, RingHom.coe_comp, Function.comp_apply, MvPolynomial.map_C]`. Simplify using `only [RingHom.comp_apply, flt_tay, eval₂Hom_X', _root_.map_add, MvPolynomial.map_C, MvPolynomial.map_X]`. Distinguish the cases in `hS : v.1 ∈ S`. Consider the cases of `hv : LL.vec v.1`. Establish `hT : twistSub LL S j (X v : MvPolynomial (ι × Fin n) R) = ∑ b : Fin n, C (twistMat R n j (-1) v.2 b) * X (v.1, b)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Simplify using `only [twistSub, eval₂Hom_X', hS, hv, Bool.false_eq_true, ↓reduceIte]`. Establish `hTh : ∀ b : Fin n, flt_Th LL S j (C (twistMat R n j (-1) v.2 b) * X (v.1, b)) = C (C (twistMat R n j (-1) v.2 b)) * C (X (v.1, b)) + C (C (twistMat R n j (-1) v.2 b)) * ∑ c : Fin n, C (C (twistMat R n j 1 b c)) * X (v.1, c)`. Introduce `b`. Simplify using `only [flt_Th, _root_.map_mul, eval₂Hom_C, eval₂Hom_X', RingHom.coe_comp, Function.comp_apply, hS, hv, Bool.false_eq_true, ↓reduceIte, mul_add]`. Establish `hY` using `sum_C_C_mul_sum_of_mul_eq_one (twistMat R n j (-1)).transpose (twistMat R n j 1).transpose h2 (fun c => (X (v.1, c) : MvPolynomial (ι × Fin n) (MvPolynomial (ι × Fin n) (GLLaurent R n)))) v.2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.transpose_apply] at hY`. Rewrite using `[hT]`. Simplify using `only [_root_.map_sum, hTh, Finset.sum_add_distrib]`. Rewrite using `[hY]`. Simplify using `only [_root_.map_mul, Prod.mk.eta]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hT : twistSub LL S j (X v : MvPolynomial (ι × Fin n) R) = ∑ b : Fin n, C (twistMat R n j 1 b v.2) * X (v.1, b)`. Simplify using `only [twistSub, eval₂Hom_X', hS, hv, ↓reduceIte]`. Establish `hTh : ∀ b : Fin n, flt_Th LL S j (C (twistMat R n j 1 b v.2) * X (v.1, b)) = C (C (twistMat R n j 1 b v.2)) * C (X (v.1, b)) + C (C (twistMat R n j 1 b v.2)) * ∑ c : Fin n, C (C (twistMat R n j (-1) c b)) * X (v.1, c)`. Introduce `b`. Simplify using `only [flt_Th, _root_.map_mul, eval₂Hom_C, eval₂Hom_X', RingHom.coe_comp, Function.comp_apply, hS, hv, ↓reduceIte, mul_add]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hY` using `sum_C_C_mul_sum_of_mul_eq_one (twistMat R n j 1) (twistMat R n j (-1)) h1 (fun c => (X (v.1, c) : MvPolynomial (ι × Fin n) (MvPolynomial (ι × Fin n) (GLLaurent R n)))) v.2`. Apply the tactic sequence `try dsimp only at hY`. Rewrite using `[hT]`. Simplify using `only [_root_.map_sum, hTh, Finset.sum_add_distrib]`. Rewrite using `[hY]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [_root_.map_mul, Prod.mk.eta]`. Establish `hT : twistSub LL S j (X v : MvPolynomial (ι × Fin n) R) = X v`. Simplify using `only [twistSub, eval₂Hom_X', hS, ↓reduceIte]`. Rewrite using `[hT]`. Simplify using `only [flt_Th, eval₂Hom_X', hS, ↓reduceIte]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flt_Th_twist {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n) :
     (MvPolynomial.map (twistSub (R := R) LL S j)).comp (flt_tay R (ι × Fin n)) =
@@ -956,17 +940,17 @@ theorem flt_Th_twist {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Lette
       simp only [flt_Th, eval₂Hom_X', hS, ↓reduceIte]
 
 /- English proof (translation)
-Establish `hmon2 : ∀ (u : ι × Fin n) (a : GLLaurent R n), a ∈ (flt_L (GLCoord R n) e).F (0 - flt_cost LL S (!bm) (Finsupp.single u 1)) → C (C a) * X u ∈ (flt_lift (laurentCoeffFiltration R n (ι × Fin n) e) (flt_cost LL S (!bm))).F 0`. Introduce `u a ha`. Rewrite using `[MvPolynomial.C_mul_X_eq_monomial]`. Conclude with `flt_monomial_mem (flt_C_mem ha)`. Use `flt_hom_mem (flt_L (GLCoord R n) e) _ (flt_Th LL S j) 0 (fun s b hb => ?_) (fun w => ?_) hP` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : flt_Th LL S j (C b) = C (C b)`. Simplify using `only [flt_Th, eval₂Hom_C, RingHom.coe_comp, Function.comp_apply]`. Rewrite using `[e1]`. Conclude with `flt_C_mem (flt_C_mem hb)`. Rewrite using `[AddMonoidHom.zero_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [flt_Th, eval₂Hom_X']`. Establish `hX1 : (X w : MvPolynomial (ι × Fin n) (GLLaurent R n)) ∈ (laurentCoeffFiltration R n (ι × Fin n) e).F 0`. Establish `h1` using `flt_monomial_mem (Fl := flt_L (GLCoord R n) e) (wt := 0) (t := 0) (m := Finsupp.single w 1) (a := 1) (by simpa using (flt_L (GLCoord R n) e).one_mem)`. Rewrite `h1` using `[← MvPolynomial.C_mul_X_eq_monomial, _root_.map_one, one_mul]`. Then use the resulting hypothesis. Use `AddSubgroup.add_mem _ (flt_C_mem hX1) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hS : w.1 ∈ S`. Rewrite using `[if_pos hS]`. Consider the cases of `hv : LL.vec w.1`. Rewrite using `[if_neg Bool.false_ne_true]`. Use `AddSubgroup.sum_mem _ fun c _ => hmon2 _ _ (flt_twistMat_mem R n j 1 e _ ?_ ?_ _ _)` and prove the remaining obligations.
+Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `all_goals rw [flt_cost_single]; rcases h with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> simp [hS, hv]`. Rewrite using `[if_pos rfl]`. Use `AddSubgroup.sum_mem _ fun c _ => hmon2 _ _ (flt_twistMat_mem R n j (-1) e _ ?_ ?_ _ _)` and prove the remaining obligations. Apply the tactic sequence `all_goals rw [flt_cost_single]; rcases h with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> simp [hS, hv]`. Rewrite using `[if_neg hS]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (1 : GLLaurent R n) ∈ (flt_L (GLCoord R n) e).F (0 - flt_cost LL S (!bm) (Finsupp.single w 1))`. Rewrite using `[flt_cost_single, if_neg (fun h' => hS h'.1), sub_zero]`. Conclude with `(flt_L _ e).one_mem`. Simplify using `using hmon2 w 1 h1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem flt_Th_mem {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
     {e : ℤ} {bm : Bool} (h : flt_compat e bm) {t : ℤ} {P : MvPolynomial (ι × Fin n) (GLLaurent R n)}
@@ -1006,9 +990,9 @@ theorem flt_Th_mem {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters
       simpa using hmon2 w 1 h1
 
 /- English proof (translation)
-Establish `h1` using `flt_Th_mem LL S j h hF`. Establish `e1 : flt_Th LL S j (twistSub LL S j F) = MvPolynomial.map (twistSub LL S j) (flt_tay R (ι × Fin n) F)`. Establish `h2` using `RingHom.congr_fun (flt_Th_twist (R := R) LL S j) F`. Simplify `h2.symm` using `only [RingHom.comp_apply]`. Rewrite `h1` using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `(flt_lift_mem.1 h1) be`. Rewrite `h2` using `[MvPolynomial.coeff_map, flt_tay_coeff]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem flt_divDer_mem {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
     {e : ℤ} {bm : Bool} (h : flt_compat e bm) {t : ℤ} {F : MvPolynomial (ι × Fin n) R}
@@ -1024,7 +1008,7 @@ theorem flt_divDer_mem {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Let
   rwa [MvPolynomial.coeff_map, flt_tay_coeff] at h2
 
 /- English proof (translation)
-Rewrite using `[_root_.map_mul]`. Establish `h1` using `(laurentCoeffFiltration R n _ e).mul_mem (flt_twist_monomial_mem (R := R) LL S j h al) (flt_divDer_mem LL S j h hF be)`. Establish `e2 : t - (flt_cost LL S bm al + flt_cost LL S (!bm) be) = -flt_cost LL S bm al + (t - flt_cost LL S (!bm) be)` using `by ring`. Rewrite using `[e2]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flt_op_mem {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
     {e : ℤ} {bm : Bool} (h : flt_compat e bm) {t : ℤ} {F : MvPolynomial (ι × Fin n) R}
@@ -1039,7 +1023,7 @@ theorem flt_op_mem {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters
   exact h1
 
 /- English proof (translation)
-Simplify using `only [vecDeg, Finsupp.sum]`. Apply the tactic sequence `exact Finset.sum_le_sum fun v _ => by split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem flt_vecDeg_le {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (al : ι × Fin n →₀ ℕ) :
     vecDeg LL S al ≤ al.sum fun _ k => k := by
@@ -1047,7 +1031,7 @@ theorem flt_vecDeg_le {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (al :
   exact Finset.sum_le_sum fun v _ => by split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [covDeg, Finsupp.sum]`. Apply the tactic sequence `exact Finset.sum_le_sum fun v _ => by split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem flt_covDeg_le {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (al : ι × Fin n →₀ ℕ) :
     covDeg LL S al ≤ al.sum fun _ k => k := by
@@ -1055,7 +1039,7 @@ theorem flt_covDeg_le {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (al :
   exact Finset.sum_le_sum fun v _ => by split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [covDeg, vecDeg, Finsupp.sum]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun v _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp_all`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem flt_cov_add_vec_le {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (al : ι × Fin n →₀ ℕ) :
     covDeg LL S al + vecDeg LL S al ≤ al.sum fun _ k => k := by
@@ -1065,7 +1049,7 @@ theorem flt_cov_add_vec_le {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) 
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Establish `hF` using `(flt_le_valS LL S F t).1 ht`. Establish `h1` using `flt_op_mem LL S (lastIdx n) (Or.inl ⟨rfl, rfl⟩ : flt_compat 1 false) hF al be`. Simplify using `only [flt_cost_covDeg, Bool.not_false, flt_cost_vecDeg] at h1`. Conclude with `(laurentCoeffFiltration R n _ 1).anti (by omega) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flt_op_mem_val {R : Type*} [CommRing R] {ι : Type} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     {F : MvPolynomial (ι × Fin n) R} {t : ℤ} (ht : (t : WithTop ℤ) ≤ valS LL S F) (al be : ι × Fin n →₀ ℕ)
@@ -1077,7 +1061,7 @@ theorem flt_op_mem_val {R : Type*} [CommRing R] {ι : Type} {n : ℕ} [NeZero n]
   exact (laurentCoeffFiltration R n _ 1).anti (by omega) h1
 
 /- English proof (translation)
-Establish `hF` using `(flt_lam1S_le LL S F M).1 hM`. Establish `h1` using `flt_op_mem LL S (0 : Fin n) (Or.inr ⟨rfl, rfl⟩ : flt_compat (-1) true) hF al be`. Simplify using `only [flt_cost_vecDeg, Bool.not_true, flt_cost_covDeg] at h1`. Conclude with `(laurentCoeffFiltration R n _ (-1)).anti (by omega) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flt_op_mem_lam {R : Type*} [CommRing R] {ι : Type} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     {F : MvPolynomial (ι × Fin n) R} {M : ℤ} (hM : lam1S LL S F ≤ (M : WithBot ℤ)) (al be : ι × Fin n →₀ ℕ)
@@ -1089,7 +1073,7 @@ theorem flt_op_mem_lam {R : Type*} [CommRing R] {ι : Type} {n : ℕ} [NeZero n]
   exact (laurentCoeffFiltration R n _ (-1)).anti (by omega) h1
 
 /- English proof (translation)
-Use `flt_withTop_le fun t ht => ?_` and prove the remaining obligations. Rewrite using `[flt_le_valS]`. Conclude with `flt_op_mem_val LL S ht al be N hN`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flt_op_valS {R : Type*} [CommRing R] {ι : Type} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (F : MvPolynomial (ι × Fin n) R) (al be : ι × Fin n →₀ ℕ) (N : ℕ)
@@ -1100,7 +1084,7 @@ theorem flt_op_valS {R : Type*} [CommRing R] {ι : Type} {n : ℕ} [NeZero n] (L
   exact flt_op_mem_val LL S ht al be N hN
 
 /- English proof (translation)
-Use `flt_withBot_le fun M hM => ?_` and prove the remaining obligations. Rewrite using `[flt_lam1S_le]`. Conclude with `flt_op_mem_lam LL S hM al be N hN`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flt_op_lam1S {R : Type*} [CommRing R] {ι : Type} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (F : MvPolynomial (ι × Fin n) R) (al be : ι × Fin n →₀ ℕ) (N : ℕ)
@@ -1111,7 +1095,7 @@ theorem flt_op_lam1S {R : Type*} [CommRing R] {ι : Type} {n : ℕ} [NeZero n] (
   exact flt_op_mem_lam LL S hM al be N hN
 
 /- English proof (translation)
-Unfold `DerivativeValuationBound`. Introduce `R _ ι _ LL n _ S F al be`. Conclude with `⟨flt_op_valS LL S F al be _ (add_le_add (flt_covDeg_le LL S al) (flt_vecDeg_le LL S be)), flt_op_lam1S LL S F al be _ (add_le_add (flt_vecDeg_le LL S al) (flt_covDeg_le LL S be)), flt_op_valS LL S F al be _ le_rfl, flt_op_lam1S LL S F al be _ le_rfl⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem derivative_valuation_bound (D : Formalism.BasicNotions.D7) : DerivativeValuationBound D := by
   unfold DerivativeValuationBound
@@ -1121,7 +1105,7 @@ theorem derivative_valuation_bound (D : Formalism.BasicNotions.D7) : DerivativeV
     flt_op_valS LL S F al be _ le_rfl, flt_op_lam1S LL S F al be _ le_rfl⟩
 
 /- English proof (translation)
-Simplify using `only [twistSub, eval₂Hom_C, RingHom.coe_comp, Function.comp_apply]`. Use `flt_C_mem ?_` and prove the remaining obligations. Simplify using `only [coefL, RingHom.coe_comp, Function.comp_apply]`. Conclude with `flt_L_C e _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flt_twist_C_mem {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
     (e : ℤ) (q : R) : twistSub LL S j (C q) ∈ (laurentCoeffFiltration R n (ι × Fin n) e).F 0 := by
@@ -1131,13 +1115,13 @@ theorem flt_twist_C_mem {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Le
   exact flt_L_C e _
 
 /- English proof (translation)
-Unfold `DegreeTruncationLemma`. Introduce `R _ ι _ LL n _ S c T hT q F`. Prove the components needed by the constructor for the conclusion. Use `flt_withTop_le fun t ht => ?_` and prove the remaining obligations. Rewrite using `[flt_le_valS, _root_.map_sum]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `AddSubgroup.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.smul_eq_C_mul, _root_.map_mul]`. Establish `h1` using `flt_twist_C_mem LL S (lastIdx n) 1 (q m)`. Establish `h2` using `flt_op_mem_val LL S ht m m (4 * c) ((flt_cov_add_vec_le LL S m).trans (hT m hm))`. Establish `h3` using `(laurentCoeffFiltration R n _ 1).mul_mem h1 h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[zero_add]`. Then use the resulting hypothesis. Use `flt_withBot_le fun M hM => ?_` and prove the remaining obligations. Rewrite using `[flt_lam1S_le, _root_.map_sum]`. Use `AddSubgroup.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.smul_eq_C_mul, _root_.map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `flt_twist_C_mem LL S (0 : Fin n) (-1) (q m)`. Establish `h2` using `flt_op_mem_lam LL S hM m m (4 * c) (by have h4 := flt_cov_add_vec_le LL S m; have h5 := hT m hm; omega)`. Establish `h3` using `(laurentCoeffFiltration R n _ (-1)).mul_mem h1 h2`. Rewrite `h3` using `[zero_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem degree_truncation (D : Formalism.BasicNotions.D7) : DegreeTruncationLemma D := by
   unfold DegreeTruncationLemma

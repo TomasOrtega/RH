@@ -8,15 +8,15 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt
 
 /- English proof (translation)
-Introduce `Cb`. Take `⟨Cl, _, hL⟩` from `PBE.belowTop`. Take `⟨Ct, hT⟩` from `PBE.formLimit_top Cb`. Use `⟨max Cl Ct, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P0 p f χ ε A N cut hDD hχ hε hf hfA hA hcut`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun n => PBE.cutCpt P0 p.T.base f χ ε cut hχ hε hf hcut n, ?_⟩` and prove the remaining obligations. Introduce `i w hwc hw a b`. Establish `hX : 0 ≤ ((P0.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P0.r : ℝ) + P0.k + 1) ^ 2 + (2 * (P0.r : ℝ) + P0.k + 1) ^ 3)`. Check the signs of the components of the expression. Break down `lt_trichotomy i (P0.r + 1) with hlt | heq | hgt` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Check the signs of the components of the expression. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hL (max Cl Ct) (le_max_left _ _) Wp Wq P0 p f χ ε A N cut hχ hε hf hfA hA hcut i (by omega) w hw a b`. Substitute `heq` using the available equality. Use `hT Wp Wq P0 p f χ ε A N cut hDD hχ hε hf hfA ?_ hcut w hwc hw a b` and prove the remaining obligations. Use `le_trans ?_ hA` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right (le_max_right Cl Ct) hX` as an intermediate fact.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `h0 : ∀ F, p.RR F i w a b = 0`. Introduce `F`. Unfold `KB.Pl.RR D.RRplace`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [h0]`. Conclude with `tendsto_const_nhds`.
+A detailed English derivation is pending.
 -/
 theorem limit_of_module_forms : Formalism.FourierDecayAlt.KB.FormLimit := by
   intro Cb

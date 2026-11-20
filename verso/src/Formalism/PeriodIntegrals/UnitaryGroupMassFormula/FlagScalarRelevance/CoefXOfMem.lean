@@ -12,7 +12,7 @@ section Local
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T : E}
 
 /- English proof (translation)
-Unfold `FlagG.coefX`. Conclude with `dif_pos hx`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem coefX_of_mem (F : FlagG S r T) (x : S.V) (hx : x ∈ Submodule.span E (Set.range F.e))
     (k : Fin r) : F.coefX x k = F.e_indep.repr ⟨x, hx⟩ k := by
@@ -20,7 +20,7 @@ theorem coefX_of_mem (F : FlagG S r T) (x : S.V) (hx : x ∈ Submodule.span E (S
   exact dif_pos hx
 
 /- English proof (translation)
-Rewrite using `[coefX_of_mem F _ (F.X.add_mem hx hy), coefX_of_mem F _ hx, coefX_of_mem F _ hy]`. Establish `: (⟨x + y, F.X.add_mem hx hy⟩ : Submodule.span E (Set.range F.e)) = ⟨x, hx⟩ + ⟨y, hy⟩` using `rfl`. Rewrite using `[this, map_add, Finsupp.add_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coefX_add' (F : FlagG S r T) (x y : S.V) (k : Fin r) (hx : x ∈ F.X) (hy : y ∈ F.X) :
     F.coefX (x + y) k = F.coefX x k + F.coefX y k := by
@@ -29,7 +29,7 @@ theorem coefX_add' (F : FlagG S r T) (x y : S.V) (k : Fin r) (hx : x ∈ F.X) (h
   rw [this, map_add, Finsupp.add_apply]
 
 /- English proof (translation)
-Rewrite using `[coefX_of_mem F _ (F.X.smul_mem a hx), coefX_of_mem F _ hx]`. Establish `: (⟨a • x, F.X.smul_mem a hx⟩ : Submodule.span E (Set.range F.e)) = a • ⟨x, hx⟩` using `rfl`. Rewrite using `[this, map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coefX_smul' (F : FlagG S r T) (a : E) (x : S.V) (k : Fin r) (hx : x ∈ F.X) :
     F.coefX (a • x) k = a * F.coefX x k := by
@@ -38,20 +38,20 @@ theorem coefX_smul' (F : FlagG S r T) (a : E) (x : S.V) (k : Fin r) (hx : x ∈ 
   rw [this, map_smul, Finsupp.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨j, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem e_mem_X (F : FlagG S r T) (j : Fin r) : F.e j ∈ F.X :=
   Submodule.subset_span ⟨j, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[coefX_of_mem F _ (e_mem_X F j), F.e_indep.repr_eq_single j _ rfl, Finsupp.single_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coefX_e' (F : FlagG S r T) (j k : Fin r) :
     F.coefX (F.e j) k = if j = k then 1 else 0 := by
   rw [coefX_of_mem F _ (e_mem_X F j), F.e_indep.repr_eq_single j _ rfl, Finsupp.single_apply]
 
 /- English proof (translation)
-Rewrite using `[coefX_of_mem F _ F.X.zero_mem]`. Establish `: (⟨0, F.X.zero_mem⟩ : Submodule.span E (Set.range F.e)) = 0` using `rfl`. Rewrite using `[this, map_zero, Finsupp.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coefX_zero' (F : FlagG S r T) (k : Fin r) : F.coefX 0 k = 0 := by
   rw [coefX_of_mem F _ F.X.zero_mem]
@@ -59,20 +59,20 @@ theorem coefX_zero' (F : FlagG S r T) (k : Fin r) : F.coefX 0 k = 0 := by
   rw [this, map_zero, Finsupp.zero_apply]
 
 /- English proof (translation)
-Unfold `FlagG.Xa FlagG.X`. Conclude with `Submodule.span_mono (by rintro _ ⟨i, _, rfl⟩; exact ⟨i, rfl⟩)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Xa_le_X (F : FlagG S r T) (a : ℕ) : F.Xa a ≤ F.X := by
   unfold FlagG.Xa FlagG.X
   exact Submodule.span_mono (by rintro _ ⟨i, _, rfl⟩; exact ⟨i, rfl⟩)
 
 /- English proof (translation)
-Establish `key : x ∈ F.X ∧ F.coefX x k = 0`. Unfold `FlagG.Xa at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨i, hi, rfl⟩` from `hy`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨e_mem_X F i, ?_⟩` and prove the remaining obligations. Rewrite using `[coefX_e']`. Establish `hne : i ≠ k`. Introduce `h`. Establish `: i.val < a` using `hi`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[h]`. Use linear arithmetic over natural numbers and integers. Simplify using `[hne]`. Consider the case `zero => exact ⟨F.X.zero_mem, coefX_zero' F k⟩`. Consider the case `add y z _ _ hy hz`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Conclude with `⟨F.X.add_mem hy.1 hz.1, by rw [coefX_add' F y z k hy.1 hz.1, hy.2, hz.2, add_zero]⟩`. Consider the case `smul b y _ hy`. Conclude with `⟨F.X.smul_mem b hy.1, by rw [coefX_smul' F b y k hy.1, hy.2, mul_zero]⟩`. Conclude with `key.2`.
+Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coefX_low' (F : FlagG S r T) (a : ℕ) (x : S.V) (k : Fin r) (hx : x ∈ F.Xa a)
     (hk : a ≤ k.val) : F.coefX x k = 0 := by
@@ -99,28 +99,28 @@ theorem coefX_low' (F : FlagG S r T) (a : ℕ) (x : S.V) (k : Fin r) (hx : x ∈
 end Local
 
 /- English proof (translation)
-Introduce `E _ _ _ S r T F x y k hx hy`. Conclude with `coefX_add' F x y k hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coefAdd : CoefAdd := by
   intro E _ _ _ S r T F x y k hx hy
   exact coefX_add' F x y k hx hy
 
 /- English proof (translation)
-Introduce `E _ _ _ S r T F a x k hx`. Conclude with `coefX_smul' F a x k hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coefSmul : CoefSmul := by
   intro E _ _ _ S r T F a x k hx
   exact coefX_smul' F a x k hx
 
 /- English proof (translation)
-Introduce `E _ _ _ S r T F j k`. Conclude with `coefX_e' F j k`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coefE : CoefE := by
   intro E _ _ _ S r T F j k
   exact coefX_e' F j k
 
 /- English proof (translation)
-Introduce `E _ _ _ S r T F a x k hx hk`. Conclude with `coefX_low' F a x k hx hk`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coefLow : CoefLow := by
   intro E _ _ _ S r T F a x k hx hk

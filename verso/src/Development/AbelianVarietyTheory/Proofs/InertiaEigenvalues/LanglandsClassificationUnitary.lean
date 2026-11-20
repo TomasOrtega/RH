@@ -6,15 +6,13 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL
 namespace GlobalTheory.LocGL
 
 /- English proof (translation)
-Establish `h' : ∀ Δ ∈ 𝔫, ∃ (t : ℝ) (δ : IrrGL k) (Γ : Segment k), IsLSeg Γ δ.rep ∧ IsUnitarisable δ.rep ∧ Δ = Γ.nu (t : ℂ)` using `fun Δ h =>`. Set `⟨δ, Γ, t, h⟩` to `h𝔫 Δ h`. Use the proof step `⟨t, δ, Γ, h⟩`. Use `choose! t ht using h'`. Set `r : Segment k → Segment k → Prop` to `fun a b => t b ≤ t a`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : IsTrans (Segment k) r := ⟨fun a b c h1 h2 => le_trans h2 h1⟩`. Use `haveI : Std.Total r := ⟨fun a b => le_total _ _⟩`. Take `⟨l, hl, hs⟩ : ∃ l : List (Segment k), (l : Multiset (Segment k)) = 𝔫 ∧ l.Pairwise r` from `⟨𝔫.toList.insertionSort r, (Multiset.coe_eq_coe.2 (List.perm_insertionSort r _)).trans (Multiset.coe_toList 𝔫), List.pairwise_insertionSort r _⟩`. Establish `hm : ∀ i : Fin l.length, l.get i ∈ 𝔫` using `fun i => by`. Rewrite using `[← hl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `List.get_mem l i`. Use `choose δ Γ hL hU hE using fun i : Fin l.length => ht _ (hm i)`. Establish `hF : LFactors 𝔫 (fun i : Fin l.length => (δ i).nu (t (l.get i)))`. Use `⟨fun i => (Γ i).nu (t (l.get i)), ⟨?_, fun i j hij h => ?_⟩, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← hl, ← funext hE]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify using the standard rewrite rules. Establish `h1 : t (l.get j) ≤ t (l.get i)` using `List.pairwise_iff_get.1 hs i j hij`. Use `hP _ _ _ _ (hL i) (hU i) (hL j) (hU j) _ _ h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `((hL i).tw _ (isSmoothChar_absPow _)).of_equiv ((δ i).twEquiv _ _)`.
-
-Take `⟨π, hπ⟩` from `hS k 𝔫 _ _ _ rfl hF`. Conclude with `⟨IrrGL.of π.ρ π.smooth π.irr, _, _, rfl, hF, hπ.of_equiv (IrrGL.equivOf _ _ _) (.refl _)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isL_of_unitary_twists (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [CharZero k] (hS : GlobalTheory.Published.StandardCosocleGL)

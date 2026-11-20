@@ -27,11 +27,11 @@ namespace GlobalTheory.TopConv
 variable {D : D7}
 
 /- English proof (translation)
-Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Use `⟨Finsupp.single a.1 1, fun u hu => ?_, by rw [GlobalTheory.StepComb.comb_single', one_smul]⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hu)]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `a.2`. Consider the case `zero => exact ⟨0, fun u hu => absurd hu (Finsupp.notMem_support_iff.2 rfl), GlobalTheory.StepComb.comb_zero' ψ f⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨b, hb, rfl⟩` from `hx`. Take `⟨b', hb', rfl⟩` from `hy`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨b + b', fun u hu => (Finset.mem_union.1 (Finsupp.support_add hu)).elim (hb u) (hb' u), GlobalTheory.StepComb.comb_add' ψ b b' f⟩`. Consider the case `smul a x _ hx`. Take `⟨b, hb, rfl⟩` from `hx`. Conclude with `⟨a • b, fun u hu => hb u (Finsupp.support_smul hu), GlobalTheory.StepComb.comb_smul' ψ a b f⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finComb_of_mem_span (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} {f g : WO S T → ℂ}
     (hg : g ∈ Submodule.span ℂ (Set.range fun a : {a : WO S T // a.map (infPart D) = 0} => heisO ψ S T a f)) :
@@ -53,9 +53,9 @@ theorem exists_finComb_of_mem_span (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D
     exact ⟨a • b, fun u hu => hb u (Finsupp.support_smul hu), GlobalTheory.StepComb.comb_smul' ψ a b f⟩
 
 /- English proof (translation)
-Take `⟨c, h1, h2⟩` from `(GlobalTheory.HeisComb.main D ψ S T).1 b b'`. Use `⟨c, fun w hw => ?_, h2⟩` and prove the remaining obligations. Take `⟨x, hx, y, hy, rfl⟩` from `h1 w hw`. Use extensionality with `i j`. Establish `e1` using `congrFun (congrFun (hb x hx) i) j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `e2` using `congrFun (congrFun (hb' y hy) i) j`. Simplify using `only [Matrix.map_apply, Matrix.zero_apply] at e1 e2 ⊢`. Rewrite using `[Matrix.add_apply, RingHom.map_add, e1, e2, add_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isFinComb_comp (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} {b b' : WO S T →₀ ℂ} (hb : IsFinComb b)
     (hb' : IsFinComb b') : ∃ c : WO S T →₀ ℂ, IsFinComb c ∧ ∀ f, comb ψ S T c f = comb ψ S T b (comb ψ S T b' f) := by
@@ -77,7 +77,7 @@ noncomputable section
 namespace GlobalTheory.TopConv
 
 /- English proof (translation)
-Unfold `comb`. Conclude with `Submodule.sum_mem _ fun u hu => Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨u, hb u hu⟩, rfl⟩)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem comb_mem_span {D : D7} (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} {b : WO S T →₀ ℂ} (hb : IsFinComb b)
     (f : WO S T → ℂ) :
@@ -88,15 +88,15 @@ theorem comb_mem_span {D : D7} (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} {b
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W hP j h v hv`. Establish `hLev` using `hP.bot.hyp.2.2.2.1.lev`. Take `⟨cY, hbY⟩` from `hLev.βY (j + 1) (by omega)`. Take `⟨cX', hbX⟩` from `hLev.βX`. Establish `sdY : IsSelfDualC (Yc D (j + 1)) ((pk W).ΛY (j + 1))` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hLev.βY (j + 1) (by omega))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `sdX : IsSelfDualC D.sp.X' (pk W).ΛX` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ hLev.βX`. Establish `hr : (Yc D (j + 1)).rank ≤ D.sp.X'.rank`. Rewrite using `[D.sp.Y_rank _ (min_le_right _ _), D.sp.X'_rank]`. Conclude with `Nat.add_le_add_left (Nat.mul_le_mul_right _ (min_le_right _ _)) _`. Establish `key : ∀ n (e : D.R.m - 1 = n), IsStepVecOf (pk W).ψ (pk W).θ (Yc D n) D.sp.X' (cart ((pk W).MY n)) (cart (pk W).MX) ((pk W).ΛY n) (pk W).ΛX ((pk W).βY n) (pk W).βX ((pk W).datYt W.P.A3.A.μ0 n (pk W).triv) ((pk W).chi D.R.m) ((pk W).Q W.P.A3.A.μ0) ((pk W).xiR W.P.A3.A.μ0) (Eq.rec …` using `fun n _ => WO (Yc D n) D.sp.X' → ℂ) (pk W).vacX e) (Eq.rec (motive := fun n _ => WO (Yc D n) D.sp.X' → ℂ) ((pk W).vX W.P.A3.A.μ0) e) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n e`. Substitute `e` using the available equality. Conclude with `W.Q.charW.base.chain.vX _`. Establish `hX` using `key (j + 1) (idx_top h)`. Take `⟨d₁, hd₁, e₁⟩` from `GlobalTheory.StepComb.exists_comb_of_isStepVecOf _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ sdY sdX hbY.1 hbX.1 hX`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d₂, hd₂, e₂⟩` from `GlobalTheory.StepComb.exists_comb_of_isStepVecOf _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ sdY sdX hbY.1 hbX.1 hv`. Establish `hv0 : v ≠ 0` using `(GlobalTheory.Chain.StepVac.stepVec_vac sdY sdX hr hv).2.1`. Establish `hspan` using `comb_mem_span (pk W).ψ (GlobalTheory.Fam.VacTheta.isFinComb_of_combAt hd₂) (vacT (pk W) j h)`. Rewrite `hspan` using `[← e₂]`. Establish `hvac` using `GlobalTheory.T.vacuum_mem_span_heisenbergTranslates_of_ne_zero hv.1 sdY sdX hspan hv0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hbv⟩` from `exists_finComb_of_mem_span _ hvac`. Take `⟨c, hc, hcc⟩` from `isFinComb_comp (pk W).ψ (GlobalTheory.Fam.VacTheta.isFinComb_of_combAt hd₁) hb`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[hcc, hbv]`. Conclude with `e₁.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_comb : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → ∀ (j : ℕ) (h : j + 2 * 0 + 2 = D.R.m) (v : WO (Yc D (j + 1)) D.sp.X' → ℂ), IsStepVecOf (pk W).ψ (pk W).θ (Yc D (j + 1)) D.sp.X' (cart ((pk W).MY (j + 1))) (cart (pk W).MX) ((pk W).ΛY (j + 1)) (pk W).ΛX ((pk W).βY (j + 1)) (pk W).βX ((pk W).datYt W.P.A3.A.μ0 (j + 1) (lvP W)) ((pk W).chi D.R.m) ((pk W).Q W.P.A3.A.μ0) ((pk W).xiR W.P.A3.A.μ0) (vacT (pk W) j h) v → ∃ b : WO (Yc D (j + 1)) D.sp.X' →₀ ℂ, IsFinComb b ∧ comb (pk W).ψ (Yc D (j + 1)) D.sp.X' b v = Eq.rec (motive := fun n _ => WO (Yc D n) D.sp.X' → ℂ) ((pk W).vX W.P.A3.A.μ0) (idx_top h) := by
   intro D L hT Gi Gl Kc Yd cX ex W hP j h v hv

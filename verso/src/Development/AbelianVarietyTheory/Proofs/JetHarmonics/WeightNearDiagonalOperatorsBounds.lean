@@ -7,11 +7,11 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih (fun i hi j hj => h i (Finset.mem_insert_of_mem hi) j (Finset.mem_insert_of_mem hj))]`. Establish `h0 : ⟪c a • x a, ∑ i ∈ s, c i • x i⟫_ℂ = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[inner_sum]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_left, inner_smul_right, h a (Finset.mem_insert_self _ _) i (Finset.mem_insert_of_mem hi) (fun e => ha (e ▸ hi))]`. Simplify using the standard rewrite rules. Rewrite using `[@norm_add_sq ℂ, h0, norm_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wtdiag_pyth {M : Type} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ι : Type} (T : Finset ι) (x : ι → M)
     (h : ∀ i ∈ T, ∀ j ∈ T, i ≠ j → ⟪x i, x j⟫_ℂ = 0) (c : ι → ℂ) :
@@ -32,21 +32,19 @@ theorem wtdiag_pyth {M : Type} [NormedAddCommGroup M] [InnerProductSpace ℂ M] 
     simp [mul_pow]
 
 /- English proof (translation)
-Introduce `M _ _ n ε E Λ t w hU hw`. Take `⟨T, x, hx, hsum, horth⟩` from `GlobalTheory.T.exists_orthogonal_weight_decomp_of_mem_wtNear M n ε E Λ t w hU hw`. Establish `P` using `wtdiag_pyth T x horth`. Establish `hw2 : ‖w‖ ^ 2 = ∑ ω ∈ T, ‖x ω‖ ^ 2`. Use `P (fun _ => 1)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[← hsum]`. Establish `hE : ∀ a, E a a w = ∑ ω ∈ T, (ω a : ℂ) • x ω`. Introduce `a`. Rewrite using `[hsum, map_sum]`. Conclude with `Finset.sum_congr rfl fun ω hω => (hx ω hω).2 a`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hE2 : ∀ a, ‖E a a w‖ ^ 2 = ∑ ω ∈ T, ω a ^ 2 * ‖x ω‖ ^ 2`. Introduce `a`. Rewrite using `[hE a, P]`. Use `Finset.sum_congr rfl fun ω _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, sq_abs]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `m hm`. Repeatedly rewrite using `[hE2]`. Rewrite using `[Finset.sum_comm, hw2, Finset.mul_sum]`. Use `Finset.sum_le_sum fun ω hω => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hm ω (hx ω hω).1) (sq_nonneg _)`. Introduce `a ζ d hd h`. Establish `e : ζ • w + E a a w = ∑ ω ∈ T, (ζ + (ω a : ℂ)) • x ω`. Rewrite using `[hE a]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [hsum, Finset.smul_sum]`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun ω _ => (add_smul _ _ _).symm`. Rewrite using `[e, P, hw2, Finset.mul_sum]`. Use `Finset.sum_le_sum fun ω hω => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_le_mul_of_nonneg_right (pow_le_pow_left₀ hd (h ω (hx ω hω).1) 2) (sq_nonneg _)`. Introduce `a D h`. Rewrite using `[hE2, hw2, Finset.mul_sum]`. Use `Finset.sum_le_sum fun ω hω => ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right ?_ (sq_nonneg _)` and prove the remaining obligations.
-
-Rewrite using `[← sq_abs]`. Conclude with `pow_le_pow_left₀ (abs_nonneg _) (h ω (hx ω hω).1) 2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtNear_diag_bounds : ∀ (M : Type) [NormedAddCommGroup M] [InnerProductSpace ℂ M] (n : ℕ) (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (Λ : Fin n → ℝ) (t : ℝ) (w : M), IsUnitary ε E → w ∈ WtNear E Λ t → (∀ m : ℝ, (∀ ω : Fin n → ℝ, ∑ a, |ω a - Λ a| ≤ t → m ≤ ∑ a, ω a ^ 2) → m * ‖w‖ ^ 2 ≤ ∑ a, ‖E a a w‖ ^ 2) ∧ (∀ (a : Fin n) (ζ : ℂ) (d : ℝ), 0 ≤ d → (∀ ω : Fin n → ℝ, ∑ a, |ω a - Λ a| ≤ t → d ≤ ‖ζ + (ω a : ℂ)‖) → d ^ 2 * ‖w‖ ^ 2 ≤ ‖ζ • w + E a a w‖ ^ 2) ∧ ∀ (a : Fin n) (D : ℝ), (∀ ω : Fin n → ℝ, ∑ a, |ω a - Λ a| ≤ t → |ω a| ≤ D) → ‖E a a w‖ ^ 2 ≤ D ^ 2 * ‖w‖ ^ 2 := by
   intro M _ _ n ε E Λ t w hU hw

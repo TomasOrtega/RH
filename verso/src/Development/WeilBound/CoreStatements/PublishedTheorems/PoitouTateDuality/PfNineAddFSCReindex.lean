@@ -18,14 +18,14 @@ def reindexAdd {α β : Type} (P : β → Type) [∀ b, AddCommGroup (P b)] (e :
       simp only [Equiv.toFun_as_coe, Pi.add_apply, Equiv.piCongrLeft_apply_apply] }
 
 /- English proof (translation)
-The claim follows from `Equiv.piCongrLeft_apply_apply P e f a`.
+A detailed English derivation is pending.
 -/
 theorem reindexAdd_apply {α β : Type} (P : β → Type) [∀ b, AddCommGroup (P b)] (e : α ≃ β)
     (f : ∀ a, P (e a)) (a : α) : reindexAdd P e f (e a) = f a :=
   Equiv.piCongrLeft_apply_apply P e f a
 
 /- English proof (translation)
-Establish `h` using `reindexAdd_apply P e ((reindexAdd P e).symm g) a`. Rewrite `h` using `[AddEquiv.apply_symm_apply]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reindexAdd_symm_apply {α β : Type} (P : β → Type) [∀ b, AddCommGroup (P b)] (e : α ≃ β)
     (g : ∀ b, P b) (a : α) : (reindexAdd P e).symm g a = g (e a) := by
@@ -38,7 +38,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [∀ v, IsTopologicalGroup (Hv v)] (φ : ∀ v, Hv v →ₜ* G)
 
 /- English proof (translation)
-Rewrite using `[ptLocalDualMap_apply]`. Use `(Fintype.sum_equiv e _ _ (fun k => ?_)).symm` and prove the remaining obligations. Rewrite using `[reindexAdd_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ptLocalDualMap_reindex [Fintype ι] {κ : Type} [Fintype κ] (e : κ ≃ ι)
     (D : Rep.{0} (ULift.{0} ℤ) G) [IsDiscreteRep D] (M : Rep.{0} (ULift.{0} ℤ) G) [IsDiscreteRep M]
@@ -53,7 +53,7 @@ theorem ptLocalDualMap_reindex [Fintype ι] {κ : Type} [Fintype κ] (e : κ ≃
   rw [reindexAdd_apply]
 
 /- English proof (translation)
-Rewrite using `[reindexAdd_symm_apply, ptGlobalToLocal_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ptGlobalToLocal_reindex {κ : Type} (e : κ ≃ ι) (M : Rep.{0} (ULift.{0} ℤ) G) [IsDiscreteRep M]
     (r : ℕ) (x : cohomology M r) (k : κ) :
@@ -62,7 +62,7 @@ theorem ptGlobalToLocal_reindex {κ : Type} (e : κ ≃ ι) (M : Rep.{0} (ULift.
   rw [reindexAdd_symm_apply, ptGlobalToLocal_apply]
 
 /- English proof (translation)
-Apply `(reindexAdd (fun v => cohomology (Rep.res (φ v).toMonoidHom M) r) e).symm.injective` to reduce the goal to its premises. Rewrite using `[AddEquiv.symm_apply_apply]`. Use function extensionality and compare the values at `k`. Rewrite using `[ptGlobalToLocal_reindex, sq]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem locSq_reindex {κ : Type} (e : κ ≃ ι) (M : Rep.{0} (ULift.{0} ℤ) G) [IsDiscreteRep M] (r : ℕ)
     {X : Type} [AddCommGroup X] {Xk : κ → Type} [∀ k, AddCommGroup (Xk k)]
@@ -77,7 +77,7 @@ theorem locSq_reindex {κ : Type} (e : κ ≃ ι) (M : Rep.{0} (ULift.{0} ℤ) G
   rw [ptGlobalToLocal_reindex, sq]
 
 /- English proof (translation)
-Rewrite using `[ptLocalDualMap_reindex, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← hQ, hres, AddEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem trSq_reindex [Fintype ι] {κ : Type} [Fintype κ] (e : κ ≃ ι)
     (D : Rep.{0} (ULift.{0} ℤ) G) [IsDiscreteRep D] (M : Rep.{0} (ULift.{0} ℤ) G) [IsDiscreteRep M]

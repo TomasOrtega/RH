@@ -22,7 +22,7 @@ def IsGalConj {E : Type} [Field E] [NumberField E] (s : ℂ ≃+* ℂ) (w : ℝ)
   ∀ (P : HeightOneSpectrum (𝓞 E)) (k : Eˣ), twVal χ' w P k = s (twVal χ w P k)
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem isGalConj_refl {E : Type} [Field E] [NumberField E] (w : ℝ) (χ : Formalism.L2.Host.HChar E) :
     IsGalConj (RingEquiv.refl ℂ) w χ χ := fun _ _ => rfl
@@ -33,7 +33,7 @@ def IsEmbOverK (σ : D.what₂.LL →+* ℂ) (s : ℂ ≃+* ℂ) : Prop :=
   (∀ a, σ a = s (D.what₂.embLL a)) ∧ ∀ x : D.host.E, x ∈ D.host.K → σ (D.embE x) = D.what₂.embLL (D.embE x)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => rfl, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isEmbOverK_base : IsEmbOverK D D.what₂.embLL (RingEquiv.refl ℂ) := ⟨fun _ => rfl, fun _ _ => rfl⟩
 

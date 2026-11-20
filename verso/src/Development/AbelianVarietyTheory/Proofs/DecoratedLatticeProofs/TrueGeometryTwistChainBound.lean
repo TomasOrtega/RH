@@ -22,7 +22,7 @@ namespace GlobalTheory.TopVol.InKConj
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `a ha`. Rewrite `ha`, the goal using `[idAt, Submodule.mem_inf, Submodule.mem_iInf]`. Conclude with `⟨ha.1, fun w => ha.2 ⟨w.1, fun h => w.2 (h ▸ hv)⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem idAt_le_of {P : Pl D → Prop} {v : Pl D} (hv : P v) : idAt D (· = v) ≤ idAt D P := by
   intro a ha
@@ -30,7 +30,7 @@ theorem idAt_le_of {P : Pl D → Prop} {v : Pl D} (hv : P v) : idAt D (· = v) �
   exact ⟨ha.1, fun w => ha.2 ⟨w.1, fun h => w.2 (h ▸ hv)⟩⟩
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hy' : ∀ i, y i ∈ idAt D P` using `fun i => idAt_le_of hv (hy i)`. Rewrite using `[KOpen.mem_latV_iff V M _ y hy, KOpen.mem_latV_iff V M _ _ (KOpen.supp_mulVec V _ g hy), ← KOpen.mem_latV_iff V M P y hy', ← KOpen.mem_latV_iff V M P _ (KOpen.supp_mulVec V P g hy')]`. Conclude with `h y hy'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moves_at {V : HSp D} {g : GA D V} {M : Lat V} {P : Pl D → Prop} (h : Moves V g M M P) {v : Pl D} (hv : P v) :
     Moves V g M M (· = v) := by
@@ -41,17 +41,13 @@ theorem moves_at {V : HSp D} {g : GA D V} {M : Lat V} {P : Pl D → Prop} (h : M
   exact h y hy'
 
 /- English proof (translation)
-Use `haveI : Submodule.IsLattice D.host.E Λ := hΛ.1`. Establish `hfg : Λ.FG` using `Submodule.IsLattice.fg (A := D.host.E)`. Take `⟨hκf, hκ1⟩` from `(KOpen.mem_grpAt_iff V P κ).1 hκ.1`. Establish `hy : t⁻¹ * κ * t ∈ GfC V` using `(GfC V).mul_mem ((GfC V).mul_mem ((GfC V).inv_mem ht) hκf) ht`. Establish `hproj : ∀ v, ¬ P v → GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v (t⁻¹ * κ * t) = 1` using `fun v hv => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, hκ1 v hv, mul_one, map_inv, inv_mul_cancel]`. Establish `hSt : Lev.finE V (t⁻¹ * κ * t) ∈ St β`. Rewrite using `[GlobalTheory.ChainOnto.LStab.finE_mem_St_iff_stabLoc D V β Λ hβ]`. Introduce `v`. Distinguish the cases in `hv : P v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GlobalTheory.StMoves.moves_iff_stabLoc V Λ hfg v]`. Conclude with `(GlobalTheory.StMoves.moves_conj_iff κ (hm v hv)).2 (moves_at hκ.2 hv)`. Rewrite using `[hproj v hv]`. Conclude with `Subgroup.one_mem _`. Establish `hred : ∀ PP ∈ Ld.Pg, redFn β PP (Lev.finE V (t⁻¹ * κ * t)) = 1` using `fun PP hP => GlobalTheory.ChainOnto.RedOne.redFn_eq_one D V β _ PP hSt (hproj _ (hPg PP hP))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨hy, mem_lev.2 ⟨mem_parLev.2 ⟨GlobalTheory.LevSplit.finE_mem_UA V _, hSt, fun PP hP => ?_, fun PP hP => ?_⟩, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hred PP hP]`. Conclude with `Subgroup.one_mem _`. Rewrite `hP` using `[hQ]`. Conclude with `absurd hP (Finset.notMem_empty _)`.
-
-Establish `e : rTup β Ld (Lev.finE V (t⁻¹ * κ * t)) = 1`. Use function extensionality and compare the values at `PP`. Use `show upperLeftBlock Ld.hr (redFn β PP.1 _) = 1`. Rewrite using `[hred PP.1 PP.2]`. Conclude with `blockDiagonalExtendByOnePrimeField_one _ _`.
-
-Rewrite using `[e]`. Conclude with `Subgroup.one_mem _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_levG (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Λ M : Lat V) (Ld : LevDat D.host.E ℂ V.rank)
     (P : Pl D → Prop) (t κ : GA D V) (hβ : IsFrame β Λ) (hΛ : IsSelfDualC V Λ) (ht : t ∈ GfC V)
@@ -87,11 +83,9 @@ end GlobalTheory.TopVol.InKConj
 namespace GlobalTheory.TopVol.InKConj
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat t J hJ κ hκ`. Establish `hsd` using `W.Q.charW.base.lev.βX`. Set `row : ∀ t, RowCh (pk W) (lvP W) u a.g t` to `fun t => { vP := fun _ _ => 0, vT := fun _ _ _ => 0 sBF := fun j ρ h => (GlobalTheory.Unf.Inhab.nonempty_stepBF W.Q.stdChar _ _).some sFB := fun j σ h => (GlobalTheory.Unf.Inhab.nonempty_stepFB W.Q.stdChar _ _).some io := fun _ => 0, ioT := fun _ _ => 0 }`. Set `col` to `fun t : W.P.T => (GlobalTheory.Fam.Check.colCh_nonempty (D := I.rec7 l Z) (u := u) ((I.rec7 l Z).chTw u (W.P.I.tup t))).choose`. Establish `tie` using `(ha.tie row col).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hNT : a.v.NT = a.g.LT` using `tie.bT.2`. Establish `hm : ∀ v, (fun p => ∃ i, (J.G i).q.v = p) v → Moves _ a.g.bT (pk W).ΛX a.v.NT (· = v)` using `fun v _ => by`. Rewrite using `[hNT]`. Conclude with `tie.movesT _`. Rewrite using `[mem_levSph]`.
-
-Conclude with `conj_mem_levG _ (pk W).βX (pk W).ΛX a.v.NT (datSph W) _ a.g.bT κ (hsd.elim fun _ h => h.1) (GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame _ _ _ _ _ hsd) ha.top.2.1 hm rfl (fun PP hP ⟨i, hi⟩ => GlobalTheory.Fam.qj_place_ne_lev W hW u a ha t J hJ i PP (Or.inr ((hW.lev.2.1 PP …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inK_mem_levSph : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ (t : W.P.T) (J : QJ a t), J.Reads → ∀ κ, InK (I.rec7 l Z).sp.X' a.v.NT (fun p => ∃ i, (J.G i).q.v = p) κ → κ ∈ levSph W a.g.bT := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat t J hJ κ hκ

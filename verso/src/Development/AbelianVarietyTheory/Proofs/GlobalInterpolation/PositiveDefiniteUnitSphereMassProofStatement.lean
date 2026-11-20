@@ -9,7 +9,7 @@ open MeasureTheory Matrix Filter Topology Formalism.BasicNotions Formalism.MainN
 open scoped ENNReal NNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SphereMassProof.sphereMass | exact GlobalTheory.SphereMassProof.sphereMass | (intros; apply GlobalTheory.SphereMassProof.sphereMass <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.positiveDefiniteUnitSphereMass_proof : GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.SphereMass := by
   first | exact @GlobalTheory.SphereMassProof.sphereMass | exact GlobalTheory.SphereMassProof.sphereMass | (intros; apply GlobalTheory.SphereMassProof.sphereMass <;> assumption)

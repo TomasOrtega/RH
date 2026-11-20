@@ -14,15 +14,15 @@ noncomputable section
 namespace GlobalTheory.TwistLiftW
 
 /- English proof (translation)
-Introduce `D X E Y i j b g κ h`. Establish `P` using `Y.Z.pin`. Establish `rW : (Wc D j).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) j.2`. Establish `hβ` using `P.frT i j b`. Establish `hP` using `P.Pg i j b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tri : ∀ (PP : Pl D.host.E) (r t : ℕ), r = (Wc D j).rank → ∀ x : GL (Fin (Wc D j).rank) (kP PP), x ∈ blockTri (blkOf r t)` using `fun PP r t hr x => mem_blockTri.2 fun a c hac => by`. Establish `ha : a.val < r` using `lt_of_lt_of_eq a.2 hr.symm`. Establish `e : blkOf r t a = 0` using `if_pos ha`. Conclude with `absurd (lt_of_lt_of_eq hac e) (Nat.not_lt_zero _)`. Use `⟨h.1, mem_parLev.2 ⟨parLev_UA h.2.1, ?_, fun PP _ => tri PP _ _ rfl _, fun PP hPP => absurd hPP (Finset.notMem_empty _)⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hβ]`. Conclude with `parLev_St h.2.1`. Use function extensionality and compare the values at `PP`. Take `⟨PP, hPP⟩` from `PP`. Establish `hPP' : PP ∈ X.R.Pg` using `hP ▸ hPP`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Units.ext (Matrix.ext fun a c => ?_)` and prove the remaining obligations. Establish `e1` using `P.grp i j b (X.cG (X.R.eG g)) PP hPP hPP' a c`. Rewrite `e1` using `[MulEquiv.symm_apply_apply]`. Use `Eq.trans ?_ e1.symm` and prove the remaining obligations. Rewrite using `[← h.2.2, hβ]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `upper_block_val_submatrix (le_refl _) (blockTri_blkOf_le _ 1 (tri PP _ 1 rfl (redFn (X.R.βW j) PP (Lev.finE (Wc D j) κ))))`. Establish `e3` using `upper_block_val_submatrix rW.ge (blockTri_blkOf_le _ 1 (tri PP _ 1 rW.symm (redFn (X.R.βW j) PP (Lev.finE (Wc D j) κ))))`. Conclude with `(congrFun (congrFun e2 a) c).trans (congrFun (congrFun e3 (Fin.cast rW a)) (Fin.cast rW c)).symm`.
+A detailed English derivation is pending.
 -/
 theorem isLevelLift_base_of_realisation_lift : ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool)
     (g : X.Γ) (κ : GA D (Wc D j)),

@@ -24,15 +24,13 @@ namespace UpperTheory.ConvolutionTheory.Loc.NearIdentityDescent
 open UpperTheory.ConvolutionTheory.Loc.BallG
 
 /- English proof (translation)
-Use `⟨fun s => ?_, HasCompactSupport.intro (hU.image hp) h2⟩` and prove the remaining obligations. Rewrite using `[← isClosed_compl_iff, ← Set.preimage_compl]`. Generalize the expression as in `sᶜ = t`. Establish `hc : IsClosed (a ⁻¹' t)`. Rewrite using `[← isOpen_compl_iff, ← Set.preimage_compl]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha _`. Establish `e : f ⁻¹' t = p '' (U ∩ a ⁻¹' t) ∪ ((p '' U)ᶜ ∩ {_y | (0 : ℂ) ∈ t})`. Use extensionality with `y`. Distinguish the cases in `hy : y ∈ p '' U`. Take `⟨u, hu, rfl⟩` from `hy`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `Or.inl ⟨u, ⟨hu, by rwa [Set.mem_preimage, h1 u hu] at h⟩, rfl⟩`. Introduce and unpack `(⟨u', ⟨hu', h⟩, e⟩ | ⟨h, -⟩)`. Rewrite using `[Set.mem_preimage, ← e, h1 u' hu']`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the first alternative. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Conclude with `absurd ⟨u, hu, rfl⟩ h`. Rewrite using `[Set.mem_preimage, h2 y hy]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => Or.inr ⟨hy, h⟩`.
-
-Introduce and unpack `(⟨u', ⟨hu', -⟩, e⟩ | ⟨-, h⟩)`. Conclude with `absurd ⟨u', hu', e⟩ hy`. Conclude with `h`. Rewrite using `[e]`. Conclude with `((hU.inter_right hc).image hp).isClosed.union (ho.isClosed_compl.inter isClosed_const)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. Prove the second alternative. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sb_of_push {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] [T2Space Y] {U : Set X} (hU : IsCompact U)
     {p : X → Y} (hp : Continuous p) (ho : IsOpen (p '' U)) {a : X → ℂ} (ha : IsLocallyConstant a) {f : Y → ℂ}
@@ -64,9 +62,9 @@ private theorem sb_of_push {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y
   exact ((hU.inter_right hc).image hp).isClosed.union (ho.isClosed_compl.inter isClosed_const)
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `u₀`. Establish `h : ∀ᶠ u in nhds u₀, ∀ κ ∈ K, φ (κ⁻¹ * u * θ κ) = φ (κ⁻¹ * u₀ * θ κ)`. Use `hK.eventually_forall_of_forall_eventually fun κ _ => ?_` and prove the remaining obligations. Establish `h1` using `(hφ.comp_continuous (f := fun z : G × G => z.2⁻¹ * z.1 * θ z.2) (by fun_prop)).eventually_eq (u₀, κ)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `(hφ.comp_continuous (f := fun z : G × G => z.2⁻¹ * u₀ * θ z.2) (by fun_prop)).eventually_eq (u₀, κ)`. Use `filter_upwards [h1, h2] with z hz1 hz2`. Conclude with `hz1.trans hz2.symm`. Use `filter_upwards [h] with u hu`. Conclude with `setIntegral_congr_fun hm hu`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem avg_locConst {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     (μ : Measure G) {θ : G → G} (hθ : Continuous θ) {K : Set G} (hK : IsCompact K) (hm : MeasurableSet K) {φ : G → ℂ}
@@ -83,14 +81,14 @@ private theorem avg_locConst {G : Type} [Group G] [TopologicalSpace G] [IsTopolo
   exact setIntegral_congr_fun hm hu
 
 /- English proof (translation)
-Simplify using `[quotIntegral, h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem quot_zero {G : Type} [Group G] [MeasurableSpace G] (μ : Measure G) (H : Subgroup G) (ν : Measure H) {F : G → ℂ}
     (h : ∀ g, F g = 0) : quotIntegral μ H ν F = 0 := by
   simp [quotIntegral, h]
 
 /- English proof (translation)
-Unfold `quotIntegral`. Use `split_ifs`. Rewrite using `[← integral_const_mul]`. Simplify using `only [mul_assoc]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem quot_const_mul {G : Type} [Group G] [MeasurableSpace G] (μ : Measure G) (H : Subgroup G) (ν : Measure H) (c : ℂ)
     (F : G → ℂ) : quotIntegral μ H ν (fun g => c * F g) = c * quotIntegral μ H ν F := by
@@ -105,23 +103,23 @@ section Alg
 variable {k E : Type} [Field k] [Field E] [Algebra k E] {n : ℕ}
 
 /- English proof (translation)
-Introduce `x y h` and use `by ext i j exact (algebraMap k E).injective (congrArg (fun g : GL (Fin n) E => (g : Matrix (Fin n) (Fin n) E) i j) h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem incl_inj : Function.Injective (incl : GL (Fin n) k → GL (Fin n) E) := fun x y h => by
   ext i j
   exact (algebraMap k E).injective (congrArg (fun g : GL (Fin n) E => (g : Matrix (Fin n) (Fin n) E) i j) h)
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `σ.commutes _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem sigma_incl (σ : E ≃ₐ[k] E) (y : GL (Fin n) k) : sigmaGL σ (incl y : GL (Fin n) E) = incl y := by
   ext i j
   exact σ.commutes _
 
 /- English proof (translation)
-Unfold `normGL`. Proceed by induction on `Module.finrank k E with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[twNorm_succ, ih, pow_succ y, map_mul]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `clear ih`. Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih => rw [pow_succ_apply, sigma_incl, ih]`.
+Reduce the equality to equality of the corresponding arguments. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem norm_incl (σ : E ≃ₐ[k] E) (y : GL (Fin n) k) :
     normGL σ (incl y : GL (Fin n) E) = incl (y ^ Module.finrank k E) := by
@@ -137,7 +135,7 @@ private theorem norm_incl (σ : E ≃ₐ[k] E) (y : GL (Fin n) k) :
     | succ m ih => rw [pow_succ_apply, sigma_incl, ih]
 
 /- English proof (translation)
-Establish `e : ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) = (γ : Matrix (Fin n) (Fin n) k).map (algebraMap k E)` using `rfl`. Rewrite using `[e, Matrix.charpoly_map, Polynomial.separable_map]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem sep_incl (γ : GL (Fin n) k) :
     ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).charpoly.Separable ↔ IsRegSemisimple γ := by
@@ -146,30 +144,30 @@ private theorem sep_incl (γ : GL (Fin n) k) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem sep_conj (x h : GL (Fin n) E) : ((h * x * h⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).charpoly =
     (x : Matrix (Fin n) (Fin n) E).charpoly := by
   rw [Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]
 
 /- English proof (translation)
-The claim follows from `Units.ext (UpperTheory.V.Z.Tf.Orb.centComm E n a x y ha (congrArg Units.val hx) (congrArg Units.val hy))`.
+A detailed English derivation is pending.
 -/
 private theorem comm_of_sep {a x y : GL (Fin n) E} (ha : (a : Matrix (Fin n) (Fin n) E).charpoly.Separable)
     (hx : x * a = a * x) (hy : y * a = a * y) : x * y = y * x :=
   Units.ext (UpperTheory.V.Z.Tf.Orb.centComm E n a x y ha (congrArg Units.val hx) (congrArg Units.val hy))
 
 /- English proof (translation)
-Rewrite using `[← sigmaGL_pow, ← IsGalois.card_aut_eq_finrank, pow_card_eq_one', sigmaGL_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem theta_pow [FiniteDimensional k E] [IsGalois k E] (σ : E ≃ₐ[k] E) :
     (sigmaGL σ : Monoid.End (GL (Fin n) E)) ^ Module.finrank k E = 1 := by
   rw [← sigmaGL_pow, ← IsGalois.card_aut_eq_finrank, pow_card_eq_one', sigmaGL_one]
 
 /- English proof (translation)
-Rewrite using `[mem_twCent, mem_twCent, twConj, map_mul, map_mul, map_inv]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem mem_twCent_conj {G : Type} [Group G] (θ : Monoid.End G) (δ g x : G) :
     x ∈ twCent θ δ ↔ g⁻¹ * x * g ∈ twCent θ (twConj θ g δ) := by
@@ -194,7 +192,7 @@ variable {k E : Type} [Field k] [CharZero k] [ValuativeRel k] [TopologicalSpace 
 
 include hr in
 /- English proof (translation)
-Apply `incl_inj (E := E)` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, map_inv]`. Use `rootConj E n _ r hr _ hu _ hu' _ ?_` and prove the remaining obligations. Rewrite using `[← map_pow, ← map_pow, ← h, map_mul, map_mul, map_inv]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem root_conj {u u' y : GL (Fin n) k} (hu : (incl u : GL (Fin n) E) ∈ ball n r) (hu' : (incl u' : GL (Fin n) E) ∈ ball n r)
     (h : y⁻¹ * u ^ Module.finrank k E * y = u' ^ Module.finrank k E) : y⁻¹ * u * y = u' := by
@@ -205,7 +203,7 @@ private theorem root_conj {u u' y : GL (Fin n) k} (hu : (incl u : GL (Fin n) E) 
 
 include hgen hr in
 /- English proof (translation)
-Take `⟨hc, -, hb⟩` from `bridge k E σ`. Take `⟨x, hx⟩` from `((hb n).2.2.1 hgen ((incl y)⁻¹ * g * incl y')).mp (rigidNear E n σ _ hc r hr _ hu _ hu' (sigma_incl σ u) (sigma_incl σ u') _ (by show _ * _ * sigmaGL σ _ = _`. Simplify using `only [map_mul, map_inv, sigma_incl] at h ⊢`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨y * x * y'⁻¹, by rw [map_mul, map_mul, map_inv, hx]; group⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Supply the required witnesses or components.
 -/
 private theorem rigid {u u' y y' : GL (Fin n) k} (hu : (incl u : GL (Fin n) E) ∈ ball n r) (hu' : (incl u' : GL (Fin n) E) ∈ ball n r)
     {g : GL (Fin n) E} (h : g⁻¹ * incl (y * u * y⁻¹) * sigmaGL σ g = incl (y' * u' * y'⁻¹)) : ∃ x : GL (Fin n) k, incl x = g := by
@@ -220,7 +218,7 @@ private theorem rigid {u u' y y' : GL (Fin n) k} (hu : (incl u : GL (Fin n) E) �
 
 include hgen hr in
 /- English proof (translation)
-Take `⟨hc, -, hb⟩` from `bridge k E σ`. Take `⟨κ, hκ, u, hu, hf, e⟩` from `openNear E n σ _ hc r r hr le_rfl 1 (fun i j => by simp) (map_one _) g hg`. Take `⟨u, rfl⟩` from `((hb n).2.2.1 hgen u).mp hf`. Rewrite `e` using `[one_mul, one_mul]`. Conclude with `⟨κ, hκ, u, hu, e⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem near {g : GL (Fin n) E} (hg : g ∈ ball n (r * valuation E (Module.finrank k E : E))) :
     ∃ κ ∈ ball n r, ∃ u : GL (Fin n) k, (incl u : GL (Fin n) E) ∈ ball n r ∧ g = κ⁻¹ * incl u * sigmaGL σ κ := by
@@ -232,13 +230,13 @@ private theorem near {g : GL (Fin n) E} (hg : g ∈ ball n (r * valuation E (Mod
 
 include hgen hr in
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_twCent, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨x, rfl⟩` from `rigid hgen hr hu hu h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨x, ?_, rfl⟩` and prove the remaining obligations. Rewrite `h` using `[sigma_incl, ← map_inv, ← map_mul, ← map_mul]`. Establish `h1` using `incl_inj h`. Rewrite using `[Subgroup.mem_centralizer_singleton_iff, ← conj_pow]`. Use `(Commute.pow_right ?_ _).eq` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨x, hx, rfl⟩`. Rewrite `hx` using `[Subgroup.mem_centralizer_singleton_iff]`. Establish `h1` using `root_conj hr hu hu (y := y⁻¹ * x * y) (by`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[sigma_incl, ← map_inv, ← map_mul, ← map_mul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation.
 -/
 private theorem cent_eq {u : GL (Fin n) k} (hu : (incl u : GL (Fin n) E) ∈ ball n r) (y : GL (Fin n) k) :
     twCent (sigmaGL σ) (incl (y * u * y⁻¹) : GL (Fin n) E) =
@@ -267,17 +265,15 @@ private theorem cent_eq {u : GL (Fin n) k} (hu : (incl u : GL (Fin n) E) ∈ bal
 
 include hgen hr in
 /- English proof (translation)
-Take `⟨hc, -, hb⟩` from `bridge k E σ`. Establish `hj` using `(hb n).2.2.2.1`. Use `haveI := (UpperTheory.V.Z.Tf.Orb.gLTop k n).2.2.1`. Establish `hr1 : r < 1` using `hr.trans_le (valuation_natCast_le_one _)`. Set `f : GL (Fin n) k → ℂ` to `fun γ => if h : ∃ u : GL (Fin n) k, (incl u : GL (Fin n) E) ∈ ball n r ∧ u ^ Module.finrank k E = γ then a h.choose else 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : ∀ u : GL (Fin n) k, (incl u : GL (Fin n) E) ∈ ball n r → f (u ^ Module.finrank k E) = a u`. Introduce `u hu`. Establish `h : ∃ u' : GL (Fin n) k, (incl u' : GL (Fin n) E) ∈ ball n r ∧ u' ^ Module.finrank k E = u ^ Module.finrank k E` using `⟨u, hu, rfl⟩`. Use `root_conj hr (y := 1) h.choose_spec.1 hu (by simpa using h.choose_spec.2)` as an intermediate fact. Simplify using `only [f, dif_pos h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[inv_one, one_mul, mul_one]`. Conclude with `congrArg a this`. Establish `h2 : ∀ γ, (¬ ∃ u : GL (Fin n) k, (incl u : GL (Fin n) E) ∈ ball n r ∧ u ^ Module.finrank k E = γ) → f γ = 0` using `fun γ h => dif_neg h`. Use `⟨f, sb_of_push (U := incl ⁻¹' ball (E := E) n r) (hj.isCompact_preimage (isCompact_ball hr1)) (p := fun u => u ^ Module.finrank k E) (continuous_pow _) ?_ ha h1 h2, h1, h2⟩` and prove the remaining obligations. Establish `e : (fun u : GL (Fin n) k => u ^ Module.finrank k E) '' (incl ⁻¹' ball (E` using `E) n r) = incl ⁻¹' ball (E := E) n (r * valuation E (Module.finrank k E : E)) := by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `γ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Rewrite using `[Set.mem_preimage, map_pow]`. Conclude with `pow_mem_ball hr hu`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `hγ`. Take `⟨u, hu, hf, huq⟩` from `exists_fixed_root hc.isom hr hγ (sigma_incl σ γ)`. Take `⟨u, rfl⟩` from `((hb n).2.2.1 hgen u).mp hf`. Conclude with `⟨u, hu, incl_inj (by rw [map_pow, huq])⟩`. Rewrite using `[e]`.
-
-Conclude with `(isOpen_ball (mul_pos hr0 (hr0.trans hr)).ne').preimage hj.continuous`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_push (hr0 : 0 < r) {a : GL (Fin n) k → ℂ} (ha : IsLocallyConstant a) :
     ∃ f ∈ SB (GL (Fin n) k), (∀ u : GL (Fin n) k, (incl u : GL (Fin n) E) ∈ ball n r → f (u ^ Module.finrank k E) = a u) ∧
@@ -321,45 +317,39 @@ end UpperTheory.ConvolutionTheory.Loc.NearIdentityDescent
 
 open UpperTheory.ConvolutionTheory.Loc.NearIdentityDescent UpperTheory.ConvolutionTheory.Loc.BallG UpperTheory.V.Z.Tf.Orb in
 /- English proof (translation)
-Introduce `k E _ _ _ _ _ _ _ _ _ _ _ _ _ σ hgen n _ _ _ _ μE μk hμE hμk`. Use `haveI : CharZero E := charZero_of_injective_algebraMap (algebraMap k E).injective`. Take `⟨hc, -, hb⟩` from `bridge k E σ`. Establish `hj` using `(hb n).2.2.2.1`. Take `⟨_, _, _, -⟩` from `gLTop E n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, _, _, -⟩` from `gLTop k n`. Establish `hθ : Continuous (sigmaGL σ : GL (Fin n) E → GL (Fin n) E)` using `((extCont k E).2.2 n).2 σ`. Take `⟨r, hr0, hr⟩` from `exists_radius (w := valuation E (Module.finrank k E : E)) ((Valuation.ne_zero_iff _).mpr (Nat.cast_ne_zero.mpr hc.pos.ne'))`. Establish `hq1` using `valuation_natCast_le_one (E := E) (Module.finrank k E)`. Establish `hr1 : r < 1` using `hr.trans_le hq1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r * valuation E (Module.finrank k E : E), mul_pos hr0 (hr0.trans hr), fun φ hφ hs => ?_⟩` and prove the remaining obligations. Use `set K := ballSub n r hr1 with hK`. Establish `hKo : IsOpen (K : Set (GL (Fin n) E))` using `isOpen_ball hr0.ne'`. Establish `hKc : IsCompact (K : Set (GL (Fin n) E))` using `isCompact_ball hr1`. Use `set c : ℂ := (((μk (K.comap (incl : GL (Fin n) k →* GL (Fin n) E))).toReal⁻¹ : ℝ) : ℂ) with hcdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set A : GL (Fin n) E → ℂ := fun u => ∫ κ in (K : Set (GL (Fin n) E)), φ (κ⁻¹ * u * sigmaGL σ κ) ∂μE with hA`. Establish `hAl : IsLocallyConstant A` using `avg_locConst μE hθ hKc hKo.measurableSet hφ.1`. Take `⟨f, hf, h1, h2⟩` from `exists_push hgen hr hr0 (a := fun u => c * A (incl u)) ((hAl.comp_continuous hj.continuous).comp fun z => c * z)`. Establish `hA0 : ∀ w, w ∉ ball n r → A w = 0`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `setIntegral_eq_zero_of_forall_eq_zero fun κ hκ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `h3 : κ⁻¹ * w * sigmaGL σ κ ∈ K` using `ball_mono (mul_le_of_le_one_right' hq1) (hs h)`. Establish `h4 : sigmaGL σ κ ∈ K` using `(sg_mem_ball_iff hc.isom).mpr hκ`. Establish `h5` using `K.mul_mem (K.mul_mem hκ h3) (K.inv_mem h4)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite `h5` using `[show κ * (κ⁻¹ * w * sigmaGL σ κ) * (sigmaGL σ κ)⁻¹ = w by group]`. Conclude with `hw h5`. Use `⟨f, hf, fun δ γ h μδ μγ hδ hN hμδ hμγ hmap => ?_, fun γ μγ _ hno _ => ?_⟩` and prove the remaining obligations. Use `swap`. Use `quot_zero _ _ _ fun y => h2 _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨u, -, hu⟩`. Conclude with `hno ⟨incl u, (incl y)⁻¹, by rw [norm_incl, hu, map_mul, map_mul, map_inv, inv_inv]⟩`. Establish `hγE : ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).charpoly.Separable`. Rewrite using `[← sep_conj _ h, ← hN]`. Conclude with `hδ`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hγ : IsRegSemisimple γ` using `(sep_incl γ).mp hγE`. Distinguish the cases in `hex : ∃ u y : GL (Fin n) k, (incl u : GL (Fin n) E) ∈ ball n r ∧ γ = y * u ^ Module.finrank k E * y⁻¹`. Use `swap`. Rewrite using `[twOrbIntegralC, orbIntegralC, quot_zero, quot_zero]`. Use `fun y => h2 _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨u, hu, e⟩`. Conclude with `hex ⟨u, y, hu, by rw [e]; group⟩`. Introduce `g`. Assume the negation of the conclusion as `h0`. Take `⟨κ, -, u, hu, e⟩` from `near hgen hr (hs h0)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `congrArg (twNorm (sigmaGL σ) (Module.finrank k E)) e`. Rewrite `e1` using `[← twConj, twNorm_twConj_of_pow_eq_one _ (theta_pow σ), twNorm_twConj_of_pow_eq_one _ (theta_pow σ), ← normGL, ← normGL, hN, norm_incl]`. Take `⟨y, hy⟩` from `conjDesc k E n γ (u ^ Module.finrank k E) hγ ⟨κ * g⁻¹ * h, by`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hex ⟨u, y⁻¹, hu, by rw [hy]; group⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨u, y, hu, hγu⟩` from `hex`. Establish `hN1 : normGL σ (incl (y * u * y⁻¹) : GL (Fin n) E) = incl γ` using `by rw [norm_incl, conj_pow, hγu]`. Take `⟨g, hg⟩` from `normInj k E σ hgen n γ hγ δ (incl (y * u * y⁻¹)) ⟨h, hN⟩ ⟨1, by simpa using hN1⟩`. Take `⟨μ', hμ', hmap'⟩` from `haarConj (GL (Fin n) E) _ _ g (mem_twCent_conj (sigmaGL σ) δ g) μδ hμδ`. Rewrite using `[← twOrbConj k E σ n μE hμE δ g μδ μ' hδ hμδ hμ' hmap' φ hφ]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz : h⁻¹ * g * incl γ = incl γ * (h⁻¹ * g)`. Establish `e` using `hN1`. Rewrite `e` using `[hg, normGL, twNorm_twConj_of_pow_eq_one _ (theta_pow σ), ← normGL, hN]`. Combine the equalities or inequalities in the displayed calculation. Establish `hpt : (fun x : twCent (sigmaGL σ) δ => g⁻¹ * (x : GL (Fin n) E) * g) = fun x : twCent (sigmaGL σ) δ => h⁻¹ * (x : GL (Fin n) E) * h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Establish `e` using `comm_of_sep hγE (Subgroup.mem_centralizer_singleton_iff.mp (conj_twCent_mem_centralizer _ (theta_pow σ) hN x.2)) hz`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hmap'` using `[hpt, hmap]`. Use `clear hμ' hpt`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `revert μ'`. Rewrite using `[← hg]`. Introduce `μ' hmap'`. Establish `hT : IsClosed (Subgroup.centralizer ({γ} : Set (GL (Fin n) k)) : Set (GL (Fin n) k))`. Establish `e : (Subgroup.centralizer ({γ} : Set (GL (Fin n) k)) : Set (GL (Fin n) k)) = {x | x * γ = γ * x}` using `Set.ext fun x => Subgroup.mem_centralizer_singleton_iff`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `isClosed_eq (by fun_prop) (by fun_prop)`. Establish `hinv` using `(haarComm (GL (Fin n) k) _ hT (fun a ha b hb => comm_of_sep hγ (Subgroup.mem_centralizer_singleton_iff.mp ha) (Subgroup.mem_centralizer_singleton_iff.mp hb)) μγ hμγ).2.1`. Establish `hreg : IsTwRegSemisimple σ (incl (y * u * y⁻¹) : GL (Fin n) E)`. Rewrite using `[IsTwRegSemisimple, hN1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hγE`. Take `⟨D, hD, hDs⟩` from `orbProper k E σ hgen n _ hreg _ hφ.2`. Rewrite using `[twOrbIntegralC, quotDesc _ _ incl hj μE μk hμE (unimod gLTop E n μE hμE).1 hμk (unimod gLTop k n μk hμk).1 K hKo hKc _ _ μ' μγ hT (by rw [cent_eq hgen hr hu y, ← hγu]) hμγ hinv hmap'.symm (fun g => φ (twConj (sigmaGL σ) g (incl (y * u * y⁻¹)))) (hφ.1.continuous.comp (by unfold t …`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : (∫ κ in (K : Set (GL (Fin n) E)), φ (twConj (sigmaGL σ) (incl x * κ) (incl (y * u * y⁻¹))) ∂μE) = A (incl ((y⁻¹ * x)⁻¹ * u * (y⁻¹ * x)))`. Simplify using `only [hA, twConj, map_mul, map_inv, sigma_incl, mul_inv_rev, inv_inv, mul_assoc]`. Establish `e' : x⁻¹ * γ * x = ((y⁻¹ * x)⁻¹ * u * (y⁻¹ * x)) ^ Module.finrank k E`. Use `conj_pow (a := (y⁻¹ * x)⁻¹) (b := u) (i := Module.finrank k E)` as an intermediate fact. Rewrite `this` using `[inv_inv]`.
-
-Rewrite using `[this, hγu]`. Use `group`. Rewrite using `[e]`. Distinguish the cases in `hw : (incl ((y⁻¹ * x)⁻¹ * u * (y⁻¹ * x)) : GL (Fin n) E) ∈ ball n r`. Rewrite using `[e', h1 _ hw]`.
-
-Rewrite using `[hA0 _ hw, mul_zero, h2]`. Introduce and unpack `⟨u', hu', e2⟩`. Rewrite `hw` using `[root_conj hr hu hu' (y := y⁻¹ * x) (by rw [e2, hγu]; group)]`. Conclude with `hw hu'`. Introduce `x hx`.
-
-Take `⟨κ, hκ, u', hu', e⟩` from `near hgen hr (hs hx)`. Take `⟨z, hz⟩` from `rigid hgen hr hu hu' (y := y) (y' := 1) (g := x * κ⁻¹) (by`. Rewrite using `[one_mul, inv_one, mul_one, map_mul (sigmaGL σ), map_inv]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨z, κ, hκ, by rw [hz]; group⟩`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Loc.nearDown :
     ∀ (k E : Type) [Field k] [CharZero k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]

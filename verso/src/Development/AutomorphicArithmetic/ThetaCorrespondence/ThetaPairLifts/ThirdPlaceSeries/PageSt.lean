@@ -19,17 +19,17 @@ end GlobalTheory.BigOn.PageNumbers
 namespace GlobalTheory.BigOn
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 /- English proof (translation)
-Use `(GlobalTheory.T.indexBoundParameterRequirements_eventually_family.and _root_.GlobalTheory.T.leafLevelSq_and_leafYBound).imp fun Fm CH _ H => ?_` and prove the remaining obligations. Take `⟨⟨xs, hxs⟩, ⟨c1, hc1⟩⟩` from `H`. Use `⟨max c1 1, fun c hc hB => ?_⟩` and prove the remaining obligations. Take `⟨x2, hx2⟩` from `hc1 c ((le_max_left _ _).trans hc) hB`. Use `⟨max (max xs x2) (3 * c.C), fun x hx hle i p hp hm r O hr => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxs' : xs ≤ x` using `(le_max_left _ _).trans ((le_max_left _ _).trans hle)`. Establish `hx2' : x2 ≤ x` using `(le_max_right _ _).trans ((le_max_left _ _).trans hle)`. Establish `hxC : 3 * c.C ≤ x` using `(le_max_right _ _).trans hle`. Establish `hR` using `hxs x hx hxs' i`. Take `⟨hSq, hY⟩` from `hx2 x hx hx2' i p hp hm r O hr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hE : ∀ C CH', ErrorConstantMatchesDefinition ((R2 p).num (F2 p) C CH') O C` using `fun C CH' => (GlobalTheory.BigOn.Check.twoRunDatum_boundUnit_at_indefinitePoint p (Fm.parT x hx i) r O hr C CH').1`. Establish `hb : O.b = (Fm.L x i).sc.b` using `(GlobalTheory.BigOn.Check.twoRunDatum_boundUnit_at_indefinitePoint p (Fm.parT x hx i) r O hr 0 0).2`. Take `⟨st, hd⟩` from `hr.1.depth`. Use `letI := st`. Use `letI := hostAlg (Fm.D x i)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Establish `hd' : GlobalTheory.RunDepth.RunTie p.T.toCore (Fm.ex x hx i).errX (Fm.parT x hx i) (Fm.ex x hx i).kap_def ({ O with de2` using `(Fm.L x i).de2 } : Obj p c) (fun j : Fin (Fm.D x i).R.m => (j : ℕ) + 1) := { hd with }`. Establish `hN : GlobalTheory.IndexAssembly.NumTie (Fm.parT x hx i) (Fm.ex x hx i).kap_def ({ O with de2` using `(Fm.L x i).de2 } : Obj p c) := ⟨hr.1.rr_eq, hr.1.realisedChain_torus_eq, hr.1.Nc_eq, hr.1.DF_eq.trans (congrArg (fun n : ℕ => (n : ℝ)) (PageNumbers.sup_fin_eq_topDeg _ _)), rfl, hr.1.pde_eq⟩`. Establish `hx3 : 3 * c.C ≤ (Fm.L x i).sc.x` using `by rw [Fm.L_x x i hx]; exact hxC`. Establish `hC : Formalism.L2.Indef.Tree.OnPage.ConstC c` using `(le_max_right _ _).trans hc`. Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.IndexAssembly.numericLeaves hd' hN hR hC hB hx3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨h1, h2, h3, h4, hSq, hY, hb, ?_, hE⟩` and prove the remaining obligations. Establish `hx0 : 0 < (Fm.L x i).sc.x` using `by linarith [(Fm.L x i).sc.one_lt_alt]`. Establish `e1` using `Real.rpow_pos_of_pos hx0 (Fm.L x i).sc.eps`. Establish `e2` using `Real.rpow_pos_of_pos hx0 (-(Fm.L x i).sc.eps)`. Express the relevant statement in the definitionally equal form `0 ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps * (((Fm.D x i).R.f : ℝ) * (Fm.D x i).R.m * (Fm.L x i).sc.b * (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps + (Fm.L x i).Nc)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hb0 : 0 < (Fm.L x i).sc.b` using `Real.exp_pos _`. Unfold `SizeData₂.Nc budgetNc rankBudget bSize`. Check the signs of the components of the expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem pageSt_alt : _root_.GlobalTheory.BigOn.PageStatement := by
   refine (GlobalTheory.T.indexBoundParameterRequirements_eventually_family.and _root_.GlobalTheory.T.leafLevelSq_and_leafYBound).imp fun Fm CH _ H => ?_

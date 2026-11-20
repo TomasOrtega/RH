@@ -25,16 +25,16 @@ def adjA (x : MtM m) : MtM m := (Matrix.of x : Mx m).adjugate
 def detA (x : MtM m) : ℂ := (Matrix.of x : Mx m).det
 
 /- English proof (translation)
-The claim follows from `Continuous.matrix_det (continuous_id (X := Mx m))`.
+A detailed English derivation is pending.
 -/
 theorem detA_cont : Continuous (detA (m := m)) := Continuous.matrix_det (continuous_id (X := Mx m))
 /- English proof (translation)
-The claim follows from `Continuous.matrix_adjugate (continuous_id (X := Mx m))`.
+A detailed English derivation is pending.
 -/
 theorem adjA_cont : Continuous (adjA (m := m)) := Continuous.matrix_adjugate (continuous_id (X := Mx m))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use `show (Ring.inverse (Matrix.of x : Mx m).det • (Matrix.of x : Mx m).adjugate : Mx m) = _`. Rewrite using `[Ring.inverse_eq_inv']`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem invA_smul : (invA : MtM m → MtM m) = fun x => (detA x)⁻¹ • adjA x := by
   funext x
@@ -42,21 +42,21 @@ theorem invA_smul : (invA : MtM m → MtM m) = fun x => (detA x)⁻¹ • adjA x
   rw [Ring.inverse_eq_inv']; rfl
 
 /- English proof (translation)
-Rewrite using `[invA_smul]`. Conclude with `(detA_cont.continuousOn.inv₀ (fun x hx => hx)).smul adjA_cont.continuousOn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invA_contOn : ContinuousOn (invA : MtM m → MtM m) {x | detA x ≠ 0} := by
   rw [invA_smul]
   exact (detA_cont.continuousOn.inv₀ (fun x hx => hx)).smul adjA_cont.continuousOn
 
 /- English proof (translation)
-Unfold `lmulQ`. Conclude with `(continuous_const (y := a)).matrix_mul (continuous_id (X := Mx m))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lmulQ_cont (a : Mx m) : Continuous (lmulQ a : MtM m → MtM m) := by
   unfold lmulQ
   exact (continuous_const (y := a)).matrix_mul (continuous_id (X := Mx m))
 
 /- English proof (translation)
-Unfold `mulA`. Conclude with `Continuous.matrix_mul (A := fun p : MtM m × MtM m => (Matrix.of p.1 : Mx m)) (B := fun p : MtM m × MtM m => (Matrix.of p.2 : Mx m)) continuous_fst continuous_snd`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mulA_cont : Continuous (mulA : MtM m × MtM m → MtM m) := by
   unfold mulA
@@ -64,7 +64,7 @@ theorem mulA_cont : Continuous (mulA : MtM m × MtM m → MtM m) := by
     (B := fun p : MtM m × MtM m => (Matrix.of p.2 : Mx m)) continuous_fst continuous_snd
 
 /- English proof (translation)
-The claim follows from `Matrix.isUnit_det_of_right_inverse (hG.2.2.2 a ha).2`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_det {G : Set (Mx m)} (hG : IsMatGroup G) {a : Mx m} (ha : a ∈ G) : IsUnit a.det :=
   Matrix.isUnit_det_of_right_inverse (hG.2.2.2 a ha).2
@@ -72,7 +72,7 @@ theorem isUnit_det {G : Set (Mx m)} (hG : IsMatGroup G) {a : Mx m} (ha : a ∈ G
 def amb (G : Set (Mx m)) : Set (MtM m) := {x | Matrix.of x ∈ G}
 
 /- English proof (translation)
-The claim follows from `hG.1`.
+A detailed English derivation is pending.
 -/
 theorem amb_closed {G : Set (Mx m)} (hG : IsMatGroup G) : IsClosed (amb G) := hG.1
 
@@ -90,29 +90,29 @@ instance : T2Space (Grp G hG) := inferInstanceAs (T2Space {x : MtM m // x ∈ am
 def inc (x : Grp G hG) : MtM m := x.1
 
 /- English proof (translation)
-The claim follows from `x.2`.
+A detailed English derivation is pending.
 -/
 theorem inc_mem (x : Grp G hG) : Matrix.of (inc x) ∈ G := x.2
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem inc_cont : Continuous (inc : Grp G hG → MtM m) := continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `(amb_closed hG).isClosedEmbedding_subtypeVal`.
+A detailed English derivation is pending.
 -/
 theorem inc_closedEmb : IsClosedEmbedding (inc : Grp G hG → MtM m) :=
   (amb_closed hG).isClosedEmbedding_subtypeVal
 
 /- English proof (translation)
-The claim follows from `MeasurableEmbedding.subtype_coe (amb_closed hG).measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem inc_memb : MeasurableEmbedding (inc : Grp G hG → MtM m) :=
   MeasurableEmbedding.subtype_coe (amb_closed hG).measurableSet
 
 /- English proof (translation)
-The claim follows from `Subtype.range_coe`.
+A detailed English derivation is pending.
 -/
 theorem range_inc : Set.range (inc : Grp G hG → MtM m) = amb G := Subtype.range_coe
 
@@ -143,20 +143,20 @@ instance : IsTopologicalGroup (Grp G hG) where
 def pull (hG : IsMatGroup G) (μ : Measure (MtM m)) : Measure (Grp G hG) := μ.comap inc
 
 /- English proof (translation)
-Rewrite using `[pull, inc_memb.map_comap, range_inc]`. Conclude with `Measure.restrict_eq_self_of_ae_mem (by rw [ae_iff]; exact h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_pull (μ : Measure (MtM m)) (h : μ {x | Matrix.of x ∉ G} = 0) : (pull hG μ).map inc = μ := by
   rw [pull, inc_memb.map_comap, range_inc]
   exact Measure.restrict_eq_self_of_ae_mem (by rw [ae_iff]; exact h)
 
 /- English proof (translation)
-Use `⟨fun g => ?_⟩` and prove the remaining obligations. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply (continuous_const_mul g).measurable hs, pull, inc_memb.comap_apply, inc_memb.comap_apply]`. Establish `e1 : (μ.map (lmulQ (Matrix.of (inc g)))) (inc '' s) = μ (inc '' s)` using `congrArg (fun n : Measure (MtM m) => n (inc '' s)) (h (Matrix.of (inc g)) (inc_mem g))`. Establish `e2` using `Measure.map_apply (μ := μ) (lmulQ_cont (Matrix.of (inc g))).measurable (inc_memb.measurableSet_image.2 hs)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e1, e2]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨g * y, hy, rfl⟩`. Introduce and unpack `⟨z, hz, hzx⟩`. Use `⟨g⁻¹ * z, ?_, ?_⟩` and prove the remaining obligations. Use `show g * (g⁻¹ * z) ∈ s`. Rewrite using `[mul_inv_cancel_left]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz`. Rewrite using `[inc_mul, hzx]`. Conclude with `Matrix.nonsing_inv_mul_cancel_left (Matrix.of (inc g) : Mx m) (Matrix.of x : Mx m) (isUnit_det hG (inc_mem g))`.
+A detailed English derivation is pending.
 -/
 theorem pull_left (μ : Measure (MtM m)) (h : ∀ a ∈ G, μ.map (lmulQ a) = μ) : (pull hG μ).IsMulLeftInvariant := by
   refine ⟨fun g => ?_⟩
@@ -180,7 +180,7 @@ theorem pull_left (μ : Measure (MtM m)) (h : ∀ a ∈ G, μ.map (lmulQ a) = μ
         (isUnit_det hG (inc_mem g))
 
 /- English proof (translation)
-Use `⟨⟨⟨fun n => inc ⁻¹' spanningSets μ n, fun _ => trivial, fun n => ?_, ?_⟩⟩⟩` and prove the remaining obligations. Rewrite using `[pull, inc_memb.comap_apply]`. Conclude with `lt_of_le_of_lt (measure_mono (Set.image_preimage_subset _ _)) (measure_spanningSets_lt_top μ n)`. Rewrite using `[← Set.preimage_iUnion, iUnion_spanningSets, Set.preimage_univ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_sigmaFinite (μ : Measure (MtM m)) [SigmaFinite μ] : SigmaFinite (pull hG μ) := by
   refine ⟨⟨⟨fun n => inc ⁻¹' spanningSets μ n, fun _ => trivial, fun n => ?_, ?_⟩⟩⟩
@@ -189,11 +189,11 @@ theorem pull_sigmaFinite (μ : Measure (MtM m)) [SigmaFinite μ] : SigmaFinite (
   · rw [← Set.preimage_iUnion, iUnion_spanningSets, Set.preimage_univ]
 
 /- English proof (translation)
-Use `⟨pos_iff_ne_zero.2 fun hc => h0 (by rw [h, hc, zero_smul]), lt_top_iff_ne_top.2 fun hc => h0 ?_⟩` and prove the remaining obligations. Rewrite using `[← Measure.measure_univ_eq_zero, ← iUnion_spanningSets μ]`. Use `measure_iUnion_null fun n => ?_` and prove the remaining obligations. Establish `h1` using `measure_spanningSets_lt_top μ n`. Establish `h2 : μ (spanningSets μ n) = ⊤ * ν (spanningSets μ n)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun ρ : Measure X => ρ (spanningSets μ n)) h` as an intermediate fact. Simplify `this` using `[hc]`. Distinguish the cases in `h3 : ν (spanningSets μ n) = 0`. Rewrite using `[h2, h3, mul_zero]`. Rewrite `h1` using `[h2, ENNReal.top_mul h3]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd h1 (lt_irrefl _)`.
+A detailed English derivation is pending.
 -/
 theorem factor_pos_lt_top {X : Type*} [MeasurableSpace X] (μ ν : Measure X) [SigmaFinite μ] (h0 : μ ≠ 0)
     (c : ℝ≥0∞) (h : μ = c • ν) : 0 < c ∧ c < ⊤ := by
@@ -214,9 +214,9 @@ def haar0 (hG : IsMatGroup G) : Measure (Grp G hG) := Measure.haar
 instance : (haar0 hG).IsHaarMeasure := inferInstanceAs (Measure.IsHaarMeasure Measure.haar)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hμ`. Use `pull_sigmaFinite (hG := hG) μ` as an intermediate fact. Use `pull_left (hG := hG) μ h4` as an intermediate fact. Establish `e` using `Measure.haarMeasure_unique (pull hG μ) (Classical.arbitrary _)`. Establish `e' : μ = (pull hG μ (Classical.arbitrary (TopologicalSpace.PositiveCompacts (Grp G hG)) : TopologicalSpace.PositiveCompacts (Grp G hG))) • (haar0 hG).map inc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Measure.map_smul]`. Use `(map_pull (hG := hG) μ h3).symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg (Measure.map inc) e`. Take `⟨a, b⟩` from `factor_pos_lt_top μ _ h2 _ e'`. Conclude with `⟨_, a, b, e'⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eq_smul_haar (hG : IsMatGroup G) (μ : Measure (MtM m)) (hμ : IsHaarOnM G μ) :
     ∃ c : ℝ≥0∞, 0 < c ∧ c < ⊤ ∧ μ = c • (haar0 hG).map inc := by
@@ -233,11 +233,9 @@ theorem eq_smul_haar (hG : IsMatGroup G) (μ : Measure (MtM m)) (hμ : IsHaarOnM
   exact ⟨_, a, b, e'⟩
 
 /- English proof (translation)
-Introduce `m G μ hG hμ`. Take `⟨c, hc0, hct, hc⟩` from `eq_smul_haar hG μ hμ`. Use `⟨fun μ' hμ' => ?_, fun K hK _ => ?_, fun U hU hx => ?_⟩` and prove the remaining obligations. Take `⟨d, hd0, hdt, hd⟩` from `eq_smul_haar hG μ' hμ'`. Use `⟨d / c, ENNReal.div_pos hd0.ne' hct.ne, ENNReal.div_lt_top hdt.ne hc0.ne', ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hd, hc, smul_smul, ENNReal.div_mul_cancel hc0.ne' hct.ne]`. Rewrite using `[hc, Measure.smul_apply, smul_eq_mul, inc_memb.map_apply]`. Conclude with `ENNReal.mul_lt_top hct (inc_closedEmb.isCompact_preimage hK).measure_lt_top`. Take `⟨x, hxU, hxG⟩` from `hx`. Rewrite using `[hc, Measure.smul_apply, smul_eq_mul, inc_memb.map_apply]`.
-
-Conclude with `ENNReal.mul_pos hc0.ne' ((hU.preimage inc_cont).measure_ne_zero _ ⟨⟨x, hxG⟩, hxU⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haar_unique_locFinite_openPos :
     ∀ (m : ℕ) (G : Set (Matrix (Fin m) (Fin m) ℂ)) (μ : Measure (PI.MtM m)), PI.IsMatGroup G → PI.IsHaarOnM G μ →

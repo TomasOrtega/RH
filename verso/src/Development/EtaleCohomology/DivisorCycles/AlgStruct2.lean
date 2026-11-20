@@ -7,26 +7,26 @@ namespace AlgStruct₂
 variable {C : Type} [Field C] {N n : ℕ} {p : Fin n → Mat C N}
 
 /- English proof (translation)
-The claim follows from `(hp.1.idem i).eq`.
+A detailed English derivation is pending.
 -/
 theorem pp (hp : Sys p) (i : Fin n) : p i * p i = p i := (hp.1.idem i).eq
 /- English proof (translation)
-Rewrite using `[← mul_assoc, pp hp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pp' (hp : Sys p) (i : Fin n) (X : Mat C N) : p i * (p i * X) = p i * X := by
   rw [← mul_assoc, pp hp]
 /- English proof (translation)
-The claim follows from `hp.1.ortho h`.
+A detailed English derivation is pending.
 -/
 theorem pq (hp : Sys p) {i j : Fin n} (h : i ≠ j) : p i * p j = 0 := hp.1.ortho h
 /- English proof (translation)
-Rewrite using `[← mul_assoc, pq hp h, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pq' (hp : Sys p) {i j : Fin n} (h : i ≠ j) (X : Mat C N) : p i * (p j * X) = 0 := by
   rw [← mul_assoc, pq hp h, zero_mul]
 
 /- English proof (translation)
-Distinguish the cases in `h : m = i`. Rewrite using `[h]`. Simplify using `only [mul_assoc, pp hp, pp' hp]`. Simplify using `only [mul_assoc, pq hp (Ne.symm h), pq' hp h, mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem corner_comm (hp : Sys p) (X : Mat C N) (i m : Fin n) :
     p i * X * p i * p m = p m * (p i * X * p i) := by
@@ -35,7 +35,7 @@ theorem corner_comm (hp : Sys p) (X : Mat C N) (i m : Fin n) :
   · simp only [mul_assoc, pq hp (Ne.symm h), pq' hp h, mul_zero]
 
 /- English proof (translation)
-Establish `h1 : a * b = a * (∑ j, p j) * b` using `by rw [hp.1.complete, mul_one]`. Rewrite using `[h1]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [mul_assoc, pp' hp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem decomp (hp : Sys p) (a b : Mat C N) (i k : Fin n) :
     p i * (a * b) * p k = ∑ j, p i * a * p j * (p j * b * p k) := by
@@ -45,7 +45,7 @@ theorem decomp (hp : Sys p) (a b : Mat C N) (i k : Fin n) :
   simp only [mul_assoc, pp' hp]
 
 /- English proof (translation)
-Establish `h : Y = (∑ i, p i) * Y * (∑ j, p j)` using `by rw [hp.1.complete, one_mul, mul_one]`. Use `conv_lhs => rw [h]`. Rewrite using `[Finset.sum_mul, Finset.sum_mul]`. Simplify using `only [Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem expand (hp : Sys p) (Y : Mat C N) : Y = ∑ i, ∑ j, p i * Y * p j := by
   have h : Y = (∑ i, p i) * Y * (∑ j, p j) := by rw [hp.1.complete, one_mul, mul_one]
@@ -59,9 +59,9 @@ def S (p : Fin n → Mat C N) (g : Submodule C (Mat C N)) : Set (Mat C N) :=
 variable {g : Submodule C (Mat C N)}
 
 /- English proof (translation)
-Use `⟨fun i j h => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_add, add_mul]`. Conclude with `g.add_mem (ha.1 i j h) (hb.1 i j h)`. Take `⟨c, hc⟩` from `ha.2 i`. Take `⟨c', hc'⟩` from `hb.2 i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨c + c', by rw [mul_add, add_mul, hc, hc', add_smul]⟩`.
+A detailed English derivation is pending.
 -/
 theorem S_add {a b : Mat C N} (ha : a ∈ S p g) (hb : b ∈ S p g) : a + b ∈ S p g := by
   refine ⟨fun i j h => ?_, fun i => ?_⟩
@@ -70,7 +70,7 @@ theorem S_add {a b : Mat C N} (ha : a ∈ S p g) (hb : b ∈ S p g) : a + b ∈ 
     exact ⟨c + c', by rw [mul_add, add_mul, hc, hc', add_smul]⟩
 
 /- English proof (translation)
-Use `⟨fun i j h => ?_, fun i => ⟨r, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Algebra.algebraMap_eq_smul_one, mul_smul_comm, mul_one, smul_mul_assoc, pq hp h, smul_zero]`. Conclude with `g.zero_mem`. Rewrite using `[Algebra.algebraMap_eq_smul_one, mul_smul_comm, mul_one, smul_mul_assoc, pp hp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem S_alg (hp : Sys p) (r : C) : algebraMap C (Mat C N) r ∈ S p g := by
   refine ⟨fun i j h => ?_, fun i => ⟨r, ?_⟩⟩
@@ -79,23 +79,23 @@ theorem S_alg (hp : Sys p) (r : C) : algebraMap C (Mat C N) r ∈ S p g := by
   · rw [Algebra.algebraMap_eq_smul_one, mul_smul_comm, mul_one, smul_mul_assoc, pp hp]
 
 /- English proof (translation)
-Use `⟨fun i k hik => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[decomp hp]`. Use `g.sum_mem fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hji : j = i`. Rewrite using `[hji]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `ha.2 i`. Establish `e : p i * (p i * b * p k) = p i * b * p k` using `by simp only [mul_assoc, pp' hp]`. Rewrite using `[hc, smul_mul_assoc, e]`. Conclude with `g.smul_mem _ (hb.1 _ _ hik)`. Distinguish the cases in `hjk : j = k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hjk]`. Take `⟨c, hc⟩` from `hb.2 k`. Establish `e : p i * a * p k * p k = p i * a * p k` using `by simp only [mul_assoc, pp hp]`. Rewrite using `[hc, mul_smul_comm, e]`. Conclude with `g.smul_mem _ (ha.1 _ _ hik)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hbr _ (ha.1 i j (Ne.symm hji)) _ (hb.1 j k hjk)`. Establish `z : p j * b * p k * (p i * a * p j) = 0`. Simplify using `only [mul_assoc, pq' hp (Ne.symm hik), mul_zero]`. Rewrite `h` using `[z, sub_zero]`. Then use the resulting hypothesis. Establish `key : ∀ j, ∃ c : C, p i * a * p j * (p j * b * p i) = c • p i`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `j`. Distinguish the cases in `hji : j = i`. Rewrite using `[hji]`. Take `⟨c, hc⟩` from `ha.2 i`. Take `⟨c', hc'⟩` from `hb.2 i`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨c * c', by rw [hc, hc', smul_mul_assoc, mul_smul_comm, pp hp, smul_smul]⟩`. Establish `hZ` using `hbr _ (ha.1 i j (Ne.symm hji)) _ (hb.1 j i hji)`. Establish `e1 : p i * a * p j * (p j * b * p i) = p i * (a * p j * (p j * b)) * p i`. Simplify using `only [mul_assoc]`. Establish `e2 : p j * b * p i * (p i * a * p j) = p j * (b * p i * (p i * a)) * p j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [mul_assoc]`. Rewrite `hZ` using `[e1, e2]`. Establish `hc : ∀ m, (p i * (a * p j * (p j * b)) * p i - p j * (b * p i * (p i * a)) * p j) * p m = p m * (p i * (a * p j * (p j * b)) * p i - p j * (b * p i * (p i * a)) * p j)`. Introduce `m`. Rewrite using `[sub_mul, mul_sub, corner_comm hp, corner_comm hp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hcZ⟩` from `hdiag _ hZ hc i`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, ← hcZ, sub_mul]`. Establish `f1 : p i * (a * p j * (p j * b)) * p i * p i = p i * (a * p j * (p j * b)) * p i`. Simplify using `only [mul_assoc, pp hp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `f2 : p j * (b * p i * (p i * a)) * p j * p i = 0`. Simplify using `only [mul_assoc, pq hp hji, mul_zero]`. Rewrite using `[f1, f2, sub_zero]`. Use `choose f hf using key`. Conclude with `⟨∑ j, f j, by rw [decomp hp, Finset.sum_smul]; exact Finset.sum_congr rfl fun j _ => hf j⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem S_mul (hp : Sys p) (hbr : ∀ Y ∈ g, ∀ Z ∈ g, Y * Z - Z * Y ∈ g)
     (hdiag : ∀ Y ∈ g, (∀ i, Y * p i = p i * Y) → ∀ i, ∃ c : C, Y * p i = c • p i)
@@ -141,15 +141,13 @@ theorem S_mul (hp : Sys p) (hbr : ∀ Y ∈ g, ∀ Z ∈ g, Y * Z - Z * Y ∈ g)
     exact ⟨∑ j, f j, by rw [decomp hp, Finset.sum_smul]; exact Finset.sum_congr rfl fun j _ => hf j⟩
 
 /- English proof (translation)
-Use `⟨hoff Y hY, fun i => ?_⟩` and prove the remaining obligations. Use `set D := ∑ k, p k * Y * p k with hDdef`. Establish `hsplit : Y = D + ∑ k, ∑ j ∈ Finset.univ.erase k, p k * Y * p j` using `by conv_lhs => rw [expand hp Y]`. Rewrite using `[hDdef, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => (Finset.add_sum_erase _ _ (Finset.mem_univ k)).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : D ∈ g`. Establish `: D = Y - ∑ k, ∑ j ∈ Finset.univ.erase k, p k * Y * p j`. Rewrite using `[eq_sub_iff_add_eq, ← hsplit]`. Rewrite using `[this]`. Use `g.sub_mem hY (g.sum_mem fun k _ => g.sum_mem fun j hj => hoff Y hY k j ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ne.symm (Finset.ne_of_mem_erase hj)`. Establish `hcomm : ∀ m, D * p m = p m * D`. Introduce `m`. Rewrite using `[hDdef, Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => corner_comm hp Y k m`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨c, hc⟩` from `hdiag D hD hcomm i`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, hDdef, Finset.sum_mul, Finset.sum_eq_single i]`. Simplify using `only [mul_assoc, pp hp]`. Introduce `k _ hki`.
-
-Simplify using `only [mul_assoc, pq hp hki, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem S_of_mem (hp : Sys p) (hoff : ∀ Y ∈ g, ∀ i j, i ≠ j → p i * Y * p j ∈ g)
     (hdiag : ∀ Y ∈ g, (∀ i, Y * p i = p i * Y) → ∀ i, ∃ c : C, Y * p i = c • p i)
@@ -185,7 +183,7 @@ def Sa (hp : Sys p) (hbr : ∀ Y ∈ g, ∀ Z ∈ g, Y * Z - Z * Y ∈ g)
   algebraMap_mem' := S_alg hp
 
 /- English proof (translation)
-Introduce `C _ N n p g hp hbr hoff hdiag a ha`. Establish `hle : Algebra.adjoin C (g : Set (Mat C N)) ≤ Sa hp hbr hdiag` using `Algebra.adjoin_le fun Y hY => S_of_mem hp hoff hdiag hY`. Conclude with `hle ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem AlgStruct_of : AlgStruct := by
   intro C _ N n p g hp hbr hoff hdiag a ha

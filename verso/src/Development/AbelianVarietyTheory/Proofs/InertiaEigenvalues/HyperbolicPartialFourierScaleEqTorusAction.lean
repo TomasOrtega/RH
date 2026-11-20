@@ -7,15 +7,15 @@ noncomputable section
 namespace GlobalTheory.JR.Hyp
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace F := Unram.lcF (E := E)`. Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Use `haveI : SecondCountableTopology A.K := by`. Set `e : A.K ≃ₗ[F] (Fin (Module.finrank F A.K) → F)` to `(Module.finBasis F A.K).equivFun`. Establish `h1 : Continuous e` using `IsModuleTopology.continuous_of_linearMap e.toLinearMap`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2 : Continuous e.symm` using `IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap`. Set `h : A.K ≃ₜ (Fin (Module.finrank F A.K) → F)` to `⟨e.toEquiv, h1, h2⟩`. Conclude with `h.isEmbedding.secondCountableTopology`. Establish `hme : MeasurableEmbedding (fun b : A.K => s • b)` using `(Homeomorph.smul s).measurableEmbedding`. Establish `hmap : Measure.map (fun b : A.K => s • b) ν = ((distribHaarChar A.K s : ℝ≥0∞))⁻¹ • ν`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `S hS`. Rewrite using `[hme.map_apply, Measure.smul_apply, smul_eq_mul]`. Establish `h1` using `distribHaarChar_mul ν s⁻¹ S`. Rewrite using `[Set.preimage_smul, ← h1, map_inv, ENNReal.coe_inv (distribHaarChar_pos).ne']`. Establish `hint : ∫ b, g ((s : A.K) * b) ∂ν = ∫ b, g b ∂(Measure.map (fun b : A.K => s • b) ν)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hme.integral_map]`. Both sides reduce to the same expression. Establish `habs : A.absK (s : A.K) = (distribHaarChar A.K s : ℝ)`. Unfold `Et.absK`. Rewrite using `[dif_pos s.isUnit]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use `ext`. Both sides reduce to the same expression. Rewrite using `[hint, hmap, integral_smul_measure, habs]`. Simplify using `[Complex.real_smul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_comp_unit_mul {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ν : Measure A.K) [ν.IsAddHaarMeasure]
@@ -46,13 +46,13 @@ theorem integral_comp_unit_mul {F E : Type} [NontriviallyNormedField F] [Nontriv
   simp [Complex.real_smul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ν hν ψ x s Φ`. Use function extensionality and compare the values at `p`. Take `⟨a, u⟩` from `p`. Establish `hs0 : A.absK (s : A.K) ≠ 0`. Unfold `Et.absK`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos s.isUnit]`. Conclude with `(distribHaarChar_pos).ne'` after adjusting the coercions. Establish `key` using `integral_comp_unit_mul A ν s (fun b' => Φ (a * (s : A.K), b') * A.psiK ψ (x * b' * (u * ((s⁻¹ : A.Kˣ) : A.K))))`. Simplify using `only [pt, rg, mS, fourB, kx]`. Simplify using `only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons, Matrix.head_fin_const, mul_zero, add_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[eq_inv_mul_iff_mul_eq₀ (by exact_mod_cast hs0)]`. Rewrite using `[← key, ← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun b => ?_)` and prove the remaining obligations. Establish `e1 : x * ((s : A.K) * b) * (u * ((s⁻¹ : A.Kˣ) : A.K)) = x * b * u`. Rewrite using `[show x * ((s : A.K) * b) * (u * ((s⁻¹ : A.Kˣ) : A.K)) = x * b * u * ((s : A.K) * ((s⁻¹ : A.Kˣ) : A.K)) by ring, Units.mul_inv, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [e1, mul_comm a (s : A.K)]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pt_scale_eq_rg_mS : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ν : Measure A.K), ν.IsAddHaarMeasure → ∀ (ψ : AddChar F ℂ) (x : A.K) (s : A.Kˣ) (Φ : A.K × A.K → ℂ), Hyp.pt A ν ψ x (fun p => (A.absK (s : A.K) : ℂ) * Φ ((s : A.K) * p.1, (s : A.K) * p.2)) = Hyp.rg A (mS s) (Hyp.pt A ν ψ x Φ) := by
   intro F E _ _ _ _ _ A ν hν ψ x s Φ

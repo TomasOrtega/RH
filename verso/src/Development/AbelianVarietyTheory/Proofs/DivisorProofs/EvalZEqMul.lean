@@ -17,9 +17,9 @@ namespace GlobalTheory.Poinc.TraitRam
 variable {g n : ℕ} {o : Type} [CommRing o] {ζ : o} {F : SFam g n ζ}
 
 /- English proof (translation)
-Set `K` to `AlgebraicClosure (FractionRing T.V)`. Set `k : Sp K ⟶ Sp (FractionRing T.V)` to `spMap (algebraMap (FractionRing T.V) K)`. Establish `hK : (n : K) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hp` using `(IsPullback.of_hasPullback T.A.A.hom k).paste_horiz T.cart.1`. Establish `h1 : SmoothOfRelativeDimension T.A.g (pullback.snd T.A.A.hom k)` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback T.A.A.hom k) T.A.smoothDim`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.SiegDim.dim_geometric_fibre F.univ hn hζ hK (k ≫ T.y) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `SmoothOfRelativeDimension T.A.g (pullback.snd F.univ.A.hom (k ≫ T.y))`. Rewrite using `[← hp.isoPullback_inv_snd]`. Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_horiz_isIso (fst := hp.isoPullback.inv) (g := 𝟙 _) ⟨by simp⟩) h1`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dim_eq (hn : 2 ≤ n) (hζ : IsUnit ζ) (T : Trait F) : T.A.g = g := by
   let K := AlgebraicClosure (FractionRing T.V)
@@ -36,7 +36,7 @@ theorem dim_eq (hn : 2 ≤ n) (hζ : IsUnit ζ) (T : Trait F) : T.A.g = g := by
     (IsPullback.of_horiz_isIso (fst := hp.isoPullback.inv) (g := 𝟙 _) ⟨by simp⟩) h1
 
 /- English proof (translation)
-Establish `hR : AdmBase T.V (maximalIdeal T.V)` using `⟨inferInstance, inferInstance, inferInstance, T.complete⟩`. Establish `h` using `GlobalTheory.TateUnif.rank_add_dim hR T.semi T.U`. Establish `e` using `dim_eq hn hζ T`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_le (hn : 2 ≤ n) (hζ : IsUnit ζ) (T : Trait F) : Module.finrank ℤ T.D.toPre.X ≤ g := by
   have hR : AdmBase T.V (maximalIdeal T.V) := ⟨inferInstance, inferInstance, inferInstance, T.complete⟩
@@ -45,11 +45,11 @@ theorem finrank_le (hn : 2 ≤ n) (hζ : IsUnit ζ) (T : Trait F) : Module.finra
   omega
 
 /- English proof (translation)
-Introduce `g n o _ ζ hn hζ F T T' f fK hf hl hK hy m hm φ hφ`. Establish `hB : GlobalTheory.Mum.Base T'.V` using `⟨⟨inferInstance, inferInstance, inferInstance, T'.complete⟩, inferInstance⟩`. Establish `hid : spMap (RingHom.id (FractionRing T'.V)) = 𝟙 _` using `Spec.map_id _`. Take `⟨e, he⟩` from `GlobalTheory.T.trait_lattices_iso_forms_proportional_ramification g n o ζ F T T' T'.V f (RingHom.id _) fK (RingHom.id _) hB inferInstance hf Function.injective_id hl inferInstance hK (fun _ => rfl) (by rw [hid, Category.id_comp, hy]) T'.ϖ m 1 T'.irr hm (by rw [pow_one]; rfl)`. Establish `hon` using `hφ T.D.toPre.X (finrank_le hn hζ T)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : toReal T.β ∈ psdCone (id : ℤ → ℤ) T.D.toPre.X` using `GlobalTheory.PolFan.TameZ.toReal_mem_psdCone_int (mem_balForms_int.2 T.symm) fun x => by simpa using T.mono.nonneg 0 x`. Rewrite using `[← evalR_toReal φ T.β, ← hon.homog _ hc m m.cast_nonneg, ← evalZ_pull φ (r := e.toIntLinearEquiv.toLinearMap) e.surjective, ← evalR_toReal]`. Use `congr 1`. Use `LinearMap.ext₂ fun a b => ?_` and prove the remaining obligations. Establish `h` using `he a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[Nat.cast_one, one_mul]`. Simplify using `only [toReal_apply, pull_apply, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `h.symm` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evalZ_eq_mul : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o), 2 ≤ n → IsUnit ζ → ∀ (F : SFam g n ζ) (T T' : Trait F) (f : T.V →+* T'.V) (fK : FractionRing T.V →+* FractionRing T'.V), Function.Injective f → IsLocalHom f → (∀ a, fK (algebraMap T.V (FractionRing T.V) a) = algebraMap T'.V (FractionRing T'.V) (f a)) → T'.y = spMap fK ≫ T.y → ∀ m : ℕ, Associated (f T.ϖ) (T'.ϖ ^ m) → ∀ φ : InvFun ℤ, IsPolFan id g φ → φ.evalZ T'.β = m * φ.evalZ T.β := by
   intro g n o _ ζ hn hζ F T T' f fK hf hl hK hy m hm φ hφ

@@ -13,9 +13,9 @@ open Classical
 namespace GlobalTheory.UPoinc.SetupAt
 
 /- English proof (translation)
-Establish `hirr : IsIrreducible (irreducibleComponent x)` using `isIrreducible_irreducibleComponent`. Establish `hcl : IsClosed (irreducibleComponent x)` using `isClosed_irreducibleComponent`. Use `⟨hirr.genericPoint, ?_, ?_⟩` and prove the remaining obligations. Use `show closure {hirr.genericPoint} ∈ irreducibleComponents X`. Rewrite using `[hirr.isGenericPoint_genericPoint_closure.def, hcl.closure_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `irreducibleComponent_mem_irreducibleComponents x`. Rewrite using `[specializes_iff_mem_closure, hirr.isGenericPoint_genericPoint_closure.def, hcl.closure_eq]`. Conclude with `mem_irreducibleComponent`.
+A detailed English derivation is pending.
 -/
 theorem exists_generic_specializes {X : Scheme.{0}} (x : X) : ∃ η ∈ genericPoints X, η ⤳ x := by
   have hirr : IsIrreducible (irreducibleComponent x) := isIrreducible_irreducibleComponent
@@ -28,7 +28,7 @@ theorem exists_generic_specializes {X : Scheme.{0}} (x : X) : ∃ η ∈ generic
     exact mem_irreducibleComponent
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.UPoinc.exists_uSetup_regular_at`.
+A detailed English derivation is pending.
 -/
 theorem exists_uSetup_regular_at : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (x : Xo.XF c), ∃ (X' : USetup C) (w : X'.M.Z), X'.π w = C.i x ∧ X'.S.R ≤ X'.M.O w :=
   GlobalTheory.UPoinc.exists_uSetup_regular_at

@@ -14,13 +14,13 @@ def IsRightAct (st : G → R →ₐ[K] R) : Prop :=
   (∀ x, st 1 x = x) ∧ ∀ h h' x, st (h * h') x = st h' (st h x)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x => by simp, fun h h' x => by simp only [mul_inv_rev, map_mul]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isRightAct_inv (ρ : G →* (R →ₐ[K] R)) : IsRightAct (fun h => ρ h⁻¹) :=
   ⟨fun x => by simp, fun h h' x => by simp only [mul_inv_rev, map_mul]; rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x => by simp only [map_one]; exact h.1 x, fun a b x => by simp only [map_mul]; exact h.2 _ _ x⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsRightAct.comp {st : G → R →ₐ[K] R} (h : IsRightAct st) {G' : Type} [Group G'] (f : G' →* G) :
     IsRightAct (fun g => st (f g)) :=
@@ -30,7 +30,7 @@ def funPull (K : Type) [Field K] {Z : Type} [MulAction G Z] (h : G) : (Z → K) 
   Pi.algHom _ _ fun z => Pi.evalAlgHom K (fun _ : Z => K) (h • z)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x => funext fun z => congrArg x (one_smul G z), fun h h' x => funext fun z => congrArg x (mul_smul h h' z)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isRightAct_funPull {Z : Type} [MulAction G Z] : IsRightAct (funPull K (Z := Z) (G := G)) :=
   ⟨fun x => funext fun z => congrArg x (one_smul G z), fun h h' x => funext fun z => congrArg x (mul_smul h h' z)⟩
@@ -62,7 +62,7 @@ def eigen (χ : G →* Kˣ) : Submodule K R where
   smul_mem' := fun c a ha h => by rw [map_smul, ha h, smul_comm]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_eigen {χ : G →* Kˣ} {F : R} : F ∈ eigen st χ ↔ ∀ h, st h F = ((χ h : Kˣ) : K) • F := Iff.rfl
 
@@ -78,7 +78,7 @@ theorem IsRightAct.leftRep_apply {st : G → R →ₐ[K] R} (hs : IsRightAct st)
     hs.leftRep g x = st g⁻¹ x := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h g => by rw [hs.leftRep_apply, h g⁻¹, map_inv]; rfl, fun h g => by have := h g⁻¹; rwa [hs.leftRep_apply, inv_inv, MonoidHom.inv_apply, map_inv, inv_inv] at this⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsRightAct.mem_eigen_iff {st : G → R →ₐ[K] R} (hs : IsRightAct st) {χ : G →* Kˣ} {F : R} :
     F ∈ eigen st χ ↔ ∀ g, hs.leftRep g F = ((χ⁻¹ g : Kˣ) : K) • F :=
@@ -99,13 +99,13 @@ def algOp (e : MonoidAlgebra K G) : Module.End K R :=
   Finsupp.linearCombination K (fun g => (st g⁻¹).toLinearMap) e.coeff
 
 /- English proof (translation)
-Simplify using `[algOp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem algOp_single (g : G) (a : K) (x : R) : algOp st (MonoidAlgebra.single g a) x = a • st g⁻¹ x := by
   simp [algOp]
 
 /- English proof (translation)
-Rewrite using `[algOp, Finsupp.linearCombination_apply, Finsupp.sum_fintype _ (fun i a => a • (st i⁻¹).toLinearMap) (fun _ => zero_smul _ _), LinearMap.sum_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem algOp_apply [Fintype G] (e : MonoidAlgebra K G) (x : R) :
     algOp st e x = ∑ g, e.coeff g • st g⁻¹ x := by
@@ -114,9 +114,9 @@ theorem algOp_apply [Fintype G] (e : MonoidAlgebra K G) (x : R) :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `e using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp [algOp]`. Consider the case `add a b ha hb => rw [map_add, ← ha, ← hb]`. Simplify using `[algOp]`. Consider the case `single g a => ext x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[algOp_single, Representation.asAlgebraHom_single]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem IsRightAct.algOp_eq {st : G → R →ₐ[K] R} (hs : IsRightAct st) (e : MonoidAlgebra K G) :
     algOp st e = hs.leftRep.asAlgebraHom e := by
@@ -126,14 +126,14 @@ theorem IsRightAct.algOp_eq {st : G → R →ₐ[K] R} (hs : IsRightAct st) (e :
   | single g a => ext x; rw [algOp_single, Representation.asAlgebraHom_single]; rfl
 
 /- English proof (translation)
-Rewrite using `[hs.algOp_eq, hs.algOp_eq, hs.algOp_eq, map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsRightAct.algOp_mul {st : G → R →ₐ[K] R} (hs : IsRightAct st) (e e' : MonoidAlgebra K G) :
     algOp st (e * e') = algOp st e * algOp st e' := by
   rw [hs.algOp_eq, hs.algOp_eq, hs.algOp_eq, map_mul]
 
 /- English proof (translation)
-Rewrite using `[algOp, Finsupp.linearCombination_apply, Finsupp.sum, LinearMap.sum_apply]`. Conclude with `C.sum_mem fun g _ => C.smul_mem _ (hC _ x hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algOp_mem {C : Submodule K R} (hC : ∀ h, ∀ x ∈ C, st h x ∈ C) (e : MonoidAlgebra K G) {x : R} (hx : x ∈ C) :
     algOp st e x ∈ C := by
@@ -145,7 +145,7 @@ variable [Fintype G]
 def tr (χ : G →* Kˣ) : R →ₗ[K] R := ∑ h, (((χ h)⁻¹ : Kˣ) : K) • (st h).toLinearMap
 
 /- English proof (translation)
-Rewrite using `[tr, LinearMap.sum_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tr_apply (χ : G →* Kˣ) (F : R) : tr st χ F = ∑ h, (((χ h)⁻¹ : Kˣ) : K) • st h F := by
   rw [tr, LinearMap.sum_apply]; rfl
@@ -161,13 +161,13 @@ theorem ph_apply (χ : G →* Kˣ) (u f : R) (h : G) : ph st χ u f h = tr st χ
 def ps (u : R) : (G → R) →ₗ[K] R := ∑ h, LinearMap.mulRight K (st h u) ∘ₗ LinearMap.proj h
 
 /- English proof (translation)
-Rewrite using `[ps, LinearMap.sum_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ps_apply (u : R) (F : G → R) : ps st u F = ∑ h, F h * st h u := by
   rw [ps, LinearMap.sum_apply]; rfl
 
 /- English proof (translation)
-Introduce `g` and use `by rw [tr_apply, map_sum, Finset.smul_sum] refine Fintype.sum_equiv (Equiv.mulRight g) _ _ fun h => ?_ rw [map_smul, ← hs.2, smul_smul, Equiv.coe_mulRight, map_mul] congr 1 simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsRightAct.tr_mem_eigen {st : G → R →ₐ[K] R} (hs : IsRightAct st) (χ : G →* Kˣ) (F : R) :
     tr st χ F ∈ eigen st χ := fun g => by
@@ -178,21 +178,21 @@ theorem IsRightAct.tr_mem_eigen {st : G → R →ₐ[K] R} (hs : IsRightAct st) 
   simp
 
 /- English proof (translation)
-Rewrite using `[tr_apply, Finset.sum_congr rfl (g := fun _ => F) fun h _ => by rw [hF h, smul_smul]; simp]`. Simplify using `[Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tr_of_mem_eigen {χ : G →* Kˣ} {F : R} (hF : F ∈ eigen st χ) : tr st χ F = (Fintype.card G : K) • F := by
   rw [tr_apply, Finset.sum_congr rfl (g := fun _ => F) fun h _ => by rw [hF h, smul_smul]; simp]
   simp [Nat.cast_smul_eq_nsmul]
 
 /- English proof (translation)
-Rewrite using `[tr_apply]`. Conclude with `C.sum_mem fun g _ => C.smul_mem _ (hC _ x hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tr_mem {C : Submodule K R} (hC : ∀ h, ∀ x ∈ C, st h x ∈ C) (χ : G →* Kˣ) {x : R} (hx : x ∈ C) :
     tr st χ x ∈ C := by
   rw [tr_apply]; exact C.sum_mem fun g _ => C.smul_mem _ (hC _ x hx)
 
 /- English proof (translation)
-Use `show (Pi.single (1 : G) (1 : K) : G → K) ((h * g) • (1 : G)) = _`. Simplify using `[Pi.single_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example [DecidableEq G] (h g : G) :
     groupMat (funPull K (Z := G)) (Pi.single (1 : G) (1 : K)) h g 1 = if h * g = 1 then 1 else 0 := by
@@ -210,12 +210,12 @@ def latCap (L : Submodule O C) (W : Submodule K R) : Submodule O C :=
   L ⊓ (W.comap C.subtype).restrictScalars O
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_latCap {L : Submodule O C} {W : Submodule K R} {F : C} : F ∈ latCap L W ↔ F ∈ L ∧ (F : R) ∈ W := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem latCap_le (L : Submodule O C) (W : Submodule K R) : latCap L W ≤ L := inf_le_left
 
@@ -224,7 +224,7 @@ def spanQ (N : Submodule O C) : Submodule K R := (Submodule.span K (N : Set C)).
 omit [Algebra O K] [IsScalarTower O K C] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨F, Submodule.subset_span hF, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_spanQ {N : Submodule O C} {F : C} (hF : F ∈ N) : (F : R) ∈ spanQ N :=
   ⟨F, Submodule.subset_span hF, rfl⟩
@@ -232,13 +232,13 @@ theorem mem_spanQ {N : Submodule O C} {F : C} (hF : F ∈ N) : (F : R) ∈ spanQ
 def cutLat (N : Submodule O C) (T : Module.End K R) : Submodule O C := latCap N ((spanQ N).map T)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_cutLat {N : Submodule O C} {T : Module.End K R} {F : C} :
     F ∈ cutLat N T ↔ F ∈ N ∧ ∃ x ∈ spanQ N, T x = F := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `and_congr_right fun hF => ⟨fun ⟨x, _, e⟩ => by have e' : T x = F := e rw [← e']; exact congrArg (fun S : Module.End K R => S x) hT, fun e => ⟨F, mem_spanQ hF, e⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_cutLat_iff {N : Submodule O C} {T : Module.End K R} (hT : IsIdempotentElem T) {F : C} :
     F ∈ cutLat N T ↔ F ∈ N ∧ T F = F :=
@@ -248,13 +248,13 @@ theorem mem_cutLat_iff {N : Submodule O C} {T : Module.End K R} (hT : IsIdempote
     fun e => ⟨F, mem_spanQ hF, e⟩⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.ext fun _ => (mem_cutLat_iff IsIdempotentElem.one).trans (and_iff_left rfl)`.
+A detailed English derivation is pending.
 -/
 theorem cutLat_one (N : Submodule O C) : cutLat N 1 = N :=
   Submodule.ext fun _ => (mem_cutLat_iff IsIdempotentElem.one).trans (and_iff_left rfl)
 
 /- English proof (translation)
-The claim follows from `Submodule.ext fun F => (mem_cutLat_iff IsIdempotentElem.zero).trans ⟨fun h => Subtype.ext h.2.symm, fun h => by obtain rfl : F = 0 := h; exact ⟨N.zero_mem, rfl⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem cutLat_zero (N : Submodule O C) : cutLat N 0 = ⊥ :=
   Submodule.ext fun F => (mem_cutLat_iff IsIdempotentElem.zero).trans
@@ -280,15 +280,15 @@ Both sides reduce to the same expression.
 theorem qProj_mk (h : I ≤ J) (x : N) : qProj h (Submodule.Quotient.mk x) = Submodule.Quotient.mk x := rfl
 
 /- English proof (translation)
-The claim follows from `Submodule.factor_surjective (Submodule.smul_mono_left h)`.
+A detailed English derivation is pending.
 -/
 theorem qProj_surjective (h : I ≤ J) : Function.Surjective (qProj (N := N) h) :=
   Submodule.factor_surjective (Submodule.smul_mono_left h)
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Establish `e : J • (⊤ : Submodule O (QMod N I)) = (J • (⊤ : Submodule O N)).map (I • (⊤ : Submodule O N)).mkQ`. Rewrite using `[Submodule.map_smul'', Submodule.map_top, Submodule.range_mkQ]`. Rewrite using `[qProj_mk, Submodule.Quotient.mk_eq_zero, e]`. Use `⟨fun hx => ⟨x, hx, rfl⟩, fun ⟨y, hy, hyx⟩ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.smul_mono_left h ((Submodule.Quotient.eq _).1 hyx)` as an intermediate fact. Simplify using `using sub_mem hy this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem qProj_eq_zero (h : I ≤ J) (q : QMod N I) : qProj h q = 0 ↔ q ∈ J • (⊤ : Submodule O (QMod N I)) := by
   obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ q
@@ -300,7 +300,7 @@ theorem qProj_eq_zero (h : I ≤ J) (q : QMod N I) : qProj h q = 0 ↔ q ∈ J �
   simpa using sub_mem hy this
 
 /- English proof (translation)
-Use `Submodule.mem_map_of_mem (f := f) hx` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_smul_top {M M' : Type} [AddCommGroup M] [Module O M] [AddCommGroup M'] [Module O M'] (f : M →ₗ[O] M')
     {x : M} (hx : x ∈ J • (⊤ : Submodule O M)) : f x ∈ J • (⊤ : Submodule O M') := by
@@ -313,7 +313,7 @@ def endRed (h : I ≤ J) (γ : QMod N I →ₗ[O] QMod N I) : QMod N J →ₗ[O]
     (qProj_eq_zero h _).2 (map_mem_smul_top (γ ∘ₗ Submodule.mkQ _) hx)
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem endRed_qProj (h : I ≤ J) (γ : QMod N I →ₗ[O] QMod N I) (q : QMod N I) :
     endRed h γ (qProj h q) = qProj h (γ q) := by
@@ -337,7 +337,7 @@ def autRed (h : I ≤ J) : QAut N I →* QAut N J where
     simp [endRed_qProj]
 
 /- English proof (translation)
-The claim follows from `endRed_qProj h _ q`.
+A detailed English derivation is pending.
 -/
 theorem autRed_qProj (h : I ≤ J) (γ : QAut N I) (q : QMod N I) : autRed h γ (qProj h q) = qProj h (γ q) :=
   endRed_qProj h _ q
@@ -358,14 +358,12 @@ def trivMod : Subgroup (QAut N I) where
     rwa [e, neg_sub] at h
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_trivMod {γ : QAut N I} : γ ∈ trivMod N I J ↔ ∀ q, γ q - q ∈ J • (⊤ : Submodule O (QMod N I)) := Iff.rfl
 
 /- English proof (translation)
-Use `⟨fun e q => (qProj_eq_zero h _).1 ?_, fun e => LinearEquiv.ext fun q => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, ← autRed_qProj, e]`. Conclude with `sub_self _`. Take `⟨q, rfl⟩` from `qProj_surjective h q`. Rewrite using `[autRed_qProj]`.
-
-Conclude with `sub_eq_zero.1 ((map_sub (qProj h) _ _).symm.trans ((qProj_eq_zero h _).2 (e q)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem autRed_eq_one (h : I ≤ J) (γ : QAut N I) : autRed h γ = 1 ↔ γ ∈ trivMod N I J := by
   refine ⟨fun e q => (qProj_eq_zero h _).1 ?_, fun e => LinearEquiv.ext fun q => ?_⟩
@@ -375,13 +373,13 @@ theorem autRed_eq_one (h : I ≤ J) (γ : QAut N I) : autRed h γ = 1 ↔ γ ∈
     exact sub_eq_zero.1 ((map_sub (qProj h) _ _).symm.trans ((qProj_eq_zero h _).2 (e q)))
 
 /- English proof (translation)
-Introduce `_ hγ q` and use `Submodule.smul_mono_left h (hγ q)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trivMod_mono {J' : Ideal O} (h : J ≤ J') : trivMod N I J ≤ trivMod N I J' :=
   fun _ hγ q => Submodule.smul_mono_left h (hγ q)
 
 /- English proof (translation)
-The claim follows from `eq_bot_iff.2 fun q hq => by have := (qProj_eq_zero (le_refl I) q).2 hq obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ q exact this`.
+A detailed English derivation is pending.
 -/
 theorem smul_top_qMod : I • (⊤ : Submodule O (QMod N I)) = ⊥ :=
   eq_bot_iff.2 fun q hq => by
@@ -390,14 +388,14 @@ theorem smul_top_qMod : I • (⊤ : Submodule O (QMod N I)) = ⊥ :=
     exact this
 
 /- English proof (translation)
-Use extensionality with `γ`. Rewrite using `[mem_trivMod, mem_trivMod, Submodule.sup_smul, smul_top_qMod, bot_sup_eq]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem trivMod_sup : trivMod N I (I ⊔ J) = trivMod N I J := by
   ext γ
   rw [mem_trivMod, mem_trivMod, Submodule.sup_smul, smul_top_qMod, bot_sup_eq]
 
 /- English proof (translation)
-Use `⟨eq_top_iff.2 fun γ _ q => by simp, eq_bot_iff.2 fun γ hγ => LinearEquiv.ext fun q => ?_⟩` and prove the remaining obligations. Use `hγ q` as an intermediate fact. Rewrite `this` using `[smul_top_qMod]`. Conclude with `sub_eq_zero.1 this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 example : trivMod N I ⊤ = ⊤ ∧ trivMod N I I = ⊥ := by
   refine ⟨eq_top_iff.2 fun γ _ q => by simp, eq_bot_iff.2 fun γ hγ => LinearEquiv.ext fun q => ?_⟩
@@ -406,9 +404,7 @@ example : trivMod N I ⊤ = ⊤ ∧ trivMod N I I = ⊥ := by
   exact sub_eq_zero.1 this
 
 /- English proof (translation)
-Rewrite using `[← Ideal.ker_tensorProductMk_quotient M Js hc, LinearMap.mem_ker]`. Use function extensionality and compare the values at `i`. Apply `(TensorProduct.quotTensorEquivQuotSMul M (Js i)).injective` to reduce the goal to its premises. Use `show TensorProduct.quotTensorEquivQuotSMul M (Js i) (1 ⊗ₜ x) = _`. Rewrite using `[TensorProduct.quotTensorEquivQuotSMul_mk_one_tmul, Pi.zero_apply, map_zero]`.
-
-Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (hx i)`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iInf_smul_top {ι M : Type} [Finite ι] [AddCommGroup M] [Module O M] {Js : ι → Ideal O}
     (hc : Pairwise (Function.onFun IsCoprime Js)) {x : M} (hx : ∀ i, x ∈ Js i • (⊤ : Submodule O M)) :
@@ -488,7 +484,7 @@ def endMat : Module.End O M →* Matrix (Fin r) (Fin r) (ZMod p) where
     simp
 
 /- English proof (translation)
-Simplify using `[endMat, LinearMap.toMatrix'_mulVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem endMat_mulVec (γ : Module.End O M) (x : M) : (endMat e γ).mulVec (e x) = e (γ x) := by
   simp [endMat, LinearMap.toMatrix'_mulVec]
@@ -497,19 +493,19 @@ def autMat : (M ≃ₗ[O] M) →* GL (Fin r) (ZMod p) :=
   ((endMat e).comp (LinearEquiv.automorphismGroup.toLinearMapMonoidHom)).toHomUnits
 
 /- English proof (translation)
-The claim follows from `endMat_mulVec e _ x`.
+A detailed English derivation is pending.
 -/
 theorem autMat_mulVec (γ : M ≃ₗ[O] M) (x : M) :
     (autMat e γ : Matrix (Fin r) (Fin r) (ZMod p)).mulVec (e x) = e (γ x) := endMat_mulVec e _ x
 
 /- English proof (translation)
-Introduce `γ δ h` and use `LinearEquiv.ext fun x => e.injective (by rw [← autMat_mulVec, ← autMat_mulVec, h])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem autMat_injective : Function.Injective (autMat (O := O) e) := fun γ δ h =>
   LinearEquiv.ext fun x => e.injective (by rw [← autMat_mulVec, ← autMat_mulVec, h])
 
 /- English proof (translation)
-Introduce `g` and use `by let f : M ≃+ M := e.trans ((Matrix.GeneralLinearGroup.toLin g).toLinearEquiv.toAddEquiv.trans e.symm) refine ⟨f.toLinearEquiv fun a x => ?_, Units.ext (Matrix.ext_of_mulVec_single fun i => ?_)⟩ · obtain ⟨n, hn⟩ := hO a rw [hn, hn, map_zsmul] · rw [← e.apply_symm_apply (Pi.sing …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem autMat_surjective (hO : ∀ a : O, ∃ n : ℤ, ∀ x : M, a • x = n • x) :
     Function.Surjective (autMat (O := O) e) := fun g => by

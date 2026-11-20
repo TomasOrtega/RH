@@ -22,13 +22,11 @@ variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists} (hF : GlobalTheory.Publis
   (C : _root_.GlobalTheory.HeightCounting.CGTrueT hL D T)
 include hF C in
 /- English proof (translation)
-Introduce `a ha π hc s hs`. Use `host_isCMField D.host` as an intermediate fact. Take `⟨r, h1, h3⟩` from `_root_.GlobalTheory.HeightCounting.Blocks.exists_rep_alt_alt hL hF hG D.nd.Om ι ha (C.e a π).1 ((C.csd a π).1 hc) s fun τ => by`. Use `hs τ` as an intermediate fact. Rewrite `this` using `[C.inf]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hfin : ∀ᶠ w : PlE D.host in cofinite, ((l : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal`. Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 D.host.E)} ≠ 0` using `by simpa using hp.out.ne_zero`. Conclude with `((Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.2 hv).eventually_cofinite_notMem`. Use `⟨fun z σ => (r σ : Matrix (Fin a) (Fin a) (Qbar l)).charpoly.eval z, fun z => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.eval_charpoly]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(continuous_const.sub h1).matrix_det`. Use `filter_upwards [hfin, D.naut.locG_unr_ae π] with w hl hu B σ hB hσ z`. Establish `hu'` using `(D.naut.unr_tw _ (s + (1 - (a : ℝ)) / 2)).2 hu`. Establish `e : T.e w (D.naut.lpTw (D.naut.locG π w) (s + (1 - (a : ℝ)) / 2)) = wdOf (D.nd.plOm.2 w) hl ι r`. Establish `hu2` using `(T.unr w _).1 hu'`.
-
-Rewrite `hu2`, the goal using `[← D.naut.lpTw_add, T.tw, T.tw, C.loc]`. Conclude with `((h3 w hl _ _).eq_unr hu2).symm`. Rewrite using `[galPol, T.frobEig w _ hu', e, ← frobEig_wdOf hl ι h1 (e ▸ (T.unr w _).1 hu') hB hσ]`. Conclude with `(eval_map_apply ι.toRingHom _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cuspFam_alt_alt (hG : _root_.UpperTheory.GalS.CuspUAlt) {l : ℕ} [hp : Fact l.Prime] (ι : Qbar l ≃+* ℂ) :
     CuspFam D.naut ι := by

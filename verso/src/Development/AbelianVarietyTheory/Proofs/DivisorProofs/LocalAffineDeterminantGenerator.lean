@@ -9,21 +9,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.RealMult.Obj
 
 /- English proof (translation)
-Introduce `F _ _ 𝔠 M U y`. Take `⟨W₀, hW₀, hyW₀, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp M.isBasis_affineOpens) (show y ∈ (⊤ : M.Opens) from trivial)`. Establish `hW₀ : IsAffineOpen W₀` using `hW₀`. Take `⟨Y₀, φ₀, h₀⟩` from `exists_isPullBy (S' := Sp Γ(M, W₀)) U hW₀.fromSpec`. Take `⟨hfin, hproj, hrk⟩` from `GlobalTheory.T.lie_algebra_finite_projective_rank Y₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `q` to `hW₀.primeIdealOf ⟨y, hyW₀⟩`. Set `p : Ideal Γ(M, W₀)` to `q.asIdeal`. Use `haveI : p.IsPrime := q.isPrime`. Use `haveI : Module.FinitePresentation Γ(M, W₀) Y₀.Lie := Module.finitePresentation_of_projective _ _`. Use `haveI : Module.Free (Localization.AtPrime p) (LocalizedModule p.primeCompl Y₀.Lie) := Module.free_of_flat_of_isLocalRing`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g, hg, hfree, hfr⟩` from `Module.FinitePresentation.exists_free_localizedModule_powers p.primeCompl (LocalizedModule.mkLinearMap p.primeCompl Y₀.Lie) (Localization.AtPrime p)`. Establish `hyW : y ∈ M.basicOpen g`. Establish `h1 : q ∈ hW₀.fromSpec ⁻¹ᵁ M.basicOpen g`. Rewrite using `[hW₀.fromSpec_preimage_basicOpen]`. Conclude with `hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `h2 : hW₀.fromSpec q ∈ M.basicOpen g` using `h1`. Rewrite `h2` using `[hW₀.fromSpec_primeIdealOf]`. Then use the resulting hypothesis. Establish `hW : IsAffineOpen (M.basicOpen g)` using `hW₀.basicOpen g`. Use `letI : Algebra Γ(M, W₀) Γ(M, M.basicOpen g) := (M.presheaf.map (homOfLE (M.basicOpen_le g)).op).hom.toAlgebra`. Use `haveI : IsLocalization.Away g Γ(M, M.basicOpen g) := hW₀.isLocalization_basicOpen g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Y, ψ, hψ⟩` from `exists_isPullBy (S' := Sp Γ(M, M.basicOpen g)) Y₀ (spMap (algebraMap Γ(M, W₀) Γ(M, M.basicOpen g)))`. Establish `hcomp : spMap (algebraMap Γ(M, W₀) Γ(M, M.basicOpen g)) ≫ hW₀.fromSpec = hW.fromSpec` using `hW₀.map_fromSpec hW (homOfLE (M.basicOpen_le g)).op`. Use `⟨M.basicOpen g, hW, hyW, Y, ψ ≫ φ₀, by rw [← hcomp]; exact hψ.comp h₀, ?_⟩` and prove the remaining obligations. Take `⟨e, -, -⟩` from `exists_lieEquiv (R' := Γ(M, M.basicOpen g)) hψ`. Use `haveI : Module.Finite (Localization.Away g) (LocalizedModule.Away g Y₀.Lie) := Module.Finite.of_isLocalizedModule (Submonoid.powers g) (LocalizedModule.mkLinearMap (Submonoid.powers g) Y₀.Lie)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hd : Module.finrank (Localization.Away g) (LocalizedModule.Away g Y₀.Lie) = Module.finrank ℚ F`. Rewrite using `[hfr]`. Conclude with `hrk q`. Use `haveI : Nontrivial (Localization.Away g) := (IsLocalization.Away.lift g (S := Localization.Away g) (g := algebraMap Γ(M, W₀) (Localization.AtPrime p)) (IsLocalization.map_units (Localization.AtPrime p) ⟨g, hg⟩)).domain_nontrivial`. Set `b₀` to `Module.finBasisOfFinrankEq (Localization.Away g) (LocalizedModule.Away g Y₀.Lie) hd`.
-
-Use `haveI : IsLocalizedModule (Submonoid.powers g) (TensorProduct.mk Γ(M, W₀) Γ(M, M.basicOpen g) Y₀.Lie 1) := (isLocalizedModule_iff_isBaseChange (Submonoid.powers g) Γ(M, M.basicOpen g) _).2 (TensorProduct.isBaseChange _ _ _)`. Set `l` to `IsLocalizedModule.linearEquiv (Submonoid.powers g) (LocalizedModule.mkLinearMap (Submonoid.powers g) Y₀.Lie) (TensorProduct.mk Γ(M, W₀) Γ(M, M.basicOpen g) Y₀.Lie 1)`. Set `τ` to `IsLocalization.algEquiv (Submonoid.powers g) (Localization.Away g) Γ(M, M.basicOpen g)`. Set `Ψ` to `l.symm ≪≫ₗ b₀.repr.restrictScalars Γ(M, W₀) ≪≫ₗ Finsupp.mapRange.linearEquiv τ.toLinearEquiv`. Set `Ψ'` to `Ψ.extendScalarsOfIsLocalization (Submonoid.powers g) Γ(M, M.basicOpen g)`.
-
-Conclude with `⟨DetGen.ofBasis Y ((Module.Basis.ofRepr Ψ').map e)⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_affine_nbhd_detGen_basicOpen : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (M : Scheme.{0}) (U : Obj F 𝔠 M) (y : M),
     ∃ (W : M.Opens) (hW : IsAffineOpen W), y ∈ W ∧ ∃ (Y : Obj F 𝔠 (Sp Γ(M, W))) (φ : Y.A.left ⟶ U.A.left),

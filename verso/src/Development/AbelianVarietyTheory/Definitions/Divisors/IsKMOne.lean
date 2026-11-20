@@ -41,7 +41,7 @@ open scoped TensorProduct in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ} in
 
 /- English proof (translation)
-Use `⟨⟨by simp, fun x y => by simp only [one_mulVec]⟩, fun x _ => ⟨0, ?_, ?_⟩, fun x hx => ⟨x, hx, one_mulVec x⟩⟩` and prove the remaining obligations. Conclude with `(_root_.GlobalTheory.AdLat.hat F L).zero_mem`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UCls.isKM_one (c : E ≃ₐ[F] E) (G : Matrix (Fin n) (Fin n) E)
     (L : Set (Fin n → E)) (M : ℕ) :

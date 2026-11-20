@@ -11,7 +11,7 @@ open scoped CategoryTheory.Obj TensorProduct ContDiff
 open GlobalTheory.ZM
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ThetaPrime.exists_prime_independent_ratios` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FThetaIdealPrimeAvoidingVariable.lean&line=136#L136)
 -/

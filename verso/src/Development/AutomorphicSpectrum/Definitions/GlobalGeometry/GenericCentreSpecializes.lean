@@ -54,28 +54,28 @@ open ProjectiveLinePlaces
 variable {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ϖ : Ω} (Γ : FibreCurve ξ ϖ) {L L' M : Lat ξ Ω} {d d' : ℤ}
 
 /- English proof (translation)
-Use `centre_specializes (Γ.z i) (Γ.C.v i).valuationSubring.subtype` as an intermediate fact. Rewrite `this` using `[Γ.z_gen i]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem generic_centre_specializes (i : Γ.C.I) : centre Γ.η ⤳ centre (Γ.z i) := by
   have := centre_specializes (Γ.z i) (Γ.C.v i).valuationSubring.subtype
   rwa [Γ.z_gen i] at this
 
 /- English proof (translation)
-The claim follows from `Γ.η_spec.trans (Γ.generic_centre_specializes i)`.
+A detailed English derivation is pending.
 -/
 theorem z_spec (i : Γ.C.I) : genPt ξ ⤳ centre (Γ.z i) := Γ.η_spec.trans (Γ.generic_centre_specializes i)
 
 /- English proof (translation)
-The claim follows from `hg.subset fun i hi h1 => hi (by simp [h1])`.
+A detailed English derivation is pending.
 -/
 theorem finite_support {g : Γ.C.I → Γ.κ} (hg : {i | Γ.C.v i (g i) ≠ 1}.Finite) :
     Function.HasFiniteSupport fun i => (Γ.C.w i : ℤ) * (-WithZero.log (Γ.C.v i (g i))) :=
   hg.subset fun i hi h1 => hi (by simp [h1])
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `valAt_of_unit _ ha`. Use `⟨_, valAt_restrict _ (Γ.z_gen i) Γ.η_spec ht, ?_⟩` and prove the remaining obligations. Establish `a1 : Γ.C.v i ((Γ.C.v i).valuationSubring.subtype t) ≤ 1` using `t.1.2`. Establish `a2 : Γ.C.v i ((Γ.C.v i).valuationSubring.subtype ↑t⁻¹) ≤ 1` using `(t⁻¹).1.2`. Establish `a3 : Γ.C.v i ((Γ.C.v i).valuationSubring.subtype t) * Γ.C.v i ((Γ.C.v i).valuationSubring.subtype ↑t⁻¹) = 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Use `le_antisymm a1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem exists_val_of_unitAt (i : Γ.C.I) {a : Ω} (ha : unitAt ξ ⟨centre (Γ.z i), Γ.z_spec i⟩ a) :
     ∃ t : Γ.κ, ValAt ξ Γ.η a t ∧ Γ.C.v i t = 1 := by
@@ -94,15 +94,15 @@ theorem exists_val_of_unitAt (i : Γ.C.I) {a : Ω} (ha : unitAt ξ ⟨centre (Γ
 variable {Γ}
 
 /- English proof (translation)
-Take `⟨e, f, r, he, hf, hr, hfin, hd⟩` from `h`. Take `⟨u, hu⟩` from `valAt_of_unit Γ.η_spec (unitAt_div he' he)`. Establish `key : ∀ i, Γ.C.v i (r' i) = Γ.C.v i (u : Γ.κ) * Γ.C.v i (r i)`. Introduce `i`. Take `⟨h, hi⟩` from `hf i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h', hi'⟩` from `hf' i`. Take `⟨t, ht, hv⟩` from `Γ.exists_val_of_unitAt i (unitAt_div hi hi')`. Establish `h2` using `CoordModel.valAt_mul (CoordModel.valAt_mul hu (hr i).2) ht`. Establish `e0` using `he.1`. Establish `e1` using `hi.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[show e' / e * (e / f i) * (f i / f' i) = e' / f' i by field_simp]`. Rewrite using `[CoordModel.valAt_unique hξ (hr' i) h2, map_mul, map_mul, hv, mul_one]`. Establish `hu0 : ∀ i, Γ.C.v i (u : Γ.κ) ≠ 0` using `fun i => by simp`. Establish `hr0 : ∀ i, Γ.C.v i (r i) ≠ 0` using `fun i => by simpa using (hr i).1`. Use `⟨fun i h0 => ?_, ((Γ.C.fin _ u.ne_zero).union hfin).subset fun i hi => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_ne_zero (hu0 i) (hr0 i) (by rw [← key, h0, map_zero])`. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hc`. Conclude with `hi (by rw [key, hc.1, hc.2, mul_one])`. Repeatedly rewrite using `[key, fun i => WithZero.log_mul (hu0 i) (hr0 i), neg_add, mul_add]`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[finsum_add_distrib (Γ.finite_support (Γ.C.fin _ u.ne_zero)) (Γ.finite_support hfin), hd]`. Repeatedly rewrite using `[mul_neg]`. Rewrite using `[finsum_neg_distrib, Γ.C.prod _ u.ne_zero, neg_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasDeg.of_generators (hξ : IsCptGen ξ) (h : Γ.HasDeg L d) (e' : Ω) (f' : Γ.C.I → Ω) (r' : Γ.C.I → Γ.κ)
     (he' : L.IsGenAt ⟨centre Γ.η, Γ.η_spec⟩ e')
@@ -135,20 +135,18 @@ theorem HasDeg.of_generators (hξ : IsCptGen ξ) (h : Γ.HasDeg L d) (e' : Ω) (
     rw [finsum_neg_distrib, Γ.C.prod _ u.ne_zero, neg_zero, zero_add]
 
 /- English proof (translation)
-Take `⟨e, f, r, he, hf, hr, -, hd⟩` from `h'`. Conclude with `(h.of_generators hξ e f r he hf fun i => (hr i).2).2.2.symm.trans hd`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem HasDeg.unique (hξ : IsCptGen ξ) (h : Γ.HasDeg L d) (h' : Γ.HasDeg L d') : d = d' := by
   obtain ⟨e, f, r, he, hf, hr, -, hd⟩ := h'
   exact (h.of_generators hξ e f r he hf fun i => (hr i).2).2.2.symm.trans hd
 
 /- English proof (translation)
-Take `⟨e, f, r, he, hf, hr, hfin, hd⟩` from `h`. Take `⟨e', f', r', he', hf', hr', hfin', hd'⟩` from `h'`. Use `⟨e * e', fun i => f i * f' i, fun i => r i * r' i, hM _ _ _ he he', fun i => ?_, fun i => ⟨?_, ?_⟩, (hfin.union hfin').subset fun i hi => ?_, ?_⟩` and prove the remaining obligations. Take `⟨h, hi⟩` from `hf i`. Take `⟨_, hi'⟩` from `hf' i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h, hM _ _ _ hi hi'⟩`. Conclude with `mul_ne_zero (hr i).1 (hr' i).1`. Rewrite using `[mul_div_mul_comm]`. Conclude with `CoordModel.valAt_mul (hr i).2 (hr' i).2`. Assume the negation of the conclusion as `hc`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hc`. Conclude with `hi (by rw [map_mul, hc.1, hc.2, mul_one])`. Establish `: ∀ i, WithZero.log (Γ.C.v i (r i * r' i)) = WithZero.log (Γ.C.v i (r i)) + WithZero.log (Γ.C.v i (r' i))` using `fun i => by`. Rewrite using `[map_mul, WithZero.log_mul (by simpa using (hr i).1) (by simpa using (hr' i).1)]`. Repeatedly rewrite using `[this, neg_add, mul_add]`.
-
-Rewrite using `[finsum_add_distrib (Γ.finite_support hfin) (Γ.finite_support hfin'), hd, hd']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasDeg.mul (hM : ∀ p e e', L.IsGenAt p e → L'.IsGenAt p e' → M.IsGenAt p (e * e'))
     (h : Γ.HasDeg L d) (h' : Γ.HasDeg L' d') : Γ.HasDeg M (d + d') := by
@@ -174,7 +172,7 @@ theorem HasDeg.mul (hM : ∀ p e e', L.IsGenAt p e → L'.IsGenAt p e' → M.IsG
 variable (Γ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => (h.of_generators hξ e f r he hf hr).2.2, fun h => ⟨e, f, r, he, hf, fun i => ⟨h0 i, hr i⟩, hfin, h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasDeg_iff_of_witness (hξ : IsCptGen ξ) (e : Ω) (f : Γ.C.I → Ω) (r : Γ.C.I → Γ.κ)
     (he : L.IsGenAt ⟨centre Γ.η, Γ.η_spec⟩ e)
@@ -184,7 +182,7 @@ theorem hasDeg_iff_of_witness (hξ : IsCptGen ξ) (e : Ω) (f : Γ.C.I → Ω) (
   ⟨fun h => (h.of_generators hξ e f r he hf hr).2.2, fun h => ⟨e, f, r, he, hf, fun i => ⟨h0 i, hr i⟩, hfin, h⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨e, fun _ => e, fun _ => 1, he, fun i => ⟨_, hf i⟩, fun _ => ⟨one_ne_zero, Γ.η_spec, 1, by rw [map_one, div_self he.1], map_one _⟩, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasDeg_zero_of_gen {e : Ω} (he : L.IsGenAt ⟨centre Γ.η, Γ.η_spec⟩ e)
     (hf : ∀ i, L.IsGenAt ⟨centre (Γ.z i), Γ.z_spec i⟩ e) : Γ.HasDeg L 0 :=
@@ -192,7 +190,7 @@ theorem hasDeg_zero_of_gen {e : Ω} (he : L.IsGenAt ⟨centre Γ.η, Γ.η_spec�
     fun _ => ⟨one_ne_zero, Γ.η_spec, 1, by rw [map_one, div_self he.1], map_one _⟩, by simp, by simp⟩
 
 /- English proof (translation)
-The claim follows from `Γ.hasDeg_zero_of_gen he fun i => by have h : (⟨centre (Γ.z i), Γ.z_spec i⟩ : Cpt ξ) = ⟨centre Γ.η, Γ.η_spec⟩ := Subtype.ext ((Γ.generic_centre_specializes i).mem_closed hc rfl) rw [h] exact he`.
+A detailed English derivation is pending.
 -/
 theorem hasDeg_zero_of_isClosed (hc : IsClosed ({centre Γ.η} : Set X)) {e : Ω}
     (he : L.IsGenAt ⟨centre Γ.η, Γ.η_spec⟩ e) : Γ.HasDeg L 0 :=
@@ -203,7 +201,7 @@ theorem hasDeg_zero_of_isClosed (hc : IsClosed ({centre Γ.η} : Set X)) {e : Ω
     exact he
 
 /- English proof (translation)
-Introduce `⟨_, _, _, he, _⟩` and use `he.1 (Submodule.span_singleton_eq_bot.1 he.2.symm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_hasDeg_bot (d : ℤ) : ¬ Γ.HasDeg (fun _ => ⊥) d := fun ⟨_, _, _, he, _⟩ =>
   he.1 (Submodule.span_singleton_eq_bot.1 he.2.symm)
@@ -218,9 +216,9 @@ def scale (n : ℕ) (hn : 0 < n) : FibreCurve ξ ϖ :=
     w_pos := fun i => Nat.mul_pos hn (Γ.w_pos i) }
 
 /- English proof (translation)
-Take `⟨e, f, r, he, hf, hr, hfin, hd⟩` from `h`. Use `⟨e, f, r, he, hf, hr, hfin, ?_⟩` and prove the remaining obligations. Rewrite using `[← hd, mul_finsum]`. Conclude with `finsum_congr fun i => by`. Express the relevant statement in the definitionally equal form `((n * Γ.C.w i : ℕ) : ℤ) * _ = _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_mul, mul_assoc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem HasDeg.scale {Γ : FibreCurve ξ ϖ} (h : Γ.HasDeg L d) (n : ℕ) (hn : 0 < n) :
     (Γ.scale n hn).HasDeg L (n * d) := by
@@ -235,13 +233,13 @@ theorem HasDeg.scale {Γ : FibreCurve ξ ϖ} (h : Γ.HasDeg L d) (n : ℕ) (hn :
 end FibreCurve
 
 /- English proof (translation)
-Introduce `Γ` and use `Γ.hasDeg_zero_of_gen (he _) fun _ => he _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem numTrivMod_of_gen {ξ : Spec (CommRingCat.of Ω) ⟶ X} {L : Lat ξ Ω} {e : Ω} (he : ∀ p, L.IsGenAt p e)
     (ϖ : Ω) : NumTrivMod L ϖ := fun Γ => Γ.hasDeg_zero_of_gen (he _) fun _ => he _
 
 /- English proof (translation)
-The claim follows from `numTrivMod_of_gen (fun _ => ⟨one_ne_zero, rfl⟩) ϖ`.
+A detailed English derivation is pending.
 -/
 example {ξ : Spec (CommRingCat.of Ω) ⟶ X} (ϖ : Ω) :
     NumTrivMod (fun p => Submodule.span (regAt ξ p) {(1 : Ω)} : Lat ξ Ω) ϖ :=
@@ -262,35 +260,31 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
 /- English proof (translation)
-Use `letI : Algebra o (RatFunc k) := ((algebraMap k (RatFunc k)).comp (algebraMap o k)).toAlgebra`. Establish `hi` using `fun c => chartEval_injective x c (hx c) hinj`. Set `w : Option (Fin 1) → RatFunc k` to `fun j => j.elim 1 fun _ => RatFunc.X`. Establish `hw : ∀ c, w c ≠ 0`. Introduce and unpack `(_ | c)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `one_ne_zero`. Conclude with `RatFunc.X_ne_zero`. Set `c : (projLine k).I → Option (Fin 1)` to `fun i => Option.elim i (some 0) fun _ => none`. Establish `hX : (projLine k).v none RatFunc.X = WithZero.exp 1` using `RatFunc.inftyValuation.X k`. Establish `hc : ∀ i j, (projLine k).v i (w j / w (c i)) ≤ 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce and unpack `(_ | q) (_ | j)`. Express the relevant statement in the definitionally equal form `(projLine k).v none (1 / RatFunc.X) ≤ 1`. Rewrite using `[map_div₀, hX, map_one, one_div, ← WithZero.exp_neg, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Evaluate the numerical expressions. Express the relevant statement in the definitionally equal form `(projLine k).v none (RatFunc.X / RatFunc.X) ≤ 1`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[div_self RatFunc.X_ne_zero, map_one]`. Express the relevant statement in the definitionally equal form `(projLine k).v (some q) (1 / 1) ≤ 1`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `q.valuation (RatFunc k) (RatFunc.X / 1) ≤ 1`. Rewrite using `[div_one]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `q.valuation_le_one Polynomial.X`. Establish `hmem : ∀ i a, chartEval (o` using `o) w (c i) (hw _) a ∈ ((projLine k).v i).valuationSubring := by`. Introduce `i a`. Establish `h` using `(mem_range_chartEval (o := o) w (c i) (hw _) _).1 ⟨a, rfl⟩`. Generalize the expression as in `chartEval (o := o) w (c i) (hw _) a = b at h`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `h using Algebra.adjoin_induction with`. Consider the case `mem y hy => obtain ⟨j, rfl⟩ := hy`. Conclude with `hc i j`. Consider the case `algebraMap r`. Express the relevant statement in the definitionally equal form `(projLine k).v i (algebraMap k (RatFunc k) (algebraMap o k r)) ≤ 1`.
+Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Distinguish the cases in `h0 : algebraMap o k r = 0`. Simplify using `[h0]`. Conclude with `(projective_line_place_trivial_on_constants k i _ h0).le`. Consider the case `add y z _ _ hy hz => exact add_mem hy hz`. Consider the case `mul y z _ _ hy hz => exact mul_mem hy hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨η, eη⟩ : ∃ η : Spec (CommRingCat.of (RatFunc k)) ⟶ Proj (homogeneousSubmodule (Option (Fin 1)) o), ∀ c, η = CptModel.pt (chartEval w c (hw c)) ≫ Proj.awayι _ (X c) (X_mem c) one_pos` from `⟨CptModel.pt (chartEval w none (hw none)) ≫ Proj.awayι _ (X none) (X_mem none) one_pos, fun c => pt_awayι_eq _ _ (X_mem none) (X_mem c) one_pos one_pos _ _⟩`. Establish `vη : ∀ c a, ValAt ξ η (chartEval (o` using `o) x c (hx c) a) (chartEval (o := o) w c (hw c) a) := fun c a => by`. Rewrite using `[eη c]`. Conclude with `valAt_chart _ (hi c) _ (e c) _ a`. Set `χ` to `fun i => (chartEval (o := o) w (c i) (hw _)).codRestrict ((projLine k).v i).valuationSubring (hmem i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Set `z : ∀ i, Spec (CommRingCat.of ((projLine k).v i).valuationSubring) ⟶ Proj (homogeneousSubmodule (Option (Fin 1)) o)` to `fun i => Spec.map (CommRingCat.ofHom (χ i)) ≫ Proj.awayι _ (X (c i)) (X_mem (c i)) one_pos`. Establish `vz : ∀ i a, ValAt ξ (z i) (chartEval (o` using `o) x (c i) (hx _) a) (χ i a) := fun i a => valAt_chart _ (hi _) _ (e _) _ a`. Establish `h0 : ValAt ξ η (algebraMap o Ω ϖ) 0`. Use `vη none (cst none ϖ)` as an intermediate fact. Rewrite `this` using `[chartEval_cst, chartEval_cst]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `this` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `0 = algebraMap k (RatFunc k) (algebraMap o k ϖ)`. Rewrite using `[hϖ, map_zero]`. Set `Γ : FibreCurve ξ (algebraMap o Ω ϖ)` to `{ k := k, κ := RatFunc k, fg := ratFunc_fg k, trdeg := ratFunc_trdeg k, C := projLine k, w_pos := projective_line_place_degree_pos k, triv := projective_line_place_trivial_on_constants k, all := projective_line_places_all_valuations k, η := η, η_spec := h0.1, η_zero := h0, z := z …`. Rewrite using `[eη (c i), ← Category.assoc, ← Spec.map_comp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `rfl }`. Use `⟨Γ, fun d L hL n => ?_⟩` and prove the remaining obligations. Establish `vr : ∀ c j, ValAt ξ η (x j / x c) (w j / w c)` using `fun c j => by`. Simplify `vη c (ratio c j)` using `only [chartEval_ratio]`. Rewrite using `[Γ.hasDeg_iff_of_witness hξ (L := L) (x none ^ d) (fun i => x (c i) ^ d) (fun i => (w none / w (c i)) ^ d) ⟨pow_ne_zero _ (hx _), hL _ none ⟨hx _, fun j => mem_regAt_of_valAt (vr none j) _⟩⟩ (fun i => ⟨(vz i 0).1, pow_ne_zero _ (hx _), hL _ _ ⟨hx _, fun j => by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `mem_regAt_of_valAt (vz i (ratio (c i) j)) (vz i 0).1` as an intermediate fact. Rewrite using `[chartEval_ratio] at this⟩⟩)` and apply the resulting hypothesis. Use the proof step `(fun i => by rw [← div_pow]; exact valAt_pow (vr _ _) d)`. Use the proof step `(fun i => pow_ne_zero _ (div_ne_zero (hw _) (hw _)))`. Use the proof step `((Set.finite_singleton none).subset fun i hi => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Break down `i with _ | q` into its components or cases. Both sides reduce to the same expression. Conclude with `absurd (show (projLine k).v (some q) ((1 / 1) ^ d) = 1 by simp) hi)]`. Rewrite using `[finsum_eq_single (α := (projLine k).I) _ none]`. Express the relevant statement in the definitionally equal form `((1 : ℕ) : ℤ) * -WithZero.log ((projLine k).v none ((1 / RatFunc.X) ^ d)) = n ↔ _`.
-
-Rewrite using `[map_pow, map_div₀, hX, map_one, one_div, ← WithZero.exp_neg, ← WithZero.exp_nsmul, WithZero.log_exp]`. Simplify using `[eq_comm]`. Introduce and unpack `(_ | q) hi`. Conclude with `absurd rfl hi`. Express the relevant statement in the definitionally equal form `_ * -WithZero.log ((projLine k).v (some q) ((1 / 1) ^ d)) = 0`.
-
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem line_deg (x : Option (Fin 1) → Ω) (hx : ∀ c, x c ≠ 0)
     (hinj : ∀ (n : ℕ) (g : MvPolynomial (Option (Fin 1)) o), g.IsHomogeneous n → aeval x g = 0 → g = 0)
@@ -388,17 +382,15 @@ end Proj
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 /- English proof (translation)
-Establish `hi` using `IsFractionRing.injective (MvPolynomial (Fin 1) o) (FractionRing (MvPolynomial (Fin 1) o))`. Establish `hx : ∀ c : Option (Fin 1), algebraMap (MvPolynomial (Fin 1) o) (FractionRing (MvPolynomial (Fin 1) o)) (c.elim 1 MvPolynomial.X) ≠ 0` using `fun c => by`. Rewrite using `[map_ne_zero_iff _ hi]`. Consider the cases of `c with`. Consider the case `none => exact one_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `some j => exact MvPolynomial.X_ne_zero j`. Establish `hinj : ∀ (d : ℕ) (g : MvPolynomial (Option (Fin 1)) o), g.IsHomogeneous d → MvPolynomial.aeval (fun j : Option (Fin 1) => algebraMap (MvPolynomial (Fin 1) o) (FractionRing (MvPolynomial (Fin 1) o)) (j.elim 1 MvPolynomial.X)) g = 0 → g = 0` using `fun d g hg h => by`. Conclude with `ProjCoord.eq_zero_of_dehom hg ((map_eq_zero_iff _ hi).1 ((MvPolynomial.aeval_algebraMap_apply _ _ g).symm.trans h))`. Take `⟨ξ, hT, e⟩` from `coordTie_charts _ hx none hinj (fun a => by`. Establish `key : ∀ p : MvPolynomial (Fin 1) o, algebraMap _ (FractionRing (MvPolynomial (Fin 1) o)) p ∈ Algebra.adjoin o (Set.range fun j : Option (Fin 1) => algebraMap (MvPolynomial (Fin 1) o) (FractionRing (MvPolynomial (Fin 1) o)) (j.elim 1 MvPolynomial.X) / algebraMap (MvPolynomial (Fin …`.
+Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C r`. Rewrite using `[← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply]`. Conclude with `Subalgebra.algebraMap_mem _ r`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add p q hp hq`. Rewrite using `[map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `mul_mem hp (Algebra.subset_adjoin ⟨some i, by simp⟩)`. Take `⟨u, v, hv, rfl⟩` from `IsFractionRing.div_surjective (A := MvPolynomial (Fin 1) o) a`. Establish `h0` using `(map_ne_zero_iff _ hi).2 (nonZeroDivisors.ne_zero hv)`. Conclude with `⟨_, key u, _, key v, h0, div_mul_cancel₀ _ h0⟩)`. Take `⟨Γ, hΓ⟩` from `line_deg _ hx hinj ξ hT.gen e k ϖ hϖ`.
-
-Use `⟨ξ, hT.gen, Γ, fun d => ?_⟩` and prove the remaining obligations. Take `⟨L, hL⟩` from `Lat.exists_line hT d`. Use `⟨L, Lat.isVB_line hT hL, hΓ d L hL, fun hd h => hd ?_⟩` and prove the remaining obligations. Conclude with `((hΓ d L hL 0).1 (h Γ)).symm` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_line_curve (o : Type) [CommRing o] [IsDomain o] (k : Type) [Field k] [Algebra o k] (ϖ : o)
     (hϖ : algebraMap o k ϖ = 0) :
@@ -445,7 +437,7 @@ theorem exists_line_curve (o : Type) [CommRing o] [IsDomain o] (k : Type) [Field
   exact_mod_cast ((hΓ d L hL 0).1 (h Γ)).symm
 
 /- English proof (translation)
-The claim follows from `exists_line_curve ℤ (ZMod p) (p : ℤ) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem exists_line_curve_int (p : ℕ) [Fact p.Prime] :
     ∃ ξ : Spec (CommRingCat.of (FractionRing (MvPolynomial (Fin 1) ℤ))) ⟶
@@ -455,9 +447,9 @@ theorem exists_line_curve_int (p : ℕ) [Fact p.Prime] :
   exists_line_curve ℤ (ZMod p) (p : ℤ) (by simp)
 
 /- English proof (translation)
-Take `⟨ξ, hξ, Γ, hΓ⟩` from `exists_line_curve_int 2`. Use `⟨_, _, _, ξ, _, Γ, hξ, ?_, fun hc => ?_⟩` and prove the remaining obligations. Use `haveI : CharZero (FractionRing (MvPolynomial (Fin 1) ℤ)) := charZero_of_injective_algebraMap (IsFractionRing.injective (MvPolynomial (Fin 1) ℤ) _)`. Simplify using the standard rewrite rules. Take `⟨L, -, hL, -⟩` from `hΓ 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, -, -, he, -⟩` from `(hL 1).2 rfl`. Conclude with `absurd ((hL 0).1 (Γ.hasDeg_zero_of_isClosed hc he)) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem exists_fibreCurve : ∃ (X : Scheme.{0}) (Ω : Type) (_ : Field Ω) (ξ : Spec (CommRingCat.of Ω) ⟶ X) (ϖ : Ω)
     (Γ : FibreCurve ξ ϖ), IsCptGen ξ ∧ ϖ ≠ 0 ∧ ¬ IsClosed ({centre Γ.η} : Set X) := by

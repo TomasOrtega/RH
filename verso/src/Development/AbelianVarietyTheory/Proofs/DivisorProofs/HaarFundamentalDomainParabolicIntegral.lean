@@ -24,11 +24,7 @@ noncomputable section
 namespace GlobalTheory.FoldLine
 
 /- English proof (translation)
-Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`.
-
-Use `haveI : LocallyCompactSpace (AE F E) := e.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E) := e.secondCountableTopology`. Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`. Use `haveI : SecondCountableTopology (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Use `haveI : LocallyCompactSpace (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`.
-
-Conclude with `⟨inferInstance, Units.isClosedEmbedding_embedProduct.locallyCompactSpace, Units.isEmbedding_embedProduct.secondCountableTopology⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem units_lcsc (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] :
     IsTopologicalGroup (AE F E)ˣ ∧ LocallyCompactSpace (AE F E)ˣ ∧ SecondCountableTopology (AE F E)ˣ := by
@@ -46,9 +42,9 @@ theorem units_lcsc (F E : Type) [Field F] [NumberField F] [Field E] [NumberField
     Units.isEmbedding_embedProduct.secondCountableTopology⟩
 
 /- English proof (translation)
-Take `⟨ex, ey, eι⟩` from `e`. Take `⟨ex', ey', eι'⟩` from `e'`. Establish `mm : ∀ {k : ℕ} {J : Matrix (Fin k) (Fin k) E} (a b : UA σ J), mat (a * b) = mat a * mat b` using `fun _ _ => rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mm, ← Matrix.mulVec_mulVec, ex', Matrix.mulVec_smul, ex, smul_smul, Units.val_mul, mul_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mm, ← Matrix.mulVec_mulVec, ey', Matrix.mulVec_smul, ey, smul_smul, mul_inv_rev, Units.val_mul, map_mul]`. Rewrite using `[mm, mm, Matrix.mul_assoc, eι', ← Matrix.mul_assoc, eι, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem levi_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} (H : Plane E d d₁) {t t' : (AE F E)ˣ} {h₁ h₁' : UA σ W₁.J}
@@ -62,9 +58,9 @@ theorem levi_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   · rw [mm, mm, Matrix.mul_assoc, eι', ← Matrix.mul_assoc, eι, Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `u hu`. Proceed by induction on `hu using Subgroup.closure_induction with`. Consider the case `mem v hv => exact hv.1`. Consider the case `one => exact Matrix.one_mulVec _`. Consider the case `mul a b _ _ ha hb => show (mat a * mat b) *ᵥ _ = _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← Matrix.mulVec_mulVec, hb, ha]`. Consider the case `inv a _ ha`. Establish `e` using `congrArg (fun z => mat a⁻¹ *ᵥ z) ha`. Simplify using `only [Matrix.mulVec_mulVec, GlobalTheory.StabHaar.mat_inv_mul, Matrix.one_mulVec] at e`. Conclude with `e.symm`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unip_fix {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n n₁ : ℕ} (X : Spc F E n) (H : Plane E n n₁) : ∀ u ∈ unip σ X H, mat u *ᵥ incV F H.x = incV F H.x := by
@@ -81,7 +77,7 @@ theorem unip_fix {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
     exact e.symm
 
 /- English proof (translation)
-Take `rfl` from `hH.rank`. Establish `hL : Submodule.span E ((reS X Y).L : Set (Fin (n₁ + 2) → E)) = ⊤` using `hXY.lat.span_eq_top`. Use `choose a b c hdec using fun j : Fin (n₁ + 2) => GlobalTheory.IterBochner.exists_decomp B H (reS X Y) X₁ hH hL (Pi.single j 1)`. Conclude with `GlobalTheory.IterBochner.continuous_of_isLevi (W := X) (W₁ := X₁) H a b c hdec m hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem levi_cont {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : Base F E) {n n₁ : ℕ} (X Y : Spc F E n) (X₁ : Spc F E n₁) (H : Plane E n n₁) {r s i₀ i₁ : ℕ}
@@ -94,27 +90,21 @@ theorem levi_cont {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   exact GlobalTheory.IterBochner.continuous_of_isLevi (W := X) (W₁ := X₁) H a b c hdec m hm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n n₁ X Y X₁ H r s i₀ i₁ hB hX hXY hH μX μ₁ D₁ hμX hμ₁ hD₁ K μK μ hK hμK hμ m hm Q hQ`. Take `⟨hTG, hLC, hSC, hT2⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ n X.J`. Take `⟨hTG₁, hLC₁, hSC₁, hT2₁⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ n₁ X₁.J`. Take `⟨hTGi, hLCi, hSCi⟩` from `units_lcsc F E`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : BorelSpace (UA σ X₁.J) := ⟨rfl⟩`. Use `haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`. Use `haveI := hμX`. Use `haveI := hμ₁`. Use `haveI := hμ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `haveI : SFinite μ₁ := @instSFiniteOfSigmaFinite _ _ _ (MeasureTheory.SigmaFinite.of_isFiniteMeasureOnCompacts μ₁)`. Use `haveI : SFinite μ := @instSFiniteOfSigmaFinite _ _ _ (MeasureTheory.SigmaFinite.of_isFiniteMeasureOnCompacts μ)`. Use `haveI : Countable (ratU σ X.J) := GlobalTheory.QDom.countable_ratU σ X.J`. Use `haveI : Countable (ratU σ X₁.J) := GlobalTheory.QDom.countable_ratU σ X₁.J`. Take `⟨μN, c, hμN, hc0, hcT, hform⟩` from `GlobalTheory.T.levi_haar_stabilizer_measure F E σ B n n₁ X Y X₁ H r s i₀ i₁ hB hX hXY hH μX μ₁ hμX hμ₁ K μK μ hK hμK hμ m hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `haveI := hμN`. Establish `hx0 : H.x ≠ 0` using `fun h0 => by`. Establish `h1` using `hH.xy`. Rewrite `h1` using `[h0]`. Simplify using `[form] at h1`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcl` using `GlobalTheory.UnipClosed.isClosed_unip F E σ n n₁ X H hx0`. Use `haveI : LocallyCompactSpace (unip σ X H) := hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology (unip σ X H) := hcl.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology`. Use `haveI : SFinite μN := @instSFiniteOfSigmaFinite _ _ _ (MeasureTheory.SigmaFinite.of_isFiniteMeasureOnCompacts μN)`. Take `⟨𝓕, h𝓕, -, h𝓕top⟩` from `GlobalTheory.T.exists_unip_fundamentalDomain_finite_pos_measure F E σ B n n₁ X Y X₁ H r s i₀ i₁ hB hX hXY hH μN hμN`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hQr : Q ≤ ratU σ X.J` using `fun q hq => ((hQ q).1 hq).1`. Establish `hQc : Countable Q` using `(Subgroup.inclusion_injective hQr).countable`. Establish `hsub : Q.subgroupOf (unip σ X H) = (ratU σ X.J).subgroupOf (unip σ X H)`. Use extensionality with `u`. Simplify using `only [Subgroup.mem_subgroupOf]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨fun h => hQr h, fun h => (hQ _).2 ⟨h, unip_fix X H _ u.2⟩⟩`. Establish `h𝓕' : IsFundamentalDomain (Q.subgroupOf (unip σ X H)) 𝓕 μN` using `by rw [hsub]; exact h𝓕`. Establish `hmulm : ∀ l g₀, ∀ γ ∈ ratU σ X₁.J, m l (γ * g₀) = m 1 γ * m l g₀`. Introduce `l g₀ γ _`. Use `GlobalTheory.T.levi_element_unique_bis F E σ B n n₁ X Y X₁ H r s i₀ i₁ hB hX hXY hH l (γ * g₀) _ _ (hm l (γ * g₀)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `levi_mul H (hm 1 γ) (hm l g₀)` using `only [one_mul]`. Establish `hιQ : ∀ γ ∈ ratU σ X₁.J, m 1 γ ∈ Q`. Introduce `γ hγ`. Use `(hQ _).2 ⟨GlobalTheory.T.levi_map_preserves_rational_points F E σ B n n₁ X Y X₁ H r s i₀ i₁ hB hX hXY hH m hm γ hγ, ?_⟩` and prove the remaining obligations. Rewrite using `[(hm 1 γ).1, Units.val_one, one_smul]`.
-
-Establish `huniq : ∀ q ∈ Q, ∃! γ : ratU σ X₁.J, (m 1 γ)⁻¹ * q ∈ unip σ X H` using `fun q hq => GlobalTheory.T.levi_rational_point_vector_action F E σ B n n₁ X Y X₁ H r s i₀ i₁ hB hX hXY hH m hm q ((hQ q).1 hq).1 ((hQ q).1 hq).2`. Establish `hcont` using `levi_cont B X Y X₁ H hXY hH m hm`. Establish `hjoint : Measurable (fun p : unip σ X H × UA σ X₁.J × (AE F E)ˣ × K => p.1.1 * m p.2.2.1 p.2.1 * p.2.2.2.1)`. Apply `Continuous.measurable` to reduce the goal to its premises. Conclude with `((continuous_subtype_val.comp continuous_fst).mul (hcont.comp ((continuous_fst.comp (continuous_snd.comp continuous_snd)).prodMk (continuous_fst.comp continuous_snd)))).mul (continuous_subtype_val.comp (continuous_snd.comp (continuous_snd.comp continuous_snd)))`.
-
-Establish `habs : ∀ l : (AE F E)ˣ, 0 < (absE F E l : ℝ)`. Introduce `l`. Establish `h1 : absE F E l * absE F E l⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Conclude with `NNReal.coe_pos.2 (pos_iff_ne_zero.2 (left_ne_zero_of_mul_eq_one h1))`. Establish `hw : Measurable fun l : (AE F E)ˣ => ENNReal.ofReal ((absE F E l : ℝ) ^ (1 - (n : ℝ)))` using `ENNReal.measurable_ofReal.comp ((NNReal.continuous_coe.comp GlobalTheory.Doubling.continuous_absE).measurable.pow_const _)`.
-
-Establish `hw0 : ∀ l : (AE F E)ˣ, ENNReal.ofReal ((absE F E l : ℝ) ^ (1 - (n : ℝ))) ≠ 0` using `fun l => (ENNReal.ofReal_pos.2 (Real.rpow_pos_of_pos (habs l) _)).ne'`. Use `⟨c * μN 𝓕, ENNReal.mul_ne_top hcT h𝓕top, ?_⟩` and prove the remaining obligations. Introduce `𝓓 h𝓓 f hf hfQ hfN`. Conclude with `GlobalTheory.T.unfolding_fundamental_domain_integral μX μ₁ μ μK (unip σ X H) Q (ratU σ X₁.J) μN (fun k : K => k.1) m (fun γ => m 1 γ) (fun l => ENNReal.ofReal ((absE F E l : ℝ) ^ (1 - (n : ℝ)))) c D₁ 𝓕 hQc inferInstance inferInstance inferInstance inferInstance (fun g => (continu …`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lintegral_fd_le_iwasawa : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n n₁ : ℕ) (X Y : Spc F E n) (X₁ : Spc F E n₁) (H : Plane E n n₁) (r s i₀ i₁ : ℕ), B.IsGood σ → X.IsHerm σ B r s → (reS X Y).IsHerm σ B r s → H.IsAdapted σ B (reS X Y) X₁ i₀ i₁ → ∀ (μX : Measure (UA σ X.J)) (μ₁ : Measure (UA σ X₁.J)) (D₁ : Set (UA σ X₁.J)), μX.IsHaarMeasure → μ₁.IsHaarMeasure → IsFundamentalDomain (ratU σ X₁.J) D₁ μ₁ → ∀ (K : Subgroup (UA σ X.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ), IsStab (X := X) B K → μK.IsHaarMeasure → μ.IsHaarMeasure → ∀ m : (AE F E)ˣ → UA σ X₁.J → UA σ X.J, (∀ l g₀, IsLevi (W₁ := X₁) H l g₀ (m l g₀)) → ∀ Q : Subgroup (UA σ X.J), (∀ q, q ∈ Q ↔ q ∈ ratU σ X.J ∧ mat q *ᵥ incV F H.x = incV F H.x) → ∃ C : ℝ≥0∞, C ≠ ⊤ ∧ ∀ 𝓓 : Set (UA σ X.J), IsFundamentalDomain Q 𝓓 μX → ∀ f : UA σ X.J → ℝ≥0∞, AEMeasurable f μX → (∀ q ∈ Q, ∀ g, f (q * g) = f g) → (∀ u ∈ unip σ X H, ∀ g, f (u * g) = f g) → ∫⁻ g in 𝓓, f g ∂μX ≤ C * ∫⁻ k, ∫⁻ l, ∫⁻ g₀ in D₁, f (m l g₀ * k.1) * ENNReal.ofReal ((absE F E l : ℝ) ^ (1 - (n : ℝ))) ∂μ₁ ∂μ ∂μK := by
   intro F E _ _ _ _ _ σ B n n₁ X Y X₁ H r s i₀ i₁ hB hX hXY hH μX μ₁ D₁ hμX hμ₁ hD₁ K μK μ hK hμK hμ m hm Q hQ

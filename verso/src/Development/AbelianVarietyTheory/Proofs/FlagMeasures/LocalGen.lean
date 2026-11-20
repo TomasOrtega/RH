@@ -3,17 +3,15 @@ import Mathlib
 namespace GlobalTheory.LocalGenerators
 
 /- English proof (translation)
-Establish `hP : P.asIdeal ≠ ⊤` using `P.isPrime.ne_top`. Establish `hlt : ¬ J ≤ J * P.asIdeal`. Introduce `h`. Establish `heq : J * P.asIdeal = J * ⊤`. Rewrite using `[Ideal.mul_top]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_antisymm Ideal.mul_le_left h`. Conclude with `hP (mul_left_cancel₀ hJ heq)`. Take `⟨d, hdJ, hdn⟩` from `SetLike.not_le_iff_exists.mp hlt`. Establish `hd0 : d ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hdn (Submodule.zero_mem _)`. Establish `hdvd : J ∣ Ideal.span {d}` using `Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem J).mpr hdJ)`. Take `⟨K, hK⟩` from `hdvd`. Establish `hKP : ¬ K ≤ P.asIdeal`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Apply `hdn` to reduce the goal to its premises. Establish `: Ideal.span {d} ≤ J * P.asIdeal` using `hK ▸ Ideal.mul_mono_right h`. Conclude with `this (Ideal.mem_span_singleton_self d)`. Take `⟨s, hsK, hsP⟩` from `SetLike.not_le_iff_exists.mp hKP`. Use `⟨d, hdJ, hd0, s, hsP, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `y hy`. Establish `hm : s * y ∈ Ideal.span {d}`. Rewrite using `[hK, mul_comm s y]`. Conclude with `Ideal.mul_mem_mul hy hsK`. Take `⟨o, ho⟩` from `Ideal.mem_span_singleton'.mp hm`.
-
-Conclude with `⟨o, ho.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem local_gen {R : Type*} [CommRing R] [IsDedekindDomain R]
     (P : IsDedekindDomain.HeightOneSpectrum R) (J : Ideal R) (hJ : J ≠ ⊥) :
@@ -44,7 +42,7 @@ theorem local_gen {R : Type*} [CommRing R] [IsDedekindDomain R]
   exact ⟨o, ho.symm⟩
 
 /- English proof (translation)
-Introduce `E _ _ P J hJ`. Conclude with `local_gen P J hJ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {E : Type} [inst : Field E] [NumberField E]
     (P : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E))

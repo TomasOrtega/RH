@@ -4,21 +4,17 @@ open MeasureTheory Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X _ μ E _ _ a u h hh hm hb he`. Take `⟨s, hs⟩` from `(𝓝[>] (0 : ℝ)).exists_seq_tendsto`. Take `⟨N, hN⟩` from `eventually_atTop.1 (hs.eventually (hm.and hb))`. Establish `hs' : Tendsto (fun n => s (n + N)) atTop (𝓝[>] (0 : ℝ))` using `hs.comp (tendsto_add_atTop_nat N)`. Establish `hev : ∀ᵐ x ∂μ, ∀ᶠ n in atTop, a (s (n + N)) x = u x` using `by filter_upwards [he] with x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hs'.eventually hx`. Establish `hu : AEStronglyMeasurable u μ`. Use `aestronglyMeasurable_of_tendsto_ae atTop (f := fun n => a (s (n + N))) (fun n => (hN (n + N) (Nat.le_add_left _ _)).1) ?_` and prove the remaining obligations. Use `filter_upwards [hev] with x hx`. Conclude with `tendsto_const_nhds.congr' (hx.mono fun n hn => hn.symm)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hub : ∀ᵐ x ∂μ, ‖u x‖ ^ 2 ≤ h x`. Establish `h1 : ∀ᵐ x ∂μ, ∀ n, ‖a (s (n + N)) x‖ ^ 2 ≤ h x` using `ae_all_iff.2 fun n => (hN (n + N) (Nat.le_add_left _ _)).2`. Use `filter_upwards [hev, h1] with x hx h1x`. Take `⟨n, hn⟩` from `hx.exists`. Rewrite using `[← hn]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1x n`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[memLp_two_iff_integrable_sq_norm hu]`. Use `hh.mono' (hu.norm.pow 2) ?_` and prove the remaining obligations. Use `filter_upwards [hub] with x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Real.norm_of_nonneg (by positivity)]`. Conclude with `hx`. Establish `key : (((∫ x, ‖u x‖ ^ 2 ∂μ : ℝ) : ℂ)) = ∫ x, inner ℂ (u x) (u x) ∂μ`. Rewrite using `[← integral_complex_ofReal]`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Simplify using `only [inner_self_eq_norm_sq_to_K]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[key]`. Use `tendsto_integral_filter_of_dominated_convergence h ?_ ?_ hh ?_` and prove the remaining obligations.
-
-Use `filter_upwards [hm] with ε hε`. Conclude with `hε.inner hu`. Use `filter_upwards [hb] with ε hε filter_upwards [hε, hub] with x h1 h2`. Use `norm_inner_le_norm (𝕜 := ℂ) (a ε x) (u x)` as an intermediate fact. Use polynomial arithmetic with `[sq_nonneg (‖a ε x‖ - ‖u x‖)]`.
-
-Use `filter_upwards [he] with x hx`. Conclude with `tendsto_const_nhds.congr' (hx.mono fun ε hε => by simp only [hε])`.
+A detailed English derivation is pending.
 -/
 theorem memLp_and_tendsto_integral_inner_of_eventually_eq : ∀ (X : Type) [MeasurableSpace X] (μ : Measure X) (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℂ E] (a : ℝ → X → E) (u : X → E) (h : X → ℝ), Integrable h μ → (∀ᶠ ε in 𝓝[>] (0 : ℝ), AEStronglyMeasurable (a ε) μ) → (∀ᶠ ε in 𝓝[>] (0 : ℝ), ∀ᵐ x ∂μ, ‖a ε x‖ ^ 2 ≤ h x) → (∀ᵐ x ∂μ, ∀ᶠ ε in 𝓝[>] (0 : ℝ), a ε x = u x) → MemLp u 2 μ ∧ Tendsto (fun ε : ℝ => ∫ x, inner ℂ (a ε x) (u x) ∂μ) (𝓝[>] 0) (𝓝 (((∫ x, ‖u x‖ ^ 2 ∂μ : ℝ) : ℂ))) := by
   intro X _ μ E _ _ a u h hh hm hb he

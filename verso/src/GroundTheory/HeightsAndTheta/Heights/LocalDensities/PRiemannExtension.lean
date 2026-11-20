@@ -9,11 +9,11 @@ noncomputable section
 namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.FourB
 
 /- English proof (translation)
-Establish `: IsJacobsonRing A` using `isJacobsonRing_of_finiteType (A := ℂ)`. Establish `hJ : P.jacobson = P` using `IsJacobsonRing.out ‹_› (Ideal.IsPrime.isRadical ‹_›)`. Rewrite `hc` using `[← hJ, Ideal.jacobson, Submodule.mem_sInf]`. Use `push Not at hc`. Take `⟨m, ⟨hPm, hm⟩, hcm⟩` from `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `letI : Field (A ⧸ m) := Ideal.Quotient.field m`. Establish `: Module.Finite ℂ (A ⧸ m)` using `finite_of_finite_type_of_isJacobsonRing ℂ (A ⧸ m)`. Set `e : ℂ ≃ₐ[ℂ] A ⧸ m` to `AlgEquiv.ofBijective (Algebra.ofId ℂ (A ⧸ m)) IsAlgClosed.algebraMap_bijective_of_isIntegral`. Use `⟨e.symm.toAlgHom.comp (Ideal.Quotient.mkₐ ℂ m), fun a ha => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[Ideal.Quotient.eq_zero_iff_mem.2 (hPm ha)]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hcm` using `[Ideal.Quotient.eq_zero_iff_mem]`.
+A detailed English derivation is pending.
 -/
 theorem RiemannExt.exists_point {A : Type} [CommRing A] [Algebra ℂ A] [Algebra.FiniteType ℂ A]
     (P : Ideal A) [P.IsPrime] (c : A) (hc : c ∉ P) :
@@ -32,19 +32,19 @@ theorem RiemannExt.exists_point {A : Type} [CommRing A] [Algebra ℂ A] [Algebra
   · simpa [Ideal.Quotient.eq_zero_iff_mem] using hcm
 
 /- English proof (translation)
-Introduce `A _ _ p q ⟨hft, hdom, hic, hq, hbdd⟩`. Assume the negation of the conclusion as `hne`. Establish `hdvd : ¬ q ∣ p` using `fun ⟨r, hr⟩ => hne ⟨r, hr⟩`. Use `hdom` as an intermediate fact. Use `hft` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsNoetherianRing A` using `Algebra.FiniteType.isNoetherianRing ℂ A`. Establish `hp : p ≠ 0` using `by rintro rfl; exact hdvd (dvd_zero q)`. Take `⟨P, hP, -, c, hc, t, ht, hct⟩` from `hK A p q ⟨hq, hdvd⟩`. Take `⟨x, hxP, hxc⟩` from `RiemannExt.exists_point P c hc`. Take `⟨s, ε, hε, M, hM⟩` from `hbdd x`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hδ : 0 < ‖x c‖` using `norm_pos_iff.2 hxc`. Establish `hxt : x t = 0` using `hxP t ht`. Establish `hM1 : 0 < |M| + 1` using `by positivity`. Take `⟨y, hy, hyg⟩` from `hZ A (p * q) ⟨hft, hdom, mul_ne_zero hp hq⟩ x (insert c (insert t s)) (min ε (min (‖x c‖ / 2) (‖x c‖ / (2 * (|M| + 1))))) (by positivity)`. Establish `hyp : y p ≠ 0` using `fun h => hyg (by rw [map_mul, h, zero_mul])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hyq : y q ≠ 0` using `fun h => hyg (by rw [map_mul, h, mul_zero])`. Establish `h1` using `hM y (fun a ha => (hy a (by simp [ha])).trans_le (min_le_left _ _)) hyq`. Establish `hyc : ‖y c - x c‖ < ‖x c‖ / 2` using `(hy c (by simp)).trans_le ((min_le_right _ _).trans (min_le_left _ _))`. Establish `hyt : ‖y t‖ < ‖x c‖ / (2 * (|M| + 1))`. Use `(hy t (by simp)).trans_le ((min_le_right _ _).trans (min_le_right _ _))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hxt, sub_zero]`. Then use the resulting hypothesis. Establish `hrel : ‖y c‖ * ‖y q‖ = ‖y t‖ * ‖y p‖`. Rewrite using `[← norm_mul, ← norm_mul, ← map_mul, ← map_mul, hct]`. Establish `hc' : ‖x c‖ / 2 < ‖y c‖`. Use `norm_sub_norm_le (x c) (y c)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[norm_sub_rev]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : ‖y c‖ ≤ |M| * ‖y t‖`. Establish `hle : ‖y c‖ * ‖y q‖ ≤ (|M| * ‖y t‖) * ‖y q‖`. Rewrite using `[hrel]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_right hle (norm_pos_iff.2 hyq)`. Establish `hsmall : |M| * ‖y t‖ < ‖x c‖ / 2`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem RiemannExt.proof (hK : KrullHeightOne.Statement) (hZ : ZariskiDense.Statement) :
     RiemannExt.Statement := by

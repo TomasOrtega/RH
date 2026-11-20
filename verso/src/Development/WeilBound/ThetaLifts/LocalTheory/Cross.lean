@@ -37,13 +37,13 @@ variable {B : Base F E} {P : Type} [AddCommGroup P] [Module ℂ P] {Q : Pl F →
   {Ev : Fn F n d → Fn F n₁ d₁} {L : SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n₁ × Fin d₁)} {Λ : ∀ v : Pl F, Fl F v n d →ₗ[ℂ] Fl F v n₁ d₁}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun v h hh a ha b hb a' ha' b' hb' => s.wdF v h hh a ha b hb a' ha' b' hb', s.wdL, s.wdK⟩`.
+Supply the required witnesses or components.
 -/
 theorem Side.cross (s : Side B M om pi p S) : Cross B M om M om pi p pi p :=
   ⟨fun v h hh a ha b hb a' ha' b' hb' => s.wdF v h hh a ha b hb a' ha' b' hb', s.wdL, s.wdK⟩
 
 /- English proof (translation)
-Use `choose T hT _ using fun t : ℝ => s.op _ (hγ.2 (Multiplicative.ofAdd t))`. Take `⟨g, -, ag, -⟩` from `s.lie γ hγ T hT f hf`. Conclude with `⟨g, ag⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Side.der (s : Side B M om pi p S) {γ} (hγ : γ ∈ Lines σ W) {f} (hf : f ∈ M.Pol B.ψ B.emb) :
     ∃ g : SInf F _, ActsD (evI F) (fun t => om (1, γ (Multiplicative.ofAdd t))) f g := by
@@ -52,19 +52,17 @@ theorem Side.der (s : Side B M om pi p S) {γ} (hγ : γ ∈ Lines σ W) {f} (hf
   exact ⟨g, ag⟩
 
 /- English proof (translation)
-Take `⟨si, hi, hi'⟩` from `exists_section pi (M.Pol B.ψ B.emb)`. Use `choose sf hf hf' using fun v => exists_section (p v) (S v)`. Establish `e1 : ∀ f ∈ M.Pol B.ψ B.emb, (pi₁ ∘ₗ (L : _ →ₗ[ℂ] _) ∘ₗ si) (pi f) = pi₁ (L f)` using `fun f h => by`. Use `kerI s b j pt (si (pi f) - f) (sub_mem (hi _) h) (by rw [map_sub, hi' f h, sub_self])` as an intermediate fact. Rewrite `this` using `[map_sub, map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `e2 : ∀ v, ∀ x ∈ S v, (p₁ v ∘ₗ Λ v ∘ₗ sf v) (p v x) = p₁ v (Λ v x)` using `fun v x h => by`. Use `kerF s b j pt v (sf v (p v x) - x) (sub_mem (hf v _) h) (by rw [map_sub, hf' v x h, sub_self])` as an intermediate fact. Rewrite `this` using `[map_sub, map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Use `⟨_, _, e1, e2, ⟨fun γ hγ hu f h f' a => ?_, fun γ hγ γ₁ hγ₁ τ hl c' hd f h f₁ h₁ f' f₁' a a₁ e => ?_, fun k hk k₁ hk₁ t hl f h f₁ h₁ f' f₁' a a₁ e => ?_⟩, fun v t h₁ m hl u hu huv hm φ hφ φ' hφ' φ₁ hφ₁ φ₁' hφ₁' a a₁ e => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, ex⟩` from `s.ontoI (pi₂ f) choose T hT _ using fun t : ℝ => s.op _ (hγ.2 (Multiplicative.ofAdd t))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x', hx', ax, -⟩` from `s.lie γ hγ T hT x hx`. Rewrite using `[c.lie γ hγ f h x hx f' x' a ax ex.symm, e1 _ hx']`. Conclude with `eqN s s₁ b j pt hγ hu hx ax`. Take `⟨x, hx, ex⟩` from `s.ontoI (pi₂ f) choose T hT _ using fun t : ℝ => s.op _ (hγ.2 (Multiplicative.ofAdd t))`. Take `⟨x', hx', ax, -⟩` from `s.lie γ hγ T hT x hx`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, ey⟩` from `s₁.ontoI (pi₃ f₁)`. Take `⟨y', ay⟩` from `s₁.der hγ₁ hy`. Establish `h0 : τ 0 = 1` using `levi_t_one hH (h₁ := γ₁ (Multiplicative.ofAdd 0)) (by simpa using hl 0)`. Rewrite using `[c.lie γ hγ f h x hx f' x' a ax ex.symm, e1 _ hx', c₁.lie γ₁ hγ₁ f₁ h₁ y hy f₁' y' a₁ ay ey.symm, ← ey]`. Conclude with `eqL s s₁ b j pt hγ hγ₁ hl h0 hd hx hy ax ay (by rw [← e1 _ hx, ex, e, ey])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, ex⟩` from `s.ontoI (pi₂ f)`. Take `⟨T, hT, hT'⟩` from `s.op k hk.1`. Take `⟨y, hy, ey⟩` from `s₁.ontoI (pi₃ f₁)`. Take `⟨T₁, hT₁, -⟩` from `s₁.op k₁ hk₁.1`. Rewrite using `[c.cpt k hk f h x hx f' _ a (hT.2 x) ex.symm, e1 _ (hT' hk x hx), c₁.cpt k₁ hk₁ f₁ h₁ y hy f₁' _ a₁ (hT₁.2 y) ey.symm]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `eqK s s₁ b j pt hk hk₁ hl hx hy (hT.2 x) (hT₁.2 y) (by rw [← e1 _ hx, ex, e, ey])`. Take `⟨x, hx, ex⟩` from `s.onto v (p₂ v φ)`. Take `⟨x', hx', ax⟩` from `s.stab v _ (uat_mul huv hm) x hx`. Take `⟨y, hy, ey⟩` from `s₁.onto v (p₃ v φ₁)`. Establish `hh` using `levi_at hH hW hl hm`.
-
-Take `⟨y', hy', ay⟩` from `s₁.stab v _ hh y hy`. Rewrite using `[c.fin v _ (uat_mul huv hm) φ hφ x (s.le v hx) φ' hφ' x' (s.le v hx') a ax ex.symm, e2 v _ hx', c₁.fin v _ hh φ₁ hφ₁ y (s₁.le v hy) φ₁' hφ₁' y' (s₁.le v hy') a₁ ay ey.symm]`. Conclude with `eqF s s₁ b j pt v hl hu hh hx hx' (s₁.le v hy) (s₁.le v hy') ax ay (by rw [← e2 v _ hx, ex, e, ey])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lams (s : Side B M om pi p S) (s₁ : Side B M₁ om₁ pi₁ p₁ S₁) (b : Br B M om M₁ om₁ H' χ r S S₁ Ev L Λ)
     (j : Inj B M₁ om₁ pi₁ p₁ S₁) (pt : Pt B M S pi₁ p₁ L Λ) (c : Cross B M₂ om₂ M om pi₂ p₂ pi p)

@@ -6,11 +6,9 @@ open IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `S K _ _ _ _ _ _ t ht`. Assume the negation of the conclusion as `hn`. Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`. Conclude with `hn isIntegral_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `: Algebra.EssFiniteType S K` using `.of_isLocalization K (nonZeroDivisors S)`. Establish `hic : IsIntegrallyClosedIn (integralClosure S K).toSubring K` using `inferInstanceAs (IsIntegrallyClosedIn (integralClosure S K) K)`. Take `⟨W, hW, htW⟩` from `Subring.exists_le_valuationSubring_of_isIntegrallyClosedIn (R := (integralClosure S K).toSubring) (x := t) hn`. Establish `hinv : t⁻¹ ∈ W.nonunits` using `W.inv_mem_nonunits_iff.mpr (Or.inr htW)`. Take `⟨V, h1, h2, -, h3⟩` from `exists_discreteValuationSubring_of_valuationSubring (R := S) W (fun r => hW ((integralClosure S K).algebraMap_mem r)) Set.finite_empty (Set.finite_singleton t⁻¹) (by simp) (by simpa using hinv) ⟨_, rfl, inv_ne_zero ht0⟩`.
-
-Conclude with `(V.inv_mem_nonunits_iff.mp (h3 _ rfl)).resolve_left ht0 (ht V h1 h2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_forall_mem_discreteValuationSubring : ∀ (S K : Type) [CommRing S] [IsDomain S] [IsNoetherianRing S] [Field K] [Algebra S K] [IsFractionRing S K] (t : K), (∀ V : ValuationSubring K, IsDiscreteValuationRing V → (∀ s : S, algebraMap S K s ∈ V) → t ∈ V) → IsIntegral S t := by
   intro S K _ _ _ _ _ _ t ht

@@ -9,13 +9,11 @@ namespace GlobalTheory.CompanionTheory.ComplexSets
 variable {σ : Type} [Fintype σ]
 
 /- English proof (translation)
-Take `⟨N, k, f, hN, hwN, hf, hZN⟩` from `hZ`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hYZ` to reduce the goal to its premises. Establish `hall : ∀ i, ∀ᶠ z in 𝓝 w, z ∈ Y → f i z = 0`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Apply `hcon (f i) (hf i w hwN)` to reduce the goal to its premises. Use `filter_upwards [hN.mem_nhds hwN] with z hzN hzZ`. Establish `hz : z ∈ Z ∩ N` using `⟨hzZ, hzN⟩`. Rewrite `hz` using `[hZN]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hz.2 i`. Establish `hall' : ∀ᶠ z in 𝓝 w, ∀ i, z ∈ Y → f i z = 0` using `Filter.eventually_all.mpr hall`. Use `filter_upwards [hall', hN.mem_nhds hwN] with z hz hzN hzY`. Establish `hz' : z ∈ {z | z ∈ N ∧ ∀ i, f i z = 0}` using `⟨hzN, fun i => hz i hzY⟩`. Rewrite `hz'` using `[← hZN]`.
-
-Conclude with `hz'.1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_equation_not_vanishing {Y Z : Set (σ → ℂ)} {w : σ → ℂ} (hZ : IsAnalyticNear Z w)
     (hYZ : ¬ ∀ᶠ z in 𝓝 w, z ∈ Y → z ∈ Z) :
@@ -39,11 +37,9 @@ theorem exists_equation_not_vanishing {Y Z : Set (σ → ℂ)} {w : σ → ℂ} 
   exact hz'.1
 
 /- English proof (translation)
-Take `⟨hwY, hirr⟩` from `hY`. Use `revert hφ hne`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_ _ h`. Establish `h0` using `h.self_of_nhds hwY`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at h0`. Introduce `a s has ih hφ hne h`. Rewrite `h` using `[Finset.prod_insert has]`. Break down `hirr (φ a) (fun z => ∏ j ∈ s, φ j z) (hφ a (Finset.mem_insert_self a s)) (by simpa only [Finset.prod_fn] using Finset.analyticAt_prod s fun j hj => hφ j (Finset.mem_insert_of_mem hj)) h with h1 | h1` into its components or cases. Conclude with `hne a (Finset.mem_insert_self a s) h1`.
-
-Conclude with `ih (fun j hj => hφ j (Finset.mem_insert_of_mem hj)) (fun j hj => hne j (Finset.mem_insert_of_mem hj)) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses repeatedly using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem not_eventually_prod_eq_zero {ι : Type} {Y : Set (σ → ℂ)} {w : σ → ℂ}
     (hY : GermIrreducibleAt Y w) (φ : ι → (σ → ℂ) → ℂ) (s : Finset ι)
@@ -67,13 +63,13 @@ theorem not_eventually_prod_eq_zero {ι : Type} {Y : Set (σ → ℂ)} {w : σ �
         (fun j hj => hne j (Finset.mem_insert_of_mem hj)) h1
 
 /- English proof (translation)
-Use `haveI : Fintype ι := Fintype.ofFinite ι`. Set `P : Finset ι → Prop` to `fun T => ∀ᶠ z in 𝓝 w, z ∈ (⋃ i, Y i) ↔ ∃ i ∈ T, z ∈ Y i`. Establish `hP : P Finset.univ` using `Filter.Eventually.of_forall fun z => by simp`. Take `⟨T, hT, hmin⟩` from `Finset.exists_min_image (Finset.univ.filter P) Finset.card ⟨Finset.univ, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hP⟩⟩`. Rewrite `hT` using `[Finset.mem_filter]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨T, hT.2, ?_⟩` and prove the remaining obligations. Introduce `i hi j hj hij hsub`. Establish `hP' : P (T.erase i)` using `by filter_upwards [hT.2, hsub] with z hz hzs`. Rewrite using `[hz]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨m, hm, hzm⟩`. Distinguish the cases in `hmi : m = i`. Rewrite `hzm` using `[hmi]`. Conclude with `⟨j, Finset.mem_erase.mpr ⟨Ne.symm hij, hj⟩, hzs hzm⟩`. Conclude with `⟨m, Finset.mem_erase.mpr ⟨hmi, hm⟩, hzm⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨m, hm, hzm⟩`. Conclude with `⟨m, Finset.mem_of_mem_erase hm, hzm⟩`. Establish `hle` using `hmin (T.erase i) (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hP'⟩)`. Establish `hlt` using `Finset.card_erase_lt_of_mem hi`. Use linear arithmetic over natural numbers and integers.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_subfamily_no_containment {ι : Type} [Finite ι] (Y : ι → Set (σ → ℂ)) (w : σ → ℂ) :
     ∃ T : Finset ι, (∀ᶠ z in 𝓝 w, z ∈ (⋃ i, Y i) ↔ ∃ i ∈ T, z ∈ Y i) ∧
@@ -103,23 +99,19 @@ theorem exists_subfamily_no_containment {ι : Type} [Finite ι] (Y : ι → Set 
   omega
 
 /- English proof (translation)
-Establish `hsep : ∀ j, ∃ φ : (σ → ℂ) → ℂ, AnalyticAt ℂ φ w ∧ (j ≠ i → (∀ᶠ z in 𝓝 w, z ∈ Y j → φ z = 0) ∧ ¬ ∀ᶠ z in 𝓝 w, z ∈ Y i → φ z = 0)`. Introduce `j`. Distinguish the cases in `hj : j = i`. Conclude with `⟨fun _ => 1, analyticAt_const, fun h' => absurd hj h'⟩`. Take `⟨φ, h1, h2, h3⟩` from `exists_equation_not_vanishing (hYan j) (hno i j (Ne.symm hj))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨φ, h1, fun _ => ⟨h2, h3⟩⟩`. Use `choose φ hφan hφ using hsep`. Establish `hΦan : AnalyticAt ℂ (fun z => ∏ j ∈ Finset.univ.erase i, φ j z) w` using `by simpa only [Finset.prod_fn] using Finset.analyticAt_prod (Finset.univ.erase i) fun j _ => hφan j`. Establish `hΦne : ¬ ∀ᶠ z in 𝓝 w, z ∈ Y i → ∏ j ∈ Finset.univ.erase i, φ j z = 0` using `not_eventually_prod_eq_zero (hYirr i) φ _ (fun j _ => hφan j) (fun j hj => (hφ j (Finset.ne_of_mem_erase hj)).2)`. Establish `hΦY : ∀ᶠ z in 𝓝 w, ∀ j, j ≠ i → z ∈ Y j → ∏ j ∈ Finset.univ.erase i, φ j z = 0`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Filter.eventually_all]`. Introduce `j`. Distinguish the cases in `hj : j = i`. Conclude with `Filter.Eventually.of_forall fun z h' => absurd hj h'`. Use `filter_upwards [(hφ j hj).1] with z hz _ hzj`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.prod_eq_zero (Finset.mem_erase.mpr ⟨hj, Finset.mem_univ j⟩) (hz hzj)`. Take `⟨ε, hε, hhb⟩` from `hh.exists_ball_analyticOnNhd`. Establish `hcont : ∀ᶠ z in 𝓝 w, ContinuousAt (fun z => ∏ j ∈ Finset.univ.erase i, φ j z) z` using `hΦan.eventually_analyticAt.mono fun z hz => hz.continuousAt`. Establish `hAball : ∀ᶠ z in 𝓝 w, A z ∈ Metric.ball (A w) ε` using `A.continuous.continuousAt.preimage_mem_nhds (Metric.ball_mem_nhds _ hε)`. Establish `hgood` using `hcont.and (hΦY.and (hv.and (hAball.and (show ∀ᶠ z in 𝓝 w, z ∈ W from hW))))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfreq` using `Filter.not_eventually.mp hΦne`. Take `⟨x, hx1, hx2⟩` from `(hfreq.and_eventually hgood.eventually_nhds).exists`. Use `push_neg at hx1`. Take `⟨hxY, hxΦ⟩` from `hx1`. Take `⟨hxc, -, -, hxA, hxW⟩` from `hx2.self_of_nhds`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxS : x ∈ S`. Establish `hx' : x ∈ (⋃ j, Y j) ∩ W` using `⟨Set.mem_iUnion.mpr ⟨i, hxY⟩, hxW⟩`. Rewrite `hx'` using `[← hS]`. Conclude with `hx'.1`. Establish `hV` using `hx2.and (hxc.eventually_ne hxΦ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Establish `himg` using `hopen x hxS _ hV`. Establish `hzero : ∀ᶠ y in 𝓝 (A x), h y = 0` using `by filter_upwards [himg] with y hy`. Take `⟨z, ⟨hzS, ⟨⟨-, hzY, hzh, -, hzW⟩, hzΦ⟩⟩, rfl⟩` from `hy`. Establish `hz' : z ∈ (⋃ j, Y j) ∩ W` using `by rw [← hS]; exact ⟨hzS, hzW⟩`. Take `⟨j, hzj⟩` from `Set.mem_iUnion.mp hz'.1`.
-
-Distinguish the cases in `hji : j = i`. Rewrite `hzj` using `[hji]`. Conclude with `hzh hzj`. Conclude with `absurd (hzY j hji hzj) hzΦ`. Establish `hEq` using `hhb.eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_ball _ _).isPreconnected hxA hzero`.
-
-Use `filter_upwards [Metric.ball_mem_nhds (A w) hε] with y hy`. Conclude with `hEq hy`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dominant_of_open {ι : Type} [Fintype ι] {d : ℕ} (A : (σ → ℂ) →L[ℂ] (Fin d → ℂ))
     {S W : Set (σ → ℂ)} {w : σ → ℂ} (Y : ι → Set (σ → ℂ))
@@ -183,17 +175,17 @@ theorem dominant_of_open {ι : Type} [Fintype ι] {d : ℕ} (A : (σ → ℂ) �
   exact hEq hy
 
 /- English proof (translation)
-Introduce `hAGC`. Unfold `AnalyticGermComponents.Statement at hAGC`. Unfold `OpenProjectionDominantComponents.Statement`. Introduce `σ _ X B k f d A hB hf hXB hopen w hw`. Establish `hAN : IsAnalyticNear (X ∩ B) w`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `IsAnalyticNear`. Conclude with `⟨B, k, f, hB, hw.2, hf, by rw [Set.inter_assoc, Set.inter_self, hXB]⟩`. Take `⟨n₀, Y₀, hY₀, W, hW, hXW⟩` from `hAGC σ (X ∩ B) w hAN hw`. Take `⟨T, hT, hTno⟩` from `exists_subfamily_no_containment Y₀ w`. Set `e : Fin T.card ≃ T` to `T.equivFin.symm`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hno : ∀ i j : Fin T.card, i ≠ j → ¬ ∀ᶠ z in 𝓝 w, z ∈ Y₀ (e i) → z ∈ Y₀ (e j)`. Introduce `i j hij`. Conclude with `hTno _ (e i).2 _ (e j).2 (fun h => hij (e.injective (Subtype.ext h)))`. Establish `hW' : W ∩ {z | z ∈ (⋃ i, Y₀ i) ↔ ∃ i ∈ T, z ∈ Y₀ i} ∈ 𝓝 w` using `Filter.inter_mem hW hT`. Establish `hS : X ∩ B ∩ (W ∩ {z | z ∈ (⋃ i, Y₀ i) ↔ ∃ i ∈ T, z ∈ Y₀ i}) = (⋃ i, Y₀ (e i)) ∩ (W ∩ {z | z ∈ (⋃ i, Y₀ i) ↔ ∃ i ∈ T, z ∈ Y₀ i})`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hzXB, hzW, hzT⟩`. Establish `h1 : z ∈ (⋃ i, Y₀ i) ∩ W` using `by rw [← hXW]; exact ⟨hzXB, hzW⟩`. Take `⟨i, hiT, hzi⟩` from `hzT.mp h1.1`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Set.mem_iUnion.mpr ⟨e.symm ⟨i, hiT⟩, ?_⟩, hzW, hzT⟩` and prove the remaining obligations. Simplify using `using hzi`. Introduce and unpack `⟨hzU, hzW, hzT⟩`. Take `⟨i, hzi⟩` from `Set.mem_iUnion.mp hzU`. Establish `h1 : z ∈ (⋃ i, Y₀ i) ∩ W` using `⟨Set.mem_iUnion.mpr ⟨_, hzi⟩, hzW⟩`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← hXW]`. Conclude with `⟨h1.1, hzW, hzT⟩`. Use `⟨T.card, fun i => Y₀ (e i), fun i => ⟨(hY₀ _).1, (hY₀ _).2, fun h hh hv => ?_⟩, hno, _, hW', hS⟩` and prove the remaining obligations. Conclude with `dominant_of_open A (fun j => Y₀ (e j)) hopen (fun j => (hY₀ _).1) (fun j => (hY₀ _).2) hno hW' hS i h hh hv`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem openProjectionDominantComponents_of_analyticGermComponents :
     AnalyticGermComponents.Statement → OpenProjectionDominantComponents.Statement := by

@@ -23,7 +23,7 @@ def FieldSelfDual (i : X.Tw) (s : X.Sig i) : Prop :=
           (algebraMap (X.O0 i) (FractionRing (X.O0 i)))
 
 /- English proof (translation)
-Introduce `i hi` and use `have hA := (GlobalTheory.TripleLocal.galois_hypotheses_of_isTriple S (GlobalTheory.SplitFrobDense.frobDense D (GlobalTheory.Published.chebotarevDegreeOne_iff_cheb.1 hC)) hG h2 h).2.2 i hi have hT := GlobalTheory.LamTie.sum_th_empty_ne_zero D D.nd D.ntw Z hZ (GlobalTheory.LamTieWe …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem setHyp_of_isTriple_of_galHodge (hC : GlobalTheory.Published.ChebotarevDegreeOne) (D : D7)
     (T : GlobalTheory.RowTie.WDTie D.nd D.naut) (C₀ : Formalism.L2.Host.CharFrame D) (S : GlobalTheory.HeightCounting.CharSide D C₀)

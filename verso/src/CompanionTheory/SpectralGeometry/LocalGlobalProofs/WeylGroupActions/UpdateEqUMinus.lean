@@ -13,9 +13,9 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Form
 namespace GlobalTheory.CompanionTheory.WignerShift
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Unfold `uPlus`. Rewrite using `[Function.update_apply]`. Use `split_ifs with h`. Rewrite using `[h]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem update_eq_uPlus (u : ℕ → ℝ) (l n₀ : ℕ) :
     Function.update u (l + 1) (u (l + 1) + (n₀ : ℝ)) = uPlus u l n₀ := by
@@ -27,9 +27,9 @@ theorem update_eq_uPlus (u : ℕ → ℝ) (l n₀ : ℕ) :
   · rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Unfold `uMinus`. Rewrite using `[Function.update_apply]`. Use `split_ifs with h`. Rewrite using `[h]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem update_eq_uMinus (u : ℕ → ℝ) (l n₀ : ℕ) :
     Function.update u l (u l - (n₀ : ℝ)) = uMinus u l n₀ := by
@@ -41,9 +41,9 @@ theorem update_eq_uMinus (u : ℕ → ℝ) (l n₀ : ℕ) :
   · rfl
 
 /- English proof (translation)
-Introduce `k r z z' Wq _ _ _ π' u l n₀ b hz hz' hT hT' hπ hdec hl1 hlk hgap hb3 hb`. Establish `hreg` using `GlobalTheory.T.type_exponents_consecutive_gap Wq k r z' π' u hz' hT' hπ hdec`. Establish `h1` using `abs_le.mp (hb l (Finset.mem_Icc.mpr ⟨hl1, hlk.le⟩))`. Establish `h2` using `abs_le.mp (hb (l + 1) (Finset.mem_Icc.mpr ⟨by omega, hlk⟩))`. Establish `hn : (n₀ : ℝ) ≤ b` using `by linarith [h1.2, h2.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Vp, iP1, iP2, iP3, Vm, familyMassRatio, familyMassSecondLine, iM3, πp, πm, Ap, Am, hπp, hπm, hAp, hAm, hlow⟩` from `GlobalTheory.WigSh.exists_shifted_types_lower_bound Wq k r z' π' u l n₀ b hz' hT' hπ hreg hl1 hlk hgap hb hn (by linarith)`. Rewrite `hπp` using `[update_eq_uPlus]`. Rewrite `hπm` using `[update_eq_uMinus]`. Conclude with `⟨{ Wqp := Vp Wqm := Vm πp := πp πm := πm Ap := fun g => Ap (GlobalTheory.WigSh.omg k r z z' g) Am := fun g => Am (GlobalTheory.WigSh.omg k r z z' g) typeP := hπp typeM := hπm polyP := GlobalTheory.T.wigner_map_polynomial_operator Wq Vp k r z z' π' πp n₀ Ap hz hT hz' hT' hAp polyM …`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem wigExists : WigExists := by
   intro k r z z' Wq _ _ _ π' u l n₀ b hz hz' hT hT' hπ hdec hl1 hlk hgap hb3 hb

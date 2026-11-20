@@ -32,7 +32,7 @@ section Free
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [Pi.smul_apply, LineTest.expo_single, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem expo_single_eq (a : Sym E) (k : ℤ) : expo Dw (Finsupp.single a k) = k • expo Dw (Finsupp.single a 1) := by
   funext z
@@ -40,7 +40,7 @@ theorem expo_single_eq (a : Sym E) (k : ℤ) : expo Dw (Finsupp.single a k) = k 
   split_ifs <;> simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [LineTest.expo_zero]`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, LineTest.expo_add, ih, expo_single_eq]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem expo_sum_single {ι : Type} (s : Finset ι) (a : ι → Sym E) (n : ι → ℤ) :
     expo Dw (∑ i ∈ s, Finsupp.single (a i) (n i)) = ∑ i ∈ s, n i • expo Dw (Finsupp.single (a i) 1) := by
@@ -49,9 +49,9 @@ theorem expo_sum_single {ι : Type} (s : Finset ι) (a : ι → Sym E) (n : ι �
   | insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, LineTest.expo_add, ih, expo_single_eq]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.prod_insert hj, ← ih, ← Finset.prod_zpow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun z _ => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.add_apply, zpow_add, Pi.smul_apply, smul_eq_mul, mul_comm (n j), zpow_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_zpow_sum {G ι κ : Type} [CommGroup G] [Fintype κ] (T : κ → G) (s : Finset ι) (n : ι → ℤ)
     (ex : ι → κ → ℤ) : ∏ z, T z ^ (∑ i ∈ s, n i • ex i) z = ∏ i ∈ s, (∏ z, T z ^ ex i z) ^ n i := by
@@ -66,7 +66,7 @@ variable {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] 
   {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e)
 
 /- English proof (translation)
-Simplify using `only [divOf, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_smul, Finset.smul_sum, mul_smul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem divOf_sum_zsmul {ι : Type} (s : Finset ι) (n : ι → ℤ) (ex : ι → Letter Dw → ℤ) :
     divOf Y (∑ i ∈ s, n i • ex i) = ∑ i ∈ s, n i • divOf Y (ex i) := by
@@ -74,9 +74,9 @@ theorem divOf_sum_zsmul {ι : Type} (s : Finset ι) (n : ι → ℤ) (ex : ι �
   exact Finset.sum_comm
 
 /- English proof (translation)
-Rewrite using `[expo_sum_single, divOf_sum_zsmul]`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using CartierDiv.isEqn_zero x`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.prod_insert hj]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((Base.isEqn_eqn _ x).zsmul _).add ih`.
+A detailed English derivation is pending.
 -/
 theorem isEqn_prod_eqn {ι : Type} (s : Finset ι) (a : ι → Sym E) (n : ι → ℤ) (x : Y.Y.X) :
     (divOf Y (expo Dw (∑ i ∈ s, Finsupp.single (a i) (n i)))).IsEqn x
@@ -89,7 +89,7 @@ theorem isEqn_prod_eqn {ι : Type} (s : Finset ι) (a : ι → Sym E) (n : ι �
     exact ((Base.isEqn_eqn _ x).zsmul _).add ih
 
 /- English proof (translation)
-Use `(Base.isEqn_eqn _ x).iff_unitAt.1 (isEqn_prod_eqn Y s a n x)` as an intermediate fact. Rewrite `this` using `[div_eq_mul_inv, ← Units.val_inv_eq_inv_val, ← Units.val_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem unitAt_eqnRatio {ι : Type} (s : Finset ι) (a : ι → Sym E) (n : ι → ℤ) (x : Y.Y.X) :
     UnitAt x (eqnRatio Y s a n x : Y.Y.Fn) := by
@@ -103,7 +103,7 @@ section Val
 variable {K : Type} [Field K] {X : Scheme.{0}} [IsIntegral X] (w : AbsoluteValue K ℝ) (y : Sp K ⟶ X)
 
 /- English proof (translation)
-Take `⟨a, -, rfl⟩` from `hf`. Take `⟨b, -, rfl⟩` from `hg`. Rewrite using `[← map_mul, Base.valAt_stalk, Base.valAt_stalk, Base.valAt_stalk, map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem valAt_mul_of_unitAt {f g : X.functionField} (hf : UnitAt (below y) f) (hg : UnitAt (below y) g) :
     valAt y (f * g) = valAt y f * valAt y g := by
@@ -112,7 +112,7 @@ theorem valAt_mul_of_unitAt {f g : X.functionField} (hf : UnitAt (below y) f) (h
   rw [← map_mul, Base.valAt_stalk, Base.valAt_stalk, Base.valAt_stalk, map_mul]
 
 /- English proof (translation)
-Rewrite using `[valAt_mul_of_unitAt y hf hg, map_mul, Real.log_mul (w.pos (Base.valAt_zpow y hf).1).ne' (w.pos (Base.valAt_zpow y hg).1).ne']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem log_valAt_mul {f g : X.functionField} (hf : UnitAt (below y) f) (hg : UnitAt (below y) g) :
     Real.log (w (valAt y (f * g))) = Real.log (w (valAt y f)) + Real.log (w (valAt y g)) := by
@@ -120,16 +120,16 @@ theorem log_valAt_mul {f g : X.functionField} (hf : UnitAt (below y) f) (hg : Un
     Real.log_mul (w.pos (Base.valAt_zpow y hf).1).ne' (w.pos (Base.valAt_zpow y hg).1).ne']
 
 /- English proof (translation)
-Rewrite using `[(Base.valAt_zpow y hf).2 k, map_zpow₀, Real.log_zpow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem log_valAt_zpow {f : X.functionField} (hf : UnitAt (below y) f) (k : ℤ) :
     Real.log (w (valAt y (f ^ k))) = k * Real.log (w (valAt y f)) := by
   rw [(Base.valAt_zpow y hf).2 k, map_zpow₀, Real.log_zpow]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `h1 : valAt y (1 : X.functionField) = 1` using `by simpa using Base.valAt_stalk y 1`. Simplify using `[h1]`. Consider the case `insert j s hj ih`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `hs : UnitAt (below y) ((∏ i ∈ s, g i : X.functionFieldˣ) : X.functionField)` using `(unitsAt (below y)).prod_mem fun i hi => hg i (Finset.mem_insert_of_mem hi)`. Rewrite using `[Finset.prod_insert hj, Units.val_mul, log_valAt_mul w y (hg j (Finset.mem_insert_self j s)) hs, ih fun i hi => hg i (Finset.mem_insert_of_mem hi), Finset.sum_insert hj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem log_valAt_prod {ι : Type} (s : Finset ι) (g : ι → X.functionFieldˣ)
     (hg : ∀ i ∈ s, UnitAt (below y) (g i : X.functionField)) :
@@ -154,9 +154,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e)
 
 /- English proof (translation)
-Establish `hP : (∏ z : Letter Dw, T z.1 z.2 ^ expo Dw (∑ i ∈ s, Finsupp.single (a i) (n i)) z) = ∏ i ∈ s, (∏ z : Letter Dw, T z.1 z.2 ^ expo Dw (Finsupp.single (a i) 1) z) ^ n i`. Rewrite using `[expo_sum_single]`. Conclude with `prod_zpow_sum (fun z : Letter Dw => T z.1 z.2) s n _`. Rewrite using `[hP, eqnRatio]`. Simplify using `only [mul_zpow, Finset.prod_mul_distrib, inv_zpow', Finset.prod_inv_distrib, zpow_neg]`.
-
-Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame_quot_eq {ι : Type} (s : Finset ι) (a : ι → Sym E) (n : ι → ℤ) (x : Y.Y.X)
     (T : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Y.Y.Fnˣ) :
@@ -173,13 +171,13 @@ theorem frame_quot_eq {ι : Type} (s : Finset ι) (a : ι → Sym E) (n : ι →
   group
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ _ e Y ι s a n x`. Use `⟨unitAt_eqnRatio Y s a n x, fun v ε y hx => ?_⟩` and prove the remaining obligations. Substitute `hx` using the available equality. Establish `hR` using `unitAt_eqnRatio Y s a n (below y.1)`. Establish `hU (w : Sym E →₀ ℤ) : UnitAt (below y.1) (((∏ z : Letter Dw, (Y.gr_spec (below y.1)).choose_spec.choose_spec.choose z.1 z.2 ^ expo Dw w z) * (eqn (divOf Y (expo Dw w)) (below y.1))⁻¹ : Y.Y.Fnˣ) : Y.Y.Fn)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Base.isEqn_eqn (divOf Y (expo Dw w)) (below y.1)).iff_unitAt.1 (LineTest.isEqn_divOf Y (expo Dw w) (below y.1))` as an intermediate fact. Rewrite `this` using `[div_eq_mul_inv, ← Units.val_inv_eq_inv_val, ← Units.val_mul]`. Then use the resulting hypothesis. Establish `hprod : UnitAt (below y.1) ((∏ i ∈ s, ((∏ z : Letter Dw, (Y.gr_spec (below y.1)).choose_spec.choose_spec.choose z.1 z.2 ^ expo Dw (Finsupp.single (a i) 1) z) * (eqn (divOf Y (expo Dw (Finsupp.single (a i) 1))) (below y.1))⁻¹) ^ n i : Y.Y.Fnˣ) : Y.Y.Fn)` using `(unitsAt (below y.1)).prod_mem fun i _ => (unitsAt (below y.1)).zpow_mem (hU _) _`. Simplify using `only [lgOf, dif_pos (LineTest.residueCharacteristic_prime v)]`. Rewrite using `[frame_quot_eq Y s a n (below y.1), Units.val_mul, log_valAt_mul _ _ hprod hR, log_valAt_prod _ _ _ _ fun i _ => (unitsAt (below y.1)).zpow_mem (hU _) _, ← Finsupp.sum_finset_sum_index (fun _ => by simp) (fun _ _ _ => by push_cast; ring)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finsupp.sum_single_index, Int.cast_zero, zero_mul, Int.cast_one, one_mul]`. Rewrite using `[Finset.sum_congr rfl fun i _ => by rw [Units.val_zpow_eq_zpow_val, log_valAt_zpow _ _ (hU _)]]`. Rewrite using `[Finset.mul_sum]`. Simplify using `only [mul_add, Finset.sum_add_distrib]`. Rewrite using `[add_right_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem lgOf_sum_single : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}

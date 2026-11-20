@@ -10,9 +10,9 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh GlobalTheory.Wig
 namespace GlobalTheory.CompanionTheory.RgCz
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Proceed by induction on `m using Quotient.inductionOn with`. Consider the case `h l`. Use `⟨fun i => l.get (Fin.cast (by simp) i), ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.univ_val_map]`.
+Substitute using the available equality. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg _ ?_` and prove the remaining obligations. Apply `List.ext_get` to reduce the goal to its premises. Simplify using the standard rewrite rules. Introduce `n h1 h2`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem exists_fin_map_eq {a : ℕ} (m : Multiset ℂ) (hm : Multiset.card m = a) :
     ∃ χ : Fin a → ℂ, Multiset.map χ Finset.univ.val = m := by
@@ -28,15 +28,13 @@ theorem exists_fin_map_eq {a : ℕ} (m : Multiset ℂ) (hm : Multiset.card m = a
       simp
 
 /- English proof (translation)
-Take `⟨hnd, hint⟩` from `hr τ`. Take `⟨χ, hχ⟩` from `exists_fin_map_eq ((CG.mk π).infChar τ) (CG.card_infChar (CG.mk π) τ)`. Establish `hinf : π.HasInfChar τ (Multiset.map χ Finset.univ.val)`. Rewrite using `[hχ]`. Conclude with `GlobalTheory.CuspRep.ParLaws.hasInfChar_infChar (CG.mk π) τ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcap` using `(GlobalTheory.capelli_cuspSub E a π τ χ hinf).2`. Rewrite `hnd`, `hint` using `[← hχ]`. Establish `hχinj : Function.Injective χ`. Establish `h` using `Multiset.inj_on_of_nodup_map hnd`. Introduce `s t hst`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h s (by simp) t (by simp) hst`. Establish `hn : ∀ s, ∃ n : ℤ, χ s = (n : ℂ) + ((a : ℂ) - 1) / 2` using `fun s => hint _ (Multiset.mem_map_of_mem χ (by simp))`. Use `choose l hl using hn`. Use `⟨l, fun s t hst => hχinj (by rw [hl, hl, hst]), fun u => ?_⟩` and prove the remaining obligations. Establish `h` using `hcap (u - ((a : ℂ) - 1) / 2)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `h` using `[sub_add_cancel]`. Rewrite using `[h]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hl k]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem charInt_at {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (π : CuspSub E a)
     (hr : (CG.mk π).IsRegAlg) (τ : E →+* ℂ) :
@@ -66,7 +64,7 @@ theorem charInt_at {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a 
   ring
 
 /- English proof (translation)
-Introduce `E _ _ _ a π hr`. Use `choose l hl using charInt_at π hr`. Conclude with `⟨l, fun τ => (hl τ).1, fun τ => (hl τ).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem charInt : PositivityTheory.Rg.Cz.CharInt := by
   intro E _ _ _ a π hr

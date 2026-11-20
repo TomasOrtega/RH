@@ -10,9 +10,9 @@ open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.
 namespace UpperTheory.V.J
 open UpperTheory.V.Pr
 /- English proof (translation)
-Take `⟨hd, -⟩` from `degEq Ω l ι c N e ψ η σ g₁ B M H L Φ k v`. Use `⟨⟨Λ, hJ.ring.fin⟩, ?_, fun g hg => (hJ.ring.unr0 R.v0 g hg).1, n4Of Ω l ι c N e ψ η σ g₁ B M H L Φ k c₁ f n ka R, hJ.p1, hJ.p3, hs⟩` and prove the remaining obligations. Introduce `Z hZ`. Use `haveI : IsDiscreteValuationRing c₁.O := c₁.dvr`. Use `dimOf c₁.O Λ.Λ R.B₀.B (Λ.toPair R.B₀.u : Λ.Λ →+* R.B₀.B) J _ hΛ hJ.ring.fin hJ.ring.tf Z hZ` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← hd]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem mod_l_open_existence
     {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {c : Coef l}

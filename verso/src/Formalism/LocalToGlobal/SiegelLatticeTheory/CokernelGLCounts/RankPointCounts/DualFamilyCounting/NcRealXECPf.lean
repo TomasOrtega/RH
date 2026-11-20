@@ -10,11 +10,11 @@ namespace Formalism.L2.SG.Pf.NcReal.JX.EC
 open Formalism.QuantumDeterminants WlocSk.NB
 
 /- English proof (translation)
-Introduce `k r`. Take `⟨σ, hσ, hσe⟩` from `hS k r`. Take `⟨Λ, hΛm, hΛ, hvol⟩` from `hC k r`. Establish `hE` using `Formalism.MainNotions.BridgeCSB.continuous_expLie (k := k) (r := r) (Nset k r)`. Set `Φ : (CI k r → ℂ) × (Fin r → ℝ) → Mt k r` to `fun t => phi0 t.1 t.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hφ : Continuous Φ` using `continuous_nilpotent_chart`. Unfold `Formalism.MainNotions.S.haarLie`. Rewrite using `[one_smul, hvol, Measure.map_smul, Measure.map_map hE.measurable hΛm, ← hσ.map_eq]`. Use `congr 1`. Establish `e : ((fun x : Formalism.MainNotions.S.lieE (Nset k r) => fun i j => NormedSpace.exp (Formalism.MainNotions.S.unrealify (x : EuclideanSpace ℝ _)) i j) ∘ Λ : (J k r → ℝ) → Mt k r) = Φ ∘ σ`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Simplify using `only [Function.comp, Φ]`. Rewrite using `[hσe y, hΛ y, Formalism.MainNotions.BridgeCSB.unrealify_RL]`. Rewrite using `[e]`. Conclude with `(Measure.map_map hφ.measurable hσ.measurable).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expChart_of (hS : ShearStep) (hC : ConstStep) : ExpChart := by
   intro k r
@@ -39,7 +39,7 @@ end Formalism.L2.SG.Pf.NcReal.JX.EC
 namespace Formalism.L2.SG.Pf.NcReal.JX
 
 /- English proof (translation)
-The claim follows from `EC.expChart_of EC.shear_change_holds EC.constant_change_holds`.
+A detailed English derivation is pending.
 -/
 theorem exponential_chart_haar : ExpChart := EC.expChart_of EC.shear_change_holds EC.constant_change_holds
 

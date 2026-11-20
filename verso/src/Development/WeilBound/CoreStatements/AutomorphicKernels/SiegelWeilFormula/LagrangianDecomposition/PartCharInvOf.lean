@@ -8,41 +8,37 @@ open scoped Matrix TensorProduct
 namespace PositivityTheory.SiegelWeilFormula.Ald.PCI
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ' κ'' _ _ l hl hinv Ψ hΨ hzero`. Take `⟨f₀, hf₀⟩` from `GlobalTheory.CharInvForm.exists_schwartz_one (κ'' → mixedEmbedding.mixedSpace F)`. Take `⟨U₀, hU₀o, hU₀c, -, -⟩` from `GlobalTheory.FinSepChar.finite_chars_separate F ψ hψ κ'' Set.univ Filter.univ_mem`. Use `set θf : (κ'' → Af F) → ℂ := GlobalTheory.CharForm.cosetInd U₀ 0 with hθf`. Establish `hθfSB : θf ∈ SB (κ'' → Af F)` using `GlobalTheory.CharForm.cosetInd_mem_SB U₀ hU₀o hU₀c 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθf0 : θf 0 = 1` using `by simp [hθf, GlobalTheory.CharForm.cosetInd]`. Use `set θ : (κ'' → AF F) → ℂ := pureA F f₀ θf with hθ`. Set `P : ((κ' ⊕ κ'' → AF F) → ℂ) →ₗ[ℂ] ((κ' ⊕ κ'' → AF F) → ℂ)` to `{ toFun := fun Φ x => Φ (Sum.elim (x ∘ Sum.inl) 0) * θ (x ∘ Sum.inr) map_add' := fun _ _ => by funext x; simp [add_mul] map_smul' := fun _ _ => by funext x; simp [mul_assoc] }`. Establish `hP : ∀ Φ x, P Φ x = Φ (Sum.elim (x ∘ Sum.inl) 0) * θ (x ∘ Sum.inr)` using `fun _ _ => rfl`. Establish `e1 : ∀ x : κ' ⊕ κ'' → AF F, (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((Sum.elim (x ∘ Sum.inl) 0 : κ' ⊕ κ'' → AF F) i).1) = Sum.elim ((fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1) ∘ Sum.inl) 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `x`. Use function extensionality and compare the values at `j`. Break down `j with j | j` into its components or cases. Both sides reduce to the same expression. Simplify using `only [Sum.elim_inr, Pi.zero_apply]`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Establish `e2 : ∀ x : κ' ⊕ κ'' → AF F, (fun i => ((Sum.elim (x ∘ Sum.inl) 0 : κ' ⊕ κ'' → AF F) i).2) = Sum.elim ((fun i => (x i).2) ∘ Sum.inl) 0`. Apply the tactic sequence `intro x; funext j; rcases j with j | j <;> rfl`. Establish `gen : ∀ (f : SchwartzMap (κ' ⊕ κ'' → mixedEmbedding.mixedSpace F) ℂ) (g : (κ' ⊕ κ'' → Af F) → ℂ), g ∈ SB (κ' ⊕ κ'' → Af F) → l (pureA F f g) = l (P (pureA F f g))`. Introduce `f g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨fs, hfs⟩` from `exists_slice (κ'' := κ'') f`. Take `⟨f₁, hf₁⟩` from `GlobalTheory.SchwartzBox.exists_schwartz_box fs f₀`. Use `set g₁ : (κ' ⊕ κ'' → Af F) → ℂ := fun z => g (Sum.elim (z ∘ Sum.inl) 0) * θf (z ∘ Sum.inr) with hg₁def`. Establish `hg₁ : g₁ ∈ SB (κ' ⊕ κ'' → Af F)` using `GlobalTheory.SchwartzBox.sb_box (sb_slice hg) hθfSB`. Establish `hPf : P (pureA F f g) = pureA F f₁ g₁`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[hP]`. Simplify using `only [pureA, hθ, hf₁, hfs, hg₁def]`. Rewrite using `[e1 x, e2 x]`. Simplify using `only [Function.comp_def]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hPf]`. Take `⟨T, hT⟩` from `hl g hg`. Establish `hA : T f = T f₁`. Establish `h` using `arch_part T (fun L f₂ f₃ h23 => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨Y, hY⟩` from `GlobalTheory.TraceDual.exists_trace_rep F κ'' L`. Rewrite using `[← hT, ← hT, ← hinv (fun i => pairA F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (Y i)) 0) (pureA F f₂ g) (GlobalTheory.CharInvForm.mem_schA f₂ hg)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [pureA, h23, GlobalTheory.CharInvForm.psi_dot_inf hψ, hY]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [Function.comp_apply]`. Use the proof step `ring) (f - f₁) (fun v hv => by`. Establish `hv' : v = Sum.elim (v ∘ Sum.inl) 0`. Use function extensionality and compare the values at `j`. Break down `j with j | j` into its components or cases.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Both sides reduce to the same expression. Conclude with `congrFun hv j`. Rewrite using `[SchwartzMap.sub_apply, hf₁, hfs, hv, hf₀, mul_one]`. Rewrite using `[← hv', sub_self])`. Rewrite `h` using `[map_sub, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `h`. Set `a : ((κ' ⊕ κ'' → Af F) → ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun h => l (pureA F f₁ h) map_add' := fun h h' => by`. Rewrite using `[← map_add]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [pureA, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_smul' := fun s h => by`. Rewrite using `[RingHom.id_apply, ← map_smul]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [pureA, Pi.smul_apply, smul_eq_mul]`. Use `ring }`. Establish `hB : a g = a g₁`. Establish `h` using `hfin F ψ hψ κ' κ'' a (fun y h hh => by show l (pureA F f₁ _) = l (pureA F f₁ h)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← hinv (fun i => pairA F 0 (y i)) (pureA F f₁ h) (GlobalTheory.CharInvForm.mem_schA f₁ hh)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [pureA, GlobalTheory.CharInvForm.dot_pairA_fin]`. Simplify using `only [Function.comp_def]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use the proof step `ring) (g - g₁) (sub_mem hg hg₁) (fun z' => by`. Simplify using `only [Pi.sub_apply, hg₁def, Sum.elim_comp_inl, Sum.elim_comp_inr, hθf0, mul_one, sub_self])`. Rewrite `h` using `[map_sub, sub_eq_zero]`. Conclude with `h`. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `key : ∀ Φ ∈ schA F (κ' ⊕ κ''), l Φ = l (P Φ)`. Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ hmem`. Take `⟨f, g, hg, rfl⟩` from `hmem`.
-
-Conclude with `gen f g hg`. Consider the case `zero => simp`. Consider the case `add _ _ _ _ h h' => rw [map_add, map_add, map_add, h, h']`. Consider the case `smul c _ _ h => rw [map_smul, map_smul, map_smul, h]`. Establish `h0 : P Ψ = 0`.
-
-Use function extensionality and compare the values at `x`. Rewrite using `[hP, hzero, zero_mul]`. Both sides reduce to the same expression. Rewrite using `[key Ψ hΨ, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partCharInv_of (hfin : FinPart) : PartCharInv := by
   intro F _ _ ψ hψ κ' κ'' _ _ l hl hinv Ψ hΨ hzero

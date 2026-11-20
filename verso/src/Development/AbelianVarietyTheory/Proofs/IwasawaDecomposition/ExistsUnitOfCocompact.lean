@@ -12,11 +12,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Per.UnitN
 
 /- English proof (translation)
-Set `μ : Measure G` to `Measure.haar`. Take `⟨𝓕, h⟩` from `GlobalTheory.FundDomDiscrete.exists_isFundamentalDomain Γ μ`. Establish `hle : μ 𝓕 ≤ μ K`. Rewrite using `[h.measure_eq_tsum K]`. Use `(measure_mono fun n hn => ?_).trans (measure_iUnion_le _)` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨γ, hγ, k, hk, rfl⟩` from `hcov n`. Conclude with `Set.mem_iUnion.2 ⟨⟨γ, hγ⟩, ⟨k, hk, rfl⟩, hn⟩`. Establish `hfin : μ 𝓕 ≠ ⊤` using `(hle.trans_lt hK.measure_lt_top).ne`. Establish `hpos : μ 𝓕 ≠ 0` using `h.measure_ne_zero (NeZero.ne μ)`. Use `⟨(μ 𝓕)⁻¹ • μ, 𝓕, Measure.IsHaarMeasure.smul μ (ENNReal.inv_ne_zero.2 hfin) (ENNReal.inv_ne_top.2 hpos), h.mono Measure.smul_absolutelyContinuous, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel hpos hfin]`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit_of_cocompact {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] [LocallyCompactSpace G] [SecondCountableTopology G] (Γ : Subgroup G) [Countable Γ] [DiscreteTopology Γ]
@@ -36,15 +36,13 @@ theorem exists_unit_of_cocompact {G : Type} [Group G] [TopologicalSpace G] [IsTo
   rw [Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel hpos hfin]
 
 /- English proof (translation)
-Introduce `D B ρ e he`. Take `⟨i1, i2, i3, i4, i5, i6, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B`. Take `⟨K, hK, h⟩` from `(GlobalTheory.Mem.UnipCocompact.radicals_cocompact D B ρ e he).1`. Establish `hcl : IsClosed (NFlag B e : Set (GA D B))`. Establish `: DiscreteTopology (GQ B ⊓ NFlag B e : Subgroup (GA D B))` using `DiscreteTopology.of_subset (s := (GQ B : Set (GA D B))) i6 (fun x hx => hx.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsClosed ((GQ B ⊓ NFlag B e : Subgroup (GA D B)) : Set (GA D B))` using `Subgroup.isClosed_of_discrete`. Establish `h2` using `h1.mul_right_of_isCompact (hK.image continuous_subtype_val)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Take `⟨γ, hγ, k, hk, e⟩` from `h ⟨x, hx⟩`. Conclude with `⟨γ, ⟨hγ, γ.2⟩, k, ⟨k, hk, rfl⟩, (congrArg Subtype.val e).symm⟩`. Introduce and unpack `⟨γ, hγ, _, ⟨k, -, rfl⟩, rfl⟩`. Conclude with `mul_mem hγ.2 k.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `: LocallyCompactSpace (NFlag B e)` using `hcl.locallyCompactSpace`. Establish `: SecondCountableTopology (NFlag B e)` using `TopologicalSpace.Subtype.secondCountableTopology _`. Establish `hinj : Function.Injective fun γ : NFlagQ B e => (⟨γ.1.1, γ.2⟩ : GQ B)` using `fun a b h => Subtype.ext (Subtype.ext (congrArg (fun x : GQ B => (x : GA D B)) h))`. Establish `: Countable (NFlagQ B e)` using `hinj.countable`. Establish `: DiscreteTopology (NFlagQ B e)` using `DiscreteTopology.of_continuous_injective ((continuous_subtype_val.comp continuous_subtype_val).subtype_mk _) hinj`.
-
-Conclude with `exists_unit_of_cocompact (NFlagQ B e) hK h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isUnitN : ∀ (D : D7) (B : HSp D) (ρ : ℕ) (e : Matrix (Fin B.rank) (Fin ρ) D.host.E), IsIsoSub B e →
     ∃ ν 𝓝, GlobalTheory.Per.IsUnitN B e ν 𝓝 := by

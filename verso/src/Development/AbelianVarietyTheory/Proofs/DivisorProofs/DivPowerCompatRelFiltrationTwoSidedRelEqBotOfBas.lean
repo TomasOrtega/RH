@@ -16,9 +16,9 @@ section General
 variable {A : Type} [Ring A]
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx y`. Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => rw [add_mul]`. Conclude with `add_mem hx hz`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul r x _ ih => rw [smul_eq_mul, mul_assoc]`. Conclude with `Ideal.mul_mem_left _ _ ih`.
+A detailed English derivation is pending.
 -/
 theorem span_mul_mem {S : Set A} (h : ∀ s ∈ S, ∀ y, s * y ∈ Ideal.span S) {x : A} (hx : x ∈ Ideal.span S) (y : A) :
     x * y ∈ Ideal.span S := by
@@ -29,9 +29,9 @@ theorem span_mul_mem {S : Set A} (h : ∀ s ∈ S, ∀ y, s * y ∈ Ideal.span S
   | smul r x _ ih => rw [smul_eq_mul, mul_assoc]; exact Ideal.mul_mem_left _ _ ih
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => rw [map_add]`. Conclude with `add_mem hx hz`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul r x _ ih => rw [smul_eq_mul, map_mul]`. Conclude with `Ideal.mul_mem_left _ _ ih`.
+A detailed English derivation is pending.
 -/
 theorem span_map_mem (f : A →+* A) {S : Set A} (h : ∀ s ∈ S, f s ∈ Ideal.span S) {x : A} (hx : x ∈ Ideal.span S) :
     f x ∈ Ideal.span S := by
@@ -42,7 +42,7 @@ theorem span_map_mem (f : A →+* A) {S : Set A} (h : ∀ s ∈ S, f s ∈ Ideal
   | smul r x _ ih => rw [smul_eq_mul, map_mul]; exact Ideal.mul_mem_left _ _ ih
 
 /- English proof (translation)
-Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[add_mul]`. Conclude with `add_mem (Ideal.mem_sup_left (hI a ha y)) (Ideal.mem_sup_right (hK b hb y))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sup_mul_mem {I K : Ideal A} (hI : ∀ x ∈ I, ∀ y, x * y ∈ I) (hK : ∀ x ∈ K, ∀ y, x * y ∈ K) {x : A}
     (hx : x ∈ I ⊔ K) (y : A) : x * y ∈ I ⊔ K := by
@@ -51,7 +51,7 @@ theorem sup_mul_mem {I K : Ideal A} (hI : ∀ x ∈ I, ∀ y, x * y ∈ I) (hK :
   exact add_mem (Ideal.mem_sup_left (hI a ha y)) (Ideal.mem_sup_right (hK b hb y))
 
 /- English proof (translation)
-Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[map_add]`. Conclude with `add_mem (Ideal.mem_sup_left (hI a ha)) (Ideal.mem_sup_right (hK b hb))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sup_map_mem (f : A →+* A) {I K : Ideal A} (hI : ∀ x ∈ I, f x ∈ I) (hK : ∀ x ∈ K, f x ∈ K) {x : A}
     (hx : x ∈ I ⊔ K) : f x ∈ I ⊔ K := by
@@ -66,15 +66,15 @@ section Filt
 variable {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J)
 
 /- English proof (translation)
-The claim follows from `Ideal.span_mono fun _ ⟨l, h1, h2, h3⟩ ↦ ⟨l, h1, h.trans h2, h3⟩`.
+A detailed English derivation is pending.
 -/
 theorem fil_anti' {m n : ℕ} (h : m ≤ n) : fil δ n ≤ fil δ m :=
   Ideal.span_mono fun _ ⟨l, h1, h2, h3⟩ ↦ ⟨l, h1, h.trans h2, h3⟩
 
 /- English proof (translation)
-Establish `key : fil δ m * fil δ n ≤ fil δ (m + n)`. Rewrite using `[fil, fil, Ideal.span_mul_span]`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, ⟨l, hl, hs, rfl⟩, y, ⟨l', hl', hs', rfl⟩, rfl⟩`. Use `Ideal.subset_span ⟨l ++ l', fun p hp ↦ ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Break down `List.mem_append.1 hp with hp | hp exacts [hl p hp, hl' p hp]` into its components or cases. Simplify using `only [List.map_append, List.sum_append]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [List.map_append, List.prod_append]`. Conclude with `key (Ideal.mul_mem_mul ha hb)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fil_mul_mem' {m n : ℕ} {a b : B} (ha : a ∈ fil δ m) (hb : b ∈ fil δ n) : a * b ∈ fil δ (m + n) := by
   have key : fil δ m * fil δ n ≤ fil δ (m + n) := by
@@ -103,7 +103,7 @@ Both sides reduce to the same expression.
 theorem rel_eq_span : rel R δ = Ideal.span (relGen R δ) := rfl
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[rel_eq_span]`. Use `span_mul_mem (fun s hs y ↦ ?_) hx y` and prove the remaining obligations. Take `⟨n, a, ha, rfl⟩` from `hs`. Rewrite using `[ι_mul]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨n, a, ha, rfl⟩)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_mul_mem {x : DR R B} (hx : x ∈ rel R δ) (y : DR R B) : x * y ∈ rel R δ := by
   rw [rel_eq_span] at hx ⊢
@@ -113,9 +113,9 @@ theorem rel_mul_mem {x : DR R B} (hx : x ∈ rel R δ) (y : DR R B) : x * y ∈ 
   exact Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨n, a, ha, rfl⟩)
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[rel_eq_span]`. Use `span_map_mem (sgn : DR R B →ₐ[B] DR R B).toRingHom (fun s hs ↦ ?_) hx` and prove the remaining obligations. Take `⟨n, a, ha, rfl⟩` from `hs`. Express the relevant statement in the definitionally equal form `sgn (ι1 _) ∈ _`. Rewrite using `[sgn_ι]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `neg_mem (Ideal.subset_span ⟨n, a, ha, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem sgn_mem_rel {x : DR R B} (hx : x ∈ rel R δ) : sgn x ∈ rel R δ := by
   rw [rel_eq_span] at hx ⊢
@@ -126,7 +126,7 @@ theorem sgn_mem_rel {x : DR R B} (hx : x ∈ rel R δ) : sgn x ∈ rel R δ := b
   exact neg_mem (Ideal.subset_span ⟨n, a, ha, rfl⟩)
 
 /- English proof (translation)
-Use `span_mul_mem (fun s hs y ↦ ?_) hx y` and prove the remaining obligations. Take `⟨b, hb, rfl⟩` from `hs`. Rewrite using `[Algebra.commutes]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨b, hb, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem filSpan_mul_mem (n : ℕ) {x : DR R B} (hx : x ∈ Ideal.span (algebraMap B (DR R B) '' fil δ n))
     (y : DR R B) : x * y ∈ Ideal.span (algebraMap B (DR R B) '' fil δ n) := by
@@ -136,7 +136,7 @@ theorem filSpan_mul_mem (n : ℕ) {x : DR R B} (hx : x ∈ Ideal.span (algebraMa
   exact Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨b, hb, rfl⟩)
 
 /- English proof (translation)
-Use `span_map_mem (sgn : DR R B →ₐ[B] DR R B).toRingHom (fun s hs ↦ ?_) hx` and prove the remaining obligations. Take `⟨b, hb, rfl⟩` from `hs`. Express the relevant statement in the definitionally equal form `sgn (algebraMap B _ b) ∈ _`. Rewrite using `[AlgHom.commutes]`. Conclude with `Ideal.subset_span ⟨b, hb, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem filSpan_sgn_mem (n : ℕ) {x : DR R B} (hx : x ∈ Ideal.span (algebraMap B (DR R B) '' fil δ n)) :
     sgn x ∈ Ideal.span (algebraMap B (DR R B) '' fil δ n) := by
@@ -147,11 +147,9 @@ theorem filSpan_sgn_mem (n : ℕ) {x : DR R B} (hx : x ∈ Ideal.span (algebraMa
   exact Ideal.subset_span ⟨b, hb, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨c, hc, rfl⟩` from `hx`. Rewrite using `[Algebra.smul_def, ← map_mul]`. Conclude with `Ideal.subset_span ⟨b * c, fil_mul_mem' δ hb hc, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => rw [smul_add]`. Conclude with `add_mem hx hz`. Consider the case `smul r x _ ih`. Rewrite using `[smul_eq_mul, Algebra.smul_def, ← mul_assoc, Algebra.commutes b r, mul_assoc, ← Algebra.smul_def]`.
-
-Conclude with `Ideal.mul_mem_left _ _ ih`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem filSpan_smul_mem (m n : ℕ) {b : B} (hb : b ∈ fil δ m) {x : DR R B}
     (hx : x ∈ Ideal.span (algebraMap B (DR R B) '' fil δ n)) :
@@ -168,11 +166,9 @@ theorem filSpan_smul_mem (m n : ℕ) {b : B} (hb : b ∈ fil δ m) {x : DR R B}
     exact Ideal.mul_mem_left _ _ ih
 
 /- English proof (translation)
-Use `⟨fun x hx y ↦ rel_mul_mem R δ hx y, fun x hx ↦ sgn_mem_rel R δ hx, fun n x hx y ↦ ?_, fun n x hx ↦ ?_, ?_, fun m n h ↦ ?_, fun m n b hb x hx ↦ ?_⟩` and prove the remaining obligations. Conclude with `sup_mul_mem (fun x hx y ↦ filSpan_mul_mem R δ n hx y) (fun x hx y ↦ rel_mul_mem R δ hx y) hx y`. Conclude with `sup_map_mem (sgn : DR R B →ₐ[B] DR R B).toRingHom (fun x hx ↦ filSpan_sgn_mem R δ n hx) (fun x hx ↦ sgn_mem_rel R δ hx) hx`. Use `(Ideal.eq_top_iff_one _).2 (Ideal.mem_sup_left (Ideal.subset_span ⟨1, ?_, map_one _⟩))` and prove the remaining obligations. Rewrite using `[fil_zero_eq_top]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result.
 
-Discharge the goal by the elementary cases of `trivial`. Conclude with `sup_le_sup_right (Ideal.span_mono (Set.image_mono (fil_anti' δ h))) _`. Take `⟨a, ha, c, hc, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[smul_add]`. Use `add_mem (Ideal.mem_sup_left (filSpan_smul_mem R δ m n hb ha)) (Ideal.mem_sup_right ?_)` and prove the remaining obligations.
-
-Rewrite using `[Algebra.smul_def]`. Conclude with `Ideal.mul_mem_left _ _ hc`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_filDR_properties :
     (∀ x ∈ rel R δ, ∀ y, x * y ∈ rel R δ) ∧ (∀ x ∈ rel R δ, sgn x ∈ rel R δ) ∧
@@ -196,7 +192,7 @@ theorem rel_filDR_properties :
 attribute [local instance] GlobalTheory.Cris.opModule GlobalTheory.Cris.isCentralScalar_kaehler GlobalTheory.Cris.isScalarTower_kaehler in
 
 /- English proof (translation)
-Establish `hD` using `GlobalTheory.CrysConn.isDPDer_of_map h hJ (D R B)`. Rewrite using `[rel, Ideal.span_eq_bot]`. Introduce and unpack `_ ⟨n, a, ha, rfl⟩`. Rewrite using `[hD n a ha, sub_self, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem rel_eq_bot_of_map (I : Ideal R) (κ : DividedPowers I) (h : IsDPMorphism κ δ (algebraMap R B))
     (hJ : J ≤ I.map (algebraMap R B)) : rel R δ = ⊥ := by
@@ -208,7 +204,7 @@ theorem rel_eq_bot_of_map (I : Ideal R) (κ : DividedPowers I) (h : IsDPMorphism
 end Main
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun R _ _ _ _ _ δ ↦ rel_filDR_properties R δ, fun R _ _ _ _ _ δ I κ h hJ ↦ rel_eq_bot_of_map R δ I κ h hJ⟩`.
+Supply the required witnesses or components.
 -/
 theorem rel_two_sided_and_bot :
     (∀ (R B : Type) [CommRing R] [CommRing B] [Algebra R B] (J : Ideal B) (δ : DividedPowers J),

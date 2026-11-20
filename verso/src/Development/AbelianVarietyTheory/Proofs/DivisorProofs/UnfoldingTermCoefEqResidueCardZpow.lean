@@ -28,7 +28,7 @@ def volDiag : (n ⊕ Fin c → kˣ) →* ℚ where
 
 omit [IsNonarchimedeanLocalField k] [ValuativeRel k] [TopologicalSpace k] in
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add₀ hq]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_zpow_eq {ι : Type} (s : Finset ι) (q : ℚ) (hq : q ≠ 0) (g : ι → ℤ) :
     ∏ t ∈ s, q ^ g t = q ^ ∑ t ∈ s, g t := by
@@ -38,14 +38,14 @@ theorem prod_zpow_eq {ι : Type} (s : Finset ι) (q : ℚ) (hq : q ≠ 0) (g : �
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add₀ hq]
 
 /- English proof (translation)
-Rewrite using `[resCard, Nat.cast_ne_zero]`. Conclude with `Nat.card_pos.ne'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resCard_ne_zero : (resCard k : ℚ) ≠ 0 := by
   rw [resCard, Nat.cast_ne_zero]
   exact Nat.card_pos.ne'
 
 /- English proof (translation)
-The claim follows from `|z| ≤ Fintype.card (n ⊕ Fin c) * ∑ r, |f r| := by choose z hz hzb using fun t : n ⊕ Fin c => GlobalTheory.T.exists_inverseUnipotentVolume_conj_diagonal_eq (k := k) (n := n) (c := c) ϖ hϖ t have hd : (fun r => ϖ ^ f r) = ∏ t, (Pi.mulSingle t ϖ) ^ f t := by funext r rw [Finset.prod …`.
+A detailed English derivation is pending.
 -/
 theorem invVol_diag_zpow (ϖ : kˣ) (hϖ : IsUnif ϖ) (f : n ⊕ Fin c → ℤ) : ∃ z : ℤ,
     invVol ((KO k (n ⊕ Fin c)).map (MulAut.conj (diagGL fun r => ϖ ^ f r)).toMonoidHom) = (resCard k : ℚ) ^ z ∧
@@ -76,9 +76,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   (hs : 1 ≤ G.s)
 
 /- English proof (translation)
-Establish `h : topRank G j + (G.m - 1 - j) = G.rank (G.m, j)` using `by have := topRank_add hs j; omega`. Establish `hK : (KO k (Fin (G.rank (G.m, j)))).map (toFrame hs hj).toMonoidHom = KO k _`. Use extensionality with `x`. Rewrite using `[Subgroup.map_equiv_eq_comap_symm', Subgroup.mem_comap, mem_KO_iff, mem_KO_iff, ← map_inv]`. Conclude with `and_congr ((frame h).symm.forall_congr fun _ => (frame h).symm.forall_congr fun _ => Iff.rfl) ((frame h).symm.forall_congr fun _ => (frame h).symm.forall_congr fun _ => Iff.rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[conjLevel, Subgroup.map_map, ← hK, Subgroup.map_map]`. Use `congr 1`. Use extensionality with `x : 1`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conjLevel_KO (g : G.VertexGroup) {j : ℕ} (hj : j < G.m) :
     conjLevel hs (fun _ => KO k _) g hj = (KO k _).map (MulAut.conj (toFrame hs hj (g (G.m, j)))).toMonoidHom := by
@@ -102,15 +102,13 @@ def aaExp (w : Pl D.host.E) (j : ℕ) : Fin (topRank (bareGrid w) j) ⊕ Fin (D.
     FractionalIdeal.count D.host.E w D.host.AAbar * (p.val + 1)
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Establish `h : topRank (bareGrid w) j + ((bareGrid w).m - 1 - j) = (bareGrid w).rank ((bareGrid w).m, j)`. Use `topRank_add hs j` as an intermediate fact. Establish `hm : (bareGrid w).m = D.R.m` using `rfl`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `show (aaElt w j).val.submatrix (frame h) (frame h) = _`. Rewrite using `[aaElt, diagGL_val, diagGL_val, submatrix_diagonal_equiv]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Break down `x with a | p` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = ((unifAt w ^ aaExp w j (Sum.inl a) : (Kw w)ˣ) : Kw w)`. Rewrite using `[show aaExp w j (Sum.inl a) = 0 from rfl]`. Simplify using `[frame, Nat.not_le.2 a.2]`. Establish `e : ∀ (x : ℤ) (N : ℕ), ((unifAt w) ^ x) ^ N = unifAt w ^ (x * N)` using `fun x N => by`. Rewrite using `[← zpow_natCast, ← _root_.zpow_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show _ = ((unifAt w ^ aaExp w j (Sum.inr p) : (Kw w)ˣ) : Kw w)`. Rewrite using `[show aaExp w j (Sum.inr p) = FractionalIdeal.count D.host.E w D.host.AA * ((D.R.m - 1 - j - p.val : ℕ) : ℤ) - FractionalIdeal.count D.host.E w D.host.AAbar * (p.val + 1) from rfl]`. Simplify using `only [Function.comp_apply, frame, Equiv.trans_apply, finSumFinEquiv_apply_right, finCongr_apply, Fin.val_cast, Fin.val_natAdd, le_add_iff_nonneg_right, zero_le, if_true, Nat.add_sub_cancel_left, genAt]`. Use `congr 1`. Rewrite using `[e, e, ← _root_.zpow_neg, ← _root_.zpow_add]`.
-
-Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem toFrame_aaElt (w : Pl D.host.E) (hs : 1 ≤ (bareGrid w).s) {j : ℕ} (hj : j < (bareGrid w).m) :
     toFrame hs hj (aaElt w j) = diagGL fun r => unifAt w ^ aaExp w j r := by
@@ -141,7 +139,7 @@ section Main
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h1 : (j + 1) * D.R.t ≤ D.R.m * D.R.t` using `Nat.mul_le_mul_right _ (Nat.succ_le_of_lt hj)`. Establish `h2` using `Formalism.BasicNotions.Ranks.r_eq D.R`. Simplify using `only [Grid.rank, bareGrid, bigN, sLen, add_mul] at h1 ⊢`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem rank_le_bigN (w : Pl D.host.E) {j : ℕ} (hj : j < D.R.m) :
     (bareGrid w).rank ((bareGrid w).m, j) ≤ bigN D := by
@@ -151,13 +149,11 @@ theorem rank_le_bigN (w : Pl D.host.E) {j : ℕ} (hj : j < D.R.m) :
   nlinarith
 
 /- English proof (translation)
-Use `set A := FractionalIdeal.count D.host.E w D.host.AA`. Use `set A' := FractionalIdeal.count D.host.E w D.host.AAbar`. Establish `hA : 0 ≤ |A| + |A'|` using `by positivity`. Rewrite using `[Fintype.sum_sum_type]`. Establish `h0 : ∑ a : Fin (topRank (bareGrid w) j), |aaExp w j (Sum.inl a)| = 0` using `Finset.sum_eq_zero fun a _ => by simp [show aaExp w j (Sum.inl a) = 0 from rfl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h0, zero_add]`. Establish `hp : ∀ p : Fin (D.R.m - 1 - j), |aaExp w j (Sum.inr p)| ≤ (D.R.m : ℤ) * (|A| + |A'|)` using `fun p => by`. Establish `hpv` using `p.2`. Rewrite using `[show aaExp w j (Sum.inr p) = A * ((D.R.m - 1 - j - p.val : ℕ) : ℤ) - A' * (p.val + 1) from rfl]`. Establish `e1 : (((D.R.m - 1 - j - p.val : ℕ) : ℤ)) ≤ D.R.m` using `by omega`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ((p.val : ℤ) + 1) ≤ D.R.m` using `by omega`. Establish `e3 : (0 : ℤ) ≤ ((D.R.m - 1 - j - p.val : ℕ) : ℤ)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[abs_mul, abs_mul, abs_of_nonneg e3, abs_of_nonneg (by positivity : (0 : ℤ) ≤ p.val + 1)]`. Use `_ ≤ |A| * D.R.m + |A'| * D.R.m := add_le_add (mul_le_mul_of_nonneg_left e1 (abs_nonneg _)) (mul_le_mul_of_nonneg_left e2 (abs_nonneg _))`.
-
-Use `_ = _ := by ring`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_abs_aaExp_le (w : Pl D.host.E) (j : ℕ) :
     ∑ r, |aaExp w j r| ≤ (D.R.m : ℤ) * ((D.R.m : ℤ) * (|FractionalIdeal.count D.host.E w D.host.AA| +
@@ -188,7 +184,7 @@ theorem sum_abs_aaExp_le (w : Pl D.host.E) (j : ℕ) :
     _ ≤ _ := mul_le_mul_of_nonneg_right (by omega) (by positivity)
 
 /- English proof (translation)
-The claim follows from `|z| ≤ (bigN D : ℤ) * ((D.R.m : ℤ) * ((D.R.m : ℤ) * (|FractionalIdeal.count D.host.E w D.host.AA| + |FractionalIdeal.count D.host.E w D.host.AAbar|))) := by rw [conjLevel_KO, hg, toFrame_aaElt w hs hj] obtain ⟨z, hz, hzb⟩ := invVol_diag_zpow (unifAt w) (isUnif_unifAt w) (aaExp w j …`.
+A detailed English derivation is pending.
 -/
 theorem factor (w : Pl D.host.E) (hs : 1 ≤ (bareGrid w).s) (g : (bareGrid w).VertexGroup) {j : ℕ} (hj : j < (bareGrid w).m)
     (hg : g ((bareGrid w).m, j) = aaElt w j) : ∃ z : ℤ,
@@ -209,7 +205,7 @@ theorem factor (w : Pl D.host.E) (hs : 1 ≤ (bareGrid w).s) (g : (bareGrid w).V
 end Main
 
 /- English proof (translation)
-The claim follows from `|n| ≤ 2 * ((D.R.m : ℤ) ^ 3 * (bigN D : ℤ) ^ 2 * (|FractionalIdeal.count D.host.E w D.host.AA| + |FractionalIdeal.count D.host.E w D.host.AAbar|)) := by set B := (bigN D : ℤ) * ((D.R.m : ℤ) * ((D.R.m : ℤ) * (|FractionalIdeal.count D.host.E w D.host.AA| + |FractionalIdeal.count D.h …`.
+A detailed English derivation is pending.
 -/
 theorem aaTerm_coef_eq_zpow {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil)
     (w : Pl D.host.E) : ∃ n : ℤ, (aaTerm W w).coef = (resCard (Kw w) : ℚ) ^ n ∧

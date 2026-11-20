@@ -18,13 +18,13 @@ open GlobalTheory.Published.AbelianDeRham (bcMor)
 open GlobalTheory.Twist (resM resM_resM resM_self resM_smul)
 
 /- English proof (translation)
-Set `S : ∀ U : X.Opens, Submodule Γ(X, U) Γ(F, U)` to `fun U => { carrier := {s | ∀ (V : X.Opens) (hV : IsAffineOpen V) (h : V ≤ U), resM F h s ∈ N V hV} add_mem' := fun hs ht V hV h => by rw [map_add]; exact add_mem (hs V hV h) (ht V hV h) zero_mem' := fun V hV h => by rw [map_zero]; exact zero_mem _ smul_mem' := fun a s hs V hV h = …`. Rewrite using `[resM_smul]`. Conclude with `Submodule.smul_mem _ _ (hs V hV h) }`. Establish `hS : ∀ (U : X.Opens) (s : Γ(F, U)), s ∈ S U ↔ ∀ (V : X.Opens) (hV : IsAffineOpen V) (h : V ≤ U), resM F h s ∈ N V hV` using `fun _ _ => Iff.rfl`. Use `⟨⟨S, fun {U W} h s hs => (hS _ _).2 fun V hV h' => ?_, fun {U s} H => (hS _ _).2 fun V hV h => ?_⟩, fun V hV s => ⟨fun hs => ?_, fun hs => ?_⟩⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[resM_resM]`. Conclude with `(hS _ _).1 hs V hV _`. Set `G : Set Γ(X, V)` to `{f | ∃ n : ℕ, f ^ n • resM F h s ∈ N V hV}`. Establish `hG : Ideal.span G = ⊤`. Rewrite using `[← hV.self_le_iSup_basicOpen_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨W, hW, hxW, hs⟩` from `H x (h hx)`. Take `⟨f, hf, hxf⟩` from `hV.exists_basicOpen_le (V := W) ⟨x, hxW⟩ hx`. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨f, hloc V hV f _ ?_⟩, hxf⟩` and prove the remaining obligations. Use `(hS _ _).1 hs _ (hV.basicOpen f) hf` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[resM_resM, ← resM_resM h (X.basicOpen_le f)]`. Then use the resulting hypothesis. Conclude with `Submodule.mem_of_span_eq_top_of_smul_pow_mem _ G hG _ fun r => r.2`. Use `(hS _ _).1 hs V hV le_rfl` as an intermediate fact. Rewrite `this` using `[resM_self]`. Then use the resulting hypothesis. Conclude with `(hS _ _).2 fun W hW h => hres V W hV hW h s hs`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_sub_of_affine {X : Scheme.{0}} {F : X.Modules}
     (N : ∀ V : X.Opens, IsAffineOpen V → Submodule Γ(X, V) Γ(F, V))
@@ -61,19 +61,17 @@ theorem exists_sub_of_affine {X : Scheme.{0}} {F : X.Modules}
   · exact (hS _ _).2 fun W hW h => hres V W hV hW h s hs
 
 /- English proof (translation)
-Use `letI : Module R M' := Module.compHom _ (algebraMap R R')`. Use `haveI : IsScalarTower R R' M' := ⟨fun a b m => by show (a • b) • m = algebraMap R R' a • b • m`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Set `l : M →ₗ[R] M'` to `{ toFun := f map_add' := map_add _ map_smul' := fun a m => f.map_smulₛₗ a m }`. Establish `hl : IsBaseChange R' l` using `IsBaseChange.of_equiv (LinearEquiv.ofBijective _ hf) fun m => by`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `(liftSemi_tmul _ 1 m).trans (one_smul _ _)`. Use `haveI : IsLocalizedModule (Submonoid.powers r) l := (isLocalizedModule_iff_isBaseChange (Submonoid.powers r) R' l).2 hl`. Set `N` to `Submodule.span R (Set.range Φ)`. Establish `hle : Submodule.span R' (Set.range Φ') ≤ N.localized' R' (Submonoid.powers r) l`. Rewrite using `[Submodule.span_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨z, rfl⟩` from `hf.2 y`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add, map_add]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `add_mem ha hb`. Consider the case `tmul c m`. Rewrite using `[liftSemi_tmul, map_smulₛₗ, ← hΦ]`. Use `Submodule.smul_mem _ _ ⟨Φ m, Submodule.subset_span ⟨m, rfl⟩, 1, ?_⟩` and prove the remaining obligations. Conclude with `IsLocalizedModule.mk'_one _ _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨m, hm, s, hs⟩` from `hle hx`. Establish `h1 : l m = l (s • x)`. Rewrite `hs` using `[IsLocalizedModule.mk'_eq_iff]`. Rewrite using `[hs, Submonoid.smul_def, Submonoid.smul_def, map_smul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `IsLocalizedModule.exists_of_eq (S := Submonoid.powers r) h1`. Take `⟨n, hn⟩` from `(c * s).2`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `: r ^ n • x = c • m`. Rewrite using `[hc, smul_smul, Submonoid.smul_def, ← hn]`.
-
-Rewrite using `[this]`. Conclude with `N.smul_mem _ hm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_mem_span {R R' : Type} {M M' : Type*} [CommRing R] [CommRing R']
     [Algebra R R'] [AddCommGroup M] [Module R M] [AddCommGroup M'] [Module R' M'] (r : R)
@@ -122,7 +120,7 @@ theorem exists_pow_smul_mem_span {R R' : Type} {M M' : Type*} [CommRing R] [Comm
   exact N.smul_mem _ hm
 
 /- English proof (translation)
-Establish `k` using `(frobMor p R hR A (cast_left p R hR A)).comp (bcMor hφ)`. Use `(GrpMor.pull_pull _ _ k (fun _ => rfl) rfl x).trans (GrpMor.pull_pull _ _ k (fun r => ?_) ?_ x).symm` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, frobR_apply, frobR_apply, map_pow]`. Conclude with `GlobalTheory.VB.frob_naturality p _ φ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_frobDR (p : ℕ) [Fact p.Prime] {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R']
     (hR : (p : R) = 0) (hR' : (p : R') = 0) {A : Over (Sp R)} [GrpObj A] {A' : Over (Sp R')}
@@ -136,17 +134,15 @@ theorem pull_frobDR (p : ℕ) [Fact p.Prime] {R R' : Type} [CommRing R] [CommRin
   · exact GlobalTheory.VB.frob_naturality p _ φ _
 
 /- English proof (translation)
-Introduce `P p _ T _ A _ g hA hg H e he`. Establish `hp (V : T.Opens) : (p : Γ(T, V)) = 0` using `GlobalTheory.SS.FrobField.cast_zero (GlobalTheory.VB.natCast_eq_zero T p (ZMod p)) V`. Use `exists_sub_of_affine (fun V hV => (conjDR p Γ(T, V) (hp V) (onAff A hV)).comap (e V hV).toLinearMap) (fun V W hV hW h s hs => ?_) fun V hV f s hs => ?_` and prove the remaining obligations. Use `letI := resAlg h`. Take `⟨φ, hφ, hφ'⟩` from `VB.exists_transition A hV hW h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `e W hW _ ∈ conjDR p _ _ _`. Rewrite using `[he V W hV hW h φ hφ hφ']`. Establish `hle : conjDR p Γ(T, V) (hp V) (onAff A hV) ≤ (conjDR p Γ(T, W) (hp W) (onAff A hW)).comap (bcMor hφ).pull`. Rewrite using `[conjDR, Submodule.span_le]`. Introduce and unpack `_ ⟨y, rfl⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Express the relevant statement in the definitionally equal form `(bcMor hφ).pull _ ∈ conjDR p _ _ _`. Rewrite using `[pull_frobDR p (hp V) (hp W) hφ]`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`. Conclude with `hle hs`. Establish `hD` using `hV.basicOpen f`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `letI := resAlg (T.basicOpen_le f)`. Take `⟨φ, hφ, hφ'⟩` from `VB.exists_transition A hV hD (T.basicOpen_le f)`. Establish `hbc : (bcMor hφ).IsBC` using `(P.p5.2.2.1 _ (onAff A hV) g (VB.isAbelianScheme_onAff A hA hV) (VB.smooth_onAff A hg hV) _ (onAff A hD) φ hφ).1`. Express the relevant statement in the definitionally equal form `e _ hD _ ∈ conjDR p _ _ _ at hs`. Rewrite `hs` using `[he V _ hV hD (T.basicOpen_le f) φ hφ hφ']`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := hV.isLocalization_basicOpen f`. Take `⟨n, hn⟩` from `exists_pow_smul_mem_span f (bcMor hφ).pull hbc _ _ (pull_frobDR p (hp V) (hp _) hφ) _ hs`. Use `⟨n, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e V hV _ ∈ conjDR p _ _ _`. Rewrite using `[map_smul]`.
-
-Conclude with `hn`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conjSub : GlobalTheory.CovTop.Hypotheses2 → ∀ (p : ℕ) [Fact p.Prime] {T : Scheme.{0}}
     [Algebra (ZMod p) Γ(T, ⊤)] (A : Over T) [GrpObj A]

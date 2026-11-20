@@ -10,7 +10,7 @@ open scoped ComplexConjugate
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Establish `hc : c.toReal ≠ 0` using `ENNReal.toReal_ne_zero.mpr ⟨hc0, hct⟩`. Establish `hc' : ((c.toReal : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hc`. Rewrite using `[Measure.restrict_smul, integral_smul_measure, Measure.smul_apply, smul_eq_mul, ENNReal.toReal_mul, Complex.ofReal_mul, mul_inv, Complex.real_smul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma mean_smul {α : Type*} [MeasurableSpace α] (μ : Measure α) (c : ENNReal) (hc0 : c ≠ 0)
     (hct : c ≠ ⊤) (s : Set α) (F : α → ℂ) :
@@ -24,7 +24,7 @@ lemma mean_smul {α : Type*} [MeasurableSpace α] (μ : Measure α) (c : ENNReal
     _ = _ := by rw [inv_mul_cancel₀ hc', mul_one]
 
 /- English proof (translation)
-Use `haveI : ProperSpace G := FiniteDimensional.proper_real G`. Establish `h` using `Measure.isAddLeftInvariant_eq_smul ν μ`. Establish `hpos` using `Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure ν μ`. Rewrite using `[h, ENNReal.smul_def]`. Conclude with `(mean_smul μ _ (ENNReal.coe_ne_zero.mpr hpos.ne') ENNReal.coe_ne_top s F).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mean_haar {G : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G]
     [MeasurableSpace G] [BorelSpace G] (μ ν : Measure G) [μ.IsAddHaarMeasure] [ν.IsAddHaarMeasure]
@@ -43,11 +43,11 @@ noncomputable def fjI (ξ : Fin r → E) (ν : X.Ψ → ℝ) (P : Frame X.Ψ r �
   P (X.flow ξ (fun τ => (s τ : ℂ)) x) * cexp (-(4 * Real.pi * I) * ∑ τ, (ν τ : ℂ) * s τ)
 
 /- English proof (translation)
-Rewrite using `[differentiable_pi]`. Introduce `τ`. Rewrite using `[differentiable_pi]`. Introduce `a`. Rewrite using `[differentiable_pi]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `b`. Introduce `s`. Simplify using `only [Data.flow, Matrix.mul_apply, Data.flowMat, Matrix.of_apply, mat]`. Use `DifferentiableAt.fun_sum fun k _ => ?_` and prove the remaining obligations. Apply `DifferentiableAt.mul_const` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `DifferentiableAt.const_sub` to reduce the goal to its premises. Apply `DifferentiableAt.mul_const` to reduce the goal to its premises. Apply `DifferentiableAt.mul_const` to reduce the goal to its premises. Apply `DifferentiableAt.const_mul` to reduce the goal to its premises. Conclude with `(differentiable_apply τ) s`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 lemma flow_differentiable (ξ : Fin r → E) (x : Frame X.Ψ r) :
     Differentiable ℂ (fun s : X.Ψ → ℂ => X.flow ξ s x) := by
@@ -68,11 +68,11 @@ lemma flow_differentiable (ξ : Fin r → E) (x : Frame X.Ψ r) :
   exact (differentiable_apply τ) s
 
 /- English proof (translation)
-Establish `hflow0 : X.flow ξ (fun _ => (0 : ℂ)) x = x`. Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `X.flowMat ξ τ 0 * mat x τ = x τ`. Rewrite using `[flowMat_eq]`. Simplify using `only [mul_zero, neg_zero, zero_smul, add_zero, one_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hmaps : ∀ s : X.Ψ → ℝ, X.flow ξ (fun τ => (s τ : ℂ)) x ∈ X.dom`. Introduce `s`. Establish `h0` using `(flow_mem_dom_iff (X := X) hξ x hx (fun _ => (0 : ℂ))).mp (by rw [hflow0]; exact hx)`. Rewrite using `[flow_mem_dom_iff (X := X) hξ x hx]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h0`. Establish `hc1 : Continuous (fun s : X.Ψ → ℝ => X.flow ξ (fun τ => (s τ : ℂ)) x)` using `(flow_differentiable X ξ x).continuous.comp (continuous_pi fun τ => Complex.continuous_ofReal.comp (continuous_apply τ))`. Establish `hc2 : Continuous (fun s : X.Ψ → ℝ => P (X.flow ξ (fun τ => (s τ : ℂ)) x))` using `hP.1.continuousOn.comp_continuous hc1 hmaps`. Unfold `fjI`. Conclude with `hc2.mul (by fun_prop)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma fjI_continuous (P : Frame X.Ψ r → ℂ) (hP : X.IsSec la P) {ξ : Fin r → E}
     (hξ : herm X.Gm ξ ξ = 0) (ν : X.Ψ → ℝ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
@@ -97,21 +97,21 @@ lemma fjI_continuous (P : Frame X.Ψ r → ℂ) (hP : X.IsSec la P) {ξ : Fin r 
   exact hc2.mul (by fun_prop)
 
 /- English proof (translation)
-Establish `hflow0 : X.flow ξ (fun _ => (0 : ℂ)) x = x`. Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `X.flowMat ξ τ 0 * mat x τ = x τ`. Rewrite using `[flowMat_eq]`. Simplify using `only [mul_zero, neg_zero, zero_smul, add_zero, one_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hmaps : ∀ s : X.Ψ → ℝ, X.flow ξ (fun τ => (s τ : ℂ)) x ∈ X.dom`. Introduce `s`. Establish `h0` using `(flow_mem_dom_iff (X := X) hξ x hx (fun _ => (0 : ℂ))).mp (by rw [hflow0]; exact hx)`. Rewrite using `[flow_mem_dom_iff (X := X) hξ x hx]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h0`. Establish `hadd : X.flow ξ (fun τ => (((p + s) τ : ℝ) : ℂ)) x = X.flow ξ (cR X p) (X.flow ξ (fun τ => (s τ : ℂ)) x)`. Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `X.flowMat ξ τ _ * mat x τ = X.flowMat ξ τ _ * mat (X.flow ξ _ x) τ`. Rewrite using `[mat_flow, ← mul_assoc, flowMat_mul (X := X) hξ]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Simplify using `[cR]`. Unfold `fjI`. Rewrite using `[hadd, sec_periodic (X := X) la P hP hξΛ hξ hp _ (hmaps s)]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨k, hk⟩` from `hν p hp`. Establish `hsplit : ∑ τ, (ν τ : ℂ) * (((p + s) τ : ℝ) : ℂ) = ∑ τ, (ν τ : ℂ) * (p τ : ℂ) + ∑ τ, (ν τ : ℂ) * (s τ : ℂ)`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit, mul_add, Complex.exp_add]`. Establish `hk' : cexp (-(4 * Real.pi * I) * ∑ τ, (ν τ : ℂ) * (p τ : ℂ)) = 1`. Establish `h1 : ∑ τ, (ν τ : ℂ) * (p τ : ℂ) = (k : ℂ) / 2`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun t : ℝ => (t : ℂ)) hk`. Move the coercions through the operations in `at h2`. Take the linear combination `h2 / 2`. Rewrite using `[h1, show -(4 * (Real.pi : ℂ) * I) * ((k : ℂ) / 2) = ((-k : ℤ) : ℂ) * (2 * Real.pi * I) by push_cast; ring]`. Conclude with `Complex.exp_int_mul_two_pi_mul_I (-k)`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk', one_mul]`.
+A detailed English derivation is pending.
 -/
 lemma fjI_periodic (P : Frame X.Ψ r → ℂ) (hP : X.IsSec la P) {ξ : Fin r → E} (hξΛ : ξ ∈ X.Λ)
     (hξ : herm X.Gm ξ ξ = 0) (ν : X.Ψ → ℝ)
@@ -159,7 +159,7 @@ lemma fjI_periodic (P : Frame X.Ψ r → ℂ) (hP : X.IsSec la P) {ξ : Fin r �
   rw [hk', one_mul]
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ (perL X la)`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ (perL X la)) = Fintype.card X.Ψ`. Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex, perL_rank]`. Use `⟨(b.ofZLatticeBasis ℝ (perL X la)).reindex (Fintype.equivFinOfCardEq hcard), ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.range_reindex, Module.Basis.ofZLatticeBasis_span]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma exists_basis : ∃ ω : Module.Basis (Fin (Fintype.card X.Ψ)) ℝ (X.Ψ → ℝ),
     Submodule.span ℤ (Set.range ω) = perL X la := by
@@ -171,33 +171,29 @@ lemma exists_basis : ∃ ω : Module.Basis (Fin (Fintype.card X.Ψ)) ℝ (X.Ψ �
   rw [Module.Basis.range_reindex, Module.Basis.ofZLatticeBasis_span]
 
 /- English proof (translation)
-Establish `hper : X.periods la = (Submodule.span ℤ (Set.range ω)).toAddSubgroup`. Rewrite using `[hω]`. Both sides reduce to the same expression. Establish `hcond : ∀ p ∈ X.periods la, ∃ k' : ℤ, 2 * ∑ τ, ν τ * p τ = k'`. Introduce `p hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hp` using `[hper]`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).mp hp`. Use `⟨∑ j, c j * k j, ?_⟩` and prove the remaining obligations. Establish `hc : ∀ τ, (∑ j, c j • ω j) τ = ∑ j, (c j : ℝ) * ω j τ` using `fun τ => by`. Simplify using `[Finset.sum_apply, zsmul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hc]`. Use `push_cast`. Simplify using `only [← hk, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hF0 : IsAddFundamentalDomain (X.periods la) (ZSpan.fundamentalDomain ω) volume`. Rewrite using `[hper]`. Conclude with `ZSpan.isAddFundamentalDomain ω volume`. Establish `hex : ∃ D : Set (X.Ψ → ℝ), MeasurableSet D ∧ IsAddFundamentalDomain (X.periods la) D volume ∧ 0 < volume D ∧ volume D < ⊤` using `⟨_, ZSpan.fundamentalDomain_measurableSet ω, hF0, pos_iff_ne_zero.mpr (ZSpan.measure_fundamentalDomain_ne_zero ω), (ZSpan.fundamentalDomain_isBounded ω).measure_lt_top⟩`. Establish `hcount : ((X.periods la : Set (X.Ψ → ℝ))).Countable` using `(Set.countable_range (fun c : Fin n → ℤ => ∑ j, c j • ω j)).mono fun p hp => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `hp` using `[hper]`. Conclude with `(Submodule.mem_span_range_iff_exists_fun ℤ).mp hp`. Use `haveI : Countable (X.periods la) := hcount.to_subtype`. Unfold `Data.fj`. Rewrite using `[if_pos hcond, dif_pos hex]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨-, hD, -, -⟩` from `hex.choose_spec`. Use `show ((volume hex.choose).toReal : ℂ)⁻¹ * ∫ s in hex.choose, fjI X ξ ν P x s = _`. Rewrite using `[hD.measure_eq hF0, hD.setIntegral_eq hF0 (f := fjI X ξ ν P x) (fun g s => fjI_periodic X la P hP hξ.1 hξ.2.1 ν hcond hx g g.2 s)]`. Use `set T := ω.equivFunL.symm with hTdef`. Use `haveI : (Measure.map T volume).IsAddHaarMeasure := T.isAddHaarMeasure_map volume`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[mean_haar volume (Measure.map T volume) (ZSpan.fundamentalDomain ω) (fjI X ξ ν P x)]`. Establish `hmp : MeasurePreserving T volume (Measure.map T volume)` using `T.continuous.measurable.measurePreserving volume`. Establish `hemb : MeasurableEmbedding T` using `T.toHomeomorph.measurableEmbedding`. Rewrite using `[← hmp.setIntegral_preimage_emb hemb _ (ZSpan.fundamentalDomain ω), Measure.map_apply T.continuous.measurable (ZSpan.fundamentalDomain_measurableSet ω)]`. Establish `hpre : T ⁻¹' ZSpan.fundamentalDomain ω = Set.univ.pi (fun _ : Fin n => Set.Ico (0 : ℝ) 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `t`. Establish `hTt : T t = ω.equivFun.symm t` using `rfl`. Establish `hrep : ∀ i, ω.repr (ω.equivFun.symm t) i = t i` using `fun i => by`. Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[Set.mem_preimage, ZSpan.mem_fundamentalDomain, Set.mem_univ_pi, hTt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hrep]`. Establish `hvol : volume (Set.univ.pi (fun _ : Fin n => Set.Ico (0 : ℝ) 1)) = 1`. Rewrite using `[Real.volume_pi_Ico]`. Simplify using the standard rewrite rules. Establish `hae : (Set.univ.pi fun _ : Fin n => Set.Ico (0 : ℝ) 1) =ᵐ[volume] (Set.univ.pi fun _ : Fin n => Set.Ioc (0 : ℝ) 1)`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MeasureTheory.volume_pi]`. Conclude with `Measure.univ_pi_Ico_ae_eq_Icc.trans Measure.univ_pi_Ioc_ae_eq_Icc.symm`. Rewrite using `[hpre, hvol, ENNReal.toReal_one, Complex.ofReal_one, inv_one, one_mul, setIntegral_congr_set hae]`. Unfold `ReciprocityTheory.L2DbarEstimates.Y.fourCoeff`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions.
 
-Use function extensionality and compare the values at `t`. Establish `hT : ∀ τ, (T t) τ = ∑ j, t j * ω j τ` using `fun τ => by`. Rewrite using `[show T t = ω.equivFun.symm t from rfl, Module.Basis.equivFun_symm_apply, Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Establish `hk' : ∀ j, (k j : ℂ) = 2 * ∑ τ, (ν τ : ℂ) * (ω j τ : ℂ)` using `fun j => by`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `h2` using `congrArg (fun r : ℝ => (r : ℂ)) (hk j)`. Move the coercions through the operations in `at h2`. Conclude with `h2.symm`. Unfold `fjI`. Simplify using `only [hT, Pi.zero_apply, Complex.ofReal_zero, zero_mul, add_zero, hk']`.
-
-Use `push_cast`. Use `congr 1`. Use `congr 1`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
-
-Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fj_eq_fourCoeff (P : Frame X.Ψ r → ℂ) (hP : X.IsSec la P) {ξ : Fin r → E} (hξ : X.IsIso ξ)
     {x : Frame X.Ψ r} (hx : x ∈ X.dom) {n : ℕ} (ω : Module.Basis (Fin n) ℝ (X.Ψ → ℝ))

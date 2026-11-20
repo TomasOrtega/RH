@@ -19,25 +19,23 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Set `L : (Fin n → ℝ) →ₗ[ℝ] ℝ` to `∑ i : Fin n, ((i : ℕ) : ℝ) • LinearMap.proj i`. Establish `hL1 : ∀ a : Fin n, L (Pi.single a 1) = ((a : ℕ) : ℝ)`. Introduce `a`. Simplify using `[L, LinearMap.sum_apply, Pi.single_apply]`. Establish `hLr : ∀ a b : Fin n, L (Formalism.REAL.root a b) = ((a : ℕ) : ℝ) - ((b : ℕ) : ℝ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a b`. Simplify using `only [Formalism.REAL.root, map_sub, hL1]`. Establish `key : ∀ {x y : Fin n → ℝ}, Formalism.MainNotions.S.CDom ε x y → L (y - x) ≤ 0 ∧ (L (y - x) = 0 → y - x = 0)`. Introduce `x y ⟨c, hc, he⟩`. Establish `hterm : ∀ a b, (c a b : ℝ) * (((a : ℕ) : ℝ) - ((b : ℕ) : ℝ)) ≤ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a b`. Distinguish the cases in `h0 : c a b = 0`. Simplify using `[h0]`. Use `(hc a b h0).1` as an intermediate fact. Establish `: ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast this`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) ≤ (c a b : ℝ)` using `Nat.cast_nonneg _`. Use the polynomial consequences of the given equalities and inequalities. Establish `hLe : L (y - x) = ∑ a, ∑ b, (c a b : ℝ) * (((a : ℕ) : ℝ) - ((b : ℕ) : ℝ))`. Rewrite using `[he, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hLr, smul_eq_mul]`. Use `⟨?_, fun h0 => ?_⟩` and prove the remaining obligations. Rewrite using `[hLe]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_nonpos fun a _ => Finset.sum_nonpos fun b _ => hterm a b`. Rewrite `h0` using `[hLe]`. Establish `h1` using `(Finset.sum_eq_zero_iff_of_nonpos fun a _ => Finset.sum_nonpos fun b _ => hterm a b).1 h0`. Rewrite using `[he]`. Use `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `(Finset.sum_eq_zero_iff_of_nonpos fun b _ => hterm a b).1 (h1 a (Finset.mem_univ _)) b (Finset.mem_univ _)`. Distinguish the cases in `h0 : c a b = 0`. Simplify using `[h0]`. Use `(hc a b h0).1` as an intermediate fact. Establish `: ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast this`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : (0 : ℝ) < (c a b : ℝ)` using `by exact_mod_cast Nat.pos_of_ne_zero h0`. It suffices to derive a contradiction. Establish `: (c a b : ℝ) * (((a : ℕ) : ℝ) - ((b : ℕ) : ℝ)) < 0` using `mul_neg_of_pos_of_neg hc0 (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨k1, k1'⟩` from `key h₁`.
+It suffices to derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k2, -⟩` from `key h₂`. Establish `: L (Λ - μ) = 0`. Establish `: L (μ - Λ) = -L (Λ - μ)` using `by rw [← map_neg, neg_sub]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `k1' this` as an intermediate fact.
-
-Conclude with `(sub_eq_zero.1 this).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cdom_antisymm {ε : Fin n → Bool} {μ Λ : Fin n → ℝ} (h₁ : Formalism.MainNotions.S.CDom ε μ Λ)
     (h₂ : Formalism.MainNotions.S.CDom ε Λ μ) : μ = Λ := by
@@ -92,7 +90,7 @@ theorem cdom_antisymm {ε : Fin n → Bool} {μ Λ : Fin n → ℝ} (h₁ : Form
   exact (sub_eq_zero.1 this).symm
 
 /- English proof (translation)
-Use `⟨hlam.1, h, hgap, ?_⟩` and prove the remaining obligations. Establish `h1 : 2 + max (3 * (n : ℝ) / 2) (1 + (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ)) ≤ hNeed ε` using `le_max_left _ _`. Establish `h2 : 1 + (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) ≤ max (3 * (n : ℝ) / 2) (1 + (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ))` using `le_max_right _ _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem stdGap_of {ε : Fin n → Bool} {lam : Fin n → ℝ} {h : ℝ} (hlam : S7.IsHCParam lam)
     (hgap : GapAtLeast ε lam h) (hN : hNeed ε < h) : StdGap ε lam := by
@@ -103,9 +101,9 @@ theorem stdGap_of {ε : Fin n → Bool} {lam : Fin n → ℝ} {h : ℝ} (hlam : 
   linarith
 
 /- English proof (translation)
-Establish `h1 : 16 * (n : ℝ) * (min (pOf ε) (qOf ε) : ℝ) + 8 * Real.sqrt (2 * (min (pOf ε) (qOf ε) : ℝ)) + 2 ≤ hNeed ε` using `(le_max_left _ _).trans (le_max_right _ _)`. Establish `hq : ((S7.q0 ε : ℕ) : ℝ) = (min (pOf ε) (qOf ε) : ℝ)`. Simplify using `[S7.q0, Nat.cast_min]`. Rewrite using `[hq]`. Establish `: 0 ≤ (n : ℝ) * (min (pOf ε) (qOf ε) : ℝ)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: 0 ≤ Real.sqrt (2 * (min (pOf ε) (qOf ε) : ℝ))` using `Real.sqrt_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem eight_lt_of {ε : Fin n → Bool} {h : ℝ} (hN : hNeed ε < h) : 8 * (n : ℝ) * S7.q0 ε < h := by
   have h1 : 16 * (n : ℝ) * (min (pOf ε) (qOf ε) : ℝ) + 8 * Real.sqrt (2 * (min (pOf ε) (qOf ε) : ℝ)) + 2 ≤ hNeed ε :=
@@ -118,7 +116,7 @@ theorem eight_lt_of {ε : Fin n → Bool} {h : ℝ} (hN : hNeed ε < h) : 8 * (n
   nlinarith
 
 /- English proof (translation)
-Establish `ha' : aᴴ * Jm ε * a = Jm ε` using `ha`. Establish `hb' : bᴴ * Jm ε * b = Jm ε` using `hb`. Use `show (a * b)ᴴ * Jm ε * (a * b) = Jm ε`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma inUJ_mul {ε : Fin n → Bool} {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ UJset ε) (hb : b ∈ UJset ε) :
     a * b ∈ UJset ε := by
@@ -130,7 +128,7 @@ lemma inUJ_mul {ε : Fin n → Bool} {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a 
     _ = Jm ε := by rw [ha', hb']
 
 /- English proof (translation)
-The claim follows from `y.2`.
+A detailed English derivation is pending.
 -/
 lemma umat_mem {ε : Fin n → Bool} (y : Formalism.REAL.UJ ε) : Formalism.MainNotions.S.umat y ∈ UJset ε := y.2
 
@@ -140,7 +138,7 @@ variable {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε l
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)}
 
 /- English proof (translation)
-Use `show _ ∈ Submodule.comap _ _`. Rewrite using `[Submodule.mem_comap, Submodule.mem_map]`. Conclude with `⟨⟨uniformisationL2 ε Ψ v₀ v, datumEmbedding_mem_smooth hP v₀ v⟩, Submodule.mem_comap.2 (Submodule.subset_span ⟨v, rfl⟩), rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma coefficient_mem_lowest_K_submodule (hP : IsPsiFor ε lam T Ψ) (v₀ v : T.V) :
     (⟨uniformisationL2 ε Ψ v₀ v, datumEmbedding_mem_Hlam hP v⟩ : Hlam ε Ψ v₀) ∈ lowKSubLam ε Ψ v₀ := by
@@ -149,13 +147,13 @@ lemma coefficient_mem_lowest_K_submodule (hP : IsPsiFor ε lam T Ψ) (v₀ v : T
   exact ⟨⟨uniformisationL2 ε Ψ v₀ v, datumEmbedding_mem_smooth hP v₀ v⟩, Submodule.mem_comap.2 (Submodule.subset_span ⟨v, rfl⟩), rfl⟩
 
 /- English proof (translation)
-Establish `hlow` using `sigLam_lowK hgap hP hv₀`. Establish `hW` using `hlow.1`. Establish `hfull : ∀ (μ' : Fin n → ℝ) (S : Submodule ℂ (Hlam ε Ψ v₀)), Formalism.MainNotions.S.IsKTypeOf ε (sigLam ε Ψ v₀) μ' S → (∃ S' ≤ lowKSubLam ε Ψ v₀, Formalism.MainNotions.S.IsKTypeOf ε (sigLam ε Ψ v₀) μ' S') → S ≤ lowKSubLam ε Ψ v₀`. Introduce `μ' S hS ⟨S', hS'W, hS'⟩`. Establish `hne : S' ≠ ⊥`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨v, hv, hv0, -⟩` from `hS'.2.2.2.1`. Introduce `hb`. Rewrite `hv` using `[hb]`. Conclude with `hv0 ((Submodule.mem_bot ℂ).1 hv)`. Establish `hS'eq : S' = lowKSubLam ε Ψ v₀` using `(hW.2.2.1 S' hS'W hS'.2.1).resolve_left hne`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, hu0, huw⟩` from `hW.2.2.2.1`. Take `⟨v, hv, hv0, hvw⟩` from `hS'.2.2.2.1`. Establish `c1` using `hS'.2.2.2.2 _ u (by rw [hS'eq]; exact hu) hu0 huw`. Establish `c2` using `hW.2.2.2.2 _ v (by rw [← hS'eq]; exact hv) hv0 hvw`. Establish `hμ : μ' = Formalism.QuantumDeterminants.lowK ε lam` using `cdom_antisymm c2 c1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hμ` using the available equality. Conclude with `(hlow.2 S hS).le`. Establish `hsum : lowKSubLam ε Ψ v₀ ≤ sSup {S : Submodule ℂ (Hlam ε Ψ v₀) | ∃ μ', Formalism.MainNotions.S.IsKTypeOf ε (sigLam ε Ψ v₀) μ' S}` using `le_sSup ⟨_, hW⟩`. Take `⟨α, h1, h2, -, -, h5⟩` from `sigLam_le_of_kTypes hgap hP hv₀ (lowKSubLam ε Ψ v₀) hW.1 hfull hsum Set.univ isOpen_univ (Set.mem_univ _)`. Conclude with `⟨α, h1, h2, h5⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma exists_smooth_convolution_fixing_lowest (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) {v₀ : T.V} (hv₀ : v₀ ≠ 0) :
     ∃ α : Matrix (Fin n) (Fin n) ℂ → ℂ, ContDiff ℝ ∞ α ∧ HasCompactSupport α ∧
@@ -187,21 +185,19 @@ lemma exists_smooth_convolution_fixing_lowest (hgap : StdGap ε lam) (hP : IsPsi
   exact ⟨α, h1, h2, h5⟩
 
 /- English proof (translation)
-Establish `hv₀ : T.w ≠ 0` using `fun h0 => by simpa [h0] using T.w_norm`. Take `⟨α, hα1, hα2, hα⟩` from `exists_smooth_convolution_fixing_lowest hgap hP hv₀`. Use `⟨α, hα1, hα2, fun g hg v₁ v₂ => ?_⟩` and prove the remaining obligations. Establish `hc : ((‖uniformisationL2 ε Ψ T.w T.w‖ ^ 2 : ℝ) : ℂ) ≠ 0`. Use `datumEmbedding_highest_ne_zero hgap hP hv₀` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `pow_ne_zero 2 (norm_ne_zero_iff.2 this)` after adjusting the coercions. Establish `hF : ∀ x ∈ UJset ε, ((‖uniformisationL2 ε Ψ T.w T.w‖ ^ 2 : ℝ) : ℂ) * ⟪v₂, Ψ x v₁⟫_ℂ = ⟪(⟨uniformisationL2 ε Ψ T.w v₂, datumEmbedding_mem_Hlam hP v₂⟩ : Hlam ε Ψ T.w), sigLam ε Ψ T.w x ⟨uniformisationL2 ε Ψ T.w v₁, datumEmbedding_mem_Hlam hP v₁⟩⟫_ℂ` using `fun x hx => (formulaF_sigLam hgap hP hv₀ hx v₁ v₂).symm`. Establish `hU` using `sigLam_isURepOn hgap hP hv₀`. Establish `hfix` using `hα _ (coefficient_mem_lowest_K_submodule hP T.w v₁)`. Establish `key : ((‖uniformisationL2 ε Ψ T.w T.w‖ ^ 2 : ℝ) : ℂ) * ⟪v₂, Ψ g v₁⟫_ℂ = ∫ y : Formalism.REAL.UJ ε, α (Formalism.MainNotions.S.umat y) * (((‖uniformisationL2 ε Ψ T.w T.w‖ ^ 2 : ℝ) : ℂ) * ⟪v₂, Ψ (g * Formalism.MainNotions.S.umat y) v₁⟫_ℂ) ∂(Formalism.REAL.muG ε)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hint : Integrable (fun y : Formalism.REAL.UJ ε => α (Formalism.MainNotions.S.umat y) • sigLam ε Ψ T.w (Formalism.MainNotions.S.umat y) ⟨uniformisationL2 ε Ψ T.w v₁, datumEmbedding_mem_Hlam hP v₁⟩) (Formalism.REAL.muG ε)`. Rewrite using `[hF g hg, ← hfix]`. Set `Lc : Hlam ε Ψ T.w →L[ℂ] ℂ` to `(innerSL ℂ (⟨uniformisationL2 ε Ψ T.w v₂, datumEmbedding_mem_Hlam hP v₂⟩ : Hlam ε Ψ T.w)).comp (sigLam ε Ψ T.w g)`. Establish `e1 : ⟪(⟨uniformisationL2 ε Ψ T.w v₂, datumEmbedding_mem_Hlam hP v₂⟩ : Hlam ε Ψ T.w), sigLam ε Ψ T.w g (opConv ε (sigLam ε Ψ T.w) α ⟨uniformisationL2 ε Ψ T.w v₁, datumEmbedding_mem_Hlam hP v₁⟩)⟫_ℂ = Lc (opConv ε (sigLam ε Ψ T.w) α ⟨uniformisationL2 ε Ψ T.w v₁, datumEmbedding_mem_H …` using `rfl`. Rewrite using `[e1, opConv]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans (Lc.integral_comp_comm hint).symm ?_` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `show ⟪(⟨uniformisationL2 ε Ψ T.w v₂, datumEmbedding_mem_Hlam hP v₂⟩ : Hlam ε Ψ T.w), sigLam ε Ψ T.w g (α (Formalism.MainNotions.S.umat y) • sigLam ε Ψ T.w (Formalism.MainNotions.S.umat y) ⟨uniformisationL2 ε Ψ T.w v₁, datumEmbedding_mem_Hlam hP v₁⟩)⟫_ℂ = _`. Simplify using `only`. Rewrite using `[map_smul, inner_smul_right, hF _ (inUJ_mul hg (umat_mem y)), hU.1.2 g hg _ (umat_mem y), ContinuousLinearMap.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : (⟨uniformisationL2 ε Ψ T.w v₁, datumEmbedding_mem_Hlam hP v₁⟩ : Hlam ε Ψ T.w) = 0`. Rewrite using `[← hfix, opConv]`. Conclude with `integral_undef hint`. Establish `hz : ∀ x ∈ UJset ε, ((‖uniformisationL2 ε Ψ T.w T.w‖ ^ 2 : ℝ) : ℂ) * ⟪v₂, Ψ x v₁⟫_ℂ = 0` using `fun x hx => by`. Rewrite using `[hF x hx, h0, map_zero, inner_zero_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hz g hg]`. Use `symm`. Use `integral_eq_zero_of_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [Pi.zero_apply]`. Rewrite using `[hz _ (inUJ_mul hg (umat_mem y)), mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e2 : ∫ y : Formalism.REAL.UJ ε, α (Formalism.MainNotions.S.umat y) * (((‖uniformisationL2 ε Ψ T.w T.w‖ ^ 2 : ℝ) : ℂ) * ⟪v₂, Ψ (g * Formalism.MainNotions.S.umat y) v₁⟫_ℂ) ∂(Formalism.REAL.muG ε) = ((‖uniformisationL2 ε Ψ T.w T.w‖ ^ 2 : ℝ) : ℂ) * ∫ y : Formalism.REAL.UJ ε, α (Forma …`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite `key` using `[e2]`. Conclude with `mul_left_cancel₀ hc key`.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repro_real (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) :
     ∃ α : Matrix (Fin n) (Fin n) ℂ → ℂ, ContDiff ℝ ∞ α ∧ HasCompactSupport α ∧
@@ -260,9 +256,9 @@ theorem repro_real (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) :
   exact mul_left_cancel₀ hc key
 
 /- English proof (translation)
-It suffices to establish `H : ∀ (H : Subgroup (Matrix (Fin n) (Fin n) ℂ)ˣ), H = S7.UJ ε → ∀ (m : MeasurableSpace H), @BorelSpace H _ m → ∀ (μH : Measure H), μH.IsHaarMeasure → ∃ c : ℝ, ∀ Φ : Matrix (Fin n) (Fin n) ℂ → ℂ, ∫ y, Φ ((y : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) ∂μH = (c : ℂ) * …`. Conclude with `H _ (Subgroup.ext fun _ => Iff.rfl) _ inferInstance (Formalism.REAL.muG ε) (Formalism.REAL.instIsHaarMuG n ε)`. Introduce and unpack `H rfl m hb μH hμH`. Take `rfl : m = borel _` from `hb.measurable_eq`. Use `⟨(Measure.haarScalarFactor μH ν : ℝ), fun Φ => ?_⟩` and prove the remaining obligations.
+Reduce the argument to an intermediate assertion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `Measure.isMulLeftInvariant_eq_smul μH ν`. Use `conv_lhs => rw [e]`. Rewrite using `[integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_transfer (ε : Fin n → Bool) (ν : Measure (S7.UJ ε)) [ν.IsHaarMeasure] :
     ∃ c : ℝ, ∀ Φ : Matrix (Fin n) (Fin n) ℂ → ℂ,
@@ -280,9 +276,9 @@ theorem integral_transfer (ε : Fin n → Bool) (ν : Measure (S7.UJ ε)) [ν.Is
   rw [integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]
 
 /- English proof (translation)
-Take `⟨α, hα1, hα2, hα⟩` from `repro_real hgap hP`. Take `⟨c, hc⟩` from `integral_transfer ε ν`. Use `⟨fun x => (c : ℂ) * α x, contDiff_const.mul hα1, hα2.mul_left, fun g hg v₁ v₂ => ?_⟩` and prove the remaining obligations. Establish `h1` using `hc (fun x => α x * ⟪v₂, Ψ (g * x) v₁⟫_ℂ)`. Rewrite using `[hα g hg v₁ v₂, h1, ← integral_const_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem reproducing_smooth_compact_kernel (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (ν : Measure (S7.UJ ε)) [ν.IsHaarMeasure] :
     ∃ β : Matrix (Fin n) (Fin n) ℂ → ℂ, ContDiff ℝ ∞ β ∧ HasCompactSupport β ∧

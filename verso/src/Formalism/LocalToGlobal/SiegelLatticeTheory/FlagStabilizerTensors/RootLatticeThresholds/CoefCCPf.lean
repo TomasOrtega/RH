@@ -16,9 +16,9 @@ variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Take `⟨-, h120, -, -⟩` from `hok`. Establish `hn : 1 ≤ 2 * r + k + 1` using `by omega`. Establish `ht` using `Formalism.L2.SG.BesselDiscreteSeries.thrStar_le hn ε`. Establish `hn1 : (1 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)` using `by exact_mod_cast hn`. Establish `hn3 : (1 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ) ^ 3` using `one_le_pow₀ hn1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⌈A⌉₊, ?_, Nat.le_ceil A⟩` and prove the remaining obligations. Establish `hc` using `Nat.ceil_lt_add_one hA0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exists_exp_of_gapOK {ε : Fin (2 * r + k + 1) → Bool} {h : ℝ} (hok : Formalism.FourierDecayAlt.ThreeDimData.GapOK k r h) {A : ℝ}
     (hA0 : 0 ≤ A) (hA : A ≤ h / 2) : ∃ m' : ℕ, ReciprocityTheory.ChartRestriction.DS.thrStar ε + m' < h ∧ A ≤ m' := by
@@ -36,7 +36,7 @@ section congr
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-The claim follows from `| [], xs, _, g, hg => by cases xs <;> exact hf g hg | _ :: _, [], _, g, hg => hf g hg | b :: ks, X :: xs, hx, g, hg => PI.ComplexConjugateDerivative.D_congr (b := b) (fun y hy => ev_congr hf ks xs (fun Y hY => hx Y (List.mem_cons_of_mem _ hY)) y hy) hg (hx X List.mem_cons_self)`.
+A detailed English derivation is pending.
 -/
 theorem ev_congr {f₁ f₂ : B.Mat k r → E} (hf : ∀ y ∈ B.GV k r, f₁ y = f₂ y) :
     ∀ (ks : List Bool) (xs : List (B.Mat k r)), (∀ X ∈ xs, B.inLie k r X) →
@@ -48,11 +48,9 @@ theorem ev_congr {f₁ f₂ : B.Mat k r → E} (hf : ∀ y ∈ B.GV k r, f₁ y 
       (hx X List.mem_cons_self)
 
 /- English proof (translation)
-Take `⟨c, hck, hb⟩` from `h1`. Use `⟨c, fun g₀ hg₀ => ?_, fun u w hu hw hl g hg => ?_⟩` and prove the remaining obligations. Take `⟨U, f', hU, h0, hc, he⟩` from `hck g₀ hg₀`. Conclude with `⟨U, f', hU, h0, hc, fun y hy hyG => (hf y hyG).symm.trans (he y hy hyG)⟩`. Establish `e : B.dLR u w f₂ g = B.dLR u w f₁ g`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[PI.ComplexConjugateDerivative.dLR_eq_ev, PI.ComplexConjugateDerivative.dLR_eq_ev]`. Conclude with `(ev_congr hf _ (u ++ w) (fun X hX => by`. Break down `List.mem_append.1 hX with h | h` into its components or cases. Conclude with `(hu X h).1`. Conclude with `(hw X h).1) g hg).symm`.
-
-Rewrite using `[e]`. Conclude with `hb u w hu hw hl g hg`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inCC_congr {A : ℝ} {m : ℕ} {f₁ f₂ : B.Mat k r → E} (hf : ∀ y ∈ B.GV k r, f₁ y = f₂ y)
     (h1 : B.InCC (k := k) (r := r) A m f₁) : B.InCC (k := k) (r := r) A m f₂ := by
@@ -72,13 +70,13 @@ theorem inCC_congr {A : ℝ} {m : ℕ} {f₁ f₂ : B.Mat k r → E} (hf : ∀ y
 end congr
 
 /- English proof (translation)
-Establish `hai : a⁻¹ ∈ B.GV k r` using `Formalism.MainNotions.LowestKTypeMultiplicity.UH_inv ha`. Establish `hdet : IsUnit a.det` using `Formalism.MainNotions.LowestKTypeMultiplicity.UH_det ha`. Establish `haa : a⁻¹ * a = 1` using `Matrix.nonsing_inv_mul a hdet`. Use `inCC_congr (f₁ := Formalism.MainNotions.S.Pv.BetaCut.coefM σ (σ a⁻¹ v) (σ b v') ξ ξ') (fun g hg => ?_) (coefM_inCC_of_dec hσ hdec (Formalism.MainNotions.LowestKTypeMultiplicity.smooth_orbit hσ hv hai) (Formalism.MainNotions.LowestKTypeMultiplicity.smooth_orbit hσ hv' hb) ξ ξ' m)` and prove the remaining obligations. Rewrite using `[coefM_eq, coefM_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show ⟪σ a⁻¹ v, σ g (σ b v')⟫_ℂ • rk1 ξ ξ' = ⟪v, σ (a * g * b) v'⟫_ℂ • rk1 ξ ξ'`. Use `congr 1`. Set `L : H →ₗᵢ[ℂ] H` to `⟨(σ a⁻¹ : H →ₗ[ℂ] H), fun x => hσ.2.1 _ hai x⟩`. Establish `hgb : g * b ∈ B.GV k r` using `Formalism.MainNotions.LowestKTypeMultiplicity.UH_mul hg hb`. Establish `e1 : σ (a * g * b) v' = σ a (σ g (σ b v'))`.
+Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, hσ.1.2 a ha _ hgb, hσ.1.2 g hg b hb]`. Both sides reduce to the same expression. Establish `e2 : σ a⁻¹ (σ a (σ g (σ b v'))) = σ g (σ b v')`. Use `hσ.1.2 _ hai _ ha` as an intermediate fact. Rewrite `this` using `[haa, hσ.1.1]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (fun T : H →L[ℂ] H => T (σ g (σ b v'))) this`. Simplify using `using h3.symm`. Rewrite using `[e1, ← L.inner_map_map v (σ a (σ g (σ b v')))]`. Use `show ⟪σ a⁻¹ v, σ g (σ b v')⟫_ℂ = ⟪σ a⁻¹ v, σ a⁻¹ (σ a (σ g (σ b v')))⟫_ℂ`. Rewrite using `[e2]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefM_translate_inCC {σ : B.Mat k r → (H →L[ℂ] H)} (hσ : Formalism.MainNotions.S.IsURepOn (B.GV k r) σ) {A : ℝ}
     (hdec : ∀ a ∈ Formalism.MainNotions.S.smoothVecs (k := k) (r := r) σ, ∀ b ∈ Formalism.MainNotions.S.smoothVecs (k := k) (r := r) σ,
@@ -110,7 +108,7 @@ theorem coefM_translate_inCC {σ : B.Mat k r → (H →L[ℂ] H)} (hσ : Formali
   rw [e2]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Use extensionality with `x`. Simplify using `only [Pi.smul_apply, Formalism.MainNotions.S.Pv.BetaCut.coefM, ContinuousLinearMap.smulRight_apply, _root_.smul_apply]`. Rewrite using `[smul_comm c, smul_comm c]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coefM_smul (σ : B.Mat k r → (H →L[ℂ] H)) (v v' : H) (ξ : Wp) (ξ' : Wq) (c : ℂ) :
     c • Formalism.MainNotions.S.Pv.BetaCut.coefM σ v v' ξ ξ' = Formalism.MainNotions.S.Pv.BetaCut.coefM σ v v' (c • ξ) ξ' := by
@@ -120,7 +118,7 @@ theorem coefM_smul (σ : B.Mat k r → (H →L[ℂ] H)) (v v' : H) (ξ : Wp) (ξ
   rw [smul_comm c, smul_comm c]
 
 /- English proof (translation)
-Take `⟨C, Ws, -, hC⟩` from `ReciprocityTheory.ChartRestriction.DS.DecInf.decSm hlam hgap m' hm' hσ`. Introduce `a ha b hb`. Use `⟨C * (Ws.map fun w => ‖Formalism.MainNotions.S.dsigW (k := k) (r := r) σ w b‖).sum * (Ws.map fun w => ‖Formalism.MainNotions.S.dsigW (k := k) (r := r) σ w a‖).sum, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h1` using `PI.ComplexConjugateDerivative.one_le_gN hg`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem dec_of_DS {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     (hlam : Formalism.QuantumDeterminants.IsHCParam lam) {h : ℝ} (hgap : Formalism.QuantumDeterminants.GapAtLeast ε lam h) (m' : ℕ)
@@ -139,7 +137,7 @@ theorem dec_of_DS {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1)
     _ ≤ _ := hC b hb a ha g hg
 
 /- English proof (translation)
-Take `⟨m', hm', hAm⟩` from `exists_exp_of_gapOK (ε := ε) hok hA0 hA`. Establish `hks` using `Formalism.L2.SG.LitS.kFinSmooth_pi Formalism.L2.SG.Pf.k_finite_smooth`. Rewrite using `[coefM_smul]`. Conclude with `coefM_translate_inCC (Formalism.MainNotions.LowestKTypeMultiplicity.urep_of_DS hσ) (dec_of_DS hlam hgap m' hm' hAm hσ) (hks k r ε lam H σ (by exact hlam) hσ v hv) (hks k r ε lam H σ (by exact hlam) hσ v' hv') ha hb (c • ξ) ξ' m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_coefM_translate_inCC_kfin_gapOK {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     (hlam : Formalism.QuantumDeterminants.IsHCParam lam) {h : ℝ} (hgap : Formalism.QuantumDeterminants.GapAtLeast ε lam h)

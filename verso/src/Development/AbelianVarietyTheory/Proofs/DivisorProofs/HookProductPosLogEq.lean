@@ -5,21 +5,19 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HookREqHookProd
 namespace GlobalTheory.HookDiagram
 
 /- English proof (translation)
-Establish `hrow : ∀ r, r < n → μ.rowLen r = a r`. Introduce `r hr`. Apply `le_antisymm` to reduce the goal to its premises. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm : (r, a r) ∈ μ` using `YoungDiagram.mem_iff_lt_rowLen.mpr hlt`. Conclude with `lt_irrefl _ ((h r (a r)).mp hm).2`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `hm : (r, μ.rowLen r) ∈ μ` using `(h r _).mpr ⟨hr, hlt⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `lt_irrefl _ (YoungDiagram.mem_iff_lt_rowLen.mp hm)`. Establish `hcol : ∀ r c, Finset.filter (fun r' => c < a r') (Finset.Ioo r n) = Finset.Ioo r (μ.colLen c)`. Introduce `r c`. Use extensionality with `r'`. Simplify using `only [Finset.mem_filter, Finset.mem_Ioo]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Conclude with `⟨h1, YoungDiagram.mem_iff_lt_colLen.mp ((h r' c).mpr ⟨h2, h3⟩)⟩`. Introduce and unpack `⟨h1, h2⟩`. Establish `hm` using `(h r' c).mp (YoungDiagram.mem_iff_lt_colLen.mpr h2)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨⟨h1, hm.1⟩, hm.2⟩`. Establish `hrc : ∀ r c, r < n → c < a r → r < μ.colLen c` using `fun r c hr hc => YoungDiagram.mem_iff_lt_colLen.mp ((h r c).mpr ⟨hr, hc⟩)`. Unfold `Formalism.LatticeIndexTer.hookProd GlobalTheory.IndefiniteRowSideFullHecke.SchurTensorLattices.hookProd`. Rewrite using `[Finset.prod_finset_product μ.cells (Finset.range n) (fun r => Finset.range (a r))]`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `r hr`. Rewrite `hr` using `[Finset.mem_range]`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `c hc`. Rewrite `hc` using `[Finset.mem_range]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[hcol r c, Nat.card_Ioo, hrow r hr]`. Use `hrc r c hr hc` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨i, j⟩`.
-
-Simplify using `only [YoungDiagram.mem_cells, Finset.mem_range]`. Conclude with `h i j`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hookProd_eq_of_mem (μ : YoungDiagram) (n : ℕ) (a : ℕ → ℕ)
     (h : ∀ i j, (i, j) ∈ μ ↔ i < n ∧ j < a i) :
@@ -65,9 +63,9 @@ theorem hookProd_eq_of_mem (μ : YoungDiagram) (n : ℕ) (a : ℕ → ℕ)
     exact h i j
 
 /- English proof (translation)
-Establish `hsort : ((List.range n).map a).Pairwise (· ≥ ·)`. Rewrite using `[List.pairwise_map]`. Conclude with `List.pairwise_lt_range.imp_of_mem (fun {x y} _ hy hxy => ha x y hxy.le (List.mem_range.mp hy))`. Establish `hL : ((List.range n).map a).insertionSort (· ≥ ·) = (List.range n).map a` using `hsort.insertionSort_eq`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.hookOf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hookProd_eq_of_mem` to reduce the goal to its premises. Introduce `i j`. Rewrite using `[YoungDiagram.mem_ofRowLens]`. Simplify using `only [hL, List.length_map, List.length_range, List.getElem_map, List.getElem_range, exists_prop]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hookOf_eq (n : ℕ) (a : ℕ → ℕ) (ha : ∀ x y, x ≤ y → y < n → a y ≤ a x) :
     GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.hookOf n a = GlobalTheory.IndefiniteRowSideFullHecke.SchurTensorLattices.hookProd n a := by
@@ -85,27 +83,25 @@ theorem hookOf_eq (n : ℕ) (a : ℕ → ℕ) (ha : ∀ x y, x ≤ y → y < n �
     exists_prop]
 
 /- English proof (translation)
-Rewrite using `[hookOf_eq n a ha]`. Establish `hm` using `GlobalTheory.LiftSizeCompare.hookProd_mul n a ha`. Establish `hinner : ∀ r ∈ Finset.range n, 0 < ∏ l ∈ Finset.Ioo r n, (a r - a l + (l - r))`. Introduce `r _`. Apply `Finset.prod_pos` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `l hl`. Rewrite `hl` using `[Finset.mem_Ioo]`. Use linear arithmetic over natural numbers and integers. Establish `hPpos : 0 < ∏ r ∈ Finset.range n, ∏ l ∈ Finset.Ioo r n, (a r - a l + (l - r))` using `Finset.prod_pos hinner`. Establish `hHpos : 0 < GlobalTheory.IndefiniteRowSideFullHecke.SchurTensorLattices.hookProd n a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos (GlobalTheory.IndefiniteRowSideFullHecke.SchurTensorLattices.hookProd n a) with h0 | h0` into its components or cases. Establish `hF : 0 < ∏ r ∈ Finset.range n, (a r + n - 1 - r).factorial` using `Finset.prod_pos fun r _ => Nat.factorial_pos _`. Rewrite `hm` using `[h0, zero_mul]`. Use linear arithmetic over natural numbers and integers. Conclude with `h0`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hHpos, ?_⟩` and prove the remaining obligations. Establish `hmR : (GlobalTheory.IndefiniteRowSideFullHecke.SchurTensorLattices.hookProd n a : ℝ) = ((∏ r ∈ Finset.range n, (a r + n - 1 - r).factorial : ℕ) : ℝ) / ((∏ r ∈ Finset.range n, ∏ l ∈ Finset.Ioo r n, (a r - a l + (l - r)) : ℕ) : ℝ)`. Rewrite using `[eq_div_iff (by exact_mod_cast hPpos.ne'), ← Nat.cast_mul, hm]`. Establish `hFpos : (0 : ℝ) < ((∏ r ∈ Finset.range n, (a r + n - 1 - r).factorial : ℕ) : ℝ)`. Conclude with `Finset.prod_pos fun r _ => Nat.factorial_pos _` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hmR, Real.log_div hFpos.ne' (by exact_mod_cast hPpos.ne')]`. Unfold `Formalism.BasicNotions.DV.logHook`. Use `congr 1`. Rewrite using `[Nat.cast_prod, Real.log_prod]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `r hr`. Rewrite `hr` using `[Finset.mem_range]`. Establish `hg : (a r : ℝ) + n - r = ((a r + n - 1 - r : ℕ) : ℝ) + 1`. Rewrite using `[Nat.cast_sub (show r ≤ a r + n - 1 by omega), Nat.cast_sub (show 1 ≤ a r + n by omega)]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hg, Real.Gamma_nat_eq_factorial]`. Introduce `r _`. Conclude with `(Nat.factorial_pos _).ne'` after adjusting the coercions. Rewrite using `[Nat.cast_prod, Real.log_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `r hr`. Rewrite using `[Nat.cast_prod, Real.log_prod]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l hl`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `hl` using `[Finset.mem_Ioo]`. Establish `hal : a l ≤ a r` using `ha r l hl.1.le hl.2`. Use `congr 1`. Rewrite using `[Nat.cast_add, Nat.cast_sub hal, Nat.cast_sub hl.1.le]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `l hl`. Rewrite `hl` using `[Finset.mem_Ioo]`. Establish `hpos : 0 < a r - a l + (l - r)` using `by omega`. Conclude with `hpos.ne'` after adjusting the coercions. Introduce `r hr`.
-
-Conclude with `(hinner r hr).ne'` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hookOf_pos_log (n : ℕ) (a : ℕ → ℕ) (ha : ∀ x y, x ≤ y → y < n → a y ≤ a x) :
     0 < GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.hookOf n a ∧

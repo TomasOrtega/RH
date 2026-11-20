@@ -9,19 +9,19 @@ namespace ReciprocityTheory.PTheta
 variable {ι : Type*} [Fintype ι]
 
 /- English proof (translation)
-Establish `hsq : ∀ x : ZMod 2, x * x = x` using `by decide`. Establish `htwo : ∀ x : ZMod 2, x + x = 0` using `by decide`. Establish `key : ∀ f : ι → ι → ZMod 2, (∀ i j, f i j = f j i) → ∑ i, ∑ j, f i j = ∑ i, f i i`. Introduce `f hf`. Establish `h : ∑ p : ι × ι, (f p.1 p.2 - if p.1 = p.2 then f p.1 p.2 else 0) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Finset.sum_involution (fun p _ => p.swap) ?_ ?_ (fun p _ => Finset.mem_univ _) (fun p _ => Prod.swap_swap p)` and prove the remaining obligations. Introduce `p _`. Simplify using `only [Prod.fst_swap, Prod.snd_swap]`. Rewrite using `[hf p.2 p.1]`. Distinguish the cases in `hp : p.1 = p.2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hp]`. Simplify using `only [if_neg hp, if_neg (Ne.symm hp), sub_zero]`. Conclude with `htwo _`. Introduce `p _ hne heq`. Apply `hne` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h12 : p.1 = p.2`. Use `congrArg Prod.fst heq` as an intermediate fact. Simplify using `using this.symm`. Simplify using `only [if_pos h12, sub_self]`. Rewrite `h` using `[Fintype.sum_prod_type]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_sub_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true] at h`. Conclude with `sub_eq_zero.mp h`. It suffices to establish `h2 : ((l ⬝ᵥ (B *ᵥ l) - l ⬝ᵥ (fun i => B i i) : ℤ) : ZMod 2) = 0 by`. Take `⟨k, hk⟩` from `(ZMod.intCast_zmod_eq_zero_iff_dvd _ 2).mp h2`. Conclude with `⟨k, by push_cast at hk; linarith⟩`.
+Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Move the embeddings inside the algebraic operations. Rewrite the conclusion repeatedly using the stated equalities.
 
-Move the coercions through the operations in `[dotProduct, Matrix.mulVec]`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[sub_eq_zero]`. Use `(key (fun i j => (l i : ZMod 2) * ((B i j : ZMod 2) * (l j : ZMod 2))) ?_).trans ?_` and prove the remaining obligations. Introduce `i j show (l i : ZMod 2) * ((B i j : ZMod 2) * (l j : ZMod 2)) = (l j : ZMod 2) * ((B j i : ZMod 2) * (l i : ZMod 2))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hB.apply i j]`. Expand and normalize the polynomial expressions, which then agree. Use `Finset.sum_congr rfl fun i _ => ?_ show (l i : ZMod 2) * ((B i i : ZMod 2) * (l i : ZMod 2)) = _` and prove the remaining obligations. Rewrite using `[mul_comm (B i i : ZMod 2), ← mul_assoc, hsq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quad_diag_int (B : Matrix ι ι ℤ) (hB : B.IsSymm) (l : ι → ℤ) :
     ∃ k : ℤ, l ⬝ᵥ (B *ᵥ l) = l ⬝ᵥ (fun i => B i i) + 2 * k := by
@@ -67,9 +67,9 @@ theorem quad_diag_int (B : Matrix ι ι ℤ) (hB : B.IsSymm) (l : ι → ℤ) :
     rw [mul_comm (B i i : ZMod 2), ← mul_assoc, hsq]
 
 /- English proof (translation)
-Rewrite using `[h]`. Simplify using `only [eC]`. Rewrite using `[mul_add, Complex.exp_add]`. Establish `hk : Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (k : ℂ)) = 1`. Rewrite using `[show (2 * (Real.pi : ℂ) * Complex.I * (k : ℂ)) = (k : ℂ) * (2 * Real.pi * Complex.I) by ring]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `Complex.exp_int_mul_two_pi_mul_I k`. Rewrite using `[hk, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eC_eq_of_int (x y : ℂ) (k : ℤ) (h : x = y + k) : eC x = eC y := by
   rw [h]
@@ -87,7 +87,7 @@ theorem shiftVec_eq (a : ι → ℝ) (l : ι → ℤ) : shiftVec a l = ofIntVec 
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[ofRealVec, Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ofRealVec_mulVec (M : Matrix ι ι ℤ) (a : ι → ℝ) :
     ofRealVec (M.map (fun x : ℤ => (x : ℝ)) *ᵥ a) = M.map (fun x : ℤ => (x : ℂ)) *ᵥ ofRealVec a := by
@@ -95,7 +95,7 @@ theorem ofRealVec_mulVec (M : Matrix ι ι ℤ) (a : ι → ℝ) :
   simp [ofRealVec, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[ofIntVec, Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ofIntVec_mulVec (M : Matrix ι ι ℤ) (l : ι → ℤ) :
     ofIntVec (M *ᵥ l) = M.map (fun x : ℤ => (x : ℂ)) *ᵥ ofIntVec l := by
@@ -103,19 +103,19 @@ theorem ofIntVec_mulVec (M : Matrix ι ι ℤ) (l : ι → ℤ) :
   simp [ofIntVec, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Unfold `ThetaTranslTauStatement`. Introduce `ι _ a b z τ B hB`. Establish `hadd : ∀ x y : ℂ, eC (x + y) = eC x * eC y` using `fun x y => by`. Simplify using `only [eC, mul_add, Complex.exp_add]`. Establish `hb' : ofRealVec (b + B.map (fun x : ℤ => (x : ℝ)) *ᵥ a + fun i => ((B i i : ℤ) : ℝ) / 2) = ofRealVec b + B.map (fun x : ℤ => (x : ℂ)) *ᵥ ofRealVec a + fun i => ((B i i : ℤ) : ℂ) / 2`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← ofRealVec_mulVec]`. Use function extensionality and compare the values at `i`. Simplify using `[ofRealVec]`. Establish `hBc : (B.map (fun x : ℤ => (x : ℂ)))ᵀ = B.map (fun x : ℤ => (x : ℂ))`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.transpose_apply, Matrix.map_apply, hB.apply i j]`. Unfold `theta`. Rewrite using `[← tsum_mul_left]`. Use `tsum_congr fun l => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `quad_diag_int B hB l`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hkC : ofIntVec l ⬝ᵥ (B.map (fun x : ℤ => (x : ℂ)) *ᵥ ofIntVec l) = ofIntVec l ⬝ᵥ (fun i => ((B i i : ℤ) : ℂ)) + 2 * (k : ℂ)`. Establish `e1 : ofIntVec l ⬝ᵥ ofIntVec (B *ᵥ l) = ((l ⬝ᵥ (B *ᵥ l) : ℤ) : ℂ)`. Simplify using `[dotProduct, ofIntVec]`. Establish `e2 : ofIntVec l ⬝ᵥ (fun i => ((B i i : ℤ) : ℂ)) = ((l ⬝ᵥ (fun i => B i i) : ℤ) : ℂ)`. Simplify using `[dotProduct, ofIntVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← ofIntVec_mulVec, e1, e2, hk]`. Use `first`. Consider the case `(push_cast; done)`. Consider the case `(push_cast; ring)`. Establish `hsA : ofRealVec a ⬝ᵥ (B.map (fun x : ℤ => (x : ℂ)) *ᵥ ofIntVec l) = ofIntVec l ⬝ᵥ (B.map (fun x : ℤ => (x : ℂ)) *ᵥ ofRealVec a)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hBc, dotProduct_comm]`. Establish `hhL : ofIntVec l ⬝ᵥ (fun i => ((B i i : ℤ) : ℂ) / 2) = (ofIntVec l ⬝ᵥ fun i => ((B i i : ℤ) : ℂ)) / 2`. Simplify using `only [dotProduct, Finset.sum_div, mul_div_assoc]`. Unfold `thetaTerm`. Rewrite using `[← hadd]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `eC_eq_of_int _ _ k` to reduce the goal to its premises. Rewrite using `[hb', shiftVec_eq]`. Simplify using `only [Matrix.add_mulVec, Matrix.mulVec_add, dotProduct_add, add_dotProduct]`. Take the linear combination `(1 / 2 : ℂ) * hkC + (1 / 2 : ℂ) * hsA - hhL`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem thetaTranslTau_holds : ThetaTranslTauStatement := by
   unfold ThetaTranslTauStatement
@@ -168,17 +168,17 @@ def transpEquiv [DecidableEq ι] (U : (Matrix ι ι ℤ)ˣ) : (ι → ℤ) ≃ (
       Matrix.one_mulVec]
 
 /- English proof (translation)
-Unfold `ThetaGLStatement`. Introduce `ι _ _ U a b z τ`. Establish `h1 : ((U⁻¹ : (Matrix ι ι ℤ)ˣ) : Matrix ι ι ℤ)ᵀ * (U : Matrix ι ι ℤ)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]`. Establish `hVt : ((U : Matrix ι ι ℤ).map (fun x : ℤ => (x : ℂ)))ᵀ = ((U : Matrix ι ι ℤ)ᵀ).map (fun x : ℤ => (x : ℂ))`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.transpose_map]`. Establish `hWT : (((U⁻¹ : (Matrix ι ι ℤ)ˣ) : Matrix ι ι ℤ).map (fun x : ℤ => (x : ℂ)))ᵀ * ((U : Matrix ι ι ℤ)ᵀ).map (fun x : ℤ => (x : ℂ)) = 1`. Use extensionality with `i j`. Establish `h2` using `congrFun (congrFun h1 i) j`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.one_apply] at h2 ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h2` after adjusting the coercions. Unfold `theta`. Use `conv_rhs => rw [← (transpEquiv U).tsum_eq]`. Use `tsum_congr fun l => ?_` and prove the remaining obligations. Establish `hs : shiftVec (((U : Matrix ι ι ℤ).map (fun x : ℤ => (x : ℝ)))ᵀ *ᵥ a) ((U : Matrix ι ι ℤ)ᵀ *ᵥ l) = ((U : Matrix ι ι ℤ)ᵀ).map (fun x : ℤ => (x : ℂ)) *ᵥ shiftVec a l`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[shiftVec_eq, shiftVec_eq, ← Matrix.transpose_map, ofIntVec_mulVec, ofRealVec_mulVec, Matrix.mulVec_add]`. Establish `q : ∀ s : ι → ℂ, s ⬝ᵥ (((U : Matrix ι ι ℤ).map (fun x : ℤ => (x : ℂ)) * τ * ((U : Matrix ι ι ℤ).map (fun x : ℤ => (x : ℂ)))ᵀ) *ᵥ s) = (((U : Matrix ι ι ℤ)ᵀ).map (fun x : ℤ => (x : ℂ)) *ᵥ s) ⬝ᵥ (τ *ᵥ (((U : Matrix ι ι ℤ)ᵀ).map (fun x : ℤ => (x : ℂ)) *ᵥ s))`. Introduce `s`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hVt]`. Establish `lin : ∀ s : ι → ℂ, s ⬝ᵥ ((U : Matrix ι ι ℤ).map (fun x : ℤ => (x : ℂ)) *ᵥ z + ofRealVec b) = (((U : Matrix ι ι ℤ)ᵀ).map (fun x : ℤ => (x : ℂ)) *ᵥ s) ⬝ᵥ (z + ofRealVec (((U⁻¹ : (Matrix ι ι ℤ)ˣ) : Matrix ι ι ℤ).map (fun x : ℤ => (x : ℝ)) *ᵥ b))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s`. Establish `hl1 : s ⬝ᵥ ((U : Matrix ι ι ℤ).map (fun x : ℤ => (x : ℂ)) *ᵥ z) = (((U : Matrix ι ι ℤ)ᵀ).map (fun x : ℤ => (x : ℂ)) *ᵥ s) ⬝ᵥ z`. Rewrite using `[Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hVt]`. Establish `hl2 : (((U : Matrix ι ι ℤ)ᵀ).map (fun x : ℤ => (x : ℂ)) *ᵥ s) ⬝ᵥ (((U⁻¹ : (Matrix ι ι ℤ)ˣ) : Matrix ι ι ℤ).map (fun x : ℤ => (x : ℂ)) *ᵥ ofRealVec b) = s ⬝ᵥ ofRealVec b`. Rewrite using `[Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, Matrix.mulVec_mulVec, hWT, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ofRealVec_mulVec, dotProduct_add, dotProduct_add, hl1, hl2]`. Simplify using `only [transpEquiv, Equiv.coe_fn_mk]`. Unfold `thetaTerm`. Rewrite using `[hs, q, lin]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaGL_holds : ThetaGLStatement := by
   unfold ThetaGLStatement

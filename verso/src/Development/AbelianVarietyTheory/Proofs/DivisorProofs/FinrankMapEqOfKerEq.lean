@@ -34,13 +34,11 @@ def blockSym {E ι : Type*} [AddCommGroup E] [Module k E] (W : ι → Submodule 
     fun i j hij x hx y hy => by simp [hB.2 i j hij x hx y hy]⟩
 
 /- English proof (translation)
-Use `set M := (ksSub ρ φ Fil Z).map (cls Fil) with hM`. Set `b` to `Module.finBasis k M`. Establish `hb : ∀ i, ∃ f ∈ ksSub ρ φ Fil Z, cls Fil f = (b i : Fil →ₗ[k] H ⧸ Fil)` using `fun i => (b i).2`. Use `choose f hf hfb using hb`. Establish `key : ∀ (g : H →ₗ[k] H) (c : Fin (finrank k M) → k), (∀ x ∈ Fil, g x - ∑ i, c i • f i x ∈ Fil) ↔ cls Fil g = ∑ i, c i • (b i : Fil →ₗ[k] H ⧸ Fil)` using `fun g c => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 
-Repeatedly rewrite using `[← hfb]`. Simplify using `only [← map_smul, ← map_sum, cls_eq_iff, LinearMap.sum_apply, LinearMap.smul_apply]`. Use `⟨f, hf, fun g hg => ?_⟩` and prove the remaining obligations. Set `m : M` to `⟨cls Fil g, g, hg, rfl⟩`. Establish `hsum : ∀ c : Fin (finrank k M) → k, (cls Fil g = ∑ i, c i • (b i : Fil →ₗ[k] H ⧸ Fil)) ↔ m = ∑ i, c i • b i` using `fun c => by`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Subtype.ext_iff]`. Simplify using `[m]`. Use `⟨b.equivFun m, (key g _).2 ((hsum _).2 ?_), fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[← b.equivFun_symm_apply, LinearEquiv.symm_apply_apply]`. Use `(hsum c).1 ((key g c).1 hc)` as an intermediate fact.
-
-Rewrite using `[this, ← b.equivFun_symm_apply, LinearEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ksDim_finrank [FiniteDimensional k H] (ρ : O →+* Module.End k H) (φ : LinearMap.BilinForm k H)
     (Fil Z : Submodule k H) : KSDim ρ φ Fil Z (finrank k ((ksSub ρ φ Fil Z).map (cls Fil))) := by
@@ -64,7 +62,7 @@ theorem ksDim_finrank [FiniteDimensional k H] (ρ : O →+* Module.End k H) (φ 
     rw [this, ← b.equivFun_symm_apply, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.finrank_range_add_finrank_ker (f ∘ₗ p.subtype), LinearMap.range_comp, Submodule.range_subtype]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_map_add_ker {M N : Type*} [AddCommGroup M] [Module k M] [FiniteDimensional k M]
     [AddCommGroup N] [Module k N] (p : Submodule k M) (f : M →ₗ[k] N) :

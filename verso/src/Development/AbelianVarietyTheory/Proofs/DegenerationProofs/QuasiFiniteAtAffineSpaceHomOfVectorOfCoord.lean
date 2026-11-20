@@ -9,19 +9,17 @@ open GlobalTheory.ZJ
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨i, y, rfl⟩` from `X.affineCover.exists_eq x`. Establish `hemb` using `(X.affineCover.f i).isOpenEmbedding`. Rewrite using `[← Set.image_singleton, ← hemb.isOpen_iff_image_isOpen]`. Establish `hN : IsLocallyNoetherian (X.affineCover.X i)` using `isLocallyNoetherian_of_isOpenImmersion (X.affineCover.f i)`. Establish `hA : IsAffine (X.affineCover.X i)` using `inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsNoetherian (X.affineCover.X i)` using `{}`. Establish `hcl : IsClosed ({y} : Set (X.affineCover.X i))`. Use `hx.preimage hemb.continuous` as an intermediate fact. Rewrite `this` using `[← Set.image_singleton, Set.preimage_image_eq _ hemb.injective]`. Then use the resulting hypothesis. Establish `hgen : ∀ z, z ⤳ y → z = y` using `fun z hz => hemb.injective (h _ (hz.map hemb.continuous))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `clear hx h hemb`. Generalize the expression as in `X.affineCover.X i = Y at *`. Establish `hfin` using `TopologicalSpace.NoetherianSpace.finite_irreducibleComponents (α := Y)`. Establish `hc : IsClosed (⋃ Z ∈ {Z ∈ irreducibleComponents Y | y ∉ Z}, Z)` using `(hfin.subset (Set.sep_subset _ _)).isClosed_biUnion fun Z hZ => isClosed_of_mem_irreducibleComponents Z hZ.1`. Use `hc.isOpen_compl using 1` and compare the differences between its conclusion and the goal.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use extensionality with `z`. Simplify using `only [Set.mem_singleton_iff, Set.mem_compl_iff, Set.mem_iUnion, Set.mem_setOf_eq, not_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl Z hZ hz`. Conclude with `hZ.2 hz`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `H`. Establish `hm` using `irreducibleComponent_mem_irreducibleComponents z`. Establish `hy : y ∈ irreducibleComponent z`. Assume the negation of the conclusion as `hy`. Conclude with `H _ ⟨hm, hy⟩ mem_irreducibleComponent`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hg` using `(isIrreducible_irreducibleComponent (x := z)).isGenericPoint_genericPoint isClosed_irreducibleComponent`. Establish `e` using `hgen _ (hg.specializes hy)`. Rewrite `hg` using `[e]`. Establish `: z ∈ closure {y}`. Rewrite using `[hg.def]`.
-
-Conclude with `mem_irreducibleComponent`. Rewrite `this` using `[hcl.closure_eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isOpen_singleton_of_isClosed_of_generization {X : Scheme.{0}} [IsLocallyNoetherian X] (x : X)
     (hx : IsClosed ({x} : Set X)) (h : ∀ y, y ⤳ x → y = x) : IsOpen ({x} : Set X) := by
@@ -61,13 +59,13 @@ theorem isOpen_singleton_of_isClosed_of_generization {X : Scheme.{0}} [IsLocally
     rwa [hcl.closure_eq] at this
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.quasiFiniteAt_iff_isOpen_singleton_asFiber]`. Establish `: LocallyOfFiniteType (f.fiberToSpecResidueField (f x))` using `inferInstanceAs (LocallyOfFiniteType (pullback.snd _ _))`. Establish `: IsLocallyNoetherian (f.fiber (f x))` using `LocallyOfFiniteType.isLocallyNoetherian (f.fiberToSpecResidueField (f x))`. Establish `hemb` using `(f.fiberι (f x)).isEmbedding`. Establish `hx' : f.fiberι (f x) (f.asFiber x) = x` using `by simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `isOpen_singleton_of_isClosed_of_generization` to reduce the goal to its premises. Use `hx.preimage hemb.continuous` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Conclude with `⟨fun hz => by rw [hz]; exact hx', fun hz => hemb.injective (hz.trans hx'.symm)⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Introduce `y hy`. Apply `hemb.injective` to reduce the goal to its premises. Rewrite using `[hx']`. Apply `h` to reduce the goal to its premises. Use `hy.map hemb.continuous` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `this` using `[hx']`. Then use the resulting hypothesis. Establish `: f.fiberι (f x) y ∈ f ⁻¹' {f x}`. Rewrite using `[← f.range_fiberι]`. Conclude with `⟨y, rfl⟩`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem quasiFiniteAt_of_isClosed_of_generization {X Y : Scheme.{0}} (f : X ⟶ Y) [LocallyOfFiniteType f]
     (x : X) (hx : IsClosed ({x} : Set X)) (h : ∀ y, y ⤳ x → f y = f x → y = x) : f.QuasiFiniteAt x := by
@@ -94,9 +92,9 @@ theorem quasiFiniteAt_of_isClosed_of_generization {X Y : Scheme.{0}} (f : X ⟶ 
       exact this
 
 /- English proof (translation)
-Use `(h.antisymm ?_).eq` and prove the remaining obligations. Rewrite using `[specializes_iff_forall_open]`. Introduce `V hV hy`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Establish `hyU : y ∈ U` using `h.mem_open U.2 hxU`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, hs, hys⟩` from `IsAffineOpen.exists_basicOpen_le hU (V := ⟨V, hV⟩) ⟨y, hy⟩ hyU`. Conclude with `hs (H U hxU s hys)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_of_specializes_of_basicOpen {X : Scheme.{0}} {y x : X} (h : y ⤳ x)
     (H : ∀ (U : X.Opens) (_ : x ∈ U) (s : Γ(X, U)), y ∈ X.basicOpen s → x ∈ X.basicOpen s) : y = x := by
@@ -110,33 +108,29 @@ theorem eq_of_specializes_of_basicOpen {X : Scheme.{0}} {y x : X} (h : y ⤳ x)
   exact hs (H U hxU s hys)
 
 /- English proof (translation)
-Introduce `C w W hw u hcl hco`. Use `C.proper` as an intermediate fact. Establish `hlft : LocallyOfFiniteType C.GG.hom` using `inferInstanceAs (LocallyOfFiniteType (C.G.ι ≫ C.P.hom))`. Unfold `Core.Coord at hco`. Express the relevant statement in the definitionally equal form `IsLocalRing.maximalIdeal (C.GG.left.presheaf.stalk w) = _ at hco`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition.
 
-Use `set f := AffineSpace.homOfVector (W.ι ≫ C.GG.hom) (fun i => W.topIso.inv.hom (u i)) with hf`. Establish `hover : f ≫ (𝔸(Fin C.g; C.Z) ↘ C.Z) = W.ι ≫ C.GG.hom` using `AffineSpace.homOfVector_over _ _`. Establish `: LocallyOfFiniteType (f ≫ (𝔸(Fin C.g; C.Z) ↘ C.Z))`. Rewrite using `[hover]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: LocallyOfFiniteType f` using `locallyOfFiniteType_of_comp f (𝔸(Fin C.g; C.Z) ↘ C.Z)`. Establish `hemb` using `W.ι.isOpenEmbedding`. Apply `quasiFiniteAt_of_isClosed_of_generization` to reduce the goal to its premises. Use `hcl.preimage hemb.continuous` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `z`. Conclude with `Subtype.ext_iff`. Introduce `y hy hfy`. Establish `hy' : y.1 ⤳ w` using `hy.map hemb.continuous`. Establish `hg : C.GG.hom y.1 = C.GG.hom w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ t : W.toScheme, C.GG.hom t.1 = (𝔸(Fin C.g; C.Z) ↘ C.Z) (f t)`. Introduce `t`. Rewrite using `[← Scheme.Hom.comp_apply, hover]`. Both sides reduce to the same expression. Rewrite using `[e y, hfy, ← e ⟨w, hw⟩]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Set `P : Ideal (C.G.toScheme.presheaf.stalk w)` to `(IsLocalRing.maximalIdeal _).comap (C.G.toScheme.presheaf.stalkSpecializes hy').hom`. Establish `hP : ∀ (U : C.G.toScheme.Opens) (hU : w ∈ U) (s : Γ(C.G.toScheme, U)), (C.G.toScheme.presheaf.germ U w hU).hom s ∈ P ↔ y.1 ∉ C.G.toScheme.basicOpen s`. Introduce `U hU s`. Rewrite using `[C.G.toScheme.mem_basicOpen s y.1 (hy'.mem_open U.2 hU), Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, ← CommRingCat.comp_apply, TopCat.Presheaf.germ_stalkSpecializes]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : ∀ (U : C.G.toScheme.Opens) (hU : w ∈ U) (s : Γ(C.G.toScheme, U)), (C.G.toScheme.presheaf.germ U w hU).hom s ∈ IsLocalRing.maximalIdeal _ ↔ w ∉ C.G.toScheme.basicOpen s`. Introduce `U hU s`. Rewrite using `[C.G.toScheme.mem_basicOpen s w hU, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Establish `hle : IsLocalRing.maximalIdeal (C.G.toScheme.presheaf.stalk w) ≤ P`. Use `hco.le.trans (sup_le ?_ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `h1 : w ∉ C.G.toScheme.basicOpen (u i)`. Rewrite using `[← hm W hw]`. Conclude with `hco.ge (Ideal.mem_sup_left (Ideal.subset_span ⟨i, rfl⟩))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ t : W.toScheme, t.1 ∈ C.G.toScheme.basicOpen (u i) ↔ f t ∈ Scheme.basicOpen _ (AffineSpace.coord C.Z i)`. Introduce `t`. Establish `e1 : f ⁻¹ᵁ Scheme.basicOpen _ (AffineSpace.coord C.Z i) = W.toScheme.basicOpen (W.topIso.inv.hom (u i))`. Rewrite using `[Scheme.preimage_basicOpen_top, hf, AffineSpace.homOfVector_appTop_coord]`. Establish `e2` using `W.ι_image_basicOpen_topIso_inv (u i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e2, ← e1]`. Conclude with `Scheme.Hom.apply_mem_image_iff W.ι (x := t)`. Use `(hP W hw (u i)).2 ?_` and prove the remaining obligations. Rewrite using `[e y, hfy, ← e ⟨w, hw⟩]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Ideal.IsPrime.radical_le_iff inferInstance).2 ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Take `⟨V, hV, s, rfl⟩` from `C.Z.presheaf.exists_germ_eq a`. Rewrite using `[Ideal.mem_comap, Scheme.Hom.germ_stalkMap_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(hP _ _ _).2 ?_` and prove the remaining obligations. Establish `h1 : C.GG.hom w ∉ C.Z.basicOpen s`. Rewrite using `[C.Z.mem_basicOpen s _ hV]`. Conclude with `ha`. Rewrite `h1` using `[← hg]`.
-
-Introduce `h2`. Apply `h1` to reduce the goal to its premises. Establish `e` using `Scheme.preimage_basicOpen C.GG.hom s`. Conclude with `e.ge h2`. Apply `eq_of_specializes_of_basicOpen hy'` to reduce the goal to its premises.
-
-Introduce `U hU s hs`. Assume the negation of the conclusion as `hn`. Conclude with `(hP U hU s).1 (hle ((hm U hU s).2 hn)) hs`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem quasiFiniteAt_homOfVector_of_coord : ∀ (C : Core) (w : C.G.toScheme) (W : C.G.toScheme.Opens) (hw : w ∈ W) (u : Fin C.g → Γ(C.G.toScheme, W)), IsClosed ({w} : Set C.G.toScheme) → C.Coord w W hw u → (AffineSpace.homOfVector (W.ι ≫ C.GG.hom) (fun i => W.topIso.inv.hom (u i))).QuasiFiniteAt ⟨w, hw⟩ := by
   intro C w W hw u hcl hco

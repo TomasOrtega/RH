@@ -13,18 +13,18 @@ section aux
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Algebra.smul_def c y`.
+A detailed English derivation is pending.
 -/
 theorem smul_field (c : 𝓞 K) (y : K) : c • y = (c : K) * y := Algebra.smul_def c y
 
 /- English proof (translation)
-The claim follows from `smul_field c (x i)`.
+A detailed English derivation is pending.
 -/
 theorem smul_coord (c : 𝓞 K) (x : Fin n → K) (i : Fin n) : (c • x) i = (c : K) * x i :=
   smul_field c (x i)
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.P6.r03a.GlobalTheory.CompanionTheory.Adelic.SatLine.exists_smul_mem M hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_mem (M : Submodule (𝓞 K) (Fin n → K)) {x : Fin n → K}
     (hx : x ∈ Submodule.span K (M : Set (Fin n → K))) :
@@ -32,15 +32,15 @@ theorem exists_smul_mem (M : Submodule (𝓞 K) (Fin n → K)) {x : Fin n → K}
   _root_.UpperTheory.Reformulated.B.P6.r03a.GlobalTheory.CompanionTheory.Adelic.SatLine.exists_smul_mem M hx
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hM`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (𝓞 K)⁰ (S.image fun x : Fin n → K => a * x j)`. Use `⟨b, nonZeroDivisors.ne_zero b.2, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[← hS]`. Proceed by induction on `hx using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Consider the case `mem x h`. Take `⟨t, ht⟩` from `hb _ (Finset.mem_image_of_mem _ (Finset.mem_coe.mp h))`. Use `⟨t, ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap (𝓞 K) K t = (b : 𝓞 K) • (a * x j)` using `ht`. Rewrite `h1` using `[Algebra.smul_def]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.symm`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨s, hs⟩` from `hx`. Take `⟨t, ht⟩` from `hy`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s + t, ?_⟩` and prove the remaining obligations. Establish `: ((s + t : 𝓞 K) : K) = (s : K) + (t : K)` using `rfl`. Rewrite using `[this, ← hs, ← ht, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul r x _ hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `hx`. Use `⟨r * s, ?_⟩` and prove the remaining obligations. Establish `: ((r * s : 𝓞 K) : K) = (r : K) * (s : K)` using `rfl`. Rewrite using `[this, ← hs, smul_coord]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_denominator {M : Submodule (𝓞 K) (Fin n → K)} (hM : M.FG) (j : Fin n) (a : K) :
     ∃ d : 𝓞 K, d ≠ 0 ∧ ∀ x ∈ M, ∃ t : 𝓞 K, (d : K) * (a * x j) = t := by
@@ -75,7 +75,7 @@ theorem exists_denominator {M : Submodule (𝓞 K) (Fin n → K)} (hM : M.FG) (j
 end aux
 
 /- English proof (translation)
-The claim follows from `|((Algebra.norm ℚ (d : K) : ℚ) : ℝ)| / (I.absNorm : ℝ) := by intro K _ _ n M hM hspan v hv obtain ⟨j, hj⟩ : ∃ j, v j ≠ 0 := Function.ne_iff.mp hv obtain ⟨d, hd, hden⟩ := exists_denominator hM j (v j)⁻¹ have hdK : (d : K) ≠ 0 := fun h => hd (RingOfIntegers.ext h) let g : 𝓞 K →ₗ[𝓞 …`.
+A detailed English derivation is pending.
 -/
 theorem saturatedLine_eq_ideal_div :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (M : Submodule (𝓞 K) (Fin n → K)), M.FG →

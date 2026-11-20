@@ -8,13 +8,13 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.TheoremB
 namespace PrimesLogSum
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨C, hC⟩`. Establish `hC0 : 0 ≤ C`. Establish `h` using `hC 2 le_rfl ∅ (by simp) (by simp)`. Simplify using `only [Finset.sum_empty, Nat.cast_ofNat] at h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hl : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨C, fun B0 hB0 P hP hcard => ?_⟩` and prove the remaining obligations. Establish `hfl : 2 ≤ ⌊B0⌋₊` using `Nat.le_floor (by exact_mod_cast hB0)`. Establish `hcard' : P.card ≤ ⌊B0⌋₊` using `Nat.le_floor hcard`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hC ⌊B0⌋₊ hfl P hP hcard'`. Establish `hpos : (0 : ℝ) < ⌊B0⌋₊` using `by exact_mod_cast (lt_of_lt_of_le (by norm_num) hfl)`. Establish `hlog : Real.log ⌊B0⌋₊ ≤ Real.log B0` using `Real.log_le_log hpos (Nat.floor_le (by linarith))`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨C, hC⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components.
 
-Use `⟨C, fun B hB P hP hcard => ?_⟩` and prove the remaining obligations. Conclude with `hC B (by exact_mod_cast hB) P hP (by exact_mod_cast hcard)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem equiv : NineStatements.PrimeLogSum.Statement ↔ PrimesLogSum.Statement := by
   constructor

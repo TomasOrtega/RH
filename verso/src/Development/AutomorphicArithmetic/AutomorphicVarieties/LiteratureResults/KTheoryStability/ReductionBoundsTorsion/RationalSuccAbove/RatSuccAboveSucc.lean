@@ -17,7 +17,7 @@ def chMap {X Y : Type} (f : X → Y) (n : ℕ) : HC X n →ₗ[ℝ] HC Y n :=
   Finsupp.lmapDomain ℝ ℝ fun t : Fin n → X => f ∘ t
 
 /- English proof (translation)
-Establish `: φ = ψ` using `Finsupp.lhom_ext' fun t => LinearMap.ext_ring (by simpa using h t)`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_single {α M : Type} [AddCommGroup M] [Module ℝ M] (φ ψ : (α →₀ ℝ) →ₗ[ℝ] M)
     (h : ∀ t, φ (Finsupp.single t 1) = ψ (Finsupp.single t 1)) (c : α →₀ ℝ) : φ c = ψ c := by
@@ -29,7 +29,7 @@ section Tuples
 variable {X Y Z : Type}
 
 /- English proof (translation)
-Rewrite using `[hbd, Finsupp.linearCombination_single, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hbd_single (n : ℕ) (t : Fin (n + 1) → X) :
     hbd X n (Finsupp.single t 1) =
@@ -37,21 +37,21 @@ theorem hbd_single (n : ℕ) (t : Fin (n + 1) → X) :
   rw [hbd, Finsupp.linearCombination_single, one_smul]
 
 /- English proof (translation)
-Simplify using `[cone]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cone_single (a : X) (n : ℕ) (t : Fin n → X) (c : ℝ) :
     cone a n (Finsupp.single t c) = Finsupp.single (Fin.cons a t : Fin (n + 1) → X) c := by
   simp [cone]
 
 /- English proof (translation)
-Simplify using `[chMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chMap_single (f : X → Y) (n : ℕ) (t : Fin n → X) (c : ℝ) :
     chMap f n (Finsupp.single t c) = Finsupp.single (f ∘ t) c := by
   simp [chMap]
 
 /- English proof (translation)
-Use `eq_of_single (hbd Y n ∘ₗ chMap f (n + 1)) (chMap f n ∘ₗ hbd X n) (fun t => ?_) c` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, chMap_single, hbd_single, map_sum, map_smul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem hbd_chMap (f : X → Y) (n : ℕ) (c : HC X (n + 1)) :
     hbd Y n (chMap f (n + 1) c) = chMap f n (hbd X n c) := by
@@ -60,7 +60,7 @@ theorem hbd_chMap (f : X → Y) (n : ℕ) (c : HC X (n + 1)) :
   rfl
 
 /- English proof (translation)
-Use `eq_of_single (chMap g n ∘ₗ chMap f n) (chMap (g ∘ f) n) (fun t => ?_) c` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, chMap_single]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem chMap_chMap (f : X → Y) (g : Y → Z) (n : ℕ) (c : HC X n) :
     chMap g n (chMap f n c) = chMap (g ∘ f) n c := by
@@ -69,7 +69,7 @@ theorem chMap_chMap (f : X → Y) (g : Y → Z) (n : ℕ) (c : HC X n) :
   rfl
 
 /- English proof (translation)
-Use `eq_of_single (chMap f (n + 1) ∘ₗ cone a n) (cone (f a) n ∘ₗ chMap f n) (fun t => ?_) c` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, chMap_single, cone_single, Fin.comp_cons]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem chMap_cone (f : X → Y) (a : X) (n : ℕ) (c : HC X n) :
     chMap f (n + 1) (cone a n c) = cone (f a) n (chMap f n c) := by
@@ -77,7 +77,7 @@ theorem chMap_cone (f : X → Y) (a : X) (n : ℕ) (c : HC X n) :
   simp only [LinearMap.comp_apply, chMap_single, cone_single, Fin.comp_cons]
 
 /- English proof (translation)
-Use `eq_of_single (hbd X 0 ∘ₗ cone a 0) LinearMap.id (fun t => ?_) c` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, cone_single, hbd_single, LinearMap.id_apply]`. Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_zero, add_zero, Fin.val_zero, pow_zero, one_smul]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem hbd_cone_zero (a : X) (c : HC X 0) : hbd X 0 (cone a 0 c) = c := by
   refine eq_of_single (hbd X 0 ∘ₗ cone a 0) LinearMap.id (fun t => ?_) c
@@ -86,11 +86,11 @@ theorem hbd_cone_zero (a : X) (c : HC X 0) : hbd X 0 (cone a 0 c) = c := by
   congr 1
 
 /- English proof (translation)
-Use `eq_of_single (hbd X (n + 1) ∘ₗ cone a (n + 1)) (LinearMap.id - cone a n ∘ₗ hbd X n) (fun t => ?_) c` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, cone_single, hbd_single, LinearMap.id_apply, LinearMap.sub_apply, map_sum, map_smul]`. Rewrite using `[Fin.sum_univ_succ, sub_eq_add_neg, ← Finset.sum_neg_distrib]`. Use `congr 1`. Simplify using `only [Fin.val_zero, pow_zero, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `: (Fin.cons a t : Fin (n + 2) → X) ∘ (Fin.succ j).succAbove = (Fin.cons a (t ∘ j.succAbove) : Fin (n + 1) → X)`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `refine Fin.cases ?_ (fun k => ?_) k <;> simp`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this, Fin.val_succ, pow_succ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hbd_cone_succ (a : X) (n : ℕ) (c : HC X (n + 1)) :
     hbd X (n + 1) (cone a (n + 1) c) = c - cone a n (hbd X n c) := by
@@ -111,9 +111,9 @@ theorem hbd_cone_succ (a : X) (n : ℕ) (c : HC X (n + 1)) :
     simp
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Use `eq_of_single (hbd X 0 ∘ₗ hbd X 1) 0 (fun t => ?_) c` and prove the remaining obligations. Rewrite using `[← Fin.cons_self_tail t, ← cone_single]`. Simplify using `only [LinearMap.comp_apply, hbd_cone_succ, map_sub, hbd_cone_zero, sub_self, LinearMap.zero_apply]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Use `eq_of_single (hbd X (n + 1) ∘ₗ hbd X (n + 2)) 0 (fun t => ?_) c` and prove the remaining obligations. Rewrite using `[← Fin.cons_self_tail t, ← cone_single]`. Simplify using `only [LinearMap.comp_apply, hbd_cone_succ, map_sub, ih, map_zero, sub_zero, sub_self, LinearMap.zero_apply]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hbd_hbd (n : ℕ) (c : HC X (n + 2)) : hbd X n (hbd X (n + 1) c) = 0 := by
   induction n with
@@ -143,7 +143,7 @@ def hD (a : G) : ∀ n, HC G n →ₗ[ℝ] HC G (n + 1)
         - hD a n (hbd G n (Finsupp.single t 1)))
 
 /- English proof (translation)
-Rewrite using `[hD, Finsupp.linearCombination_single, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hD_single (a : G) (n : ℕ) (t : Fin (n + 1) → G) :
     hD a (n + 1) (Finsupp.single t 1) =
@@ -152,7 +152,7 @@ theorem hD_single (a : G) (n : ℕ) (t : Fin (n + 1) → G) :
   rw [hD, Finsupp.linearCombination_single, one_smul]
 
 /- English proof (translation)
-Use `eq_of_single (rho a 0) LinearMap.id (fun t => ?_) c` and prove the remaining obligations. Simplify using `only [rho, chMap_single, LinearMap.id_apply]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `i.elim0`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rho_zero (a : G) (c : HC G 0) : rho a 0 c = c := by
   refine eq_of_single (rho a 0) LinearMap.id (fun t => ?_) c
@@ -162,13 +162,13 @@ theorem rho_zero (a : G) (c : HC G 0) : rho a 0 c = c := by
   exact i.elim0
 
 /- English proof (translation)
-The claim follows from `hbd_chMap _ n c`.
+A detailed English derivation is pending.
 -/
 theorem hbd_rho (a : G) (n : ℕ) (c : HC G (n + 1)) :
     hbd G n (rho a (n + 1) c) = rho a n (hbd G n c) := hbd_chMap _ n c
 
 /- English proof (translation)
-Use `eq_of_single (hbd G (n + 1) ∘ₗ hD a (n + 1) + hD a n ∘ₗ hbd G n) (LinearMap.id - rho a (n + 1)) (fun t => ?_) c` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.id_apply]`. Rewrite using `[hD_single, hbd_cone_succ, map_sub (hbd G n), map_sub (hbd G n), h, hbd_rho, sub_self, map_zero]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem hD_step (a : G) (n : ℕ)
     (h : ∀ c : HC G (n + 1), hbd G n (hD a n (hbd G n c)) = hbd G n c - rho a n (hbd G n c))
@@ -181,9 +181,9 @@ theorem hD_step (a : G) (n : ℕ)
   abel
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Use `hD_step a 0 (fun c => ?_) c` and prove the remaining obligations. Rewrite using `[rho_zero, sub_self, hD, LinearMap.zero_apply, map_zero]`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `hD_step a (n + 1) (fun c => ?_) c` and prove the remaining obligations. Use `ih (hbd G (n + 1) c)` as an intermediate fact. Rewrite `this` using `[hbd_hbd, map_zero, add_zero]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem hD_spec (a : G) (n : ℕ) (c : HC G (n + 1)) :
     hbd G (n + 1) (hD a (n + 1) c) + hD a n (hbd G n c) = c - rho a (n + 1) c := by
@@ -197,7 +197,7 @@ theorem hD_spec (a : G) (n : ℕ) (c : HC G (n + 1)) :
     rwa [hbd_hbd, map_zero, add_zero] at this
 
 /- English proof (translation)
-Establish `: ((fun x : G => g * x) ∘ fun x => x * a) = ((fun x => x * a) ∘ fun x => g * x)`. Use function extensionality and compare the values at `x`. Simplify using `[mul_assoc]`. Simplify using `only [rho, chMap_chMap, this]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem chMap_rho (g a : G) (n : ℕ) (c : HC G n) :
     chMap (g * ·) n (rho a n c) = rho a n (chMap (g * ·) n c) := by
@@ -207,9 +207,9 @@ theorem chMap_rho (g a : G) (n : ℕ) (c : HC G n) :
   simp only [rho, chMap_chMap, this]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [hD]`. Consider the case `succ n ih`. Use `eq_of_single (hD a (n + 1) ∘ₗ chMap (g * ·) (n + 1)) (chMap (g * ·) (n + 2) ∘ₗ hD a (n + 1)) (fun t => ?_) c` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[chMap_single, hD_single, hD_single, chMap_cone]`. Simplify using `only [map_sub]`. Rewrite using `[← ih, ← hbd_chMap, chMap_rho, chMap_single]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hD_left (g a : G) (n : ℕ) (c : HC G n) :
     hD a n (chMap (g * ·) n c) = chMap (g * ·) (n + 1) (hD a n c) := by
@@ -239,28 +239,28 @@ def icmap {H : Type} [Group H] (f : G →* H) (m : ℕ) : HC G m →ₗ[ℝ] HC 
   Finsupp.lmapDomain ℝ ℝ fun g i => f (g i)
 
 /- English proof (translation)
-Simplify using `[ph]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ph_single (n : ℕ) (x : Fin (n + 1) → G) (r : ℝ) :
     ph n (Finsupp.single x r) = Finsupp.single (rat x) r := by
   simp [ph]
 
 /- English proof (translation)
-Simplify using `[ps]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ps_single (n : ℕ) (x : Fin n → G) (r : ℝ) :
     ps n (Finsupp.single x r) = Finsupp.single (Fin.partialProd x) r := by
   simp [ps]
 
 /- English proof (translation)
-Simplify using `[icmap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem icmap_single {H : Type} [Group H] (f : G →* H) (m : ℕ) (x : Fin m → G) (r : ℝ) :
     icmap f m (Finsupp.single x r) = Finsupp.single (fun i => f (x i)) r := by
   simp [icmap]
 
 /- English proof (translation)
-Rewrite using `[ibd, Finsupp.linearCombination_single, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ibd_single (m : ℕ) (g : Fin (m + 1) → G) :
     ibd G m (Finsupp.single g 1) = Finsupp.single (fun i => g i.succ) 1 +
@@ -268,14 +268,14 @@ theorem ibd_single (m : ℕ) (g : Fin (m + 1) → G) :
   rw [ibd, Finsupp.linearCombination_single, one_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[rat, Fin.partialProd_succ]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rat_partialProd {n : ℕ} (g : Fin n → G) : rat (Fin.partialProd g) = g := by
   funext i
   simp [rat, Fin.partialProd_succ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Proceed by induction on `k using Fin.induction with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [Fin.partialProd_succ, ih, rat, mul_assoc, mul_inv_cancel_left]`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem partialProd_rat {n : ℕ} (x : Fin (n + 1) → G) :
     Fin.partialProd (rat x) = fun k => (x 0)⁻¹ * x k := by
@@ -285,14 +285,14 @@ theorem partialProd_rat {n : ℕ} (x : Fin (n + 1) → G) :
   | succ k ih => rw [Fin.partialProd_succ, ih, rat, mul_assoc, mul_inv_cancel_left]
 
 /- English proof (translation)
-Use `eq_of_single (ph n ∘ₗ ps n) LinearMap.id (fun t => ?_) z` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, ps_single, ph_single, rat_partialProd, LinearMap.id_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem ph_ps (n : ℕ) (z : HC G n) : ph n (ps n z) = z := by
   refine eq_of_single (ph n ∘ₗ ps n) LinearMap.id (fun t => ?_) z
   simp only [LinearMap.comp_apply, ps_single, ph_single, rat_partialProd, LinearMap.id_apply]
 
 /- English proof (translation)
-Use `eq_of_single (ph n ∘ₗ chMap (g * ·) (n + 1)) (ph n) (fun t => ?_) c` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, chMap_single, ph_single]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[rat, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ph_chMap_left (g : G) (n : ℕ) (c : HC G (n + 1)) :
     ph n (chMap (g * ·) (n + 1) c) = ph n c := by
@@ -303,7 +303,7 @@ theorem ph_chMap_left (g : G) (n : ℕ) (c : HC G (n + 1)) :
   simp [rat, mul_assoc]
 
 /- English proof (translation)
-Use `eq_of_single (ph n ∘ₗ rho a (n + 1)) (icmap (MulAut.conj a⁻¹).toMonoidHom n ∘ₗ ph n) (fun t => ?_) c` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, rho, chMap_single, ph_single, icmap_single]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[rat, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ph_rho (a : G) (n : ℕ) (c : HC G (n + 1)) :
     ph n (rho a (n + 1) c) = icmap (MulAut.conj a⁻¹).toMonoidHom n (ph n c) := by
@@ -315,7 +315,7 @@ theorem ph_rho (a : G) (n : ℕ) (c : HC G (n + 1)) :
   simp [rat, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[ph_single, ps_single, partialProd_rat, chMap_single]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ps_ph_single (n : ℕ) (x : Fin (n + 1) → G) :
     ps n (ph n (Finsupp.single x 1)) = chMap ((x 0)⁻¹ * ·) (n + 1) (Finsupp.single x 1) := by
@@ -323,7 +323,7 @@ theorem ps_ph_single (n : ℕ) (x : Fin (n + 1) → G) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [rat, Function.comp_apply, Fin.succAbove_zero, Fin.succ_castSucc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rat_succAbove_zero {m : ℕ} (x : Fin (m + 2) → G) :
     rat (x ∘ (0 : Fin (m + 2)).succAbove) = fun i => rat x i.succ := by
@@ -331,9 +331,9 @@ theorem rat_succAbove_zero {m : ℕ} (x : Fin (m + 2) → G) :
   simp only [rat, Function.comp_apply, Fin.succAbove_zero, Fin.succ_castSucc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, rat, Fin.contractNth]`. Distinguish the cases in `h1 : (i : ℕ) < j`. Apply the tactic sequence `rw [if_pos h1, Fin.succAbove_of_castSucc_lt _ _ (by simp [Fin.lt_def] <;> omega), Fin.succAbove_of_castSucc_lt _ _ (by simp [Fin.lt_def] <;> omega)]`. Simplify using `only [Fin.succ_castSucc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h2 : (i : ℕ) = j`. Apply the tactic sequence `rw [if_neg h1, if_pos h2, Fin.succAbove_of_castSucc_lt _ _ (by simp [Fin.lt_def] <;> omega), Fin.succAbove_of_le_castSucc _ _ (by simp [Fin.le_def] <;> omega)]`. Simplify using `only [Fin.succ_castSucc, mul_assoc, mul_inv_cancel_left]`. Apply the tactic sequence `rw [if_neg h1, if_neg h2, Fin.succAbove_of_le_castSucc _ _ (by simp [Fin.le_def] <;> omega), Fin.succAbove_of_le_castSucc _ _ (by simp [Fin.le_def] <;> omega)]`. Simplify using `only [Fin.succ_castSucc]`.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem rat_succAbove_succ {m : ℕ} (x : Fin (m + 2) → G) (j : Fin (m + 1)) :
     rat (x ∘ j.succ.succAbove) = Fin.contractNth j (· * ·) (rat x) := by
@@ -352,9 +352,9 @@ theorem rat_succAbove_succ {m : ℕ} (x : Fin (m + 2) → G) (j : Fin (m + 1)) :
       simp only [Fin.succ_castSucc]
 
 /- English proof (translation)
-Use `eq_of_single (ibd G m ∘ₗ ph (m + 1)) (ph m ∘ₗ hbd G (m + 1)) (fun x => ?_) c` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, ph_single, ibd_single, hbd_single, map_sum, map_smul]`. Use `conv_rhs => rw [Fin.sum_univ_succ]`. Use `congr 1`. Rewrite using `[rat_succAbove_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[rat_succAbove_succ, Fin.val_succ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ibd_ph (m : ℕ) (c : HC G (m + 2)) : ibd G m (ph (m + 1) c) = ph m (hbd G (m + 1) c) := by
   refine eq_of_single (ibd G m ∘ₗ ph (m + 1)) (ph m ∘ₗ hbd G (m + 1)) (fun x => ?_) c
@@ -369,7 +369,7 @@ theorem ibd_ph (m : ℕ) (c : HC G (m + 2)) : ibd G m (ph (m + 1) c) = ph m (hbd
 def hI (a : G) (m : ℕ) : HC G m →ₗ[ℝ] HC G (m + 1) := ph (m + 1) ∘ₗ hD a (m + 1) ∘ₗ ps m
 
 /- English proof (translation)
-Use `eq_of_single (ph (m + 1) ∘ₗ hD a (m + 1)) (hI a m ∘ₗ ph m) (fun x => ?_) c` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, hI]`. Rewrite using `[ps_ph_single, hD_left, ph_chMap_left]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ph_hD (a : G) (m : ℕ) (c : HC G (m + 1)) : ph (m + 1) (hD a (m + 1) c) = hI a m (ph m c) := by
   refine eq_of_single (ph (m + 1) ∘ₗ hD a (m + 1)) (hI a m ∘ₗ ph m) (fun x => ?_) c
@@ -377,7 +377,7 @@ theorem ph_hD (a : G) (m : ℕ) (c : HC G (m + 1)) : ph (m + 1) (hD a (m + 1) c)
   rw [ps_ph_single, hD_left, ph_chMap_left]
 
 /- English proof (translation)
-Establish `hz : z = ph (m + 1) (ps (m + 1) z)` using `(ph_ps _ z).symm`. Rewrite using `[hz, ← ph_hD, ibd_ph, ibd_ph, ← ph_hD, ← map_add, hD_spec, map_sub, ph_rho]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem homotopy (a : G) (m : ℕ) (z : HC G (m + 1)) :
     ibd G (m + 1) (hI a (m + 1) z) + hI a m (ibd G m z) =
@@ -386,15 +386,15 @@ theorem homotopy (a : G) (m : ℕ) (z : HC G (m + 1)) :
   rw [hz, ← ph_hD, ibd_ph, ibd_ph, ← ph_hD, ← map_add, hD_spec, map_sub, ph_rho]
 
 /- English proof (translation)
-Rewrite using `[← ph_ps _ z, ibd_ph, ibd_ph, hbd_hbd, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ibd_ibd (m : ℕ) (z : HC G (m + 2)) : ibd G m (ibd G (m + 1) z) = 0 := by
   rw [← ph_ps _ z, ibd_ph, ibd_ph, hbd_hbd, map_zero]
 
 /- English proof (translation)
-Use `eq_of_single (ibd H m ∘ₗ icmap f (m + 1)) (icmap f m ∘ₗ ibd G m) (fun x => ?_) z` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, icmap_single, ibd_single, map_add, map_sum, map_smul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Fin.contractNth]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ibd_icmap {H : Type} [Group H] (f : G →* H) (m : ℕ) (z : HC G (m + 1)) :
     ibd H m (icmap f (m + 1) z) = icmap f m (ibd G m z) := by
@@ -408,7 +408,7 @@ theorem ibd_icmap {H : Type} [Group H] (f : G →* H) (m : ℕ) (z : HC G (m + 1
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `eq_of_single (icmap (g.comp f) m) (icmap g m ∘ₗ icmap f m) (fun x => ?_) z` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, icmap_single, MonoidHom.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem icmap_comp {H K : Type} [Group H] [Group K] (f : G →* H) (g : H →* K) (m : ℕ) (z : HC G m) :
     icmap (g.comp f) m z = icmap g m (icmap f m z) := by
@@ -416,7 +416,7 @@ theorem icmap_comp {H K : Type} [Group H] [Group K] (f : G →* H) (g : H →* K
   simp only [LinearMap.comp_apply, icmap_single, MonoidHom.comp_apply]
 
 /- English proof (translation)
-Use `⟨-hI g⁻¹ (m + 1) z, ?_⟩` and prove the remaining obligations. Establish `h` using `homotopy g⁻¹ m z`. Rewrite `h` using `[hz, map_zero, add_zero, inv_inv]`. Rewrite using `[map_neg, h, neg_sub]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_bd (g : G) (m : ℕ) (z : HC G (m + 1)) (hz : ibd G m z = 0) :
     icmap (MulAut.conj g).toMonoidHom (m + 1) z - z ∈ LinearMap.range (ibd G (m + 1)) := by

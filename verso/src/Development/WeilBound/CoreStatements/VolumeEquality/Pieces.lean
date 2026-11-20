@@ -20,9 +20,9 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory
 open scoped ComplexOrder
 
 /- English proof (translation)
-Take `⟨S, hc, hs, he⟩` from `TopologicalSpace.isOpen_sUnion_countable {V | IsOpen V ∧ P V} fun _ hV => hV.1`. Take `⟨W, hW⟩` from `(hc.insert ∅).exists_eq_range (Set.insert_nonempty _ _)`. Use `⟨W, fun m => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Break down `(hW ▸ Set.mem_range_self m : W m ∈ insert ∅ S) with e | e` into its components or cases. Conclude with `e ▸ ⟨isOpen_empty, h0⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `hs e`. Take `⟨V, h1, h2, h3⟩` from `h t ht`. Take `⟨V', hV', ht'⟩ : t ∈ ⋃₀ S` from `he ▸ ⟨V, ⟨h1, h3⟩, h2⟩`. Take `⟨m, rfl⟩ : V' ∈ Set.range W` from `hW ▸ Set.mem_insert_of_mem _ hV'`. Conclude with `Set.mem_iUnion.2 ⟨m, ht'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cover_seq {α : Type} [TopologicalSpace α] [SecondCountableTopology α] (T : Set α) (P : Set α → Prop) (h0 : P ∅)
     (h : ∀ t ∈ T, ∃ V, IsOpen V ∧ t ∈ V ∧ P V) : ∃ W : ℕ → Set α, (∀ m, IsOpen (W m) ∧ P (W m)) ∧ T ⊆ ⋃ m, W m := by
@@ -38,11 +38,11 @@ theorem cover_seq {α : Type} [TopologicalSpace α] [SecondCountableTopology α]
     exact Set.mem_iUnion.2 ⟨m, ht'⟩
 
 /- English proof (translation)
-Establish `hs : StarConvex ℝ 0 (GlobalTheory.CompanionTheory.Ar.Cusp.ballDom q)` using `fun t ht a b ha hb hab τ => by`. Establish `e : GlobalTheory.CompanionTheory.Ar.Cusp.ballMat q (a • (0 : Fin n → ℂ) + b • t) τ = (b : ℂ) • GlobalTheory.CompanionTheory.Ar.Cusp.ballMat q t τ`. Use extensionality with `x y`. Simplify using `[GlobalTheory.CompanionTheory.Ar.Cusp.ballMat]`. Establish `e2 : 1 - (GlobalTheory.CompanionTheory.Ar.Cusp.ballMat q (a • (0 : Fin n → ℂ) + b • t) τ)ᴴ * GlobalTheory.CompanionTheory.Ar.Cusp.ballMat q (a • (0 : Fin n → ℂ) + b • t) τ = (1 - (GlobalTheory.CompanionTheory.Ar.Cusp.ballMat q t τ)ᴴ * GlobalTheory.CompanionTheory.Ar.Cusp.ballMat …`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e, conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, smul_smul]`. Simplify using `only [Complex.star_def, Complex.conj_ofReal]`. Use `push_cast`. Use `module`. Rewrite using `[e2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(ht τ).add_posSemidef ((posSemidef_conjTranspose_mul_self _).smul (Complex.zero_le_real.2 (by nlinarith)))`. Use `(hs.isPathConnected fun τ => ?_).isConnected.isPreconnected` and prove the remaining obligations. Rewrite using `[show GlobalTheory.CompanionTheory.Ar.Cusp.ballMat q 0 τ = 0 from rfl, Matrix.mul_zero, sub_zero]`. Conclude with `PosDef.one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ballDom_preconnected {Ψ : Type} [Fintype Ψ] {j j' n : ℕ} (q : Ψ × Fin j × Fin j' ≃ Fin n) : _root_.IsPreconnected (GlobalTheory.CompanionTheory.Ar.Cusp.ballDom q) := by
   have hs : StarConvex ℝ 0 (GlobalTheory.CompanionTheory.Ar.Cusp.ballDom q) := fun t ht a b ha hb hab τ => by
@@ -62,7 +62,7 @@ theorem ballDom_preconnected {Ψ : Type} [Fintype Ψ] {j j' n : ℕ} (q : Ψ × 
   exact PosDef.one
 
 /- English proof (translation)
-Simplify using `using (h ⊤ 0).1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isOpen_of_holTo {X : Scheme.{0}} {n : ℕ} {B : Set (Fin n → ℂ)} {y : (Fin n → ℂ) → (Sp ℂ ⟶ X)} (h : IsHolTo B y) : IsOpen B := by
   simpa using (h ⊤ 0).1
@@ -76,7 +76,7 @@ variable {S : Finset ℕ} {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K �
   (𝔐 : HodgeCpt Y S y)
 
 /- English proof (translation)
-Take `⟨_, rfl, a, ha, rfl⟩` from `hs`. Conclude with `(((tie_points _ _ 𝔐.ξ K J y 𝔐.tie ℂ).2.2 z _ (𝔐.all _) h).2 _).2 ⟨fun k => Units.mk0 (a k) (ha k), rfl⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem coords_of_sat {z : Sp ℂ ⟶ 𝔐.X} {w w' : (Σ k, J k) → ℂ} (h : CoordsAt 𝔐.ξ y z w') (hs : w ∈ torusSat {w'}) :
     CoordsAt 𝔐.ξ y z w := by
@@ -84,7 +84,7 @@ theorem coords_of_sat {z : Sp ℂ ⟶ 𝔐.X} {w w' : (Σ k, J k) → ℂ} (h : 
   exact (((tie_points _ _ 𝔐.ξ K J y 𝔐.tie ℂ).2.2 z _ (𝔐.all _) h).2 _).2 ⟨fun k => Units.mk0 (a k) (ha k), rfl⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `(((tie_points _ _ 𝔐.ξ K J y 𝔐.tie ℂ).2.2 z _ (𝔐.all _) h).2 _).1 h'`. Conclude with `⟨_, rfl, fun k => a k, fun k => (a k).ne_zero, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sat_of_coords {z : Sp ℂ ⟶ 𝔐.X} {w w' : (Σ k, J k) → ℂ} (h : CoordsAt 𝔐.ξ y z w') (h' : CoordsAt 𝔐.ξ y z w) :
     w ∈ torusSat {w'} := by
@@ -92,13 +92,13 @@ theorem sat_of_coords {z : Sp ℂ ⟶ 𝔐.X} {w w' : (Σ k, J k) → ℂ} (h : 
   exact ⟨_, rfl, fun k => a k, fun k => (a k).ne_zero, rfl⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.normal_scheme_coords_injective _ _ 𝔐.ξ K J y 𝔐.tie 𝔐.normal 𝔐.all z z' w h h'`.
+A detailed English derivation is pending.
 -/
 theorem pt_unique {z z' : Sp ℂ ⟶ 𝔐.X} {w : (Σ k, J k) → ℂ} (h : CoordsAt 𝔐.ξ y z w) (h' : CoordsAt 𝔐.ξ y z' w) : z = z' :=
   GlobalTheory.T.normal_scheme_coords_injective _ _ 𝔐.ξ K J y 𝔐.tie 𝔐.normal 𝔐.all z z' w h h'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun k => (h.1 k).imp fun _ h => h.ne_zero, fun g hg => by rw [MvPolynomial.eval_map] exact ((tie_points _ _ 𝔐.ξ K J y 𝔐.tie ℂ).2.2 z _ (𝔐.all _) h).1 g hg⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_mcPts {z : Sp ℂ ⟶ 𝔐.X} {w : (Σ k, J k) → ℂ} (h : CoordsAt 𝔐.ξ y z w) : w ∈ mcPts (mCoordIdeal y) :=
   ⟨fun k => (h.1 k).imp fun _ h => h.ne_zero, fun g hg => by
@@ -106,7 +106,7 @@ theorem mem_mcPts {z : Sp ℂ ⟶ 𝔐.X} {w : (Σ k, J k) → ℂ} (h : CoordsA
     exact ((tie_points _ _ 𝔐.ξ K J y 𝔐.tie ℂ).2.2 z _ (𝔐.all _) h).1 g hg⟩
 
 /- English proof (translation)
-The claim follows from `((tie_points _ _ 𝔐.ξ K J y 𝔐.tie ℂ).1 w (fun k => (h.1 k).imp fun _ h => Ne.isUnit h) fun g hg => by have := h.2 g hg rwa [MvPolynomial.eval_map] at this).exists.imp fun _ h => h.2`.
+A detailed English derivation is pending.
 -/
 theorem exists_pt {w : (Σ k, J k) → ℂ} (h : w ∈ mcPts (mCoordIdeal y)) : ∃ z : Sp ℂ ⟶ 𝔐.X, CoordsAt 𝔐.ξ y z w :=
   ((tie_points _ _ 𝔐.ξ K J y 𝔐.tie ℂ).1 w (fun k => (h.1 k).imp fun _ h => Ne.isUnit h) fun g hg => by
@@ -114,15 +114,15 @@ theorem exists_pt {w : (Σ k, J k) → ℂ} (h : w ∈ mcPts (mCoordIdeal y)) : 
     rwa [MvPolynomial.eval_map] at this).exists.imp fun _ h => h.2
 
 /- English proof (translation)
-The claim follows from `abLocus_pullback abLocusOne Y.t.semi 𝔐.m.cart.1 _`.
+A detailed English derivation is pending.
 -/
 theorem interior_iff (z : Sp ℂ ⟶ 𝔐.X) : centre (z ≫ 𝔐.f) ∈ abLocus Y.t.G ↔ 𝔐.Interior z :=
   abLocus_pullback abLocusOne Y.t.semi 𝔐.m.cart.1 _
 
 /- English proof (translation)
-Take `⟨κ', p, hp⟩` from `FamEx.exists_isOver E H D l Xo c Y S Ω K J y 𝔐 z hz`. Choose the witnesses or unpack the hypotheses as in `rfl : κ' = κ := by`. Take `⟨x, h1, -, h3⟩` from `hp`. Use `c.fin` as an intermediate fact. Establish `: NumberField c.F` using `{ to_charZero := inferInstance, to_finiteDimensional := c.fin }`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[← Category.assoc, ← h1, Model.j, Category.assoc, Category.assoc, pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over, ← Category.assoc, h3, ← Chg.spMap_comp']`. Conclude with `IsFractionRing.ringHom_ext (A := 𝓞 c.F) fun a => RingHom.congr_fun (congrArg CommRingCat.Hom.hom (Spec.map_injective h)) a`. Conclude with `fun τ a => GlobalTheory.T.constants_value_over_point E H D l Xo c Y S Ω K J y 𝔐 z _ p hp _`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem labVal_of_over {z : Sp ℂ ⟶ 𝔐.X} (hz : 𝔐.Interior z) {κ : c.F →+* ℂ}
     (h : z ≫ 𝔐.f ≫ Y.s = spMap (κ.comp (algebraMap (𝓞 c.F) c.F))) (sm : CMType H → CMType H ⊕ CMType H) :
@@ -165,51 +165,43 @@ def nSheets (U : Y.X.Opens) (k : Fin B.np) : ℕ := if ∃ t ∈ GlobalTheory.Co
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Establish `: CharZero Ω` using `algebraRat.charZero Ω`. Take `⟨U, a, cf, hU, hc⟩` from `h4 E H D l Xo c Y S₀ Ω K J Dc.y Or.𝔐 Or.deg Or.cover`. Establish `hgen : Or.𝔐.f (genPt Or.𝔐.ξ) = genPt Or.𝔐.ξ₀` using `by show (Or.𝔐.ξ ≫ Or.𝔐.f) (IsLocalRing.closedPoint Ω) = _`. Rewrite using `[show Or.𝔐.ξ ≫ Or.𝔐.f = _ from Or.𝔐.fn_over]`. Conclude with `congrArg (fun x => Or.𝔐.ξ₀ x) (Subsingleton.elim (α := PrimeSpectrum Or.𝔐.Ω₀) _ _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨U, hU, fun p hp => ?_, ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `IsAlgClosed.exists_root (monicOf fun i => valAt' p U (a i)) fun h => Or.cover.1.ne' ((natDegree_monicOf _).symm.trans (natDegree_eq_of_degree_eq_some h))`. Take `⟨z, rfl, -⟩` from `(hc p hp).2.1 x hx`. Conclude with `hgen ▸ (Or.𝔐.all (centre z)).map Or.𝔐.f.continuous`. Set `T : Fin B.np → Set (Fin Dc.n → ℂ)` to `fun k => {t ∈ GlobalTheory.CompanionTheory.Ar.Cusp.ballDom (B.F k).q | ⊤ ≤ B.pt k t ⁻¹ᵁ U}`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `A : Fin B.np → (Fin Dc.n → ℂ) → Fin Or.deg → ℂ` to `fun k t i => valAt' (B.pt k t) U (a i)`. Set `w : Fin B.np → (Fin Dc.n → ℂ) → ℂ → (Σ k, J k) → ℂ` to `fun k t θ s => ∑ i, valAt' (B.pt k t) U (cf s i) * θ ^ (i : ℕ)`. Establish `hW : ∀ k, ∃ Wk : ℕ → Set (Fin Dc.n → ℂ), (∀ m, IsOpen (Wk m) ∧ Wk m ⊆ T k ∧ (∀ t ∈ Wk m, ∀ t' ∈ Wk m, (B.F k).Eqv (B.Γ k) t t' → t = t') ∧ ∃ θ : Fin Or.deg → (Fin Dc.n → ℂ) → ℂ, (∀ i, DifferentiableOn ℂ (θ i) (Wk m)) ∧ ∀ t ∈ Wk m, (Function.Injective fun i => θ i t) ∧ ∀ x, (monic …` using `fun k => by`. Use `cover_seq (T k) (fun V => V ⊆ T k ∧ (∀ t ∈ V, ∀ t' ∈ V, (B.F k).Eqv (B.Γ k) t t' → t = t') ∧ ∃ θ : Fin Or.deg → (Fin Dc.n → ℂ) → ℂ, (∀ i, DifferentiableOn ℂ (θ i) V) ∧ ∀ t ∈ V, (Function.Injective fun i => θ i t) ∧ ∀ x, (monicOf (A k t)).IsRoot x ↔ ∃ i, x = θ i t) ?_ fun t ht => …` and prove the remaining obligations. Conclude with `⟨Set.empty_subset _, fun _ h => h.elim, 0, fun _ => differentiableOn_empty, fun _ h => h.elim⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨V, θ, o1, m1, s1, d1, r1⟩` from `h3 _ _ (T k) (A k) (B.hol k U 0).1 (differentiableOn_pi.2 fun i => (B.hol k U (a i)).2) (fun t ht => (hc _ ht.2).1) t ht`. Take `⟨V', o2, m2, -, i2⟩` from `h5 E H l (B.Di k) _ _ _ _ _ (B.F k) (B.Γ k) (B.form_eq k) (fun γ hγ => (B.mem_Γ k γ).1 hγ) t ht.1`. Conclude with `⟨V ∩ V', o1.inter o2, ⟨m1, m2⟩, Set.inter_subset_left.trans s1, fun t h t' h' => i2 t h.2 t' h'.2, θ, fun i => (d1 i).mono Set.inter_subset_left, fun t h => r1 t h.1⟩`. Use `choose Wk hWk hWc using hW`. Use `choose hWo hWs hWi θ hθd hθ using hWk`.
+Supply the required witnesses or components. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz : ∀ k m i t, ∃ z : Sp ℂ ⟶ Or.𝔐.X, t ∈ Wk k m → z ≫ Or.𝔐.f = B.pt k t ∧ CoordsAt Or.𝔐.ξ Dc.y z (w k t (θ k m i t))` using `fun k m i t => by`. Distinguish the cases in `ht : t ∈ Wk k m`. Conclude with `((hc _ (hWs k m ht).2).2.1 _ (((hθ k m t ht).2 _).2 ⟨i, rfl⟩)).imp fun _ h _ => h`. Take `⟨w₀, hw₀⟩` from `GlobalTheory.T.multiprojective_points_nonempty K J Ω Dc.y fun k => by`. Take `⟨c', hc'⟩` from `Or.𝔐.tie.cover ⟨genPt Or.𝔐.ξ, specializes_rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨c' k, Finset.prod_ne_zero_iff.1 hc'.1 k (Finset.mem_univ k)⟩`. Conclude with `(exists_pt Or.𝔐 hw₀).imp fun _ _ h => absurd h ht`. Use `choose z hz using hz`. Establish `hin : ∀ k m i t, t ∈ Wk k m → Or.𝔐.Interior (z k m i t)` using `fun k m i t ht => (interior_iff Or.𝔐 _).1 ((hz k m i t ht).1 ▸ B.interior k t (hWs k m ht).1)`. Establish `hsame : ∀ k m i t k' m' i' t', t ∈ Wk k m → t' ∈ Wk k' m' → w k t (θ k m i t) ∈ torusSat {w k' t' (θ k' m' i' t')} → z k m i t = z k' m' i' t' ∧ B.pt k t = B.pt k' t'` using `fun k m i t k' m' i' t' ht ht' h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `pt_unique Or.𝔐 (hz k m i t ht).2 (coords_of_sat Or.𝔐 (hz k' m' i' t' ht').2 h)`. Conclude with `⟨e, by rw [← (hz k m i t ht).1, e, (hz k' m' i' t' ht').1]⟩`. Establish `hcov : ∀ b : Fin Dc.nCharts, ∀ᵐ t, t ∈ Metric.ball (0 : Fin Dc.n → ℂ) 1 → ∃ k m i, ∃ t' ∈ FF k ∩ disjointed (Wk k) m, (Dc.chart b).γ t ∈ torusSat {w k t' (θ k m i t')}` using `fun b => by`. Establish `hζ : ∀ t, ∃ ζ : Sp ℂ ⟶ Or.𝔐.X, t ∈ Metric.ball (0 : Fin Dc.n → ℂ) 1 → CoordsAt Or.𝔐.ξ Dc.y ζ ((Dc.chart b).γ t)` using `fun t => by`. Distinguish the cases in `ht : t ∈ Metric.ball (0 : Fin Dc.n → ℂ) 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(exists_pt Or.𝔐 ((Dc.chart b).mem t ht)).imp fun _ h _ => h`. Conclude with `(exists_pt Or.𝔐 ((Dc.chart b).mem 0 (Metric.mem_ball_self one_pos))).imp fun _ _ h => absurd h ht`. Use `choose ζ hζ using hζ`. Establish `hg : genPt Or.𝔐.ξ ∈ Or.𝔐.f ⁻¹ᵁ U` using `by show (Or.𝔐.ξ ≫ Or.𝔐.f) (IsLocalRing.closedPoint Ω) ∈ U`. Rewrite using `[show Or.𝔐.ξ ≫ Or.𝔐.f = _ from Or.𝔐.fn_over]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(congrArg (fun x => Or.𝔐.ξ₀ x ∈ U) (Subsingleton.elim (α := PrimeSpectrum Or.𝔐.Ω₀) _ _)).mpr hU`. Take `⟨t₁, ht₁, z₁, c₁, u₁⟩` from `h2 _ Ω Or.𝔐.ξ K J Dc.y _ _ (Dc.chart b) _ Or.𝔐.tie Or.𝔐.all Dc.arith hg`. Establish `n1` using `h1 _ _ _ ζ (Or.𝔐.f ⁻¹ᵁ U) Metric.isOpen_ball (convex_ball _ _).isPreconnected (GlobalTheory.T.holomorphic_coords_of_generic_point _ Ω Or.𝔐.ξ K J Dc.y Or.𝔐.tie Or.𝔐.all _ _ _ ζ Metric.isOpen_ball (Dc.chart b).analytic.differentiableOn hζ) ⟨t₁, ht₁, pt_unique Or.𝔐 c₁ (hζ t₁ ht₁) ▸ …`. Establish `n2 : ∀ᵐ t : Fin Dc.n → ℂ, ∀ i, t i ≠ 0` using `ae_all_iff.2 fun i => by`. Rewrite using `[volume_pi]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `Measure.ae_eval_ne _ i 0`. Use `filter_upwards [n2, compl_mem_ae_iff.2 n1] with t e1 e2 ht`. Establish `hi : Or.𝔐.Interior (ζ t)` using `by_contra fun h => by`. Take `⟨i, -, hi⟩` from `((Dc.chart b).boundary t ht).1 ((Or.bd _ _ (hζ t ht)).2 h)`. Conclude with `e1 i hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, t₂, ht₂, e3⟩` from `B.onto _ ((interior_iff Or.𝔐 _).2 hi)`. Take `⟨t₃, ht₃, e4⟩` from `(hF k).2.2.1 t₂ ht₂`. Establish `e5 : ζ t ≫ Or.𝔐.f = B.pt k t₃` using `e3.symm.trans ((B.fibre k _ ht₂ _ ((hF k).2.1 ht₃)).2 e4)`. Establish `e6 : t₃ ∈ T k` using `⟨(hF k).2.1 ht₃, e5 ▸ by_contra fun h => e2 ⟨ht, h⟩⟩`. Take `⟨m, hm⟩` from `Set.mem_iUnion.1 (iUnion_disjointed (f := Wk k) ▸ hWc k e6)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, cx⟩` from `(hc _ e6.2).2.2.1 _ e5`. Take `⟨i, rfl⟩` from `((hθ k m t₃ (disjointed_subset _ _ hm)).2 x).1 hx`. Conclude with `⟨k, m, i, t₃, ⟨ht₃, hm⟩, sat_of_coords Or.𝔐 cx (hζ t ht)⟩`. Choose the witnesses or unpack the hypotheses as in `⟨k₀, m₀, i₀, t₀, ht₀⟩ : ∃ k m, ∃ _ : Fin Or.deg, ∃ t, t ∈ FF k ∩ disjointed (Wk k) m := by`. Take `⟨w₀, hw₀⟩` from `GlobalTheory.T.multiprojective_points_nonempty K J Ω Dc.y fun k => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨c', hc'⟩` from `Or.𝔐.tie.cover ⟨genPt Or.𝔐.ξ, specializes_rfl⟩`. Conclude with `⟨c' k, Finset.prod_ne_zero_iff.1 hc'.1 k (Finset.mem_univ k)⟩`. Take `⟨b, -⟩` from `Dc.chart_cover w₀ hw₀`. Take `⟨t, ht, h⟩` from `Measure.exists_mem_of_measure_ne_zero_of_ae (Metric.measure_ball_pos volume (0 : Fin Dc.n → ℂ) one_pos).ne' (ae_restrict_of_ae (hcov b))`. Take `⟨k, m, i, t', ht', -⟩` from `h ht`.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨k, m, i, t', ht'⟩`. Establish `: Nonempty (Fin B.np)` using `⟨k₀⟩`. Establish `: Nonempty (Fin Or.deg)` using `⟨i₀⟩`. Take `⟨e⟩ : Nonempty (ℕ ≃ Fin B.np × ℕ × Fin Or.deg)` from `nonempty_equiv_of_countable`. Establish `hT : ∀ {k t}, t ∈ T k → nSheets Or B U k = Or.deg` using `fun ht => if_pos ⟨_, ht.1, ht.2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨⟨k₀, (hT (hWs k₀ m₀ (disjointed_subset _ _ ht₀.2))).symm ▸ Or.cover.1⟩, fun m => (e m).1, fun m => Wk (e m).1 (e m).2.1, fun m => FF (e m).1 ∩ disjointed (Wk (e m).1) (e m).2.1, fun m t => w (e m).1 t (θ (e m).1 (e m).2.1 (e m).2.2 t), fun m => z (e m).1 (e m).2.1 (e m).2.2, ⟨f …` and prove the remaining obligations. Conclude with `differentiableOn_pi.2 fun s => DifferentiableOn.fun_sum fun i _ => ((B.hol _ U (cf s i)).2.mono (hWs _ _)).mul ((hθd _ _ _).pow _)`. Conclude with `⟨mem_mcPts Or.𝔐 (hz _ _ _ t ht).2, fun h => (Or.bd _ _ (hz _ _ _ t ht).2).1 h (hin _ _ _ t ht)⟩`. Conclude with `hWi _ _ t ht t' ht' ((B.fibre _ t (hWs _ _ ht).1 t' (hWs _ _ ht').1).1 (hsame _ _ _ _ _ _ _ _ ht ht' h).2)`. Take `⟨_, ⟨t', ht', rfl⟩, h⟩` from `h`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Generalize the expression as in `e m = x at ht h ⊢`. Generalize the expression as in `e m' = x' at ht' h ⊢`. Take `⟨k, n, i⟩` from `x`. Take `⟨k', n', i'⟩` from `x'`. Establish `u` using `disjointed_subset _ _ ht.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Establish `u'` using `disjointed_subset _ _ ht'.2`. Take `⟨e1, e2⟩` from `hsame _ _ i _ _ _ i' _ u u' ⟨_, rfl, h⟩`. Take `rfl : k = k'` from `B.disj _ _ t (hWs _ _ u).1 t' (hWs _ _ u').1 e2`. Take `rfl : t = t'` from `(hF k).2.2.2 t ht.1 t' ht'.1 ((B.fibre k t (hWs _ _ u).1 t' (hWs _ _ u').1).1 e2)`. Take `rfl : n = n'` from `by_contra fun hn => Set.disjoint_left.1 (disjoint_disjointed (Wk k) hn) ht.2 ht'.2`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `rfl : i = i'` from `(hθ k n t u).1 ((hc _ (hWs _ _ u).2).2.2.2 _ _ _ (((hθ k n t u).2 _).2 ⟨i, rfl⟩) (((hθ k n t u).2 _).2 ⟨i', rfl⟩) (hz k n i t u).2 (e1 ▸ (hz k n i' t u).2))`. Both sides reduce to the same expression. Use `measure_mono_null ?_ (ae_iff.1 (hcov b))` and prove the remaining obligations. Introduce `t ht h`. Take `⟨k, m, i, t', ht', _, rfl, h'⟩` from `h ht.1`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ht.2 ⟨_, Set.mem_iUnion.2 ⟨e.symm (k, m, i), t', by rwa [e.apply_symm_apply], by simp only [e.apply_symm_apply]⟩, h'⟩`. Distinguish the cases in `hk : ∃ t ∈ GlobalTheory.CompanionTheory.Ar.Cusp.ballDom (B.F k).q, ⊤ ≤ B.pt k t ⁻¹ᵁ U`. Use `filter_upwards [compl_mem_ae_iff.2 (h1 _ _ _ _ U (isOpen_of_holTo (B.hol k)) (ballDom_preconnected (B.F k).q) (B.hol k) hk)] with t e1 ht`. Establish `e2 : t ∈ T k` using `⟨(hF k).2.1 ht, by_contra fun h => e1 ⟨(hF k).2.1 ht, h⟩⟩`. Take `⟨n, hn⟩` from `Set.mem_iUnion.1 (iUnion_disjointed (f := Wk k) ▸ hWc k e2)`.
-
-Establish `: {m | (e m).1 = k ∧ t ∈ FF (e m).1 ∩ disjointed (Wk (e m).1) (e m).2.1} = (fun i : Fin Or.deg => e.symm (k, n, i)) '' Set.univ`. Use extensionality with `m`. Take `⟨⟨k', n', i⟩, rfl⟩` from `e.symm.surjective m`. Simplify using `only [Set.mem_setOf_eq, e.apply_symm_apply, Set.image_univ, Set.mem_range, e.symm.injective.eq_iff]`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨rfl, h⟩`. Take `rfl : n = n'` from `by_contra fun h' => Set.disjoint_left.1 (disjoint_disjointed (Wk k') h') hn h.2`. Conclude with `⟨i, rfl⟩`. Introduce and unpack `⟨_, ⟨⟩⟩`. Conclude with `⟨rfl, ht, hn⟩`.
-
-Rewrite using `[this, Function.Injective.encard_image (fun i i' h => by simpa using h), hT e2]`. Simplify using the standard rewrite rules. Use `ae_of_all _ fun t _ => ?_` and prove the remaining obligations. Rewrite using `[nSheets, if_neg hk, Nat.cast_zero, Set.encard_eq_zero]`. Use `Set.eq_empty_of_forall_notMem ?_` and prove the remaining obligations.
-
-Introduce and unpack `m ⟨rfl, h⟩`. Conclude with `hk ⟨t, hWs _ _ (disjointed_subset _ _ h.2)⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_sheets (h1 : HolNull) (h2 : ChartMeets) (h3 : RootBranches) (h4 : CoverRoots) (h5 : LocInj)
     (FF : Fin B.np → Set (Fin Dc.n → ℂ)) (hF : ∀ k, (B.F k).IsFundSet (B.Γ k) (FF k)) :

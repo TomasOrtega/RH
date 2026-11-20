@@ -12,7 +12,7 @@ open GlobalTheory.ArchDecay
 namespace GlobalTheory.ArchDecay
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, hL u hu, Matrix.mul_zero, Matrix.zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem at_mul_of_at {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {n d : ℕ} (G : Matrix (Fin n) (Fin n) (AE F E)) (H : Matrix (Fin d) (Fin d) (AE F E))
@@ -21,9 +21,7 @@ theorem at_mul_of_at {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   rw [← Matrix.smul_mul, ← Matrix.mul_smul, hL u hu, Matrix.mul_zero, Matrix.zero_mul]
 
 /- English proof (translation)
-Establish `h1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff.mp hu`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show u.1 * _ = 0`. Rewrite using `[h1, zero_mul]`. Use `show u.2 * 0 = 0`.
-
-Rewrite using `[mul_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_infAd_of_evI {F : Type} [Field F] [NumberField F] (u : AF F) (hu : evI F u = 0)
     (α : mixedEmbedding.mixedSpace F) : u * infAd F α = 0 := by
@@ -35,11 +33,11 @@ theorem mul_infAd_of_evI {F : Type} [Field F] [NumberField F] (u : AF F) (hu : e
     rw [mul_zero]
 
 /- English proof (translation)
-Take `⟨a, ha1, ha2⟩ : ∃ a : AF F, a.1 = 0 ∧ a.2 = 1` from `⟨(0, 1), rfl, rfl⟩`. Establish `h0 : evI F a = 0`. Establish `e : evI F a = InfiniteAdeleRing.ringEquiv_mixedSpace F a.1` using `rfl`. Rewrite using `[e, ha1, map_zero]`. Establish `h2 : z.2 = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `congrArg Prod.snd (hz a h0)`. Establish `h4 : (a * z).2 = a.2 * z.2` using `rfl`. Rewrite `h3` using `[h4, ha2, one_mul]`. Conclude with `h3`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show z.1 = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (InfiniteAdeleRing.ringEquiv_mixedSpace F z.1)`. Rewrite using `[RingEquiv.symm_apply_apply]`. Use `show z.2 = 0`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem eq_infAd_of_ann {F : Type} [Field F] [NumberField F] (z : AF F)
     (hz : ∀ a : AF F, evI F a = 0 → a * z = 0) : z = infAd F (evI F z) := by
@@ -59,15 +57,13 @@ theorem eq_infAd_of_ann {F : Type} [Field F] [NumberField F] (z : AF F)
     exact h2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d X W M p ζ`. Establish `hL : At (evI F) (liftI M ζ)`. Introduce `u hu`. Unfold `liftI`. Rewrite using `[← LinearEquiv.map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `(M.co.e.symm).map_zero using 2` and compare the differences between its conclusion and the goal. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `mul_infAd_of_evI u hu _`. Use function extensionality and compare the values at `i`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_infAd_of_evI u hu _`. Use `⟨hL, ?_⟩` and prove the remaining obligations. Establish `hw : At (evI F) (actAB (cA σ) p⁻¹ (liftI M ζ))` using `at_mul_of_at _ _ _ hL`. Use `set w := actAB (cA σ) p⁻¹ (liftI M ζ) with hwdef`. Establish `hc : ∀ u : AF F, evI F u = 0 → u • M.co.e w = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Introduce `u hu`. Rewrite using `[← LinearEquiv.map_smul, hw u hu, LinearEquiv.map_zero]`. Unfold `liftI movI arch`. Use `conv_rhs => rw [← M.co.e.symm_apply_apply w]`. Use `congr 1`.
-
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `(eq_infAd_of_ann _ fun a ha => congrFun (congrArg Prod.fst (hc a ha)) i).symm`. Use function extensionality and compare the values at `i`. Conclude with `(eq_infAd_of_ann _ fun a ha => congrFun (congrArg Prod.snd (hc a ha)) i).symm`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem liftI_at_movI : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (p : UA σ X.J × UA σ W.J) (ζ : (Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F)), At (evI F) (liftI M ζ) ∧ liftI M (movI M p ζ) = actAB (cA σ) p⁻¹ (liftI M ζ) := by
   intro F E _ _ _ _ _ σ n d X W M p ζ

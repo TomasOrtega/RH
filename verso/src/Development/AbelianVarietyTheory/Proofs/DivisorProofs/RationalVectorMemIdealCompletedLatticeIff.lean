@@ -16,19 +16,19 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨b, hb, z, hz, rfl⟩`. Rewrite using `[SetLike.mem_coe]`. Proceed by induction on `hz using AddSubgroup.closure_induction with`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `mem w hw`. Take `⟨a, ha, x, hx, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨a, ha, b • x, Submodule.smul_mem_smul hb hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul, Algebra.smul_def]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `zero`. Use `AddSubgroup.zero_mem _ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `add w w' _ _ h h'`.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `add_mem h h' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[mul_add]`. Consider the case `neg w _ h`. Use `neg_mem h using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Unfold `GlobalTheory.AdLat.hat`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨a, ha, x, hx, rfl⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `hx`, the goal using `[SetLike.mem_coe]`. Use `Submodule.smul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `b hb y hy`. Use `AddSubgroup.subset_closure ⟨b, hb, fun i => a ⊗ₜ y i, AddSubgroup.subset_closure ⟨a, ha, y, hy, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Algebra.TensorProduct.tmul_mul_tmul, Algebra.smul_def]`. Introduce `y y' h h'`. Use `add_mem h h' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[TensorProduct.tmul_add]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem closure_eq_hat (L : Submodule (𝓞 E) (Fin n → E)) (I : Ideal (𝓞 E)) :
     AddSubgroup.closure {u : Fin n → GlobalTheory.AdLat.RA F E | ∃ b ∈ I, ∃ z ∈ GlobalTheory.AdLat.hat F (L : Set (Fin n → E)),
@@ -68,9 +68,9 @@ theorem closure_eq_hat (L : Submodule (𝓞 E) (Fin n → E)) (I : Ideal (𝓞 E
       funext i; simp [TensorProduct.tmul_add]
 
 /- English proof (translation)
-Take `⟨b, hb, hb0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Rewrite using `[eq_top_iff, ← hL, Submodule.span_le]`. Introduce `x hx`. Establish `hb1 : algebraMap (𝓞 E) E b ≠ 0`. Simplify using `using hb0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e : x = (algebraMap (𝓞 E) E b)⁻¹ • (b • x)`. Rewrite using `[← algebraMap_smul E b x, smul_smul, inv_mul_cancel₀ hb1, one_smul]`. Rewrite using `[SetLike.mem_coe, e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Submodule.smul_mem_smul hb hx))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_smul_eq_top (L : Submodule (𝓞 E) (Fin n → E)) (I : Ideal (𝓞 E)) (hI : I ≠ ⊥)
     (hL : Submodule.span E (L : Set (Fin n → E)) = ⊤) :
@@ -88,7 +88,7 @@ theorem span_smul_eq_top (L : Submodule (𝓞 E) (Fin n → E)) (I : Ideal (𝓞
 end General
 
 /- English proof (translation)
-Introduce `D V I hI a`. Take `⟨hfg, hsp, -, -, hhat, -⟩` from `GlobalTheory.Member.latG_lattice_and_completion D V 1`. Establish `hfg' : (I • latG V 1).FG` using `Submodule.FG.smul (IsNoetherian.noetherian I) hfg`. Establish `key` using `(GlobalTheory.AdLat.hat_rational_points_and_approx D.host.F D.host.E V.rank _ hfg' (span_smul_eq_top _ I hI hsp)).1 a`. Rewrite using `[hhat, ← key, ← closure_eq_hat]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

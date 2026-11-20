@@ -17,7 +17,7 @@ def placeAlg (E : Place (algebraMap ℂ K)) : Subalgebra ℂ K :=
   { E.ring.toSubring with algebraMap_mem' := E.const_mem }
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_placeAlg {E : Place (algebraMap ℂ K)} {e : K} : e ∈ placeAlg E ↔ e ∈ E.ring :=
   Iff.rfl
@@ -28,9 +28,9 @@ def tensMap (A : Subalgebra ℂ K) : A ⊗[ℂ] κ' →ₐ[ℂ] K ⊗[ℂ] κ' :
   Algebra.TensorProduct.map A.val (AlgHom.id ℂ κ')
 
 /- English proof (translation)
-Establish `e : ⇑(tensMap κ' A) = ⇑(LinearMap.rTensor κ' A.val.toLinearMap)`. Use function extensionality and compare the values at `w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => rfl`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add u v hu hv => simp only [map_add, hu, hv]`. Rewrite using `[e]`. Conclude with `Module.Flat.rTensor_preserves_injective_linearMap _ Subtype.val_injective`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensMap_injective (A : Subalgebra ℂ K) : Function.Injective (tensMap κ' A) := by
   have e : ⇑(tensMap κ' A) = ⇑(LinearMap.rTensor κ' A.val.toLinearMap) := by
@@ -54,7 +54,7 @@ Both sides reduce to the same expression.
     (tensEquiv A w : K ⊗[ℂ] κ') = tensMap κ' A w := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨e, he⟩ ⊗ₜ b, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem tmul_mem {A : Subalgebra ℂ K} {e : K} (he : e ∈ A) (b : κ') :
     e ⊗ₜ[ℂ] b ∈ tens (κ' := κ') A :=
@@ -77,7 +77,7 @@ def gens (E : Place (algebraMap ℂ K)) (R : Subring K) (π : R →+* κ) (ρ : 
 variable {L : Type} [Field L] [Algebra (K ⊗[ℂ] κ') L]
 
 /- English proof (translation)
-The claim follows from `(Ideal.ne_top_iff_one 𝔭).1 h𝔭.ne_top`.
+A detailed English derivation is pending.
 -/
 theorem one_notMem {A : Subalgebra ℂ K} (𝔭 : Ideal (tens (κ' := κ') A)) [h𝔭 : 𝔭.IsPrime] :
     (1 : tens (κ' := κ') A) ∉ 𝔭 :=
@@ -122,7 +122,7 @@ Both sides reduce to the same expression.
     (b : tens (κ' := κ') A) : (toQ (L := L) 𝔭 b : L) = algebraMap (K ⊗[ℂ] κ') L b := rfl
 
 /- English proof (translation)
-Take `⟨x, a, s, hs, hx⟩` from `x`. Conclude with `⟨a, s, hs, Subtype.ext hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mul_toQ {A : Subalgebra ℂ K} (𝔭 : Ideal (tens (κ' := κ') A)) [𝔭.IsPrime]
     (x : locAt (L := L) 𝔭) : ∃ a s : tens (κ' := κ') A, s ∉ 𝔭 ∧ x * toQ 𝔭 s = toQ 𝔭 a := by
@@ -136,14 +136,14 @@ variable {A : Subalgebra ℂ K} (𝔭 : Ideal (tens (κ' := κ') A)) [𝔭.IsPri
 include hinj
 
 /- English proof (translation)
-Introduce `h` and use `hb (Subtype.ext (hinj (h.trans (map_zero _).symm)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem algebraMap_ne_zero {b : tens (κ' := κ') A} (hb : b ≠ 0) :
     algebraMap (K ⊗[ℂ] κ') L b ≠ 0 := fun h =>
   hb (Subtype.ext (hinj (h.trans (map_zero _).symm)))
 
 /- English proof (translation)
-Establish `hb0 : algebraMap (K ⊗[ℂ] κ') L b ≠ 0` using `algebraMap_ne_zero hinj fun h => hb (h ▸ 𝔭.zero_mem)`. Use `IsUnit.of_mul_eq_one (b := ⟨(algebraMap (K ⊗[ℂ] κ') L b)⁻¹, 1, b, hb, by simp [hb0]⟩) (Subtype.ext ?_)` and prove the remaining obligations. Simplify using `[hb0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isUnit_toQ {b : tens (κ' := κ') A} (hb : b ∉ 𝔭) : IsUnit (toQ (L := L) 𝔭 b) := by
   have hb0 : algebraMap (K ⊗[ℂ] κ') L b ≠ 0 :=
@@ -153,11 +153,9 @@ theorem isUnit_toQ {b : tens (κ' := κ') A} (hb : b ∉ 𝔭) : IsUnit (toQ (L 
   simp [hb0]
 
 /- English proof (translation)
-Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x => ?_` and prove the remaining obligations. Take `⟨a, s, hs, hx⟩` from `exists_mul_toQ 𝔭 x`. Distinguish the cases in `ha : a ∈ 𝔭`. Use `right`. Establish `hsa : s - a ∉ 𝔭` using `fun h => hs (by simpa using add_mem h ha)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `isUnit_of_mul_isUnit_left (y := toQ 𝔭 s) ?_` and prove the remaining obligations. Rewrite using `[sub_mul, one_mul, hx, ← map_sub]`. Conclude with `isUnit_toQ 𝔭 hinj hsa`. Use `left`. Use `isUnit_of_mul_isUnit_left (y := toQ 𝔭 s) ?_` and prove the remaining obligations.
-
-Rewrite using `[hx]`. Conclude with `isUnit_toQ 𝔭 hinj ha`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalRing_locAt : IsLocalRing (locAt (L := L) 𝔭) := by
   refine IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x => ?_
@@ -174,9 +172,9 @@ theorem isLocalRing_locAt : IsLocalRing (locAt (L := L) 𝔭) := by
     exact isUnit_toQ 𝔭 hinj ha
 
 /- English proof (translation)
-Use `⟨fun h hb => ?_, isUnit_toQ 𝔭 hinj⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `h.exists_right_inv`. Take `⟨a, s, hs, e⟩` from `exists_mul_toQ 𝔭 y`. Establish `e2 : toQ (L` using `L) 𝔭 (b * a) = toQ 𝔭 s := by`. Rewrite using `[map_mul, ← e, ← mul_assoc, hy, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : b * a = s` using `Subtype.ext (hinj (congrArg Subtype.val e2))`. Conclude with `hs (e3 ▸ 𝔭.mul_mem_right a hb)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_toQ_iff {b : tens (κ' := κ') A} : IsUnit (toQ (L := L) 𝔭 b) ↔ b ∉ 𝔭 := by
   refine ⟨fun h hb => ?_, isUnit_toQ 𝔭 hinj⟩
@@ -188,14 +186,14 @@ theorem isUnit_toQ_iff {b : tens (κ' := κ') A} : IsUnit (toQ (L := L) 𝔭 b) 
   exact hs (e3 ▸ 𝔭.mul_mem_right a hb)
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_toQ_iff 𝔭 hinj, not_not]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toQ_mem_maximalIdeal_iff [IsLocalRing (locAt (L := L) 𝔭)] {b : tens (κ' := κ') A} :
     toQ (L := L) 𝔭 b ∈ IsLocalRing.maximalIdeal (locAt (L := L) 𝔭) ↔ b ∈ 𝔭 := by
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_toQ_iff 𝔭 hinj, not_not]
 
 /- English proof (translation)
-The claim follows from `Ideal.map_le_iff_le_comap.2 fun _ hb => (toQ_mem_maximalIdeal_iff 𝔭 hinj).2 hb`.
+A detailed English derivation is pending.
 -/
 theorem map_le_maximalIdeal [IsLocalRing (locAt (L := L) 𝔭)] :
     𝔭.map (toQ (L := L) 𝔭) ≤ IsLocalRing.maximalIdeal (locAt (L := L) 𝔭) :=

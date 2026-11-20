@@ -17,7 +17,7 @@ def genEval (n s : ℕ) (g : MvPolynomial (Fin n) k[X]) : (MvPolynomial (Fin n �
   MvPolynomial.eval₂ (Polynomial.mapRingHom MvPolynomial.C) (genSub n s) g
 
 /- English proof (translation)
-Unfold `genEval`. Rewrite using `[← Polynomial.coe_mapRingHom, MvPolynomial.hom_eval₂, Polynomial.mapRingHom_comp]`. Establish `h : φ.comp (MvPolynomial.C : k →+* MvPolynomial (Fin n × Fin (s + 1)) k) = RingHom.id k` using `RingHom.ext hφ`. Rewrite using `[h, Polynomial.mapRingHom_id]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_genEval (n s : ℕ) (φ : MvPolynomial (Fin n × Fin (s + 1)) k →+* k)
     (hφ : ∀ a, φ (MvPolynomial.C a) = a) (g : MvPolynomial (Fin n) k[X]) :
@@ -30,7 +30,7 @@ theorem map_genEval (n s : ℕ) (φ : MvPolynomial (Fin n × Fin (s + 1)) k →+
   rfl
 
 /- English proof (translation)
-Unfold `genSub`. Use `Polynomial.natDegree_sum_le_of_forall_le _ _ ?_` and prove the remaining obligations. Introduce `t _`. Conclude with `(Polynomial.natDegree_monomial_le _).trans (Nat.lt_succ_iff.mp t.2)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem natDegree_genSub_le (n s : ℕ) (j : Fin n) : (genSub (k := k) n s j).natDegree ≤ s := by
   unfold genSub
@@ -39,9 +39,9 @@ theorem natDegree_genSub_le (n s : ℕ) (j : Fin n) : (genSub (k := k) n s j).na
   exact (Polynomial.natDegree_monomial_le _).trans (Nat.lt_succ_iff.mp t.2)
 
 /- English proof (translation)
-Unfold `genEval`. Rewrite using `[MvPolynomial.eval₂_eq']`. Use `Polynomial.natDegree_sum_le_of_forall_le _ _ ?_` and prove the remaining obligations. Introduce `μ hμ`. Take `⟨h1, h2⟩` from `hg μ (MvPolynomial.mem_support_iff.mp hμ)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `(Polynomial.natDegree_mul_le).trans ?_` and prove the remaining obligations. Establish `hA : (Polynomial.mapRingHom (MvPolynomial.C : k →+* MvPolynomial (Fin n × Fin (s + 1)) k) (g.coeff μ)).natDegree ≤ m` using `(Polynomial.natDegree_map_le).trans h2`. Establish `hB : (∏ j, genSub (k` using `k) n s j ^ μ j).natDegree ≤ d * s := by`. Use `(Polynomial.natDegree_prod_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -66,25 +66,25 @@ theorem natDegree_genEval_le (n s d m : ℕ) (g : MvPolynomial (Fin n) k[X])
   omega
 
 /- English proof (translation)
-Simplify using `[genSub, Polynomial.map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem genSub_map_constantCoeff (n s : ℕ) (j : Fin n) :
     (genSub (k := k) n s j).map MvPolynomial.constantCoeff = 0 := by
   simp [genSub, Polynomial.map_sum]
 
 /- English proof (translation)
-Simplify using `[genSub, Polynomial.map_sum, Polynomial.finset_sum_coeff, Polynomial.coeff_monomial, Fin.val_inj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coeff_genSub_map_eval (n s : ℕ) (c : Fin n × Fin (s + 1) → k) (j : Fin n) (t : Fin (s + 1)) :
     ((genSub (k := k) n s j).map (MvPolynomial.eval c)).coeff t = c (j, t) := by
   simp [genSub, Polynomial.map_sum, Polynomial.finset_sum_coeff, Polynomial.coeff_monomial, Fin.val_inj]
 
 /- English proof (translation)
-Establish `h` using `map_genEval (k := k) n s MvPolynomial.constantCoeff (fun a => by simp) g`. Establish `h2 : (fun j => (genSub (k` using `k) n s j).map MvPolynomial.constantCoeff) = 0 := by`. Use function extensionality and compare the values at `j`. Conclude with `genSub_map_constantCoeff n s j`. Rewrite `h` using `[h2, MvPolynomial.eval_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : MvPolynomial.constantCoeff g = 0`. Assume the negation of the conclusion as `hne`. Use `hg 0 (by rwa [← MvPolynomial.constantCoeff_eq])` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[h3]`. Use `congrArg (fun p => Polynomial.coeff p e) h` as an intermediate fact. Simplify `this` using `[Polynomial.coeff_map]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem constantCoeff_coeff_genEval (n s d : ℕ) (hd : 0 < d) (g : MvPolynomial (Fin n) k[X])
     (hg : ∀ μ, g.coeff μ ≠ 0 → μ.degree = d) (e : ℕ) :
@@ -102,21 +102,19 @@ theorem constantCoeff_coeff_genEval (n s d : ℕ) (hd : 0 < d) (g : MvPolynomial
   simpa [Polynomial.coeff_map] using this
 
 /- English proof (translation)
-Use `set s := r * (m + 1) with hs`. Use `set E := d * s + m + 1 with hE`. Set `F : Fin r × Fin E → MvPolynomial (Fin n × Fin (s + 1)) k` to `fun p => (genEval n s (g p.1)).coeff p.2`. Set `e1 : Fin (r * E) ≃ Fin r × Fin E` to `finProdFinEquiv.symm`. Set `e2 : Fin (n * (s + 1)) ≃ Fin n × Fin (s + 1)` to `finProdFinEquiv.symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `F' : Fin (r * E) → MvPolynomial (Fin (n * (s + 1))) k` to `fun q => MvPolynomial.rename e2.symm (F (e1 q))`. Establish `hF' : ∀ q, MvPolynomial.constantCoeff (F' q) = 0`. Introduce `q`. Simplify using `only [F', MvPolynomial.constantCoeff_rename, F]`. Conclude with `constantCoeff_coeff_genEval n s d hd _ (fun μ h => (hg _ μ h).1) _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : r * E < n * (s + 1)`. Establish `h1 : r * d + 1 ≤ n` using `hn`. Establish `h2 : (r * d + 1) * (s + 1) ≤ n * (s + 1)` using `Nat.mul_le_mul_right _ h1`. Establish `h3 : r * E < (r * d + 1) * (s + 1)`. Rewrite using `[hE, hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Use the polynomial consequences of the given equalities and inequalities. Use linear arithmetic over natural numbers and integers.
 
-Put the polynomial expressions in normal form. Use the polynomial consequences of the given equalities and inequalities. Use linear arithmetic over natural numbers and integers. Take `⟨c, hc0, hc⟩` from `exists_ne_zero_common_zero_of_constantCoeff_eq_zero k _ _ F' hF' hlt`. Use `set c' : Fin n × Fin (s + 1) → k := c ∘ e2.symm with hc'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨fun j => (genSub n s j).map (MvPolynomial.eval c'), ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : ∃ q, c q ≠ 0 := by`. Assume the negation of the conclusion as `hh`. Use `push_neg at hh`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hc0 (funext hh)`. Use `congrArg (fun x : Fin n → k[X] => (x (e2 q).1).coeff (e2 q).2) h0` as an intermediate fact. Simplify using `only [coeff_genSub_map_eval, Pi.zero_apply, Polynomial.coeff_zero] at this`. Apply `hq` to reduce the goal to its premises. Simplify `this` using `[hc']`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[← map_genEval n s (MvPolynomial.eval c') (fun a => by simp)]`. Use extensionality with `e`. Rewrite using `[Polynomial.coeff_map, Polynomial.coeff_zero]`. Distinguish the cases in `he : e < E`.
-
-Use `hc (e1.symm (i, ⟨e, he⟩))` as an intermediate fact. Simplify `this` using `[F', F, MvPolynomial.eval_rename, hc']`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt, map_zero]`. Use `natDegree_genEval_le n s d m (g i) (hg i)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_polynomial_common_zero [IsAlgClosed k] (n r d m : ℕ)
     (g : Fin r → MvPolynomial (Fin n) k[X])
@@ -168,27 +166,23 @@ end TsenLang
 open TsenLang in
 
 /- English proof (translation)
-Introduce `k _ _ n r d f hf hd hn`. Set `S : Finset (RatFunc k)` to `Finset.univ.biUnion fun i => (f i).support.image fun μ => (f i).coeff μ`. Take `⟨⟨b, hb⟩, hbS⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors k[X]) S`. Set `numer : RatFunc k → k[X]` to `fun a => if h : IsLocalization.IsInteger k[X] (b • a) then (RingHom.mem_rangeS.mp h).choose else 0`. Establish `hnumer : ∀ a ∈ S, algebraMap k[X] (RatFunc k) (numer a) = b • a`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a ha`. Establish `h` using `hbS a ha`. Simplify using `only [numer, dif_pos h]`. Conclude with `(RingHom.mem_rangeS.mp h).choose_spec`. Set `g : Fin r → MvPolynomial (Fin n) k[X]` to `fun i => ∑ μ ∈ (f i).support, MvPolynomial.monomial μ (numer ((f i).coeff μ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hgc : ∀ i μ, (g i).coeff μ = if μ ∈ (f i).support then numer ((f i).coeff μ) else 0`. Introduce `i μ`. Simplify using `only [g, MvPolynomial.coeff_sum, MvPolynomial.coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Establish `hgmap : ∀ i, MvPolynomial.map (algebraMap k[X] (RatFunc k)) (g i) = MvPolynomial.C (algebraMap k[X] (RatFunc k) b) * f i`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Use extensionality with `μ`. Rewrite using `[MvPolynomial.coeff_map, hgc, MvPolynomial.coeff_C_mul]`. Use `split_ifs with hμ`. Rewrite using `[hnumer _ (by simp only [S, Finset.mem_biUnion, Finset.mem_image]; exact ⟨i, Finset.mem_univ _, μ, hμ, rfl⟩), Algebra.smul_def]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[MvPolynomial.notMem_support_iff.mp hμ]`. Simplify using the standard rewrite rules. Set `m : ℕ` to `Finset.univ.sup fun i => (g i).support.sup fun μ => ((g i).coeff μ).natDegree`. Establish `hg : ∀ i μ, (g i).coeff μ ≠ 0 → μ.degree = d ∧ ((g i).coeff μ).natDegree ≤ m`. Introduce `i μ hμ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hmem : μ ∈ (f i).support`. Assume the negation of the conclusion as `h`. Rewrite `hμ` using `[hgc, if_neg h]`. Conclude with `hμ rfl`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `hf i (MvPolynomial.mem_support_iff.mp hmem)` as an intermediate fact. Rewrite using `[Finsupp.degree_eq_weight_one]` and apply the resulting hypothesis. Conclude with `le_trans (Finset.le_sup (f := fun μ => ((g i).coeff μ).natDegree) (MvPolynomial.mem_support_iff.mpr hμ)) (Finset.le_sup (f := fun i => (g i).support.sup fun μ => ((g i).coeff μ).natDegree) (Finset.mem_univ i))`. Take `⟨y, hy0, hy⟩` from `exists_ne_zero_polynomial_common_zero n r d m g hg hd hn`. Establish `hinj : Function.Injective (algebraMap k[X] (RatFunc k))` using `IsFractionRing.injective k[X] (RatFunc k)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hb0 : algebraMap k[X] (RatFunc k) b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Use `⟨fun j => algebraMap k[X] (RatFunc k) (y j), ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hy0` to reduce the goal to its premises. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun h j` as an intermediate fact. Conclude with `hinj (by simpa using this)`. Introduce `i`. Establish `h1 : algebraMap k[X] (RatFunc k) (MvPolynomial.eval y (g i)) = MvPolynomial.eval (fun j => algebraMap k[X] (RatFunc k) (y j)) (MvPolynomial.map (algebraMap k[X] (RatFunc k)) (g i))`. Rewrite using `[MvPolynomial.eval_map]`.
-
-Use `first`. Consider the case `(simp only [MvPolynomial.eval, MvPolynomial.coe_eval₂Hom, MvPolynomial.hom_eval₂]; rfl)`. Consider the case `exact MvPolynomial.eval₂_comp_left _ _ _ _`. Consider the case `simp [MvPolynomial.eval₂_comp_left]`. Rewrite `h1` using `[hy i, map_zero, hgmap, map_mul, MvPolynomial.eval_C]`.
-
-Conclude with `(mul_eq_zero.mp h1.symm).resolve_left hb0`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsenLang_ratFunc :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (n r d : ℕ) (f : Fin r → MvPolynomial (Fin n) (RatFunc k)),
@@ -255,7 +249,7 @@ theorem tsenLang_ratFunc :
     exact (mul_eq_zero.mp h1.symm).resolve_left hb0
 
 /- English proof (translation)
-The claim follows from `tsenLang_ratFunc`.
+A detailed English derivation is pending.
 -/
 example : ∀ (k : Type) [Field k] [IsAlgClosed k] (n r d : ℕ) (f : Fin r → MvPolynomial (Fin n) (RatFunc k)),
   (∀ i, (f i).IsHomogeneous d) → 0 < d → r * d < n → ∃ x : Fin n → RatFunc k, x ≠ 0 ∧ ∀ i, MvPolynomial.eval x (f i) = 0 :=

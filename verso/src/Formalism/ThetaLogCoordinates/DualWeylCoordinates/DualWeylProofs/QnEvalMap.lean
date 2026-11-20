@@ -16,9 +16,9 @@ def qn_InZ (n : ℕ) (ν : Fin n → ℕ) (x : MvPolynomial (Fin n × Fin n) ℚ
   ∃ Y ∈ dualWeyl ℤ n n ν, transposeVariables ℚ n x = map (Int.castRingHom ℚ) Y
 
 /- English proof (translation)
-Establish `h : (eval (idFrame ℚ n n)).comp (map (Int.castRingHom ℚ)) = (Int.castRingHom ℚ).comp (eval (idFrame ℤ n n))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using the standard rewrite rules. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [RingHom.coe_comp, Function.comp_apply, map_X, eval_X, idFrame]`. Apply the tactic sequence `split_ifs <;> simp`. Conclude with `congrArg (fun φ => φ Y) h`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem qn_eval_map (n : ℕ) (Y : MvPolynomial (Fin n × Fin n) ℤ) :
     eval (idFrame ℚ n n) (map (Int.castRingHom ℚ) Y) = ((eval (idFrame ℤ n n) Y : ℤ) : ℚ) := by
@@ -32,11 +32,11 @@ theorem qn_eval_map (n : ℕ) (Y : MvPolynomial (Fin n × Fin n) ℤ) :
   exact congrArg (fun φ => φ Y) h
 
 /- English proof (translation)
-Unfold `UZmon at hu`. Proceed by induction on `hu using Submonoid.closure_induction with`. Consider the case `mem g hg`. Introduce and unpack `x ⟨Y, hY, hx⟩`. Break down `hg with ⟨a, b, k, hab, rfl⟩ | ⟨a, k, rfl⟩` into its components or cases.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨rowDiv ℤ a b k Y, rowDivStable ℤ n n ν a b k Y hY, by`. Rewrite using `[qn_T_divPowE n a b hab, hx, lclosedeq_rowDiv_map]⟩`. Conclude with `⟨rowDiv ℤ a a k Y, rowDivStable ℤ n n ν a a k Y hY, by`. Rewrite using `[qn_T_binomE, hx, lclosedeq_rowDiv_map]⟩`. Consider the case `one => intro x hx`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `hx`. Consider the case `mul g h _ _ ihg ihh => intro x hx`. Conclude with `ihg _ (ihh x hx)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem qn_InZ_UZ (n : ℕ) (ν : Fin n → ℕ) (u : Module.End ℚ (MvPolynomial (Fin n × Fin n) ℚ))
     (hu : u ∈ UZmon (glOps ℚ n (rowLetters n) Set.univ)) :
@@ -54,11 +54,11 @@ theorem qn_InZ_UZ (n : ℕ) (ν : Fin n → ℕ) (u : Module.End ℚ (MvPolynomi
   | mul g h _ _ ihg ihh => intro x hx; exact ihg _ (ihh x hx)
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `⟨_, h1 i, qn_T_map n (P i)⟩`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, by simp⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨Y1, h1, e1⟩` from `hx`. Take `⟨Y2, h2, e2⟩` from `hy`. Conclude with `⟨Y1 + Y2, Submodule.add_mem _ h1 h2, by rw [map_add, map_add, e1, e2]⟩`. Consider the case `smul c x _ hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨Y1, h1, e1⟩` from `hx`. Conclude with `⟨c • Y1, Submodule.smul_mem _ _ h1, by rw [map_zsmul, map_zsmul, e1]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem qn_InZ_span (n : ℕ) (ν : Fin n → ℕ) {ι : Type} (P : ι → MvPolynomial (Fin n × Fin n) ℤ)
     (h1 : ∀ i, transposeVariables ℤ n (P i) ∈ dualWeyl ℤ n n ν) (x : MvPolynomial (Fin n × Fin n) ℚ)
@@ -77,31 +77,27 @@ theorem qn_InZ_span (n : ℕ) (ν : Fin n → ℕ) {ι : Type} (P : ι → MvPol
     exact ⟨c • Y1, Submodule.smul_mem _ _ h1, by rw [map_zsmul, map_zsmul, e1]⟩
 
 /- English proof (translation)
-Use `set v := map (Int.castRingHom ℚ) (P i0) with hv`. Establish `hTv : transposeVariables ℚ n v = map (Int.castRingHom ℚ) (transposeVariables ℤ n (P i0))` using `qn_T_map n (P i0)`. Establish `hTvmem : transposeVariables ℚ n v ∈ dualWeyl ℚ n n ν`. Rewrite using `[hTv]`. Conclude with `dualWeylMap ℤ ℚ _ n n ν _ (h1 i0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hTvev : eval (idFrame ℚ n n) (transposeVariables ℚ n v) = 1`. Rewrite using `[hTv, qn_eval_map, h3, Int.cast_one]`. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hx`. Use `⟨Submodule.span_le_restrictScalars ℤ ℚ _ hx, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Take `⟨Y, hY, hy⟩` from `qn_InZ_UZ n ν u hu x (qn_InZ_span n ν P h1 x hx)`. Use `⟨eval (idFrame ℤ n n) Y, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `qn_mem_otherWts'` to reduce the goal to its premises. Establish `hYQ : transposeVariables ℚ n (u x) ∈ dualWeyl ℚ n n ν`. Rewrite using `[hy]`. Conclude with `dualWeylMap ℤ ℚ _ n n ν _ hY`. Rewrite using `[map_sub, map_smul, map_sub, map_smul, qn_comp n ν hν _ hYQ, qn_comp n ν hν _ hTvmem, hTvev, hy, qn_eval_map, one_smul, eq_intCast, sub_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨hxQ, hxN⟩`. Establish `hxD : transposeVariables ℚ n x ∈ dualWeyl ℚ n n ν`. Establish `hle : Submodule.span ℚ (Set.range fun i => map (Int.castRingHom ℚ) (P i)) ≤ (dualWeyl ℚ n n ν).comap (transposeVariables ℚ n).toLinearMap`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `show transposeVariables ℚ n (map (Int.castRingHom ℚ) (P i)) ∈ dualWeyl ℚ n n ν`. Rewrite using `[qn_T_map]`. Conclude with `dualWeylMap ℤ ℚ _ n n ν _ (h1 i)`. Conclude with `hle hxQ`. Use `set W : Set (MvPolynomial (Fin n × Fin n) ℚ) := {F | ∃ y, F = transposeVariables ℚ n y ∧ transposeVariables ℚ n y ∈ dualWeyl ℚ n n ν ∧ y ∈ Nabla (O := ℤ) (glOps ℚ n (rowLetters n) Set.univ) (fun a => (ν a : ℤ)) v} with hWdef`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW : ∀ F ∈ W, ∀ (a b : Fin n) (k : ℕ), a ≠ b → rowDiv ℚ a b k F ∈ W`. Introduce and unpack `F ⟨y, rfl, hyD, hyN⟩ a b k hab`. Use `⟨divPowE (glOps ℚ n (rowLetters n) Set.univ) a b k y, (qn_T_divPowE n a b hab k y).symm, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[qn_T_divPowE n a b hab]`. Conclude with `rowDivStable ℚ n n ν a b k _ hyD`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `u hu`. Establish `hg : divPowE (glOps ℚ n (rowLetters n) Set.univ) a b k ∈ UZmon (glOps ℚ n (rowLetters n) Set.univ)` using `Submonoid.subset_closure (Or.inl ⟨a, b, k, hab, rfl⟩)`. Conclude with `hyN (u * divPowE (glOps ℚ n (rowLetters n) Set.univ) a b k) (Submonoid.mul_mem _ hu hg)`. Establish `hev : ∀ F ∈ W, ∃ z : ℤ, eval (idFrame ℚ n n) F = z`. Introduce and unpack `F ⟨y, rfl, hyD, hyN⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `hyN 1 (Submonoid.one_mem _)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `h` using `qn_otherWts_coeff' n ν _ hc`. Rewrite `h` using `[Module.End.one_apply, map_sub, map_smul, coeff_sub, coeff_smul, ← qn_eval_eq_coeff n ν _ (qn_colHom ℚ n ν _ hyD), ← qn_eval_eq_coeff n ν _ (qn_colHom ℚ n ν _ hTvmem), hTvev, smul_eq_mul, mul_one, eq_intCast, sub_eq_zero]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcol : ∀ F ∈ W, IsWeightedHomogeneous (colW n n) F ν`. Introduce and unpack `F ⟨y, rfl, hyD, _⟩`. Conclude with `qn_colHom ℚ n ν _ hyD`. Establish `htri` using `qn_tri n ν W hW hev hcol (transposeVariables ℚ n x) ⟨x, rfl, hxD, hxN⟩`. Take `⟨Q', hQ'⟩` from `qn_lowerTriIntegral n n ν (transposeVariables ℚ n x) hxD htri`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hQ'' : transposeVariables ℚ n x = map (Int.castRingHom ℚ) Q'` using `hQ'`. Establish `hQmem : Q' ∈ dualWeyl ℤ n n ν` using `(dualWeylIntRat n n ν Q').mpr (hQ'' ▸ hxD)`. Establish `hQs` using `h2 hQmem`. Use `set φ : MvPolynomial (Fin n × Fin n) ℤ →ₗ[ℤ] MvPolynomial (Fin n × Fin n) ℚ := (intQ n n).comp (transposeVariables ℤ n).toLinearMap with hφ`. Establish `hφx : φ Q' = x` using `by show map (Int.castRingHom ℚ) (transposeVariables ℤ n Q') = x`.
-
-Rewrite using `[← qn_T_map, ← hQ'', transposeVariables_involutive]`. Establish `hx` using `Submodule.mem_map_of_mem (f := φ) hQs`. Rewrite `hx` using `[Submodule.map_span, hφx]`. Use `Submodule.span_mono ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`.
-
-Use `⟨i, ?_⟩` and prove the remaining obligations. Use `show _ = map (Int.castRingHom ℚ) (transposeVariables ℤ n (transposeVariables ℤ n (P i)))`. Rewrite using `[transposeVariables_involutive]`.
+A detailed English derivation is pending.
 -/
 theorem qn_main (n : ℕ) (ν : Fin n → ℕ) (hν : Antitone ν) {ι : Type}
     (P : ι → MvPolynomial (Fin n × Fin n) ℤ) (i0 : ι)

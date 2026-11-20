@@ -8,25 +8,25 @@ namespace GlobalTheory.Nef.PathJet
 open PowerSeries
 
 /- English proof (translation)
-Establish `hdv : ∀ (n : ℕ) (p q : PowerSeries R), (X : PowerSeries R) ^ n ∣ p - q → ∀ k, k < n → coeff k p = coeff k q`. Introduce `n p q h k hk`. Use `(PowerSeries.X_pow_dvd_iff.mp h) k hk` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hstab : ∀ f k j, k ≤ j + 1 → coeff k (φ j f) = coeff k (φ k f)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `f k j hkj`. Break down `Nat.lt_or_ge j k with h | h` into its components or cases. Establish `hk : k = j + 1` using `by omega`. Substitute `hk` using the available equality. Conclude with `(hdv _ _ _ (hc j f) (j + 1) (by omega)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Proceed by induction.
 
-Proceed by induction on `j, h using Nat.le_induction with`. Consider the case `base => rfl`. Consider the case `succ j hj ih`. Rewrite using `[hdv _ _ _ (hc j f) k (by omega)]`. Conclude with `ih (by omega)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g : A → PowerSeries R` to `fun f => PowerSeries.mk fun k => coeff k (φ k f)`. Establish `hg : ∀ f k j, k ≤ j + 1 → coeff k (g f) = coeff k (φ j f)`. Introduce `f k j hkj`. Simplify using `only [g, PowerSeries.coeff_mk]`. Conclude with `(hstab f k j hkj).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `gmul : ∀ f h, g (f * h) = g f * g h`. Introduce `f h`. Use extensionality with `k`. Rewrite using `[hg _ k k (by omega), hdv _ _ _ ((hφ k).1.1 f h) k (by omega), coeff_mul, coeff_mul]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[hg f x.1 k (by omega), hg h x.2 k (by omega)]`. Establish `gadd : ∀ f h, g (f + h) = g f + g h`. Introduce `f h`. Use extensionality with `k`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[hg _ k k (by omega), hdv _ _ _ ((hφ k).1.2.1 f h) k (by omega), map_add, map_add, hg f k k (by omega), hg h k k (by omega)]`. Establish `gone : g 1 = 1`. Use extensionality with `k`. Rewrite using `[hg _ k k (by omega), hdv _ _ _ (hφ k).1.2.2.1 k (by omega)]`. Establish `gzero : g 0 = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `gadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Take the linear combination `-this`. Set `γ : A →+* PowerSeries R` to `{ toFun := g, map_one' := gone, map_mul' := gmul, map_zero' := gzero, map_add' := gadd }`. Use `⟨γ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `b k show coeff k (g (π b)) = coeff k (C (β b))`. Rewrite using `[hg _ k k (by omega), hdv _ _ _ ((hφ k).1.2.2.2 b) k (by omega)]`. Use extensionality with `f show constantCoeff (g f) = β (ε f)`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, hg f 0 0 (by omega), coeff_zero_eq_constantCoeff_apply, (hφ 0).2.2.1 f]`. Introduce `f show coeff 1 (g f) = δ f`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg f 1 0 (by omega), (hφ 0).2.2.2 f]`. Use extensionality with `f k show coeff k (rescale 2 (g f)) = coeff k (g (m f))`. Rewrite using `[coeff_rescale, hg f k k (by omega), hg (m f) k k (by omega), hdv _ _ _ ((hφ k).2.1 f) k (by omega), coeff_rescale]`.
+A detailed English derivation is pending.
 -/
 theorem limit_of_jets (A B R : Type) [CommRing A] [CommRing B] [CommRing R] (π : B →+* A)
     (ε : A →+* B) (m : A →+* A) (β : B →+* R) (δ : A →+ R) (φ : ℕ → A → PowerSeries R)

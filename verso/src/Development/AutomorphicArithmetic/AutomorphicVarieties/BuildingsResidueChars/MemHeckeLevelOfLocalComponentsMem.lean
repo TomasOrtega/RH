@@ -11,21 +11,19 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ _ s n hn V Q c m τ₀ K`. Establish `hS : ∀ q : Q.Q, (Q.wq q).under (𝓞 (Lp L)) ∈ V.S'` using `fun q => by`. Rewrite using `[Q.range]`. Conclude with `Or.inr ⟨q, rfl⟩`. Establish `hsec` using `fun q : Q.Q => (secU l L Ω s n hn (Q.wq q) (UpperTheory.isSplitAt_of_decomposition_le_restriction_range L Ω _ _ (s.hA _) (V.split _ (hS q)) _ rfl)).2 (Q.notS q)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the second alternative. Establish an intermediate fact.
 
-Establish `h1 : ∀ (q : Q.Q) (g : GLw n (Q.wq q)) (w : Plc L), w.under (𝓞 (Lp L)) ≠ (Q.wq q).under (𝓞 (Lp L)) → CaseU.cmp n w ((sec n s (Q.wq q) g : Ub n s) : Ga l L n) = 1` using `fun q g w hw => MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 ((hsec q).2.2 g) w) hw)`. Establish `key : ∀ (T : Finset Q.Q) (u : Ub n s), (∀ w : Plc L, w.under (𝓞 (Lp L)) ∉ V.S' → CaseU.cmp n w (u : Ga l L n) ∈ KO (w.adicCompletion L) (Fin n)) → (∀ q : Q.Q, CaseU.cmp n (Q.wq q) (u : Ga l L n) ∈ K.1 q) → (∀ q ∉ T, CaseU.cmp n (Q.wq q) (u : Ga l L n) = 1) → u ∈ (hset Q τ₀).lev K`. Introduce `T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `u hu _ h0`. Use `Subgroup.mem_sup_left (S := UQ n Q) ?_` and prove the remaining obligations. Conclude with `Subgroup.mem_inf.2 ⟨Subgroup.mem_iInf.2 fun w => Subgroup.mem_iInf.2 fun hw => hu w hw, Subgroup.mem_iInf.2 fun q => MonoidHom.mem_ker.2 (h0 q (Finset.notMem_empty q))⟩`. Consider the case `insert q T _ ih`. Introduce `u hu hK h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `x : Ub n s` to `sec n s (Q.wq q) (CaseU.cmp n (Q.wq q) (u : Ga l L n))`. Establish `hx : x ∈ (hset Q τ₀).lev K` using `Subgroup.mem_sup_right (Subgroup.mem_iSup_of_mem q ⟨_, hK q, rfl⟩)`. Establish `e1 : ∀ w : Plc L, w.under (𝓞 (Lp L)) ≠ (Q.wq q).under (𝓞 (Lp L)) → CaseU.cmp n w ((x⁻¹ * u : Ub n s) : Ga l L n) = CaseU.cmp n w (u : Ga l L n)` using `fun w hw => by`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv, h1 q _ w hw, inv_one, one_mul]`. Establish `e2 : CaseU.cmp n (Q.wq q) ((x⁻¹ * u : Ub n s) : Ga l L n) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv, (hsec q).2.1, inv_mul_cancel]`. Establish `hy : x⁻¹ * u ∈ (hset Q τ₀).lev K`. Use `ih _ (fun w hw => ?_) (fun q' => ?_) fun q' hq' => ?_` and prove the remaining obligations. Rewrite using `[e1 w fun h => hw (h ▸ hS q)]`. Conclude with `hu w hw`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : q' = q`. Substitute `h` using the available equality. Rewrite using `[e2]`. Conclude with `one_mem _`. Rewrite using `[e1 _ fun h' => h (Q.inj h')]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hK q'`. Distinguish the cases in `h : q' = q`. Substitute `h` using the available equality. Conclude with `e2`. Rewrite using `[e1 _ fun h' => h (Q.inj h')]`.
-
-Conclude with `h0 q' fun h' => (Finset.mem_insert.1 h').elim h hq'`. Establish `e : u = x * (x⁻¹ * u)` using `(mul_inv_cancel_left x u).symm`. Rewrite using `[e]`. Conclude with `Subgroup.mul_mem _ hx hy`. Conclude with `fun u hu hK => key Finset.univ u hu hK fun q hq => (hq (Finset.mem_univ q)).elim`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem UpperTheory.mem_heckeLevel_of_local_components_mem :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n → ∀ (V : s.Lev) (Q : QData V) (c : Coef l) (m : ℕ) (τ₀ : KT n (wt s) →* GL (Fin m) c.O) (K : (hset Q τ₀).Lev) (u : Ub n s), (∀ w : Plc L, w.under (𝓞 (Lp L)) ∉ V.S' → cmp n w (u : Ga l L n) ∈ KO (w.adicCompletion L) (Fin n)) → (∀ q : Q.Q, cmp n (Q.wq q) (u : Ga l L n) ∈ K.1 q) → u ∈ (hset Q τ₀).lev K := by

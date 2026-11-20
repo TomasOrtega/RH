@@ -6,9 +6,9 @@ open Module
 namespace GlobalTheory.Per.Sen
 
 /- English proof (translation)
-Establish `h` using `finrank_span_eq_card (hd.comp (Subtype.val : {i // p i} → Fin m) Subtype.val_injective)`. Rewrite `h` using `[Fintype.card_subtype]`. Rewrite using `[show d '' {i | p i} = Set.range (d ∘ (Subtype.val : {i // p i} → Fin m)) by`. Use extensionality with `x`. Simplify using `[Set.mem_image, Set.mem_range]]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem finrank_span_image_eq_card {L M : Type} [Field L] [AddCommGroup M] [Module L M] {m : ℕ}
     (d : Fin m → M) (hd : LinearIndependent L d) (p : Fin m → Prop) [DecidablePred p] :
@@ -20,13 +20,11 @@ theorem finrank_span_image_eq_card {L M : Type} [Field L] [AddCommGroup M] [Modu
   exact h
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `(Submodule.fg_iff_finiteDimensional D).mpr inferInstance`. Establish `key : ∀ T : Finset M, (T : Set M) ⊆ D → ∃ a, ∀ x ∈ T, x ∈ A a`. Introduce `T`. Use `Finset.induction_on T ?_ ?_` and prove the remaining obligations. Introduce `_; exact ⟨0, by simp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y T _ ih hT`. Take `⟨a, ha⟩` from `ih (fun z hz => hT (Finset.mem_coe.mpr (Finset.mem_insert_of_mem hz)))`. Take `⟨b, hb⟩` from `hex y (hT (Finset.mem_coe.mpr (Finset.mem_insert_self y T)))`. Use `⟨min a b, fun x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hx with rfl | hx` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hA (min_le_right a b) hb`. Conclude with `hA (min_le_left a b) (ha x hx)`. Take `⟨a, ha⟩` from `key S (by rw [← hS]; exact Submodule.subset_span)`. Use `⟨a, le_antisymm (hAD a) ?_⟩` and prove the remaining obligations. Rewrite using `[← hS, Submodule.span_le]`.
-
-Conclude with `fun x hx => ha x hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem exists_eq_of_antitone_le_of_exhaustive {L M : Type} [Field L] [AddCommGroup M] [Module L M]
     (D : Submodule L M) [FiniteDimensional L D] (A : ℤ → Submodule L M) (hA : Antitone A)
@@ -50,63 +48,57 @@ private theorem exists_eq_of_antitone_le_of_exhaustive {L M : Type} [Field L] [A
   exact fun x hx => ha x hx
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero`. Introduce `D _ A U hr hA hAD hex hsep hU`. Establish `hD : D = ⊥` using `Submodule.finrank_eq_zero.mp hr`. Establish `hA0 : ∀ a, A a = ⊥` using `fun a => le_bot_iff.mp (hD ▸ hAD a)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU0 : U = 0`. Use extensionality with `a`. Establish `h` using `hU a`. Rewrite `h` using `[hA0 a, hA0 (a + 1), finrank_bot]`. Rewrite using `[Multiset.count_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Move the coercions through the operations in `at h`. Use linear arithmetic over natural numbers and integers. Use `⟨Fin.elim0, Fin.elim0, by simp [hU0], linearIndependent_empty_type, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hA0 a]`. Use `symm`.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Rewrite using `[Submodule.span_eq_bot]`. Introduce and unpack `x ⟨k, -, -⟩`. Conclude with `k.elim0`. Consider the case `succ r ih`. Introduce `D _ A U hr hA hAD hex hsep hU`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a0, ha0⟩` from `exists_eq_of_antitone_le_of_exhaustive D A hA hAD hex`. Establish `hDne : D ≠ ⊥`. Introduce `h`. Rewrite `hr` using `[h, finrank_bot]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hwD, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hDne`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b, w ∉ A b := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hw0 (hsep w h)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hbd : ∀ a, A a = D → a < b`. Introduce `a ha`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hb (hA h (by rw [ha]; exact hwD))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hsmax⟩` from `Int.exists_greatest_of_bdd ⟨b, fun z hz => (hbd z hz).le⟩ ⟨a0, ha0⟩`. Establish `hBD : A (s + 1) < D` using `lt_of_le_of_ne (hAD _) (fun h => by have := hsmax _ h; omega)`. Take `⟨v, hvD, hvB⟩` from `SetLike.exists_of_lt hBD`. Establish `hv0 : v ≠ 0` using `fun h => hvB (by rw [h]; exact Submodule.zero_mem _)`. Take `⟨C, hC⟩` from `Submodule.exists_isCompl (A (s + 1) ⊔ Submodule.span L {v})`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨D', hD'⟩ : ∃ D' : Submodule L M, D' = A (s + 1) ⊔ (C ⊓ D)` from `⟨_, rfl⟩`. Establish `hED : A (s + 1) ⊔ Submodule.span L {v} ≤ D` using `sup_le (hAD _) ((Submodule.span_singleton_le_iff_mem _ _).mpr hvD)`. Establish `hD'D : D' ≤ D` using `by rw [hD']; exact sup_le (hAD _) inf_le_right`. Establish `hBD' : A (s + 1) ≤ D'` using `by rw [hD']; exact le_sup_left`. Establish `hvD' : v ∉ D'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hv`. Rewrite `hv` using `[hD']`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.mp hv`. Establish `hzE : z ∈ A (s + 1) ⊔ Submodule.span L {v}`. Establish `: z = v - y` using `by rw [← hyz]; abel`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_right (Submodule.mem_span_singleton_self v)) (Submodule.mem_sup_left hy)`. Establish `hz0 : z = 0` using `(Submodule.disjoint_def.mp hC.disjoint) z hzE hz.1`. Apply `hvB` to reduce the goal to its premises. Rewrite using `[← hyz, hz0, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hy`. Establish `hsup : D' ⊔ Submodule.span L {v} = D`. Rewrite using `[hD', sup_right_comm, ← sup_inf_assoc_of_le _ hED, hC.sup_eq_top, top_inf_eq]`. Establish `hinf : D' ⊓ Submodule.span L {v} = ⊥`. Rewrite using `[eq_bot_iff]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨hx1, hx2⟩` from `Submodule.mem_inf.mp hx`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hx2`. Distinguish the cases in `hc : c = 0`. Simplify using `[hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Conclude with `absurd ((Submodule.smul_mem_iff _ hc).mp hx1) hvD'`. Establish `: FiniteDimensional L D'` using `Submodule.finiteDimensional_of_le hD'D`. Establish `: FiniteDimensional L (Submodule.span L {v})` using `FiniteDimensional.span_of_finite L (Set.finite_singleton v)`. Establish `hrD' : Module.finrank L D' = r`. Establish `h` using `Submodule.finrank_sup_add_finrank_inf_eq D' (Submodule.span L {v})`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hsup, hinf, finrank_bot, finrank_span_singleton hv0, hr]`. Use linear arithmetic over natural numbers and integers. Establish `hlow : ∀ a, a ≤ s → A a = D` using `fun a ha => le_antisymm (hAD a) (by rw [← hs]; exact hA ha)`. Establish `hs_mem : 0 < U.count s`. Establish `h` using `hU s`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite `h` using `[hs, hr]`. Use `Submodule.finrank_lt_finrank_of_lt hBD` as an intermediate fact. Rewrite `this` using `[hr]`. Use linear arithmetic over natural numbers and integers. Establish `hU' : ∀ a : ℤ, (Module.finrank L ↥(A a ⊓ D') : ℤ) - Module.finrank L ↥(A (a + 1) ⊓ D') = ((U.erase s).count a : ℤ)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a`. Break down `lt_trichotomy a s with h | h | h` into its components or cases. Establish `h0` using `hU a`. Rewrite `h0` using `[hlow a h.le, hlow (a + 1) (by omega)]`. Rewrite using `[hlow a h.le, hlow (a + 1) (by omega), inf_eq_right.mpr hD'D, Multiset.count_erase_of_ne h.ne]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[h]`. Establish `h0` using `hU s`. Rewrite `h0` using `[hs, hr]`. Rewrite using `[hs, inf_eq_right.mpr hD'D, inf_eq_left.mpr hBD', Multiset.count_erase_self, hrD', Nat.cast_sub hs_mem, Nat.cast_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h0 ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite using `[inf_eq_left.mpr ((hA (show s + 1 ≤ a by omega)).trans hBD'), inf_eq_left.mpr ((hA (show s + 1 ≤ a + 1 by omega)).trans hBD'), Multiset.count_erase_of_ne h.ne']`. Conclude with `hU a`. Take `⟨u', d', hu', hd', hspan'⟩` from `ih D' (fun a => A a ⊓ D') (U.erase s) hrD' (fun a b h => inf_le_inf_right _ (hA h)) (fun a => inf_le_right) (fun x hx => by obtain ⟨a, ha⟩ := hex x (hD'D hx); exact ⟨a, Submodule.mem_inf.mpr ⟨ha, hx⟩⟩) (fun x hx => hsep x (fun a => (Submodule.mem_inf.mp (hx a)).1)) hU'`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hd'D' : ∀ k, d' k ∈ D'`. Introduce `k`. Establish `h` using `hspan' (u' k)`. Establish `hk : d' k ∈ Submodule.span L (d' '' {j | u' k ≤ u' j})` using `Submodule.subset_span ⟨k, le_refl (u' k), rfl⟩`. Rewrite `hk` using `[← h]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(Submodule.mem_inf.mp hk).2`. Use `⟨Fin.cons s u', Fin.cons v d', ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.univ_val_map, List.ofFn_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[← Multiset.cons_coe, ← Fin.univ_val_map, hu']`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Multiset.cons_erase (Multiset.count_pos.mp hs_mem)`. Use `linearIndependent_finCons.mpr ⟨hd', fun hv => hvD' ?_⟩` and prove the remaining obligations. Conclude with `(Submodule.span_le.mpr (by rintro _ ⟨k, rfl⟩; exact hd'D' k)) hv`. Introduce `a`. Distinguish the cases in `has : a ≤ s`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlow a has]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← hsup, sup_le_iff]`. Prove the components needed by the constructor for the conclusion. Establish `h` using `hspan' a`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h` using `[hlow a has, inf_eq_right.mpr hD'D]`. Rewrite using `[h]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Conclude with `⟨j.succ, by simpa using hj, by simp⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `Submodule.subset_span ⟨0, by simpa using has, by simp⟩`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, -, rfl⟩`. Break down `Fin.eq_zero_or_eq_succ k with rfl | ⟨j, rfl⟩` into its components or cases.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `using hvD`. Simplify using `using hD'D (hd'D' j)`. Use `push Not at has`. Establish `h` using `hspan' a`. Rewrite `h` using `[inf_eq_left.mpr ((hA (show s + 1 ≤ a by omega)).trans hBD')]`.
-
-Rewrite using `[h]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, hj, rfl⟩`.
-
-Conclude with `⟨j.succ, by simpa using hj, by simp⟩`. Introduce and unpack `⟨k, hk, rfl⟩`. Break down `Fin.eq_zero_or_eq_succ k with rfl | ⟨j, rfl⟩` into its components or cases. Simplify using `at hk`. Use linear arithmetic over natural numbers and integers.
-
-Conclude with `⟨j, by simpa using hk, by simp⟩`.
+Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_adapted_basis_of_finrank_jumps {L M : Type} [Field L] [AddCommGroup M] [Module L M]
     (r : ℕ) : ∀ (D : Submodule L M) [FiniteDimensional L D] (A : ℤ → Submodule L M)
@@ -264,7 +256,7 @@ private theorem exists_adapted_basis_of_finrank_jumps {L M : Type} [Field L] [Ad
           · exact ⟨j, by simpa using hk, by simp⟩
 
 /- English proof (translation)
-Introduce `L M _ _ _ D _ A U r hr hA hAD hex hsep hU`. Conclude with `exists_adapted_basis_of_finrank_jumps r D A U hr hA hAD hex hsep hU`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem adapted_basis_jumps : ∀ {L M : Type} [Field L] [AddCommGroup M] [Module L M]
     (D : Submodule L M) [FiniteDimensional L D] (A : ℤ → Submodule L M) (U : Multiset ℤ) (r : ℕ),

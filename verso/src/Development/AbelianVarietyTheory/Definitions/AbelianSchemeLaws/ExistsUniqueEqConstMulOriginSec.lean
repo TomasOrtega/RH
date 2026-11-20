@@ -26,9 +26,9 @@ def twoChartFn (a : Γ(X, U₀)) (b : Γ(X, U₁)) : ∀ i, Γ(X, (twoChart U₀
   | false => b
 
 /- English proof (translation)
-Apply the tactic sequence `rcases i with _ | _ <;> rcases j with _ | _`. Conclude with `((congrArg (· * _) (one_pow n)).trans (one_mul _)).symm`. Establish `l : U₁ ⊓ U₀ ≤ U₀ ⊓ U₁` using `le_inf inf_le_right inf_le_left`. Establish `e` using `congrArg (resG X l) h`. Simplify using `only [map_mul, map_pow, resG_resG] at e`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `resG X (inf_le_left : U₁ ⊓ U₀ ≤ U₁) b = ((res l u)⁻¹).val ^ n * resG X (inf_le_right : U₁ ⊓ U₀ ≤ U₀) a`. Rewrite using `[e, ← val_res, ← mul_assoc, ← mul_pow, Units.inv_mul, one_pow, one_mul]`. Conclude with `h`. Conclude with `((congrArg (· * _) (one_pow n)).trans (one_mul _)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twoChartFn_compat (n : ℕ) {a : Γ(X, U₀)} {b : Γ(X, U₁)}
     (h : resG X inf_le_left a = (u : Γ(X, U₀ ⊓ U₁)) ^ n * resG X inf_le_right b) (i j : Bool) :
@@ -52,7 +52,7 @@ def twoChartSec (a : Γ(X, U₀)) (b : Γ(X, U₁))
   compat i j := (twoChartFn_compat u 1 (by rwa [pow_one]) i j).trans (by rw [pow_one])
 
 /- English proof (translation)
-Substitute `hV` using the available equality. Use `hU.isLocalization_basicOpen a` as an intermediate fact. Conclude with `IsLocalization.injective Γ(X, X.basicOpen a) (Submonoid.powers_le.2 ha)`.
+Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem resG_injective_of_eq_basicOpen {U V : X.Opens} (hU : IsAffineOpen U) {a : Γ(X, U)}
     (ha : a ∈ nonZeroDivisors Γ(X, U)) (hV : V = X.basicOpen a) (h : V ≤ U) :
@@ -62,7 +62,7 @@ theorem resG_injective_of_eq_basicOpen {U V : X.Opens} (hU : IsAffineOpen U) {a 
   exact IsLocalization.injective Γ(X, X.basicOpen a) (Submonoid.powers_le.2 ha)
 
 /- English proof (translation)
-Substitute `hV` using the available equality. Rewrite using `[← Scheme.Hom.app_eq_appLE]`. Conclude with `(ConcreteCategory.bijective_of_isIso (e.app U)).1`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appLE_injective_of_isIso (e : Y ⟶ X) [IsIso e] {U : X.Opens} {V : Y.Opens}
     (hV : V = e ⁻¹ᵁ U) : Function.Injective (e.appLE U V hV.le).hom := by
@@ -71,7 +71,7 @@ theorem appLE_injective_of_isIso (e : Y ⟶ X) [IsIso e] {U : X.Opens} {V : Y.Op
   exact (ConcreteCategory.bijective_of_isIso (e.app U)).1
 
 /- English proof (translation)
-Establish `e : evalPt x U h a = (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom (resG _ h ((x.app U).hom a))` using `rfl`. Rewrite using `[e, map_eq_zero_iff _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of A)).hom).1]`. Use `⟨fun h0 => ?_, fun h0 => by rw [h0, map_zero]⟩` and prove the remaining obligations. Use `congrArg (resG _ (le_top : x ⁻¹ᵁ U ≤ ⊤)) h0` as an intermediate fact. Rewrite `this` using `[resG_resG, resG_self, map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem evalPt_eq_zero_iff {A : Type} [CommRing A] (x : Sp A ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U)
     (a : Γ(X, U)) : evalPt x U h a = 0 ↔ (x.app U).hom a = 0 := by
@@ -84,7 +84,7 @@ theorem evalPt_eq_zero_iff {A : Type} [CommRing A] (x : Sp A ⟶ X) {U : X.Opens
   rwa [resG_resG, resG_self, map_zero] at this
 
 /- English proof (translation)
-The claim follows from `le_inf le_rfl fun _ hy => Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hy 0`.
+A detailed English derivation is pending.
 -/
 theorem wchart_le_const (L : LB X) (φ : Y ⟶ X) (n : ℕ) (k : Fin (n + 1) → L.ι) :
     LB.wchart L (fun _ : Fin (n + 1) => φ) k ≤
@@ -122,7 +122,7 @@ def finPowSec {L : LB X} (hL : L.IsLB) {n : ℕ} (s : (lbPow L (n + 1)).Sec) (φ
       exact congrArg (· * _) (congrArg Units.val (c₁.trans c₂.symm))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, fun _ => (gs_mul _ y _ hk _ _).trans (congrArg₂ (· * ·) (gs_unit _ y _ hk _) ((gs_appLE φ _ _ _ (𝟙 Y) y hk _).trans (by rw [Category.id_comp])))⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_gs_finPowSec {L : LB X} (hL : L.IsLB) {n : ℕ} (φ : Y ⟶ X) (y : Y)
     (k : Fin (n + 1) → L.ι) (hk : y ∈ LB.wchart L (fun _ : Fin (n + 1) => φ) k) :
@@ -132,7 +132,7 @@ theorem exists_gs_finPowSec {L : LB X} (hL : L.IsLB) {n : ℕ} (φ : Y ⟶ X) (y
     ((gs_appLE φ _ _ _ (𝟙 Y) y hk _).trans (by rw [Category.id_comp])))⟩
 
 /- English proof (translation)
-Use `nonzeroLocus_eq_of _ _ (fun y _ => exists_chart (LB.isLB_linComb hL _ _) y) fun y k hk => ?_` and prove the remaining obligations. Take `⟨v, hv⟩` from `exists_gs_finPowSec hL φ y k hk`. Establish `hy : φ y ∈ L.U (k 0)` using `Set.mem_iInter.1 hk 0`. Rewrite using `[hv, Units.isUnit_units_mul, isUnit_gs_iff φ y _ hy, ← nonzeroLocus_inf_powSecFn]`. Conclude with `⟨fun h => h.1, fun h => ⟨h, hy⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem nonzeroLocus_finPowSec {L : LB X} (hL : L.IsLB) {n : ℕ} (s : (lbPow L (n + 1)).Sec)
     (φ : Y ⟶ X) : nonzeroLocus (finPowSec hL s φ) = φ ⁻¹ᵁ nonzeroLocus s := by
@@ -143,9 +143,9 @@ theorem nonzeroLocus_finPowSec {L : LB X} (hL : L.IsLB) {n : ℕ} (s : (lbPow L 
   exact ⟨fun h => h.1, fun h => ⟨h, hy⟩⟩
 
 /- English proof (translation)
-Rewrite using `[← RingHom.range_eq_top, ← top_le_iff, ← CommRingCat.closure_range_union_range_eq_top_of_isPushout po, Subring.closure_le]`. Introduce and unpack `_ (⟨d, rfl⟩ | ⟨c, rfl⟩)`. Take `⟨p, rfl⟩` from `h d`. Use `⟨MvPolynomial.map (b.hom.comp c) p, ?_⟩` and prove the remaining obligations. Establish `e : inr.hom.comp b.hom = inl.hom.comp a.hom` using `congrArg CommRingCat.Hom.hom po.w.symm`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.eval₂Hom_map_hom, ← RingHom.comp_assoc, e, RingHom.comp_assoc]`. Conclude with `(MvPolynomial.map_eval₂Hom _ _ _ p).symm`. Conclude with `⟨MvPolynomial.C c, MvPolynomial.eval₂Hom_C _ _ _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eval₂Hom_surjective_of_isPushout {A B C D : CommRingCat.{0}} {a : A ⟶ B} {b : A ⟶ C}
     {inl : B ⟶ D} {inr : C ⟶ D} (po : IsPushout a b inl inr) {R σ : Type} [CommRing R]
@@ -180,7 +180,7 @@ section
 variable {W} {U V : (scheme W).Opens}
 
 /- English proof (translation)
-Simplify using `only [originCofactor, map_add, map_sub, map_mul, map_pow, map_one, resG_constOn, resG_ratioOn]`.
+Simplify using the standard rewrite rules.
 -/
 theorem resG_originCofactor (hU : U ≤ coordOpen W 1) (h : V ≤ U) :
     resG _ h (originCofactor W U hU) = originCofactor W V (h.trans hU) := by
@@ -188,7 +188,7 @@ theorem resG_originCofactor (hU : U ≤ coordOpen W 1) (h : V ≤ U) :
     resG_ratioOn]
 
 /- English proof (translation)
-Establish `h` using `(WeierstrassCurve.Projective.equation_iff _).1 (equation_ratioOn hU)`. Simplify using `only [WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆, ratioOn_self] at h`. Rewrite using `[originCofactor]`. Take the linear combination `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ratioOn_mul_originCofactor (hU : U ≤ coordOpen W 1) :
     ratioOn W U 1 hU 2 * originCofactor W U hU = ratioOn W U 1 hU 0 ^ 3 := by
@@ -203,12 +203,12 @@ end
 def originOpen : (scheme W).Opens := (scheme W).basicOpen (originCofactor W (coordOpen W 1) le_rfl)
 
 /- English proof (translation)
-The claim follows from `(scheme W).basicOpen_le _`.
+A detailed English derivation is pending.
 -/
 theorem originOpen_le : originOpen W ≤ coordOpen W 1 := (scheme W).basicOpen_le _
 
 /- English proof (translation)
-The claim follows from `(isAffineOpen_coordOpen W 1).basicOpen _`.
+A detailed English derivation is pending.
 -/
 theorem isAffineOpen_originOpen : IsAffineOpen (originOpen W) :=
   (isAffineOpen_coordOpen W 1).basicOpen _
@@ -216,7 +216,7 @@ theorem isAffineOpen_originOpen : IsAffineOpen (originOpen W) :=
 variable {W} in
 
 /- English proof (translation)
-Establish `: IsUnit (resG _ (originOpen_le W) (originCofactor W (coordOpen W 1) le_rfl))` using `(scheme W).toRingedSpace.isUnit_res_basicOpen _`. Use `this.map (resG _ h)` as an intermediate fact. Rewrite `this` using `[resG_originCofactor, resG_originCofactor]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_originCofactor {U : (scheme W).Opens} (h : U ≤ originOpen W) :
     IsUnit (originCofactor W U (h.trans (originOpen_le W))) := by
@@ -226,13 +226,13 @@ theorem isUnit_originCofactor {U : (scheme W).Opens} (h : U ≤ originOpen W) :
   rwa [resG_originCofactor, resG_originCofactor] at this
 
 /- English proof (translation)
-Use `top_le_iff.1 fun x _ => ?_` and prove the remaining obligations. Break down `(coordOpen_one_sup_coordOpen_two W).ge (Set.mem_univ x) with hx | hx` into its components or cases. Use `swap`. Conclude with `Or.inr hx`. Establish `key : ∀ {S : Type} [CommRing S] [IsLocalRing S] (z w u a b : S), w * u = z ^ 3 → u + (z * a + w * b) = 1 → IsUnit u ∨ IsUnit w`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S _ _ z w u a b h₁ h₂`. Break down `IsLocalRing.isUnit_or_isUnit_of_add_one h₂ with h | h` into its components or cases. Conclude with `Or.inl h`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add h with h | h` into its components or cases. Conclude with `Or.inl (isUnit_of_mul_isUnit_right (h₁ ▸ (isUnit_of_mul_isUnit_left h).pow 3))`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inr (isUnit_of_mul_isUnit_left h)`. Set `γ` to `((scheme W).presheaf.germ (coordOpen W 1) x hx).hom`. Break down `key (γ (ratio W 1 0)) (γ (ratio W 1 2)) (γ (originCofactor W _ le_rfl)) (γ (constOn W _ W.a₂ * ratio W 1 0 + constOn W _ W.a₄ * ratio W 1 2 - constOn W _ W.a₁)) (γ (constOn W _ W.a₆ * ratio W 1 2 - constOn W _ W.a₃)) (by rw [← map_mul, ratioOn_mul_originCofactor, map_pow]) (by rw …` into its components or cases. Use `congr 1`. Use the proof step `ring) with h | h`.
+Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis. Reduce the equality to equality of the corresponding arguments. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inl (((scheme W).mem_basicOpen _ x hx).2 h)`. Conclude with `Or.inr ((basicOpen_ratioOn le_rfl).le (((scheme W).mem_basicOpen _ x hx).2 h)).2`.
+A detailed English derivation is pending.
 -/
 theorem originOpen_sup_coordOpen_two : originOpen W ⊔ coordOpen W 2 = ⊤ := by
   refine top_le_iff.1 fun x _ => ?_
@@ -263,7 +263,7 @@ abbrev originParam : Γ(scheme W, originOpen W) := ratioOn W (originOpen W) 1 (o
 variable {W} in
 
 /- English proof (translation)
-Rewrite using `[← isUnit_pow_iff three_ne_zero, ← ratioOn_mul_originCofactor]`. Conclude with `(isUnit_ratioOn _ h₁).mul (isUnit_originCofactor h₀)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_ratioOn_one_zero {U : (scheme W).Opens} (h₀ : U ≤ originOpen W)
     (h₁ : U ≤ coordOpen W 2) : IsUnit (ratioOn W U 1 (h₀.trans (originOpen_le W)) 0) := by
@@ -271,7 +271,7 @@ theorem isUnit_ratioOn_one_zero {U : (scheme W).Opens} (h₀ : U ≤ originOpen 
   exact (isUnit_ratioOn _ h₁).mul (isUnit_originCofactor h₀)
 
 /- English proof (translation)
-Rewrite using `[← (scheme W).basicOpen_pow _ three_pos, ← ratioOn_mul_originCofactor, Scheme.basicOpen_mul, basicOpen_ratioOn, (scheme W).basicOpen_of_isUnit (isUnit_originCofactor le_rfl)]`. Conclude with `inf_eq_left.2 inf_le_left`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basicOpen_originParam :
     (scheme W).basicOpen (originParam W) = originOpen W ⊓ coordOpen W 2 := by
@@ -280,7 +280,7 @@ theorem basicOpen_originParam :
   exact inf_eq_left.2 inf_le_left
 
 /- English proof (translation)
-Establish `h` using `((isRegularFn_ratio_one_two W).resG (originOpen_le W)).mul (.of_isUnit (isUnit_originCofactor (le_refl (originOpen W))))`. Rewrite `h` using `[resG_ratioOn, ratioOn_mul_originCofactor]`. Conclude with `h.of_dvd (dvd_pow_self _ three_ne_zero)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRegularFn_originParam : Cartier.IsRegularFn (originParam W) := by
   have h := ((isRegularFn_ratio_one_two W).resG (originOpen_le W)).mul
@@ -289,7 +289,7 @@ theorem isRegularFn_originParam : Cartier.IsRegularFn (originParam W) := by
   exact h.of_dvd (dvd_pow_self _ three_ne_zero)
 
 /- English proof (translation)
-The claim follows from `resG_injective_of_eq_basicOpen (isAffineOpen_originOpen W) (isRegularFn_originParam W).mem (basicOpen_originParam W).symm _`.
+A detailed English derivation is pending.
 -/
 theorem resG_originOpen_injective :
     Function.Injective (resG _ (inf_le_left : originOpen W ⊓ coordOpen W 2 ≤ originOpen W)) :=
@@ -323,7 +323,7 @@ Both sides reduce to the same expression.
 @[simp] theorem originLB_g_true_false : (originLB W).g true false = originUnit W := rfl
 
 /- English proof (translation)
-The claim follows from `twoChart_isLB (originOpen_sup_coordOpen_two W) _`.
+A detailed English derivation is pending.
 -/
 theorem originLB_isLB : (originLB W).IsLB := twoChart_isLB (originOpen_sup_coordOpen_two W) _
 
@@ -346,14 +346,14 @@ Both sides reduce to the same expression.
 @[simp] theorem originSec_f_false : (originSec W).f false = (1 : Γ(scheme W, coordOpen W 2)) := rfl
 
 /- English proof (translation)
-The claim follows from `| true => isRegularFn_originParam W | false => .of_isUnit isUnit_one`.
+A detailed English derivation is pending.
 -/
 theorem isRegularSec_originSec : Cartier.IsRegularSec (originSec W)
   | true => isRegularFn_originParam W
   | false => .of_isUnit isUnit_one
 
 /- English proof (translation)
-Use `le_antisymm (iSup_le ?_) ?_` and prove the remaining obligations. Introduce and unpack `(_ | _)`. Conclude with `(scheme W).basicOpen_le _`. Conclude with `(basicOpen_originParam W).le.trans inf_le_right`. Conclude with `((scheme W).basicOpen_of_isUnit (isUnit_one (M := Γ(scheme W, coordOpen W 2)))).ge.trans (basicOpen_le_nonzeroLocus (originSec W) false)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_originSec : nonzeroLocus (originSec W) = coordOpen W 2 := by
   refine le_antisymm (iSup_le ?_) ?_
@@ -366,7 +366,7 @@ theorem nonzeroLocus_originSec : nonzeroLocus (originSec W) = coordOpen W 2 := b
 variable {W} in
 
 /- English proof (translation)
-The claim follows from `(mul_one _).symm.trans (evalPt_ptHom_ratioOn_mul (algebraMap R R) ![0, 1, 0] (isUnimodularSol_zero _) hU h j)`.
+A detailed English derivation is pending.
 -/
 theorem evalPt_zero_ratioOn {U : (scheme W).Opens} (hU : U ≤ coordOpen W 1)
     (h : ⊤ ≤ zero W ⁻¹ᵁ U) (j : Fin 3) :
@@ -377,7 +377,7 @@ theorem evalPt_zero_ratioOn {U : (scheme W).Opens} (hU : U ≤ coordOpen W 1)
 variable {W} in
 
 /- English proof (translation)
-The claim follows from `evalPt_constOn (ρ := RingHom.id R) ((zero_toSpec W).trans (Spec.map_id _).symm) h r`.
+A detailed English derivation is pending.
 -/
 theorem evalPt_zero_constOn {U : (scheme W).Opens} (h : ⊤ ≤ zero W ⁻¹ᵁ U) (r : R) :
     evalPt (zero W) U h (constOn W U r) = r :=
@@ -386,14 +386,14 @@ theorem evalPt_zero_constOn {U : (scheme W).Opens} (h : ⊤ ≤ zero W ⁻¹ᵁ 
 variable {W} in
 
 /- English proof (translation)
-Simplify using `[originCofactor, evalPt_zero_ratioOn]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evalPt_zero_originCofactor {U : (scheme W).Opens} (hU : U ≤ coordOpen W 1)
     (h : ⊤ ≤ zero W ⁻¹ᵁ U) : evalPt (zero W) U h (originCofactor W U hU) = 1 := by
   simp [originCofactor, evalPt_zero_ratioOn]
 
 /- English proof (translation)
-Use `top_le_iff.1 fun p _ => ?_` and prove the remaining obligations. Break down `(originOpen_sup_coordOpen_two W).ge (Set.mem_univ (zero W p)) with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd ((zero_preimage_coordOpen_two W).le h) id`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem zero_preimage_originOpen : zero W ⁻¹ᵁ originOpen W = ⊤ := by
   refine top_le_iff.1 fun p _ => ?_
@@ -405,16 +405,14 @@ abbrev originValue : Γ(scheme W, originOpen W) →+* R :=
   evalPt (zero W) (originOpen W) (zero_preimage_originOpen W).ge
 
 /- English proof (translation)
-The claim follows from `evalPt_zero_ratioOn _ _ 0`.
+A detailed English derivation is pending.
 -/
 theorem originValue_originParam : originValue W (originParam W) = 0 := evalPt_zero_ratioOn _ _ 0
 
 variable {W} in
 
 /- English proof (translation)
-Establish `hw : evalPt x _ h (ratioOn W _ 1 (originOpen_le W) 2) = 0`. Use `congrArg (evalPt x _ h) (ratioOn_mul_originCofactor (originOpen_le W))` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, hz, zero_pow three_ne_zero]`. Conclude with `((isUnit_originCofactor le_rfl).map (evalPt x _ h)).mul_left_eq_zero.1 this`. Take `⟨hP, e⟩` from `eq_ptHom_evalPt hx (originOpen_le W) h (P := ![0, 1, 0]) fun j => by fin_cases j`.
-
-Conclude with `hz`. Conclude with `(congrArg _ (ratioOn_self _)).trans (map_one _)`. Conclude with `hw`. Conclude with `e.trans (SpecMap_zero W ρ).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_spMap_zero_of_evalPt {A : Type} [CommRing A] {x : Sp A ⟶ scheme W} {ρ : R →+* A}
     (hx : x ≫ toSpec W = spMap ρ) (h : ⊤ ≤ x ⁻¹ᵁ originOpen W)
@@ -431,11 +429,11 @@ theorem eq_spMap_zero_of_evalPt {A : Type} [CommRing A] {x : Sp A ⟶ scheme W} 
   exact e.trans (SpecMap_zero W ρ).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `e`. Establish `key : ∀ q : T ⟶ Sp R, ⊤ ≤ (q ≫ zero W) ⁻¹ᵁ originOpen W ∧ ((q ≫ zero W).app (originOpen W)).hom (originParam W) = 0` using `fun q => by`. Use `⟨fun t _ => (zero_preimage_originOpen W).ge (Set.mem_univ (q t)), ?_⟩` and prove the remaining obligations. Use `(evalPt_eq_zero_iff _ _ _).1 (originValue_originParam W)` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(congrArg (q.app _).hom this).trans (map_zero _)`. Rewrite using `[e, ← Category.assoc]`. Conclude with `key _`. Introduce and unpack `⟨h, hz⟩`. Use `T.affineCover.hom_ext _ _ fun i => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ρ, hρ⟩` from `Spec.map_surjective (T.affineCover.f i ≫ g ≫ toSpec W)`. Establish `h' : ⊤ ≤ (T.affineCover.f i ≫ g) ⁻¹ᵁ originOpen W` using `fun t _ => h (Set.mem_univ (T.affineCover.f i t))`. Use `eq_spMap_zero_of_evalPt (x := T.affineCover.f i ≫ g) (ρ := ρ.hom) ((Category.assoc _ _ _).trans hρ.symm) h' ((evalPt_eq_zero_iff _ _ _).2 ((congrArg ((T.affineCover.f i).app _).hom hz).trans (map_zero _)))` as an intermediate fact. Conclude with `this.trans ((congrArg (· ≫ zero W) hρ).trans ((Category.assoc _ _ _).trans (congrArg (_ ≫ ·) (Category.assoc _ _ _))))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_comp_zero_iff {T : Scheme.{0}} (g : T ⟶ scheme W) : g = g ≫ toSpec W ≫ zero W ↔
     ⊤ ≤ g ⁻¹ᵁ originOpen W ∧ (g.app (originOpen W)).hom (originParam W) = 0 := by
@@ -460,15 +458,13 @@ theorem eq_comp_zero_iff {T : Scheme.{0}} (g : T ⟶ scheme W) : g = g ≫ toSpe
       (congrArg (_ ≫ ·) (Category.assoc _ _ _))))
 
 /- English proof (translation)
-Establish `key : ∀ j, (Cartier.secPull (originSec W) g).f j = 0 ↔ (g.app _).hom ((originSec W).f (j ⟨⟩)) = 0` using `fun j => by`. Use `⟨fun h0 => ?_, fun h0 => (congrArg (resG T _) h0).trans (map_zero _)⟩` and prove the remaining obligations. Use `congrArg (resG T (Cartier.pull_U (originLB W) g j).ge) h0` as an intermediate fact. Rewrite `this` using `[map_zero]`. Conclude with `((resG_resG _ _ _).trans (resG_self _ _)).symm.trans this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [key]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `(eq_comp_zero_iff W g).2 ⟨fun t _ => ?_, h fun _ => true⟩` and prove the remaining obligations. Break down `(originOpen_sup_coordOpen_two W).ge (Set.mem_univ (g t)) with ht | ht` into its components or cases.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `ht`. Establish `h1 : (1 : Γ(T, g ⁻¹ᵁ coordOpen W 2)) = 0` using `(map_one _).symm.trans (h fun _ => false)`. Use `congrArg (T.presheaf.germ (g ⁻¹ᵁ coordOpen W 2) t ht).hom h1` as an intermediate fact. Rewrite `this` using `[map_one, map_zero]`. Conclude with `absurd this one_ne_zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `e j`. Break down `hj : j ⟨⟩ with _ | _` into its components or cases. Use `Cartier.ext_germ fun t ht => ?_` and prove the remaining obligations. Rewrite `ht` using `[e, ← Category.assoc]`. Conclude with `absurd ((zero_preimage_coordOpen_two W).le ht) id`.
-
-Conclude with `((eq_comp_zero_iff W g).1 e).2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secPull_originSec_eq_zero_iff {T : Scheme.{0}} (g : T ⟶ scheme W) :
     (∀ j, (Cartier.secPull (originSec W) g).f j = 0) ↔ g = g ≫ toSpec W ≫ zero W := by
@@ -503,7 +499,7 @@ def coordFn (j : Fin 3) : ∀ i, Γ(scheme W, (originLB W).U i) :=
     (originCofactor W _ (originOpen_le W) * ratioOn W _ 1 (originOpen_le W) j) (ratio W 2 j)
 
 /- English proof (translation)
-Rewrite using `[map_mul, resG_originCofactor, resG_ratioOn, resG_ratioOn, val_originUnit, ← ratioOn_mul_originCofactor, mul_right_comm, ratioOn_mul_ratioOn, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coordFn_overlap (j : Fin 3) :
     resG _ (inf_le_left : originOpen W ⊓ coordOpen W 2 ≤ _)
@@ -514,7 +510,7 @@ theorem coordFn_overlap (j : Fin 3) :
     ← ratioOn_mul_originCofactor, mul_right_comm, ratioOn_mul_ratioOn, mul_comm]
 
 /- English proof (translation)
-The claim follows from `twoChartFn_compat (originUnit W) 3 (coordFn_overlap W j) i k`.
+A detailed English derivation is pending.
 -/
 theorem coordFn_compat (j : Fin 3) (i k : (originLB W).ι) :
     resG _ (inf_le_left : (originLB W).U i ⊓ (originLB W).U k ≤ _) (coordFn W j i) =
@@ -525,14 +521,14 @@ def coordSec (j : Fin 3) : (lbPow (originLB W) 3).Sec :=
   powSecMk 3 (coordFn W j) (coordFn_compat W j)
 
 /- English proof (translation)
-The claim follows from `(resG_resG _ _ _).trans (resG_self _ _)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem powSecFn_coordSec (j : Fin 3) (i : (originLB W).ι) :
     powSecFn (coordSec W j) i = coordFn W j i :=
   (resG_resG _ _ _).trans (resG_self _ _)
 
 /- English proof (translation)
-The claim follows from `| true => by change (scheme W).basicOpen (originCofactor W _ (originOpen_le W) * ratioOn W _ 1 (originOpen_le W) j) = originOpen W ⊓ coordOpen W j rw [Scheme.basicOpen_mul, basicOpen_ratioOn, (scheme W).basicOpen_of_isUnit (isUnit_originCofactor le_rfl)] exact inf_eq_right.2 inf_ …`.
+A detailed English derivation is pending.
 -/
 theorem basicOpen_coordFn (j : Fin 3) : ∀ i,
     (scheme W).basicOpen (coordFn W j i) = (originLB W).U i ⊓ coordOpen W j
@@ -544,7 +540,7 @@ theorem basicOpen_coordFn (j : Fin 3) : ∀ i,
   | false => basicOpen_ratioOn le_rfl
 
 /- English proof (translation)
-Rewrite using `[coordSec, nonzeroLocus_powSecMk]`. Simplify using `only [basicOpen_coordFn]`. Rewrite using `[← iSup_inf_eq, (originLB_isLB W).cover, top_inf_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem nonzeroLocus_coordSec (j : Fin 3) : nonzeroLocus (coordSec W j) = coordOpen W j := by
   rw [coordSec, nonzeroLocus_powSecMk]
@@ -554,7 +550,7 @@ theorem nonzeroLocus_coordSec (j : Fin 3) : nonzeroLocus (coordSec W j) = coordO
 variable {W} in
 
 /- English proof (translation)
-The claim follows from `| true, hk => by have e : ∀ l, resG _ hk (coordFn W l true) = originCofactor W V (hk.trans (originOpen_le W)) * ratioOn W V 1 (hk.trans (originOpen_le W)) l := fun l => (map_mul (resG _ hk) _ _).trans (congrArg (· * _) (resG_originCofactor (originOpen_le W) hk)) rw [e, e, ← ratio …`.
+A detailed English derivation is pending.
 -/
 theorem resG_coordFn {V : (scheme W).Opens} {i : Fin 3} (hi : V ≤ coordOpen W i) (j : Fin 3) :
     ∀ (k : (originLB W).ι) (hk : V ≤ (originLB W).U k),
@@ -570,7 +566,7 @@ theorem resG_coordFn {V : (scheme W).Opens} {i : Fin 3} (hi : V ≤ coordOpen W 
 variable {W} in
 
 /- English proof (translation)
-Establish `hm : r z ∈ coordOpen W i ⊓ (originLB W).U k` using `⟨hi, hk⟩`. Establish `e` using `congrArg (gs r z _) (resG_coordFn (i := i) inf_le_left j k inf_le_right)`. Rewrite `e` using `[gs_res _ z _ hm, gs_mul _ z _ hm, gs_res _ z _ hm, ← resG_ratioOn le_rfl inf_le_left, gs_res _ z _ hm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gs_coordFn {Z : Scheme.{0}} (r : Z ⟶ scheme W) (z : Z) {i : Fin 3} (j : Fin 3)
     {k : (originLB W).ι} (hi : r z ∈ coordOpen W i) (hk : r z ∈ (originLB W).U k) :
@@ -581,29 +577,25 @@ theorem gs_coordFn {Z : Scheme.{0}} (r : Z ⟶ scheme W) (z : Z) {i : Fin 3} (j 
     gs_res _ z _ hm] at e
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `(affineFnEquiv W).surjective f₁`. Take `⟨p, q, rfl⟩` from `WeierstrassCurve.Affine.CoordinateRing.exists_smul_basis_eq b`. Establish `h₀ : originOpen W ⊓ coordOpen W 2 ≤ originOpen W` using `inf_le_left`. Establish `h₁ : originOpen W ⊓ coordOpen W 2 ≤ coordOpen W 1` using `h₀.trans (originOpen_le W)`. Establish `h₂ : originOpen W ⊓ coordOpen W 2 ≤ coordOpen W 2` using `inf_le_right`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set z := ratioOn W _ 1 h₁ 0 with hz`. Use `set x := ratioOn W _ 2 h₂ 0 with hx`. Use `set y := ratioOn W _ 2 h₂ 1 with hy`. Use `set u := originCofactor W _ h₁ with hu`. Establish `ey : z ^ 3 * y = u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, ← ratioOn_mul_originCofactor, mul_right_comm, ratioOn_mul_ratioOn, ratioOn_self, one_mul]`. Establish `ex : z ^ 2 * x = u`. Use `(isUnit_ratioOn_one_zero h₀ h₂).mul_left_cancel ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← pow_succ', ← ratioOn_mul_originCofactor, mul_right_comm, ratioOn_mul_ratioOn]`. Set `ψ : W.toAffine.CoordinateRing →+* _` to `(resG _ h₂).comp (affineFnEquiv W).toRingHom`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hψ : ∀ p : Polynomial R, ψ (WeierstrassCurve.Affine.CoordinateRing.mk W.toAffine (Polynomial.C p)) = ∑ i ∈ p.support, constOn W _ (p.coeff i) * x ^ i` using `fun p => by`. Establish `: (ψ.comp (WeierstrassCurve.Affine.CoordinateRing.mk W.toAffine)).comp Polynomial.C = Polynomial.eval₂RingHom (constOn W _) x`. Use `Polynomial.ringHom_ext (fun r => ?_) ?_` and prove the remaining obligations. Rewrite using `[Polynomial.coe_eval₂RingHom, Polynomial.eval₂_C]`. Conclude with `(congrArg (resG _ h₂) (affineFnEquiv_algebraMap W r)).trans (resG_constOn h₂ r)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.coe_eval₂RingHom, Polynomial.eval₂_X]`. Conclude with `congrArg (resG _ h₂) (affineFnEquiv_affineX W)`. Conclude with `(RingHom.congr_fun this p).trans (Polynomial.eval₂_eq_sum.trans (Polynomial.sum_def _ _))`. Establish `hψy : ψ (WeierstrassCurve.Affine.CoordinateRing.mk W.toAffine Polynomial.X) = y` using `congrArg (resG _ h₂) (affineFnEquiv_affineY W)`. Apply the tactic sequence `have key := coeff_eq_zero_of_simple_pole (constOn W (originOpen W)) (resG _ h₀) (resG_originOpen_injective W) (originValue W) (evalPt_zero_constOn _) (originParam W) (originValue_originParam W) (Sum.elim (fun i => 2 * i) (fun i => 2 * i + 3)) (by rintro (i | i) (j | j) e <;> simp …`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rintro (i | i) <;> simp only [Sum.elim_inl, Sum.elim_inr] <;>`. Rewrite using `[map_pow, resG_originCofactor, resG_ratioOn, ← hz, ← hu]`. Rewrite using `[← ex]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[pow_succ u] nth_rw 2 [← ey]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ex]`. Use the proof step `ring)`. Apply the tactic sequence `(by rintro (i | i) <;> simp only [Sum.elim_inl, Sum.elim_inr] <;>`. Rewrite using `[map_pow, evalPt_zero_originCofactor, one_pow])`. Use the proof step `(Sum.elim p.coeff q.coeff) (p.support.disjSum q.support) f₀ (by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[h, Finset.sum_disjSum]`. Use `congrArg₂ (· * ·) rfl (Eq.symm ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ψ _ = _`. Rewrite using `[map_add, WeierstrassCurve.Affine.CoordinateRing.smul, WeierstrassCurve.Affine.CoordinateRing.smul, mul_one, map_mul, hψ, hψ, hψy, Finset.sum_mul]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, resG_constOn, mul_assoc])`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hq : q = 0`. Use extensionality with `i`. Assume the negation of the conclusion as `hi`. Conclude with `hi (key (.inr i) (Finset.inr_mem_disjSum.2 (Polynomial.mem_support_iff.2 hi)) (by simp only [Sum.elim_inr]; omega))`. Establish `hp : p = Polynomial.C (p.coeff 0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use extensionality with `i`. Break down `i with _ | i` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[Polynomial.coeff_C_succ]`. Assume the negation of the conclusion as `hi`.
-
-Conclude with `hi (key (.inl (i + 1)) (Finset.inl_mem_disjSum.2 (Polynomial.mem_support_iff.2 hi)) (by simp only [Sum.elim_inl]; omega))`. Establish `e₁ : affineFnEquiv W (p • (1 : W.toAffine.CoordinateRing) + q • WeierstrassCurve.Affine.CoordinateRing.mk W.toAffine Polynomial.X) = constOn W _ (p.coeff 0)`. Rewrite using `[hq, zero_smul, add_zero, WeierstrassCurve.Affine.CoordinateRing.smul, mul_one]`. Use `conv_lhs => rw [hp]`. Conclude with `affineFnEquiv_algebraMap W _`.
-
-Use `⟨p.coeff 0, resG_originOpen_injective W ?_, e₁⟩` and prove the remaining obligations. Rewrite using `[h, e₁, map_mul, resG_constOn, resG_constOn, mul_comm]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_constOn (f₀ : Γ(scheme W, originOpen W)) (f₁ : Γ(scheme W, coordOpen W 2))
     (h : resG _ inf_le_left f₀ = (originUnit W : Γ(scheme W, originOpen W ⊓ coordOpen W 2)) *
@@ -684,7 +676,7 @@ theorem exists_eq_constOn (f₀ : Γ(scheme W, originOpen W)) (f₁ : Γ(scheme 
   rfl
 
 /- English proof (translation)
-Introduce `c c' h`. Establish `h₁` using `congrArg (resG _ (inf_le_right : originOpen W ⊓ coordOpen W 2 ≤ _)) h`. Rewrite `h₁` using `[resG_constOn, resG_constOn, ← resG_constOn inf_le_left, ← resG_constOn inf_le_left c']`. Establish `h₂` using `congrArg (originValue W) (resG_originOpen_injective W h₁)`. Rewrite `h₂` using `[evalPt_zero_constOn, evalPt_zero_constOn]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem constOn_coordOpen_two_injective : Function.Injective (constOn W (coordOpen W 2)) := by
   intro c c' h
@@ -694,9 +686,7 @@ theorem constOn_coordOpen_two_injective : Function.Injective (constOn W (coordOp
   rwa [evalPt_zero_constOn, evalPt_zero_constOn] at h₂
 
 /- English proof (translation)
-Take `⟨c, h₀, h₁⟩` from `exists_eq_constOn W (s.f true) (s.f false) (s.compat true false)`. Use `⟨c, ?_, fun c' hc' => constOn_coordOpen_two_injective W ?_⟩` and prove the remaining obligations. Introduce and unpack `(_ | _)`. Conclude with `h₁.trans (mul_one _).symm`. Conclude with `h₀`.
-
-Conclude with `((hc' false).trans (mul_one _)).symm.trans h₁`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem existsUnique_eq_const_mul_originSec (s : (originLB W).Sec) :
     ∃! c : R, ∀ i, s.f i = constFn (toSpec W) _ c * (originSec W).f i := by
@@ -712,7 +702,7 @@ section BaseChange
 variable {R' : Type} [CommRing R'] {W' : WeierstrassCurve R'} (f : R →+* R') (h : W.map f = W')
 
 /- English proof (translation)
-Simplify using `only [originCofactor, map_add, map_sub, map_mul, map_pow, map_one, mapHom_app_constOn, mapHom_app_ratioOn]`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem mapHom_app_originCofactor {U : (scheme W).Opens} (hU : U ≤ coordOpen W 1) :
     ((mapHom W f h).app U).hom (originCofactor W U hU) = originCofactor W' (mapHom W f h ⁻¹ᵁ U)
@@ -723,7 +713,7 @@ theorem mapHom_app_originCofactor {U : (scheme W).Opens} (hU : U ≤ coordOpen W
   rfl
 
 /- English proof (translation)
-Establish `e` using `mapHom_preimage_coordOpen W f h 1`. Establish `e₁` using `mapHom_app_originCofactor W f h le_rfl`. Rewrite `e₁` using `[← resG_originCofactor le_rfl e.le]`. Use `(Scheme.preimage_basicOpen _ _).trans ((congrArg (scheme W').basicOpen e₁).trans (((scheme W').basicOpen_res _ (homOfLE e.le).op).trans ?_))` and prove the remaining obligations. Conclude with `inf_eq_right.2 ((originOpen_le W').trans e.ge)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mapHom_preimage_originOpen : mapHom W f h ⁻¹ᵁ originOpen W = originOpen W' := by
   have e := mapHom_preimage_coordOpen W f h 1
@@ -734,7 +724,7 @@ theorem mapHom_preimage_originOpen : mapHom W f h ⁻¹ᵁ originOpen W = origin
   exact inf_eq_right.2 ((originOpen_le W').trans e.ge)
 
 /- English proof (translation)
-The claim follows from `| true => mapHom_preimage_originOpen W f h | false => mapHom_preimage_coordOpen W f h 2`.
+A detailed English derivation is pending.
 -/
 theorem mapHom_preimage_originLB_U : ∀ i : Bool,
     mapHom W f h ⁻¹ᵁ (originLB W).U i = (originLB W').U i
@@ -742,7 +732,7 @@ theorem mapHom_preimage_originLB_U : ∀ i : Bool,
   | false => mapHom_preimage_coordOpen W f h 2
 
 /- English proof (translation)
-The claim follows from `| true => mapHom_app_ratioOn W f h (originOpen_le W) 0 | false => (map_one _).trans (map_one _).symm`.
+A detailed English derivation is pending.
 -/
 theorem mapHom_app_originSec : ∀ i : Bool,
     ((mapHom W f h).app ((originLB W).U i)).hom ((originSec W).f i) =
@@ -751,7 +741,7 @@ theorem mapHom_app_originSec : ∀ i : Bool,
   | false => (map_one _).trans (map_one _).symm
 
 /- English proof (translation)
-Establish `hy'` using `(mapHom_preimage_originLB_U W f h i).ge hy`. Use `gs_pull (𝟙 _) (mapHom W f h) y _ hy' ((originSec W).f i)` as an intermediate fact. Rewrite `this` using `[Category.id_comp, mapHom_app_originSec]`. Conclude with `this.symm.trans (gs_res (𝟙 _) y _ hy' _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_mapHom_originSec (i : Bool) (y : scheme W') (hy : y ∈ (originLB W').U i) :
     gs (mapHom W f h) y _ ((originSec W).f i) = gs (𝟙 _) y _ ((originSec W').f i) := by
@@ -775,7 +765,7 @@ def chartPullOriginLB : ChartPull (originLB W') (originLB W) (mapHom W f h) wher
     exact hr
 
 /- English proof (translation)
-Use `Cartier.existsUnique_secMaps (isRegularSec_originSec W') fun p q => ?_` and prove the remaining obligations. Establish `hp : ((originLB W).pull (mapHom W f h)).U p ⊓ (originLB W').U q ≤ (originLB W').U (p ⟨⟩)` using `inf_le_left.trans ((Cartier.pull_U _ _ p).trans (mapHom_preimage_originLB_U W f h _)).le`. Establish `e : resG _ (inf_le_left : ((originLB W).pull (mapHom W f h)).U p ⊓ (originLB W').U q ≤ _) ((Cartier.secPull (originSec W) (mapHom W f h)).f p) = resG _ hp ((originSec W').f (p ⟨⟩))` using `(resG_resG _ _ _).trans ((congrArg (resG _ _) (mapHom_app_originSec W f h _)).trans (resG_resG _ _ _))`. Rewrite using `[e, Cartier.sec_compat (originSec W') (p ⟨⟩) q hp inf_le_right]`. Conclude with `associated_unit_mul_right _ _ ((Units.isUnit _).map _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_iso_pull_originLB :
     ∃! w : LB.Iso (originLB W') ((originLB W).pull (mapHom W f h)), w.IsGen ∧
@@ -791,7 +781,7 @@ theorem existsUnique_iso_pull_originLB :
   exact associated_unit_mul_right _ _ ((Units.isUnit _).map _)
 
 /- English proof (translation)
-The claim follows from `let ⟨w, hw, _⟩ := existsUnique_iso_pull_originLB W f h ⟨w, hw.1⟩`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_originLB : LBIso (originLB W') ((originLB W).pull (mapHom W f h)) :=
   let ⟨w, hw, _⟩ := existsUnique_iso_pull_originLB W f h
@@ -800,13 +790,11 @@ theorem lbIso_pull_originLB : LBIso (originLB W') ((originLB W).pull (mapHom W f
 end BaseChange
 
 /- English proof (translation)
-Set `e : scheme (W.map f) ⟶ Y` to `((isPullback_mapHom W f rfl).isoIsPullback _ _ H).hom`. Establish `e₁ : e ≫ φ = mapHom W f rfl` using `IsPullback.isoIsPullback_hom_fst _ _ _ _`. Establish `e₂ : e ≫ p = toSpec (W.map f)` using `IsPullback.isoIsPullback_hom_snd _ _ _ _`. Establish `hU : ∀ i : Bool, (originLB (W.map f)).U i = e ⁻¹ᵁ ((originLB W).pull φ).U (fun _ => i)` using `fun i => by`. Use `(mapHom_preimage_originLB_U W f rfl i).symm.trans ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e₁]`. Conclude with `congrArg (e ⁻¹ᵁ ·) (Cartier.pull_U (originLB W) φ fun _ => i).symm`. Set `a : ChartPull (originLB (W.map f)) ((originLB W).pull φ) e` to `{ idx := fun i _ => i le := fun i => (hU i).le g := fun y i j hi hj => ((chartPullOriginLB W f rfl).g y i j hi hj).trans (by`. Rewrite using `[gm_pull_g _ φ e y _ _ ((hU i).le hi) ((hU j).le hj), e₁]`. Use the proof step `rfl) }`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (c : R') (i : Bool), (e.appLE _ _ (hU i).le).hom (constFn p _ c * (Cartier.secPull (originSec W) φ).f (fun _ => i)) = constFn (toSpec (W.map f)) _ c * (originSec (W.map f)).f i` using `fun c i => fn_ext fun y hy => by`. Establish `hy'` using `(hU i).le hy`. Rewrite using `[gs_appLE e _ _ _ (𝟙 _) y hy, Category.id_comp, gs_mul e y _ hy', gs_mul _ y _ hy, gs_constFn p _ e y hy', gs_constFn _ _ _ y hy, e₂, Category.id_comp, ← gs_mapHom_originSec W f rfl i y hy, ← e₁]`. Conclude with `congrArg _ ((gs_res e y _ hy' _).trans (gs_pull e φ y _ (mem_pull.1 hy') _))`. Use `(existsUnique_congr fun c => ?_).1 (existsUnique_eq_const_mul_originSec (W.map f) (chartSec a s))` and prove the remaining obligations.
-
-Conclude with `⟨fun hc j => appLE_injective_of_isIso e (hU (j ⟨⟩)) ((hc (j ⟨⟩)).trans (key c (j ⟨⟩)).symm), fun hc i => (congrArg (e.appLE _ _ (hU i).le).hom (hc fun _ => i)).trans (key c i)⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem existsUnique_eq_const_mul_secPull {R' : Type} [CommRing R'] {f : R →+* R'} {Y : Scheme.{0}}
     {φ : Y ⟶ scheme W} {p : Y ⟶ Sp R'} (H : IsPullback φ p (toSpec W) (spMap f))
@@ -840,9 +828,9 @@ theorem existsUnique_eq_const_mul_secPull {R' : Type} [CommRing R'] {f : R →+*
     fun hc i => (congrArg (e.appLE _ _ (hU i).le).hom (hc fun _ => i)).trans (key c i)⟩
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `Spec.map_surjective (T.isoSpec.inv ≫ t)`. Establish `H' : IsPullback φ (p ≫ T.isoSpec.hom) (toSpec W) (spMap f.hom)` using `H.of_iso (Iso.refl _) (Iso.refl _) T.isoSpec (Iso.refl _) (by simp) (by simp) (by simp) ((Category.comp_id _).trans ((Iso.hom_inv_id_assoc T.isoSpec t).symm.trans (congrArg (_ ≫ ·) hf.symm)))`. Establish `e : ∀ (U : Y.Opens) (c : Γ(T, ⊤)), constFn (p ≫ T.isoSpec.hom) U c = (p.appLE ⊤ U le_top).hom c` using `fun U c => by`. Establish `e₁ : (p ≫ T.isoSpec.hom).appLE ⊤ U le_top = T.isoSpec.hom.appTop ≫ p.appLE ⊤ U le_top` using `Scheme.Hom.comp_appLE _ _ _ _ _`. Establish `e₂ : T.isoSpec.hom.appTop = (Scheme.ΓSpecIso Γ(T, ⊤)).hom` using `Scheme.toSpecΓ_appTop T`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e₁` using `[e₂]`. Conclude with `(congrArg (fun q => q.hom ((Scheme.ΓSpecIso Γ(T, ⊤)).inv.hom c)) e₁).trans (congrArg (p.appLE ⊤ U le_top).hom (Iso.inv_hom_id_apply (Scheme.ΓSpecIso Γ(T, ⊤)) c))`. Simplify `existsUnique_eq_const_mul_secPull W H' s` using `only [e]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem existsUnique_eq_appLE_mul_secPull {T Y : Scheme.{0}} [IsAffine T] {t : T ⟶ Sp R}
     {φ : Y ⟶ scheme W} {p : Y ⟶ T} (H : IsPullback φ p (toSpec W) t)
@@ -865,7 +853,7 @@ theorem existsUnique_eq_appLE_mul_secPull {T Y : Scheme.{0}} [IsAffine T] {t : T
   simpa only [e] using existsUnique_eq_const_mul_secPull W H' s
 
 /- English proof (translation)
-Introduce `i j` and use `unit_ext fun y hy => by have key : ∀ k : PUnit → Bool, y ∈ ((originLB W).pull (zero W)).U k → k = fun _ => true := by intro k hk have hk' := mem_pull.1 hk funext ⟨⟩ rcases e : k PUnit.unit with _ | _ · rw [e] at hk' exact absurd ((zero_preimage_coordOpen_two W).le hk') id · rfl o …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isGen_one_pull_zero :
     LB.Gen.IsGen (L := (originLB W).pull (zero W)) ⟨fun _ => 1⟩ := fun i j =>
@@ -885,15 +873,13 @@ theorem isGen_one_pull_zero :
       (gm_res _ y _ hy _)).trans (one_mul _)
 
 /- English proof (translation)
-Introduce `U hU`. Set `ι` to `(toSpec W ⁻¹ᵁ U).ι`. Establish `H : IsPullback ι (toSpec W ∣_ U) (toSpec W) U.ι` using `(isPullback_morphismRestrict _ U).flip`. Establish `: IsAffine U` using `hU`. Establish `: IsAffineHom ι` using `MorphismProperty.of_isPullback (P := @IsAffineHom) H.flip inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `s : Fin 3 → (powOver (schemeOver W) (originLB W) U 3).Sec` to `fun j => finPowSec (originLB_isLB W) (n := 2) (coordSec W j) ι`. Establish `loc : ∀ j, nonzeroLocus (s j) = ι ⁻¹ᵁ coordOpen W j` using `fun j => (nonzeroLocus_finPowSec _ _ _).trans (by rw [nonzeroLocus_coordSec])`. Use `⟨3, by norm_num, 2, s, top_le_iff.1 fun y _ => ?_, fun i => ⟨?_, fun j => (ι.appLE _ _ (loc i).le).hom (ratio W i j), fun j k => fn_ext fun y hy => ?_, ?_⟩⟩` and prove the remaining obligations. Break down `(coordOpen_one_sup_coordOpen_two W).ge (Set.mem_univ (ι y)) with h | h` into its components or cases. Conclude with `Opens.mem_iSup.2 ⟨1, (loc 1).ge h⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Opens.mem_iSup.2 ⟨2, (loc 2).ge h⟩`. Rewrite using `[loc]`. Conclude with `(isAffineOpen_coordOpen W i).preimage ι`. Take `⟨v, hv⟩` from `exists_gs_finPowSec (originLB_isLB W) (n := 2) ι y k hy.2`. Establish `e` using `gs_coordFn ι y j (k := k 0) ((loc i).le hy.1) (Set.mem_iInter.1 hy.2 0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₁` using `hv (coordSec W j)`. Establish `e₂` using `hv (coordSec W i)`. Rewrite `e₁`, `e₂` using `[powSecFn_coordSec]`. Use `(gs_res _ y _ hy _).trans (e₁.trans (Eq.symm ((gs_mul _ y _ hy _ _).trans ((congrArg₂ (· * ·) ((gs_res _ y _ hy _).trans ((gs_appLE ι _ _ _ (𝟙 _) y hy.1 _).trans (by rw [Category.id_comp]))) ((gs_res _ y _ hy _).trans e₂)).trans ?_))))` and prove the remaining obligations. Rewrite using `[e, mul_left_comm]`.
-
-Establish `po` using `(isIso_pushoutSection_iff H (US := ⊤) (UT := ⊤) (UX := coordOpen W i) le_top le_top (UY := nonzeroLocus (s i)) (by rw [loc]; simp)).1 (isIso_pushoutSection_of_isAffineOpen H _ _ _ (isAffineOpen_top _) (isAffineOpen_top _) (isAffineOpen_coordOpen W i))`. Conclude with `eval₂Hom_surjective_of_isPushout po (Scheme.ΓSpecIso (.of R)).inv.hom (ratio W i) (eval₂Hom_ratio_surjective W i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relAmple_originLB : RelAmple (schemeOver W) (originLB W) := by
   intro U hU
@@ -929,9 +915,9 @@ theorem relAmple_originLB : RelAmple (schemeOver W) (originLB W) := by
       (eval₂Hom_ratio_surjective W i)
 
 /- English proof (translation)
-Introduce `ht`. Take `⟨c, hc, -⟩` from `existsUnique_eq_const_mul_originSec W ⟨fun i => (t.s i).val, fun i j => congrArg Units.val (ht i j)⟩`. Establish `h : IsUnit (originParam W)` using `isUnit_of_mul_isUnit_right ((congrArg IsUnit (hc true)).mp (t.s true).isUnit)`. Use `h.map (originValue W)` as an intermediate fact. Rewrite `this` using `[originValue_originParam]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `not_isUnit_zero this`.
+A detailed English derivation is pending.
 -/
 theorem not_isGen_originLB [Nontrivial R] (t : (originLB W).Gen) : ¬ t.IsGen := by
   intro ht
@@ -944,7 +930,7 @@ theorem not_isGen_originLB [Nontrivial R] (t : (originLB W).Gen) : ¬ t.IsGen :=
   exact not_isUnit_zero this
 
 /- English proof (translation)
-The claim follows from `s.compat true false`.
+A detailed English derivation is pending.
 -/
 example (s : (originLB W).Sec) :
     resG _ (inf_le_left : originOpen W ⊓ coordOpen W 2 ≤ _) (s.f true) =
@@ -952,7 +938,7 @@ example (s : (originLB W).Sec) :
   s.compat true false
 
 /- English proof (translation)
-Rewrite using `[affineFnEquiv_affineX, affineFnEquiv_affineY, mul_comm]`. Conclude with `ratioOn_mul_ratioOn inf_le_right (inf_le_left.trans (originOpen_le W))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example : (originUnit W : Γ(scheme W, originOpen W ⊓ coordOpen W 2)) *
     resG _ inf_le_right (affineFnEquiv W (affineY W)) =
@@ -961,7 +947,7 @@ example : (originUnit W : Γ(scheme W, originOpen W ⊓ coordOpen W 2)) *
   exact ratioOn_mul_ratioOn inf_le_right (inf_le_left.trans (originOpen_le W))
 
 /- English proof (translation)
-Establish `h₀` using `evalPt_ptHom_ratioOn_mul _ _ hP le_rfl h 0`. Establish `h₂` using `evalPt_ptHom_ratioOn_mul _ _ hP le_rfl h 2`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val, Matrix.cons_val_one] at h₀ h₂`. Simplify using `only [originCofactor, map_add, map_sub, map_mul, map_pow, map_one, map_zero, map_neg]`. Rewrite using `[eq_div_of_mul_eq (by norm_num) h₀, eq_div_of_mul_eq (by norm_num) h₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Evaluate the numerical expressions.
 -/

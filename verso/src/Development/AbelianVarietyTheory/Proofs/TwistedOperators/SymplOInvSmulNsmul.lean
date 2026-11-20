@@ -11,20 +11,20 @@ namespace GlobalTheory.FinDecomp
 variable {D : D7} {S T : HSp D}
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.DualPairCheck.cA_incA, star_inv₀, star_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cA_incA_inv_natCast (m : ℕ) : cA D (incA D ((m : D.host.E)⁻¹)) = incA D ((m : D.host.E)⁻¹) := by
   rw [GlobalTheory.DualPairCheck.cA_incA, star_inv₀, star_natCast]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.PlaceModel.symplO_smul, cA_incA_inv_natCast, GlobalTheory.PlaceModel.inv_smul_nsmul S T hm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_inv_smul_nsmul {m : ℕ} (hm : 0 < m) (y l : WO S T) :
     symplO S T (incA D ((m : D.host.E)⁻¹) • y) (m • l) = symplO S T y l := by
   rw [GlobalTheory.PlaceModel.symplO_smul, cA_incA_inv_natCast, GlobalTheory.PlaceModel.inv_smul_nsmul S T hm]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.PlaceModel.symplO_skew S T x (incA D ((m : D.host.E)⁻¹) • u), neg_neg, GlobalTheory.PlaceModel.symplO_smul, cA_incA_inv_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_inv_smul_swap (m : ℕ) (x u : WO S T) :
     symplO S T (incA D ((m : D.host.E)⁻¹) • x) u = -symplO S T (incA D ((m : D.host.E)⁻¹) • u) x := by
@@ -32,7 +32,7 @@ theorem symplO_inv_smul_swap (m : ℕ) (x u : WO S T) :
     cA_incA_inv_natCast]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hij` using `congrFun (congrFun hr i) j`. Simplify using `only [Matrix.map_apply, Matrix.zero_apply] at hij ⊢`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul, hij, mul_zero]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_infPart_smul (a : AE D) {r : WO S T} (hr : r.map (infPart D) = 0) : (a • r).map (infPart D) = 0 := by
   ext i j
@@ -41,13 +41,13 @@ theorem map_infPart_smul (a : AE D) {r : WO S T} (hr : r.map (infPart D) = 0) : 
   rw [Matrix.smul_apply, smul_eq_mul, map_mul, hij, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[smul_comm, GlobalTheory.PlaceModel.inv_smul_nsmul S T hm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nsmul_inv_smul {m : ℕ} (hm : 0 < m) (x : WO S T) : m • (incA D ((m : D.host.E)⁻¹) • x) = x := by
   rw [smul_comm, GlobalTheory.PlaceModel.inv_smul_nsmul S T hm]
 
 /- English proof (translation)
-Take `⟨l, hl, rfl⟩` from `mem_mLat.1 hx`. Rewrite using `[GlobalTheory.PlaceModel.inv_smul_nsmul S T hm]`. Conclude with `hΛ l hl r hr`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_shift {ψ : AddChar (AF D.host.F) ℂ} {Λ : AddSubgroup (WO S T)} {m : ℕ} (hm : 0 < m)
     (hΛ : ∀ x ∈ Λ, ∀ y ∈ Λ, ψ (symplO S T x y) = 1) {r : WO S T} (hr : r ∈ Λ) {x : WO S T} (hx : x ∈ mLat m Λ) :
@@ -74,7 +74,7 @@ theorem qCharM_apply (ψ : AddChar (AF D.host.F) ℂ) (Λ : AddSubgroup (WO S T)
     qCharM ψ Λ m hm hΛ r hr u = ψ (symplO S T (incA D ((m : D.host.E)⁻¹) • repm u) r) := rfl
 
 /- English proof (translation)
-Rewrite using `[qCharM_apply]`. Establish `h` using `psi_shift hm hΛ hr (repm_mk_sub (m := m) hu)`. Establish `e : repm (QuotientAddGroup.mk (⟨u, hu⟩ : Λ) : Qm m Λ) = (repm (QuotientAddGroup.mk (⟨u, hu⟩ : Λ) : Qm m Λ) - u) + u` using `by abel`. Rewrite using `[e, smul_add, GlobalTheory.PlaceModel.symplO_add_left, AddChar.map_add_eq_mul, h, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem qCharM_mk (ψ : AddChar (AF D.host.F) ℂ) (Λ : AddSubgroup (WO S T)) (m : ℕ) (hm : 0 < m)
     (hΛ : ∀ x ∈ Λ, ∀ y ∈ Λ, ψ (symplO S T x y) = 1) (r : WO S T) (hr : r ∈ Λ) {u : WO S T} (hu : u ∈ Λ) :
@@ -86,11 +86,11 @@ theorem qCharM_mk (ψ : AddChar (AF D.host.F) ℂ) (Λ : AddSubgroup (WO S T)) (
   rw [e, smul_add, GlobalTheory.PlaceModel.symplO_add_left, AddChar.map_add_eq_mul, h, one_mul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `hx : incA D ((m : D.host.E)⁻¹) • r ∈ Λ`. Use `hmax _ (map_infPart_smul _ (hinf r hr)) fun u hu => ?_` and prove the remaining obligations. Establish `h1` using `qCharM_mk ψ Λ m hm hΛ r hr hu`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[h0, AddChar.zero_apply]`. Rewrite using `[symplO_inv_smul_swap, AddChar.map_neg_eq_inv, ← h1, inv_one]`. Conclude with `mem_mLat.2 ⟨_, hx, nsmul_inv_smul hm r⟩`. Introduce `hrm`. Take `⟨l, hl, rfl⟩` from `mem_mLat.1 hrm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `DFunLike.ext _ _ (fun u => ?_)` and prove the remaining obligations. Rewrite using `[qCharM_apply, AddChar.zero_apply, symplO_inv_smul_nsmul hm]`. Conclude with `hΛ _ (repm_mem u) _ hl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qCharM_eq_zero_iff {ψ : AddChar (AF D.host.F) ℂ} {Λ : AddSubgroup (WO S T)} {m : ℕ} (hm : 0 < m)
     (hinf : ∀ u ∈ Λ, u.map (infPart D) = 0) (hΛ : ∀ x ∈ Λ, ∀ y ∈ Λ, ψ (symplO S T x y) = 1)
@@ -111,9 +111,9 @@ theorem qCharM_eq_zero_iff {ψ : AddChar (AF D.host.F) ℂ} {Λ : AddSubgroup (W
     exact hΛ _ (repm_mem u) _ hl
 
 /- English proof (translation)
-Introduce `D ψ S T Λ m hm hinf hΛ hmax _ _ q`. Establish `key : qCharM ψ Λ m hm hΛ (repm q) (repm_mem q) = 0 ↔ q = 0`. Rewrite using `[qCharM_eq_zero_iff hm hinf hΛ hmax (repm_mem q)]`. Use `conv_rhs => rw [← mk_repm q]`. Rewrite using `[QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs` using `AddChar.sum_eq_ite (qCharM ψ Λ m hm hΛ (repm q) (repm_mem q))`. Simplify using `only [qCharM_apply, key] at hs`. Use `hs` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem charSum_selfAnn : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (Λ : AddSubgroup (WO S T)) (m : ℕ), 0 < m →
     (∀ u ∈ Λ, u.map (infPart D) = 0) → (∀ x ∈ Λ, ∀ y ∈ Λ, ψ (symplO S T x y) = 1) →

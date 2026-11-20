@@ -19,13 +19,13 @@ open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 namespace GlobalTheory.HorizontalChange
 
 /- English proof (translation)
-Take `⟨ε, hε, hb⟩` from `Metric.eventually_nhds_iff_ball.1 h`. Establish `hm {v : E} {x : J → ℝ} (hv : v ∈ Metric.ball v₀ ε) (hx : x ∈ Metric.ball x₀ ε) : (v, x) ∈ Metric.ball (v₀, x₀) ε`. Rewrite using `[← ball_prod_same]`. Conclude with `⟨hv, hx⟩`. Use `filter_upwards [Metric.ball_mem_nhds v₀ hε] with v hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h0` using `Metric.mem_ball_self (x := v₀) hε`. Establish `hx0` using `Metric.mem_ball_self (x := x₀) hε`. Establish `hd : DenseRange (Pi.map fun (_ : J) (r : ℚ) => (r : ℝ))` using `DenseRange.piMap fun _ => Rat.denseRange_cast`. Establish `hf : ∃ᶠ x in 𝓝 x₀, F (v, x) = F (v₀, x)`. Use `((mem_closure_iff_frequently.1 (hd x₀)).and_eventually (Metric.ball_mem_nhds x₀ hε)).mono ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x ⟨⟨r, hr⟩, hx⟩`. Use function extensionality and compare the values at `i`. Establish `hc : ContinuousOn (fun t : E => F (t, x) i) (Metric.ball v₀ ε)` using `fun t ht => ((continuous_apply i).continuousAt.comp ((hb _ (hm ht hx)).1.comp (f := fun t : E => (t, x)) (by fun_prop))).continuousWithinAt`. Establish `hs` using `(countable_range (Rat.cast : ℚ → ℝ)).isTotallyDisconnected _ (by`. Introduce and unpack `_ ⟨t, ht, rfl⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩` from `(hb _ (hm ht hx)).2 (fun j => ⟨r j, by rw [← hr]; rfl⟩) i`. Conclude with `⟨q, hq.symm⟩)`. Use the proof step `((convex_ball v₀ ε).isPreconnected.image _ hc)`. Conclude with `hs (mem_image_of_mem _ hv) (mem_image_of_mem _ h0)`. Conclude with `tendsto_nhds_unique_of_frequently_eq ((hb _ (hm hv hx0)).1.comp (f := fun x : J → ℝ => (v, x)) (by fun_prop)) ((hb _ (hm h0 hx0)).1.comp (f := fun x : J → ℝ => (v₀, x)) (by fun_prop)) hf`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eventually_eq_of_rat {E J K : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [Fintype J] [Fintype K]
     (F : E × (J → ℝ) → (K → ℝ)) (v₀ : E) (x₀ : J → ℝ)
@@ -60,13 +60,13 @@ theorem eventually_eq_of_rat {E J K : Type} [NormedAddCommGroup E] [NormedSpace 
     ((hb _ (hm h0 hx0)).1.comp (f := fun x : J → ℝ => (v₀, x)) (by fun_prop)) hf
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h choose r hr using h`. Use `⟨∏ i, (r i).den, Finset.prod_pos fun i _ => (r i).pos, fun i => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `Finset.dvd_prod_of_mem (fun i => (r i).den) (Finset.mem_univ i)`. Use `⟨(r i).num * m, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (Rat.cast : ℚ → ℝ) (Rat.mul_den_eq_num (r i))` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite using `[hm, Pi.smul_apply, hr, nsmul_eq_mul]`. Use `push_cast`. Rewrite using `[← this]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨N, hN, h⟩ i`. Take `⟨n, hn⟩` from `h i`. Use `⟨n / N, ?_⟩` and prove the remaining obligations. Establish `: (N : ℝ) ≠ 0` using `by positivity`.
+Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hn` using `[Pi.smul_apply, nsmul_eq_mul]`. Use `push_cast`. Rewrite using `[← hn]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem rat_iff {J : Type} [Fintype J] (x : J → ℝ) :
     (∀ i, ∃ r : ℚ, x i = r) ↔ ∃ N : ℕ, 0 < N ∧ ∀ i, ∃ n : ℤ, (N • x) i = n := by
@@ -92,7 +92,7 @@ theorem rat_iff {J : Type} [Fintype J] (x : J → ℝ) :
     field_simp
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[per, vecMul, dotProduct, mul_add, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_assoc _ _ _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem per_nsmul {g : ℕ} (t : Matrix (Fin g) (Fin g) ℂ) (N : ℕ) (x : Fl g) : per t (N • x) = N • per t x := by
   ext i
@@ -100,7 +100,7 @@ theorem per_nsmul {g : ℕ} (t : Matrix (Fin g) (Fin g) ℂ) (N : ℕ) (x : Fl g
   exact Finset.sum_congr rfl fun _ _ => mul_assoc _ _ _
 
 /- English proof (translation)
-Rewrite using `[stdLat, Module.Basis.mem_span_iff_repr_mem]`. Conclude with `forall_congr' fun i => ⟨fun ⟨n, hn⟩ => ⟨n, by simpa using hn.symm⟩, fun ⟨n, hn⟩ => ⟨n, by simpa using hn.symm⟩⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_stdLat_iff {g : ℕ} {x : Fl g} : x ∈ stdLat g ↔ ∀ i, ∃ n : ℤ, x i = n := by
   rw [stdLat, Module.Basis.mem_span_iff_repr_mem]
@@ -108,26 +108,24 @@ theorem mem_stdLat_iff {g : ℕ} {x : Fl g} : x ∈ stdLat g ↔ ∀ i, ∃ n : 
     fun ⟨n, hn⟩ => ⟨n, by simpa using hn.symm⟩⟩
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.FlatCubicalProof.flatCubical g).1 E B τ h).1`.
+A detailed English derivation is pending.
 -/
 theorem props {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {g : ℕ} {B : Set E}
     {τ : E → Matrix (Fin g) (Fin g) ℂ} (h : IsPeriodMap B τ) : FlatFormProps B τ :=
   ((GlobalTheory.FlatCubicalProof.flatCubical g).1 E B τ h).1
 
 /- English proof (translation)
-Take `⟨v, z⟩` from `Q`. Establish `hv : v ∈ c.e.target` using `hQ.1`. Take `⟨h₁, h₂, -, h₄, -⟩` from `H.2.2 v hv`. Take `⟨f₁, f₂⟩` from `(props H.1).1 v hv`. Use `revert X`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h₁ z]`. Introduce `X hX`. Establish `e₁ : (1 : Over.mk (c.e.symm v).1 ⟶ A).left = (c.e.symm v).1 ≫ unitSec A`. Rewrite using `[Hom.one_def]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hp (N : ℕ) : (X ^ N).left = (ex (v, N • z)).1`. Proceed by induction on `N with`. Consider the case `zero`. Rewrite using `[pow_zero, e₁, zero_smul]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `((h₄ 0).2 ⟨0, zero_mem _, ?_⟩).symm` and prove the remaining obligations. Simplify using `using (per_nsmul (τ v) 0 0).symm`. Consider the case `succ n ih => rw [pow_succ, h₂ _ _ _ _ ih hX, succ_nsmul]`. Rewrite using `[rat_iff]`. Use `exists_congr fun N => and_congr_right fun _ => ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mem_stdLat_iff]`. Establish `e : N • z = per (τ v) (N • flat τ (v, z))`. Rewrite using `[per_nsmul]`. Conclude with `congrArg _ (f₂ z).symm`. Use `⟨fun h => Over.OverMorphism.ext ?_, fun h => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hp, e₁]`. Conclude with `(h₄ _).2 ⟨_, h, e⟩`. Take `⟨l, hl, el⟩` from `(h₄ _).1 ((hp N).symm.trans ((congrArg (·.left) h).trans e₁))`. Use `congrArg (flatOf (τ v)) (e.symm.trans el)` as an intermediate fact. Rewrite `this` using `[f₁, f₁]`.
-
-Conclude with `this ▸ hl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsion_iff {k : Type} [CommRing k] {S : Scheme.{0}} {p : S ⟶ Sp k} {σ : k →+* ℂ} {A : Over S}
     [GrpObj A] {g D : ℕ} {w : VMetric p (omega A) g} {c : AlgChart p σ D}
@@ -167,19 +165,19 @@ theorem torsion_iff {k : Type} [CommRing k] {S : Scheme.{0}} {p : S ⟶ Sp k} {�
     exact this ▸ hl
 
 /- English proof (translation)
-Establish `f` using `props h`. Establish `f'` using `props h'`. Establish `hP1 : P.1 ∈ B` using `hP.1`. Use `set x₀ := flat τ P with hx₀`. Set `t : E × Fl g → Pt E g` to `fun Q => (Q.1, per (τ Q.1) Q.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ht (Q : E × Fl g) (hQ : Q.1 ∈ B) : AnalyticAt ℝ t Q` using `analyticAt_fst.prod (f.2.2.1 Q ⟨hQ, trivial⟩)`. Establish `hft (Q : E × Fl g) (hQ : Q.1 ∈ B) : flat τ (t Q) = Q.2` using `(f.1 _ hQ).1 _`. Establish `ht0 : t (P.1, x₀) = P` using `Prod.ext rfl ((f.1 _ hP1).2 _)`. Establish `hB : ∀ᶠ v in 𝓝 P.1, v ∈ B` using `h.1.mem_nhds hP1`. Establish `hconst : ∀ᶠ v in 𝓝 P.1, flat τ' (ψ (t (v, x₀))) = flat τ' (ψ (t (P.1, x₀)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `eventually_eq_of_rat (fun Q => flat τ' (ψ (t Q))) P.1 x₀ ?_` and prove the remaining obligations. Establish `a` using `(ht (P.1, x₀) hP1).continuousAt`. Rewrite `a` using `[ContinuousAt, ht0]`. Use `filter_upwards [a.eventually hc, (continuousAt_fst (p := (P.1, x₀))).eventually hB] with Q hQ hQB`. Use `⟨((f'.2.1 _ hQ.2.1).continuousAt.comp hQ.1).comp (ht Q hQB).continuousAt, fun hr => hQ.2.2 ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[hft Q hQB]` and apply the resulting hypothesis. Establish `hs : DifferentiableAt ℝ (fun v => t (v, x₀)) P.1` using `(ht (P.1, x₀) hP1).differentiableAt.comp (f := fun v => (v, x₀)) _ (by fun_prop)`. Use `set L := fderiv ℝ (fun v => t (v, x₀)) P.1 with hL`. Establish `hsL : HasFDerivAt (fun v => t (v, x₀)) L P.1` using `hs.hasFDerivAt`. Establish `hL1 (a : E) : (L a).1 = a` using `congrArg (· a) (hsL.fst.unique (hasFDerivAt_id P.1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL2 (a : E) : dflat τ P (L a) = 0`. Establish `d : HasFDerivAt (flat τ) (dflat τ P) (t (P.1, x₀))` using `ht0.symm ▸ (f.2.1 P hP).differentiableAt.hasFDerivAt`. Establish `d₀ : HasFDerivAt (flat τ ∘ fun v => t (v, x₀)) (0 : E →L[ℝ] Fl g) P.1` using `(hasFDerivAt_const x₀ P.1).congr_of_eventuallyEq (hB.mono fun v hv => hft (v, x₀) hv)`. Establish `e` using `(d.comp P.1 hsL).unique d₀`. Conclude with `congrArg (· a) e`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hua : u = L u.1`. Use `Prod.ext (hL1 _).symm (((f.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2 P hP).2 u.1).unique hu ?_)` and prove the remaining obligations. Use `hL2 u.1` as an intermediate fact. Rewrite `this` using `[← Prod.mk.eta (p := L u.1), hL1]`. Then use the resulting hypothesis. Establish `dψ : HasFDerivAt ψ ((fderiv ℂ ψ P).restrictScalars ℝ) (t (P.1, x₀))` using `ht0.symm ▸ hψ.hasFDerivAt.restrictScalars ℝ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `d' : HasFDerivAt (flat τ') (dflat τ' (ψ P)) (ψ (t (P.1, x₀)))` using `ht0.symm ▸ (f'.2.1 _ hc.self_of_nhds.2.1).differentiableAt.hasFDerivAt`. Establish `d₀ : HasFDerivAt (flat τ' ∘ ψ ∘ fun v => t (v, x₀)) (0 : E →L[ℝ] Fl g) P.1` using `(hasFDerivAt_const _ P.1).congr_of_eventuallyEq hconst`. Establish `e` using `(d'.comp P.1 (dψ.comp P.1 hsL)).unique d₀`. Rewrite using `[hua]`. Conclude with `congrArg (· u.1) e`.
+A detailed English derivation is pending.
 -/
 theorem dflat_eq_zero_of_rat {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {g : ℕ}
     {B B' : Set E} {τ τ' : E → Matrix (Fin g) (Fin g) ℂ} (h : IsPeriodMap B τ) (h' : IsPeriodMap B' τ')
@@ -232,9 +230,9 @@ theorem dflat_eq_zero_of_rat {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ 
   exact congrArg (· u.1) e
 
 /- English proof (translation)
-Introduce `k _ S p A _ g w σ D c c' τ τ' ex ex' H H' P hP ψ hψ hc u hu`. Use `dflat_eq_zero_of_rat H.1 H'.1 hP hψ ?_ u hu` and prove the remaining obligations. Establish `ho : IsOpen (cov c.e.target g)` using `H.1.1.prod isOpen_univ`. Use `filter_upwards [hc, ho.mem_nhds hP] with Q hQ hQc`. Use `⟨hQ.1, hQ.2.1, fun hr => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[torsion_iff H' hQ.2.1 (Over.homMk (ex' (ψ Q)).1 rfl) rfl, hQ.2.2]`. Conclude with `(torsion_iff H hQc _ rfl).1 hr`.
+A detailed English derivation is pending.
 -/
 theorem dflat_change_eq_zero : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (A : Over S) [GrpObj A]
     (g : ℕ) (w : VMetric p (omega A) g) (σ : k →+* ℂ) (D : ℕ) (c c' : AlgChart p σ D)

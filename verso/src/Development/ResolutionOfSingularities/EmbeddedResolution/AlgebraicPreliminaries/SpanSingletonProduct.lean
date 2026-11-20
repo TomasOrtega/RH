@@ -2,11 +2,11 @@ import Mathlib
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Introduce `_ h1`. Rewrite `h1` using `[Finset.prod_empty]`. Use `hI.ne_top ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.eq_top_iff_one]`. Conclude with `h1`. Consider the case `@insert a u ha ih`. Introduce `h hmem`. Rewrite `hmem` using `[Finset.prod_insert ha]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hI.mem_or_mem hmem with h1 | h1` into its components or cases. Conclude with `h a (Finset.mem_insert_self a u) h1`. Conclude with `ih (fun j hj => h j (Finset.mem_insert_of_mem hj)) h1`.
+A detailed English derivation is pending.
 -/
 private theorem prod_notMem_of_isPrime {R : Type*} [CommRing R] {ι : Type*} [DecidableEq ι]
     {I : Ideal R} (hI : I.IsPrime) (g : ι → R) (t : Finset ι) :
@@ -26,11 +26,9 @@ private theorem prod_notMem_of_isPrime {R : Type*} [CommRing R] {ι : Type*} [De
       · exact ih (fun j hj => h j (Finset.mem_insert_of_mem hj)) h1
 
 /- English proof (translation)
-Use `le_antisymm (le_inf ?_ ?_) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Conclude with `Ideal.mem_span_singleton.mpr ⟨b, rfl⟩`. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Conclude with `Ideal.mem_span_singleton.mpr ⟨a, mul_comm a b⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `z hz`. Rewrite `hz` using `[Submodule.mem_inf]`. Take `⟨hz1, hz2⟩` from `hz`. Take `⟨v, rfl⟩` from `Ideal.mem_span_singleton.mp hz2`. Establish `hv : v ∈ Ideal.span ({a} : Set R)` using `(hpa.mem_or_mem hz1).resolve_left hb`.
-
-Take `⟨w, rfl⟩` from `Ideal.mem_span_singleton.mp hv`. Conclude with `Ideal.mem_span_singleton.mpr ⟨w, by ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem span_singleton_mul_eq_inf {R : Type*} [CommRing R] {a b : R}
     (hpa : (Ideal.span ({a} : Set R)).IsPrime) (hb : b ∉ Ideal.span ({a} : Set R)) :
@@ -49,11 +47,11 @@ private theorem span_singleton_mul_eq_inf {R : Type*} [CommRing R] {a b : R}
     exact Ideal.mem_span_singleton.mpr ⟨w, by ring⟩
 
 /- English proof (translation)
-Use `revert hp hdvd`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `_ _`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `@insert a u ha ih`. Introduce `hp hdvd`. Establish `hpa : (Ideal.span ({f a} : Set R)).IsPrime` using `hp a (Finset.mem_insert_self a u)`. Establish `hP : (∏ i ∈ u, f i) ∉ Ideal.span ({f a} : Set R)`. Use `prod_notMem_of_isPrime hpa f u ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Conclude with `hdvd a (Finset.mem_insert_self a u) j (Finset.mem_insert_of_mem hj) (by rintro rfl; exact ha hj)`. Establish `ihu` using `ih (fun i hi => hp i (Finset.mem_insert_of_mem hi)) (fun i hi j hj hij => hdvd i (Finset.mem_insert_of_mem hi) j (Finset.mem_insert_of_mem hj) hij)`. Rewrite using `[Finset.prod_insert ha, span_singleton_mul_eq_inf hpa hP, ihu, Finset.iInf_insert]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_singleton_prod_eq_biInf {R : Type*} [CommRing R] {ι : Type*} [DecidableEq ι]
     (f : ι → R) (s : Finset ι)
@@ -79,7 +77,7 @@ theorem span_singleton_prod_eq_biInf {R : Type*} [CommRing R] {ι : Type*} [Deci
       rw [Finset.prod_insert ha, span_singleton_mul_eq_inf hpa hP, ihu, Finset.iInf_insert]
 
 /- English proof (translation)
-Use `le_iInf fun i => le_iInf fun hi => ?_` and prove the remaining obligations. Use `le_trans (Ideal.radical_mono ?_) (hp i hi).isRadical` and prove the remaining obligations. Conclude with `iInf_le_of_le i (iInf_le _ hi)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isRadical_biInf_span_singleton {R : Type*} [CommRing R] {ι : Type*}
     (f : ι → R) (s : Finset ι)
@@ -90,7 +88,7 @@ theorem isRadical_biInf_span_singleton {R : Type*} [CommRing R] {ι : Type*}
   exact iInf_le_of_le i (iInf_le _ hi)
 
 /- English proof (translation)
-Rewrite using `[span_singleton_prod_eq_biInf f s hp hdvd]`. Conclude with `isRadical_biInf_span_singleton f s hp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRadical_span_singleton_prod_finset {R : Type*} [CommRing R] {ι : Type*}
     [DecidableEq ι]
@@ -106,9 +104,9 @@ end FunctorialResolution.EmbeddedResolution
 namespace IsLocalization
 
 /- English proof (translation)
-Establish `he : ((IsLocalization.algEquiv M S T).toAlgHom.toRingHom).comp (algebraMap R S) = algebraMap R T` using `RingHom.ext fun r => by show (IsLocalization.algEquiv M S T) (algebraMap R S r) = algebraMap R T r`. Conclude with `(IsLocalization.algEquiv M S T).commutes r`. Establish `hmap : ∀ K : Ideal R, Ideal.map (algebraMap R T) K = Ideal.map ((IsLocalization.algEquiv M S T).toAlgHom.toRingHom) (Ideal.map (algebraMap R S) K)`. Introduce `K`. Rewrite using `[Ideal.map_map, he]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmap, hmap, h]`.
+A detailed English derivation is pending.
 -/
 theorem map_eq_map_of_map_eq_map {R S T : Type*} [CommRing R] [CommRing S]
     [CommRing T] [Algebra R S] [Algebra R T] (M : Submonoid R) [IsLocalization M S]
@@ -132,11 +130,11 @@ end IsLocalization
 namespace Ideal
 
 /- English proof (translation)
-Use `revert i hi`. Proceed by induction on `L with`. Consider the case `nil`. Introduce `i hi`. Simplify using `at hi`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `cons A L ih`. Introduce `i hi`. Consider the cases of `i with`. Consider the case `zero`. Simplify using `only [List.prod_cons, List.getElem_cons_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Conclude with `le_trans Ideal.mul_le_inf inf_le_left`. Consider the case `succ i'`. Establish `hi' : i' < L.length` using `by simpa using hi`. Simplify using `only [List.prod_cons, List.getElem_cons_succ]`. Conclude with `le_trans (le_trans Ideal.mul_le_inf inf_le_right) (ih i' hi')`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem list_prod_le_getElem {R : Type*} [CommRing R] (L : List (Ideal R)) (i : ℕ)
     (hi : i < L.length) : L.prod ≤ (L[i]'hi) := by
@@ -161,9 +159,9 @@ end Ideal
 namespace KaehlerDifferential
 
 /- English proof (translation)
-Establish `hsm : ∀ a : A, a • (1 : IsLocalRing.ResidueField A) = IsLocalRing.residue A a`. Introduce `a`. Rewrite using `[Algebra.smul_def, mul_one, IsLocalRing.ResidueField.algebraMap_eq]`. Establish `hx0 : IsLocalRing.residue A x = 0`. Rewrite using `[IsLocalRing.residue_eq_zero_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Establish `hstep : IsLocalRing.residue A c • ((1 : IsLocalRing.ResidueField A) ⊗ₜ[A] KaehlerDifferential.D k A x) = (IsLocalRing.residue A c * 1) ⊗ₜ[A] KaehlerDifferential.D k A x` using `rfl`. Rewrite using `[Derivation.leibniz, TensorProduct.tmul_add, ← TensorProduct.smul_tmul, ← TensorProduct.smul_tmul, hsm, hsm, hx0, TensorProduct.zero_tmul, zero_add, hstep, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_tmul_D_mul_of_mem_maximalIdeal (k : Type*) [CommRing k] (A : Type*)
     [CommRing A]

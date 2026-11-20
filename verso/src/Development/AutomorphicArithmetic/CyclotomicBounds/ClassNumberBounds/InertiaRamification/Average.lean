@@ -5,9 +5,9 @@ namespace KStar.Ram
 open DirichletCharacter
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `[hp.ne_one]`. Introduce `a t ha ih`. Rewrite using `[Finset.lcm_insert]`. Express the relevant statement in the definitionally equal form `p ∣ Nat.lcm (c a) (t.lcm c) ↔ _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hp.dvd_lcm, ih]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem prime_dvd_finset_lcm {ι : Type*} {p : ℕ} (hp : p.Prime) (s : Finset ι)
     (c : ι → ℕ) : p ∣ s.lcm c ↔ ∃ i ∈ s, p ∣ c i := by
@@ -23,11 +23,11 @@ private theorem prime_dvd_finset_lcm {ι : Type*} {p : ℕ} (hp : p.Prime) (s : 
 variable {N : ℕ} [NeZero N] (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Establish `key : ramIdx l X = 1 ↔ ∀ ψ ∈ X, localPart N l ψ = 1`. Unfold `ramIdx`. Rewrite using `[Subgroup.card_eq_one, Subgroup.map_eq_bot_iff]`. Conclude with `⟨fun h ψ hψ => h hψ, fun h ψ hψ => h ψ hψ⟩`. Establish `e1 : ramIdx l X = 1 ↔ ∀ ψ ∈ X, ¬ l ∣ ψ.conductor`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[key]`. Conclude with `forall₂_congr fun ψ _ => (localPart_eq_one_iff l ψ).2`. Use `⟨e1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Unfold `fieldCond`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prime_dvd_finset_lcm (Fact.out)]`. Simplify using the standard rewrite rules. Unfold `ramIdx`. Conclude with `Nat.card_pos`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ramIdx_eq_one_iff (X : Subgroup (DirichletCharacter ℂ N)) :
     (ramIdx l X = 1 ↔ ∀ ψ ∈ X, ¬ l ∣ ψ.conductor) ∧ (ramIdx l X = 1 ↔ ¬ l ∣ fieldCond X) ∧

@@ -21,26 +21,26 @@ section Hil
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 /- English proof (translation)
-Establish `h : prj V v ∈ V.topologicalClosure` using `Submodule.starProjection_apply_mem V.topologicalClosure v`. Rewrite `h` using `[hV.submodule_topologicalClosure_eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem prj_mem {V : Submodule ℂ H} (hV : IsClosed (V : Set H)) (v : H) : prj V v ∈ V := by
   have h : prj V v ∈ V.topologicalClosure := Submodule.starProjection_apply_mem V.topologicalClosure v
   rwa [hV.submodule_topologicalClosure_eq] at h
 
 /- English proof (translation)
-The claim follows from `Submodule.starProjection_eq_self_iff.2 (Submodule.le_topologicalClosure _ hv)`.
+A detailed English derivation is pending.
 -/
 theorem prj_self {V : Submodule ℂ H} {v : H} (hv : v ∈ V) : prj V v = v :=
   Submodule.starProjection_eq_self_iff.2 (Submodule.le_topologicalClosure _ hv)
 
 /- English proof (translation)
-The claim follows from `Submodule.starProjection_inner_eq_zero v w (Submodule.le_topologicalClosure _ hw)`.
+A detailed English derivation is pending.
 -/
 theorem prj_inner {V : Submodule ℂ H} (v : H) {w : H} (hw : w ∈ V) : ⟪v - prj V v, w⟫_ℂ = 0 :=
   Submodule.starProjection_inner_eq_zero v w (Submodule.le_topologicalClosure _ hw)
 
 /- English proof (translation)
-The claim follows from `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (Submodule.le_topologicalClosure _ hy) fun w hw => h w (by rwa [hV.submodule_topologicalClosure_eq] at hw)`.
+A detailed English derivation is pending.
 -/
 theorem prj_eq_of {V : Submodule ℂ H} (hV : IsClosed (V : Set H)) (x y : H) (hy : y ∈ V)
     (h : ∀ w ∈ V, ⟪x - y, w⟫_ℂ = 0) : prj V x = y :=
@@ -48,14 +48,14 @@ theorem prj_eq_of {V : Submodule ℂ H} (hV : IsClosed (V : Set H)) (x y : H) (h
     fun w hw => h w (by rwa [hV.submodule_topologicalClosure_eq] at hw)
 
 /- English proof (translation)
-The claim follows from `isStarProjection_starProjection`.
+A detailed English derivation is pending.
 -/
 theorem prj_star (V : Submodule ℂ H) : IsStarProjection (prj V) := isStarProjection_starProjection
 
 /- English proof (translation)
-Establish `hEG : IsClosed ((E ⊓ G : Submodule ℂ H) : Set H)`. Rewrite using `[Submodule.coe_inf]`. Conclude with `hE.inter hG`. Use `ContinuousLinearMap.ext fun x => (prj_eq_of hEG x ((prj E * prj G) x) ⟨prj_mem hE (prj G x), ?_⟩ fun w hw => ?_).symm` and prove the remaining obligations. Use `show (prj E * prj G) x ∈ G`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hc.eq]`. Conclude with `prj_mem hG _`. Establish `: x - (prj E * prj G) x = (x - prj G x) + (prj G x - prj E (prj G x))` using `by simp`. Rewrite using `[this, inner_add_left, prj_inner x hw.2, prj_inner _ hw.1, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prj_mul {E G : Submodule ℂ H} (hE : IsClosed (E : Set H)) (hG : IsClosed (G : Set H))
     (hc : Commute (prj E) (prj G)) : prj E * prj G = prj (E ⊓ G) := by
@@ -68,7 +68,7 @@ theorem prj_mul {E G : Submodule ℂ H} (hE : IsClosed (E : Set H)) (hG : IsClos
     rw [this, inner_add_left, prj_inner x hw.2, prj_inner _ hw.1, add_zero]
 
 /- English proof (translation)
-Use `ContinuousLinearMap.ext fun v => (prj_eq_of hV (T v) (T (prj V v)) (h1 _ (prj_mem hV v)) fun w hw => ?_).symm` and prove the remaining obligations. Rewrite using `[← map_sub, ← ContinuousLinearMap.adjoint_inner_right]`. Conclude with `prj_inner v (h2 w hw)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prj_commute {V : Submodule ℂ H} (hV : IsClosed (V : Set H)) (T : H →L[ℂ] H) (h1 : ∀ v ∈ V, T v ∈ V)
     (h2 : ∀ v ∈ V, ContinuousLinearMap.adjoint T v ∈ V) : Commute T (prj V) := by
@@ -77,7 +77,7 @@ theorem prj_commute {V : Submodule ℂ H} (hV : IsClosed (V : Set H)) (T : H →
   exact prj_inner v (h2 w hw)
 
 /- English proof (translation)
-Use `(prj_eq_of hW' _ _ ((h _).2 (prj_mem hW v)) fun w hw => ?_).symm` and prove the remaining obligations. Take `⟨u, rfl⟩` from `U.surjective w`. Rewrite using `[← map_sub, U.inner_map_map]`. Conclude with `prj_inner v ((h u).1 hw)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prj_equiv {W W' : Submodule ℂ H} (hW : IsClosed (W : Set H)) (hW' : IsClosed (W' : Set H)) (U : H ≃ₗᵢ[ℂ] H)
     (h : ∀ v, U v ∈ W' ↔ v ∈ W) (v : H) : U (prj W v) = prj W' (U v) := by
@@ -87,15 +87,15 @@ theorem prj_equiv {W W' : Submodule ℂ H} (hW : IsClosed (W : Set H)) (hW' : Is
   exact prj_inner v ((h u).1 hw)
 
 /- English proof (translation)
-Simplify using `only [eigIn, Submodule.mem_inf, Module.End.mem_eigenspace_iff, ContinuousLinearMap.coe_coe]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_eigIn {W : Submodule ℂ H} {A : H →L[ℂ] H} {x : ℝ} {v : H} : v ∈ eigIn W A x ↔ v ∈ W ∧ A v = (x : ℂ) • v := by
   simp only [eigIn, Submodule.mem_inf, Module.End.mem_eigenspace_iff, ContinuousLinearMap.coe_coe]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hv : v ∈ W`. Establish `h1 : (x : ℂ) • v ∈ W` using `by rw [← h, hc.eq]; exact prj_mem hW _`. Conclude with `(W.smul_mem_iff (Complex.ofReal_ne_zero.2 hx)).1 h1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨hv, by rw [← h, ContinuousLinearMap.mul_apply, prj_self hv]⟩`. Introduce and unpack `⟨hv, h⟩`. Rewrite using `[ContinuousLinearMap.mul_apply, prj_self hv, h]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eig_mul {W : Submodule ℂ H} (hW : IsClosed (W : Set H)) {O : H →L[ℂ] H} (hc : Commute O (prj W)) {x : ℝ} (hx : x ≠ 0)
     (v : H) : (O * prj W) v = (x : ℂ) • v ↔ v ∈ W ∧ O v = (x : ℂ) • v := by
@@ -111,11 +111,11 @@ theorem eig_mul {W : Submodule ℂ H} (hW : IsClosed (W : Set H)) {O : H →L[�
 variable {Γ : Type*} [Group Γ] [TopologicalSpace Γ]
 
 /- English proof (translation)
-Proceed by induction on `g using FreeGroup.induction_on with`. Consider the case `C1 => intro v`. Simplify using `only [map_one, UnitaryRep.map_one_apply]`. Consider the case `of x => simpa using h x`. Consider the case `inv_of x ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Introduce `v`. Establish `h1` using `ih (π (FreeGroup.lift f (FreeGroup.of x))⁻¹ v)`. Rewrite `h1` using `[← UnitaryRep.map_mul_apply, mul_inv_cancel, UnitaryRep.map_one_apply]`. Rewrite using `[map_inv, map_inv, h1, ← UnitaryRep.map_mul_apply, inv_mul_cancel, UnitaryRep.map_one_apply]`. Consider the case `mul a b iha ihb => intro v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Simplify using `only [map_mul, UnitaryRep.map_mul_apply, iha, ihb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lift_int {X : Type*} (π : UnitaryRep Γ H) (A : H → H) (f f' : X → Γ) (h : ∀ x v, A (π (f x) v) = π (f' x) (A v))
     (g : FreeGroup X) : ∀ v, A (π (FreeGroup.lift f g) v) = π (FreeGroup.lift f' g) (A v) := by
@@ -130,7 +130,7 @@ theorem lift_int {X : Type*} (π : UnitaryRep Γ H) (A : H → H) (f f' : X → 
   | mul a b iha ihb => intro v; simp only [map_mul, UnitaryRep.map_mul_apply, iha, ihb]
 
 /- English proof (translation)
-Use `prj_eq_of hV _ _ (hi _ _ (prj_mem hV v)) fun w hw => ?_` and prove the remaining obligations. Establish `h1 : w = π g (π g⁻¹ w)` using `by rw [← UnitaryRep.map_mul_apply, mul_inv_cancel, UnitaryRep.map_one_apply]`. Rewrite using `[← map_sub, h1, UnitaryRep.inner_map_map]`. Conclude with `prj_inner v (hi _ _ hw)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_commute (π : UnitaryRep Γ H) {V : Submodule ℂ H} (hV : IsClosed (V : Set H)) (hi : π.IsInvariant V) (g : Γ) (v : H) :
     prj V (π g v) = π g (prj V v) := by
@@ -142,11 +142,11 @@ theorem inv_commute (π : UnitaryRep Γ H) {V : Submodule ℂ H} (hV : IsClosed 
 end Hil
 
 /- English proof (translation)
-Proceed by induction on `a using FreeGroup.induction_on with`. Consider the case `C1 => simp`. Consider the case `of x`. Proceed by induction on `b using FreeGroup.induction_on with`. Consider the case `C1 => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `of y => simpa using h x y`. Consider the case `inv_of y ih => rw [map_inv]`. Conclude with `ih.inv_right`. Consider the case `mul c d ihc ihd => rw [map_mul]`. Conclude with `ihc.mul_right ihd`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `inv_of x ih => rw [map_inv]`. Conclude with `ih.inv_left`. Consider the case `mul c d ihc ihd => rw [map_mul]`. Conclude with `ihc.mul_left ihd`.
+A detailed English derivation is pending.
 -/
 theorem lift_commute {X Γ : Type*} [Group Γ] (f f' : X → Γ) (h : ∀ x y, Commute (f x) (f' y)) (a b : FreeGroup X) :
     Commute (FreeGroup.lift f a) (FreeGroup.lift f' b) := by
@@ -165,11 +165,11 @@ section Alg
 variable {M : Type*} [Monoid M]
 
 /- English proof (translation)
-Introduce `r`. Proceed by induction on `r with`. Consider the case `zero => intro T P _`. Simplify using the standard rewrite rules. Consider the case `succ r ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `T P h1`. Establish `h3` using `ih (fun i => T i.succ) (fun i => P i.succ) fun i j hij => h1 _ _ fun h => hij (Fin.succ_injective _ h)`. Establish `h4 : Commute (P 0) (List.ofFn fun i : Fin r => T i.succ).prod`. Use `Commute.list_prod_right _ _ fun x hx => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `h1 _ _ (Fin.succ_ne_zero i).symm`. Simplify using `only [List.ofFn_succ, List.prod_cons]`. Rewrite using `[h3, mul_assoc, mul_assoc, ← mul_assoc (P 0), h4.eq, mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofFn_mul : ∀ (r : ℕ) (T P : Fin r → M), (∀ i j, i ≠ j → Commute (P i) (T j)) →
     (List.ofFn fun i => T i * P i).prod = (List.ofFn T).prod * (List.ofFn P).prod := by
@@ -187,11 +187,11 @@ theorem ofFn_mul : ∀ (r : ℕ) (T P : Fin r → M), (∀ i j, i ≠ j → Comm
     rw [h3, mul_assoc, mul_assoc, ← mul_assoc (P 0), h4.eq, mul_assoc]
 
 /- English proof (translation)
-Introduce `r`. Proceed by induction on `r with`. Consider the case `zero => intro T j`. Conclude with `j.elim0`. Consider the case `succ r ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T j h`. Rewrite using `[List.ofFn_succ, List.prod_cons]`. Use `Fin.cases (fun h => ?_) (fun j h => ?_) j h` and prove the remaining obligations. Rewrite using `[List.prod_eq_one, mul_one]`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hx`. Conclude with `h _ (Fin.succ_ne_zero i)`. Rewrite using `[h 0 (Fin.succ_ne_zero j).symm, one_mul]`. Conclude with `ih (fun i => T i.succ) j fun i hi => h _ fun e => hi (Fin.succ_injective _ e)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofFn_single : ∀ (r : ℕ) (T : Fin r → M) (j : Fin r), (∀ i, i ≠ j → T i = 1) → (List.ofFn T).prod = T j := by
   intro r
@@ -223,7 +223,7 @@ def prodM {G Γ : Type*} [Group G] [Group Γ] {r : ℕ} (ι : Fin r → G →* �
     simp only [Pi.mul_apply, map_mul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Pi.mulSingle j a, by rw [ofFn_single r _ j fun i hi => by simp [Pi.mulSingle_eq_of_ne hi]] simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_prodM {G Γ : Type*} [Group G] [Group Γ] {r : ℕ} (ι : Fin r → G →* Γ)
     (h : ∀ i j, i ≠ j → ∀ a b, Commute (ι i a) (ι j b)) (j : Fin r) (a : G) : ι j a ∈ prodM ι h :=
@@ -232,7 +232,7 @@ theorem mem_prodM {G Γ : Type*} [Group G] [Group Γ] {r : ℕ} (ι : Fin r → 
     simp⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `map_list_prod (Pi.evalMonoidHom (fun _ : Fin r => G) j) (List.ofFn fun i => (Pi.mulSingle i (g i) : Fin r → G))` as an intermediate fact. Rewrite `this` using `[List.map_ofFn, ofFn_single r (_ ∘ _) j fun i hi => by simp [Pi.mulSingle_eq_of_ne' hi]]`. Conclude with `this.trans (by simp)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofFn_mulSingle {G : Type*} [Group G] {r : ℕ} (g : Fin r → G) :
     (List.ofFn fun i => (Pi.mulSingle i (g i) : Fin r → G)).prod = g := by
@@ -242,9 +242,9 @@ theorem ofFn_mulSingle {G : Type*} [Group G] {r : ℕ} (g : Fin r → G) :
   exact this.trans (by simp)
 
 /- English proof (translation)
-Establish `h1 : ∀ (k : ℕ) j, J ((fun x => x + 1)^[k] j) ≤ J j` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => exact fun _ => le_rfl`. Consider the case `succ k ih => exact fun j => by rw [Function.iterate_succ_apply']; exact (h _).trans (ih j)`. Take `⟨k, hk, hp⟩` from `Function.mem_periodicPts.1 ((add_left_injective (1 : Fin (m + 1))).mem_periodicPts i)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hk.ne'`. Establish `h2 : (fun x => x + 1)^[k] (i + 1) = i` using `hp`. Simplify `h1 k (i + 1)` using `[h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cyc_le {α : Type*} [Preorder α] {m : ℕ} (J : Fin (m + 1) → α) (h : ∀ i, J (i + 1) ≤ J i) (i : Fin (m + 1)) :
     J i ≤ J (i + 1) := by
@@ -261,14 +261,14 @@ section Loc
 variable {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Use `(UpperTheory.ConvolutionTheory.Tf.commPrj K n μ ⊥).2.2.2.2.2.2.2.1 (AdelicGLn.localEmbedding w g)` as an intermediate fact. Simplify `this` using `only [rhoL, map_inv]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rhoL_adj (w : Pl K) (g : Gw n w) : ContinuousLinearMap.adjoint (rhoL μ w g) = rhoL μ w g⁻¹ := by
   have := (UpperTheory.ConvolutionTheory.Tf.commPrj K n μ ⊥).2.2.2.2.2.2.2.1 (AdelicGLn.localEmbedding w g)
   simpa only [rhoL, map_inv] using this
 
 /- English proof (translation)
-Establish `hm` using `(UpperTheory.ConvolutionTheory.Tf.commPrj K n μ ⊥).2.2.2.2.2.1`. Establish `hc` using `(UpperTheory.ConvolutionTheory.Tf.locEmb K n v).2.2.2.1 w h.symm g x`. Use `show rhoL μ v g ∘L rhoL μ w x = rhoL μ w x ∘L rhoL μ v g`. Simplify using `only [rhoL]`. Rewrite using `[← hm, ← hm, hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rhoL_comm {v w : Pl K} (h : v ≠ w) (g : Gw n v) (x : Gw n w) : Commute (rhoL μ v g) (rhoL μ w x) := by
   have hm := (UpperTheory.ConvolutionTheory.Tf.commPrj K n μ ⊥).2.2.2.2.2.1
@@ -278,13 +278,13 @@ theorem rhoL_comm {v w : Pl K} (h : v ≠ w) (g : Gw n v) (x : Gw n w) : Commute
   rw [← hm, ← hm, hc]
 
 /- English proof (translation)
-The claim follows from `(MultiplicityOne.finProj_mul_archProj_comm h a).symm`.
+A detailed English derivation is pending.
 -/
 theorem arch_fin (a : archGroup K n) (h : AdelicGLn.FiniteAdelicGL K n) :
     Commute (archP K n a) (MultiplicityOne.finProj K n h) := (MultiplicityOne.finProj_mul_archProj_comm h a).symm
 
 /- English proof (translation)
-Simplify using `[eigL, Submodule.mem_iInf, LinearMap.mem_eqLocus]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_eigL {w : Pl K} {J' : Subgroup (Gw n w)} {χ' : Gw n w → ℂ} {x : LL μ} :
     x ∈ eigL μ w J' χ' ↔ ∀ y ∈ J', rhoL μ w y x = χ' y • x := by
@@ -296,13 +296,13 @@ def GA (J : ∀ w : Pl K, Subgroup (Gw n w)) (χ : ∀ w : Pl K, Gw n w → ℂ)
 variable {J : ∀ w : Pl K, Subgroup (Gw n w)} {χ : ∀ w : Pl K, Gw n w → ℂ}
 
 /- English proof (translation)
-Simplify using `only [GA, Submodule.mem_iInf, mem_eigL]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_GA {A : Set (Pl K)} {x : LL μ} : x ∈ GA μ J χ A ↔ ∀ u ∈ A, ∀ y ∈ J u, rhoL μ u y x = χ u y • x := by
   simp only [GA, Submodule.mem_iInf, mem_eigL]
 
 /- English proof (translation)
-Establish `: (GA μ J χ A : Set (LL μ)) = ⋂ u ∈ A, ⋂ y ∈ J u, {x | rhoL μ u y x = χ u y • x}`. Use extensionality with `x`. Simplify using `[mem_GA]`. Rewrite using `[this]`. Conclude with `isClosed_biInter fun u _ => isClosed_biInter fun y _ => isClosed_eq (rhoL μ u y).continuous (continuous_const_smul _)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GA_closed (A : Set (Pl K)) : IsClosed (GA μ J χ A : Set (LL μ)) := by
   have : (GA μ J χ A : Set (LL μ)) = ⋂ u ∈ A, ⋂ y ∈ J u, {x | rhoL μ u y x = χ u y • x} := by
@@ -312,7 +312,7 @@ theorem GA_closed (A : Set (Pl K)) : IsClosed (GA μ J χ A : Set (LL μ)) := by
   exact isClosed_biInter fun u _ => isClosed_biInter fun y _ => isClosed_eq (rhoL μ u y).continuous (continuous_const_smul _)
 
 /- English proof (translation)
-Establish `key : ∀ B : LL μ →L[ℂ] LL μ, (∀ u ∈ A, ∀ x, Commute B (rhoL μ u x)) → ∀ v ∈ GA μ J χ A, B v ∈ GA μ J χ A` using `fun B hB v hv => (mem_GA μ).2 fun u hu y hy => by`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← (hB u hu y).eq, ContinuousLinearMap.mul_apply, (mem_GA μ).1 hv u hu y hy, map_smul]`. Use `prj_commute (GA_closed μ A) B (key B hB) (key _ fun u hu x => ?_)` and prove the remaining obligations. Establish `h` using `(hB u hu x⁻¹).star_star`. Rewrite `h` using `[ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.star_eq_adjoint, rhoL_adj, inv_inv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem GA_commute {A : Set (Pl K)} (B : LL μ →L[ℂ] LL μ) (hB : ∀ u ∈ A, ∀ x, Commute B (rhoL μ u x)) :
     Commute B (prj (GA μ J χ A)) := by
@@ -324,28 +324,28 @@ theorem GA_commute {A : Set (Pl K)} (B : LL μ →L[ℂ] LL μ) (hB : ∀ u ∈ 
   rwa [ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.star_eq_adjoint, rhoL_adj, inv_inv] at h
 
 /- English proof (translation)
-The claim follows from `GA_commute μ _ fun u hu x => rhoL_comm μ (fun h : v = u => hv (h ▸ hu)) g x`.
+A detailed English derivation is pending.
 -/
 theorem GA_rhoL {A : Set (Pl K)} {v : Pl K} (hv : v ∉ A) (g : Gw n v) : Commute (rhoL μ v g) (prj (GA μ J χ A)) :=
   GA_commute μ _ fun u hu x => rhoL_comm μ (fun h : v = u => hv (h ▸ hu)) g x
 
 /- English proof (translation)
-The claim follows from `GA_commute μ _ fun _ hu x => (GA_rhoL μ (Set.disjoint_right.1 h hu) x).symm`.
+A detailed English derivation is pending.
 -/
 theorem GA_GA {A A' : Set (Pl K)} (h : Disjoint A A') : Commute (prj (GA μ J χ A)) (prj (GA μ J χ A')) :=
   GA_commute μ _ fun _ hu x => (GA_rhoL μ (Set.disjoint_right.1 h hu) x).symm
 
 /- English proof (translation)
-The claim follows from `iInf_union`.
+A detailed English derivation is pending.
 -/
 theorem GA_union (A A' : Set (Pl K)) : GA μ J χ (A ∪ A') = GA μ J χ A ⊓ GA μ J χ A' := iInf_union
 
 /- English proof (translation)
-Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `R _`. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[prj_self ((mem_GA μ).2 fun u hu => by simp at hu)]`. Simplify using the standard rewrite rules. Consider the case `succ r ih`. Introduce `R h`. Rewrite using `[List.ofFn_succ, List.prod_cons, ih (fun i => R i.succ) fun i j hij => h _ _ fun e => hij (Fin.succ_injective _ e), prj_mul (GA_closed μ _) (GA_closed μ _) (GA_GA μ (Set.disjoint_iUnion_right.2 fun i => h _ _ (Fin.succ_ne_zero i).symm)), ← GA_union]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use extensionality with `u`. Simplify using `[Fin.exists_fin_succ]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem GA_prod : ∀ (r : ℕ) (R : Fin r → Set (Pl K)), (∀ i j, i ≠ j → Disjoint (R i) (R j)) →
     (List.ofFn fun i => prj (GA μ J χ (R i))).prod = prj (GA μ J χ (⋃ i, R i)) := by
@@ -366,7 +366,7 @@ theorem GA_prod : ∀ (r : ℕ) (R : Fin r → Set (Pl K)), (∀ i j, i ≠ j �
     simp [Fin.exists_fin_succ]
 
 /- English proof (translation)
-Establish `h` using `GA_commute μ (J := J) (χ := χ) (A := A) (prj V) fun u _ x => ContinuousLinearMap.ext fun y => inv_commute _ hV.closed hV.inv _ y`. Rewrite using `[← prj_self hv, ← ContinuousLinearMap.mul_apply, ← h.eq]`. Conclude with `prj_mem hV.closed _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GA_mem {V : Submodule ℂ (LL μ)} (hV : IsSummand μ V) (A : Set (Pl K)) {v : LL μ} (hv : v ∈ V) :
     prj (GA μ J χ A) v ∈ V := by
@@ -376,7 +376,7 @@ theorem GA_mem {V : Submodule ℂ (LL μ)} (hV : IsSummand μ V) (A : Set (Pl K)
   exact prj_mem hV.closed _
 
 /- English proof (translation)
-The claim follows from `GA_commute μ _ fun u _ x => ContinuousLinearMap.ext fun y => by simp only [ContinuousLinearMap.mul_apply, rhoL, rhoF] rw [← UnitaryRep.map_mul_apply, ← UnitaryRep.map_mul_apply, (arch_fin _ _).eq]`.
+A detailed English derivation is pending.
 -/
 theorem GA_arch (A : Set (Pl K)) (a : archGroup K n) :
     Commute (rightRegularRep (rationalGLOne K n) μ (archP K n a)) (prj (GA μ J χ A)) :=
@@ -385,9 +385,7 @@ theorem GA_arch (A : Set (Pl K)) (a : archGroup K n) :
     rw [← UnitaryRep.map_mul_apply, ← UnitaryRep.map_mul_apply, (arch_fin _ _).eq]
 
 /- English proof (translation)
-Use `⟨(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_, HasCompactSupport.intro hJ.1 fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ (J : Set G)`. Use `filter_upwards [hJ.2.mem_nhds hx, (IsLocallyConstant.iff_eventually_eq _).1 hχ.1 x] with y hy hy2`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem hx, hy2]`. Use `filter_upwards [(Subgroup.isClosed_of_isOpen J hJ.2).isOpen_compl.mem_nhds hx] with y hy`.
-
-Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem test_ind {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {J : Subgroup G} (hJ : CO J)
     {χ : G → ℂ} (hχ : IsChr J χ) : Test ((J : Set G).indicator fun x => conj (χ x)) := by
@@ -400,11 +398,11 @@ theorem test_ind {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G
     rw [Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]
 
 /- English proof (translation)
-Take `⟨κ, hκ, H⟩` from `tensFactor K n hn μ ν J χ hco hcof`. Establish `hB` using `Filter.eventually_cofinite.1 hcof`. Take `⟨e, he, -⟩` from `UpperTheory.ConvolutionTheory.Tf.finTens K n μ Measure.haar _ (fun j => (hB.toFinset.equivFin.symm j).1) (fun i j h => hB.toFinset.equivFin.symm.injective (Subtype.ext h)) (fun v => (J v : Set (Gw n v)).indicator fun g => conj (χ v g)) (fun i => test_ind (hco _).1 (hco _).2) fun …`. Establish `h : J v = GLnLocal.integralGL (v.adicCompletion K) n ∧ χ v = 1`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hv ⟨hB.toFinset.equivFin ⟨v, hB.mem_toFinset.2 h⟩, by simp⟩`. Rewrite using `[h.1, h.2]`. Conclude with `Set.indicator_congr fun x _ => by simp`. Establish `h1` using `@H β 0 Fin.elim0 (fun i => i.elim0) (fun i => i.elim0) (fun i => i.elim0) (fun i => i.elim0) (fun i => i.elim0) (fun i => i.elim0) (fun i => i.elim0) (fun i => i.elim0) e fun x => by rw [he]; simp`. Establish `h2` using `((UpperTheory.ConvolutionTheory.C.opBasics K n μ (tens β e)).2.2).smul ((κ : ℂ)⁻¹)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `cast (congrArg _ (funext fun v => Eq.symm ?_)) h2` and prove the remaining obligations. Establish `h3 : GA μ J χ Set.univ = ⨅ u, eigL μ u (J u) (χ u)` using `by simp [GA]`. Simplify using `only [h1, h3, ContinuousLinearMap.comp_apply, Pi.smul_apply, ContinuousLinearMap.smul_apply, List.ofFn_zero, List.prod_nil, ContinuousLinearMap.one_apply]`. Rewrite using `[inv_smul_smul₀ (Complex.ofReal_ne_zero.2 hκ.ne')]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compact_typed (hn : 0 < n) (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (hco : ∀ w, CO (J w) ∧ IsChr (J w) (χ w))
     (hcof : ∀ᶠ w in Filter.cofinite, J w = GLnLocal.integralGL (w.adicCompletion K) n ∧ χ w = 1) (β : TI K n) :
@@ -429,9 +427,9 @@ theorem compact_typed (hn : 0 < n) (ν : Measure (archGroup K n)) [ν.IsHaarMeas
   rw [inv_smul_smul₀ (Complex.ofReal_ne_zero.2 hκ.ne')]
 
 /- English proof (translation)
-Proceed by induction on `B using Finset.induction_on with`. Consider the case `empty => exact ⟨1, M.one_mem, h, (one_mul _).symm, by simp⟩`. Consider the case `insert b B hb ih`. Take `⟨x, hx, h', e, h1⟩` from `ih fun c hc => hM c (Finset.mem_insert_of_mem hc)`. Use `⟨_, M.mul_mem hx (hM b (Finset.mem_insert_self _ _) (finAt b (finEmb K n h'))), (AdelicGLn.localEmbedding b (finAt b (finEmb K n h')))⁻¹ * h', ?_, fun w hw => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, map_mul, map_inv, mul_assoc, mul_inv_cancel_left]`. Rewrite using `[map_mul, map_inv, finAt_mul, finAt_inv]`. Break down `Finset.mem_insert.1 hw with rfl | hw` into its components or cases. Rewrite using `[(UpperTheory.ConvolutionTheory.Tf.locEmb K n w).2.1, inv_mul_cancel]`. Rewrite using `[(UpperTheory.ConvolutionTheory.Tf.locEmb K n b).2.2.1 w (fun e => hb (e ▸ hw)), h1 w hw, inv_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem split_fin (M : Submonoid (normOneGL K n)) (B : Finset (Pl K))
     (hM : ∀ b ∈ B, ∀ y, MultiplicityOne.finProj K n (AdelicGLn.localEmbedding b y) ∈ M) (h : AdelicGLn.FiniteAdelicGL K n) :
@@ -456,7 +454,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (μ : Measure (normOneGL E n)) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Establish `key : T ∘L OComponent μ s hs ν a = OComponent μ s' hs' ν a ∘L T`. Use `UnitaryRep.comp_integrated_of_mem_intertwiners _ _ ?_ _` and prove the remaining obligations. Introduce `x u`. Conclude with `h x u`. Conclude with `DFunLike.congr_fun key v`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem operatorAt_int {s s' : archGroup F n →* archGroup E n} (hs : Continuous s) (hs' : Continuous s')
     (ν : Measure (archGroup F n)) [ν.IsHaarMeasure] (a : TI F n) (T : LL μ →L[ℂ] LL μ)
@@ -470,14 +468,14 @@ theorem operatorAt_int {s s' : archGroup F n →* archGroup E n} (hs : Continuou
   exact DFunLike.congr_fun key v
 
 /- English proof (translation)
-Use `ext1`. Conclude with `(Ideal.over_def u.1.asIdeal v.asIdeal).symm`.
+A detailed English derivation is pending.
 -/
 theorem under_of_over {v : Pl F} (u : PlacesOver E v) : u.1.under (𝓞 F) = v := by
   ext1
   exact (Ideal.over_def u.1.asIdeal v.asIdeal).symm
 
 /- English proof (translation)
-Use `(Set.finite_range fun u : PlacesOver E v => u.1).subset fun w hw => ?_` and prove the remaining obligations. Substitute `hw` using the available equality. Conclude with `⟨⟨w, ⟨rfl⟩⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem finite_over (v : Pl F) : {w : Pl E | w.under (𝓞 F) = v}.Finite := by
   refine (Set.finite_range fun u : PlacesOver E v => u.1).subset fun w hw => ?_

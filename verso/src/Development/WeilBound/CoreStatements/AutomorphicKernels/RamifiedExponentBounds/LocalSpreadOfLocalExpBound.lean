@@ -30,9 +30,9 @@ def LocalSpread : Prop :=
       ∃ hd : ∑ j, ((δ j).nu (s j)).1 = N, Nonempty (π.Equiv (prodIrr (fun j => (δ j).nu (s j)) hd))
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ N V _ _ π hs hi hu hg`. Take `⟨h, δ, Δ, s, hΔ, hc, hb, hd, e⟩` from `H k N V π hs hi hu hg`. Use `⟨h, δ, Δ, s, hΔ, hc, fun j j' => ?_, hd, e⟩` and prove the remaining obligations. Establish `h1` using `abs_lt.1 (hb j)`. Establish `h2` using `abs_lt.1 (hb j')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear relations using `[h1.1, h2.2]`.
+Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem localSpread_of_localExpBound (H : LocalExpBound) : LocalSpread := by
   intro k _ _ _ _ _ N V _ _ π hs hi hu hg

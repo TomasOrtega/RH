@@ -12,13 +12,11 @@ set_option autoImplicit false
 namespace GlobalTheory.FieldPair.Place
 
 /- English proof (translation)
-Introduce `k K _ _ _ c n x E hx hmem`. Set `y : Fin n → E.ring` to `fun i => ⟨x i, hmem i⟩`. Establish `e₁ : E.toRat n (dForm E.const y) = dForm c x`. Conclude with `formMap_dForm (α := E.const) (β := c) E.ring.subtype rfl y`. Take `⟨ω, hω⟩` from `E.exists_isFreeGen hx`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hω.2 (dForm E.const y)`. Rewrite using `[← e₁, ← ha, map_smulₛₗ]`. Distinguish the cases in `h0 : (a : K) = 0`. Establish `hz : (E.ring.subtype a) • E.toRat n ω = 0`. Express the relevant statement in the definitionally equal form `(a : K) • _ = 0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, zero_smul]`. Rewrite using `[hz, formOrd, dif_neg]`. Introduce and unpack `⟨b, hb⟩`. Conclude with `hb.ne_zero rfl`. Express the relevant statement in the definitionally equal form `0 ≤ E.formOrd ((a : K) • E.toRat n ω)`.
-
-Rewrite using `[E.formOrd_smul_toRat hω h0]`. Conclude with `(E.ord_nonneg_iff h0).2 a.2`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formOrd_dForm_nonneg : ∀ {k K : Type} [Field k] [CharZero k] [Field K] (c : k →+* K) (n : ℕ) (x : Fin n → K) (E : Place c),
   TrBasis c x → (∀ i, x i ∈ E.ring) → 0 ≤ E.formOrd (dForm c x) := by

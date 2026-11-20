@@ -7,7 +7,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.FD ComplexConjugate
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Use `Finset.sum_bij (fun a _ => Fin.castLE h a) (fun a _ => by simp) (fun a _ b _ hab => Fin.castLE_injective h hab) (fun b hb => ⟨⟨b, by simpa using hb⟩, Finset.mem_univ _, Fin.ext rfl⟩) (fun a _ => rfl)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem sum_castLE_eq {n : ℕ} (h : n ≤ r) (g : Fin r → ℝ) :
     ∑ a : Fin n, g (Fin.castLE h a) = ∑ b ∈ Finset.univ.filter (fun b : Fin r => (b : ℕ) < n), g b := by
@@ -16,11 +16,11 @@ theorem sum_castLE_eq {n : ℕ} (h : n ≤ r) (g : Fin r → ℝ) :
     (fun b hb => ⟨⟨b, by simpa using hb⟩, Finset.mem_univ _, Fin.ext rfl⟩) (fun a _ => rfl)
 
 /- English proof (translation)
-Establish `hinj : Function.Injective f`. Introduce `a b hab`. Establish `h1` using `congrArg Fin.val hab`. Rewrite `h1` using `[hf, hf]`. Conclude with `Fin.ext (by omega)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_bij (fun a _ => f a) (fun a _ => by simp [hf]) (fun a _ b _ hab => hinj hab) (fun b hb => ?_) (fun a _ => rfl)` and prove the remaining obligations. Establish `hb' : ¬ (b : ℕ) < n` using `by simpa using hb`. Use `⟨⟨b - n, by have := b.isLt; omega⟩, Finset.mem_univ _, Fin.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hf]`. Simplify using `only`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem sum_shift_eq {n m : ℕ} (hn : n ≤ r) (hm : m = r - n) (g : Fin r → ℝ) (f : Fin m → Fin r)
     (hf : ∀ a, (f a : ℕ) = n + a) :
@@ -40,16 +40,16 @@ theorem sum_shift_eq {n m : ℕ} (hn : n ≤ r) (hm : m = r - n) (g : Fin r → 
   omega
 
 /- English proof (translation)
-The claim follows from `star_star φ`.
+A detailed English derivation is pending.
 -/
 theorem conj_conj_X (φ : E →+* ℂ) :
     ComplexEmbedding.conjugate (ComplexEmbedding.conjugate φ) = φ :=
   star_star φ
 
 /- English proof (translation)
-Establish `h` using `A.e_flag τ r le_rfl`. Establish `h1 : (fun a : Fin r => A.e τ (Fin.castLE le_rfl a)) = A.e τ` using `funext fun a => rfl`. Establish `h2 : (fun a : Fin r => col (mat x τ) (Fin.castLE le_rfl a)) = fun a => col (mat x τ) a`. Use function extensionality and compare the values at `fun a => rfl`. Rewrite `h` using `[h1, h2, e_span X τ (A.e τ) (A.e_orth τ)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcols : LinearIndependent ℂ (fun a : Fin r => col (mat x τ) a)` using `linearIndependent_of_top_le_span_of_card_eq_finrank h.le (by simp)`. Conclude with `hcols.comp _ (Fin.castLE_injective X.p0_le)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cols_linInd (X : Data E r) (x : Frame X.Ψ r) (A : TorusAt X x) (τ : X.Ψ) :
     LinearIndependent ℂ (X.colP x τ) := by
@@ -63,25 +63,23 @@ theorem cols_linInd (X : Data E r) (x : Frame X.Ψ r) (A : TorusAt X x) (τ : X.
   exact hcols.comp _ (Fin.castLE_injective X.p0_le)
 
 /- English proof (translation)
-Establish `hc : ∀ τ : X.Ψ, 0 ≤ X.c τ` using `fun τ => by unfold Data.c; positivity`. Establish `hmaj : ∀ τ : X.Ψ, X.maj x τ (Data.emb τ.1 v) = ∑ b : Fin r, ‖hermC τ.1 X.Gm (Data.emb τ.1 v) (A.e τ b)‖ ^ 2` using `fun τ => maj_eq_sum X τ (A.e τ) (A.e_orth τ) x (A.e_flag τ X.p0 X.p0_le) (cols_linInd X x A τ) _`. Set `F : (E →+* ℂ) → ℝ` to `fun σ => ∑ a : Fin (A.T.dim σ), ‖A.φ v ⟨σ, a⟩‖ ^ 2`. Establish `hpos : ∀ τ : X.Ψ, F τ.1 = X.c τ * ∑ b ∈ Finset.univ.filter (fun b : Fin r => (b : ℕ) < X.p0), ‖hermC τ.1 X.Gm (Data.emb τ.1 v) (A.e τ b)‖ ^ 2`. Introduce `τ`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : A.T.dim τ.1 ≤ r` using `by rw [A.dim_pos τ]; exact X.p0_le`. Establish `e1 : ∀ a : Fin (A.T.dim τ.1), ‖A.φ v ⟨τ.1, a⟩‖ ^ 2 = X.c τ * ‖hermC τ.1 X.Gm (Data.emb τ.1 v) (A.e τ (Fin.castLE hle a))‖ ^ 2`. Introduce `a`. Rewrite using `[A.coord_pos τ a v, norm_mul, mul_pow, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _), Real.sq_sqrt (hc τ)]`. Use `show ∑ a : Fin (A.T.dim τ.1), ‖A.φ v ⟨τ.1, a⟩‖ ^ 2 = _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl fun a _ => e1 a, ← Finset.mul_sum, sum_castLE_eq hle (fun b => ‖hermC τ.1 X.Gm (Data.emb τ.1 v) (A.e τ b)‖ ^ 2), A.dim_pos τ]`. Establish `hneg : ∀ τ : X.Ψ, F (ComplexEmbedding.conjugate τ.1) = X.c τ * ∑ b ∈ Finset.univ.filter (fun b : Fin r => ¬ (b : ℕ) < X.p0), ‖hermC τ.1 X.Gm (Data.emb τ.1 v) (A.e τ b)‖ ^ 2`. Introduce `τ`. Establish `hlt : ∀ a : Fin (A.T.dim (ComplexEmbedding.conjugate τ.1)), X.p0 + a.1 < r`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : a.1 < r - X.p0` using `lt_of_lt_of_eq a.2 (A.dim_neg τ)`. Use `X.p0_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `e1 : ∀ a : Fin (A.T.dim (ComplexEmbedding.conjugate τ.1)), ‖A.φ v ⟨ComplexEmbedding.conjugate τ.1, a⟩‖ ^ 2 = X.c τ * ‖hermC τ.1 X.Gm (Data.emb τ.1 v) (A.e τ ⟨X.p0 + a.1, hlt a⟩)‖ ^ 2`. Introduce `a`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[A.coord_neg τ a v, norm_mul, mul_pow, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _), Real.sq_sqrt (hc τ), Complex.norm_conj, norm_neg]`. Use `show ∑ a : Fin (A.T.dim (ComplexEmbedding.conjugate τ.1)), ‖A.φ v ⟨ComplexEmbedding.conjugate τ.1, a⟩‖ ^ 2 = _`. Rewrite using `[Finset.sum_congr rfl fun a _ => e1 a, ← Finset.mul_sum]`. Use `congr 1`. Conclude with `sum_shift_eq X.p0_le (A.dim_neg τ) (fun b => ‖hermC τ.1 X.Gm (Data.emb τ.1 v) (A.e τ b)‖ ^ 2) (fun a => ⟨X.p0 + a.1, hlt a⟩) (fun a => rfl)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsplit : ∑ σ, F σ = ∑ τ : X.Ψ, (F τ.1 + F (ComplexEmbedding.conjugate τ.1))`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not Finset.univ (fun σ => σ ∈ X.Ψ)]`. Establish `hfilt : Finset.univ.filter (fun σ => σ ∈ X.Ψ) = X.Ψ` using `by ext; simp`. Establish `hcomp : ∑ σ ∈ Finset.univ.filter (fun σ => σ ∉ X.Ψ), F σ = ∑ τ ∈ X.Ψ, F (ComplexEmbedding.conjugate τ)`. Use `Finset.sum_nbij' (fun σ => ComplexEmbedding.conjugate σ) (fun τ => ComplexEmbedding.conjugate τ) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `σ hσ`. Simplify using `only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and] at hσ ⊢`. Rewrite using `[X.cmType, conj_conj_X]`. Conclude with `hσ`. Introduce `τ hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and] at hτ ⊢`. Conclude with `(X.cmType τ).mp hτ`. Introduce `σ _`. Conclude with `conj_conj_X σ`. Introduce `τ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `conj_conj_X τ`. Introduce `σ _`. Rewrite using `[conj_conj_X]`. Rewrite using `[hfilt, hcomp, ← Finset.sum_add_distrib, ← Finset.sum_coe_sort X.Ψ (fun σ => F σ + F (ComplexEmbedding.conjugate σ))]`. Rewrite using `[EuclideanSpace.norm_sq_eq, Fintype.sum_sigma]`.
-
-Use `show ∑ σ, F σ = _`. Rewrite using `[hsplit]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[hpos τ, hneg τ, hmaj τ, ← mul_add, Finset.sum_filter_add_sum_filter_not]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sq_eq (X : Data E r) (x : Frame X.Ψ r) (A : TorusAt X x) (v : Fin r → E) :
     ‖A.φ v‖ ^ 2 = ∑ τ : X.Ψ, X.c τ * X.maj x τ (Data.emb τ.1 v) := by
@@ -150,7 +148,7 @@ theorem norm_sq_eq (X : Data E r) (x : Frame X.Ψ r) (A : TorusAt X x) (v : Fin 
   rw [hpos τ, hneg τ, hmaj τ, ← mul_add, Finset.sum_filter_add_sum_filter_not]
 
 /- English proof (translation)
-Introduce `E _ _ _ r X x A`. Conclude with `⟨A.φ, A.sg, A.sg_pm, A.lat, A.act_eq, fun v _ => norm_sq_eq X x A v, A.im_eq⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem torusAtIs_holds : TorusAtIsStatement := by
   intro E _ _ _ r X x A

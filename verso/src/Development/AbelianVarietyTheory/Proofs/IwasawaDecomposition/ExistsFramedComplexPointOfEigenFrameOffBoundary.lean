@@ -15,11 +15,11 @@ open scoped ContDiff
 namespace GlobalTheory.ShFam
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z σ y hy f`. Establish `hr : Set.range y.1 ⊆ Set.range Z.jQ`. Introduce and unpack `_ ⟨p, rfl⟩`. Take `rfl : p = IsLocalRing.closedPoint ℂ` from `Subsingleton.elim _ _`. Conclude with `not_not.1 hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Z.jQ_open` as an intermediate fact. Set `zF` to `IsOpenImmersion.lift Z.jQ y.1 hr`. Establish `hzF : zF ≫ Z.jQ = y.1` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hs : zF ≫ pullback.snd _ _ = spMap σ`. Establish `h2` using `y.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← hzF, Category.assoc, Z.jQ_over]`. Conclude with `h2`. Take `⟨q, hq, hv⟩` from `exists_frPt_ptF_of_eigFrame E H Dw l Xo c O β Z ℂ σ zF (y.1 ≫ genι Z) f hs (by rw [← Category.assoc, hzF])`. Use `⟨q, Subtype.ext ?_, hv⟩` and prove the remaining obligations. Conclude with `(congrArg (· ≫ Z.jQ) hq).trans hzF`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_frPt_cxPt_of_eigFrame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (y : CxPts (genStr Z) σ), ¬ LiesIn y (genBd Z) → ∀ f : EigFrame Z σ (y.1 ≫ genι Z), ∃ q : FrPt Xo c (CAt σ), cxPt Z q = y ∧ ∀ τ k, ∃ w : Sp (DualNumber ℂ) ⟶ Z.oF.t.G.left, w ≫ Z.m0.toSABMap.φ = q.u τ k ∧ w ≫ Z.m.φ = f.v τ k := by
   intro E _ _ _ H Dw l Xo c O _ β Z σ y hy f

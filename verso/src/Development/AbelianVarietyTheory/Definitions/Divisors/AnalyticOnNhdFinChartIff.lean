@@ -31,11 +31,11 @@ abbrev toV (D : ℕ) : (Fin D → ℂ) ≃L[ℝ] V D :=
   (PiLp.continuousLinearEquiv 2 ℝ fun _ : Fin D => ℂ).symm
 
 /- English proof (translation)
-Establish `h₁ : fderiv ℝ (h ∘ toV D) = fun w => (fderiv ℝ h (toV D w)).comp (toV D).toContinuousLinearMap`. Use function extensionality and compare the values at `fun _ => (toV D).comp_right_fderiv`. Establish `h₂` using `((((hh.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero).hasFDerivAt.comp z (toV D).hasFDerivAt).clm_comp (hasFDerivAt_const (toV D).toContinuousLinearMap z)).fderiv`. Establish `e₁ : (∑ k, ((ξ k).re • ReciprocityTheory.L2DbarEstimates.bas D k + (ξ k).im • (Complex.I • ReciprocityTheory.L2DbarEstimates.bas D k))) = toV D ξ`. Use extensionality with `a`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `apply Complex.ext <;> simp [ReciprocityTheory.L2DbarEstimates.bas, Pi.single_apply, Finset.sum_add_distrib]`. Establish `e₂ : (∑ k, ((ξ k).re • (Complex.I • ReciprocityTheory.L2DbarEstimates.bas D k) - (ξ k).im • ReciprocityTheory.L2DbarEstimates.bas D k)) = toV D (Complex.I • ξ)`. Use extensionality with `a`. Apply the tactic sequence `apply Complex.ext <;> simp [ReciprocityTheory.L2DbarEstimates.bas, Pi.single_apply, Finset.sum_sub_distrib]`. Use `ReciprocityTheory.L2DbarEstimates.Y.LocalMaximumSecondDerivative.leviV_re_eq hh ξ` as an intermediate fact.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `this` using `[e₁, e₂]`. Rewrite using `[levi, h₁, eq_div_iff four_ne_zero, this]`. Use `erw [h₂]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leviV_re_eq_levi {h : V D → ℝ} {z : Fin D → ℂ} (hh : ContDiffAt ℝ 2 h (toV D z))
     (ξ : Fin D → ℂ) : (leviV D (fun v => (h v : ℂ)) (toV D z) ξ).re = levi (h ∘ toV D) z ξ := by
@@ -59,7 +59,7 @@ theorem leviV_re_eq_levi {h : V D → ℝ} {z : Fin D → ℂ} (hh : ContDiffAt 
   simp
 
 /- English proof (translation)
-Establish `e : (fun v => h v / 2) = (2⁻¹ : ℝ) • h` using `funext fun v => by simp [div_eq_inv_mul]`. Simplify using `only [e, levi, fderiv_const_smul_field, Pi.smul_apply]`. Simplify using `only [FunLike.coe_smul, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem levi_half (h : (Fin D → ℂ) → ℝ) (z w : Fin D → ℂ) :
     levi (fun v => h v / 2) z w = levi h z w / 2 := by
@@ -83,23 +83,23 @@ def SameForm (A : FinHolAtlas e X) (P Q : LocPot X) : Prop :=
 namespace SameForm
 
 /- English proof (translation)
-Introduce `_ _ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem refl (A : FinHolAtlas e X) (P : LocPot X) : SameForm A P P := fun _ _ _ => rfl
 
 /- English proof (translation)
-Introduce `j y hy` and use `(h j y hy).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem symm (h : SameForm A P Q) : SameForm A Q P := fun j y hy => (h j y hy).symm
 
 /- English proof (translation)
-Introduce `j y hy` and use `(h j y hy).trans (h' j y hy)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trans (h : SameForm A P Q) (h' : SameForm A Q T) : SameForm A P T :=
   fun j y hy => (h j y hy).trans (h' j y hy)
 
 /- English proof (translation)
-Introduce `j y hy` and use `by obtain ⟨W, hW, hx, G, hG, h⟩ := h ((A.chart j).symm y) refine (hessCGerm _ _ _ ?_).trans (ReciprocityTheory.AnForm.A.hessC_add_re_analytic _ _ _ (potSmoothAt A Q hQ _ j ⟨hy, Q.mem_U _⟩) (hG j y ⟨hy, hx⟩)) exact eventually_of_mem (((A.chart j).isOpen_inter_preimage_symm hW).mem …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem of_re (hQ : IsPotential A Q) (h : ∀ x, ∃ W : Set X, IsOpen W ∧ x ∈ W ∧ ∃ G : X → ℂ,
     A.HoloOn W G ∧ ∀ z ∈ W, P.φ x z = Q.φ x z + (G z).re) : SameForm A P Q := fun j y hy => by
@@ -113,13 +113,13 @@ variable {Φ Ψ : Fin e → LocPot X} (h : ∀ i, SameForm A (Φ i) (Ψ i))
 include h
 
 /- English proof (translation)
-The claim follows from `maDens_congr_hessC _ _ _ fun i => h i j y hy`.
+A detailed English derivation is pending.
 -/
 theorem locDens_eq {j : Fin A.n} {y : Fin e → ℂ} (hy : y ∈ (A.chart j).target) :
     locDens A Φ j y = locDens A Ψ j y := maDens_congr_hessC _ _ _ fun i => h i j y hy
 
 /- English proof (translation)
-Unfold `mInt integralWith`. Use `split_ifs`. Conclude with `Finset.sum_congr rfl fun j _ => MeasureTheory.setIntegral_congr_fun (A.chart j).open_target.measurableSet fun y hy => by simp only [locDens_eq h hy]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mInt_eq (g : X → ℝ) : mInt A Φ g = mInt A Ψ g := by
   unfold mInt integralWith
@@ -129,7 +129,7 @@ theorem mInt_eq (g : X → ℝ) : mInt A Φ g = mInt A Ψ g := by
   · rfl
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun _ => forall_congr' fun _ => forall_congr' fun hK => forall_congr' fun hc => MeasureTheory.integrableOn_congr_fun (fun y hy => by simp only [locDens_eq h (hK hy)]) hc.measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem mIntegrable_iff (g : X → ℝ) : MIntegrable A Φ g ↔ MIntegrable A Ψ g :=
   forall_congr' fun _ => forall_congr' fun _ => forall_congr' fun hK => forall_congr' fun hc =>
@@ -175,13 +175,13 @@ Both sides reduce to the same expression.
 theorem finChart_symm_apply (z : Fin D → ℂ) : c.finChart.symm z = c.e.symm (toV D z) := rfl
 
 /- English proof (translation)
-The claim follows from `c.apply_eq y hy a`.
+A detailed English derivation is pending.
 -/
 theorem finChart_eq_ev (hy : y ∈ c.e.source) (a : Fin D) :
     c.finChart y a = ev p σ c.U (c.x a) y := c.apply_eq y hy a
 
 /- English proof (translation)
-The claim follows from `(SCV.analyticOnNhd_iff_differentiableOn (c.finChart.isOpen_inter_preimage_symm hS)).trans ((EuclideanSpace.equiv (Fin D) ℂ).symm.comp_right_differentiableOn_iff (f := f ∘ c.e.symm) (s := c.e.target ∩ c.e.symm ⁻¹' S))`.
+A detailed English derivation is pending.
 -/
 theorem analyticOnNhd_finChart_iff {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [CompleteSpace E] (hS : IsOpen S) (f : CxPts p σ → E) :
@@ -192,7 +192,7 @@ theorem analyticOnNhd_finChart_iff {E : Type*} [NormedAddCommGroup E] [NormedSpa
       (s := c.e.target ∩ c.e.symm ⁻¹' S))
 
 /- English proof (translation)
-The claim follows from `(toV D).contDiffOn_comp_iff (f := f ∘ c.e.symm) (s := c.e.target ∩ c.e.symm ⁻¹' S)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_finChart_iff {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (n : WithTop ℕ∞) (S : Set (CxPts p σ)) (f : CxPts p σ → E) :
@@ -201,7 +201,7 @@ theorem contDiffOn_finChart_iff {E : Type*} [NormedAddCommGroup E] [NormedSpace 
   (toV D).contDiffOn_comp_iff (f := f ∘ c.e.symm) (s := c.e.target ∩ c.e.symm ⁻¹' S)
 
 /- English proof (translation)
-The claim follows from `(c.analyticOnNhd_finChart_iff c'.e.open_source _).2 ((EuclideanSpace.equiv (Fin D) ℂ).differentiable.comp_differentiableOn (c.holo_trans c'))`.
+A detailed English derivation is pending.
 -/
 theorem analyticOnNhd_trans : AnalyticOnNhd ℂ (c'.finChart ∘ c.finChart.symm)
     (c.finChart.target ∩ c.finChart.symm ⁻¹' c'.finChart.source) :=
@@ -209,7 +209,7 @@ theorem analyticOnNhd_trans : AnalyticOnNhd ℂ (c'.finChart ∘ c.finChart.symm
     ((EuclideanSpace.equiv (Fin D) ℂ).differentiable.comp_differentiableOn (c.holo_trans c'))
 
 /- English proof (translation)
-The claim follows from `leviV_re_eq_levi (h := f ∘ c.e.symm) (z := c.finChart y) hf ξ`.
+A detailed English derivation is pending.
 -/
 theorem leviV_re_eq {f : CxPts p σ → ℝ} (hf : ContDiffAt ℝ 2 (f ∘ c.e.symm) (c.e y))
     (ξ : Fin D → ℂ) : (leviV D (fun v => (f (c.e.symm v) : ℂ)) (c.e y) ξ).re =
@@ -217,11 +217,11 @@ theorem leviV_re_eq {f : CxPts p σ → ℝ} (hf : ContDiffAt ℝ 2 (f ∘ c.e.s
   leviV_re_eq_levi (h := f ∘ c.e.symm) (z := c.finChart y) hf ξ
 
 /- English proof (translation)
-Establish `hl : c.finChart.symm (c.finChart y) = y` using `c.finChart.left_inv hy`. Establish `hl' : c'.finChart.symm (c'.finChart y) = y` using `c'.finChart.left_inv hy'`. Establish `hm : c.finChart y ∈ c.finChart.target ∩ c.finChart.symm ⁻¹' c'.finChart.source` using `⟨c.finChart.map_source hy, by rwa [mem_preimage, hl]⟩`. Establish `hn` using `(c.finChart.isOpen_inter_preimage_symm c'.finChart.open_source).mem_nhds hm`. Establish `hτ` using `c.analyticOnNhd_trans c' _ hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : (c'.finChart ∘ c.finChart.symm) (c.finChart y) = c'.finChart y` using `congrArg _ hl`. Establish `hτ'` using `c'.analyticOnNhd_trans c (c'.finChart y) ⟨c'.finChart.map_source hy', by rwa [mem_preimage, hl']⟩`. Use `⟨fderiv ℂ (c'.finChart ∘ c.finChart.symm) (c.finChart y) w, fun hw h0 => hw ?_, ?_⟩` and prove the remaining obligations. Establish `e : (c.finChart ∘ c'.finChart.symm) ∘ (c'.finChart ∘ c.finChart.symm) =ᶠ[𝓝 (c.finChart y)] id` using `eventually_of_mem hn fun v hv => (congrArg c.finChart (c'.finChart.left_inv hv.2)).trans (c.finChart.right_inv hv.1)`. Use `congrArg (· w) ((fderiv_comp _ (hp ▸ hτ'.differentiableAt) hτ.differentiableAt).symm.trans e.fderiv_eq)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this.symm` using `[h0]`. Use `(levi_congr ?_ w).trans ((levi_comp w hτ (hp ▸ hf)).trans (by rw [hp]))` and prove the remaining obligations. Conclude with `eventually_of_mem hn fun v hv => (congrArg f (c'.finChart.left_inv hv.2)).symm`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_levi_eq (hy : y ∈ c.e.source) (hy' : y ∈ c'.e.source) {f : CxPts p σ → ℝ}
     (hf : ContDiffAt ℝ 2 (f ∘ c'.finChart.symm) (c'.finChart y)) (w : Fin D → ℂ) :
@@ -274,13 +274,13 @@ theorem finAtlasOf_chart (s : Finset R.ι) (hs) (j : Fin s.card) :
     (R.finAtlasOf s hs).chart j = (R.chart (s.equivFin.symm j)).finChart := rfl
 
 /- English proof (translation)
-Introduce `_` and use `⟨_, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isAlgAtlas_finAtlasOf (s : Finset R.ι) (hs) : IsAlgAtlas (R.finAtlasOf s hs) :=
   fun _ => ⟨_, rfl⟩
 
 /- English proof (translation)
-The claim follows from `R.isAlgAtlas_finAtlasOf _ _`.
+A detailed English derivation is pending.
 -/
 theorem isAlgAtlas_finAtlas [CompactSpace (CxPts p σ)] : IsAlgAtlas R.finAtlas :=
   R.isAlgAtlas_finAtlasOf _ _
@@ -298,26 +298,26 @@ def anRead : AnRead p σ D where
   cover y := (A.cover y).imp fun j hj => by rwa [(hA j).choose_spec] at hj
 
 /- English proof (translation)
-The claim follows from `(hA j).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem chart_eq (j : Fin A.n) : A.chart j = (hA.anRead.chart j).finChart := (hA j).choose_spec
 
 /- English proof (translation)
-Introduce `j` and use `by rw [hA.chart_eq j] exact ⟨AlgChart.analyticOnNhd_trans _ _, AlgChart.analyticOnNhd_trans _ _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isCompatChart (c : AlgChart p σ D) : IsCompatChart A c.finChart := fun j => by
   rw [hA.chart_eq j]
   exact ⟨AlgChart.analyticOnNhd_trans _ _, AlgChart.analyticOnNhd_trans _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun j l => hA'.chart_eq l ▸ (hA.isCompatChart _ j).1, fun j l => hA.chart_eq l ▸ (hA'.isCompatChart _ j).1⟩`.
+Supply the required witnesses or components.
 -/
 theorem compatible (hA' : IsAlgAtlas A') : A.Compatible A' :=
   ⟨fun j l => hA'.chart_eq l ▸ (hA.isCompatChart _ j).1,
     fun j l => hA.chart_eq l ▸ (hA'.isCompatChart _ j).1⟩
 
 /- English proof (translation)
-The claim follows from `Iff.trans (forall_congr' fun j => by rw [hA.chart_eq j] exact AlgChart.analyticOnNhd_finChart_iff _ hS f) (AnRead.holoOn_iff hA.anRead R hS)`.
+A detailed English derivation is pending.
 -/
 theorem holoOn_iff (R : AnRead p σ D) (hS : IsOpen S) {f : CxPts p σ → ℂ} :
     A.HoloOn S f ↔ R.HoloOn S f :=
@@ -326,7 +326,7 @@ theorem holoOn_iff (R : AnRead p σ D) (hS : IsOpen S) {f : CxPts p σ → ℂ} 
     exact AlgChart.analyticOnNhd_finChart_iff _ hS f) (AnRead.holoOn_iff hA.anRead R hS)
 
 /- English proof (translation)
-The claim follows from `Iff.trans (forall_congr' fun j => by rw [hA.chart_eq j] exact AlgChart.contDiffOn_finChart_iff _ _ S f) (AnRead.smoothOn_iff hA.anRead R hS)`.
+A detailed English derivation is pending.
 -/
 theorem smoothOn_iff (R : AnRead p σ D) (hS : IsOpen S) {f : CxPts p σ → ℝ} :
     A.SmoothOn S f ↔ R.SmoothOn S f :=
@@ -335,13 +335,13 @@ theorem smoothOn_iff (R : AnRead p σ D) (hS : IsOpen S) {f : CxPts p σ → ℝ
     exact AlgChart.contDiffOn_finChart_iff _ _ S f) (AnRead.smoothOn_iff hA.anRead R hS)
 
 /- English proof (translation)
-The claim follows from `hA.smoothOn_iff R isOpen_univ`.
+A detailed English derivation is pending.
 -/
 theorem smooth_iff (R : AnRead p σ D) {f : CxPts p σ → ℝ} : A.Smooth f ↔ R.SmoothOn univ f :=
   hA.smoothOn_iff R isOpen_univ
 
 /- English proof (translation)
-Use `⟨continuous_of_comp hm, fun j l => ?_⟩` and prove the remaining obligations. Rewrite using `[hA.chart_eq l, hA'.chart_eq j]`. Conclude with `(AlgChart.analyticOnNhd_finChart_iff _ ((hA.anRead.chart l).e.open_source.preimage (continuous_of_comp hm)) ((hA.anRead.chart l).finChart ∘ m)).2 ((EuclideanSpace.equiv (Fin D) ℂ).differentiable.comp_differentiableOn (AlgChart.holo_map hm _ _))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem holoMap {k' : Type} [CommRing k'] {Y' : Scheme.{0}} {p' : Y' ⟶ Sp k'} {σ' : k' →+* ℂ}
     {D' : ℕ} {A' : FinHolAtlas D' (CxPts p' σ')} (hA' : IsAlgAtlas A') {f : Y' ⟶ Y}
@@ -360,7 +360,7 @@ namespace AnRead
 variable (R R' : AnRead p σ D) {S : Set (CxPts p σ)}
 
 /- English proof (translation)
-The claim follows from `(R.isAlgAtlas_finAtlasOf s hs).compatible (R'.isAlgAtlas_finAtlasOf s' hs')`.
+A detailed English derivation is pending.
 -/
 theorem finAtlasOf_compatible (s : Finset R.ι) (hs) (s' : Finset R'.ι) (hs') :
     (R.finAtlasOf s hs).Compatible (R'.finAtlasOf s' hs') :=
@@ -369,7 +369,7 @@ theorem finAtlasOf_compatible (s : Finset R.ι) (hs) (s' : Finset R'.ι) (hs') :
 variable {R} in
 
 /- English proof (translation)
-Use `⟨S ∩ (fun z => g z * (g y)⁻¹) ⁻¹' Complex.slitPlane, ((h.continuousOn hS).mul continuousOn_const).isOpen_inter_preimage hS Complex.isOpen_slitPlane, ⟨hy, ?_⟩, inter_subset_left, fun z => Complex.log (g z * (g y)⁻¹) + Real.log ‖g y‖, fun i => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Simplify using `[mul_inv_cancel₀ h0]`. Conclude with `(DifferentiableOn.clog ((h.mono inter_subset_left i).mul_const _) fun _ hv => hv.2.2).add_const _`. Establish `hz0 : g z ≠ 0` using `left_ne_zero_of_mul (Complex.slitPlane_ne_zero hz.2)`. Rewrite using `[Complex.add_re, Complex.log_re, Complex.ofReal_re, ← div_eq_mul_inv, norm_div, Real.log_div (norm_ne_zero_iff.2 hz0) (norm_ne_zero_iff.2 h0), sub_add_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HoloOn.exists_log {g : CxPts p σ → ℂ} (h : R.HoloOn S g) (hS : IsOpen S) {y : CxPts p σ}
     (hy : y ∈ S) (h0 : g y ≠ 0) : ∃ W, IsOpen W ∧ y ∈ W ∧ W ⊆ S ∧ ∃ G : CxPts p σ → ℂ,
@@ -387,31 +387,31 @@ theorem HoloOn.exists_log {g : CxPts p σ → ℂ} (h : R.HoloOn S g) (hS : IsOp
 variable [CompactSpace (CxPts p σ)]
 
 /- English proof (translation)
-The claim follows from `R.isAlgAtlas_finAtlas.compatible R'.isAlgAtlas_finAtlas`.
+A detailed English derivation is pending.
 -/
 theorem finAtlas_compatible : R.finAtlas.Compatible R'.finAtlas :=
   R.isAlgAtlas_finAtlas.compatible R'.isAlgAtlas_finAtlas
 
 /- English proof (translation)
-The claim follows from `R.isAlgAtlas_finAtlas.isCompatChart c`.
+A detailed English derivation is pending.
 -/
 theorem isCompatChart_finAtlas (c : AlgChart p σ D) : IsCompatChart R.finAtlas c.finChart :=
   R.isAlgAtlas_finAtlas.isCompatChart c
 
 /- English proof (translation)
-The claim follows from `R.isAlgAtlas_finAtlas.holoOn_iff R hS`.
+A detailed English derivation is pending.
 -/
 theorem finAtlas_holoOn_iff (hS : IsOpen S) {f : CxPts p σ → ℂ} :
     R.finAtlas.HoloOn S f ↔ R.HoloOn S f := R.isAlgAtlas_finAtlas.holoOn_iff R hS
 
 /- English proof (translation)
-The claim follows from `R.isAlgAtlas_finAtlas.smoothOn_iff R hS`.
+A detailed English derivation is pending.
 -/
 theorem finAtlas_smoothOn_iff (hS : IsOpen S) {f : CxPts p σ → ℝ} :
     R.finAtlas.SmoothOn S f ↔ R.SmoothOn S f := R.isAlgAtlas_finAtlas.smoothOn_iff R hS
 
 /- English proof (translation)
-The claim follows from `mIntAtlasIndep _ _ (R.finAtlas_compatible R') Φ hΦ g hg`.
+A detailed English derivation is pending.
 -/
 theorem mInt_finAtlas_eq [T2Space (CxPts p σ)] {Φ : Fin D → LocPot (CxPts p σ)}
     (hΦ : ∀ i, IsPotential R.finAtlas (Φ i)) {g : CxPts p σ → ℝ} (hg : MIntegrable R.finAtlas Φ g) :
@@ -456,7 +456,7 @@ theorem locSec_apply (s : B.ι → CxPts p σ → ℂ) (x : CxPts p σ) :
 variable (φ) in
 
 /- English proof (translation)
-Rewrite using `[φ.trans i j y hi hj, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem half_eq {i j : B.ι} {y : CxPts p σ} (hi : y ∈ ptsIn p σ (B.U i))
     (hj : y ∈ ptsIn p σ (B.U j)) : φ.φ i y / 2 = φ.φ j y / 2 + Real.log ‖gv p σ B i j y‖ := by
@@ -467,7 +467,7 @@ theorem half_eq {i j : B.ι} {y : CxPts p σ} (hi : y ∈ ptsIn p σ (B.U i))
 variable (φ R) in
 
 /- English proof (translation)
-Take `⟨W, hW, hy, hs, G, hG, e⟩` from `(R.holoOn_ev _ (B.g i j).val).exists_log (isOpen_ptsIn _) (mem_ptsIn_inf.2 ⟨hi, hj⟩) (gv_ne_zero hi hj)`. Conclude with `⟨W, hW, hy, G, hG, fun z hz => by`. Rewrite using `[e z hz, φ.half_eq (mem_ptsIn_inf.1 (hs hz)).1 (mem_ptsIn_inf.1 (hs hz)).2, CxPts.gv]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_half_eq {i j : B.ι} {y : CxPts p σ} (hi : y ∈ ptsIn p σ (B.U i))
     (hj : y ∈ ptsIn p σ (B.U j)) : ∃ W, IsOpen W ∧ y ∈ W ∧ ∃ G : CxPts p σ → ℂ,
@@ -478,7 +478,7 @@ theorem exists_half_eq {i j : B.ι} {y : CxPts p σ} (hi : y ∈ ptsIn p σ (B.U
     rw [e z hz, φ.half_eq (mem_ptsIn_inf.1 (hs hz)).1 (mem_ptsIn_inf.1 (hs hz)).2, CxPts.gv]⟩
 
 /- English proof (translation)
-Use `⟨fun x => (hA.smoothOn_iff R (isOpen_ptsIn _)).2 fun c => (h _ c).div_const 2, fun x x' y hy => ?_⟩` and prove the remaining obligations. Take `⟨W, hW, hy, G, hG, e⟩` from `φ.exists_half_eq R hy.1 hy.2`. Conclude with `⟨W, hW, hy, G, (hA.holoOn_iff R hW).2 hG, fun z hz => sub_eq_iff_eq_add'.2 (e z hz.1.1)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsSmooth.isPotential (h : φ.IsSmooth R) (hA : IsAlgAtlas A) : IsPotential A φ.locPot := by
   refine ⟨fun x => (hA.smoothOn_iff R (isOpen_ptsIn _)).2 fun c => (h _ c).div_const 2,
@@ -487,7 +487,7 @@ theorem IsSmooth.isPotential (h : φ.IsSmooth R) (hA : IsAlgAtlas A) : IsPotenti
   exact ⟨W, hW, hy, G, (hA.holoOn_iff R hW).2 hG, fun z hz => sub_eq_iff_eq_add'.2 (e z hz.1.1)⟩
 
 /- English proof (translation)
-Introduce `i` and use `smoothOn_of_cover (T := φ.locPot.U) φ.locPot.isOpen_U (fun y _ => ⟨y, φ.locPot.mem_U y⟩) fun x => SmoothOn.congr (f := fun y => 2 * φ.locPot.φ x y + Real.log (‖gv p σ B i (pick φ.isLB x) y‖ ^ 2)) (fun c => (contDiffOn_const.mul (((hA.smoothOn_iff R (isOpen_ptsIn _)).1 (h.1 x)).mo …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmooth_of_isPotential (hA : IsAlgAtlas A) (h : IsPotential A φ.locPot) :
     φ.IsSmooth R := fun i =>
@@ -504,7 +504,7 @@ theorem isSmooth_of_isPotential (hA : IsAlgAtlas A) (h : IsPotential A φ.locPot
 variable (φ) in
 
 /- English proof (translation)
-Rewrite using `[φ.nsq_eq hs hi, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _), ← Real.exp_half, neg_div]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_mul_exp_eq_sqrt {s : B.ι → CxPts p σ → ℂ} (hs : s ∈ fibSec p σ B) {i : B.ι}
     {y : CxPts p σ} (hi : y ∈ ptsIn p σ (B.U i)) :
@@ -515,7 +515,7 @@ theorem norm_mul_exp_eq_sqrt {s : B.ι → CxPts p σ → ℂ} (hs : s ∈ fibSe
 variable (φ) in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => (hA.holoOn_iff R (isOpen_ptsIn _)).2 (hs.2 _), fun _ _ _ hy => (φ.norm_mul_exp_eq_sqrt hs.1 hy.1).trans (φ.norm_mul_exp_eq_sqrt hs.1 hy.2).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSection_of_isAlgAtlas (hA : IsAlgAtlas A) {s : B.ι → CxPts p σ → ℂ}
     (hs : s ∈ R.holSec B) : IsSection A φ.locPot (φ.locSec s) :=
@@ -525,9 +525,9 @@ theorem isSection_of_isAlgAtlas (hA : IsAlgAtlas A) {s : B.ι → CxPts p σ →
 variable (φ) in
 
 /- English proof (translation)
-Establish `e : φ.nsq s y = (‖φ.locSec s y y‖ * Real.exp (-φ.locPot.φ y y)) ^ 2`. Rewrite using `[mul_pow, ← Real.exp_nat_mul, locPot_φ, nsq, locSec_apply]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, Real.log_pow, logNormSec]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem logNormSec_locSec (s : B.ι → CxPts p σ → ℂ) (y : CxPts p σ) :
     logNormSec φ.locPot (φ.locSec s) y = 1 / 2 * Real.log (φ.nsq s y) := by
@@ -543,7 +543,7 @@ theorem logNormSec_locSec (s : B.ι → CxPts p σ → ℂ) (y : CxPts p σ) :
 variable (φ) in
 
 /- English proof (translation)
-Rewrite using `[logNormSec_locSec, ← mul_assoc, mul_one_div_cancel two_ne_zero, one_mul, Real.exp_log ((φ.nsq_nonneg s y).lt_of_ne' h)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_logNormSec_locSec {s : B.ι → CxPts p σ → ℂ} {y : CxPts p σ} (h : φ.nsq s y ≠ 0) :
     Real.exp (2 * logNormSec φ.locPot (φ.locSec s) y) = φ.nsq s y := by
@@ -551,7 +551,7 @@ theorem exp_logNormSec_locSec {s : B.ι → CxPts p σ → ℂ} {y : CxPts p σ}
     Real.exp_log ((φ.nsq_nonneg s y).lt_of_ne' h)]
 
 /- English proof (translation)
-The claim follows from `(((c.contDiffOn_finChart_iff _ _ _).2 ((h i).chart (isOpen_ptsIn _) c)).contDiffAt ((c.finChart.isOpen_inter_preimage_symm (isOpen_ptsIn _)).mem_nhds (mem_over c.e hy hi))).of_le (WithTop.coe_le_coe.2 le_top)`.
+A detailed English derivation is pending.
 -/
 theorem IsSmooth.contDiffAt_finChart (h : φ.IsSmooth R) (c : AlgChart p σ D) {i : B.ι}
     {y : CxPts p σ} (hy : y ∈ c.e.source) (hi : y ∈ ptsIn p σ (B.U i)) :
@@ -561,9 +561,9 @@ theorem IsSmooth.contDiffAt_finChart (h : φ.IsSmooth R) (c : AlgChart p σ D) {
       (mem_over c.e hy hi))).of_le (WithTop.coe_le_coe.2 le_top)
 
 /- English proof (translation)
-Take `⟨w', hw, e⟩` from `c.exists_levi_eq c' hy hy' (h.contDiffAt_finChart c' hy' hi) w`. Take `⟨W, hW, hyW, G, hG, e'⟩` from `φ.exists_half_eq R hi hj`. Establish `hm : c'.finChart y ∈ c'.finChart.target ∩ c'.finChart.symm ⁻¹' W` using `mem_over c'.e hy' hyW`. Establish `hGa` using `(c'.analyticOnNhd_finChart_iff hW G).2 (hG.chart hW c') _ hm`. Use `⟨w', hw, e.trans ((levi_congr (ψ := fun v => (φ.φ j ∘ c'.finChart.symm) v + 2 * ((G ∘ c'.finChart.symm) v).re) ?_ w').trans ?_)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `eventually_of_mem ((c'.finChart.isOpen_inter_preimage_symm hW).mem_nhds hm) fun v hv => ?_` and prove the remaining obligations. Use `e' _ hv.2` as an intermediate fact. Simplify using `only [Function.comp_apply]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[levi_add_smul (g := fun v => ((G ∘ c'.finChart.symm) v).re) 2 (h.contDiffAt_finChart c' hy' hj) (Complex.reCLM.contDiff.contDiffAt.comp _ (hGa.restrictScalars (𝕜 := ℝ)).contDiffAt), levi_re_analytic hGa, mul_zero, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsSmooth.exists_levi_eq (h : φ.IsSmooth R) (c c' : AlgChart p σ D) {i j : B.ι}
     {y : CxPts p σ} (hy : y ∈ c.e.source) (hy' : y ∈ c'.e.source) (hi : y ∈ ptsIn p σ (B.U i))
@@ -585,7 +585,7 @@ theorem IsSmooth.exists_levi_eq (h : φ.IsSmooth R) (c c' : AlgChart p σ D) {i 
       (hGa.restrictScalars (𝕜 := ℝ)).contDiffAt), levi_re_analytic hGa, mul_zero, add_zero]
 
 /- English proof (translation)
-The claim follows from `c.leviV_re_eq ((((h i).chart (isOpen_ptsIn _) c).contDiffAt ((isOpen_over _ (isOpen_ptsIn _)).mem_nhds (mem_over c.e hy hi))).of_le (WithTop.coe_le_coe.2 le_top)) ξ`.
+A detailed English derivation is pending.
 -/
 theorem IsSmooth.leviV_re_eq (h : φ.IsSmooth R) (c : AlgChart p σ D) {i : B.ι} {y : CxPts p σ}
     (hy : y ∈ c.e.source) (hi : y ∈ ptsIn p σ (B.U i)) (ξ : Fin D → ℂ) :
@@ -595,9 +595,9 @@ theorem IsSmooth.leviV_re_eq (h : φ.IsSmooth R) (c : AlgChart p σ D) {i : B.ι
     (isOpen_ptsIn _)).mem_nhds (mem_over c.e hy hi))).of_le (WithTop.coe_le_coe.2 le_top)) ξ
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hA j`. Rewrite `hz`, the goal using `[hc]`. Take `⟨c', hc'⟩` from `R.cover (c.finChart.symm z)`. Take `⟨ξ, hξ, e⟩` from `h.exists_levi_eq c (R.chart c') (c.finChart.map_target hz.1) hc' hz.2 hz.2 w`. Use `⟨_, c', _, ⟨hc', hz.2⟩, ξ, hξ, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h.leviV_re_eq _ hc' hz.2, ← e, c.finChart.right_inv hz.1]`. Conclude with `levi_half _ z w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsSmooth.levi_locPot (h : φ.IsSmooth R) (hA : IsAlgAtlas A) {x : CxPts p σ} {j : Fin A.n}
     {z : Fin D → ℂ} (hz : z ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' φ.locPot.U x)
@@ -613,9 +613,9 @@ theorem IsSmooth.levi_locPot (h : φ.IsSmooth R) (hA : IsAlgAtlas A) {x : CxPts 
   exact levi_half _ z w
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `A.cover y`. Take `⟨c', hc'⟩` from `hA j`. Rewrite `hj` using `[hc']`. Take `⟨w, hw, e⟩` from `h.exists_levi_eq c c' hy.1 hj hy.2 (mem_pick φ.isLB y) ξ`. Use `⟨j, c'.finChart y, by rw [hc']; exact mem_over c'.e hj (φ.locPot.mem_U y), w, hw, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h.leviV_re_eq _ hy.1 hy.2, e, hc']`. Conclude with `((congrArg (2 * ·) (levi_half _ _ w)).trans (mul_div_cancel₀ _ two_ne_zero)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsSmooth.leviV_eq_locPot (h : φ.IsSmooth R) (hA : IsAlgAtlas A) {i : B.ι}
     {c : AlgChart p σ D} {y : CxPts p σ} (hy : y ∈ c.e.source ∩ ptsIn p σ (B.U i)) (ξ : Fin D → ℂ) :
@@ -631,7 +631,7 @@ theorem IsSmooth.leviV_eq_locPot (h : φ.IsSmooth R) (hA : IsAlgAtlas A) {i : B.
   exact ((congrArg (2 * ·) (levi_half _ _ w)).trans (mul_div_cancel₀ _ two_ne_zero)).symm
 
 /- English proof (translation)
-Use `⟨fun H i c y hy ξ => ?_, fun H x j z hz w => ?_⟩` and prove the remaining obligations. Take `⟨j, z, hz, w, -, e⟩` from `h.leviV_eq_locPot hA hy ξ`. Conclude with `e ▸ mul_nonneg zero_le_two (H y j z hz w)`. Take `⟨i, c, y, hy, ξ, -, e⟩` from `h.levi_locPot hA hz w`. Conclude with `e ▸ div_nonneg (H i c y hy ξ) zero_le_two`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsSmooth.isPsh_iff (h : φ.IsSmooth R) (hA : IsAlgAtlas A) :
     IsPsh A φ.locPot ↔ φ.SemiPos R := by
@@ -642,7 +642,7 @@ theorem IsSmooth.isPsh_iff (h : φ.IsSmooth R) (hA : IsAlgAtlas A) :
     exact e ▸ div_nonneg (H i c y hy ξ) zero_le_two
 
 /- English proof (translation)
-Use `⟨fun H i c y hy ξ h0 => ?_, fun H x j z hz w h0 => ?_⟩` and prove the remaining obligations. Take `⟨j, z, hz, w, hw, e⟩` from `h.leviV_eq_locPot hA hy ξ`. Conclude with `e ▸ mul_pos two_pos (H y j z hz w (hw h0))`. Take `⟨i, c, y, hy, ξ, hξ, e⟩` from `h.levi_locPot hA hz w`. Conclude with `e ▸ half_pos (H i c y hy ξ (hξ h0))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsSmooth.isPosPot_iff (h : φ.IsSmooth R) (hA : IsAlgAtlas A) :
     IsPosPot A φ.locPot ↔ φ.StrictPos R := by
@@ -655,7 +655,7 @@ theorem IsSmooth.isPosPot_iff (h : φ.IsSmooth R) (hA : IsAlgAtlas A) :
 variable (φ) in
 
 /- English proof (translation)
-The claim follows from `SameForm.of_re hQ fun x => by obtain ⟨i, hi, W, hW, hx, G, hG, e⟩ := h x obtain ⟨W', hW', hx', G', hG', e'⟩ := φ.exists_half_eq R (mem_pick φ.isLB x) hi refine ⟨W ∩ W', hW.inter hW', ⟨hx, hx'⟩, _, holoOn_add A ((hA.holoOn_iff R hW).2 hG) ((hA.holoOn_iff R hW').2 hG'), fun z hz => …`.
+A detailed English derivation is pending.
 -/
 theorem sameForm_of_re (hA : IsAlgAtlas A) {Q : LocPot (CxPts p σ)} (hQ : IsPotential A Q)
     (h : ∀ x, ∃ i, x ∈ ptsIn p σ (B.U i) ∧ ∃ W, IsOpen W ∧ x ∈ W ∧ ∃ G : CxPts p σ → ℂ,
@@ -670,7 +670,7 @@ theorem sameForm_of_re (hA : IsAlgAtlas A) {Q : LocPot (CxPts p σ)} (hQ : IsPot
 variable (φ) in
 
 /- English proof (translation)
-The claim follows from `φ.sameForm_of_re (R := hA.anRead) hA hQ fun x => (h x).imp fun _ hi => ⟨hi.1, univ, isOpen_univ, trivial, fun _ => 0, fun _ => differentiableOn_const (0 : ℂ), fun z _ => by simp [hi.2 z]⟩`.
+A detailed English derivation is pending.
 -/
 theorem sameForm_of_eq (hA : IsAlgAtlas A) {Q : LocPot (CxPts p σ)} (hQ : IsPotential A Q)
     (h : ∀ x, ∃ i, x ∈ ptsIn p σ (B.U i) ∧ ∀ z, φ.φ i z / 2 = Q.φ x z) :
@@ -679,7 +679,7 @@ theorem sameForm_of_eq (hA : IsAlgAtlas A) {Q : LocPot (CxPts p σ)} (hQ : IsPot
     trivial, fun _ => 0, fun _ => differentiableOn_const (0 : ℂ), fun z _ => by simp [hi.2 z]⟩
 
 /- English proof (translation)
-The claim follows from `sameForm_of_eq _ hA (isPotentialAdd A _ _ (h'.isPotential hA) (h.isPotential hA)) fun x => ⟨(pick ψ.isLB x, pick φ.isLB x), mem_ptsIn_inf.2 ⟨mem_pick ψ.isLB x, mem_pick φ.isLB x⟩, fun _ => add_div _ _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsSmooth.sameForm_tens {ψ : Weight p σ B'} (h' : ψ.IsSmooth R) (h : φ.IsSmooth R)
     (hA : IsAlgAtlas A) : SameForm A (ψ.tens φ).locPot (ψ.locPot + φ.locPot) :=
@@ -688,7 +688,7 @@ theorem IsSmooth.sameForm_tens {ψ : Weight p σ B'} (h' : ψ.IsSmooth R) (h : �
       fun _ => add_div _ _ _⟩
 
 /- English proof (translation)
-The claim follows from `sameForm_of_eq _ hA (isPotentialZsmul A n _ (h.isPotential hA)) fun x => ⟨fun _ => pick φ.isLB x, mem_pow_iff.2 (mem_pick _ x), fun z => by rw [φ.zpow_φ n _ z] exact mul_div_assoc _ _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsSmooth.sameForm_zpow (h : φ.IsSmooth R) (hA : IsAlgAtlas A) (n : ℤ) :
     SameForm A (φ.zpow n).locPot (φ.locPot.zsmul n) :=
@@ -698,7 +698,7 @@ theorem IsSmooth.sameForm_zpow (h : φ.IsSmooth R) (hA : IsAlgAtlas A) (n : ℤ)
       exact mul_div_assoc _ _ _⟩
 
 /- English proof (translation)
-The claim follows from `sameForm_of_eq _ hA (isPotentialZsmul A _ _ (h.isPotential hA)) fun x => ⟨(pick φ.isLB x : B.ι), mem_pick φ.isLB x, fun z => by simp [Weight.dual, LocPot.zsmul, locPot_φ, neg_div]⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsSmooth.sameForm_dual (h : φ.IsSmooth R) (hA : IsAlgAtlas A) :
     SameForm A φ.dual.locPot (φ.locPot.zsmul (-1)) :=
@@ -709,20 +709,20 @@ theorem IsSmooth.sameForm_dual (h : φ.IsSmooth R) (hA : IsAlgAtlas A) :
 variable (φ) in
 
 /- English proof (translation)
-Introduce `_ _ _` and use `congrArg (hessC · _) (funext fun _ => add_div _ _ _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sameForm_addFn (A : FinHolAtlas D (CxPts p σ)) (u : CxPts p σ → ℝ) :
     SameForm A (φ.addFn u).locPot (φ.locPot + LocPot.ofFun fun y => u y / 2) :=
   fun _ _ _ => congrArg (hessC · _) (funext fun _ => add_div _ _ _)
 
 /- English proof (translation)
-Introduce `_ _ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem sameForm_ofFun (A : FinHolAtlas D (CxPts p σ)) (u : CxPts p σ → ℝ) :
     SameForm A (ofFun u).locPot (LocPot.ofFun fun y => u y / 2) := fun _ _ _ => rfl
 
 /- English proof (translation)
-The claim follows from `sameForm_of_re (R := R) _ hA (h.isPotential hA) fun x => by have ha := mem_pick hB' x have hb := mem_pick φ.isLB x obtain ⟨W, hW, hx, hs, G, hG, e⟩ := (R.holoOn_ev _ (w.s (pick hB' x, pick φ.isLB x)).val).exists_log (isOpen_ptsIn _) (mem_ptsIn_inf.2 ⟨ha, hb⟩) (ev_iso_ne_zero w hb …`.
+A detailed English derivation is pending.
 -/
 theorem IsSmooth.sameForm_ofIso (h : φ.IsSmooth R) (hA : IsAlgAtlas A) (hB' : B'.IsLB)
     (w : LB.Iso B B') (hw : w.IsGen) : SameForm A (φ.ofIso hB' w hw).locPot φ.locPot :=
@@ -739,7 +739,7 @@ theorem IsSmooth.sameForm_ofIso (h : φ.IsSmooth R) (hA : IsAlgAtlas A) (hB' : B
     ring
 
 /- English proof (translation)
-The claim follows from `sameForm_of_eq _ hA' (isPotentialPullback A A' _ (hA.holoMap hA' (f := f) fun _ => rfl) _ (h.isPotential hA)) fun x => ⟨fun _ => pick φ.isLB (PtsOver.map f hf _ x), ptsIn_mono (fun _ hx => mem_iInter.2 fun _ => hx) ((mem_ptsIn_preimage (f := f) (m := PtsOver.map f hf _) fun _ => …`.
+A detailed English derivation is pending.
 -/
 theorem IsSmooth.sameForm_pull (h : φ.IsSmooth R) (hA : IsAlgAtlas A) {Y' : Scheme.{0}}
     {q : Y' ⟶ Sp k} {D' : ℕ} {A' : FinHolAtlas D' (CxPts q σ)} (hA' : IsAlgAtlas A') (f : Y' ⟶ Y)
@@ -752,7 +752,7 @@ theorem IsSmooth.sameForm_pull (h : φ.IsSmooth R) (hA : IsAlgAtlas A) {Y' : Sch
       fun z => congrArg (· / 2) (φ.pull_φ f hf _ z)⟩
 
 /- English proof (translation)
-The claim follows from `maDens_congr_hessC _ _ _ fun a => by obtain ⟨W, hW, hx, G, hG, e⟩ := (χ a).exists_half_eq R (mem_pick (χ a).isLB _) (hi a) refine (hessCGerm _ _ _ ?_).trans (ReciprocityTheory.AnForm.A.hessC_add_re_analytic _ _ _ ?_ ((hA.holoOn_iff R hW).2 hG j z ⟨hz, hx⟩)) · exact eventually_of_ …`.
+A detailed English derivation is pending.
 -/
 theorem locDens_locPot (hA : IsAlgAtlas A) {L : Fin D → LB Y} {χ : ∀ a, Weight p σ (L a)}
     (h : ∀ a, (χ a).IsSmooth R) {j : Fin A.n} {z : Fin D → ℂ} (hz : z ∈ (A.chart j).target)
@@ -772,13 +772,13 @@ theorem locDens_locPot (hA : IsAlgAtlas A) {L : Fin D → LB Y} {χ : ∀ a, Wei
 variable [CompactSpace (CxPts p σ)]
 
 /- English proof (translation)
-The claim follows from `h.isPotential R.isAlgAtlas_finAtlas`.
+A detailed English derivation is pending.
 -/
 theorem isPotential_locPot (h : φ.IsSmooth R) : IsPotential R.finAtlas φ.locPot :=
   h.isPotential R.isAlgAtlas_finAtlas
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isSmooth_of_isPotential R.isAlgAtlas_finAtlas, isPotential_locPot⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPotential_locPot_iff : IsPotential R.finAtlas φ.locPot ↔ φ.IsSmooth R :=
   ⟨isSmooth_of_isPotential R.isAlgAtlas_finAtlas, isPotential_locPot⟩
@@ -786,25 +786,25 @@ theorem isPotential_locPot_iff : IsPotential R.finAtlas φ.locPot ↔ φ.IsSmoot
 variable (φ) in
 
 /- English proof (translation)
-The claim follows from `φ.isSection_of_isAlgAtlas R.isAlgAtlas_finAtlas hs`.
+A detailed English derivation is pending.
 -/
 theorem isSection_locSec {s : B.ι → CxPts p σ → ℂ} (hs : s ∈ R.holSec B) :
     IsSection R.finAtlas φ.locPot (φ.locSec s) := φ.isSection_of_isAlgAtlas R.isAlgAtlas_finAtlas hs
 
 /- English proof (translation)
-The claim follows from `h.isPsh_iff R.isAlgAtlas_finAtlas`.
+A detailed English derivation is pending.
 -/
 theorem isPsh_iff_semiPos (h : φ.IsSmooth R) : IsPsh R.finAtlas φ.locPot ↔ φ.SemiPos R :=
   h.isPsh_iff R.isAlgAtlas_finAtlas
 
 /- English proof (translation)
-The claim follows from `h.isPosPot_iff R.isAlgAtlas_finAtlas`.
+A detailed English derivation is pending.
 -/
 theorem isPosPot_iff_strictPos (h : φ.IsSmooth R) : IsPosPot R.finAtlas φ.locPot ↔ φ.StrictPos R :=
   h.isPosPot_iff R.isAlgAtlas_finAtlas
 
 /- English proof (translation)
-The claim follows from `have hΦ := fun a => isPotential_locPot (h a) have hi := mIntegrableCont _ _ hΦ g hg ⟨hi, (R.mInt_finAtlas_eq R' hΦ hi).2⟩`.
+A detailed English derivation is pending.
 -/
 theorem mInt_locPot_eq [T2Space (CxPts p σ)] {L : Fin D → LB Y} {χ : ∀ a, Weight p σ (L a)}
     (h : ∀ a, (χ a).IsSmooth R) (R' : AnRead p σ D) {g : CxPts p σ → ℝ} (hg : Continuous g) :
@@ -825,7 +825,7 @@ variable (k σ) (N : ℕ)
 def finAtlas : FinHolAtlas N (CxPts (PSpace.str k N) σ) := (AnRead.all _ σ N).finAtlas
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Weight.isPotential_locPot (Weight.isSmooth_fsBasis _ _ _ _ _), fun _ => Weight.isSection_locSec _ (AnRead.secVal_mem_holSec _ _)⟩`.
+Supply the required witnesses or components.
 -/
 example : IsPotential (finAtlas k σ N) (fsO1 k σ N).locPot ∧ ∀ a,
     IsSection (finAtlas k σ N) (fsO1 k σ N).locPot
@@ -834,7 +834,7 @@ example : IsPotential (finAtlas k σ N) (fsO1 k σ N).locPot ∧ ∀ a,
     fun _ => Weight.isSection_locSec _ (AnRead.secVal_mem_holSec _ _)⟩
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `(finAtlas k σ N).cover (projPt σ ⟨fun _ => 1, by`. Rewrite using `[Ideal.eq_top_iff_one]`. Conclude with `Ideal.subset_span ⟨0, rfl⟩⟩)`. Conclude with `⟨j, _, OpenPartialHomeomorph.map_source _ hj⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 example : ∃ j, ((finAtlas k σ N).chart j).target.Nonempty := by
   obtain ⟨j, hj⟩ := (finAtlas k σ N).cover (projPt σ ⟨fun _ => 1, by
@@ -842,7 +842,7 @@ example : ∃ j, ((finAtlas k σ N).chart j).target.Nonempty := by
   exact ⟨j, _, OpenPartialHomeomorph.map_source _ hj⟩
 
 /- English proof (translation)
-Rewrite using `[Weight.locPot_φ, e, fubiniStudyWeight_projPoint k σ N v i hi, Real.log_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example (x : CxPts (PSpace.str k N) σ) (v : Unimodular ℂ N) (i : Fin (N + 1))
     (e : pick (fsO1 k σ N).isLB x = i) (hi : v.1 i ≠ 0) :
@@ -853,7 +853,7 @@ example (x : CxPts (PSpace.str k N) σ) (v : Unimodular ℂ N) (i : Fin (N + 1))
 end ProjAn
 
 /- English proof (translation)
-Establish `: Real.log 4 = 2 * Real.log 2`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]`. Evaluate the numerical expressions. Simplify using `[logNormSec, Weight.locPot, Weight.locSec, Weight.ofFun, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Simplify using the standard rewrite rules.
 -/
 example (y : CxPts p σ) : logNormSec (Weight.ofFun fun _ : CxPts p σ => Real.log 4).locPot
     ((Weight.ofFun fun _ => Real.log 4).locSec fun _ _ => 1) y = -Real.log 2 := by
@@ -863,7 +863,7 @@ example (y : CxPts p σ) : logNormSec (Weight.ofFun fun _ : CxPts p σ => Real.l
   simp [logNormSec, Weight.locPot, Weight.locSec, Weight.ofFun, this]
 
 /- English proof (translation)
-Establish `e : (fun v : Fin 1 → ℂ => (∑ a, Complex.normSq (v a)) / 2) = fun v => 2⁻¹ * ∑ a, Complex.normSq (v a)` using `funext fun _ => div_eq_inv_mul _ _`. Rewrite using `[maDens, ReciprocityTheory.AnForm.A.mdisc_const, e, hessC_const_mul', ReciprocityTheory.AnForm.A.hessC_sum_normSq]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 example (z : Fin 1 → ℂ) :
     maDens (fun _ v => (∑ a, Complex.normSq (v a)) / 2) z = 1 / Real.pi := by

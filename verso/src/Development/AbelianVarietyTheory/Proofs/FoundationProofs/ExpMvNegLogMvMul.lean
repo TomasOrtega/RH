@@ -11,11 +11,11 @@ namespace GlobalTheory.ExpLogMv
 open PowerSeries
 
 /- English proof (translation)
-Rewrite using `[coeff_subst (HasSubst.of_constantCoeff_zero hG), finsum_eq_sum_of_support_subset (s := Finset.range ((α.sum fun _ k => k) + 1))]`. Both sides reduce to the same expression. Introduce `k hk`. Assume the negation of the conclusion as `h`. Apply `hk` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hlt : (α.sum fun _ k => k) < k` using `by simpa using h`. Establish `h0 : MvPowerSeries.coeff α (G ^ k) = 0`. Apply `MvPowerSeries.coeff_of_lt_order` to reduce the goal to its premises. Use `lt_of_lt_of_le ?_ (MvPowerSeries.le_order_pow_of_constantCoeff_eq_zero k hG)` and prove the remaining obligations. Conclude with `hlt` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[h0]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_subst_range {K σ : Type*} [CommRing K] {G : MvPowerSeries σ K}
     (hG : MvPowerSeries.constantCoeff G = 0) (f : PowerSeries K) (α : σ →₀ ℕ) :
@@ -38,9 +38,9 @@ theorem coeff_subst_range {K σ : Type*} [CommRing K] {G : MvPowerSeries σ K}
 variable {p : ℕ} [Fact p.Prime] {σ : Type*}
 
 /- English proof (translation)
-Use extensionality with `α`. Rewrite using `[coeff_subst_range hG]`. Use `show expMv G α = _`. Rewrite using `[expMv]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[div_eq_inv_mul]`.
+A detailed English derivation is pending.
 -/
 theorem expMv_eq_subst {G : MvPowerSeries σ ℂ_[p]} (hG : MvPowerSeries.constantCoeff G = 0) :
     expMv G = (exp ℂ_[p]).subst G := by
@@ -52,11 +52,9 @@ theorem expMv_eq_subst {G : MvPowerSeries σ ℂ_[p]} (hG : MvPowerSeries.consta
   simp [div_eq_inv_mul]
 
 /- English proof (translation)
-Establish `h1 : MvPowerSeries.constantCoeff (F - 1) = 0` using `by simp [hF]`. Use extensionality with `α`. Rewrite using `[coeff_subst_range h1]`. Use `show GL3Theta.logMv F α = _`. Rewrite using `[GL3Theta.logMv]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_log]`. Use `split_ifs`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem logMv_eq_subst {F : MvPowerSeries σ ℂ_[p]} (hF : MvPowerSeries.constantCoeff F = 1) :
     GL3Theta.logMv F = (log ℂ_[p]).subst (F - 1) := by
@@ -73,13 +71,13 @@ theorem logMv_eq_subst {F : MvPowerSeries σ ℂ_[p]} (hF : MvPowerSeries.consta
     ring
 
 /- English proof (translation)
-Establish `h0 : constantCoeff (-log K) = 0` using `by simp`. Establish `hs` using `HasSubst.of_constantCoeff_zero' h0`. Establish `e : (1 + X) * d⁄dX K (log K) = 1`. Rewrite using `[deriv_log]`. Use extensionality with `n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Consider the cases of `n with`. Consider the case `zero => simp [add_mul]`. Consider the case `succ n => simp [add_mul, coeff_succ_X_mul, coeff_one, pow_succ]`. Use `derivative.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, derivative_subst hs, derivative_exp, map_neg, derivative_one, map_add, derivative_one, derivative_X]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_eq_mul]`. Take the linear combination `(-(exp K).subst (-log K)) * e`. Establish `: constantCoeff ((exp K).subst (-log K) : PowerSeries K) = 1`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_subst' hs, finsum_eq_single _ 0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `k hk`. Simplify using `[hk]`. Simplify using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem exp_neg_log_one_var (K : Type*) [Field K] [CharZero K] :
     (exp K).subst (-log K) * (1 + X : PowerSeries K) = 1 := by
@@ -104,11 +102,11 @@ theorem exp_neg_log_one_var (K : Type*) [Field K] [CharZero K] :
     simp [this]
 
 /- English proof (translation)
-Introduce `p _ σ F hF`. Establish `h1 : MvPowerSeries.constantCoeff (F - 1) = 0` using `by simp [hF]`. Establish `hs` using `HasSubst.of_constantCoeff_zero h1`. Establish `h0 : MvPowerSeries.constantCoeff (GL3Theta.logMv F) = 0`. Rewrite using `[logMv_eq_subst hF]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `constantCoeff_subst_eq_zero h1 _ constantCoeff_log`. Use `⟨h0, ?_⟩` and prove the remaining obligations. Establish `hl : HasSubst (-log ℂ_[p])` using `HasSubst.of_constantCoeff_zero' (by simp)`. Establish `e` using `congrArg (substAlgHom (R := ℂ_[p]) hs) (exp_neg_log_one_var ℂ_[p])`. Establish `en : subst (F - 1) (-log ℂ_[p]) = -GL3Theta.logMv F`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[logMv_eq_subst hF, ← coe_substAlgHom hs, map_neg]`. Rewrite `e` using `[map_mul, map_add, map_one, substAlgHom_X, coe_substAlgHom, subst_comp_subst_apply hl hs, en, add_sub_cancel]`. Rewrite using `[expMv_eq_subst (by rw [map_neg, h0, neg_zero])]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expMv_neg_logMv_mul : ∀ (p : ℕ) [Fact p.Prime] (σ : Type) (F : MvPowerSeries σ ℂ_[p]), MvPowerSeries.constantCoeff F = 1 → MvPowerSeries.constantCoeff (GL3Theta.logMv F) = 0 ∧ expMv (-GL3Theta.logMv F) * F = 1 := by
   intro p _ σ F hF

@@ -9,14 +9,14 @@ namespace GlobalTheory.BSP.AdicComplExists
 variable {L : Type} [CommRing L] {J : Ideal L}
 
 /- English proof (translation)
-Rewrite using `[AlgHom.commutes]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evalₐ_algebraMap' (n : ℕ) (r : L) :
     AdicCompletion.evalₐ J n (algebraMap L (AdicCompletion J L) r) = Ideal.Quotient.mk _ r := by
   rw [AlgHom.commutes]; rfl
 
 /- English proof (translation)
-Rewrite using `[← Submodule.restrictScalars_mem L, ← Ideal.smul_top_eq_map, AdicCompletion.pow_smul_top_eq_ker_eval hfg, LinearMap.mem_ker]`. Establish `h' : (J ^ n • ⊤ : Ideal L) = J ^ n` using `by ext x; simp`. Conclude with `(map_eq_zero_iff _ (Ideal.quotientEquivAlgOfEq L h').injective).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_map_pow_iff (hfg : J.FG) (n : ℕ) (y : AdicCompletion J L) :
     y ∈ (J ^ n).map (algebraMap L (AdicCompletion J L)) ↔ AdicCompletion.evalₐ J n y = 0 := by
@@ -30,9 +30,9 @@ end GlobalTheory.BSP.AdicComplExists
 open GlobalTheory.BSP.AdicComplExists in
 
 /- English proof (translation)
-Introduce `L _ J hfg`. Use `⟨AdicCompletion J L, inferInstance, algebraMap L (AdicCompletion J L), ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[IsAdicComplete.map_algebraMap_iff]`. Conclude with `AdicCompletion.isAdicComplete hfg`. Introduce `x n`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ J n x)`. Conclude with `⟨r, by rw [mem_map_pow_iff hfg, map_sub, evalₐ_algebraMap', hr, sub_self]⟩`. Introduce `a n ha`. Rewrite `ha` using `[mem_map_pow_iff hfg, evalₐ_algebraMap']`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp ha`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BSP.isCompl_exists : ∀ (L : Type) [CommRing L] (J : Ideal L), J.FG →
     ∃ (Q : Type) (_ : CommRing Q) (i : L →+* Q), IsCompl i J := by

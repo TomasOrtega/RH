@@ -14,21 +14,19 @@ open scoped ContDiff
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-Introduce `X _ l μT μ gT g E b hb hE hg hgT h`. Establish `key : ∀ (ν : Measure X) (f : X → ℝ) (R : ℝ), AEStronglyMeasurable f ν → IntegrableOn f (E R) ν → ∫⁻ y in (E R)ᶜ, ‖f y‖ₑ ∂ν ≤ ENNReal.ofReal (b R) → Integrable f ν`. Introduce `ν f R hm h1 h2`. Establish `h3 : IntegrableOn f (E R)ᶜ ν` using `⟨hm.restrict, lt_of_le_of_lt h2 ENNReal.ofReal_lt_top⟩`. Use `h1.union h3` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Set.union_compl_self, integrableOn_univ]`. Then use the resulting hypothesis. Establish `tb : ∀ (ν : Measure X) (f : X → ℝ) (R : ℝ), ∫⁻ y in (E R)ᶜ, ‖f y‖ₑ ∂ν ≤ ENNReal.ofReal (b R) → ‖∫ y in (E R)ᶜ, f y ∂ν‖ ≤ max (b R) 0`. Introduce `ν f R h2`. Establish `h5` using `(enorm_integral_le_lintegral_enorm (μ := ν.restrict (E R)ᶜ) f).trans h2`. Rewrite `h5` using `[← ofReal_norm_eq_enorm]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `(ENNReal.ofReal_le_ofReal_iff').1 h5 with h6 | h6` into its components or cases. Conclude with `h6.trans (le_max_left _ _)`. Conclude with `h6.trans (le_max_right _ _)`. Take `⟨R₀, hR₀⟩` from `h.exists`. Establish `hgi₀` using `key μ g R₀ hg hR₀.1 hR₀.2.1`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hgi₀, ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hR₀.2.2.1, hgT] with t h1 h2`. Conclude with `key _ _ R₀ h2 h1.1 h1.2`. Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hε3 : 0 < ε / 3` using `by positivity`. Establish `hbs : ∀ᶠ R in atTop, b R < ε / 3` using `hb (Iio_mem_nhds hε3)`. Take `⟨R, hR, hbR⟩` from `(h.and hbs).exists`. Establish `hgi` using `key μ g R hg hR.1 hR.2.1`. Establish `hlim` using `Metric.tendsto_nhds.1 hR.2.2.2 (ε / 3) hε3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hR.2.2.1, hgT, hlim] with t h1 h2 h3`. Establish `hti` using `key _ _ R h2 h1.1 h1.2`. Rewrite using `[← integral_add_compl (hE R) hti, ← integral_add_compl (hE R) hgi]`. Establish `e1` using `tb (μT t) (gT t) R h1.2`. Establish `e2` using `tb μ g R hR.2.1`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hm : max (b R) 0 < ε / 3` using `max_lt hbR hε3`. Rewrite `h3`, the goal using `[Real.dist_eq]`. Rewrite `e1`, `e2` using `[Real.norm_eq_abs]`. Take `⟨a1, a2⟩` from `abs_lt.1 h3`. Take `⟨b1, b2⟩` from `abs_le.1 e1`.
-
-Take `⟨c1, c2⟩` from `abs_le.1 e2`. Rewrite using `[abs_lt]`. Apply the tactic sequence `constructor <;> linarith`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem conv_tail_split : ∀ {X : Type} [MeasurableSpace X] {l : Filter ℝ} (μT : ℝ → Measure X) (μ : Measure X) (gT : ℝ → X → ℝ) (g : X → ℝ) (E : ℝ → Set X) (b : ℝ → ℝ), Tendsto b atTop (𝓝 0) → (∀ R, MeasurableSet (E R)) → AEStronglyMeasurable g μ → (∀ᶠ t in l, AEStronglyMeasurable (gT t) (μT t)) → (∀ᶠ R in atTop, IntegrableOn g (E R) μ ∧ ∫⁻ y in (E R)ᶜ, ‖g y‖ₑ ∂μ ≤ ENNReal.ofReal (b R) ∧ (∀ᶠ t in l, IntegrableOn (gT t) (E R) (μT t) ∧ ∫⁻ y in (E R)ᶜ, ‖gT t y‖ₑ ∂μT t ≤ ENNReal.ofReal (b R)) ∧ Tendsto (fun t => ∫ y in E R, gT t y ∂μT t) l (𝓝 (∫ y in E R, g y ∂μ))) → Integrable g μ ∧ (∀ᶠ t in l, Integrable (gT t) (μT t)) ∧ Tendsto (fun t => ∫ y, gT t y ∂μT t) l (𝓝 (∫ y, g y ∂μ)) := by
   intro X _ l μT μ gT g E b hb hE hg hgT h
@@ -75,13 +73,11 @@ theorem conv_tail_split : ∀ {X : Type} [MeasurableSpace X] {l : Filter ℝ} (�
     constructor <;> linarith
 
 /- English proof (translation)
-Introduce `X _ ν B r f c R M hSm hB hf hl hM`. Establish `hsub : {y | y ∉ B ∧ r y ≤ R}ᶜ ⊆ B ∪ (Bᶜ ∩ {y | R ≤ r y})`. Introduce `y hy`. Distinguish the cases in `hyB : y ∈ B`. Conclude with `Or.inl hyB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Use `Or.inr ⟨hyB, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_compl_iff, Set.mem_setOf_eq, not_and, not_le] at hy`. Conclude with `(hy hyB).le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Measure.restrict_eq_zero.2 hB, lintegral_zero_measure, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ ≤ ∫⁻ y in Bᶜ ∩ {y | R ≤ r y}, ENNReal.ofReal |c| * ENNReal.ofReal (Real.log (r y)) ∂ν := by`. Use `setLIntegral_mono' hSm fun y hy => ?_` and prove the remaining obligations. Rewrite using `[Real.enorm_eq_ofReal_abs, ← ENNReal.ofReal_mul (abs_nonneg c)]`. Conclude with `ENNReal.ofReal_le_ofReal ((hf y hy.1).trans (mul_le_mul_of_nonneg_right (le_abs_self c) (hl y hy.1)))`. Use `_ = ENNReal.ofReal |c| * ∫⁻ y in Bᶜ ∩ {y | R ≤ r y}, ENNReal.ofReal (Real.log (r y)) ∂ν := lintegral_const_mul' _ _ ENNReal.ofReal_ne_top`.
-
-Use `_ ≤ ENNReal.ofReal |c| * ENNReal.ofReal M := by gcongr`. Use `_ = ENNReal.ofReal (|c| * M) := (ENNReal.ofReal_mul (abs_nonneg c)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_tail_enorm : ∀ {X : Type} [MeasurableSpace X] (ν : Measure X) (B : Set X) (r f : X → ℝ) (c R M : ℝ), MeasurableSet (Bᶜ ∩ {y | R ≤ r y}) → ν B = 0 → (∀ y ∉ B, |f y| ≤ c * Real.log (r y)) → (∀ y ∉ B, 0 ≤ Real.log (r y)) → ∫⁻ y in Bᶜ ∩ {y | R ≤ r y}, ENNReal.ofReal (Real.log (r y)) ∂ν ≤ ENNReal.ofReal M → ∫⁻ y in {y | y ∉ B ∧ r y ≤ R}ᶜ, ‖f y‖ₑ ∂ν ≤ ENNReal.ofReal (|c| * M) := by
   intro X _ ν B r f c R M hSm hB hf hl hM
@@ -108,13 +104,13 @@ theorem conv_tail_enorm : ∀ {X : Type} [MeasurableSpace X] (ν : Measure X) (B
     _ = ENNReal.ofReal (|c| * M) := (ENNReal.ofReal_mul (abs_nonneg c)).symm
 
 /- English proof (translation)
-Introduce `e X _ _ _ _ _ A th u Θ hth hΘ hu hpsh`. Establish `hpot : ∀ i, IsPotential A (th i + LocPot.ofFun (u i) + Θ)` using `fun i => isPotentialAdd A _ _ (isPotentialAdd A _ _ (hth i) (isPotential_ofFun A _ (hu i))) hΘ`. Take `⟨hfin, hint⟩` from `maMeasure_thm A _ hpot hpsh`. Establish `h1` using `hint (fun _ => 1) measurable_const`. Establish `hI : MIntegrable A (fun i => th i + LocPot.ofFun (u i) + Θ) (fun _ => 1)` using `h1.1.2 (integrable_const 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `h1.2 hI`. Rewrite `hm` using `[integral_const, smul_eq_mul, mul_one, measureReal_def]`. Rewrite using `[← hm, ← massIndep A (fun i => th i + Θ) u (fun i => isPotentialAdd A _ _ (hth i) hΘ) hu]`. Establish `hD : ∀ j, locDens A (fun i => th i + LocPot.ofFun (u i) + Θ) j = locDens A (fun i => th i + Θ + LocPot.ofFun (u i)) j`. Introduce `j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `y`. Unfold `locDens`. Use `congr 1`. Use function extensionality and compare the values at `i y'`. Use `show (th i).φ _ _ + u i _ + Θ.φ _ _ = (th i).φ _ _ + Θ.φ _ _ + u i _`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `mInt integralWith`. Simplify using `only [hD]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conv_mass_approx : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] [MeasurableSpace X] [BorelSpace X] (A : FinHolAtlas e X) (th : Fin e → LocPot X) (u : Fin e → X → ℝ) (Θ : LocPot X), (∀ i, IsPotential A (th i)) → IsPotential A Θ → (∀ i, A.Smooth (u i)) → (∀ i, IsPsh A (th i + LocPot.ofFun (u i) + Θ)) → (maMeasure A (fun i => th i + LocPot.ofFun (u i) + Θ) Set.univ).toReal = mInt A (fun i => th i + Θ) (fun _ => 1) := by
   intro e X _ _ _ _ _ A th u Θ hth hΘ hu hpsh
@@ -140,9 +136,9 @@ theorem conv_mass_approx : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] [Compac
   simp only [hD]
 
 /- English proof (translation)
-Establish `ht : Tendsto (fun R : ℝ => ENNReal.ofReal (K * Real.log R / R)) atTop (𝓝 0)`. Establish `h1` using `(Real.tendsto_pow_log_div_mul_add_atTop 1 0 1 one_ne_zero).const_mul K`. Simplify using `only [pow_one, one_mul, add_zero, mul_zero] at h1`. Rewrite using `[← ENNReal.ofReal_zero]`. Use `ENNReal.tendsto_ofReal (h1.congr fun R => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `le_antisymm (ge_of_tendsto ht ?_) bot_le` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop (Real.exp 1)] with R hR`. Conclude with `h R hR`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem conv_null_of_log_div {X : Type} [MeasurableSpace X] (ν : Measure X) (B : Set X) (K : ℝ)
     (h : ∀ R : ℝ, Real.exp 1 ≤ R → ν B ≤ ENNReal.ofReal (K * Real.log R / R)) : ν B = 0 := by
@@ -157,7 +153,7 @@ theorem conv_null_of_log_div {X : Type} [MeasurableSpace X] (ν : Measure X) (B 
   exact h R hR
 
 /- English proof (translation)
-Establish `h` using `hf.aestronglyMeasurable (μ := ν) hB.isOpen_compl.measurableSet`. Rewrite `h` using `[Measure.restrict_eq_self_of_ae_mem (s := Bᶜ) (compl_mem_ae_iff.2 hν)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem conv_aesm {X : Type} [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X] (ν : Measure X)
     {B : Set X} (hB : IsClosed B) (hν : ν B = 0) {f : X → ℝ} (hf : ContinuousOn f Bᶜ) :
@@ -166,7 +162,7 @@ theorem conv_aesm {X : Type} [TopologicalSpace X] [MeasurableSpace X] [BorelSpac
   rwa [Measure.restrict_eq_self_of_ae_mem (s := Bᶜ) (compl_mem_ae_iff.2 hν)] at h
 
 /- English proof (translation)
-Use `⟨hl.continuousOn (Frequently.of_forall hc), fun y hy => ?_⟩` and prove the remaining obligations. Establish `ht : Tendsto (fun t => gT t y) (𝓝[>] 0) (𝓝 (g y))` using `hl.tendsto_at hy`. Conclude with `le_of_tendsto ht.abs (Eventually.of_forall fun t => hb t y hy)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem conv_limit_props {X : Type} [TopologicalSpace X] (U : Set X) (g : X → ℝ) (gT : ℝ → X → ℝ)
     (b : X → ℝ) (hc : ∀ t, ContinuousOn (gT t) U) (hb : ∀ t y, y ∈ U → |gT t y| ≤ b y)
@@ -177,27 +173,23 @@ theorem conv_limit_props {X : Type} [TopologicalSpace X] (U : Set X) (g : X → 
   exact le_of_tendsto ht.abs (Eventually.of_forall fun t => hb t y hy)
 
 /- English proof (translation)
-Take `⟨-, K₁, hK₁⟩` from `GlobalTheory.T.mixed_energy_regularization_bound tailBound_holds A Θ L s m W hΘ hpos hL hS hSNC hnorm th ph phT C₅ C t₀ hW hR hC2`. Take `⟨K₂, t₁, ht₁, ht₁₀, hU⟩` from `tail_uniform tailBound_holds A Θ L s m W hΘ hpos hL hS hSNC hnorm th ph phT C₅ C t₀ hW hR`. Establish `hB : IsClosed (bdry s)` using `LeviFormBoundaryTopology.isClosed_bdry hS`. Establish `hUo : IsOpen (bdry s)ᶜ` using `hB.isOpen_compl`. Establish `hlog : ∀ y, 0 ≤ Real.log (rW L s y)` using `fun y => Real.log_nonneg (by linarith [rW_ge L s hnorm y, Real.add_one_le_exp (1 : ℝ)])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hgcont, hgbd⟩` from `conv_limit_props (bdry s)ᶜ g gT (fun y => C₆ * Real.log (rW L s y)) hgc (fun t y hy => hgb t y hy) hgl`. Establish `hev : ∀ᶠ t in 𝓝[>] (0 : ℝ), 0 < t ∧ t ≤ t₁` using `by filter_upwards [self_mem_nhdsWithin, Ioo_mem_nhdsGT ht₁] with t ht ht'`. Conclude with `⟨ht, ht'.2.le⟩`. Establish `hpot : ∀ t, 0 < t ∧ t ≤ t₁ → ∀ i, IsPotential A (th i + LocPot.ofFun (phT i t) + Θ) ∧ IsPsh A (th i + LocPot.ofFun (phT i t) + Θ)` using `fun t ht => (hU (fun _ => t) (fun _ => ht)).1`. Establish `htail : ∀ t, 0 < t ∧ t ≤ t₁ → ∀ R, Real.exp 1 ≤ R → ∫⁻ y in (bdry s)ᶜ ∩ {y | R ≤ rW L s y}, ENNReal.ofReal (Real.log (rW L s y)) ∂maMeasure A (fun i => th i + LocPot.ofFun (phT i t) + Θ) ≤ ENNReal.ofReal (K₂ * Real.log R ^ 2 / R)` using `fun t ht R hR => ((hU (fun _ => t) (fun _ => ht)).2 R hR).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμT0 : ∀ t, 0 < t ∧ t ≤ t₁ → maMeasure A (fun i => th i + LocPot.ofFun (phT i t) + Θ) (bdry s) = 0` using `fun t ht => bdry_null A L s m W hL hS hSNC _ (fun i => (hpot t ht i).1)`. Establish `hμTfin : ∀ t, 0 < t ∧ t ≤ t₁ → IsFiniteMeasure (maMeasure A (fun i => th i + LocPot.ofFun (phT i t) + Θ))` using `fun t ht => (maMeasure_thm A _ (fun i => (hpot t ht i).1) (fun i => (hpot t ht i).2)).1`. Establish `hμ0 : maMeasure A (fun i => th i + LocPot.ofFun (ph i) + Θ) (bdry s) = 0` using `conv_null_of_log_div _ _ K₁ fun R hR => (measure_mono Set.subset_union_left).trans (hK₁ R hR).1`. Establish `hsm : ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ i, A.Smooth (phT i t)`. Rewrite using `[eventually_all]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Use `filter_upwards [self_mem_nhdsWithin, Ioo_mem_nhdsGT (hR i).1] with t ht ht'`. Conclude with `((hR i).2.2 t ht ht'.2.le).1`. Use `set Kc : ℝ → Set X := fun R => {y | y ∉ bdry s ∧ rW L s y ≤ R} with hKc`. Establish `hKcpt : ∀ R, IsCompact (Kc R)` using `fun R => isCompact_rW_sublevel A L s hL hS R`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKm : ∀ R, MeasurableSet (Kc R)` using `fun R => (hKcpt R).isClosed.measurableSet`. Establish `hKU : ∀ R, Kc R ⊆ (bdry s)ᶜ` using `fun R y hy => hy.1`. Establish `hSm : ∀ R : ℝ, MeasurableSet ((bdry s)ᶜ ∩ {y | R ≤ rW L s y})`. Introduce `R`. Establish `: (bdry s)ᶜ ∩ {y | R ≤ rW L s y} = (bdry s)ᶜ \ {y | y ∉ bdry s ∧ rW L s y < R}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `y`. Simplify using `only [Set.mem_inter_iff, Set.mem_compl_iff, Set.mem_setOf_eq, Set.mem_diff, not_and, not_lt]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, fun _ => h2⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, h2 h1⟩`. Rewrite using `[this]`. Conclude with `hUo.measurableSet.diff ((rW_open A L s hL hS).2 R).measurableSet`. Establish `hcp` using `fun R => compact_part_integrals_tendsto A (bdry s)ᶜ (fun i => th i + LocPot.ofFun (ph i) + Θ) (fun t i => th i + LocPot.ofFun (phT i t) + Θ) hUo (fun j => locDens_add_ofFun_continuousOn A (bdry s)ᶜ th ph Θ hUo (fun i => (hW i).1) hΘ (fun i => (hW i).2.1) j) (hsm.mono fun t ht i = …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `set K := max K₁ K₂ with hK`. Use `set b : ℝ → ℝ := fun R => |C₆| * (K * Real.log R ^ 2 / R) with hbdef`. Establish `hb : Tendsto b atTop (𝓝 0)`. Establish `h1` using `((Real.tendsto_pow_log_div_mul_add_atTop 1 0 2 one_ne_zero).const_mul K).const_mul |C₆|`. Simplify using `only [one_mul, add_zero, mul_zero] at h1`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h1.congr fun R => ?_` and prove the remaining obligations. Simplify using `only [hbdef]`. Expand and normalize the polynomial expressions, which then agree. Use `conv_tail_split (fun t => maMeasure A (fun i => th i + LocPot.ofFun (phT i t) + Θ)) _ gT g Kc b hb hKm (conv_aesm _ hB hμ0 hgcont) (hev.mono fun t ht => conv_aesm _ hB (hμT0 t ht) (hgc t)) ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop (Real.exp 1)] with R hR`.
-
-Establish `hRpos : 0 ≤ Real.log R ^ 2 / R` using `div_nonneg (sq_nonneg _) ((Real.exp_pos 1).le.trans hR)`. Establish `hKb : ∀ K', K' ≤ K → ENNReal.ofReal (K' * Real.log R ^ 2 / R) ≤ ENNReal.ofReal (K * Real.log R ^ 2 / R)` using `fun K' hK' => ENNReal.ofReal_le_ofReal (by`. Rewrite using `[mul_div_assoc, mul_div_assoc]`. Conclude with `mul_le_mul_of_nonneg_right hK' hRpos)`. Use `⟨(hcp R).2.1, ?_, ?_, (hcp R).2.2⟩` and prove the remaining obligations.
-
-Conclude with `conv_tail_enorm _ (bdry s) (rW L s) g C₆ R (K * Real.log R ^ 2 / R) (hSm R) hμ0 (fun y hy => hgbd y hy) (fun y _ => hlog y) (((hK₁ R hR).2).trans (hKb K₁ (le_max_left _ _)))`. Use `filter_upwards [hev] with t ht haveI := hμTfin t ht`. Use `⟨ContinuousOn.integrableOn_compact (hKcpt R) ((hgc t).mono (hKU R)), ?_⟩` and prove the remaining obligations. Conclude with `conv_tail_enorm _ (bdry s) (rW L s) (gT t) C₆ R _ (hSm R) (hμT0 t ht) (fun y hy => hgb t y hy) (fun y _ => hlog y) ((htail t ht R hR).trans (hKb K₂ (le_max_right _ _)))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem conv_core {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X]
     [MeasurableSpace X] [BorelSpace X] (A : FinHolAtlas e X) (Θ L : LocPot X) (s : X → X → ℂ) {n : ℕ}
@@ -301,13 +293,13 @@ theorem conv_core {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2
       (fun y _ => hlog y) ((htail t ht R hR).trans (hKb K₂ (le_max_right _ _)))
 
 /- English proof (translation)
-Introduce `e X _ _ _ _ _ A Θ L s n m W hΘ hpos hL hS hSNC hnorm th ph phT C₅ C t₀ hW hR hC2 g gT C₆ hgc hgb hgl`. Introduce `μT μ`. Take `⟨hfin, -⟩` from `GlobalTheory.T.mixed_energy_regularization_bound tailBound_holds A Θ L s m W hΘ hpos hL hS hSNC hnorm th ph phT C₅ C t₀ hW hR hC2`. Take `⟨hg1, hg2, hg3⟩` from `conv_core A Θ L s m W hΘ hpos hL hS hSNC hnorm th ph phT C₅ C t₀ hW hR hC2 g gT C₆ hgc hgb hgl`. Use `⟨hfin, ?_, hg1, hg2, hg3⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlog1 : ∀ y, 1 ≤ Real.log (rW L s y)` using `fun y => by`. Rewrite using `[← Real.log_exp 1]`. Conclude with `Real.log_le_log (Real.exp_pos 1) (rW_ge L s hnorm y)`. Establish `hconst : TendstoLocallyUniformlyOn (fun (_ : ℝ) (_ : X) => (1 : ℝ)) (fun _ => 1) (𝓝[>] 0) (bdry s)ᶜ`. Introduce `u hu x _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨Set.univ, Filter.univ_mem, Eventually.of_forall fun _ y _ => refl_mem_uniformity hu⟩`. Establish `hc1` using `(conv_core A Θ L s m W hΘ hpos hL hS hSNC hnorm th ph phT C₅ C t₀ hW hR hC2 (fun _ => 1) (fun _ _ => 1) 1 (fun _ => continuousOn_const) (fun t y _ => by simpa using hlog1 y) hconst).2.2`. Take `⟨K₂, t₁, ht₁, ht₁₀, hU⟩` from `tail_uniform tailBound_holds A Θ L s m W hΘ hpos hL hS hSNC hnorm th ph phT C₅ C t₀ hW hR`. Establish `hev : ∀ᶠ t in 𝓝[>] (0 : ℝ), mInt A (fun i => th i + Θ) (fun _ => 1) = ∫ y, (fun _ => (1 : ℝ)) y ∂maMeasure A (fun i => th i + LocPot.ofFun (phT i t) + Θ)` using `by filter_upwards [self_mem_nhdsWithin, Ioo_mem_nhdsGT ht₁] with t ht ht'`. Establish `hp` using `(hU (fun _ => t) (fun _ => ⟨ht, ht'.2.le⟩)).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_const, smul_eq_mul, mul_one, measureReal_def]`. Conclude with `(conv_mass_approx A th (fun i => phT i t) Θ (fun i => (hW i).1) hΘ (fun i => ((hR i).2.2 t ht (ht'.2.le.trans (ht₁₀ (hR i).1))).1) (fun i => (hp i).2)).symm`. Establish `h2` using `tendsto_nhds_unique hc1 (tendsto_const_nhds.congr' hev)`. Rewrite `h2` using `[integral_const, smul_eq_mul, mul_one, measureReal_def]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem convergence_holds : ConvergenceStatement := by
   intro e X _ _ _ _ _ A Θ L s n m W hΘ hpos hL hS hSNC hnorm th ph phT C₅ C t₀ hW hR hC2 g gT C₆

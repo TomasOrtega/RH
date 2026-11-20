@@ -18,15 +18,15 @@ private def DivisibilityInvariant {O : Type} [CommRing O] (ϖ : O) (e : ℕ) (f 
   ¬ ϖ ^ (m + 1) ∣ coeff i f ∧ ∀ t : ℕ, 1 ≤ t → ϖ ^ (m + 1 - e * t) ∣ coeff (i + t) f
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Establish `hcoeff : ∀ k, coeff (k + 1) (f * (X - C c)) = coeff k f - coeff (k + 1) f * c`. Introduce `k`. Rewrite using `[mul_sub, map_sub, coeff_succ_mul_X, coeff_mul_C]`. Use `⟨?_, fun t ht => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hcoeff]`. Introduce `hd`. Apply `h1` to reduce the goal to its premises. Establish `h3 : ϖ ^ (m + 1) ∣ coeff (i + 1) f * c`. Establish `h4` using `mul_dvd_mul (h2 1 le_rfl) hc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[← pow_add, mul_one]`. Conclude with `(pow_dvd_pow ϖ (by omega)).trans h4`. Establish `h5` using `dvd_add hd h3`. Rewrite `h5` using `[sub_add_cancel]`. Then use the resulting hypothesis. Rewrite using `[show i + 1 + t = (i + t) + 1 by omega, hcoeff]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `dvd_sub (h2 t ht) ?_` and prove the remaining obligations. Establish `h4` using `mul_dvd_mul (h2 (t + 1) (by omega)) hc`. Rewrite `h4` using `[← pow_add, show i + (t + 1) = i + t + 1 by omega]`. Use `(pow_dvd_pow ϖ ?_).trans h4` and prove the remaining obligations. Rewrite using `[mul_add, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `e * t = u`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private lemma divisibilityInvariant_mul_linear {O : Type} [CommRing O] (ϖ c : O) (e : ℕ) (hc : ϖ ^ e ∣ c)
     (f : PowerSeries O) (i m : ℕ) (h : DivisibilityInvariant ϖ e f i m) : DivisibilityInvariant ϖ e (f * (X - C c)) (i + 1) m := by
@@ -54,7 +54,7 @@ private lemma divisibilityInvariant_mul_linear {O : Type} [CommRing O] (ϖ c : O
     omega
 
 /- English proof (translation)
-Proceed by induction on `A with`. Consider the case `zero => simpa using h`. Consider the case `succ A ih`. Rewrite using `[pow_succ, ← mul_assoc, show i + (A + 1) = (i + A) + 1 by omega]`. Conclude with `divisibilityInvariant_mul_linear ϖ c e hc _ _ _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma divisibilityInvariant_mul_pow {O : Type} [CommRing O] (ϖ c : O) (e : ℕ) (hc : ϖ ^ e ∣ c)
     (f : PowerSeries O) (i m : ℕ) (h : DivisibilityInvariant ϖ e f i m) (A : ℕ) :
@@ -67,13 +67,13 @@ private lemma divisibilityInvariant_mul_pow {O : Type} [CommRing O] (ϖ c : O) (
 
 open Classical in
 /- English proof (translation)
-Set `Pr : ℕ → Prop` to `fun i => ¬ ϖ ^ (e * (v₁ - i) + 1) ∣ coeff i f`. Establish `hP0 : Pr 0` using `by simpa [Pr] using h0`. Use `⟨Nat.findGreatest Pr v₁, Nat.findGreatest_le v₁, Nat.findGreatest_spec (Nat.zero_le _) hP0, fun t ht => ?_⟩` and prove the remaining obligations. Use `set i := Nat.findGreatest Pr v₁ with hi`. Establish `hiv : i ≤ v₁` using `Nat.findGreatest_le v₁`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hit : i + t ≤ v₁`. Establish `hn` using `Nat.findGreatest_is_greatest (by omega : i < i + t) hit`. Take `⟨d, hd⟩ : ∃ d, v₁ = i + t + d` from `⟨v₁ - (i + t), by omega⟩`. Establish `hex : e * (v₁ - i) + 1 - e * t = e * (v₁ - (i + t)) + 1`. Rewrite using `[show v₁ - i = t + d by omega, show v₁ - (i + t) = d by omega, mul_add]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hex]`. Conclude with `not_not.mp hn`. Establish `hle : e * (v₁ - i) + 1 ≤ e * t`. Establish `h2 : e * (v₁ - i + 1) ≤ e * t` using `Nat.mul_le_mul_left e (by omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h2` using `[mul_add, mul_one]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Nat.sub_eq_zero_of_le hle, pow_zero]`. Conclude with `one_dvd _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_divisibilityInvariant {O : Type} [CommRing O] (ϖ : O) (e : ℕ) (he : 1 ≤ e)
     (f : PowerSeries O) (v₁ : ℕ) (h0 : ¬ ϖ ^ (e * v₁ + 1) ∣ coeff 0 f) :
@@ -101,7 +101,7 @@ private lemma exists_divisibilityInvariant {O : Type} [CommRing O] (ϖ : O) (e :
     exact one_dvd _
 
 /- English proof (translation)
-Take `⟨a, b, rfl⟩` from `Ideal.mem_span_pair.mp hF`. Rewrite using `[map_add, coeff_mul_C, coeff_mul_X_pow', if_neg (by omega), add_zero]`. Conclude with `dvd_mul_left _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma coeff_dvd_of_mem_span {O : Type} [CommRing O] (d : O) (B : ℕ) (F : PowerSeries O)
     (hF : F ∈ Ideal.span {C d, (X : PowerSeries O) ^ B}) (j : ℕ) (hj : j < B) : d ∣ coeff j F := by
@@ -110,21 +110,19 @@ private lemma coeff_dvd_of_mem_span {O : Type} [CommRing O] (d : O) (B : ℕ) (F
   exact dvd_mul_left _ _
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ l hl e u he hlu f₁ a A' y B v₁ k _ hndiv hB hmem`. Establish `hnd0 : ¬ ϖ ^ (e * v₁ + 1) ∣ coeff 0 f₁`. Rewrite using `[coeff_zero_eq_constantCoeff_apply]` and apply the resulting hypothesis. Take `⟨i₀, hi₀, hinv⟩` from `exists_divisibilityInvariant ϖ e he f₁ v₁ hnd0`. Establish `hl_dvd : ϖ ^ e ∣ (l : O)` using `⟨u, by rw [hlu, mul_comm]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hinv2` using `divisibilityInvariant_mul_pow ϖ (l : O) e hl_dvd f₁ i₀ _ hinv A'`. Establish `hF : C ((l : O) ^ a) * f₁ * (X - C (l : O)) ^ A' * X ^ y = (C ((l : O) ^ a) * (f₁ * (X - C (l : O)) ^ A')) * X ^ y` using `by ring`. Establish `hj : i₀ + A' + y < B` using `by omega`. Establish `hd` using `coeff_dvd_of_mem_span (ϖ ^ k) B _ hmem (i₀ + A' + y) hj`. Rewrite `hd` using `[hF, coeff_mul_X_pow, coeff_C_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hnd : ¬ ϖ ^ (e * (v₁ - i₀) + 1 + e * a) ∣ (l : O) ^ a * coeff (i₀ + A') (f₁ * (X - C (l : O)) ^ A')`. Introduce `h`. Apply `hinv2.1` to reduce the goal to its premises. Establish `h' : ϖ ^ (e * a) * ϖ ^ (e * (v₁ - i₀) + 1) ∣ ϖ ^ (e * a) * (((u ^ a : Oˣ) : O) * coeff (i₀ + A') (f₁ * (X - C (l : O)) ^ A'))`. Rewrite using `[← pow_add, add_comm (e * a)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hlu, Units.val_pow_eq_pow_val, mul_pow, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h''` using `(mul_dvd_mul_iff_left (pow_ne_zero _ hϖ.ne_zero)).mp h'`. Conclude with `Units.dvd_mul_left.mp h''`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : k < e * (v₁ - i₀) + 1 + e * a`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hnd ((pow_dvd_pow ϖ hcon).trans hd)`. Establish `h1 : e * (v₁ - i₀) ≤ e * v₁` using `Nat.mul_le_mul_left e (Nat.sub_le _ _)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : e * (a + v₁ + 1) = e * a + e * v₁ + e` using `by ring`. Establish `hk2 : k < e * (a + v₁ + 1)`. Rewrite using `[h3]`. Generalize the expression as in `e * (v₁ - i₀) = p at *`. Generalize the expression as in `e * v₁ = q at *`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Generalize the expression as in `e * a = s at *`. Use linear arithmetic over natural numbers and integers. Establish `he0 : (0 : ℚ) < e` using `by exact_mod_cast he`. Rewrite using `[div_lt_iff₀ he0]`. Establish `hq` using `(Nat.cast_lt (α := ℚ)).mpr hk2`.
-
-Move the coercions through the operations in `at hq`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem content_divisibility : R2 := by
   intro O _ _ _ ϖ hϖ l hl e u he hlu f₁ a A' y B v₁ k _ hndiv hB hmem
@@ -174,9 +172,9 @@ end R2
 section Kap
 
 /- English proof (translation)
-Establish `hp : 1 < l` using `(Fact.out : l.Prime).one_lt`. Establish `hlt : ((l : ℝ))⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by exact_mod_cast hp)`. Establish `h1 : ‖(1 + (l : ℤ_[l]))‖ = 1`. Rewrite using `[PadicInt.norm_add_eq_max_of_ne, norm_one, PadicInt.norm_p]`. Conclude with `max_eq_left hlt.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_one, PadicInt.norm_p]`. Conclude with `hlt.ne'`. Use `⟨(PadicInt.isUnit_iff.mpr h1).unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, add_sub_cancel_left, PadicInt.valuation_p]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma chi_exists (l : ℕ) [Fact l.Prime] :
     ∃ χ : ℤ_[l]ˣ, PadicInt.valuation ((χ : ℤ_[l]) - 1) = 1 := by
@@ -191,15 +189,15 @@ private lemma chi_exists (l : ℕ) [Fact l.Prime] :
   rw [IsUnit.unit_spec, add_sub_cancel_left, PadicInt.valuation_p]
 
 /- English proof (translation)
-Take `⟨χ, hχ⟩` from `chi_exists l`. Establish `hv` using `(Formalism.WindowSums.arc_KillerVal l hl2 χ hχ ell JS).2`. Establish `hv' : PadicInt.valuation ((Formalism.WindowSums.PP l χ ell JS).eval 1) = ell + ∑ i ∈ JS.erase 0, (ell + 1 + padicValInt l i)`. Rewrite using `[hv, add_comm]`. Repeatedly rewrite using `[add_comm 1 ell]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `hsub : JS ⊆ Finset.univ.biUnion fun k : Fin (ro + 1) => Finset.Ico ((Fin.cons (-(2 * G : ℤ)) a : Fin (ro + 1) → ℤ) k) ((Fin.cons (-(2 * G : ℤ)) a : Fin (ro + 1) → ℤ) k + ((Fin.cons (3 * G + 1) (fun _ => S) : Fin (ro + 1) → ℕ) k : ℤ))`. Introduce `i hi`. Break down `Finset.mem_union.mp (hJS hi) with h1 | h2` into its components or cases. Rewrite `h1` using `[Finset.mem_Icc]`. Use `Finset.mem_biUnion.mpr ⟨0, Finset.mem_univ _, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Fin.cons_zero, Finset.mem_Ico]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Take `⟨k, _, hk⟩` from `Finset.mem_biUnion.mp h2`. Use `Finset.mem_biUnion.mpr ⟨k.succ, Finset.mem_univ _, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `hk` using `only [Fin.cons_succ]`. Establish `hw` using `Formalism.TruncatedSeriesCounting.TruncatedSeriesCountingBounds.kappa_window_bound l hl2 χ hχ ell (ro + 1) (2 * h) (Fin.cons (-(2 * G : ℤ)) a) (Fin.cons (3 * G + 1) fun _ => S) JS hsub (by exact_mod_cast hD)`. Rewrite using `[← hv']`. Use `hw.2.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_succ]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.cons_zero, Fin.cons_succ, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, nsmul_eq_mul]`. Apply the tactic sequence `try push_cast`. Apply the tactic sequence `try ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma kappa_bound_logb (l : ℕ) [Fact l.Prime] (hl2 : l ≠ 2) (G S h ell ro : ℕ) (a : Fin ro → ℤ)
     (JS : Finset ℤ)
@@ -242,27 +240,27 @@ private lemma kappa_bound_logb (l : ℕ) [Fact l.Prime] (hl2 : l ≠ 2) (G S h e
   try ring
 
 /- English proof (translation)
-Introduce `l hl h5 G S h ell ro a hGh h1 ha JS`. Establish `: Fact l.Prime` using `⟨hl⟩`. Establish `hl2 : l ≠ 2` using `by omega`. Establish `hD : ∀ i ∈ JS, |i| ≤ ((2 * h : ℕ) : ℤ)`. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[abs_le]`. Use `push_cast`. Break down `Finset.mem_union.mp hi with h2 | h2` into its components or cases. Rewrite `h2` using `[Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨k, _, hk⟩` from `Finset.mem_biUnion.mp h2`. Rewrite `hk` using `[Finset.mem_Ico]`. Use `ha k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hlR : (5 : ℝ) ≤ l` using `by exact_mod_cast h5`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hhR : (1 : ℝ) ≤ h` using `by exact_mod_cast h1`. Establish `hLh : 0 ≤ Real.logb l h` using `Real.logb_nonneg (by linarith) hhR`. Establish `hlog : Real.logb l ((2 * h : ℕ) : ℝ) ≤ 1 + Real.logb l h`. Use `push_cast`. Rewrite using `[Real.logb_mul (by norm_num) (by linarith)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `: Real.logb l 2 ≤ Real.logb l l` using `Real.logb_le_logb_of_le (by linarith) (by norm_num) (by linarith)`. Rewrite `this` using `[Real.logb_self_eq_one (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdiv : ∀ x : ℝ, 0 ≤ x → x / ((l : ℝ) - 1) ≤ x` using `fun x hx => div_le_self hx (by linarith)`. Establish `hG0 : (0 : ℝ) ≤ G` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS0 : (0 : ℝ) ≤ S` using `Nat.cast_nonneg _`. Establish `hr0 : (0 : ℝ) ≤ ro` using `Nat.cast_nonneg _`. Establish `hL0 : (0 : ℝ) ≤ ell` using `Nat.cast_nonneg _`. Establish `hrS : (0 : ℝ) ≤ (ro : ℝ) * S` using `mul_nonneg hr0 hS0`. Break down `Nat.eq_zero_or_pos S with hS | hS` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hJS : JS ⊆ Finset.Icc (-(2 * G : ℤ)) G ∪ Finset.univ.biUnion fun k : Fin 0 => Finset.Ico ((Fin.elim0 k : ℤ)) ((Fin.elim0 k : ℤ) + S)`. Introduce `i hi`. Break down `Finset.mem_union.mp hi with h2 | h2` into its components or cases. Conclude with `Finset.mem_union_left _ h2`. Take `⟨k, _, hk⟩` from `Finset.mem_biUnion.mp h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hk` using `[Finset.mem_Ico, hS]`. Move the coercions through the operations in `at hk`. Use linear arithmetic over natural numbers and integers. Establish `hb` using `kappa_bound_logb l hl2 G S h ell 0 (fun k => Fin.elim0 k) JS hJS hD`. Use `hb.trans ?_` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hd1` using `hdiv ((3 * G + 1 : ℕ) : ℝ) (Nat.cast_nonneg _)`. Substitute `hS` using the available equality. Move the coercions through the operations in `at hd1 hlog ⊢`. Use polynomial arithmetic with `[mul_nonneg hG0 hL0, mul_nonneg hr0 hLh]`. Establish `hb` using `kappa_bound_logb l hl2 G S h ell ro a JS (le_refl _) hD`.
+Substitute using the available equality. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hb.trans ?_` and prove the remaining obligations. Establish `hd1` using `hdiv ((3 * G + 1 : ℕ) : ℝ) (Nat.cast_nonneg _)`. Establish `hd2` using `hdiv (S : ℝ) hS0`. Establish `hS1 : (1 : ℝ) ≤ S` using `by exact_mod_cast hS`. Establish `hrle : (ro : ℝ) ≤ ro * S` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (ro : ℝ) * ((S : ℝ) / ((l : ℝ) - 1) + Real.logb l ((2 * h : ℕ) : ℝ)) ≤ ro * (S + (1 + Real.logb l h))` using `mul_le_mul_of_nonneg_left (by linarith) hr0`. Move the coercions through the operations in `at hd1 h3 hlog ⊢`. Use polynomial arithmetic with `[mul_nonneg hG0 hL0, mul_nonneg hrS hL0, mul_nonneg hr0 hLh]`.
+Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem killerKap_holds : KillerKap 8 := by
   intro l hl h5 G S h ell ro a hGh h1 ha JS
@@ -327,24 +325,24 @@ theorem killerKap_holds : KillerKap 8 := by
 end Kap
 
 /- English proof (translation)
-The claim follows from `content_divisibility`.
+A detailed English derivation is pending.
 -/
 theorem content_divisibility_clause (D : Formalism.BasicNotions.D7) : adm9 D := content_divisibility
 
 /- English proof (translation)
-The claim follows from `Formalism.WindowSums.arc_KillerVal`.
+A detailed English derivation is pending.
 -/
 theorem killerVal_holds : Formalism.WindowSums.KillerVal := Formalism.WindowSums.arc_KillerVal
 
 /- English proof (translation)
-The claim follows from `Formalism.WindowSums.arc_KillerKills`.
+A detailed English derivation is pending.
 -/
 theorem killerKills_holds : Formalism.WindowSums.KillerKills := Formalism.WindowSums.arc_KillerKills
 
 /- English proof (translation)
-Introduce `l hl hl5 G S h ell ro a hGh hh ha`. Establish `h8` using `killerKap_holds l hl hl5 G S h ell ro a hGh hh ha`. Simplify using `only at h8 ⊢`. Establish `hlog : 0 ≤ Real.logb l h` using `Real.logb_nonneg (by exact_mod_cast (by omega : 1 < l)) (by exact_mod_cast hh)`. Establish `hX : 0 ≤ ((G : ℝ) + ro * S + 1) * (ell + 1) + (ro + 1) * Real.logb l h` using `add_nonneg (by positivity) (mul_nonneg (by positivity) hlog)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h8.trans (mul_le_mul_of_nonneg_right hC hX)`.
+A detailed English derivation is pending.
 -/
 theorem killerKap_of_le {C : ℝ} (hC : 8 ≤ C) : KillerKap C := by
   intro l hl hl5 G S h ell ro a hGh hh ha
@@ -357,7 +355,7 @@ theorem killerKap_of_le {C : ℝ} (hC : 8 ≤ C) : KillerKap C := by
   exact h8.trans (mul_le_mul_of_nonneg_right hC hX)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨killerVal_holds, killerKills_holds, hLev, hMod, killerKap_of_le hC⟩`.
+Supply the required witnesses or components.
 -/
 theorem lemma_M_prime_hypothesis (D : Formalism.BasicNotions.D7) (HW : Formalism.BasicNotions.HWOf D.loc) (F : Formalism.BasicNotions.FonOf D.loc D.locA HW) {C : ℝ} (hC : 8 ≤ C) (hLev : KillerLevL D.loc D.locA HW F)
     (hMod : KillerModL D.loc D.locA HW F) : adm8 D HW F C :=
@@ -377,7 +375,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem γD_smulA (T : LocLat G Qp LL O) (g : W.Gam) (a : LetA O n) (x : W.DD T) :
     W.γD T g (a • x) = W.γA g a • W.γD T g x := by
@@ -385,9 +383,9 @@ theorem γD_smulA (T : LocLat G Qp LL O) (g : W.Gam) (a : LetA O n) (x : W.DD T)
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `W.γ₀ g ((letE c : LetA O n) i) = (letE c : LetA O n) i`. Distinguish the cases in `h : i = c`. Substitute `h` using the available equality. Simplify using `[letE]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[letE, Pi.single_eq_of_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem γA_letE (g : W.Gam) (c : ZMod n) : W.γA g (letE c) = letE c := by
   funext i
@@ -409,9 +407,9 @@ def piNc (T : LocLat G Qp LL O) (c : ZMod n) : Submodule O (W.DD T) where
     exact ⟨a • y, (W.NΔ T).smul_mem a h, by rw [smul_comm, e], smul_comm _ _ _⟩
 
 /- English proof (translation)
-Introduce `_ T c ell JS w _ _ hw`. Establish `hst : ∀ u ∈ piNc W T c, W.γ T u ∈ piNc W T c`. Introduce and unpack `_ ⟨y, hy, hc, rfl⟩`. Take `⟨u, hu, hπ⟩` from `h`. Use `⟨u • W.γD T W.gam y, ⟨(W.N T).smul_mem _ (W.N_Γ T _ y hy.1), fun δ hδ => ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[γD_smulA, hu δ hδ, ← W.γD_mul, mul_comm, W.γD_mul, hy.2 δ hδ]`. Rewrite using `[smul_comm, ← γA_letE W W.gam c, ← γD_smulA, hc]`. Express the relevant statement in the definitionally equal form `W.γD T W.gam (W.π₀ • y) = _`. Rewrite using `[γD_smulA, hπ, mul_smul]`. Conclude with `Formalism.ExponentWindows.aeval_sub_eval_one_smul_mem O (W.DD T) (W.γ T) (piNc W T c) hst (PPO W ell JS) w hw`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killer_module_of_pi_stable (h : Pi0Stable W) : KillerModCore W := by
   intro _ T c ell JS w _ _ hw
@@ -428,7 +426,7 @@ theorem killer_module_of_pi_stable (h : Pi0Stable W) : KillerModCore W := by
 end KillerBridge
 
 /- English proof (translation)
-Introduce `l _ K LL hG hA h5`. Conclude with `killer_module_of_pi_stable _ (h l K LL hG hA h5)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem killerModL_of (LT : LocTheory) (A : ∀ (l : ℕ) [Fact l.Prime], LocAinf l (LT l)) (HW : HWOf LT)
     (F : FonOf LT A HW)
@@ -437,7 +435,7 @@ theorem killerModL_of (LT : LocTheory) (A : ∀ (l : ℕ) [Fact l.Prime], LocAin
   exact killer_module_of_pi_stable _ (h l K LL hG hA h5)
 
 /- English proof (translation)
-The claim follows from `lemma_M_prime_hypothesis D HW F hC hLev (killerModL_of D.loc D.locA HW F h)`.
+A detailed English derivation is pending.
 -/
 theorem pi_stability_content_clause (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) {C : ℝ} (hC : 8 ≤ C) (hLev : KillerLevL D.loc D.locA HW F)
     (h : AtCaseA fun l _ K LL hG => Pi0Stable ((HW l).W K 1 LL hG)) : adm8 D HW F C :=

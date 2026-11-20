@@ -9,23 +9,23 @@ variable {E : Type} [Field E] [NumberField E]
 noncomputable def primeBelow (q : Prm E) : ℕ := Ideal.absNorm (q.asIdeal.under ℤ)
 
 /- English proof (translation)
-Establish `: NeZero q.asIdeal` using `⟨q.ne_bot⟩`. Conclude with `Nat.absNorm_under_prime q.asIdeal`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem primeBelow_prime (q : Prm E) : (primeBelow q).Prime := by
   have : NeZero q.asIdeal := ⟨q.ne_bot⟩
   exact Nat.absNorm_under_prime q.asIdeal
 
 /- English proof (translation)
-The claim follows from `have : q.asIdeal.LiesOver (Ideal.span {((primeBelow q : ℕ) : ℤ)}) := Int.liesOver_span_absNorm q.asIdeal ⟨_, Ideal.absNorm_eq_pow_inertiaDeg' q.asIdeal (primeBelow_prime q)⟩`.
+A detailed English derivation is pending.
 -/
 theorem nrm_eq_primeBelow_pow (q : Prm E) : ∃ f : ℕ, Nrm q = primeBelow q ^ f :=
   have : q.asIdeal.LiesOver (Ideal.span {((primeBelow q : ℕ) : ℤ)}) := Int.liesOver_span_absNorm q.asIdeal
   ⟨_, Ideal.absNorm_eq_pow_inertiaDeg' q.asIdeal (primeBelow_prime q)⟩
 
 /- English proof (translation)
-Establish `h0 : Nrm q ≠ 0`. Unfold `Nrm`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `q.ne_bot`. Establish `h1 : Nrm q ≠ 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Nrm`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `q.isPrime.ne_top`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem two_le_nrm (q : Prm E) : 2 ≤ Nrm q := by
   have h0 : Nrm q ≠ 0 := by
@@ -35,9 +35,9 @@ theorem two_le_nrm (q : Prm E) : 2 ≤ Nrm q := by
   omega
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `nrm_eq_primeBelow_pow q`. Establish `hp` using `primeBelow_prime q`. Establish `h1 : Nrm q ≠ 1` using `by have := two_le_nrm q; omega`. Rewrite `h`, `h1`, the goal using `[hf]`. Establish `hf0 : f ≠ 0` using `by rintro rfl; simp at h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf1 : f ≠ 1` using `by rintro rfl; simp [hp] at h`. Conclude with `Nat.pow_le_pow_right hp.pos (by omega)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem primeBelow_sq_le (q : Prm E) (h : ¬ (Nrm q).Prime) : primeBelow q ^ 2 ≤ Nrm q := by
   obtain ⟨f, hf⟩ := nrm_eq_primeBelow_pow q
@@ -49,7 +49,7 @@ theorem primeBelow_sq_le (q : Prm E) (h : ¬ (Nrm q).Prime) : primeBelow q ^ 2 �
   exact Nat.pow_le_pow_right hp.pos (by omega)
 
 /- English proof (translation)
-Establish `hp` using `primeBelow_prime q`. Establish `: (Ideal.span {((primeBelow q : ℕ) : ℤ)}).IsMaximal` using `((Ideal.span_singleton_prime (by exact_mod_cast hp.ne_zero)).mpr (Nat.prime_iff_prime_int.mp hp)).isMaximal (by simp [hp.ne_zero])`. Rewrite using `[IsDedekindDomain.mem_primesOverFinset_iff (by simp [hp.ne_zero])]`. Conclude with `⟨q.isPrime, Int.liesOver_span_absNorm q.asIdeal⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_primesOverFinset_primeBelow (q : Prm E) :
     q.asIdeal ∈ IsDedekindDomain.primesOverFinset (Ideal.span {((primeBelow q : ℕ) : ℤ)}) (𝓞 E) := by
@@ -61,7 +61,7 @@ theorem mem_primesOverFinset_primeBelow (q : Prm E) :
   exact ⟨q.isPrime, Int.liesOver_span_absNorm q.asIdeal⟩
 
 /- English proof (translation)
-Establish `: (Ideal.span {(p:ℤ)}).IsMaximal` using `((Ideal.span_singleton_prime (by exact_mod_cast hp.ne_zero)).mpr (Nat.prime_iff_prime_int.mp hp)).isMaximal (by simp [hp.ne_zero])`. Conclude with `Ideal.card_primesOverFinset_le_finrank (𝓞 E) ℚ E (by simp [hp.ne_zero])`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_primesOverFinset_le (p : ℕ) (hp : p.Prime) :
     (IsDedekindDomain.primesOverFinset (Ideal.span {(p:ℤ)}) (𝓞 E)).card ≤ Module.finrank ℚ E := by
@@ -71,9 +71,9 @@ theorem card_primesOverFinset_le (p : ℕ) (hp : p.Prime) :
   exact Ideal.card_primesOverFinset_le_finrank (𝓞 E) ℚ E (by simp [hp.ne_zero])
 
 /- English proof (translation)
-Use `le_trans ?_ (card_primesOverFinset_le (E := E) p hp)` and prove the remaining obligations. Use `Finset.card_le_card_of_injOn (fun x => x.asIdeal) ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Finset.coe_filter] at hx`. Use `mem_primesOverFinset_primeBelow x` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[hx.2]`. Conclude with `this`. Introduce `x _ y _ hxy`. Conclude with `HeightOneSpectrum.ext hxy`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem card_filter_primeBelow_le (u : Finset (Prm E)) (p : ℕ) (hp : p.Prime) :
     (u.filter fun x => primeBelow x = p).card ≤ Module.finrank ℚ E := by
@@ -89,9 +89,9 @@ theorem card_filter_primeBelow_le (u : Finset (Prm E)) (p : ℕ) (hp : p.Prime) 
     exact HeightOneSpectrum.ext hxy
 
 /- English proof (translation)
-Use `split_ifs with h`. Check the signs of the components of the expression. Establish `hq` using `primeBelow_sq_le q h`. Establish `hp` using `(primeBelow_prime q).pos`. Establish `hq' : ((primeBelow q : ℝ)) ^ 2 ≤ (Nrm q : ℝ)` using `by exact_mod_cast hq`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : (0 : ℝ) < (primeBelow q : ℝ) ^ 2` using `by positivity`. Rewrite using `[inv_eq_one_div]`. Conclude with `one_div_le_one_div_of_le hpos hq'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonprime_term_le (q : Prm E) :
     (if (Nrm q).Prime then (0 : ℝ) else ((Nrm q : ℕ) : ℝ)⁻¹) ≤ 1 / ((primeBelow q : ℕ) : ℝ) ^ 2 := by
@@ -105,11 +105,11 @@ theorem nonprime_term_le (q : Prm E) :
     exact one_div_le_one_div_of_le hpos hq'
 
 /- English proof (translation)
-Set `G : ℕ → ℝ` to `fun n => 1 / (n : ℝ) ^ 2`. Establish `hG : Summable G` using `Real.summable_one_div_nat_pow.mpr (by norm_num)`. Establish `hG0 : ∀ n, 0 ≤ G n` using `fun n => by positivity`. Apply the tactic sequence `refine summable_of_sum_le (c := Module.finrank ℚ E * ∑' n, G n) (fun q => by dsimp only; split_ifs <;> positivity) (fun u => ?_)`. Combine the equalities or inequalities in the displayed calculation.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `Finset.sum_le_sum fun b hb => ?_` and prove the remaining obligations. Take `⟨x, -, rfl⟩` from `Finset.mem_image.mp hb`. Rewrite using `[nsmul_eq_mul]`. Use `mul_le_mul_of_nonneg_right ?_ (hG0 _)` and prove the remaining obligations. Conclude with `card_filter_primeBelow_le u _ (primeBelow_prime x)` after adjusting the coercions.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = (Module.finrank ℚ E : ℝ) * ∑ b ∈ u.image (fun x => primeBelow x), G b := by`. Rewrite using `[Finset.mul_sum]`. Use `_ ≤ (Module.finrank ℚ E : ℝ) * ∑' n, G n := mul_le_mul_of_nonneg_left (hG.sum_le_tsum _ fun n _ => hG0 n) (by positivity)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summable_nonprime_norm :
     Summable (fun q : Prm E => if (Nrm q).Prime then (0 : ℝ) else ((Nrm q : ℕ) : ℝ)⁻¹) := by
@@ -135,7 +135,7 @@ theorem summable_nonprime_norm :
         mul_le_mul_of_nonneg_left (hG.sum_le_tsum _ fun n _ => hG0 n) (by positivity)
 
 /- English proof (translation)
-Establish `h : {I : Ideal (𝓞 E) | Ideal.absNorm I ∈ T}.Finite`. Establish `: {I : Ideal (𝓞 E) | Ideal.absNorm I ∈ T} = ⋃ n ∈ T, {I : Ideal (𝓞 E) | Ideal.absNorm I = n}` using `by ext; simp`. Rewrite using `[this]`. Conclude with `Set.Finite.biUnion T.finite_toSet fun n _ => Ideal.finite_setOfPred_absNorm_eq n`. Conclude with `h.preimage (f := fun q : Prm E => q.asIdeal) (fun x _ y _ hxy => HeightOneSpectrum.ext hxy)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_norm_mem (T : Finset ℕ) : {q : Prm E | Nrm q ∈ T}.Finite := by
   have h : {I : Ideal (𝓞 E) | Ideal.absNorm I ∈ T}.Finite := by

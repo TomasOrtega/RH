@@ -12,9 +12,9 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory.IwConst
 
 /- English proof (translation)
-Use `symm`. Rewrite using `[lintegral_prod (fun x => δ x.2.1 * P x) (show Measurable fun x : α × β × γ => δ x.2.1 * P x from (hδ.comp measurable_snd.fst).mul hP).aemeasurable]`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations. Rewrite using `[lintegral_prod (fun y => δ y.1 * P (u, y)) (show Measurable fun y : β × γ => δ y.1 * P (u, y) from (hδ.comp measurable_fst).mul (hP.comp measurable_prodMk_left)).aemeasurable]`. Use `lintegral_congr fun m => ?_` and prove the remaining obligations.
+Use symmetry to reverse the relation. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `lintegral_const_mul (δ m) (show Measurable fun k : γ => P (u, m, k) from hP.comp (measurable_prodMk_left.comp measurable_prodMk_left))`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_triple_eq {α β γ : Type} [MeasurableSpace α] [MeasurableSpace β] [MeasurableSpace γ]
     (μ₁ : Measure α) (μ₂ : Measure β) (μ₃ : Measure γ) [SFinite μ₂] [SFinite μ₃]
@@ -32,7 +32,7 @@ theorem lintegral_triple_eq {α β γ : Type} [MeasurableSpace α] [MeasurableSp
     (show Measurable fun k : γ => P (u, m, k) from hP.comp (measurable_prodMk_left.comp measurable_prodMk_left))
 
 /- English proof (translation)
-Take `⟨A, hA, hON, hspan, rfl⟩` from `h`. Conclude with `(GlobalTheory.T.gaugeMeasure_matrixAlgebraSubgroup_local_asymptotics n ε A d E hA hON hspan μ hμ).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsCut.sigmaFinite {n d : ℕ} {ε : Fin n → Bool} {S : Set (Formalism.REAL.UJ ε)}
     {E : Fin d → Matrix (Fin n) (Fin n) ℂ} (h : IsCut ε S E) {μ : Measure (Formalism.REAL.UJ ε)}
@@ -41,47 +41,41 @@ theorem IsCut.sigmaFinite {n d : ℕ} {ε : Fin n → Bool} {S : Set (Formalism.
   exact (GlobalTheory.T.gaugeMeasure_matrixAlgebraSubgroup_local_asymptotics n ε A d E hA hON hspan μ hμ).1
 
 /- English proof (translation)
-Introduce `n ε a j W hW dN dM dK dL EN EM EK EL hN hM hK hL hgau hvol μN μM μK hμN hμM hμK`. Use `hN.sigmaFinite hμN` as an intermediate fact. Use `hM.sigmaFinite hμM` as an intermediate fact. Use `hK.sigmaFinite hμK` as an intermediate fact. Take `⟨C, hC, hCη⟩` from `GlobalTheory.T.iwasawa_product_gauge_sandwich_near_one n ε _ _ _ dN dM dK dL EN EM EK EL hN hM hK hL hgau`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t₀, ht₀, hasym⟩` from `GlobalTheory.T.tendsto_prod_gaugeMeasures_gaugeBody n ε _ _ _ dN dM dK dL EN EM EK EL hN hM hK hgau μN μM μK hμN hμM hμK`. Take `⟨t₁, ht₁, h₁⟩` from `hCη 1 one_pos`. Take `⟨ts, hts, hts0, hts1⟩ : ∃ ts : ℝ, 0 < ts ∧ ts ≤ t₀ ∧ ts ≤ t₁` from `⟨min t₀ t₁, lt_min ht₀ ht₁, min_le_left _ _, min_le_right _ _⟩`. Take `⟨ρ₀, hρ₀, hball⟩` from `GlobalTheory.T.iwasawa_factors_near_one_of_product_near_one n ε a j W hW ts hts`. Take `⟨hdltm, -, hdlt⟩` from `GlobalTheory.T.leviFactorInverseModulus_properties n ε a j W`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hae : ∀ᵐ x ∂(μN.prod (μM.prod μK)), x.1 ∈ flagN ε W ∧ x.2.1 ∈ flagM ε W ∧ x.2.2 ∈ maxK ε`. Establish `h1 : (μN.prod (μM.prod μK)) ((flagN ε W)ᶜ ×ˢ Set.univ) = 0`. Rewrite using `[Measure.prod_prod, hμN.1, zero_mul]`. Establish `h2 : (μN.prod (μM.prod μK)) (Set.univ ×ˢ ((flagM ε W)ᶜ ×ˢ Set.univ)) = 0`. Rewrite using `[Measure.prod_prod, Measure.prod_prod, hμM.1, zero_mul, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (μN.prod (μM.prod μK)) (Set.univ ×ˢ (Set.univ ×ˢ (maxK ε)ᶜ)) = 0`. Rewrite using `[Measure.prod_prod, Measure.prod_prod, hμK.1, mul_zero, mul_zero]`. Establish `e1 : ∀ᵐ x ∂(μN.prod (μM.prod μK)), x.1 ∈ flagN ε W`. Rewrite using `[ae_iff]`. Conclude with `measure_mono_null (fun x hx => Set.mem_prod.2 ⟨hx, Set.mem_univ _⟩) h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ∀ᵐ x ∂(μN.prod (μM.prod μK)), x.2.1 ∈ flagM ε W`. Rewrite using `[ae_iff]`. Conclude with `measure_mono_null (fun x hx => Set.mem_prod.2 ⟨Set.mem_univ _, Set.mem_prod.2 ⟨hx, Set.mem_univ _⟩⟩) h2`. Establish `e3 : ∀ᵐ x ∂(μN.prod (μM.prod μK)), x.2.2 ∈ maxK ε`. Rewrite using `[ae_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `measure_mono_null (fun x hx => Set.mem_prod.2 ⟨Set.mem_univ _, Set.mem_prod.2 ⟨Set.mem_univ _, hx⟩⟩) h3`. Use `filter_upwards [e1, e2, e3] with x hx1 hx2 hx3`. Conclude with `⟨hx1, hx2, hx3⟩`. Use `⟨ρ₀, hρ₀, fun ρ hρ hρρ₀ => ?_⟩` and prove the remaining obligations. Establish `hPmeas : ∀ r : ℝ, Measurable fun x : Formalism.REAL.UJ ε × Formalism.REAL.UJ ε × Formalism.REAL.UJ ε => (hsBall ε r).indicator (1 : Formalism.REAL.UJ ε → ENNReal) (x.1 * x.2.1 * x.2.2) * (slab ε EL ρ r).indicator 1 x.2.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `r`. Conclude with `((measurable_one.indicator (measurableSet_hsBall ε r)).comp ((measurable_fst.mul measurable_snd.fst).mul measurable_snd.snd)).mul ((measurable_one.indicator (measurableSet_slab ε EL ρ r)).comp measurable_snd.snd)`. Establish `hF : ∀ r : ℝ, (∫⁻ u, ∫⁻ m, dlt j W m * ∫⁻ k, (hsBall ε r).indicator 1 (u * m * k) * (slab ε EL ρ r).indicator 1 k ∂μK ∂μM ∂μN) = ∫⁻ x, dlt j W x.2.1 * ((hsBall ε r).indicator 1 (x.1 * x.2.1 * x.2.2) * (slab ε EL ρ r).indicator 1 x.2.2) ∂(μN.prod (μM.prod μK))` using `fun r => GlobalTheory.IwConst.lintegral_triple_eq μN μM μK (dlt j W) hdltm _ (hPmeas r)`. Establish `hc` using `continuous_nrm_uMat ε`. Apply `GlobalTheory.T.tendsto_small_ball_density_of_squeeze _ (dN + (dM + dK)) _ hvol` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `η hη`. Take `⟨t₂, ht₂, h₂⟩` from `hCη η hη`. Take `⟨t₃, ht₃, h₃⟩` from `hdlt η hη`. Take `⟨t, ht, htts, htρ, htt₂, htt₃⟩ : ∃ t : ℝ, 0 < t ∧ t ≤ ts ∧ t ≤ ρ ∧ t ≤ t₂ ∧ t ≤ t₃` from `⟨min (min ts ρ) (min t₂ t₃), lt_min (lt_min hts hρ) (lt_min ht₂ ht₃), (min_le_left _ _).trans (min_le_left _ _), (min_le_left _ _).trans (min_le_right _ _), (min_le_right _ _).trans (min_le_left _ _), (min_le_right _ _).trans (min_le_right _ _)⟩`. Establish `hBmeas : ∀ s : ℝ, MeasurableSet {x : Formalism.REAL.UJ ε × Formalism.REAL.UJ ε × Formalism.REAL.UJ ε | (nrm (uMat x.1 - 1) < t ∧ nrm (uMat x.2.1 - 1) < t ∧ nrm (uMat x.2.2 - 1) < t) ∧ gau EN EM EK EL (crd EN (uMat x.1 - 1), crd EM (uMat x.2.1 - 1), crd EK (uMat x.2.2 - 1)) ≤ s}`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `s`. Use `measurableSet_setOfPred.2 (((measurableSet_setOfPred.1 (measurableSet_lt (hc.measurable.comp measurable_fst) measurable_const)).and ((measurableSet_setOfPred.1 (measurableSet_lt (hc.measurable.comp measurable_snd.fst) measurable_const)).and (measurableSet_setOfPred.1 (measurableS …` and prove the remaining obligations. Conclude with `(continuous_gau EN EM EK EL).measurable.comp (((continuous_crd_uMat ε EN).measurable.comp measurable_fst).prodMk (((continuous_crd_uMat ε EM).measurable.comp measurable_snd.fst).prodMk ((continuous_crd_uMat ε EK).measurable.comp measurable_snd.snd)))`. Use `⟨fun s => (μN.prod (μM.prod μK)) {x | (nrm (uMat x.1 - 1) < t ∧ nrm (uMat x.2.1 - 1) < t ∧ nrm (uMat x.2.2 - 1) < t) ∧ gau EN EM EK EL (crd EN (uMat x.1 - 1), crd EM (uMat x.2.1 - 1), crd EK (uMat x.2.2 - 1)) ≤ s}, hasym t ht (htts.trans hts0), ?_⟩` and prove the remaining obligations. Establish `hr₁ : 0 < min ρ₀ (t / (2 * C))` using `lt_min hρ₀ (div_pos ht (by positivity))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `filter_upwards [Ioo_mem_nhdsGT hr₁] with r hr`. Take `⟨hr0, hr1⟩` from `hr`. Establish `hrρ₀ : r ≤ ρ₀` using `(lt_of_lt_of_le hr1 (min_le_left _ _)).le`. Establish `hrC : 2 * C * r < t`. Establish `h` using `lt_of_lt_of_le hr1 (min_le_right _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[lt_div_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hη1 : (0 : ℝ) < 1 + η` using `by linarith`. Rewrite using `[hF r]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← lintegral_indicator_one (hBmeas _), ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`. Take `⟨hxN, hxM, hxK⟩` from `hx`. Rewrite using `[Set.indicator_apply]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hB`. Take `⟨⟨hu, hm, hk⟩, hγ⟩` from `hB`. Take `⟨-, hσγ, -, -, -⟩` from `h₂ x.1 hxN x.2.1 hxM x.2.2 hxK (lt_of_lt_of_le hu htt₂) (lt_of_lt_of_le hm htt₂) (lt_of_lt_of_le hk htt₂) _ _ rfl rfl`. Establish `hσ : max (nrm (uMat (x.1 * x.2.1 * x.2.2) - 1)) (len (crd EL (uMat x.2.2 - 1))) ≤ r`. Use `hσγ.trans ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hmem1 : x.1 * x.2.1 * x.2.2 ∈ hsBall ε r` using `((le_max_left _ _).trans hσ : nrm (uMat (x.1 * x.2.1 * x.2.2) - 1) ≤ r)`. Establish `hmem2 : x.2.2 ∈ slab ε EL ρ r` using `(⟨lt_of_lt_of_le hk htρ, (le_max_right _ _).trans hσ⟩ : nrm (uMat x.2.2 - 1) < ρ ∧ len (crd EL (uMat x.2.2 - 1)) ≤ r)`. Rewrite using `[Set.indicator_of_mem hmem1, Set.indicator_of_mem hmem2]`. Simplify using `only [Pi.one_apply, mul_one]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(h₃ x.2.1 hxM (lt_of_lt_of_le hm htt₃)).2`. Conclude with `bot_le`. Rewrite using `[← lintegral_indicator_one (hBmeas _), ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hxN, hxM, hxK⟩` from `hx`. Distinguish the cases in `hA : x.1 * x.2.1 * x.2.2 ∈ hsBall ε r`. Use `swap`. Simplify using `[Set.indicator_apply, hA]`. Distinguish the cases in `hS : x.2.2 ∈ slab ε EL ρ r`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `swap`. Simplify using `[Set.indicator_apply, hS]`. Rewrite using `[Set.indicator_of_mem hA, Set.indicator_of_mem hS]`. Simplify using `only [Pi.one_apply, mul_one]`. Establish `hA' : nrm (uMat (x.1 * x.2.1 * x.2.2) - 1) ≤ r` using `hA`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨hkρ, hL⟩` from `(hS : nrm (uMat x.2.2 - 1) < ρ ∧ len (crd EL (uMat x.2.2 - 1)) ≤ r)`. Take `⟨hu1, hm1, hk1⟩` from `hball x.1 hxN x.2.1 hxM x.2.2 (hA'.trans hrρ₀) (lt_of_lt_of_le hkρ hρρ₀)`. Establish `hσ : max (nrm (uMat (x.1 * x.2.1 * x.2.2) - 1)) (len (crd EL (uMat x.2.2 - 1))) ≤ r` using `max_le hA' hL`. Take `⟨hγ1, -, hCu, hCm, hCk⟩` from `h₁ x.1 hxN x.2.1 hxM x.2.2 hxK (lt_of_lt_of_le hu1 hts1) (lt_of_lt_of_le hm1 hts1) (lt_of_lt_of_le hk1 hts1) _ _ rfl rfl`. Establish `hγ2 : gau EN EM EK EL (crd EN (uMat x.1 - 1), crd EM (uMat x.2.1 - 1), crd EK (uMat x.2.2 - 1)) ≤ 2 * r`.
-
-Use `mul_le_mul_of_nonneg_left hσ (by norm_num : (0 : ℝ) ≤ 1 + 1)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hCγ` using `mul_le_mul_of_nonneg_left hγ2 hC.le`. Establish `hu : nrm (uMat x.1 - 1) < t` using `by linarith`. Establish `hm : nrm (uMat x.2.1 - 1) < t` using `by linarith`.
-
-Establish `hk : nrm (uMat x.2.2 - 1) < t` using `by linarith`. Take `⟨hγη, -, -, -, -⟩` from `h₂ x.1 hxN x.2.1 hxM x.2.2 hxK (lt_of_lt_of_le hu htt₂) (lt_of_lt_of_le hm htt₂) (lt_of_lt_of_le hk htt₂) _ _ rfl rfl`. Establish `hγ : gau EN EM EK EL (crd EN (uMat x.1 - 1), crd EM (uMat x.2.1 - 1), crd EK (uMat x.2.2 - 1)) ≤ (1 + η) * r` using `hγη.trans (mul_le_mul_of_nonneg_left hσ hη1.le)`. Simplify using `only [Set.indicator_apply, Set.mem_ofPred_eq]`. Rewrite using `[if_pos ⟨⟨hu, hm, hk⟩, hγ⟩, Pi.one_apply, mul_one]`.
-
-Conclude with `(h₃ x.2.1 hxM (lt_of_lt_of_le hm htt₃)).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localised_iwasawa_asymptotics : ∀ (n : ℕ) (ε : Fin n → Bool) (a : ℕ) (j : Fin a → ℕ) (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)), IsIsoFlag ε j W → ∀ (dN dM dK dL : ℕ) (EN : Fin dN → Matrix (Fin n) (Fin n) ℂ) (EM : Fin dM → Matrix (Fin n) (Fin n) ℂ) (EK : Fin dK → Matrix (Fin n) (Fin n) ℂ) (EL : Fin dL → Matrix (Fin n) (Fin n) ℂ), IsCut ε (flagN ε W) EN → IsCut ε (flagM ε W) EM → IsCut ε (maxK ε) EK → IsON EL → (∀ v, gau EN EM EK EL v = 0 → v = 0) → volume {v | gau EN EM EK EL v ≤ 1} ≠ ⊤ → ∀ μN μM μK : Measure (Formalism.REAL.UJ ε), IsGaugeSub (flagN ε W) dN μN → IsGaugeSub (flagM ε W) dM μM → IsGaugeSub (maxK ε) dK μK → ∃ ρ₀ : ℝ, 0 < ρ₀ ∧ ∀ ρ : ℝ, 0 < ρ → ρ ≤ ρ₀ → Filter.Tendsto (fun r : ℝ => (∫⁻ u, ∫⁻ m, dlt j W m * ∫⁻ k, (hsBall ε r).indicator 1 (u * m * k) * (slab ε EL ρ r).indicator 1 k ∂μK ∂μM ∂μN) / ENNReal.ofReal (r ^ (dN + (dM + dK)))) (nhdsWithin (0 : ℝ) (Set.Ioi 0)) (nhds (volume {v | gau EN EM EK EL v ≤ 1})) := by
   intro n ε a j W hW dN dM dK dL EN EM EK EL hN hM hK hL hgau hvol μN μM μK hμN hμM hμK

@@ -11,7 +11,7 @@ namespace GlobalTheory.CompanionTheory.FieldNumbers
 open GroundTheory.Heights₂.Heights.FieldNumbers GroundTheory.Heights₂.Heights.NumbersDVR
 
 /- English proof (translation)
-The claim follows from `ProjectionFormulaDegree.of_divPushForward (DivPushForward.proof ContractRelDimLe.proof DivPushForwardLocalZero)`.
+A detailed English derivation is pending.
 -/
 theorem projectionFormulaDegree :
     GroundTheory.Heights₂.Heights.FieldNumbers.ProjectionFormulaDegree.Statement.{0} :=

@@ -32,16 +32,16 @@ theorem pure_eq {κ : Type} [Fintype κ] (f : SInf F κ) (φ : ∀ v : Pl F, (κ
     pure f φ = pureA F f (finPr φ) := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.WeilM.isLocallyConstant_finprod_evalV φ hSB hstd, GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ hSB hstd⟩`.
+Supply the required witnesses or components.
 -/
 theorem finPr_mem {κ : Type} [Fintype κ] (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (hSB : ∀ v, φ v ∈ SB _)
     (hstd : ∀ᶠ v in cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) : finPr φ ∈ SB _ :=
   ⟨GlobalTheory.WeilM.isLocallyConstant_finprod_evalV φ hSB hstd, GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ hSB hstd⟩
 
 /- English proof (translation)
-Establish `key : ∀ v : Pl F, ∃ p : κ → Fv F v, φ v p ≠ 0 ∧ (φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 → ∀ i, p i ∈ v.adicCompletionIntegers F)`. Introduce `v`. Take `⟨p, hp⟩` from `Function.ne_iff.1 (h0 v)`. Use `⟨p, hp, fun h => ?_⟩` and prove the remaining obligations. Rewrite `hp` using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Set.mem_of_indicator_ne_zero hp`. Use `choose p hp hp' using key`. Use `⟨fun i => ⟨fun v => p v i, ?_⟩, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hstd] with v hv using hp' v hv i`. Conclude with `finprod_induction (fun z : ℂ => z ≠ 0) one_ne_zero (fun a b ha hb => mul_ne_zero ha hb) fun v => hp v`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_finPr_ne {κ : Type} [Fintype κ] (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (h0 : ∀ v, φ v ≠ 0)
     (hstd : ∀ᶠ v in cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) : ∃ y, finPr φ y ≠ 0 := by
@@ -65,7 +65,7 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.WeilM.pureA _root_.GlobalTheory.ThK.ModelPol.pt`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.ThK.ModelPol.pureA_pt {κ : Type}
     (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (g : (κ → _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) → ℂ)
@@ -77,7 +77,7 @@ theorem _root_.GlobalTheory.ThK.ModelPol.pureA_pt {κ : Type}
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `g _`. Use `⟨g y • (BoundedContinuousFunction.evalCLM ℂ x).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ), fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.proj_apply, pureA_pt]`. Simplify using `[mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem proj_adm {κ : Type} [Fintype κ] (x : κ → mixedEmbedding.mixedSpace F) (y : κ → Af F) :
     (LinearMap.proj (pt x y) : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) ∈ (adeleClass F).adm κ := by
@@ -91,13 +91,11 @@ section
 variable {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
 
 /- English proof (translation)
-Establish `hG : ∀ f, M.IsGauss ψ τ f ↔ M'.IsGauss ψ τ (ei f)` using `fun f => by`. Use `exists_congr fun ε => forall₂_congr fun u u' => forall₃_congr fun hu hu' _ => ⟨fun h g g' hg hg' => ?_, fun h g g' hg hg' => ?_⟩` and prove the remaining obligations. Rewrite using `[(hD' u hu _ _).1 hg, (hD' u' hu' _ _).1 hg', ← hi u hu, ← hi u' hu', h _ _ ((hD u hu _ _).2 rfl) ((hD u' hu' _ _).2 rfl), map_smul]`. Apply `hb.1` to reduce the goal to its premises. Rewrite using `[(hD u hu _ _).1 hg, (hD u' hu' _ _).1 hg', map_smul, hi u hu, hi u' hu']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h _ _ ((hD' u hu _ _).2 rfl) ((hD' u' hu' _ _).2 rfl)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.map_le_iff_le_comap]`. Use `sInf_le ⟨fun f hf => ?_, fun u hu f hf f₁ h₁ => ?_⟩` and prove the remaining obligations. Conclude with `Submodule.mem_sInf.2 fun N hN => hN.1 _ ((hG f).1 hf)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.mem_sInf.2 fun N hN => hN.2 u hu (ei f) (Submodule.mem_sInf.1 hf N hN) _ ?_` and prove the remaining obligations. Rewrite using `[hD' u hu, (hD u hu _ _).1 h₁, hi u hu]`. Use `sInf_le ⟨fun g hg => ?_, ?_⟩` and prove the remaining obligations. Take `⟨f, rfl⟩` from `hb.2 g`. Conclude with `Submodule.mem_map_of_mem (Submodule.mem_sInf.2 fun N hN => hN.1 _ ((hG f).2 hg))`.
-
-Introduce and unpack `u hu _ ⟨f, hf, rfl⟩ g₁ h₁`. Rewrite using `[(hD' u hu _ _).1 h₁, ← hi u hu]`. Conclude with `Submodule.mem_map_of_mem (Submodule.mem_sInf.2 fun N hN => hN.2 u hu f (Submodule.mem_sInf.1 hf N hN) _ ((hD u hu _ _).2 rfl))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pol_map (M M' : Model σ X W) (ψ : AddChar (AF F) ℂ) (τ : ∀ w : InfinitePlace F, EmbOver E w)
     (D D' : Matrix (Fin n) (Fin d) (AE F E) → SInf F (Fin n × Fin d) → SInf F (Fin n × Fin d))
@@ -127,7 +125,7 @@ theorem pol_map (M M' : Model σ X W) (ψ : AddChar (AF F) ℂ) (τ : ∀ w : In
         hN.2 u hu f (Submodule.mem_sInf.1 hf N hN) _ ((hD u hu _ _).2 rfl))
 
 /- English proof (translation)
-Establish `h1 : ActsD (evI F) (M.heisLine ψ u) f g` using `(hA F _ f g g).1 _ (fun t => by`. Use function extensionality and compare the values at `x`. Simplify using `[Model.heisLine, Darboux.rho, schr]) h`. Conclude with `⟨fun h2 => (hA F _ f f₁ g).2.2.1 _ h2 h1, fun e => e ▸ h1⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem actsD_iff (hA : GlobalTheory.RealLift.ActsLaws) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (u : Matrix (Fin n) (Fin d) (AE F E))
     (f g : SInf F (Fin n × Fin d)) (h : GlobalTheory.RealLift.SD (fun t => M.co.rho ψ (realAd F t • u)) f g) (f₁ : SInf F (Fin n × Fin d)) :
@@ -139,7 +137,7 @@ theorem actsD_iff (hA : GlobalTheory.RealLift.ActsLaws) (M : Model σ X W) (ψ :
 end
 
 /- English proof (translation)
-Take `⟨χ, hχ, hr⟩` from `GlobalTheory.T.exists_hecke_character_restriction F E σ B hB`. Use `⟨χ ^ m, ⟨hχ.1.pow m, fun x => ?_⟩, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.pow_apply, hχ.2 x, one_pow]`. Apply the tactic sequence `rw [MonoidHom.pow_apply, Circle.coe_pow, hr a] split_ifs <;> simp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_chr (B : Base F E) (hB : B.IsGood σ) (m : ℕ) :
     ∃ χ : Chr F E, IsHecke F E χ ∧ ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ m := by
@@ -150,41 +148,39 @@ theorem exists_chr (B : Base F E) (hB : B.IsGood σ) (m : ℕ) :
     split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B n d r s r' s' X W M M' hB hX hW hM hM'`. Take `⟨χX, hcX, rX⟩` from `exists_chr B hB n`. Take `⟨χW, hcW, rW⟩` from `exists_chr B hB d`. Take `⟨om, hom⟩` from `GlobalTheory.WeilExGen.exists_isWeil hK F E σ B hB n d X W r s r' s' hX hW M hM χX χW hcX hcW rX rW`. Take `⟨om', hom'⟩` from `GlobalTheory.WeilExGen.exists_isWeil hK F E σ B hB n d X W r s r' s' hX hW M' hM' χX χW hcX hcW rX rW`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, -, -, hE, hbij, -⟩` from `GlobalTheory.T.theta_model_change hK F E σ B n d X W M χX χW om r s r' s' ⟨hB, hX, hW, hM, hcX, hcW, rX, rW, hom⟩ M' om' ⟨hB, hX, hW, hM', hcX, hcW, rX, rW, hom'⟩`. Take `⟨ei, ev, -, hv, hl⟩` from `hE.loc`. Establish `hg : finPr M.vac ∈ SB _` using `finPr_mem _ (fun v => (hM.vac v).1) hM.std`. Establish `hg' : finPr M'.vac ∈ SB _` using `finPr_mem _ (fun v => (hM'.vac v).1) hM'.std`. Take `⟨y, hy⟩` from `exists_finPr_ne M.vac (fun v => (hM.vac v).2.1) hM.std`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y', hy'⟩` from `exists_finPr_ne M'.vac (fun v => (hM'.vac v).2.1) hM'.std`. Establish `mem : ∀ (f : SInf F (Fin n × Fin d)) g, g ∈ SB (Fin n × Fin d → Af F) → pureA F f g ∈ schA F (Fin n × Fin d)` using `fun f g h => Submodule.subset_span ⟨f, g, h, rfl⟩`. Establish `hvac : ∀ f : SInf F (Fin n × Fin d), e (pureA F f (finPr M.vac)) = pureA F (ei f) (finPr M'.vac)` using `fun f => by`. Use `hl f M.vac (fun v => (hM.vac v).1) (Eventually.of_forall fun _ => rfl)` as an intermediate fact. Simplify using `only [fun v => (hv v).1] at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Establish `hinj : Function.Injective ei` using `(injective_iff_map_eq_zero ei).2 fun f hf => by`. Establish `h1 : e (pureA F f (finPr M.vac)) = e 0`. Rewrite using `[hvac, hf, map_zero]`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[pureA]`. Establish `h2` using `hbij.injOn (mem f _ hg) (zero_mem _) h1`. Use `SchwartzMap.ext fun x => ?_` and prove the remaining obligations. Establish `h3` using `congrFun h2 (pt x y)`. Rewrite `h3` using `[pureA_pt]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.1 h3).resolve_right hy`. Establish `hsl : ∀ Φ ∈ schA F (Fin n × Fin d), ∃ f, ∀ x, e Φ (pt x y') = ei f x`. Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `zero => exact ⟨0, fun x => by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add a b _ _ ha hb`. Take `⟨f, hf⟩` from `ha`. Take `⟨g, hg⟩` from `hb`. Conclude with `⟨f + g, fun x => by simp [hf, hg]⟩`. Consider the case `smul c a _ ha`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨f, hf⟩` from `ha`. Conclude with `⟨c • f, fun x => by simp [hf]⟩`. Consider the case `mem Φ hΦ`. Take `⟨f, g, hg, rfl⟩` from `hΦ`. Use `replace hg := GlobalTheory.T.schwartzBruhat_finiteAdeles_mem_span_restrictedProducts F _ g hg`.
+Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `zero => exact ⟨0, fun x => by`. Rewrite using `[show pureA F f 0 = 0 from funext fun _ => mul_zero _]`. Use the proof step `simp⟩`. Consider the case `add a b _ _ ha hb`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f₁, hf⟩` from `ha`. Take `⟨f₂, hg⟩` from `hb`. Conclude with `⟨f₁ + f₂, fun x => by`. Rewrite using `[show pureA F f (a + b) = pureA F f a + pureA F f b from funext fun _ => mul_add _ _ _]`. Simplify using `[hf, hg]⟩`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c a _ ha`. Take `⟨f₁, hf⟩` from `ha`. Conclude with `⟨c • f₁, fun x => by`. Rewrite using `[show pureA F f (c • a) = c • pureA F f a from funext fun _ => mul_left_comm _ _ _]`. Simplify using `[hf]⟩`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `mem p hp`. Take `⟨φ, hφ, hs, rfl⟩` from `hp`. Establish `h1` using `hl f φ hφ (by filter_upwards [hs, hM.std] with v h1 h2 using h1.trans h2.symm)`. Use `⟨finPr (fun v => ev v (φ v)) y' • f, fun x => ?_⟩` and prove the remaining obligations. Rewrite `h1` using `[pure_eq, pure_eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(congrFun h1 _).trans ?_` and prove the remaining obligations. Rewrite using `[pureA_pt]`. Simplify using `[mul_comm]`. Establish `hsurj : Function.Surjective ei` using `fun g => by`. Take `⟨Φ, hΦ, h1⟩` from `hbij.surjOn (mem g _ hg')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨f, hf⟩` from `hsl Φ hΦ`. Use `⟨(finPr M'.vac y')⁻¹ • f, ?_⟩` and prove the remaining obligations. Use `SchwartzMap.ext fun x => ?_` and prove the remaining obligations. Establish `h2` using `hf x`. Rewrite `h2` using `[h1, pureA_pt]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_smul, smul_apply, ← h2, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Take `⟨D, hD⟩` from `GlobalTheory.T.archHeisenbergDerivatives_exist F E σ _ _ _ B.ψ _ _ M.co hB.std`. Take `⟨D', hD'⟩` from `GlobalTheory.T.archHeisenbergDerivatives_exist F E σ _ _ _ B.ψ _ _ M'.co hB.std`. Establish `Heisenberg₂ : ∀ u, ∀ Φ ∈ schA F (Fin n × Fin d), e (M.co.rho B.ψ u Φ) = M'.co.rho B.ψ u (e Φ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `u Φ hΦ`. Establish `h1 : ∀ m : ℕ, incM F (1 : Matrix (Fin m) (Fin m) E) = 1` using `fun m => Matrix.map_one _ (map_zero _) (map_one _)`. Use `hE.Heisenberg₂ u Φ hΦ` as an intermediate fact. Rewrite `this` using `[h1, h1, Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one]`. Then use the resulting hypothesis. Use `⟨e, hE, ei, ev, hsurj, ?_, hv, hl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `pol_map M M' B.ψ B.emb (fun u f => D u f) (fun u f => D' u f) (fun u hu f => actsD_iff GlobalTheory.T.archActionReadings_compatible M B.ψ u f _ (hD u hu f).1) (fun u hu f => actsD_iff GlobalTheory.T.archActionReadings_compatible M' B.ψ u f _ (hD' u hu f).1) _ ⟨hinj, hsurj⟩ fun u …` and prove the remaining obligations. Use `SchwartzMap.ext fun x => ?_` and prove the remaining obligations. Establish `h1` using `(hD u hu f).1 _ hg _ (GlobalTheory.T.eigen_intertwiner_good_models F E σ B n d n d X W X W M M' 1 1 ∅ e hM hM' hE _ (proj_adm x y'))`. Establish `h2` using `(hD' u hu (ei f)).1 _ hg' _ (proj_adm x y')`. Simplify using `only [LinearMap.comp_apply, Heisenberg₂ _ _ (mem f _ hg), hvac] at h1`.
-
-Establish `h3` using `h1.unique h2`. Rewrite `h3` using `[LinearMap.proj_apply, LinearMap.proj_apply, pureA_pt, pureA_pt]`. Conclude with `mul_right_cancel₀ hy' h3`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_modelChange_pol : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d r s r' s' : ℕ) (X : Spc F E n) (W : Spc F E d) (M M' : Model σ X W), B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' →

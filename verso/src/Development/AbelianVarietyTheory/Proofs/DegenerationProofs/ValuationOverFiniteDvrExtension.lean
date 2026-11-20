@@ -20,7 +20,7 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : 
   {F : Type} [Field F] [Algebra (FractionRing V) F] {v : AddValuation F (WithTop ℚ)} in
 
 /- English proof (translation)
-Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hc hϖ`. Use `⟨n, ?_, fun hn => by subst hn; simp⟩` and prove the remaining obligations. Rewrite using `[hv _ n ⟨u, by rw [zpow_natCast, map_mul, map_pow, mul_comm]⟩]`. Use `norm_cast`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 -/
 theorem _root_.GlobalTheory.FiniteDVRValuation.exists_nat_val (hϖ : Irreducible ϖ) (hv : _root_.ReciprocityTheory.ChartRestriction.G.DVR.ValOver ϖ F v) {c : V}
     (hc : c ≠ 0) :
@@ -37,9 +37,9 @@ attribute [local instance] Over.cartesianMonoidalCategory in
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V}
   {F : Type} [Field F] [Algebra (FractionRing V) F] {v : AddValuation F (WithTop ℚ)} in
 /- English proof (translation)
-Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Simplify using the standard rewrite rules. Take `⟨n, hn, -⟩` from `_root_.GlobalTheory.FiniteDVRValuation.exists_nat_val hϖ hv hc`. Rewrite using `[hn]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `n.cast_nonneg` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FiniteDVRValuation.val_nonneg (hϖ : Irreducible ϖ) (hv : _root_.ReciprocityTheory.ChartRestriction.G.DVR.ValOver ϖ F v) (c : V) :
     0 ≤ v (algebraMap (FractionRing V) F (algebraMap V (FractionRing V) c)) := by
@@ -88,23 +88,23 @@ open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj Alg
 open scoped CategoryTheory.Obj BigOperators in
 attribute [local instance] Over.cartesianMonoidalCategory in
 /- English proof (translation)
-Introduce `W W' _ _ _ _ _ _ i hi hfin ϖ hϖ F _ _ v hv`. Use `⟨fun r => _root_.GlobalTheory.FiniteDVRValuation.val_nonneg hϖ hv r, ?_, fun K _ e => ⟨_root_.GlobalTheory.FiniteDVRValuation.nonnegSubring v e, fun x => ⟨Iff.rfl, fun h => ?_⟩⟩⟩` and prove the remaining obligations. Establish `hinj : Function.Injective ((algebraMap W' (FractionRing W')).comp i)` using `(IsFractionRing.injective W' (FractionRing W')).comp hi`. Establish `hunit : ∀ x : W, v (algebraMap (FractionRing W') F (algebraMap W' _ (i x))) = 0 → IsUnit x`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hxu`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hx`. Establish `hmax` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal' i hfin.to_isIntegral (IsLocalRing.maximalIdeal W')`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcomap : (IsLocalRing.maximalIdeal W').comap i = IsLocalRing.maximalIdeal W` using `IsLocalRing.eq_maximalIdeal hmax`. Establish `hmem : x ∈ (IsLocalRing.maximalIdeal W').comap i`. Rewrite using `[hcomap]`. Conclude with `(IsLocalRing.mem_maximalIdeal x).2 hxu`. Establish `hix : ¬IsUnit (i x)` using `(IsLocalRing.mem_maximalIdeal _).1 (Ideal.mem_comap.1 hmem)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle` using `(_root_.ReciprocityTheory.ChartRestriction.G.DVR.TWO.v_of_V v hϖ hv (i x)).2 hix ((map_ne_zero_iff i hi).2 hx0)`. Establish `hle' : (1 : WithTop ℚ) ≤ 0`. Rewrite using `[← hx]`. Conclude with `hle`. Conclude with `absurd hle' (by norm_num)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `⟨IsFractionRing.lift hinj, fun r => IsFractionRing.lift_algebraMap hinj r, fun a ha => ?_⟩` and prove the remaining obligations. Distinguish the cases in `ha0 : a = 0`. Substitute `ha0` using the available equality. Simplify using `at ha`. Break down `ValuationRing.isInteger_or_isInteger W a with ⟨x, hx⟩ | ⟨x, hx⟩` into its components or cases.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Substitute `hx` using the available equality. Rewrite `ha` using `[IsFractionRing.lift_algebraMap, RingHom.comp_apply]`. Conclude with `⟨(hunit x ha).unit, rfl⟩`. Establish `hinv : v (algebraMap (FractionRing W') F (IsFractionRing.lift hinj a⁻¹)) = 0`. Establish `hsum : v (algebraMap (FractionRing W') F (IsFractionRing.lift hinj a)) + v (algebraMap (FractionRing W') F (IsFractionRing.lift hinj a⁻¹)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← AddValuation.map_mul, ← map_mul, ← map_mul, mul_inv_cancel₀ ha0, map_one, map_one, AddValuation.map_one]`. Rewrite `hsum` using `[ha, zero_add]`. Then use the resulting hypothesis. Rewrite `hinv` using `[← hx, IsFractionRing.lift_algebraMap, RingHom.comp_apply]`. Use `⟨(hunit x hinv).unit⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[← inv_inv a, ← hx, map_units_inv, IsUnit.unit_spec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h`. Establish `h1 : x ∈ _root_.GlobalTheory.FiniteDVRValuation.nonnegSubring v e` using `(ValuationSubring.valuation_le_one_iff _ _).1 h.le`. Establish `h2 : x⁻¹ ∈ _root_.GlobalTheory.FiniteDVRValuation.nonnegSubring v e` using `(ValuationSubring.valuation_le_one_iff _ _).1 (by rw [map_inv₀, h, inv_one])`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `0 ≤ v (e x) at h1`. Express the relevant statement in the definitionally equal form `0 ≤ v (e x⁻¹) at h2`. Establish `hsum : v (e x) + v (e x⁻¹) = 0`. Rewrite using `[← AddValuation.map_mul, ← map_mul, mul_inv_cancel₀ hx0, map_one, AddValuation.map_one]`. Conclude with `le_antisymm (le_add_of_nonneg_right h2 |>.trans_eq hsum) h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FiniteDVRValuation.main :
     ∀ (W W' : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [CommRing W']

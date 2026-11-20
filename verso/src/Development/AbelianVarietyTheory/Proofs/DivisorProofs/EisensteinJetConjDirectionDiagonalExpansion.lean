@@ -14,21 +14,19 @@ open GlobalTheory.LatJet (EisExp IsEis FR)
 namespace GlobalTheory.HilbFam
 
 /- English proof (translation)
-Introduce `hE F _ _ _ hf s N L hs hN hL τ κ Ch`. Establish `him : 0 < (τ : ℂ).im` using `τ.im_pos`. Establish `hne : τ.im ≠ 0` using `τ.im_pos.ne'`. Use `set v : ℂ := ((Real.pi / τ.im : ℝ) : ℂ) with hv`. Use `set T : ℂ := 2 * Real.pi * Complex.I with hT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hT0 : T ≠ 0`. Simplify using `[hT, Real.pi_ne_zero, Complex.I_ne_zero]`. Establish `hw : v * (starRingEnd ℂ (τ : ℂ) - τ) = -T`. Establish `: starRingEnd ℂ (τ : ℂ) - τ = -(2 * ((τ : ℂ).im : ℂ) * Complex.I)`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, hv, hT]`. Establish `: ((τ : ℂ).im : ℂ) = (τ.im : ℂ)` using `rfl`. Rewrite using `[this]`. Use `push_cast`. Establish `h0 : (τ.im : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hne`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Use `set C : ℂ := T ^ 2 * Ch τ with hC`. Establish `h1` using `GlobalTheory.T.hilbert_eisenstein_jet_smul_direction hE F hf s N L hs hN hL τ 1 (starRingEnd ℂ (τ : ℂ) - τ) v κ him`. Establish `h2` using `GlobalTheory.T.hilbert_eisenstein_jet_add_direction hE F hf s N L hs hN hL τ C (-T) (v - C) κ him`. Rewrite `h1` using `[mul_one, hw]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : jet (2 * s) L κ τ 1 (starRingEnd ℂ (τ : ℂ) - τ) * v ^ (∑ i, κ i) = jet (2 * s) L κ τ (C + (v - C)) (-T)`. Rewrite using `[add_sub_cancel, h1, mul_comm]`. Rewrite using `[h3, h2, Finset.sum_div]`. Use `Finset.sum_congr rfl fun μ hμ ↦ ?_` and prove the remaining obligations. Establish `hle : μ ≤ κ` using `Finset.mem_Iic.mp hμ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hwt : wt (2 * s) κ = wt (2 * s) μ + 2 * ∑ i, (κ i - μ i)`. Establish `: ∑ i, κ i = ∑ i, μ i + ∑ i, (κ i - μ i)`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ ↦ (Nat.add_sub_of_le (hle i)).symm`. Simplify using `only [wt, this]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsub : v / T ^ 2 - Ch τ = (v - C) / T ^ 2`. Rewrite using `[hC]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hsub, hfun, ← hT, ← hC, hwt, pow_add, pow_mul, div_pow]`.
-
-Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem jet_conj_expand : EisExp → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], 2 ≤ Module.finrank ℚ F → ∀ (s N : ℕ) (L : Lat F), 1 ≤ s → 0 < N → HasLevel N L → ∀ (τ : ℍ) (κ : Emb F → ℕ) (Ch : ℍ → ℂ), jet (2 * s) L κ τ 1 (starRingEnd ℂ (τ : ℂ) - τ) * ((Real.pi / τ.im : ℝ) : ℂ) ^ (∑ i, κ i) / (2 * Real.pi * Complex.I) ^ wt (2 * s) κ = ∑ μ ∈ Finset.Iic κ, ((∏ i, rco (2 * s) (κ i) (μ i) : ℤ) : ℂ) * (((Real.pi / τ.im : ℝ) : ℂ) / (2 * Real.pi * Complex.I) ^ 2 - Ch τ) ^ (∑ i, (κ i - μ i)) * hfun (2 * s) L μ Ch τ := by
   intro hE F _ _ _ hf s N L hs hN hL τ κ Ch

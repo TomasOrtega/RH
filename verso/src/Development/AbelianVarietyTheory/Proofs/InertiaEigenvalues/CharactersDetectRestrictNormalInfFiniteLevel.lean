@@ -9,21 +9,19 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory
 namespace GlobalTheory.PMon.Ram
 
 /- English proof (translation)
-Introduce `l _ L _ _ _ _ _ _ _ _ _ _ r N N' I ι x a hx hN hN'`. Introduce `σ₀ hσ₀ hσ₀B`. Set `lift : (L ≃ₐ[ℚ_[l]] L) → GQ l` to `fun s => if h : ∃ σ ∈ N, AlgEquiv.restrictNormalHom L σ = s then h.choose else 1`. Establish `hlift : ∀ s ∈ N.map (AlgEquiv.restrictNormalHom L), lift s ∈ N ∧ AlgEquiv.restrictNormalHom L (lift s) = s`. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : ∃ σ ∈ N, AlgEquiv.restrictNormalHom L σ = s` using `Subgroup.mem_map.mp hs`. Simplify using `only [lift, dif_pos h]`. Conclude with `h.choose_spec`. Take `⟨hτN, hτ⟩` from `hlift σ₀ hσ₀.1`. Establish `hτN' : lift σ₀ ∉ N'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `hσ₀B ⟨Subgroup.mem_map.mpr ⟨lift σ₀, h, hτ⟩, hσ₀.2⟩`. Establish `hex : ∃ i, ¬ (l : ℤ) ^ r ∣ a i (lift σ₀)`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hτN' (hN' _ hτN hc)`. Take `⟨i, hi⟩` from `hex`. Take `⟨x', hx'⟩` from `hx i`. Establish `hl0 : (l : ℝ) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Establish `hlL : (l : L) ^ r ≠ 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `pow_ne_zero _ ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap ℚ_[l] L)]`. Conclude with `(map_ne_zero _).mpr (by exact_mod_cast (Fact.out : l.Prime).ne_zero)`. Establish `hnorm_l : ‖(l : Om l)‖ = (l : ℝ)⁻¹`. Establish `h : (l : Om l) = algebraMap ℚ_[l] (Om l) (l : ℚ_[l])` using `by simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[h, PadicAlgCl.norm_extends, Padic.norm_p]`. Use `⟨x', fun s => a i (lift s), ?_, hi⟩` and prove the remaining obligations. Introduce `s hs`. Take `⟨hσN, hσ⟩` from `hlift s hs.1`. Establish `key : algebraMap L (Om l) (s x') = lift s (x i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hx']`. Use `conv_lhs => rw [← hσ]`. Conclude with `AlgEquiv.restrictNormal_commutes (lift s) L x'`. Use `⟨(s x' - x' - (a i (lift s) : L)) / (l : L) ^ r, ?_, ?_⟩` and prove the remaining obligations. Use `((GlobalTheory.T.localFieldInteger_iff_algebraicClosureNorm l L _).1).mpr ?_` and prove the remaining obligations.
-
-Rewrite using `[map_div₀, map_sub, map_sub, map_intCast, map_pow, map_natCast, key, hx', norm_div, norm_pow, hnorm_l]`. Rewrite using `[div_le_one (by positivity)]`. Conclude with `hN i _ hσN`. Rewrite using `[mul_div_cancel₀ _ hlL]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem detects_restrictNormal_inf : ∀ (l : ℕ) [Fact l.Prime] (L : Type) [Field L] [ValuativeRel L] [TopologicalSpace L]
     [IsNonarchimedeanLocalField L] [Algebra ℚ_[l] L] [ValuativeExtension ℚ_[l] L] [FiniteDimensional ℚ_[l] L]

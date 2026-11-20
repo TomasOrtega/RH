@@ -13,7 +13,7 @@ section Parts
 variable {σ : Type*}
 
 /- English proof (translation)
-Unfold `plusPart`. Rewrite using `[finsum_eq_single _ d]`. Rewrite using `[homogeneousComponent_of_mem hP, if_pos rfl]`. Introduce `e he`. Rewrite using `[homogeneousComponent_of_mem hP, if_neg he, map_zero, map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 lemma plusPart_of_mem {A : Module.End ℂ (MvPolynomial σ ℂ)} {d : ℕ} {P : MvPolynomial σ ℂ}
     (hP : P ∈ homog σ d) : plusPart A P = homogeneousComponent (d + 2) (A P) := by
@@ -24,7 +24,7 @@ lemma plusPart_of_mem {A : Module.End ℂ (MvPolynomial σ ℂ)} {d : ℕ} {P : 
     rw [homogeneousComponent_of_mem hP, if_neg he, map_zero, map_zero]
 
 /- English proof (translation)
-Unfold `minusPart`. Rewrite using `[finsum_eq_single _ d]`. Rewrite using `[homogeneousComponent_of_mem hQ, if_pos rfl]`. Introduce `e he`. Rewrite using `[homogeneousComponent_of_mem hQ, if_neg (by omega), map_zero, map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 lemma minusPart_of_mem {A : Module.End ℂ (MvPolynomial σ ℂ)} {d : ℕ} {Q : MvPolynomial σ ℂ}
     (hQ : Q ∈ homog σ (d + 2)) : minusPart A Q = homogeneousComponent d (A Q) := by
@@ -39,9 +39,9 @@ end Parts
 variable {p q r s : ℕ}
 
 /- English proof (translation)
-Establish `hm : minusPart (A Z) z = homogeneousComponent d (A Z z)` using `minusPart_of_mem hz`. Establish `hmem : minusPart (A Z) z ∈ homog (Ix p q × Ix r s) d`. Rewrite using `[hm]`. Conclude with `homogeneousComponent_mem d _`. Apply `fockInner_self_eq_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[fockInner_hc_right _ _ hz]`. Use `_ = - fockInner z (plusPart (A Zᴴ) (minusPart (A Z) z)) := by rw [plusPart_of_mem hmem]`. Use `_ = 0 := by rw [← fockInner_conj, horth Zᴴ (isPC_ct hZ) _ hmem, map_zero, neg_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma kill {a b : ℕ} (A : Mat a b →ₗ[ℂ] Module.End ℂ (Pol p q r s))
     (hA : ∀ Z : Mat a b, IsPC Z → ∀ P Q, fockInner (A Z P) Q = - fockInner P (A Zᴴ Q))
@@ -64,15 +64,13 @@ lemma kill {a b : ℕ} (A : Mat a b →ₗ[ℂ] Module.End ℂ (Pol p q r s))
     _ = 0 := by rw [← fockInner_conj, horth Zᴴ (isPC_ct hZ) _ hmem, map_zero, neg_zero]
 
 /- English proof (translation)
-Introduce `p q r s u1 u2 _ d`. Establish `hRle : Submodule.span ℂ (raised p q r s u1 u2 d) ≤ homog (Ix p q × Ix r s) (d + 2)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `R ⟨Q, hQ, h | h⟩`. Take `⟨_, Z, _, rfl⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[SetLike.mem_coe, plusPart_of_mem hQ]`. Conclude with `homogeneousComponent_mem _ _`. Take `⟨_, Z, _, rfl⟩` from `h`. Rewrite using `[SetLike.mem_coe, plusPart_of_mem hQ]`. Conclude with `homogeneousComponent_mem _ _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf`. Take `⟨y, hy, horth⟩` from `exists_orth (Submodule.span ℂ (raised p q r s u1 u2 d)) (d + 2) hRle f`. Establish `hfy : f - y ∈ homog (Ix p q × Ix r s) (d + 2)` using `Submodule.sub_mem _ hf (hRle hy)`. Establish `hlow : f - y ∈ lowKer p q r s u1 u2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun hu Z hZ => ?_, fun hu Z hZ => ?_⟩` and prove the remaining obligations. Use `kill (fockAct1 p q r s) (fun Z hZ P Q => fockAct1_adj hZ P Q) hfy (fun Z' hZ' g hg => ?_) Z hZ` and prove the remaining obligations. Conclude with `horth _ (Submodule.subset_span ⟨g, hg, Or.inl ⟨hu, Z', hZ', rfl⟩⟩)`. Use `kill (fockAct2 p q r s) (fun Z hZ P Q => fockAct2_adj hZ P Q) hfy (fun Z' hZ' g hg => ?_) Z hZ` and prove the remaining obligations. Conclude with `horth _ (Submodule.subset_span ⟨g, hg, Or.inr ⟨hu, Z', hZ', rfl⟩⟩)`.
-
-Establish `hsplit : f = (f - y) + y` using `by abel`. Rewrite using `[hsplit]`. Conclude with `Submodule.add_mem_sup ⟨hfy, Submodule.subset_span hlow⟩ hy`. Conclude with `sup_le inf_le_left hRle`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem harmSplit : PI.FockDegreeTwoParts.HarmSplit := by
   intro p q r s u1 u2 _ d

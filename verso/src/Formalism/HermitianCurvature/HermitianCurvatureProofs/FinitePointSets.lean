@@ -6,15 +6,13 @@ open Formalism.FourierDecayAlt.TB Finset Filter Topology
 open scoped ComplexInnerProductSpace ComplexConjugate
 
 /- English proof (translation)
-Use `set F : Finset (ℕ × E) := (range (i + 1)) ×ˢ S with hFdef`. Use `((List.finite_length_le F i).image (List.map Subtype.val)).subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hl, hp⟩`. Establish `hmem : ∀ x ∈ p, 1 ≤ x.1 ∧ x.2 ∈ S`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, rfl⟩` from `List.mem_iff_getElem.1 hx`. Conclude with `hp k hk`. Unfold `level at hl`. Establish `hF : ∀ x ∈ p, x ∈ F`. Introduce `x hx`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hFdef, mem_product, mem_range]`. Use `⟨?_, (hmem x hx).2⟩` and prove the remaining obligations. Establish `: x.1 ≤ (p.map Prod.fst).sum` using `List.le_sum_of_mem (List.mem_map_of_mem hx)`. Use linear arithmetic over natural numbers and integers. Use `⟨p.pmap Subtype.mk hF, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (p.map Prod.fst).length ≤ (p.map Prod.fst).sum`. Use `List.length_le_sum_of_one_le _ fun n hn => ?_` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `List.mem_map.1 hn`. Conclude with `(hmem x hx).1`. Express the relevant statement in the definitionally equal form `(p.pmap Subtype.mk hF).length ≤ i`.
-
-Simplify `h1` using `[hl]`. Simplify using `[List.map_pmap]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_pts {E : Type} [Field E] (S : Finset E) (i : ℕ) :
     {p : Pt E | level p = i ∧
@@ -52,15 +50,15 @@ noncomputable def tw {E : Type} [Field E] (S : Finset E) (h0 : (0 : E) ∉ S) : 
   zero_not_mem := fun _ _ => h0
 
 /- English proof (translation)
-Take `⟨B, hB⟩ : ∃ B : Matrix Y Y ℂ, Matrix.gram ℂ (fun p : Y => V p.1) = star B * B` from `by open scoped MatrixOrder Matrix.Norms.L2Operator in`. Conclude with `CStarAlgebra.nonneg_iff_eq_star_mul_self.mp (Matrix.posSemidef_gram ℂ (fun p : Y => V p.1)).nonneg`. Establish `hG : ∀ p q : Y, ⟪V p.1, V q.1⟫ = ∑ j, conj (B j p) * B j q`. Introduce `p q`. Use `congrFun (congrFun hB p) q` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Matrix.gram, Matrix.mul_apply, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_apply]`. Establish `e1 : ∑ p ∈ Y, ∑ q ∈ Y, k p q * ⟪V q, V p⟫ = ∑ p : Y, ∑ q : Y, k p.1 q.1 * ⟪V q.1, V p.1⟫`. Rewrite using `[← Finset.sum_coe_sort Y]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_coe_sort Y]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ∑ p : Y, ∑ q : Y, k p.1 q.1 * ⟪V q.1, V p.1⟫ = ∑ j : Y, star (fun p : Y => conj (B j p)) ⬝ᵥ (Matrix.of fun x y : Y => k x y).mulVec (fun p : Y => conj (B j p))`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.of_apply, Pi.star_apply, RCLike.star_def, Complex.conj_conj, Finset.mul_sum]`. Use `symm`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[hG q p, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, Complex.re_sum]`. Conclude with `Finset.sum_nonneg fun j _ => Matrix.PosSemidef.re_dotProduct_nonneg hk _`.
+A detailed English derivation is pending.
 -/
 theorem form_nonneg {α H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (Y : Finset α) (k : α → α → ℂ) (hk : PSDOn Y k) (V : α → H) :
@@ -97,9 +95,9 @@ theorem form_nonneg {α H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ 
   exact Finset.sum_nonneg fun j _ => Matrix.PosSemidef.re_dotProduct_nonneg hk _
 
 /- English proof (translation)
-Use `inner_self_eq_norm_sq_to_K (𝕜 := ℂ) (∑ p ∈ Y, c p • V p)` as an intermediate fact. Rewrite using `[Complex.ofReal_pow]`. Use `this.symm.trans ?_` and prove the remaining obligations. Rewrite using `[inner_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sum_inner]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_left, inner_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_sq_comb {α H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (Y : Finset α) (c : α → ℂ) (V : α → H) :
@@ -116,9 +114,9 @@ theorem norm_sq_comb {α H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ
   ring
 
 /- English proof (translation)
-Establish `h0` using `form_nonneg Y _ h V`. Establish `e : ∑ p ∈ Y, ∑ q ∈ Y, (k p q - ∑ ρ ∈ R, c ρ p * starRingEnd ℂ (c ρ q)) * ⟪V q, V p⟫ = ∑ p ∈ Y, ∑ q ∈ Y, k p q * ⟪V q, V p⟫ - ((∑ ρ ∈ R, ‖∑ p ∈ Y, c ρ p • V p‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_sum]`. Repeatedly rewrite using `[norm_sq_comb]`. Rewrite using `[Finset.sum_comm (s := R), ← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm (s := R), ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[sub_mul, Finset.sum_mul]`. Rewrite `h0` using `[e, Complex.sub_re, Complex.ofReal_re]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -148,33 +146,29 @@ open Formalism.FourierDecayAlt.TB Finset Filter Topology
 open scoped ComplexInnerProductSpace ComplexConjugate
 
 /- English proof (translation)
-Introduce `E W _ D jn H _ _ _ Vt c _ _ hE hC hA B hB R`. Take `⟨hA1, hA2, hA3⟩` from `hA`. Establish `hsum : ∀ ρ, Summable (fun p : Pt E => c ρ p • Vt p)`. Introduce `ρ`. Use `Summable.of_norm ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `hA3 ρ` using `[norm_smul]`. Establish `hlim : Tendsto (fun F : Finset (Pt E) => ∑ ρ ∈ R, ‖∑ p ∈ F, c ρ p • Vt p‖ ^ 2) atTop (𝓝 (∑ ρ ∈ R, ‖∑' p, c ρ p • Vt p‖ ^ 2))`. Use `tendsto_finsetSum _ fun ρ _ => ?_` and prove the remaining obligations. Conclude with `((hsum ρ).hasSum.norm).pow 2`. Use `le_of_tendsto_of_frequently hlim ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Filter.frequently_atTop]`. Introduce `F`. Use `set F0 : Finset (Pt E) := F.filter (fun p => IsPt p (D.r + 1)) with hF0`. Use `set S : Finset E := F0.biUnion fun p => (p.map Prod.snd).toFinset with hS`. Establish `hS0 : (0 : E) ∉ S`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Simplify using `only [hS, mem_biUnion, List.mem_toFinset, List.mem_map] at h`. Take `⟨p, hp, b, hb, hb0⟩` from `h`. Take `⟨k, hk, rfl⟩` from `List.mem_iff_getElem.1 hb`. Conclude with `((Finset.mem_filter.1 hp).2.2 k hk).2 hb0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `set T : Tower E := FinitePointSets.tw S hS0 with hT`. Use `set Y : Finset (Pt E) := T.X (D.r + 1) with hY`. Establish `hYpt : ∀ p ∈ Y, IsPt p (D.r + 1)`. Introduce `p hp`. Take `⟨h1, h2⟩` from `(T.isTower (D.r + 1) p).1 hp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨h1, fun k hk => ⟨(h2 k hk).1, fun h => ?_⟩⟩` and prove the remaining obligations. Use `(h2 k hk).2` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `T.zero_not_mem _ _ this`. Establish `hF0Y : ∀ p ∈ F0, p ∈ Y`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p hp`. Establish `hp'` using `(Finset.mem_filter.1 hp).2`. Use `(T.isTower (D.r + 1) p).2 ⟨hp'.1, fun k hk => ⟨(hp'.2 k hk).1, ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(p[k]'hk).2 ∈ S`. Simplify using `only [hS, mem_biUnion, List.mem_toFinset, List.mem_map]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨p, hp, p[k]'hk, List.getElem_mem hk, rfl⟩`. Use `⟨F ∪ Y, Finset.subset_union_left, ?_⟩` and prove the remaining obligations. Establish `e : ∀ ρ, ∑ p ∈ F ∪ Y, c ρ p • Vt p = ∑ p ∈ Y, c ρ p • Vt p`. Introduce `ρ`. Use `symm`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `Finset.sum_subset Finset.subset_union_right fun p hp hnp => ?_` and prove the remaining obligations. Establish `hc : c ρ p = 0`. Assume the negation of the conclusion as `h`. Establish `hpF : p ∈ F`. Break down `Finset.mem_union.1 hp with h' | h'` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `h'`. Conclude with `absurd h' hnp`. Conclude with `hnp (hF0Y p (Finset.mem_filter.2 ⟨hpF, hA1 ρ p h⟩))`. Rewrite using `[hc, zero_smul]`. Repeatedly rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `(FinitePointSets.rows_le_form Y (D.Kr (D.r + 1)) Vt c R (hA2 Y hYpt R)).trans ?_` and prove the remaining obligations. Establish `key : ∀ δ : ℝ, 0 < δ → (∑ p ∈ Y, ∑ q ∈ Y, D.Kr (D.r + 1) p q * ⟪Vt q, Vt p⟫).re ≤ B * (jn + δ)`. Introduce `δ hδ`. Establish `h1 : ∀ᶠ ε in 𝓝[>] (0 : ℝ), ∀ w ∈ D.Wb D.Ntop, (D.gram ε 0 w [] []).re / D.wt w ≤ jn + δ` using `(Filter.eventually_all_finset _).2 fun w hw => (hE w hw).eventually_le_const (by linarith)`. Take `⟨ε, h1ε, h2ε, hε⟩` from `(h1.and ((hC Y hYpt).and self_mem_nhdsWithin)).exists`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h3` using `hB T ε hε (jn + δ) h1ε`. Establish `e2 : D.Sf ε (D.r + 1) D.emp (T.X (D.r + 1)) = (∑ p ∈ Y, ∑ q ∈ Y, D.Kr (D.r + 1) p q * ⟪Vt q, Vt p⟫).re`. Unfold `Data.Sf`. Use `congr 1`. Use `Finset.sum_congr rfl fun p hp => Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations.
-
-Distinguish the cases in `hK : D.Kr (D.r + 1) p q = 0`. Rewrite using `[hK, zero_mul, zero_mul]`. Rewrite using `[h2ε p hp q hq hK]`. Rewrite `h3` using `[e2]`. Then use the resulting hypothesis. Establish `ht : Tendsto (fun δ : ℝ => B * (jn + δ)) (𝓝[>] 0) (𝓝 (B * (jn + 0)))` using `(Continuous.tendsto (by fun_prop) 0).mono_left nhdsWithin_le_nhds`.
-
-Rewrite `ht` using `[add_zero]`. Conclude with `ge_of_tendsto ht (by filter_upwards [self_mem_nhdsWithin] with δ hδ using key δ hδ)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem limitStep : Formalism.FourierDecayAlt.TB.LimitStep := by
   intro E W _ D jn H _ _ _ Vt c _ _ hE hC hA B hB R

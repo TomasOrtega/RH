@@ -18,11 +18,11 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G
 variable {p : ℕ} [Fact p.Prime] {X : Sys p} {Y : Pend X} {u : D.what₂.Word} {μ : D.what₂.Tup}
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx => exact hS x hx`. Consider the case `zero`. Introduce `c' L' _`. Simplify using `only [map_zero, Pi.zero_apply, ker_zero, smul_zero, Finset.sum_const_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `add x y _ _ hx hy`. Introduce `c' L' hL`. Simplify using `only [map_add, Pi.add_apply, ker_add, smul_add, Finset.sum_add_distrib, hx c' L' hL, hy c' L' hL]`. Consider the case `smul a x _ hx`. Introduce `c' L' hL`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_smul, Pi.smul_apply, ker_smul]`. Rewrite using `[map_smul_Kf Y, hx c' L' hL, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem bodyC_of_span (Y : Pend X) (j : ℕ) (cK : Y.Kc) {I : Type} [Fintype I] (wt : I → Y.Kc) (La : I → X.Lt j)
     (S : Set (X.Fm j))
@@ -49,13 +49,13 @@ theorem bodyC_of_span (Y : Pend X) (j : ℕ) (cK : Y.Kc) {I : Type} [Fintype I] 
     rw [smul_comm]
 
 /- English proof (translation)
-Take `⟨hSh, hRd, hLat, hDG, hSer, cK, h1, h2, _, hDel⟩` from `hT`. Establish `body` using `bodyC_of_span Y j cK (fun x : (D.chTw u μ).cls j => (((Nat.card ((D.chTw u μ).stab j x) : ℕ) : Y.Kc))⁻¹) lp (Set.range (cmp j)) (by`. Introduce and unpack `_ ⟨x, rfl⟩ c' L' hL`. Take `⟨y, hy⟩` from `hrat x`. Establish `hsum : (D.chTw u μ).K j ((ex.tw.fm u μ).emb j x) = ∑ c : (D.chTw u μ).cls j, (((Nat.card ((D.chTw u μ).stab j c) : ℕ) : ℂ))⁻¹ • entRec t ex.tw u μ j c x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hQ` using `sharpQ_qOf (hSh x)`. Use function extensionality and compare the values at `c1 y1`. Rewrite using `[compatible_lift_exists D L hT Gi Gl Kc0 Dx cX ex t u μ j hj _ _ hQ.1 hQ.2 c1 y1]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, entRec]`. Rewrite using `[hCh x y hy, hRd y c' L' hL, hy, hsum, map_sum]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, map_inv₀, map_natCast, hDel c x c' L' hL, kernel_of_smul p X Y j (lp c) (c', L') _ (hSer c c' L' hL), mul_smul])`. Use `⟨cK, h1, h2, (D.chTw u μ).cls j, Unit, inferInstance, inferInstance, fun x => Nat.card ((D.chTw u μ).stab j x), fun x _ => lp x, fun x _ => hLat x, fun x => ⟨Nat.card_pos, hDG x⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `F hF c' L' hL`. Simplify `body F (hspan hF) c' L' hL` using `only [Finset.univ_unique, Finset.sum_singleton]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `v i F hF La' hLa'`. Simplify `hH v i F hF La' hLa'` using `only [Finset.univ_unique, Finset.sum_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem second_kernel_coupled (t : KerEntTied ex) {σ : D.what₂.LL →+* X.G.Kf} (cmp : ∀ j, ((ex.tw.fm u μ).lat j).V →ₛₗ[σ] X.Fm j)
     (ι : ℂ →+* Y.Kc)
@@ -93,7 +93,7 @@ theorem second_kernel_coupled (t : KerEntTied ex) {σ : D.what₂.LL →+* X.G.K
 end Gen
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc0 Dx cX ex t u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y ι Rd Sr lp hm hTs hH`. Establish `hj : D.R.m - 1 < D.R.m` using `by omega`. Establish `hsp` using `fq_le_span (X := sysAt Ch std vp unif eO eO_spec dG dG_spec om) KA.cmp (D.R.m - 1) (KA.cmp_int (D.R.m - 1) hj.le)`. Establish `hch : ∀ (x : ((ex.tw.fm u μ).lat (D.R.m - 1)).V) (y : ((ex.tw.fm u μ).lat (D.R.m - 1 + 1)).V), (ex.tw.fm u μ).emb (D.R.m - 1 + 1) y = (D.chTw u μ).K (D.R.m - 1) ((ex.tw.fm u μ).emb (D.R.m - 1) x) → (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Kz (D.R.m - 1) (KA.cmp (D.R.m - 1) …` using `fun x y hy => (KA.cmp_K (D.R.m - 1) hj x y hy).symm`. Conclude with `second_kernel_coupled (X := sysAt Ch std vp unif eO eO_spec dG dG_spec om) (Y := Y) (σ := ex.cmp.embW u w h) t KA.cmp ι Rd Sr (D.R.m - 1) hj lp hsp (KA.rat (D.R.m - 1) hj) hch hTs hH`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem second_kernel_coupled_instance : SecondKernelCoupledLastLift := by
   intro D L hT Gi Gl Kc0 Dx cX ex t u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y ι Rd Sr lp hm hTs hH
@@ -107,9 +107,9 @@ theorem second_kernel_coupled_instance : SecondKernelCoupledLastLift := by
     (D.R.m - 1) hj lp hsp (KA.rat (D.R.m - 1) hj) hch hTs hH
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc0 Dx cX ex t u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y ι Rd Sr lp hE hL`. Establish `hmm : (sysAt Ch std vp unif eO eO_spec dG dG_spec om).mm = D.R.m` using `KA.fl_m`. Use `⟨fun j hj => ?_, fun j hj => ?_⟩` and prove the remaining obligations. Establish `hl : j + 1 < D.R.m` using `by omega`. Take `⟨cK, h1, h2, _, hb⟩` from `second_kernel_entry_instance D L hT Gi Gl Kc0 Dx cX ex t u μ w h Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y ι Rd Sr hE j hl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨cK, h1, h2, hb⟩`. Establish `hm : 0 < D.R.m` using `by omega`. Take `rfl : j = D.R.m - 1` from `by omega`. Take `⟨hT1, hH1⟩` from `hL hm`. Conclude with `second_kernel_coupled_instance D L hT Gi Gl Kc0 Dx cX ex t u μ w h Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y ι Rd Sr lp hm hT1 hH1`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem admissible_fourth_instance : Adm4NewInst := by
   intro D L hT Gi Gl Kc0 Dx cX ex t u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y ι Rd Sr lp hE hL
@@ -126,17 +126,15 @@ theorem admissible_fourth_instance : Adm4NewInst := by
       hm hT1 hH1
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc0 Dx cX ex u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y lp hm h5b hsec hst v i F hF La' hLa'`. Establish `hj : D.R.m - 1 < (sysAt Ch std vp unif eO eO_spec dG dG_spec om).mm` using `lt_of_lt_of_eq (by omega : D.R.m - 1 < D.R.m) KA.fl_m.symm`. Apply the tactic sequence `have hk := Pf.kadj_entry D h5b (Formalism.L2.G.Pend.up_down_adjoint D _ Y) (D.R.m - 1) hj v i F hF La' hLa'`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton] at hk`. Simplify using `only [Pf.up_finsum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hb : ClsBij (Y` using `Y) u μ KA.cls (D.R.m - 1) := class_bijection_instance D L hT Gi Gl Kc0 Dx cX ex u μ w h Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y (D.R.m - 1) (by omega)`. Establish `hbij : Function.Bijective fun x : (D.chTw u μ).cls (D.R.m - 1) => (⟨lp x, (hsec x).1⟩ : {La // La ∈ Y.Rep (D.R.m - 1)})`. Prove the components needed by the constructor for the conclusion. Introduce `x1 x2 he`. Establish `h1` using `(hsec x1).2`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `(hsec x2).2`. Establish `: lp x1 = lp x2` using `congrArg Subtype.val he`. Rewrite using `[← h1, ← h2, this]`. Introduce `La`. Use `⟨KA.cls (D.R.m - 1) La.1.1 La.1.2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hb.1` to reduce the goal to its premises. Use `show KA.cls (D.R.m - 1) (lp _).1 (lp _).2 = KA.cls (D.R.m - 1) La.1.1 La.1.2`. Conclude with `(hsec _).2`. Establish `hw : ∀ x : (D.chTw u μ).cls (D.R.m - 1), Nat.card ((D.chTw u μ).stab (D.R.m - 1) x) = (sysAt Ch std vp unif eO eO_spec dG dG_spec om).stab (D.R.m - 1) (lp x)`. Introduce `x`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `hst (lp x) (hsec x).1`. Rewrite `e` using `[(hsec x).2]`. Conclude with `e`. Use `(Fintype.sum_bijective _ hbij _ _ fun x => ?_).trans (hk.trans (Fintype.sum_bijective _ hbij _ _ fun x => ?_).symm)` and prove the remaining obligations. Simplify using `only [hw x]`.
-
-Simplify using `only [hw x]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hecke_coupled_entry : HeckeCEntry := by
   intro D L hT Gi Gl Kc0 Dx cX ex u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y lp hm h5b hsec hst
@@ -173,9 +171,9 @@ theorem hecke_coupled_entry : HeckeCEntry := by
   · simp only [hw x]
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc0 Dx cX ex t u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y ι Rd Sr lp hm hsec hTs`. Take `⟨hSh, hSt, hRd, hSer, cK, h1, h2, h3, hDel⟩` from `hTs`. Use `⟨hSh, hRd, fun x => Y.Rep_lat _ _ (hsec x).1, fun x => ?_, fun x c' L' hL => hSer (lp x) (hsec x).1 c' L' hL, cK, h1, h2, h3, fun x y c' L' hL => ?_⟩` and prove the remaining obligations. Establish `e` using `hSt (lp x) (hsec x).1`. Rewrite `e` using `[(hsec x).2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `dG_spec (D.R.m - 1) (by have := KA.fl_m; omega) (lp x).1 (lp x).2 (Y.Rep_lat _ _ (hsec x).1)`. Establish `e` using `hDel (lp x) (hsec x).1 y c' L' hL`. Rewrite `e` using `[(hsec x).2]`. Conclude with `e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coupled_compatibility_at_place : TiesCOfAt := by
   intro D L hT Gi Gl Kc0 Dx cX ex t u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y ι Rd Sr lp hm hsec hTs
@@ -191,7 +189,7 @@ theorem coupled_compatibility_at_place : TiesCOfAt := by
     exact e
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc0 Dx cX ex u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y hm`. Establish `hb : ClsBij (Y` using `Y) u μ KA.cls (D.R.m - 1) := class_bijection_instance D L hT Gi Gl Kc0 Dx cX ex u μ w h Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y (D.R.m - 1) (by omega)`. Use `⟨fun x => (Function.surjInv hb.2 x).1, fun x => ⟨(Function.surjInv hb.2 x).2, ?_⟩⟩` and prove the remaining obligations. Conclude with `Function.surjInv_eq hb.2 x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coupled_section_exists : SecCEx := by
   intro D L hT Gi Gl Kc0 Dx cX ex u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y hm

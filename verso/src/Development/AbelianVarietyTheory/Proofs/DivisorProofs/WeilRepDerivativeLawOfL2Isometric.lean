@@ -24,25 +24,25 @@ open MeasureTheory
 namespace GlobalTheory.WeilL2Words
 
 /- English proof (translation)
-Introduce `F _ _ _ κ _ ψ hψ G _ om hpres M himpl μ hμ hiso p h φ hφ`. Use `set h' := M p h with hh'`. Establish `hOm : om p φ ∈ GlobalTheory.WeilM.schA F κ` using `hpres p φ hφ`. Establish `hD1 : GlobalTheory.WeilL2Words.dS F ψ h' φ ∈ GlobalTheory.WeilM.schA F κ` using `GlobalTheory.WeilL2Words.dS_mem_schA F hψ h' hφ`. Use `set Qr : ℕ → (κ → AdeleRing (𝓞 F) F) → ℂ := fun n => ((n : ℂ) + 1) • (GlobalTheory.WeilM.schr ψ (GlobalTheory.WeilL2Words.archPair F (((n : ℝ) + 1)⁻¹ • h')) φ - φ) - GlobalTheory.WeilL2Words.dS F ψ h' φ with hQr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQr_mem : ∀ n, Qr n ∈ GlobalTheory.WeilM.schA F κ` using `fun n => Submodule.sub_mem _ (Submodule.smul_mem _ _ (Submodule.sub_mem _ (GlobalTheory.T.schroedingerOperator_archimedean_mem_adelicSchwartz F κ ψ hψ _ φ hφ) hφ)) hD1`. Use `set Gn : ℕ → (κ → AdeleRing (𝓞 F) F) → ℂ := fun n a => ((n : ℂ) + 1) * (GlobalTheory.WeilM.schr ψ (GlobalTheory.WeilL2Words.archPair F (((n : ℝ) + 1)⁻¹ • h)) (om p φ) a - om p φ a) - om p (GlobalTheory.WeilL2Words.dS F ψ h' φ) a with hGn`. Establish `hGQ : ∀ n, Gn n = om p (Qr n)`. Introduce `n`. Establish `e` using `himpl p (((n : ℝ) + 1)⁻¹ • h) φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `e` using `[map_smul]`. Rewrite using `[hQr, map_sub, map_smul, map_sub, e]`. Use function extensionality and compare the values at `a`. Simplify using `[hGn, smul_eq_mul]`. Establish `hGmem : ∀ n, Gn n ∈ GlobalTheory.WeilM.schA F κ` using `fun n => by rw [hGQ]; exact hpres p _ (hQr_mem n)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hGl2 : Filter.Tendsto (fun n => GlobalTheory.WeilL2Words.l2A F μ (Gn n)) Filter.atTop (nhds 0)`. Establish `e : (fun n => GlobalTheory.WeilL2Words.l2A F μ (Gn n)) = fun n => GlobalTheory.WeilL2Words.l2A F μ (Qr n)`. Use function extensionality and compare the values at `n`. Rewrite using `[hGQ, hiso p _ (hQr_mem n)]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `GlobalTheory.T.adelic_schwartz_haar_weil F κ ψ hψ μ hμ h' φ hφ` as an intermediate fact. Use `this.congr fun n => ?_` and prove the remaining obligations. Use `congr 1`. Use `set D : (κ → AdeleRing (𝓞 F) F) → ℂ := GlobalTheory.WeilL2Words.dS F ψ h (om p φ) - om p (GlobalTheory.WeilL2Words.dS F ψ h' φ) with hD`. Establish `hDmem : D ∈ GlobalTheory.WeilM.schA F κ` using `Submodule.sub_mem _ (GlobalTheory.WeilL2Words.dS_mem_schA F hψ h hOm) (hpres p _ hD1)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpt : ∀ a, Filter.Tendsto (fun n => Gn n a) Filter.atTop (nhds (D a))`. Introduce `a`. Establish `hd` using `(GlobalTheory.WeilL2Words.differentiableAt_schr F hψ h hOm a).hasDerivAt`. Rewrite `hd` using `[hasDerivAt_iff_tendsto_slope_zero]`. Establish `ht : Filter.Tendsto (fun n : ℕ => ((n : ℝ) + 1)⁻¹) Filter.atTop (nhdsWithin 0 {0}ᶜ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Use `tendsto_nhdsWithin_iff.2 ⟨?_, Filter.Eventually.of_forall fun n => ?_⟩` and prove the remaining obligations. Establish `h1 : Filter.Tendsto (fun n : ℕ => 1 / ((n : ℝ) + 1)) Filter.atTop (nhds 0)` using `tendsto_one_div_add_atTop_nhds_zero_nat`. Simplify `h1` using `only [one_div]`. Simplify using `only [Set.mem_compl_iff, Set.mem_singleton_iff, inv_eq_zero]`. Check the signs of the components of the expression.
+Check the signs of the components of the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ∀ Ψ : (κ → AdeleRing (𝓞 F) F) → ℂ, GlobalTheory.WeilM.schr ψ (GlobalTheory.WeilL2Words.archPair F ((0 : ℝ) • h)) Ψ a = Ψ a`. Introduce `Ψ`. Establish `: GlobalTheory.WeilL2Words.archPair F ((0 : ℝ) • h) = (0, 0)`. Rewrite using `[zero_smul]`. Apply the tactic sequence `refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> exact GlobalTheory.WeilL2Words.adeleOfMixedSpaceComponent_zero F`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Simplify using `[GlobalTheory.WeilM.schr]`. Use `(hd.comp ht).sub_const (om p (GlobalTheory.WeilL2Words.dS F ψ h' φ) a)` as an intermediate fact. Use `this.congr fun n => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, zero_add, h0, hGn, inv_inv, Complex.real_smul]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hl` using `GlobalTheory.T.adelic_l2_limit_zero F κ μ D Gn hGmem hpt hGl2`. Establish `hz` using `GlobalTheory.T.adelic_l2_eq_zero_imp_eq_zero F κ μ hμ D hDmem hl`. Conclude with `sub_eq_zero.mp hz`.
+A detailed English derivation is pending.
 -/
 theorem dS_om_eq : ∀ (F : Type) [Field F] [NumberField F] [Invertible (2 : AdeleRing (𝓞 F) F)] (κ : Type) [Fintype κ]
     (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ), GlobalTheory.WeilL2Words.IsStdInf F ψ →

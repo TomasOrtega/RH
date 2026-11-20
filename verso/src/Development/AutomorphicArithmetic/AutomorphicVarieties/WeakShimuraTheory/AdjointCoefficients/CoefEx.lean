@@ -3,29 +3,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open IsLocalRing UpperTheory.V UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `Λ _ _ A _ _ _ K hK κ _ ε hspan hind`. Establish `hkill : ∀ m ∈ maximalIdeal A, ∀ e ∈ K, m * e = 0`. Introduce `m hm e he`. Establish `h` using `Ideal.mul_mem_mul hm he`. Rewrite `h` using `[hK]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Submodule.mem_bot A).mp h`. Establish `hsc : ∀ b : A, ∃ l : Λ, b - algebraMap Λ A l ∈ maximalIdeal A` using `fun b => IsCO.res_surj (O := Λ) b`. Establish `hact : ∀ b : A, ∀ l : Λ, b - algebraMap Λ A l ∈ maximalIdeal A → ∀ e ∈ K, b * e = l • e`. Introduce `b l hb e he`. Establish `h` using `hkill _ hb e he`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[sub_mul]`. Rewrite using `[Algebra.smul_def]`. Conclude with `sub_eq_zero.mp h`. Establish `hres : ∀ b : A, ∀ l : Λ, b - algebraMap Λ A l ∈ maximalIdeal A → res Λ A b = residue Λ l`. Introduce `b l hb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `(res_eq_zero_iff Λ A _).mpr hb`. Rewrite `h` using `[map_sub, AlgHom.commutes, sub_eq_zero]`. Rewrite using `[h]`. Both sides reduce to the same expression. Establish `hex : ∀ x ∈ K, ∃ a : κ → Λ, x = ∑ u, a u • ε u`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hx'` using `hx`. Rewrite `hx'` using `[hspan]`. Take `⟨b, hb⟩` from `(Submodule.mem_span_range_iff_exists_fun A).mp hx'`. Use `choose l hl using fun u => hsc (b u)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨l, ?_⟩` and prove the remaining obligations. Rewrite using `[← hb]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`. Use `hact _ _ (hl u) _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hspan]`. Conclude with `Ideal.subset_span ⟨u, rfl⟩`. Establish `huniq : ∀ a a' : κ → Λ, ∑ u, a u • ε u = ∑ u, a' u • ε u → ∀ u, residue Λ (a u) = residue Λ (a' u)`. Introduce `a a' h u`. Establish `h0` using `hind (a - a') (by simp only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, h, sub_self]) u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `(residue_eq_zero_iff _).mpr h0`. Set `co : κ → A → ResidueField Λ` to `fun u x => if h : x ∈ K then residue Λ ((hex x h).choose u) else 0`. Establish `hco : ∀ x (h : x ∈ K) (a : κ → Λ), x = ∑ u, a u • ε u → ∀ u, co u x = residue Λ (a u)`. Introduce `x h a hx u`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [co, dif_pos h]`. Conclude with `huniq _ _ ((hex x h).choose_spec.symm.trans hx) u`. Use `⟨co, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u x hx y hy`. Take `⟨a, ha⟩` from `hex x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨b, hb⟩` from `hex y hy`. Rewrite using `[hco x hx a ha, hco y hy b hb, hco (x + y) (K.add_mem hx hy) (a + b) (by rw [ha, hb, ← Finset.sum_add_distrib]; simp [add_smul]), Pi.add_apply, map_add]`. Introduce `u c x hx`. Take `⟨a, ha⟩` from `hex x hx`. Take `⟨l, hl⟩` from `hsc c`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[hco x hx a ha, hco (c * x) (K.mul_mem_left c hx) (l • a) ?_, hres c l hl, Pi.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[hact c l hl x hx, ha, Finset.smul_sum]`. Simplify using `[smul_smul]`. Introduce `x hx`. Take `⟨a, ha⟩` from `hex x hx`.
-
-Conclude with `⟨a, fun u => (hco x hx a ha u).symm, ha⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.X1.coefEx :
     ∀ {Λ : Type} [CommRing Λ] [IsLocalRing Λ] {A : Type} [CommRing A] [Algebra Λ A] [IsCO Λ A] (K : Ideal A), maximalIdeal A * K = ⊥ → ∀ (κ : Type) [Fintype κ] (ε : κ → A), K = Ideal.span (Set.range ε) → (∀ c : κ → Λ, ∑ u, c u • ε u = 0 → ∀ u, c u ∈ maximalIdeal Λ) → ∃ co : κ → A → ResidueField Λ, (∀ u, ∀ x ∈ K, ∀ y ∈ K, co u (x + y) = co u x + co u y) ∧ (∀ u (a : A), ∀ x ∈ K, co u (a * x) = res Λ A a * co u x) ∧ ∀ x ∈ K, ∃ a : κ → Λ, (∀ u, residue Λ (a u) = co u x) ∧ x = ∑ u, a u • ε u := by

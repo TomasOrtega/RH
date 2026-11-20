@@ -11,25 +11,23 @@ open Matrix
 open scoped ComplexOrder
 
 /- English proof (translation)
-Use `set A := Nᴴ * N with hAdef`. Use `set u := q ᵥ* N with hu`. Distinguish the cases in `hA : A.det = 0`. Rewrite using `[hA]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : IsUnit A.det` using `isUnit_iff_ne_zero.mpr hA`. Establish `hsplit : A - vecMulVec (star u) u = A + replicateCol Unit (-star u) * replicateRow Unit u`. Use extensionality with `i j`. Simplify using `[vecMulVec, replicateCol, replicateRow, Matrix.mul_apply, sub_eq_add_neg]`. Establish `key : (A - vecMulVec (star u) u).det = A.det * (1 - u ⬝ᵥ A⁻¹ *ᵥ star u)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hsplit, Matrix.det_add_mul _ _ hU]`. Use `congr 1`. Rewrite using `[Matrix.det_unique]`. Simplify using `[Matrix.mul_apply, replicateRow, replicateCol, dotProduct, mulVec, sub_eq_add_neg, Finset.mul_sum]`. Simplify using `only [Finset.sum_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_comm`. Use `set P := N * A⁻¹ * Nᴴ with hPdef`. Establish `hs : u ⬝ᵥ A⁻¹ *ᵥ star u = q ⬝ᵥ P *ᵥ star q`. Rewrite using `[hu, Matrix.star_vecMul, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Establish `hAh : Aᴴ = A` using `by rw [hAdef, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPh : Pᴴ = P`. Rewrite using `[hPdef, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_nonsing_inv, hAh, Matrix.mul_assoc]`. Establish `hPP : P * P = P`. Establish `h1 : A⁻¹ * A = 1` using `Matrix.nonsing_inv_mul A hU`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hQ : (1 - P) = (1 - P)ᴴ * (1 - P)`. Rewrite using `[Matrix.conjTranspose_sub, Matrix.conjTranspose_one, hPh, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_sub, hPP]`. Simplify using the standard rewrite rules. Establish `hpsd : (1 - P).PosSemidef` using `by rw [hQ]; exact Matrix.posSemidef_conjTranspose_mul_self _`. Establish `ht` using `hpsd.dotProduct_mulVec_nonneg (star q)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `ht` using `[star_star, Matrix.sub_mulVec, Matrix.one_mulVec, dotProduct_sub]`. Establish `hqq : q ⬝ᵥ star q = ((∑ c, ‖q c‖ ^ 2 : ℝ) : ℂ)`. Simplify using `only [dotProduct, Pi.star_apply, Complex.star_def, Complex.mul_conj, Complex.ofReal_sum, Complex.normSq_eq_norm_sq, Complex.ofReal_pow]`. Establish `ha` using `(Matrix.posSemidef_conjTranspose_mul_self N).det_nonneg`. Rewrite `ha` using `[← hAdef]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[key, hs]`. Use `set a := A.det`. Use `set t := q ⬝ᵥ star q - q ⬝ᵥ P *ᵥ star q with htdef`. Establish `hsq : q ⬝ᵥ P *ᵥ star q = ((∑ c, ‖q c‖ ^ 2 : ℝ) : ℂ) - t` using `by rw [htdef, hqq]; ring`. Rewrite using `[hsq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨ha1, ha2⟩` from `Complex.nonneg_iff.1 ha`. Take `⟨ht1, ht2⟩` from `Complex.nonneg_iff.1 ht`. Establish `hae : a = (a.re : ℂ)` using `Complex.ext rfl (by simp [← ha2])`. Establish `hte : t = (t.re : ℂ)` using `Complex.ext rfl (by simp [← ht2])`. Rewrite using `[hae, hte, Complex.norm_real, Real.norm_of_nonneg ha1]`.
-
-Rewrite using `[show (a.re : ℂ) * (1 - (((∑ c, ‖q c‖ ^ 2 : ℝ) : ℂ) - (t.re : ℂ))) = ((a.re * (1 - ∑ c, ‖q c‖ ^ 2 + t.re) : ℝ) : ℂ) by push_cast; ring]`. Rewrite using `[Complex.norm_real]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem det_sub_bound {p m : ℕ} (N : Matrix (Fin p) (Fin m) ℂ) (q : Fin p → ℂ) :
     (1 - ∑ c, ‖q c‖ ^ 2) * ‖(Nᴴ * N).det‖ ≤
@@ -99,7 +97,7 @@ open scoped ComplexOrder
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.gram, hermC, ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_eq_mul {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x : Matrix (Fin r) (Fin r) ℂ) :
     ReciprocityTheory.ChartRestriction.G.FD.gram τ G x = xᵀ * G.map τ * x.map (starRingEnd ℂ) := by
@@ -109,7 +107,7 @@ theorem gram_eq_mul {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) 
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Rewrite using `[gram_eq_mul, gram_eq_mul, Matrix.transpose_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gram_mul {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x y : Matrix (Fin r) (Fin r) ℂ) :
     ReciprocityTheory.ChartRestriction.G.FD.gram τ G (x * y) = yᵀ * ReciprocityTheory.ChartRestriction.G.FD.gram τ G x * y.map (starRingEnd ℂ) := by
@@ -117,7 +115,7 @@ theorem gram_mul {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x 
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mul_diagonal, Matrix.transpose_apply, Matrix.map_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem entry_tdm {r : ℕ} (M : Matrix (Fin r) (Fin r) ℂ) (d : Fin r → ℂ) (i j : Fin r) :
     (Mᵀ * Matrix.diagonal d * M.map (starRingEnd ℂ)) i j = ∑ l, M l i * d l * starRingEnd ℂ (M l j) := by
@@ -133,11 +131,11 @@ theorem nmat_eq (z : V (nd X)) (τ : X.Ψ) (a b : Fin (p + 1)) :
     nmat X z τ a b = lowMat (zOf X z τ) a b := rfl
 
 /- English proof (translation)
-Use `show (∑ c, zFrame X z τ i.castSucc c * leviFrame X z τ c a.castSucc) = _`. Rewrite using `[Fin.sum_univ_castSucc]`. Establish `hl : zFrame X z τ i.castSucc (Fin.last p) = 0`. Simplify using `[zFrame, hp, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hl, zero_mul, add_zero]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[zFrame, leviFrame, hp, nmat_eq]`. Rewrite using `[if_neg (by omega), if_neg (by omega)]`. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: i.castSucc ≠ b.castSucc` using `fun h => hb (Fin.castSucc_injective _ h).symm`. Simplify using `[zFrame, hp, this]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem n_top (hp : X.p0 = p) (z : V (nd X)) (τ : X.Ψ) (i a : Fin p) :
     mat (nFrame X z) τ i.castSucc a.castSucc = lowMat (zOf X z τ) i.castSucc a.castSucc := by
@@ -155,7 +153,7 @@ theorem n_top (hp : X.p0 = p) (z : V (nd X)) (τ : X.Ψ) (i a : Fin p) :
   · simp
 
 /- English proof (translation)
-Use `show (∑ c, zFrame X z τ (Fin.last p) c * leviFrame X z τ c a.castSucc) = _`. Simplify using `[zFrame, leviFrame, hp, nmat_eq, Fin.sum_univ_castSucc]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg (by omega)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem n_last (hp : X.p0 = p) (z : V (nd X)) (τ : X.Ψ) (a : Fin p) :
     mat (nFrame X z) τ (Fin.last p) a.castSucc =
@@ -175,25 +173,23 @@ open scoped ComplexOrder
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {p : ℕ}
 
 /- English proof (translation)
-Use `set w := zOf X z τ with hw`. Set `N : Matrix (Fin p) (Fin ((k : ℕ) + 1)) ℂ` to `fun i a => lowMat w i.castSucc (Fin.castSucc ⟨a, by omega⟩)`. Set `q : Fin p → ℂ` to `fun c => lowMat w (Fin.last p) c.castSucc`. Establish `hA : colGram (blkW X.p0 w) k.succ = ‖(Nᴴ * N).det‖`. Establish `hB : blkW X.p0 w = fun (i j : Fin (p + 1 - 1)) => lowMat w ⟨i, by omega⟩ ⟨j, by omega⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i j`. Unfold `blkW`. Use `split_ifs with h`. Establish `hi : (i : ℕ) = 0` using `by omega`. Establish `hj : (j : ℕ) = 0` using `by omega`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `[lowMat, hi, hj, Fin.ext_iff]`. Both sides reduce to the same expression. Rewrite using `[hB]`. Both sides reduce to the same expression. Establish `hZ : zDet X z τ = 1 - ∑ c, ‖q c‖ ^ 2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `zDet`. Rewrite using `[Matrix.det_one_sub_mul_comm]`. Use `letI hU : Unique {a : Fin (p + 1) // X.p0 ≤ (a : ℕ)} := { default := ⟨Fin.last p, by simp [hp]⟩ uniq := fun a => Subtype.ext (Fin.ext (by have := a.2; have := a.1.2; simp; omega)) }`. Rewrite using `[Matrix.det_unique]`. Set `e : Fin p ≃ {b : Fin (p + 1) // (b : ℕ) < X.p0}` to `{ toFun := fun c => ⟨c.castSucc, by simp [hp]⟩ invFun := fun b => ⟨b.1, by have := b.2; omega⟩ left_inv := fun c => rfl right_inv := fun b => rfl }`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hs : ∑ b : {b : Fin (p + 1) // (b : ℕ) < X.p0}, zBlock X z τ default b * star (zBlock X z τ default b) = ((∑ c, ‖q c‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[← Fintype.sum_equiv e (fun c => zBlock X z τ default (e c) * star (zBlock X z τ default (e c))) _ (fun _ => rfl)]`. Use `push_cast`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `q c * star (q c) = _`.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Both sides reduce to the same expression. Simplify using `only [Matrix.sub_apply, Matrix.one_apply_eq, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Rewrite using `[hs]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Complex.sub_re, Complex.one_re, Complex.ofReal_re]`. Establish `hD : dmin X.Gm (point X x0 z) τ ⟨(k : ℕ) + 1, by omega⟩ = (Nᴴ * N - Matrix.vecMulVec (star (q ᵥ* N)) (q ᵥ* N)).det`. Establish `hg : ReciprocityTheory.ChartRestriction.G.FD.gram τ.1 X.Gm (mat (point X x0 z) τ) = (mat (nFrame X z) τ)ᵀ * Matrix.diagonal (fun a : Fin (p + 1) => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) * (mat (nFrame X z) τ).map (starRingEnd ℂ)`. Rewrite using `[show mat (point X x0 z) τ = mat x0.1 τ * mat (nFrame X z) τ from rfl, gram_mul, x0.2 τ]`. Unfold `dmin lminor`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hg, ← Matrix.det_transpose (Nᴴ * N - _)]`. Use `congr 1`. Use extensionality with `a b`. Establish `hc : ∀ a : Fin ((k : ℕ) + 1), (Fin.castLE (by omega) a : Fin (p + 1)) = Fin.castSucc (⟨a, by omega⟩ : Fin p)` using `fun a => Fin.ext rfl`. Rewrite using `[Matrix.submatrix_apply, hc, hc, entry_tdm, Fin.sum_univ_castSucc]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [n_top X hp, n_last X hp, Fin.val_castSucc, Fin.val_last, sgn, hp, Fin.is_lt, if_true, lt_irrefl, if_false, Matrix.transpose_apply, Matrix.sub_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.vecMulVec_apply, Matrix.vecMul, dotProduct, Pi.star_apply, N, q, ← hw]`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.ofReal_one, Complex.ofReal_neg, mul_one, Complex.star_def]`. Rewrite using `[sub_eq_add_neg]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hA, hZ, hD]`. Conclude with `det_sub_bound N q`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteRing_sq_sub_mul_sq_eq_of_card (X : Data E (p + 1)) (hp : X.p0 = p) (x0 : Base X) (z : V (nd X)) (τ : X.Ψ)
     (k : Fin p) :
@@ -267,7 +263,7 @@ end GlobalTheory.IntBall.MinorLast
 namespace GlobalTheory.IntBall.MinorLast
 
 /- English proof (translation)
-Introduce `E _ _ _ r X hr x0 z _ τ k`. Take `⟨p, rfl⟩ : ∃ p, r = p + 1` from `⟨X.p0, hr.symm⟩`. Conclude with `finiteRing_sq_sub_mul_sq_eq_of_card X (by omega) x0 z τ k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem zDet_mul_colGram_le_dmin : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r), X.p0 + 1 = r → ∀ (x0 : Base X) (z : V (nd X)), z ∈ Om X → ∀ (τ : X.Ψ) (k : Fin (r - 1)), zDet X z τ * colGram (blkW X.p0 (zOf X z τ)) k.succ ≤ ‖dmin X.Gm (point X x0 z) τ ⟨(k : ℕ) + 1, by omega⟩‖ := by
   intro E _ _ _ r X hr x0 z _ τ k

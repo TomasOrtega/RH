@@ -32,13 +32,13 @@ variable {A B : Type} [Group A] [Group B] [TopologicalSpace A] [TopologicalSpace
   [MeasurableSpace A] [MeasurableSpace B] [BorelSpace A] [BorelSpace B]
 
 /- English proof (translation)
-Use `⟨fun b => ?_⟩` and prove the remaining obligations. Set `μA : Measure A` to `Measure.haar`. Use `haveI := h (μA.prod ν) inferInstance`. Use `set c := Measure.haarScalarFactor (ν.map (· * b)) ν`. Establish `hc : ν.map (· * b) = c • ν` using `Measure.isMulLeftInvariant_eq_smul _ _`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (μA.prod ν).map (· * ((1 : A), b)) = μA.prod (ν.map (· * b))`. Establish `e : (fun x : A × B => x * ((1 : A), b)) = Prod.map id (· * b)`. Use function extensionality and compare the values at `x`. Simplify using `[Prod.ext_iff]`. Rewrite using `[e, ← Measure.map_prod_map _ _ measurable_id (measurable_mul_const b), Measure.map_id]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : μA.prod ν = (c : ℝ≥0∞) • μA.prod ν`. Rewrite using `[← Measure.prod_smul_right, ← ENNReal.smul_def, ← hc, ← h1, map_mul_right_eq_self]`. Take `K : TopologicalSpace.PositiveCompacts (A × B)` from `Classical.arbitrary _`. Establish `hpos : 0 < μA.prod ν K` using `Measure.measure_pos_of_nonempty_interior _ K.interior_nonempty`. Establish `hfin : μA.prod ν K < ⊤` using `K.isCompact.measure_lt_top`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h4` using `congrArg (fun m : Measure (A × B) => m K) h3`. Simplify using `only [Measure.smul_apply, smul_eq_mul] at h4`. Establish `h5 : (c : ℝ≥0∞) = 1` using `(ENNReal.mul_left_inj hpos.ne' hfin.ne).1 (h4.symm.trans (one_mul _).symm)`. Rewrite using `[hc, ENNReal.smul_def, h5, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rightInv_of_prod (h : ∀ μ : Measure (A × B), μ.IsHaarMeasure → μ.IsMulRightInvariant)
     (ν : Measure B) (hν : ν.IsHaarMeasure) : ν.IsMulRightInvariant := by
@@ -97,11 +97,7 @@ def restrEquiv (P Q R : Subgroup G) (e : P × Q ≃ₜ* G) (he : ∀ p, e p = p.
 variable [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace P := hP.locallyCompactSpace`. Use `haveI : LocallyCompactSpace Q := hQ.locallyCompactSpace`. Use `haveI : LocallyCompactSpace R := hR.locallyCompactSpace`. Establish `hRP : IsClosed ((R.subgroupOf P : Subgroup P) : Set P)` using `hR.preimage continuous_subtype_val`. Establish `hRQ : IsClosed ((R.subgroupOf Q : Subgroup Q) : Set Q)` using `hR.preimage continuous_subtype_val`.
-
-Use `haveI : LocallyCompactSpace (R.subgroupOf P) := hRP.locallyCompactSpace`. Use `haveI : LocallyCompactSpace (R.subgroupOf Q) := hRQ.locallyCompactSpace`. Introduce `ν hν`. Use `rightInv_of_prod (A := R.subgroupOf P) (fun μ hμ => ?_) ν hν` and prove the remaining obligations. Use `haveI := hμ`.
-
-Conclude with `GlobalTheory.UpqUnimodular.isMulRightInvariant_of_continuousMulEquiv (restrEquiv P Q R e he hs) μ (hu _ (ContinuousMulEquiv.isHaarMeasure_map μ (restrEquiv P Q R e he hs)))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rightInv_restr (P Q R : Subgroup G) (hP : IsClosed (P : Set G)) (hQ : IsClosed (Q : Set G))
     (hR : IsClosed (R : Set G)) (e : P × Q ≃ₜ* G) (he : ∀ p, e p = p.1.1 * p.2.1)
@@ -130,7 +126,7 @@ open GlobalTheory.AdelicU
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h` using `ofInf_projInf_mul_ofFin_projFin D.sp.cm.sig V.gram a`. Rewrite `h` using `[mem_infPts.1 ha, map_one, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ofInf_projInf_of_mem (V : HSp D) {a : GA D V} (ha : a ∈ GinfC V) :
     ofInf D.sp.cm.sig V.gram (projInf D.sp.cm.sig V.gram a) = a := by
@@ -138,7 +134,7 @@ theorem ofInf_projInf_of_mem (V : HSp D) {a : GA D V} (ha : a ∈ GinfC V) :
   rwa [mem_infPts.1 ha, map_one, mul_one] at h
 
 /- English proof (translation)
-Establish `h` using `ofInf_projInf_mul_ofFin_projFin D.sp.cm.sig V.gram b`. Rewrite `h` using `[mem_finPts.1 hb, map_one, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ofFin_projFin_of_mem (V : HSp D) {b : GA D V} (hb : b ∈ GfC V) :
     ofFin D.sp.cm.sig V.gram (projFin D.sp.cm.sig V.gram b) = b := by
@@ -146,7 +142,7 @@ theorem ofFin_projFin_of_mem (V : HSp D) {b : GA D V} (hb : b ∈ GfC V) :
   rwa [mem_finPts.1 hb, map_one, one_mul] at h
 
 /- English proof (translation)
-Rewrite using `[← ofInf_projInf_of_mem V ha, ← ofFin_projFin_of_mem V hb]`. Conclude with `commute_ofInf_ofFin _ _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_GinfC_GfC (V : HSp D) {a b : GA D V} (ha : a ∈ GinfC V) (hb : b ∈ GfC V) : a * b = b * a := by
   rw [← ofInf_projInf_of_mem V ha, ← ofFin_projFin_of_mem V hb]
@@ -179,26 +175,22 @@ Both sides reduce to the same expression.
 theorem splitEquiv_apply (V : HSp D) (p : GinfC V × GfC V) : splitEquiv V p = p.1.1 * p.2.1 := rfl
 
 /- English proof (translation)
-The claim follows from `isClosed_infPts _ _`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_GinfC' (V : HSp D) : IsClosed (GinfC V : Set (GA D V)) := isClosed_infPts _ _
 /- English proof (translation)
-The claim follows from `isClosed_finPts _ _`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_GfC' (V : HSp D) : IsClosed (GfC V : Set (GA D V)) := isClosed_finPts _ _
 
 end Adelic
 
 /- English proof (translation)
-Introduce `D V`. Establish `hi` using `isClosed_GinfC' V`. Establish `hf` using `isClosed_GfC' V`. Use `haveI : LocallyCompactSpace (GinfC V) := hi.locallyCompactSpace`. Use `haveI : LocallyCompactSpace (GfC V) := hf.locallyCompactSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hi, hf, fun a ha b hb => commute_GinfC_GfC V ha hb, ⟨(splitEquiv V).toHomeomorph, fun p => rfl⟩, fun μ hμ => rightInv_of_prod (A := GinfC V) (fun m hm => ?_) μ hμ, fun V₀ ρ d => ?_⟩` and prove the remaining obligations. Use `haveI := hm`. Conclude with `GlobalTheory.UpqUnimodular.isMulRightInvariant_of_continuousMulEquiv (splitEquiv V) m (GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D V _ inferInstance)`. Establish `hJ` using `GlobalTheory.jacGrp_isClosed D V V₀ ρ d`. Use `haveI : LocallyCompactSpace (jacGrp d) := hJ.locallyCompactSpace`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨⟨GlobalTheory.T.fourierJacobiGroup_split_real_finite D V V₀ ρ d, fun μ hμ => ?_, fun μ hμ => ?_⟩, fun A L o => ?_⟩` and prove the remaining obligations. Use `haveI := hμ haveI := GlobalTheory.T.fourierJacobiGroup_haar_isMulRightInvariant D V V₀ ρ d μ hμ`. Conclude with `GlobalTheory.QuotDiscrete.isInvInvariant_of_isMulRightInvariant μ`. Establish `hc : IsClosed (((jacGrp d).subgroupOf (GfC V) : Subgroup (GfC V)) : Set (GfC V))` using `hJ.preimage continuous_subtype_val haveI : LocallyCompactSpace ((jacGrp d).subgroupOf (GfC V)) := hc.locallyCompactSpace haveI := hμ haveI := rightInv_restr (GinfC V) (GfC V) (jacGrp d) hi hf hJ (splitEquiv V) (splitEquiv_apply V) (GlobalTheory.T.fourierJacobiGroup_split_real_fin …`. Conclude with `GlobalTheory.QuotDiscrete.isInvInvariant_of_isMulRightInvariant μ`.
-
-Establish `hB` using `GlobalTheory.BesClosed.besGrp_isClosed D V V₀ A L ρ d o`. Use `haveI : LocallyCompactSpace (besGrp d o) := hB.locallyCompactSpace`. Use `⟨GlobalTheory.T.besselGroup_split_real_finite D V V₀ A L ρ d o, fun μ hμ => ?_, fun μ hμ => ?_⟩` and prove the remaining obligations. Use `haveI := hμ haveI := GlobalTheory.T.besselGroup_haar_isMulRightInvariant D V V₀ A L ρ d o μ hμ`. Conclude with `GlobalTheory.QuotDiscrete.isInvInvariant_of_isMulRightInvariant μ`.
-
-Establish `hc : IsClosed (((besGrp d o).subgroupOf (GfC V) : Subgroup (GfC V)) : Set (GfC V))` using `hB.preimage continuous_subtype_val haveI : LocallyCompactSpace ((besGrp d o).subgroupOf (GfC V)) := hc.locallyCompactSpace haveI := hμ haveI := rightInv_restr (GinfC V) (GfC V) (besGrp d o) hi hf hB (splitEquiv V) (splitEquiv_apply V) (GlobalTheory.T.besselGroup_split_real_finite …`. Conclude with `GlobalTheory.QuotDiscrete.isInvInvariant_of_isMulRightInvariant μ`.
+A detailed English derivation is pending.
 -/
 theorem adelic_split : ∀ (D : D7) (V : HSp D), IsClosed (GinfC V : Set (GA D V)) ∧ IsClosed (GfC V : Set (GA D V)) ∧ (∀ a ∈ GinfC V, ∀ b ∈ GfC V, a * b = b * a) ∧ (∃ e : (GinfC V × GfC V) ≃ₜ GA D V, ∀ p, e p = p.1 * p.2) ∧ (∀ μ : Measure (GfC V), μ.IsHaarMeasure → μ.IsMulRightInvariant) ∧ ∀ (V₀ : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ), ((∀ a ∈ GinfC V, ∀ b ∈ GfC V, a * b ∈ jacGrp d → a ∈ jacGrp d ∧ b ∈ jacGrp d) ∧ (∀ μ : Measure (jacGrp d), μ.IsHaarMeasure → μ.IsInvInvariant) ∧ ∀ μ : Measure ((jacGrp d).subgroupOf (GfC V)), μ.IsHaarMeasure → μ.IsInvInvariant) ∧ ∀ (A L : HSp D) (o : OrthDec V₀ A L), (∀ a ∈ GinfC V, ∀ b ∈ GfC V, a * b ∈ besGrp d o → a ∈ besGrp d o ∧ b ∈ besGrp d o) ∧ (∀ μ : Measure (besGrp d o), μ.IsHaarMeasure → μ.IsInvInvariant) ∧ ∀ μ : Measure ((besGrp d o).subgroupOf (GfC V)), μ.IsHaarMeasure → μ.IsInvInvariant := by
   intro D V

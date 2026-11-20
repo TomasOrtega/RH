@@ -25,11 +25,11 @@ open scoped nonZeroDivisors in
 variable {W : Type} [AddCommGroup W] [Module ℝ W] in
 
 /- English proof (translation)
-Substitute `hM` using the available equality. Use `haveI : Invertible (2 : ℝ) := invertibleOfNonzero two_ne_zero`. Take `⟨v, hv⟩` from `LinearMap.BilinForm.exists_orthogonal_basis (LinearMap.BilinForm.isSymm_iff.mp hs)`. Set `L : W →ₗ[ℝ] (Fin (finrank ℝ W) → ℝ)` to `LinearMap.pi fun i => √(B (v i) (v i)) • v.coord i`. Use `⟨(EuclideanSpace.equiv (Fin _) ℝ).symm.toLinearEquiv.toLinearMap ∘ₗ L, fun x y => ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hB : B x y = ∑ i, v.repr x i * v.repr y i * B (v i) (v i)` using `by conv_lhs => rw [← v.sum_repr x, ← v.sum_repr y]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by rw [hv hj]; ring) (by simp)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB]`. Simplify using `[L, PiLp.inner_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Take the linear combination `(v.repr x i * v.repr y i) * Real.mul_self_sqrt (hp (v i))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ThickPoint.exists_euclidean_real {M : ℕ} [FiniteDimensional ℝ W] (hM : finrank ℝ W = M)
     (B : LinearMap.BilinForm ℝ W) (hs : B.IsSymm) (hp : ∀ x, 0 ≤ B x x) :
@@ -60,23 +60,21 @@ variable {W : Type} [AddCommGroup W] [Module ℝ W] in
 variable {V : Type} [AddCommGroup V] [Module ℚ V] in
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos M with rfl | hM` into its components or cases. Conclude with `⟨Fin.elim0, fun i => i.elim0, linearIndependent_empty_type, fun i => i.elim0⟩`. Use `haveI : Nonempty (Fin M) := ⟨⟨0, hM⟩⟩`. Use `set d := B.dualBasis hn b with hd`. Establish `hpair : ∀ i j, inner ℝ (φ (b i)) (ψ (d j)) = if i = j then 1 else 0`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Rewrite using `[hφ, hd, LinearMap.BilinForm.apply_dualBasis_right hn hs]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hli : LinearIndependent ℝ (fun j => ψ (d j))`. Rewrite using `[Fintype.linearIndependent_iff]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g hg i`. Establish `h` using `congrArg (fun z => inner ℝ (φ (b i)) z) hg`. Simplify `h` using `[inner_sum, inner_smul_right, hpair]`. Set `c : Basis (Fin M) ℝ (EuclideanSpace ℝ (Fin M))` to `basisOfLinearIndependentOfCardEqFinrank hli (by simp)`. Establish `hc : ∀ j, c j = ψ (d j)` using `fun j => by simp [c]`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlat : ∀ x ∈ span ℤ (Set.range c), x ≠ 0 → lam ≤ ‖x‖`. Introduce `x hx hx0`. Take `⟨m, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).mp hx`. Use `set u : V := ∑ j, m j • d j with hu`. Establish `hψu : ψ u = ∑ j, m j • c j` using `by simp [hu, map_sum, map_zsmul, hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hu0 : u ≠ 0` using `fun h => hx0 (by rw [← hψu, h, map_zero])`. Establish `hint : ∀ j, ∃ k : ℤ, B u (b j) = k` using `fun j => ⟨m j, by`. Simplify using `[hu, map_sum, map_zsmul, LinearMap.sum_apply, hd, LinearMap.BilinForm.apply_dualBasis_left]⟩`. Establish `h` using `hmin u hu0 hint`. Rewrite `h` using `[hψu]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[norm_nonneg (∑ j, m j • c j)]`. Take `⟨y, hyli, hyint, hyle⟩` from `_root_.ReciprocityTheory.ChartRestriction.G.T0.transference_dual c lam hlam hlat`. Use `choose m hm using hyint`. Establish `hφv : ∀ i, φ (∑ j, m i j • b j) = y i`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `InnerProductSpace.ext_inner_right_basis c fun j => ?_` and prove the remaining obligations. Rewrite using `[hm i j, hc j, map_sum, sum_inner]`. Simplify using `[map_zsmul, ← Int.cast_smul_eq_zsmul ℝ, inner_smul_left, hpair]`. Use `⟨fun i => ∑ j, m i j • b j, fun i => ?_, ?_, fun i => ?_⟩` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (subset_span ⟨j, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Establish `h1 : ∑ j, (g j : ℝ) • y j = 0`. Rewrite using `[← map_zero φ, ← hg, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← hφv j, ← map_ratCast_smul φ ℚ ℝ (g j)]`. Simplify using the standard rewrite rules. Conclude with `(Fintype.linearIndependent_iff.mp hyli) _ h1 i` after adjusting the coercions. Rewrite using `[hφv]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hyle i) 2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ThickPoint.transference_pair {M : ℕ} (b : Basis (Fin M) ℚ V)
     (B : LinearMap.BilinForm ℚ V) (hs : B.IsSymm) (hn : B.Nondegenerate)
@@ -158,9 +156,9 @@ open NumberField Module Submodule in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 /- English proof (translation)
-Establish `hc : ∀ z : E, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc z = IsCMField.complexConj E z` using `fun _ => rfl`. Establish `hcc : ∀ z : E, IsCMField.complexConj E (IsCMField.complexConj E z) = z` using `fun z => by`. Simplify `_root_.GlobalTheory.TraceDualMin.cc_cc z` using `[hc]`. Simplify using `only [hc] at hG`. Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.FD.herm, hc, map_sum, map_mul, hcc, hG]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma herm_swap_eq_cc_herm {G : Matrix (Fin r) (Fin r) E}
     (hG : ∀ a b, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (G a b) = G b a)
@@ -178,7 +176,7 @@ open NumberField Module Submodule in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 /- English proof (translation)
-Use `LinearMap.BilinForm.isSymm_iff.mpr ⟨fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.id_apply, _root_.GlobalTheory.ThickPoint.traceFormOf_apply, _root_.GlobalTheory.ThickPoint.traceFormOf_apply, herm_swap_eq_cc_herm hG x y, _root_.GlobalTheory.TraceDualMin.trace_cc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.ThickPoint.traceFormOf_isSymm {G : Matrix (Fin r) (Fin r) E}
     (hG : ∀ a b, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (G a b) = G b a) :
@@ -191,13 +189,13 @@ open NumberField Module Submodule in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 /- English proof (translation)
-Use `(LinearMap.BilinForm.isSymm_iff.mp (_root_.GlobalTheory.ThickPoint.traceFormOf_isSymm hG)).isRefl.nondegenerate_iff_separatingLeft.mpr ?_` and prove the remaining obligations. Introduce `x hx`. Establish `h1 : ∀ y, _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G x y = 0`. Introduce `y`. Use `(traceForm_nondegenerate ℚ E).1 _ fun c => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `hx (_root_.ReciprocityTheory.ChartRestriction.G.FD.cc c • y)`. Rewrite `h` using `[_root_.GlobalTheory.ThickPoint.traceFormOf_apply, _root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.herm_smul_right, _root_.GlobalTheory.TraceDualMin.cc_cc]`. Rewrite using `[Algebra.traceForm_apply, mul_comm]`. Conclude with `h`. Establish `h2 : Matrix.vecMul x G = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `b`. Establish `hs : ∀ j, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc ((Pi.single b (1 : E) : Fin r → E) j) = (Pi.single b (1 : E) : Fin r → E) j` using `fun j => by`. Apply the tactic sequence `by_cases hj : j = b <;> simp [hj, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc, Pi.single_apply]`. Establish `h` using `h1 (Pi.single b 1)`. Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.FD.herm, hs] at h`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `[Matrix.vecMul, dotProduct, Pi.single_apply]`. Conclude with `Matrix.eq_zero_of_vecMul_eq_zero hdet h2`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ThickPoint.traceFormOf_nondegenerate {G : Matrix (Fin r) (Fin r) E}
     (hG : ∀ a b, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (G a b) = G b a)
@@ -223,13 +221,13 @@ theorem _root_.GlobalTheory.ThickPoint.traceFormOf_nondegenerate {G : Matrix (Fi
   exact Matrix.eq_zero_of_vecMul_eq_zero hdet h2
 
 /- English proof (translation)
-Use `set D : FractionalIdeal (𝓞 E)⁰ E := (differentIdeal ℤ (𝓞 E) : FractionalIdeal (𝓞 E)⁰ E) with hD`. Establish `hD0 : D ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.mpr differentIdeal_ne_bot`. Establish `h1 : ∀ y ∈ X.L', herm X.Gm u y ∈ D⁻¹`. Introduce `y hy`. Use `TraceDualMin.mem_inv_different fun a => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `htr _ (X.L'.smul_mem (⟨cc (a : E), TraceDualMin.isIntegral_cc a.isIntegral_coe⟩ : 𝓞 E) hy)`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[← hk]`. Express the relevant statement in the definitionally equal form `_ = Algebra.trace ℚ E (herm X.Gm u (cc (a : E) • y))`. Rewrite using `[HermitianTraceFormVanishing.herm_smul_right, HermitianTraceFormVanishing.cc_cc, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hδ : ((discr E : ℤ) : E) ∈ D`. Use `FractionalIdeal.mem_coeIdeal_of_mem (𝓞 E)⁰ (P := E) (NumberField.discr_mem_differentIdeal E (𝓞 E))` as an intermediate fact. Rewrite `this` using `[map_intCast]`. Then use the resulting hypothesis. Use `X.L'_dual _ fun y hy => ?_` and prove the remaining obligations. Rewrite using `[HermitianTraceFormVanishing.herm_smul_left]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `FractionalIdeal.mul_mem_mul hδ (h1 y hy)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel₀ hD0]`. Take `⟨b, hb⟩` from `(FractionalIdeal.mem_one_iff _).mp this`. Rewrite using `[← hb]`. Conclude with `b.isIntegral_coe`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discr_smul_mem (X : DataX E r) (u : Fin r → E)
     (htr : ∀ y ∈ X.L', ∃ k : ℤ, Algebra.trace ℚ E (herm X.Gm u y) = k) :
@@ -287,7 +285,7 @@ open NumberField Module Submodule in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.ThickPoint.traceFormOf_apply, _root_.ReciprocityTheory.ChartRestriction.G.FD.MajorantOperators.trace_eq_sum (X := X)]`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.MajorantOperators.gI`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(_root_.ReciprocityTheory.ChartRestriction.G.FD.hermC (τ : E →+* ℂ) X.Gm (X.jp x τ (_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ u)) ((2 : ℂ) • X.jp x τ (_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ v))).re = _`. Rewrite using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_right, _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.hermC_jp_jp X hx, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_emb]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -311,9 +309,9 @@ open NumberField Module Submodule in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Establish `hD : (((discr E).natAbs : 𝓞 E)) ∈ differentIdeal ℤ (𝓞 E)`. Establish `h` using `Ideal.absNorm_mem (differentIdeal ℤ (𝓞 E))`. Rewrite `h` using `[absNorm_differentIdeal E (𝓞 E)]`. Then use the resulting hypothesis. Establish `hD' : ((discr E).natAbs : E) ∈ (↑(differentIdeal ℤ (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E)` using `(FractionalIdeal.mem_coeIdeal _).mpr ⟨_, hD, by simp⟩`. Establish `hmul` using `FractionalIdeal.mul_mem_mul hD' hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hmul` using `[mul_inv_cancel₀ _root_.GlobalTheory.coe_different_ne_zero, FractionalIdeal.mem_one_iff]`. Take `⟨a, ha⟩` from `hmul`. Rewrite using `[← ha]`. Conclude with `RingOfIntegers.isIntegral_coe a`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma isIntegral_natAbs_discr_mul_of_mem_inv_differentIdeal {z : E}
     (hz : z ∈ (↑(differentIdeal ℤ (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E)⁻¹) :
@@ -335,57 +333,55 @@ open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Establish `hspan : span E (X.L' : Set (Fin r → E)) = ⊤`. Rewrite using `[eq_top_iff, ← X.toData.Λ_span]`. Use `span_le.mpr fun y hy => ?_` and prove the remaining obligations. Establish `hNA : (X.NA : E) ≠ 0` using `by exact_mod_cast X.NA_pos.ne'`. Establish `h` using `X.NA_sub y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy' : y = (X.NA : E)⁻¹ • ((X.NA : E) • y)`. Rewrite using `[smul_smul, inv_mul_cancel₀ hNA, one_smul]`. Rewrite using `[hy']`. Use `Submodule.smul_mem _ _ (subset_span ?_)` and prove the remaining obligations. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[Nat.cast_smul_eq_nsmul]`. Then use the resulting hypothesis. Take `⟨b, hb⟩` from `_root_.GlobalTheory.ShortVectors.exists_basis X.L' X.L'_fg hspan`. Set `B` to `_root_.GlobalTheory.ThickPoint.majForm X.toData x hx`. Establish `hBs : B.IsSymm` using `LinearMap.BilinForm.isSymm_iff.mpr ⟨fun u v => _root_.ReciprocityTheory.ChartRestriction.G.FD.MajorantOperators.gI_comm hx u v⟩`. Establish `hBp : ∀ u, 0 ≤ B u u` using `fun u => by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[_root_.GlobalTheory.ThickPoint.majForm_apply, _root_.ReciprocityTheory.ChartRestriction.G.FD.MajorantOperators.gI_self hx]`. Conclude with `Finset.sum_nonneg fun τ _ => _root_.ReciprocityTheory.ChartRestriction.G.FD.MajorantOperators.maj_nonneg hx τ _`. Establish `hdim : finrank ℝ (X.Ψ → Fin r → ℂ) = 2 * _root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E * r`. Establish `hc` using `_root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticCoefficientForms.card_Psi X.toData`. Rewrite `hc` using `[Fintype.card_coe]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Module.finrank_pi_fintype, Complex.finrank_real_complex, hc]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨Φ, hΦ⟩` from `_root_.GlobalTheory.ThickPoint.exists_euclidean_real hdim B hBs hBp`. Set `φ` to `Φ.toAddMonoidHom.comp (_root_.GlobalTheory.ThickPoint.embHom X.toData)`. Set `ψ` to `Φ.toAddMonoidHom.comp (_root_.GlobalTheory.ThickPoint.reflHom X.toData x)`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφψ : ∀ u v, inner ℝ (φ u) (ψ v) = (_root_.GlobalTheory.ThickPoint.traceFormOf X.Gm u v : ℝ)`. Introduce `u v`. Simplify using `only [φ, ψ, AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe]`. Rewrite using `[hΦ, _root_.GlobalTheory.ThickPoint.majForm_apply, _root_.GlobalTheory.ThickPoint.pair_eq _ _ hx]`. Establish `hself : ∀ w, _root_.ReciprocityTheory.ChartRestriction.G.FD.MajorantOperators.gI x (_root_.GlobalTheory.ThickPoint.embHom X.toData w) (_root_.GlobalTheory.ThickPoint.embHom X.toData w) = ∑ τ, X.maj x τ (_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 w)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Rewrite using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.MajorantOperators.gI_self hx]`. Both sides reduce to the same expression. Establish `hφn : ∀ w, ‖φ w‖ ^ 2 = ∑ τ, X.maj x τ (_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 w)`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← real_inner_self_eq_norm_sq]`. Simplify using `only [φ, AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe]`. Rewrite using `[hΦ, _root_.GlobalTheory.ThickPoint.majForm_apply, hself]`. Establish `hψn : ∀ w, ‖ψ w‖ ^ 2 = 4 * ∑ τ, X.maj x τ (_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 w)`. Introduce `w`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hrefl : _root_.GlobalTheory.ThickPoint.reflHom X.toData x w = (2 : ℝ) • fun τ => X.jp x τ (_root_.GlobalTheory.ThickPoint.embHom X.toData w τ)`. Use function extensionality and compare the values at `τ i`. Simplify using `[_root_.GlobalTheory.ThickPoint.reflHom]`. Establish `hjj : _root_.ReciprocityTheory.ChartRestriction.G.FD.MajorantOperators.gI x (fun τ => X.jp x τ (_root_.GlobalTheory.ThickPoint.embHom X.toData w τ)) (fun τ => X.jp x τ (_root_.GlobalTheory.ThickPoint.embHom X.toData w τ)) = _root_.ReciprocityTheory.ChartRestriction.G.FD.MajorantO …`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.MajorantOperators.gI`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(_root_.ReciprocityTheory.ChartRestriction.G.FD.hermC (τ : E →+* ℂ) X.Gm (X.jp x τ (X.jp x τ _)) (X.jp x τ _)).re = (_root_.ReciprocityTheory.ChartRestriction.G.FD.hermC (τ : E →+* ℂ) X.Gm (X.jp x τ _) _).re`. Rewrite using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.hermC_jp_jp _ hx]`. Rewrite using `[← real_inner_self_eq_norm_sq]`. Simplify using `only [ψ, AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΦ, _root_.GlobalTheory.ThickPoint.majForm_apply, hrefl, _root_.ReciprocityTheory.ChartRestriction.G.FD.MajorantOperators.gI_smul_left, _root_.ReciprocityTheory.ChartRestriction.G.FD.MajorantOperators.gI_comm hx, _root_.ReciprocityTheory.ChartRestriction.G.FD.MajorantOperators.g …`. Expand and normalize the polynomial expressions, which then agree. Establish `hdE : _root_.ReciprocityTheory.ChartRestriction.G.FD.dE E = ((discr E).natAbs : ℝ)`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.dE`. Simplify using `[Nat.cast_natAbs]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdpos : 0 < _root_.ReciprocityTheory.ChartRestriction.G.FD.dE E`. Rewrite using `[hdE]`. Conclude with `Int.natAbs_pos.mpr (discr_ne_zero E)` after adjusting the coercions. Use `set lam : ℝ := 2 * √ε / _root_.ReciprocityTheory.ChartRestriction.G.FD.dE E with hlamdef`. Establish `hlam : 0 < lam` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmin' : ∀ u, u ≠ 0 → (∀ j, ∃ k : ℤ, _root_.GlobalTheory.ThickPoint.traceFormOf X.Gm u (b j) = k) → lam ^ 2 ≤ ‖ψ u‖ ^ 2`. Introduce `u hu0 hint`. Establish `hL : ∀ y ∈ X.L', ∃ k : ℤ, _root_.GlobalTheory.ThickPoint.traceFormOf X.Gm u y = k`. Introduce `y hy`. Rewrite `hy` using `[← hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨j, rfl⟩` from `hy`. Conclude with `hint j`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `add y z _ _ hy hz`. Take `⟨k, hk⟩` from `hy`. Take `⟨l, hl⟩` from `hz`. Conclude with `⟨k + l, by rw [map_add, hk, hl]; push_cast; ring⟩`. Consider the case `smul n y _ hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, hk⟩` from `hy`. Conclude with `⟨n * k, by rw [map_zsmul, hk]; push_cast; simp⟩`. Establish `hD : ∀ y ∈ X.L', _root_.ReciprocityTheory.ChartRestriction.G.FD.herm X.Gm u y ∈ (↑(differentIdeal ℤ (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E)⁻¹`. Introduce `y hy`. Use `_root_.GlobalTheory.TraceDualMin.mem_inv_different fun a => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `a' : 𝓞 E` to `⟨_root_.ReciprocityTheory.ChartRestriction.G.FD.cc (a : E), _root_.GlobalTheory.TraceDualMin.isIntegral_cc (RingOfIntegers.isIntegral_coe a)⟩`. Take `⟨k, hk⟩` from `hL _ (X.L'.smul_mem a' hy)`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[← hk, _root_.GlobalTheory.ThickPoint.traceFormOf_apply, ← algebraMap_smul E a' y]`. Express the relevant statement in the definitionally equal form `_ = Algebra.trace ℚ E (_root_.ReciprocityTheory.ChartRestriction.G.FD.herm X.Gm u (_root_.ReciprocityTheory.ChartRestriction.G.FD.cc (a : E) • y))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.herm_smul_right, _root_.GlobalTheory.TraceDualMin.cc_cc, mul_comm]`. Use `set N : E := ((discr E).natAbs : E) with hN`. Establish `hNu : N • u ∈ X.L'` using `X.L'_dual _ fun y hy => by`. Rewrite using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.herm_smul_left]`. Conclude with `isIntegral_natAbs_discr_mul_of_mem_inv_differentIdeal (hD y hy)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hN0 : N ≠ 0`. Rewrite using `[hN]`. Conclude with `Int.natAbs_ne_zero.mpr (discr_ne_zero E)` after adjusting the coercions. Establish `hε'` using `hmin _ hNu (smul_ne_zero hN0 hu0)`. Establish `hemb : ∀ τ : X.Ψ, _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 (N • u) = (((discr E).natAbs : ℝ) : ℂ) • _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 u` using `fun τ => by`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb, hN, Pi.smul_apply, smul_eq_mul, map_mul, map_natCast, Complex.ofReal_natCast]`. Simplify using `only [hemb, _root_.ReciprocityTheory.ChartRestriction.G.FD.UnipotentCoefficientShift.maj_smul hx] at hε'`. Rewrite `hε'` using `[← Finset.mul_sum, ← hdE]`. Rewrite using `[hψn, hlamdef, div_pow, mul_pow, Real.sq_sqrt hε.le, div_le_iff₀ (by positivity)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Take `⟨v, hvL, hvli, hvle⟩` from `_root_.GlobalTheory.ThickPoint.transference_pair b (_root_.GlobalTheory.ThickPoint.traceFormOf X.Gm) (_root_.GlobalTheory.ThickPoint.traceFormOf_isSymm X.Gm_herm) (_root_.GlobalTheory.ThickPoint.traceFormOf_nondegenerate X.Gm_herm X.Gm_det) φ ψ hφψ lam hlam hmin'`. Establish `hbound : ∀ i, ∑ τ, X.maj x τ (_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 (v i)) ≤ (2 * _root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E * r : ℝ) ^ 4 * _root_.ReciprocityTheory.ChartRestriction.G.FD.dE E ^ 2 / (4 * ε)`. Introduce `i`. Rewrite using `[← hφn]`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(hvle i).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[hlamdef, div_pow, div_pow, mul_pow, Real.sq_sqrt hε.le]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin : Fintype.card (Fin (2 * _root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E * r)) = finrank ℚ (Fin r → E)`. Rewrite using `[Fintype.card_fin, Module.finrank_pi_fintype]`. Simplify using `[_root_.GlobalTheory.ShortVectors.finrank_eq]`. Expand and normalize the polynomial expressions, which then agree. Establish `hQ : span ℚ (Set.range v) = ⊤` using `hvli.span_eq_top_of_card_eq_finrank' hfin`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hE : span E (Set.range v) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `z _`. Establish `hz : z ∈ span ℚ (Set.range v)` using `hQ ▸ Submodule.mem_top`. Conclude with `Submodule.span_le_restrictScalars ℚ E _ hz`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hsv, hss, hsli⟩` from `exists_linearIndependent E (Set.range v)`. Set `bs : Basis s E (Fin r → E)` to `Basis.mk hsli (by rw [Subtype.range_coe, hss, hE])`. Set `e : s ≃ Fin r` to `bs.indexEquiv (Pi.basisFun E (Fin r))`. Use `⟨fun i => (e.symm i : Fin r → E), fun i => ?_, hsli.comp _ e.symm.injective, fun i => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hsv (e.symm i).2 show (e.symm i : Fin r → E) ∈ X.L'`.
-
-Rewrite using `[← hk]`. Conclude with `(hb _).mp (hvL k)`. Take `⟨k, hk⟩` from `hsv (e.symm i).2 show ∑ τ, X.maj x τ (_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 (e.symm i : Fin r → E)) ≤ _`. Rewrite using `[← hk]`. Conclude with `hbound k`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.exists_short_basis_at {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.DataX E r) (x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r)
     (hx : x ∈ X.dom) (ε : ℝ) (hε : 0 < ε)

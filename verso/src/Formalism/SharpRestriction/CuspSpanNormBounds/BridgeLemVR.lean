@@ -10,19 +10,19 @@ open NumberField Formalism.HermitianLatticesTheory Formalism.ThetaLiftIndependen
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_loc_iff (p : Ideal (𝓞 K)) (N : Submodule (𝓞 K) K) (x : K) :
     x ∈ loc (K := K) p N ↔ ∃ s ∈ hcompl (K := K) p, s • x ∈ N := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_locR_iff (p : Ideal (𝓞 K)) (x : K) :
     x ∈ locR (K := K) p ↔ ∃ s ∈ hcompl (K := K) p, s • x ∈ (1 : Submodule (𝓞 K) K) := Iff.rfl
 
 /- English proof (translation)
-Use `hp.isPrime` as an intermediate fact. Unfold `hcompl`. Rewrite using `[Submonoid.closure_le]`. Introduce `s hs`. Conclude with `hs.1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hcompl_le_primeCompl {p : Ideal (𝓞 K)} (hp : p.IsMaximal) :
     hcompl (K := K) p ≤ p.primeCompl := by
@@ -33,15 +33,15 @@ theorem hcompl_le_primeCompl {p : Ideal (𝓞 K)} (hp : p.IsMaximal) :
   exact hs.1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, (hcompl (K := K) p).one_mem, by rw [one_smul]; exact Submodule.mem_one.2 ⟨1, map_one _⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem_locR (p : Ideal (𝓞 K)) : (1 : K) ∈ locR (K := K) p :=
   ⟨1, (hcompl (K := K) p).one_mem, by rw [one_smul]; exact Submodule.mem_one.2 ⟨1, map_one _⟩⟩
 
 /- English proof (translation)
-Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨t, ht, hty⟩` from `hy`. Use `⟨s * t, (hcompl (K := K) p).mul_mem hs ht, ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `Submodule.mem_one.1 hsx`. Take `⟨r', hr'⟩` from `Submodule.mem_one.1 hty`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `Submodule.mem_one.2 ⟨r * r', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hr, hr', Algebra.smul_def, Algebra.smul_def, Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mul_mem_locR {p : Ideal (𝓞 K)} {x y : K} (hx : x ∈ locR (K := K) p) (hy : y ∈ locR (K := K) p) :
     x * y ∈ locR (K := K) p := by
@@ -55,11 +55,11 @@ theorem mul_mem_locR {p : Ideal (𝓞 K)} {x y : K} (hx : x ∈ locR (K := K) p)
   ring
 
 /- English proof (translation)
-Establish `key : hcompl (K` using `K) p ≤ (hcompl (K := K) p).comap (conjO K : 𝓞 K →* 𝓞 K) := by conv_lhs => unfold hcompl`. Rewrite using `[Submonoid.closure_le]`. Introduce `s hs`. Use `show conjO K s ∈ hcompl (K := K) p`. Apply `Submonoid.subset_closure` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hs.2 (conjO K s) rfl, fun t ht => ?_⟩` and prove the remaining obligations. Establish `e : t = s`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `: (t : K) = star (star (s : K))` using `ht`. Rewrite `this` using `[star_star]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Rewrite using `[e]`. Conclude with `hs.1`. Conclude with `key hs`.
+A detailed English derivation is pending.
 -/
 theorem conjO_mem_hcompl {p : Ideal (𝓞 K)} {s : 𝓞 K} (hs : s ∈ hcompl (K := K) p) :
     conjO K s ∈ hcompl (K := K) p := by
@@ -80,9 +80,9 @@ theorem conjO_mem_hcompl {p : Ideal (𝓞 K)} {s : 𝓞 K} (hs : s ∈ hcompl (K
   exact key hs
 
 /- English proof (translation)
-Take `⟨s, hs, hsx⟩` from `hx`. Use `⟨conjO K s, conjO_mem_hcompl hs, ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `Submodule.mem_one.1 hsx`. Use `Submodule.mem_one.2 ⟨conjO K r, ?_⟩` and prove the remaining obligations. Rewrite `hr`, the goal using `[Algebra.smul_def]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `e1 : algebraMap (𝓞 K) K (conjO K r) = star (algebraMap (𝓞 K) K r)` using `rfl`. Establish `e2 : algebraMap (𝓞 K) K (conjO K s) = star (algebraMap (𝓞 K) K s)` using `rfl`. Rewrite using `[e1, e2, hr, star_mul']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem star_mem_locR {p : Ideal (𝓞 K)} {x : K} (hx : x ∈ locR (K := K) p) :
     star x ∈ locR (K := K) p := by
@@ -96,11 +96,11 @@ theorem star_mem_locR {p : Ideal (𝓞 K)} {x : K} (hx : x ∈ locR (K := K) p) 
   rw [e1, e2, hr, star_mul']
 
 /- English proof (translation)
-Set `J : Ideal (𝓞 K)` to `(1 : Submodule (𝓞 K) K).comap (LinearMap.toSpanSingleton (𝓞 K) K x)`. Establish `hJ : J = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨p, hp, hJp⟩` from `Ideal.exists_le_maximal J hne`. Take `⟨s, hs, hsx⟩` from `hx p hp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsJ : s ∈ J` using `by show LinearMap.toSpanSingleton (𝓞 K) K x s ∈ (1 : Submodule (𝓞 K) K)`. Rewrite using `[LinearMap.toSpanSingleton_apply]`. Conclude with `hsx`. Conclude with `hcompl_le_primeCompl hp hs (hJp hsJ)`. Establish `h1 : (1 : 𝓞 K) ∈ J` using `hJ ▸ Submodule.mem_top`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Express the relevant statement in the definitionally equal form `LinearMap.toSpanSingleton (𝓞 K) K x 1 ∈ (1 : Submodule (𝓞 K) K) at h1`. Rewrite `h1` using `[LinearMap.toSpanSingleton_apply, one_smul]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem mem_one_of_locR {x : K} (hx : ∀ p : Ideal (𝓞 K), p.IsMaximal → x ∈ locR (K := K) p) :
     x ∈ (1 : Submodule (𝓞 K) K) := by
@@ -119,11 +119,11 @@ theorem mem_one_of_locR {x : K} (hx : ∀ p : Ideal (𝓞 K), p.IsMaximal → x 
   rwa [LinearMap.toSpanSingleton_apply, one_smul] at h1
 
 /- English proof (translation)
-Take `⟨g, hg, hgM⟩` from `hM.2 p hp`. Use `⟨g 1, (mem_isom_iff h1 g).1 hg, fun y => ?_⟩` and prove the remaining obligations. Establish `hgx : ∀ x, g x = x * g 1`. Introduce `x`. Establish `: g x = g (x • (1 : K))` using `by simp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this, map_smul, smul_eq_mul]`. Rewrite using `[← hgM, mem_gmap]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `⟨g.symm y, hy, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hgx, LinearEquiv.apply_symm_apply]`. Introduce and unpack `⟨r, hr, rfl⟩`. Rewrite using `[← hgx, LinearEquiv.symm_apply_apply]`. Conclude with `hr`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local (h : K →ₗ⋆[K] K →ₗ[K] K) (h1 : h 1 1 ≠ 0) {M : Submodule (𝓞 K) K}
     (hM : M ∈ genus h (1 : Submodule (𝓞 K) K)) {p : Ideal (𝓞 K)} (hp : p.IsMaximal) :
@@ -144,17 +144,17 @@ theorem exists_local (h : K →ₗ⋆[K] K →ₗ[K] K) (h1 : h 1 1 ≠ 0) {M : 
     exact hr
 
 /- English proof (translation)
-Establish `key : ∀ p : Ideal (𝓞 K), p.IsMaximal → a * star a ∈ locR (K` using `K) p ∧ (a * star a)⁻¹ ∈ locR (K := K) p := by`. Introduce `p hp`. Take `⟨z, hz, hzM⟩` from `exists_local h h1 hM hp`. Take `⟨z', hz', hzM'⟩` from `exists_local h h1 hM' hp`. Establish `hl : loc (K` using `K) p M = Submodule.span (𝓞 K) {a} * loc (K := K) p M' := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[he, loc_mul hp]`. Establish `hzin : z ∈ loc (K` using `K) p M := (hzM z).2 ⟨1, one_mem_locR p, (one_mul z).symm⟩`. Rewrite `hzin` using `[hl, Submodule.mem_span_singleton_mul]`. Take `⟨m, hm, hmz⟩` from `hzin`. Take `⟨r, hr, rfl⟩` from `(hzM' m).1 hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `haz : a * z' ∈ loc (K` using `K) p M := by`. Rewrite using `[hl, Submodule.mem_span_singleton_mul]`. Conclude with `⟨z', (hzM' z').2 ⟨1, one_mem_locR p, (one_mul z').symm⟩, rfl⟩`. Take `⟨r', hr', hr'e⟩` from `(hzM _).1 haz`. Establish `hz1 : z * star z = 1` using `by rw [mul_comm]; exact hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz1' : z' * star z' = 1` using `by rw [mul_comm]; exact hz'`. Establish `t1` using `congrArg (fun t => t * star t) hr'e`. Simplify using `only [star_mul'] at t1`. Establish `e1 : a * star a = r' * star r'`. Take the linear combination `t1 - (a * star a) * hz1' + (r' * star r') * hz1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `t2` using `congrArg (fun t => t * star t) hmz`. Simplify using `only [star_mul'] at t2`. Establish `e2 : a * star a * (r * star r) = 1`. Take the linear combination `t2 - (a * star a * r * star r) * hz1' + hz1`. Use `⟨e1 ▸ mul_mem_locR hr' (star_mem_locR hr'), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inv_eq_of_mul_eq_one_right e2]`. Conclude with `mul_mem_locR hr (star_mem_locR hr)`. Conclude with `⟨mem_one_of_locR fun p hp => (key p hp).1, mem_one_of_locR fun p hp => (key p hp).2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem norm_unit (h : K →ₗ⋆[K] K →ₗ[K] K) (h1 : h 1 1 ≠ 0) {M M' : Submodule (𝓞 K) K}
     (hM : M ∈ genus h (1 : Submodule (𝓞 K) K)) (hM' : M' ∈ genus h (1 : Submodule (𝓞 K) K)) {a : K}

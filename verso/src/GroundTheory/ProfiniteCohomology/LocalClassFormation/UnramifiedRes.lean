@@ -25,7 +25,7 @@ noncomputable def galRestrict : Gal(L'/K') →* Gal(L/K) :=
       map_mul' := fun _ _ => rfl }
 
 /- English proof (translation)
-Establish `: IsGalois K L` using `isGalois_of_unramified K L IsUnramified.ramificationIndex_eq_one`. Conclude with `AlgEquiv.restrictNormal_commutes (AlgEquiv.restrictScalars K σ) L x`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem algebraMap_galRestrict_apply (σ : Gal(L'/K')) (x : L) :
     algebraMap L L' (galRestrict K K' L L' σ x) = σ (algebraMap L L' x) := by
@@ -60,9 +60,9 @@ variable [ValuativeRel K'] [TopologicalSpace K'] [IsNonarchimedeanLocalField K']
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] [FiniteDimensional K L] in
 
 /- English proof (translation)
-Establish `: ValuativeExtension K L'` using `valuativeExtension_trans K K' L'`. Establish `: FiniteDimensional K L'` using `FiniteDimensional.trans K K' L'`. Establish `: FiniteDimensional L L'` using `FiniteDimensional.right K L L'`. Establish `h1` using `ramificationIndex_tower K L L'`. Establish `h2` using `ramificationIndex_tower K K' L'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[IsUnramified.ramificationIndex_eq_one (K := K) (L := L), one_mul]`. Rewrite `h2` using `[IsUnramified.ramificationIndex_eq_one (K := K') (L := L'), mul_one]`. Rewrite using `[← h1, h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ramificationIndex_right_eq :
     ramificationIndex L L' = ramificationIndex K K' := by
@@ -76,7 +76,7 @@ theorem ramificationIndex_right_eq :
   rw [← h1, h2]
 
 /- English proof (translation)
-Set `` to `Fintype.ofFinite 𝓀[K]`. Set `` to `Fintype.ofFinite 𝓀[K']`. Rewrite using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, Module.card_eq_pow_finrank (K := 𝓀[K]) (V := 𝓀[K']), residueDegree_eq_finrank]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_residueField_eq_pow : Nat.card 𝓀[K'] = Nat.card 𝓀[K] ^ residueDegree K K' := by
   let := Fintype.ofFinite 𝓀[K]
@@ -85,11 +85,11 @@ theorem card_residueField_eq_pow : Nat.card 𝓀[K'] = Nat.card 𝓀[K] ^ residu
     Module.card_eq_pow_finrank (K := 𝓀[K]) (V := 𝓀[K']), residueDegree_eq_finrank]
 
 /- English proof (translation)
-Establish `he` using `IsUnramified.ramificationIndex_eq_one (K := K) (L := L)`. Apply `residueAlgEquiv_injective_of_unramified K L he` to reduce the goal to its premises. Use extensionality with `y`. Take `⟨x, rfl⟩` from `IsLocalRing.residue_surjective y`. Establish `hpow : ∀ n : ℕ, residueAlgEquiv K L (frob K L ^ n) (IsLocalRing.residue 𝒪[L] x) = IsLocalRing.residue 𝒪[L] x ^ (Nat.card 𝓀[K] ^ n)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ', map_mul, AlgEquiv.mul_apply, ih, map_pow, residueAlgEquiv_frobenius_apply, ← pow_mul, pow_succ, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpow, ← card_residueField_eq_pow K K', residueAlgEquiv_residue]`. Apply `(algebraMap 𝓀[L] 𝓀[L']).injective` to reduce the goal to its premises. Rewrite using `[map_pow, IsLocalRing.ResidueField.algebraMap_residue, IsLocalRing.ResidueField.algebraMap_residue]`. Establish `hx : algebraMap 𝒪[L] 𝒪[L'] (integerAlgEquiv K L (galRestrict K K' L L' (frob K' L')) x) = integerAlgEquiv K' L' (frob K' L') (algebraMap 𝒪[L] 𝒪[L'] x)` using `Subtype.ext (algebraMap_galRestrict_apply K K' L L' _ _)`. Rewrite using `[hx, residue_frobenius_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem galRestrict_frob : galRestrict K K' L L' (frob K' L') = frob K L ^ residueDegree K K' := by
   have he := IsUnramified.ramificationIndex_eq_one (K := K) (L := L)
@@ -114,9 +114,9 @@ theorem galRestrict_frob : galRestrict K K' L L' (frob K' L') = frob K L ^ resid
   rw [hx, residue_frobenius_apply]
 
 /- English proof (translation)
-Establish `: FiniteDimensional K L'` using `FiniteDimensional.trans K K' L'`. Establish `: FiniteDimensional L L'` using `FiniteDimensional.right K L L'`. Simplify using `only [h2Valuation, groupCohomology.functor_map]`. Rewrite using `[← groupCohomology.map_comp, ← groupCohomology.map_comp]`. Use `groupCohomology.map_congr (by ext; rfl) (LinearMap.ext fun x => ?_) 2` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `ord (algebraMap L L' ((Additive.toMul x : Lˣ) : L)) = (ramificationIndex K K' : ℤ) * ord ((Additive.toMul x : Lˣ) : L)`. Rewrite using `[ord_algebraMap, ramificationIndex_right_eq K K' L L']`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitsResH2_comp_h2Valuation :
     unitsResH2 K K' L L' ≫ h2Valuation K' L' =
@@ -132,7 +132,7 @@ theorem unitsResH2_comp_h2Valuation :
   rw [ord_algebraMap, ramificationIndex_right_eq K K' L L']
 
 /- English proof (translation)
-Establish `hsq` using `congrArg (fun h => h.hom x) (unitsResH2_comp_h2Valuation K K' L L')`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at hsq`. Rewrite using `[unramifiedInv_apply, hsq, h2IntAddEquiv_map_intMulRes, unramifiedInv_apply, AddMonoidHom.smul_apply, AddMonoidHom.comp_apply, MonoidHom.toAdditive_apply_apply, toMul_ofMul, galRestrict_frob, ofMul_pow, map_nsmul, map_zsmul, map_nsmul, ← ramificationIndex_mul_residueDegree K K', …`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem unramifiedInv_unitsResH2 (x : groupCohomology (galUnitsZ K L) 2) :
     unramifiedInv K' L' ((unitsResH2 K K' L L').hom x) =
@@ -157,7 +157,7 @@ variable (K L L' : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsUnramified K L']
 
 /- English proof (translation)
-Rewrite using `[unramifiedInv_unitsResH2, Module.finrank_self, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unramifiedInv_inflation (x : groupCohomology (galUnitsZ K L) 2) :
     unramifiedInv K L' ((unitsResH2 K K L L').hom x) = unramifiedInv K L x := by

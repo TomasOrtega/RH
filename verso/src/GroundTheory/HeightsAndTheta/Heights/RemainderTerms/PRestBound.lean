@@ -8,7 +8,7 @@ namespace GroundTheory.Heights₂.Heights
 namespace RestTerms
 
 /- English proof (translation)
-Introduce `f r a c B₀ hf hr ha hB`. Use `⟨(h₁ f r a c B₀ hf hr ha hB).1, ?_⟩` and prove the remaining obligations. Introduce `Q hQ s e he P`. Conclude with `h₂ f r a c B₀ hf hr ha hB Q s e (fun p hp hpB => (h₁ f r a c B₀ hf hr ha hB).2 Q hQ s e he p hp hpB) P`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem RestBound.proof (h₁ : RestPrimeBound.Statement) (h₂ : RestBoundOfPrimeBound.Statement) :
     RestBound.Statement := by

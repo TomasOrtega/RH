@@ -8,9 +8,9 @@ open scoped Classical
 namespace UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `h`. Take `⟨r, hr⟩` from `Complex.conj_eq_iff_real.1 h`. Establish `h0` using `D.ρc_root`. Rewrite `h0` using `[hr]`. Establish `h1 : (r : ℝ) ^ 2 - D.tr * r + D.nm = 0` using `by exact_mod_cast h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ((D.tr : ℝ)) ^ 2 - 4 * D.nm < 0` using `by exact_mod_cast D.disc_neg`. Use polynomial arithmetic with `[sq_nonneg (2 * r - D.tr)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem rho_ne_conj {p : ℕ} [Fact p.Prime] (D : Datum p) :
     (starRingEnd ℂ) D.ρc ≠ D.ρc := by
@@ -23,15 +23,15 @@ private theorem rho_ne_conj {p : ℕ} [Fact p.Prime] (D : Datum p) :
   nlinarith [sq_nonneg (2 * r - D.tr)]
 
 /- English proof (translation)
-Establish `hne : ComplexEmbedding.conjugate t₀ ≠ t₀`. Introduce `h`. Apply `rho_ne_conj D` to reduce the goal to its premises. Use `congrArg (fun τ : D.F →+* ℂ => τ (D.ω : D.F)) h` as an intermediate fact. Simplify `this` using `[ComplexEmbedding.conjugate_coe_eq, h₀]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hc : (ComplexEmbedding.conjugate t₀) (D.ω : D.F) ≠ D.ρc`. Simplify `rho_ne_conj D` using `[ComplexEmbedding.conjugate_coe_eq, h₀]`. Establish `key : ∀ τ : D.F →+* ℂ, (typeMult D.n t₀ (epsD D) τ : ℂ) * τ (c : D.F) = (if τ = t₀ then τ (c : D.F) else 0) + (if τ (D.ω : D.F) ≠ D.ρc then (D.n : ℂ) * τ (c : D.F) else 0) - (if τ = ComplexEmbedding.conjugate t₀ then τ (c : D.F) else 0)`. Introduce `τ`. Unfold `typeMult epsD`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `h1 : τ = t₀`. Substitute `h1` using the available equality. Simplify using `[hne.symm, h₀]`. Distinguish the cases in `h2 : τ = ComplexEmbedding.conjugate t₀`. Substitute `h2` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hc' : (starRingEnd ℂ) (t₀ (D.ω : D.F)) ≠ D.ρc`. Simplify `hc` using `[ComplexEmbedding.conjugate_coe_eq]`. Simplify using `[h1, hc', Nat.cast_sub hn]`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `by_cases h3 : τ (D.ω : D.F) = D.ρc <;> simp [h1, h2, h3]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Finset.sum_congr rfl fun τ _ => key τ, Finset.sum_sub_distrib, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq', Finset.sum_filter]`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem type_sum {p : ℕ} [Fact p.Prime] (D : Datum p) (t₀ : D.F →+* ℂ) (h₀ : t₀ (D.ω : D.F) = D.ρc)
     (hn : 1 ≤ D.n) (c : 𝓞 D.F) :
@@ -65,15 +65,13 @@ private theorem type_sum {p : ℕ} [Fact p.Prime] (D : Datum p) (t₀ : D.F →+
   simp [ComplexEmbedding.conjugate_coe_eq]
 
 /- English proof (translation)
-Introduce `p _ D ha hm t₀ ht ρ hs gb hst`. Establish `hsub : Subsingleton (Fin D.a)` using `by rw [ha]; infer_instance`. Set `i₀ : Fin D.a` to `⟨0, by omega⟩`. Set `b : Base D ℂ` to `{ unit := fun k hk => by`. Use `isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 fun h => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `h` using the available equality. Conclude with `(Fact.out : p.Prime).one_lt.ne' (Nat.coprime_zero_left p |>.1 hk)`. Use `ρ := gb.ρ`. Use `ρ_root := gb.ρ_root`. Use `t := gb.t`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `t_ω := gb.t_ω`. Use `comax := fun i j hij => absurd (hsub.elim i j) hij`. Use `apart := fun i j hij => absurd (hsub.elim i j) hij }`. Use `⟨b, rfl, fun i => (RingHom.id_comp _).symm, ?_⟩` and prove the remaining obligations. Introduce `c`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hti : b.t i₀ c = t₀ (c : D.F)`. Use `hst.2 i₀ c` as an intermediate fact. Rewrite `this` using `[ht i₀]`. Conclude with `this`. Establish `hb : b.ρ = D.ρc` using `hst.1`.
-
-Establish `h₀ : t₀ (D.ω : D.F) = D.ρc` using `by rw [← ht i₀]; exact D.tau_ω i₀`. Rewrite using `[hs.tr c, type_sum D t₀ h₀ hs.pos c, hm, Fintype.sum_subsingleton _ i₀, Fintype.sum_subsingleton _ i₀]`. Simplify using `[hti, hb]`.
+A detailed English derivation is pending.
 -/
 theorem baseC_of : BaseC := by
   intro p _ D ha hm t₀ ht ρ hs gb hst

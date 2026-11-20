@@ -8,7 +8,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Mod
 namespace GlobalTheory.OrdLoc
 
 /- English proof (translation)
-Use `show (GG.ofGL h * r g * (GG.ofGL h)⁻¹).left = _`. Rewrite using `[SemidirectProduct.mul_left, SemidirectProduct.mul_left, SemidirectProduct.inv_left]`. Simplify using `only [SemidirectProduct.right_inl, SemidirectProduct.left_inl, SemidirectProduct.mul_right, hg, mul_one, inv_one, map_one, MulAut.one_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conjBy_left {G C : Type} [Group G] [CommRing C] (h : GL (Fin 3) C) (r : G →* GG 3 C) (g : G)
     (hg : (r g).right = 1) : (conjBy h r g).left = h * (r g).left * h⁻¹ := by
@@ -17,7 +17,7 @@ theorem conjBy_left {G C : Type} [Group G] [CommRing C] (h : GL (Fin 3) C) (r : 
   simp only [SemidirectProduct.right_inl, SemidirectProduct.left_inl, SemidirectProduct.mul_right, hg, mul_one, inv_one, map_one, MulAut.one_apply]
 
 /- English proof (translation)
-Unfold `GG.mat`. Rewrite using `[conjBy_left h r g hg, Units.val_mul, Units.val_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjBy_mat {G C : Type} [Group G] [CommRing C] (h : GL (Fin 3) C) (r : G →* GG 3 C) (g : G)
     (hg : (r g).right = 1) :
@@ -30,7 +30,7 @@ section Conj
 variable {C : Type} [CommRing C]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_right _ _ (Ideal.sum_mem _ fun m _ => Ideal.mul_mem_left _ _ (hN m k))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ent_mem_mul {J : Ideal C} {N : Matrix (Fin 3) (Fin 3) C} (hN : ∀ i j, N i j ∈ J)
     (A B : Matrix (Fin 3) (Fin 3) C) (i j : Fin 3) : (A * N * B) i j ∈ J := by
@@ -39,7 +39,7 @@ theorem ent_mem_mul {J : Ideal C} {N : Matrix (Fin 3) (Fin 3) C} (hN : ∀ i j, 
     (Ideal.sum_mem _ fun m _ => Ideal.mul_mem_left _ _ (hN m k))
 
 /- English proof (translation)
-Establish `e : (h : Matrix (Fin 3) (Fin 3) C) * ((h⁻¹ : GL (Fin 3) C) : Matrix (Fin 3) (Fin 3) C) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, ← (Matrix.scalar_commute c (fun _ => Commute.all _ _) (h : Matrix (Fin 3) (Fin 3) C)), Matrix.mul_assoc (Matrix.scalar _ c), e, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_sub_scalar (h : GL (Fin 3) C) (M : Matrix (Fin 3) (Fin 3) C) (c : C) :
     (h : Matrix (Fin 3) (Fin 3) C) * M * ((h⁻¹ : GL (Fin 3) C) : Matrix (Fin 3) (Fin 3) C) - Matrix.scalar _ c =
@@ -50,7 +50,7 @@ theorem conj_sub_scalar (h : GL (Fin 3) C) (M : Matrix (Fin 3) (Fin 3) C) (c : C
     Matrix.mul_assoc (Matrix.scalar _ c), e, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `e : ((h⁻¹ : GL (Fin 3) C) : Matrix (Fin 3) (Fin 3) C) * (h : Matrix (Fin 3) (Fin 3) C) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc ((h⁻¹ : GL (Fin 3) C) : Matrix (Fin 3) (Fin 3) C) (h : Matrix (Fin 3) (Fin 3) C), e, Matrix.one_mul, ← Matrix.mul_assoc ((h⁻¹ : GL (Fin 3) C) : Matrix (Fin 3) (Fin 3) C) (h : Matrix (Fin 3) (Fin 3) C), e, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mul_three_alt (h : GL (Fin 3) C) (A B E : Matrix (Fin 3) (Fin 3) C) :
     ((h : Matrix (Fin 3) (Fin 3) C) * A * ((h⁻¹ : GL (Fin 3) C) : Matrix (Fin 3) (Fin 3) C)) *
@@ -64,7 +64,7 @@ theorem conj_mul_three_alt (h : GL (Fin 3) C) (A B E : Matrix (Fin 3) (Fin 3) C)
     ← Matrix.mul_assoc ((h⁻¹ : GL (Fin 3) C) : Matrix (Fin 3) (Fin 3) C) (h : Matrix (Fin 3) (Fin 3) C), e, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `e : ((h⁻¹ : GL (Fin 3) C) : Matrix (Fin 3) (Fin 3) C) * (h : Matrix (Fin 3) (Fin 3) C) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, Matrix.mul_one, ← Matrix.mul_assoc, e, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem unconj (h : GL (Fin 3) C) (M : Matrix (Fin 3) (Fin 3) C) :
     M = ((h⁻¹ : GL (Fin 3) C) : Matrix (Fin 3) (Fin 3) C) *
@@ -75,14 +75,14 @@ theorem unconj (h : GL (Fin 3) C) (M : Matrix (Fin 3) (Fin 3) C) :
   rw [e, Matrix.mul_one, ← Matrix.mul_assoc, e, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.trace_mul_comm, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_conj (h : GL (Fin 3) C) (M : Matrix (Fin 3) (Fin 3) C) :
     ((h : Matrix (Fin 3) (Fin 3) C) * M * ((h⁻¹ : GL (Fin 3) C) : Matrix (Fin 3) (Fin 3) C)).trace = M.trace := by
   rw [Matrix.trace_mul_comm, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.coe_units_inv]`. Conclude with `Matrix.charpoly_units_conj h M`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_conj (h : GL (Fin 3) C) (M : Matrix (Fin 3) (Fin 3) C) :
     ((h : Matrix (Fin 3) (Fin 3) C) * M * ((h⁻¹ : GL (Fin 3) C) : Matrix (Fin 3) (Fin 3) C)).charpoly = M.charpoly := by
@@ -96,23 +96,23 @@ end GlobalTheory.OrdLoc
 namespace GlobalTheory.OrdLoc
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ D C _ _ r h hr`. Establish `hR : ∀ s ∈ D.HL, (r s).right = 1` using `fun s hs => (hr s).trans (MonoidHom.mem_ker.1 (Subgroup.mem_inf.1 hs).1)`. Establish `hM : ∀ s ∈ D.HL, (conjBy h r s).mat = (h : Matrix (Fin 3) (Fin 3) C) * (r s).mat * ((h⁻¹ : GL (Fin 3) C) : Matrix (Fin 3) (Fin 3) C)` using `fun s hs => conjBy_mat h r s (hR s hs)`. Establish `hsh : ∀ s ∈ D.HL, ∀ a, sh D (conjBy h r) a s = (h : Matrix (Fin 3) (Fin 3) C) * sh D r a s * ((h⁻¹ : GL (Fin 3) C) : Matrix (Fin 3) (Fin 3) C)`. Introduce `s hs a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `sh`. Rewrite using `[hM s hs, conj_sub_scalar]`. Establish `hs0 : s0 D ∈ D.HL` using `(GlobalTheory.OrdLoc.hl_basic D).2.2.2.2.1`. Take `⟨⟨hfr, -⟩, -⟩` from `GlobalTheory.OrdLoc.fr_isFr D`. Establish `htr : ∀ a, tr D (conjBy h r) a = tr D r a`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a`. Unfold `tr`. Rewrite using `[hsh _ hs0, hsh _ hs0, hM _ hfr, conj_mul_three_alt, trace_conj]`. Establish `hdd : ∀ a, dd D (conjBy h r) a = dd D r a`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `dd`. Rewrite using `[htr, htr]`. Use `⟨?_, hdd, ?_⟩` and prove the remaining obligations. Unfold `ordIdeal`. Apply `le_antisymm` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Ideal.span_le.2 (Set.union_subset ?_ ?_)` and prove the remaining obligations. Introduce and unpack `x ⟨s, hs, i, rfl⟩`. Apply `Ideal.subset_span` to reduce the goal to its premises. Use `Or.inl ⟨s, hs, i, ?_⟩` and prove the remaining obligations. Rewrite using `[hM s (Subgroup.mem_inf.1 hs).1, charpoly_conj]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `x ⟨s, hs, i, j, rfl⟩`. Rewrite using `[hsh _ (Subgroup.mem_inf.1 (hs 0)).1, hsh _ (Subgroup.mem_inf.1 (hs 1)).1, hsh _ (Subgroup.mem_inf.1 (hs 2)).1, conj_mul_three_alt]`. Apply `ent_mem_mul` to reduce the goal to its premises. Introduce `i' j'`. Conclude with `Ideal.subset_span (Or.inr ⟨s, hs, i', j', rfl⟩)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.span_le.2 (Set.union_subset ?_ ?_)` and prove the remaining obligations. Introduce and unpack `x ⟨s, hs, i, rfl⟩`. Apply `Ideal.subset_span` to reduce the goal to its premises. Use `Or.inl ⟨s, hs, i, ?_⟩` and prove the remaining obligations. Rewrite using `[hM s (Subgroup.mem_inf.1 hs).1, charpoly_conj]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x ⟨s, hs, i, j, rfl⟩`. Rewrite using `[unconj h (sh D r 0 (s 0) * sh D r 1 (s 1) * sh D r 2 (s 2))]`. Apply `ent_mem_mul` to reduce the goal to its premises. Introduce `i' j'`. Apply `Ideal.subset_span` to reduce the goal to its premises.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Or.inr ⟨s, hs, i', j', ?_⟩` and prove the remaining obligations. Rewrite using `[hsh _ (Subgroup.mem_inf.1 (hs 0)).1, hsh _ (Subgroup.mem_inf.1 (hs 1)).1, hsh _ (Subgroup.mem_inf.1 (hs 2)).1, conj_mul_three_alt]`. Unfold `del`. Rewrite using `[hdd 0, hdd 1]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ordEqs_conjBy : ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] (D : Dat3 l O) {C : Type} [CommRing C] [Algebra O C] (r : GQ l →* GG 3 C) (h : GL (Fin 3) C), HasMult D.η r → GlobalTheory.OrdLoc.ordIdeal D (conjBy h r) = GlobalTheory.OrdLoc.ordIdeal D r ∧ (∀ a, GlobalTheory.OrdLoc.dd D (conjBy h r) a = GlobalTheory.OrdLoc.dd D r a) ∧ GlobalTheory.OrdLoc.del D (conjBy h r) = GlobalTheory.OrdLoc.del D r := by
   intro l _ O _ _ _ D C _ _ r h hr

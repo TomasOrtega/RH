@@ -10,13 +10,13 @@ namespace GlobalTheory.TwV.AwayCpl.RhoOne
 open GlobalTheory.TopStep
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[redGL_val, Units.val_one]`. Use extensionality with `a b`. Establish `hq` using `qOf_ne_zero (P := P)`. Establish `hint : IntAt P ((k.1 (Pi.single b 1) a - (Pi.single b 1 : Sp E n) a) / ((qOf P : ℕ) : E))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨d, hd⟩ : ∃ d, D = d + 1` from `⟨D - 1, by omega⟩`. Establish `e : (k.1 (Pi.single b 1) a - (Pi.single b 1 : Sp E n) a) / ((qOf P : ℕ) : E) = ((qOf P : ℕ) : E) ^ d * ((((qOf P : ℕ) : E) ^ D)⁻¹ * (k.1 (Pi.single b 1) a - (Pi.single b 1 : Sp E n) a))`. Rewrite using `[hd, pow_succ]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(intAt_pow (intAt_nat _) _).mul (hk b a)`. Establish `h0` using `redP_eq_zero_of_div hint`. Establish `hs : IntAt P ((Pi.single b 1 : Sp E n) a)` using `mem_stdAt.1 (single_mem_stdAt b) a`. Apply the tactic sequence `rw [reduction_sub (glint_entry k a b) hs, sub_eq_zero] at h0`. Rewrite using `[redMat, Matrix.of_apply, h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[reduction_one₂]`. Simplify using `[Pi.single_apply, h, reduction_zero]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem redGL_eq_one_of_cong {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {P : HeightOneSpectrum (𝓞 E)}
     (D : ℕ) (hD : 1 ≤ D) (k : GLint E n P)
@@ -44,9 +44,9 @@ theorem redGL_eq_one_of_cong {E : Type} [Field E] [NumberField E] [StarRing E] {
   · simp [Pi.single_apply, h, reduction_zero]
 
 /- English proof (translation)
-Introduce `X Pr R Ch sel S mu cst hc i n P k hk`. Establish `hred` using `redGL_eq_one_of_cong (cst.D P) (hc.D_pos P) k hk`. Establish `hdet : redP P.1 ((LinearEquiv.det k.1 : X.Eˣ) : X.E) = 1`. Rewrite using `[(det_glint k).2, ← redGL_val, hred, Units.val_one, Matrix.det_one]`. Unfold `rhoS LocE.unitV`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hdet]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rhoS_det_one : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S : Set ℕ)
     (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)), cst.Ok → ∀ (i n : ℕ) (P : rowSG Pr sel mu) (k : GLint X.E n P.1),

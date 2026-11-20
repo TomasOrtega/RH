@@ -7,9 +7,9 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open Finset
 
 /- English proof (translation)
-Establish `h` using `congrArg (MvPolynomial.aeval (R := ℂ) (fun x : s => (x : ℂ))) (MvPolynomial.mul_esymm_eq_sum s ℂ k)`. Simplify using `only [map_mul, map_natCast, map_pow, map_neg, map_one, map_sum, MvPolynomial.aeval_esymm_eq_multiset_esymm, Multiset.map_univ_coe, MvPolynomial.psum, MvPolynomial.aeval_X] at h`. Use `h using 4 with a _` and compare the differences between its conclusion and the goal. Rewrite using `[Finset.sum_eq_multiset_sum]`. Use `conv_lhs => rw [← Multiset.map_univ_coe s]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem multiset_mul_esymm_eq_sum (s : Multiset ℂ) (k : ℕ) :
     (k : ℂ) * s.esymm k = (-1) ^ (k + 1) *
@@ -27,13 +27,13 @@ theorem multiset_mul_esymm_eq_sum (s : Multiset ℂ) (k : ℕ) :
   rfl
 
 /- English proof (translation)
-Introduce `σ _ V d Z hV hcard hp k`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Break down `Nat.eq_zero_or_pos k with rfl | hk0` into its components or cases. Simplify `(analyticOnNhd_const (𝕜 := ℂ) (v := (1 : ℂ)) (s := V))` using `[Multiset.esymm, Multiset.powersetCard_zero_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Distinguish the cases in `hkd : d < k`. Use `(analyticOnNhd_const (𝕜 := ℂ) (v := (0 : ℂ))).congr hV fun z hz => ?_` and prove the remaining obligations. Simplify using `[Multiset.esymm, Multiset.powersetCard_eq_empty _ (by rw [hcard z hz]; exact hkd)]`. Use `push Not at hkd`. Establish `hsum : AnalyticOnNhd ℂ (fun z => ((k : ℂ))⁻¹ * ((-1) ^ (k + 1) * ∑ a ∈ antidiagonal k with a.1 < k, (-1) ^ a.1 * (Z z).esymm a.1 * ((Z z).map fun x => x ^ a.2).sum)) V`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `analyticOnNhd_const.mul (analyticOnNhd_const.mul ?_)` and prove the remaining obligations. Use `Finset.analyticOnNhd_fun_sum _ fun a ha => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.HasAntidiagonal.mem_antidiagonal] at ha`. Use `(analyticOnNhd_const.mul (ih a.1 ha.2)).mul (hp a.2 (by omega) (by omega))` and prove the remaining obligations. Use `hsum.congr hV fun z _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← multiset_mul_esymm_eq_sum, ← mul_assoc, inv_mul_cancel₀ (by exact_mod_cast hk0.ne'), one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem PowerSumsEsymmAnalytic.proof : PowerSumsEsymmAnalytic.Statement := by
   intro σ _ V d Z hV hcard hp k

@@ -9,13 +9,13 @@ open ReciprocityTheory.Gal Formalism.RepresentationBoundsCohomology.LOC Reciproc
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p _ O _ _ _ _ hO φ`. Use `haveI := hO.ring`. Use `continuous_of_continuousAt_zero φ ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero]`. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `(isAdic_iff.mp hO.adic).2 s hs`. Establish `hball : Metric.closedBall (0 : ℤ_[p]) ((p : ℝ) ^ (-(n : ℤ))) ∈ nhds (0 : ℤ_[p])`. Apply `Metric.closedBall_mem_nhds` to reduce the goal to its premises. Establish `: (0 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).pos`. Check the signs of the components of the expression.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `Filter.mem_map.mpr (Filter.mem_of_superset hball ?_)` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[Metric.mem_closedBall, dist_zero_right, PadicInt.norm_le_pow_iff_mem_span_pow]`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.mp hx`. Apply `hn` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show φ (a * (p : ℤ_[p]) ^ n) ∈ ((IsLocalRing.maximalIdeal O) ^ n : Ideal O)`. Rewrite using `[map_mul, map_pow, map_natCast]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow hO.p_mem n)`.
+A detailed English derivation is pending.
 -/
 theorem padicInt_ringHom_continuous_of_padicCoeff : ∀ {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [TopologicalSpace O], PadicCoeff p O → ∀ φ : ℤ_[p] →+* O, Continuous φ := by

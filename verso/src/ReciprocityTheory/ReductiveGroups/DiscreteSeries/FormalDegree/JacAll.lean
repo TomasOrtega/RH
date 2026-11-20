@@ -14,7 +14,7 @@ variable {n : ℕ}
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [pmat, Pi.add_apply, Matrix.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jall_pmat_add {ε : Fin n → Bool} (z w : PCoord ε → ℂ) : pmat (z + w) = pmat z + pmat w := by
   ext a b
@@ -22,7 +22,7 @@ theorem jall_pmat_add {ε : Fin n → Bool} (z w : PCoord ε → ℂ) : pmat (z 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [pmat, Pi.smul_apply, Matrix.smul_apply]`. Apply the tactic sequence `split_ifs <;> simp [Complex.real_smul, star_mul', Complex.conj_ofReal]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jall_pmat_smul {ε : Fin n → Bool} (c : ℝ) (z : PCoord ε → ℂ) :
     pmat (c • z) = (c : ℂ) • pmat z := by
@@ -41,7 +41,7 @@ def adKL {ε : Fin n → Bool} (k : KG ε) : (PCoord ε → ℂ) →ₗ[ℝ] (PC
       RingHom.id_apply, Complex.real_smul, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hk` using `toMK_facts k`. Establish `h : pmat (adK k⁻¹ (adK k z)) = pmat z`. Rewrite using `[pmat_adK, pmat_adK, toMK_inv, Matrix.conjTranspose_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pact_pmat_coords (adK k⁻¹ (adK k z)), h, pact_pmat_coords]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem jall_adK_inv {ε : Fin n → Bool} (k : KG ε) (z : PCoord ε → ℂ) : adK k⁻¹ (adK k z) = z := by
   have hk := toMK_facts k
@@ -53,13 +53,11 @@ theorem jall_adK_inv {ε : Fin n → Bool} (k : KG ε) (z : PCoord ε → ℂ) :
   rw [← pact_pmat_coords (adK k⁻¹ (adK k z)), h, pact_pmat_coords]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (adKL k)` using `fun x y hxy => by`. Use `congrArg (adK k⁻¹) hxy` as an intermediate fact. Simplify `this` using `only [adKL, LinearMap.coe_mk, AddHom.coe_mk, jall_adK_inv]`. Establish `hmp` using `adK_measurePreserving k`. Establish `hcs : IsCompact ((adKL k) '' Metric.closedBall (0 : PCoord ε → ℂ) 1)` using `(isCompact_closedBall 0 1).image (LinearMap.continuous_of_finiteDimensional _)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : volume ((adK k) ⁻¹' ((adKL k) '' Metric.closedBall (0 : PCoord ε → ℂ) 1)) = volume ((adKL k) '' Metric.closedBall (0 : PCoord ε → ℂ) 1)` using `hmp.measure_preimage hcs.isClosed.measurableSet.nullMeasurableSet`. Establish `hpre : (adK k) ⁻¹' ((adKL k) '' Metric.closedBall (0 : PCoord ε → ℂ) 1) = Metric.closedBall (0 : PCoord ε → ℂ) 1` using `Set.preimage_image_eq _ hinj`. Rewrite `h1` using `[hpre, MeasureTheory.Measure.addHaar_image_linearMap]`. Establish `hpos : volume (Metric.closedBall (0 : PCoord ε → ℂ) 1) ≠ 0` using `(Metric.measure_closedBall_pos volume 0 one_pos).ne'`. Establish `hfin : volume (Metric.closedBall (0 : PCoord ε → ℂ) 1) ≠ ⊤` using `(isCompact_closedBall (0 : PCoord ε → ℂ) 1).measure_lt_top.ne`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ENNReal.ofReal |LinearMap.det (adKL k)| = 1`. Establish `h3 : 1 * volume (Metric.closedBall (0 : PCoord ε → ℂ) 1) = ENNReal.ofReal |LinearMap.det (adKL k)| * volume (Metric.closedBall (0 : PCoord ε → ℂ) 1)`. Rewrite using `[one_mul]`. Conclude with `h1`. Conclude with `((ENNReal.mul_left_inj hpos hfin).mp h3).symm`.
-
-Conclude with `ENNReal.ofReal_eq_one.mp h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jall_abs_det_adKL {ε : Fin n → Bool} (k : KG ε) : |LinearMap.det (adKL k)| = 1 := by
   have hinj : Function.Injective (adKL k) := fun x y hxy => by
@@ -90,7 +88,7 @@ def jdetA {ε : Fin n → Bool} (g : Matrix (Fin n) (Fin n) ℂ) (z : PCoord ε 
     (PCoord ε → ℂ) →ₗ[ℝ] (PCoord ε → ℂ))
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (JacB.actR_contDiff' hg).differentiable one_ne_zero z`. Consider the case `exact (JacB.actR_contDiff' hg).differentiable le_rfl z`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem jall_diff {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (z : PCoord ε → ℂ) :
     DifferentiableAt ℝ (actR (ε := ε) g) z := by
@@ -99,7 +97,7 @@ theorem jall_diff {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : i
   | exact (JacB.actR_contDiff' hg).differentiable le_rfl z
 
 /- English proof (translation)
-Unfold `jdetA`. Establish `hfun : actR (ε` using `ε) (g * h) = actR h ∘ actR g := funext (actR_mul hg hh)`. Rewrite using `[hfun, fderiv_comp z (jall_diff hh (actR g z)) (jall_diff hg z)]`. Conclude with `LinearMap.det_comp _ _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jall_chain {ε : Fin n → Bool} {g h : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hh : inUJ ε h)
     (z : PCoord ε → ℂ) : jdetA (g * h) z = jdetA h (actR g z) * jdetA g z := by
@@ -109,9 +107,9 @@ theorem jall_chain {ε : Fin n → Bool} {g h : Matrix (Fin n) (Fin n) ℂ} (hg 
   exact LinearMap.det_comp _ _
 
 /- English proof (translation)
-Establish `e : actR (ε` using `ε) (toMK k) = ⇑(LinearMap.toContinuousLinearMap (adKL k⁻¹)) := by`. Use function extensionality and compare the values at `w`. Rewrite using `[actR_K]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ContinuousLinearMap.fderiv _`.
+A detailed English derivation is pending.
 -/
 theorem jall_fderiv_K {ε : Fin n → Bool} (k : KG ε) (z : PCoord ε → ℂ) :
     fderiv ℝ (actR (ε := ε) (toMK k)) z = LinearMap.toContinuousLinearMap (adKL k⁻¹) := by
@@ -123,7 +121,7 @@ theorem jall_fderiv_K {ε : Fin n → Bool} (k : KG ε) (z : PCoord ε → ℂ) 
   exact ContinuousLinearMap.fderiv _
 
 /- English proof (translation)
-The claim follows from `|jdetA (toMK k) z| = 1 := by unfold jdetA rw [jall_fderiv_K] exact jall_abs_det_adKL k⁻¹`.
+A detailed English derivation is pending.
 -/
 theorem jall_abs_jdetA_K {ε : Fin n → Bool} (k : KG ε) (z : PCoord ε → ℂ) :
     |jdetA (toMK k) z| = 1 := by
@@ -132,7 +130,7 @@ theorem jall_abs_jdetA_K {ε : Fin n → Bool} (k : KG ε) (z : PCoord ε → �
   exact jall_abs_det_adKL k⁻¹
 
 /- English proof (translation)
-Use `first`. Consider the case `exact k.1.2`. Consider the case `exact k.val.property`. Consider the case `exact k.2.1`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem jall_inUJ_K {ε : Fin n → Bool} (k : KG ε) : inUJ ε (toMK k) := by
   first
@@ -141,7 +139,7 @@ theorem jall_inUJ_K {ε : Fin n → Bool} (k : KG ε) : inUJ ε (toMK k) := by
   | exact k.2.1
 
 /- English proof (translation)
-Establish `hp0 : pmat (0 : PCoord ε → ℂ) = 0`. Use extensionality with `a b`. Simplify using `[pmat]`. Apply `actR_of_eq_polarM (k := k)` to reduce the goal to its premises. Simplify using `only [polarM, hp0, NormedSpace.exp_zero, Matrix.one_mul, Matrix.mul_one]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem jall_actR_K_zero {ε : Fin n → Bool} (k : KG ε) : actR (ε := ε) (toMK k) 0 = 0 := by
   have hp0 : pmat (0 : PCoord ε → ℂ) = 0 := by
@@ -151,7 +149,7 @@ theorem jall_actR_K_zero {ε : Fin n → Bool} (k : KG ε) : actR (ε := ε) (to
   simp only [polarM, hp0, NormedSpace.exp_zero, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-The claim follows from `|LinearMap.det ((fderiv ℝ (actR (ε := ε) g) z : (PCoord ε → ℂ) →L[ℝ] (PCoord ε → ℂ)) : (PCoord ε → ℂ) →ₗ[ℝ] (PCoord ε → ℂ))| * Jac (actR g z) = Jac z := by have hp0 : pmat (0 : PCoord ε → ℂ) = 0 := by ext a b simp [pmat] obtain ⟨k, hk⟩ := actR_spec hg z set w := actR g z with hw …`.
+A detailed English derivation is pending.
 -/
 theorem jacAll {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (z : PCoord ε → ℂ) :
     |LinearMap.det ((fderiv ℝ (actR (ε := ε) g) z : (PCoord ε → ℂ) →L[ℝ] (PCoord ε → ℂ)) :

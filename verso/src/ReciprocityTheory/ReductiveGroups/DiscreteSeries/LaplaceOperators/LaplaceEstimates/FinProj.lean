@@ -10,23 +10,23 @@ open scoped InnerProductSpace
 namespace ReciprocityTheory.ChartRestriction.DS.Lap
 
 /- English proof (translation)
-Take `⟨v, hvW, hv0, hvF⟩` from `hFW`. Take `⟨hq0, hNd⟩` from `gapNeed k r ε h hp hq hgap`. Establish `hstd : StdGap ε lam'`. Use `⟨hlam.1, h, hgl, ?_⟩` and prove the remaining obligations. Establish `h1` using `hgap.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `le_max_right (3 * ((2 * r + k + 1 : ℕ) : ℝ) / 2) (1 + ((2 * r + k + 1 : ℕ) : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ))`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h8 : 8 * ((2 * r + k + 1 : ℕ) : ℝ) * (S7.q0 ε : ℝ) < h`. Establish `hmq : (min (pOf ε) (qOf ε) : ℝ) = (S7.q0 ε : ℝ)` using `by simp [S7.q0, Nat.cast_min]`. Unfold `hNeed at hNd`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `hNd` using `[hmq, max_lt_iff, max_lt_iff]`. Take `⟨-, hB, -⟩` from `hNd`. Establish `hs` using `Real.sqrt_nonneg (2 * (S7.q0 ε : ℝ))`. Establish `hnq : 0 ≤ ((2 * r + k + 1 : ℕ) : ℝ) * (S7.q0 ε : ℝ)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Take `⟨T', μ', hμ, C, hC, d, hd, hcoef, hstab, hS⟩` from `closed_irreducible_lowest_type_data ε lam' h hstd hlam hgl hq0 h8 W' hirr hcas hK`. Take `⟨t, ht⟩` from `hcoef v hvW`. Rewrite `ht` using `[hvF]`. Establish `hf0 : toL2 ε F ≠ 0`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hv0` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hvF, h0]`. Both sides reduce to the same expression. Establish `hF2 : MemLp (fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hn`. Conclude with `hf0 (toL2_eq_zero_of_not_memLp ε hn)`. Establish `hfK : toL2 ε F ∈ closGen (smE ε (rreg ε)) W'` using `hvF ▸ mem_closure_generated_of_mem W' hvW`. Establish `hrep` using `reproducing_formula_closed_invariant (hWf F hF).1 hF2 (closure_generated_isClosed W') hfK hstab hS`. Establish `hff : ⟪toL2 ε F, toL2 ε F⟫_ℂ ≠ 0` using `inner_self_ne_zero.2 hf0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC0 : (C : ℂ) ≠ 0` using `by exact_mod_cast hC.ne'`. Establish `hd0 : (d : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`. Use `set κ : ℂ := (C : ℂ) * (d : ℂ) / ⟪toL2 ε F, toL2 ε F⟫_ℂ with hκ`. Use `⟨T', μ', κ • t, t, hμ, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨x', rfl⟩` from `exists_unitary_preimage ε hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ∀ y : Formalism.REAL.UJ ε, F (Formalism.MainNotions.S.umat y) * ⟪t, S7.PsiM T' μ' ((Formalism.MainNotions.S.umat y)⁻¹ * Formalism.MainNotions.S.umat x') (κ • t)⟫_ℂ = (κ / C) * (F (Formalism.MainNotions.S.umat y) * ⟪toL2 ε F, rreg ε ((Formalism.MainNotions.S.umat y)⁻¹ * Formal …`. Introduce `y`. Establish `hg : (Formalism.MainNotions.S.umat y)⁻¹ * Formalism.MainNotions.S.umat x' ∈ UJset ε`. Rewrite using `[← unitary_matrix_inv_alt, ← unitary_matrix_mul]`. Conclude with `unitary_matrix_mem_set ε _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht _ hg, map_smul, inner_smul_right]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[integral_congr_ae (ae_of_all _ e), integral_const_mul, hrep _ hx, hκ]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem finProj (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (lam' : Fin (2 * r + k + 1) → ℝ) (h : ℝ)
     (hp : pOf ε = k + r) (hq : qOf ε = r + 1) (hgap : StepGap ε r h) (hlam : S7.IsHCParam lam')

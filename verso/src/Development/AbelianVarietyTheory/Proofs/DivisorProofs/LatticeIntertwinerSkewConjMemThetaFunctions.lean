@@ -12,9 +12,9 @@ open GlobalTheory.Mem.Col2.SplitChar (finIdl)
 noncomputable section
 
 /- English proof (translation)
-Introduce `D δ t0 hc ht a d hd e0 hv W hep hep' 𝔪 hm hcop hcond o ho`. Establish `hlc` using `GlobalTheory.ThetaLevels.levels_closed D ⊤ δ hc a d`. Establish `s0` using `VacMove.sd_of_moves (VacMove.moves_one D a)`. Establish `s0'` using `VacMove.sd_of_moves (VacMove.moves_one D d)`. Establish `heT : e0 ∈ TT D (tor0 D ⊤ δ) a d` using `hlc.1 _ _ s0 s0' e0 hv.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : D.host.conj • (D.host.conj • 𝔪) ≠ ⊥` using `GlobalTheory.BotPairSmall.conj_smul_ne_bot D (GlobalTheory.BotPairSmall.conj_smul_ne_bot D hm)`. Take `⟨M, hM, hMs⟩` from `GlobalTheory.BotPairSmall.CosetTheta.skewLat_nsmul_le (D := D) (D.host.conj • 𝔪) hne d`. Conclude with `GlobalTheory.BotPairSmall.CosetTheta.iop_mem_TT hc hM (fun x hx => GlobalTheory.BotPairSmall.CosetTheta.La_nsmul_mem (L := stdL D a) ⊤ δ M hMs hx) heT`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BotPairSmall.iop_skew_conj_mem_TT : ∀ (D : D7) (δ t0 : ℂ) (hc : Crv D ⊤ δ) (ht : GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D ⊤ δ) t0) (a d : ℕ) (hd : Even d) (e0 : VC D a d → ℂ) (hv : oddE0 D ⊤ δ t0 a d e0) (W : WeilO D ⊤ δ a d e0) (hep : W.ep = 1) (hep' : W.ep' = 1) (𝔪 : Ideal (𝓞 D.host.E)) (hm : 𝔪 ≠ ⊥) (hcop : 𝔪 ⊔ D.host.conj • 𝔪 = ⊤) (hcond : ∀ u : (AE D)ˣ, IntU D u → (u : AE D) - 1 ∈ hatId D (𝔪 * D.host.conj • 𝔪) → W.chV'.f u = 1) (o : ℕ) (ho : o + a = d), (Iop D (tor0 D ⊤ δ) (La0 D (tor0 D ⊤ δ) a d) (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D (D.host.conj • 𝔪) d)) e0) ∈ TT D (tor0 D ⊤ δ) a d := by
   intro D δ t0 hc ht a d hd e0 hv W hep hep' 𝔪 hm hcop hcond o ho

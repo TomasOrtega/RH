@@ -16,7 +16,7 @@ open GlobalTheory.MixModel.OrthDec GlobalTheory.LocFlat.CFac
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k)
 
 /- English proof (translation)
-Establish `h : p.ι (x * p.π b) = p.e * (p.ι x * b)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h, ← mul_assoc, GlobalTheory.LocMod.Witness.e_ι]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem ι_mul (x : k) (b : AE D) : p.ι x * b = p.ι (x * p.π b) := by
   have h : p.ι (x * p.π b) = p.e * (p.ι x * b) := by
@@ -26,7 +26,7 @@ theorem ι_mul (x : k) (b : AE D) : p.ι x * b = p.ι (x * p.π b) := by
   rw [h, ← mul_assoc, GlobalTheory.LocMod.Witness.e_ι]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, ι_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_ι_mul {a b c : Type} [Fintype b] (M : Matrix a b k) (N : Matrix b c (AE D)) :
     M.map p.ι * N = (M * N.map p.π).map p.ι := by
@@ -36,7 +36,7 @@ theorem map_ι_mul {a b c : Type} [Fintype b] (M : Matrix a b k) (N : Matrix b c
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Establish `e : (Y → k) ≃ₗ[k] (Fin N → k)` using `LinearEquiv.ofLinear (Matrix.toLin' F.β) (Matrix.toLin' F.γ) (by rw [← Matrix.toLin'_mul, F.βγ, Matrix.toLin'_one]) (by rw [← Matrix.toLin'_mul, F.γβ, Matrix.toLin'_one])`. Simplify using `using e.finrank_eq`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem frame_card {N : ℕ} {Y : Type} [Fintype Y] [DecidableEq Y] (F : Frame k N Y) : Fintype.card Y = N := by
   have e : (Y → k) ≃ₗ[k] (Fin N → k) := LinearEquiv.ofLinear (Matrix.toLin' F.β) (Matrix.toLin' F.γ)
@@ -80,7 +80,7 @@ open GlobalTheory.MixModel.OrthDec GlobalTheory.LocFlat.CFac
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k)
 
 /- English proof (translation)
-Simplify using `only [heisO]`. Rewrite using `[d.symplOH_resS, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, GlobalTheory.MixModel.symplOH_zero_right, zero_add, ← map_add, Prod.mk_add_mk, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem heis_slice {S A L T : HSp D} (d : OrthDec S A L) (ψ : AddChar (AF D.host.F) ℂ) (f : WO S T → ℂ)
     (u : WO A T) (w v : WO L T) :
@@ -91,13 +91,13 @@ theorem heis_slice {S A L T : HSp D} (d : OrthDec S A L) (ψ : AddChar (AF D.hos
     ← map_add, Prod.mk_add_mk, add_zero]
 
 /- English proof (translation)
-Simplify using `[symplO, hO]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplO_zero_right' (S T : HSp D) (x : WO S T) : symplO S T x 0 = 0 := by
   simp [symplO, hO]
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[resS_symm_apply, Matrix.zero_mul, zero_add, Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, hy i l]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isHalf_slice {S A L T : HSp D} (d : OrthDec S A L) {a : AE D} {y : WO L T} (hy : IsHalf a y) :
     IsHalf a ((d.resS T).symm (0, y)) := by
@@ -110,9 +110,9 @@ variable {ρ : ℕ} {B : BesLev D ρ} {s : k} {n n' : Type} [Fintype n] [Decidab
   {FA : Frame k B.A.rank n'} {F₀ : Frame k B.V₀.rank (n' ⊕ Unit)} {FL : Frame k B.L.rank Unit}
 
 /- English proof (translation)
-Use extensionality with `r (a | u)`. Conclude with `h.1 r a`. Consider the cases of `u`. Rewrite using `[h.2 r, fromCols_apply_inr, Matrix.mul_apply]`. Simplify using `only [vecB, Matrix.mulVec, dotProduct, Place.pr, map_sum, map_mul, Matrix.map_apply, hL, RingHom.comp_apply, Finset.mul_sum]`.
+By extensionality, compare the relevant components. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem beta_eq (h : p.IsCoreFrame B s FA F₀) (hL : ∀ r, FL.β r () = s * p.pr (B.ζ r)) :
     F₀.β = fromCols (B.o.iA.map (p.π.comp (incA D)) * FA.β) (B.o.iB.map (p.π.comp (incA D)) * FL.β) := by
@@ -141,11 +141,11 @@ Both sides reduce to the same expression.
 theorem rat_map_π {a b : ℕ} (M : Matrix (Fin a) (Fin b) D.host.E) : (rat M).map p.π = M.map (p.π.comp (incA D)) := rfl
 
 /- English proof (translation)
-Establish `k1 : x * FL.γ * B.o.qB.map (p.π.comp (incA D)) * F₀.β = fromCols (0 : Matrix n n' k) x`. Rewrite using `[beta_eq p h hL, Matrix.mul_fromCols]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (B.o.qB.map _) (B.o.iA.map _), ← Matrix.map_mul, B.o.qB_iA, ← Matrix.mul_assoc (B.o.qB.map _) (B.o.iB.map _), ← Matrix.map_mul, B.o.qB_iB]`. Simplify using `[FL.γβ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `k2 : fromCols (0 : Matrix n n' k) x * F₀.γ = x * FL.γ * B.o.qB.map (p.π.comp (incA D))`. Rewrite using `[← k1, Matrix.mul_assoc (x * FL.γ * B.o.qB.map (p.π.comp (incA D))) F₀.β F₀.γ, F₀.βγ, Matrix.mul_one]`. Rewrite using `[resS_symm_apply, Matrix.zero_mul, zero_add]`. Unfold `Place.up`. Rewrite using `[pB, map_ι_mul, rat_map_π]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Matrix.mul_assoc FS.β (fromCols 0 x) F₀.γ, k2]`. Simplify using `only [Matrix.mul_assoc]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem up_fromCols (h : p.IsCoreFrame B s FA F₀) (hL : ∀ r, FL.β r () = s * p.pr (B.ζ r)) {S : HSp D}
     (FS : Frame k S.rank n) (x : Matrix n Unit k) :
@@ -166,11 +166,11 @@ theorem up_fromCols (h : p.IsCoreFrame B s FA F₀) (hL : ∀ r, FL.β r () = s 
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `k1 : t * F₀.γ * B.o.iB.map (p.π.comp (incA D)) * FL.β = t.toCols₂`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_fromCols, toCols₂_fromCols, Matrix.mul_assoc (t * F₀.γ)]`. Use `_ = ((t * F₀.γ) * F₀.β).toCols₂ := by rw [← beta_eq p h hL]`. Use `_ = t.toCols₂ := by rw [Matrix.mul_assoc, F₀.γβ, Matrix.mul_one]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `k2 : t * F₀.γ * B.o.iB.map (p.π.comp (incA D)) = t.toCols₂ * FL.γ`. Rewrite using `[← k1, Matrix.mul_assoc (t * F₀.γ * B.o.iB.map (p.π.comp (incA D))) FL.β FL.γ, FL.βγ, Matrix.mul_one]`. Rewrite using `[resS_apply]`. Simplify using `only`. Unfold `Place.up`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[jB, map_ι_mul, rat_map_π]`. Simplify using `only [Matrix.mul_assoc] at k2 ⊢`. Rewrite using `[k2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resS_up_snd (h : p.IsCoreFrame B s FA F₀) (hL : ∀ r, FL.β r () = s * p.pr (B.ζ r)) {S : HSp D}
     (FS : Frame k S.rank n) (t : Matrix n (n' ⊕ Unit) k) :
@@ -198,32 +198,32 @@ namespace GlobalTheory.SliceLine
 open GlobalTheory.MixModel.OrthDec GlobalTheory.LocFlat.CFac
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by ext i j; simp, by ext i j; simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem toCols_add {k n n' : Type} [Field k] (t : Matrix n (n' ⊕ Unit) k) (x : Matrix n Unit k) :
     (t + fromCols (0 : Matrix n n' k) x).toCols₁ = t.toCols₁ ∧ (t + fromCols (0 : Matrix n n' k) x).toCols₂ = t.toCols₂ + x :=
   ⟨by ext i j; simp, by ext i j; simp⟩
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p ψ ρ B S s n n' _ _ _ _ FA F₀ FS h T₀ hT`. Establish `hA` using `frame_card FA`. Establish `h0` using `frame_card F₀`. Establish `hr` using `B.o.rank_add`. Rewrite `h0` using `[Fintype.card_sum, Fintype.card_unit]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hL1 : B.L.rank = 1` using `by omega`. Establish `hsub : ∀ r r' : Fin B.L.rank, r = r'` using `fun r r' => Fin.ext (by have := r.isLt; have := r'.isLt; omega)`. Establish `hv : ∀ r, s * p.pr (B.ζ r) ≠ 0`. Introduce `r₀ h₀`. Establish `hz : ∀ r, s * p.pr (B.ζ r) = 0` using `fun r => by rw [hsub r r₀]; exact h₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcol : ∀ r, F₀.β r (Sum.inr ()) = 0`. Introduce `r`. Rewrite using `[h.2 r]`. Simplify using `only [vecB, Matrix.mulVec, dotProduct, Place.pr, map_sum, map_mul, Finset.mul_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `hz j` as an intermediate fact. Simplify using `only [Place.pr] at this`. Rewrite using `[mul_left_comm, this, mul_zero]`. Use `congrFun (congrFun F₀.γβ (Sum.inr ())) (Sum.inr ())` as an intermediate fact. Simplify using `[Matrix.mul_apply, hcol] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Choose the witnesses or unpack the hypotheses as in `⟨FL, hFL⟩ : ∃ FL : Frame k B.L.rank Unit, ∀ r, FL.β r () = s * p.pr (B.ζ r) := by`. Use `⟨⟨Matrix.of fun r _ => s * p.pr (B.ζ r), Matrix.of fun _ r => (s * p.pr (B.ζ r))⁻¹, ?_, ?_⟩, fun r => rfl⟩` and prove the remaining obligations. Use extensionality with `r r'`. Take `rfl` from `hsub r r'`. Simplify using `[Matrix.mul_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[← _root_.mul_inv_rev]`. Conclude with `mul_inv_cancel₀ (hv r)`. Use extensionality with `u u'`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => (1 : k)) fun j _ => by rw [← _root_.mul_inv_rev]; exact inv_mul_cancel₀ (hv j)]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hL1]`. Use `⟨FL, hFL, fun Ξ u₀ => ?_⟩` and prove the remaining obligations. Set `T' : SB (Matrix n Unit k) →ₗ[ℂ] (WO B.L S → ℂ)` to `(LinearMap.funLeft ℂ ℂ (fun w : WO B.L S => (B.o.resS S).symm (u₀, w))).comp (T₀.comp (box Ξ))`. Establish `hT' : ∀ c w, T' c w = T₀ (box Ξ c) ((B.o.resS S).symm (u₀, w))` using `fun _ _ => rfl`. Use `⟨T', ⟨fun Φ => ?_, fun x Φ Φ' hΦ => ?_, fun y hy Φ Φ' hΦ => ?_⟩, fun c Ψ hΨ w => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.BoxSlice.isThetaFunO_slice_right B.o (hT.theta (box Ξ Φ)) u₀`. Establish `e` using `hT.trans (fromCols 0 x) (box Ξ Φ) (box Ξ Φ') (fun t => by`. Rewrite using `[box_apply, box_apply, hΦ, (toCols_add t x).1, (toCols_add t x).2])`. Use function extensionality and compare the values at `w`. Rewrite using `[hT', e, up_fromCols p h hFL, heis_slice]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `e` using `hT.modul ((B.o.resS S).symm (0, y)) (isHalf_slice B.o hy) (box Ξ Φ) (box Ξ Φ') (fun t => by`. Simplify using `only [box_apply, hΦ, B.o.symplO_resS, AddEquiv.apply_symm_apply, resS_up_snd p h hFL, symplO_zero_right', zero_add]`. Use the proof step `ring)`. Use function extensionality and compare the values at `w`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hT', e, heis_slice]`. Both sides reduce to the same expression. Establish `e : Ψ = box Ξ c` using `Subtype.ext (funext fun x => by rw [hΨ, box_apply]; rfl)`. Rewrite using `[hT', e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slice_line : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k) (ψ : AddChar (AF D.host.F) ℂ) (ρ : ℕ) (B : BesLev D ρ) (S : HSp D) (s : k) (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (FA : Frame k B.A.rank n') (F₀ : Frame k B.V₀.rank (n' ⊕ Unit)) (FS : Frame k S.rank n), p.IsCoreFrame B s FA F₀ → ∀ T₀, p.IsModel ψ F₀ FS T₀ → ∃ FL : Frame k B.L.rank Unit, (∀ r, FL.β r () = s * p.pr (B.ζ r)) ∧ ∀ (Ξ : SB (Matrix n n' k)) (u₀ : WO B.A S), ∃ T', p.IsModel ψ FL FS T' ∧ ∀ (c : SB (Matrix n Unit k)) (Ψ : SB (Matrix n (n' ⊕ Unit) k)), (∀ x, Ψ.1 x = Ξ.1 x.toCols₁ * c.1 (Matrix.of fun r _ => x r (Sum.inr ()))) → ∀ w, T' c w = T₀ Ψ ((B.o.resS S).symm (u₀, w)) := by
   intro D k _ _ _ _ p ψ ρ B S s n n' _ _ _ _ FA F₀ FS h T₀ hT

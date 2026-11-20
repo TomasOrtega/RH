@@ -10,7 +10,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 /- English proof (translation)
-Introduce `_`. Use `StepW.of_all fun K B f T w _ _ _ P x => ?_` and prove the remaining obligations. Conclude with `valLL0_colW w x.o.Z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lowerLeftValuation_eq_zero_all_stages_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → AllSt fun _ _ _ _ _ _ x => ValLL0 (Dof x) (cfOf x) := by
   intro _
@@ -22,7 +22,7 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.HeightCounting.Up.lowerLeftValuation_eq_zero_all_stages_alt | exact _root_.GlobalTheory.HeightCounting.Up.lowerLeftValuation_eq_zero_all_stages_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.lowerLeftValuation_eq_zero_all_stages_alt …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.valLL0_cfOf_at_states : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → AllSt fun _ _ _ _ _ _ x => ValLL0 (Dof x) (cfOf x) := by
   first | exact @_root_.GlobalTheory.HeightCounting.Up.lowerLeftValuation_eq_zero_all_stages_alt | exact _root_.GlobalTheory.HeightCounting.Up.lowerLeftValuation_eq_zero_all_stages_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.lowerLeftValuation_eq_zero_all_stages_alt <;> assumption)

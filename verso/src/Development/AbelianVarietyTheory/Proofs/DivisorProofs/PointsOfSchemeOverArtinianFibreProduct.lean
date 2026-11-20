@@ -4,7 +4,7 @@ open AlgebraicGeometry CategoryTheory Limits
 namespace GlobalTheory.PinchPoints
 
 /- English proof (translation)
-The claim follows from `((Types.isPullback_iff _ _ _ _).1 (h.map (forget CommRingCat))).2.2 a b hab`.
+A detailed English derivation is pending.
 -/
 theorem ring_lift_of_isPullback {P R₁ R₂ R₀ : CommRingCat.{0}} {f₁ : P ⟶ R₁} {f₂ : P ⟶ R₂}
     {g₁ : R₁ ⟶ R₀} {g₂ : R₂ ⟶ R₀} (h : IsPullback f₁ f₂ g₁ g₂) (a : R₁) (b : R₂)
@@ -12,7 +12,7 @@ theorem ring_lift_of_isPullback {P R₁ R₂ R₀ : CommRingCat.{0}} {f₁ : P �
   ((Types.isPullback_iff _ _ _ _).1 (h.map (forget CommRingCat))).2.2 a b hab
 
 /- English proof (translation)
-The claim follows from `((Types.isPullback_iff _ _ _ _).1 (h.map (forget CommRingCat))).2.1 x y ⟨h₁, h₂⟩`.
+A detailed English derivation is pending.
 -/
 theorem ring_ext_of_isPullback {P R₁ R₂ R₀ : CommRingCat.{0}} {f₁ : P ⟶ R₁} {f₂ : P ⟶ R₂}
     {g₁ : R₁ ⟶ R₀} {g₂ : R₂ ⟶ R₀} (h : IsPullback f₁ f₂ g₁ g₂) (x y : P)
@@ -20,7 +20,7 @@ theorem ring_ext_of_isPullback {P R₁ R₂ R₀ : CommRingCat.{0}} {f₁ : P �
   ((Types.isPullback_iff _ _ _ _).1 (h.map (forget CommRingCat))).2.1 x y ⟨h₁, h₂⟩
 
 /- English proof (translation)
-Take `⟨z, hz1, hz2⟩` from `Scheme.Pullback.exists_preimage_pullback x y hxy`. Use `⟨h.isoPullback.inv z, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, h.isoPullback_inv_fst, hz1]`. Rewrite using `[← Scheme.Hom.comp_apply, h.isoPullback_inv_snd, hz2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem scheme_exists_of_isPullback {X Y Z W : Scheme.{0}} {fst : W ⟶ X} {snd : W ⟶ Y}
     {f : X ⟶ Z} {g : Y ⟶ Z} (h : IsPullback fst snd f g) (x : X) (y : Y) (hxy : f x = g y) :
@@ -31,7 +31,7 @@ theorem scheme_exists_of_isPullback {X Y Z W : Scheme.{0}} {fst : W ⟶ X} {snd 
   · rw [← Scheme.Hom.comp_apply, h.isoPullback_inv_snd, hz2]
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback (P := @IsClosedImmersion) h.flip inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem closedImmersion_of_isPullback {W X Y Z : Scheme.{0}} {fst : W ⟶ X} {snd : W ⟶ Y}
     {f : X ⟶ Z} {g : Y ⟶ Z} (h : IsPullback fst snd f g) [IsClosedImmersion g] :
@@ -39,7 +39,7 @@ theorem closedImmersion_of_isPullback {W X Y Z : Scheme.{0}} {fst : W ⟶ X} {sn
   MorphismProperty.of_isPullback (P := @IsClosedImmersion) h.flip inferInstance
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a b => PrimeSpectrum.ext ((IsLocalRing.eq_maximalIdeal (@IsArtinianRing.isMaximal_of_isPrime P _ a.asIdeal a.isPrime _)).trans (IsLocalRing.eq_maximalIdeal (@IsArtinianRing.isMaximal_of_isPrime P _ b.asIdeal b.isPrime _)).symm)⟩`.
+Supply the required witnesses or components.
 -/
 theorem spec_subsingleton_of_artinian (P : CommRingCat.{0}) [IsLocalRing P] [IsArtinianRing P] :
     Subsingleton (Spec P) :=
@@ -48,32 +48,28 @@ theorem spec_subsingleton_of_artinian (P : CommRingCat.{0}) [IsLocalRing P] [IsA
       (IsLocalRing.eq_maximalIdeal (@IsArtinianRing.isMaximal_of_isPrime P _ b.asIdeal b.isPrime _)).symm)⟩
 
 /- English proof (translation)
-Rewrite using `[← not_isEmpty_iff, ← not_subsingleton_iff_nontrivial]`. Conclude with `not_congr (PrimeSpectrum.isEmpty_iff_subsingleton (R := R))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spec_nonempty_iff (R : CommRingCat.{0}) : Nonempty (Spec R) ↔ Nontrivial R := by
   rw [← not_isEmpty_iff, ← not_subsingleton_iff_nontrivial]
   exact not_congr (PrimeSpectrum.isEmpty_iff_subsingleton (R := R))
 
 /- English proof (translation)
-Introduce `P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hP hloc hart hg₁ hg₂ Y Y₁ Y₂ Y₀ p p₁ p₂ p₀ j₁ j₂ i₁ i₂ h₁ h₂ h₀ hcomm`. Establish `hf₁ : Function.Surjective f₁` using `fun a => by`. Take `⟨b, hb⟩` from `hg₂ (g₁ a)`. Take `⟨x, hx, -⟩` from `ring_lift_of_isPullback hP a b hb.symm`. Conclude with `⟨x, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hf₂ : Function.Surjective f₂` using `fun b => by`. Take `⟨a, ha⟩` from `hg₁ (g₂ b)`. Take `⟨x, -, hx⟩` from `ring_lift_of_isPullback hP a b ha`. Conclude with `⟨x, hx⟩`. Use `haveI := IsClosedImmersion.spec_of_surjective f₁ hf₁`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `haveI := IsClosedImmersion.spec_of_surjective f₂ hf₂`. Use `haveI : IsClosedImmersion j₁ := closedImmersion_of_isPullback h₁`. Use `haveI : IsClosedImmersion j₂ := closedImmersion_of_isPullback h₂`. Use `haveI : Subsingleton (Spec P) := spec_subsingleton_of_artinian P`. Use `haveI : Subsingleton (Spec R₁) := (Spec.map f₁).isClosedEmbedding.injective.subsingleton`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `lift₁ : Nontrivial R₁ → ∀ y : Y, ∃ y₁, j₁ y₁ = y` using `fun hn y => by`. Take `⟨s⟩` from `(spec_nonempty_iff R₁).2 hn`. Take `⟨y₁, hy, -⟩` from `scheme_exists_of_isPullback h₁ y s (Subsingleton.elim _ _)`. Conclude with `⟨y₁, hy⟩`. Establish `lift₂ : Nontrivial R₂ → ∀ y : Y, ∃ y₂, j₂ y₂ = y` using `fun hn y => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Take `⟨s⟩` from `(spec_nonempty_iff R₂).2 hn`. Take `⟨y₂, hy, -⟩` from `scheme_exists_of_isPullback h₂ y s (Subsingleton.elim _ _)`. Conclude with `⟨y₂, hy⟩`. Use `⟨fun y => ?_, fun y₁ y₂ hy => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hn : Nontrivial R₁`.
+Consider separately whether the proposition holds or fails. Prove the second alternative. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Or.inl (lift₁ hn y)`. Distinguish the cases in `hn₂ : Nontrivial R₂`. Conclude with `Or.inr (lift₂ hn₂ y)`. It suffices to derive a contradiction. Rewrite `hn`, `hn₂` using `[not_nontrivial_iff_subsingleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `one_ne_zero (ring_ext_of_isPullback hP (1 : P) 0 (Subsingleton.elim _ _) (Subsingleton.elim _ _))`. Establish `hn₁ : Nontrivial R₁` using `(spec_nonempty_iff R₁).1 ⟨p₁ y₁⟩`. Establish `hn₂ : Nontrivial R₂` using `(spec_nonempty_iff R₂).1 ⟨p₂ y₂⟩`. Establish `hn₀ : Nontrivial R₀`. Assume the negation of the conclusion as `hc`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[not_nontrivial_iff_subsingleton]`. Take `⟨e, he₁, he₂⟩` from `ring_lift_of_isPullback hP (1 : R₁) (0 : R₂) (Subsingleton.elim _ _)`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self e with hu | hu` into its components or cases. Establish `h'` using `hu.map f₂.hom`. Rewrite `h'` using `[show f₂.hom e = 0 from he₂]`.
-
-Conclude with `not_isUnit_zero h'`. Establish `h'` using `hu.map f₁.hom`. Rewrite `h'` using `[map_sub, map_one, show f₁.hom e = 1 from he₁, sub_self]`. Conclude with `not_isUnit_zero h'`. Take `⟨s₀⟩` from `(spec_nonempty_iff R₀).2 hn₀`.
-
-Take `⟨y₀, hy₀, -⟩` from `scheme_exists_of_isPullback h₀ y₁ s₀ (Subsingleton.elim _ _)`. Use `⟨y₀, hy₀, j₂.isClosedEmbedding.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← hcomm, Scheme.Hom.comp_apply, hy₀, hy]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem points_of_pinch : ∀ (P R₁ R₂ R₀ : CommRingCat.{0}) (f₁ : P ⟶ R₁) (f₂ : P ⟶ R₂) (g₁ : R₁ ⟶ R₀) (g₂ : R₂ ⟶ R₀), IsPullback f₁ f₂ g₁ g₂ → IsLocalRing P → IsArtinianRing P → Function.Surjective g₁ → Function.Surjective g₂ → ∀ (Y Y₁ Y₂ Y₀ : Scheme.{0}) (p : Y ⟶ Spec P) (p₁ : Y₁ ⟶ Spec R₁) (p₂ : Y₂ ⟶ Spec R₂) (p₀ : Y₀ ⟶ Spec R₀) (j₁ : Y₁ ⟶ Y) (j₂ : Y₂ ⟶ Y) (i₁ : Y₀ ⟶ Y₁) (i₂ : Y₀ ⟶ Y₂), IsPullback j₁ p₁ p (Spec.map f₁) → IsPullback j₂ p₂ p (Spec.map f₂) → IsPullback i₁ p₀ p₁ (Spec.map g₁) → i₁ ≫ j₁ = i₂ ≫ j₂ → (∀ y : Y, (∃ y₁, j₁ y₁ = y) ∨ ∃ y₂, j₂ y₂ = y) ∧ ∀ (y₁ : Y₁) (y₂ : Y₂), j₁ y₁ = j₂ y₂ → ∃ y₀ : Y₀, i₁ y₀ = y₁ ∧ i₂ y₀ = y₂ := by
   intro P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hP hloc hart hg₁ hg₂ Y Y₁ Y₂ Y₀ p p₁ p₂ p₀ j₁ j₂ i₁ i₂ h₁ h₂ h₀ hcomm

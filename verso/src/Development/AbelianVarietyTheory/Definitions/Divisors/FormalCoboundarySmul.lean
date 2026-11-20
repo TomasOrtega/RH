@@ -72,7 +72,7 @@ set_option autoImplicit false in
 open MvPowerSeries TensorProduct in
 variable {R : Type} [CommRing R] {d e : ℕ} {τ : Type} in
 /- English proof (translation)
-Establish `hμ : HasSubst μ` using `hasSubst_of_constantCoeff_zero h`. Establish `hL : HasSubst (fun i => (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) R))` using `hasSubst_of_constantCoeff_zero fun i => by simp`. Establish `hR : HasSubst (fun i => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) R))` using `hasSubst_of_constantCoeff_zero fun i => by simp`. Simplify using `only [_root_.GlobalTheory.Katz.cob1, _root_.GlobalTheory.Katz.inL, _root_.GlobalTheory.Katz.inR, subst_add hμ, subst_add hL, subst_add hR]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem _root_.GlobalTheory.Katz.formalCoboundary_add {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R} (h : ∀ i, constantCoeff (μ i) = 0)
     (f g : MvPowerSeries (Fin d) R) :
@@ -91,7 +91,7 @@ set_option autoImplicit false in
 open MvPowerSeries TensorProduct in
 variable {R : Type} [CommRing R] {d e : ℕ} {τ : Type} in
 /- English proof (translation)
-Establish `hμ : HasSubst μ` using `hasSubst_of_constantCoeff_zero h`. Establish `hL : HasSubst (fun i => (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) R))` using `hasSubst_of_constantCoeff_zero fun i => by simp`. Establish `hR : HasSubst (fun i => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) R))` using `hasSubst_of_constantCoeff_zero fun i => by simp`. Simplify using `only [_root_.GlobalTheory.Katz.cob1, _root_.GlobalTheory.Katz.inL, _root_.GlobalTheory.Katz.inR, subst_smul hμ, subst_smul hL, subst_smul hR, smul_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.Katz.formalCoboundary_smul {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R} (h : ∀ i, constantCoeff (μ i) = 0)
     (r : R) (f : MvPowerSeries (Fin d) R) :
@@ -127,7 +127,7 @@ set_option autoImplicit false in
 open MvPowerSeries TensorProduct in
 variable (p : ℕ) [Fact p.Prime] {k : Type} [Field k] [CharP k p] {σ : Type} {d : ℕ} in
 /- English proof (translation)
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, _root_.GlobalTheory.Katz.coeff_lift, coeff_zero_eq_constantCoeff_apply, h, WittVector.teichmuller_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.Katz.constantCoeff_lift {f : MvPowerSeries σ k}
     (h : constantCoeff f = 0) :
@@ -237,9 +237,9 @@ open MvPowerSeries TensorProduct in
 variable {k : Type} [CommRing k] {σ : Type} [Finite σ] in
 variable {p d e : ℕ} {G H : _root_.GlobalTheory.PDivGroup p k} (c : _root_.GlobalTheory.Katz.Chart G d) in
 /- English proof (translation)
-Break down `i with i | i` into its components or cases. Take `⟨m, hm⟩` from `c.nil n i`. Conclude with `⟨m, by`. Simplify using `only [_root_.GlobalTheory.Katz.Chart.x₂, Sum.elim_inl]`. Rewrite using `[Algebra.TensorProduct.tmul_pow, hm, one_pow, TensorProduct.zero_tmul]⟩`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, hm⟩` from `c.nil n i`. Conclude with `⟨m, by`. Simplify using `only [_root_.GlobalTheory.Katz.Chart.x₂, Sum.elim_inr]`. Rewrite using `[Algebra.TensorProduct.tmul_pow, hm, one_pow, TensorProduct.tmul_zero]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.Katz.Chart.nil₂ (n : ℕ) (i : Fin d ⊕ Fin d) :
     IsNilpotent (c.x₂ n i) := by

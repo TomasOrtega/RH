@@ -30,11 +30,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (L1 : Lattice (O := O) (charRep (cycLL PD LL))) (hL1 : L1.T = OL O LL)
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hc`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Establish `hcg : ∀ h, (c : G → A'.V ⧸ LA'.T) h = repD LA' h (Submodule.Quotient.mk v) - Submodule.Quotient.mk v` using `fun h => (congrFun hw h).symm`. Establish `hT : IsOpen (L1.T : Set LL)` using `integers_isOpen PD L1 hL1 hopen`. Establish `hcont : Continuous fun g : G => P ((d : G → A.V) g) (A'.ρ g v)` using `(IsModuleTopology.continuous_bilinear_of_finite_left P).comp (d.2.1.1.prodMk (A'.cont v))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlc : IsLocallyConstant fun g : G => -(Submodule.Quotient.mk (P ((d : G → A.V) g) (A'.ρ g v)) : LL ⧸ L1.T)` using `(locConst_mk L1.T hT _ hcont).neg`. Use `⟨fun g => -torsionPairing PD hd L1 hL1 (repD LA' g (Submodule.Quotient.mk v)) (evT LA g d), ⟨hlc, fun _ => Submodule.mem_top⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Take `⟨g, h⟩` from `x`. Use `show repD L1 g (-torsionPairing PD hd L1 hL1 (repD LA' h (Submodule.Quotient.mk v)) (evT LA h d)) - -torsionPairing PD hd L1 hL1 (repD LA' (g * h) (Submodule.Quotient.mk v)) (evT LA (g * h) d) + -torsionPairing PD hd L1 hL1 (repD LA' g (Submodule.Quotient.mk v)) (evT LA g d) = cu …`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cup_apply_alt]`. Simplify using `only [hcg, map_neg, ← torsionPairing_equivariant, lattice_cocycle_mul, map_mul, Module.End.mul_apply, map_add, map_sub, LinearMap.add_apply, LinearMap.sub_apply]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem cup_coboundary_right (hopen : IsOpen (Set.range (algebraMap O LL))) (c : ↥(divisibleCocycles LA'))
     (d : ↥(latticeCocycles LA)) (hc : (c : G → A'.V ⧸ LA'.T) ∈ BD LA') :
@@ -67,15 +67,13 @@ theorem cup_coboundary_right (hopen : IsOpen (Set.range (algebraMap O LL))) (c :
 end Gen
 
 /- English proof (translation)
-Introduce `hT l _ P K LL _ _ _ O _ _ hG L1 hL1 A A' LA LA' m hd`. Take `⟨e⟩` from `GlobalTheory.T.tate_H2_period_datum hT l P K LL O hG L1 hL1`. Take `⟨⟨hO, hDVR, hFr⟩, -, -, htr, hopen⟩` from `hG`. Use `haveI := hO`. Use `haveI := hDVR`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := hFr`. Use `haveI := htr`. Take `⟨pr, hpr⟩` from `exists_pr (P.PD K) hopen hd L1 hL1`. Use `⟨(pr.compr₂ e.toLinearMap).flip ∘ₗ Submodule.mkQ _, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `d c show e (pr c (Submodule.Quotient.mk d)) = 0 ↔ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[LinearEquiv.map_eq_zero_iff]`. Conclude with `hpr c d`. Introduce `d c hdB show e (pr c (Submodule.Quotient.mk d)) = 0`. Rewrite using `[LinearEquiv.map_eq_zero_iff, hpr c d]`. Unfold `CobO`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cup_eq_pairing (P.PD K) hd L1 hL1 c d]`. Conclude with `cup_mem_coboundaries (P.PD K) hd L1 hL1 c d hdB`. Introduce `d c hc show e (pr c (Submodule.Quotient.mk d)) = 0`. Rewrite using `[LinearEquiv.map_eq_zero_iff, hpr c d]`. Unfold `CobO`.
-
-Rewrite using `[← cup_eq_pairing (P.PD K) hd L1 hL1 c d]`. Conclude with `cup_coboundary_right (P.PD K) hd L1 hL1 hopen c d hc`.
+A detailed English derivation is pending.
 -/
 theorem integral_pairing : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l)
     (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type)

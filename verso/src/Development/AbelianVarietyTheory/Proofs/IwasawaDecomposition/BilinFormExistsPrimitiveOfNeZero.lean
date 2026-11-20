@@ -5,19 +5,19 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨a, b, hab⟩ : ∃ a b, σ a b ≠ 0 := by`. Assume the negation of the conclusion as `h`. Apply `hσ` to reduce the goal to its premises. Use extensionality with `a b`. Assume the negation of the conclusion as `h'`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `h ⟨a, b, by simpa using h'⟩`. Establish `hbound : ∀ k : ℕ, (∃ β' : LinearMap.BilinForm ℤ X, (k : ℤ) • β' = σ) → k ≤ (σ a b).natAbs`. Introduce and unpack `k ⟨β', hβ'⟩`. Establish `h1 : σ a b = (k : ℤ) * β' a b`. Rewrite using `[← hβ']`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h2 : k ∣ (σ a b).natAbs` using `Int.natCast_dvd.mp ⟨β' a b, h1⟩`. Conclude with `Nat.le_of_dvd (Int.natAbs_pos.mpr hab) h2`. Set `P : ℕ → Prop` to `fun k => ∃ β' : LinearMap.BilinForm ℤ X, (k : ℤ) • β' = σ`. Establish `hP1 : P 1` using `⟨σ, by simp⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1le : 1 ≤ (σ a b).natAbs` using `hbound 1 hP1`. Establish `hg : P (Nat.findGreatest P (σ a b).natAbs)` using `Nat.findGreatest_spec h1le hP1`. Establish `hg1 : 1 ≤ Nat.findGreatest P (σ a b).natAbs` using `Nat.le_findGreatest h1le hP1`. Establish `hmax : ∀ k, P k → k ≤ Nat.findGreatest P (σ a b).natAbs` using `fun k hk => Nat.le_findGreatest (hbound k hk) hk`. Generalize the expression as in `Nat.findGreatest P (σ a b).natAbs = g at hg hg1 hmax`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨β₀, hβ₀⟩` from `hg`. Use `⟨g, β₀, hg1, hβ₀, ?_⟩` and prove the remaining obligations. Introduce `k β' hk`. Establish `hgk : P (g * k)` using `⟨β', by rw [Nat.cast_mul, mul_smul, hk, hβ₀]⟩`. Establish `hle` using `hmax _ hgk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Apply `hσ` to reduce the goal to its premises. Rewrite using `[← hβ₀, ← hk]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk1 : k ≤ 1`. Establish `: g * k ≤ g * 1` using `by simpa using hle`. Conclude with `Nat.le_of_mul_le_mul_left this hg1`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem bilinForm_exists_primitive_of_ne_zero (X : Type) [AddCommGroup X]
     (σ : LinearMap.BilinForm ℤ X) (hσ : σ ≠ 0) :

@@ -9,7 +9,7 @@ section
 variable {Γ : Type} [Group Γ] [TopologicalSpace Γ]
 
 /- English proof (translation)
-Establish `hc : IsClosed (φ.ker : Set Γ)`. Establish `: (φ.ker : Set Γ) = {g | φ g = 1}` using `rfl`. Rewrite using `[this]`. Conclude with `(h.isClopen_fiber 1).isClosed`. Conclude with `Subgroup.topologicalClosure_minimal _ (Subgroup.normalClosure_le_normal fun g hg => MonoidHom.mem_ker.2 (hN g hg)) hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem le_ker [IsTopologicalGroup Γ] {G : Type} [Monoid G] (φ : Γ →* G) (h : IsLocallyConstant φ)
     (N : Set Γ) (hN : ∀ g ∈ N, φ g = 1) : (Subgroup.normalClosure N).topologicalClosure ≤ φ.ker := by
@@ -20,18 +20,16 @@ private theorem le_ker [IsTopologicalGroup Γ] {G : Type} [Monoid G] (φ : Γ �
   exact Subgroup.topologicalClosure_minimal _ (Subgroup.normalClosure_le_normal fun g hg => MonoidHom.mem_ker.2 (hN g hg)) hc
 
 /- English proof (translation)
-Introduce `s` and use `(QuotientGroup.isQuotientMap_mk M).isOpen_preimage.1 (h s)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem lc_quot {Y : Type} (M : Subgroup Γ) (f : Γ ⧸ M → Y)
     (h : IsLocallyConstant fun g : Γ => f (QuotientGroup.mk g)) : IsLocallyConstant f := fun s =>
   (QuotientGroup.isQuotientMap_mk M).isOpen_preimage.1 (h s)
 
 /- English proof (translation)
-Introduce `H hH`. Establish `hc : Continuous (QuotientGroup.mk' M)` using `QuotientGroup.continuous_mk`. Use `haveI := h (H.comap (QuotientGroup.mk' M)) (hH.preimage hc) fun g hg => by`. Rewrite using `[Subgroup.mem_comap, QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff g).2 hg]`. Conclude with `H.one_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `π` to `(QuotientGroup.mk' M).subgroupComap H`. Establish `hπ : Continuous π` using `(hc.comp continuous_subtype_val).subtype_mk _`. Establish `hs : Function.Surjective π` using `(QuotientGroup.mk' M).subgroupComap_surjective_of_surjective H (QuotientGroup.mk'_surjective M)`. Use `Finite.of_injective (β := {φ : H.comap (QuotientGroup.mk' M) →* Multiplicative (ZMod l) // IsOpen (φ.ker : Set (H.comap (QuotientGroup.mk' M))) ∧ ∀ g : H.comap (QuotientGroup.mk' M), (g : Γ) ∈ M → φ g = 1}) (fun φ => ⟨φ.1.comp π, φ.2.preimage hπ, fun g hg => ?_⟩) fun φ φ' e => ?_` and prove the remaining obligations. Establish `: π g = 1` using `Subtype.ext ((QuotientGroup.eq_one_iff (g : Γ)).2 hg)`.
-
-Rewrite using `[MonoidHom.comp_apply, this, map_one]`. Conclude with `Subtype.ext ((MonoidHom.cancel_right hs).1 (congrArg Subtype.val e))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem phi_quot (l : ℕ) (M : Subgroup Γ) [M.Normal]
     (h : ∀ H : Subgroup Γ, IsOpen (H : Set Γ) → M ≤ H →
@@ -58,15 +56,13 @@ variable {Λ : Type} [CommRing Λ] [IsLocalRing Λ] {ι : Type} [Fintype ι] [De
   {rbar : Γ →* Matrix ι ι (ResidueField Λ)}
 
 /- English proof (translation)
-Establish `key : ∀ x y : R, (∀ n : ℕ, Ideal.Quotient.mk (maximalIdeal R ^ n) x = Ideal.Quotient.mk _ y) → x = y`. Introduce `x y hxy`. Establish `hH : IsHausdorff (maximalIdeal R) R` using `(IsCO.complete (O := Λ)).toIsHausdorff`. Rewrite using `[← sub_eq_zero]`. Apply `hH.haus` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `n`. Rewrite using `[SModEq.sub_mem, sub_zero, Ideal.smul_eq_mul, Ideal.mul_top]`. Conclude with `Ideal.Quotient.eq.1 (hxy n)`. Establish `hc : IsClosed (s.hom.ker : Set Γ)`. Establish `: (s.hom.ker : Set Γ) = ⋂ a, ⋂ b, ⋂ n : ℕ, {g | Ideal.Quotient.mk (maximalIdeal R ^ n) (s.hom g a b) = Ideal.Quotient.mk (maximalIdeal R ^ n) ((1 : Matrix ι ι R) a b)}`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_iInter, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hg a b n`. Rewrite using `[hg]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hg`. Use extensionality with `a b`. Conclude with `key _ _ (hg a b)`. Rewrite using `[this]`. Conclude with `isClosed_iInter fun a => isClosed_iInter fun b => isClosed_iInter fun n => ((s.cont a b n).isClopen_fiber _).isClosed`.
-
-Conclude with `Subgroup.topologicalClosure_minimal _ (Subgroup.normalClosure_le_normal fun g hg => MonoidHom.mem_ker.2 (hN g hg)) hc`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem kills_closure [IsTopologicalGroup Γ] {R : Type} [CommRing R] [Algebra Λ R] [IsCO Λ R]
     (s : Lift Λ rbar R) (N : Set Γ) (hN : ∀ g ∈ N, s.hom g = 1) :
@@ -99,23 +95,21 @@ private theorem kills_closure [IsTopologicalGroup Γ] {R : Type} [CommRing R] [A
 end
 
 /- English proof (translation)
-Introduce `l _ Λ _ _ _ _ _ _ Γ ι _ _ _ _ _ _ _ rbar N hfin hloc hN`. Use `haveI : (Subgroup.normalClosure N).topologicalClosure.Normal := Subgroup.is_normal_topologicalClosure _`. Establish `hKc : IsClosed ((Subgroup.normalClosure N).topologicalClosure : Set Γ)` using `Subgroup.isClosed_topologicalClosure _`. Use `haveI : TotallyDisconnectedSpace (Γ ⧸ (Subgroup.normalClosure N).topologicalClosure) := (UpperTheory.V.AlgebraTools.totallyDisconnected_quot Γ _ hKc).1`. Establish `hK : (Subgroup.normalClosure N).topologicalClosure ≤ rbar.ker` using `le_ker rbar hloc N hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `rq : Γ ⧸ (Subgroup.normalClosure N).topologicalClosure →* Matrix ι ι (ResidueField Λ)` to `QuotientGroup.lift _ rbar hK`. Establish `hlq : IsLocallyConstant rq` using `lc_quot _ rq hloc`. Establish `hΦ : PhiCond (Γ ⧸ (Subgroup.normalClosure N).topologicalClosure) l` using `phi_quot l _ fun H hH hKH => hfin H hH (le_trans (Subgroup.le_topologicalClosure _) hKH)`. Take `⟨R, _, _, _, r0, hr0⟩` from `univ_lift l Λ (Γ ⧸ (Subgroup.normalClosure N).topologicalClosure) ι rq hΦ hlq`. Set `r : Lift Λ rbar R` to `⟨r0.hom.comp (QuotientGroup.mk' _), fun a b n => (r0.cont a b n).comp_continuous continuous_quot_mk, fun g a b => r0.red (g : Γ ⧸ (Subgroup.normalClosure N).topologicalClosure) a b⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨R, inferInstance, inferInstance, inferInstance, r, ?_⟩` and prove the remaining obligations. Introduce `R' _ _ _`. Prove the components needed by the constructor for the conclusion. Introduce `f n hn`. Establish `h1 : ((n : Γ ⧸ (Subgroup.normalClosure N).topologicalClosure)) = 1` using `(QuotientGroup.eq_one_iff n).2 (Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure hn))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Rewrite using `[Lift.map_hom]`. Use `show f (r0.hom (n : Γ ⧸ (Subgroup.normalClosure N).topologicalClosure) a b) = _`. Rewrite using `[h1, map_one]`. Apply the tactic sequence `by_cases hab : a = b <;> simp [Matrix.one_apply, hab]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce `r' hr'`. Establish `hK' : (Subgroup.normalClosure N).topologicalClosure ≤ r'.hom.ker` using `kills_closure r' N hr'`. Set `rq' : Lift Λ rq R'` to `⟨QuotientGroup.lift _ r'.hom hK', fun a b n => lc_quot _ _ (r'.cont a b n), fun q a b => by`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g => exact r'.red g a b⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨f, hf, huniq⟩` from `(hr0 R').2 rq' trivial`. Establish `key : ∀ g : R →ₐ[Λ] R', Lift.map g r = r' ↔ Lift.map g r0 = rq'`. Introduce `g`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Apply `Lift.ext` to reduce the goal to its premises. Use `MonoidHom.ext fun q => ?_` and prove the remaining obligations. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H x`. Use extensionality with `a b`.
+Treat this case separately. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congrArg (fun y : Lift Λ rbar R' => y.hom x a b) h` as an intermediate fact. Conclude with `(Lift.map_hom g r0 _ a b).trans ((Lift.map_hom g r x a b).symm.trans this)`. Introduce `h`. Apply `Lift.ext` to reduce the goal to its premises. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations.
-
-Use extensionality with `a b`. Use `congrArg (fun y : Lift Λ rq R' => y.hom (x : Γ ⧸ (Subgroup.normalClosure N).topologicalClosure) a b) h` as an intermediate fact. Conclude with `(Lift.map_hom g r x a b).trans ((Lift.map_hom g r0 _ a b).symm.trans this)`. Conclude with `⟨f, (key f).2 hf, fun g hg => huniq g ((key g).1 hg)⟩`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.sxUnivKill :
     ∀ (l : ℕ) [Fact l.Prime] {Λ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ] [Finite (ResidueField Λ)] [CharP (ResidueField Λ) l] {Γ ι : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [TotallyDisconnectedSpace Γ] [Fintype ι] [DecidableEq ι] (rbar : Γ →* Matrix ι ι (ResidueField Λ)) (N : Set Γ), (∀ H : Subgroup Γ, IsOpen (H : Set Γ) → Subgroup.normalClosure N ≤ H → Finite {φ : H →* Multiplicative (ZMod l) // IsOpen (φ.ker : Set H) ∧ ∀ g : H, (g : Γ) ∈ (Subgroup.normalClosure N).topologicalClosure → φ g = 1}) → IsLocallyConstant rbar → (∀ n ∈ N, rbar n = 1) → ∃ (R : Type) (_ : CommRing R) (_ : Algebra Λ R) (_ : IsCO Λ R) (r : Lift Λ rbar R), Represents (killCond rbar N) r := by

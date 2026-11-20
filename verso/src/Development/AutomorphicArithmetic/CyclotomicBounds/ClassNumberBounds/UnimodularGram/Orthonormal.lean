@@ -6,7 +6,7 @@ namespace KStar.Cstarloc
 variable {R : Type*} [CommRing R] [StarRing R] {M : Type*} [AddCommGroup M] [Module R M]
 
 /- English proof (translation)
-Rewrite using `[mem_perp]`. Simplify using `[hx]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem projection_mem_orthogonal (h : Sesq R M) (x : M) (hx : h x x = 1) (z : M) :
     z + (-(h z x)) • x ∈ perp h x := by
@@ -14,7 +14,7 @@ private theorem projection_mem_orthogonal (h : Sesq R M) (x : M) (hx : h x x = 1
   simp [hx]
 
 /- English proof (translation)
-Rewrite `hy` using `[mem_perp]`. Use `congrArg (fun z => h z x) e` as an intermediate fact. Simplify `this` using `[hx, hy]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem orthogonal_complement_independent (h : Sesq R M) (x : M) (hx : h x x = 1) (c : R) (y : M)
     (hy : y ∈ perp h x) (e : c • x + y = 0) : c = 0 := by
@@ -23,11 +23,11 @@ private theorem orthogonal_complement_independent (h : Sesq R M) (x : M) (hx : h
   simpa [hx, hy] using this
 
 /- English proof (translation)
-Set `p : M →ₗ[R] perp h x` to `LinearMap.codRestrict (perp h x) (LinearMap.id - (h.flip x).smulRight x) (fun z => by`. Use `projection_mem_orthogonal h x hx z` as an intermediate fact. Simplify `this)` using `[sub_eq_add_neg]`. Establish `hp : p.comp (perp h x).subtype = LinearMap.id`. Use extensionality with `⟨z, hz⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite `hz` using `[mem_perp]`. Simplify using `[p, hz]`. Establish `hs : Function.Surjective p` using `fun z => ⟨z, by`. Use `LinearMap.congr_fun hp z` as an intermediate fact. Simplify using `using this⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `haveI : Module.Finite R (perp h x) := Module.Finite.of_surjective p hs`. Use `haveI : Module.Projective R (perp h x) := Module.Projective.of_split _ p hp`. Conclude with `⟨inferInstance, Module.free_of_flat_of_isLocalRing⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem orthogonal_complement_free_finite [IsLocalRing R] [Module.Free R M] [Module.Finite R M]
     (h : Sesq R M) (x : M) (hx : h x x = 1) :
@@ -49,19 +49,17 @@ private theorem orthogonal_complement_free_finite [IsLocalRing R] [Module.Free R
 
 universe u in
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `M _ _ _ _ h _ _ hn`. Use `⟨Module.finBasisOfFinrankEq R M hn, ?_⟩` and prove the remaining obligations. Use extensionality with `i`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Conclude with `i.elim0`. Consider the case `succ n ih`. Introduce `M _ _ _ _ h hh hu hn`. Use `haveI : Nontrivial M := Module.nontrivial_of_finrank_eq_succ hn`. Take `⟨x, hx⟩` from `exists_norm_one hR h hh hu`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hfin, hfree⟩` from `orthogonal_complement_free_finite h x hx`. Establish `hli` using `orthogonal_complement_independent h x hx`. Establish `hsp : ∀ z : M, ∃ c : R, z + c • x ∈ perp h x` using `fun z => ⟨_, projection_mem_orthogonal h x hx z⟩`. Establish `hr : Module.finrank R (perp h x) = n`. Use `Module.finrank_eq_card_basis (Module.Basis.mkFinCons x (Module.finBasis R (perp h x)) hli hsp)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `this` using `[hn, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Take `⟨b, hb⟩` from `ih (perp h x) (restr h (perp h x)) (fun a c => hh a c) (isUnimod_restr_perp h hh hu x hx) hr`. Use `⟨Module.Basis.mkFinCons x b hli hsp, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.coe_mkFinCons]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ j, h (b j) x = 0` using `fun j => (b j).2`. Establish `h2 : ∀ j, h x (b j) = 0` using `fun j => by rw [hh, h1, star_zero]`. Establish `h3 : ∀ i j, h (b i) (b j) = if i = j then 1 else 0` using `fun i j => by`. Use `congrFun (congrFun hb i) j` as an intermediate fact. Simplify `this` using `[gram, Matrix.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j`. Simplify using `[gram, hx]`. Simplify using `[gram, h2, Matrix.one_apply, (Fin.succ_ne_zero j).symm]`. Simplify using `[gram, h1, Matrix.one_apply]`.
-
-Simplify using `[gram, h3, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_orthonormal_basis_unimodular [IsLocalRing R] (hR : UnramDatum R) (n : ℕ) :
     ∀ (M : Type u) [AddCommGroup M] [Module R M] [Module.Free R M] [Module.Finite R M]
@@ -103,15 +101,15 @@ private theorem exists_orthonormal_basis_unimodular [IsLocalRing R] (hR : UnramD
     · simp [gram, h3, Matrix.one_apply]
 
 /- English proof (translation)
-Set `h : Sesq R (n → R)` to `LinearMap.mk₂'ₛₗ (RingHom.id R) (starRingEnd R) (fun x y => x ⬝ᵥ G.mulVec (star y)) (fun _ _ _ => add_dotProduct _ _ _) (fun _ _ _ => by simp) (fun _ _ _ => by simp [Matrix.mulVec_add]) (fun _ _ _ => by`. Simplify using `[Matrix.mulVec_smul, starRingEnd_apply])`. Establish `hg : gram h (Pi.basisFun R n) = G`. Use extensionality with `i j`. Simplify using `[gram, h, ← Pi.single_star]`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hh : IsHerm h` using `(isHerm_iff_gram h (Pi.basisFun R n)).2 (by rw [hg]; exact hG)`. Establish `hu : IsUnimod h` using `(isUnimod_iff_gram h (Pi.basisFun R n)).2 (by rw [hg]; exact hd)`. Take `⟨b, hb⟩` from `exists_orthonormal_basis_unimodular hR (Fintype.card n) (n → R) h hh hu (Module.finrank_fintype_fun_eq_card R)`. Set `e` to `Fintype.equivFin n`. Set `P : Matrix n n R` to `Matrix.of fun i j => b (e i) j`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `key : P * G * P.conjTranspose = 1`. Rewrite using `[← hg, ← gram_comb]`. Establish `: (fun i => ∑ j, P i j • (Pi.basisFun R n) j) = fun i => b (e i)`. Use function extensionality and compare the values at `i`. Use `(Pi.basisFun R n).sum_repr (b (e i))` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify `this` using `[P]`. Rewrite using `[this]`. Use extensionality with `i j`. Use `congrFun (congrFun hb (e i)) (e j)` as an intermediate fact. Simplify `this` using `[gram, Matrix.one_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨P, ?_, key⟩` and prove the remaining obligations. Rewrite `key` using `[Matrix.mul_assoc]`. Conclude with `Matrix.isUnit_det_of_right_inverse key`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_congr_one [IsLocalRing R] (hR : UnramDatum R) {n : Type*} [Fintype n]
     [DecidableEq n] (G : Matrix n n R) (hG : G.IsHermitian) (hd : IsUnit G.det) :

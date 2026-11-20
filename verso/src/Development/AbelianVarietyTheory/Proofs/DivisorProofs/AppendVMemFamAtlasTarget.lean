@@ -33,7 +33,7 @@ theorem appendV_last (v s : V 1) : appendV 1 1 (v, s) (Fin.last 1) = s 0 := rfl
 def sphFin : sphere.ι := (0 : Fin 2)
 
 /- English proof (translation)
-Use extensionality with `i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Simplify using `only [EuclideanSpace.single_apply, if_true]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem sphFin_apply (w : ℂ) : sphere.e sphFin (w : OnePoint ℂ) = EuclideanSpace.single 0 w := by
   ext i
@@ -50,27 +50,27 @@ theorem famAtlas_symm (x : V (n + 1)) : ((famAtlas A).e (j, k)).symm x =
     ((A.e j).symm ((appendV n 1).symm x).1, (sphere.e k).symm ((appendV n 1).symm x).2) := rfl
 
 /- English proof (translation)
-Rewrite using `[famAtlas_symm, ContinuousLinearEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem famAtlas_symm_appendV (v : V n) (s : V 1) : ((famAtlas A).e (j, k)).symm (appendV n 1 (v, s)) =
     ((A.e j).symm v, (sphere.e k).symm s) := by
   rw [famAtlas_symm, ContinuousLinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_famAtlas_target (x : V (n + 1)) : x ∈ ((famAtlas A).e (j, k)).target ↔
     ((appendV n 1).symm x).1 ∈ (A.e j).target ∧ ((appendV n 1).symm x).2 ∈ (sphere.e k).target := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_famAtlas_target, ContinuousLinearEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem appendV_mem_famAtlas_target (v : V n) (s : V 1) : appendV n 1 (v, s) ∈ ((famAtlas A).e (j, k)).target ↔
     v ∈ (A.e j).target ∧ s ∈ (sphere.e k).target := by
   rw [mem_famAtlas_target, ContinuousLinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Introduce and unpack `⟨j, k⟩`. Establish `d : ContDiff ℝ (⊤ : ℕ∞) fun x : V (n + 1) => ((appendV n 1).symm x).1` using `contDiff_fst.comp (((appendV n 1).symm : V (n + 1) →L[ℂ] V n × V 1).restrictScalars ℝ).contDiff`. Conclude with `(hχ j).comp d.contDiffOn fun x hx => ⟨hx.1.1, trivial⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smoothOn_fst {χ : M → ℂ} (hχ : A.SmoothOn univ χ) : (famAtlas A).SmoothOn univ fun y => χ y.1 := by
   rintro ⟨j, k⟩

@@ -18,11 +18,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (Q : SelfR
   (k : Type) [CommRing k] [Algebra (maximalRealSubfield E) k]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul s y`. Use `⟨s ⊗ₜ ⟨(y + invol Q y) / 2, ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `invol Q _ = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [map_div₀, map_add, invol_invol, map_ofNat, AlgHom.id_apply, add_comm]`. Express the relevant statement in the definitionally equal form `s ⊗ₜ[maximalRealSubfield E] ((y + invol Q y) / 2) = _ * (s ⊗ₜ y + s ⊗ₜ invol Q y)`. Rewrite using `[← TensorProduct.tmul_add, Algebra.TensorProduct.tmul_mul_tmul, one_mul, div_eq_inv_mul]`. Consider the case `add x y hx hy`. Take `⟨a, ha⟩` from `hx`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hy`. Use `⟨a + b, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ha, hb, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_inclPlus_half (z : k ⊗[maximalRealSubfield E] Fld Q) :
     ∃ a : k ⊗[maximalRealSubfield E] plus Q,
@@ -43,7 +43,7 @@ theorem exists_inclPlus_half (z : k ⊗[maximalRealSubfield E] Fld Q) :
     ring
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_inclPlus_half Q k z`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `h2 : (2 : k ⊗[maximalRealSubfield E] Fld Q) = (1 : k) ⊗ₜ[maximalRealSubfield E] (2 : Fld Q)` using `(map_ofNat (Algebra.TensorProduct.includeRight : Fld Q →ₐ[maximalRealSubfield E] k ⊗[maximalRealSubfield E] Fld Q) 2).symm`. Rewrite using `[ha, hz, ← two_mul, ← mul_assoc, h2, Algebra.TensorProduct.tmul_mul_tmul, mul_one, inv_mul_cancel₀ two_ne_zero, ← Algebra.TensorProduct.one_def, one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_inclPlus_of_fixed {z : k ⊗[maximalRealSubfield E] Fld Q} (hz : involBase Q k z = z) :
     ∃ a : k ⊗[maximalRealSubfield E] plus Q, inclPlus Q k a = z := by
@@ -56,18 +56,18 @@ theorem exists_inclPlus_of_fixed {z : k ⊗[maximalRealSubfield E] Fld Q} (hz : 
     inv_mul_cancel₀ two_ne_zero, ← Algebra.TensorProduct.one_def, one_mul]
 
 /- English proof (translation)
-The claim follows from `Module.Flat.lTensor_preserves_injective_linearMap (M := k) (plus Q).val.toLinearMap Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 theorem inclPlus_injective : Function.Injective (inclPlus Q k) :=
   Module.Flat.lTensor_preserves_injective_linearMap (M := k) (plus Q).val.toLinearMap
     Subtype.val_injective
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hu`. Establish `hinv : involBase Q k ((u⁻¹ : (k ⊗[maximalRealSubfield E] Fld Q)ˣ) : k ⊗[maximalRealSubfield E] Fld Q) = (u⁻¹ : (k ⊗[maximalRealSubfield E] Fld Q)ˣ)`. Establish `h1 : (u : k ⊗[maximalRealSubfield E] Fld Q) * involBase Q k ((u⁻¹ : (k ⊗[maximalRealSubfield E] Fld Q)ˣ) : k ⊗[maximalRealSubfield E] Fld Q) = 1` using `by conv_lhs => rw [← hy]`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Units.inv_mul_cancel_left]`. Use `_ = _ := by rw [h1, mul_one]`. Take `⟨a, ha⟩` from `exists_inclPlus_of_fixed Q k hy`. Take `⟨b, hb⟩` from `exists_inclPlus_of_fixed Q k hinv`. Establish `hab : a * b = 1` using `inclPlus_injective Q k (by rw [map_mul, ha, hb, Units.mul_inv, map_one])`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨⟨a, b, hab, by rw [mul_comm]; exact hab⟩, ha⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit_of_fixed {y : k ⊗[maximalRealSubfield E] Fld Q} (hu : IsUnit y)
     (hy : involBase Q k y = y) :
@@ -95,9 +95,9 @@ end Fixed
 section Matrix
 
 /- English proof (translation)
-Proceed by induction on `g using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, map_add, add_mul, mul_add, hp, hq]`. Consider the case `monomial d a`. Establish `e : B ^ d * H = H * C ^ d` using `(((show SemiconjBy H C B from h.symm).pow_right d).eq).symm`. Rewrite using `[aeval_monomial, aeval_monomial]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, mul_smul_comm, mul_assoc, e]`.
+Simplify using the standard rewrite rules.
 -/
 theorem aeval_mul_of_intertwine {K : Type} [Field K] {n : ℕ} {B C H : Matrix (Fin n) (Fin n) K}
     (h : B * H = H * C) (g : K[X]) : aeval B g * H = H * aeval C g := by
@@ -110,7 +110,7 @@ theorem aeval_mul_of_intertwine {K : Type} [Field K] {n : ℕ} {B C H : Matrix (
     simp only [Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, mul_smul_comm, mul_assoc, e]
 
 /- English proof (translation)
-Simplify using `[cT, Matrix.map_mul, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_mul {K : Type} [Field K] (s : K →+* K) {n : ℕ} (B C : Matrix (Fin n) (Fin n) K) :
     cT s (B * C) = cT s C * cT s B := by
@@ -123,15 +123,15 @@ section Local
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Use `set k := v.adicCompletion (maximalRealSubfield E)`. Set `ι : w.adicCompletion E →+* k ⊗[maximalRealSubfield E] Fld Q` to `(inclBase Q k).toRingHom.comp (locJ hU w hw v hv).toRingHom`. Establish `hιc : ∀ y, involBase Q k (ι y) = ι (cj w y)`. Introduce `y`. Express the relevant statement in the definitionally equal form `involBase Q k (inclBase Q k (locJ hU w hw v hv y)) = inclBase Q k (locJ hU w hw v hv (cj w y))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[locJ_cj]`. Generalize the expression as in `locJ hU w hw v hv y = t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [inclBase, involBase, invol_algebraMap]`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Set `ib : k ⊗[maximalRealSubfield E] Fld Q →+* k ⊗[maximalRealSubfield E] Fld Q` to `(involBase Q k).toRingHom`. Establish `hR : locPhi hU w hw v hv Q (atPl w r₀) = (1 : k) ⊗ₜ (alpha Q)⁻¹`. Rewrite using `[locPhi_atPl]`. Use `congr 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hr` using `[map_sub, map_mul, AdjoinRoot.mk_X, map_one, sub_eq_zero]`. Conclude with `eq_inv_of_mul_eq_one_right hr`. Establish `e1 : ib.comp ι = ι.comp (cj w)` using `RingHom.ext fun y => hιc y`. Establish `e2 : ib ((1 : k) ⊗ₜ alpha Q) = (1 : k) ⊗ₜ (alpha Q)⁻¹`. Express the relevant statement in the definitionally equal form `(1 : k) ⊗ₜ invol Q (alpha Q) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[invol_alpha]`. Express the relevant statement in the definitionally equal form `ib (eval₂ ι _ f) = eval₂ ι _ _`. Rewrite using `[Polynomial.hom_eval₂, e1, e2, eval₂_comp, eval₂_map]`. Conclude with `congrArg (fun x => eval₂ (ι.comp (cj w)) x f) hR.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem involBase_locPhi (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w)
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (hv : w.under (𝓞 (maximalRealSubfield E)) = v)
@@ -170,29 +170,27 @@ theorem involBase_locPhi (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w)
 end Local
 
 /- English proof (translation)
-Introduce `E _ _ _ hU w hw v hv n γ₀ hell H₀ hH hdet h3 m hM hMdet r Q hQ`. Establish `hsep : γ₀.val.charpoly.Separable` using `hell.2.2.1`. Take `⟨r₀, hr₀⟩` from `GlobalTheory.BCT.ClsFin.exists_aeval_of_comm γ₀.val (γ₀⁻¹).val hsep (by rw [Units.mul_inv, Units.inv_mul])`. Establish `hPr : γ₀.val.charpoly ∣ X * r₀ - 1`. Use `GlobalTheory.ClassParam.charpoly_dvd_of_aeval γ₀.val hsep _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sub, map_mul, aeval_X, ← hr₀, Units.mul_inv, map_one, sub_self]`. Establish `hr : AdjoinRoot.mk Q.1 (X * r₀ - 1) = 0` using `AdjoinRoot.mk_eq_zero.2 (hQ.trans hPr)`. Take `⟨A, hA⟩ : ∃ A, A = γ₀.val.map (algebraMap E (w.adicCompletion E))` from `⟨_, rfl⟩`. Take `⟨H, hHd⟩ : ∃ H, H = H₀.map (algebraMap E (w.adicCompletion E))` from `⟨_, rfl⟩`. Rewrite `hM`, `hMdet` using `[← hA, ← hHd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨M, hMd⟩ : ∃ M, M = aeval A m` from `⟨_, rfl⟩`. Rewrite `hM`, `hMdet` using `[← hMd]`. Establish `hAsep : A.charpoly.Separable` using `by rw [hA, Matrix.charpoly_map]; exact hsep.map`. Establish `hAP : A.charpoly = atPl w γ₀.val.charpoly` using `by rw [hA]; exact Matrix.charpoly_map _ _`. Establish `hAi : A * aeval A (atPl w r₀) = 1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hA, aeval_map_mat, ← hr₀, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hHh : cT (cj w) H = H`. Rewrite using `[hHd, ← cT_map hU w hw]`. Conclude with `congrArg (Matrix.map · (algebraMap E (w.adicCompletion E))) hH`. Establish `hcA : cT (cj w) A * H * A = H`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (Matrix.map · (algebraMap E (w.adicCompletion E))) h3` as an intermediate fact. Simplify using `only [Matrix.map_mul, cT_map hU w hw] at this`. Rewrite using `[hA, hHd]`. Conclude with `this`. Establish `hint : cT (cj w) A * H = H * aeval A (atPl w r₀)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hH0 : IsUnit H`. Rewrite `*` using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_mul]`. Conclude with `(left_ne_zero_of_mul hMdet).isUnit`. Establish `hM0 : IsUnit M`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Rewrite `hMdet` using `[Matrix.det_mul]`. Conclude with `(right_ne_zero_of_mul hMdet).isUnit`. Establish `hfix : M = aeval A ((m.map (cj w)).comp (atPl w r₀))`. Establish `h1 : cT (cj w) M * H = H * M`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hM` as an intermediate fact. Rewrite `this` using `[IsHerm, cT_mul, hHh]`. Conclude with `this`. Rewrite `h1` using `[hMd, GlobalTheory.NormInert.cT_aeval, aeval_mul_of_intertwine hint, ← aeval_comp, ← hMd]`. Conclude with `(hH0.mul_left_cancel h1).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hdiv : A.charpoly ∣ (m.map (cj w)).comp (atPl w r₀) - m` using `GlobalTheory.ClassParam.charpoly_dvd_of_aeval A hAsep _ (by rw [map_sub, ← hfix, ← hMd, sub_self])`. Establish `hΦ0 : locPhi hU w hw v hv Q A.charpoly = 0`. Rewrite using `[hAP, locPhi_atPl]`. Conclude with `(congrArg _ (AdjoinRoot.mk_eq_zero.2 hQ)).trans (TensorProduct.tmul_zero _ _)`. Establish `hy : involBase Q (v.adicCompletion (maximalRealSubfield E)) (locPhi hU w hw v hv Q m) = locPhi hU w hw v hv Q m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨t, ht⟩` from `hdiv`. Rewrite using `[involBase_locPhi hU w hw v hv Q hr, ← sub_eq_zero, ← map_sub, ht, map_mul, hΦ0, zero_mul]`. Take `⟨u, hu⟩` from `hM0`. Establish `hcomm : Commute A (u : Matrix (Fin n) (Fin n) (w.adicCompletion E))`. Rewrite using `[hu, hMd]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `congrArg (aeval A) (mul_comm (X : (w.adicCompletion E)[X]) m)` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, aeval_X]`. Conclude with `this`. Take `⟨g, hg⟩` from `GlobalTheory.BCT.ClsFin.exists_aeval_of_comm A ((u⁻¹ : (Matrix (Fin n) (Fin n) (w.adicCompletion E))ˣ) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) hAsep hcomm.units_inv_right.eq`. Establish `hdiv2 : A.charpoly ∣ m * g - 1` using `GlobalTheory.ClassParam.charpoly_dvd_of_aeval A hAsep _ (by`.
-
-Rewrite using `[map_sub, map_mul, ← hg, ← hMd, ← hu, Units.mul_inv, map_one, sub_self])`. Establish `hone : locPhi hU w hw v hv Q m * locPhi hU w hw v hv Q g = 1`. Take `⟨t, ht⟩` from `hdiv2`. Rewrite using `[← map_mul, ← sub_eq_zero, ← map_one (locPhi hU w hw v hv Q), ← map_sub, ht, map_mul, hΦ0, zero_mul]`. Conclude with `exists_unit_of_fixed Q _ (isUnit_iff_exists_inv.2 ⟨_, hone⟩) hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locPhi_mem_units_plus : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (hv : w.under (𝓞 (maximalRealSubfield E)) = v), ∀ (n : ℕ) (γ₀ : GL (Fin n) E), γ₀.val.charpoly ∈ Ell E n → ∀ H₀ : Matrix (Fin n) (Fin n) E, IsHerm (IsCMField.complexConj E).toRingEquiv.toRingHom H₀ → H₀.det ≠ 0 → cT (IsCMField.complexConj E).toRingEquiv.toRingHom γ₀.val * H₀ * γ₀.val = H₀ → ∀ m : (w.adicCompletion E)[X], IsHerm (cj w) ((H₀.map (algebraMap E (w.adicCompletion E))) * aeval (γ₀.val.map (algebraMap E (w.adicCompletion E))) m) → ((H₀.map (algebraMap E (w.adicCompletion E))) * aeval (γ₀.val.map (algebraMap E (w.adicCompletion E))) m).det ≠ 0 → ∀ (r : ℕ) (Q : SelfRecip E r), Q.1 ∣ γ₀.val.charpoly → ∃ x : ((v.adicCompletion (maximalRealSubfield E)) ⊗[(maximalRealSubfield E)] plus Q)ˣ, inclPlus Q (v.adicCompletion (maximalRealSubfield E)) (x : (v.adicCompletion (maximalRealSubfield E)) ⊗[(maximalRealSubfield E)] plus Q) = locPhi hU w hw v hv Q m := by
   intro E _ _ _ hU w hw v hv n γ₀ hell H₀ hH hdet h3 m hM hMdet r Q hQ

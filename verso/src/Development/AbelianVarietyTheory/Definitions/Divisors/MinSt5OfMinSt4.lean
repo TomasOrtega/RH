@@ -29,7 +29,7 @@ def MinAt5 (F : SFam g n (zetaAway n)) {Z : Scheme.{0}} (z : Z ⟶ Sp (cycAway n
     (1 ≤ N ∧ LBIso (OZ.pull π) (lbPow (hodge G g) N))
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, ⟨h₁, -, -, -, -, h₂, h₃⟩, -⟩` from `h`. Conclude with `⟨h₁, h₂, h₃⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem MinAt5.isThetaCompact {F : SFam g n (zetaAway n)} {Z : Scheme.{0}} {z : Z ⟶ Sp (cycAway n)} {i : F.X ⟶ Z} {OZ : LB Z}
     (h : MinAt5 F z i OZ) : IsThetaCompact F z i ∧ OZ.IsLB ∧ IsAmpleLB OZ := by

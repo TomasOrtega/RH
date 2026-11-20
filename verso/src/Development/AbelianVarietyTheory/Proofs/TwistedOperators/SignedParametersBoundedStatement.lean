@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.StrictInterlaceI
 open Formalism.L2.Theta
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Twist.parPi_parD0_entries_bounded` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSignedParametersBounded.lean&line=75#L75)
 -/

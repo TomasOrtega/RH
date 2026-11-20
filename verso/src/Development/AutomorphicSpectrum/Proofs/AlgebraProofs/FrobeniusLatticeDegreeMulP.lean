@@ -12,7 +12,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Crv.DegFrob
 variable {K : Type} [Field K] (C : ACurve K) (p : ℕ) [Fact p.Prime] [CharP K p]
 
 /- English proof (translation)
-Use `haveI : ExpChar K p := ExpChar.prime Fact.out`. Rewrite using `[Module.Basis.det_apply, Module.Basis.det_apply, ← frobenius_def, RingHom.map_det]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem det_frobVec {d : ℕ} (b : Fin d → Fin d → K) :
     (Pi.basisFun K (Fin d)).det (fun q => frobVec p (b q)) =
@@ -22,11 +22,9 @@ theorem det_frobVec {d : ℕ} (b : Fin d → Fin d → K) :
   congr 1
 
 /- English proof (translation)
-Establish `hnd : n = d`. Establish `h` using `Module.finrank_eq_card_basis b`. Rewrite `h` using `[Module.finrank_fin_fun, Fintype.card_fin]`. Conclude with `h.symm`. Substitute `hnd` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hb : IsUnit ((Pi.basisFun K (Fin n)).det b)` using `(Module.Basis.is_basis_iff_det (Pi.basisFun K (Fin n))).1 ⟨b.linearIndependent, b.span_eq⟩`. Establish `hb' : IsUnit ((Pi.basisFun K (Fin n)).det (fun q => frobVec p (b q)))`. Rewrite using `[det_frobVec p (⇑b)]`. Conclude with `hb.pow p`. Take `⟨hli, hsp⟩` from `(Module.Basis.is_basis_iff_det (Pi.basisFun K (Fin n))).2 hb'`.
-
-Conclude with `⟨Module.Basis.mk hli hsp.ge, fun q => Module.Basis.mk_apply _ _ _⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_frob_basis {n d : ℕ} (b : Module.Basis (Fin n) K (Fin d → K)) :
     ∃ b' : Module.Basis (Fin n) K (Fin d → K), ∀ q, b' q = frobVec p (b q) := by
@@ -43,7 +41,7 @@ theorem exists_frob_basis {n d : ℕ} (b : Module.Basis (Fin n) K (Fin d → K))
   exact ⟨Module.Basis.mk hli hsp.ge, fun q => Module.Basis.mk_apply _ _ _⟩
 
 /- English proof (translation)
-Use `haveI : ExpChar K p := ExpChar.prime Fact.out`. Establish `key : frobVec p y = ∑ i, (b.repr y i) ^ p • b' i` using `by conv_lhs => rw [← b.sum_repr y]`. Use function extensionality and compare the values at `j`. Simplify using `only [frobVec, h, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, sum_pow_char, mul_pow]`. Rewrite using `[key, Module.Basis.repr_sum_self]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr_frobVec {n d : ℕ} (b b' : Module.Basis (Fin n) K (Fin d → K))
     (h : ∀ q, b' q = frobVec p (b q)) (y : Fin d → K) (q : Fin n) :
@@ -56,13 +54,13 @@ theorem repr_frobVec {n d : ℕ} (b b' : Module.Basis (Fin n) K (Fin d → K))
   rw [key, Module.Basis.repr_sum_self]
 
 /- English proof (translation)
-Introduce `x`. Express the relevant statement in the definitionally equal form `x ∈ AddSubgroup.closure _ ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hle : AddSubgroup.closure {y | ∃ (a : K) (z : Fin d → K), C.v i a ≤ 1 ∧ z ∈ L i ∧ y = a • frobVec p z} ≤ GlobalTheory.CompanionTheory.Ar.Crv.Inhab.latOf C i b'`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `y ⟨a, z, ha, hz, rfl⟩`. Express the relevant statement in the definitionally equal form `∀ q, C.v i (b'.repr (a • frobVec p z) q) ≤ 1`. Introduce `q`. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, repr_frobVec p b b' h z q, map_mul, map_pow]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_one' ha (pow_le_one' ((hb z).1 hz q) p)`. Conclude with `hle hx`. Introduce `hx`. Rewrite using `[← b'.sum_repr x]`. Use `AddSubgroup.sum_mem _ fun q _ => AddSubgroup.subset_closure ⟨b'.repr x q, b q, hx q, (hb (b q)).2 fun r => ?_, by rw [h]⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Module.Basis.repr_self, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem isLatOf_frob {n d : ℕ} (L : C.I → AddSubgroup (Fin d → K)) (i : C.I)
     (b b' : Module.Basis (Fin n) K (Fin d → K))
@@ -89,9 +87,9 @@ theorem isLatOf_frob {n d : ℕ} (L : C.I → AddSubgroup (Fin d → K)) (i : C.
     split_ifs <;> simp
 
 /- English proof (translation)
-Take `⟨h1, b₀, hfin⟩` from `hL`. Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `h1 i`. Take `⟨b', hb'⟩` from `exists_frob_basis p b`. Conclude with `⟨b', isLatOf_frob C p L i b b' hb' hb⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨b', hb'⟩` from `exists_frob_basis p b₀`. Use `⟨b', hfin.subset fun i hi => ?_⟩` and prove the remaining obligations. Introduce `h`. Conclude with `absurd (isLatOf_frob C p L i b₀ b' hb' h) hi`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isBun_frobLat {d : ℕ} (L : C.I → AddSubgroup (Fin d → K)) (hL : IsBun C L) :
     IsBun C (frobLat C p L) := by
@@ -106,13 +104,13 @@ theorem isBun_frobLat {d : ℕ} (L : C.I → AddSubgroup (Fin d → K)) (hL : Is
     exact absurd (isLatOf_frob C p L i b₀ b' hb' h) hi
 
 /- English proof (translation)
-Introduce `K _ C p _ _ d L hL`. Establish `hL'` using `isBun_frobLat C p L hL`. Use `⟨hL', ?_⟩` and prove the remaining obligations. Use `choose b hb using hL.1`. Use `choose b' hb' using fun i => exists_frob_basis p (b i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Fin d ≃ Fin (Module.finrank K (Fin d → K))` using `finCongr (Module.finrank_fin_fun K).symm`. Use `set b₀ := (Pi.basisFun K (Fin d)).reindex e with hb₀`. Establish `hdet : ∀ i, b₀.det (b' i) = (b₀.det (b i)) ^ p`. Introduce `i`. Rewrite using `[hb₀, Module.Basis.det_reindex, Module.Basis.det_reindex]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (⇑(b' i) ∘ ⇑e) = fun q => frobVec p ((⇑(b i) ∘ ⇑e) q)`. Use function extensionality and compare the values at `q`. Conclude with `hb' i (e q)`. Rewrite using `[hc, det_frobVec]`. Take `⟨-, h1⟩` from `GlobalTheory.T.bundle_degree_eq_sum_valuations K C (Fin d → K) L _ b₀ b hL hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, h2⟩` from `GlobalTheory.T.bundle_degree_eq_sum_valuations K C (Fin d → K) (frobLat C p L) _ b₀ b' hL' (fun i => isLatOf_frob C p L i (b i) (b' i) (hb' i) (hb i))`. Rewrite using `[h1, h2, mul_finsum]`. Use `finsum_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[hdet, map_pow, WithZero.log_pow, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem deg_frobLat : ∀ (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fact p.Prime] [CharP K p]
     (d : ℕ) (L : C.I → AddSubgroup (Fin d → K)), IsBun C L →

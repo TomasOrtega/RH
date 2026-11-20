@@ -19,7 +19,7 @@ def frW : Submodule I.E (Fin I.n → I.E) where
   smul_mem' := fun c x hx s hs => by rw [hform_smul_right, hx s hs, mul_zero]
 
 /- English proof (translation)
-Establish `hT` using `I.cm.totReal`. Take `⟨v⟩ : Nonempty (NumberField.InfinitePlace I.F)` from `inferInstance`. Conclude with `⟨NumberField.InfinitePlace.embedding_of_isReal (hT.isReal v)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fr_real_emb (I : Formalism.MainNotions.S.AutInst) : Nonempty (I.F →+* ℝ) := by
   have hT := I.cm.totReal
@@ -27,15 +27,15 @@ theorem fr_real_emb (I : Formalism.MainNotions.S.AutInst) : Nonempty (I.F →+* 
   exact ⟨NumberField.InfinitePlace.embedding_of_isReal (hT.isReal v)⟩
 
 /- English proof (translation)
-Rewrite using `[Submodule.disjoint_def]`. Introduce `x hxS hxW`. Assume the negation of the conclusion as `hx0`. Establish `key : ∀ z ∈ Submodule.span I.E S, hform (starRingEnd I.E) I.J z x = 0`. Introduce `z hz`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz => exact hxW z hz`. Consider the case `zero => simp [hform]`. Consider the case `add u v _ _ hu hv => rw [hform_add_left, hu, hv, add_zero]`. Consider the case `smul c u _ hu => rw [hform_smul_left, hu, mul_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨ι⟩` from `fr_real_emb I`. Break down `hS ι with h | h` into its components or cases. Take `⟨a, ha, hpos⟩` from `h x hx0 (fun s hs => hxW s hs)`. Rewrite `ha` using `[key x hxS]`. Establish `ha0 : a = 0` using `(algebraMap I.F I.E).injective (by rw [ha, map_zero])`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hpos` using `[ha0, map_zero]`. Conclude with `lt_irrefl _ hpos`. Take `⟨a, ha, hneg⟩` from `h x hx0 (fun s hs => hxW s hs)`. Rewrite `ha` using `[key x hxS]`. Establish `ha0 : a = 0` using `(algebraMap I.F I.E).injective (by rw [ha, map_zero])`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hneg` using `[ha0, map_zero]`. Conclude with `lt_irrefl _ hneg`.
+A detailed English derivation is pending.
 -/
 theorem fr_disj (hS : DefiniteCompl I S) : Disjoint (Submodule.span I.E S) (frW I S) := by
   rw [Submodule.disjoint_def]
@@ -62,7 +62,7 @@ theorem fr_disj (hS : DefiniteCompl I S) : Disjoint (Submodule.span I.E S) (frW 
     exact lt_irrefl _ hneg
 
 /- English proof (translation)
-Use `Finset.induction_on s (by simp [hform]) ?_` and prove the remaining obligations. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hform_add_left, ih]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem fr_hform_sum_left {ι : Type} (s : Finset ι) (x : ι → Fin I.n → I.E) (y : Fin I.n → I.E) :
     hform (starRingEnd I.E) I.J (∑ i ∈ s, x i) y = ∑ i ∈ s, hform (starRingEnd I.E) I.J (x i) y := by
@@ -72,15 +72,15 @@ theorem fr_hform_sum_left {ι : Type} (s : Finset ι) (x : ι → Fin I.n → I.
   rw [Finset.sum_insert ha, Finset.sum_insert ha, hform_add_left, ih]
 
 /- English proof (translation)
-Use `set V := Submodule.span I.E S with hV`. Set `b` to `Module.finBasis I.E V`. Set `T : (Fin I.n → I.E) →ₗ[I.E] (Fin (Module.finrank I.E V) → I.E)` to `{ toFun := fun y k => hform (starRingEnd I.E) I.J (b k : Fin I.n → I.E) y map_add' := by intro x y; funext k; simp [hform_add_right] map_smul' := by intro c x; funext k; simp [hform_smul_right] }`. Establish `hker : LinearMap.ker T ≤ frW I S`. Introduce `y hy s hs`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy' : ∀ k, hform (starRingEnd I.E) I.J (b k : Fin I.n → I.E) y = 0` using `fun k => congrFun (LinearMap.mem_ker.mp hy) k`. Establish `hexp : ∑ k, b.repr ⟨s, Submodule.subset_span hs⟩ k • (b k : Fin I.n → I.E) = s`. Use `congrArg Subtype.val (b.sum_repr ⟨s, Submodule.subset_span hs⟩)` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Rewrite using `[← hexp, fr_hform_sum_left]`. Simplify using `[hform_smul_left, hy']`. Establish `hrn` using `LinearMap.finrank_range_add_finrank_ker T`. Establish `hr : Module.finrank I.E (LinearMap.range T) ≤ Module.finrank I.E V`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Submodule.finrank_le (LinearMap.range T)` as an intermediate fact. Simplify using `using this`. Establish `hW : Module.finrank I.E (LinearMap.ker T) ≤ Module.finrank I.E (frW I S)` using `Submodule.finrank_mono hker`. Establish `hsup` using `Submodule.finrank_sup_add_finrank_inf_eq V (frW I S)`. Establish `hinf : V ⊓ frW I S = ⊥` using `disjoint_iff.mp (fr_disj hS)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hsup` using `[hinf, finrank_bot, add_zero]`. Establish `hn : Module.finrank I.E (Fin I.n → I.E) = I.n` using `Module.finrank_fin_fun I.E`. Establish `hle` using `Submodule.finrank_le (V ⊔ frW I S)`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem fr_sup (hS : DefiniteCompl I S) : Submodule.span I.E S ⊔ frW I S = ⊤ := by
   classical
@@ -117,17 +117,17 @@ theorem fr_sup (hS : DefiniteCompl I S) : Submodule.span I.E S ⊔ frW I S = ⊤
   omega
 
 /- English proof (translation)
-Introduce `I S hS`. Establish `hc : IsCompl (Submodule.span I.E S) (frW I S)` using `⟨fr_disj hS, codisjoint_iff.mpr (fr_sup hS)⟩`. Set `bS` to `Module.finBasis I.E (Submodule.span I.E S)`. Set `bW` to `Module.finBasis I.E (frW I S)`. Set `bb` to `(bS.prod bW).map (Submodule.prodEquivOfIsCompl _ _ hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e` to `Pi.basisFun I.E (Fin I.n)`. Use `⟨Frame.mk _ _ (e.toMatrix bb) (bb.toMatrix e) (e.toMatrix_mul_toMatrix_flip bb) (bb.toMatrix_mul_toMatrix_flip e) ?_ ?_ ?_⟩` and prove the remaining obligations. Introduce `j`. Establish `hcol : (fun i => e.toMatrix bb i (Sum.inl j)) = (bS j : Fin I.n → I.E)`. Use function extensionality and compare the values at `i`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[bb, e, Basis.toMatrix_apply]`. Rewrite using `[hcol]`. Conclude with `(bS j).2`. Introduce `s hs j`. Establish `h1 : bb.toMatrix e *ᵥ s = bb.repr s`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `e.toMatrix_mulVec_repr bb s` as an intermediate fact. Establish `he : ⇑(e.repr s) = s` using `by funext i; simp [e]`. Rewrite `this` using `[he]`. Conclude with `this`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs' : s = Submodule.prodEquivOfIsCompl _ _ hc (⟨s, Submodule.subset_span hs⟩, 0)` using `by simp`. Rewrite using `[hs', Basis.map_repr, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, Basis.prod_repr_inr]`. Simplify using the standard rewrite rules. Introduce `s hs j`. Establish `hcol : (fun i => e.toMatrix bb i (Sum.inr j)) = (bW j : Fin I.n → I.E)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using `[bb, e, Basis.toMatrix_apply]`. Rewrite using `[hcol]`. Conclude with `(bW j).2 s hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameExists : FrameExists := by
   intro I S hS

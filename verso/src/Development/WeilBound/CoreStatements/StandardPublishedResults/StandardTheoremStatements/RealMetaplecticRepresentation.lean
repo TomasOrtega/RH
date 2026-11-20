@@ -3,7 +3,7 @@ import Development.WeilBound.ThetaLifts.Reductions.MetaplecticDerivatives.RealMe
 namespace PositivityTheory.Stage1.PM
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.ThKR.realMetaplecticRepresentation_holds`.
+A detailed English derivation is pending.
 -/
 theorem realMetaplecticRepresentation : GlobalTheory.Published.RealMetaplecticRepresentation :=
   PositivityTheory.ThKR.realMetaplecticRepresentation_holds

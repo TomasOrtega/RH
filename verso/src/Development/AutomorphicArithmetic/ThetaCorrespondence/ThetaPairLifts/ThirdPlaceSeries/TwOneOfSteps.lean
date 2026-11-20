@@ -25,7 +25,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BigOn.Exp.TwConj
 open GlobalTheory.ConjTwist
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.BigOn.Exp.TwistConditions.of_forall fun _ _ _ _ p _ _ _ _ _ B ν ν' ⟨_, c, hc, n, hn, hνn⟩ ⟨_, c', hc', m, hm, hνm⟩ => by obtain ⟨k, hk, hkk⟩ := scale_pow_eq p.R p.v₀ B hc hc' refine ⟨n * m * k, Nat.mul_ne_zero (Nat.mul_ne_zero hn hm) hk, ?_⟩ have e1 : ν' ^ (n …`.
+A detailed English derivation is pending.
 -/
 theorem normAt_alt : _root_.GlobalTheory.BigOn.Exp.TwConj.NormCondition := _root_.GlobalTheory.BigOn.Exp.TwistConditions.of_forall fun _ _ _ _ p _ _ _ _ _ B ν ν' ⟨_, c, hc, n, hn, hνn⟩ ⟨_, c', hc', m, hm, hνm⟩ => by
   obtain ⟨k, hk, hkk⟩ := scale_pow_eq p.R p.v₀ B hc hc'
@@ -37,11 +37,11 @@ theorem normAt_alt : _root_.GlobalTheory.BigOn.Exp.TwConj.NormCondition := _root
   rw [e1, e2, hνm, hνn, ← pow_mul, ← pow_mul, mul_pow, mul_pow,
     show m * (n * k) = n * m * k by ring, show n * (m * k) = n * m * k by ring, e3]
 /- English proof (translation)
-Use `_root_.GlobalTheory.BigOn.Exp.TwistConditions.imp (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and hA hT) (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and hF (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and hC hE))) fun Fm …` and prove the remaining obligations. Take `⟨⟨a1, a2⟩, a3, a4, a5⟩` from `H`. Introduce `ρ ρ' ν hρ hρ' hp hS hL hAd hN h₀ P hP h hh τ hτ hcc`. Take `⟨c, u, ξ, hc, hu, hξ, K⟩` from `a4 ρ ν hρ hp hN`. Take `⟨y, hy, hyy⟩` from `K h₀ P hP`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f1, f2⟩` from `a3 ρ hρ hp hL τ hτ`. Take `⟨g1, g2, -⟩` from `GlobalTheory.TwistGood.tw_good _ _ _ ρ hρ _ j ((Fm.ex x hx i).nch.sd w) _ _ _ a1.1`. Take `⟨g3, -, -⟩` from `GlobalTheory.TwistGood.tw_good _ _ _ ρ' hρ' _ j ((Fm.ex x hx i).nch.sd w) _ _ _ a1.1`. Take `⟨ζ, hζ, hcf⟩` from `conjFun_gen (Fm.parT x hx i).nV_ge (a2 ρ ρ' hρ hρ' hp hS hAd) (hρ.base _ _ _) (hρ.weil_base _ _ _) g1 g3 g2 (hcc.1.symm ▸ g2) (root_delta hρ _ _ _) (root_charOf _ _ a1.1.2.2.1) hc hu f1 f2 hcc hh (hyy τ hτ)`. Establish `hcf1` using `(GlobalTheory.ConjClassSum.conjFun_iff _ _ _ _ _ _).2 (GlobalTheory.ConjGen.cf_one_of (root_ne hζ) ((GlobalTheory.ConjClassSum.conjFun_iff _ _ _ _ _ _).1 hcf))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, b, g, e1, e2⟩` from `a5 τ hτ _ _ hcf1`. Establish `hsm : ∀ ψ, ν • genW (Fm.ex x hx i) w j ρ ψ h P = ξ • phs p j • genW (Fm.ex x hx i) w j ρ ψ h (p.R.ioP j (PiTensorProduct.tprod ℂ u) (c y))` using `fun ψ => smul_apply_of _ hy`. Conclude with `⟨_, root_mul (root_mul (root_map τ hξ) (root_inv hζ)) (root_inv hξ), n, fun l => ξ * b l, g, rescale τ (root_ne hξ) (hsm _) (hsm _) e1 e2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem twOne_of_steps_alt (hA : _root_.GlobalTheory.BigOn.Exp.TwAdmAlt) (hT : _root_.GlobalTheory.BigOn.Exp.TwConj.TupleCondition) (hF : _root_.GlobalTheory.BigOn.Exp.TwConj.FixedPointCondition) (hC : _root_.GlobalTheory.BigOn.Exp.TwConj.CoefficientCondition)
     (hE : _root_.GlobalTheory.BigOn.Exp.TwistConditions fun Fm x _ i p _ j => ∀ τ : ℂ ≃+* ℂ,
@@ -68,7 +68,7 @@ theorem twOne_of_steps_alt (hA : _root_.GlobalTheory.BigOn.Exp.TwAdmAlt) (hT : _
   exact ⟨_, root_mul (root_mul (root_map τ hξ) (root_inv hζ)) (root_inv hξ), n, fun l => ξ * b l, g,
     rescale τ (root_ne hξ) (hsm _) (hsm _) e1 e2⟩
 /- English proof (translation)
-Introduce `h1 h2 h3 hD hW h4 hA hC` and use `_root_.GlobalTheory.BigOn.Exp.TwConj.conjTw_of_twAdm_latSmallGen_normAt_twOne hA _root_.GlobalTheory.T.latSmallGen' _root_.GlobalTheory.BigOn.Exp.TwConj.normAt_alt (_root_.GlobalTheory.BigOn.Exp.TwConj.twOne_of_steps_alt hA (_root_.GlobalTheory.T.twisted_conj_tuple_at' h1 h2 h3 h …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conj_tw_of_prints : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt →
     GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.CasselmanWallach → GlobalTheory.SerStd.SeriesRatS →

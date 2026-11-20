@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.ThetaQuasiRat
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.WeilM.schr, Pi.smul_apply, smul_eq_mul, Prod.fst_add, Prod.snd_add, add_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, add_dotProduct, dotProduct_add]`. Use `congr 2`. Establish `h : ⅟(2 : R) * 2 = 1` using `invOf_mul_self 2`. Take the linear combination `(-(w.1 ⬝ᵥ w'.2)) * h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem schr_schr {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (w w' : (κ → R) × (κ → R)) (φ : (κ → R) → ℂ) :
@@ -29,20 +29,20 @@ theorem schr_schr {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R �
   linear_combination (-(w.1 ⬝ᵥ w'.2)) * h
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.WeilM.thetaSum, Pi.smul_apply, smul_eq_mul, tsum_mul_left]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaSum_smul' (F : Type) [Field F] [NumberField F] {κ : Type} (c : ℂ) (φ : (κ → AdeleRing (𝓞 F) F) → ℂ) :
     GlobalTheory.WeilM.thetaSum F (c • φ) = c * GlobalTheory.WeilM.thetaSum F φ := by
   simp only [GlobalTheory.WeilM.thetaSum, Pi.smul_apply, smul_eq_mul, tsum_mul_left]
 
 /- English proof (translation)
-Establish `h2 : ⅟(2 : AdeleRing (𝓞 F) F) = algebraMap F (AdeleRing (𝓞 F) F) (1 / 2)`. Apply `invOf_eq_right_inv` to reduce the goal to its premises. Rewrite using `[← map_ofNat (algebraMap F (AdeleRing (𝓞 F) F)) 2, ← map_mul]`. Evaluate the numerical expressions. Establish `key : ∀ ξ : κ → F, ψ ((fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)) ⬝ᵥ (fun i => algebraMap F (AdeleRing (𝓞 F) F) (z i)) + ⅟(2 : AdeleRing (𝓞 F) F) * ((fun i => algebraMap F (AdeleRing (𝓞 F) F) (y i)) ⬝ᵥ (fun i => algebraMap F (AdeleRing (𝓞 F) F) (z i)))) = 1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Introduce `ξ`. Establish `e : (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)) ⬝ᵥ (fun i => algebraMap F (AdeleRing (𝓞 F) F) (z i)) + ⅟(2 : AdeleRing (𝓞 F) F) * ((fun i => algebraMap F (AdeleRing (𝓞 F) F) (y i)) ⬝ᵥ (fun i => algebraMap F (AdeleRing (𝓞 F) F) (z i))) = algebraMap F (AdeleRing (𝓞 F) F) (ξ ⬝ …`. Simplify using `only [dotProduct, map_add, map_mul, map_sum, h2]`. Rewrite using `[e]`. Conclude with `hψ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `GlobalTheory.WeilM.thetaSum GlobalTheory.WeilM.schr`. Simplify using `only [key, one_mul]`. Rewrite using `[← (Equiv.addRight y).tsum_eq (fun ξ : κ → F => φ (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)))]`. Use `congr 1`. Use function extensionality and compare the values at `ξ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thetaSum_schr_rat (F : Type) [Field F] [NumberField F] [Invertible (2 : AdeleRing (𝓞 F) F)]
     (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (hψ : ∀ a : F, ψ (algebraMap F (AdeleRing (𝓞 F) F) a) = 1)
@@ -79,7 +79,7 @@ end GlobalTheory.ThetaQuasiRat
 namespace GlobalTheory.ThetaQuasiRat
 
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => rfl`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cA_apply (D : D7) (a : AF D.host.F ⊗[D.host.F] D.host.E) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig a = cA D a := by
@@ -89,13 +89,13 @@ theorem cA_apply (D : D7) (a : AF D.host.F ⊗[D.host.F] D.host.E) :
   | add a b ha hb => rw [map_add, map_add, ha, hb]
 
 /- English proof (translation)
-Unfold `GlobalTheory.WeilM.symp Formalism.IndefR.Datum.symplO`. Use `congr 1`. Establish `hb : ∀ j l, ξ * incM D.host.F JB j l = incA D D.host.xi0 * incA D (S.gram⁻¹ j l)` using `fun j l => by`. Use `congrFun (congrFun hB j) l` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at this`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Simplify using `[incM, Matrix.map_apply, Matrix.smul_apply, map_mul]`. Establish `e : ∀ i j k l, ξ * (x i j * incM D.host.F JA i k * incM D.host.F JB j l * GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig (y k l)) = incA D D.host.xi0 * (incA D (S.gram⁻¹ j l) * cA D (y k l) * incA D (T.gram k i) * x i j)` using `fun i j k l => by`. Establish `h1 : incM D.host.F JA i k = incA D (T.gram k i)`. Substitute `hA` using the available equality.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Both sides reduce to the same expression. Rewrite using `[cA_apply, h1]`. Take the linear combination `(x i j * incA D (T.gram k i) * cA D (y k l)) * hb j l`. Unfold `GlobalTheory.WeilM.hTens Formalism.IndefR.Datum.hO`. Simplify using `only [Finset.mul_sum, e]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `symm`. Combine the equalities or inequalities in the displayed calculation.
+Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation.
 -/
 theorem symp_eq_symplO (D : D7) (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E)
     (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E) (ξ : AF D.host.F ⊗[D.host.F] D.host.E) (hA : JA = T.gramᵀ)
@@ -133,13 +133,13 @@ end GlobalTheory.ThetaQuasiRat
 namespace GlobalTheory.ThetaQuasiRat
 
 /- English proof (translation)
-Introduce `D ψ hψ S T JA JB ξ hA hB κ _ co hrat Φ _ γ w`. Take `⟨y, z, hyz⟩` from `hrat γ`. Establish `hγ : ratW T S γ = incM D.host.F γ` using `rfl`. Establish `hform` using `co.form (incM D.host.F γ) w`. Rewrite `hform` using `[symp_eq_symplO D S T JA JB ξ hA hB, hyz]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `GlobalTheory.WeilSchrodinger.thetaTr GlobalTheory.WeilM.Darboux.rho`. Rewrite using `[map_add, hγ, hyz]`. Use `set u : (κ → AF D.host.F) × (κ → AF D.host.F) := (fun i => algebraMap D.host.F (AF D.host.F) (y i), fun i => algebraMap D.host.F (AF D.host.F) (z i)) with hu`. Use `set v := co.e w`. Establish `law` using `schr_schr ψ u v Φ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : ψ (-(⅟(2 : AF D.host.F) * (u.1 ⬝ᵥ v.2 - v.1 ⬝ᵥ u.2))) * ψ (⅟(2 : AF D.host.F) * (u.1 ⬝ᵥ v.2 - v.1 ⬝ᵥ u.2)) = 1`. Rewrite using `[← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one]`. Establish `hsum : GlobalTheory.WeilM.schr ψ (u + v) Φ = ψ (-(⅟(2 : AF D.host.F) * (u.1 ⬝ᵥ v.2 - v.1 ⬝ᵥ u.2))) • GlobalTheory.WeilM.schr ψ u (GlobalTheory.WeilM.schr ψ v Φ)`. Rewrite using `[law, smul_smul, hinv, one_smul]`. Establish `h2 : ⅟(2 : AF D.host.F) = algebraMap D.host.F (AF D.host.F) (1 / 2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `invOf_eq_right_inv` to reduce the goal to its premises. Rewrite using `[← map_ofNat (algebraMap D.host.F (AF D.host.F)) 2, ← map_mul]`. Evaluate the numerical expressions. Rewrite using `[hsum, thetaSum_smul', hu, thetaSum_schr_rat D.host.F ψ hψ.1.2.2.1 y z, ← hu, Formalism.IndefR.Datum.symplOH, hform, h2]`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaTr_ratW_add : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)

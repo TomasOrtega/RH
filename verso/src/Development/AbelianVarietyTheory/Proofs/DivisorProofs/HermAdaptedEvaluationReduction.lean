@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.ThK.IsoPhaseComm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [Darboux.rho, schr, Pi.smul_apply, smul_eq_mul, d.form, ← mul_assoc, ← AddChar.map_add_eq_mul]`. Rewrite using `[add_right_comm x (d.e s).1]`. Use `congr 2`. Simplify using `only [add_dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -30,9 +30,9 @@ theorem rho_swap {R : Type} [CommRing R] [Invertible (2 : R)] {V : Type} [AddCom
   ring
 
 /- English proof (translation)
-Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Simplify using `only [hTens, Matrix.vecMulVec_apply, map_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hTens_pure {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c : E →ₐ[R] E) {α β : Type}
     [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
@@ -52,18 +52,18 @@ theorem hTens_pure {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c : E �
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Simplify using `only [thetaSum, Pi.smul_apply, smul_eq_mul]`. Conclude with `tsum_mul_left`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thetaSum_smul {κ : Type} (c : ℂ) (Φ : (κ → AF F) → ℂ) : thetaSum F (c • Φ) = c * thetaSum F Φ := by
   simp only [thetaSum, Pi.smul_apply, smul_eq_mul]
   exact tsum_mul_left
 
 /- English proof (translation)
-Establish `hyx : form σ J H.y H.x = 1`. Establish `h1 : σ (form σ J H.x H.y) = form σ J H.y H.x`. Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hJ]`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[← h1, hxy, map_one]`. Establish `h0 : (∑ i, ∑ k, incV F H.y i * incM F J i k * cA σ (incV F H.x k)) = 1`. Establish `: (∑ i, ∑ k, incV F H.y i * incM F J i k * cA σ (incV F H.x k)) = inclR (F` using `F) (AF F) (form σ J H.y H.x) := by`. Simplify using `only [incV, incM, Matrix.map_apply, GlobalTheory.ThK.UnipDom.Inverse.cA_inclR, form, dotProduct, Matrix.mulVec, map_sum, map_mul, Finset.mul_sum, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hyx, map_one]`. Establish `h2 : (∑ j, ∑ l, incV F w j * incM F JW j l * cA σ (z l)) = GlobalTheory.UnipMass.hA σ JW (incV F w) z`. Simplify using `only [GlobalTheory.UnipMass.hA, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`. Rewrite using `[symp, hTens_pure, h0, h2, one_mul, neg_one_mul, map_neg]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symp_pair {σ : E →ₐ[F] E} {n n₁ d₁ : ℕ} (hσ : ∀ e, σ (σ e) = e) (J : Matrix (Fin n) (Fin n) E)
     (hJ : ∀ i j, σ (J j i) = J i j) (JW : Matrix (Fin d₁) (Fin d₁) E) (H : Plane E n n₁)
@@ -92,7 +92,7 @@ end GlobalTheory.ThK.IsoPhaseComm
 namespace GlobalTheory.ThK.IsoPhaseComm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d₁ X W₁ M₁ r s n₁ X₁ H j₀ j₁ M₂ hB hX hH e' he' φ hφ w z`. Establish `hσ : ∀ e, σ (σ e) = e` using `GlobalTheory.ThK.UnipDom.Inverse.sigma_sigma hB.cm`. Establish `hsch` using `GlobalTheory.HeisSchA.rho_mem_schA M₁ B.ψ hB.std (Matrix.vecMulVec (incV F H.y) (incV F w)) φ hφ`. Rewrite using `[rho_swap M₁.co B.ψ, map_smul, he'.inv _ ⟨z, rfl⟩ _ hsch, thetaSum_smul, symp_pair hσ X.J hX.herm W₁.J H hH.xy w z]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaSum_ev_phase : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d₁ : ℕ) (X : Spc F E n) (W₁ : Spc F E d₁) (M₁ : Model σ X W₁) (r s n₁ : ℕ) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ : ℕ)
     (M₂ : Model σ X₁ W₁), B.IsGood σ → X.IsHerm σ B r s → H.IsAdapted σ B X X₁ j₀ j₁ → ∀ e' : Fn F n d₁ →ₗ[ℂ] Fn F n₁ d₁,

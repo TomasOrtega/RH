@@ -34,7 +34,7 @@ def toUJ (ε : Fin n → Bool) (m : Matrix (Fin n) (Fin n) ℂ) : UJ ε :=
   else 1
 
 /- English proof (translation)
-Unfold `toUJ`. Use `split_ifs with h`. Conclude with `Subtype.ext (Units.ext rfl)`. Conclude with `absurd g.2 h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem toUJ_toM (ε : Fin n → Bool) (g : UJ ε) : toUJ ε (toM g) = g := by
   unfold toUJ
@@ -43,11 +43,11 @@ theorem toUJ_toM (ε : Fin n → Bool) (g : UJ ε) : toUJ ε (toM g) = g := by
   · exact absurd g.2 h
 
 /- English proof (translation)
-Establish `hc : Topology.IsClosedEmbedding (intMuCD_eM ε)` using `isClosedEmbedding_toM ε`. Establish `he : MeasurableEmbedding (intMuCD_eM ε)` using `hc.measurableEmbedding`. Establish `hinj : Function.Injective (intMuCD_eM ε)` using `hc.injective`. Establish `heq : (fun m : Fin n → Fin n → ℂ => f (toUJ ε m)) = Function.extend (intMuCD_eM ε) f (fun _ => f 1)`. Use function extensionality and compare the values at `m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `h : inUJ ε m`. Take `⟨g, rfl⟩ : m ∈ Set.range (fun g : UJ ε => toM g)` from `by rw [range_toM]; exact h show f (toUJ ε (toM g)) = Function.extend (intMuCD_eM ε) f (fun _ => f 1) (intMuCD_eM ε g)`. Rewrite using `[toUJ_toM, hinj.extend_apply]`. Rewrite using `[Function.extend_apply']`. Simplify using `[toUJ, h]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨g, hg⟩`. Conclude with `h (hg ▸ g.2)`. Rewrite using `[heq]`. Conclude with `he.measurable_extend hf measurable_const`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_comp_toUJ (ε : Fin n → Bool) {f : UJ ε → ℝ≥0∞} (hf : Measurable f) :
     Measurable (fun m : Fin n → Fin n → ℂ => f (toUJ ε m)) := by
@@ -71,25 +71,23 @@ theorem measurable_comp_toUJ (ε : Fin n → Bool) {f : UJ ε → ℝ≥0∞} (h
 def phiF (ε : Fin n → Bool) (B : Pt ε → Qt ε → ℂ) : PCoord ε → ℂ := fun ab => pOfB ε B ab.1.1 ab.1.2
 
 /- English proof (translation)
-Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;> simp [pOfB, ha, hb]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pOfB_star (ε : Fin n → Bool) (B : Pt ε → Qt ε → ℂ) (a b : Fin n) :
     star (pOfB ε B b a) = pOfB ε B a b := by
   cases ha : ε a <;> cases hb : ε b <;> simp [pOfB, ha, hb]
 
 /- English proof (translation)
-Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;> simp_all [pOfB]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pOfB_zero (ε : Fin n → Bool) (B : Pt ε → Qt ε → ℂ) {a b : Fin n} (h : ε a = ε b) :
     pOfB ε B a b = 0 := by
   cases ha : ε a <;> cases hb : ε b <;> simp_all [pOfB]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a b`. Simplify using `only [pmat]`. Use `split_ifs with h1 h2`. Both sides reduce to the same expression. Conclude with `pOfB_star ε B a b`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `(pOfB_zero ε B ?_).symm` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Conclude with `h2 ⟨h, Ne.symm hne⟩`. Conclude with `hne (h ▸ rfl)`.
-
-Conclude with `h1 ⟨h, hne⟩`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem pmat_phiF (ε : Fin n → Bool) (B : Pt ε → Qt ε → ℂ) : pmat (phiF ε B) = pOfB ε B := by
   funext a b
@@ -134,11 +132,11 @@ def phiL (ε : Fin n → Bool) : (Pt ε → Qt ε → ℂ) ≃ₗ[ℝ] (PCoord �
       simp only [dif_neg ha, dif_pos hb, pmat, dif_neg h1, dif_pos h2, star_star]
 
 /- English proof (translation)
-Set `e : (Pt ε → Qt ε → ℂ) ≃L[ℝ] (PCoord ε → ℂ)` to `(phiL ε).toContinuousLinearEquiv`. Set `eM` to `e.toHomeomorph.toMeasurableEquiv`. Establish `h1 : ∀ _ : Pt ε, (volume : Measure (Qt ε → ℂ)).IsAddHaarMeasure` using `fun _ => inferInstance`. Establish `h2 : ∀ _ : Pt ε, SigmaFinite (volume : Measure (Qt ε → ℂ))` using `fun _ => inferInstance`. Establish `h3 : ∀ _ : Pt ε, MeasurableAdd (Qt ε → ℂ)` using `fun _ => inferInstance`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (volume : Measure (Pt ε → Qt ε → ℂ)).IsAddHaarMeasure` using `inferInstance`. Establish `: (Measure.map eM (volume : Measure (Pt ε → Qt ε → ℂ))).IsAddHaarMeasure` using `ContinuousLinearEquiv.isAddHaarMeasure_map e volume`. Establish `hv` using `Measure.isAddLeftInvariant_eq_smul (volume : Measure (PCoord ε → ℂ)) (Measure.map eM (volume : Measure (Pt ε → Qt ε → ℂ)))`. Use `⟨((volume : Measure (PCoord ε → ℂ)).addHaarScalarFactor (Measure.map eM (volume : Measure (Pt ε → Qt ε → ℂ))) : ℝ≥0∞), ENNReal.coe_ne_top, fun H => le_of_eq ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_smul_measure, lintegral_map_equiv]`. Use `congr 2`. Use function extensionality and compare the values at `B`. Use `show H (pmat (phiF ε B)) = _`. Rewrite using `[pmat_phiF]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_pmat_le (ε : Fin n → Bool) :
     ∃ c : ℝ≥0∞, c ≠ ⊤ ∧ ∀ H : Matrix (Fin n) (Fin n) ℂ → ℝ≥0∞,
@@ -163,21 +161,17 @@ theorem lintegral_pmat_le (ε : Fin n → Bool) :
   rw [pmat_phiF]
 
 /- English proof (translation)
-Use `muPolar_isHaar ε` as an intermediate fact. Establish `hν : ν = (Measure.haarScalarFactor ν (muPolar ε) : ℝ≥0∞) • muPolar ε` using `Measure.isMulLeftInvariant_eq_smul ν (muPolar ε)`. Take `⟨c', hc', hvol⟩` from `lintegral_pmat_le ε`. Establish `hK : muK ε Set.univ ≠ 0` using `(ENNReal.toReal_pos_iff.1 (muK_univ_pos ε)).1.ne'`. Use `set c : ℝ≥0∞ := (Measure.haarScalarFactor ν (muPolar ε) : ℝ≥0∞) with hcdef`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c * (muK ε Set.univ)⁻¹ * c', ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.coe_ne_top (ENNReal.inv_ne_top.2 hK)) hc', ?_⟩` and prove the remaining obligations. Introduce `f hf`. Use `set F : (Fin n → Fin n → ℂ) → ℝ≥0∞ := fun m => f (toUJ ε m) with hFdef`. Establish `hFm : Measurable F` using `measurable_comp_toUJ ε hf`. Establish `hFg : ∀ g : UJ ε, F (toM g) = f g` using `fun g => by simp only [hFdef, toUJ_toM]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJm : Measurable (fun z : PCoord ε → ℂ => ENNReal.ofReal (Jac z))` using `ENNReal.measurable_ofReal.comp (jac_continuous ε).measurable`. Establish `hmeas : AEMeasurable (Function.uncurry fun (k : KG ε) (z : PCoord ε → ℂ) => F (polarM (k, z)) * ENNReal.ofReal (Jac z)) ((dk ε).prod volume)` using `((hFm.comp (intMuCD_measurable_pM ε)).mul (hJm.comp measurable_snd)).aemeasurable`. Set `H : Matrix (Fin n) (Fin n) ℂ → ℝ≥0∞` to `fun X => (∫⁻ k, F (toMK k * NormedSpace.exp X) ∂(muK ε)) * ENNReal.ofReal (Real.exp (n * Real.sqrt (2 * q0 ε) * Real.sqrt (hs X)))`. Establish `hJ : ∀ z : PCoord ε → ℂ, ENNReal.ofReal (Jac z) ≤ ENNReal.ofReal (Real.exp (n * Real.sqrt (2 * q0 ε) * Real.sqrt (hs (pmat z))))`. Introduce `z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `ENNReal.ofReal_le_ofReal ((jac_le_exp z).trans (Real.exp_le_exp.2 ?_))` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (by linarith) (Real.sqrt_nonneg _)) (Real.sqrt_nonneg _)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_smul_measure, smul_eq_mul]`. Simplify using `only [hFg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `_ = c * ∫⁻ k, ∫⁻ z, F (polarM (k, z)) * ENNReal.ofReal (Jac z) ∂volume ∂(dk ε) := by`. Rewrite using `[lintegral_muPolar ε F hFm]`. Use `_ = c * ∫⁻ z, ∫⁻ k, F (polarM (k, z)) * ENNReal.ofReal (Jac z) ∂(dk ε) ∂volume := by`. Rewrite using `[lintegral_lintegral_swap hmeas]`. Use `_ = c * ∫⁻ z, (muK ε Set.univ)⁻¹ * ((∫⁻ k, F (toMK k * NormedSpace.exp (pmat z)) ∂(muK ε)) * ENNReal.ofReal (Jac z)) ∂volume := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `lintegral_congr fun z => ?_` and prove the remaining obligations. Rewrite using `[lintegral_mul_const' _ _ ENNReal.ofReal_ne_top, dk, lintegral_smul_measure, smul_eq_mul, mul_assoc]`. Both sides reduce to the same expression. Use `_ ≤ c * ∫⁻ z : PCoord ε → ℂ, (muK ε Set.univ)⁻¹ * H (pmat z) ∂volume := by`.
-
-Conclude with `mul_le_mul_right (lintegral_mono fun z => mul_le_mul_right (mul_le_mul_right (hJ z) _) _) c`. Use `_ = c * ((muK ε Set.univ)⁻¹ * ∫⁻ z : PCoord ε → ℂ, H (pmat z) ∂volume) := by`. Rewrite using `[lintegral_const_mul' _ _ (ENNReal.inv_ne_top.2 hK)]`. Use `_ ≤ c * ((muK ε Set.univ)⁻¹ * (c' * ∫⁻ B : Pt ε → Qt ε → ℂ, H (pOfB ε B))) := by gcongr`. Conclude with `hvol H`.
-
-Use `_ = c * (muK ε Set.univ)⁻¹ * c' * ∫⁻ B : Pt ε → Qt ε → ℂ, H (pOfB ε B) := by`. Simplify using `only [mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem haar_polar_le (ε : Fin n → Bool) (hq : 1 ≤ q0 ε) (ν : Measure (UJ ε)) [ν.IsHaarMeasure] :
     ∃ C : ℝ≥0∞, C ≠ ⊤ ∧ ∀ f : UJ ε → ℝ≥0∞, Measurable f →

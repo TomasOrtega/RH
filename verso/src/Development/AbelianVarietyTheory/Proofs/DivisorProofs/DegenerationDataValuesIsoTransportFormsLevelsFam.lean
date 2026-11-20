@@ -17,19 +17,19 @@ section
 variable {O O' : Type} [CommRing O] [CommRing O'] {f : O →+* O'} {N : NumD O} {N' : NumD O'} (I : NumD.Hom f N N')
 
 /- English proof (translation)
-The claim follows from `((I.rel_iff _ _).1 ((I.rel_img g).mul (I.rel_img h))).symm`.
+A detailed English derivation is pending.
 -/
 theorem img_mul (g h : N.Gt) : I.img (g * h) = I.img g * I.img h :=
   ((I.rel_iff _ _).1 ((I.rel_img g).mul (I.rel_img h))).symm
 
 /- English proof (translation)
-The claim follows from `((I.rel_iff _ _).1 ((I.rel_img g).pow n)).symm`.
+A detailed English derivation is pending.
 -/
 theorem img_pow (g : N.Gt) (n : ℕ) : I.img (g ^ n) = I.img g ^ n :=
   ((I.rel_iff _ _).1 ((I.rel_img g).pow n)).symm
 
 /- English proof (translation)
-The claim follows from `((I.rel_iff _ _).1 (I.rel_io y)).symm`.
+A detailed English derivation is pending.
 -/
 theorem img_io (y : N.X) : I.img (N.io y) = N'.io (I.e y) :=
   ((I.rel_iff _ _).1 (I.rel_io y)).symm
@@ -41,17 +41,17 @@ def imgQ {k : ℕ} (p : N.QT k) : N'.QT k :=
     rw [← img_pow, h, img_io]⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Prod.ext (congrArg Multiplicative.ofAdd (map_add I.e p.1.1.toAdd q.1.1.toAdd)) (img_mul I p.1.2 q.1.2))`.
+A detailed English derivation is pending.
 -/
 theorem imgQ_mul {k : ℕ} (p q : N.QT k) : imgQ I (p * q) = imgQ I p * imgQ I q :=
   Subtype.ext (Prod.ext (congrArg Multiplicative.ofAdd (map_add I.e p.1.1.toAdd q.1.1.toAdd)) (img_mul I p.1.2 q.1.2))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, h1, h2⟩`. Take `⟨z, rfl⟩` from `I.e.surjective z`. Use `⟨z, I.e.injective ?_, hi ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_nsmul]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Rewrite using `[img_mul, img_io]`. Conclude with `h2`. Introduce and unpack `⟨z, h1, h2⟩`. Use `⟨I.e z, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `I.e q.1.1.toAdd = I.e p.1.1.toAdd + k • I.e z`. Rewrite using `[h1, map_add, map_nsmul]`. Express the relevant statement in the definitionally equal form `I.img q.1.2 = I.img p.1.2 * N'.io (I.e z)`. Rewrite using `[h2, img_mul, img_io]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qEq_imgQ (hi : Function.Injective I.img) {k : ℕ} (p q : N.QT k) :
     N'.QEq (imgQ I p) (imgQ I q) ↔ N.QEq p q := by
@@ -69,9 +69,9 @@ theorem qEq_imgQ (hi : Function.Injective I.img) {k : ℕ} (p q : N.QT k) :
       rw [h2, img_mul, img_io]
 
 /- English proof (translation)
-Introduce `p'`. Take `⟨g, hg⟩` from `hi.2 p'.1.2`. Establish `h : p'.1.2 ^ k = N'.io p'.1.1.toAdd` using `p'.2`. Use `⟨⟨(Multiplicative.ofAdd (I.e.symm p'.1.1.toAdd), g), ?_⟩, Subtype.ext (Prod.ext ?_ hg)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g ^ k = N.io (I.e.symm p'.1.1.toAdd)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `hi.1` to reduce the goal to its premises. Rewrite using `[img_pow, img_io, hg, h, AddEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `Multiplicative.ofAdd (I.e (I.e.symm p'.1.1.toAdd)) = p'.1.1`. Rewrite using `[AddEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem imgQ_surjective (hi : Function.Bijective I.img) {k : ℕ} : Function.Surjective (imgQ I (k := k)) := by
   intro p'
@@ -95,21 +95,19 @@ end
 variable {F F' : Type} [Field F] [Field F'] {e : F ≃+* F'} {N : NumD F} {N' : NumD F'} (I : NumD.Hom (e : F →+* F') N N')
 
 /- English proof (translation)
-The claim follows from `(Units.mapEquiv e.toMulEquiv).bijective`.
+A detailed English derivation is pending.
 -/
 theorem units_bij (e : F ≃+* F') : Function.Bijective (Units.map (e : F →+* F').toMonoidHom) :=
   (Units.mapEquiv e.toMulEquiv).bijective
 
 /- English proof (translation)
-Establish `hu` using `units_bij e`. Prove the components needed by the constructor for the conclusion. Introduce `g g' h`. Establish `a` using `I.rel_img g`. Establish `b` using `I.rel_img g'`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `a` using `[h]`. Use `NumD.Gt.ext (hφ.1 (a.1.symm.trans b.1)) (funext fun χ => hu.1 ?_)` and prove the remaining obligations. Establish `a2` using `a.2 χ`. Establish `b2` using `b.2 χ`. Simplify using `only [hh, _root_.mul_one] at a2 b2`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `a2.symm.trans b2`. Introduce `g'`. Take `⟨b, hb⟩` from `hφ.2 g'.b`. Use `choose s hs using fun χ => hu.2 (g'.s (I.e χ))`. Use `⟨⟨b, s, fun χ χ' => hu.1 ?_⟩, ((I.rel_iff _ _).1 ⟨hb.symm, fun χ => ?_⟩).symm⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `a` using `I.θ_eq (N.c χ) (N.c χ') b`. Simplify using `only [hh, _root_.mul_one] at a`. Rewrite using `[map_mul, map_mul, hs, hs, hs, ← a, ← I.c_eq, ← I.c_eq, hb, map_add]`. Conclude with `g'.mult _ _`. Simplify using `only [hh, _root_.mul_one]`.
-
-Conclude with `(hs χ).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem img_bijective (hφ : Function.Bijective I.φ) (hh : ∀ x, I.h x = 1) : Function.Bijective I.img := by
   have hu := units_bij e
@@ -135,17 +133,17 @@ theorem img_bijective (hφ : Function.Bijective I.φ) (hh : ∀ x, I.h x = 1) : 
       exact (hs χ).symm
 
 /- English proof (translation)
-Introduce `F F' _ _ e N N' I hφ hh hl`. Establish `hi` using `img_bijective I hφ hh`. Establish `hu` using `units_bij e`. Use `⟨fun k β => ⟨formImg I β, fun a b => ?_⟩, fun m g hm ζ q hq => ⟨fun a => imgQ I (q a), ?_, ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `β.be (I.e.symm (I.e a)) (I.e.symm (I.e b)) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[AddEquiv.symm_apply_apply, AddEquiv.symm_apply_apply]`. Take `⟨h1, h2, h3, h4, h5⟩` from `hq`. Use `⟨h1.map_of_injective hu.1, fun a b => ?_, fun a b h => h3 a b ((qEq_imgQ I hi.1 _ _).1 h), fun p => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← imgQ_mul]`. Conclude with `(qEq_imgQ I hi.1 _ _).2 (h2 a b)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨p, rfl⟩` from `imgQ_surjective I hi p`. Take `⟨a, ha⟩` from `h4 p`. Conclude with `⟨a, (qEq_imgQ I hi.1 _ _).2 ha⟩`. Rewrite using `[I.wp_eq (q (Pi.single i 1)) (q (Pi.single j 1)) _ _ rfl (I.rel_img _) rfl (I.rel_img _), h5, map_zpow]`. Introduce and unpack `a f f' ⟨h1, h2⟩ hf`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun h' χ => ?_, fun α hα x => ?_⟩` and prove the remaining obligations. Take `⟨h, rfl⟩` from `hi.2 h'`. Take `⟨χ, rfl⟩` from `I.e.surjective χ`. Rewrite using `[I.evT_eq hm (q a) _ rfl (I.rel_img _) χ h _ (I.rel_img _), ← h1]`. Establish `r` using `(I.rel_img h).2 ((q a).1.1.toAdd + m • χ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hh, _root_.mul_one] at r`. Establish `t : (imgQ I (q a)).1.1.toAdd + m • I.e χ = I.e ((q a).1.1.toAdd + m • χ)`. Rewrite using `[map_add, map_nsmul]`. Both sides reduce to the same expression. Rewrite using `[t, r, (I.rel_img h).1, hf, hl, hh]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨α, rfl⟩` from `I.e.surjective α`. Take `⟨x, rfl⟩` from `hφ.2 x`. Rewrite using `[hf, h2 α (fun χ h => hα (I.e χ) (by rw [h, map_add, map_nsmul]; rfl)), map_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transport : ∀ (F F' : Type) [Field F] [Field F'] (e : F ≃+* F') (N : NumD F) (N' : NumD F') (I : NumD.Hom (e : F →+* F') N N'), Function.Bijective I.φ → (∀ x, I.h x = 1) → I.lam = 1 → (∀ (k : ℕ) (β : N.Form k), ∃ β' : N'.Form k, ∀ a b, β'.be (I.e a) (I.e b) = β.be a b) ∧ ∀ (m g : ℕ), Odd m → ∀ (ζ : Fˣ) (q : (Fin (2 * g) → ZMod (m ^ 2)) → N.QT (m ^ 2)), QLevel N g (m ^ 2) ζ q → ∃ q' : (Fin (2 * g) → ZMod (m ^ 2)) → N'.QT (m ^ 2), QLevel N' g (m ^ 2) (Units.map (e : F →+* F').toMonoidHom ζ) q' ∧ ∀ a (f : N.X → N.A → F) (f' : N'.X → N'.A → F'), IsEvFam N m (q a) f → (∀ α x, f' (I.e α) (I.φ x) = e (f α x)) → IsEvFam N' m (q' a) f' := by
   intro F F' _ _ e N N' I hφ hh hl

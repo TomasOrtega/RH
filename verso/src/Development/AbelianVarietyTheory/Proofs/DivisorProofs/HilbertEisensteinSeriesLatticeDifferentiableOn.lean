@@ -10,24 +10,22 @@ namespace GlobalTheory
 open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization
 
 /- English proof (translation)
-Simplify using `[eisTerm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eisTerm_at_zero_eq {F : Type} [Field F] [NumberField F] (k : ℕ) (z : Emb F → ℂ) (p : F × F) :
     eisTerm k 0 z p = (∏ τ, latPt z p τ)⁻¹ ^ k := by
   simp [eisTerm]
 
 /- English proof (translation)
-Establish `h1 : ‖z τ - z₀ τ‖ < r` using `lt_of_le_of_lt (norm_le_pi_norm (z - z₀) τ) hz`. Establish `h2 : r ≤ (z τ).im`. Establish `h3` using `abs_im_le_norm (z τ - z₀ τ)`. Rewrite `h3` using `[sub_im]`. Establish `h4` using `(abs_le.1 (h3.trans h1.le)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Combine the linear relations using `[hr τ]`. Establish `hpi : (0 : ℝ) < Real.pi` using `Real.pi_pos`. Establish `e : latPt z₀ p τ = latPt z p τ + 2 * (Real.pi : ℂ) * I * ((τ p.2 : ℝ) : ℂ) * (z₀ τ - z τ)`. Simplify using `only [latPt]`. Expand and normalize the polynomial expressions, which then agree.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hn : ∀ w : ℂ, ‖2 * (Real.pi : ℂ) * I * w‖ = 2 * Real.pi * ‖w‖`. Introduce `w`. Rewrite using `[norm_mul, norm_mul, norm_mul, norm_I, Complex.norm_real, Real.norm_of_nonneg hpi.le]`. Evaluate the numerical expressions. Establish `hlow : 2 * Real.pi * (|τ p.2| * r) ≤ ‖latPt z p τ‖`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Rewrite using `[latPt, hn]`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Use `le_trans ?_ (abs_im_le_norm _)` and prove the remaining obligations. Simplify using `only [add_im, ofReal_im, mul_im, ofReal_re, zero_mul, add_zero, zero_add]`. Rewrite using `[abs_mul, abs_of_pos (lt_of_lt_of_le (lt_of_le_of_lt (norm_nonneg _) hz) h2)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left h2 (abs_nonneg _)`. Establish `hup : ‖2 * (Real.pi : ℂ) * I * ((τ p.2 : ℝ) : ℂ) * (z₀ τ - z τ)‖ ≤ 2 * Real.pi * (|τ p.2| * r)`. Rewrite using `[show 2 * (Real.pi : ℂ) * I * ((τ p.2 : ℝ) : ℂ) * (z₀ τ - z τ) = 2 * (Real.pi : ℂ) * I * (((τ p.2 : ℝ) : ℂ) * (z₀ τ - z τ)) by ring, hn, norm_mul, Complex.norm_real, Real.norm_eq_abs, norm_sub_rev]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left h1.le (abs_nonneg _)) (by positivity)`. Rewrite using `[e]`.
-
-Combine the linear relations using `[norm_add_le (latPt z p τ) (2 * (Real.pi : ℂ) * I * ((τ p.2 : ℝ) : ℂ) * (z₀ τ - z τ))]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_latPt_le_two_mul_of_near {F : Type} [Field F] [NumberField F] {z z₀ : Emb F → ℂ} {r : ℝ}
     (hr : ∀ τ, 2 * r ≤ (z₀ τ).im) (hz : ‖z - z₀‖ < r) (p : F × F) (τ : Emb F) :
@@ -59,11 +57,11 @@ theorem norm_latPt_le_two_mul_of_near {F : Type} [Field F] [NumberField F] {z z�
   linarith [norm_add_le (latPt z p τ) (2 * (Real.pi : ℂ) * I * ((τ p.2 : ℝ) : ℂ) * (z₀ τ - z τ))]
 
 /- English proof (translation)
-Rewrite using `[eisTerm_at_zero_eq, eisTerm_at_zero_eq, norm_pow, norm_pow, norm_inv, norm_inv, norm_prod, norm_prod, ← mul_pow]`. Use `pow_le_pow_left₀ (by positivity) ?_ k` and prove the remaining obligations. Establish `hA : 0 < ∏ τ, ‖latPt z₀ p τ‖` using `Finset.prod_pos fun τ _ => norm_pos_iff.2 (latPt_ne_zero hz₀ hp τ)`. Establish `hAB : ∏ τ, ‖latPt z₀ p τ‖ ≤ 2 ^ Fintype.card (Emb F) * ∏ τ, ‖latPt z p τ‖`. Rewrite using `[← Finset.card_univ, ← Finset.prod_const, ← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_le_prod (fun τ _ => norm_nonneg _) fun τ _ => norm_latPt_le_two_mul_of_near hr hz p τ`. Establish `h2 : (0 : ℝ) < 2 ^ Fintype.card (Emb F)` using `by positivity`. Establish `hB : 0 < ∏ τ, ‖latPt z p τ‖`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[inv_le_comm₀ hB (by positivity), mul_inv, inv_inv]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_eisTerm_zero_le_of_near {F : Type} [Field F] [NumberField F] {z z₀ : Emb F → ℂ} {r : ℝ}
     (hz₀ : z₀ ∈ upperHalf F) (hr : ∀ τ, 2 * r ≤ (z₀ τ).im) (hz : ‖z - z₀‖ < r) (k : ℕ) {p : F × F} (hp : p ≠ 0) :
@@ -86,19 +84,17 @@ theorem norm_eisTerm_zero_le_of_near {F : Type} [Field F] [NumberField F] {z z�
     _ = ∏ τ, ‖latPt z p τ‖ := by field_simp
 
 /- English proof (translation)
-Introduce `F _ _ _ 𝔞 𝔟 k hs z₀ hz₀`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr0, hr⟩ : ∃ r : ℝ, 0 < r ∧ ∀ τ, 2 * r ≤ (z₀ τ).im := by`. Break down `isEmpty_or_nonempty (Emb F) with h | h` into its components or cases. Conclude with `⟨1, one_pos, fun τ => (IsEmpty.false τ).elim⟩`. Use `⟨(Finset.univ.inf' Finset.univ_nonempty fun τ => (z₀ τ).im) / 2, ?_, fun τ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `half_pos ((Finset.lt_inf'_iff _).2 fun τ _ => hz₀ τ)`. Use `Finset.inf'_le (fun τ => (z₀ τ).im) (Finset.mem_univ τ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsub : ball z₀ r ⊆ upperHalf F`. Introduce `z hz τ`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[mem_ball, dist_eq_norm]`. Establish `h1 : ‖z τ - z₀ τ‖ < r` using `lt_of_le_of_lt (norm_le_pi_norm (z - z₀) τ) hz`. Establish `h3` using `abs_im_le_norm (z τ - z₀ τ)`. Rewrite `h3` using `[sub_im]`. Establish `h4` using `(abs_le.1 (h3.trans h1.le)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[hr τ]`. Establish `hdiff : ∀ c : Quotient (latRel 𝔞 𝔟), DifferentiableOn ℂ (fun z => eisClass 𝔞 𝔟 k 0 z c) (ball z₀ r)`. Introduce `c z hz`. Establish `hp : c.out.1 ≠ 0` using `c.out.2.2.2`. Establish `e : (fun z => eisClass 𝔞 𝔟 k 0 z c) = fun z => (∏ τ, latPt z c.out.1 τ)⁻¹ ^ k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Conclude with `eisTerm_at_zero_eq k z c.out.1`. Rewrite using `[e]`. Establish `hP : Differentiable ℂ (fun z : Emb F → ℂ => ∏ τ, latPt z c.out.1 τ)`. Unfold `latPt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fun_prop`. Establish `hne : ∏ τ, latPt z c.out.1 τ ≠ 0` using `Finset.prod_ne_zero_iff.2 fun τ _ => latPt_ne_zero (hsub hz) hp τ`. Conclude with `((hP z).inv hne).pow k |>.differentiableWithinAt`. Establish `hbd : ∀ c : Quotient (latRel 𝔞 𝔟), ∀ z ∈ ball z₀ r, ‖eisClass 𝔞 𝔟 k 0 z c‖ ≤ (2 ^ Fintype.card (Emb F)) ^ k * ‖eisClass 𝔞 𝔟 k 0 z₀ c‖`. Introduce `c z hz`.
-
-Rewrite `hz` using `[mem_ball, dist_eq_norm]`. Conclude with `norm_eisTerm_zero_le_of_near hz₀ hr hz k c.out.2.2.2`. Establish `hsum : Summable fun c => (2 ^ Fintype.card (Emb F) : ℝ) ^ k * ‖eisClass 𝔞 𝔟 k 0 z₀ c‖` using `(summable_norm_iff.2 (hs z₀ hz₀)).mul_left _`. Establish `h` using `GlobalTheory.differentiableOn_tsum_of_norm_le (Emb F → ℂ) (Quotient (latRel 𝔞 𝔟)) (ball z₀ r) (fun c z => eisClass 𝔞 𝔟 k 0 z c) _ isOpen_ball hdiff hsum hbd`. Conclude with `(h.differentiableAt (isOpen_ball.mem_nhds (mem_ball_self hr0))).differentiableWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eisSum_zero_differentiableOn :
     ∀ (F : Type) [Field F] [NumberField F] [NumberField.IsTotallyReal F] (𝔞 𝔟 : Frac F) (k : ℕ),

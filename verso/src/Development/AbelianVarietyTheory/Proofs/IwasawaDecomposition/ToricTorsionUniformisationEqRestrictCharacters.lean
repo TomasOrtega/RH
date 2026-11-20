@@ -17,11 +17,11 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.ToricTorsionCompare
 
 /- English proof (translation)
-Introduce `K _ O X _ k hk τ hτ`. Establish `hpow : ∀ x, (τ x : K) ^ k = 1` using `fun x => by`. Use `congrArg (fun f => ((f x : Kˣ) : K)) hτ` as an intermediate fact. Simplify `this` using `[MonoidHom.pow_apply]`. Establish `mem : ∀ x, (τ x : K) ∈ O` using `fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Break down `O.mem_or_inv_mem (τ x : K) with h | h` into its components or cases. Conclude with `h`. Establish `h1 : (τ x : K) ^ (k - 1) * (τ x : K) = 1` using `by rw [← pow_succ, Nat.sub_add_cancel hk, hpow]`. Establish `h2 : ((τ x : K)⁻¹) ^ (k - 1) = τ x` using `by rw [inv_pow, inv_eq_of_mul_eq_one_right h1]`. Rewrite using `[← h2]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `O.pow_mem h _`. Establish `vi : ∀ x, (τ x : K) * (τ x⁻¹ : K) = 1` using `fun x => by`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Set `f : Multiplicative X → Oˣ` to `fun x => ⟨⟨τ x, mem x⟩, ⟨τ x⁻¹, mem x⁻¹⟩, Subtype.ext (vi x), Subtype.ext ((mul_comm _ _).trans (vi x))⟩`. Conclude with `⟨MonoidHom.mk' f (fun x y => Units.ext (Subtype.ext (by simp [f]))), fun x => rfl⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem units_of_pow_eq_one : ∀ (K : Type) [Field K] (O : ValuationSubring K) (X : Type) [AddCommGroup X] (k : ℕ), 1 ≤ k →
     ∀ (τ : Multiplicative X →* Kˣ), τ ^ k = 1 → ∃ τO : Multiplicative X →* Oˣ, ∀ x, ((τO x : O) : K) = (τ x : K) := by
@@ -42,47 +42,45 @@ theorem units_of_pow_eq_one : ∀ (K : Type) [Field K] (O : ValuationSubring K) 
   exact ⟨MonoidHom.mk' f (fun x y => Units.ext (Subtype.ext (by simp [f]))), fun x => rfl⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ _ _ t P W _ _ _ t' P' _ _ hR hW g m V _ _ _ ψ _ tV mV Ω _ α β hβ tΩ n n' j _ t₀ m₀ h₀ m₀' ρ hα hb hc hd he hf F _ _ _ _ O φ hφ hφW hgF k hk τ τ' q q' v v' hτ'k hττ' hqy hq hq'y hq' hv hv'`. Establish `hk1 : 1 ≤ k`. Break down `Nat.eq_zero_or_pos k with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using `at hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `h`. Take `⟨s, s1, s2, s3, s4⟩` from `GlobalTheory.T.exists_toric_torsion_sections_uniformisation E H R t P hR k hk1`. Take `⟨s', s1', s2', s3', s4'⟩` from `GlobalTheory.T.exists_toric_torsion_sections_uniformisation E H W t' P' hW k hk1`. Take `⟨fR, hfR, -⟩` from `GlobalTheory.T.exists_torsionMap_uniformisation_generic E H R t P hR F k hk1`. Take `⟨fW, hfW, -⟩` from `GlobalTheory.T.exists_torsionMap_uniformisation_generic E H W t' P' hW F k hk1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `ρm` to `AddMonoidHom.toMultiplicative ρ`. Establish `powc : ∀ {G : Type} [CommGroup G] (f : Multiplicative P'.D.toPre.X →* G), f ^ k = 1 → (f.comp ρm) ^ k = 1` using `fun f hf => MonoidHom.ext fun x => by`. Rewrite using `[MonoidHom.pow_apply, MonoidHom.comp_apply, ← MonoidHom.pow_apply, hf]`. Both sides reduce to the same expression. Establish `hτ : τ = τ'.comp ρm` using `MonoidHom.ext fun x => hττ' (Multiplicative.toAdd x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτk : τ ^ k = 1`. Rewrite using `[hτ]`. Conclude with `powc τ' hτ'k`. Establish `hv0 : v = (s F _ τ hτk).left` using `((hfR q v).1 hv).trans ((hfR q _).1 (s4 F _ τ hτk q rfl hqy hq)).symm`. Establish `hv0' : v' = (s' F _ τ' hτ'k).left` using `((hfW q' v').1 hv').trans ((hfW q' _).1 (s4' F _ τ' hτ'k q' rfl hq'y hq')).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨τO, hτO⟩` from `units_of_pow_eq_one F O _ k hk1 τ' hτ'k`. Establish `hτOk : τO ^ k = 1`. Use `MonoidHom.ext fun x => Units.ext (Subtype.ext ?_)` and prove the remaining obligations. Use `congrArg (fun f => ((f x : Fˣ) : F)) hτ'k` as an intermediate fact. Simplify using `only [MonoidHom.pow_apply, MonoidHom.one_apply, Units.val_pow_eq_pow_val, Units.val_one] at this ⊢`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[SubmonoidClass.coe_pow, hτO, this]`. Both sides reduce to the same expression. Set `bW : ResidueField W →+* Ω` to `Ideal.Quotient.lift (maximalIdeal W) β hβ`. Choose the witnesses or unpack the hypotheses as in `⟨Ω', _, _, σ, κ₀, hσκ⟩ : ∃ (Ω' : Type) (_ : Field Ω') (_ : IsAlgClosed Ω') (σ : Ω →+* Ω') (κ₀ : ResidueField O →+* Ω'), σ.comp bW = κ₀.comp (ResidueField.map φ) := by`. Use `letI := bW.toAlgebra`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `letI := (ResidueField.map φ).toAlgebra`. Take `⟨M, hM⟩` from `Ideal.exists_maximal (TensorProduct (ResidueField W) Ω (ResidueField O))`. Use `letI := Ideal.Quotient.field M`. Set `q0 : TensorProduct (ResidueField W) Ω (ResidueField O) →+* AlgebraicClosure (TensorProduct (ResidueField W) Ω (ResidueField O) ⧸ M)` to `(algebraMap (TensorProduct (ResidueField W) Ω (ResidueField O) ⧸ M) _).comp (Ideal.Quotient.mk M)`. Use `⟨AlgebraicClosure (TensorProduct (ResidueField W) Ω (ResidueField O) ⧸ M), inferInstance, inferInstance, q0.comp Algebra.TensorProduct.includeLeftRingHom, q0.comp Algebra.TensorProduct.includeRight.toRingHom, ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[RingHom.comp_assoc, RingHom.comp_assoc]`. Conclude with `congrArg q0.comp Algebra.TensorProduct.includeLeftRingHom_comp_algebraMap`. Set `κ : O →+* Ω'` to `κ₀.comp (residue O)`. Establish `hκ : σ.comp β = κ.comp φ`. Use extensionality with `w`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg (fun f => f (residue W w)) hσκ` as an intermediate fact. Express the relevant statement in the definitionally equal form `σ (bW (residue W w)) = κ₀ (ResidueField.map φ (residue W w)) at this`. Rewrite `this` using `[ResidueField.map_residue]`. Conclude with `this`. Establish `hκloc : IsLocalHom κ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hna`. Establish `: residue O a = 0` using `(residue_eq_zero_iff a).2 ((mem_maximalIdeal a).2 hna)`. Establish `h0 : κ a = 0` using `by simp only [κ, RingHom.comp_apply, this, map_zero]`. Rewrite `ha` using `[h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `not_isUnit_zero ha`. Take `⟨U, hU, hUloc⟩` from `IsLocalRing.exists_factor_valuationRing (σ.comp α)`. Set `u : V →+* U` to `(σ.comp α).codRestrict U.toSubring hU`. Establish `hwu : U.subtype.comp u = σ.comp α` using `rfl`. Set `τ'' : Multiplicative P'.D.toPre.X →* Ω'ˣ` to `(Units.map κ.toMonoidHom).comp τO`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h'' : τ'' ^ k = 1`. Rewrite using `[show τ'' ^ k = (Units.map κ.toMonoidHom).comp (τO ^ k) by ext x; simp [τ'']]`. Rewrite using `[hτOk]`. Use `ext`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨τU, hτU⟩` from `units_of_pow_eq_one Ω' U _ k hk1 τ'' h''`. Establish `hτUk : τU ^ k = 1`. Use `MonoidHom.ext fun x => Units.ext (Subtype.ext ?_)` and prove the remaining obligations. Use `congrArg (fun f => ((f x : Ω'ˣ) : Ω')) h''` as an intermediate fact. Simplify using `only [MonoidHom.pow_apply, MonoidHom.one_apply, Units.val_pow_eq_pow_val, Units.val_one] at this ⊢`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[SubmonoidClass.coe_pow, hτU, this]`. Both sides reduce to the same expression. Set `zU : Over.mk (spMap u) ⟶ splitTorus (Sp V) P'.D.toPre.X` to `(GlobalTheory.splitTorusPointsEquiv _ _ _).symm ((Units.map (Scheme.ΓSpecIso (CommRingCat.of U)).inv.hom.toMonoidHom).comp τU)`. Establish `hzU : ∀ χ, GlobalTheory.UU.chV zU χ = unitOn (τU (Multiplicative.ofAdd χ))` using `fun χ => by`. Simplify using `only [GlobalTheory.UU.chV, zU, MulEquiv.apply_symm_apply]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hkU : IsUnit (k : U)` using `by simpa using hk.map (u.comp ψ)`. Set `τRU` to `τU.comp ρm`. Establish `hτRU : τRU ^ k = 1`. Conclude with `powc τU hτUk`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hG1` using `GlobalTheory.T.toricTorsionSection_eq_pushed_trait_point_local E H R t P k s s1 s2 s3 _ ρ V ψ tV mV j t₀ m₀ h₀ m₀' hc hd U u hUloc hkU τU τRU hτRU hτUk (fun χ => rfl) zU hzU`. Establish `hG2` using `GlobalTheory.T.toricTorsionSection_eq_pulled_trait_point_field E H W t' P' k s' s3' R t g m V ψ tV mV Ω α β hβ tΩ n n' j hb hf Ω' σ (κ.comp φ) hκ.symm U u U.subtype hwu τU τ'' h'' (fun χ => (hτU χ).symm) zU hzU`. Set `τRΩ` to `τ''.comp ρm`. Establish `hτRΩ : τRΩ ^ k = 1`. Conclude with `powc τ'' h''`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hgU : (κ.comp φ).comp g = U.subtype.comp (u.comp ψ)`. Use extensionality with `r`. Use `congrArg (fun f => σ f) (RingHom.congr_fun he r)` as an intermediate fact. Establish `h2` using `RingHom.congr_fun hκ (g r)`. Simplify using `only [RingHom.comp_apply] at this h2 ⊢`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← h2, ← this]`. Both sides reduce to the same expression. Establish `h8 : (s Ω' ((κ.comp φ).comp g) τRΩ hτRΩ).left = spMap U.subtype ≫ (s U (u.comp ψ) τRU hτRU).left` using `s2 U Ω' _ _ U.subtype τRU hτRU τRΩ hτRΩ hgU (fun χ => (hτU (ρm χ)).symm)`. Set `τOR` to `τO.comp ρm`. Establish `hτOR : τOR ^ k = 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `powc τO hτOk`. Take `⟨e, he'⟩` from `GlobalTheory.LiePull.exists_pushEquiv m.cart (Over.mk (spMap φ)) (spMap (φ.comp g)) (spMap_comp g φ)`. Establish `hkO : IsUnit (k : O)` using `by simpa using hk.map (φ.comp g)`. Establish `hxy : s O (φ.comp g) τOR hτOR = e (s' O φ τO hτOk)`. Use `GlobalTheory.T.smoothCommGroupScheme_eq_of_pow_eq_of_closedPoint (Sp R) t.G t.semi.smooth O (spMap (φ.comp g)) k hkO _ _ ?_ Ω' κ hκloc ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[s1, ← map_pow, s1', map_one]`. Rewrite using `[he', ← Category.assoc, ← s2' O Ω' φ (κ.comp φ) κ τO hτOk τ'' h'' rfl (fun χ => rfl), hG2, ← s2 O Ω' (φ.comp g) ((κ.comp φ).comp g) κ τOR hτOR τRΩ hτRΩ rfl (fun χ => rfl), h8, hG1]`. Establish `hOR : (algebraMap (FractionRing R) F).comp (algebraMap R (FractionRing R)) = O.subtype.comp (φ.comp g)`. Use extensionality with `r`. Simplify using `[hgF, hφW]`.
-
-Establish `hOW : (algebraMap (FractionRing W) F).comp (algebraMap W (FractionRing W)) = O.subtype.comp φ`. Use extensionality with `w`. Simplify using `[hφW]`. Rewrite using `[hv0, hv0', s2 O F _ _ O.subtype τOR hτOR τ hτk hOR (fun χ => by simp [τOR, hτ, hτO]), s2' O F _ _ O.subtype τO hτOk τ' hτ'k hOW (fun χ => by simp [hτO]), hxy, he', Category.assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toric_torsion_eq_restrict : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (t' : SAB H (Sp W)) (P' : PELUnif (maximalIdeal W) t') [CharZero R] [CharZero W], AdmBase R (maximalIdeal R) → AdmBase W (maximalIdeal W) →
     ∀ (g : R →+* W) (m : SABMap t' t (spMap g))

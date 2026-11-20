@@ -21,9 +21,7 @@ open Classical
 namespace GlobalTheory.Mum.CoverPull
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ _ S ρS M U₀ EE hO Z w`. Use `haveI : IsProper ρS.P.A.hom := ρS.P.isAb.proper`. Use `haveI : IsProper ((Over.pullback Z.u₀).obj ρS.P.A).hom := by show IsProper (pullback.snd ρS.P.A.hom Z.u₀) infer_instance`. Use `GlobalTheory.range_subset_abLocus_of_isProper (G' := (Over.pullback Z.u₀).obj ρS.P.A) (f := U₀.ι) (φ := Z.φ) Z.semi Z.cart.1 ?_` and prove the remaining obligations. Establish `hm : M.pt w ∈ U₀` using `M.top_le_preimage_pt hO.ne (x := w) trivial`.
-
-Conclude with `⟨⟨_, hm⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pt_mem_abLocus : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [GlobalTheory.ZH.ArithBase o Ω] (S : GlobalTheory.ZH.ThetaSys o Ω) (ρS : S.Real) (M : GlobalTheory.ZH.RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), S.Over₀ M U₀ → ∀ (Z : GlobalTheory.ZH.ZHOut ρS M U₀ EE) (w : Sp Ω), M.pt w ∈ abLocus Z.G := by
   intro o Ω _ _ _ _ S ρS M U₀ EE hO Z w
@@ -36,11 +34,9 @@ theorem pt_mem_abLocus : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω
   exact ⟨⟨_, hm⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ S ρS M U₀ EE Z T h W _ _ _ hW ξ hab`. Take `⟨hdvr, hc, hch⟩` from `(GlobalTheory.LN.cDvr_iff W).1 hW`. Use `haveI := hch`. Take `⟨D, A, U, hl, -⟩` from `Z.unif W inferInstance inferInstance hc (ξ ≫ h) hab`. Establish `hpt : (pullback.snd Z.G.hom (ξ ≫ h) ≫ ξ) ≫ h = pullback.snd Z.G.hom (ξ ≫ h) ≫ ξ ≫ h` using `Category.assoc _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `β : pullback Z.G.hom (ξ ≫ h) ⟶ pullback Z.G.hom h` to `pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ ξ) (pullback.condition.trans hpt.symm)`. Establish `hβf : β ≫ pullback.fst Z.G.hom h = pullback.fst Z.G.hom (ξ ≫ h)` using `pullback.lift_fst _ _ _`. Establish `hβs : β ≫ pullback.snd Z.G.hom h = pullback.snd Z.G.hom (ξ ≫ h) ≫ ξ` using `pullback.lift_snd _ _ _`. Use `⟨(Over.pullback (ξ ≫ h)).obj Z.G, inferInstance, inferInstance, β, D, A, U, ?_, ?_⟩` and prove the remaining obligations. Use `(isGrpPullback_pullback Z.G h).cancel ?_ hβs` and prove the remaining obligations.
-
-Conclude with `(isGrpPullback_pullback Z.G (ξ ≫ h)).congr rfl hβf.symm`. Conclude with `LBIso.trans U.LG.isLB (pull_isLB Z.L.isLB _) (pull_isLB (pull_isLB Z.L.isLB _) _) hl (GlobalTheory.GenSpread.lbIso_pull_pull Z.L.isLB β hβf.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_unif_pullback : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : GlobalTheory.ZH.ThetaSys o Ω) (ρS : S.Real) (M : GlobalTheory.ZH.RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (Z : GlobalTheory.ZH.ZHOut ρS M U₀ EE) (T : Scheme.{0}) (h : T ⟶ M.Z) (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], GlobalTheory.LN.CDvr W → ∀ ξ : Sp W ⟶ T, ((ξ ≫ h) ⁻¹' abLocus Z.G).Nonempty → ∃ (G' : Over (Sp W)) (_ : GrpObj G') (_ : IsCommMonObj G') (β : G'.left ⟶ ((Over.pullback h).obj Z.G).left) (D' : DegData W (maximalIdeal W)) (A' : PolAV (Sp (FractionRing W))) (U' : Unif (maximalIdeal W) D' A' G'), IsGrpPullback G' ((Over.pullback h).obj Z.G) ξ β ∧ LBIso U'.LG.L ((Z.L.L.pull (pullback.fst Z.G.hom h)).pull β) := by
   intro o Ω _ _ _ S ρS M U₀ EE Z T h W _ _ _ hW ξ hab
@@ -63,19 +59,17 @@ end GlobalTheory.Mum.CoverPull
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R₁ _ _ _ o Ω _ _ _ _ S ρS M U₀ EE hO Z b e hb A₁ φ hcart hlb`. Establish `hs : IsProper M.s` using `GlobalTheory.SpreadAb.isProper_of_isProjOver hO.proj`. Establish `hy : (spMap e ≫ M.pt) ≫ M.s = jK R₁ ≫ spMap b`. Rewrite using `[Category.assoc, M.pt_s, jK, spMap, spMap, spMap, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `x`. Conclude with `hb x`. Take `⟨M', h, hgp, -⟩` from `GlobalTheory.T.exists_modification_closure_of_graph R₁ o b M.Z M.s hs _ hy`. Take `⟨P₀, hP₀⟩` from `GlobalTheory.T.exists_cubicalStructure_semiAbelianExtension o Ω S ρS M U₀ EE hO Z`. Establish `hw : pullback.fst Z.G.hom h ≫ Z.G.hom = ((Over.pullback h).obj Z.G).hom ≫ h` using `pullback.condition`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mul : ∀ (T : Over M'.S) (x y : T ⟶ (Over.pullback h).obj Z.G), toBase hw (x * y) = toBase hw x * toBase hw y`. Introduce `T x y`. Conclude with `Over.OverMorphism.ext ((isGrpPullback_pullback Z.G h).2 T x y (toBase hw x) (toBase hw y) rfl rfl).symm`. Take `⟨rig, hr, c, s, h₁, h₂, h₃, -⟩` from `GlobalTheory.UU.exists_isCPMap P₀ mul _ (pull_isLB P₀.L.isLB _) _ (GlobalTheory.UU.pullIso_isGen P₀.L.isLB _)`. Take `⟨α, hα, hαl⟩` from `GlobalTheory.T.genericFibre_pulled_semiAbelian_eq_abelianVariety R₁ o Ω S ρS M U₀ EE hO Z e M' h hgp A₁ φ hcart hlb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨{ toModif := M' G := (Over.pullback h).obj Z.G semi := IsSemiAbelian.pullback _ _ Z.semi P := ⟨⟨_, rig, pull_isLB P₀.L.isLB _, hr⟩, c, s, h₁, h₂, h₃⟩ A := A₁ α := α α_cart := hα α_lb := by show LBIso A₁.L ((P₀.L.L.pull (pullback.fst Z.G.hom h)).pull α)` and prove the remaining obligations. Rewrite using `[hP₀]`. Conclude with `hαl`. Use `trait := ?_ }, rfl⟩`. Introduce `W _ _ _ hW φW ξ hφ hξ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨w, k, hk⟩` from `GlobalTheory.T.exists_genericPoint_of_lies_over_generic R₁ M' W φW ξ hφ hξ`. Establish `hab : ((ξ ≫ h) ⁻¹' abLocus Z.G).Nonempty`. Use `⟨w, ?_⟩` and prove the remaining obligations. Establish `e1 : (ξ ≫ h) w = M.pt ((spMap e) k)`. Rewrite using `[Scheme.Hom.comp_apply, hk, ← Scheme.Hom.comp_apply, hgp, Scheme.Hom.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (ξ ≫ h) w ∈ abLocus Z.G`. Rewrite using `[e1]`. Conclude with `CoverPull.pt_mem_abLocus o Ω S ρS M U₀ EE hO Z _`. Take `⟨G', iG, cG, β, D', A', U', hβ, hl⟩` from `CoverPull.exists_unif_pullback o Ω S ρS M U₀ EE Z M'.S h W hW ξ hab`. Establish `hid : spMap (RingHom.id W) ≫ ξ = ξ`.
-
-Rewrite using `[spMap, CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`. Use `⟨W, _, inferInstance, inferInstance, RingHom.id W, G', iG, cG, β, D', A', U', hW, Function.injective_id, RingHom.Finite.id W, hid.symm ▸ hβ, ?_⟩` and prove the remaining obligations. Use `show LBIso U'.LG.L ((P₀.L.L.pull (pullback.fst Z.G.hom h)).pull β)`. Rewrite using `[hP₀]`. Conclude with `hl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_uCover_of_zhOut : ∀ (R₁ : Type) [CommRing R₁] [IsDomain R₁] [IsLocalRing R₁] (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [GlobalTheory.ZH.ArithBase o Ω] (S : GlobalTheory.ZH.ThetaSys o Ω) (ρS : S.Real) (M : GlobalTheory.ZH.RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), S.Over₀ M U₀ → GlobalTheory.ZH.ZHOut ρS M U₀ EE → ∀ (b : o →+* R₁) (e : Ω →+* FractionRing R₁), (∀ x : o, e (algebraMap o Ω x) = algebraMap R₁ (FractionRing R₁) (b x)) → ∀ (A₁ : PolAV (Sp (FractionRing R₁))) (φ : A₁.A.left ⟶ ρS.P.A.left), IsGrpPullback A₁.A ρS.P.A (spMap (e.comp S.R.val.toRingHom)) φ → LBIso A₁.L (ρS.P.L.pull φ) → ∃ C : UCover R₁, C.A = A₁ := by
   intro R₁ _ _ _ o Ω _ _ _ _ S ρS M U₀ EE hO Z b e hb A₁ φ hcart hlb

@@ -11,7 +11,7 @@ variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) {u u' : D.what₂.Word}
   {what₂ : Finset (Submodule (NumberField.RingOfIntegers D.host.E) (VS D).V)}
 
 /- English proof (translation)
-The claim follows from `patchC_of Formalism.L2.SG.Pf.LocalDenominators.latPatch_holds hL`.
+A detailed English derivation is pending.
 -/
 theorem patchC_of_full (hL : LocFullC Zd u u' F0 what₂) : PatchC Zd u u' F0 what₂ :=
   patchC_of Formalism.L2.SG.Pf.LocalDenominators.latPatch_holds hL

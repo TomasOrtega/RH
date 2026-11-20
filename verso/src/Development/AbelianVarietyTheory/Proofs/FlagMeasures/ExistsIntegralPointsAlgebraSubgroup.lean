@@ -9,7 +9,7 @@ namespace GlobalTheory.AlgCutSubgroup
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Unfold `Formalism.REAL.Jm`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sign_sq : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   unfold Formalism.REAL.Jm
@@ -19,11 +19,11 @@ theorem sign_sq : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Establish `hJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1` using `sign_sq`. Establish `hg : (uMat g)ᴴ * Formalism.REAL.Jm ε * uMat g = Formalism.REAL.Jm ε` using `g.2`. Establish `hMN : uMat g * uMat g⁻¹ = 1`. Unfold `uMat`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Establish `hN : uMat g⁻¹ = Formalism.REAL.Jm ε * (uMat g)ᴴ * Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hg, hJ, Matrix.one_mul]`. Use `_ = Formalism.REAL.Jm ε * (uMat g)ᴴ * Formalism.REAL.Jm ε * (uMat g * uMat g⁻¹) := by`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = Formalism.REAL.Jm ε * (uMat g)ᴴ * Formalism.REAL.Jm ε := by rw [hMN, Matrix.mul_one]`. Rewrite using `[hN, conjTranspose_sub, conjTranspose_one, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hJ]`.
+A detailed English derivation is pending.
 -/
 theorem inv_sub_one (g : Formalism.REAL.UJ ε) :
     uMat g⁻¹ - 1 = Formalism.REAL.Jm ε * (uMat g - 1)ᴴ * Formalism.REAL.Jm ε := by
@@ -41,25 +41,21 @@ theorem inv_sub_one (g : Formalism.REAL.UJ ε) :
   rw [hN, conjTranspose_sub, conjTranspose_one, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hJ]
 
 /- English proof (translation)
-Introduce `I xf A h1 h2`. Take `⟨Γ0, hΓ0⟩` from `(GlobalTheory.RatDiscrete.subgroup_countable_discrete I).1`. Establish `hKmul : ∀ a b : I.Gf, a ∈ I.Kset → b ∈ I.Kset → a * b ∈ I.Kset` using `fun a b ha hb => (Formalism.UG.stabGL I.Lf).mul_mem ha hb`. Establish `hKinv : ∀ a : I.Gf, a ∈ I.Kset → a⁻¹ ∈ I.Kset` using `fun a ha => (Formalism.UG.stabGL I.Lf).inv_mem ha`. Establish `hKone : (1 : I.Gf) ∈ I.Kset` using `(Formalism.UG.stabGL I.Lf).one_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUmul : ∀ (v : InfinitePlace I.F) (g h : I.Ginf), uMat ((g * h) v) = uMat (g v) * uMat (h v)` using `fun _ _ _ => rfl`. Establish `hUinv : ∀ (v : InfinitePlace I.F) (g : I.Ginf), uMat (g⁻¹ v) = uMat (g v)⁻¹` using `fun _ _ => rfl`. Establish `hUone : ∀ v : InfinitePlace I.F, uMat ((1 : I.Ginf) v) = 1` using `fun _ => rfl`. Use `⟨{ carrier := {g | g ∈ latGroup I xf ∧ ∀ v, uMat (g v) - 1 ∈ A v}, mul_mem' := ?_, one_mem' := ?_, inv_mem' := ?_ }, rfl⟩` and prove the remaining obligations. Introduce and unpack `g h ⟨hg, hgA⟩ ⟨hh, hhA⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨?_, fun v => ?_⟩` and prove the remaining obligations. Unfold `latGroup at hg hh ⊢`. Take `⟨γ, hγ, rfl, hk⟩` from `hg`. Take `⟨δ, hδ, rfl, hk'⟩` from `hh`. Use `⟨γ * δ, ?_, rfl, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hγ`, `hδ`, the goal using `[← hΓ0]`. Conclude with `Γ0.mul_mem hγ hδ`. Establish `e : xf⁻¹ * (γ * δ).2 * xf = (xf⁻¹ * γ.2 * xf) * (xf⁻¹ * δ.2 * xf)`. Simplify using `[mul_assoc]`. Rewrite using `[e]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hKmul _ _ hk hk'`. Establish `e : uMat ((g * h) v) - 1 = (uMat (g v) - 1) * (uMat (h v) - 1) + (uMat (g v) - 1) + (uMat (h v) - 1)`. Rewrite using `[hUmul]`. Use `noncomm_ring`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `add_mem (add_mem (h1 v _ (hgA v) _ (hhA v)) (hgA v)) (hhA v)`. Use `⟨?_, fun v => ?_⟩` and prove the remaining obligations. Unfold `latGroup`. Use `⟨1, ?_, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[← hΓ0]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Γ0.one_mem`. Simplify using `using hKone`. Rewrite using `[hUone, sub_self]`. Conclude with `zero_mem _`. Introduce and unpack `g ⟨hg, hgA⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨?_, fun v => ?_⟩` and prove the remaining obligations. Unfold `latGroup at hg ⊢`. Take `⟨γ, hγ, rfl, hk⟩` from `hg`. Use `⟨γ⁻¹, ?_, rfl, ?_⟩` and prove the remaining obligations. Rewrite `hγ`, the goal using `[← hΓ0]`.
-
-Conclude with `Γ0.inv_mem hγ`. Establish `e : xf⁻¹ * γ⁻¹.2 * xf = (xf⁻¹ * γ.2 * xf)⁻¹`. Simplify using `[mul_assoc]`. Rewrite using `[e]`. Conclude with `hKinv _ hk`.
-
-Rewrite using `[hUinv, inv_sub_one]`. Conclude with `h2 v _ (hgA v)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_subgroup : ∀ (I : AutInst) (xf : I.Gf) (A : InfinitePlace I.F → Submodule ℂ (Matrix (Fin I.n) (Fin I.n) ℂ)), (∀ v, ∀ X ∈ A v, ∀ Y ∈ A v, X * Y ∈ A v) → (∀ v, ∀ X ∈ A v, Formalism.REAL.Jm (I.ε v) * Xᴴ * Formalism.REAL.Jm (I.ε v) ∈ A v) → ∃ Γ : Subgroup I.Ginf, (Γ : Set I.Ginf) = {g | g ∈ latGroup I xf ∧ ∀ v, uMat (g v) - 1 ∈ A v} := by
   intro I xf A h1 h2

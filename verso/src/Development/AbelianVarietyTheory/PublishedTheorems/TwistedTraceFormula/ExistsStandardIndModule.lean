@@ -23,9 +23,9 @@ variable {n a : ℕ}
 abbrev Flag (n a : ℕ) : Type := Fin (a + 1) → Submodule ℂ (Fin n → ℂ)
 
 /- English proof (translation)
-Establish `hg' : ∀ y ∈ V, Matrix.toLin' g y ∈ V` using `hg`. Establish `hh' : ∀ y ∈ V, Matrix.toLin' h y ∈ V` using `hh`. Establish `hgh : ∀ y ∈ V, Matrix.toLin' (g * h) y ∈ V` using `fun y hy => by`. Rewrite using `[Matrix.toLin'_mul]`. Conclude with `hg _ (hh y hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[detOn, detOn, detOn, dif_pos hg', dif_pos hh', dif_pos hgh, ← norm_mul, ← map_mul]`. Use `congr 2`. Use extensionality with `y : 2`. Simplify using `[Matrix.toLin'_mul]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem detOn_mul {g h : Matrix (Fin n) (Fin n) ℂ} {V : Submodule ℂ (Fin n → ℂ)} (hg : ∀ y ∈ V, g *ᵥ y ∈ V)
     (hh : ∀ y ∈ V, h *ᵥ y ∈ V) : detOn (g * h) V = detOn g V * detOn h V := by
@@ -39,7 +39,7 @@ theorem detOn_mul {g h : Matrix (Fin n) (Fin n) ℂ} {V : Submodule ℂ (Fin n �
   simp [Matrix.toLin'_mul]
 
 /- English proof (translation)
-Establish `h : ∀ y ∈ V, Matrix.toLin' (1 : Matrix (Fin n) (Fin n) ℂ) y ∈ V` using `by simp`. Rewrite using `[detOn, dif_pos h, show (Matrix.toLin' (1 : Matrix (Fin n) (Fin n) ℂ)).restrict h = 1 by ext y : 2; simp]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem detOn_one (V : Submodule ℂ (Fin n → ℂ)) : detOn 1 V = 1 := by
   have h : ∀ y ∈ V, Matrix.toLin' (1 : Matrix (Fin n) (Fin n) ℂ) y ∈ V := by simp
@@ -93,7 +93,7 @@ def indFun (S : Subgroup (UJ ε)) (j : Fin a → ℕ) (W : Flag n a) (σ : Matri
       simp [h.2.2 u hu m hm x t ht h1 h2 h3 g hg, smul_comm c]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨continuousOn_univ.1 h.1, fun u hu m hm x t ht g => h.2.2 u hu m hm x t ht trivial trivial trivial g trivial⟩, fun h => ⟨h.1.continuousOn, fun _ hg => (hg trivial).elim, fun u hu m hm x t ht _ _ _ g _ => h.2 u hu m hm x t ht g⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_indFun_top {j : Fin a → ℕ} {W : Flag n a} {σ : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] V)} {s : Fin a → ℂ}
     {f : UJ ε → V} : f ∈ indFun ⊤ j W σ s ↔ Continuous f ∧
@@ -104,7 +104,7 @@ theorem mem_indFun_top {j : Fin a → ℕ} {W : Flag n a} {σ : Matrix (Fin n) (
     fun h => ⟨h.1.continuousOn, fun _ hg => (hg trivial).elim, fun u hu m hm x t ht _ _ _ g _ => h.2 u hu m hm x t ht g⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.comp (continuous_mul_const y).continuousOn fun _ hg => S.mul_mem hg hy, fun _ hg => h.2.1 _ fun e => hg ((S.mul_mem_cancel_right hy).1 e), fun u hu m hm x t ht h1 h2 h3 g hg => by simpa only [mul_assoc] using h.2.2 u hu m hm x t ht h1 h2 h3 _ (S.mul_mem hg hy)⟩`.
+Supply the required witnesses or components.
 -/
 theorem indFun_mul_right {S : Subgroup (UJ ε)} {j : Fin a → ℕ} {W : Flag n a}
     {σ : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] V)} {s : Fin a → ℂ} {f : UJ ε → V} (h : f ∈ indFun S j W σ s) {y : UJ ε}
@@ -177,13 +177,13 @@ section Opposite
 variable {j : Fin a → ℕ} {W : Flag n a}
 
 /- English proof (translation)
-The claim follows from `funext fun i => by rw [opp, opp, ← Submodule.map_comp, ← mulVecLin_mul, Jm_mul_self, mulVecLin_one, Submodule.map_id]`.
+A detailed English derivation is pending.
 -/
 theorem opp_opp : opp ε (opp ε W) = W := funext fun i => by
   rw [opp, opp, ← Submodule.map_comp, ← mulVecLin_mul, Jm_mul_self, mulVecLin_one, Submodule.map_id]
 
 /- English proof (translation)
-Establish `hg : (uMat g)ᴴ * Jm ε * uMat g = Jm ε` using `g.2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem inv_mul_Jm (g : UJ ε) : uMat g⁻¹ * Jm ε = Jm ε * (uMat g)ᴴ := by
   have hg : (uMat g)ᴴ * Jm ε * uMat g = Jm ε := g.2
@@ -192,7 +192,7 @@ theorem inv_mul_Jm (g : UJ ε) : uMat g⁻¹ * Jm ε = Jm ε * (uMat g)ᴴ := by
     _ = _ := by rw [uMat_mul_inv, mul_one, mul_assoc, mul_assoc, Jm_mul_self, mul_one]
 
 /- English proof (translation)
-Use `congrArg (fun x => Jm ε * x * Jm ε) (inv_mul_Jm g⁻¹)` as an intermediate fact. Simplify using `only [inv_inv, ← mul_assoc, Jm_mul_self, one_mul] at this`. Rewrite using `[← this, mul_assoc, Jm_mul_self, mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjTranspose_inv_mul_Jm (g : UJ ε) : (uMat g⁻¹)ᴴ * Jm ε = Jm ε * uMat g := by
   have := congrArg (fun x => Jm ε * x * Jm ε) (inv_mul_Jm g⁻¹)
@@ -200,7 +200,7 @@ theorem conjTranspose_inv_mul_Jm (g : UJ ε) : (uMat g⁻¹)ᴴ * Jm ε = Jm ε 
   rw [← this, mul_assoc, Jm_mul_self, mul_one]
 
 /- English proof (translation)
-Establish `hr : ∀ i, Module.finrank ℂ (opp ε W i) = Module.finrank ℂ (W i)` using `fun i => GlobalTheory.RealIwasawa.finrank_map_toLin _ _ (Jm_mul_self ε) _`. Use `⟨by rw [opp, hW.1, Submodule.map_bot], fun _ _ h => Submodule.map_mono (hW.2.1 h), fun i => by rw [hr, hr, hW.2.2.1], ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩`. Rewrite using `[mulVecLin_apply, mulVecLin_apply, mulVec_mulVec, Jm_mul_self, one_mulVec, star_mulVec, Jm_conjTranspose, ← dotProduct_mulVec]`. Conclude with `hW.2.2.2 x hx y hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIsoFlag_opp (hW : IsIsoFlag ε j W) : IsIsoFlag ε j (opp ε W) := by
   have hr : ∀ i, Module.finrank ℂ (opp ε W i) = Module.finrank ℂ (W i) := fun i =>
@@ -213,7 +213,7 @@ theorem isIsoFlag_opp (hW : IsIsoFlag ε j W) : IsIsoFlag ε j (opp ε W) := by
   exact hW.2.2.2 x hx y hy
 
 /- English proof (translation)
-Introduce and unpack `i _ ⟨y, hy, rfl⟩`. Rewrite using `[mulVecLin_apply, mulVec_mulVec, mulVec_mulVec, inv_mul_Jm, conjTranspose_inv_mul_Jm, ← mulVec_mulVec, ← mulVec_mulVec]`. Conclude with `⟨⟨_, (h i y hy).2, rfl⟩, _, (h i y hy).1, rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem inv_mem_flagM_opp {g : UJ ε} (h : g ∈ flagM ε W) : g⁻¹ ∈ flagM ε (opp ε W) := by
   rintro i _ ⟨y, hy, rfl⟩
@@ -222,13 +222,11 @@ theorem inv_mem_flagM_opp {g : UJ ε} (h : g ∈ flagM ε W) : g⁻¹ ∈ flagM 
   exact ⟨⟨_, (h i y hy).2, rfl⟩, _, (h i y hy).1, rfl⟩
 
 /- English proof (translation)
-Establish `le : ∀ W : Flag n a, leviOne ε W ≤ leviOne ε (opp ε W)` using `fun W g hg => by`. Use `(Subgroup.inv_mem_iff _).1 ⟨inv_mem_flagM_opp hg.1, fun i => ?_⟩` and prove the remaining obligations. Take `⟨r, C, h1, h2⟩` from `GlobalTheory.IsoTorus.exists_frame (W i)`. Establish `hC : ∀ y, y ∈ W i ↔ ∃ v, y = C *ᵥ v` using `fun y => ⟨fun hy => ⟨Cᴴ *ᵥ y, by rw [mulVec_mulVec, (h2 y).1 hy]⟩, fun ⟨v, hv⟩ => by rw [h2, hv, mulVec_mulVec, Matrix.mul_assoc, h1, Matrix.mul_one]⟩`. Establish `e : ∀ p : Matrix (Fin n) (Fin n) ℂ, (∀ y ∈ W i, p *ᵥ y ∈ W i) → p * C = C * (Cᴴ * p * C)` using `fun p hp => Matrix.ext_iff_mulVec.2 fun v => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(h2 _).1 (hp _ ((hC _).2 ⟨v, rfl⟩))` as an intermediate fact. Simplify using `only [← mulVec_mulVec] at this ⊢`. Conclude with `this.symm`. Rewrite using `[← hg.2 i, GlobalTheory.LeviIso.Size.detOn_of_frame _ C _ _ h1 hC (e _ fun y hy => (hg.1 i y hy).1), GlobalTheory.LeviIso.Size.detOn_of_frame _ (Jm ε * C) (Cᴴ * uMat g * C)ᴴ, det_conjTranspose, norm_star]`. Rewrite using `[conjTranspose_mul, Jm_conjTranspose, Matrix.mul_assoc, ← Matrix.mul_assoc (Jm ε), Jm_mul_self, Matrix.one_mul, h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Simplify using `only [opp, Submodule.mem_map, mulVecLin_apply, hC, ← mulVec_mulVec]`. Conclude with `⟨fun ⟨_, ⟨v, hv⟩, h⟩ => ⟨v, by rw [← h, hv]⟩, fun ⟨v, hv⟩ => ⟨_, ⟨v, rfl⟩, hv.symm⟩⟩`. Rewrite using `[← Matrix.mul_assoc, inv_mul_Jm, Matrix.mul_assoc, e _ fun y hy => (hg.1 i y hy).2]`. Simplify using `[Matrix.mul_assoc]`.
-
-Conclude with `le_antisymm (by simpa only [opp_opp] using le (opp ε W)) (le W)`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leviOne_opp : leviOne ε (opp ε W) = leviOne ε W := by
   have le : ∀ W : Flag n a, leviOne ε W ≤ leviOne ε (opp ε W) := fun W g hg => by
@@ -261,7 +259,7 @@ variable {j : Fin a → ℕ} {W : Flag n a}
 variable (ε) in
 
 /- English proof (translation)
-Use extensionality with `g`. Use `⟨fun h => Matrix.mem_unitaryGroup_iff'.1 h.1, fun h => ⟨Matrix.mem_unitaryGroup_iff'.2 h, ?_⟩⟩` and prove the remaining obligations. Establish `hg : (uMat g)ᴴ * Jm ε * uMat g = Jm ε` using `g.2`. Express the relevant statement in the definitionally equal form `uMat g * Jm ε = Jm ε * uMat g`. Use `conv_lhs => rw [← hg, ← mul_assoc, ← mul_assoc, mul_eq_one_comm.1 h, one_mul]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem KG_eq : (KG ε : Set (UJ ε)) = maxK ε := by
   ext g
@@ -271,13 +269,13 @@ theorem KG_eq : (KG ε : Set (UJ ε)) = maxK ε := by
   conv_lhs => rw [← hg, ← mul_assoc, ← mul_assoc, mul_eq_one_comm.1 h, one_mul]
 
 /- English proof (translation)
-Establish `hU1 : ∀ y ∈ U, Matrix.toLin' g y ∈ U` using `hU`. Establish `hU' : ∀ y ∈ U', Matrix.toLin' g y ∈ U'` using `fun y hy => by`. Simplify using `using U'.add_mem (hle (hc y hy)) (U'.smul_mem c hy)`. Use `set e := (Matrix.toLin' g).restrict hU'`. Establish `he : U.submoduleOf U' ≤ (U.submoduleOf U').comap e` using `fun y hy => hU _ hy`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : e.restrict he = (Submodule.submoduleOfEquivOfLe hle).symm.toLinearMap ∘ₗ (Matrix.toLin' g).restrict hU1 ∘ₗ (Submodule.submoduleOfEquivOfLe hle).symm.symm.toLinearMap`. Use extensionality with `y : 3`. Both sides reduce to the same expression. Establish `h2 : (U.submoduleOf U').mapQ (U.submoduleOf U') e he = c • LinearMap.id`. Use extensionality with `y : 2`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.mapQ_apply, LinearMap.smul_apply, LinearMap.id_apply, ← Submodule.Quotient.mk_smul, Submodule.Quotient.eq]`. Conclude with `hc _ y.2`. Establish `h3 : Module.finrank ℂ (U' ⧸ U.submoduleOf U') = d`. Use `Submodule.finrank_quotient_add_finrank (U.submoduleOf U')` as an intermediate fact. Rewrite `this` using `[(Submodule.submoduleOfEquivOfLe hle).finrank_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[detOn, detOn, dif_pos hU1, dif_pos hU', LinearMap.det_eq_det_mul_det _ e he, h1, h2, LinearMap.det_conj, LinearMap.det_smul, h3]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem detOn_step {g : Matrix (Fin n) (Fin n) ℂ} {U U' : Submodule ℂ (Fin n → ℂ)} (hle : U ≤ U') {d : ℕ}
     (hd : Module.finrank ℂ U' = Module.finrank ℂ U + d) (hU : ∀ y ∈ U, g *ᵥ y ∈ U) {c : ℂ}
@@ -304,13 +302,13 @@ theorem detOn_step {g : Matrix (Fin n) (Fin n) ℂ} {U U' : Submodule ℂ (Fin n
   simp
 
 /- English proof (translation)
-Rewrite using `[detOn, dif_pos (by simp), LinearMap.det_eq_one_of_subsingleton]; simp`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem detOn_bot (g : Matrix (Fin n) (Fin n) ℂ) : detOn g ⊥ = 1 := by
   rw [detOn, dif_pos (by simp), LinearMap.det_eq_one_of_subsingleton]; simp
 
 /- English proof (translation)
-Use `detOn_mul (inv_keeps (uMat_inv_mul g) U h) h` as an intermediate fact. Rewrite `this` using `[uMat_inv_mul, detOn_one]`. Apply the tactic sequence `refine lt_of_le_of_ne (by unfold detOn; split_ifs <;> positivity) fun e => ?_`. Rewrite `this` using `[← e, mul_zero]`. Conclude with `one_ne_zero this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detOn_pos {g : UJ ε} {U : Submodule ℂ (Fin n → ℂ)} (h : ∀ y ∈ U, uMat g *ᵥ y ∈ U) :
     0 < detOn (uMat g) U := by
@@ -321,7 +319,7 @@ theorem detOn_pos {g : UJ ε} {U : Submodule ℂ (Fin n → ℂ)} (h : ∀ y ∈
   exact one_ne_zero this
 
 /- English proof (translation)
-Rewrite using `[detOn_step (hW.2.1 (Fin.castSucc_lt_succ (i := i)).le) (hW.2.2.1 i) (fun y hy => (ht.1 _ y hy).1) (ht.2.1 i), Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le, Real.exp_nat_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsSplit.detOn_succ (hW : IsIsoFlag ε j W) {x : Fin a → ℝ} {t : UJ ε} (ht : IsSplit ε W x t) (i : Fin a) :
     detOn (uMat t) (W i.succ) = detOn (uMat t) (W i.castSucc) * Real.exp (j i * x i) := by
@@ -329,7 +327,7 @@ theorem IsSplit.detOn_succ (hW : IsIsoFlag ε j W) {x : Fin a → ℝ} {t : UJ �
     Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le, Real.exp_nat_mul]
 
 /- English proof (translation)
-Proceed by induction on `i using Fin.induction with`. Consider the case `zero => rw [hW.1, detOn_bot]`. Consider the case `succ i ih`. Rewrite using `[detOn_step (c := 1) (hW.2.1 (Fin.castSucc_lt_succ (i := i)).le) (hW.2.2.1 i) ((UnipRad.flagN_subgroup_closed_keeps n ε a j W hW).2.2 u hu _) (by simpa using hu.1 i), ih]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem detOn_flagN (hW : IsIsoFlag ε j W) {u : UJ ε} (hu : u ∈ flagN ε W) (i : Fin (a + 1)) :
     detOn (uMat u) (W i) = 1 := by
@@ -341,15 +339,15 @@ theorem detOn_flagN (hW : IsIsoFlag ε j W) {u : UJ ε} (hu : u ∈ flagN ε W) 
     simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(leviSub ε W).one_mem, fun i y _ => by simp [uMat_one], fun y _ => by simp [uMat_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSplit_one : IsSplit ε W 0 1 :=
   ⟨(leviSub ε W).one_mem, fun i y _ => by simp [uMat_one], fun y _ => by simp [uMat_one]⟩
 
 /- English proof (translation)
-Use `⟨(leviSub ε W).mul_mem h.1 h'.1, fun i y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `(W _).add_mem (h.1 _ _ (h'.2.1 i y hy)).1 ((W _).smul_mem (Real.exp (x' i) : ℂ) (h.2.1 i y hy)) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[uMat_mul, ← mulVec_mulVec, mulVec_sub, mulVec_smul, Pi.add_apply, Real.exp_add]`. Use `push_cast`. Use `module`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `(W _).add_mem (h.1 _ _ (h'.2.2 y hy)).1 (h.2.2 y hy) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[uMat_mul, ← mulVec_mulVec, mulVec_sub]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem IsSplit.mul {x x' : Fin a → ℝ} {t t' : UJ ε} (h : IsSplit ε W x t) (h' : IsSplit ε W x' t') :
     IsSplit ε W (x + x') (t * t') := by
@@ -363,15 +361,15 @@ theorem IsSplit.mul {x x' : Fin a → ℝ} {t t' : UJ ε} (h : IsSplit ε W x t)
     abel
 
 /- English proof (translation)
-Establish `hl : W l ≤ W (Fin.last a)` using `hW.2.1 (Fin.le_last l)`. Use `set c : ℂ := (Real.exp r : ℂ) with hc`. Establish `hH : (uMat t)ᴴ = uMat t`. Simplify using `[ht, GlobalTheory.IsoTorus.tor, h0, Jm_conjTranspose, hc, mul_assoc, -Complex.ofReal_exp]`. Establish `key : ∀ y, (∀ z ∈ W (Fin.last a), star z ⬝ᵥ (Jm ε *ᵥ y) = 0) → uMat t *ᵥ y = y + (c - 1) • P *ᵥ y`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Establish `: (Jm ε * P * Jm ε) *ᵥ y = 0`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, GlobalTheory.RealIwasawa.proj_mulVec_eq_zero h0 h1 fun z hz => hy z (hl hz), mulVec_zero]`. Simplify using `[ht, GlobalTheory.IsoTorus.tor, add_mulVec, smul_mulVec, this]`. Establish `key' : ∀ i, ∀ y ∈ W i, uMat t *ᵥ y = y + (c - 1) • P *ᵥ y` using `fun i y hy => key y fun z hz => hW.2.2.2 z hz y (hW.2.1 (Fin.le_last i) hy)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `keep : ∀ i, ∀ y ∈ W i, uMat t *ᵥ y ∈ W i` using `fun i y hy => by`. Rewrite using `[key' i y hy]`. Use `(W i).add_mem hy ((W i).smul_mem _ ?_)` and prove the remaining obligations. Break down `le_total i l with h | h` into its components or cases. Rewrite using `[h2 y (hW.2.1 h hy)]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hW.2.1 h (h1 y)`. Use `⟨fun i y hy => ⟨keep i y hy, hH.symm ▸ keep i y hy⟩, fun i y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[key' _ y hy] dsimp only split_ifs with h`. Rewrite using `[h2 y (hW.2.1 h hy), ← hc, show y + (c - 1) • y - c • y = 0 by module]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (W _).smul_mem (c - 1) (hW.2.1 (Fin.le_castSucc_iff.2 (not_le.1 h)) (h1 y))`. Simplify `(W _).smul_mem (c - 1) (hl (h1 y))` using `[key y hy]`.
+A detailed English derivation is pending.
 -/
 theorem isSplit_of_tor (hW : IsIsoFlag ε j W) {l : Fin (a + 1)} {r : ℝ} {P : Matrix (Fin n) (Fin n) ℂ} (h0 : Pᴴ = P)
     (h1 : ∀ y, P *ᵥ y ∈ W l) (h2 : ∀ y ∈ W l, P *ᵥ y = y) {t : UJ ε}
@@ -405,19 +403,17 @@ theorem isSplit_of_tor (hW : IsIsoFlag ε j W) {l : Fin (a + 1)} {r : ℝ} {P : 
   · simpa [key y hy] using (W _).smul_mem (c - 1) (hl (h1 y))
 
 /- English proof (translation)
-Take `⟨P, h0, h1, h2⟩` from `GlobalTheory.RealIwasawa.exists_proj (W l)`. Establish `hJ` using `Jm_mul_self ε`. Establish `hl : W l ≤ W (Fin.last a)` using `hW.2.1 (Fin.le_last l)`. Establish `hPP : P * P = P` using `Matrix.ext_iff_mulVec.2 fun y => by rw [← mulVec_mulVec, h2 _ (h1 y)]`. Establish `hi : P * Jm ε * P = 0` using `GlobalTheory.RealIwasawa.proj_iso hW h0 fun y => hl (h1 y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Q := Jm ε * P * Jm ε with hQ`. Establish `hQQ : Q * Q = Q`. Simplify using `only [hQ, mul_assoc]`. Rewrite using `[← mul_assoc (Jm ε) (Jm ε), hJ, one_mul, ← mul_assoc P P, hPP]`. Establish `hPQ : P * Q = 0` using `by rw [hQ, ← mul_assoc, ← mul_assoc, hi, zero_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQP : Q * P = 0` using `by rw [hQ, mul_assoc, mul_assoc, ← mul_assoc P, hi, mul_zero]`. Use `set c : ℂ := (Real.exp r : ℂ) with hc`. Use `set d : ℂ := (Real.exp (-r) : ℂ) with hd`. Establish `hH : (GlobalTheory.IsoTorus.tor P Q c d)ᴴ = GlobalTheory.IsoTorus.tor P Q c d`. Simplify using `[GlobalTheory.IsoTorus.tor, hQ, h0, Jm_conjTranspose, hc, hd, mul_assoc, -Complex.ofReal_exp]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hm : (GlobalTheory.IsoTorus.tor P Q c d)ᴴ * Jm ε * GlobalTheory.IsoTorus.tor P Q c d = Jm ε`. Establish `e : GlobalTheory.IsoTorus.tor P Q c d * Jm ε = Jm ε * GlobalTheory.IsoTorus.tor P Q d c`. Simplify using `only [GlobalTheory.IsoTorus.tor, hQ, add_mul, mul_add, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, mul_assoc, hJ, ← mul_assoc (Jm ε) (Jm ε)]`. Normalize the expressions using the abelian group laws. Rewrite using `[hH, e, mul_assoc, GlobalTheory.IsoTorus.tor_tor hPP hQQ hPQ hQP, hc, hd, ← Complex.ofReal_mul, ← Complex.ofReal_mul, ← Real.exp_add, ← Real.exp_add]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[GlobalTheory.IsoTorus.tor_one]`. Take `⟨t, ht, -⟩` from `GlobalTheory.RealIwasawa.exists_uMat _ hm`. Use `⟨t, isSplit_of_tor hW h0 h1 h2 ht, ?_⟩` and prove the remaining obligations. Use `isSplit_of_tor (isIsoFlag_opp hW) (l := l) (r := -r) (P := Q) (t := t) (by simp [hQ, h0, Jm_conjTranspose, mul_assoc]) (fun y => ⟨_, h1 (Jm ε *ᵥ y), by simp [hQ, mul_assoc]⟩) ?_ ?_ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Pi.neg_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite using `[mulVecLin_apply, mulVec_mulVec, hQ, mul_assoc, hJ, mul_one, ← mulVec_mulVec, h2 y hy]`. Rewrite using `[ht, GlobalTheory.IsoTorus.tor_symm, neg_neg, hQ]`.
-
-Simplify using `only [← mul_assoc, hJ, one_mul]`. Rewrite using `[mul_assoc P, hJ, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isSplit_step (hW : IsIsoFlag ε j W) (l : Fin (a + 1)) (r : ℝ) :
     ∃ t, IsSplit ε W (fun i => if i.succ ≤ l then r else 0) t ∧
@@ -458,9 +454,9 @@ theorem exists_isSplit_step (hW : IsIsoFlag ε j W) (l : Fin (a + 1)) (r : ℝ) 
     rw [mul_assoc P, hJ, mul_one]
 
 /- English proof (translation)
-Set `B : AddSubmonoid (Fin a → ℝ)` to `{ carrier := {x | ∃ t, IsSplit ε W x t ∧ IsSplit ε (opp ε W) (-x) t} zero_mem' := ⟨1, isSplit_one, by simpa only [neg_zero] using isSplit_one⟩ add_mem' := fun ⟨_, h⟩ ⟨_, h'⟩ => ⟨_, h.1.mul h'.1, neg_add (α := Fin a → ℝ) _ _ ▸ h.2.mul h'.2⟩ }`. Rewrite using `[← Finset.univ_sum_single x]`. Use `B.sum_mem fun i _ => ?_` and prove the remaining obligations. Use `B.add_mem (exists_isSplit_step hW i.succ (x i)) (exists_isSplit_step hW i.castSucc (-x i)) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `l`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Break down `lt_trichotomy l i with h | rfl | h` into its components or cases. Simplify using `[h.ne, h.le, Fin.succ_le_castSucc_iff, h]`. Simplify using the standard rewrite rules. Simplify using `[h.ne', h.not_ge, Fin.succ_le_castSucc_iff, h.le.not_gt]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem exists_isSplit (hW : IsIsoFlag ε j W) (x : Fin a → ℝ) :
     ∃ t, IsSplit ε W x t ∧ IsSplit ε (opp ε W) (-x) t := by
@@ -478,9 +474,9 @@ theorem exists_isSplit (hW : IsIsoFlag ε j W) (x : Fin a → ℝ) :
   · simp [h.ne', h.not_ge, Fin.succ_le_castSucc_iff, h.le.not_gt]
 
 /- English proof (translation)
-Establish `ex : ∀ x : Fin a → ℝ, ∃ t, IsSplit ε W x t` using `fun x => (exists_isSplit hW x).imp fun _ h => h.1`. Take `⟨t, ht⟩` from `ex x`. Take `⟨t₀, h₀⟩` from `ex (-x)`. Establish `one : ∀ t', IsSplit ε W x t' → t' * t₀ = 1` using `fun t' h => by`. Establish `h1` using `h.mul h₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[add_neg_cancel]`. Conclude with `GlobalTheory.RealIwasawa.eq_one_of_mul_mem_compact hW _ ⟨fun i y hy => by simpa using h1.2.1 i y hy, h1.2.2⟩ _ ((leviSub ε W).inv_mem h1.1) (by rw [mul_inv_cancel]; exact (compactSub ε).one_mem)`. Conclude with `⟨t, ht, fun t' h => mul_right_cancel ((one t' h).trans (one t ht).symm)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem existsUnique_isSplit (hW : IsIsoFlag ε j W) (x : Fin a → ℝ) : ∃! t, IsSplit ε W x t := by
   have ex : ∀ x : Fin a → ℝ, ∃ t, IsSplit ε W x t := fun x => (exists_isSplit hW x).imp fun _ h => h.1
@@ -494,7 +490,7 @@ theorem existsUnique_isSplit (hW : IsIsoFlag ε j W) (x : Fin a → ℝ) : ∃! 
   exact ⟨t, ht, fun t' h => mul_right_cancel ((one t' h).trans (one t ht).symm)⟩
 
 /- English proof (translation)
-Take `⟨t', h1, h2⟩` from `exists_isSplit hW x`. Rewrite using `[(existsUnique_isSplit hW x).unique ht h1]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem IsSplit.opp (hW : IsIsoFlag ε j W) {x : Fin a → ℝ} {t : UJ ε} (ht : IsSplit ε W x t) :
     IsSplit ε (opp ε W) (-x) t := by
@@ -502,11 +498,11 @@ theorem IsSplit.opp (hW : IsIsoFlag ε j W) {x : Fin a → ℝ} {t : UJ ε} (ht 
   rwa [(existsUnique_isSplit hW x).unique ht h1]
 
 /- English proof (translation)
-Establish `hp : ∀ i, 0 < detOn (uMat l) (W i)` using `fun i => detOn_pos fun y hy => (hl i y hy).1`. Take `⟨t, ht, -⟩` from `existsUnique_isSplit hW fun i => Real.log (detOn (uMat l) (W i.succ) / detOn (uMat l) (W i.castSucc)) / j i`. Establish `he : ∀ i, detOn (uMat t) (W i) = detOn (uMat l) (W i)` using `fun i => by`. Proceed by induction on `i using Fin.induction with`. Consider the case `zero => rw [hW.1, detOn_bot, detOn_bot]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `succ i ih`. Establish `: (j i : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (by have := hj i; omega)`. Rewrite using `[ht.detOn_succ hW, ih, mul_div_cancel₀ _ this, Real.exp_log (div_pos (hp _) (hp _)), mul_div_cancel₀ _ (hp _).ne']`. Establish `hm : l * t⁻¹ ∈ flagM ε W` using `(leviSub ε W).mul_mem hl ((leviSub ε W).inv_mem ht.1)`. Use `⟨l * t⁻¹, ⟨hm, fun i => ?_⟩, _, t, ht, by group⟩` and prove the remaining obligations.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `detOn_mul (fun y hy => (hm i y hy).1) (fun y hy => (ht.1 i y hy).1)` as an intermediate fact. Rewrite `this` using `[← uMat_mul, inv_mul_cancel_right, he]`. Conclude with `(mul_eq_right₀ (hp i).ne').1 this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_leviOne_mul (hW : IsIsoFlag ε j W) (hj : ∀ i, 1 ≤ j i) {l : UJ ε} (hl : l ∈ flagM ε W) :
     ∃ m ∈ leviOne ε W, ∃ x t, IsSplit ε W x t ∧ l = m * t := by
@@ -527,7 +523,7 @@ theorem exists_leviOne_mul (hW : IsIsoFlag ε j W) (hj : ∀ i, 1 ≤ j i) {l : 
   exact (mul_eq_right₀ (hp i).ne').1 this.symm
 
 /- English proof (translation)
-Take `⟨l, hl, hu⟩` from `GlobalTheory.RealIwasawa.exists_unip_mul_levi hW p hp`. Take `⟨m, hm, x, t, ht, rfl⟩` from `exists_leviOne_mul hW hj hl`. Conclude with `⟨_, hu, m, hm, x, t, ht, by group⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_langlands_decomp (hW : IsIsoFlag ε j W) (hj : ∀ i, 1 ≤ j i) {p : UJ ε}
     (hp : ∀ i, ∀ y ∈ W i, uMat p *ᵥ y ∈ W i) :
@@ -537,13 +533,13 @@ theorem exists_langlands_decomp (hW : IsIsoFlag ε j W) (hj : ∀ i, 1 ≤ j i) 
   exact ⟨_, hu, m, hm, x, t, ht, by group⟩
 
 /- English proof (translation)
-Take `⟨r, C, h1, h2⟩` from `GlobalTheory.IsoTorus.exists_frame U`. Establish `hc : Continuous fun g : UJ ε => uMat g⁻¹ * C` using `(continuous_uMat.comp continuous_inv).matrix_mul continuous_const`. Use `⟨fun g => ‖((uMat g⁻¹ * C)ᴴ * (uMat g⁻¹ * C)).det‖, (hc.matrix_conjTranspose.matrix_mul hc).matrix_det.norm, by simp [uMat_one, h1], fun g k hk => ?_, fun p hp g => ?_⟩` and prove the remaining obligations. Establish `: (uMat k⁻¹)ᴴ * uMat k⁻¹ = 1` using `Matrix.mem_unitaryGroup_iff'.1 ((KG ε).inv_mem hk).1`. Simplify using `only [_root_.mul_inv_rev, uMat_mul, conjTranspose_mul, Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc (uMat k⁻¹)ᴴ, this, Matrix.one_mul]`. Establish `hC : ∀ y, y ∈ U ↔ ∃ v, y = C *ᵥ v` using `fun y => ⟨fun hy => ⟨Cᴴ *ᵥ y, by rw [mulVec_mulVec, (h2 y).1 hy]⟩, fun ⟨v, hv⟩ => by rw [h2, hv, mulVec_mulVec, Matrix.mul_assoc, h1, Matrix.mul_one]⟩`. Establish `e : uMat p * C = C * (Cᴴ * uMat p * C)` using `Matrix.ext_iff_mulVec.2 fun v => by`. Use `(h2 _).1 (hp _ ((hC _).2 ⟨v, rfl⟩))` as an intermediate fact. Simplify using `only [← mulVec_mulVec] at this ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this.symm`. Establish `e' : uMat g⁻¹ * C = uMat (p * g)⁻¹ * C * (Cᴴ * uMat p * C)`. Rewrite using `[Matrix.mul_assoc, ← e, ← Matrix.mul_assoc, ← uMat_mul, _root_.mul_inv_rev, inv_mul_cancel_right]`. Simplify using `only`. Rewrite using `[GlobalTheory.LeviIso.Size.detOn_of_frame _ C _ U h1 hC e, e']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `uMat (p * g)⁻¹ * C = B`. Generalize the expression as in `Cᴴ * uMat p * C = X`. Rewrite using `[conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc Bᴴ, det_mul, det_mul, det_conjTranspose, norm_mul, norm_mul, norm_star]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_gram (U : Submodule ℂ (Fin n → ℂ)) : ∃ w : UJ ε → ℝ, Continuous w ∧ w 1 = 1 ∧
     (∀ g, ∀ k ∈ KG ε, w (g * k) = w g) ∧
@@ -572,15 +568,15 @@ theorem exists_gram (U : Submodule ℂ (Fin n → ℂ)) : ∃ w : UJ ε → ℝ,
     ring
 
 /- English proof (translation)
-Use `choose w hc h1 hK hP using fun i => exists_gram (ε := ε) (W i)`. Establish `hpos : ∀ i g, w i g ≠ 0` using `fun i g e => by`. Take `⟨k, hk, hp⟩` from `GlobalTheory.RealIwasawa.exists_stab_mul_compact hW g`. Use `hP i _ (hp i) 1` as an intermediate fact. Rewrite `this` using `[mul_one, hK i g _ ((KG ε).inv_mem ((KG_eq ε).symm ▸ hk :)), e, h1, zero_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zero_ne_one this`. Use `⟨fun g i => (Real.log (w i.castSucc g) - Real.log (w i.succ g)) / (2 * j i), continuous_pi fun i => (((hc _).log (hpos _)).sub ((hc _).log (hpos _))).div_const _, by funext i; simp [h1], fun g k hk => by simp only [hK _ g k hk], fun u hu m hm x t ht g => funext fun i => ?_⟩` and prove the remaining obligations. Establish `hu'` using `(UnipRad.flagN_subgroup_closed_keeps n ε a j W hW).2.2 u hu`. Establish `e : ∀ l, Real.log (w l (u * m * t * g)) = Real.log (w l g) - 2 * Real.log (detOn (uMat t) (W l))` using `fun l => by`. Establish `a1` using `hP l u (hu' l) (m * (t * g))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `hP l m (fun y hy => (hm.1 l y hy).1) (t * g)`. Establish `a3` using `hP l t (fun y hy => (ht.1 l y hy).1) g`. Rewrite `a1` using `[detOn_flagN hW hu, one_pow, mul_one]`. Rewrite `a2` using `[hm.2, one_pow, mul_one]`. Rewrite using `[mul_assoc, mul_assoc, a1, a2, ← a3, Real.log_mul (hpos _ _) (pow_ne_zero _ (detOn_pos fun y hy => (ht.1 l y hy).1).ne'), Real.log_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `: (j i : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (by have := hj i; omega)`. Simplify using `only [e, Pi.add_apply]`. Rewrite using `[ht.detOn_succ hW, Real.log_mul (detOn_pos fun y hy => (ht.1 _ y hy).1).ne' (Real.exp_pos _).ne', Real.log_exp]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_height (hW : IsIsoFlag ε j W) (hj : ∀ i, 1 ≤ j i) : ∃ h : UJ ε → Fin a → ℝ, Continuous h ∧ h 1 = 0 ∧
     (∀ g, ∀ k ∈ KG ε, h (g * k) = h g) ∧
@@ -625,7 +621,7 @@ def parab : Subgroup (UJ ε) where
   inv_mem' := fun {g} hg i => inv_keeps (uMat_inv_mul g) _ (hg i)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `IsClosed {g : UJ ε | ∀ i, ∀ y ∈ W i, uMat g *ᵥ y ∈ W i}`. Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun y => isClosed_iInter fun _ => (W i).closed_of_finiteDimensional.preimage (continuous_uMat.matrix_mulVec continuous_const)`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isClosed_parab : IsClosed (parab ε W : Set (UJ ε)) := by
   change IsClosed {g : UJ ε | ∀ i, ∀ y ∈ W i, uMat g *ᵥ y ∈ W i}
@@ -636,31 +632,25 @@ theorem isClosed_parab : IsClosed (parab ε W : Set (UJ ε)) := by
 open scoped Pointwise in
 
 /- English proof (translation)
-Establish `hP` using `isClosed_parab (ε := ε) (W := W)`. Establish `hK : IsCompact (KG ε : Set (UJ ε))` using `isCompact_iff_compactSpace.2 (instCompactKG n ε)`. Use `haveI : LocallyCompactSpace (parab ε W) := hP.locallyCompactSpace`. Use `haveI : IsProbabilityMeasure (muK ε) := ⟨Measure.haarMeasure_self⟩`. Use `haveI : (muG ε).IsMulRightInvariant := ⟨fun g => indefinite_unitary_unimodular n ε g⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `inv : ∀ (S : Subgroup (UJ ε)) (ν : Measure S) [ν.IsMulLeftInvariant], ∀ s ∈ S, (ν.map Subtype.val).map (fun g => s * g) = ν.map Subtype.val` using `fun S ν _ s hs => by conv_rhs => rw [← map_mul_left_eq_self ν ⟨s, hs⟩]`. Rewrite using `[Measure.map_map (measurable_const_mul s) measurable_subtype_coe, Measure.map_map measurable_subtype_coe (measurable_const_mul _)]`. Both sides reduce to the same expression. Use `set κ : Measure (UJ ε) := (muK ε).map Subtype.val with hκ`. Use `set ρ : Measure (UJ ε) := (Measure.haar : Measure (parab ε W)).map Subtype.val with hρ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsProbabilityMeasure κ := Measure.isProbabilityMeasure_map measurable_subtype_coe.aemeasurable`. Use `haveI : IsFiniteMeasureOnCompacts ρ := ⟨fun T hT => by`. Rewrite using `[hρ, Measure.map_apply measurable_subtype_coe hT.measurableSet]`. Conclude with `(hP.isClosedEmbedding_subtypeVal.isCompact_preimage hT).measure_lt_top⟩`. Establish `aP : ∀ᵐ p ∂ρ, p ∈ parab ε W` using `(ae_map_iff measurable_subtype_coe.aemeasurable hP.measurableSet).2 (.of_forall fun p => p.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Take `⟨B, hB, hB1⟩` from `exists_compact_mem_nhds (1 : UJ ε)`. Establish `pos : ∀ T : Set (UJ ε), IsCompact T → B ⊆ T → ρ T ≠ 0` using `fun T hT h => by`. Rewrite using `[hρ, Measure.map_apply measurable_subtype_coe hT.measurableSet]`. Conclude with `(Measure.measure_pos_of_mem_nhds _ (continuous_subtype_val.continuousAt.preimage_mem_nhds (Filter.mem_of_superset hB1 h : T ∈ nhds ((1 : parab ε W) : UJ ε)))).ne'`. Establish `hT` using `hK.mul hB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT0` using `pos _ hT fun b hb => ⟨1, one_mem _, b, hb, one_mul b⟩`. Establish `hTK : ∀ k ∈ KG ε, ∀ g ∈ (KG ε : Set (UJ ε)) * B, k * g ∈ (KG ε : Set (UJ ε)) * B`. Introduce and unpack `k hk _ ⟨k', hk', b, hb, rfl⟩`. Conclude with `⟨k * k', mul_mem hk hk', b, hb, mul_assoc _ _ _⟩`. Take `⟨e, e0, e1, he⟩` from `GlobalTheory.IwasawaShape.exists_lintegral_eq_mul (muG ε) ρ κ (NeZero.ne _) (parab ε W) (KG ε) (inv _ _) (inv _ _) (GlobalTheory.IwasawaShape.exists_map_mul_right_eq_smul _ hP.measurableSet ρ (mem_ae_iff.1 aP) (inv _ _) _ hT.measurableSet hT0 hT.measure_ne_top) (fun g => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, hk, hp⟩` from `GlobalTheory.RealIwasawa.exists_stab_mul_compact hW g`. Conclude with `⟨_, hp, k, (KG_eq ε).symm ▸ hk, by group⟩)`. Use `_ hT.measurableSet (fun k hk g => ⟨fun h => by simpa using hTK k hk _ h, hTK _ (inv_mem hk) g⟩) hT0`. Use the proof step `hT.measure_ne_top`. Establish `hcm : Measurable fun p => ENNReal.ofReal (c p)` using `hc.measurable.ennreal_ofReal`.
+Simplify by unfolding definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `main : ∀ D : Set (UJ ε), IsCompact D → ∀ Φ : UJ ε → ENNReal, Measurable Φ → (∀ p ∈ parab ε W, ∀ g, Φ (p * g) = ENNReal.ofReal (c p) * Φ g) → ∫⁻ g, (D * (KG ε : Set (UJ ε))).indicator Φ g ∂muG ε = e * ((∫⁻ p in D * (KG ε : Set (UJ ε)), ENNReal.ofReal (c p) ∂ρ) * ∫⁻ k : KG ε, Φ k ∂ …`. Introduce `D hD Φ hΦ h`. Establish `hm` using `(hD.mul hK).measurableSet`. Rewrite using `[he _ (hΦ.indicator hm), ← lintegral_indicator hm, ← lintegral_mul_const _ (hcm.indicator hm)]`. Use `congr 1`.
+Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `lintegral_congr_ae (aP.mono fun p hp => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hκ, lintegral_map (f := fun k => (D * (KG ε : Set (UJ ε))).indicator Φ (p * k)) ((hΦ.indicator hm).comp (measurable_const_mul p)) measurable_subtype_coe, ← lintegral_const_mul (f := fun k : KG ε => Φ k) _ (hΦ.comp measurable_subtype_coe)]`. Use `lintegral_congr fun k => ?_` and prove the remaining obligations. Establish `st : ∀ k ∈ KG ε, ∀ g ∈ D * (KG ε : Set (UJ ε)), g * k ∈ D * (KG ε : Set (UJ ε))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `k hk _ ⟨b, hb, k', hk', rfl⟩`. Conclude with `⟨b, hb, k' * k, mul_mem hk' hk, (mul_assoc _ _ _).symm⟩`. Distinguish the cases in `hpD : p ∈ D * (KG ε : Set (UJ ε))`. Rewrite using `[Set.indicator_of_mem hpD, Set.indicator_of_mem (st k k.2 p hpD), h p hp]`. Rewrite using `[Set.indicator_of_notMem hpD, Set.indicator_of_notMem fun e => hpD (by simpa using st _ (inv_mem k.2) _ e), zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `fin : ∀ D : Set (UJ ε), IsCompact D → ∫⁻ p in D, ENNReal.ofReal (c p) ∂ρ ≠ ⊤` using `fun D hD => (hc.continuousOn.integrableOn_compact hD).lintegral_lt_top.ne`. Establish `hD` using `(hB.mul hK).mul (isCompact_singleton (x := y))`. Establish `I0 : ∫⁻ p in B * (KG ε : Set (UJ ε)), ENNReal.ofReal (c p) ∂ρ ≠ 0` using `fun h => by`. Rewrite `h` using `[lintegral_eq_zero_iff hcm]`. Use `pos _ (hB.mul hK) (fun b hb => ⟨b, hb, 1, one_mem _, mul_one b⟩) ?_` and prove the remaining obligations.
-
-Rewrite using `[← Measure.restrict_eq_zero, ← ae_eq_bot, ← Filter.eventually_false_iff_eq_bot]`. Conclude with `h.mono fun p hp => (ENNReal.ofReal_pos.2 (hc0 p)).ne' hp`. Use `⟨_ / _, ENNReal.div_ne_top (fin _ (hD.mul hK)) I0, fun Φ hΦ h => ?_⟩` and prove the remaining obligations. Establish `h1` using `main B hB (fun g => Φ (g * y)) (hΦ.comp (measurable_mul_const y)) fun p hp g => by rw [mul_assoc, h p hp]`. Establish `h2` using `main _ hD Φ hΦ h`.
-
-Establish `h3 : ∫⁻ g, (B * (KG ε : Set (UJ ε))).indicator (fun g => Φ (g * y)) g ∂muG ε ≤ ∫⁻ g, (B * (KG ε : Set (UJ ε)) * {y} * (KG ε : Set (UJ ε))).indicator Φ g ∂muG ε`. Rewrite using `[← lintegral_mul_right_eq_self ((B * (KG ε : Set (UJ ε)) * {y} * (KG ε : Set (UJ ε))).indicator Φ) y]`. Use `lintegral_mono fun g => Set.indicator_apply_le' (fun hg => ?_) fun _ => zero_le` and prove the remaining obligations. Conclude with `(Set.indicator_of_mem (s := B * (KG ε : Set (UJ ε)) * {y} * (KG ε : Set (UJ ε))) (Set.mem_mul.2 ⟨g * y, Set.mul_mem_mul hg rfl, 1, one_mem (KG ε), mul_one _⟩) Φ).ge`. Rewrite `h3` using `[h1, h2, ENNReal.mul_le_mul_iff_right e0 e1]`.
-
-Rewrite using `[div_eq_mul_inv, mul_right_comm, ← div_eq_mul_inv, ENNReal.le_div_iff_mul_le (.inl I0) (.inl (fin _ (hB.mul hK))), mul_comm]`. Conclude with `h3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_transl_le (hW : IsIsoFlag ε j W) {c : UJ ε → ℝ} (hc : Continuous c) (hc0 : ∀ g, 0 < c g)
     (y : UJ ε) : ∃ C : ENNReal, C ≠ ⊤ ∧ ∀ Φ : UJ ε → ENNReal, Measurable Φ →
@@ -750,17 +740,15 @@ theorem lintegral_transl_le (hW : IsIsoFlag ε j W) {c : UJ ε → ℝ} (hc : Co
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {σ : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] V)}
 
 /- English proof (translation)
-Use `haveI : IsProbabilityMeasure (muK ε) := ⟨Measure.haarMeasure_self⟩`. Set `r : F →ₗ[ℂ] C(KG ε, V)` to `{ toFun := fun f => ⟨fun k => f.1 k, (hcont f f.2).comp continuous_subtype_val⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Choose the witnesses or unpack the hypotheses as in `⟨L, _, _, _, ι₀, hn⟩ : ∃ (L : Type) (_ : NormedAddCommGroup L) (_ : InnerProductSpace ℂ L) (_ : CompleteSpace L) (ι₀ : F →ₗ[ℂ] L), ∀ f, ‖ι₀ f‖ ^ 2 = ∫ k : KG ε, ‖f.1 k‖ ^ 2 ∂muK ε := by`. Use `⟨Lp V 2 (muK ε), _, _, inferInstance, (ContinuousMap.toLp 2 (muK ε) ℂ).toLinearMap ∘ₗ r, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ), L2.inner_def, ← integral_re (L2.integrable_inner _ _)]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae ((ContinuousMap.coeFn_toLp (p := 2) (𝕜 := ℂ) (muK ε) (r f)).mono fun k hk => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[inner_self_eq_norm_sq, LinearMap.comp_apply, ContinuousLinearMap.coe_coe, hk]`. Both sides reduce to the same expression. Set `H` to `(LinearMap.range ι₀).topologicalClosure`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : CompleteSpace H := (Submodule.isClosed_topologicalClosure _).completeSpace_coe`. Set `ι : F →ₗ[ℂ] H` to `ι₀.codRestrict H fun f => Submodule.le_topologicalClosure _ ⟨f, rfl⟩`. Establish `hd : DenseRange ι` using `fun x => by`. Rewrite using `[closure_subtype, ← Set.range_comp]`. Conclude with `x.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `R : UJ ε → (F →ₗ[ℂ] F)` to `fun y => { toFun := fun f => ⟨_, hR _ f.2 y⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hb' : ∀ y, ∃ C, ∀ f, ‖(ι ∘ₗ R y) f‖ ≤ C * ‖ι f‖` using `fun y => by`. Take `⟨C, hC, hle⟩` from `hb y`. Use `⟨√C, fun f => (abs_le_of_sq_le_sq' ?_ (by positivity)).2⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖ι₀ (R y f)‖ ^ 2 ≤ (√C * ‖ι₀ f‖) ^ 2`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[mul_pow, Real.sq_sqrt hC, hn, hn]`. Conclude with `hle _ f.2`. Use `⟨H, inferInstance, inferInstance, this, fun g => if e : ∃ y : UJ ε, uMat y = g then (ι ∘ₗ R e.choose).extendOfNorm ι else 0, ι, hd, hn, fun y _ f f' e => ?_⟩` and prove the remaining obligations. Establish `ex : ∃ y' : UJ ε, uMat y' = uMat y` using `⟨y, rfl⟩`. Establish `: ex.choose = y` using `Subtype.ext (Units.ext ex.choose_spec)`.
-
-Rewrite using `[dif_pos ex, this, LinearMap.extendOfNorm_eq hd (hb' y)]`. Conclude with `congrArg ι (Subtype.ext (funext fun g => (e g).symm))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isIndModel_of_bound [CompleteSpace V] (F : Submodule ℂ (UJ ε → V)) (hcont : ∀ f ∈ F, Continuous f)
     (hR : ∀ f ∈ F, ∀ y, (fun g => f (g * y)) ∈ F)
@@ -806,11 +794,11 @@ theorem exists_isIndModel_of_bound [CompleteSpace V] (F : Submodule ℂ (UJ ε �
   exact congrArg ι (Subtype.ext (funext fun g => (e g).symm))
 
 /- English proof (translation)
-Use `haveI : IsProbabilityMeasure (muK ε) := ⟨Measure.haarMeasure_self⟩`. Establish `hcont : ∀ f ∈ indFun (ε` using `ε) ⊤ j W σ s, Continuous f := fun f hf => (mem_indFun_top.1 hf).1`. Use `exists_isIndModel_of_bound _ hcont (fun f hf y => indFun_mul_right hf trivial) fun y => ?_` and prove the remaining obligations. Take `⟨h, hc, h1, -, hh⟩` from `exists_height hW hj`. Take `⟨C, hC, hle⟩` from `lintegral_transl_le hW (c := fun g => ‖Complex.exp (pairing j (s + rho n j) (h g))‖ ^ 2) (by unfold pairing; fun_prop) (fun g => pow_pos (norm_pos_iff.2 (Complex.exp_ne_zero _)) 2) y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C.toReal, ENNReal.toReal_nonneg, fun f hf => ?_⟩` and prove the remaining obligations. Establish `e : ∀ f : UJ ε → V, Continuous f → ENNReal.ofReal (∫ k : KG ε, ‖f k‖ ^ 2 ∂muK ε) = ∫⁻ k : KG ε, ENNReal.ofReal (‖f k‖ ^ 2) ∂muK ε` using `fun f hf => ofReal_integral_eq_lintegral_ofReal (((hf.comp continuous_subtype_val).norm.pow 2).integrable_of_hasCompactSupport (isClosed_tsupport _).isCompact) (.of_forall fun k => by positivity)`. Use `hle (fun g => ENNReal.ofReal (‖f g‖ ^ 2)) ((hcont f hf).norm.pow 2).measurable.ennreal_ofReal fun p hp g => by` as an intermediate fact. Take `⟨u, hu, m, hm, x, t, ht, rfl⟩` from `exists_langlands_decomp hW hj hp`. Use `hh u hu m hm x t ht 1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[mul_one, h1, add_zero]`. Rewrite using `[(mem_indFun_top.1 hf).2 u hu m hm x t ht, this, norm_smul, hσ m hm, mul_pow, ENNReal.ofReal_mul (by positivity)]`. Rewrite `this` using `[← e f (hcont f hf), ← e (fun g => f (g * y)) ((hcont f hf).comp (continuous_mul_const y)), ← ENNReal.ofReal_toReal hC, ← ENNReal.ofReal_mul ENNReal.toReal_nonneg, ENNReal.ofReal_le_ofReal_iff (mul_nonneg ENNReal.toReal_nonneg (integral_nonneg fun _ => by positivity))]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_isIndModel [CompleteSpace V] (hW : IsIsoFlag ε j W) (hj : ∀ i, 1 ≤ j i)
     (hσ : ∀ m ∈ leviOne ε W, ∀ v, ‖σ (uMat m) v‖ = ‖v‖) (s : Fin a → ℂ) :
@@ -840,7 +828,7 @@ theorem exists_isIndModel [CompleteSpace V] (hW : IsIsoFlag ε j W) (hj : ∀ i,
     ENNReal.ofReal_le_ofReal_iff (mul_nonneg ENNReal.toReal_nonneg (integral_nonneg fun _ => by positivity))] at this
 
 /- English proof (translation)
-Take `⟨h, hc, h1, hK, hh⟩` from `exists_height hW hj`. Use `⟨fun g => Complex.exp (pairing j (s + rho n j) (h g)), mem_indFun_top.2 ⟨by unfold pairing; fun_prop, fun u hu m hm x t ht g => ?_⟩, by simp [h1, pairing], fun g k hk => by simp only [hK g k hk]⟩` and prove the remaining obligations. Simplify using `[hh u hu m hm x t ht, pairing, mul_add, Finset.sum_add_distrib, Complex.exp_add]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_spherical (hW : IsIsoFlag ε j W) (hj : ∀ i, 1 ≤ j i) (s : Fin a → ℂ) :
     ∃ f ∈ indFun (ε := ε) ⊤ j W (fun _ => (1 : ℂ →L[ℂ] ℂ)) s, f 1 = 1 ∧ ∀ g, ∀ k ∈ KG ε, f (g * k) = f g := by
@@ -850,9 +838,9 @@ theorem exists_spherical (hW : IsIsoFlag ε j W) (hj : ∀ i, 1 ≤ j i) (s : Fi
   simp [hh u hu m hm x t ht, pairing, mul_add, Finset.sum_add_distrib, Complex.exp_add]
 
 /- English proof (translation)
-Take `⟨h, hc, h1, -, hh⟩` from `exists_height hW hj`. Establish `h0 : (1 : UJ ε) ∈ flagN ε W` using `⟨fun i y _ => by simp [uMat_one], fun y _ => by simp [uMat_one]⟩`. Use `(isClosed_flagM W).inter (isClosed_eq hc (continuous_const (y := 0))) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `l`. Use `⟨fun hl => ⟨hl.1, by simpa [h1] using hh 1 h0 l hl 0 1 isSplit_one 1⟩, fun hl => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, hm, x, t, ht, rfl⟩` from `exists_leviOne_mul hW hj hl.1`. Use `hh 1 h0 m hm x t ht 1` as an intermediate fact. Rewrite `this` using `[one_mul, mul_one, h1, add_zero, show h (m * t) = 0 from hl.2]`. Rewrite using `[(existsUnique_isSplit hW x).unique ht (this ▸ isSplit_one), mul_one]`. Conclude with `hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_leviOne (hW : IsIsoFlag ε j W) (hj : ∀ i, 1 ≤ j i) : IsClosed (leviOne ε W : Set (UJ ε)) := by
   obtain ⟨h, hc, h1, -, hh⟩ := exists_height hW hj
@@ -877,16 +865,14 @@ variable {V H H' : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [Norme
 
 omit [InnerProductSpace ℂ V] in
 /- English proof (translation)
-Use extensionality with `g`. Conclude with `⟨fun ⟨y, _, h⟩ => h ▸ y.2, fun h => let ⟨y, hy, _⟩ := GlobalTheory.RealIwasawa.exists_uMat g h; ⟨y, trivial, hy⟩⟩`.
+By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem mats_top : mats (⊤ : Subgroup (UJ ε)) = UJset ε := by
   ext g
   exact ⟨fun ⟨y, _, h⟩ => h ▸ y.2, fun h => let ⟨y, hy, _⟩ := GlobalTheory.RealIwasawa.exists_uMat g h; ⟨y, trivial, hy⟩⟩
 
 /- English proof (translation)
-Use `⟨ContinuousLinearMap.ext fun v => ?_, ?_⟩` and prove the remaining obligations. Conclude with `h.dense.induction_on v (isClosed_eq (by fun_prop) (by fun_prop)) fun f => h.transl 1 S.one_mem f f (by simp)`. Introduce and unpack `_ ⟨y, hy, rfl⟩ _ ⟨z, hz, rfl⟩`. Use `ContinuousLinearMap.ext fun v => h.dense.induction_on v (isClosed_eq (by fun_prop) (by fun_prop)) fun f => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply, h.transl z hz f ⟨_, hR _ f.2 z hz⟩ fun _ => rfl, h.transl y hy _ ⟨_, hR _ f.2 _ (S.mul_mem hy hz)⟩ fun _ => by simp [mul_assoc]]`.
-
-Conclude with `h.transl _ (S.mul_mem hy hz) _ _ fun _ => rfl`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsIndModel.isCRepOn (h : IsIndModel S C μ F ρ ι) (hR : ∀ f ∈ F, ∀ y ∈ S, (fun g => f (g * y)) ∈ F) :
     Formalism.QuantumDeterminants.IsCRepOn (mats S) ρ := by
@@ -899,9 +885,9 @@ theorem IsIndModel.isCRepOn (h : IsIndModel S C μ F ρ ι) (hR : ∀ f ∈ F, �
     exact h.transl _ (S.mul_mem hy hz) _ _ fun _ => rfl
 
 /- English proof (translation)
-Establish `hn : ∀ f, ‖ι' (LinearEquiv.refl ℂ F f)‖ = ‖ι f‖` using `fun f => (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).1 ((h'.norm_sq f).trans (h.norm_sq f).symm)`. Establish `e` using `(LinearEquiv.refl ℂ F).extendOfIsometry_eq ι ι' h.dense h'.dense hn`. Use `⟨_, e, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩ v`. Use `h.dense.induction_on v (isClosed_eq (by fun_prop) (by fun_prop)) fun f => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h.transl y hy f ⟨_, hR _ f.2 y hy⟩ fun _ => rfl, e, e]`. Conclude with `(h'.transl y hy _ _ fun _ => rfl).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsIndModel.unique [CompleteSpace H] [CompleteSpace H'] (h : IsIndModel S C μ F ρ ι)
     (h' : IsIndModel S C μ F ρ' ι') (hR : ∀ f ∈ F, ∀ y ∈ S, (fun g => f (g * y)) ∈ F) :
@@ -916,18 +902,18 @@ theorem IsIndModel.unique [CompleteSpace H] [CompleteSpace H'] (h : IsIndModel S
   exact (h'.transl y hy _ _ fun _ => rfl).symm
 
 /- English proof (translation)
-Establish `h : ∀ i, W i = ⊥` using `fun i => by rw [Fin.eq_zero i, hW.1]`. Conclude with `eq_top_iff.2 fun g _ => ⟨fun i y hy => by rw [h] at hy ⊢; simp_all, fun i => by rw [h, detOn_bot]⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem leviOne_zero {j : Fin 0 → ℕ} {W : Flag n 0} (hW : IsIsoFlag ε j W) : leviOne ε W = ⊤ := by
   have h : ∀ i, W i = ⊥ := fun i => by rw [Fin.eq_zero i, hW.1]
   exact eq_top_iff.2 fun g _ => ⟨fun i y hy => by rw [h] at hy ⊢; simp_all, fun i => by rw [h, detOn_bot]⟩
 
 /- English proof (translation)
-Use `haveI : IsProbabilityMeasure (muK ε) := ⟨Measure.haarMeasure_self⟩`. Establish `one : ∀ {u : UJ ε}, (∀ y, (∀ z ∈ W (Fin.last 0), star z ⬝ᵥ (Jm ε *ᵥ y) = 0) → uMat u *ᵥ y - y ∈ W (Fin.last 0)) → u = 1` using `fun {u} hu => Subtype.ext (Units.ext (Matrix.ext_iff_mulVec.2 fun y => by`. Establish `h0 : W (Fin.last 0) = ⊥` using `hW.1`. Use `hu y (by rw [h0]; simp)` as an intermediate fact. Rewrite `this` using `[h0, Submodule.mem_bot, sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this.trans (one_mulVec y).symm))`. Establish `law : ∀ f ∈ indFun (ε` using `ε) ⊤ j W σ s, ∀ g, f g = σ (uMat g) (f 1) := fun f hf g => by`. Simplify `(mem_indFun_top.1 hf).2 1 ⟨fun i => i.elim0, fun y _ => by simp [uMat_one]⟩ g (leviOne_zero hW ▸ trivial) 0 1 isSplit_one 1` using `[pairing]`. Use `⟨Function.Surjective.denseRange fun v => ⟨⟨fun g => σ (uMat g) v, mem_indFun_top.2 ⟨(hσ.2.2 v).comp_continuous continuous_uMat fun g => g.2, fun u hu m hm x t ht g => ?_⟩⟩, ?_⟩, fun f => ?_, fun y _ f f' e => ?_⟩` and prove the remaining obligations. Rewrite using `[one hu.2, one ht.2.2, one_mul, mul_one, uMat_mul, hσ.1.2 _ m.2 _ g.2]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[pairing]`. Simplify using `[uMat_one, hσ.1.1]`. Establish `: ∀ k : KG ε, ‖f.1 k‖ = ‖f.1 1‖` using `fun k => by rw [law _ f.2, hσ.2.1 _ k.1.2]`. Simplify using `[this]`. Simplify `(law _ f.2 y).symm` using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isIndModel_zero {j : Fin 0 → ℕ} {W : Flag n 0} (hW : IsIsoFlag ε j W)
     {σ : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] V)} (hσ : IsURepOn (UJset ε) σ) (s : Fin 0 → ℂ) :
@@ -953,9 +939,9 @@ theorem isIndModel_zero {j : Fin 0 → ℕ} {W : Flag n 0} (hW : IsIsoFlag ε j 
   · simpa [e] using (law _ f.2 y).symm
 
 /- English proof (translation)
-Set `e : (⊤ : Subgroup (UJ ε)) ≃ₜ* UJ ε` to `{ Subgroup.topEquiv with continuous_toFun := continuous_subtype_val continuous_invFun := continuous_id.subtype_mk _ }`. Establish `he : MeasurableEmbedding e` using `e.toHomeomorph.measurableEmbedding`. Establish `he' : MeasurableEmbedding e.symm` using `e.symm.toHomeomorph.measurableEmbedding`. Use `and_congr_right fun _ => and_congr (by rw [mats_top]) ⟨fun ⟨h, ν, _, v, hv, hi⟩ => ⟨mats_top ▸ h, v, hv, fun r hr => ?_⟩, fun ⟨h, v, hv, hi⟩ => ⟨mats_top.symm ▸ h, μ.map e.symm, inferInstance, v, hv, fun r hr => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Measure.isMulLeftInvariant_eq_smul μ (ν.map e)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Integrable.smul_measure_nnreal (he.integrable_map_iff.2 ?_)` and prove the remaining obligations. Conclude with `hi r hr`. Conclude with `he'.integrable_map_iff.2 (hi r hr)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isIrrTempered_top_iff {σ : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] V)} (μ : Measure (UJ ε)) [μ.IsHaarMeasure] :
     IsIrrTempered (⊤ : Subgroup (UJ ε)) σ ↔ Nontrivial V ∧ IsIrredOn (UJset ε) σ ∧
@@ -973,7 +959,7 @@ theorem isIrrTempered_top_iff {σ : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] 
   · exact he'.integrable_map_iff.2 (hi r hr)
 
 /- English proof (translation)
-Use `haveI : CompactSpace M := isCompact_iff_compactSpace.1 ((isCompact_iff_compactSpace.2 (instCompactKG n ε)).of_isClosed_subset hM hK)`. Establish `h : IsURepOn (mats M) fun _ => (1 : ℂ →L[ℂ] ℂ)` using `⟨⟨rfl, fun _ _ _ _ => rfl⟩, fun _ _ _ => rfl, fun _ => continuousOn_const⟩`. Conclude with `⟨inferInstance, fun S _ _ => eq_bot_or_eq_top S, h, Measure.haar, inferInstance, GlobalTheory.Orb.isTempered_of_finite ⟨fun _ _ => rfl, fun _ => continuous_const⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isIrrTempered_one {M : Subgroup (UJ ε)} (hM : IsClosed (M : Set (UJ ε))) (hK : M ≤ KG ε) :
     IsIrrTempered M fun _ => (1 : ℂ →L[ℂ] ℂ) := by
@@ -1021,11 +1007,11 @@ def IsMinimalFlag {b : ℕ} (W₀ : Flag n b) : Prop :=
 variable (ε) in
 
 /- English proof (translation)
-Set `p : ℕ → Prop` to `fun b => ∃ W : Flag n b, IsIsoFlag ε (fun _ => 1) W`. Establish `h0 : p 0` using `⟨fun _ => ⊥, rfl, monotone_const, fun i => i.elim0, by simp⟩`. Establish `hb : ∀ b, p b → b ≤ n` using `fun b ⟨W, hW⟩ => by`. Establish `: ∀ i : Fin (b + 1), Module.finrank ℂ (W i) = i` using `fun i => by`. Proceed by induction on `i using Fin.induction with`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => rw [hW.1]`. Simplify using the standard rewrite rules. Consider the case `succ i ih => rw [hW.2.2.1, ih]`. Simplify using the standard rewrite rules. Simplify `(W (Fin.last b)).finrank_le` using `[this]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨W, hW⟩` from `Nat.findGreatest_spec (P := p) (Nat.zero_le n) h0`. Conclude with `⟨_, W, hW, fun b' W' h => Nat.le_findGreatest (hb _ ⟨W', h⟩) ⟨W', h⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isMinimalFlag : ∃ (b : ℕ) (W₀ : Flag n b), IsMinimalFlag ε W₀ := by
   classical
@@ -1085,7 +1071,7 @@ structure IndModule extends Datum ε where
 attribute [instance] IndModule.hacg IndModule.hips IndModule.hcs
 
 /- English proof (translation)
-Take `⟨H, _, _, _, ρ, ι, h⟩` from `exists_isIndModel D.flag D.pos (fun m hm => D.temp.2.2.1.2.1 _ ⟨m, hm, rfl⟩) D.s`. Conclude with `⟨{ D with H := H, ρ := ρ, ι := ι, model := h }, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Datum.exists_indModule (D : Datum ε) : ∃ I : IndModule ε, I.toDatum = D := by
   obtain ⟨H, _, _, _, ρ, ι, h⟩ := exists_isIndModel D.flag D.pos
@@ -1093,7 +1079,7 @@ theorem Datum.exists_indModule (D : Datum ε) : ∃ I : IndModule ε, I.toDatum 
   exact ⟨{ D with H := H, ρ := ρ, ι := ι, model := h }, rfl⟩
 
 /- English proof (translation)
-The claim follows from `mats_top ▸ I.model.isCRepOn fun _ hf _ hy => indFun_mul_right hf hy`.
+A detailed English derivation is pending.
 -/
 theorem IndModule.isCRepOn (I : IndModule ε) : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) I.ρ :=
   mats_top ▸ I.model.isCRepOn fun _ hf _ hy => indFun_mul_right hf hy
@@ -1108,7 +1094,7 @@ section Characters
 variable (ε)
 
 /- English proof (translation)
-The claim follows from `have h := isURepOn_det (H := ℂ) ε ⟨inferInstance, ⟨h.1, h.2.2, fun k hk => h.2.1 k (mem_UJset_of_mem_Kset hk), (isGKSub_det ε ⊤).2⟩, fun S _ _ => eq_bot_or_eq_top S⟩`.
+A detailed English derivation is pending.
 -/
 theorem isIrrAdm_det : IsIrrAdm ε fun g => g.det • (1 : ℂ →L[ℂ] ℂ) :=
   have h := isURepOn_det (H := ℂ) ε
@@ -1116,9 +1102,9 @@ theorem isIrrAdm_det : IsIrrAdm ε fun g => g.det • (1 : ℂ →L[ℂ] ℂ) :=
     fun S _ _ => eq_bot_or_eq_top S⟩
 
 /- English proof (translation)
-Use `⟨Module.finrank ℂ H, fun r Y _ hY => ?_⟩` and prove the remaining obligations. Establish `: ∀ i : Fin (r + 1), i.val ≤ Module.finrank ℂ (Y i)` using `fun i => by`. Proceed by induction on `i using Fin.induction with`. Consider the case `zero => simp`. Consider the case `succ i ih => exact Nat.lt_of_le_of_lt ih (Submodule.finrank_lt_finrank_of_lt (hY Fin.castSucc_lt_succ))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `(this (Fin.last r)).trans (Submodule.finrank_le _)`.
+A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_of_finiteDimensional {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [FiniteDimensional ℂ H] (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) : HasFiniteLength ε ρ := by
@@ -1130,11 +1116,9 @@ theorem hasFiniteLength_of_finiteDimensional {H : Type} [NormedAddCommGroup H] [
   exact (this (Fin.last r)).trans (Submodule.finrank_le _)
 
 /- English proof (translation)
-Establish `hk` using `(GlobalTheory.Published.infinitesimalEquivalence_hyp_det ε).2.2.1`. Use `le_antisymm (iSup₂_le fun r ⟨Z, Y, h, h'⟩ => ?_) (le_iSup₂_of_le (f := fun (r : ℕ) _ => (r : ℕ∞)) 1 ⟨fun _ => ⊥, fun _ => ⊤, fun _ => ⟨(isGKSub_det ε _).1, (isGKSub_det ε _).1, bot_le, LinearMap.id, by simp [hk], by simp, fun _ _ _ _ => rfl, fun _ _ _ _ => rfl⟩, fun i l e => absu …` and prove the remaining obligations. Establish `ne : ∀ i, ¬ Y i ≤ Z i` using `fun i e => by`. Take `⟨-, -, -, T, h1, h2, -⟩` from `h i`. Take `⟨w, hw, hw1⟩ : (1 : ℂ) ∈ (Y i).map T` from `by rw [h1, hk]; trivial`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `one_ne_zero (hw1 ▸ (h2 w hw).2 (e hw))`. Assume the negation of the conclusion as `hr`. Establish `hr : 1 < r` using `by simpa using hr`. Use `h' ⟨0, by omega⟩ ⟨1, hr⟩ (by simp)` as an intermediate fact. Break down `eq_bot_or_eq_top (Y ⟨0, by omega⟩) with e | e` into its components or cases.
-
-Conclude with `ne _ (e ▸ bot_le)`. Conclude with `ne _ (le_top.trans (e ▸ this))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem mult_det : mult ε (fun g => g.det • (1 : ℂ →L[ℂ] ℂ)) (fun g => g.det • (1 : ℂ →L[ℂ] ℂ)) = 1 := by
   have hk := (GlobalTheory.Published.infinitesimalEquivalence_hyp_det ε).2.2.1
@@ -1159,19 +1143,19 @@ section RankOne
 open GlobalTheory.FlagMeas.Model
 
 /- English proof (translation)
-Introduce `m hm`. Establish `hv : (![1, 1] : Fin 2 → ℂ) ∈ W2 1` using `Submodule.mem_span_singleton_self _`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 (hm.1 1 _ hv).1`. Take `⟨d, hd⟩` from `Submodule.mem_span_singleton.1 (hm.1 1 _ hv).2`. Establish `h1` using `detOn_step (g := uMat m) (c := c) (isIsotropicFlag_unitary_one_one.2.1 (Fin.zero_le 1)) (isIsotropicFlag_unitary_one_one.2.2.1 0) (fun y hy => (hm.1 0 y hy).1) fun y hy => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Rewrite using `[mulVec_smul, ← hc, smul_comm, sub_self]`. Conclude with `zero_mem _`. Rewrite `h1` using `[hm.2, hm.2]`. Establish `h2 : c * starRingEnd ℂ c = 1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, show ‖c‖ = 1 by simpa using h1.symm]; simp`. Establish `hJ : (uMat m)ᴴ * Jm e2 * uMat m = Jm e2` using `m.2`. Rewrite using `[← SetLike.mem_coe, KG_eq]`. Express the relevant statement in the definitionally equal form `(uMat m)ᴴ * uMat m = 1`. Generalize the expression as in `uMat m = g at *`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `c0` using `congrFun hc 0`. Establish `c1` using `congrFun hc 1`. Establish `d0` using `congrArg (starRingEnd ℂ) (congrFun hd 0)`. Establish `d1` using `congrArg (starRingEnd ℂ) (congrFun hd 1)`. Establish `j0` using `congrFun (congrFun hJ 0) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `j1` using `congrFun (congrFun hJ 0) 1`. Simplify using `[mulVec, dotProduct, Fin.sum_univ_two, Matrix.mul_apply, Jm, e2, diagonal] at c0 c1 d0 d1 j0 j1`. Establish `e1 : g 1 0 = g 0 1` using `by linear_combination (c0 - c1 - d0 + d1) / 2`. Establish `e2 : g 1 1 = g 0 0` using `by linear_combination c0 - c1 - e1`. Rewrite `j0`, `j1` using `[e1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `j1` using `[e2]`. Rewrite `h2` using `[c0, map_add]`. Establish `e3 : starRingEnd ℂ (g 0 1) * c = 0` using `by rw [c0]; linear_combination (h2 - j0 - j1) / 2`. Establish `e4 : g 0 1 = 0`. Break down `mul_eq_zero.1 e3 with h | h` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h`. Rewrite `h2` using `[← c0, h]`. Simplify using `at h2`. Use extensionality with `i l`. Apply the tactic sequence `fin_cases i <;> fin_cases l <;> simp_all [Matrix.mul_apply, Fin.sum_univ_two]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem levi_borel_le_compact : leviOne e2 W2 ≤ KG e2 := by
   intro m hm
@@ -1221,9 +1205,9 @@ def sphericalDatum (s : ℂ) : Datum e2 where
   s := ![s]
 
 /- English proof (translation)
-Use `haveI : IsProbabilityMeasure (muK e2) := ⟨Measure.haarMeasure_self⟩`. Take `⟨H, _, _, _, ρ, ι, h⟩` from `exists_isIndModel (σ := fun _ => (1 : ℂ →L[ℂ] ℂ)) isIsotropicFlag_unitary_one_one (by simp) (fun _ _ _ => rfl) ![s]`. Take `⟨f, hf, h1, h2⟩` from `exists_spherical isIsotropicFlag_unitary_one_one (by simp) ![s]`. Use `⟨{ sphericalDatum s with H := H, ρ := ρ, ι := ι, model := h }, rfl, ⟨fun i => ⟨i, rfl⟩, Subsingleton.strictAnti (α := Fin 1) _, fun i => ?_⟩, by simp [rho]; norm_num, ι ⟨f, hf⟩, ?_, fun k hk => h.transl k trivial _ _ fun g => (h2 g k hk).symm⟩` and prove the remaining obligations. Take `rfl : i = (0 : Fin 1)` from `Subsingleton.elim (α := Fin 1) _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hs`. Use `h.norm_sq ⟨f, hf⟩` as an intermediate fact. Establish `e : ∀ k : KG e2, f k = 1` using `fun k => by rw [← one_mul k.1, h2 _ _ k.2, h1]`. Conclude with `(sq_eq_sq₀ (norm_nonneg _) zero_le_one).1 (by simpa [e] using this)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_standard_indModule {s : ℂ} (hs : 0 < s.re) : ∃ I : IndModule e2, I.toDatum = sphericalDatum s ∧
     I.IsStandard W2 ∧ rho 2 ![1] 0 = 1 ∧ ∃ w : I.H, ‖w‖ = 1 ∧ ∀ k ∈ KG e2, I.ρ (uMat k) w = w := by

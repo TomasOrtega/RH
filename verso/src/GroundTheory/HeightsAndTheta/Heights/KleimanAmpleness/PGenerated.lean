@@ -11,35 +11,31 @@ noncomputable section
 universe u w
 
 /- English proof (translation)
-Introduce `S _ _ Ω _ _ N x Q`. Take `⟨M, hMgam, hMtilde⟩` from `hE S Ω N x Ω Q.toSubFamily Q.fg`. Take `⟨n, deg, gen, hgen, hM⟩` from `M.fg`. Use `⟨∑ j, |deg j|, fun c hc I => le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Conclude with `(Submodule.mem_iInf _).mp hz I`. Take `⟨i, hi⟩` from `I.2.1`. Establish `hxi : x i ≠ 0` using `(mem_support x).mp (I.2.2 hi)`. Use `set T := Submodule.span (chartRing S x I) ((Q.twist (twistSys S x c)).secs : Set Ω) with hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgenT : ∀ (j : Fin n) (f s : Poly S N) (e e' : ℕ), s ∈ monos I.1 → f.IsHomogeneous e' → s.IsHomogeneous e → (e' : ℤ) + deg j = e → x i ^ c * ((aeval x s)⁻¹ * (aeval x f * gen j)) ∈ T`. Introduce `j f s e e' hs hf hse hee`. Establish `hd : deg j ≤ c` using `(le_abs_self (deg j)).trans ((Finset.single_le_sum (fun j _ => abs_nonneg (deg j)) (Finset.mem_univ j)).trans hc)`. Take `⟨k, hk⟩ : ∃ k : ℕ, (k : ℤ) = c - deg j` from `⟨(c - deg j).toNat, Int.toNat_of_nonneg (by omega)⟩`. Establish `hsec : x i ^ k * gen j ∈ (Q.twist (twistSys S x c)).secs`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `M.smul_mem k (deg j) (X i ^ k) (gen j) (isHomogeneous_X_pow i k) (hgen j)`. Establish `h2 : deg j + (k : ℤ) = c` using `by omega`. Rewrite `h1` using `[h2]`. Establish `h3` using `hMgam c h1`. Rewrite `h3` using `[map_pow, aeval_X, smul_eq_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hα : aeval x f / aeval x s ∈ twistMod S x (-deg j) I` using `Submodule.subset_span ⟨f, s, e, e', hs, hf, hse, by omega, rfl⟩`. Rewrite `hα` using `[twistMod_eq_span (-deg j) I hi, Submodule.mem_span_singleton]`. Take `⟨b, hb⟩` from `hα`. Rewrite `hb` using `[chartRing_smul_def]`. Establish `e1 : x i ^ c * x i ^ (-deg j) = x i ^ k`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← zpow_add₀ hxi, ← zpow_natCast, hk]`. Use `congr 1`. Establish `e2 : x i ^ c * ((aeval x s)⁻¹ * (aeval x f * gen j)) = b • (x i ^ k * gen j)`. Rewrite using `[chartRing_smul_def, ← e1]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Conclude with `T.smul_mem b (Submodule.subset_span hsec)`. Establish `key : ∀ y ∈ M.tilde 0 I, x i ^ c * y ∈ T`. Introduce `y hy`. Use `Submodule.span_induction (p := fun y _ => x i ^ c * y ∈ T) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨m, s, a, e, hs, hse, hm, hae, rfl⟩`. Use `Submodule.span_induction (p := fun m _ => x i ^ c * ((aeval x s)⁻¹ • m) ∈ T) ?_ ?_ ?_ ?_ (hM a hm)` and prove the remaining obligations. Introduce and unpack `_ ⟨j, f, e', hf, hee, rfl⟩`. Rewrite using `[smul_eq_mul, smul_eq_mul]`. Conclude with `hgenT j f s e e' hs hf hse (by omega)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smul_zero, mul_zero]`. Conclude with `T.zero_mem`. Introduce `m m' _ _ h h'`. Rewrite using `[smul_add, mul_add]`. Conclude with `T.add_mem h h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `r m _ h`. Establish `: x i ^ c * ((aeval x s)⁻¹ • (r • m)) = (algebraMap S (chartRing S x I) r) • (x i ^ c * ((aeval x s)⁻¹ • m))`. Rewrite using `[chartRing_smul_def]`. Simplify using `only [smul_eq_mul, Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `_ = algebraMap S Ω r * _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `T.smul_mem _ h`. Rewrite using `[mul_zero]`. Conclude with `T.zero_mem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `y y' _ _ h h'`. Rewrite using `[mul_add]`. Conclude with `T.add_mem h h'`. Introduce `b y _ h`. Establish `: x i ^ c * (b • y) = b • (x i ^ c * y)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[chartRing_smul_def, chartRing_smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `T.smul_mem b h`. Express the relevant statement in the definitionally equal form `Submodule.span _ _ ≤ T`.
-
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨q, hq, y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `q ∈ twistMod S x c I at hq`. Rewrite `hq` using `[twistMod_eq_span c I hi, Submodule.mem_span_singleton]`. Take `⟨a, rfl⟩` from `hq`.
-
-Establish `hy' : y ∈ M.tilde 0 I` using `by rw [hMtilde I]; exact hy`. Establish `: (a • x i ^ c) • y = a • (x i ^ c * y)`. Rewrite using `[smul_eq_mul, chartRing_smul_def, chartRing_smul_def, mul_assoc]`. Rewrite using `[SetLike.mem_coe, this]`. Conclude with `T.smul_mem a (key y hy')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Generated.proof (hE : Extension.Statement.{u, w, w}) : Generated.Statement.{u, w} := by
   intro S _ _ Ω _ _ N x Q

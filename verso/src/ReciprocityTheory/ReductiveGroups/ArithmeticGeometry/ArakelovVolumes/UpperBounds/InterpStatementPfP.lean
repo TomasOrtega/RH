@@ -15,7 +15,7 @@ def Nset (Δ : Frame X.Ψ r → ℂ) (zOf : Frame X.Ψ r → V (nd X)) (ρ : ℝ
   {x | x ∈ X.dom ∧ Δ x ≠ 0} ∩ zOf ⁻¹' ball 0 ρ
 
 /- English proof (translation)
-Use extensionality with `a c`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.gram, ReciprocityTheory.ChartRestriction.G.FD.hermC, ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem gram_eq_transpose_mul_map_mul' (σ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (M : Matrix (Fin r) (Fin r) ℂ) :
@@ -26,11 +26,9 @@ private theorem gram_eq_transpose_mul_map_mul' (σ : E →+* ℂ) (G : Matrix (F
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Use extensionality with `a c`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Use `symm`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[Finset.sum_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = ∑ k, M (Fin.castLE h a) k * N k (Fin.castLE h c) := by`. Use `Finset.sum_subset (Finset.subset_univ _) (fun k _ hk => ?_)` and prove the remaining obligations. Establish `hik : i ≤ (k : ℕ)`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
-
-Conclude with `hk (Finset.mem_map.2 ⟨⟨k, hlt⟩, Finset.mem_univ _, Fin.ext rfl⟩)`. Rewrite using `[hM a k hik, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem submatrix_castLE_mul_of_left_zero {i : ℕ} (h : i ≤ r) (M N : Matrix (Fin r) (Fin r) ℂ)
     (hM : ∀ (a : Fin i) (k : Fin r), i ≤ (k : ℕ) → M (Fin.castLE h a) k = 0) :
@@ -51,11 +49,9 @@ private theorem submatrix_castLE_mul_of_left_zero {i : ℕ} (h : i ≤ r) (M N :
         rw [hM a k hik, zero_mul]
 
 /- English proof (translation)
-Use extensionality with `a c`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Use `symm`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[Finset.sum_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = ∑ k, N (Fin.castLE h a) k * U k (Fin.castLE h c) := by`. Use `Finset.sum_subset (Finset.subset_univ _) (fun k _ hk => ?_)` and prove the remaining obligations. Establish `hik : i ≤ (k : ℕ)`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
-
-Conclude with `hk (Finset.mem_map.2 ⟨⟨k, hlt⟩, Finset.mem_univ _, Fin.ext rfl⟩)`. Rewrite using `[hU k c hik, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem submatrix_castLE_mul_of_right_zero {i : ℕ} (h : i ≤ r) (N U : Matrix (Fin r) (Fin r) ℂ)
     (hU : ∀ (k : Fin r) (c : Fin i), i ≤ (k : ℕ) → U k (Fin.castLE h c) = 0) :
@@ -76,17 +72,17 @@ private theorem submatrix_castLE_mul_of_right_zero {i : ℕ} (h : i ≤ r) (N U 
         rw [hU k c hik, mul_zero]
 
 /- English proof (translation)
-Establish `h : (i : ℕ) ≤ r` using `Nat.le_of_lt_succ i.isLt`. Establish `hB : (mat b τ).BlockTriangular id`. Introduce `a c hac`. Conclude with `(hb τ).2 a c hac`. Use `⟨((mat b τ).submatrix (Fin.castLE h) (Fin.castLE h)).det, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hdet` using `(hb τ).1`. Rewrite `hdet` using `[Matrix.det_of_upperTriangular hB]`. Rewrite using `[Matrix.det_of_upperTriangular (by intro a c hac; exact hB (show Fin.castLE h c < Fin.castLE h a from hac))]`. Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => Finset.prod_ne_zero_iff.1 hdet (Fin.castLE h a) (Finset.mem_univ _)`. Establish `hL : ∀ (a : Fin (i : ℕ)) (k : Fin r), (i : ℕ) ≤ (k : ℕ) → (mat b τ)ᵀ (Fin.castLE h a) k = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a k hik`. Establish `ha` using `a.isLt`. Conclude with `hB (show Fin.castLE h a < k by rw [Fin.lt_iff_val_lt_val, Fin.coe_castLE]; omega)`. Establish `hU : ∀ (k : Fin r) (c : Fin (i : ℕ)), (i : ℕ) ≤ (k : ℕ) → ((mat b τ).map (starRingEnd ℂ)) k (Fin.castLE h c) = 0`. Introduce `k c hik`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc` using `c.isLt`. Establish `hz : mat b τ k (Fin.castLE h c) = 0` using `hB (show Fin.castLE h c < k by rw [Fin.lt_iff_val_lt_val, Fin.coe_castLE]; omega)`. Rewrite using `[Matrix.map_apply, hz, map_zero]`. Unfold `dmin lminor`. Rewrite using `[show mat (rmul x b) τ = mat x τ * mat b τ from rfl, gram_eq_transpose_mul_map_mul', gram_eq_transpose_mul_map_mul', Matrix.transpose_mul, Matrix.map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `key : (mat b τ)ᵀ * (mat x τ)ᵀ * X.Gm.map (τ : E →+* ℂ) * ((mat x τ).map (starRingEnd ℂ) * (mat b τ).map (starRingEnd ℂ)) = (mat b τ)ᵀ * ((mat x τ)ᵀ * X.Gm.map (τ : E →+* ℂ) * (mat x τ).map (starRingEnd ℂ)) * (mat b τ).map (starRingEnd ℂ)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[key, submatrix_castLE_mul_of_right_zero h _ _ hU, submatrix_castLE_mul_of_left_zero h _ _ hL, Matrix.det_mul, Matrix.det_mul]`. Establish `h1 : ((mat b τ)ᵀ).submatrix (Fin.castLE h) (Fin.castLE h) = ((mat b τ).submatrix (Fin.castLE h) (Fin.castLE h))ᵀ` using `rfl`. Establish `h2 : ((mat b τ).map (starRingEnd ℂ)).submatrix (Fin.castLE h) (Fin.castLE h) = ((mat b τ).submatrix (Fin.castLE h) (Fin.castLE h)).map (starRingEnd ℂ)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h3 : (((mat b τ).submatrix (Fin.castLE h) (Fin.castLE h)).map (starRingEnd ℂ)).det = starRingEnd ℂ ((mat b τ).submatrix (Fin.castLE h) (Fin.castLE h)).det` using `(RingHom.map_det _ _).symm`. Rewrite using `[h1, h2, h3, Matrix.det_transpose, ← Complex.mul_conj]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem exists_dmin_rmul_eq_normSq_mul (x b : Frame X.Ψ r) (hb : b ∈ Bor X.Ψ r) (τ : X.Ψ)
     (i : Fin (r + 1)) :
@@ -133,11 +129,11 @@ private theorem exists_dmin_rmul_eq_normSq_mul (x b : Frame X.Ψ r) (hb : b ∈ 
     ring
 
 /- English proof (translation)
-Establish `hx' : x ∈ GG X.Ψ X.Gm X.p0` using `hx`. Use `show rmul x b ∈ GG X.Ψ X.Gm X.p0`. Simplify using `only [GG, Set.mem_setOf_eq] at hx' ⊢`. Introduce `τ`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (mat x τ * mat b τ).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero (hx' τ).1 (hb τ).1`. Take `⟨d, hd, he⟩` from `exists_dmin_rmul_eq_normSq_mul X x b hb τ i`. Rewrite using `[he, Complex.re_ofReal_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h0` using `(hx' τ).2 i`. Establish `hn : 0 < Complex.normSq d` using `Complex.normSq_pos.2 hd`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 private theorem rmul_mem_dom' {x b : Frame X.Ψ r} (hx : x ∈ X.dom) (hb : b ∈ Bor X.Ψ r) :
     rmul x b ∈ X.dom := by
@@ -156,7 +152,7 @@ private theorem rmul_mem_dom' {x b : Frame X.Ψ r} (hx : x ∈ X.dom) (hb : b �
     nlinarith
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show mat u τ * mat v τ * mat w τ = mat u τ * (mat v τ * mat w τ)`. Conclude with `Matrix.mul_assoc _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem rmul_assoc_upper_bounds (u v w : Frame X.Ψ r) : rmul (rmul u v) w = rmul u (rmul v w) := by
   funext τ
@@ -164,11 +160,9 @@ private theorem rmul_assoc_upper_bounds (u v w : Frame X.Ψ r) : rmul (rmul u v)
   exact Matrix.mul_assoc _ _ _
 
 /- English proof (translation)
-Simplify using `only [Bor, Set.mem_setOf_eq]`. Introduce `τ`. Establish `h1 : (mat u τ).BlockTriangular id`. Introduce `a c h`. Conclude with `(hu τ).2 a c h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : (mat v τ).BlockTriangular id`. Introduce `a c h`. Conclude with `(hv τ).2 a c h`. Use `⟨?_, fun a c hac => (h1.mul h2) hac⟩` and prove the remaining obligations. Use `show (mat u τ * mat v τ).det ≠ 0`.
-
-Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero (hu τ).1 (hv τ).1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rmul_mem_bor_of_mem {u v : Frame X.Ψ r} (hu : u ∈ Bor X.Ψ r) (hv : v ∈ Bor X.Ψ r) :
     rmul u v ∈ Bor X.Ψ r := by
@@ -186,11 +180,11 @@ private theorem rmul_mem_bor_of_mem {u v : Frame X.Ψ r} (hu : u ∈ Bor X.Ψ r)
   exact mul_ne_zero (hu τ).1 (hv τ).1
 
 /- English proof (translation)
-Use `⟨fun τ => ((mat u τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ), ?_, fun y => ?_⟩` and prove the remaining obligations. Simplify using `only [Bor, Set.mem_setOf_eq]`. Introduce `τ`. Establish `hdu : IsUnit (mat u τ).det` using `(hu τ).1.isUnit`. Use `letI : Invertible (mat u τ) := Matrix.invertibleOfIsUnitDet _ hdu`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `h1 : (mat u τ).BlockTriangular id`. Introduce `a c h`. Conclude with `(hu τ).2 a c h`. Establish `h2` using `Matrix.blockTriangular_inv_of_blockTriangular h1`. Use `⟨?_, fun a c hac => h2 hac⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show ((mat u τ)⁻¹).det ≠ 0`. Conclude with `(Matrix.isUnit_nonsing_inv_det _ hdu).ne_zero`. Use function extensionality and compare the values at `τ show mat y τ * mat u τ * (mat u τ)⁻¹ = mat y τ`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (hu τ).1.isUnit, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_mem_bor_rmul_rmul_eq {u : Frame X.Ψ r} (hu : u ∈ Bor X.Ψ r) :
     ∃ v ∈ Bor X.Ψ r, ∀ y : Frame X.Ψ r, rmul (rmul y u) v = y := by
@@ -211,13 +205,13 @@ private theorem exists_mem_bor_rmul_rmul_eq {u : Frame X.Ψ r} (hu : u ∈ Bor X
     rw [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (hu τ).1.isUnit, Matrix.mul_one]
 
 /- English proof (translation)
-Unfold `Nset`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hxb, hΔ⟩, hball⟩`. Take `⟨hz, hβ, heq⟩` from `hdec _ hxb hΔ`. Take `⟨v, hv, hcancel⟩` from `exists_mem_bor_rmul_rmul_eq X hb`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx' : x = rmul (cpt X x1 (zOf (rmul x b))) (rmul (bOf (rmul x b)) v)`. Rewrite using `[← rmul_assoc_upper_bounds, ← heq, hcancel]`. Take `⟨hΔx, hzx, -⟩` from `hlast _ hz _ (rmul_mem_bor_of_mem X hβ hv)`. Rewrite `hΔx`, `hzx` using `[← hx']`. Conclude with `⟨⟨hx, hΔx⟩, by rw [Set.mem_preimage, hzx]; exact hball⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨-, hΔ⟩, hball⟩`. Take `⟨hz, hβ, heq⟩` from `hdec _ hx hΔ`. Establish `hxb : rmul x b = rmul (cpt X x1 (zOf x)) (rmul (bOf x) b)`. Rewrite using `[← rmul_assoc_upper_bounds, ← heq]`. Take `⟨hΔxb, hzxb, -⟩` from `hlast _ hz _ (rmul_mem_bor_of_mem X hβ hb)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hΔxb`, `hzxb` using `[← hxb]`. Conclude with `⟨⟨rmul_mem_dom' X hx hb, hΔxb⟩, by rw [Set.mem_preimage, hzxb]; exact hball⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem Nset_sat (x1 : Frame X.Ψ r) {Δ : Frame X.Ψ r → ℂ} {zOf : Frame X.Ψ r → V (nd X)}
     {bOf : Frame X.Ψ r → Frame X.Ψ r}
@@ -246,9 +240,9 @@ theorem Nset_sat (x1 : Frame X.Ψ r) {Δ : Frame X.Ψ r → ℂ} {zOf : Frame X.
     exact ⟨⟨rmul_mem_dom' X hx hb, hΔxb⟩, by rw [Set.mem_preimage, hzxb]; exact hball⟩
 
 /- English proof (translation)
-Unfold `dmin lminor`. Apply `Continuous.matrix_det` to reduce the goal to its premises. Apply `Continuous.matrix_submatrix` to reduce the goal to its premises. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.gram, ReciprocityTheory.ChartRestriction.G.FD.hermC, ReciprocityTheory.ChartRestriction.G.FD.col, ReciprocityTheory.ChartRestriction.G.FD.mat, Matrix.of_apply]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `fun_prop`.
+A detailed English derivation is pending.
 -/
 private theorem dmin_continuous (τ : X.Ψ) (i : Fin (r + 1)) :
     Continuous (fun x : Frame X.Ψ r => dmin X.Gm x τ i) := by
@@ -261,7 +255,7 @@ private theorem dmin_continuous (τ : X.Ψ) (i : Fin (r + 1)) :
   fun_prop
 
 /- English proof (translation)
-Establish `h` using `((show x ∈ GG X.Ψ X.Gm X.p0 from hx) τ).2 i`. Introduce `h0`. Rewrite `h` using `[h0]`. Simplify using `at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem dmin_ne_zero' {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (i : Fin (r + 1)) :
     dmin X.Gm x τ i ≠ 0 := by
@@ -271,7 +265,7 @@ private theorem dmin_ne_zero' {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) 
   simp at h
 
 /- English proof (translation)
-Unfold `Data.nfac`. Use `continuousOn_finset_prod _ (fun τ _ => continuousOn_finset_prod _ (fun i _ => ?_))` and prove the remaining obligations. Use `ContinuousOn.rpow_const ?_ (fun x hx => Or.inl ?_)` and prove the remaining obligations. Conclude with `((dmin_continuous X τ _).continuousOn.div (dmin_continuous X τ _).continuousOn (fun x hx => dmin_ne_zero' X hx τ _)).norm`. Conclude with `norm_ne_zero_iff.2 (div_ne_zero (dmin_ne_zero' X hx τ _) (dmin_ne_zero' X hx τ _))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem continuousOn_nfac (la : Wt X.Ψ r) : ContinuousOn (X.nfac la) X.dom := by
   unfold Data.nfac
@@ -282,7 +276,7 @@ private theorem continuousOn_nfac (la : Wt X.Ψ r) : ContinuousOn (X.nfac la) X.
   · exact norm_ne_zero_iff.2 (div_ne_zero (dmin_ne_zero' X hx τ _) (dmin_ne_zero' X hx τ _))
 
 /- English proof (translation)
-Unfold `Data.nfac`. Conclude with `Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (norm_pos_iff.2 (div_ne_zero (dmin_ne_zero' X hx τ _) (dmin_ne_zero' X hx τ _))) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem zero_lt_nfac_of_mem_dom (la : Wt X.Ψ r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     0 < X.nfac la x := by
@@ -291,14 +285,14 @@ private theorem zero_lt_nfac_of_mem_dom (la : Wt X.Ψ r) {x : Frame X.Ψ r} (hx 
     Real.rpow_pos_of_pos (norm_pos_iff.2 (div_ne_zero (dmin_ne_zero' X hx τ _) (dmin_ne_zero' X hx τ _))) _
 
 /- English proof (translation)
-Use `show ContinuousOn (fun x => -2 * Real.log (X.nfac la x)) X.dom`. Conclude with `continuousOn_const.mul ((continuousOn_nfac X la).log fun x hx => (zero_lt_nfac_of_mem_dom X la hx).ne')`.
+A detailed English derivation is pending.
 -/
 theorem phla_contOn (la : Wt X.Ψ r) : ContinuousOn (phla X la) X.dom := by
   show ContinuousOn (fun x => -2 * Real.log (X.nfac la x)) X.dom
   exact continuousOn_const.mul ((continuousOn_nfac X la).log fun x hx => (zero_lt_nfac_of_mem_dom X la hx).ne')
 
 /- English proof (translation)
-Use `continuousOn_finset_sum _ (fun k _ => ?_)` and prove the remaining obligations. Conclude with `((hs k).norm.mul (continuousOn_nfac X L)).pow 2`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pnormS_contOn (L : Wt X.Ψ r) (s : Fin (nd X) → Frame X.Ψ r → ℂ)
     (hs : ∀ k, ContinuousOn (s k) X.dom) :
@@ -313,7 +307,7 @@ def gφ (P : Frame X.Ψ r → ℂ) (Fp L : Wt X.Ψ r) (s : Fin (nd X) → Frame 
     (ENNReal.ofReal (X.dom.piecewise (fun x => ∑ k, X.pnorm L (s k) x ^ 2) 0 x))⁻¹ ^ (nd X)
 
 /- English proof (translation)
-Simplify using `[gφ, Set.piecewise, hx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gφ_dom (P : Frame X.Ψ r → ℂ) (Fp L : Wt X.Ψ r) (s : Fin (nd X) → Frame X.Ψ r → ℂ)
     {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
@@ -322,11 +316,9 @@ theorem gφ_dom (P : Frame X.Ψ r → ℂ) (Fp L : Wt X.Ψ r) (s : Fin (nd X) �
   simp [gφ, Set.piecewise, hx]
 
 /- English proof (translation)
-Establish `hdet : ∀ τ : X.Ψ, Continuous (fun x : Frame X.Ψ r => (mat x τ).det)`. Introduce `τ`. Apply `Continuous.matrix_det` to reduce the goal to its premises. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.mat, Matrix.of_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `(continuous_apply b).comp ((continuous_apply a).comp (continuous_apply τ))`. Establish `he : X.dom = ⋂ τ : X.Ψ, ({x | (mat x τ).det ≠ 0} ∩ ⋂ i : Fin (r + 1), {x | 0 < psgn X.p0 i * (dmin X.Gm x τ i).re})`. Use extensionality with `x`. Simplify using `only [Data.dom, GG, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_inter_iff]`. Rewrite using `[he]`.
-
-Conclude with `isOpen_iInter_of_finite fun τ => IsOpen.inter (isOpen_ne_fun (hdet τ) continuous_const) (isOpen_iInter_of_finite fun i => isOpen_lt continuous_const (continuous_const.mul (Complex.continuous_re.comp (dmin_continuous X τ i))))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem data_dom_isOpen : IsOpen X.dom := by
   have hdet : ∀ τ : X.Ψ, Continuous (fun x : Frame X.Ψ r => (mat x τ).det) := by
@@ -345,9 +337,9 @@ private theorem data_dom_isOpen : IsOpen X.dom := by
       (continuous_const.mul (Complex.continuous_re.comp (dmin_continuous X τ i))))
 
 /- English proof (translation)
-Establish `hdom : MeasurableSet X.dom` using `(data_dom_isOpen X).measurableSet`. Establish `m1 : Measurable (X.dom.piecewise P 0)` using `hP.measurable_piecewise continuousOn_const hdom`. Establish `m2 : Measurable (X.dom.piecewise (phla X Fp) 0)` using `(phla_contOn X Fp).measurable_piecewise continuousOn_const hdom`. Establish `m3 : Measurable (X.dom.piecewise (fun x => ∑ k, X.pnorm L (s k) x ^ 2) 0)` using `(pnormS_contOn X L s hs).measurable_piecewise continuousOn_const hdom`. Unfold `gφ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `(ENNReal.measurable_ofReal.comp ((m1.norm.pow_const 2).mul (Real.measurable_exp.comp m2.neg))).mul ((ENNReal.measurable_ofReal.comp m3).inv.pow_const _)`.
+A detailed English derivation is pending.
 -/
 theorem gφ_meas (P : Frame X.Ψ r → ℂ) (hP : ContinuousOn P X.dom) (Fp L : Wt X.Ψ r)
     (s : Fin (nd X) → Frame X.Ψ r → ℂ) (hs : ∀ k, ContinuousOn (s k) X.dom) :
@@ -365,7 +357,7 @@ theorem gφ_meas (P : Frame X.Ψ r → ℂ) (hP : ContinuousOn P X.dom) (Fp L : 
     (Real.measurable_exp.comp m2.neg))).mul ((ENNReal.measurable_ofReal.comp m3).inv.pow_const _)
 
 /- English proof (translation)
-Unfold `bchar`. Use `Finset.prod_ne_zero_iff.2 (fun τ _ => Finset.prod_ne_zero_iff.2 (fun i _ => zpow_ne_zero _ ?_))` and prove the remaining obligations. Establish `hdet` using `(hb τ).1`. Rewrite `hdet` using `[Matrix.det_of_upperTriangular (by intro a c h; exact (hb τ).2 a c h)]`. Conclude with `Finset.prod_ne_zero_iff.1 hdet i (Finset.mem_univ _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem bchar_ne_zero_upper_bounds {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (la : Wt X.Ψ r) :
     bchar la b ≠ 0 := by
@@ -376,9 +368,9 @@ private theorem bchar_ne_zero_upper_bounds {b : Frame X.Ψ r} (hb : b ∈ Bor X.
   exact Finset.prod_ne_zero_iff.1 hdet i (Finset.mem_univ _)
 
 /- English proof (translation)
-Establish `hN` using `zero_lt_nfac_of_mem_dom X la hx`. Establish `hcn : 0 < ‖bchar la b‖` using `norm_pos_iff.2 (bchar_ne_zero_upper_bounds X hb la)`. Unfold `phla`. Rewrite using `[hR r X la x hx b hb, Real.log_mul (inv_ne_zero hcn.ne') hN.ne', Real.log_inv]`. Establish `e : Real.exp (2 * Real.log ‖bchar la b‖) = ‖bchar la b‖ ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Real.log_rpow hcn, Real.exp_log (Real.rpow_pos_of_pos hcn _), Real.rpow_two]`. Rewrite using `[show -(-2 * (-Real.log ‖bchar la b‖ + Real.log (X.nfac la x))) = -(-2 * Real.log (X.nfac la x)) - 2 * Real.log ‖bchar la b‖ by ring, Real.exp_sub, e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem exp_neg_phla_rmul (hR : NfacRmulStatement (E := E)) (la : Wt X.Ψ r) {x : Frame X.Ψ r}
     (hx : x ∈ X.dom) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) :
@@ -393,7 +385,7 @@ theorem exp_neg_phla_rmul (hR : NfacRmulStatement (E := E)) (la : Wt X.Ψ r) {x 
       -(-2 * Real.log (X.nfac la x)) - 2 * Real.log ‖bchar la b‖ by ring, Real.exp_sub, e]
 
 /- English proof (translation)
-Establish `hc` using `bchar_ne_zero_upper_bounds X hb L`. Use `show ‖P (rmul x b)‖ * X.nfac L (rmul x b) = ‖P x‖ * X.nfac L x`. Rewrite using `[hR r X L x hx b hb, hP.2.1 x hx b hb, norm_mul, mul_mul_mul_comm, mul_inv_cancel₀ (norm_ne_zero_iff.2 hc), one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pnorm_rmul (hR : NfacRmulStatement (E := E)) (L : Wt X.Ψ r) {P : Frame X.Ψ r → ℂ}
     (hP : X.IsSec L P) {x : Frame X.Ψ r} (hx : x ∈ X.dom) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) :
@@ -404,9 +396,9 @@ theorem pnorm_rmul (hR : NfacRmulStatement (E := E)) (L : Wt X.Ψ r) {P : Frame 
     mul_inv_cancel₀ (norm_ne_zero_iff.2 hc), one_mul]
 
 /- English proof (translation)
-Establish `hc : ‖bchar Fp b‖ ≠ 0` using `norm_ne_zero_iff.2 (bchar_ne_zero_upper_bounds X hb Fp)`. Establish `hpk : ∀ k, X.pnorm L (s k) (rmul x b) = X.pnorm L (s k) x` using `fun k => pnorm_rmul X hR L (hs k) hx hb`. Rewrite using `[gφ_dom X P Fp L s (rmul_mem_dom' X hx hb), gφ_dom X P Fp L s hx, hP.2 x hx b hb, exp_neg_phla_rmul X hR Fp hx hb]`. Simplify using `only [hpk]`. Establish `he : ‖bchar Fp b * P x‖ ^ 2 * (Real.exp (-phla X Fp x) / ‖bchar Fp b‖ ^ 2) = ‖P x‖ ^ 2 * Real.exp (-phla X Fp x)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, mul_pow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[he]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem gφ_rmul (hR : NfacRmulStatement (E := E)) {P : Frame X.Ψ r → ℂ} {Fp L : Wt X.Ψ r}
     (hP : IsBEq X Fp P) {s : Fin (nd X) → Frame X.Ψ r → ℂ} (hs : ∀ k, X.IsSec L (s k))

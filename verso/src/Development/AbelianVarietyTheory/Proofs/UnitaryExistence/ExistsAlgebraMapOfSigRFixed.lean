@@ -16,13 +16,13 @@ open GlobalTheory.Member
 namespace GlobalTheory.Member
 
 /- English proof (translation)
-Establish `hT : ∀ z : R ⊗[F] E, ∃ t : R, z + sigR R σ z = t ⊗ₜ 1`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul a x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨t, ht⟩` from `htr x`. Use `⟨t • a, ?_⟩` and prove the remaining obligations. Establish `h : sigR R σ (a ⊗ₜ x) = a ⊗ₜ σ x` using `by simp [sigR]`. Rewrite using `[h, ← TensorProduct.tmul_add, ← ht, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Consider the case `add x y hx hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨t, ht⟩` from `hx`. Take `⟨t', ht'⟩` from `hy`. Use `⟨t + t', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, TensorProduct.add_tmul, ← ht, ← ht']`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨t, ht⟩` from `hT z`. Use `⟨(2 : F)⁻¹ • t, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, ← TensorProduct.smul_tmul', ← ht, hz, ← two_smul F z, smul_smul, inv_mul_cancel₀ two_ne_zero, one_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_algebraMap_of_sigR_fixed {F E : Type} [Field F] [CharZero F] [Field E] [Algebra F E]
     (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E)
@@ -48,9 +48,9 @@ theorem exists_algebraMap_of_sigR_fixed {F E : Type} [Field F] [CharZero F] [Fie
     ← TensorProduct.smul_tmul', ← ht, hz, ← two_smul F z, smul_smul, inv_mul_cancel₀ two_ne_zero, one_smul]
 
 /- English proof (translation)
-Establish `hz' : sigR R σ ((z⁻¹ : (R ⊗[F] E)ˣ) : R ⊗[F] E) = (z⁻¹ : (R ⊗[F] E)ˣ)`. Apply `z.isUnit.mul_left_cancel` to reduce the goal to its premises. Use `conv_lhs => rw [← hz, ← map_mul]`. Simplify using the standard rewrite rules. Take `⟨a, ha⟩` from `exists_algebraMap_of_sigR_fixed R σ htr _ hz`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `exists_algebraMap_of_sigR_fixed R σ htr _ hz'`. Establish `hinj : Function.Injective (algebraMap R (R ⊗[F] E))` using `Algebra.TensorProduct.includeLeft_injective (S := F) (algebraMap F E).injective`. Establish `hab : a * b = 1` using `hinj (by rw [map_mul, ha, hb, map_one]; simp)`. Conclude with `⟨⟨a, b, hab, by rw [mul_comm, hab]⟩, Units.ext ha⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unit_of_sigR_fixed {F E : Type} [Field F] [CharZero F] [Field E] [Algebra F E]
     (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E)
@@ -69,9 +69,9 @@ theorem exists_unit_of_sigR_fixed {F E : Type} [Field F] [CharZero F] [Field E] 
   exact ⟨⟨a, b, hab, by rw [mul_comm, hab]⟩, Units.ext ha⟩
 
 /- English proof (translation)
-Distinguish the cases in `h : 1 + u = 0`. Take `⟨y, hy⟩` from `hne`. Use `⟨Units.mk0 (y - σ y) (sub_ne_zero.2 hy.symm), ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mk0, map_sub, hσ]`. Take the linear combination `(y - σ y) * h`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨Units.mk0 (1 + u) h, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mk0, map_add, map_one]`. Take the linear combination `- hu`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_root_of_norm_one {E : Type} [Field E] (σ : E →+* E) (hσ : ∀ x, σ (σ x) = x)
     (hne : ∃ y, σ y ≠ y) (u : E) (hu : σ u * u = 1) : ∃ x : Eˣ, (x : E) = u * σ x := by
@@ -85,7 +85,7 @@ theorem exists_root_of_norm_one {E : Type} [Field E] (σ : E →+* E) (hσ : ∀
     linear_combination - hu
 
 /- English proof (translation)
-Unfold `IsDetRoot at *`. Rewrite using `[Units.val_mul, (matHom V).map_mul, Units.val_mul, Matrix.det_mul, RingHom.map_mul]`. Use `conv_lhs => rw [hx, hx']`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isDetRoot_mul {D : D7} (V : HSp D) (g g' : GA D V) (x x' : (AE D)ˣ) (hx : IsDetRoot V g x)
     (hx' : IsDetRoot V g' x') : IsDetRoot V (g * g') (x * x') := by
@@ -95,21 +95,21 @@ theorem isDetRoot_mul {D : D7} (V : HSp D) (g g' : GA D V) (x x' : (AE D)ˣ) (hx
   ring
 
 /- English proof (translation)
-Introduce `D V`. Establish `hσ : ∀ x, D.sp.cm.sig (D.sp.cm.sig x) = x` using `fun x => star_star x`. Use `⟨GlobalTheory.RecDict.exists_isDetRoot D V, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g x x' hx hx'`. Establish `htr : ∀ x : D.host.E, ∃ t : D.host.F, algebraMap _ _ t = x + D.sp.cm.sig x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Apply `(D.sp.cm.fixed _).1` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `D.sp.cm.sig _ = _`. Rewrite using `[map_add, hσ, add_comm]`. Unfold `IsDetRoot at hx hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Take `⟨a, ha⟩` from `exists_unit_of_sigR_fixed (AF D.host.F) D.sp.cm.sig htr (x⁻¹ * x') (by`. Apply `(x.isUnit.map (sigR (AF D.host.F) D.sp.cm.sig)).mul_left_cancel` to reduce the goal to its premises. Apply `x.isUnit.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[← map_mul, ← Units.val_mul, mul_inv_cancel_left, mul_left_comm, ← Units.val_mul, mul_inv_cancel_left]`. Take the linear combination `(sigR (AF D.host.F) D.sp.cm.sig (x' : AE D)) * hx - (sigR (AF D.host.F) D.sp.cm.sig (x : AE D)) * hx')`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨a, ?_⟩` and prove the remaining obligations. Unfold `idF`. Rewrite using `[ha, mul_inv_cancel_left]`. Introduce `γ hγ`. Take `⟨γ', -, hγ'⟩` from `hγ`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hdet : (Formalism.L2.Theta.mt V γ).det = incA D (γ' : Matrix (Fin V.rank) (Fin V.rank) D.host.E).det`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Conclude with `congrArg Units.val hγ'.symm`. Establish `hc : ∀ y, cA D (incA D y) = incA D (D.sp.cm.sig y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Simplify using `[cA, sigR, inclR]`. Establish `hinj : Function.Injective (incA D)` using `Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective _ _)`. Establish `hu` using `det_conj_mul V γ`. Rewrite `hu` using `[hdet, hc, ← map_mul, ← map_one (incA D)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `exists_root_of_norm_one (D.sp.cm.sig : D.host.E →+* D.host.E) hσ (GlobalTheory.RecDict.cmData_sig_ne_id D.sp.cm) _ (hinj hu)`. Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `key : incA D (x : D.host.E) = (Formalism.L2.Theta.mt V γ).det * cA D (incA D (x : D.host.E))`. Rewrite using `[hdet, hc, ← map_mul]`. Conclude with `congrArg _ hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `IsDetRoot`. Rewrite using `[Units.coe_map]`. Conclude with `key`. Conclude with `isDetRoot_mul V`.
+A detailed English derivation is pending.
 -/
 theorem isDetRoot_laws : ∀ (D : D7) (V : HSp D), (∀ g : GA D V, ∃ x, IsDetRoot V g x) ∧ (∀ g x x', IsDetRoot V g x → IsDetRoot V g x' → ∃ a, x' = x * idF D a) ∧ (∀ γ ∈ GQ V, ∃ x : D.host.Eˣ, IsDetRoot V γ (Units.map (incA D).toMonoidHom x)) ∧ ∀ g g' x x', IsDetRoot V g x → IsDetRoot V g' x' → IsDetRoot V (g * g') (x * x') := by
   intro D V

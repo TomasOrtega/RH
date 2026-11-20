@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.BKGal.CrysEps
 
 /- English proof (translation)
-Use `PowerSeries.ext fun i => ?_` and prove the remaining obligations. Consider the cases of `i with`. Consider the case `zero => simpa using h (PowerSeries.C k) 0`. Consider the case `succ n`. Establish `h1` using `h (PowerSeries.C k) (n + 1)`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `h1` using `[Function.iterate_succ_apply, PowerSeries.derivative_C, Function.iterate_fixed (map_zero _)]`. Establish `h2 : ((n + 1).factorial : K⟦X⟧) ≠ 0`. Rewrite using `[← map_natCast (PowerSeries.C : K →+* K⟦X⟧), Ne, map_eq_zero_iff _ PowerSeries.C_injective]`. Conclude with `Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)`. Rewrite using `[(mul_eq_zero.1 h1).resolve_left h2, PowerSeries.coeff_C, if_neg (Nat.succ_ne_zero n)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shift_C {K : Type} [Field K] [CharZero K] (sh : K⟦X⟧ →+* K⟦X⟧⟦X⟧)
     (h : ∀ (f : K⟦X⟧) (i : ℕ), (i.factorial : K⟦X⟧) * coeff i (sh f) = (PowerSeries.derivative K)^[i] f)
@@ -34,9 +34,9 @@ theorem shift_C {K : Type} [Field K] [CharZero K] (sh : K⟦X⟧ →+* K⟦X⟧�
     rw [(mul_eq_zero.1 h1).resolve_left h2, PowerSeries.coeff_C, if_neg (Nat.succ_ne_zero n)]
 
 /- English proof (translation)
-Use `first`. Consider the case `(rename_i h_4 h_5 h_6 h_7 h_8 h_9; revert A B M N h_4 h_5 h_6 h_7 h_8 h_9 f u h p h0 hadd hs hu y; exact @_root_.GlobalTheory.BaseChangeInduction.baseChange_induction)`. Consider the case `exact @_root_.GlobalTheory.BaseChangeInduction.baseChange_induction`. Consider the case `exact _root_.GlobalTheory.BaseChangeInduction.baseChange_induction`. Consider the case `(apply _root_.GlobalTheory.BaseChangeInduction.baseChange_induction <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply _root_.GlobalTheory.BaseChangeInduction.baseChange_induction <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.BaseChangeInduction.baseChange_induction <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.BaseChangeInduction.baseChange_induction ..)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem bc_induction {A B M N : Type} [CommRing A] [CommRing B] [AddCommGroup M] [Module A M]
     [AddCommGroup N] [Module B N] {f : A →+* B} {u : M →ₛₗ[f] N} (h : SemiBC u) (p : N → Prop)
@@ -52,35 +52,31 @@ theorem bc_induction {A B M N : Type} [CommRing A] [CommRing B] [AddCommGroup M]
   | (intros; exact _root_.GlobalTheory.BaseChangeInduction.baseChange_induction ..)
 
 /- English proof (translation)
-Establish `hb : ∀ k : ι, (fun _ => Pi.single k 1 : Vec K a ι) ∈ P.M` using `fun k => mem_tot.2 fun τ i => by`. Break down `eq_or_ne i k with rfl | h` into its components or cases. Simplify using `only [Pi.single_eq_same]`. Conclude with `one_mem _`. Simplify using `only [Pi.single_eq_of_ne h]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zero_mem _`. Use `choose b hb using fun k => hsurj _ (hb k)`. Use `choose U hU using hU`. Use `⟨fun τ => Matrix.of fun i k => lam₀ (EE.tr p₁ (b k)) τ i, ?_⟩` and prove the remaining obligations. Use `set ε : ZMod a → Matrix ι ι K⟦X⟧⟦X⟧ := fun τ => Matrix.of fun i k => lam₀ (EE.tr p₁ (b k)) τ i with hε`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hU₀ : ∀ o y τ i, lam₀ ((U o).u PP y) τ i = PowerSeries.C (PowerSeries.C (algebraMap O K o)) * lam₀ y τ i`. Introduce `o y`. Use `bc_induction (EE.tr_bc p₀) (fun y => ∀ τ i, lam₀ ((U o).u PP y) τ i = PowerSeries.C (PowerSeries.C (algebraMap O K o)) * lam₀ y τ i) ?_ ?_ ?_ ?_ y` and prove the remaining obligations. Introduce `τ i`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `y z hy hz τ i`. Simplify using `only [map_add, Pi.add_apply, hy, hz, mul_add]`. Introduce `r y hy τ i`. Rewrite using `[map_smul, hl₀, hl₀, hy]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x τ i`. Rewrite using `[(U o).u_tr, ht₀, ht₀, hU]`. Simplify using `only [map_mul, frob_C]`. Establish `hU₁ : ∀ o x τ i, lam₁ ((U o).u PP (EE.tr p₁ x)) τ i = PowerSeries.C (PowerSeries.C (algebraMap O K o)) * lam₁ (EE.tr p₁ x) τ i`. Introduce `o x τ i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(U o).u_tr, ht₁, ht₁, hU]`. Simplify using `only [map_mul, frob_C, shift_C sh hsh]`. Establish `hS0 : ∀ τ, lam₀ 0 τ = ε τ *ᵥ lam₁ 0 τ` using `by intro τ; simp`. Establish `hSadd : ∀ y z, (∀ τ, lam₀ y τ = ε τ *ᵥ lam₁ y τ) → (∀ τ, lam₀ z τ = ε τ *ᵥ lam₁ z τ) → ∀ τ, lam₀ (y + z) τ = ε τ *ᵥ lam₁ (y + z) τ`. Introduce `y z hy hz τ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_add, Pi.add_apply, hy, hz, Matrix.mulVec_add]`. Establish `hSs : ∀ (r : PP.A) y, (∀ τ, lam₀ y τ = ε τ *ᵥ lam₁ y τ) → ∀ τ, lam₀ (r • y) τ = ε τ *ᵥ lam₁ (r • y) τ`. Introduce `r y hy τ`. Establish `e0 : lam₀ (r • y) τ = j τ r • lam₀ y τ` using `funext fun i => hl₀ r y τ i`. Establish `e1 : lam₁ (r • y) τ = j τ r • lam₁ y τ` using `funext fun i => hl₁ r y τ i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e0, e1, hy, Matrix.mulVec_smul]`. Establish `hSU : ∀ o x, (∀ τ, lam₀ (EE.tr p₁ x) τ = ε τ *ᵥ lam₁ (EE.tr p₁ x) τ) → ∀ τ, lam₀ (EE.tr p₁ ((U o).u _ x)) τ = ε τ *ᵥ lam₁ (EE.tr p₁ ((U o).u _ x)) τ`. Introduce `o x hx τ`. Rewrite using `[← (U o).u_tr]`. Establish `e0 : lam₀ ((U o).u PP (EE.tr p₁ x)) τ = (PowerSeries.C (PowerSeries.C (algebraMap O K o)) : K⟦X⟧⟦X⟧) • lam₀ (EE.tr p₁ x) τ`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun i => hU₀ o _ τ i`. Establish `e1 : lam₁ ((U o).u PP (EE.tr p₁ x)) τ = (PowerSeries.C (PowerSeries.C (algebraMap O K o)) : K⟦X⟧⟦X⟧) • lam₁ (EE.tr p₁ x) τ`. Use function extensionality and compare the values at `fun i => hU₁ o _ τ i`. Rewrite using `[e0, e1, hx, Matrix.mulVec_smul]`. Establish `hSb : ∀ k τ, lam₀ (EE.tr p₁ (b k)) τ = ε τ *ᵥ lam₁ (EE.tr p₁ (b k)) τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Introduce `k τ`. Establish `e1 : lam₁ (EE.tr p₁ (b k)) τ = Pi.single k 1` using `funext fun i => by`. Rewrite using `[ht₁, hb]`. Break down `eq_or_ne i k with rfl | h` into its components or cases. Simplify using `only [Pi.single_eq_same, map_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Pi.single_eq_of_ne h, map_zero]`. Rewrite using `[e1, Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Use `bc_induction (EE.tr_bc p₁) (fun y => ∀ τ, lam₀ y τ = ε τ *ᵥ lam₁ y τ) hS0 hSadd hSs fun x => ?_` and prove the remaining obligations. Use `choose w hwx using fun i => hspan (fun τ => c x τ i) fun τ => mem_tot.1 (hmem x) τ i`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hx : x = ∑ i, ∑ k, (U (o k)).u _ (w i k • b i)`. Apply `hinj` to reduce the goal to its premises. Use function extensionality and compare the values at `τ i`. Simplify using `only [map_sum, Finset.sum_apply, hU, hw, hb]`. Rewrite using `[Finset.sum_eq_single i]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.single_eq_same, mul_one]`. Conclude with `hwx i τ`. Introduce `i' _ h`. Simplify using `only [Pi.single_eq_of_ne h.symm, mul_zero, Finset.sum_const_zero]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[hx, map_sum]`. Use `Finset.sum_induction _ (fun y => ∀ τ, lam₀ y τ = ε τ *ᵥ lam₁ y τ) hSadd hS0 fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_induction _ (fun y => ∀ τ, lam₀ y τ = ε τ *ᵥ lam₁ y τ) hSadd hS0 fun k _ => ?_` and prove the remaining obligations. Use `hSU _ _ ?_` and prove the remaining obligations.
-
-Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `hSs _ _ (hSb i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_crystalline_epsilon_combination {l : ℕ} [Fact l.Prime] {a e : ℕ} {O K : Type} [CommRing O] [NormedField K]
     [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [CharZero K] {ι : Type} [Fintype ι] [DecidableEq ι]
@@ -180,9 +176,9 @@ theorem exists_crystalline_epsilon_combination {l : ℕ} [Fact l.Prime] {a e : �
   exact hSs _ _ (hSb i)
 
 /- English proof (translation)
-Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ t ϖ ι _ _ P EE c hinj hmem hsurj hw hU sh hsh PP p₀ p₁ j _ lam₀ lam₁ hl₀ hl₁ ht₀ ht₁`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap ℚ_[l] K).injective`. Use `exists_crystalline_epsilon_combination (ϖ.prism a) (fun w τ => (toAc t K w τ : K⟦X⟧)) (Module.Free.chooseBasis ℤ_[l] O) ?_ P EE c hinj hmem hsurj hw hU sh hsh PP p₀ p₁ j lam₀ lam₁ hl₀ hl₁ ht₀ ht₁` and prove the remaining obligations. Introduce `f hf`. Take `⟨w, hw⟩` from `exists_eq_sum_toAc t K (Module.Free.chooseBasis ℤ_[l] O) fun τ => ⟨f τ, hf τ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨w, fun τ => ?_⟩` and prove the remaining obligations. Use `(congrArg Subtype.val (congrFun hw τ)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_apply, AddSubmonoidClass.coe_finset_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Subalgebra.coe_smul, Algebra.smul_def, algebraMap_eq_C]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eps : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod O K l e a ι) (EE : FCrys l ↥(OL (ϖ.field a))) (c : EE.M (ϖ.prism a) →+ Vec K a ι), Function.Injective c → (∀ x, c x ∈ P.M) → (∀ m ∈ P.M, ∃ x, c x = m) → (∀ (w : (ϖ.prism a).A) (x : EE.M (ϖ.prism a)), c (w • x) = fun τ i => (toAc t K w τ : K⟦X⟧) * c x τ i) → (∀ o : O, ∃ U : FHom EE EE, ∀ x, c (U.u (ϖ.prism a) x) = fun τ i => PowerSeries.C (algebraMap O K o) * c x τ i) → ∀ (sh : K⟦X⟧ →+* K⟦X⟧⟦X⟧), (∀ (f : K⟦X⟧) (i : ℕ), (i.factorial : K⟦X⟧) * coeff i (sh f) = (PowerSeries.derivative K)^[i] f) → ∀ (PP : Obj l ↥(OL (ϖ.field a))) (p₀ p₁ : GlobalTheory.Prism.Hom (ϖ.prism a) PP) (j : ZMod a → PP.A →+* K⟦X⟧⟦X⟧), (∀ τ (x : (Wq l a)⟦X⟧), j τ (p₀.f x) = PowerSeries.C (toAc t K (frobS l a x) τ : K⟦X⟧) ∧ j τ (p₁.f x) = sh (toAc t K (frobS l a x) τ : K⟦X⟧)) → ∀ (lam₀ lam₁ : EE.M PP →+ (ZMod a → ι → K⟦X⟧⟦X⟧)), (∀ (r : PP.A) (y : EE.M PP) τ i, lam₀ (r • y) τ i = j τ r * lam₀ y τ i) → (∀ (r : PP.A) (y : EE.M PP) τ i, lam₁ (r • y) τ i = j τ r * lam₁ y τ i) → (∀ x τ i, lam₀ (EE.tr p₀ x) τ i = PowerSeries.C (frob K l (c x (τ - 1) i))) → (∀ x τ i, lam₁ (EE.tr p₁ x) τ i = sh (frob K l (c x (τ - 1) i))) → ∃ ε : ZMod a → Matrix ι ι K⟦X⟧⟦X⟧, ∀ y τ, lam₀ y τ = ε τ *ᵥ lam₁ y τ := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ t ϖ ι _ _ P EE c hinj hmem hsurj hw hU sh hsh PP p₀ p₁ j _

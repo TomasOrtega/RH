@@ -11,7 +11,7 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {E E' : X.Mod
   {h : VMetric p E r} {h' : VMetric p E' r} {φ : E ≅ E'}
 
 /- English proof (translation)
-Use `VMetric.ext (funext fun σ => Met.ext_form fun V s t y hy => ?_)` and prove the remaining obligations. Conclude with `(Met.form_restrict (h'.met σ) ((fl.ofIso φ).isSubbundle i.succ) ((fl.ofIso φ).isVB i.succ) s t hy).trans ((hφ σ V _ _ y hy).trans (Met.form_restrict (h.met σ) (fl.isSubbundle i.succ) (fl.isVB i.succ) s t hy).symm)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem stepMet_ofIso (hφ : h.IsIsometry h' φ) (fl : Vert.Flag E r) (i : Fin r) :
     h'.stepMet (fl.ofIso φ) i = h.stepMet fl i := by
@@ -21,7 +21,7 @@ theorem stepMet_ofIso (hφ : h.IsIsometry h' φ) (fl : Vert.Flag E r) (i : Fin r
       (Met.form_restrict (h.met σ) (fl.isSubbundle i.succ) (fl.isVB i.succ) s t hy).symm)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_congr rfl fun i _ => congrArg (fun g : VMetric p (stepSeq fl i).X₂ (i + 1) => g.bcInt (stepSeq_shortExact fl i) (fl.isVB i.castSucc) (fl.isVB_gr i)) (stepMet_ofIso hφ fl i)`.
+A detailed English derivation is pending.
 -/
 theorem flagBc_ofIso (hφ : h.IsIsometry h' φ) (fl : Vert.Flag E r) :
     h'.flagBc (fl.ofIso φ) = h.flagBc fl :=
@@ -29,7 +29,7 @@ theorem flagBc_ofIso (hφ : h.IsIsometry h' φ) (fl : Vert.Flag E r) :
     g.bcInt (stepSeq_shortExact fl i) (fl.isVB i.castSucc) (fl.isVB_gr i)) (stepMet_ofIso hφ fl i)
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun i => iff_of_eq (congrArg (fun g : VMetric p (stepSeq fl i).X₂ (i + 1) => g.BcFinite (stepSeq_shortExact fl i) (fl.isVB i.castSucc) (fl.isVB_gr i)) (stepMet_ofIso hφ fl i))`.
+A detailed English derivation is pending.
 -/
 theorem flagBcFinite_ofIso (hφ : h.IsIsometry h' φ) (fl : Vert.Flag E r) :
     h'.FlagBcFinite (fl.ofIso φ) ↔ h.FlagBcFinite fl :=
@@ -37,9 +37,9 @@ theorem flagBcFinite_ofIso (hφ : h.IsIsometry h' φ) (fl : Vert.Flag E r) :
     g.BcFinite (stepSeq_shortExact fl i) (fl.isVB i.castSucc) (fl.isVB_gr i)) (stepMet_ofIso hφ fl i))
 
 /- English proof (translation)
-Establish `e : h'.grMet (fl.ofIso φ) i = h.grMet fl i` using `congrArg (fun g : VMetric p (stepSeq fl i).X₂ (i + 1) => g.quot (stepSeq_shortExact fl i) (fl.isVB i.castSucc) (fl.isVB_gr i)) (stepMet_ofIso hφ fl i)`. Express the relevant statement in the definitionally equal form `det (H'.grMet (fl.ofIso φ) i) = det (H.grMet fl i)`. Generalize the expression as in `H'.grMet (fl.ofIso φ) i = A`. Generalize the expression as in `H.grMet fl i = B`. Use `revert A B`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Introduce `A B`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem grLB_ofIso (hφ : h.IsIsometry h' φ) (H : h.IsCInf) (H' : h'.IsCInf) (fl : Vert.Flag E r)
     (i : Fin r) : grLB (fl.ofIso φ) i H' = grLB fl i H := by
@@ -57,7 +57,7 @@ theorem grLB_ofIso (hφ : h.IsIsometry h' φ) (H : h.IsCInf) (H' : h'.IsCInf) (f
 end GlobalTheory.VMetric
 
 /- English proof (translation)
-Introduce `k _ X p _ E E' r h h' φ H H' fl a hφ`. Unfold `IsFlagCh2`. Rewrite using `[flagBcFinite_ofIso hφ, flagBc_ofIso hφ]`. Simplify using `only [grLB_ofIso hφ H H']`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem GlobalTheory.VMetric.isFlagCh2_ofIso : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k)
     [IsIntegral X] (E E' : X.Modules) (r : ℕ) (h : VMetric p E r) (h' : VMetric p E' r)

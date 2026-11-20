@@ -20,13 +20,13 @@ namespace GlobalTheory.Dict.VacProd
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g : ℕ} {X : Data E r}
 
 /- English proof (translation)
-Establish `hwv : w • v ∈ L` using `GlobalTheory.SW.TensLat.int_smul_mem hw hv`. Take `⟨k, hk⟩` from `(hL.2 u).1 hu (w • v) hwv`. Establish `hcc : cc w = 1 - w` using `by rw [← hw1]; ring`. Establish `hB : ∀ a b c d : Fin r → E, EF X (a + b) (c + d) = EF X a c + EF X a d + EF X b c + EF X b d`. Introduce `a b c d`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [GlobalTheory.SW.TensLat.EF_eq_bilin, map_add, LinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hvu : EF X v (w • u) = EF X u (w • v) - EF X u v`. Rewrite using `[GlobalTheory.SW.TensLat.EF_swap X (w • u) v, GlobalTheory.SW.TensLat.EF_smul, hcc, sub_smul, one_smul]`. Simplify using `only [GlobalTheory.SW.TensLat.EF_eq_bilin, map_sub]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `key : EF X (u + v) (w • (u + v)) = EF X u (w • u) + EF X v (w • v) - EF X u v + 2 * (k : ℚ)`. Rewrite using `[smul_add, hB, hvu, hk]`. Expand and normalize the polynomial expressions, which then agree. Unfold `GlobalTheory.Dict.eps1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Rewrite using `[key, ← Complex.exp_add, ← Complex.exp_add, Complex.exp_eq_exp_iff_exists_int]`. Conclude with `⟨k, by push_cast; ring⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem thetaSignExpEF_add_selfDual_lattice {L : Lt E r} (hL : SelfD X L) {w : E} (hw : IsIntegral ℤ w) (hw1 : w + cc w = 1)
     {u v : Fin r → E} (hu : u ∈ L) (hv : v ∈ L) :
@@ -51,17 +51,15 @@ theorem thetaSignExpEF_add_selfDual_lattice {L : Lt E r} (hL : SelfD X L) {w : E
   exact ⟨k, by push_cast; ring⟩
 
 /- English proof (translation)
-Establish `hsum : ∀ (c : Fin g ⊕ Fin g → ℤ) (y : Fin g ⊕ Fin g), ∑ k, c k * (Pi.single k (1 : ℤ) : Fin g ⊕ Fin g → ℤ) y = c y`. Introduce `c y`. Simplify using `[Pi.single_apply]`. Establish `h2 : ∀ j, ∑ k, m' k * omegaStd (Pi.single j (1 : ℤ)) (Pi.single k 1) = omegaStd (Pi.single j (1 : ℤ)) m'`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `omegaStd`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[← hsum m' (Sum.inr i), ← hsum m' (Sum.inl i), Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl (fun k _ => by ring)`. Establish `h1 : ∑ j, m j * omegaStd (Pi.single j (1 : ℤ)) m' = omegaStd m m'`. Unfold `omegaStd`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[← hsum m (Sum.inr i), ← hsum m (Sum.inl i), Finset.sum_mul, Finset.sum_mul, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl (fun k _ => by ring)`. Establish `hZ : ∑ j, m j * ∑ k, m' k * omegaStd (Pi.single j (1 : ℤ)) (Pi.single k 1) = omegaStd m m'`. Simplify using `only [h2, h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, LinearMap.sum_apply, map_zsmul, LinearMap.smul_apply, hb, zsmul_eq_mul]`. Rewrite using `[← hZ]`. Use `push_cast`. Simplify using `only [mul_neg, Finset.sum_neg_distrib, Finset.mul_sum]`. Use `congr 1`.
-
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl (fun _ _ => Finset.sum_congr rfl (fun _ _ => by ring))`.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem bilinForm_sum_smul_eq_neg_omegaStd {V : Type} [AddCommGroup V] [Module ℚ V] (B : LinearMap.BilinForm ℚ V)
     {b : Fin g ⊕ Fin g → V}
@@ -101,7 +99,7 @@ private theorem bilinForm_sum_smul_eq_neg_omegaStd {V : Type} [AddCommGroup V] [
   exact Finset.sum_congr rfl (fun _ _ => Finset.sum_congr rfl (fun _ _ => by ring))
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SW.TensLat.EF_eq_bilin]`. Conclude with `bilinForm_sum_smul_eq_neg_omegaStd _ (fun i j => by rw [← GlobalTheory.SW.TensLat.EF_eq_bilin]; exact hb i j) m m'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EF_sum {b : Fin g ⊕ Fin g → (Fin r → E)}
     (hb : ∀ i j, EF X (b i) (b j) = -(omegaStd (Pi.single i 1) (Pi.single j 1) : ℤ))
@@ -111,7 +109,7 @@ theorem EF_sum {b : Fin g ⊕ Fin g → (Fin r → E)}
   exact bilinForm_sum_smul_eq_neg_omegaStd _ (fun i j => by rw [← GlobalTheory.SW.TensLat.EF_eq_bilin]; exact hb i j) m m'
 
 /- English proof (translation)
-Unfold `GlobalTheory.CanTh.canMult`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [dotProduct, Pi.add_apply, Int.cast_add, mul_add, add_mul, Finset.sum_add_distrib]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -126,31 +124,31 @@ private theorem canMult_add_add (a b : Fin g → ℝ) (m n m' n' : Fin g → ℤ
   ring
 
 /- English proof (translation)
-Establish `hbL' : ∀ m : Fin g ⊕ Fin g → ℤ, ∑ j, m j • b j ∈ L` using `hbL`. Set `P : (Fin g ⊕ Fin g → ℤ) → ℂ` to `fun m => eps1 X w (∑ j, m j • b j) * GlobalTheory.CanTh.canMult a₁ a₂ (fun i => m (Sum.inl i)) (fun i => m (Sum.inr i))`. Establish `hP0 : P 0 = 1`. Simplify using `only [P, Pi.zero_apply, zero_smul, Finset.sum_const_zero]`. Unfold `GlobalTheory.Dict.eps1 GlobalTheory.CanTh.canMult`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Simplify using `[GlobalTheory.SW.TensLat.EF_eq_bilin, dotProduct]`. Establish `hadd : ∀ m m', P (m + m') = P m * P m'`. Introduce `m m'`. Establish `hE : cexp (-(Real.pi * I * ((EF X (∑ j, m j • b j) (∑ j, m' j • b j) : ℚ) : ℂ))) * cexp (Real.pi * I * (((fun i => m (Sum.inl i)) ⬝ᵥ (fun i => m' (Sum.inr i)) + (fun i => m' (Sum.inl i)) ⬝ᵥ (fun i => m (Sum.inr i)) : ℤ) : ℂ)) = 1`. Rewrite using `[EF_sum hb, ← Complex.exp_add, ← Complex.exp_zero, Complex.exp_eq_exp_iff_exists_int]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(fun i => m (Sum.inl i)) ⬝ᵥ (fun i => m' (Sum.inr i)), ?_⟩` and prove the remaining obligations. Establish `hc : ∑ i, (m (Sum.inr i) : ℂ) * (m' (Sum.inl i) : ℂ) = ∑ i, (m' (Sum.inl i) : ℂ) * (m (Sum.inr i) : ℂ)` using `Finset.sum_congr rfl (fun i _ => mul_comm _ _)`. Simplify using `only [omegaStd, dotProduct]`. Use `push_cast`. Rewrite using `[Finset.sum_sub_distrib, hc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h1 : eps1 X w (∑ j, (m + m') j • b j) = eps1 X w (∑ j, m j • b j) * eps1 X w (∑ j, m' j • b j) * cexp (-(Real.pi * I * ((EF X (∑ j, m j • b j) (∑ j, m' j • b j) : ℚ) : ℂ)))`. Establish `hs : ∑ j, (m + m') j • b j = ∑ j, m j • b j + ∑ j, m' j • b j`. Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib]`. Rewrite using `[hs]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `thetaSignExpEF_add_selfDual_lattice hL hw hw1 (hbL' m) (hbL' m')`. Establish `h2 : GlobalTheory.CanTh.canMult a₁ a₂ (fun i => (m + m') (Sum.inl i)) (fun i => (m + m') (Sum.inr i)) = GlobalTheory.CanTh.canMult a₁ a₂ (fun i => m (Sum.inl i)) (fun i => m (Sum.inr i)) * GlobalTheory.CanTh.canMult a₁ a₂ (fun i => m' (Sum.inl i)) (fun i => m' (Sum.inr i)) * cexp …` using `canMult_add_add a₁ a₂ _ _ _ _`. Use `show eps1 X w (∑ j, (m + m') j • b j) * GlobalTheory.CanTh.canMult a₁ a₂ (fun i => (m + m') (Sum.inl i)) (fun i => (m + m') (Sum.inr i)) = (eps1 X w (∑ j, m j • b j) * GlobalTheory.CanTh.canMult a₁ a₂ (fun i => m (Sum.inl i)) (fun i => m (Sum.inr i))) * (eps1 X w (∑ j, m' j • b j …`. Rewrite using `[h1, h2]`. Take the linear combination `(eps1 X w (∑ j, m j • b j) * eps1 X w (∑ j, m' j • b j) * GlobalTheory.CanTh.canMult a₁ a₂ (fun i => m (Sum.inl i)) (fun i => m (Sum.inr i)) * GlobalTheory.CanTh.canMult a₁ a₂ (fun i => m' (Sum.inl i)) (fun i => m' (Sum.inr i))) * hE`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbase : ∀ j, P (Pi.single j 1) = 1`. Introduce `j`. Establish `hB : ∑ k, (Pi.single j (1 : ℤ) : Fin g ⊕ Fin g → ℤ) k • b k = b j`. Simplify using `[Pi.single_apply]`. Use `show eps1 X w (∑ k, (Pi.single j (1 : ℤ) : Fin g ⊕ Fin g → ℤ) k • b k) * _ = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[hB]`. Break down `j with i | i` into its components or cases. Establish `hc : GlobalTheory.CanTh.canMult a₁ a₂ (fun i' => (Pi.single (Sum.inl i) (1 : ℤ) : Fin g ⊕ Fin g → ℤ) (Sum.inl i')) (fun i' => (Pi.single (Sum.inl i) (1 : ℤ) : Fin g ⊕ Fin g → ℤ) (Sum.inr i')) = cexp (2 * Real.pi * I * a₁ i)`. Unfold `GlobalTheory.CanTh.canMult`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[dotProduct, Pi.single_apply]`. Rewrite using `[hc, (he i).1, ← Complex.exp_add]`. Break down `h₁ i with h | h` into its components or cases. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[h, Complex.exp_eq_one_iff]; exact ⟨1, by push_cast; ring⟩`. Establish `hc : GlobalTheory.CanTh.canMult a₁ a₂ (fun i' => (Pi.single (Sum.inr i) (1 : ℤ) : Fin g ⊕ Fin g → ℤ) (Sum.inl i')) (fun i' => (Pi.single (Sum.inr i) (1 : ℤ) : Fin g ⊕ Fin g → ℤ) (Sum.inr i')) = cexp (-(2 * Real.pi * I * a₂ i))`. Unfold `GlobalTheory.CanTh.canMult`. Use `congr 1`. Simplify using `[dotProduct, Pi.single_apply]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[hc, (he i).2, ← Complex.exp_add, Complex.exp_eq_one_iff]`. Conclude with `⟨0, by push_cast; ring⟩`. Establish `hsingle : ∀ j (k : ℤ), P (Pi.single j k) = 1`. Introduce `j k`. Proceed by induction on `k using Int.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simpa using hP0`. Consider the case `succ k ih`. Rewrite using `[show (Pi.single j ((k : ℤ) + 1) : Fin g ⊕ Fin g → ℤ) = Pi.single j (k : ℤ) + Pi.single j 1 from Pi.single_add _ _ _, hadd, ih, hbase j, _root_.one_mul]`. Consider the case `pred k ih`. Establish `hk` using `hadd (Pi.single j (-(k : ℤ) - 1)) (Pi.single j 1)`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hk` using `[← Pi.single_add, sub_add_cancel, ih, hbase j, _root_.mul_one]`. Conclude with `hk.symm`. Establish `hfin : ∀ s : Finset (Fin g ⊕ Fin g), P (∑ j ∈ s, Pi.single j (m j)) = 1`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Consider the case `empty => simpa using hP0`. Consider the case `@insert j s hj ih => rw [Finset.sum_insert hj, hadd, hsingle, ih, _root_.one_mul]`. Establish `hm` using `hfin Finset.univ`. Rewrite `hm` using `[Finset.univ_sum_single]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem thetaSign_mul_canonicalTheta_multiplier {L : Lt E r} (hL : SelfD X L) {w : E} (hw : IsIntegral ℤ w) (hw1 : w + cc w = 1)
     {b : Fin g ⊕ Fin g → (Fin r → E)} (hbL : ∀ m : Fin g ⊕ Fin g → ℤ, ∑ j, m j • b j ∈ L)
@@ -247,31 +245,29 @@ theorem thetaSign_mul_canonicalTheta_multiplier {L : Lt E r} (hL : SelfD X L) {w
   rwa [Finset.univ_sum_single] at hm
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g bas idx n hs hn w hw hw1 L hL v hv x hxd θ hθ`. Take `⟨b, hbL, hb⟩` from `GlobalTheory.Dict.VacNorm.exists_sympl_of_selfD hs hL`. Take `⟨c₁, c₂, C, hC, hc₁, hc₂, H⟩` from `GlobalTheory.T.periodCoordinateTheta_of_signedHeisenbergVacuum E r X g bas idx n hs hn w hw hw1 L hL v hv b hbL hb`. Take `⟨hdet, hτ, hhx, heps, hthA⟩` from `H x hxd _ _ rfl rfl`. Use `clear H`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set M₁ : Matrix (Fin g) (Fin g) ℂ := Matrix.of fun i k => pv X idx x (b (Sum.inl k)) i with hM₁`. Use `set M₂ : Matrix (Fin g) (Fin g) ℂ := Matrix.of fun i k => pv X idx x (b (Sum.inr k)) i with hM₂`. Use `set h : Matrix (Fin g) (Fin g) ℂ := M₁⁻¹ with hh`. Use `set τ : Matrix (Fin g) (Fin g) ℂ := h * M₂ with hτdef`. Establish `hτ' : τ.IsSymm ∧ (τ.map Complex.im).PosDef` using `hτ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hM₁u : IsUnit M₁.det` using `(Matrix.isUnit_nonsing_inv_det_iff).1 hdet`. Choose the witnesses or unpack the hypotheses as in `⟨a₁, ha₁, h₁⟩ : ∃ a : Fin g → ℝ, (fun i => (a i : ℂ)) = c₁ ∧ ∀ k, (a k : ℂ) = 0 ∨ (a k : ℂ) = 1 / 2 := by`. Use `⟨fun k => if c₁ k = 0 then 0 else 1 / 2, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `funext k; rcases hc₁ k with hk | hk <;> simp [hk]`. Apply the tactic sequence `intro k; rcases hc₁ k with hk | hk <;> simp [hk]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨a₂, ha₂⟩ : ∃ a : Fin g → ℝ, (fun i => (a i : ℂ)) = c₂ := by`. Use `⟨fun k => if c₂ k = 0 then 0 else 1 / 2, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `funext k; rcases hc₂ k with hk | hk <;> simp [hk]`. Substitute `ha₁ ha₂` using the available equality. Establish `hl : ∀ m : Fin g ⊕ Fin g → ℤ, h *ᵥ pv X idx x (∑ j, m j • b j) = (fun i => (m (Sum.inl i) : ℂ)) + τ *ᵥ fun i => (m (Sum.inr i) : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `m`. Establish `hpv : pv X idx x (∑ j, m j • b j) = M₁ *ᵥ (fun i => (m (Sum.inl i) : ℂ)) + M₂ *ᵥ (fun i => (m (Sum.inr i) : ℂ))`. Use function extensionality and compare the values at `i`. Simplify using `only [pv, Function.comp_apply, GlobalTheory.ThFr.per_sum, GlobalTheory.ThFr.per_zsmul]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Fintype.sum_sum_type, Pi.add_apply, Matrix.mulVec, dotProduct, hM₁, hM₂, Matrix.of_apply, pv, Function.comp_apply]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [zsmul_eq_mul]`. Apply the tactic sequence `congr 1 <;> exact Finset.sum_congr rfl (fun k _ => by ring)`. Rewrite using `[hpv, Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hh, Matrix.nonsing_inv_mul _ hM₁u, Matrix.one_mulVec]`. Establish `hbL' : ∀ m : Fin g ⊕ Fin g → ℤ, ∑ j, m j • b j ∈ L` using `fun m => (hbL _).2 ⟨m, rfl⟩`. Use `set F : (Fin g → ℂ) → ℂ := fun z => GlobalTheory.CanTh.canTh τ a₁ a₂ (h *ᵥ z) with hFdef`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlin : Differentiable ℂ (fun z : Fin g → ℂ => h *ᵥ z)`. Establish `hd` using `(LinearMap.toContinuousLinearMap (Matrix.mulVecLin h)).differentiable`. Simplify using `only [LinearMap.coe_toContinuousLinearMap'] at hd`. Conclude with `hd`. Establish `hF : IsTheta1 X bas idx w x L F`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨(GlobalTheory.CanTh.differentiable_canTh hτ'.2 a₁ a₂).comp hlin, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Take `⟨m, rfl⟩` from `(hbL u).1 hu`. Use function extensionality and compare the values at `z`. Establish `hxl : hx X bas idx x (z + (1 / 2 : ℂ) • pv X idx x (∑ j, m j • b j)) (pv X idx x (∑ j, m j • b j)) = hermForm (GlobalTheory.CanTh.imInv τ) (h *ᵥ z) ((fun i => (m (Sum.inl i) : ℂ)) + τ *ᵥ fun i => (m (Sum.inr i) : ℂ)) + 1 / 2 * hermForm (GlobalTheory.CanTh.imInv τ) ((fun i => (m ( …`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[hhx, Matrix.mulVec_add, Matrix.mulVec_smul, hl]`. Simplify using `only [hermForm, GlobalTheory.CanTh.imInv, add_dotProduct, smul_dotProduct, smul_eq_mul]`. Establish `hper` using `GlobalTheory.CanTh.canTh_add_period hτ'.1 hτ'.2 a₁ a₂ (fun i => m (Sum.inl i)) (fun i => m (Sum.inr i)) (l := (fun i => (m (Sum.inl i) : ℂ)) + τ *ᵥ fun i => (m (Sum.inr i) : ℂ)) rfl (h *ᵥ z)`. Establish `key` using `thetaSign_mul_canonicalTheta_multiplier hL hw hw1 hbL' hb h₁ heps m`. Simplify using `only [Pi.smul_apply, smul_eq_mul, fock, hFdef]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hxl, Matrix.mulVec_add, hl, hper]`. Generalize the expression as in `hermForm (GlobalTheory.CanTh.imInv τ) (h *ᵥ z) ((fun i => (m (Sum.inl i) : ℂ)) + τ *ᵥ fun i => (m (Sum.inr i) : ℂ)) = A`. Generalize the expression as in `hermForm (GlobalTheory.CanTh.imInv τ) ((fun i => (m (Sum.inl i) : ℂ)) + τ *ᵥ fun i => (m (Sum.inr i) : ℂ)) ((fun i => (m (Sum.inl i) : ℂ)) + τ *ᵥ fun i => (m (Sum.inr i) : ℂ)) = B`. Establish `hE : cexp (-(((1 : ℕ) : ℂ) * Real.pi * (A + 1 / 2 * B))) * cexp (Real.pi * A + Real.pi / 2 * B) = 1`. Rewrite using `[← Complex.exp_add, Complex.exp_eq_one_iff]; exact ⟨0, by push_cast; ring⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `(cexp (-(((1 : ℕ) : ℂ) * Real.pi * (A + 1 / 2 * B))) * cexp (Real.pi * A + Real.pi / 2 * B) * GlobalTheory.CanTh.canTh τ a₁ a₂ (h *ᵥ z)) * key + GlobalTheory.CanTh.canTh τ a₁ a₂ (h *ᵥ z) * hE`. Establish `hF0 : F ≠ 0`. Introduce `hF0`. Apply `GlobalTheory.CanTh.canTh_ne_zero hτ'.1 hτ'.2 a₁ a₂` to reduce the goal to its premises. Use function extensionality and compare the values at `ζ`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hz` using `congr_fun hF0 (M₁ *ᵥ ζ)`. Simplify using `only [hFdef, Pi.zero_apply, Matrix.mulVec_mulVec, hh, Matrix.nonsing_inv_mul _ hM₁u, Matrix.one_mulVec] at hz`. Simplify using `using hz`. Take `⟨a, rfl⟩` from `GlobalTheory.T.levelOne_theta_eq_smul_of_selfDual_lattice E r X g bas idx n hs hn w hw hw1 L hL x hxd θ F hθ hF hF0`. Establish `hCd : C * h.det ^ (n / 2) ≠ 0` using `mul_ne_zero hC (pow_ne_zero _ hdet.ne_zero)`.
-
-Use `⟨a ^ n * (C * h.det ^ (n / 2))⁻¹, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[hthA z, _root_.mul_assoc (a ^ n), inv_mul_cancel_left₀ hCd]`. Rewrite using `[show (∏ b, (a • F) (z b)) = a ^ n * ∏ b, F (z b) by`. Simplify using `[Finset.prod_mul_distrib, Finset.prod_const]]`. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem prod_eq_mul_thA : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ w : E, IsIntegral ℤ w → w + cc w = 1 → ∀ L : Lt E r, SelfD X L → ∀ v : TF n g, IsVac X bas w (tens (stdL E n) L) v → ∀ x ∈ X.dom, ∀ θ : (Fin g → ℂ) → ℂ, IsTheta1 X bas idx w x L θ → ∃ κ : ℂ, ∀ z : Fin n → Fin g → ℂ, ∏ b, θ (z b) = κ * thA X bas idx v x z := by
   intro E _ _ _ r X g bas idx n hs hn w hw hw1 L hL v hv x hxd θ hθ

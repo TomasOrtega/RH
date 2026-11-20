@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.HalfEx
 
 /- English proof (translation)
-Take `⟨φ, rfl⟩` from `Spec.map_surjective κ`. Take `⟨φ', rfl⟩` from `Spec.map_surjective κ'`. Establish `e : Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R)) ≫ φ) = Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R)) ≫ φ')`. Rewrite using `[Spec.map_comp, Spec.map_comp]`. Conclude with `h.trans h'.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e'` using `Spec.map_injective e`. Use `congr 1`. Use extensionality with `x`. Use `IsLocalization.ringHom_ext (nonZeroDivisors R) (j := φ.hom) (k := φ'.hom) (congrArg CommRingCat.Hom.hom e')` as an intermediate fact. Conclude with `congrArg (fun q => q x) this`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kappa_unique (R : Type) [CommRing R] [IsDomain R] (R' : Type) [CommRing R'] [IsDomain R'] (ρ : R →+* R')
     (κ κ' : (TK R').left ⟶ (TK R).left) (h : κ ≫ jK R = jK R' ≫ spMap ρ) (h' : κ' ≫ jK R = jK R' ≫ spMap ρ) :
@@ -38,17 +38,15 @@ theorem kappa_unique (R : Type) [CommRing R] [IsDomain R] (R' : Type) [CommRing 
   exact congrArg (fun q => q x) this
 
 /- English proof (translation)
-Introduce `R _ _ R' _ _ _ _ Q ρ P β β₂ hρ hpb hsq hiso`. Take `⟨rig, hrig⟩` from `P.rigid`. Take `⟨cub⟩` from `(GlobalTheory.T.all_six_abelian_scheme_laws_hold.1.cube _ P ⟨P.L, rig, P.isLB, hrig⟩ rfl).1`. Take `⟨sym, hsym, hsr⟩` from `GlobalTheory.SelfUnif.exists_sym P`. Establish `hF` using `hpb.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩ : ∃ c : Q.X → (𝟙_ (Over (Sp R')) ⟶ P.A), ∀ x, (c x).left ≫ β = spMap ρ ≫ (Q.c x).left` from `⟨fun x => Over.homMk (hF.lift (spMap ρ ≫ (Q.c x).left) (𝟙 _) (by`. Rewrite using `[Category.assoc, Over.w, Category.id_comp]`. Conclude with `Category.comp_id _)) (hF.lift_snd _ _ _),`. Use `fun x => hF.lift_fst _ _ _⟩`. Establish `cadd : ∀ a b, c (a + b) = padd P.A (c a) (c b)` using `fun a b => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Over.OverMorphism.ext (hF.hom_ext ?_ (by rw [Over.w, Over.w]))` and prove the remaining obligations. Establish `u : (toUnit (Over.mk ((𝟙_ (Over (Sp R'))).hom ≫ spMap ρ))).left = spMap ρ` using `Category.id_comp _`. Establish `m` using `hpb.2 _ (c a) (c b) (toUnit _ ≫ Q.c a) (toUnit _ ≫ Q.c b) (by rw [hc, Over.comp_left, u]) (by rw [hc, Over.comp_left, u])`. Rewrite `m` using `[← MonObj.comp_mul, Over.comp_left, u]`. Rewrite using `[hc, Q.c_add]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Conclude with `m`. Use `choose psi hpsi using fun x : Q.X => GlobalTheory.SS.HtForm.gen_field _ (DVR.linComb_isLB P.L P.isLB (K := PUnit) (fun _ => ptK (c x)) (fun _ => -1))`. Set `D : DegPre R'` to `{ P := P, rig := rig, rig_gen := hrig, cub := cub, sym := sym, sym_gen := hsym, sym_rig := hsr, X := Q.X, c := c, c_add := cadd, psi := psi, psi_gen := hpsi }`. Take `⟨w, hw, hw1⟩` from `GlobalTheory.T.exists_mumfordBundleIso_value_one_origin_polarised R R' Q ρ P β β₂ hpb hsq hiso`. Establish `hR` using `GlobalTheory.T.exists_fraction_constant_period_ratio_polarised R R' Q ρ D (AddEquiv.refl _) β β₂ w hpb hsq hw hc`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `f : D.X → D.X → (FractionRing R')ˣ` to `fun a b => if h : ∃ κ : (TK R').left ⟶ (TK R).left, κ ≫ jK R = jK R' ≫ spMap ρ then (hR h.choose h.choose_spec a b).choose else 1`. Use `⟨D, AddEquiv.refl _, f, β, β₂, w, hpb, hsq, hw, hw1, hc, ?_⟩` and prove the remaining obligations. Introduce `κ hκ a b z J J' hJ hJ'`. Establish `h : ∃ κ : (TK R').left ⟶ (TK R).left, κ ≫ jK R = jK R' ≫ spMap ρ` using `⟨κ, hκ⟩`. Establish `e` using `kappa_unique R R' ρ _ _ h.choose_spec hκ`.
-
-Use `(hR h.choose h.choose_spec a b).choose_spec z J J' hJ hJ'` as an intermediate fact. Simplify using `only [f, dif_pos h]`. Rewrite using `[← e]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem half_exists : ∀ (R : Type) [CommRing R] [IsDomain R] (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] [IsNoetherianRing R'] (Q : Data R) (ρ : R →+* R') (P : PolAV (Sp R')) (β : P.A.left ⟶ Q.B.left) (β₂ : (G2 P.A).left ⟶ (G2 Q.B).left), Function.Injective ρ → IsGrpPullback P.A Q.B (spMap ρ) β → IsSquare β β₂ → (letI := P.isAb.comm; LBIso (abelian₂ P.A P.L) ((abelian₂ Q.B Q.M.L).pull β₂)) → ∃ (D : DegPre R') (e : D.X ≃+ Q.X) (f : D.X → D.X → (FractionRing R')ˣ), Half Q ρ D e f := by
   intro R _ _ R' _ _ _ _ Q ρ P β β₂ hρ hpb hsq hiso

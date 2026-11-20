@@ -42,7 +42,7 @@ def pre (m : CxMap K K') {G : C' ⥤ C} (θ : G ⟶ m.G) : CxMap K K' where
     rw [← K.diffTwo_natural, m.comp_commutes_diffTwo]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ ↦ rfl, fun _ _ ↦ rfl, fun _ _ ↦ rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem joined_pre (m : CxMap K K') {G : C' ⥤ C} (θ : G ⟶ m.G) : (m.pre θ).Joined m θ :=
   ⟨fun _ _ ↦ rfl, fun _ _ ↦ rfl, fun _ _ ↦ rfl⟩

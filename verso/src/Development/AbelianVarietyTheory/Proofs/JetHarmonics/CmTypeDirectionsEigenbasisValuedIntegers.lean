@@ -16,11 +16,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CharDepth.EigExt
 
 /- English proof (translation)
-Establish `h1 : IsUnit (Matrix.of w)`. Rewrite using `[← Matrix.vecMul_surjective_iff_isUnit]`. Introduce `v`. Take `⟨a, ha, -⟩` from `hb v`. Conclude with `⟨a, funext fun j => ha j⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h2 : IsUnit (ι.mapMatrix (Matrix.of w))` using `h1.map _`. Rewrite `h2` using `[← Matrix.mulVec_surjective_iff_isUnit]`. Introduce `g`. Take `⟨f, hf⟩` from `h2 (Function.extend emb g 0)`. Use `⟨f, funext fun i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `congrFun hf (emb i)`. Rewrite `h3` using `[emb.injective.extend_apply]`. Rewrite using `[← h3]`. Use `show ∑ j, ι (u i j) * f j = ∑ j, ι (w (emb i) j) * f j`. Rewrite using `[hw]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_surjective_of_extends {R O : Type} [CommRing R] [CommRing O] (ι : R →+* O) {d s : ℕ}
     (u : Fin s → Fin d → R) (w : Fin d → Fin d → R) (emb : Fin s ↪ Fin d) (hw : ∀ i, w (emb i) = u i)
@@ -44,7 +44,7 @@ theorem res_surjective_of_extends {R O : Type} [CommRing R] [CommRing O] (ι : R
   rw [hw]
 
 /- English proof (translation)
-Introduce `a b h`. Apply `IsFractionRing.injective T.V T.Fr` to reduce the goal to its premises. Apply `X.ιF.injective` to reduce the goal to its premises. Rewrite using `[X.comp, X.comp, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ι_injective {T : CDVR} {p : ℕ} [Fact p.Prime] (X : ValExt T p) : Function.Injective X.ι := by
   intro a b h
@@ -53,9 +53,9 @@ theorem ι_injective {T : CDVR} {p : ℕ} [Fact p.Prime] (X : ValExt T p) : Func
   rw [X.comp, X.comp, h]
 
 /- English proof (translation)
-Use `letI := X.ι.toAlgebra`. Use `haveI : IsDomain X.O := Function.Injective.isDomain (algebraMap X.O X.C) X.ints.hom_inj`. Rewrite using `[Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, eq_bot_iff]`. Introduce and unpack `x ⟨⟨a, ha⟩, hx⟩`. Establish `hx' : X.ι a * x = 0` using `hx`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : X.ι a ≠ 0` using `fun h => nonZeroDivisors.ne_zero ha (ι_injective X (h.trans (map_zero _).symm))`. Conclude with `(mul_eq_zero.1 hx').resolve_left ha'`.
+A detailed English derivation is pending.
 -/
 theorem flat {T : CDVR} {p : ℕ} [Fact p.Prime] (X : ValExt T p) :
     letI := X.ι.toAlgebra; Module.Flat T.V X.O := by
@@ -68,9 +68,9 @@ theorem flat {T : CDVR} {p : ℕ} [Fact p.Prime] (X : ValExt T p) :
   exact (mul_eq_zero.1 hx').resolve_left ha'
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Establish `key : ∀ a i j, ReciprocityTheory.ChartRestriction.G.TB.dAct T.Fr Ch.ch.B a i j = algebraMap T.V T.Fr (linPart (Ch.actT a) i j)`. Introduce `a i j`. Use `show MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) (MvPowerSeries.map (algebraMap T.Fr T.Fr) (Ch.ch.B.A.act a i)) = _`. Rewrite using `[MvPowerSeries.coeff_map, Ch.gen.1.2.1 a i, MvPowerSeries.coeff_map]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use extensionality with `i j`. Apply `IsFractionRing.injective T.V T.Fr` to reduce the goal to its premises. Rewrite using `[Matrix.add_apply, map_add, ← key, ← key, ← key, ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.EigA.dAct_add, Matrix.add_apply]`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linPart_add {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)] {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io}
@@ -92,13 +92,11 @@ end GlobalTheory.CharDepth.EigExt
 open GlobalTheory.CharDepth.EigExt in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `T io y Ch p _ X τO hτ τ`. Prove the components needed by the constructor for the conclusion. Take `⟨τT, hT, hT', -⟩` from `GlobalTheory.T.exists_cmType_embeddings_into_valuation_ring E H l c T io p X`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `he : τO τ = X.ι.comp (τT τ)`. Use extensionality with `a`. Apply `X.ints.hom_inj` to reduce the goal to its premises. Rewrite using `[hτ τ a]`. Conclude with `(hT' τ a).symm`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Use `letI := X.ι.toAlgebra`. Use `haveI := flat X`. Rewrite using `[he]`. Conclude with `GlobalTheory.T.isEigenBasis_map_flat_baseChange T.V X.O (𝓞 E) _ _ Ch.actT (linPart_add Ch) (τT τ) _ (GlobalTheory.T.integral_chart_directions_isEigenBasis E H Dw l Xo c T io y Ch τ (τT τ) (hT τ))`. Take `⟨⟨w, emb, hw, hb⟩, -⟩` from `Formalism.L2.Pj.SaturatedCharts.saturation_charts_holds Xo c T io y Ch τ`.
-
-Conclude with `res_surjective_of_extends X.ι _ w emb hw hb`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CharDepth.isEigBasis_valExt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (Ch : IntegralChartA3 Xo c T io y) (p : ℕ) [Fact p.Prime] (X : ValExt T p) (τO : (E →+* ℂ) → (𝓞 E →+* X.O)), IsTypes X io τO → ∀ τ : E →+* ℂ, IsEigBasis (fun a i => MvPowerSeries.map X.ι (Ch.actT a i)) (τO τ) (fun (i : Fin (Dw.mult τ)) j => X.ι (Ch.uvecT ⟨τ, i⟩ j)) ∧ Function.Surjective (res (fun (i : Fin (Dw.mult τ)) j => X.ι (Ch.uvecT ⟨τ, i⟩ j))) := by
   intro E _ _ _ H Dw l Xo c

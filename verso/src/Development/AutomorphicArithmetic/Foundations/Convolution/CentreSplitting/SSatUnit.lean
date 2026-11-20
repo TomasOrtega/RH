@@ -8,9 +8,9 @@ open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
 /- English proof (translation)
-Establish `h2 : (B.map fun r => Polynomial.X - Polynomial.C r).prod = (B'.map fun r => Polynomial.X - Polynomial.C r).prod`. Rewrite using `[Multiset.prod_X_sub_X_eq_sum_esymm, Multiset.prod_X_sub_X_eq_sum_esymm, hB, hB']`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Break down `j with _ | j` into its components or cases. Simplify using `[Multiset.esymm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Rewrite using `[h ⟨j, by simpa using hj⟩]`. Simplify using `using congrArg Polynomial.roots h2`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem eq_of_esymm {n : ℕ} {B B' : Multiset ℂ} (hB : B.card = n) (hB' : B'.card = n)
     (h : ∀ i : Fin n, B.esymm (i + 1) = B'.esymm (i + 1)) : B = B' := by
@@ -24,21 +24,19 @@ private theorem eq_of_esymm {n : ℕ} {B B' : Multiset ℂ} (hB : B.card = n) (h
 
 open UpperTheory.ConvolutionTheory in
 /- English proof (translation)
-Introduce `K _ _ n μ _ w V B hB`. Take `⟨v, hv, h0⟩` from `(Submodule.ne_bot_iff _).1 hB.2.1`. Use `⟨?_, fun B₁ h₁ => eq_of_esymm h₁.1 hB.1 fun i => smul_left_injective ℂ h0 ((h₁.2.2 i v hv).symm.trans (hB.2.2 i v hv))⟩` and prove the remaining obligations. Establish `hne : ∀ b ∈ B, b ≠ 0`. Introduce `b hb e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `e` using the available equality. Establish `hn : 0 < n` using `hB.1 ▸ Multiset.card_pos_iff_exists_mem.2 ⟨_, hb⟩`. Establish `h1` using `hB.2.2 ⟨n - 1, by omega⟩ v hv`. Establish `h2 : B.esymm (n - 1 + 1) = 0`. Rewrite using `[Nat.sub_add_cancel hn, ← hB.1, Multiset.esymm, Multiset.powersetCard_self]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hb`. Use `set J := GLnLocal.integralGL (w.adicCompletion K) n`. Use `set x := Cartan.diagPow (w.adicCompletion K) n fun _ => 1 with hx`. Establish `hxc : x ∈ Subgroup.center _` using `Matrix.GeneralLinearGroup.mem_center_iff_val_mem_range_scalar.2 ⟨_, by rw [Matrix.scalar_apply, hx, Cartan.coe_diagPow]⟩`. Establish `e1 : (fun a : Fin n => if a ≤ (⟨n - 1, by omega⟩ : Fin n) then (1 : ℤ) else 0) = fun _ => 1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun a => if_pos (Fin.le_def.2 (by have := a.2; simp only; omega))`. Establish `e2 : {c : GL (Fin n) (w.adicCompletion K) ⧸ J | ∃ k ∈ J, c = QuotientGroup.mk (k * x)} = {QuotientGroup.mk x}`. Use extensionality with `c`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Subgroup.mem_center_iff.1 hxc k]`. Conclude with `QuotientGroup.mk_mul_of_mem x hk`. Introduce and unpack `rfl`. Conclude with `⟨1, J.one_mem, by rw [one_mul]⟩`. Establish `e3 : prj (fixL μ w J) v = v` using `Submodule.starProjection_eq_self_iff.2 (Submodule.le_topologicalClosure _ hv.2)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e4 : Hop μ w J x v = rhoL μ w (QuotientGroup.mk x : _ ⧸ J).out v`. Rewrite using `[Hop, e2, finsum_mem_singleton, ContinuousLinearMap.comp_apply, e3]`. Rewrite `h1` using `[h2, zero_smul, Tsph, e1, ContinuousLinearMap.smul_apply, e4]`. Break down `smul_eq_zero.1 h1 with h | h` into its components or cases. Use `(Real.rpow_pos_of_pos ?_ _).ne' (Complex.ofReal_eq_zero.1 h)` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Nat.cast_pos.2 (Nat.pos_of_ne_zero fun e => w.ne_bot (Ideal.absNorm_eq_zero_iff.1 e))`. Use `h0 (norm_eq_zero.1 ?_)` and prove the remaining obligations. Establish `h3 : ∀ g, ‖rhoF μ g v‖ = ‖v‖` using `fun g => by`. Unfold `rhoF`. Conclude with `UnitaryRep.norm_map _ _ v`.
-
-Rewrite using `[← h3, ← rhoL, h, norm_zero]`. Use `⟨B.attach.map fun b => Units.mk0 b.1 (hne b.1 b.2), ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.map_map]`. Conclude with `(Multiset.attach_map_val B).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Dp.sSatUnit :
     UpperTheory.ConvolutionTheory.Dp.SSatUnit := by

@@ -14,7 +14,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype A] in
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; by_cases h : j ∈ P <;> simp [setCols, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem setCols_eq_add_offBlock (P : Finset C) (Y Y' : Matrix A C k) (T : Matrix A P k) :
     setCols P Y' T = setCols P Y T + setCols P (Y' - Y) 0 := by
@@ -23,7 +23,7 @@ theorem setCols_eq_add_offBlock (P : Finset C) (Y Y' : Matrix A C k) (T : Matrix
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype A] in
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; by_cases h : j ∈ P <;> simp [setCols, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem setCols_of_add (P : Finset C) (Y : Matrix A C k) (x t : (Σ _ : A, P) → k) :
     setCols P Y (Matrix.of fun i j => (x + t) ⟨i, j⟩) =
@@ -32,9 +32,7 @@ theorem setCols_of_add (P : Finset C) (Y : Matrix A C k) (x t : (Σ _ : A, P) �
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] [Fintype A] in
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : j ∈ P`. Simplify using `only [setCols, of_apply, dif_pos h]`. Conclude with `continuous_const`. Simplify using `only [setCols, of_apply, dif_neg h]`.
-
-Conclude with `continuous_id.matrix_elem i j`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_setCols_left (P : Finset C) (T : Matrix A P k) :
     Continuous fun Y : Matrix A C k => setCols P Y T := by
@@ -46,9 +44,7 @@ theorem continuous_setCols_left (P : Finset C) (T : Matrix A P k) :
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] [Fintype A] in
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : j ∈ P`. Simplify using `only [setCols, of_apply, dif_pos h]`. Conclude with `(continuous_apply (⟨i, ⟨j, h⟩⟩ : (Σ _ : A, P))).comp continuous_snd`. Simplify using `only [setCols, of_apply, dif_neg h]`.
-
-Conclude with `continuous_fst.matrix_elem i j`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_setCols_pair (P : Finset C) :
     Continuous fun q : Matrix A C k × ((Σ _ : A, P) → k) =>
@@ -62,7 +58,7 @@ theorem continuous_setCols_pair (P : Finset C) :
 
 omit [DecidableEq C] in
 /- English proof (translation)
-Unfold `pairCols`. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `(continuous_snd.matrix_elem i j).mul (continuous_fst.matrix_elem i (j : C))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_pairCols_pair (P : Finset C) :
     Continuous fun q : Matrix A C k × Matrix A P k => pairCols P q.1 q.2 := by
@@ -73,25 +69,21 @@ theorem continuous_pairCols_pair (P : Finset C) :
 end GlobalTheory.ColFourier
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ A C _ _ _ ψ m hψ hm P Ξ hΞ`. Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Use `haveI := hm.1`. Establish `hinv` using `GlobalTheory.LocFlat.PartialFourier.eventually_add_invariant hΞ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(IsLocallyConstant.iff_eventually_eq _).mpr fun Y => ?_, ?_⟩` and prove the remaining obligations. Establish `hK : IsCompact (restrictCols P '' tsupport Ξ)` using `hΞ.2.image (continuous_restrictCols P)`. Establish `h1 : ∀ᶠ Y' in 𝓝 Y, ∀ X, Ξ (X + setCols P (Y' - Y) 0) = Ξ X`. Establish `hc : Continuous (fun Y' : Matrix A C k => setCols P (Y' - Y) 0)` using `(continuous_setCols_left P 0).comp (continuous_id.sub continuous_const)`. Establish `h0 : setCols P (Y - Y) (0 : Matrix A P k) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Apply the tactic sequence `ext i j; by_cases h : j ∈ P <;> simp [setCols, h]`. Establish `ht : Filter.Tendsto (fun Y' : Matrix A C k => setCols P (Y' - Y) 0) (𝓝 Y) (𝓝 0)`. Use `hc.tendsto Y using 2` and compare the differences between its conclusion and the goal. Conclude with `h0.symm`. Conclude with `ht.eventually hinv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∀ᶠ Y' in 𝓝 Y, ∀ T ∈ restrictCols P '' tsupport Ξ, ψ (pairCols P Y' T) = ψ (pairCols P Y T)`. Use `hK.eventually_forall_of_forall_eventually fun T _ => ?_` and prove the remaining obligations. Establish `h3 : IsLocallyConstant fun q : Matrix A C k × Matrix A P k => (ψ (pairCols P q.1 q.2), ψ (pairCols P Y q.2))` using `(hψ.isLocallyConstant.comp_continuous (continuous_pairCols_pair P)).prodMk (hψ.isLocallyConstant.comp_continuous ((continuous_pairCols_pair P).comp (continuous_const.prodMk continuous_snd)))`. Use `filter_upwards [h3.eventually_eq (Y, T)] with q hq`. Simplify using `only [Prod.mk.injEq] at hq`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hq.1, hq.2]`. Use `filter_upwards [h1, h2] with Y' hY1 hY2`. Unfold `fourierInt`. Use `congr 1`. Use function extensionality and compare the values at `T`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[setCols_eq_add_offBlock P Y Y' T, hY1]`. Distinguish the cases in `hT : setCols P Y T ∈ tsupport Ξ`. Rewrite using `[hY2 T ⟨_, hT, restrictCols_setCols P Y T⟩]`. Simplify using `[image_eq_zero_of_notMem_tsupport hT]`. Establish `hc : Continuous fun t : (Σ _ : A, P) → k => setCols P (0 : Matrix A C k) (Matrix.of fun i j => t ⟨i, j⟩)` using `(continuous_setCols_pair P).comp (continuous_const.prodMk continuous_id)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : setCols P (0 : Matrix A C k) (Matrix.of fun i j => (0 : (Σ _ : A, P) → k) ⟨i, j⟩) = 0`. Apply the tactic sequence `ext i j; by_cases h : j ∈ P <;> simp [setCols, h]`. Establish `hU : {Z : Matrix A C k | ∀ X, Ξ (X + Z) = Ξ X} ∈ 𝓝 (setCols P (0 : Matrix A C k) (Matrix.of fun i j => (0 : (Σ _ : A, P) → k) ⟨i, j⟩))`. Rewrite using `[h0]`. Conclude with `hinv`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `FourierPi.exists_box_subset (hc.continuousAt.preimage_mem_nhds hU)`. Use `HasCompactSupport.intro ((hΞ.2.prod (FourierPi.isCompact_box (1 * s⁻¹))).image (continuous_setCols_pair P)) fun Y hY => ?_` and prove the remaining obligations. Rewrite using `[fourierInt_eq_pi]`. Distinguish the cases in `hy : (fun p : (Σ _ : A, P) => Y p.1 p.2) ∈ FourierPi.box (Σ _ : A, P) (1 * s⁻¹)`. Use `integral_eq_zero_of_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
-
-Establish `hback : setCols P (setCols P Y (Matrix.of fun i j => x ⟨i, j⟩)) (Matrix.of fun i j => (fun p : (Σ _ : A, P) => Y p.1 p.2) ⟨i, j⟩) = Y`. Apply the tactic sequence `ext i j; by_cases h : j ∈ P <;> simp [setCols, h]`. Establish `hX : setCols P Y (Matrix.of fun i j => x ⟨i, j⟩) ∉ tsupport Ξ` using `fun hX => hY ⟨(_, fun p => Y p.1 p.2), ⟨hX, hy⟩, hback⟩`. Simplify using `[image_eq_zero_of_notMem_tsupport hX]`. Use `FourierPi.fourier_eq_zero_pi (Measure.pi fun _ : (Σ _ : A, P) => m) hψ (s := s) (f := fun x => Ξ (setCols P Y (Matrix.of fun i j => x ⟨i, j⟩))) (fun t ht x => ?_) hy show Ξ (setCols P Y (Matrix.of fun i j => (x + t) ⟨i, j⟩)) = Ξ (setCols P Y (Matrix.of fun i j => x ⟨i, j⟩))` and prove the remaining obligations.
-
-Rewrite using `[setCols_of_add]`. Conclude with `hs ht _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ColFourier.fourierInt_mem_SB : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (A C : Type) [Fintype A] [DecidableEq A] [DecidableEq C] (ψ : AddChar k Circle) (m : Measure k), HasConductor ψ 1 → IsUnitVol m → ∀ (P : Finset C), ∀ Ξ ∈ SB (Matrix A C k), fourierInt ψ m P Ξ ∈ SB (Matrix A C k) := by
   intro k _ _ _ _ _ _ A C _ _ _ ψ m hψ hm P Ξ hΞ

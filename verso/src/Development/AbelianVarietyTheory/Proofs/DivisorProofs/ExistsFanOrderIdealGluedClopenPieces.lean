@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Take `⟨U, hU, hx, -⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (show x ∈ (⊤ : X.Opens) from trivial)`. Simplify using `only [ReciprocityTheory.AnForm.R.WMult.stalkId_eq_map_germ _ x ⟨U, hU⟩ hx]`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [Ideal.map_top]`. Consider the case `insert c s hc ih`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.prod_insert hc, Finset.prod_insert hc, Scheme.IdealSheafData.ideal_mul, Pi.mul_apply, Ideal.map_mul, ih]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem stalkId_finsetProd {X : Scheme.{0}} {ι : Type} (s : Finset ι) (K : ι → X.IdealSheafData) (x : X) :
     FinalTheorems.stalkId (∏ c ∈ s, K c) x = ∏ c ∈ s, FinalTheorems.stalkId (K c) x := by
@@ -26,7 +26,7 @@ theorem stalkId_finsetProd {X : Scheme.{0}} {ι : Type} (s : Finset ι) (K : ι 
     rw [Finset.prod_insert hc, Finset.prod_insert hc, Scheme.IdealSheafData.ideal_mul, Pi.mul_apply, Ideal.map_mul, ih]
 
 /- English proof (translation)
-Rewrite using `[stalkId_finsetProd]`. Simplify using `only [GlobalTheory.Vanishing.stalkId_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem stalkId_prodPow {X : Scheme.{0}} {ι : Type} [Fintype ι] (K : ι → X.IdealSheafData) (e : ι → ℕ) (x : X) :
     FinalTheorems.stalkId (∏ c, K c ^ e c) x = ∏ c, FinalTheorems.stalkId (K c) x ^ e c := by
@@ -34,17 +34,17 @@ theorem stalkId_prodPow {X : Scheme.{0}} {ι : Type} [Fintype ι] (K : ι → X.
   simp only [GlobalTheory.Vanishing.stalkId_pow]
 
 /- English proof (translation)
-Introduce `o _ ζ g n F S j φ ι _ W J d _ huniq hd hsupp htr`. Establish `hdvd : ∀ c, d c ∣ ∏ c, d c` using `fun c => Finset.dvd_prod_of_mem (s := Finset.univ) d (Finset.mem_univ c)`. Establish `htop : ∀ c x, x ∉ W c → FinalTheorems.stalkId (J c) x = ⊤` using `fun c x hx => GlobalTheory.Vanishing.stalkId_eq_top (J c) fun hs => hx (hsupp c x hs).1`. Use `⟨∏ c, d c, ∏ c, J c ^ ((∏ c, d c) / d c), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Nat.one_le_iff_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun c _ => by have := hd c; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨c, hc, -⟩` from `huniq x`. Distinguish the cases in `hs : x ∈ (J c).support`. Conclude with `(hsupp c x hs).2`. It suffices to derive a contradiction.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(mem_support_iff_stalkId _ x).1 hx ?_` and prove the remaining obligations. Rewrite using `[stalkId_prodPow, ← Ideal.one_eq_top]`. Use `Finset.prod_eq_one fun c' _ => ?_` and prove the remaining obligations. Distinguish the cases in `e : c' = c`. Substitute `e` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.Vanishing.stalkId_eq_top (J c') hs, ← Ideal.one_eq_top, one_pow]`. Rewrite using `[htop c' x fun h => e ((huniq x).unique h hc), ← Ideal.one_eq_top, one_pow]`. Introduce `T ξ hξ`. Take `⟨c, hc, -⟩` from `huniq (ξ (closedPoint T.V))`. Take `⟨a, ha, hJ⟩` from `htr c T ξ hξ hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨(∏ c, d c) / d c * a, ?_, ?_⟩` and prove the remaining obligations. Establish `hd0 : (d c : ℝ) ≠ 0` using `by have := hd c; positivity`. Rewrite using `[Nat.cast_mul, Nat.cast_div (hdvd c) hd0, ha]`. Clear the denominators using the available nonvanishing facts. Unfold `idlAlong at hJ ⊢`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[stalkId_prodPow, Finset.prod_eq_single c, Ideal.map_pow, hJ, Ideal.span_singleton_pow, ← pow_mul, mul_comm]`. Introduce `c' _ e`. Rewrite using `[htop c' _ fun h => e ((huniq _).unique h hc), ← Ideal.one_eq_top, one_pow]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ c) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_valOn_of_pieces : ∀ {o : Type} [CommRing o] {ζ : o} {g n : ℕ} (F : SFam g n ζ) {S : Scheme.{0}} (j : F.X ⟶ S) (φ : InvFun ℤ) {ι : Type} [Fintype ι] (W : ι → Set S) (J : ι → S.IdealSheafData) (d : ι → ℕ), (∀ c, IsClopen (W c)) → (∀ x, ∃! c, x ∈ W c) → (∀ c, 1 ≤ d c) → (∀ c, ∀ x ∈ (J c).support, x ∈ W c ∧ x ∉ Set.range j) → (∀ c (T : Trait F) (ξ : Sp T.V ⟶ S), jK T.V ≫ ξ = T.y ≫ j → ξ (closedPoint T.V) ∈ W c → ∃ a : ℕ, (a : ℝ) = d c * φ.evalZ T.β ∧ idlAlong (J c) ξ = Ideal.span {T.ϖ ^ a}) → ∃ (d' : ℕ) (J' : S.IdealSheafData), 1 ≤ d' ∧ (∀ x ∈ J'.support, x ∉ Set.range j) ∧ ValOn F j φ J' d' := by
   intro o _ ζ g n F S j φ ι _ W J d _ huniq hd hsupp htr

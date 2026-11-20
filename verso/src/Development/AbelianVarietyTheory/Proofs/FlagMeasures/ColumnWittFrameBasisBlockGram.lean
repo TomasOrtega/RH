@@ -10,11 +10,11 @@ namespace GlobalTheory.St
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `h`. Take `⟨v, hv, h0⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Apply `hv` to reduce the goal to its premises. Establish `: S.frame.equivFun.symm v = 0`. Use `S.nondeg.2 _ fun x => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : ∀ i, S.hT (S.frame i) (S.frame.equivFun.symm v) = 0` using `fun i => by`. Use `congrFun h0 i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, Formalism.BasicNotions.HSpace.gram, mul_comm]`. Rewrite using `[← S.frame.sum_repr x]`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, hx, smul_zero, Finset.sum_const_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(LinearEquiv.map_eq_zero_iff _).1 this`.
+A detailed English derivation is pending.
 -/
 theorem hspace_gram_det_ne {E : Type} [Field E] [NumberField E] [StarRing E] (S : Formalism.BasicNotions.HSpace E) :
     S.gram.det ≠ 0 := by
@@ -32,9 +32,9 @@ theorem hspace_gram_det_ne {E : Type} [Field E] [NumberField E] [StarRing E] (S 
   exact (LinearEquiv.map_eq_zero_iff _).1 this
 
 /- English proof (translation)
-Use `conv_rhs => rw [← X.bas.sum_repr v, ← X.bas.sum_repr w]`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Formalism.UG.hform, map_mul, HidaSetting.crd, crdOf, starRingEnd_apply, X.ιE_conj, RingEquiv.apply_symm_apply, X.J_eq, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [← Formalism.BasicNotions.bridge_star_holds D.R D.host, RingHom.id_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hform_crd_setting (X : HidaSetting D) (v w : (VS D).V) :
     X.ιE (Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J (X.crd v) (X.crd w)) = (VS D).hT v w := by
@@ -48,7 +48,7 @@ theorem hform_crd_setting (X : HidaSetting D) (v w : (VS D).V) :
   ring
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Formalism.UG.hform, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_entry {A : Type} [CommRing A] {n ι : Type} [Fintype n] (σ : A →+* A) (Q : Matrix n ι A)
     (J : Matrix n n A) (k l : ι) :
@@ -66,20 +66,20 @@ namespace GlobalTheory.St
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[← (VS D).herm.eq x y, h, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hT_symm_zero {x y : (VS D).V} (h : (VS D).hT x y = 0) : (VS D).hT y x = 0 := by
   rw [← (VS D).herm.eq x y, h, map_zero]
 
 /- English proof (translation)
-Rewrite using `[← hiso, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hT_wt_symm (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hiso : ∀ x y, (VS D).hT (wt x) (wt y) = (VS D).hT x y)
     (x y : (VS D).V) : (VS D).hT (wt.symm x) y = (VS D).hT x (wt y) := by
   rw [← hiso, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[qFr, hT_wt_symm wt hiso, qFr, LinearEquiv.apply_symm_apply, xFr, xFr, D.sp.iXY_isom 0 (by have := D.R.two_le_m; omega)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hT_qFr_qFr (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hiso : ∀ x y, (VS D).hT (wt x) (wt y) = (VS D).hT x y)
     (a b : Fin (D.R.N 0)) : (VS D).hT (qFr wt a) (qFr wt b) = Formalism.L2.Forms.gramN D 0 (Nat.zero_le _) a b := by
@@ -88,9 +88,9 @@ theorem hT_qFr_qFr (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hiso : ∀ x y, (V
   rfl
 
 /- English proof (translation)
-Take `⟨hiso, he, hf, hz⟩` from `hw`. Rewrite using `[qFr, hT_wt_symm wt hiso]`. Break down `k with b | b | b` into its components or cases. Simplify using `only [famQ, Sum.elim_inr, Sum.elim_inl, he]`. Conclude with `(D.sp.hyp_orthX b _).1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [famQ, Sum.elim_inr, Sum.elim_inl, hf]`. Conclude with `(D.sp.hyp_orthX b _).2`. Simplify using `only [famQ, Sum.elim_inr, hz, Formalism.BasicNotions.D7.zmOf, LinearMap.map_smul]`. Rewrite using `[xFr, D.sp.zm_orth, smul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hT_qFr_rest (X : HidaSetting D) (u : D.what₂.Word) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hw : WittX X u wt)
     (a : Fin (D.R.N 0)) (k : Fin D.R.rS ⊕ Fin D.R.rS ⊕ Unit) :
@@ -109,7 +109,7 @@ namespace GlobalTheory.St
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[← (VS D).herm.eq (X.eX b) (X.fY a), X.ef]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hT_fe (X : HidaSetting D) (a b : Fin D.R.rS) :
     (VS D).hT (X.fY a) (X.eX b) = if b = a then 1 else 0 := by
@@ -117,19 +117,19 @@ theorem hT_fe (X : HidaSetting D) (a b : Fin D.R.rS) :
   split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `hT_symm_zero (X.zu_orth u b).1`.
+A detailed English derivation is pending.
 -/
 theorem hT_ze (X : HidaSetting D) (u : D.what₂.Word) (b : Fin D.R.rS) : (VS D).hT (X.zu u) (X.eX b) = 0 :=
   hT_symm_zero (X.zu_orth u b).1
 
 /- English proof (translation)
-The claim follows from `hT_symm_zero (X.zu_orth u b).2`.
+A detailed English derivation is pending.
 -/
 theorem hT_zf (X : HidaSetting D) (u : D.what₂.Word) (b : Fin D.R.rS) : (VS D).hT (X.zu u) (X.fY b) = 0 :=
   hT_symm_zero (X.zu_orth u b).2
 
 /- English proof (translation)
-Rewrite using `[X.zu_norm, neg_ne_zero, Nat.cast_ne_zero]`. Conclude with `((D.mem u).A.T_prime).ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hT_zz_ne (X : HidaSetting D) (u : D.what₂.Word) : (VS D).hT (X.zu u) (X.zu u) ≠ 0 := by
   rw [X.zu_norm, neg_ne_zero, Nat.cast_ne_zero]
@@ -149,7 +149,7 @@ def gramRinv (X : HidaSetting D) (u : D.what₂.Word) :
     | _, _ => 0
 
 /- English proof (translation)
-Establish `ht : X.ιE.symm ((VS D).hT (X.zu u) (X.zu u)) ≠ 0`. Rewrite using `[Ne, RingEquiv.map_eq_zero_iff]`. Conclude with `hT_zz_ne X u`. Apply the tactic sequence `ext (a | a | a) (b | b | b) <;>`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, gramR, gramRinv, X.ee, X.ff, X.ef, hT_fe, hT_ze, hT_zf, X.zu_orth, Matrix.one_apply, ht, eq_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gramR_mul_inv (X : HidaSetting D) (u : D.what₂.Word) : gramR X u * gramRinv X u = 1 := by
   have ht : X.ιE.symm ((VS D).hT (X.zu u) (X.zu u)) ≠ 0 := by
@@ -164,27 +164,25 @@ namespace GlobalTheory.St
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `D X u wt hw`. Set `Q : Matrix (Fin X.B.I.n) (Fin (D.R.N 0) ⊕ (Fin D.R.rS ⊕ Fin D.R.rS ⊕ Unit)) X.B.I.E` to `Matrix.of fun i k => X.crd (famQ X u wt k) i`. Establish `hiso` using `hw.1`. Establish `hM : (Q.map (starRingEnd X.B.I.E))ᵀ * X.B.I.J * Q = Matrix.fromBlocks ((Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)).map X.ιE.symm) 0 0 (gramR X u)`. Use extensionality with `k l`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[gram_entry]`. Apply `X.ιE.injective` to reduce the goal to its premises. Rewrite using `[show (fun i => Q i k) = X.crd (famQ X u wt k) from rfl, show (fun i => Q i l) = X.crd (famQ X u wt l) from rfl, hform_crd_setting]`. Apply the tactic sequence `rcases k with a | k <;> rcases l with b | l`. Simplify using `only [Matrix.fromBlocks_apply₁₁, Matrix.map_apply, RingEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Conclude with `hT_qFr_qFr wt hiso a b`. Simplify using `only [Matrix.fromBlocks_apply₁₂, Matrix.zero_apply, map_zero]`. Conclude with `hT_qFr_rest X u wt hw a l`. Simplify using `only [Matrix.fromBlocks_apply₂₁, Matrix.zero_apply, map_zero]`. Conclude with `hT_symm_zero (hT_qFr_rest X u wt hw b k)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [Matrix.fromBlocks_apply₂₂, gramR, Matrix.of_apply, RingEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Establish `hA : ((Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)).map X.ιE.symm).det ≠ 0`. Establish `h1 : ((Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)).map X.ιE.symm).det = X.ιE.symm.toRingHom (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)).det`. Rewrite using `[RingHom.map_det]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Rewrite using `[h1]`. Use `(map_ne_zero _).2 ?_` and prove the remaining obligations. Unfold `Formalism.L2.Forms.gramN`. Rewrite using `[Matrix.det_reindex_self]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hspace_gram_det_ne _`. Establish `hG : IsUnit (gramR X u).det` using `Matrix.isUnit_det_of_right_inverse (gramR_mul_inv X u)`. Establish `hMu : IsUnit ((Q.map (starRingEnd X.B.I.E))ᵀ * X.B.I.J * Q).det`. Rewrite using `[hM, Matrix.det_fromBlocks_zero₂₁]`. Conclude with `(isUnit_iff_ne_zero.2 hA).mul hG`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression.
 
-Establish `hcard : Fintype.card (Fin (D.R.N 0) ⊕ (Fin D.R.rS ⊕ Fin D.R.rS ⊕ Unit)) = X.B.I.n`. Rewrite using `[X.n_eq, ← dimS_eq, Formalism.BasicNotions.Ranks.N_zero]`. Simplify using `only [Fintype.card_sum, Fintype.card_fin, Fintype.card_unit]`. Use linear arithmetic over natural numbers and integers. Set `σ` to `Fintype.equivFinOfCardEq hcard`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `P` to `Q.submatrix σ id`. Establish `hQ : Q = P.submatrix σ.symm id`. Use extensionality with `i k`. Simplify using `[P]`. Establish `hconj : (Q.map (starRingEnd X.B.I.E))ᵀ = Qᴴ`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use extensionality with `i k`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `starRingEnd_apply _`. Establish `hPJ : (Q.map (starRingEnd X.B.I.E))ᵀ * X.B.I.J * Q = Pᴴ * X.B.I.J.submatrix σ σ * P`. Establish `hJ : X.B.I.J = (X.B.I.J.submatrix σ σ).submatrix σ.symm σ.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Matrix.submatrix_submatrix]`. Rewrite using `[hconj, hQ, Matrix.conjTranspose_submatrix]`. Use `conv_lhs => rw [hJ]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, Matrix.submatrix_id_id]`. Establish `hP : IsUnit P.det`.
-
-Rewrite `hMu` using `[hPJ, Matrix.det_mul, Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_right hMu`. Use `⟨Q, (P⁻¹).submatrix id σ.symm, gramR X u, ?_, ?_, fun _ _ => rfl, fun _ _ => rfl, fun _ _ => rfl, fun _ => rfl, hG, hM⟩` and prove the remaining obligations. Rewrite using `[hQ, ← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, Matrix.mul_nonsing_inv _ hP, Matrix.submatrix_one_equiv]`. Rewrite using `[hQ, Matrix.submatrix_mul_equiv, Matrix.nonsing_inv_mul _ hP, Matrix.submatrix_id_id]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qFrame_basis_gram : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V), WittX X u wt → ∃ (Q : Matrix (Fin X.B.I.n) (Fin (D.R.N 0) ⊕ (Fin D.R.rS ⊕ Fin D.R.rS ⊕ Unit)) X.B.I.E) (Qi : Matrix (Fin (D.R.N 0) ⊕ (Fin D.R.rS ⊕ Fin D.R.rS ⊕ Unit)) (Fin X.B.I.n) X.B.I.E) (G' : Matrix (Fin D.R.rS ⊕ Fin D.R.rS ⊕ Unit) (Fin D.R.rS ⊕ Fin D.R.rS ⊕ Unit) X.B.I.E), Q * Qi = 1 ∧ Qi * Q = 1 ∧ (∀ j i, Q i (Sum.inl j) = X.crd (qFr wt j) i) ∧ (∀ a i, Q i (Sum.inr (Sum.inl a)) = X.eR a i) ∧ (∀ a i, Q i (Sum.inr (Sum.inr (Sum.inl a))) = X.fR a i) ∧ (∀ i, Q i (Sum.inr (Sum.inr (Sum.inr ()))) = X.zR u i) ∧ IsUnit G'.det ∧ (Q.map (starRingEnd X.B.I.E))ᵀ * X.B.I.J * Q = Matrix.fromBlocks ((Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)).map X.ιE.symm) 0 0 G' := by
   intro D X u wt hw

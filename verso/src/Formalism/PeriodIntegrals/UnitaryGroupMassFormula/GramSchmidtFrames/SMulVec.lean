@@ -18,38 +18,38 @@ abbrev Sm {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] (f : E → F) (
   ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) f s
 
 /- English proof (translation)
-Conclude with `contDiffOn_pi`.
+A detailed English derivation is pending.
 -/
 lemma sv_iff {m : ℕ} {v : E → Fin m → ℂ} : Sm v s ↔ ∀ i, Sm (fun x => v x i) s := by
   exact contDiffOn_pi
 
 /- English proof (translation)
-Unfold `Sm`. Conclude with `contDiffOn_pi.trans (forall_congr' fun i => contDiffOn_pi)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma sm_iff {p q : ℕ} {M : E → Matrix (Fin p) (Fin q) ℂ} : Sm M s ↔ ∀ i j, Sm (fun x => M x i j) s := by
   unfold Sm
   exact contDiffOn_pi.trans (forall_congr' fun i => contDiffOn_pi)
 
 /- English proof (translation)
-Conclude with `Complex.conjCLE.contDiff.comp_contDiffOn hf`.
+A detailed English derivation is pending.
 -/
 lemma s_star {f : E → ℂ} (hf : Sm f s) : Sm (fun x => star (f x)) s := by
   exact Complex.conjCLE.contDiff.comp_contDiffOn hf
 
 /- English proof (translation)
-Conclude with `Complex.reCLM.contDiff.comp_contDiffOn hf`.
+A detailed English derivation is pending.
 -/
 lemma s_re {f : E → ℂ} (hf : Sm f s) : Sm (fun x => (f x).re) s := by
   exact Complex.reCLM.contDiff.comp_contDiffOn hf
 
 /- English proof (translation)
-Conclude with `Complex.ofRealCLM.contDiff.comp_contDiffOn hf`.
+A detailed English derivation is pending.
 -/
 lemma s_ofReal {f : E → ℝ} (hf : Sm f s) : Sm (fun x => ((f x : ℝ) : ℂ)) s := by
   exact Complex.ofRealCLM.contDiff.comp_contDiffOn hf
 
 /- English proof (translation)
-Rewrite using `[sv_iff]`. Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `ContDiffOn.sum fun j _ => (sm_iff.1 hM i j).mul (sv_iff.1 hv j)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma s_mulVec {m : ℕ} {M : E → Matrix (Fin m) (Fin m) ℂ} {v : E → Fin m → ℂ} (hM : Sm M s) (hv : Sm v s) :
     Sm (fun x => M x *ᵥ v x) s := by
@@ -59,7 +59,7 @@ lemma s_mulVec {m : ℕ} {M : E → Matrix (Fin m) (Fin m) ℂ} {v : E → Fin m
   exact ContDiffOn.sum fun j _ => (sm_iff.1 hM i j).mul (sv_iff.1 hv j)
 
 /- English proof (translation)
-Establish `hH : Sm (fun x => H *ᵥ v x) s` using `s_mulVec contDiffOn_const hv`. Simplify using `only [herm, dotProduct, Pi.star_apply]`. Conclude with `ContDiffOn.sum fun i _ => (s_star (sv_iff.1 hw i)).mul (sv_iff.1 hH i)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma s_herm {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) {v w : E → Fin m → ℂ} (hv : Sm v s) (hw : Sm w s) :
     Sm (fun x => herm H (v x) (w x)) s := by
@@ -68,7 +68,7 @@ lemma s_herm {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) {v w : E → Fin m → �
   exact ContDiffOn.sum fun i _ => (s_star (sv_iff.1 hw i)).mul (sv_iff.1 hH i)
 
 /- English proof (translation)
-Rewrite using `[sv_iff]`. Introduce `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `hc.mul (sv_iff.1 hv i)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma s_smul {m : ℕ} {c : E → ℂ} {v : E → Fin m → ℂ} (hc : Sm c s) (hv : Sm v s) :
     Sm (fun x => c x • v x) s := by
@@ -78,7 +78,7 @@ lemma s_smul {m : ℕ} {c : E → ℂ} {v : E → Fin m → ℂ} (hc : Sm c s) (
   exact hc.mul (sv_iff.1 hv i)
 
 /- English proof (translation)
-Rewrite using `[sm_iff]`. Introduce `i j`. Simplify using `only [Matrix.mul_apply]`. Conclude with `ContDiffOn.sum fun l _ => (sm_iff.1 hA i l).mul (sm_iff.1 hB l j)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma s_mmul {m : ℕ} {A B : E → Matrix (Fin m) (Fin m) ℂ} (hA : Sm A s) (hB : Sm B s) :
     Sm (fun x => A x * B x) s := by
@@ -88,7 +88,7 @@ lemma s_mmul {m : ℕ} {A B : E → Matrix (Fin m) (Fin m) ℂ} (hA : Sm A s) (h
   exact ContDiffOn.sum fun l _ => (sm_iff.1 hA i l).mul (sm_iff.1 hB l j)
 
 /- English proof (translation)
-Rewrite using `[sm_iff]`. Introduce `i j`. Simplify using `only [Matrix.conjTranspose_apply]`. Conclude with `s_star (sm_iff.1 hA j i)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma s_ct {m : ℕ} {A : E → Matrix (Fin m) (Fin m) ℂ} (hA : Sm A s) : Sm (fun x => (A x)ᴴ) s := by
   rw [sm_iff]
@@ -97,7 +97,7 @@ lemma s_ct {m : ℕ} {A : E → Matrix (Fin m) (Fin m) ℂ} (hA : Sm A s) : Sm (
   exact s_star (sm_iff.1 hA j i)
 
 /- English proof (translation)
-Proceed by induction on `u using Finset.induction_on with`. Consider the case `empty => simpa using contDiffOn_const`. Consider the case `insert a u ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a u)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma sm_finset_prod {ι : Type*} (u : Finset ι) {f : ι → E → ℂ} (h : ∀ i ∈ u, Sm (f i) s) :
     Sm (fun x => ∏ i ∈ u, f i x) s := by
@@ -109,7 +109,7 @@ private lemma sm_finset_prod {ι : Type*} (u : Finset ι) {f : ι → E → ℂ}
     exact (h a (Finset.mem_insert_self a u)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Conclude with `ContDiffOn.sum fun σ _ => contDiffOn_const.mul (sm_finset_prod _ fun i _ => h (σ i) i)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma s_det {p : ℕ} {M : E → Matrix (Fin p) (Fin p) ℂ} (h : ∀ i j, Sm (fun x => M x i j) s) :
     Sm (fun x => (M x).det) s := by
@@ -117,9 +117,9 @@ lemma s_det {p : ℕ} {M : E → Matrix (Fin p) (Fin p) ℂ} (h : ∀ i j, Sm (f
   exact ContDiffOn.sum fun σ _ => contDiffOn_const.mul (sm_finset_prod _ fun i _ => h (σ i) i)
 
 /- English proof (translation)
-Simplify using `only [Matrix.adjugate_apply]`. Use `s_det fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.updateRow_apply]`. Distinguish the cases in `hi : i = b`. Simplify using `only [hi, if_true]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `contDiffOn_const`. Simplify using `only [hi, if_false]`. Conclude with `h i j`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma s_adj {p : ℕ} {M : E → Matrix (Fin p) (Fin p) ℂ} (h : ∀ i j, Sm (fun x => M x i j) s) (a b : Fin p) :
     Sm (fun x => (M x).adjugate a b) s := by
@@ -135,9 +135,9 @@ lemma s_adj {p : ℕ} {M : E → Matrix (Fin p) (Fin p) ℂ} (h : ∀ i j, Sm (f
 variable {k r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[sv_iff]`. Introduce `i`. Simplify using `only [wbPart]`. Distinguish the cases in `hc : r ≤ i.val ∧ i.val ≤ r + k`. Simplify using `only [hc, and_self, if_true]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `sv_iff.1 hv i`. Simplify using `only [hc, if_false]`. Conclude with `contDiffOn_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma s_wbPart {v : E → Fin (2 * r + k + 1) → ℂ} (hv : Sm v s) : Sm (fun x => wbPart k r (v x)) s := by
   rw [sv_iff]
@@ -150,7 +150,7 @@ lemma s_wbPart {v : E → Fin (2 * r + k + 1) → ℂ} (hv : Sm v s) : Sm (fun x
     exact contDiffOn_const
 
 /- English proof (translation)
-Simplify using `only [prW]`. Conclude with `(s_wbPart hv).add (s_smul ((s_herm _ (s_wbPart hv) contDiffOn_const).div_const _) contDiffOn_const)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma s_prW (z : Fin (2 * r + k + 1) → ℂ) {v : E → Fin (2 * r + k + 1) → ℂ} (hv : Sm v s) :
     Sm (fun x => prW k r z (v x)) s := by
@@ -158,7 +158,7 @@ lemma s_prW (z : Fin (2 * r + k + 1) → ℂ) {v : E → Fin (2 * r + k + 1) →
   exact (s_wbPart hv).add (s_smul ((s_herm _ (s_wbPart hv) contDiffOn_const).div_const _) contDiffOn_const)
 
 /- English proof (translation)
-Simplify using `only [Zhat]`. Conclude with `s_herm _ (s_mulVec hY contDiffOn_const) contDiffOn_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma s_Zhat (z z' : Fin (2 * r + k + 1) → ℂ) {Y : E → B.Mat k r} (hY : Sm Y s) (a b : Fin (r + 1)) :
     Sm (fun x => Zhat k r z z' (Y x) a b) s := by
@@ -166,7 +166,7 @@ lemma s_Zhat (z z' : Fin (2 * r + k + 1) → ℂ) {Y : E → B.Mat k r} (hY : Sm
   exact s_herm _ (s_mulVec hY contDiffOn_const) contDiffOn_const
 
 /- English proof (translation)
-Simplify using `only [xcofL]`. Conclude with `ContDiffOn.sum fun a _ => s_smul (s_star (s_adj (fun i j => s_Zhat z z' hY i j) _ _)) contDiffOn_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma s_xcofL (z z' : Fin (2 * r + k + 1) → ℂ) {Y : E → B.Mat k r} (hY : Sm Y s) :
     Sm (fun x => xcofL k r z z' (Y x)) s := by
@@ -175,7 +175,7 @@ lemma s_xcofL (z z' : Fin (2 * r + k + 1) → ℂ) {Y : E → B.Mat k r} (hY : S
     s_smul (s_star (s_adj (fun i j => s_Zhat z z' hY i j) _ _)) contDiffOn_const
 
 /- English proof (translation)
-Simplify using `only [xcof]`. Conclude with `ContDiffOn.sum fun b _ => s_smul (s_adj (fun i j => s_Zhat z z' hY i j) _ _) (s_mulVec hY contDiffOn_const)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma s_xcof (z z' : Fin (2 * r + k + 1) → ℂ) {Y : E → B.Mat k r} (hY : Sm Y s) :
     Sm (fun x => xcof k r z z' (Y x)) s := by
@@ -184,7 +184,7 @@ lemma s_xcof (z z' : Fin (2 * r + k + 1) → ℂ) {Y : E → B.Mat k r} (hY : Sm
     s_smul (s_adj (fun i j => s_Zhat z z' hY i j) _ _) (s_mulVec hY contDiffOn_const)
 
 /- English proof (translation)
-Simplify using `only [omW]`. Conclude with `s_prW z (s_xcof z z' hY)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma s_omW (z z' : Fin (2 * r + k + 1) → ℂ) {Y : E → B.Mat k r} (hY : Sm Y s) :
     Sm (fun x => omW k r z z' (Y x)) s := by

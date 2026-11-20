@@ -12,15 +12,13 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open scoped TensorProduct NNReal Matrix
 namespace GlobalTheory.ThKBasic
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP`. Establish `hS` using `hP.weil.isUSplitting`. Take `⟨l, hl, hlt⟩` from `GlobalTheory.T.exists_admissibleForm_adelicThetaSum F (Fin n × Fin d)`. Use `⟨fun Φ hΦ => ⟨?_, ?_, _root_.GlobalTheory.T.theta_pair_moderate_growth hKP F E σ B n d X W M χX χW om r s r' s' hP Φ hΦ⟩, ?_⟩` and prove the remaining obligations. Use `(hS.cont l hl Φ hΦ).congr fun x => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [theta]`. Conclude with `hlt _ (hS.pres _ _ hΦ)`. Introduce `γ hγ γ' hγ' g h`. Simplify using `only [theta]`. Establish `e : om (γ * g, γ' * h) Φ = om (γ, γ') (om (g, h) Φ)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `_root_.GlobalTheory.T.theta_pair_sum_rational hKP F E σ B n d X W M χX χW om r s r' s' hP γ hγ γ' hγ' _ (hS.pres _ _ hΦ)`. Introduce `φ hφ g h`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T, hT⟩` from `hS.adm (g, h) l hl φ hφ`. Use `T.continuous.congr fun f => ?_` and prove the remaining obligations. Simplify using `only [theta]`. Establish `hm : pureA F (f : (Fin n × Fin d → mixedEmbedding.mixedSpace F) → ℂ) φ ∈ schA F (Fin n × Fin d)` using `Submodule.subset_span ⟨f, φ, hφ, rfl⟩`. Rewrite using `[← hlt _ (hS.pres _ _ hm)]`.
-
-Conclude with `(hT f).symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_kernel_basic_properties : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.ThK.ThetaBasic := by
   intro hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP
@@ -51,7 +49,7 @@ end
 section
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.ThKBasic.theta_kernel_basic_properties | exact _root_.GlobalTheory.ThKBasic.theta_kernel_basic_properties | (intros; apply _root_.GlobalTheory.ThKBasic.theta_kernel_basic_properties <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.theta_kernel_fundamental_properties : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.ThK.ThetaBasic := by
   first | exact @_root_.GlobalTheory.ThKBasic.theta_kernel_basic_properties | exact _root_.GlobalTheory.ThKBasic.theta_kernel_basic_properties | (intros; apply _root_.GlobalTheory.ThKBasic.theta_kernel_basic_properties <;> assumption)

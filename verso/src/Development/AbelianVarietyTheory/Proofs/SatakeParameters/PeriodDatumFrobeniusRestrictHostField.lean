@@ -11,7 +11,7 @@ open NumberField IsDedekindDomain GlobalTheory.HTW GlobalTheory.HTW.Rec Formalis
 namespace GlobalTheory.FrobPeriod
 
 /- English proof (translation)
-Establish `hx : IsIntegral ℤ (c (x : E))` using `map_isIntegral_int c x.isIntegral_coe`. Establish `h : c (x : E) ∈ (NormedField.valuation (K` using `PadicAlgCl l)).integer := (Valuation.integer.integers (NormedField.valuation (K := PadicAlgCl l))).mem_of_integral hx.tower_top`. Rewrite `h` using `[Valuation.mem_integer_iff, NormedField.valuation_apply]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_int_le_one {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [NumberField E]
     (c : E →+* PadicAlgCl l) (x : 𝓞 E) : ‖c (x : E)‖ ≤ 1 := by
@@ -23,7 +23,7 @@ theorem norm_int_le_one {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [NumberFie
   exact_mod_cast h
 
 /- English proof (translation)
-Use `letI : Algebra E L := φ.toAlgebra`. Use `haveI : IsScalarTower ℚ E L := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Use `⟨AlgHom.restrictNormal' ψ.toRatAlgHom E, fun x => ?_⟩` and prove the remaining obligations. Conclude with `(AlgHom.restrictNormal_commutes ψ.toRatAlgHom E x).symm`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_comp_of_normal {E L : Type} [Field E] [Field L] [CharZero E] [CharZero L]
     [Normal ℚ E] (φ ψ : E →+* L) : ∃ g : E ≃ₐ[ℚ] E, ∀ x, ψ x = φ (g x) := by
@@ -33,9 +33,9 @@ theorem exists_comp_of_normal {E L : Type} [Field E] [Field L] [CharZero E] [Cha
   exact (AlgHom.restrictNormal_commutes ψ.toRatAlgHom E x).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `hmax : (Ideal.span {(l : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hl.out).irreducible`. Use `hmax.eq_of_le (Ideal.IsPrime.ne_top inferInstance) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Express the relevant statement in the definitionally equal form `(algebraMap ℤ (𝓞 E) (l : ℤ)) ∈ v.asIdeal`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem liesOver_of_mem {E : Type} [Field E] [NumberField E] (l : ℕ) [hl : Fact l.Prime]
     (v : HeightOneSpectrum (𝓞 E)) (h : ((l : ℕ) : 𝓞 E) ∈ v.asIdeal) :
@@ -49,7 +49,7 @@ theorem liesOver_of_mem {E : Type} [Field E] [NumberField E] (l : ℕ) [hl : Fac
   simpa using h
 
 /- English proof (translation)
-Rewrite using `[← h.over, Nat.card_congr (Int.quotientSpanNatEquivZMod l).toEquiv, Nat.card_zmod]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_quot_under {E : Type} [Field E] [NumberField E] (l : ℕ) [hl : Fact l.Prime]
     (Q : Ideal (𝓞 E)) [h : Q.LiesOver (Ideal.span {(l : ℤ)})] :
@@ -61,23 +61,21 @@ end GlobalTheory.FrobPeriod
 open GlobalTheory.FrobPeriod in
 
 /- English proof (translation)
-Introduce `D l _ P K c h2 hq hd x y hy`. Establish `hlN : ¬ l ∣ D.host.condN` using `fun h => by`. Break down `(D.host.dvd_condN_iff_small Fact.out).1 h with h | h | h` into its components or cases. Use `exacts [h2 h, hq h, hd h]`. Use `haveI : IsGalois ℚ D.host.E := D.host.hostE_isGalois`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `c' : D.host.E →+* PadicAlgCl l` to `K.1.val.toRingHom.comp c`. Establish `hK : ∀ z, c' z ∈ K0 K` using `fun z => IntermediateField.mem_inf.2 ⟨(c z).2, GlobalTheory.T.hostField_padicEmbedding_mem_maxUnramified D.host l h2 hq hd c' z⟩`. Set `c0 : D.host.E →+* ↥(K0 K)` to `c'.codRestrict (K0 K) hK`. Establish `hc0 : ∀ z, ((c0 z : ↥(K0 K)) : PadicAlgCl l) = c' z` using `fun z => rfl`. Establish `hyx : y = c0 x` using `Subtype.ext (congrArg (fun t : ↥K.1 => (t : PadicAlgCl l)) hy)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `σ0` to `(P.PD K).σ`. Take `⟨g, hg⟩` from `exists_comp_of_normal c0 ((σ0 : ↥(K0 K) →+* ↥(K0 K)).comp c0)`. Take `⟨v, hvl, hv⟩` from `GlobalTheory.T.exists_place_over_prime_of_padicAlgCl_embedding l D.host.E c'`. Use `haveI := liesOver_of_mem l v hvl`. Establish `hgl : ∀ z : 𝓞 D.host.E, g • z - z ^ l ∈ v.asIdeal` using `fun z => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hv _).2 ?_` and prove the remaining obligations. Establish `h` using `P.PD_σ K (c0 z) (by rw [hc0]; exact norm_int_le_one c' z)`. Establish `e : ((g • z - z ^ l : 𝓞 D.host.E) : D.host.E) = g (z : D.host.E) - (z : D.host.E) ^ l`. Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, map_sub, map_pow, ← hc0, ← hc0, ← hg]`. Conclude with `h`. Use `set F := D.host.sigmaOf (DV.frobG D l) with hFdef`. Establish `hF : ∀ z : 𝓞 D.host.E, F • z - z ^ l ∈ v.asIdeal` using `fun z => by`. Establish `h` using `(GlobalTheory.T.frobG_isArithFrobAt_and_sign_eq_jacobiSym D l h2 hq hd).1 v.asIdeal z`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[card_quot_under l v.asIdeal]`. Conclude with `h`. Establish `hin` using `(D.host.der.frob l hlN v.asIdeal).2.2.2`. Establish `hgF : g * F⁻¹ = 1`. Use `(hin _).1 fun z => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `v.asIdeal.sub_mem (hgl (F⁻¹ • z)) (hF (F⁻¹ • z))`. Establish `e : (g * F⁻¹) • z - z = g • F⁻¹ • z - (F⁻¹ • z) ^ l - (F • F⁻¹ • z - (F⁻¹ • z) ^ l)`. Rewrite using `[mul_smul, smul_inv_smul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h`. Establish `hgF' : g = F` using `by simpa using mul_inv_eq_one.1 hgF`. Substitute `hyx` using the available equality. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(((σ0 (c0 x) : ↥(K0 K)) : PadicAlgCl l)) = c' (F x)`.
-
-Use `hg x` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this`. Rewrite using `[show (σ0 (c0 x)) = c0 (g x) from this, hc0, hgF']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FrobPeriod.periodFrob_restrict : ∀ (D : D7) {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (c : D.host.E →+* ↥K.1), l ∉ D.host.small → l ≠ D.host.q → l ≠ D.host.d → ∀ (x : D.host.E) (y : ↥(K0 K)), algebraMap ↥(K0 K) ↥K.1 y = c x → algebraMap ↥(K0 K) ↥K.1 ((P.PD K).σ y) = c (D.host.sigmaOf (DV.frobG D l) x) := by
   intro D l _ P K c h2 hq hd x y hy

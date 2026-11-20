@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.SiegelDataDescent
 
 /- English proof (translation)
-Establish `v₁ : (fst A' A').left ≫ A'.hom = (A' ⊗ A').hom` using `Over.w _`. Establish `v₂ : (snd A' A').left ≫ A'.hom = (A' ⊗ A').hom` using `Over.w _`. Conclude with `⟨pullback.lift ((fst A' A').left ≫ φ) ((snd A' A').left ≫ φ) (by rw [Category.assoc, Category.assoc, w, reassoc_of% v₁, reassoc_of% v₂]), pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_isSquare {S' S : Scheme.{0}} {A' : Over S'} {A : Over S} {f : S' ⟶ S} {φ : A'.left ⟶ A.left}
     (w : φ ≫ A.hom = A'.hom ≫ f) :
@@ -29,7 +29,7 @@ theorem exists_isSquare {S' S : Scheme.{0}} {A' : Over S'} {A : Over S} {f : S' 
     pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩
 
 /- English proof (translation)
-Establish `w₁ : (fst A A).left ≫ A.hom = (A ⊗ A).hom` using `Over.w _`. Establish `v₁ : (fst A' A').left ≫ A'.hom = (A' ⊗ A').hom` using `Over.w _`. Establish `h₁` using `h.1`. Rewrite using `[← w₁, reassoc_of% h₁, w, reassoc_of% v₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSquare_w {S' S : Scheme.{0}} {A' : Over S'} {A : Over S} {f : S' ⟶ S} {φ : A'.left ⟶ A.left}
     (w : φ ≫ A.hom = A'.hom ≫ f) {φ₂ : (A' ⊗ A').left ⟶ (A ⊗ A).left} (h : Geo.Tor.IsSquare φ φ₂) :
@@ -40,9 +40,9 @@ theorem isSquare_w {S' S : Scheme.{0}} {A' : Over S'} {A : Over S} {f : S' ⟶ S
   rw [← w₁, reassoc_of% h₁, w, reassoc_of% v₁]
 
 /- English proof (translation)
-Establish `a₁` using `hψ.1`. Establish `a₂` using `hψ.2`. Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ ≫ (fst A A).left = _ ≫ (fst A A).left`. Rewrite using `[Category.assoc, hφ.1, reassoc_of% a₁, hχ.1, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ ≫ (snd A A).left = _ ≫ (snd A A).left`. Rewrite using `[Category.assoc, hφ.2, reassoc_of% a₂, hχ.2, e]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSquare_comp {S'' S' S : Scheme.{0}} {A'' : Over S''} {A' : Over S'} {A : Over S}
     {ψ : A''.left ⟶ A'.left} {φ : A'.left ⟶ A.left} {χ : A''.left ⟶ A.left} (e : ψ ≫ φ = χ)
@@ -58,17 +58,15 @@ theorem isSquare_comp {S'' S' S : Scheme.{0}} {A'' : Over S''} {A' : Over S'} {A
     rw [Category.assoc, hφ.2, reassoc_of% a₂, hχ.2, e]
 
 /- English proof (translation)
-Establish `w₁ : (fst A A).left ≫ A.hom = (A ⊗ A).hom` using `Over.w _`. Establish `w₂ : (snd A A).left ≫ A.hom = (A ⊗ A).hom` using `Over.w _`. Establish `v₁ : (fst A' A').left ≫ A'.hom = (A' ⊗ A').hom` using `Over.w _`. Establish `v₂ : (snd A' A').left ≫ A'.hom = (A' ⊗ A').hom` using `Over.w _`. Establish `h₁` using `h.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂` using `h.2`. Use `⟨⟨isSquare_w hA.w h⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => pullback.lift (hA.lift (s.fst ≫ (fst A A).left) s.snd (by rw [Category.assoc, w₁, s.condition])) (hA.lift (s.fst ≫ (snd A A).left) s.snd (by rw [Category.assoc, w₂, s.condition])) (by rw [IsPullback.lift_snd, IsPullback.l …` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ ≫ (fst A A).left = _ ≫ (fst A A).left`. Rewrite using `[Category.assoc, h₁, ← Category.assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (· ≫ φ) (pullback.lift_fst _ _ _)).trans (IsPullback.lift_fst _ _ _ _)`. Express the relevant statement in the definitionally equal form `_ ≫ (snd A A).left = _ ≫ (snd A A).left`. Rewrite using `[Category.assoc, h₂, ← Category.assoc]`. Conclude with `(congrArg (· ≫ φ) (pullback.lift_snd _ _ _)).trans (IsPullback.lift_fst _ _ _ _)`. Rewrite using `[← v₁, ← Category.assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg (· ≫ A'.hom) (pullback.lift_fst _ _ _)).trans (IsPullback.lift_snd _ _ _ _)`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `Eq.trans ?_ (pullback.lift_fst _ _ _).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ≫ (fst A' A').left = _`. Apply `hA.hom_ext` to reduce the goal to its premises.
+Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[IsPullback.lift_fst, ← h1, Category.assoc, Category.assoc, h₁]`. Rewrite using `[IsPullback.lift_snd, ← h2, Category.assoc, v₁]`. Use `Eq.trans ?_ (pullback.lift_snd _ _ _).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ≫ (snd A' A').left = _`. Apply `hA.hom_ext` to reduce the goal to its premises.
-
-Rewrite using `[IsPullback.lift_fst, ← h1, Category.assoc, Category.assoc, h₂]`. Rewrite using `[IsPullback.lift_snd, ← h2, Category.assoc, v₂]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_of_isSquare {S' S : Scheme.{0}} {A' : Over S'} {A : Over S} {f : S' ⟶ S}
     {φ : A'.left ⟶ A.left} (hA : IsPullback φ A'.hom A.hom f) {φ₂ : (A' ⊗ A').left ⟶ (A ⊗ A).left}

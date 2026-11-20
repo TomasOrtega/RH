@@ -14,27 +14,27 @@ local notation "𝒮" => tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E)
 local notation "ι" => inclE (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)
 
 /- English proof (translation)
-The claim follows from `Submodule.span_eq (Formalism.UG.CS.globLat x Lb)`.
+A detailed English derivation is pending.
 -/
 theorem latAd_eq_globLat {N : ℕ} (x : GL (Fin N) (E ⊗[F] 𝔸)) (Lb : Submodule (𝓞 E) (Fin N → E)) :
     latAd x Lb = Formalism.UG.CS.globLat x Lb :=
   Submodule.span_eq (Formalism.UG.CS.globLat x Lb)
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[Algebra.smul_def]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incl_smul {N : ℕ} (s : 𝓞 E) (w : Fin N → E) :
     (fun i => ι ((s • w) i)) = ι (algebraMap (𝓞 E) E s) • fun i => ι (w i) := by
   ext i; simp [Algebra.smul_def]
 
 /- English proof (translation)
-Take `⟨m, hm0, hm⟩` from `csGlob_single Lb hspan`. Use `choose d hd0 hd using fun i => levelaf_denom (E := E) (z i)`. Establish `hP : ∀ i, levelafC E (∏ k, d k) * z i ∈ 𝒮` using `fun i => by`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i), levelafC_mul, mul_comm (levelafC E (d i)), mul_assoc]`. Conclude with `mul_mem (levelafC_mem _) (hd i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmC : levelafC E ((m : ℤ) : 𝓞 F) = ((m : ℤ) : E ⊗[F] 𝔸)`. Rewrite using `[levelafC, map_intCast, ← Algebra.TensorProduct.includeRight_apply, map_intCast]`. Use `⟨(∏ k, d k) * ((m : ℤ) : 𝓞 F), mul_ne_zero (Finset.prod_ne_zero_iff.2 fun i _ => hd0 i) (Int.cast_ne_zero.2 hm0), ?_⟩` and prove the remaining obligations. Establish `e : levelafC E ((∏ k, d k) * ((m : ℤ) : 𝓞 F)) • z = ∑ k, (⟨_, hP k⟩ : 𝒮) • (fun i => ι ((Pi.single k (m : E) : Fin N → E) i))`. Use function extensionality and compare the values at `j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_apply, Finset.sum_eq_single j]`. Simplify using `only [Pi.smul_apply, Subring.smul_def, smul_eq_mul, Pi.single_eq_same, map_intCast, levelafC_mul, hmC]`. Expand and normalize the polynomial expressions, which then agree. Introduce `k _ hkj`. Simplify using `only [Pi.smul_apply, Subring.smul_def, smul_eq_mul, Pi.single_eq_of_ne (Ne.symm hkj), map_zero, mul_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => absurd (Finset.mem_univ j) h`. Rewrite using `[e]`. Conclude with `sum_mem fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hm k, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem exists_den_vec {N : ℕ} (Lb : Submodule (𝓞 E) (Fin N → E))
     (hspan : Submodule.span E (Lb : Set (Fin N → E)) = ⊤) (z : Fin N → E ⊗[F] 𝔸) :
@@ -65,23 +65,21 @@ theorem exists_den_vec {N : ℕ} (Lb : Submodule (𝓞 E) (Fin N → E))
   exact sum_mem fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hm k, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[latAd_eq_globLat]`. Establish `hpv : Q.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E)) = v.asIdeal` using `hQ.symm`. Establish `hp : Q.asIdeal.IsPrime` using `Q.isPrime`. Establish `hs : ∀ e, (hc.sig : E →+* E) ((hc.sig : E →+* E) e) = e` using `fun e => star_star e`. Establish `hfix : ∀ e : E, hc.sig e = e → ∃ a : F, algebraMap F E a = e` using `fun e he => (hc.fixed e).1 he`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hsc, hsx⟩`. Establish `key : ∀ s ∈ Formalism.HermitianLatticesTheory.hcompl (K` using `E) Q.asIdeal, ∃ u ∈ 𝒮, u * ι (algebraMap (𝓞 E) E s) = afsplitEps E v := by`. Introduce `s hs'`. Proceed by induction on `hs' using Submonoid.closure_induction with`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem s h => exact GlobalTheory.LocDict.exists_inv_gen hc.sig hs hfix v Q.asIdeal hp hpv s h.1 h.2`. Consider the case `one => exact ⟨_, afsplit_eps_int v, by rw [map_one, map_one, mul_one]⟩`. Consider the case `mul a b _ _ ha hb`. Take `⟨u, hu, e⟩` from `ha`. Take `⟨u', hu', e'⟩` from `hb`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨u * u', mul_mem hu hu', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, mul_mul_mul_comm, e, e', afsplit_eps_idem]`. Take `⟨u, hu, e⟩` from `key s hsc`. Establish `hsx' : ((x⁻¹ : GL (Fin N) (E ⊗[F] 𝔸)) : Matrix (Fin N) (Fin N) (E ⊗[F] 𝔸)) *ᵥ (fun i => ι ((s • w) i)) ∈ latS (F` using `F) 𝔸 𝒮 Lb := hsx`. Establish `h` using `Submodule.smul_mem (latS (F := F) 𝔸 𝒮 Lb) ⟨u, hu⟩ hsx'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[incl_smul, Matrix.mulVec_smul, Subring.smul_def, smul_smul, e]`. Introduce `hx`. Take `⟨d, hd0, hd⟩` from `exists_den_vec Lb hspan (((x⁻¹ : GL (Fin N) (E ⊗[F] 𝔸)) : Matrix (Fin N) (Fin N) (E ⊗[F] 𝔸)) *ᵥ fun i => ι (w i))`. Take `⟨t, ht, y, hy, e⟩` from `GlobalTheory.LocDict.exists_approx v d hd0`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hinj : Function.Injective (algebraMap (𝓞 E) E)` using `IsFractionRing.injective (𝓞 E) E`. Establish `htp : algebraMap (𝓞 F) (𝓞 E) t ∉ Q.asIdeal`. Rewrite using `[← Ideal.mem_comap, hpv]`. Conclude with `ht`. Use `⟨algebraMap (𝓞 F) (𝓞 E) t, Submonoid.subset_closure ⟨htp, fun r hr => ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: r = algebraMap (𝓞 F) (𝓞 E) t`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hr, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (𝓞 F) F E]`. Conclude with `(hc.fixed _).2 ⟨_, rfl⟩`. Rewrite using `[this]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `htp`. Use `show ((x⁻¹ : GL (Fin N) (E ⊗[F] 𝔸)) : Matrix (Fin N) (Fin N) (E ⊗[F] 𝔸)) *ᵥ (fun i => ι ((algebraMap (𝓞 F) (𝓞 E) t • w) i)) ∈ latS (F := F) 𝔸 𝒮 Lb`. Rewrite using `[incl_smul, Matrix.mulVec_smul, ← IsScalarTower.algebraMap_apply, adelstab_incl_C]`. Establish `e2 : levelafC E t = levelafC E t * afsplitEps E v + ((1 : E) ⊗ₜ[F] y) * levelafC E d`. Rewrite using `[GlobalTheory.LocDict.eps_eq, levelafC, levelafC, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← TensorProduct.tmul_add, ← e]`.
-
-Rewrite using `[e2, add_smul, ← smul_smul, ← smul_smul]`. Conclude with `add_mem (Submodule.smul_mem _ ⟨_, levelafC_mem (E := E) t⟩ hx) (Submodule.smul_mem _ ⟨_, GlobalTheory.LocDict.one_tmul_mem hy⟩ hd)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_loc_latAd (hc : Formalism.BasicNotions.CMData F E) (Q : HeightOneSpectrum (𝓞 E))
     (v : HeightOneSpectrum (𝓞 F)) (hQ : Formalism.L2.Col.IsOver v Q) {N : ℕ}
@@ -139,9 +137,9 @@ theorem mem_loc_latAd (hc : Formalism.BasicNotions.CMData F E) (Q : HeightOneSpe
         (Submodule.smul_mem _ ⟨_, GlobalTheory.LocDict.one_tmul_mem hy⟩ hd)
 
 /- English proof (translation)
-Establish `hinv : bc (prV (E` using `E) v) x₁⁻¹ = bc (prV (E := E) v) x⁻¹ := by rw [map_inv, map_inv, h]`. Establish `hij : ∀ i j, prV (E` using `E) v (((x₁⁻¹ : GL (Fin N) (E ⊗[F] 𝔸)) : Matrix (Fin N) (Fin N) (E ⊗[F] 𝔸)) i j) = prV (E := E) v (((x⁻¹ : GL (Fin N) (E ⊗[F] 𝔸)) : Matrix (Fin N) (Fin N) (E ⊗[F] 𝔸)) i j) := fun i j => by`. Use `congrArg (fun g : GL (Fin N) (E ⊗[F] v.adicCompletion F) => ((g : Matrix (Fin N) (Fin N) (E ⊗[F] v.adicCompletion F)) i j)) hinv` as an intermediate fact. Conclude with `this`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← mul_assoc, ← afsplit_decomp, ← afsplit_decomp, hij]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eps_smul_inv_mulVec {N : ℕ} (v : HeightOneSpectrum (𝓞 F)) (x x₁ : GL (Fin N) (E ⊗[F] 𝔸))
     (h : bc (prV (E := E) v) x₁ = bc (prV (E := E) v) x) (z : Fin N → E ⊗[F] 𝔸) :
@@ -160,7 +158,7 @@ theorem eps_smul_inv_mulVec {N : ℕ} (v : HeightOneSpectrum (𝓞 F)) (x x₁ :
   rw [← mul_assoc, ← mul_assoc, ← afsplit_decomp, ← afsplit_decomp, hij]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hc Q v hQ N Lb _ hspan x x₁ h`. Use extensionality with `w`. Rewrite using `[mem_loc_latAd hc Q v hQ Lb hspan x₁ w, mem_loc_latAd hc Q v hQ Lb hspan x w, eps_smul_inv_mulVec v x x₁ h]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem loc_latAd_eq : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (hc : Formalism.BasicNotions.CMData F E) (Q : HeightOneSpectrum (𝓞 E)) (v : HeightOneSpectrum (𝓞 F)), Formalism.L2.Col.IsOver v Q → ∀ {N : ℕ} (Lb : Submodule (𝓞 E) (Fin N → E)), Module.Finite (𝓞 E) Lb → Submodule.span E (Lb : Set (Fin N → E)) = ⊤ → ∀ (x x₁ : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)), bc (prV (E := E) v) x₁ = bc (prV (E := E) v) x → Formalism.HermitianLatticesTheory.loc (K := E) Q.asIdeal (latAd x₁ Lb) = Formalism.HermitianLatticesTheory.loc (K := E) Q.asIdeal (latAd x Lb) := by
   intro F E _ _ _ _ _ _ hc Q v hQ N Lb _ hspan x x₁ h

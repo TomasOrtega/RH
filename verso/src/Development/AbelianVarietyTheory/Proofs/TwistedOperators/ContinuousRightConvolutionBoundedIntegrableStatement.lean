@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContinuousRightC
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.conv_right_continuous | exact GlobalTheory.conv_right_continuous | (intros; apply GlobalTheory.conv_right_continuous <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.continuous_right_convolution_bounded_integrable : ∀ {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] {H : Subgroup G} (m : Measure H) (α : H → ℂ), Integrable α m → ∀ (φ : G → ℂ), Continuous φ → ∀ B : ℝ, (∀ g, ‖φ g‖ ≤ B) → Continuous (fun x => ∫ h, α h * φ (x * (h : G)) ∂m) := by
   first | exact @GlobalTheory.conv_right_continuous | exact GlobalTheory.conv_right_continuous | (intros; apply GlobalTheory.conv_right_continuous <;> assumption)

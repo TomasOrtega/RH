@@ -37,7 +37,7 @@ def etaGal (s : ℕ) (hQ : ∀ T, QB L M s T → QA L M s (((nmB M hL).mor 0).ob
 end GaloisEquivariantMaps
 
 /- English proof (translation)
-Establish `i1 : RingHomCompTriple L.ι (L.σB g) ((L.σB g).comp L.ι)` using `⟨rfl⟩`. Establish `i2 : RingHomCompTriple (L.σA g) L.ι ((L.σB g).comp L.ι)` using `⟨RingHom.ext fun a => hL.σ_ι g a⟩`. Establish `e₁` using `CrystallineSemistableComparison.pull_pull ((L.σB g).comp L.ι) (smB M s hL hQ).o (nmS (nmGB hL g M) 1 s).o j z`. Establish `e₂` using `CrystallineSemistableComparison.pull_pull ((L.σB g).comp L.ι) (nmS (nmGA hL g M) l s).o (smB M s hL hQ).o j z`. Conclude with `e₁.trans ((CrystallineSemistableComparison.P.prism ((smB M s hL hQ).o.comp (σ'' := (L.σB g).comp L.ι) (nmS (nmGB hL g M) 1 s).o) ((nmS (nmGA hL g M) l s).o.comp (σ'' := (L.σB g).comp L.ι) (smB M s hL hQ).o) (GaloisEquivariantMaps.etaGal hL g M s hQ) (fun T x => rfl) j z).trans e₂ …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nmHO_nmGB_bMap (s : ℕ) (hQ : ∀ T, QB L M s T → QA L M s (((nmB M hL).mor 0).obj T)) (j : ℕ) (z : HO (QA L M s) j) :
     nmHO (nmGB hL g M) 1 s j (bMap M s hL hQ j z) = bMap M s hL hQ j (nmHO (nmGA hL g M) l s j z) := by
@@ -53,7 +53,7 @@ variable (s : ℕ) (hQ : ∀ T, QB L M s T → QA L M s (((nmB M hL).mor 0).obj 
   (rH : ∀ n j, M.Hc false n j →ₛₗ[L.lam] HM (QA L M s) none ((l : L.A) ^ n) j)
 
 /- English proof (translation)
-The claim follows from `rfl lam c := hL.σ_lam g c ι a := (hL.σ_ι g a).symm o k := hL.σB_K g k tS n j x := ((M.galH false j (IntermediateField.fixingSubgroupEquiv K g)).comm n x).symm r n j x := hr n j x red n j z := nmHM_redM _ l s none n j z b j z := nmHO_nmGB_bMap hL g M s hQ j z μ j v := (nm_muB (nmG …`.
+A detailed English derivation is pending.
 -/
 theorem homGal_good_of_galRed (hr : GalRed hL g M s rH) : (homGal hL g M s hQ rH).Good where
   ℓ := rfl
@@ -74,9 +74,7 @@ variable {m : ℕ} {L : Lev (per l K) m}
   (hc : ∀ n (c : Acris l), (d n).ρ ((PAlg.base l).cris n c) = Ideal.Quotient.mk _ (L.lam c))
 
 /- English proof (translation)
-Introduce `n j x`. Conclude with `(red_nm (d n) (d n) s (nmGA hL g M) _ _ _ _ _ (hc n) (hc n) _ _ (fun _ _ => (Category.comp_id _).symm) (by`. Introduce `y`. Take `⟨c, rfl⟩` from `((RL.base_acr (PAlg.base l) PAlg.isBase_base).2 n).1 y`. Rewrite using `[PAlg.galBase_cris, hc, hc]`.
-
-Conclude with `(congrArg (Ideal.Quotient.mk _) (hL.σ_lam g c)).symm) none j x).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galRed_rHof (hL : L.Good) (g : K.fixingSubgroup) (M : Model l K) (s : ℕ) : GalRed hL g M s (rHof d hc M s) := by
   intro n j x

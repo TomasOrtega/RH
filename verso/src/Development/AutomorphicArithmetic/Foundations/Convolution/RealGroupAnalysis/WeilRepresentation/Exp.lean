@@ -10,9 +10,9 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π f hf φ hφ h`. Establish `hδ : D.δ ≠ 0`. Introduce `h0`. Establish `h` using `D.sq`. Rewrite `h` using `[h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `D.b.ne_zero 1 (by rw [D.b1, (pow_eq_zero_iff two_ne_zero).1 h])`. Establish `hO` using `G.orth F D.δ hδ (T0 W M f.1 φ h) (Wx W M f.1 φ h) (fun u => lift W M f.1 φ (nE D u * h)) (G.expand1 F E D W M π f hf φ hφ h).1 fun u => by`. Rewrite using `[(G.expand1 F E D W M π f hf φ hφ _).2, (G.transN F E D W M f.1 φ h u).1]`. Simplify using `only [(G.transN F E D W M f.1 φ h u).2]`. Conclude with `hO.2.2.2.trans (G.thetaFourierCoeff_zero_and_eq_shifted_whittaker F E D W M π f hf φ hφ h).2.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.exp :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), St.Exp W M π := by

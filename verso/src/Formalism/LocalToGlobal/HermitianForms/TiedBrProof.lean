@@ -12,7 +12,7 @@ section GlobalTheory
 variable {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.product_first_zeroth_parts.ten`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun τ _ => blkRow_rename K τ (f τ)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blkRow_ten (K : ι → Matrix (Fin n) (Fin n) ℂ) (f : ι → MvPolynomial (Fin n × Fin n) ℂ) :
     blkRow K (Formalism.MainNotions.product_first_zeroth_parts.ten f) = Formalism.MainNotions.product_first_zeroth_parts.ten (fun τ => Formalism.GradedWeylDivisibility.rowAct ℂ (K τ) (f τ)) := by
@@ -21,11 +21,11 @@ theorem blkRow_ten (K : ι → Matrix (Fin n) (Fin n) ℂ) (f : ι → MvPolynom
   exact Finset.prod_congr rfl fun τ _ => blkRow_rename K τ (f τ)
 
 /- English proof (translation)
-Establish `h : (blkRow K).toLinearMap = Formalism.MainNotions.product_first_zeroth_parts.blk (fun τ => ⇑((Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `n) (K τ)).toLinearMap)) := by`. Apply `(MvPolynomial.basisMonomials (ι × Fin n × Fin n) ℂ).ext` to reduce the goal to its premises. Introduce `mon`. Rewrite using `[MvPolynomial.coe_basisMonomials, Formalism.L2.Ker.ta_blk_monomial]`. Establish `hm : (MvPolynomial.monomial mon (1 : ℂ)) = Formalism.MainNotions.product_first_zeroth_parts.ten fun τ => MvPolynomial.monomial (mon.comapDomain (Prod.mk τ) (Prod.mk_right_injective τ).injOn) (1 : ℂ)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Formalism.MainNotions.product_first_zeroth_parts.ten_monomial, Formalism.L2.Ker.ta_sum_map_comap]`. Rewrite using `[AlgHom.toLinearMap_apply]`. Simplify using `only`. Rewrite using `[hm, blkRow_ten]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `LinearMap.congr_fun h P`.
+A detailed English derivation is pending.
 -/
 theorem blkRow_eq_blk (K : ι → Matrix (Fin n) (Fin n) ℂ) (P : MvPolynomial (ι × Fin n × Fin n) ℂ) :
     blkRow K P = Formalism.MainNotions.product_first_zeroth_parts.blk (fun τ => ⇑((Formalism.GradedWeylDivisibility.rowAct ℂ (n := n) (K τ)).toLinearMap)) P := by
@@ -55,7 +55,7 @@ theorem embGL_val {R : Type} [CommRing R] {n N : ℕ} (h : n + 1 = N) (G : GL (F
         (Matrix.fromBlocks (G : Matrix (Fin n) (Fin n) R) 0 0 (1 : Matrix (Fin 1) (Fin 1) R)) := rfl
 
 /- English proof (translation)
-Unfold `detPow`. Use `congr 2`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply, embGL_val, Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem detPow_embGL {R : Type} [CommRing R] {n N : ℕ} (h : n + 1 = N) (G : GL (Fin n) R) (c : ℤ) :
     detPow R N (Formalism.MainNotions.PrimeDegreeVariant.embGL R n N h G) c = detPow R n G c := by
@@ -66,7 +66,7 @@ theorem detPow_embGL {R : Type} [CommRing R] {n N : ℕ} (h : n + 1 = N) (G : GL
     Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one]
 
 /- English proof (translation)
-Unfold `sqAct`. Rewrite using `[smul_smul, inv_mul_cancel₀ (by unfold detPow; exact Units.ne_zero _), one_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rowAct_tr_eq {k : ℕ} (l : DomWeight k) (G : GL (Fin k) ℂ) (f : MvPolynomial (Fin k × Fin k) ℂ) :
     Formalism.GradedWeylDivisibility.rowAct ℂ (n := k) (G : Matrix (Fin k) (Fin k) ℂ).transpose f = (detPow ℂ k G l.detShift)⁻¹ • sqAct ℂ k l G f := by
@@ -74,7 +74,7 @@ theorem rowAct_tr_eq {k : ℕ} (l : DomWeight k) (G : GL (Fin k) ℂ) (f : MvPol
   rw [smul_smul, inv_mul_cancel₀ (by unfold detPow; exact Units.ne_zero _), one_smul]
 
 /- English proof (translation)
-Rewrite using `[rowAct_tr_eq l, rowAct_tr_eq s, map_smul, Formalism.L2.Ker.brOne_sqAct hN l s hS G f, detPow_embGL]`. Rewrite using `[show s.detShift = l.detShift from hS]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem brOne_rowAct {N n : ℕ} (hN : N = n + 1) (l : DomWeight N) (s : DomWeight n)
     (hS : Formalism.L2.Col.Br.SameShift l s) (G : GL (Fin n) ℂ) (f : MvPolynomial (Fin N × Fin N) ℂ) :
@@ -89,9 +89,9 @@ end GLBlk
 variable {D : D7} {u : D.what₂.Word}
 
 /- English proof (translation)
-Establish `hS : ∀ τ, Formalism.L2.Col.Br.SameShift (lamTr D u τ) (sgTr D u τ)` using `fun τ => Formalism.L2.Ker.sameShiftTr D u τ (interlaceTr D u (sg_interlace Tf.valP) τ)`. Rewrite using `[blkRow_eq_blk, blkRow_eq_blk]`. Unfold `Formalism.L2.Ker.brTen`. Rewrite using `[Formalism.L2.Ker.ta_blk_comp, Formalism.L2.Ker.ta_blk_comp]`. Establish `e : (fun τ => ⇑(Formalism.L2.Ker.brOne ℂ (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ) ∘ₗ (Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `D.R.N D.R.m) ((Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ _ _ (Nm_succ D.R) (G τ) : GL (Fin (D.R.N D.R.m)) ℂ) : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) ℂ).transpose).toLinearMap)) = fun τ => ⇑((Formalism.GradedWeylDivisibility.rowAct ℂ (n := D.R.N D.R.m - 1) (G τ : M …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ f`. Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply]`. Conclude with `brOne_rowAct (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ) (hS τ) (G τ) f`. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem brTen_blkRow (Tf : FormsTied D u) (G : D.what₂.Tau → GL (Fin (D.R.N D.R.m - 1)) ℂ)
     (P : MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ) :
@@ -119,9 +119,9 @@ def dgE (B' : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E) :
     (Matrix.fromBlocks B' 0 0 (1 : Matrix (Fin 1) (Fin 1) D.host.E))
 
 /- English proof (translation)
-Use extensionality with `a b`. Take `⟨x, rfl⟩` from `(finSumFinEquiv.trans (finCongr (Nm_succ D.R))).surjective b`. Rewrite using `[Matrix.mul_apply, ← (finSumFinEquiv.trans (finCongr (Nm_succ D.R))).sum_comp, Fintype.sum_sum_type]`. Break down `x with i | i` into its components or cases. Simplify using `[bZg, bZ, dgE, Matrix.mul_apply, Matrix.reindex_apply, Matrix.submatrix_apply]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Establish `hi : i = 0` using `Subsingleton.elim _ _`. Substitute `hi` using the available equality. Simplify using `[bZg, bZ, dgE, Matrix.reindex_apply, Matrix.submatrix_apply]`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem bZg_eq_mul (z0 : Fin (D.R.N D.R.m) → D.host.E) (B' : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E) :
     bZg u z0 B' = bZ u z0 * dgE B' := by
@@ -135,7 +135,7 @@ theorem bZg_eq_mul (z0 : Fin (D.R.N D.R.m) → D.host.E) (B' : Matrix (Fin (D.R.
     simp [bZg, bZ, dgE, Matrix.reindex_apply, Matrix.submatrix_apply]
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Use `show A.map (embT D τ) * (A⁻¹).map (embT D τ) = 1`. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ hA, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem atInf_inv_inv {n : ℕ} (A : Matrix (Fin n) (Fin n) D.host.E) (hA : IsUnit A.det) (τ : D.what₂.Tau) :
     (atInf (embT D) A⁻¹ τ)⁻¹ = atInf (embT D) A τ := by
@@ -156,7 +156,7 @@ theorem glT_val (B' : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.h
     ((glT B' hB' τ : GL (Fin (D.R.N D.R.m - 1)) ℂ) : Matrix _ _ ℂ) = (B'.map (embT D τ)).transpose := rfl
 
 /- English proof (translation)
-Rewrite using `[embGL_val, Matrix.transpose_reindex, Matrix.fromBlocks_transpose, glT_val, Matrix.transpose_transpose, Matrix.transpose_zero, Matrix.transpose_zero, Matrix.transpose_one]`. Unfold `dgE`. Rewrite using `[Matrix.reindex_apply, Matrix.reindex_apply, ← Matrix.submatrix_map, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _), Matrix.map_zero _ (map_zero _), Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem embGL_glT (B' : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E) (hB' : IsUnit B'.det) (τ : D.what₂.Tau) :
     ((Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ _ _ (Nm_succ D.R) (glT B' hB' τ) : GL (Fin (D.R.N D.R.m)) ℂ) : Matrix _ _ ℂ).transpose =
@@ -168,11 +168,11 @@ theorem embGL_glT (B' : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D
     Matrix.map_zero _ (map_zero _), Matrix.map_zero _ (map_zero _), Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Establish `hS : Formalism.L2.Col.Br.SameShift (lamTr D u τ) (sgTr D u τ)` using `Formalism.L2.Ker.sameShiftTr D u τ (interlaceTr D u (sg_interlace Tf.valP) τ)`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hN : D.R.N D.R.m = D.R.k + D.R.m * (D.R.t + 1)` using `rfl`. Establish `h1 : 0 < D.R.N D.R.m` using `by omega`. Establish `h2 : 0 < D.R.N D.R.m - 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS' : (sgTr D u τ).detShift = (lamTr D u τ).detShift` using `hS`. Unfold `lamTr sgTr at hS'`. Rewrite `hS'` using `[detShift_wSh _ _ h1, detShift_wSh _ _ h2]`. Simplify using `only [shiftOf, lamT, sgT]`. Rewrite using `[detShift_shW _ _ h1, detShift_shW _ _ h2]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `cTw at hS'`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem shift_lamT_sgT (Tf : FormsTied D u) (τ : D.what₂.Tau) :
     shiftOf (lamT u D.R.m) τ = shiftOf (sgT u) τ := by
@@ -191,19 +191,19 @@ theorem shift_lamT_sgT (Tf : FormsTied D u) (τ : D.what₂.Tau) :
   omega
 
 /- English proof (translation)
-Introduce `w φ hφ c`. Take `⟨P, hP, hv⟩` from `val_rep Tf φ hφ c`. Use `⟨P, hP, hv, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hBc` using `hB w c`. Establish `hU1` using `atInf_inv_isUnit _ hBc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbZ` using `bZ_isUnit Tf`. Establish `hbZg` using `bZg_isUnit Tf (B w c) hBc`. Establish `hU2` using `atInf_inv_isUnit _ hbZg`. Establish `hL : coPT Tf B w z c = (∏ τ, ((1 : D.what₂.Tau → Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) ℂ) τ * (atInf (embT D) (B w c)⁻¹ τ)⁻¹).det ^ shiftOf (sgT u) τ) • blkRow (fun τ => (1 : D.what₂.Tau → Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) ℂ) τ * (atInf (embT …`. Establish `e1 : coPT Tf B w z c = fnInv (gramC (gramP D) (embT D)) (shiftOf (sgT u)) (atInf (embT D) (B w c)⁻¹) (Tf.valP.eW z c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [coPT, LinearMap.pi_apply, LinearMap.coe_comp, Function.comp_apply, LinearMap.coe_proj, Function.eval, LinearEquiv.coe_coe]`. Rewrite using `[e1, hz, fnOf_change _ _ (atInf (embT D) (B w c)⁻¹) 1 hU1, fnInv_fnOf _ _ _ hU1]`. Establish `hM : trEv Tf c (φ ((D.fm u).til c)) = fnOf _ (shiftOf (lamT u D.R.m)) (mZ u Tf.til.z0) P`. Use function extensionality and compare the values at `y`. Rewrite using `[trEv_eq, hv, Equiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hR : coMT Tf B w c (φ ((D.fm u).til c)) = (∏ τ, (atInf (embT D) (bZ u Tf.til.z0)⁻¹ τ * (atInf (embT D) (bZg u Tf.til.z0 (B w c))⁻¹ τ)⁻¹).det ^ shiftOf (lamT u D.R.m) τ) • blkRow (fun τ => atInf (embT D) (bZ u Tf.til.z0)⁻¹ τ * (atInf (embT D) (bZg u Tf.til.z0 (B w c))⁻¹ τ)⁻¹) P`. Simplify using `only [coMT, LinearMap.coe_comp, Function.comp_apply]`. Rewrite using `[hM, mZ, fnOf_change _ _ (atInf (embT D) (bZg u Tf.til.z0 (B w c))⁻¹) (atInf (embT D) (bZ u Tf.til.z0)⁻¹) hU2, fnInv_fnOf _ _ _ hU2]`. Establish `hKm : (fun τ => atInf (embT D) (bZ u Tf.til.z0)⁻¹ τ * (atInf (embT D) (bZg u Tf.til.z0 (B w c))⁻¹ τ)⁻¹) = fun τ => ((Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ _ _ (Nm_succ D.R) (glT (B w c) hBc τ) : GL (Fin (D.R.N D.R.m)) ℂ) : Matrix _ _ ℂ).transpose`. Use function extensionality and compare the values at `τ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[embGL_glT, atInf_inv_inv _ hbZg, bZg_eq_mul]`. Use `show (bZ u Tf.til.z0)⁻¹.map (embT D τ) * (bZ u Tf.til.z0 * dgE (B w c)).map (embT D τ) = _`. Rewrite using `[← Matrix.map_mul, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hbZ, Matrix.one_mul]`. Establish `hKp : (fun τ => (1 : D.what₂.Tau → Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) ℂ) τ * (atInf (embT D) (B w c)⁻¹ τ)⁻¹) = fun τ => ((glT (B w c) hBc τ : GL (Fin (D.R.N D.R.m - 1)) ℂ) : Matrix _ _ ℂ).transpose`. Use function extensionality and compare the values at `τ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[glT_val, Matrix.transpose_transpose, Pi.one_apply, Matrix.one_mul, atInf_inv_inv _ hBc]`. Both sides reduce to the same expression. Rewrite using `[hL, hR, hKm, hKp, map_smul, brTen_blkRow Tf]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `congrFun hKm τ`. Establish `h2` using `congrFun hKp τ`. Rewrite using `[h1, h2, shift_lamT_sgT Tf τ, embGL_glT, glT_val, Matrix.det_transpose]`. Unfold `dgE`. Rewrite using `[Matrix.reindex_apply, ← Matrix.submatrix_map, Matrix.det_submatrix_equiv_self, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _), Matrix.map_zero _ (map_zero _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one, Matrix.det_tran …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exP_of (Tf : FormsTied D u)
     (B : D.what₂.places.Pl → (D.fm u).clsP → Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E)
@@ -279,7 +279,7 @@ structure RestrictionLatticeIntegralCoordinates (Tf : FormsTied D u)
       (blk (fun τ => sqAct ℂ _ (sgTr D u τ) (gP w c τ)) (coPT Tf B w z c))).re
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨exP_of Tf B hB, h.lat_co, h.pt_co, h.ipV_co, h.re_petersson_self_eq_sum_coord⟩`.
+Supply the required witnesses or components.
 -/
 theorem pendRest_of (Tf : FormsTied D u)
     (B : D.what₂.places.Pl → (D.fm u).clsP → Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E)
@@ -289,7 +289,7 @@ theorem pendRest_of (Tf : FormsTied D u)
   ⟨exP_of Tf B hB, h.lat_co, h.pt_co, h.ipV_co, h.re_petersson_self_eq_sum_coord⟩
 
 /- English proof (translation)
-The claim follows from `{ coM_mem := coM_mem_of Tf B hB, coM_inj := coM_inj_of Tf B hB, coP_mem := coP_mem_of_isUnit_det Tf B hB, coP_inj := coP_inj_of_isUnit_det Tf B hB, exP := exP_of Tf B hB, lat_co := h.lat_co, pt_co := h.pt_co, ipV_co := h.ipV_co, re_petersson_self_eq_sum_coord := h.re_petersson_se …`.
+A detailed English derivation is pending.
 -/
 theorem pendClauses_of (Tf : FormsTied D u)
     (B : D.what₂.places.Pl → (D.fm u).clsP → Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E)
@@ -301,7 +301,7 @@ theorem pendClauses_of (Tf : FormsTied D u)
     re_petersson_self_eq_sum_coord := h.re_petersson_self_eq_sum_coord }
 
 /- English proof (translation)
-The claim follows from `brExists_of_rest Tf B hB hL gP (pendRest_of Tf B hB gP h)`.
+A detailed English derivation is pending.
 -/
 theorem brExists_of_rest4 (Tf : FormsTied D u) (hL : LowerLevelCompatible Tf)
     (B : D.what₂.places.Pl → (D.fm u).clsP → Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E)
@@ -311,7 +311,7 @@ theorem brExists_of_rest4 (Tf : FormsTied D u) (hL : LowerLevelCompatible Tf)
   brExists_of_rest Tf B hB hL gP (pendRest_of Tf B hB gP h)
 
 /- English proof (translation)
-Establish `e : (fun τ => sqAct ℂ n (l τ) (g τ)) = fun τ => ⇑(detPow ℂ n (g τ) (l τ).detShift • (Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `n) (g τ : Matrix (Fin n) (Fin n) ℂ).transpose).toLinearMap) :=`. Use function extensionality and compare the values at `fun τ => (Formalism.L2.Ker.ta_sqActL_coe _ _).symm`. Rewrite using `[e, Formalism.L2.Ker.blk_smul, blkRow_eq_blk]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem blk_sqAct_eq {ι : Type} [Fintype ι] {n : ℕ} (l : ι → DomWeight n) (g : ι → GL (Fin n) ℂ)
     (Q : MvPolynomial (ι × Fin n × Fin n) ℂ) :
@@ -324,9 +324,9 @@ theorem blk_sqAct_eq {ι : Type} [Fintype ι] {n : ℕ} (l : ι → DomWeight n)
   rfl
 
 /- English proof (translation)
-Establish `hi : ∀ τ, IsUnit ((o τ)⁻¹).det` using `fun τ => Matrix.isUnit_nonsing_inv_det _ (ho τ)`. Rewrite using `[fnOf_change G _ (fun τ => (o τ)⁻¹) M hi Q, blk_sqAct_eq]`. Establish `hK : (fun τ => M τ * ((fun τ => (o τ)⁻¹) τ)⁻¹) = fun τ => (g τ : Matrix (Fin n) (Fin n) ℂ).transpose`. Use function extensionality and compare the values at `τ`. Simplify using `only [hg, Matrix.transpose_transpose, Matrix.nonsing_inv_nonsing_inv _ (ho τ)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hK]`. Use `congr 2`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Unfold `detPow`. Rewrite using `[Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply, hg, Matrix.det_transpose, Matrix.nonsing_inv_nonsing_inv _ (ho τ)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fnOf_sqAct {ι : Type} [Fintype ι] {n : ℕ} (G : ι → Matrix (Fin n) (Fin n) ℂ) (l : ι → DomWeight n)
     (M o : ι → Matrix (Fin n) (Fin n) ℂ) (ho : ∀ τ, IsUnit (o τ).det) (g : ι → GL (Fin n) ℂ)
@@ -352,7 +352,7 @@ def gPof (B : D.what₂.places.Pl → (D.fm u).clsP → Matrix (Fin (D.R.N D.R.m
     rw [Matrix.det_transpose, Matrix.det_mul]; exact (atInf_inv_isUnit _ (hB w c) τ).mul (o.2 τ))
 
 /- English proof (translation)
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `hN : D.R.N D.R.m = D.R.k + D.R.m * (D.R.t + 1)` using `rfl`. Establish `h2 : 0 < D.R.N D.R.m - 1` using `by omega`. Simplify using `only [shiftOf, sgT, sgTr]`. Rewrite using `[detShift_shW _ _ h2, detShift_wSh _ _ h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -365,19 +365,19 @@ theorem shift_sgTr (τ : D.what₂.Tau) : (sgTr D u τ).detShift = shiftOf (sgT 
   rfl
 
 /- English proof (translation)
-Simplify using `only [Formalism.MainNotions.product_first_zeroth_parts.CSpan, sgTr, delSq_wSh]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cspan_sgTr : Formalism.MainNotions.product_first_zeroth_parts.CSpan (sgTr D u) = Formalism.MainNotions.product_first_zeroth_parts.CSpan (D.fm u).sg := by
   simp only [Formalism.MainNotions.product_first_zeroth_parts.CSpan, sgTr, delSq_wSh]
 
 /- English proof (translation)
-Introduce `w z hz`. Establish `hQ : ∀ c, blk (fun τ => sqAct ℂ _ (sgTr D u τ) (gPof B hB o w c τ)) (coPT Tf B w z c) ∈ CSpan (D.fm u).sg`. Introduce `c`. Establish `h0` using `coP_mem_of_isUnit_det Tf B hB w z hz c`. Rewrite `h0` using `[← cspan_sgTr]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `Formalism.L2.Ker.lc_blk_sqAct_mem _ (gPof B hB o w c) _ h0`. Rewrite `h1` using `[cspan_sgTr]`. Conclude with `h1`. Establish `hE : ∀ c, Tf.valP.eW z c = fnOf _ (shiftOf (sgT u)) (fun τ => (o.1 τ)⁻¹) (blk (fun τ => sqAct ℂ _ (sgTr D u τ) (gPof B hB o w c τ)) (coPT Tf B w z c))`. Introduce `c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, _, hq⟩` from `eW_rep Tf (B w c) (hB w c) z hz c`. Establish `hc : coPT Tf B w z c = Q`. Simplify using `only [coPT, LinearMap.pi_apply, LinearMap.coe_comp, Function.comp_apply, LinearMap.coe_proj, Function.eval, LinearEquiv.coe_coe]`. Rewrite using `[hq, fnInv_fnOf _ _ _ (atInf_inv_isUnit _ (hB w c))]`. Establish `hs : shiftOf (sgT u) = fun τ => (sgTr D u τ).detShift` using `funext fun τ => (shift_sgTr τ).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, hq, hs, fnOf_sqAct _ (sgTr D u) (atInf (embT D) (B w c)⁻¹) o.1 o.2 _ (fun τ => rfl)]`. Rewrite using `[Tf.valP.ipP o ho z z _ _ hQ hQ hE hE, Complex.re_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[show ((Nat.card ((D.fm u).stabilizer₂ c) : ℕ) : ℂ)⁻¹ = (((Nat.card ((D.fm u).stabilizer₂ c) : ℝ))⁻¹ : ℝ) by push_cast; rfl, Complex.re_ofReal_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem re_petersson_self_eq_sum_coord_of_isOrthonormal (Tf : FormsTied D u)
     (B : D.what₂.places.Pl → (D.fm u).clsP → Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E)

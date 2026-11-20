@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.UPel.HT.EtLev.GeoCard
 
 /- English proof (translation)
-Take `⟨ℓ, hℓ1, hℓ⟩` from `Nat.exists_infinite_primes (p + ringChar k + 1)`. Establish `hℓp : ℓ ≠ p` using `by omega`. Establish `hℓk : (ℓ : k) ≠ 0`. Rewrite using `[Ne, CharP.cast_eq_zero_iff k (ringChar k)]`. Introduce `hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `(Nat.dvd_prime hℓ).1 hd with h1 | h1` into its components or cases. Conclude with `CharP.ringChar_ne_one (R := k) h1`. Use linear arithmetic over natural numbers and integers. Conclude with `GlobalTheory.T.abelianScheme_card_kernel_eq_norm_pow S o.A o.ab D.F (o.act.toF D) k x (D.m * D.n) ℓ hℓ hℓk (GlobalTheory.T.exists_level_structure_on_torsion p D R b N S s o k x ℓ hℓ hℓp) c hc (GlobalTheory.T.harrisTaylor_tangent_injective_away_from_etalePlace p D R b N w0 hw S s …`.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem card_ker_elt {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
     {w0 : Ideal (𝓞 D.F)} (hw : IsEtPlace b w0) {S : Scheme.{0}} {s : S ⟶ Sp R} (o : Obj b N s) (k : Type) [Field k]
@@ -34,45 +34,39 @@ theorem card_ker_elt {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing
     (GlobalTheory.T.harrisTaylor_tangent_injective_away_from_etalePlace p D R b N w0 hw S s o k x c hc hcw)
 
 /- English proof (translation)
-Introduce `p _ D R _ b N w0 hw S s o k _ _ x`. Use `letI : CommGroup (Over.mk x ⟶ o.A) := Hom.commGroup`. Establish `act0 : o.act.act 0 = 1`. Establish `h` using `o.act.add 0 0`. Rewrite `h` using `[add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_eq_left.mp h.symm`. Use `letI : Module (𝓞 D.F) (Additive (Over.mk x ⟶ o.A)) := { smul := fun c g => Additive.ofMul (g.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O c)) one_smul := fun g => by show Additive.ofMul (g.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O 1)) = g`. Rewrite using `[map_one, o.act.one, Category.comp_id]`. Both sides reduce to the same expression. Use `mul_smul := fun a b g => by show Additive.ofMul (g.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O (a * b))) = Additive.ofMul ((g.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O b)) ≫ o.act.act (algebraMap (𝓞 D.F) D.O a))`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, o.act.mul, Category.assoc]`. Use `smul_zero := fun c => by haveI := o.act.hom (algebraMap (𝓞 D.F) D.O c) show Additive.ofMul ((1 : Over.mk x ⟶ o.A) ≫ o.act.act (algebraMap (𝓞 D.F) D.O c)) = Additive.ofMul 1`. Rewrite using `[MonObj.one_comp]`. Use `smul_add := fun c g g' => by haveI := o.act.hom (algebraMap (𝓞 D.F) D.O c) show Additive.ofMul ((g.toMul * g'.toMul) ≫ o.act.act (algebraMap (𝓞 D.F) D.O c)) = Additive.ofMul ((g.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O c)) * (g'.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O c)))`. Rewrite using `[MonObj.mul_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `add_smul := fun a b g => by show Additive.ofMul (g.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O (a + b))) = Additive.ofMul ((g.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O a)) * (g.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O b)))`. Rewrite using `[map_add, o.act.add, MonObj.comp_mul]`. Use `zero_smul := fun g => by show Additive.ofMul (g.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O 0)) = Additive.ofMul 1`. Rewrite using `[map_zero, act0, MonObj.comp_one] }`. Establish `hsm : ∀ (c : 𝓞 D.F) (g : Additive (Over.mk x ⟶ o.A)), c • g = Additive.ofMul (g.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O c))` using `fun _ _ => rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmax : w0.IsMaximal` using `hw.1`. Establish `hne : w0 ≠ ⊥`. Introduce `h0`. Establish `hp : ((p : ℕ) : 𝓞 D.F) ∈ w0` using `hw.2.1`. Rewrite `hp` using `[h0, Ideal.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(Fact.out : p.Prime).ne_zero (by exact_mod_cast hp)`. Establish `hdiv : ∀ c : 𝓞 D.F, c ≠ 0 → Function.Surjective (fun g : Additive (Over.mk x ⟶ o.A) => c • g)`. Introduce `c hc g`. Use `set n := Ideal.absNorm (Ideal.span {c}) with hn`. Establish `hn0 : 0 < n`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hn, Nat.pos_iff_ne_zero, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hc`. Establish `hmem : ((n : ℕ) : 𝓞 D.F) ∈ Ideal.span {c}` using `Ideal.absNorm_mem _`. Take `⟨c', hc'⟩` from `Ideal.mem_span_singleton'.mp hmem`. Take `⟨g', hg'⟩` from `GlobalTheory.T.exists_pow_eq_point_of_isAbelianScheme S o.A o.ab k x n hn0 g.toMul`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨c' • Additive.ofMul g', ?_⟩` and prove the remaining obligations. Use `show c • c' • Additive.ofMul g' = g`. Rewrite using `[smul_smul, mul_comm, hc', Nat.cast_smul_eq_nsmul, ← ofMul_pow, hg']`. Both sides reduce to the same expression. Establish `hT : ∀ I : Ideal (𝓞 D.F), Nat.card (Submodule.torsionBySet (𝓞 D.F) (Additive (Over.mk x ⟶ o.A)) (I : Set (𝓞 D.F))) = Nat.card {g : Over.mk x ⟶ o.A // ∀ c ∈ I, g ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1}`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `I`. Use `Nat.card_congr (Equiv.subtypeEquiv Additive.toMul (fun g => ?_))` and prove the remaining obligations. Rewrite using `[Submodule.mem_torsionBySet_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `h ⟨c, hc⟩` as an intermediate fact. Rewrite `this` using `[hsm]`. Conclude with `this`. Introduce `h c`. Rewrite using `[hsm]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `congrArg Additive.ofMul (h c.1 c.2)`. Establish `hw0nz : w0 ∈ nonZeroDivisors (Ideal (𝓞 D.F))` using `mem_nonZeroDivisors_of_ne_zero hne`. Use `set H := orderOf (ClassGroup.mk0 ⟨w0, hw0nz⟩) with hH`. Establish `hH0 : 0 < H` using `orderOf_pos _`. Establish `hpowz : w0 ^ H ∈ nonZeroDivisors (Ideal (𝓞 D.F))` using `mem_nonZeroDivisors_of_ne_zero (pow_ne_zero _ hne)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hprin : Submodule.IsPrincipal (w0 ^ H)`. Rewrite using `[← ClassGroup.mk0_eq_one_iff hpowz]`. Establish `: (⟨w0 ^ H, hpowz⟩ : nonZeroDivisors (Ideal (𝓞 D.F))) = ⟨w0, hw0nz⟩ ^ H` using `rfl`. Rewrite using `[this, map_pow, hH, pow_orderOf_eq_one]`. Take `⟨c, hcgen⟩` from `hprin.principal`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hspan : w0 ^ H = Ideal.span {c}` using `hcgen`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `hspan` using `[Ideal.span_singleton_eq_bot.mpr rfl]`. Conclude with `pow_ne_zero _ hne hspan`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcw : ∀ w : Ideal (𝓞 D.F), w.IsMaximal → ((p : ℕ) : 𝓞 D.F) ∈ w → w ≠ w0 → c ∉ w`. Introduce `w hwm _ hww hcw`. Apply `hww` to reduce the goal to its premises. Establish `h1 : w0 ^ H ≤ w` using `by rw [hspan, Ideal.span_le, Set.singleton_subset_iff]; exact hcw`. Conclude with `(hmax.eq_of_le hwm.ne_top (hwm.isPrime.le_of_pow_le h1)).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcount` using `card_ker_elt hw o k x c hc0 hcw`. Establish `hnorm : (Algebra.norm ℤ c).natAbs = Nat.card (𝓞 D.F ⧸ w0) ^ H`. Rewrite using `[← Ideal.absNorm_span_singleton, ← hspan, map_pow, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hTH : Nat.card (Submodule.torsionBySet (𝓞 D.F) (Additive (Over.mk x ⟶ o.A)) ((w0 ^ H : Ideal (𝓞 D.F)) : Set (𝓞 D.F))) = Nat.card (𝓞 D.F ⧸ w0) ^ (H * (D.m * D.n))`. Rewrite using `[hspan, Submodule.torsionBySet_span_singleton_eq, pow_mul, ← hnorm, ← hcount]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `Nat.card_congr (Equiv.subtypeEquiv Additive.toMul (fun g => ?_))` and prove the remaining obligations. Rewrite using `[Submodule.mem_torsionBy_iff, hsm]`. Conclude with `⟨fun h => congrArg Additive.toMul h, fun h => congrArg Additive.ofMul h⟩`. Establish `hq : 1 < Nat.card (𝓞 D.F ⧸ w0)`. Establish `hfin : Finite (𝓞 D.F ⧸ w0)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `hne`. Use `letI := Ideal.Quotient.field w0`. Conclude with `Finite.one_lt_card`.
-
-Establish `hTHfin : Finite (Submodule.torsionBySet (𝓞 D.F) (Additive (Over.mk x ⟶ o.A)) ((w0 ^ H : Ideal (𝓞 D.F)) : Set (𝓞 D.F)))`. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[hTH]`. Conclude with `pow_ne_zero _ (by omega)`. Establish `hsub : Submodule.torsionBySet (𝓞 D.F) (Additive (Over.mk x ⟶ o.A)) (w0 : Set (𝓞 D.F)) ≤ Submodule.torsionBySet (𝓞 D.F) (Additive (Over.mk x ⟶ o.A)) ((w0 ^ H : Ideal (𝓞 D.F)) : Set (𝓞 D.F))` using `Submodule.torsionBySet_le_torsionBySet_of_subset (Ideal.pow_le_self hH0.ne')`.
-
-Establish `hT1fin : Finite (Submodule.torsionBySet (𝓞 D.F) (Additive (Over.mk x ⟶ o.A)) (w0 : Set (𝓞 D.F)))` using `Finite.of_injective _ (Submodule.inclusion_injective hsub)`. Use `letI := Ideal.Quotient.field w0`. Use `haveI : Module.Finite (𝓞 D.F ⧸ w0) (Submodule.torsionBySet (𝓞 D.F) (Additive (Over.mk x ⟶ o.A)) (w0 : Set (𝓞 D.F))) := Module.Finite.of_finite`. Use `set h' := Module.finrank (𝓞 D.F ⧸ w0) (Submodule.torsionBySet (𝓞 D.F) (Additive (Over.mk x ⟶ o.A)) (w0 : Set (𝓞 D.F))) with hh'`. Establish `hT1 : Nat.card (Submodule.torsionBySet (𝓞 D.F) (Additive (Over.mk x ⟶ o.A)) (w0 : Set (𝓞 D.F))) = Nat.card (𝓞 D.F ⧸ w0) ^ h'` using `Module.natCard_eq_pow_finrank`.
-
-Establish `hall` using `GlobalTheory.T.card_torsionBySet_pow_of_divisible_numberField D.F _ w0 h' hmax hne hdiv hT1 H`. Rewrite `hall` using `[hTH]`. Establish `he : H * (D.m * D.n) = H * h'` using `Nat.pow_right_injective hq hall`. Establish `he' : h' = D.m * D.n` using `(Nat.eq_of_mul_eq_mul_left hH0 he).symm`. Rewrite using `[← hT, hT1, he']`.
+A detailed English derivation is pending.
 -/
 theorem card_ker_place : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ)
     (w0 : Ideal (𝓞 D.F)), IsEtPlace b w0 → ∀ (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b N s) (k : Type) [Field k]

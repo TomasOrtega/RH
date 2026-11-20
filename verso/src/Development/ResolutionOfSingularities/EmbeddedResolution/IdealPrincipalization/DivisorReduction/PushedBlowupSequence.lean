@@ -221,7 +221,7 @@ private def HasSmoothDivisorTransforms (T : MarkedIdealWithBoundary.{u}) (j : �
           ((S.center t).comap (D t).subschemeι))
 
 /- English proof (translation)
-Substitute `hlen` using the available equality. Use `⟨D, false, h1, h2, h3, fun hbb => Bool.noConfusion hbb, fun t ht _ => h5 t ht, ?_, fun t ht _ => h7 t ht⟩` and prove the remaining obligations. Rewrite using `[MarkedSequenceOfBlowups.lastIdeal_eq]`. Conclude with `h6`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem divisorReductionShape_of_strictTransforms {T : MarkedIdealWithBoundary.{u}} (j : ℕ) (hj : j < T.boundary.length)
     (S : T.SequenceOfBlowups) (len : ℕ) (D : (t : ℕ) → (S.schemeAt t).IdealSheafData) (hlen : S.length = len)
@@ -247,15 +247,11 @@ private theorem divisorReductionShape_of_strictTransforms {T : MarkedIdealWithBo
   exact h6
 
 /- English proof (translation)
-Use `⟨fun t => Nat.rec (motive := fun t => (S.schemeAt t).IdealSheafData) D0 (fun t' _ => Dd t') t, true, ?_, h2, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(_ | t) ht`. Conclude with `h1a`. Rewrite `ht` using `[hlen]`. Conclude with `h1b t (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `(_ | t) ht`. Conclude with `h3a`. Rewrite `ht` using `[hlen]`. Conclude with `h3b t (by omega)`. Introduce `_`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨?_, h4, h4'⟩` and prove the remaining obligations. Rewrite using `[hlen]`. Conclude with `Nat.succ_pos len`. Introduce and unpack `(_ | t) ht hbz`. Conclude with `absurd rfl (hbz rfl)`.
-
-Rewrite `ht` using `[hlen]`. Conclude with `h5 t (by omega)`. Rewrite using `[MarkedSequenceOfBlowups.lastIdeal_eq, hlen]`. Conclude with `h6`. Introduce and unpack `(_ | t) ht hbz`.
-
-Conclude with `absurd rfl (hbz rfl)`. Rewrite `ht` using `[hlen]`. Conclude with `h7 t (by omega)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem divisorReductionShape_of_pullback_then_strictTransforms {T : MarkedIdealWithBoundary.{u}} (j : ℕ) (hj : j < T.boundary.length)
     (S : T.SequenceOfBlowups) (len : ℕ) (hlen : S.length = len + 1)
@@ -308,7 +304,7 @@ private theorem divisorReductionShape_of_pullback_then_strictTransforms {T : Mar
       exact h7 t (by omega)
 
 /- English proof (translation)
-The claim follows from `Blowup.comap_map_of_isClosedImmersion f I`.
+A detailed English derivation is pending.
 -/
 private theorem comap_imageIdealSheaf_eq_self_of_isClosedImmersion {X Y : Scheme.{u}} (f : X ⟶ Y)
     [AlgebraicGeometry.IsClosedImmersion f] (I : X.IdealSheafData) :
@@ -316,7 +312,7 @@ private theorem comap_imageIdealSheaf_eq_self_of_isClosedImmersion {X Y : Scheme
   Blowup.comap_map_of_isClosedImmersion f I
 
 /- English proof (translation)
-Rewrite using `[orderAtLeastLocus_comap_iso_hom_eq_preimage, h, Set.preimage_empty]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem orderAtLeastLocus_comap_iso_eq_empty {X Y : Scheme.{u}} (e : X ≅ Y)
     (I : Y.IdealSheafData) (m : ℕ) (h : orderAtLeastLocus I m = (∅ : Set ↥Y)) :
@@ -324,15 +320,15 @@ private theorem orderAtLeastLocus_comap_iso_eq_empty {X Y : Scheme.{u}} (e : X �
   rw [orderAtLeastLocus_comap_iso_hom_eq_preimage, h, Set.preimage_empty]
 
 /- English proof (translation)
-Establish `hpe : (AlgebraicGeometry.Scheme.Hom.ker f).subschemeι ≫ pY = (kerSubschemeIso f).hom ≫ pX`. Rewrite using `[hp, ← Category.assoc, kerSubschemeIso_hom_comp]`. Establish `hid : I.comap (kerSubschemeIso f).hom = IY.comap (AlgebraicGeometry.Scheme.Hom.ker f).subschemeι`. Rewrite using `[← hIY, ← kerSubschemeIso_hom_comp f, Scheme.IdealSheafData.comap_comp]`. Use `⟨I.comap (kerSubschemeIso f).hom, nonzeroOnComponents_comap_iso_hom (kerSubschemeIso f) I hnz, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x _`. Use `⟨⊤, trivial, ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun J => J.comap (⊤ : (AlgebraicGeometry.Scheme.Hom.ker f).subscheme.Opens).ι) hid`. Establish `hcert1` using `PrincipalizationCertificate.comap_iso_of_eq_iso_hom_comp (kerSubschemeIso f) hpe hcert`. Establish `hsub : ⇑(kerSubschemeIso f).hom ⁻¹' Mem ⊆ ⇑(AlgebraicGeometry.Scheme.Hom.ker f).subschemeι ⁻¹' MemY`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite `hx` using `[Set.mem_preimage]`. Establish `h2` using `hMem hx`. Rewrite `h2` using `[Set.mem_preimage]`. Establish `hb0 : ⇑(AlgebraicGeometry.Scheme.Hom.ker f).subschemeι x = ⇑f (⇑(kerSubschemeIso f).hom x)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← kerSubschemeIso_hom_comp f]`. Simplify using the standard rewrite rules. Rewrite using `[Set.mem_preimage, hb0]`. Conclude with `h2`. Establish `hZe : ZY.comap (AlgebraicGeometry.Scheme.Hom.ker f).subschemeι = Z.comap (kerSubschemeIso f).hom`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hZY, ← kerSubschemeIso_hom_comp f, Scheme.IdealSheafData.comap_comp, comap_imageIdealSheaf_eq_self_of_isClosedImmersion f Z]`. Rewrite using `[hZe]`. Conclude with `principalizationCertificate_mono_of_subset hsub hcert1`.
+A detailed English derivation is pending.
 -/
 private theorem exists_principalizationCertificate_ker_of_isClosedImmersion {k : Type u} [Field k]
     {X Y : Scheme.{u}}
@@ -390,11 +386,9 @@ private theorem exists_principalizationCertificate_ker_of_isClosedImmersion {k :
     exact principalizationCertificate_mono_of_subset hsub hcert1
 
 /- English proof (translation)
-Use `divisorReductionShape_of_strictTransforms j hj S 0 (fun t => Nat.rec (motive := fun t => (S.schemeAt t).IdealSheafData) ((T.boundary.get ⟨j, hj⟩).comap S.isoZero.hom) (fun _ _ => ⊤) t) hlen ?_ rfl ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `t ht`. Take `rfl : t = 0` from `Nat.le_zero.mp ht`. Conclude with `hsm`. Introduce `t ht`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd ht (Nat.not_lt_zero t)`. Introduce `t ht`. Conclude with `absurd ht (Nat.not_lt_zero t)`. Establish `hz : orderAtLeastLocus (S.ideal 0) T.mult = (∅ : Set ↥(S.schemeAt 0))`. Rewrite using `[MarkedSequenceOfBlowups.ideal_zero]`.
-
-Conclude with `orderAtLeastLocus_comap_iso_eq_empty S.isoZero T.ideal T.mult hcs`. Rewrite using `[hz, Set.empty_inter]`. Introduce `t ht`. Conclude with `absurd ht (Nat.not_lt_zero t)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem divisorReductionShape_of_orderAtLeastLocus_empty {T : MarkedIdealWithBoundary.{u}} (j : ℕ)
     (hj : j < T.boundary.length) (S : T.SequenceOfBlowups) (hlen : S.length = 0)
@@ -419,7 +413,7 @@ private theorem divisorReductionShape_of_orderAtLeastLocus_empty {T : MarkedIdea
     exact absurd ht (Nat.not_lt_zero t)
 
 /- English proof (translation)
-Establish `hlt : t < (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.length`. Rewrite using `[show (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.length = s.length from MarkedBlowupSequenceData.ofMarkedSequence_length s]`. Conclude with `ht`. Conclude with `ker_embeddingIntoAmbientBlowupSequence_succ (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres blowupPreservesNoetherian hpr t hlt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ker_embeddingIntoAmbient_succ_eq_strictTransform (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (T : MarkedIdealWithBoundary.{u}) [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ)
@@ -458,7 +452,7 @@ private def divisorIdealWithoutBlowup (hres : FunctorialResolution.Blowup.Strict
       (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T) s hpr t)
 
 /- English proof (translation)
-The claim follows from `DivisorReduction.ambientBlowupSeq_length hres blowupPreservesNoetherian T j hj (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T) s hpr`.
+A detailed English derivation is pending.
 -/
 private theorem length_ambientMarkedSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (T : MarkedIdealWithBoundary.{u})
@@ -474,7 +468,7 @@ private theorem length_ambientMarkedSeq (hres : FunctorialResolution.Blowup.Stri
     (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T) s hpr
 
 /- English proof (translation)
-The claim follows from `hshape.isSmoothDivisor_ker_top T hV hO hD j hj htop hvl s hpr hmk`.
+A detailed English derivation is pending.
 -/
 private theorem isSmoothDivisor_ambientMarkedSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hshape : PushedBlowupSequenceProperties hres blowupPreservesNoetherian)
@@ -495,7 +489,7 @@ private theorem isSmoothDivisor_ambientMarkedSeq (hres : FunctorialResolution.Bl
   hshape.isSmoothDivisor_ker_top T hV hO hD j hj htop hvl s hpr hmk
 
 /- English proof (translation)
-The claim follows from `hshape.ker_pushedEmb_zero_top T j hj s hpr hmk`.
+A detailed English derivation is pending.
 -/
 private theorem divisorTransform_zero_eq_comap_isoObjZero (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hshape : PushedBlowupSequenceProperties hres blowupPreservesNoetherian)
@@ -513,7 +507,7 @@ private theorem divisorTransform_zero_eq_comap_isoObjZero (hres : FunctorialReso
   hshape.ker_pushedEmb_zero_top T j hj s hpr hmk
 
 /- English proof (translation)
-The claim follows from `DivisorReduction.ambientBlowupSeq_center_eq_imageIdealSheaf hres blowupPreservesNoetherian T j hj (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T) s hpr t`.
+A detailed English derivation is pending.
 -/
 private theorem center_ambientMarkedSeq_eq_imageIdealSheaf (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (T : MarkedIdealWithBoundary.{u})
@@ -531,7 +525,7 @@ private theorem center_ambientMarkedSeq_eq_imageIdealSheaf (hres : FunctorialRes
     T j hj (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T) s hpr t
 
 /- English proof (translation)
-Use `DivisorReduction.isClosedImmersion_embeddingIntoAmbient hres blowupPreservesNoetherian T j hj (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T) s hpr t` as an intermediate fact. Rewrite using `[center_ambientMarkedSeq_eq_imageIdealSheaf hres T j hj s hpr hmk t]`. Conclude with `hshape.support_imageIdeal_subset_ker _ _ (DivisorReduction.embeddingIntoAmbient hres blowupPreservesNoetherian T j hj (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T) s hpr t) (s.center t)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem support_center_ambientBlowupSeq_subset (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hshape : PushedBlowupSequenceProperties hres blowupPreservesNoetherian)
@@ -558,7 +552,7 @@ private theorem support_center_ambientBlowupSeq_subset (hres : FunctorialResolut
       (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T) s hpr t) (s.center t)
 
 /- English proof (translation)
-Introduce `t ht`. Rewrite using `[MarkedBlowupSequenceData.toMarkedSequence_blowupMorphism, MarkedBlowupSequenceData.toMarkedSequence_center]`. Conclude with `ker_embeddingIntoAmbient_succ_eq_strictTransform hres T j hj (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T) s hpr t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem divisorTransform_succ_eq_strictTransform (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (T : MarkedIdealWithBoundary.{u})
@@ -586,7 +580,7 @@ private theorem divisorTransform_succ_eq_strictTransform (hres : FunctorialResol
     (DivisorReduction.lowerBoundaryWithoutBlowup T) s hpr t ht
 
 /- English proof (translation)
-The claim follows from `hfacts.coSupport_inter_ker_eq_empty_top T hV hO hD j hj htop hvl s hpr hfin`.
+A detailed English derivation is pending.
 -/
 private theorem orderAtLeastLocus_inter_divisorTransform_eq_empty
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -611,7 +605,7 @@ private theorem orderAtLeastLocus_inter_divisorTransform_eq_empty
   hfacts.coSupport_inter_ker_eq_empty_top T hV hO hD j hj htop hvl s hpr hfin
 
 /- English proof (translation)
-Introduce `t ht`. Use `DivisorReduction.isClosedImmersion_embeddingIntoAmbient hres blowupPreservesNoetherian T j hj (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T) s hpr t` as an intermediate fact. Conclude with `exists_principalizationCertificate_ker_of_isClosedImmersion (DivisorReduction.embeddingIntoAmbient hres blowupPreservesNoetherian T j hj (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T) s hpr t) (s.projectionToSpec t) ((DivisorReduction …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exists_nonzeroOnComponents_certificate_ambientMarkedSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -671,7 +665,7 @@ private theorem exists_nonzeroOnComponents_certificate_ambientMarkedSeq (hres : 
     (hcert t ht)
 
 /- English proof (translation)
-The claim follows from `divisorReductionShape_of_strictTransforms j hj _ s.length (divisorIdealWithoutBlowup hres T j hj s hpr hmk) (length_ambientMarkedSeq hres T j hj s hpr hmk) (isSmoothDivisor_ambientMarkedSeq hres hshape T hV hO hD j hj htop hvl s hpr hmk) (divisorTransform_zero_eq_comap_isoObjZero …`.
+A detailed English derivation is pending.
 -/
 private theorem divisorReductionShape_ambientBlowupSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -716,7 +710,7 @@ private def divisorIdealAfterBlowup (hres : FunctorialResolution.Blowup.StrictTr
       (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) s hpr t)
 
 /- English proof (translation)
-The claim follows from `congrArg (fun m => m + 1) (DivisorReduction.ambientBlowupSeq_length hres blowupPreservesNoetherian T j hj (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) s hpr)`.
+A detailed English derivation is pending.
 -/
 private theorem length_prependedAmbientSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (T : MarkedIdealWithBoundary.{u})
@@ -735,7 +729,7 @@ private theorem length_prependedAmbientSeq (hres : FunctorialResolution.Blowup.S
       (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) s hpr)
 
 /- English proof (translation)
-The claim follows from `BlowupSequenceData.prepend_isoObjZero (DivisorReduction.containedComponentsIdeal T j hj) hb (DivisorReduction.ambientBlowupSeq hres blowupPreservesNoetherian T j hj (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) s hpr)`.
+A detailed English derivation is pending.
 -/
 private theorem isoObjZero_prependedAmbientSeq_eq_refl (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (T : MarkedIdealWithBoundary.{u})
@@ -754,7 +748,7 @@ private theorem isoObjZero_prependedAmbientSeq_eq_refl (hres : FunctorialResolut
       (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) s hpr)
 
 /- English proof (translation)
-The claim follows from `BlowupSequenceData.prepend_center_zero (DivisorReduction.containedComponentsIdeal T j hj) hb (DivisorReduction.ambientBlowupSeq hres blowupPreservesNoetherian T j hj (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) s hpr)`.
+A detailed English derivation is pending.
 -/
 private theorem center_prependedAmbientSeq_zero (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (T : MarkedIdealWithBoundary.{u}) [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ)
@@ -773,7 +767,7 @@ private theorem center_prependedAmbientSeq_zero (hres : FunctorialResolution.Blo
       (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) s hpr)
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun e => (T.boundary.get ⟨j, hj⟩).comap (Iso.hom e)) (isoObjZero_prependedAmbientSeq_eq_refl hres T j hj hb s hpr hmk)).trans (Scheme.IdealSheafData.comap_id _)`.
+A detailed English derivation is pending.
 -/
 private theorem comap_boundary_isoObjZero_prependedAmbientSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (T : MarkedIdealWithBoundary.{u})
@@ -793,7 +787,7 @@ private theorem comap_boundary_isoObjZero_prependedAmbientSeq (hres : Functorial
     (Scheme.IdealSheafData.comap_id _)
 
 /- English proof (translation)
-Rewrite using `[center_prependedAmbientSeq_zero hres T j hj hb s hpr hmk, comap_boundary_isoObjZero_prependedAmbientSeq hres T j hj hb s hpr hmk]`. Conclude with `hshape.support_preIdeal_subset_boundary T hV j hj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem support_center_zero_prependedAmbientBlowupSeq_subset (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hshape : PushedBlowupSequenceProperties hres blowupPreservesNoetherian)
@@ -820,7 +814,7 @@ private theorem support_center_zero_prependedAmbientBlowupSeq_subset (hres : Fun
   exact hshape.support_preIdeal_subset_boundary T hV j hj
 
 /- English proof (translation)
-Rewrite using `[center_prependedAmbientSeq_zero hres T j hj hb s hpr hmk, comap_boundary_isoObjZero_prependedAmbientSeq hres T j hj hb s hpr hmk]`. Conclude with `hshape.isOpen_preimage_preIdeal T hV j hj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isOpen_preimage_support_center_zero_prependedAmbientSeq
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -846,7 +840,7 @@ private theorem isOpen_preimage_support_center_zero_prependedAmbientSeq
   exact hshape.isOpen_preimage_preIdeal T hV j hj
 
 /- English proof (translation)
-The claim follows from `DivisorReduction.ambientBlowupSeq_center_eq_imageIdealSheaf hres blowupPreservesNoetherian T j hj (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) s hpr t`.
+A detailed English derivation is pending.
 -/
 private theorem center_prependedAmbientSeq_succ_eq_imageIdealSheaf (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (T : MarkedIdealWithBoundary.{u})
@@ -867,7 +861,7 @@ private theorem center_prependedAmbientSeq_succ_eq_imageIdealSheaf (hres : Funct
     T j hj (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) s hpr t
 
 /- English proof (translation)
-Use `DivisorReduction.isClosedImmersion_embeddingIntoAmbient hres blowupPreservesNoetherian T j hj (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) s hpr t` as an intermediate fact. Rewrite using `[center_prependedAmbientSeq_succ_eq_imageIdealSheaf hres T j hj hb s hpr hmk t]`. Conclude with `hshape.support_imageIdeal_subset_ker _ _ (DivisorReduction.embeddingIntoAmbient hres blowupPreservesNoetherian T j hj (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) s hpr t) (s.center t)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem support_center_succ_prependedAmbientBlowupSeq_subset (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hshape : PushedBlowupSequenceProperties hres blowupPreservesNoetherian)
@@ -897,7 +891,7 @@ private theorem support_center_succ_prependedAmbientBlowupSeq_subset (hres : Fun
     (s.center t)
 
 /- English proof (translation)
-Introduce `t ht`. Rewrite using `[BlowupSequenceData.prepend_blowupMorphism_succ, BlowupSequenceData.prepend_center_succ]`. Conclude with `ker_embeddingIntoAmbient_succ_eq_strictTransform hres T j hj (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) s hpr t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ker_embeddingIntoAmbient_succ_eq_strictTransform_prepend (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (T : MarkedIdealWithBoundary.{u}) [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ)
@@ -929,7 +923,7 @@ private theorem ker_embeddingIntoAmbient_succ_eq_strictTransform_prepend (hres :
     (DivisorReduction.lowerBoundaryAfterBlowup T j hj) s hpr t ht
 
 /- English proof (translation)
-Introduce `t ht`. Rewrite using `[MarkedBlowupSequenceData.toMarkedSequence_blowupMorphism, MarkedBlowupSequenceData.toMarkedSequence_center]`. Conclude with `ker_embeddingIntoAmbient_succ_eq_strictTransform_prepend hres T j hj hb s hpr t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prependedDivisorTransform_succ_eq_strictTransform (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (T : MarkedIdealWithBoundary.{u})
@@ -960,7 +954,7 @@ private theorem prependedDivisorTransform_succ_eq_strictTransform (hres : Functo
   exact ker_embeddingIntoAmbient_succ_eq_strictTransform_prepend hres T j hj hb s hpr t ht
 
 /- English proof (translation)
-The claim follows from `hshape.isSmoothDivisor_ker_pre T hV hO hD j hj hne hb hvl s hpr hmk`.
+A detailed English derivation is pending.
 -/
 private theorem isSmoothDivisor_prependedAmbientSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hshape : PushedBlowupSequenceProperties hres blowupPreservesNoetherian)
@@ -984,7 +978,7 @@ private theorem isSmoothDivisor_prependedAmbientSeq (hres : FunctorialResolution
   hshape.isSmoothDivisor_ker_pre T hV hO hD j hj hne hb hvl s hpr hmk
 
 /- English proof (translation)
-The claim follows from `hshape.ker_pushedEmb_zero_pre T j hj hb s hpr hmk`.
+A detailed English derivation is pending.
 -/
 private theorem prependedDivisorTransform_zero_eq_comap_blowupMorphism (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hshape : PushedBlowupSequenceProperties hres blowupPreservesNoetherian)
@@ -1006,7 +1000,7 @@ private theorem prependedDivisorTransform_zero_eq_comap_blowupMorphism (hres : F
   hshape.ker_pushedEmb_zero_pre T j hj hb s hpr hmk
 
 /- English proof (translation)
-The claim follows from `hfacts.coSupport_inter_ker_eq_empty_pre T hV hO hD j hj hne hb hvl s hpr hfin`.
+A detailed English derivation is pending.
 -/
 private theorem orderAtLeastLocus_inter_prependedDivisorTransform_eq_empty
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -1033,7 +1027,7 @@ private theorem orderAtLeastLocus_inter_prependedDivisorTransform_eq_empty
   hfacts.coSupport_inter_ker_eq_empty_pre T hV hO hD j hj hne hb hvl s hpr hfin
 
 /- English proof (translation)
-Introduce `t ht`. Use `DivisorReduction.isClosedImmersion_embeddingIntoAmbient hres blowupPreservesNoetherian T j hj (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) s hpr t` as an intermediate fact. Conclude with `exists_principalizationCertificate_ker_of_isClosedImmersion (DivisorReduction.embeddingIntoAmbient hres blowupPreservesNoetherian T j hj (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) s hpr t) (s.projectionToSpec t) ((DivisorRed …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exists_nonzeroOnComponents_certificate_prependedAmbientSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -1099,7 +1093,7 @@ private theorem exists_nonzeroOnComponents_certificate_prependedAmbientSeq (hres
     (hcert t ht)
 
 /- English proof (translation)
-The claim follows from `divisorReductionShape_of_pullback_then_strictTransforms j hj _ s.length (length_prependedAmbientSeq hres T j hj hb s hpr hmk) ((T.boundary.get ⟨j, hj⟩).comap (DivisorReduction.prependedPushedMarkedSeq hres blowupPreservesNoetherian T j hj hb s hpr hmk).isoZero.hom) (divisorIdealA …`.
+A detailed English derivation is pending.
 -/
 private theorem divisorReductionShape_prependedAmbientBlowupSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -1138,15 +1132,13 @@ private theorem divisorReductionShape_prependedAmbientBlowupSeq (hres : Functori
     (exists_nonzeroOnComponents_certificate_prependedAmbientSeq hres hfacts hshape T hV hO hD j hj hne hb hvl s hpr hmk hcert)
 
 /- English proof (translation)
-Introduce `T hV hdim hO hD hj`. Establish `hNoe : AlgebraicGeometry.IsNoetherian T.scheme` using `DivisorReduction.isNoetherian_scheme_of_isAdmissible T hV`. Use `show HasSmoothDivisorTransforms T j hj ((canonicalAlgorithmRules hres).divisorFamily L j T)`. Rewrite using `[divisorFamily_canonicalAlgorithmRules_eq_divisorReductionSeq hres L j T]`. Distinguish the cases in `hcs : orderAtLeastLocus T.ideal T.mult = (∅ : Set ↥T.scheme)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[DivisorReduction.divisorReductionSeq_eq_empty_of_orderAtLeastLocus_eq_empty hres blowupPreservesNoetherian T (fun S _ => L S) j hj hcs]`. Conclude with `divisorReductionShape_of_orderAtLeastLocus_empty j hj (emptyMarkedSequenceOfBlowups T.structMap T.ideal T.mult T.boundary) (emptyMarkedSequenceOfBlowups_length T.structMap T.ideal T.mult T.boundary) (hshape.isSmoothDivisor_boundary_comap T hV j hj (emptyMarkedSequenceOfBlowups T. …`. Establish `hcoNE : (orderAtLeastLocus T.ideal T.mult).Nonempty` using `Set.nonempty_iff_ne_empty.mpr hcs`. Break down `DivisorReduction.divisorReductionSeq_eq_ambientBlowupSeq_or_prepend hres hfacts L j T hV hj hO hD hcs with ⟨htop, hpr, hmk0, heq⟩ | ⟨hne, hb, hpr, hmk0, heq⟩` into its components or cases. Establish `hvl : (DivisorReduction.restrictToDivisor T j hj).IsAdmissible` using `hfacts.valid_lowerTop T hV hO hD j hj htop`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdimlow : (DivisorReduction.restrictToDivisor T j hj).krullDimSucc < n` using `lt_of_lt_of_le (hfacts.lowerTriple_dim_lt T hV hcoNE j hj (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T)) hdim`. Establish `hfin : orderAtLeastLocus ((L (DivisorReduction.restrictToDivisor T j hj)).ideal (L (DivisorReduction.restrictToDivisor T j hj)).length) T.mult = ∅`. Establish `hr` using `hL.resolves (DivisorReduction.restrictToDivisor T j hj) hvl hdimlow`. Rewrite `hr` using `[MarkedSequenceOfBlowups.isResolution_iff, MarkedSequenceOfBlowups.lastIdeal_eq]`. Conclude with `hr`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[heq hmk0]`. Conclude with `divisorReductionShape_ambientBlowupSeq hres hfacts hshape T hV hO hD j hj htop hvl (L (DivisorReduction.restrictToDivisor T j hj)) hpr hmk0 (fun t ht => hL.cert (DivisorReduction.restrictToDivisor T j hj) hvl hdimlow t ht) hfin`. Establish `hvl : (DivisorReduction.restrictTwistedToDivisor T j hj).IsAdmissible` using `hfacts.valid_lowerPre T hV hO hD j hj hne`. Establish `hdimlow : (DivisorReduction.restrictTwistedToDivisor T j hj).krullDimSucc < n` using `lt_of_lt_of_le (hfacts.lowerTriple_dim_lt T hV hcoNE j hj (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj)) hdim`. Establish `hfin : orderAtLeastLocus ((L (DivisorReduction.restrictTwistedToDivisor T j hj)).ideal (L (DivisorReduction.restrictTwistedToDivisor T j hj)).length) T.mult = ∅`.
-
-Establish `hr` using `hL.resolves (DivisorReduction.restrictTwistedToDivisor T j hj) hvl hdimlow`. Rewrite `hr` using `[MarkedSequenceOfBlowups.isResolution_iff, MarkedSequenceOfBlowups.lastIdeal_eq]`. Conclude with `hr`. Rewrite using `[heq hmk0]`. Conclude with `divisorReductionShape_prependedAmbientBlowupSeq hres hfacts hshape T hV hO hD j hj hne hb hvl (L (DivisorReduction.restrictTwistedToDivisor T j hj)) hpr hmk0 (fun t ht => hL.cert (DivisorReduction.restrictTwistedToDivisor T j hj) hvl hdimlow t ht) hfin`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smoothDivisorSeq_divisorFamily_canonicalAlgorithmRules
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})

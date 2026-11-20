@@ -19,7 +19,7 @@ section Cech
 variable {X Y Z : Scheme.{0}} (L : LB X) {K : Type} [Fintype K]
 
 /- English proof (translation)
-The claim follows from `congrArg (fun φ : Γ(X, U) ⟶ Γ(Y, V') => φ.hom x) (f.appLE_map e (homOfLE i).op)`.
+A detailed English derivation is pending.
 -/
 theorem map_ev (f : Y ⟶ X) {U : X.Opens} {V V' : Y.Opens} (e : V ≤ f ⁻¹ᵁ U) (i : V' ≤ V)
     (x : Γ(X, U)) :
@@ -27,7 +27,7 @@ theorem map_ev (f : Y ⟶ X) {U : X.Opens} {V V' : Y.Opens} (e : V ≤ f ⁻¹�
   congrArg (fun φ : Γ(X, U) ⟶ Γ(Y, V') => φ.hom x) (f.appLE_map e (homOfLE i).op)
 
 /- English proof (translation)
-The claim follows from `congrArg (fun φ : Γ(X, U') ⟶ Γ(Y, V) => φ.hom x) (f.map_appLE e (homOfLE i).op)`.
+A detailed English derivation is pending.
 -/
 theorem ev_map (f : Y ⟶ X) {U U' : X.Opens} {V : Y.Opens} (e : V ≤ f ⁻¹ᵁ U) (i : U ≤ U')
     (e' : V ≤ f ⁻¹ᵁ U') (x : Γ(X, U')) :
@@ -35,7 +35,7 @@ theorem ev_map (f : Y ⟶ X) {U U' : X.Opens} {V : Y.Opens} (e : V ≤ f ⁻¹�
   congrArg (fun φ : Γ(X, U') ⟶ Γ(Y, V) => φ.hom x) (f.map_appLE e (homOfLE i).op)
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Conclude with `congrArg (fun φ : Γ(X, U) ⟶ Γ(Z, W) => φ.hom x) (Scheme.Hom.appLE_comp_appLE f g U V W e₁ e₂)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ev_ev (f : Z ⟶ Y) (g : Y ⟶ X) (k : Z ⟶ X) (hk : f ≫ g = k) {U : X.Opens} {V : Y.Opens}
     {W : Z.Opens} (e₁ : V ≤ g ⁻¹ᵁ U) (e₂ : W ≤ f ⁻¹ᵁ V) (e₃ : W ≤ k ⁻¹ᵁ U) (x : Γ(X, U)) :
@@ -45,9 +45,9 @@ theorem ev_ev (f : Z ⟶ Y) (g : Y ⟶ X) (k : Z ⟶ X) (hk : f ≫ g = k) {U : 
     (Scheme.Hom.appLE_comp_appLE f g U V W e₁ e₂)
 
 /- English proof (translation)
-Take `rfl : φ' = fun k => h ≫ φ k` from `funext fun k => (hφ k).symm`. Establish `key : Units.map (h.appLE _ _ e).hom.toMonoidHom ((LB.LinComb L φ ε).g j j') = (LB.LinComb L (fun k => h ≫ φ k) ε).g j j'`. Simplify using `only [LB.LinComb, map_prod, map_zpow]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext`. Conclude with `ev_ev h (φ k) _ rfl (U := L.U (j k) ⊓ L.U (j' k)) (le_inf (inf_le_left.trans (LB.wchart_le L φ j k)) (inf_le_right.trans (LB.wchart_le L φ j' k))) e (le_inf (inf_le_left.trans (LB.wchart_le L (fun k => h ≫ φ k) j k)) (inf_le_right.trans (LB.wchart_le L (fun k => h ≫ φ k) j' k))) …`. Conclude with `congrArg Units.val key`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem transition_pull (φ : K → (Y ⟶ X)) (ε : K → ℤ) (h : Z ⟶ Y) (φ' : K → (Z ⟶ X))
     (hφ : ∀ k, h ≫ φ k = φ' k) (j j' : K → L.ι)
@@ -79,7 +79,7 @@ def Secs (L : LB A.left) (a : ℤ) (T : Over S) : Type := LB.Sec (LPow A L a T)
 variable {A} {L : LB A.left} {a : ℤ} {T : Over S}
 
 /- English proof (translation)
-Consider the cases of `s`. Consider the cases of `t`. Reduce the equality to equality of the corresponding arguments. Conclude with `funext h`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem Secs.ext {s t : Secs A L a T} (h : ∀ j, LB.Sec.f s j = LB.Sec.f t j) : s = t := by
   cases s; cases t; congr; exact funext h
@@ -91,7 +91,7 @@ theorem liftFun_eq {T : Over S} (W : (T ⊗ A).left.Opens) (r : Γ(T.left, ⊤))
     liftFun A W r = ((fst T A).left.appLE ⊤ W le_top).hom r := rfl
 
 /- English proof (translation)
-The claim follows from `map_ev (fst T A).left le_top e r`.
+A detailed English derivation is pending.
 -/
 theorem map_liftFun {W W' : (T ⊗ A).left.Opens} (e : W' ≤ W) (r : Γ(T.left, ⊤)) :
     ((T ⊗ A).left.presheaf.map (homOfLE e).op).hom (liftFun A W r) = liftFun A W' r :=
@@ -145,7 +145,7 @@ instance : Module Γ(T.left, ⊤) (Secs A L a T) where
   zero_smul s := Secs.ext fun j => by rw [smul_f, liftFun_eq, map_zero, zero_mul, zero_f]
 
 /- English proof (translation)
-Establish `hl : H.left ≫ (fst T A).left = (fst T' A).left ≫ u.left`. Rewrite using `[← Over.comp_left, hH, Over.comp_left]`. Establish `h2 : u.left.appTop.hom r = (u.left.appLE ⊤ ⊤ le_top).hom r` using `congrArg (fun φ : Γ(T.left, ⊤) ⟶ Γ(T'.left, ⊤) => φ.hom r) (u.left.app_eq_appLE (U := ⊤))`. Rewrite using `[h2]`. Conclude with `(ev_ev H.left (fst T A).left _ hl le_top e le_top r).trans (ev_ev (fst T' A).left u.left _ rfl (U := ⊤) (V := ⊤) (W := W') le_top le_top le_top r).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appLE_liftFun {T' : Over S} (H : T' ⊗ A ⟶ T ⊗ A) (u : T' ⟶ T)
     (hH : H ≫ fst T A = fst T' A ≫ u) (W : (T ⊗ A).left.Opens) (W' : (T' ⊗ A).left.Opens)
@@ -174,26 +174,26 @@ def pullSec {T' : Over S} (u : T' ⟶ T) (s : Secs A L a T) : Secs A L a T' wher
     exact congrArg₂ (· * ·) hg ((ev_map _ e _ _ _).trans (map_ev _ _ _ _).symm)
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem isPullSec_pullSec {T' : Over S} (u : T' ⟶ T) (s : Secs A L a T) :
     IsPullSec A L a (u ▷ A) (whiskerRight_snd _ _) s (pullSec u s) := fun _ => rfl
 
 /- English proof (translation)
-The claim follows from `Secs.ext fun _ => map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem pullSec_zero {T' : Over S} (u : T' ⟶ T) : pullSec u (0 : Secs A L a T) = 0 :=
   Secs.ext fun _ => map_zero _
 
 /- English proof (translation)
-The claim follows from `Secs.ext fun _ => map_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem pullSec_add {T' : Over S} (u : T' ⟶ T) (s t : Secs A L a T) :
     pullSec u (s + t) = pullSec u s + pullSec u t :=
   Secs.ext fun _ => map_add _ _ _
 
 /- English proof (translation)
-The claim follows from `Secs.ext fun j => by refine (map_mul _ _ _).trans ?_ rw [appLE_liftFun (u ▷ A) u (whiskerRight_fst _ _)] rfl`.
+A detailed English derivation is pending.
 -/
 theorem pullSec_smul {T' : Over S} (u : T' ⟶ T) (r : Γ(T.left, ⊤)) (s : Secs A L a T) :
     pullSec u (r • s) = u.left.appTop.hom r • pullSec u s :=
@@ -203,7 +203,7 @@ theorem pullSec_smul {T' : Over S} (u : T' ⟶ T) (r : Γ(T.left, ⊤)) (s : Sec
     rfl
 
 /- English proof (translation)
-Use `⟨by simp, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add, hx, hy, mul_add]`. Rewrite using `[map_mul, map_mul, hx, hr, mul_left_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem twist_comb {R R' C : Type} [CommRing R] [CommRing R'] [CommRing C] (F : R →+* C)
     (G : R' →+* C) (c : C) {x' y' r' : R} {x y r : R'} (hx : F x' = c * G x) (hy : F y' = c * G y)
@@ -214,9 +214,9 @@ theorem twist_comb {R R' C : Type} [CommRing R] [CommRing R'] [CommRing C] (F : 
   · rw [map_mul, map_mul, hx, hr, mul_left_comm]
 
 /- English proof (translation)
-Establish `key` using `fun j : Fin 2 → L.ι => twist_comb ((T ⊗ A).left.presheaf.map (homOfLE (chart_le_zero A L (translPt A θ.pt) j)).op).hom ((translT A θ.pt).left.appLE _ _ (chart_le_pull A L (translT A θ.pt) (translPt A θ.pt) (lift_snd _ _) j)).hom _ (r' := liftFun A _ r) (r := liftFun A _ r) (hs j) …`. Establish `h` using `appLE_liftFun (translT A θ.pt) (𝟙 T) (by simp [translT]) _ _ (chart_le_pull A L (translT A θ.pt) (translPt A θ.pt) (lift_snd _ _) j) r`. Establish `hr : (𝟙 T : T ⟶ T).left.appTop.hom r = r` using `by simp`. Rewrite `h` using `[hr]`. Conclude with `(map_liftFun _ r).trans h.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨fun j => (key j).2.1, fun j => (key j).2.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem isActOf_comb (θ : ThetaGrp A L a T) {s t s' t' : Secs A L a T} (hs : IsActOf A L a θ s s')
     (ht : IsActOf A L a θ t t') (r : Γ(T.left, ⊤)) :
@@ -234,7 +234,7 @@ theorem isActOf_comb (θ : ThetaGrp A L a T) {s t s' t' : Secs A L a T} (hs : Is
   exact ⟨fun j => (key j).2.1, fun j => (key j).2.2⟩
 
 /- English proof (translation)
-Introduce `j` and use `(map_zero ((T ⊗ A).left.presheaf.map (homOfLE (chart_le_zero A L (translPt A θ.pt) j)).op).hom).trans ((mul_zero _).symm.trans (congrArg (_ * ·) (map_zero ((translT A θ.pt).left.appLE _ _ (chart_le_pull A L (translT A θ.pt) (translPt A θ.pt) (lift_snd _ _) j)).hom).symm))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isActOf_zero (θ : ThetaGrp A L a T) :
     IsActOf A L a θ (0 : Secs A L a T) (0 : Secs A L a T) := fun j =>
@@ -282,14 +282,14 @@ def VVRank (S : Scheme.{0}) : Prop :=
     ∀ T : Over S, VVLocallyFree P (m ^ 2) m ((m ^ 2) ^ P.g) T
 
 /- English proof (translation)
-The claim follows from `inf_eq_left.2 fun _ _ _ i => i.elim`.
+A detailed English derivation is pending.
 -/
 example (P : PolAV S) (N m : ℕ) {T : Over S} (ho : Odd N) (hi : IsUnit (N : Γ(T.left, ⊤))) :
     VVWeight P N m ho hi (I := Empty) Empty.elim (fun i => i.elim) Empty.elim = VV P N m T :=
   inf_eq_left.2 fun _ _ _ i => i.elim
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span hs`.
+A detailed English derivation is pending.
 -/
 example (P : PolAV S) (N m : ℕ) {T : Over S} (s : Secs P.A P.L N T) (hs : InVV P N m s) :
     s ∈ VV P N m T := Submodule.subset_span hs

@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.IntCocycle
 
 /- English proof (translation)
-Establish `hli : LinearIndependent ℤ (Pi.basisFun ℝ (Fin g ⊕ Fin g))` using `(Pi.basisFun ℝ (Fin g ⊕ Fin g)).linearIndependent.restrict_scalars' ℤ`. Conclude with `Module.Free.of_basis (Module.Basis.span hli)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stdLat_free (g : ℕ) : Module.Free ℤ (stdLat g) := by
   have hli : LinearIndependent ℤ (Pi.basisFun ℝ (Fin g ⊕ Fin g)) :=
@@ -90,15 +90,13 @@ end GlobalTheory.IntCocycle
 open GlobalTheory.IntCocycle in
 
 /- English proof (translation)
-Introduce `g c hs hc`. Set `L` to `stdLat g`. Set `c' : L → L → ℤ` to `fun x y => c x y`. Use `letI : AddCommGroup (Ext c') := Ext.addCommGroup (fun x y => hs x x.2 y y.2) (fun x y z => by simpa [c'] using hc x x.2 y y.2 z z.2)`. Use `haveI : Module.Free ℤ L := stdLat_free g`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `pr : Ext c' →+ L` to `{ toFun := Ext.snd map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `hpr : Function.Surjective pr` using `fun l => ⟨⟨0, l⟩, rfl⟩`. Take `⟨s, hs'⟩` from `Module.projective_lifting_property pr.toIntLinearMap LinearMap.id hpr`. Establish `hsnd : ∀ l : L, (s l).snd = l` using `fun l => LinearMap.congr_fun hs' l`. Use `⟨fun x => if h : x ∈ L then (s ⟨x, h⟩).fst else 0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l hl l' hl'`. Establish `hll : l + l' ∈ L` using `L.add_mem hl hl'`. Use `show c l l' = (if h : l + l' ∈ L then (s ⟨l + l', h⟩).fst else 0) - (if h : l ∈ L then (s ⟨l, h⟩).fst else 0) - (if h : l' ∈ L then (s ⟨l', h⟩).fst else 0)`. Rewrite using `[dif_pos hll, dif_pos hl, dif_pos hl']`. Establish `hadd` using `congrArg Ext.fst (s.map_add ⟨l, hl⟩ ⟨l', hl'⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (⟨l, hl⟩ + ⟨l', hl'⟩ : L) = ⟨l + l', hll⟩` using `rfl`. Rewrite `hadd` using `[e]`. Rewrite using `[hadd]`. Use `show c l l' = (s ⟨l, hl⟩).fst + (s ⟨l', hl'⟩).fst + c (s ⟨l, hl⟩).snd.1 (s ⟨l', hl'⟩).snd.1 - (s ⟨l, hl⟩).fst - (s ⟨l', hl'⟩).fst`. Rewrite using `[hsnd, hsnd]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.symm_int_cocycle_stdLat_coboundary :
     ∀ {g : ℕ} (c : Fl g → Fl g → ℤ), (∀ l ∈ stdLat g, ∀ l' ∈ stdLat g, c l l' = c l' l) →

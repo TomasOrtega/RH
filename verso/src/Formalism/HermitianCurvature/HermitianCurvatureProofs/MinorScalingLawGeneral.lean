@@ -7,7 +7,7 @@ open Matrix
 namespace XGen
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, Matrix.of_apply, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem scaled_eq {K : Type} [Field K] (n : ℕ) (Z : Matrix (Fin n) (Fin n) K) (α β : Fin n → K)
     (l : ℕ) (hl : l ≤ n) :
@@ -23,7 +23,7 @@ theorem scaled_eq {K : Type} [Field K] (n : ℕ) (Z : Matrix (Fin n) (Fin n) K) 
 end XGen
 
 /- English proof (translation)
-Introduce `K _ n Z α β l hl`. Rewrite using `[XGen.scaled_eq n Z α β l hl, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_diagonal, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem minor_scaling_law_general : Formalism.FourierDecayAlt.X.MinorScaleGen := by
   intro K _ n Z α β l hl

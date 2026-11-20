@@ -76,15 +76,15 @@ section Checks
 variable {K : Type} [Field K] {N n : ℕ} (hN : N = n + 1) (G' : Matrix (Fin n) (Fin n) K) (g : K)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => mul_nonneg (mul_self_nonneg _) (Nat.cast_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem fockB_self_nonneg {σ : Type} (f : MvPolynomial σ ℝ) : 0 ≤ fockB f f :=
   Finset.sum_nonneg fun _ _ => mul_nonneg (mul_self_nonneg _) (Nat.cast_nonneg _)
 
 /- English proof (translation)
-Establish `hk : 0 ≤ Br.kapBr ℝ hN lam sg` using `div_nonneg (fockB_self_nonneg _) (fockB_self_nonneg _)`. Establish `h1 : (T ^ (-((Br.nBr lam sg : ℤ) : ℝ) / 2)) ^ 2 = T ^ (-Br.nBr lam sg)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hT.le, ← Real.rpow_intCast]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[factor, mul_pow, mul_pow, h1, sq_abs, Real.sq_sqrt hk, mul_assoc]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem factor_sq (lam : DomWeight N) (sg : DomWeight n) {T : ℝ} (hT : 0 < T) :
     factor hN lam sg T ^ 2 =
@@ -98,7 +98,7 @@ theorem factor_sq (lam : DomWeight N) (sg : DomWeight n) {T : ℝ} (hT : 0 < T) 
   rw [factor, mul_pow, mul_pow, h1, sq_abs, Real.sq_sqrt hk, mul_assoc]
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `Br.Interlace`. Evaluate the decidable proposition. Unfold `Br.SameShift`. Evaluate the decidable proposition.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Evaluate the decidable proposition. Replace the relevant objects with their definitions. Evaluate the decidable proposition.
 
 Evaluate the decidable proposition. Evaluate the decidable proposition.
 -/

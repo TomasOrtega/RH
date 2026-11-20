@@ -18,7 +18,7 @@ def ev {T : Scheme.{0}} {K : Type} [CommRing K] (f : Sp K ⟶ T) (O : T.Opens) (
   (Scheme.ΓSpecIso (CommRingCat.of K)).hom ((f.appLE O ⊤ h).hom u)
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Unfold `ev`. Use `congr 1`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE]`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_comp {T T' : Scheme.{0}} {K : Type} [CommRing K] (s : Sp K ⟶ T') (g : T' ⟶ T) {O : T.Opens}
     {O' : T'.Opens} (e : O' ≤ g ⁻¹ᵁ O) (h : ⊤ ≤ s ⁻¹ᵁ O') {g' : Sp K ⟶ T} (hg : s ≫ g = g')
@@ -29,14 +29,14 @@ theorem ev_comp {T T' : Scheme.{0}} {K : Type} [CommRing K] (s : Sp K ⟶ T') (g
   rw [← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE]
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem appLE_top_top {A B : Scheme.{0}} (f : A ⟶ B) : f.appLE ⊤ ⊤ le_top = f.appTop := by
   rw [Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]
   congr 1
 
 /- English proof (translation)
-Rewrite using `[ev_comp (spMap θ) f h le_top rfl]`. Unfold `ev`. Rewrite using `[appLE_top_top, ← CommRingCat.comp_apply, Scheme.ΓSpecIso_naturality]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_spMap {T : Scheme.{0}} {A B : Type} [CommRing A] [CommRing B] (θ : A →+* B) (f : Sp A ⟶ T)
     (O : T.Opens) (h : ⊤ ≤ f ⁻¹ᵁ O) (h' : ⊤ ≤ (spMap θ ≫ f) ⁻¹ᵁ O) (u : Γ(T, O)) :
@@ -47,7 +47,7 @@ theorem ev_spMap {T : Scheme.{0}} {A B : Type} [CommRing A] [CommRing B] (θ : A
   rfl
 
 /- English proof (translation)
-Introduce `z _`. Establish `hz : X.fromSpecStalk x z ⤳ x`. Establish `: X.fromSpecStalk x z ∈ Set.range (X.fromSpecStalk x)` using `⟨z, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Conclude with `hz.mem_open U.2 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem fromSpecStalk_top' {X : Scheme.{0}} (x : X) (U : X.Opens) (hx : x ∈ U) :
     ⊤ ≤ X.fromSpecStalk x ⁻¹ᵁ U := by
@@ -58,7 +58,7 @@ theorem fromSpecStalk_top' {X : Scheme.{0}} (x : X) (U : X.Opens) (hx : x ∈ U)
   exact hz.mem_open U.2 hx
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.appLE, Scheme.fromSpecStalk_app hx]`. Simplify using `only [Category.assoc, ← Functor.map_comp]`. Establish `e : ((homOfLE le_top).op ≫ (homOfLE (fromSpecStalk_top' x U hx)).op : Opposite.op (⊤ : (Spec (X.presheaf.stalk x)).Opens) ⟶ Opposite.op ⊤) = 𝟙 _` using `rfl`. Rewrite using `[e, CategoryTheory.Functor.map_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fromSpecStalk_appLE' {X : Scheme.{0}} (x : X) (U : X.Opens) (hx : x ∈ U) :
     (X.fromSpecStalk x).appLE U ⊤ (fromSpecStalk_top' x U hx) =
@@ -70,7 +70,7 @@ theorem fromSpecStalk_appLE' {X : Scheme.{0}} (x : X) (U : X.Opens) (hx : x ∈ 
   rw [e, CategoryTheory.Functor.map_id, Category.comp_id]
 
 /- English proof (translation)
-Unfold `ev gp`. Rewrite using `[fromSpecStalk_appLE' (genericPoint X) O hO, CommRingCat.comp_apply]`. Express the relevant statement in the definitionally equal form `_ = (Scheme.ΓSpecIso (X.presheaf.stalk (genericPoint X))).hom _`. Rewrite using `[Iso.inv_hom_id_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fnOf_eq_ev {X : Scheme.{0}} [IsIntegral X] (O : X.Opens) (hO : genericPoint X ∈ O) (u : Γ(X, O)) :
     fnOf O hO u = ev (gp X) O (fromSpecStalk_top' _ O hO) u := by
@@ -81,33 +81,29 @@ theorem fnOf_eq_ev {X : Scheme.{0}} [IsIntegral X] (O : X.Opens) (hO : genericPo
   rfl
 
 /- English proof (translation)
-Introduce `R R₁ _ _ ρ X Y V _ _ p q i _ φ θ H hP U hU hg`. Use `letI := (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p U).toAlgebra`. Use `letI := ρ.toAlgebra`. Take `⟨l, hl1, hl2⟩` from `hP`. Set `W : V.Opens` to `φ ⁻¹ᵁ U ⊓ (i ≫ q) ⁻¹ᵁ ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `O : Y.Opens` to `i ''ᵁ W`. Establish `hmemW : ∀ z : V, z ∈ W ↔ φ z ∈ U` using `fun z => ⟨fun h => h.1, fun h => ⟨h, trivial⟩⟩`. Establish `hmemO : ∀ y : Y, y ∈ O ↔ ∃ z : V, φ z ∈ U ∧ i z = y`. Introduce `y`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨z, hz.1, rfl⟩`. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨z, (hmemW z).2 hz, rfl⟩`. Set `pt : Sp Y.functionField` to `IsLocalRing.closedPoint Y.functionField`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `hz1 : i (l pt) = genericPoint Y`. Rewrite using `[← Scheme.Hom.comp_apply, hl1]`. Conclude with `Scheme.fromSpecStalk_closedPoint`. Establish `hz2 : φ (l pt) = genericPoint X`. Rewrite using `[← Scheme.Hom.comp_apply, hl2, Scheme.Hom.comp_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Scheme.fromSpecStalk_closedPoint (x := genericPoint X) ▸ congrArg _ (Subsingleton.elim _ _)`. Establish `hO : genericPoint Y ∈ O` using `(hmemO _).2 ⟨l pt, hz2 ▸ hg, hz1⟩`. Set `e` to `ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.eTens p (i ≫ q) φ H U hU`. Set `j : Γ(V, W) →+* Γ(Y, O)` to `(i.appIso W).inv.hom`. Establish `hj : ∀ s, j ((i.appIso W).hom.hom s) = s` using `fun s => Iso.hom_inv_id_apply _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hj' : ∀ s, (i.appIso W).hom.hom (j s) = s` using `fun s => Iso.inv_hom_id_apply _ _`. Use `⟨((fnOf O hO).comp (j.comp e.toRingHom)).toAddMonoidHom, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Establish `h1` using `congrArg (i.appIso W).hom.hom (fnOf_injective O hO hab)`. Simplify using `only [RingHom.comp_apply, hj'] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `e.injective h1`. Introduce `b r`. Establish `hlW : ⊤ ≤ l ⁻¹ᵁ W`. Introduce `z _`. Establish `hz : z = pt` using `Subsingleton.elim _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hz` using the available equality. Conclude with `(hmemW _).2 (hz2 ▸ hg)`. Establish `hC : ∀ y : Γ(V, W), fnOf O hO (j y) = ev l W hlW y`. Introduce `y`. Rewrite using `[fnOf_eq_ev]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(ev_comp l i (O := O) (O' := W) (i.preimage_image_eq W).ge hlW hl1 _ _).trans ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appIso_inv_appLE]`. Establish `: (homOfLE (le_refl W)).op = 𝟙 (Opposite.op W)` using `rfl`. Use `erw [this, CategoryTheory.Functor.map_id]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Both sides reduce to the same expression. Establish `hX : ⊤ ≤ (spMap θ ≫ gp X) ⁻¹ᵁ U` using `fun z _ => fromSpecStalk_top' (genericPoint X) U hg (Set.mem_univ (spMap θ z))`. Establish `hYq : ⊤ ≤ (gp Y ≫ q) ⁻¹ᵁ ⊤` using `fun _ _ => trivial`. Use `show fnOf O hO (j (e (b ⊗ₜ[R] r))) = _`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.eTens_tmul, map_mul, map_mul, hC, hC]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[← ev_comp l φ inf_le_left hlW hl2 hX, ev_spMap θ (gp X) U (fromSpecStalk_top' _ U hg), ← fnOf_eq_ev]`. Unfold `ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX cst`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, RingHom.comp_apply, fnOf_eq_ev ⊤ trivial, ← appLE_top_top, ← ev_comp l (i ≫ q) le_top hlW (by rw [← Category.assoc, hl1]) hYq, ← ev_comp (gp Y) q le_top (fromSpecStalk_top' _ ⊤ trivial) rfl hYq]`. Use extensionality with `v`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Set.mem_range, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩ z hz`. Conclude with `regAt_fnOf ((hmemO _).2 ⟨z, hz, rfl⟩) hO _`. Introduce `hv`.
-
-Take `⟨s, hs⟩` from `exists_fnOf_eq hO fun y hy => by`. Take `⟨z, hz, rfl⟩` from `(hmemO y).1 hy`. Conclude with `hv z hz`. Use `⟨e.symm ((i.appIso W).hom.hom s), ?_⟩` and prove the remaining obligations. Use `show fnOf O hO (j (e (e.symm ((i.appIso W).hom.hom s)))) = v`.
-
-Rewrite using `[RingEquiv.apply_symm_apply, hj, hs]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tensor_fnOf : ∀ (R R₁ : Type) [CommRing R] [CommRing R₁] (ρ : R →+* R₁) (X Y V : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp R) (q : Y ⟶ Sp R₁) (i : V ⟶ Y) [IsOpenImmersion i] (φ : V ⟶ X) (θ : X.functionField →+* Y.functionField), IsPullback φ (i ≫ q) p (spMap ρ) → PFF i φ θ → ∀ (U : X.Opens), IsAffineOpen U → ∀ hg : genericPoint X ∈ U, letI := (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p U).toAlgebra; letI := ρ.toAlgebra; ∃ β : Γ(X, U) ⊗[R] R₁ →+ Y.functionField, Function.Injective β ∧ (∀ b r, β (b ⊗ₜ[R] r) = θ (GlobalTheory.Cartier.fnOf U hg b) * GlobalTheory.Desc.cst q r) ∧ Set.range β = {v | ∀ z : V, φ z ∈ U → GlobalTheory.Cartier.RegAt (i z) v} := by
   intro R R₁ _ _ ρ X Y V _ _ p q i _ φ θ H hP U hU hg

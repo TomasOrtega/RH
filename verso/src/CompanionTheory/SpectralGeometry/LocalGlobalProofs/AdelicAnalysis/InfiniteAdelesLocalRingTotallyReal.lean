@@ -20,7 +20,7 @@ def posU (ι : Type) : Subgroup (ι → ℝ)ˣ where
     exact (pos_iff_pos_of_mul_pos (h1 ▸ one_pos)).2 (hu i)
 
 /- English proof (translation)
-Establish `h1 : {x : ι → ℝ | ∀ i, 0 < x i} = ⋂ i, {x : ι → ℝ | 0 < x i}`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[h1]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_lt continuous_const (continuous_apply i)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_pos (ι : Type) [Finite ι] : IsOpen {x : ι → ℝ | ∀ i, 0 < x i} := by
   have h1 : {x : ι → ℝ | ∀ i, 0 < x i} = ⋂ i, {x : ι → ℝ | 0 < x i} := by
@@ -30,23 +30,23 @@ theorem isOpen_pos (ι : Type) [Finite ι] : IsOpen {x : ι → ℝ | ∀ i, 0 <
   exact isOpen_iInter_of_finite fun i => isOpen_lt continuous_const (continuous_apply i)
 
 /- English proof (translation)
-The claim follows from `(isOpen_pos ι).preimage Units.continuous_val`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_posU (ι : Type) [Fintype ι] : IsOpen (posU ι : Set (ι → ℝ)ˣ) :=
   (isOpen_pos ι).preimage Units.continuous_val
 
 /- English proof (translation)
-Establish `hv : IsOpenEmbedding (Units.val : (ι → ℝ)ˣ → (ι → ℝ))` using `Units.isOpenEmbedding_val`. Use `(IsOpenEmbedding.of_comp_iff _ hv).1 ?_` and prove the remaining obligations. Use `set j : posU ι → (ι → ℝ) := fun u => ((u : (ι → ℝ)ˣ) : ι → ℝ) with hjdef`. Establish `hj : IsOpenEmbedding j` using `hv.comp (isOpen_posU ι).isOpenEmbedding_subtypeVal`. Use `set g : posU ι → (ι → ℝ) := Units.val ∘ (fun u : posU ι => ((u : (ι → ℝ)ˣ) ^ 2 : (ι → ℝ)ˣ)) with hgdef`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hg : Continuous g` using `Units.continuous_val.comp (continuous_subtype_val.pow 2)`. Set `r : (ι → ℝ) → (ι → ℝ)` to `fun x i => Real.sqrt (x i)`. Establish `hr : Continuous r` using `continuous_pi fun i => (continuous_apply i).sqrt`. Establish `hrg : r ∘ g = j`. Use function extensionality and compare the values at `u i`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hu : 0 < ((u : (ι → ℝ)ˣ) : ι → ℝ) i` using `u.2 i`. Simplify using `[r, g, j, Real.sqrt_sq hu.le]`. Establish `hind : IsInducing g` using `IsInducing.of_comp hg hr (by rw [hrg]; exact hj.isInducing)`. Establish `hinj : Function.Injective g` using `Function.Injective.of_comp (f := r) (by rw [hrg]; exact hj.injective)`. Establish `hrange : Set.range g = {x : ι → ℝ | ∀ i, 0 < x i}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩ i`. Establish `hu : 0 < ((u : (ι → ℝ)ˣ) : ι → ℝ) i` using `u.2 i`. Simplify `pow_pos hu 2` using `[g]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hx`. Establish `hs : ∀ i, 0 < Real.sqrt (x i)` using `fun i => Real.sqrt_pos.2 (hx i)`. Set `w : (ι → ℝ)ˣ` to `⟨fun i => Real.sqrt (x i), fun i => (Real.sqrt (x i))⁻¹, by funext i; simp [(hs i).ne'], by funext i; simp [(hs i).ne']⟩`. Use `⟨⟨w, fun i => hs i⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Simplify using `[g, w, Real.sq_sqrt (hx i).le]`. Conclude with `⟨⟨hind, hinj⟩, by rw [hrange]; exact isOpen_pos ι⟩`.
+A detailed English derivation is pending.
 -/
 theorem isOpenEmbedding_sq (ι : Type) [Fintype ι] :
     IsOpenEmbedding (fun u : posU ι => ((u : (ι → ℝ)ˣ) ^ 2 : (ι → ℝ)ˣ)) := by
@@ -88,7 +88,7 @@ def eInf (h : IsTotallyReal F) : Ainf F ≃+* (InfinitePlace F → ℝ) :=
 
 omit [NumberField F] in
 /- English proof (translation)
-Use `show Continuous (fun (x : ∀ w : InfinitePlace F, w.Completion) (w : InfinitePlace F) => InfinitePlace.Completion.ringEquivRealOfIsReal (h.isReal w) (x w))`. Conclude with `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivRealOfIsReal (h.isReal w)).continuous.comp (continuous_apply w)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_eInf (h : IsTotallyReal F) : Continuous (eInf F h) := by
   show Continuous (fun (x : ∀ w : InfinitePlace F, w.Completion) (w : InfinitePlace F) =>
@@ -98,7 +98,7 @@ theorem continuous_eInf (h : IsTotallyReal F) : Continuous (eInf F h) := by
 
 omit [NumberField F] in
 /- English proof (translation)
-Use `show Continuous (fun (x : InfinitePlace F → ℝ) (w : InfinitePlace F) => (InfinitePlace.Completion.ringEquivRealOfIsReal (h.isReal w)).symm (x w))`. Conclude with `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivRealOfIsReal (h.isReal w)).symm.continuous.comp (continuous_apply w)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_eInf_symm (h : IsTotallyReal F) : Continuous (eInf F h).symm := by
   show Continuous (fun (x : InfinitePlace F → ℝ) (w : InfinitePlace F) =>
@@ -121,15 +121,13 @@ end GlobalTheory.CompanionTheory.SW.LocInf
 open GlobalTheory.CompanionTheory.SW.LocInf in
 
 /- English proof (translation)
-Introduce `F _ _ h`. Establish `hT2 : T2Space (Ainf F)` using `inferInstanceAs (T2Space (∀ w : InfinitePlace F, w.Completion))`. Establish `hSC : SecondCountableTopology (Ainf F)` using `(hInf F h).secondCountableTopology`. Establish `hArt : IsArtinianRing (Ainf F)` using `inferInstanceAs (IsArtinianRing (∀ w : InfinitePlace F, w.Completion))`. Establish `hRed : IsReduced (Ainf F)` using `inferInstanceAs (IsReduced (∀ w : InfinitePlace F, w.Completion))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval : IsOpenEmbedding (Units.val : (Ainf F)ˣ → Ainf F)`. Establish `h1 : IsOpenEmbedding (Units.val : (InfinitePlace F → ℝ)ˣ → (InfinitePlace F → ℝ))` using `Units.isOpenEmbedding_val`. Establish `h2` using `((hInf F h).symm.isOpenEmbedding.comp h1).comp (uInf F h).isOpenEmbedding`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `((eInf F h).symm_apply_apply _).symm`. Use `⟨inferInstance, inferInstance, hSC, hT2, hArt, hRed, hval, (posU (InfinitePlace F)).comap (Units.map (eInf F h).toMonoidHom), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(isOpen_posU (InfinitePlace F)).preimage (uInf F h).continuous`. Set `S` to `(posU (InfinitePlace F)).comap (Units.map (eInf F h).toMonoidHom)`. Set `T : S ≃ₜ posU (InfinitePlace F)` to `(uInf F h).subtype (fun x => Iff.rfl)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h2` using `((uInf F h).symm.isOpenEmbedding.comp (isOpenEmbedding_sq (InfinitePlace F))).comp T.isOpenEmbedding`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Apply `(uInf F h).injective` to reduce the goal to its premises. Simplify using `only [Function.comp_apply, Homeomorph.apply_symm_apply]`.
-
-Conclude with `map_pow (Units.map (eInf F h).toMonoidHom) (u : (Ainf F)ˣ) 2`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.SW.isLocR_Ainf : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F → IsLocR (Ainf F) := by
   intro F _ _ h

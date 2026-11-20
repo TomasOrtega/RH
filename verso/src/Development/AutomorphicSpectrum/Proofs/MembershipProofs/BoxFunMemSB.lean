@@ -8,11 +8,11 @@ open GlobalTheory.CompanionTheory.VacLoc GlobalTheory.CompanionTheory.FinHeis Gl
 namespace GlobalTheory.CompanionTheory.VacDbl
 
 /- English proof (translation)
-Use `⟨(h₁.1.comp_continuous (f := fun x : κ ⊕ κ' → R => x ∘ Sum.inl) (by fun_prop)).mul (h₂.1.comp_continuous (f := fun x : κ ⊕ κ' → R => x ∘ Sum.inr) (by fun_prop)), ?_⟩` and prove the remaining obligations. Establish `hK : IsCompact ((fun p : (κ → R) × (κ' → R) => Sum.elim p.1 p.2) '' (tsupport φ₁ ×ˢ tsupport φ₂))`. Use `(IsCompact.prod h₁.2 h₂.2).image (continuous_pi ?_)` and prove the remaining obligations. Introduce and unpack `(i | i)`. Conclude with `(continuous_apply i).comp continuous_fst`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(continuous_apply i).comp continuous_snd`. Use `HasCompactSupport.intro hK fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨e₁, e₂⟩` from `mul_ne_zero_iff.1 hne`. Use `hx ⟨(x ∘ Sum.inl, x ∘ Sum.inr), ⟨subset_tsupport _ e₁, subset_tsupport _ e₂⟩, ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases i with i | i <;> rfl`.
+A detailed English derivation is pending.
 -/
 theorem boxFun_mem_SB {R : Type} [TopologicalSpace R] [T2Space R] {κ κ' : Type} {φ₁ : (κ → R) → ℂ}
     {φ₂ : (κ' → R) → ℂ} (h₁ : φ₁ ∈ SB (κ → R)) (h₂ : φ₂ ∈ SB (κ' → R)) : boxFun φ₁ φ₂ ∈ SB (κ ⊕ κ' → R) := by

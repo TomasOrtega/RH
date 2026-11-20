@@ -6,17 +6,15 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris CrystallineSemistable
 namespace GlobalTheory.CompanionTheory.DPFil
 
 /- English proof (translation)
-Introduce `b L`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `r hr T`. Express the relevant statement in the definitionally equal form `T.pdPow r.toNat = ⊤`. Rewrite using `[Int.toNat_of_nonpos hr]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `T.pdPow_zero`. Introduce `T`. Express the relevant statement in the definitionally equal form `T.pdPow (1 : ℤ).toNat = T.J`. Conclude with `le_antisymm (dividedPowerFiltration_one_le T.δ) T.J_le_pdPow_one`. Introduce `r r' h T`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `T.pdPow_anti (Int.toNat_le_toNat h)`. Introduce `r r' T x y hx hy`. Establish `hx' : (show T.B from x) ∈ pdP T.δ r`. Establish `: (show T.B from x) ∈ T.pdPow ((r : ℤ).toNat)` using `hx`. Rewrite `this` using `[Int.toNat_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hy' : (show T.B from y) ∈ pdP T.δ r'`. Establish `: (show T.B from y) ∈ T.pdPow ((r' : ℤ).toNat)` using `hy`. Rewrite `this` using `[Int.toNat_natCast]`. Conclude with `this`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h` using `dividedPowerFiltration_mul_le T.δ r r' (Ideal.mul_mem_mul hx' hy')`. Express the relevant statement in the definitionally equal form `_ ∈ T.pdPow (((r + r' : ℕ) : ℤ).toNat)`. Rewrite using `[Int.toNat_natCast]`. Conclude with `h`. Introduce `k T x hx`.
-
-Express the relevant statement in the definitionally equal form `_ ∈ T.pdPow ((k : ℤ).toNat)`. Rewrite using `[Int.toNat_natCast]`. Conclude with `dpow_mem_pdP T.δ k hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFil_thFil : ∀ {b : Base} (L : b.Fun), IsFil (thP L) (thFil L) := by
   intro b L

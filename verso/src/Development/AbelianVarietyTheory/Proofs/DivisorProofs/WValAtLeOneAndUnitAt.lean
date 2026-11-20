@@ -12,13 +12,11 @@ noncomputable section
 namespace GlobalTheory.NormExt
 
 /- English proof (translation)
-Take `⟨W₀, hW₀, s, hs⟩` from `hf.exists_fnOf`. Establish `ht : ⊤ ≤ yt ⁻¹ᵁ W₀` using `HtGen.IntPt.top_le_of_closedPoint yt hW₀`. Establish `ht' : ⊤ ≤ (spMap e.O.subtype ≫ yt) ⁻¹ᵁ W₀` using `fun q _ => ht (x := spMap e.O.subtype q) trivial`. Establish `hb : below (spMap e.O.subtype ≫ yt) ∈ W₀` using `ht' trivial`. Establish `hev` using `OfModel.eval_pull e.O.subtype (𝟙 Z) (spMap e.O.subtype ≫ yt) yt (Category.comp_id _).symm (U := W₀) (W := W₀) le_rfl ht' ht s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hid : ((𝟙 Z : Z ⟶ Z).appLE W₀ W₀ le_rfl).hom s = s`. Establish `: (𝟙 Z : Z ⟶ Z).appLE W₀ W₀ le_rfl = 𝟙 _` using `(Category.id_comp _).trans (Z.presheaf.map_id _)`. Rewrite using `[this]`. Both sides reduce to the same expression. Rewrite `hev` using `[hid]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hs, OfModel.valAt_fnOf _ hb ht', hev]`. Use `set c : e.O := (Scheme.Hom.appLE yt W₀ ⊤ ht ≫ (Scheme.ΓSpecIso (CommRingCat.of e.O)).hom).hom s with hc`. Express the relevant statement in the definitionally equal form `e.w (c : AlgebraicClosure F) ≤ 1 ∧ (e.w (c : AlgebraicClosure F) = 1 → _)`. Use `⟨(e.mem_O _).1 c.2, fun h1 => ?_⟩` and prove the remaining obligations. Rewrite `h1` using `[HtGen.IntPt.w_eq_one_iff, hc, RegCrit.isUnit_eval_iff yt ht s]`.
-
-Conclude with `(unitAt_fnOf_iff hW₀ (gen_mem hW₀) s).2 h1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem w_valAt_le_one_and_unitAt {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)}
     (e : TrueGeo.Ext v) {Z : Scheme.{0}} [IsIntegral Z] (yt : Sp e.O ⟶ Z) {f : Z.functionField}

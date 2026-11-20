@@ -15,19 +15,15 @@ open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm Recipro
 namespace GlobalTheory.CompanionTheory.Ar.Giv.Push
 
 /- English proof (translation)
-Establish `hne : Nonempty (ChartPartition A)` using `existsPartition A`. Establish `hm : mInt A Φ G = integralWith A hne.some Φ G` using `by unfold mInt; rw [dif_pos hne]`. Use `set Pt := hne.some with hPt`. Use `set hj : Fin A.n → (Fin e → ℂ) → ℝ := fun j u => Pt.χ j ((A.chart j).symm u) * G ((A.chart j).symm u) * locDens A Φ j u with hhj`. Establish `hN : ∀ j, volume ((q ∘ (A.chart j).symm) '' (goodT A q j ∩ (A.chart j).symm ⁻¹' S)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j`. Use `addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero volume ?_ ?_` and prove the remaining obligations. Introduce `u hu`. Conclude with `(hu.1.2.1.differentiableAt.restrictScalars ℝ).differentiableWithinAt`. Conclude with `measure_mono_null (Set.inter_subset_inter_left _ fun u (hu : u ∈ goodT A q j) => hu.1) (hS j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfinj : ∀ j, ∀ᵐ y, (goodT A q j ∩ (q ∘ (A.chart j).symm) ⁻¹' {y}).Finite`. Introduce `j`. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.mp (hN j)] with y hy`. Rewrite using `[goodT_fibre_eq A q S hq j hy]`. Conclude with `((hfin y).subset Set.inter_subset_right).image _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `harea : ∀ j, Integrable (fibSum (goodT A q j) (q ∘ (A.chart j).symm) (hj j)) ∧ ∫ u in goodT A q j, hj j u = ∫ y, fibSum (goodT A q j) (q ∘ (A.chart j).symm) (hj j) y` using `fun j => area_open (isOpen_goodT A q j) (fun u hu => hu.2) ((integrableOn_chart A Pt Φ G hG j).mono_set fun u hu => hu.1) (hfinj j)`. Establish `hset : ∀ j, ∫ u in (A.chart j).target, hj j u = ∫ u in goodT A q j, hj j u`. Introduce `j`. Use `setIntegral_congr_set (ae_eq_set.mpr ⟨?_, ?_⟩)` and prove the remaining obligations. Conclude with `measure_mono_null (target_diff_goodT_subset A q S hq j) (hS j)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Set.sdiff_eq_empty.mpr fun u hu => hu.1]`. Conclude with `measure_empty`. Establish `hterm : ∀ j x, x ∈ (A.chart j).source → x ∉ S → hj j (A.chart j x) / jacN (q ∘ (A.chart j).symm) (A.chart j x) = Pt.χ j x * (G x * pushDens A Φ q x)`. Introduce `j x hx hxS`. Simplify using `only [hhj, (A.chart j).left_inv hx]`.
-
-Rewrite using `[mul_div_assoc, locDens_div_jacN A Φ q S hq hsm j hx hxS, mul_assoc]`. Establish `hae` using `sum_fibSum_ae A q S hN hq hfin Pt hj (fun x => G x * pushDens A Φ q x) hterm`. Use `⟨(integrable_finsetSum Finset.univ fun j _ => (harea j).1).congr hae, ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`. Unfold `integralWith`.
-
-Establish `hsum : ∑ j, ∫ u in (A.chart j).target, hj j u = ∫ y, ∑ j, fibSum (goodT A q j) (q ∘ (A.chart j).symm) (hj j) y`. Rewrite using `[integral_finsetSum _ fun j _ => (harea j).1]`. Conclude with `Finset.sum_congr rfl fun j _ => (hset j).trans (harea j).2`. Conclude with `hsum.trans (integral_congr_ae hae)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_mInt_fibreSum {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas e X) (Φ : Fin e → LocPot X) (q : X → Fin e → ℂ) (S : Set X) (G : X → ℝ)

@@ -7,21 +7,21 @@ open NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨N, ι, hι, hmul, hlat⟩` from `Formalism.HermitianLatticesTheory.final_traceReal K V h hs hpos`. Use `set e : ℤ := NumberField.discr K with he`. Establish `he0 : e ≠ 0` using `NumberField.discr_ne_zero K`. Establish `ecast : ((e.natAbs ^ 2 : ℕ) : K) = ((e : K)) * (e : K)`. Establish `h0 : ((e.natAbs ^ 2 : ℕ) : ℤ) = e * e` using `by rw [Nat.cast_pow, Int.natAbs_sq, sq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Int.cast_natCast, h0, Int.cast_mul]`. Establish `hstar : ∀ r : 𝓞 K, star (algebraMap (𝓞 K) K r) ∈ Set.range (algebraMap (𝓞 K) K)` using `fun r => ⟨⟨star (algebraMap (𝓞 K) K r), r.isIntegral_coe.map (starRingEnd K).toIntAlgHom⟩, rfl⟩`. Set `S : Set (Submodule (𝓞 K) V)` to `{M | Submodule.IsLattice K M ∧ (∀ x ∈ M, ∀ y ∈ M, (d : K) * h x y ∈ Set.range (algebraMap (𝓞 K) K)) ∧ (∀ y : V, (∀ x ∈ M, h x y ∈ Set.range (algebraMap (𝓞 K) K)) → (c : K) • y ∈ M)}`. Take `⟨s, hs1, hs2⟩` from `Formalism.HermitianLatticesTheory.classSetFinite_core Formalism.HermitianLatticesTheory.final_shortVectors Formalism.HermitianLatticesTheory.final_finIntermediate Formalism.HermitianLatticesTheory.final_isomOfTrace h hpos N ι hι hmul d hd (Real.sqrt (((c * e.natAbs ^ 2 : ℕ) : ℝ) …`. Introduce `M hM _ _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Formalism.HermitianLatticesTheory.genusCovolBound_covol_le h N ι hι M (c * e.natAbs ^ 2) (Nat.mul_pos hc (pow_pos (Int.natAbs_pos.mpr he0) 2))` to reduce the goal to its premises. Establish `hdual : ∀ y, (∀ x ∈ M, ∃ z : ℤ, Algebra.trace ℚ K (h x y) = z) → ∀ x ∈ M, h x ((e : K) • y) ∈ Set.range (algebraMap (𝓞 K) K)`. Introduce `y hy x hx`. Rewrite using `[LinearMap.map_smul, smul_eq_mul]`. Establish `hm : ((e : ℤ) : K) * h x y ∈ (1 : Submodule (𝓞 K) K)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Formalism.HermitianLatticesTheory.genusCovolBound_discr` to reduce the goal to its premises. Introduce `r`. Take `⟨s, hs'⟩` from `hstar r`. Take `⟨z, hz⟩` from `hy (s • x) (M.smul_mem s hx)`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hz]`. Use `congr 1`. Rewrite using `[← algebraMap_smul K s x, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, hs', star_star, mul_comm]`. Conclude with `Submodule.mem_one.mp hm`. Introduce `y y' hy hy'`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (c : K) • ((e : K) • y) ∈ M` using `hM.2.2 _ (hdual y hy)`. Establish `h2` using `hdual y' hy' _ h1`. Establish `key : h ((c : K) • ((e : K) • y)) ((e : K) • y') = algebraMap ℚ K ((c * e.natAbs ^ 2 : ℕ) : ℚ) * h y y'`. Rewrite using `[map_natCast, Nat.cast_mul, ecast]`. Simplify using `only [LinearMap.map_smulₛₗ₂, LinearMap.map_smul, starRingEnd_apply, star_intCast, star_natCast, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[key]`. Take `⟨r, hr⟩` from `h2`. Take `⟨z, hz⟩` from `Formalism.HermitianLatticesTheory.genusCovolBound_trace_int (K := K) r`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[← hz, hr, ← Algebra.smul_def, LinearMap.map_smul, smul_eq_mul])`. Conclude with `⟨s, fun M₀ hM₀ => (hs1 M₀ hM₀).1, fun M hL hd' hc' => hs2 M ⟨hL, hd', hc'⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem hermLat_boundedScaleDual_finite {K V : Type} [Field K] [NumberField K] [StarRing K]
     [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V]

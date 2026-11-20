@@ -9,7 +9,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LowDa
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LowFilt.Opp.exists_opp | exact GlobalTheory.LowFilt.Opp.exists_opp | (intros; apply GlobalTheory.LowFilt.Opp.exists_opp <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_oppositeIsotropicPair : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H) (Z : Submodule (𝓞 E) D.La), IsIsoSat D Z → ∃ Z' : Submodule (𝓞 E) D.La, IsOpp D Z Z' := by
   first | exact @GlobalTheory.LowFilt.Opp.exists_opp | exact GlobalTheory.LowFilt.Opp.exists_opp | (intros; apply GlobalTheory.LowFilt.Opp.exists_opp <;> assumption)

@@ -44,7 +44,7 @@ def ratPart (φ : ℂ → L) (w : ℂ) (P : MvPolynomial ι ℂ) : MvPolynomial 
 variable {σ}
 
 /- English proof (translation)
-Use `choose z hz using h`. Use `⟨∑ k ∈ P.support, φ (w * P.coeff k) * z k, ?_⟩` and prove the remaining obligations. Simplify using `only [ratPart, map_sum, map_smul, hz, map_mul, Finset.mul_sum, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ratPart_rat {ℓ : MvPolynomial ι ℂ →ₗ[ℂ] ℂ} {Ω : ℂ} (h : ∀ k, ∃ z : L, ℓ (MvPolynomial.monomial k 1) = Ω * σ z)
     (φ : ℂ → L) (w : ℂ) (P : MvPolynomial ι ℂ) : ∃ z : L, ℓ (ratPart σ φ w P) = Ω * σ z := by
@@ -54,9 +54,9 @@ theorem ratPart_rat {ℓ : MvPolynomial ι ℂ →ₗ[ℂ] ℂ} {Ω : ℂ} (h : 
   exact Finset.sum_congr rfl fun k _ => by ring
 
 /- English proof (translation)
-Use `choose z hz using h`. Establish `e : ℓ P = ∑ k ∈ P.support, P.coeff k * (Ω * σ (z k))` using `by conv_lhs => rw [P.as_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← hz, ← smul_eq_mul, ← map_smul, MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [ratPart, map_sum, map_smul, hz, Finset.mul_sum, smul_eq_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[show w * (P.coeff k * (Ω * σ (z k))) = (w * Ω * P.coeff k) * σ (z k) by ring, hφ, σ.map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ratPart_eq {ℓ : MvPolynomial ι ℂ →ₗ[ℂ] ℂ} {Ω : ℂ} (h : ∀ k, ∃ z : L, ℓ (MvPolynomial.monomial k 1) = Ω * σ z)
     (φ : ℂ →+ L) (hφ : ∀ x y, φ (x * σ y) = φ x * y) (w : ℂ) (P : MvPolynomial ι ℂ) :
@@ -73,9 +73,9 @@ theorem ratPart_eq {ℓ : MvPolynomial ι ℂ →ₗ[ℂ] ℂ} {Ω : ℂ} (h : �
   ring
 
 /- English proof (translation)
-Use `letI : Algebra L ℂ := σ.toAlgebra`. Take `⟨φ, hφ⟩` from `not_forall.1 (mt (Module.forall_dual_apply_eq_zero_iff L x).1 hx)`. Use `⟨φ.toAddMonoidHom, fun a y => ?_, hφ⟩` and prove the remaining obligations. Establish `: a * σ y = y • a` using `by rw [Algebra.smul_def, mul_comm]; rfl`. Use `show φ (a * σ y) = φ a * y`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_smul, smul_eq_mul, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem exists_dual {x : ℂ} (hx : x ≠ 0) : ∃ φ : ℂ →+ L, (∀ a y, φ (a * σ y) = φ a * y) ∧ φ x ≠ 0 := by
   letI : Algebra L ℂ := σ.toAlgebra
@@ -94,29 +94,27 @@ section Bottom
 variable {T : Type} {A A' WW : HSp D} {X : Tri T A A' WW} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
 
 /- English proof (translation)
-Take `⟨h0, Pi, p, p', J, hs, hJ, -, hI, hI', P', hP', -⟩` from `h`. Take `⟨Ω, Ω', hΩ, hΩ', H⟩` from `hr`. Take `⟨P, hP⟩` from `hs (p' P')`. Establish `hI'' : ∀ t Q, X.I' ψ θ t Q = J t (p' Q)` using `fun t Q => hI' t Q (hi' t Q)`. Set `ℓ : T → GA D WW → (PolF D WW.rank A.rank →ₗ[ℂ] ℂ)` to `fun t g => lam t • (LinearMap.proj g ∘ₗ J t ∘ₗ p)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ℓ' : T → GA D WW → (PolF D WW.rank A'.rank →ₗ[ℂ] ℂ)` to `fun t g => LinearMap.proj g ∘ₗ J t ∘ₗ p'`. Establish `hℓ : ∀ t g Q, ℓ t g Q = X.I ψ θ t Q g` using `fun t g Q => by rw [hI]; rfl`. Establish `hℓ' : ∀ t g Q, ℓ' t g Q = X.I' ψ θ t Q g` using `fun t g Q => by rw [hI'']; rfl`. Establish `r : ∀ t, ∀ g ∈ GfC WW, ∀ k, ∃ z : L, ℓ t g (MvPolynomial.monomial k 1) = Ω * σ z` using `fun t g hg k => by`. Rewrite using `[hℓ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((H t g hg).1 k).2`. Establish `r' : ∀ t, ∀ g ∈ GfC WW, ∀ k, ∃ z : L, ℓ' t g (MvPolynomial.monomial k 1) = Ω' * σ z` using `fun t g hg k => by`. Rewrite using `[hℓ']`. Conclude with `((H t g hg).2 k).2`. Establish `sep : ∀ t Q Q' (a b : ℂ), (∀ g ∈ GfC WW, a * ℓ t g Q - b * ℓ' t g Q' = 0) → (a * lam t) • p Q = b • p' Q'` using `fun t Q Q' a b hh => hJ t (funext fun g => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hz t Q Q' a b (fun g hg => by rw [← hℓ, ← hℓ']; exact hh g hg) g` as an intermediate fact. Rewrite `this` using `[hI, hI'']`. Simplify using `only [map_smul, _root_.Pi.smul_apply, smul_eq_mul] at this ⊢`. Take the linear combination `this)`. Establish `nz : ∀ t Q', p' Q' ≠ 0 → ∃ g ∈ GfC WW, ℓ' t g Q' ≠ 0` using `fun t Q' hQ => by`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `sep t P Q' 0 1 fun g hg => by rw [hc g hg]; simp` as an intermediate fact. Conclude with `hQ (by simpa using this.symm)`. Take `⟨g₀, hg₀, hn₀⟩` from `nz t₀ P' hP'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨φ, hφ, hφ0⟩` from `exists_dual (σ := σ) hn₀`. Establish `e0 : ∀ g, (lam t₀)⁻¹ * ℓ t₀ g P = 1 * ℓ' t₀ g P'` using `fun g => by show (lam t₀)⁻¹ * (lam t₀ * J t₀ (p P) g) = 1 * J t₀ (p' P') g`. Rewrite using `[hP, inv_mul_cancel_left₀ (h0 _), one_mul]`. Use `set Q := ratPart σ φ ((lam t₀)⁻¹ * Ω) P`. Use `set Q' := ratPart σ φ (1 * Ω') P'`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (Ω' * lam t₀) • p Q = Ω • p' Q'` using `sep t₀ Q Q' Ω' Ω fun g hg => by`. Rewrite using `[ratPart_eq (r t₀ g hg) φ hφ, ratPart_eq (r' t₀ g hg) φ hφ, e0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hQ' : p' Q' ≠ 0` using `fun hh => by`. Establish `h1 : ℓ' t₀ g₀ Q' = 0` using `by show J t₀ (p' Q') g₀ = 0`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hh, map_zero]`. Both sides reduce to the same expression. Rewrite `h1` using `[ratPart_eq (r' t₀ g₀ hg₀) φ hφ, one_mul]`. Conclude with `mul_ne_zero hΩ' ((map_ne_zero σ).2 hφ0) h1`. Introduce `t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨h0 t, ?_⟩` and prove the remaining obligations. Take `⟨g, hg, hn⟩` from `nz t Q' hQ'`. Take `⟨z, hz1⟩` from `ratPart_rat (r t g hg) φ ((lam t₀)⁻¹ * Ω) P`. Take `⟨z', hz2⟩` from `ratPart_rat (r' t g hg) φ (1 * Ω') P'`. Establish `e2 : Ω' * lam t₀ * ℓ t g Q = lam t * Ω * ℓ' t g Q'`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (fun x => J t x g) e1` as an intermediate fact. Simplify using `only [map_smul, _root_.Pi.smul_apply, smul_eq_mul] at this`. Use `show Ω' * lam t₀ * (lam t * J t (p Q) g) = lam t * Ω * J t (p' Q') g`. Take the linear combination `lam t * this`. Establish `hz' : σ z' ≠ 0` using `fun hh => hn (hz2.trans (by rw [hh, mul_zero]))`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `e3 : σ (z / z') = lam t / lam t₀`. Rewrite `e2` using `[show ℓ t g Q = _ from hz1, show ℓ' t g Q' = _ from hz2]`. Use `h0 t₀` as an intermediate fact. Rewrite using `[map_div₀]`. Clear the denominators using the available nonvanishing facts.
-
-Establish `e4 : Ω * Ω' * (σ z * lam t₀ - lam t * σ z') = 0` using `by linear_combination e2`. Use `(mul_eq_zero.1 e4).resolve_left (mul_ne_zero hΩ hΩ')` as an intermediate fact. Take the linear combination `this`. Establish `hne : z / z' ≠ 0` using `fun hh => div_ne_zero (h0 t) (h0 t₀) (by rw [← e3, hh, map_zero])`. Conclude with `⟨Units.mk0 _ hne, e3⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Factor.ratIn {L : Type} [Field L] {σ : L →+* ℂ} {lam : T → ℂ} (h : Factor X ψ θ lam) (hr : X.RationalSums ψ θ σ)
     (hi' : ∀ t P g, IntegrableOn (X.ker' ψ θ t P g) X.fd' X.m')
@@ -183,7 +181,7 @@ theorem Factor.ratIn {L : Type} [Field L] {σ : L →+* ℂ} {lam : T → ℂ} (
   exact ⟨Units.mk0 _ hne, e3⟩
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ w.ne_bot`.
+A detailed English derivation is pending.
 -/
 theorem ideal_ne_bot (X : Tri T A A' WW) (S : T → Finset (Pl D.host.E)) (t : T) : X.ideal S t ≠ ⊥ :=
   Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ w.ne_bot
@@ -191,9 +189,9 @@ theorem ideal_ne_bot (X : Tri T A A' WW) (S : T → Finset (Pl D.host.E)) (t : T
 variable {α β : T → ((AE D)ˣ →* Circle)} {νH : T → Formalism.L2.Host.HChar D.host.E} {S : T → Finset (Pl D.host.E)}
 
 /- English proof (translation)
-Establish `hν : IsHeckeChar D (α t / β t)` using `(h.weil' t).hecT`. Take `⟨f, h1, h2⟩` from `GlobalTheory.T.first_standard_pair_member_has_theta_function D ψ θ A WW X.rA X.rW _ _ _ _ _ h.rigA h.rigW hν (h.idem t) (ideal_ne_bot X S t) h.isVac`. Take `⟨f', h1', h2'⟩` from `GlobalTheory.T.exists_thetaFunction_standardPairSecond D ψ θ A' WW X.rA' X.rW _ _ _ _ A.rank _ h.rigA' h.rigW hν (h.idem t) (ideal_ne_bot X S t) h.isVac'`. Take `⟨Tm, hT⟩` from `h1.1`. Take `⟨Tm', hT'⟩` from `h1'.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨((h.fst t).2 Tm hT).trans (h1.2 Tm hT).symm ▸ h2, ((h.snd t).2 Tm' hT').trans (h1'.2 Tm' hT').symm ▸ h2'⟩`.
+Supply the required witnesses or components.
 -/
 theorem theta_f (h : X.Is ψ θ α β νH S) (t : T) : IsThetaFunO ψ (neg A) WW (X.f t) ∧ IsThetaFunO ψ A' WW (X.f' t) := by
   have hν : IsHeckeChar D (α t / β t) := (h.weil' t).hecT
@@ -204,7 +202,7 @@ theorem theta_f (h : X.Is ψ θ α β νH S) (t : T) : IsThetaFunO ψ (neg A) WW
   exact ⟨((h.fst t).2 Tm hT).trans (h1.2 Tm hT).symm ▸ h2, ((h.snd t).2 Tm' hT').trans (h1'.2 Tm' hT').symm ▸ h2'⟩
 
 /- English proof (translation)
-Establish `c` using `fun t P => GlobalTheory.T.thetaIntegral_definiteSource_converges_continuous_invariant D ψ true A WW _ _ (X.ω t) X.m X.fd _ (h.weil t) hA h.meas.1 h.meas.2 (GlobalTheory.Chain.InnerSteps.theta_pureTensorO (S := neg A) h.isVac.1 h.isVac.2.inf (fun τ => -X.rA.s τ) X.rA.B X.rW.s X.rW …`. Establish `c'` using `fun t P => GlobalTheory.T.thetaIntegral_definiteSource_converges_continuous_invariant D ψ false A' WW _ _ (X.ω' t) X.m' X.fd' _ (h.weil' t) hA' h.meas'.1 h.meas'.2 (GlobalTheory.Chain.InnerSteps.theta_pureTensorO h.isVac.1 h.isVac.2.inf X.rA'.s X.rA'.B X.rW.s X.rW.B (theta_f h t) …`. Use `hF.ratIn hr (fun t P g => (c' t P).1 g) (fun t P P' a b => ?_) t₀` and prove the remaining obligations. Use `GlobalTheory.T.continuous_automorphic_eq_zero_of_vanish_on_finiteAdelic D WW (fun g => a * X.I ψ θ t P g - b * X.I' ψ θ t P' g) hW ((continuous_const.mul (c t P).2.1).sub (continuous_const.mul (c' t P').2.1)) fun γ hγ g => ?_` and prove the remaining obligations. Conclude with `congrArg₂ (fun u v => a * u - b * v) ((c t P).2.2 γ hγ g) ((c' t P').2.2 γ hγ g)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ratIn_of_definite {L : Type} [Field L] {σ : L →+* ℂ} {lam : T → ℂ} (h : X.Is ψ θ α β νH S)
     (hA : ∀ τ, (gramAt D A τ).PosDef) (hA' : ∀ τ, (gramAt D A' τ).PosDef) (hW : ∀ τ, (gramAt D WW τ).PosDef)
@@ -219,7 +217,7 @@ theorem ratIn_of_definite {L : Type} [Field L] {σ : L →+* ℂ} {lam : T → �
   exact congrArg₂ (fun u v => a * u - b * v) ((c t P).2.2 γ hγ g) ((c' t P').2.2 γ hγ g)
 
 /- English proof (translation)
-Establish `: gramAt D V τ = 1` using `by rw [gramAt, h.1]; simp`. Rewrite using `[this]`. Conclude with `Matrix.PosDef.one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posDef_of_std {V : HSp D} {r : Rig V} (h : r.IsStd) (τ : D.what₂.Tau) : (gramAt D V τ).PosDef := by
   have : gramAt D V τ = 1 := by rw [gramAt, h.1]; simp
@@ -231,7 +229,7 @@ variable {G₀ : Type} [Group G₀] [Fintype G₀] {Pl0 T : Type} {Fam : FamIn D
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D Fam Ks} {F : Face D Fam} {G : GridPre R}
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.Mem.UnrAe.exists_levelLe χ w`. Use `⟨Nat.find h, fun m => ⟨fun hm => Nat.find_min' h hm, fun hm x hx hx' => Nat.find_spec h x hx (hx'.trans ?_)⟩⟩` and prove the remaining obligations. Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exists_expAt (χ : Formalism.L2.Host.HChar D.host.E) (w : Pl D.host.E) : ∃ n, GlobalTheory.CMVal.ExpAt χ w n := by
   classical
@@ -241,9 +239,9 @@ theorem exists_expAt (χ : Formalism.L2.Host.HChar D.host.E) (w : Pl D.host.E) :
   omega
 
 /- English proof (translation)
-Use `(GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V).1` as an intermediate fact. Establish `: BorelSpace (GA D V)` using `⟨rfl⟩`. Establish `: IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E)` using `⟨rfl⟩`. Establish `: Module.Finite D.host.F D.host.E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `: IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsTopologicalGroup (GA D V)` using `inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig V.gram))`. Take `⟨𝓕, h⟩` from `GlobalTheory.FundDomDiscrete.exists_fundDom D V Measure.haar inferInstance`. Conclude with `⟨Measure.haar, 𝓕, inferInstance, h⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_meas (V : HSp D) : ∃ (μ : Measure (GA D V)) (𝓕 : Set (GA D V)), μ.IsHaarMeasure ∧ IsFundamentalDomain (GQ V) 𝓕 μ := by
   have := (GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V).1
@@ -258,7 +256,7 @@ theorem exists_meas (V : HSp D) : ∃ (μ : Measure (GA D V)) (𝓕 : Set (GA D 
   exact ⟨Measure.haar, 𝓕, inferInstance, h⟩
 
 /- English proof (translation)
-Take `⟨om, h⟩` from `GlobalTheory.T.exists_weilDatum_of_splittingCharacters D ψ hψ (sgn ε S) W χS χW hη h1 h2 h3 h4`. Conclude with `⟨om.comp ((ofSgn ε S).symm.toMonoidHom.prodMap (MonoidHom.id _)), h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isWeil {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (hη : ∃ η, GlobalTheory.WeilParts.IsEtaTilde D η) (ε : Bool)
     (S W : HSp D) {χS χW : (AE D)ˣ →* Circle} (h1 : IsHeckeChar D χS) (h2 : IsHeckeChar D χW) (h3 : ResEta D χS S.rank)

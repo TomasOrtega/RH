@@ -7,9 +7,9 @@ open Formalism.UG GlobalTheory.SatakeWeyl
 namespace GlobalTheory.SatakeWeyl
 
 /- English proof (translation)
-Set `E : A ⧸ U ≃ A ⧸ V` to `Quotient.congr e.toEquiv (fun a b => by`. Rewrite using `[QuotientGroup.leftRel_apply, QuotientGroup.leftRel_apply, he, map_mul, map_inv]`. Use the proof step `rfl)`. Establish `hE : ∀ a : A, E (QuotientGroup.mk a) = QuotientGroup.mk (e a)` using `fun a => rfl`. Rewrite using `[← finsum_comp_equiv E]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_congr fun y => ?_` and prove the remaining obligations. Establish `h1 : E y = QuotientGroup.mk (e y.out)`. Rewrite using `[← hE, QuotientGroup.out_eq']`. Take `⟨v, hv⟩` from `QuotientGroup.mk_out_eq_mul V (e y.out)`. Rewrite using `[h1, hv, mul_inv_rev, hV _ (V.inv_mem v.2)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_out_inv_congr {A : Type} [Group A] (U V : Subgroup A) (e : MulAut A) (f : A → ℂ)
     (he : ∀ a, a ∈ U ↔ e a ∈ V) (hV : ∀ v ∈ V, ∀ a, f (v * a) = f a) :
@@ -26,25 +26,23 @@ theorem finsum_out_inv_congr {A : Type} [Group A] (U V : Subgroup A) (e : MulAut
   rw [h1, hv, mul_inv_rev, hV _ (V.inv_mem v.2)]
 
 /- English proof (translation)
-Introduce `hUn hCh A _ U c Q d f hc hQ hind hex hV hU hfin`. Establish `hchain` using `hCh A U c Q hc hind`. Establish `hmem : ∀ (j : ℤ) (a : A), a ∈ U.comap (c ^ j).toMonoidHom ↔ (c ^ j) a ∈ U` using `fun j a => Iff.rfl`. Establish `hmono : ∀ j j' : ℤ, j ≤ j' → U.comap (c ^ j).toMonoidHom ≤ U.comap (c ^ j').toMonoidHom`. Introduce `j j' h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hchain j (j' - j).toNat).1` as an intermediate fact. Rewrite `this` using `[show j + ((j' - j).toNat : ℤ) = j' by omega]`. Then use the resulting hypothesis. Establish `h0 : U.comap (c ^ (0 : ℤ)).toMonoidHom = U`. Use extensionality with `a`. Rewrite using `[hmem, zpow_zero, MulAut.one_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `choose J hJ using hex`. Choose the witnesses or unpack the hypotheses as in `⟨k, hkd, hk⟩ : ∃ k : ℕ, d ≤ k ∧ ∀ y : A ⧸ U, f y.out ≠ 0 → J y.out ≤ k := by`. Use `⟨hfin.toFinset.sup (fun y => J y.out) + d.toNat, by omega, fun y hy => ?_⟩` and prove the remaining obligations. Conclude with `le_trans (Finset.le_sup (f := fun y : A ⧸ U => J y.out) (hfin.mem_toFinset.2 hy)) (Nat.le_add_right _ _)`. Take `⟨l, hl⟩ : ∃ l : ℕ, d + l = k` from `⟨(k - d).toNat, by omega⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUΓ : U ≤ U.comap (c ^ (k : ℤ)).toMonoidHom`. Use `hmono 0 k (by omega)` as an intermediate fact. Rewrite `this` using `[h0]`. Then use the resulting hypothesis. Establish `iU : U.relIndex (U.comap (c ^ (k : ℤ)).toMonoidHom) = Q ^ k`. Use `(hchain 0 k).2` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[h0, zero_add]`. Then use the resulting hypothesis. Establish `iV : (U.comap (c ^ d).toMonoidHom).relIndex (U.comap (c ^ (k : ℤ)).toMonoidHom) = Q ^ l`. Use `(hchain d l).2` as an intermediate fact. Rewrite `this` using `[hl]`. Then use the resulting hypothesis. Establish `hsupp : ∀ a, f a ≠ 0 → a ∈ U.comap (c ^ (k : ℤ)).toMonoidHom`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `a ha`. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul U a`. Establish `h1 : f (QuotientGroup.mk a : A ⧸ U).out ≠ 0` using `by rwa [hu, hU _ u.2]`. Establish `h2 : (QuotientGroup.mk a : A ⧸ U).out ∈ U.comap (c ^ (k : ℤ)).toMonoidHom`. Use `hmono (J (QuotientGroup.mk a : A ⧸ U).out : ℕ) k (by exact_mod_cast hk _ h1) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hmem, zpow_natCast]`. Conclude with `hJ _`. Rewrite `h2` using `[hu]`. Conclude with `(Subgroup.mul_mem_cancel_right _ (hUΓ u.2)).1 h2`. Establish `key` using `hUn A _ U (U.comap (c ^ d).toMonoidHom) f hUΓ (hmono d k hkd) (by rw [iU]; exact pow_ne_zero _ hQ) (by rw [iV]; exact pow_ne_zero _ hQ) hsupp (fun v hv => hV v hv) hU`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[finsum_out_inv_congr U (U.comap (c ^ d).toMonoidHom) (c ^ (-d)) f (fun a => by`. Rewrite using `[hmem, ← MulAut.mul_apply, ← zpow_add, add_neg_cancel, zpow_zero, MulAut.one_apply])`. Use the proof step `(fun v hv => hV v hv)]`. Rewrite `key` using `[iU, iV]`. Establish `hQ' : (Q : ℂ) ≠ 0` using `by exact_mod_cast hQ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Move the embeddings inside the algebraic operations.
 
-Establish `hpow : (Q : ℂ) ^ l = (Q : ℂ) ^ k * (Q : ℂ) ^ (-d)`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ hQ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Move the coercions through the operations in `at key`.
-
-Rewrite `key` using `[hpow, mul_assoc]`. Conclude with `mul_left_cancel₀ (pow_ne_zero _ hQ') key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chainSum_of_unimod : Unimod → ChainIndex → ChainSum := by
   classical

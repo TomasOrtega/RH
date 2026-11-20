@@ -21,19 +21,19 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.ConeSmallMid
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hCfg e' he' K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ'`. Take `⟨s₁a, ha⟩` from `GlobalTheory.T.haar_stabilizer_period_case_b_third hKP F E σ B a b G G₁ H H' hCfg e' he' K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ'`. Take `⟨s₁b, hb⟩` from `GlobalTheory.T.haar_stabilizer_period_case_b_fourth hKP F E σ B a b G G₁ H H' hCfg e' he' K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ'`. Use `⟨max s₁a s₁b, ?_⟩` and prove the remaining obligations. Introduce `T hTr s hs hLU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsa : s₁a < s.re` using `lt_of_le_of_lt (le_max_left _ _) hs`. Establish `hsb : s₁b < s.re` using `lt_of_le_of_lt (le_max_right _ _) hs`. Use `⟨ha T hTr s hsa hLU, ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hJ1, hJ2⟩` from `hb T hTr s hsb hLU`. Take `⟨m₀, hm₀⟩` from `GlobalTheory.ThK.exists_isLevi F E σ B _ _ G.W G₁.W H' _ _ _ _ hT.base.cm hT.geo.hW hCfg.hH' (GlobalTheory.Eis.Conv.halfE F E)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `habs` using `GlobalTheory.Eis.Conv.absE_halfE F E σ hT.base.cm`. Establish `hcard : 0 < Fintype.card (InfinitePlace F)`. Take `⟨τ⟩ : Nonempty (F →+* ℂ)` from `inferInstance`. Conclude with `Fintype.card_pos_iff.2 ⟨InfinitePlace.mk τ⟩`. Establish `hr0 : (0 : ℝ) < (absE F E (GlobalTheory.Eis.Conv.halfE F E) : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[habs]`. Check the signs of the components of the expression. Establish `hr1 : (absE F E (GlobalTheory.Eis.Conv.halfE F E) : ℝ) ≠ 1`. Rewrite using `[habs]`. Use `push_cast`.
+Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `h4 : (1 : ℝ) < 4 ^ Fintype.card (InfinitePlace F)` using `one_lt_pow₀ (by norm_num) hcard.ne'`. Introduce `h1`. Rewrite `h1` using `[inv_eq_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlt : b + 2 < a` using `hT.geo.lt`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne` using `ne_of_re_ne' (u := X.α (GlobalTheory.Eis.Conv.halfE F E)) (v := X.β (GlobalTheory.Eis.Conv.halfE F E)) hr0 hr1 (w := ((b + 2 : ℕ) : ℂ) / 2) (w' := ((a + 2 : ℕ) : ℂ) / 2) (by`. Establish `e3 : ((b + 2 : ℕ) : ℂ) / 2 = ((((b : ℝ) + 2) / 2 : ℝ) : ℂ)` using `by push_cast; ring`. Establish `e4 : ((a + 2 : ℕ) : ℂ) / 2 = ((((a : ℝ) + 2) / 2 : ℝ) : ℂ)` using `by push_cast; ring`. Establish `hab : (b : ℝ) + 2 + 1 ≤ a` using `by exact_mod_cast hlt`. Rewrite using `[e3, e4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.ofReal_re]`. Introduce `h`. Use the proof step `linarith)`. Take `⟨T₃, T₄, hTe, h3, h4⟩` from `exists_split hJ1 hJ2 hm₀ hne`. Conclude with `⟨T₃, T₄, hTe ▸ hc, h3, h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem midCT : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

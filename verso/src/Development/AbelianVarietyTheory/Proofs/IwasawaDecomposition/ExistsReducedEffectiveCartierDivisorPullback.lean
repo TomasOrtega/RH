@@ -11,14 +11,14 @@ namespace GlobalTheory.FlagBundle.DivPull
 variable {F : Type} [Field F] {B Y : GlobalTheory.ProjVar.Var F} {φ : B.Fn →ₐ[F] Y.Fn} {f : Y.X ⟶ B.X}
 
 /- English proof (translation)
-The claim follows from `mem_O_ratOf.1 (h.map_mem_O (z := y) (mem_O_ratOf.2 hg))`.
+A detailed English derivation is pending.
 -/
 theorem regAt_map (h : (ratOf B).IsHom (ratOf Y) φ f) {y : Y.X} {g : B.Fn} (hg : RegAt (f y) g) :
     RegAt y (φ g) :=
   mem_O_ratOf.1 (h.map_mem_O (z := y) (mem_O_ratOf.2 hg))
 
 /- English proof (translation)
-The claim follows from `(unitAt_iff ((map_ne_zero φ).2 hg.ne_zero)).2 ⟨regAt_map h hg.regAt, by rw [← map_inv₀]; exact regAt_map h hg.inv.regAt⟩`.
+A detailed English derivation is pending.
 -/
 theorem unitAt_map (h : (ratOf B).IsHom (ratOf Y) φ f) {y : Y.X} {g : B.Fn} (hg : UnitAt (f y) g) :
     UnitAt y (φ g) :=
@@ -26,7 +26,7 @@ theorem unitAt_map (h : (ratOf B).IsHom (ratOf Y) φ f) {y : Y.X} {g : B.Fn} (hg
     ⟨regAt_map h hg.regAt, by rw [← map_inv₀]; exact regAt_map h hg.inv.regAt⟩
 
 /- English proof (translation)
-Establish `h0 : g ≠ 0` using `(map_ne_zero φ).1 hu.ne_zero`. Conclude with `(unitAt_iff h0).2 ⟨hg, mem_O_ratOf.1 (h.inv_mem_O (z := y) (mem_O_ratOf.2 hg) h0 (mem_O_ratOf.2 hu.inv.regAt))⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unitAt_of_map (h : (ratOf B).IsHom (ratOf Y) φ f) {y : Y.X} {g : B.Fn} (hg : RegAt (f y) g)
     (hu : UnitAt y (φ g)) : UnitAt (f y) g := by
@@ -35,9 +35,9 @@ theorem unitAt_of_map (h : (ratOf B).IsHom (ratOf Y) φ f) {y : Y.X} {g : B.Fn} 
     (h.inv_mem_O (z := y) (mem_O_ratOf.2 hg) h0 (mem_O_ratOf.2 hu.inv.regAt))⟩
 
 /- English proof (translation)
-Use `choose e he using fun y : Y.X => D.exists_isEqn (f y)`. Establish `key : ∀ (y : Y.X) (g : B.Fnˣ), D.IsEqn (f y) g → germOf y (Units.map (φ : B.Fn →* Y.Fn) (e y)) = germOf y (Units.map (φ : B.Fn →* Y.Fn) g)`. Introduce `y g hg`. Rewrite using `[germOf_eq_iff]`. Use `unitAt_map h ((he y).iff_unitAt.1 hg)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_div₀]`. Conclude with `this`. Use `⟨show cartierGroup Y.X from ⟨fun y => germOf y (Units.map (φ : B.Fn →* Y.Fn) (e y)), fun y => ?_⟩, key⟩` and prove the remaining obligations. Take `⟨U, hU, g, hg⟩` from `D.exists_isEqn_nhds (f y)`. Conclude with `⟨f ⁻¹ᵁ U, hU, Units.map (φ : B.Fn →* Y.Fn) g, fun z hz => key z g (hg _ hz)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pullback (h : (ratOf B).IsHom (ratOf Y) φ f) (D : B.Dv) :
     ∃ D' : Y.Dv, ∀ (y : Y.X) (g : B.Fnˣ), D.IsEqn (f y) g →
@@ -55,17 +55,17 @@ theorem exists_pullback (h : (ratOf B).IsHom (ratOf Y) φ f) (D : B.Dv) :
   exact ⟨f ⁻¹ᵁ U, hU, Units.map (φ : B.Fn →* Y.Fn) g, fun z hz => key z g (hg _ hz)⟩
 
 /- English proof (translation)
-Introduce `F _ B Y φ f D h hk hD hr`. Take `⟨D', hD'⟩` from `exists_pullback h D`. Use `⟨D', CartierDiv.eff_iff.2 fun y g hg => ?_, fun y => ?_, fun y g hg a n ha hn => ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `D.exists_isEqn (f y)`. Establish `h1` using `((hD' y e he).iff_unitAt.1 hg).regAt.mul (regAt_map h (CartierDiv.eff_iff.1 hD _ e he))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : φ e ≠ 0` using `(map_ne_zero φ).2 e.ne_zero`. Establish `e1 : (g : Y.Fn) / φ e * φ e = g` using `div_mul_cancel₀ _ h0`. Conclude with `e1 ▸ h1`. Take `⟨e, he⟩` from `D.exists_isEqn (f y)`. Express the relevant statement in the definitionally equal form `¬ D'.IsEqn y 1 ↔ ¬ D.IsEqn (f y) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[not_iff_not, (hD' y e he).iff_unitAt, he.iff_unitAt, Units.val_one, Units.val_one, one_div, one_div]`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Use `hu.inv` as an intermediate fact. Rewrite `this` using `[inv_inv]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(unitAt_of_map h (CartierDiv.eff_iff.1 hD _ e he) this).inv`. Introduce `hu`. Use `hu.inv` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Conclude with `(unitAt_map h this).inv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `D.exists_isEqn (f y)`. Establish `hR` using `hk y e ⟨e.ne_zero, mem_O_ratOf.2 (CartierDiv.eff_iff.1 hD _ e he), fun x m hx hm => mem_O_ratOf.2 (hr _ e he x m (mem_O_ratOf.1 hx) (mem_O_ratOf.1 hm))⟩`. Establish `hu : UnitAt y ((g : Y.Fn) / φ e)` using `(hD' y e he).iff_unitAt.1 hg`. Establish `h0 : φ e ≠ 0` using `(map_ne_zero φ).2 e.ne_zero`. Establish `hg0 : (g : Y.Fn) ≠ 0` using `g.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : a ^ n / g * ((g : Y.Fn) / φ e) = a ^ n / φ e` using `by field_simp`. Establish `e2 : a / φ e * ((g : Y.Fn) / φ e)⁻¹ = a / g` using `by field_simp`. Establish `h2 : RegAt y (a / φ e)` using `mem_O_ratOf.1 (hR.2.2 a n (mem_O_ratOf.2 ha) (mem_O_ratOf.2 (e1 ▸ hn.mul hu.regAt)))`. Conclude with `e2 ▸ h2.mul hu.inv.regAt`.
+A detailed English derivation is pending.
 -/
 theorem exists_reduced_pullback : ∀ (F : Type) [Field F] (B Y : GlobalTheory.ProjVar.Var F) (φ : B.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ B.X) (D : B.Dv), (ratOf B).IsHom (ratOf Y) φ f → KeepsRad (ratOf B) (ratOf Y) φ f → D.Eff → (∀ (y : B.X) (g : B.Fnˣ), D.IsEqn y g → ∀ (a : B.Fn) (n : ℕ), RegAt y a → RegAt y (a ^ n / g) → RegAt y (a / g)) → ∃ D' : Y.Dv, D'.Eff ∧ (∀ y, y ∈ D'.supp ↔ f y ∈ D.supp) ∧ ∀ (y : Y.X) (g : Y.Fnˣ), D'.IsEqn y g → ∀ (a : Y.Fn) (n : ℕ), RegAt y a → RegAt y (a ^ n / g) → RegAt y (a / g) := by
   intro F _ B Y φ f D h hk hD hr

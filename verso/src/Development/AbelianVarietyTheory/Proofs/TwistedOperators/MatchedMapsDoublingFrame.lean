@@ -27,31 +27,27 @@ namespace GlobalTheory.PlacePureFin
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.AdelicU GlobalTheory.FinDecomp
 
 /- English proof (translation)
-Establish `hvAt : ∀ v, loc (idem F v) (idem_mul_self v) h ∈ UAt σ Wd (evFin F v)`. Introduce `v u hu`. Use `show u • (mat (loc (idem F v) (idem_mul_self v) h) - 1) = 0`. Rewrite using `[mat_loc, phi_sub_one, smul_smul, mul_idem_of_evFin hu, zero_smul]`. Use `choose φ₁ hφ₁SB hφ₁Act using fun v => hloc v _ (hvAt v) (φ v) (hSB v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : {v | ¬ φ v = M.vac v}.Finite` using `hvac`. Establish `hN2 : {v | ¬ M.vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1}.Finite` using `hM.std`. Use `set S : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) := S₀ ∪ hN.toFinset ∪ hN2.toFinset with hSdef`. Establish `hS₀ : S₀ ⊆ S` using `Finset.subset_union_left.trans Finset.subset_union_left`. Establish `hφS : ∀ w ∉ S, φ w = M.vac w` using `fun w hw => by`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Conclude with `hw (Finset.mem_union_left _ (Finset.mem_union_right _ (hN.mem_toFinset.2 hc)))`. Establish `hvacS : ∀ w ∉ S, M.vac w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1` using `fun w hw => by`. Assume the negation of the conclusion as `hc`. Conclude with `hw (Finset.mem_union_right _ (hN2.mem_toFinset.2 hc))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hidem_at : ∀ w v (u : AF F), At (evFin F w) u → w ≠ v → u * idem F v = 0`. Introduce `w v u hu hwv`. Apply `mul_idem_of_evFin` to reduce the goal to its premises. Rewrite using `[← idem_mul_of_at hu, map_mul, evFin_idem, if_neg (Ne.symm hwv), zero_mul]`. Establish `key : ∀ v ∉ S, φ₁ v = φ v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v hv`. Establish `hA` using `hφ₁Act v`. Rewrite `hA`, the goal using `[hφS v hv]`. Use `GlobalTheory.T.vacuum_fixed_of_fixes_pureTensors_vacuaOutside F E σ M om v _ S (hM.vac v).1 hvacS (fun f' φ' hSB' hout => ?_) (φ₁ v) hA` and prove the remaining obligations. Use `hfix S (idem F v) (idem_mul_self v) hS₀ (fun w hw u hu => hidem_at w v u hu (fun e => hv (e ▸ hw))) (fun w _ u hu => ?_) f' φ' hSB' hout` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hwv : w = v`. Substitute `hwv` using the available equality. Use `right`. Rewrite using `[mul_comm]`. Conclude with `idem_mul_of_at hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `left`. Conclude with `hidem_at w v u hu hwv`. Use `⟨φ₁, hφ₁SB, ?_, hφ₁Act, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hvac, S.eventually_cofinite_notMem] with v hv hvS`. Rewrite using `[key v hvS, hv]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `heS : idemS F S * idemS F S = idemS F S` using `idemS_mul_self S`. Establish `heS' : (1 - idemS F S) * (1 - idemS F S) = 1 - idemS F S`. Rewrite using `[sub_mul, one_mul, mul_sub, mul_one, heS, sub_self, sub_zero]`. Establish `horth : idemS F S * (1 - idemS F S) = 0` using `by rw [mul_sub, mul_one, heS, sub_self]`. Establish `hdec : h = (S.toList.map fun v => loc (idem F v) (idem_mul_self v) h).prod * loc (1 - idemS F S) heS' h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `ua_ext` to reduce the goal to its premises. Rewrite using `[mat_mul, mat_prod_loc h _ S.nodup_toList, Finset.toList_toFinset, mat_loc, phi_mul_orth horth, add_sub_cancel, phi_one]`. Establish `hnot : ∀ w ∉ S, ∀ u : AF F, At (evFin F w) u → u * idemS F S = 0`. Introduce `w hw u hu`. Rewrite using `[← idem_mul_of_at hu, mul_comm (idem F w), mul_assoc, idem_mul_idemS_of_notMem hw, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hk : om (1, loc (1 - idemS F S) heS' h) (pure f φ) = pure f φ`. Use `hfix S _ heS' hS₀ (fun w hw u hu => ?_) (fun w hw u hu => Or.inr ?_) f φ hSB hφS` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_sub, mul_one, hnot w hw u hu, sub_zero]`. Establish `hmul : ∀ (a b : UA σ Wd.J) (x : (Fin n × Fin d → AF F) → ℂ), om (1, a * b) x = om (1, a) (om (1, b) x)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b x`. Establish `: ((1 : UA σ Y.J), a * b) = (1, a) * (1, b)` using `by simp`. Rewrite using `[this, map_mul]`. Both sides reduce to the same expression. Establish `hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `(hvac.and hM.std).mono fun v hv => hv.1.trans hv.2`.
-
-Use `conv_lhs => rw [hdec]`. Rewrite using `[hmul, hk, GlobalTheory.T.weilRep_list_prod_distinctPlaces_pureTensor F E σ om (fun v => loc (idem F v) (idem_mul_self v) h) φ φ₁ hSB hφ₁SB hφ₁Act hstd S.toList S.nodup_toList f]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v ∈ S`.
-
-Rewrite using `[if_pos (Finset.mem_toList.2 hv)]`. Rewrite using `[if_neg (mt Finset.mem_toList.1 hv), key v hv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem side {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {Y : Spc F E n} {Wd : Spc F E d} (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (hM : M.IsGood ψ)
@@ -134,13 +130,13 @@ theorem side {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [A
     · rw [if_neg (mt Finset.mem_toList.1 hv), key v hv]
 
 /- English proof (translation)
-Introduce `hP D W W₁ X e Bs Γ Xc om om' R Rf hM hJ g hg`. Establish `hT` using `hM.triple`. Set `h : UA D.sp.cm.sig Γ.W.J` to `GlobalTheory.TripleRead.toUX X e hJ g`. Establish `harch : ∀ u : AF D.host.F, At (evI D.host.F) u → u • (mat h - 1) = 0` using `GlobalTheory.T.finiteUnitaryPoint_darboux_trivial_archimedean D X e hJ g hg`. Take `⟨S₀, hS₀⟩` from `GlobalTheory.T.unramified_places_finite_set hP _ _ _ Bs _ _ Γ Xc om om' hT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨S₁, hS₁⟩` from `GlobalTheory.T.idempotentCut_unitaryPoint_stabilizes_lattices _ _ _ Bs _ _ Γ hT.geo h`. Establish `hfixB : ∀ (S : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl D.host.F)) (e : AF D.host.F) (he : e * e = e), S₀ ∪ S₁ ⊆ S → (∀ w ∈ S, ∀ u : AF D.host.F, At (evFin D.host.F w) u → u * e = 0) → (∀ w ∉ S, ∀ u : AF D.host.F, At (evFin D.host.F w) u → u * e = 0 ∨ u …`. Introduce `S e he hS hin hout`. Take `⟨hl, hl'⟩` from `hS₁ S e he (Finset.subset_union_right.trans hS) hout`. Use `hS₀ S (Finset.subset_union_left.trans hS) (loc e he h) ?_ ?_ hl hl'` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u hu`. Rewrite using `[mat_loc, phi_sub_one, smul_comm, harch u hu, smul_zero]`. Introduce `w hw u hu`. Rewrite using `[mat_loc, phi_sub_one, smul_smul, hin w hw u hu, zero_smul]`. Use `⟨fun v => loc (idem _ v) (idem_mul_self v) h, fun v u hu => ?_, fun f φ hSB hvac => ?_, fun f φ hSB hvac => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show u • (mat (loc (idem _ v) (idem_mul_self v) h) - 1) = 0`. Rewrite using `[mat_loc, phi_sub_one, smul_smul, mul_idem_of_evFin hu, zero_smul]`. Conclude with `side Γ.M Bs.ψ hT.geo.hM om h (fun v hh hhv φ hφ => GlobalTheory.T.weilRepresentationLocality_unitaryGroupW_pairVW _ _ _ Bs _ _ Γ Xc om om' hT v hh hhv φ hφ) (S₀ ∪ S₁) (fun S e he hS hin hout => (hfixB S e he hS hin hout).1) f φ hSB hvac`. Conclude with `side Γ.M' Bs.ψ hT.geo.hM' om' h (fun v hh hhv φ hφ => GlobalTheory.T.weilRepresentation_localAtFinitePlace_unitaryGroupW _ _ _ Bs _ _ Γ Xc om om' hT v hh hhv φ hφ) (S₀ ∪ S₁) (fun S e he hS hin hout => (hfixB S e he hS hin hout).2) f φ hSB hvac`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem placePure : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (W W₁ X : HSp D) (e : Fin (W.rank + W₁.rank) ≃ Fin X.rank) (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E)
     (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig W.rank W₁.rank) (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars D.host.F D.host.E)

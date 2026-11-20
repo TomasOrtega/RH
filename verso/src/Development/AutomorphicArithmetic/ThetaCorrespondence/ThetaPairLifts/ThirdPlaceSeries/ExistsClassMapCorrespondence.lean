@@ -12,7 +12,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.UpperTheory.One.M.exists_isRc_isClassMapD_alt | exact _root_.UpperTheory.One.M.exists_isRc_isClassMapD_alt | (intros; apply _root_.UpperTheory.One.M.exists_isRc_isClassMapD_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_isRc_classMap_correspondence : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut) (I : Ident D), ∃ rc : GlobalTheory.SerSys.Corr D, _root_.GlobalTheory.TypeRec.IsSeriesCorrespondence hL T I rc ∧ ∀ k v, _root_.GlobalTheory.SerSys.IsClassMapD D.naut.lpDim (rc k v) := by
   first | exact @_root_.UpperTheory.One.M.exists_isRc_isClassMapD_alt | exact _root_.UpperTheory.One.M.exists_isRc_isClassMapD_alt | (intros; apply _root_.UpperTheory.One.M.exists_isRc_isClassMapD_alt <;> assumption)

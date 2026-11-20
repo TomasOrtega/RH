@@ -22,14 +22,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {J : Matrix (Fin n) (Fin n) E}
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_mul_sq {R : Type} [CommRing R] (s : R →+* R) {k : ℕ} (A B : Matrix (Fin k) (Fin k) R) :
     cT s (A * B) = cT s B * cT s A := by
   simp only [Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.cT, Matrix.map_one _ (map_zero s) (map_one s), Matrix.transpose_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_one_sq {R : Type} [CommRing R] (s : R →+* R) {k : ℕ} : cT s (1 : Matrix (Fin k) (Fin k) R) = 1 := by
   simp only [Formalism.UG.cT, Matrix.map_one _ (map_zero s) (map_one s), Matrix.transpose_one]
@@ -41,13 +41,13 @@ def cTUnit {R : Type} [CommRing R] (s : R →+* R) {k : ℕ} (β : GL (Fin k) R)
   inv_val := by rw [← cT_mul_sq, Units.inv_mul, cT_one_sq]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul`.
+A detailed English derivation is pending.
 -/
 theorem adMat_mul' {a b c : ℕ} (A : Matrix (Fin a) (Fin b) E) (B : Matrix (Fin b) (Fin c) E) :
     adMat F (A * B) = adMat F A * adMat F B := Matrix.map_mul
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem adMat_one' {a : ℕ} : adMat F (1 : Matrix (Fin a) (Fin a) E) = 1 := Matrix.map_one _ (map_zero _) (map_one _)
 
@@ -56,14 +56,14 @@ def blk {k : ℕ} (P : Matrix (Fin k) (Fin n) E) (X : Matrix (Fin n) (Fin k) E) 
   adMat F P * (matHom _ σ J g).1 * adMat F X
 
 /- English proof (translation)
-Rewrite using `[blk, Matrix.mul_assoc, h, ← Matrix.mul_assoc, ← adMat_mul', hPX, adMat_one', Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blk_of {k : ℕ} {P : Matrix (Fin k) (Fin n) E} {X : Matrix (Fin n) (Fin k) E} (hPX : P * X = 1) {g : GAd σ J}
     {B : Matrix (Fin k) (Fin k) (AF F ⊗[F] E)} (h : (matHom _ σ J g).1 * adMat F X = adMat F X * B) : blk P X g = B := by
   rw [blk, Matrix.mul_assoc, h, ← Matrix.mul_assoc, ← adMat_mul', hPX, adMat_one', Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[blk_of hPX h, blk, blk, map_mul, Units.val_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem blk_mul {k : ℕ} {P : Matrix (Fin k) (Fin n) E} {X : Matrix (Fin n) (Fin k) E} (hPX : P * X = 1) (a : GAd σ J)
     {b : GAd σ J} {B : Matrix (Fin k) (Fin k) (AF F ⊗[F] E)} (h : (matHom _ σ J b).1 * adMat F X = adMat F X * B) :
@@ -75,9 +75,9 @@ theorem blk_mul {k : ℕ} {P : Matrix (Fin k) (Fin n) E} {X : Matrix (Fin n) (Fi
 variable {r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.LeviSplit.mem_leviOne]`. Simplify using `only [Finset.mem_singleton, forall_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨B, -, h⟩, ⟨B', -, h'⟩, ⟨B'', h2, h''⟩⟩`. Conclude with `⟨⟨B, h⟩, ⟨B', h'⟩, ⟨B'', h2, h''⟩⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨B, h⟩, ⟨B', h'⟩, ⟨B'', h2, h''⟩⟩`. Conclude with `⟨⟨B, Subgroup.mem_top _, h⟩, ⟨B', Subgroup.mem_top _, h'⟩, ⟨B'', h2, h''⟩⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_leviOne_last {X Y : Matrix (Fin n) (Fin (r + 1)) E} {g : GAd σ J} :
     g ∈ GlobalTheory.StdPar.leviOne σ J X Y {Fin.last r} ↔
@@ -97,47 +97,41 @@ set_option maxHeartbeats 1000000 in
 open GlobalTheory.UAut GlobalTheory.EisLine in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r m X Y Z J₀ hF`. Take `⟨_, _⟩` from `GlobalTheory.StdPar.ring_facts (F := F) (E := E)`. Take `⟨lv, hlv, -, -⟩` from `GlobalTheory.SphEis.Inhabitant.existsUnique_isLv hF`. Use `set K := ((absE F E).comp (Matrix.GeneralLinearGroup.det : GL (Fin (r + 1)) (AF F ⊗[F] E) →* (AF F ⊗[F] E)ˣ)).ker with hK`. Use `set A := GlobalTheory.StdPar.leviOne σ J X Y {Fin.last r} with hA`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set T := (GlobalTheory.SphEis.fixG σ J X ⊓ GlobalTheory.SphEis.fixG σ J Y : Subgroup (GAd σ J)) with hT`. Use `set P : Matrix (Fin (r + 1)) (Fin n) E := cT (σ : E →+* E) Y * J with hP`. Use `set Q : Matrix (Fin (r + 1)) (Fin n) E := cT (σ : E →+* E) X * J with hQ`. Establish `hPX : P * X = 1` using `hF.dc`. Establish `hQY : Q * Y = 1` using `hF.cd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1X : ∀ g : GAd σ J, (matHom _ σ J g).1 * adMat F X = adMat F X → (matHom _ σ J g).1 * adMat F X = adMat F X * (1 : GL (Fin (r + 1)) (AF F ⊗[F] E)).1` using `fun g h => by`. Rewrite using `[Units.val_one, Matrix.mul_one]`. Conclude with `h`. Establish `hinv : ∀ a : A, blk P X (a : GAd σ J) * blk P X ((a⁻¹ : A) : GAd σ J) = 1 ∧ blk P X ((a⁻¹ : A) : GAd σ J) * blk P X (a : GAd σ J) = 1`. Introduce `a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨B, hB⟩, -, -⟩` from `mem_leviOne_last.1 a.2`. Take `⟨⟨B', hB'⟩, -, -⟩` from `mem_leviOne_last.1 (a⁻¹).2`. Establish `e1 : blk P X (1 : GAd σ J) = 1`. Use `blk_of hPX (h1X 1 (by rw [map_one, Units.val_one, Matrix.one_mul]))` as an intermediate fact. Rewrite using `[this, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← blk_mul hPX _ hB', ← Subgroup.coe_mul, mul_inv_cancel, Subgroup.coe_one, e1]`. Rewrite using `[← blk_mul hPX _ hB, ← Subgroup.coe_mul, inv_mul_cancel, Subgroup.coe_one, e1]`. Set `πu : A → GL (Fin (r + 1)) (AF F ⊗[F] E)` to `fun a => ⟨blk P X (a : GAd σ J), blk P X ((a⁻¹ : A) : GAd σ J), (hinv a).1, (hinv a).2⟩`. Establish `hπK : ∀ a : A, πu a ∈ K`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a`. Take `⟨-, -, ⟨B, hBK, hB⟩⟩` from `mem_leviOne_last.1 a.2`. Establish `: πu a = B` using `Units.ext (blk_of hPX hB)`. Rewrite using `[this]`. Conclude with `hBK`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `π : A → K` to `fun a => ⟨πu a, hπK a⟩`. Establish `hlvA : ∀ β : K, lv β ∈ A` using `fun β => mem_leviOne_last.2 ⟨⟨β, hlv.onC β⟩, ⟨cTUnit (sigR (AF F) σ) (β : GL (Fin (r + 1)) (AF F ⊗[F] E)), hlv.onD β⟩, ⟨β, β.2, hlv.onC β⟩⟩`. Set `mm : K → A` to `fun β => ⟨lv β, hlvA β⟩`. Establish `hTA : T ≤ A`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hxX, hxY⟩` from `Subgroup.mem_inf.1 hx`. Establish `hX' : (matHom _ σ J x).1 * adMat F X = adMat F X` using `hxX`. Establish `hY' : (matHom _ σ J x).1 * adMat F Y = adMat F Y` using `hxY`. Conclude with `mem_leviOne_last.2 ⟨⟨1, by rw [hX', Units.val_one, Matrix.mul_one]⟩, ⟨1, by rw [hY', Units.val_one, Matrix.mul_one]⟩, ⟨1, one_mem _, by rw [hX', Units.val_one, Matrix.mul_one]⟩⟩`. Establish `hTiff : ∀ a : A, (a : GAd σ J) ∈ T ↔ π a = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `Subtype.ext (Units.ext (blk_of hPX (h1X _ (Subgroup.mem_inf.1 hx).1)))`. Introduce `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : blk P X (a : GAd σ J) = 1`. Use `congrArg (fun x : K => (x : GL (Fin (r + 1)) (AF F ⊗[F] E)).1) h1` as an intermediate fact. Conclude with `this`. Take `⟨⟨B, hB⟩, ⟨B', hB'⟩, -⟩` from `mem_leviOne_last.1 a.2`. Establish `hB1 : B.1 = 1` using `(blk_of hPX hB).symm.trans hb`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfX : (matHom _ σ J (a : GAd σ J)).1 * adMat F X = adMat F X` using `by rw [hB, hB1, Matrix.mul_one]`. Establish `hfXi : (a : GAd σ J)⁻¹ ∈ GlobalTheory.SphEis.fixG σ J X` using `inv_mem (show (a : GAd σ J) ∈ GlobalTheory.SphEis.fixG σ J X from hfX)`. Establish `hform` using `form_mul_of_mul_cols (B := 1) (show (matHom _ σ J (a : GAd σ J)⁻¹).1 * adMat F X = adMat F X * 1 by rw [Matrix.mul_one]; exact hfXi)`. Rewrite `hform` using `[inv_inv, cT_one_sq, Matrix.one_mul]`. Establish `e1 : blk Q Y (a : GAd σ J) = B'.1` using `blk_of hQY hB'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `e1` using `[blk, hform, ← adMat_mul', hQY, adMat_one']`. Establish `hfY : (matHom _ σ J (a : GAd σ J)).1 * adMat F Y = adMat F Y` using `by rw [hB', ← e1, Matrix.mul_one]`. Conclude with `Subgroup.mem_inf.2 ⟨hfX, hfY⟩`. Establish `hπc : Continuous π`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `show Continuous fun a : A => adMat F P * (matHom _ σ J (a : GAd σ J)).1 * adMat F X`. Conclude with `(continuous_const.matrix_mul (GlobalTheory.StdPar.continuous_mat.comp continuous_subtype_val)).matrix_mul continuous_const`. Use `show Continuous fun a : A => adMat F P * (matHom _ σ J ((a⁻¹ : A) : GAd σ J)).1 * adMat F X`. Conclude with `(continuous_const.matrix_mul (GlobalTheory.StdPar.continuous_mat.comp (continuous_subtype_val.comp continuous_inv))).matrix_mul continuous_const`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmc : Continuous mm` using `(hlv.cont.comp continuous_subtype_val).subtype_mk _`. Establish `hmm : ∀ a b, mm (a * b) = mm a * mm b` using `fun a b => Subtype.ext (map_mul lv _ _)`. Establish `hππ : ∀ a b, π (a * b) = π a * π b`. Introduce `a b`. Take `⟨⟨B, hB⟩, -, -⟩` from `mem_leviOne_last.1 b.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Subtype.ext (Units.ext (blk_mul hPX (a : GAd σ J) hB))`. Establish `hπm : ∀ β, π (mm β) = β` using `fun β => Subtype.ext (Units.ext (blk_of hPX (hlv.onC β)))`. Establish `hc : ∀ τ ∈ T, ∀ β, τ * (mm β : GAd σ J) = mm β * τ` using `fun τ hτ β => (GlobalTheory.SphEis.lv_comm_of_fix_cols F E σ n J (r + 1) m X Y Z J₀ hF lv hlv β τ hτ).symm`. Take `⟨φ, hφ⟩` from `GlobalTheory.LeviSplit.exists_prod_equiv A T mm π hmc hπc hmm hππ hπm hTA hTiff hc`. Use `⟨φ, fun p => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hφ p]`. Express the relevant statement in the definitionally equal form `(p.1 : GAd σ J) * lv p.2 ∈ ratPts σ J ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hp1 : (matHom _ σ J (p.1 : GAd σ J)).1 * adMat F X = adMat F X` using `(Subgroup.mem_inf.1 p.1.2).1`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hg : (matHom _ σ J ((p.1 : GAd σ J) * lv p.2)).1 * adMat F X = adMat F X * (p.2 : GL (Fin (r + 1)) (AF F ⊗[F] E)).1`. Rewrite using `[map_mul, Units.val_mul, Matrix.mul_assoc, hlv.onC, ← Matrix.mul_assoc, hp1]`. Establish `hb` using `blk_of hPX hg`. Take `⟨γ, -, hγ⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 h)`. Establish `hM : (matHom _ σ J ((p.1 : GAd σ J) * lv p.2)).1 = adMat F γ.1` using `(congrArg Units.val hγ).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hb` using `[blk, hM, ← adMat_mul', ← adMat_mul']`. Establish `hrng : (p.2 : GL (Fin (r + 1)) (AF F ⊗[F] E)) ∈ (bc (inclR (F` using `F) (AF F)) : GL (Fin (r + 1)) E →* GL (Fin (r + 1)) (AF F ⊗[F] E)).range := by`. Break down `subsingleton_or_nontrivial (AF F ⊗[F] E) with _ | _` into its components or cases. Conclude with `⟨1, Units.ext (Subsingleton.elim _ _)⟩`. Establish `hd : (P * γ.1 * X).det ≠ 0` using `fun h0 => by`.
-
-Establish `hu : IsUnit (p.2 : GL (Fin (r + 1)) (AF F ⊗[F] E)).1.det` using `(Matrix.isUnit_iff_isUnit_det _).1 (p.2 : GL (Fin (r + 1)) (AF F ⊗[F] E)).isUnit`. Rewrite `hu` using `[← hb, show (adMat F (P * γ.1 * X)).det = inclR (F := F) (AF F) (P * γ.1 * X).det from (RingHom.map_det _ _).symm, h0, map_zero]`. Conclude with `not_isUnit_zero hu`. Conclude with `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero _ hd, Units.ext hb⟩`. Take `⟨δ, hδ⟩` from `hrng`.
-
-Use `⟨?_, ⟨δ, hδ⟩⟩` and prove the remaining obligations. Establish `h2 : lv p.2 ∈ ratPts σ J` using `by rw [← hδ]; exact hlv.rat δ`. Use `mul_mem h (inv_mem h2)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis. Introduce and unpack `⟨h1, ⟨δ, hδ⟩⟩`.
-
-Use `mul_mem h1 ?_` and prove the remaining obligations. Rewrite using `[← hδ]`. Conclude with `hlv.rat δ`.
+A detailed English derivation is pending.
 -/
 theorem leviOne_last_prod : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (r m : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (Z : Matrix (Fin n) (Fin m) E) (J₀ : Matrix (Fin m) (Fin m) E), GlobalTheory.SphEis.Fr σ J X Y Z J₀ → ∃ φ : (GlobalTheory.SphEis.fixG σ J X ⊓ GlobalTheory.SphEis.fixG σ J Y : Subgroup (GAd σ J)) × ((absE F E).comp (Matrix.GeneralLinearGroup.det : GL (Fin (r + 1)) (AF F ⊗[F] E) →* (AF F ⊗[F] E)ˣ)).ker ≃ₜ* GlobalTheory.StdPar.leviOne σ J X Y {Fin.last r}, ∀ p, ((φ p : GAd σ J) ∈ ratPts σ J ↔ (p.1 : GAd σ J) ∈ ratPts σ J ∧ (p.2 : GL (Fin (r + 1)) (AF F ⊗[F] E)) ∈ (bc (inclR (F := F) (AF F)) : GL (Fin (r + 1)) E →* GL (Fin (r + 1)) (AF F ⊗[F] E)).range) := by
   intro F E _ _ _ _ _ σ n J r m X Y Z J₀ hF

@@ -18,11 +18,11 @@ variable {K V ι : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V]
   [Module K V] [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `h1 : ∀ v, Formalism.HermitianLatticesTheory.normAt b X v x ^ 2 = ∑ i, ‖Formalism.HermitianLatticesTheory.fcoord b X v x i‖ ^ 2`. Introduce `v`. Unfold `Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.cnorm`. Conclude with `Real.sq_sqrt (Finset.sum_nonneg (fun i _ => by positivity))`. Simplify using `only [h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.HermitianLatticesTheory.realize Formalism.HermitianLatticesTheory.realizeRaw`. Rewrite using `[PiLp.norm_sq_eq_of_L2, Fintype.sum_prod_type]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `v _`. Rewrite using `[Fintype.sum_prod_type]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[Fin.sum_univ_two]`. Simplify using `[Real.norm_eq_abs, sq_abs, Complex.sq_norm, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mink_norm_sq_realize (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (x : V) :
     ‖Formalism.HermitianLatticesTheory.realize b X x‖ ^ 2 = ∑ v, Formalism.HermitianLatticesTheory.normAt b X v x ^ 2 := by
@@ -43,13 +43,13 @@ theorem mink_norm_sq_realize (b : Basis ι K V) (X : InfinitePlace K → Matrix 
   ring
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.cnorm`. Apply `Real.sqrt_pos.mpr` to reduce the goal to its premises. Establish `hne : Formalism.HermitianLatticesTheory.fcoord b X v x ≠ 0`. Unfold `Formalism.HermitianLatticesTheory.fcoord Formalism.HermitianLatticesTheory.vecAt`. Introduce `h0`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (fun i => v.embedding (b.repr x i)) = 0`. Establish `h3` using `congrArg (fun w => (X v).mulVec w) h0`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (hX v), Matrix.one_mulVec, Matrix.mulVec_zero] at h3`. Conclude with `h3`. Apply `hx` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h2 : b.repr x = 0`. Use extensionality with `i`. Establish `h4` using `congrFun h1 i`. Simplify using `only [Pi.zero_apply] at h4`. Rewrite using `[Finsupp.zero_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(map_eq_zero v.embedding).mp h4`. Conclude with `b.repr.map_eq_zero_iff.mp h2`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hne`. Establish `hpos : 0 < ‖Formalism.HermitianLatticesTheory.fcoord b X v x i‖ ^ 2` using `pow_pos (norm_pos_iff.mpr hi) 2`. Conclude with `lt_of_lt_of_le hpos (Finset.single_le_sum (f := fun j => ‖Formalism.HermitianLatticesTheory.fcoord b X v x j‖ ^ 2) (fun j _ => by positivity) (Finset.mem_univ i))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mink_normAt_pos (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) (v : InfinitePlace K) (x : V) (hx : x ≠ 0) :
@@ -78,15 +78,15 @@ theorem mink_normAt_pos (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι
     (fun j _ => by positivity) (Finset.mem_univ i))
 
 /- English proof (translation)
-Use `set n : ℝ := (Fintype.card σ : ℝ) with hn_def`. Establish `hn : 0 < n` using `Nat.cast_pos.mpr Fintype.card_pos`. Establish `hw : ∑ _v : σ, (1 / n) = 1`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← hn_def, mul_one_div_cancel hn.ne']`. Establish `hJ` using `convexOn_exp.map_sum_le (t := Finset.univ) (w := fun _ => 1 / n) (p := fun v => 2 * Real.log (a v)) (fun _ _ => by positivity) hw (fun _ _ => Set.mem_univ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_eq_mul] at hJ`. Establish `hexp : ∀ v, Real.exp (2 * Real.log (a v)) = a v ^ 2` using `fun v => by`. Rewrite using `[two_mul, Real.exp_add, Real.exp_log (ha v)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hL : ∑ v, 1 / n * (2 * Real.log (a v)) = 2 * (1 / n * ∑ v, Real.log (a v))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `v _`. Expand and normalize the polynomial expressions, which then agree. Establish `hR : ∑ v, 1 / n * Real.exp (2 * Real.log (a v)) = 1 / n * ∑ v, a v ^ 2`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `v _`. Rewrite using `[hexp v]`. Rewrite `hJ` using `[hL, hR]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : n * (1 / n * ∑ v, a v ^ 2) = ∑ v, a v ^ 2`. Rewrite using `[← mul_assoc, mul_one_div_cancel hn.ne', one_mul]`. Conclude with `(mul_le_mul_of_nonneg_left hJ hn.le).trans_eq h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mink_am_gm {σ : Type} [Fintype σ] [Nonempty σ] (a : σ → ℝ) (ha : ∀ v, 0 < a v) :
     (Fintype.card σ : ℝ) * Real.exp (2 * ((1 / (Fintype.card σ : ℝ)) * ∑ v, Real.log (a v))) ≤
@@ -119,31 +119,29 @@ theorem mink_am_gm {σ : Type} [Fintype σ] [Nonempty σ] (a : σ → ℝ) (ha :
 end
 
 /- English proof (translation)
-Introduce `K V ι _ _ _ _ _ _ _ _ _ _ b X hX B La hBfg hB0 hshort`. Use `set ρ := Formalism.HermitianLatticesTheory.realize b X with hρ`. Take `⟨hlat, hrk, -⟩` from `place_lattice_structure K V ι b X hX B hBfg`. Establish `hinj : Function.Injective ρ` using `PlaceLattice.realize_injective b X hX`. Establish `hnf` using `sizeMu_finrank_eq K`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : (0 : ℝ) < (nPl K : ℝ)`. Establish `: 0 < nPl K` using `Fintype.card_pos`. Conclude with `this` after adjusting the coercions. Establish `hj : (0 : ℝ) < (rkK B : ℝ)`. Establish `: Module.Finite K V` using `Module.Finite.of_basis b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : Submodule.span K (B : Set V) ≠ ⊥`. Introduce `h`. Apply `hB0` to reduce the goal to its premises. Rewrite `h` using `[Submodule.span_eq_bot]`. Conclude with `(Submodule.eq_bot_iff _).2 (fun x hx => h x hx)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 < rkK (K` using `K) B := Nat.lt_of_lt_of_le Nat.zero_lt_one (Submodule.one_le_finrank_iff.2 h)`. Conclude with `this` after adjusting the coercions. Establish `hdisc : DiscreteTopology (zl ρ B)` using `hlat.2`. Establish `hne : ∀ N : Submodule (𝓞 K) V, N ≠ ⊥ → zl ρ N ≠ ⊥`. Introduce `N hN h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hN` to reduce the goal to its premises. Use `(Submodule.eq_bot_iff _).2 fun x hx => ?_` and prove the remaining obligations. Establish `hm : ρ x ∈ zl ρ N` using `⟨x, hx, rfl⟩`. Rewrite `hm` using `[h, Submodule.mem_bot]`. Conclude with `hinj (by rw [hm, map_zero])`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmono : ∀ N : Submodule (𝓞 K) V, N ≤ B → zl ρ N ≤ zl ρ B`. Introduce and unpack `N hN y ⟨x, hx, rfl⟩`. Conclude with `⟨x, hN hx, rfl⟩`. Use `set r : ℝ := Real.sqrt (nPl K : ℝ) * Real.exp (-La) with hr`. Establish `hr0 : 0 < r` using `mul_pos (Real.sqrt_pos.2 hf) (Real.exp_pos _)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmin : ∀ y ∈ zl ρ B, y ≠ 0 → r ≤ ‖y‖`. Introduce and unpack `y ⟨x, hx, rfl⟩ hy`. Establish `hx0 : x ≠ 0` using `fun h => hy (by rw [h]; exact map_zero ρ)`. Establish `h1` using `hshort x hx hx0`. Establish `h2` using `mink_am_gm (fun v => Formalism.HermitianLatticesTheory.normAt b X v x) (fun v => mink_normAt_pos b X hX v x hx0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h3 : ‖ρ x‖ ^ 2 = ∑ v, Formalism.HermitianLatticesTheory.normAt b X v x ^ 2` using `mink_norm_sq_realize b X x`. Establish `h4 : r ^ 2 ≤ ‖ρ x‖ ^ 2`. Rewrite using `[h3, hr, mul_pow, Real.sq_sqrt hf.le]`. Use `le_trans (mul_le_mul_of_nonneg_left ?_ hf.le) h2` and prove the remaining obligations. Rewrite using `[← Real.exp_nat_mul]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `: (1 / (nPl K : ℝ)) * ∑ v, Real.log (Formalism.HermitianLatticesTheory.normAt b X v x) = (1 / (Fintype.card (InfinitePlace K) : ℝ)) * ∑ v, Real.log (Formalism.HermitianLatticesTheory.normAt b X v x)` using `rfl`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(pow_le_pow_iff_left₀ hr0.le (norm_nonneg _) (by norm_num)).1 h4`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hM` using `Formalism.F.muMaxLeMin _ (zl ρ B) hdisc (hne B hB0) r hr0 hmin`. Establish `hle : muMax ρ B ≤ Formalism.F.muMax (zl ρ B)`. Use `csSup_le ⟨_, B, le_rfl, hB0, rfl⟩ ?_` and prove the remaining obligations. Introduce and unpack `t ⟨N, hN, hN0, rfl⟩`. Conclude with `Formalism.F.slopeLeMuMax _ (zl ρ B) (zl ρ N) hdisc (hmono N hN) (hne N hN0)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hrkR : (Formalism.F.rk (zl ρ B) : ℝ) = 2 * (nPl K : ℝ) * (rkK B : ℝ)`. Establish `: Formalism.F.rk (zl ρ B) = 2 * nPl K * rkK B` using `by rw [← hnf]; exact hrk`. Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hlogr : Real.log r = Real.log (nPl K : ℝ) / 2 - La`. Rewrite using `[hr, Real.log_mul (Real.sqrt_pos.2 hf).ne' (Real.exp_pos _).ne', Real.log_sqrt hf.le, Real.log_exp]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlogrk : Real.log (Formalism.F.rk (zl ρ B) : ℝ) = Real.log 2 + Real.log (nPl K : ℝ) + Real.log (rkK B : ℝ)`. Rewrite using `[hrkR, Real.log_mul (by positivity) hj.ne', Real.log_mul (by norm_num) hf.ne']`.
-
-Rewrite `hM` using `[hlogr, hlogrk]`. Unfold `muMaxDef`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem max_slope_minkowski : MuMaxMinkowski := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX B La hBfg hB0 hshort

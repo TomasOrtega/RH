@@ -16,7 +16,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualAbelianSchemeEx
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.abelianDeRham_of_hodge_dual_poincare GlobalTheory.T.abelianScheme_deRham_locallyFree_hodgeDegenerates GlobalTheory.T.dualAbelianScheme_exists_biduality (GlobalTheory.PoincareDeRhamDualityProof.poincareDeRhamDuality_of_hodge GlobalTheory.T.abelianScheme_deRham_locally …`.
+A detailed English derivation is pending.
 -/
 theorem abelianDeRham : GlobalTheory.Published.AbelianDeRham :=
   GlobalTheory.abelianDeRham_of_hodge_dual_poincare GlobalTheory.T.abelianScheme_deRham_locallyFree_hodgeDegenerates GlobalTheory.T.dualAbelianScheme_exists_biduality

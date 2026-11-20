@@ -10,25 +10,25 @@ namespace DiscreteGroups.sglob.DzFe
 variable {g : ℕ}
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i k`. Rewrite using `[Units.val_mul, DzRed.longElt_mul_apply]`. Use `show _ = if i = finRotate (m + 1) k then (1 : ZMod g) else 0`. Establish `hrv : ((Fin.rev i : Fin (m + 1)) : ℕ) = m - i` using `by rw [Fin.val_rev]; omega`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hil` using `i.isLt`. Break down `Fin.eq_castSucc_or_eq_last (Fin.rev i) with ⟨d, hd⟩ | hd` into its components or cases. Rewrite using `[hd]`. Establish `hdv : (d : ℕ) = m - i` using `by rw [← hrv, hd, Fin.coe_castSucc]`. Establish `hdl` using `d.isLt`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Fin.eq_castSucc_or_eq_last k with ⟨c, rfl⟩ | rfl` into its components or cases. Rewrite using `[DzRed.corner_cs_cs, DzRed.val_longElt]`. Establish `hc : ((finRotate (m + 1) c.castSucc : Fin (m + 1)) : ℕ) = c + 1`. Rewrite using `[finRotate_succ_apply, Fin.val_add_one, if_neg (Fin.castSucc_lt_last c).ne, Fin.coe_castSucc]`. Establish `hcl` using `c.isLt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : c = d.rev`. Rewrite using `[if_pos h, if_pos]`. Use `ext`. Rewrite using `[hc]`. Use `congrArg Fin.val h` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h, if_neg]`. Introduce `e`. Apply `h` to reduce the goal to its premises.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use `ext`. Use `congrArg Fin.val e` as an intermediate fact. Rewrite `this` using `[hc]`. Rewrite using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[DzRed.corner_cs_last, if_neg]`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Rewrite `this` using `[finRotate_succ_apply, Fin.last_add_one, Fin.val_zero]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd]`. Establish `hi0 : (i : ℕ) = 0`. Use `congrArg Fin.val hd` as an intermediate fact. Rewrite `this` using `[hrv, Fin.val_last]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Fin.eq_castSucc_or_eq_last k with ⟨c, rfl⟩ | rfl` into its components or cases. Rewrite using `[DzRed.corner_last_cs, if_neg]`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Rewrite `this` using `[finRotate_succ_apply, Fin.val_add_one, if_neg (Fin.castSucc_lt_last c).ne, Fin.coe_castSucc]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[DzRed.corner_last_last, if_pos]`. Use `ext`. Rewrite using `[finRotate_succ_apply, Fin.last_add_one, Fin.val_zero, hi0]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem longElt_corner_eq_cyc (m : ℕ) :
     longElt (m + 1) (ZMod g) * corner (longElt m (ZMod g)) = cyc g (m + 1) := by
@@ -83,13 +83,13 @@ theorem longElt_corner_eq_cyc (m : ℕ) :
       rw [finRotate_succ_apply, Fin.last_add_one, Fin.val_zero, hi0]
 
 /- English proof (translation)
-Establish `hne : ∀ j : Fin m, j.castSucc ≠ Fin.last m` using `fun j => (Fin.castSucc_lt_last j).ne`. Use `set A : Matrix (Fin m) (Fin m) (ZMod g) := (M : Matrix (Fin (m + 1)) (Fin (m + 1)) (ZMod g)).submatrix Fin.castSucc Fin.castSucc with hA`. Establish `he : ((-1 : ZMod g) ^ (m + m)) = 1` using `by rw [← two_mul, pow_mul]; simp`. Establish `hdet : (M : Matrix (Fin (m + 1)) (Fin (m + 1)) (ZMod g)).det = A.det`. Rewrite using `[Matrix.det_succ_row _ (Fin.last m), Fin.sum_univ_castSucc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hr, hne, Fin.succAbove_last, A, he]`. Establish `hAd : A.det ≠ 0`. Rewrite using `[← hdet]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 M.isUnit).ne_zero`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero A hAd, fun i l hil => hlow i l hil, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i l`. Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last i with ⟨i, rfl⟩ | rfl <;>`. Break down `Fin.eq_castSucc_or_eq_last l with ⟨l, rfl⟩ | rfl` into its components or cases. Rewrite using `[DzRed.corner_cs_cs]`.
+Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[DzRed.corner_cs_last, hc, if_neg (hne i)]`. Rewrite using `[DzRed.corner_last_cs, hr, if_neg (hne l)]`. Rewrite using `[DzRed.corner_last_last, hr, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_corner [Fact g.Prime] {m : ℕ} (M : GL (Fin (m + 1)) (ZMod g))
     (hr : ∀ l, (M : Matrix (Fin (m + 1)) (Fin (m + 1)) (ZMod g)) (Fin.last m) l = if l = Fin.last m then 1 else 0)

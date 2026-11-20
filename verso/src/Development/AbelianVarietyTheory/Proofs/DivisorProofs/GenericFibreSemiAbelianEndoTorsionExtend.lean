@@ -17,37 +17,37 @@ noncomputable section
 namespace GlobalTheory.Poinc.FibLat
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ S ρ M U₀ EE FinalForm hU`. Establish `hr : Set.range M.pt ⊆ Set.range U₀.ι`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `M.top_le_preimage_pt hU (x := w) trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `x : Sp Ω ⟶ U₀.toScheme` to `IsOpenImmersion.lift U₀.ι M.pt hr`. Establish `hx : x ≫ U₀.ι = M.pt` using `IsOpenImmersion.lift_fac _ _ _`. Set `Q` to `(Over.pullback FinalForm.u₀).obj ρ.P.A`. Set `ν : pullback FinalForm.G.hom M.pt ⟶ pullback ρ.P.A.hom FinalForm.u₀` to `FinalForm.cart.1.lift (pullback.fst FinalForm.G.hom M.pt) (pullback.snd FinalForm.G.hom M.pt ≫ x) (by rw [pullback.condition, Category.assoc, hx])`. Establish `hν₁ : ν ≫ FinalForm.φ = pullback.fst FinalForm.G.hom M.pt` using `FinalForm.cart.1.lift_fst _ _ _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hν₂ : ν ≫ Q.hom = pullback.snd FinalForm.G.hom M.pt ≫ x` using `FinalForm.cart.1.lift_snd _ _ _`. Establish `gA` using `isGrpPullback_pullback FinalForm.G M.pt`. Establish `gη : IsGrpPullback ((Over.pullback M.pt).obj FinalForm.G) FinalForm.G (x ≫ U₀.ι) (ν ≫ FinalForm.φ)` using `gA.congr hx.symm hν₁.symm`. Establish `gν : IsGrpPullback ((Over.pullback M.pt).obj FinalForm.G) Q x ν` using `FinalForm.cart.cancel gη hν₂`. Establish `gψ` using `gν.comp (isGrpPullback_pullback ρ.P.A FinalForm.u₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gψ' : IsGrpPullback ((Over.pullback M.pt).obj FinalForm.G) ρ.P.A (spMap S.R.val.toRingHom) (ν ≫ pullback.fst ρ.P.A.hom FinalForm.u₀)` using `gψ.congr (FinalForm.u₀_gen x hx) rfl`. Use `⟨(Over.pullback M.pt).obj FinalForm.G, inferInstance, ν ≫ pullback.fst ρ.P.A.hom FinalForm.u₀, pullback.fst FinalForm.G.hom M.pt, gψ', gA, ?_, ?_⟩` and prove the remaining obligations. Introduce `e he haveI := he`. Take `⟨w', hw', pa⟩` from `GlobalTheory.SymBaseChange.exists_endo gψ' e`. Take `⟨F, ⟨hF, hFw⟩, -⟩` from `FinalForm.endo w' hw'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨F, hF, fun e₀ he₀ => ?_⟩` and prove the remaining obligations. Establish `hw'l : w'.left ≫ (ν ≫ pullback.fst ρ.P.A.hom FinalForm.u₀) = (ν ≫ pullback.fst ρ.P.A.hom FinalForm.u₀) ≫ e.left`. Use `congrArg (fun z => z.left) (pa (𝟙 _))` as an intermediate fact. Simplify `this` using `[pushPt]`. Establish `he₀w : e₀ = w'` using `hom_ext_of_pullback gψ' (he₀.trans hw'l.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he₀w, ← hFw]`. Simplify using `only [Over.pullback_map_left]`. Conclude with `pullback.lift_fst _ _ _`. Introduce `b`. Establish `hb : (spMap S.R.val.toRingHom ≫ (ρ.pt b).left) ≫ ρ.P.A.hom = 𝟙 _ ≫ spMap S.R.val.toRingHom`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Category.assoc, Over.w (ρ.pt b)]`. Simplify using the standard rewrite rules. Set `w₀` to `gψ'.1.lift _ _ hb`. Establish `hw₁ : w₀ ≫ (ν ≫ pullback.fst ρ.P.A.hom FinalForm.u₀) = spMap S.R.val.toRingHom ≫ (ρ.pt b).left` using `gψ'.1.lift_fst _ _ _`. Establish `hw₂ : w₀ ≫ pullback.snd FinalForm.G.hom M.pt = 𝟙 _` using `gψ'.1.lift_snd _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `sec0 : Over.mk (𝟙 (Sp Ω)) ⟶ (Over.pullback M.pt).obj FinalForm.G` to `Over.homMk w₀ hw₂`. Set `V : Over.mk M.pt ⟶ Over.mk (𝟙 (Sp Ω) ≫ M.pt)` to `Over.homMk (𝟙 _) (by simp)`. Set `gγ : Over.mk M.pt ⟶ FinalForm.G` to `V ≫ pushPt gA.1.w sec0`. Establish `hgl : gγ.left = w₀ ≫ pullback.fst FinalForm.G.hom M.pt` using `by simp [gγ, V, pushPt, sec0]`. Use `⟨gγ, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ρ.pt 0 = 1`. Use `ρ.pt_add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`. Establish `hpt : ∀ n : ℕ, (ρ.pt b) ^ n = ρ.pt (n • b)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [h0]`. Consider the case `succ k ih => rw [pow_succ, ih, ← ρ.pt_add, succ_nsmul]`. Establish `hrN : (S.r * S.N) • b = 0`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Set `U : Over.mk (𝟙 (Sp Ω) ≫ spMap S.R.val.toRingHom) ⟶ baseOver (Sp S.R)` to `Over.homMk (spMap S.R.val.toRingHom) (by simp)`. Establish `hs : pushPt gψ'.1.w sec0 = U ≫ ρ.pt b`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[pushPt, sec0, U, hw₁]`. Establish `hsec : sec0 ^ (S.r * S.N) = 1`. Apply `GlobalTheory.SymBaseChange.pushPt_injective gψ'` to reduce the goal to its premises. Establish `e1 : pushPt gψ'.1.w (sec0 ^ (S.r * S.N)) = (pushPt gψ'.1.w sec0) ^ (S.r * S.N)` using `map_pow (pushHom gψ' _) sec0 _`. Establish `e2 : pushPt gψ'.1.w (1 : Over.mk (𝟙 (Sp Ω)) ⟶ (Over.pullback M.pt).obj FinalForm.G) = 1` using `map_one (pushHom gψ' _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : (U ≫ ρ.pt b) ^ (S.r * S.N) = U ≫ (ρ.pt b) ^ (S.r * S.N)` using `(map_pow (preHom U) (ρ.pt b) _).symm`. Establish `e4 : U ≫ (1 : baseOver (Sp S.R) ⟶ ρ.P.A) = 1` using `map_one (preHom U)`. Rewrite using `[e1, e2, hs, e3, hpt, hrN, h0, e4]`. Establish `f1 : gγ ^ (S.r * S.N) = V ≫ (pushPt gA.1.w sec0) ^ (S.r * S.N)` using `map_pow (preHom V) _ _`. Establish `f2 : (pushPt gA.1.w sec0) ^ (S.r * S.N) = pushPt gA.1.w (sec0 ^ (S.r * S.N))` using `(map_pow (pushHom gA _) sec0 _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `f3 : pushPt gA.1.w (1 : Over.mk (𝟙 (Sp Ω)) ⟶ (Over.pullback M.pt).obj FinalForm.G) = 1` using `map_one (pushHom gA _)`. Establish `f4 : V ≫ (1 : Over.mk (𝟙 (Sp Ω) ≫ M.pt) ⟶ FinalForm.G) = 1` using `map_one (preHom V)`. Rewrite using `[f1, f2, hsec, f3, f4]`. Introduce `w h1 h2`. Establish `: w = w₀` using `gψ'.1.hom_ext (by rw [h2, hw₁]) (by show w ≫ pullback.snd FinalForm.G.hom M.pt = w₀ ≫ pullback.snd FinalForm.G.hom M.pt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hw₂]`. Conclude with `h1)`. Rewrite using `[this, hgl]`. Introduce `z hz`. Take `⟨W, h, hzW, hh, hx'⟩` from `FinalForm.sec z b hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨W, h, hzW, hh, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[hgl, hx' y (w₀ ≫ ν) hy ?_ ?_, Category.assoc, hν₁]`. Rewrite using `[Category.assoc, ← Category.assoc ν, hν₁, pullback.condition, ← Category.assoc, hw₂, Category.id_comp]`. Rewrite using `[Category.assoc]`. Conclude with `hw₁`.
+A detailed English derivation is pending.
 -/
 theorem genFibre_endo_torsion : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (FinalForm : ZHOut ρ M U₀ EE), (U₀ : Set M.Z).Nonempty → ∃ (A₀ : Over (Sp Ω)) (_ : GrpObj A₀) (a₀ : A₀.left ⟶ ρ.P.A.left) (ψ : A₀.left ⟶ FinalForm.G.left), IsGrpPullback A₀ ρ.P.A (spMap S.R.val.toRingHom) a₀ ∧ IsGrpPullback A₀ FinalForm.G M.pt ψ ∧ (∀ e : ρ.P.A ⟶ ρ.P.A, IsMonHom e → ∃ F : FinalForm.G ⟶ FinalForm.G, IsMonHom F ∧ ∀ e₀ : A₀ ⟶ A₀, e₀.left ≫ a₀ = a₀ ≫ e.left → e₀.left ≫ ψ = ψ ≫ F.left) ∧ ∀ b : S.Gam, ∃ gγ : Over.mk M.pt ⟶ FinalForm.G, gγ ^ (S.r * S.N) = 1 ∧ (∀ w : Sp Ω ⟶ A₀.left, w ≫ A₀.hom = 𝟙 _ → w ≫ a₀ = spMap S.R.val.toRingHom ≫ (ρ.pt b).left → w ≫ ψ = gγ.left) ∧ ∀ z, b ∈ S.HH M z → ExtNear gγ z := by
   intro o Ω _ _ _ S ρ M U₀ EE FinalForm hU

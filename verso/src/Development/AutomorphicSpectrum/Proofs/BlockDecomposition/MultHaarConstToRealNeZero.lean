@@ -11,7 +11,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Simplify using `[selfDualMeasure, hψ.2.2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem selfDualMeasure_eq_of_isStd {ψ : AddChar F Circle} (hψ : IsStd ψ) :
     selfDualMeasure ψ = haarIntegers F := by

@@ -12,21 +12,21 @@ open GlobalTheory.SplitWeil (SB nabs)
 namespace GlobalTheory.KSp
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ _ c δ hE α _ _ ν _ _ Q _ ψ _ hψ1 _ χ _ hres _ _ μ _ p hp φ`. Take `⟨h1, -, -⟩` from `GlobalTheory.T.splitUnitarySiegelParabolic_block_relations F E c δ hE ν p hp`. Take `⟨-, htop, -, -, -, -, -, -⟩` from `GlobalTheory.T.quadExt_topological_properties F E c δ hE`. Take `⟨-, -, -, hnorm, -⟩` from `GlobalTheory.T.unitaryCharacterAbsScalar_basic_properties F E c δ hE (Fintype.card α) χ hres`. Establish `h1'` using `mul_eq_one_comm.mp h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `A : GL ν E` to `⟨(mat c p).toBlocks₁₁, _, h1, h1'⟩`. Establish `hA : ((A : GL ν E) : Matrix ν ν E) = (mat c p).toBlocks₁₁` using `rfl`. Use `set D : NNReal := distribHaarChar F ((Units.map (Algebra.norm F : E →* F)) (Matrix.GeneralLinearGroup.det A)) with hD`. Establish `hD0 : D ≠ 0` using `distribHaarChar_pos.ne'`. Establish `hsc : ‖sc F χ (Fintype.card α) (mat c p).toBlocks₁₁.det‖ₑ ^ 2 = ((D ^ Fintype.card α : NNReal) : ENNReal)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hnorm (Matrix.GeneralLinearGroup.det A)` as an intermediate fact. Establish `hd : ((Matrix.GeneralLinearGroup.det A : Eˣ) : E) = (mat c p).toBlocks₁₁.det` using `rfl`. Rewrite `this` using `[hd]`. Rewrite using `[enorm_eq_nnnorm, ← ENNReal.coe_pow]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `NNReal.eq` to reduce the goal to its premises. Use `push_cast`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hpt : ∀ x, ‖parFun c ψ χ Q (mat c p) φ x‖ₑ ^ 2 = ((D ^ Fintype.card α : NNReal) : ENNReal) * ‖φ (x * (A : Matrix ν ν E))‖ₑ ^ 2`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `hψe : ∀ t, ‖ψ t‖ₑ = 1` using `fun t => by`. Rewrite using `[enorm_eq_nnnorm]`. Simplify using `[← NNReal.coe_eq_one, coe_nnnorm, hψ1 t]`. Simplify using `only [parFun, enorm_mul, hψe, one_mul, mul_pow, hsc, hA]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `haveI := htop`. Set `e : Matrix α ν E ≃ₜ Matrix α ν E` to `{ toFun := fun x => x * (A : Matrix ν ν E) invFun := fun x => x * ((A⁻¹ : GL ν E) : Matrix ν ν E) left_inv := fun x => by simp only [Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one] right_inv := fun x => by simp only [Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one] continuous_to …`. Establish `hmap : μ.map (e.toMeasurableEquiv) = ((D ^ Fintype.card α)⁻¹ : NNReal) • μ`. Use `GlobalTheory.T.map_twoSided_mul_haar_matrix_quadraticExt F E c δ hE α ν μ 1 A` as an intermediate fact. Establish `hf : (fun x : Matrix α ν E => ((1 : GL α E) : Matrix α α E) * x * (A : Matrix ν ν E)) = e.toMeasurableEquiv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Simplify using `[e]`. Rewrite `this` using `[hf]`. Rewrite using `[this, ← hD]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hpt]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.coe_ne_top]`. Establish `hl` using `lintegral_map_equiv (fun y => ‖φ y‖ₑ ^ 2) e.toMeasurableEquiv (μ := μ)`. Establish `hl' : ∫⁻ x, ‖φ (x * (A : Matrix ν ν E))‖ₑ ^ 2 ∂μ = ∫⁻ y, ‖φ y‖ₑ ^ 2 ∂(μ.map e.toMeasurableEquiv)` using `hl.symm`. Rewrite using `[hl', hmap, lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul, ← mul_assoc, ← ENNReal.coe_mul, mul_inv_cancel₀ (pow_ne_zero _ hD0), ENNReal.coe_one, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parFun_lintegral_sq : ∀ (F : Type) [Field F] [CharZero F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (E : Type) [Field E] [Algebra F E] [TopologicalSpace E] [IsModuleTopology F E] (c : E →ₐ[F] E) (δ : E) (hE : IsQuad c δ) (α : Type) [Fintype α] [DecidableEq α] (ν : Type) [Fintype ν] [DecidableEq ν] (Q : Matrix α α E) (_ : IsHerm c Q) (ψ : AddChar F ℂ) (hψ : Continuous ψ) (_ : ∀ t, ‖ψ t‖ = 1) (_ : ψ ≠ 1) (χ : Eˣ →* Circle) (_ : Continuous χ) (_ : ResEtaPow (R := F) ⊥ χ (Fintype.card α)) [MeasurableSpace (Matrix α ν E)] [BorelSpace (Matrix α ν E)] (μ : Measure (Matrix α ν E)) [μ.IsAddHaarMeasure] (p : UG c (stdJ ν E)), p ∈ sieg c ν → ∀ φ : Matrix α ν E → ℂ, ∫⁻ x, ‖parFun c ψ χ Q (mat c p) φ x‖ₑ ^ 2 ∂μ = ∫⁻ x, ‖φ x‖ₑ ^ 2 ∂μ := by
   intro F _ _ _ _ _ E _ _ _ _ c δ hE α _ _ ν _ _ Q _ ψ _ hψ1 _ χ _ hres _ _ μ _ p hp φ

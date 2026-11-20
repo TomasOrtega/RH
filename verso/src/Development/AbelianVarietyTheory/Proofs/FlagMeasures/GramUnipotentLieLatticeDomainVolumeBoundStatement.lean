@@ -5,7 +5,7 @@ open NumberField Module Matrix Formalism.MainNotions.S GlobalTheory.LoopV
 open scoped ENNReal Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LieCovol.lie_lattice_domain` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FGramUnipotentLieLatticeDomainVolumeBound.lean&line=779#L779)
 -/

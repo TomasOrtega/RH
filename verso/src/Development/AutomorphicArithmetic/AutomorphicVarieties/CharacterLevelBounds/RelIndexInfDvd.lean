@@ -15,11 +15,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Chr
 
 /- English proof (translation)
-Establish `e : (U' ⊓ D).relIndex (U ⊓ D) = U'.relIndex (U ⊓ D)`. Unfold `Subgroup.relIndex`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.mem_inf]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun h => h.1, fun h => ⟨h, x.2.2⟩⟩`. Rewrite using `[e]`. Establish `k : ∀ K : Subgroup G, U'.relIndex K = Nat.card (K.map (QuotientGroup.mk' U'))` using `fun K => by`. Rewrite using `[← Subgroup.relIndex_ker, QuotientGroup.ker_mk']`. Rewrite using `[k, k]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.card_dvd_of_le (Subgroup.map_mono inf_le_left)`.
+A detailed English derivation is pending.
 -/
 private theorem relIndex_inf_dvd {G : Type} [Group G] (U' U D : Subgroup G) [U'.Normal] :
     (U' ⊓ D).relIndex (U ⊓ D) ∣ U'.relIndex U := by
@@ -36,38 +36,36 @@ private theorem relIndex_inf_dvd {G : Type} [Group G] (U' U D : Subgroup G) [U'.
   exact Subgroup.card_dvd_of_le (Subgroup.map_mono inf_le_left)
 
 /- English proof (translation)
-Introduce `a ha b hb` and use `⟨h a b, D.mul_mem (D.mul_mem (D.mul_mem ha.2 hb.2) (D.inv_mem ha.2)) (D.inv_mem hb.2)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 private theorem comm_inf {G : Type} [Group G] (U' D : Subgroup G) (h : ∀ a b : G, a * b * a⁻¹ * b⁻¹ ∈ U') :
     ∀ a ∈ ⊤ ⊓ D, ∀ b ∈ ⊤ ⊓ D, a * b * a⁻¹ * b⁻¹ ∈ U' ⊓ D := fun a ha b hb =>
   ⟨h a b, D.mul_mem (D.mul_mem (D.mul_mem ha.2 hb.2) (D.inv_mem ha.2)) (D.inv_mem hb.2)⟩
 
 /- English proof (translation)
-Introduce `Ω _ _ _ N _ H l hl O _ _ _ _ _ e ψ he hψ`. Use `haveI : IsGalois ℚ Ω := IsAlgClosure.isGalois ℚ Ω`. Take `⟨hopen, -, -, -, hine⟩` from `clsFacts ℚ Ω N`. Take `⟨hex, hN, hconj⟩` from `placesQ Ω`. Establish `hk : (cls ℚ Ω N).ker ≤ levH ℚ Ω H` using `fun g hg => by show cls ℚ Ω N g ∈ H`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.mem_ker.1 hg]`. Conclude with `H.one_mem`. Establish `hUo : IsOpen (levH ℚ Ω H : Set (G ℚ Ω))` using `Subgroup.isOpen_mono hk hopen`. Establish `hψi : levH ℚ Ω H ≤ (ψ⁻¹).ker` using `fun g hg => by`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.inv_apply, MonoidHom.mem_ker.1 (hψ hg), inv_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ContAction (rho l e ψ)` using `(contTw ℚ Ω l).2.2 O ψ⁻¹ _ (Subgroup.isOpen_mono hψi hUo)`. Establish `hcomm : ∀ a b : G ℚ Ω, a * b * a⁻¹ * b⁻¹ ∈ levH ℚ Ω H` using `fun a b => by show cls ℚ Ω N _ ∈ H`. Rewrite using `[map_mul, map_mul, map_mul, map_inv, map_inv, mul_inv_cancel_comm, mul_inv_cancel]`. Conclude with `H.one_mem`. Establish `hn : H.index ≠ 0` using `Subgroup.index_ne_zero_of_finite`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hdvd : (levH ℚ Ω H).relIndex ⊤ ∣ H.index`. Rewrite using `[Subgroup.relIndex_top_right, levH, Subgroup.index_comap]`. Conclude with `Subgroup.relIndex_dvd_index_of_normal _ _`. Take `⟨hb1, hb2⟩` from `H0_local_card_bounded_of_cls_ker_le_ker Ω l O N e ψ he (hk.trans hψ)`. Take `⟨A₀, hA₀⟩` from `hex l hl.out`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hA : ∀ p : N.primeFactors, ∃ A : ValuationSubring Ω, ¬ A.valuation (l : Ω) < 1 ∧ ∀ A' : ValuationSubring Ω, A'.valuation ((p : ℕ) : Ω) < 1 → ¬ A'.valuation (l : Ω) < 1 → ∃ u : G ℚ Ω, ∀ x ∈ Ine (F` using `ℚ) A', u⁻¹ * x * u ∈ Ine (F := ℚ) A := by`. Introduce `p`. Distinguish the cases in `h : ∃ A : ValuationSubring Ω, A.valuation ((p : ℕ) : Ω) < 1 ∧ ¬ A.valuation (l : Ω) < 1`. Take `⟨A, h1, h2⟩` from `h`. Conclude with `⟨A, h2, fun A' h3 _ => (hconj p A' A (Nat.prime_of_mem_primeFactors p.2) h3 h1).imp fun _ hu => hu.2⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨⊤, ((places ℚ Ω l ⊤).2.1 rfl).2, fun A' h3 h4 => absurd ⟨A', h3, h4⟩ h⟩`. Use `choose A hAl hAc using hA`. Establish `hID : ∀ B : ValuationSubring Ω, Ine (F` using `ℚ) B ≤ Dec (F := ℚ) B := fun _ _ h => h.1`. Set `D : Option N.primeFactors → Subgroup (G ℚ Ω)` to `fun i => i.elim (Dec (F := ℚ) A₀) fun p => Ine (F := ℚ) (A p)`. Establish `h1` using `selDown O _ _ (rho l e ψ) (levH ℚ Ω H) ⊤ le_top _ (conjStable_shaFam ℚ Ω l) _ D (by`.
+Assume the hypotheses and unpack their components. Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `(_ | p)`. Conclude with `Or.inl ⟨A₀, hA₀, rfl⟩`. Conclude with `Or.inr ⟨A p, rfl⟩)`. Use the proof step `(by`. Establish `hd : ∀ B : ValuationSubring Ω, B.valuation (l : Ω) < 1 → ∃ u : G ℚ Ω, ∀ x ∈ Dec (F` using `ℚ) B, u⁻¹ * x * u ∈ D none := fun B hB => (hconj l B A₀ hl.out hB hA₀).imp fun _ hu => hu.1`.
+Extract witnesses or component facts from the available result. Prove the second alternative. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Prove the second alternative.
 
-Introduce and unpack `_ (⟨B, hB, rfl⟩ | ⟨B, rfl⟩)`. Take `⟨u, hu⟩` from `hd B hB`. Conclude with `Or.inr ⟨none, u, trivial, fun x hx => hu x hx.2⟩`. Distinguish the cases in `hB : B.valuation (l : Ω) < 1`. Take `⟨u, hu⟩` from `hd B hB`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the second alternative. Prove the first alternative.
 
-Conclude with `Or.inr ⟨none, u, trivial, fun x hx => hu x (hID B hx.2)⟩`. Distinguish the cases in `hB' : B.valuation (N : Ω) < 1`. Take `⟨p, hp, hp'⟩` from `(hN B N (NeZero.ne N)).1 hB'`. Take `⟨u, hu⟩` from `hAc ⟨p, hp⟩ B hp' hB`. Conclude with `Or.inr ⟨some ⟨p, hp⟩, u, trivial, fun x hx => hu x hx.2⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Or.inl (inf_le_right.trans ((hine B hB').trans hk)))`. Establish `h2` using `(selTwist O _ _ (twist₂ l (chiO ℚ Ω l O ^ (-(e : ℤ)))) (rho l e ψ) ψ (tw_apply l e ψ) (levH ℚ Ω H) (fun u hu => hψ hu) _ (conjStable_shaFam ℚ Ω l)).2 ⊤ 1`. Rewrite `h2` using `[mul_one]`. Establish `h3` using `cokerAb O _ _ (rho l e ψ) hc (qoFacts l O).1 (fun g => ⟨_, fun _ => rfl⟩) (levH ℚ Ω H) ⊤ le_top isClosed_univ (hUo.preimage continuous_subtype_val) fun a _ b _ => hcomm a b`. Establish `h3'` using `h3.trans (mul_le_mul' (pow_le_pow_left' (Nat.cast_le.2 (Nat.le_of_dvd (Nat.pos_of_ne_zero hn) hdvd)) 2) hb2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `(kerIdx l O _ _ hc _ _ (inf_le_inf_right (D none) (le_top : levH ℚ Ω H ≤ ⊤)) (comm_inf _ _ hcomm) _ hn ((relIndex_inf_dvd _ _ _).trans hdvd)).trans (mul_le_mul' le_rfl (hb1 A₀ _ hA₀ (le_inf le_top (hID A₀))))`. Establish `h5 : ∀ p : N.primeFactors, _` using `fun p => kerFin l O _ _ hc _ _ (inf_le_inf_right (D (some p)) (le_top : levH ℚ Ω H ≤ ⊤)) (fun g hg => by`. Establish `e1 : chiO ℚ Ω l O g = 1`. Use `MonoidHom.mem_ker.1 ((places ℚ Ω l (A p)).2.2.2 (hAl p) hg.2)` as an intermediate fact. Rewrite using `[chiO, MonoidHom.comp_apply, this, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.mem_ker, MonoidHom.mul_apply, MonoidHom.mem_ker.1 (hψi hg.1), one_mul]`. Use `show chiO ℚ Ω l O g ^ (-(e : ℤ)) = 1`. Rewrite using `[e1, one_zpow]) (comm_inf _ _ hcomm) _ hn ((relIndex_inf_dvd _ _ _).trans hdvd)`. Rewrite `h1` using `[Fintype.sum_option]`. Establish `h6` using `(Finset.sum_le_sum fun p (_ : p ∈ Finset.univ) => h5 p).trans_eq (Finset.sum_const _)`.
-
-Use `(h2.le.trans (h1.trans (add_le_add (add_le_add le_rfl (add_le_add h4 h6)) h3'))).trans_eq ?_` and prove the remaining obligations. Rewrite using `[Finset.card_univ, Fintype.card_coe, nsmul_eq_mul, loss, add_assoc]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Chr.eigLe :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (N : ℕ) [NeZero N] (H : Subgroup (ZMod N)ˣ) (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (e : ℕ) (ψ : G ℚ Ω →* Oˣ), e ≠ 0 → levH ℚ Ω H ≤ ψ.ker →

@@ -12,13 +12,11 @@ namespace Formalism.FourierDecayAlt.P.Ux13
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.U
 
 /- English proof (translation)
-Establish `hint : ∀ m ≤ q, ∀ x, Integrable (fun a => ph a x m) μ` using `fun m hm x => hb.mono' (hmeas m hm x) (Filter.Eventually.of_forall fun a => hle m hm a x)`. Use `⟨fun x => ?_, fun m hm x => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Establish `h0` using `hint 0 (Nat.zero_le _) x show (∫ a, ph a x 0 ∂μ) 0 = ∫ a, H a x ∂μ`. Rewrite using `[ContinuousMultilinearMap.integral_apply h0]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun a => (hT a).zero_eq x)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmq' : m < q` using `by exact_mod_cast hm`. Establish `hm' : m + 1 ≤ q` using `hmq'`. Establish `hmq : m ≤ q` using `hmq'.le`. Establish `key` using `hasFDerivAt_integral_of_dominated_of_fderiv_le (μ := μ) (s := Set.univ) (x₀ := x) (F := fun y a => ph a y m) (F' := fun y a => (ph a y (m + 1)).curryLeft) (bound := bound) Filter.univ_mem (Filter.Eventually.of_forall fun y => hmeas m hmq y) (hint m hmq x) ((continuousMultilinearC …`. Establish `hn` using `(continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (m + 1) => X) W).norm_map (ph a y (m + 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(le_of_eq hn).trans (hle (m + 1) hm' a y))`. Use `hb (Filter.Eventually.of_forall fun a y _ => (hT a).fderiv m hm y)`. Establish `hc` using `(continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (m + 1) => X) W).toContinuousLinearEquiv.integral_comp_comm (μ := μ) (fun a => ph a x (m + 1))`. Conclude with `key.congr_fderiv hc`. Establish `hmq : m ≤ q` using `by exact_mod_cast hm`.
-
-Conclude with `continuous_of_dominated (fun x => hmeas m hmq x) (fun x => Filter.Eventually.of_forall fun a => hle m hmq a x) hb (Filter.Eventually.of_forall fun a => (hT a).cont m hm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem taylor_integral {α : Type*} [MeasurableSpace α] {μ : Measure α}
     {X W : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X] [NormedAddCommGroup W] [NormedSpace ℝ W]
@@ -55,7 +53,7 @@ theorem taylor_integral {α : Type*} [MeasurableSpace α] {μ : Measure α}
       (Filter.Eventually.of_forall fun a => (hT a).cont m hm)
 
 /- English proof (translation)
-Unfold `blk2`. Rewrite using `[← Matrix.fromBlocks_add]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem block2_add {p s : ℕ} (A A' : Matrix (Fin p) (Fin p) ℂ) (B B' : Matrix (Fin p) (Fin s) ℂ)
     (C C' : Matrix (Fin s) (Fin p) ℂ) (D D' : Matrix (Fin s) (Fin s) ℂ) :
@@ -66,7 +64,7 @@ theorem block2_add {p s : ℕ} (A A' : Matrix (Fin p) (Fin p) ℂ) (B B' : Matri
   simp
 
 /- English proof (translation)
-Unfold `blk2`. Rewrite using `[← Matrix.fromBlocks_smul]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem smul_block_two {p s : ℕ} (r : ℝ) (A : Matrix (Fin p) (Fin p) ℂ) (B : Matrix (Fin p) (Fin s) ℂ)
     (C : Matrix (Fin s) (Fin p) ℂ) (D : Matrix (Fin s) (Fin s) ℂ) :
@@ -90,9 +88,9 @@ def iotaL (p s : ℕ) : G.Mat s →ₗ[ℝ] G.Mat (p + s) where
     exact h
 
 /- English proof (translation)
-Establish `h : ∀ (H : Matrix (Fin p) (Fin p) ℂ) (B : Matrix (Fin p) (Fin s) ℂ) (C : Matrix (Fin s) (Fin p) ℂ) (D Z : Matrix (Fin s) (Fin s) ℂ), blk2 H B C (D + Z) = blk2 H B C (D + 0) + blk2 0 0 0 Z`. Introduce `H B C D Z`. Rewrite using `[block2_add]`. Simplify using the standard rewrite rules. Unfold `ZjH`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[hZ, hZ, h _ _ _ _ (Matrix.of CC)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem zjH_split (hZ : ZjAffine) {p s : ℕ} (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (η : XiH p s σ)
     (CC : G.Mat s) :
@@ -107,7 +105,7 @@ theorem zjH_split (hZ : ZjAffine) {p s : ℕ} (σ : Equiv.Perm (Fin p)) (d : Fin
   rfl
 
 /- English proof (translation)
-Conclude with `(hA.matrix_fromBlocks hB hC hD).matrix_reindex _ _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_block2 {α : Type*} [TopologicalSpace α] {p s : ℕ} {A : α → Matrix (Fin p) (Fin p) ℂ}
     {B : α → Matrix (Fin p) (Fin s) ℂ} {C : α → Matrix (Fin s) (Fin p) ℂ} {D : α → Matrix (Fin s) (Fin s) ℂ}
@@ -116,9 +114,7 @@ theorem continuous_block2 {α : Type*} [TopologicalSpace α] {p s : ℕ} {A : α
   exact (hA.matrix_fromBlocks hB hC hD).matrix_reindex _ _
 
 /- English proof (translation)
-Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Distinguish the cases in `h : b < a ∧ σ.symm b < σ.symm a`. Simplify using `only [lowW, Matrix.add_apply, Matrix.of_apply, dif_pos h]`. Conclude with `continuous_const.add (continuous_apply _)`. Simplify using `only [lowW, Matrix.add_apply, Matrix.of_apply, dif_neg h]`.
-
-Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_lowW {p : ℕ} (σ : Equiv.Perm (Fin p)) : Continuous (lowW σ) := by
   refine continuous_matrix fun a b => ?_
@@ -129,9 +125,7 @@ theorem continuous_lowW {p : ℕ} (σ : Equiv.Perm (Fin p)) : Continuous (lowW �
     exact continuous_const
 
 /- English proof (translation)
-Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Distinguish the cases in `h : a < b`. Simplify using `only [G.upper, G.strictUpper, Matrix.add_apply, Matrix.of_apply, dif_pos h]`. Conclude with `continuous_const.add (continuous_apply _)`. Simplify using `only [G.upper, G.strictUpper, Matrix.add_apply, Matrix.of_apply, dif_neg h]`.
-
-Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_upper {p : ℕ} : Continuous (G.upper (d := p)) := by
   refine continuous_matrix fun a b => ?_
@@ -142,9 +136,9 @@ theorem continuous_upper {p : ℕ} : Continuous (G.upper (d := p)) := by
     exact continuous_const
 
 /- English proof (translation)
-Use `show Continuous fun l : Matrix (Fin p) (Fin p) ℂ => subS l`. Unfold `subS`. Use `continuous_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : i.val + 1 < p`. Simplify using `only [dif_pos h]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_id.matrix_elem _ _`. Simplify using `only [dif_neg h]`. Conclude with `continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_subS {p : ℕ} : Continuous (subS (p := p)) := by
   show Continuous fun l : Matrix (Fin p) (Fin p) ℂ => subS l
@@ -157,9 +151,9 @@ theorem continuous_subS {p : ℕ} : Continuous (subS (p := p)) := by
     exact continuous_const
 
 /- English proof (translation)
-Use `show Continuous fun l : Matrix (Fin p) (Fin p) ℂ => supS l`. Unfold `supS`. Use `continuous_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : i.val + 1 < p`. Simplify using `only [dif_pos h]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_id.matrix_elem _ _`. Simplify using `only [dif_neg h]`. Conclude with `continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_supS {p : ℕ} : Continuous (supS (p := p)) := by
   show Continuous fun l : Matrix (Fin p) (Fin p) ℂ => supS l
@@ -172,9 +166,7 @@ theorem continuous_supS {p : ℕ} : Continuous (supS (p := p)) := by
     exact continuous_const
 
 /- English proof (translation)
-Use `show Continuous fun a : Fin s → Fin p → ℂ => cornerA a`. Distinguish the cases in `h : 0 < s ∧ 0 < p`. Simplify using `only [cornerA, dif_pos h]`. Conclude with `continuous_apply_apply _ _`. Simplify using `only [cornerA, dif_neg h]`.
-
-Conclude with `continuous_const`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_cornerA {p s : ℕ} : Continuous (cornerA (p := p) (s := s)) := by
   show Continuous fun a : Fin s → Fin p → ℂ => cornerA a
@@ -185,9 +177,7 @@ theorem continuous_cornerA {p s : ℕ} : Continuous (cornerA (p := p) (s := s)) 
     exact continuous_const
 
 /- English proof (translation)
-Use `show Continuous fun b : Fin p → Fin s → ℂ => cornerB b`. Distinguish the cases in `h : 0 < s ∧ 0 < p`. Simplify using `only [cornerB, dif_pos h]`. Conclude with `continuous_apply_apply _ _`. Simplify using `only [cornerB, dif_neg h]`.
-
-Conclude with `continuous_const`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_cornerB {p s : ℕ} : Continuous (cornerB (p := p) (s := s)) := by
   show Continuous fun b : Fin p → Fin s → ℂ => cornerB b
@@ -198,9 +188,9 @@ theorem continuous_cornerB {p s : ℕ} : Continuous (cornerB (p := p) (s := s)) 
     exact continuous_const
 
 /- English proof (translation)
-Establish `h1 : Continuous fun η : XiH p s σ => subS (wP σ * lowW σ η.2.1 * (wP σ)⁻¹)` using `continuous_subS.comp ((continuous_const.matrix_mul ((continuous_lowW σ).comp (continuous_fst.comp continuous_snd))).matrix_mul continuous_const)`. Establish `h2 : Continuous fun η : XiH p s σ => supS (G.upper η.2.2)` using `continuous_supS.comp (continuous_upper.comp (continuous_snd.comp continuous_snd))`. Establish `h3 : Continuous fun η : XiH p s σ => cornerA η.1.1` using `continuous_cornerA.comp (continuous_fst.comp continuous_fst)`. Establish `h4 : Continuous fun η : XiH p s σ => cornerB η.1.2` using `continuous_cornerB.comp (continuous_snd.comp continuous_fst)`. Simplify using `only [psiH, G.psi]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (Complex.continuous_re.comp (continuous_const.mul (((h1.add h2).add h3).add h4)))))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_psiH {p s : ℕ} (β : ℂ) (σ : Equiv.Perm (Fin p)) :
     Continuous fun η : XiH p s σ => psiH β σ η := by
@@ -218,9 +208,9 @@ theorem continuous_psiH {p s : ℕ} (β : ℂ) (σ : Equiv.Perm (Fin p)) :
     (Complex.continuous_re.comp (continuous_const.mul (((h1.add h2).add h3).add h4)))))
 
 /- English proof (translation)
-Establish `hof1 : Continuous fun η : XiH p s σ => (Matrix.of η.1.1 : Matrix (Fin s) (Fin p) ℂ)` using `continuous_matrix fun i j => (continuous_apply_apply i j).comp (continuous_fst.comp continuous_fst)`. Establish `hof2 : Continuous fun η : XiH p s σ => (Matrix.of η.1.2 : Matrix (Fin p) (Fin s) ℂ)` using `continuous_matrix fun i j => (continuous_apply_apply i j).comp (continuous_snd.comp continuous_fst)`. Establish `hH : Continuous fun η : XiH p s σ => headH σ d η.2.1 η.2.2`. Unfold `headH`. Conclude with `((continuous_const.matrix_mul ((continuous_lowW σ).comp (continuous_fst.comp continuous_snd))).matrix_mul continuous_const).matrix_mul (continuous_upper.comp (continuous_snd.comp continuous_snd))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hZ : Continuous fun η : XiH p s σ => ZjH σ d η CC`. Unfold `ZjH Zj`. Conclude with `((continuous_block2 continuous_const continuous_const hof1 continuous_const).matrix_mul (continuous_block2 hH continuous_const continuous_const continuous_const)).matrix_mul (continuous_block2 continuous_const hof2 continuous_const continuous_const)`. Conclude with `hZ`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_zjH {p s : ℕ} (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (CC : G.Mat s) :
     Continuous fun η : XiH p s σ => (Matrix.of.symm (ZjH σ d η CC) : G.Mat (p + s)) := by
@@ -258,7 +248,7 @@ Both sides reduce to the same expression.
 theorem Lc_apply {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] (c : ℂ) (v : V) : Lc c v = c • v := rfl
 
 /- English proof (translation)
-Simplify using `only [psiH, G.psi]`. Rewrite using `[mul_comm]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_psiH {p s : ℕ} (β : ℂ) (σ : Equiv.Perm (Fin p)) (η : XiH p s σ) : ‖psiH β σ η‖ = 1 := by
   simp only [psiH, G.psi]
@@ -266,16 +256,16 @@ theorem norm_psiH {p s : ℕ} (β : ℂ) (σ : Equiv.Perm (Fin p)) (η : XiH p s
   exact Complex.norm_exp_ofReal_mul_I _
 
 /- English proof (translation)
-Unfold `wtH`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem wtH_pos {p s : ℕ} {σ : Equiv.Perm (Fin p)} (η : XiH p s σ) : 0 < wtH η := by
   unfold wtH
   positivity
 
 /- English proof (translation)
-Establish `hm' : ((m : ℕ) : WithTop ℕ∞) ≤ (q : WithTop ℕ∞)` using `by exact_mod_cast hm`. Establish `h1 : ContDiff ℝ q (fun z => f (T + z))` using `hf.comp (contDiff_const.add contDiff_id)`. Establish `h2 : ContDiff ℝ q ((fun z => f (T + z)) ∘ ι)` using `h1.comp ι.contDiff`. Establish `e1` using `L.iteratedFDeriv_comp_left (h2.contDiffAt (x := x)) hm'`. Establish `e2` using `ι.iteratedFDeriv_comp_right h1 x hm'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `iteratedFDeriv_comp_add_left (𝕜 := ℝ) (f := f) m T (ι x)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem iter_lemma {X Y V : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
     [NormedAddCommGroup Y] [NormedSpace ℝ Y] [NormedAddCommGroup V] [NormedSpace ℝ V]
@@ -294,57 +284,45 @@ private theorem iter_lemma {X Y V : Type*} [NormedAddCommGroup X] [NormedSpace �
     _ = _ := by rw [e2, e3]
 
 /- English proof (translation)
-Introduce `p s β σ d hd hs q e he`. Use `haveI i1 : OpensMeasurableSpace (Fin s → Fin p → ℂ) := inferInstance`. Use `haveI i2 : OpensMeasurableSpace (Fin p → Fin s → ℂ) := inferInstance`. Use `haveI i3 : OpensMeasurableSpace (LW σ → ℂ) := inferInstance`. Use `haveI i4 : OpensMeasurableSpace (G.UT p → ℂ) := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI i5 : SecondCountableTopology (Fin s → Fin p → ℂ) := inferInstance`. Use `haveI i6 : SecondCountableTopology (Fin p → Fin s → ℂ) := inferInstance`. Use `haveI i7 : SecondCountableTopology (LW σ → ℂ) := inferInstance`. Use `haveI i8 : SecondCountableTopology (G.UT p → ℂ) := inferInstance`. Use `haveI i9 : OpensMeasurableSpace ((Fin s → Fin p → ℂ) × (Fin p → Fin s → ℂ)) := inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI i10 : OpensMeasurableSpace ((LW σ → ℂ) × (G.UT p → ℂ)) := inferInstance`. Use `haveI i11 : SecondCountableTopology ((Fin s → Fin p → ℂ) × (Fin p → Fin s → ℂ)) := inferInstance`. Use `haveI i12 : SecondCountableTopology ((LW σ → ℂ) × (G.UT p → ℂ)) := inferInstance`. Use `haveI : OpensMeasurableSpace (XiH p s σ) := inferInstance`. Establish `hN : (1 : ℝ) ≤ ((p + s : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ p + s)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h5N : (0 : ℝ) < 5 * ((p + s : ℕ) : ℝ)` using `by positivity`. Establish `hepos : ∀ i ≤ q, 0 ≤ e i`. Introduce `i hi`. Establish `h1` using `he i hi`. Establish `h2 : (0 : ℝ) ≤ 2 * ((p + s : ℕ) : ℝ) ^ 2` using `by positivity`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 0 < e i / (5 * ((p + s : ℕ) : ℝ))` using `by linarith`. Conclude with `le_of_lt ((div_pos_iff_of_pos_right h5N).mp h3)`. Use `choose C hC using fun i : ℕ => hST p s σ d hd hs (max (e i) 0) (le_max_right _ _)`. Take `⟨Tm, hTm⟩ : ∃ Tm : XiH p s σ → G.Mat (p + s), Tm = fun η => Matrix.of.symm (ZjH σ d η 0)` from `⟨_, rfl⟩`. Establish `hTc : Continuous Tm` using `by rw [hTm]; exact continuous_zjH σ d 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsplit : ∀ (η : XiH p s σ) (CC : G.Mat s), (Matrix.of.symm (ZjH σ d η CC) : G.Mat (p + s)) = Tm η + iotaC p s CC`. Introduce `η CC`. Rewrite using `[hTm]`. Conclude with `zjH_split hZ σ d η CC`. Use `⟨∑ k ∈ Finset.range (q + 1), ‖iotaC p s‖ ^ k * |C k| * ∫ η, wtH η ^ (-(e k / (5 * ((p + s : ℕ) : ℝ)))) ∂(muXiH p s σ), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `V _ _ _ Φ0 K hΦ`. Unfold `DecayAll at hΦ ⊢`. Take `⟨hcd, hbd⟩` from `hΦ`. Establish `hK : 0 ≤ K`. Establish `h` using `hbd 0 (Nat.zero_le _) 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h'` using `(norm_nonneg _).trans h`. Simplify using `using h'`. Establish `hexp : ∀ m ≤ q, ∀ (η : XiH p s σ) (x : G.Mat s), iteratedFDeriv ℝ m (fun y => Lc (psiH β σ η) (Φ0 (Tm η + iotaC p s y))) x = (Lc (psiH β σ η)).compContinuousMultilinearMap ((iteratedFDeriv ℝ m Φ0 (Tm η + iotaC p s x)).compContinuousLinearMap fun _ => iotaC p s)` using `fun m hm η x => iter_lemma hcd (Lc (psiH β σ η)) (Tm η) (iotaC p s) hm x`. Establish `hLc : ∀ η : XiH p s σ, ‖(Lc (psiH β σ η) : V →L[ℝ] V)‖ ≤ 1`. Introduce `η`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun v => ?_` and prove the remaining obligations. Rewrite using `[Lc_apply, norm_smul, norm_psiH, one_mul]`. Establish `hpt : ∀ m ≤ q, ∀ (η : XiH p s σ) (x : G.Mat s), ‖iteratedFDeriv ℝ m (fun y => Lc (psiH β σ η) (Φ0 (Tm η + iotaC p s y))) x‖ ≤ ‖iotaC p s‖ ^ m * K * |C m| * (1 + ‖x‖) ^ (-(e m / (5 * ((p + s : ℕ) : ℝ)))) * wtH η ^ (-(e m / (5 * ((p + s : ℕ) : ℝ))))`. Introduce `m hm η x`. Rewrite using `[hexp m hm η x]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h1` using `ContinuousLinearMap.norm_compContinuousMultilinearMap_le (Lc (psiH β σ η) : V →L[ℝ] V) ((iteratedFDeriv ℝ m Φ0 (Tm η + iotaC p s x)).compContinuousLinearMap fun _ => iotaC p s)`. Establish `h2` using `ContinuousMultilinearMap.norm_compContinuousLinearMap_le (iteratedFDeriv ℝ m Φ0 (Tm η + iotaC p s x)) (fun _ : Fin m => iotaC p s)`. Rewrite `h2` using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Establish `h3` using `hbd m hm (Tm η + iotaC p s x)`. Establish `hmx : mx (ZjH σ d η x) = ‖Tm η + iotaC p s x‖`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `mx`. Rewrite using `[hsplit]`. Establish `h4` using `hC m η x`. Rewrite `h4` using `[max_eq_left (hepos m hm), hmx]`. Establish `hw` using `wtH_pos η`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Establish `h5 : (wtH η * (1 + ‖x‖)) ^ (-(e m / (5 * ((p + s : ℕ) : ℝ)))) = wtH η ^ (-(e m / (5 * ((p + s : ℕ) : ℝ)))) * (1 + ‖x‖) ^ (-(e m / (5 * ((p + s : ℕ) : ℝ))))` using `Real.mul_rpow hw.le (by positivity)`. Rewrite `h4` using `[h5]`. Establish `hA : 0 ≤ wtH η ^ (-(e m / (5 * ((p + s : ℕ) : ℝ)))) * (1 + ‖x‖) ^ (-(e m / (5 * ((p + s : ℕ) : ℝ))))` using `by positivity`. Establish `hCabs : C m * (wtH η ^ (-(e m / (5 * ((p + s : ℕ) : ℝ)))) * (1 + ‖x‖) ^ (-(e m / (5 * ((p + s : ℕ) : ℝ))))) ≤ |C m| * (wtH η ^ (-(e m / (5 * ((p + s : ℕ) : ℝ)))) * (1 + ‖x‖) ^ (-(e m / (5 * ((p + s : ℕ) : ℝ)))))` using `mul_le_mul_of_nonneg_right (le_abs_self _) hA`. Establish `hι : 0 ≤ ‖iotaC p s‖ ^ m` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left ?_ zero_le_one` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right h3 hι`. Use `_ ≤ 1 * ((K * (|C m| * (wtH η ^ (-(e m / (5 * ((p + s : ℕ) : ℝ)))) * (1 + ‖x‖) ^ (-(e m / (5 * ((p + s : ℕ) : ℝ))))))) * ‖iotaC p s‖ ^ m) := by`. Use `mul_le_mul_of_nonneg_left ?_ zero_le_one` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_right ?_ hι` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left (h4.trans hCabs) hK`. Use `_ = _ := by ring`. Establish `hmeasI : ∀ m ≤ q, ∀ x : G.Mat s, AEStronglyMeasurable (fun η : XiH p s σ => iteratedFDeriv ℝ m (fun y => Lc (psiH β σ η) (Φ0 (Tm η + iotaC p s y))) x) (muXiH p s σ)`. Introduce `m hm x`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfun : (fun η : XiH p s σ => iteratedFDeriv ℝ m (fun y => Lc (psiH β σ η) (Φ0 (Tm η + iotaC p s y))) x) = fun η => psiH β σ η • ((iteratedFDeriv ℝ m Φ0 (Tm η + iotaC p s x)).compContinuousLinearMap fun _ => iotaC p s)`. Use function extensionality and compare the values at `η`. Rewrite using `[hexp m hm η x]`. Use extensionality with `v`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hfun]`. Use `Continuous.aestronglyMeasurable ?_` and prove the remaining obligations. Use `(continuous_psiH β σ).smul ?_` and prove the remaining obligations. Conclude with `(ContinuousMultilinearMap.compContinuousLinearMapL (fun _ : Fin m => iotaC p s)).continuous.comp ((hcd.continuous_iteratedFDeriv (by exact_mod_cast hm)).comp (hTc.add continuous_const))`. Establish `hbndI : Integrable (fun η : XiH p s σ => ∑ k ∈ Finset.range (q + 1), ‖iotaC p s‖ ^ k * K * |C k| * wtH η ^ (-(e k / (5 * ((p + s : ℕ) : ℝ))))) (muXiH p s σ)` using `integrable_finset_sum _ fun k hk => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hkq : k ≤ q` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)`. Conclude with `(hIT p s σ _ (he k hkq)).const_mul _`. Establish `hle : ∀ m ≤ q, ∀ (η : XiH p s σ) (x : G.Mat s), ‖iteratedFDeriv ℝ m (fun y => Lc (psiH β σ η) (Φ0 (Tm η + iotaC p s y))) x‖ ≤ ∑ k ∈ Finset.range (q + 1), ‖iotaC p s‖ ^ k * K * |C k| * wtH η ^ (-(e k / (5 * ((p + s : ℕ) : ℝ))))`. Introduce `m hm η x`. Use `(hpt m hm η x).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hx1 : (1 + ‖x‖) ^ (-(e m / (5 * ((p + s : ℕ) : ℝ)))) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos (by linarith [norm_nonneg x]) (neg_nonpos.mpr (div_nonneg (hepos m hm) h5N.le))`. Establish `h0 : 0 ≤ ‖iotaC p s‖ ^ m * K * |C m|` using `mul_nonneg (mul_nonneg (by positivity) hK) (abs_nonneg _)`. Establish `hw : 0 ≤ wtH η ^ (-(e m / (5 * ((p + s : ℕ) : ℝ))))` using `Real.rpow_nonneg (wtH_pos η).le _`. Establish `hterm : ‖iotaC p s‖ ^ m * K * |C m| * (1 + ‖x‖) ^ (-(e m / (5 * ((p + s : ℕ) : ℝ)))) * wtH η ^ (-(e m / (5 * ((p + s : ℕ) : ℝ)))) ≤ ‖iotaC p s‖ ^ m * K * |C m| * wtH η ^ (-(e m / (5 * ((p + s : ℕ) : ℝ))))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hterm.trans (Finset.single_le_sum (f := fun k => ‖iotaC p s‖ ^ k * K * |C k| * wtH η ^ (-(e k / (5 * ((p + s : ℕ) : ℝ))))) (fun k _ => mul_nonneg (mul_nonneg (mul_nonneg (by positivity) hK) (abs_nonneg _)) (Real.rpow_nonneg (wtH_pos η).le _)) (Finset.mem_range.mpr (Nat.lt_succ_of …`. Establish `hTI` using `taylor_integral (μ := muXiH p s σ) (q := q) (fun η x => Lc (psiH β σ η) (Φ0 (Tm η + iotaC p s x))) (fun η x m => iteratedFDeriv ℝ m (fun y => Lc (psiH β σ η) (Φ0 (Tm η + iotaC p s y))) x) (fun η => ContDiff.ftaylorSeries (by`. Conclude with `(Lc (psiH β σ η) : V →L[ℝ] V).contDiff.comp ((hcd.comp (contDiff_const.add contDiff_id)).comp (iotaC p s).contDiff)))`. Use `hmeasI _ hbndI hle`. Establish `hPhi : PhiTop β σ d Φ0 = fun x => ∫ η, Lc (psiH β σ η) (Φ0 (Tm η + iotaC p s x)) ∂(muXiH p s σ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree.
 
-Use function extensionality and compare the values at `x`. Unfold `PhiTop`. Use `integral_congr_ae (Filter.Eventually.of_forall fun η => ?_)` and prove the remaining obligations. Use `show psiH β σ η • Φ0 (ZjH σ d η x) = psiH β σ η • Φ0 (Tm η + iotaC p s x)`. Rewrite using `[← hsplit η x]`.
-
-Both sides reduce to the same expression. Use `⟨fun CC => ?_, ?_, fun i hi Z => ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun η : XiH p s σ => psiH β σ η • Φ0 (ZjH σ d η CC)` using `(continuous_psiH β σ).smul (hcd.continuous.comp (continuous_zjH σ d CC))`. Use `((hIT p s σ _ (he 0 (Nat.zero_le _))).const_mul (‖iotaC p s‖ ^ 0 * K * |C 0| * (1 + ‖CC‖) ^ (-(e 0 / (5 * ((p + s : ℕ) : ℝ)))))).mono' hc.aestronglyMeasurable (Filter.Eventually.of_forall fun η => ?_)` and prove the remaining obligations. Establish `h` using `hpt 0 (Nat.zero_le _) η CC`.
-
-Rewrite `h` using `[norm_iteratedFDeriv_zero]`. Establish `e1 : Lc (psiH β σ η) (Φ0 (Tm η + iotaC p s CC)) = psiH β σ η • Φ0 (ZjH σ d η CC)`. Rewrite using `[Lc_apply, ← hsplit η CC]`. Both sides reduce to the same expression. Rewrite `h` using `[e1]`.
-
-Conclude with `h`. Rewrite using `[hPhi]`. Conclude with `hTI.contDiff`. Use `beta_reduce`. Establish `hiq : ((i : ℕ) : WithTop ℕ∞) ≤ (q : WithTop ℕ∞)` using `by exact_mod_cast hi`.
-
-Establish `heq` using `hTI.eq_iteratedFDeriv hiq Z`. Rewrite using `[hPhi, ← heq]`. Use `beta_reduce`. Establish `hI : Integrable (fun η : XiH p s σ => (‖iotaC p s‖ ^ i * K * |C i| * (1 + ‖Z‖) ^ (-(e i / (5 * ((p + s : ℕ) : ℝ))))) * wtH η ^ (-(e i / (5 * ((p + s : ℕ) : ℝ))))) (muXiH p s σ)` using `(hIT p s σ _ (he i hi)).const_mul _`. Use `(norm_integral_le_of_norm_le hI (Filter.Eventually.of_forall fun η => hpt i hi η Z)).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[integral_const_mul]`. Establish `hsum` using `Finset.single_le_sum (s := Finset.range (q + 1)) (f := fun k => ‖iotaC p s‖ ^ k * |C k| * ∫ η, wtH η ^ (-(e k / (5 * ((p + s : ℕ) : ℝ)))) ∂(muXiH p s σ)) (fun k _ => mul_nonneg (mul_nonneg (by positivity) (abs_nonneg _)) (integral_nonneg fun η => Real.rpow_nonneg (wtH_pos η).le _ …`. Establish `hr : 0 ≤ (1 + ‖Z‖) ^ (-(e i / (5 * ((p + s : ℕ) : ℝ))))` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ ≤ _ := mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hsum hK) hr`.
+A detailed English derivation is pending.
 -/
 theorem topCells_of (hZ : ZjAffine) (hST : SizesTop) (hIT : IntTop) : TopCells := by
   intro p s β σ d hd hs q e he
@@ -528,7 +506,7 @@ theorem topCells_of (hZ : ZjAffine) (hST : SizesTop) (hIT : IntTop) : TopCells :
       _ ≤ _ := mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hsum hK) hr
 
 /- English proof (translation)
-Introduce `hZ _ hST hIT`. Conclude with `topCells_of hZ hST hIT`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem topCellsOfParts : TopCellsOfParts := by
   intro hZ _ hST hIT
@@ -537,13 +515,13 @@ theorem topCellsOfParts : TopCellsOfParts := by
 end Formalism.FourierDecayAlt.P.Ux13
 
 /- English proof (translation)
-Conclude with `Formalism.FourierDecayAlt.P.Ux13.topCellsOfParts`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.top_cells_of_parts : Formalism.FourierDecayAlt.U.TopCellsOfParts := by
   exact Formalism.FourierDecayAlt.P.Ux13.topCellsOfParts
 
 /- English proof (translation)
-Conclude with `Formalism.FourierDecayAlt.P.Ux13.topCells_of Formalism.FourierDecayAlt.P.level_z_affine Formalism.FourierDecayAlt.P.sizes_top_level Formalism.FourierDecayAlt.P.integrability_top_level`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.top_cells : Formalism.FourierDecayAlt.U.TopCells := by
   exact Formalism.FourierDecayAlt.P.Ux13.topCells_of Formalism.FourierDecayAlt.P.level_z_affine Formalism.FourierDecayAlt.P.sizes_top_level Formalism.FourierDecayAlt.P.integrability_top_level

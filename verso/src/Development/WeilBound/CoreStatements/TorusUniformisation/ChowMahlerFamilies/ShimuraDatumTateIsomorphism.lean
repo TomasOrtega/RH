@@ -28,9 +28,9 @@ namespace PositivityTheory.Xgn.ShimuraDatumTate
 open GlobalTheory GlobalTheory.PointUnif
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, 0 < n → (n : ℤ) ∣ EF (c • x) x' - EF x (H.bar c • x')` using `fun n hn => by`. Establish `e1` using `hweil n (c • x) x' _ hn (expNegUnit_zpow_val n _)`. Establish `e2` using `hweil n x (H.bar c • x') _ hn (expNegUnit_zpow_val n _)`. Rewrite `e1`, `e2` using `[exp_div_smul hP hlin]`. Establish `e3` using `hros n _ _ c _ (exp_div_pow he hker hn x) (exp_div_pow he hker hn x') e1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `f` using `weilIs_unique_fieldPoint _ _ _ hL ℂ _ _ _ _ _ _ e3 e2`. Rewrite using `[← (expNegUnit_isPrimitiveRoot hn).zpow_eq_one_iff_dvd, _root_.zpow_sub, f, mul_inv_cancel]`. Conclude with `sub_eq_zero.1 (Int.eq_zero_of_dvd_of_natAbs_lt_natAbs (key _ (Nat.succ_pos (EF (c • x) x' - EF x (H.bar c • x')).natAbs)) (by rw [Int.natAbs_natCast]; exact Nat.lt_succ_self _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_of_weil {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S : Scheme.{0}} {G : Over S}
     [GrpObj G] {y : Sp ℂ ⟶ S} {g : ℕ} {e : (Fin g → ℂ) → (Over.mk y ⟶ G)} {act : OAct (𝓞 E) G} {L : LB G.left}
@@ -56,7 +56,7 @@ theorem adj_of_weil {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host
     (by rw [Int.natAbs_natCast]; exact Nat.lt_succ_self _))
 
 /- English proof (translation)
-Use `letI := H.starRing`. Conclude with `(weilRosati abelianSchemeLaws_all.1.globalFns abelianSchemeLaws_all.1.cube (Sp L) (SabModel.pol t ht) (𝓞 E) ⟨t.act.toRingAct, t.rosatiAdj⟩ k T x x' a c hx hx').1 h`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem weil_adj {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {L : Type} [Field L]
     (t : SAB H (Sp L)) (ht : IsPrincipal t) (k : ℕ) (T : Over (Sp L)) (x x' : T ⟶ t.G) (a : 𝓞 E)
@@ -71,35 +71,31 @@ end PositivityTheory.Xgn.ShimuraDatumTate
 
 open GlobalTheory GlobalTheory.PointUnif PositivityTheory.Xgn.ShimuraDatumTate in
 /- English proof (translation)
-Introduce `E _ _ _ H L _ t ht σ p q hdet`. Take `⟨t', ⟨m⟩⟩ : ∃ t' : SAB H (Sp ℂ), Nonempty (SABMap t' t (spMap σ))` from `⟨_, ⟨ReciprocityTheory.ChartRestriction.G.PullbackSections.sabM ReciprocityTheory.ChartRestriction.G.Out.proved_CubePullSt (spMap σ) t⟩⟩`. Establish `hLiso : LBIso t'.PP.L (t.PP.L.pull m.cm.F)`. Take `⟨w, hw, -⟩` from `m.lin`. Conclude with `⟨w, hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨hab, hamp, hkt⟩` from `PolPull.pol_pull_of_relAmple_local AmpleLocal.relAmple_of_locally _ _ t.G t'.G (spMap σ) m.cm.F _ _ t.PP.isLB t'.PP.isLB (SabModel.pol t ht).isAb m.cart hLiso`. Establish `ht' : IsPrincipal t'` using `⟨hab.proper, hamp ht.2.1, hkt ht.2.2⟩`. Take `⟨u, Hm, χ, Ef, hAH, -, h1, h2, hF, -, hE, hbij, hweil⟩` from `thetaUnifAV_all (SabModel.pol t' ht') t'.PP.rig t'.PP.rigGen`. Take `⟨g, ty, hty⟩` from `AllClasses.exists_isTypeFn H p q`. Take `⟨Φ, hΦ, hΦW⟩` from `exists_push m.cart (𝟙_ _) (weilIs_iff_of_isGrpPullback_comm _ _ _ _ (spMap σ) m.cm.F _ _ t.PP.isLB t'.PP.isLB m.cart hLiso _) (spMap σ) (Category.id_comp _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `he₀` using `isExp_push m.cart u h1 h2 Φ hΦ`. Establish `hker₀ : ∀ z, Φ (u.ex z) = 1 ↔ z ∈ u.Λ` using `fun z => (map_eq_one_iff Φ Φ.injective).trans (u.ker z)`. Take `⟨ρ, hρ⟩` from `he₀.exists_rep t.act u.Λ u.discrete hker₀ fun a => by`. Take `⟨F, hF⟩` from `hF (t'.act.act a) (t'.act.hom a)`. Use `⟨F, fun z => Over.OverMorphism.ext ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hΦ, hF, Over.comp_left _ _ _ (Φ _), hΦ]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (fun q => (u.ex z).left ≫ q) (m.act a)).trans (Category.assoc _ _ _).symm)`. Take `⟨h, hh⟩` from `exists_equiv_of_finrank_eq (isSplitting_embeddings (E := E)) (diagRep ty) ρ fun φ => by`. Rewrite using `[finrank_eigenSub_diagRep]`. Distinguish the cases in `hφ : φ (H.rt : E) = H.rt0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hty φ).1 hφ, he₀.finrank_eigenSub _ ρ hρ ((hdet _).1 hφ)]`. Rewrite using `[(hty φ).2 hφ, he₀.finrank_eigenSub _ ρ hρ ((hdet _).2 hφ)]`. Establish `he` using `he₀.comp_equiv h`. Establish `hlin : ∀ (a : 𝓞 E) z, Φ (u.ex (h fun k => ty k (a : E) * z k)) = Φ (u.ex (h z)) ≫ t.act.act a` using `fun a z => by rw [← hρ, ← hh, diagRep_apply]`. Establish `hst : ∀ a, ∀ x ∈ u.Λ, ρ a x ∈ u.Λ` using `fun a x hx => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `t.act.hom a` as an intermediate fact. Rewrite using `[← hker₀, hρ, (hker₀ x).2 hx, MonObj.one_comp]`. Use `letI : SMul (𝓞 E) u.Λ := ⟨fun a x => ⟨ρ a x, hst a x x.2⟩⟩`. Establish `hsm : ∀ (a : 𝓞 E) (x : u.Λ), ((a • x : u.Λ) : _ → ℂ) = ρ a x` using `fun _ _ => rfl`. Use `letI : Module (𝓞 E) u.Λ := Module.ofMinimalAxioms (fun a x y => Subtype.ext (by simp [hsm])) (fun a b x => Subtype.ext (by simp [hsm])) (fun a b x => Subtype.ext (by simp [hsm])) (fun x => Subtype.ext (by simp [hsm]))`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `P : u.Λ →+ (Fin g → ℂ)` to `h.symm.toLinearMap.toAddMonoidHom.comp u.Λ.subtype.toAddMonoidHom`. Establish `hP : ∀ x, h (P x) = x` using `fun x => h.apply_symm_apply _`. Establish `hrange : ∀ z, z ∈ P.range ↔ h z ∈ u.Λ` using `fun z => ⟨by rintro ⟨x, rfl⟩; rw [hP]; exact x.2, fun hz => ⟨⟨_, hz⟩, h.symm_apply_apply z⟩⟩`. Establish `hker : ∀ z, Φ (u.ex (h z)) = 1 ↔ z ∈ P.range` using `fun z => (hker₀ _).trans (hrange z).symm`. Establish `hPs : ∀ (a : 𝓞 E) x i, P (a • x) i = ty i (a : E) * P x i` using `fun a x => congrFun (h.injective (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP, hsm, ← diagRep_apply, hh, hP]))`. Establish `hPi : Function.Injective P` using `h.symm.injective.comp Subtype.val_injective`. Establish `hPd : DiscreteTopology P.range`. Use `u.discrete` as an intermediate fact. Use `DiscreteTopology.of_continuous_injective (f := fun z : P.range => (⟨h z, (hrange _).1 z.2⟩ : u.Λ)) ((h.toLinearMap.continuous_of_finiteDimensional.comp continuous_subtype_val).subtype_mk _) fun z w hzw => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (h.injective (congrArg Subtype.val hzw))`. Establish `hPf : Submodule.span ℝ (Set.range P) = ⊤`. Establish `e : Set.range P = (h.symm.toLinearMap.restrictScalars ℝ) '' u.Λ`. Use extensionality with `z`. Conclude with `⟨by rintro ⟨x, rfl⟩; exact ⟨x, x.2, rfl⟩, by rintro ⟨x, hx, rfl⟩; exact ⟨⟨x, hx⟩, rfl⟩⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e, ← Submodule.map_span, u.full, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `h.symm.surjective`. Take `⟨Hm', hH', hH''⟩` from `exists_hermForm_comp Hm hAH.1 h.toLinearMap`. Establish `hpos : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm' z z).re` using `fun z hz => by`. Rewrite using `[hH'']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hAH.2.1 _ (h.map_ne_zero_iff.2 hz)`. Establish `him : ∀ x x', (hermForm Hm' (P x) (P x')).im = Ef x x'` using `fun x x' => by`. Rewrite using `[hH'', hE]`. Conclude with `congrArg₂ (fun a b => (hermForm Hm a b).im) (hP x) (hP x')`. Establish `hweil' : ∀ (k : ℕ) (a b : u.Λ) (c : ℂˣ), 0 < k → (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (Ef a b : ℂ) / k) → Out.WeilIs t.G t.PP.L k (Φ (u.ex (h ((k : ℂ)⁻¹ • P a)))) (Φ (u.ex (h ((k : ℂ)⁻¹ • P b)))) (unitOn c)` using `fun k a b c hk hc => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[map_smul, map_smul, hP, hP]`. Conclude with `hΦW _ _ _ _ (hweil k a b c hk hc)`. Take `⟨D', ε, hp, hq, hε⟩` from `PeriodDatum.exists_datum E H u.Λ Ef p q g ty P Hm' hty hbij (adj_of_weil t.PP.isLB he hker hPs hlin hweil' fun k => weil_adj t ht k _) hPs hPi hPd hPf hH' hpos him`. Set `P' : D'.La →+ (Fin g → ℂ)` to `P.comp ε.toLinearMap.toAddMonoidHom`. Establish `hr' : P'.range = P.range`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `z`. Conclude with `⟨by rintro ⟨x, rfl⟩; exact ⟨ε x, rfl⟩, by rintro ⟨x, rfl⟩; exact ⟨ε.symm x, congrArg P (ε.apply_symm_apply x)⟩⟩`. Establish `hper : IsPeriod D' ty P'`. Use `⟨fun a x i => ?_, hPi.comp ε.injective, hr' ▸ hPd, ?_, Hm', hH', hpos, fun x x' => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (fun x => P x i) (map_smul ε a x)).trans (hPs a _ i)`.
-
-Rewrite using `[← AddMonoidHom.coe_range, hr', AddMonoidHom.coe_range, hPf]`. Rewrite using `[hε]`. Conclude with `him _ _`. Establish `hker' : ∀ z, Φ (u.ex (h z)) = 1 ↔ z ∈ P'.range` using `hr' ▸ hker`. Establish `hweil'' : ∀ (k : ℕ) (a b : D'.La) (c : ℂˣ), 0 < k → (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (D'.EF a b : ℂ) / k) → Out.WeilIs t.G t.PP.L k (Φ (u.ex (h ((k : ℂ)⁻¹ • P' a)))) (Φ (u.ex (h ((k : ℂ)⁻¹ • P' b)))) (unitOn c)` using `fun k a b c hk hc => hweil' k (ε a) (ε b) c hk (by rw [hc, hε])`.
-
-Conclude with `⟨D', hp, hq, ⟨expTateIso he hper hker' hlin hweil''⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.shimura_datum_tate_isomorphism : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] (t : SAB H (Sp L)), IsPrincipal t → ∀ (σ : L →+* ℂ) (p q : ℕ), (∀ τ : 𝓞 E →+* ℂ, (τ H.rt = H.rt0 → LieMult t.act (spMap σ) τ p) ∧ (τ H.rt ≠ H.rt0 → LieMult t.act (spMap σ) τ q)) → ∃ D : Datum H, D.p = p ∧ D.q = q ∧ Nonempty (TateIso D ℂ (Over.mk (spMap σ) ⟶ t.G) (fun a g => g ≫ t.act.act a) (fun n g g' c => Out.WeilIs t.G t.PP.L n g g' (unitOn c))) := by
   intro E _ _ _ H L _ t ht σ p q hdet

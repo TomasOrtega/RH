@@ -3,15 +3,13 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Introduce `Z P S k b _ _ _`. Establish `hk : IsFinite k` using `IsFinite.of_comp k b`. Establish `ht : IsFinite k.toImage`. Establish `: IsFinite (k.toImage ≫ k.imageι)` using `by rw [k.toImage_imageι]; exact hk`. Conclude with `IsFinite.of_comp k.toImage k.imageι`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Surjective k.toImage` using `surjective_of_isDominant_of_isClosed_range k.toImage k.toImage.isClosedMap.isClosed_range`. Establish `e : k.toImage ≫ (k.imageι ≫ b) = k ≫ b` using `k.toImage_imageι_assoc b`. Establish `huc : UniversallyClosed (k.imageι ≫ b)`. Establish `: UniversallyClosed (k.toImage ≫ (k.imageι ≫ b))` using `by rw [e]; infer_instance`. Conclude with `UniversallyClosed.of_comp_surjective k.toImage _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hqf : LocallyQuasiFinite (k.imageι ≫ b)`. Use `.of_finite_preimage_singleton _ fun s => ?_` and prove the remaining obligations. Use `(((k ≫ b).finite_preimage_singleton s).image k.toImage).subset ?_` and prove the remaining obligations. Introduce `y hy`. Take `⟨x, rfl⟩` from `k.toImage.surjective y`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨x, ?_, rfl⟩` and prove the remaining obligations. Establish `: (k ≫ b) x = (k.imageι ≫ b) (k.toImage x)`. Rewrite using `[← e, Scheme.Hom.comp_apply]`. Conclude with `this.trans hy`. Establish `: IsProper (k.imageι ≫ b)` using `⟨⟩`.
-
-Conclude with `⟨IsFinite.of_isProper_of_locallyQuasiFinite _, ht⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.imageOne_of :
     ImageOne := by

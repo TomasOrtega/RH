@@ -6,9 +6,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Weyl
 open Matrix UpperTheory.V.Weyl
 
 /- English proof (translation)
-Establish `h : HasDerivAt (fun t => ∑ m, (∑ l, P t p l * Y l m) * Q t m q) (∑ m, ((∑ l, P' p l * Y l m) * Q 0 m q + (∑ l, P 0 p l * Y l m) * Q' m q)) 0` using `HasDerivAt.fun_sum fun m _ => (HasDerivAt.fun_sum fun l _ => (hP p l).mul_const (Y l m)).mul (hQ m q)`. Establish `e : (P' * Y * Q 0 + P 0 * Y * Q') p q = ∑ m, ((∑ l, P' p l * Y l m) * Q 0 m q + (∑ l, P 0 p l * Y l m) * Q' m q)`. Rewrite using `[Matrix.add_apply, Matrix.mul_apply, Matrix.mul_apply, ← Finset.sum_add_distrib]`. Simplify using `only [Matrix.mul_apply]`. Establish `ef : (fun t => (P t * Y * Q t) p q) = fun t => ∑ m, (∑ l, P t p l * Y l m) * Q t m q`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Simplify using `only [Matrix.mul_apply]`. Rewrite using `[e, ef]`. Conclude with `h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hasDerivAt_mul_mul_entry {n : ℕ} (P Q : ℂ → Matrix (Fin n) (Fin n) ℂ)
     (P' Q' Y : Matrix (Fin n) (Fin n) ℂ)
@@ -30,7 +30,7 @@ private theorem hasDerivAt_mul_mul_entry {n : ℕ} (P Q : ℂ → Matrix (Fin n)
   exact h
 
 /- English proof (translation)
-Establish `hM : M = ∑ p, ∑ q, M p q • Matrix.single p q (1 : ℂ)` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single M]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`. Use `conv_lhs => rw [hM]`. Simplify using `only [map_sum, map_smul, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem pre_D_eq_sum_single {n : ℕ} (Ξ : Pre n) (M : Matrix (Fin n) (Fin n) ℂ) (i k : Fin Ξ.d) :
     Ξ.D M i k = ∑ p, ∑ q, M p q * Ξ.D (Matrix.single p q 1) i k := by
@@ -42,19 +42,17 @@ private theorem pre_D_eq_sum_single {n : ℕ} (Ξ : Pre n) (M : Matrix (Fin n) (
   simp only [map_sum, map_smul, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `n Ξ a b Y`. Take `⟨P, Q, hP0, hQ0, hQP, hd⟩` from `invCurve n a b`. Use `set s : Matrix (Fin n) (Fin n) ℂ := Matrix.single a b 1 with hs`. Use `set c : Matrix (Fin n) (Fin n) ℂ := s * Y - Y * s with hc`. Establish `hE : ∀ t, Ξ.mat (P t) * Ξ.D Y = Ξ.D (P t * Y * Q t) * Ξ.mat (P t)` using `fun t => adEq n Ξ (P t) Y (P t * Y * Q t) (by rw [Matrix.mul_assoc (P t * Y), hQP t, Matrix.mul_one])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmat` using `curve n Ξ P s hP0 (fun i j => (hd i j).1)`. Establish `hM : ∀ p q, HasDerivAt (fun t => (P t * Y * Q t) p q) (c p q) 0`. Introduce `p q`. Apply the tactic sequence `have h := hasDerivAt_mul_mul_entry P Q s (-s) Y (fun i j => (hd i j).1) (fun i j => by simpa using (hd i j).2) p q`. Simplify `h` using `[hP0, hQ0, hc, sub_eq_add_neg, Matrix.mul_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdD : ∀ i k, HasDerivAt (fun t => Ξ.D (P t * Y * Q t) i k) (Ξ.D c i k) 0`. Introduce `i k`. Establish `h : HasDerivAt (fun t => ∑ p, ∑ q, (P t * Y * Q t) p q * Ξ.D (Matrix.single p q 1) i k) (∑ p, ∑ q, c p q * Ξ.D (Matrix.single p q 1) i k) 0` using `HasDerivAt.fun_sum fun p _ => HasDerivAt.fun_sum fun q _ => (hM p q).mul_const _`. Rewrite using `[pre_D_eq_sum_single Ξ c i k]`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components.
 
-Use function extensionality and compare the values at `t`. Conclude with `pre_D_eq_sum_single Ξ _ i k`. Use extensionality with `i j`. Establish `hL : HasDerivAt (fun t => (Ξ.mat (P t) * Ξ.D Y) i j) (∑ k, Ξ.D s i k * Ξ.D Y k j) 0`. Simplify using `only [Matrix.mul_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `HasDerivAt.fun_sum fun k _ => (hmat i k).mul_const _`. Establish `hR : HasDerivAt (fun t => (Ξ.D (P t * Y * Q t) * Ξ.mat (P t)) i j) (∑ k, (Ξ.D c i k * Ξ.mat (P 0) k j + Ξ.D (P 0 * Y * Q 0) i k * Ξ.D s k j)) 0`. Simplify using `only [Matrix.mul_apply]`. Conclude with `HasDerivAt.fun_sum fun k _ => (hdD i k).mul (hmat k j)`. Establish `hfun : (fun t => (Ξ.mat (P t) * Ξ.D Y) i j) = fun t => (Ξ.D (P t * Y * Q t) * Ξ.mat (P t)) i j`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `fun t => by rw [hE t]`. Rewrite `hL` using `[hfun]`. Establish `hu` using `hL.unique hR`. Simplify using `only [hP0, hQ0, Matrix.mul_one, Matrix.one_mul, map_one, Finset.sum_add_distrib] at hu`. Simplify using `only [Matrix.sub_apply, Pre.E, Matrix.mul_apply]`.
-
-Rewrite using `[hu]`. Simplify using `[Matrix.one_apply, s]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Weyl.bracket :
     ∀ (n : ℕ) (Ξ : Pre n) (a b : Fin n) (Y : Matrix (Fin n) (Fin n) ℂ),

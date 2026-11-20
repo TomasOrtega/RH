@@ -466,7 +466,7 @@ def CoverAtSplitPlaces : Prop := ∀ p : ℕ, p.Prime → ∀ w : HeightOneSpect
       algebraMap (X.O0 i) (FractionRing (X.O0 i)) y = X.emb0 i (x : ↥LL0)
 
 /- English proof (translation)
-Introduce `p hp w hw _` and use `h p hp w hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem levelLetterCocycles_of_fact (h : X.TwCover) : X.CoverAtSplitPlaces := fun p hp w hw _ => h p hp w hw
 

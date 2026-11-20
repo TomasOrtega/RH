@@ -14,11 +14,11 @@ variable {D : D7}
 open Classical in
 
 /- English proof (translation)
-Set `es : Formalism.L2.DIV.Pl D.host.E → AE D` to `fun PP => if h : ¬ Lev.IsConjPl (D := D) PP PP then (idem_exists_at PP h).choose else 0`. Establish `hes : ∀ PP ∈ S, Formalism.L2.NTheta.IsIdemAt (es PP) PP`. Introduce `PP hPP`. Establish `h` using `hnc PP hPP PP hPP`. Simplify using `only [es, dif_pos h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(idem_exists_at PP h).choose_spec.1`. Use `⟨∑ PP ∈ S, es PP, ⟨es, hes, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, Finset.sum_mul_sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `PP hPP`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `PP' hPP'`. Conclude with `idem_orth_conj (hnc PP hPP PP hPP) (hes PP hPP) (hes PP' hPP') (hnc PP hPP PP' hPP')`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem idemSum_of_noConj (S : Finset (Formalism.L2.DIV.Pl D.host.E))
     (hnc : ∀ P ∈ S, ∀ P' ∈ S, ¬ Lev.IsConjPl (D := D) P P') :
@@ -39,7 +39,7 @@ theorem idemSum_of_noConj (S : Finset (Formalism.L2.DIV.Pl D.host.E))
   exact idem_orth_conj (hnc PP hPP PP hPP) (hes PP hPP) (hes PP' hPP') (hnc PP hPP PP' hPP')
 
 /- English proof (translation)
-Establish `h1` using `C.P.pb_over k`. Rewrite `h1` using `[← h]`. Establish `h2 : ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ PP.asIdeal.comap (algebraMap (𝓞 D.host.K) (𝓞 D.host.E))` using `h1`. Simplify `h2` using `[Ideal.mem_comap]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem g_mem_of_div (C : Formalism.L2.Host.CharFrame D) {k : Fin 2} {PP : Formalism.L2.DIV.Pl D.host.E} (h : C.P.Div k PP) :
     ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal := by
@@ -58,7 +58,7 @@ open Formalism.IndefR.Links
 variable {T : Type}
 
 /- English proof (translation)
-Rewrite using `[Finset.disjoint_left]`. Introduce `P hP hPQ`. Take `⟨i, hi⟩` from `(hL.Pg P).1 hP`. Take `⟨⟨q, hq, hcard, -, hqg⟩, -⟩` from `hL.Q_pl t P hPQ`. Conclude with `Formalism.IndefR.Fin.not_two_primes P.isPrime.ne_top (D.host.g_prime i) hq (fun h => hqg i h.symm) (g_mem_of_div L.C hi) (char_mem hq hcard)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem disjoint_Pg_Q (L : LevCh D T) {μ0 : T} (hL : L.Is μ0) (t : T) : Disjoint L.Pg (L.Q t) := by
   rw [Finset.disjoint_left]

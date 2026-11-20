@@ -9,11 +9,11 @@ namespace GlobalTheory.BadShare
 
 open Polynomial Classical in
 /- English proof (translation)
-Establish `hint : IsIntegral (ZMod g) x` using `Algebra.IsIntegral.isIntegral x`. Set `K` to `IntermediateField.adjoin (ZMod g) {x}`. Establish `hfin : Module.finrank (ZMod g) K = (minpoly (ZMod g) x).natDegree` using `IntermediateField.adjoin.finrank hint`. Use `haveI : FiniteDimensional (ZMod g) K := IntermediateField.adjoin.finiteDimensional hint`. Use `haveI : Finite K := Module.finite_of_finite (ZMod g)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Fintype K := Fintype.ofFinite K`. Establish `hcard : Fintype.card K = g ^ (minpoly (ZMod g) x).natDegree`. Rewrite using `[← hfin, Module.card_eq_pow_finrank (K := ZMod g), ZMod.card]`. Set `x' : K` to `⟨x, IntermediateField.mem_adjoin_simple_self _ _⟩`. Establish `hx' : x' ≠ 0` using `fun h => hx (congrArg Subtype.val h)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `FiniteField.pow_card_sub_one_eq_one x' hx'` as an intermediate fact. Rewrite `this` using `[hcard]`. Conclude with `congrArg Subtype.val this`.
+A detailed English derivation is pending.
 -/
 private theorem pow_card_pow_natDegree_minpoly_sub_one_eq_one {g : ℕ} [Fact g.Prime] (x : AlgebraicClosure (ZMod g)) (hx : x ≠ 0) :
     x ^ (g ^ (minpoly (ZMod g) x).natDegree - 1) = 1 := by
@@ -34,9 +34,9 @@ private theorem pow_card_pow_natDegree_minpoly_sub_one_eq_one {g : ℕ} [Fact g.
 
 open Polynomial Classical in
 /- English proof (translation)
-Establish `hx0 : x ≠ 0` using `by rintro rfl; simp [zero_pow hn.ne'] at hx`. Establish `hy0 : y ≠ 0` using `by rintro rfl; simp [zero_pow hm.ne'] at hy`. Take `⟨a, ha⟩` from `(_root_.GlobalTheory.BadShare.samePart_iff_of_ne_zero hl hx0 hy0).1 hs`. Rewrite using `[Nat.mem_primeFactors]`. Use `⟨hl, ?_, by positivity⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hdiv`. Establish `hcop : (n * m).Coprime l` using `(Nat.coprime_comm).1 ((Nat.Prime.coprime_iff_not_dvd hl).2 hdiv)`. Conclude with `hxy (_root_.GlobalTheory.BadShare.eq_of_pow_eq (M := n * m) (l := l) (a := a) hcop (by rw [pow_mul, hx, one_pow]) (by rw [mul_comm, pow_mul, hy, one_pow]) (by positivity) ha)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem mem_primeFactors_mul_of_same_of_ne {g : ℕ} [Fact g.Prime] (l : ℕ) (hl : l.Prime) (n m : ℕ)
     (hn : 0 < n) (hm : 0 < m) (x y : AlgebraicClosure (ZMod g)) (hx : x ^ n = 1) (hy : y ^ m = 1) (hxy : x ≠ y)
@@ -53,7 +53,7 @@ private theorem mem_primeFactors_mul_of_same_of_ne {g : ℕ} [Fact g.Prime] (l :
 
 open Polynomial Classical in
 /- English proof (translation)
-Establish `hix : IsIntegral (ZMod g) x` using `Algebra.IsIntegral.isIntegral x`. Establish `hiy : IsIntegral (ZMod g) y` using `Algebra.IsIntegral.isIntegral y`. Use `(minpoly.irreducible hix).coprime_iff_not_dvd.2 fun hd => h ?_` and prove the remaining obligations. Conclude with `eq_of_monic_of_associated (minpoly.monic hix) (minpoly.monic hiy) ((minpoly.irreducible hix).associated_of_dvd (minpoly.irreducible hiy) hd)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem isCoprime_minpoly_of_ne {g : ℕ} [Fact g.Prime] {x y : AlgebraicClosure (ZMod g)}
     (h : minpoly (ZMod g) x ≠ minpoly (ZMod g) y) : IsCoprime (minpoly (ZMod g) x) (minpoly (ZMod g) y) := by
@@ -65,13 +65,11 @@ private theorem isCoprime_minpoly_of_ne {g : ℕ} [Fact g.Prime] {x y : Algebrai
 
 open Polynomial Classical in
 /- English proof (translation)
-Use `set B := padicValNat l n`. Use `set m := n / l ^ B`. Establish `hnm : n = l ^ B * m` using `(Nat.mul_div_cancel' pow_padicValNat_dvd).symm`. Establish `hm0 : m ≠ 0` using `by rintro h; rw [h, mul_zero] at hnm; omega`. Establish `hcop : (l ^ B).Coprime m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Nat.coprime_ordCompl hl hn.ne'` as an intermediate fact. Rewrite `this` using `[Nat.factorization_def n hl]`. Conclude with `Nat.Coprime.pow_left _ this`. Use `haveI : NeZero m := ⟨hm0⟩`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t, l ^ B * t ≡ 1 [MOD m] := by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(((l ^ B : ℕ) : ZMod m)⁻¹).val, ?_⟩` and prove the remaining obligations. Rewrite using `[← ZMod.natCast_eq_natCast_iff, Nat.cast_mul, ZMod.natCast_zmod_val, Nat.cast_one]`. Conclude with `ZMod.coe_mul_inv_eq_one _ hcop`. Use `⟨y ^ (l ^ B * t), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, ← mul_assoc, mul_comm m, ← hnm, pow_mul, hy, one_pow]`.
-
-Establish `hw : (y ^ l ^ B) ^ m = 1` using `by rw [← pow_mul, ← hnm, hy]`. Establish `key : ∀ a, (y ^ l ^ B) ^ a = (y ^ l ^ B) ^ (a % m)` using `fun a => by conv_lhs => rw [← Nat.div_add_mod a m, pow_add, pow_mul, hw, one_pow, one_mul]`. Rewrite using `[← pow_mul, mul_comm, pow_mul, key, ht, ← key, pow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_root_pow_eq_pow_padicVal {g : ℕ} [Fact g.Prime] (l : ℕ) (hl : l.Prime) (n : ℕ) (hn : 0 < n)
     (y : AlgebraicClosure (ZMod g)) (hy : y ^ n = 1) :
@@ -99,15 +97,15 @@ private theorem exists_root_pow_eq_pow_padicVal {g : ℕ} [Fact g.Prime] (l : �
 
 open Polynomial Classical in
 /- English proof (translation)
-Use `set B := padicValNat l (g ^ e - 1)`. Use `set m := (g ^ e - 1) / l ^ B`. Establish `hnm : g ^ e - 1 = l ^ B * m` using `(Nat.mul_div_cancel' pow_padicValNat_dvd).symm`. Establish `hcop : (l ^ (max a B)).Coprime m`. Use `Nat.coprime_ordCompl hl he.ne'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Nat.factorization_def _ hl]`. Conclude with `Nat.Coprime.pow_left _ this`. Establish `hK : z ^ l ^ max a B = x ^ l ^ max a B`. Establish `h1 : z ^ l ^ max a B = y ^ l ^ max a B`. Rewrite using `[← Nat.sub_add_cancel (le_max_right a B), pow_add, mul_comm, pow_mul, pow_mul, hzy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : x ^ l ^ max a B = y ^ l ^ max a B`. Rewrite using `[← Nat.sub_add_cancel (le_max_left a B), pow_add, mul_comm, pow_mul, pow_mul, ha]`. Rewrite using `[h1, h2]`. Establish `h3 : z ^ (l ^ max a B * (g ^ d - 1)) = 1`. Rewrite using `[pow_mul, hK, ← pow_mul, mul_comm, pow_mul, hx, one_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : z ^ Nat.gcd (l ^ max a B * (g ^ d - 1)) m = 1` using `pow_gcd_eq_one.2 ⟨h3, hz⟩`. Rewrite `h4` using `[Nat.Coprime.gcd_mul_left_cancel _ hcop]`. Establish `hzd : z ^ (g ^ d - 1) = 1`. Take `⟨k, hk⟩` from `Nat.gcd_dvd_left (g ^ d - 1) m`. Rewrite using `[hk, pow_mul, h4, one_pow]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hze : z ^ (g ^ e - 1) = 1` using `by rw [hnm, mul_comm, pow_mul, hz, one_pow]`. Use `pow_gcd_eq_one.2 ⟨hzd, hze⟩` as an intermediate fact. Rewrite `this` using `[Nat.pow_sub_one_gcd_pow_sub_one]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 private theorem pow_pow_gcd_sub_one_eq_one_of_same_prime_power {g : ℕ} [Fact g.Prime] (l : ℕ) (hl : l.Prime) (d e : ℕ) (he : 0 < g ^ e - 1)
     (x y z : AlgebraicClosure (ZMod g)) (hx : x ^ (g ^ d - 1) = 1)
@@ -141,9 +139,9 @@ private theorem pow_pow_gcd_sub_one_eq_one_of_same_prime_power {g : ℕ} [Fact g
 
 open Polynomial Classical in
 /- English proof (translation)
-Take `⟨hfin, hle⟩` from `(_root_.GlobalTheory.BadShare.samePart_roots_finite_ncard (AlgebraicClosure (ZMod g)) n l hn hl).2 z`. Use `le_trans ?_ hle` and prove the remaining obligations. Rewrite using `[← Set.ncard_coe_finset]`. Apply `Set.ncard_le_ncard _ hfin` to reduce the goal to its premises. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.coe_filter, Multiset.mem_toFinset, mem_nthRoots hn, Set.mem_setOf_eq] at hx ⊢`. Conclude with `hx`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem card_nthRoots_samePrimePower_le {g : ℕ} [Fact g.Prime] (l n : ℕ) (hl : l.Prime) (hn : 0 < n) (z : AlgebraicClosure (ZMod g)) :
     ((nthRoots n (1 : AlgebraicClosure (ZMod g))).toFinset.filter (fun x => _root_.GlobalTheory.BadShare.SamePart l x z)).card ≤
@@ -158,21 +156,19 @@ private theorem card_nthRoots_samePrimePower_le {g : ℕ} [Fact g.Prime] (l n : 
 
 open Polynomial Classical in
 /- English proof (translation)
-Use `set Xd := (nthRoots (g ^ d - 1) (1 : AlgebraicClosure (ZMod g))).toFinset`. Use `set Ye := (nthRoots (g ^ e - 1) (1 : AlgebraicClosure (ZMod g))).toFinset`. Use `set Rc := (nthRoots (g ^ Nat.gcd d e - 1) (1 : AlgebraicClosure (ZMod g))).toFinset`. Use `set Y' := Rc.biUnion (fun z => Ye.filter (fun y => _root_.GlobalTheory.BadShare.SamePart l y z))`. Establish `hg1 : 1 < g` using `(Fact.out : g.Prime).one_lt`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hd0 : 0 < d`. Break down `Nat.eq_zero_or_pos d with h | h` into its components or cases. Rewrite `hd` using `[h, pow_zero]`. Use linear arithmetic over natural numbers and integers. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hcpos : 0 < g ^ Nat.gcd d e - 1` using `Nat.sub_pos_of_lt (Nat.one_lt_pow (Nat.gcd_pos_of_pos_left e hd0).ne' hg1)`. Establish `hsub : (Xd ×ˢ Ye).filter (fun p => _root_.GlobalTheory.BadShare.SamePart l p.1 p.2) ⊆ Y'.biUnion (fun y => (Xd.filter (fun x => _root_.GlobalTheory.BadShare.SamePart l x y)) ×ˢ {y})`. Introduce and unpack `⟨x, y⟩ hp`. Simplify using `only [Finset.mem_filter, Finset.mem_product, Xd, Ye, Multiset.mem_toFinset, mem_nthRoots hd, mem_nthRoots he] at hp`. Take `⟨⟨hx, hy⟩, hs⟩` from `hp`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx0 : x ≠ 0` using `by rintro rfl; simp [zero_pow hd.ne'] at hx`. Establish `hy0 : y ≠ 0` using `by rintro rfl; simp [zero_pow he.ne'] at hy`. Take `⟨a, ha⟩` from `(_root_.GlobalTheory.BadShare.samePart_iff_of_ne_zero hl hx0 hy0).1 hs`. Take `⟨z, hz, hzy⟩` from `exists_root_pow_eq_pow_padicVal l hl _ he y hy`. Establish `hc : z ^ (g ^ Nat.gcd d e - 1) = 1` using `pow_pow_gcd_sub_one_eq_one_of_same_prime_power l hl d e he x y z hx a ha hz hzy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz0 : z ≠ 0` using `by rintro rfl; simp [zero_pow hcpos.ne'] at hc`. Simplify using `only [Finset.mem_biUnion, Finset.mem_product, Finset.mem_filter, Finset.mem_singleton, Y', Rc, Xd, Ye, Multiset.mem_toFinset, mem_nthRoots hd, mem_nthRoots he, mem_nthRoots hcpos]`. Conclude with `⟨y, ⟨z, hc, hy, (_root_.GlobalTheory.BadShare.samePart_iff_of_ne_zero hl hy0 hz0).2 ⟨_, hzy.symm⟩⟩, ⟨hx, hs⟩, rfl⟩`. Use `(Finset.card_le_card hsub).trans ?_` and prove the remaining obligations. Use `(Finset.card_biUnion_le).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ y ∈ Y', ((Xd.filter (fun x => _root_.GlobalTheory.BadShare.SamePart l x y)) ×ˢ {y}).card ≤ l ^ padicValNat l (g ^ d - 1)`. Introduce `y _`. Rewrite using `[Finset.card_product, Finset.card_singleton, mul_one]`. Conclude with `card_nthRoots_samePrimePower_le l _ hl hd y`. Use `(Finset.sum_le_sum h1).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_const, smul_eq_mul]`. Use `Nat.mul_le_mul_right _ ?_` and prove the remaining obligations. Use `(Finset.card_biUnion_le).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum (fun z _ => card_nthRoots_samePrimePower_le l _ hl he z)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, smul_eq_mul]`.
-
-Use `Nat.mul_le_mul_right _ ?_` and prove the remaining obligations. Conclude with `(Multiset.toFinset_card_le _).trans (card_nthRoots _ _)`.
+A detailed English derivation is pending.
 -/
 private theorem card_root_pairs_samePrimePower_le {g : ℕ} [Fact g.Prime] (l : ℕ) (hl : l.Prime) (d e : ℕ)
     (hd : 0 < g ^ d - 1) (he : 0 < g ^ e - 1) :
@@ -223,19 +219,17 @@ private theorem card_root_pairs_samePrimePower_le {g : ℕ} [Fact g.Prime] (l : 
 
 open Polynomial Classical in
 /- English proof (translation)
-Establish `hg1 : 1 < g` using `(Fact.out : g.Prime).one_lt`. Establish `hd : 0 < g ^ d - 1` using `Nat.sub_pos_of_lt (Nat.one_lt_pow (by omega) hg1)`. Establish `he : 0 < g ^ e - 1` using `Nat.sub_pos_of_lt (Nat.one_lt_pow (by omega) hg1)`. Use `set S := (((nthRoots (g ^ d - 1) (1 : AlgebraicClosure (ZMod g))).toFinset ×ˢ (nthRoots (g ^ e - 1) (1 : AlgebraicClosure (ZMod g))).toFinset).filter (fun p => _root_.GlobalTheory.BadShare.SamePart l p.1 p.2)).filter (fun p => (minpoly (ZMod g) p.1).natDegree = d ∧ (minpoly (ZMod …`. Establish `hU` using `(_root_.GlobalTheory.BadShare.mass_union_bounds g N).2.2.1 _ S (_root_.GlobalTheory.BadShare.TwoFactors.PairFor d e l) (fun p f => minpoly (ZMod g) p.1 * minpoly (ZMod g) p.2 ∣ f) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f _ ⟨x, y, hx, hy, hs, hdx, hdy, hne', hPf, hQf⟩`. Use `⟨(x, y), ?_, (isCoprime_minpoly_of_ne hne').mul_dvd hPf hQf⟩` and prove the remaining obligations. Rewrite using `[hS, Finset.mem_filter, Finset.mem_filter, Finset.mem_product, Multiset.mem_toFinset, Multiset.mem_toFinset, mem_nthRoots hd, mem_nthRoots he]`. Conclude with `⟨⟨⟨hx, hy⟩, hs⟩, hdx, hdy, hne'⟩)`. Use `hU.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hterm : ∀ p ∈ S, _root_.GlobalTheory.BadShare.mass g N (fun f => minpoly (ZMod g) p.1 * minpoly (ZMod g) p.2 ∣ f) ≤ 1 / (((g ^ d - 1 : ℕ) : ℝ) * ((g ^ e - 1 : ℕ) : ℝ))`. Introduce and unpack `⟨x, y⟩ hp`. Rewrite `hp` using `[hS, Finset.mem_filter, Finset.mem_filter, Finset.mem_product, Multiset.mem_toFinset, Multiset.mem_toFinset, mem_nthRoots hd, mem_nthRoots he]`. Take `⟨⟨⟨hx, hy⟩, -⟩, hdx, hdy, hne'⟩` from `hp`. Establish `hix : IsIntegral (ZMod g) x` using `Algebra.IsIntegral.isIntegral x`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiy : IsIntegral (ZMod g) y` using `Algebra.IsIntegral.isIntegral y`. Establish `hx0 : x ≠ 0` using `by rintro rfl; simp [zero_pow hd.ne'] at hx`. Establish `hy0 : y ≠ 0` using `by rintro rfl; simp [zero_pow he.ne'] at hy`. Establish `hmem : minpoly (ZMod g) x * minpoly (ZMod g) y ∈ _root_.GlobalTheory.BadShare.sqSet g (d + e)`. Rewrite using `[_root_.GlobalTheory.BadShare.mem_sqSet]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(minpoly.monic hix).mul (minpoly.monic hiy), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[natDegree_mul (minpoly.ne_zero hix) (minpoly.ne_zero hiy), hdx, hdy]`. Conclude with `squarefree_mul_iff.2 ⟨(isCoprime_minpoly_of_ne hne').isRelPrime, (minpoly.irreducible hix).squarefree, (minpoly.irreducible hiy).squarefree⟩`. Rewrite using `[mul_coeff_zero]`. Conclude with `mul_ne_zero (minpoly.coeff_zero_ne_zero hix hx0) (minpoly.coeff_zero_ne_zero hiy hy0)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `((_root_.GlobalTheory.BadShare.divisor_bound g).2 N _ _ hmem).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.BadShare.torusCard_mul (minpoly.ne_zero hix) (minpoly.ne_zero hiy), _root_.GlobalTheory.BadShare.torusCard_irreducible (minpoly.irreducible hix), _root_.GlobalTheory.BadShare.torusCard_irreducible (minpoly.irreducible hiy), hdx, hdy, one_div, Nat.cast_mul]`. Use `(Finset.sum_le_sum hterm).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, nsmul_eq_mul, mul_one_div]`. Use `gcongr`.
-
-Conclude with `(Finset.card_filter_le _ _).trans (card_root_pairs_samePrimePower_le l hl d e hd he)` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mass_pairFor_le {g : ℕ} [Fact g.Prime] (N l : ℕ) (hl : l.Prime) (d e : ℕ) (hd1 : 1 ≤ d) (he1 : 1 ≤ e) :
     _root_.GlobalTheory.BadShare.mass g N (_root_.GlobalTheory.BadShare.TwoFactors.PairFor d e l) ≤
@@ -285,21 +279,19 @@ private theorem mass_pairFor_le {g : ℕ} [Fact g.Prime] (N l : ℕ) (hl : l.Pri
 
 open Polynomial Classical in
 /- English proof (translation)
-Rewrite `hexc` using `[_root_.GlobalTheory.BadShare.bb_iff]`. Use `push_neg at hexc`. Take `⟨-, hexc⟩` from `hexc`. Establish `hPd : (l ^ padicValNat l (g ^ d - 1)) ^ 4 ≤ g ^ d`. Rewrite using `[← pow_mul, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hexc hl d hd1 hdN`. Establish `hPe : (l ^ padicValNat l (g ^ e - 1)) ^ 4 ≤ g ^ e`. Rewrite using `[← pow_mul, mul_comm]`. Conclude with `hexc hl e he1 heN`. Use `set c := Nat.gcd d e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcd : c ≤ d` using `Nat.le_of_dvd (by omega) (Nat.gcd_dvd_left d e)`. Establish `hce : c ≤ e` using `Nat.le_of_dvd (by omega) (Nat.gcd_dvd_right d e)`. Establish `hnat : ((g ^ c - 1) * l ^ padicValNat l (g ^ e - 1) * l ^ padicValNat l (g ^ d - 1)) ^ 4 ≤ g ^ (3 * (d + e))`. Establish `h1 : (g ^ c - 1) ^ 4 ≤ g ^ (2 * (d + e))` using `(Nat.pow_le_pow_left (Nat.sub_le _ _) 4).trans (by rw [← pow_mul]; exact Nat.pow_le_pow_right (by omega) (by omega))`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_pow, mul_pow]`. Use `_ ≤ g ^ (2 * (d + e)) * g ^ e * g ^ d := by gcongr`. Use `_ = g ^ (3 * (d + e)) := by rw [← pow_add, ← pow_add]; ring_nf`. Use `set q : ℝ := (g : ℝ) ^ ((1 : ℝ) / 4) with hq`. Establish `hg0 : (0 : ℝ) < g` using `by exact_mod_cast (by omega : 0 < g)`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq0 : 0 < q` using `Real.rpow_pos_of_pos hg0 _`. Establish `hq4 : q ^ 4 = g`. Rewrite using `[hq, ← Real.rpow_natCast, ← Real.rpow_mul hg0.le]`. Evaluate the numerical expressions. Establish `hX : (((g ^ c - 1) * l ^ padicValNat l (g ^ e - 1) * l ^ padicValNat l (g ^ d - 1) : ℕ) : ℝ) ≤ q ^ (3 * (d + e))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : (q ^ (3 * (d + e))) ^ 4 = (g : ℝ) ^ (3 * (d + e))` using `by rw [← pow_mul, mul_comm, pow_mul, hq4]`. Rewrite using `[← pow_le_pow_iff_left₀ (by positivity) (by positivity) (by norm_num : (4 : ℕ) ≠ 0), h4]`. Conclude with `hnat` after adjusting the coercions. Establish `hden : ∀ k, 1 ≤ k → (4095 / 4096 : ℝ) * q ^ (4 * k) ≤ ((g ^ k - 1 : ℕ) : ℝ)`. Introduce `k hk`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hgk : g ≤ g ^ k` using `Nat.le_self_pow (by omega) g`. Rewrite using `[Nat.cast_sub (Nat.one_le_pow _ _ (by omega)), Nat.cast_pow, Nat.cast_one, pow_mul, hq4]`. Establish `: (4096 : ℝ) ≤ (g : ℝ) ^ k` using `by exact_mod_cast (by omega : 4096 ≤ g ^ k)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hDd` using `hden d hd1`.
-
-Establish `hDe` using `hden e he1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_div, inv_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem pair_ratio_le_of_not_bb {g : ℕ} [Fact g.Prime] (hg : 2 ^ 12 ≤ g) (N l d e : ℕ) (hd1 : 1 ≤ d) (he1 : 1 ≤ e)
     (hdN : d ≤ N) (heN : e ≤ N) (hl : l.Prime) (hexc : ¬ _root_.GlobalTheory.BadShare.BB g N l) :
@@ -353,7 +345,7 @@ private theorem pair_ratio_le_of_not_bb {g : ℕ} [Fact g.Prime] (hg : 2 ^ 12 �
 
 open Polynomial Classical in
 /- English proof (translation)
-Establish `h : 2 ^ n.primeFactors.card ≤ n`. Use `(Finset.pow_card_le_prod _ _ 2 fun p hp => (Nat.prime_of_mem_primeFactors hp).two_le).trans ?_` and prove the remaining obligations. Conclude with `Nat.le_of_dvd (Nat.pos_of_ne_zero hn) (Nat.prod_primeFactors_dvd n)`. Rewrite using `[Real.le_logb_iff_rpow_le (by norm_num) (by exact_mod_cast Nat.pos_of_ne_zero hn), Real.rpow_natCast]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_primeFactors_le_logb_two (n : ℕ) (hn : n ≠ 0) : (n.primeFactors.card : ℝ) ≤ Real.logb 2 n := by
   have h : 2 ^ n.primeFactors.card ≤ n := by
@@ -364,19 +356,17 @@ private theorem card_primeFactors_le_logb_two (n : ℕ) (hn : n ≠ 0) : (n.prim
 
 open Polynomial Classical in
 /- English proof (translation)
-Establish `hA : ∑ d ∈ Finset.Icc 1 N, (d : ℝ) * r ^ d ≤ r / (1 - r) ^ 2`. Establish `hs : Summable (fun n : ℕ => (n : ℝ) * r ^ n)`. Simplify using `using summable_pow_mul_geometric_of_norm_lt_one 1 (by rwa [Real.norm_eq_abs, abs_of_nonneg hr0])`. Rewrite using `[← tsum_coe_mul_geometric_of_norm_lt_one (by rwa [Real.norm_eq_abs, abs_of_nonneg hr0])]`. Conclude with `hs.sum_le_tsum _ (fun i _ => by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hB : ∑ e ∈ Finset.Icc 1 N, r ^ e ≤ r / (1 - r)`. Establish `hs : Summable (fun n : ℕ => r ^ n)` using `summable_geometric_of_lt_one hr0 hr1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun e he => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_succ']`. Use `congr 1`. Use `(Finset.mem_Icc.1 he).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `_ ≤ r * ∑' n : ℕ, r ^ n := by gcongr`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.range_eq_Ico]`. Conclude with `Finset.sum_nbij' (fun e => e - 1) (fun n => n + 1) (by intro a ha; simp at ha ⊢; omega) (by intro a ha; simp at ha ⊢; omega) (by intro a ha; simp at ha; omega) (by intro a ha; simp) (by intro a ha; rfl)`. Use `_ ≤ ∑' n : ℕ, r ^ n := hs.sum_le_tsum _ (fun i _ => by positivity)`. Use `_ = r / (1 - r) := by rw [tsum_geometric_of_lt_one hr0 hr1]; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations.
 
-Establish `hsplit : ∑ de ∈ Finset.Icc 1 N ×ˢ Finset.Icc 1 N, ((de.1 + de.2 : ℕ) : ℝ) * r ^ (de.1 + de.2) = 2 * ((∑ d ∈ Finset.Icc 1 N, (d : ℝ) * r ^ d) * ∑ e ∈ Finset.Icc 1 N, r ^ e)`. Rewrite using `[Finset.sum_product, Finset.sum_mul_sum]`. Establish `: ∀ d e : ℕ, ((d + e : ℕ) : ℝ) * r ^ (d + e) = (d : ℝ) * r ^ d * r ^ e + (e : ℝ) * r ^ e * r ^ d`. Introduce `d e`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_add]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [this, Finset.sum_add_distrib]`. Use `nth_rewrite 2 [Finset.sum_comm]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hsplit]`. Establish `h1r : 0 < 1 - r` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem sum_icc_prod_add_mul_pow_le (N : ℕ) {r : ℝ} (hr0 : 0 ≤ r) (hr1 : r < 1) :
     ∑ de ∈ Finset.Icc 1 N ×ˢ Finset.Icc 1 N, ((de.1 + de.2 : ℕ) : ℝ) * r ^ (de.1 + de.2) ≤
@@ -418,43 +408,37 @@ private theorem sum_icc_prod_add_mul_pow_le (N : ℕ) {r : ℝ} (hr0 : 0 ≤ r) 
 open Polynomial Classical in
 
 /- English proof (translation)
-Introduce `g _ N hg`. Establish `hg1 : 1 < g` using `(Fact.out : g.Prime).one_lt`. Use `set L : ℕ × ℕ → Finset ℕ := fun de => ((g ^ de.1 - 1) * (g ^ de.2 - 1)).primeFactors.filter (fun l => ¬ _root_.GlobalTheory.BadShare.BB g N l) with hL`. Use `set s := (Finset.Icc 1 N ×ˢ Finset.Icc 1 N).sigma L with hs`. Use `set One : (ZMod g)[X] → Prop := fun f => ∃ l, Nat.Prime l ∧ ¬_root_.GlobalTheory.BadShare.BB g N l ∧ ∃ P : (ZMod g)[X], P.Monic ∧ Irreducible P ∧ P ∣ f ∧ ∃ x ∈ P.aroots (AlgebraicClosure (ZMod g)), ∃ y ∈ P.aroots (AlgebraicClosure (ZMod g)), x ≠ y ∧ _root_.GlobalTheory.BadShare.S …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `set B : Option ((_ : ℕ × ℕ) × ℕ) → (ZMod g)[X] → Prop := fun i => match i with`. Consider the case `none => One`. Consider the case `some t => _root_.GlobalTheory.BadShare.TwoFactors.PairFor t.1.1 t.1.2 t.2 with hB`. Establish `hU` using `(_root_.GlobalTheory.BadShare.mass_union_bounds g N).2.2.1 _ (Finset.insertNone s) (fun f => ¬ _root_.GlobalTheory.BadShare.RootsApart g N f) B (by`. Introduce `f hf hnot`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `hf` using `[_root_.GlobalTheory.BadShare.mem_sqSet]`. Take `⟨hmon, hdeg, -, hc⟩` from `hf`. Establish `hf0 : f ≠ 0` using `hmon.ne_zero`. Unfold `_root_.GlobalTheory.BadShare.RootsApart at hnot`. Use `push_neg at hnot`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨l, hl, hexc, x, hx, y, hy, hsame, hxy⟩` from `hnot`. Establish `hix : IsIntegral (ZMod g) x` using `Algebra.IsIntegral.isIntegral x`. Establish `hiy : IsIntegral (ZMod g) y` using `Algebra.IsIntegral.isIntegral y`. Establish `hPf : minpoly (ZMod g) x ∣ f` using `minpoly.dvd _ _ (mem_aroots.mp hx).2`. Establish `hQf : minpoly (ZMod g) y ∣ f` using `minpoly.dvd _ _ (mem_aroots.mp hy).2`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hPQ : minpoly (ZMod g) x = minpoly (ZMod g) y`. Use `⟨none, Finset.none_mem_insertNone, ?_⟩` and prove the remaining obligations. Use `⟨l, hl, hexc, minpoly (ZMod g) x, minpoly.monic hix, minpoly.irreducible hix, hPf, x, ?_, y, ?_, hxy, hsame⟩` and prove the remaining obligations. Conclude with `mem_aroots.mpr ⟨minpoly.ne_zero hix, minpoly.aeval _ _⟩`. Rewrite using `[hPQ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mem_aroots.mpr ⟨minpoly.ne_zero hiy, minpoly.aeval _ _⟩`. Establish `hdx : 1 ≤ (minpoly (ZMod g) x).natDegree` using `minpoly.natDegree_pos hix`. Establish `hdy : 1 ≤ (minpoly (ZMod g) y).natDegree` using `minpoly.natDegree_pos hiy`. Establish `hlx : (minpoly (ZMod g) x).natDegree ≤ N` using `hdeg ▸ natDegree_le_of_dvd hPf hf0`. Establish `hly : (minpoly (ZMod g) y).natDegree ≤ N` using `hdeg ▸ natDegree_le_of_dvd hQf hf0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hpx` using `pow_card_pow_natDegree_minpoly_sub_one_eq_one x (_root_.GlobalTheory.BadShare.root_ne_zero hc hx)`. Establish `hpy` using `pow_card_pow_natDegree_minpoly_sub_one_eq_one y (_root_.GlobalTheory.BadShare.root_ne_zero hc hy)`. Establish `hdpos : 0 < g ^ (minpoly (ZMod g) x).natDegree - 1` using `Nat.sub_pos_of_lt (Nat.one_lt_pow (by omega) hg1)`. Establish `hepos : 0 < g ^ (minpoly (ZMod g) y).natDegree - 1` using `Nat.sub_pos_of_lt (Nat.one_lt_pow (by omega) hg1)`. Use `⟨some ⟨((minpoly (ZMod g) x).natDegree, (minpoly (ZMod g) y).natDegree), l⟩, ?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.some_mem_insertNone, hs, Finset.mem_sigma, Finset.mem_product, Finset.mem_Icc, Finset.mem_Icc, hL, Finset.mem_filter]`. Conclude with `⟨⟨⟨hdx, hlx⟩, hdy, hly⟩, mem_primeFactors_mul_of_same_of_ne l hl _ _ hdpos hepos x y hpx hpy hxy hsame, hexc⟩`. Conclude with `⟨x, y, hpx, hpy, hsame, rfl, rfl, hPQ, hPf, hQf⟩)`. Use `hU.trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_insertNone]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hOne' : _root_.GlobalTheory.BadShare.mass g N (B none) ≤ 12 * Real.logb 2 g / Real.sqrt g` using `_root_.GlobalTheory.BadShare.mass_samePart_one_factor g N hg`. Establish `hTwo : ∑ t ∈ s, _root_.GlobalTheory.BadShare.mass g N (B (some t)) ≤ 7 / 2 * Real.logb 2 g / Real.sqrt g` using `by set q : ℝ := (g : ℝ) ^ ((1 : ℝ) / 4) with hq`. Establish `hg0 : (0 : ℝ) < g` using `by exact_mod_cast (by omega : 0 < g)`. Establish `hq0 : 0 < q` using `Real.rpow_pos_of_pos hg0 _`. Establish `hq4 : q ^ 4 = g` using `by rw [hq, ← Real.rpow_natCast, ← Real.rpow_mul hg0.le]; norm_num`.
+Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hq2 : q ^ 2 = Real.sqrt g`. Rewrite using `[Real.sqrt_eq_rpow, hq, ← Real.rpow_natCast, ← Real.rpow_mul hg0.le]`. Evaluate the numerical expressions. Establish `hq8 : 8 ≤ q`. Rewrite using `[← pow_le_pow_iff_left₀ (by norm_num) hq0.le (by norm_num : (4 : ℕ) ≠ 0), hq4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (4096 : ℝ) ≤ g` using `by exact_mod_cast hg`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set r : ℝ := 1 / q with hr`. Establish `hr0 : 0 ≤ r` using `by positivity`. Establish `hr8 : r ≤ 1 / 8` using `by rw [hr]; exact one_div_le_one_div_of_le (by norm_num) hq8`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hr2 : r ^ 2 = 1 / Real.sqrt g` using `by rw [hr, div_pow, one_pow, hq2]`. Establish `hlb : 0 ≤ Real.logb 2 g` using `Real.logb_nonneg (by norm_num) (by exact_mod_cast hg1.le)`. Rewrite using `[hs, Finset.sum_sigma]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun de hde => Finset.sum_le_sum fun l hl => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hde` using `[Finset.mem_product, Finset.mem_Icc, Finset.mem_Icc]`. Rewrite `hl` using `[hL, Finset.mem_filter]`. Establish `hlp : l.Prime` using `Nat.prime_of_mem_primeFactors hl.1`. Conclude with `(mass_pairFor_le N l hlp de.1 de.2 hde.1.1 hde.2.1).trans (pair_ratio_le_of_not_bb hg N l de.1 de.2 hde.1.1 hde.2.1 hde.1.2 hde.2.2 hlp hl.2)`. Use `_ ≤ ∑ de ∈ Finset.Icc 1 N ×ˢ Finset.Icc 1 N, (Real.logb 2 g * (4096 / 4095 : ℝ) ^ 2) * (((de.1 + de.2 : ℕ) : ℝ) * r ^ (de.1 + de.2)) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_le_sum fun de hde => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Rewrite `hde` using `[Finset.mem_product, Finset.mem_Icc, Finset.mem_Icc]`. Establish `h1` using `Nat.one_lt_pow (n := de.1) (by omega) hg1`. Establish `h2` using `Nat.one_lt_pow (n := de.2) (by omega) hg1`.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hne : (g ^ de.1 - 1) * (g ^ de.2 - 1) ≠ 0` using `mul_ne_zero (by omega) (by omega)`. Establish `hle : (g ^ de.1 - 1) * (g ^ de.2 - 1) ≤ g ^ (de.1 + de.2)`. Rewrite using `[pow_add]`. Conclude with `Nat.mul_le_mul (Nat.sub_le _ _) (Nat.sub_le _ _)`. Establish `hcard : ((L de).card : ℝ) ≤ ((de.1 + de.2 : ℕ) : ℝ) * Real.logb 2 g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `(Nat.cast_le.2 (Finset.card_filter_le _ _)).trans ((card_primeFactors_le_logb_two _ hne).trans ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Use `_ = (Real.logb 2 g * (4096 / 4095 : ℝ) ^ 2) * ∑ de ∈ Finset.Icc 1 N ×ˢ Finset.Icc 1 N, (((de.1 + de.2 : ℕ) : ℝ) * r ^ (de.1 + de.2)) := by rw [Finset.mul_sum]`. Use `_ ≤ (Real.logb 2 g * (4096 / 4095 : ℝ) ^ 2) * (2 * r ^ 2 / (7 / 8) ^ 3) := by gcongr`.
-
-Use `(sum_icc_prod_add_mul_pow_le N hr0 (by linarith)).trans ?_` and prove the remaining obligations. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = ((4096 / 4095 : ℝ) ^ 2 * 1024 / 343) * (Real.logb 2 g * r ^ 2) := by ring`. Use `_ ≤ 7 / 2 * (Real.logb 2 g * r ^ 2) := mul_le_mul_of_nonneg_right (by norm_num) (by positivity)`.
-
-Use `_ = 7 / 2 * Real.logb 2 g / Real.sqrt g := by rw [hr2]; ring`. Establish `hlog : Real.logb 2 g = Real.log g / Real.log 2` using `rfl`. Establish `hl2` using `Real.log_two_gt_d9`. Establish `hlg : 0 ≤ Real.log g` using `Real.log_nonneg (by exact_mod_cast hg1.le)`. Establish `hsq : 0 < Real.sqrt g` using `Real.sqrt_pos.2 (by exact_mod_cast (by omega : 0 < g))`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_le_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.BadShare.mass_not_rootsApart_le : ∀ (g : ℕ) [Fact g.Prime], ∀ N : ℕ, 2 ^ 12 ≤ g →
     (_root_.GlobalTheory.BadShare.mass g N fun f => ¬ _root_.GlobalTheory.BadShare.RootsApart g N f) ≤ 23 * Real.log g / Real.sqrt g := by

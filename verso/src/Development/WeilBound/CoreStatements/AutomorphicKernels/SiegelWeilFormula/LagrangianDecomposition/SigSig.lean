@@ -13,7 +13,7 @@ namespace PositivityTheory.SiegelWeilFormula.Ald.YFA
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sig_sig' (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -24,9 +24,9 @@ variable (F) in
 def spcOf {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : Spc F E n := ⟨J, ⊤, fun _ => 1, fun _ => 1⟩
 
 /- English proof (translation)
-Establish `hd` using `GlobalTheory.ThK.Dbl.Frame.frame_diag (1 : GL (Fin n) E) T a`. Use `⟨1, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `congrFun (congrFun hd i) j` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Fintype.sum_sum_type]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.zero_apply, mul_zero, Finset.sum_const_zero, add_zero, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`. Simplify `this` using `[Matrix.toCols₁]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toCols₁_wit {n : ℕ} (T : GL (Fin n) E) (a : E) :
     ∃ t : GL (Fin n) E, (GlobalTheory.ThK.Dbl.Frame.two 1 * GlobalTheory.ThK.Dbl.Frame.wit a T).1.toCols₁ = diagCols (Fin n) * t.1 := by
@@ -42,14 +42,14 @@ theorem toCols₁_wit {n : ℕ} (T : GL (Fin n) E) (a : E) :
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Apply the tactic sequence `ext (i | i) (j | j) <;> simp [dbl, Matrix.fromBlocks, hJ]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dbl_sym {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {e₀ : E} (hJ : ∀ i j, σ (J j i) = e₀ * J i j) :
     ((dbl J).map (σ : E →+* E))ᵀ = e₀ • dbl J := by
   ext (i | i) (j | j) <;> simp [dbl, Matrix.fromBlocks, hJ]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.ThK.Dbl.Frame.gram_sym (σ : E →+* E) hc (dbl_sym hJ) b`. Establish `hb' : bᵀ * dbl J * b.map (σ : E →+* E) = Matrix.fromBlocks 0 1 (e • 1) 0` using `hb`. Rewrite `h` using `[hb']`. Use `congrFun (congrFun h (Sum.inl ⟨0, hn⟩)) (Sum.inr ⟨0, hn⟩)` as an intermediate fact. Simplify `this` using `[Matrix.fromBlocks, he]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eps_eq {n : ℕ} (hn : 1 ≤ n) (hc : ∀ z : E, σ (σ z) = z) {J : Matrix (Fin n) (Fin n) E} {e₀ : E}
     (hJ : ∀ i j, σ (J j i) = e₀ * J i j) {b : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E} {e : E}

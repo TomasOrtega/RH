@@ -6,9 +6,9 @@ open scoped InnerProductSpace Kronecker
 namespace GlobalTheory.CompanionTheory.ZuckCount
 
 /- English proof (translation)
-Establish `h : ∑ a, ((addSet μ J a) ^ 2 + ((μ + Pi.single s 1 : Fin n → ℝ) a) ^ 2 - μ a ^ 2 - ((addSet μ J + Pi.single s 1 : Fin n → ℝ) a) ^ 2) = if s ∈ J then -2 else 0`. Rewrite using `[Finset.sum_eq_single s]`. Apply the tactic sequence `simp only [addSet, Pi.add_apply, Pi.single_eq_same] split_ifs <;> ring`. Introduce `b _ hb`. Simplify using `only [addSet, Pi.add_apply, Pi.single_eq_of_ne hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using `only [Finset.sum_sub_distrib, Finset.sum_add_distrib] at h`. Unfold `casG`. Apply the tactic sequence `split_ifs at h ⊢ <;> linarith`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem casG_polar {n : ℕ} (μ : Fin n → ℝ) (J : Finset (Fin n)) (s : Fin n) :
     casG (addSet μ J) + casG (μ + Pi.single s 1) + (2 - casG μ) - casG (addSet μ J + Pi.single s 1)
@@ -27,7 +27,7 @@ theorem casG_polar {n : ℕ} (μ : Fin n → ℝ) (J : Finset (Fin n)) (s : Fin 
   split_ifs at h ⊢ <;> linarith
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Distinguish the cases in `ha : a = s`. Substitute `ha` using the available equality. Simplify using `[addSet, hs]`. Simplify using `[addSet, ha]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem addSet_insert {n : ℕ} (μ : Fin n → ℝ) (J : Finset (Fin n)) (s : Fin n) (hs : s ∉ J) :
     addSet μ J + Pi.single s 1 = addSet μ (insert s J) := by
@@ -38,11 +38,11 @@ theorem addSet_insert {n : ℕ} (μ : Fin n → ℝ) (J : Finset (Fin n)) (s : F
   · simp [addSet, ha]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hs : s ∉ J`. Introduce `hs`. Use `congrFun h s` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [addSet, Pi.add_apply, Pi.single_eq_same, if_pos hs] at this`. Apply the tactic sequence `split_ifs at this <;> linarith`. Use `⟨hs, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[addSet_insert μ J s hs]`. Use extensionality with `a`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Use `congrFun h a` as an intermediate fact. Simplify using `only [addSet, add_right_inj] at this`. Apply the tactic sequence `by_cases h1 : a ∈ I <;> by_cases h2 : a ∈ insert s J <;> simp_all`. Introduce and unpack `⟨hs, rfl⟩`. Conclude with `addSet_insert μ J s hs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem addSet_eq_iff {n : ℕ} (μ : Fin n → ℝ) (J I : Finset (Fin n)) (s : Fin n) :
     addSet μ J + Pi.single s 1 = addSet μ I ↔ s ∉ J ∧ I = insert s J := by
@@ -63,7 +63,7 @@ theorem addSet_eq_iff {n : ℕ} (μ : Fin n → ℝ) (J I : Finset (Fin n)) (s :
     exact addSet_insert μ J s hs
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun x : ℝ => (x : ℂ)) (casG_polar μ J s)`. Apply the tactic sequence `split_ifs at h ⊢ <;> (push_cast at h; exact h)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem casG_polar_complex {n : ℕ} (μ : Fin n → ℝ) (J : Finset (Fin n)) (s : Fin n) :
     (casG (addSet μ J) : ℂ) + (casG (μ + Pi.single s 1) : ℂ) + (2 - (casG μ : ℂ))
@@ -72,21 +72,19 @@ theorem casG_polar_complex {n : ℕ} (μ : Fin n → ℝ) (J : Finset (Fin n)) (
   split_ifs at h ⊢ <;> (push_cast at h; exact h)
 
 /- English proof (translation)
-Introduce `n m μ _ par w`. Establish `hw : ∀ p, w p (par p) = if p.2 ∈ p.1.1 then 0 else 2` using `fun p => casG_polar_complex μ p.1.1 p.2`. Use `⟨fun I => ?_, fun ν hν => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ p ∈ univ.filter (fun p => par p = addSet μ I.1), w p (addSet μ I.1) = 2`. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp'` using `(Finset.mem_filter.1 hp).2`. Rewrite using `[← hp', hw, if_neg ((addSet_eq_iff μ p.1.1 I.1 p.2).1 hp').1]`. Rewrite using `[Finset.sum_congr rfl h1, Finset.sum_const]`. Establish `hc : (univ.filter (fun p => par p = addSet μ I.1)).card = I.1.card`. Use `Finset.card_bij (fun p _ => p.2) ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p hp`. Use `(addSet_eq_iff μ p.1.1 I.1 p.2).1 (Finset.mem_filter.1 hp).2` as an intermediate fact. Rewrite using `[this.2]`. Conclude with `Finset.mem_insert_self _ _`. Introduce `p hp q hq hpq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `(addSet_eq_iff μ p.1.1 I.1 p.2).1 (Finset.mem_filter.1 hp).2`. Establish `h2` using `(addSet_eq_iff μ q.1.1 I.1 q.2).1 (Finset.mem_filter.1 hq).2`. Establish `hpq' : p.2 = q.2` using `hpq`. Use `Prod.ext (Subtype.ext ?_) hpq'` and prove the remaining obligations. Rewrite using `[← Finset.erase_insert h1.1, ← Finset.erase_insert h2.1, ← h1.2, ← h2.2, hpq']`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Use `⟨(⟨I.1.erase s, ?_⟩, s), Finset.mem_filter.2 ⟨Finset.mem_univ _, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[Finset.card_erase_of_mem hs, I.2]`. Both sides reduce to the same expression. Conclude with `(addSet_eq_iff μ _ I.1 s).2 ⟨Finset.notMem_erase _ _, (Finset.insert_erase hs).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hc, I.2, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `Finset.sum_eq_zero fun p hp => ?_` and prove the remaining obligations. Establish `hp'` using `(Finset.mem_filter.1 hp).2`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[← hp', hw, if_pos]`. Assume the negation of the conclusion as `hs`. Use `hν ⟨insert p.2 p.1.1, ?_⟩ ?_` and prove the remaining obligations. Rewrite using `[Finset.card_insert_of_notMem hs, p.1.2]`. Rewrite using `[← hp']`.
-
-Conclude with `(addSet_insert μ _ _ hs).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem count : Count := by
   intro n m μ _ par w

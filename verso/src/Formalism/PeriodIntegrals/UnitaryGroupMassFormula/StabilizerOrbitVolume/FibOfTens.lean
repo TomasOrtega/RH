@@ -49,9 +49,9 @@ def DensV : Prop := InCtx fun F E _ _ _ _ _ σ M J a _X0 _hT =>
       DensAll μv (gramR (Fv F v) σ J) Subtype.val νv {X | LinearIndependent (Fv F v ⊗[F] E) X}
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7⟩` from `hT`. Establish `: BorelSpace (R ⊗[F] E)` using `⟨rfl⟩`. Establish `: BorelSpace (HermR R σ a)` using `⟨rfl⟩`. Establish `: LocallyCompactSpace (Matrix (Fin a) (Fin a) (R ⊗[F] E))` using `inferInstanceAs (LocallyCompactSpace (Fin a → Fin a → R ⊗[F] E))`. Establish `: SecondCountableTopology (Matrix (Fin a) (Fin a) (R ⊗[F] E))` using `inferInstanceAs (SecondCountableTopology (Fin a → Fin a → R ⊗[F] E))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: T2Space (Matrix (Fin a) (Fin a) (R ⊗[F] E))` using `inferInstanceAs (T2Space (Fin a → Fin a → R ⊗[F] E))`. Establish `: LocallyCompactSpace (HermR R σ a)` using `h4.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: SecondCountableTopology (HermR R σ a)` using `Topology.IsInducing.subtypeVal.secondCountableTopology`. Conclude with `hG _ _ _ μ ν inferInstance inferInstance inferInstance _ _ _ h5 h4.isClosedEmbedding_subtypeVal (fun X => ⟨⟨_, h6 X⟩, rfl⟩) h7 hD`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fib_of_tens {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {M : ℕ}
     {J : Matrix (Fin M) (Fin M) E} {a : ℕ} {R : Type} [CommRing R] [Algebra F R]
@@ -78,7 +78,7 @@ theorem fib_of_tens {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →�
     h4.isClosedEmbedding_subtypeVal (fun X => ⟨⟨_, h6 X⟩, rfl⟩) h7 hD
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ μinf hμ νinf hν`. Conclude with `fib_of_tens hG (hT F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet).1 μinf νinf hμ.1 hν.1 (hD F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ μinf hμ νinf hν)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fibInfEx_of (hG : FibOfDens) (hT : TensAll) (hD : DensInf) : FibInfEx := by
   intro F E _ _ _ _ _ σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ μinf hμ νinf hν
@@ -86,7 +86,7 @@ theorem fibInfEx_of (hG : FibOfDens) (hT : TensAll) (hD : DensInf) : FibInfEx :=
     (hD F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ μinf hμ νinf hν)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ v μv hμ νv hν`. Conclude with `fib_of_tens hG ((hT F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet).2 v) μv νv hμ.1 hν.1 (hD F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ v μv hμ νv hν)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fibVEx_of (hG : FibOfDens) (hT : TensAll) (hD : DensV) : FibVEx := by
   intro F E _ _ _ _ _ σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ v μv hμ νv hν

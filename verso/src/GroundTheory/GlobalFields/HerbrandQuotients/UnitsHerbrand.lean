@@ -37,7 +37,7 @@ theorem fullLog_apply (x : Additive (𝓞 L)ˣ) (w : InfinitePlace L) :
   rfl
 
 /- English proof (translation)
-The claim follows from `sum_mult_mul_log x.toMul`.
+A detailed English derivation is pending.
 -/
 theorem sum_fullLog (x : Additive (𝓞 L)ˣ) : ∑ w, fullLog L x w = 0 :=
   sum_mult_mul_log x.toMul
@@ -55,9 +55,9 @@ theorem logProj_fullLog (x : Additive (𝓞 L)ˣ) : logProj L (fullLog L x) = lo
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← logEmbedding_eq_zero_iff, ofMul_toMul, ← logProj_fullLog, h, map_zero]`. Introduce `h`. Rewrite `h` using `[mem_torsion]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `w`. Rewrite using `[fullLog_apply, h w, Real.log_one, mul_zero, Pi.zero_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem fullLog_eq_zero_iff (x : Additive (𝓞 L)ˣ) : fullLog L x = 0 ↔ x.toMul ∈ torsion L := by
   constructor
@@ -69,7 +69,7 @@ theorem fullLog_eq_zero_iff (x : Additive (𝓞 L)ˣ) : fullLog L x = 0 ↔ x.to
     rw [fullLog_apply, h w, Real.log_one, mul_zero, Pi.zero_apply]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `m.2`. Rewrite using `[← hx]`. Conclude with `⟨x, trivial, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem logProj_mem_unitLattice (m : logLattice L) : logProj L m ∈ unitLattice L := by
   obtain ⟨x, hx⟩ := m.2
@@ -107,15 +107,15 @@ instance : Module.Finite ℤ (logLattice L) :=
   Module.Finite.equiv (logLatticeEquiv L).symm
 
 /- English proof (translation)
-The claim follows from `(logLatticeEquiv L).finrank_eq.trans (unitLattice_rank L)`.
+A detailed English derivation is pending.
 -/
 theorem finrank_logLattice : finrank ℤ (logLattice L) = rank L :=
   (logLatticeEquiv L).finrank_eq.trans (unitLattice_rank L)
 
 /- English proof (translation)
-Apply `LinearIndependent.of_comp (logProj L)` to reduce the goal to its premises. Use `((b.map (logLatticeEquiv L)).ofZLatticeBasis ℝ (unitLattice L)).linearIndependent` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Rewrite using `[Basis.ofZLatticeBasis_apply, Basis.map_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Apply the tactic sequence `all_goals rfl`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem linearIndependent_logLattice_basis {ι : Type*} (b : Basis ι ℤ (logLattice L)) :
     LinearIndependent ℝ (fun i => (b i : InfinitePlace L → ℝ)) := by
@@ -135,9 +135,7 @@ variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Alge
 
 omit [NumberField K] [NumberField L] in
 /- English proof (translation)
-Use `isReal_smul_iff (σ := g) (w := w)` as an intermediate fact. Unfold `mult`. Use `split_ifs with h1 h2 h2`. Both sides reduce to the same expression. Conclude with `absurd (this.mp h1) h2`.
-
-Conclude with `absurd (this.mpr h2) h1`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mult_smul (g : L ≃ₐ[K] L) (w : InfinitePlace L) : (g • w).mult = w.mult := by
   have := isReal_smul_iff (σ := g) (w := w)
@@ -151,7 +149,7 @@ theorem mult_smul (g : L ≃ₐ[K] L) (w : InfinitePlace L) : (g • w).mult = w
 omit [NumberField K] [NumberField L] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Rewrite using `[funPermRep_apply, fullLog_apply, fullLog_apply, mult_smul, unitsRep_apply, toMul_ofMul, InfinitePlace.smul_apply, AlgEquiv.aut_inv, AlgEquiv.symm_symm]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fullLog_unitsRep (g : L ≃ₐ[K] L) (x : Additive (𝓞 L)ˣ) :
     fullLog L (unitsRep K L g x) = funPermRep ℝ (L ≃ₐ[K] L) (InfinitePlace L) g (fullLog L x) := by
@@ -162,7 +160,7 @@ theorem fullLog_unitsRep (g : L ≃ₐ[K] L) (x : Additive (𝓞 L)ˣ) :
 
 omit [NumberField K] [NumberField L] in
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `hm`. Conclude with `⟨unitsRep K L g x, fullLog_unitsRep g x⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem funPermRep_mem_logLattice (g : L ≃ₐ[K] L) {m : InfinitePlace L → ℝ}
     (hm : m ∈ logLattice L) : funPermRep ℝ (L ≃ₐ[K] L) (InfinitePlace L) g m ∈ logLattice L := by
@@ -199,9 +197,9 @@ variable [FiniteDimensional K L]
 omit [NumberField K] in
 
 /- English proof (translation)
-Set `p : Additive (𝓞 L)ˣ →+ logLattice L` to `(fullLog L).toIntLinearMap.rangeRestrict.toAddMonoidHom`. Establish `hp : Function.Surjective p` using `(fullLog L).toIntLinearMap.surjective_rangeRestrict`. Establish `: Finite p.ker`. Use `Finite.of_injective (β := torsion L) (fun x => ⟨(x : Additive (𝓞 L)ˣ).toMul, (fullLog_eq_zero_iff L x).1 ?_⟩) ?_` and prove the remaining obligations. Use `congrArg Subtype.val (AddMonoidHom.mem_ker.1 x.2)` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `this`. Introduce `x y h`. Simplify using `only [Subtype.mk.injEq] at h`. Conclude with `Subtype.ext (Additive.toMul.injective h)`. Conclude with `cycHerbrand_eq_of_surjective_of_finite_ker (unitsRep K L) (logLatticeRep K L) σ hp (fun g x => Subtype.ext (fullLog_unitsRep g x)) (hasHerbrandQuotient_cycSubOne_of_finite _ hσ)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cycHerbrand_unitsRep_eq_logLattice {σ : L ≃ₐ[K] L} (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
     cycHerbrand (unitsRep K L) σ = cycHerbrand (logLatticeRep K L) σ := by

@@ -5,11 +5,9 @@ namespace GlobalTheory.FinTwoMembership
 open Matrix
 
 /- English proof (translation)
-Establish `hadj : ∀ i j, M.adjugate i j ∈ S`. Introduce `i j`. Rewrite using `[Matrix.adjugate_fin_two]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [S.neg_mem, hM]`. Establish `hv : ∀ i, (M.adjugate *ᵥ y) i ∈ S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Conclude with `S.add_mem (S.mul_mem (hadj _ _) (hy _)) (S.mul_mem (hadj _ _) (hy _))`. Establish `hdet : M.det ∈ S`. Rewrite using `[Matrix.det_fin_two]`.
-
-Conclude with `S.sub_mem (S.mul_mem (hM _ _) (hM _ _)) (S.mul_mem (hM _ _) (hM _ _))`. Conclude with `S.sub_mem (S.mul_mem hdet hu) (S.sub_mem (S.mul_mem (hv _) (hz _)) (S.mul_mem (hv _) (hz _)))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_fin_two {R : Type*} [CommRing R] (S : Subring R) (M : Matrix (Fin 2) (Fin 2) R)
     (y z : Fin 2 → R) (u : R) (hM : ∀ i j, M i j ∈ S) (hy : ∀ i, y i ∈ S) (hz : ∀ i, z i ∈ S)
@@ -30,9 +28,9 @@ theorem mem_of_fin_two {R : Type*} [CommRing R] (S : Subring R) (M : Matrix (Fin
     (S.sub_mem (S.mul_mem (hv _) (hz _)) (S.mul_mem (hv _) (hz _)))
 
 /- English proof (translation)
-Introduce `Ω _ _ l _ c W y z u hW hy hz hu s`. Establish `hM : ∀ i j, (GlobalTheory.Ord2.mat W s - 1) i j ∈ c.O.toSubring`. Introduce `i j`. Rewrite using `[Matrix.sub_apply]`. Use `c.O.toSubring.sub_mem (hW s i j) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `c.O.toSubring.one_mem`. Conclude with `c.O.toSubring.zero_mem`. Conclude with `mem_of_fin_two c.O.toSubring _ (y s) (z s) (u s) hM (hy s) (hz s) (hu s)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ht_mem : ∀ {Ω : Type} [inst : Field Ω] [inst_1 : Algebra ℚ Ω] {l : ℕ} [inst_2 : Fact (Nat.Prime l)]
     (c : UpperTheory.V.HV.Coef l) (W : GlobalTheory.Ord2.R2 Ω l) (y z : Formalism.ConjugateSelfDual.G ℚ Ω → Fin (2 : ℕ) → Formalism.ConjugateSelfDual.Qbar l)

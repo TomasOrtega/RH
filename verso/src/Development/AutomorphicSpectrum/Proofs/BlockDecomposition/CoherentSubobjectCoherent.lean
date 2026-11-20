@@ -8,9 +8,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.GE
 
 /- English proof (translation)
-Establish `hEq` using `hE.1`. Establish `hC : (cokernel D.arrow).IsQuasicoherent` using `inferInstance`. Establish `hK : IsCoherent (kernel (cokernel.π D.arrow))` using `isCoherent_kernel _ hE`. Set `e : (D : X.Modules) ≅ kernel (cokernel.π D.arrow)` to `IsLimit.conePointUniqueUpToIso (Abelian.monoIsKernelOfCokernel (f := D.arrow) (CokernelCofork.ofπ _ (cokernel.condition D.arrow)) (cokernelIsCokernel _)) (limit.isLimit _)`. Use `⟨hD, fun U hU => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `hK.2 U hU` as an intermediate fact. Set `f : Γ(kernel (cokernel.π D.arrow), U) →ₗ[Γ(X, U)] Γ((D : X.Modules), U)` to `{ toFun := e.inv.app U map_add' := map_add _ map_smul' := Scheme.Modules.Hom.app_smul _ }`. Conclude with `Module.Finite.of_surjective f (bijective_app_of_iso e.symm U).2`.
+Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isCoherent_subobject {X : Scheme.{0}} [IsLocallyNoetherian X] {E : X.Modules}
     (hE : IsCoherent E) (D : Subobject E) (hD : (D : X.Modules).IsQuasicoherent) :

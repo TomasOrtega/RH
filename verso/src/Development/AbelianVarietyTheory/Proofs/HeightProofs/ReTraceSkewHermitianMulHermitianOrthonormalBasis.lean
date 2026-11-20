@@ -5,7 +5,7 @@ open Matrix Formalism.REAL Formalism.MainNotions.S Formalism.L2.Theta GlobalTheo
 namespace GlobalTheory.TypeSum.CasBasis
 
 /- English proof (translation)
-Rewrite using `[unitE, Matrix.single_apply, if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `h rfl`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem unitE_apply_eq_zero_of_sign {n : ℕ} {ε : Fin n → Bool} {i j a b : Fin n}
     (h : (ε i = ε j) ≠ (ε a = ε b)) : unitE i j a b = 0 := by
@@ -14,11 +14,11 @@ theorem unitE_apply_eq_zero_of_sign {n : ℕ} {ε : Fin n → Bool} {i j a b : F
   exact h rfl
 
 /- English proof (translation)
-Unfold `kList at hX`. Break down `List.mem_append.1 hX with h | h` into its components or cases. Take `⟨c, -, rfl⟩` from `List.mem_map.1 h`. Establish `h1 : unitE c c a b = 0` using `unitE_apply_eq_zero_of_sign (ε := ε) (by simp [hab])`. Simplify using `only [Matrix.smul_apply, h1, smul_zero]`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨p, hp, hX⟩` from `List.mem_flatMap.1 h`. Establish `hpe : ε p.1 = ε p.2`. Use `(List.mem_filter.1 hp).2` as an intermediate fact. Simplify using `at this`. Conclude with `this.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : unitE p.1 p.2 a b = 0` using `unitE_apply_eq_zero_of_sign (ε := ε) (by simp [hab, hpe])`. Establish `h2 : unitE p.2 p.1 a b = 0` using `unitE_apply_eq_zero_of_sign (ε := ε) (by simp [hab, hpe])`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hX`. Apply the tactic sequence `rcases hX with rfl | rfl <;>`. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply, h1, h2, sub_zero, add_zero, smul_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kList_entry_zero {n : ℕ} {ε : Fin n → Bool} {X : Mx n} (hX : X ∈ kList ε) {a b : Fin n}
     (hab : ε a ≠ ε b) : X a b = 0 := by
@@ -42,11 +42,11 @@ theorem kList_entry_zero {n : ℕ} {ε : Fin n → Bool} {X : Mx n} (hX : X ∈ 
       simp only [Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply, h1, h2, sub_zero, add_zero, smul_zero]
 
 /- English proof (translation)
-Unfold `pList at hY`. Take `⟨p, hp, hY⟩` from `List.mem_flatMap.1 hY`. Establish `hpe : ε p.1 ≠ ε p.2`. Use `(List.mem_filter.1 hp).2` as an intermediate fact. Simplify using `at this`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this.2`. Establish `h1 : unitE p.1 p.2 a b = 0` using `unitE_apply_eq_zero_of_sign (ε := ε) (by simp [hab, hpe])`. Establish `h2 : unitE p.2 p.1 a b = 0` using `unitE_apply_eq_zero_of_sign (ε := ε) (by simp [hab, Ne.symm hpe])`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hY`. Apply the tactic sequence `rcases hY with rfl | rfl <;>`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply, h1, h2, sub_zero, add_zero, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem pList_entry_zero {n : ℕ} {ε : Fin n → Bool} {Y : Mx n} (hY : Y ∈ pList ε) {a b : Fin n}
     (hab : ε a = ε b) : Y a b = 0 := by
@@ -65,9 +65,9 @@ theorem pList_entry_zero {n : ℕ} {ε : Fin n → Bool} {Y : Mx n} (hY : Y ∈ 
     simp only [Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply, h1, h2, sub_zero, add_zero, smul_zero]
 
 /- English proof (translation)
-Introduce `n ε i b`. Establish `hX : kB ε i ∈ kList ε` using `List.get_mem _ _`. Establish `hY : pB ε b ∈ pList ε` using `List.get_mem _ _`. Establish `: trace (kB ε i * pB ε b) = 0`. Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ε a = ε c`. Rewrite using `[pList_entry_zero hY h.symm, mul_zero]`. Rewrite using `[kList_entry_zero hX h, zero_mul]`. Rewrite using `[this, Complex.zero_re]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem re_trace_kB_mul_pB : ∀ (n : ℕ) (ε : Fin n → Bool) (i : Fin (kList ε).length) (b : Fin (pList ε).length),
     (trace (kB ε i * pB ε b)).re = 0 := by

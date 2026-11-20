@@ -18,11 +18,11 @@ section Cayley
 variable {M : Type*} [Ring M] [StarRing M]
 
 /- English proof (translation)
-Establish `e : (1 - u) * w * (1 + u) = 1 - u` using `by rw [mul_assoc, hw', mul_one]`. Use `⟨?_, by rw [add_mul, e, one_mul, add_add_sub_cancel, one_add_one_eq_two]⟩` and prove the remaining obligations. Establish `e' : (1 + star u) * star ((1 - u) * w) = 1 - star u`. Simplify `congrArg star e` using `only [star_mul ((1 - u) * w), star_add, star_sub, star_one]`. Establish `hs : star w * (1 + star u) = 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `congrArg star hw` using `only [star_mul, star_add, star_one]`. Establish `key : (1 + star u) * (star ((1 - u) * w) + (1 - u) * w) * (1 + u) = 0`. Rewrite using `[mul_add (1 + star u) (star _), e', add_mul, mul_assoc (1 + star u), e]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[eq_neg_iff_add_eq_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hs, hw, one_mul, mul_one]`. Use `_ = star w * ((1 + star u) * (star ((1 - u) * w) + (1 - u) * w) * (1 + u)) * w := by`. Simplify using `only [mul_assoc]`. Use `_ = 0 := by rw [key, mul_zero, zero_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cayley_skew {u w : M} (hu : star u * u = 1) (hw : (1 + u) * w = 1) (hw' : w * (1 + u) = 1) :
     star ((1 - u) * w) = -((1 - u) * w) ∧ (1 + (1 - u) * w) * (1 + u) = 2 := by
@@ -45,9 +45,9 @@ theorem cayley_skew {u w : M} (hu : star u * u = 1) (hw : (1 + u) * w = 1) (hw' 
     _ = 0 := by rw [key, mul_zero, zero_mul]
 
 /- English proof (translation)
-Establish `hs : star t * (1 - S) = 1`. Simplify `congrArg star ht` using `only [star_mul, star_add, star_one, hS, ← sub_eq_add_neg]`. Establish `e : star (2 * t - 1) = 2 * star t - 1`. Rewrite using `[two_mul, two_mul, star_sub, star_add, star_one]`. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem cayley_unitary {S t : M} (hS : star S = -S) (ht : (1 + S) * t = 1) :
     star (2 * t - 1) * (2 * t - 1) = 1 := by
@@ -61,13 +61,13 @@ theorem cayley_unitary {S t : M} (hS : star S = -S) (ht : (1 + S) * t = 1) :
     _ = 1 := by rw [ht, hs]; noncomm_ring
 
 /- English proof (translation)
-Use `set z := k • (D * (k • (1 + u))) with hz`. Establish `hzN : z ∈ N` using `nsmul_mem (mul_mem hD h₁) k`. Take `⟨w, hw, hw1⟩` from `hJ z hzN`. Establish `e1 : (1 + γ) * (1 + p • z) = 1 + u`. Use `sub_eq_zero.1 (h2 _ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a : (1 + (S + (2 * p * k * k) • D)) * (1 + u) = 2 • (1 + p • z)`. Rewrite using `[← add_assoc, add_mul, hS, hz, smul_add, mul_smul_comm, smul_smul, smul_smul, smul_smul, smul_mul_assoc]`. Simplify using the standard rewrite rules. Rewrite using `[smul_sub, ← mul_smul_comm, ← a, ← mul_assoc, hγ, two_mul, two_smul, sub_self]`. Establish `e2 : (star u * γ) * (1 + p • z) = 1 + p • z - p • ((k • (1 + star u)) * (D * (k • (1 + u))))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b : (k • (1 + star u)) * (D * (k • (1 + u))) = (1 + star u) * z`. Rewrite using `[hz, smul_mul_assoc, mul_smul_comm (k) (1 + star u)]`. Rewrite using `[b, ← mul_smul_comm]`. Generalize the expression as in `p • z = y at e1 ⊢`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `e3 : star u * γ = 1 - p • ((k • (1 + star u)) * (D * (k • (1 + u)))) * w`. Rewrite using `[← mul_one (star u * γ), ← congrArg (star u * γ * ·) hw1, ← mul_assoc, e2, sub_mul, hw1]`. Rewrite using `[e3]`. Conclude with `sub_mem (one_mem _) (mul_mem (nsmul_mem (mul_mem h₂ (mul_mem hD h₁)) p) hw)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cayley_perturb (N : Subring M) {u γ S D : M} {p k : ℕ} (h2 : ∀ x : M, 2 • x = 0 → x = 0)
     (hu : star u * u = 1) (hS : (1 + S) * (1 + u) = 2) (hγ : (1 + γ) * (1 + (S + (2 * p * k * k) • D)) = 2)
@@ -102,11 +102,9 @@ section Matrices
 variable {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Set `Z' : Matrix n n O` to `Matrix.of fun i j => ⟨Z i j, hZ i j⟩`. Establish `hd : IsUnit (1 + (p : O) • Z').det`. Rewrite using `[Matrix.det_one_add_smul, add_assoc, sq, ← mul_assoc, ← add_mul, mul_comm, ← nsmul_eq_mul]`. Generalize the expression as in `Z'.trace + _ = y`. Take `⟨w, hw, h⟩` from `hJ y y.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Conclude with `IsUnit.of_mul_eq_one (⟨w, hw⟩ : O) (Subtype.ext h)`. Use `⟨O.subtype.mapMatrix (1 + (p : O) • Z')⁻¹, fun i j => ((1 + (p : O) • Z')⁻¹ i j).2, ?_⟩` and prove the remaining obligations. Use `congrArg O.subtype.mapMatrix (Matrix.mul_nonsing_inv _ hd)` as an intermediate fact. Rewrite `this` using `[map_mul, map_one, Nat.cast_smul_eq_nsmul, map_add, map_one, map_nsmul]`. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
-
-Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inv_one_add_smul {A : Type*} [CommRing A] (O : Subring A) {p : ℕ}
     (hJ : ∀ z ∈ O, ∃ w ∈ O, (1 + p • z) * w = 1) (Z : Matrix n n A) (hZ : Z ∈ O.matrix) :
@@ -124,25 +122,23 @@ theorem exists_inv_one_add_smul {A : Type*} [CommRing A] (O : Subring A) {p : �
   exact this
 
 /- English proof (translation)
-Establish `hO' : ∀ i, ∀ Z ∈ ((O i).matrix : Subring (Matrix n n (A i))), star Z ∈ (O i).matrix` using `fun i Z hZ a b => hO i _ (hZ b a)`. Establish `happ' : ∀ Z : ∀ i, Matrix n n (A i), ∃ X : Matrix n n E, ∀ i, (φ i).mapMatrix X - Z i ∈ (O i).matrix`. Introduce `Z`. Use `choose X hX using fun a b => happ fun i => Z i a b`. Conclude with `⟨Matrix.of X, fun i a b => hX a b i⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hφ' : ∀ i (X : Matrix n n E), (φ i).mapMatrix (star X) = star ((φ i).mapMatrix X)` using `fun i X => Matrix.ext fun a b => hφ i _`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk, hku⟩ : ∃ k : ℕ, k ≠ 0 ∧ ∀ i, k • u i ∈ (O i).matrix := by`. Take `⟨X, hX⟩` from `happ' u`. Use `choose d hd hdX using fun ab : n × n => hden (X ab.1 ab.2)`. Use `⟨∏ ab, d ab, Finset.prod_ne_zero_iff.2 fun ab _ => hd ab, fun i => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← sub_sub_cancel ((φ i).mapMatrix X) (u i), smul_sub]`. Use `sub_mem (fun a b => ?_) (nsmul_mem (hX i) _)` and prove the remaining obligations. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem d (Finset.mem_univ (a, b))`. Rewrite using `[hc, mul_comm, mul_smul]`. Conclude with `nsmul_mem (hdX (a, b) i) c`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose w hw using fun i => (hu1 i).exists_right_inv`. Establish `hc` using `fun i => cayley_skew (hu i) (hw i) (mul_eq_one_comm.1 (hw i))`. Use `set m := 2 * p * k * k with hm`. Establish `hm0 : ((2 * m : ℕ) : E) ≠ 0` using `Nat.cast_ne_zero.2 (by positivity)`. Take `⟨Y, hY⟩` from `happ' fun i => φ i ((2 * m : ℕ) : E)⁻¹ • ((1 - u i) * w i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hS : star (m • (Y - star Y)) = -(m • (Y - star Y))`. Rewrite using `[star_nsmul, star_sub, star_star, ← smul_neg, neg_sub]`. Take `⟨t, ht⟩` from `(hdef _ hS).exists_right_inv`. Use `⟨2 * t - 1, cayley_unitary hS ht, fun i => ?_⟩` and prove the remaining obligations. Establish `h2 : ∀ x : Matrix n n (A i), 2 • x = 0 → x = 0` using `fun x hx => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: φ i 2⁻¹ • 2 • x = x`. Rewrite using `[← Nat.cast_smul_eq_nsmul (A i), smul_smul, ← map_natCast (φ i), ← map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[← this, hx, smul_zero]`. Use `cayley_perturb (O i).matrix (p := p) (k := k) h2 (hu i) (hc i).2 ?_ (sub_mem (hY i) (hO' i _ (hY i))) (by rw [smul_add]; exact add_mem (nsmul_mem (one_mem _) _) (hku i)) (by rw [smul_add, ← star_nsmul]; exact add_mem (nsmul_mem (one_mem _) _) (hO' i _ (hku i))) (exists_inv_one_ad …` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (1 + (2 * t - 1)) * (1 + m • (Y - star Y)) = 2`. Rewrite using `[add_sub_cancel, mul_assoc, mul_eq_one_comm.1 ht, mul_one]`. Establish `e'` using `congrArg (φ i).mapMatrix e`. Rewrite `e'` using `[map_mul, map_add, map_add, map_one, map_ofNat, map_nsmul, map_sub _ Y, hφ']`. Rewrite using `[← e']`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[star_sub, star_smul, (hc i).1, ← hφ, star_inv₀, star_natCast, ← hm]`. Generalize the expression as in `(1 - u i) * w i = S`. Establish `: (2 * m) • φ i ((2 * m : ℕ) : E)⁻¹ • S = S`. Rewrite using `[← Nat.cast_smul_eq_nsmul (A i), smul_smul, ← map_natCast (φ i), ← map_mul, mul_inv_cancel₀ hm0, map_one, one_smul]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[← this, this, smul_neg]`. Use `nth_rw 1 [← this]`. Generalize the expression as in `φ i ((2 * m : ℕ) : E)⁻¹ • S = T`. Rewrite using `[two_mul, add_smul]`. Simplify using `only [smul_sub, smul_neg]`.
-
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem exists_unitary_approx {E : Type*} [Field E] [CharZero E] [StarRing E] {ι : Type*} {A : ι → Type*}
     [∀ i, CommRing (A i)] [∀ i, StarRing (A i)] (φ : ∀ i, E →+* A i) (hφ : ∀ i x, φ i (star x) = star (φ i x))
@@ -207,11 +203,9 @@ theorem exists_unitary_approx {E : Type*} [Field E] [CharZero E] [StarRing E] {�
   abel
 
 /- English proof (translation)
-Use `((IsArtinianRing.setOf_isMaximal_finite A).biUnion (t := fun m => {x : K | f.eval (φ x) ∈ m}) fun m hm => ?_).subset fun x hx => ?_` and prove the remaining obligations. Use `haveI : m.IsMaximal := hm`. Establish `h0 : f.map (Ideal.Quotient.mk m) ≠ 0` using `fun h => by`. Use `congrArg (eval (Ideal.Quotient.mk m 0)) h` as an intermediate fact. Rewrite `this` using `[eval_map_apply, hf, map_one, eval_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `one_ne_zero this`. Use `((finite_setOf_isRoot h0).preimage ((Ideal.Quotient.mk m).comp φ).injective.injOn).subset fun x hx => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `eval (Ideal.Quotient.mk m (φ x)) _ = 0`. Rewrite using `[eval_map_apply, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hx`.
-
-Take `⟨m, hm, h⟩` from `exists_max_ideal_of_mem_nonunits hx`. Conclude with `Set.mem_biUnion hm h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finite_not_isUnit_eval {K A : Type*} [Field K] [CommRing A] [IsArtinianRing A] (φ : K →+* A) (f : A[X])
     (hf : f.eval 0 = 1) : {x : K | ¬ IsUnit (f.eval (φ x))}.Finite := by
@@ -231,9 +225,9 @@ theorem finite_not_isUnit_eval {K A : Type*} [Field K] [CommRing A] [IsArtinianR
     exact Set.mem_biUnion hm h
 
 /- English proof (translation)
-Establish `e : ∀ a : A, (1 + (X : A[X]) • h.map C).det.eval a = (1 + a • h).det` using `fun a => by`. Rewrite using `[← coe_evalRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, apply_ite (eval a), mul_comm a]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify `finite_not_isUnit_eval φ _ ((e 0).trans (by simp))` using `only [e, Matrix.isUnit_iff_isUnit_det]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finite_not_isUnit_one_add_smul {K A : Type*} [Field K] [CommRing A] [IsArtinianRing A] (φ : K →+* A)
     (h : Matrix n n A) : {x : K | ¬ IsUnit (1 + φ x • h)}.Finite := by
@@ -253,9 +247,9 @@ open ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.SelfDualGenus IsLocalR
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : 𝓞 E, (x : E) - cc (x : E) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `IsCMField.complexConj_ne_one E (AlgEquiv.ext fun x => ?_)` and prove the remaining obligations. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) x`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : ∀ a : 𝓞 E, IsCMField.complexConj E (algebraMap (𝓞 E) E a) = algebraMap (𝓞 E) E a` using `fun a => (sub_eq_zero.1 (h a)).symm`. Rewrite using `[map_div₀, e, e]`. Both sides reduce to the same expression. Use `⟨x - IsCMField.ringOfIntegersComplexConj E x, by simpa [cc] using hx, ?_⟩` and prove the remaining obligations. Simplify using `[cc]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_imaginary_integer (E : Type) [Field E] [NumberField E] [IsCMField E] :
     ∃ θ : 𝓞 E, (θ : E) ≠ 0 ∧ cc (θ : E) = -θ := by
@@ -271,13 +265,11 @@ theorem exists_imaginary_integer (E : Type) [Field E] [NumberField E] [IsCMField
   simp [cc]
 
 /- English proof (translation)
-Establish `app : ∀ a : ∀ v : T, v.1.adicCompletion (maximalRealSubfield E), ∃ x : maximalRealSubfield E, ∀ v : T, locEmb v.1 (x : E) - algebraMap _ (LocAlg v.1) (a v) ∈ locOrder v.1`. Introduce `a`. Take `⟨x, hx⟩` from `Metric.denseRange_iff.1 (LocalQuad.denseRange_finite_real (maximalRealSubfield E) T) (a, 0) 1 one_pos`. Use `⟨x, fun v => ?_⟩` and prove the remaining obligations. Establish `h` using `(dist_le_pi_dist _ _ v).trans ((le_max_left _ _).trans hx.le)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[dist_comm, dist_eq_norm]`. Rewrite using `[locEmb_coe, ← map_sub]`. Conclude with `(locOrder v.1).algebraMap_mem ⟨_, Valued.toNormedField.norm_le_one_iff.1 h⟩`. Take `⟨θ, h0, hθ⟩` from `exists_imaginary_integer E`. Use `choose a b hab using fun v : T => exists_coord v.1 h0 hθ (z v)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `app a`. Take `⟨y, hy⟩` from `app b`. Use `⟨x + y * θ, fun v => ?_⟩` and prove the remaining obligations. Use `add_mem (hx v) (mul_mem (hy v) (locEmb_mem_locOrder v.1 θ)) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hab v, map_add, map_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_sub_mem_locOrder (T : Finset (HeightOneSpectrum (𝓞 (maximalRealSubfield E))))
     (z : ∀ v : T, LocAlg v.1) : ∃ x : E, ∀ v : T, locEmb v.1 x - z v ∈ locOrder v.1 := by
@@ -303,11 +295,11 @@ theorem exists_sub_mem_locOrder (T : Finset (HeightOneSpectrum (𝓞 (maximalRea
 variable (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)))
 
 /- English proof (translation)
-Use `haveI : Algebra.IsIntegral (v.adicCompletionIntegers (maximalRealSubfield E)) (locOrder v) := ⟨fun x => (isIntegral_algHom_iff (locOrder v).val Subtype.val_injective).1 (isIntegral_of_mem_locOrder v x.2)⟩`. Establish `: IsUnit (1 + p • (⟨z, hz⟩ : locOrder v))`. Assume the negation of the conclusion as `h`. Take `⟨m, hm, h⟩` from `exists_max_ideal_of_mem_nonunits h`. Establish `h1` using `eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := v.adicCompletionIntegers (maximalRealSubfield E)) m)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (p : v.adicCompletionIntegers (maximalRealSubfield E)) ∈ maximalIdeal _`. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, ← map_natCast (algebraMap (𝓞 (maximalRealSubfield E)) _), isUnit_algebraMap_iff]`. Conclude with `fun h => h hp`. Rewrite `h2` using `[← h1, Ideal.mem_comap, map_natCast]`. Rewrite `h` using `[nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hm.ne_top ((Ideal.eq_top_iff_one _).2 ((Ideal.add_mem_iff_left _ (m.mul_mem_right _ h2)).1 h))`. Take `⟨w, hw⟩` from `this.exists_right_inv`. Conclude with `⟨w, w.2, congrArg Subtype.val hw⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_inv_one_add {p : ℕ} (hp : (p : 𝓞 (maximalRealSubfield E)) ∈ v.asIdeal) (z : LocAlg v)
     (hz : z ∈ locOrder v) : ∃ w ∈ locOrder v, (1 + p • z) * w = 1 := by
@@ -329,19 +321,17 @@ theorem exists_inv_one_add {p : ℕ} (hp : (p : 𝓞 (maximalRealSubfield E)) �
   exact ⟨w, w.2, congrArg Subtype.val hw⟩
 
 /- English proof (translation)
-Use `haveI : IsArtinianRing (LocAlg v) := IsArtinianRing.of_finite (v.adicCompletion (maximalRealSubfield E)) _`. Take `⟨θ, h0, hθ⟩` from `exists_imaginary_integer E`. Establish `hc : ∀ k : ℤ, IsCMField.complexConj E (1 + p * (k * θ : E)) = 1 - p * (k * θ)` using `fun k => by`. Rewrite using `[map_add, map_one, map_mul, map_mul, map_natCast, map_intCast, show IsCMField.complexConj E θ = -θ from hθ]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hne : ∀ k : ℤ, 1 + p * (k * θ : E) ≠ 0` using `fun k hk => by`. Use `hc k` as an intermediate fact. Rewrite `this` using `[hk, map_zero]`. Conclude with `two_ne_zero (α := E) (by linear_combination hk - this)`. Establish `hne' : ∀ k : ℤ, 1 - p * (k * θ : E) ≠ 0` using `fun k => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← hc]`. Conclude with `(_root_.map_ne_zero _).2 (hne k)`. Set `f : ℤ → E` to `fun k => (1 - p * (k * θ)) / (1 + p * (k * θ))`. Establish `hf : Function.Injective f` using `fun a b hab => by`. Rewrite `hab` using `[div_eq_div_iff (hne a) (hne b)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: (2 * p * θ : E) * (a - b) = 0` using `by linear_combination -hab`. Establish `h1 : (2 * p * θ : E) ≠ 0` using `mul_ne_zero (mul_ne_zero two_ne_zero (Nat.cast_ne_zero.2 hp0)) h0`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 this).resolve_left h1)` after adjusting the coercions. Take `⟨_, ⟨k, rfl⟩, hk⟩` from `(Set.infinite_range_of_injective hf).exists_notMem_finite (finite_not_isUnit_one_add_smul (locEmb v) h)`. Use `⟨locEmb v (f k), ?_, ?_, not_not.1 hk⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : locEmb v (k * θ : E) ∈ locOrder v` using `by simpa using locEmb_mem_locOrder v (k * θ)`. Take `⟨w, hw, e⟩` from `exists_inv_one_add v hp _ hz`. Establish `: locEmb v (f k) = (1 - p • locEmb v (k * θ : E)) * w`. Establish `e' : locEmb v (f k) * (1 + p • locEmb v (k * θ : E)) = 1 - p • locEmb v (k * θ : E)`. Simplify using `using congrArg (locEmb v) (div_mul_cancel₀ (1 - p * (k * θ : E)) (hne k))`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← e', mul_assoc, e, mul_one]`. Rewrite using `[this]`. Conclude with `mul_mem (sub_mem (one_mem _) (nsmul_mem hz p)) hw`. Rewrite using `[locConj_locEmb, ← map_mul, ← map_one (locEmb v)]`. Use `congr 1`.
-
-Use `hc (-k)` as an intermediate fact. Simplify using `only [Int.cast_neg, neg_mul, mul_neg, ← sub_eq_add_neg, sub_neg_eq_add] at this`. Simplify using `only [cc, f, map_div₀, hc, this]`. Rewrite using `[div_mul_div_comm, mul_comm, div_self (mul_ne_zero (hne' k) (hne k))]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_norm_one_isUnit {p : ℕ} (hp0 : p ≠ 0) (hp : (p : 𝓞 (maximalRealSubfield E)) ∈ v.asIdeal)
     (h : Matrix (Fin n) (Fin n) (LocAlg v)) :
@@ -388,11 +378,9 @@ theorem exists_norm_one_isUnit {p : ℕ} (hp0 : p ≠ 0) (hp : (p : 𝓞 (maxima
   star_add := map_add _
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `h1 : (τ.mapMatrix S)ᴴ = -τ.mapMatrix S`. Rewrite using `[← map_neg, ← hS]`. Conclude with `Matrix.ext fun i j => (IsCMField.complexEmbedding_complexConj E τ _).symm`. Use `open scoped ComplexOrder in`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(Matrix.PosDef.one.add_posSemidef (Matrix.posSemidef_conjTranspose_mul_self (τ.mapMatrix S))).isUnit`. Establish `h3 : 1 + (τ.mapMatrix S)ᴴ * τ.mapMatrix S = τ.mapMatrix (1 + S) * τ.mapMatrix (1 - S)`. Rewrite using `[h1, map_add, map_sub, map_one]`. Use `noncomm_ring`. Rewrite `h2` using `[h3, Matrix.isUnit_iff_isUnit_det, Matrix.det_mul, ← RingHom.map_det]`.
-
-Rewrite using `[Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero, ← _root_.map_ne_zero τ]`. Conclude with `left_ne_zero_of_mul h2.ne_zero`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_one_add_of_skew (S : Matrix (Fin n) (Fin n) E) (hS : star S = -S) : IsUnit (1 + S) := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -408,13 +396,11 @@ theorem isUnit_one_add_of_skew (S : Matrix (Fin n) (Fin n) E) (hS : star S = -S)
   exact left_ne_zero_of_mul h2.ne_zero
 
 /- English proof (translation)
-Establish `hT : {v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)) | (p : 𝓞 (maximalRealSubfield E)) ∈ v.asIdeal}.Finite`. Simplify `Ideal.finite_factors (I := Ideal.span {(p : 𝓞 (maximalRealSubfield E))}) (by simpa using hp)` using `only [Ideal.dvd_span_singleton]`. Use `letI := fun v : hT.toFinset => locStar v.1`. Establish `hv : ∀ v : hT.toFinset, (p : 𝓞 (maximalRealSubfield E)) ∈ v.1.asIdeal` using `fun v => hT.mem_toFinset.1 v.2`. Use `choose ζ hζ hζ1 hζu using fun v : hT.toFinset => exists_norm_one_isUnit v.1 hp (hv v) (h v.1)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ, hγ'⟩` from `exists_unitary_approx (A := fun v : hT.toFinset => LocAlg v.1) (fun v => locEmb v.1) (fun v x => (locConj_locEmb v.1 x).symm) (fun v => (locOrder v.1).toSubring) (fun v z => locConj_mem v.1) hp (fun v => exists_inv_one_add v.1 (hv v)) (exists_sub_mem_locOrder _) (fun x => by`. Take `⟨k, s, hk, hx⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic x)).exists_nsmul_eq (𝓞 E)`. Conclude with `⟨k, hk, fun v => by rw [← map_nsmul, hx]; exact locEmb_mem_locOrder v.1 s⟩)`. Use `isUnit_one_add_of_skew (fun v => ζ v • h v.1)`. Use the proof step `(fun v => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Rewrite using `[star_smul, smul_mul_smul_comm]`. Conclude with `(congrArg₂ (· • ·) (hζ1 v) (hh v.1)).trans (one_smul _ _))`. Use `hζu`. Use `⟨γ, hγ, fun v hv i j => ?_⟩` and prove the remaining obligations. Set `v' : hT.toFinset` to `⟨v, hT.mem_toFinset.2 hv⟩`.
-
-Use `mul_mem (hζ v') (hγ' v' i j)` as an intermediate fact. Rewrite `this` using `[star_smul, smul_mul_assoc, Matrix.smul_apply, smul_eq_mul, ← mul_assoc, mul_comm (ζ v')]`. Use `erw [hζ1 v', one_mul] at this`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitary_near {p : ℕ} (hp : p ≠ 0)
     (h : ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)), Matrix (Fin n) (Fin n) (LocAlg v))
@@ -457,15 +443,13 @@ open ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.SelfDualGenus GlobalTh
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hk`. Use `push Not at hk`. Set `J : Ideal (𝓞 E)` to `L.comap (LinearMap.toSpanSingleton (𝓞 E) _ x)`. Set `I : Ideal (𝓞 (maximalRealSubfield E))` to `J.comap (algebraMap _ _)`. Use `haveI : (Ideal.span {(p : ℤ)}).IsPrime := (Ideal.span_singleton_prime (by simpa using hp.ne_zero)).2 (Nat.prime_iff_prime_int.1 hp)`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Q, hIQ, hQ, hQp⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (Ideal.span {(p : ℤ)}) I fun k hkI => by`. Rewrite using `[Ideal.mem_span_singleton, Int.natCast_dvd]`. Assume the negation of the conclusion as `hd`. Use `hk _ hd ?_` and prove the remaining obligations. Establish `h1 : k • x ∈ L`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `: algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) (algebraMap ℤ _ k) • x ∈ L` using `hkI`. Rewrite `this` using `[eq_intCast, map_intCast, Int.cast_smul_eq_zsmul]`. Then use the resulting hypothesis. Rewrite using `[← natCast_zsmul]`. Break down `Int.natAbs_eq k with e | e` into its components or cases. Rewrite using `[← e]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h1` using `[e, neg_smul, neg_mem_iff]`. Then use the resulting hypothesis. Establish `hpQ : (p : 𝓞 (maximalRealSubfield E)) ∈ Q`. Establish `: (p : ℤ) ∈ Q.comap (algebraMap ℤ _)` using `hQp ▸ Ideal.mem_span_singleton_self _`. Simplify using `using this`. Take `⟨s, hs, hsx⟩` from `h ⟨Q, hQ, fun e => hp.ne_zero (by simpa [e] using hpQ)⟩ hpQ`.
-
-Conclude with `hs (hIQ hsx)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_nsmul_mem {p : ℕ} (hp : p.Prime) (L : Submodule (𝓞 E) (Fin n → E)) (x : Fin n → E)
     (h : ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)), (p : 𝓞 (maximalRealSubfield E)) ∈ v.asIdeal →
@@ -495,14 +479,14 @@ theorem exists_nsmul_mem {p : ℕ} (hp : p.Prime) (L : Submodule (𝓞 E) (Fin n
   exact hs (hIQ hsx)
 
 /- English proof (translation)
-Rewrite using `[herm_eq_dotProduct, Matrix.vecMul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem herm_one (x y : Fin n → E) : herm 1 x y = stdForm x y := by
   rw [herm_eq_dotProduct, Matrix.vecMul_one]
   rfl
 
 /- English proof (translation)
-Rewrite using `[← mem_span_semiLoc_iff, pi_eq_sum_univ' y]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ (⟨y j, (locEmb_mem_locOrder_iff v _).1 (hy j)⟩ : semiLoc v) (Submodule.subset_span (single_mem_stdMod j))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_stdMod (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) {y : Fin n → E}
     (hy : ∀ i, locEmb v (y i) ∈ locOrder v) :
@@ -512,19 +496,19 @@ theorem exists_smul_mem_stdMod (v : HeightOneSpectrum (𝓞 (maximalRealSubfield
     (⟨y j, (locEmb_mem_locOrder_iff v _).1 (hy j)⟩ : semiLoc v) (Submodule.subset_span (single_mem_stdMod j))
 
 /- English proof (translation)
-Introduce `p hp`. Establish `hL : ReciprocityTheory.MultiplicativeHeights.IsLattice Λ.L` using `⟨Λ.fg, Λ.span_top⟩`. Use `choose h hh hhL using exists_orthonormal_frame (G := 1) (L := Λ.L) (fun a b => by simp [cc, Matrix.one_apply, apply_ite, eq_comm]) (by simp) hL (fun x => (hΛ x).trans (forall₂_congr fun y _ => by`. Rewrite using `[herm_one]`. Conclude with `⟨fun ⟨a, ha⟩ => ha ▸ a.isIntegral_coe, fun h => ⟨⟨_, h⟩, rfl⟩⟩))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hh' : ∀ v, ((h v).1.map (locConj v))ᵀ * (h v).1 = 1` using `fun v => by`. Use `congrArg Matrix.transpose (hh v)` as an intermediate fact. Rewrite `this` using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_one]`. Then use the resulting hypothesis. Establish `hinv : ∀ v, ((h v)⁻¹).1 = ((h v).1.map (locConj v))ᵀ` using `fun v => Units.inv_eq_of_mul_eq_one_left (hh' v)`. Take `⟨γ, hγ, hγ'⟩` from `exists_unitary_near hp.ne_zero (fun v => (h v).1) hh'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hγ₂ : γ * (γ.map cc)ᵀ = 1` using `mul_eq_one_comm.1 hγ`. Establish `hmap : ∀ v (M : Matrix (Fin n) (Fin n) E) (x : Fin n → E), (fun i => locEmb v ((M *ᵥ x) i)) = M.map (locEmb v) *ᵥ fun i => locEmb v (x i)` using `fun v M x => funext fun i => RingHom.map_mulVec (locEmb v) M x i`. Use `⟨Matrix.toLin'OfInv hγ hγ₂, fun x y => ?_, fun x hx => exists_nsmul_mem hp _ _ fun v hv => ?_, fun x hx => exists_nsmul_mem hp _ _ fun v hv => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `stdForm (γ *ᵥ x) (γ *ᵥ y) = _`. Use `congrArg Matrix.transpose hγ` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_one]`. Rewrite using `[← herm_one, herm_mulVec, Matrix.mul_one, this, herm_one]`. Establish `h1` using `(hhL v _).1 (Submodule.subset_span ⟨x, hx, rfl⟩)`. Establish `h2 : ∀ i j, (((γ.map cc)ᵀ).map (locEmb v) * (h v).1) i j ∈ locOrder v` using `fun i j => by`. Use `locConj_mem v (hγ' v hv j i) using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, locConj_locConj, locConj_locEmb, mul_comm]`. Establish `h3` using `mulVec_mem_locOrder v h2 h1`. Rewrite `h3` using `[Matrix.mulVec_mulVec, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one, ← hmap]`. Take `⟨s, hs, h4⟩` from `exists_smul_mem_stdMod v h3`. Use `⟨s, hs, _, h4, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `γ *ᵥ _ = _`. Rewrite using `[← algebraMap_smul E, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hγ₂, Matrix.one_mulVec, algebraMap_smul]`. Take `⟨y, hy, rfl⟩` from `hx`. Use `(locEmb_mem_locLattice_iff v hL _).1 ((hhL v _).2 ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∀ i, (_ *ᵥ fun i => locEmb v ((γ *ᵥ y) i)) i ∈ _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmap, Matrix.mulVec_mulVec, hinv]`. Use `mulVec_mem_locOrder v (hγ' v hv) fun i => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `mem_stdMod.1 hy i`. Conclude with `ha ▸ locEmb_mem_locOrder v a`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inGenus_of_selfDual [Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E)] {Λ : Lat E n}
     (hΛ : Λ.SelfDual) : Λ.InGenus := by

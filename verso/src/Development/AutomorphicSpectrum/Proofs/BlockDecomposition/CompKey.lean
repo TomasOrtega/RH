@@ -8,13 +8,13 @@ open PositivityTheory.Rg.BcB.E1
 namespace GlobalTheory.CompanionTheory.KernelOperators
 
 /- English proof (translation)
-Use `haveI : SFinite X.ν := by unfold Ctx.ν; infer_instance`. Take `⟨A, hA, hrow, hcol⟩` from `hR X ψ hψ`. Establish `hmeas : Measurable (Function.uncurry (ker X.Γ ψ))` using `(hB X ψ hψ).2.1.measurable`. Establish `hint` using `hS X.G X.ν (ker X.Γ ψ) A hmeas hA hrow hcol (fun z => ker X.Γ φ x z) f ((hL X φ hφ).2 x) hf`. Establish `e1 : ∀ z, ∫ y, ker X.Γ φ x z * ker X.Γ ψ z y * f y ∂X.ν = ker X.Γ φ x z * ∫ y, ker X.Γ ψ z y * f y ∂X.ν`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Repeatedly rewrite using `[mul_assoc]`. Conclude with `integral_const_mul _ _`. Prove the components needed by the constructor for the conclusion. Establish `h` using `hint.integral_prod_left`.
+Rewrite the conclusion repeatedly using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h` using `only [e1]`. Establish `h` using `integral_integral_swap (f := fun z y => ker X.Γ φ x z * ker X.Γ ψ z y * f y) hint`. Simplify using `only [e1] at h`. Rewrite using `[h]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [integral_mul_const]`. Rewrite using `[hM X φ ψ hφ hψ x y]`.
+A detailed English derivation is pending.
 -/
 theorem comp_key (hB : KerBasic) (hR : RowInt) (hL : KernelL2RowsColumns) (hS : SchurInt) (hM : KerMul)
     (X : Ctx) (φ ψ : X.G → ℂ) (hφ : Tst φ) (hψ : Tst ψ) (x : X.G) (f : X.G → ℂ)
@@ -44,15 +44,15 @@ theorem comp_key (hB : KerBasic) (hR : RowInt) (hL : KernelL2RowsColumns) (hS : 
     rw [hM X φ ψ hφ hψ x y]
 
 /- English proof (translation)
-Introduce `hB hLin hR hL hS hC hM X ι _ Φ₁ Φ₂ T₁ T₂ h₁ h₂ o₁ o₂`. Establish `tcv : ∀ i j k, Tst (cv X.μ (Φ₁ i k) (Φ₂ k j))` using `fun i j k => (hC X _ _ (h₁ i k) (h₂ k j)).1`. Establish `lin : ∀ i j, Tst (fun y => ∑ k, cv X.μ (Φ₁ i k) (Φ₂ k j) y) ∧ ∀ x y, ker X.Γ (fun y => ∑ k, cv X.μ (Φ₁ i k) (Φ₂ k j) y) x y = ∑ k, ker X.Γ (cv X.μ (Φ₁ i k) (Φ₂ k j)) x y`. Introduce `i j`. Establish `h` using `hLin X ι (fun k => cv X.μ (Φ₁ i k) (Φ₂ k j)) (fun _ => 1) (fun k => tcv i j k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `h` using `only [mul_one]`. Use `⟨fun i j => (lin i j).1, ?_⟩` and prove the remaining obligations. Introduce `f i`. Establish `a1` using `o₁ (T₂ f) i`. Use `show ((T₁ (T₂ f)) i : X.G → ℂ) =ᵐ[X.ν] _`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [a1] with x hx`. Rewrite using `[hx]`. Establish `hfj : ∀ j, MemLp (f j : X.G → ℂ) 2 X.ν` using `fun j => Lp.memLp _`. Establish `step : ∀ k, ∫ z, ker X.Γ (Φ₁ i k) x z * ((T₂ f) k : X.G → ℂ) z ∂X.ν = ∑ j, ∫ y, ker X.Γ (cv X.μ (Φ₁ i k) (Φ₂ k j)) x y * (f j : X.G → ℂ) y ∂X.ν`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun z => ker X.Γ (Φ₁ i k) x z * ((T₂ f) k : X.G → ℂ) z) =ᵐ[X.ν] fun z => ∑ j, ker X.Γ (Φ₁ i k) x z * ∫ y, ker X.Γ (Φ₂ k j) z y * (f j : X.G → ℂ) y ∂X.ν` using `by filter_upwards [o₂ f k] with z hz`. Rewrite using `[hz, Finset.mul_sum]`. Rewrite using `[integral_congr_ae e, integral_finset_sum _ fun j _ => (comp_key hB hR hL hS hM X _ _ (h₁ i k) (h₂ k j) x _ (hfj j)).1]`. Conclude with `Finset.sum_congr rfl fun j _ => (comp_key hB hR hL hS hM X _ _ (h₁ i k) (h₂ k j) x _ (hfj j)).2`. Rewrite using `[Finset.sum_congr rfl fun k _ => step k, Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[(lin i j).2, Finset.sum_mul]`. Establish `hi : ∀ k, Integrable (fun y => ker X.Γ (cv X.μ (Φ₁ i k) (Φ₂ k j)) x y * (f j : X.G → ℂ) y) X.ν` using `fun k => MemLp.integrable_mul ((hL X _ (tcv i j k)).2 x) (hfj j)`. Conclude with `(integral_finset_sum _ fun k _ => hi k).symm`.
+A detailed English derivation is pending.
 -/
 theorem opMul : KerBasic → KerLin → RowInt → KernelL2RowsColumns → SchurInt → CvTest → KerMul → OpMul := by
   intro hB hLin hR hL hS hC hM X ι _ Φ₁ Φ₂ T₁ T₂ h₁ h₂ o₁ o₂

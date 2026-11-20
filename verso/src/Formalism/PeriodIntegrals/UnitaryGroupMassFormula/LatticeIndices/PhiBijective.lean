@@ -13,20 +13,20 @@ def phi (σ : E →ₐ[F] E) (ι : E →ₐ[F] K) : K ⊗[F] E →ₐ[K] K × K 
   Algebra.TensorProduct.lift (Algebra.ofId K (K × K)) (ι.prod (ι.comp σ)) (fun _ _ => Commute.all _ _)
 
 /- English proof (translation)
-Simplify using `[phi, Algebra.TensorProduct.lift_tmul, Algebra.ofId_apply, Prod.algebraMap_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phi_tmul (σ : E →ₐ[F] E) (ι : E →ₐ[F] K) (x : K) (e : E) :
     phi σ ι (x ⊗ₜ[F] e) = (x * ι e, x * ι (σ e)) := by
   simp [phi, Algebra.TensorProduct.lift_tmul, Algebra.ofId_apply, Prod.algebraMap_apply]
 
 /- English proof (translation)
-Establish `hne : ι a - ι (σ a) ≠ 0`. Introduce `h`. Conclude with `ha (ι.injective (sub_eq_zero.mp h)).symm`. Establish `hsurj : Function.Surjective (phi σ ι)`. Introduce and unpack `⟨u, v⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨((u - v) / (ι a - ι (σ a))) ⊗ₜ[F] a + (u - (u - v) / (ι a - ι (σ a)) * ι a) ⊗ₜ[F] (1 : E), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, phi_tmul, phi_tmul]`. Simplify using `only [map_one, mul_one, Prod.mk_add_mk, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ h2`. Establish `hr : Module.finrank K (K ⊗[F] E) = Module.finrank K (K × K)`. Rewrite using `[Module.finrank_baseChange, h2, Module.finrank_prod, Module.finrank_self]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `key` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hr (f := (phi σ ι).toLinearMap)).mpr (by exact hsurj)`. Conclude with `⟨by exact key, hsurj⟩`.
+A detailed English derivation is pending.
 -/
 theorem phi_bijective (σ : E →ₐ[F] E) (ι : E →ₐ[F] K) (h2 : Module.finrank F E = 2) (a : E) (ha : σ a ≠ a) :
     Function.Bijective (phi σ ι) := by
@@ -50,9 +50,9 @@ theorem phi_bijective (σ : E →ₐ[F] E) (ι : E →ₐ[F] K) (h2 : Module.fin
   exact ⟨by exact key, hsurj⟩
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x e`. Simplify using `only [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, phi_tmul, hσ, Prod.swap_prod_mk]`. Consider the case `add x y hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[map_add, map_add, map_add, hx, hy]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem phi_sig (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (ι : E →ₐ[F] K) (t : K ⊗[F] E) :
     phi σ ι (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR K σ t) = (phi σ ι t).swap := by
@@ -75,11 +75,11 @@ def EmbP {D : Formalism.BasicNotions.D7} (X : HidaSetting D) (p : TypX X) : Prop
   Nonempty (X.B.I.E →ₐ[X.B.I.F] FpX X p)
 
 /- English proof (translation)
-Take `⟨ι⟩` from `h`. Establish `hσ : ∀ x, X.B.I.cm.sig (X.B.I.cm.sig x) = x` using `fun x => star_star x`. Establish `h2 : Module.finrank X.B.I.F X.B.I.E = 2` using `X.B.I.cm.deg2`. Establish `hex : ∃ a, X.B.I.cm.sig a ≠ a`. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hne`. Establish `htop : (⊥ : Subalgebra X.B.I.F X.B.I.E) = ⊤`. Use `eq_top_iff.mpr fun x _ => Algebra.mem_bot.mpr ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `(X.B.I.cm.fixed x).1 (hne x)`. Conclude with `⟨y, hy⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `Subalgebra.bot_eq_top_iff_finrank_eq_one.mp htop` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨a, ha⟩` from `hex`. Conclude with `⟨AlgEquiv.ofBijective (MassDataIdxSplit.phi X.B.I.cm.sig ι) (MassDataIdxSplit.phi_bijective _ ι h2 a ha), fun t => MassDataIdxSplit.phi_sig _ hσ ι t⟩`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem splitTheta_of {D : Formalism.BasicNotions.D7} (X : HidaSetting D) (p : TypX X) (h : EmbP X p) :
     ∃ θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p, IsSplitEquiv X p θ := by

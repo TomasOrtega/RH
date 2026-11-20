@@ -12,7 +12,7 @@ noncomputable def cen (k : ℕ) : ℂ := ((k : ℂ) + 2) * Complex.I
 noncomputable def rad (k : ℕ) : ℝ := ((k : ℝ) + 2) - 1 / ((k : ℝ) + 2)
 
 /- English proof (translation)
-Unfold `rad`. Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `h : 1 / ((k : ℝ) + 2) < 1`. Rewrite using `[div_lt_one (by positivity)]; linarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem rad_pos (k : ℕ) : 0 < rad k := by
   unfold rad
@@ -22,18 +22,18 @@ theorem rad_pos (k : ℕ) : 0 < rad k := by
   linarith
 
 /- English proof (translation)
-Simplify using `[cen]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cen_im (k : ℕ) : (cen k).im = (k : ℝ) + 2 := by simp [cen]
 /- English proof (translation)
-Simplify using `[cen]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cen_re (k : ℕ) : (cen k).re = 0 := by simp [cen]
 
 /- English proof (translation)
-Introduce `z hz`. Rewrite `hz` using `[Metric.mem_closedBall, dist_eq_norm]`. Establish `h1` using `Complex.abs_im_le_norm (z - cen k)`. Establish `h2 : (z - cen k).im = z.im - ((k : ℝ) + 2)` using `by rw [Complex.sub_im, cen_im]`. Rewrite `h1` using `[h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : 0 < 1 / ((k : ℝ) + 2)` using `by positivity`. Use `show 0 < z.im`. Unfold `rad at hz`. Use `neg_abs_le (z.im - ((k : ℝ) + 2))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem closedBall_sub (k : ℕ) : Metric.closedBall (cen k) (rad k) ⊆ Hs := by
   intro z hz
@@ -48,9 +48,9 @@ theorem closedBall_sub (k : ℕ) : Metric.closedBall (cen k) (rad k) ⊆ Hs := b
   linarith
 
 /- English proof (translation)
-Use `monotone_nat_of_le_succ fun k => Metric.ball_subset_ball' ?_` and prove the remaining obligations. Establish `hd : cen k - cen (k + 1) = -Complex.I`. Simplify using `only [cen]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[dist_eq_norm, hd, norm_neg, Complex.norm_I]`. Unfold `rad`. Use `push_cast`. Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `: 1 / ((k : ℝ) + 1 + 2) ≤ 1 / ((k : ℝ) + 2)` using `one_div_le_one_div_of_le (by positivity) (by linarith)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -67,13 +67,13 @@ theorem ball_mono : Monotone (fun k : ℕ => Metric.ball (cen k) (rad k)) := by
   linarith
 
 /- English proof (translation)
-Establish `hy : 0 < z.im` using `hz`. Take `⟨k, hk⟩` from `exists_nat_gt ((z.re ^ 2 + z.im ^ 2 + 2) / (2 * z.im))`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_ball, dist_eq_norm]`. Use `set a : ℝ := (k : ℝ) + 2 with ha`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hapos : 0 < a` using `by positivity`. Establish `hka : (k : ℝ) < a` using `by linarith`. Establish `h1 : z.re ^ 2 + z.im ^ 2 + 2 < 2 * z.im * a`. Use `(div_lt_iff₀ (by positivity : (0:ℝ) < 2 * z.im)).1 (hk.trans hka)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hsq : ‖z - cen k‖ ^ 2 = z.re ^ 2 + (z.im - a) ^ 2`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply, Complex.sub_re, Complex.sub_im, cen_re, cen_im]`. Expand and normalize the polynomial expressions, which then agree. Establish `hrad : rad k = a - 1 / a` using `rfl`. Establish `hinv : a * (1 / a) = 1` using `by field_simp`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : ‖z - cen k‖ ^ 2 < rad k ^ 2`. Rewrite using `[hsq, hrad]`. Use polynomial arithmetic with `[sq_nonneg (1 / a)]`. Conclude with `lt_of_pow_lt_pow_left₀ 2 (rad_pos k).le hlt`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem cover (z : ℂ) (hz : z ∈ Hs) : ∃ k : ℕ, z ∈ Metric.ball (cen k) (rad k) := by
   have hy : 0 < z.im := hz
@@ -97,15 +97,13 @@ theorem cover (z : ℂ) (hz : z ∈ Hs) : ∃ k : ℕ, z ∈ Metric.ball (cen k)
   exact lt_of_pow_lt_pow_left₀ 2 (rad_pos k).le hlt
 
 /- English proof (translation)
-Establish `hfc : ContinuousAt f z0` using `(hf.differentiableAt (hD.mem_nhds hz0)).continuousAt`. Establish `hgc : ContinuousAt g z0` using `(hg.differentiableAt (hD.mem_nhds hz0)).continuousAt`. Use `set S : ℂ → ℂ := fun z => ∑ i ∈ Finset.range m, f z ^ i * g z ^ (m - 1 - i) with hS`. Establish `hSc : ContinuousAt S z0`. Simplify using `only [hS]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `fun_prop`. Establish `hS0 : S z0 ≠ 0`. Establish `: S z0 = (m : ℂ) * f z0 ^ (m - 1)`. Simplify using `only [hS, ← hfg0]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => f z0 ^ (m - 1))]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `i hi`. Rewrite using `[← pow_add]`. Use `congr 1`. Use `Finset.mem_range.1 hi` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[this]`. Conclude with `mul_ne_zero (by exact_mod_cast hm.ne') (pow_ne_zero _ hne)`. Establish `hev : f =ᶠ[nhds z0] g` using `by filter_upwards [hSc.eventually_ne hS0, hD.mem_nhds hz0] with z hz hzD`. Establish `key : S z * (f z - g z) = f z ^ m - g z ^ m`.
-
-Simplify using `only [hS]`. Conclude with `geom_sum₂_mul (f z) (g z) m`. Rewrite `key` using `[hpow z hzD, sub_self]`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 key).resolve_left hz)`. Conclude with `(hf.analyticOnNhd hD).eqOn_of_preconnected_of_eventuallyEq (hg.analyticOnNhd hD) hc hz0 hev`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eqOn_of_pow_eq {D : Set ℂ} (hD : IsOpen D) (hc : IsPreconnected D) {m : ℕ} (hm : 0 < m)
     {f g : ℂ → ℂ} (hf : DifferentiableOn ℂ f D) (hg : DifferentiableOn ℂ g D)
@@ -141,27 +139,23 @@ end GlobalTheory.UHPRoot
 open GlobalTheory.UHPRoot in
 
 /- English proof (translation)
-Introduce `h m hm hd hord`. Establish `hHo : IsOpen Hs` using `isOpen_lt continuous_const Complex.continuous_im`. Establish `han : AnalyticOnNhd ℂ h Hs` using `hd.analyticOnNhd hHo`. Establish `hr : ∀ k : ℕ, ∃ r : ℂ → ℂ, DifferentiableOn ℂ r (Metric.ball (cen k) (rad k)) ∧ ∀ z ∈ Metric.ball (cen k) (rad k), r z ^ m = h z` using `fun k => GlobalTheory.T.exists_root_ball_of_analyticOrder_dvd h m (cen k) (rad k) hm (rad_pos k) (han.mono (closedBall_sub k)) (fun τ hτ => hord τ (closedBall_sub k hτ))`. Use `choose r hrd hrp using hr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : cen 0 ∈ Hs` using `closedBall_sub 0 (Metric.mem_closedBall_self (rad_pos 0).le)`. Take `⟨k0, hk0⟩` from `hord (cen 0) hc0`. Establish `hnt : ¬ ∀ᶠ z in nhds (cen 0), h z = 0`. Rewrite using `[← analyticOrderAt_eq_top, hk0]`. Conclude with `ENat.coe_ne_top _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z0, hz0h, hz0D⟩` from `((Filter.not_eventually.1 hnt).and_eventually (Metric.ball_mem_nhds (cen 0) (rad_pos 0))).exists`. Take `⟨w0, hw0⟩` from `IsAlgClosed.exists_pow_nat_eq (h z0) hm`. Establish `hw0ne : w0 ≠ 0`. Introduce and unpack `rfl`. Rewrite `hw0` using `[zero_pow hm.ne']`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hz0h hw0.symm`. Establish `hz0k : ∀ k, z0 ∈ Metric.ball (cen k) (rad k)` using `fun k => ball_mono (Nat.zero_le k) hz0D`. Establish `hrk0 : ∀ k, r k z0 ≠ 0`. Introduce `k h0`. Use `hrp k z0 (hz0k k)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h0, zero_pow hm.ne']`. Conclude with `hz0h this.symm`. Use `set r' : ℕ → ℂ → ℂ := fun k z => (w0 / r k z0) * r k z with hr'`. Establish `hr'd : ∀ k, DifferentiableOn ℂ (r' k) (Metric.ball (cen k) (rad k))` using `fun k => (differentiableOn_const _).mul (hrd k)`. Establish `hr'p : ∀ k, ∀ z ∈ Metric.ball (cen k) (rad k), r' k z ^ m = h z`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k z hz`. Simplify using `only [hr', mul_pow, div_pow, hw0, hrp k z hz, hrp k z0 (hz0k k)]`. Rewrite using `[div_self hz0h, one_mul]`. Establish `hr'0 : ∀ k, r' k z0 = w0`. Introduce `k`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hr']`. Rewrite using `[div_mul_cancel₀ _ (hrk0 k)]`. Establish `agree_le : ∀ j k, j ≤ k → Set.EqOn (r' j) (r' k) (Metric.ball (cen j) (rad j))`. Introduce `j k hjk`. Use `eqOn_of_pow_eq Metric.isOpen_ball (convex_ball _ _).isPreconnected hm (hr'd j) ((hr'd k).mono (ball_mono hjk)) (hz0k j) (by rw [hr'0, hr'0]) (by rw [hr'0]; exact hw0ne) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `z hz`. Rewrite using `[hr'p j z hz, hr'p k z (ball_mono hjk hz)]`. Establish `agree : ∀ j k w, w ∈ Metric.ball (cen j) (rad j) → w ∈ Metric.ball (cen k) (rad k) → r' j w = r' k w`. Introduce `j k w hj hk`. Break down `le_total j k with hjk | hkj` into its components or cases.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `agree_le j k hjk hj`. Conclude with `(agree_le k j hkj hk).symm`. Use `choose N hN using cover`. Set `R : ℂ → ℂ` to `fun z => if hz : z ∈ Hs then r' (N z hz) z else 0`. Use `⟨R, ?_, ?_⟩` and prove the remaining obligations.
-
-Introduce `z hz`. Establish `hzk` using `hN z hz`. Establish `hev : R =ᶠ[nhds z] r' (N z hz)` using `by filter_upwards [Metric.isOpen_ball.mem_nhds hzk] with w hw`. Establish `hwH : w ∈ Hs` using `closedBall_sub _ (Metric.ball_subset_closedBall hw)`. Simplify using `only [R, dif_pos hwH]`.
-
-Conclude with `agree _ _ w (hN w hwH) hw`. Conclude with `(((hr'd _).differentiableAt (Metric.isOpen_ball.mem_nhds hzk)).congr_of_eventuallyEq hev).differentiableWithinAt`. Introduce `z hz`. Simplify using `only [R, dif_pos hz]`. Conclude with `hr'p _ z (hN z hz)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.KZ.H3.uhp_root : ∀ (h : ℂ → ℂ) (m : ℕ), 0 < m → DifferentiableOn ℂ h Hs →
     (∀ τ ∈ Hs, ∃ k : ℕ, analyticOrderAt h τ = ((m * k : ℕ) : ℕ∞)) →

@@ -19,7 +19,7 @@ def HasBoundedSums (φ : GL (Fin n) k → ℂ) : Prop :=
     ‖∑ c ∈ S, φ c.out‖ ≤ S.card
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ => rfl, fun _ _ _ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isBorelSph_one : IsBorelSph k (n := n) (fun _ => 1) fun _ => 1 :=
   ⟨fun _ _ _ => rfl, fun _ _ _ _ => by simp⟩

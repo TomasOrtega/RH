@@ -16,27 +16,23 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory.SmallSecondTangent
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε F G d c μ' hlift hμ k e he hadapt Θ hΘ`. Establish `hF : IsFrame p C (RingHom.id O)` using `GlobalTheory.FrameIntegers.isFrame_integers p C v O hv`. Establish `hμeq : (fun i => map F.θ (μ' i)) = c.μ` using `funext hμ`. Take `⟨k', es, lbs, hbs, -, hcobs, hlies⟩` from `GlobalTheory.T.exists_adapted_quasiLog_basis_pDivGroup_lieDual p C v O hv G d c C hF`. Establish `hlift1 : ∀ m, ∃ f : MvPowerSeries (Fin d) F.Q, QL μ' ⊤ f ∧ map Θ f = es m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `m`. Establish `hq : QL (fun i => map F.θ (μ' i)) ⊤ (es m)` using `hμeq ▸ hbs.1 m`. Use `choose b _ hb using hq.2.1`. Use `choose w hw using fun i => F.frame.surj (b i)`. Take `⟨f, hf, hf', -⟩` from `GlobalTheory.QLog.KLift.lift_quasiLog p F.B O F.Q F.θ F.frame d μ' hlift C hF Θ hΘ (es m) w hq (fun i => by rw [hb, hw])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨f, hf, hf'⟩`. Use `choose f hfq hfm using hlift1`. Establish `hfb : IsBasis μ' f`. Use `GlobalTheory.basis_lift p F.B O F.Q F.θ F.frame d μ' hlift C hF Θ hΘ _ f hfq ?_ (GlobalTheory.BChain.reflTransGen_isStep p C v O hv ε hε F)` and prove the remaining obligations. Establish `: (fun i => map Θ (f i)) = es` using `funext hfm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[this, hμeq]`. Conclude with `hbs`. Use `choose P hP using fun i => (hfb.2 (e i) (he.1 i)).exists`. Use `choose P' hP' using fun j => (he.2 (f j) (hfq j)).exists`. Take `⟨h1, h2⟩` from `GlobalTheory.T.quasiLogarithmBasis_transitionMatrices_inverse μ' e f he hfb P P' hP hP'`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Set `Ls : Fin d ⊕ Fin k' → G.dual.Lie` to `Sum.elim 0 lbs`. Establish `hLs : ∀ m, c.IsLie (es m) (Ls m)`. Introduce and unpack `(i | j)`. Take `⟨l, hl, -⟩` from `GlobalTheory.T.pDivGroup_dual_tangent_of_quasiLogarithm p C v O hv G d c C hF (es (Sum.inl i)) (hbs.1 _)`. Use `(GlobalTheory.T.pDivGroup_dual_tangent_linear_kills_integral p C v O hv G d c C hF _ _ l l 0 hl hl).2.2 (hcobs i)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `this` using the available equality. Conclude with `hl`. Conclude with `hlies j`. Establish `hμc : ∀ i, constantCoeff (μ' i) = 0` using `hlift.const`. Establish `hg : ∀ i, QL c.μ ⊤ (map Θ (e i))` using `fun i => by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hμeq]`. Conclude with `GlobalTheory.SmallSecond.ql_map hΘ μ' hμc (he.1 i)`. Establish `hrow : ∀ i, c.IsLie (map Θ (e i)) (∑ m, F.θ (P i m) • Ls m)`. Introduce `i`. Use `GlobalTheory.T.tangentVector_quasiLogarithm_of_congruent_combination p C v O hv G d c es (hbs.1) Ls hLs _ (hg i) _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `α`. Take `⟨b, -, hb⟩` from `hP i α`. Use `⟨F.θ b, trivial, ?_⟩` and prove the remaining obligations. Establish `: map Θ (e i) - comb (fun m => F.θ (P i m)) es = map Θ (e i - comb (P i) f)`. Rewrite using `[map_sub, GlobalTheory.SmallSecond.map_comb hΘ, funext hfm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this, coeff_map, hb, hΘ]`. Establish `hzero : ∀ i j, F.θ (P (Sum.inl i) (Sum.inr j)) = 0`. Introduce `i`. Establish `hc : cob1 (up C c.μ) (map Θ (e (Sum.inl i))) = 0`. Rewrite using `[← hμeq]`.
-
-Conclude with `GlobalTheory.SmallSecond.formalGroupLawCoboundaryOne_map_eq_zero hΘ μ' hμc (hadapt i).1`. Establish `h0` using `(GlobalTheory.T.pDivGroup_dual_tangent_linear_kills_integral p C v O hv G d c C hF _ _ _ _ 0 (hrow (Sum.inl i)) (hrow (Sum.inl i))).2.2 hc`. Simplify using `only [Fintype.sum_sum_type, Ls, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, smul_zero, Finset.sum_const_zero, zero_add] at h0`. Conclude with `(Fintype.linearIndependent_iff.1 lbs.linearIndependent) _ h0`. Take `⟨lb, hlb⟩` from `GlobalTheory.T.exists_basis_of_blockLowerTriangular_inv' O G.dual.Lie d k k' lbs ((Matrix.of P).map F.θ) ((Matrix.of P').map F.θ) (by rw [← Matrix.map_mul, h1, Matrix.map_one _ (map_zero _) (map_one _)]) (by rw [← Matrix.map_mul, h2, Matrix.map_one _ (map_zero _) (map_one _)]) hz …`.
-
-Use `⟨lb, fun j => ?_⟩` and prove the remaining obligations. Use `hrow (Sum.inr j)` as an intermediate fact. Simplify using `only [Fintype.sum_sum_type, Ls, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, smul_zero, Finset.sum_const_zero, zero_add] at this`. Rewrite using `[hlb]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tangent_basis : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d) (μ' : Fin d → MvPowerSeries (Fin d ⊕ Fin d) F.B), IsLift F.θ μ' → (∀ i, map F.θ (μ' i) = c.μ i) → ∀ (k : ℕ) (e : Fin d ⊕ Fin k → MvPowerSeries (Fin d) F.Q), IsBasis μ' e → IsAdapted F.θ μ' e → ∀ Θ : F.Q →+* C, (∀ b, Θ (algebraMap F.B F.Q b) = algebraMap O C (F.θ b)) → ∃ lb : Module.Basis (Fin k) O G.dual.Lie, ∀ j, c.IsLie (map Θ (e (Sum.inr j))) (lb j) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε F G d c μ' hlift hμ k e he hadapt Θ hΘ

@@ -17,12 +17,12 @@ open UpperTheory.Top UpperTheory.V.HV UpperTheory.V.HV.U
 namespace UpperTheory.V.Lit.KN.O
 
 /- English proof (translation)
-The claim follows from `U3.corGK (U3.propGK h.number (oneChar h ha))`.
+A detailed English derivation is pending.
 -/
 theorem corGK_of (h : InpN) (ha : Aut.AutomorphyUnramifiedCoefficients) : U3.CorGK := U3.corGK (U3.propGK h.number (oneChar h ha))
 
 /- English proof (translation)
-The claim follows from `U3.countI (corGK_of h ha)`.
+A detailed English derivation is pending.
 -/
 theorem caseI (h : InpN) (ha : Aut.AutomorphyUnramifiedCoefficients) : CountI := U3.countI (corGK_of h ha)
 

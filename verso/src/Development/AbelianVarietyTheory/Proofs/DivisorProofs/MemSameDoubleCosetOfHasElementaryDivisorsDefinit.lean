@@ -17,15 +17,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LocalCartan
 
 /- English proof (translation)
-Introduce `D _ n P d x y hx hy hdx hdy`. Take `⟨a, b, e⟩` from `GlobalTheory.SphGal.HasDiv.exists_eq_mul_mul (O := Ov D.host.E P) (fun _ h => h) hdy hdx`. Distinguish the cases in `hs : IsSplitAt P`. Take `⟨φ, hφ⟩` from `GlobalTheory.locU_equiv_GL D.host.E n P hs`. Establish `hc : ∀ g, cLoc P (φ.symm g : UA D.host.E n) = g` using `fun g => by rw [← hφ, φ.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨φ.symm a, ⟨(φ.symm a).2, by rw [hc]; exact a.2⟩, φ.symm b, ⟨(φ.symm b).2, by rw [hc]; exact b.2⟩, ?_⟩` and prove the remaining obligations. Establish `h : (⟨y, hy⟩ : locU n P) = φ.symm a * ⟨x, hx⟩ * φ.symm b`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, φ.apply_symm_apply, φ.apply_symm_apply, hφ, hφ]`. Conclude with `e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg Subtype.val h`. Take `⟨s, ϖ, q, hs, hU⟩` from `GlobalTheory.InertPlaceConj.exists_conj_isUnramInv D.host.E P (GlobalTheory.ToricDistribution.host_unram P) hs`. Take `⟨φ, hφ⟩` from `GlobalTheory.DefU.Inert.locU_equiv D.host.E n P s hs hU.2.1`. Establish `hc : ∀ g, cLoc P (φ.symm g : UA D.host.E n) = g.1` using `fun g => by rw [← hφ, φ.apply_symm_apply]`. Take `⟨k₁, hk₁, k₂, hk₂, e'⟩` from `GlobalTheory.UnramDoubleCoset.doubleCoset_one hU _ (φ ⟨x, hx⟩).2 _ (φ ⟨y, hy⟩).2 a a.2 b b.2 (by rw [hφ, hφ]; exact e)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨φ.symm ⟨k₁, hk₁.1⟩, ⟨(φ.symm _).2, by rw [hc]; exact hk₁.2⟩, φ.symm ⟨k₂, hk₂.1⟩, ⟨(φ.symm _).2, by rw [hc]; exact hk₂.2⟩, ?_⟩` and prove the remaining obligations. Establish `h : (⟨y, hy⟩ : locU n P) = φ.symm ⟨k₁, hk₁.1⟩ * ⟨x, hx⟩ * φ.symm ⟨k₂, hk₂.1⟩`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, φ.apply_symm_apply, φ.apply_symm_apply]`. Conclude with `Subtype.ext e'`.
-
-Conclude with `congrArg Subtype.val h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem doubleCoset_of_hasDiv : ∀ (D : D7) [IsCMField D.host.E] (n : ℕ) (P : HeightOneSpectrum (𝓞 D.host.E)) (d : List ℤ)
     (x y : UA D.host.E n), x ∈ locU n P → y ∈ locU n P →

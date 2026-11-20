@@ -9,39 +9,37 @@ variable (V : Type*) [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDim
   (d : ℕ) [Fact (finrank ℝ V = d)]
 
 /- English proof (translation)
-Introduce `o b lam hlam hmin`. Set `_ : MeasurableSpace V` to `borel V`. Establish `_ : BorelSpace V` using `⟨rfl⟩`. Establish `hd : finrank ℝ V = d` using `Fact.out`. Establish `hcomb : ∀ x ∈ span ℤ (Set.range b), x ≠ 0 → lam ≤ ‖x‖`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx hx0`. Take `⟨z, rfl⟩` from `(mem_span_range_iff_exists_fun ℤ).1 hx`. Establish `hz : z ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hx0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify `hmin z hz` using `[← Int.cast_smul_eq_zsmul ℝ]`. Establish `hdisc : DiscreteTopology (span ℤ (Set.range b))` using `DiscreteTopology.of_forall_le_norm hlam fun x hx => hcomb x x.2 (by simpa using hx)`. Establish `hZ : LinearIndependent ℤ b`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `z hz`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Establish `hz' : z ≠ 0` using `fun h => hne (fun i => by simp [h])`. Establish `h1` using `hmin z hz'`. Establish `h2 : ∑ i, (z i : ℝ) • b i = 0` using `by simpa [Int.cast_smul_eq_zsmul] using hz`. Rewrite `h1` using `[h2, norm_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hR : LinearIndependent ℝ b`. Rewrite using `[linearIndependent_iff_card_eq_finrank_span, Real.finrank_eq_int_finrank_of_discrete hdisc, Set.finrank, finrank_span_eq_card hZ]`. Establish `hcard : Fintype.card (Fin d) = finrank ℝ V` using `by simp [hd]`. Set `B : Basis (Fin d) ℝ V` to `Basis.mk hR (hR.span_eq_top_of_card_eq_finrank' hcard).ge`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hB : ⇑B = b` using `Basis.coe_mk _ _`. Establish `hF : volume (ZSpan.fundamentalDomain B) = ENNReal.ofReal |o.volumeForm b|`. Rewrite using `[measure_congr (ZSpan.fundamentalDomain_ae_parallelepiped B volume), ← o.measure_eq_volume, AlternatingMap.measure_parallelepiped, hB]`. Set `e : OrthonormalBasis (Fin d) ℝ V` to `(stdOrthonormalBasis ℝ V).reindex (finCongr hd)`. Use `set σ : ℝ := lam / Real.sqrt d with hσ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hσ0 : 0 ≤ σ` using `div_nonneg hlam.le (Real.sqrt_nonneg _)`. Set `φ : V →ₗ[ℝ] (Fin d → ℝ)` to `(WithLp.linearEquiv 2 ℝ (Fin d → ℝ)).toLinearMap ∘ₗ e.repr.toLinearEquiv.toLinearMap`. Set `P : Set (Fin d → ℝ)` to `Set.univ.pi fun _ => Set.Ioo (-σ) σ`. Set `s : Set V` to `φ ⁻¹' P`. Establish `hs_mem : ∀ v, v ∈ s ↔ ∀ i, |e.repr v i| < σ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Simplify using `only [s, P, Set.mem_preimage, Set.mem_univ_pi, Set.mem_Ioo, abs_lt]`. Both sides reduce to the same expression. Establish `hsymm : ∀ x ∈ s, -x ∈ s`. Introduce `x hx`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[hs_mem]`. Introduce `i`. Simplify using `using hx i`. Establish `hconv : Convex ℝ s` using `(convex_pi fun _ _ => convex_Ioo _ _).linear_preimage φ`. Establish `hvol : volume s = ENNReal.ofReal (2 * σ) ^ d`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmp : MeasurePreserving (fun v : V => WithLp.ofLp (e.repr v)) volume volume` using `(PiLp.volume_preserving_ofLp (Fin d)).comp e.measurePreserving_repr`. Rewrite using `[show s = (fun v : V => WithLp.ofLp (e.repr v)) ⁻¹' P from rfl, hmp.measure_preimage (MeasurableSet.univ_pi fun _ => measurableSet_Ioo).nullMeasurableSet, Real.volume_pi_Ioo, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Assume the negation of the conclusion as `hlt`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push Not at hlt`. Establish `hlt' : volume (ZSpan.fundamentalDomain B) * 2 ^ finrank ℝ V < volume s`. Rewrite using `[hd]`. Establish `h : ENNReal.ofReal (|o.volumeForm b| * 2 ^ d) < ENNReal.ofReal ((2 * σ) ^ d)`. Rewrite using `[ENNReal.ofReal_lt_ofReal_iff_of_nonneg (by positivity), mul_pow, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `mul_lt_mul_of_pos_left hlt (by positivity)`. Rewrite `h` using `[ENNReal.ofReal_mul (abs_nonneg _), ENNReal.ofReal_pow (mul_nonneg zero_le_two hσ0), ENNReal.ofReal_pow zero_le_two, ENNReal.ofReal_ofNat, ← hF, ← hvol]`. Then use the resulting hypothesis. Establish `hcount : Countable (span ℤ (Set.range B)).toAddSubgroup`. Express the relevant statement in the definitionally equal form `Countable (span ℤ (Set.range B))`. Use `infer_instance`.
+Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨⟨x, hxL⟩, hx0, hxs⟩` from `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure (ZSpan.isAddFundamentalDomain' B volume) hsymm hconv hlt'`. Establish `hx0' : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `hx0 rfl`. Establish `h1 : lam ≤ ‖x‖` using `hcomb x (by rw [← hB]; exact hxL) hx0'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ‖x‖ < lam`. Rewrite `hxs` using `[hs_mem]`. Break down `Nat.eq_zero_or_pos d with hd0 | hdpos` into its components or cases. Conclude with `absurd (@Subsingleton.elim _ (finrank_zero_iff.1 (hd.trans hd0)) x 0) hx0'`. Establish `hσpos : 0 < σ` using `div_pos hlam (Real.sqrt_pos.2 (by exact_mod_cast hdpos))`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hsq : (d : ℝ) * σ ^ 2 = lam ^ 2`. Rewrite using `[hσ, div_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← e.repr.norm_map, EuclideanSpace.norm_eq]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Apply `Real.sqrt_lt_sqrt (by positivity)` to reduce the goal to its premises. Apply `Finset.sum_lt_sum_of_nonempty (Finset.univ_nonempty_iff.2 ⟨⟨0, hdpos⟩⟩)` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[Real.norm_eq_abs, sq_lt_sq, abs_of_pos hσpos, abs_abs]`. Conclude with `hxs i`.
-
-Use `_ = lam := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, hsq, Real.sqrt_sq hlam.le]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem MinkowskiVolumeForm.proof : MinkowskiVolumeForm.Statement V d := by
   classical

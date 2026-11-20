@@ -18,7 +18,7 @@ section ModeG2
 variable {D : D7} (Z : LocDat D) (p : PlF D) (g : Formalism.MainNotions.S.Loc.SplitG (Z.M p).L)
 
 /- English proof (translation)
-Use `⟨fun a b h => ?_, fun a => ?_⟩` and prove the remaining obligations. Simplify using `only [lmat, Matrix.of_apply, hl0 a b h, hρ0 b a h, map_zero, Prod.fst_zero, Prod.snd_zero]`. Rewrite using `[show ((0 : (D.s.atP p).Fp), (0 : (D.s.atP p).Fp)) = 0 from rfl, map_zero]`. Simplify using `only [lmat, Matrix.of_apply, hl1 a, hρ1 a, map_one, Prod.fst_one, Prod.snd_one]`. Rewrite using `[show ((1 : (D.s.atP p).Fp), (1 : (D.s.atP p).Fp)) = 1 from rfl, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lmat_low {l ρ : Formalism.L2.SG.LsDatumB.MatP D p} (hl0 : ∀ a b, a < b → l a b = 0) (hl1 : ∀ a, l a a = 1)
     (hρ0 : ∀ a b, b < a → ρ a b = 0) (hρ1 : ∀ a, ρ a a = 1) :
@@ -30,15 +30,13 @@ theorem lmat_low {l ρ : Formalism.L2.SG.LsDatumB.MatP D p} (hl0 : ∀ a b, a < 
     rw [show ((1 : (D.s.atP p).Fp), (1 : (D.s.atP p).Fp)) = 1 from rfl, map_one]
 
 /- English proof (translation)
-Establish `hLl : ∀ a, L a (Fin.last D.R.rS) = if a = Fin.last D.R.rS then 1 else 0`. Introduce `a`. Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `hL1 _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hL0 a _ (lt_of_le_of_ne (Fin.le_last a) h)`. Establish `hRl : ∀ b, R (Fin.last D.R.rS) b = if b = Fin.last D.R.rS then 1 else 0`. Introduce `b`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hR1 _`. Conclude with `hR0 _ b (lt_of_le_of_ne (Fin.le_last b) h)`. Use extensionality with `a b`. Simplify using `only [Matrix.mul_apply]`. Rewrite using `[Finset.sum_eq_single (Fin.last D.R.rS) (fun d _ hd => by`.
+Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_zero (fun c _ => by rw [hC c d (fun h => hd h.2), mul_zero]), zero_mul]) (by simp),`. Use the proof step `Finset.sum_eq_single (Fin.last D.R.rS) (fun c _ hc => by rw [hC c _ (fun h => hc h.1), mul_zero]) (by simp),`. Use `hLl a, hRl b]`. Apply the tactic sequence `by_cases ha : a = Fin.last D.R.rS <;> by_cases hb : b = Fin.last D.R.rS`. Substitute `ha` using the available equality.
-
-Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hb, mul_zero, hC a b (fun h => hb h.2)]`. Rewrite using `[if_neg ha, zero_mul, zero_mul, hC a b (fun h => ha h.1)]`. Rewrite using `[if_neg ha, zero_mul, zero_mul, hC a b (fun h => ha h.1)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corner_fix {L R C : Formalism.L2.SG.LsDatumB.MatP D p} (hL0 : ∀ a b, a < b → L a b = 0) (hL1 : ∀ a, L a a = 1)
     (hR0 : ∀ a b, b < a → R a b = 0) (hR1 : ∀ a, R a a = 1)

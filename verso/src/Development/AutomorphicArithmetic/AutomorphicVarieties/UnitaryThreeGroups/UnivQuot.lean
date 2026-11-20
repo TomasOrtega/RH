@@ -11,20 +11,18 @@ variable {O : Type} [CommRing O] [IsLocalRing O] {Γ : Type} [Group Γ] [Topolog
   {η : Γ →* ℤˣ} {Ψ : Γ →* Oˣ}
 
 /- English proof (translation)
-The claim follows from `GLift.ext rfl`.
+A detailed English derivation is pending.
 -/
 private theorem glift_map_map {R R' R'' : Type} [CommRing R] [Algebra O R] [IsCO O R] [CommRing R'] [Algebra O R']
     [IsCO O R'] [CommRing R''] [Algebra O R''] [IsCO O R''] (r : GLift O η Ψ R) (f : R →ₐ[O] R')
     (f' : R' →ₐ[O] R'') : (r.map f).map f' = r.map (f'.comp f) := GLift.ext rfl
 
 /- English proof (translation)
-Take `⟨f₀, hf₀, -⟩` from `(V.rep R₀).2 r₀ (hQP _ _ h₀)`. Establish `hle : J ≤ RingHom.ker f₀` using `(hJ R₀ f₀).1 (hf₀ ▸ h₀)`. Establish `hne : J ≠ ⊤` using `fun h => RingHom.ker_ne_top f₀ (top_le_iff.1 (h ▸ hle))`. Use `haveI : Nontrivial (V.R ⧸ J) := Ideal.Quotient.nontrivial_iff.2 hne`. Use `haveI : IsCO O (V.R ⧸ J) := co_quot O V.R (V.R ⧸ J) (Ideal.Quotient.mkₐ O J) (Ideal.Quotient.mkₐ_surjective O J)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨V.R ⧸ J, V.r.map (Ideal.Quotient.mkₐ O J), fun R' _ _ _ => ⟨fun f => ?_, fun r' hr' => ?_⟩⟩⟩` and prove the remaining obligations. Rewrite using `[glift_map_map, hJ]`. Introduce `y hy`. Use `show f (Ideal.Quotient.mk J y) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 hy, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨f, hf, hu⟩` from `(V.rep R').2 r' (hQP _ _ hr')`. Establish `hk : J ≤ RingHom.ker f` using `(hJ R' f).1 (hf ▸ hr')`. Establish `hc : (Ideal.Quotient.liftₐ J f hk).comp (Ideal.Quotient.mkₐ O J) = f` using `AlgHom.ext fun _ => rfl`. Use `⟨Ideal.Quotient.liftₐ J f hk, ?_, fun g hg => ?_⟩` and prove the remaining obligations. Use `show (V.r.map _).map _ = r'`.
-
-Rewrite using `[glift_map_map, hc, hf]`. Establish `hg' : g.comp (Ideal.Quotient.mkₐ O J) = f` using `hu _ ((glift_map_map V.r _ g).symm.trans hg)`. Conclude with `Ideal.Quotient.algHom_ext O (hg'.trans hc.symm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem univ_quot {P Q : GCond O η Ψ} (V : Univ P) (J : Ideal V.R)
     (hQP : ∀ (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (r : GLift O η Ψ R), Q R r → P R r)
@@ -53,15 +51,15 @@ private theorem univ_quot {P Q : GCond O η Ψ} (V : Univ P) (J : Ideal V.R)
       exact Ideal.Quotient.algHom_ext O (hg'.trans hc.symm)
 
 /- English proof (translation)
-Use `univ_quot V (Ideal.span ({x | ∃ a b, x = ((V.r.hom c).mat - 1) a b} ∪ {zmat c g₁ V.r.hom 0 1, zmat c g₁ V.r.hom 1 0})) (fun _ _ _ _ _ h => h.2) (fun R _ _ _ f => ?_) r₀ h₀` and prove the remaining obligations. Establish `hz : ∀ a b, zmat c g₁ (V.r.map f).hom a b = f (zmat c g₁ V.r.hom a b)` using `fun a b => by`. Simplify using `only [zmat, Matrix.sub_apply, map_sub]`. Both sides reduce to the same expression. Establish `hc : ∀ a b, (((V.r.map f).hom c).mat - 1) a b = f (((V.r.hom c).mat - 1) a b)` using `fun a b => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [Matrix.sub_apply, map_sub, Matrix.one_apply, apply_ite f, map_one, map_zero]`. Both sides reduce to the same expression. Rewrite using `[Ideal.span_le]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hn, -⟩ x hx show f x = 0`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Break down `hx with ⟨a, b, rfl⟩ | rfl | rfl` into its components or cases. Rewrite using `[← hc, hn.atc, sub_self, Matrix.zero_apply]`. Rewrite using `[← hz, hn.z12]`. Rewrite using `[← hz, hn.z21]`. Introduce `h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨?_, ?_, ?_⟩, (V.rep R).1 f⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use extensionality with `a b`. Rewrite using `[hc]`. Conclude with `h (Or.inl ⟨a, b, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz]`. Conclude with `h (Or.inr (Or.inl rfl))`. Rewrite using `[hz]`. Conclude with `h (Or.inr (Or.inr rfl))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem univ_norm {P : GCond O η Ψ} (V : Univ P) (c g₁ : Γ)
     {R₀ : Type} [CommRing R₀] [Algebra O R₀] [IsCO O R₀] (r₀ : GLift O η Ψ R₀) (h₀ : NormCond c g₁ P R₀ r₀) :
@@ -94,11 +92,11 @@ private theorem univ_norm {P : GCond O η Ψ} (V : Univ P) (c g₁ : Γ)
       exact h (Or.inr (Or.inr rfl))
 
 /- English proof (translation)
-Take `⟨φ, hφ, -⟩` from `(U.rep V.R).2 (V.r.comap ι hι) trivial`. Use `univ_quot V (I.map φ) (fun _ _ _ _ _ h => h.1) (fun R _ _ _ f => ?_) r₀ h₀` and prove the remaining obligations. Establish `hf : U.r.map (f.comp φ) = (V.r.map f).comap ι hι`. Rewrite using `[← glift_map_map, hφ]`. Conclude with `GLift.ext rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, f', hf', hI⟩`. Take `⟨g, -, hu⟩` from `(U.rep R).2 ((V.r.map f).comap ι hι) trivial`. Establish `e : f' = f.comp φ` using `(hu f' hf').trans (hu _ hf).symm`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `e` using the available equality. Conclude with `fun y hy => hI hy`. Conclude with `fun h => ⟨(V.rep R).1 f, f.comp φ, hf, fun y hy => h hy⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem univ_box {H : Type} [Group H] [TopologicalSpace H] {N : Set Γ} {ι : H →* Γ} (hι : Continuous ι)
     (U : Univ (GCond.noCondition O (η.comp ι) (Ψ.comp ι))) (I : Ideal U.R)
@@ -124,11 +122,11 @@ end Quot
 end UpperTheory.V.U3
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ Γ H _ _ _ _ _ _ η Ψ N ι hι U I cc g₁ hM hL hΨ hN ⟨V⟩`. Take `⟨x, τ, _, w, φ, hx, hφ, -⟩` from `hL.chart`. Establish `h₀ : BoxCond N ι hι U I O (baseLift O η Ψ hΨ)`. Use `⟨hN, x, GLift.ext hx, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h1 : φ y = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hy` using `[← hφ.ker]`. Conclude with `hy`. Establish `h2` using `hφ.const y`. Rewrite `h2` using `[h1, map_zero]`. Conclude with `IsFractionRing.injective O (FractionRing O) (h2.symm.trans (map_zero _).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨B⟩` from `univ_box hι U I V _ h₀`. Conclude with `⟨⟨B⟩, univ_norm B cc g₁ (baseLift O η Ψ hΨ) ⟨baseRepGL3_normalised_of_psi_eq_one η Ψ g₁ hM.Ψc, h₀⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.U3.exists_sRing :
     ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [Finite (ResidueField O)]

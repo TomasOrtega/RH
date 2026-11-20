@@ -13,23 +13,21 @@ section Lin
 variable {n r : ℕ}
 
 /- English proof (translation)
-Unfold `spanLt`. Conclude with `Submodule.span_mono (Set.image_mono fun b (hb : b.1 < a) => lt_of_lt_of_le hb h)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem spanLt_mono (e : Fin r → Fin n → ℂ) {a b : ℕ} (h : a ≤ b) : spanLt e a ≤ spanLt e b := by
   unfold spanLt
   exact Submodule.span_mono (Set.image_mono fun b (hb : b.1 < a) => lt_of_lt_of_le hb h)
 
 /- English proof (translation)
-Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_eq_sub_add (g : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℂ) :
     g *ᵥ x = (g - 1) *ᵥ x + x := by
   rw [Matrix.sub_mulVec, Matrix.one_mulVec, sub_add_cancel]
 
 /- English proof (translation)
-Establish `key : spanLt e a ≤ (spanLt e a).comap (Matrix.mulVecLin (g - 1))`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, Matrix.mulVecLin_apply]`. Conclude with `spanLt_mono e (le_of_lt hb) (hg.1 b)`.
-
-Conclude with `key hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sub_mem_spanLt {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : InS e z g) (a : ℕ) {x : Fin n → ℂ} (hx : x ∈ spanLt e a) : (g - 1) *ᵥ x ∈ spanLt e a := by
@@ -41,7 +39,7 @@ theorem sub_mem_spanLt {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {g : Ma
   exact key hx
 
 /- English proof (translation)
-Rewrite using `[mulVec_eq_sub_add g x]`. Conclude with `Submodule.add_mem _ (sub_mem_spanLt hg a hx) hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_spanLt_of_inS {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : InS e z g) (a : ℕ) {x : Fin n → ℂ} (hx : x ∈ spanLt e a) : g *ᵥ x ∈ spanLt e a := by
@@ -49,11 +47,11 @@ theorem mem_spanLt_of_inS {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {g :
   exact Submodule.add_mem _ (sub_mem_spanLt hg a hx) hx
 
 /- English proof (translation)
-Set `f : W →ₗ[ℂ] W` to `(Matrix.mulVecLin g).restrict (fun x hx => hW x hx)`. Establish `hf : Function.Injective f`. Introduce `a b hab`. Establish `h2 : g *ᵥ (a : Fin n → ℂ) = g *ᵥ (b : Fin n → ℂ)` using `congrArg Subtype.val hab`. Establish `h3` using `congrArg (fun y => g' *ᵥ y) h2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec] at h3`. Conclude with `Subtype.ext h3`. Establish `hs : Function.Surjective f` using `LinearMap.injective_iff_surjective.mp hf`. Introduce `x hx`. Take `⟨y, hy⟩` from `hs ⟨x, hx⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy' : g *ᵥ (y : Fin n → ℂ) = x` using `congrArg Subtype.val hy`. Rewrite using `[← hy', Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Conclude with `y.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_preserves {W : Submodule ℂ (Fin n → ℂ)} {g g' : Matrix (Fin n) (Fin n) ℂ} (h1 : g' * g = 1)
     (hW : ∀ x ∈ W, g *ᵥ x ∈ W) : ∀ x ∈ W, g' *ᵥ x ∈ W := by
@@ -72,7 +70,7 @@ theorem inv_preserves {W : Submodule ℂ (Fin n → ℂ)} {g g' : Matrix (Fin n)
   exact y.2
 
 /- English proof (translation)
-Apply the tactic sequence `simp only [Matrix.sub_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, mul_sub, mul_one, Matrix.one_mulVec] <;> abel`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mul_sub_one_mulVec (g g' : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℂ) :
     (g * g' - 1) *ᵥ x = g *ᵥ ((g' - 1) *ᵥ x) + (g - 1) *ᵥ x := by
@@ -80,7 +78,7 @@ theorem mul_sub_one_mulVec (g g' : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → �
     Matrix.one_mulVec] <;> abel
 
 /- English proof (translation)
-Simplify using `only [Matrix.sub_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec, neg_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inv_sub_one_mulVec {g g' : Matrix (Fin n) (Fin n) ℂ} (h1 : g' * g = 1) (x : Fin n → ℂ) :
     (g' - 1) *ᵥ x = -(g' *ᵥ ((g - 1) *ᵥ x)) := by
@@ -88,14 +86,14 @@ theorem inv_sub_one_mulVec {g g' : Matrix (Fin n) (Fin n) ℂ} (h1 : g' * g = 1)
     neg_sub]
 
 /- English proof (translation)
-Unfold `InS`. Apply the tactic sequence `refine ⟨fun a => ?_, ?_⟩ <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inS_one (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) : InS e z 1 := by
   unfold InS
   refine ⟨fun a => ?_, ?_⟩ <;> simp
 
 /- English proof (translation)
-Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_sub_one_mulVec]`. Conclude with `Submodule.add_mem _ (mem_spanLt_of_inS hg _ (hg'.1 a)) (hg.1 a)`. Rewrite using `[mul_sub_one_mulVec]`. Conclude with `Submodule.add_mem _ (mem_spanLt_of_inS hg _ hg'.2) hg.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inS_mul {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {g g' : Matrix (Fin n) (Fin n) ℂ}
     (hg : InS e z g) (hg' : InS e z g') : InS e z (g * g') := by
@@ -106,9 +104,7 @@ theorem inS_mul {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {g g' : Matrix
     exact Submodule.add_mem _ (mem_spanLt_of_inS hg _ hg'.2) hg.2
 
 /- English proof (translation)
-Establish `hp : ∀ (a : ℕ), ∀ x ∈ spanLt e a, g' *ᵥ x ∈ spanLt e a` using `fun a => inv_preserves h1 (fun x hx => mem_spanLt_of_inS hg a hx)`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_sub_one_mulVec h1]`. Conclude with `Submodule.neg_mem _ (hp _ _ (hg.1 a))`. Rewrite using `[inv_sub_one_mulVec h1]`.
-
-Conclude with `Submodule.neg_mem _ (hp _ _ hg.2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inS_inv {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {g g' : Matrix (Fin n) (Fin n) ℂ}
     (hg : InS e z g) (h1 : g' * g = 1) : InS e z g' := by
@@ -121,14 +117,14 @@ theorem inS_inv {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {g g' : Matrix
     exact Submodule.neg_mem _ (hp _ _ hg.2)
 
 /- English proof (translation)
-Unfold `InN`. Conclude with `⟨inS_one e z, fun y _ => by simp⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem inN_one (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) : InN ε e z 1 := by
   unfold InN
   exact ⟨inS_one e z, fun y _ => by simp⟩
 
 /- English proof (translation)
-Use `⟨inS_mul hg.1 hg'.1, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_sub_one_mulVec]`. Conclude with `Submodule.add_mem _ (mem_spanLt_of_inS hg.1 _ (hg'.2 y hy)) (hg.2 y hy)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inN_mul {ε : Fin n → Bool} {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {g g' : Matrix (Fin n) (Fin n) ℂ}
     (hg : InN ε e z g) (hg' : InN ε e z g') : InN ε e z (g * g') := by
@@ -137,7 +133,7 @@ theorem inN_mul {ε : Fin n → Bool} {e : Fin r → Fin n → ℂ} {z : Fin n �
   exact Submodule.add_mem _ (mem_spanLt_of_inS hg.1 _ (hg'.2 y hy)) (hg.2 y hy)
 
 /- English proof (translation)
-Use `⟨inS_inv hg.1 h1, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[inv_sub_one_mulVec h1]`. Conclude with `Submodule.neg_mem _ (inv_preserves h1 (fun x hx => mem_spanLt_of_inS hg.1 r hx) _ (hg.2 y hy))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inN_inv {ε : Fin n → Bool} {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {g g' : Matrix (Fin n) (Fin n) ℂ}
     (hg : InN ε e z g) (h1 : g' * g = 1) : InN ε e z g' := by
@@ -147,7 +143,7 @@ theorem inN_inv {ε : Fin n → Bool} {e : Fin r → Fin n → ℂ} {z : Fin n �
     (inv_preserves h1 (fun x hx => mem_spanLt_of_inS hg.1 r hx) _ (hg.2 y hy))
 
 /- English proof (translation)
-Establish `hc : Continuous fun g : Matrix (Fin n) (Fin n) ℂ => (g - 1) *ᵥ x` using `(continuous_id.sub continuous_const).matrix_mulVec continuous_const`. Conclude with `W.closed_of_finiteDimensional.preimage hc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_sub_mem (x : Fin n → ℂ) (W : Submodule ℂ (Fin n → ℂ)) :
     IsClosed {g : Matrix (Fin n) (Fin n) ℂ | (g - 1) *ᵥ x ∈ W} := by
@@ -156,7 +152,7 @@ theorem isClosed_sub_mem (x : Fin n → ℂ) (W : Submodule ℂ (Fin n → ℂ))
   exact W.closed_of_finiteDimensional.preimage hc
 
 /- English proof (translation)
-Establish `h1 : {g : Matrix (Fin n) (Fin n) ℂ | InN ε e z g} = ((⋂ a : Fin r, {g | (g - 1) *ᵥ e a ∈ spanLt e a.1}) ∩ {g | (g - 1) *ᵥ z ∈ spanLt e r}) ∩ ⋂ y ∈ {y : Fin n → ℂ | ∀ a, hJ ε (e a) y = 0}, {g | (g - 1) *ᵥ y ∈ spanLt e r}`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter, InN, InS]`. Rewrite using `[h1]`. Conclude with `((isClosed_iInter fun a => isClosed_sub_mem _ _).inter (isClosed_sub_mem _ _)).inter (isClosed_biInter fun y _ => isClosed_sub_mem _ _)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_inN (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) :
     IsClosed {g : Matrix (Fin n) (Fin n) ℂ | InN ε e z g} := by
@@ -170,7 +166,7 @@ theorem isClosed_inN (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (z : Fi
     (isClosed_biInter fun y _ => isClosed_sub_mem _ _)
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε` using `hg`. Unfold `hJ`. Rewrite using `[Matrix.star_mulVec, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, hg']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_mulVec {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g)
     (x y : Fin n → ℂ) : hJ ε (g *ᵥ x) (g *ᵥ y) = hJ ε x y := by
@@ -180,9 +176,9 @@ theorem hJ_mulVec {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : F
     Matrix.vecMul_vecMul, ← Matrix.mul_assoc, hg']
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hle : Submodule.span ℂ W ≤ LinearMap.ker (Matrix.mulVecLin g - LinearMap.id)`. Rewrite using `[Submodule.span_le]`. Introduce `y hy`. Simplify using `[hW y hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hx'` using `hle hx`. Simplify `hx'` using `[sub_eq_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fix_span {W : Set (Fin n → ℂ)} {g : Matrix (Fin n) (Fin n) ℂ} (hW : ∀ x ∈ W, g *ᵥ x = x) :
     ∀ x ∈ Submodule.span ℂ W, g *ᵥ x = x := by
@@ -195,20 +191,18 @@ theorem fix_span {W : Set (Fin n → ℂ)} {g : Matrix (Fin n) (Fin n) ℂ} (hW 
   simpa [sub_eq_zero] using hx'
 
 /- English proof (translation)
-Rewrite using `[mul_sub, sub_mul, mul_one, hh]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_sub_one {h x h' : Matrix (Fin n) (Fin n) ℂ} (hh : h * h' = 1) :
     h * x * h' - 1 = h * (x - 1) * h' := by
   rw [mul_sub, sub_mul, mul_one, hh]
 
 /- English proof (translation)
-Establish `hfix : ∀ (a : ℕ), ∀ v ∈ spanLt e a, h *ᵥ v = v` using `fun a => fix_span (fun v hv => by obtain ⟨b, _, rfl⟩ := hv; exact he b)`. Establish `h'e : ∀ v, h *ᵥ v = v → h' *ᵥ v = v` using `fun v hv => by conv_lhs => rw [← hv]`. Rewrite using `[Matrix.mulVec_mulVec, hh', Matrix.one_mulVec]`. Establish `key : ∀ v, (h * x * h' - 1) *ᵥ v = h *ᵥ ((x - 1) *ᵥ (h' *ᵥ v))` using `fun v => by`. Rewrite using `[conj_sub_one hh]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec_mulVec, mul_assoc]`. Use `⟨⟨fun a => ?_, ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[key, h'e _ (he a), hfix a.1 _ (hx.1.1 a)]`. Conclude with `hx.1.1 a`. Rewrite using `[key, h'e _ hz, hfix r _ hx.1.2]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hx.1.2`. Establish `hy' : ∀ a, hJ ε (e a) (h' *ᵥ y) = 0` using `fun a => by`. Rewrite using `[← hJ_mulVec hU, he a, Matrix.mulVec_mulVec, hh, Matrix.one_mulVec]`. Conclude with `hy a`. Rewrite using `[key, hfix r _ (hx.2 _ hy')]`.
-
-Conclude with `hx.2 _ hy'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inN_conj {ε : Fin n → Bool} {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ}
     {h h' x : Matrix (Fin n) (Fin n) ℂ} (hU : Formalism.REAL.inUJ ε h) (hh : h * h' = 1) (hh' : h' * h = 1)
@@ -250,26 +244,26 @@ Both sides reduce to the same expression.
 theorem uMat_one {n : ℕ} {ε : Fin n → Bool} : Formalism.MainNotions.S.uMat (1 : Formalism.REAL.UJ ε) = 1 := rfl
 
 /- English proof (translation)
-Rewrite using `[← uMat_mul, inv_mul_cancel, uMat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem uMat_inv_mul {n : ℕ} {ε : Fin n → Bool} (g : Formalism.REAL.UJ ε) :
     Formalism.MainNotions.S.uMat g⁻¹ * Formalism.MainNotions.S.uMat g = 1 := by
   rw [← uMat_mul, inv_mul_cancel, uMat_one]
 
 /- English proof (translation)
-Rewrite using `[← uMat_mul, mul_inv_cancel, uMat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem uMat_mul_inv {n : ℕ} {ε : Fin n → Bool} (g : Formalism.REAL.UJ ε) :
     Formalism.MainNotions.S.uMat g * Formalism.MainNotions.S.uMat g⁻¹ = 1 := by
   rw [← uMat_mul, mul_inv_cancel, uMat_one]
 
 /- English proof (translation)
-The claim follows from `g.2`.
+A detailed English derivation is pending.
 -/
 theorem uMat_inUJ {n : ℕ} {ε : Fin n → Bool} (g : Formalism.REAL.UJ ε) : Formalism.REAL.inUJ ε (Formalism.MainNotions.S.uMat g) := g.2
 
 /- English proof (translation)
-The claim follows from `(Units.continuous_val.comp continuous_subtype_val).comp (continuous_apply v)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_uMat_apply (v : NumberField.InfinitePlace I.F) :
     Continuous fun s : I.Ginf => Formalism.MainNotions.S.uMat (s v) := (Units.continuous_val.comp continuous_subtype_val).comp (continuous_apply v)
@@ -302,7 +296,7 @@ def HSub (S : Set (Fin I.n → I.E)) : Subgroup I.Ginf where
     rw [Matrix.mulVec_mulVec, uMat_inv_mul, Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `h1 : Ninf I e z = ⋂ v, (fun s : I.Ginf => Formalism.MainNotions.S.uMat (s v)) ⁻¹' {g | InN (I.ε v) (fun a => rv I v (e a)) (rv I v z) g}`. Use extensionality with `s`. Simplify using `only [Ninf, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage]`. Rewrite using `[h1]`. Conclude with `isClosed_iInter fun v => (isClosed_inN _ _ _).preimage (continuous_uMat_apply I v)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_Ninf (e : Fin r → Fin I.n → I.E) (z : Fin I.n → I.E) : IsClosed (Ninf I e z) := by
   have h1 : Ninf I e z = ⋂ v, (fun s : I.Ginf => Formalism.MainNotions.S.uMat (s v)) ⁻¹'
@@ -313,9 +307,9 @@ theorem isClosed_Ninf (e : Fin r → Fin I.n → I.E) (z : Fin I.n → I.E) : Is
   exact isClosed_iInter fun v => (isClosed_inN _ _ _).preimage (continuous_uMat_apply I v)
 
 /- English proof (translation)
-Establish `h1 : Hset I S = ⋂ v, ⋂ x ∈ S, {s : I.Ginf | Formalism.MainNotions.S.uMat (s v) *ᵥ rv I v x = rv I v x}`. Use extensionality with `s`. Simplify using `only [Hset, Set.mem_setOf_eq, Set.mem_iInter]`. Rewrite using `[h1]`. Use `isClosed_iInter fun v => isClosed_biInter fun x _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isClosed_eq ((continuous_uMat_apply I v).matrix_mulVec continuous_const) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_Hset (S : Set (Fin I.n → I.E)) : IsClosed (Hset I S) := by
   have h1 : Hset I S = ⋂ v, ⋂ x ∈ S, {s : I.Ginf | Formalism.MainNotions.S.uMat (s v) *ᵥ rv I v x = rv I v x} := by
@@ -326,9 +320,9 @@ theorem isClosed_Hset (S : Set (Fin I.n → I.E)) : IsClosed (Hset I S) := by
   exact isClosed_eq ((continuous_uMat_apply I v).matrix_mulVec continuous_const) continuous_const
 
 /- English proof (translation)
-Introduce `I r e f z`. Use `⟨NSub I e z, HSub I (frameSet I e f z), rfl, rfl, isClosed_Ninf I e z, isClosed_Hset I _, ?_⟩` and prove the remaining obligations. Introduce `h hh x hx`. Establish `hh' : h ∈ Hset I (frameSet I e f z)` using `hh`. Establish `hx' : x ∈ Ninf I e z` using `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ∀ v, InN _ _ _ (Formalism.MainNotions.S.uMat ((h * x * h⁻¹) v))`. Introduce `v`. Use `show InN _ _ _ (Formalism.MainNotions.S.uMat (h v * x v * (h v)⁻¹))`. Rewrite using `[uMat_mul, uMat_mul]`. Conclude with `inN_conj (uMat_inUJ _) (uMat_mul_inv _) (uMat_inv_mul _) (fun a => hh' v _ (Set.mem_union_left _ (Set.mem_union_left _ (Set.mem_range_self a)))) (hh' v _ (Set.mem_union_right _ rfl)) (hx' v)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measure_subFacts : SubFacts := by
   intro I r e f z

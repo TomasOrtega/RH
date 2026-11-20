@@ -3,11 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Introduce `s`. Establish `e : h ⁻¹' s = f ⁻¹' (f '' (h ⁻¹' s))`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨x, hx, rfl⟩`. Introduce and unpack `⟨y, hy, hyx⟩ show h x ∈ s`. Rewrite using `[← H y x hyx]`. Conclude with `hy`. Rewrite using `[e]`.
-
-Conclude with `hf _`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem locConst_of_factor {X Y Z : Type} [TopologicalSpace X] {f : X → Y} (hf : IsLocallyConstant f)
     (h : X → Z) (H : ∀ x y, f x = f y → h x = h y) : IsLocallyConstant h := by
@@ -25,9 +23,9 @@ private theorem locConst_of_factor {X Y Z : Type} [TopologicalSpace X] {f : X �
   exact hf _
 
 /- English proof (translation)
-Establish `hle : Ideal.map (algebraMap C (lauSub P)) (maximalIdeal C) ≤ vertex h`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `c hc`. Rewrite using `[Ideal.mem_comap, mem_vertex]`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show _ = (AddMonoidAlgebra.single 0 (algebraMap C K c)).coeff 0`. Rewrite using `[AddMonoidAlgebra.coeff_single, Finsupp.single_eq_same]`. Establish `hm` using `Ideal.mem_map_of_mem (algebraMap C (lauSub P)) hc`. Rewrite `hm` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono hle N hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem algebraMap_mem_vertex_pow {C K : Type} [CommRing C] [CommRing K] [Algebra C K] [IsLocalRing C]
     {P : ℤ → Submodule C K} [SetLike.GradedMonoid P] (h : HasVertex P) (N : ℕ) {c : C}
@@ -44,9 +42,9 @@ private theorem algebraMap_mem_vertex_pow {C K : Type} [CommRing C] [CommRing K]
   exact Ideal.pow_right_mono hle N hm
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on (p := fun y => ∃ p ∈ vertex h ^ N, (p : lauSub P).1 = AddMonoidAlgebra.single d y) hx ?_ ?_` and prove the remaining obligations. Introduce `c hc m hm`. Use `⟨algebraMap C (lauSub P) c * ⟨AddMonoidAlgebra.single d m, single_mem_lauSub P (hM hm)⟩, Ideal.mul_mem_right _ _ (algebraMap_mem_vertex_pow h N hc), ?_⟩` and prove the remaining obligations. Rewrite using `[Subalgebra.coe_mul]`. Use `show AddMonoidAlgebra.single 0 (algebraMap C K c) * AddMonoidAlgebra.single d m = _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddMonoidAlgebra.single_mul_single, zero_add, Algebra.smul_def]`. Introduce and unpack `x y ⟨p, hp, hpx⟩ ⟨q, hq, hqy⟩`. Conclude with `⟨p + q, add_mem hp hq, by rw [Subalgebra.coe_add, hpx, hqy, AddMonoidAlgebra.single_add]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem single_mem_vertex_pow {C K : Type} [CommRing C] [CommRing K] [Algebra C K] [IsLocalRing C]
     {P : ℤ → Submodule C K} [SetLike.GradedMonoid P] (h : HasVertex P) (N : ℕ) (d : ℤ) (M : Submodule C K)
@@ -64,17 +62,15 @@ private theorem single_mem_vertex_pow {C K : Type} [CommRing C] [CommRing K] [Al
     exact ⟨p + q, add_mem hp hq, by rw [Subalgebra.coe_add, hpx, hqy, AddMonoidAlgebra.single_add]⟩
 
 /- English proof (translation)
-Introduce `l _ O _ _ F n C _ _ _ K _ _ ρ hc h ρD hr hψ`. Use `⟨fun i j N => ?_, fun v i N => ?_⟩` and prove the remaining obligations. Use `locConst_of_factor (hc.cont i j N) _ fun g g' hgg => ?_` and prove the remaining obligations. Rewrite `hgg` using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Establish `hS : Submodule.span C (Set.range fun g => ρ.r g i j) ≤ ρ.part C (w n i - w n j)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g0, rfl⟩`. Conclude with `NRep.r_mem_part C ρ g0 i j`. Take `⟨p, hp, hpe⟩` from `single_mem_vertex_pow h N (w n i - w n j) _ hS hgg`. Rewrite using `[Ideal.Quotient.eq]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ρD.r g i j - ρD.r g' i j = p`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hpe, AddSubgroupClass.coe_sub, hr, hr, AddMonoidAlgebra.single_sub]`. Rewrite using `[e]`. Conclude with `hp`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨χ, hχ, hχe⟩` from `hc.psi`. Use `locConst_of_factor ((hχ v i).1 N) _ fun g g' hgg => ?_` and prove the remaining obligations. Rewrite `hgg`, the goal using `[Ideal.Quotient.eq]`. Establish `hm` using `algebraMap_mem_vertex_pow h N hgg`. Establish `e : (↑(ρD.ψ v i g) : lauSub (ρ.part C)) - ↑(ρD.ψ v i g') = algebraMap C (lauSub (ρ.part C)) (χ v i g - χ v i g')`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubgroupClass.coe_sub, hψ, hψ]`. Use `show _ = AddMonoidAlgebra.single 0 (algebraMap C K (χ v i g - χ v i g'))`. Rewrite using `[map_sub, hχe, hχe, AddMonoidAlgebra.single_sub]`. Rewrite using `[e]`.
-
-Conclude with `hm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.alg_cont :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] {F : Frame l (ResidueField O)} {n : ℕ} (C : Type) [CommRing C] [Algebra O C] [IsCO O C] {K : Type} [CommRing K] [Algebra C K] (ρ : NRep F n K), Cone O C ρ → ∀ (h : HasVertex (ρ.part C)) (ρD : NRep F n (lauSub (ρ.part C))), (∀ g i j, (ρD.r g i j).1 = AddMonoidAlgebra.single (w n i - w n j) (ρ.r g i j)) → (∀ v i g, (ρD.ψ v i g : lauSub (ρ.part C)).1 = AddMonoidAlgebra.single 0 (ρ.ψ v i g : K)) → ρD.Cont (vertex h) := by

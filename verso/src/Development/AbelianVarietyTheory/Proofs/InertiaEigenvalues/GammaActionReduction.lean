@@ -9,9 +9,9 @@ open scoped LaurentSeries PowerSeries
 namespace GlobalTheory.RedAct
 
 /- English proof (translation)
-Establish `h` using `PadicInt.sub_zmodRepr_mem z`. Rewrite `h` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `h`. Establish `hz : z = (z.zmodRepr : ℤ_[l]) + l * c` using `by rw [← hc]; ring`. Rewrite using `[hz]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, map_mul, map_natCast, CharP.cast_eq_zero, zero_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ringHom_padicInt_eq {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] (f : ℤ_[l] →+* k)
     (z : ℤ_[l]) : f z = ((ZMod.castHom (dvd_refl l) k).comp PadicInt.toZMod) z := by
@@ -23,9 +23,9 @@ theorem ringHom_padicInt_eq {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP
   simp only [map_add, map_mul, map_natCast, CharP.cast_eq_zero, zero_mul]
 
 /- English proof (translation)
-Establish `hb : PowerSeries.map f (GlobalTheory.CycFr.bin O c) = GlobalTheory.IndefiniteRowSideFullHecke.OnePlusPowerCharacters.onePlusPow k l c`. Use extensionality with `n`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.OnePlusPowerCharacters.onePlusPow, PowerSeries.coeff_map, PowerSeries.coeff_map, PowerSeries.binomialSeries_coeff, PowerSeries.binomialSeries_coeff, smul_eq_mul, mul_one, ← Algebra.algebraMap_eq_smul_one]`. Conclude with `ringHom_padicInt_eq (f.comp (algebraMap ℤ_[l] O)) _`. Rewrite using `[GlobalTheory.CycFr.act_apply, GlobalTheory.IndefiniteRowSideFullHecke.OnePlusPowerCharacters.deltaPi, ← hb]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `PowerSeries.map_subst (GlobalTheory.CycFr.hasSubst_bin O c) (h := f) a`. Establish `h2 : PowerSeries.map f (GlobalTheory.CycFr.bin O c - 1) = PowerSeries.map f (GlobalTheory.CycFr.bin O c) - 1`. Rewrite using `[map_sub, map_one]`. Rewrite using `[← h2]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_act {l : ℕ} [Fact l.Prime] {O k : Type} [CommRing O] [Algebra ℤ_[l] O] [Field k] [CharP k l]
     (f : O →+* k) (c : ℤ_[l]) (a : O⟦X⟧) :
@@ -44,7 +44,7 @@ theorem map_act {l : ℕ} [Fact l.Prime] {O k : Type} [CommRing O] [Algebra ℤ_
   exact h
 
 /- English proof (translation)
-Establish `h` using `PowerSeries.binomialSeries_nat (R := ℤ_[l]) (A := ℤ_[l]) (1 + l)`. Rewrite `h` using `[Nat.cast_add, Nat.cast_one]`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.OnePlusPowerCharacters.deltaPi, GlobalTheory.IndefiniteRowSideFullHecke.OnePlusPowerCharacters.gammaPi, GlobalTheory.IndefiniteRowSideFullHecke.OnePlusPowerCharacters.onePlusPow, h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem deltaPi_one_add {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] (b : k⟦X⟧) :
     GlobalTheory.IndefiniteRowSideFullHecke.OnePlusPowerCharacters.deltaPi k l (1 + l) b = GlobalTheory.IndefiniteRowSideFullHecke.OnePlusPowerCharacters.gammaPi k l b := by
@@ -54,11 +54,11 @@ theorem deltaPi_one_add {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l
   simp
 
 /- English proof (translation)
-Introduce `u`. Take `⟨χ', h1, -, h3⟩` from `GlobalTheory.Cyc.exists_integral_cyclotomicChar l P`. Take `⟨g, hg, hgu⟩` from `h3 K 0 (le_trans (le_inf le_rfl hK) le_sup_left) u (by simp)`. Use `⟨W.resΓ ⟨g, hg⟩, Units.ext (GlobalTheory.algebraMap_padicInt_OL_injective LL ?_)⟩` and prove the remaining obligations. Rewrite using `[hχ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `h` using `W.χΓ_res ⟨g, hg⟩`. Rewrite `h` using `[P.PD_χ, ← h1]`. Use `h.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] ↥LL.1 ((χ' g : ℤ_[l]) : ℚ_[l]) = _`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hgu]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chi_surjective {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l) {n : ℕ}
     (W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) n) (hK : K.1 ≤ MaximalUnramifiedExtension l) (χ : W.Gam →* ℤ_[l]ˣ)
@@ -78,9 +78,9 @@ theorem chi_surjective {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt 
   rfl
 
 /- English proof (translation)
-Establish `p1 : Module.finrank ↥(K0 K) ↥K.1 = 1`. Rewrite using `[Algebra.finrank_eq_one_iff_bijective_algebraMap]`. Conclude with `⟨(algebraMap ↥(K0 K) ↥K.1).injective, fun x => ⟨⟨x.1, x.2, hK x.2⟩, rfl⟩⟩`. Establish `hc` using `GlobalTheory.TorsionCard.card_torsion_mul_finrank P K LL W hl h`. Rewrite `hc` using `[p1, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hc`.
+A detailed English derivation is pending.
 -/
 theorem card_torsion {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l) {n : ℕ}
     (W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) n) (hK : K.1 ≤ MaximalUnramifiedExtension l) (hl : l ≠ 2) (h : K.1 ≤ Ks K 1) :
@@ -93,7 +93,7 @@ theorem card_torsion {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l)
   exact hc
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.WachTie.γ₀_eq W (P.PD_p K) χ hχ g`.
+A detailed English derivation is pending.
 -/
 theorem gamma_eq_act {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l) {n : ℕ}
     (W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) n) (χ : W.Gam →* ℤ_[l]ˣ)
@@ -102,19 +102,17 @@ theorem gamma_eq_act {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l)
   GlobalTheory.WachTie.γ₀_eq W (P.PD_p K) χ hχ g
 
 /- English proof (translation)
-Establish `h2l` using `(Fact.out : l.Prime).two_le`. Establish `hχi : Function.Injective χ` using `fun a b hab => W.χΓ_inj (Units.ext (by rw [← hχ, ← hχ, hab]))`. Establish `hcard : Nat.card (CommGroup.torsion W.Gam) = l - 1`. Rewrite using `[← hc, ← Set.ncard_coe_finset, ← Nat.card_coe_set_eq]`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun g => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[CommGroup.mem_torsion, Finset.mem_coe, GlobalTheory.WachTie.mem_DelF_iff]`. Establish `hpow : ∀ δ ∈ W.DelF, δ ^ (l - 1) = 1` using `fun δ hδ => by`. Establish `h1 : (⟨δ, (GlobalTheory.WachTie.mem_DelF_iff W δ).1 hδ⟩ : CommGroup.torsion W.Gam) ^ (l - 1) = 1`. Rewrite using `[← hcard]`. Conclude with `pow_card_eq_one'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `congrArg Subtype.val h1`. Prove the components needed by the constructor for the conclusion. Establish `hu : IsUnit (1 + (l : ℤ_[l]))`. Establish `h1` using `IsLocalRing.isUnit_or_isUnit_one_sub_self (-(l : ℤ_[l]))`. Rewrite `h1` using `[sub_neg_eq_add, IsUnit.neg_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `h1.resolve_left PadicInt.p_nonunit`. Take `⟨g, hg⟩` from `hs hu.unit`. Establish `hg' : (χ g : ℤ_[l]) = 1 + l` using `by rw [hg, hu.unit_spec]`. Use `⟨g, by rw [← hχ, hg', map_add, map_one, map_natCast], fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hγ, map_act, hg', deltaPi_one_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `f : {δ // δ ∈ W.DelF} → {z : ℤ_[l] // z ^ (l - 1) = 1}` to `fun δ => ⟨χ δ.1, by rw [← Units.val_pow_eq_pow_val, ← map_pow, hpow δ.1 δ.2, map_one, Units.val_one]⟩`. Establish `hf : Function.Bijective f`. Use `⟨fun a b hab => Subtype.ext (hχi (Units.ext (congrArg Subtype.val hab))), fun z => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit z.1` using `IsUnit.of_pow_eq_one z.2 (by omega)`. Take `⟨g, hg⟩` from `hs hu.unit`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hg' : (χ g : ℤ_[l]) = z.1` using `by rw [hg, hu.unit_spec]`. Use `⟨⟨g, (W.DelF_def g).2 ⟨l - 1, by omega, hχi (Units.ext ?_)⟩⟩, Subtype.ext hg'⟩` and prove the remaining obligations. Rewrite using `[map_pow, Units.val_pow_eq_pow_val, hg', z.2, map_one, Units.val_one]`. Use `⟨Equiv.ofBijective f hf, fun δ a => ?_⟩` and prove the remaining obligations. Rewrite using `[hγ, map_act]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem action_of_surjective {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀]
     [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
@@ -165,7 +163,7 @@ theorem action_of_surjective {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ 
     rfl
 
 /- English proof (translation)
-Introduce `l _ P H S k _ _ _`. Take `⟨χ, hχ, -⟩` from `GlobalTheory.exists_cyclotomicChar_padicInt_units P S.K S.LL (S.W H)`. Conclude with `action_of_surjective (S.W H) χ hχ (chi_surjective P S.K S.LL _ S.hyp.1.2.1.1 χ hχ) (gamma_eq_act P S.K S.LL _ χ hχ) (card_torsion P S.K S.LL _ S.hyp.1.2.1.1 S.hyp.1.2.1.2.1 S.hyp.1.2.1.2.2.2.2.1) (algebraMap S.O k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gamma_action_reduction : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (H : LocHW l P) (S : TopSit P) (k : Type) [Field k] [Algebra S.O k] [CharP k l], (∃ γ : (S.W H).Gam, ((S.W H).χΓ γ : S.O) = 1 + (l : S.O) ∧ ∀ a, PowerSeries.map (algebraMap S.O k) ((S.W H).γ₀ γ a) = GlobalTheory.IndefiniteRowSideFullHecke.OnePlusPowerCharacters.gammaPi k l (PowerSeries.map (algebraMap S.O k) a)) ∧ ∃ e : {δ // δ ∈ (S.W H).DelF} ≃ {z : ℤ_[l] // z ^ (l - 1) = 1}, ∀ δ a, PowerSeries.map (algebraMap S.O k) ((S.W H).γ₀ δ.1 a) = GlobalTheory.IndefiniteRowSideFullHecke.OnePlusPowerCharacters.deltaPi k l (e δ).1 (PowerSeries.map (algebraMap S.O k) a) := by
   intro l _ P H S k _ _ _

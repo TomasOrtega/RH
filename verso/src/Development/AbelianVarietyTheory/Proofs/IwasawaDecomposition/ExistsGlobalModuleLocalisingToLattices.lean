@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.Mem.Top.KerGlob
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_approx_finite_places_numberField w hw y c hc`.
+A detailed English derivation is pending.
 -/
 theorem weak_approx {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι]
     (w : ι → HeightOneSpectrum (𝓞 F)) (hw : Function.Injective w) (y : ∀ i, (w i).adicCompletion F) (c : F) (hc : c ≠ 0) :
@@ -22,7 +22,7 @@ theorem weak_approx {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι
   GlobalTheory.T.exists_approx_finite_places_numberField w hw y c hc
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_global_matrix_approximation_mod_integral W Q f π hπ t ht hd g hg q0`.
+A detailed English derivation is pending.
 -/
 theorem matrix_approx {ι : Type} [Fintype ι] [DecidableEq ι] (W Q : ι → Type) [∀ q, CommRing (W q)] [∀ q, IsDomain (W q)]
     [∀ q, IsDiscreteValuationRing (W q)] [∀ q, Field (Q q)] [∀ q, Algebra (W q) (Q q)] [∀ q, IsFractionRing (W q) (Q q)]
@@ -36,9 +36,9 @@ theorem matrix_approx {ι : Type} [Fintype ι] [DecidableEq ι] (W Q : ι → Ty
   GlobalTheory.T.exists_global_matrix_approximation_mod_integral W Q f π hπ t ht hd g hg q0
 
 /- English proof (translation)
-Rewrite using `[Formalism.MainNotions.G.colSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨c, rfl⟩`. Establish `: (fun i => (g * u.map (algebraMap R K)) i c) = ∑ j, u j c • fun i => g i j`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mul_apply, Algebra.smul_def, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `(fun i => (g * u.map (algebraMap R K)) i c) ∈ Formalism.MainNotions.G.colSpan R g`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colSpan_mul_le {R K : Type} [CommRing R] [Field K] [Algebra R K] {k : ℕ} (g : Matrix (Fin k) (Fin k) K)
     (u : Matrix (Fin k) (Fin k) R) :
@@ -53,7 +53,7 @@ theorem colSpan_mul_le {R K : Type} [CommRing R] [Field K] [Algebra R K] {k : �
   exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Use `le_antisymm (colSpan_mul_le g u) ?_` and prove the remaining obligations. Use `colSpan_mul_le (g * u.map (algebraMap R K)) u⁻¹` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hu, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem colSpan_mul_eq {R K : Type} [CommRing R] [Field K] [Algebra R K] {k : ℕ} (g : Matrix (Fin k) (Fin k) K)
     (u : Matrix (Fin k) (Fin k) R) (hu : IsUnit u.det) :
@@ -64,7 +64,7 @@ theorem colSpan_mul_eq {R K : Type} [CommRing R] [Field K] [Algebra R K] {k : �
     Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one] at this
 
 /- English proof (translation)
-Establish `h2 : IsIntegral (w.adicCompletionIntegers F) (φ x)` using `IsIntegral.map_of_comp_eq (Int.castRingHom _) φ (RingHom.ext_int _ _) x.isIntegral_coe`. Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := w.adicCompletionIntegers F) (K := w.adicCompletion F)).1 h2`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_int {F E : Type} [Field F] [NumberField F] [Field E] (w : HeightOneSpectrum (𝓞 F))
     (φ : E →+* w.adicCompletion F) (x : 𝓞 E) : φ x ∈ w.adicCompletionIntegers F := by
@@ -76,11 +76,11 @@ theorem map_int {F E : Type} [Field F] [NumberField F] [Field E] (w : HeightOneS
   exact y.2
 
 /- English proof (translation)
-Establish `hcc0 : algebraMap F (w.adicCompletion F) ((p : F) ^ N) ≠ 0` using `(map_ne_zero _).2 (pow_ne_zero _ hp)`. Establish `hz' : (algebraMap F (w.adicCompletion F) a - e (algebraMap W Q y)) / algebraMap F (w.adicCompletion F) ((p : F) ^ N) ∈ w.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_div₀]`. Conclude with `div_le_one_of_le₀ hv zero_le`. Take `⟨z, hz⟩` from `(heW (e.symm _)).2 (by rw [e.apply_symm_apply]; exact hz')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨z, ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[e.apply_symm_apply, map_add, map_add, map_mul, hz, map_mul, e.apply_symm_apply, map_pow, map_pow, map_natCast, map_natCast]`. Establish `hcc' : algebraMap F (w.adicCompletion F) ((p : F) ^ N) = (p : w.adicCompletion F) ^ N`. Rewrite using `[map_pow, map_natCast]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcc', mul_div_cancel₀ _ hcc0]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem step {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F)) {W Q : Type} [CommRing W] [Field Q]
     [Algebra W Q] (e : Q ≃+* w.adicCompletion F)
@@ -108,7 +108,7 @@ variable {D : D7} {H : Formalism.L2.Herm.HermColsCh D} (Gs : Formalism.L2.Herm.S
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar v))
 
 /- English proof (translation)
-Use `((Gs u v hg).completion_integers_iff q _ rfl _).2 ?_` and prove the remaining obligations. Rewrite using `[KerOne.splitPlaceIdempotent_cmEmbedding_compat]`. Conclude with `map_int _ (((RingHom.fst _ _).comp ((Gs u v hg).spl _ ((Gs u v hg).pl q).2).toRingHom).comp (Formalism.UG.inclE (F := D.host.F) ((((Gs u v hg).pl q).1).adicCompletion D.host.F))) r`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitPlaceEmbedding_integers_mem_localIntegers (q : Fin (D.gat u v hg).P.nV) (r : 𝓞 D.host.E) :
     KerOne.iw0 Gs u v hg q (algebraMap (𝓞 D.host.E) D.host.E r) ∈
@@ -119,7 +119,7 @@ theorem splitPlaceEmbedding_integers_mem_localIntegers (q : Fin (D.gat u v hg).P
       (Formalism.UG.inclE (F := D.host.F) ((((Gs u v hg).pl q).1).adicCompletion D.host.F))) r
 
 /- English proof (translation)
-Apply `((Gs u v hg).eQ q _ rfl).injective` to reduce the goal to its premises. Rewrite using `[KerOne.splitPlaceIdempotent_cmEmbedding_compat]`. Use `((Gs u v hg).spl_F _ _ a).trans ?_` and prove the remaining obligations. Conclude with `(RingEquiv.apply_symm_apply _ _).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem splitPlaceEmbedding_baseField_eq_completion (q : Fin (D.gat u v hg).P.nV) (a : D.host.F) :
     KerOne.iw0 Gs u v hg q (algebraMap D.host.F D.host.E a) =
@@ -130,15 +130,15 @@ theorem splitPlaceEmbedding_baseField_eq_completion (q : Fin (D.gat u v hg).P.nV
   exact (RingEquiv.apply_symm_apply _ _).symm
 
 /- English proof (translation)
-Introduce `_ _ h` and use `(Gs u v hg).pl.injective (Subtype.ext h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pl_inj : Function.Injective (fun q : Fin (D.gat u v hg).P.nV => ((Gs u v hg).pl q).1) :=
   fun _ _ h => (Gs u v hg).pl.injective (Subtype.ext h)
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty (Fin (D.gat u v hg).P.nV) with h | ⟨⟨q1⟩⟩` into its components or cases. Conclude with `⟨0, fun q => (IsEmpty.false q).elim⟩`. Establish `hp0 : ((D.what₂.places.resChar v : ℕ) : D.host.F) ≠ 0` using `Nat.cast_ne_zero.2 (((D.gat u v hg).P.setting q1).prime.ne_zero)`. Take `⟨a, ha⟩` from `weak_approx (fun q => ((Gs u v hg).pl q).1) (pl_inj Gs u v hg) (fun q => (Gs u v hg).eQ q _ rfl (algebraMap ((D.gat u v hg).P.W q) ((D.gat u v hg).P.Qq q) (y q))) (((D.what₂.places.resChar v : ℕ) : D.host.F) ^ N) (pow_ne_zero _ hp0)`. Use `⟨a, fun q => ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz⟩` from `step _ ((Gs u v hg).eQ q _ rfl) ((Gs u v hg).completion_integers_iff q _ rfl) _ N hp0 a (y q) (ha q)`. Conclude with `⟨z, (splitPlaceEmbedding_baseField_eq_completion Gs u v hg q a).trans hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dense (y : ∀ q, (D.gat u v hg).P.W q) (N : ℕ) : ∃ x : D.host.F, ∀ q, ∃ z : (D.gat u v hg).P.W q,
     KerOne.iw0 Gs u v hg q (algebraMap D.host.F D.host.E x) =
@@ -156,23 +156,19 @@ theorem dense (y : ∀ q, (D.gat u v hg).P.W q) (N : ℕ) : ∃ x : D.host.F, �
   exact ⟨z, (splitPlaceEmbedding_baseField_eq_completion Gs u v hg q a).trans hz⟩
 
 /- English proof (translation)
-Introduce `hL`. Use `choose g hgu hgL using hL`. Establish `hfr : ∀ q, IsFractionRing ((D.gat u v hg).P.W q) ((D.gat u v hg).P.Qq q)` using `fun q => ((D.gat u v hg).P.setting q).frac_alt`. Set `Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)` to `{ carrier := {x | ∀ q, (fun i => KerOne.iw0 Gs u v hg q (x i)) ∈ L q} add_mem' := fun {x y} hx hy q => by`. Establish `: (fun i => KerOne.iw0 Gs u v hg q ((x + y) i)) = (fun i => KerOne.iw0 Gs u v hg q (x i)) + fun i => KerOne.iw0 Gs u v hg q (y i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `(L q).add_mem (hx q) (hy q)`. Use the proof step `zero_mem' := fun q => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `: (fun i => KerOne.iw0 Gs u v hg q ((0 : Fin n → D.host.E) i)) = 0` using `by funext i; simp`. Rewrite using `[this]`. Conclude with `(L q).zero_mem`. Use the proof step `smul_mem' := fun r x hx q => by`. Take `⟨c, hc⟩` from `splitPlaceEmbedding_integers_mem_localIntegers Gs u v hg q r`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (fun i => KerOne.iw0 Gs u v hg q ((r • x) i)) = c • fun i => KerOne.iw0 Gs u v hg q (x i)`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, Algebra.smul_def, map_mul, ← hc, Algebra.smul_def]`. Rewrite using `[this]`. Conclude with `(L q).smul_mem c (hx q) }`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `⟨Λ, fun q0 => ?_⟩` and prove the remaining obligations. Take `⟨B, w, hw, hB, hoff⟩` from `matrix_approx (fun q => (D.gat u v hg).P.W q) (fun q => (D.gat u v hg).P.Qq q) (fun q => (KerOne.iw0 Gs u v hg q).comp (algebraMap D.host.F D.host.E)) (fun q => ((D.what₂.places.resChar v : ℕ) : (D.gat u v hg).P.W q)) (fun q => ((D.gat u v hg).P.setting q).p_unif) ((D.what₂.place …`. Establish `hcol : ∀ c, (fun i => algebraMap D.host.F D.host.E (B i c)) ∈ Λ`. Introduce `c q`. Distinguish the cases in `hq : q = q0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Substitute `hq` using the available equality. Establish `: (fun i => KerOne.iw0 Gs u v hg q (algebraMap D.host.F D.host.E (B i c))) = fun i => (g q * w.map (algebraMap ((D.gat u v hg).P.W q) ((D.gat u v hg).P.Qq q))) i c`. Use function extensionality and compare the values at `i`. Conclude with `congrFun (congrFun hB i) c`. Use `show (fun i => KerOne.iw0 Gs u v hg q (algebraMap D.host.F D.host.E (B i c))) ∈ L q`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hgL q, ← colSpan_mul_eq (g q) w hw]`. Conclude with `Submodule.subset_span ⟨c, rfl⟩`. Use `show (fun i => KerOne.iw0 Gs u v hg q (algebraMap D.host.F D.host.E (B i c))) ∈ L q`. Rewrite using `[hgL q]`. Conclude with `hoff q hq c`.
-
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[hgL q0, ← colSpan_mul_eq (g q0) w hw, Formalism.MainNotions.G.colSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨c, rfl⟩`. Use `Submodule.subset_span ⟨_, hcol c, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
-
-Conclude with `(congrFun (congrFun hB i) c).symm`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hx q0`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_global_lattice (n : ℕ)
     (L : ∀ q : Fin (D.gat u v hg).P.nV, Submodule ((D.gat u v hg).P.W q) (Fin n → (D.gat u v hg).P.Qq q)) :

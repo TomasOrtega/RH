@@ -12,31 +12,31 @@ noncomputable section
 namespace GlobalTheory.LatPair
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n _ _ i P c hn hc hlat hcl`. Establish `hmem : ∀ b, b ≠ i → Pi.single b c ∈ P.lat`. Introduce `b hb`. Rewrite using `[hlat]`. Use `⟨fun j => ?_, ⟨0, zero_mem _, ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : j = b`. Substitute `h` using the available equality. Simplify using `[hc]`. Rewrite using `[Pi.single_eq_of_ne h]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Pi.single_eq_of_ne (Ne.symm hb)]`. Simplify using the standard rewrite rules. Establish `hzero : ∀ a, a ≠ i → P.HasVal (Pi.single a c) 0`. Introduce `a ha`. Choose the witnesses or unpack the hypotheses as in `⟨d, hda, hdi⟩ : ∃ d, d ≠ a ∧ d ≠ i := by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hsub : (Finset.univ : Finset n) ⊆ {a, i}` using `fun d _ => by`. Distinguish the cases in `hd : d = a`. Simplify using `[hd]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h d hd]`. Establish `h1` using `Finset.card_le_card hsub`. Establish `h2 : ({a, i} : Finset n).card ≤ 2` using `Finset.card_le_two`. Rewrite `h1` using `[Finset.card_univ]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `(Pair.mem_lat_iff (P := P)).1 (hmem d hdi)`. Take `⟨w, hw⟩` from `(Pair.mem_lat_iff (P := P)).1 (hmem a ha)`. Establish `h1` using `hcl _ _ hv a d 1 (Ne.symm hda) (Or.inl ha)`. Establish `hx : (Pi.single d c + Pi.single a (((1 : 𝒪[k]) : k) * (Pi.single d c : n → k) d) : n → k) = Pi.single d c + Pi.single a c`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hx]`. Establish `h3` using `h1.unique (hv.add hw)`. Establish `hw0 : w = 0` using `by linear_combination -h3`. Conclude with `hw0 ▸ hw`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, a ≠ i := by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `: Fintype.card n ≤ 1` using `Fintype.card_le_one_iff.2 (fun x y => (h x).trans (h y).symm)`. Use linear arithmetic over natural numbers and integers. Establish `hzi : ∀ t : 𝒪[k], t ∈ IsLocalRing.maximalIdeal 𝒪[k] → P.HasVal (Pi.single i ((t : k) * c)) 0`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `t ht`. Establish `h1` using `hcl _ _ (hzero a ha) i a t (Ne.symm ha) (Or.inr ht)`. Rewrite `h1` using `[Pi.single_eq_same]`. Simplify using `using h1.sub (hzero a ha)`. Apply `P.fn_ne` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use extensionality with `⟨x, hx⟩`. Take `⟨hxj, s, hs, hsx⟩` from `(hlat x).1 hx`. Establish `hsing : ∀ b, P.HasVal (Pi.single b (x b)) 0`. Introduce `b`. Distinguish the cases in `hb : b = i`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `hb` using the available equality. Establish `he : (s : k) * c = x b` using `by rw [hsx]; field_simp`. Simplify `hzi s hs` using `[he]`. Establish `h` using `(hzero b hb).smul ⟨c⁻¹ * x b, hxj b⟩`. Establish `he : (⟨c⁻¹ * x b, hxj b⟩ : 𝒪[k]) • (Pi.single b c : n → k) = Pi.single b (x b)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Pi.single_smul']`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(c⁻¹ * x b) * c = x b`. Clear the denominators using the available nonvanishing facts. Simplify `h` using `[he]`.
+Clear the denominators using the available nonvanishing facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : P.HasVal (∑ b, Pi.single b (x b)) 0` using `Finset.sum_induction _ (fun y => P.HasVal y 0) (fun _ _ h h' => by simpa using h.add h') ⟨P.lat.zero_mem, map_zero P.fn⟩ (fun b _ => hsing b)`. Rewrite `hsum` using `[Finset.univ_sum_single]`. Rewrite using `[LinearMap.zero_apply]`. Conclude with `hsum.2`.
+A detailed English derivation is pending.
 -/
 theorem no_pair_on_scaled_kernel : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] [DecidableEq n] (i : n) (P : GlobalTheory.LatPair.Pair k n) (c : k), 3 ≤ Fintype.card n → c ≠ 0 → (∀ x : n → k, x ∈ P.lat ↔ (∀ j, c⁻¹ * x j ∈ 𝒪[k]) ∧ ∃ s : 𝒪[k], s ∈ IsLocalRing.maximalIdeal 𝒪[k] ∧ (s : k) = c⁻¹ * x i) → (∀ (x : n → k) (a : 𝓀[k]), P.HasVal x a → ∀ (b d : n) (t : 𝒪[k]), b ≠ d → (b ≠ i ∨ t ∈ IsLocalRing.maximalIdeal 𝒪[k]) → P.HasVal (x + Pi.single b ((t : k) * x d)) a) → False := by
   intro k _ _ _ _ n _ _ i P c hn hc hlat hcl

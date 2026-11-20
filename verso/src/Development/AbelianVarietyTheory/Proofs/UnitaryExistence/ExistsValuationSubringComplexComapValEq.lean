@@ -17,9 +17,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.B
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨W, hW⟩ : ∃ W : ValuationSubring ℂ, W.comap (algebraMap F ℂ) = U` from `exists_valuationSubring_comap_eq U _`. Use `⟨W, ?_, hW⟩` and prove the remaining obligations. Rewrite `hp`, the goal using `[ValuationSubring.mem_nonunits_iff_or]`. Break down `hp with h | h` into its components or cases. Use `left`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using congrArg (algebraMap F ℂ) h`. Use `right`. Rewrite `h` using `[← hW, ValuationSubring.mem_comap]`. Simplify using `using h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_valuationSubring_complex_comap_val_eq (F : IntermediateField ℚ ℂ)
     (U : ValuationSubring F) (p : ℕ) (hp : (p : F) ∈ U.nonunits) :

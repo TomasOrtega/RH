@@ -17,7 +17,7 @@ namespace GlobalTheory.MuLift
 section Ring
 
 /- English proof (translation)
-Establish `eg : e * (1 - e - f) = 0` using `by linear_combination -he - hef`. Establish `fg : f * (1 - e - f) = 0` using `by linear_combination -hf - hef`. Establish `gg : (1 - e - f) * (1 - e - f) = 1 - e - f` using `by linear_combination -eg - fg`. Take the linear combination `(p * p') * he + (q * q') * hf + (p * q' + q * p') * hef + (p + p') * eg + (q + q') * fg + gg + e * hp + f * hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem orth_mul {R : Type} [CommRing R] {e f : R} (he : e * e = e) (hf : f * f = f) (hef : e * f = 0)
     {p q p' q' : R} (hp : p * p' = 1) (hq : q * q' = 1) :
@@ -29,15 +29,15 @@ theorem orth_mul {R : Type} [CommRing R] {e f : R} (he : e * e = e) (hf : f * f 
     e * hp + f * hq
 
 /- English proof (translation)
-Establish `hf : c e * c e = c e` using `by rw [← map_mul, he]`. Establish `hxx : ((x⁻¹ : Rˣ) : R) * x = 1` using `x.inv_mul`. Establish `hcx : c ((x⁻¹ : Rˣ) : R) * c x = 1` using `by rw [← map_mul, hxx, map_one]`. Establish `hw` using `orth_mul he hf hef hcx hxx`. Set `w : Rˣ` to `⟨_, _, hw, (mul_comm _ _).trans hw⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hw1 : (w : R) = e * c ((x⁻¹ : Rˣ) : R) + c e * ((x⁻¹ : Rˣ) : R) + (1 - e - c e)` using `rfl`. Establish `hw2 : ((w⁻¹ : Rˣ) : R) = e * c (x : R) + c e * (x : R) + (1 - e - c e)` using `rfl`. Establish `hcw : c w = w`. Rewrite using `[hw1]`. Simplify using `only [map_add, map_mul, map_sub, map_one, hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hm : ∀ a ∈ S, e * c a + c e * a + (1 - e - c e) ∈ S` using `fun a ha => add_mem (add_mem (mul_mem heS (hS _ ha)) (mul_mem (hS _ heS) ha)) (sub_mem (sub_mem (one_mem _) heS) (hS _ heS))`. Use `⟨x * w, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul, hcw, ← mul_assoc, ← hx]`. Rewrite using `[Units.val_mul, hw1]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, map_mul, map_sub, map_one, h1, hpe, hpf]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Units.val_mul, hw1]`. Conclude with `mul_mem h2 (hm _ h3)`. Rewrite using `[mul_inv, Units.val_mul, hw2]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem h3 (hm _ h2)`. Rewrite using `[Units.val_mul, hw1]`. Take the linear combination `(x * c ((x⁻¹ : Rˣ) : R) - x) * hef + (x * ((x⁻¹ : Rˣ) : R) - x) * hf + c e * hxx`. Rewrite using `[Units.val_mul, hw1]`. Take the linear combination `(x * c ((x⁻¹ : Rˣ) : R) - x) * he + (x * ((x⁻¹ : Rˣ) : R) - x) * hef + e * c ((x⁻¹ : Rˣ) : R) * hx + e * d * hcx`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_root {R A : Type} [CommRing R] [CommRing A] (c : R →+* R) (hc : ∀ z, c (c z) = z) (S : Subring R)
     (hS : ∀ z ∈ S, c z ∈ S) (p : R →+* A) {e d : R} (he : e * e = e) (hef : e * c e = 0) (heS : e ∈ S)
@@ -80,7 +80,7 @@ open NumberField Formalism.L2.DIV
 open scoped TensorProduct
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hg : g ∈ blockTri (blk2 n)` using `fun i j hij => by`. Simplify using `[blk2] at hij`. Use `congr 1`. Conclude with `Units.ext (upper_block_val_submatrix hr hg)`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem det_restricted_block {κ : Type} [CommRing κ] {n r : ℕ} (hr : r ≤ n) (h : n = r) (g : GL (Fin n) κ) :
     Matrix.GeneralLinearGroup.det (upperLeftBlock hr g) = Matrix.GeneralLinearGroup.det g := by
@@ -93,7 +93,7 @@ theorem det_restricted_block {κ : Type} [CommRing κ] {n r : ℕ} (hr : r ≤ n
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `e : (⟨a, ha⟩ : Formalism.L2.Herm.intAf F E) * ⟨x, hx⟩ = ⟨a, ha⟩ * ⟨y, hy⟩` using `Subtype.ext h`. Use `congrArg (resS F PP) e` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, h1, one_mul, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem resS_eq_gen (PP : Pl E) {a x y : E ⊗[F] Formalism.L2.Herm.Af F} (ha : a ∈ Formalism.L2.Herm.intAf F E)
     (hx : x ∈ Formalism.L2.Herm.intAf F E) (hy : y ∈ Formalism.L2.Herm.intAf F E) (h1 : resS F PP ⟨a, ha⟩ = 1)
@@ -103,9 +103,9 @@ theorem resS_eq_gen (PP : Pl E) {a x y : E ⊗[F] Formalism.L2.Herm.Af F} (ha : 
   rwa [map_mul, map_mul, h1, one_mul, one_mul] at this
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hg`. Establish `h3 : d = (y.val.det : Formalism.L2.Herm.intAf F E)`. Rewrite using `[hd]`. Express the relevant statement in the definitionally equal form `(β * intGL _ _ _ y * β⁻¹).val.det = _`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.det_units_conj]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((Formalism.L2.Herm.intAf F E).subtype.map_det y.val).symm`. Substitute `h3` using the available equality. Use `⟨y.val.det.2, fun PP => ?_⟩` and prove the remaining obligations. Rewrite using `[redFn_frGL]`. Conclude with `((resS F PP).map_det y.val).symm`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_int_gen {n : ℕ} {β g : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} (hg : g ∈ St β)
     {d : E ⊗[F] Formalism.L2.Herm.Af F} (hd : d = g.val.det) :
@@ -134,7 +134,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.GridIdem.exists_isIdemSum P (fun Q hQ => GlobalTheory.ParahoricLift.exists_isIdemAt (h Q hQ Q hQ)) fun Q hQ Q' hQ' e => (GlobalTheory.IdemSupport.eq_or_eq_cP e).resolve_right fun e' => h Q' hQ' Q hQ ((GlobalTheory.IdemSupport.isConjPl_iff Q' Q).2 e')`.
+A detailed English derivation is pending.
 -/
 theorem exists_idemSum (P : Finset (Pl D.host.E)) (h : ∀ Q ∈ P, ∀ Q' ∈ P, ¬ IsConjPl Q Q') :
     ∃ e : AE D, IsIdemSum e P :=
@@ -143,7 +143,7 @@ theorem exists_idemSum (P : Finset (Pl D.host.E)) (h : ∀ Q ∈ P, ∀ Q' ∈ P
       h Q' hQ' Q hQ ((GlobalTheory.IdemSupport.isConjPl_iff Q' Q).2 e')
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rfl`. Consider the case `tmul a x => exact congrArg (a ⊗ₜ[D.host.F] ·) (star_star x)`. Consider the case `add a b ha hb => rw [RingHom.map_add, RingHom.map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cA_cA (z : AE D) : cA D (cA D z) = z := by
   induction z using TensorProduct.induction_on with
@@ -154,9 +154,9 @@ theorem cA_cA (z : AE D) : cA D (cA D z) = z := by
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨hd, hr⟩ : ∃ h : toEAf D (Formalism.L2.Theta.mt V k).det ∈ Formalism.L2.Herm.intAf D.host.F D.host.E, ∀ PP : Pl D.host.E, ((Matrix.GeneralLinearGroup.det (redFn β PP (finE V k)) : (kP PP)ˣ) : kP PP) = resS D.host.F PP ⟨_, h⟩` from `det_int_gen hk ((toEAf D).map_det _)`. Establish `e5 : (finHom V k).1.det = finPart D (Formalism.L2.Theta.mt V k).det` using `((finPart D).map_det _).symm`. Take `⟨x, hx, hx1, hx2, hx3⟩` from `GlobalTheory.GeoLevel.LiftChar.exists_finUnit_root V k hf (e5 ▸ GlobalTheory.PlaceDatum.finPart_mem_of_toEAf hd)`. Take `⟨hei, her⟩` from `GlobalTheory.TameProd.resS_idemSum he`. Establish `hinf` using `GlobalTheory.PlaceDatum.infPart_idemSum he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy, hy1, hy2, hy3, hy4, hy5⟩` from `exists_root (cA D) cA_cA ((Formalism.L2.Herm.intAf D.host.F D.host.E).comap (toEAf D)) (fun z hz => GlobalTheory.IdemRes.toEAf_mem_of_finPart (GlobalTheory.IdemSupport.finPart_cA_mem (GlobalTheory.PlaceDatum.finPart_mem_of_toEAf hz))) (infPart D) (d := (Formalism.L2.Theta.mt V k) …`. Rewrite using `[hV.2 k y hy]`. Use `hχ y hy1 hy2 hy3 hy4 (fun PP => Matrix.GeneralLinearGroup.det (redFn β PP (finE V k))) fun PP hP => ?_` and prove the remaining obligations. Use `(hr PP).trans (resS_eq_gen PP hei hd hy2 (her PP hP) ?_)` and prove the remaining obligations. Rewrite using `[← RingHom.map_mul, ← hy5, RingHom.map_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mu_eq_prod {V : HSp D} {χ : (AE D)ˣ →* Circle} {mu : GA D V → ℂ} (hV : MuVal V χ mu) {e : AE D}
     {P : Finset (Pl D.host.E)} (he : IsIdemSum e P) {c : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ} (hχ : TameOn χ e P c)
@@ -183,9 +183,9 @@ theorem mu_eq_prod {V : HSp D} {χ : (AE D)ˣ →* Circle} {mu : GA D V → ℂ}
   rw [← RingHom.map_mul, ← hy5, RingHom.map_mul]
 
 /- English proof (translation)
-Establish `hM` using `L.C.isMu0 j`. Use `GlobalTheory.TameProd.tameOn_of_tame D _ (L.C.mu0 j) e L.Pg _ (hL.mu0 j) hM.tame he ?_ (hL.chi j)` and prove the remaining obligations. Introduce `PP h1 h2`. Use `hM.unr PP fun k hk => ?_` and prove the remaining obligations. Break down `GlobalTheory.StepLaw.div_or_isConjPl_div D L.C.P k PP hk with h | ⟨PP', h, hc⟩` into its components or cases.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h1 ((hL.Pg PP).2 ⟨k, h⟩)`. Conclude with `h2 ⟨PP', (hL.Pg PP').2 ⟨k, h⟩, hc⟩`.
+A detailed English derivation is pending.
 -/
 theorem tame_on_base_character {T0 : Type} {L : LevCh D T0} {μ0 : T0} (hL : L.Is μ0) (j : Fin D.R.m) {e : AE D}
     (he : IsIdemSum e L.Pg) : TameOn (L.mu0 ((j : ℕ) + 1)) e L.Pg fun PP => (L.chi ((j : ℕ) + 1) PP)⁻¹ := by
@@ -210,9 +210,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R i hL mu hV g k hk`. Take `⟨hf, hp, hr⟩` from `hk`. Take `⟨e, he⟩` from `exists_idemSum R.Pg (GlobalTheory.TypePlaces.not_isConjPl R.C.P R.Pg hL.Pg)`. Establish `hrk : (Formalism.IndefR.Links.Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`. Rewrite using `[mu_eq_prod hV he (tame_on_base_character hL i he) hf (Formalism.L2.DIV.parLev_St hp), ← Finset.prod_coe_sort R.Pg, ← Finset.prod_mul_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_eq_one fun PP _ => ?_` and prove the remaining obligations. Establish `h1 : Matrix.GeneralLinearGroup.det (R.eG g PP) = Matrix.GeneralLinearGroup.det (Formalism.L2.DIV.redFn (R.βW i) PP.1 (Formalism.IndefR.Lev.finE (Formalism.IndefR.Links.Wc D i) k))` using `(congrArg Matrix.GeneralLinearGroup.det (congrFun hr PP)).symm.trans (det_restricted_block (Formalism.IndefR.Links.r_le_rank_Wc i) hrk _)`. Rewrite using `[h1, MonoidHom.inv_apply, Units.mul_inv]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem chiDet_mul_mu_eq_one : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : Formalism.IndefR.Links.RealDat D A Ks) (i : Fin D.R.m), R.toLevCh.Is A.μ0 → ∀ mu : GA D (Formalism.IndefR.Links.Wc D i) → ℂ, MuVal (Formalism.IndefR.Links.Wc D i) (R.mu0 ((i : ℕ) + 1)) mu → ∀ (g : G) (k : GA D (Formalism.IndefR.Links.Wc D i)), Formalism.IndefR.Lev.IsLevelLift (Formalism.IndefR.Links.Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) k → (∏ PP : R.Pg, ((R.chi ((i : ℕ) + 1) PP.1 (Matrix.GeneralLinearGroup.det (R.eG g PP)) : ℂˣ) : ℂ)) * mu k = 1 := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R i hL mu hV g k hk

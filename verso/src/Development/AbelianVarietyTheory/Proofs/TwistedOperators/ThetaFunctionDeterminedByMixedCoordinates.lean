@@ -18,7 +18,7 @@ namespace GlobalTheory.ThetaMixInj
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `h`. Establish `e` using `ψ.map_add_eq_mul t (-t)`. Rewrite `e` using `[add_neg_cancel, ψ.map_zero_eq_one, h, zero_mul]`. Conclude with `one_ne_zero e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_ne_zero (ψ : AddChar (AF D.host.F) ℂ) (t : AF D.host.F) : ψ t ≠ 0 := by
   intro h
@@ -40,7 +40,7 @@ theorem heisO_three (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} (u v t : WO S
       ψ (symplOH S T z u) * (ψ (symplOH S T (z + u) v) * (ψ (symplOH S T (z + u + v) t) * f (z + u + v + t))) := rfl
 
 /- English proof (translation)
-Use `⟨adj (incA D (-D.host.xi0) • (η ⬝ giA S)), ?_⟩` and prove the remaining obligations. Rewrite using `[HypDec.incAdj_apply, adj_adj, Matrix.smul_mul, Matrix.mul_assoc, giA_mul_gA, Matrix.mul_one, smul_smul, ← map_mul, neg_mul_neg, inv_mul_cancel₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D), map_one, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem incAdj_surj {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (S : HSp D) (η : Mx D ρ S.rank) :
     ∃ y, d.incAdj S y = d.incY S η := by
@@ -49,7 +49,7 @@ theorem incAdj_surj {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (S : HSp 
     ← map_mul, neg_mul_neg, inv_mul_cancel₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D), map_one, one_smul]
 
 /- English proof (translation)
-Establish `h` using `d.hO_inc S 0 0 0 η w 0`. Simplify using `only [map_zero, zero_add, add_zero, pairT, hO_eq_trace S T₀, adj_zero, Matrix.mul_zero, Matrix.zero_mul, trace_zero] at h`. Rewrite using `[symplOH_eq, h, map_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem wittHyperbolic_symplecticPairing_core_dual_eq_zero {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (S : HSp D) (w : WO S T₀) (η : Mx D ρ S.rank) :
     symplOH S T (d.inc0 S w) (d.incY S η) = 0 := by
@@ -61,11 +61,11 @@ theorem wittHyperbolic_symplecticPairing_core_dual_eq_zero {T T₀ : HSp D} {ρ 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w₀`. Unfold `HypDec.mixT`. Use `congrArg (fun F : Mx D ρ S.rank → ℂ => ∫ ξ in 𝓕, F ξ ∂μ) (funext fun ξ => ?_)` and prove the remaining obligations. Rewrite using `[HypDec.integrandT_eq, HypDec.integrandT_eq, heisO]`. Establish `e1 : symplOH S T (d.incX S ξ + d.incAdj S y + d.inc0 S w₀) (d.incAdj S y') = symplOH S T (d.incX S ξ) (d.incAdj S y')`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.OrientedHeis.symplOH_add_left, GlobalTheory.OrientedHeis.symplOH_add_left]`. Simplify using `only [HypDec.incAdj_apply, HypDec.symplOH_incY_incY, wittHyperbolic_symplecticPairing_core_dual_eq_zero, add_zero]`. Establish `e2 : d.incX S ξ + d.incAdj S y + d.inc0 S w₀ + d.incAdj S y' = d.incX S ξ + d.incAdj S (y + y') + d.inc0 S w₀`. Rewrite using `[map_add]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[e1, e2, ← mul_assoc, ← AddChar.map_add_eq_mul, ← GlobalTheory.OrientedHeis.symplOH_add_right, ← map_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mixT_incAdj {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) {S : HSp D} (ψ : AddChar (AF D.host.F) ℂ)
     (μ : Measure (Mx D ρ S.rank)) (𝓕 : Set (Mx D ρ S.rank)) (g : WO S T → ℂ) (y y' : Mx D S.rank ρ) :
@@ -83,15 +83,15 @@ theorem mixT_incAdj {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) {S : HSp 
   rw [e1, e2, ← mul_assoc, ← AddChar.map_add_eq_mul, ← GlobalTheory.OrientedHeis.symplOH_add_right, ← map_add]
 
 /- English proof (translation)
-Establish `L` using `GlobalTheory.HeisMixSource.heis_mixS D ψ hψ S S₀ T ρ d v`. Use function extensionality and compare the values at `z`. Establish `hz : z = d.extX T (z ⬝ d.jX) + d.ext0 T (z ⬝ d.j0) + d.extY T (z ⬝ d.jY)` using `((d.coordS T).symm_apply_apply z).symm`. Generalize the expression as in `z ⬝ d.jX = a at hz`. Generalize the expression as in `z ⬝ d.j0 = w at hz`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `z ⬝ d.jY = b at hz`. Substitute `hz` using the available equality. Establish `hg` using `GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf (d.extY T b)`. Establish `hg'` using `GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf' (d.extY T b)`. Establish `hk` using `GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hg (d.extX T a)`.
+Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk'` using `GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hg' (d.extX T a)`. Establish `hmix : ∀ x, d.mixS T ψ v.μ v.𝓕 (heisO ψ S T (d.extX T a) (heisO ψ S T (d.extY T b) f)) x = d.mixS T ψ v.μ v.𝓕 (heisO ψ S T (d.extX T a) (heisO ψ S T (d.extY T b) f')) x` using `fun x => by`. Rewrite using `[(L _ hg).1 x a, (L _ hg').1 x a, (L f hf).2.1 (x + a) b, (L f' hf').2.1 (x + a) b, h]`. Establish `e1` using `(L _ hk).2.2.2.2 w`. Establish `e2` using `(L _ hk').2.2.2.2 w`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hmix] at e1`. Establish `hv` using `e1.unique e2`. Rewrite `hv` using `[heisO_two, heisO_two]`. Establish `p : d.ext0 T w + d.extX T a + d.extY T b = d.extX T a + d.ext0 T w + d.extY T b` using `by abel`. Rewrite `hv` using `[p]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_left_cancel₀ (psi_ne_zero ψ _) (mul_left_cancel₀ (psi_ne_zero ψ _) hv)`.
+A detailed English derivation is pending.
 -/
 theorem source {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {f f' : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) (hf' : IsThetaFunO ψ S T f') {S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ)
@@ -121,15 +121,15 @@ theorem source {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T
   exact mul_left_cancel₀ (psi_ne_zero ψ _) (mul_left_cancel₀ (psi_ne_zero ψ _) hv)
 
 /- English proof (translation)
-Establish `L` using `GlobalTheory.HeisTarget.main D ψ hψ S T T₀ ρ d v.μ v.𝓕 v.covol`. Use function extensionality and compare the values at `z`. Take `⟨y, hy⟩` from `incAdj_surj d S (d.pY ⬝ z)`. Establish `hz : z = d.incX S (d.pX ⬝ z) + d.inc0 S (d.p0 ⬝ z) + d.incAdj S y`. Rewrite using `[hy]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((d.coordT S).symm_apply_apply z).symm`. Generalize the expression as in `d.pX ⬝ z = ξ at hz`. Generalize the expression as in `d.p0 ⬝ z = w at hz`. Substitute `hz` using the available equality. Establish `hg` using `GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf (d.incAdj S y)`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg'` using `GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf' (d.incAdj S y)`. Establish `hk` using `GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hg (d.inc0 S w)`. Establish `hk'` using `GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hg' (d.inc0 S w)`. Establish `hm` using `GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hk (d.incX S ξ)`. Establish `hm'` using `GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hk' (d.incX S ξ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmix : ∀ y₀, d.mixT S ψ v.μ v.𝓕 (heisO ψ S T (d.incX S ξ) (heisO ψ S T (d.inc0 S w) (heisO ψ S T (d.incAdj S y) f))) y₀ = d.mixT S ψ v.μ v.𝓕 (heisO ψ S T (d.incX S ξ) (heisO ψ S T (d.inc0 S w) (heisO ψ S T (d.incAdj S y) f'))) y₀` using `fun y₀ => by`. Rewrite using `[(L _ hk).1 ξ y₀, (L _ hk').1 ξ y₀, (L _ hg).2.1 w y₀, (L _ hg').2.1 w y₀, mixT_incAdj, mixT_incAdj, h]`. Establish `e1` using `(L _ hm).2.2`. Establish `e2` using `(L _ hm').2.2`. Simplify using `only [hmix] at e1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hv` using `e1.unique e2`. Rewrite `hv` using `[heisO_three, heisO_three, zero_add]`. Conclude with `mul_left_cancel₀ (psi_ne_zero ψ _) (mul_left_cancel₀ (psi_ne_zero ψ _) (mul_left_cancel₀ (psi_ne_zero ψ _) hv))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem target {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {f f' : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) (hf' : IsThetaFunO ψ S T f') {T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ)
@@ -161,7 +161,7 @@ theorem target {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T
   exact mul_left_cancel₀ (psi_ne_zero ψ _) (mul_left_cancel₀ (psi_ne_zero ψ _) (mul_left_cancel₀ (psi_ne_zero ψ _) hv))
 
 /- English proof (translation)
-Introduce `_ _ hψ _ _ _ _ hf hf'` and use `⟨fun _ _ d v h => source hψ hf hf' d v h, fun _ _ d v h => target hψ hf hf' d v h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (f f' : WO S T → ℂ), IsThetaFunO ψ S T f → IsThetaFunO ψ S T f' → (∀ (S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (v : VolM D T.rank ρ), (∀ x, d.mixS T ψ v.μ v.𝓕 f x = d.mixS T ψ v.μ v.𝓕 f' x) → f = f') ∧ ∀ (T₀ : HSp D) (ρ : ℕ) (d : HypDec T T₀ ρ) (v : VolM D ρ S.rank), (∀ y, d.mixT S ψ v.μ v.𝓕 f y = d.mixT S ψ v.μ v.𝓕 f' y) → f = f' :=
   fun _ _ hψ _ _ _ _ hf hf' =>

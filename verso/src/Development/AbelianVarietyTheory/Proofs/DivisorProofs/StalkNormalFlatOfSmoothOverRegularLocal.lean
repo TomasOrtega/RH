@@ -17,9 +17,9 @@ open GlobalTheory.Desc
 namespace GlobalTheory.SmoothStalkNormal
 
 /- English proof (translation)
-Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (show x ∈ (⊤ : X.Opens) from trivial)`. Rewrite using `[← hU.fromSpecStalk_eq_fromSpecStalk hx, IsAffineOpen.fromSpecStalk]`. Establish `: Flat (Spec.map (X.presheaf.germ U x hx))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Set `_` to `X.presheaf.algebra_section_stalk ⟨x, hx⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `hU.isLocalization_stalk ⟨x, hx⟩` as an intermediate fact. Conclude with `IsLocalization.flat (X.presheaf.stalk x) (hU.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl`. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem flat_fromSpecStalk' (X : Scheme.{0}) (x : X) : Flat (X.fromSpecStalk x) := by
   obtain ⟨U, hU, hx, -⟩ := exists_isAffineOpen_mem_and_subset (show x ∈ (⊤ : X.Opens) from trivial)
@@ -32,9 +32,9 @@ theorem flat_fromSpecStalk' (X : Scheme.{0}) (x : X) : Flat (X.fromSpecStalk x) 
   infer_instance
 
 /- English proof (translation)
-Use `algebraize [f]`. Use `(injective_iff_map_eq_zero f).2 fun r hr => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Establish `hreg : IsSMulRegular B r` using `Module.Flat.isSMulRegular_of_isRegular (isRegular_of_ne_zero h0)`. Establish `h1 : r • (1 : B) = r • (0 : B)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_zero, Algebra.smul_def, _root_.mul_one]`. Conclude with `hr`. Conclude with `one_ne_zero (hreg h1)`.
+A detailed English derivation is pending.
 -/
 theorem injective_of_flat_of_isDomain {A B : Type} [CommRing A] [IsDomain A] [CommRing B]
     [Nontrivial B] (f : A →+* B) (hf : f.Flat) : Function.Injective f := by
@@ -48,11 +48,9 @@ theorem injective_of_flat_of_isDomain {A B : Type} [CommRing A] [IsDomain A] [Co
   exact one_ne_zero (hreg h1)
 
 /- English proof (translation)
-Introduce `R _ _ X p hp x`. Use `haveI : Smooth p := hp`. Use `haveI : IsRegularRing (CommRingCat.of R) := GlobalTheory.isRegularRing_of_isRegularLocalRing R`. Establish `hreg : IsRegularLocalRing (X.presheaf.stalk x)` using `GroundTheory.Arith.SchemeCoh.isRegularLocalRing_stalk_of_smooth p x`. Take `⟨hdom, hint⟩` from `GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing (X.presheaf.stalk x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRdom : IsDomain R` using `(GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing R).1`. Establish `hfl : (Spec.preimage (X.fromSpecStalk x ≫ p)).hom.Flat` using `by haveI := flat_fromSpecStalk' X x`. Establish `h : Flat (Spec.map (Spec.preimage (X.fromSpecStalk x ≫ p)))`. Rewrite using `[Spec.map_preimage]`. Use `infer_instance`.
-
-Conclude with `(HasRingHomProperty.Spec_iff (P := @Flat)).1 h`. Use `⟨hdom, inferInstance, hint, hfl, ?_⟩` and prove the remaining obligations. Conclude with `injective_of_flat_of_isDomain (A := R) _ hfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem stalk_of_smooth_over_regular :
     ∀ (R : Type) [CommRing R] [IsRegularLocalRing R] (X : Scheme.{0}) (p : X ⟶ Sp R), Smooth p →

@@ -10,13 +10,13 @@ namespace GlobalTheory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `hU hK r X x0 ho hP FF hFF bb hbb`. Take `⟨κ, hκm, hκ1, hκB, hκka, ⟨C, hC, hsum⟩, -⟩` from `hK r X x0 ho hP bb hbb`. Use `⟨C, hC, fun φ hφm hφB hφΓ => ?_⟩` and prove the remaining obligations. Establish `h1 : ∫⁻ z, ENNReal.ofReal (kaF X x0 bb z) * φ (cpt X x0 z) ∂muF X x0 = ∫⁻ z, ENNReal.ofReal (κ (cpt X x0 z)) * φ (cpt X x0 z) ∂muF X x0` using `lintegral_congr_ae ((OntoH.ae_mem_Om X x0).mono fun z hz => by simp only [hκka z hz])`. Establish `h2` using `hU r X x0 ho FF hFF (fun x => ENNReal.ofReal (κ x) * φ x) (hκm.ennreal_ofReal.mul hφm) (fun x hx b hb => by simp only [hκB x hx b hb, hφB x hx b hb])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h2, ← lintegral_const_mul' _ _ hC.ne]`. Use `setLIntegral_mono' hFF.1 fun z hz => ?_` and prove the remaining obligations. Establish `hx : cpt X x0 z ∈ X.dom` using `hFF.2.1 hz`. Combine the equalities or inequalities in the displayed calculation. Use `ENNReal.tsum_le_tsum fun γ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hφΓ γ.1 γ.2 _ hx]`. Use `mul_le_mul' (ENNReal.ofReal_le_ofReal ?_) le_rfl` and prove the remaining obligations. Take `⟨h0, h1⟩` from `hκ1 _ (OntoS.dom_lact X γ.2 hx)`. Rewrite using `[Real.le_sqrt h0.le h0.le]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `_ = (∑' γ : X.Γ, ENNReal.ofReal (Real.sqrt (κ (lact γ.1 (cpt X x0 z))))) * φ (cpt X x0 z) := ENNReal.tsum_mul_right`. Use `_ ≤ C * φ (cpt X x0 z) := mul_le_mul' (hsum _ hx) le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem kaUnfold_of_unfold_of_kappa :
     (∀ (r : ℕ) (X : Data E r) (x0 : Frame X.Ψ r), IsOrth X x0 → ∀ FF, IsFundSet X x0 FF → ∀ ψ : Frame X.Ψ r → ℝ≥0∞, Measurable ψ → (∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, ψ (rmul x b) = ψ x) → ∫⁻ z, ψ (cpt X x0 z) ∂muF X x0 = ∫⁻ z in FF, ∑' γ : X.Γ, ψ (lact γ.1 (cpt X x0 z)) ∂muF X x0) → (∀ (r : ℕ) (X : Data E r) (x0 : Frame X.Ψ r), IsOrth X x0 → PropDisc X → ∀ bb : ℝ, 4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 < bb → ∃ κ : Frame X.Ψ r → ℝ, Measurable κ ∧ (∀ x ∈ X.dom, 0 < κ x ∧ κ x ≤ 1) ∧ (∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, κ (rmul x b) = κ x) ∧ (∀ z ∈ OmF X x0, κ (cpt X x0 z) = kaF X x0 bb z) ∧ (∃ C : ℝ≥0∞, C < ⊤ ∧ ∀ x ∈ X.dom, ∑' γ : X.Γ, ENNReal.ofReal (Real.sqrt (κ (lact γ.1 x))) ≤ C) ∧ ∃ ρ C : ℝ, 0 < ρ ∧ ∀ x, IsOrth X x → ∀ z : V (nd X), ‖z‖ < ρ → κ (cpt X x z) ≤ C * κ x) → (KaUnfoldStatement (E := E)) := by

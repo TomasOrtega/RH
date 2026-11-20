@@ -7,15 +7,13 @@ open scoped ENNReal NNReal
 namespace GlobalTheory.CompanionTheory.SW.InvariantProduct
 
 /- English proof (translation)
-Set `μ : Measure Q` to `(ρ.restrict (Set.univ ×ˢ A)).map Prod.fst`. Establish `hμ : ∀ U : Set Q, MeasurableSet U → μ U = ρ (U ×ˢ A)`. Introduce `U hU`. Rewrite using `[Measure.map_apply measurable_fst hU, Measure.restrict_apply (measurable_fst hU)]`. Use `congr 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `⟨x, z⟩`. Simplify using the standard rewrite rules. Use `haveI : μ.IsMulLeftInvariant := ⟨fun q => by`. Use extensionality with `U hU`. Establish `hT : Measurable (fun p : Q × Z => (q * p.1, p.2))` using `(measurable_fst.const_mul q).prodMk measurable_snd`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.map_apply (measurable_const_mul q) hU, hμ _ (measurable_const_mul q hU), hμ U hU]`. Use `conv_rhs => rw [← hinv q]`. Rewrite using `[Measure.map_apply hT (hU.prod hA)]`. Use the proof step `rfl⟩`. Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨fun L hL => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hμ L hL.isClosed.measurableSet]`. Conclude with `(measure_mono (Set.prod_mono subset_rfl hAC)).trans_lt (hL.prod hC).measure_lt_top⟩`. Use `⟨Measure.haarScalarFactor μ η, fun U hU => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun ν : Measure Q => ν U) (Measure.isMulLeftInvariant_eq_smul μ η)`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at h`.
-
-Rewrite using `[← hμ U hU]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_const_rect {Q Z : Type} [Group Q] [TopologicalSpace Q] [LocallyCompactSpace Q]
     [SecondCountableTopology Q] [T2Space Q] [MeasurableSpace Q] [BorelSpace Q]
@@ -54,23 +52,23 @@ end GlobalTheory.CompanionTheory.SW.InvariantProduct
 namespace GlobalTheory.CompanionTheory.SW
 
 /- English proof (translation)
-Introduce `Q Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ η _ ρ _ hinv`. Take `⟨K, hKc, hK1⟩` from `exists_compact_mem_nhds (1 : Q)`. Establish `hKpos : η K ≠ 0` using `(lt_of_lt_of_le (isOpen_interior.measure_pos η ⟨1, mem_interior_iff_mem_nhds.2 hK1⟩) (measure_mono interior_subset)).ne'`. Establish `hKfin : η K ≠ ∞` using `hKc.measure_lt_top.ne`. Establish `hKm : MeasurableSet K` using `hKc.isClosed.measurableSet`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `m : Measure Z` to `(η K)⁻¹ • (ρ.restrict (K ×ˢ Set.univ)).map Prod.snd`. Establish `hm : ∀ A : Set Z, MeasurableSet A → m A = (η K)⁻¹ * ρ (K ×ˢ A)`. Introduce `A hA`. Establish `hset : Prod.snd ⁻¹' A ∩ (K ×ˢ (Set.univ : Set Z)) = K ×ˢ A`. Use extensionality with `⟨x, z⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[and_comm]`. Simplify using `only [m, Measure.smul_apply, smul_eq_mul]`. Rewrite using `[Measure.map_apply measurable_snd hA, Measure.restrict_apply (measurable_snd hA), hset]`. Establish `hrect : ∀ (U : Set Q) (A C : Set Z), MeasurableSet U → MeasurableSet A → IsCompact C → A ⊆ C → ρ (U ×ˢ A) = η U * m A`. Introduce `U A C hU hA hC hAC`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc⟩` from `InvariantProduct.exists_const_rect η ρ hinv hA hC hAC`. Rewrite using `[hc U hU, hm A hA, hc K hKm, ← mul_assoc (η K)⁻¹, mul_comm (η K)⁻¹, mul_assoc (c : ℝ≥0∞), ENNReal.inv_mul_cancel hKpos hKfin, mul_one, mul_comm]`. Establish `hmC : ∀ C : Set Z, IsCompact C → m C < ∞`. Introduce `C hC`. Rewrite using `[hm C hC.isClosed.measurableSet]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.mul_lt_top (ENNReal.inv_lt_top.2 (pos_iff_ne_zero.2 hKpos)) (hKc.prod hC).measure_lt_top`. Use `haveI hmfc : IsFiniteMeasureOnCompacts m := ⟨fun C hC => hmC C hC⟩`. Use `⟨m, inferInstance, ?_⟩` and prove the remaining obligations. Use `symm`. Set `CQ : Set (Set Q)` to `{U | MeasurableSet U ∧ ∃ L, IsCompact L ∧ U ⊆ L}`.
+Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `CZ : Set (Set Z)` to `{A | MeasurableSet A ∧ ∃ L, IsCompact L ∧ A ⊆ L}`. Establish `genAux : ∀ (X : Type) [TopologicalSpace X] [SigmaCompactSpace X] [T2Space X] [MeasurableSpace X] [BorelSpace X], MeasurableSpace.generateFrom {U : Set X | MeasurableSet U ∧ ∃ L, IsCompact L ∧ U ⊆ L} = ‹MeasurableSpace X›`. Introduce `X _ _ _ M _`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `MeasurableSpace.generateFrom_le fun U hU => hU.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `B hB`. Establish `: B = ⋃ n, B ∩ compactCovering X n`. Rewrite using `[← Set.inter_iUnion, iUnion_compactCovering, Set.inter_univ]`. Rewrite using `[this]`. Conclude with `MeasurableSet.iUnion fun n => MeasurableSpace.measurableSet_generateFrom ⟨hB.inter (isCompact_compactCovering X n).isClosed.measurableSet, _, isCompact_compactCovering X n, Set.inter_subset_right⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `piAux : ∀ (X : Type) [TopologicalSpace X] [MeasurableSpace X], IsPiSystem {U : Set X | MeasurableSet U ∧ ∃ L, IsCompact L ∧ U ⊆ L}`. Introduce `X _ _ U hU V hV _`. Take `⟨hUm, L, hL, hUL⟩` from `hU`. Conclude with `⟨hUm.inter hV.1, L, hL, Set.inter_subset_left.trans hUL⟩`. Establish `spanAux : ∀ (X : Type) [TopologicalSpace X] [SigmaCompactSpace X] [T2Space X] [MeasurableSpace X] [BorelSpace X] (μ : Measure X) [IsFiniteMeasureOnCompacts μ], μ.FiniteSpanningSetsIn {U : Set X | MeasurableSet U ∧ ∃ L, IsCompact L ∧ U ⊆ L}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce `X _ _ _ _ _ μ _`. Conclude with `⟨compactCovering X, fun n => ⟨(isCompact_compactCovering X n).isClosed.measurableSet, _, isCompact_compactCovering X n, subset_rfl⟩, fun n => (isCompact_compactCovering X n).measure_lt_top, iUnion_compactCovering X⟩`. Use `Measure.prod_eq_generateFrom (genAux Q) (genAux Z) (piAux Q) (piAux Z) (spanAux Q η) (spanAux Z m) ?_` and prove the remaining obligations. Introduce and unpack `U ⟨hU, -⟩ A ⟨hA, L, hL, hAL⟩`. Conclude with `(hrect U A L hU hA hL hAL)`.
+A detailed English derivation is pending.
 -/
 theorem measure_eq_haar_prod_of_left_invariant :
     ∀ (Q Z : Type) [Group Q] [TopologicalSpace Q] [LocallyCompactSpace Q]

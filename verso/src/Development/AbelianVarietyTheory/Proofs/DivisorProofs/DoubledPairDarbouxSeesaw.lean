@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.DblPairInv
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> ext i j <;>`. Simplify using `only [Matrix.submatrix_apply, Function.comp_apply, Equiv.symm_apply_apply, id, Matrix.fromCols_apply_inl, Matrix.fromCols_apply_inr]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem fromCols_blocks {A : Type} {n d : ℕ} (z z' : Matrix (Fin n) (Fin d) A) :
     ((Matrix.fromCols z z').submatrix id finSumFinEquiv.symm).submatrix id (finSumFinEquiv ∘ Sum.inl) = z ∧
@@ -30,15 +30,13 @@ theorem fromCols_blocks {A : Type} {n d : ℕ} (z z' : Matrix (Fin n) (Fin d) A)
       Matrix.fromCols_apply_inr]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d Xs W M χX χW om r s' r₁ s₁ hP W₂ _ co _ hΔ _ e _ hadm hint h Φ₁ hΦ₁ Φ₂ hΦ₂`. Establish `hS` using `IsUWeilPair.isUSplitting hP.weil`. Use `letI : MeasurableSpace (Fin n × Fin d → AF F) := borel _`. Use `haveI : BorelSpace (Fin n × Fin d → AF F) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (AF F) := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : T2Space (AF F) := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Establish `hμ : (Measure.addHaar : Measure (Fin n × Fin d → AF F)).IsAddHaarMeasure` using `inferInstance`. Take `⟨c, hc⟩` from `GlobalTheory.DiagUniq.eq_mul_diagInt F B.ψ hP.base.std (Fin n × Fin d) _ (hadm _ (GlobalTheory.WeilSchUnique.evalZero_mem_adelicSchwartzAdmittedForms _)) (fun x y Φ hΦ => by`. Set `z` to `M.co.e.symm (x, y)`. Set `u : Matrix (Fin n) (Fin (d + d)) (AE F E)` to `(Matrix.fromCols z z).submatrix id finSumFinEquiv.symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : topC u = z` using `(fromCols_blocks z z).1`. Establish `hb : botC u = z` using `(fromCols_blocks z z).2`. Establish `hu : dblE M.co u = (Sum.elim x x, Sum.elim y (-y))` using `by simp [dblE, ht, hb, z]`. Establish `h0 : (co.e u).1 = 0` using `hΔ u fun i => by`. Rewrite using `[diagSub, LinearMap.mem_eqLocus]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `j`. Conclude with `(congrFun (congrFun ht i) j).trans (congrFun (congrFun hb i) j).symm`. Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply]`. Rewrite using `[← hu, hint u Φ hΦ]`. Simplify using `[Darboux.rho, schr, h0]) Measure.addHaar hμ`.
-
-Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply] at hc`. Establish `hbox : ∀ φ₁ ∈ schA F (Fin n × Fin d), ∀ φ₂ ∈ schA F (Fin n × Fin d), e (boxC φ₁ φ₂) 0 = c * ∫ x, φ₁ x * starRingEnd ℂ (φ₂ x) ∂Measure.addHaar` using `fun φ₁ h₁ φ₂ h₂ => hc _ (GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ φ₁ h₁ _ (GlobalTheory.SchAConj.star_mem_schA F _ φ₂ h₂))`. Rewrite using `[hbox _ (hS.pres _ _ hΦ₁) _ (hS.pres _ _ hΦ₂), hbox _ hΦ₁ _ hΦ₂, GlobalTheory.L2PairingPolar.pairing_eq F _ (om (1, h)) (hS.pres _) (fun μ hμ => hS.unit μ hμ _) _ hμ Φ₁ hΦ₁ Φ₂ hΦ₂]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairing_invariant : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (Xs : Spc F E n) (W : Spc F E d) (M : Model σ Xs W) (χX χW : Chr F E) (om : Rep σ Xs W) (r s' r₁ s₁ : ℕ),

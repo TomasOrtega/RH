@@ -15,9 +15,9 @@ open UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published UpperTheory.V.Af.Bc 
 open scoped Pointwise
 
 /- English proof (translation)
-Use `hI K Ω l ι a r r' hc hc' hs hs' ?_` and prove the remaining obligations. Use `filter_upwards [h, h'] with w hw hw' hp`. Take `⟨B, hB, hr⟩` from `hw hp`. Take `⟨B', hB', hr'⟩` from `hw' hp`. Take `rfl` from `hu _ _ _ hB hB'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨_, hr, hr'⟩`.
+A detailed English derivation is pending.
 -/
 private theorem uniq (hI : IsoOne) (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (sat : HeightOneSpectrum (𝓞 F) → Multiset ℂˣ → Prop) (hu : ∀ v B B', sat v B → sat v B' → B = B') (r r' : G K Ω →* GL (Fin a) (Qbar l)) (hc : Continuous r) (hc' : Continuous r') (hs : IsSSRep r) (hs' : IsSSRep r') (h : AttOne sat ι K r) (h' : AttOne sat ι K r') : RepIso r r' := by
   refine hI K Ω l ι a r r' hc hc' hs hs' ?_
@@ -30,11 +30,9 @@ private theorem uniq (hI : IsoOne) (F Ω : Type) [Field F] [NumberField F] [Fiel
 open GlobalTheory.RealGal.TrInv in
 
 /- English proof (translation)
-Use `haveI : Algebra.IsQuadraticExtension F K := ⟨h2⟩`. Use `haveI : Normal F K := Algebra.IsQuadraticExtension.normal F K`. Establish `hsur` using `conj_surjective (F := F) (Ω := Ω) K g`. Establish `hatt' : AttOne sat ι K (r.comp (conj K g))` using `hC F Ω K l ι a sat r g (conj K g) (res_conj K g) hsur hatt`. Take `⟨h, hh⟩` from `uniq hI F Ω K l ι a sat hu r (r.comp (conj K g)) hr (hr.comp (continuous_conj K g)) hss (isSSRep_comp r _ hsur hss) hatt hatt'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hs' : s' = conj K g s` using `GlobalTheory.SatSysPatch.res_injective (F := F) (Ω := Ω) K (by rw [hs, res_conj])`. Substitute `hs'` using the available equality. Rewrite using `[← MonoidHom.comp_apply, hh s]`. Simplify using `only [Units.val_mul]`. Rewrite using `[Matrix.trace_mul_cycle]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem trace_conj (hI : IsoOne) (hC : OneConj) (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (h2 : Module.finrank F K = 2) (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (sat : HeightOneSpectrum (𝓞 F) → Multiset ℂˣ → Prop) (hu : ∀ v B B', sat v B → sat v B' → B = B') (r : G K Ω →* GL (Fin a) (Qbar l)) (hr : Continuous r) (hss : IsSSRep r) (hatt : AttOne sat ι K r) (g : G F Ω) (s s' : G K Ω) (hs : res F Ω K s' = g * res F Ω K s * g⁻¹) : ((r s' : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).trace = ((r s : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).trace := by
   haveI : Algebra.IsQuadraticExtension F K := ⟨h2⟩
@@ -54,21 +52,15 @@ private theorem trace_conj (hI : IsoOne) (hC : OneConj) (F Ω : Type) [Field F] 
 open GlobalTheory.RealGalCompat in
 
 /- English proof (translation)
-Set `M : IntermediateField F Ω` to `Q.K ⊔ Q'.K`. Use `haveI : FiniteDimensional F Q.K := Module.finite_of_finrank_pos (by rw [Q.two]; norm_num)`. Use `haveI : FiniteDimensional F Q'.K := Module.finite_of_finrank_pos (by rw [Q'.two]; norm_num)`. Use `haveI : NumberField M := NumberField.of_module_finite F M`. Use `haveI : IsAlgClosure M Ω := ⟨IsAlgClosure.isAlgClosed F, haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic; Algebra.IsAlgebraic.tower_top (K := F) _⟩`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Algebra.IsQuadraticExtension F Q.K := { finrank_eq_two' := Q.two }`. Use `haveI : Algebra.IsQuadraticExtension F Q'.K := { finrank_eq_two' := Q'.two }`. Use `haveI : Normal F M := IntermediateField.normal_sup F Ω Q.K Q'.K`. Use `letI : Algebra Q.K M := (IntermediateField.inclusion (le_sup_left : Q.K ≤ M)).toRingHom.toAlgebra`. Use `letI : Algebra Q'.K M := (IntermediateField.inclusion (le_sup_right : Q'.K ≤ M)).toRingHom.toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsScalarTower F Q.K M := IsScalarTower.of_algebraMap_eq fun x => ((IntermediateField.inclusion _).commutes x).symm`. Use `haveI : IsScalarTower F Q'.K M := IsScalarTower.of_algebraMap_eq fun x => ((IntermediateField.inclusion _).commutes x).symm`. Use `haveI : IsScalarTower Q.K M Ω := IsScalarTower.of_algebraMap_eq fun x => rfl`. Use `haveI : IsScalarTower Q'.K M Ω := IsScalarTower.of_algebraMap_eq fun x => rfl`. Establish `hA` using `hT F Ω Q.K M l ι a sat r ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hA'` using `hT F Ω Q'.K M l ι a sat r' ha'`. Establish `hS` using `UpperTheory.semisimple_restriction_to_normal_subgroup _ _ _ a r (res Q.K Ω M) (range_res_normal (F := F)) hs`. Establish `hS'` using `UpperTheory.semisimple_restriction_to_normal_subgroup _ _ _ a r' (res Q'.K Ω M) (range_res_normal (F := F)) hs'`. Establish `hC` using `hr.comp (UpperTheory.V.Af.continuous_restrictScalarsHom Q.K M Ω)`. Establish `hC'` using `hr'.comp (UpperTheory.V.Af.continuous_restrictScalarsHom Q'.K M Ω)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨g, hg⟩` from `uniq hI F Ω M l ι a sat hu _ _ hC hC' hS hS' hA hA'`. Use `set σ : G F Ω := res F Ω Q.K s with hσ`. Establish `hfix : σ ∈ M.fixingSubgroup`. Rewrite using `[IntermediateField.fixingSubgroup_sup, Subgroup.mem_inf]`. Use `⟨fun x => ?_, fun x => ?_⟩` and prove the remaining obligations.
-
-Conclude with `s.commutes x`. Rewrite using `[hss]`. Conclude with `s'.commutes x`. Set `t : G M Ω` to `IntermediateField.fixingSubgroupEquiv M ⟨σ, hfix⟩`. Establish `ht : res Q.K Ω M t = s` using `by ext z; rfl`.
-
-Establish `ht' : res Q'.K Ω M t = s'`. Use extensionality with `z`. Conclude with `congrArg (fun u : G F Ω => u z) hss`. Establish `e` using `hg t`. Simplify using `only [MonoidHom.comp_apply, ht, ht'] at e`.
-
-Rewrite using `[e, Units.val_mul, Units.val_mul, Matrix.trace_mul_cycle, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem trace_eq (hI : IsoOne) (hT : OneTower) (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (Q Q' : QCM F Ω) (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (sat : HeightOneSpectrum (𝓞 F) → Multiset ℂˣ → Prop) (hu : ∀ v B B', sat v B → sat v B' → B = B') (r : G ↥Q.K Ω →* GL (Fin a) (Qbar l)) (r' : G ↥Q'.K Ω →* GL (Fin a) (Qbar l)) (hr : Continuous r) (hr' : Continuous r') (hs : IsSSRep r) (hs' : IsSSRep r') (ha : AttOne sat ι ↥Q.K r) (ha' : AttOne sat ι ↥Q'.K r') (s : G ↥Q.K Ω) (s' : G ↥Q'.K Ω) (hss : res F Ω ↥Q.K s = res F Ω ↥Q'.K s') : ((r s : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).trace = ((r' s' : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).trace := by
   let M : IntermediateField F Ω := Q.K ⊔ Q'.K
@@ -110,21 +102,17 @@ private theorem trace_eq (hI : IsoOne) (hT : OneTower) (F Ω : Type) [Field F] [
     Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `hI hT hC F Ω _ _ _ _ _ l _ ι a sat hu S hS r hr`. Use `haveI : Infinite ↥S := hS.to_subtype`. Use `haveI : Algebra.IsIntegral F Ω := (IsAlgClosure.isAlgebraic (R := F) (K := Ω)).isIntegral`. Take `⟨η, hηinj, hη⟩` from `GlobalTheory.RealGal.SignChar.main F Ω`. Set `e : ∀ Q : ↥S, G ↥Q.1.K Ω ≃* (η Q.1).ker` to `fun Q => (MonoidHom.ofInjective (GlobalTheory.SatSysPatch.res_injective F Ω ↥Q.1.K)).trans (MulEquiv.subgroupCongr (hη Q.1).1.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : ∀ Q : ↥S, ∀ (s : G ↥Q.1.K Ω), ((e Q s : (η Q.1).ker) : G F Ω) = res F Ω ↥Q.1.K s` using `fun Q s => rfl`. Establish `hes : ∀ Q : ↥S, ∀ (h : (η Q.1).ker), res F Ω ↥Q.1.K ((e Q).symm h) = h`. Introduce `Q h`. Rewrite using `[← he, MulEquiv.apply_symm_apply]`. Set `r' : ∀ Q : ↥S, (η Q.1).ker →* GL (Fin a) (Qbar l)` to `fun Q => (r Q).comp (e Q).symm.toMonoidHom`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr' : ∀ Q : ↥S, ∀ (h : (η Q.1).ker), r' Q h = r Q ((e Q).symm h)` using `fun Q h => rfl`. Establish `hcont : ∀ Q : ↥S, Continuous (r' Q)`. Introduce `Q`. Use `haveI : CompactSpace (G ↥Q.1.K Ω) := inferInstanceAs (CompactSpace (Ω ≃ₐ[↥Q.1.K] Ω))`. Establish `hc : Continuous (e Q)` using `(UpperTheory.V.Af.continuous_restrictScalarsHom F ↥Q.1.K Ω).subtype_mk _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `hm` to `hc.homeoOfEquivCompactToT2 (f := (e Q).toEquiv)`. Conclude with `(hr Q).1.comp hm.symm.continuous`. Establish `hss : ∀ Q : ↥S, IsSSRep (r' Q)`. Introduce `Q`. Use `UpperTheory.semisimple_restriction_to_normal_subgroup _ _ _ a (r Q) (e Q).symm.toMonoidHom ?_ (hr Q).2.1` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.range_eq_top.mpr (e Q).symm.surjective]`. Use `infer_instance`. Take `⟨ρ, hρc, hρs, hev⟩` from `GlobalTheory.IndexTwoPatch.main (G F Ω) (Qbar l) a ↥S (fun Q => η Q.1) (hηinj.comp Subtype.val_injective) (fun Q => (hη Q.1).2) r' (fun Q => ⟨hcont Q, hss Q⟩) (by`. Introduce `Q g h h' hh`. Rewrite using `[hr', hr']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `trace_conj hI hC F Ω ↥Q.1.K Q.1.two l ι a sat hu (r Q) (hr Q).1 (hr Q).2.1 (hr Q).2.2 g ((e Q).symm h) ((e Q).symm h') (by rw [hes, hes]; exact hh))`. Use the proof step `(by`. Introduce `Q Q' h h' hh`. Rewrite using `[hr', hr']`. Conclude with `trace_eq hI hT F Ω Q.1 Q'.1 l ι a sat hu (r Q) (r Q') (hr Q).1 (hr Q').1 (hr Q).2.1 (hr Q').2.1 (hr Q).2.2 (hr Q').2.2 _ _ (by rw [hes, hes]; exact hh))`.
-
-Use `⟨ρ, hρc, hρs, hev.mono fun Q hQ => ?_⟩` and prove the remaining obligations. Establish `hres : IsSSRep (ρ.comp (res F Ω ↥Q.1.K))`. Use `UpperTheory.semisimple_restriction_to_normal_subgroup _ _ _ a ρ (res F Ω ↥Q.1.K) ?_ hρs` and prove the remaining obligations. Rewrite using `[← (hη Q.1).1]`. Use `infer_instance`.
-
-Use `GlobalTheory.TraceConj.main (G ↥Q.1.K Ω) (Qbar l) a (r Q) (ρ.comp (res F Ω ↥Q.1.K)) (hr Q).2.1 hres fun s => ?_` and prove the remaining obligations. Establish `h1` using `hQ (e Q s)`. Rewrite `h1` using `[hr', MulEquiv.symm_apply_apply, he]`. Conclude with `h1.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem patchOne_holds : IsoOne → OneTower → OneConj → PatchOne := by
   intro hI hT hC F Ω _ _ _ _ _ l _ ι a sat hu S hS r hr

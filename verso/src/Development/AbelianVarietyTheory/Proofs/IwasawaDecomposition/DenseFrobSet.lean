@@ -18,17 +18,17 @@ def frobSet (D : D7) (F : Finset (PlE D.host)) : Set (G D.host.E D.nd.Om) :=
     ∃ B : ValuationSubring D.nd.Om, IsPlaceOver (F := D.host.E) B w ∧ IsFrob (F := D.host.E) B (normV w) σ}
 
 /- English proof (translation)
-The claim follows from `h F`.
+A detailed English derivation is pending.
 -/
 theorem dense_frobSet (D : D7) (h : GlobalTheory.RowTie.ChebSplit D.nd) (F : Finset (PlE D.host)) :
     Dense (frobSet D F) := h F
 
 /- English proof (translation)
-Establish `hS` using `hv`. Take `⟨hsp, hl, hSi, hQ⟩` from `hv`. Establish `hgen : ∀ k ∈ Finset.Icc 1 D.R.nV, GenAt (withLoc L) ((withLoc L).nd.l i) ((withLoc L).nd.Q i) v k`. Introduce `k hk`. Take `⟨hk1, hk2⟩` from `Finset.mem_Icc.1 hk`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨hsp, hl, ?_, hQ, hk1, hk2⟩` and prove the remaining obligations. Introduce `hmem`. Conclude with `hSi (((withLoc L).nd.S_def i v).2 hmem)`. Simplify using `only [heckePol, sysPol, Polynomial.map_add, Polynomial.map_pow, Polynomial.map_X, Polynomial.map_sum, Polynomial.map_mul, Polynomial.map_C]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.CoefDuty.ptSys, if_pos (hgen k hk), map_mul, map_pow, map_neg, map_one, map_natCast]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem heckePol_map (D : D7) (L : LocAll (lay0 D)) (i : (withLoc L).nd.Loc) (x : (withLoc L).nd.X i) (v : PlE D.host)
     (hv : SplitOut (withLoc L).nd i v) :

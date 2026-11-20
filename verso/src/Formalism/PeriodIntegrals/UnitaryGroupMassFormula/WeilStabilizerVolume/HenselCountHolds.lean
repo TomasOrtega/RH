@@ -17,61 +17,57 @@ def hlev (Λ0 : AddSubgroup V) (H : AddSubgroup X) (G : V → X) (y : V) (h : X)
   {Z | Z ∈ Λ0 ∧ G (y + Z) - h ∈ H}
 
 /- English proof (translation)
-Establish `hHa : ∀ n, H (n + 1) ≤ H n`. Introduce `n`. Rewrite using `[← hD, ← hD]`. Conclude with `AddSubgroup.map_mono (hΛa (Nat.le_succ n))`. Establish `hDW : ∀ n W, W ∈ Λ n → D W ∈ H n` using `fun n W hW => hD n ▸ AddSubgroup.mem_map_of_mem D hW`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΛ0 : ∀ n W, W ∈ Λ n → W ∈ Λ 0` using `fun n W hW => hΛa (Nat.zero_le n) hW`. Establish `hopen : ∀ m h', IsOpen (hlev (Λ 0) (H m) G y h')`. Introduce `m h'`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce and unpack `Z ⟨hZ0, hZh⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{x | x - Z ∈ Λ m}, ?_, (hΛo m).preimage (continuous_id.sub continuous_const), by simp [(Λ m).zero_mem]⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hx : x - Z ∈ Λ m` using `hx`. Establish `hx' : x = Z + (x - Z)` using `by abel`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx']`. Conclude with `(Λ 0).add_mem hZ0 (hΛ0 m _ hx)`. Establish `h1` using `hG m Z hZ0 (x - Z) hx`. Establish `h2` using `hDW m _ hx`. Establish `e : G (y + x) - h' = (G (y + Z + (x - Z)) - G (y + Z) - D (x - Z)) + D (x - Z) + (G (y + Z) - h')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[show y + Z + (x - Z) = y + x by abel]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `(H m).add_mem ((H m).add_mem (hHa m h1) h2) hZh`. Establish `htr : ∀ n h' W, W ∈ Λ n → μ (hlev (Λ 0) (H (n + 1)) G y (h' + D W)) = μ (hlev (Λ 0) (H (n + 1)) G y h')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `n h' W hW`. Establish `hW0` using `hΛ0 n W hW`. Establish `e : hlev (Λ 0) (H (n + 1)) G y (h' + D W) = (fun Z => -W + Z) ⁻¹' hlev (Λ 0) (H (n + 1)) G y h'`. Use extensionality with `Z`. Simplify using `only [hlev, Set.mem_preimage, Set.mem_setOf_eq]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hZ, hZh⟩`. Establish `hZ' : -W + Z ∈ Λ 0` using `(Λ 0).add_mem ((Λ 0).neg_mem hW0) hZ`. Use `⟨hZ', ?_⟩` and prove the remaining obligations. Establish `h1` using `hG n (-W + Z) hZ' W hW`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[show y + (-W + Z) + W = y + Z by abel]`. Establish `e2 : G (y + (-W + Z)) - h' = (G (y + Z) - (h' + D W)) - (G (y + Z) - G (y + (-W + Z)) - D W)` using `by abel`. Rewrite using `[e2]`. Conclude with `(H (n + 1)).sub_mem hZh h1`. Introduce and unpack `⟨hZ', hZh⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hZ : Z ∈ Λ 0`. Use `(Λ 0).add_mem hW0 hZ'` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_left]`. Then use the resulting hypothesis. Use `⟨hZ, ?_⟩` and prove the remaining obligations. Establish `h1` using `hG n (-W + Z) hZ' W hW`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[show y + (-W + Z) + W = y + Z by abel]`. Establish `e2 : G (y + Z) - (h' + D W) = (G (y + Z) - G (y + (-W + Z)) - D W) + (G (y + (-W + Z)) - h')` using `by abel`. Rewrite using `[e2]`. Conclude with `(H (n + 1)).add_mem h1 hZh`. Rewrite using `[e, measure_preimage_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hstep : ∀ n, ∃ k : ℕ, k ≠ 0 ∧ μ (hlev (Λ 0) (H n) G y h) = k * μ (hlev (Λ 0) (H (n + 1)) G y h) ∧ ν (H n) = k * ν (H (n + 1))`. Introduce `n`. Establish `: DiscreteTopology (X ⧸ H (n + 1))` using `QuotientAddGroup.discreteTopology (hHo (n + 1))`. Set `q : X → X ⧸ H (n + 1)` to `QuotientAddGroup.mk`. Establish `hq : Continuous q` using `continuous_quot_mk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hfin : (q '' (H n : Set X)).Finite` using `((hHc n).image hq).finite_of_discrete`. Use `set T := hfin.toFinset with hT`. Establish `hqeq : ∀ a b, q a = q b ↔ a - b ∈ H (n + 1)` using `fun a b => QuotientAddGroup.eq_iff_sub_mem`. Establish `hmemT : ∀ p, p ∈ T ↔ ∃ u ∈ H n, q u = p`. Introduce `p`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[hT, q]`. Set `piece : X ⧸ H (n + 1) → Set V` to `fun p => {Z | Z ∈ Λ 0 ∧ q (G (y + Z) - h) = p}`. Establish `hpiece : ∀ u, piece (q u) = hlev (Λ 0) (H (n + 1)) G y (h + u)`. Introduce `u`. Use extensionality with `Z`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `only [piece, hlev, Set.mem_setOf_eq, hqeq, sub_sub]`. Establish `hA : hlev (Λ 0) (H n) G y h = ⋃ p ∈ T, piece p`. Use extensionality with `Z`. Simplify using `only [Set.mem_iUnion, exists_prop]`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `⟨hZ, hZh⟩`. Conclude with `⟨q (G (y + Z) - h), (hmemT _).2 ⟨_, hZh, rfl⟩, hZ, rfl⟩`. Introduce and unpack `⟨p, hp, hZ, hZp⟩`. Take `⟨u, hu, rfl⟩` from `(hmemT p).1 hp`. Use `⟨hZ, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `(hqeq _ _).1 hZp`. Establish `e : G (y + Z) - h = (G (y + Z) - h - u) + u` using `by abel`. Rewrite using `[e]`. Conclude with `(H n).add_mem (hHa n h1) hu`. Establish `hdisj : Set.PairwiseDisjoint (↑T : Set (X ⧸ H (n + 1))) piece`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `p _ p' _ hne`. Use `Set.disjoint_left.2 fun Z hZ hZ' => hne ?_` and prove the remaining obligations. Conclude with `hZ.2.symm.trans hZ'.2`. Establish `hmeasP : ∀ p ∈ T, MeasurableSet (piece p)`. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, _, rfl⟩` from `(hmemT p).1 hp`. Rewrite using `[hpiece]`. Conclude with `(hopen _ _).measurableSet`. Establish `hvalP : ∀ p ∈ T, μ (piece p) = μ (hlev (Λ 0) (H (n + 1)) G y h)`. Introduce `p hp`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu, rfl⟩` from `(hmemT p).1 hp`. Rewrite using `[hpiece]`. Rewrite `hu` using `[← hD n]`. Take `⟨W, hW, rfl⟩` from `AddSubgroup.mem_map.1 hu`. Conclude with `htr n h W hW`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : (H n : Set X) = ⋃ p ∈ T, q ⁻¹' {p}`. Use extensionality with `x`. Simplify using `only [Set.mem_iUnion, Set.mem_preimage, Set.mem_singleton_iff, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨q x, (hmemT _).2 ⟨x, hx, rfl⟩, rfl⟩`. Introduce and unpack `⟨p, hp, hxp⟩`. Take `⟨u, hu, rfl⟩` from `(hmemT p).1 hp`. Establish `h1` using `(hqeq _ _).1 hxp`. Establish `e : x = (x - u) + u` using `by abel`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(H n).add_mem (hHa n h1) hu`. Establish `hdisjH : Set.PairwiseDisjoint (↑T : Set (X ⧸ H (n + 1))) (fun p => q ⁻¹' {p})` using `fun p _ p' _ hne => (Set.disjoint_singleton.2 hne).preimage q`. Establish `hmeasH : ∀ p ∈ T, MeasurableSet (q ⁻¹' {p})` using `fun p _ => ((isOpen_discrete ({p} : Set (X ⧸ H (n + 1)))).preimage hq).measurableSet`. Establish `hvalH : ∀ p ∈ T, ν (q ⁻¹' {p}) = ν (H (n + 1))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `p hp`. Take `⟨u, _, rfl⟩` from `(hmemT p).1 hp`. Establish `e : q ⁻¹' {q u} = (fun z => -u + z) ⁻¹' (H (n + 1) : Set X)`. Use extensionality with `z`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, hqeq, SetLike.mem_coe]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[show z - u = -u + z by abel]`. Rewrite using `[e, measure_preimage_add]`. Use `⟨T.card, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Finset.card_ne_zero.2 ⟨q 0, (hmemT _).2 ⟨0, (H n).zero_mem, rfl⟩⟩` and prove the remaining obligations. Rewrite using `[hA, measure_biUnion_finset hdisj hmeasP, Finset.sum_congr rfl hvalP, Finset.sum_const, nsmul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hH, measure_biUnion_finset hdisjH hmeasH, Finset.sum_congr rfl hvalH, Finset.sum_const, nsmul_eq_mul]`. Proceed by induction on `n with`. Consider the case `zero`. Establish `e : hlev (Λ 0) (H 0) G y h = (Λ 0 : Set V)`. Use extensionality with `Z`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hlev, Set.mem_setOf_eq, SetLike.mem_coe, and_iff_left_iff_imp]`. Introduce `hZ`. Establish `h1` using `hG 0 0 (Λ 0).zero_mem Z hZ`. Simplify using `only [add_zero] at h1`. Establish `e2 : G (y + Z) - h = (G (y + Z) - G y - D Z) + D Z - (h - G y)` using `by abel`.
-
-Rewrite using `[e2]`. Conclude with `(H 0).sub_mem ((H 0).add_mem (hHa 0 h1) (hDW 0 Z hZ)) hh`. Rewrite using `[e, mul_comm]`. Consider the case `succ n ih`. Take `⟨k, hk, hμ, hν⟩` from `hstep n`.
-
-Establish `hk0 : (k : ENNReal) ≠ 0` using `Nat.cast_ne_zero.2 hk`. Establish `key : (k : ENNReal) * (μ (hlev (Λ 0) (H (n + 1)) G y h) * ν (H 0)) = k * (μ (Λ 0) * ν (H (n + 1)))`. Rewrite using `[← mul_assoc, ← hμ, ih, hν]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(ENNReal.mul_right_inj hk0 (ENNReal.natCast_ne_top k)).1 key`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hensel_main (μ : Measure V) (ν : Measure X) [μ.IsAddHaarMeasure] [ν.IsAddHaarMeasure]
     (Λ : ℕ → AddSubgroup V) (H : ℕ → AddSubgroup X) (hΛo : ∀ n, IsOpen (Λ n : Set V))
@@ -240,7 +236,7 @@ theorem hensel_main (μ : Measure V) (ν : Measure X) [μ.IsAddHaarMeasure] [ν.
 end Hensel
 
 /- English proof (translation)
-Introduce `V X _ _ _ _ _ _ _ _ _ _ μ ν hμ hν Λ H hΛo _ hΛa hHo hHc D hD G y hG n h hh`. Conclude with `hensel_main μ ν Λ H hΛo hΛa hHo hHc D hD G y hG h hh n`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem henselCount_holds : HenselCount := by
   intro V X _ _ _ _ _ _ _ _ _ _ μ ν hμ hν Λ H hΛo _ hΛa hHo hHc D hD G y hG n h hh

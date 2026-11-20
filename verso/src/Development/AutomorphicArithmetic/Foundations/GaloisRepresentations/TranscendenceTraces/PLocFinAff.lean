@@ -6,19 +6,15 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `hC hR W V U _ π r _ _ _ x`. Set `A` to `Γ(U, ⊤)`. Set `u : Spec (CommRingCat.of A) ⟶ U` to `U.isoSpec.inv`. Take `⟨B, _, _, v, _, hpb⟩` from `hC r A u`. Use `haveI : IsIso v := hpb.isIso_fst_of_isIso`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `f : W ⟶ Spec (CommRingCat.of B)` to `π ≫ inv v`. Take `⟨C, g, h, hg, hh⟩` from `GlobalTheory.T.exists_etaleFaithfullyFlat_refining_etale_surjection (CommRingCat.of B) W f inferInstance inferInstance`. Use `letI : Algebra B C := g.hom.toAlgebra`. Use `haveI : Algebra.Etale B C := hg.1`. Use `haveI : Module.FaithfullyFlat B C := hg.2`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `P : PrimeSpectrum A` to `U.isoSpec.hom x`. Take `⟨E, _, _, hE, ⟨Q, hQ⟩, ⟨φ⟩⟩` from `hR A B C P`. Set `gE : Spec (CommRingCat.of E) ⟶ U` to `Spec.map (CommRingCat.ofHom (algebraMap A E)) ≫ u`. Use `haveI : Etale (Spec.map (CommRingCat.ofHom (algebraMap A E))) := HasRingHomProperty.Spec_iff.mpr (RingHom.etale_algebraMap.mpr hE)`. Establish `big` using `(isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_tensorProduct A B E)).paste_horiz hpb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hhπ : h ≫ π = Spec.map g ≫ v`. Rewrite using `[← hh]`. Simplify using `[f]`. Use `⟨Spec (CommRingCat.of E), gE, inferInstance, inferInstance, ⟨Q, ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u (Spec.map (CommRingCat.ofHom (algebraMap A E)) Q) = x`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e : Spec.map (CommRingCat.ofHom (algebraMap A E)) Q = P` using `hQ`. Rewrite using `[e]`. Use `show U.isoSpec.inv (U.isoSpec.hom x) = x`. Rewrite using `[← Scheme.Hom.comp_apply, Iso.hom_inv_id]`. Both sides reduce to the same expression.
-
-Use `⟨big.lift (pullback.fst r gE) (pullback.snd r gE) pullback.condition ≫ Spec.map (CommRingCat.ofHom φ.toRingHom) ≫ h, ?_⟩` and prove the remaining obligations. Establish `eφ : g ≫ CommRingCat.ofHom φ.toRingHom = CommRingCat.ofHom Algebra.TensorProduct.includeLeftRingHom`. Use extensionality with `b`. Conclude with `φ.commutes b`. Rewrite using `[Category.assoc, Category.assoc, hhπ, ← Category.assoc (Spec.map _) (Spec.map g) v, ← Spec.map_comp, eφ]`.
-
-Conclude with `big.lift_fst _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.locFinAff_of :
     Chart → RingSplit → LocFinAff := by

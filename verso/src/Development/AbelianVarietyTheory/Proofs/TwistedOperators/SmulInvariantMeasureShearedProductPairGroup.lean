@@ -6,13 +6,13 @@ open scoped Pointwise
 namespace GlobalTheory.UnfoldNormal
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace N := hNc.locallyCompactSpace`. Use `haveI : SecondCountableTopology N := TopologicalSpace.Subtype.secondCountableTopology (N : Set H)`. Use `haveI : SigmaFinite κ := inferInstance`. Use `⟨fun g s hs => ?_⟩` and prove the remaining obligations. Take `⟨⟨u, v⟩, hu, hv, huv⟩` from `g`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression.
 
-Establish `hmeasg : Measurable (fun x : H × H => ((⟨(u, v), hu, hv, huv⟩ : pairGroup Γ N hN)) • x)`. Express the relevant statement in the definitionally equal form `Measurable (fun x : H × H => (u * x.1, v * x.2))`. Conclude with `(measurable_fst.const_mul u).prodMk (measurable_snd.const_mul v)`. Set `δ : N` to `⟨u * v⁻¹, huv⟩`. Set `c : N → N` to `fun n => ⟨v * n * v⁻¹, hN v hv n n.2⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : MeasurePreserving c κ κ` using `⟨(show Continuous c from ((continuous_const.mul continuous_subtype_val).mul continuous_const).subtype_mk _).measurable, hconj v hv⟩`. Establish `hf : MeasurePreserving (fun n : N => δ * c n) κ κ` using `(measurePreserving_mul_left κ δ).comp hc`. Establish `hT : MeasurePreserving (Prod.map (fun n : N => δ * c n) (fun h : H => v * h)) (κ.prod ν) (κ.prod ν)` using `hf.prod (measurePreserving_mul_left ν v)`. Establish `hsh` using `(measurableEmbedding_shear (N := N) hNc)`. Establish `key : (fun x : H × H => ((⟨(u, v), hu, hv, huv⟩ : pairGroup Γ N hN)) • x) ∘ shear N = shear N ∘ Prod.map (fun n : N => δ * c n) (fun h : H => v * h)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `p`. Express the relevant statement in the definitionally equal form `(u * (p.1 * p.2), v * p.2) = (((u * v⁻¹) * (v * p.1 * v⁻¹)) * (v * p.2), v * p.2)`. Use `congr 1`. Use `group`. Rewrite using `[← Measure.map_apply hmeasg hs, Measure.map_map hmeasg hsh.measurable, key, ← Measure.map_map hsh.measurable hT.measurable, hT.map_eq]`.
+A detailed English derivation is pending.
 -/
 theorem smulInvariantMeasure_shear_map (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     [LocallyCompactSpace H] [SecondCountableTopology H] [T2Space H] [MeasurableSpace H] [BorelSpace H]

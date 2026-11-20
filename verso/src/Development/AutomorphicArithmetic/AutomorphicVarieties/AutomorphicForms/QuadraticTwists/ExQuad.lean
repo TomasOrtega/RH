@@ -11,13 +11,13 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Set `R : Subring Ω` to `(Int.castRingHom Ω).range`. Establish `hpR : (p : Ω) ∈ R` using `⟨p, by simp⟩`. Set `x : R` to `⟨p, hpR⟩`. Establish `hI : Ideal.span {x} ≠ ⊤`. Introduce `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[Ideal.eq_top_iff_one, Ideal.mem_span_singleton']`. Take `⟨⟨r, n, rfl⟩, hr⟩` from `h`. Establish `h1 : ((n * p : ℤ) : Ω) = 1`. Use `congrArg Subtype.val hr` as an intermediate fact. Simplify `this` using `[x]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : n * (p : ℤ) = 1` using `by exact_mod_cast h1`. Establish `h3 : ((p : ℕ) : ℤ) ∣ ((1 : ℕ) : ℤ)` using `⟨n, by push_cast; linarith⟩`. Establish `h4 : p ∣ 1` using `Int.natCast_dvd_natCast.mp h3`. Conclude with `hp.one_lt.ne' (Nat.dvd_one.mp h4)`. Take `⟨B, -, hB⟩` from `Ideal.image_subset_nonunits_valuationSubring _ hI`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨B, (B.mem_nonunits_iff).mp (hB ⟨x, Ideal.subset_span rfl, rfl⟩)⟩`.
+A detailed English derivation is pending.
 -/
 private theorem exists_valuationSubring_valuation_prime_lt_one (Ω : Type) [Field Ω] [CharZero Ω] (p : ℕ) (hp : p.Prime) :
     ∃ A : ValuationSubring Ω, A.valuation (p : Ω) < 1 := by
@@ -39,7 +39,7 @@ private theorem exists_valuationSubring_valuation_prime_lt_one (Ω : Type) [Fiel
   exact ⟨B, (B.mem_nonunits_iff).mp (hB ⟨x, Ideal.subset_span rfl, rfl⟩)⟩
 
 /- English proof (translation)
-Use `⟨Rat.ringOfIntegersEquiv x, ?_⟩` and prove the remaining obligations. Use `eq_intCast (Rat.ringOfIntegersEquiv.symm : ℤ →+* 𝓞 ℚ) (Rat.ringOfIntegersEquiv x)` as an intermediate fact. Conclude with `(Rat.ringOfIntegersEquiv.symm_apply_apply x).symm.trans this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ringOfIntegers_rat_exists_int_eq (x : 𝓞 ℚ) : ∃ n : ℤ, x = (n : 𝓞 ℚ) := by
   refine ⟨Rat.ringOfIntegersEquiv x, ?_⟩
@@ -47,11 +47,11 @@ private theorem ringOfIntegers_rat_exists_int_eq (x : 𝓞 ℚ) : ∃ n : ℤ, x
   exact (Rat.ringOfIntegersEquiv.symm_apply_apply x).symm.trans this
 
 /- English proof (translation)
-Establish `hmem : ∀ x : 𝓞 ℚ, ((algebraMap ℚ Ω).comp (algebraMap (𝓞 ℚ) ℚ)) x ∈ A`. Introduce `x`. Take `⟨n, rfl⟩` from `ringOfIntegers_rat_exists_int_eq x`. Simplify using `using A.intCast_mem n`. Set `f : 𝓞 ℚ →+* A` to `RingHom.codRestrict ((algebraMap ℚ Ω).comp (algebraMap (𝓞 ℚ) ℚ)) A hmem`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `I : Ideal (𝓞 ℚ)` to `Ideal.comap f (IsLocalRing.maximalIdeal A)`. Establish `hI : ∀ x, x ∈ I ↔ A.valuation ((algebraMap ℚ Ω) (x : ℚ)) < 1` using `fun x => A.valuation_lt_one_iff (f x)`. Establish `hpI : (p : 𝓞 ℚ) ∈ I`. Rewrite using `[hI]`. Simplify using `using h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨⟨I, Ideal.comap_isPrime f _, ?_⟩, fun x => (hI x).symm, hpI⟩` and prove the remaining obligations. Introduce `hbot`. Rewrite `hpI` using `[hbot, Ideal.mem_bot]`. Conclude with `hp0 (by exact_mod_cast hpI)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_isPlaceOver_natCast_mem_of_valuation_lt_one {Ω : Type} [Field Ω] [Algebra ℚ Ω] (A : ValuationSubring Ω) (p : ℕ)
     (hp0 : p ≠ 0) (h : A.valuation (p : Ω) < 1) :
@@ -73,11 +73,11 @@ private theorem exists_isPlaceOver_natCast_mem_of_valuation_lt_one {Ω : Type} [
   exact hp0 (by exact_mod_cast hpI)
 
 /- English proof (translation)
-Establish `hcop : Nat.Coprime p q` using `(Nat.coprime_primes hp hq).mpr hpq`. Establish `h1 : (p : ℤ) * p.gcdA q + (q : ℤ) * p.gcdB q = 1`. Rewrite using `[← Nat.gcd_eq_gcd_ab, hcop.gcd_eq_one]`. Both sides reduce to the same expression. Establish `h2 : (((p : ℤ) * p.gcdA q + (q : ℤ) * p.gcdB q : ℤ) : 𝓞 ℚ) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Simplify using the standard rewrite rules. Establish `h3 : (1 : 𝓞 ℚ) ∈ v.asIdeal`. Rewrite using `[← h2]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `add_mem (Ideal.mul_mem_right _ _ hpv) (Ideal.mul_mem_right _ _ hqv)`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h3)`.
+A detailed English derivation is pending.
 -/
 private theorem false_of_distinct_primes_mem_asIdeal (v : HeightOneSpectrum (𝓞 ℚ)) (p q : ℕ) (hp : p.Prime) (hq : q.Prime)
     (hpq : p ≠ q) (hpv : (p : 𝓞 ℚ) ∈ v.asIdeal) (hqv : (q : 𝓞 ℚ) ∈ v.asIdeal) : False := by
@@ -95,13 +95,13 @@ private theorem false_of_distinct_primes_mem_asIdeal (v : HeightOneSpectrum (�
   exact v.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h3)
 
 /- English proof (translation)
-Set `F : Polynomial ℤ` to `X ^ 2 + C (p : ℤ)`. Establish `h2 : ‖((2 : ℤ) : ℤ_[l])‖ = 1`. Use `le_antisymm (PadicInt.norm_le_one _) (not_lt.mp ?_)` and prove the remaining obligations. Rewrite using `[PadicInt.norm_int_lt_one_iff_dvd]`. Introduce `hd`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : l ∣ 2` using `by exact_mod_cast hd`. Conclude with `hl ((Nat.prime_dvd_prime_iff_eq (Fact.out) Nat.prime_two).mp h')`. Establish `ha : (aeval (1 : ℤ_[l])) F = ((1 + p : ℤ) : ℤ_[l])` using `by simp [F]`. Establish `hd : (aeval (1 : ℤ_[l])) (derivative F) = ((2 : ℤ) : ℤ_[l])`. Simplify using `[F]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `map_ofNat _ 2`. Establish `hlt : ‖(aeval (1 : ℤ_[l])) F‖ < ‖(aeval (1 : ℤ_[l])) (derivative F)‖ ^ 2`. Rewrite using `[ha, hd, h2, one_pow, PadicInt.norm_int_lt_one_iff_dvd]`. Conclude with `hdiv`. Take `⟨z, hz, -⟩` from `hensels_lemma hlt`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨z, ?_⟩` and prove the remaining obligations. Establish `hz' : z ^ 2 + (p : ℤ_[l]) = 0` using `by simpa [F] using hz`. Take the linear combination `hz'`.
+A detailed English derivation is pending.
 -/
 private theorem exists_padicInt_sq_eq_neg_of_dvd_one_add (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) (p : ℕ) (hdiv : (l : ℤ) ∣ 1 + p) :
     ∃ s : ℤ_[l], s ^ 2 = -(p : ℤ_[l]) := by
@@ -125,9 +125,9 @@ private theorem exists_padicInt_sq_eq_neg_of_dvd_one_add (l : ℕ) [Fact l.Prime
   linear_combination hz'
 
 /- English proof (translation)
-Establish `hf : (map (algebraMap ℚ ℚ_[l]) (X ^ 2 + C (p : ℚ))) = (X - C s) * (X - C (-s))`. Establish `h' : C s ^ 2 = -C (p : ℚ_[l])` using `by rw [← C_pow, hs, C_neg]`. Rewrite `h'` using `[map_natCast]`. Simplify using `only [Polynomial.map_add, Polynomial.map_pow, map_X, map_C, map_natCast, Polynomial.map_natCast, C_neg]`. Take the linear combination `h'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hsp : (map (algebraMap ℚ ℚ_[l]) (X ^ 2 + C (p : ℚ))).Splits`. Rewrite using `[hf]`. Conclude with `(Splits.X_sub_C s).mul (Splits.X_sub_C _)`. Conclude with `⟨(SplittingField.lift _ hsp).toRingHom⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem nonempty_ringHom_Kstar_of_sq_eq_neg (l : ℕ) [Fact l.Prime] (p : ℕ) (s : ℚ_[l]) (hs : s ^ 2 = -(p : ℚ_[l])) :
     Nonempty (Kstar p →+* ℚ_[l]) := by
@@ -142,29 +142,23 @@ private theorem nonempty_ringHom_Kstar_of_sq_eq_neg (l : ℕ) [Fact l.Prime] (p 
   exact ⟨(SplittingField.lift _ hsp).toRingHom⟩
 
 /- English proof (translation)
-Introduce `Ω _ instA _ l hl hl2 S hS`. Use `haveI hc : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Establish `e : instA = DivisionRing.toRatAlgebra` using `Subsingleton.elim _ _`. Substitute `e` using the available equality. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `P : Set ℕ` to `{p | p.Prime ∧ 4 * l ∣ p + 1}`. Use `haveI hl0 : NeZero (4 * l) := ⟨by have := hl.out.pos; omega⟩`. Establish `hPinf : P.Infinite`. Use `Set.infinite_of_forall_exists_gt fun n => ?_` and prove the remaining obligations. Take `⟨p, hpn, hp, hpm⟩` from `Nat.forall_exists_prime_gt_and_eq_mod (q := 4 * l) (a := -1) isUnit_one.neg n`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `⟨p, ⟨hp, ?_⟩, hpn⟩` and prove the remaining obligations. Rewrite using `[← ZMod.natCast_eq_zero_iff]`. Use `push_cast`. Rewrite using `[hpm]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Infinite P := hPinf.to_subtype`. Establish `hA : ∀ p : P, ∃ A : ValuationSubring Ω, A.valuation ((p : ℕ) : Ω) < 1` using `fun p => exists_valuationSubring_valuation_prime_lt_one Ω p p.2.1`. Use `choose Af hAf using hA`. Establish `hv : ∀ p : P, ∃ v : HeightOneSpectrum (𝓞 ℚ), IsPlaceOver (Af p) v ∧ ((p : ℕ) : 𝓞 ℚ) ∈ v.asIdeal` using `fun p => exists_isPlaceOver_natCast_mem_of_valuation_lt_one (Af p) p p.2.1.ne_zero (hAf p)`. Use `choose vf hvf1 hvf2 using hv`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective vf`. Introduce `p q hpq`. Assume the negation of the conclusion as `hne`. Conclude with `false_of_distinct_primes_mem_asIdeal (vf p) p q p.2.1 q.2.1 (fun h => hne (Subtype.ext h)) (hvf2 p) (hpq ▸ hvf2 q)`. Establish `hfin : (vf ⁻¹' {v | ¬ S v}).Finite` using `(Filter.eventually_cofinite.mp hS).preimage hinj.injOn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨p, hpS⟩` from `hfin.infinite_compl.nonempty`. Establish `hSv : S (vf p)` using `by simpa using hpS`. Take `⟨hp, hdvd⟩` from `p.2`. Establish `h4 : 4 ∣ (p : ℕ) + 1` using `dvd_trans (Dvd.intro l rfl) hdvd`. Establish `hp4 : (p : ℕ) % 4 = 3` using `by omega`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hl' : l ∣ (p : ℕ) + 1` using `dvd_trans (Dvd.intro_left 4 rfl) hdvd`. Establish `hdiv : (l : ℤ) ∣ 1 + ((p : ℕ) : ℤ)`. Use `Int.natCast_dvd_natCast.mpr hl'` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite `this` using `[add_comm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨s, hs⟩` from `exists_padicInt_sq_eq_neg_of_dvd_one_add l hl2 p hdiv`. Establish `hs' : (s : ℚ_[l]) ^ 2 = -((p : ℕ) : ℚ_[l])`. Use `congrArg (fun x : ℤ_[l] => (x : ℚ_[l])) hs` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨ι⟩` from `nonempty_ringHom_Kstar_of_sq_eq_neg l p s hs'`. Take `⟨-, htc, hfr, -⟩` from `HV.kstar p hp hp4`. Set `φ : Kstar p →ₐ[ℚ] Ω` to `IsAlgClosed.lift`. Use `letI alg : Algebra (Kstar p) Ω := φ.toRingHom.toAlgebra`. Use `haveI tower : IsScalarTower ℚ (Kstar p) Ω := IsScalarTower.of_algebraMap_eq (fun x => (φ.commutes x).symm)`.
-
-Use `haveI : Algebra.IsAlgebraic (Kstar p) Ω := Algebra.IsAlgebraic.tower_top (K := ℚ) (Kstar p)`. Use `haveI hac : IsAlgClosure (Kstar p) Ω := ⟨inferInstance, inferInstance⟩`. Use `haveI := htc`. Use `haveI : Algebra.IsQuadraticExtension ℚ (Kstar p) := ⟨hfr⟩`. Establish `hram` using `HV.kstarRam p hp hp4 Ω (Af p) (hAf p)`.
-
-Take `⟨σ, hσI, hσG⟩` from `SetLike.not_le_iff_exists.mp hram`. Use `⟨Kstar p, inferInstance, inferInstance, IsCMField.ofCMExtension ℚ (Kstar p), alg, tower, hac, hfr, ⟨ι⟩, vf p, Af p, hSv, hvf1 p, σ, hσI, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨τ, rfl⟩`. Apply `hσG` to reduce the goal to its premises. Introduce `x`.
-
-Conclude with `τ.commutes x`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Cq.exQuad :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ (S : HeightOneSpectrum (𝓞 ℚ) → Prop), (∀ᶠ v in Filter.cofinite, S v) →

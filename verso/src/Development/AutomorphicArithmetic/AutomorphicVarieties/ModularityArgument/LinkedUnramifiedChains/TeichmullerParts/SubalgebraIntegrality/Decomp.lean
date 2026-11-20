@@ -24,9 +24,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Establish `hUL : GlobalTheory.BCT.UL n w = ⊤` using `if_pos hs`. Establish `hsurj : Function.Surjective (GlobalTheory.BCT.UL n w).subtype` using `fun g => ⟨⟨g, hUL ▸ Subgroup.mem_top g⟩, rfl⟩`. Set `σ₁ : SmIrr (GlobalTheory.BCT.UL n w)` to `{ V := τ.V ρ := τ.ρ.comp (GlobalTheory.BCT.UL n w).subtype smooth := fun v => (τ.smooth v).preimage continuous_subtype_val irred := GlobalTheory.BCT.LocCompU.isIrreducible_comp_of_surjective τ.ρ _ hsurj τ.irred }`. Take `⟨-, f, hf0, hfm, hf⟩` from `hc`. Set `p : locU n w →* GlobalTheory.BCT.UL n w` to `((cLoc w).comp (locU n w).subtype).codRestrict (GlobalTheory.BCT.UL n w) fun x => hUL ▸ Subgroup.mem_top _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `GlobalTheory.T.localComponent_levelFixedVectors_ne_bot L hU n hn S hS lam K' hLev π h1 h2 h3 w hw σ₁ ⟨p, fun x => rfl, σ₁.irred, f, hf0, hfm, fun x v => hf x v⟩`.
+A detailed English derivation is pending.
 -/
 private theorem fixOf {L : Type} [Field L] [NumberField L] [IsCMField L] (hU : GlobalTheory.BCT.Unr L) {n : ℕ} (hn : 1 ≤ n)
     {S : Set (GlobalTheory.BCT.Pl L)} (hS : GlobalTheory.BCT.IsSection S) {lam : InfinitePlace L → DomWeight n}
@@ -75,7 +75,7 @@ private theorem yEq {c : Coef l} {m : ℕ} (Q : QData V) (τ₀ : KT n (wt s) �
 end Tf
 
 /- English proof (translation)
-The claim follows from `UpperTheory.V.Hi.partUR2Wt l L Ω s n hn V Q c ι m τ₀ lam d e ξ hξ σ' hσ' hne`.
+A detailed English derivation is pending.
 -/
 private theorem wtY {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ) (hn : 1 ≤ n) (V : s.Lev) (Q : QData V) (c : Coef l) (ι : Qbar l ≃+* ℂ)
@@ -87,7 +87,7 @@ private theorem wtY {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberFiel
   UpperTheory.V.Hi.partUR2Wt l L Ω s n hn V Q c ι m τ₀ lam d e ξ hξ σ' hσ' hne
 
 /- English proof (translation)
-The claim follows from `(hlink σ' hσ').1 h`.
+A detailed English derivation is pending.
 -/
 private theorem wtZ {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] {s : HidaSetting l L Ω} {n : ℕ} (V : s.Lev) (ι : Qbar l ≃+* ℂ) (lam : Wt L l n)
@@ -101,7 +101,7 @@ private def PwD {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} (la
     (π : Submodule ℂ (UA L n → ℂ)) : Prop := ∀ v, HasWeightAt π v.embedding (lam' v)
 
 /- English proof (translation)
-Unfold `HSet.lev`. Use `sup_le le_rfl (iSup_le fun q => ?_)` and prove the remaining obligations. Conclude with `(hQ.false q).elim`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem levLe {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] {s : HidaSetting l L Ω} {n : ℕ} {V : s.Lev} (Q : QData V) (hQ : IsEmpty Q.Q) {c : Coef l} {m : ℕ}
@@ -111,19 +111,17 @@ private theorem levLe {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberFi
   exact (hQ.false q).elim
 
 /- English proof (translation)
-Introduce `F hF`. Set `J : UA L n →* Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1)` to `MonoidHom.prod (away l L n).rangeRestrict (Pi.monoidHom fun v : V.frame.Vl => cLoc (s.w v.1))`. Take `⟨hinj, haut, htr, hsurj, hsur⟩` from `UpperTheory.V.Hi.formU l L Ω s n hn V Q c m τ₀ ι lam d e ξ hξ J (fun _ => rfl)`. Use `haveI := e.finiteDimensional`. Establish `hJinf : ∀ x ∈ infU L n, J x = 1` using `fun x hx => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ w, cLoc w x = 1` using `fun w => by`. Establish `h2 : Matrix.GeneralLinearGroup.map (pFin L) x.1 = 1` using `hx`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map (pLoc L w) (Matrix.GeneralLinearGroup.map (pFin L) x.1) = 1`. Rewrite using `[h2, map_one]`. Conclude with `Prod.ext (Subtype.ext (funext fun w => h1 _)) (funext fun v => h1 _)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRfin : ∀ k ∈ finU L n, infRep (V` using `V) ι lam k = 1 := fun k hk => by`. Establish `h1 : ∀ τ, cEmb τ k = 1` using `fun τ => by`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map (coord τ) (cInf k) = 1`. Rewrite using `[MonoidHom.mem_ker.1 hk, map_one]`. Establish `h2 : (Pi.monoidHom fun e : Emb l (fun v : V.frame.Vl => s.w v.1) => (GlobalTheory.Branching.sqRep ℂ n (lam e.res)).comp (cEmb (E` using `L) (n := n) (ι.toRingHom.comp e.res))) k = 1 :=`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Use function extensionality and compare the values at `fun y => by`. Express the relevant statement in the definitionally equal form `GlobalTheory.Branching.sqRep ℂ n (lam y.res) (cEmb _ k) = 1`. Rewrite using `[h1, map_one]`. Unfold `infRep`. Rewrite using `[MonoidHom.comp_apply, h2, map_one]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Dc.core3 (hset Q τ₀).X ξ ((hset Q τ₀).τC ι) (hset Q τ₀).UQ ((hset Q τ₀).X.I.I1 b) J (tfOf ι e) (fun x ℓ => ℓ ∘ₗ infRep ι lam x⁻¹) hJinf (fun k hk ℓ => ?_) hinj haut htr hsurj hsur ?_ Kf (fun k hk => ?_) Pw (fun σ' hσ' hne => hwtY σ' hσ' (by rw [← yEq ι e Q τ₀ ξ σ']; exact hne)) σ …` and prove the remaining obligations. Rewrite using `[hRfin _ ((finU L n).inv_mem hk)]`. Both sides reduce to the same expression. Use `filter_upwards [UpperTheory.eventually_mem_heckeLevel_and_iwahoriCongruence l L Ω s n hn V Q c m τ₀ hτ ⟨fun q => (hQ.false q).elim, fun q => (hQ.false q).elim⟩ b] with k ⟨⟨u, hu, huk, hu1⟩, hk⟩`. Use `⟨⟨u, levLe Q hQ τ₀ _ hu, huk, ?_⟩, hk⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map _ (τ₀ (toKT n s u)) = 1`. Rewrite using `[hu1, map_one]`. Take `⟨⟨u, hu, huk, hu1⟩, hk'⟩` from `hKf k hk`. Use `⟨⟨u, hu, huk, ?_⟩, hk'⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map _ (τ₀ (toKT n s u)) = 1`.
-
-Rewrite using `[hu1, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mainStep {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ) (hn : 1 ≤ n) (V : s.Lev) (Q : QData V) (c : Coef l) (ι : Qbar l ≃+* ℂ)
@@ -179,7 +177,7 @@ private theorem mainStep {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [Numbe
     rw [hu1, map_one]
 
 /- English proof (translation)
-Take `⟨hinj, -⟩` from `UpperTheory.V.Hi.formU l L Ω s n hn V Q c m τ₀ ι lam d e ξ hξ (MonoidHom.prod (away l L n).rangeRestrict (Pi.monoidHom fun v : V.frame.Vl => cLoc (s.w v.1))) (fun _ => rfl)`. Set `Tt : Fin m × Module.Dual ℂ (⨂[ℂ] e : Emb l (fun v : V.frame.Vl => s.w v.1), nablaSq ℂ n (lam e.res)) → (Fin m → Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1) → Fin d → ℂ) →ₗ[ℂ] (UA L n → ℂ)` to `fun t => (LinearMap.applyₗ t.2) ∘ₗ tfOf ι e ∘ₗ LinearMap.proj t.1`. Use `Dc.indepOf σ hind _ Tt (fun i y hy t => ?_) (fun i y hy h0 => funext fun a => hinj (y a) (hy.1.1 a trivial) fun ℓ => h0 (a, ℓ))` and prove the remaining obligations. Establish `hle : Submodule.span ℂ {F : Fin m → Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1) → Fin d → ℂ | ∀ a ℓ, toForm ι e (F a) ℓ ∈ σ i} ≤ (σ i).comap (Tt t)` using `Submodule.span_le.2 fun F hF => hF t.1 t.2`. Conclude with `hle hy.2`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem yIndep {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ) (hn : 1 ≤ n) (V : s.Lev) (Q : QData V) (c : Coef l) (ι : Qbar l ≃+* ℂ)
@@ -201,15 +199,13 @@ private theorem yIndep {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberF
 
 set_option Elab.async false in
 /- English proof (translation)
-Introduce `hI l _ L Ω _ _ _ _ _ _ s n hn V hV Q c ι m τ₀ lam d e ξ hξ hτ lam' hlink b`. Establish `hU` using `Dc.unrOf s`. Take `⟨c0, hc0⟩` from `Dc.exC (n := n) (s := s) τ₀ hτ`. Establish `hcc` using `hc0 (c0 + b + 1) (by omega)`. Establish `hfin : s.S.Finite` using `hV ▸ V.fin`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS` using `Dc.secRange s`. Establish `hLev : GlobalTheory.BCT.IsLevelFam (fun w : GlobalTheory.BCT.Pl L => MonoidHom.id (GlobalTheory.BCT.UL n w)) (GlobalTheory.BCT.KL n) (Dc.Kf s n (c0 + b + 1))` using `Dc.levFam hfin`. Take `⟨-, J', hJ', σ, hσ, hind, hsup, -⟩` from `GlobalTheory.T.unitaryAutForms_weight_level_finite_sum_fixed_vectors L hU n hn _ hS lam' _ hLev`. Establish `hdec : IsDec (Set.range s.w) lam' (Dc.Kf s n (c0 + b + 1)) σ` using `⟨hσ, hind, hsup⟩`. Establish `hσind` using `hI L n _ hS lam' _ hLev J' σ hdec`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Set.range s.w, Dc.Kf s n (c0 + b + 1), J', hJ', σ, hS, hLev, fun w hw => Dc.Kf_notS hw, hdec, yIndep s n hn V Q c ι m τ₀ lam d e ξ hξ σ hσind, fun i w hw => Dc.unramOf hU _ (hσ i).2.2 w hw, fun i w hw hs τ hc => fixOf hU hn hS hLev (σ i) (hσ i).1 (hσ i).2.1 (hσ i).2.2 w hw hs τ …` and prove the remaining obligations. Establish `hQ` using `Dc.Q_empty hV Q`. Establish `hgood : ∀ k ∈ GlobalTheory.BCT.globLev (Set.range s.w) (Dc.Kf s n (c0 + b + 1)), (∃ u : Ub n s, u ∈ UQ n Q ∧ (u : Ga l L n) = (away l L n).rangeRestrict (k : UA L n) ∧ τ₀ (toKT n s u) = 1) ∧ (fun v : V.frame.Vl => cLoc (s.w v.1) (k : UA L n)) ∈ (hset Q τ₀).X.I.I1 b` using `fun k hk => Dc.goodOf hV Q τ₀ b hcc (by omega) (by omega) hU k hk`. Establish `hwtY : ∀ σ' : Submodule ℂ (UA L n → ℂ), IsAutRepU σ' → YOf Q ι τ₀ e ξ σ' ≠ ⊥ → PwD lam' σ'` using `fun σ' hσ' hne => wtZ V ι lam lam' hlink σ' hσ' (wtY s n hn V Q c ι m τ₀ lam d e ξ hξ σ' hσ' hne)`. Establish `hcov : ∀ π : Submodule ℂ (UA L n → ℂ), IsAutRepU π → PwD lam' π → π ⊓ GlobalTheory.PRep.fixed (GlobalTheory.BCT.RF L n) (GlobalTheory.BCT.globLev (Set.range s.w) (Dc.Kf s n (c0 + b + 1))) ≤ ⨆ j, σ j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `π hπ hP φ hφ`. Establish `h1 : φ ∈ GlobalTheory.BCT.forms (Set.range s.w) lam' (Dc.Kf s n (c0 + b + 1))` using `(le_iSup₂_of_le (f := fun (π : Submodule ℂ (UA L n → ℂ)) (_ : IsAutRepU π ∧ ∀ v, HasWeightAt π v.embedding (lam' v)) => π ⊓ GlobalTheory.PRep.fixed (GlobalTheory.BCT.RF L n) (GlobalTheory.BCT.globLev (Set.range s.w) (Dc.Kf s n (c0 + b + 1)))) π ⟨hπ, hP⟩ le_rfl) hφ`. Rewrite `h1` using `[← hsup]`. Establish `h2 : (⨆ i, σ i ⊓ GlobalTheory.PRep.fixed (GlobalTheory.BCT.RF L n) (GlobalTheory.BCT.globLev (Set.range s.w) (Dc.Kf s n (c0 + b + 1)))) ≤ ⨆ j, σ j` using `iSup_mono fun i => inf_le_left`. Conclude with `h2 h1`.
-
-Conclude with `mainStep s n hn V Q c ι m τ₀ hτ lam d e ξ hξ b hQ (PwD lam') hwtY (GlobalTheory.BCT.globLev (Set.range s.w) (Dc.Kf s n (c0 + b + 1))) hgood σ (fun j => (hσ j).1) hσind hcov`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.J.D.decomp :
     IndepS → Decomp := by

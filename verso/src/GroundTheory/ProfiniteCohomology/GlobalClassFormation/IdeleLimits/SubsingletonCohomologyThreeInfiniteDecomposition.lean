@@ -22,13 +22,13 @@ variable {K L : Type} [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] 
 include v in
 
 /- English proof (translation)
-Use `⟨fun a b => ?_⟩` and prove the remaining obligations. It suffices to establish `h : ∀ c : groupCohomology (Rep.ofMulDistribMulAction (MulAction.stabilizer Gal(L/K) w) (w.Completion)ˣ) 1, c = 0 by rw [h a, h b]`. Introduce `c`. Use `H1_induction_on c fun x => (H1π_eq_zero_iff _).2 ?_` and prove the remaining obligations. Establish `hc` using `isMulCocycle₁_of_mem_cocycles₁ _ x.2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `e` to `infiniteDecompositionMulEquiv v w`. Set `f : Gal(w.Completion/v.Completion) → (w.Completion)ˣ` to `fun τ => Additive.toMul (x (e.symm τ))`. Establish `hf : IsMulCocycle₁ f` using `fun τ₁ τ₂ => by`. Establish `h1` using `hc (e.symm τ₁) (e.symm τ₂)`. Simplify using `only [f, map_mul]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `h1.trans ?_` and prove the remaining obligations. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `congrArg (fun τ : Gal(w.Completion/v.Completion) => τ ((Additive.toMul (α := (w.Completion)ˣ) (x (e.symm τ₂)) : (w.Completion)ˣ) : w.Completion)) (e.apply_symm_apply τ₁)`. Take `⟨β, hβ⟩` from `isMulCoboundary₁_of_isMulCocycle₁_of_aut_to_units f hf`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(coboundariesOfIsMulCoboundary₁ (G := MulAction.stabilizer Gal(L/K) w) (M := (w.Completion)ˣ) (f := fun σ => Additive.toMul (x σ)) ⟨β, fun σ => ?_⟩).2` and prove the remaining obligations. Establish `h` using `hβ (e σ)`. Simplify using `only [f, MulEquiv.symm_apply_apply] at h`. Use `Eq.trans ?_ h` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem subsingleton_groupCohomology_one_infiniteDecomposition :
     Subsingleton (groupCohomology (Rep.ofMulDistribMulAction (MulAction.stabilizer Gal(L/K) w)
@@ -61,11 +61,9 @@ theorem subsingleton_groupCohomology_one_infiniteDecomposition :
 include v in
 
 /- English proof (translation)
-Establish `h` using `natCard_infiniteDecompositionGroup v w`. Break down `Nat.lt_or_ge (Module.finrank v.Completion w.Completion) 2 with h2 | h2` into its components or cases. Establish `h1 : Nat.card (MulAction.stabilizer Gal(L/K) w) ≤ 1` using `by omega`. Establish `: Subsingleton (MulAction.stabilizer Gal(L/K) w)` using `(Finite.card_le_one_iff_subsingleton).1 h1`. Conclude with `isCyclic_of_subsingleton`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : Module.finrank v.Completion w.Completion ≤ 2`. Establish `hc` using `NumberField.InfinitePlace.card_stabilizer (k := K) (w := w)`. Rewrite using `[← h, hc]`. Apply the tactic sequence `split_ifs <;> omega`. Establish `h2' : Nat.card (MulAction.stabilizer Gal(L/K) w) = 2` using `by omega`.
-
-Conclude with `isCyclic_of_prime_card (p := 2) h2'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCyclic_infiniteDecomposition : IsCyclic (MulAction.stabilizer Gal(L/K) w) := by
   have h := natCard_infiniteDecompositionGroup v w
@@ -85,9 +83,7 @@ include v in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `haveI := isCyclic_infiniteDecomposition v w`. Use `letI : CommGroup (MulAction.stabilizer Gal(L/K) w) := IsCyclic.commGroup`. Use `haveI : Fintype (MulAction.stabilizer Gal(L/K) w) := Fintype.ofFinite _`. Take `⟨g, hg⟩` from `IsCyclic.exists_generator (α := MulAction.stabilizer Gal(L/K) w)`. Use `haveI := subsingleton_groupCohomology_one_infiniteDecomposition v w`.
-
-Set `A` to `Rep.ofMulDistribMulAction (MulAction.stabilizer Gal(L/K) w) (w.Completion)ˣ`. Set `e : cohomology A 3 ≅ groupCohomology A 1` to `cohomologyIsoGroupCohomology A 3 ≪≫ Rep.FiniteCyclicGroup.groupCohomologyIsoOdd A g hg 3 ⟨1, rfl⟩ ≪≫ (Rep.FiniteCyclicGroup.groupCohomologyIsoOdd A g hg 1 ⟨0, rfl⟩).symm`. Conclude with `e.toLinearEquiv.injective.subsingleton`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem subsingleton_cohomology_three_infiniteDecomposition :
     Subsingleton (cohomology (Rep.ofMulDistribMulAction (MulAction.stabilizer Gal(L/K) w)
@@ -111,7 +107,7 @@ section Global
 local notation "ℚ̄" => AlgebraicClosure ℚ
 
 /- English proof (translation)
-Establish `h1` using `subsingleton_cohomology_three_galUnits_open (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1)) ⊤`. Establish `h2 : Subsingleton (cohomology (galUnits.{0} (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1))) 3)` using `(bijective_cohomologyRes_top _ 3).1.subsingleton`. Conclude with `(cohomologyULiftIntAddEquiv (galUnits.{0} (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1))) 3).symm.injective.subsingleton`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem subsingleton_cohomology_three_galUnitsZ_adicCompletion {K : FiniteSubfield}
     (v : HeightOneSpectrum (𝓞 K.1)) :
@@ -128,9 +124,9 @@ theorem subsingleton_cohomology_three_galUnitsZ_adicCompletion {K : FiniteSubfie
 variable {K : FiniteSubfield}
 
 /- English proof (translation)
-Break down `v with v | v` into its components or cases. Establish `key : ∀ t : localGaloisCohomology K 3 (.inl v), t = 0` using `fun t => by`. Take `⟨p, z, rfl⟩` from `(ι.localLimit 3).exists_infl (.inl v) t`. Use `haveI : (ι.places.inf v p).1.LiesOver v := (ι.places.inf v p).2`. Establish `hs` using `subsingleton_cohomology_three_infiniteDecomposition (K := K.1) (L := p.1.1) v (ι.places.inf v p).1`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : z = 0` using `hs.elim _ _`. Rewrite using `[hz, map_zero]`. Both sides reduce to the same expression. Conclude with `⟨fun a b => (key a).trans (key b).symm⟩`. Conclude with `subsingleton_cohomology_three_galUnitsZ_adicCompletion v`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem subsingleton_localGaloisCohomology_three (ι : LocalEmbeddings K) (v : Place K.1) :
     Subsingleton (localGaloisCohomology K 3 v) := by
@@ -147,9 +143,7 @@ theorem subsingleton_localGaloisCohomology_three (ι : LocalEmbeddings K) (v : P
   · exact subsingleton_cohomology_three_galUnitsZ_adicCompletion v
 
 /- English proof (translation)
-Take `⟨ι⟩` from `nonempty_localEmbeddings K`. Establish `h : ∀ ζ : ⨁ v : Place K.1, localGaloisCohomology K 3 v, ζ = 0` using `fun ζ => by`. Use extensionality with `v`. Use `haveI := subsingleton_localGaloisCohomology_three ι v`. Conclude with `Subsingleton.elim _ _`.
-
-Use `haveI : Subsingleton (⨁ v : Place K.1, localGaloisCohomology K 3 v) := ⟨fun a b => (h a).trans (h b).symm⟩`. Conclude with `(idelesLimitCohomologyEquiv ι (by norm_num : 1 ≤ 3)).injective.subsingleton`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem subsingleton_cohomology_three_limitRep : Subsingleton (cohomology (limitRep K) 3) := by
   obtain ⟨ι⟩ := nonempty_localEmbeddings K

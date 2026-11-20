@@ -24,15 +24,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 set_option autoImplicit false
 
 /- English proof (translation)
-Introduce `D A N j S κ s x Φ k R M ι _ w L m hR hI n`. Establish `hsm : ∀ (v : Sym D.host.E →₀ ℤ) (c : ℤ), (∀ a ∈ v.support, a.2.1 = some R) → ∀ a ∈ (c • v).support, a.2.1 = some R` using `fun v c h a ha => h a (Finsupp.support_smul ha)`. Establish `hadd : ∀ (v v' : Sym D.host.E →₀ ℤ), (∀ a ∈ v.support, a.2.1 = some R) → (∀ a ∈ v'.support, a.2.1 = some R) → ∀ a ∈ (v + v').support, a.2.1 = some R` using `fun v v' h h' a ha => by`. Break down `Finset.mem_union.1 (Finsupp.support_add ha) with ha | ha` into its components or cases. Conclude with `h a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `h' a ha`. Establish `hzp : ∀ i, (adlOf (Φ.C k) (metsOf x Φ k) (n i • w i)).Induced M (ArInt.zp (L i) (n i)) m 0` using `fun i => by`. Establish `e : n i • w i = (n i).toNat • w i + -((-n i).toNat • w i)`. Rewrite using `[← natCast_zsmul, ← natCast_zsmul, ← sub_eq_add_neg, ← sub_smul, Int.toNat_sub_toNat_neg]`. Establish `hn : ∀ c : ℕ, ∀ a ∈ (c • w i).support, a.2.1 = some R` using `fun c => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← natCast_zsmul]`. Conclude with `hsm _ _ (hR i)`. Rewrite using `[e]`. Conclude with `GlobalTheory.T.adelic_divisor_induced_add D A N j S κ s x Φ k M m R _ _ _ _ (hn _) (fun a ha => hn _ a (by rwa [Finsupp.support_neg] at ha)) (GlobalTheory.T.adelic_divisor_induced_nsmul D A N j S κ s x Φ k M m R _ _ (hR i) (hI i) _) (GlobalTheory.T.adelic_divisor_induced_neg D A …`. Establish `key : ∀ l : List ι, (∀ a ∈ (l.map fun i => n i • w i).sum.support, a.2.1 = some R) ∧ (adlOf (Φ.C k) (metsOf x Φ k) (l.map fun i => n i • w i).sum).Induced M (l.foldr (fun i M' => (ArInt.zp (L i) (n i)).tens M') (HermLB.triv M.p)) m 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => exact ⟨by simp, GlobalTheory.T.adelic_divisor_zero_trivial D A N j S κ s x Φ k M m⟩`. Consider the case `cons i l ih`. Rewrite using `[List.map_cons, List.sum_cons, List.foldr_cons]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hadd _ _ (hsm _ _ (hR i)) ih.1, GlobalTheory.T.adelic_divisor_induced_add D A N j S κ s x Φ k M m R _ _ _ _ (hsm _ _ (hR i)) ih.1 (hzp i) ih.2⟩`. Establish `e : ∑ i, n i • w i = ((Finset.univ : Finset ι).toList.map fun i => n i • w i).sum`. Rewrite using `[Finset.sum_map_toList]`. Rewrite using `[e]`. Conclude with `(key _).2`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CombInd.induced_comb : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (Φ : s.Flag) (k : s.Comp) (R : ℝ) (M : GlobalTheory.TrueGeo.Model (Φ.C k).Y) (ι : Type) [Fintype ι] (w : ι → Sym D.host.E →₀ ℤ) (L : ι → GlobalTheory.HermLB M.p) (m : ℕ+), (∀ i, ∀ a ∈ (w i).support, a.2.1 = some R) → (∀ i, (adlOf (Φ.C k) (metsOf x Φ k) (w i)).Induced M (L i) m 0) → ∀ n : ι → ℤ, (adlOf (Φ.C k) (metsOf x Φ k) (∑ i, n i • w i)).Induced M (GlobalTheory.ArInt.comb L n) m 0 := by
   intro D A N j S κ s x Φ k R M ι _ w L m hR hI n

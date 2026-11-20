@@ -4,7 +4,7 @@ import Mathlib
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.TwLangAb.exists_finite_reps_of_twisted_lang) | (exact GlobalTheory.TwLangAb.exists_finite_reps_of_twisted_lang) | (intros; apply GlobalTheory.TwLangAb.exists_finite_reps_of_twisted_lang <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.twisted_fixed_coset_decomposition : ∀ {H : Type} [Group H] (Z U : Subgroup H) (τ : H →* H) (r : ℕ), 0 < r → (∀ z ∈ Z, τ z ∈ Z) →
     (∀ z ∈ Z, (⇑τ)^[r] z = z) → (∀ a ∈ Z, ∀ b ∈ Z, a * b = b * a) → U ≤ Z → (∀ u ∈ U, τ u ∈ U) →

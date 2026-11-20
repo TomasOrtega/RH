@@ -12,13 +12,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SW.Flow
 
 /- English proof (translation)
-Establish `hL : Continuous L`. Establish `: L = fun X => e.symm (L' (e X))`. Use function extensionality and compare the values at `X`. Rewrite using `[← hc, AddEquiv.symm_apply_apply]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs.comp (hL'.comp he)`. Establish `hν` using `hH (μ.map e) (e.isAddHaarMeasure_map μ he hs)`. Establish `h1 : (μ.map L).map e = (c • μ).map e`. Rewrite using `[Measure.map_map he.measurable hL.measurable, Measure.map_smul, ← hν, Measure.map_map hL'.measurable he.measurable]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `X`. Conclude with `hc X`. Establish `h2 : ((μ.map L).map e).map e.symm = ((c • μ).map e).map e.symm` using `by rw [h1]`. Rewrite `h2` using `[Measure.map_map hs.measurable he.measurable, Measure.map_map hs.measurable he.measurable]`. Establish `hid : (e.symm ∘ e : G → G) = id` using `by funext X; simp`.
-
-Rewrite `h2` using `[hid, Measure.map_id, Measure.map_id]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem map_eq_of_conj {G H : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [MeasurableSpace G] [BorelSpace G] [AddCommGroup H] [TopologicalSpace H] [IsTopologicalAddGroup H]
@@ -64,7 +62,7 @@ def coordEquiv {d : ℕ} (b : Module.Basis (Fin d) F E) (n M : ℕ) :
     simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Establish `h : (a ⊗ₜ[F] (1 : E)) * X p.1 p.2.1 = a • X p.1 p.2.1`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Simplify using `[coordEquiv, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem coordEquiv_smul {d : ℕ} (b : Module.Basis (Fin d) F E) (n M : ℕ) (a : A)
     (X : Fin n → Fin M → A ⊗[F] E) :
@@ -77,25 +75,19 @@ theorem coordEquiv_smul {d : ℕ} (b : Module.Basis (Fin d) F E) (n M : ℕ) (a 
 end Coord
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm τ hτ n M μ hμ x`. Take `⟨⟨hAlc, hAsc, hAt2⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Use `haveI := hAlc`. Use `haveI := hAsc`. Use `haveI := hAt2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : BorelSpace (AF F) := ⟨rfl⟩`. Take `⟨hTR, -, -, -, -, -, hHom, hBor, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm (AF F)`. Use `haveI := hTR`. Use `haveI := hBor n M`. Establish `hd : Module.finrank F E = 2` using `hcm.2.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by omega)`. Set `b : Module.Basis (Fin 2) F E` to `Module.finBasisOfFinrankEq F E hd`. Take `⟨-, θ, hθ, hτx⟩` from `hτ`. Establish `hh` using `hHom 2 b`. Set `hm` to `hh.homeomorph`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : Continuous (coordEquiv (A` using `AF F) b n M) := by`. Use `continuous_pi fun p => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun X : Fin n → Fin M → AF F ⊗[F] E => X p.1 p.2.1` using `(continuous_apply p.2.1).comp (continuous_apply p.1)`. Conclude with `(continuous_apply p.2.2).comp (hh.continuous.comp h1)`. Establish `hs : Continuous (coordEquiv (A` using `AF F) b n M).symm := by`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `continuous_pi fun a => continuous_pi fun i => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun Y : Fin n × Fin M × Fin 2 → AF F => fun k => Y (a, i, k)` using `continuous_pi fun k => continuous_apply _`. Establish `h2 : (fun Y : Fin n × Fin M × Fin 2 → AF F => (coordEquiv (A` using `AF F) b n M).symm Y a i) = fun Y => hm.symm (fun k => Y (a, i, k)) := by`. Use function extensionality and compare the values at `Y`. Apply `hm.injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Homeomorph.apply_symm_apply]`. Use function extensionality and compare the values at `k`. Use `(Algebra.TensorProduct.basis (AF F) b).equivFun.apply_symm_apply (fun k => Y (a, i, k))` as an intermediate fact. Conclude with `congrFun this k`. Rewrite using `[h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm.symm.continuous.comp h1`. Establish `ht : 0 < Real.exp x` using `Real.exp_pos x`. Use `map_eq_of_conj (coordEquiv (A := AF F) b n M) he hs _ (fun y p => (show AF F from (θ (Real.exp x), 1)) * y p) ?_ ?_ _ ?_ μ` and prove the remaining obligations. Conclude with `continuous_pi fun p => continuous_const.mul (continuous_apply p)`. Introduce `X`.
-
-Rewrite using `[hτx x]`. Conclude with `coordEquiv_smul b n M _ X`. Introduce `ν hν`. Use `GlobalTheory.CompanionTheory.AdelicFlow.map_scalar F hcm.1 θ hθ (Fin n × Fin M × Fin 2) ν (Real.exp x) ht` as an intermediate fact. Rewrite using `[this]`.
-
-Use `congr 2`. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_neg]`. Use `congr 1`. Simplify using `only [Fintype.card_prod, Fintype.card_fin]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem modulus_flow : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ τ : Multiplicative ℝ →* (AF F ⊗[F] E)ˣ, IsFlow τ → ∀ (n M : ℕ) (μ : Measure (Fin n → Fin M → AF F ⊗[F] E)), μ.IsAddHaarMeasure → ∀ x : ℝ, μ.map (fun X => ((τ (Multiplicative.ofAdd (x)) : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) • X) = ENNReal.ofReal (Real.exp (-(2 * Module.finrank ℚ F * n * M * x))) • μ := by
   intro F E _ _ _ _ _ σ hcm τ hτ n M μ hμ x

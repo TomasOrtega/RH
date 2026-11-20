@@ -11,7 +11,7 @@ open NumberField ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.LieHt Gl
 namespace GlobalTheory.LieRead.CovolBasis
 
 /- English proof (translation)
-Establish `h : IsIntegral (NormedField.valuation (K` using `k)).integer y := hy.tower_top`. Establish `h2` using `(Valuation.integer.integers (NormedField.valuation (K := k))).mem_of_integral h`. Rewrite `h2` using `[Valuation.mem_integer_iff, NormedField.valuation_apply]`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_isIntegral_int {k : Type} [NormedField k] [IsUltrametricDist k] {y : k}
     (hy : IsIntegral ℤ y) : ‖y‖ ≤ 1 := by
@@ -21,7 +21,7 @@ theorem norm_le_one_of_isIntegral_int {k : Type} [NormedField k] [IsUltrametricD
   exact_mod_cast h2
 
 /- English proof (translation)
-Establish `h1` using `PadicComplex.norm_extends' p (s : ℚ_[p])`. Rewrite `h1` using `[Padic.norm_natCast_eq_one_iff.2 ((Nat.Prime.coprime_iff_not_dvd Fact.out).2 h)]`. Simplify using `using h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_natCast_of_not_dvd (p : ℕ) [Fact p.Prime] {s : ℕ} (h : ¬ p ∣ s) : ‖(s : ℂ_[p])‖ = 1 := by
   have h1 := PadicComplex.norm_extends' p (s : ℚ_[p])
@@ -29,11 +29,11 @@ theorem norm_natCast_of_not_dvd (p : ℕ) [Fact p.Prime] {s : ℕ} (h : ¬ p ∣
   simpa using h1
 
 /- English proof (translation)
-Use `haveI : Nonempty (Fin g → Fin g) := ⟨id⟩`. Establish `hle : ∀ σ : Fin g → Fin g, ‖(H.submatrix σ id).det‖ ≤ ‖H.det‖`. Introduce `σ`. Distinguish the cases in `hσ : Function.Injective σ`. Establish `hb : Function.Bijective σ` using `Finite.injective_iff_bijective.mp hσ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show H.submatrix σ id = H.submatrix (Equiv.ofBijective σ hb) id from rfl, Matrix.det_permute]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (Equiv.ofBijective σ hb)) with h | h <;> simp [h]`. Simplify using `only [Function.Injective, not_forall] at hσ`. Take `⟨a, b, hab, hne⟩` from `hσ`. Rewrite using `[Matrix.det_zero_of_row_eq hne (by ext; simp [hab])]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Apply `le_antisymm (ciSup_le hle)` to reduce the goal to its premises. Conclude with `le_ciSup (f := fun σ : Fin g → Fin g => ‖(H.submatrix σ id).det‖) (Set.finite_range _).bddAbove id`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem iSup_norm_det_submatrix {C : Type} [NormedField C] {g : ℕ} (H : Matrix (Fin g) (Fin g) C) :
     (⨆ σ : Fin g → Fin g, ‖(H.submatrix σ id).det‖) = ‖H.det‖ := by
@@ -52,37 +52,33 @@ theorem iSup_norm_det_submatrix {C : Type} [NormedField C] {g : ℕ} (H : Matrix
   exact le_ciSup (f := fun σ : Fin g → Fin g => ‖(H.submatrix σ id).det‖) (Set.finite_range _).bddAbove id
 
 /- English proof (translation)
-Use `set X : Matrix (Fin g) (Fin g) K := Matrix.of fun i k => x k i with hXdef`. Establish `hXdet : X.det ≠ 0`. Establish `hu : IsUnit (Matrix.of x)` using `(Matrix.linearIndependent_rows_iff_isUnit).1 hx`. Establish `: X = (Matrix.of x)ᵀ` using `rfl`. Rewrite using `[this, det_transpose]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(isUnit_iff_ne_zero.mp ((Matrix.isUnit_iff_isUnit_det _).1 hu))`. Use `set B : Matrix (Fin g) (Fin g) ℂ_[p] := j.mapMatrix X with hBdef`. Establish `hBdet : B.det = j X.det` using `(RingHom.map_det j X).symm`. Establish `hBu : IsUnit B.det` using `by rw [hBdet]; exact isUnit_iff_ne_zero.2 ((map_ne_zero j).2 hXdet)`. Use `set H := B⁻¹ with hHdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHB : H * B = 1` using `nonsing_inv_mul B hBu`. Establish `hBH : B * H = 1` using `mul_nonsing_inv B hBu`. Establish `hsC : ‖(s : ℂ_[p])‖ = 1` using `norm_natCast_of_not_dvd p hs`. Establish `hv : ∀ v ∈ L, ∀ i, ‖(H *ᵥ fun i => j (v i)) i‖ ≤ 1`. Introduce `v hvL i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Take `⟨b, hb⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 K)).1 (hspan v hvL)`. Establish `hBb : B *ᵥ (fun k => j (b k : K)) = (s : ℂ_[p]) • fun i => j (v i)`. Use extensionality with `i'`. Use `congrFun hb i'` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at this`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [B, mulVec, dotProduct, RingHom.mapMatrix_apply, map_apply, X, of_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← map_natCast j s, ← map_mul, ← this, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, ← map_mul, mul_comm]`. Establish `h2 : (s : ℂ_[p]) • (H *ᵥ fun i => j (v i)) = fun k => j (b k : K)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← mulVec_smul, ← hBb, mulVec_mulVec, hHB, one_mulVec]`. Establish `h3` using `congrFun h2 i`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h3`. Establish `h4 : ‖j (b i : K)‖ ≤ 1` using `norm_le_one_of_isIntegral_int (map_isIntegral_int j (RingOfIntegers.isIntegral_coe (b i)))`. Rewrite `h4` using `[← h3, norm_mul, hsC, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `h4`. Establish `hM : ∀ c : Fin g → ℂ_[p], (∃ (n : ℕ) (a : Fin n → ℂ_[p]) (v : Fin n → Fin g → K), (∀ m, ‖a m‖ ≤ 1) ∧ (∀ m, v m ∈ L) ∧ c = ∑ m, a m • fun i => j (v m i)) ↔ ∀ i, ‖(H *ᵥ c) i‖ ≤ 1`. Introduce `c`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, a, v, ha, hvL, rfl⟩ i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVec_sum]`. Simplify using `only [mulVec_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one` to reduce the goal to its premises. Introduce `m _`. Rewrite using `[norm_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `mul_le_one₀ (ha m) (norm_nonneg _) (hv _ (hvL m) i)`. Introduce `hc`. Use `⟨g, H *ᵥ c, x, hc, hxL, ?_⟩` and prove the remaining obligations. Establish `: B *ᵥ (H *ᵥ c) = c` using `by rw [mulVec_mulVec, hBH, one_mulVec]`. Use `conv_lhs => rw [← this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i`. Simplify using `[B, X, mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Establish `hh : ∀ c : Fin g → ℂ_[p], (∀ jj, ∑ i, H jj i * c i = 0) → c = 0`. Introduce `c hc`. Establish `h0 : H *ᵥ c = 0` using `funext hc`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: c = B *ᵥ (H *ᵥ c)` using `by rw [mulVec_mulVec, hBH, one_mulVec]`. Rewrite using `[this, h0, mulVec_zero]`. Use `set N : Fin g → ℝ := fun l => sInf {r : ℝ | ∃ c : Fin g → ℂ_[p], c l ≠ 0 ∧ (∀ i, l < i → c i = 0) ∧ (∃ (n : ℕ) (a : Fin n → ℂ_[p]) (v : Fin n → Fin g → K), (∀ m, ‖a m‖ ≤ 1) ∧ (∀ m, v m ∈ L) ∧ c = ∑ m, a m • fun i => j (v m i)) ∧ r = ‖c l‖⁻¹} with hNdef`. Establish `hlnN : ∀ l, lnGrP p j L l = Real.log (N l)` using `fun l => rfl`. Establish `hstd : ∀ (cf : Fin g → ℂ_[p]) i, ∑ l', cf l' * (Pi.single l' (1 : ℂ_[p]) : Fin g → ℂ_[p]) i = cf i`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Introduce `cf i`. Simplify using `[Pi.single_apply]`. Establish `hN : ∀ l, N l = sInf {r | ∃ cf : Fin g → ℂ_[p], cf l ≠ 0 ∧ (∀ l', l < l' → cf l' = 0) ∧ (∀ jj, ‖∑ i, H jj i * ∑ l', cf l' * (Pi.single l' (1 : ℂ_[p]) : Fin g → ℂ_[p]) i‖ ≤ 1) ∧ r = ‖cf l‖⁻¹}`. Introduce `l`. Simplify using `only [hNdef, hM, hstd]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `hli : LinearIndependent ℂ_[p] (fun l : Fin g => (Pi.single l (1 : ℂ_[p]) : Fin g → ℂ_[p]))`. Use `(Pi.basisFun ℂ_[p] (Fin g)).linearIndependent using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `l`. Conclude with `(Pi.basisFun_apply ℂ_[p] (Fin g) l).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take `⟨hpos, hprod⟩` from `GlobalTheory.LineNorm.Covol.prod_grNorm_eq_iSup_minor ℂ_[p] g (Fin g) (fun jj i => H jj i) hh g (fun l => (Pi.single l (1 : ℂ_[p]) : Fin g → ℂ_[p])) hli N hN`. Establish `h1` using `hprod g le_rfl`. Establish `hsup : ∀ σ : Fin g → Fin g, ∑ s : Fin g → Fin g, (∏ i, H (σ i) (s i)) * GlobalTheory.LineNorm.minor (fun l => (Pi.single l (1 : ℂ_[p]) : Fin g → ℂ_[p])) le_rfl s = (H.submatrix σ id).det`. Introduce `σ`. Rewrite using `[GlobalTheory.LineNorm.Covol.sum_prod_mul_minor (fun i => H (σ i)) _ le_rfl, ← det_transpose]`.
-
-Use `congr 1`. Use extensionality with `a b`. Simplify using `[Pi.single_apply]`. Simplify using `only [hsup] at h1`. Rewrite `h1` using `[iSup_norm_det_submatrix]`.
-
-Establish `hprodN : ∏ l, N l = ‖H.det‖` using `by rw [← h1]; rfl`. Simplify using `only [hlnN]`. Rewrite using `[← Real.log_prod (fun l _ => (hpos l).ne'), hprodN, hHdef, det_nonsing_inv, Ring.inverse_eq_inv', norm_inv, Real.log_inv, hBdet]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_lnGrP_eq_neg_log_norm_det (K : Type) [Field K] [NumberField K] (g p : ℕ) [Fact p.Prime]
     (j : K →+* ℂ_[p]) (L : Submodule (𝓞 K) (Fin g → K)) (x : Fin g → Fin g → K) (s : ℕ)

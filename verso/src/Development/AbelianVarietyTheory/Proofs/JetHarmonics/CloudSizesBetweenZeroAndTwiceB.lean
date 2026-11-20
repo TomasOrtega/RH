@@ -10,37 +10,35 @@ open GlobalTheory.RunDepth GlobalTheory.CharDepth
 namespace GlobalTheory.RunDepth
 
 /- English proof (translation)
-Introduce `D L P hx hkb`. Establish `hk : (5 : ℝ) ≤ D.R.k`. Establish `: 5 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega`. Conclude with `this` after adjusting the coercions. Establish `hn : (1 : ℝ) ≤ D.R.n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 1 ≤ D.R.n` using `Formalism.HC.Frame.ord_pos _`. Conclude with `this` after adjusting the coercions. Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `hb' : 0 < L.sc.b'`. Unfold `Scale.b' Scale.a Scale.X' Scale.b`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hbb : 5 * L.sc.b' ≤ L.sc.b` using `le_trans (by nlinarith) hkb`. Establish `hbx : L.sc.b' / L.sc.x ≤ L.sc.b' / 3` using `div_le_div_of_nonneg_left hb'.le (by norm_num) hx`. Establish `hw0 : 0 < L.sc.w'' D.R.n` using `by unfold Scale.w''; positivity`. Establish `hw : L.sc.w'' D.R.n ≤ L.sc.b' / 3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `Scale.w''`. Conclude with `div_le_div_of_nonneg_left hb'.le (by norm_num) (by nlinarith)`. Establish `ht` using `L.t_win.1`. Establish `he1 : 1 ≤ L.etaSz` using `le_trans ht P.t_le_eta`. Establish `he : L.etaSz ≤ L.sc.b' / 9`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h1` using `P.teta`. Establish `h2 : L.sc.w'' D.R.n / L.sc.x ≤ L.sc.w'' D.R.n / 3` using `div_le_div_of_nonneg_left hw0.le (by norm_num) hx`. Use the polynomial consequences of the given equalities and inequalities. Establish `hS0` using `L.Sc_pos`. Establish `hS : L.Sc ≤ L.sc.b' / 3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `P.kS_le` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hk0 : (0 : ℝ) < D.R.k` using `by linarith`. Establish `hLa : 0 < L.LaG`. Establish `h1 : 0 < L.LaG * L.sc.b' / D.R.k` using `by have := P.S_le; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : 0 < L.LaG * L.sc.b'` using `(div_pos_iff_of_pos_right hk0).1 h1`. Conclude with `(mul_pos_iff_of_pos_right hb').1 h2`. Establish `hbT : ∀ t, (L.bT t : ℝ) ≤ L.sc.b' + L.sc.b' / 4`. Introduce `t`. Establish `h1` using `P.bT_le t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `P.rho_le`. Establish `h3 : L.sc.x ^ (-2 : ℝ) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos (by linarith) (by norm_num)`. Establish `h4 : 0 ≤ P.Crho * Real.log L.sc.x * L.LaG / D.R.k`. Use `P.Crho_pos` as an intermediate fact. Use `Real.log_nonneg (show 1 ≤ L.sc.x by linarith)` as an intermediate fact.
+Establish an intermediate fact. Check the signs of the components of the expression. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Unfold `LevelStarExponents.rhoP at h2`. Use `set A := LevelStarExponents.Nstar L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k with hA`. Establish `h5 : 4 * LevelStarExponents.Nstar L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k = 4 * A` using `by rw [hA]; ring`. Establish `h6 : LevelStarExponents.Nstar L * L.sc.x ^ L.sc.eps * L.LaG * L.sc.b' / D.R.k = A * L.sc.b'` using `by rw [hA]; ring`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h7 : A ≤ 1 / 4` using `by linarith`. Rewrite `h1` using `[h6]`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨by linarith, fun j hj => ?_⟩` and prove the remaining obligations. Establish `hoff : ∀ τ, (D.eTau τ : D.R.GG) ∉ D.host.thickPlaces → 0 ≤ wj D j τ ∧ wj D j τ ≤ 2 * L.sc.b'`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `τ hτ`. Distinguish the cases in `htop : (D.eTau τ : D.R.GG) ∈ D.host.topPlaces`. Unfold `Host.topPlaces at htop`. Take `⟨t, htT, hteq⟩` from `Finset.mem_image.1 htop`. Take `⟨h1, h2⟩` from `L.win_top j hj.1 hj.2 τ ⟨t, htT⟩ hteq.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Establish `h3` using `hbT ⟨t, htT⟩`. Establish `h4` using `L.bT_ge ⟨t, htT⟩`. Establish `h5 : 0 ≤ L.sc.b' / L.sc.x` using `by positivity`. Apply the tactic sequence `constructor <;> linarith`. Take `⟨h1, h2⟩` from `L.win_thin j hj.1 hj.2 τ ⟨(D.eTau τ).2, htop, hτ⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> linarith`. Use `⟨fun τ => ?_, fun t => (hoff _ ?_).2, fun z => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hτ : (D.eTau τ : D.R.GG) ∈ D.host.thickPlaces`. Take `⟨h1, h2⟩` from `L.win_thick j hj.1 hj.2 τ hτ`. Apply the tactic sequence `constructor <;> linarith`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `hoff τ hτ`. Apply the tactic sequence `constructor <;> linarith`. Introduce `h`. Unfold `Host.thickPlaces at h`. Take `⟨s, -, hs⟩` from `Finset.mem_image.1 h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : (D.eTau (plOf D (false, t)) : D.R.GG) = D.R.tau1 t`. Simplify using `[plOf]`. Rewrite `hs` using `[h1]`. Establish `h2` using `congrArg (fun g : D.R.GG => g.1.1) hs`. Simplify using `only [Formalism.HC.Frame.tau1, Formalism.HC.Frame.tau2] at h2`.
-
-Conclude with `absurd h2 (by decide)`. Establish `h1 : 1 ≤ j ∧ j ≤ (numOf D L).R.m` using `hj`. Establish `h2 : j - 1 < D.R.m` using `by have := hj.1; have := hj.2; omega`. Rewrite using `[NumDatum.w, NumDatum.eQ, dif_pos h1, wj, dif_pos h2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sizes_le_two_mul : ∀ (D : D7) (L : SizeData₂ D) (_ : ParameterChoice' D L), 3 ≤ L.sc.x → (D.R.k : ℝ) * L.sc.b' ≤ L.sc.b → L.Sc + L.etaSz ≤ 2 * L.sc.b ∧ ∀ j, InR D j → (∀ τ, 0 ≤ wj D j τ ∧ wj D j τ ≤ 2 * L.sc.b) ∧ (∀ t, wj D j (plOf D (false, t)) ≤ 2 * L.sc.b') ∧ ∀ z, (numOf D L).w j z = wj D j (plOf D z) := by
   intro D L P hx hkb

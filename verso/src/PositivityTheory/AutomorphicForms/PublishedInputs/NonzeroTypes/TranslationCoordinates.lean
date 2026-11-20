@@ -21,15 +21,15 @@ def coord {m : ℕ} (c : W ≃ₗ[ℂ] (Fin m → ℂ)) : Representation ℂ K (
 end TranslationCoordinates
 
 /- English proof (translation)
-Introduce `K _ _ W hfin hW hsm`. Use `hfin` as an intermediate fact. Set `c` to `(Module.finBasis ℂ W).equivFun`. Set `V0` to `TranslationCoordinates.coord W hW c`. Set `e : (Fin (Module.finrank ℂ W) → ℂ) →ₗ[ℂ] (K → ℂ)` to `W.subtype ∘ₗ c.symm.toLinearMap`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `he : ∀ k v, e (V0 k v) = rightReg ℂ K ℂ k (e v)`. Introduce `k v`. Simplify using `[e, V0, TranslationCoordinates.coord, TranslationCoordinates.rW, sub]`. Establish `hinj : Function.Injective e` using `W.injective_subtype.comp c.symm.injective`. Use `⟨_, V0, e, hinj, ?_, he, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `φ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, rfl⟩`. Simplify using `[e]`. Introduce `hφ`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨c ⟨φ, hφ⟩, by simp [e]⟩`. Introduce `v`. Establish `hset : {g : K | V0 g v = v} = {g : K | rightReg ℂ K ℂ g (e v) = e v}`. Use extensionality with `g`. Simplify using `only [Set.mem_ofPred_eq]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← he]`. Conclude with `hinj.eq_iff.symm`. Rewrite using `[hset]`. Conclude with `hsm _ (by simp [e])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensionalTranslation_holds : FiniteDimensionalTranslationCoordinates := by
   intro K _ _ W hfin hW hsm

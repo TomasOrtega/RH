@@ -12,7 +12,7 @@ abbrev Ex (D : ℕ) : P D ≃ₐ[ℤ] MvPolynomial (Fin D) (MvPolynomial (Fin D)
 def cmp {D : ℕ} (β : Fin D →₀ ℕ) (f : P D) : P D := rename Sum.inr (coeff β (Ex D f))
 
 /- English proof (translation)
-Proceed by induction on `s using MvPolynomial.induction_on with`. Consider the case `C n => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 lemma Ex_inl {D : ℕ} (s : S D) :
     Ex D (rename Sum.inl s) = map (C : ℤ →+* MvPolynomial (Fin D) ℤ) s := by
@@ -22,7 +22,7 @@ lemma Ex_inl {D : ℕ} (s : S D) :
   | mul_X p i hp => simp [hp]
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C n => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 lemma Ex_inr {D : ℕ} (g : S D) : Ex D (rename Sum.inr g) = C g := by
   induction g using MvPolynomial.induction_on with
@@ -31,16 +31,16 @@ lemma Ex_inr {D : ℕ} (g : S D) : Ex D (rename Sum.inr g) = C g := by
   | mul_X p i hp => simp [hp]
 
 /- English proof (translation)
-Simplify using `[cmp]`.
+Simplify using the standard rewrite rules.
 -/
 lemma cmp_zero {D : ℕ} (β : Fin D →₀ ℕ) : cmp β (0 : P D) = 0 := by simp [cmp]
 
 /- English proof (translation)
-Apply `(Ex D).injective` to reduce the goal to its premises. Rewrite using `[map_sum]`. Establish `h : ∀ β ∈ B, Ex D (inx (monomial β 1) * cmp β f) = monomial β (coeff β (Ex D f))`. Introduce `β _`. Rewrite using `[map_mul, inx, cmp, Ex_inl, Ex_inr, map_monomial, map_one, mul_comm, C_mul_monomial, mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl h]`. Use `conv_rhs => rw [as_sum (Ex D f)]`. Use `symm`. Use `Finset.sum_subset hB fun β _ hβ => ?_` and prove the remaining obligations. Rewrite `hβ` using `[mem_support_iff, not_not]`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hβ]`.
+A detailed English derivation is pending.
 -/
 lemma sum_cmp {D : ℕ} (f : P D) (B : Finset (Fin D →₀ ℕ)) (hB : (Ex D f).support ⊆ B) :
     ∑ β ∈ B, inx (monomial β 1) * cmp β f = f := by

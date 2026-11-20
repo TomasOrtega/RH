@@ -22,27 +22,23 @@ open GlobalTheory.CompanionTheory.PointSurjectivity
 namespace GlobalTheory.CompanionTheory.PointSurjectivity
 
 /- English proof (translation)
-Introduce `k _ _ X T Z a b p q H ha _ _ G hG R _ t _ Y π f Hy hfib κ _ _ D hD hc n`. Establish `HP` using `Hy.paste_horiz H`. Establish `hproj : IsProjBy f`. Take `⟨c, hcb⟩` from `Spec.map_surjective (t ≫ b)`. Establish `HP' : IsPullback (π ≫ p) f a (spMap c.hom)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: spMap c.hom = t ≫ b`. Rewrite using `[← hcb]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `HP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(ProjSpace.isProjBy_iff_isProjOver f).2 (ProjSpace.isProjOver_of_isPullback_spMap c.hom HP' ((ProjSpace.isProjBy_iff_isProjOver a).1 ha))`. Use `haveI : IsSeparated f := MorphismProperty.of_isPullback (P := @IsSeparated) HP inferInstance`. Use `haveI : Flat f := MorphismProperty.of_isPullback (P := @Flat) HP inferInstance`. Use `haveI hN : IsNoetherianRing R := by haveI : IsLocallyNoetherian (Spec (CommRingCat.of R)) := LocallyOfFiniteType.isLocallyNoetherian (t ≫ b)`. Conclude with `(isLocallyNoetherian_Spec (R := CommRingCat.of R)).1 inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hM` using `LB.isLB_pull hG π`. Establish `hI` using `GlobalTheory.MumfordSupport.isAffineOpen_biInf_of_isSeparated f hD`. Establish `hflat : ∀ p, Module.Flat R ((cechLB f (G.pull π) D).X p)` using `flat_cechLB_X f hM hI`. Establish `hfin` using `GlobalTheory.T.finite_cechLB_homology_of_affine_cover R Y f _ κ D hM inferInstance hproj hD hc`. Rewrite using `[HomologicalComplex.exactAt_iff_isZero_homology, ModuleCat.isZero_iff_subsingleton]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Use `GlobalTheory.MumfordAway.subsingleton_of_points k R (t ≫ b) _ fun χ hχ => ?_` and prove the remaining obligations. Use `exists_smul_homology_eq_zero_of_acyclic_fibre R k χ _ (Fintype.card κ) (fun p hp => isZero_cechLB_X _ _ _ hp.le) hflat hfin ?_ n` and prove the remaining obligations. Establish `h'` using `IsPullback.of_hasPullback f (Spec.map (CommRingCat.ofHom χ))`. Establish `P1` using `h'.paste_horiz HP`. Rewrite `P1` using `[hχ]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `u` to `pullback.fst f (Spec.map (CommRingCat.ofHom χ))`. Set `v` to `pullback.snd f (Spec.map (CommRingCat.ofHom χ))`. Set `e` to `u ≫ π ≫ p`. Use `haveI : IsIso e := P1.isIso_fst_of_isIso`. Establish `he : e ≫ a = v` using `P1.w.trans (Category.comp_id _)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `σ : X ⟶ Z` to `inv e ≫ u ≫ π`. Establish `hσp : σ ≫ p = 𝟙 X`. Simplify using `only [σ, Category.assoc]`. Conclude with `IsIso.inv_hom_id e`. Establish `hes : e ≫ σ = u ≫ π` using `by simp [σ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hσq : σ ≫ q = a ≫ Spec.map (CommRingCat.ofHom χ) ≫ t`. Rewrite using `[← cancel_epi e, ← Category.assoc e σ, hes, ← Category.assoc e a, he, Category.assoc u, Hy.w]`. Conclude with `(reassoc_of% h'.w) t`. Establish `hac` using `hfib (Spec.map (CommRingCat.ofHom χ)) σ hχ hσp hσq κ (fun i => inv e ⁻¹ᵁ u ⁻¹ᵁ D i) (fun i => (isAffineOpen_preimage_of_isPullback h' (hD i)).preimage_of_isIso _) (by rw [← Scheme.Hom.preimage_iSup, ← Scheme.Hom.preimage_iSup, hc]; rfl)`. Take `⟨i₁⟩` from `cechLB_pull_iso_of_isOpenImmersion k X a (G.pull σ) _ e κ (fun i => inv e ⁻¹ᵁ u ⁻¹ᵁ D i) (LB.isLB_pull hG σ) (fun i => by rw [Scheme.Hom.opensRange_of_isIso]; exact le_top)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD' : (fun i => e ⁻¹ᵁ inv e ⁻¹ᵁ u ⁻¹ᵁ D i) = fun i => u ⁻¹ᵁ D i` using `funext fun i => by`. Rewrite using `[← Scheme.Hom.comp_preimage, IsIso.hom_inv_id]`. Both sides reduce to the same expression. Rewrite `i₁` using `[he, hD']`. Take `⟨w₁, hw₁⟩ : ∃ w : LB.Iso ((G.pull σ).pull e) (G.pull (u ≫ π)), w.IsGen` from `hes ▸ GlobalTheory.MumfordSupport.exists_iso_pull_pull hG σ e`.
-
-Take `⟨w₂, hw₂⟩` from `GlobalTheory.MumfordSupport.exists_iso_pull_pull hG π u`. Establish `hL₁ : ((G.pull σ).pull e).IsLB` using `LB.isLB_pull (LB.isLB_pull hG σ) e`. Establish `hL₂ : ((G.pull π).pull u).IsLB` using `LB.isLB_pull hM u`. Establish `hL₃ : (G.pull (u ≫ π)).IsLB` using `LB.isLB_pull hG _`. Establish `c₁` using `cechLBCongr v (fun i => u ⁻¹ᵁ D i) hL₁ hL₃ w₁ hw₁`.
-
-Establish `c₂` using `cechLBCongr v (fun i => u ⁻¹ᵁ D i) hL₂ hL₃ w₂ hw₂`. Establish `E` using `cechLBBaseChangeIso hM h' hI ≪≫ c₂ ≪≫ c₁.symm ≪≫ i₁`. Conclude with `fun m => (hac m).of_iso E.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem fibAc_of_closed_fibres : ∀ {k : Type} [Field k] [IsAlgClosed k] {X T Z : Scheme.{0}} (a : X ⟶ Sp k) (b : T ⟶ Sp k) (p : Z ⟶ X)
     (q : Z ⟶ T) (H : IsPullback p q a b) (ha : IsProjBy a) [IsSeparated a] [Flat a] (G : LB Z) (hG : G.IsLB)

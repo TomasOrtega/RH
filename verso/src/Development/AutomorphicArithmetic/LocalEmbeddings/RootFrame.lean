@@ -298,7 +298,7 @@ def Charts.HTAt {t : SAB H X} {V : Cover Y} {ρ' : V.X ⟶ X} {J : Type} (K : Ch
 end Fam
 
 /- English proof (translation)
-Distinguish the cases in `hi' : (i : ℕ) < r`. Conclude with `.inl ⟨⟨i, hi'⟩, rfl⟩`. Use `i.2` as an intermediate fact. Conclude with `.inr ⟨⟨N - 1 - i, by omega⟩, Fin.ext (by simp only [hi]; omega)⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lo_or_hi {r s N : ℕ} (h : r + s = N) (i : Fin N) : (∃ k, lo h k = i) ∨ ∃ l, hi h l = i := by
   by_cases hi' : (i : ℕ) < r

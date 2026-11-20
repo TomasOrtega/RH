@@ -16,23 +16,19 @@ open scoped ContDiff
 namespace GlobalTheory.HCA
 
 /- English proof (translation)
-Introduce `𝔸 _ _ _ _ G 𝔤 h d b _ _ μ hμ S hSc hSt K hK Λ hΛ`. Use `haveI := hμ`. Use `haveI : LocallyCompactSpace G := h.locallyCompactSpace`. Use `haveI : SecondCountableTopology G := h.secondCountableTopology`. Take `⟨ε, hε, hdens⟩` from `h.exists_smooth_density_prodExp_tsupport μ b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨N, Λ', κ, hκ, hsum⟩` from `GlobalTheory.T.exists_dixmierMalliavin_decomp_prodExp 𝔸 G 𝔤 h d b μ hμ S hSc hSt K hK ε hε d id Λ hΛ`. Use `choose κ' hκ'sm hκ'cs _ hκ'int using fun m => hdens (κ m) (hκ m).2.1 (hκ m).2.2`. Establish `hKμ : μ K < ⊤` using `hK.measure_lt_top`. Use `choose C hC using fun m => (hκ m).1.bdd []`. Use `choose a ha using fun m => GlobalTheory.T.exists_integrable_density_of_bound_by_integral_on_compact G μ K hK hKμ S hSc (Λ' m []) (C m) ((hκ m).1.lin []) (hC m)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hκ'is : ∀ m, h.IsSmoothFun (κ' m)` using `fun m => hκ'sm m`. Establish `hκ'c : ∀ m, Continuous (κ' m)` using `fun m => by`. Use `letI := h.chartedSpace`. Conclude with `(hκ'sm m).continuous`. Establish `hconv` using `fun m => GlobalTheory.T.smooth_hasCompactSupport_conv_of_integrable_compact 𝔸 G 𝔤 h μ hμ K hK (κ' m) (a m) (hκ'is m) (hκ'cs m) (ha m).1 (ha m).2.1 (ha m).2.2.1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `⟨fun z => ∑ m, ∫ x, κ' m x * a m (x⁻¹ * z) ∂μ, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (fun z => ∑ m, ∫ x, κ' m x * a m (x⁻¹ * z) ∂μ) = ∑ m, (fun z => ∫ x, κ' m x * a m (x⁻¹ * z) ∂μ)`. Use extensionality with `z`. Simplify using `[Finset.sum_apply]`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Conclude with `h.mem_smoothFuns.1 (Submodule.sum_mem (h.smoothFuns (F := ℂ)) fun m _ => h.mem_smoothFuns.2 (hconv m).1)`. Establish `e : (fun z => ∑ m, ∫ x, κ' m x * a m (x⁻¹ * z) ∂μ) = ∑ m, (fun z => ∫ x, κ' m x * a m (x⁻¹ * z) ∂μ)`. Use extensionality with `z`. Simplify using `[Finset.sum_apply]`. Rewrite using `[e]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_induction _ HasCompactSupport (fun _ _ hu hv => hu.add hv) HasCompactSupport.zero fun m _ => (hconv m).2`. Introduce `f hf`. Establish `hcc : ∀ m, Continuous (fun z => ∫ x, κ' m x * a m (x⁻¹ * z) ∂μ)` using `fun m => by`. Use `letI := h.chartedSpace`. Conclude with `(hconv m).1.continuous`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hint : ∀ m, Integrable (fun z => f z * ∫ x, κ' m x * a m (x⁻¹ * z) ∂μ) μ` using `fun m => ((hSc f hf).mul (hcc m)).integrable_of_hasCompactSupport (hconv m).2.mul_left`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[Finset.mul_sum]`. Conclude with `integral_finsetSum _ fun m _ => hint m`. Use `_ = ∑ m, ∫ x, κ' m x * Λ' m [] (fun y => f (x * y)) ∂μ := by`.
-
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.integral_mul_convolution_eq_alt G μ hμ K hK (κ' m) (a m) (hκ'c m) (hκ'cs m) (ha m).1 (ha m).2.1 (ha m).2.2.1 f (hSc f hf)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Establish `hx` using `(ha m).2.2.2 _ (hSt f hf x)`. Simplify using `only at hx ⊢`.
-
-Rewrite using `[hx]`. Use `_ = ∑ m, ∫ t, κ m t * Λ' m [] (fun y => f (h.prodExp (fun k => b (id k)) t * y)) := by`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Conclude with `hκ'int m _ (GlobalTheory.T.continuous_leftTranslate_boundedDerivFunctional 𝔸 G 𝔤 h d b μ hμ S hSc hSt K hK (Λ' m) (hκ m).1 [] f hf)`. Use `_ = Λ [] f := (hsum f hf).symm`.
+A detailed English derivation is pending.
 -/
 theorem smFn_nil_eq_integral_smooth : ∀ (𝔸 : Type) [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸] (G : Subgroup 𝔸ˣ) (𝔤 : Submodule ℝ 𝔸) (h : IsExpLieAlgebra G 𝔤) (d : ℕ) (b : Module.Basis (Fin d) ℝ 𝔤) [MeasurableSpace G] [BorelSpace G] (μ : Measure G), μ.IsHaarMeasure → ∀ (S : Submodule ℂ (G → ℂ)), (∀ f ∈ S, Continuous f) → (∀ f ∈ S, ∀ g, (fun y => f (g * y)) ∈ S) → ∀ K : Set G, IsCompact K → ∀ Λ : List (Fin d) → (G → ℂ) → ℂ, SmFn h b μ S K Λ → ∃ α : G → ℂ, h.IsSmoothFun α ∧ HasCompactSupport α ∧ ∀ f ∈ S, ∫ y, f y * α y ∂μ = Λ [] f := by
   intro 𝔸 _ _ _ _ G 𝔤 h d b _ _ μ hμ S hSc hSt K hK Λ hΛ

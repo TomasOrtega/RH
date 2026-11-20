@@ -8,15 +8,13 @@ open GlobalTheory.BCT GlobalTheory.LFun PositivityTheory.Rg.BcB.G8 PositivityThe
 namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hKc`. Use `set M' : Subgroup K := M.subgroupOf K with hM'`. Establish `hM'o : IsOpen (M' : Set K)` using `hMo.preimage continuous_subtype_val`. Use `haveI : Finite (K ⧸ M') := Subgroup.quotient_finite_of_isOpen M' hM'o`. Use `haveI : M'.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hcl : IsClosed (M'.normalCore : Set K)`. Establish `hc : IsClosed (M' : Set K)` using `Subgroup.isClosed_of_isOpen M' hM'o`. Establish `: (M'.normalCore : Set K) = ⋂ b : K, (fun a : K => b * a * b⁻¹) ⁻¹' (M' : Set K)`. Use extensionality with `a`. Simplify using `[Subgroup.normalCore, Set.mem_iInter]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `isClosed_iInter fun b => hc.preimage (by fun_prop)`. Establish `hop : IsOpen (M'.normalCore : Set K)` using `Subgroup.isOpen_of_isClosed_of_finiteIndex _ hcl`. Use `⟨M'.normalCore.map K.subtype, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: ((M'.normalCore.map K.subtype : Subgroup G) : Set G) = Subtype.val '' (M'.normalCore : Set K)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hKo.isOpenMap_subtype_val _ hop`. Introduce and unpack `_ ⟨a, ha, rfl⟩`.
-
-Establish `h1 : a ∈ M'` using `Subgroup.normalCore_le M' ha`. Conclude with `h1`. Introduce and unpack `k hk _ ⟨a, ha, rfl⟩`. Use `⟨⟨k, hk⟩ * a * (⟨k, hk⟩ : K)⁻¹, ?_, by simp⟩` and prove the remaining obligations. Conclude with `(Subgroup.normalCore_normal M').conj_mem a ha _`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_core {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (K M : Subgroup G) (hKo : IsOpen (K : Set G)) (hKc : IsCompact (K : Set G))
@@ -48,11 +46,9 @@ private theorem exists_core {G : Type} [Group G] [TopologicalSpace G] [IsTopolog
     exact (Subgroup.normalCore_normal M').conj_mem a ha _
 
 /- English proof (translation)
-Use `⟨?_, fun k hk x => ?_⟩` and prove the remaining obligations. Use `haveI : Unique (GLw 0 w) := Unique.mk' _`. Establish `e : (fun g : GLw n w => ((g, 1) : GLw n w × GLw 0 w)) = ⇑(Homeomorph.prodUnique (GLw n w) (GLw 0 w)).symm`. Use function extensionality and compare the values at `g`. Conclude with `Prod.ext rfl (Subsingleton.elim _ _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : Topology.IsClosedEmbedding (fun g : GLw n w => ((g, 1) : GLw n w × GLw 0 w))`. Rewrite using `[e]`. Conclude with `(Homeomorph.prodUnique (GLw n w) (GLw 0 w)).symm.isClosedEmbedding`. Conclude with `hf.1.comp_isClosedEmbedding h`. Establish `h` using `hf.2 _ (hN k hk) (x, 1)`.
-
-Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem hecke_slice {E : Type} [Field E] [NumberField E] {n : ℕ} (w : Pl E)
     (K' : Subgroup (GLw n w × GLw 0 w)) (f : GLw n w × GLw 0 w → ℂ) (hf : IsHecke K' f)
@@ -72,19 +68,15 @@ private theorem hecke_slice {E : Type} [Field E] [NumberField E] {n : ℕ} (w : 
     simpa using h
 
 /- English proof (translation)
-Introduce `E _ _ _ n Z N₀ hN₀ φ₁ φ₂ hφ`. Establish `hK` using `fun w : Pl E => GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL (E := E) w n`. Establish `key : ∀ w ∈ Z, ∃ C : Subgroup (GLw n w), IsOpen (C : Set (GLw n w)) ∧ C ≤ N₀ w ∧ (∀ k ∈ KGL w n, ∀ x ∈ C, k * x * k⁻¹ ∈ C) ∧ ∀ b, IsHecke C (two φ₁ φ₂ w b)`. Introduce `w hw`. Take `⟨⟨A, hAo, -, hA⟩, ⟨B, hBo, -, hB⟩⟩` from `hφ w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `ι : GLw n w →* GLw n w × GLw 0 w` to `MonoidHom.inl _ _`. Establish `hι : Continuous ι` using `continuous_id.prodMk continuous_const`. Establish `hMo : IsOpen ((N₀ w ⊓ A.comap ι ⊓ B.comap ι : Subgroup (GLw n w)) : Set (GLw n w))` using `((hN₀ w).1.inter (hAo.preimage hι)).inter (hBo.preimage hι)`. Take `⟨C, hCo, hCM, hCn⟩` from `exists_core (KGL w n) (N₀ w ⊓ A.comap ι ⊓ B.comap ι) (hK w).1 (hK w).2 hMo (fun x hx => (hN₀ w).2.1 hx.1.1)`. Use `⟨C, hCo, fun x hx => (hCM hx).1.1, hCn, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `(_ | _)`. Conclude with `hecke_slice w A (φ₁ w) hA C fun k hk => (hCM hk).1.2`. Conclude with `hecke_slice w B (φ₂ w) hB C fun k hk => (hCM hk).2`. Use `choose! C hC using key`. Use `⟨fun w => if w ∈ Z then C w else N₀ w, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Introduce `w`. Distinguish the cases in `hw : w ∈ Z`. Simplify using `only [if_pos hw]`. Take `⟨a, b, c, -⟩` from `hC w hw`. Conclude with `⟨a, b.trans (hN₀ w).2.1, c, fun h => absurd hw h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [if_neg hw]`. Conclude with `hN₀ w`. Introduce `w`. Distinguish the cases in `hw : w ∈ Z`. Simplify using `only [if_pos hw]`.
-
-Conclude with `(hC w hw).2.1`. Simplify using `only [if_neg hw]`. Conclude with `le_rfl`. Introduce `w hw b`. Simplify using `only [if_pos hw]`.
-
-Conclude with `(hC w hw).2.2.2 b`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lcLevel_pf : LcLevel := by
   classical

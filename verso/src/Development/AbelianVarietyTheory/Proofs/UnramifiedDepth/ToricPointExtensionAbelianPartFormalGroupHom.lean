@@ -22,7 +22,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChF
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `h`. Conclude with `⟨k, fun t ht => by rw [← φ.commutes, hk t ht, map_zero]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem kills_of_algHom {R : Type} [CommRing R] {I : Ideal R} {S S' : Type} [CommRing S] [Algebra R S]
     [CommRing S'] [Algebra R S'] (φ : S →ₐ[R] S') (h : ∃ k, Kills I k S) : ∃ k, Kills I k S' := by
@@ -30,17 +30,15 @@ private theorem kills_of_algHom {R : Type} [CommRing R] {I : Ideal R} {S S' : Ty
   exact ⟨k, fun t ht => by rw [← φ.commutes, hk t ht, map_zero]⟩
 
 /- English proof (translation)
-Set `J : Ideal S` to `Ideal.span (Set.range a)`. Establish `hJ : IsNilpotent J`. Use `(Ideal.FG.isNilpotent_iff_le_nilradical (Submodule.fg_span (Set.finite_range a))).2 ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `ha i`. Set `T : Subalgebra R (S × S)` to `AlgHom.equalizer ((Ideal.Quotient.mkₐ R J).comp (AlgHom.fst R S S)) ((Ideal.Quotient.mkₐ R J).comp (AlgHom.snd R S S))`. Set `ρ : T →ₐ[R] S` to `(AlgHom.fst R S S).comp T.val`. Set `π : T →ₐ[R] S` to `(AlgHom.snd R S S).comp T.val`. Set `σ : S →ₐ[R] T` to `((AlgHom.id R S).prod (AlgHom.id R S)).codRestrict T (fun _ => rfl)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hm : ∀ i, ((0, a i) : S × S) ∈ T` using `fun i => by show Ideal.Quotient.mk J 0 = Ideal.Quotient.mk J (a i)`. Rewrite using `[map_zero, eq_comm, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span ⟨i, rfl⟩`. Use `⟨T, inferInstance, inferInstance, ρ, π, σ, fun i => ⟨(0, a i), hm i⟩, rfl, ?_, fun _ => rfl, fun _ => rfl⟩` and prove the remaining obligations. Take `⟨N, hN⟩` from `hJ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : RingHom.ker ρ ≤ J.comap π` using `fun t ht => by`. Establish `h1 : t.1.1 = 0` using `ht`. Establish `h2 : Ideal.Quotient.mk J t.1.1 = Ideal.Quotient.mk J t.1.2` using `t.2`. Rewrite `h2` using `[h1, map_zero, eq_comm, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨N + 1, le_bot_iff.1 fun t ht => ?_⟩` and prove the remaining obligations. Establish `h1 : t.1.1 = 0` using `(Ideal.pow_le_self (Nat.succ_ne_zero N) ht : t ∈ RingHom.ker ρ)`. Establish `h2` using `Ideal.le_comap_pow π N (Ideal.pow_right_mono hle N (Ideal.pow_le_pow_right (Nat.le_succ N) ht))`. Rewrite `h2` using `[hN]`. Establish `h3 : π t = 0` using `by simpa using h2`.
-
-Conclude with `Subtype.ext (Prod.ext h1 h3)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exists_split_thickening {R : Type} [CommRing R] {d : ℕ} (S : Type) [CommRing S] [Algebra R S]
     (a : Fin d → S) (ha : ∀ i, IsNilpotent (a i)) :
@@ -76,11 +74,11 @@ private theorem exists_split_thickening {R : Type} [CommRing R] {d : ℕ} (S : T
   exact Subtype.ext (Prod.ext h1 h3)
 
 /- English proof (translation)
-Take `⟨T, _, _, ρ, π, σ, a', hσ, ⟨N, hN⟩, h0, h1⟩` from `exists_split_thickening (R := R) S a ha`. Establish `hT` using `kills_of_algHom σ h`. Establish `hnil : ∀ t : T, ρ t = 0 → IsNilpotent t` using `fun t ht => ⟨N, by`. Use `Ideal.pow_mem_pow (show t ∈ RingHom.ker ρ from ht) N` as an intermediate fact. Rewrite `this` using `[hN]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this⟩`. Establish `ha' : ∀ i, IsNilpotent (a' i)` using `fun i => hnil _ (h0 i)`. Take `⟨b, hb, hz⟩` from `hB.surj T S ρ σ hσ ⟨N, hN⟩ (E.q T hT (x T a')) (by`. Rewrite using `[← E.q_nat T S ρ hT h, hx.nat T S ρ a' ha', show (fun i => ρ (a' i)) = 0 from funext h0, hx.zero, map_one])`. Establish `hb' : ∀ j, IsNilpotent (b j)` using `fun j => hnil _ (hb j)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨fun j => π (b j), fun j => (hb' j).map π, ?_⟩` and prove the remaining obligations. Rewrite using `[← hB.nat T S π b hb', ← hz, ← E.q_nat T S π hT h, hx.nat T S π a' ha', show (fun i => π (a' i)) = a from funext h1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_nilpotent_image {R : Type} [CommRing R] {I : Ideal R}
     {G : Over (Spec (CommRingCat.of R))} [GrpObj G] {B : Over (Spec (CommRingCat.of R))} [GrpObj B]
@@ -103,35 +101,31 @@ private theorem exists_nilpotent_image {R : Type} [CommRing R] {I : Ideal R}
   rw [← hB.nat T S π b hb', ← hz, ← E.q_nat T S π hT h, hx.nat T S π a' ha', show (fun i => π (a' i)) = a from funext h1]
 
 /- English proof (translation)
-Introduce `R _ I hI G _ _ B _ _ X _ E d g F FB x xB hx hB`. Set `c : ∀ (S : Type) [CommRing S] [Algebra R S], (Fin d → S) → Fin g → S` to `fun S _ _ a => if h : (∃ k, Kills I k S) ∧ ∀ i, IsNilpotent (a i) then (exists_nilpotent_image E hx hB S h.1 a h.2).choose else 0`. Establish `hc : ∀ (S : Type) [CommRing S] [Algebra R S] (h : ∃ k, Kills I k S) (a : Fin d → S), (∀ i, IsNilpotent (a i)) → (∀ j, IsNilpotent (c S a j)) ∧ E.q S h (x S a) = xB S (c S a)`. Introduce `S _ _ h a ha`. Establish `: c S a = (exists_nilpotent_image E hx hB S h a ha).choose` using `dif_pos ⟨h, ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `(exists_nilpotent_image E hx hB S h a ha).choose_spec`. Establish `hnat : ∀ (S : Type) [CommRing S] [Algebra R S] (S' : Type) [CommRing S'] [Algebra R S'] (φ : S →ₐ[R] S') (a : Fin d → S), (∃ k, Kills I k S) → (∀ i, IsNilpotent (a i)) → (fun j => φ (c S a j)) = c S' (fun i => φ (a i))`. Introduce `S _ _ S' _ _ φ a h ha`. Establish `h'` using `kills_of_algHom φ h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : ∀ i, IsNilpotent (φ (a i))` using `fun i => (ha i).map φ`. Use `hB.inj S' _ _ (fun j => ((hc S h a ha).1 j).map φ) (hc S' h' _ ha').1 ?_` and prove the remaining obligations. Rewrite using `[← (hc S' h' _ ha').2, ← hB.nat S S' φ _ (hc S h a ha).1, ← (hc S h a ha).2, ← E.q_nat S S' φ h h', hx.nat S S' φ a ha]`. Use `choose Q hQ using fun j : Fin g => GlobalTheory.T.exists_powerSeries_of_natural_nilpotentPoints R I hI 1 d (fun _ _ _ => True) (fun _ _ => trivial) (fun S _ _ a => c S (a 0) j) (fun S _ _ S' _ _ φ a _ _ _ h ha => congrFun (hnat S S' φ (a 0) h (ha 0)) j)`. Establish `hQ' : ∀ (S : Type) [CommRing S] [Algebra R S] (h : ∃ k, Kills I k S) (a : Fin d → S), (∀ i, IsNilpotent (a i)) → (fun j => nv (algebraMap R S) (Q j) ![a]) = c S a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `S _ _ h a ha`. Use function extensionality and compare the values at `j`. Conclude with `(hQ j S ![a] trivial h (fun i l => by fin_cases i; exact ha l)).symm`. Establish `hconst : ∀ j, MvPowerSeries.constantCoeff (Q j) = 0`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsHausdorff.haus (I := I) inferInstance _ fun k => ?_` and prove the remaining obligations. Establish `hk : ∃ m, Kills I m (R ⧸ I ^ (k + 1))` using `⟨k, fun t ht => Ideal.Quotient.eq_zero_iff_mem.2 ht⟩`. Establish `h0 : ∀ i : Fin d, IsNilpotent ((0 : Fin d → R ⧸ I ^ (k + 1)) i)` using `fun _ => IsNilpotent.zero`. Establish `h1 : c (R ⧸ I ^ (k + 1)) 0 = 0` using `hB.inj _ _ _ (hc _ hk 0 h0).1 (fun _ => IsNilpotent.zero) (by`. Rewrite using `[← (hc _ hk 0 h0).2, hx.zero, hB.zero, map_one])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrFun (hQ' _ hk 0 h0) j`. Establish `h3` using `(nv_calculus R (R ⧸ I ^ (k + 1)) (algebraMap _ _) 1 d ![0] (fun i l => by fin_cases i; exact h0 l)).2.2.2.2.2 (fun i l i' l' => by fin_cases i; simp) (Q j)`. Rewrite `h2` using `[h1]`. Rewrite `h3` using `[h2]`. Establish `h4 : algebraMap R (R ⧸ I ^ (k + 1)) (MvPowerSeries.constantCoeff (Q j)) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using h3.symm`. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Conclude with `Ideal.pow_le_pow_right (Nat.le_succ k) (Ideal.Quotient.eq_zero_iff_mem.1 h4)`. Use `⟨Q, ⟨hconst, fun j => ?_⟩, fun S _ _ h a ha => by rw [hQ' S h a ha]; exact (hc S h a ha).2⟩` and prove the remaining obligations. Use `GlobalTheory.T.powerSeries_eq_of_evalAtNilpotentPoints_eq R I inferInstance 2 d _ _ fun S _ _ k hk _ a ha => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : ∃ k, Kills I k S` using `⟨k, hk⟩`. Take `⟨⟨ψ, hψ, -, hX⟩, hn, hs, -⟩` from `nv_calculus R S (algebraMap R S) 2 d a ha`. Establish `hpt : ∀ i : Fin 2, ∀ l, nv (algebraMap R S) (ev (n` using `2) ![pt R d i] (Q l)) a = c S (a i) l := by`. Introduce `i l`. Establish `e` using `hs 1 d ![pt R d i] (Q l) (fun i' l' => by fin_cases i'; simp [pt])`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (fun i' l' => nv (algebraMap R S) ((![pt R d i] : Fin 1 → Fin d → PS R 2 d) i' l') a) = ![a i]`. Use function extensionality and compare the values at `i' l'`. Use `fin_cases i'`. Conclude with `(hψ _).symm.trans (hX (i, l'))`. Rewrite `e` using `[e2]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `e.trans (congrFun (hQ' S h (a i) (ha i)) l)`. Establish `hpc : ∀ i : Fin 2, ∀ l, MvPowerSeries.constantCoeff (ev (n` using `2) ![pt R d i] (Q l)) = 0 := by`. Introduce `i l`. Use `MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero ?_) ?_ (hconst l)` and prove the remaining obligations. Use `all_goals`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Introduce and unpack `⟨i', l'⟩`. Use `fin_cases i'`. Simplify using `[pt]`. Apply the tactic sequence `have ea : a = ![a 0, a 1] := by funext i; fin_cases i <;> rfl`. Establish `hFn : ∀ l, IsNilpotent (nv (algebraMap R S) (F.F l) a)` using `fun l => (hn _ (F.const l)).1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `hs 1 d ![F.F] (Q j) (fun i' l' => by fin_cases i'; exact F.const l')`. Establish `e2 : (fun i' l' => nv (algebraMap R S) ((![F.F] : Fin 1 → Fin d → PS R 2 d) i' l') a) = ![fun l => nv (algebraMap R S) (F.F l) a]`. Use function extensionality and compare the values at `i' l'`. Use `fin_cases i'`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e1` using `[e2]`. Establish `e3` using `hs 2 g ![fun i => ev (n := 2) ![pt R d 0] (Q i), fun i => ev (n := 2) ![pt R d 1] (Q i)] (FB.F j) (fun i' l' => by fin_cases i'; exacts [hpc 0 l', hpc 1 l'])`. Establish `e4 : (fun i' l' => nv (algebraMap R S) ((![fun i => ev (n` using `2) ![pt R d 0] (Q i), fun i => ev (n := 2) ![pt R d 1] (Q i)] : Fin 2 → Fin g → PS R 2 d) i' l') a) = ![c S (a 0), c S (a 1)] := by`. Use function extensionality and compare the values at `i' l'`. Use `fin_cases i'`.
-
-Use `exacts [hpt 0 l', hpt 1 l']`. Rewrite `e3` using `[e4]`. Establish `hcn : ∀ i l, IsNilpotent ((![c S (a 0), c S (a 1)] : Fin 2 → Fin g → S) i l)` using `fun i l => by fin_cases i exacts [(hc S h _ (ha 0)).1 l, (hc S h _ (ha 1)).1 l]`. Establish `key : c S (fun l => nv (algebraMap R S) (F.F l) a) = fun l => nv (algebraMap R S) (FB.F l) ![c S (a 0), c S (a 1)]`. Use `hB.inj S _ _ (hc S h _ hFn).1 (fun l => ((nv_calculus R S (algebraMap R S) 2 g _ hcn).2.1 _ (FB.const l)).1) ?_` and prove the remaining obligations.
-
-Rewrite using `[← (hc S h _ hFn).2, ← hB.law S _ _ (hc S h _ (ha 0)).1 (hc S h _ (ha 1)).1, ← (hc S h _ (ha 0)).2, ← (hc S h _ (ha 1)).2, ← map_mul, hx.law S _ _ (ha 0) (ha 1), ← ea]`. Rewrite using `[e3]`. Conclude with `e1.trans ((congrFun (hQ' S h _ hFn) j).trans (congrFun key j))`.
+A detailed English derivation is pending.
 -/
 theorem ptExt_q_series : ∀ (R : Type) [CommRing R] (I : Ideal R) [IsAdicComplete I R] (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (B : Over (Spec (CommRingCat.of R))) [GrpObj B] [IsCommMonObj B] (X : Type) [AddCommGroup X] (E : PtExt I G B X) (d g : ℕ) (F : FGLaw R d) (FB : FGLaw R g) (x : Fam G d) (xB : Fam B g), NilChart G F.F x → NilChart B FB.F xB → ∃ Q : Fin g → PS R 1 d, IsHomF F.F FB.F Q ∧ (∀ (S : Type) [CommRing S] [Algebra R S] (h : ∃ k, Kills I k S) (a : Fin d → S), (∀ i, IsNilpotent (a i)) → E.q S h (x S a) = xB S (fun j => nv (algebraMap R S) (Q j) ![a])) := by
   intro R _ I hI G _ _ B _ _ X _ E d g F FB x xB hx hB

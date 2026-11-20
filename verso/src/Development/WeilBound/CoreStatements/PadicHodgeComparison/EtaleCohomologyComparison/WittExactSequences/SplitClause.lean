@@ -14,15 +14,13 @@ namespace CrystallineSemistableComparison.D
 variable (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Introduce `t x`. Set `xa : A.obj →ₐ[Ob l] t.obj.A` to `x.hom.hom`. Establish `hPf : Pf l t.obj.A` using `⟨t.obj.natCast_l, t.obj.perf.bijective_frobenius⟩`. Establish `hV : VAL ((xa : A.obj →+* t.obj.A) (algebraMap (Ob l) A.obj (rt l 0)))`. Establish `e : (xa : A.obj →+* t.obj.A) (algebraMap (Ob l) A.obj (rt l 0)) = t.obj.pi`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `xa (algebraMap (Ob l) A.obj (rt l 0)) = t.obj.s (pFlat l)`. Rewrite using `[xa.commutes, ← (isRt_rt l).2]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `t.property.2`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `hS t.obj.A (xa : A.obj →+* t.obj.A) hPf t.property.1 hV`. Set `ya : B →ₐ[Ob l] t.obj.A` to `{ y with commutes' := fun c => by`. Express the relevant statement in the definitionally equal form `y (algebraMap (Ob l) B c) = algebraMap (Ob l) t.obj.A c`. Rewrite using `[IsScalarTower.algebraMap_apply (Ob l) A.obj B c, ← RingHom.comp_apply, hy]`. Conclude with `xa.commutes c }`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨ObjectProperty.homMk (CommAlgCat.ofHom ya), ?_⟩` and prove the remaining obligations. Apply `ObjectProperty.hom_ext` to reduce the goal to its premises. Apply `CommAlgCat.hom_ext` to reduce the goal to its premises. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `a`.
-
-Express the relevant statement in the definitionally equal form `y (algebraMap A.obj B a) = xa a`. Conclude with `RingHom.congr_fun hy a`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem split_clause (A : PfC l (Ob l)) (B : Type) [CommRing B] [Algebra (Ob l) B] [Algebra A.obj B]
     [IsScalarTower (Ob l) A.obj B] (hB : Pf l B) (hS : Splits l (algebraMap (Ob l) A.obj (rt l 0)) (algebraMap A.obj B)) :
@@ -51,29 +49,27 @@ theorem split_clause (A : PfC l (Ob l)) (B : Type) [CommRing B] [Algebra (Ob l) 
   exact RingHom.congr_fun hy a
 
 /- English proof (translation)
-Establish `hr` using `isRt_rt l`. Establish `hIsRt : IsRt l (fun k => algebraMap (Ob l) B (rt l k))` using `fun k => by`. Simplify using `only`. Rewrite using `[← map_pow, hr.1 k]`. Take `⟨T, _, g, hPf, hAIC, hVAL, hcompl, hnzd, hsurj, hinj, huniv⟩` from `Leaf.test_of_pre l B (fun k => algebraMap (Ob l) B (rt l k)) hB hIsRt hA hV`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `s : Ob l →+* T` to `g.comp (algebraMap (Ob l) B)`. Establish `hs0 : s (pFlat l) = g (algebraMap (Ob l) B (rt l 0))`. Simplify using `only [s, RingHom.comp_apply, hr.2]`. Use `letI : Algebra (Ob l) T := s.toAlgebra`. Set `P0 : PAlg l` to `{ A := T, s := s, perf := ⟨hPf.bij⟩ compl := by rw [hs0]; exact hcompl tf := by rw [hs0]; exact hnzd }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `t₀ : Test l` to `⟨P0, hAIC, by show VAL (s (pFlat l)); rw [hs0]; exact hVAL⟩`. Set `gA : B →ₐ[Ob l] T` to `{ g with commutes' := fun _ => rfl }`. Set `g' : pfOb (R` to `Ob l) B hB ⟶ (testι l ⋙ toPf l).obj t₀ := ObjectProperty.homMk (CommAlgCat.ofHom gA)`. Use `⟨t₀, g', ?_, ?_⟩` and prove the remaining obligations. Introduce `t y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `ya : B →ₐ[Ob l] t.obj.A` to `y.hom.hom`. Establish `hc : (ya : B →+* t.obj.A) (algebraMap (Ob l) B (rt l 0)) = t.obj.s (pFlat l)`. Express the relevant statement in the definitionally equal form `ya (algebraMap (Ob l) B (rt l 0)) = _`. Rewrite using `[ya.commutes, hr.2]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨ψ, hψ, huq⟩` from `huniv t.obj.A (ya : B →+* t.obj.A) (by rw [hc]; exact t.obj.compl) (by rw [hc]; exact t.obj.tf)`. Establish `hcomm : ψ.comp P0.s = t.obj.s`. Use extensionality with `c`. Express the relevant statement in the definitionally equal form `ψ (g (algebraMap (Ob l) B c)) = t.obj.s c`. Rewrite using `[← RingHom.comp_apply ψ g, hψ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ya.commutes c`. Use `⟨ObjectProperty.homMk (⟨ψ, hcomm⟩ : PAlg.Hom P0 t.obj), ?_, ?_⟩` and prove the remaining obligations. Apply `ObjectProperty.hom_ext` to reduce the goal to its premises. Apply `CommAlgCat.hom_ext` to reduce the goal to its premises. Apply `AlgHom.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Express the relevant statement in the definitionally equal form `ψ (g b) = ya b`. Conclude with `RingHom.congr_fun hψ b`. Introduce `φ hφ`. Apply `ObjectProperty.hom_ext` to reduce the goal to its premises.
+Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `PAlg.Hom.ext` to reduce the goal to its premises. Apply `huq` to reduce the goal to its premises. Use extensionality with `b`. Use `congrArg (fun u => u.hom.hom b) hφ` as an intermediate fact. Conclude with `this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ((tensF l (Ob l) N).map g').hom = gA.toLinearMap.lTensor N` using `rfl`. Take `⟨hsT, hkT⟩` from `Leaf.tens_compl (Ob l) (rt l) M N B T gA (by rw [hr.2]; exact hN) (fun y => hsurj M y) (fun x hx k => by rw [Algebra.smul_def]; exact hinj M x hx k)`. Rewrite using `[key]`. Introduce `a ha`. Use `⟨?_, fun y => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Introduce `w hw`. Conclude with `hkT w hw k`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => intro w _`. Conclude with `zero_smul _ _`. Consider the case `add x y _ _ hx hy => intro w hw`. Rewrite using `[add_smul, hx w hw, hy w hw, add_zero]`. Consider the case `smul c x _ hx => intro w hw`.
-
-Rewrite using `[smul_eq_mul, mul_smul, hx w hw, smul_zero]`. Conclude with `hsT (a • y)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem test_clause (N : Type) [AddCommGroup N] [Module (Ob l) N] (M : ℕ) (hN : ∀ x : N, pFlat l ^ M • x = 0)
     (B : Type) [CommRing B] [Algebra (Ob l) B] (hB : Pf l B) (hA : AIC B) (hV : VAL (algebraMap (Ob l) B (rt l 0))) :

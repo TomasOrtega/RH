@@ -27,9 +27,9 @@ theorem headLastIsom_apply (n : ℕ) (v : V (n + 1)) :
     headLastIsom n v = WithLp.toLp 2 (headL n v, v (Fin.last n)) := rfl
 
 /- English proof (translation)
-Introduce `p`. Take `⟨q, rfl⟩ : ∃ q, p = WithLp.toLp 2 q` from `⟨WithLp.ofLp p, (WithLp.toLp_ofLp (p := 2) p).symm⟩`. Use `⟨WithLp.toLp 2 (Fin.snoc (α := fun _ => ℂ) (WithLp.ofLp q.1) q.2), ?_⟩` and prove the remaining obligations. Rewrite using `[headLastIsom_apply]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext`. Simplify using `[headL_apply]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem headLastIsom_surjective (n : ℕ) : Function.Surjective (headLastIsom n) := by
   intro p
@@ -51,7 +51,7 @@ Both sides reduce to the same expression.
 theorem headLastMeas_apply (n : ℕ) (v : V (n + 1)) : headLastMeas n v = (headL n v, v (Fin.last n)) := rfl
 
 /- English proof (translation)
-Set `e` to `LinearIsometryEquiv.ofSurjective (headLastIsom n) (headLastIsom_surjective n)`. Set `eR : V (n + 1) ≃ₗᵢ[ℝ] WithLp 2 (V n × ℂ)` to `{ toLinearEquiv := e.toLinearEquiv.restrictScalars ℝ, norm_map' := e.norm_map }`. Establish `h1 : MeasurePreserving eR` using `LinearIsometryEquiv.measurePreserving eR`. Conclude with `(WithLp.volume_preserving_ofLp (V n) ℂ).comp h1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem headLastMeas_measurePreserving (n : ℕ) : MeasurePreserving (headLastMeas n) := by
   let e := LinearIsometryEquiv.ofSurjective (headLastIsom n) (headLastIsom_surjective n)
@@ -61,9 +61,9 @@ theorem headLastMeas_measurePreserving (n : ℕ) : MeasurePreserving (headLastMe
   exact (WithLp.volume_preserving_ofLp (V n) ℂ).comp h1
 
 /- English proof (translation)
-Establish `hmp` using `headLastMeas_measurePreserving n`. Establish `hc : (fun v : V (n + 1) => F (headL n v) (v (Fin.last n))) = Function.uncurry F ∘ headLastMeas n` using `rfl`. Establish `hI : Integrable (Function.uncurry F) ((volume : Measure (V n)).prod (volume : Measure ℂ))`. Rewrite `hF` using `[hc]`. Conclude with `(hmp.integrable_comp_emb (headLastMeas n).measurableEmbedding).1 hF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hI.integral_prod_left, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem integral_headL_last {n : ℕ} (F : V n → ℂ → ℝ)
     (hF : Integrable (fun v : V (n + 1) => F (headL n v) (v (Fin.last n)))) :

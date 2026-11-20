@@ -9,17 +9,17 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y a n m g hy`. Establish `hN : IsNoetherianRing (Algebra.adjoin ℤ (Set.range g))` using `adjoin_isNoetherianRing g`. Take `⟨n₁, hn₁⟩` from `hL K ι Ω (Algebra.adjoin ℤ (Set.range g)) hN y hy`. Use `choose c0 hc0 using hy`. Use `set R := Algebra.adjoin ℤ (Set.range g)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e : K → ℕ` to `fun k => n₁ + ((n : ℤ) * a k).natAbs`. Set `b : K → ℕ` to `fun k => ((n : ℤ) * a k + e k).toNat`. Establish `hb : ∀ k, ((b k : ℕ) : ℤ) = (n : ℤ) * a k + e k`. Introduce `k`. Use `Int.toNat_of_nonneg ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [e]`. Use `push_cast`. Use `neg_abs_le ((n : ℤ) * a k)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hbn : ∀ k, n₁ ≤ b k`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k`. Establish `h1` using `hb k`. Simplify using `only [e] at h1`. Move the coercions through the operations in `at h1`. Use `neg_abs_le ((n : ℤ) * a k)` as an intermediate fact.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `set mon : Ω := ∏ k, y ⟨k, c0 k⟩ ^ e k`. Establish `hmon : mon ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc0 k)`. Set `φ : Ω →ₗ[R] Ω` to `LinearMap.mulRight R mon`. Establish `hφ : Function.Injective φ` using `mul_left_injective₀ hmon`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hmap : (relChartLat R y a n).map φ ≤ relSecM R y b`. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Conclude with `hn₁ b hbn (mul_prod_mem_relChartLat R y e c0 (fun k => hb k) hs)`. Establish `: IsNoetherian R (relSecM R y b)` using `isNoetherian_of_fg_of_noetherian _ (relSecM_fg R y b)`. Conclude with `Submodule.fg_of_fg_map_injective φ hφ (Submodule.FG.of_le_of_isNoetherian hmap)`.
+A detailed English derivation is pending.
 -/
 theorem RelLatticeFinite.proof (hL : RelSectionsLarge.Statement) : RelLatticeFinite.Statement := by
   intro K _ ι _ Ω _ y a n m g hy

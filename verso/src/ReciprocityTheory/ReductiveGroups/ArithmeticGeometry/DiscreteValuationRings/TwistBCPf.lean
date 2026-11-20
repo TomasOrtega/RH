@@ -26,7 +26,7 @@ def TwistBaseChangeStatement : Prop :=
         IsSecBasis (T := Over.mk (Spec.map (CommRingCat.ofHom f))) (A := D.P.A) _ b'
 
 /- English proof (translation)
-Introduce `R _ _ _ _ D k hk α R' _ _ f _ s'`. Take `⟨m, b, -, hb⟩` from `h R D k hk α`. Establish `hbasis` using `hb R' f (fun i => pullSec D.P.L (DegPre.famφB D α) (DegPre.famε k) (b i) (snd (Over.mk (Spec.map (CommRingCat.ofHom f))) D.P.A).left) (fun i j => rfl)`. Take `⟨r, hr, -⟩` from `hbasis s'`. Conclude with `⟨m, r, b, hr⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem twistBCSpan_of (h : TwistBaseChangeStatement) : TwistBCSpanStatement := by
   intro R _ _ _ _ D k hk α R' _ _ f _ s'

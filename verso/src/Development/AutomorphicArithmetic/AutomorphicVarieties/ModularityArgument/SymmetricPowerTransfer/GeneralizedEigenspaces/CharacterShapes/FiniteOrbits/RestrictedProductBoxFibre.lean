@@ -14,7 +14,7 @@ section Box
 variable {I G : Type} [Group G] {Gv : I → Type} [∀ v, Group (Gv v)] {K U : ∀ v, Subgroup (Gv v)}
 
 /- English proof (translation)
-Simplify using `[RPG.box, Subgroup.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem memBox (P : RPG G Gv K) (U : ∀ v, Subgroup (Gv v)) (g : G) :
     g ∈ P.box U ↔ ∀ v, P.p v g ∈ U v := by
@@ -31,13 +31,13 @@ end Box
 end UpperTheory.V.Z.Sym.So
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_doubleCoset_iff_exists_eq_mul_mul {A : Type} [Group A] {W : Subgroup A} {a x : A} :
     x ∈ DC W a ↔ ∃ u ∈ W, ∃ u' ∈ W, x = u * a * u' := Iff.rfl
 
 /- English proof (translation)
-Take `⟨u, hu, u', hu', rfl⟩` from `mem_doubleCoset_iff_exists_eq_mul_mul.1 hx`. Conclude with `mem_doubleCoset_iff_exists_eq_mul_mul.2 ⟨u, hu, u' * c, mul_mem hu' hc, by simp only [mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem mul_mem_doubleCoset_of_mem_doubleCoset_of_mem {A : Type} [Group A] {W : Subgroup A} {a x c : A}
     (hx : x ∈ DC W a) (hc : c ∈ W) : x * c ∈ DC W a := by
@@ -45,7 +45,7 @@ private theorem mul_mem_doubleCoset_of_mem_doubleCoset_of_mem {A : Type} [Group 
   exact mem_doubleCoset_iff_exists_eq_mul_mul.2 ⟨u, hu, u' * c, mul_mem hu' hc, by simp only [mul_assoc]⟩
 
 /- English proof (translation)
-Take `⟨u, hu, u', hu', rfl⟩` from `mem_doubleCoset_iff_exists_eq_mul_mul.1 hx`. Conclude with `mem_doubleCoset_iff_exists_eq_mul_mul.2 ⟨c * u, mul_mem hc hu, u', hu', by simp only [mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem mul_mem_doubleCoset_of_mem_of_mem_doubleCoset {A : Type} [Group A] {W : Subgroup A} {a x c : A}
     (hx : x ∈ DC W a) (hc : c ∈ W) : c * x ∈ DC W a := by
@@ -53,7 +53,7 @@ private theorem mul_mem_doubleCoset_of_mem_of_mem_doubleCoset {A : Type} [Group 
   exact mem_doubleCoset_iff_exists_eq_mul_mul.2 ⟨c * u, mul_mem hc hu, u', hu', by simp only [mul_assoc]⟩
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `QuotientGroup.mk_out_eq_mul W x`. Rewrite using `[hc]`. Use `⟨mul_mem_doubleCoset_of_mem_doubleCoset_of_mem h1 c.2, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_inv_rev, mul_assoc]`. Conclude with `mul_mem_doubleCoset_of_mem_of_mem_doubleCoset h2 (inv_mem c.2)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem out_mem_doubleCoset_and_out_inv_mul_mem_doubleCoset {A : Type} [Group A] {W : Subgroup A} {a b g x : A}
     (h1 : x ∈ DC W a) (h2 : x⁻¹ * g ∈ DC W b) :
@@ -65,57 +65,51 @@ private theorem out_mem_doubleCoset_and_out_inv_mul_mem_doubleCoset {A : Type} [
   exact mul_mem_doubleCoset_of_mem_of_mem_doubleCoset h2 (inv_mem c.2)
 
 /- English proof (translation)
-The claim follows from `Quotient.out_eq y`.
+A detailed English derivation is pending.
 -/
 private theorem quotientGroup_coe_out_eq_self {A : Type} [Group A] (W : Subgroup A) (y : A ⧸ W) :
     ((Quotient.out y : A) : A ⧸ W) = y := Quotient.out_eq y
 
 /- English proof (translation)
-Introduce `I G _ Gv _ K U P S _ a ha`. Establish `hB : ∀ g, g ∈ P.box U ↔ ∀ v, P.p v g ∈ U v` using `memBox P U`. Establish `glue : ∀ x : (v : I) → Gv v, (∀ v ∉ S, x v = 1) → ∃ h : G, ∀ v, P.p v h = x v`. Introduce `x hx`. Apply `P.surj` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Filter.eventually_cofinite.2 (S.finite_toSet.subset ?_)` and prove the remaining obligations. Introduce `v hv`. Assume the negation of the conclusion as `hvS`. Conclude with `hv (by rw [hx v hvS]; exact one_mem _)`. Establish `key : ∀ c : G, (∀ v ∉ S, P.p v c ∈ U v) → ∀ g : G, g ∈ DC (P.box U) c ↔ (∀ v ∈ S, P.p v g ∈ DC (U v) (P.p v c)) ∧ ∀ v ∉ S, P.p v g ∈ U v`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨u, hu, u', hu', rfl⟩` from `mem_doubleCoset_iff_exists_eq_mul_mul.1 hg`. Rewrite `hu`, `hu'` using `[hB]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun v _ => mem_doubleCoset_iff_exists_eq_mul_mul.2 ⟨P.p v u, hu v, P.p v u', hu' v, by rw [map_mul, map_mul]⟩, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Conclude with `mul_mem (mul_mem (hu v) (hc v hv)) (hu' v)`. Introduce and unpack `⟨h1, h2⟩`. Establish `h1' : ∀ v ∈ S, ∃ u ∈ U v, ∃ u' ∈ U v, P.p v g = u * P.p v c * u'` using `fun v hv => mem_doubleCoset_iff_exists_eq_mul_mul.1 (h1 v hv)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose! u hu u' hu' hg using h1'`. Take `⟨w, hw⟩` from `glue (fun v => if v ∈ S then u v else 1) (fun v hv => if_neg hv)`. Use `mem_doubleCoset_iff_exists_eq_mul_mul.2 ⟨w, ?_, c⁻¹ * w⁻¹ * g, ?_, by group⟩` and prove the remaining obligations. Rewrite using `[hB]`. Introduce `v`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hw]`. Use `split_ifs with hv`. Use `exacts [hu v hv, one_mem _]`. Rewrite using `[hB]`. Introduce `v`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, map_inv, map_inv, hw]`. Use `split_ifs with hv`. Rewrite using `[hg v hv]`. Establish `e : (P.p v c)⁻¹ * (u v)⁻¹ * (u v * P.p v c * u' v) = u' v` using `by group`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hu' v hv`. Rewrite using `[inv_one, mul_one]`. Conclude with `mul_mem (inv_mem (hc v hv)) (h2 v hv)`. Use `⟨key a ha, ?_, ?_⟩` and prove the remaining obligations. Introduce `hf`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Unfold `UpperTheory.V.AlgebraTools.FinOrb at hf ⊢`. Establish `hout : ∀ u : P.box U, ∀ v ∉ S, P.p v (Quotient.out (u • (a : G ⧸ P.box U))) ∈ U v`. Introduce `u v hv`. Take `⟨c, hc⟩` from `QuotientGroup.mk_out_eq_mul (P.box U) ((u : G) * a)`. Rewrite using `[smulMk, hc, map_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `mul_mem (mul_mem ((hB _).1 u.2 v) (ha v hv)) ((hB _).1 c.2 v)`. Apply `Set.Finite.of_finite_image (f := fun (y : G ⧸ P.box U) (v : S) => ((P.p v.1 (Quotient.out y) : Gv v.1) : Gv v.1 ⧸ U v.1))` to reduce the goal to its premises. Use `(Set.Finite.pi (t := fun v : S => MulAction.orbit (U v.1) ((P.p v.1 a : Gv v.1) : Gv v.1 ⧸ U v.1)) (fun v => hf v.1 v.2)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, ⟨u, rfl⟩, rfl⟩`. Rewrite using `[Set.mem_univ_pi]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v`. Use `⟨⟨P.p v.1 u, (hB _).1 u.2 v.1⟩, ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `QuotientGroup.mk_out_eq_mul (P.box U) ((u : G) * a)`. Simplify using `only [smulMk]`. Rewrite using `[hc, QuotientGroup.eq]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hB _).1 c.2 v.1 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_mul, Subgroup.coe_mk]`. Use `group`. Introduce and unpack `_ ⟨u1, rfl⟩ _ ⟨u2, rfl⟩ h12`. Use `(quotientGroup_coe_out_eq_self _ _).symm.trans ((QuotientGroup.eq.2 ?_).trans (quotientGroup_coe_out_eq_self _ _))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hB]`. Introduce `v`. Rewrite using `[map_mul, map_inv]`. Distinguish the cases in `hv : v ∈ S`. Conclude with `QuotientGroup.eq.1 (congrFun h12 ⟨v, hv⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_mem (inv_mem (hout u1 v hv)) (hout u2 v hv)`. Introduce `b hb hloc g`. Establish `hab : ∀ v ∉ S, P.p v (a * b) ∈ U v` using `fun v hv => by`. Rewrite using `[map_mul]`. Conclude with `mul_mem (ha v hv) (hb v hv)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨hgS, hgN⟩` from `(key _ hab g).1 hg`. Establish `hgl : ∀ v ∈ S, P.p v g ∈ DC (U v) (P.p v a * P.p v b)` using `fun v hv => by`. Rewrite using `[← map_mul]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hgS v hv`. Establish `hl : ∀ v ∈ S, ∃ z, z ∈ DC (U v) (P.p v a) ∧ z⁻¹ * P.p v g ∈ DC (U v) (P.p v b)`. Introduce `v hv`. Take `⟨y, hy, -⟩` from `(hloc v hv (P.p v g)).1 (hgl v hv)`. Conclude with `⟨_, hy⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `choose! z hz1 hz2 using hl`. Take `⟨w, hw⟩` from `glue (fun v => if v ∈ S then z v else 1) (fun v hv => if_neg hv)`. Establish `hw1 : w ∈ DC (P.box U) a` using `(key a ha w).2 ⟨fun v hv => by rw [hw, if_pos hv]; exact hz1 v hv, fun v hv => by rw [hw, if_neg hv]; exact one_mem _⟩`. Establish `hw2 : w⁻¹ * g ∈ DC (P.box U) b` using `(key b hb _).2 ⟨fun v hv => by rw [map_mul, map_inv, hw, if_pos hv]; exact hz2 v hv, fun v hv => by rw [map_mul, map_inv, hw, if_neg hv, inv_one, one_mul]; exact hgN v hv⟩`. Use `⟨(w : G ⧸ P.box U), out_mem_doubleCoset_and_out_inv_mul_mem_doubleCoset hw1 hw2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `y ⟨hy1, hy2⟩`. Use `(quotientGroup_coe_out_eq_self _ _).symm.trans (QuotientGroup.eq.2 ?_)` and prove the remaining obligations. Rewrite using `[hB]`. Introduce `v`. Rewrite using `[map_mul, map_inv]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ha1` using `(key a ha _).1 hy1`. Establish `hb1` using `(key b hb _).1 hy2`. Distinguish the cases in `hv : v ∈ S`. Establish `hb2` using `hb1.1 v hv`. Rewrite `hb2` using `[map_mul, map_inv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hz2'` using `hz2 v hv`. Rewrite `hz2'` using `[← if_pos (c := v ∈ S) (t := z v) (e := 1) hv, ← hw v]`. Establish `hz1'` using `hz1 v hv`. Rewrite `hz1'` using `[← if_pos (c := v ∈ S) (t := z v) (e := 1) hv, ← hw v]`. Establish `e` using `((hloc v hv (P.p v g)).1 (hgl v hv)).unique (out_mem_doubleCoset_and_out_inv_mul_mem_doubleCoset (ha1.1 v hv) hb2) (out_mem_doubleCoset_and_out_inv_mul_mem_doubleCoset hz1' hz2')`.
-
-Conclude with `QuotientGroup.eq.1 e`. Rewrite using `[hw, if_neg hv]`. Conclude with `mul_mem (inv_mem (ha1.2 v hv)) (one_mem _)`. Introduce `y hy1 hy2`. Use `(key _ hab g).2 ⟨fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations.
-
-Establish `h2` using `((key b hb _).1 hy2).1 v hv`. Rewrite `h2` using `[map_mul, map_inv]`. Rewrite using `[map_mul]`. Conclude with `(hloc v hv (P.p v g)).2 (P.p v y) (((key a ha y).1 hy1).1 v hv) h2`. Establish `h1` using `((key a ha y).1 hy1).2 v hv`.
-
-Establish `h2` using `((key b hb _).1 hy2).2 v hv`. Rewrite `h2` using `[map_mul, map_inv]`. Establish `h3` using `mul_mem h1 h2`. Rewrite `h3` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.So.uFBox :
     UpperTheory.V.Z.Sym.So.UFBox := by

@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `σ R _ _ _ P d hP y g`. Rewrite using `[MvPolynomial.aeval_def, MvPolynomial.aeval_def, MvPolynomial.eval₂_eq', MvPolynomial.eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Establish `h1 : s.degree = d`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `(MvPolynomial.mem_support_iff.1 hs) (hP.coeff_eq_zero h)`. Establish `h2 : ∑ i, s i = d`. Rewrite using `[← h1, Finsupp.degree_eq_sum]`. Repeatedly rewrite using `[mul_pow]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qh65.aeval_mul_of_isHomogeneous :
     ∀ {σ R : Type} [Fintype σ]

@@ -19,9 +19,9 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundl
 namespace PositivityTheory.HtPt.Pflag
 
 /- English proof (translation)
-Establish `hneg : (fun i : Fin N => (-X i : MvPolynomial (Fin N) ℝ)) = fun i => C (-1) * X i`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Simplify using `only [hsymm, map_sum, map_multiset_prod, Multiset.map_map, Function.comp_def, aeval_X, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hneg, Multiset.prod_map_mul, Multiset.map_const', Multiset.prod_replicate, ← map_pow]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem aeval_neg_hsymm (N a : ℕ) :
     aeval (fun i => (-X i : MvPolynomial (Fin N) ℝ)) (hsymm (Fin N) ℝ a) =
@@ -40,7 +40,7 @@ variable (F : Type) [Field F] (K : Type) [Fintype K] [DecidableEq K] (ι : K →
   [∀ k, Fintype (ι k)] (V : Ideal (MRing ι F))
 
 /- English proof (translation)
-Simplify using `only [genNum, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun ν _ => Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[intNumL_perm_of_perm F K ι V (classList u ν ++ (classList b μ ++ Q)) (classList b μ ++ (classList u ν ++ Q)) (List.perm_append_comm_assoc _ _ _)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem swap_num {N : ℕ} (b u : Fin N → K → ℤ) (G H : MvPolynomial (Fin N) ℝ) (Q : List (K → ℤ)) :
     ∑ μ ∈ G.support, G.coeff μ * genNum F V u H (classList b μ ++ Q) =
@@ -53,7 +53,7 @@ theorem swap_num {N : ℕ} (b u : Fin N → K → ℤ) (G H : MvPolynomial (Fin 
   ring
 
 /- English proof (translation)
-Unfold `genNum`. Use `Finset.sum_subset hs fun μ _ hμ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.notMem_support_iff.mp hμ, zero_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem genNum_eq_sum_of_support_subset {N : ℕ} (b : Fin N → K → ℤ) (P : MvPolynomial (Fin N) ℝ)
     (Q : List (K → ℤ)) (s : Finset (Fin N →₀ ℕ)) (hs : P.support ⊆ s) :
@@ -63,7 +63,7 @@ private theorem genNum_eq_sum_of_support_subset {N : ℕ} (b : Fin N → K → �
   rw [MvPolynomial.notMem_support_iff.mp hμ, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[genNum_eq_sum_of_support_subset F K ι V b (P + P') Q (P.support ∪ P'.support) support_add, genNum_eq_sum_of_support_subset F K ι V b P Q (P.support ∪ P'.support) Finset.subset_union_left, genNum_eq_sum_of_support_subset F K ι V b P' Q (P.support ∪ P'.support) Finset.subset_union …`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_add, add_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem genNum_add {N : ℕ} (b : Fin N → K → ℤ) (P P' : MvPolynomial (Fin N) ℝ)
     (Q : List (K → ℤ)) : genNum F V b (P + P') Q = genNum F V b P Q + genNum F V b P' Q := by
@@ -76,7 +76,7 @@ private theorem genNum_add {N : ℕ} (b : Fin N → K → ℤ) (P P' : MvPolynom
   rw [coeff_add, add_mul]
 
 /- English proof (translation)
-Rewrite using `[genNum_eq_sum_of_support_subset F K ι V b (monomial m c) Q {m} support_monomial_subset]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem genNum_monomial {N : ℕ} (b : Fin N → K → ℤ) (m : Fin N →₀ ℕ) (c : ℝ)
     (Q : List (K → ℤ)) : genNum F V b (monomial m c) Q = c * intNumL F V (classList b m ++ Q) := by
@@ -85,13 +85,13 @@ private theorem genNum_monomial {N : ℕ} (b : Fin N → K → ℤ) (m : Fin N �
   simp
 
 /- English proof (translation)
-Set `L : MvPolynomial (Fin N) ℝ →+ ℝ` to `{ toFun := fun P => genNum F V b P Q map_zero' := by simp [genNum] map_add' := fun P P' => genNum_add F K ι V b P P' Q }`. Establish `hL : ∀ P, genNum F V b P Q = L P` using `fun _ => rfl`. Establish `hG : G * H = ∑ μ ∈ G.support, ∑ ν ∈ H.support, monomial μ (G.coeff μ) * monomial ν (H.coeff ν)` using `by conv_lhs => rw [G.as_sum, H.as_sum]`. Rewrite using `[Finset.sum_mul_sum]`. Rewrite using `[hG, hL, map_sum]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Unfold `genNum`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun ν _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp : (classList b (μ + ν)).Perm (classList b ν ++ classList b μ)`. Rewrite using `[← Multiset.coe_eq_coe, ← Multiset.coe_add]`. Simplify using `[classList, Finsupp.toMultiset_add, add_comm]`. Establish `e1 : L (monomial μ (G.coeff μ) * monomial ν (H.coeff ν)) = G.coeff μ * H.coeff ν * intNumL F V (classList b (μ + ν) ++ Q)`. Rewrite using `[← hL, monomial_mul, genNum_monomial]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, intNumL_perm_of_perm F K ι V _ (classList b ν ++ (classList b μ ++ Q)) ((hp.append_right Q).trans (List.Perm.of_eq (List.append_assoc _ _ _)))]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem genNum_mul {N : ℕ} (b : Fin N → K → ℤ) (G H : MvPolynomial (Fin N) ℝ)
     (Q : List (K → ℤ)) :
@@ -123,11 +123,11 @@ private theorem genNum_mul {N : ℕ} (b : Fin N → K → ℤ) (G H : MvPolynomi
   ring
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Rewrite using `[aH]`. Rewrite using `[List.length_append, length_classList_of_hom b hG hμ]`. Use linear arithmetic over natural numbers and integers.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `_ = ∑ ν ∈ H.support, H.coeff ν * genNum F V b G (classList u ν ++ Q) := swap_num F K ι V b u G H Q`. Use `_ = ∑ ν ∈ H.support, H.coeff ν * genNum F V u G (classList u ν ++ Q) := by`. Use `Finset.sum_congr rfl fun ν hν => ?_` and prove the remaining obligations. Rewrite using `[aG]`. Rewrite using `[List.length_append, length_classList_of_hom u hH hν]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Use `_ = genNum F V u (G * H) Q := by`. Rewrite using `[mul_comm G H, genNum_mul]`.
+A detailed English derivation is pending.
 -/
 theorem agree_mul {N : ℕ} (e : ℕ) (b u : Fin N → K → ℤ) (G H : MvPolynomial (Fin N) ℝ) (m n : ℕ)
     (hG : G.IsHomogeneous m) (hH : H.IsHomogeneous n)
@@ -155,11 +155,11 @@ theorem agree_mul {N : ℕ} (e : ℕ) (b u : Fin N → K → ℤ) (G H : MvPolyn
         rw [mul_comm G H, genNum_mul]
 
 /- English proof (translation)
-Proceed by induction on `t using Multiset.induction_on with`. Consider the case `empty`. Use `⟨by simpa using isHomogeneous_one (Fin N) ℝ, fun Q _ => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : MvPolynomial (Fin N) ℝ) = monomial 0 1`. Rewrite using `[← C_1, C_apply]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Multiset.map_zero, Multiset.prod_zero]`. Rewrite using `[h1, genNum_monomial, genNum_monomial]`. Simplify using `[classList]`. Consider the case `cons a t ih`. Take `⟨ih1, ih2⟩` from `ih`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Multiset.map_cons, Multiset.prod_cons, Multiset.sum_cons]`. Use `⟨(isHomogeneous_hsymm_real N a).mul ih1, fun Q hQ => ?_⟩` and prove the remaining obligations. Conclude with `agree_mul F K ι V e b u _ _ a t.sum (isHomogeneous_hsymm_real N a) ih1 (fun Q hQ => ah a Q hQ) ih2 Q hQ`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem agree_prod {N : ℕ} (e : ℕ) (b u : Fin N → K → ℤ)
     (ah : ∀ (a : ℕ) (Q : List (K → ℤ)), a + Q.length = e →
@@ -186,7 +186,7 @@ theorem agree_prod {N : ℕ} (e : ℕ) (b u : Fin N → K → ℤ)
       (fun Q hQ => ah a Q hQ) ih2 Q hQ
 
 /- English proof (translation)
-Unfold `genNum`. Rewrite using `[MvPolynomial.support_map_of_injective _ (Int.castRingHom ℝ).injective_int]`. Use `push_cast`. Simplify using `[MvPolynomial.coeff_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 -/
 theorem cast_num {N : ℕ} (b : Fin N → K → ℤ) (G : MvPolynomial (Fin N) ℤ) (Y : List (K → ℤ)) :
     ((∑ μ ∈ G.support, G.coeff μ * intNumL F V (classList b μ ++ Y) : ℤ) : ℝ) =
@@ -199,11 +199,11 @@ theorem cast_num {N : ℕ} (b : Fin N → K → ℤ) (G : MvPolynomial (Fin N) �
 end
 
 /- English proof (translation)
-Unfold `GroundTheory.Heights₂.Heights.FieldNumbers.relDim`. Rewrite using `[hdim]`. Establish `h1 : (((e + Fintype.card K : ℕ) : WithBot ℕ∞)) = ((((e + Fintype.card K : ℕ) : ℕ∞)) : WithBot ℕ∞)` using `rfl`. Rewrite using `[h1, WithBot.map_coe]`. Establish `h3 : ((e + Fintype.card K : ℕ) : ℤ) - (Fintype.card K : ℤ) = (e : ℤ)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : WithTop.map (fun e' : ℕ => (e' : ℤ) - (Fintype.card K : ℤ)) (((e + Fintype.card K : ℕ) : ℕ∞)) = (((e : ℤ)) : WithTop ℤ)`. Rewrite using `[← h3]`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h4]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem relDim_eq_of_ringKrullDim_quotient (F : Type) [Field F] (K : Type) [Fintype K] (ι : K → Type)
     (P : Ideal (MRing ι F)) (e : ℕ)
@@ -225,11 +225,11 @@ private theorem relDim_eq_of_ringKrullDim_quotient (F : Type) [Field F] (K : Typ
   rfl
 
 /- English proof (translation)
-Set `Φ` to `FractionRing (MvPolynomial (Fin N) Ω)`. Set `t : Fin N → Φ` to `fun i => algebraMap (MvPolynomial (Fin N) Ω) Φ (X i)`. Establish `ht : AlgebraicIndependent Ω t` using `(MvPolynomial.algebraicIndependent_X (Fin N) Ω).map' (f := IsScalarTower.toAlgHom Ω (MvPolynomial (Fin N) Ω) Φ) (IsFractionRing.injective (MvPolynomial (Fin N) Ω) Φ)`. Establish `h1` using `NumericalSegre.full F Ω K ι y e hP hdim N hN V B w b hw M a φ hφ Φ t ht (r + (N - 1)) Y (by omega)`. Establish `h2` using `NumericalSegre.full F Ω K ι y e hP hdim N hN V B v u hv M a φ hφ Φ t ht (r + (N - 1)) Y (by omega)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : projIdeal F y w φ t = projIdeal F y v φ t` using `le_antisymm (BaseChangeColon.projIdeal_le y w v φ t ht) (BaseChangeColon.projIdeal_le y v w φ t ht)`. Rewrite `h1` using `[heq, h2]`. Establish `hle : N - 1 ≤ r + (N - 1)` using `by omega`. Establish `hsub : r + (N - 1) - (N - 1) = r` using `by omega`. Rewrite `h1` using `[if_pos hle, if_pos hle, hsub]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.symm`.
+A detailed English derivation is pending.
 -/
 private theorem shift_agree_lemma_5 (F : Type) [Field F] (Ω : Type) [Field Ω] [Algebra F Ω] (K : Type)
     [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (y : (Σ k, ι k) → Ω) (e : ℕ)
@@ -262,15 +262,15 @@ private theorem shift_agree_lemma_5 (F : Type) [Field F] (Ω : Type) [Field Ω] 
   exact h1.symm
 
 /- English proof (translation)
-Introduce `r`. Proceed by induction on `r using Nat.strong_induction_on with`. Consider the case `_ r ih`. Introduce `Y hrY`. Establish `hb` using `HsymmShift.proof F K ι W hP d hrel N hN (-b) a r Y hrY`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hu` using `HsymmShift.proof F K ι W hP d hrel N hN (-u) a r Y hrY`. Establish `hab : (fun i => (-b) i + a) = fun i => a - b i`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.neg_apply]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Establish `hau : (fun i => (-u) i + a) = fun i => a - u i`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.neg_apply]`. Normalize the expressions using the abelian group laws. Rewrite `hb` using `[hab, Finset.sum_range_succ']`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hu` using `[hau, Finset.sum_range_succ']`. Establish `hR : ∑ x ∈ Finset.range r, ((N - 1 + r).choose (x + 1) : ℤ) * ∑ α ∈ Finset.Nat.antidiagonalTuple N (r - (x + 1)), intNumL F W (rootList (-b) α ++ List.replicate (x + 1) a ++ Y) = ∑ x ∈ Finset.range r, ((N - 1 + r).choose (x + 1) : ℤ) * ∑ α ∈ Finset.Nat.antidiagonalTuple N (r - (x …`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Establish `hx'` using `Finset.mem_range.mp hx`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [List.append_assoc]`. Conclude with `ih (r - (x + 1)) (by omega) (List.replicate (x + 1) a ++ Y) (by simp; omega)`. Rewrite `hb` using `[hS r Y hrY, hu, hR]`. Establish `h0` using `(add_left_cancel hb).symm`. Simplify using `using h0`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem negs_agree_lemma_6 (F : Type) [Field F] (K : Type) [Fintype K] [DecidableEq K]
     (ι : K → Type) [∀ k, Fintype (ι k)] (W : Ideal (MRing ι F)) (hP : IsMultiProjPrime W) (d : ℕ)
@@ -314,7 +314,7 @@ private theorem negs_agree_lemma_6 (F : Type) [Field F] (K : Type) [Fintype K] [
   simpa using h0
 
 /- English proof (translation)
-Rewrite using `[genNum_eq_sum_of_support_subset F K ι W b (c • P) Q P.support (MvPolynomial.support_smul), genNum_eq_sum_of_support_subset F K ι W b P Q P.support subset_rfl, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_smul, smul_eq_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem genNum_smul (F : Type) [Field F] (K : Type) [Fintype K] [DecidableEq K]
     (ι : K → Type) [∀ k, Fintype (ι k)] (W : Ideal (MRing ι F)) {N : ℕ} (b : Fin N → K → ℤ)
@@ -327,9 +327,9 @@ private theorem genNum_smul (F : Type) [Field F] (K : Type) [Fintype K] [Decidab
   rw [coeff_smul, smul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Establish `key : ∀ x : Fin N → K → ℤ, genNum F W (-x) (hsymm (Fin N) ℝ r) Q = (-1) ^ r * genNum F W x (hsymm (Fin N) ℝ r) Q`. Introduce `x`. Establish `h1` using `genNum_neg F K ι W e hP hdim x (hsymm (Fin N) ℝ r) r (isHomogeneous_hsymm_real N r) Q hrQ`. Rewrite `h1` using `[aeval_neg_hsymm, C_mul', genNum_smul]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : genNum F W (-b) (hsymm (Fin N) ℝ r) Q = genNum F W (-u) (hsymm (Fin N) ℝ r) Q`. Rewrite using `[genNum_hsymm, genNum_hsymm, hneg r Q hrQ]`. Rewrite `h2` using `[key b, key u]`. Conclude with `mul_left_cancel₀ (pow_ne_zero _ (by norm_num)) h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem genNum_hsymm_eq_of_intNumL_rootList_sum_eq (F : Type) [Field F] (K : Type) [Fintype K] [DecidableEq K]
     (ι : K → Type) [∀ k, Fintype (ι k)] (W : Ideal (MRing ι F)) (e : ℕ) (hP : IsMultiProjPrime W)
@@ -353,17 +353,17 @@ private theorem genNum_hsymm_eq_of_intNumL_rootList_sum_eq (F : Type) [Field F] 
   exact mul_left_cancel₀ (pow_ne_zero _ (by norm_num)) h2
 
 /- English proof (translation)
-Introduce `F _ Ω _ _ K _ _ ι _ y e hP hdim N V _ _ B w v b u hw hv c G hsymG hG Y hY`. Break down `Nat.eq_zero_or_pos N with hN0 | hN` into its components or cases. Substitute `hN0` using the available equality. Establish `hbu : b = u` using `funext fun i => i.elim0`. Rewrite using `[hbu]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a₁, ha⟩` from `TwistedDualGensExist.proof F Ω K ι y N V B`. Take `⟨M, φ, hφ⟩` from `ha a₁ le_rfl`. Establish `hrel` using `relDim_eq_of_ringKrullDim_quotient F K ι (pointIdeal F y) e hdim`. Establish `hneg` using `negs_agree_lemma_6 F K ι (pointIdeal F y) hP e hrel N hN b u a₁ (fun r Y' hr => shift_agree_lemma_5 F Ω K ι y e hP hdim N hN V B w v b u hw hv a₁ M φ hφ r Y' hr)`. Establish `hh : ∀ (r : ℕ) (Q : List (K → ℤ)), r + Q.length = e → genNum F (pointIdeal F y) b (hsymm (Fin N) ℝ r) Q = genNum F (pointIdeal F y) u (hsymm (Fin N) ℝ r) Q` using `fun r Q hrQ => genNum_hsymm_eq_of_intNumL_rootList_sum_eq F K ι (pointIdeal F y) e hP hdim N b u hneg r Q hrQ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspan` using `SymmetricSpanHsymm.proof N c G hG hsymG`. Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Rewrite using `[cast_num F K ι (pointIdeal F y) b G Y, cast_num F K ι (pointIdeal F y) u G Y]`. Use `clear hG hsymG`. Proceed by induction on `hspan using Submodule.span_induction with`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨μ, rfl⟩` from `hx`. Establish `hm : MvPolynomial.map (Int.castRingHom ℝ) (hsymmPart (Fin N) ℤ μ) = (μ.parts.map (hsymm (Fin N) ℝ)).prod`. Simplify using `only [hsymmPart, hsymm, map_multiset_prod, Multiset.map_map, Function.comp_def, map_sum, MvPolynomial.map_X]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Conclude with `(agree_prod F K ι (pointIdeal F y) e b u (fun a Q h => hh a Q h) μ.parts).2 Y (by rw [μ.parts_sum]; omega)`. Consider the case `zero => simp [genNum]`. Consider the case `add x z _ _ hx hz`. Rewrite using `[map_add, genNum_add, genNum_add, hx, hz]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul n x _ hx`. Rewrite using `[map_zsmul, ← Int.cast_smul_eq_zsmul ℝ, genNum_smul, genNum_smul, hx]`.
+A detailed English derivation is pending.
 -/
 theorem field_flag_indep : ∀ (F : Type) [Field F] (Ω : Type) [Field Ω] [Algebra F Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (y : (Σ k, ι k) → Ω) (e : ℕ), IsMultiProjPrime (pointIdeal F y) → ringKrullDim (MRing ι F ⧸ pointIdeal F y) = ((e + Fintype.card K : ℕ) : WithBot ℕ∞) → ∀ (N : ℕ) (V : Type) [AddCommGroup V] [Module Ω V] (B : ChartBundle F (segreVec y) N V) (w v : Module.Basis (Fin N) Ω V) (b u : Fin N → K → ℤ), IsFlagFrame y B w b → IsFlagFrame y B v u → ∀ (c : ℕ) (G : MvPolynomial (Fin N) ℤ), G.IsSymmetric → G.IsHomogeneous c → ∀ Y : List (K → ℤ), Y.length + c = e → ∑ μ ∈ G.support, G.coeff μ * intNumL F (pointIdeal F y) (classList b μ ++ Y) = ∑ μ ∈ G.support, G.coeff μ * intNumL F (pointIdeal F y) (classList u μ ++ Y) := by
   intro F _ Ω _ _ K _ _ ι _ y e hP hdim N V _ _ B w v b u hw hv c G hsymG hG Y hY

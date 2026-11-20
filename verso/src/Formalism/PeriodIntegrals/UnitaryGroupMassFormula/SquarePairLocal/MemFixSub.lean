@@ -10,7 +10,7 @@ def fixSub {R : Type} [CommRing R] (σ : R ≃+* R) : Subring R :=
   (σ : R →+* R).eqLocus (RingHom.id R)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_fixSub {R : Type} [CommRing R] (σ : R ≃+* R) (x : R) : x ∈ fixSub σ ↔ σ x = x :=
   Iff.rfl

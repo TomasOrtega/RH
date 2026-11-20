@@ -19,7 +19,7 @@ section Abstract
 variable {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Take `⟨h0, h1⟩` from `(GlobalTheory.CuspRep.isIrreducible_iff _).1 hσ`. Use `(GlobalTheory.CuspRep.isIrreducible_iff _).2 ⟨h0, fun Y hY => h1 Y fun g v hv => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hp g`. Conclude with `hY x v hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isIrreducible_comp_surj {H : Type} [Group H] (σ : Representation ℂ H W) (p : G →* H)
     (hp : Function.Surjective p) (hσ : σ.IsIrreducible) : Representation.IsIrreducible (σ.comp p) := by
@@ -35,7 +35,7 @@ end SplitSph
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.Rg.BcB.Loc.split_spherical2 hπ hs P hc hu`.
+A detailed English derivation is pending.
 -/
 theorem split_spherical {π : Submodule ℂ (UA E n → ℂ)} (hπ : IsAutRepU π) {w : HeightOneSpectrum (𝓞 E)} (hs : IsSplitAt w)
     (P : SmIrr (GL (Fin n) (w.adicCompletion E)))

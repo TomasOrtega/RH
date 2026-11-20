@@ -26,15 +26,13 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)}
 
 /- English proof (translation)
-Establish `e : χ.loc w = SmGL.unrChar (w.adicCompletion E) (χ.val w)`. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Establish `h2` using `unif_spec w`. Establish `h0 : Valued.v (x : w.adicCompletion E) ≠ 0` using `by simp`. Establish `h1 : IsUnitAt w (x * (atFin w (unif w) ^ ord (w.adicCompletion E) x)⁻¹)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `IsUnitAt IsUnifAt at *`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, map_mul, map_inv₀, map_zpow₀, h2, ← WithZero.exp_zsmul, SphCompletion.ord_completion]`. Simplify using `only [smul_eq_mul, mul_neg, mul_one, neg_neg]`. Rewrite using `[WithZero.exp_log h0, mul_inv_cancel₀ h0]`. Establish `h3` using `hu _ h1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[map_mul, map_inv, map_zpow, mul_inv_eq_one]`. Conclude with `h3`. Take `⟨a, ha, ε, -, H⟩` from `ParLaws.isRec_locRec hL h`. Establish `e2 : ParLaws.locPar hL (CG.ofChar χ) h = WD.mk (WDRep.diag h fun _ : Fin 1 => (χ.val w)⁻¹)`. Rewrite using `[ParLaws.locPar_ofChar, H.one]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ∀ (ξ : (w.adicCompletion E)ˣ →* ℂˣ) (hξ : WeilDeligne.IsSmooth (ξ.comp a)), ξ = SmGL.unrChar (w.adicCompletion E) (χ.val w) → WD.lpOfChar h (ξ.comp a) hξ = WD.mk (WDRep.diag h fun _ : Fin 1 => (χ.val w)⁻¹)`. Introduce and unpack `ξ hξ rfl`. Conclude with `Test.lpOfChar_unrChar ha _ _`. Conclude with `this _ _ e`. Rewrite using `[e2, WD.frobEig_diag]`.
-
-Conclude with `⟨(WD.unr_mk _).2 (WDRep.unr_diag _), by simp⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem locPar_unr (hL : GlobalTheory.Published.LocalLanglandsGL) (χ : HChar E) (h : IsPlaceOver A w) (hu : χ.UnrAt w) :
     (ParLaws.locPar hL (CG.ofChar χ) h).unr ∧
@@ -65,9 +63,9 @@ theorem locPar_unr (hL : GlobalTheory.Published.LocalLanglandsGL) (χ : HChar E)
   exact ⟨(WD.unr_mk _).2 (WDRep.unr_diag _), by simp⟩
 
 /- English proof (translation)
-Take `⟨a, ha, ε, -, H⟩` from `ParLaws.isRec_locRec hL h`. Rewrite using `[ParLaws.locPar_ofChar, H.one, Test.unr_lpOfChar_iff ha (ParLaws.isSmoothChar_loc χ w)]`. Use `forall_congr' fun x => imp_congr_left ?_` and prove the remaining obligations. Establish `h0 : Valued.v (x : w.adicCompletion E) ≠ 0` using `by simp`. Rewrite using `[← ord_eq_zero_iff, SphCompletion.ord_completion, neg_eq_zero, IsUnitAt]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hl`. Rewrite using `[← WithZero.exp_log h0, hl, WithZero.exp_zero]`. Introduce `hv`. Rewrite using `[hv, WithZero.log_one]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem locPar_unr_iff (hL : GlobalTheory.Published.LocalLanglandsGL) (χ : HChar E) (h : IsPlaceOver A w) :
     (ParLaws.locPar hL (CG.ofChar χ) h).unr ↔ χ.UnrAt w := by
@@ -89,7 +87,7 @@ section Eta
 variable {R : Ranks} {H : Formalism.BasicNotions.Host R} {χ : HChar H.E}
 
 /- English proof (translation)
-Establish `h` using `unif_spec v`. Establish `hk : Valued.v ((atFin v (Formalism.L2.Host.unif v) : (v.adicCompletion F)ˣ) : v.adicCompletion F) = v.valuation F (Formalism.L2.Host.unif v : F)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (Formalism.L2.Host.unif v : F)`. Unfold `IsUnifAt at h`. Rewrite using `[ordF, ← hk, h, WithZero.log_exp]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ordF_unif {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) : ordF v (unif v) = 1 := by
   have h := unif_spec v
@@ -100,9 +98,9 @@ theorem ordF_unif {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (�
   rw [ordF, ← hk, h, WithZero.log_exp]; simp
 
 /- English proof (translation)
-Take `⟨c, hc, hcm, hr, -⟩` from `GlobalTheory.Mem.HostCM.host_cm R H`. Establish `h1` using `h.res.1 v (unif v)`. Rewrite `h1` using `[etaFin, ordF_unif, zpow_one, HChar.resFin, MonoidHom.finsetProd_apply]`. Rewrite using `[← h1]`. Use `Finset.prod_congr rfl fun P hP => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hP' : P.under (𝓞 H.F) = v` using `by simpa [aboveF] using hP`. Rewrite using `[MonoidHom.comp_apply, GlobalTheory.HeckeProduct.locK_unr χ (h.unr P), hr, hP', ordF_unif, zpow_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_val (h : IsEtaT H χ) (v : HeightOneSpectrum (𝓞 H.F)) :
     ∏ P ∈ aboveF (L := H.E) H.F v, χ.val P = if (aboveF (L := H.E) H.F v).card = 1 then -1 else 1 := by
@@ -117,9 +115,9 @@ theorem prod_val (h : IsEtaT H χ) (v : HeightOneSpectrum (𝓞 H.F)) :
 open Classical in
 
 /- English proof (translation)
-Take `⟨c, hc', hcm, -⟩` from `GlobalTheory.Mem.HostCM.host_cm R H`. Establish `h1 : GlobalTheory.Mem.Chr.ConjPl c.toRingEquiv w w'` using `(GlobalTheory.Mem.Chr.conjPl_iff_mem _ _ _).2 fun x y e => hc x y (e.trans (hc' _))`. Use extensionality with `P`. Establish `: P ∈ aboveF (L` using `H.E) H.F (w.under (𝓞 H.F)) ↔ P.under (𝓞 H.F) = w.under (𝓞 H.F) := by simp [aboveF]`. Rewrite using `[this, GlobalTheory.Mem.Chr.under_eq_iff_conjPl c hcm.rank hcm.ne w P, Finset.mem_insert, Finset.mem_singleton]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `or_congr Iff.rfl ⟨fun h' => (GlobalTheory.Mem.Chr.existsUnique_conjPl _ w).unique h' h1, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem above_eq {w w' : PlE H} (hc : IsConjPl H w w') : aboveF (L := H.E) H.F (w.under (𝓞 H.F)) = {w, w'} := by
   obtain ⟨c, hc', hcm, -⟩ := GlobalTheory.Mem.HostCM.host_cm R H
@@ -133,9 +131,9 @@ theorem above_eq {w w' : PlE H} (hc : IsConjPl H w w') : aboveF (L := H.E) H.F (
   exact h1
 
 /- English proof (translation)
-Establish `e : aboveF (L` using `H.E) H.F (w.under (𝓞 H.F)) = {w} := by`. Use extensionality with `P`. Establish `: P ∈ aboveF (L` using `H.E) H.F (w.under (𝓞 H.F)) ↔ P.under (𝓞 H.F) = w.under (𝓞 H.F) := by simp [aboveF]`. Rewrite using `[this, Finset.mem_singleton]`. Use `⟨fun h' => ?_, fun h' => h' ▸ rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hw ((GlobalTheory.Mem.GoodPlace.isSplitPl_iff H w).2 ⟨P, fun h => hne h.symm, h'⟩)`. Use `prod_val h (w.under (𝓞 H.F))` as an intermediate fact. Rewrite `this` using `[e]`. Simplify using `using this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem val_inert (h : IsEtaT H χ) {w : PlE H} (hw : ¬ IsSplitPl H w) : χ.val w = -1 := by
   have e : aboveF (L := H.E) H.F (w.under (𝓞 H.F)) = {w} := by
@@ -150,11 +148,11 @@ theorem val_inert (h : IsEtaT H χ) {w : PlE H} (hw : ¬ IsSplitPl H w) : χ.val
   simpa using this
 
 /- English proof (translation)
-Establish `e` using `above_eq hc`. Establish `hne : w ≠ w'`. Introduce and unpack `rfl`. Take `⟨P, h1, h2⟩` from `(GlobalTheory.Mem.GoodPlace.isSplitPl_iff H w).1 hw`. Establish `: P ∈ aboveF (L` using `H.E) H.F (w.under (𝓞 H.F)) := by simpa [aboveF] using h2`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[e]`. Simplify using `at this`. Conclude with `h1 this.symm`. Use `prod_val h (w.under (𝓞 H.F))` as an intermediate fact. Rewrite `this` using `[e, Finset.prod_pair hne, Finset.card_pair hne]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem val_split (h : IsEtaT H χ) {w w' : PlE H} (hw : IsSplitPl H w) (hc : IsConjPl H w w') :
     χ.val w * χ.val w' = 1 := by
@@ -182,30 +180,30 @@ def ofU {R : Ranks} {H : Formalism.BasicNotions.Host R} (χ : HChar H.E) (h : χ
   haveI := host_isCMField H; ⟨CG.ofChar χ, CG.isUnitary_ofChar h⟩
 
 /- English proof (translation)
-The claim follows from `host_isCMField H; σ = ofU (CGu.equivChar H.E σ).1 (CGu.equivChar H.E σ).2 := haveI := host_isCMField H; Subtype.ext (CGu.ofChar_equivChar σ).symm`.
+A detailed English derivation is pending.
 -/
 theorem eq_ofU {R : Ranks} {H : Formalism.BasicNotions.Host R} (σ : HostCGu H 1) :
     haveI := host_isCMField H; σ = ofU (CGu.equivChar H.E σ).1 (CGu.equivChar H.E σ).2 :=
   haveI := host_isCMField H; Subtype.ext (CGu.ofChar_equivChar σ).symm
 
 /- English proof (translation)
-Rewrite using `[T.unr, Equiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unr_symm (w) (x) : D.naut.unr ((T.e w).symm x) ↔ x.unr := by rw [T.unr, Equiv.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[T.frobEig _ _ ((unr_symm T w x).2 h), Equiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frob_symm (w) (x) (h : x.unr) : D.naut.frobEig ((T.e w).symm x) = x.frobEig := by
   rw [T.frobEig _ _ ((unr_symm T w x).2 h), Equiv.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[← T.dim, Equiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dim_symm (w) (x) : D.naut.lpDim ((T.e w).symm x) = x.lpDim := by rw [← T.dim, Equiv.apply_symm_apply]
 
 /- English proof (translation)
-Use `host_isCMField D.host` as an intermediate fact. Establish `h1` using `locPar_unr hL χ (D.nd.plOm.2 w) hu`. Conclude with `⟨(unr_symm T w _).2 h1.1, (frob_symm T w _ h1.1).trans h1.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem ofU_spec {χ : HChar D.host.E} (h : χ.IsUnitary) {w} (hu : χ.UnrAt w) :
     D.naut.unr ((T.e w).symm (ParLaws.locG hL D.nd.plOm (ofU χ h) w)) ∧
@@ -215,7 +213,7 @@ theorem ofU_spec {χ : HChar D.host.E} (h : χ.IsUnitary) {w} (hu : χ.UnrAt w) 
   exact ⟨(unr_symm T w _).2 h1.1, (frob_symm T w _ h1.1).trans h1.2⟩
 
 /- English proof (translation)
-Use `host_isCMField D.host` as an intermediate fact. Conclude with `(unr_symm T w _).trans (locPar_unr_iff hL χ (D.nd.plOm.2 w))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ofU_unr_iff {χ : HChar D.host.E} (h : χ.IsUnitary) (w) :
     D.naut.unr ((T.e w).symm (ParLaws.locG hL D.nd.plOm (ofU χ h) w)) ↔ χ.UnrAt w := by
@@ -282,7 +280,7 @@ end Family
 section Side
 
 /- English proof (translation)
-The claim follows from `host_isCMField H; (∀ u : (Af H.E)ˣ, χ.1 (finId H.E (Units.map (conjFin (IsCMField.complexConj H.E).toRingEquiv).toMonoidHom u)⁻¹) = χ.1 (finId H.E u)) ↔ ∀ w w', IsConjPl H w w' → ∀ k : H.Eˣ, χ.locK w' (Units.map (MonoidHomClass.toMonoidHom H.conj) k) = (χ.locK w k)⁻¹ := GlobalThe …`.
+A detailed English derivation is pending.
 -/
 theorem csdFin {R : Ranks} (H : Formalism.BasicNotions.Host R) (χ : HChar H.E) : haveI := host_isCMField H;
     (∀ u : (Af H.E)ˣ, χ.1 (finId H.E (Units.map (conjFin (IsCMField.complexConj H.E).toRingEquiv).toMonoidHom u)⁻¹) =
@@ -291,14 +289,14 @@ theorem csdFin {R : Ranks} (H : Formalism.BasicNotions.Host R) (χ : HChar H.E) 
       χ.locK w' (Units.map (MonoidHomClass.toMonoidHom H.conj) k) = (χ.locK w k)⁻¹ := GlobalTheory.T.heckeChar_conjSelfDual_finite_idelic_iff_local H χ
 
 /- English proof (translation)
-The claim follows from `host_isCMField H; (∀ z, dchi χ (-star z) = dchi χ z) ↔ ∀ k : H.Eˣ, χ.inf (Units.map (MonoidHomClass.toMonoidHom H.conj) k) = (χ.inf k)⁻¹ := GlobalTheory.T.heckeChar_conjSelfDual_infinity_infinitesimal_iff_field H χ`.
+A detailed English derivation is pending.
 -/
 theorem csdInf {R : Ranks} (H : Formalism.BasicNotions.Host R) (χ : HChar H.E) : haveI := host_isCMField H;
     (∀ z, dchi χ (-star z) = dchi χ z) ↔
     ∀ k : H.Eˣ, χ.inf (Units.map (MonoidHomClass.toMonoidHom H.conj) k) = (χ.inf k)⁻¹ := GlobalTheory.T.heckeChar_conjSelfDual_infinity_infinitesimal_iff_field H χ
 
 /- English proof (translation)
-The claim follows from `host_isCMField H; (CG.ofChar χ).IsCsd ↔ IsCSD H χ := by haveI := host_isCMField H rw [CG.isCsd_ofChar, CG.thetaInv_one_iff, csdFin H χ, csdInf H χ] rfl`.
+A detailed English derivation is pending.
 -/
 theorem isCsd_ofChar_iff {R : Ranks} (H : Formalism.BasicNotions.Host R) (χ : HChar H.E) :
     haveI := host_isCMField H; (CG.ofChar χ).IsCsd ↔ IsCSD H χ := by
@@ -307,7 +305,7 @@ theorem isCsd_ofChar_iff {R : Ranks} (H : Formalism.BasicNotions.Host R) (χ : H
   rfl
 
 /- English proof (translation)
-The claim follows from `host_isCMField H; (CG.ofChar χ).infChar (embPsi H g) = {(a g : ℂ)} ∧ (CG.ofChar χ).infChar ((starRingEnd ℂ).comp (embPsi H g)) = {-(a g : ℂ)} := by haveI := host_isCMField H obtain ⟨n, hn, hi⟩ := h have hI : Function.Injective fun i => InfinitePlace.mk (embPsi H i) := fun i j e = …`.
+A detailed English derivation is pending.
 -/
 theorem infChar_ofChar_of_hasInfQ {R : Ranks} (H : Formalism.BasicNotions.Host R) (χ : HChar H.E) (a : R.Psi → ℚ)
     (h : χ.HasInfQ (embPsi H) a) (g : R.Psi) : haveI := host_isCMField H;
@@ -337,14 +335,14 @@ variable (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Publi
   (T : GlobalTheory.RowTie.WDTie D.nd D.naut)
 
 /- English proof (translation)
-The claim follows from `host_isCMField H; (CGu.equivChar H.E (ofU χ h)).1 = χ := haveI := host_isCMField H; CG.toChar_ofChar χ`.
+A detailed English derivation is pending.
 -/
 theorem equivChar_ofU {R : Ranks} {H : Formalism.BasicNotions.Host R} (χ : HChar H.E) (h : χ.IsUnitary) :
     haveI := host_isCMField H; (CGu.equivChar H.E (ofU χ h)).1 = χ :=
   haveI := host_isCMField H; CG.toChar_ofChar χ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, _, eq_ofU σ⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_ofU {R : Ranks} {H : Formalism.BasicNotions.Host R} (σ : HostCGu H 1) : ∃ χ h, σ = ofU χ h :=
   ⟨_, _, eq_ofU σ⟩
@@ -394,7 +392,7 @@ namespace GlobalTheory.HeightCounting
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2.Host NumberField IsDedekindDomain Polynomial
 
 /- English proof (translation)
-Introduce `hL hF D hE T cf hP` and use `⟨TrueSide.trueK hL hF T cf.isEta, ⟨TrueSide.trueCG hL hF T hE cf.isEta⟩, ⟨TrueSide.trueSide hL hF T hE cf hP⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_cgTrue_charSide : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (D : D7)
     (hE : IsEmpty D.nd.Loc) (T : GlobalTheory.RowTie.WDTie D.nd D.naut) (cf : CharFrame D), (∀ k v, cf.P.Div k (D.naut.plGw k v)) →

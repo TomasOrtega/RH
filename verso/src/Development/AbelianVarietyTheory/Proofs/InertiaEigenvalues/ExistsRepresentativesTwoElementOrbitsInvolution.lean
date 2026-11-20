@@ -3,17 +3,15 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `ι _ s hs`. Use `haveI := Fintype.ofFinite ι`. Use `set enc : ι → ℕ := fun i => (Fintype.equivFin ι i : ℕ) with henc_def`. Establish `henc : Function.Injective enc` using `fun a b h => (Fintype.equivFin ι).injective (Fin.ext h)`. Use `set S : Finset ι := Finset.univ.filter (fun i => enc i < enc (s i)) with hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `memS : ∀ x : S, enc (x : ι) < enc (s x)` using `fun x => (Finset.mem_filter.1 x.2).2`. Use `⟨S.card, fun j => (S.equivFin.symm j : ι), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j k h`. Conclude with `S.equivFin.symm.injective (Subtype.ext h)`. Introduce `j k h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Simplify using `only at h`. Establish `hj` using `memS (S.equivFin.symm j)`. Establish `hk` using `memS (S.equivFin.symm k)`. Generalize the expression as in `(S.equivFin.symm j : ι) = a at h hj`. Generalize the expression as in `(S.equivFin.symm k : ι) = b at h hk`.
+Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `h` using the available equality. Rewrite `hk` using `[hs]`. Use linear arithmetic over natural numbers and integers. Introduce `i`. Distinguish the cases in `hi : s i = i`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `Or.inl hi`. Use `right`. Establish `hne : enc i ≠ enc (s i)` using `fun h => hi (henc h).symm`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Establish `hm : i ∈ S` using `Finset.mem_filter.2 ⟨Finset.mem_univ _, h⟩`.
-
-Conclude with `⟨S.equivFin ⟨i, hm⟩, Or.inl (by simp)⟩`. Establish `hm : s i ∈ S` using `Finset.mem_filter.2 ⟨Finset.mem_univ _, by rw [hs]; exact h⟩`. Conclude with `⟨S.equivFin ⟨s i, hm⟩, Or.inr (by simp [hs])⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem involution_pair_representatives :
     ∀ (ι : Type) [Finite ι] (s : ι → ι), (∀ i, s (s i) = i) → ∃ (r : ℕ) (e : Fin r → ι),

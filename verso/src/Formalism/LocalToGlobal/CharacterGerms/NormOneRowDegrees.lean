@@ -16,7 +16,7 @@ section WH
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Introduce `dd hd`. Take `⟨u, rfl, hu⟩` from `coeff_rename_ne_zero f p dd hd`. Rewrite using `[← h hu, Finsupp.weight_apply, Finsupp.weight_apply, Finsupp.sum_mapDomain_index (h := fun i c => c • w i) (fun _ => zero_smul _ _) (fun _ _ _ => add_smul _ _ _)]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isWH_rename {σ τ : Type} {w : τ → ℕ} (f : σ → τ) {p : MvPolynomial σ R} {D : ℕ}
     (h : IsWeightedHomogeneous (w ∘ f) p D) : IsWeightedHomogeneous w (rename f p) D := by
@@ -27,7 +27,7 @@ theorem isWH_rename {σ τ : Type} {w : τ → ℕ} (f : σ → τ) {p : MvPolyn
   rfl
 
 /- English proof (translation)
-Introduce `dd _`. Simplify using `[Finsupp.weight_apply, hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isWH_of_zero {σ : Type} {w : σ → ℕ} (hw : ∀ x, w x = 0) (p : MvPolynomial σ R) :
     IsWeightedHomogeneous w p 0 := by
@@ -35,7 +35,7 @@ theorem isWH_of_zero {σ : Type} {w : σ → ℕ} (hw : ∀ x, w x = 0) (p : MvP
   simp [Finsupp.weight_apply, hw]
 
 /- English proof (translation)
-Take `rfl : w = w'` from `funext h`. Conclude with `hp`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isWH_congr {σ : Type} {w w' : σ → ℕ} (h : ∀ x, w x = w' x) {p : MvPolynomial σ R} {D : ℕ}
     (hp : IsWeightedHomogeneous w' p D) : IsWeightedHomogeneous w p D := by
@@ -43,18 +43,18 @@ theorem isWH_congr {σ : Type} {w w' : σ → ℕ} (h : ∀ x, w x = w' x) {p : 
   exact hp
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `hp`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isWH_deg {σ : Type} {w : σ → ℕ} {p : MvPolynomial σ R} {D D' : ℕ}
     (hp : IsWeightedHomogeneous w p D) (e : D = D') : IsWeightedHomogeneous w p D' := by
   subst e; exact hp
 
 /- English proof (translation)
-Unfold `minorK`. Rewrite using `[dif_pos h, Matrix.det_apply]`. Use `IsWeightedHomogeneous.sum _ _ _ fun σ _ => ?_` and prove the remaining obligations. Establish `hprod : IsWeightedHomogeneous w (∏ i : Fin k, (Matrix.of fun b c : Fin k => (X (Fin.castLE h.1 b, Fin.castLE h.2 c) : MvPolynomial (Fin N × Fin N') R)) (σ i) i) (∑ c : Fin k, v (Fin.castLE h.2 c))` using `IsWeightedHomogeneous.prod _ _ _ fun i _ => by`. Simplify using `only [Matrix.of_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hx` using `isWeightedHomogeneous_X R w (Fin.castLE h.1 (σ i), Fin.castLE h.2 i)`. Rewrite `hx` using `[hw]`. Then use the resulting hypothesis. Introduce `dd hdd`. Apply `hprod` to reduce the goal to its premises. Introduce `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hdd` to reduce the goal to its premises. Rewrite using `[MvPolynomial.coeff_smul, h0, smul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isWH_minorK_gen {N N' k : ℕ} {w : Fin N × Fin N' → ℕ} (v : Fin N' → ℕ) (hw : ∀ x, w x = v x.2)
     (h : k ≤ N ∧ k ≤ N') :
@@ -76,11 +76,11 @@ theorem isWH_minorK_gen {N N' k : ℕ} {w : Fin N × Fin N' → ℕ} (v : Fin N'
   rw [MvPolynomial.coeff_smul, h0, smul_zero]
 
 /- English proof (translation)
-Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single ⟨c0, h⟩]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[if_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hc`. Conclude with `hb (Fin.ext hc)`. Simplify using the standard rewrite rules. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Introduce `hc`. Conclude with `h (by rw [← hc]; exact c.2)`.
+A detailed English derivation is pending.
 -/
 theorem sum_fin_ite (k c0 : ℕ) : (∑ c : Fin k, if (c : ℕ) = c0 then 1 else 0) = if c0 < k then 1 else 0 := by
   split_ifs with h
@@ -95,11 +95,11 @@ theorem sum_fin_ite (k c0 : ℕ) : (∑ c : Fin k, if (c : ℕ) = c0 then 1 else
     exact h (by rw [← hc]; exact c.2)
 
 /- English proof (translation)
-Distinguish the cases in `h : k ≤ N ∧ k ≤ N'`. Establish `hg` using `isWH_minorK_gen (R := R) (fun c : Fin N' => if P ∧ (c : ℕ) = c0 then 1 else 0) hw h`. Use `isWH_deg hg ?_` and prove the remaining obligations. Distinguish the cases in `hP : P`. Simplify using `only [hP, true_and, Fin.coe_castLE]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite using `[sum_fin_ite]`. Simplify using `[h.1, h.2, hP]`. Simplify using `[hP]`. Unfold `minorK`. Rewrite using `[dif_neg h, if_neg (fun hc => h ⟨hc.1, hc.2.1⟩)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isWeightedHomogeneous_one R w`.
+A detailed English derivation is pending.
 -/
 theorem isWH_minorK_row {N N' k : ℕ} {w : Fin N × Fin N' → ℕ} (P : Prop) [Decidable P] (c0 : ℕ)
     (hw : ∀ x, w x = if P ∧ (x.2 : ℕ) = c0 then 1 else 0) :
@@ -125,9 +125,9 @@ variable {T : Type} (r : T → ℕ) (n : ℕ)
 def wLet (σ : T) (c0 : Fin (r σ)) (ℓ : Letter T r n) : ℕ := ∑ b : Fin n, if ℓ = ⟨σ, c0, b⟩ then 1 else 0
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum]`. Simplify using `only [wLet, smul_eq_mul, Finset.mul_sum, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Both sides reduce to the same expression. Simplify using `only [Finsupp.mem_support_iff, not_not] at h`. Conclude with `h.symm`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weight_wLet (σ : T) (c0 : Fin (r σ)) (m : Letter T r n →₀ ℕ) :
     Finsupp.weight (wLet r n σ c0) m = ∑ b : Fin n, m ⟨σ, c0, b⟩ := by
@@ -144,9 +144,9 @@ theorem weight_wLet (σ : T) (c0 : Fin (r σ)) (m : Letter T r n →₀ ℕ) :
 variable {r n}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Consider the cases of `h`. Conclude with `⟨rfl, rfl⟩`. Introduce and unpack `⟨h1, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Consider the cases of `h1`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem letEq {τ1 τ2 : T} {c1 : Fin (r τ1)} {c2 : Fin (r τ2)} {b1 b2 : Fin n} :
     ((⟨τ1, (c1, b1)⟩ : Letter T r n) = ⟨τ2, (c2, b2)⟩) ↔ ((⟨τ1, c1⟩ : Σ σ, Fin (r σ)) = ⟨τ2, c2⟩ ∧ b1 = b2) := by
@@ -159,9 +159,9 @@ theorem letEq {τ1 τ2 : T} {c1 : Fin (r τ1)} {c2 : Fin (r τ2)} {b1 b2 : Fin n
     rfl
 
 /- English proof (translation)
-Unfold `wLet`. Simplify using `only [letEq]`. Distinguish the cases in `h : (⟨τ, c⟩ : Σ σ, Fin (r σ)) = ⟨σ, c0⟩`. Simplify using `only [h, true_and, if_true]`. Rewrite using `[Finset.sum_ite_eq]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem wLet_mk (σ : T) (c0 : Fin (r σ)) (τ : T) (c : Fin (r τ)) (ρ : Fin n) :
     wLet r n σ c0 ⟨τ, (c, ρ)⟩ = if (⟨τ, c⟩ : Σ σ, Fin (r σ)) = ⟨σ, c0⟩ then 1 else 0 := by
@@ -190,7 +190,7 @@ variable (X : RowData C V d (IIof r tau o0) J0) (F : Flag X)
 
 include hty in
 /- English proof (translation)
-Rewrite using `[← hty g (F.en g t c)]`. Conclude with `F.en_ty g t c`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem en_fst (g : Fin 2) (t : ZMod d) (c : Fin (X.rkF g t)) : (F.en g t c).1 = t := by
   rw [← hty g (F.en g t c)]
@@ -198,11 +198,11 @@ theorem en_fst (g : Fin 2) (t : ZMod d) (c : Fin (X.rkF g t)) : (F.en g t c).1 =
 
 include hty in
 /- English proof (translation)
-Unfold `RowData.rkF`. Establish `hc : (Finset.univ : Finset (Fin (r (tau o0 g t)))).card = r (tau o0 g t)` using `by simp`. Rewrite using `[← hc]`. Use `symm`. Apply `Finset.card_bij (fun c _ => (⟨t, c⟩ : IIof r tau o0 g))` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `c _`. Simplify using `[hty]`. Introduce `c1 _ c2 _ h`. Simplify using `using h`. Introduce and unpack `⟨t', c⟩ hc'`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, hty] at hc'`. Substitute `hc'` using the available equality. Conclude with `⟨c, Finset.mem_univ _, rfl⟩`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem rkF_eq (g : Fin 2) (t : ZMod d) : X.rkF g t = r (tau o0 g t) := by
   unfold RowData.rkF
@@ -219,7 +219,7 @@ theorem rkF_eq (g : Fin 2) (t : ZMod d) : X.rkF g t = r (tau o0 g t) := by
 
 include hty std in
 /- English proof (translation)
-Unfold `wRow Flag.letter`. Simplify using `only [en_fst X F hty, std]`. Simplify using `only [and_assoc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem wRow_letter {N : ℕ} (g0 : Fin 2) (t0 : ZMod d) (c0 : ℕ) (g : Fin 2) (t : ZMod d)
     (x : Fin N × Fin (X.rkF g t)) :
@@ -230,7 +230,7 @@ theorem wRow_letter {N : ℕ} (g0 : Fin 2) (t0 : ZMod d) (c0 : ℕ) (g : Fin 2) 
 
 include hty std in
 /- English proof (translation)
-Apply `isWH_rename` to reduce the goal to its premises. Conclude with `isWH_minorK_row (R := C) (g = g0 ∧ t = t0) c0 (fun x => wRow_letter X F hty std g0 t0 c0 g t x)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem isWH_letter_minorK {N k : ℕ} (g0 : Fin 2) (t0 : ZMod d) (c0 : ℕ) (g : Fin 2) (t : ZMod d) :
     IsWeightedHomogeneous (wRow r tau o0 (N := N) g0 t0 c0) (rename (F.letter g t) (minorK C N (X.rkF g t) k))
@@ -240,11 +240,11 @@ theorem isWH_letter_minorK {N k : ℕ} (g0 : Fin 2) (t0 : ZMod d) (c0 : ℕ) (g 
 
 include hty in
 /- English proof (translation)
-Distinguish the cases in `hg : g0 = g ∧ t0 = t`. Take `⟨rfl, rfl⟩` from `hg`. Rewrite using `[rkF_eq X hty]`. Simplify using `only [le_refl, true_and, eq_self_iff_true]`. Rewrite using `[Finset.sum_ite_eq']`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mem_Icc]`. Distinguish the cases in `hc : X.n ≤ r (tau o0 g0 t0) ∧ c0 < X.n`. Rewrite using `[if_pos hc, if_pos ⟨by omega, hc.1⟩, smul_eq_mul, mul_one]`. Rewrite using `[if_neg hc, if_neg (fun h => hc ⟨h.2, by omega⟩), smul_zero]`. Rewrite using `[Finset.sum_eq_zero (fun k _ => if_neg (fun h => hg ⟨h.1, h.2.1⟩))]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun h => hg ⟨h.2.2.1.1.symm, h.2.2.1.2.symm⟩), smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem num_ch (g0 : Fin 2) (t0 : ZMod d) (c0 : ℕ) (g : Fin 2) (t : ZMod d) (u : ℕ) :
     u • (if X.n ≤ X.n ∧ X.n ≤ X.rkF g t ∧ (g = g0 ∧ t = t0) ∧ c0 < X.n then 1 else 0) =
@@ -263,15 +263,15 @@ theorem num_ch (g0 : Fin 2) (t0 : ZMod d) (c0 : ℕ) (g : Fin 2) (t : ZMod d) (u
 
 include hty in
 /- English proof (translation)
-Distinguish the cases in `hg : g = g0`. Substitute `hg` using the available equality. Rewrite using `[Finset.sum_eq_single t0]`. Rewrite using `[rkF_eq X hty]`. Establish `hL : ∀ k ∈ Finset.Icc 1 (min N (r (tau o0 g t0))), e t0 k • (if k ≤ N ∧ k ≤ r (tau o0 g t0) ∧ (g = g ∧ t0 = t0) ∧ c0 < k then 1 else 0) = if c0 < k then e t0 k else 0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k hk`. Rewrite `hk` using `[Finset.mem_Icc]`. Distinguish the cases in `hc : c0 < k`. Rewrite using `[if_pos ⟨by omega, by omega, ⟨rfl, rfl⟩, hc⟩, if_pos hc, smul_eq_mul, mul_one]`. Rewrite using `[if_neg (fun h => hc h.2.2.2), if_neg hc, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl hL, ← Finset.sum_filter, ← Finset.sum_filter]`. Use `congr 1`. Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc, eq_self_iff_true, true_and]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `t _ ht`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `k _`. Rewrite using `[if_neg (fun h => ht h.2.2.1.2), smul_zero]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `trans 0`. Conclude with `Finset.sum_eq_zero fun t _ => Finset.sum_eq_zero fun k _ => by`. Rewrite using `[if_neg (fun h => hg h.2.2.1.1), smul_zero]`. Conclude with `(Finset.sum_eq_zero fun k _ => if_neg (fun h => hg h.1.symm)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem num_mon (g0 : Fin 2) (t0 : ZMod d) (c0 : ℕ) (g : Fin 2) (e : ZMod d → ℕ → ℕ) (N : ℕ) :
     (∑ t : ZMod d, ∑ k ∈ Finset.Icc 1 (min N (X.rkF g t)),

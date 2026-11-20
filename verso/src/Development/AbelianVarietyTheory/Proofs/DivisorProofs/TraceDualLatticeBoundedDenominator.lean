@@ -10,13 +10,13 @@ open scoped TensorProduct NNReal Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F _ _`. Use `⟨(NumberField.discr F).natAbs, Int.natAbs_pos.mpr (NumberField.discr_ne_zero F), ?_⟩` and prove the remaining obligations. Introduce `ξ hξ`. Establish `hint` using `GlobalTheory.discr_mul_isIntegral_of_traceDual F ξ hξ`. Establish `hint' : IsIntegral ℤ (((NumberField.discr F).natAbs : F) * ξ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Int.natAbs_eq (NumberField.discr F) with h | h` into its components or cases. Establish `: ((NumberField.discr F).natAbs : F) = (NumberField.discr F : F)`. Establish `h' : ((NumberField.discr F).natAbs : ℤ) = NumberField.discr F` using `by omega`. Rewrite using `[← Int.cast_natCast, h']`. Rewrite using `[this]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hint`. Establish `: ((NumberField.discr F).natAbs : F) = -(NumberField.discr F : F)`. Establish `h' : ((NumberField.discr F).natAbs : ℤ) = -(NumberField.discr F)` using `by omega`. Rewrite using `[← Int.cast_natCast, h', Int.cast_neg]`. Rewrite using `[this, neg_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `hint.neg`. Conclude with `⟨⟨_, hint'⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_den_traceDual_ringOfIntegers :
     ∀ {F : Type} [Field F] [NumberField F], ∃ D : ℕ, 0 < D ∧ ∀ ξ : F,

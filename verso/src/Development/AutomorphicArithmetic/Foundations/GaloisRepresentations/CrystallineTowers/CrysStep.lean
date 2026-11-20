@@ -5,7 +5,7 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Fo
 open UpperTheory.Gal.Seam
 
 /- English proof (translation)
-Establish `h : M.act n (σ * σ') = M.act n σ * M.act n σ'`. Simplify using `only [Model.act, map_mul]`. Both sides reduce to the same expression. Rewrite using `[Model.mat, h, LinearMap.toMatrix_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem mat_mul' {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (M : Model l K) (n : ℕ) {a : ℕ}
     (b : Module.Basis (Fin a) ℚ_[l] (M.V n)) (σ σ' : K.fixingSubgroup) :
@@ -17,7 +17,7 @@ private theorem mat_mul' {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l]
   rfl
 
 /- English proof (translation)
-Establish `h : M.act n 1 = 1`. Simplify using `only [Model.act, map_one]`. Both sides reduce to the same expression. Rewrite using `[Model.mat, h, LinearMap.toMatrix_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 private theorem mat_one' {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (M : Model l K) (n : ℕ) {a : ℕ}
     (b : Module.Basis (Fin a) ℚ_[l] (M.V n)) : M.mat n b 1 = 1 := by
@@ -27,13 +27,13 @@ private theorem mat_one' {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l]
   rw [Model.mat, h, LinearMap.toMatrix_one]
 
 /- English proof (translation)
-Introduce `hCS hNB hLT hBC hIM hGO hMI hSA hGC E Ω _ _ _ _ _ l _ H θ hN dd ρ hc hp w hw C hOn P AI hT A hA O _ _ _ Bw hj`. Take `⟨ρ₀, hM, hG⟩` from `hp`. Take `⟨φ, hφ, -⟩` from `hIM E Ω l w A hA O Bw hj`. Use `haveI := Bw.Kw.2`. Establish `hN'` using `hNB E _ (kOf Bw) H hN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ₁, hM₁, hρ⟩` from `hLT l E ↥Bw.Kw.1 Ω (PadicAlgCl l) (kOf Bw) Bw.j (fun _ => rfl) H hN (Om l) θ dd ρ₀ hM`. Take `⟨C', u, -, -, hOn', -, -⟩` from `hBC E ↥Bw.Kw.1 (Ow w) ↥(OK l Bw.Kw.1) (Om l) (kOf Bw) φ hφ H θ C`. Take `⟨N, a, b, M, hinj, hmat⟩` from `hMI l Bw.Kw (bcAlong H (kOf Bw)) θ hN' C' (hOn' hOn) dd ρ₁ hM₁`. Take `⟨FreeQuotientRank⟩` from `UpperTheory.Lit.Cmp.locTied6 l P AI hT`. Establish `hgood : (mod C').Good` using `hGO l Bw.Kw.1 (mod C') C'.smooth C'.proj`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcr : IsCrysAt P Bw (ρ₀.comp (Dec (F` using `E) A).subtype) := by`. Use `hSA l P AI hT E Ω (Dec (F := E) A) O Bw N dd a (fun n => (mod C').mat n (b n)) _ (fun n => ⟨mat_one' _ _ _, mat_mul' _ _ _, ?_⟩) M hinj ?_` and prove the remaining obligations. Conclude with `isAdmP_of_isAdm FreeQuotientRank (hCS l Bw.Kw.1 (mod C') hgood C'.smooth n (a n) (b n))`. Introduce `g`. Use `hmat (Bw.e g)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[this]`. Use `congr 2`. Conclude with `hρ _ _ fun x => Bw.e_comm g x`. Take `⟨c, hc'⟩` from `hG`. Conclude with `hGC l P AI hT E Ω _ O Bw dd _ _ ⟨c, fun g => hc' g⟩ hcr`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Seam.crysStep :
     CrystallineSemistableComparison.SmoothModelCrystalline → NiceBc → LocTower → BcCover → IntMap → GoodOf → MatIn → SubAdm → GrCrys → UpperTheory.Gal.Int.Geo.CrysStep := by

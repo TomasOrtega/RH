@@ -13,13 +13,13 @@ open PowerSeries GlobalTheory.Honda Formalism.L2.Th1.CM
 namespace GlobalTheory.Honda
 
 /- English proof (translation)
-Establish `hNn : ‖(N : ℂ_[l])‖ = 1`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] ℂ_[l]), norm_algebraMap', Padic.norm_natCast_eq_one_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd Fact.out).mpr hN`. Establish `hle : ∀ y : ℂ_[l], y ^ 2 - y + (N : ℂ_[l]) = 0 → ‖y‖ ≤ 1`. Introduce `y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `h1 : y ^ 2 = y - N` using `by linear_combination hy`. Establish `h2 : ‖y - (N : ℂ_[l])‖ ≤ max ‖y‖ ‖(N : ℂ_[l])‖`. Rewrite using `[sub_eq_add_neg, ← norm_neg (N : ℂ_[l])]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `IsUltrametricDist.norm_add_le_max _ _`. Rewrite `h2` using `[hNn, max_eq_left h.le]`. Establish `h3 : ‖y‖ ^ 2 ≤ ‖y‖` using `by rw [← norm_pow, h1]; exact h2`. Use the polynomial consequences of the given equalities and inequalities. Establish `h1` using `hle x hx`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hle (1 - x) (by linear_combination hx)`. Establish `hprod : x * (1 - x) = N` using `by linear_combination -hx`. Establish `h4 : ‖x‖ * ‖1 - x‖ = 1` using `by rw [← norm_mul, hprod, hNn]`. Use `le_antisymm h1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_eq_one_of_quad_root {l : ℕ} [Fact l.Prime] (x : ℂ_[l]) (N : ℕ) (hN : ¬ l ∣ N)
     (hx : x ^ 2 - x + (N : ℂ_[l]) = 0) : ‖x‖ = 1 := by
@@ -47,19 +47,19 @@ theorem norm_eq_one_of_quad_root {l : ℕ} [Fact l.Prime] (x : ℂ_[l]) (N : ℕ
     _ = ‖x‖ := mul_one _
 
 /- English proof (translation)
-Introduce `d L hd hL l _ hl5 hld hsq ι g2 g3 hG n`. Take `⟨-, -, h2, h3, hΔ, lam, hlam, rfl, rfl⟩` from `hG`. Establish `hc0 : ι.symm lam ≠ 0` using `by simpa using hlam`. Take `⟨L', -, hg2, hg3, -, hCM⟩` from `GlobalTheory.T.exists_homothetic_periodPair_lattice L (ι.symm lam) hc0`. Establish `hιc : ι (ι.symm lam) = lam` using `ι.apply_symm_apply lam`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : ι L'.g₂ = lam ^ 4 * ι L.g₂` using `by rw [hg2, map_mul, map_pow, hιc]`. Establish `e3 : ι L'.g₃ = lam ^ 6 * ι L.g₃` using `by rw [hg3, map_mul, map_pow, hιc]`. Establish `hL' : HasCMBy d L'` using `hCM d hL`. Establish `hq` using `GlobalTheory.T.omegaK_sq_sub_self_add_eq_zero d hd`. Use `set N := (d + 1) / 4 with hNdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN0 : 0 < N` using `by omega`. Establish `hlN : ¬ l ∣ N`. Introduce `h`. Apply `hsq` to reduce the goal to its premises. Use `⟨1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h4 : 4 * N = d + 1` using `by omega`. Establish `h5 : ((4 * N : ℕ) : ZMod l) = 0`. Rewrite using `[Nat.cast_mul, (ZMod.natCast_eq_zero_iff N l).mpr h, mul_zero]`. Rewrite `h5` using `[h4]`. Move the coercions through the operations in `at h5`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h5`. Establish `hιβ : ‖ι (omegaK d)‖ = 1`. Apply `norm_eq_one_of_quad_root _ N hlN` to reduce the goal to its premises. Use `congrArg ι hq` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hNz : ∀ z, omegaK d * z ∈ L'.lattice → (N : ℂ) * z ∈ L'.lattice`. Introduce `z hz`. Establish `hz2 : omegaK d * (omegaK d * z) ∈ L'.lattice` using `hL' _ hz`. Establish `e : (N : ℂ) * z = omegaK d * z - omegaK d * (omegaK d * z)` using `by linear_combination z * hq`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sub_mem hz hz2`. Establish `key` using `GlobalTheory.T.formalGroup_mulBy_integral_of_kernel_prime_to_l L' l hl5 ι (by rw [e2]; exact h2) (by rw [e3]; exact h3) (by rw [e2, e3]; exact hΔ) (omegaK d) N hL' hιβ hN0 hlN hNz`. Rewrite `key` using `[e2, e3]`. Rewrite using `[Formalism.L2.Th1.A.uSerEq ℂ_[l]]`. Conclude with `key n`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem endOmega_holds : EndOmega := by
   intro d L hd hL l _ hl5 hld hsq ι g2 g3 hG n

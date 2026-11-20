@@ -4,17 +4,17 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Λ R _ _ _ _ h`. Take `⟨σ, hσ⟩` from `(Algebra.essFiniteType_iff Λ R).mp h`. Set `y : Fin σ.card → R` to `fun i => (σ.equivFin.symm i : R)`. Set `φ₀ : MvPolynomial (Fin σ.card) Λ →ₐ[Λ] R` to `MvPolynomial.aeval y`. Establish `hrange : Algebra.adjoin Λ (σ : Set R) = φ₀.range`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← Algebra.adjoin_range_eq_range_aeval]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨σ.equivFin ⟨x, hx⟩, by simp [y]⟩`. Introduce and unpack `⟨i, rfl⟩`. Conclude with `(σ.equivFin.symm i).2`. Set `P : Ideal (MvPolynomial (Fin σ.card) Λ)` to `(maximalIdeal R).comap φ₀`. Establish `hunit : ∀ b : P.primeCompl, IsUnit (φ₀ b)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Assume the negation of the conclusion as `hb`. Conclude with `b.2 ((mem_maximalIdeal _).mpr hb)`. Use `⟨σ.card, P, inferInstance, IsLocalization.liftAlgHom (M := P.primeCompl) (f := φ₀) hunit, ?_⟩` and prove the remaining obligations. Introduce `r`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨t, ht, htu, hrt⟩` from `hσ r`. Rewrite `ht`, `hrt` using `[hrange]`. Take `⟨b, rfl⟩` from `ht`. Take `⟨a, ha⟩` from `hrt`. Establish `hb : b ∈ P.primeCompl` using `fun hbP => (mem_maximalIdeal _).mp hbP htu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨IsLocalization.mk' (Localization.AtPrime P) a ⟨b, hb⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocalization.liftAlgHom_apply, IsLocalization.lift_mk'_spec]`. Express the relevant statement in the definitionally equal form `φ₀ a = φ₀ b * r`. Conclude with `ha.trans (mul_comm _ _)`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem exists_surj_localization_mvPolynomial_of_essFiniteType :
     ∀ (Λ R : Type) [CommRing Λ] [CommRing R] [IsLocalRing R] [Algebra Λ R]

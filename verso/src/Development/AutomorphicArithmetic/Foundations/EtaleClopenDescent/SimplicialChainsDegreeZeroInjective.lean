@@ -16,7 +16,7 @@ private def top (K : CochainComplex C ℤ) (k : ℤ) (hK : IsZero (K.X (k + 1)))
     exact hK.eq_of_tgt _ _)
 
 /- English proof (translation)
-Simplify using `only [top, HomologicalComplex.mkHomFromSingle_f, Category.comp_id]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private lemma top_f (K : CochainComplex C ℤ) (k : ℤ) (hK : IsZero (K.X (k + 1))) :
     (top K k hK).f k = (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) k (K.X k)).hom := by
@@ -24,7 +24,7 @@ private lemma top_f (K : CochainComplex C ℤ) (k : ℤ) (hK : IsZero (K.X (k + 
   rfl
 
 /- English proof (translation)
-Apply `HomologicalComplex.from_single_hom_ext` to reduce the goal to its premises. Rewrite using `[HomologicalComplex.comp_f, HomologicalComplex.comp_f, top_f, top_f]`. Express the relevant statement in the definitionally equal form `((HomologicalComplex.single C (ComplexShape.up ℤ) k).map (φ.f k)).f k ≫ _ = _`. Simplify using `only [HomologicalComplex.single_map_f_self, Category.assoc, Iso.cancel_iso_hom_left]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -39,9 +39,9 @@ private lemma top_comm {K L : CochainComplex C ℤ} (φ : K ⟶ L) (k : ℤ) (hK
   rfl
 
 /- English proof (translation)
-Use extensionality with `p q' hpq`. Distinguish the cases in `hp : p = k`. Substitute `hp` using the available equality. Take `rfl : q' = q` from `by omega`. Rewrite using `[Cochain.zero_cochain_comp_v, Cochain.ofHom_v, Cochain.fromSingleMk_v, top_f]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `(HomologicalComplex.isZero_single_obj_X _ _ _ _ hp).eq_of_src _ _`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma ofHom_top_comp {K I : CochainComplex C ℤ} (k : ℤ) (hK : IsZero (K.X (k + 1))) {m q : ℤ}
     (hq : k + m = q) (x : Cochain K I m) :
@@ -60,7 +60,7 @@ private def coneTop {K L : CochainComplex C ℤ} (φ : K ⟶ L) (k : ℤ) (hK : 
   mappingCone.map _ _ (top K k hK) (top L k hL) (top_comm φ k hK hL)
 
 /- English proof (translation)
-Rewrite using `[← Cochain.comp_assoc_of_second_is_zero_cochain, coneTop, mappingCone.map, mappingCone.inl_desc, Cochain.comp_assoc_of_first_is_zero_cochain, ofHom_top_comp k hK rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma inl_coneTop {K L I : CochainComplex C ℤ} (φ : K ⟶ L) (k : ℤ) (hK : IsZero (K.X (k + 1)))
     (hL : IsZero (L.X (k + 1))) {n : ℤ} (z : Cochain (mappingCone φ) I n) :
@@ -71,7 +71,7 @@ private lemma inl_coneTop {K L I : CochainComplex C ℤ} (φ : K ⟶ L) (k : ℤ
     Cochain.comp_assoc_of_first_is_zero_cochain, ofHom_top_comp k hK rfl]
 
 /- English proof (translation)
-Rewrite using `[← Cochain.comp_assoc_of_first_is_zero_cochain, ← Cochain.ofHom_comp, coneTop, mappingCone.map, mappingCone.inr_desc, Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain, ofHom_top_comp k hL rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma inr_coneTop {K L I : CochainComplex C ℤ} (φ : K ⟶ L) (k : ℤ) (hK : IsZero (K.X (k + 1)))
     (hL : IsZero (L.X (k + 1))) {n : ℤ} (z : Cochain (mappingCone φ) I n) :
@@ -84,15 +84,15 @@ private lemma inr_coneTop {K L I : CochainComplex C ℤ} (φ : K ⟶ L) (k : ℤ
 
 open LateralTheory.E.FiltGenPf in
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Cochain.fromSingleMk_surjective ((mappingCone.inl ((singleFunctor C k).map (φ.f k))).comp c₀ (show -1 + (n - 1) = n - 1 - 1 by omega)) (k + (n - 1 - 1)) rfl`. Take `⟨b, hb⟩` from `Cochain.fromSingleMk_surjective ((Cochain.ofHom (mappingCone.inr ((singleFunctor C k).map (φ.f k)))).comp c₀ (zero_add (n - 1))) (k + (n - 1)) rfl`. Establish `hc : δ (n - 1) n c₀ = mappingCone.descCochain ((singleFunctor C k).map (φ.f k)) (Cochain.fromSingleMk (a ≫ I.d (k + (n - 1 - 1)) (k + (n - 1)) + n.negOnePow • (φ.f k ≫ b)) (show k + (n - 1) = k + (n - 1) from rfl)) (Cochain.fromSingleMk (b ≫ I.d (k + (n - 1)) (k + n)) (show k + n …`. Rewrite using `[desc_eta ((singleFunctor C k).map (φ.f k)) (show n - 1 - 1 + 1 = n - 1 by omega) c₀, ← ha, ← hb]`. Conclude with `δ_desc_fromSingle k (φ.f k) (show n - 1 + 1 = n by omega) a b (by omega) rfl rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `inl_coneTop φ k (hK _ (by omega)) (hL _ (by omega)) z`. Rewrite `e1` using `[h, hc, mappingCone.inl_descCochain]`. Establish `e2` using `inr_coneTop φ k (hK _ (by omega)) (hL _ (by omega)) z`. Rewrite `e2` using `[h, hc, mappingCone.inr_descCochain]`. Establish `f1` using `congrArg (Cochain.fromSingleEquiv (show k + (n - 1) = k + (n - 1) from rfl)) e1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f2` using `congrArg (Cochain.fromSingleEquiv (show k + n = k + n from rfl)) e2`. Simplify using `only [Cochain.fromSingleEquiv_fromSingleMk] at f1 f2`. Use `⟨mappingCone.descCochain φ (Cochain.single a (n - 1 - 1)) (Cochain.single b (n - 1)) (by omega), ?_, ?_⟩` and prove the remaining obligations. Introduce `p q hpq hp`. Break down `eq_or_lt_of_le (show k ≤ p by omega) with rfl | hkp` into its components or cases.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Take `rfl : q = k + (n - 1)` from `by omega`. Rewrite using `[Cochain.comp_sub, δ_desc φ (by omega) (by omega), mappingCone.inl_descCochain, Cochain.sub_v, Cochain.add_v, Cochain.units_smul_v, δ_v (n - 1 - 1) (n - 1) (by omega) _ k (k + (n - 1)) hpq (k + (n - 1 - 1)) (k + 1) (by omega) rfl, Cochain.zero_cochain_comp_v, Cochain.ofHom_v, Coc …`. Simplify using the standard rewrite rules. Conclude with `(hK p hkp).eq_of_src _ _`. Introduce `p q hpq hp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Break down `eq_or_lt_of_le (show k ≤ p by omega) with rfl | hkp` into its components or cases. Take `rfl : q = k + n` from `by omega`. Rewrite using `[Cochain.comp_sub, δ_desc φ (by omega) (by omega), mappingCone.inr_descCochain, Cochain.sub_v, δ_v (n - 1) n (by omega) _ k (k + n) hpq (k + (n - 1)) (k + 1) (by omega) rfl, Cochain.single_v_eq_zero b _ (k + 1) _ _ (by omega), Cochain.single_v, ← f2]`. Simplify using the standard rewrite rules. Conclude with `(hL p hkp).eq_of_src _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma lift_of_top {K L I : CochainComplex C ℤ} (φ : K ⟶ L) (k n : ℤ)
     (hK : ∀ p, k < p → IsZero (K.X p)) (hL : ∀ p, k < p → IsZero (L.X p))
@@ -148,9 +148,9 @@ open AlgebraicGeometry Opposite Simplicial GlobalTheory.EtC LateralTheory.E.Disc
 variable (R : Type) [CommRing R]
 
 /- English proof (translation)
-Establish `c' : φ₂ ≫ inv v = inv u ≫ φ₁`. Rewrite using `[IsIso.eq_inv_comp, ← Category.assoc, ← c, Category.assoc, IsIso.hom_inv_id, Category.comp_id]`. Establish `hT : mappingCone.map φ₂ φ₁ (inv u) (inv v) c' ≫ mappingCone.map φ₁ φ₂ u v c = 𝟙 _`. Rewrite using `[← mappingCone.map_comp, cone_map_congr R φ₂ φ₂ _ (by rw [Category.id_comp, Category.comp_id]) (IsIso.inv_hom_id u) (IsIso.inv_hom_id v)]`. Conclude with `mappingCone.map_id φ₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hxy`. Use `congrArg (HK.pull R (mappingCone.map φ₂ φ₁ (inv u) (inv v) c') F n) hxy` as an intermediate fact. Rewrite `this` using `[← pull_comp', ← pull_comp', hT, pull_id', pull_id']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private lemma pull_cone_injective {K₁ L₁ K₂ L₂ : Cx R} (φ₁ : K₁ ⟶ L₁) (φ₂ : K₂ ⟶ L₂) (u : K₁ ⟶ K₂) (v : L₁ ⟶ L₂)
     [IsIso u] [IsIso v] (c : φ₁ ≫ v = u ≫ φ₂) (F : Shv R) (n : ℤ) :
@@ -169,9 +169,7 @@ private def lvl {Z : PSh} {X : Spc} (a : disc.obj Z ⟶ X) : (free R).obj Z ⟶ 
   (e0d R Z).inv ≫ ((chains R).map a).f 0
 
 /- English proof (translation)
-Establish `e : lvl R a ≫ (e0 R X).hom = (free R).map (a.app (op ⦋0⦌))`. Use `etale_discrete_chains_degree_zero_iso_free_naturality R a` as an intermediate fact. Simplify using `only [lvl, Category.assoc, this]`. Conclude with `Iso.inv_hom_id_assoc (e0d R Z) _`. Establish `: IsIso (lvl R a ≫ (e0 R X).hom)` using `by rw [e]; infer_instance`.
-
-Conclude with `IsIso.of_isIso_comp_right _ (e0 R X).hom`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma lvl_isIso {Z : PSh} {X : Spc} (a : disc.obj Z ⟶ X) (ha : IsIso (a.app (op ⦋0⦌))) :
     IsIso (lvl R a) := by
@@ -183,7 +181,7 @@ private lemma lvl_isIso {Z : PSh} {X : Spc} (a : disc.obj Z ⟶ X) (ha : IsIso (
   exact IsIso.of_isIso_comp_right _ (e0 R X).hom
 
 /- English proof (translation)
-Establish `e : (free R).map h ≫ (e0d R Z).inv = (e0d R Z').inv ≫ ((chains R).map (disc.map h)).f 0`. Rewrite using `[Iso.eq_inv_comp, ← Category.assoc, ← etale_discrete_simplicial_chains_degree_zero_iso_naturality, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Simplify using `only [lvl, Category.assoc]`. Rewrite using `[← Category.assoc, e, Category.assoc, ← HomologicalComplex.comp_f, ← Functor.map_comp, comm, Functor.map_comp, HomologicalComplex.comp_f]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma lvl_comm {Z' Z : PSh} {X' X : Spc} (g : X' ⟶ X) (h : Z' ⟶ Z) (a : disc.obj Z ⟶ X)
     (b : disc.obj Z' ⟶ X') (comm : disc.map h ≫ a = b ≫ g) :
@@ -195,7 +193,7 @@ private lemma lvl_comm {Z' Z : PSh} {X' X : Spc} (g : X' ⟶ X) (h : Z' ⟶ Z) (
     Functor.map_comp, HomologicalComplex.comp_f]
 
 /- English proof (translation)
-Apply `HomologicalComplex.from_single_hom_ext` to reduce the goal to its premises. Rewrite using `[HomologicalComplex.comp_f, HomologicalComplex.comp_f, top_f]`. Express the relevant statement in the definitionally equal form `_ = ((HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) 0).map (lvl R a)).f 0 ≫ _`. Simplify using `only [sec, HomologicalComplex.mkHomFromSingle_f, HomologicalComplex.single_map_f_self, Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private lemma sec_chains {Z : PSh} {X : Spc} (a : disc.obj Z ⟶ X) (hX : IsZero (((chains R).obj X).X (0 + 1))) :
     sec R Z ≫ (chains R).map a =
@@ -214,15 +212,15 @@ end UpperTheory.Cb.ConeApexLifts
 open CategoryTheory Limits AlgebraicGeometry Opposite Simplicial CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
   LateralTheory.E.LeafGhostCut LateralTheory.E.DiscLvlPf UpperTheory.Cb.ConeApexLifts in
 /- English proof (translation)
-Introduce `_ R _ F n Z' Z X' X g h a b comm ha hb z hz`. Establish `hK : ∀ p : ℤ, 0 < p → IsZero (((chains R).obj X').X p)` using `LateralTheory.E.CechFiltPf.chains_isZero R X'`. Establish `hL : ∀ p : ℤ, 0 < p → IsZero (((chains R).obj X).X p)` using `LateralTheory.E.CechFiltPf.chains_isZero R X`. Establish `hK1` using `hK (0 + 1) (by omega)`. Establish `hL1` using `hL (0 + 1) (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `lvl_isIso R a ha` as an intermediate fact. Use `lvl_isIso R b hb` as an intermediate fact. Establish `cT : (singleFunctor (Shv R) 0).map ((free R).map h) ≫ (singleFunctor (Shv R) 0).map (lvl R a) = (singleFunctor (Shv R) 0).map (lvl R b) ≫ (singleFunctor (Shv R) 0).map (((chains R).map g).f 0)`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, lvl_comm R g h a b comm]`. Establish `hsq : mappingCone.map _ _ (sec R Z') (sec R Z) (sec_comm R h) ≫ rmap R g (disc.map h) b a comm = mappingCone.map _ _ _ _ cT ≫ coneTop ((chains R).map g) 0 hK1 hL1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[rmap, coneTop, ← mappingCone.map_comp, ← mappingCone.map_comp]`. Conclude with `cone_map_congr R _ _ _ _ (sec_chains R b hK1) (sec_chains R a hL1)`. Establish `hz' : HK.pull R (rmap R g (disc.map h) b a comm) F n (CohomologyClass.mk z) = 0` using `hz`. Establish `h1 : HK.pull R (coneTop ((chains R).map g) 0 hK1 hL1) F n (CohomologyClass.mk z) = 0`. Establish `h2` using `(pull_comp' R (mappingCone.map _ _ (sec R Z') (sec R Z) (sec_comm R h)) (rmap R g (disc.map h) b a comm) F n (CohomologyClass.mk z)).trans ((congrArg _ hz').trans (map_zero _))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `pull_cone_injective R _ _ _ _ cT F n` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `(pull_comp' R _ _ F n _).symm.trans ((congrArg (fun t => HK.pull R t F n (CohomologyClass.mk z)) hsq.symm).trans h2)`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp (Cocycle.ofHom (coneTop ((chains R).map g) 0 hK1 hL1)) z (zero_add n)) = 0 at h1`. Rewrite `h1` using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c₀, hc₀⟩` from `h1`. Take `⟨c, hc⟩` from `lift_of_top ((chains R).map g) 0 n hK hL (z : Cochain (mappingCone ((chains R).map g)) (res R F) n) c₀ hc₀.symm`. Establish `e : (0 : ℤ) - 1 = -1` using `by norm_num`. Rewrite `hc` using `[e]`. Conclude with `⟨c, hc⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Cb.simplicial_chains_degree_zero_injective :
     LateralTheory.E.t_E3Cut.Coprod → LateralTheory.E.FiltrationLevelBase.Step0 := by

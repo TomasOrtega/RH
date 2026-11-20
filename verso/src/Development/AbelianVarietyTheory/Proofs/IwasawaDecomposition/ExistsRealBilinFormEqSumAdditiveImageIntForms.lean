@@ -5,21 +5,19 @@ open GlobalTheory.PolFan
 namespace GlobalTheory.PolFan
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ L`. Set `H` to `Module.Free.chooseBasis ℚ ℝ`. Set `S : Finset (Module.Free.ChooseBasisIndex ℚ ℝ)` to `Finset.univ.biUnion fun p : Module.Free.ChooseBasisIndex ℤ L × Module.Free.ChooseBasisIndex ℤ L => (H.repr (B (b p.1) (b p.2))).support`. Set `f : S × Module.Free.ChooseBasisIndex ℤ L × Module.Free.ChooseBasisIndex ℤ L → ℚ` to `fun t => H.repr (B (b t.2.1) (b t.2.2)) t.1`. Take `⟨⟨D, hD⟩, hn⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors ℤ) f`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `choose m hm using hn`. Establish `hD' : (D : ℚ) ≠ 0` using `by exact_mod_cast nonZeroDivisors.ne_zero hD`. Establish `hm' : ∀ t, (m t : ℚ) = D * f t` using `fun t => by simpa [Submonoid.smul_def] using hm t`. Set `Q : S → LinearMap.BilinForm ℤ L` to `fun s => Matrix.toLinearMap₂ b b (fun i k => m (s, i, k))`. Set `g : S → ℝ →+ ℝ` to `fun s => (D : ℝ) • ((Rat.castHom ℝ).toAddMonoidHom.comp (H.coord s).toAddMonoidHom)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hQb : ∀ s i k, (Q s (b i) (b k) : ℝ) = D * (H.repr (B (b i) (b k)) s : ℝ)` using `fun s i k => by`. Establish `h1 : Q s (b i) (b k) = m (s, i, k)` using `Matrix.toLinearMap₂_apply_basis _ _ _ _ _`. Rewrite using `[h1]`. Use `hm' (s, i, k)` as an intermediate fact. Simplify using `only [f] at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hQ : ∀ s y z, (Q s y z : ℝ) = g s (B y z)`. Introduce `s`. Establish `: toReal (Q s) = B.compr₂ (g s).toIntLinearMap`. Use `LinearMap.ext_basis b b fun i k => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[toReal_apply, hQb]`. Simplify using `[g, H]`. Introduce `y z`. Simplify using `using LinearMap.congr_fun₂ this y z`. Use `⟨S, inferInstance, fun s => H s / D, Q, ?_, fun s => ⟨g s, hQ s⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `LinearMap.ext_basis b b fun i k => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, toReal_apply, hQb, smul_eq_mul]`. Establish `hDr : (D : ℝ) ≠ 0` using `by exact_mod_cast hD'`. Establish `key : ∀ h r : ℝ, h / D * (D * r) = r * h` using `fun h r => by field_simp`. Establish `e1 : ∀ x : S, H x / D * (D * (H.repr (B (b i) (b k)) x : ℝ)) = H.repr (B (b i) (b k)) x • H x` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Rat.smul_def]`. Conclude with `key _ _`. Rewrite using `[Finset.sum_congr rfl fun x _ => e1 x]`. Rewrite using `[Finset.sum_coe_sort S (fun x => H.repr (B (b i) (b k)) x • H x)]`. Use `conv_lhs => rw [← H.linearCombination_repr (B (b i) (b k))]`.
-
-Rewrite using `[Finsupp.linearCombination_apply]`. Use `Finsupp.sum_of_support_subset _ ?_ (fun (x : Module.Free.ChooseBasisIndex ℚ ℝ) (a : ℚ) => a • H x) fun x _ => zero_smul ℚ (H x)` and prove the remaining obligations. Introduce `x hx`. Conclude with `Finset.mem_biUnion.2 ⟨(i, k), Finset.mem_univ _, hx⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_toReal_span_fintype {L : Type} [AddCommGroup L] [Module.Free ℤ L] [Module.Finite ℤ L]
     (B : L →ₗ[ℤ] L →ₗ[ℤ] ℝ) : ∃ (κ : Type) (_ : Fintype κ) (w : κ → ℝ) (Q : κ → LinearMap.BilinForm ℤ L),
@@ -69,9 +67,9 @@ theorem exists_toReal_span_fintype {L : Type} [AddCommGroup L] [Module.Free ℤ 
   exact Finset.mem_biUnion.2 ⟨(i, k), Finset.mem_univ _, hx⟩
 
 /- English proof (translation)
-Introduce `L _ _ _ B`. Take `⟨κ, _, w, Q, h1, h2⟩` from `exists_toReal_span_fintype B`. Set `e` to `Fintype.equivFin κ`. Use `⟨Fintype.card κ, fun j => w (e.symm j), fun j => Q (e.symm j), ?_, fun j => h2 _⟩` and prove the remaining obligations. Rewrite using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(e.symm.sum_comp fun s => w s • toReal (Q s)).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_sum_toReal_additive_images : ∀ {L : Type} [AddCommGroup L] [Module.Free ℤ L] [Module.Finite ℤ L]
     (B : L →ₗ[ℤ] L →ₗ[ℤ] ℝ), ∃ (n : ℕ) (w : Fin n → ℝ) (Q : Fin n → LinearMap.BilinForm ℤ L),

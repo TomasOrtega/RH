@@ -17,11 +17,11 @@ noncomputable section
 namespace GlobalTheory.HeatSym
 
 /- English proof (translation)
-Introduce `R Ω _ _ _ φ Y L hL x g k l s s' h h'`. Take `⟨r, σ, ω, hr, hv, he⟩` from `h`. Take `⟨r', σ', ω', hr', hv', he'⟩` from `h'`. Establish `hF : FormEq (Sum.elim (fun _ : Fin 1 => 𝟙 Y) (fun _ : Fin 1 => 𝟙 Y)) (Sum.elim (fun _ : Fin 1 => (k : ℤ)) (fun _ : Fin 1 => (l : ℤ))) (fun _ : Fin 1 => 𝟙 Y) (fun _ => ((k + l : ℕ) : ℤ))`. Introduce `U _ f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Finset.univ_unique, Finset.prod_singleton]`. Use `push_cast`. Rewrite using `[zpow_add]`. Take `⟨σ'', hσ''⟩` from `exists_sec hL hF (ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.mulSec σ σ')`. Use `⟨r * r', σ'', ω * ω', mul_ne_zero hr hr', ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Z q z J hJ`. Rewrite using `[hσ'' Z (q ≫ x) z J hJ, ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.sval_mulSec σ σ' (q ≫ x) z hJ, hv Z q z J hJ, hv' Z q z J hJ, map_mul, gs_mul q z ⊤ trivial, pow_add, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, map_mul, map_mul, he, he']`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem VS.mul : ∀ {R Ω : Type} [CommRing R] [IsDomain R] [CommRing Ω] (φ : R →+* Ω) {Y : Scheme.{0}} (L : LB Y), L.IsLB → ∀ (x : Sp Ω ⟶ Y) (g : GlobalTheory.RayEv.Transport.Frame L (x ≫ 𝟙 Y)) (k l : ℕ) (s s' : FractionRing Ω), GlobalTheory.HeatSym.VS φ L x g k s → GlobalTheory.HeatSym.VS φ L x g l s' → GlobalTheory.HeatSym.VS φ L x g (k + l) (s * s') := by
   intro R Ω _ _ _ φ Y L hL x g k l s s' h h'

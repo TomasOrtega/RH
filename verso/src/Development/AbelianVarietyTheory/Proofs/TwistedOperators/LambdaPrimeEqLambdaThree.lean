@@ -39,11 +39,11 @@ section ScaleIP
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
 
 /- English proof (translation)
-Establish `hc0 : ENNReal.ofReal c ≠ 0` using `by simpa using hc`. Establish `hcT : ENNReal.ofReal c ≠ ⊤` using `ENNReal.ofReal_ne_top`. Establish `hcC : (c : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`. Unfold `IsMultIP`. Use `forall_congr' fun v => forall_congr' fun v' => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [IntegrableOn, Measure.restrict_smul, integrable_smul_measure hc0 hcT, integral_smul_measure, ENNReal.toReal_ofReal hc.le, Complex.real_smul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, mul_left_cancel₀ hcC ?_⟩` and prove the remaining obligations. Rewrite using `[h2, mul_assoc]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, mul_assoc]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isMultiplicityInner_smul_measure_iff (M : DSModel V S) (ν : Measure (GA D V)) (𝓕 : Set (GA D V)) (T T' : MMap M) (c : ℝ)
     (hc : 0 < c) (k : ℂ) :
@@ -64,9 +64,7 @@ theorem isMultiplicityInner_smul_measure_iff (M : DSModel V S) (ν : Measure (GA
     rw [h2, mul_assoc]
 
 /- English proof (translation)
-Establish `hu : ∀ τ, ∃ x : M.sm τ, x ∈ lowT M τ ∧ x ≠ 0` using `fun τ => Submodule.exists_mem_ne_zero_of_ne_bot (GlobalTheory.LowTypeRestriction.lowT_ne_bot M τ)`. Use `choose u _ hu2 using hu`. Use `⟨u, Finset.prod_ne_zero_iff.2 fun τ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, inner_self_eq_zero]`. Introduce `h`.
-
-Conclude with `hu2 τ (Subtype.ext h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_vec_ne (M : DSModel V S) : ∃ v : M.Vec, ∏ τ, ⟪(v τ : M.H τ), (v τ : M.H τ)⟫_ℂ ≠ 0 := by
   have hu : ∀ τ, ∃ x : M.sm τ, x ∈ lowT M τ ∧ x ≠ 0 := fun τ =>
@@ -78,11 +76,11 @@ theorem exists_vec_ne (M : DSModel V S) : ∃ v : M.Vec, ∏ τ, ⟪(v τ : M.H 
   exact hu2 τ (Subtype.ext h)
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_vec_ne M`. Establish `hcC : (c : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`. Distinguish the cases in `h : ∃ k, IsMultIP M ν 𝓕 T T' k`. Establish `h2 : IsMultIP M (ENNReal.ofReal c • ν) 𝓕 T T' ((c : ℂ) * ipM M ν 𝓕 T T')` using `(isMultiplicityInner_smul_measure_iff M ν 𝓕 T T' c hc _).2 (ipM_spec M ν 𝓕 T T' h)`. Conclude with `hasPeterssonInner_unique M _ 𝓕 T T' v hv (ipM_spec M _ 𝓕 T T' ⟨_, h2⟩) h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : ¬ ∃ k, IsMultIP M (ENNReal.ofReal c • ν) 𝓕 T T' k`. Introduce and unpack `⟨k, hk⟩`. Apply `h` to reduce the goal to its premises. Use `⟨k / c, (isMultiplicityInner_smul_measure_iff M ν 𝓕 T T' c hc _).1 ?_⟩` and prove the remaining obligations. Rewrite using `[mul_div_cancel₀ _ hcC]` and apply the resulting hypothesis.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions.
 
-Unfold `ipM`. Rewrite using `[dif_neg h, dif_neg h', mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipM_smul_meas (M : DSModel V S) (ν : Measure (GA D V)) (𝓕 : Set (GA D V)) (T T' : MMap M) (c : ℝ)
     (hc : 0 < c) : ipM M (ENNReal.ofReal c • ν) 𝓕 T T' = (c : ℂ) * ipM M ν 𝓕 T T' := by
@@ -116,9 +114,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `e1 : (toLiftReal R F tupT hm hTop hinj).measW i = ENNReal.ofReal (RealDat.nP F false)⁻¹ • R.νW i` using `rfl`. Establish `e2 : ∀ τ, (toLiftReal R F tupT hm hTop hinj).κ i τ = kapAt (Wc D i) (sg0 D A) τ` using `fun _ => rfl`. Rewrite using `[LiftReal.ipWc, e1]`. Simplify using `only [e2]`. Express the relevant statement in the definitionally equal form `(∏ τ, _) * ipMT (R.MW i (sg0 D A)) _ (R.fdW i) _ _ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Unfold `ipMT`. Use `erw [LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply]`. Rewrite using `[ ipM_smul_meas _ _ _ _ _ _ (inv_pos.2 (RealDat.nP_pos false)), (hW i (sg0 D A)).2.2 a b, ipAt]`. Establish `hP : ∀ (P P' c I : ℂ), P = P' → P * (c * I) = c * (P' * I)` using `fun P P' c I h => by rw [h]; ring`. Conclude with `hP _ _ _ _ rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ipWc_lift (R : RealDat D A Ks) (hW : R.models_HW) (F : Face D A) (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m)
     (hTop : TopMultH R) (hinj : ∀ i t, Function.Injective (R.extV i t)) (i : Fin D.R.m) (a b : (R.HW i (sg0 D A)).H) :
@@ -137,9 +135,7 @@ theorem ipWc_lift (R : RealDat D A Ks) (hW : R.models_HW) (F : Face D A) (tupT :
   exact hP _ _ _ _ rfl
 
 /- English proof (translation)
-Unfold `ipVia`. Use `split_ifs with h`. Establish `h1 : h.1.choose = u` using `he h.1.choose_spec`. Establish `h2 : h.2.choose = v` using `he h.2.choose_spec`. Rewrite using `[h1, h2]`.
-
-Conclude with `absurd ⟨⟨u, rfl⟩, ⟨v, rfl⟩⟩ h`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipVia_self' {H N : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [AddCommGroup N] [Module ℂ N]
     (e : H →ₗ[ℂ] N) (he : Function.Injective e) (u v : H) : ipVia e (e u) (e v) = ⟪u, v⟫_ℂ := by
@@ -153,7 +149,7 @@ theorem ipVia_self' {H N : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(((RealDat.nP F false)⁻¹ : ℝ) : ℂ) * ipVia (R.extV i (tupT μ)) _ _ = _`. Rewrite using `[ipVia_self' _ (hinj i (tupT μ)) a b]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem ipA_ext (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m)
     (hTop : TopMultH R) (hinj : ∀ i t, Function.Injective (R.extV i t)) (μ : D.what₂.Tup) (i : Fin D.R.m)
@@ -169,7 +165,7 @@ def pre (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T) (hm : 0
   (LinearEquiv.ofInjective _ (hinj i (tupT μ))).symm (Submodule.inclusion inf_le_left f)
 
 /- English proof (translation)
-Establish `h` using `LinearEquiv.apply_symm_apply (LinearEquiv.ofInjective (R.extV i (tupT μ)) (hinj i (tupT μ))) (Submodule.inclusion inf_le_left f)`. Conclude with `congrArg Subtype.val h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ext_pre (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m)
     (hTop : TopMultH R) (hinj : ∀ i t, Function.Injective (R.extV i t)) (μ : D.what₂.Tup) (i : Fin D.R.m)
@@ -180,7 +176,7 @@ theorem ext_pre (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T)
   exact congrArg Subtype.val h
 
 /- English proof (translation)
-Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[postOn]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem lift_postOn' {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S)
     (L : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)) (X : MMap M) :
@@ -193,13 +189,13 @@ theorem lift_postOn' {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S)
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨w, hwM, hwK, hwW⟩` from `GlobalTheory.ThetaFireLift.thetaFireL R F tupT hm hTop hinj hlev hgrp hM hE R.hv0 IL μ hμ i x`. Establish `hth` using `hT.theta μ hμ i x w (GlobalTheory.ThetaPRead.isThetaP_toLiftReal R F tupT hm hTop hinj hE.thF μ i) hwM hwK hwW`. Use `set z := pre R F tupT hm hTop hinj μ i (IL.jMt μ hμ i x) with hz`. Set `w' : (⨂[ℂ] τ, (R.MW i (sg0 D A)).sm τ) →ₗ[ℂ] (GA D (Wc D i) → ℂ)` to `w`. Set `U : MMap (R.MW i (sg0 D A))` to `PiTensorProduct.lift.symm w'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hU : U ∈ R.Wall i (sg0 D A)` using `GlobalTheory.HeckeParts.mult_le_triv _ ((mem_multT _ _ _ _ w').1 hwM)`. Establish `hlow : ∀ v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ, U (fun ρ => v ρ) = R.thF i (tupT μ) z (fun ρ => v ρ)`. Introduce `v`. Establish `e` using `LinearMap.congr_fun hwK (PiTensorProduct.tprod ℂ v)`. Establish `e2 : w' (PiTensorProduct.map (fun τ => (lowT (R.MW i (sg0 D A)) τ).subtype) (PiTensorProduct.tprod ℂ v)) = PiTensorProduct.lift (R.thF i (tupT μ) z) (PiTensorProduct.map (fun τ => (lowT (R.MW i (sg0 D A)) τ).subtype) (PiTensorProduct.tprod ℂ v))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e.trans rfl`. Rewrite `e2` using `[PiTensorProduct.map_tprod, PiTensorProduct.lift.tprod]`. Conclude with `e2`. Establish `hw0 : U - R.thF i (tupT μ) z = 0` using `GlobalTheory.LowTypeDetermined.eq_zero_of_lowT D _ _ (R.MW i (sg0 D A)) R.θ hM.inf (GlobalTheory.LowTypeRestriction.lowT_ne_bot _) _ _ _ (Submodule.sub_mem _ hU (hE.thF_mem i (tupT μ) z)) (fun v => by show U (fun ρ => v ρ) - R.thF i (tupT μ) z (fun ρ => v ρ) = 0`. Rewrite using `[hlow v, sub_self])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hUw : PiTensorProduct.lift U = w'` using `LinearEquiv.apply_symm_apply _ w'`. Use `hth.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `R.eWf i (sg0 D A) ∘ₗ w' = _`. Rewrite using `[← hUw, sub_eq_zero.1 hw0, ← lift_postOn', ← hE.thG i (tupT μ) z]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaP_read (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m)
     (hTop : TopMultH R) (hinj : ∀ i t, Function.Injective (R.extV i t)) (hlev : R.toLevCh.Is A.μ0) (hgrp : R.IsGrp F)
@@ -243,9 +239,9 @@ end GlobalTheory.LamPrimeTransport
 namespace GlobalTheory.LamPrimeTransport
 
 /- English proof (translation)
-Set `Si : E →ₗᵢ[ℂ] E` to `{ toLinearMap := S, norm_map' := hS }`. Set `Ui : F →ₗᵢ[ℂ] F` to `{ toLinearMap := U, norm_map' := hU }`. Establish `hsurj : Function.Surjective S` using `LinearMap.injective_iff_surjective.mp Si.injective`. Apply `ext_inner_right ℂ` to reduce the goal to its premises. Introduce `y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y', rfl⟩` from `hsurj y`. Establish `h1 : ⟪S (LinearMap.adjoint Θ w), S y'⟫_ℂ = ⟪LinearMap.adjoint Θ w, y'⟫_ℂ` using `Si.inner_map_map _ _`. Establish `h2 : ⟪U w, U (Θ y')⟫_ℂ = ⟪w, Θ y'⟫_ℂ` using `Ui.inner_map_map _ _`. Rewrite using `[inner_smul_left, h1, LinearMap.adjoint_inner_left, LinearMap.adjoint_inner_left, hΘ, ← h2, hw, inner_smul_left]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem adjoint_eigen {E F : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
     [NormedAddCommGroup F] [InnerProductSpace ℂ F] [FiniteDimensional ℂ F]
@@ -266,13 +262,13 @@ theorem adjoint_eigen {E F : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Apply `GlobalTheory.extV_mem_levSubV_of_lift R i t P` to reduce the goal to its premises. Introduce `g0 κ hκ h`. Apply the tactic sequence `have hT := GlobalTheory.translate_lift_linear_isometry R hLev hMod i t g0.1 κ hκ`. Break down `hT with ⟨S, hSn, hSe⟩` into its components or cases. Establish `hL` using `(GlobalTheory.StepLifts.lifts_exist R hLev i).2 g0.1`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `hL with ⟨κ', hκ'⟩` into its components or cases. Establish `hB` using `GlobalTheory.ThetaGoodEquiv.thG_equiv R hLev hMod hThP hgr hv i t g0.1 κ κ' hκ hκ' S hSe`. Establish `hCw` using `GlobalTheory.FormEigenW.gW_eq_chi_smul R hLev hMod i (sg0 D A) P.conj w hw ⟨g0.1, g0.2⟩`. Establish `hU : ∀ x, ‖R.gW i (sg0 D A) (R.eG.symm g0.1) x‖ = ‖x‖` using `GlobalTheory.gW_norm_eq R hMod.HW hMod.gW hMod.νW i _ _`. Establish `hE` using `adjoint_eigen (R.thG i t) S _ hSn hU hB hCw`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `congrFun (congrArg (R.extV i t) hE) h`. Establish `e2` using `hSe (LinearMap.adjoint (R.thG i t) w) h`. Establish `e3 : R.extV i t (((P.conj.chi ⟨g0.1, g0.2⟩ : ℂˣ) : ℂ) • LinearMap.adjoint (R.thG i t) w) h = ((P.conj.chi ⟨g0.1, g0.2⟩ : ℂˣ) : ℂ) • R.extV i t (LinearMap.adjoint (R.thG i t) w) h` using `congrFun ((R.extV i t).map_smul _ _) h`. Establish `hc : ((P.conj.chi ⟨g0.1, g0.2⟩ : ℂˣ) : ℂ) = (((P.chi g0 : ℂˣ) : ℂ))⁻¹`. Express the relevant statement in the definitionally equal form `(((P.chi⁻¹) g0 : ℂˣ) : ℂ) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val]`. Establish `hlc : levChi _ (R.βV i) (flagL (R.datVt i t)) κ ≠ 0` using `levChi_ne_zero _ _`. Establish `e4` using `e2.symm.trans (e1.trans e3)`. Conclude with `(smul_inv_smul₀ hlc _).symm.trans ((congrArg (levChi _ (R.βV i) (flagL (R.datVt i t)) κ • ·) e4).trans (congrArg (fun c : ℂ => levChi _ (R.βV i) (flagL (R.datVt i t)) κ • (c • R.extV i t (LinearMap.adjoint (R.thG i t) w) h)) hc))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem adjoint_mem_levSubV {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (hLev : R.toLevCh.Is A.μ0)
@@ -309,11 +305,11 @@ theorem adjoint_mem_levSubV {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : T
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F _hCusp hC hEx _hPG tupT hm hTop hinj i w hw`. Establish `hLev` using `hC.base.lev`. Establish `hMod` using `hC.base.models`. Establish `hThP : R.toRealDat.IsThP` using `RealDat.thP_of_weak hC.base.thP hEx`. Establish `hv : A3.A.v0 = InfinitePlace.mk D.what₂.embLL` using `R.hv0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨LinearMap.mem_range_self _ _, ?_⟩` and prove the remaining obligations. Establish `hw' : PiTensorProduct.lift ((R.HW i (sg0 D A3.A)).e w) ∈ (Mult.goodPart R.θ (R.MW i (sg0 D A3.A)) (levS _ (R.βW i) (R.datWp i (R.levL F.lv2 false (sg0 D A3.A)))) (levChi _ (R.βW i) (R.datWp i (R.levL F.lv2 false (sg0 D A3.A)))) (R.eWf i (sg0 D A3.A))).map (PiTensorProduct.lift : …` using `hw`. Establish `hwM : (R.HW i (sg0 D A3.A)).e w ∈ Mult R.θ (R.MW i (sg0 D A3.A)) (levS _ (R.βW i) (R.datWp i (R.levL F.lv2 false (sg0 D A3.A)))) (levChi _ (R.βW i) (R.datWp i (R.levL F.lv2 false (sg0 D A3.A))))`. Take `⟨X, hX, hXe⟩` from `Submodule.mem_map.1 hw'`. Establish `hXw : X = (R.HW i (sg0 D A3.A)).e w` using `PiTensorProduct.lift.injective hXe`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hXw]`. Conclude with `Mult.goodPart_le _ _ _ _ _ hX`. Rewrite `hwM` using `[GlobalTheory.Proof.LevelCharacterConjugate.liftLevel_fixedEmbedding_eq_conj_rowLevel R.toRealDat F.lv2 false hv]`. Conclude with `adjoint_mem_levSubV R.toRealDat hLev hMod hThP hC.base.grp.record hv i (tupT D.what₂.mu0) _ w hwM`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoint_mem_base_level : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), GlobalTheory.Published.CuspRapidDecay → R.WeakCharacterisation F → R.toRealDat.ExAt → R.PGEquiv F → ∀ (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m) (hTop : RecTie.TopMultH R.toRealDat) (hinj : ∀ i t, Function.Injective (R.toRealDat.extV i t)) (i : Fin D.R.m) (w : (R.HW i (sg0 D A3.A)).H), PiTensorProduct.lift ((R.HW i (sg0 D A3.A)).e w) ∈ (RecTie.toLiftReal R.toRealDat F.lv2 tupT hm hTop hinj).Wc i → R.toRealDat.extV i (tupT D.what₂.mu0) (LinearMap.adjoint (R.thG i (tupT D.what₂.mu0)) w) ∈ (RecTie.toLiftReal R.toRealDat F.lv2 tupT hm hTop hinj).Amt D.what₂.mu0 i := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F _hCusp hC hEx _hPG tupT hm hTop hinj i w hw

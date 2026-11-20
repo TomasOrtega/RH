@@ -11,7 +11,7 @@ def DimStatement : Prop :=
     FiniteDimensional ℂ (Y.Sec q) ∧ Module.finrank ℂ (Y.Sec q) ≤ q ^ Fintype.card ι
 
 /- English proof (translation)
-Introduce `_ _ Y q hq` and use `DimC.dim_core Y q hq`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dim : DimStatement :=
   fun _ _ Y q hq => DimC.dim_core Y q hq

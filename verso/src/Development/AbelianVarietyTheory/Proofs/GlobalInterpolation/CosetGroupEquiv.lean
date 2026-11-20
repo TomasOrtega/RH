@@ -22,18 +22,18 @@ def cosetGrpEquiv (Γ K : Subgroup G) (y : G) : CosetGroupMembership.cosetGrp Γ
   right_inv _ := rfl
 
 /- English proof (translation)
-The claim follows from `Nat.card_congr (cosetGrpEquiv Γ K y)`.
+A detailed English derivation is pending.
 -/
 theorem card_cosetGrp (Γ K : Subgroup G) (y : G) :
     Nat.card (CosetGroupMembership.cosetGrp Γ K y) = Nat.card (stabAt Γ K y) :=
   Nat.card_congr (cosetGrpEquiv Γ K y)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h _ s hs`. Establish `hb : Function.Bijective (fun c => (DoubleCoset.mk Γ K (s c) : ClassSet Γ K))`. Establish `: (fun c => (DoubleCoset.mk Γ K (s c) : ClassSet Γ K)) = id` using `funext hs`. Rewrite using `[this]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Function.bijective_id`. Rewrite using `[← h _ s hb]`. Simplify using `only [card_cosetGrp]`. Introduce `h ι _ y hy`. Set `e : ι ≃ ClassSet Γ K` to `Equiv.ofBijective _ hy`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `letI : Fintype (ClassSet Γ K) := Fintype.ofEquiv ι e`. Establish `hs : ∀ c : ClassSet Γ K, DoubleCoset.mk Γ K (y (e.symm c)) = c` using `fun c => e.apply_symm_apply c`. Rewrite using `[← h (fun c => y (e.symm c)) hs, ← e.symm.sum_comp]`. Simplify using `only [card_cosetGrp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_clause_iff (Γ K : Subgroup G) (m : ℝ) :
     (∀ (ι : Type) [Fintype ι] (y : ι → G),
@@ -57,7 +57,7 @@ theorem sum_clause_iff (Γ K : Subgroup G) (m : ℝ) :
     simp only [card_cosetGrp]
 
 /- English proof (translation)
-The claim follows from `and_congr Iff.rfl (and_congr (forall_congr' fun y => (cosetGrpEquiv Γ K y).finite_iff) (sum_clause_iff Γ K m))`.
+A detailed English derivation is pending.
 -/
 theorem cosetSum_iff (Γ K : Subgroup G) (m : ℝ) : CosetGroupMembership.CosetSum Γ K m ↔ ClassesDoubleCosets.CosetMass Γ K m :=
   and_congr Iff.rfl (and_congr (forall_congr' fun y => (cosetGrpEquiv Γ K y).finite_iff)
@@ -76,7 +76,7 @@ theorem stabHat_eq (hc : CMData F E) (S : HSpace E) (N : Submodule (𝓞 E) S.V)
     CosetGroupMembership.stabHat hc S N = ClassesDoubleCosets.stabHat hc S N := rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `⟨fun h => ⟨x.2, h⟩, fun h => h.2⟩`.
+By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem stabHat0_eq {R : Ranks} (sp : Spaces R F E) (N : Submodule (𝓞 E) (sp.X 0).V) :
     CosetGroupMembership.stabHat0 sp N = (levelAfL sp.cm.sig sp.gram0 (sp.crdLat0 N)).subgroupOf
@@ -90,7 +90,7 @@ def InCoords (hc : CMData F E) {k : ℕ} (J : Matrix (Fin k) (Fin k) E) (Λ : Su
     ((stabGL (hatL (F := F) Λ)).subgroupOf (UPts hc.sig J (Af F))) m
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem inCoords_cast (hc : CMData F E) (S : HSpace E) {k : ℕ} (h : S.rank = k) (N : Submodule (𝓞 E) S.V)
     (m : ℝ) :
@@ -102,7 +102,7 @@ theorem inCoords_cast (hc : CMData F E) (S : HSpace E) {k : ℕ} (h : S.rank = k
   rfl
 
 /- English proof (translation)
-The claim follows from `inCoords_cast sp.cm (sp.X 0) sp.rank0 N m`.
+A detailed English derivation is pending.
 -/
 theorem general_clause_iff {R : Ranks} (sp : Spaces R F E) (N : Submodule (𝓞 E) (sp.X 0).V) (m : ℝ) :
     CosetGroupMembership.CosetSum (UFin sp.cm (sp.X 0)) (CosetGroupMembership.stabHat sp.cm (sp.X 0) N) m ↔
@@ -112,14 +112,14 @@ theorem general_clause_iff {R : Ranks} (sp : Spaces R F E) (N : Submodule (𝓞 
 end Obj
 
 /- English proof (translation)
-Unfold `CosetGroupMembership.GeneralForm ClassesDoubleCosets.General`. Simplify using `only [cosetSum_iff, stabHat_eq]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem general_iff : CosetGroupMembership.GeneralForm ↔ ClassesDoubleCosets.General := by
   unfold CosetGroupMembership.GeneralForm ClassesDoubleCosets.General
   simp only [cosetSum_iff, stabHat_eq]
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Unfold `CosetGroupMembership.ColumnForm ClassesDoubleCosets.DefiniteSpaceClassStatement`. Use `forall_congr' fun N => forall_congr' fun _ => forall_congr' fun _ => ?_` and prove the remaining obligations. Rewrite using `[cosetSum_iff, stabHat0_eq]`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem column_iff (D : D7) (Lv : LevelData D) (u : D.what₂.Word) :
     CosetGroupMembership.ColumnForm D ↔ ClassesDoubleCosets.DefiniteSpaceClassStatement D Lv u := by
@@ -130,7 +130,7 @@ theorem column_iff (D : D7) (Lv : LevelData D) (u : D.what₂.Word) :
   rfl
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Introduce `N hN hU`. Conclude with `(general_clause_iff D.sp N _).1 (h D.host.F D.host.E D.sp.cm (D.sp.X 0) (D.sp.X_sig 0) (baseSpace_posDef D.R D.host.F D.sp) N hN hU)`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem column_of_general (h : CosetGroupMembership.GeneralForm) (D : D7) : CosetGroupMembership.ColumnForm D := by
   letI := D.host.cmStar
@@ -139,7 +139,7 @@ theorem column_of_general (h : CosetGroupMembership.GeneralForm) (D : D7) : Cose
     (h D.host.F D.host.E D.sp.cm (D.sp.X 0) (D.sp.X_sig 0) (baseSpace_posDef D.R D.host.F D.sp) N hN hU)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨general_iff.1 h.1, fun D Lv u => (column_iff D Lv u).1 (h.2 D)⟩, fun h => ⟨general_iff.2 h.1, column_of_general (general_iff.2 h.1)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem massAsCosetSum_iff : CosetGroupMembership.MassAsCosetSum ↔ ClassesDoubleCosets.ClassesAsDoubleCosets :=
   ⟨fun h => ⟨general_iff.1 h.1, fun D Lv u => (column_iff D Lv u).1 (h.2 D)⟩,

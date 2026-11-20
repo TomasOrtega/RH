@@ -16,18 +16,18 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem nsiu_one (h : IsUnit (1 : Mat n).det) : Matrix.nonsingInvUnit (1 : Mat n) h = 1 := Units.ext rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem nsiu_mul (x y : Mat n) (hx : IsUnit x.det) (hy : IsUnit y.det) (hxy : IsUnit (x * y).det) :
     Matrix.nonsingInvUnit (x * y) hxy = Matrix.nonsingInvUnit x hx * Matrix.nonsingInvUnit y hy := Units.ext rfl
 
 /- English proof (translation)
-Establish `h : IsUnit (1 : Mat n).det` using `by simp`. Unfold `Rm`. Rewrite using `[dif_pos h, nsiu_one, map_one, LinearMap.toMatrix_one]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rm_one (lam : Fin n → ℤ) : Rm lam (1 : Mat n) = 1 := by
   have h : IsUnit (1 : Mat n).det := by simp
@@ -35,7 +35,7 @@ theorem rm_one (lam : Fin n → ℤ) : Rm lam (1 : Mat n) = 1 := by
   rw [dif_pos h, nsiu_one, map_one, LinearMap.toMatrix_one]
 
 /- English proof (translation)
-Establish `hxy : IsUnit (x * y).det` using `by rw [Matrix.det_mul]; exact hx.mul hy`. Unfold `Rm`. Rewrite using `[dif_pos hxy, dif_pos hx, dif_pos hy, nsiu_mul x y hx hy hxy, map_mul, LinearMap.toMatrix_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rm_mul (lam : Fin n → ℤ) (x y : Mat n) (hx : IsUnit x.det) (hy : IsUnit y.det) :
     Rm lam (x * y) = Rm lam x * Rm lam y := by
@@ -44,15 +44,13 @@ theorem rm_mul (lam : Fin n → ℤ) (x y : Mat n) (hx : IsUnit x.det) (hy : IsU
   rw [dif_pos hxy, dif_pos hx, dif_pos hy, nsiu_mul x y hx hy hxy, map_mul, LinearMap.toMatrix_mul]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Introduce `ℓ`. Establish `e : ∀ x : Mat n, Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `n) xᵀ (C a) = C a := fun x => by simp [Formalism.GradedWeylDivisibility.rowAct]`. Simplify using `only [e]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `contDiff_const`. Consider the case `add p q hp hq`. Introduce `ℓ`. Simplify using `only [map_add]`. Conclude with `(hp ℓ).add (hq ℓ)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `mul_X p v hp`. Introduce `ℓ`. Establish `e : ∀ x : Mat n, ℓ (Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `n) xᵀ (p * X v)) = ∑ b : Fin n, x b v.1 * (ℓ ∘ₗ LinearMap.mulRight ℂ (X (b, v.2) : MvPolynomial (Fin n × Fin n) ℂ)) (Formalism.GradedWeylDivisibility.rowAct ℂ (n := n) xᵀ p) := by`. Introduce `x`. Rewrite using `[map_mul, Formalism.GradedWeylDivisibility.rowAct, aeval_X, ← Formalism.GradedWeylDivisibility.rowAct, Finset.mul_sum, map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.mulRight_apply, Matrix.transpose_apply, mul_left_comm, ← smul_eq_C_mul, map_smul, smul_eq_mul]`. Simplify using `only [e]`. Use `ContDiff.sum fun b _ => ContDiff.mul ?_ (hp _)` and prove the remaining obligations. Establish `: (fun x : Mat n => x b v.1) = fun x : Mat n => (x : Fin n → Fin n → ℂ) b v.1` using `rfl`.
-
-Conclude with `(contDiff_apply_apply ℝ ℂ b v.1).restrict_scalars ℝ`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rowAct_smooth (f : MvPolynomial (Fin n × Fin n) ℂ) :
     ∀ ℓ : MvPolynomial (Fin n × Fin n) ℂ →ₗ[ℂ] ℂ,
@@ -86,7 +84,7 @@ def extL (lam : Fin n → ℤ) (i : Jd n lam) : MvPolynomial (Fin n × Fin n) �
   Classical.choose (LinearMap.exists_extend ((wb lam).coord i))
 
 /- English proof (translation)
-Establish `h` using `Classical.choose_spec (LinearMap.exists_extend ((wb lam).coord i))`. Establish `h2` using `LinearMap.congr_fun h f`. Rewrite `h2` using `[LinearMap.comp_apply, Submodule.subtype_apply, Module.Basis.coord_apply]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extL_spec (lam : Fin n → ℤ) (i : Jd n lam) (f : Formalism.BasicNotions.nablaSq ℂ n (dw lam)) :
     extL lam i (f : MvPolynomial (Fin n × Fin n) ℂ) = (wb lam).repr f i := by
@@ -96,7 +94,7 @@ theorem extL_spec (lam : Fin n → ℤ) (i : Jd n lam) (f : Formalism.BasicNotio
   exact h2
 
 /- English proof (translation)
-Unfold `Rm`. Rewrite using `[dif_pos hx, LinearMap.toMatrix_apply, ← extL_spec, GlobalTheory.Branching.sqRep_coe]`. Unfold `Formalism.BasicNotions.sqAct Formalism.BasicNotions.detPow`. Rewrite using `[map_smul, smul_eq_mul, Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rm_entry (lam : Fin n → ℤ) (x : Mat n) (hx : IsUnit x.det) (i j : Jd n lam) :
     Rm lam x i j = x.det ^ (dw lam).detShift * extL lam i (Formalism.GradedWeylDivisibility.rowAct ℂ (n := n) xᵀ ((wb lam j : _) : MvPolynomial (Fin n × Fin n) ℂ)) := by
@@ -107,9 +105,9 @@ theorem rm_entry (lam : Fin n → ℤ) (x : Mat n) (hx : IsUnit x.det) (i j : Jd
   rfl
 
 /- English proof (translation)
-Establish `e : (fun x : Mat n => x.det) = fun x : Mat n => ∑ σ : Equiv.Perm (Fin n), (Equiv.Perm.sign σ : ℂ) * ∏ i, x (σ i) i`. Use function extensionality and compare the values at `x`. Rewrite using `[Matrix.det_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, zsmul_eq_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `ContDiff.sum fun σ _ => contDiff_const.mul (contDiff_prod fun i _ => ?_)` and prove the remaining obligations. Conclude with `(contDiff_apply_apply ℝ ℂ (σ i) i).restrict_scalars ℝ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem det_smooth : ContDiff ℝ ∞ (fun x : Mat n => x.det) := by
   have e : (fun x : Mat n => x.det) = fun x : Mat n => ∑ σ : Equiv.Perm (Fin n), (Equiv.Perm.sign σ : ℂ) * ∏ i, x (σ i) i := by
@@ -120,9 +118,9 @@ theorem det_smooth : ContDiff ℝ ∞ (fun x : Mat n => x.det) := by
   exact (contDiff_apply_apply ℝ ℂ (σ i) i).restrict_scalars ℝ
 
 /- English proof (translation)
-Introduce `x hx`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Establish `hx' : x.det ≠ 0` using `hx`. Consider the cases of `c with`. Consider the case `ofNat k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Simplify using `only [Int.ofNat_eq_natCast, zpow_natCast]`. Conclude with `(det_smooth.pow k).contDiffAt`. Consider the case `negSucc k`. Simplify using `only [zpow_negSucc]`. Conclude with `(det_smooth.pow (k + 1)).contDiffAt.inv (pow_ne_zero _ hx')`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem detPow_smooth (c : ℤ) : ContDiffOn ℝ ∞ (fun x : Mat n => x.det ^ c) (GLs n) := by
   intro x hx
@@ -137,9 +135,9 @@ theorem detPow_smooth (c : ℤ) : ContDiffOn ℝ ∞ (fun x : Mat n => x.det ^ c
     exact (det_smooth.pow (k + 1)).contDiffAt.inv (pow_ne_zero _ hx')
 
 /- English proof (translation)
-Establish `hF : ContDiffOn ℝ ∞ (fun x : Mat n => (Matrix.of fun i j : Jd n lam => x.det ^ (dw lam).detShift * extL lam i (Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `n) xᵀ ((wb lam j : _) : MvPolynomial (Fin n × Fin n) ℂ)) : Matrix (Jd n lam) (Jd n lam) ℂ)) (GLs n) := by`. Use `contDiffOn_pi.2 fun i => contDiffOn_pi.2 fun j => ?_` and prove the remaining obligations. Conclude with `(detPow_smooth _).mul (rowAct_smooth _ _).contDiffOn`. Use `hF.congr fun x hx => ?_` and prove the remaining obligations. Use extensionality with `i j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rw [rm_entry lam x (isUnit_iff_ne_zero.2 hx) i j]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rm_smooth (lam : Fin n → ℤ) : ContDiffOn ℝ ∞ (Rm lam) (GLs n) := by
   have hF : ContDiffOn ℝ ∞ (fun x : Mat n => (Matrix.of fun i j : Jd n lam =>

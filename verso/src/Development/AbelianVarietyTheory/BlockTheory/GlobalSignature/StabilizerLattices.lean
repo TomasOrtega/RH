@@ -37,7 +37,7 @@ theorem actV_eq (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (h
       Matrix (Fin M) (Fin M) (R ⊗[F] E)).mulVec y := rfl
 
 /- English proof (translation)
-Unfold `actV`. Rewrite using `[one_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem actV_one (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (y : Fin M → R ⊗[F] E) : actV R σ J 1 y = y := by
@@ -45,7 +45,7 @@ theorem actV_one (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
   rw [one_smul]
 
 /- English proof (translation)
-Unfold `actV`. Rewrite using `[mul_smul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem actV_mul (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (g h : HA R σ J)
     (y : Fin M → R ⊗[F] E) : actV R σ J (g * h) y = actV R σ J g (actV R σ J h y) := by
@@ -95,7 +95,7 @@ def StabTransitive : Prop :=
     ∀ x ∈ L, hE σ J x x = algebraMap F E β → OrbitConcl F E σ J L x β
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨1, fun v => by rw [map_one]; exact one_mem _, x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 example (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] {M : ℕ}
     (L : Submodule (𝓞 E) (Fin M → E)) (x : Fin M → E) (hx : x ∈ L) :
@@ -106,17 +106,15 @@ def stdLat (E : Type) [Field E] (M : ℕ) : Submodule (𝓞 E) (Fin M → E) :=
   Submodule.span (𝓞 E) (Set.range fun i : Fin M => (Pi.single i 1 : Fin M → E))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨j, rfl⟩` from `hz`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `using isIntegral_one`. Simplify `isIntegral_zero` using `[Pi.single_eq_of_ne h]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `zero => intro i`. Conclude with `isIntegral_zero`. Consider the case `add a b _ _ ha hb => intro i`. Conclude with `(ha i).add (hb i)`. Consider the case `smul c a _ ha => intro i`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(c.2 : IsIntegral ℤ (c : E)).mul (ha i)`. Introduce `hy`. Rewrite using `[← Finset.univ_sum_single y]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `: (Pi.single i (y i) : Fin M → E) = (⟨y i, hy i⟩ : 𝓞 E) • (Pi.single i 1 : Fin M → E)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Rewrite using `[Pi.smul_apply, Pi.single_eq_same, Pi.single_eq_same, Algebra.smul_def, mul_one]`. Both sides reduce to the same expression.
-
-Rewrite using `[Pi.smul_apply, Pi.single_eq_of_ne h, Pi.single_eq_of_ne h, smul_zero]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_stdLat (E : Type) [Field E] (M : ℕ) (y : Fin M → E) :
     y ∈ stdLat E M ↔ ∀ i, IsIntegral ℤ (y i) := by
@@ -146,17 +144,15 @@ theorem mem_stdLat (E : Type) [Field E] (M : ℕ) (y : Fin M → E) :
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Establish `hh : ∀ x y : Fin M → E, hE σ 1 x y = ∑ i, σ (x i) * y i`. Introduce `x y`. Simplify using `[hE, Formalism.UG.hform, Matrix.one_apply]`. Use `⟨Submodule.fg_span (Set.finite_range _), ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `y _`. Rewrite using `[← Finset.univ_sum_single y]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `: (Pi.single i (y i) : Fin M → E) = y i • (Pi.single i 1 : Fin M → E)`. Rewrite using `[← Pi.single_smul, smul_eq_mul, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Submodule.subset_span ⟨i, rfl⟩))`. Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Rewrite using `[hh]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx`, `hy` using `[mem_stdLat]`. Conclude with `IsIntegral.sum _ fun i _ => ((hx i).map (σ : E →+* E).toIntAlgHom).mul (hy i)`. Introduce `H`. Rewrite using `[mem_stdLat]`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `H (Pi.single i 1) (Submodule.subset_span ⟨i, rfl⟩)` as an intermediate fact. Rewrite `this` using `[hh, Finset.sum_eq_single i]`. Simplify using `using this`. Introduce `j _ hj`. Simplify using `[Pi.single_eq_of_ne hj]`.
-
-Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSelfDualLat_std {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) :
     IsSelfDualLat σ (1 : Matrix (Fin M) (Fin M) E) (stdLat E M) := by

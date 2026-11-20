@@ -8,15 +8,13 @@ namespace GlobalTheory
 open ValuativeRel
 
 /- English proof (translation)
-Establish `hO : IsCompact (𝒪[k] : Set k)` using `by exact GlobalTheory.SplitWeil.Model.isCompact_int`. Establish `hK : IsCompact ((fun u => t * u) '' (𝒪[k] : Set k))` using `hO.image (continuous_const.mul continuous_id)`. Take `⟨C, hC⟩` from `(hK.image hψ).isBounded.exists_norm_le`. Establish `hpow : ∀ n : ℤ, ‖ψ0 t‖ ^ n ≤ C` using `fun n => by`. Establish `hmem : ψ0 (t * (n : k)) ∈ ψ0 '' ((fun u => t * u) '' (𝒪[k] : Set k))` using `⟨t * n, ⟨n, intCast_mem _ n, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hC _ hmem` as an intermediate fact. Rewrite `this` using `[mul_comm, ← zsmul_eq_mul, AddChar.map_zsmul_eq_zpow, norm_zpow]`. Then use the resulting hypothesis. Establish `hne : ψ0 t ≠ 0` using `fun h => by`. Use `AddChar.map_add_eq_mul ψ0 t (-t)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, AddChar.map_zero_eq_one, h, zero_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `one_ne_zero this`. Establish `hpos : 0 < ‖ψ0 t‖` using `norm_pos_iff.2 hne`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt C (not_le.1 h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `absurd (hpow n) (by rw [zpow_natCast]; exact not_le.2 hn)`. Assume the negation of the conclusion as `h`. Establish `h1 : 1 < ‖ψ0 t‖⁻¹` using `one_lt_inv₀ hpos |>.2 (not_le.1 h)`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt C h1`. Use `hpow (-(n : ℤ))` as an intermediate fact.
-
-Rewrite `this` using `[_root_.zpow_neg, zpow_natCast, ← inv_pow]`. Conclude with `absurd this (not_le.2 hn)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_addChar_nonarch {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ψ0 : AddChar k ℂ) (hψ : Continuous ψ0) (t : k) : ‖ψ0 t‖ = 1 := by
@@ -45,11 +43,11 @@ theorem norm_addChar_nonarch {k : Type} [Field k] [ValuativeRel k] [TopologicalS
     exact absurd this (not_le.2 hn)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ ψ0 hψ κ _ μ hμ w φ φ'`. Use `letI : MeasurableSpace (κ → k) := borel _`. Use `haveI : BorelSpace (κ → k) := ⟨rfl⟩`. Establish `h1 : ∀ s : k, ψ0 s * (starRingEnd ℂ) (ψ0 s) = 1` using `fun s => by`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, norm_addChar_nonarch ψ0 hψ s]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h2 : (fun y => GlobalTheory.WeilM.schr ψ0 w φ y * (starRingEnd ℂ) (GlobalTheory.WeilM.schr ψ0 w φ' y)) = fun y => φ (y + w.1) * (starRingEnd ℂ) (φ' (y + w.1))`. Use function extensionality and compare the values at `y`. Simplify using `only [GlobalTheory.WeilM.schr, map_mul]`. Use `h1 (y ⬝ᵥ w.2 + ⅟(2 : k) * (w.1 ⬝ᵥ w.2))` as an intermediate fact.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(φ (y + w.1) * (starRingEnd ℂ) (φ' (y + w.1))) * this`. Rewrite using `[h2]`. Conclude with `integral_add_right_eq_self (fun y => φ y * (starRingEnd ℂ) (φ' y)) w.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem schr_unitary : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Invertible (2 : k)] (ψ0 : AddChar k ℂ), Continuous ψ0 →
     ∀ {κ : Type} [Fintype κ] (μ : @Measure (κ → k) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →

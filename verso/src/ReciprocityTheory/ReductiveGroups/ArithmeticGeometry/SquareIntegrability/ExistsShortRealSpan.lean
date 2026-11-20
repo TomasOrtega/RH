@@ -16,7 +16,7 @@ def partSub {dim : (E →+* ℂ) → ℕ} (σ : E →+* ℂ) : Submodule ℂ (Vs
 variable {X : PT E} {DF : ℕ} {P : Par X DF} {I : Submodule ℤ (Vsp X.dim)}
 
 /- English proof (translation)
-Introduce `g hg hg0`. Take `⟨x, hx, hu⟩` from `hg`. Establish `h1` using `hI.sep x hx g hu hg0`. Establish `h2 : (1:ℝ) ≤ ‖g‖ ^ 2` using `P.C2.trans h1`. Use polynomial arithmetic with `[norm_nonneg g]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma sep_X (hI : IsSplit P I) : ∀ g ∈ Xg X.L I, g ≠ 0 → 1 ≤ ‖g‖ := by
   intro g hg hg0
@@ -26,9 +26,9 @@ lemma sep_X (hI : IsSplit P I) : ∀ g ∈ Xg X.L I, g ≠ 0 → 1 ≤ ‖g‖ :
   nlinarith [norm_nonneg g]
 
 /- English proof (translation)
-Take `⟨x, u, hxu, hli, hb⟩` from `hI.u1`. Use `⟨x, u, hxu, ?_, hb⟩` and prove the remaining obligations. Establish `hle : Submodule.span ℝ (Set.range u) ≤ IR I`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `(hxu j).2.1`. Apply `Submodule.eq_of_le_of_finrank_eq hle` to reduce the goal to its premises. Rewrite using `[finrank_span_eq_card hli, Fintype.card_fin]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_short_real_span (hI : IsSplit P I) : ∃ x u : Fin (Module.finrank ℝ (IR I)) → Vsp X.dim,
     (∀ j, x j ∈ X.L ∧ IsU I (x j) (u j)) ∧
@@ -44,13 +44,13 @@ lemma exists_short_real_span (hI : IsSplit P I) : ∃ x u : Fin (Module.finrank 
   rw [finrank_span_eq_card hli, Fintype.card_fin]
 
 /- English proof (translation)
-Introduce and unpack `v ⟨hvI, hvσ⟩`. Establish `hvσ' : ∀ j : Idx X.dim, j.1 ≠ σ → v j = 0` using `hvσ`. Establish `hfix : prj σ v = v`. Use extensionality with `i`. Distinguish the cases in `h : i.1 = σ`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Simplify using `[prj, h]`. Simplify using `[prj, h, hvσ' i h]`. Establish `hspan : Submodule.span ℂ (I : Set (Vsp X.dim)) ≤ Submodule.span ℂ (Set.range u)`. Rewrite using `[Submodule.span_le]`. Introduce `y hy`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hyR : y ∈ IR I` using `Submodule.subset_span hy`. Rewrite `hyR` using `[← hu]`. Conclude with `Submodule.span_le_restrictScalars ℝ ℂ (Set.range u) hyR`. Establish `hv : v ∈ Submodule.span ℂ (Set.range u)` using `hspan hvI`. Rewrite using `[← hfix]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmap : Submodule.map (prj σ) (Submodule.span ℂ (Set.range u)) ≤ W`. Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨j, rfl⟩, rfl⟩`. Conclude with `hW j`. Conclude with `hmap (Submodule.mem_map_of_mem hv)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma span_inf_partSub_le {σ : E →+* ℂ} (u : Fin (Module.finrank ℝ (IR I)) → Vsp X.dim)
     (hu : Submodule.span ℝ (Set.range u) = IR I) (W : Submodule ℂ (Vsp X.dim))
@@ -78,9 +78,9 @@ lemma span_inf_partSub_le {σ : E →+* ℂ} (u : Fin (Module.finrank ℝ (IR I)
   exact hmap (Submodule.mem_map_of_mem hv)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hle` using `span_inf_partSub_le u hu W hcon`. Establish `h2 : Module.finrank ℂ ((Submodule.span ℂ (I : Set (Vsp X.dim)) ⊓ partSub σ : Submodule ℂ (Vsp X.dim))) ≤ Module.finrank ℂ W` using `Submodule.finrank_mono hle`. Rewrite `h2` using `[hρ]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 lemma exists_out {σ : E →+* ℂ} {ρ : ℕ}
     (hρ : Module.finrank ℂ (((Submodule.span ℂ (I : Set (Vsp X.dim)) ⊓ partSub σ : Submodule ℂ (Vsp X.dim)))) = ρ)
@@ -96,15 +96,15 @@ lemma exists_out {σ : E →+* ℂ} {ρ : ℕ}
   omega
 
 /- English proof (translation)
-Take `⟨x, u, hxu, hspan, -⟩` from `exists_short_real_span hI`. Use `set S := prj σ '' (Xg X.L I : Set (Vsp X.dim))`. Take `⟨b, hbS, hbspan, hbli⟩` from `exists_linearIndependent ℂ S`. Establish `hbfin : b.Finite` using `hbli.setFinite`. Use `hbfin.fintype` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV1 : ((Submodule.span ℂ (I : Set (Vsp X.dim)) ⊓ partSub σ : Submodule ℂ (Vsp X.dim))) ≤ Submodule.span ℂ b`. Rewrite using `[hbspan]`. Conclude with `span_inf_partSub_le u hspan _ fun j => Submodule.subset_span ⟨u j, ⟨x j, (hxu j).1, (hxu j).2⟩, rfl⟩`. Establish `h1 : ρ ≤ Fintype.card b`. Use `Submodule.finrank_mono hV1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hρ]`. Establish `h2` using `finrank_span_eq_card hbli`. Rewrite `h2` using `[Subtype.range_coe]`. Establish `h3 : Fintype.card {x // x ∈ b} = Fintype.card b` using `Fintype.card_congr (Equiv.refl _)`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `rank_bound X.L I (sep_X hI) (fun α u hu => Xg_act X.stable hI.stable α hu) ω hω σ b hbS hbli`. Take `⟨ρ', hρ'm, hρ'⟩` from `hI.rank`. Establish `hn : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Establish `hf : 2 * PT.f E ≤ Module.finrank ℚ E` using `by unfold PT.f; omega`. Establish `h3 : Module.finrank ℚ E * Fintype.card b ≤ Module.finrank ℚ E * ρ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite `h2` using `[hρ']`. Use the polynomial consequences of the given equalities and inequalities. Establish `h4` using `Nat.le_of_mul_le_mul_left h3 hn`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma rho_le [IsCMField E] (hI : IsSplit P I) (ω : Fin (Module.finrank ℚ E) → 𝓞 E)
     (hω : LinearIndependent ℚ (fun j => (ω j : E))) {σ : E →+* ℂ} {ρ : ℕ}

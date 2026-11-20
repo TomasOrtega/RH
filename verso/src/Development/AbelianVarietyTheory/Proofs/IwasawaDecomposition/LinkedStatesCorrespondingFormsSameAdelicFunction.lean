@@ -17,15 +17,15 @@ namespace GlobalTheory.HeightCounting.SerMove.ReadMove
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨P', _⟩` from `B'`. Take `⟨P, _⟩` from `B`. Simplify using `only at q`. Substitute `q` using the available equality. Establish `e0 : i = i'` using `Fin.ext hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `e0` using the available equality. Consider the cases of `M`. Consider the cases of `M'`. Simplify using `only at a b c d l e g`. Consider the cases of `a`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `b`. Consider the cases of `c`. Consider the cases of `d`. Consider the cases of `l`. Consider the cases of `e`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `g`. Establish `e' : X' = X` using `eq_of_heq hX`. Substitute `e'` using the available equality. Establish `e'' : u' = u` using `eq_of_heq hu`. Substitute `e''` using the available equality.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Introduce `v v' hv y y' hy`. Consider the cases of `hy`. Establish `: v' = v` using `funext fun τ => Subtype.ext (eq_of_heq (hv τ τ HEq.rfl)).symm`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem sameMap_of_heq {B B' : Base} (q : B'.toPre = B.toPre) {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'}
     {w : ColW B f T} {w' : ColW B' f' T'} {Z : w.Lt} {Z' : w'.Lt}
@@ -58,7 +58,7 @@ theorem sameMap_of_heq {B B' : Base} (q : B'.toPre = B.toPre) {f : Fr B.toPre} {
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce and unpack `σ σ' rfl rfl`. Take `⟨a, b, c, d, l, e, g, -, hW, -, -⟩` from `hE.MW j j' hj`. Conclude with `sameMap_of_heq q j j' hj _ _ a b c d l e g _ _ hW _ _ (GlobalTheory.Mem.R3.LiftRead.read_extN q hE j j' hj φ hφ x x' hx)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem read_same {B B' : Base} (q : B'.toPre = B.toPre) {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'}
     {w : ColW B f T} {w' : ColW B' f' T'} {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok}
@@ -83,7 +83,7 @@ namespace GlobalTheory.HeightCounting.SerMove
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `K B B' f f' T T' w w' P P' x x' ι e g g' l hg hg' a a' j j' hj y y' hy`. Conclude with `ReadMove.read_same l.enl.1 l.extN j j' hj ι l.cp.embLL y y' hy _ _ (GlobalTheory.TwInputs.Move.sign_at_base_place_eq_embedding (sideAt x g hg a)) (GlobalTheory.TwInputs.Move.sign_at_base_place_eq_embedding (sideAt x' g' hg' a'))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem reading_link : ∀ {K : Ctx} {B B' : Base} {f : Top.Fr B.toPre} {f' : Top.Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'} {P : Pre2 K w} {P' : Pre2 K w'} (x : St P) (x' : St P') (ι : (Dof x).what₂.LL →+* (Dof x').what₂.LL) (e : ↥(Dof x').LL0 ≃+* ↥(Dof x).LL0) (g : Geo x) (g' : Geo x'), Link x x' ι e g g' → ∀ (hg : GlobalTheory.RealGeo.InGeo g) (hg' : GlobalTheory.RealGeo.InGeo g') (a : BigHost (Dof x)) (a' : BigHost (Dof x')), ∀ (j : Fin (Dof x).R.m) (j' : Fin (Dof x').R.m), (j : ℕ) = j' → ∀ (y : Fin ((sideAt x g hg a).R.nW j) → (Dof x).what₂.LL) (y' : Fin ((sideAt x' g' hg' a').R.nW j') → (Dof x').what₂.LL), (∀ (k : Fin ((sideAt x g hg a).R.nW j)) (k' : Fin ((sideAt x' g' hg' a').R.nW j')), (k : ℕ) = k' → y' k' = ι (y k)) → GlobalTheory.TwInputs.Move.SameMap (GlobalTheory.TwInputs.Move.evidence (sideAt x g hg a) j y) (GlobalTheory.TwInputs.Move.evidence (sideAt x' g' hg' a') j' y') := by
   intro K B B' f f' T T' w w' P P' x x' ι e g g' l hg hg' a a' j j' hj y y' hy

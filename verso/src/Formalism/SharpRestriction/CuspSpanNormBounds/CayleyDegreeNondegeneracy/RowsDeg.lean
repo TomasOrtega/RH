@@ -21,16 +21,16 @@ def rows_KZ (D : D7) (u u' : D.what₂.Word) (Z : GramM D) : ℝ :=
         Real.sqrt ((Tu D u : ℝ) * (Tu D u' : ℝ))) ^ 2 - 1)
 
 /- English proof (translation)
-Unfold `rows_KZ`. Rewrite using `[rows_leadMinor_inv h D.R.rS, rows_leadMinor_inv h (D.R.rS + 1)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rows_KZ_inv {Z Z₂ : GramM D} (h : ZEquiv Z Z₂) (u u' : D.what₂.Word) : rows_KZ D u u' Z₂ = rows_KZ D u u' Z := by
   unfold rows_KZ
   rw [rows_leadMinor_inv h D.R.rS, rows_leadMinor_inv h (D.R.rS + 1)]
 
 /- English proof (translation)
-Unfold `rows_Kt rows_KZ`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[rows_chRatio_eq Y hrd t τ]`. Unfold `onePlusChSh`. Distinguish the cases in `h0 : Dr (X.fl t) (X.fl' t) = 0`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Establish `h0' : leadMinorE (termGramMatrix X t) D.R.rS = 0` using `h0`. Rewrite using `[if_pos h0, if_pos h0']`. Establish `h0' : ¬ leadMinorE (termGramMatrix X t) D.R.rS = 0` using `h0`. Rewrite using `[if_neg h0, if_neg h0']`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rows_Kt_KZ (hrd : 0 < D.host.rdE) (t : D.s.Term u u') : rows_Kt Y t = rows_KZ D u u' (termGramMatrix X t) := by
   unfold rows_Kt rows_KZ
@@ -58,13 +58,13 @@ def rows_lam (D : D7) (large₂ : SizeData₂ D) (c Ca C2 Ch : ℝ) (q : ℕ) (Z
     (Ca / D.R.k) ^ (D.R.k * D.R.f) * sizeZ D large₂.sc.b Ch Z ^ (-(2 * (q : ℝ) / ((D.R.rS : ℝ) + 1)))
 
 /- English proof (translation)
-The claim follows from `(D.R.k_even.mul_right _).pow_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem rows_CK_nonneg (D : D7) (Ca : ℝ) : 0 ≤ (Ca / D.R.k) ^ (D.R.k * D.R.f) :=
   (D.R.k_even.mul_right _).pow_nonneg _
 
 /- English proof (translation)
-Unfold `rows_GamD`. Establish `h3 : 0 < GamS D large₂` using `by unfold GamS; exact Real.exp_pos _`. Use `rows_CK_nonneg D Ca` as an intermediate fact. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem rows_GamD_nonneg (D : D7) (large₂ : SizeData₂ D) (Ca C2 : ℝ) : 0 ≤ rows_GamD D large₂ Ca C2 := by
   unfold rows_GamD
@@ -73,7 +73,7 @@ theorem rows_GamD_nonneg (D : D7) (large₂ : SizeData₂ D) (Ca C2 : ℝ) : 0 �
   positivity
 
 /- English proof (translation)
-Establish `hs : 0 < sizeZ D large₂.sc.b Ch Z` using `lt_of_lt_of_le one_pos (rows_one_le_sizeZ _ _ _)`. Unfold `rows_lam rows_GamD`. Rewrite using `[Real.rpow_add hs, mul_pow, rows_rpow_pow hs]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rows_lam_eq (D : D7) (large₂ : SizeData₂ D) (c Ca C2 Ch : ℝ) (q : ℕ) (Z : GramM D) :
     rows_lam D large₂ c Ca C2 Ch q Z = (HHZ D large₂.sc.b c Z ^ (c * (D.R.rS : ℝ) ^ 2)) ^ 2 *
@@ -86,7 +86,7 @@ theorem rows_lam_eq (D : D7) (large₂ : SizeData₂ D) (c Ca C2 Ch : ℝ) (q : 
   ring
 
 /- English proof (translation)
-Rewrite using `[rows_lam_eq]`. Establish `h1` using `rows_one_le_HHZ' D large₂ c Z`. Establish `h2` using `rows_one_le_sizeZ (D := D) large₂.sc.b Ch Z`. Establish `h3` using `rows_GamD_nonneg D large₂ Ca C2`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem rows_lam_nonneg (D : D7) (large₂ : SizeData₂ D) (c Ca C2 Ch : ℝ) (q : ℕ) (Z : GramM D) : 0 ≤ rows_lam D large₂ c Ca C2 Ch q Z := by
   rw [rows_lam_eq]
@@ -115,7 +115,7 @@ def rows_degB (D : D7) (large₂ : SizeData₂ D) (u : D.what₂.Word) (c Ca C2 
 variable {C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm : ℝ} {q : ℕ}
 
 /- English proof (translation)
-Take `⟨t, hG, hrel, hE, _⟩` from `hZ`. Rewrite using `[rows_KZ_inv hE, ← rows_Kt_KZ Y (d_rdE_pos h.hH.1)]`. Conclude with `rowsT_Kt_pos Y (d_rdE_pos h.hH.1) t hG hrel`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rows_KZ_pos (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm q) {Z : GramM D}
     (hZ : wordPairGramGood X u u' large₂ c Z) : 0 < rows_KZ D u u' Z := by
@@ -124,7 +124,7 @@ theorem rows_KZ_pos (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ
   exact rowsT_Kt_pos Y (d_rdE_pos h.hH.1) t hG hrel
 
 /- English proof (translation)
-Establish `h1` using `rows_nZ_pos Y h hZ`. Establish `h2` using `rows_KZ_pos Y h hZ`. Establish `h3` using `rows_Tr_pos D u`. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem rows_den_pos (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm q) {Z : GramM D}
     (hZ : wordPairGramGood X u u' large₂ c Z) :
@@ -135,9 +135,9 @@ theorem rows_den_pos (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch �
   positivity
 
 /- English proof (translation)
-Take `⟨hEq, hGood⟩` from `rows_Zr_spec Y h.hH h.hHH t hG hrel`. Establish `h1` using `rows_term_MINdec Y h.hH h.hDEC h.ha h.hb h.hp h.hpp h.hV h.hT h.hCh t hG hrel q h.hq`. Rewrite `h1` using `[rows_Kt_KZ Y (d_rdE_pos h.hH.1), ← rows_KZ_inv hEq, ← rows_nZ_inv hEq, ← rows_HHZ_inv hEq, ← rows_sizeZ_inv hEq]`. Establish `h2 : aT X t ^ 2 / dimPi (hc` using `D.hcW) u ≤ rows_lam D large₂ c Ca C2 Ch q (termReducedGramMatrix Y h.hH h.hHH t) / (wordPairGramNorm D u u' (termReducedGramMatrix Y h.hH h.hHH t) * rows_KZ D u u' (termReducedGramMatrix Y h.hH h.hHH t) ^ (2 * D.R.k) * (Tr D u)⁻¹ ^ (D.R.k * D.R.f)) := by`. Rewrite using `[le_div_iff₀ (rows_den_pos Y h hGood)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h3 : aT X t / Real.sqrt (dimPi (hc` using `D.hcW) u) = Real.sqrt (aT X t ^ 2 / dimPi (hc := D.hcW) u) := by`. Rewrite using `[Real.sqrt_div (sq_nonneg _), Real.sqrt_sq (aT_nonneg X t)]`. Rewrite using `[h3]`. Conclude with `Real.sqrt_le_sqrt h2`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rows_deg_term (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm q) (t : D.s.Term u u')
     (hG : D.s.Gterm t ≠ 0) (hrel : D.s.relevant t) :
@@ -163,9 +163,9 @@ theorem rows_deg_term (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch 
 include Y in
 
 /- English proof (translation)
-Establish `h` using `((rows_thmA Y hThA hSt p hG1 hG2 hs).2 hnd).2.2`. Establish `e1 : G0 (X.abelian₂ (D.s.pfst p)) (gS D) (X.fl (D.s.pfst p)) (X.fl' (D.s.pfst p)) = wordPairGramProduct D u u' (termGramMatrix X (D.s.pfst p))` using `hG0 (D.s.pfst p) hG1`. Establish `e2 : G0 (X.abelian₂ (D.s.psnd p)) (gS D) (X.fl (D.s.psnd p)) (X.fl' (D.s.psnd p)) = wordPairGramProduct D u u' (termGramMatrix X (D.s.psnd p))` using `hG0 (D.s.psnd p) hG2`. Rewrite `e2` using `[← X.pLam p, ← X.pfl p]`. Rewrite `h` using `[e1, e2, ← X.s0_eq p, ← rows_gg_eq, rows_Kpair_eq Y hrd, rows_Kt_KZ Y hrd, rows_Kt_KZ Y hrd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `rows_DeD`. Establish `e3 : (Tr D u)⁻¹ ^ D.R.f = (((Tu D u : ℕ) : ℝ) ^ D.R.f)⁻¹` using `by rw [inv_pow]; rfl`. Rewrite using `[e3]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem rows_thmA_deg (hThA : VanishingOnXAndXPlus.adm14 D u u') (hSt : Cnt.Stand D u u') (hG0 : @LatticeDeterminantFactorization D X u u') (hrd : 0 < D.host.rdE)
     (p : D.s.Pair u u') (hG1 : D.s.Gterm (D.s.pfst p) ≠ 0) (hG2 : D.s.Gterm (D.s.psnd p) ≠ 0) (hs : 2 ≤ D.s.s0 p)
@@ -185,13 +185,13 @@ theorem rows_thmA_deg (hThA : VanishingOnXAndXPlus.adm14 D u u') (hSt : Cnt.Stan
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `hb` using `d_two_le_b D large₂`. Establish `hb0 : 0 < large₂.sc.b` using `by linarith`. Establish `hm2 : (2 : ℝ) ≤ D.R.m` using `by rw [rows_m_cast]; have : (0 : ℝ) ≤ D.R.rS := by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hf0 : (0 : ℝ) ≤ D.R.f` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h2 : 1 ≤ sizeZ D large₂.sc.b c Z ^ 4` using `one_le_pow₀ (rows_one_le_sizeZ _ _ _)`. Establish `hE : ((2 * D.R.f : ℕ) : ℝ) ≤ c * (D.R.m : ℝ) ^ 2 * D.R.f * (c * D.R.m)`. Establish `e : c * (D.R.m : ℝ) ^ 2 * D.R.f * (c * D.R.m) = (c ^ 2 * (D.R.m : ℝ) ^ 3) * D.R.f` using `by ring`. Rewrite using `[e]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `h8 : (2 : ℝ) ≤ c ^ 2 * (D.R.m : ℝ) ^ 3`. Establish `a1 : (1 : ℝ) ≤ c ^ 2` using `one_le_pow₀ hc`. Establish `a2 : (2 : ℝ) ≤ (D.R.m : ℝ) ^ 3` using `by nlinarith [mul_nonneg (by linarith : (0:ℝ) ≤ D.R.m) (by linarith : (0:ℝ) ≤ D.R.m)]`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `mul_le_mul_of_nonneg_right h8 hf0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h1 : (3 : ℝ) ^ D.R.f ≤ (large₂.sc.b ^ (c * (D.R.m : ℝ) ^ 2 * D.R.f)) ^ (c * (D.R.m : ℝ))`. Rewrite using `[← Real.rpow_mul hb0.le]`. Combine the equalities or inequalities in the displayed calculation. Unfold `HHZ`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem rows_three_le (D : D7) (large₂ : SizeData₂ D) {c : ℝ} (hc : 1 ≤ c) (Z : GramM D) : (3 : ℝ) ^ D.R.f ≤ HHZ D large₂.sc.b c Z := by
   have hb := d_two_le_b D large₂
@@ -218,9 +218,9 @@ theorem rows_three_le (D : D7) (large₂ : SizeData₂ D) {c : ℝ} (hc : 1 ≤ 
     _ ≤ _ := mul_le_mul_of_nonneg_left h2 (by positivity)
 
 /- English proof (translation)
-Establish `hg2` using `two_le_gg_of_count_hypotheses h.hH.1`. Establish `h1` using `rows_KZ_pos Y h gx`. Establish `h2` using `rows_KZ_pos Y h gy`. Establish `h3` using `rows_Tr_pos D u`. Establish `: 0 ≤ gg D` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `rows_DeD`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem rows_DeD_nonneg (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm q) (s : ℕ) {x y : GramM D}
     (gx : wordPairGramGood X u u' large₂ c x) (gy : wordPairGramGood X u u' large₂ c y) : 0 ≤ rows_DeD D u u' s x y := by
@@ -233,19 +233,17 @@ theorem rows_DeD_nonneg (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 C
   positivity
 
 /- English proof (translation)
-Establish `hg2` using `two_le_gg_of_count_hypotheses h.hH.1`. Establish `hrd` using `d_rdE_pos h.hH.1`. Establish `hDe0` using `rows_DeD_nonneg Y h s gx gy`. Distinguish the cases in `hne : S'.Nonempty`. Take `⟨p₀, hp₀⟩` from `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hDe_of : ∀ p ∈ S', pairDeterminant X p ≤ rows_DeD D u u' s x y`. Introduce `p hp`. Take `⟨⟨hG1, hG2, hs0, hnd⟩, e1, e2⟩` from `hS p hp`. Establish `h'` using `rows_thmA_deg Y h.hThA h.hH.2.1 h.hG0 hrd p hG1 hG2 (by rw [hs0]; exact hs) hnd`. Unfold `rows_DeD at h' ⊢`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `h'` using `[hs0, ← gramProductG0_equiv_invariant e1, ← gramProductG0_equiv_invariant e2, ← rows_KZ_inv e1, ← rows_KZ_inv e2]`. Conclude with `h'`. Establish `h1 : 1 ≤ rows_DeD D u u' s x y` using `le_trans (rows_DetGeOne_of h.hH.2.1 p₀ (hS p₀ hp₀).1.1 (hS p₀ hp₀).1.2.1) (hDe_of p₀ hp₀)`. Establish `kb : ∀ Z, wordPairGramGood X u u' large₂ c Z → rows_KZ D u u' Z ^ 2 ≤ 9 ^ D.R.f * HHZ D large₂.sc.b c Z ^ 3`. Introduce and unpack `Z ⟨t, hG, hrel, hE, _⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rows_KZ_inv hE, rows_HHZ_inv hE, ← rows_Kt_KZ Y hrd]`. Conclude with `hK t hG hrel`. Establish `h9 : (9 : ℝ) ^ D.R.f ≤ HHZ D large₂.sc.b c x * HHZ D large₂.sc.b c y`. Establish `e : (9 : ℝ) ^ D.R.f = 3 ^ D.R.f * 3 ^ D.R.f` using `by rw [← mul_pow]; norm_num`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul (rows_three_le D large₂ hc1 x) (rows_three_le D large₂ hc1 y) (by positivity) (le_trans zero_le_one (rows_one_le_HHZ D large₂ h.hc x))`. Establish `hT1 : 1 ≤ Tr D u` using `by unfold Tr; exact_mod_cast (D.mem u).A.T_prime.pos`. Establish `h2 : rows_DeD D u u' s x y ≤ (HHZ D large₂.sc.b c x * HHZ D large₂.sc.b c y) ^ (3 : ℝ)`. Use `Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.deDegBound D.R.f s (gg D) (Tr D u) (wordPairGramProduct D u u' x) (wordPairGramProduct D u u' y) (rows_KZ D u u' x) (rows_KZ D u u' y) (HHZ D large₂.sc.b c x) (HHZ D large₂.sc.b c y) hg2 hT1 (gramProductG0_pos Y h.hH.1 h.h …` as an intermediate fact. Rewrite using `[show (3 : ℝ) = ((3 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this`. Take `⟨t1, hG1, hr1, hE1, _⟩` from `gx`. Take `⟨t2, hG2, hr2, hE2, _⟩` from `gy`. Use `rows_count Y h.hH h.hC3 x y (rows_RelZ_inv hE1 (rows_RelZ_term X t1 hG1 hr1)) (rows_RelZ_inv hE2 (rows_RelZ_term X t2 hG2 hr2)) s hs hsk _ h1 h2 (rows_c3B_nonneg D large₂ u h.hc x y s hDe0) _ ?_` and prove the remaining obligations. Introduce `p hp`.
-
-Conclude with `⟨(hS p hp).1.1, (hS p hp).1.2.1, (hS p hp).2.1, (hS p hp).2.2, (hS p hp).1.2.2.1, hDe_of p hp⟩`. Rewrite using `[Finset.not_nonempty_iff_eq_empty.1 hne, Finset.sum_empty]`. Conclude with `mul_nonneg (rows_massRows_nonneg Y) (rows_c3B_nonneg D large₂ u h.hc x y s hDe0)`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rows_deg_count (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm q) (hK : rows_KBound Y c)
     (hc1 : 1 ≤ c) (s : ℕ) (hs : 2 ≤ s)
@@ -296,21 +294,21 @@ theorem rows_deg_count (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch
     exact mul_nonneg (rows_massRows_nonneg Y) (rows_c3B_nonneg D large₂ u h.hc x y s hDe0)
 
 /- English proof (translation)
-Establish `hrd` using `d_rdE_pos h.hH.1`. Establish `hb2` using `d_two_le_b D large₂`. Establish `hg2` using `two_le_gg_of_count_hypotheses h.hH.1`. Establish `hc` using `h.hc`. Establish `hv1 : 1 ≤ D.host.v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, h19, _⟩` from `h.hH.1.1`. Conclude with `h19`. Establish `hk1 : 1 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Establish `hx1` using `rows_one_le_HHZ D large₂ hc x`. Establish `hy1` using `rows_one_le_HHZ D large₂ hc y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sx1` using `rows_one_le_sizeZ (D := D) large₂.sc.b Ch x`. Establish `sy1` using `rows_one_le_sizeZ (D := D) large₂.sc.b Ch y`. Establish `hh0 : 0 ≤ HHZ D large₂.sc.b c x * HHZ D large₂.sc.b c y` using `mul_nonneg (by linarith) (by linarith)`. Establish `hP1` using `rows_P_one_le D large₂ c Ch`. Establish `cx : HHZ D large₂.sc.b c x ≤ rows_P D large₂ c Ch * sizeZ D large₂.sc.b Ch x ^ 4` using `rows_HHZ_cmp hrd (by linarith) c Ch x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cy : HHZ D large₂.sc.b c y ≤ rows_P D large₂ c Ch * sizeZ D large₂.sc.b Ch y ^ 4` using `rows_HHZ_cmp hrd (by linarith) c Ch y`. Establish `hαsq : ∀ Z, wordPairGramGood X u u' large₂ c Z → LatticeSumBounds.nTot D.R.k D.R.f D.host.v (wordPairGramProduct D u u' Z) (NT D u) * rows_alD D large₂ u u' c Ca C2 Ch q Z ^ 2 * rows_KZ D u u' Z ^ (2 * D.R.k) * (Tr D u)⁻¹ ^ (D.R.k * D.R.f) ≤ rows_lam D large₂ c Ca C2 Ch q Z`. Introduce `Z hZ`. Establish `e : wordPairGramNorm D u u' Z = LatticeSumBounds.nTot D.R.k D.R.f D.host.v (wordPairGramProduct D u u' Z) (NT D u)` using `d_nProduct h.hH.1 Z`. Rewrite using `[← e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `rows_alD`. Rewrite using `[Real.sq_sqrt (div_nonneg (rows_lam_nonneg D large₂ c Ca C2 Ch q Z) (rows_den_pos Y h hZ).le)]`. Establish `hd` using `(rows_den_pos Y h hZ).ne'`. Use `le_of_eq ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `n1` using `Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.degRow D.R.k D.R.f s (gg D) D.host.v (Tr D u) (NT D u) (wordPairGramProduct D u u' x) (wordPairGramProduct D u u' y) (rows_KZ D u u' x) (rows_KZ D u u' y) (XiS D u (HHZ D large₂.sc.b c x * HHZ D large₂.sc.b c y) c s) ((HHZ …`. Establish `hXi : XiS D u (HHZ D large₂.sc.b c x * HHZ D large₂.sc.b c y) c s ≤ XiS D u (rows_P D large₂ c Ch ^ 2) c s * (sizeZ D large₂.sc.b Ch x * sizeZ D large₂.sc.b Ch y) ^ (4 * (c * D.R.k))`. Use `rows_Xi_le D u hh0 (by positivity) (one_le_mul_of_one_le_of_one_le sx1 sy1) hc ?_ s` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `he : 4 * (c * D.R.k) + 4 * pairCountExponent D c s + 4 * (c * (D.R.rS : ℝ) ^ 2) + (C2 * (D.R.m : ℝ) ^ 2 + C2 * (D.R.m : ℝ) ^ 4 * 2) / 2 - 2 * (q : ℝ) / ((D.R.rS : ℝ) + 1) / 2 ≤ -(12 * ((D.R.rS : ℝ) + 1) ^ 2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : 2 * (q : ℝ) / ((D.R.rS : ℝ) + 1) / 2 = (q : ℝ) / ((D.R.rS : ℝ) + 1)` using `by ring`. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `n2` using `rows_num_pair (P := rows_P D large₂ c Ch) (σ₁ := sizeZ D large₂.sc.b Ch x) (σ₂ := sizeZ D large₂.sc.b Ch y) (h₁ := HHZ D large₂.sc.b c x) (h₂ := HHZ D large₂.sc.b c y) (cr := c * (D.R.rS : ℝ) ^ 2) (Γ := rows_GamD D large₂ Ca C2) (a2 := C2 * (D.R.m : ℝ) ^ 2 + C2 * (D.R.m : ℝ) ^ 4 …`. Establish `hA0 : 0 ≤ (2 / gg D) ^ ((s - 2) * D.R.k * D.R.f) * ((D.R.k : ℝ) * D.host.v / (Real.exp 1 * Real.pi)) ^ (D.R.k * D.R.f)`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpi` using `Real.pi_pos`. Establish `: 0 ≤ gg D` using `by linarith`. Establish `: 0 ≤ D.host.v` using `by linarith`. Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem rows_deg_prod (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm q) (s : ℕ) (hs : 2 ≤ s)
     (hq2 : 4 * (c * D.R.k) + 4 * pairCountExponent D c s + 4 * (c * (D.R.rS : ℝ) ^ 2) +
@@ -411,11 +409,11 @@ theorem rows_deg_prod (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch 
     _ = _ := by unfold rows_RD; ring
 
 /- English proof (translation)
-Establish `hg2` using `two_le_gg_of_count_hypotheses h.hH.1`. Establish `hv1 : 1 ≤ D.host.v`. Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, h19, _⟩` from `h.hH.1.1`. Conclude with `h19`. Establish `hP1` using `rows_P_one_le D large₂ c Ch`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG` using `rows_GamD_nonneg D large₂ Ca C2`. Establish `hXiP0 : 0 ≤ XiS D u (rows_P D large₂ c Ch ^ 2) c s` using `rows_XiS_nonneg D u (by positivity) h.hc s`. Establish `hpi` using `Real.pi_pos`. Establish `: 0 ≤ gg D` using `by linarith`. Establish `: 0 ≤ D.host.v` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h.hc` as an intermediate fact. Unfold `rows_RD`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem rows_RD_nonneg (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm q) (s : ℕ) :
     0 ≤ rows_RD D large₂ u c Ca C2 Ch s := by
@@ -434,15 +432,13 @@ theorem rows_RD_nonneg (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch
   positivity
 
 /- English proof (translation)
-Use `rowBound_relevant Y (fun p hp => ⟨hp.1, hp.2.1⟩) ?_` and prove the remaining obligations. Introduce `S hS`. Establish `sp1 : ∀ p ∈ S, ZEquiv (termGramMatrix X (D.s.pfst p)) (termReducedGramMatrix Y h.hH h.hHH (D.s.pfst p)) ∧ wordPairGramGood X u u' large₂ c (termReducedGramMatrix Y h.hH h.hHH (D.s.pfst p))` using `fun p hp => rows_Zr_spec Y h.hH h.hHH _ (hS p hp).1.1 (hS p hp).2.1`. Establish `sp2 : ∀ p ∈ S, ZEquiv (termGramMatrix X (D.s.psnd p)) (termReducedGramMatrix Y h.hH h.hHH (D.s.psnd p)) ∧ wordPairGramGood X u u' large₂ c (termReducedGramMatrix Y h.hH h.hHH (D.s.psnd p))` using `fun p hp => rows_Zr_spec Y h.hH h.hHH _ (hS p hp).1.2.1 (hS p hp).2.2`. Establish `key` using `weighted_sum_le' S (fun p => X.wRow p) (fun p => aT X (D.s.pfst p) / Real.sqrt (dimPi (hc := D.hcW) u)) (fun p => aT X (D.s.psnd p) / Real.sqrt (dimPi (hc := D.hcW) u)) (fun p => termReducedGramMatrix Y h.hH h.hHH (D.s.pfst p)) (fun p => termReducedGramMatrix Y h.hH h.hHH (D.s.ps …`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `x y ⟨p1, hp1, rfl⟩ ⟨p2, hp2, rfl⟩ S' hS' hl`. Use `rows_deg_count Y h hK hc1 s hs hsk _ _ (sp1 p1 hp1).2 (sp2 p2 hp2).2 S' fun p hp => ?_` and prove the remaining obligations. Use `⟨(hS p (hS' hp)).1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← (hl p hp).1]`. Conclude with `(sp1 p (hS' hp)).1`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (hl p hp).2]`. Conclude with `(sp2 p (hS' hp)).1)`. Use the proof step `(by`. Introduce and unpack `x y ⟨p1, hp1, rfl⟩ ⟨p2, hp2, rfl⟩`. Conclude with `rows_deg_prod Y h s hs hq2 _ _ (sp1 p1 hp1).2 (sp2 p2 hp2).2)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 
-Use the proof step `(fun x => Real.sqrt_nonneg _)`. Use the proof step `(fun x => Real.rpow_nonneg (le_trans zero_le_one (rows_one_le_sizeZ _ _ _)) _)`. Use the proof step `(fun 𝒵 h𝒵 => rows_nd_size Y h 𝒵 fun Z hZ => by obtain ⟨p, hp, rfl⟩ := h𝒵 Z hZ; exact (sp1 p hp).2)`. Use the proof step `(fun 𝒵 h𝒵 => rows_nd_size Y h 𝒵 fun Z hZ => by obtain ⟨p, hp, rfl⟩ := h𝒵 Z hZ; exact (sp2 p hp).2)`. Rewrite using `[rows_wP_sum h.hdim S]`.
-
-Combine the equalities or inequalities in the displayed calculation. Unfold `rows_degB`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem rows_Deg_record (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm q) (hK : rows_KBound Y c)
     (hc1 : 1 ≤ c) (s : ℕ) (hs : 2 ≤ s) (hsk : s ≤ D.R.k)

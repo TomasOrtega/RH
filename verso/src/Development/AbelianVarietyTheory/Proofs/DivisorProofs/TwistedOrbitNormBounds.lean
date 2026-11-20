@@ -18,13 +18,13 @@ def EBd {n : ℕ} (M : Matrix (Fin n) (Fin n) (PadicAlgCl p)) (c : ℝ) : Prop :
   GlobalTheory.InnerAutomorphism.EntriesBounded M c
 
 /- English proof (translation)
-Introduce `i j` and use `(h i j).trans hab`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem EBd.mono {n : ℕ} {M : Matrix (Fin n) (Fin n) (PadicAlgCl p)} {a b : ℝ} (h : EBd M a) (hab : a ≤ b) :
     EBd M b := fun i j => (h i j).trans hab
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg ha hb) fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hA i k) (hB k j) (norm_nonneg _) ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EBd.mul {n : ℕ} {A B : Matrix (Fin n) (Fin n) (PadicAlgCl p)} {a b : ℝ} (hA : EBd A a) (hB : EBd B b)
     (ha : 0 ≤ a) (hb : 0 ≤ b) : EBd (A * B) (a * b) := by
@@ -35,7 +35,7 @@ theorem EBd.mul {n : ℕ} {A B : Matrix (Fin n) (Fin n) (PadicAlgCl p)} {a b : �
   exact mul_le_mul (hA i k) (hB k j) (norm_nonneg _) ha
 
 /- English proof (translation)
-Introduce `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem EBd.one (n : ℕ) : EBd (1 : Matrix (Fin n) (Fin n) (PadicAlgCl p)) 1 := by
   intro i j
@@ -44,19 +44,17 @@ theorem EBd.one (n : ℕ) : EBd (1 : Matrix (Fin n) (Fin n) (PadicAlgCl p)) 1 :=
   · simp [Matrix.one_apply_ne h]
 
 /- English proof (translation)
-Establish `hdet : (Matrix.scalar (Fin n) μ - M).det = 0`. Rewrite using `[← Matrix.eval_charpoly]`. Conclude with `hμ`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hdet`. Establish `hv' : M *ᵥ v = μ • v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv` using `[Matrix.sub_mulVec, sub_eq_zero]`. Rewrite using `[← hv]`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.scalar_apply, Matrix.diagonal_apply]`. Use `haveI : Nonempty (Fin n) := by`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nonempty_iff]`. Conclude with `hv0 (funext fun i => (IsEmpty.false i).elim)`. Take `⟨i, hi⟩` from `Finite.exists_max fun j => ‖v j‖`. Establish `hvi : v i ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `h0`. Apply `hv0` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Use `hi j` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `norm_le_zero_iff.1 this`. Establish `e : μ * v i = ∑ j, M i j * v j`. Use `congrFun hv' i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at this`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle : ‖μ * v i‖ ≤ c * ‖v i‖`. Rewrite using `[e]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg hc (norm_nonneg _)) fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hM i j) (hi j) (norm_nonneg _) hc`.
-
-Rewrite `hle` using `[norm_mul]`. Conclude with `le_of_mul_le_mul_right hle (norm_pos_iff.2 hvi)`.
+A detailed English derivation is pending.
 -/
 theorem norm_root_le {n : ℕ} {M : Matrix (Fin n) (Fin n) (PadicAlgCl p)} {c : ℝ} (hM : EBd M c) (hc : 0 ≤ c)
     {μ : PadicAlgCl p} (hμ : M.charpoly.IsRoot μ) : ‖μ‖ ≤ c := by
@@ -107,13 +105,13 @@ def GB (G : HTGroup p) (r : ℕ) (g : Gr G r) (c : ℝ) : Prop :=
 variable (G : HTGroup p) (r : ℕ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.mono hab, fun w => (h.2 w).mono hab⟩`.
+Supply the required witnesses or components.
 -/
 theorem GB.mono {g : Gr G r} {a b : ℝ} (h : GB G r g a) (hab : a ≤ b) : GB G r g b :=
   ⟨h.1.mono hab, fun w => (h.2 w).mono hab⟩
 
 /- English proof (translation)
-Use `⟨?_, fun w => ?_⟩` and prove the remaining obligations. Use `hg.1.mul hh.1 ha hb` as an intermediate fact. Rewrite `this` using `[← Matrix.map_mul]`. Then use the resulting hypothesis. Use `(hg.2 w).mul (hh.2 w) ha hb` as an intermediate fact. Rewrite `this` using `[← Matrix.map_mul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem GB.mul {g h : Gr G r} {a b : ℝ} (hg : GB G r g a) (hh : GB G r h b) (ha : 0 ≤ a) (hb : 0 ≤ b) :
     GB G r (g * h) (a * b) := by
@@ -124,7 +122,7 @@ theorem GB.mul {g h : Gr G r} {a b : ℝ} (hg : GB G r g a) (hh : GB G r h b) (h
     rwa [← Matrix.map_mul] at this
 
 /- English proof (translation)
-Use `⟨?_, fun w => ?_⟩` and prove the remaining obligations. Use `EBd.one (p := p) 1` as an intermediate fact. Simplify `this` using `[Matrix.map_one]`. Use `EBd.one (p := p) G.n` as an intermediate fact. Simplify `this` using `[Matrix.map_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem GB.one : GB G r 1 1 := by
   refine ⟨?_, fun w => ?_⟩
@@ -134,9 +132,9 @@ theorem GB.one : GB G r 1 1 := by
     simpa [Matrix.map_one] using this
 
 /- English proof (translation)
-Use `⟨?_, fun w => ?_⟩` and prove the remaining obligations. Take `⟨h, e⟩` from `hk.1`. Introduce `i j`. Rewrite using `[Matrix.map_apply, ← e]`. Conclude with `(mem_Obar_iff (p := p)).1 ((h : Matrix (Fin 1) (Fin 1) (GlobalTheory.LKLoc.intR p (GlobalTheory.LKRes.Q0 p) r)) i j).2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h, e⟩` from `hk.2 w (Set.mem_univ _)`. Introduce `i j`. Rewrite using `[Matrix.map_apply, ← e]`. Conclude with `GlobalTheory.LKRes.Model.mulMap_intKQ p (G.Fw w) r _ ((h : Matrix (Fin G.n) (Fin G.n) (intKQ p (G.Fw w) r)) i j).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GB.of_mem {k : Gr G r} (hk : k ∈ KHT p G.m G.n r G.Fw) : GB G r k 1 := by
   refine ⟨?_, fun w => ?_⟩
@@ -150,9 +148,9 @@ theorem GB.of_mem {k : Gr G r} (hk : k ∈ KHT p G.m G.n r G.Fw) : GB G r k 1 :=
     exact GlobalTheory.LKRes.Model.mulMap_intKQ p (G.Fw w) r _ ((h : Matrix (Fin G.n) (Fin G.n) (intKQ p (G.Fw w) r)) i j).2
 
 /- English proof (translation)
-Set `a : ℝ` to `∑ i, ∑ j, ‖((g.1 : Matrix (Fin 1) (Fin 1) (Qr p r)).map (Qr p r).val) i j‖`. Set `b : ℝ` to `∑ w, ∑ i, ∑ j, ‖((g.2 w : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw w) r)).map (GlobalTheory.LKRes.Model.mulMap p (G.Fw w) r)) i j‖`. Establish `ha : 0 ≤ a` using `by positivity`. Establish `hb : 0 ≤ b` using `by positivity`. Use `⟨1 + a + b, by linarith, fun i j => ?_, fun w i j => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ‖((g.1 : Matrix (Fin 1) (Fin 1) (Qr p r)).map (Qr p r).val) i j‖ ≤ a` using `(Finset.single_le_sum (f := fun j => ‖((g.1 : Matrix (Fin 1) (Fin 1) (Qr p r)).map (Qr p r).val) i j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖((g.1 : Matrix (Fin 1) (Fin 1) (Qr p r)).map (Qr p r).val) i j‖) (fun _ _ => by …`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ‖((g.2 w : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw w) r)).map (GlobalTheory.LKRes.Model.mulMap p (G.Fw w) r)) i j‖ ≤ b` using `((Finset.single_le_sum (f := fun j => ‖((g.2 w : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw w) r)).map (GlobalTheory.LKRes.Model.mulMap p (G.Fw w) r)) i j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖((g.2 w : Matrix (Fin G.n) (Fi …`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem GB.exists (g : Gr G r) : ∃ c : ℝ, 1 ≤ c ∧ GB G r g c := by
   let a : ℝ := ∑ i, ∑ j, ‖((g.1 : Matrix (Fin 1) (Fin 1) (Qr p r)).map (Qr p r).val) i j‖
@@ -178,7 +176,7 @@ theorem GB.exists (g : Gr G r) : ∃ c : ℝ, 1 ≤ c ∧ GB G r g c := by
     linarith
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa using GB.one G r`. Consider the case `cons x l ih`. Rewrite using `[List.prod_cons, List.length_cons, pow_succ']`. Conclude with `(h x List.mem_cons_self).mul G r (ih fun y hy => h y (List.mem_cons_of_mem _ hy)) (by linarith) (by positivity)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GB.list_prod (l : List (Gr G r)) {c : ℝ} (hc : 1 ≤ c) (h : ∀ x ∈ l, GB G r x c) :
     GB G r l.prod (c ^ l.length) := by
@@ -198,7 +196,7 @@ namespace GlobalTheory.AtPBd
 variable {p : ℕ} [Fact p.Prime] (G : HTGroup p) (r : ℕ)
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[Matrix.mul_apply, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gl_one_mul_comm {R : Type} [CommRing R] (a b : GL (Fin 1) R) : a * b = b * a := by
   ext i j
@@ -206,7 +204,7 @@ theorem gl_one_mul_comm {R : Type} [CommRing R] (a b : GL (Fin 1) R) : a * b = b
   simp [Matrix.mul_apply, mul_comm]
 
 /- English proof (translation)
-Use `show (a : PadicAlgCl p) * 1 = _`. Rewrite using `[mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mulMap_inclK (w : Fin G.m) (a : G.Fw w) :
     GlobalTheory.LKRes.Model.mulMap p (G.Fw w) r (inclK p (G.Fw w) r a) = algebraMap (G.Fw w) (PadicAlgCl p) a := by
@@ -214,15 +212,13 @@ theorem mulMap_inclK (w : Fin G.m) (a : G.Fw w) :
   rw [mul_one]; rfl
 
 /- English proof (translation)
-Use `⟨?_, fun w μ hμ => ?_⟩` and prove the remaining obligations. Establish `h1 : (inclG G r g).1 = M.1`. Rewrite using `[h, Prod.fst_mul, Prod.fst_mul, Prod.fst_inv, gl_one_mul_comm P.1 M.1, mul_inv_cancel_right]`. Establish `h2` using `congrArg (fun x : GL (Fin 1) (Qr p r) => (Qr p r).val ((x : Matrix (Fin 1) (Fin 1) (Qr p r)) 0 0)) h1`. Establish `h3 : (Qr p r).val (((inclG G r g).1 : Matrix (Fin 1) (Fin 1) (Qr p r)) 0 0) = algebraMap ℚ_[p] (PadicAlgCl p) (g.1 : ℚ_[p])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[inclG]`. Rewrite using `[← PadicAlgCl.norm_extends, ← h3, h2]`. Conclude with `hM.1 0 0`. Set `f : KQ p (G.Fw w) r →+* PadicAlgCl p` to `(GlobalTheory.LKRes.Model.mulMap p (G.Fw w) r).toRingHom`. Set `u : (Matrix (Fin G.n) (Fin G.n) (PadicAlgCl p))ˣ` to `Units.map f.mapMatrix.toMonoidHom (P.2 w)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (fun x : Gr G r => ((x.2 w : GL (Fin G.n) (KQ p (G.Fw w) r)) : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw w) r)).map f) h`. Establish `hl : (((inclG G r g).2 w : GL (Fin G.n) (KQ p (G.Fw w) r)) : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw w) r)).map f = ((g.2 w : GL (Fin G.n) (G.Fw w)) : Matrix (Fin G.n) (Fin G.n) (G.Fw w)).map (algebraMap (G.Fw w) (PadicAlgCl p))`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`. Conclude with `mulMap_inclK G r w _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hr : (((P * M * P⁻¹).2 w : GL (Fin G.n) (KQ p (G.Fw w) r)) : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw w) r)).map f = (u : Matrix (Fin G.n) (Fin G.n) (PadicAlgCl p)) * ((M.2 w : GL (Fin G.n) (KQ p (G.Fw w) r)) : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw w) r)).map f * ((u⁻¹ : (Matrix ( …`. Simplify using `only [Prod.snd_mul, Prod.snd_inv, Pi.mul_apply, Pi.inv_apply, Units.val_mul, u]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Both sides reduce to the same expression. Rewrite `h1` using `[hl, hr]`.
-
-Rewrite `hμ` using `[← Matrix.charpoly_map, h1, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`. Conclude with `norm_root_le (hM.2 w) hc hμ`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bound_of_conj (g : Gp G) (M P : Gr G r) (h : inclG G r g = P * M * P⁻¹) {c : ℝ} (hc : 0 ≤ c)
     (hM : GB G r M c) :
@@ -272,7 +268,7 @@ section Iter
 variable {p : ℕ} [Fact p.Prime] (G : HTGroup p) (r : ℕ)
 
 /- English proof (translation)
-Proceed by induction on `k generalizing g with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply, ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sig_iter_apply (k : ℕ) (g : Gr G r) :
     (⇑(sigG G r))^[k] g = ((⇑(GlobalTheory.LKLoc.sig p (GlobalTheory.LKRes.Q0 p) 1 r))^[k] g.1,
@@ -284,7 +280,7 @@ theorem sig_iter_apply (k : ℕ) (g : Gr G r) :
     rfl
 
 /- English proof (translation)
-Rewrite using `[sig_iter_apply]`. Use `Prod.ext ?_ (funext fun i => ?_)` and prove the remaining obligations. Conclude with `GlobalTheory.LKLoc.sig_iterate_r p (GlobalTheory.LKRes.Q0 p) inferInstance 1 r hr g.1`. Conclude with `sigRes_iterate_eq_self p (G.Fw i) G.n r hr (g.2 i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sig_iter_self {r : ℕ} (hr : 0 < r) (g : Gr G r) : (⇑(sigG G r))^[r] g = g := by
   rw [sig_iter_apply]
@@ -293,7 +289,7 @@ theorem sig_iter_self {r : ℕ} (hr : 0 < r) (g : Gr G r) : (⇑(sigG G r))^[r] 
   · exact sigRes_iterate_eq_self p (G.Fw i) G.n r hr (g.2 i)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact hg`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `GlobalTheory.LKRes.Model.sigHT_KHT p G.m G.n r G.Fw _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sig_iter_mem (k : ℕ) {g : Gr G r} (hg : g ∈ KHT p G.m G.n r G.Fw) :
     (⇑(sigG G r))^[k] g ∈ KHT p G.m G.n r G.Fw := by
@@ -306,31 +302,29 @@ theorem sig_iter_mem (k : ℕ) {g : Gr G r} (hg : g ∈ KHT p G.m G.n r G.Fw) :
 end Iter
 
 /- English proof (translation)
-Introduce `p _ G r K φ hr hT`. Take `⟨-, -, -, S, hS⟩` from `hT`. Use `choose cf hcf using fun g : Gr G r => GB.exists G r g`. Set `B : ℝ` to `1 + ∑ s ∈ S, ∑ i ∈ Finset.range r, (cf ((⇑(sigG G r))^[i] s) + cf ((⇑(sigG G r))^[i] s⁻¹))`. Establish `hsum : ∀ s ∈ S, ∀ i ∈ Finset.range r, cf ((⇑(sigG G r))^[i] s) + cf ((⇑(sigG G r))^[i] s⁻¹) ≤ B - 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs i hi`. Establish `h0 : ∀ t ∈ S, ∀ j ∈ Finset.range r, 0 ≤ cf ((⇑(sigG G r))^[j] t) + cf ((⇑(sigG G r))^[j] t⁻¹)` using `fun t _ j _ => by`. Combine the linear relations using `[(hcf ((⇑(sigG G r))^[j] t)).1, (hcf ((⇑(sigG G r))^[j] t⁻¹)).1]`. Use `(Finset.single_le_sum (f := fun j => cf ((⇑(sigG G r))^[j] s) + cf ((⇑(sigG G r))^[j] s⁻¹)) (h0 s hs) hi).trans (Finset.single_le_sum (f := fun t => ∑ j ∈ Finset.range r, (cf ((⇑(sigG G r))^[j] t) + cf ((⇑(sigG G r))^[j] t⁻¹))) (fun t ht => Finset.sum_nonneg (h0 t ht)) hs)` as an intermediate fact. Simplify using `only [B]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB1 : 1 ≤ B`. Establish `: 0 ≤ ∑ s ∈ S, ∑ i ∈ Finset.range r, (cf ((⇑(sigG G r))^[i] s) + cf ((⇑(sigG G r))^[i] s⁻¹))` using `Finset.sum_nonneg fun t _ => Finset.sum_nonneg fun j _ => by`. Combine the linear relations using `[(hcf ((⇑(sigG G r))^[j] t)).1, (hcf ((⇑(sigG G r))^[j] t⁻¹)).1]`. Simplify using `only [B]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hBs : ∀ s ∈ S, ∀ i ∈ Finset.range r, GB G r ((⇑(sigG G r))^[i] s) B ∧ GB G r ((⇑(sigG G r))^[i] s⁻¹) B`. Introduce `s hs i hi`. Establish `h` using `hsum s hs i hi`. Establish `h1` using `(hcf ((⇑(sigG G r))^[i] s)).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(hcf ((⇑(sigG G r))^[i] s⁻¹)).1`. Conclude with `⟨(hcf _).2.mono G r (by linarith), (hcf _).2.mono G r (by linarith)⟩`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt (B ^ r) hp1`. Use `⟨k, fun γ δ z y hN hφ => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, k₁, hk₁, k₂, hk₂, e⟩` from `hS _ hφ`. Establish `hN' : nrmG (sigG G r) r (y⁻¹ * δ * sigG G r y) = (z * y)⁻¹ * inclG G r γ * (z * y)`. Rewrite using `[(nrmG_twConj (sigG G r) r δ y).1, sig_iter_self G hr, hN]`. Use `group`. Establish `hc1 : inclG G r γ = (z * y) * nrmG (sigG G r) r (y⁻¹ * δ * sigG G r y) * (z * y)⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hN']`. Use `group`. Establish `hc2 : inclG G r γ⁻¹ = (z * y) * (nrmG (sigG G r) r (y⁻¹ * δ * sigG G r y))⁻¹ * (z * y)⁻¹`. Rewrite using `[map_inv, hc1]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hG1 : GB G r (nrmG (sigG G r) r (y⁻¹ * δ * sigG G r y)) (B ^ r)`. Establish `h` using `GB.list_prod G r (List.map (fun i => (⇑(sigG G r))^[i] (y⁻¹ * δ * sigG G r y)) (List.range r)) hB1 ?_`. Rewrite `h` using `[List.length_map, List.length_range]`. Conclude with `h`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨i, hi, rfl⟩` from `List.mem_map.1 hx`. Establish `hi' : i ∈ Finset.range r` using `Finset.mem_range.2 (List.mem_range.1 hi)`. Rewrite using `[e, iter_hom_mul, iter_hom_mul]`. Use `(((GB.of_mem G r (sig_iter_mem G r i hk₁)).mul G r (hBs s hs i hi').1 zero_le_one (by linarith)).mul G r (GB.of_mem G r (sig_iter_mem G r i hk₂)) (by linarith) zero_le_one)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hG2 : GB G r (nrmG (sigG G r) r (y⁻¹ * δ * sigG G r y))⁻¹ (B ^ r)`. Unfold `nrmG`. Rewrite using `[List.prod_inv_reverse]`. Establish `h` using `GB.list_prod G r (List.map (fun x => x⁻¹) (List.map (fun i => (⇑(sigG G r))^[i] (y⁻¹ * δ * sigG G r y)) (List.range r))).reverse hB1 ?_`. Rewrite `h` using `[List.length_reverse, List.length_map, List.length_map, List.length_range]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h`. Introduce `x hx`. Rewrite `hx` using `[List.mem_reverse, List.map_map]`. Take `⟨i, hi, rfl⟩` from `List.mem_map.1 hx`. Establish `hi' : i ∈ Finset.range r` using `Finset.mem_range.2 (List.mem_range.1 hi)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply]`. Rewrite using `[← iter_hom_inv, e, _root_.mul_inv_rev, _root_.mul_inv_rev, iter_hom_mul, iter_hom_mul, ← mul_assoc]`. Use `(((GB.of_mem G r (sig_iter_mem G r i (inv_mem hk₂))).mul G r (hBs s hs i hi').2 zero_le_one (by linarith)).mul G r (GB.of_mem G r (sig_iter_mem G r i (inv_mem hk₁))) (by linarith) zero_le_one)` as an intermediate fact. Simplify using `using this`. Establish `hBp : B ^ r ≤ (p : ℝ) ^ k` using `hk.le`.
-
-Establish `hB0 : 0 ≤ B ^ r` using `by positivity`. Take `⟨a1, a2⟩` from `bound_of_conj G r γ _ _ hc1 hB0 hG1`. Take `⟨b1, b2⟩` from `bound_of_conj G r γ⁻¹ _ _ hc2 hB0 hG2`. Conclude with `⟨a1.trans hBp, b1.trans hBp, fun w μ hμ => (a2 w μ hμ).trans hBp, fun w μ hμ => (b2 w μ hμ).trans hBp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (r : ℕ) (K : Subgroup (Gr G r)) (φ : Gr G r → ℂ), 0 < r → IsTest (sigG G r) (KHT p G.m G.n r G.Fw) K φ → ∃ k : ℕ, ∀ (γ : Gp G) (δ z y : Gr G r), IsNrm G r γ δ z → φ (y⁻¹ * δ * sigG G r y) ≠ 0 → ‖((γ.1 : ℚ_[p]ˣ) : ℚ_[p])‖ ≤ (p : ℝ) ^ k ∧ ‖((γ.1⁻¹ : ℚ_[p]ˣ) : ℚ_[p])‖ ≤ (p : ℝ) ^ k ∧ (∀ (w : Fin G.m) (μ : PadicAlgCl p), (((γ.2 w : GL (Fin G.n) (G.Fw w)) : Matrix (Fin G.n) (Fin G.n) (G.Fw w)).charpoly.map (algebraMap (G.Fw w) (PadicAlgCl p))).IsRoot μ → ‖μ‖ ≤ (p : ℝ) ^ k) ∧ (∀ (w : Fin G.m) (μ : PadicAlgCl p), ((((γ.2 w)⁻¹ : GL (Fin G.n) (G.Fw w)) : Matrix (Fin G.n) (Fin G.n) (G.Fw w)).charpoly.map (algebraMap (G.Fw w) (PadicAlgCl p))).IsRoot μ → ‖μ‖ ≤ (p : ℝ) ^ k) := by
   intro p _ G r K φ hr hT

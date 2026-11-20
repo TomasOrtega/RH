@@ -11,11 +11,9 @@ open MvPowerSeries TensorProduct GlobalTheory GlobalTheory.Katz GlobalTheory.QLo
 namespace GlobalTheory.EvMul
 
 /- English proof (translation)
-Rewrite using `[coeff_subst (hasSubst_of_constantCoeff_zero ha)]`. Use `finsum_eq_zero_of_forall_eq_zero fun α => ?_` and prove the remaining obligations. Distinguish the cases in `h : α.degree < N`. Rewrite using `[hf α h, zero_smul]`. Rewrite using `[coeff_of_lt_order (f := α.prod fun s e => a s ^ e) (d := β) ?_, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `lt_of_lt_of_le (b := ((α.degree : ℕ) : ℕ∞)) (by exact_mod_cast (by omega : β.degree < α.degree)) ?_` and prove the remaining obligations. Rewrite using `[Finsupp.prod]`. Use `le_trans ?_ (le_order_prod _ _)` and prove the remaining obligations. Use `show ((∑ i ∈ α.support, α i : ℕ) : ℕ∞) ≤ _`. Use `push_cast`.
-
-Conclude with `Finset.sum_le_sum fun i _ => le_order_pow_of_constantCoeff_eq_zero _ (ha i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem coeff_subst_eq_zero_of_degree {R : Type} [CommRing R] {σ τ : Type} [Finite σ]
     {a : σ → MvPowerSeries τ R} (ha : ∀ i, constantCoeff (a i) = 0) {N : ℕ}
@@ -34,11 +32,11 @@ theorem coeff_subst_eq_zero_of_degree {R : Type} [CommRing R] {σ τ : Type} [Fi
     exact Finset.sum_le_sum fun i _ => le_order_pow_of_constantCoeff_eq_zero _ (ha i)
 
 /- English proof (translation)
-Proceed by induction on `k generalizing i with`. Consider the case `zero => simp [nmul]`. Consider the case `succ k ih`. Establish `h : ∀ j, constantCoeff (Sum.elim (nmul μ k) (fun l => (X l : MvPowerSeries (Fin d) R)) j) = 0`. Introduce and unpack `(j | j)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `ih j`. Conclude with `constantCoeff_X _`. Establish `e : nmul μ (k + 1) i = at2 (μ i) (nmul μ k) (fun l => X l)`. Unfold `nmul`. Rewrite using `[Function.iterate_succ_apply']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e, at2]`. Conclude with `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero h) h (hμ i)`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_nmul {R : Type} [CommRing R] {d : ℕ}
     {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R} (hμ : ∀ i, constantCoeff (μ i) = 0) (k : ℕ) (i : Fin d) :
@@ -60,7 +58,7 @@ end GlobalTheory.EvMul
 namespace GlobalTheory.EvMul
 
 /- English proof (translation)
-Rewrite using `[PDiv.mulBy, pow_succ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mulBy_succ_apply {O A : Type} [CommRing O] [CommRing A] [Bialgebra O A] [Coalgebra.IsCocomm O A] (k : ℕ) (a : A) :
     PDiv.mulBy O A (k + 1) a = Algebra.TensorProduct.lmul' O
@@ -69,7 +67,7 @@ theorem mulBy_succ_apply {O A : Type} [CommRing O] [CommRing A] [Bialgebra O A] 
   rfl
 
 /- English proof (translation)
-Rewrite using `[PDiv.mulBy, pow_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mulBy_zero_apply {O A : Type} [CommRing O] [CommRing A] [Bialgebra O A] [Coalgebra.IsCocomm O A] (a : A) :
     PDiv.mulBy O A 0 a = algebraMap O A (Coalgebra.counit a) := by
@@ -83,7 +81,7 @@ namespace GlobalTheory.EvMul
 variable {p : ℕ} {O : Type} [CommRing O]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `h`. Conclude with `⟨φ y, by rw [map_mul, map_pow, map_natCast]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pow_dvd_map {A B : Type} [CommRing A] [CommRing B] [Algebra O A] [Algebra O B]
     (φ : A →ₐ[O] B) {m : ℕ} {a : A} (h : (p : A) ^ m ∣ a) : (p : B) ^ m ∣ φ a := by
@@ -91,7 +89,7 @@ theorem pow_dvd_map {A B : Type} [CommRing A] [CommRing B] [Algebra O A] [Algebr
   exact ⟨φ y, by rw [map_mul, map_pow, map_natCast]⟩
 
 /- English proof (translation)
-Introduce `m`. Take `⟨N, hN⟩` from `hE m`. Conclude with `⟨N, fun f hf => by`. Rewrite using `[AlgHom.comp_apply, substAlgHom_apply]`. Conclude with `hN _ (coeff_subst_eq_zero_of_degree ha hf)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cont_subst {σ τ : Type} [Finite τ] {A : Type} [CommRing A] [Algebra O A]
     (E : MvPowerSeries σ O →ₐ[O] A)
@@ -108,11 +106,11 @@ theorem cont_subst {σ τ : Type} [Finite τ] {A : Type} [CommRing A] [Algebra O
 variable [IsAdicComplete (Ideal.span {(p : O)}) O] {G : PDivGroup p O} {d : ℕ} (c : QLog.Chart G d)
 
 /- English proof (translation)
-Establish `ha` using `constantCoeff_nmul c.isLaw.const k`. Establish `gens : ∀ i, ((c.ev n).comp (substAlgHom (R` using `O) (hasSubst_of_constantCoeff_zero ha))) (X i) = ((PDiv.mulBy O (G.A n) k : G.A n →ₐ[O] G.A n).comp (c.ev n)) (X i) := by`. Introduce `i`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, substAlgHom_X, (c.isEval n).1, hk]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `cont' : ∀ m : ℕ, ∃ N : ℕ, ∀ f, (∀ α : Fin d →₀ ℕ, α.degree < N → coeff α f = 0) → (p : G.A n) ^ m ∣ ((PDiv.mulBy O (G.A n) k : G.A n →ₐ[O] G.A n).comp (c.ev n)) f`. Introduce `m`. Take `⟨N, hN⟩` from `(c.isEval n).2 m`. Conclude with `⟨N, fun f hf => by`. Rewrite using `[AlgHom.comp_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_dvd_map (PDiv.mulBy O (G.A n) k : G.A n →ₐ[O] G.A n) (hN f hf)⟩`. Establish `e` using `GlobalTheory.T.padicContinuous_mvPowerSeries_algHom_ext p O (Fin d) (G.A n) _ _ gens (cont_subst (c.ev n) (c.isEval n).2 ha) cont'`. Use `DFunLike.congr_fun e h` as an intermediate fact. Rewrite `this` using `[AlgHom.comp_apply, AlgHom.comp_apply, substAlgHom_apply]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_subst_of_gen (n k : ℕ)
     (hk : ∀ i, c.ev n (nmul c.μ k i) = PDiv.mulBy O (G.A n) k (c.x n i))
@@ -144,19 +142,17 @@ variable {p : ℕ} {O : Type} [CommRing O]
 variable [IsAdicComplete (Ideal.span {(p : O)}) O] {G : PDivGroup p O} {d : ℕ} (c : QLog.Chart G d)
 
 /- English proof (translation)
-Proceed by induction on `k generalizing i with`. Consider the case `zero`. Rewrite using `[mulBy_zero_apply, c.aug, map_zero]`. Conclude with `map_zero _`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `hs : ∀ j, constantCoeff (Sum.elim (nmul c.μ k) (fun l => (X l : MvPowerSeries (Fin d) O)) j) = 0`. Introduce and unpack `(j | j)`. Conclude with `constantCoeff_nmul c.isLaw.const k j`. Conclude with `constantCoeff_X _`. Use `set Θ := (c.ev n).comp (substAlgHom (R := O) (hasSubst_of_constantCoeff_zero hs)) with hΘ`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set Λ := (Algebra.TensorProduct.lmul' O).comp ((Algebra.TensorProduct.map (PDiv.mulBy O (G.A n) k : G.A n →ₐ[O] G.A n) (AlgHom.id O (G.A n))).comp (c.ev₂ n)) with hΛ`. Establish `gens : ∀ j, Θ (X j) = Λ (X j)`. Introduce and unpack `(j | j)`. Rewrite using `[hΘ, hΛ, AlgHom.comp_apply, AlgHom.comp_apply, AlgHom.comp_apply, substAlgHom_X, (c.isEval₂ n).1]`. Simplify using `only [Sum.elim_inl, Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq, Algebra.TensorProduct.lmul'_apply_tmul, map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `ih j`. Rewrite using `[hΘ, hΛ, AlgHom.comp_apply, AlgHom.comp_apply, AlgHom.comp_apply, substAlgHom_X, (c.isEval₂ n).1]`. Simplify using `only [Sum.elim_inr, Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq, Algebra.TensorProduct.lmul'_apply_tmul, map_one, one_mul]`. Conclude with `(c.isEval n).1 j`. Establish `cont' : ∀ m : ℕ, ∃ N : ℕ, ∀ f, (∀ α : Fin d ⊕ Fin d →₀ ℕ, α.degree < N → coeff α f = 0) → (p : G.A n) ^ m ∣ Λ f`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Introduce `m`. Take `⟨N, hN⟩` from `(c.isEval₂ n).2 m`. Conclude with `⟨N, fun f hf => by`. Rewrite using `[hΛ, AlgHom.comp_apply, AlgHom.comp_apply]`. Conclude with `pow_dvd_map _ (pow_dvd_map _ (hN f hf))⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : Θ = Λ` using `GlobalTheory.T.padicContinuous_mvPowerSeries_algHom_ext p O (Fin d ⊕ Fin d) (G.A n) Θ Λ gens (cont_subst (c.ev n) (c.isEval n).2 hs) cont'`. Establish `e1 : nmul c.μ (k + 1) i = subst (Sum.elim (nmul c.μ k) fun l => X l) (c.μ i)`. Unfold `nmul`. Rewrite using `[Function.iterate_succ_apply']`. Both sides reduce to the same expression.
-
-Establish `e2` using `DFunLike.congr_fun e (c.μ i)`. Rewrite `e2` using `[hΘ, hΛ, AlgHom.comp_apply, AlgHom.comp_apply, AlgHom.comp_apply, substAlgHom_apply, c.comul]`. Rewrite using `[e1, e2, mulBy_succ_apply]`.
+A detailed English derivation is pending.
 -/
 theorem ev_nmul (n k : ℕ) (i : Fin d) :
     c.ev n (nmul c.μ k i) = PDiv.mulBy O (G.A n) k (c.x n i) := by
@@ -201,7 +197,7 @@ theorem ev_nmul (n k : ℕ) (i : Fin d) :
     rw [e1, e2, mulBy_succ_apply]
 
 /- English proof (translation)
-Introduce `p _ O _ _ G d c n k h`. Conclude with `ev_subst_of_gen c n k (ev_nmul c n k) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ev_subst_nmul : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O]
     [IsAdicComplete (Ideal.span {(p : O)}) O] (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d)

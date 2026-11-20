@@ -6,7 +6,7 @@ import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.TwoTorsi
 namespace Formalism.L2.Th1.F
 
 /- English proof (translation)
-Introduce `W L h2 h3`. Establish `h` using `hw ℂ W`. Rewrite `h` using `[h2, h3]`. Conclude with `hu ℂ L.g₂ L.g₃ _ _ h (ht L)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem curveBridge_of (hw : Formalism.L2.Th1.A.BridgeWp) (hu : IsWpUnique) (ht : TaylorIsWp) : CurveBridge := by
   intro W L h2 h3
@@ -15,7 +15,7 @@ theorem curveBridge_of (hw : Formalism.L2.Th1.A.BridgeWp) (hu : IsWpUnique) (ht 
   exact hu ℂ L.g₂ L.g₃ _ _ h (ht L)
 
 /- English proof (translation)
-The claim follows from `curveBridge_of Formalism.L2.Th1.A.bridgeWp weierstrass_series_unique (taylorIsWp_of taylor_ring taylor_deriv)`.
+A detailed English derivation is pending.
 -/
 theorem curve_weierstrass_series_eq : CurveBridge :=
   curveBridge_of Formalism.L2.Th1.A.bridgeWp weierstrass_series_unique (taylorIsWp_of taylor_ring taylor_deriv)

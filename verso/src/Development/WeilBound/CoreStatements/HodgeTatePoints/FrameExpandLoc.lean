@@ -7,11 +7,11 @@ open Module NumberField GlobalTheory.CompanionTheory.Ar.HT TensorProduct Filter
 namespace PositivityTheory.HtPt.Ge
 
 /- English proof (translation)
-Use `⟨Matrix.vecMul ζ H - Q • Matrix.vecMul r Z, ?_, ?_⟩` and prove the remaining obligations. Introduce `l`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Use `L.sub_mem ?_ (L.mul_mem hQ ?_)` and prove the remaining obligations. Simplify using `only [Matrix.vecMul, dotProduct]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `L.sum_mem fun i _ => L.mul_mem (hζ i) (hH i l)`. Simplify using `only [Matrix.vecMul, dotProduct]`. Conclude with `L.sum_mem fun i _ => L.mul_mem (hr i) (hZ i l)`. Establish `h1 : Matrix.vecMul r (G * H) = Matrix.vecMul r 1 + Matrix.vecMul r ((P * Q) • Z)`. Rewrite using `[e, Matrix.vecMul_add]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[← Matrix.vecMul_vecMul, h, Matrix.smul_vecMul, Matrix.vecMul_one, Matrix.vecMul_smul]`. Rewrite using `[smul_sub, smul_smul, h1]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem cancel_gram {Ω : Type} [Field Ω] (L : Subring Ω) {N : ℕ} (G H Z : Matrix (Fin N) (Fin N) Ω) (P Q : Ω)
     (hQ : Q ∈ L) (hH : ∀ i j, H i j ∈ L) (hZ : ∀ i j, Z i j ∈ L) (e : G * H = 1 + (P * Q) • Z)
@@ -35,17 +35,17 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {B : Subalgebra o 
   {E : Type} [Field E] [NumberField E] {c : E ≃+* E} {p R N : ℕ} {V : Type} [AddCommGroup V] [Module Ω V]
 
 /- English proof (translation)
-Establish `hev : ∀ᶠ n : ℕ in atTop, (∀ l, u ^ n * x l ∈ B) ∧ (∀ a, u ^ n * t a ∈ B) ∧ u ^ n • y ∈ D.omHT σ` using `(Filter.eventually_all.2 fun l => loc_ev (hx l)).and ((Filter.eventually_all.2 fun a => loc_ev (ht a)).and (locM_ev hy))`. Take `⟨n, hxn, htn, hyn⟩` from `hev.exists`. Establish `hun : u ^ n ≠ 0` using `pow_ne_zero n hu0`. Set `X : Fin N → B` to `fun l => ⟨u ^ n * x l, hxn l⟩`. Set `T : Fin k → B` to `fun a => ⟨u ^ n * t a, htn a⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hq : D.q σ X = ∑ a, T a • (bM a : V) + ((p : B) ^ m) • (u ^ n • y)`. Establish `e'` using `congrArg (fun v => u ^ n • v) e`. Simplify using `only [Finset.smul_sum, smul_add, smul_smul] at e'`. Express the relevant statement in the definitionally equal form `∑ l, (u ^ n * x l) • eigProj D.ρΩ σ (D.h (Pi.single l 1)) = ∑ a, (u ^ n * t a) • (bM a : V) + (((p : B) ^ m : B) : Ω) • (u ^ n • y)`. Rewrite using `[e', smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Rewrite using `[mul_comm]`. Take `⟨s', z', hsz⟩` from `frame_expand D hex hg X T (u ^ n • y) hyn hq`. Establish `hmem : ∀ b : B, (u ^ n)⁻¹ * (b : Ω) ∈ loc B u hu` using `fun b => loc_of_pow n (by rw [← mul_assoc, mul_inv_cancel₀ hun, one_mul]; exact loc_of_mem b.2)`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun a => (u ^ n)⁻¹ * s' a, fun l => (u ^ n)⁻¹ * z' l, fun a => hmem _, fun l => hmem _, ?_⟩` and prove the remaining obligations. Introduce `l`. Establish `hl` using `congrArg (fun v : Fin N → B => ((v l : B) : Ω)) hsz`. Simplify using `only [Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Pi.add_apply, Pi.smul_apply, smul_eq_mul, X, T] at hl`. Move the coercions through the operations in `at hl`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Apply `mul_left_cancel₀ hun` to reduce the goal to its premises. Rewrite using `[hl, mul_add, mul_add, Finset.mul_sum, Finset.mul_sum]`. Use `congr 1`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Clear the denominators using the available nonvanishing facts. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts.
 -/
 theorem frame_expand_loc (hu0 : u ≠ 0) (D : HTChart B Ω c p R N V) {σ : E →+* Ω} {m j k : ℕ}
     {i : Module.Dual B (D.omHT (σ.comp c.toRingHom)) →ₗ[B] (Fin N → B)}
@@ -93,13 +93,13 @@ theorem frame_expand_loc (hu0 : u ≠ 0) (D : HTChart B Ω c p R N V) {σ : E �
   · field_simp
 
 /- English proof (translation)
-Establish `hY : eigProj D.ρΩ (σ.comp c.toRingHom) (D.h (Pi.single l' 1)) ∈ D.omHT (σ.comp c.toRingHom)` using `Submodule.mem_map_of_mem (Submodule.mem_sup_left (Submodule.subset_span ⟨_, rfl⟩))`. Take `⟨x', hx'⟩` from `hg.1 a`. Take `⟨z, hz⟩` from `hi (W a) l' ⟨_, hY⟩ rfl`. Use `⟨hY, z, x', ?_⟩` and prove the remaining obligations. Establish `hcol : ∀ l, (g l (Sum.inl a) : Ω) = (i (W a) l : Ω) + (p : Ω) ^ m * x' l` using `fun l => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `congrFun hx' l`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul] at h1`. Rewrite using `[h1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hz' : ∑ l, (i (W a) l : Ω) * D.gram σ d l l' = (W a ⟨_, hY⟩ : Ω) + (p : Ω) ^ m * z`. Establish `h2 : ∑ l, (i (W a) l : Ω) * D.gram σ d l l' = (((W a ⟨_, hY⟩ + (p : C) ^ m * z : C)) : Ω)` using `hz`. Rewrite using `[h2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hcol, add_mul, Finset.sum_add_distrib, hz', Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem exists_sum_gram_eq_add_prime_pow_mul {C : Subalgebra o Ω} (D : HTChart C Ω c p R N V) {σ : E →+* Ω} {m j k : ℕ} {d : C}
     {i : Module.Dual C (D.omHT (σ.comp c.toRingHom)) →ₗ[C] (Fin N → C)}
@@ -130,59 +130,51 @@ private theorem exists_sum_gram_eq_add_prime_pow_mul {C : Subalgebra o Ω} (D : 
   simp only [hcol, add_mul, Finset.sum_add_distrib, hz', Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Establish `huL : u ∈ loc B u hu` using `loc_of_mem hu`. Establish `hpow_inv : ∀ (n : ℕ) (a : Ω), u ^ n * a ∈ B → a ∈ loc B u hu` using `fun n a h => loc_of_pow n (loc_of_mem h)`. Establish `hSmem : ∀ b a, S b a ∈ loc B u hu`. Introduce `b a`. Take `⟨n, hn⟩` from `hM _ (MA a).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `coef_mem (DB.omHT σ).subtype Subtype.val_injective MB (fun b => S b a) n ⟨_, hn⟩ ?_ b` and prove the remaining obligations. Simplify using `only [Submodule.subtype_apply]`. Rewrite using `[hS a]`. Establish `hφBloc : ∀ b w, w ∈ locM (DB.omHT (σ.comp c.toRingHom)) u hu → φB b w ∈ loc B u hu`. Introduce `b w hw`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨n, hn⟩ : ∃ n : ℕ, u ^ n • w ∈ DB.omHT (σ.comp c.toRingHom)` from `hw`. Use `hpow_inv n _ ?_` and prove the remaining obligations. Rewrite using `[← smul_eq_mul, ← map_smul, ← hφB b ⟨_, hn⟩]`. Conclude with `(WB b _).2`. Establish `hTmem : ∀ b a, T b a ∈ loc B u hu`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b a`. Use `coef_mem_dual (DB.omHT (σ.comp c.toRingHom)) (omHT_fg _ _) WB φB hφB (fun b => T b a) ?_ b` and prove the remaining obligations. Introduce `z hz`. Use `show (∑ b, T b a • φB b) z ∈ loc B u hu`. Rewrite using `[← hT a]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `hW z hz`. Establish `h1 : φA a (u⁻¹ ^ n • z) ∈ loc B u hu`. Rewrite using `[← hφA a ⟨_, hn⟩]`. Conclude with `hAL _ (WA a _).2`. Rewrite `h1` using `[map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h2` using `(loc B u hu).mul_mem (pow_mem huL n) h1`. Rewrite `h2` using `[← mul_assoc, inv_pow, mul_inv_cancel₀ (pow_ne_zero n hu0), one_mul]`. Then use the resulting hypothesis. Establish `hφAloc : ∀ a w, w ∈ locM (DB.omHT (σ.comp c.toRingHom)) u hu → φA a w ∈ loc B u hu`. Introduce `a w hw`. Rewrite using `[hT a, LinearMap.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(loc B u hu).sum_mem fun b _ => by`. Rewrite using `[LinearMap.smul_apply, smul_eq_mul]`. Conclude with `(loc B u hu).mul_mem (hTmem b a) (hφBloc b w hw)`. Establish `hdiff : ∀ (σ' : E →+* Ω) (l : Fin N), ∃ w ∈ locM (DB.omHT σ') u hu, eigProj DB.ρΩ σ' (DA.h (Pi.single l 1)) = eigProj DB.ρΩ σ' (DB.h (Pi.single l 1)) + ((p : Ω) ^ m) • w`. Introduce `σ' l`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, z, hz, hze⟩` from `hh σ' (Pi.single l 1)`. Establish `hun : u ^ n ≠ 0` using `pow_ne_zero n hu0`. Use `⟨(u ^ n)⁻¹ • z, ⟨n, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, mul_inv_cancel₀ hun, one_smul]` and apply the resulting hypothesis. Rewrite using `[smul_comm, ← hze, smul_smul, inv_mul_cancel₀ hun, one_smul, map_sub]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `hR : ∀ a : Fin k, ∃ (s : Fin j → Ω) (z : Fin N → Ω), (∀ b, s b ∈ loc B u hu) ∧ (∀ l, z l ∈ loc B u hu) ∧ ∀ l, (gA l (Sum.inr a) : Ω) = ∑ b, (gB l (Sum.inl b) : Ω) * s b + ∑ b, (gB l (Sum.inr b) : Ω) * S b a + (p : Ω) ^ m * z l`. Introduce `a`. Take `⟨yA, hyA, hqA⟩` from `hgA.2 a`. Use `choose w hw hwe using hdiff σ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hyAloc : yA ∈ locM (DB.omHT σ) u hu` using `hM yA hyA`. Use `frame_expand_loc hu0 DB hex hgB (fun l => gA l (Sum.inr a)) (fun l => hAL _ (gA l _).2) (fun b => S b a) (fun b => hSmem b a) (yA - ∑ l, (gA l (Sum.inr a) : Ω) • w l) ?_ ?_` and prove the remaining obligations. Conclude with `(locM (DB.omHT σ) u hu).sub_mem hyAloc ((locM (DB.omHT σ) u hu).sum_mem fun l _ => locM_smul (hAL _ (gA l _).2) (hw l))`. Establish `hq' : ∑ l, (gA l (Sum.inr a) : Ω) • eigProj DB.ρΩ σ (DA.h (Pi.single l 1)) = (MA a : V) + (p : Ω) ^ m • yA`. Establish `h1` using `hqA`.
+Express the relevant assertion in an equivalent form by its definition. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [HTChart.q, hρ] at h1`. Rewrite using `[show ((p : Ω) ^ m) • yA = ((p : A) ^ m) • yA by`. Express the relevant statement in the definitionally equal form `_ = (((p : A) ^ m : A) : Ω) • yA`. Use `push_cast`. Use the proof step `rfl]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `h1`. Simplify using `only [hwe, smul_add, Finset.sum_add_distrib] at hq'`. Rewrite using `[← hS a, smul_sub, Finset.smul_sum]`. Simplify using `only [smul_comm ((p : Ω) ^ m)]`. Rewrite using `[← add_sub_assoc, ← hq']`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `hinj : Function.Injective (algebraMap B Ω)` using `Subtype.val_injective`. Take `⟨G, H, Zg, -, hG, hGH, -⟩` from `PositivityTheory.HtPt.Ga.gram_unit B Ω hinj E c hc p R N V DB σ dB (fun a => ⟨⟨_, hσ a⟩, rfl⟩) hdB`. Establish `hgram : ∀ l l', DA.gram σ dA l l' = DB.gram σ dB l l'`. Introduce `l l'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [HTChart.gram, he]`. Rewrite using `[show algebraMap A Ω dA = algebraMap B Ω dB from hd]`. Establish `hΓ : ∀ l l', DB.gram σ dB l l' ∈ loc B u hu` using `fun l l' => by`. Rewrite using `[← hG]`. Conclude with `loc_of_mem (G l l').2`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGH' : G.map (algebraMap B Ω) * H.map (algebraMap B Ω) = 1 + ((p : Ω) ^ m * (p : Ω) ^ (R - m)) • Zg.map (algebraMap B Ω)`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hm, ← Matrix.map_mul, hGH]`. Use extensionality with `i l`. Simplify using `[Matrix.one_apply, apply_ite]`. Use `choose hYA zA xA hA using fun a l' => exists_sum_gram_eq_add_prime_pow_mul DA hiA hgA a l'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `choose hYB zB xB hB using fun b l' => exists_sum_gram_eq_add_prime_pow_mul DB hiB hgB b l'`. Use `choose wc hwc hwce using hdiff (σ.comp c.toRingHom)`. Establish `hL : ∀ a : Fin j, ∃ z : Fin N → Ω, (∀ l, z l ∈ loc B u hu) ∧ ∀ l, (gA l (Sum.inl a) : Ω) = ∑ b, (gB l (Sum.inl b) : Ω) * T b a + (p : Ω) ^ m * z l`. Introduce `a`. Set `v : Fin N → Ω` to `fun l => (gA l (Sum.inl a) : Ω) - ∑ b, (gB l (Sum.inl b) : Ω) * T b a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `ζ : Fin N → Ω` to `fun l' => φA a (wc l') + zA a l' + ∑ l, (xA a l' l : Ω) * DB.gram σ dB l l' - ∑ b, T b a * (zB b l' + ∑ l, (xB b l' l : Ω) * DB.gram σ dB l l')`. Establish `hvmem : ∀ l, v l ∈ loc B u hu` using `fun l => (loc B u hu).sub_mem (hAL _ (gA l _).2) ((loc B u hu).sum_mem fun b _ => (loc B u hu).mul_mem (loc_of_mem (gB l _).2) (hTmem b a))`. Establish `hζmem : ∀ l', ζ l' ∈ loc B u hu`. Introduce `l'`. Use `(loc B u hu).sub_mem ((loc B u hu).add_mem ((loc B u hu).add_mem (hφAloc a _ (hwc l')) (hAL _ (zA a l').2)) ((loc B u hu).sum_mem fun l _ => (loc B u hu).mul_mem (hAL _ (xA a l' l).2) (hΓ l l'))) ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(loc B u hu).sum_mem fun b _ => (loc B u hu).mul_mem (hTmem b a) ((loc B u hu).add_mem (loc_of_mem (zB b l').2) ((loc B u hu).sum_mem fun l _ => (loc B u hu).mul_mem (loc_of_mem (xB b l' l).2) (hΓ l l')))`. Establish `hvec : Matrix.vecMul v (G.map (algebraMap B Ω)) = ((p : Ω) ^ m) • ζ`. Use function extensionality and compare the values at `l'`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.map_apply, hG, Pi.smul_apply, smul_eq_mul]`. Establish `eA` using `hA a l'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hgram] at eA`. Rewrite `eA` using `[hφA a]`. Establish `hYeq : ((⟨_, hYA a l'⟩ : DA.omHT (σ.comp c.toRingHom)) : V) = eigProj DB.ρΩ (σ.comp c.toRingHom) (DB.h (Pi.single l' 1)) + ((p : Ω) ^ m) • wc l'`. Rewrite using `[← hwce l', ← hρ]`. Rewrite `eA` using `[hYeq, map_add, map_smul, smul_eq_mul]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `eB : ∀ b, ∑ l, (gB l (Sum.inl b) : Ω) * DB.gram σ dB l l' = φB b (eigProj DB.ρΩ (σ.comp c.toRingHom) (DB.h (Pi.single l' 1))) + (p : Ω) ^ m * zB b l' + (p : Ω) ^ m * ∑ l, (xB b l' l : Ω) * DB.gram σ dB l l'`. Introduce `b`. Rewrite using `[hB b l', hφB b]`. Establish `hφAY : φA a (eigProj DB.ρΩ (σ.comp c.toRingHom) (DB.h (Pi.single l' 1))) = ∑ b, T b a * φB b (eigProj DB.ρΩ (σ.comp c.toRingHom) (DB.h (Pi.single l' 1)))`. Rewrite using `[hT a, LinearMap.sum_apply]`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hsplit : ∑ l, v l * DB.gram σ dB l l' = ∑ l, (gA l (Sum.inl a) : Ω) * DB.gram σ dB l l' - ∑ b, T b a * ∑ l, (gB l (Sum.inl b) : Ω) * DB.gram σ dB l l'`. Simplify using `only [v, sub_mul, Finset.sum_sub_distrib, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `congr 1`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun l _ => by ring`. Establish `hsum : ∑ b, T b a * ∑ l, (gB l (Sum.inl b) : Ω) * DB.gram σ dB l l' = ∑ b, T b a * φB b (eigProj DB.ρΩ (σ.comp c.toRingHom) (DB.h (Pi.single l' 1))) + (p : Ω) ^ m * ∑ b, T b a * (zB b l' + ∑ l, (xB b l' l : Ω) * DB.gram σ dB l l')`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun b _ => by rw [eB b]; ring`. Rewrite using `[hsplit, hsum, eA, hφAY]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [ζ]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨z, hz, hvz⟩` from `cancel_gram (loc B u hu) (G.map (algebraMap B Ω)) (H.map (algebraMap B Ω)) (Zg.map (algebraMap B Ω)) ((p : Ω) ^ m) ((p : Ω) ^ (R - m)) (pow_mem (natCast_mem _ p) _) (fun i l => loc_of_mem (H i l).2) (fun i l => loc_of_mem (Zg i l).2) hGH' v ζ hvmem hζmem hvec`. Use `⟨z, hz, fun l => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun hvz l`.
-
-Simplify using `only [v, Pi.smul_apply, smul_eq_mul] at h1`. Take the linear combination `h1`. Use `choose sR zR hsR hzR hRe using hR`. Use `choose zL hzL hLe using hL`. Use `⟨Matrix.of fun b a => sR a b, Matrix.of fun l c => Sum.elim (fun a => zL a l) (fun a => zR a l) c, ?_, ?_, ?_⟩` and prove the remaining obligations.
-
-Introduce and unpack `(a | a) (b | b)`. Simplify using `using hTmem a b`. Simplify using `using hsR b a`. Simplify using `using (loc B u hu).zero_mem`. Simplify using `using hSmem a b`.
-
-Introduce and unpack `l (a | a)`. Simplify using `using hzL a l`. Simplify using `using hzR a l`. Use extensionality with `l (a | a)`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, hLe a l]`.
-
-Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, hRe a l]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem overlap [CharZero Ω] [Fact p.Prime] [IsFractionRing B Ω] (hc : ∀ x, c (c x) = x) (hu0 : u ≠ 0)
     {A : Subalgebra o Ω} (hAL : ∀ a ∈ A, a ∈ loc B u hu)

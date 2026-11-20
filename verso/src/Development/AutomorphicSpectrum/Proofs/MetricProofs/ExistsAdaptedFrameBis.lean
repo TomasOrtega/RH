@@ -45,7 +45,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Type} [Fintype
   [AddCommGroup Λ] [Module (𝓞 E) Λ] {F : UnivFam E Ψ j j' n g Λ} (C : LatEmb F) (R : RiemLat E g Λ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i`. Simplify using `[LatEmb.vec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem vec_add (x y : Λ) : C.vec (x + y) = C.vec x + C.vec y := by
   funext τ i
@@ -98,7 +98,7 @@ def pBarL (τ : Ψ) : (Fin (j + j') → ℂ) →ₗ[ℂ] (Fin g → ℂ) := linP
 def bs (τ : Ψ) (u v : Fin (j + j') → ℂ) : ℂ := star v ⬝ᵥ C.sgr τ *ᵥ u
 
 /- English proof (translation)
-Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.Gwb8.exists_adapted_at <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_adapted_at (hF : R.form = F.form) (hS : R.HasSig F.σ j j') (τ : Ψ) :
     ∃ A : Matrix (Fin (j + j')) (Sg j j') ℂ, Aᴴ * C.sgr τ * A = sgI j j' ∧
@@ -109,7 +109,7 @@ theorem exists_adapted_at (hF : R.form = F.form) (hS : R.HasSig F.σ j j') (τ :
 end Lat
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ _ j j' n g Λ _ _ F C R hF hS`. Use `choose A h1 h2 h3 using exists_adapted_at C R hF hS`. Conclude with `⟨A, ⟨h1, h2, h3⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isAdapted : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ]
     (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ) (C : LatEmb F)

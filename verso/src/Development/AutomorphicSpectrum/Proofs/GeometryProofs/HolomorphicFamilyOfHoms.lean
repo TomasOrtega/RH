@@ -18,41 +18,39 @@ namespace GlobalTheory.CompanionTheory.ChartRing
 open MvPolynomial
 
 /- English proof (translation)
-Take `⟨I, J, _, _, P, hd⟩` from `h.out`. Use `Fintype.ofFinite I` as an intermediate fact. Use `Fintype.ofFinite J` as an intermediate fact. Establish `e : Fin D ≃ {i : I // i ∉ Set.range P.map}` using `(Fintype.equivFinOfCardEq (by`. Rewrite using `[Fintype.card_subtype_compl, ← hd, Algebra.Presentation.dimension, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, Set.card_range_of_injective P.map_inj])).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `ev` to `fun (x : I → ℂ) => eval₂Hom σ x`. Establish `pt : ∀ ψ : A →+* ℂ, ψ.comp (algebraMap k A) = σ → ∀ p, ψ (algebraMap P.Ring A p) = ev (fun i => ψ (P.val i)) p` using `fun ψ hψ p => by`. Rewrite using `[P.algebraMap_apply, aeval_def, ← coe_eval₂Hom, map_eval₂Hom, hψ]`. Set `q : I → MvPolynomial I k` to `fun i => if h : i ∈ Set.range P.map then P.relation h.choose else X i`. Establish `q₁ : ∀ j, q (P.map j) = P.relation j` using `fun j => (dif_pos ⟨j, rfl⟩).trans (congrArg _ (P.map_inj (⟨j, rfl⟩ : P.map j ∈ Set.range P.map).choose_spec))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `q₂ : ∀ i : {i : I // i ∉ Set.range P.map}, q i = X i.1` using `fun i => dif_neg i.2`. Set `Φ : (I → ℂ) → I → ℂ` to `fun x i => eval x (map σ (q i))`. Establish `Φe : ∀ x i, Φ x i = ev x (q i)` using `fun x i => MvPolynomial.eval_map _ _ _`. Set `x₀ : I → ℂ` to `fun i => ψ₀ (P.val i)`. Set `F : (I → ℂ) →L[ℂ] (I → ℂ)` to `ContinuousLinearMap.pi fun i => ∑ i', eval x₀ (pderiv i' (map σ (q i))) • ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : I => ℂ) i'`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hF : HasFDerivAt Φ F x₀` using `hasFDerivAt_pi.2 fun i => hasFDerivAt_eval _ _`. Establish `Fv : ∀ v i, F v i = ∑ i', ev x₀ (pderiv i' (q i)) * v i'` using `fun v i => by`. Simplify using `[F, ev, pderiv_map, MvPolynomial.eval_map]`. Establish `inj : Function.Injective F` using `(injective_iff_map_eq_zero F).2 fun v hv => by`. Establish `z₁ : ∀ i, i ∉ Set.range P.map → v i = 0` using `fun i hi => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrFun hv i` as an intermediate fact. Rewrite `this` using `[Fv, q₂ ⟨i, hi⟩]`. Simplify `this` using `[pderiv_X, Pi.single_apply, apply_ite]`. Establish `dt : ((ev x₀).mapMatrix P.jacobiMatrix).det ≠ 0`. Rewrite using `[← RingHom.map_det, ← pt ψ₀ h₀, ← P.jacobian_eq_jacobiMatrix_det]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(P.jacobian_isUnit.map ψ₀).ne_zero`. Establish `z₂ : (fun j => v (P.map j)) = 0` using `Matrix.eq_zero_of_vecMul_eq_zero dt (funext fun j => by`. Use `congrFun hv (P.map j)` as an intermediate fact. Rewrite using `[Fv, q₁, ← Finset.sum_subset (Finset.subset_univ (Finset.univ.image P.map)) (fun i _ hi => by`. Rewrite `this` using `[z₁ i (by simpa using hi), mul_zero]), Finset.sum_image fun a _ b _ h => P.map_inj h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this)` using `[Matrix.vecMul, dotProduct, P.jacobiMatrix_apply, mul_comm]`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i ∈ Set.range P.map`. Take `⟨j, rfl⟩` from `hi`. Conclude with `congrFun z₂ j`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `z₁ i hi`. Set `F' : (I → ℂ) ≃L[ℂ] (I → ℂ)` to `(LinearEquiv.ofInjectiveEndo F.toLinearMap inj).toContinuousLinearEquiv`. Establish `cd : ContDiffAt ℂ 1 Φ x₀` using `contDiffAt_pi.2 fun i => (AnalyticOnNhd.eval_mvPolynomial (map σ (q i)) x₀ trivial).contDiffAt`. Set `T` to `cd.toOpenPartialHomeomorph Φ (f' := F') hF one_ne_zero`. Set `O` to `T.target ∩ interior {w | ContDiffAt ℂ 1 T.symm w}`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `oO : IsOpen O` using `T.open_target.inter isOpen_interior`. Establish `mO : Φ x₀ ∈ O` using `⟨cd.image_mem_toOpenPartialHomeomorph_target (f' := F') hF one_ne_zero, mem_interior_iff_mem_nhds.2 ((cd.to_localInverse (f' := F') hF one_ne_zero).eventually (by simp))⟩`. Set `em : (Fin D → ℂ) →L[ℂ] (I → ℂ)` to `ContinuousLinearMap.pi fun i => if h : i ∈ Set.range P.map then 0 else ContinuousLinearMap.proj (e.symm ⟨i, h⟩)`. Establish `m₁ : ∀ b j, em b (P.map j) = 0` using `fun b j => by simp [em]`. Establish `m₂ : ∀ b i, em b (e i) = b i` using `fun b i => by simp only [em, ContinuousLinearMap.pi_apply, dif_neg (e i).2]; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `lf : ∀ x : I → ℂ, (∀ j, ev x (P.relation j) = 0) → ∃ ψ : A →+* ℂ, ∀ p, ψ (algebraMap P.Ring A p) = ev x p` using `fun x hx => ⟨(algebraMap P.Ring A).liftOfSurjective P.algebraMap_surjective ⟨ev x, by show P.ker ≤ _`. Rewrite using `[← P.span_range_relation_eq_ker, Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hx j⟩, fun p => RingHom.liftOfRightInverse_comp_apply _ _ _ _ p⟩`. Use `choose Ψ hΨ using lf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `rel : ∀ b, em b ∈ O → ∀ j, ev (T.symm (em b)) (P.relation j) = 0` using `fun b hb j => by`. Rewrite using `[← q₁, ← Φe, show Φ (T.symm (em b)) = em b from T.right_inv hb.1, m₁]`. Take `⟨ε, ε0, hε⟩` from `Metric.mem_nhds_iff.1 (Filter.inter_mem (T.open_source.mem_nhds (cd.mem_toOpenPartialHomeomorph_source (f' := F') hF one_ne_zero)) (hF.continuousAt.preimage_mem_nhds (oO.mem_nhds mO)))`. Set `n` to `Fintype.equivFin I`. Use `⟨_, fun j => P.val (n.symm j), fun i => P.val (e i), em ⁻¹' O, ε, fun b => if h : em b ∈ O then Ψ _ (rel b h) else ψ₀, ε0, oO.preimage em.continuous, fun b hb => ?_, fun a => ?_, fun ψ hψ hg => ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [dif_pos (show em b ∈ O from hb)]`. Use `⟨RingHom.ext fun r => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, IsScalarTower.algebraMap_apply k P.Ring A, hΨ]`. Conclude with `eval₂Hom_C _ _ _`. Rewrite using `[show P.val (e i) = algebraMap P.Ring A (X (e i).1) by simp, hΨ, ← q₂, ← Φe, show Φ (T.symm (em b)) = em b from T.right_inv hb.1, m₂]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p, rfl⟩` from `P.algebraMap_surjective a`. Use `DifferentiableOn.congr (f := fun b => eval (T.symm (em b)) (map σ p)) (fun b hb => ?_) fun b hb => ?_` and prove the remaining obligations. Establish `c₁ : ContDiffAt ℂ 1 T.symm (em b)` using `interior_subset hb.2`. Establish `c₂ : DifferentiableAt ℂ (fun x : I → ℂ => eval x (map σ p)) (T.symm (em b))` using `(hasFDerivAt_eval _ _).differentiableAt`. Conclude with `(c₂.comp b ((c₁.differentiableAt one_ne_zero).comp b em.differentiableAt)).differentiableWithinAt`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [dif_pos (show em b ∈ O from hb)]`. Rewrite using `[hΨ, MvPolynomial.eval_map]`. Both sides reduce to the same expression. Establish `hx` using `hε (show (fun i => ψ (P.val i)) ∈ Metric.ball x₀ ε from (dist_pi_lt_iff ε0).2 fun i => by`. Simplify `hg (n i))` using `[dist_eq_norm]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `e₁ : em (fun i => ψ (P.val (e i))) = Φ fun i => ψ (P.val i)` using `funext fun i => by`. Distinguish the cases in `hi : i ∈ Set.range P.map`. Take `⟨j, rfl⟩` from `hi`. Rewrite using `[m₁, Φe, q₁, ← pt ψ hψ, P.algebraMap_apply, P.aeval_val_relation, map_zero]`. Take `⟨j, hj⟩` from `e.surjective ⟨i, hi⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `rfl : (e j).1 = i` from `congrArg Subtype.val hj`. Rewrite using `[m₂, Φe, q₂]`. Simplify using `only [ev, eval₂Hom_X']`. Establish `mB : em (fun i => ψ (P.val (e i))) ∈ O` using `by rw [e₁]; exact hx.2`. Use `⟨mB, (dif_pos mB).trans (RingHom.ext fun a => ?_)⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨p, rfl⟩` from `P.algebraMap_surjective a`. Rewrite using `[hΨ, pt ψ hψ, e₁, show T.symm (Φ fun i => ψ (P.val i)) = _ from T.left_inv hx.1]`. Rewrite using `[eq_top_iff, ← P.basisKaehler.span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
-
-Take `⟨j, hj⟩` from `e.surjective ⟨i.1, i.2⟩`. Conclude with `⟨j, by simp [hj, P.basisKaehler_apply]⟩`.
+A detailed English derivation is pending.
 -/
 theorem anChart_span {k A : Type} [Field k] [CommRing A] [Algebra k A] (D : ℕ) [h : Algebra.IsStandardSmoothOfRelativeDimension D k A]
     (σ : k →+* ℂ) (ψ₀ : A →+* ℂ) (h₀ : ψ₀.comp (algebraMap k A) = σ) :
@@ -158,19 +156,13 @@ theorem anChart_span {k A : Type} [Field k] [CommRing A] [Algebra k A] (D : ℕ)
     exact ⟨j, by simp [hj, P.basisKaehler_apply]⟩
 
 /- English proof (translation)
-Set `S` to `MvPolynomial (Fin D) k`. Use `letI : Algebra S A := (aeval f : S →ₐ[k] A).toRingHom.toAlgebra`. Establish `hal : ∀ c : S, algebraMap S A c = aeval f c` using `fun _ => rfl`. Use `haveI : IsScalarTower k S A := .of_algebraMap_eq fun r => by`. Rewrite using `[hal, MvPolynomial.algebraMap_eq, aeval_C]`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Algebra.FiniteType S A := .of_restrictScalars_finiteType k S A`. Use `haveI : FaithfulSMul S A := (faithfulSMul_iff_algebraMap_injective S A).2 hinj`. Establish `hz : KaehlerDifferential.map k S A A = 0` using `LinearMap.ext_on hspan (by`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `: f i = algebraMap S A (X i)` using `by simp [hal]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [KaehlerDifferential.map_D, LinearMap.zero_apply]`. Rewrite using `[this]`. Use the proof step `simp)`. Use `haveI : Subsingleton Ω[A⁄S] := ⟨fun x y => by`. Take `⟨x, rfl⟩` from `KaehlerDifferential.map_surjective k S A x`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Take `⟨y, rfl⟩` from `KaehlerDifferential.map_surjective k S A y`. Simplify using `[hz]⟩`. Use `haveI : Algebra.FormallyUnramified S A := ⟨inferInstance⟩`. Set `K` to `FractionRing S`. Set `L` to `FractionRing A`.
-
-Use `letI : Algebra K L := FractionRing.liftAlgebra S L`. Use `haveI : IsScalarTower S K L := FractionRing.isScalarTower_liftAlgebra S L`. Use `haveI : Algebra.FormallyEtale A L := .of_isLocalization (nonZeroDivisors _)`. Use `haveI : Algebra.FormallyUnramified S L := Algebra.FormallyUnramified.comp S A L`. Use `haveI : Algebra.FormallyUnramified K L := Algebra.FormallyUnramified.of_restrictScalars S K L`.
-
-Use `haveI : Algebra.EssFiniteType A L := .of_isLocalization L (nonZeroDivisors _)`. Use `haveI : Algebra.EssFiniteType S L := Algebra.EssFiniteType.comp S A L`. Use `haveI : Algebra.EssFiniteType K L := Algebra.EssFiniteType.of_comp S K L`. Use `haveI : Algebra.IsSeparable K L := Algebra.FormallyUnramified.isSeparable K L`. Use `haveI : Algebra.IsAlgebraic K L := inferInstance`.
-
-Use `haveI : Algebra.IsAlgebraic S L := (IsFractionRing.comap_isAlgebraic_iff (A := S) (K := K)).2 inferInstance`. Use `haveI : Algebra.IsAlgebraic S A := Algebra.IsAlgebraic.of_injective (IsScalarTower.toAlgHom S A L) (IsFractionRing.injective A L)`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic a).exists_nonzero_dvd (mem_nonZeroDivisors_of_ne_zero ha)`.
+A detailed English derivation is pending.
 -/
 theorem exists_dvd_polynomial {k A : Type} [Field k] [CommRing A] [IsDomain A] [Algebra k A] [Algebra.FiniteType k A]
     {D : ℕ} (f : Fin D → A) (hspan : Submodule.span A (Set.range fun i => KaehlerDifferential.D k A (f i)) = ⊤)
@@ -212,11 +204,11 @@ theorem exists_dvd_polynomial {k A : Type} [Field k] [CommRing A] [IsDomain A] [
   exact (Algebra.IsAlgebraic.isAlgebraic a).exists_nonzero_dvd (mem_nonZeroDivisors_of_ne_zero ha)
 
 /- English proof (translation)
-Establish `hs : ∀ i, (Metric.ball (b₀ i) ρ).Infinite` using `fun i => infinite_of_mem_nhds (b₀ i) (Metric.ball_mem_nhds _ hρ)`. Use `MvPolynomial.funext_set (s := fun i => Metric.ball (b₀ i) ρ) hs fun x hx => ?_` and prove the remaining obligations. Establish `hρ' : (ρ : ℂ) ≠ 0` using `by exact_mod_cast hρ.ne'`. Establish `hx' : x = b₀ + (ρ : ℂ) • ((ρ : ℂ)⁻¹ • (x - b₀))`. Rewrite using `[smul_smul, mul_inv_cancel₀ hρ', one_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[map_zero, hx']`. Use `h _ ?_` and prove the remaining obligations. Rewrite using `[mem_ball_zero_iff, pi_norm_lt_iff one_pos]`. Introduce `i`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hx i (Set.mem_univ i)` as an intermediate fact. Rewrite `this` using `[Metric.mem_ball, dist_eq_norm]`. Simplify using `only [Pi.smul_apply, Pi.sub_apply, smul_eq_mul, norm_mul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hρ]`. Rewrite using `[inv_mul_lt_iff₀ hρ]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_eval_polydisc {D : ℕ} (Q : MvPolynomial (Fin D) ℂ) (b₀ : Fin D → ℂ) {ρ : ℝ} (hρ : 0 < ρ)
     (h : ∀ z ∈ Metric.ball (0 : Fin D → ℂ) 1, eval (b₀ + (ρ : ℂ) • z) Q = 0) : Q = 0 := by
@@ -237,7 +229,7 @@ theorem eq_zero_of_eval_polydisc {D : ℕ} (Q : MvPolynomial (Fin D) ℂ) (b₀ 
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval_map, aeval_def, ← coe_eval₂Hom, map_eval₂Hom, hφ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem apply_aeval {k A : Type} [Field k] [CommRing A] [Algebra k A] {D : ℕ} (f : Fin D → A) (σ : k →+* ℂ)
     (φ : A →+* ℂ) (hφ : φ.comp (algebraMap k A) = σ) (c : MvPolynomial (Fin D) k) :
@@ -246,19 +238,17 @@ theorem apply_aeval {k A : Type} [Field k] [CommRing A] [Algebra k A] {D : ℕ} 
   rfl
 
 /- English proof (translation)
-Introduce `k A _ _ _ _ D hsm σ ψ₀ h₀`. Use `haveI : Algebra.FiniteType k A := by`. Take `⟨I, J, _, _, P, -⟩` from `hsm.out`. Conclude with `P.finiteType`. Take `⟨N, g, f, B, ε, Ψ₁, ε0, hB, hch, hhol, hlast, hspan⟩` from `anChart_span D σ ψ₀ h₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hb₀, hΨ₀⟩` from `hlast ψ₀ h₀ fun j => by simpa using ε0`. Take `⟨r, r0, hr⟩` from `Metric.isOpen_iff.1 hB _ hb₀`. Use `set b₀ : Fin D → ℂ := fun i => ψ₀ (f i) with hb₀def`. Establish `hρ : 0 < r / 2` using `by positivity`. Use `set ρ : ℝ := r / 2 with hρdef`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `c : (Fin D → ℂ) → Fin D → ℂ` to `fun z => b₀ + (ρ : ℂ) • z`. Establish `hc : ∀ z ∈ ball (0 : Fin D → ℂ) 1, c z ∈ B` using `fun z hz => hr (by`. Rewrite `hz` using `[mem_ball_zero_iff]`. Rewrite using `[Metric.mem_ball, dist_eq_norm]`. Establish `: c z - b₀ = (ρ : ℂ) • z` using `by simp [c]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hρ]`. Use polynomial arithmetic with `[norm_nonneg z])`. Establish `hv : ∀ q : MvPolynomial (Fin D) k, (∀ z ∈ ball (0 : Fin D → ℂ) 1, Ψ₁ (c z) (aeval f q) = 0) → q = 0` using `fun q hq => by`. Establish `: map σ q = 0` using `eq_zero_of_eval_polydisc _ b₀ hρ fun z hz => by`. Establish `h₁` using `apply_aeval f σ (Ψ₁ (c z)) (hch _ (hc z hz)).1 q`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h₂ : (fun i => Ψ₁ (c z) (f i)) = c z` using `funext (hch _ (hc z hz)).2`. Rewrite `h₁` using `[hq z hz, h₂]`. Conclude with `h₁.symm`. Conclude with `map_injective σ σ.injective (by simpa using this)`. Use `⟨fun z => Ψ₁ (c z), ⟨Metric.isOpen_ball, fun a => ?_⟩, ?_, fun z hz => (hch _ (hc z hz)).1, fun a ha => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hd : DifferentiableOn ℂ c (ball 0 1)`. Simplify using `only [c]`. Use `fun_prop`. Conclude with `(hhol a).comp hd hc`. Simplify using `only [c, smul_zero, add_zero]`.
-
-Conclude with `hΨ₀`. Assume the negation of the conclusion as `ha0`. Establish `hinj : Function.Injective (aeval f : MvPolynomial (Fin D) k →ₐ[k] A)` using `(injective_iff_map_eq_zero _).2 fun q hq => hv q fun z _ => by simp [hq]`. Take `⟨q, hq0, w, hw⟩` from `exists_dvd_polynomial f hspan hinj ha0`. Conclude with `hq0 (hv q fun z hz => by rw [hw, map_mul, ha z hz, zero_mul])`.
+A detailed English derivation is pending.
 -/
 theorem exists_polydisc_chart : ∀ (k A : Type) [Field k] [CommRing A] [IsDomain A] [Algebra k A] (D : ℕ) [Algebra.IsStandardSmoothOfRelativeDimension D k A] (σ : k →+* ℂ) (ψ₀ : A →+* ℂ), ψ₀.comp (algebraMap k A) = σ → ∃ Ψ : (Fin D → ℂ) → (A →+* ℂ), IsHolPts (ball 0 1) Ψ ∧ Ψ 0 = ψ₀ ∧ (∀ z ∈ ball (0 : Fin D → ℂ) 1, (Ψ z).comp (algebraMap k A) = σ) ∧ ∀ a : A, (∀ z ∈ ball (0 : Fin D → ℂ) 1, Ψ z a = 0) → a = 0 := by
   intro k A _ _ _ _ D hsm σ ψ₀ h₀

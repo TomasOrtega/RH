@@ -13,14 +13,14 @@ section
 variable {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-Simplify using `only [pp, List.map_append, List.prod_append, Module.End.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pp_append (E : GLOps n K V) (mu : Fin n → ℤ) (l1 l2 : List (Fin n × Fin n)) (T : ℕ) (x : V) :
     pp E mu (l1 ++ l2) T x = pp E mu l1 T (pp E mu l2 T x) := by
   simp only [pp, List.map_append, List.prod_append, Module.End.mul_apply]
 
 /- English proof (translation)
-Simplify using `only [pp, List.map_cons, List.prod_cons, Module.End.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pp_cons (E : GLOps n K V) (mu : Fin n → ℤ) (ab : Fin n × Fin n) (l : List (Fin n × Fin n)) (T : ℕ) (x : V) :
     pp E mu (ab :: l) T x = ppFac E mu ab.1 ab.2 T (pp E mu l T x) := by
@@ -29,7 +29,7 @@ theorem pp_cons (E : GLOps n K V) (mu : Fin n → ℤ) (ab : Fin n × Fin n) (l 
 end
 
 /- English proof (translation)
-Simplify using `only [weightSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, sub_eq_zero]`. Use `first`. Consider the case `simp only [Module.End.one_apply]`. Consider the case `simp only [LinearMap.one_apply]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem mem_weightSp_iff_forall_diag {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
     (E : GLOps n K V) (ν : Fin n → ℤ) (y : V) :
@@ -41,19 +41,19 @@ private theorem mem_weightSp_iff_forall_diag {n : ℕ} {K V : Type*} [Field K] [
   | simp only [LinearMap.one_apply]
 
 /- English proof (translation)
-Rewrite `hy`, the goal using `[mem_weightSp_iff_forall_diag]`. Introduce `c`. Establish `h` using `congrArg (fun f : Module.End K V => f y) (hE.1 c c a b)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, hy c, map_smul] at h`. Rewrite `h` using `[sub_eq_iff_eq_add]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h]`. Distinguish the cases in `hca : c = a`. Substitute `hca` using the available equality. Distinguish the cases in `hcb : c = b`. Substitute `hcb` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [eq_self_iff_true, if_true]`. Use `push_cast`. Use `first`. Consider the case `module`. Consider the case `(simp [add_smul, sub_smul])`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hbc : ¬ b = c` using `fun h => hcb h.symm`. Simplify using `only [eq_self_iff_true, if_true, if_neg hbc, if_neg hcb, LinearMap.zero_apply, sub_zero]`. Use `push_cast`. Use `first`. Consider the case `module`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails.
 
-Consider the case `(simp [add_smul, sub_smul]; abel)`. Distinguish the cases in `hcb : c = b`. Substitute `hcb` using the available equality. Simplify using `only [eq_self_iff_true, if_true, if_neg hca, LinearMap.zero_apply, zero_sub]`. Use `push_cast`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `module`. Consider the case `(simp [add_smul, sub_smul]; abel)`. Establish `hbc : ¬ b = c` using `fun h => hcb h.symm`. Simplify using `only [if_neg hca, if_neg hbc, if_neg hcb, LinearMap.zero_apply, sub_zero, zero_add]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Treat this case separately. Treat this case separately.
 
-Use `push_cast`. Use `first`. Consider the case `module`. Consider the case `simp`.
+A detailed English derivation is pending.
 -/
 private theorem glRep_apply_mem_weightSp_shift {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
     (E : GLOps n K V) (hE : IsGLRep E) (a b : Fin n) (ν : Fin n → ℤ) (y : V)
@@ -95,9 +95,9 @@ private theorem glRep_apply_mem_weightSp_shift {n : ℕ} {K V : Type*} [Field K]
       | simp
 
 /- English proof (translation)
-Proceed by induction on `k generalizing ν y with`. Consider the case `zero => simpa using hy`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Module.End.mul_apply]`. Establish `h1` using `ih _ _ (glRep_apply_mem_weightSp_shift E hE a b ν y hy)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `h1 using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `c`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem glRep_pow_apply_mem_weightSp_shift {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
     (E : GLOps n K V) (hE : IsGLRep E) (a b : Fin n) (k : ℕ) (ν : Fin n → ℤ) (y : V)
@@ -115,11 +115,11 @@ private theorem glRep_pow_apply_mem_weightSp_shift {n : ℕ} {K V : Type*} [Fiel
     ring
 
 /- English proof (translation)
-Unfold `ppFac`. Use `first`. Consider the case `rw [LinearMap.sum_apply]`. Consider the case `rw [LinearMap.coe_sum, Finset.sum_apply]`. Consider the case `rw [LinearMap.coe_fn_sum, Finset.sum_apply]`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Simplify using `only [divPowE, LinearMap.smul_apply, Module.End.mul_apply, map_smul]`. Use `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Submodule.smul_mem _ _ ?_))` and prove the remaining obligations. Establish `h1` using `glRep_pow_apply_mem_weightSp_shift E hE a b k ν y hy`. Establish `h2` using `glRep_pow_apply_mem_weightSp_shift E hE b a k _ _ h1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h2 using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `c`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem ppFac_apply_mem_weightSp_of_mem {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
     (E : GLOps n K V) (hE : IsGLRep E) (mu : Fin n → ℤ) (a b : Fin n) (T : ℕ) (ν : Fin n → ℤ)
@@ -139,7 +139,7 @@ private theorem ppFac_apply_mem_weightSp_of_mem {n : ℕ} {K V : Type*} [Field K
   ring
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa [pp] using hy`. Consider the case `cons ab l ih`. Rewrite using `[pp_cons]`. Conclude with `ppFac_apply_mem_weightSp_of_mem E hE mu ab.1 ab.2 T ν _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pp_apply_mem_weightSp_of_mem {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
     (E : GLOps n K V) (hE : IsGLRep E) (mu : Fin n → ℤ) (l : List (Fin n × Fin n)) (T : ℕ)
@@ -151,19 +151,19 @@ private theorem pp_apply_mem_weightSp_of_mem {n : ℕ} {K V : Type*} [Field K] [
     exact ppFac_apply_mem_weightSp_of_mem E hE mu ab.1 ab.2 T ν _ ih
 
 /- English proof (translation)
-Consider the cases of `h with`. Consider the case `swap l1 l2 a b c d hac had hbc hbd`. Simplify using `only [pp_append, pp_cons, ppFac_eq]`. Use `congr 1`. Conclude with `LinearMap.congr_fun (hC K V n E hE a b c d hac had hbc hbd _ _ T).eq _`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Treat this case separately.
 
-Consider the case `braid l1 l2 a b c hab hbc`. Simplify using `only [pp_append, pp_cons, ppFac_eq]`. Use `congr 1`. Establish `h1` using `hmu a b hab`. Establish `h2` using `hmu b c hbc`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hmu a c (hab.trans hbc)`. Establish `hab2 : (a : ℕ) < b` using `hab`. Establish `hbc2 : (b : ℕ) < c` using `hbc`. Establish `e1 : ((mu a - mu b + ((b : ℤ) - (a : ℤ))).toNat : ℤ) = mu a - mu b + ((b : ℤ) - (a : ℤ))` using `Int.toNat_of_nonneg (by omega)`. Establish `e2 : ((mu b - mu c + ((c : ℤ) - (b : ℤ))).toNat : ℤ) = mu b - mu c + ((c : ℤ) - (b : ℤ))` using `Int.toNat_of_nonneg (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : ((mu a - mu c + ((c : ℤ) - (a : ℤ))).toNat : ℤ) = mu a - mu c + ((c : ℤ) - (a : ℤ))` using `Int.toNat_of_nonneg (by omega)`. Establish `hu : (mu a - mu c + ((c : ℤ) - (a : ℤ))).toNat = (mu a - mu b + ((b : ℤ) - (a : ℤ))).toNat + (mu b - mu c + ((c : ℤ) - (b : ℤ))).toNat`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hu]`. Conclude with `hY ((b : ℕ) - a - 1) ((c : ℕ) - b - 1) K V n E hE a b c hab.ne (hab.trans hbc).ne hbc.ne mu _ _ (by omega) (by omega) T hT _ (pp_apply_mem_weightSp_of_mem E hE mu l2 T mu x hx)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `braid' l1 l2 a b c hab hbc`. Simplify using `only [pp_append, pp_cons, ppFac_eq]`. Use `congr 1`. Establish `h1` using `hmu a b hab`. Establish `h2` using `hmu b c hbc`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hmu a c (hab.trans hbc)`. Establish `hab2 : (a : ℕ) < b` using `hab`. Establish `hbc2 : (b : ℕ) < c` using `hbc`. Establish `e1 : ((mu a - mu b + ((b : ℤ) - (a : ℤ))).toNat : ℤ) = mu a - mu b + ((b : ℤ) - (a : ℤ))` using `Int.toNat_of_nonneg (by omega)`. Establish `e2 : ((mu b - mu c + ((c : ℤ) - (b : ℤ))).toNat : ℤ) = mu b - mu c + ((c : ℤ) - (b : ℤ))` using `Int.toNat_of_nonneg (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : ((mu a - mu c + ((c : ℤ) - (a : ℤ))).toNat : ℤ) = mu a - mu c + ((c : ℤ) - (a : ℤ))` using `Int.toNat_of_nonneg (by omega)`. Establish `hu : (mu a - mu c + ((c : ℤ) - (a : ℤ))).toNat = (mu a - mu b + ((b : ℤ) - (a : ℤ))).toNat + (mu b - mu c + ((c : ℤ) - (b : ℤ))).toNat`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hu]`. Conclude with `(hY ((b : ℕ) - a - 1) ((c : ℕ) - b - 1) K V n E hE a b c hab.ne (hab.trans hbc).ne hbc.ne mu _ _ (by omega) (by omega) T hT _ (pp_apply_mem_weightSp_of_mem E hE mu l2 T mu x hx)).symm`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pp_step (hC : RestComm) (hY : RestYB) {K V : Type} [Field K] [CharZero K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] {n : ℕ} (E : GLOps n K V) (hE : IsGLRep E) (mu : Fin n → ℤ)
@@ -217,13 +217,13 @@ theorem pp_step (hC : RestComm) (hY : RestYB) {K V : Type} [Field K] [CharZero K
       mu _ _ (by omega) (by omega) T hT _ (pp_apply_mem_weightSp_of_mem E hE mu l2 T mu x hx)).symm
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ n E hE mu hmu ord hord T hT x hx a b hab`. Take `⟨l, hl⟩` from `hN n ord hord a b hab`. Establish `key : ∀ l', Relation.ReflTransGen (Step n) ord l' → pp E mu ord T x = pp E mu l' T x`. Introduce `l' hl'`. Proceed by induction on `hl' with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `refl => rfl`. Consider the case `tail _ hs ih => rw [ih, pp_step hC hY E hE mu hmu T hT hs x hx]`. Establish `hlt : a < b`. Rewrite using `[Fin.lt_iff_val_lt_val]`. Use linear arithmetic over natural numbers and integers.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `h1` using `hmu a b hlt`. Establish `hba : ((b : ℕ) : ℤ) - ((a : ℕ) : ℤ) = 1` using `by omega`. Establish `key2 : ((mu a - mu b + ((b : ℤ) - (a : ℤ))).toNat : ℤ) = mu a - mu b + 1`. Rewrite using `[Int.toNat_of_nonneg (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[key _ hl, pp_cons, ppFac_eq]`. Conclude with `hK K V n E hE a b hlt.ne mu _ key2 T hT _ (pp_apply_mem_weightSp_of_mem E hE mu l T mu x hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem raising_kill_of_interface (hN : RestConn) (hC : RestComm) (hY : RestYB) (hK : RestKill) : SimpleRaisingKillsExtremalProjector := by
   intro K V _ _ _ _ _ n E hE mu hmu ord hord T hT x hx a b hab

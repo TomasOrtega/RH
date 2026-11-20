@@ -23,9 +23,9 @@ namespace GlobalTheory
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `D T h j hj hG hT ka wL wF G S g0 la hH hV _ hB hwL hU _`. Take `⟨-, hbc, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hany, htw, -, -⟩` from `GlobalTheory.lawsFieldsSeparately`. Take `⟨hgood, -, -, -, -, -, hnum⟩` from `GlobalTheory.PinNum.numerics_of_pins D T.Q h.pins`. Take `⟨hpq, hr, -⟩` from `hnum j hj`. Use `CompFin.finite_comp (T.Q.Xo j) T.Q.c` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, -, -, hWt, -⟩` from `GlobalTheory.Frames.algebraic_laws hbc _ _ _ _ (T.Q.Xo j) T.Q.c`. Conclude with `realPt_of h j hj hG G la hU hwL (ptOfS_of h j hj hG hany htw hT hV G hB la (GlobalTheory.SecCount.countQAtSt D T h j hj hG hT ka wL wF G S g0 la hH)) hT (GlobalTheory.intFrames_of_laws hbc htw _ _ _ _ (T.Q.Xo j) T.Q.c) hWt (GlobalTheory.Frames.modelAtSt_of_good GlobalTheory.Modul …`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem realPtNZ_of_curveHyp : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c) (hT : GenFromTest (T.Q.Xo j) T.Q.c hG) (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData (recPlus h j hj) ka wL wF) (S : Scal (recB h.toLawsCore)) (g0 : (recB h.toLawsCore).Cusp j wF) (la : HeightOneSpectrum (𝓞 (recB h.toLawsCore).KO)), CurveHyp h j hj hG ka wL wF G S g0 → GenValInjSt h j hG → CompSplitSt h j hG → BIRSt h j hj hG G → 0 < wL.n → ∀ (hU : IsUnif (OsK (recPlus h j hj) la G.w) (unifO (recPlus h j hj) la G.N)) [∀ ζ : PtsG G la, IsDVRAt ζ], RealPtNZSt h j hj hG G la hU := by
   intro D T h j hj hG hT ka wL wF G S g0 la hH hV _ hB hwL hU _

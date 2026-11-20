@@ -27,7 +27,7 @@ section Transfer
 variable {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {f : S' ⟶ S} {φ : A'.left ⟶ A.left}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.SiegelPull.push_injective h T, GlobalTheory.SiegelPull.push_surjective h T⟩`.
+Supply the required witnesses or components.
 -/
 theorem pushHom_bijective (h : IsGrpPullback A' A f φ) (T : Over S') : Function.Bijective (pushHom h T) := ⟨GlobalTheory.SiegelPull.push_injective h T, GlobalTheory.SiegelPull.push_surjective h T⟩
 
@@ -36,13 +36,13 @@ def Labels {C : Type} [Group C] (A : Over S) [GrpObj A] (n : ℕ) (i : C →* (�
     (∀ x : Over.mk t ⟶ A, x ^ n = 1 ↔ ∃ c, x = toUnit _ ≫ i c) ∧ ∀ c, toUnit (Over.mk t) ≫ i c = 1 → c = 1
 
 /- English proof (translation)
-Establish `hmul : ∀ x y : 𝟙_ (Over S) ⟶ A, GlobalTheory.SiegelPull.secPull h (x * y) = GlobalTheory.SiegelPull.secPull h x * GlobalTheory.SiegelPull.secPull h y`. Introduce `x y`. Apply `GlobalTheory.SiegelPull.push_injective h (𝟙_ (Over S'))` to reduce the goal to its premises. Rewrite using `[map_mul, GlobalTheory.SiegelPull.push_secPull', GlobalTheory.SiegelPull.push_secPull', GlobalTheory.SiegelPull.push_secPull', MonObj.comp_mul]`. Use `⟨MonoidHom.mk' (fun c => GlobalTheory.SiegelPull.secPull h (i c)) (fun a b => by rw [map_mul]; exact hmul _ _), fun c => GlobalTheory.SiegelPull.secPull_left h (i c), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k _ _ t`. Establish `hp` using `hi k (t ≫ f)`. Establish `hinj` using `GlobalTheory.SiegelPull.push_injective h (Over.mk t)`. Establish `key : ∀ c, pushHom h (Over.mk t) (toUnit (Over.mk t) ≫ GlobalTheory.SiegelPull.secPull h (i c)) = toUnit (Over.mk (t ≫ f)) ≫ i c` using `fun c => GlobalTheory.SiegelPull.push_secPull h (i c) (Over.mk t)`. Use `⟨fun x => ⟨fun hx => ?_, ?_⟩, fun c hc => hp.2 c ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpx : pushHom h (Over.mk t) x ^ n = 1` using `by rw [← map_pow, hx, map_one]`. Take `⟨c, hc⟩` from `(hp.1 (pushHom h (Over.mk t) x)).1 hpx`. Conclude with `⟨c, hinj ((key c).symm ▸ hc)⟩`. Introduce and unpack `⟨c, rfl⟩`. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_pow, map_one]`. Conclude with `(hp.1 _).2 ⟨c, key c⟩`. Rewrite using `[← key c]`. Establish `hc' : toUnit (Over.mk t) ≫ GlobalTheory.SiegelPull.secPull h (i c) = 1` using `hc`. Rewrite using `[hc', map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pull_labels (h : IsGrpPullback A' A f φ) {C : Type} [Group C] (n : ℕ)
     (i : C →* (𝟙_ (Over S) ⟶ A)) (hi : Labels A n i) :
@@ -79,14 +79,14 @@ variable {h k : ℕ} {o o' : Type} [CommRing o] [CommRing o'] {ζ : o} {ζ' : o'
   {s : S ⟶ Sp o} {s' : S' ⟶ Sp o'}
 
 /- English proof (translation)
-Unfold `SiegPre.diag`. Conclude with `pull_isLB c.isLB _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem diag_isLB (c : SiegPre h k ζ s) : c.diag.IsLB := by
   unfold SiegPre.diag
   exact pull_isLB c.isLB _
 
 /- English proof (translation)
-Unfold `SiegPre.diag`. Conclude with `GlobalTheory.SiegelPull.diag_iso hs hw`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem diag_iso {c : SiegPre h k ζ s} {c' : SiegPre h k ζ' s'} {φ : c'.A.left ⟶ c.A.left}
     {φ₂ : (G2 c'.A).left ⟶ (G2 c.A).left} (hs : IsSquare φ φ₂) (hw : LBIso c'.P (c.P.pull φ₂)) :
@@ -95,9 +95,9 @@ theorem diag_iso {c : SiegPre h k ζ s} {c' : SiegPre h k ζ' s'} {φ : c'.A.lef
   exact GlobalTheory.SiegelPull.diag_iso hs hw
 
 /- English proof (translation)
-Establish `hLam : (abelian₂ P.A P.L).IsLB`. Unfold `abelian₂ cubeLB`. Conclude with `ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB _ P.isLB _ _`. Take `⟨hPb, hg, φ₂', hsq', hiso'⟩` from `hP`. Take `⟨φ₁, φ₂, hpb₁, hsq₁, hiso₁, -⟩` from `hc`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨φ ≫ φ₁, hPb.comp hpb₁, hg, φ₂' ≫ φ₂, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hsq₁.1, ← Category.assoc, hsq'.1, Category.assoc]`. Rewrite using `[Category.assoc, hsq₁.2, ← Category.assoc, hsq'.2, Category.assoc]`. Conclude with `LBIso.trans hLam (pull_isLB c₁.isLB _) (pull_isLB c.isLB _) hiso' (LBIso.trans (pull_isLB c₁.isLB _) (pull_isLB (pull_isLB c.isLB _) _) (pull_isLB c.isLB _) (GlobalTheory.SiegelPullComp.iso_pull φ₂' hiso₁) (GlobalTheory.SiegelPullComp.iso_pull_pull c.isLB φ₂ φ₂'))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqOf_of_pb {o₁ : Type} [CommRing o₁] {ζ₁ : o₁} {s₁ : S' ⟶ Sp o₁} {c₁ : SiegPre h k ζ₁ s₁}
     {c : SiegPre h k ζ s} {f : S' ⟶ S} {g : S'' ⟶ S'} {P : Out.PolAV S''} {φ : P.A.left ⟶ c₁.A.left}
@@ -117,14 +117,14 @@ theorem sqOf_of_pb {o₁ : Type} [CommRing o₁] {ζ₁ : o₁} {s₁ : S' ⟶ S
 end Sieg
 
 /- English proof (translation)
-Unfold `spMap`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem spMap_id' (o : Type) [CommRing o] : spMap (RingHom.id o) = 𝟙 (Sp o) := by
   unfold spMap
   simp
 
 /- English proof (translation)
-Take `⟨⟨c', hc'⟩, hpr⟩` from `GlobalTheory.siegPre_pullback h k o ζ S S' s s' f c hf`. Conclude with `⟨c', hc', hpr c' hc' hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pull_sieg {h k : ℕ} {o : Type} [CommRing o] {ζ : o} {S S' : Scheme.{0}} {s : S ⟶ Sp o} (s' : S' ⟶ Sp o)
     (f : S' ⟶ S) (hf : f ≫ s = s') (c : SiegPre h k ζ s) (hc : c.Principal) :
@@ -133,9 +133,9 @@ theorem pull_sieg {h k : ℕ} {o : Type} [CommRing o] {ζ : o} {S S' : Scheme.{0
   exact ⟨c', hc', hpr c' hc' hc⟩
 
 /- English proof (translation)
-Establish `h2 : IsUnit ((2 : ℕ) : R)`. Establish `hq : IsUnit ((2 : ℕ) : ℚ)` using `isUnit_iff_ne_zero.mpr (by norm_num)`. Use `hq.map (algebraMap ℚ R)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Use `h2.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_two_sections (R : Type) [CommRing R] [Algebra ℚ R] : IsUnit ((2 : ℕ) : Γ(Sp R, ⊤)) := by
   have h2 : IsUnit ((2 : ℕ) : R) := by
@@ -146,14 +146,14 @@ theorem isUnit_two_sections (R : Type) [CommRing R] [Algebra ℚ R] : IsUnit ((2
   rwa [map_natCast] at this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Spec.preimage g).hom, by unfold spMap; simp⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_ringHom_spMap_eq {R o : Type} [CommRing R] [CommRing o] (g : Sp R ⟶ Sp o) :
     ∃ β : o →+* R, spMap β = g :=
   ⟨(Spec.preimage g).hom, by unfold spMap; simp⟩
 
 /- English proof (translation)
-Unfold `spMap`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem spMap_comp_var {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
@@ -162,25 +162,23 @@ private theorem spMap_comp_var {A B C : Type} [CommRing A] [CommRing B] [CommRin
   rfl
 
 /- English proof (translation)
-Introduce `hL h k o _ ζ R _ _ _ S s c f hk hζ hc`. Establish `two : ∀ (T : Type) [CommRing T] [Algebra ℚ T], IsUnit ((2 : ℕ) : T)` using `fun T _ _ => by`. Establish `hq : IsUnit ((2 : ℕ) : ℚ)` using `isUnit_iff_ne_zero.mpr (by norm_num)`. Use `hq.map (algebraMap ℚ T)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `sq2 : ∀ x : Multiplicative (Fin (2 * h) → ZMod 2), x ^ 2 = 1` using `fun x => by`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Rewrite using `[toAdd_pow, toAdd_one, Pi.smul_apply, Pi.zero_apply, nsmul_eq_mul, Nat.cast_ofNat, show (2 : ZMod 2) = 0 from rfl, zero_mul]`. Take `⟨β, hβ⟩` from `exists_ringHom_spMap_eq (f ≫ s)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c₁, hpb₁, hc₁⟩` from `pull_sieg (spMap β) f hβ.symm c hc`. Establish `sm₁` using `GlobalTheory.T.siegel_smoothOfRelativeDimension_charZero hL h k o ζ R β c₁ hk hζ`. Take `⟨R₁, _, _, ⟨fin₁, et₁, ff₁⟩, lab₁⟩` from `GlobalTheory.T.exists_finiteEtale_cover_constant_torsion R c₁.A h 2 c₁.ab sm₁ (two R)`. Use `haveI : IsNoetherianRing R₁ := Algebra.FiniteType.isNoetherianRing R R₁`. Use `letI : Algebra ℚ R₁ := ((algebraMap R R₁).comp (algebraMap ℚ R)).toAlgebra`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Take `⟨c₂, hpb₂, hc₂⟩` from `pull_sieg (spMap ((algebraMap R R₁).comp β)) (spMap (algebraMap R R₁)) (spMap_comp_var β (algebraMap R R₁)).symm c₁ hc₁`. Take `⟨φ₂, φ₂₂, hg₂, hsq₂, hiso₂, hlev₂⟩` from `hpb₂`. Take `⟨i, hi⟩` from `lab₁ c₂.A φ₂ hg₂`. Take `⟨R₂, _, _, ⟨fin₂, et₂, ff₂⟩, H91⟩` from `GlobalTheory.T.exists_symmetric_linearisation_square_diagonalBundle hL h k o ζ R₁ ((algebraMap R R₁).comp β) c₂ h i hc₂`. Use `haveI : IsNoetherianRing R₂ := Algebra.FiniteType.isNoetherianRing R₁ R₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `letI : Algebra ℚ R₂ := ((algebraMap R₁ R₂).comp (algebraMap ℚ R₁)).toAlgebra`. Take `⟨c₃, hpb₃, hc₃⟩` from `pull_sieg (spMap ((algebraMap R₁ R₂).comp ((algebraMap R R₁).comp β))) (spMap (algebraMap R₁ R₂)) (spMap_comp_var ((algebraMap R R₁).comp β) (algebraMap R₁ R₂)).symm c₂ hc₂`. Take `⟨φ₃, φ₃₂, hg₃, hsq₃, hiso₃, hlev₃⟩` from `hpb₃`. Take `⟨i₃, hi₃l, hi₃⟩` from `exists_pull_labels hg₃ 2 i hi`. Establish `hLlb : (lbPow (c₂.diag.pull φ₃) 2).IsLB` using `isLB_lbPow (pull_isLB (diag_isLB c₂) _) 2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, j, hu⟩` from `H91 c₃.A φ₃ i₃ _ hg₃ hi₃l rfl`. Take `⟨hmon, hfin, het, hsurj⟩` from `GlobalTheory.abelianScheme_id_pow_finite_etale_surjective (Sp R₂) c₃.A 2 c₃.ab (isUnit_two_sections R₂)`. Take `⟨M, hM, hLM, hMinv⟩` from `GlobalTheory.T.exists_descent_symmetric_linearised_bundle (Sp R₂) c₃.A c₃.A ((𝟙 c₃.A) ^ 2) _ i₃ _ hLlb hmon hfin het hsurj (fun x => by rw [MonObj.comp_pow, Category.comp_id, ← map_pow, sq2, map_one]) (fun k _ _ t => ⟨fun x => by rw [MonObj.comp_pow, Category.comp_id]; exact (hi₃ …`. Establish `hLam` using `GlobalTheory.T.lam_iso_of_doubling_pullback_eq_diagonal_sq hL h k o ζ R₂ _ c₃ M hc₃ hM (LBIso.trans (isLB_lbPow (diag_isLB c₃) 2) hLlb (pull_isLB hM _) (lbIso_lbPow (diag_iso hsq₃ hiso₃) 2) hLM)`. Take `⟨P, φP, hP⟩` from `GlobalTheory.T.exists_principalPolarization_symmetric_squareRoot hL h k o ζ R₂ _ c₃ M hc₃ (GlobalTheory.T.siegel_smoothOfRelativeDimension_charZero hL h k o ζ R₂ _ c₃ hk hζ) hM hLam hMinv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ₂, hψ₂⟩` from `sqOf_of_pb hP ⟨φ₃, φ₃₂, hg₃, hsq₃, hiso₃, hlev₃⟩`. Take `⟨ψ₁, hψ₁⟩` from `sqOf_of_pb hψ₂ ⟨φ₂, φ₂₂, hg₂, hsq₂, hiso₂, hlev₂⟩`. Take `⟨ψ₀, hψ₀⟩` from `sqOf_of_pb hψ₁ hpb₁`. Take `⟨iP, -, hiP⟩` from `exists_pull_labels hP.1 2 i₃ hi₃`. Use `letI : Algebra R R₂ := ((algebraMap R₁ R₂).comp (algebraMap R R₁)).toAlgebra`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : IsScalarTower R R₁ R₂ := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `⟨R₂, inferInstance, inferInstance, P, ψ₀, ⟨?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `first | exact Module.Finite.trans R₁ R₂ | infer_instance`. Apply the tactic sequence `first | exact Algebra.Etale.comp R R₁ R₂ | infer_instance`. Apply the tactic sequence `first | exact Module.FaithfullyFlat.trans R R₁ R₂ | infer_instance`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `e : spMap (algebraMap R R₂) ≫ f = ((𝟙 _ ≫ spMap (algebraMap R₁ R₂)) ≫ spMap (algebraMap R R₁)) ≫ f`. Rewrite using `[Category.id_comp, ← spMap_comp_var]`. Rewrite using `[e]`. Conclude with `hψ₀`. Introduce `K _ _ x y hy`.
-
-Take `⟨a, rfl⟩` from `((hiP K x).1 y).1 hy`. Conclude with `⟨iP a, by rw [← map_pow, sq2, map_one], rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_sqrt : Out.Laws → ∀ (h k : ℕ) (o : Type) [CommRing o] (ζ : o) (R : Type) [CommRing R] [Algebra ℚ R] [IsNoetherianRing R] (S : Scheme.{0}) (s : S ⟶ Sp o) (c : SiegPre h k ζ s) (f : Sp R ⟶ S), 2 ≤ k → IsUnit ζ → c.Principal → ∃ (R₁ : Type) (_ : CommRing R₁) (_ : Algebra R R₁) (P : Out.PolAV (Sp R₁)) (φ : P.A.left ⟶ c.A.left), (Module.Finite R R₁ ∧ Algebra.Etale R R₁ ∧ Module.FaithfullyFlat R R₁) ∧ SqOf P c (spMap (algebraMap R R₁) ≫ f) φ ∧ TorsConst P.A 2 := by
   intro hL h k o _ ζ R _ _ _ S s c f hk hζ hc

@@ -13,7 +13,7 @@ variable {X : Type}
 def cls (r : Setoid X) (q : Quotient r) : Set X := Quotient.mk r ⁻¹' {q}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_cls {r : Setoid X} {q : Quotient r} {y : X} :
     y ∈ cls r q ↔ Quotient.mk r y = q := Iff.rfl
@@ -22,9 +22,9 @@ variable [TopologicalSpace X] [MeasurableSpace X] [OpensMeasurableSpace X]
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hc.isCompact.elim_finite_subcover (cls r) hr (by`. Introduce `x _`. Conclude with `Set.mem_iUnion.2 ⟨Quotient.mk r x, rfl⟩)`. Use `t.finite_toSet.subset ?_` and prove the remaining obligations. Introduce `q hq`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨q', hq', hm⟩` from `Set.mem_iUnion₂.1 (ht (subset_tsupport f hq))`. Establish `hqq : q = q'` using `(Quotient.out_eq q).symm.trans hm`. Conclude with `hqq ▸ hq'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem support_out_finite (r : Setoid X) (hr : ∀ q, IsOpen (cls r q)) (f : X → E)
     (hc : HasCompactSupport f) :
@@ -38,9 +38,9 @@ theorem support_out_finite (r : Setoid X) (hr : ∀ q, IsOpen (cls r q)) (f : X 
   exact hqq ▸ hq'
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `hx : f x = f (Quotient.mk r x).out` using `hf _ _ (Quotient.out_eq _).symm`. Simplify using `only [Set.indicator_apply, mem_cls]`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with h`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Rewrite using `[hx]`. Assume the negation of the conclusion as `hne`. Conclude with `h (ht hne)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem eq_sum_indicator (r : Setoid X) (f : X → E)
     (hf : ∀ x y, Quotient.mk r x = Quotient.mk r y → f x = f y)
@@ -58,17 +58,15 @@ theorem eq_sum_indicator (r : Setoid X) (f : X → E)
     exact h (ht hne)
 
 /- English proof (translation)
-Establish `hfin` using `support_out_finite r hr f hc`. Establish `ht : Function.support (fun q : Quotient r => f q.out) ⊆ (hfin.toFinset : Set _)`. Simplify using the standard rewrite rules. Establish `hsupp : Function.support (fun q : Quotient r => (μ (cls r q)).toReal • f q.out) ⊆ (hfin.toFinset : Set _)` using `fun q hq => ht (fun h => hq (by simp [h]))`. Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `hμ with hμ | hμ` into its components or cases. Use `conv_lhs => rw [eq_sum_indicator r f hf hfin.toFinset ht]`. Rewrite using `[integral_finsetSum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[integral_indicator_const _ ((hr q).measurableSet)]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `q _`. Conclude with `(integrable_indicator_iff (hr q).measurableSet).2 (integrableOn_const (hμ q).ne)`. Establish `h0 : ∀ q, (μ (cls r q)).toReal • f q.out = 0` using `fun q => by simp [hμ q]`. Simplify using `only [h0, Finset.sum_const_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hz : ∀ q : Quotient r, f q.out = 0`. Establish `: f = 0` using `funext fun x => (hf _ _ (Quotient.out_eq _).symm).trans (hz _)`. Simplify using `[this]`. Use `push Not at hz`. Take `⟨q, hq⟩` from `hz`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `integral_undef` to reduce the goal to its premises. Introduce `hint`. Establish `hlt` using `hint.measure_norm_ge_lt_top (ε := ‖f q.out‖) (norm_pos_iff.2 hq)`. Establish `hsub : cls r q ⊆ {x | ‖f q.out‖ ≤ ‖f x‖}` using `fun x hx => by show ‖f q.out‖ ≤ ‖f x‖`. Rewrite using `[hf x q.out (hx.trans (Quotient.out_eq q).symm)]`.
-
-Conclude with `absurd (hμ q) ((measure_mono hsub).trans_lt hlt).ne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_eq_finsum (r : Setoid X) (hr : ∀ q, IsOpen (cls r q)) (μ : Measure X)
     (f : X → E) (hf : ∀ x y, Quotient.mk r x = Quotient.mk r y → f x = f y)
@@ -112,11 +110,11 @@ section Left
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe]`. Rewrite using `[mem_cls]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : (y : G ⧸ K₀) = ((q.out : G) : G ⧸ K₀)` using `h.trans (Quotient.out_eq q).symm`. Rewrite `h'` using `[QuotientGroup.eq]`. Simplify using `using K₀.inv_mem h'`. Introduce `h`. Establish `h' : ((q.out : G) : G ⧸ K₀) = (y : G ⧸ K₀)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[QuotientGroup.eq]`. Conclude with `h`. Conclude with `h'.symm.trans (Quotient.out_eq q)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_leftRel (K₀ : Subgroup G) (q : G ⧸ K₀) :
     cls (QuotientGroup.leftRel K₀) q = (fun z => q.out⁻¹ * z) ⁻¹' (K₀ : Set G) := by
@@ -136,13 +134,13 @@ theorem cls_leftRel (K₀ : Subgroup G) (q : G ⧸ K₀) :
 end Left
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ μ _ K₀ hK E _ _ _ f hf hc`. Establish `hr : ∀ q, IsOpen (cls (QuotientGroup.leftRel K₀) q)` using `fun q => by`. Rewrite using `[cls_leftRel]`. Conclude with `hK.preimage (continuous_const.mul continuous_id)`. Establish `hμq : ∀ q : G ⧸ K₀, μ (cls (QuotientGroup.leftRel K₀) q) = μ (K₀ : Set G)` using `fun q => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cls_leftRel, measure_preimage_mul]`. Establish `hf' : ∀ x y : G, Quotient.mk (QuotientGroup.leftRel K₀) x = Quotient.mk (QuotientGroup.leftRel K₀) y → f x = f y`. Introduce `x y h`. Establish `h' : (x : G ⧸ K₀) = (y : G ⧸ K₀)` using `h`. Rewrite `h'` using `[QuotientGroup.eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hf x _ h'` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Conclude with `this.symm`. Use `⟨support_out_finite _ hr f hc, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_eq_finsum _ hr μ f hf' hc]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Conclude with `finsum_congr fun q => by rw [hμq]`. Distinguish the cases in `h : μ (K₀ : Set G) < ⊤`. Conclude with `Or.inl fun q => (hμq q).symm ▸ h`. Conclude with `Or.inr fun q => (hμq q).trans (not_lt_top_iff.1 h)`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem intRightInv : Formalism.DoubleCosetMeasures.IntRightInv := by
   intro G _ _ _ _ _ μ _ K₀ hK E _ _ _ f hf hc
@@ -172,11 +170,11 @@ variable {G : Type} [Group G]
 def dcMap (K₀ : Subgroup G) (g : G) (k : K₀) : G ⧸ K₀ := ((k : G) * g : G)
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[DoubleCoset.mem_doubleCoset]`. Simplify using `only [Set.mem_preimage, Set.mem_range, dcMap, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨a, ha⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[QuotientGroup.eq]`. Simplify `hb` using `[mul_assoc]`. Introduce and unpack `⟨k, hk⟩`. Rewrite `hk` using `[QuotientGroup.eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨k, k.2, _, hk, by group⟩`.
+Supply the required witnesses or components.
 -/
 theorem doubleCoset_eq_preimage (K₀ : Subgroup G) (g : G) :
     DoubleCoset.doubleCoset g (K₀ : Set G) K₀ =
@@ -194,7 +192,7 @@ theorem doubleCoset_eq_preimage (K₀ : Subgroup G) (g : G) :
     exact ⟨k, k.2, _, hk, by group⟩
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.mem_map_equiv, MulAut.conj_symm_apply]`. Simplify using `only [dcMap, QuotientGroup.eq]`. Simplify using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dcMap_eq_iff (K₀ : Subgroup G) (g : G) (k k' : K₀) :
     dcMap K₀ g k = dcMap K₀ g k' ↔
@@ -204,9 +202,9 @@ theorem dcMap_eq_iff (K₀ : Subgroup G) (g : G) (k k' : K₀) :
   simp [mul_assoc]
 
 /- English proof (translation)
-Establish `hker : Setoid.ker (dcMap K₀ g) = QuotientGroup.leftRel ((K₀.map (MulAut.conj g).toMonoidHom).subgroupOf K₀)`. Use extensionality with `k k'`. Rewrite using `[Setoid.ker_def, QuotientGroup.leftRel_apply]`. Conclude with `dcMap_eq_iff K₀ g k k'`. Rewrite using `[Subgroup.relIndex, Subgroup.index, ← Nat.card_congr (Setoid.quotientKerEquivRange (dcMap K₀ g)), hker]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem card_range_dcMap (K₀ : Subgroup G) (g : G) :
     Nat.card (Set.range (dcMap K₀ g)) = (K₀.map (MulAut.conj g).toMonoidHom).relIndex K₀ := by
@@ -222,9 +220,9 @@ theorem card_range_dcMap (K₀ : Subgroup G) (g : G) :
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Establish `: CompactSpace K₀` using `isCompact_iff_compactSpace.1 hc`. Establish `hopen : IsOpen (((K₀.map (MulAut.conj g).toMonoidHom).subgroupOf K₀ : Subgroup K₀) : Set K₀)`. Establish `: (((K₀.map (MulAut.conj g).toMonoidHom).subgroupOf K₀ : Subgroup K₀) : Set K₀) = Subtype.val ⁻¹' ((fun x => g⁻¹ * x * g) ⁻¹' (K₀ : Set G))`. Use extensionality with `k`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.mem_map_equiv, MulAut.conj_symm_apply]`. Rewrite using `[this]`. Conclude with `(hK.preimage (by fun_prop)).preimage continuous_subtype_val`. Use `Subgroup.quotient_finite_of_isOpen _ hopen` as an intermediate fact. Conclude with `Subgroup.index_ne_zero_of_finite`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relIndex_conj_ne_zero (K₀ : Subgroup G) (hK : IsOpen (K₀ : Set G))
     (hc : IsCompact (K₀ : Set G)) (g : G) :
@@ -243,7 +241,7 @@ theorem relIndex_conj_ne_zero (K₀ : Subgroup G) (hK : IsOpen (K₀ : Set G))
   exact Subgroup.index_ne_zero_of_finite
 
 /- English proof (translation)
-Rewrite using `[cls_leftRel]`. Conclude with `hK.preimage (continuous_const.mul continuous_id)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_cls_leftRel (K₀ : Subgroup G) (hK : IsOpen (K₀ : Set G)) (q : G ⧸ K₀) :
     IsOpen (cls (QuotientGroup.leftRel K₀) q) := by
@@ -252,9 +250,9 @@ theorem isOpen_cls_leftRel (K₀ : Subgroup G) (hK : IsOpen (K₀ : Set G)) (q :
 variable [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Establish `hU : (QuotientGroup.mk : G → G ⧸ K₀) ⁻¹' S = ⋃ q ∈ hS.toFinset, cls (QuotientGroup.leftRel K₀) q`. Use extensionality with `y`. Simplify using `only [Set.mem_preimage, Set.mem_iUnion, Set.Finite.mem_toFinset, mem_cls, exists_prop, exists_eq_right']`. Rewrite using `[hU, measure_biUnion_finset]`. Repeatedly rewrite using `[cls_leftRel, measure_preimage_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.sum_const, nsmul_eq_mul, Nat.card_coe_set_eq, Set.ncard_eq_toFinset_card S hS]`. Introduce `q _ q' _ hne`. Conclude with `Set.disjoint_left.2 fun x hx hx' => hne (hx.symm.trans hx')`. Conclude with `fun q _ => (isOpen_cls_leftRel K₀ hK q).measurableSet`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem measure_preimage_mk (μ : Measure G) [μ.IsMulLeftInvariant] (K₀ : Subgroup G)
     (hK : IsOpen (K₀ : Set G)) (S : Set (G ⧸ K₀)) (hS : S.Finite) :
@@ -275,9 +273,9 @@ theorem measure_preimage_mk (μ : Measure G) [μ.IsMulLeftInvariant] (K₀ : Sub
 end Doset
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ μ _ K₀ hK hc g`. Establish `hne` using `relIndex_conj_ne_zero K₀ hK hc g`. Use `⟨hne, ?_⟩` and prove the remaining obligations. Establish `hfin : (Set.range (dcMap K₀ g)).Finite`. Establish `: Finite (Set.range (dcMap K₀ g))` using `Nat.finite_of_card_ne_zero (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[card_range_dcMap]`. Conclude with `hne)`. Conclude with `Set.toFinite _`. Rewrite using `[doubleCoset_eq_preimage, measure_preimage_mk μ K₀ hK _ hfin, card_range_dcMap]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dosetVol : Formalism.DoubleCosetMeasures.DosetVol := by
   intro G _ _ _ _ _ μ _ K₀ hK hc g
@@ -290,7 +288,7 @@ theorem dosetVol : Formalism.DoubleCosetMeasures.DosetVol := by
   rw [doubleCoset_eq_preimage, measure_preimage_mk μ K₀ hK _ hfin, card_range_dcMap]
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[mem_cls]`. Conclude with `(DoubleCoset.mem_quotToDoubleCoset_iff (H := K₀) (K := K₀) q y).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_double {G : Type} [Group G] (K₀ : Subgroup G)
     (q : Quotient (DoubleCoset.setoid (K₀ : Set G) (K₀ : Set G))) :
@@ -301,13 +299,11 @@ theorem cls_double {G : Type} [Group G] (K₀ : Subgroup G)
   exact (DoubleCoset.mem_quotToDoubleCoset_iff (H := K₀) (K := K₀) q y).symm
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ μ _ K₀ hK hc E _ _ _ f hf hcs`. Establish `hr : ∀ q, IsOpen (cls (DoubleCoset.setoid (K₀ : Set G) (K₀ : Set G)) q)` using `fun q => by`. Rewrite using `[cls_double]`. Conclude with `hK.mul_left`. Establish `hμq : ∀ q, μ (cls (DoubleCoset.setoid (K₀ : Set G) (K₀ : Set G)) q) = ((K₀.map (MulAut.conj (Quotient.out q)).toMonoidHom).relIndex K₀ : ENNReal) * μ (K₀ : Set G)` using `fun q => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cls_double]`. Conclude with `(dosetVol G μ K₀ hK hc _).2`. Establish `hf' : ∀ x y : G, Quotient.mk (DoubleCoset.setoid (K₀ : Set G) (K₀ : Set G)) x = Quotient.mk (DoubleCoset.setoid (K₀ : Set G) (K₀ : Set G)) y → f x = f y`. Introduce `x y h`. Take `⟨a, ha, b, hb, rfl⟩` from `(DoubleCoset.eq K₀ K₀ x y).1 h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hf a ha b hb x).symm`. Use `⟨support_out_finite _ hr f hcs, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_eq_finsum _ hr μ f hf' hcs]`. Conclude with `finsum_congr fun q => by rw [hμq, ENNReal.toReal_mul, ENNReal.toReal_natCast]`. Distinguish the cases in `h : μ (K₀ : Set G) < ⊤`.
-
-Conclude with `Or.inl fun q => (hμq q).symm ▸ ENNReal.mul_lt_top (ENNReal.natCast_lt_top _) h`. Use `Or.inr fun q => ?_` and prove the remaining obligations. Rewrite using `[hμq, not_lt_top_iff.1 h]`. Conclude with `ENNReal.mul_top (Nat.cast_ne_zero.2 (relIndex_conj_ne_zero K₀ hK hc _))`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intBiInv : Formalism.DoubleCosetMeasures.IntBiInv := by
   intro G _ _ _ _ _ μ _ K₀ hK hc E _ _ _ f hf hcs

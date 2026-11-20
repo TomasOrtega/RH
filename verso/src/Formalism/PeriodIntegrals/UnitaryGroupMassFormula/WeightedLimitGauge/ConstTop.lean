@@ -15,13 +15,13 @@ namespace PI.RhsWLim.W
 open PI.RhsWLim
 
 /- English proof (translation)
-The claim follows from `constVal_of_polarHyp rhsTest transW hU hO polarHyp`.
+A detailed English derivation is pending.
 -/
 theorem constVal_of_unimodW_orbitPush (hU : UnimodW) (hO : OrbitPush) : ConstVal :=
   constVal_of_polarHyp rhsTest transW hU hO polarHyp
 
 /- English proof (translation)
-The claim follows from `constVal_of_unimodW_orbitPush unimodW hO`.
+A detailed English derivation is pending.
 -/
 theorem constVal_of_orbit (hO : OrbitPush) : ConstVal :=
   constVal_of_unimodW_orbitPush unimodW hO

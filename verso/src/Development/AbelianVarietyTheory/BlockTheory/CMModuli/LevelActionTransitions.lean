@@ -18,7 +18,7 @@ variable (D : Datum H)
 def nLa (n : ℕ) : Submodule (𝓞 E) D.La := LinearMap.range ((n : 𝓞 E) • (LinearMap.id : D.La →ₗ[𝓞 E] D.La))
 
 /- English proof (translation)
-Simplify using `only [nLa, LinearMap.mem_range, LinearMap.smul_apply, LinearMap.id_apply, Nat.cast_smul_eq_nsmul, eq_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_nLa {n : ℕ} {x : D.La} : x ∈ nLa D n ↔ ∃ y, x = n • y := by
   simp only [nLa, LinearMap.mem_range, LinearMap.smul_apply, LinearMap.id_apply, Nat.cast_smul_eq_nsmul, eq_comm]
@@ -28,7 +28,7 @@ abbrev LaMod (n : ℕ+) : Type := D.La ⧸ nLa D n
 abbrev cls (n : ℕ+) (a : D.La) : LaMod D n := Submodule.Quotient.mk a
 
 /- English proof (translation)
-Rewrite using `[Submodule.Quotient.eq, mem_nLa]`. Conclude with `exists_congr fun y => by rw [sub_eq_iff_eq_add']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_eq {n : ℕ+} {a b : D.La} : cls D n a = cls D n b ↔ ∃ y, a = b + (n : ℕ) • y := by
   rw [Submodule.Quotient.eq, mem_nLa]
@@ -73,7 +73,7 @@ def KMax : Subgroup (∀ n : ℕ+, LaMod D n ≃ₗ[𝓞 E] LaMod D n) where
       exact (h2 n a' b' a b ha.symm hb.symm).symm
 
 /- English proof (translation)
-Establish `h1` using `(KMax D).one_mem`. Use `⟨fun n m a b h => h1.1 n m (-a) b h, fun n a b a' b' ha hb => ?_⟩` and prove the remaining obligations. Simplify using `using h1.2 n (-a) (-b) a' b' ha hb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem neg_mem_KMax : (fun n => LinearEquiv.neg (𝓞 E)) ∈ KMax D := by
   have h1 := (KMax D).one_mem
@@ -91,7 +91,7 @@ def FixesLevel (l : Level H) (g : KMax D) : Prop :=
   ∀ a b, Sends l g a b → a - b ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La) ∧ a - b ∈ nLa D l.A
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `Submodule.Quotient.mk_surjective _ (g.1 (modulus l) (cls D _ a))`. Conclude with `⟨b, hb.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sends (l : Level H) (g : KMax D) (a : D.La) : ∃ b, Sends l g a b := by
   obtain ⟨b, hb⟩ := Submodule.Quotient.mk_surjective _ (g.1 (modulus l) (cls D _ a))
@@ -104,7 +104,7 @@ def IsNormalisation {U Z Y : Scheme.{0}} (i : U ⟶ Z) (p : Z ⟶ Y) : Prop :=
     i ≫ e.hom = (i ≫ p).toNormalization ∧ e.hom ≫ (i ≫ p).fromNormalization = p
 
 /- English proof (translation)
-Establish `key : ∀ g : U ⟶ Y, g = f → ∃ (_ : QuasiCompact g) (_ : QuasiSeparated g) (e : f.normalization ≅ g.normalization), f.toNormalization ≫ e.hom = g.toNormalization ∧ e.hom ≫ g.fromNormalization = f.fromNormalization`. Introduce and unpack `g rfl`. Conclude with `⟨inferInstance, inferInstance, Iso.refl _, by simp, by simp⟩`. Conclude with `key _ f.toNormalization_fromNormalization`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isNormalisation_normalization {U Y : Scheme.{0}} (f : U ⟶ Y) [QuasiCompact f] [QuasiSeparated f] :
     IsNormalisation f.toNormalization f.fromNormalization := by
@@ -115,7 +115,7 @@ theorem isNormalisation_normalization {U Y : Scheme.{0}} (f : U ⟶ Y) [QuasiCom
   exact key _ f.toNormalization_fromNormalization
 
 /- English proof (translation)
-Take `⟨_, _, e, -, he⟩` from `h`. Rewrite using `[← he]`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsNormalisation.isIntegralHom {U Z Y : Scheme.{0}} {i : U ⟶ Z} {p : Z ⟶ Y} (h : IsNormalisation i p) :
     IsIntegralHom p := by
@@ -159,7 +159,7 @@ structure IsLevelAction (m : Model univ h φ) (act : KMax D → (m.X ⟶ m.X)) (
 def LevelActs (m : Model univ h φ) : Prop := ∃ act lift act₀, IsLevelAction m act lift act₀
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨act g⁻¹, by rw [← ρ.act_mul, mul_inv_cancel, ρ.act_one], by rw [← ρ.act_mul, inv_mul_cancel, ρ.act_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsLevelAction.isIso {m : Model univ h φ} {act lift act₀} (ρ : IsLevelAction m act lift act₀) (g : KMax D) :
     IsIso (act g) :=

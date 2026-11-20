@@ -105,7 +105,7 @@ noncomputable def IsCT : (u : List (Letter E)) → Vec u → (N m : ℕ) → wsi
       (slc (r := x.1) (s := wsize u + m) (by simpa [wsize, add_assoc] using h) g φ)
 
 /- English proof (translation)
-The claim follows from `| [], _, N, m, h, c, ψ, ψ', φ, φ', h1, h2 => by obtain rfl : m = N := by simpa [wsize] using h obtain rfl := eq_of_heq h1 obtain rfl := eq_of_heq h2 exact HEq.rfl | x :: u, f, N, m, h, c, ψ, ψ', φ, φ', h1, h2 => fun g => by have := IsCT.lin u f.2 _ m rfl c _ _ _ _ (h1 g) (h2 g) r …`.
+A detailed English derivation is pending.
 -/
 theorem IsCT.lin : ∀ (u : List (Letter E)) (f : Vec u) (N m : ℕ) (h : wsize u + m = N) (c : ℂ) (ψ ψ' : Sm E m)
     (φ φ' : Sm E N), IsCT u f N m h ψ φ → IsCT u f N m h ψ' φ' → IsCT u f N m h (c • ψ + ψ') (c • φ + φ')
@@ -119,7 +119,7 @@ theorem IsCT.lin : ∀ (u : List (Letter E)) (f : Vec u) (N m : ℕ) (h : wsize 
     rwa [smul_comm c, ← smul_add, ← map_smul, ← map_add] at this
 
 /- English proof (translation)
-The claim follows from `| [], _, N, m, h => by obtain rfl : m = N := by simpa [wsize] using h exact HEq.rfl | x :: u, f, N, m, h => fun g => by rw [smul_zero, map_zero] exact IsCT.zero u f.2 _ m rfl`.
+A detailed English derivation is pending.
 -/
 theorem IsCT.zero : ∀ (u : List (Letter E)) (f : Vec u) (N m : ℕ) (h : wsize u + m = N), IsCT u f N m h 0 0
   | [], _, N, m, h => by

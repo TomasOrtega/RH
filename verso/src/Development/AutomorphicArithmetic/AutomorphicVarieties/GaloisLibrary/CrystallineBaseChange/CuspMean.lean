@@ -13,14 +13,14 @@ open scoped Matrix MatrixGroups
 namespace UpperTheory.V.Br
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_succ, add_comm]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem cm_aff_add {R : Type} [CommRing R] (x y : R) : aff 1 (x + y) = aff 1 x * aff 1 y := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_succ, add_comm]
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff, Matrix.GeneralLinearGroup.map]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem cm_map_aff {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) (x : R) :
     Matrix.GeneralLinearGroup.map p (aff 1 x) = aff 1 (p x) := by
@@ -28,14 +28,14 @@ private theorem cm_map_aff {R S : Type} [CommRing R] [CommRing S] (p : R →+* S
   fin_cases i <;> fin_cases j <;> simp [aff, Matrix.GeneralLinearGroup.map]
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem cm_aff_zero {R : Type} [CommRing R] : aff (1 : Rˣ) (0 : R) = 1 := by
   refine Units.ext (Matrix.ext fun i j => ?_)
   fin_cases i <;> fin_cases j <;> simp [aff]
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j <;> simp [aff] <;> fun_prop`. Express the relevant statement in the definitionally equal form `Continuous fun x : R => (!![(((1 : Rˣ)⁻¹ : Rˣ) : R), -((((1 : Rˣ)⁻¹ : Rˣ) : R) * x); 0, 1] : Matrix (Fin 2) (Fin 2) R)`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem cm_continuous_aff {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] :
     Continuous fun x : R => aff (1 : Rˣ) x := by
@@ -49,7 +49,7 @@ private theorem cm_continuous_aff {R : Type} [CommRing R] [TopologicalSpace R] [
 private noncomputable def eR (t : ℝ) : Ad ℚ := TR.sInf ℚ (algebraMap ℝ (TR.Rinf ℚ) t)
 
 /- English proof (translation)
-The claim follows from `(TR.infEq ℚ).symm_apply_apply _`.
+A detailed English derivation is pending.
 -/
 private theorem pInf_eR (t : ℝ) : TR.pInf ℚ (eR t) = algebraMap ℝ (TR.Rinf ℚ) t := (TR.infEq ℚ).symm_apply_apply _
 
@@ -59,7 +59,7 @@ Both sides reduce to the same expression.
 private theorem pFin_eR (t : ℝ) : pFin ℚ (eR t) = 0 := rfl
 
 /- English proof (translation)
-The claim follows from `map_zero (TR.infEq ℚ).symm`.
+A detailed English derivation is pending.
 -/
 private theorem pInf_sFin (a : Af ℚ) : TR.pInf ℚ (sFin ℚ a) = 0 := map_zero (TR.infEq ℚ).symm
 
@@ -69,7 +69,7 @@ Both sides reduce to the same expression.
 private theorem pFin_sFin (a : Af ℚ) : pFin ℚ (sFin ℚ a) = a := rfl
 
 /- English proof (translation)
-The claim follows from `DFunLike.congr_fun (Subsingleton.elim ((TR.pInf ℚ).comp (algebraMap ℚ (Ad ℚ))) ((algebraMap ℝ (TR.Rinf ℚ)).comp (Rat.castHom ℝ))) q`.
+A detailed English derivation is pending.
 -/
 private theorem pInf_rat (q : ℚ) : TR.pInf ℚ (algebraMap ℚ (Ad ℚ) q) = algebraMap ℝ (TR.Rinf ℚ) (q : ℝ) :=
   DFunLike.congr_fun (Subsingleton.elim ((TR.pInf ℚ).comp (algebraMap ℚ (Ad ℚ)))
@@ -81,26 +81,26 @@ Both sides reduce to the same expression.
 private theorem pFin_rat (q : ℚ) : pFin ℚ (algebraMap ℚ (Ad ℚ) q) = algebraMap ℚ (Af ℚ) q := rfl
 
 /- English proof (translation)
-Simplify using `only [eR, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem eR_add (s t : ℝ) : eR (s + t) = eR s + eR t := by simp only [eR, map_add]
 
 /- English proof (translation)
-The claim follows from `TR.ga_ext (by simp [upR, cm_map_aff, pInf_eR]) (by simp [upR, cm_map_aff, pFin_eR, cm_aff_zero])`.
+A detailed English derivation is pending.
 -/
 private theorem cm_upR_aff (t : ℝ) : upR (aff 1 t) = aff 1 (eR t) :=
   TR.ga_ext (by simp [upR, cm_map_aff, pInf_eR]) (by simp [upR, cm_map_aff, pFin_eR, cm_aff_zero])
 
 /- English proof (translation)
-The claim follows from `TR.ga_ext (by simp [cm_map_aff, pInf_sFin, cm_aff_zero]) (by simp [cm_map_aff, pFin_sFin])`.
+A detailed English derivation is pending.
 -/
 private theorem cm_finGL_aff (a : Af ℚ) : finGL ℚ 2 (aff 1 a) = aff 1 (sFin ℚ a) :=
   TR.ga_ext (by simp [cm_map_aff, pInf_sFin, cm_aff_zero]) (by simp [cm_map_aff, pFin_sFin])
 
 /- English proof (translation)
-Use `⟨ev (TR.pInf ℚ x) - q, TR.ad_ext ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add, pInf_rat, pInf_eR, pInf_sFin, add_zero, ← map_add, add_sub_cancel]`. Use function extensionality and compare the values at `v`. Rewrite using `[Subsingleton.elim v Rat.infinitePlace]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_add, map_add, pFin_rat, pFin_eR, pFin_sFin, add_zero, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem cm_decomp (x : Ad ℚ) (q : ℚ) :
     ∃ s : ℝ, x = algebraMap ℚ (Ad ℚ) q + eR s + sFin ℚ (pFin ℚ x - algebraMap ℚ (Af ℚ) q) := by
@@ -112,11 +112,11 @@ private theorem cm_decomp (x : Ad ℚ) (q : ℚ) :
   · rw [map_add, map_add, pFin_rat, pFin_eR, pFin_sFin, add_zero, add_sub_cancel]
 
 /- English proof (translation)
-Establish `hp : Function.Periodic (fun t : ℝ => ψ (eR t)) N` using `fun t => by`. Establish `e : eR (t + N) + sFin ℚ (N : Af ℚ) = algebraMap ℚ (Ad ℚ) (N : ℚ) + eR t`. Use `TR.ad_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[map_add, map_add, pInf_rat, pInf_eR, pInf_eR, pInf_sFin, add_zero, Rat.cast_natCast, map_add, add_comm]`. Rewrite using `[map_add, map_add, pFin_rat, pFin_eR, pFin_eR, pFin_sFin, zero_add, add_zero, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Rewrite using `[← hu _ hN, e, hq]`. Use `⟨hp, fun x => ?_⟩` and prove the remaining obligations. Take `⟨q, hq'⟩` from `(GroundTheory.Automorphic.AdelicGLn.denseRange_algebraMap_finiteAdeleRing ℚ).exists_mem_open (hU.preimage (continuous_const.sub continuous_id : Continuous fun z : Af ℚ => pFin ℚ x - z)) ⟨pFin ℚ x, by simpa using h0⟩`. Take `⟨s, hs⟩` from `cm_decomp x q`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : ∀ t, ψ (eR t + x) = ψ (eR (t + s))` using `fun t => by`. Rewrite using `[hs, ← add_assoc, hu (pFin ℚ x - algebraMap ℚ (Af ℚ) q) hq', add_left_comm, hq, eR_add]`. Simplify using `only [e]`. Rewrite using `[intervalIntegral.integral_comp_add_right (fun t => ψ (eR t)) s, zero_add, add_comm, hp.intervalIntegral_add_eq s 0, zero_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cm_mean {ψ : Ad ℚ → ℂ} {U : Set (Af ℚ)} (hU : IsOpen U) (h0 : 0 ∈ U) {N : ℕ} (hN : (N : Af ℚ) ∈ U)
     (hq : ∀ (q : ℚ) x, ψ (algebraMap ℚ (Ad ℚ) q + x) = ψ x) (hu : ∀ a ∈ U, ∀ x, ψ (x + sFin ℚ a) = ψ x) :
@@ -140,9 +140,9 @@ private theorem cm_mean {ψ : Ad ℚ → ℂ} {U : Set (Af ℚ)} (hU : IsOpen U)
 
 open GroundTheory.Automorphic.AutomorphicForm in
 /- English proof (translation)
-Establish `hμ : (unipMeasure ℚ 2 1).IsAddHaarMeasure` using `inferInstance`. Establish `hB : BorelSpace (UPos 2 1 → AdeleRing (𝓞 ℚ) ℚ)` using `inferInstance`. Establish `hL : ratN ℚ 2 1 = unipLattice ℚ 2 1` using `AddSubgroup.ext fun x => ⟨fun ⟨y, hy⟩ => ⟨y, hy⟩, fun ⟨y, hy⟩ => ⟨y, hy⟩⟩`. Conclude with `⟨_, hB, unipMeasure ℚ 2 1, unipFundamentalDomain ℚ 2 1, hμ, by`. Rewrite using `[hL]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isAddFundamentalDomain_unipFundamentalDomain⟩`.
+A detailed English derivation is pending.
 -/
 private theorem cm_fund : ∃ (_ : MeasurableSpace (BlockIx 2 1 → Ad ℚ)) (_ : BorelSpace (BlockIx 2 1 → Ad ℚ))
     (μ : Measure (BlockIx 2 1 → Ad ℚ)) (D : Set (BlockIx 2 1 → Ad ℚ)), μ.IsAddHaarMeasure ∧ IsAddFundamentalDomain (ratN ℚ 2 1) D μ := by
@@ -157,23 +157,19 @@ end UpperTheory.V.Br
 
 open UpperTheory.V.Br in
 /- English proof (translation)
-Introduce `φ hφ g`. Establish `hl` using `hφ.1.left`. Establish `ho` using `hφ.1.level`. Use `set u : GL (Fin 2) (Af ℚ) := Matrix.GeneralLinearGroup.map (pFin ℚ) g with hu`. Establish `hc : Continuous fun x : Af ℚ => u⁻¹ * aff 1 x * u` using `(continuous_const.mul cm_continuous_aff).mul continuous_const`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU` using `ho.preimage hc`. Establish `h0 : (0 : Af ℚ) ∈ (fun x : Af ℚ => u⁻¹ * aff 1 x * u) ⁻¹' {k | TR.finRep ℚ 2 k φ = φ}`. Simplify using `[cm_aff_zero]`. Take `⟨n, hn⟩` from `((GlobalTheory.AdelicFactorial.tendsto_factorial_finiteAdele ℚ).eventually (hU.mem_nhds h0)).exists`. Use `⟨n.factorial, n.factorial_pos, fun y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set N : ℕ := n.factorial`. Establish `hN : (0 : ℝ) < N` using `Nat.cast_pos.2 n.factorial_pos`. Establish `hq : ∀ (q : ℚ) x, φ.1 (aff 1 (algebraMap ℚ (Ad ℚ) q + x) * (g * upR y)) = φ.1 (aff 1 x * (g * upR y))` using `fun q x => by`. Rewrite using `[cm_aff_add, ← cm_map_aff, mul_assoc]`. Conclude with `hl _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hp, hm⟩` from `cm_mean (ψ := fun x => φ.1 (aff 1 x * (g * upR y))) hU h0 hn hq fun a ha x => by`. Establish `h1 : ∀ g, φ.1 (g * finGL ℚ 2 (u⁻¹ * aff 1 a * u)) = φ.1 g` using `fun g => congrFun (congrArg Subtype.val ha) g`. Establish `e1 : g * upR y * finGL ℚ 2 (u⁻¹ * aff 1 a * u) = finGL ℚ 2 (aff 1 a) * (g * upR y)` using `TR.ga_ext (by simp) (by simp [upR, ← hu, mul_assoc])`. Rewrite using `[cm_aff_add, ← cm_finGL_aff, mul_assoc, ← e1, ← mul_assoc, h1]`. Simplify using `only [cm_upR_aff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨hp, ?_⟩` and prove the remaining obligations. Use `set c := ∫ t in (0 : ℝ)..N, φ.1 (aff 1 (eR t) * (g * upR y))`. Take `⟨_, _, μ, D, hμ, hD⟩` from `cm_fund`. Take `⟨i1, i2, i3, i4, hco, hcu, hx⟩` from `UpperTheory.eisenstein_constantTerm_upperBlock ℚ`. Establish `hψ : Continuous fun x : BlockIx 2 1 → Ad ℚ => φ.1 (unip x * (g * upR y))` using `(smCont ℚ 2 φ ho).comp (hcu.mul continuous_const)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hinv : ∀ γ ∈ ratN ℚ 2 1, ∀ x, φ.1 (unip (γ + x) * (g * upR y)) = φ.1 (unip x * (g * upR y))`. Introduce and unpack `_ ⟨q, rfl⟩ x`. Rewrite using `[hx, hx]`. Conclude with `hq _ _`. Take `⟨hfin, hP⟩` from `UpperTheory.periodic_integral_fundamentalDomain_invariant _ (ratN ℚ 2 1) hco μ D hD`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hint` using `(hP _ hinv).1 hψ`. Establish `he : Continuous fun (t : ℝ) (_ : BlockIx 2 1) => eR t` using `continuous_pi fun _ => (((TR.continuous_infEq ℚ).comp (continuous_algebraMap ℝ (TR.Rinf ℚ))).prodMk continuous_const : Continuous fun t : ℝ => ((TR.infEq ℚ (algebraMap ℝ (TR.Rinf ℚ) t), 0) : InfiniteAdeleRing ℚ × Af ℚ))`. Establish `key` using `avgZero _ (ratN ℚ 2 1) μ D hμ hD (fun x => φ.1 (unip x * (g * upR y)) - c / N) (hψ.sub continuous_const) (fun γ hγ x => by rw [hinv γ hγ]) _ he N hN fun x => by`. Establish `h2 : Continuous fun t : ℝ => φ.1 (unip ((fun _ => eR t) + x) * (g * upR y))` using `hψ.comp (he.add continuous_const)`. Rewrite using `[intervalIntegral.integral_sub (h2.intervalIntegrable _ _) (by simp)]`.
-
-Simplify using `only [hx]`. Rewrite using `[intervalIntegral.integral_const, sub_zero, Complex.real_smul, Complex.ofReal_natCast, mul_div_cancel₀ _ (Nat.cast_ne_zero.2 n.factorial_pos.ne'), sub_eq_zero]`. Conclude with `hm _`. Rewrite `key` using `[integral_sub hint (integrableOn_const hfin), hφ.2 1 one_pos one_lt_two μ D hμ hD, setIntegral_const, zero_sub, neg_eq_zero, smul_eq_zero, div_eq_zero_iff]`. Break down `key with key | key | key` into its components or cases.
-
-Conclude with `absurd key (ENNReal.toReal_ne_zero.2 ⟨hD.measure_ne_zero (NeZero.ne μ), hfin⟩)`. Conclude with `key`. Conclude with `absurd key (Nat.cast_ne_zero.2 n.factorial_pos.ne')`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Br.cuspMean :
     UpperTheory.V.Br.CuspMean := by

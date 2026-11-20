@@ -34,24 +34,24 @@ def rs (j : Fin 2) (c : C) : MvPowerSeries (Fin 2) C →+* MvPowerSeries (Fin 2)
 def rc (c : C) (γ : κ → PowerSeries C) : κ → PowerSeries C := fun i => PowerSeries.rescale c (γ i)
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => MvPowerSeries.constantCoeff_X _`.
+A detailed English derivation is pending.
 -/
 theorem hsX (j : Fin 2) : MvPowerSeries.HasSubst (fun _ : Unit => (MvPowerSeries.X j : MvPowerSeries (Fin 2) C)) :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => MvPowerSeries.constantCoeff_X _
 
 /- English proof (translation)
-The claim follows from `constantCoeff_subst_zero (fun _ => MvPowerSeries.constantCoeff_X _) hf`.
+A detailed English derivation is pending.
 -/
 theorem inV_cc (j : Fin 2) {f : PowerSeries C} (hf : PowerSeries.constantCoeff f = 0) :
     MvPowerSeries.constantCoeff (inV j f) = 0 :=
   constantCoeff_subst_zero (fun _ => MvPowerSeries.constantCoeff_X _) hf
 
 /- English proof (translation)
-Establish `hw : MvPowerSeries.HasSubst (w • MvPowerSeries.X : Fin 2 → MvPowerSeries (Fin 2) C)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun s => by simp`. Establish `hc : MvPowerSeries.HasSubst (fun _ : Unit => (w j • PowerSeries.X : PowerSeries C))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => by show MvPowerSeries.constantCoeff (w j • (PowerSeries.X : PowerSeries C)) = 0`. Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul, show MvPowerSeries.constantCoeff (PowerSeries.X : PowerSeries C) = 0 from MvPowerSeries.constantCoeff_X (), mul_zero]`. Unfold `inV`. Rewrite using `[MvPowerSeries.rescale_eq_subst, PowerSeries.rescale_eq_subst]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `PowerSeries.subst`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (hsX j) hw, MvPowerSeries.subst_comp_subst_apply hc (hsX j)]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Rewrite using `[MvPowerSeries.subst_X hw, ← MvPowerSeries.coe_substAlgHom (hsX j), map_smul, MvPowerSeries.coe_substAlgHom (hsX j)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : MvPowerSeries.subst (fun _ : Unit => (MvPowerSeries.X j : MvPowerSeries (Fin 2) C)) (PowerSeries.X : PowerSeries C) = MvPowerSeries.X j` using `MvPowerSeries.subst_X (hsX j) ()`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rescale_inV (w : Fin 2 → C) (j : Fin 2) (f : PowerSeries C) :
     MvPowerSeries.rescale w (inV j f) = inV j (PowerSeries.rescale (w j) f) := by
@@ -75,13 +75,11 @@ theorem rescale_inV (w : Fin 2 → C) (j : Fin 2) (f : PowerSeries C) :
   rfl
 
 /- English proof (translation)
-Establish `hP : MvPowerSeries.HasSubst (pairSubst (fun i => inV 0 (x i)) (fun i => inV 1 (z i)))`. Use `MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => ?_` and prove the remaining obligations. Unfold `pairSubst`. Use `split_ifs`. Conclude with `inV_cc 0 (hx q.2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `inV_cc 1 (hz q.2)`. Establish `hw : MvPowerSeries.HasSubst (w • MvPowerSeries.X : Fin 2 → MvPowerSeries (Fin 2) C)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun s => by simp`. Unfold `HH hAt`. Rewrite using `[MvPowerSeries.rescale_eq_subst, MvPowerSeries.subst_comp_subst_apply hP hw]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use function extensionality and compare the values at `q`. Rewrite using `[← MvPowerSeries.rescale_eq_subst]`. Unfold `pairSubst rc`. Use `split_ifs`. Conclude with `rescale_inV w 0 (x q.2)`.
-
-Conclude with `rescale_inV w 1 (z q.2)`.
+A detailed English derivation is pending.
 -/
 theorem rescale_HH (X : RawChart C d I κ) (x z : κ → PowerSeries C) (hx : ∀ i, PowerSeries.constantCoeff (x i) = 0)
     (hz : ∀ i, PowerSeries.constantCoeff (z i) = 0) (w : Fin 2 → C) :
@@ -109,11 +107,11 @@ end SelfConjPoints
 open SelfConjPoints in
 
 /- English proof (translation)
-Establish `e1 : ∀ y : κ → PowerSeries C, rc 1 y = y` using `fun y => by`. Use function extensionality and compare the values at `i`. Unfold `rc`. Rewrite using `[PowerSeries.rescale_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `rs`. Rewrite using `[rescale_HH X x z hx hz]`. Simplify using `[e1]`. Unfold `rs`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[rescale_HH X x z hx hz]`. Simplify using `[e1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem r1sHResc (C : Type) [Field C] (d : ℕ) (I : Fin 2 → Type) [∀ g, Fintype (I g)] (κ : Type) [Fintype κ]
     (X : RawChart C d I κ) (x z : κ → PowerSeries C) (hx : ∀ i, PowerSeries.constantCoeff (x i) = 0)

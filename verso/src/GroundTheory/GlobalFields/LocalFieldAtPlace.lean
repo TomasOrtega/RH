@@ -13,21 +13,21 @@ variable {R : Type*} [CommRing R] [IsDedekindDomain R] {K : Type*} [Field K] [Al
   [IsFractionRing R K] (v : HeightOneSpectrum R)
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isDiscreteValuationRing_adicCompletionIntegers :
     IsDiscreteValuationRing (v.adicCompletionIntegers K) :=
   inferInstance
 
 /- English proof (translation)
-The claim follows from `valuedAdicCompletion_surjective K v`.
+A detailed English derivation is pending.
 -/
 theorem valued_adicCompletion_surjective :
     Function.Surjective (Valued.v : v.adicCompletion K → ℤᵐ⁰) :=
   valuedAdicCompletion_surjective K v
 
 /- English proof (translation)
-Establish `h : Valuation.IsUniformizer (Valued.v : Valuation (v.adicCompletion K) ℤᵐ⁰) (ϖ : v.adicCompletion K)` using `Valuation.isUniformizer_of_maximalIdeal_eq_span Valued.v ((IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ)`. Rewrite using `[h.val, Valuation.IsRankOneDiscrete.generator_eq_exp_neg_one_of_surjective (valuedAdicCompletion_surjective K v)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valued_of_irreducible {ϖ : v.adicCompletionIntegers K} (hϖ : Irreducible ϖ) :
     Valued.v (ϖ : v.adicCompletion K) = exp (-1 : ℤ) := by
@@ -59,16 +59,16 @@ theorem normalizedAbv_apply (x : v.adicCompletion K) : normalizedAbv v x = ‖x�
   rfl
 
 /- English proof (translation)
-The claim follows from `FinitePlace.norm_def v x`.
+A detailed English derivation is pending.
 -/
 theorem normalizedAbv_eq_toNNReal (x : v.adicCompletion K) :
     normalizedAbv v x = WithZeroMulInt.toNNReal (NumberField.HeightOneSpectrum.absNorm_ne_zero v) (Valued.v x) :=
   FinitePlace.norm_def v x
 
 /- English proof (translation)
-Establish `hx' : Valued.v x ≠ 0` using `(Valued.v).ne_zero_iff.2 hx`. Establish `key : ∀ (y : ℤᵐ⁰) (hy : y ≠ 0), Multiplicative.toAdd (unzero hy) = log y`. Introduce and unpack `(_ | a) hy`. Conclude with `absurd rfl hy`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[normalizedAbv_eq_toNNReal, WithZeroMulInt.toNNReal_neg_apply _ hx', key]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem normalizedAbv_eq_zpow {x : v.adicCompletion K} (hx : x ≠ 0) :
     normalizedAbv v x = (Ideal.absNorm v.asIdeal : ℝ) ^ log (Valued.v x) := by
@@ -81,7 +81,7 @@ theorem normalizedAbv_eq_zpow {x : v.adicCompletion K} (hx : x ≠ 0) :
   simp
 
 /- English proof (translation)
-Establish `h0 : (ϖ : v.adicCompletion K) ≠ 0`. Introduce `h`. Conclude with `hϖ.ne_zero (Subtype.ext h)`. Rewrite using `[normalizedAbv_eq_zpow v h0, valued_of_irreducible v hϖ, log_exp, zpow_neg_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normalizedAbv_of_irreducible {ϖ : v.adicCompletionIntegers K} (hϖ : Irreducible ϖ) :
     normalizedAbv v (ϖ : v.adicCompletion K) = (Ideal.absNorm v.asIdeal : ℝ)⁻¹ := by
@@ -119,7 +119,7 @@ variable {R : Type*} [CommRing R] [IsDedekindDomain R] {K : Type*} [Field K] [Al
   [IsFractionRing R K] (v : HeightOneSpectrum R)
 
 /- English proof (translation)
-Rewrite using `[Valuation.mem_integer_iff, mem_adicCompletionIntegers, (ValuativeRel.isEquiv (ValuativeRel.valuation (v.adicCompletion K)) Valued.v).le_one_iff_le_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_valuationInteger_iff (x : v.adicCompletion K) :
     x ∈ 𝒪[v.adicCompletion K] ↔ x ∈ v.adicCompletionIntegers K := by

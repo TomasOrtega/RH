@@ -15,30 +15,30 @@ def scC (r : ℕ) (α β : E) : Matrix (Ix r) (Ix r) E :=
   Matrix.fromBlocks 1 (β • liftE r) 0 (dlast r α)
 
 /- English proof (translation)
-Simplify using `[scC, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scC_apply_inl_inl (α β : E) (a b : Fin (r + 1)) : scC r α β (Sum.inl a) (Sum.inl b) = if a = b then 1 else 0 := by
   simp [scC, Matrix.one_apply]
 /- English proof (translation)
-Simplify using `[scC, liftE, smul_ite]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scC_apply_inl_inr (α β : E) (a b : Fin (r + 1)) :
     scC r α β (Sum.inl a) (Sum.inr b) = if a = Fin.last r ∧ b = Fin.last r then β else 0 := by
   simp [scC, liftE, smul_ite]
 /- English proof (translation)
-Simplify using `[scC]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scC_apply_inr_inl (α β : E) (a b : Fin (r + 1)) : scC r α β (Sum.inr a) (Sum.inl b) = 0 := by
   simp [scC]
 /- English proof (translation)
-Simplify using `[scC, dlast, Matrix.diagonal_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scC_apply_inr_inr (α β : E) (a b : Fin (r + 1)) :
     scC r α β (Sum.inr a) (Sum.inr b) = if a = b then (if a = Fin.last r then α else 1) else 0 := by
   simp [scC, dlast, Matrix.diagonal_apply]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Fintype.sum_sum_type, scC_apply_inl_inl, scC_apply_inr_inl, zero_mul, Finset.sum_const_zero, add_zero, ite_mul, one_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scC_left_inl (α β : E) (G : Matrix (Ix r) (Ix r) E) (a : Fin (r + 1)) (j : Ix r) :
     ((scC r α β).transpose * G) (Sum.inl a) j = G (Sum.inl a) j := by
@@ -46,7 +46,7 @@ theorem scC_left_inl (α β : E) (G : Matrix (Ix r) (Ix r) E) (a : Fin (r + 1)) 
     zero_mul, Finset.sum_const_zero, add_zero, ite_mul, one_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Fintype.sum_sum_type, scC_apply_inl_inr, scC_apply_inr_inr]`. Distinguish the cases in `ha : a = Fin.last r`. Substitute `ha` using the available equality. Simplify using `[ite_mul, Finset.sum_ite_eq', add_comm]`. Simplify using `[ha, ite_mul, Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem scC_left_inr (α β : E) (G : Matrix (Ix r) (Ix r) E) (a : Fin (r + 1)) (j : Ix r) :
     ((scC r α β).transpose * G) (Sum.inr a) j =
@@ -59,7 +59,7 @@ theorem scC_left_inr (α β : E) (G : Matrix (Ix r) (Ix r) E) (a : Fin (r + 1)) 
   · simp [ha, ite_mul, Finset.sum_ite_eq]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Fintype.sum_sum_type, scC_apply_inl_inl, scC_apply_inr_inl, map_zero, mul_zero, Finset.sum_const_zero, add_zero, apply_ite cj, map_one, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scC_right_inl (α β : E) (X : Matrix (Ix r) (Ix r) E) (i : Ix r) (b : Fin (r + 1)) :
     (X * (scC r α β).map cj) i (Sum.inl b) = X i (Sum.inl b) := by
@@ -68,7 +68,7 @@ theorem scC_right_inl (α β : E) (X : Matrix (Ix r) (Ix r) E) (i : Ix r) (b : F
     if_true]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Fintype.sum_sum_type, scC_apply_inl_inr, scC_apply_inr_inr]`. Distinguish the cases in `hb : b = Fin.last r`. Substitute `hb` using the available equality. Simplify using `[apply_ite cj, mul_ite, Finset.sum_ite_eq', add_comm]`. Simplify using `[hb, apply_ite cj, mul_ite, Finset.sum_ite_eq']`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem scC_right_inr (α β : E) (X : Matrix (Ix r) (Ix r) E) (i : Ix r) (b : Fin (r + 1)) :
     (X * (scC r α β).map cj) i (Sum.inr b) =
@@ -81,11 +81,11 @@ theorem scC_right_inr (α β : E) (X : Matrix (Ix r) (Ix r) E) (i : Ix r) (b : F
   · simp [hb, apply_ite cj, mul_ite, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `rcases i with a | a <;> rcases j with b | b`. Rewrite using `[scC_right_inl, scC_left_inl]`. Simplify using `[gramG]`. Rewrite using `[scC_right_inr, scC_left_inl, scC_left_inl]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases ha : a = Fin.last r <;> by_cases hb : b = Fin.last r <;>`. Apply the tactic sequence `simp [gramG, cor, dlast, Matrix.mul_diagonal, ha, hb, map_mul, map_sub, map_add, hqi, hT] <;> ring`. Rewrite using `[scC_right_inl, scC_left_inr]`. Apply the tactic sequence `by_cases ha : a = Fin.last r <;> by_cases hb : b = Fin.last r <;>`. Apply the tactic sequence `simp [gramG, cor, dlast, Matrix.mul_diagonal, ha, hb] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[scC_right_inr, scC_left_inr, scC_left_inr]`. Apply the tactic sequence `by_cases ha : a = Fin.last r <;> by_cases hb : b = Fin.last r <;>`. Apply the tactic sequence `simp [gramG, cor, dlast, Matrix.mul_diagonal, ha, hb, map_mul, map_sub, map_add, map_neg, hqi, hT, hT', hcj] <;> first | ring1 | linear_combination (qi ^ 2 * T') * hα | linear_combination (qi * qi * T') * hα | linear_combination (-(qi ^ 2 * T')) * hα`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gramG_scale (hcj : ∀ x, cj (cj x) = x) (α T T' : E) (hα : α * cj α = 1)
     (hqi : cj qi = qi) (hT : cj T = T) (hT' : cj T' = T') (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :

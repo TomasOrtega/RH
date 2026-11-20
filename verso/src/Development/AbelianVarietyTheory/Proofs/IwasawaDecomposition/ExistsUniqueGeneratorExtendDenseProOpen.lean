@@ -17,15 +17,15 @@ namespace GlobalTheory.GenExtendDense
 open GlobalTheory.GenericExtend GlobalTheory.DvrModel
 
 /- English proof (translation)
-Use `choose Jg hJg using fun ψ : Z ⟶ X => exists_chart hL (ψ z)`. Establish `hG : Good L z Jg` using `hJg`. Establish `hv` using `val_corr hG hc κ`. Rewrite `hv` using `[val_pull hG, val_pull hG]`. Establish `hw : ∀ k, (κ ≫ eU) ≫ jH ≫ φ k = (κ ≫ j) ≫ e ≫ φ k` using `fun k => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc, reassoc_of% heU]`. Set `a' : I → L.ι` to `fun k => Jg ((κ ≫ eU) ≫ jH ≫ φ k)`. Establish `ha' : a' = fun k => Jg ((κ ≫ j) ≫ e ≫ φ k)` using `funext fun k => congrArg Jg (hw k)`. Rewrite `hv` using `[val_of t (κ ≫ eU) z Jg a' (fun k => rfl), val_of ρ (κ ≫ j) z Jg a' (fun k => by rw [ha'])]`. Establish `hpt : jH ((κ ≫ eU) z) = e ((κ ≫ j) z)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.Hom.comp_apply, Category.assoc, heU, ← Category.assoc, Scheme.Hom.comp_apply]`. Establish `h1 : (κ ≫ eU) z ∈ LB.wchart L (fun i => jH ≫ φ i) a` using `(wchart_comp L jH φ a).ge (show jH ((κ ≫ eU) z) ∈ LB.wchart L φ a by rw [hpt]; exact ha)`. Establish `h2 : (κ ≫ j) z ∈ LB.wchart L (fun i => e ≫ φ i) a` using `(wchart_comp L e φ a).ge ha`. Establish `h1' : (κ ≫ eU) z ∈ LB.wchart L (fun i => jH ≫ φ i) a'` using `hG.mem (fun i => jH ≫ φ i) (κ ≫ eU)`. Establish `h2' : (κ ≫ j) z ∈ LB.wchart L (fun i => e ≫ φ i) a'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha']`. Conclude with `hG.mem (fun i => e ≫ φ i) (κ ≫ j)`. Establish `htr : trF (L` using `L) (fun i => jH ≫ φ i) ε (κ ≫ eU) z a a' = trF (L := L) (fun i => e ≫ φ i) ε (κ ≫ j) z a a' := by`. Unfold `trF`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[hw k]`. Rewrite using `[gen_trans ht (κ ≫ eU) z h1 h1', gen_trans hρ (κ ≫ j) z h2 h2', htr, hv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_eq_of_corr {X Y U HU H Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) {I : Type} [Fintype I]
     {φ : I → (H ⟶ X)} {ε : I → ℤ} {jH : HU ⟶ H} {e : Y ⟶ H} {j : U ⟶ Y} {eU : U ⟶ HU}
@@ -63,43 +63,39 @@ theorem gm_eq_of_corr {X Y U HU H Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) {I : 
   rw [gen_trans ht (κ ≫ eU) z h1 h1', gen_trans hρ (κ ≫ j) z h2 h2', htr, hv]
 
 /- English proof (translation)
-Introduce `Y U H HU X _ j _ _ _ _ hY p e jH pU eU hsm hgi he hP heU L hL I _ φ ε t ρ ht hρ hc`. Use `haveI := hsm`. Use `haveI := hgi`. Use `IsNormalScheme.of_pred hY` as an intermediate fact. Use `isNormalScheme_of_smooth p` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `LocallyOfFiniteType.isLocallyNoetherian p` as an intermediate fact. Use `IsSchemeTheoreticallyDominant.of_isDominant j` as an intermediate fact. Establish `hJ` using `(pullback.fst p j).app_injective`. Establish `hN : (LB.LinComb L φ ε).IsLB` using `LB.isLB_linComb hL φ ε`. Set `iso` to `hP.isoPullback`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiso : iso.inv ≫ jH = pullback.fst p j` using `hP.isoPullback_inv_fst`. Establish `hiso' : iso.hom ≫ pullback.fst p j = jH` using `hP.isoPullback_hom_fst`. Establish `hisoa : ∀ {W : Scheme.{0}} (g : H ⟶ W), iso.inv ≫ jH ≫ g = pullback.fst p j ≫ g` using `fun g => by`. Rewrite using `[← Category.assoc, hiso]`. Establish `hpt : ∀ q, jH (iso.inv q) = pullback.fst p j q` using `fun q => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Hom.comp_apply, hiso]`. Establish `hle : ∀ a, pullback.fst p j ⁻¹ᵁ (LB.LinComb L φ ε).U a ≤ iso.inv ⁻¹ᵁ LB.wchart L (fun i => jH ≫ φ i) a` using `fun a q hq => (wchart_comp L jH φ a).ge (show jH (iso.inv q) ∈ LB.wchart L φ a by rw [hpt]; exact hq)`. Set `τ : ∀ a, Γ(pullback p j, pullback.fst p j ⁻¹ᵁ (LB.LinComb L φ ε).U a)ˣ` to `fun a => res (hle a) (pullU iso.inv _ (t.s a))`. Establish `hτg : ∀ (Z : Scheme.{0}) (r : Z ⟶ pullback p j) (z : Z) (a), pullback.fst p j (r z) ∈ (LB.LinComb L φ ε).U a → gm r z _ (τ a) = gm (r ≫ iso.inv) z (LB.wchart L (fun i => jH ≫ φ i) a) (t.s a)` using `fun Z r z a h => (gm_res r z (hle a) h _).trans (gm_pull r iso.inv z _ (hle a h) _)`. Establish `hτ : Compat (LB.LinComb L φ ε) (pullback.fst p j) τ` using `fun Z r z a b ha hb => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : (r ≫ iso.inv) z ∈ LB.wchart L (fun i => jH ≫ φ i) a` using `hle a ha`. Establish `hb' : (r ≫ iso.inv) z ∈ LB.wchart L (fun i => jH ≫ φ i) b` using `hle b hb`. Rewrite using `[hτg Z r z a ha, hτg Z r z b hb, gen_trans ht (r ≫ iso.inv) z ha' hb']`. Use `congrArg (· * _) (Eq.symm ((gm_linComb L φ ε (r ≫ pullback.fst p j) z a b ha hb).trans ?_))` and prove the remaining obligations. Rewrite using `[trF]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Category.assoc, hisoa]`. Establish `hle' : ∀ a, e ⁻¹ᵁ (LB.LinComb L φ ε).U a ≤ LB.wchart L (fun i => e ≫ φ i) a` using `fun a => (wchart_comp L e φ a).ge`. Set `ρ' : ∀ a, Γ(Y, e ⁻¹ᵁ (LB.LinComb L φ ε).U a)ˣ` to `fun a => res (hle' a) (ρ.s a)`. Set `eU' : U ⟶ pullback p j` to `pullback.lift (j ≫ e) (𝟙 U) (by simp [he])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w : eU' ≫ pullback.fst p j = j ≫ e` using `pullback.lift_fst _ _ _`. Establish `hπ : eU' ≫ pullback.snd p j = 𝟙 U` using `pullback.lift_snd _ _ _`. Establish `hsec : eU ≫ pU = 𝟙 U`. Rewrite using `[← cancel_mono j, Category.id_comp, Category.assoc, ← hP.w, reassoc_of% heU, he, Category.comp_id]`. Establish `heU' : eU' ≫ iso.inv = eU`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← cancel_mono iso.hom, Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[w, Category.assoc, hiso', heU]`. Rewrite using `[hπ, Category.assoc, hP.isoPullback_hom_snd, hsec]`. Establish `hτρ : ∀ (Z : Scheme.{0}) (κ : Z ⟶ U) (z : Z) (a : I → L.ι), e (j (κ z)) ∈ (LB.LinComb L φ ε).U a → gm (κ ≫ eU') z (pullback.fst p j ⁻¹ᵁ (LB.LinComb L φ ε).U a) (τ a) = gm (κ ≫ j) z (e ⁻¹ᵁ (LB.LinComb L φ ε).U a) (ρ' a)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `Z κ z a ha`. Establish `hm : pullback.fst p j ((κ ≫ eU') z) ∈ (LB.LinComb L φ ε).U a`. Rewrite using `[← Scheme.Hom.comp_apply, Category.assoc, w]`. Conclude with `ha`. Establish `e₁ : gm ((κ ≫ eU') ≫ iso.inv) z (LB.wchart L (fun i => jH ≫ φ i) a) (t.s a) = gm (κ ≫ eU) z (LB.wchart L (fun i => jH ≫ φ i) a) (t.s a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, heU']`. Conclude with `(hτg Z _ z a hm).trans (e₁.trans ((gm_eq_of_corr hL heU ht hρ hc κ z a ha).trans (gm_res (κ ≫ j) z (hle' a) ha _).symm))`. Establish `key : ∀ a, ∀ y ∈ (LB.LinComb L φ ε).U a, Order.coheight y ≤ 1 → y ∉ Set.range (pullback.fst p j) → ExtAt (pullback.fst p j) ((LB.LinComb L φ ε).U a) (τ a).val y ∧ ExtAt (pullback.fst p j) ((LB.LinComb L φ ε).U a) ((τ a)⁻¹).val y` using `fun a y ha h1 hy ↦ by`. Use `extAt_of_coheight_eq_one j p he hN w hπ hτ hτρ y (le_antisymm (coheight_apply_le_one p h1) (ENat.one_le_iff_ne_zero.2 fun h0 ↦ hy ?_)) a ha` and prove the remaining obligations. Rewrite using `[Scheme.Pullback.range_fst]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ξ, hξ, hξy⟩` from `exists_specializes_mem_range j (p y)`. Conclude with `(Flat.generalizingMap j).stableUnderGeneralization_range (show p y ⤳ ξ from Order.coheight_eq_zero.1 h0 hξy) hξ`. Use `choose s hs using fun a ↦ exists_app_eq _ hJ _ _ fun y ha h1 hy ↦ (key a y ha h1 hy).1`. Use `choose s' hs' using fun a ↦ exists_app_eq _ hJ _ _ fun y ha h1 hy ↦ (key a y ha h1 hy).2`. Establish `hm : ∀ a, s a * s' a = 1` using `fun a ↦ hJ _ (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `((pullback.fst p j).app _).hom _ = ((pullback.fst p j).app _).hom _`. Rewrite using `[map_mul, map_one, hs, hs', Units.mul_inv])`. Set `σ : ∀ a, Γ(H, (LB.LinComb L φ ε).U a)ˣ` to `fun a ↦ ⟨s a, s' a, hm a, (mul_comm _ _).trans (hm a)⟩`. Establish `hσ : ∀ a, pullU (pullback.fst p j) _ (σ a) = τ a` using `fun a ↦ Units.ext (hs a)`. Establish `hgen : (⟨σ⟩ : LB.Gen (LB.LinComb L φ ε)).IsGen` using `fun a b ↦ Units.map_injective (f := ((pullback.fst p j).app ((LB.LinComb L φ ε).U a ⊓ (LB.LinComb L φ ε).U b)).hom.toMonoidHom) (hJ _) (by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Express the relevant statement in the definitionally equal form `pullU _ _ _ = pullU _ _ _`. Use `unit_ext fun q hq ↦ ?_` and prove the remaining obligations. Use `hτ _ (𝟙 _) q a b hq.1 hq.2` as an intermediate fact. Rewrite `this` using `[← hσ, ← hσ, gm_pull _ _ q _ hq.1, gm_pull _ _ q _ hq.2]`. Rewrite using `[gm_pull _ _ q _ hq, gm_pull _ _ q _ hq, map_mul, gm_res _ q _ hq, gm_res _ q _ hq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Conclude with `this)`. Establish `hτc : ∀ c : LB.Gen (LB.LinComb L φ ε), LB.pullGen L _ _ c jH = t → ∀ a, pullU (pullback.fst p j) _ (c.s a) = τ a`. Introduce and unpack `c rfl a`. Use `unit_ext fun q hq ↦ ?_` and prove the remaining obligations. Rewrite using `[gm_pull _ _ q _ hq, hτg _ (𝟙 _) q a hq]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Category.id_comp]`. Simplify using `only [LB.pullGen]`. Establish `h₁ : iso.inv q ∈ LB.wchart L (fun i => jH ≫ φ i) a` using `hle a hq`. Establish `h₂ : jH (iso.inv q) ∈ LB.wchart L φ a` using `by rw [hpt]; exact hq`. Conclude with `((gm_res iso.inv q _ h₁ _).trans ((gm_pull iso.inv jH q _ h₂ _).trans (congrArg (fun f => gm f q _ (c.s a)) hiso))).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpg : LB.pullGen L _ _ (⟨σ⟩ : LB.Gen (LB.LinComb L φ ε)) jH = t`. Use `congrArg LB.Gen.mk (funext fun a ↦ unit_ext fun y hy ↦ ?_)` and prove the remaining obligations. Establish `hy' : jH y ∈ (LB.LinComb L φ ε).U a` using `(wchart_comp L jH φ a).le hy`. Establish `h' : pullback.fst p j (iso.hom y) ∈ (LB.LinComb L φ ε).U a`. Rewrite using `[← Scheme.Hom.comp_apply, hiso']`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hy'`. Establish `e₁ : gm jH y ((LB.LinComb L φ ε).U a) (σ a) = gm (𝟙 HU) y (LB.wchart L (fun i => jH ≫ φ i) a) (t.s a)`. Use `(congrArg (fun f => gm f y ((LB.LinComb L φ ε).U a) (σ a)) hiso'.symm).trans ((gm_pull iso.hom _ y _ h' _).symm.trans ?_)` and prove the remaining obligations. Rewrite using `[hσ]`. Conclude with `(hτg _ iso.hom y a h').trans (by rw [Iso.hom_inv_id])`.
-
-Use `Eq.trans ?_ e₁` and prove the remaining obligations. Simplify using `only [LB.pullGen]`. Rewrite using `[gm_res _ y _ hy, gm_pull _ _ y _ hy', Category.id_comp]`. Use `⟨⟨σ⟩, ⟨hgen, hpg⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨c⟩ ⟨-, hc'⟩`.
-
-Use `congrArg LB.Gen.mk (funext fun a ↦ Units.map_injective (f := ((pullback.fst p j).app ((LB.LinComb L φ ε).U a)).hom.toMonoidHom) (hJ _) ?_)` and prove the remaining obligations. Conclude with `(hτc ⟨c⟩ hc' a).trans (hσ a).symm`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_gen_extend : ∀ (Y U H HU X : Scheme.{0}) [IsLocallyNoetherian Y] (j : U ⟶ Y) [IsPreimmersion j] [Flat j] [IsDominant j] [QuasiCompact j], Geo.Tor.IsNormalScheme Y → ∀ (p : H ⟶ Y) (e : Y ⟶ H) (jH : HU ⟶ H) (pU : HU ⟶ U) (eU : U ⟶ HU), Smooth p → GeometricallyIntegral p → e ≫ p = 𝟙 _ → IsPullback jH pU p j → eU ≫ jH = j ≫ e → ∀ (L : LB X), L.IsLB → ∀ (I : Type) [Fintype I] (φ : I → (H ⟶ X)) (ε : I → ℤ) (t : LB.Gen (LB.LinComb L (fun i => jH ≫ φ i) ε)) (ρ : LB.Gen (LB.LinComb L (fun i => e ≫ φ i) ε)), t.IsGen → ρ.IsGen → LB.Gen.Corr L _ _ _ _ (LB.pullGen L _ _ t eU) (LB.pullGen L _ _ ρ j) → ∃! c : LB.Gen (LB.LinComb L φ ε), c.IsGen ∧ LB.pullGen L _ _ c jH = t := by
   intro Y U H HU X _ j _ _ _ _ hY p e jH pU eU hsm hgi he hP heU L hL I _ φ ε t ρ ht hρ hc

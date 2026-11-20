@@ -18,13 +18,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
 /- English proof (translation)
-Use `T.L.free` as an intermediate fact. Establish `hfg : Module.Finite O ↥T.L.T` using `⟨(Submodule.fg_top _).mpr T.L.fg⟩`. Set `e` to `Module.Free.chooseBasis O ↥T.L.T`. Set `w : Module.Free.ChooseBasisIndex O ↥T.L.T → T.V` to `fun j => (e j : T.V)`. Establish `hli : LinearIndependent O w` using `e.linearIndependent.map' T.L.T.subtype (Submodule.ker_subtype _)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hli' : LinearIndependent LL w` using `(LinearIndependent.iff_fractionRing O LL).mp hli`. Establish `hspO : Submodule.span O (Set.range w) = T.L.T`. Establish `: Set.range w = T.L.T.subtype '' Set.range e`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[this, ← Submodule.map_span, e.span_eq, Submodule.map_top, Submodule.range_subtype]`. Establish `hsp : ⊤ ≤ Submodule.span LL (Set.range w)`. Rewrite using `[← T.L.span, Submodule.span_le]`. Introduce `x hx`. Rewrite `hx` using `[← hspO]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Submodule.span_le_restrictScalars O LL _ hx`. Rewrite using `[Module.finrank_eq_card_basis (Module.Basis.mk hli' hsp), Module.finrank_eq_card_chooseBasisIndex]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_lat [IsDomain O] [IsFractionRing O LL] (T : LocLat G Qp LL O) :
     finrank O ↥T.L.T = finrank LL T.V := by
@@ -46,17 +46,17 @@ theorem finrank_lat [IsDomain O] [IsFractionRing O LL] (T : LocLat G Qp LL O) :
   rw [Module.finrank_eq_card_basis (Module.Basis.mk hli' hsp), Module.finrank_eq_card_chooseBasisIndex]
 
 /- English proof (translation)
-Set `w : Fin r → ↥(W.N T)` to `fun j => ⟨b j, hb j⟩`. Establish `hli : LinearIndependent (LetA O n) w`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `h0 : (0 : W.DD T) = ∑ j, g j • b j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg Subtype.val hg` as an intermediate fact. Simplify `this.symm` using `[w, Submodule.coe_sum]`. Establish `h1 : (0 : W.DD T) = ∑ j, (0 : Fin r → LetA O n) j • b j` using `by simp`. Take `⟨a, _, ha⟩` from `huniq 0 (W.N T).zero_mem`. Establish `e1` using `ha g h0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2` using `ha 0 h1`. Introduce `j`. Rewrite using `[e1, ← e2]`. Both sides reduce to the same expression. Establish `hsp : ⊤ ≤ Submodule.span (LetA O n) (Set.range w)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce and unpack `⟨x, hx⟩ -`. Take `⟨a, ha, -⟩` from `huniq x hx`. Establish `: (⟨x, hx⟩ : ↥(W.N T)) = ∑ j, a j • w j`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[w, Submodule.coe_sum, ha]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Set `bN` to `Module.Basis.mk hli hsp`. Set `bD` to `(W.N_base T hT).basis bN`. Establish `: Nontrivial W.EE` using `W.EE_inj.nontrivial`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Module.finrank_eq_card_basis bD`. Rewrite `h1` using `[(W.DD_free T).2, Fintype.card_fin]`. Conclude with `h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_basis_eq [Nontrivial O] [NeZero n] (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
     (hT : IsCrys PD T.ρ) {r : ℕ} (b : Fin r → W.DD T) (hb : ∀ j, b j ∈ W.N T)

@@ -15,15 +15,15 @@ namespace GlobalTheory.SplitDualLat
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `map_sum f g _`.
+A detailed English derivation is pending.
 -/
 theorem ringHom_sum {A B ι : Type} [Semiring A] [Semiring B] [Fintype ι] (f : A →+* B) (g : ι → A) :
     f (∑ i, g i) = ∑ i, f (g i) := map_sum f g _
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [RingHom.map_zero, RingHom.map_zero]`. Consider the case `add x y hx hy => rw [RingHom.map_add, RingHom.map_add, hx, hy]`. Consider the case `tmul a x`. Express the relevant statement in the definitionally equal form `a ⊗ₜ[D.host.F] star (star x) = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[star_star]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cA_cA (z : AE D) : cA D (cA D z) = z := by
   induction z using TensorProduct.induction_on with
@@ -39,7 +39,7 @@ Both sides reduce to the same expression.
 theorem cA_incA (x : D.host.E) : cA D (incA D x) = incA D (star x) := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [RingHom.map_zero]`. Consider the case `add x y hx hy => simp only [RingHom.map_add, hx, hy]`. Consider the case `tmul a x => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem finPart_cA (x : AE D) : finPart D (cA D x) = sigR (Af D.host.F) D.sp.cm.sig (finPart D x) := by
   induction x using TensorProduct.induction_on with
@@ -48,9 +48,9 @@ theorem finPart_cA (x : AE D) : finPart D (cA D x) = sigR (Af D.host.F) D.sp.cm.
   | tmul a x => rfl
 
 /- English proof (translation)
-Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, RingHom.map_zero _⟩`. Consider the case `add x y hx hy`. Take `⟨a, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a + b, RingHom.map_add _ _ _⟩`. Consider the case `tmul a x => exact ⟨pairA D.host.F 0 a ⊗ₜ[D.host.F] x, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 -/
 theorem finPart_surjective : Function.Surjective (finPart D) := by
   intro z
@@ -63,9 +63,9 @@ theorem finPart_surjective : Function.Surjective (finPart D) := by
   | tmul a x => exact ⟨pairA D.host.F 0 a ⊗ₜ[D.host.F] x, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨a, ha, o, rfl⟩` from `hw`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, ⟨D.sp.cm.sig (o : D.host.E), (show IsIntegral ℤ (o : D.host.E) from o.2).map (D.sp.cm.sig : D.host.E →+* D.host.E).toIntAlgHom⟩, rfl⟩`. Consider the case `zero => rw [RingHom.map_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [RingHom.map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [RingHom.map_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sigR_mem_intAE {z : Af D.host.F ⊗[D.host.F] D.host.E} (hz : z ∈ intAE D) :
     sigR (Af D.host.F) D.sp.cm.sig z ∈ intAE D := by
@@ -81,7 +81,7 @@ theorem sigR_mem_intAE {z : Af D.host.F ⊗[D.host.F] D.host.E} (hz : z ∈ intA
 def form (V : HSp D) (x z : Fin V.rank → AE D) : AE D := ∑ i, ∑ j, cA D (x i) * incA D (V.gram i j) * z j
 
 /- English proof (translation)
-Simplify using `only [form, ringHom_sum, RingHom.map_mul, finPart_cA]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem finPart_form (V : HSp D) (x z : Fin V.rank → AE D) :
     finPart D (form V x z) =
@@ -90,7 +90,7 @@ theorem finPart_form (V : HSp D) (x z : Fin V.rank → AE D) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [form, map_sum, RingHom.map_mul, cA_cA, cA_incA, GlobalTheory.LatVac.gram_star]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cA_form (V : HSp D) (x z : Fin V.rank → AE D) : cA D (form V x z) = form V z x := by
   simp only [form, map_sum, RingHom.map_mul, cA_cA, cA_incA, GlobalTheory.LatVac.gram_star]
@@ -98,7 +98,7 @@ theorem cA_form (V : HSp D) (x z : Fin V.rank → AE D) : cA D (form V x z) = fo
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Simplify using `only [form, RingHom.map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_mul (V : HSp D) (a b : AE D) (x z : Fin V.rank → AE D) :
     form V (fun i => a * x i) (fun i => b * z i) = cA D a * b * form V x z := by
@@ -106,9 +106,9 @@ theorem form_mul (V : HSp D) (a b : AE D) (x z : Fin V.rank → AE D) :
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.LatDual.lamHat_selfDual_and_module V).1]`. Prove the components needed by the constructor for the conclusion. Introduce `h z hz`. Rewrite using `[← cA_form, finPart_cA, finPart_form]`. Conclude with `sigR_mem_intAE (h _ hz)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h z hz`. Take `⟨w, rfl⟩ : ∃ w : Fin V.rank → AE D, (fun i => finPart D (w i)) = z` from `by choose s hs using finPart_surjective (D := D)`. Conclude with `⟨fun i => s (z i), funext fun i => hs _⟩`. Rewrite using `[← finPart_form, ← cA_form, finPart_cA]`. Conclude with `sigR_mem_intAE (h _ hz)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iff (V : HSp D) (x : Fin V.rank → AE D) :
     (fun i => finPart D (x i)) ∈ LamHat V ↔
@@ -126,7 +126,7 @@ theorem mem_iff (V : HSp D) (x : Fin V.rank → AE D) :
     exact sigR_mem_intAE (h _ hz)
 
 /- English proof (translation)
-Simplify using `only [form, map_sum, RingHom.map_mul, dotProduct, vecMul, Finset.sum_mul, Matrix.map_apply]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_form (V : HSp D) {K : Type} [CommRing K] (π : AE D →+* K) (x z : Fin V.rank → AE D) :
     π (form V x z) =
@@ -135,17 +135,17 @@ theorem map_form (V : HSp D) {K : Type} [CommRing K] (π : AE D →+* K) (x z : 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Introduce `D e v π he hπ V β hβ y`. Rewrite using `[mem_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h j choose s hs using hπ.1`. Establish `h1 : (fun k => π (s (β.1 k j))) = β.1 *ᵥ Pi.single j 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[hs, Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Establish `h2` using `h _ ((hβ fun k => s (β.1 k j)).2 fun i => by`. Rewrite using `[h1, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `⟨1, map_one _⟩`. Rewrite using `[Pi.single_eq_of_ne hi]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨0, map_zero _⟩)`. Rewrite `h2` using `[form_mul, cA_cA, he.1, hπ.2.2.2, map_form, h1, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, dotProduct_single, mul_one]`. Conclude with `h2`. Introduce `h z hz`. Establish `h1` using `(GlobalTheory.LatDual.lamHat_selfDual_and_module V).2 _ (GlobalTheory.AdIdem.idempotent_mem_intAE D (finPart D e) (by rw [← RingHom.map_mul, he.1])) _ hz`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [← RingHom.map_mul] at h1`. Establish `h2` using `(hβ z).1 h1`. Establish `h3` using `form_mul V (cA D e) 1 y z`. Simplify using `only [one_mul, mul_one, cA_cA] at h3`. Establish `h4 : (fun k => π (z k)) = β.1 *ᵥ ((β⁻¹).1 *ᵥ fun k => π (z k))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Rewrite using `[h3, hπ.2.2.2, map_form, h4, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, isInt_iff]`. Conclude with `sum_mem fun i _ => mul_mem (isInt_iff.1 (h i)) (isInt_iff.1 (h2 i))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_lamHat_iff : ∀ {D : D7} (e : AE D) (v : HeightOneSpectrum (𝓞 D.host.F)) (π : AE D →+* Fv D.host.F v), IsSplitIdem D e → Chart e v π → ∀ (V : HSp D) (β : GL (Fin V.rank) (Fv D.host.F v)), Frame V e π β → ∀ y : Fin V.rank → AE D, (fun i => finPart D (cA D e * y i)) ∈ LamHat V ↔ ∀ j, IsInt (Ov D v) (((fun i => π (cA D (y i))) ᵥ* ((V.gram.map fun a => π (incA D a)) * β.1)) j) := by
   intro D e v π he hπ V β hβ y

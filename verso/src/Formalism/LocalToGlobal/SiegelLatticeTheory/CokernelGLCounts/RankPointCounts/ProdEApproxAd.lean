@@ -26,16 +26,16 @@ def ballS (c : K) : AddSubgroup K where
     simpa [Valuation.map_neg] using hx
 
 /- English proof (translation)
-Use `show InBall c x ↔ _`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_ballS {c x : K} : x ∈ ballS c ↔ valuation K x ≤ valuation K c := by
   show InBall c x ↔ _
   rfl
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`. Establish `hv : valuation K c ≠ 0` using `by simpa using hc`. Use `IsValuativeTopology.mem_nhds_iff'.mpr ⟨Units.mk0 _ hv, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy' : valuation K (y - x) < valuation K c` using `by simpa using hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[SetLike.mem_coe, mem_ballS]`. Establish `e : y = (y - x) + x` using `by ring`. Rewrite using `[e]`. Conclude with `Valuation.map_add_le _ hy'.le hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ballS_isOpen [TopologicalSpace K] [IsValuativeTopology K] {c : K} (hc : c ≠ 0) :
     IsOpen (ballS c : Set K) := by
@@ -50,7 +50,7 @@ theorem ballS_isOpen [TopologicalSpace K] [IsValuativeTopology K] {c : K} (hc : 
   exact Valuation.map_add_le _ hy'.le hx
 
 /- English proof (translation)
-Use `⟨x / c, ?_, by field_simp⟩` and prove the remaining obligations. Rewrite using `[Valuation.mem_integer_iff, map_div₀]`. Conclude with `div_le_one_of_le₀ (mem_ballS.1 hx) zero_le'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ballS_mul {c x : K} (hc : c ≠ 0) (hx : x ∈ ballS c) : ∃ β ∈ 𝒪[K], x = c * β := by
   refine ⟨x / c, ?_, by field_simp⟩
@@ -67,27 +67,21 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (L : ∀ p : HeightOneSpectrum (𝓞 F), LocAt F E sig p)
 
 /- English proof (translation)
-Take `⟨n, b, hbint, hbspan⟩` from `intSpan' F E`. Use `choose α hα using fun p => local_span_holds F E sig p (L p) n b hbspan (x p)`. Use `set c' : ∀ p, (L p).Fp := fun p => if p ∈ T then c p else 1 with hc'`. Establish `hc'0 : ∀ p, c' p ≠ 0`. Introduce `p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hp : p ∈ T`. Simplify using `only [hc', if_pos hp]`. Conclude with `hc p hp`. Simplify using `only [hc', if_neg hp]`. Conclude with `one_ne_zero`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hVo : ∀ p, IsOpen (ballS (c' p) : Set (L p).Fp)`. Introduce `p`. Use `(L p).lf` as an intermediate fact. Conclude with `ballS_isOpen (hc'0 p)`. Use `choose a ha using fun p (i : Fin n) => local_dense_embedding F E sig p (L p) (ballS (c' p)) (hVo p) (α p i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `choose d hd0 hd using fun p => local_neighbourhood_small F E sig p (L p) (ballS (c' p)) (hVo p)`. Use `choose t ht1 ht2 using fun i : Fin n => strong_approximation_finite_places F T (fun p => a p i) d (fun p _ => hd0 p)`. Use `⟨∑ i, t i • b i, fun p hp => ?_, fun p hp => ?_⟩` and prove the remaining obligations. Establish `hιE : (L p).ιE (∑ i, t i • b i) = ∑ i, (L p).ιF (t i) • (L p).ιE (b i)`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `Finset.sum_congr rfl fun i _ => existsLatticeAutomorphismApprox F E sig p (L p) (t i) (b i)`. Establish `h1 : (L p).ιE (∑ i, t i • b i) - x p = ∑ i, ((L p).ιF (t i) - α p i) • (L p).ιE (b i)`. Rewrite using `[hιE]`. Use `conv_lhs => rw [hα p]`. Rewrite using `[← Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun i _ => (sub_smul _ _ _).symm`. Establish `hmem : ∀ i, (L p).ιF (t i) - α p i ∈ ballS (c' p)`. Introduce `i`. Establish `h2 : (L p).ιF (t i) - α p i = (L p).ιF (t i - a p i) + ((L p).ιF (a p i) - α p i)`. Rewrite using `[map_sub]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Conclude with `(ballS (c' p)).add_mem (hd p _ (ht1 i p hp)) (ha p i)`. Establish `hcp : c' p = c p` using `by simp only [hc', if_pos hp]`. Use `choose β hβO hβ using fun i => ballS_mul (hc'0 p) (hmem i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hbO : ∀ i, (L p).ιE (b i) ∈ (L p).O`. Introduce `i`. Use `local_integral_of_substitution F E sig p (L p) 1 (b i) (by simp) (hbint i)` as an intermediate fact. Simplify using `using this`. Establish `hβE : ∀ i, algebraMap (L p).Fp (L p).Ep (β i) * (L p).ιE (b i) ∈ (L p).O`.
-
-Introduce `i`. Use `(L p).lf` as an intermediate fact. Establish `hA : IsIntegral 𝒪[(L p).Fp] (algebraMap (L p).Fp (L p).Ep (β i))` using `isIntegral_algebraMap (R := 𝒪[(L p).Fp]) (A := (L p).Ep) (x := ⟨β i, hβO i⟩)`. Conclude with `(L p).O.mul_mem (((L p).O_def _).mpr hA) (hbO i)`. Use `⟨∑ i, algebraMap (L p).Fp (L p).Ep (β i) * (L p).ιE (b i), (L p).O.sum_mem fun i _ => hβE i, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[h1, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hβ i, ← hcp, Algebra.smul_def, map_mul, mul_assoc]`. Rewrite using `[map_sum]`. Use `(L p).O.sum_mem fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[existsLatticeAutomorphismApprox F E sig p (L p) (t i) (b i)]`. Conclude with `local_integral_of_substitution F E sig p (L p) (t i) (b i) (ht2 i p hp) (hbint i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sa_lat (T : Finset (HeightOneSpectrum (𝓞 F))) (x : ∀ p, (L p).Ep) (c : ∀ p, (L p).Fp)
     (hc : ∀ p ∈ T, c p ≠ 0) :

@@ -10,7 +10,7 @@ open MeasureTheory NumberField Topology Set Formalism.BasicNotions Formalism.L2.
   Formalism.L2.SG.Sub Matrix
 
 /- English proof (translation)
-Introduce `v` and use `X.B.I.cm.totReal.isReal v`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem totReal_of {D : D7} (X : HidaSetting D) : ∀ v : InfinitePlace X.B.I.F, v.IsReal :=
   fun v => X.B.I.cm.totReal.isReal v
@@ -24,9 +24,9 @@ def tupCoord {D : D7} (X : HidaSetting D) :
       (Homeomorph.piCongrRight fun _ => ainfReal (totReal_of X))).trans (flat4 _ _ _ _)
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Simplify using `only [tupCoord, Homeomorph.trans_apply]`. Rewrite using `[← flatten_four_add]`. Use `congr 1`. Use function extensionality and compare the values at `a i k`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Homeomorph.piCongrRight_apply, Homeomorph.trans_apply, Pi.add_apply]`. Rewrite using `[tensCoord_add]`. Conclude with `ainfReal_add (totReal_of X) _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tupCoord_add {D : D7} (X : HidaSetting D) (x y : TupI X) :
     tupCoord X (x + y) = tupCoord X x + tupCoord X y := by
@@ -40,7 +40,7 @@ theorem tupCoord_add {D : D7} (X : HidaSetting D) (x y : TupI X) :
   exact ainfReal_add (totReal_of X) _ _
 
 /- English proof (translation)
-Establish `h : (pairA F (a + b) 0 : AF F) = pairA F a 0 + pairA F b 0` using `by show ((a + b, 0) : Ainf F × Af F) = ((a, 0) : Ainf F × Af F) + ((b, 0) : Ainf F × Af F)`. Rewrite using `[Prod.mk_add_mk, add_zero]`. Simplify using `only [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.psiInf]`. Rewrite using `[h, AddChar.map_add_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiInf_addP {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (a b : Ainf F) :
     psiInf F ψ (a + b) = psiInf F ψ a * psiInf F ψ b := by
@@ -51,7 +51,7 @@ theorem psiInf_addP {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) �
   rw [h, AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-The claim follows from `funext hS`.
+A detailed English derivation is pending.
 -/
 theorem psiInf_eq {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (hS : Formalism.L2.SG.LocVol.IsStdChar ψ) :
     psiInf F ψ = fun x => Complex.exp (2 * Real.pi * Complex.I *
@@ -59,7 +59,7 @@ theorem psiInf_eq {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ)
   funext hS
 
 /- English proof (translation)
-Rewrite using `[psiInf_eq ψ hS]`. Use `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp ?_))` and prove the remaining obligations. Conclude with `continuous_finsetSum _ fun w _ => Complex.continuous_re.comp ((InfinitePlace.Completion.isometry_extensionEmbedding (v := w)).continuous.comp (continuous_apply w))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_psiInfP {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ)
     (hS : Formalism.L2.SG.LocVol.IsStdChar ψ) : Continuous (psiInf F ψ) := by
@@ -69,7 +69,7 @@ theorem continuous_psiInfP {F : Type} [Field F] [NumberField F] (ψ : AddChar (A
     ((InfinitePlace.Completion.isometry_extensionEmbedding (v := w)).continuous.comp (continuous_apply w))
 
 /- English proof (translation)
-Rewrite using `[hS x]`. Establish `: 2 * (Real.pi : ℂ) * Complex.I * ((∑ w : InfinitePlace F, (InfinitePlace.Completion.extensionEmbedding w (x w)).re : ℝ) : ℂ) = ((2 * Real.pi * ∑ w : InfinitePlace F, (InfinitePlace.Completion.extensionEmbedding w (x w)).re : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`. Rewrite using `[this, Complex.norm_exp_ofReal_mul_I]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_psiInfP {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ)
     (hS : Formalism.L2.SG.LocVol.IsStdChar ψ) (x : Ainf F) : ‖psiInf F ψ x‖ = 1 := by
@@ -82,21 +82,21 @@ theorem norm_psiInfP {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) �
   rw [this, Complex.norm_exp_ofReal_mul_I]
 
 /- English proof (translation)
-Simplify using `only [BR, hR, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem BR_add_leftP {D : D7} (X : HidaSetting D) (x x' y : TupI X) :
     BR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J (x + x') y = BR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J x y + BR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J x' y := by
   simp only [BR, hR, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [BR, hR, Formalism.UG.hform, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem BR_add_rightP {D : D7} (X : HidaSetting D) (x y y' : TupI X) :
     BR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J x (y + y') = BR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J x y + BR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J x y' := by
   simp only [BR, hR, Formalism.UG.hform, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Conclude with `IsModuleTopology.continuous_of_linearMap _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_traceP {D : D7} (X : HidaSetting D) :
     Continuous (Algebra.trace (Ainf X.B.I.F) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)) := by
@@ -104,7 +104,7 @@ theorem continuous_traceP {D : D7} (X : HidaSetting D) :
   exact IsModuleTopology.continuous_of_linearMap _
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Use `show Continuous fun x : TupI X => ∑ a, Algebra.trace (Ainf X.B.I.F) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) (∑ i, ∑ j, sigR (Ainf X.B.I.F) X.B.I.cm.sig (x a i) * JR (Ainf X.B.I.F) X.B.I.J i j * y a j)`. Conclude with `continuous_finsetSum _ fun a _ => (continuous_traceP X).comp (continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => (((continuous_sigRP (Ainf X.B.I.F) X.B.I.cm.sig).comp ((continuous_apply i).comp (continuous_apply a))).mul continuous_const).mul continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_BR_leftP {D : D7} (X : HidaSetting D) (y : TupI X) : Continuous fun x : TupI X => BR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J x y := by
   haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X
@@ -115,7 +115,7 @@ theorem continuous_BR_leftP {D : D7} (X : HidaSetting D) (y : TupI X) : Continuo
       ((continuous_apply i).comp (continuous_apply a))).mul continuous_const).mul continuous_const)
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Use `show Continuous fun y : TupI X => ∑ a, Algebra.trace (Ainf X.B.I.F) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) (∑ i, ∑ j, sigR (Ainf X.B.I.F) X.B.I.cm.sig (x a i) * JR (Ainf X.B.I.F) X.B.I.J i j * y a j)`. Conclude with `continuous_finsetSum _ fun a _ => (continuous_traceP X).comp (continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => continuous_const.mul ((continuous_apply j).comp (continuous_apply a)))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_BR_rightP {D : D7} (X : HidaSetting D) (x : TupI X) : Continuous fun y : TupI X => BR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J x y := by
   haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X
@@ -125,9 +125,7 @@ theorem continuous_BR_rightP {D : D7} (X : HidaSetting D) (x : TupI X) : Continu
     continuous_finsetSum _ fun j _ => continuous_const.mul ((continuous_apply j).comp (continuous_apply a)))
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hP`. Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Use `haveI := hP.2.2.2.2.1.1`. Establish `hS` using `hP.2.2.1`. Establish `hpc` using `continuous_psiInfP ψ hS`.
-
-Conclude with `ST.testEx_of_homeo μinf _ (tupCoord X) (tupCoord_add X) (fun x x' y => by rw [BR_add_leftP, psiInf_addP]) (fun x y y' => by rw [BR_add_rightP, psiInf_addP]) (fun x y => norm_psiInfP ψ hS _) (fun y => hpc.comp (continuous_BR_leftP X y)) (fun x => hpc.comp (continuous_BR_rightP X x …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sdTestI_holds : SdTestI := by
   intro D X u' ψ hT μinf νinf fibInf hP
@@ -143,7 +141,7 @@ theorem sdTestI_holds : SdTestI := by
     (fun x => hpc.comp (continuous_BR_rightP X x))
 
 /- English proof (translation)
-The claim follows from `invFib_of (sdInvG_of sdTestI_holds)`.
+A detailed English derivation is pending.
 -/
 theorem invFib_holds : InvFib := invFib_of (sdInvG_of sdTestI_holds)
 

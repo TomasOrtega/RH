@@ -21,7 +21,7 @@ def varIdeal (B : Set K) : Ideal (MRing ι R) :=
   Ideal.span {p | ∃ v : Σ k, ι k, v.1 ∈ B ∧ p = X v}
 
 /- English proof (translation)
-Simplify using `[killB, hv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem killB_X_of_mem (B : Set K) {v : Σ k, ι k} (hv : v.1 ∈ B) :
     killB (R := R) B (X v) = 0 := by
@@ -29,7 +29,7 @@ theorem killB_X_of_mem (B : Set K) {v : Σ k, ι k} (hv : v.1 ∈ B) :
   simp [killB, hv]
 
 /- English proof (translation)
-Simplify using `[killB, hv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem killB_X_of_not_mem (B : Set K) {v : Σ k, ι k} (hv : v.1 ∉ B) :
     killB (R := R) B (X v) = X v := by
@@ -38,9 +38,9 @@ theorem killB_X_of_not_mem (B : Set K) {v : Σ k, ι k} (hv : v.1 ∉ B) :
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[killB, aeval_monomial]`. Use `split_ifs with h`. Rewrite using `[monomial_eq, algebraMap_eq]`. Use `congr 1`. Use `Finsupp.prod_congr fun v hv => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (h v hv)]`. Use `push Not at h`. Take `⟨v, hv, hB⟩` from `h`. Rewrite using `[Finsupp.prod, Finset.prod_eq_zero hv, mul_zero]`. Rewrite using `[if_pos hB, zero_pow (Finsupp.mem_support_iff.mp hv)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killB_monomial (B : Set K) (d : (Σ k, ι k) →₀ ℕ) (a : R) :
     killB (R := R) B (monomial d a) =
@@ -58,9 +58,9 @@ theorem killB_monomial (B : Set K) (d : (Σ k, ι k) →₀ ℕ) (a : R) :
 
 open Classical in
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on' with`. Consider the case `monomial e a`. Rewrite using `[killB_monomial]`. Distinguish the cases in `hed : e = d`. Apply the tactic sequence `subst hed split_ifs <;> simp`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp [coeff_monomial, hed]`. Consider the case `add p q hp hq`. Rewrite using `[map_add, coeff_add, hp, hq]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coeff_killB (B : Set K) (p : MRing ι R) (d : (Σ k, ι k) →₀ ℕ) :
     coeff d (killB B p) = if ∀ v ∈ d.support, v.1 ∉ B then coeff d p else 0 := by
@@ -76,13 +76,11 @@ theorem coeff_killB (B : Set K) (p : MRing ι R) (d : (Σ k, ι k) →₀ ℕ) :
     split_ifs <;> simp
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq`. Rewrite using `[map_add, add_sub_add_comm]`. Conclude with `add_mem hp hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `mul_X p v hp`. Establish `e : p * X v - killB B (p * X v) = (p - killB B p) * X v + killB B p * (X v - killB B (X v))`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `add_mem (Ideal.mul_mem_right _ _ hp) (Ideal.mul_mem_left _ _ ?_)` and prove the remaining obligations. Distinguish the cases in `hv : v.1 ∈ B`. Rewrite using `[killB_X_of_mem B hv, sub_zero]`. Conclude with `Ideal.subset_span ⟨v, hv, rfl⟩`. Rewrite using `[killB_X_of_not_mem B hv, sub_self]`.
-
-Conclude with `zero_mem _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_killB_mem (B : Set K) (p : MRing ι R) : p - killB B p ∈ varIdeal (R := R) B := by
   classical
@@ -106,11 +104,11 @@ theorem sub_killB_mem (B : Set K) (p : MRing ι R) : p - killB B p ∈ varIdeal 
 variable [DecidableEq K]
 
 /- English proof (translation)
-Establish `hw : ∀ k, Finsupp.weight (blockWeight ι) d k = ∑ i ∈ d.support, d i * (Pi.single i.1 1 : K → ℕ) k`. Introduce `k`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h v hv hB`. Establish `h0` using `h v.1 hB`. Rewrite `h0` using `[hw, Finset.sum_eq_zero_iff]`. Use `h0 v hv` as an intermediate fact. Simplify using `[Finsupp.mem_support_iff.mp hv] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `h k hk`. Rewrite using `[hw, Finset.sum_eq_zero_iff]`. Introduce `i hi`. Establish `hik : i.1 ≠ k` using `fun e => h i hi (e ▸ hk)`. Simplify using `[Ne.symm hik]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem weight_eq_zero_iff (d : (Σ k, ι k) →₀ ℕ) (B : Set K) :
     (∀ k ∈ B, Finsupp.weight (blockWeight ι) d k = 0) ↔ ∀ v ∈ d.support, v.1 ∉ B := by
@@ -132,13 +130,13 @@ theorem weight_eq_zero_iff (d : (Σ k, ι k) →₀ ℕ) (B : Set K) :
     simp [Ne.symm hik]
 
 /- English proof (translation)
-Set `M` to `(q.support.image (Finsupp.weight (blockWeight ι))).filter (fun m => ∀ k ∈ B, m k = 0)`. Establish `key : killB B q = ∑ m ∈ M, weightedHomogeneousComponent (blockWeight ι) m q`. Use extensionality with `d`. Rewrite using `[coeff_killB, coeff_sum]`. Repeatedly rewrite using `[coeff_weightedHomogeneousComponent]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.sum_ite_eq]`. Distinguish the cases in `hd : coeff d q = 0`. Simplify using `[hd]`. Establish `hmem : d ∈ q.support` using `mem_support_iff.mpr hd`. Establish `hiff : Finsupp.weight (blockWeight ι) d ∈ M ↔ ∀ v ∈ d.support, v.1 ∉ B`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← weight_eq_zero_iff]`. Simplify using `only [M, Finset.mem_filter, Finset.mem_image]`. Conclude with `⟨fun h => h.2, fun h => ⟨⟨d, hmem, rfl⟩, h⟩⟩`. Distinguish the cases in `hP : ∀ v ∈ d.support, v.1 ∉ B`. Rewrite using `[if_pos hP, if_pos (hiff.mpr hP)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hP, if_neg (fun h => hP (hiff.mp h))]`. Rewrite using `[key]`. Conclude with `Q.sum_mem fun m _ => hQ q hq m`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killB_mem {Q : Ideal (MRing ι R)} (hQ : IsMultiHomogIdeal Q) (B : Set K)
     {q : MRing ι R} (hq : q ∈ Q) : killB B q ∈ Q := by
@@ -163,11 +161,9 @@ theorem killB_mem {Q : Ideal (MRing ι R)} (hQ : IsMultiHomogIdeal Q) (B : Set K
   exact Q.sum_mem fun m _ => hQ q hq m
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le (fun q hq => killB_mem hQ B hq) ?_` and prove the remaining obligations. Use `Ideal.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Use `show killB B (X v) ∈ Q`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[killB_X_of_mem B hv]`. Conclude with `zero_mem _`. Introduce `p hp`. Establish `: p = killB B p + (p - killB B p)` using `by ring`. Rewrite using `[this]`.
-
-Conclude with `add_mem (Ideal.mem_sup_left hp) (Ideal.mem_sup_right (sub_killB_mem B p))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sup_eq_comap {Q : Ideal (MRing ι R)} (hQ : IsMultiHomogIdeal Q) (B : Set K) :
     Q ⊔ varIdeal B = Q.comap (killB B) := by
@@ -184,9 +180,9 @@ theorem sup_eq_comap {Q : Ideal (MRing ι R)} (hQ : IsMultiHomogIdeal Q) (B : Se
     exact add_mem (Ideal.mem_sup_left hp) (Ideal.mem_sup_right (sub_killB_mem B p))
 
 /- English proof (translation)
-Introduce `R _ K _ _ ι Q B hP hQ`. Establish `h` using `sup_eq_comap (R := R) hQ B`. Express the relevant statement in the definitionally equal form `(Q ⊔ varIdeal B).IsPrime ∧ ∀ v : Σ k, ι k, v.1 ∉ B → (X v ∈ Q ⊔ varIdeal B ↔ X v ∈ Q)`. Rewrite using `[h]`. Use `⟨Ideal.IsPrime.comap (killB B) (hK := hP), fun v hv => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.mem_comap, killB_X_of_not_mem B hv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem proof : BlockAdjoinPrime.Statement := by
   intro R _ K _ _ ι Q B hP hQ

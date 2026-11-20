@@ -16,11 +16,11 @@ attribute [local instance] GlobalTheory.CuspRep.host_isCMField
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Take `⟨a, d, h, P, h1, h2, h3⟩` from `hMW n hn V hV hc`. Establish `had : a * d = n` using `by simpa [mul_comm] using h`. Establish `ha : 1 ≤ a` using `Nat.pos_of_mul_pos_right (had ▸ hn)`. Establish `hd : 1 ≤ d` using `Nat.pos_of_mul_pos_left (had ▸ hn)`. Take `⟨r1, r2⟩` from `PositivityTheory.UdReth.cusp_reg m hm hnd hg hd P h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨π, c1, c2, c3⟩` from `hC a P ha h1`. Use `⟨⟨a, π, d⟩, ha, hd, c1, had, fun w σ' hσ' => ?_, fun τ m' hm' => ?_⟩` and prove the remaining obligations. Take `⟨u, σ, l, -, q⟩` from `h2 w σ' hσ'`. Use `⟨u, ?_⟩` and prove the remaining obligations. Rewrite using `[hS w a d n h σ σ' (hT a P ha h1 r1 r2 w σ l) q, ← c2 w σ l, spehLoc_eq]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m0, hm0, rfl⟩` from `h3 τ m' hm'`. Rewrite using `[c3 τ m0 hm0]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem udPart {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N}
     {rc : RecMap A} (hMW : DiscCsd H.E) (hT : PositivityTheory.UdReth2.TempCsdP H.E) (hS : PositivityTheory.UdReth2.RecSpehP rc) (hC : CuspRead rc) {n : ℕ}
@@ -46,21 +46,19 @@ theorem udPart {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H w
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField in
 
 /- English proof (translation)
-Take `⟨c, d, h, V, σ, m, bc⟩` from `hNT H.E (host_unramified H) n hn U hU`. Establish `hnd : ∀ i τ, (m i τ).Nodup` using `fun i τ => by`. Take `⟨lam, hl⟩` from `hw τ`. Establish `e` using `bc.weight τ lam hl`. Establish `hle : m i τ ≤ ∑ j, m j τ` using `Finset.single_le_sum (f := fun j => m j τ) (fun _ _ => Multiset.zero_le _) (Finset.mem_univ i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Multiset.nodup_of_le hle (e ▸ nodup_infOfWeight lam)`. Establish `hg : ∀ i, ∃ g : ℂ, ∀ τ, ∀ z ∈ m i τ, ∃ k : ℤ, z = g + k` using `fun i => by`. Use `⟨((n : ℂ) - 1) / 2, fun τ z hz => ?_⟩` and prove the remaining obligations. Take `⟨lam, hl⟩` from `hw τ`. Establish `e` using `bc.weight τ lam hl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : m i τ ≤ ∑ j, m j τ` using `Finset.single_le_sum (f := fun j => m j τ) (fun _ _ => Multiset.zero_le _) (Finset.mem_univ i)`. Establish `hz' : z ∈ infOfWeight lam` using `e ▸ Multiset.mem_of_le hle hz`. Take `⟨k, -, rfl⟩` from `Multiset.mem_map.1 hz'`. Conclude with `⟨lam.w k - (k : ℕ), by push_cast; ring⟩`. Use `choose p p1 p2 p3 p4 p5 p6 using fun i => udPart hMW hT hS hC (bc.pos i) (bc.discrete i) (bc.csd i) (m i) (bc.inf i) (hnd i) (hg i)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Q : ∀ w, LocIrr w n` to `fun w => { V := _ ρ := locProd h w (σ · w) smooth := GlobalTheory.SmGL.isSmooth_parInd _ _ irred := UpperTheory.Lit.Mix.multiProd_at (@UpperTheory.Lit.Mix.twoAt_charZero _ _ _ _ _ (charZero_of_injective_algebraMap (algebraMap H.E _).injective)) _ (fun i => (σ i w).smooth) (fun i …`. Establish `hloc : ∀ w, isoLoc N A (List.ofFn p) w = rc w n (Q w)` using `fun w => by`. Rewrite using `[hP w c n d h (σ · w) (Q w) ⟨.refl _⟩]`. Simplify using `only [fun i => (p5 i w _ (bc.loc i w)).2]`. Rewrite using `[lpSumList, ← Function.comp_def (fun q => spehLoc N A q w) p, ← List.map_ofFn, List.foldr_map]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hinf : ∀ τ, isoInf N A (List.ofFn p) τ = ∑ i, m i τ` using `fun τ => by`. Rewrite using `[isoInf_eq, List.map_ofFn, List.sum_ofFn]`. Conclude with `Finset.sum_congr rfl fun i _ => (p6 i τ _ (bc.inf i τ)).symm`. Use `⟨List.ofFn p, fun q hq => ?_, ?_, fun w hw => ⟨Q w, bc.split w (isSplitAt_of_isSplitPl hw), hloc w⟩, fun w α ⟨s, ϖ, q, e1, e2, e3⟩ => ?_, fun τ lam hl => ⟨List.nodup_ofFn.2 fun i j e => ?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hq`. Conclude with `⟨p1 i, p2 i, p3 i⟩`. Rewrite using `[rankIso, List.map_ofFn, List.sum_ofFn, ← h]`. Conclude with `Finset.sum_congr rfl fun i _ => p4 i`. Rewrite using `[hloc, ← ubc_eq_map_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hSat w n (Q w) _ (bc.inert w s ϖ q e1 e2 α e3)`. Use `GlobalTheory.eq_of_nodup_sum_multiset_of_eq (Fin c) (m · τ) (bc.weight τ lam hl ▸ nodup_infOfWeight lam) i j (fun h0 => (bc.pos i).ne' ?_) ?_` and prove the remaining obligations. Rewrite using `[← (bc.inf i τ).1]`. Conclude with `Multiset.card_eq_zero.2 h0`. Rewrite using `[p6 i τ _ (bc.inf i τ), p6 j τ _ (bc.inf j τ), e]`.
-
-Rewrite using `[hinf, bc.weight τ lam hl]`. Rewrite using `[hinf, bc.weight _ _ (hasWeightAt_conjugate hn hl), infOfWeight_dual]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem udParts {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N}
     {rc : RecMap A} (hNT : DefiniteN)
@@ -140,9 +138,9 @@ variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂
 attribute [local instance] host_isCMField
 
 /- English proof (translation)
-Take `⟨a, d, h, P, h1, h2, h3⟩` from `hMW n hn V hV hc`. Establish `had : a * d = n` using `by simpa [mul_comm] using h`. Establish `ha : 1 ≤ a` using `Nat.pos_of_mul_pos_right (had ▸ hn)`. Take `⟨π, c1, c2, c3⟩` from `hC a P ha h1`. Use `⟨⟨a, π, d⟩, ha, Nat.pos_of_mul_pos_left (had ▸ hn), c1, had, fun w σ' hσ' => ?_, fun τ m' hm' => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, σ, l, u', q⟩` from `h2 w σ' hσ'`. Use `⟨u, ?_⟩` and prove the remaining obligations. Rewrite using `[hS w a d n h P σ σ' l u' q, ← c2 w σ l, spehLoc_eq]`. Take `⟨m, hm, rfl⟩` from `h3 τ m' hm'`. Rewrite using `[c3 τ m hm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem part {rc : RecMap A} (hMW : DiscCsd H.E) (hS : RecSpeh rc) (hC : CuspRead rc) {n : ℕ}
     (hn : 0 < n) {V : Submodule ℂ (Sm H.E n)} (hV : IsDiscrete V) (hc : CsdAsc V) :
@@ -163,15 +161,13 @@ theorem part {rc : RecMap A} (hMW : DiscCsd H.E) (hS : RecSpeh rc) (hC : CuspRea
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField in
 
 /- English proof (translation)
-Take `⟨c, d, h, V, σ, m, bc⟩` from `hNT H.E (host_unramified H) n hn U hU`. Use `choose p p1 p2 p3 p4 p5 p6 using fun i => part hMW hS hC (bc.pos i) (bc.discrete i) (bc.csd i)`. Set `Q : ∀ w, LocIrr w n` to `fun w => { V := _ ρ := locProd h w (σ · w) smooth := GlobalTheory.SmGL.isSmooth_parInd _ _ irred := UpperTheory.Lit.Mix.multiProd_at (@UpperTheory.Lit.Mix.twoAt_charZero _ _ _ _ _ (charZero_of_injective_algebraMap (algebraMap H.E _).injective)) _ (fun i => (σ i w).smooth) (fun i …`. Establish `hloc : ∀ w, isoLoc N A (List.ofFn p) w = rc w n (Q w)` using `fun w => by`. Rewrite using `[hP w c n d h (σ · w) (Q w) ⟨.refl _⟩]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [fun i => (p5 i w _ (bc.loc i w)).2]`. Rewrite using `[lpSumList, ← Function.comp_def (fun q => spehLoc N A q w) p, ← List.map_ofFn, List.foldr_map]`. Both sides reduce to the same expression. Establish `hinf : ∀ τ, isoInf N A (List.ofFn p) τ = ∑ i, m i τ` using `fun τ => by`. Rewrite using `[isoInf_eq, List.map_ofFn, List.sum_ofFn]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.sum_congr rfl fun i _ => (p6 i τ _ (bc.inf i τ)).symm`. Use `⟨List.ofFn p, fun q hq => ?_, ?_, fun w hw => ⟨Q w, bc.split w (isSplitAt_of_isSplitPl hw), hloc w⟩, fun w α ⟨s, ϖ, q, e1, e2, e3⟩ => ?_, fun τ lam hl => ⟨List.nodup_ofFn.2 fun i j e => ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hq`. Conclude with `⟨p1 i, p2 i, p3 i⟩`. Rewrite using `[rankIso, List.map_ofFn, List.sum_ofFn, ← h]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.sum_congr rfl fun i _ => p4 i`. Rewrite using `[hloc, ← ubc_eq_map_inv]`. Conclude with `hSat w n (Q w) _ (bc.inert w s ϖ q e1 e2 α e3)`. Use `GlobalTheory.eq_of_nodup_sum_multiset_of_eq (Fin c) (m · τ) (bc.weight τ lam hl ▸ nodup_infOfWeight lam) i j (fun h0 => (bc.pos i).ne' ?_) ?_` and prove the remaining obligations. Rewrite using `[← (bc.inf i τ).1]`.
-
-Conclude with `Multiset.card_eq_zero.2 h0`. Rewrite using `[p6 i τ _ (bc.inf i τ), p6 j τ _ (bc.inf j τ), e]`. Rewrite using `[hinf, bc.weight τ lam hl]`. Rewrite using `[hinf, bc.weight _ _ (hasWeightAt_conjugate hn hl), infOfWeight_dual]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parts {rc : RecMap A} (hNT : DefiniteN)
     (hMW : DiscCsd H.E)
@@ -218,13 +214,13 @@ theorem parts {rc : RecMap A} (hNT : DefiniteN)
   · rw [hinf, bc.weight _ _ (hasWeightAt_conjugate hn hl), infOfWeight_dual]
 
 /- English proof (translation)
-Introduce `j h1 h2 π hπ`. Take `⟨U, u1, u2, u3, u4⟩` from `hU j h1 h2 π`. Establish `hn : 1 ≤ R.nV`. Use `R.rank_add_five_le` as an intermediate fact. Simplify using `only [Ranks.nV]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨Pa, a1, a2, a3, a4, a5⟩` from `parts hNT hMW hP hS hSat hC hn u1`. Use `⟨Pa, fun p hp => ⟨(a1 p hp).1, (a1 p hp).2.1⟩, fun p hp => (a1 p hp).2.2, ?_, a2, fun w hw => ?_, fun w hw => ?_, fun τ => ?_, fun τ _ => ?_⟩` and prove the remaining obligations. Take `⟨lam, hl, -⟩` from `u4 H.φ₀`. Conclude with `(a5 _ lam hl).1`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, s1, s2⟩` from `a3 w hw`. Rewrite using `[s2, u2 w hw σ s1]`. Take `⟨α, s1, s2⟩` from `u3 w hw (hπ w hw)`. Rewrite using `[s2]`. Conclude with `a4 w α s1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨lam, hl, e⟩` from `u4 τ`. Rewrite using `[e, (a5 τ lam hl).2.1]`. Take `⟨lam, hl, e⟩` from `u4 τ`. Rewrite using `[e, (a5 τ lam hl).2.2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bcAt (B : NBC A) (rc : RecMap A) (hNT : DefiniteN)
     (hMW : DiscCsd H.E)
@@ -256,7 +252,7 @@ section Frozen
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions
 
 /- English proof (translation)
-Introduce `D rc hNT hMW hP hS hSat hC hU _ _ j h1 h2 _ _ π hπ`. Take `⟨Pa, hPa⟩` from `bcAt D.nbc rc hNT hMW hP hS hSat hC hU j h1 h2 π hπ`. Conclude with `⟨Pa, GlobalTheory.DefiniteBCFrozen.isBC_of_isBaseChange hPa⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem baseChangeDefinite_of_cmDatum_recLaws : ∀ (D : D7) (rc : RecMap D.naut), DefiniteN →
     DiscCsd D.host.E → RecProd rc → RecSpeh rc →
@@ -275,7 +271,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `hNT hGU hSC hL D T A hCG hAU`. Take `⟨hP, hS, hSat⟩` from `GlobalTheory.T.rec_product_speh_satake hGU hSC hL D.nd D.naut T`. Conclude with `baseChangeDefinite_of_cmDatum_recLaws D (recT T hL) hNT (discCsd_of hA D.host.E) hP hS hSat (GlobalTheory.T.cuspidal_of_local_langlands hL D T hCG) (GlobalTheory.T.unitary_of_local_langlands hL D T A hAU)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem baseChange_preserves_unitary_of (hA : AscComp) : DefiniteN → GlobalTheory.Published.GenericUnitaryDualGL → GlobalTheory.Published.StandardCosocleGL →
     ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut) (A : AUSide D),

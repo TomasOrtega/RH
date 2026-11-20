@@ -11,7 +11,7 @@ open GroundTheory.Global.AdicLiesOver
 namespace GlobalTheory.CompanionTheory.CtMeas
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `‖((localChar c w (Units.map (algebraMap (Qv v) (Kv K w) : Qv v →* Kv K w) u) : ℂˣ) : ℂ)‖ = 1`. Rewrite using `[GroundTheory.Automorphic.GodementSection.coe_localChar]`. Conclude with `Circle.norm_coe _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_cAt {K : Type} [Field K] [NumberField K] (c : HeckeCharacter K) (v : Pl) (w : PlK K)
     [w.asIdeal.LiesOver v.asIdeal] (u : (Qv v)ˣ) : ‖((cAt c v w u : ℂˣ) : ℂ)‖ = 1 := by
@@ -20,7 +20,7 @@ theorem norm_cAt {K : Type} [Field K] [NumberField K] (c : HeckeCharacter K) (v 
   exact Circle.norm_coe _
 
 /- English proof (translation)
-The claim follows from `(GroundTheory.Automorphic.GodementSection.continuous_localChar c w).comp (Continuous.units_map _ (_root_.continuous_algebraMap (Qv v) (Kv K w)))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cAt {K : Type} [Field K] [NumberField K] (c : HeckeCharacter K) (v : Pl) (w : PlK K)
     [w.asIdeal.LiesOver v.asIdeal] : Continuous (cAt c v w) :=
@@ -28,7 +28,7 @@ theorem continuous_cAt {K : Type} [Field K] [NumberField K] (c : HeckeCharacter 
     (Continuous.units_map _ (_root_.continuous_algebraMap (Qv v) (Kv K w)))
 
 /- English proof (translation)
-Consider the cases of `D with`. Consider the case `@sp w₁ w₂ h₁ h₂ Φ`. Conclude with `Units.continuous_val.comp ((continuous_cAt c v w₁).mul (continuous_cAt c v w₂).inv)`. Consider the case `@ns w h σ η Φ => exact continuous_const`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_ct {K : Type} [Field K] [NumberField K] {c : HeckeCharacter K} {v : Pl} (D : LM c v) :
     Continuous D.ct := by
@@ -38,9 +38,9 @@ theorem continuous_ct {K : Type} [Field K] [NumberField K] {c : HeckeCharacter K
   | @ns w h σ η Φ => exact continuous_const
 
 /- English proof (translation)
-Consider the cases of `D with`. Consider the case `@sp w₁ w₂ h₁ h₂ Φ`. Express the relevant statement in the definitionally equal form `‖((cAt c v w₁ u * (cAt c v w₂ u)⁻¹ : ℂˣ) : ℂ)‖ = 1`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, norm_mul, norm_inv, norm_cAt, norm_cAt]`. Simplify using the standard rewrite rules.
+Split into cases according to the possible forms of the given data. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `@ns w h σ η Φ`. Express the relevant statement in the definitionally equal form `‖(1 : ℂ)‖ = 1`. Simplify using the standard rewrite rules.
+Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem norm_ct {K : Type} [Field K] [NumberField K] {c : HeckeCharacter K} {v : Pl} (D : LM c v)
     (u : (Qv v)ˣ) : ‖D.ct u‖ = 1 := by
@@ -54,11 +54,9 @@ theorem norm_ct {K : Type} [Field K] [NumberField K] {c : HeckeCharacter K} {v :
     simp
 
 /- English proof (translation)
-Distinguish the cases in `h : v ∈ Sv`. Establish `e : (fun u => D.ct (tu Sv m u v)) = (fun x : (Qv v)ˣ => D.ct (unifUnit (Qv v) ^ (m v) * x)) ∘ (fun u : ∀ v : Sv, (Qv v.1)ˣ => u ⟨v, h⟩)`. Use function extensionality and compare the values at `u`. Simplify using `[tu, h]`. Rewrite using `[e]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((continuous_ct D).comp (continuous_const.mul continuous_id)).measurable.comp (measurable_pi_apply _)`. Establish `e : (fun u => D.ct (tu Sv m u v)) = fun _ => D.ct (unifUnit (Qv v) ^ (m v))`. Use function extensionality and compare the values at `u`. Simplify using `[tu, h]`. Rewrite using `[e]`.
-
-Conclude with `measurable_const`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_ct_tu {K : Type} [Field K] [NumberField K] {c : HeckeCharacter K} {v : Pl} (D : LM c v)
     (Sv : Finset Pl) (m : Pl →₀ ℤ) : Measurable (fun u => D.ct (tu Sv m u v)) := by
@@ -77,9 +75,9 @@ theorem measurable_ct_tu {K : Type} [Field K] [NumberField K] {c : HeckeCharacte
     exact measurable_const
 
 /- English proof (translation)
-Introduce `K _ _ c M Sv m`. Use `⟨?_, fun u => ?_⟩` and prove the remaining obligations. Unfold `ctM`. Conclude with `Finset.measurable_fun_prod _ fun v _ => measurable_ct_tu (M v) Sv m`. Unfold `ctM`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_prod]`. Simplify using `[norm_ct]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurable_ctM_norm_le : ∀ (K : Type) [Field K] [NumberField K] (c : HeckeCharacter K) (M : ∀ v : Pl, LM c v) (Sv : Finset Pl) (m : Pl →₀ ℤ),
   Measurable (fun u => ctM M Sv m u) ∧ ∀ u, ‖ctM M Sv m u‖ ≤ 1 := by

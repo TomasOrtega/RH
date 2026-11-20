@@ -18,13 +18,13 @@ noncomputable section
 namespace GlobalTheory.KernelThickening
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `A x z`. Use `⟨A, 𝟙 A, by rw [Over.id_left]; infer_instance, fun T y => ⟨fun _ => ⟨y, by simp⟩, fun _ j => j.elim0⟩⟩` and prove the remaining obligations. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Introduce `A x z`. Take `⟨K, k, hk, hK⟩` from `ih (equalizer (x 0) (z 0)) (fun j => equalizer.ι _ _ ≫ x j.succ) (fun j => equalizer.ι _ _ ≫ z j.succ)`. Use `⟨K, k ≫ equalizer.ι _ _, by rw [Over.comp_left]; infer_instance, fun T y => ⟨fun h => ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨y', hy'⟩` from `(hK T (equalizer.lift y (h 0))).1 fun j => by`. Simplify using `using h j.succ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `⟨y', by rw [← Category.assoc, hy', equalizer.lift_ι]⟩`. Introduce and unpack `⟨y', rfl⟩ j`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Rewrite using `[equalizer.condition (x 0) (z 0)]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using (hK T (y' ≫ k)).2 ⟨y', rfl⟩ j`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_closed_equalizer {S : Scheme.{0}} (D : Over S) [IsSeparated D.hom] (n : ℕ) :
     ∀ (A : Over S) (x z : Fin n → (A ⟶ D)), ∃ (K : Over S) (k : K ⟶ A), IsClosedImmersion k.left ∧
@@ -48,17 +48,17 @@ theorem exists_closed_equalizer {S : Scheme.{0}} (D : Over S) [IsSeparated D.hom
       · simpa using (hK T (y' ≫ k)).2 ⟨y', rfl⟩ j
 
 /- English proof (translation)
-Establish `hnil : ∀ a ∈ RingHom.ker π, a ^ N = 0` using `fun a ha => by`. Use `Ideal.pow_mem_pow ha N` as an intermediate fact. Rewrite `this` using `[hN, Ideal.mem_bot]`. Then use the resulting hypothesis. Establish `hinj : Function.Injective f`. Use `Function.LeftInverse.injective (g := e) fun p => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨φ, hφ⟩` from `Spec.map_surjective (H.fromSpecResidueField p ≫ f)`. Establish `hker : RingHom.ker π ≤ RingHom.ker φ.hom` using `fun a ha => by`. Establish `: (φ.hom a) ^ N = 0` using `by rw [← map_pow, hnil a ha, map_zero]`. Conclude with `IsNilpotent.eq_zero ⟨N, this⟩`. Set `ψ : CommRingCat.of R₀ ⟶ H.residueField p` to `CommRingCat.ofHom (π.liftOfSurjective hπ ⟨φ.hom, hker⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψ : CommRingCat.ofHom π ≫ ψ = φ` using `CommRingCat.hom_ext (π.liftOfRightInverse_comp _ _ ⟨φ.hom, hker⟩)`. Establish `h₁` using `h _ (H.fromSpecResidueField p) (Spec.map ψ) (by`. Rewrite using `[← hφ, spMap, ← Spec.map_comp, hψ])`. Take `⟨q, hq⟩ : ∃ q : Spec (H.residueField p), H.fromSpecResidueField p q = p` from `⟨IsLocalRing.closedPoint (H.residueField p), Scheme.fromSpecResidueField_apply _ _⟩`. Establish `h₂ : H.fromSpecResidueField p q = (H.fromSpecResidueField p ≫ f ≫ e) q` using `congrArg (fun g => g q) h₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₂` using `[Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, hq]`. Conclude with `h₂.symm`. Establish `: LocallyQuasiFinite f` using `LocallyQuasiFinite.of_injective hinj`. Establish `: IsFinite f` using `IsFinite.of_isProper_of_locallyQuasiFinite f`. Use `GlobalTheory.PrincipalModRadical.mono_of_section (RingHom.ker π) ?_ f e fun T d t hd => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `fun a ha => Ideal.radical_le_jacobson ⟨N, hnil a ha⟩`. Use `h T d (t ≫ spMap (RingHom.quotientKerEquivOfSurjective hπ).symm.toRingHom) ?_` and prove the remaining obligations. Rewrite using `[hd, Category.assoc, spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 3`. Use extensionality with `a`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `(RingHom.quotientKerEquivOfSurjective hπ).injective` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem mono_of_proper {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →+* R₀) (hπ : Function.Surjective π)
     (N : ℕ) (hN : RingHom.ker π ^ N = ⊥) {H : Scheme.{0}} (f : H ⟶ Sp R) [IsProper f] (e : Sp R ⟶ H)
@@ -93,15 +93,15 @@ theorem mono_of_proper {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →+
     simp
 
 /- English proof (translation)
-Introduce `R R₀ _ _ π hπ ⟨N, hN⟩ A _ hA n D _ hD x hx h₀`. Take `⟨K, k, hk, hK⟩` from `exists_closed_equalizer D n A x fun _ => 1`. Simplify using `only [MonObj.comp_one] at hK`. Establish `: IsProper K.hom`. Rewrite using `[← Over.w k]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Establish `one : ∀ T : Over (Sp R), ∃ y : T ⟶ K, y ≫ k = 1` using `fun T => (hK T 1).1 fun j => by`. Use `hx j` as an intermediate fact. Simplify using `[Hom.one_def]`. Establish `hkx` using `(hK K k).2 ⟨𝟙 K, Category.id_comp k⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `one (𝟙_ _)`. Establish `: Mono K.hom` using `mono_of_proper π hπ N hN K.hom e.left fun T d t hd => by`. Set `d' : Over.mk ((Over.mk t).hom ≫ spMap π) ⟶ K` to `Over.homMk d hd`. Establish `h₁ : d' ≫ k = 1` using `h₀ (Over.mk t) _ fun j => by rw [Category.assoc, hkx, MonObj.comp_one]`. Establish `: d' ≫ k = d' ≫ toUnit K ≫ e ≫ k`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h₁, he, MonObj.comp_one, MonObj.comp_one]`. Rewrite using `[← cancel_mono k.left, Category.assoc, Category.assoc]`. Conclude with `congrArg (·.left) this`. Introduce `T y hy`. Take `⟨y₁, hy₁⟩` from `(hK T y).1 hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y₂, hy₂⟩` from `one T`. Rewrite using `[← hy₁, ← hy₂, Over.OverMorphism.ext ((cancel_mono K.hom).1 ((Over.w y₁).trans (Over.w y₂).symm))]`.
+A detailed English derivation is pending.
 -/
 theorem kernel_trivial_of_nilpotent :
     ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π →

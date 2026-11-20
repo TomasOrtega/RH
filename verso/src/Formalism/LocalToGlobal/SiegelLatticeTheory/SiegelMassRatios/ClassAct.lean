@@ -14,7 +14,7 @@ variable {G : Type} [Group G]
 def Normalises (D K : Subgroup G) : Prop := ∀ δ ∈ D, ∀ κ ∈ K, δ * κ * δ⁻¹ ∈ K
 
 /- English proof (translation)
-Use `h δ⁻¹ (D.inv_mem hδ) κ hκ` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Normalises.inv_conj {D K : Subgroup G} (h : Normalises D K) {δ : G} (hδ : δ ∈ D) {κ : G}
     (hκ : κ ∈ K) : δ⁻¹ * κ * δ ∈ K := by
@@ -32,13 +32,13 @@ def DiaFree (Γ K D : Subgroup G) : Prop :=
   ∀ x : G, ∀ δ ∈ D, DoubleCoset.mk Γ K (x * δ) = DoubleCoset.mk Γ K x → δ ∈ K
 
 /- English proof (translation)
-Introduce `x δ hδ h`. Take `⟨γ, hγ, κ, hκ, hx⟩` from `(DoubleCoset.eq Γ K (x * δ) x).mp h`. Establish `hst : (⟨γ⁻¹, Γ.inv_mem hγ⟩ : Γ) ∈ stabAt Γ K₀ x` using `by show x⁻¹ * γ⁻¹ * x ∈ K₀`. Establish `e : x⁻¹ * γ⁻¹ * x = δ * κ`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e]`. Conclude with `K₀.mul_mem (hD hδ) (hK hκ)`. Rewrite `hst` using `[hn x]`. Establish `hγ1 : γ = 1`. Use `congrArg Subtype.val (Set.mem_singleton_iff.mp hst)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Substitute `hγ1` using the available equality. Establish `e2 : δ = κ⁻¹`. Establish `: x * 1 = x * (δ * κ)`. Combine the equalities or inequalities in the displayed calculation.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `(mul_left_cancel this).symm` as an intermediate fact. Conclude with `eq_inv_of_mul_eq_one_left this`. Rewrite using `[e2]`. Conclude with `K.inv_mem hκ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diaFree_of_isNeat {Γ K K₀ D : Subgroup G} (hK : K ≤ K₀) (hD : D ≤ K₀) (hn : IsNeat Γ K₀) :
     DiaFree Γ K D := by
@@ -87,9 +87,9 @@ def FixAt (k : Type) [CommRing k] {W : Type} [AddCommGroup W] [Module k W] (Γ K
   AMFChi k Γ K ρ χ ⊓ ⨅ δ : D, LinearMap.ker (rtF k W (δ : G) - LinearMap.id)
 
 /- English proof (translation)
-Unfold `FixAt`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero, Subtype.forall]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, fun δ hδ g => congrFun (h2 δ hδ) g⟩`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, fun δ hδ => funext fun g => h2 δ hδ g⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_FixAt {k : Type} [CommRing k] {W : Type} [AddCommGroup W] [Module k W] {Γ K : Subgroup G}
     {ρ : Representation k Γ W} {χ : K →* kˣ} {D : Subgroup G} {f : G → W} :

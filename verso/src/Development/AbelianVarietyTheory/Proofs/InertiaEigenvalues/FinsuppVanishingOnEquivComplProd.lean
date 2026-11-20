@@ -3,17 +3,15 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `I S n`. Use `⟨{ toFun := fun l => l.1.subtypeDomain (· ∉ S) invFun := fun l' => ⟨l'.embDomain (Function.Embedding.subtype _), by` and prove the remaining obligations. Introduce `v hv`. Apply `Finsupp.embDomain_notin_range` to reduce the goal to its premises. Introduce and unpack `⟨i, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Conclude with `i.2 hv⟩`. Use `left_inv := by`. Introduce and unpack `⟨l, hl⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `Finsupp.ext fun v => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hv : v ∈ S`. Use `show Finsupp.embDomain _ _ v = l v`. Rewrite using `[Finsupp.embDomain_notin_range, hl v hv]`. Introduce and unpack `⟨i, rfl⟩`. Conclude with `i.2 hv`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Finsupp.embDomain _ _ v = l v`. Use `Finsupp.embDomain_apply_self (Function.Embedding.subtype (· ∉ S)) (l.subtypeDomain (· ∉ S)) ⟨v, hv⟩` as an intermediate fact. Simplify using `using this`. Use `right_inv := by`. Introduce `l'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finsupp.ext fun i => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.subtypeDomain_apply]`. Conclude with `Finsupp.embDomain_apply_self (Function.Embedding.subtype (· ∉ S)) l' i }, ?_⟩`. Introduce `M _ r _ l`. Take `⟨l, hl⟩` from `l`.
-
-Use `show (l.subtypeDomain (· ∉ S)).prod (fun i v => r i.1 v) = l.prod r`. Apply `Finsupp.prod_subtypeDomain_index` to reduce the goal to its premises. Introduce `x hx hxS`. Conclude with `(Finsupp.mem_support_iff.mp hx) (hl x hxS)`.
+A detailed English derivation is pending.
 -/
 theorem finsupp_vanishing_on_equiv_compl_prod :
     ∀ {I : Type} (S : Finset I) (n : ℕ),

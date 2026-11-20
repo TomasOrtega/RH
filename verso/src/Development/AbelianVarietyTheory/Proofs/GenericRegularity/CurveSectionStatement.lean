@@ -16,11 +16,11 @@ open scoped WithZero
 namespace GlobalTheory.ValZeroSection
 
 /- English proof (translation)
-Establish `key : ∀ Z, ∃ x : Ω Z, ∀ (ζ : P) (hζ : Zc ζ = Z), v ζ (cast (congrArg Ω hζ.symm) x) = WithZero.exp (n ζ)`. Introduce `Z`. Establish `: Fintype {ζ : P // Zc ζ = Z}` using `Fintype.ofFinite _`. Establish `hV : ∀ ζ : {ζ : P // Zc ζ = Z}, ∃ V : Valuation (Ω Z) ℤᵐ⁰, (∀ x : Ω Z, V x = v ζ.1 (cast (congrArg Ω ζ.2.symm) x)) ∧ (∀ r : ∀ Z, Ω Z, V (r Z) = v ζ.1 (r (Zc ζ.1))) ∧ ∃ x, V x = WithZero.exp (1 : ℤ)`. Introduce and unpack `⟨ζ, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨v ζ, fun _ => rfl, fun _ => rfl, hgen ζ⟩`. Use `choose V hV1 hV2 hV3 using hV`. Take `⟨x, hx⟩` from `ReciprocityTheory.ChartRestriction.G.Lift.exists_val_eq V hV3 (fun i i' hne he => by`. Take `⟨r, h1, h2⟩` from `hsep i.1 i'.1 (fun e => hne (Subtype.ext e)) (i.2.trans i'.2.symm)`. Rewrite `h1` using `[← hV2 i r]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← hV2 i' r]`. Conclude with `h1.ne (he.eq_one_iff_eq_one.2 h2)) (fun i => n i.1)`. Conclude with `⟨x, fun ζ hζ => (hV1 ⟨ζ, hζ⟩ x).symm.trans (hx ⟨ζ, hζ⟩)⟩`. Use `choose a ha using key`. Conclude with `⟨a, fun ζ => ha (Zc ζ) ζ rfl⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem approx_family {P C : Type} [Finite P] (Ω : C → Type) [∀ Z, Field (Ω Z)] (Zc : P → C)
     (v : ∀ ζ, Valuation (Ω (Zc ζ)) ℤᵐ⁰)
@@ -48,19 +48,17 @@ theorem approx_family {P C : Type} [Finite P] (Ω : C → Type) [∀ Z, Field (�
   exact ⟨a, fun ζ => ha (Zc ζ) ζ rfl⟩
 
 /- English proof (translation)
-Establish `hup : ∀ Z ∈ S, ∀ k m, (∃ p ∈ M k, ∃ q ∈ M k, e Z q ≠ 0 ∧ e Z p = a Z * e Z q) → ∃ p ∈ M (k + m), ∃ q ∈ M (k + m), e Z q ≠ 0 ∧ e Z p = a Z * e Z q`. Introduce `Z hZ k m hk`. Take `⟨u, hu1, hu2⟩` from `hu Z hZ`. Proceed by induction on `m with`. Consider the case `zero => exact hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `succ m ih`. Take `⟨p, hp, q, hq, h1, h2⟩` from `ih`. Use `⟨p * u, hmul _ _ _ hp hu1, q * u, hmul _ _ _ hq hu1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_ne_zero h1 hu2`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, h2, mul_assoc]`. Use `choose! k hk using hbir`. Use `set K := S.sup k with hK`. Establish `hK' : ∀ Z ∈ S, ∃ p ∈ M (K + 1), ∃ q ∈ M (K + 1), (e Z q ≠ 0 ∧ e Z p = a Z * e Z q) ∧ ∀ Z', Z' ≠ Z → e Z' p = 0 ∧ e Z' q = 0`. Introduce `Z hZ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle : k Z ≤ K` using `Finset.le_sup hZ`. Use `hup Z hZ (k Z) (K + 1 - k Z) (hk Z hZ)` as an intermediate fact. Rewrite `this` using `[show k Z + (K + 1 - k Z) = K + 1 by omega]`. Take `⟨p, hp, q, hq, h1, h2⟩` from `this`. Take `⟨p', hp', h3, h4⟩` from `hsplit Z _ p hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨q', hq', h5, h6⟩` from `hsplit Z _ q hq`. Conclude with `⟨p', hp', q', hq', ⟨by rwa [h5], by rw [h3, h5, h2]⟩, fun Z' hZ' => ⟨h4 Z' hZ', h6 Z' hZ'⟩⟩`. Use `choose! p hp q hq h1 h2 using hK'`. Use `⟨K, ∑ Z ∈ S, p Z, sum_mem hp, ∑ Z ∈ S, q Z, sum_mem hq, fun Z hZ => ?_⟩` and prove the remaining obligations. Establish `ep : e Z (∑ Z ∈ S, p Z) = e Z (p Z)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_single_of_mem Z hZ fun b hb hne => (h2 b hb Z hne.symm).1`. Establish `eq : e Z (∑ Z ∈ S, q Z) = e Z (q Z)`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_single_of_mem Z hZ fun b hb hne => (h2 b hb Z hne.symm).2`.
-
-Rewrite using `[ep, eq]`. Conclude with `h1 Z hZ`.
+A detailed English derivation is pending.
 -/
 theorem glue_ratios {R C : Type} [CommRing R] (Ω : C → Type) [∀ Z, Field (Ω Z)] (e : ∀ Z, R →+* Ω Z)
     (M : ℕ → AddSubgroup R) (S : Finset C) (a : ∀ Z, Ω Z)
@@ -105,9 +103,9 @@ theorem glue_ratios {R C : Type} [CommRing R] (Ω : C → Type) [∀ Z, Field (�
   exact h1 Z hZ
 
 /- English proof (translation)
-Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Rewrite using `[map_zero]`. Conclude with `zero_lt_iff.2 (valV_ne_zero hx)`. Rewrite `h` using `[nval_of_ne hx, nval_of_ne hy, EReal.coe_lt_coe_iff, Nat.cast_one, div_one, div_one, Int.cast_lt]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(WithZero.log_lt_log (valV_ne_zero hy) (valV_ne_zero hx)).1 ?_` and prove the remaining obligations. Simplify using `only [vV] at h`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem valV_lt_of_nval_lt {T : CDVR} {x y : T.Fr} (hx : x ≠ 0) (h : nval T.V 1 x < nval T.V 1 y) :
     valV T.V y < valV T.V x := by
@@ -121,23 +119,21 @@ theorem valV_lt_of_nval_lt {T : CDVR} {x y : T.Fr} (hx : x ≠ 0) (h : nval T.V 
   omega
 
 /- English proof (translation)
-Establish `hratio : ∀ ζ w F F', ev ζ w F' ≠ 0 → ι ζ (e (Zc ζ) w F / e (Zc ζ) w F') = ev ζ w F / ev ζ w F'`. Introduce `ζ w F F' hF'`. Establish `h0 : ι ζ (e (Zc ζ) w F') ≠ 0` using `(map_ne_zero _).2 fun h => hF' (h2 ζ w F' h)`. Rewrite using `[map_div₀, div_eq_div_iff h0 hF', h3, mul_comm]`. Take `⟨a, ha⟩` from `approx_family Ω Zc (fun ζ => (valV (Tt ζ).V).comap (ι ζ)) (fun ζ => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `h1 ζ`. Establish `h0 : ι ζ a ≠ 0`. Introduce `h`. Rewrite `ha` using `[h]`. Simplify using `[vV] at ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨a⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[Valuation.comap_apply, map_inv₀, map_inv₀, ← WithZero.exp_log (valV_ne_zero (V := (Tt ζ).V) h0), ← WithZero.exp_neg]`. Conclude with `congrArg _ ha)`. Use the proof step `(fun ζ ζ' hne hZ => by`. Take `⟨w, F, F', a1, a2, a3, a4⟩` from `h4 ζ ζ' hne hZ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun Z => e Z w F / e Z w F', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Valuation.comap_apply, hratio ζ w F F' a1, map_div₀]`. Conclude with `(div_lt_one₀ (zero_lt_iff.2 (valV_ne_zero a1))).2 (valV_lt_of_nval_lt a1 a3)`. Rewrite using `[Valuation.comap_apply, hratio ζ' w F F' a2, map_div₀]`. Use `Valuation.map_add_eq_of_lt_left _ (valV_lt_of_nval_lt a2 a4)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[add_sub_cancel]`. Rewrite using `[this, div_self (valV_ne_zero a2)]) (fun ζ => n ζ)`. Take `⟨k, p, q, hpq⟩` from `hR a`. Use `⟨k, p, q, fun ζ => ?_⟩` and prove the remaining obligations. Take `⟨hq0, hp⟩` from `hpq ζ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha' : valV (Tt ζ).V (ι ζ (a (Zc ζ))) = WithZero.exp (n ζ)` using `ha ζ`. Establish `ha0 : ι ζ (a (Zc ζ)) ≠ 0`. Introduce `h`. Rewrite `ha'` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero ha'.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `hL ζ k`. Establish `hq : ev ζ _ q ≠ 0`. Introduce `h`. Use `h3 ζ _ q u` as an intermediate fact. Rewrite `this` using `[h, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero ((map_ne_zero _).2 hq0) hu this`. Establish `hr` using `hratio ζ _ p q hq`. Rewrite `hr` using `[hp, mul_div_cancel_right₀ _ hq0, eq_div_iff hq]`. Use `⟨hr ▸ mul_ne_zero ha0 hq, hq, ?_⟩` and prove the remaining obligations. Rewrite using `[← hr, vV_mul ha0 hq]`.
-
-Establish `: vV (Tt ζ).V (ι ζ (a (Zc ζ))) = - n ζ` using `by rw [vV, ha', WithZero.log_exp]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_forms_val {P C Wt : Type} [Finite P] (Ω : C → Type) [∀ Z, Field (Ω Z)] (Zc : P → C) (Tt : P → CDVR)
     (ι : ∀ ζ, Ω (Zc ζ) →+* (Tt ζ).Fr) (M : Wt → Type) (e : ∀ Z w, M w → Ω Z) (ev : ∀ ζ w, M w → (Tt ζ).Fr)
@@ -198,9 +194,9 @@ theorem exists_forms_val {P C Wt : Type} [Finite P] (Ω : C → Type) [∀ Z, Fi
   omega
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `hs.s0.ne_zero` to reduce the goal to its premises. Rewrite using `[Formalism.MainNotions.Gaps.EtaleWeightGaps.sec, map_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.smul_def, map_mul]`. Conclude with `mul_eq_zero_of_right _ (hc k)`.
+A detailed English derivation is pending.
 -/
 theorem exists_gen_ne_zero {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} {X : PJ D B P j} {E : PtExt X}
     {hM : IntAtExt X E} {ka wL wF : WeightFamilies.Wt D j} {G : GlobalFamilyData (xplus X E hM) ka wL wF}
@@ -218,19 +214,15 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hw1 : ∀ i, ((G.w i : (recB h.toLawsCore).Cusp j wL) : T.R j) ∈ cutR T.C j (addL (wt0 D j) wL 1)`. Introduce `i`. Rewrite using `[add_zero_weight_one_eq]`. Conclude with `(G.w i).2`. Take `⟨k, p, hp, q, hq, hpq⟩` from `glue_ratios (R := T.R j) (fun Z : Comp (T.Q.Xo j) T.Q.c => Om Z) (fun Z => (evCAlg hG hT Z).toRingHom) (fun k => (cutR T.C j (addL (wt0 D j) wL k)).toAddSubgroup) S a (fun k f g hf hg => esec_mem_mulL h hj hf hg) (fun Z hZ => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `hS Z hZ`. Conclude with `⟨_, hw1 i, fun h0 => hi ((evCAlg_apply hG hT Z _).symm.trans h0)⟩)`. Use the proof step `(fun Z k g hg => by`. Take `⟨g', h1, h2⟩` from `hC Z (addL (wt0 D j) wL k) ⟨g, hg⟩`. Use `⟨(g' : T.R j), g'.2, ?_, fun Z' hZ' => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(evCAlg_apply hG hT Z _).trans (h1.trans (evCAlg_apply hG hT Z _).symm)`. Conclude with `(evCAlg_apply hG hT Z' _).trans (h2 Z' hZ'))`. Use the proof step `(fun Z hZ => by`. Take `⟨i, hi⟩` from `hS Z hZ`. Take `⟨k, g, Pw, hP, hne, he⟩` from `hB Z (a Z)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hg : (g : T.R j) ∈ cutR T.C j (addL (wt0 D j) wL k)`. Rewrite using `[addL, zero_weight_add]`. Conclude with `g.2`. Establish `hq` using `esec_hom_mem h hj (fun i => ((G.w i : (recB h.toLawsCore).Cusp j wL) : T.R j)) (fun i => (G.w i).2) (Pw * MvPolynomial.X i) (hP.mul (MvPolynomial.isHomogeneous_X _ i))`. Establish `hv` using `(evCAlg_apply hG hT Z _).trans (esec_evC_aeval h hj hG hT Z (fun i => ((G.w i : (recB h.toLawsCore).Cusp j wL) : T.R j)) (Pw * MvPolynomial.X i))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hv` using `[map_mul (MvPolynomial.aeval fun i => evC hG Z _), MvPolynomial.aeval_X]`. Use `⟨k + 1, _, esec_mem_mulL h hj hg (hw1 i), _, hq, ?_, ?_⟩` and prove the remaining obligations. Conclude with `fun h0 => mul_ne_zero hne hi (hv.symm.trans h0)`. Use `Eq.trans ?_ (congrArg (fun t => a Z * t) hv).symm` and prove the remaining obligations. Use `(map_mul (evCAlg hG hT Z) _ _).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[evCAlg_apply, evCAlg_apply, ← mul_assoc, he])`. Use `⟨k, ⟨p, hp⟩, ⟨q, hq⟩, fun Z hZ => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hpq Z hZ`. Use `⟨fun h0 => h1 ((evCAlg_apply hG hT Z _).trans h0), ?_⟩` and prove the remaining obligations. Use `(evCAlg_apply hG hT Z _).symm.trans (h2.trans ?_)` and prove the remaining obligations.
-
-Conclude with `congrArg (fun t => a Z * t) (evCAlg_apply hG hT Z _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_ratio {D : D7} {T : Top D} (h : LawsP T) {j : ℕ} (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c)
     (hT : GenFromTest (T.Q.Xo j) T.Q.c hG) {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData (recPlus h j hj) ka wL wF)
@@ -282,13 +274,13 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `y hw g0 hM hg0`. Establish `hfin : Finite (PtsG G la)` using `(finite_pts_of_curve _ (inCurveSec (E := extAll h j hj) (hM := intAtExt_extAll h j hj) G la y (fun ζ => (hw ζ).toSecPt) g0 hM hg0)).1`. Use `Fintype.ofFinite (PtsG G la)` as an intermediate fact. Take `⟨Zc, ι, h1, h2, h3, h4⟩` from `hV y hw`. Establish `hgen` using `fun ζ => exists_gen_ne_zero (hw ζ).toSecPt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, p, q, hpq⟩` from `exists_forms_val (fun Z : Comp (T.Q.Xo j) T.Q.c => Om Z) Zc (fun ζ => (hw ζ).T) ι (fun w => (recB h.toLawsCore).Cusp j w) (fun Z w F => evC hG Z ((F : (recB h.toLawsCore).Cusp j w) : T.R j)) (fun ζ w F => (hw ζ).ev (emb (recPlus h j hj) la G.N ((recPJ h j hj).inc w F))) h1 h2 h3 …`. Take `⟨i, hi⟩` from `hgen ζ`. Rewrite using `[← esecW_eq]`. Use `⟨esecPow h hj (G.w i) k, ?_⟩` and prove the remaining obligations. Rewrite using `[esec_inc_pow]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h0 => pow_ne_zero (k + 1) hi (((map_pow ((hw ζ).ev.comp (emb (recPlus h j hj) la G.N)) _ _).symm).trans h0))`. Use the proof step `(fun a => by`. Take `⟨k, p, q, hpq⟩` from `exists_ratio h hj hG hT G hC hB (Finset.univ.image Zc) (fun Z hZ => by`. Take `⟨ζ, -, rfl⟩` from `Finset.mem_image.1 hZ`. Take `⟨i, hi⟩` from `hgen ζ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨i, fun h0 => hi (h2 ζ wL (G.w i) h0)⟩) a`. Conclude with `⟨k, p, q, fun ζ => hpq (Zc ζ) (Finset.mem_image_of_mem Zc (Finset.mem_univ ζ))⟩)`. Use the proof step `(fun ζ => vV (hw ζ).T.V ((hw ζ).ev (emb (recPlus h j hj) la G.N ((recPJ h j hj).inc wF g0))))`. Conclude with `⟨k + 1, emb (recPlus h j hj) la G.N ((recPJ h j hj).inc _ p), emb (recPlus h j hj) la G.N ((recPJ h j hj).inc _ q), emb_mem_Vw (recPlus h j hj) la G.N _ p, emb_mem_Vw (recPlus h j hj) la G.N _ q, fun β hβ => hasseRp_emb (recPlus h j hj) la hβ _, fun β hβ => hasseRp_emb (recPlus h …`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eSec_of_valSep {D : D7} {T : Top D} (h : LawsP T) {j : ℕ} (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c)
     (hT : GenFromTest (T.Q.Xo j) T.Q.c hG) {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData (recPlus h j hj) ka wL wF)
@@ -333,7 +325,7 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D T h j hj hG hT ka wL wF G S g0 la hH hV hC hB` and use `GlobalTheory.ValZeroSection.eSec_of_valSep h hj hG hT G la hC hB (GlobalTheory.GenSep.valSep_of_curveHyp D T h j hj hG hT ka wL wF G S g0 la hH hV hC hB)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.eSec_of_curveHyp : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c) (hT : GenFromTest (T.Q.Xo j) T.Q.c hG) (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData (recPlus h j hj) ka wL wF) (S : Scal (recB h.toLawsCore)) (g0 : (recB h.toLawsCore).Cusp j wF) (la : HeightOneSpectrum (𝓞 (recB h.toLawsCore).KO)), CurveHyp h j hj hG ka wL wF G S g0 → GenValInjSt h j hG → CompSplitSt h j hG → BIRSt h j hj hG G → ESecSt (E := extAll h j hj) (hM := intAtExt_extAll h j hj) G la :=
   fun D T h j hj hG hT ka wL wF G S g0 la hH hV hC hB =>

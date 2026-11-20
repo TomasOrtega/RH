@@ -17,13 +17,13 @@ noncomputable section
 namespace GlobalTheory.VacEigenLine
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M r s r' s' hB hX hW hM v t hvac φ _ hφ`. Establish `hAt` using `(GlobalTheory.LatVac.latAtV_at_stable X W v).1`. Set `χ : (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v) → ℂ` to `fun l => if h : ∃ γ ∈ latAtV X W v, GlobalTheory.LatVac.locCo M.co v γ = l then t h.choose else 0`. Establish `loc : ∀ f : (Fin n × Fin d → Fv F v) → ℂ, (∀ γ ∈ latAtV X W v, locOp B.ψ v (locPt v (M.co.e γ)) f = t γ • f) → ∀ l ∈ (latAtV X W v).map (GlobalTheory.LatVac.locCo M.co v), ∀ ξ, GlobalTheory.LatVac.psiAt B.ψ v (ξ ⬝ᵥ l.2 + (2 : Fv F v)⁻¹ * (l.1 ⬝ᵥ l.2)) * f (ξ + l.1) = χ l * f ξ`. Introduce `f hf l hl ξ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : ∃ γ ∈ latAtV X W v, GlobalTheory.LatVac.locCo M.co v γ = l` using `AddSubgroup.mem_map.mp hl`. Establish `key` using `congrFun (hf _ h.choose_spec.1) ξ`. Establish `e : locPt v (M.co.e h.choose) = l` using `h.choose_spec.2`. Simplify using `only [χ, dif_pos h]`. Rewrite `key` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [locOp, Pi.smul_apply, smul_eq_mul] at key`. Rewrite using `[GlobalTheory.LatVac.psiAt_apply, ← div_eq_inv_mul]`. Conclude with `key`. Take `⟨c, hc0, hcb⟩` from `GlobalTheory.LatBound.locCo_latAtV_bounded X W v M.co hX.lat hW.lat`. Establish `hsd` using `GlobalTheory.LatVac.DualLoc.map_selfDual v M.co B.ψ _ hAt (GlobalTheory.LatSelfDualAll.latAtV_selfDual F E σ B n d X W r s r' s' hB hX hW v)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfill` using `GlobalTheory.SelfDualFirstProjAny.exists_pair_of_annihilator_any F v _ (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.VacAny.continuous_psiV hB.std.1 v) (fun _ => GlobalTheory.StdCharFromIsStd.norm_psi hB.std _) (GlobalTheory.PsiNontriv.psiAt_ne_one B.ψ hB.std v) _ c hc0 hsd (fu …`. Take `⟨γ, hγ, rfl⟩` from `AddSubgroup.mem_map.mp hl`. Conclude with `hcb γ hγ i)`. Conclude with `GlobalTheory.heisenbergEigen_proportional (GlobalTheory.LatVac.psiAt B.ψ v) _ χ (M.vac v) φ (loc _ hvac) (loc φ hφ) (hM.vac v).2.1 hfill`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eigen_line : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E) {n d : ℕ}
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (r s r' s' : ℕ), B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' →

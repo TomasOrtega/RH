@@ -5,21 +5,21 @@ open GlobalTheory.BI GlobalTheory.BrauerZero
 namespace GlobalTheory.BrauerZero
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite G`. Use function extensionality and compare the values at `g`. Establish `hcard : Nat.card (K.subgroupOf A) = Nat.card K` using `Nat.card_congr (Subgroup.subgroupOfEquivOfLe hKA).toEquiv`. Establish `key : ∀ a y : A, ext0 (K.subgroupOf A) (fun k => ψ ⟨((k : A) : G), k.2⟩) (y⁻¹ * a * y) = ext0 K ψ ((y : G)⁻¹ * (a : G) * y)`. Introduce `a y`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc : ((y⁻¹ * a * y : A) : G) = (y : G)⁻¹ * (a : G) * y` using `by simp`. Distinguish the cases in `h : (y : G)⁻¹ * (a : G) * y ∈ K`. Establish `h' : y⁻¹ * a * y ∈ K.subgroupOf A` using `by rw [Subgroup.mem_subgroupOf, hc]; exact h`. Rewrite using `[ext0, ext0, dif_pos h', dif_pos h]`. Use `congr 1`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `h' : y⁻¹ * a * y ∉ K.subgroupOf A` using `by rw [Subgroup.mem_subgroupOf, hc]; exact h`. Rewrite using `[ext0, ext0, dif_neg h', dif_neg h]`. Establish `step : ∀ x : G, ext0 A (ind (K.subgroupOf A) (fun k => ψ ⟨((k : A) : G), k.2⟩)) (x⁻¹ * g * x) = (Nat.card K : ℂ)⁻¹ * ∑ y : A, ext0 K ψ ((x * y)⁻¹ * g * (x * y))`. Introduce `x`. Distinguish the cases in `hx : x⁻¹ * g * x ∈ A`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ext0, dif_pos hx, ind, hcard, finsum_eq_sum_of_fintype]`. Use `congr 1`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[key ⟨_, hx⟩ y]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_inv_rev]`. Use `group`. Rewrite using `[ext0, dif_neg hx]`. Use `symm`. Use `mul_eq_zero_of_right _ (Finset.sum_eq_zero fun y _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hn : (x * y)⁻¹ * g * (x * y) ∉ K`. Introduce `hk`. Apply `hx` to reduce the goal to its premises. Establish `hA : (x * y)⁻¹ * g * (x * y) ∈ A` using `hKA hk`. Establish `e : x⁻¹ * g * x = (y : G) * ((x * y)⁻¹ * g * (x * y)) * (y : G)⁻¹` using `by group`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `A.mul_mem (A.mul_mem y.2 hA) (A.inv_mem y.2)`. Rewrite using `[ext0, dif_neg hn]`. Rewrite using `[ind, ind, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.sum_congr rfl (fun x _ => step x), ← Finset.mul_sum, Finset.sum_comm]`. Establish `shift : ∀ y : A, ∑ x : G, ext0 K ψ ((x * y)⁻¹ * g * (x * y)) = ∑ z : G, ext0 K ψ (z⁻¹ * g * z)` using `fun y => Fintype.sum_equiv (Equiv.mulRight (y : G)) _ _ (fun x => rfl)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[Finset.sum_congr rfl (fun y _ => shift y), Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Nat.card_eq_fintype_card]`. Establish `hA0 : (Nat.card A : ℂ) ≠ 0` using `by exact_mod_cast (Nat.card_pos (α := A)).ne'`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem ind_ind_of_le {G : Type} [Group G] [Finite G] (K A : Subgroup G) (hKA : K ≤ A)
     (ψ : K → ℂ) :

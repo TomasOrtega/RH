@@ -12,7 +12,7 @@ def enatMin (n : ℕ∞) (a : ℝ) : ℝ :=
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem enatMin_top (a : ℝ) : enatMin ⊤ a = a :=
   rfl
@@ -25,7 +25,7 @@ theorem enatMin_coe (m : ℕ) (a : ℝ) : enatMin m a = min (m : ℝ) a :=
   rfl
 
 /- English proof (translation)
-Proceed by induction on `n using ENat.recTopCoe with`. Consider the case `top => simpa using ha`. Consider the case `coe m => simp [ha]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem enatMin_nonneg (n : ℕ∞) {a : ℝ} (ha : 0 ≤ a) : 0 ≤ enatMin n a := by
   induction n using ENat.recTopCoe with
@@ -33,7 +33,7 @@ theorem enatMin_nonneg (n : ℕ∞) {a : ℝ} (ha : 0 ≤ a) : 0 ≤ enatMin n a
   | coe m => simp [ha]
 
 /- English proof (translation)
-Proceed by induction on `n using ENat.recTopCoe with`. Consider the case `top => exact monotone_id`. Consider the case `coe m => exact fun a b h ↦ by simpa using min_le_min_left _ h`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem enatMin_mono (n : ℕ∞) : Monotone (enatMin n) := by
   induction n using ENat.recTopCoe with
@@ -41,7 +41,7 @@ theorem enatMin_mono (n : ℕ∞) : Monotone (enatMin n) := by
   | coe m => exact fun a b h ↦ by simpa using min_le_min_left _ h
 
 /- English proof (translation)
-Proceed by induction on `n using ENat.recTopCoe with`. Consider the case `top => exact continuous_id`. Consider the case `coe m => exact continuous_const.min continuous_id`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem continuous_enatMin (n : ℕ∞) : Continuous (enatMin n) := by
   induction n using ENat.recTopCoe with
@@ -49,7 +49,7 @@ theorem continuous_enatMin (n : ℕ∞) : Continuous (enatMin n) := by
   | coe m => exact continuous_const.min continuous_id
 
 /- English proof (translation)
-Proceed by induction on `n using ENat.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe m => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem enatMin_eq_self_iff {n : ℕ∞} {a : ℝ} : enatMin n a = a ↔ ∀ m : ℕ, n = m → a ≤ m := by
   induction n using ENat.recTopCoe with
@@ -69,9 +69,9 @@ def lowerRamificationGroupReal (t : ℝ) : Subgroup (L ≃ₐ[K] L) :=
 variable {K L}
 
 /- English proof (translation)
-Rewrite using `[lowerRamificationGroupReal, mem_lowerRamificationGroup_iff_lowerIndex, enatMin_eq_self_iff]`. Generalize the expression as in `lowerIndex K L σ = n`. Proceed by induction on `n using ENat.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe m`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [Nat.cast_le, Nat.cast_inj, forall_eq']`. Rewrite using `[Int.toNat_le, ← le_sub_iff_add_le, Int.ceil_le]`. Use `push_cast`. Apply the tactic sequence `constructor <;> intro h <;> linarith`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_lowerRamificationGroupReal_iff {t : ℝ} {σ : L ≃ₐ[K] L} :
     σ ∈ lowerRamificationGroupReal K L t ↔ enatMin (lowerIndex K L σ) (t + 1) = t + 1 := by
@@ -86,7 +86,7 @@ theorem mem_lowerRamificationGroupReal_iff {t : ℝ} {σ : L ≃ₐ[K] L} :
     constructor <;> intro h <;> linarith
 
 /- English proof (translation)
-Rewrite using `[mem_lowerRamificationGroupReal_iff, h, enatMin_coe, min_eq_right_iff]`. Use the proof step `@[simp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_lowerRamificationGroupReal_iff_of_lowerIndex_eq {t : ℝ} {σ : L ≃ₐ[K] L} {m : ℕ}
     (h : lowerIndex K L σ = m) : σ ∈ lowerRamificationGroupReal K L t ↔ t + 1 ≤ m := by
@@ -94,7 +94,7 @@ theorem mem_lowerRamificationGroupReal_iff_of_lowerIndex_eq {t : ℝ} {σ : L �
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[lowerRamificationGroupReal, Int.ceil_natCast]`. Use the proof step `@[simp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowerRamificationGroupReal_natCast (n : ℕ) :
     lowerRamificationGroupReal K L n = lowerRamificationGroup K L n := by
@@ -102,7 +102,7 @@ theorem lowerRamificationGroupReal_natCast (n : ℕ) :
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[lowerRamificationGroupReal, Int.ceil_intCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lowerRamificationGroupReal_intCast (n : ℤ) :
     lowerRamificationGroupReal K L n = lowerRamificationGroup K L n := by
@@ -111,13 +111,13 @@ theorem lowerRamificationGroupReal_intCast (n : ℤ) :
 variable (K L) in
 
 /- English proof (translation)
-The claim follows from `fun _ _ h ↦ lowerRamificationGroup_antitone K L (Int.ceil_mono h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lowerRamificationGroupReal_antitone : Antitone (lowerRamificationGroupReal K L) :=
   fun _ _ h ↦ lowerRamificationGroup_antitone K L (Int.ceil_mono h)
 
 /- English proof (translation)
-The claim follows from `lowerRamificationGroup_eq_top K L (Int.ceil_le.mpr (by push_cast; exact ht))`.
+A detailed English derivation is pending.
 -/
 theorem lowerRamificationGroupReal_eq_top {t : ℝ} (ht : t ≤ -1) :
     lowerRamificationGroupReal K L t = ⊤ :=
@@ -132,7 +132,7 @@ def herbrandPhi (u : ℝ) : ℝ :=
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
 /- English proof (translation)
-Rewrite using `[Subgroup.relIndex, mul_comm, ← Subgroup.card_mul_index (H.subgroupOf K)]`. Use `congr 1`. Rewrite using `[← Subgroup.inf_subgroupOf_right]`. Conclude with `(Nat.card_congr (Subgroup.subgroupOfEquivOfLe inf_le_right).toEquiv).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_mul_card_inf {G : Type*} [Group G] (H K : Subgroup G) :
     H.relIndex K * Nat.card ↥(H ⊓ K) = Nat.card K := by
@@ -144,11 +144,9 @@ theorem relIndex_mul_card_inf {G : Type*} [Group G] (H K : Subgroup G) :
 open Classical in
 
 /- English proof (translation)
-Establish `hmul` using `relIndex_mul_card_inf (lowerRamificationGroupReal K L t) (lowerRamificationGroup K L 0)`. Establish `hcount : (∑ σ : L ≃ₐ[K] L, if σ ∈ lowerRamificationGroup K L 0 ∧ σ ∈ lowerRamificationGroupReal K L t then (1 : ℝ) else 0) = Nat.card ↥(lowerRamificationGroupReal K L t ⊓ lowerRamificationGroup K L 0)`. Rewrite using `[Finset.sum_boole, Nat.card_eq_fintype_card, Fintype.card_subtype]`. Use `congr 2`. Use extensionality with `σ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[Subgroup.mem_inf, and_comm]`. Rewrite using `[hcount]`. Establish `hc : (Nat.card ↥(lowerRamificationGroupReal K L t ⊓ lowerRamificationGroup K L 0) : ℝ) ≠ 0`. Conclude with `Nat.card_pos.ne'` after adjusting the coercions. Establish `hmulR : ((lowerRamificationGroupReal K L t).relIndex (lowerRamificationGroup K L 0) : ℝ) * Nat.card ↥(lowerRamificationGroupReal K L t ⊓ lowerRamificationGroup K L 0) = Nat.card (lowerRamificationGroup K L 0)`.
-
-Conclude with `hmul` after adjusting the coercions. Rewrite using `[← hmulR, mul_inv, mul_assoc, inv_mul_cancel₀ hc, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_relIndex_eq_sum (t : ℝ) :
     ((lowerRamificationGroupReal K L t).relIndex (lowerRamificationGroup K L 0) : ℝ)⁻¹ =
@@ -175,7 +173,7 @@ theorem inv_relIndex_eq_sum (t : ℝ) :
 
 open Classical in
 /- English proof (translation)
-Introduce `a b hab`. Distinguish the cases in `hb : σ ∈ lowerRamificationGroup K L 0 ∧ σ ∈ lowerRamificationGroupReal K L b`. Establish `ha : σ ∈ lowerRamificationGroup K L 0 ∧ σ ∈ lowerRamificationGroupReal K L a` using `⟨hb.1, lowerRamificationGroupReal_antitone K L hab hb.2⟩`. Simplify using `only [ha, hb, and_self, if_true, le_refl]`. Apply the tactic sequence `simp only [hb, if_false] split_ifs <;> norm_num`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem antitone_indicator_lowerRamificationGroupReal (σ : L ≃ₐ[K] L) :
     Antitone fun t : ℝ ↦ if σ ∈ lowerRamificationGroup K L 0 ∧
@@ -191,7 +189,7 @@ theorem antitone_indicator_lowerRamificationGroupReal (σ : L ≃ₐ[K] L) :
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
 /- English proof (translation)
-Break down `le_total 0 u with hu | hu` into its components or cases. Rewrite using `[intervalIntegral.integral_of_le hu, setIntegral_indicator measurableSet_Iic, Set.Ioc_inter_Iic]`. Simplify using `[hu, hc]`. Rewrite using `[intervalIntegral.integral_of_ge hu, setIntegral_indicator measurableSet_Iic, Set.Ioc_inter_Iic, min_eq_left hc, min_eq_left (hu.trans hc)]`. Simplify using `[hu]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem integral_indicator_Iic {c : ℝ} (hc : 0 ≤ c) (u : ℝ) :
     ∫ t in (0 : ℝ)..u, (Set.Iic c).indicator (fun _ ↦ (1 : ℝ)) t = min u c := by
@@ -206,13 +204,13 @@ theorem integral_indicator_Iic {c : ℝ} (hc : 0 ≤ c) (u : ℝ) :
 open Classical in
 
 /- English proof (translation)
-Distinguish the cases in `h0 : σ ∈ lowerRamificationGroup K L 0`. Simplify using `only [h0, true_and, if_true]`. Establish `h1` using `one_le_lowerIndex_iff.mpr h0`. Generalize the expression as in `hn : lowerIndex K L σ = n at h1`. Proceed by induction on `n using ENat.recTopCoe with`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Consider the case `top`. Establish `hall : ∀ t : ℝ, σ ∈ lowerRamificationGroupReal K L t` using `fun t ↦ by`. Rewrite using `[mem_lowerRamificationGroupReal_iff, hn, enatMin_top]`. Simplify using `[hall]`. Consider the case `coe m`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `hm : 1 ≤ m` using `by exact_mod_cast h1`. Establish `hmR : (1 : ℝ) ≤ m` using `by exact_mod_cast hm`. Establish `heq : (fun t : ℝ ↦ if σ ∈ lowerRamificationGroupReal K L t then (1 : ℝ) else 0) = (Set.Iic ((m : ℝ) - 1)).indicator (fun _ ↦ 1)`. Use function extensionality and compare the values at `t`. Simplify using `only [Set.indicator, Set.mem_Iic, mem_lowerRamificationGroupReal_iff_of_lowerIndex_eq hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Apply `propext` to reduce the goal to its premises. Apply the tactic sequence `constructor <;> intro h <;> linarith`. Rewrite using `[heq, integral_indicator_Iic (by linarith), ← ENat.natCast_one, ← ENat.natCast_sub, enatMin_coe, Nat.cast_sub hm, Nat.cast_one, min_comm]`. Simplify using `[h0]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem integral_indicator_lowerRamificationGroupReal (σ : L ≃ₐ[K] L) (u : ℝ) :
     ∫ t in (0 : ℝ)..u, (if σ ∈ lowerRamificationGroup K L 0 ∧
@@ -244,9 +242,9 @@ theorem integral_indicator_lowerRamificationGroupReal (σ : L ≃ₐ[K] L) (u : 
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[herbrandPhi]`. Repeatedly rewrite using `[inv_relIndex_eq_sum]`. Rewrite using `[intervalIntegral.integral_const_mul, intervalIntegral.integral_finsetSum]`. Repeatedly rewrite using `[integral_indicator_lowerRamificationGroupReal]`. Introduce `σ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(antitone_indicator_lowerRamificationGroupReal σ).intervalIntegrable`.
+A detailed English derivation is pending.
 -/
 theorem herbrandPhi_eq_sum (u : ℝ) :
     herbrandPhi K L u = (Nat.card (lowerRamificationGroup K L 0) : ℝ)⁻¹ *
@@ -262,23 +260,23 @@ theorem herbrandPhi_eq_sum (u : ℝ) :
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 open Classical in
 /- English proof (translation)
-Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_filter_mem {G : Type*} [Group G] [Fintype G] (H : Subgroup G) :
     ((Finset.univ.filter (· ∈ H)).card : ℝ) = Nat.card H := by
   rw [Nat.card_eq_fintype_card, Fintype.card_subtype]
 
 /- English proof (translation)
-Conclude with `Nat.card_pos` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem card_lowerRamificationGroup_zero_pos :
     (0 : ℝ) < Nat.card (lowerRamificationGroup K L 0) := by
   exact_mod_cast Nat.card_pos
 
 /- English proof (translation)
-Rewrite using `[herbrandPhi_eq_sum]`. Establish `h : ∀ σ : L ≃ₐ[K] L, (if σ ∈ lowerRamificationGroup K L 0 then enatMin (lowerIndex K L σ - 1) u else 0) = if σ ∈ lowerRamificationGroup K L 0 then u else 0`. Introduce `σ`. Use `split_ifs`. Rewrite using `[enatMin_eq_self_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun m _ ↦ hu.trans (Nat.cast_nonneg m)`. Both sides reduce to the same expression. Repeatedly rewrite using `[h]`. Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, nsmul_eq_mul, card_filter_mem, ← mul_assoc, inv_mul_cancel₀ card_lowerRamificationGroup_zero_pos.ne', one_mul]`. Use the proof step `@[simp]`.
+Both sides reduce to the same expression. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herbrandPhi_of_nonpos {u : ℝ} (hu : u ≤ 0) : herbrandPhi K L u = u := by
   classical
@@ -297,19 +295,19 @@ theorem herbrandPhi_of_nonpos {u : ℝ} (hu : u ≤ 0) : herbrandPhi K L u = u :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `herbrandPhi_of_nonpos le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem herbrandPhi_zero : herbrandPhi K L 0 = 0 :=
   herbrandPhi_of_nonpos le_rfl
 
 /- English proof (translation)
-Establish `h : ∀ σ : L ≃ₐ[K] L, enatMin (lowerIndex K L σ) (u + 1) = (if σ ∈ lowerRamificationGroup K L 0 then enatMin (lowerIndex K L σ - 1) u else 0) + if σ ∈ lowerRamificationGroup K L 0 then 1 else 0`. Introduce `σ`. Distinguish the cases in `h0 : σ ∈ lowerRamificationGroup K L 0`. Simplify using `only [h0, if_true]`. Establish `h1` using `one_le_lowerIndex_iff.mpr h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Generalize the expression as in `lowerIndex K L σ = n at h1`. Proceed by induction on `n using ENat.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe m`. Establish `hm : 1 ≤ m` using `by exact_mod_cast h1`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[← ENat.natCast_one, ← ENat.natCast_sub, enatMin_coe, enatMin_coe, Nat.cast_sub hm, Nat.cast_one, ← min_add_add_right, sub_add_cancel]`. Simplify using `only [h0, if_false, add_zero, lowerIndex_eq_zero_iff.mpr h0]`. Rewrite using `[show ((0 : ℕ∞)) = ((0 : ℕ) : ℕ∞) from rfl, enatMin_coe, Nat.cast_zero]`. Conclude with `min_eq_left (by linarith)`. Repeatedly rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_add_distrib, Finset.sum_boole, card_filter_mem, herbrandPhi_eq_sum, mul_add, inv_mul_cancel₀ card_lowerRamificationGroup_zero_pos.ne', add_sub_cancel_right]`.
+A detailed English derivation is pending.
 -/
 theorem herbrandPhi_eq_sum_lowerIndex {u : ℝ} (hu : -1 ≤ u) :
     herbrandPhi K L u = (Nat.card (lowerRamificationGroup K L 0) : ℝ)⁻¹ *
@@ -337,9 +335,9 @@ theorem herbrandPhi_eq_sum_lowerIndex {u : ℝ} (hu : -1 ≤ u) :
     inv_mul_cancel₀ card_lowerRamificationGroup_zero_pos.ne', add_sub_cancel_right]
 
 /- English proof (translation)
-Introduce `a b hab`. Rewrite using `[herbrandPhi_eq_sum, herbrandPhi_eq_sum]`. Use `mul_lt_mul_of_pos_left ?_ (inv_pos.mpr card_lowerRamificationGroup_zero_pos)` and prove the remaining obligations. Use `Finset.sum_lt_sum (fun σ _ ↦ ?_) ⟨1, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Use `split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `enatMin_mono _ hab.le`. Conclude with `le_rfl`. Simplify using `[(lowerRamificationGroup K L 0).one_mem, hab]`.
+A detailed English derivation is pending.
 -/
 theorem herbrandPhi_strictMono : StrictMono (herbrandPhi K L) := by
   classical
@@ -353,9 +351,7 @@ theorem herbrandPhi_strictMono : StrictMono (herbrandPhi K L) := by
   · simp [(lowerRamificationGroup K L 0).one_mem, hab]
 
 /- English proof (translation)
-Establish `h : herbrandPhi K L = fun u ↦ (Nat.card (lowerRamificationGroup K L 0) : ℝ)⁻¹ * ∑ σ : L ≃ₐ[K] L, if σ ∈ lowerRamificationGroup K L 0 then enatMin (lowerIndex K L σ - 1) u else 0`. Use function extensionality and compare the values at `herbrandPhi_eq_sum`. Rewrite using `[h]`. Use `continuous_const.mul (continuous_finsetSum _ fun σ _ ↦ ?_)` and prove the remaining obligations. Use `split_ifs`.
-
-Conclude with `continuous_enatMin _`. Conclude with `continuous_const`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_herbrandPhi : Continuous (herbrandPhi K L) := by
   classical
@@ -370,9 +366,9 @@ theorem continuous_herbrandPhi : Continuous (herbrandPhi K L) := by
   · exact continuous_const
 
 /- English proof (translation)
-Establish `hge : ∀ u ≥ (0 : ℝ), (Nat.card (lowerRamificationGroup K L 0) : ℝ)⁻¹ * u ≤ herbrandPhi K L u`. Introduce `u hu`. Rewrite using `[herbrandPhi_eq_sum]`. Use `mul_le_mul_of_nonneg_left ?_ (inv_pos.mpr card_lowerRamificationGroup_zero_pos).le` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Simplify using `[(lowerRamificationGroup K L 0).one_mem]`. Use `_ ≤ _ := Finset.single_le_sum (f := fun σ : L ≃ₐ[K] L ↦ if σ ∈ lowerRamificationGroup K L 0 then enatMin (lowerIndex K L σ - 1) u else 0) (fun σ _ ↦ by split_ifs`. Conclude with `enatMin_nonneg _ hu`. Conclude with `le_rfl) (Finset.mem_univ 1)`. Conclude with `tendsto_atTop_mono' atTop ((eventually_ge_atTop 0).mono hge) (Tendsto.const_mul_atTop (inv_pos.mpr card_lowerRamificationGroup_zero_pos) tendsto_id)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tendsto_herbrandPhi_atTop : Tendsto (herbrandPhi K L) atTop atTop := by
   classical
@@ -394,13 +390,13 @@ theorem tendsto_herbrandPhi_atTop : Tendsto (herbrandPhi K L) atTop atTop := by
     (Tendsto.const_mul_atTop (inv_pos.mpr card_lowerRamificationGroup_zero_pos) tendsto_id)
 
 /- English proof (translation)
-The claim follows from `tendsto_id.congr' ((eventually_le_atBot 0).mono fun _ hu ↦ (herbrandPhi_of_nonpos hu).symm)`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_herbrandPhi_atBot : Tendsto (herbrandPhi K L) atBot atBot :=
   tendsto_id.congr' ((eventually_le_atBot 0).mono fun _ hu ↦ (herbrandPhi_of_nonpos hu).symm)
 
 /- English proof (translation)
-The claim follows from `continuous_herbrandPhi.surjective tendsto_herbrandPhi_atTop tendsto_herbrandPhi_atBot`.
+A detailed English derivation is pending.
 -/
 theorem herbrandPhi_surjective : Function.Surjective (herbrandPhi K L) :=
   continuous_herbrandPhi.surjective tendsto_herbrandPhi_atTop tendsto_herbrandPhi_atBot
@@ -424,26 +420,26 @@ def herbrandPsi (v : ℝ) : ℝ :=
 
 @[simp]
 /- English proof (translation)
-The claim follows from `(herbrandPhiOrderIso K L).apply_symm_apply v @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem herbrandPhi_herbrandPsi (v : ℝ) : herbrandPhi K L (herbrandPsi K L v) = v :=
   (herbrandPhiOrderIso K L).apply_symm_apply v
 
 @[simp]
 /- English proof (translation)
-The claim follows from `(herbrandPhiOrderIso K L).symm_apply_apply u`.
+A detailed English derivation is pending.
 -/
 theorem herbrandPsi_herbrandPhi (u : ℝ) : herbrandPsi K L (herbrandPhi K L u) = u :=
   (herbrandPhiOrderIso K L).symm_apply_apply u
 
 /- English proof (translation)
-The claim follows from `(herbrandPhiOrderIso K L).symm.strictMono`.
+A detailed English derivation is pending.
 -/
 theorem herbrandPsi_strictMono : StrictMono (herbrandPsi K L) :=
   (herbrandPhiOrderIso K L).symm.strictMono
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Simplify using the standard rewrite rules. Introduce and unpack `rfl`. Simplify using the standard rewrite rules.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem herbrandPsi_eq_iff {u v : ℝ} : herbrandPsi K L v = u ↔ herbrandPhi K L u = v := by
   constructor
@@ -451,23 +447,23 @@ theorem herbrandPsi_eq_iff {u v : ℝ} : herbrandPsi K L v = u ↔ herbrandPhi K
   · rintro rfl; simp
 
 /- English proof (translation)
-The claim follows from `herbrandPsi_eq_iff.mpr (herbrandPhi_of_nonpos hv) @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem herbrandPsi_of_nonpos {v : ℝ} (hv : v ≤ 0) : herbrandPsi K L v = v :=
   herbrandPsi_eq_iff.mpr (herbrandPhi_of_nonpos hv)
 
 @[simp]
 /- English proof (translation)
-The claim follows from `herbrandPsi_of_nonpos le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem herbrandPsi_zero : herbrandPsi K L 0 = 0 :=
   herbrandPsi_of_nonpos le_rfl
 
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 /- English proof (translation)
-Establish `h` using `relIndex_mul_card_inf H K`. Establish `hK : 0 < Nat.card K` using `Nat.card_pos`. Establish `: 0 < H.relIndex K`. Break down `Nat.eq_zero_or_pos (H.relIndex K) with h0 | h0` into its components or cases. Rewrite `h` using `[h0, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `h0`. Conclude with `this` after adjusting the coercions.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem relIndex_pos_of_finite {G : Type*} [Group G] [Finite G] (H K : Subgroup G) :
     (0 : ℝ) < H.relIndex K := by
@@ -480,19 +476,19 @@ theorem relIndex_pos_of_finite {G : Type*} [Group G] [Finite G] (H K : Subgroup 
   exact_mod_cast this
 
 /- English proof (translation)
-Establish `hG : lowerRamificationGroup K L ((n : ℤ) + 1) = lowerRamificationGroupReal K L ((n : ℝ) + 1)`. Rewrite using `[← lowerRamificationGroupReal_intCast]`. Use `push_cast`. Both sides reduce to the same expression. Establish `h : ∀ σ : L ≃ₐ[K] L, (if σ ∈ lowerRamificationGroup K L 0 then enatMin (lowerIndex K L σ - 1) u else 0) = (if σ ∈ lowerRamificationGroup K L 0 then enatMin (lowerIndex K L σ - 1) n else 0) + (u - n) * if σ ∈ lowerRamificationGroup K L 0 ∧ σ ∈ lowerRamificationGroupReal K L ((n : …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `σ`. Distinguish the cases in `h0 : σ ∈ lowerRamificationGroup K L 0`. Simplify using `only [h0, true_and, if_true]`. Establish `h1` using `one_le_lowerIndex_iff.mpr h0`. Generalize the expression as in `hn : lowerIndex K L σ = N at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Proceed by induction on `N using ENat.recTopCoe with`. Consider the case `top`. Establish `: σ ∈ lowerRamificationGroupReal K L ((n : ℝ) + 1)`. Rewrite using `[mem_lowerRamificationGroupReal_iff, hn, enatMin_top]`. Simplify using `[this]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `coe m`. Establish `hm : 1 ≤ m` using `by exact_mod_cast h1`. Rewrite using `[mem_lowerRamificationGroupReal_iff_of_lowerIndex_eq hn, ← ENat.natCast_one, ← ENat.natCast_sub, enatMin_coe, enatMin_coe, Nat.cast_sub hm, Nat.cast_one]`. Distinguish the cases in `hmn : (n : ℝ) + 1 + 1 ≤ m`. Rewrite using `[if_pos hmn, min_eq_right (by linarith [hu.2]), min_eq_right (by linarith)]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hmn]`. Establish `hmn' : (m : ℝ) - 1 ≤ n`. Establish `: m < n + 2` using `by exact_mod_cast (show (m : ℝ) < n + 2 by linarith)`. Establish `: (m : ℝ) ≤ n + 1` using `by exact_mod_cast (show m ≤ n + 1 by omega)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[min_eq_left hmn', min_eq_left (hmn'.trans hu.1)]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h0]`. Rewrite using `[herbrandPhi_eq_sum, herbrandPhi_eq_sum]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[h]`. Rewrite using `[Finset.sum_add_distrib, ← Finset.mul_sum, hG, div_eq_mul_inv, inv_relIndex_eq_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herbrandPhi_of_mem_Icc (n : ℕ) {u : ℝ} (hu : u ∈ Set.Icc (n : ℝ) (n + 1)) :
     herbrandPhi K L u = herbrandPhi K L n +
@@ -539,11 +535,11 @@ theorem herbrandPhi_of_mem_Icc (n : ℕ) {u : ℝ} (hu : u ∈ Set.Icc (n : ℝ)
   ring
 
 /- English proof (translation)
-Use `set u := herbrandPsi K L v with hu_def`. Establish `hu : u ∈ Set.Icc (n : ℝ) (n + 1)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← herbrandPsi_herbrandPhi (K := K) (L := L) (n : ℝ)]`. Conclude with `(herbrandPsi_strictMono (K := K) (L := L)).monotone hv.1`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← herbrandPsi_herbrandPhi (K := K) (L := L) ((n : ℝ) + 1)]`. Conclude with `(herbrandPsi_strictMono (K := K) (L := L)).monotone hv.2`. Establish `h` using `herbrandPhi_of_mem_Icc (K := K) (L := L) n hu`. Rewrite `h` using `[hu_def, herbrandPhi_herbrandPsi]`. Establish `hr` using `relIndex_pos_of_finite (lowerRamificationGroup K L ((n : ℤ) + 1)) (lowerRamificationGroup K L 0)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem herbrandPsi_of_mem_Icc (n : ℕ) {v : ℝ}
     (hv : v ∈ Set.Icc (herbrandPhi K L n) (herbrandPhi K L (n + 1))) :
@@ -571,14 +567,14 @@ def upperRamificationGroup (v : ℝ) : Subgroup (L ≃ₐ[K] L) :=
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[upperRamificationGroup, herbrandPsi_herbrandPhi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem upperRamificationGroup_herbrandPhi (u : ℝ) :
     upperRamificationGroup K L (herbrandPhi K L u) = lowerRamificationGroupReal K L u := by
   rw [upperRamificationGroup, herbrandPsi_herbrandPhi]
 
 /- English proof (translation)
-Rewrite using `[upperRamificationGroup, herbrandPsi_of_nonpos hv]`. Use the proof step `@[simp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upperRamificationGroup_of_nonpos {v : ℝ} (hv : v ≤ 0) :
     upperRamificationGroup K L v = lowerRamificationGroupReal K L v := by
@@ -586,7 +582,7 @@ theorem upperRamificationGroup_of_nonpos {v : ℝ} (hv : v ≤ 0) :
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[upperRamificationGroup_of_nonpos le_rfl, ← Nat.cast_zero, lowerRamificationGroupReal_natCast, Nat.cast_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem upperRamificationGroup_zero :
     upperRamificationGroup K L 0 = lowerRamificationGroup K L 0 := by
@@ -596,13 +592,13 @@ theorem upperRamificationGroup_zero :
 variable (K L) in
 
 /- English proof (translation)
-The claim follows from `fun _ _ h ↦ lowerRamificationGroupReal_antitone K L (herbrandPsi_strictMono.monotone h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem upperRamificationGroup_antitone : Antitone (upperRamificationGroup K L) :=
   fun _ _ h ↦ lowerRamificationGroupReal_antitone K L (herbrandPsi_strictMono.monotone h)
 
 /- English proof (translation)
-Rewrite using `[upperRamificationGroup, mem_lowerRamificationGroupReal_iff_of_lowerIndex_eq h, ← le_sub_iff_add_le, ← (herbrandPhi_strictMono (K := K) (L := L)).le_iff_le, herbrandPhi_herbrandPsi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_upperRamificationGroup_iff_of_lowerIndex_eq {v : ℝ} {σ : L ≃ₐ[K] L} {m : ℕ}
     (h : lowerIndex K L σ = m) :

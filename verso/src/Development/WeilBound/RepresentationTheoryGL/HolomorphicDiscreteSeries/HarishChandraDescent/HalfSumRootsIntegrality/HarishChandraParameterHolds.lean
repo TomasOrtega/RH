@@ -10,7 +10,7 @@ namespace PositivityTheory.RgHe3.HarishChandraParameter
 open ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-The claim follows from `|(x - y) / 2| ≤ n / 2 := by rw [abs_le] constructor <;> linarith`.
+A detailed English derivation is pending.
 -/
 private theorem abs_half_sub_of_mem_Icc {x y n : ℝ} (hx0 : 0 ≤ x) (hxn : x ≤ n) (hy0 : 0 ≤ y) (hyn : y ≤ n) :
     |(x - y) / 2| ≤ n / 2 := by
@@ -18,7 +18,7 @@ private theorem abs_half_sub_of_mem_Icc {x y n : ℝ} (hx0 : 0 ≤ x) (hxn : x �
   constructor <;> linarith
 
 /- English proof (translation)
-Unfold `rhoC`. Apply `abs_half_sub_of_mem_Icc (Nat.cast_nonneg _) _ (Nat.cast_nonneg _)` to reduce the goal to its premises. Conclude with `(Finset.card_filter_le _ _).trans (by simp)` after adjusting the coercions. Conclude with `(Finset.card_filter_le _ _).trans (by simp)` after adjusting the coercions.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem abs_rhoC_le {n : ℕ} (ε : Fin n → Bool) (a : Fin n) : |rhoC ε a| ≤ (n : ℝ) / 2 := by
   unfold rhoC
@@ -27,7 +27,7 @@ theorem abs_rhoC_le {n : ℕ} (ε : Fin n → Bool) (a : Fin n) : |rhoC ε a| �
   · exact_mod_cast (Finset.card_filter_le _ _).trans (by simp)
 
 /- English proof (translation)
-Unfold `rhoN`. Apply `abs_half_sub_of_mem_Icc (Nat.cast_nonneg _) _ (Nat.cast_nonneg _)` to reduce the goal to its premises. Conclude with `(Finset.card_filter_le _ _).trans (by simp)` after adjusting the coercions. Conclude with `(Finset.card_filter_le _ _).trans (by simp)` after adjusting the coercions.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem abs_rhoN_le {n : ℕ} (ε : Fin n → Bool) (a : Fin n) : |rhoN ε a| ≤ (n : ℝ) / 2 := by
   unfold rhoN
@@ -42,9 +42,9 @@ namespace PositivityTheory.RgHe3
 open ReciprocityTheory.ChartRestriction.DS PositivityTheory.RgHe3.HarishChandraParameter
 
 /- English proof (translation)
-Establish `h1` using `Finset.card_filter_add_card_filter_not (s := ({b : Fin n | a < b} : Finset (Fin n))) (p := fun b => ε b = ε a)`. Establish `h2` using `Finset.card_filter_add_card_filter_not (s := ({b : Fin n | b < a} : Finset (Fin n))) (p := fun b => ε b = ε a)`. Simplify using `only [Finset.filter_filter] at h1 h2`. Rewrite `h1` using `[Finset.filter_lt_eq_Ioi, Fin.card_Ioi]`. Rewrite `h2` using `[Finset.filter_gt_eq_Iio, Fin.card_Iio]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem card_range_filter_lt_or_even_eq {n : ℕ} (ε : Fin n → Bool) (a : Fin n) :
     #{b : Fin n | a < b ∧ ε b = ε a} + #{b : Fin n | a < b ∧ ¬ ε b = ε a} +
@@ -60,9 +60,9 @@ private theorem card_range_filter_lt_or_even_eq {n : ℕ} (ε : Fin n → Bool) 
   omega
 
 /- English proof (translation)
-Establish `hc` using `card_range_filter_lt_or_even_eq ε a`. Use `⟨-((#{b : Fin n | b < a ∧ ε b = ε a} : ℤ) + (#{b : Fin n | a < b ∧ ¬ ε b = ε a} : ℤ)), ?_⟩` and prove the remaining obligations. Establish `hc' : ((#{b : Fin n | a < b ∧ ε b = ε a} : ℕ) : ℝ) + (#{b : Fin n | a < b ∧ ¬ ε b = ε a} : ℕ) + (#{b : Fin n | b < a ∧ ε b = ε a} : ℕ) + (#{b : Fin n | b < a ∧ ¬ ε b = ε a} : ℕ) + 1 = n`. Conclude with `hc` after adjusting the coercions. Unfold `rhoC rhoN`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [ne_eq]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem exists_int_rhoC_sub_rhoN_sub_half' {n : ℕ} (ε : Fin n → Bool) (a : Fin n) :
     ∃ m : ℤ, rhoC ε a - rhoN ε a - ((n : ℝ) - 1) / 2 = m := by
@@ -77,21 +77,19 @@ private theorem exists_int_rhoC_sub_rhoN_sub_half' {n : ℕ} (ε : Fin n → Boo
   linarith
 
 /- English proof (translation)
-Introduce `n ε L h hL hh hgap`. Establish `key : ∀ a b : Fin n, a < b → h ≤ (L - rhoN ε + rhoC ε) a - (L - rhoN ε + rhoC ε) b`. Introduce `a b hab`. Simplify using `only [Pi.add_apply, Pi.sub_apply]`. Establish `h1` using `abs_le.1 (abs_rhoC_le ε a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `abs_le.1 (abs_rhoC_le ε b)`. Establish `h3` using `abs_le.1 (abs_rhoN_le ε a)`. Establish `h4` using `abs_le.1 (abs_rhoN_le ε b)`. Establish `h5` using `hgap a b hab`. Combine the linear relations using `[h1.1, h1.2, h2.1, h2.2, h3.1, h3.2, h4.1, h4.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `⟨L - rhoN ε + rhoC ε, ⟨?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Use `key a b hab` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m1, hm1⟩` from `hL a`. Take `⟨m2, hm2⟩` from `exists_int_rhoC_sub_rhoN_sub_half' ε a`. Use `⟨m1 + m2, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.sub_apply]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use extensionality with `a`. Simplify using `only [lowK, Pi.add_apply, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a b hne`.
+Combine the linear equalities and inequalities to obtain the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `lt_trichotomy a b with hab | hab | hab` into its components or cases. Conclude with `(key a b hab).trans (le_abs_self _)`. Conclude with `absurd (congrArg ε hab) hne`. Rewrite using `[abs_sub_comm]`. Conclude with `(key b a hab).trans (le_abs_self _)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a`. Simplify using `only [Pi.add_apply, Pi.sub_apply]`. Establish `h1` using `abs_le.1 (abs_rhoC_le ε a)`. Establish `h3` using `abs_le.1 (abs_rhoN_le ε a)`. Rewrite using `[abs_le]`.
-
-Apply the tactic sequence `constructor <;> linarith [h1.1, h1.2, h3.1, h3.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem harish_chandra_parameter_holds : HCOf := by
   intro n ε L h hL hh hgap

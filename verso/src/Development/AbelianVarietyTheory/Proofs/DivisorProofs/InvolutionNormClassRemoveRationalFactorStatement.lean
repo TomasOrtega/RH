@@ -4,7 +4,7 @@ import Mathlib
 open scoped TensorProduct Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.RatRed.ratred) | (exact GlobalTheory.RatRed.ratred) | (intros; apply GlobalTheory.RatRed.ratred <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.involution_norm_class_remove_rational_factor : ∀ (E : Type) [CommRing E] [Algebra ℚ E] [FiniteDimensional ℚ E] (τ : E ≃ₐ[ℚ] E) (S : Finset ℕ) (A : Finset E),
     (∀ a : E, IsUnit a → τ a = a →

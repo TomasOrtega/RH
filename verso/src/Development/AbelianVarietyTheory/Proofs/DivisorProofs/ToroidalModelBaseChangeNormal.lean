@@ -24,7 +24,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {β : Oz →+* c.F} (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β)
 
 /- English proof (translation)
-Rewrite using `[show ArIn.ind ∅ p = false by simp [ArIn.ind]]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lat_ind_empty {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] (p : ℕ) (x : Sp C ⟶ Z.X) :
     lat Z.t p x (ArIn.ind ∅ p) = latDR Z.t x := by
@@ -32,11 +32,11 @@ theorem lat_ind_empty {C : Type} [NontriviallyNormedField C] [IsUltrametricDist 
   rfl
 
 /- English proof (translation)
-Use `⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, w, h, ?_⟩` and prove the remaining obligations. Establish `hu : ∀ k : Fin 1, IsTanAtG Z.t x ((fun _ => w) k)` using `fun _ => hw`. Establish `h1` using `isCombAtG_single Z.t x hu 0`. Establish `e1 : (Fin.cons w Fin.elim0 : Fin (0 + 1) → _) = fun _ : Fin 1 => w`. Use function extensionality and compare the values at `k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `rfl : k = 0` from `Subsingleton.elim (α := Fin 1) _ _`. Both sides reduce to the same expression. Establish `e2 : (fun _ : Fin 1 => (1 : K)) = Pi.single 0 1`. Use function extensionality and compare the values at `k`. Take `rfl : k = 0` from `Subsingleton.elim _ _`.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Rewrite using `[e1, e2]`. Conclude with `h1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inGr_of_mem {K : Type} [CommRing K] {φ : c.F →+* K} {x : Sp K ⟶ Z.X}
     {Λ : Set (Sp (DualNumber K) ⟶ Z.t.G.left)} {τ : E →+* ℂ} {w : Sp (DualNumber K) ⟶ Z.t.G.left}
@@ -56,11 +56,11 @@ theorem inGr_of_mem {K : Type} [CommRing K] {φ : c.F →+* K} {x : Sp K ⟶ Z.X
   exact h1
 
 /- English proof (translation)
-Establish `h1 : spMap (epsMul δ) ≫ u' i ∈ Λ`. Use `(h' _ (hu'.1 i)).1 ⟨Pi.single i 1, fun k => ?_, isCombAtG_single Z.t x (fun j => (hu'.1 j).1) i⟩` and prove the remaining obligations. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne hk]`. Establish `h2` using `Trans.isEigTan_smul Z (hu'.1 i) δ`. Take `⟨a', ha', hc⟩` from `(h _ h2).2 (inGr_of_mem Z h2.1 h1)`. Establish `h3` using `(hu.2 _ h2).unique (comb_smul (fun j => (hu.1 j).1) ha δ) hc`. Establish `h4` using `ha' b`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[← congrFun h3 b, norm_mul, hδ, one_mul]`. Conclude with `h4`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_one {C : Type} [NormedField C] {φ : c.F →+* C} {x : Sp C ⟶ Z.X} {τ : E →+* ℂ} {r : ℕ}
     {u u' : Fin r → (Sp (DualNumber C) ⟶ Z.t.G.left)} (hu : IsEigBasis Z φ x τ u) (hu' : IsEigBasis Z φ x τ u')
@@ -83,11 +83,9 @@ theorem norm_le_one {C : Type} [NormedField C] {φ : c.F →+* C} {x : Sp C ⟶ 
   exact h4
 
 /- English proof (translation)
-Set `x₀ : Sp Γ(W, jB ⁻¹ᵁ U) ⟶ W` to `hV.fromSpec`. Establish `h1 : ⊤ ≤ (x₀ ≫ jB) ⁻¹ᵁ U` using `hV.fromSpec_preimage_self.ge`. Establish `hψ : x₀ ≫ πB ≫ genStr Z ≫ spMap e.toRingHom = spMap (Spec.preimage (x₀ ≫ πB ≫ genStr Z ≫ spMap e.toRingHom)).hom` using `(Spec.map_preimage _).symm`. Use `choose a ha using fun i => ((hu.1 _ x₀ h1 _ hψ).2 _ ((hu'.1 _ x₀ h1 _ hψ).1 i)).exists`. Use `⟨fun b i => a i b, fun K _ x hx hxx i => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx0 : x = spMap (evalPt x _ hxx) ≫ x₀` using `eq_spec_fromSpec hV x hxx`. Generalize the expression as in `evalPt x _ hxx = ψ at hx0 ⊢`. Substitute `hx0` using the available equality. Establish `h3` using `GlobalTheory.LatDRFree.comb_map Z.t ψ (ha i)`. Rewrite using `[hu'.2 _ _ ψ x₀ h1 hx i, show u K (spMap ψ ≫ x₀) hx = _ from funext fun k => hu.2 _ _ ψ x₀ h1 hx k, Category.assoc]`.
-
-Conclude with `h3`.
+Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_generic {F : Type} [Field F] (e : F ≃+* c.F) {X W : Scheme.{0}} (jB : W ⟶ X) (πB : W ⟶ gen Z) {r : ℕ}
     {τ : E →+* ℂ} {U : X.Opens} {u u' : LocAssign Z r jB U}
@@ -111,7 +109,7 @@ theorem exists_generic {F : Type} [Field F] (e : F ≃+* c.F) {X W : Scheme.{0}}
   exact h3
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hp⟩ ∀ w, IsEigTan Z (((ioOf (resP v) ε).comp (algebraMap F (AlgebraicClosure F))).comp e.symm.toRingHom) (spMap (ioOf (resP v) ε) ≫ xg ≫ πB ≫ genι Z) τ w → ((∃ a : Fin r → ℂ_[resP v], (∀ i, ‖a i‖ ≤ 1) ∧ IsCombAtG Z.t (spMap (ioOf (resP v) ε) ≫ xg ≫ πB ≫ genι Z) (fun i => spMap ( …`.
+Supply the required witnesses or components.
 -/
 theorem grLat_at {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} {X W : Scheme.{0}} {jB : W ⟶ X}
     {πB : W ⟶ gen Z} {M : X.Modules} {r : ℕ} {τ : E →+* ℂ} {u : FrAssign Z M r jB}
@@ -134,7 +132,7 @@ theorem grLat_at {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} {X W : S
 open Classical in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hp⟩ ∃ δ : ℂ_[resP v], ‖δ‖ = (resP v : ℝ) ^ (-(if kind (resP v) = true ∧ τ (H.rt : E) = H.rt0 then vDiff E (resP v) else 0)) ∧ ∀ w, IsEigTan Z (((ioOf (resP v) ε).comp (algebraMap F (AlgebraicClosure F))).comp e.symm.toRingHom) (spMap (ioOf (resP v) ε) ≫ xg ≫ πB ≫ genι Z) τ w → ( …`.
+Supply the required witnesses or components.
 -/
 theorem lieLat_at {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} {X W : Scheme.{0}} {jB : W ⟶ X}
     {πB : W ⟶ gen Z} {M : X.Modules} {r : ℕ} {τ : E →+* ℂ} {u : FrAssign Z M r jB} {kind : ℕ → Bool}
@@ -157,19 +155,17 @@ theorem lieLat_at {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} {X W : 
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Oz _ β Z F _ _ e X W q jB πB d hq hn pb M M' r τ t t' ht ht' hL hG V hV f hf f' hf'`. Establish `hI` using `IntCritPf.intCrit F X W q _ jB d hq hn pb`. Establish `hj : IsAffineHom jB` using `MorphismProperty.of_isPullback (P := @IsAffineHom) pb.flip inferInstance`. Establish `hu : IsLocFrame Z e jB πB r τ V (fun K _ x hx => t' V f' hf' K x hx)` using `⟨ht'.1 V f' hf', ht'.2.2 V f' hf'⟩`. Establish `hu' : IsLocFrame Z e jB πB r τ V (fun K _ x hx => t V f hf K x hx)` using `⟨ht.1 V f hf, ht.2.2 V f hf⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨T, hT⟩` from `exists_generic Z e jB πB (hV.preimage jB) hu hu'`. Establish `key : ∀ b i, ∃ f₀ : Γ(X, V), jB.app V f₀ = T b i` using `fun b i => by`. Use `hI _ hV _ fun v ε xg xt h1 h2 h3 hx => ?_` and prove the remaining obligations. Take `⟨hp, hio, -⟩` from `ioOf_spec F v ε`. Use `haveI : Fact (resP v).Prime := ⟨hp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxU : ⊤ ≤ (xg ≫ jB) ⁻¹ᵁ V` using `fun p hp => hx hp`. Take `⟨δ, hδ, hd⟩` from `lieLat_at Z hL v hp ε xg xt h1 h2 V f hf h3 hxU`. Establish `hd'` using `grLat_at Z hG v hp ε xg xt h1 h2 V f' hf' h3 hxU`. Establish `hk : ArIn.ind ∅ (resP v) = false` using `by simp [ArIn.ind]`. Rewrite `hd` using `[lat_ind_empty]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hδ1 : ‖δ‖ = 1`. Rewrite using `[hδ, if_neg (fun h => Bool.false_ne_true (hk.symm.trans h.1)), neg_zero, Real.rpow_zero]`. Establish `h4 : (spMap (ioOf (resP v) ε) ≫ xg) ≫ πB ≫ genStr Z ≫ spMap e.toRingHom = spMap ((ioOf (resP v) ε).comp (algebraMap F (AlgebraicClosure F)))`. Rewrite using `[Category.assoc, h1, sp_comp]`. Establish `hy : ⊤ ≤ ((spMap (ioOf (resP v) ε) ≫ xg) ≫ jB) ⁻¹ᵁ V` using `fun p _ => hxU (Set.mem_univ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b1` using `ht'.1 V f' hf' _ _ hy _ h4`. Establish `b2` using `ht.1 V f hf _ _ hy _ h4`. Rewrite `b1` using `[show t' V f' hf' _ _ hy = _ from funext fun k => ht'.2.2 V f' hf' _ _ _ xg hxU hy k, Category.assoc]`. Rewrite `b2` using `[show t V f hf _ _ hy = _ from funext fun k => ht.2.2 V f hf _ _ _ xg hxU hy k, Category.assoc]`. Conclude with `(hio _).1 (norm_le_one Z b1 b2 hδ1 hd' hd (GlobalTheory.LatDRFree.comb_map Z.t (ioOf (resP v) ε) (hT _ xg hxU hx i)) b)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose A hA using key`. Use `⟨Matrix.of A, fun K _ x hx i => ?_⟩` and prove the remaining obligations. Establish `h` using `hT K x hx hx i`. Simplify using `only [← hA] at h`. Simplify using `only [Matrix.of_apply, Trans.evalPt_app]`.
-
-Conclude with `h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isCoordMat : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}

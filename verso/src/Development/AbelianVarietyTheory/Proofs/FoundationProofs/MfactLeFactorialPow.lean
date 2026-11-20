@@ -13,11 +13,9 @@ open scoped Matrix ComplexOrder
 namespace GlobalTheory.TestLat
 
 /- English proof (translation)
-Introduce `n ν R hR mo hmo`. Establish `h : mfact mo = ∏ t : Fin n, ∏ a : Fin n, (mo (a, t)).factorial`. Express the relevant statement in the definitionally equal form `(mo.prod fun _ k => k.factorial) = _`. Rewrite using `[Finsupp.prod_fintype _ _ (by simp), Fintype.prod_prod_type_right]`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_le_prod' fun t _ => ?_` and prove the remaining obligations. Use `le_trans (Nat.le_of_dvd (Nat.factorial_pos _) (Nat.prod_factorial_dvd_factorial_sum Finset.univ fun a => mo (a, t))) ?_` and prove the remaining obligations. Rewrite using `[hmo t]`. Conclude with `Nat.factorial_le (hR t)`.
-
-Use `_ = R.factorial ^ n := by simp`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mfact_le_factorial_pow : ∀ (n : ℕ) (ν : Fin n → ℕ) (R : ℕ), (∀ i, ν i ≤ R) → ∀ mo : Fin n × Fin n →₀ ℕ, (∀ t, ∑ a, mo (a, t) = ν t) → mfact mo ≤ (R.factorial) ^ n := by
   intro n ν R hR mo hmo

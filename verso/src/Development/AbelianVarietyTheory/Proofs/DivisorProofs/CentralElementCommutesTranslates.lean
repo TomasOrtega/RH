@@ -17,7 +17,7 @@ section Alg
 variable {A : Type} [Ring A]
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _ => by simp | m + 1, f, g, h => by rw [List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, mul_assoc, prod_ofFn_mul_comm R m _ _ fun i => h i.succ, ← mul_assoc, h 0, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem prod_ofFn_mul_comm (R : A) : ∀ (m : ℕ) (f g : Fin m → A), (∀ i, f i * R = R * g i) →
     (List.ofFn f).prod * R = R * (List.ofFn g).prod
@@ -27,7 +27,7 @@ theorem prod_ofFn_mul_comm (R : A) : ∀ (m : ℕ) (f g : Fin m → A), (∀ i, 
       prod_ofFn_mul_comm R m _ _ fun i => h i.succ, ← mul_assoc, h 0, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SmoothForms.gelfA, GlobalTheory.SmoothForms.gelfA, Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun idx _ => prod_ofFn_mul_comm R _ _ _ fun i => h _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gelfA_mul_comm [Algebra ℂ A] {n : ℕ} (X Y : Fin n → Fin n → A) (R : A)
     (h : ∀ a b, X a b * R = R * Y a b) (k : ℕ) :
@@ -46,13 +46,13 @@ def rtr (h : IsCMExt F E σ) (a : GAd σ J) : Module.End ℂ (SmG σ J) where
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Introduce `t`. Establish `h1 : GlobalTheory.Orb.archMat σ J τ (projArch σ J w a)⁻¹ * GlobalTheory.Orb.archMat σ J τ (projArch σ J w a) = 1`. Rewrite using `[← map_mul, inv_mul_cancel, map_one]`. Establish `h2 : GlobalTheory.Orb.archMat σ J τ (projArch σ J w a) * GlobalTheory.Orb.archMat σ J τ (projArch σ J w a)⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, e1, e2⟩` from `hγ t`. Use `⟨(projArch σ J w a)⁻¹ * y * projArch σ J w a, ?_, ?_⟩` and prove the remaining obligations. Use `show a⁻¹ * γ t * a = _`. Rewrite using `[e1]`. Use `GAd_ext σ J (fun u => ?_) fun v => by simp` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `e : u = w`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[projArch_embArch_ne σ J e]`. Rewrite using `[map_mul, map_mul, e2]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `GlobalTheory.Orb.archMat σ J τ (projArch σ J w a)⁻¹ = M' at *`. Generalize the expression as in `GlobalTheory.Orb.archMat σ J τ (projArch σ J w a) = M at *`. Establish `hM : IsUnit M` using `⟨⟨M, M', h2, h1⟩, rfl⟩`. Rewrite using `[← Matrix.inv_eq_left_inv h1, ← Matrix.exp_conj' _ _ hM, Matrix.mul_smul, Matrix.smul_mul]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLineOf_conj {w : InfinitePlace F} {τ : EmbOver E w} {Z : Matrix (Fin n) (Fin n) ℂ}
     {γ : ℝ → GAd σ J} (hγ : IsLineOf σ J τ Z γ) (a : GAd σ J) :
@@ -78,11 +78,11 @@ theorem isLineOf_conj {w : InfinitePlace F} {τ : EmbOver E w} {Z : Matrix (Fin 
     rw [← Matrix.inv_eq_left_inv h1, ← Matrix.exp_conj' _ _ hM, Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Establish `hl : ∀ Z γ, IsLineOf σ J τ Z γ → D Z * rtr h a = rtr h a * D (GlobalTheory.Orb.archMat σ J τ (projArch σ J w a)⁻¹ * Z * GlobalTheory.Orb.archMat σ J τ (projArch σ J w a))`. Introduce `Z γ hγ`. Use `LinearMap.ext fun f => Subtype.ext ?_` and prove the remaining obligations. Use `show (D Z (rtr h a f)).1 = fun x => (D _ f).1 (x * a)`. Rewrite using `[hD.2 Z γ hγ, hD.2 _ _ (isLineOf_conj hγ a)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [lineDer, rtr, LinearMap.coe_mk, AddHom.coe_mk, mul_assoc, mul_inv_cancel_left]`. Take `⟨γ₁, γ₂, e1, e2, e3⟩` from `exists_lines h hJ τ Z`. Generalize the expression as in `(1 / 2 : ℂ) • (Z - adj (J.map τ.1) Z) = Z₁ at e1 e3`. Generalize the expression as in `(-Complex.I / 2 : ℂ) • (Z + adj (J.map τ.1) Z) = Z₂ at e2 e3`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Substitute using the available equality.
 
-Substitute `e3` using the available equality. Rewrite using `[Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, map_add, map_smul, map_add, map_smul, add_mul, mul_add, smul_mul_assoc, mul_smul_comm, hl _ _ e1, hl _ _ e2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem der_mul_rtr (h : IsCMExt F E σ) (hJ : IsHermND σ J) {w : InfinitePlace F} {τ : EmbOver E w}
     {D : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.End ℂ (SmG σ J)} (hD : IsDer σ J τ D) (a : GAd σ J)
@@ -109,23 +109,21 @@ end GlobalTheory.LeviHC.RightTr
 namespace GlobalTheory.LeviHC.RightTr
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm n J hJ w τ D hD u hu hcomm a f f' hf'`. Set `X : Fin n → Fin n → Module.End ℂ (SmG σ J)` to `fun i j => D (Matrix.single i j 1)`. Establish `hsum : ∀ M : Matrix (Fin n) (Fin n) ℂ, D M = ∑ i, ∑ j, M i j • X i j`. Introduce `M`. Use `conv_lhs => rw [Matrix.matrix_eq_sum_single M]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, X]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← map_smul, Matrix.smul_single, smul_eq_mul, mul_one]`. Establish `hgl : Formalism.REAL.GlRel X`. Introduce `p q r s`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [X]`. Rewrite using `[← hD.1, GlobalTheory.CapFrame.single_mul_single_one, GlobalTheory.CapFrame.single_mul_single_one]`. Apply the tactic sequence `split_ifs <;> simp [eq_comm]`. Establish `hu' : u ∈ Algebra.adjoin ℂ (Set.range fun p : Fin n × Fin n => X p.1 p.2)`. Use `Algebra.adjoin_le ?_ hu` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨M, rfl⟩`. Rewrite using `[hsum]`. Conclude with `Subalgebra.sum_mem _ fun i _ => Subalgebra.sum_mem _ fun j _ => Subalgebra.smul_mem _ (Algebra.subset_adjoin (R := ℂ) (s := Set.range fun p : Fin n × Fin n => X p.1 p.2) ⟨(i, j), rfl⟩) _`. Take `⟨d, hd⟩` from `GlobalTheory.SmoothForms.exists_filt hu'`. Establish `hz` using `GlobalTheory.SmoothForms.central_of_filt hgl d u hd fun i j => hcomm _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hM : GlobalTheory.Orb.archMat σ J τ (projArch σ J w a)⁻¹ * GlobalTheory.Orb.archMat σ J τ (projArch σ J w a) = 1`. Rewrite using `[← map_mul, inv_mul_cancel, map_one]`. Establish `hg : ∀ k, GlobalTheory.SmoothForms.gelfA X k * rtr hcm a = rtr hcm a * GlobalTheory.SmoothForms.gelfA X k`. Introduce `k`. Use `conv_rhs => rw [← GlobalTheory.RegSch.GelfCyc.gelfA_conj X (GlobalTheory.Orb.archMat σ J τ (projArch σ J w a)⁻¹)ᵀ (GlobalTheory.Orb.archMat σ J τ (projArch σ J w a))ᵀ (by rw [← Matrix.transpose_mul, hM, Matrix.transpose_one]) k]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `gelfA_mul_comm _ _ _ (fun i j => ?_) k` and prove the remaining obligations. Use `show D (Matrix.single i j 1) * _ = _`. Rewrite using `[der_mul_rtr hcm hJ hD a, hsum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']`. Establish `hcen : u ∈ Subalgebra.centralizer ℂ {rtr hcm a}`. Use `Algebra.adjoin_le ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩ g hg'`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.mem_singleton_iff.1 hg']`. Conclude with `(hg k).symm`. Establish `e : rtr hcm a * u = u * rtr hcm a` using `hcen _ rfl`. Establish `hf : f' = rtr hcm a f` using `Subtype.ext hf'`. Rewrite using `[hf]`.
-
-Use `show ((u * rtr hcm a) f).1 = _`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem comm_rtr : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

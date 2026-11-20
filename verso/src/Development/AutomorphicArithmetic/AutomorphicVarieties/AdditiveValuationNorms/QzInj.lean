@@ -6,13 +6,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 open UpperTheory.V UpperTheory.V.PropA Formalism.GaloisCohomology
 
 /- English proof (translation)
-Introduce `l _`. Use `Module.Baer.injective ?_` and prove the remaining obligations. Introduce `I g`. Take `⟨a, ha⟩` from `(IsPrincipalIdealRing.principal I).principal`. Establish `hmem : ∀ x ∈ I, ∃ c : ℤ_[l], c • a = x` using `fun x hx => Submodule.mem_span_singleton.1 (ha ▸ hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `haI : a ∈ I` using `ha ▸ Submodule.mem_span_singleton_self a`. Establish `hy : ∃ y : QZ l, a • y = g ⟨a, haI⟩`. Distinguish the cases in `h0 : a = 0`. Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `: (⟨a, haI⟩ : I) = 0` using `Subtype.ext h0`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, map_zero, smul_zero]`. Conclude with `(UpperTheory.V.Kum.qzBasic l).1 a h0 _`. Take `⟨y, hy⟩` from `hy`. Use `⟨LinearMap.toSpanSingleton ℤ_[l] (QZ l) y, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `hmem x hx`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (⟨c • a, hx⟩ : I) = c • (⟨a, haI⟩ : I)` using `rfl`. Rewrite using `[this, map_smul g, ← hy, LinearMap.toSpanSingleton_apply, smul_eq_mul, mul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.PropA.qzInj :
     ∀ (l : ℕ) [Fact l.Prime], Module.Injective ℤ_[l] (QZ l) := by

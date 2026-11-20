@@ -9,11 +9,11 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.RootSumWeights.RegularPairCommutatorLemmas
 
 /- English proof (translation)
-Introduce `a b ha hb`. Establish `key : ∀ c : S, Commute c (v * u * v⁻¹) → Commute (((v⁻¹ : Sˣ) : S) * c * v) u`. Introduce `c hc`. Unfold `Commute SemiconjBy at hc ⊢`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Simplify using `[mul_assoc]`. Use `_ = ((v⁻¹ : Sˣ) : S) * ((v * u * ((v⁻¹ : Sˣ) : S)) * c) * v := by rw [hc]`. Use `_ = u * (((v⁻¹ : Sˣ) : S) * c * v) := by simp [mul_assoc]`. Establish `h'` using `h _ _ (key a ha) (key b hb)`. Unfold `Commute SemiconjBy at h' ⊢`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (fun z => (v : S) * z * ((v⁻¹ : Sˣ) : S)) h'` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem commComm_conj {S : Type} [Ring S] (u : S) (v : Sˣ)
     (h : ∀ a b : S, Commute a u → Commute b u → Commute a b) :
@@ -34,9 +34,9 @@ theorem commComm_conj {S : Type} [Ring S] (u : S) (v : Sˣ)
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hg`. Use `⟨w, ?_⟩` and prove the remaining obligations. Establish `e : ((ubcMap (AfP.eval w) (h⁻¹ * g * h)).1.1 : w.1.adicCompletion ℚ ⊗[ℚ] G.C) = (((ubcMap (AfP.eval w) h).1.1⁻¹ : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ) : w.1.adicCompletion ℚ ⊗[ℚ] G.C) * ((ubcMap (AfP.eval w) g).1.1 : w.1.adicCompletion ℚ ⊗[ℚ] G.C) * ((((ubcMap (AfP.eval w) h).1.1⁻¹) …`. Simplify using `[map_mul, map_inv]`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `commComm_conj _ _ hw`.
+A detailed English derivation is pending.
 -/
 theorem regAf_conj (G : HTGroup p) (g h : G.GAf) (hg : RegAf G g) : RegAf G (h⁻¹ * g * h) := by
   obtain ⟨w, hw⟩ := hg
@@ -50,23 +50,21 @@ theorem regAf_conj (G : HTGroup p) (g h : G.GAf) (hg : RegAf G g) : RegAf G (h�
   exact commComm_conj _ _ hw
 
 /- English proof (translation)
-Use `set Z := Subalgebra.centralizer ℚ ({γ} : Set G.C) with hZdef`. Establish `hZ : ∀ x y : Z, x * y = y * x`. Introduce `x y`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hc` using `GlobalTheory.CentSep.centralizer_eq_adjoin G.F G.C G.n G.rankC γ hsep hdeg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : ∀ g ∈ ({γ} : Set G.C), g * (x : G.C) = x * g` using `(Subalgebra.mem_centralizer_iff _).1 x.2`. Establish `hy : ∀ g ∈ ({γ} : Set G.C), g * (y : G.C) = y * g` using `(Subalgebra.mem_centralizer_iff _).1 y.2`. Use `show (x : G.C) * y = y * x`. Establish `hy' : (y : G.C) ∈ Subalgebra.centralizer G.F ({γ} : Set G.C)`. Rewrite using `[Subalgebra.mem_centralizer_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hy`. Rewrite `hy'` using `[hc]`. Establish `h2` using `Algebra.adjoin_le_centralizer_centralizer G.F ({γ} : Set G.C) hy'`. Rewrite `h2` using `[Subalgebra.mem_centralizer_iff]`. Establish `hx' : (x : G.C) ∈ Subalgebra.centralizer G.F ({γ} : Set G.C)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Subalgebra.mem_centralizer_iff]`. Conclude with `hx`. Conclude with `h2 x hx'`. Establish `hcomm : ∀ a b : K ⊗[ℚ] Z, a * b = b * a`. Introduce `a b`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [add_mul, mul_add, hx, hy]`. Consider the case `tmul r x`. Proceed by induction on `b using TensorProduct.induction_on with`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [add_mul, mul_add, hx, hy]`. Consider the case `tmul s y => simp [Algebra.TensorProduct.tmul_mul_tmul, mul_comm r s, hZ x y]`. Establish `hcen` using `Subalgebra.centralizer_coe_image_includeRight_eq_center_tensorProduct ℚ K G.C ({γ} : Set G.C)`. Establish `mem : ∀ c : K ⊗[ℚ] G.C, Commute c ((1 : K) ⊗ₜ γ) → c ∈ (Algebra.TensorProduct.map (AlgHom.id ℚ K) Z.val).range`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Introduce `c hc`. Rewrite using `[← hcen, Subalgebra.mem_centralizer_iff]`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Rewrite `hg` using `[Set.mem_singleton_iff]`. Substitute `hg` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc.eq.symm`. Introduce `a b ha hb`. Take `⟨a', rfl⟩` from `mem a ha`. Take `⟨b', rfl⟩` from `mem b hb`. Unfold `Commute SemiconjBy`.
-
-Rewrite using `[← map_mul, ← map_mul, hcomm]`.
+A detailed English derivation is pending.
 -/
 theorem commComm_tmul (G : HTGroup p) (K : Type) [Field K] [Algebra ℚ K] (γ : G.C)
     (hsep : (minpoly G.F γ).Separable) (hdeg : (minpoly G.F γ).natDegree = G.n) :
@@ -113,9 +111,9 @@ theorem commComm_tmul (G : HTGroup p) (K : Type) [Field K] [Algebra ℚ K] (γ :
   rw [← map_mul, ← map_mul, hcomm]
 
 /- English proof (translation)
-Apply `regAf_conj` to reduce the goal to its premises. Take `⟨w⟩` from `finitePlacesAway_nonempty p`. Use `⟨w, ?_⟩` and prove the remaining obligations. Set `φ` to `Algebra.TensorProduct.map (AfP.eval w) (AlgHom.id ℚ G.C)`. Establish `e : ((ubcMap (AfP.eval w) (P.toAf x t hx P.self)).1.1 : w.1.adicCompletion ℚ ⊗[ℚ] G.C) = ((Units.map φ.toRingHom.toMonoidHom x : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ) : w.1.adicCompletion ℚ ⊗[ℚ] G.C) * ((1 : w.1.adicCompletion ℚ) ⊗ₜ (P.γ : G.C)) * (((Units.map φ.toRingHom.toMonoidHom …` using `by show φ ((x : AfP p ⊗[ℚ] G.C) * inC G (AfP p) (P.γ : G.C) * ((x⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C)) = _`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul]`. Simplify using `[φ, inC, Units.coe_map_inv]`. Rewrite using `[e]`. Conclude with `commComm_conj _ _ (commComm_tmul G _ _ P.reg.2 P.reg.1)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regAf_pair (G : HTGroup p) (P : Pair G) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ)
     (hx : Triv G (AfP p) P.β x t) (h : G.GAf) : RegAf G (h⁻¹ * P.toAf x t hx P.self * h) := by
@@ -138,19 +136,19 @@ end GlobalTheory.RootSumWeights.RegularPairCommutatorLemmas
 namespace GlobalTheory.RootSumWeights.RegularPairCommutatorLemmas
 
 /- English proof (translation)
-Introduce `p _ G ha L f K' f' hf hf'`. Set `f₀ : G.GAf → ℂ` to `fun g => if RegAf G g then f g else 0`. Establish `hiff : ∀ (k g : G.GAf), RegAf G (k⁻¹ * g * k) ↔ RegAf G g`. Introduce `k g`. Use `⟨fun h => ?_, fun h => regAf_conj G g k h⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `regAf_conj G _ k⁻¹ h` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Establish `hf₀ : IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f₀`. Take `⟨h1, h2, h3, S, hS⟩` from `hf`. Use `⟨h1, h2, fun k hk g => ?_, S, fun g hg => hS g ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `h3 k hk g`. Simplify using `only [MonoidHom.id_apply] at e ⊢`. Simplify using `only [f₀, e, hiff]`. Introduce `h`. Apply `hg` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[f₀, h]`. Establish `hreg : ∀ g, f₀ g ≠ 0 → RegAf G g` using `fun g hg => by`. Assume the negation of the conclusion as `h; exact hg (by simp [f₀, h])`. Establish `hterm : ∀ P : Pair G, P.term L.K.toSubgroup f 1 K' f' = P.term L.K.toSubgroup f₀ 1 K' f'`. Introduce `P`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ x t hx δ z, P.termAt L.K.toSubgroup f 1 K' f' x t hx δ z = P.termAt L.K.toSubgroup f₀ 1 K' f' x t hx δ z`. Introduce `x t hx δ z`. Unfold `Pair.termAt pointSum`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Establish `: f ((Quotient.out q).1⁻¹ * P.toAf x t hx P.self * (Quotient.out q).1) = f₀ ((Quotient.out q).1⁻¹ * P.toAf x t hx P.self * (Quotient.out q).1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [f₀, if_pos (regAf_pair G P x t hx _)]`. Rewrite using `[this]`. Unfold `Pair.term`. Apply the tactic sequence `split_ifs <;> simp only [key]`. Establish `hfin` using `hI p G ha L f₀ hf₀ hreg K' f' hf'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify `hfin` using `only [hterm]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finitely_many_marked_classes_degree_one_of_regular (hI : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), G.a = 1 → ∀ (L : G.Level) (f : G.GAf → ℂ),
     IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f → (∀ g, f g ≠ 0 → RegAf G g) →
@@ -192,6 +190,6 @@ theorem finitely_many_marked_classes_degree_one_of_regular (hI : ∀ (p : ℕ) [
 end GlobalTheory.RootSumWeights.RegularPairCommutatorLemmas
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RootSumWeights.RegularPairCommutatorLemmas.finitely_many_marked_classes_degree_one_of_regular GlobalTheory.T.finite_markedPairClasses_degreeOne_term_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RootSumWeights.finitely_many_marked_classes_term_degree_one : GlobalTheory.RootSumWeights.FinitelyManyMarkedClassesTermDegreeOne := GlobalTheory.RootSumWeights.RegularPairCommutatorLemmas.finitely_many_marked_classes_degree_one_of_regular GlobalTheory.T.finite_markedPairClasses_degreeOne_term_ne_zero

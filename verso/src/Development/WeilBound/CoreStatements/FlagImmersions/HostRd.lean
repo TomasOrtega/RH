@@ -8,11 +8,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace RootFieldNumerics.RF
 
 /- English proof (translation)
-Introduce `E _ _ _ H _`. Use `haveI : Fact (Nat.Prime H.d) := ⟨H.d_prime⟩`. Establish `h4 : H.d % 4 = 3`. Use `H.d_mod` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(quadraticChar (ZMod H.d)).ringHomComp (Int.castRingHom ℂ), GlobalTheory.isKroneckerChar_quadraticChar h4, ?_⟩` and prove the remaining obligations. Establish `hr : rootDiscr E = hostRd E`. Simplify using `[rootDiscr, hostRd, Int.cast_abs, one_div]`. Establish `hpos : 0 < hostRd E`. Unfold `hostRd`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Real.rpow_pos_of_pos` to reduce the goal to its premises. Conclude with `abs_pos.2 (Int.cast_ne_zero.2 (NumberField.discr_ne_zero E))`. Simplify using `only [GlobalTheory.CM.logOm, hostLval]`. Rewrite using `[Complex.sub_re, Complex.ofReal_re, hr, Real.log_div (by positivity) hpos.ne']`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem chiEx : ChiEx := by
   intro E _ _ _ H _

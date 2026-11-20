@@ -5,13 +5,13 @@ open TensorProduct LinearMap
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R M _ _ _ h`. Use `Module.Flat.iff_lTensor_injective'.mpr fun I => ?_` and prove the remaining obligations. Use `(injective_iff_map_eq_zero _).mpr fun x hx => ?_` and prove the remaining obligations. Take `⟨J, hfg, y, rfl⟩` from `Submodule.exists_fg_le_eq_rTensor_subtype (R := R) (M := ↥I) x`. Take `⟨s, hs⟩` from `hfg`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hsN, hN⟩` from `h s`. Establish `hJN : J ≤ N` using `hs ▸ Submodule.span_le.mpr hsN`. Take `⟨y', hy'⟩ : ∃ y' : ↥N ⊗[R] ↥I, y' = rTensor (↥I) (Submodule.inclusion hJN) y` from `⟨_, rfl⟩`. Establish `hxy : rTensor (↥I) J.subtype y = rTensor (↥I) N.subtype y'`. Rewrite using `[hy', ← rTensor_comp_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `hx`, the goal using `[hxy]`. Establish `hcomm : lTensor M I.subtype (rTensor (↥I) N.subtype y') = rTensor R N.subtype (lTensor (↥N) I.subtype y')`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.comp_apply, lTensor_comp_rTensor, rTensor_comp_lTensor]`. Rewrite `hx` using `[hcomm]`.
+Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hinj1 : Function.Injective (rTensor R N.subtype)` using `Module.Flat.rTensor_preserves_injective_linearMap (M := R) N.subtype Subtype.val_injective`. Establish `h0 : lTensor (↥N) I.subtype y' = 0` using `hinj1 (by rw [hx, map_zero])`. Establish `hinj2 : Function.Injective (lTensor (↥N) I.subtype)` using `Module.Flat.lTensor_preserves_injective_linearMap (M := ↥N) I.subtype Subtype.val_injective`. Establish `: y' = 0` using `hinj2 (by rw [h0, map_zero])`. Rewrite using `[this, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem flat_of_forall_finset_subset_flat :
     ∀ (R M : Type) [CommRing R] [AddCommGroup M] [Module R M],

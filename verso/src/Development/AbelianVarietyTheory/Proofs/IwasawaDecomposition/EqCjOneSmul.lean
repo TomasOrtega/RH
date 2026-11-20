@@ -48,9 +48,9 @@ def JSpan (z : Dat (w.st Z) w.I hX T Wt) (Wt' : Set B'.places.Pl)
 end Defs
 
 /- English proof (translation)
-Introduce `i x v hv`. Establish `hio` using `GlobalTheory.IoExtremal.ioExt D G Pl0 T0 A3.A _ R.toRealDat hch.base.lev hch.base.fam hch.base.models (RealDat.thP_of_weak hch.base.thP hEx)`. Establish `hM` using `GlobalTheory.OneMapRow3.oneFormMapRow_threeLevel_of_characterisation _ _ _ _ _ _ C R F geo.κ geo.v₀ geo.O (fun _ => 1) hn hch hEx ⟨geo.fw⟩ hio i (geo.pins i) (geo.phase i hU)`. Establish `e : v = R.jV i A3.A.μ0 x` using `(hch.base.models.HV i _).1 (hv.trans (hch.base.models.jV i _ x).symm)`. Substitute `e` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Use `obt ⟨y, hy⟩ := (Formalism.IndefR.FWT.phase_of_oneMap geo.fw hU (hI.evInj i _ (Formalism.IndefR.FWT.base_embedding_good C R.toRealDat geo.fw.alg_eq geo.fw.laws.pins.2.2.1)) (geo.O i) (geo.phase i hU hM.1)).2 x`. Conclude with `⟨y, hy.trans (one_smul ℂ _)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ratAt_of_geo {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type}
     {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T0 D.R.m} {C : Formalism.L2.Pj.CoreJ D} [Algebra C.Q.c.F D.what₂.LL] (R : RealDat3 D A3 C.Q.c.F)
@@ -69,7 +69,7 @@ theorem ratAt_of_geo {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type
   exact ⟨y, hy.trans (one_smul ℂ _)⟩
 
 /- English proof (translation)
-Rewrite using `[map_one, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_cj_one_smul {H : Type} [AddCommGroup H] [Module ℂ H] (s : Bool) (v : H) : v = Formalism.IndefR.Links.cj s (1 : ℂ) • v := by
   rw [map_one, one_smul]
@@ -83,17 +83,15 @@ local macro "qmove " h:term : tactic => `(tactic| (
 set_option maxHeartbeats 8000000 in
 
 /- English proof (translation)
-Use `obt ⟨hL, hF⟩ := GlobalTheory.HeckeCharacterRestriction.liftsAt_and_seedFacts X.toD7 _ _ _ (famR X I hX U Xg tr₀).A Ks (face0 X I hX U Xg tr₀).lv2`. Use `obt ⟨R1, p1, c1, t1, f1, g1, ⟨q1, s1⟩, m1, hrat⟩ := exists_weak_keep hI hXi hL hF (fun R => (RealDat3.IsInert (⟨R, R₀.plI, R₀.SF, R₀.phs, R₀.lam3⟩ : RealDat3 X.toD7 (famR X I hX U Xg tr₀) Ks) ∧ RealDat3.IsTup (⟨R, R₀.plI, R₀.SF, R₀.phs, R₀.lam3⟩ : RealDat3 X.toD7 (famR X I hX U X …`. Take `⟨i1, u1, a1, l1, e1, mu1, w1, b1, x1, k1⟩` from `q1`. Establish `hc : ∃ c : G0 R1.Pg X.toD7.R.r ≃* G0g X.toD7.nd, HEq c cG`. Rewrite using `[show R1.Pg = R₀.Pg from congrArg (fun L => L.Pg) l1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨cG, HEq.rfl⟩`. Take `⟨cutoffDeriv, hcG1⟩` from `hc`. Set `R2₀ : RealDat3 X.toD7 (famR X I hX U Xg tr₀) Ks` to `⟨R1, R₀.plI, R₀.SF, fun _ => 1, R₀.lam3⟩`. Establish `htr : ∃ tr : TrI X.B px, (∃ t', R2₀.TrISem (face0 X I hX U Xg tr₀) t' ∧ SepWith (famR X I hX U Xg tr₀) t') → R2₀.TrISem (face0 X I hX U Xg tr₀) tr ∧ SepWith (famR X I hX U Xg tr₀) tr`. Distinguish the cases in `h : ∃ t', R2₀.TrISem (face0 X I hX U Xg tr₀) t' ∧ SepWith (famR X I hX U Xg tr₀) t'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨t', h'⟩` from `h`. Conclude with `⟨t', fun _ => h'⟩`. Conclude with `⟨tr₀, fun h' => absurd h' h⟩`. Take `⟨tr, htr⟩` from `htr`. Set `R2 : RealDat3 X.toD7 (famR X I hX U Xg tr) Ks` to `⟨R1, R₀.plI, R₀.SF, fun _ => 1, R₀.lam3⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `obt ⟨kap, lam, hs⟩ := scalars_exist (F := face0 X I hX U Xg tr) R2`. Establish `p6` using `RealDat.preliminary_of_scalar_update p1 kap R2.lam`. Establish `f6` using `RealDat.full_Y_of_scalar_update f1 kap R2.lam`. Establish `c6` using `RealDat.weak_chain_of_scalar_update c1 kap R2.lam`. Establish `t6` using `RealDat.weak_theta_props_of_scalar_update t1 kap R2.lam`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `g6` using `RealDat.full_P_of_scalar_update g1 kap R2.lam`. Establish `hphs : (R2.updS kap lam).phase`. Introduce `i`. Use `⟨show ‖(1 : ℂ)‖ = 1 from norm_one, fun _ x => ?_⟩` and prove the remaining obligations. Use `obt ⟨y, hy⟩ := hrat i x`.
-
-Use `⟨y, ?_⟩` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact (hy.trans (eq_cj_one_smul (twAt X.toD7.what₂.embLL (famR X I hX U Xg tr₀).A.v0) _) :))`. Establish `kv` using `k1 cutoffDeriv hcG1`. Conclude with `⟨tr, R2.updS kap lam, cutoffDeriv, ⟨⟨⟨p6.1.lev, ⟨p6.1.red_R, p6.1.red_L, p6.1.levels, p6.1.record, x1⟩, p6.1.fam, p6.2, c6, t6⟩, ⟨⟨i1.tie.plI_inj, i1.tie.okI⟩, i1.onto, i1.hR, i1.hL, i1.SF⟩, f6.1, f6.2, g6, hs, ⟨u1.mu_off, u1.mu_used, u1.mu_ne, u1.mu_conj, u1.mu_on⟩, hphs, a1⟩, ⟨ …`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem charW_keep (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι)
     (Xg : Finset (Gc X.B px → X.B.LL)) (tr₀ : TrI X.B px) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks X.toD7.what₂.LL]

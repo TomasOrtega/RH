@@ -5,15 +5,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GeometricSideEstim
 open UpperTheory.V.Lit.Geo NumberField
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha L hL`. Use `letI : InnerProductSpace ℝ (EuclideanSpace ℂ (Fin a × InfinitePlace E)) := InnerProductSpace.rclikeToReal ℂ _`. Use `⟨Module.finrank ℝ (EuclideanSpace ℂ (Fin a × InfinitePlace E)), fun g => ?_⟩` and prove the remaining obligations. Take `⟨C, N, hC, hmin⟩` from `UpperTheory.global_geometric_estimate_of_local E a ha L hL`. Take `⟨-, hrt, -⟩` from `UpperTheory.rationalPoint_retraction_exists_cmDatum E a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB⟩ : ∃ B : ℝ, ∀ v ∈ lat L (rt g), v ≠ 0 → 1 ≤ B * qf (pt (rt g) v)` from `⟨_, hmin (rt g)⟩`. Establish `hlat : lat L (rt g) = lat L g`. Unfold `lat`. Rewrite using `[(hrt g).2.2]`. Rewrite `hB` using `[hlat]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `φ : lat L g →+ EuclideanSpace ℂ (Fin a × InfinitePlace E)` to `(euc.toLinearMap.toAddMonoidHom.comp (pt (rt g))).comp (lat L g).subtype`. Establish `hφ : ∀ v : lat L g, ‖φ v‖ ^ 2 = qf (pt (rt g) v.1)` using `fun v => norm_euc_sq _`. Establish `hM : (0 : ℝ) < max B 1` using `lt_max_of_lt_right one_pos`. Establish `key` using `UpperTheory.scaling_invariance_of_geometric_functional (lat L g) (EuclideanSpace ℂ (Fin a × InfinitePlace E)) φ (Real.sqrt (1 / max B 1)) (Real.sqrt_pos.2 (by positivity)) (fun v hv => by`. Establish `h1` using `hB v.1 v.2 (fun h => hv (Subtype.ext h))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hφ]`. Apply `Real.sqrt_le_iff.2` to reduce the goal to its premises. Use `⟨norm_nonneg _, ?_⟩` and prove the remaining obligations. Rewrite using `[div_le_iff₀ hM, mul_comm]`. Conclude with `h1.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (sq_nonneg _)))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `key` using `only [hφ]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.geometry_of_numbers_lattice_estimate :
     LatScale := by

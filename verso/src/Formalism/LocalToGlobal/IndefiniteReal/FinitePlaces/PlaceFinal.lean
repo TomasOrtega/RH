@@ -11,12 +11,12 @@ namespace Formalism.IndefR.Fin
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-The claim follows from `placeModelAt_of (placeLatDual D)`.
+A detailed English derivation is pending.
 -/
 theorem placeModelAtF (D : Formalism.BasicNotions.D7) : PlaceModelAt D := placeModelAt_of (placeLatDual D)
 
 /- English proof (translation)
-The claim follows from `latLevel_of (latSelfDual D)`.
+A detailed English derivation is pending.
 -/
 theorem latLevelF (D : Formalism.BasicNotions.D7) : LatLevel D := latLevel_of (latSelfDual D)
 

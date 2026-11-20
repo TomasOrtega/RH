@@ -10,9 +10,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.UPel.HT.EtLev.Onto
 
 /- English proof (translation)
-Use `haveI : Unique (Sp k) := inferInstanceAs (Unique (PrimeSpectrum k))`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨default, h ⟨default, rfl⟩⟩`. Introduce and unpack `⟨t, ht⟩ _ ⟨t', rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Subsingleton.elim t' t]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem range_sp_subset_iff {k : Type} [Field k] {X : Scheme.{0}} (f : Sp k ⟶ X) (U : Set X) :
     Set.range f ⊆ U ↔ ∃ t, f t ∈ U := by
@@ -24,9 +24,9 @@ theorem range_sp_subset_iff {k : Type} [Field k] {X : Scheme.{0}} (f : Sp k ⟶ 
     rwa [Subsingleton.elim t' t]
 
 /- English proof (translation)
-Use `haveI : Unique (Sp k) := inferInstanceAs (Unique (PrimeSpectrum k))`. Rewrite using `[range_sp_subset_iff, range_sp_subset_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht⟩ ⟨t', ht'⟩`. Rewrite `ht'` using `[Subsingleton.elim t' t]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ht ht'`. Introduce `h`. Conclude with `⟨default, fun h' => h ⟨default, h'⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem range_sp_subset_compl {k : Type} [Field k] {X : Scheme.{0}} (f : Sp k ⟶ X) (U : Set X) :
     Set.range f ⊆ Uᶜ ↔ ¬ Set.range f ⊆ U := by
@@ -46,41 +46,35 @@ namespace GlobalTheory.UPel.HT.EtLev
 open GlobalTheory.UPel.HT.EtLev.Onto
 
 /- English proof (translation)
-Introduce `p _ D R _ b N w0 r hw S _ s o K κ hKf hKe hκ hrep Z et hZf hZe hadd hlin hker`. Use `haveI := hKf`. Use `haveI := hKe`. Use `haveI := hZf`. Use `haveI := hZe`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hkc : ∀ (T T' : Over S) (f : T ⟶ T') (g : T' ⟶ o.A), (∀ c ∈ w0 ^ r, g ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1) → ∀ c ∈ w0 ^ r, (f ≫ g) ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1`. Introduce `T T' f g hg c hc`. Rewrite using `[Category.assoc, hg c hc, MonObj.comp_one]`. Establish `hetk : ∀ a, ∀ c ∈ w0 ^ r, et a ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1` using `fun a c hc => by`. Rewrite using `[← hlin]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hker _ (Submodule.subset_span ⟨c, hc, a, rfl⟩)`. Establish `huniq : ∀ (T : Over S) (y y' : T ⟶ K), y ≫ κ = y' ≫ κ → y = y'` using `fun T y y' h => (hrep T (y' ≫ κ) (hkc _ _ y' κ hκ)).unique h rfl`. Use `choose lam hlam using fun a => (hrep Z (et a) (hetk a)).exists`. Use `haveI := D.freeLa`. Use `haveI := D.finLa`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨J, _, q, hq⟩` from `LevCover.exists_finite_mod D.La (pow_pos (Fact.out : p.Prime).pos r)`. Establish `hlamq : ∀ a a', q a = q a' → lam a = lam a'`. Introduce `a a' h`. Take `⟨c, rfl⟩` from `hq a a' h`. Establish `hm : p ^ r • c ∈ wSub D w0 r`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.subset_span ⟨(p : 𝓞 D.F) ^ r, Ideal.pow_mem_pow hw.2.1 r, c, ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, map_natCast, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`. Apply `huniq` to reduce the goal to its premises. Rewrite using `[hlam, hlam, hadd, hker _ hm, _root_.mul_one]`. Establish `hfin : (Set.range lam).Finite`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `(Set.finite_range fun j : Set.range q => lam j.2.choose).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Use `⟨⟨q a, Set.mem_range_self a⟩, ?_⟩` and prove the remaining obligations. Conclude with `hlamq _ _ (Classical.choose_spec (Set.mem_range_self (f := q) a))`. Take `⟨hPf, hPe⟩` from `LevCover.finiteEtale_tensor Z K`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := hPf`. Use `haveI := hPe`. Set `U : (Z ⟶ K) → (Z ⊗ K).left.Opens` to `fun l => (LevCover.clopenCond_eq (snd Z K) (fst Z K ≫ l)).choose`. Establish `hU : ∀ l, IsClosed (U l : Set (Z ⊗ K).left) ∧ ∀ (T' : Over S) (h : T' ⟶ Z ⊗ K), h ≫ snd Z K = h ≫ fst Z K ≫ l ↔ Set.range h.left ⊆ U l` using `fun l => (LevCover.clopenCond_eq (snd Z K) (fst Z K ≫ l)).choose_spec`. Set `C : Set (Z ⊗ K).left` to `⋂ l ∈ Set.range lam, (U l : Set (Z ⊗ K).left)ᶜ`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hCo : IsOpen C` using `hfin.isOpen_biInter fun l _ => (hU l).1.isOpen_compl`. Establish `hCc : IsClosed C` using `isClosed_biInter fun l _ => (U l).isOpen.isClosed_compl`. Take `⟨V, i, hVf, hVe, -, hV⟩` from `LevCover.exists_sub (Z := Z ⊗ K) ⟨C, hCo⟩ hCc`. Use `haveI := hVf`. Use `haveI := hVe`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨I, hIc, hI⟩` from `LevCover.exists_image (i ≫ fst Z K)`. Establish `hA : ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ S) (z : Over.mk x ⟶ Z), Set.range z.left ⊆ (I : Set Z.left)ᶜ ↔ ∀ g : Over.mk x ⟶ o.A, (∀ c ∈ w0 ^ r, g ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1) → ∃ a, z ≫ et a = g`. Introduce `k _ _ x z`. Rewrite using `[range_sp_subset_compl, hI k x z]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `hno g hg`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨y, hy, -⟩` from `hrep _ g hg`. Apply `hno` to reduce the goal to its premises.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hmem : Set.range (lift z y).left ⊆ C`. Use `Set.subset_iInter₂ fun l hl => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hl`. Rewrite using `[range_sp_subset_compl, ← (hU _).2]`. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [lift_snd, lift_fst_assoc] at h`. Apply `hne a` to reduce the goal to its premises. Rewrite using `[← hy, h, Category.assoc, hlam]`. Take `⟨w, hw⟩` from `(hV _ (lift z y)).1 hmem`. Conclude with `⟨w, by rw [← Category.assoc, hw, lift_fst]⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `hall ⟨w, hw⟩`. Take `⟨a, ha⟩` from `hall ((w ≫ i) ≫ snd Z K ≫ κ) (hkc _ _ _ _ (hkc _ _ _ _ hκ))`. Establish `hs : (w ≫ i) ≫ snd Z K = (w ≫ i) ≫ fst Z K ≫ lam a`. Apply `huniq` to reduce the goal to its premises. Use `ha` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[← hw]`. Simplify `this.symm` using `only [Category.assoc, hlam]`. Establish `h1` using `((hU (lam a)).2 _ _).1 hs`. Establish `h2 : Set.range (w ≫ i).left ⊆ C` using `(hV _ _).2 ⟨w, rfl⟩`. Use `haveI : Unique (Over.mk x).left := inferInstanceAs (Unique (PrimeSpectrum k))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h3` using `h2 ⟨default, rfl⟩`. Conclude with `Set.mem_iInter₂.1 h3 (lam a) ⟨a, rfl⟩ (h1 ⟨default, rfl⟩)`. Use `⟨⟨(I : Set Z.left)ᶜ, hIc.isOpen_compl⟩, I.isOpen.isClosed_compl, fun T' h => ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `H`.
-
-Apply `LevCover.range_subset_of_geom h` to reduce the goal to its premises. Introduce `k _ _ x y`. Establish `e : (y ≫ h).left = ((Over.homMk y.left rfl : Over.mk (y.left ≫ T'.hom) ⟶ T') ≫ h).left` using `rfl`. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `_ ⊆ (I : Set Z.left)ᶜ`.
-
-Rewrite using `[hA]`. Introduce `g hg`. Take `⟨a, ha⟩` from `H k y.left g hg`. Conclude with `⟨a, by rw [Category.assoc]; exact ha⟩`. Introduce `H k _ _ xp g hg`.
-
-Establish `hsub : Set.range ((Over.homMk xp rfl : Over.mk (xp ≫ T'.hom) ⟶ T') ≫ h).left ⊆ (I : Set Z.left)ᶜ`. Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `H ⟨xp t, by simp⟩`. Take `⟨a, ha⟩` from `(hA k (xp ≫ T'.hom) _).1 hsub g hg`. Conclude with `⟨a, by rw [← Category.assoc]; exact ha⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem clopenCond_onto : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (w0 : Ideal (𝓞 D.F)) (r : ℕ), IsEtPlace b w0 → ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (s : S ⟶ Sp R) (o : Obj b N s) (K : Over S) (κ : K ⟶ o.A), IsFinite K.hom → Etale K.hom → (∀ c ∈ w0 ^ r, κ ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1) → (∀ (T : Over S) (x : T ⟶ o.A), (∀ c ∈ w0 ^ r, x ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1) → ∃! y : T ⟶ K, y ≫ κ = x) → ∀ (Z : Over S) (et : D.La → (Z ⟶ o.A)), IsFinite Z.hom → Etale Z.hom → (∀ x y, et (x + y) = et x * et y) → (∀ (c : D.O) x, et (c • x) = et x ≫ o.act.act c) → (∀ x ∈ wSub D w0 r, et x = 1) → GlobalTheory.LevCover.ClopenCond Z fun T' h => ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ T'.left), ∀ g : Over.mk (x ≫ T'.hom) ⟶ o.A, (∀ c ∈ w0 ^ r, g ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1) → ∃ y, (Over.homMk x rfl : Over.mk (x ≫ T'.hom) ⟶ T') ≫ h ≫ et y = g := by
   intro p _ D R _ b N w0 r hw S _ s o K κ hKf hKe hκ hrep Z et hZf hZe hadd hlin hker

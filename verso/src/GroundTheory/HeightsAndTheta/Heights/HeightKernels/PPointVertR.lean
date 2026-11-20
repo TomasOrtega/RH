@@ -13,7 +13,7 @@ noncomputable section
 namespace PointVertRAux
 
 /- English proof (translation)
-Rewrite using `[IndefiniteRowSideFullHecke.HeightsSet.CoordCurveDegree.full Unit (fun _ => T) K' y hP, Nat.card_eq_fintype_card, AlgHom.card]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem degC_eq_finrank {T : Type} [Fintype T] {K' : Type} [Field K'] [NumberField K']
     {y : (Σ _ : Unit, T) → K'} (hP : IsArithVar (mCoordIdeal y) 1) :
@@ -24,7 +24,7 @@ theorem degC_eq_finrank {T : Type} [Fintype T] {K' : Type} [Field K'] [NumberFie
 end PointVertRAux
 
 /- English proof (translation)
-Introduce `T _ K' _ _ y s hP hs hsP`. Rewrite using `[hI T K' y s hP hs hsP, PointVertRAux.degC_eq_finrank hP, ← Module.finrank_mul_finrank ℚ (blockFnField y) K', Nat.cast_mul, mul_assoc, hN T K' y s hP hs hsP]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem PointVertR.proof (hI : VertRIndex.Statement) (hN : SectionIndexNorm.Statement) :
     PointVertR.Statement := by

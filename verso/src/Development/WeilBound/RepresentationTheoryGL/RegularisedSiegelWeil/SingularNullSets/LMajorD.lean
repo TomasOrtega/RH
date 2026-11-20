@@ -31,7 +31,7 @@ abbrev fP (x : Mx D a b) : Fin a → Fin b → Af D.host.F ⊗[D.host.F] D.host.
 abbrev row (i : Fin a) (x : Mx D a b) : Mx D 1 b := x.submatrix (fun _ => i) id
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Rewrite using `[cA, compAt_smul, infPart_idem he, map_one, one_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem cA_idem (θ : InfFam D) {S : Finset (Pl D)} {e : AE D} (he : IsIdem S e) (x : Mx D a b) :
     cA θ (e • x) = cA θ x := by
@@ -39,15 +39,13 @@ theorem cA_idem (θ : InfFam D) {S : Finset (Pl D)} {e : AE D} (he : IsIdem S e)
   rw [cA, compAt_smul, infPart_idem he, map_one, one_smul]
 
 /- English proof (translation)
-The claim follows from `cv_congr v (by rw [map_mul, finPart_sF, one_mul])`.
+A detailed English derivation is pending.
 -/
 theorem cv_sF (v : Pl D) (z : AE D) : cv D v (sF D * z) = cv D v z :=
   cv_congr v (by rw [map_mul, finPart_sF, one_mul])
 
 /- English proof (translation)
-Introduce `x`. Establish `h` using `hG x`. Use `split_ifs at h ⊢ with hx`. Use `show q (cA θ x) * Φ x = q (cA θ (e • x)) * Φ (e • x)`. Rewrite using `[h, cA_idem θ he]`.
-
-Use `show q (cA θ x) * Φ x = 0`. Rewrite using `[h, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_mul (θ : InfFam D) {S : Finset (Pl D)} {e : AE D} (he : IsIdem S e) {Φ : Mx D a b → ℂ}
     (hG : Good S e Φ) (q : (D.what₂.Tau → Fin a → Fin b → ℂ) → ℂ) : Good S e (fun x => q (cA θ x) * Φ x) := by
@@ -60,7 +58,7 @@ theorem good_mul (θ : InfFam D) {S : Finset (Pl D)} {e : AE D} (he : IsIdem S e
     rw [h, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[Complex.mul_re, Complex.mul_im, hz.2, hw.2]`. Conclude with `⟨by simpa using mul_nonneg hz.1 hw.1, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem re_im_mul {z w : ℂ} (hz : 0 ≤ z.re ∧ z.im = 0) (hw : 0 ≤ w.re ∧ w.im = 0) :
     0 ≤ (z * w).re ∧ (z * w).im = 0 := by
@@ -68,7 +66,7 @@ theorem re_im_mul {z w : ℂ} (hz : 0 ≤ z.re ∧ z.im = 0) (hw : 0 ≤ w.re �
   exact ⟨by simpa using mul_nonneg hz.1 hw.1, by simp⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi]`. Conclude with `re_im_mul (h i) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem re_im_prod {ι : Type} (s : Finset ι) (u : ι → ℂ) (h : ∀ i, 0 ≤ (u i).re ∧ (u i).im = 0) :
     0 ≤ (∏ i ∈ s, u i).re ∧ (∏ i ∈ s, u i).im = 0 := by

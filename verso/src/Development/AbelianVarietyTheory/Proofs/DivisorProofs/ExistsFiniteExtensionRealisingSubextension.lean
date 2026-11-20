@@ -13,15 +13,11 @@ open GlobalTheory.Mum
 namespace GlobalTheory.GalClosure
 
 /- English proof (translation)
-Introduce `R _ _ _ hR R₁ _ _ _ ρ hρ E hE`. Take `⟨hadm, hinj, hfin⟩` from `hρ`. Use `haveI : CharZero R := hR.2`. Use `haveI : CharZero R₁ := charZero_of_injective_ringHom hinj`. Establish `hR₁ : Base R₁` using `⟨hadm, inferInstance⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `E'` to `IntermediateField.normalClosure (FractionRing R₁) E (Kb R₁)`. Use `haveI : IsGalois (FractionRing R₁) E' := inferInstance`. Use `haveI : FiniteDimensional (FractionRing R₁) E' := inferInstance`. Take `⟨hloc, hfe⟩` from `finExt_integralClosure (E := E') hR₁`. Use `letI : Algebra R₁ E' := (baseMap R₁ E').toAlgebra`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsScalarTower R₁ (FractionRing R₁) E' := IsScalarTower.of_algebraMap_eq' rfl`. Use `set R₂ := integralClosure R₁ E'`. Use `haveI : IsFractionRing R₂ E' := integralClosure.isFractionRing_of_finite_extension (FractionRing R₁) E'`. Set `incl : E →ₐ[FractionRing R₁] E'` to `IntermediateField.inclusion (IntermediateField.le_normalClosure E)`. Set `eqv : E' ≃ₐ[R₂] FractionRing R₂` to `(FractionRing.algEquiv R₂ E').symm`.
-
-Establish `hloc' : IsLocalHom (algebraMap R₁ R₂)` using `by haveI : Module.Finite R₁ R₂ := RingHom.finite_algebraMap.1 hfe.2.2`. Establish `: (Ideal.comap (algebraMap R₁ R₂) (maximalIdeal R₂)).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (maximalIdeal R₂)`. Conclude with `((local_hom_TFAE (algebraMap R₁ R₂)).out 0 4).mpr (IsLocalRing.eq_maximalIdeal this)`. Use `⟨R₂, inferInstance, inferInstance, hloc, algebraMap R₁ R₂, eqv.toRingHom.comp incl.toRingHom, hfe, ⟨hfe.1, hfe.2.1.comp hinj, hfe.2.2.comp hfin⟩, hloc', fun r => ?_⟩` and prove the remaining obligations. Establish `h1 : incl (algebraMap (FractionRing R₁) E (algebraMap R₁ (FractionRing R₁) r)) = algebraMap R₂ E' (algebraMap R₁ R₂ r)` using `incl.commutes _`.
-
-Express the relevant statement in the definitionally equal form `eqv (incl _) = _`. Rewrite using `[h1]`. Conclude with `eqv.commutes _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finExt_realising : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (R₁ : Type) [CommRing R₁] [IsDomain R₁] [IsLocalRing R₁] (ρ : R →+* R₁), FinExt ρ → ∀ (E : IntermediateField (FractionRing R₁) (Kb R₁)), FiniteDimensional (FractionRing R₁) E → ∃ (R₂ : Type) (_ : CommRing R₂) (_ : IsDomain R₂) (_ : IsLocalRing R₂) (i₁₂ : R₁ →+* R₂) (e : E →+* FractionRing R₂), FinExt i₁₂ ∧ FinExt (i₁₂.comp ρ) ∧ IsLocalHom i₁₂ ∧ ∀ r : R₁, e (algebraMap (FractionRing R₁) E (algebraMap R₁ (FractionRing R₁) r)) = algebraMap R₂ (FractionRing R₂) (i₁₂ r) := by
   intro R _ _ _ hR R₁ _ _ _ ρ hρ E hE

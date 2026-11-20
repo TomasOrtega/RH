@@ -100,13 +100,13 @@ def OneMapAll (F : Face D A) (phs : Fin D.R.m → ℂ) : Prop :=
       RowAll T R κ v₀ i hV (T.cE ((i : ℕ) + 1) T.toCore.σ₀) (phs i)
 
 /- English proof (translation)
-The claim follows from `h.2.1.laws.spaceW _ ⟨Nat.le_add_left _ _, i.2⟩ _ T.toCore.good_σ₀`.
+A detailed English derivation is pending.
 -/
 theorem space_eq {F : Face D A} (h : Ties T R κ v₀ F) (i : Fin D.R.m) : T.V ((i : ℕ) + 1) T.toCore.σ₀ = Wc D i :=
   h.2.1.laws.spaceW _ ⟨Nat.le_add_left _ _, i.2⟩ _ T.toCore.good_σ₀
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, h⟩` from `h`. Establish `h1` using `h.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2`. Conclude with `⟨h1.1, h1.2.1⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem RowAt.norm {i : Fin D.R.m} {hV : T.V ((i : ℕ) + 1) T.toCore.σ₀ = Wc D i} {Tup : Type} {tup : Tup → T0}
     {cc : (T.U ((i : ℕ) + 1) T.toCore.σ₀).Comp → ℂ} {ph : ℂ} (h : RowAt T R κ v₀ i hV tup cc ph) :

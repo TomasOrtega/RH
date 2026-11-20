@@ -19,7 +19,7 @@ def nbU (l : ℝ) : GL (Fin n ⊕ Fin n) ℂ where
   inv_val := by simp [fromBlocks_multiply, ← fromBlocks_one]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `InG (fromBlocks 1 0 ((l : ℂ) • 1) 1)`. Simplify using `only [InG, JJ, fromBlocks_conjTranspose, fromBlocks_multiply]`. Apply the tactic sequence `congr 1 <;> simp [Matrix.smul_eq_diagonal_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nbU_mem (l : ℝ) : nbU (n := n) l ∈ GR n := by
   change InG (fromBlocks 1 0 ((l : ℂ) • 1) 1)
@@ -29,7 +29,7 @@ theorem nbU_mem (l : ℝ) : nbU (n := n) l ∈ GR n := by
 def nbG (l : ℝ) : GR n := ⟨nbU l, nbU_mem l⟩
 
 /- English proof (translation)
-Apply `ext_mR` to reduce the goal to its premises. Use `show fromBlocks 1 0 (((0 : ℝ) : ℂ) • 1) 1 = 1`. Simplify using `[fromBlocks_one]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nbG_zero : nbG (n := n) 0 = 1 := by
   apply ext_mR
@@ -37,9 +37,9 @@ theorem nbG_zero : nbG (n := n) 0 = 1 := by
   simp [fromBlocks_one]
 
 /- English proof (translation)
-Apply `Continuous.subtype_mk` to reduce the goal to its premises. Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Use `show Continuous fun l : ℝ => (fromBlocks 1 0 ((l : ℂ) • 1) 1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℂ)`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp <;> fun_prop`. Use `show Continuous fun l : ℝ => (fromBlocks 1 0 (-((l : ℂ) • 1)) 1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℂ)`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cont_nbG : Continuous (nbG (n := n)) := by
   apply Continuous.subtype_mk
@@ -53,7 +53,7 @@ theorem cont_nbG : Continuous (nbG (n := n)) := by
     rcases i with i | i <;> rcases j with j | j <;> simp <;> fun_prop
 
 /- English proof (translation)
-Establish `hm : mR (nbG l * y) = fromBlocks 1 0 ((l : ℂ) • 1) 1 * mR y` using `rfl`. Rewrite using `[hm]`. Use `conv_lhs => rw [← fromBlocks_toBlocks (mR y)]`. Rewrite using `[fromBlocks_multiply, toBlocks_fromBlocks₂₁]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nbG_low (l : ℝ) (y : GR n) :
     (mR (nbG l * y)).toBlocks₂₁ = (l : ℂ) • (mR y).toBlocks₁₁ + (mR y).toBlocks₂₁ := by
@@ -64,21 +64,19 @@ theorem nbG_low (l : ℝ) (y : GR n) :
   simp
 
 /- English proof (translation)
-Introduce `hdet`. Take `⟨x, hx0, hx⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Set `v : Fin n ⊕ Fin n → ℂ` to `Sum.elim x 0`. Establish `hYv : mR y *ᵥ v = Sum.elim ((mR y).toBlocks₁₁ *ᵥ x) ((mR y).toBlocks₂₁ *ᵥ x)` using `by conv_lhs => rw [← fromBlocks_toBlocks (mR y)]`. Rewrite using `[fromBlocks_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[v]`. Establish `hCx : (mR y).toBlocks₂₁ *ᵥ x = -(Complex.I • ((mR y).toBlocks₁₁ *ᵥ x))`. Rewrite `hx` using `[add_mulVec, smul_mulVec]`. Rewrite using `[eq_neg_iff_add_eq_zero, add_comm]`. Conclude with `hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy : (mR y)ᴴ * JJ n * mR y = JJ n` using `y.2`. Establish `hform : star (mR y *ᵥ v) ⬝ᵥ (JJ n *ᵥ (mR y *ᵥ v)) = 0`. Rewrite using `[star_mulVec, mulVec_mulVec, dotProduct_mulVec, vecMul_vecMul, ← Matrix.mul_assoc, hy, ← dotProduct_mulVec]`. Simplify using `[v, JJ, fromBlocks_mulVec, dotProduct, Fintype.sum_sum_type]`. Rewrite `hform` using `[hYv, hCx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[JJ, fromBlocks_mulVec, dotProduct, Fintype.sum_sum_type] at hform`. Use `set u := (mR y).toBlocks₁₁ *ᵥ x with hu`. Simplify using `only [neg_mulVec, Pi.neg_apply] at hform`. Establish `h3 : (-2 * Complex.I) * ∑ i, starRingEnd ℂ (u i) * u i = 0`. Rewrite using `[← hform, Finset.mul_sum, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∑ i, starRingEnd ℂ (u i) * u i = 0` using `(mul_eq_zero.mp h3).resolve_left (by simp [Complex.I_ne_zero])`. Establish `hu0 : u = 0`. Rewrite using `[← dotProduct_star_self_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h2` using `[dotProduct]`. Establish `hYv0 : mR y *ᵥ v = 0`. Rewrite using `[hYv, hCx, hu0]`. Use extensionality with `i`. Apply the tactic sequence `rcases i with i | i <;> simp`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : mR y⁻¹ * mR y = 1` using `congrArg mR (inv_mul_cancel y)`. Establish `hv : v = 0`. Rewrite using `[← one_mulVec v, ← hinv, ← mulVec_mulVec, hYv0, mulVec_zero]`. Apply `hx0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
-
-Conclude with `congrFun hv (Sum.inl i)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem det_I (y : GR n) : (Complex.I • (mR y).toBlocks₁₁ + (mR y).toBlocks₂₁).det ≠ 0 := by
   intro hdet
@@ -122,13 +120,13 @@ theorem det_I (y : GR n) : (Complex.I • (mR y).toBlocks₁₁ + (mR y).toBlock
   exact congrFun hv (Sum.inl i)
 
 /- English proof (translation)
-Set `M : Matrix (Fin n) (Fin n) ℂ[X]` to `(X : ℂ[X]) • (mR y).toBlocks₁₁.map (Polynomial.C : ℂ →+* ℂ[X]) + (mR y).toBlocks₂₁.map (Polynomial.C : ℂ →+* ℂ[X])`. Set `p : ℂ[X]` to `M.det`. Establish `hev : ∀ z : ℂ, p.eval z = (z • (mR y).toBlocks₁₁ + (mR y).toBlocks₂₁).det`. Introduce `z`. Establish `h` using `RingHom.map_det (Polynomial.evalRingHom z) M`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[Polynomial.coe_evalRingHom]`. Rewrite using `[h]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[M]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hp : p ≠ 0`. Introduce `h0`. Apply `det_I y` to reduce the goal to its premises. Rewrite using `[← hev, h0, Polynomial.eval_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `(p.roots.toFinset.finite_toSet.preimage Complex.ofReal_injective.injOn).subset` to reduce the goal to its premises. Introduce `l hl`. Simplify using `only [Set.mem_setOf_eq] at hl`. Rewrite using `[Set.mem_preimage, Finset.mem_coe, Multiset.mem_toFinset, Polynomial.mem_roots hp]`. Conclude with `(hev _).trans hl`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_bad (y : GR n) :
     {l : ℝ | ((l : ℂ) • (mR y).toBlocks₁₁ + (mR y).toBlocks₂₁).det = 0}.Finite := by
@@ -155,11 +153,11 @@ theorem finite_bad (y : GR n) :
   exact (hev _).trans hl
 
 /- English proof (translation)
-Rewrite using `[dense_iff_closure_eq, Set.eq_univ_iff_forall]`. Introduce `y`. Establish `hS` using `finite_bad y`. Use `set S := {l : ℝ | ((l : ℂ) • (mR y).toBlocks₁₁ + (mR y).toBlocks₂₁).det = 0} with hSdef`. Establish `hT : (S \ {0})ᶜ ∈ 𝓝 (0 : ℝ)` using `(hS.diff (s := S) (t := {0})).isClosed.isOpen_compl.mem_nhds (by simp)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Continuous fun t : ℝ => nbG (n` using `n) t * y := cont_nbG.mul continuous_const`. Establish `htend : Tendsto (fun t : ℝ => nbG (n` using `n) t * y) (𝓝[≠] 0) (𝓝 y) := by`. Establish `h` using `(hcont.tendsto 0).mono_left (nhdsWithin_le_nhds (s := {0}ᶜ))`. Simplify `h` using `[nbG_zero]`. Apply `mem_closure_of_tendsto htend` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [nhdsWithin_le_nhds hT, self_mem_nhdsWithin] with t h1 h2`. Simplify using `only [Set.mem_setOf_eq, nbG_low]`. Introduce `hdet`. Conclude with `h1 ⟨hdet, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dense_cell : Dense {y : GR n | (mR y).toBlocks₂₁.det ≠ 0} := by
   rw [dense_iff_closure_eq, Set.eq_univ_iff_forall]

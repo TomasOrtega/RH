@@ -16,9 +16,9 @@ def dTot (a : Fin (N + 1)) : ℕ :=
     G.zPlus • (if Fin.castSucc G.uPos = a then 1 else 0) + chDeg G.LL a + (if Fin.last N = a then G.B else 0)
 
 /- English proof (translation)
-Unfold `chDeg`. Rewrite using `[Finset.sum_eq_single a0]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[if_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hb (Fin.castSucc_injective _ h)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a0) h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem chDeg_cast (LL : M.Letters N) (a0 : Fin N) : chDeg LL (Fin.castSucc a0) = LL.deg a0 := by
   unfold chDeg
@@ -32,7 +32,7 @@ theorem chDeg_cast (LL : M.Letters N) (a0 : Fin N) : chDeg LL (Fin.castSucc a0) 
     exact absurd (Finset.mem_univ a0) h
 
 /- English proof (translation)
-Unfold `chDeg`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`. Rewrite using `[if_neg]`. Conclude with `Fin.castSucc_ne_last b`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chDeg_last (LL : M.Letters N) : chDeg LL (Fin.last N) = 0 := by
   unfold chDeg
@@ -42,7 +42,7 @@ theorem chDeg_last (LL : M.Letters N) : chDeg LL (Fin.last N) = 0 := by
   exact Fin.castSucc_ne_last b
 
 /- English proof (translation)
-Unfold `M.finPos`. Rewrite using `[Fin.ext_iff]`. Simplify using `only [Fin.coe_castSucc]`. Rewrite using `[min_eq_left hk.le]`. Conclude with `eq_comm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPos_eq_cast (k : ℕ) (hk : k < N) (a0 : Fin N) : M.finPos N k = Fin.castSucc a0 ↔ (a0 : ℕ) = k := by
   unfold M.finPos
@@ -52,7 +52,7 @@ theorem finPos_eq_cast (k : ℕ) (hk : k < N) (a0 : Fin N) : M.finPos N k = Fin.
   exact eq_comm
 
 /- English proof (translation)
-Unfold `M.finPos`. Rewrite using `[Ne, Fin.ext_iff]`. Simplify using `only [Fin.val_last]`. Rewrite using `[min_eq_left hk.le]`. Conclude with `hk.ne`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPos_ne_last (k : ℕ) (hk : k < N) : M.finPos N k ≠ Fin.last N := by
   unfold M.finPos
@@ -62,25 +62,21 @@ theorem finPos_ne_last (k : ℕ) (hk : k < N) : M.finPos N k ≠ Fin.last N := b
   exact hk.ne
 
 /- English proof (translation)
-Take `⟨⟨hmono, hvec, _⟩, hlt, _, _⟩` from `hB`. Take `⟨hj, hjp⟩` from `hl`. Establish `hdisj : ∀ b c : Fin G.T.t, G.T.pos b + 1 ≠ G.T.pos c`. Introduce `b c h`. Take `⟨hb1, _, hbf⟩` from `hvec b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hc1, hct, _⟩` from `hvec c`. Establish `e : (⟨G.T.pos b + 1, hb1⟩ : Fin N) = ⟨G.T.pos c, by omega⟩` using `Fin.ext h`. Rewrite `hbf` using `[e]`. Rewrite `hct` using `[hbf]`. Conclude with `Bool.false_ne_true hct`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hu : a0 = G.uPos`. Rewrite using `[if_pos hu, Finset.sum_eq_zero]`. Rewrite using `[hu]`. Use linear arithmetic over natural numbers and integers. Introduce `i _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Establish `h1` using `hlt i`. Establish `h2 : (a0 : ℕ) = G.uPos` using `by rw [hu]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hu, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hex : ∃ i, (a0 : ℕ) = G.T.pos i ∨ (a0 : ℕ) = G.T.pos i + 1`. Take `⟨i0, hi0⟩` from `hex`. Rewrite using `[Finset.sum_eq_single i0]`. Rewrite using `[if_pos hi0]`. Take `⟨hN0, _, _⟩` from `hvec i0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hi0 with h | h` into its components or cases. Conclude with `(hj i0).1.trans_eq (congrArg G.LL.deg (Fin.ext (by simp; omega)))`. Conclude with `(hj i0).2.trans_eq (congrArg G.LL.deg (Fin.ext (by simp; omega)))`. Introduce `b _ hb`. Rewrite using `[if_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hb'`. Apply the tactic sequence `rcases hb' with h1 | h1 <;> rcases hi0 with h2 | h2`. Conclude with `hb (hmono.injective (by omega))`. Conclude with `hdisj i0 b (by omega)`. Conclude with `hdisj b i0 (by omega)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hb (hmono.injective (by omega))`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ i0) h'`. Use `push_neg at hex`. Rewrite using `[Finset.sum_eq_zero]`.
-
-Conclude with `Nat.zero_le _`. Introduce `i _`. Rewrite using `[if_neg]`. Introduce `h`. Break down `h with h | h` into its components or cases.
-
-Conclude with `(hex i).1 h`. Conclude with `(hex i).2 h`.
+A detailed English derivation is pending.
 -/
 theorem level_room (hB : G.BlockOK) (j : Fin G.T.t → ℕ) (jp : ℕ) (hl : G.LevelOK j jp) (a0 : Fin N) :
     (∑ i, if (a0 : ℕ) = G.T.pos i ∨ (a0 : ℕ) = G.T.pos i + 1 then j i else 0) + (if a0 = G.uPos then jp else 0) ≤
@@ -134,23 +130,23 @@ theorem level_room (hB : G.BlockOK) (j : Fin G.T.t → ℕ) (jp : ℕ) (hl : G.L
       · exact (hex i).2 h
 
 /- English proof (translation)
-Establish `hvec` using `hB.1.2.1`. Establish `hjp` using `hl.2`. Establish `hposN : ∀ i, G.T.pos i + 1 < N` using `fun i => (hvec i).1`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `hA : (∑ i, j i • ((if M.finPos N (G.T.pos i) = Fin.last N then 1 else 0) + (if M.finPos N (G.T.pos i + 1) = Fin.last N then 1 else 0))) = 0`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[if_neg (finPos_ne_last _ (by have := hposN i; omega)), if_neg (finPos_ne_last _ (hposN i))]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hu : ¬ Fin.castSucc G.uPos = Fin.last N` using `Fin.castSucc_ne_last _`. Unfold `dLvl dTot`. Rewrite using `[hA, chDeg_last, chDeg_last, if_neg hu, if_pos rfl, if_pos rfl, if_pos rfl]`. Simplify using `only [smul_eq_mul]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Consider the case `cast a0`. Establish `hA : (∑ i, j i • ((if M.finPos N (G.T.pos i) = Fin.castSucc a0 then 1 else 0) + (if M.finPos N (G.T.pos i + 1) = Fin.castSucc a0 then 1 else 0))) = ∑ i, if (a0 : ℕ) = G.T.pos i ∨ (a0 : ℕ) = G.T.pos i + 1 then j i else 0`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Establish `e1` using `finPos_eq_cast (G.T.pos i) (by have := hposN i; omega) a0`.
+Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e2` using `finPos_eq_cast (G.T.pos i + 1) (hposN i) a0`. Distinguish the cases in `h1 : (a0 : ℕ) = G.T.pos i`. Establish `h2 : ¬ (a0 : ℕ) = G.T.pos i + 1` using `by omega`. Simplify using `only [e1, e2, h1, h2, if_true, if_false, or_false]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h2 : (a0 : ℕ) = G.T.pos i + 1`. Simplify using `only [e1, e2, h1, h2, if_true, if_false, or_true]`. Simplify using the standard rewrite rules. Simplify using `only [e1, e2, h1, h2, if_false, or_false]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hB' : jp • ((if Fin.castSucc G.uPos = Fin.castSucc a0 then 1 else 0) + (if Fin.last N = Fin.castSucc a0 then 1 else 0)) = if a0 = G.uPos then jp else 0`. Establish `hL : ¬ Fin.last N = Fin.castSucc a0` using `fun h => Fin.castSucc_ne_last a0 h.symm`. Rewrite using `[if_neg hL]`. Distinguish the cases in `h : a0 = G.uPos`. Rewrite using `[if_pos (by rw [h]), if_pos h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun e => h (Fin.castSucc_injective _ e).symm), if_neg h]`. Simplify using the standard rewrite rules. Establish `hC : chDeg (G.lettersAt j jp) (Fin.castSucc a0) = (G.LL.deg a0 - ∑ i, if (a0 : ℕ) = G.T.pos i ∨ (a0 : ℕ) = G.T.pos i + 1 then j i else 0) - (if a0 = G.uPos then jp else 0)`. Rewrite using `[chDeg_cast]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hD` using `level_room G hB j jp hl a0`. Establish `hL : ¬ Fin.last N = Fin.castSucc a0` using `fun h => Fin.castSucc_ne_last a0 h.symm`. Unfold `dLvl dTot`. Rewrite using `[hA, hB', hC, chDeg_cast, if_neg hL, if_neg hL]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -210,13 +206,11 @@ theorem dLvl_eq (hB : G.BlockOK) (j : Fin G.T.t → ℕ) (jp : ℕ) (hl : G.Leve
     omega
 
 /- English proof (translation)
-Distinguish the cases in `hex : ∃ i, x i = a`. Take `⟨i0, hi0⟩` from `hex`. Rewrite using `[Finset.sum_eq_single i0]`. Simplify using `[hi0, h i0]`. Introduce `b _ hb`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Simplify using the standard rewrite rules. Introduce `hba`. Conclude with `hb (hx (hba.trans hi0.symm))`. Introduce `h'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (Finset.mem_univ i0) h'`. Use `push_neg at hex`. Rewrite using `[Finset.sum_eq_zero]`. Conclude with `Nat.zero_le _`. Introduce `i _`.
-
-Simplify using `[hex i]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_ite_inj_le {ι α : Type} [Fintype ι] [DecidableEq α] (x : ι → α) (hx : Function.Injective x) (n : ι → ℕ)
     (a : α) (Mx : ℕ) (h : ∀ i, n i ≤ Mx) : ∑ i, n i • (if x i = a then 1 else 0) ≤ Mx := by
@@ -238,13 +232,13 @@ theorem sum_ite_inj_le {ι α : Type} [Fintype ι] [DecidableEq α] (x : ι → 
     simp [hex i]
 
 /- English proof (translation)
-Establish `hpN : ∀ i, G.T.pos i + 1 < N` using `fun i => (hB.2.1 i).trans G.uPos.2`. Establish `hinj : Function.Injective (fun i => M.finPos N (G.T.pos i))`. Introduce `i i' h`. Establish `h' : min (G.T.pos i) N = min (G.T.pos i') N` using `congrArg Fin.val h`. Establish `h1` using `hpN i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hpN i'`. Conclude with `hB.1.1.injective (by omega)`. Establish `e1` using `sum_ite_inj_le (fun i => M.finPos N (G.T.pos i)) hinj G.T.z a (2 * A) hz`. Apply the tactic sequence `have e2 : G.zPlus • (if Fin.castSucc G.uPos = a then 1 else 0) ≤ 2 * A := by split_ifs <;> simp [hzp]`. Establish `e3 : chDeg G.LL a ≤ 2 * A`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => rw [chDeg_last]`. Conclude with `Nat.zero_le _`. Consider the case `cast a0 => rw [chDeg_cast]`. Conclude with `hdeg a0`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Establish `e4 : (if Fin.last N = a then G.B else 0) ≤ 2 * A` using `by split_ifs`. Conclude with `hBa`. Conclude with `Nat.zero_le _`. Unfold `dTot`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem dTot_le (hB : G.BlockOK) (A : ℕ) (hdeg : ∀ x, G.LL.deg x ≤ 2 * A) (hBa : G.B ≤ 2 * A)
     (hz : ∀ i, G.T.z i ≤ 2 * A) (hzp : G.zPlus ≤ 2 * A) (a : Fin (N + 1)) : dTot G a ≤ 8 * A := by
@@ -271,17 +265,17 @@ theorem dTot_le (hB : G.BlockOK) (A : ℕ) (hdeg : ∀ x, G.LL.deg x ≤ 2 * A) 
   omega
 
 /- English proof (translation)
-Establish `hL : ∀ n, n ≤ 8 * A + r → Nat.log p n ≤ Nat.log p (8 * A + r)` using `fun n hn => Nat.log_mono_right hn`. Establish `hld : ∀ x, (G.lettersAt j jp).deg x ≤ 2 * A`. Introduce `x`. Use `hdeg x` as an intermediate fact. Simplify using `only [M.BlockData.lettersAt]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `hj : ∀ i, j i ≤ 2 * A` using `fun i => (hl.1 i).1.trans (hdeg _)`. Establish `h1` using `val_lvC_le (r := r) p G j jp (Nat.log p (8 * A + r)) (fun i => hL _ (by`. Use `hld (G.letterAt (G.T.pos i))` as an intermediate fact. Use `hld (G.letterAt (G.T.pos i + 1))` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hz i` as an intermediate fact. Use `hj i` as an intermediate fact. Use the proof step `omega))`. Use the proof step `(hL _ (by`. Use `hdeg G.uPos` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hl.2` as an intermediate fact. Use `hzp` as an intermediate fact. Use `hBa` as an intermediate fact. Use the proof step `omega))`. Establish `h2` using `val_letters_le p G μ (dLvl G j' jp') hw (Nat.log p (8 * A + r)) (fun a => hL _ (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[dLvl_eq G hB j' jp' hl' a]`. Use `dTot_le G hB A hdeg hBa hz hzp a` as an intermediate fact. Use the proof step `omega))`. Establish `hprod : ∏ a, (dLvl G j jp a)! = ∏ a, (dLvl G j' jp' a)!`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `a _`. Rewrite using `[dLvl_eq G hB j jp hl a, dLvl_eq G hB j' jp' hl' a]`. Rewrite `h1` using `[hprod]`. Rewrite using `[Nat.add_mul ((N + 1) * r + (G.T.t + 1) * 2) (G.T.t + 1)]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem val_gen (hB : G.BlockOK) (A : ℕ) (hdeg : ∀ x, G.LL.deg x ≤ 2 * A) (hBa : G.B ≤ 2 * A)
     (hz : ∀ i, G.T.z i ≤ 2 * A) (hzp : G.zPlus ≤ 2 * A)

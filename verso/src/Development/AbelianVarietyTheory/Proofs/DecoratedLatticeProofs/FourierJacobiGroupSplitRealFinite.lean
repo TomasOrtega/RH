@@ -23,7 +23,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {M 
   {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R']
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [Algebra.TensorProduct.one_def, h]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, mul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensNU_map (φ : R' →ₐ[F] R) (j : R →ₗ[F] R') (hj : ∀ a b, j (a * b) = j a * j b) (h : ∀ a, j (φ a) = j 1 * a)
     (z : R' ⊗[F] E) : tensNU j hj (Algebra.TensorProduct.map φ (AlgHom.id F E) z) = tensNU (E := E) j hj 1 * z := by
@@ -33,7 +33,7 @@ theorem tensNU_map (φ : R' →ₐ[F] R) (j : R →ₗ[F] R') (hj : ∀ a b, j (
   | add x y hx hy => rw [map_add, map_add, hx, hy, mul_add]
 
 /- English proof (translation)
-Use `⟨tensNU (E := E) j hj 1, ?_⟩` and prove the remaining obligations. Use extensionality with `r s`. Rewrite using `[GlobalTheory.AutFunCompare.mat_extH, GlobalTheory.AutFunCompare.mat_mapH, tensNU_map φ j hj h]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mat_extH_mapH (φ : R' →ₐ[F] R) (j : R →ₗ[F] R') (hj : ∀ a b, j (a * b) = j a * j b) (h : ∀ a, j (φ a) = j 1 * a)
     (g : HA R' σ J) : ∃ c : R' ⊗[F] E, (HA.mat R' σ J (extH σ J j hj (mapH σ J φ g))).1 =
@@ -45,7 +45,7 @@ theorem mat_extH_mapH (φ : R' →ₐ[F] R) (j : R →ₗ[F] R') (hj : ∀ a b, 
 
 omit [Algebra F R] in
 /- English proof (translation)
-Rewrite using `[Matrix.add_mul, Matrix.smul_mul, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_add, Matrix.mul_smul, Matrix.mul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mix {k n m : ℕ} (c : R) (P : Matrix (Fin k) (Fin n) R) (G : Matrix (Fin n) (Fin n) R)
     (Q : Matrix (Fin n) (Fin m) R) :
@@ -54,14 +54,14 @@ theorem conj_mix {k n m : ℕ} (c : R) (P : Matrix (Fin k) (Fin n) R) (G : Matri
 
 omit [Algebra F R] in
 /- English proof (translation)
-Rewrite using `[hA, hB, smul_zero, smul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mix_zero {k m : ℕ} (c : R) {A B : Matrix (Fin k) (Fin m) R} (hA : A = 0) (hB : B = 0) :
     (1 - c) • A + c • B = 0 := by rw [hA, hB, smul_zero, smul_zero, add_zero]
 
 omit [Algebra F R] in
 /- English proof (translation)
-Substitute `hA` using the available equality. Use `⟨fun hji => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, (hB i j).1 hji, Matrix.one_apply_ne hji.ne', mul_zero, add_zero]`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, (hB i i).2, Matrix.one_apply_eq, mul_one, sub_add_cancel]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mix_uni {k : ℕ} (c : R) {A B : Matrix (Fin k) (Fin k) R} (hA : A = 1)
     (hB : ∀ i j : Fin k, (j < i → B i j = 0) ∧ B i i = 1) (i j : Fin k) :
@@ -78,7 +78,7 @@ end Gen
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `mat_extH_mapH (R' := AF D.host.F) D.sp.cm.sig V.gram (fstA D.host.F) _ _ (fun a => Prod.ext (one_mul a.1).symm (zero_mul a.2).symm) g`.
+A detailed English derivation is pending.
 -/
 theorem mt_ofInf_projInf (V : HSp D) (g : GA D V) : ∃ c : AE D,
     mt V (ofInf D.sp.cm.sig V.gram (projInf D.sp.cm.sig V.gram g)) = (1 - c) • (1 : Mx D V.rank V.rank) + c • mt V g :=
@@ -86,7 +86,7 @@ theorem mt_ofInf_projInf (V : HSp D) (g : GA D V) : ∃ c : AE D,
     (fun a => Prod.ext (one_mul a.1).symm (zero_mul a.2).symm) g
 
 /- English proof (translation)
-The claim follows from `mat_extH_mapH (R' := AF D.host.F) D.sp.cm.sig V.gram (sndA D.host.F) _ _ (fun a => Prod.ext (zero_mul a.1).symm (one_mul a.2).symm) g`.
+A detailed English derivation is pending.
 -/
 theorem mt_ofFin_projFin (V : HSp D) (g : GA D V) : ∃ c : AE D,
     mt V (ofFin D.sp.cm.sig V.gram (projFin D.sp.cm.sig V.gram g)) = (1 - c) • (1 : Mx D V.rank V.rank) + c • mt V g :=
@@ -94,7 +94,7 @@ theorem mt_ofFin_projFin (V : HSp D) (g : GA D V) : ∃ c : AE D,
     (fun a => Prod.ext (zero_mul a.1).symm (one_mul a.2).symm) g
 
 /- English proof (translation)
-Take `⟨h0, hY, hX⟩` from `(GlobalTheory.BesClosed.mem_jacGrp_iff_mat d g).1 hg`. Establish `e : ∀ {k : ℕ} (P : Mx D k S.rank), P ⬝ (mt S h ⬝ d.jX) = (1 - c) • (P ⬝ d.jX) + c • (P ⬝ (mt S g ⬝ d.jX))` using `fun P => (congrArg (fun N : Mx D S.rank S.rank => P ⬝ (N ⬝ d.jX)) hh).trans (conj_mix c P (mt S g) d.jX)`. Use `(GlobalTheory.BesClosed.mem_jacGrp_iff_mat d h).2 ⟨(e _).trans (mix_zero c d.p0_jX h0), (e _).trans (mix_zero c d.pY_jX hY), ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `mix_uni c d.pX_jX hX`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_jacGrp_of_mat {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (c : AE D) {g h : GA D S} (hg : g ∈ jacGrp d)
     (hh : mt S h = (1 - c) • (1 : Mx D S.rank S.rank) + c • mt S g) : h ∈ jacGrp d := by
@@ -114,13 +114,11 @@ namespace GlobalTheory
 open GlobalTheory.AdelicU
 
 /- English proof (translation)
-Introduce `D V V₀ ρ d a ha b hb hab`. Rewrite `ha` using `[GinfC_eq, mem_infPts]`. Rewrite `hb` using `[GfC_eq, mem_finPts]`. Establish `hA : ofInf D.sp.cm.sig V.gram (projInf D.sp.cm.sig V.gram (a * b)) = a`. Rewrite using `[map_mul, hb, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← ofInf_projInf_mul_ofFin_projFin D.sp.cm.sig V.gram a]`. Rewrite using `[ha, map_one, mul_one]`. Establish `hB : ofFin D.sp.cm.sig V.gram (projFin D.sp.cm.sig V.gram (a * b)) = b`. Rewrite using `[map_mul, ha, one_mul]`. Use `conv_rhs => rw [← ofInf_projInf_mul_ofFin_projFin D.sp.cm.sig V.gram b]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hb, map_one, one_mul]`. Take `⟨c, hc⟩` from `GlobalTheory.JacSplit.mt_ofInf_projInf V (a * b)`. Take `⟨c', hc'⟩` from `GlobalTheory.JacSplit.mt_ofFin_projFin V (a * b)`. Rewrite `hc` using `[hA]`. Rewrite `hc'` using `[hB]`.
-
-Conclude with `⟨GlobalTheory.JacSplit.mem_jacGrp_of_mat d c hab hc, GlobalTheory.JacSplit.mem_jacGrp_of_mat d c' hab hc'⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem jacGrp_split_inf_fin : ∀ (D : D7) (V V₀ : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ), ∀ a ∈ GinfC V, ∀ b ∈ GfC V,
     a * b ∈ jacGrp d → a ∈ jacGrp d ∧ b ∈ jacGrp d := by

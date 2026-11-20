@@ -21,11 +21,11 @@ def GoodFam {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (U : Set V) (f
     ∃ u : ι → ℝ, Summable u ∧ ∀ i, ∀ z ∈ L, ‖iteratedFDeriv ℝ k (f i) z‖ ≤ u i
 
 /- English proof (translation)
-Take `⟨r, hr, hrU⟩` from `Metric.isOpen_iff.1 hU z hz`. Establish `hsub : Metric.closedBall z (r / 2) ⊆ U` using `(Metric.closedBall_subset_ball (by linarith)).trans hrU`. Establish `hK : IsCompact (Metric.closedBall z (r / 2))` using `isCompact_closedBall z (r / 2)`. Take `⟨u1, hu1, hb1⟩` from `hf.2 _ hK hsub 1`. Take `⟨u0, hu0, hb0⟩` from `hf.2 _ hK hsub 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hzb : z ∈ Metric.ball z (r / 2)` using `Metric.mem_ball_self (by linarith)`. Use `hasFDerivAt_tsum_of_isPreconnected hu1 Metric.isOpen_ball (convex_ball z (r / 2)).isPreconnected (fun i y hy => ?_) (fun i y hy => ?_) hzb ?_ hzb` and prove the remaining obligations. Establish `hyU : y ∈ U` using `hsub (Metric.ball_subset_closedBall hy)`. Conclude with `(((hf.1 i).contDiffAt (hU.mem_nhds hyU)).differentiableAt (by simp)).hasFDerivAt`. Use `hb1 i y (Metric.ball_subset_closedBall hy)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[norm_iteratedFDeriv_one]`. Then use the resulting hypothesis. Use `Summable.of_norm_bounded hu0 (fun i => ?_)` and prove the remaining obligations. Use `hb0 i z (Metric.mem_closedBall_self (by linarith))` as an intermediate fact. Rewrite `this` using `[norm_iteratedFDeriv_zero]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_tsum {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
     {U : Set V} (hU : IsOpen U) {f : ι → V → E} (hf : GoodFam U f) {z : V} (hz : z ∈ U) :
@@ -48,7 +48,7 @@ theorem hasFDerivAt_tsum {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [
     rwa [norm_iteratedFDeriv_zero] at this
 
 /- English proof (translation)
-Use `⟨fun i => (hf.1 i).fderiv_of_isOpen hU (by simp), fun L hL hLU k => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hb⟩` from `hf.2 L hL hLU (k + 1)`. Conclude with `⟨u, hu, fun i z hz => by rw [norm_iteratedFDeriv_fderiv]; exact hb i z hz⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem goodFam_fderiv {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {U : Set V} (hU : IsOpen U) {f : ι → V → E} (hf : GoodFam U f) :
@@ -58,9 +58,9 @@ theorem goodFam_fderiv {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
   exact ⟨u, hu, fun i z hz => by rw [norm_iteratedFDeriv_fderiv]; exact hb i z hz⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `E _ _ _ f hf`. Rewrite using `[Nat.cast_zero, contDiffOn_zero]`. Conclude with `fun z hz => (hasFDerivAt_tsum hU hf hz).continuousAt.continuousWithinAt`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Consider the case `succ n ih`. Introduce `E _ _ _ f hf`. Rewrite using `[Nat.cast_succ, contDiffOn_succ_iff_fderiv_of_isOpen hU]`. Use `⟨fun z hz => (hasFDerivAt_tsum hU hf hz).differentiableAt.differentiableWithinAt, fun h => by simp at h, ?_⟩` and prove the remaining obligations. Conclude with `(ih (goodFam_fderiv hU hf)).congr fun z hz => (hasFDerivAt_tsum hU hf hz).fderiv`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiffOn_tsum {U : Set V} (hU : IsOpen U) (n : ℕ) :
     ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E] {f : ι → V → E},
@@ -78,7 +78,7 @@ theorem contDiffOn_tsum {U : Set V} (hU : IsOpen U) (n : ℕ) :
     exact (ih (goodFam_fderiv hU hf)).congr fun z hz => (hasFDerivAt_tsum hU hf hz).fderiv
 
 /- English proof (translation)
-The claim follows from `contDiffOn_infty.2 fun n => contDiffOn_tsum hU n hf`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_tsum_infty {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
     {U : Set V} (hU : IsOpen U) {f : ι → V → E} (hf : GoodFam U f) :
@@ -92,7 +92,7 @@ section Wirtinger
 variable {Φ : Type} [Fintype Φ] {ι : Type}
 
 /- English proof (translation)
-Use `⟨(1 / 2 : ℝ) • (ContinuousLinearMap.apply ℝ ℂ (Pi.single τ 1) + (ContinuousLinearMap.mul ℝ ℂ (if b then I else -I)).comp (ContinuousLinearMap.apply ℝ ℂ (Pi.single τ I))), fun h z => ?_⟩` and prove the remaining obligations. Simplify using `only [wirt, ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.apply_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.mul_apply', Complex.real_smul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wirt_eq_clm (τ : Φ) (b : Bool) :
     ∃ Λ : ((Φ → ℂ) →L[ℝ] ℂ) →L[ℝ] ℂ, ∀ (h : (Φ → ℂ) → ℂ) (z : Φ → ℂ),
@@ -108,7 +108,7 @@ theorem wirt_eq_clm (τ : Φ) (b : Bool) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact h`. Consider the case `cons a w ih => exact GoodAdd.wirt_congr hU ih a.1 a.2`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem wirtWord_congr {U : Set (Φ → ℂ)} (hU : IsOpen U) (w : List (Φ × Bool))
     {f g : (Φ → ℂ) → ℂ} (h : Set.EqOn f g U) : Set.EqOn (wirtWord w f) (wirtWord w g) U := by
@@ -117,11 +117,11 @@ theorem wirtWord_congr {U : Set (Φ → ℂ)} (hU : IsOpen U) (w : List (Φ × B
   | cons a w ih => exact GoodAdd.wirt_congr hU ih a.1 a.2
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact ⟨1, zero_le_one, fun h _ k z _ => by simp [wirtWord_nil]⟩`. Consider the case `cons a w ih`. Take `⟨C, hC0, hC⟩` from `ih`. Take `⟨Λ, hΛ⟩` from `wirt_eq_clm a.1 a.2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨‖Λ‖ * C, mul_nonneg (norm_nonneg _) hC0, fun h hh k z hz => ?_⟩` and prove the remaining obligations. Establish `e : wirtWord (a :: w) h = Λ ∘ fderiv ℝ (wirtWord w h)`. Rewrite using `[wirtWord_cons]`. Use function extensionality and compare the values at `y`. Conclude with `hΛ _ y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hs : ContDiffOn ℝ ∞ (wirtWord w h) U` using `GoodAdd.wirtWord_contDiffOn hU w hh`. Establish `hd : ContDiffAt ℝ ∞ (fderiv ℝ (wirtWord w h)) z` using `(hs.fderiv_of_isOpen hU (by simp)).contDiffAt (hU.mem_nhds hz)`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[List.length_cons, show k + 1 + w.length = k + (w.length + 1) by ring]; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_iteratedFDeriv_wirtWord {U : Set (Φ → ℂ)} (hU : IsOpen U) (w : List (Φ × Bool)) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ h : (Φ → ℂ) → ℂ, ContDiffOn ℝ ∞ h U → ∀ k : ℕ, ∀ z ∈ U,
@@ -148,7 +148,7 @@ theorem norm_iteratedFDeriv_wirtWord {U : Set (Φ → ℂ)} (hU : IsOpen U) (w :
           rw [List.length_cons, show k + 1 + w.length = k + (w.length + 1) by ring]; ring
 
 /- English proof (translation)
-Take `⟨C, hC0, hC⟩` from `norm_iteratedFDeriv_wirtWord hU w`. Use `⟨fun i => GoodAdd.wirtWord_contDiffOn hU w (hf.1 i), fun L hL hLU k => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hb⟩` from `hf.2 L hL hLU (k + w.length)`. Use `⟨fun i => C * u i, hu.mul_left C, fun i z hz => ?_⟩` and prove the remaining obligations. Conclude with `(hC (f i) (hf.1 i) k z (hLU hz)).trans (mul_le_mul_of_nonneg_left (hb i z hz) hC0)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem goodFam_wirtWord {U : Set (Φ → ℂ)} (hU : IsOpen U) {f : ι → (Φ → ℂ) → ℂ}
     (hf : GoodFam U f) (w : List (Φ × Bool)) : GoodFam U (fun i => wirtWord w (f i)) := by
@@ -159,11 +159,11 @@ theorem goodFam_wirtWord {U : Set (Φ → ℂ)} (hU : IsOpen U) {f : ι → (Φ 
   exact (hC (f i) (hf.1 i) k z (hLU hz)).trans (mul_le_mul_of_nonneg_left (hb i z hz) hC0)
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => intro z _`. Both sides reduce to the same expression. Consider the case `cons a w ih`. Introduce `z hz`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Λ, hΛ⟩` from `wirt_eq_clm a.1 a.2`. Establish `hg` using `goodFam_wirtWord hU hf w`. Establish `hsum : Summable (fun i => fderiv ℝ (wirtWord w (f i)) z)`. Take `⟨u, hu, hb⟩` from `hg.2 {z} isCompact_singleton (Set.singleton_subset_iff.2 hz) 1`. Conclude with `Summable.of_norm_bounded hu fun i => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hb i z (Set.mem_singleton z)` using `[norm_iteratedFDeriv_one]`. Rewrite using `[wirtWord_cons, GoodAdd.wirt_congr hU ih a.1 a.2 hz, hΛ, (hasFDerivAt_tsum hU hg hz).fderiv, Λ.map_tsum hsum]`. Simplify using `only [wirtWord_cons, hΛ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wirtWord_tsum {U : Set (Φ → ℂ)} (hU : IsOpen U) {f : ι → (Φ → ℂ) → ℂ}
     (hf : GoodFam U f) (w : List (Φ × Bool)) :
@@ -189,15 +189,15 @@ end GlobalTheory.HeckeTwo.SumGood
 open GlobalTheory.HeckeTwo.SumGood in
 
 /- English proof (translation)
-Introduce `F _ _ ι g P h1 h2 h3 h4`. Establish `hU` using `GoodAdd.upperHalf_isOpen F`. Establish `hfam : ∀ σ ∈ halfPlane, GoodFam (upperHalf F) (fun i => g i σ)` using `fun σ hσ => ⟨fun i => h1 i σ hσ, fun L hL hLU k => by`. Take `⟨u, hu, hb⟩` from `h3 {σ} isCompact_singleton (Set.singleton_subset_iff.2 hσ) L hL hLU k`. Conclude with `⟨u, hu, fun i z hz => hb i σ rfl z hz⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hPeq : ∀ σ ∈ halfPlane, Set.EqOn (P σ) (fun z => ∑' i, g i σ z) (upperHalf F)` using `fun σ hσ z hz => h4 σ hσ z hz`. Use `⟨fun σ hσ => (contDiffOn_tsum_infty hU (hfam σ hσ)).congr (hPeq σ hσ), fun w z hz => ?_⟩` and prove the remaining obligations. Establish `heq : ∀ σ ∈ halfPlane, wirtWord w (P σ) z = ∑' i, wirtWord w (g i σ) z` using `fun σ hσ => by`. Rewrite using `[wirtWord_congr hU w (hPeq σ hσ) hz]`. Conclude with `wirtWord_tsum hU (hfam σ hσ) w hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC0, hC⟩` from `norm_iteratedFDeriv_wirtWord hU w`. Establish `hHo : IsOpen (halfPlane : Set ℂ)` using `isOpen_lt continuous_const Complex.continuous_re`. Use `DifferentiableOn.congr ?_ heq` and prove the remaining obligations. Introduce `σ₀ hσ₀`. Take `⟨r, hr, hrU⟩` from `Metric.isOpen_iff.1 hHo σ₀ hσ₀`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsub : Metric.closedBall σ₀ (r / 2) ⊆ halfPlane` using `(Metric.closedBall_subset_ball (by linarith)).trans hrU`. Take `⟨u, hu, hb⟩` from `h3 _ (isCompact_closedBall σ₀ (r / 2)) hsub {z} isCompact_singleton (Set.singleton_subset_iff.2 hz) w.length`. Establish `hd : DifferentiableOn ℂ (fun σ => ∑' i, wirtWord w (g i σ) z) (Metric.ball σ₀ (r / 2))`. Use `differentiableOn_tsum_of_summable_norm (hu.mul_left C) (fun i => (h2 i w z hz).mono (Metric.ball_subset_closedBall.trans hsub)) Metric.isOpen_ball ?_` and prove the remaining obligations. Introduce `i σ hσ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hC (g i σ) (h1 i σ (hsub (Metric.ball_subset_closedBall hσ))) 0 z hz` as an intermediate fact. Rewrite `this` using `[norm_iteratedFDeriv_zero, Nat.zero_add]`. Conclude with `this.trans (mul_le_mul_of_nonneg_left (hb i σ (Metric.ball_subset_closedBall hσ) z rfl) hC0)`. Conclude with `(hd.differentiableAt (Metric.isOpen_ball.mem_nhds (Metric.mem_ball_self (by linarith)))).differentiableWithinAt`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeckeTwo.isGood_of_tsum : ∀ (F : Type) [Field F] [NumberField F] (ι : Type)
     (g : ι → ℂ → (Emb F → ℂ) → ℂ) (P : ℂ → (Emb F → ℂ) → ℂ),

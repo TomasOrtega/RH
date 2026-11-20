@@ -5,15 +5,15 @@ import Development.WeilBound.CoreStatements.RationalSupMetrics.AevalCoordProd
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo GlobalTheory.CompanionTheory.Ar.Small Filter Topology
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y 𝕜 _ a s z w hz hw`. Take `⟨dg0, dh0, g0, h0, hg0, hh0, hd0, e0, hne, e1⟩` from `hw`. Establish `key : ∀ (dg dh : K → ℕ) (g h : MRing ι), IsMultiHomog g dg → IsMultiHomog h dh → (∀ k, (dg k : ℤ) = dh k + a k) → aeval y g = s * aeval y h → aeval z g = w * aeval z h`. Introduce `dg dh g h hg hh hd e`. Establish `hdeg : dg0 + dh = dg + dh0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Establish `h1` using `hd k`. Establish `h2` using `hd0 k`. Simplify using `only [Pi.add_apply]`. Use linear arithmetic over natural numbers and integers.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `f1` using `MultiProjectiveCoordinates.Val.mh_mul hg hh0`. Establish `f2` using `MultiProjectiveCoordinates.Val.mh_mul hg0 hh`. Rewrite `f2` using `[hdeg]`. Establish `h3` using `MultiProjectiveCoordinates.Val.form_vanish y hz (MultiProjectiveCoordinates.Val.mh_sub f1 f2) (by`. Rewrite using `[map_sub, map_mul, map_mul, e, e0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `ring)`. Rewrite `h3` using `[map_sub, map_mul, map_mul, e1]`. Apply `mul_right_cancel₀ hne` to reduce the goal to its premises. Take the linear combination `h3`. Use `⟨key, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `w' ⟨dg, dh, g, h, hg, hh, hd, e, hn, e'⟩`. Use `key dg dh g h hg hh hd e` as an intermediate fact. Conclude with `mul_right_cancel₀ hn (e'.symm.trans this)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem MultiProjectiveCoordinates.valuation_unique_on_forms : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (y : (Σ k, ι k) → Ω) (𝕜 : Type) [Field 𝕜] (a : K → ℤ) (s : Ω) (z : (Σ k, ι k) → 𝕜) (w : 𝕜), z ∈ ptsOver 𝕜 (mCoordIdeal y) → HasVal y a s z w → (∀ (dg dh : K → ℕ) (g h : MRing ι), IsMultiHomog g dg → IsMultiHomog h dh → (∀ k, (dg k : ℤ) = dh k + a k) → aeval y g = s * aeval y h → aeval z g = w * aeval z h) ∧ ∀ w', HasVal y a s z w' → w' = w := by
   intro K _ ι _ Ω _ y 𝕜 _ a s z w hz hw

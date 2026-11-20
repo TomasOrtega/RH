@@ -7,27 +7,23 @@ set_option autoImplicit false
 namespace GlobalTheory.PushoutSquare
 
 /- English proof (translation)
-Introduce `X Y S S' j p y q hS hS' hj w H`. Set `φ : X ⟶ pullback y q` to `pullback.lift j p w`. Establish `hφ1 : φ ≫ pullback.fst y q = j` using `pullback.lift_fst _ _ _`. Establish `hφ2 : φ ≫ pullback.snd y q = p` using `pullback.lift_snd _ _ _`. It suffices to establish `hiso : IsIso φ by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion.
 
-Conclude with `IsPullback.of_iso_pullback ⟨w⟩ (asIso φ) hφ1 hφ2`. Establish `hPb : IsPullback (pullback.fst y q) (pullback.snd y q) y q` using `IsPullback.of_hasPullback y q`. Use `haveI : IsAffineHom q := inferInstance`. Use `haveI : IsAffineHom (pullback.fst y q) := isAffineHom_isStableUnderBaseChange.of_isPullback hPb.flip inferInstance`. Set `U : Y.affineOpens → (pullback y q).Opens` to `fun V => pullback.fst y q ⁻¹ᵁ V.1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hU : ⨆ V, U V = ⊤` using `by show ⨆ V : Y.affineOpens, pullback.fst y q ⁻¹ᵁ (V : Y.Opens) = ⊤`. Rewrite using `[← Scheme.Hom.preimage_iSup, iSup_affineOpens_eq_top, Scheme.Hom.preimage_top]`. Use `show MorphismProperty.isomorphisms Scheme φ`. Rewrite using `[IsZariskiLocalAtTarget.iff_of_iSup_eq_top (P := MorphismProperty.isomorphisms Scheme) U hU]`. Introduce `V`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpre : φ ⁻¹ᵁ U V = j ⁻¹ᵁ V.1` using `by show φ ⁻¹ᵁ (pullback.fst y q ⁻¹ᵁ V.1) = j ⁻¹ᵁ V.1`. Rewrite using `[← Scheme.Hom.comp_preimage, hφ1]`. Establish `hUa : IsAffineOpen (U V)` using `V.2.preimage _`. Establish `hSa : IsAffineOpen (φ ⁻¹ᵁ U V)` using `by rw [hpre]; exact V.2.preimage j`. Use `haveI : IsAffine (U V).toScheme := hUa`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsAffine (φ ⁻¹ᵁ U V).toScheme := hSa`. Establish `P1` using `GlobalTheory.AffBaseChange.isPushout_appLE_of_isPullback_of_isAffine Y (pullback y q) S S' (pullback.fst y q) (pullback.snd y q) y q hPb hS hS' V.1 V.2`. Establish `P2` using `H V.1 V.2`. Set `c : Γ(pullback y q, U V) ⟶ Γ(X, j ⁻¹ᵁ V.1)` to `φ.appLE (U V) (j ⁻¹ᵁ V.1) hpre.ge`. Establish `key : ∀ {T : Scheme.{0}} (g j' : X ⟶ T) (hg : g = j') (A : T.Opens) (e : j' ⁻¹ᵁ A ≤ g ⁻¹ᵁ A), g.appLE A (j' ⁻¹ᵁ A) e = j'.appLE A (j' ⁻¹ᵁ A) le_rfl`.
+Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `T g j' hg A e`. Substitute `hg` using the available equality. Both sides reduce to the same expression. Establish `hc1 : (pullback.fst y q).app V.1 ≫ c = j.app V.1`. Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.app_eq_appLE]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `key _ _ hφ1 _ _`. Establish `hc2 : (pullback.snd y q).appLE ⊤ (pullback.fst y q ⁻¹ᵁ V.1) (fun _ _ => trivial) ≫ c = p.appLE ⊤ (j ⁻¹ᵁ V.1) (fun _ _ => trivial)`. Use `(Scheme.Hom.appLE_comp_appLE φ (pullback.snd y q) ⊤ (pullback.fst y q ⁻¹ᵁ V.1) (j ⁻¹ᵁ V.1) (fun _ _ => trivial) hpre.ge).trans ?_` and prove the remaining obligations. Establish `e2 : ∀ (e : j ⁻¹ᵁ V.1 ≤ (φ ≫ pullback.snd y q) ⁻¹ᵁ ⊤), (φ ≫ pullback.snd y q).appLE ⊤ (j ⁻¹ᵁ V.1) e = p.appLE ⊤ (j ⁻¹ᵁ V.1) (fun _ _ => trivial)`. Introduce `e`.
+Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `gen : ∀ (g : X ⟶ S') (hg : g = p) (e' : j ⁻¹ᵁ V.1 ≤ g ⁻¹ᵁ ⊤), g.appLE ⊤ (j ⁻¹ᵁ V.1) e' = p.appLE ⊤ (j ⁻¹ᵁ V.1) (fun _ _ => trivial)`. Introduce `g hg e'`. Substitute `hg` using the available equality. Both sides reduce to the same expression. Conclude with `gen _ hφ2 e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `e2 _`. Establish `hcE : c = (P1.isoIsPushout _ _ P2).hom`. Apply `P1.hom_ext` to reduce the goal to its premises. Rewrite using `[IsPushout.inl_isoIsPushout_hom]`. Conclude with `hc1`.
-
-Rewrite using `[IsPushout.inr_isoIsPushout_hom]`. Conclude with `hc2`. Establish `hcI : IsIso c` using `by rw [hcE]; infer_instance`. Establish `hTop : IsIso (φ ∣_ U V).appTop`. Rewrite using `[Scheme.Hom.appTop, morphismRestrict_app']`.
-
-Use `(Scheme.Hom.appLE_congr φ _ (Scheme.Opens.ι_image_top (U V)) ((Scheme.Opens.ι_image_top (φ ⁻¹ᵁ U V)).trans hpre) (fun f => IsIso f)).mpr ?_` and prove the remaining obligations. Conclude with `hcI`. Conclude with `(MorphismProperty.arrow_mk_iso_iff (MorphismProperty.isomorphisms _) (arrowIsoSpecΓOfIsAffine (φ ∣_ U V))).mpr (inferInstanceAs (IsIso (Spec.map _)))`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_of_forall_isPushout_app :
     ∀ (X Y S S' : Scheme.{0}) (j : X ⟶ Y) (p : X ⟶ S') (y : Y ⟶ S) (q : S' ⟶ S), IsAffine S → IsAffine S' → IsAffineHom j → j ≫ y = p ≫ q → (∀ V : Y.Opens, IsAffineOpen V → IsPushout (y.appLE ⊤ V (fun _ _ => trivial)) q.appTop (j.app V) (p.appLE ⊤ (j ⁻¹ᵁ V) (fun _ _ => trivial))) → IsPullback j p y q := by

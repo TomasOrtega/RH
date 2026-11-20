@@ -15,29 +15,27 @@ noncomputable section
 namespace GlobalTheory.HeckeSignLevel
 
 /- English proof (translation)
-Introduce `F _ _ φ hφ hpm hinf`. Establish `hK : {u : (AdeleRing (𝓞 F) F)ˣ | φ u = 1} ∈ 𝓝 (1 : (AdeleRing (𝓞 F) F)ˣ)`. Establish `hopen : IsOpen {z : Circle | 0 < (z : ℂ).re}` using `isOpen_lt continuous_const (Complex.continuous_re.comp continuous_subtype_val)`. Establish `h1 : φ ⁻¹' {z : Circle | 0 < (z : ℂ).re} ∈ 𝓝 (1 : (AdeleRing (𝓞 F) F)ˣ)` using `hφ.continuousAt.preimage_mem_nhds (hopen.mem_nhds (by simp [map_one]))`. Use `Filter.mem_of_superset h1 fun u hu => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Break down `hpm u with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Establish `: (0 : ℝ) < ((φ u : Circle) : ℂ).re` using `hu`. Rewrite `this` using `[h]`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions using `at this`. Rewrite `hK` using `[Units.isEmbedding_embedProduct.isInducing.nhds_eq_comap]`. Take `⟨t, ht, hts⟩` from `Filter.mem_comap.1 hK`. Set `g : FiniteAdeleRing (𝓞 F) F × FiniteAdeleRing (𝓞 F) F → AdeleRing (𝓞 F) F × (AdeleRing (𝓞 F) F)ᵐᵒᵖ` to `fun p => (((1 : InfiniteAdeleRing F), 1 + p.1), MulOpposite.op ((1 : InfiniteAdeleRing F), 1 + p.2))`. Establish `hg : Continuous g` using `(continuous_const.prodMk (continuous_const.add continuous_fst)).prodMk (MulOpposite.continuous_op.comp (continuous_const.prodMk (continuous_const.add continuous_snd)))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg0 : g (0, 0) = Units.embedProduct _ 1`. Rewrite using `[map_one]`. Simplify using `[g]`. Both sides reduce to the same expression. Establish `h1 : g ⁻¹' t ∈ 𝓝 ((0, 0) : FiniteAdeleRing (𝓞 F) F × FiniteAdeleRing (𝓞 F) F)` using `hg.continuousAt.preimage_mem_nhds (by rw [hg0]; exact ht)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, v, hv, huv⟩` from `mem_nhds_prod_iff.1 h1`. Take `⟨N, hN, hNuv⟩` from `GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F (u ∩ v) (Filter.inter_mem hu hv)`. Use `⟨N, hN, fun n hn hdvd b hb hb' => ?_⟩` and prove the remaining obligations. Take `⟨q, rfl⟩` from `hdvd`. Take `⟨s, hs, hbs⟩` from `hb`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s', hs', hbs'⟩` from `hb'`. Establish `hint : ∀ x ∈ HeckeCharacterZeroLocus.ThmBIn.intAf F, ∀ w : HeightOneSpectrum (𝓞 F), ((q : FiniteAdeleRing (𝓞 F) F) * x) w ∈ w.adicCompletionIntegers F`. Introduce `x hx w`. Establish `hxw : x w ∈ w.adicCompletionIntegers F` using `hx w`. Establish `: ((q : FiniteAdeleRing (𝓞 F) F) * x) w = (q : w.adicCompletion F) * x w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `mul_mem (natCast_mem _ q) hxw`. Establish `key : ∀ x ∈ HeckeCharacterZeroLocus.ThmBIn.intAf F, (((N * q : ℕ) : FiniteAdeleRing (𝓞 F) F) * x) ∈ u ∩ v`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((N * q : ℕ) : FiniteAdeleRing (𝓞 F) F) * x = N • ((q : FiniteAdeleRing (𝓞 F) F) * x)`. Rewrite using `[nsmul_eq_mul, Nat.cast_mul, mul_assoc]`. Rewrite using `[e]`. Conclude with `hNuv _ (hint x hx)`. Establish `hinv : (b : AdeleRing (𝓞 F) F).2 * ((b⁻¹ : (AdeleRing (𝓞 F) F)ˣ) : AdeleRing (𝓞 F) F).2 = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg Prod.snd b.mul_inv`. Conclude with `h`. Establish `hinv' : ((b⁻¹ : (AdeleRing (𝓞 F) F)ˣ) : AdeleRing (𝓞 F) F).2 * (b : AdeleRing (𝓞 F) F).2 = 1`. Establish `h` using `congrArg Prod.snd b.inv_mul`. Conclude with `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `bf : (AdeleRing (𝓞 F) F)ˣ` to `{ val := ((1 : InfiniteAdeleRing F), (b : AdeleRing (𝓞 F) F).2) inv := ((1 : InfiniteAdeleRing F), ((b⁻¹ : (AdeleRing (𝓞 F) F)ˣ) : AdeleRing (𝓞 F) F).2) val_inv := Prod.ext (mul_one _) hinv inv_val := Prod.ext (mul_one _) hinv' }`. Establish `hbf : φ bf = 1`. Establish `hmem : Units.embedProduct _ bf ∈ t`. Establish `: Units.embedProduct _ bf = g (((N * q : ℕ) : FiniteAdeleRing (𝓞 F) F) * s, ((N * q : ℕ) : FiniteAdeleRing (𝓞 F) F) * s')` using `by show (((1 : InfiniteAdeleRing F), (b : AdeleRing (𝓞 F) F).2), MulOpposite.op ((1 : InfiniteAdeleRing F), ((b⁻¹ : (AdeleRing (𝓞 F) F)ˣ) : AdeleRing (𝓞 F) F).2)) = _`. Rewrite using `[hbs, hbs']`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `huv ⟨(key s hs).1, (key s' hs').2⟩`. Conclude with `hts hmem`. Establish `hrest : φ (b * bf⁻¹) = 1`.
-
-Apply `hinf` to reduce the goal to its premises. Use `show (b : AdeleRing (𝓞 F) F).2 * ((bf⁻¹ : (AdeleRing (𝓞 F) F)ˣ) : AdeleRing (𝓞 F) F).2 = 1`. Conclude with `hinv`. Establish `: b = (b * bf⁻¹) * bf` using `by group`. Rewrite using `[this, map_mul, hrest, hbf, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sign_char_trivial_on_congruence : ∀ (F : Type) [Field F] [NumberField F] (φ : (AdeleRing (𝓞 F) F)ˣ →* Circle),
     Continuous φ → (∀ b, φ b = 1 ∨ φ b = -1) → (∀ b : (AdeleRing (𝓞 F) F)ˣ, (b : AdeleRing (𝓞 F) F).2 = 1 → φ b = 1) →

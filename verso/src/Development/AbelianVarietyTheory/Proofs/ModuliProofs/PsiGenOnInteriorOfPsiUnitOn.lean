@@ -29,15 +29,15 @@ variable {O : Type} [CommRing O] [StarRing O] {D : DegPre R} [Module O D.X]
 variable {F : Type} [Field F] [Algebra (FractionRing R) F]
 
 /- English proof (translation)
-Establish `hG` using `GlobalTheory.globalFns_holds`. Use `oa.onB.hom a` as an intermediate fact. Use `oa.onB.hom (star a)` as an intermediate fact. Use `and_congr Iff.rfl ?_` and prove the remaining obligations. Establish `vu : ∀ {f f' : D.P.A ⟶ D.P.A} (u : LB.Gen (LB.LinComb D.P.L (rosatiφ D.P.A f f') rosatiε)) {y : (TF (R` using `R) F).left} {J}, Good D.P.L y J → ∀ x w : TF (R := R) F ⟶ D.P.A, val (LB.pullGen D.P.L _ _ u (lift x w).left) (𝟙 _) y J = val₂ u y J x w := fun u y J hJ x w => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[val_pull hJ, Category.id_comp]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hr` using `oa.onB.rosati (star a)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hr` using `[star_star]`. Take `⟨u₁, h₁, n₁⟩` from `exists_ros hG D.P.isAb D.P.isLB _ _ hr`. Take `⟨u₂, h₂, n₂⟩` from `exists_ros hG D.P.isAb D.P.isLB _ _ (oa.onB.rosati a)`. Use `⟨u₂, ⟨h₂, n₂⟩, fun χ => corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Establish `e` using `val_corr hJ (h u₁ h₁ n₁ χ) (𝟙 _)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e` using `[val_mul hJ, vu u₁ hJ]`. Rewrite using `[val_mul hJ, vu u₂ hJ, DVR.ros_swap hG D.P.isAb D.P.isLB _ _ u₁ h₁ n₁ u₂ h₂ n₂ hJ, ← e, mul_inv_cancel_right]`. Introduce and unpack `⟨u₂, ⟨h₂, n₂⟩, h⟩ u₁ h₁ n₁ χ`. Use `corr_of_val D.P.isLB fun y J hJ => ?_` and prove the remaining obligations. Establish `e` using `val_corr hJ (h χ) (𝟙 _)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e` using `[val_mul hJ, vu u₂ hJ, DVR.ros_swap hG D.P.isAb D.P.isLB _ _ u₁ h₁ n₁ u₂ h₂ n₂ hJ]`. Rewrite using `[val_mul hJ, vu u₁ hJ, ← e, inv_mul_cancel_right]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem gtAct_iff (oa : D.OAct O) (a : O) (g g' : GtPtF D F) :
     GtAct oa a g g' ↔ TorusGraphMaps.GtSmul oa a g g' := by
@@ -67,13 +67,13 @@ theorem gtAct_iff (oa : D.OAct O) (a : O) (g g' : GtPtF D F) :
     rw [val_mul hJ, vu u₁ hJ, ← e, inv_mul_cancel_right]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem qkAdd_iff {k : ℕ} (p p' p'' : QkPt D F k) :
     Geo.Tor.QkAdd p p' p'' ↔ TorusGraphMaps.QkAdd p p' p'' := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `exists_congr fun q => and_congr Iff.rfl (and_congr (gtAct_iff oa a p.g q.g) Iff.rfl)`.
+A detailed English derivation is pending.
 -/
 theorem qkAct_iff (oa : D.OAct O) (a : O) {k : ℕ} (p p' : QkPt D F k) :
     QkAct oa a p p' ↔ TorusGraphMaps.QkSmul oa a p p' :=
@@ -87,7 +87,7 @@ variable {D : DegPre R} {F F' : Type} [Field F] [Algebra (FractionRing R) F] [Fi
   [Algebra (FractionRing R) F'] {k : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨⟨f, fun r => DFunLike.congr_fun (DegActCheck.qkExt_compat f p q h) r⟩, rfl, h⟩`. Introduce and unpack `⟨σ, rfl, h⟩`. Conclude with `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem qkExt_iff (f : F →+* F') (p : QkPt D F k) (q : QkPt D F' k) :
     QkExt f p q ↔ ∃ σ : F →ₐ[FractionRing R] F', (σ : F →+* F') = f ∧ q.y = p.y ∧ TorusGraphMaps.GtMap σ p.g q.g := by
@@ -98,16 +98,16 @@ theorem qkExt_iff (f : F →+* F') (p : QkPt D F k) (q : QkPt D F' k) :
     exact h
 
 /- English proof (translation)
-The claim follows from `exists_congr fun _ => and_assoc.symm`.
+A detailed English derivation is pending.
 -/
 theorem qkMap_iff_exists (σ : F →ₐ[FractionRing R] F') (p : QkPt D F k) (p' : QkPt D F' k) :
     TorusGraphMaps.QkMap σ p p' ↔ ∃ q, QkExt (σ : F →+* F') p q ∧ QkPt.Equiv D F' q p' :=
   exists_congr fun _ => and_assoc.symm
 
 /- English proof (translation)
-Establish `hg : q.g = q'.g` using `TorusExt.gt_ext_val (Over.OverMorphism.ext (h.2.1.trans h'.2.1.symm)) fun χ y J hJ => (val_corr hJ (h.2.2 χ) _).trans (val_corr hJ (h'.2.2 χ) _).symm`. Establish `hy : q.y = q'.y` using `h.1.trans h'.1.symm`. Take `⟨y, g, e⟩` from `q`. Take `⟨y', g', e'⟩` from `q'`. Take `rfl : y = y'` from `hy`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : g = g'` from `hg`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem qkExt_unique {f : F →+* F'} {p : QkPt D F k} {q q' : QkPt D F' k} (h : QkExt f p q)
     (h' : QkExt f p q') : q = q' := by
@@ -122,9 +122,9 @@ theorem qkExt_unique {f : F →+* F'} {p : QkPt D F k} {q q' : QkPt D F' k} (h :
   rfl
 
 /- English proof (translation)
-Rewrite using `[qkMap_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨q, hq, -⟩` from `TorusExt.existsUnique_qkExt hB (σ : F →+* F') (RingHom.ext σ.commutes) p`. Conclude with `⟨q, hq, h q hq⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨q, hq, e⟩ q' hq'`. Rewrite using `[qkExt_unique hq' hq]` and apply the resulting hypothesis.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem forall_qkExt_iff (hB : D.TauBimult) (σ : F →ₐ[FractionRing R] F') (p : QkPt D F k) (p' : QkPt D F' k) :
     (∀ q, QkExt (σ : F →+* F') p q → QkPt.Equiv D F' q p') ↔ TorusGraphMaps.QkMap σ p p' := by
@@ -150,17 +150,15 @@ abbrev rigB (D : DegPre R) :=
   LB.pullGen D.P.L (fun _ : PUnit => eSec D.P.A) (fun _ => 1) D.rig D.P.A.hom
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `e : ∀ z J, Good D.P.L z J → val (LB.pullGen D.P.L _ _ u (eSec D.P.A)) (𝟙 _) z J = val (LB.pullGen D.P.L _ _ v (eSec D.P.A)) (𝟙 _) z J * rigVal D (Z` using `(𝟙_ (Over (Spec (CommRingCat.of R)))).left) (𝟙 _) z J := fun z J hJ => by`. Establish `e₀ : (𝟙 _ ≫ eSec D.P.A) ≫ D.P.A.hom = 𝟙 _`. Rewrite using `[Category.id_comp]`. Conclude with `Over.w η[D.P.A]`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[val_pull hJ, val_pull hJ, h _ _ z J hJ, e₀]`. Prove the components needed by the constructor for the conclusion. Introduce `c`. Use `corr_of_val D.P.isLB fun z J hJ => ?_` and prove the remaining obligations. Establish `a` using `(e z J hJ).symm.trans ((val_corr hJ c _).trans (val_one _))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(eq_inv_of_mul_eq_one_left a).trans (val_inv _ _).symm`. Introduce `c`. Use `corr_of_val D.P.isLB fun z J hJ => ?_` and prove the remaining obligations. Establish `a` using `(val_corr hJ c (𝟙 _)).trans (val_inv _ _)`. Conclude with `(e z J hJ).trans (((congrArg (· * _) a).trans (inv_mul_cancel _)).trans (val_one _).symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Establish `e : ∀ z J, Good D.P.L z J → val (LB.mulGen D.P.L _ _ _ _ (D.tau y (w • y)) (LB.pullGen D.P.L _ _ u (D.xK y))) (𝟙 _) z J = val (LB.mulGen D.P.L _ _ _ _ (D.tau y (w • y)) (LB.pullGen D.P.L _ _ v (D.xK y))) (𝟙 _) z J * rigVal D (𝟙 _ ≫ (toUnit (TK R)).left) z J ∧ val (LB.mulGen D.P.L …` using `fun z J hJ => by`. Establish `e₀ : (𝟙 _ ≫ D.xK y) ≫ D.P.A.hom = 𝟙 _ ≫ (toUnit (TK R)).left`. Rewrite using `[Category.id_comp, Category.id_comp]`. Conclude with `Over.w (toUnit (TK R) ≫ D.c y)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[val_mul hJ, val_mul hJ, val_pull hJ, val_pull hJ, h _ _ z J hJ, e₀, _root_.mul_assoc]`. Conclude with `(val_mul hJ _ _ _).trans (congrArg (_ * ·) (val_pull hJ _ _ _))`. Prove the components needed by the constructor for the conclusion. Introduce `c`.
-
-Use `corr_of_val D.P.isLB fun z J hJ => ?_` and prove the remaining obligations. Conclude with `mul_right_cancel ((e z J hJ).1.symm.trans ((val_corr hJ c _).trans (e z J hJ).2))`. Introduce `c`. Use `corr_of_val D.P.isLB fun z J hJ => ?_` and prove the remaining obligations. Conclude with `(e z J hJ).1.trans ((congrArg (· * _) (val_corr hJ c _)).trans (e z J hJ).2.symm)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem through_conditions (oa : D.OAct O) (w : O)
     (u : LB.Gen (LB.LinComb D.P.L (K := Fin 4)
@@ -213,7 +211,7 @@ theorem through_conditions (oa : D.OAct O) (w : O)
       exact (e z J hJ).1.trans ((congrArg (· * _) (val_corr hJ c _)).trans (e z J hJ).2.symm)
 
 /- English proof (translation)
-Rewrite using `[Fin.prod_univ_five]`. Use `show h (padd D.P.A (𝟙 _) f).left ^ (1 : ℤ) * h (𝟙 _) ^ (-1 : ℤ) * h f.left ^ (-1 : ℤ) * h (toUnit D.P.A ≫ η[D.P.A]).left ^ (1 : ℤ) * h (𝟙 _) ^ (-1 : ℤ) = _`. Simplify using `only [zpow_neg, zpow_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prod_graph (f : D.P.A ⟶ D.P.A) {U : Type} [CommGroup U] (h : (D.P.A.left ⟶ D.P.A.left) → U) :
     ∏ i, h (TorusGraphMaps.graphφ D.P.A f i) ^ TorusGraphMaps.graphε i =
@@ -224,7 +222,7 @@ theorem prod_graph (f : D.P.A ⟶ D.P.A) {U : Type} [CommGroup U] (h : (D.P.A.le
   simp only [zpow_neg, zpow_one]
 
 /- English proof (translation)
-Rewrite using `[Fin.prod_univ_four]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem prod_four (f : D.P.A ⟶ D.P.A) {U : Type} [CommGroup U] (h : (D.P.A.left ⟶ D.P.A.left) → U) :
     ∏ i : Fin 4, h ((![(padd D.P.A (𝟙 _) f).left, 𝟙 D.P.A.left, f.left, (toUnit D.P.A ≫ η[D.P.A]).left] :
@@ -234,22 +232,22 @@ theorem prod_four (f : D.P.A ⟶ D.P.A) {U : Type} [CommGroup U] (h : (D.P.A.lef
   rw [Fin.prod_univ_four]; rfl
 
 /- English proof (translation)
-The claim follows from `(Fintype.prod_unique _).trans (zpow_one _)`.
+A detailed English derivation is pending.
 -/
 theorem prod_rigB {U : Type} [CommGroup U] (h : (D.P.A.left ⟶ D.P.A.left) → U) :
     ∏ _i : PUnit, h (D.P.A.hom ≫ eSec D.P.A) ^ (1 : ℤ) = h (toUnit D.P.A ≫ η[D.P.A]).left :=
   (Fintype.prod_unique _).trans (zpow_one _)
 
 /- English proof (translation)
-Establish `hr : (rigB D).IsGen` using `DVR.pullGen_isGen _ _ _ _ D.rig_gen _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, n, hψ⟩`. Take `⟨v, hv, e⟩` from `exists_gen D.P.isLB (φ' := TorusGraphMaps.graphφ D.P.A (oa.onB.act w)) (ε' := TorusGraphMaps.graphε) (fun U _ h => by`. Use `(DVR.prod_sum₂ (K := Fin 4) (K' := PUnit) (U := U) _ (prod_four _ h) (DVR.prod_neg _ _ (prod_rigB h))).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[prod_graph]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow]`. Use the proof step `module)`. Use the proof step `(LB.mulGen D.P.L _ _ _ _ u (LB.invGen D.P.L _ _ (rigB D)))`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ hu (DVR.invGen_isGen _ _ _ _ hr))`. Establish `k` using `through_conditions oa w u v fun Z r z J hJ => by`. Rewrite using `[e Z r z J hJ, val_mul hJ, val_inv, val_pull hJ, inv_mul_cancel_right]`. Conclude with `⟨v, ⟨hv, k.1.1 n⟩, fun y => (k.2 y).1 (hψ y)⟩`. Introduce and unpack `⟨v, ⟨hv, n⟩, hψ⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu, e⟩` from `exists_gen D.P.isLB (K' := Fin 4) (φ' := ![(padd D.P.A (𝟙 _) (oa.onB.act w)).left, 𝟙 D.P.A.left, (oa.onB.act w).left, (toUnit D.P.A ≫ η[D.P.A]).left]) (ε' := ![1, -2, -1, 2]) (fun U _ h => by`. Use `(DVR.prod_sum₂ (K := Fin 5) (K' := PUnit) (U := U) _ (prod_graph _ h) (prod_rigB h)).trans ?_` and prove the remaining obligations. Rewrite using `[prod_four]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use the proof step `module)`. Use the proof step `(LB.mulGen D.P.L _ _ _ _ v (rigB D)) (DVR.mulGen_isGen _ _ _ _ _ _ _ hv hr)`. Establish `k` using `through_conditions oa w u v fun Z r z J hJ => by`. Rewrite using `[e Z r z J hJ, val_mul hJ, val_pull hJ]`. Conclude with `⟨u, hu, k.1.2 n, fun y => (k.2 y).2 (hψ y)⟩`.
+A detailed English derivation is pending.
 -/
 theorem psiW0_iff (oa : D.OAct O) (w : O) : TraceFormTwistIso D oa w ↔ TorusGraphMaps.PsiThrough oa w := by
   have hr : (rigB D).IsGen := DVR.pullGen_isGen _ _ _ _ D.rig_gen _
@@ -284,7 +282,7 @@ theorem psiW0_iff (oa : D.OAct O) (w : O) : TraceFormTwistIso D oa w ↔ TorusGr
     exact ⟨u, hu, k.1.2 n, fun y => (k.2 y).2 (hψ y)⟩
 
 /- English proof (translation)
-The claim follows from `letI := H.starRing; psiW0_iff oa H.w0`.
+A detailed English derivation is pending.
 -/
 theorem psiW0_host_iff {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) {D : DegPre R}
     [Module (𝓞 E) D.X] (oa : letI := H.starRing; D.OAct (𝓞 E)) :
@@ -296,7 +294,7 @@ end Through
 section Unit
 
 /- English proof (translation)
-Establish `: IsDominant (jK R)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical (algebraMap R (FractionRing R))).2 (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R (FractionRing R))]`. Conclude with `bot_le)⟩`. Use `IsSchemeTheoreticallyDominant.of_isDominant (jK R)` as an intermediate fact. Conclude with `(jK R).app_injective W`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jK_app_injective (W : (Spec (CommRingCat.of R)).Opens) : Function.Injective ((jK R).app W) := by
   have : IsDominant (jK R) := ⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical (algebraMap R (FractionRing R))).2 (by
@@ -308,7 +306,7 @@ theorem jK_app_injective (W : (Spec (CommRingCat.of R)).Opens) : Function.Inject
 variable (D : DegPre R) (χ : D.X)
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun _ => hV hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem generic_le (j : PUnit → D.P.L.ι) {V : (Spec (CommRingCat.of R)).Opens}
     (hV : V ≤ (D.c χ).left ⁻¹ᵁ D.P.L.U (j PUnit.unit)) :
@@ -316,9 +314,9 @@ theorem generic_le (j : PUnit → D.P.L.ι) {V : (Spec (CommRingCat.of R)).Opens
   fun _ hy => Set.mem_iInter.2 fun _ => hV hy
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨i, hi⟩` from `exists_chart D.P.isLB ((D.c χ).left x)`. Take `⟨V, hV, hxV, hle⟩` from `exists_isAffineOpen_mem_and_subset (X := Spec (CommRingCat.of R)) (x := x) (U := ⟨interior U, isOpen_interior⟩ ⊓ (D.c χ).left ⁻¹ᵁ D.P.L.U i) ⟨hx, hi⟩`. Establish `h₂ : V ≤ (D.c χ).left ⁻¹ᵁ D.P.L.U i` using `fun y hy => (hle hy).2`. Take `⟨r, hr, e⟩` from `h (fun _ => i) V hV (fun y hy => interior_subset (hle hy).1) h₂ (generic_le D χ _ h₂)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨fun _ => i, V, hxV, h₂, generic_le D χ _ h₂, hr.unit, Units.ext e⟩`.
+Supply the required witnesses or components.
 -/
 theorem psiGenOn_interior_of_psiUnitOn {U : Set (Spec (CommRingCat.of R))} (h : PsiUnitOn D χ U) :
     TorusGraphMaps.PsiGenOn D χ (interior U) := by
@@ -331,19 +329,17 @@ theorem psiGenOn_interior_of_psiUnitOn {U : Set (Spec (CommRingCat.of R))} (h : 
   exact ⟨fun _ => i, V, hxV, h₂, generic_le D χ _ h₂, hr.unit, Units.ext e⟩
 
 /- English proof (translation)
-Introduce `j V _ hU hj hh`. Establish `loc : ∀ x : V, ∃ (W : (Spec (CommRingCat.of R)).Opens) (_ : W ≤ V) (_ : x.1 ∈ W) (u : Γ(Spec (CommRingCat.of R), W)ˣ), ∀ y, jK R y ∈ W → gm (jK R) y W u = gm (𝟙 (TK R).left) y (LB.wchart D.P.L (fun _ : PUnit => D.xK χ) j) ((D.psi χ).s j)`. Introduce `x`. Take `⟨j', V', hx, hj', h', r, e⟩` from `h x.1 (hU x.2)`. Establish `l : V ⊓ V' ≤ (D.c χ).left ⁻¹ᵁ (D.P.L.U (j PUnit.unit) ⊓ D.P.L.U (j' PUnit.unit))` using `fun y hy => ⟨hj hy.1, hj' hy.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨V ⊓ V', inf_le_left, ⟨x.2, hx⟩, (res l (pullU (D.c χ).left _ (D.P.L.g (j PUnit.unit) (j' PUnit.unit)))) ^ (-1 : ℤ) * res inf_le_right r, fun y hy => ?_⟩` and prove the remaining obligations. Establish `t` using `gen_trans (D.psi_gen χ) (𝟙 (TK R).left) y (j := j) (j' := j') (hh hy.1) (h' hy.2)`. Use `Eq.trans ?_ t.symm` and prove the remaining obligations. Use `(map_mul _ _ _).trans (congrArg₂ (· * ·) ?_ ?_)` and prove the remaining obligations. Use `(map_zpow _ _ _).trans (Eq.trans ?_ (Fintype.prod_unique _).symm)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (· ^ (-1 : ℤ)) ((gm_res (jK R) y l hy _).trans ?_)` and prove the remaining obligations. Use `(gm_pull (jK R) (D.c χ).left y _ (l hy) _).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Both sides reduce to the same expression. Use `(gm_res (jK R) y inf_le_right hy _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `a` using `gm_pull (𝟙 (TK R).left) (jK R) y V' hy.2 r`. Rewrite `a` using `[Category.id_comp]`. Conclude with `a.symm.trans ((congrArg _ e).trans (gm_res (𝟙 (TK R).left) y h' hy.2 _))`. Use `choose W hW hx u hu using loc`. Take `⟨s, hs⟩` from `glue_unit V W hW (fun y hy => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨y, hy⟩, hx _⟩) u (fun a b y hy => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : res (inf_le_left : W a ⊓ W b ≤ W a) (u a) = res inf_le_right (u b)`. Use `Units.ext (jK_app_injective _ (congrArg Units.val (?_ : pullU (jK R) _ _ = pullU (jK R) _ _)))` and prove the remaining obligations. Use `unit_ext fun z hz => ?_` and prove the remaining obligations. Establish `hz' : jK R z ∈ W a ⊓ W b` using `hz`. Use `(gm_pull (𝟙 _) (jK R) z _ hz' _).trans (Eq.trans ?_ (gm_pull (𝟙 _) (jK R) z _ hz' _).symm)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.id_comp, gm_res _ z _ hz', gm_res _ z _ hz', hu a z hz'.1, hu b z hz'.2]`. Conclude with `(gm_res _ y _ hy _).symm.trans ((congrArg _ e).trans (gm_res _ y _ hy _)))`. Use `⟨s.val, s.isUnit, congrArg Units.val (?_ : pullU (jK R) V s = res hh ((D.psi χ).s j))⟩` and prove the remaining obligations. Use `unit_ext fun z hz => ?_` and prove the remaining obligations. Establish `hz' : jK R z ∈ V` using `hz`.
-
-Use `(gm_pull (𝟙 _) (jK R) z _ hz' _).trans (Eq.trans ?_ (gm_res _ z hh hz _).symm)` and prove the remaining obligations. Rewrite using `[Category.id_comp, ← gm_res _ z (hW ⟨_, hz'⟩) (hx ⟨_, hz'⟩), hs]`. Conclude with `hu _ z (hx ⟨_, hz'⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiUnitOn_of_psiGenOn {U : Set (Spec (CommRingCat.of R))} (h : TorusGraphMaps.PsiGenOn D χ U) :
     PsiUnitOn D χ U := by
@@ -387,7 +383,7 @@ theorem psiUnitOn_of_psiGenOn {U : Set (Spec (CommRingCat.of R))} (h : TorusGrap
   exact hu _ z (hx ⟨_, hz'⟩)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨psiGenOn_interior_of_psiUnitOn D χ, fun h => (DegActCheck.psiUnitOn_iff_interior D χ U).2 (psiUnitOn_of_psiGenOn D χ h)⟩`.
+Supply the required witnesses or components.
 -/
 theorem psiUnitOn_iff_interior (U : Set (Spec (CommRingCat.of R))) :
     PsiUnitOn D χ U ↔ TorusGraphMaps.PsiGenOn D χ (interior U) :=
@@ -395,7 +391,7 @@ theorem psiUnitOn_iff_interior (U : Set (Spec (CommRingCat.of R))) :
     fun h => (DegActCheck.psiUnitOn_iff_interior D χ U).2 (psiUnitOn_of_psiGenOn D χ h)⟩
 
 /- English proof (translation)
-Rewrite using `[psiUnitOn_iff_interior, hU.interior_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psiUnitOn_iff {U : Set (Spec (CommRingCat.of R))} (hU : IsOpen U) :
     PsiUnitOn D χ U ↔ TorusGraphMaps.PsiGenOn D χ U := by

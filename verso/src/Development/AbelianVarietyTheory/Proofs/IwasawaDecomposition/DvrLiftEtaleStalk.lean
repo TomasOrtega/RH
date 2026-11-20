@@ -14,23 +14,19 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory.TraitLiftGen
 
 /- English proof (translation)
-Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Use `haveI := hm.isPrime`. Take `⟨q, hq, -⟩` from `Ideal.exists_minimalPrimes_le hle`. Use `haveI : q.IsPrime := hq.1.1`. Set `T` to `Localization.AtPrime q`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `t : T` to `algebraMap S T (f ϖ)`. Establish `hmax : maximalIdeal T = Ideal.span {t}`. Establish `h1` using `IsLocalization.AtPrime.radical_map_of_mem_minimalPrimes T q _ hq`. Rewrite `h1` using `[← IsLocalization.map_radical q.primeCompl T, hrad.radical, Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_span, Set.image_singleton]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `htreg : t ∈ nonZeroDivisors T` using `IsLocalization.nonZeroDivisors_le_comap q.primeCompl T hreg`. Establish `fg : (maximalIdeal T).FG` using `by rw [hmax]; exact Submodule.fg_span_singleton _`. Set `V` to `AdicCompletion (maximalIdeal T) T`. Use `haveI : IsLocalRing V := AdicCompletion.isLocalRing_of_fg fg`. Use `haveI hc : IsAdicComplete (maximalIdeal V) V := AdicCompletion.isAdicComplete_of_fg fg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmV : maximalIdeal V = Ideal.span {algebraMap T V t}`. Rewrite using `[AdicCompletion.maximalIdeal_eq_map_of_fg fg]`. Use `conv_lhs => enter [2]`. Rewrite using `[hmax]`. Rewrite using `[Ideal.map_span, Set.image_singleton]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn : ¬ IsNilpotent (algebraMap T V t)`. Introduce and unpack `⟨n, hn⟩`. Establish `h1` using `congrArg (AdicCompletion.evalₐ (maximalIdeal T) (n + 1)) hn`. Rewrite `h1` using `[← map_pow, AlgHom.commutes, map_zero, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem, hmax, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2 : t ^ n * (1 - t * c) = 0` using `by rw [mul_sub, mul_one, ← mul_assoc, ← pow_succ, ← hc, sub_self]`. Establish `h3 : 1 - t * c = 0` using `(mem_nonZeroDivisors_iff_left.mp (pow_mem htreg n)) _ h2`. Establish `h4 : t ∈ maximalIdeal T` using `hmax ▸ Ideal.mem_span_singleton_self t`. Conclude with `(mem_maximalIdeal t).1 h4 (IsUnit.of_mul_eq_one c (sub_eq_zero.mp h3).symm)`. Take `⟨hd, hdvr, hirr⟩` from `GlobalTheory.isDiscreteValuationRing_of_maximalIdeal_eq_span hmV hn`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `h : S →+* V` to `(algebraMap T V).comp (algebraMap S T)`. Establish `hinj : Function.Injective (h.comp f)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Assume the negation of the conclusion as `h0`.
-
-Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible h0 hϖ`. Rewrite `ha` using `[map_mul, map_pow]`. Break down `mul_eq_zero.mp ha with h1 | h1` into its components or cases. Conclude with `(u.isUnit.map _).ne_zero h1`. Conclude with `hirr.ne_zero (IsNilpotent.eq_zero ⟨n, h1⟩)`.
-
-Conclude with `⟨V, inferInstance, hd, inferInstance, h, ⟨hdvr, hc, charZero_of_injective_ringHom hinj⟩, hirr⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cdvr_of_isRadical {W S : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [CharZero W]
     [CommRing S] (f : W →+* S) {ϖ : W} (hϖ : Irreducible ϖ) (hreg : f ϖ ∈ nonZeroDivisors S)
@@ -82,15 +78,13 @@ theorem exists_cdvr_of_isRadical {W S : Type} [CommRing W] [IsDomain W] [IsDiscr
   exact ⟨V, inferInstance, hd, inferInstance, h, ⟨hdvr, hc, charZero_of_injective_ringHom hinj⟩, hirr⟩
 
 /- English proof (translation)
-Set `S` to `W ⊗[A] R`. Establish `hreg : algebraMap W S ϖ ∈ nonZeroDivisors S`. Establish `hx : IsSMulRegular W ϖ` using `IsSMulRegular.of_ne_zero hϖ.ne_zero`. Establish `h : IsSMulRegular S (algebraMap W S ϖ)` using `hx.of_flat`. Rewrite using `[mem_nonZeroDivisors_iff_right]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Use `h ?_` and prove the remaining obligations. Simplify `hy` using `[smul_eq_mul, mul_comm]`. Establish `hI : (maximalIdeal W).map (algebraMap W S) = Ideal.span {algebraMap W S ϖ}`. Rewrite using `[hϖ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `e : (S ⧸ (maximalIdeal W).map (algebraMap W S)) ≃+* ResidueField W ⊗[A] R` to `(Algebra.TensorProduct.quotIdealMapEquivQuotTensor S (maximalIdeal W)).toRingEquiv.trans (Algebra.TensorProduct.cancelBaseChange A W W (ResidueField W) R).toRingEquiv`. Establish `hrad : (Ideal.span {algebraMap W S ϖ}).IsRadical`. Rewrite using `[← hI, Ideal.isRadical_iff_quotient_reduced]`. Conclude with `isReduced_of_injective e e.injective`. Establish `hne : Ideal.span {algebraMap W S ϖ} ≠ ⊤`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hI, ← Ideal.Quotient.nontrivial_iff]`. Conclude with `e.toEquiv.nontrivial`. Take `⟨W', _, _, _, h, hW', hirr⟩` from `exists_cdvr_of_isRadical (algebraMap W S) hϖ hreg hrad hne`. Use `⟨W', inferInstance, inferInstance, inferInstance, h.comp (algebraMap W S), h.comp (Algebra.TensorProduct.includeRight (R := A) (A := W) (B := R)).toRingHom, hW', hirr, fun a => ?_⟩` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes]`.
-
-Rewrite using `[← IsScalarTower.algebraMap_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cdvr_of_flat {A R W : Type} [CommRing A] [CommRing R] [CommRing W] [IsDomain W]
     [IsDiscreteValuationRing W] [CharZero W] [Algebra A R] [Algebra A W] [Module.Flat A R]
@@ -123,33 +117,27 @@ theorem exists_cdvr_of_flat {A R W : Type} [CommRing A] [CommRing R] [CommRing W
   rw [← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Use `haveI : IsNoetherianRing A := Algebra.EssFiniteType.isNoetherianRing ℤ A`. Use `set m := maximalIdeal A with hm`. Set `J` to `m.map (algebraMap A D)`. Use `haveI : Algebra.EssFiniteType ℤ D := Algebra.EssFiniteType.comp ℤ A D`. Use `haveI : IsNoetherianRing D := Algebra.EssFiniteType.isNoetherianRing ℤ D`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : IsReduced (AdicCompletion J D) := GlobalTheory.CompletionReduced.isReduced_adicCompletion D J (GlobalTheory.map_maximalIdeal_le_jacobson_of_finite A D)`. Establish `fgm : m.FG` using `m.fg_of_isNoetherianRing`. Use `haveI : IsAdicComplete (m.map (algebraMap A (AdicCompletion J D))) (AdicCompletion J D) := by`. Rewrite using `[IsScalarTower.algebraMap_eq A D (AdicCompletion J D), ← Ideal.map_map]`. Conclude with `AdicCompletion.isAdicComplete_self J J.fg_of_isNoetherianRing`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨g, hg⟩` from `GlobalTheory.exists_adicCompletion_ringHom_extend m (algebraMap A (AdicCompletion J D))`. Set `g' : AdicCompletion m A →ₐ[A] AdicCompletion J D` to `{ g with commutes' := fun a => RingHom.congr_fun hg a }`. Set `Φ : AdicCompletion m A ⊗[A] D →ₐ[A] AdicCompletion J D` to `Algebra.TensorProduct.lift g' (IsScalarTower.toAlgHom A D _) fun _ _ => Commute.all _ _`. Establish `hmap : ∀ {M N : Type} [AddCommGroup M] [Module A M] [AddCommGroup N] [Module A N] (u : M →ₗ[A] N) (n : ℕ) (x : M), x ∈ (m ^ n • ⊤ : Submodule A M) → u x ∈ (m ^ n • ⊤ : Submodule A N)`. Introduce `M N _ _ _ _ u n x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `Submodule.mem_map_of_mem (f := u) hx` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top this`. Establish `hdens : ∀ (n : ℕ) (x : AdicCompletion m A ⊗[A] D), ∃ d : D, x - 1 ⊗ₜ[A] d ∈ (m ^ n • ⊤ : Submodule A (AdicCompletion m A ⊗[A] D))`. Introduce `n x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y hx hy`. Take `⟨d, hd⟩` from `hx`. Take `⟨d', hd'⟩` from `hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨d + d', ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_add, add_sub_add_comm]`. Conclude with `add_mem hd hd'`. Consider the case `tmul a d`. Take `⟨a₀, ha₀⟩` from `Submodule.Quotient.mk_surjective _ (AdicCompletion.eval m A n a)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : a - a₀ • (1 : AdicCompletion m A) ∈ (m ^ n • ⊤ : Submodule A (AdicCompletion m A))`. Rewrite using `[AdicCompletion.pow_smul_top_eq_ker_eval fgm, LinearMap.mem_ker, map_sub, ← ha₀, sub_eq_zero, ← Algebra.algebraMap_eq_smul_one]`. Both sides reduce to the same expression. Use `⟨a₀ • d, ?_⟩` and prove the remaining obligations. Use `hmap ((TensorProduct.mk A (AdicCompletion m A) D).flip d) n _ h1` as an intermediate fact.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `this` using `[TensorProduct.sub_tmul, TensorProduct.smul_tmul]`. Establish `hinj : Function.Injective Φ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Set `e` to `(AdicCompletion.ofTensorProductEquivOfFiniteNoetherian m D).restrictScalars A`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : IsAdicComplete m (AdicCompletion m D) := AdicCompletion.isAdicComplete fgm`. Rewrite using `[← e.map_eq_zero_iff]`. Use `IsHausdorff.haus' (I := m) _ fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero]`. Use `hmap e.toLinearMap n x ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨d, hd⟩` from `hdens n x`. Establish `h1` using `hmap Φ.toLinearMap n _ hd`. Establish `h2 : Φ (1 ⊗ₜ[A] d) = algebraMap D _ d` using `by simp [Φ]`. Rewrite `h1` using `[AlgHom.toLinearMap_apply, map_sub, hx, h2, zero_sub, neg_mem_iff]`. Establish `h3` using `hmap ((AdicCompletion.evalₐ J n).restrictScalars A).toLinearMap n _ h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : (m ^ n • ⊤ : Submodule A (D ⧸ J ^ n)) = ⊥`. Rewrite using `[eq_bot_iff]`. Use `Submodule.smul_le.2 fun r hr y _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_bot, Algebra.smul_def, IsScalarTower.algebraMap_apply A D, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem.2, zero_mul]`. Rewrite using `[← Ideal.map_pow]`.
-
-Conclude with `Ideal.mem_map_of_mem _ hr`. Rewrite `h3` using `[h4, Submodule.mem_bot]`. Establish `h5 : d ∈ J ^ n`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← Ideal.Quotient.algebraMap_eq, ← (AdicCompletion.evalₐ J n).commutes]`. Conclude with `h3`.
-
-Establish `h6 : d ∈ (m ^ n • ⊤ : Submodule A D)`. Rewrite using `[Ideal.smul_top_eq_map, Submodule.restrictScalars_mem, Ideal.map_pow]`. Conclude with `h5`. Establish `h7` using `hmap (TensorProduct.mk A (AdicCompletion m A) D 1) n _ h6`. Simplify using `using add_mem hd h7`.
-
-Conclude with `isReduced_of_injective Φ hinj`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isReduced_completion_tensor_finite (A D : Type) [CommRing A] [IsLocalRing A] [Algebra.EssFiniteType ℤ A]
     [CommRing D] [IsDomain D] [Algebra A D] [Module.Finite A D] :
@@ -228,17 +216,13 @@ theorem isReduced_completion_tensor_finite (A D : Type) [CommRing A] [IsLocalRin
   exact isReduced_of_injective Φ hinj
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap O Ω)` using `IsIntegralClosure.algebraMap_injective O A Ω`. Use `haveI : FaithfulSMul O Ω := (faithfulSMul_iff_algebraMap_injective O Ω).2 hinj`. Set `L` to `FractionRing O`. Use `letI : Algebra L Ω := FractionRing.liftAlgebra O Ω`. Use `haveI : IsScalarTower O L Ω := FractionRing.isScalarTower_liftAlgebra O Ω`.
+Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsScalarTower A L Ω := .of_algebraMap_eq fun a => by`. Rewrite using `[IsScalarTower.algebraMap_apply A O L, ← IsScalarTower.algebraMap_apply O L Ω, ← IsScalarTower.algebraMap_apply A O Ω]`. Use `haveI h3 : IsReduced (L ⊗[O] (O ⊗[A] C)) := isReduced_of_injective _ (Localization.tensorRightAlgEquiv (nonZeroDivisors O) (O ⊗[A] C)).injective`. Use `haveI h4 : IsReduced (L ⊗[A] C) := isReduced_of_injective _ (Algebra.TensorProduct.cancelBaseChange A O O L C).symm.injective`. Use `haveI : PerfectField L := by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp⟩` from `ExpChar.exists L`. Establish `hp0 : 0 < p` using `expChar_pos L p`. Use `haveI : PerfectRing L p := by`. Use `PerfectRing.ofSurjective L p fun x => ?_` and prove the remaining obligations. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := O) x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hb0 : algebraMap O L b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap O Ω (a * b ^ (p - 1))) hp0`. Establish `hzi : IsIntegral A z` using `IsIntegral.of_pow hp0 (hz ▸ (IsIntegralClosure.isIntegral_iff (A := O)).2 ⟨_, rfl⟩)`. Take `⟨y, rfl⟩` from `(IsIntegralClosure.isIntegral_iff (A := O)).1 hzi`. Establish `hz' : y ^ p = a * b ^ (p - 1)` using `hinj (by rw [map_pow, hz])`.
-
-Use `⟨algebraMap O L y / algebraMap O L b, ?_⟩` and prove the remaining obligations. Rewrite using `[frobenius_def, div_pow, ← map_pow, hz', map_mul, map_pow]`. Take `⟨r, rfl⟩ : ∃ r, p = r + 1` from `⟨p - 1, by omega⟩`. Rewrite using `[Nat.add_sub_cancel, pow_succ', mul_div_mul_right _ _ (pow_ne_zero r hb0)]`. Conclude with `PerfectRing.toPerfectField L p`.
-
-Use `haveI h5 : IsReduced (Ω ⊗[L] (L ⊗[A] C)) := GlobalTheory.ReducedAlg.isReduced_field_tensor Ω _`. Conclude with `isReduced_of_injective _ (Algebra.TensorProduct.cancelBaseChange A L L Ω C).symm.injective`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isReduced_tensor_of_isIntegralClosure (A C O Ω : Type) [CommRing A] [CommRing C] [Algebra A C] [CommRing O]
     [IsDomain O] [Field Ω] [IsAlgClosed Ω] [Algebra A O] [Algebra O Ω] [Algebra A Ω] [IsScalarTower A O Ω]
@@ -276,11 +260,7 @@ theorem isReduced_tensor_of_isIntegralClosure (A C O Ω : Type) [CommRing A] [Co
   exact isReduced_of_injective _ (Algebra.TensorProduct.cancelBaseChange A L L Ω C).symm.injective
 
 /- English proof (translation)
-Use `haveI : IsNoetherianRing A := Algebra.EssFiniteType.isNoetherianRing ℤ A`. Use `haveI : Module.Flat A (AdicCompletion (maximalIdeal A) A) := AdicCompletion.flat_of_isNoetherian _`. Establish `key : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra A Ω], IsReduced (Ω ⊗[A] AdicCompletion (maximalIdeal A) A)`. Introduce `Ω _ _ _`. Establish `h1 : IsReduced (AdicCompletion (maximalIdeal A) A ⊗[A] integralClosure A Ω)`.
-
-Use `IsReduced.tensorProduct_of_flat_of_forall_fg fun B hB => ?_` and prove the remaining obligations. Use `haveI : Algebra.FiniteType A B := (Subalgebra.fg_iff_finiteType B).mp hB`. Use `haveI : Algebra.IsIntegral A B := Algebra.IsIntegral.of_injective B.val Subtype.val_injective`. Use `haveI : Module.Finite A B := Algebra.IsIntegral.finite`. Conclude with `isReduced_completion_tensor_finite A B`.
-
-Use `haveI h2 : IsReduced (integralClosure A Ω ⊗[A] AdicCompletion (maximalIdeal A) A) := isReduced_of_injective _ (Algebra.TensorProduct.comm A _ _).injective`. Conclude with `isReduced_tensor_of_isIntegralClosure A _ (integralClosure A Ω) Ω`. Use `haveI := key (AlgebraicClosure k)`. Conclude with `isReduced_of_injective (Algebra.TensorProduct.map (IsScalarTower.toAlgHom A k (AlgebraicClosure k)) (AlgHom.id A (AdicCompletion (maximalIdeal A) A))) (Module.Flat.rTensor_preserves_injective_linearMap _ (algebraMap k (AlgebraicClosure k)).injective)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isReduced_field_tensor_completion (A k : Type) [CommRing A] [IsLocalRing A] [Algebra.EssFiniteType ℤ A]
     [Field k] [Algebra A k] : IsReduced (k ⊗[A] AdicCompletion (maximalIdeal A) A) := by
@@ -304,33 +284,25 @@ theorem isReduced_field_tensor_completion (A k : Type) [CommRing A] [IsLocalRing
     (Module.Flat.rTensor_preserves_injective_linearMap _ (algebraMap k (AlgebraicClosure k)).injective)
 
 /- English proof (translation)
-Take `⟨hflat, hmap, hfin⟩` from `het`. Use `haveI := hD`. Use `haveI := hE`. Use `haveI := hEc`. Set `A` to `AdicCompletion (maximalIdeal D) D`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : IsNoetherianRing A := AdicNoeth.isNoetherianRing_adicCompletion D _`. Use `haveI : IsAdicComplete ((maximalIdeal D).map h) E := by rw [hmap]; exact hEc`. Take `⟨g, hg⟩` from `exists_adicCompletion_ringHom_extend (maximalIdeal D) h`. Use `letI : Algebra A E := g.toAlgebra`. Establish `hgA : ∀ a, g (algebraMap D A a) = h a` using `fun a => RingHom.congr_fun hg a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmA : (maximalIdeal A).map (algebraMap A E) = maximalIdeal E`. Rewrite using `[AdicCompletion.maximalIdeal_eq_map, Ideal.map_map]`. Express the relevant statement in the definitionally equal form `(maximalIdeal D).map (g.comp _) = _`. Rewrite using `[hg, hmap]`. Use `haveI : IsLocalHom (algebraMap A E) := ((local_hom_TFAE _).out 0 2).mpr hmA.le`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hres : ((residue E).comp g).Finite` using `RingHom.Finite.of_comp_finite (f := algebraMap D A) (by rw [RingHom.comp_assoc, hg]; exact hfin)`. Use `haveI : Module.Finite A (E ⧸ (maximalIdeal A).map (algebraMap A E)) := by`. Rewrite using `[← RingHom.finite_algebraMap]`. Use `show ((Ideal.Quotient.mk _).comp (algebraMap A E)).Finite`. Rewrite using `[hmA]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hres`. Use `haveI : IsHausdorff ((maximalIdeal A).map (algebraMap A E)) E := by rw [hmA]; infer_instance`. Use `haveI : Module.Finite A E := FormalIsogeny.finite_of_finite_quotient_map (maximalIdeal A)`. Use `haveI : Module.Flat A E := by`. Use `LocalFlat.flat_of_relationsLift E (I := maximalIdeal A) (hmA.le.trans (maximalIdeal_le_jacobson _)) fun n => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `letI : Algebra D E := h.toAlgebra`. Use `haveI : Module.Flat D E := hflat`. Establish `fg` using `(maximalIdeal D).fg_of_isNoetherianRing`. Establish `hkerA : ∀ x : A, AdicCompletion.evalₐ (maximalIdeal D) n x = 0 ↔ x ∈ maximalIdeal A ^ n`. Introduce `x`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[AdicCompletion.maximalIdeal_eq_map, ← Ideal.map_pow, ← Submodule.restrictScalars_mem D, ← Ideal.smul_top_eq_map, AdicCompletion.pow_smul_top_eq_ker_eval fg, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Rewrite using `[← AdicCompletion.factor_evalₐ_eq_eval _ x (by simp), h0, map_zero]`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← AdicCompletion.factor_eval_eq_evalₐ _ x (by simp), h0, map_zero]`. Establish `hmapn : (maximalIdeal A ^ n).map (algebraMap A E) = (maximalIdeal D ^ n).map (algebraMap D E)`. Rewrite using `[AdicCompletion.maximalIdeal_eq_map, ← Ideal.map_pow, Ideal.map_map]`. Express the relevant statement in the definitionally equal form `(maximalIdeal D ^ n).map (g.comp _) = _`. Rewrite using `[hg]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Use `LocalFlat.relationsLift_of_square (AdicCompletion.evalₐ (maximalIdeal D) n).toRingHom (Ideal.Quotient.mk ((maximalIdeal D ^ n).map (algebraMap D E))) (algebraMap _ _) (AdicCompletion.surjective_evalₐ _ n) Ideal.Quotient.mk_surjective ?_ ?_ ?_ ?_` and prove the remaining obligations. Use extensionality with `x`. Conclude with `(hkerA x)`. Rewrite using `[Ideal.mk_ker, hmapn]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ (maximalIdeal D) n x)`. Establish `hx : x - algebraMap D A a ∈ maximalIdeal A ^ n`. Rewrite using `[← hkerA, map_sub, ← ha, AlgHom.commutes, sub_eq_zero]`. Both sides reduce to the same expression.
-
-Establish `hx' : algebraMap A E x - h a ∈ (maximalIdeal D ^ n).map (algebraMap D E)`. Rewrite using `[← hmapn, ← hgA]`. Rewrite using `[show algebraMap A E x - g (algebraMap D A a) = algebraMap A E (x - algebraMap D A a) from (map_sub g _ _).symm]`. Conclude with `Ideal.mem_map_of_mem _ hx`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, ← ha]`.
-
-Rewrite using `[Ideal.Quotient.algebraMap_quotient_map_quotient, eq_comm, Ideal.Quotient.eq]`. Conclude with `hx'`. Rewrite using `[RingHom.flat_algebraMap_iff]`. Conclude with `Module.Flat.of_linearEquiv (Algebra.TensorProduct.quotIdealMapEquivQuotTensor E (maximalIdeal D ^ n)).toLinearEquiv`. Use `haveI : Algebra.FormallyUnramified A (ResidueField E) := by`.
-
-Rewrite using `[← RingHom.formallyUnramified_algebraMap]`. Establish `e : (algebraMap A (ResidueField E)).comp (algebraMap D A) = (residue E).comp h`. Rewrite using `[← hg]`. Both sides reduce to the same expression. Conclude with `RingHom.FormallyUnramified.of_comp (f := algebraMap D A) (by rw [e]; exact hfu)`.
-
-Use `haveI : Algebra.FormallyUnramified A E := GlobalTheory.EtaleCompletionNormal.formallyUnramified_of_map_maximalIdeal hmA`. Conclude with `⟨g, hgA, ‹IsLocalHom (algebraMap A E)›, ‹Module.Finite A E›, ‹Module.Flat A E›, ‹Algebra.FormallyUnramified A E›⟩`.
+Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finite_flat_unramified_completion (D E : Type) [CommRing D] [IsLocalRing D] [CommRing E] [IsLocalRing E]
     (h : D →+* E) (hD : IsNoetherianRing D) (hE : IsNoetherianRing E) (hEc : IsAdicComplete (maximalIdeal E) E)
@@ -414,15 +386,9 @@ theorem exists_finite_flat_unramified_completion (D E : Type) [CommRing D] [IsLo
   exact ⟨g, hgA, ‹IsLocalHom (algebraMap A E)›, ‹Module.Finite A E›, ‹Module.Flat A E›, ‹Algebra.FormallyUnramified A E›⟩
 
 /- English proof (translation)
-Use `haveI hA : IsNoetherianRing A := Algebra.EssFiniteType.isNoetherianRing ℤ A`. Take `⟨φ', hφ', hloc, hfin, hflat, hur⟩` from `exists_finite_flat_unramified_completion A R φ hA hR hRc het hfu`. Use `haveI : IsDiscreteValuationRing W := hW.1`. Use `haveI := hW.2.2`. Use `letI : Algebra A W := ψ.toAlgebra`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Module.Flat A (AdicCompletion (maximalIdeal A) A) := AdicCompletion.flat_of_isNoetherian _`. Use `haveI : Module.FaithfullyFlat A (AdicCompletion (maximalIdeal A) A) := Module.FaithfullyFlat.of_flat_of_isLocalHom`. Use `haveI := isReduced_field_tensor_completion A (ResidueField W)`. Take `⟨V, _, _, _, ι₁, g₁, hV, hι₁, hg₁⟩` from `exists_cdvr_of_flat (A := A) (R := AdicCompletion (maximalIdeal A) A) hϖ`. Use `haveI : IsLocalRing (AdicCompletion (maximalIdeal A) A) := inferInstance`.
-
-Establish `key : ∀ (C : Type) [CommRing C] [IsLocalRing C] (φ' : C →+* R) (g₁ : C →+* V), IsLocalHom φ' → φ'.Finite → φ'.Flat → φ'.FormallyUnramified → ∃ (W' : Type) (_ : CommRing W') (_ : IsDomain W') (_ : IsLocalRing W') (ι : V →+* W') (g : R →+* W'), GlobalTheory.UU.CDVR W' ∧ Irreducible …`. Introduce `C _ _ φ' g₁ hloc hfin hflat hur`. Use `haveI : IsDiscreteValuationRing V := hV.1`. Use `haveI := hV.2.2`. Use `algebraize [φ', g₁]`.
-
-Use `haveI : IsLocalHom (algebraMap C R) := hloc`. Use `haveI : Module.FaithfullyFlat C R := Module.FaithfullyFlat.of_flat_of_isLocalHom`. Use `haveI := Algebra.FormallyUnramified.isReduced_of_field (ResidueField V) (ResidueField V ⊗[C] R)`. Conclude with `exists_cdvr_of_flat (A := C) (R := R) hι₁`. Take `⟨W', _, _, _, ι₂, g, hW', hι₂, hg⟩` from `key _ φ' g₁ hloc hfin hflat hur`.
-
-Use `⟨W', inferInstance, inferInstance, inferInstance, ι₂.comp ι₁, g, hW', hι₂, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ', hg, hg₁]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_ringHom_lift {A R W : Type} [CommRing A] [IsLocalRing A] [Algebra.EssFiniteType ℤ A] [CommRing R]
     [IsLocalRing R] [CommRing W] [IsDomain W] [IsLocalRing W] (φ : A →+* R) (ψ : A →+* W) (hR : IsNoetherianRing R)
@@ -467,7 +433,7 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory.TraitLiftGen
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Z R _ _ _ ξ hCN hEt hFU W _ _ _ hW ϖ hϖ χ _ hs _ _`. Use `haveI := (GlobalTheory.GModStalk.charZero_essFiniteType_stalk E H D l Xo c Z (ξ (closedPoint R))).2`. Conclude with `exists_ringHom_lift (Scheme.stalkClosedPointTo ξ).hom ((Scheme.stalkClosedPointTo χ).hom.comp (Z.X.presheaf.stalkSpecializes hs).hom) hCN.1 hCN.2.2.1 hEt hFU hW hϖ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_lift_of_specializes : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c) {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (ξ : Sp R ⟶ Z.X), IsCN R → IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom → ((residue R).comp (Scheme.stalkClosedPointTo ξ).hom).FormallyUnramified → ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], CDvr W → ∀ ϖ : W, Irreducible ϖ → ∀ (χ : Sp W ⟶ Z.X), Set.range (jK W ≫ χ) ⊆ Set.range Z.j → ∀ hs : χ (closedPoint W) ⤳ ξ (closedPoint R), χ (closedPoint W) ≠ ξ (closedPoint R) → ringKrullDim (Z.X.presheaf.stalk (χ (closedPoint W))) = 1 → ∃ (W' : Type) (_ : CommRing W') (_ : IsDomain W') (_ : IsLocalRing W') (ι : W →+* W') (g : R →+* W'), CDvr W' ∧ Irreducible (ι ϖ) ∧ ∀ a, g ((Scheme.stalkClosedPointTo ξ).hom a) = ι ((Scheme.stalkClosedPointTo χ).hom ((Z.X.presheaf.stalkSpecializes hs).hom a)) := by
   intro E _ _ _ H D l Xo c Z R _ _ _ ξ hCN hEt hFU W _ _ _ hW ϖ hϖ χ _ hs _ _

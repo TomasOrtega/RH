@@ -8,17 +8,17 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Semi 
 namespace GlobalTheory.FlagBundle
 
 /- English proof (translation)
-Use `⟨h.hom, fun z' => ?_⟩` and prove the remaining obligations. Take `⟨U₀, b, hz, hb, hE⟩` from `EE.loc (f z')`. Take `⟨W, hW, hzW, hle⟩` from `exists_isAffineOpen_mem_and_subset (U := U₀) hz`. Take `⟨hc, hch⟩` from `h.chart W b hW ⟨_, hzW⟩ fun z hzz => hE z (hle hzz)`. Take `⟨i, hi⟩` from `hc z' hzW`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hUe, hR⟩` from `hch i hi.1`. Establish `hcard : Fintype.card {j // j ≠ i} = Fintype.card J - 1`. Rewrite using `[Fintype.card_subtype_compl, Fintype.card_subtype_eq]`. Set `e : Fin (Fintype.card J - 1) ≃ {j // j ≠ i}` to `(Fintype.equivFinOfCardEq hcard).symm`. Establish `hmem : ∀ y, y ∈ U ↔ f y ∈ W ∧ M'.Div ((b.map φ).mulVec s) i y` using `fun y => Set.ext_iff.1 hUe y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨U, W, fun k => (b.map φ).mulVec s (e k).1 / (b.map φ).mulVec s i, hU, hW, (hmem z').2 ⟨hzW, hi⟩, fun y hy => ((hmem y).1 hy).1, fun P hP => ?_, ?_⟩` and prove the remaining obligations. Apply `MvPolynomial.rename_injective e e.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use `(h.gen b hb i).2 _ ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval₂_rename]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hP`. Rewrite using `[hR]`. Use `le_antisymm (Algebra.adjoin_le ?_) (Algebra.adjoin_mono (Set.union_subset_union_right _ ?_))` and prove the remaining obligations. Introduce and unpack `x (hx | ⟨j, rfl⟩)`. Conclude with `Algebra.subset_adjoin (Or.inl hx)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hj : j = i`. Substitute `hj show _ / _ ∈ _` using the available equality. Rewrite using `[div_self hi.1]`. Conclude with `one_mem _`. Use `Algebra.subset_adjoin (Or.inr ⟨e.symm ⟨j, hj⟩, ?_⟩)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Simplify using `only [Equiv.apply_symm_apply]`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨(e k).1, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem ProjBundle.affCover (F Ω Ω' : Type) [Field F] [Field Ω] [Algebra F Ω] [Field Ω'] [Algebra F Ω']
     (M : RatModel F Ω) (M' : RatModel F Ω') (φ : Ω →ₐ[F] Ω') (f : M'.Z ⟶ M.Z) (J : Type) [Fintype J] [DecidableEq J]

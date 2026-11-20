@@ -15,13 +15,13 @@ namespace GlobalTheory.MixDens
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
 
 /- English proof (translation)
-Establish `hI : MeasurableSet (c.e '' T)` using `ChartGlue.measurableSet_image _ hT hc`. Establish `hsub : c.e '' T ⊆ c.e.target`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `c.e.map_source (hc hy)`. Establish `hs : AEMeasurable c.e.symm (volume.restrict (c.e '' T))` using `(c.e.continuousOn_symm.mono hsub).aemeasurable hI`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Measure.ext fun S hS => ?_` and prove the remaining obligations. Establish `hST : MeasurableSet (S ∩ T)` using `hS.inter hT`. Establish `hI' : MeasurableSet (c.e '' (S ∩ T))` using `ChartGlue.measurableSet_image _ hST (inter_subset_right.trans hc)`. Establish `hset : c.e.symm ⁻¹' S ∩ c.e '' T = c.e '' (S ∩ T)`. Use extensionality with `v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, y, hy, rfl⟩`. Use `⟨y, ⟨?_, hy⟩, rfl⟩` and prove the remaining obligations. Simplify `h1` using `only [mem_preimage, c.e.left_inv (hc hy)]`. Introduce and unpack `⟨y, ⟨h1, hy⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, y, hy, rfl⟩` and prove the remaining obligations. Simplify `h1` using `only [mem_preimage, c.e.left_inv (hc hy)]`. Rewrite using `[Measure.restrict_apply hS, hρ.part_apply c hST (inter_subset_right.trans hc), Measure.map_apply_of_aemeasurable (hs.mono_ac (withDensity_absolutelyContinuous _ _)) hS, ← restrict_withDensity hI, Measure.restrict_apply' hI, hset, withDensity_apply _ hI']`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsDens.part_restrict_eq_map [SecondCountableTopology (CxPts p σ)] {ρ : AlgChart p σ D → CxPts p σ → ℝ}
     (hρ : IsDens ρ) (c : AlgChart p σ D) {T : Set (CxPts p σ)} (hT : MeasurableSet T) (hc : T ⊆ c.e.source) :
@@ -50,9 +50,9 @@ theorem IsDens.part_restrict_eq_map [SecondCountableTopology (CxPts p σ)] {ρ :
     ← restrict_withDensity hI, Measure.restrict_apply' hI, hset, withDensity_apply _ hI']
 
 /- English proof (translation)
-Establish `hI : MeasurableSet (c.e '' T)` using `ChartGlue.measurableSet_image _ hT hc`. Establish `hsub : c.e '' T ⊆ c.e.target`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `c.e.map_source (hc hy)`. Establish `hs : AEMeasurable c.e.symm (volume.restrict (c.e '' T))` using `(c.e.continuousOn_symm.mono hsub).aemeasurable hI`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : AEMeasurable (fun v => ENNReal.ofReal (ρ c (c.e.symm v))) (volume.restrict (c.e '' T))` using `(((hρ.2 c).mono hsub).aemeasurable hI).ennreal_ofReal`. Rewrite using `[hρ.part_restrict_eq_map c hT hc, lintegral_map' hh.aemeasurable (hs.mono_ac (withDensity_absolutelyContinuous _ _)), lintegral_withDensity_eq_lintegral_mul₀ hd (hh.comp_aemeasurable' hs)]`. Conclude with `lintegral_congr fun v => mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_part_chart (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ)
     [SecondCountableTopology (CxPts p σ)] (ρ : AlgChart p σ D → CxPts p σ → ℝ) (hρ : IsDens ρ)

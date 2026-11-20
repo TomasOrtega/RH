@@ -20,33 +20,29 @@ namespace GlobalTheory.RealAvg
 open MvPolynomial
 open GlobalTheory.Grid (neg sgn ofSgn)
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X hPr hN hL hX`. Establish `hI` using `hX.is`. Establish `hθ : IsInfFam W.θ` using `hI.isVac.2.inf`. Establish `hgA : A.gram = 1` using `hX.std.1`. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig A.gram`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : BorelSpace (GA D A) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig A.gram`. Use `haveI : CompactSpace (GinfC A) := isCompact_iff_compactSpace.1 (GlobalTheory.T.isCompact_unitaryRealPoints_of_gram_eq_one D A hgA)`. Use `haveI : BorelSpace (GinfC A) := Subtype.borelSpace _`. Take `⟨χ, hχc, hχ, hχa⟩` from `_root_.GlobalTheory.T.exists_real_character_twist hPr hN hL hX`. Establish `hΓ` using `GlobalTheory.T.dense_unitaryRealPoints_algebraicEntries D W.θ hθ A`.
+Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `ρ : ∀ d : D.what₂.Tau →₀ ℕ, GinfC A →* Matrix (Mon D WW.rank A.rank d) (Mon D WW.rank A.rank d) ℂ` to `fun d => { toFun := fun g => χ g • substMat W.θ A WW.rank d g.1 map_one' := by simp only [map_one, OneMemClass.coe_one, substMat_one, one_smul] map_mul' := fun a b => by`. Simplify using `only [map_mul, Subgroup.coe_mul, substMat_mul]`. Rewrite using `[smul_mul_smul_comm] }`. Establish `hρ : ∀ d g, ρ d g = χ g • substMat W.θ A WW.rank d g.1` using `fun _ _ => rfl`. Establish `hρc : ∀ d, Continuous (ρ d)` using `fun d => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [hρ, Matrix.smul_apply, smul_eq_mul]`. Conclude with `hχc.mul (substMat_cont hθ A WW.rank d a b)`. Establish `hρa : ∀ d, ∀ γ ∈ {g : GinfC A | ∀ τ a b, IsAlgebraic ℚ (compAt W.θ τ (Formalism.L2.Theta.mt A g.1) a b)}, ∀ a b, IsAlgebraic ℚ (ρ d γ a b)` using `fun d γ hγ a b => by`. Simplify using `only [hρ, Matrix.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hχa γ hγ).mul (substMat_alg W.θ A WW.rank d a b γ.1 hγ)`. Establish `hker : ∀ t P h (g : GA D A), X.ker W.ψ W.θ t P h g = thetaKO ((X.ω t).toSgn true) ((ofSgn true A).symm g) h (pureTensorO W.ψ W.θ (neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (X.f t) P)` using `fun t P h g => by show thetaKO (X.ω t) g h _ = (X.ω t) ((ofSgn true A) ((ofSgn true A).symm g), h) _ 0`. Rewrite using `[MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Establish `hform : ∀ d t (x : GA D A) h (g : GinfC A) (k : Mon D WW.rank A.rank d), X.ker W.ψ W.θ t (monomial k.1 1) h (x * g.1) = ∑ k'' : Mon D WW.rank A.rank d, ρ d g k'' k * X.ker W.ψ W.θ t (monomial k''.1 1) h x`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `d t x h g k`. Rewrite using `[hker, map_mul]`. Unfold `thetaKO`. Establish `e : ((ofSgn true A).symm x * (ofSgn true A).symm g.1, h) = ((ofSgn true A).symm x, h) * ((ofSgn true A).symm g.1, (1 : GA D WW))`. Rewrite using `[Prod.mk_mul_mk, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[e, map_mul, Module.End.mul_apply, GlobalTheory.T.definiteBottom_weilAction_fockPureTensor_substitution hX t g.1, hχ t g, GlobalTheory.FiniteFock.pureTensorO_smul]`. Use `conv_lhs => rw [eq_sum_mon (d := d) (GlobalTheory.CompactHowe.substF _ _ (monomial k.1 1)) (fun k'' hk => (GlobalTheory.T.mapDomain_fst_eq_of_coeff_matrixFamilyBilateralSubstitution_ne_zero _ _ _ _ hk).trans k.2)]`. Simplify using `only [map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hρ, Matrix.smul_apply]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k'' _ => ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hker]`. Unfold `thetaKO substMat`. Expand and normalize the polynomial expressions, which then agree. Establish `he : ‖Complex.exp Complex.I‖ = 1` using `by simpa using Complex.norm_exp_ofReal_mul_I 1`. Use `choose z hz _hzc h1 h2 using fun τ => GlobalTheory.CentralUnit.exists_central_of_norm_one D W.θ hθ A τ (Complex.exp Complex.I) he`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Set `c : D.what₂.Tau → ℂ` to `fun τ => χ ⟨z τ, hz τ⟩`. Establish `hcen : ∀ d τ, ρ d ⟨z τ, hz τ⟩ = (c τ * Complex.exp Complex.I ^ d τ) • 1` using `fun d τ => by`. Rewrite using `[hρ, substMat_central W.θ A WW.rank d (z τ) τ _ (h1 τ) (h2 τ), smul_smul]`. Choose the witnesses or unpack the hypotheses as in `⟨dg, hdg⟩ : ∃ dg : D.what₂.Tau →₀ ℕ, ∀ d, d ≠ dg → ∃ τ, c τ * Complex.exp Complex.I ^ d τ ≠ 1 := by`. Distinguish the cases in `hex : ∃ d : D.what₂.Tau →₀ ℕ, ∀ τ, c τ * Complex.exp Complex.I ^ d τ = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Take `⟨d₀, hd₀⟩` from `hex`. Use `⟨d₀, fun d hd => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Use `hd (Finsupp.ext fun τ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hc0 : c τ ≠ 0` using `fun h0 => by have := hd₀ τ; rw [h0, zero_mul] at this; exact zero_ne_one this`. Conclude with `GlobalTheory.ExpPow.pow_exp_I_or_inv_injective _ _ _ (Or.inl rfl) (mul_left_cancel₀ hc0 ((hall τ).trans (hd₀ τ).symm))`. Use `push_neg at hex`. Conclude with `⟨0, fun d _ => hex d⟩`. Use `⟨dg, fun κ hκ hκp t x _ h _ k => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := hκp`. Use `set d := Finsupp.mapDomain Prod.fst k with hd`. Set `kM : Mon D WW.rank A.rank d` to `⟨k, hd.symm⟩`. Establish `hexp` using `integral_expand κ (fun g => ρ d g) (hρc d) (fun k'' => X.ker W.ψ W.θ t (monomial k''.1 1) h x) (fun g : GinfC A => X.ker W.ψ W.θ t (monomial k 1) h (x * g.1)) kM (fun g => hform d t x h g kM)`. Distinguish the cases in `hdd : d = dg`.
-
-Set `e` to `Fintype.equivFin (Mon D WW.rank A.rank d)`. Use `⟨Fintype.card (Mon D WW.rank A.rank d), fun p => ∫ g, ρ d g (e.symm p) kM ∂κ, fun p => (e.symm p).1, fun p => GlobalTheory.HaarAlg.isAlgebraic_integral κ (ρ d) (hρc d) _ hΓ (hρa d) _ _, fun p => (show Finsupp.mapDomain Prod.fst (e.symm p).1 = d from (e.symm p).2).trans hdd, ?_⟩` and prove the remaining obligations. Rewrite using `[hexp, ← Equiv.sum_comp e.symm]`. Take `⟨τ, hτ⟩` from `hdg d hdd`. Use `⟨0, Fin.elim0, Fin.elim0, fun p => p.elim0, fun p => p.elim0, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hexp, Fin.sum_univ_zero]`. Use `Finset.sum_eq_zero fun k'' _ => ?_` and prove the remaining obligations. Rewrite using `[integral_eq_zero_of_scalar κ (ρ d) (hρc d) ⟨z τ, hz τ⟩ _ hτ (hcen d τ), zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem real_average_kernel_isAlgebraic : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
@@ -152,7 +148,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.RealAvg.real_average_kernel_isAlgebraic | exact _root_.GlobalTheory.RealAvg.real_average_kernel_isAlgebraic | (intros; apply _root_.GlobalTheory.RealAvg.real_average_kernel_isAlgebraic <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.twisted_real_average_kernel_isAlgebraic : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

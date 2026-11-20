@@ -8,7 +8,7 @@ open UpperTheory.V.W (Plc Lp)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `F _ _ v`. Use `⟨inferInstance, GlobalTheory.SelfDualGenus.isAdicComplete_adicCompletionIntegers v, GlobalTheory.SelfDualGenus.finite_residueField_adicCompletionIntegers v, fun h => ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.SelfDualGenus.isUnit_algebraMap_iff v (2 : 𝓞 F)).2 h` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem UpperTheory.V.Z.Sym.Dict.Br.locBase :
     ∀ (F : Type) [Field F] [NumberField F] (v : Pl F), IsFractionRing (Ov v) (Kv v) ∧ IsAdicComplete (IsLocalRing.maximalIdeal (Ov v)) (Ov v) ∧ Finite (IsLocalRing.ResidueField (Ov v)) ∧ ((2 : 𝓞 F) ∉ v.asIdeal → IsUnit (2 : Ov v)) := by

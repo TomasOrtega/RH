@@ -84,11 +84,11 @@ def mirabolic [NeZero n] : Subgroup (GL (Fin n) F) where
     · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Introduce and unpack `g ⟨hg, hg'⟩ j`. Distinguish the cases in `h : j = lastIdx`. Substitute `h` using the available equality. Simplify using `[hg']`. Establish `hj : j < lastIdx`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `j.2` as an intermediate fact. Rewrite using `[Fin.lt_def]`. Establish `: (j : ℕ) ≠ n - 1` using `fun e ↦ h (Fin.ext e)`. Simplify using `only [lastIdx]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `[h, hg lastIdx j hj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem upperUnipotent_le_mirabolic [NeZero n] : upperUnipotent n F ≤ mirabolic n F := by
   rintro g ⟨hg, hg'⟩ j
@@ -111,11 +111,11 @@ def superdiagSum (u : Matrix (Fin n) (Fin n) F) : F :=
   ∑ i : Fin n, ∑ j : Fin n, if (j : ℕ) = i + 1 then u i j else 0
 
 /- English proof (translation)
-Take `⟨ha, ha'⟩` from `ha`. Take `⟨hb, hb'⟩` from `hb`. Establish `hne : i ≠ j` using `fun e ↦ by rw [e] at hij; omega`. Simplify using `only [Units.val_mul, Matrix.mul_apply]`. Rewrite using `[Fintype.sum_eq_add i j hne]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ha' i, hb' j, add_comm]`. Introduce and unpack `k ⟨hki, hkj⟩`. Break down `lt_or_gt_of_ne hki with hk | hk` into its components or cases. Simplify using `[ha i k hk]`. Establish `: j < k`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hk`, the goal using `[Fin.lt_def]`. Establish `: (k : ℕ) ≠ j` using `fun e ↦ hkj (Fin.ext e)`. Use linear arithmetic over natural numbers and integers. Simplify using `[hb k j this]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 theorem superdiag_mul {a b : GL (Fin n) F} (ha : a ∈ upperUnipotent n F)
     (hb : b ∈ upperUnipotent n F) {i j : Fin n} (hij : (j : ℕ) = i + 1) :
@@ -137,7 +137,7 @@ theorem superdiag_mul {a b : GL (Fin n) F} (ha : a ∈ upperUnipotent n F)
       simp [hb k j this]
 
 /- English proof (translation)
-Simplify using `only [superdiagSum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `superdiag_mul ha hb h`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem superdiagSum_mul {a b : GL (Fin n) F} (ha : a ∈ upperUnipotent n F)
     (hb : b ∈ upperUnipotent n F) :
@@ -150,7 +150,7 @@ theorem superdiagSum_mul {a b : GL (Fin n) F} (ha : a ∈ upperUnipotent n F)
   · simp
 
 /- English proof (translation)
-Use `Finset.sum_eq_zero fun i _ ↦ Finset.sum_eq_zero fun j _ ↦ ?_` and prove the remaining obligations. Use `split_ifs with h`. Establish `: i ≠ j` using `fun e ↦ by rw [e] at h; omega`. Simplify using `[Matrix.one_apply_ne this]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem superdiagSum_one : superdiagSum (1 : Matrix (Fin n) (Fin n) F) = 0 := by
   refine Finset.sum_eq_zero fun i _ ↦ Finset.sum_eq_zero fun j _ ↦ ?_
@@ -271,7 +271,7 @@ def Flag.ofSubspace (W : Submodule F (Fin n → F)) : Flag n F where
   space_last := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, by simpa [Flag.ofSubspace] using h0, by simpa [Flag.ofSubspace] using h1⟩`.
+Supply the required witnesses or components.
 -/
 theorem Flag.ofSubspace_isProper {W : Submodule F (Fin n → F)} (h0 : W ≠ ⊥) (h1 : W ≠ ⊤) :
     (Flag.ofSubspace W).IsProper :=
@@ -283,9 +283,9 @@ def lineFlag (hn : 1 < n) : Flag n F :=
   Flag.ofSubspace (Submodule.span F {Pi.single (⟨0, by omega⟩ : Fin n) (1 : F)})
 
 /- English proof (translation)
-Use `Flag.ofSubspace_isProper ?_ ?_` and prove the remaining obligations. Rewrite using `[Ne, Submodule.span_singleton_eq_bot]`. Introduce `h`. Simplify using `using congrFun h ⟨0, by omega⟩`. Introduce `htop`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem` using `(Submodule.eq_top_iff'.mp htop) (Pi.single (⟨1, hn⟩ : Fin n) (1 : F))`. Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.mp hmem`. Use `congrFun ha ⟨1, hn⟩` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem lineFlag_isProper (hn : 1 < n) : (lineFlag n F hn).IsProper := by
   refine Flag.ofSubspace_isProper ?_ ?_
@@ -299,7 +299,7 @@ theorem lineFlag_isProper (hn : 1 < n) : (lineFlag n F hn).IsProper := by
     simp at this
 
 /- English proof (translation)
-Introduce `h`. Conclude with `one_ne_zero (h (lineFlag n F hn) (lineFlag_isProper hn) 1 (fun g _ ↦ by simp))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isCuspidal_trivial (hn : 1 < n) :
     ¬ IsCuspidal n F (Representation.trivial ℂ (GL (Fin n) F) ℂ) := by
@@ -307,7 +307,7 @@ theorem not_isCuspidal_trivial (hn : 1 < n) :
   exact one_ne_zero (h (lineFlag n F hn) (lineFlag_isProper hn) 1 (fun g _ ↦ by simp))
 
 /- English proof (translation)
-Introduce and unpack `⟨i, h0, h1⟩`. Use `haveI : IsSimpleModule F (Fin 1 → F) := isSimpleModule_iff_finrank_eq_one.mpr (by simp)`. Break down `IsSimpleOrder.eq_bot_or_eq_top (𝓕.space i) with h | h` into its components or cases. Conclude with `h0 h`. Conclude with `h1 h`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem Flag.not_isProper_one (𝓕 : Flag 1 F) : ¬ 𝓕.IsProper := by
   rintro ⟨i, h0, h1⟩
@@ -317,14 +317,14 @@ theorem Flag.not_isProper_one (𝓕 : Flag 1 F) : ¬ 𝓕.IsProper := by
   · exact h1 h
 
 /- English proof (translation)
-The claim follows from `fun 𝓕 h ↦ absurd h 𝓕.not_isProper_one`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isCuspidal_one {V : Type*} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (GL (Fin 1) F) V) : IsCuspidal 1 F ρ :=
   fun 𝓕 h ↦ absurd h 𝓕.not_isProper_one
 
 /- English proof (translation)
-Establish `hbt : ((⊥ : Subrepresentation (Representation.trivial ℂ G ℂ)).toSubmodule) ≠ (⊤ : Subrepresentation (Representation.trivial ℂ G ℂ)).toSubmodule` using `bot_ne_top (α := Submodule ℂ ℂ)`. Use `{ toNontrivial := ⟨⟨⊥, ⊤, fun h ↦ hbt (congrArg _ h)⟩⟩, eq_bot_or_eq_top := fun σ ↦ ?_ }` and prove the remaining obligations. Break down `IsSimpleOrder.eq_bot_or_eq_top σ.toSubmodule with h | h` into its components or cases. Conclude with `Or.inl (Subrepresentation.toSubmodule_injective h)`. Conclude with `Or.inr (Subrepresentation.toSubmodule_injective h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem isIrreducible_trivial (G : Type*) [Group G] :
     (Representation.trivial ℂ G ℂ).IsIrreducible := by
@@ -342,7 +342,7 @@ def upperTwo (x : F) : GL (Fin 2) F :=
     ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]⟩
 
 /- English proof (translation)
-Use `⟨fun i j hij ↦ ?_, fun i ↦ ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all [upperTwo]`. Apply the tactic sequence `fin_cases i <;> simp [upperTwo]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem upperTwo_mem (x : F) : upperTwo x ∈ upperUnipotent 2 F := by
   refine ⟨fun i j hij ↦ ?_, fun i ↦ ?_⟩
@@ -350,14 +350,14 @@ theorem upperTwo_mem (x : F) : upperTwo x ∈ upperUnipotent 2 F := by
   · fin_cases i <;> simp [upperTwo]
 
 /- English proof (translation)
-Simplify using `[genericChar, superdiagSum, Fin.sum_univ_two, upperTwo]`.
+Simplify using the standard rewrite rules.
 -/
 theorem genericChar_upperTwo (ψ₀ : AddChar F ℂ) (x : F) :
     genericChar 2 F ψ₀ ⟨upperTwo x, upperTwo_mem x⟩ = ψ₀ x := by
   simp [genericChar, superdiagSum, Fin.sum_univ_two, upperTwo]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `AddChar.ne_one_iff.mp hψ₀`. Conclude with `⟨⟨upperTwo x, upperTwo_mem x⟩, by rwa [genericChar_upperTwo]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_genericChar_ne_one {ψ₀ : AddChar F ℂ} (hψ₀ : ψ₀ ≠ 1) :
     ∃ u, genericChar 2 F ψ₀ u ≠ 1 := by
@@ -373,11 +373,11 @@ def mirabolicDeltaFun (ψ₀ : AddChar F ℂ) (p : mirabolic n F) : ℂ :=
   if h : (p : GL (Fin n) F) ∈ upperUnipotent n F then genericChar n F ψ₀ ⟨p, h⟩ else 0
 
 /- English proof (translation)
-Rewrite using `[Representation.mem_coindV]`. Introduce `u p`. Distinguish the cases in `hp : (p : GL (Fin n) F) ∈ upperUnipotent n F`. Establish `hup : (u : GL (Fin n) F) * p ∈ upperUnipotent n F` using `mul_mem u.2 hp`. Establish `hup' : ((Subgroup.inclusion (upperUnipotent_le_mirabolic n F) u * p : mirabolic n F) : GL (Fin n) F) ∈ upperUnipotent n F` using `hup`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [mirabolicDeltaFun, dif_pos hp]`. Rewrite using `[dif_pos hup']`. Express the relevant statement in the definitionally equal form `genericChar n F ψ₀ (u * ⟨p, hp⟩) = _`. Rewrite using `[map_mul]`. Simplify using `[genericRep]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hup : (u : GL (Fin n) F) * p ∉ upperUnipotent n F` using `fun h ↦ hp (by simpa using mul_mem (inv_mem u.2) h)`. Establish `hup' : ((Subgroup.inclusion (upperUnipotent_le_mirabolic n F) u * p : mirabolic n F) : GL (Fin n) F) ∉ upperUnipotent n F` using `hup`. Simplify using `only [mirabolicDeltaFun, dif_neg hp, map_zero]`. Rewrite using `[dif_neg hup']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mirabolicDeltaFun_mem (ψ₀ : AddChar F ℂ) :
     mirabolicDeltaFun n F ψ₀ ∈ MirabolicInducedSpace n F ψ₀ := by
@@ -405,9 +405,9 @@ def mirabolicDelta (ψ₀ : AddChar F ℂ) : MirabolicInducedSpace n F ψ₀ :=
   ⟨mirabolicDeltaFun n F ψ₀, mirabolicDeltaFun_mem ψ₀⟩
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `congrArg (fun f : MirabolicInducedSpace n F ψ₀ ↦ (f : mirabolic n F → ℂ) 1) h`. Establish `hone : ((1 : mirabolic n F) : GL (Fin n) F) ∈ upperUnipotent n F` using `one_mem _`. Simplify using `only [mirabolicDelta, mirabolicDeltaFun, dif_pos hone] at h1`. Rewrite `h1` using `[show (⟨((1 : mirabolic n F) : GL (Fin n) F), hone⟩ : upperUnipotent n F) = 1 from rfl, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `one_ne_zero h1`.
+A detailed English derivation is pending.
 -/
 theorem mirabolicDelta_ne_zero (ψ₀ : AddChar F ℂ) : mirabolicDelta n F ψ₀ ≠ 0 := by
   intro h

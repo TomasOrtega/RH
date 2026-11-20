@@ -12,7 +12,7 @@ open UpperTheory.ConvolutionTheory.R2.C
 noncomputable section
 
 /- English proof (translation)
-Use `fun_prop`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_form {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
     (a c b d e : R) :
@@ -24,24 +24,24 @@ namespace UpperTheory.ConvolutionTheory.R2.C
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.comp (continuous_adelicChar (K := F))`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_psi : Continuous (ψ : A F → ℂ) :=
   continuous_subtype_val.comp (continuous_adelicChar (K := F))
 
 /- English proof (translation)
-The claim follows from `Circle.norm_coe _`.
+A detailed English derivation is pending.
 -/
 private theorem norm_psi (x : A F) : ‖ψ x‖ = 1 := Circle.norm_coe _
 
 /- English proof (translation)
-Conclude with `continuous_form (v 2) (rt δ) (v 3) (v 0) (v 1)`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_quaternaryForm_left (δ : F) (v : V4 F) : Continuous fun y : V4 F => B4 δ y v := by
   exact continuous_form (v 2) (rt δ) (v 3) (v 0) (v 1)
 
 /- English proof (translation)
-Use `(integrable_of_mem_schwartzBruhatPi hφ).mul_bdd (c := 1) ?_ ?_` and prove the remaining obligations. Conclude with `(continuous_psi.comp (continuous_quaternaryForm_left δ v)).aestronglyMeasurable`. Conclude with `Eventually.of_forall fun y => (norm_psi _).le`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem integrable_ft (δ : F) {φ : V4 F → ℂ} (hφ : φ ∈ schwartzBruhatPi F (Fin 4)) (v : V4 F) :
     Integrable (fun y => φ y * ψ (B4 δ y v)) (adeleMeasurePi F) := by
@@ -50,7 +50,7 @@ private theorem integrable_ft (δ : F) {φ : V4 F → ℂ} (hφ : φ ∈ schwart
   · exact Eventually.of_forall fun y => (norm_psi _).le
 
 /- English proof (translation)
-Unfold `ft4`. Rewrite using `[← integral_add (integrable_ft δ hφ v) (integrable_ft δ hφ' v)]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `only [Pi.add_apply, add_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem quaternaryFourier_add (δ : F) {φ φ' : V4 F → ℂ} (hφ : φ ∈ schwartzBruhatPi F (Fin 4))
     (hφ' : φ' ∈ schwartzBruhatPi F (Fin 4)) (v : V4 F) :
@@ -62,7 +62,7 @@ private theorem quaternaryFourier_add (δ : F) {φ φ' : V4 F → ℂ} (hφ : φ
   simp only [Pi.add_apply, add_mul]
 
 /- English proof (translation)
-Unfold `ft4`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem quaternaryFourier_smul (δ : F) (c : ℂ) (φ : V4 F → ℂ) (v : V4 F) :
     ft4 δ (c • φ) v = c * ft4 δ φ v := by
@@ -123,7 +123,7 @@ end UpperTheory.ConvolutionTheory.R2.C
 end
 
 /- English proof (translation)
-Introduce `F _ _ δ η hδ`. Conclude with `⟨{ N := opN δ, M := opM η, W := opW δ hδ N_apply := fun _ _ _ => rfl M_apply := fun _ _ _ => rfl W_apply := fun _ _ => rfl }⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.C.opsEx :
     ∀ (F : Type) [Field F] [NumberField F] (δ : F) (η : (A F)ˣ →* ℂˣ), δ ≠ 0 → Nonempty (Ops δ η) := by

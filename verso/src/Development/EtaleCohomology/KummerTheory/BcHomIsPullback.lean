@@ -7,7 +7,7 @@ namespace LateralTheory.KummerTheory.BCPf
 open LateralTheory.KummerTheory.ContCut
 
 /- English proof (translation)
-Unfold `bcHom pullback.map`. Conclude with `pullback.lift_fst _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 @[reassoc] theorem bcHom_fst {U X : Scheme.{0}} {R A : CommRingCat.{0}} (f : U ⟶ X) (p : X ⟶ Spec R) (r : U ⟶ Spec R)
     (e : f ≫ p = r) (s : R ⟶ A) :
@@ -15,7 +15,7 @@ Unfold `bcHom pullback.map`. Conclude with `pullback.lift_fst _ _ _`.
   unfold bcHom pullback.map; exact pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Unfold `bcHom pullback.map`. Rewrite using `[pullback.lift_snd, Category.comp_id]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem bcHom_snd {U X : Scheme.{0}} {R A : CommRingCat.{0}} (f : U ⟶ X) (p : X ⟶ Spec R) (r : U ⟶ Spec R)
     (e : f ≫ p = r) (s : R ⟶ A) :
@@ -23,7 +23,7 @@ theorem bcHom_snd {U X : Scheme.{0}} {R A : CommRingCat.{0}} (f : U ⟶ X) (p : 
   unfold bcHom pullback.map; rw [pullback.lift_snd, Category.comp_id]
 
 /- English proof (translation)
-Establish `big : IsPullback (bcHom f p r e s ≫ pullback.snd p (Spec.map s)) (pullback.fst r (Spec.map s)) (Spec.map s) (f ≫ p)`. Rewrite using `[bcHom_snd, e]`. Conclude with `(IsPullback.of_hasPullback r (Spec.map s)).flip`. Conclude with `IsPullback.of_right big (bcHom_fst f p r e s) (IsPullback.of_hasPullback p (Spec.map s)).flip`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bcHom_isPullback {U X : Scheme.{0}} {R A : CommRingCat.{0}} (f : U ⟶ X) (p : X ⟶ Spec R) (r : U ⟶ Spec R)
     (e : f ≫ p = r) (s : R ⟶ A) :
@@ -34,14 +34,14 @@ theorem bcHom_isPullback {U X : Scheme.{0}} {R A : CommRingCat.{0}} (f : U ⟶ X
   exact IsPullback.of_right big (bcHom_fst f p r e s) (IsPullback.of_hasPullback p (Spec.map s)).flip
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback (bcHom_isPullback f p r e s).flip ‹_›`.
+A detailed English derivation is pending.
 -/
 theorem bcHom_open {U X : Scheme.{0}} {R A : CommRingCat.{0}} (f : U ⟶ X) (p : X ⟶ Spec R) (r : U ⟶ Spec R)
     (e : f ≫ p = r) (s : R ⟶ A) [IsOpenImmersion f] : IsOpenImmersion (bcHom f p r e s) :=
   MorphismProperty.of_isPullback (bcHom_isPullback f p r e s).flip ‹_›
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hx`. Take `⟨q, hq, -⟩` from `Scheme.exists_preimage_of_isPullback (bcHom_isPullback f p r e s) x u hu.symm`. Conclude with `⟨q, hq⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bcHom_range {U X : Scheme.{0}} {R A : CommRingCat.{0}} (f : U ⟶ X) (p : X ⟶ Spec R) (r : U ⟶ Spec R)
     (e : f ≫ p = r) (s : R ⟶ A) (x : ↥(pullback p (Spec.map s))) (hx : pullback.fst p (Spec.map s) x ∈ Set.range f) :
@@ -51,13 +51,13 @@ theorem bcHom_range {U X : Scheme.{0}} {R A : CommRingCat.{0}} (f : U ⟶ X) (p 
   exact ⟨q, hq⟩
 
 /- English proof (translation)
-Introduce `R A s W U V X a b f g p pU pV pW ea eb ef eg h`. Take `⟨hf, hg, hpb, hcov⟩` from `h`. Use `⟨bcHom_open f p pU ef s, bcHom_open g p pV eg s, ?_, ?_⟩` and prove the remaining obligations. Establish `sq1 : IsPullback (pullback.fst pW (Spec.map s)) (bcHom b pV pW eb s) b (pullback.fst pV (Spec.map s))` using `(bcHom_isPullback b pV pW eb s).flip`. Establish `big0` using `sq1.paste_horiz hpb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `big : IsPullback (bcHom a pU pW ea s ≫ pullback.fst pU (Spec.map s)) (bcHom b pV pW eb s) f (bcHom g p pV eg s ≫ pullback.fst p (Spec.map s))`. Rewrite using `[bcHom_fst, bcHom_fst]`. Conclude with `big0`. Use `IsPullback.of_right big ?_ (bcHom_isPullback f p pU ef s).flip` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc, bcHom_fst, bcHom_fst_assoc]`. Rewrite using `[hpb.w]`. Simplify using `only [Category.assoc, bcHom_snd]`. Introduce `x`. Break down `hcov (pullback.fst p (Spec.map s) x) with hx | hx` into its components or cases.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inl (bcHom_range f p pU ef s x hx)`. Conclude with `Or.inr (bcHom_range g p pV eg s x hx)`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem BC_of : BC := by
   intro R A s W U V X a b f g p pU pV pW ea eb ef eg h

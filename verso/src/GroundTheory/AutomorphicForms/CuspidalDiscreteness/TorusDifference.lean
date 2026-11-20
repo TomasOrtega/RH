@@ -17,7 +17,7 @@ variable {V : Type*} [AddCommGroup V] [MeasurableSpace V] [MeasurableAdd V]
   {L : AddSubgroup V} [Countable L] {D : Set V}
 
 /- English proof (translation)
-Establish `hD' : IsAddFundamentalDomain L ((· + (-y)) ⁻¹' D) ν` using `hD.preimage_of_equiv (measurePreserving_add_right ν (-y)).quasiMeasurePreserving (e := id) bijective_id fun g x => by`. Simplify using `only [id, AddSubgroup.vadd_def, vadd_eq_add, add_assoc]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [neg_add_cancel_right]`. Use `_ = ∫ t in D, h t ∂ν := hD'.setIntegral_eq hD fun ξ x => hper ξ ξ.2 x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem setIntegral_add_right_of_periodic (hD : IsAddFundamentalDomain L D ν) {h : V → ℂ}
     (hper : ∀ ξ ∈ L, ∀ s, h (ξ + s) = h s) (y : V) :
@@ -35,7 +35,7 @@ theorem setIntegral_add_right_of_periodic (hD : IsAddFundamentalDomain L D ν) {
     _ = ∫ t in D, h t ∂ν := hD'.setIntegral_eq hD fun ξ x => hper ξ ξ.2 x
 
 /- English proof (translation)
-The claim follows from `| 0, h, _, _, _, B, hB => by simpa using hB Fin.elim0 fun i => i.elim0 | k + 1, h, hper, hint, hmean, B, hB => by have hi0 : IntegrableOn h D ν := by simpa using hint 0 have hstep : ∀ y ∈ D, ‖h (0 + y) - h 0‖ ≤ B := by intro y hy set g : V → ℂ := fun t => h (t + y) - h t with hg …`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_of_forall_altSum_le (hD : IsAddFundamentalDomain L D ν) (hD1 : ν D = 1) :
     ∀ (k : ℕ) (h : V → ℂ), (∀ ξ ∈ L, ∀ s, h (ξ + s) = h s) →
@@ -101,7 +101,7 @@ def scaledUnipFD (r M : ℕ) : Set (UPos n r → 𝔸[K]) :=
 variable {r M : ℕ}
 
 /- English proof (translation)
-Simplify using `[scaledUnipFD, unipFundamentalDomain, Set.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_scaledUnipFD {X : UPos n r → 𝔸[K]} :
     X ∈ scaledUnipFD K n r M ↔
@@ -109,14 +109,14 @@ theorem mem_scaledUnipFD {X : UPos n r → 𝔸[K]} :
   simp [scaledUnipFD, unipFundamentalDomain, Set.mem_pi]
 
 /- English proof (translation)
-The claim follows from `measurableSet_unipFundamentalDomain.preimage (continuous_pi fun p => continuous_const.mul (continuous_apply p)).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_scaledUnipFD : MeasurableSet (scaledUnipFD K n r M) :=
   measurableSet_unipFundamentalDomain.preimage
     (continuous_pi fun p => continuous_const.mul (continuous_apply p)).measurable
 
 /- English proof (translation)
-Establish `hM' : (M : K) ≠ 0` using `Nat.cast_ne_zero.2 hM.ne'`. Rewrite using `[← map_natCast (algebraMap K 𝔸[K]) M, ← map_mul, inv_mul_cancel₀ hM', map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraMap_inv_mul_natCast (hM : 0 < M) :
     algebraMap K 𝔸[K] ((M : K)⁻¹) * (M : 𝔸[K]) = 1 := by
@@ -124,15 +124,15 @@ theorem algebraMap_inv_mul_natCast (hM : 0 < M) :
   rw [← map_natCast (algebraMap K 𝔸[K]) M, ← map_mul, inv_mul_cancel₀ hM', map_one]
 
 /- English proof (translation)
-Establish `hM' : (M : K) ≠ 0` using `Nat.cast_ne_zero.2 hM.ne'`. Use `set c := algebraMap K 𝔸[K] ((M : K)⁻¹) with hc`. Use `choose k hk huniq using fun p => GroundTheory.Global.existsUnique_sub_mem_fundamentalSet K (c * X p)`. Establish `hmul : ∀ η : K, c * algebraMap K 𝔸[K] η = algebraMap K 𝔸[K] ((M : K)⁻¹ * η)` using `fun η => by`. Rewrite using `[hc, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : (fun p => algebraMap K 𝔸[K] (-((M : K) * k p))) ∈ unipLattice K n r` using `⟨fun p => -((M : K) * k p), funext fun p => rfl⟩`. Use `⟨⟨_, hmem⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show (fun p => algebraMap K 𝔸[K] (-((M : K) * k p))) + X ∈ scaledUnipFD K n r M`. Rewrite using `[mem_scaledUnipFD]`. Introduce `p`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Express the relevant statement in the definitionally equal form `c * (algebraMap K 𝔸[K] (-((M : K) * k p)) + X p) ∈ GroundTheory.Global.fundamentalSet K`. Rewrite using `[mul_add, hmul, show (M : K)⁻¹ * -((M : K) * k p) = -k p by field_simp, map_neg, add_comm, ← sub_eq_add_neg]`. Conclude with `hk p`. Introduce and unpack `⟨_, η, rfl⟩ hη`. Rewrite `hη` using `[mem_scaledUnipFD]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Subtype.ext (funext fun p => ?_)` and prove the remaining obligations. Establish `h1` using `hη p`. Express the relevant statement in the definitionally equal form `c * (algebraMap K 𝔸[K] (η p) + X p) ∈ GroundTheory.Global.fundamentalSet K at h1`. Rewrite `h1` using `[mul_add, hmul, add_comm, ← sub_neg_eq_add, ← map_neg]`. Establish `h2` using `huniq p _ h1`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Express the relevant statement in the definitionally equal form `algebraMap K 𝔸[K] (η p) = algebraMap K 𝔸[K] (-((M : K) * k p))`. Rewrite using `[← h2]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_vadd_mem_scaledUnipFD (hM : 0 < M) (X : UPos n r → 𝔸[K]) :
     ∃! ξ : unipLattice K n r, ξ +ᵥ X ∈ scaledUnipFD K n r M := by
@@ -164,7 +164,7 @@ theorem existsUnique_vadd_mem_scaledUnipFD (hM : 0 < M) (X : UPos n r → 𝔸[K
     field_simp
 
 /- English proof (translation)
-The claim follows from `IsAddFundamentalDomain.mk' measurableSet_scaledUnipFD.nullMeasurableSet (existsUnique_vadd_mem_scaledUnipFD hM)`.
+A detailed English derivation is pending.
 -/
 theorem isAddFundamentalDomain_scaledUnipFD (hM : 0 < M) :
     IsAddFundamentalDomain (unipLattice K n r) (scaledUnipFD K n r M) (unipMeasure K n r) :=
@@ -172,7 +172,7 @@ theorem isAddFundamentalDomain_scaledUnipFD (hM : 0 < M) :
     (existsUnique_vadd_mem_scaledUnipFD hM)
 
 /- English proof (translation)
-Rewrite using `[(isAddFundamentalDomain_scaledUnipFD hM).measure_eq isAddFundamentalDomain_unipFundamentalDomain, unipMeasure_unipFundamentalDomain]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unipMeasure_scaledUnipFD (hM : 0 < M) :
     unipMeasure K n r (scaledUnipFD K n r M) = 1 := by
@@ -180,7 +180,7 @@ theorem unipMeasure_scaledUnipFD (hM : 0 < M) :
     isAddFundamentalDomain_unipFundamentalDomain, unipMeasure_unipFundamentalDomain]
 
 /- English proof (translation)
-Use `⟨?_, mem_scaledUnipFD.1 hX p⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, mul_comm (M : 𝔸[K]), algebraMap_inv_mul_natCast hM, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_natCast_mul_of_mem_scaledUnipFD (hM : 0 < M) {X : UPos n r → 𝔸[K]}
     (hX : X ∈ scaledUnipFD K n r M) (p : UPos n r) :
@@ -190,7 +190,7 @@ theorem eq_natCast_mul_of_mem_scaledUnipFD (hM : 0 < M) {X : UPos n r → 𝔸[K
   rw [← mul_assoc, mul_comm (M : 𝔸[K]), algebraMap_inv_mul_natCast hM, one_mul]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `eq_natCast_mul_of_mem_scaledUnipFD hM hX p`. Use `⟨(algebraMap K 𝔸[K] ((M : K)⁻¹) * X p).2, h2.2, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [h1]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_finite_eq_natCast_mul (hM : 0 < M) {X : UPos n r → 𝔸[K]}
     (hX : X ∈ scaledUnipFD K n r M) (p : UPos n r) :
@@ -207,13 +207,13 @@ def scaledInfSet (M : ℕ) : Set (InfiniteAdeleRing K) :=
   (fun x => (M : InfiniteAdeleRing K) * x) '' closure (GroundTheory.Global.fundamentalSetInfinite K)
 
 /- English proof (translation)
-The claim follows from `(GroundTheory.Global.isCompact_closure_fundamentalSetInfinite K).image (continuous_const_mul _)`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_scaledInfSet (M : ℕ) : IsCompact (scaledInfSet K M) :=
   (GroundTheory.Global.isCompact_closure_fundamentalSetInfinite K).image (continuous_const_mul _)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `eq_natCast_mul_of_mem_scaledUnipFD hM hX p`. Use `⟨(algebraMap K 𝔸[K] ((M : K)⁻¹) * X p).1, subset_closure h2.1, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [h1]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem infinite_mem_scaledInfSet (hM : 0 < M) {X : UPos n r → 𝔸[K]}
     (hX : X ∈ scaledUnipFD K n r M) (p : UPos n r) : (X p).1 ∈ scaledInfSet K M := by
@@ -223,9 +223,9 @@ theorem infinite_mem_scaledInfSet (hM : 0 < M) {X : UPos n r → 𝔸[K]}
   rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨0, zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_empty, mul_zero]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `insert i s hi ih`. Take `⟨a, ha, hae⟩` from `exists_finite_eq_natCast_mul hM (hy i (Finset.mem_insert_self i s)) p`. Take `⟨b, hb, hbe⟩` from `ih fun j hj => hy j (Finset.mem_insert_of_mem hj)`. Use `⟨a + b, add_mem ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_insert hi, Pi.add_apply, show (y i p + (∑ x ∈ s, y x) p).2 = (y i p).2 + ((∑ x ∈ s, y x) p).2 from rfl, hae, hbe, mul_add]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_finite_sum_eq_natCast_mul (hM : 0 < M) {ι : Type*} (s : Finset ι)
     (y : ι → UPos n r → 𝔸[K]) (hy : ∀ i ∈ s, y i ∈ scaledUnipFD K n r M) (p : UPos n r) :
@@ -246,7 +246,7 @@ theorem exists_finite_sum_eq_natCast_mul (hM : 0 < M) {ι : Type*} (s : Finset �
       mul_add]
 
 /- English proof (translation)
-Establish `: altPoint y ε = ∑ i ∈ Finset.univ.filter (fun i => ε i = true), y i`. Rewrite using `[altPoint, Finset.sum_filter]`. Rewrite using `[this]`. Conclude with `exists_finite_sum_eq_natCast_mul hM _ y (fun i _ => hy i) p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_altPoint_eq_natCast_mul (hM : 0 < M) {k : ℕ} (y : Fin k → UPos n r → 𝔸[K])
     (hy : ∀ i, y i ∈ scaledUnipFD K n r M) (ε : Fin k → Bool) (p : UPos n r) :

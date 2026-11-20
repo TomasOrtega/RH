@@ -15,7 +15,7 @@ def zetaElt (p M : ℕ) : cycloLocal p M :=
   ⟨zeta M, Subring.subset_closure (Or.inr rfl)⟩
 
 /- English proof (translation)
-Use `IsPrimitiveRoot.of_map_of_injective (f := (cycloLocal p M).subtype) ?_ Subtype.val_injective` and prove the remaining obligations. Simplify `Complex.isPrimitiveRoot_exp M hM` using `[zetaElt, ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem zetaElt_isPrimitiveRoot (p : ℕ) {M : ℕ} (hM : M ≠ 0) : IsPrimitiveRoot (zetaElt p M) M := by
   refine IsPrimitiveRoot.of_map_of_injective (f := (cycloLocal p M).subtype) ?_ Subtype.val_injective
@@ -28,7 +28,7 @@ abbrev intRing (C : Type) [NormedField C] [IsUltrametricDist C] : ValuationSubri
   (NormedField.valuation (K := C)).valuationSubring
 
 /- English proof (translation)
-Simplify using `[intRing, Valuation.mem_valuationSubring_iff]`. Conclude with `ge_iff_le`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_intRing {C : Type} [NormedField C] [IsUltrametricDist C] (x : C) : x ∈ intRing C ↔ ‖x‖ ≤ 1 := by
   simp [intRing, Valuation.mem_valuationSubring_iff]

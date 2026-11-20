@@ -14,9 +14,9 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 def truncExpI (K : ℕ) (z : ℂ) : ℂ := ∑ j ∈ Finset.range K, (z * Complex.I) ^ j / (j ! : ℂ)
 
 /- English proof (translation)
-Establish `hc : ContDiffAt ℂ (i : ℕ) Complex.exp z` using `Complex.contDiff_exp.contDiffAt`. Rewrite using `[← hc.restrictScalars_iteratedFDeriv (𝕜 := ℝ)]`. Simplify using `only [Function.comp]`. Rewrite using `[ContinuousMultilinearMap.norm_restrictScalars, norm_iteratedFDeriv_eq_norm_iteratedDeriv]`. Establish `h` using `congrFun (iteratedDeriv_cexp_const_mul i 1) z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [one_mul, one_pow] at h`. Rewrite using `[h, Complex.norm_exp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_iteratedFDeriv_cexp (i : ℕ) (z : ℂ) : ‖iteratedFDeriv ℝ i Complex.exp z‖ = Real.exp z.re := by
   have hc : ContDiffAt ℂ (i : ℕ) Complex.exp z := Complex.contDiff_exp.contDiffAt
@@ -28,9 +28,9 @@ theorem norm_iteratedFDeriv_cexp (i : ℕ) (z : ℂ) : ‖iteratedFDeriv ℝ i C
   rw [h, Complex.norm_exp]
 
 /- English proof (translation)
-Break down `j with _ | n` into its components or cases. Rewrite using `[norm_iteratedFDeriv_zero]`. Simplify using the standard rewrite rules. Rewrite using `[← norm_iteratedFDeriv_fderiv, show fderiv ℝ (id : V → V) = fun _ => ContinuousLinearMap.id ℝ V from funext fun _ => fderiv_id]`. Break down `n with _ | n` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[norm_iteratedFDeriv_zero]`. Conclude with `(ContinuousLinearMap.norm_id_le).trans (by linarith [norm_nonneg x])`. Rewrite using `[iteratedFDeriv_const_of_ne (Nat.succ_ne_zero n)]`. Simplify using `only [Pi.zero_apply, norm_zero]`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem norm_iteratedFDeriv_id_le (j : ℕ) (x : V) :
     ‖iteratedFDeriv ℝ j (id : V → V) x‖ ≤ 1 + ‖x‖ := by
@@ -46,11 +46,9 @@ theorem norm_iteratedFDeriv_id_le (j : ℕ) (x : V) :
       positivity
 
 /- English proof (translation)
-Establish `h` using `B.norm_iteratedFDeriv_le_of_bilinear (f := id) (g := id) (N := (n : WithTop ℕ∞)) contDiff_id contDiff_id x le_rfl`. Simplify using `only [id] at h`. Use `h.trans (mul_le_mul_of_nonneg_left ?_ (norm_nonneg _))` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc, sq]`. Use `gcongr`. Conclude with `norm_iteratedFDeriv_id_le i x`. Conclude with `norm_iteratedFDeriv_id_le (n - i) x`. Use `_ = 2 ^ n * (1 + ‖x‖) ^ 2 := by`.
-
-Rewrite using `[← Finset.sum_mul]`. Use `congr 1`. Conclude with `Nat.sum_range_choose n` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem norm_iteratedFDeriv_diag_le (B : V →L[ℝ] V →L[ℝ] ℂ) (n : ℕ) (x : V) :
     ‖iteratedFDeriv ℝ n (fun y => B y y) x‖ ≤ ‖B‖ * (2 ^ n * (1 + ‖x‖) ^ 2) := by
@@ -72,11 +70,11 @@ theorem norm_iteratedFDeriv_diag_le (B : V →L[ℝ] V →L[ℝ] ℂ) (n : ℕ) 
         exact_mod_cast Nat.sum_range_choose n
 
 /- English proof (translation)
-Establish `hf : ContDiff ℝ ⊤ (fun y => B y y)` using `B.contDiff.clm_apply contDiff_id`. Establish `hg : ContDiff ℝ ⊤ Complex.exp` using `Complex.contDiff_exp`. Use `norm_iteratedFDeriv_comp_le (g := Complex.exp) (f := fun y => B y y) hg hf (by exact_mod_cast le_top) x (fun i _ => ?_) (fun i hi _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_iteratedFDeriv_cexp]`. Conclude with `Real.exp_le_exp.2 (hB x)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_iteratedFDeriv_diag_le B i x).trans ?_` and prove the remaining obligations. Establish `h1 : 1 ≤ (1 + ‖x‖) ^ 2` using `one_le_pow₀ (by linarith [norm_nonneg x])`. Establish `ha : 1 ≤ (‖B‖ + 1) * (1 + ‖x‖) ^ 2` using `by nlinarith [norm_nonneg B]`. Establish `h2` using `le_self_pow₀ ha (show i ≠ 0 by omega)`. Rewrite using `[mul_assoc, mul_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem norm_iteratedFDeriv_gauss_le (B : V →L[ℝ] V →L[ℝ] ℂ) (ε : ℝ)
     (hB : ∀ x, (B x x).re ≤ -(ε * ‖x‖ ^ 2)) (n : ℕ) (x : V) :
@@ -97,9 +95,9 @@ theorem norm_iteratedFDeriv_gauss_le (B : V →L[ℝ] V →L[ℝ] ℂ) (ε : ℝ
       _ ≤ 2 ^ i * ((‖B‖ + 1) * (1 + ‖x‖) ^ 2) ^ i := by gcongr
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.PolynomialGaussianBounded.poly_mul_gaussian_bounded`. Consider the case `exact _root_.GlobalTheory.PolynomialGaussianBounded.poly_mul_gaussian_bounded`. Consider the case `(apply _root_.GlobalTheory.PolynomialGaussianBounded.poly_mul_gaussian_bounded <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.PolynomialGaussianBounded.poly_mul_gaussian_bounded <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.PolynomialGaussianBounded.poly_mul_gaussian_bounded <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.PolynomialGaussianBounded.poly_mul_gaussian_bounded ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_bound_poly_mul_exp (c : ℝ) (hc : 0 < c) (N : ℕ) :
     ∃ C, ∀ r : ℝ, 0 ≤ r → (1 + r) ^ N * Real.exp (-(c * r ^ 2)) ≤ C := by

@@ -27,9 +27,9 @@ def coneMap (𝔮 : Ideal (MvPolynomial (Σ k, ι k) ℂ)) :
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Establish `: (aeval fun q => (C (Ideal.Quotient.mk 𝔮 (X q)) : MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))) = (IsScalarTower.toAlgHom ℂ (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮) (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))).comp (Ideal.Quotient.mkₐ ℂ 𝔮)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `q`. Simplify using `[MvPolynomial.algebraMap_eq]`. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[MvPolynomial.algebraMap_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem aeval_C_mk (𝔮 : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (f : MvPolynomial (Σ k, ι k) ℂ) :
     aeval (fun q => (C (Ideal.Quotient.mk 𝔮 (X q)) : MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))) f =
@@ -44,7 +44,7 @@ theorem aeval_C_mk (𝔮 : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (f : MvPolynom
   simp [MvPolynomial.algebraMap_eq]
 
 /- English proof (translation)
-Establish `h` using `ReciprocityTheory.AnForm.R.aeval_smul_of_isMultiHomog hf (fun k => (X k : MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))) (fun q => C (Ideal.Quotient.mk 𝔮 (X q)))`. Rewrite `h` using `[aeval_C_mk]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coneMap_of_isMultiHomog (𝔮 : Ideal (MvPolynomial (Σ k, ι k) ℂ)) {f : MvPolynomial (Σ k, ι k) ℂ}
     {a : K → ℕ} (hf : ReciprocityTheory.AnForm.R.IsMultiHomog f a) :
@@ -58,37 +58,33 @@ theorem coneMap_of_isMultiHomog (𝔮 : Ideal (MvPolynomial (Σ k, ι k) ℂ)) {
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `: IsDomain (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)` using `Ideal.Quotient.isDomain 𝔮`. Set `θ : MvPolynomial (Σ k, ι k) ℂ →ₐ[ℂ] MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)` to `coneMap 𝔮`. Set `y : (Σ k, ι k) → MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)` to `fun q => C (Ideal.Quotient.mk 𝔮 (X q))`. Use `show ringKrullDim (MvPolynomial (Σ k, ι k) ℂ ⧸ RingHom.ker θ) = _`. Establish `: (RingHom.ker θ).IsPrime` using `RingHom.ker_isPrime _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsDomain (MvPolynomial (Σ k, ι k) ℂ ⧸ RingHom.ker θ)` using `Ideal.Quotient.isDomain _`. Set `κ : (MvPolynomial (Σ k, ι k) ℂ ⧸ RingHom.ker θ) →ₐ[ℂ] MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)` to `Ideal.kerLiftAlg θ`. Establish `hκ : Function.Injective κ` using `Ideal.kerLiftAlg_injective θ`. Use `letI : Algebra (MvPolynomial (Σ k, ι k) ℂ ⧸ RingHom.ker θ) (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)) := κ.toRingHom.toAlgebra`. Establish `: IsScalarTower ℂ (MvPolynomial (Σ k, ι k) ℂ ⧸ RingHom.ker θ) (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))` using `IsScalarTower.of_algebraMap_eq fun c => (κ.commutes c).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκmk : ∀ f, algebraMap (MvPolynomial (Σ k, ι k) ℂ ⧸ RingHom.ker θ) (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)) (Ideal.Quotient.mk _ f) = θ f` using `fun f => Ideal.kerLiftAlg_mk θ f`. Establish `: Algebra.FiniteType ℂ (MvPolynomial (Σ k, ι k) ℂ ⧸ RingHom.ker θ)` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ ℂ _) (Ideal.Quotient.mkₐ_surjective ℂ _)`. Establish `: Algebra.FiniteType ℂ (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ ℂ 𝔮) (Ideal.Quotient.mkₐ_surjective ℂ 𝔮)`. Take `⟨sA, hAdim, hAtr⟩` from `ReciprocityTheory.CA.exists_dim_trdeg_field (K := ℂ) (A := (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))`. Take `⟨sR, hRdim, hRtr⟩` from `ReciprocityTheory.CA.exists_dim_trdeg_field (K := ℂ) (A := (MvPolynomial (Σ k, ι k) ℂ ⧸ RingHom.ker θ))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: FaithfulSMul ℂ (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)` using `(faithfulSMul_iff_algebraMap_injective ℂ _).mpr (algebraMap ℂ (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)).injective`. Establish `: FaithfulSMul (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮) (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr (MvPolynomial.C_injective K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))`. Establish `: FaithfulSMul ℂ (MvPolynomial (Σ k, ι k) ℂ ⧸ RingHom.ker θ)` using `(faithfulSMul_iff_algebraMap_injective ℂ _).mpr (algebraMap ℂ (MvPolynomial (Σ k, ι k) ℂ ⧸ RingHom.ker θ)).injective`. Establish `: FaithfulSMul (MvPolynomial (Σ k, ι k) ℂ ⧸ RingHom.ker θ) (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr hκ`. Establish `hT1 : trdeg ℂ (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮) + trdeg (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮) (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)) = trdeg ℂ (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))` using `trdeg_add_eq ℂ (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmk1 : ∀ k, Ideal.Quotient.mk 𝔮 (X ⟨k, p k⟩ : MvPolynomial (Σ k, ι k) ℂ) = 1`. Introduce `k`. Rewrite using `[← map_one (Ideal.Quotient.mk 𝔮), Ideal.Quotient.eq]`. Conclude with `h1 k`. Set `AC` to `Subalgebra.algebraicClosure (MvPolynomial (Σ k, ι k) ℂ ⧸ RingHom.ker θ) (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hRAC : ∀ f, θ f ∈ AC` using `fun f => by`. Rewrite using `[Subalgebra.mem_algebraicClosure, ← hκmk]`. Conclude with `isAlgebraic_algebraMap _`. Establish `hXk : ∀ k, θ (X ⟨k, p k⟩) = (X k : MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [θ, coneMap, aeval_X, hmk1, map_one, mul_one]`. Establish `hXq : ∀ q, θ (X q) = (X q.1 : MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)) * y q` using `fun q => by`. Simplify using `only [θ, coneMap, aeval_X, y]`. Establish `hyAC : ∀ q, y q ∈ AC` using `fun q => by`. Establish `h2` using `hRAC (X ⟨q.1, p q.1⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `hRAC (X q)`. Rewrite `h2` using `[hXk]`. Rewrite `h3` using `[hXq]`. Conclude with `(Subalgebra.mem_algebraicClosure _ _).mpr (IsAlgebraic.of_mul (mem_nonZeroDivisors_of_ne_zero (X_ne_zero q.1)) ((Subalgebra.mem_algebraicClosure _ _).mp h2) ((Subalgebra.mem_algebraicClosure _ _).mp h3))`. Establish `hCAC : ∀ f : MvPolynomial (Σ k, ι k) ℂ, C (Ideal.Quotient.mk 𝔮 f) ∈ AC`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C c`. Establish `h2` using `hRAC (C c)`. Establish `h3 : θ (C c) = C (Ideal.Quotient.mk 𝔮 (C c))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately.
 
-Simplify using `only [θ, coneMap, aeval_C, MvPolynomial.algebraMap_apply]`. Both sides reduce to the same expression. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis. Consider the case `add f g hf hg`. Rewrite using `[map_add, map_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `AC.add_mem hf hg`. Consider the case `mul_X f q hf`. Rewrite using `[map_mul, map_mul]`. Conclude with `AC.mul_mem hf (hyAC q)`. Establish `hall : ∀ t : MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮), t ∈ AC`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Introduce `t`. Proceed by induction on `t using MvPolynomial.induction_on with`. Consider the case `C a`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Conclude with `hCAC f`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `add f g hf hg => exact AC.add_mem hf hg`. Consider the case `mul_X f k hf`. Establish `h2` using `hRAC (X ⟨k, p k⟩)`. Rewrite `h2` using `[hXk]`. Conclude with `AC.mul_mem hf h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: Algebra.IsAlgebraic (MvPolynomial (Σ k, ι k) ℂ ⧸ RingHom.ker θ) (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))` using `⟨fun t => (Subalgebra.mem_algebraicClosure _ _).mp (hall t)⟩`. Establish `hT2 : trdeg ℂ (MvPolynomial (Σ k, ι k) ℂ ⧸ RingHom.ker θ) + trdeg (MvPolynomial (Σ k, ι k) ℂ ⧸ RingHom.ker θ) (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)) = trdeg ℂ (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))` using `trdeg_add_eq ℂ (MvPolynomial (Σ k, ι k) ℂ ⧸ RingHom.ker θ)`. Establish `h0 : trdeg (MvPolynomial (Σ k, ι k) ℂ ⧸ RingHom.ker θ) (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)) = 0` using `trdeg_eq_zero`. Rewrite `hT2` using `[h0, add_zero]`. Establish `hK : trdeg (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮) (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)) = (Fintype.card K : Cardinal)`.
-
-Rewrite using `[MvPolynomial.trdeg_of_isDomain, Cardinal.lift_id, Cardinal.mk_fintype]`. Rewrite `hT1` using `[hK, hAtr, ← hT2, hRtr]`. Establish `hnat : sA + Fintype.card K = sR` using `by exact_mod_cast hT1`. Establish `hsA : sA = d`. Rewrite `hd` using `[hAdim]`.
-
-Conclude with `hd` after adjusting the coercions. Rewrite using `[hRdim, ← hnat, hsA]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_ker_coneMap (𝔮 : Ideal (MvPolynomial (Σ k, ι k) ℂ)) [𝔮.IsPrime] (p : (k : K) → ι k)
     (h1 : ∀ k, (X ⟨k, p k⟩ - 1 : MvPolynomial (Σ k, ι k) ℂ) ∈ 𝔮) (d : ℕ)
@@ -205,57 +201,53 @@ end ChartSectionNotMem
 open ChartSectionNotMem in
 
 /- English proof (translation)
-Introduce `K _ _ ι _ P e m σ i A s hP hs J hJ hmem`. Take `⟨a, -, hsa, hsP⟩` from `hs`. Establish `hJmin` using `mem_segreChartComponents.1 hJ`. Establish `: J.IsPrime` using `hJmin.1.1`. Establish `hvan : ∀ f : MvPolynomial (Fin m) ℂ, (∀ z ∈ mcPts P, segre z i = 1 → eval (fun a => segre z (σ a)) f = 0) → f ∈ J`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f hf`. Apply `hJmin.1.2` to reduce the goal to its premises. Rewrite using `[segreChartIdeal, MvPolynomial.mem_vanishingIdeal_iff]`. Introduce and unpack `_ ⟨z, hz, hzi, rfl⟩`. Conclude with `hf z hz hzi`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Set `β : MvPolynomial (Σ k, ι k) ℂ →ₐ[ℂ] MvPolynomial (Fin m) ℂ` to `aeval fun q => X (σ.symm (Function.update i q.1 q.2))`. Establish `hβ : ∀ (x : Fin m → ℂ) g, eval x (β g) = eval (chartLift σ i x) g`. Introduce `x g`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C c => simp [β]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add f g hf hg => simp [hf, hg]`. Consider the case `mul_X f q hf`. Rewrite using `[map_mul, map_mul, map_mul, hf]`. Simplify using `[β, chartLift]`. Set `𝔮 : Ideal (MvPolynomial (Σ k, ι k) ℂ)` to `J.comap β`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: 𝔮.IsPrime` using `Ideal.comap_isPrime _ J`. Establish `hz0 : ∀ z : (Σ k, ι k) → ℂ, segre z i = 1 → ∀ k, z ⟨k, i k⟩ ≠ 0` using `fun z hz k h0 => by`. Establish `: segre z i = 0` using `Finset.prod_eq_zero (Finset.mem_univ k) h0`. Rewrite `this` using `[hz]`. Conclude with `one_ne_zero this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ∀ k, (X ⟨k, i k⟩ - 1 : MvPolynomial (Σ k, ι k) ℂ) ∈ 𝔮`. Introduce `k`. Use `show β _ ∈ J`. Use `hvan _ fun z _ hzi => ?_` and prove the remaining obligations. Rewrite using `[hβ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[chartLift, hzi]`. Establish `hPq : ∀ g ∈ P, MvPolynomial.map (Int.castRingHom ℂ) g ∈ 𝔮`. Introduce `g hg`. Use `show β _ ∈ J`. Use `hvan _ fun z hz hzi => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hβ]`. Establish `hl : chartLift σ i (fun a => segre z (σ a)) = fun q => (z ⟨q.1, i q.1⟩)⁻¹ * z q`. Use function extensionality and compare the values at `q`. Rewrite using `[chartLift_segre_apply σ i z hzi q.1 q.2, mul_comm]`. Rewrite using `[hl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(ReciprocityTheory.ChartRestriction.G.Geo.mcPts_smul hP.2.1.2.1 (fun k => (z ⟨k, i k⟩)⁻¹) (fun k => inv_ne_zero (hz0 z hzi k)) hz).2 g hg`. Establish `hs𝔮 : MvPolynomial.map (Int.castRingHom ℂ) s ∈ 𝔮` using `hmem`. Establish `hd𝔮 : ringKrullDim (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮) = (e : WithBot ℕ∞)`. Set `ψ : MvPolynomial (Σ k, ι k) ℂ →+* MvPolynomial (Fin m) ℂ ⧸ J` to `(Ideal.Quotient.mk J).comp β.toRingHom`. Establish `hker : RingHom.ker ψ = 𝔮`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `f`. Simplify using `[ψ, 𝔮, RingHom.mem_ker, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hXa : ∀ a : Fin m, ∃ g, ψ g = Ideal.Quotient.mk J (X a)`. Introduce `a`. Use `⟨∏ k, X ⟨k, σ a k⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show Ideal.Quotient.mk J (β _) = _`. Rewrite using `[Ideal.Quotient.eq]`. Use `hvan _ fun z _ hzi => ?_` and prove the remaining obligations. Establish `hc` using `congrFun (segre_chartLift σ i z hzi) (σ a)`. Rewrite using `[map_sub, hβ, eval_X, map_prod]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Simplify using `only [eval_X]`. Rewrite using `[show ∏ x, chartLift σ i (fun a => segre z (σ a)) ⟨x, σ a x⟩ = segre (chartLift σ i (fun a => segre z (σ a))) (σ a) from rfl, hc, sub_self]`. Establish `hsurj : Function.Surjective ψ`. Introduce `x`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C c => exact ⟨C c, by simp [ψ, β]⟩`. Consider the case `add f g hf hg`. Take `⟨f', hf'⟩` from `hf`. Take `⟨g', hg'⟩` from `hg`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨f' + g', by rw [map_add, hf', hg', map_add]⟩`. Consider the case `mul_X f a hf`. Take `⟨f', hf'⟩` from `hf`. Take `⟨g', hg'⟩` from `hXa a`. Conclude with `⟨f' * g', by rw [map_mul, hf', hg', map_mul]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hker, ringKrullDim_eq_of_ringEquiv (RingHom.quotientKerEquivOfSurjective hsurj)]`. Conclude with `SegreChartDim.proof K ι P e m σ i hP J hJ`. Use `set PQ : Ideal (MvPolynomial (Σ k, ι k) ℚ) := P.map (MvPolynomial.map (Int.castRingHom ℚ)) with hPQ`. Establish `hvar` using `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.isProjVarQ_of_isArithVar hP`. Establish `: PQ.IsPrime` using `hvar.1.isPrime`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set PC : Ideal (MvPolynomial (Σ k, ι k) ℂ) := P.map (MvPolynomial.map (Int.castRingHom ℂ)) with hPC`. Establish `hext : ReciprocityTheory.AnForm.R.extC PQ = PC`. Rewrite using `[ReciprocityTheory.AnForm.R.extC, hPQ, hPC, Ideal.map_map]`. Use `congr 1`. Use `MvPolynomial.ringHom_ext (fun c => ?_) (fun q => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [RingHom.comp_apply, MvPolynomial.map_C]`. Use `congr 1`. Simplify using the standard rewrite rules. Establish `hdim : ∀ Q ∈ PC.minimalPrimes, ringKrullDim (MvPolynomial (Σ k, ι k) ℂ ⧸ Q) = ((e + Fintype.card K : ℕ) : WithBot ℕ∞)`. Introduce `Q hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hQ` using `[← hext]`. Rewrite using `[ReciprocityTheory.AnForm.R.ringKrullDim_of_mem_minimalPrimes_extC PQ Q hQ]`. Conclude with `hvar.2`. Establish `: P.IsPrime` using `hP.2.1.1`. Establish `hch : ∀ n : ℤ, (C n : MRing ι) ∈ P → n = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `n hn`. Establish `hn' : n ∈ P.comap (C : ℤ →+* MRing ι)` using `Ideal.mem_comap.mpr hn`. Rewrite `hn'` using `[show P.comap (C : ℤ →+* MRing ι) = ⊥ from hP.2.2.1, Ideal.mem_bot]`. Conclude with `hn'`. Establish `hcomapQ : PQ.comap (MvPolynomial.map (Int.castRingHom ℚ)) = P` using `(ReciprocityTheory.AnForm.R.extQ_spec P hch).2.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsQ : ∀ Q ∈ PC.minimalPrimes, MvPolynomial.map (Int.castRingHom ℂ) s ∉ Q`. Introduce `Q hQ hsQ`. Rewrite `hQ` using `[← hext]`. Establish `hc` using `ReciprocityTheory.AnForm.R.comap_of_mem_minimalPrimes_extC PQ Q hQ`. Apply `hsP` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hcomapQ, Ideal.mem_comap, ← hc, Ideal.mem_comap, MvPolynomial.map_map, show (algebraMap ℚ ℂ).comp (Int.castRingHom ℚ) = Int.castRingHom ℂ from RingHom.ext_int _ _]`. Conclude with `hsQ`. Establish `hθP : PC ≤ RingHom.ker (coneMap (K` using `K) 𝔮) := by`. Take `⟨S, hS, hPS⟩` from `hP.2.1.2.1`. Establish `hPC' : PC = Ideal.span (MvPolynomial.map (Int.castRingHom ℂ) '' S)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hPC, hPS, Ideal.map_span]`. Rewrite using `[hPC', Ideal.span_le]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨b, hb⟩` from `hS f hf`. Establish `hfq : MvPolynomial.map (Int.castRingHom ℂ) f ∈ 𝔮` using `hPq f (by rw [hPS]; exact Ideal.subset_span hf)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, coneMap_of_isMultiHomog 𝔮 (fun d hd k => hb d (MvPolynomial.support_map_subset _ _ hd) k), Ideal.Quotient.eq_zero_iff_mem.mpr hfq, map_zero, mul_zero]`. Establish `hsθ : MvPolynomial.map (Int.castRingHom ℂ) s ∈ RingHom.ker (coneMap (K` using `K) 𝔮) := by`. Rewrite using `[RingHom.mem_ker, coneMap_of_isMultiHomog 𝔮 (fun d hd k => hsa d (MvPolynomial.support_map_subset _ _ hd) k), Ideal.Quotient.eq_zero_iff_mem.mpr hs𝔮, map_zero, mul_zero]`. Establish `: (RingHom.ker (coneMap (K` using `K) 𝔮)).IsPrime := RingHom.ker_isPrime _`. Take `⟨Q, hQ, hQθ⟩` from `Ideal.exists_minimalPrimes_le hθP`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `: Q.IsPrime` using `hQ.1.1`. Take `⟨W, hW, hWθ⟩` from `Ideal.exists_minimalPrimes_le (sup_le hQθ ((Ideal.span_singleton_le_iff_mem _).2 hsθ))`. Establish `hpit` using `ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.dimPIT ℂ (Σ k, ι k) Q W _ hQ.1.1 (hsQ Q hQ) hW`. Rewrite `hpit` using `[hdim Q hQ]`. Establish `hle : ringKrullDim (MvPolynomial (Σ k, ι k) ℂ ⧸ RingHom.ker (coneMap (K` using `K) 𝔮)) ≤ ringKrullDim (MvPolynomial (Σ k, ι k) ℂ ⧸ W) := ringKrullDim_le_of_surjective (Ideal.Quotient.factor hWθ) fun x => by`.
-
-Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `⟨Ideal.Quotient.mk W f, rfl⟩`. Rewrite `hle` using `[ringKrullDim_ker_coneMap 𝔮 i h1 e hd𝔮]`. Establish `h2 : ((e + Fintype.card K : ℕ) : WithBot ℕ∞) + 1 ≤ ((e + Fintype.card K : ℕ) : WithBot ℕ∞)`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `h3 : e + Fintype.card K + 1 ≤ e + Fintype.card K` using `by exact_mod_cast h2`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem ChartSectionNotMem.proof : ChartSectionNotMem.Statement := by
   classical

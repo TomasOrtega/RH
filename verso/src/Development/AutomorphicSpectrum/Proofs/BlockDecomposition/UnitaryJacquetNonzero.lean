@@ -17,9 +17,9 @@ open GlobalTheory.PRep Formalism.UG GlobalTheory.LFun PositivityTheory.Spherical
 namespace GlobalTheory.CompanionTheory.JacSph
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero`. Use `⟨by simpa using (GlobalTheory.CompanionTheory.Cass.isDom_monoid G D).1, ?_⟩` and prove the remaining obligations. Introduce `w l _`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `succ r ih`. Rewrite using `[pow_succ, pow_succ U]`. Conclude with `⟨(GlobalTheory.CompanionTheory.Cass.isDom_monoid G D).2 _ _ ih.1 ht, GlobalTheory.T.casselman_first_property G D V π hπ (t ^ r) t ih.1 ht _ _ ih.2 hU⟩`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem hecke_pow {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (D : CassData G) {V : Type}
     [AddCommGroup V] [Module ℂ V] (π : Representation ℂ G V) (hπ : IsSmooth π) (t : D.T) (ht : D.IsDom t)
@@ -36,17 +36,17 @@ theorem hecke_pow {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup 
       GlobalTheory.T.casselman_first_property G D V π hπ (t ^ r) t ih.1 ht _ _ ih.2 hU⟩
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q n V _ _ ρ α hu hadm _ hsat`. Take `⟨v₀, hv₀⟩` from `hsat.exists_vec`. Establish `hfixK : v₀ ∈ fixed ρ (KU σ n)` using `hv₀.2.1`. Use `⟨v₀, fun hjac => ?_, fun k hk _ => ?_⟩` and prove the remaining obligations. Take `⟨D, hJ, hN, hNm, hT⟩` from `GlobalTheory.T.iwahori_unipotent_datum L ϖ σ q hu n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hKo, hKc, hIK, t₀, ht₀d, ht₀s⟩` from `GlobalTheory.CompanionTheory.KUFactsU.kuFacts L ϖ σ q n hu`. Establish `hstr : D.IsStrDom ⟨t₀, (hT _).2 ht₀d⟩` using `(GlobalTheory.T.dominant_unipotent_contraction L ϖ σ q hu n D hJ hN hNm hT ⟨t₀, (hT _).2 ht₀d⟩).2 ht₀s`. Establish `hker : twKer ρ D.N 1 = jacU ρ` using `twKer_eq_jacSub D _ hN ρ`. Establish `hproj0 : D.proj ρ v₀ = 0`. Use `(Submodule.Quotient.mk_eq_zero _).2 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hker]`. Conclude with `hjac`. Establish `hJK : ∀ x ∈ D.J, x ∈ KU σ n` using `fun x hx => hIK (hJ ▸ hx)`. Establish `hfixJ : v₀ ∈ fixed ρ D.J` using `GlobalTheory.LGrp.mem_fixed.2 fun x hx => GlobalTheory.LGrp.mem_fixed.1 hfixK x (hJK x hx)`. Take `⟨U, hU, -⟩` from `GlobalTheory.T.hecke_character_exists_unique (GU σ n) D.J D.isOpen_J D.isCompact_J V ρ hadm.1 t₀`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j₀, hj₀⟩` from `GlobalTheory.CompanionTheory.Cass.hecke_pow_kills_of_proj_eq_zero (GU σ n) D V ρ hadm.1 _ hstr U hU ⟨v₀, hfixJ⟩ hproj0`. Take `⟨l, hlK, hl1⟩` from `GlobalTheory.CompanionTheory.KAvg.kInvForm (GU σ n) (KU σ n) hKo hKc V ρ hadm.1 v₀ hfixK hv₀.1`. Take `⟨j, hj, hS⟩` from `GlobalTheory.T.satake_power_nonvanishing L ϖ σ q n hu α t₀ ht₀d ht₀s j₀`. Establish `hUj : (U ^ j) ⟨v₀, hfixJ⟩ = 0`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hj`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_comm, pow_add, Module.End.mul_apply, hj₀, map_zero]`. Establish `hl0 : l (ρ (t₀ ^ j) v₀) = 0`. Establish `h` using `(hecke_pow D ρ hadm.1 _ hstr.1 U hU j).2 ⟨v₀, hfixJ⟩ l fun x hx => hlK x (hJK x hx)`. Rewrite `h` using `[hUj]`. Simplify using `using h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hc` using `GlobalTheory.CompanionTheory.SphComp.sphCompare L ϖ σ q n hu V ρ α v₀ hv₀ l hlK (t₀ ^ j)`. Rewrite `hc` using `[hl0, mul_zero, hl1, mul_one]`. Conclude with `hS hc.symm`. Rewrite using `[GlobalTheory.LGrp.mem_fixed.1 hfixK k hk, sub_self]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jacNeU : JacNeU := by
   intro L _ _ _ ϖ σ q n V _ _ ρ α hu hadm _ hsat

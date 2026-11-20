@@ -11,7 +11,7 @@ abbrev evU (U : Scheme.{0}) : Shv R ⥤ ModuleCat.{1} (ULift.{1} R) :=
   sheafToPresheaf _ _ ⋙ (evaluation _ _).obj (op U)
 
 /- English proof (translation)
-Establish `hm : Mono ((evU U).map (kernel.ι φ))` using `inferInstance`. Conclude with `(ModuleCat.mono_iff_injective _).1 hm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kerSec_inj {F G : Shv R} (φ : F ⟶ G) (U : Scheme.{0}) :
     Function.Injective (Sec.map (kernel.ι φ) (U := U)) := by
@@ -39,11 +39,11 @@ def LeafKumMuSec : Prop := ∀ (q : ℕ) [NeZero q] (B : Type) [CommRing B], IsU
     ∀ U : Scheme.{0}, Nonempty (Sx (sp B) 0 U) → Function.Bijective (Sec.map κ (U := U))
 
 /- English proof (translation)
-Introduce `q _ B _ hq`. Take `⟨κ, h0, hκ⟩` from `hU q B hq`. Use `⟨kernel.lift _ κ h0, fun U hUB => ?_⟩` and prove the remaining obligations. Take `⟨hi, hs⟩` from `hκ U hUB`. Establish `hc : ∀ t : Sec ((restr (Int.castRingHom (ZMod q))).obj (tw q 1)) U, Sec.map (kernel.ι _) (Sec.map (kernel.lift _ κ h0) t) = Sec.map κ t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `t`. Rewrite using `[← secMap_comp, kernel.lift_ι]`. Use `⟨fun a b hab => hi ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, ← hc, hab]`. Take `⟨t, ht⟩` from `hs (Sec.map (kernel.ι _) y) (by rw [← secMap_comp, kernel.condition, secMap_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨t, kerSec_inj _ U (by rw [hc, ht])⟩`.
+Supply the required witnesses or components.
 -/
 theorem LeafKumMuSec_of (hU : LeafKumMuUnits) : LeafKumMuSec := by
   intro q _ B _ hq
@@ -58,7 +58,7 @@ theorem LeafKumMuSec_of (hU : LeafKumMuUnits) : LeafKumMuSec := by
     exact ⟨t, kerSec_inj _ U (by rw [hc, ht])⟩
 
 /- English proof (translation)
-Introduce `_ q _ B _ hq`. Take `⟨κ, hκ⟩` from `LeafKumMuSec_of hU q B hq`. Establish `b1` using `h8 ℤ (ZMod q) (Int.castRingHom (ZMod q)) (sp B) (tw q 1) 1`. Establish `b2` using `h10 ℤ (sp B) κ hκ 1`. Conclude with `⟨((AddEquiv.ofBijective _ b1).trans (AddEquiv.ofBijective _ b2)).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem LeafKumMu_of (h8 : A8) (h10 : A10) (hU : LeafKumMuUnits) : LateralTheory.E.H2CurveOrder.LeafKumSeqPf.LeafKumMu := by
   intro _ q _ B _ hq

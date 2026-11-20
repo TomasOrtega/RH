@@ -9,11 +9,11 @@ noncomputable section
 namespace Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Take `⟨K, hK0, hK⟩` from `zeta_neg_log_deriv_re_bound`. Use `⟨K + 1, fun q _ σ t hσ hσ2 => ?_⟩` and prove the remaining obligations. Establish `hs : 1 < ((σ : ℂ) + t * I).re` using `by simpa using hσ`. Establish `h1` using `re_negLogDeriv_le q ((σ : ℂ) + t * I) hs`. Establish `h2` using `hK σ t hσ hσ2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : (1 : ℝ) ≤ q` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)`. Establish `hlq : 0 ≤ Real.log q` using `Real.log_nonneg hq`. Establish `hT : 0 ≤ Real.log (|t| + 2)` using `Real.log_nonneg (by linarith [abs_nonneg t])`. Establish `hlog : Real.log ((q : ℝ) * (|t| + 2)) = Real.log q + Real.log (|t| + 2)` using `Real.log_mul (by linarith : (0 : ℝ) < q).ne' (by linarith [abs_nonneg t] : (0 : ℝ) < |t| + 2).ne'`. Rewrite using `[hlog]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[mul_nonneg hK0 hlq]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem trivial_log_deriv_bound : TrivLogDeriv := by
   obtain ⟨K, hK0, hK⟩ := zeta_neg_log_deriv_re_bound

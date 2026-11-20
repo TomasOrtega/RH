@@ -21,11 +21,9 @@ section Concrete
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {K : FinExt l} {s : ℕ} {LL : FinExt l}
 
 /- English proof (translation)
-Establish `h1` using `W.χΓ_res g`. Rewrite `h1` using `[P.PD_χ]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h1` using `[h, map_one, Units.val_one, map_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Units.ext ((algebraMap ℚ_[l] ↥LL.1).injective (h1.symm.trans (map_one _).symm))`. Introduce `h`. Rewrite `h1` using `[h, Units.val_one, map_one]`. Apply `W.χΓ_inj` to reduce the goal to its premises. Rewrite using `[map_one]`.
-
-Conclude with `Units.ext (Subtype.ext h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_eq_one_iff (W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) (Module.finrank ℚ_[l] ↥(K0 K)))
     (g : ↥(GK K)) : W.resΓ g = 1 ↔ P.χQ (g : GQ l) = 1 := by
@@ -42,7 +40,7 @@ theorem res_eq_one_iff (W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) (Module
     exact Units.ext (Subtype.ext h1)
 
 /- English proof (translation)
-The claim follows from `have h1 := (res_eq_one_iff W' g').1 hg ⟨⟨g', mem_GK_of_chi P h.2.2.1 h0 g'.2 h1⟩, (res_eq_one_iff W _).2 h1, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem ker_transfer {K' : FinExt l}
     (W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) (Module.finrank ℚ_[l] ↥(K0 K)))
@@ -53,7 +51,7 @@ theorem ker_transfer {K' : FinExt l}
   ⟨⟨g', mem_GK_of_chi P h.2.2.1 h0 g'.2 h1⟩, (res_eq_one_iff W _).2 h1, rfl⟩
 
 /- English proof (translation)
-The claim follows from `h.haus x fun k => by rw [SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton] exact hx k`.
+A detailed English derivation is pending.
 -/
 theorem sep_of_hausdorff {R : Type} [CommRing R] (a : R) (h : IsHausdorff (Ideal.span {a}) R) (x : R)
     (hx : ∀ k : ℕ, a ^ k ∣ x) : x = 0 :=
@@ -66,9 +64,9 @@ end Concrete
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨c1, -, c3, -, c5⟩` from `GlobalTheory.HWL.TensorWitt.main l LL`. Establish `h1 : ∀ a, ∃ a', ((F l).E K' s LL h').tie.io a' = ((F l).E K s LL h).tie.io a` using `io_mem _ _ Subtype.val_injective (descends _) c3 (GlobalTheory.NL.IoXQ.main D HW F l K' s LL h').2.2.2.2.2.1 (fun g' hg' => by`. Take `⟨g, hg, e⟩` from `ker_transfer _ _ h h0 g' hg'`. Conclude with `⟨g, hg, congrArg ((D.locA l).gRW LL) e⟩)`. Use the proof step `(sep_of_hausdorff _ (c5 _ (GlobalTheory.Cyc.εroot_sub_one_not_unit (D.locA l) s)).toIsHausdorff)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1, ioE_mem _ _ (((D.loc l).PD_p K').trans ((D.loc l).PD_p K).symm) h1 ?_⟩` and prove the remaining obligations. Rewrite using `[(D.loc l).PD_p K]`. Conclude with `sep_of_hausdorff _ c1.toIsHausdorff`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rings_mem (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime]
     (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL) (K' : FinExt l) (h' : Good K' s LL)
@@ -97,7 +95,7 @@ variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} {K K' : Fi
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-The claim follows from `jD_mem E.tie E'.tie (descends E') (map_ne_top E) (φRW_surjective LL) hE T T' e (fun g' hg' => (ker_transfer W W' h h0 g' hg').imp fun g hg => ⟨hg.1, congrArg (AI.gRW LL) hg.2, he g g' hg.2⟩) x`.
+A detailed English derivation is pending.
 -/
 theorem jD_mem_sit (h0 : K0 K = K0 K') (hE : ∀ x, ∃ x', E'.tie.ioE x' = E.tie.ioE x)
     (e : ↥T.L.T →ₗ[↥(OL LL)] ↥T'.L.T)
@@ -112,7 +110,7 @@ variable (hle : K.1 ≤ K'.1) (eT : ↥T'.L.T ≃ₗ[↥(OL LL)] ↥T.L.T)
 
 include hact in
 /- English proof (translation)
-The claim follows from `(hact g' t).trans (congrArg (fun u : ↥(GK K) => T.actT u (eT t)) (Subtype.ext e))`.
+A detailed English derivation is pending.
 -/
 theorem act_fwd (g' : ↥(GK K')) (g : ↥(GK K)) (e : (g' : GQ l) = g) (t : ↥T'.L.T) :
     eT.toLinearMap (T'.actT g' t) = T.actT g (eT.toLinearMap t) :=
@@ -120,7 +118,7 @@ theorem act_fwd (g' : ↥(GK K')) (g : ↥(GK K)) (e : (g' : GQ l) = g) (t : ↥
 
 include hact in
 /- English proof (translation)
-Apply `eT.injective` to reduce the goal to its premises. Establish `h1` using `act_fwd T T' hle eT hact g' g e.symm (eT.symm t)`. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at h1 ⊢`. Conclude with `h1.symm`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem act_bwd (g : ↥(GK K)) (g' : ↥(GK K')) (e : (g : GQ l) = g') (t : ↥T.L.T) :
     eT.symm.toLinearMap (T.actT g t) = T'.actT g' (eT.symm.toLinearMap t) := by
@@ -132,7 +130,7 @@ theorem act_bwd (g : ↥(GK K)) (g' : ↥(GK K')) (e : (g : GQ l) = g') (t : ↥
 set_option maxHeartbeats 800000 in
 include hact in
 /- English proof (translation)
-The claim follows from `(jD_mem_sit E E' T T' h0 hE eT.symm.toLinearMap (act_bwd T T' hle eT hact) x).imp fun _ hx' => (congrArg (TensorProduct.map (LinearMap.id : RW LL →ₗ[↥(OL LL)] RW LL) eT.toLinearMap) hx').trans (map_id_symm eT.symm (E.tie.jD T x))`.
+A detailed English derivation is pending.
 -/
 theorem jD_bwd (h0 : K0 K = K0 K') (hE : ∀ x, ∃ x', E'.tie.ioE x' = E.tie.ioE x) (x : W.DD T) :
     ∃ x', TensorProduct.map (LinearMap.id : RW LL →ₗ[↥(OL LL)] RW LL) eT.toLinearMap
@@ -144,9 +142,9 @@ theorem jD_bwd (h0 : K0 K = K0 K') (hE : ∀ x, ∃ x', E'.tie.ioE x' = E.tie.io
 set_option maxHeartbeats 800000 in
 include hact in
 /- English proof (translation)
-Establish `d1` using `jD_mem_sit E' E T' T h0 e2 eT.toLinearMap (act_fwd T T' hle eT hact)`. Establish `d2` using `jD_bwd E E' T T' hle eT hact h0.symm e1`. Use `⟨Set.Subset.antisymm ?_ ?_, fun hT hT' => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨x', rfl⟩, rfl⟩`. Conclude with `d1 x'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨x', hx'⟩` from `d2 x`. Conclude with `⟨_, ⟨x', rfl⟩, hx'⟩`. Conclude with `(hb hT).elim fun b => N_eq E.tie E'.tie T T' eT hT (h10 hT') b hinj a1 a2 e1 hQ d2 d1 fun g' => ⟨⟨(g' : GQ l), GK_le hle g'.2⟩, rfl, hact g'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem modules_eq (h0 : K0 K' = K0 K) (a1 : ∀ x, ∃ x', E'.tie.io x' = E.tie.io x)
     (a2 : ∀ x, ∃ x', E.tie.io x' = E'.tie.io x) (e1 : ∀ x, ∃ x', E'.tie.ioE x' = E.tie.ioE x)
@@ -174,11 +172,11 @@ end Two
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D HW F l _ K s LL h W E K' h' hle h0 W' E'`. Establish `a1` using `(rings_mem D HW F l K s LL h K' h' h0.symm).1`. Establish `e1` using `(rings_mem D HW F l K s LL h K' h' h0.symm).2`. Establish `a2` using `(rings_mem D HW F l K' s LL h' K h h0).1`. Establish `e2` using `(rings_mem D HW F l K' s LL h' K h h0).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q` using `(GlobalTheory.NL.IoXQ.main D HW F l K s LL h).2.1`. Establish `q1` using `(GlobalTheory.NL.IoXQ.main D HW F l K' s LL h').2.1`. Establish `q2` using `(GlobalTheory.NL.IoXQ.main D HW F l K' s LL h').2.2.2.1`. Use `⟨?_, ?_, fun T T' eT hact => ?_⟩` and prove the remaining obligations. Conclude with `Set.Subset.antisymm (Set.range_subset_iff.2 a1) (Set.range_subset_iff.2 a2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Set.Subset.antisymm (Set.range_subset_iff.2 e1) (Set.range_subset_iff.2 e2)`. Establish `hb` using `N_basis D HW F l K s LL h T`. Establish `h10 : IsCrys ((D.loc l).PD K') T'.ρ → p10 ((HW l).W K' s LL h') T'` using `GlobalTheory.NL.FrobeniusMatrixUniqueness.main D HW F l K' s LL h' T'`. Conclude with `modules_eq ((F l).E K s LL h) ((F l).E K' s LL h') T T' hle eT hact h0 a1 a2 e1 e2 (q1.trans q.symm) q2 hb h10`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem base_indep : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; let E := ((F l).E K s LL h).tie; ∀ (K' : FinExt l) (h' : Good K' s LL) (hle : K.1 ≤ K'.1), K0 K' = K0 K → let W' := (HW l).W K' s LL h'; let E' := ((F l).E K' s LL h').tie; Set.range E.io = Set.range E'.io ∧ Set.range E.ioE = Set.range E'.ioE ∧ ∀ (T : Lt K LL) (T' : Lt K' LL) (eT : ↥T'.L.T ≃ₗ[↥(OL LL)] ↥T.L.T), (∀ (g : ↥(GK K')) (t : ↥T'.L.T), eT (T'.actT g t) = T.actT ⟨(g : GQ l), GK_le hle g.2⟩ (eT t)) → (TensorProduct.map (LinearMap.id : RW LL →ₗ[↥(OL LL)] RW LL) eT.toLinearMap) '' Set.range (E'.jD T') = Set.range (E.jD T) ∧ (IsCrys ((D.loc l).PD K) T.ρ → IsCrys ((D.loc l).PD K') T'.ρ → (TensorProduct.map (LinearMap.id : RW LL →ₗ[↥(OL LL)] RW LL) eT.toLinearMap) '' (E'.jD T' '' (W'.N T' : Set (W'.DD T'))) = E.jD T '' (W.N T : Set (W.DD T))) := by
   intro D HW F l _ K s LL h W E K' h' hle h0 W' E'

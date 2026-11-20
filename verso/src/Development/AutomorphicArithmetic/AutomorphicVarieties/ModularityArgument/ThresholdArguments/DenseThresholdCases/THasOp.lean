@@ -16,15 +16,13 @@ open UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Hi UpperTheory.V.AlgebraToo
 open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 /- English proof (translation)
-Introduce `hP l _ L Ω _ _ _ _ _ _ s V0 O _ _ _ _ _ n r B J D b hb T Q`. Use `⟨2 * n.factorial, ?_⟩` and prove the remaining obligations. Introduce `N`. Establish `hl : ∀ j, ((l : ℕ) : 𝓞 L) ∉ (Q.w N j).asIdeal`. Introduce `j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Q.v_not N j` to reduce the goal to its premises. Use `left`. Establish `h1` using `(Q.B_w N j (l : 𝓞 L)).2 hj`. Use `(Q.B_v N j (l : 𝓞 (Lp L))).1 ?_` and prove the remaining obligations. Simplify using `using h1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨A, ι, hι⟩` from `hb (Q.V N) (homComp (Q.e N) (T.h N)) T.q (Q.v N) (Q.w N) (Q.B N) (Q.e_h N) (Q.v_inj N) (Q.v_not N) (Q.S_eq N) (Q.B_w N) (Q.B_v N) (Q.split N)`. Establish `hd` using `fun j => _root_.UpperTheory.V.Z.Win.locDataT_alt hP l L Ω (Q.B N j) (Q.w N j) (Q.B_w N j) (hl j) (Q.fr N j) (Q.τ N j) (Q.fr_dec N j) (Q.fr_frob N j) (Q.τ_gen N j)`. Use `choose hq x δ hx hδ hrel using hd`. Establish `hNq : T.Nq N = qj (Q.w N)` using `funext fun j => (Q.Nq N j).trans (hq j).symm`. Establish `hok : _root_.UpperTheory.V.Pa.Lev.LocalLevelConditions A x δ (fun j => (Q.V N).pr (Q.fr N j)) (fun j => (Q.V N).pr (Q.τ N j))` using `⟨ι, hι, fun y j => hrel j n ι (y.rep.comp (Q.V N).pr) (y.σ j) (y.lg j (Q.B N j) (Q.B_w N j))⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨A1, h1⟩` from `_root_.UpperTheory.V.Th.opOfX_alt hP l L Ω s V0 O n r B J _ b (Q.V N) _ T.q (Q.w N) A x δ hl hx hδ _ _ N hok (fun j => by rw [← hNq]; exact T.Nq_mod N j)`. Take `⟨A2, h2⟩` from `opTransportX l _ _ O n _ B.B _ J _ b _ _ (Q.e N) _ (T.h N) T.q N A1 _ _ _ _ (Q.e_inj N) (fun _ => rfl) h1`. Establish `e1 : T.ph N = fun j => (Q.e N).p₀ ((Q.V N).pr (Q.fr N j))` using `funext (Q.ph N)`. Establish `e2 : T.ta N = fun j => (Q.e N).p₀ ((Q.V N).pr (Q.τ N j))` using `funext (Q.ta N)`. Rewrite using `[hNq, e1, e2]`.
-
-Conclude with `⟨A2, h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.has_operator_statement :
     _root_.UpperTheory.V.Th.HasHeckeOperatorDense := by

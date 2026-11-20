@@ -9,9 +9,9 @@ open AlgebraicGeometry CategoryTheory Limits GlobalTheory.CompanionTheory.Ar Glo
 namespace PositivityTheory.Xgn.SpecialFibreConnected
 
 /- English proof (translation)
-Take `⟨x, y, hy, e⟩` from `hc a ha.isAlgebraic`. Set `ι : FractionRing O →ₐ[O] Ω` to `{ IsFractionRing.lift (K := FractionRing O) hinj with commutes' := fun o => IsFractionRing.lift_algebraMap hinj o }`. Establish `hy' : algebraMap O Ω y ≠ 0` using `fun h => hy (hinj (by rw [h, map_zero]))`. Establish `e' : ι (algebraMap O (FractionRing O) x / algebraMap O (FractionRing O) y) = a`. Rewrite using `[map_div₀, ι.commutes, ι.commutes, ← e, mul_div_cancel_right₀ _ hy']`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hi : IsIntegral O (algebraMap O (FractionRing O) x / algebraMap O (FractionRing O) y)`. Rewrite using `[← isIntegral_algHom_iff ι ι.toRingHom.injective, e']`. Conclude with `ha`. Take `⟨o, ho⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hi`. Conclude with `⟨o, by rw [← e', ← ho, ι.commutes]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_of_isIntegral {O Ω : Type} [CommRing O] [IsDomain O] [IsIntegrallyClosed O] [Field Ω]
     [Algebra O Ω] (hinj : Function.Injective (algebraMap O Ω)) (hc : ConstClosed O Ω) (a : Ω)
@@ -30,9 +30,9 @@ theorem mem_range_of_isIntegral {O Ω : Type} [CommRing O] [IsDomain O] [IsInteg
   exact ⟨o, by rw [← e', ← ho, ι.commutes]⟩
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `t ht`. Rewrite using `[← basicOpen_eq_bot_iff, eq_bot_iff]`. Introduce `q hq`. Establish `h1 : η (IsLocalRing.closedPoint Ω) ∈ Z.basicOpen t` using `(h q).mem_open (Z.basicOpen t).isOpen hq`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : IsLocalRing.closedPoint Ω ∈ η ⁻¹ᵁ Z.basicOpen t` using `h1`. Rewrite `h2` using `[Scheme.preimage_basicOpen_top]`. Establish `h3 : η.appTop t = 0` using `ht`. Rewrite `h2` using `[h3, Scheme.basicOpen_zero]`. Conclude with `h2.elim`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appTop_injective {Z : Scheme.{0}} [IsReduced Z] {Ω : Type} [Field Ω]
     (η : Spec (CommRingCat.of Ω) ⟶ Z) (h : ∀ q : Z, η (IsLocalRing.closedPoint Ω) ⤳ q) :
@@ -50,13 +50,13 @@ theorem appTop_injective {Z : Scheme.{0}} [IsReduced Z] {Ω : Type} [Field Ω]
   exact h2.elim
 
 /- English proof (translation)
-Set `ψ : O →+* Γ(Z, ⊤)` to `f.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom`. Set `φ : Γ(Z, ⊤) →+* Ω` to `(Scheme.ΓSpecIso (CommRingCat.of Ω)).hom.hom.comp η.appTop.hom`. Establish `hφ : Function.Injective φ` using `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of Ω)).hom).1.comp (appTop_injective η h)`. Establish `hcomp : φ.comp ψ = algebraMap O Ω`. Establish `: (Scheme.ΓSpecIso (CommRingCat.of O)).inv ≫ f.appTop ≫ η.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of Ω)).hom = CommRingCat.ofHom (algebraMap O Ω)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Hom.comp_appTop_assoc, hf, Scheme.ΓSpecIso_naturality, Iso.inv_hom_id_assoc]`. Conclude with `congrArg (fun q => q.hom) this`. Establish `hψ : ψ.IsIntegral` using `RingHom.IsIntegral.trans _ _ (RingHom.isIntegral_of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of O)).inv).2) (isIntegral_appTop_of_universallyClosed f)`. Use `⟨fun a b hab => hinj ?_, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[← hcomp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg φ hab`. Establish `hi : IsIntegral O (φ t)`. Take `⟨p, hp, e⟩` from `hψ t`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Rewrite using `[← hcomp, ← Polynomial.hom_eval₂, e, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨o, ho⟩` from `mem_range_of_isIntegral hinj hc _ hi`. Use `⟨o, hφ ?_⟩` and prove the remaining obligations. Rewrite using `[← ho, ← hcomp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bijective_const {Z : Scheme.{0}} [IsReduced Z] {Ω : Type} [Field Ω]
     (η : Spec (CommRingCat.of Ω) ⟶ Z) (h : ∀ q : Z, η (IsLocalRing.closedPoint Ω) ⤳ q)
@@ -94,7 +94,7 @@ attribute [local instance] GroundTheory.Arith.SchemeCoh.algebraOfOver in
 open GroundTheory.Arith.SchemeCoh in
 
 /- English proof (translation)
-Use `letI : Z.Over (Spec (.of O)) := ⟨f⟩`. Establish `: IsProper (Z ↘ Spec (.of O))` using `(inferInstance : IsProper f)`. Conclude with `isConnected_closedFibre_of_surj (A := O) (X := Z) h (fun x hx => formalFunctions_mem_range (IsLocalRing.maximalIdeal O) (isCoherent_unit Z) 0 hx 0)`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isConnected_closed {Z : Scheme.{0}} {O : Type} [CommRing O] [IsNoetherianRing O] [IsLocalRing O]
     (f : Z ⟶ Spec (CommRingCat.of O)) [IsProper f]
@@ -109,21 +109,19 @@ end PositivityTheory.Xgn.SpecialFibreConnected
 
 open PositivityTheory.Xgn.SpecialFibreConnected in
 /- English proof (translation)
-Introduce `X Ω _ ξ O _ _ _ _ s _ ϖ hϖ hinj hs hg hc`. Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian s`. Take `⟨U, hU, hcl, hint⟩` from `cpt_open_integral X Ω ξ hg`. Establish `hrange : Set.range ξ ⊆ Set.range U.ι`. Introduce and unpack `_ ⟨z, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hz : z = IsLocalRing.closedPoint Ω` using `Subsingleton.elim (α := PrimeSpectrum Ω) _ _`. Rewrite using `[Scheme.Opens.range_ι, hz]`. Conclude with `(hU _).2 specializes_rfl`. Set `η : Spec (CommRingCat.of Ω) ⟶ U.toScheme` to `IsOpenImmersion.lift U.ι ξ hrange`. Establish `hη : η ≫ U.ι = ξ` using `IsOpenImmersion.lift_fac _ _ _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsClosedImmersion U.ι := IsClosedImmersion.of_isPreimmersion _ (by rwa [Scheme.Opens.range_ι])`. Establish `hsp : ∀ q : U.toScheme, η (IsLocalRing.closedPoint Ω) ⤳ q` using `fun q => by`. Rewrite using `[← U.ι.isOpenEmbedding.isInducing.specializes_iff]`. Establish `e : U.ι (η (IsLocalRing.closedPoint Ω)) = genPt ξ` using `congrArg (fun g : Spec (CommRingCat.of Ω) ⟶ X => g (IsLocalRing.closedPoint Ω)) hη`. Conclude with `e ▸ (hU _).1 q.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `bijective_const η hsp (U.ι ≫ s) hinj (by rw [← Category.assoc, hη, hs]) hc`. Establish `hconn` using `(isConnected_closed (U.ι ≫ s) hb).image U.ι U.ι.continuous.continuousOn`. Establish `hm : ∀ P : PrimeSpectrum O, ϖ ∈ P.asIdeal ↔ P = IsLocalRing.closedPoint O` using `fun P => by`. Establish `hmax : IsLocalRing.maximalIdeal O = Ideal.span {ϖ}` using `hϖ.maximalIdeal_eq`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `((IsLocalRing.maximalIdeal.isMaximal O).eq_of_le P.isPrime.ne_top ?_).symm` and prove the remaining obligations. Rewrite using `[hmax, Ideal.span_singleton_le_iff_mem]`. Conclude with `h`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Express the relevant statement in the definitionally equal form `ϖ ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[hmax]`. Conclude with `Ideal.mem_span_singleton_self ϖ`. Establish `key : ∀ (q : X) (h : genPt ξ ⤳ q), ¬ unitAt ξ ⟨q, h⟩ (algebraMap O Ω ϖ) ↔ s q = IsLocalRing.closedPoint O` using `fun q h => by`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(ConstReg.regular_const X Ω ξ O s hs ⟨q, h⟩ ϖ).2 hg, not_not]`. Conclude with `hm _`. Use `hconn using 1` and compare the differences between its conclusion and the goal. Use extensionality with `q`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨h, hq⟩`. Use `⟨⟨q, (hU q).2 h⟩, ?_, rfl⟩` and prove the remaining obligations. Conclude with `(key q h).1 hq`. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨(hU _).1 z.2, (key _ _).2 hz⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.zero_set_special_fibre_connected : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra O Ω] (s : X ⟶ Spec (CommRingCat.of O)) [IsProper s] (ϖ : O), Irreducible ϖ → Function.Injective (algebraMap O Ω) → ξ ≫ s = Spec.map (CommRingCat.ofHom (algebraMap O Ω)) → IsCptGen ξ → ConstClosed O Ω → _root_.IsConnected (zeroSet ξ (algebraMap O Ω ϖ)) := by
   intro X Ω _ ξ O _ _ _ _ s _ ϖ hϖ hinj hs hg hc

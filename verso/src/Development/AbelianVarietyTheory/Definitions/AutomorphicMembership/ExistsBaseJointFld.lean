@@ -17,11 +17,11 @@ namespace GlobalTheory.Mem.Top.Inh
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.FrobeniusOrbits Formalism.L2.Host GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem NumberField IsDedekindDomain
 
 /- English proof (translation)
-Take `⟨Q, ψ, hQ, hψ, hs, hT⟩` from `GlobalTheory.Mem.PsiExist.psi_exists P.R P.host l hl ((insert l ((finite_offSet P).toFinset ∪ A)).erase 0) (Finset.notMem_erase _ _)`. Take `⟨a, ha⟩` from `hψ.ord`. Establish `key : ∀ v ∈ Q, (Ideal.absNorm v.asIdeal).Prime ∧ ((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 P.host.E) ∉ v.asIdeal ^ 2 ∧ Ideal.absNorm v.asIdeal ∉ (finite_offSet P).toFinset ∪ A` using `fun v hv => by`. Take `⟨p, hp, hpv⟩` from `Examples₂.PlacesToy.exists_prime_mem v`. Take `⟨h1, h2⟩` from `hs v hv p hp hpv v hpv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h1 ▸ hp, h1 ▸ h2, h1 ▸ fun hm => hT v hv p (Finset.mem_erase.2 ⟨hp.ne_zero, Finset.mem_insert_of_mem hm⟩) hpv⟩`. Use `⟨Q, a, ψ, hψ, ha, ⟨⟨_, pow_pos hl.pos a, ha⟩, hψ.triv, hψ.tame, fun v hv => ?_⟩, fun v hv => hT v hv l (Finset.mem_erase.2 ⟨hl.ne_zero, Finset.mem_insert_self _ _⟩), fun v hv h => (key v hv).2.2 (Finset.mem_union_right _ h), fun h => ?_⟩` and prove the remaining obligations. Establish `hv' : v ∈ Q` using `by_contra fun h => hv ((hψ.ram v).2 h)`. Conclude with `⟨hψ.split v hv', (key v hv').1, (key v hv').2.1, fun hm => (key v hv').2.2 (Finset.mem_union_left _ ((finite_offSet _).mem_toFinset.2 hm))⟩`. Take `⟨v, hv⟩` from `hQ`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `((hψ.ram v).1 (h ▸ isClsF_one.unr v)) hv`.
+A detailed English derivation is pending.
 -/
 theorem exists_psi (P : Pre) (l : ℕ) (hl : l.Prime) (A : Finset ℕ) :
     ∃ (Q : Finset (HeightOneSpectrum (𝓞 P.host.E))) (k : ℕ) (ψ : HChar P.host.E), IsPsi (H := P.host) l Q ψ ∧ ψ.OrderDvd (l ^ k) ∧
@@ -46,13 +46,13 @@ theorem exists_psi (P : Pre) (l : ℕ) (hl : l.Prime) (A : Finset ℕ) :
     exact ((hψ.ram v).1 (h ▸ isClsF_one.unr v)) hv
 
 /- English proof (translation)
-Establish `H : ∀ l : ℕ, ∃ (Q : Finset (HeightOneSpectrum (𝓞 P.host.E))) (k : ℕ) (ψ : HChar P.host.E), l.Prime → IsPsi (H` using `P.host) l Q ψ ∧ ψ.OrderDvd (l ^ k) ∧ Chr.IsTwist P.host (offSet P) ψ ∧ (∀ v ∈ Q, ((l : ℕ) : 𝓞 P.host.E) ∉ v.asIdeal) ∧ (∀ v ∈ Q, Ideal.absNorm v.asIdeal ∉ A l) ∧ (l ∈ pl → ψ ≠ 1) ∧ (l ∉ pl → ψ = 1 ∧ k = 0) := fun l => by`. Distinguish the cases in `h : l.Prime ∧ l ∈ pl`. Take `⟨Q, k, ψ, h1, h2, h3, h4, h5, h6⟩` from `exists_psi P l h.1 (A l)`. Conclude with `⟨Q, k, ψ, fun _ => ⟨h1, h2, h3, h4, h5, fun _ => h6, fun hn => absurd h.2 hn⟩⟩`. Conclude with `⟨∅, 0, 1, fun hl => ⟨isPsi_one _, one_pow _, Chr.isTwist_one _ _, by simp, by simp, fun hm => absurd ⟨hl, hm⟩ h, fun _ => ⟨rfl, rfl⟩⟩⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose Q k ψ H using H`. Use `⟨{1, f.del, f.del'} ∪ {x | ∃ l : ℕ, l.Prime ∧ x = (if l = P.host.pde then f.del' else f.del) * ψ l}, ?_⟩` and prove the remaining obligations. Introduce and unpack `B rfl`. Establish `G` using `fun w => H _ (B.places.resChar_prime w)`. Use `⟨{ pl := pl, Q := fun w => Q (B.places.resChar w), k := fun w => k (B.places.resChar w), psi := fun w => ψ (B.places.resChar w), psi_is := fun w => (G w).1, psi_ord := fun w => (G w).2.1, psi_tw := fun w => (G w).2.2.1, Q_l := fun w => (G w).2.2.2.1, off := fun w => (G w).2.2.2.2 …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `TwDat.set`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨_, B.places.resChar_prime w, rfl⟩`. Introduce and unpack `⟨l, hl, rfl⟩`. Take `⟨w, hw⟩` from `GlobalTheory.Mem.PsiExist.exists_place_over B.LL hl`. Establish `e : B.places.resChar w = l` using `Examples₂.PlacesToy.prime_mem_unique w (Examples₂.PlacesToy.resCharW_prime _) hl (Examples₂.PlacesToy.resCharW_mem w) hw`. Conclude with `⟨w, by subst e; rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_family (P : Pre) (f : Fr P) (pl : Finset ℕ) (A : ℕ → Finset ℕ) : ∃ Ξ : Set (HChar P.host.E),
     ∀ (B : Base) (h : B.toPre = P), ∃ T : TwDat B, T.pl = pl ∧ T.Avoids A ∧ (∀ w, B.places.resChar w ∈ pl → T.psi w ≠ 1) ∧
@@ -89,7 +89,7 @@ theorem exists_family (P : Pre) (f : Fr P) (pl : Finset ℕ) (A : ℕ → Finset
     exact ⟨w, by subst e; rfl⟩
 
 /- English proof (translation)
-Take `⟨B', h, h'⟩` from `BaseEnl.exists_enl B S hS`. Use `⟨{ B' with LL0 := ⊤, coeffGaloisSubfield_isGalois := IsGalois.of_algEquiv IntermediateField.topEquiv.symm, Ks_le := le_top, rootOfUnity_eightQ_mem_coeffGaloisSubfield := B'.rootOfUnity_eightQ_mem_coeffGaloisSubfield.imp fun _ hz => ⟨trivial, hz.2⟩ }, h.1, h.KsC_eq, fun z hz => ?_ …` and prove the remaining obligations. Take `⟨x, hx⟩` from `h' z hz`. Conclude with `⟨x, trivial, hx⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_fixed (B : Base) (S : Finset ℂ) (hS : ∀ z ∈ S, IsAlgebraic ℚ z) :
     ∃ B' : Base, B'.toPre = B.toPre ∧ B'.KsC = B.KsC ∧ ∀ z ∈ S, z ∈ B'.fixedCoefficientFieldInComplex := by
@@ -100,7 +100,7 @@ theorem exists_fixed (B : Base) (S : Finset ℂ) (hS : ∀ z ∈ S, IsAlgebraic 
   exact ⟨x, trivial, hx⟩
 
 /- English proof (translation)
-Take `⟨sp, hT, hY, hA, hV, hz, h, -⟩` from `exists_diagSpaces_ofCh K.P K.Lv`. Conclude with `⟨_, sp, hT, hY, hA, hV, hz, rfl, h.1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_over (K : Ctx) : ∃ P, K.Over P := by
   obtain ⟨sp, hT, hY, hA, hV, hz, h, -⟩ := exists_diagSpaces_ofCh K.P K.Lv
@@ -118,13 +118,13 @@ def colsTw (B : Base) (f : Fr B.toPre) (T : TwDat B) : Cols B :=
     PTw := fun u _ => (ColsModel.member B.toPre u).P }
 
 /- English proof (translation)
-Take `⟨Del, letter, hD, hinj, gap, hu⟩` from `hB`. Set `e : ℂ ≃ₗ[ℂ] (Fin 1 → ℂ)` to `(LinearEquiv.funUnique (Fin 1) ℂ ℂ).symm`. Choose the witnesses or unpack the hypotheses as in `⟨W₀, h1, -⟩ : ∃ W₀ : RowsRest B (colsTw B f T), W₀.Drows ≤ W₀.Dall ∧ True := by`. Establish `hf : ∀ u, ∃ e : RowsModel.Euc ((colsTw B f T).mem u).A.du ≃ₗ[ℂ] ((colsTw B f T).mem u).A.Mram, ∀ φ ψ, inner ℂ φ ψ = ((colsTw B f T).fm u).ipC 0 (e φ).1 (e ψ).1` using `fun u => haveI := RowsModel.mram_fd (colsTw B f T) u RowsModel.exists_frame (RowsModel.ramCore (colsTw B f T) u (fun φ _ ψ _ => StagesInhab.ipC_conj B u φ ψ) (fun φ _ h => StagesInhab.ipC_pos B u φ h))`. Use `choose eM heM using hf`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e' : ℂ ≃ₗ[ℂ] RowsModel.Euc 1` to `e.trans (WithLp.linearEquiv 2 ℂ _).symm`. Conclude with `⟨RowsModel.model (colsTw B f T) (fun _ => 1) 1 (fun _ => e') (fun _ _ => e') eM heM, le_rfl, trivial⟩`. Set `tw : B.places.Pl → (colsTw B f T).Tup` to `fun w => ⟨T.xiTw f w, .inr ⟨w, rfl⟩⟩`. Establish `htw : ∀ w, tw (B.places.conj w) = tw w` using `fun w => Subtype.ext ((TwFin.tw_fin B f T).2.2.1 w)`. Apply the tactic sequence `let W : RowsRest B (colsTw B f T) := { W₀ with muAt := fun w => if B.places.resChar w ∈ T.pl then tw w else (colsTw B f T).mu0 muAt_conj := fun w => by rw [TwFin.resChar_conj, htw] muTw := tw muTw_conj := htw muAt_or := fun w => by split_ifs <;> simp }`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hc : ∀ u i, Nonempty (((colsTw B f T).mem u).C.cls i)` using `fun u _ => ⟨(1 : Tau B.R → (ZMod (B.T u))ˣ)⟩`. Take `⟨L⟩` from `locStage_inhabited`. Take `⟨N, -⟩` from `GaloisStage.exists_nStage_adapt B _ W L`. Take `⟨V, -⟩` from `DivInhab.exists_divStage B _ (GaloisStage.adapt W)`. Take `⟨S⟩` from `SStageInhab.nonempty_sStage B _ (GaloisStage.adapt W) Del hD gap letter hinj hu (fun u x _ y _ => (StagesInhab.ipC_conj B u y x).symm) (fun u x _ h => StagesInhab.ipC_pos B u x h) h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨G, -, -⟩` from `(GJInhab.inhabited_stage B (colsTw B f T)).2.2 (hc _ _) (hc _ _)`. Conclude with `⟨colsTw B f T, GaloisStage.adapt W, V, S, N, G, Subtype.val, Subtype.val_injective, Subtype.range_val, rfl, rfl, rfl, fun _ => rfl, fun w hw => if_pos hw, fun w hw => if_neg hw⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_muIs (B : Base) (hB : StagesInhab.HasLetters B.toPre) (f : Fr B.toPre) (T : TwDat B) :
     ∃ (C : Cols B) (W : _) (V : _) (S : _) (N : _) (G : _) (xi : C.Tup → HChar B.host.E), MuIs ⟨B, C, W, V, S, N, G⟩ f T xi := by

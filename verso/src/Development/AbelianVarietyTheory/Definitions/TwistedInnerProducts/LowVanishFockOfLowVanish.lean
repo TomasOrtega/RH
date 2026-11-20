@@ -16,19 +16,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hne : ∀ i, hG.eigenvalues i ≠ 0`. Introduce `i h0`. Apply `hu.ne_zero` to reduce the goal to its premises. Rewrite using `[hG.det_eq_prod_eigenvalues]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp [h0])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set U : Matrix (Fin n) (Fin n) ℂ := (hG.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hU`. Establish `hsp : G = U * diagonal (fun i => ((hG.eigenvalues i : ℝ) : ℂ)) * Uᴴ` using `by conv_lhs => rw [hG.spectral_theorem]`. Simplify using `[hU, Unitary.conjStarAlgAut_apply, star_eq_conjTranspose, Function.comp_def]`. Set `d : Fin n → ℂ` to `fun i => ((Real.sqrt |hG.eigenvalues i| : ℝ) : ℂ)`. Use `⟨fun i => decide (0 < hG.eigenvalues i), diagonal d * Uᴴ, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `IsUnit.mul ?_ ?_` and prove the remaining obligations. Rewrite using `[isUnit_diagonal, Pi.isUnit_iff]`. Introduce `i`. Simplify using `[d, hne i]`. Establish `: Uᴴ * U = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hU, ← star_eq_conjTranspose]`. Conclude with `Unitary.coe_star_mul_self _`. Conclude with `IsUnit.of_mul_eq_one _ this`. Establish `key : (diagonal d)ᴴ * Formalism.REAL.Jm (fun i => decide (0 < hG.eigenvalues i)) * diagonal d = diagonal (fun i => ((hG.eigenvalues i : ℝ) : ℂ))`. Rewrite using `[diagonal_conjTranspose, Formalism.REAL.Jm, diagonal_mul_diagonal, diagonal_mul_diagonal]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `hs : d i * d i = ((|hG.eigenvalues i| : ℝ) : ℂ)`. Simplify using `only [d]`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (abs_nonneg _)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `hst : star d i = d i` using `by simp [d]`. Rewrite using `[hst]`. Distinguish the cases in `h : 0 < hG.eigenvalues i`. Simplify using `only [h, decide_true, if_true, mul_one, hs, abs_of_pos h]`. Simplify using `only [h, decide_false, Bool.false_eq_true, if_false, mul_neg, mul_one, neg_mul, hs, abs_of_nonpos (not_lt.1 h)]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[conjTranspose_mul, conjTranspose_conjTranspose]`. Use `conv_rhs => rw [hsp, ← key]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_sign_frame {n : ℕ} {G : Matrix (Fin n) (Fin n) ℂ} (hG : G.IsHermitian) (hu : IsUnit G.det) :
     ∃ (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n) ℂ), IsUnit A ∧ Aᴴ * Formalism.REAL.Jm ε * A = G := by
@@ -70,7 +68,7 @@ theorem exists_sign_frame {n : ℕ} {G : Matrix (Fin n) (Fin n) ℂ} (hG : G.IsH
     simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Use `choose ε A hA hG using fun τ => exists_sign_frame (G := gramAt D V τ) (GlobalTheory.SmoothForms.RealPts.gramAt_herm V τ) (GlobalTheory.SmoothForms.RealPts.gramAt_unit V τ)`. Conclude with `⟨⟨ε, A, hA, hG⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_fr (V : HSp D) : Nonempty (Fr V) := by
   choose ε A hA hG using fun τ => exists_sign_frame (G := gramAt D V τ)
@@ -78,11 +76,11 @@ theorem nonempty_fr (V : HSp D) : Nonempty (Fr V) := by
   exact ⟨⟨ε, A, hA, hG⟩⟩
 
 /- English proof (translation)
-Establish `hd` using `(isUnit_iff_isUnit_det _).1 (A.fr_unit τ)`. Establish `hJ` using `Formalism.REAL.Jm_mul_self (A.ε τ)`. Establish `hJc` using `Formalism.REAL.Jm_conjTranspose (A.ε τ)`. Establish `hJJ : ∀ X : Matrix (Fin V.rank) (Fin V.rank) ℂ, Formalism.REAL.Jm (A.ε τ) * (Formalism.REAL.Jm (A.ε τ) * X) = X` using `fun X => by rw [← Matrix.mul_assoc, hJ, Matrix.one_mul]`. Establish `h1 : A.fr τ * A.cart τ = Formalism.REAL.Jm (A.ε τ) * A.fr τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Fr.cart, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hd]`. Establish `h2 : gramAt D V τ * A.cart τ = (A.fr τ)ᴴ * A.fr τ`. Rewrite using `[← A.fr_gram τ, Matrix.mul_assoc, h1, Matrix.mul_assoc, hJJ]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Fr.cart, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hd, hJJ, Matrix.nonsing_inv_mul _ hd]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_assoc, h2, ← Matrix.mul_assoc, ← conjTranspose_mul, h1, conjTranspose_mul, hJc, A.fr_gram]`. Rewrite using `[h2]`. Conclude with `Matrix.PosDef.conjTranspose_mul_self _ (Matrix.mulVec_injective_iff_isUnit.2 (A.fr_unit τ))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCartanInv_cart {V : HSp D} (A : Fr V) (τ : D.what₂.Tau) : IsCartanInv (gramAt D V τ) (A.cart τ) := by
   have hd := (isUnit_iff_isUnit_det _).1 (A.fr_unit τ)
@@ -101,11 +99,11 @@ theorem isCartanInv_cart {V : HSp D} (A : Fr V) (τ : D.what₂.Tau) : IsCartanI
     exact Matrix.PosDef.conjTranspose_mul_self _ (Matrix.mulVec_injective_iff_isUnit.2 (A.fr_unit τ))
 
 /- English proof (translation)
-Take `⟨f, f0, hf⟩` from `GlobalTheory.VacuumO.exists_ne_zero ψ θ hψ hθ V W _ _ (isCartanInv_cart A) (isCartanInv_cart B) _ _ (GlobalTheory.PlaceModel.isSelfDualC_latFrame _) (GlobalTheory.PlaceModel.isSelfDualC_latFrame _)`. Establish `h : IsVacF ψ θ A B f` using `⟨by simpa using (hf 1).1, by simpa using (hf 1).2.2⟩`. Establish `e : ptF ψ θ A B f 1 = f`. Establish `h1 : (1 : PolF D W.rank V.rank) = MvPolynomial.basisMonomials _ ℂ 0`. Rewrite using `[MvPolynomial.coe_basisMonomials]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Unfold `ptF pureTensorO pureTensorL`. Rewrite using `[h1, Module.Basis.constr_basis]`. Simplify using `[opPow]`. Take `⟨U, hU, hl⟩` from `isTheta_iff_level.1 h.1`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨f, f0, h, e, U, hU, Submodule.subset_span ⟨f, 1, h, hl, e.symm⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_vac {V W : HSp D} (A : Fr V) (B : Fr W) {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
     (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) :
@@ -124,9 +122,9 @@ theorem exists_vac {V W : HSp D} (A : Fr V) (B : Fr W) {ψ : AddChar (AF D.host.
   exact ⟨f, f0, h, e, U, hU, Submodule.subset_span ⟨f, 1, h, hl, e.symm⟩⟩
 
 /- English proof (translation)
-Take `⟨⟨θ, hθ⟩, ψ, hψ⟩` from `GlobalTheory.Ker.exists_infFam_and_stdChar D`. Take `⟨A⟩` from `nonempty_fr V`. Take `⟨B⟩` from `nonempty_fr W`. Take `⟨μ, 𝓕, hm⟩` from `exists_isCovolOne V W`. Take `⟨f, f0, hf, -⟩` from `exists_vac A B hψ hθ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨A, B, θ, ψ, μ, 𝓕, f, hψ, hθ, hm, f0, hf⟩`.
+Supply the required witnesses or components.
 -/
 theorem dense_hyp (V W : HSp D) : ∃ (A : Fr V) (B : Fr W) (θ : InfFam D) (ψ : AddChar (AF D.host.F) ℂ)
     (μ : Measure (WO V W)) (𝓕 : Set (WO V W)) (f : WO V W → ℂ), IsStdChar D ψ (-1) ∧ IsInfFam θ ∧
@@ -139,7 +137,7 @@ theorem dense_hyp (V W : HSp D) : ∃ (A : Fr V) (B : Fr W) (θ : InfFam D) (ψ 
   exact ⟨A, B, θ, ψ, μ, 𝓕, f, hψ, hθ, hm, f0, hf⟩
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h V W (Fr.ofModel M) (Fr.ofModel M') θ ψ χS χT ω f τ aS aT hθ hω hS hT (isVacF_of_isVacVec hf)`. Use `⟨fun X hX P z => ?_, h2⟩` and prove the remaining obligations. Use `h1 X hX P z` as an intermediate fact. Rewrite `this` using `[neg_smul, ← sub_eq_add_neg]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieFock_of_all (h : LieFockAll D) {V W : HSp D} {S S' : D.what₂.Tau → SPar} (M : DSModel V S) (M' : DSModel W S')
     {θ : InfFam D} {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* Circle}
@@ -153,7 +151,7 @@ theorem lieFock_of_all (h : LieFockAll D) {V W : HSp D} {S S' : D.what₂.Tau �
   exact this
 
 /- English proof (translation)
-The claim follows from `h V W (Fr.ofModel M) (Fr.ofModel M') θ ψ χS χT ω f τ aS aT hθ hω hS hT (isVacF_of_isVacVec hf) hf.ne`.
+A detailed English derivation is pending.
 -/
 theorem compactFock_of_all (h : CompactFockAll D) {V W : HSp D} {S S' : D.what₂.Tau → SPar} (M : DSModel V S)
     (M' : DSModel W S') {θ : InfFam D} {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* Circle}
@@ -163,7 +161,7 @@ theorem compactFock_of_all (h : CompactFockAll D) {V W : HSp D} {S S' : D.what�
   h V W (Fr.ofModel M) (Fr.ofModel M') θ ψ χS χT ω f τ aS aT hθ hω hS hT (isVacF_of_isVacVec hf) hf.ne
 
 /- English proof (translation)
-Introduce `k i V' W M' θ ψ hθ hP hi hs ω' hω ν 𝓕 hν h𝓕 J χ F hF v A f₀ hf P`. Use `h k i V' W M' θ ψ hθ hP hi hs ω' hω ν 𝓕 hν h𝓕 J χ F hF v _ ?_` and prove the remaining obligations. Take `⟨χS, χT, hW, -⟩` from `hω`. Conclude with `GlobalTheory.Chain.InnerSteps.theta_pureTensorO hW.std hθ _ _ _ _ hf.1 P`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lowVanishFock_of_lowVanish (h : GlobalTheory.IndefiniteRowSideFullHecke.LoweredSignatureVanishing.LowVanish D) : LowVanishFock D := by
   intro k i V' W M' θ ψ hθ hP hi hs ω' hω ν 𝓕 hν h𝓕 J χ F hF v A f₀ hf P
@@ -172,7 +170,7 @@ theorem lowVanishFock_of_lowVanish (h : GlobalTheory.IndefiniteRowSideFullHecke.
   exact GlobalTheory.Chain.InnerSteps.theta_pureTensorO hW.std hθ _ _ _ _ hf.1 P
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> simp [fockS, raiO, lowO, sgn, Fin.sum_univ_two, Matrix.single_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fockS_offdiag (τ : D.what₂.Tau) :
     fockS τ ![true, false] ![true] (Matrix.single 0 1 1) (1 : PolF D 1 2) =

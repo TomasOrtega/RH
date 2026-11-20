@@ -14,55 +14,47 @@ namespace GlobalTheory.Poinc
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `A o Ω _ _ _ _ _ _ κ hκ Z z _ _ _ p hp hfin`. Use `haveI : CharZero Ω := ArithBase.char (o := o)`. Use `haveI : CharZero (Sp Ω).functionField := charZero_of_injective_ringHom (((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv ≫ (Sp Ω).germToFunctionField ⊤).hom).injective`. Use `haveI : IsFinite p.fromNormalization := GlobalTheory.isFinite_fromNormalization_of_genericallyFinite (o := CommRingCat.of A) p z hfin`. Use `haveI : GlobalTheory.IsNormalScheme p.normalization := GlobalTheory.IsNormalScheme.normalization_of_isIntegral p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Use `haveI : IsFinite (spMap κ) := by rw [IsFinite.SpecMap_iff]; exact hκ`. Establish `hl : p ≫ z = spMap (algebraMap o Ω) ≫ spMap κ`. Rewrite using `[hp, ← Spec.map_comp]`. Both sides reduce to the same expression. Set `l : Sp Ω ⟶ pullback z (spMap κ)` to `pullback.lift p (spMap (algebraMap o Ω)) hl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hl1 : p = l ≫ pullback.fst z (spMap κ)` using `(pullback.lift_fst _ _ _).symm`. Set `d` to `p.normalizationDesc l (pullback.fst z (spMap κ)) hl1`. Set `s : p.normalization ⟶ Sp o` to `d ≫ pullback.snd z (spMap κ)`. Establish `hs : s ≫ spMap κ = p.fromNormalization ≫ z`. Simplify using `only [s, d, Category.assoc, ← pullback.condition]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Scheme.Hom.normalizationDesc_comp_assoc]`. Establish `hfz : LocallyOfFiniteType (s ≫ spMap κ) ∧ IsSeparated (s ≫ spMap κ) ∧ QuasiCompact (s ≫ spMap κ)`. Rewrite using `[hs]`. Conclude with `⟨inferInstance, inferInstance, inferInstance⟩`. Take `⟨h1, h2, h3⟩` from `hfz`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt_s : p.toNormalization ≫ s = spMap (algebraMap o Ω)`. Simplify using `only [s, d]`. Rewrite using `[Scheme.Hom.toNormalization_normalizationDesc_assoc, pullback.lift_snd]`. Establish `hgen : Set.range p.toNormalization = {genericPoint p.normalization}`. Establish `hr : ∀ w : Sp Ω, w = IsLocalRing.closedPoint Ω` using `fun w => Subsingleton.elim _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrng : Set.range p.toNormalization = {p.toNormalization (IsLocalRing.closedPoint Ω)}` using `Set.ext fun y => ⟨fun ⟨w, hw⟩ => hw ▸ congrArg p.toNormalization (hr w), fun hy => ⟨_, hy.symm⟩⟩`. Establish `: IsGenericPoint (p.toNormalization (IsLocalRing.closedPoint Ω)) (⊤ : Set p.normalization)`. Rewrite using `[isGenericPoint_def, ← hrng]`. Conclude with `p.toNormalization.denseRange.closure_range`. Rewrite using `[hrng, this.eq (genericPoint_spec p.normalization)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `honto : ∀ x : Ω, ∃ (U : p.normalization.Opens) (f : Γ(p.normalization, U)), (U : Set p.normalization).Nonempty ∧ valF p.toNormalization U f = x`. Introduce `x`. Use `set ξ : Sp Ω := genericPoint (Sp Ω) with hξ`. Take `⟨V, hV, hxV, -⟩` from `exists_isAffineOpen_mem_and_subset (X := Z) (x := p ξ) (U := ⊤) trivial`. Establish `hsub : ∀ w : Sp Ω, w = ξ` using `fun w => Subsingleton.elim _ _`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hpV : ⊤ ≤ p ⁻¹ᵁ V` using `fun w _ => by rw [hsub w]; exact hxV`. Establish `hξB : ξ ∈ p ⁻¹ᵁ V` using `hxV`. Use `letI := (p.app V).hom.toAlgebra`. Set `gB` to `(Sp Ω).presheaf.germ (p ⁻¹ᵁ V) ξ hξB`. Set `gR` to `Z.presheaf.germ V (p ξ) hxV`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsq : gR ≫ p.stalkMap ξ = p.app V ≫ gB` using `p.germ_stalkMap V ξ hxV`. Use `letI alO : Algebra Γ(Z, V) (Z.presheaf.stalk (p ξ)) := TopCat.Presheaf.algebra_section_stalk Z.presheaf ⟨p ξ, hxV⟩`. Use `letI alS : Algebra (Z.presheaf.stalk (p ξ)) ((Sp Ω).presheaf.stalk ξ) := (p.stalkMap ξ).hom.toAlgebra`. Use `letI alRS : Algebra Γ(Z, V) ((Sp Ω).presheaf.stalk ξ) := (gR ≫ p.stalkMap ξ).hom.toAlgebra`. Use `haveI : IsScalarTower Γ(Z, V) (Z.presheaf.stalk (p ξ)) ((Sp Ω).presheaf.stalk ξ) := IsScalarTower.of_algebraMap_eq' rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `haveI hloc : IsLocalization.AtPrime (Z.presheaf.stalk (p ξ)) (hV.primeIdealOf ⟨p ξ, hxV⟩).asIdeal := hV.isLocalization_stalk ⟨p ξ, hxV⟩`. Establish `h1 : ⊤ ≤ (𝟙 (Sp Ω)) ⁻¹ᵁ (p ⁻¹ᵁ V)` using `hpV`. Set `E : Γ(Sp Ω, p ⁻¹ᵁ V) →+* Ω` to `(GlobalTheory.Points.valMap (𝟙 (Sp Ω)) (p ⁻¹ᵁ V) h1).hom`. Establish `hE : ∀ b, E b = valR (𝟙 (Sp Ω)) (p ⁻¹ᵁ V) b` using `fun b => (GlobalTheory.Points.valR_eq _ _ h1 b).symm`. Establish `hEinj : Function.Injective E`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : GlobalTheory.Points.valMap (𝟙 (Sp Ω)) (p ⁻¹ᵁ V) h1 = (Sp Ω).presheaf.map (homOfLE h1).op ≫ (Scheme.ΓSpecIso (CommRingCat.of Ω)).hom`. Rewrite using `[GlobalTheory.Points.valMap, Scheme.Hom.appLE]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Use `haveI : Nonempty (⊤ : (Sp Ω).Opens) := ⟨⟨ξ, trivial⟩⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show Function.Injective (GlobalTheory.Points.valMap (𝟙 (Sp Ω)) (p ⁻¹ᵁ V) h1).hom`. Rewrite using `[e1]`. Conclude with `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of Ω)).hom).1.comp (map_injective_of_isIntegral (Sp Ω) (homOfLE h1))`. Choose the witnesses or unpack the hypotheses as in `⟨y', hy'⟩ : ∃ y' : Γ(Sp Ω, p ⁻¹ᵁ V), E y' = x := by`. Use `⟨((Sp Ω).presheaf.map (homOfLE le_top).op).hom ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom x), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[hE, GlobalTheory.Points.valR_res (𝟙 (Sp Ω)) le_top h1]`. Use `GlobalTheory.Points.valR_specMap (𝟙 (CommRingCat.of Ω)) x` as an intermediate fact. Rewrite `this` using `[Spec.map_id]`. Conclude with `this`. Set `y` to `gB.hom y'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy : IsIntegral (Z.presheaf.stalk (p ξ)) y` using `hfin.to_isIntegral y`. Take `⟨m, hm⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization (hV.primeIdealOf ⟨p ξ, hxV⟩).asIdeal.primeCompl y hy`. Establish `hcomm : ∀ r : Γ(Z, V), gB.hom (algebraMap Γ(Z, V) Γ(Sp Ω, p ⁻¹ᵁ V) r) = algebraMap Γ(Z, V) ((Sp Ω).presheaf.stalk ξ) r` using `fun r => by show gB.hom ((p.app V).hom r) = (gR ≫ p.stalkMap ξ).hom r`. Rewrite using `[hsq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `gB' : Γ(Sp Ω, p ⁻¹ᵁ V) →ₐ[Γ(Z, V)] (Sp Ω).presheaf.stalk ξ` to `{ gB.hom with commutes' := hcomm }`. Establish `hgB : Function.Injective gB'` using `germ_injective_of_isIntegral (Sp Ω) ξ hξB`. Set `c' : Γ(Sp Ω, p ⁻¹ᵁ V)` to `algebraMap Γ(Z, V) _ (m : Γ(Z, V))`. Set `d' : Γ(Sp Ω, p ⁻¹ᵁ V)` to `c' * y'`. Establish `hc : IsIntegral Γ(Z, V) c'` using `isIntegral_algebraMap`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hd : IsIntegral Γ(Z, V) d'`. Rewrite using `[← isIntegral_algHom_iff gB' hgB]`. Establish `: gB' d' = (m : Γ(Z, V)) • y`. Rewrite using `[Algebra.smul_def, map_mul]`. Conclude with `congrArg (· * y) (hcomm _)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hm`. Establish `hc0 : c' ≠ 0`. Introduce `h0`. Establish `h2 : IsUnit (gB.hom c')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcomm]`. Conclude with `((IsLocalization.map_units (Z.presheaf.stalk (p ξ)) m).map (p.stalkMap ξ).hom)`. Rewrite `h2` using `[h0, map_zero]`. Conclude with `not_isUnit_zero h2`. Establish `hEc : E c' ≠ 0` using `fun h0 => hc0 (hEinj (h0.trans (map_zero E).symm))`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `iso` to `p.normalizationObjIso hV`. Establish `key` using `p.normalizationObjIso_hom_val hV`. Set `ac : Γ(p.normalization, p.fromNormalization ⁻¹ᵁ V)` to `iso.inv.hom ⟨c', hc⟩`. Set `ad : Γ(p.normalization, p.fromNormalization ⁻¹ᵁ V)` to `iso.inv.hom ⟨d', hd⟩`. Establish `hle : p ⁻¹ᵁ V ≤ p.toNormalization ⁻¹ᵁ (p.fromNormalization ⁻¹ᵁ V)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[← Scheme.Hom.comp_preimage]`. Establish `hval : ∀ e : integralClosure Γ(Z, V) Γ(Sp Ω, p ⁻¹ᵁ V), valR p.toNormalization (p.fromNormalization ⁻¹ᵁ V) (iso.inv.hom e) = E e.1`. Introduce `e`. Establish `h3` using `congrArg (fun φ => φ.hom (iso.inv.hom e)) key`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Rewrite `h3` using `[← CommRingCat.comp_apply, Iso.inv_hom_id, CommRingCat.id_apply]`. Rewrite using `[hE, ← Category.id_comp p.toNormalization, ← GlobalTheory.Points.valR_appLE (𝟙 (Sp Ω)) p.toNormalization hle h1]`. Use `congr 1`. Conclude with `h3.symm`. Establish `hW : ⊤ ≤ p.toNormalization ⁻¹ᵁ (p.fromNormalization ⁻¹ᵁ V)` using `h1.trans hle`.
-
-Establish `hU : ⊤ ≤ p.toNormalization ⁻¹ᵁ p.normalization.basicOpen ac`. Rewrite using `[GlobalTheory.Points.le_preimage_basicOpen_iff _ hW ac]`. Conclude with `(show valR p.toNormalization _ ac ≠ 0 from (hval _).trans_ne hEc).isUnit`. Establish `hu : IsUnit ((p.normalization.presheaf.map (homOfLE (p.normalization.basicOpen_le ac)).op).hom ac)` using `p.normalization.toRingedSpace.isUnit_res_basicOpen ac`. Use `⟨p.normalization.basicOpen ac, (p.normalization.presheaf.map (homOfLE (p.normalization.basicOpen_le ac)).op).hom ad * ↑(hu.unit⁻¹), ⟨_, hU (x := ξ) trivial⟩, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[GlobalTheory.Points.valF_eq_valR, GlobalTheory.Points.valR_mul _ _ hU, GlobalTheory.Points.valR_res _ _ hU, hval]`. Establish `h4 : valR p.toNormalization _ ((p.normalization.presheaf.map (homOfLE (p.normalization.basicOpen_le ac)).op).hom ac) * valR p.toNormalization (p.normalization.basicOpen ac) ↑(hu.unit⁻¹) = 1`. Rewrite using `[← GlobalTheory.Points.valR_mul _ _ hU, ← GlobalTheory.Points.valR_one p.toNormalization _ hU]`. Use `congr 1`. Conclude with `hu.mul_val_inv`.
-
-Rewrite `h4` using `[GlobalTheory.Points.valR_res _ _ hU, hval]`. Rewrite using `[eq_inv_of_mul_eq_one_right h4]`. Use `show E (c' * y') * (E c')⁻¹ = x`. Rewrite using `[map_mul, mul_comm, ← mul_assoc, inv_mul_cancel₀ hEc, one_mul, hy']`. Use `haveI := IsSeparated.of_comp s (spMap κ)`.
-
-Use `haveI := locallyOfFiniteType_of_comp s (spMap κ)`. Use `haveI := QuasiCompact.of_comp s (spMap κ)`. Set `M : RatModel o Ω` to `{ Z := p.normalization s := s sep := inferInstance lft := inferInstance qc := inferInstance pt := p.toNormalization pt_s := hpt_s gen := hgen onto := honto }`. Conclude with `⟨M, p.fromNormalization, GlobalTheory.IsNormalScheme.pred _, inferInstance, p.toNormalization_fromNormalization⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_ratModel_normalization : ∀ (A o Ω : Type) [CommRing A] [IsDedekindDomain A] [CommRing o] [Field Ω]
     [Algebra o Ω] [ArithBase o Ω] (κ : A →+* o), κ.Finite → ∀ (Z : Scheme.{0}) (z : Z ⟶ Sp A), LocallyOfFiniteType z →

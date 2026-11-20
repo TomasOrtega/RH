@@ -13,7 +13,7 @@ namespace Formalism.L2.SG.Pf.Tau
 open Size Formalism.MainNotions.S
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct, Fintype.sum_prod_type, blockDiagonal_apply, ite_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockDiagonal_mulVec_apply {j : ℕ} {κ : Type} [Fintype κ] [DecidableEq κ]
     (R : κ → Matrix (Fin j) (Fin j) ℂ) (z : Fin j × κ → ℂ) (k : Fin j) (v : κ) :
@@ -21,7 +21,7 @@ theorem blockDiagonal_mulVec_apply {j : ℕ} {κ : Type} [Fintype κ] [Decidable
   simp [Matrix.mulVec, dotProduct, Fintype.sum_prod_type, blockDiagonal_apply, ite_mul]
 
 /- English proof (translation)
-Rewrite using `[LinearMap.det_restrictScalars, LinearMap.det_toLin', Matrix.det_blockDiagonal, map_prod]`. Simplify using `[Algebra.norm_complex_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_blockDiagonal_real {j : ℕ} {κ : Type} [Fintype κ] [DecidableEq κ] (R : κ → Matrix (Fin j) (Fin j) ℂ) :
     LinearMap.det ((Matrix.toLin' (blockDiagonal R)).restrictScalars ℝ) = ∏ v, Complex.normSq (R v).det := by
@@ -37,7 +37,7 @@ def t8J : (Fin j × InfinitePlace I.F → ℂ) ≃ₗ[ℝ] EuclideanSpace ℝ (F
   complexToEuclidean (t8Eq I j)
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]`. Simplify using `only [Real.norm_eq_abs, sq_abs]`. Rewrite using `[← (t8Eq I j).sum_comp]`. Simplify using `[t8J, complexToEuclidean, Fintype.sum_prod_type, Fin.sum_univ_two, Module.Basis.smulTower_repr, Complex.coe_basisOneI_repr, Complex.sq_norm, Complex.normSq_apply, ← sq]`. Simplify using `only [Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem placeEmbedding_norm_sq (z : Fin j × InfinitePlace I.F → ℂ) : ‖t8J I j z‖ ^ 2 = ∑ q, ‖z q‖ ^ 2 := by
   rw [EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]
@@ -51,9 +51,9 @@ def placeCoordsBasis : Basis (Σ _ : Fin j, Free.ChooseBasisIndex ℤ (𝓞 I.E)
   (Pi.basis fun _ : Fin j => embeddingBasis I).map (LinearEquiv.curry ℝ ℂ (Fin j) (InfinitePlace I.F)).symm
 
 /- English proof (translation)
-Simplify using `[placeCoordsBasis, embeddingBasis, Pi.basis_apply]`. Distinguish the cases in `h : q.1 = p.1`. Rewrite using `[if_pos h]`. Simplify using `[Function.uncurry_def, h]`. Rewrite using `[if_neg h]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Function.uncurry_def, Pi.single_eq_of_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem placeCoordsBasis_apply (p : Σ _ : Fin j, Free.ChooseBasisIndex ℤ (𝓞 I.E)) (q : Fin j × InfinitePlace I.F) :
     placeCoordsBasis I j p q = if q.1 = p.1 then I.φ q.2 (integralBasis I.E p.2) else 0 := by
@@ -70,7 +70,7 @@ def t8B0 : Basis (Σ _ : Fin j, Free.ChooseBasisIndex ℤ (𝓞 I.E)) ℝ (Eucli
 def t8K : ℝ := volume.real (ZSpan.fundamentalDomain (t8B0 I j))
 
 /- English proof (translation)
-Unfold `t8K`. Use `haveI : VAddInvariantMeasure (Submodule.span ℤ (Set.range (t8B0 I j))) (EuclideanSpace ℝ (Fin (2 * I.f * j))) volume := ⟨fun c s _ => measure_preimage_add volume (c : EuclideanSpace ℝ (Fin (2 * I.f * j))) s⟩`. Use `ENNReal.toReal_pos ?_ ?_` and prove the remaining obligations. Conclude with `(ZSpan.isAddFundamentalDomain (t8B0 I j) volume).measure_ne_zero (NeZero.ne volume)`. Conclude with `(ZSpan.fundamentalDomain_isBounded (t8B0 I j)).measure_lt_top.ne`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integral_covolume_pos : 0 < t8K I j := by
   unfold t8K
@@ -96,7 +96,7 @@ Both sides reduce to the same expression.
 theorem placeCoords_apply (a : Fin j → I.E) (q : Fin j × InfinitePlace I.F) : placeCoords I j a q = I.φ q.2 (a q.1) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Rewrite using `[placeCoords_apply, placeCoordsBasis_apply]`. Distinguish the cases in `h : q.1 = p.1`. Simplify using `[h]`. Simplify using `[h, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem placeCoords_single (p : Σ _ : Fin j, Free.ChooseBasisIndex ℤ (𝓞 I.E)) :
     placeCoords I j (Pi.single p.1 (integralBasis I.E p.2)) = placeCoordsBasis I j p := by
@@ -111,13 +111,13 @@ def t8O : Submodule ℤ (Fin j → I.E) :=
     Pi.single p.1 (integralBasis I.E p.2))
 
 /- English proof (translation)
-Establish `key : ∀ (k : Fin j) (x : 𝓞 I.E), Pi.single k (x : I.E) ∈ t8O I j`. Introduce `k x`. Establish `hx : (x : I.E) = ∑ i, ((RingOfIntegers.basis I.E).repr x i) • integralBasis I.E i` using `by conv_lhs => rw [← (RingOfIntegers.basis I.E).sum_repr x]`. Simplify using `[integralBasis_apply]`. Establish `hs : Pi.single k (∑ i, ((RingOfIntegers.basis I.E).repr x i) • integralBasis I.E i) = ∑ i, ((RingOfIntegers.basis I.E).repr x i) • (Pi.single k (integralBasis I.E i) : Fin j → I.E)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k'`. Distinguish the cases in `h : k' = k`. Substitute `h` using the available equality. Simplify using `[Finset.sum_apply]`. Simplify using `[Finset.sum_apply, Pi.single_apply, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hx, hs]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨k, i⟩, rfl⟩)`. Rewrite using `[← Finset.univ_sum_single a]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `ha k`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc]`. Conclude with `key k c`.
+A detailed English derivation is pending.
 -/
 theorem mem_integral_vectors (a : Fin j → I.E) (ha : ∀ k, ∃ c : 𝓞 I.E, (c : I.E) = a k) : a ∈ t8O I j := by
   have key : ∀ (k : Fin j) (x : 𝓞 I.E), Pi.single k (x : I.E) ∈ t8O I j := by
@@ -151,7 +151,7 @@ def t8T (R : InfinitePlace I.F → Matrix (Fin j) (Fin j) ℂ) :
   (t8J I j).toLinearMap ∘ₗ (t8Rl R).restrictScalars ℝ ∘ₗ (t8J I j).symm.toLinearMap
 
 /- English proof (translation)
-Unfold `t8T`. Rewrite using `[LinearMap.det_conj]`. Conclude with `det_blockDiagonal_real R`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockLinear_det (R : InfinitePlace I.F → Matrix (Fin j) (Fin j) ℂ) :
     LinearMap.det (t8T R) = ∏ v, Complex.normSq (R v).det := by
@@ -160,7 +160,7 @@ theorem blockLinear_det (R : InfinitePlace I.F → Matrix (Fin j) (Fin j) ℂ) :
   exact det_blockDiagonal_real R
 
 /- English proof (translation)
-Rewrite using `[blockLinear_det]`. Conclude with `Finset.prod_ne_zero_iff.2 fun v _ => (Complex.normSq_pos.2 (hR v)).ne'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockLinear_det_ne_zero (R : InfinitePlace I.F → Matrix (Fin j) (Fin j) ℂ) (hR : ∀ v, (R v).det ≠ 0) :
     LinearMap.det (t8T R) ≠ 0 := by
@@ -178,7 +178,7 @@ theorem blockTransform_apply (R : InfinitePlace I.F → Matrix (Fin j) (Fin j) �
     t8Th R a = t8J I j (t8Rl R (placeCoords I j a)) := rfl
 
 /- English proof (translation)
-Rewrite using `[blockTransform_apply, placeCoords_single]`. Simplify using `[t8T, t8B0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blockTransform_single (R : InfinitePlace I.F → Matrix (Fin j) (Fin j) ℂ)
     (p : Σ _ : Fin j, Free.ChooseBasisIndex ℤ (𝓞 I.E)) :
@@ -187,7 +187,7 @@ theorem blockTransform_single (R : InfinitePlace I.F → Matrix (Fin j) (Fin j) 
   simp [t8T, t8B0]
 
 /- English proof (translation)
-Rewrite using `[blockTransform_apply, placeEmbedding_norm_sq, Fintype.sum_prod_type, Finset.sum_comm]`. Simplify using `only [t8Rl, Matrix.toLin'_apply, blockDiagonal_mulVec_apply, placeCoords_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blockTransform_norm_sq (R : InfinitePlace I.F → Matrix (Fin j) (Fin j) ℂ) (a : Fin j → I.E) :
     ‖t8Th R a‖ ^ 2 = ∑ v, ∑ k, ‖(R v *ᵥ fun k' => I.φ v (a k')) k‖ ^ 2 := by
@@ -195,9 +195,9 @@ theorem blockTransform_norm_sq (R : InfinitePlace I.F → Matrix (Fin j) (Fin j)
   simp only [t8Rl, Matrix.toLin'_apply, blockDiagonal_mulVec_apply, placeCoords_apply]
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h1 : t8Rl R (placeCoords I j a) = t8Rl R (placeCoords I j b)` using `(t8J I j).injective h`. Establish `hdet : (blockDiagonal R).det ≠ 0`. Rewrite using `[det_blockDiagonal]`. Conclude with `Finset.prod_ne_zero_iff.2 fun v _ => hR v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (blockDiagonal R).mulVec` using `Matrix.mulVec_injective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 hdet))`. Establish `h2 : placeCoords I j a = placeCoords I j b` using `hinj h1`. Use function extensionality and compare the values at `k`. Take `⟨v⟩` from `(inferInstance : Nonempty (InfinitePlace I.F))`. Conclude with `(I.φ v).injective (congrFun h2 (k, v))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem blockTransform_injective (R : InfinitePlace I.F → Matrix (Fin j) (Fin j) ℂ) (hR : ∀ v, (R v).det ≠ 0) :
     Function.Injective (t8Th R) := by
@@ -218,7 +218,7 @@ def blockBasis (R : InfinitePlace I.F → Matrix (Fin j) (Fin j) ℂ) (hR : ∀ 
   (t8B0 I j).map ((t8T R).equivOfDetNeZero (blockLinear_det_ne_zero R hR))
 
 /- English proof (translation)
-Simplify using `[blockBasis]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockBasis_apply (R : InfinitePlace I.F → Matrix (Fin j) (Fin j) ℂ) (hR : ∀ v, (R v).det ≠ 0)
     (p : Σ _ : Fin j, Free.ChooseBasisIndex ℤ (𝓞 I.E)) : blockBasis R hR p = t8T R (t8B0 I j p) := by
@@ -227,9 +227,9 @@ theorem blockBasis_apply (R : InfinitePlace I.F → Matrix (Fin j) (Fin j) ℂ) 
 set_option maxRecDepth 20000 in
 
 /- English proof (translation)
-Rewrite using `[ZLattice.covolume_eq_measure_fundamentalDomain _ volume (ZSpan.isAddFundamentalDomain (blockBasis R hR) volume)]`. Rewrite using `[Measure.real, ZSpan.measure_fundamentalDomain (blockBasis R hR) volume (t8B0 I j)]`. Establish `hb : (t8B0 I j).det ⇑(blockBasis R hR) = LinearMap.det (t8T R)`. Establish `: ⇑(blockBasis R hR) = t8T R ∘ ⇑(t8B0 I j)` using `funext fun p => blockBasis_apply R hR p`. Rewrite using `[this, Module.Basis.det_comp, Module.Basis.det_self, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb, blockLinear_det, ENNReal.toReal_mul, ENNReal.toReal_ofReal (abs_nonneg _), abs_of_nonneg (Finset.prod_nonneg fun v _ => Complex.normSq_nonneg _)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem covolume_blockBasis (R : InfinitePlace I.F → Matrix (Fin j) (Fin j) ℂ) (hR : ∀ v, (R v).det ≠ 0) :
     ZLattice.covolume (Submodule.span ℤ (Set.range (blockBasis R hR))) =
@@ -244,7 +244,7 @@ theorem covolume_blockBasis (R : InfinitePlace I.F → Matrix (Fin j) (Fin j) �
   rfl
 
 /- English proof (translation)
-Rewrite using `[t8O, Submodule.map_span, ← Set.range_comp]`. Use `congrArg (Submodule.span ℤ) (congrArg Set.range (funext fun p => ?_))` and prove the remaining obligations. Use `show t8Th R (Pi.single p.1 (integralBasis I.E p.2)) = blockBasis R hR p`. Rewrite using `[blockTransform_single, blockBasis_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_integral_vectors_span (R : InfinitePlace I.F → Matrix (Fin j) (Fin j) ℂ) (hR : ∀ v, (R v).det ≠ 0) :
     (t8O I j).map (t8Th R).toIntLinearMap = Submodule.span ℤ (Set.range (blockBasis R hR)) := by

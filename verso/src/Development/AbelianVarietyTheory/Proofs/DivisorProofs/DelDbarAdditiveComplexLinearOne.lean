@@ -13,7 +13,7 @@ namespace GlobalTheory.CxForm.GlobLin
 variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Unfold `HolAtlas.loc`. Use `split_ifs`. Use `exacts [rfl, (add_zero _).symm]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem loc_add (α β : A.Fld) (i : A.ι) : A.loc (α + β) i = fun v => A.loc α i v + A.loc β i v := by
   funext v
@@ -22,7 +22,7 @@ theorem loc_add (α β : A.Fld) (i : A.ι) : A.loc (α + β) i = fun v => A.loc 
   exacts [rfl, (add_zero _).symm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Unfold `HolAtlas.loc`. Use `split_ifs`. Use `exacts [rfl, (smul_zero _).symm]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem loc_smul (c : ℂ) (α : A.Fld) (i : A.ι) : A.loc (c • α) i = fun v => c • A.loc α i v := by
   funext v
@@ -31,20 +31,20 @@ theorem loc_smul (c : ℂ) (α : A.Fld) (i : A.ι) : A.loc (c • α) i = fun v 
   exacts [rfl, (smul_zero _).symm]
 
 /- English proof (translation)
-The claim follows from `(A.e x.1.1).open_target.mem_nhds (x.ch.map_source x.2)`.
+A detailed English derivation is pending.
 -/
 theorem target_mem_nhds (x : A.Pt) : (A.e x.1.1).target ∈ 𝓝 x.crd :=
   (A.e x.1.1).open_target.mem_nhds (x.ch.map_source x.2)
 
 /- English proof (translation)
-The claim follows from `((h.smooth x.1.1 S).contDiffAt (target_mem_nhds A x)).differentiableAt (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem differentiableAt_coef {α : A.Fld} (h : A.IsForm α) (x : A.Pt) (S : Finset (Fin (n + n))) :
     DifferentiableAt ℝ (fun v => (bas n).repr (A.loc α x.1.1 v) S) x.crd :=
   ((h.smooth x.1.1 S).contDiffAt (target_mem_nhds A x)).differentiableAt (by simp)
 
 /- English proof (translation)
-The claim follows from `Filter.eventually_of_mem (target_mem_nhds A x) fun v hv => by rw [HolAtlas.loc, dif_pos hv] rfl`.
+A detailed English derivation is pending.
 -/
 theorem loc_one_eventuallyEq (x : A.Pt) : A.loc 1 x.1.1 =ᶠ[𝓝 x.crd] fun _ => 1 :=
   Filter.eventually_of_mem (target_mem_nhds A x) fun v hv => by
@@ -56,11 +56,9 @@ end GlobalTheory.CxForm.GlobLin
 open GlobalTheory.CxForm.GlobLin in
 
 /- English proof (translation)
-Introduce `M _ n A`. Use `⟨⟨funext fun x => ?_, funext fun x => ?_⟩, fun c α β hα hβ => ⟨funext fun x => ?_, funext fun x => ?_, funext fun x => ?_, funext fun x => ?_⟩⟩` and prove the remaining obligations. Apply the tactic sequence `all_goals obtain ⟨hadd, hsmul, -, hgerm, hconst⟩ := GlobalTheory.T.delOperatorAt_dbarOperatorAt_linear_local n x.crd`. Conclude with `(hgerm _ _ (loc_one_eventuallyEq A x)).1.trans (hconst 1).1`. Conclude with `(hgerm _ _ (loc_one_eventuallyEq A x)).2.trans (hconst 1).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HolAtlas.del, loc_add]`. Conclude with `(hadd _ _ (differentiableAt_coef A hα x) (differentiableAt_coef A hβ x)).1`. Rewrite using `[HolAtlas.dbar, loc_add]`. Conclude with `(hadd _ _ (differentiableAt_coef A hα x) (differentiableAt_coef A hβ x)).2`. Rewrite using `[HolAtlas.del, loc_smul]`.
-
-Conclude with `(hsmul _ c (differentiableAt_coef A hα x)).1`. Rewrite using `[HolAtlas.dbar, loc_smul]`. Conclude with `(hsmul _ c (differentiableAt_coef A hα x)).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CxForm.HolAtlas.del_dbar_linear : ∀ (M : Type) [TopologicalSpace M] (n : ℕ) (A : HolAtlas M n),
     (A.del 1 = 0 ∧ A.dbar 1 = 0) ∧

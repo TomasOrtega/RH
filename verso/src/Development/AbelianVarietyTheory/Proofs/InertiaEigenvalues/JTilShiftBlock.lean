@@ -5,27 +5,27 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `l n t h w η typ U hS a S hU b`. Establish `hsg : 0 ≤ tableLineDegreeTwo.sg n l h a`. Unfold `tableLineDegreeTwo.sg Formalism.WachCohomologyFacts.V2.sgN`. Conclude with `Int.floor_nonneg.mpr (tsum_nonneg fun j => by positivity)`. Take `⟨_, _, _, hG, hB, _, hT2, _⟩` from `hS a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hblk : (∃ c : ℕ, c < t ∧ (b : ℚ) = c) ↔ (0 ≤ b ∧ b ≤ (t : ℤ) - 1)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, hbc⟩`. Establish `: b = (c : ℤ)` using `by exact_mod_cast hbc`. Use linear arithmetic over natural numbers and integers.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h0, h1⟩`. Use `⟨b.toNat, by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg h0]`. Establish `hwin : ((w a : ℤ) ≤ b + w a ∧ b + w a ≤ (w a : ℤ) + t - 1) ↔ (0 ≤ b ∧ b ≤ (t : ℤ) - 1)`. Apply the tactic sequence `constructor <;> rintro ⟨h0, h1⟩ <;> constructor <;> omega`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hc1` using `(hU b).2`. Establish `hcS : (b : ℚ) ∈ S → (U a).count (b + w a) = 1` using `(hU b).1.2`. Establish `hcN : (b : ℚ) ∉ S → (U a).count (b + w a) = 0` using `fun hn => by`. Use `mt (hU b).1.1 hn` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hboth : (b : ℚ) ∈ S → ¬ (0 ≤ b ∧ b ≤ (t : ℤ) - 1)`. Introduce and unpack `hbS ⟨h0, h1⟩`. Establish `hmem : b + (w a : ℤ) ∈ U a` using `Multiset.count_pos.mp (by rw [hcS hbS]; omega)`. Establish `hlow : b + (w a : ℤ) ∈ tableLineDegreeTwo.lows (typ a) (h a) (η a) (U a)`. Unfold `tableLineDegreeTwo.lows`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Multiset.mem_filter]`. Use `⟨hmem, ?_⟩` and prove the remaining obligations. Unfold `Formalism.WachCohomologyFacts.V2.InWinN`. Consider the cases of `hty : typ a`. Use `hB hty` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Bool.false_eq_true, if_false]`. Apply the tactic sequence `constructor <;> omega`. Use `hG hty` as an intermediate fact. Simplify using `only [if_true]`. Apply the tactic sequence `constructor <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hy : b + (w a : ℤ) ∈ Formalism.WachCohomologyFacts.Top.GlobalTheory (w a) t`. Unfold `Formalism.WachCohomologyFacts.Top.GlobalTheory`. Rewrite using `[Finset.mem_Icc]`. Apply the tactic sequence `constructor <;> omega`. Use `hT2 _ hlow _ hy` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[sub_self, abs_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `tableLineDegreeTwo.jTil`. Distinguish the cases in `hbS : (b : ℚ) ∈ S`. Establish `hn` using `hboth hbS`.
+Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (Or.inl hbS), if_neg (by rwa [hwin]), hcS hbS]`. Simplify using the standard rewrite rules. Rewrite using `[hcN hbS]`. Distinguish the cases in `hbl : 0 ≤ b ∧ b ≤ (t : ℤ) - 1`. Rewrite using `[if_pos (Or.inr (hblk.2 hbl)), if_pos (hwin.2 hbl)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg (by rintro (h1 | h1); exact hbS h1; exact hbl (hblk.1 h1)), if_neg (by rwa [hwin])]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jTil_shift_block : ∀ (l n t : ℕ) (h w η : ZMod n → ℕ) (typ : ZMod n → Bool) (U : ZMod n → Multiset ℤ), tableLineDegreeTwo.PositionHyps l n t h w η typ U → ∀ (a : ZMod n) (S : Set ℚ), (∀ b : ℤ, ((U a).count (b + w a) = 1 ↔ (b : ℚ) ∈ S) ∧ (U a).count (b + w a) ≤ 1) → ∀ b : ℤ, (if ((b : ℚ) ∈ S ∨ ∃ c : ℕ, c < t ∧ (b : ℚ) = c) then (1 : ℤ) else 0) = tableLineDegreeTwo.jTil U w t a (b + w a) := by
   intro l n t h w η typ U hS a S hU b

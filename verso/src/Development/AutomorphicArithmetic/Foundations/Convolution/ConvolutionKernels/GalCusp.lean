@@ -9,29 +9,25 @@ open GroundTheory.Automorphic.CuspidalProjection PositivityTheory.Rg.Tf.Core Upp
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ σ e he hg hp φ ψ hφ hψ r hr hrn`. Take `⟨h1, -⟩` from `qmapPres (Gam K n) μ e hg hp`. Take `⟨a1, a2, a3⟩` from `adBasic K`. Establish `hinv : ∀ (τ : K ≃+* K) a, Formalism.L2.Host.CT.adMap τ.symm (Formalism.L2.Host.CT.adMap τ a) = a` using `fun τ a => by`. Rewrite using `[← a3, RingEquiv.self_trans_symm, a2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `s : (AutomorphicForm.UPos n r → AdeleRing (𝓞 K) K) ≃ₜ+ (AutomorphicForm.UPos n r → AdeleRing (𝓞 K) K)` to `{ toFun := fun X p => Formalism.L2.Host.CT.adMap σ (X p) invFun := fun X p => Formalism.L2.Host.CT.adMap σ.symm (X p) left_inv := fun X => funext fun p => hinv σ _ right_inv := fun X => funext fun p => hinv σ.symm _ map_add' := fun X Y => funext fun p => map_add _ _ _ continuous_ …`. Use `set ν := AutomorphicForm.unipMeasure K n r with hν`. Use `haveI : ν.IsAddHaarMeasure := by rw [hν]; infer_instance`. Use `haveI : (Measure.map s ν).IsAddHaarMeasure := ContinuousAddEquiv.isAddHaarMeasure_map ν s`. Use `haveI : (Measure.map s.symm ν).IsAddHaarMeasure := ContinuousAddEquiv.isAddHaarMeasure_map ν s.symm`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨c, hc⟩ : ∃ c : NNReal, Measure.map s ν = c • ν` from `⟨_, Measure.isAddLeftInvariant_eq_smul _ _⟩`. Establish `hq : Measure.QuasiMeasurePreserving s.symm ν ν` using `⟨s.symm.continuous.measurable, by`. Rewrite using `[Measure.isAddLeftInvariant_eq_smul (Measure.map s.symm ν) ν]`. Conclude with `Measure.smul_absolutelyContinuous⟩`. Establish `hL : ∀ (τ : K ≃+* K) (X : AutomorphicForm.UPos n r → AdeleRing (𝓞 K) K), X ∈ AutomorphicForm.unipLattice K n r → (fun p => Formalism.L2.Host.CT.adMap τ (X p)) ∈ AutomorphicForm.unipLattice K n r`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `τ _ ⟨ξ, rfl⟩`. Conclude with `⟨fun p => τ (ξ p), funext fun p => (a1 τ (ξ p)).symm⟩`. Establish `hD` using `(AutomorphicForm.isAddFundamentalDomain_unipFundamentalDomain (K := K) (n := n) (r := r))`. Establish `hD' : IsAddFundamentalDomain (AutomorphicForm.unipLattice K n r) (s.symm ⁻¹' AutomorphicForm.unipFundamentalDomain K n r) ν`. Use `hD.preimage_of_equiv hq (e := fun g => ⟨s g, hL σ g g.2⟩) ⟨fun a b h => ?_, fun b => ?_⟩ fun g X => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subtype.ext (s.injective (congrArg Subtype.val h))`. Conclude with `⟨⟨s.symm b, hL σ.symm b b.2⟩, Subtype.ext (s.apply_symm_apply _)⟩`. Express the relevant statement in the definitionally equal form `s.symm (s g + X) = g + s.symm X`. Rewrite using `[map_add, s.symm_apply_apply]`. Establish `hu : ∀ X, e (unipOne K n r X) = unipOne K n r (s X)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Introduce `X`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[he]`. Use extensionality with `i j : 2`. Express the relevant statement in the definitionally equal form `Formalism.L2.Host.CT.adMap σ (AutomorphicForm.unipMatrix X i j) = AutomorphicForm.unipMatrix (s X) i j`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [AutomorphicForm.unipMatrix, Matrix.add_apply, AutomorphicForm.blockEntry_apply, Matrix.one_apply, map_add]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp`. Use `split_ifs`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `map_zero _`. Establish `key : ∀ y, ctFun K n r (fun z => (φ : RightCosetSpace (Gam K n) → ℂ) (mk (Gam K n) (e (Quotient.out z)))) y = (c : ℝ) • constantTermL2 μ r φ (e y)`. Introduce `y`. Set `F : (AutomorphicForm.UPos n r → AdeleRing (𝓞 K) K) → ℂ` to `fun X => φ (mk (Gam K n) (unipOne K n r X * e y))`. Establish `e1` using `setIntegral_map_equiv (μ := ν) s.toHomeomorph.toMeasurableEquiv F (s.symm ⁻¹' AutomorphicForm.unipFundamentalDomain K n r)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : s.toHomeomorph.toMeasurableEquiv ⁻¹' (s.symm ⁻¹' AutomorphicForm.unipFundamentalDomain K n r) = AutomorphicForm.unipFundamentalDomain K n r`. Use extensionality with `X`. Express the relevant statement in the definitionally equal form `s.symm (s X) ∈ AutomorphicForm.unipFundamentalDomain K n r ↔ _`. Rewrite using `[s.symm_apply_apply]`. Rewrite `e1` using `[e2]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `∫ X in _, F X ∂Measure.map s ν = ∫ X in _, F (s X) ∂ν at e1`. Rewrite `e1` using `[hc, Measure.restrict_smul, integral_smul_nnreal_measure]`. Establish `e3 : ∫ X in s.symm ⁻¹' AutomorphicForm.unipFundamentalDomain K n r, F X ∂ν = ∫ X in AutomorphicForm.unipFundamentalDomain K n r, F X ∂ν`. Use `hD'.setIntegral_eq hD fun ξ X => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ (mk (Gam K n) (unipOne K n r (ξ + X) * e y)) = _`.
-
-Rewrite using `[unipOne_add, mul_assoc, mk_mul_of_mem (unipOne_mem_rationalGLOne r ξ)]`. Rewrite `e1` using `[e3]`. Simplify using `only [ctFun, constantTermL2, h1, map_mul, hu]`. Conclude with `e1.symm`. Establish `h4 : ∀ᵐ y ∂μ, constantTermL2 μ r φ (e y) = 0` using `hp.quasiMeasurePreserving.ae ((hφ : IsCuspidalL2 μ φ) r hr hrn)`.
-
-Use `filter_upwards [ae_ctFun_congr μ r hψ, h4] with y hy1 hy2`. Rewrite using `[constantTermL2, hy1, key, hy2, smul_zero, Pi.zero_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.K.galCusp :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (σ : K ≃+* K) (e : G1 K n ≃ₜ* G1 K n),

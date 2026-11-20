@@ -9,25 +9,21 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.MHInt
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ _ _ B e he`. Establish `hq1' : (1 : ℝ) < (residueCard F : ℝ)` using `by exact_mod_cast one_lt_residueCard (K := F)`. Use `set q : ℝ := (residueCard F : ℝ) with hq`. Establish `hq1 : 1 < q` using `hq1'`. Establish `hq0 : 0 < q` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ρ : ℝ := q ^ (-e) with hρ`. Establish `hρ0 : 0 < ρ` using `Real.rpow_pos_of_pos hq0 _`. Establish `hρ1 : ρ < 1` using `Real.rpow_lt_one_of_one_lt_of_neg hq1 (by linarith)`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt B hq1`. Set `a : ℤ → ℝ` to `fun k => if -(n : ℤ) ≤ k then ρ ^ k else 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ha0 : ∀ k, 0 ≤ a k` using `fun k => by`. Simplify using `only [a]`. Use `split_ifs`. Conclude with `zpow_nonneg hρ0.le _`. Conclude with `le_rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hsum : HasSum a (ρ ^ (-(n : ℤ)) * (1 - ρ)⁻¹)`. Use `hasSum_int_of_shift (-(n : ℤ)) (fun k hk => by simp [a, not_le.mpr hk]) ?_` and prove the remaining obligations. Establish `e' : (fun m : ℕ => a (-(n : ℤ) + m)) = fun m : ℕ => ρ ^ (-(n : ℤ)) * ρ ^ m`. Use function extensionality and compare the values at `m`. Simplify using `only [a, le_add_iff_nonneg_right, Nat.cast_nonneg, if_true]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[zpow_add₀ hρ0.ne', zpow_natCast]`. Rewrite using `[e']`. Conclude with `(hasSum_geometric_of_lt_one hρ0.le hρ1).mul_left _`. Establish `hbound : ∀ u : Fˣ, Set.indicator {a : Fˣ | (modulus (a : F) : ℝ) ≤ B} (fun a => ENNReal.ofReal ((modulus (a : F) : ℝ) ^ e)) u ≤ ENNReal.ofReal (a (ord (u : F)))`. Introduce `u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Distinguish the cases in `hu : u ∈ {a : Fˣ | (modulus (a : F) : ℝ) ≤ B}`. Establish `hmod : (modulus (u : F) : ℝ) = q ^ (-ord (u : F))`. Rewrite using `[modulus_of_ne_zero u.ne_zero]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Establish `hk : -(n : ℤ) ≤ ord (u : F)`. Establish `h1 : q ^ (-ord (u : F)) < q ^ (n : ℤ)`. Rewrite using `[zpow_natCast, ← hmod]`. Conclude with `lt_of_le_of_lt hu hn`. Use `(zpow_lt_zpow_iff_right₀ hq1).1 h1` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [a, Set.indicator_of_mem hu, if_pos hk]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Use `le_of_eq ?_` and prove the remaining obligations. Rewrite using `[hmod, hρ, ← Real.rpow_intCast q, ← Real.rpow_mul hq0.le, ← Real.rpow_intCast (q ^ (-e)), ← Real.rpow_mul hq0.le]`.
-
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Set.indicator_of_notMem hu]`. Use `(lintegral_multHaar_le_tsum _ (fun k => ENNReal.ofReal (a k)) hbound).trans_lt ?_` and prove the remaining obligations.
-
-Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg ha0 hsum.summable]`. Conclude with `ENNReal.ofReal_lt_top`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_indicator_modulus_rpow_lt_top :
     ForS fun F _ _ _ _ _ _ _ => ∀ B e : ℝ, 0 < e →

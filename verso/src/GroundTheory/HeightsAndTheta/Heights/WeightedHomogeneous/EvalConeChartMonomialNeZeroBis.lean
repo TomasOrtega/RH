@@ -14,7 +14,7 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Simplify using `only [evalCone, eval₂_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evalCone_mul (z : Cone n ℂ) (f f' : MvPolynomial (Coord n) ℤ) :
     evalCone z (f * f') = evalCone z f * evalCone z f' := by
@@ -22,7 +22,7 @@ theorem evalCone_mul (z : Cone n ℂ) (f f' : MvPolynomial (Coord n) ℤ) :
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Simplify using `only [evalCone, eval₂_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evalCone_pow (z : Cone n ℂ) (f : MvPolynomial (Coord n) ℤ) (m : ℕ) :
     evalCone z (f ^ m) = evalCone z f ^ m := by
@@ -31,7 +31,7 @@ theorem evalCone_pow (z : Cone n ℂ) (f : MvPolynomial (Coord n) ℤ) (m : ℕ)
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Simplify using `only [chartMonomial, evalCone, eval₂_prod, eval₂_pow, eval₂_X]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hcz k)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evalCone_chartMonomial_ne_zero {z : Cone n ℂ} {c : (k : ι) → Fin (n k + 1)}
     (hcz : ∀ k, z k (c k) ≠ 0) (d : ι → ℕ) : evalCone z (chartMonomial c d) ≠ 0 := by
@@ -43,7 +43,7 @@ variable (P : ArithVariety n)
 omit [Fintype ι] in
 
 /- English proof (translation)
-The claim follows from `fun k hk ↦ hcz k (by simpa only [evalCone, eval₂_X] using hz.2 _ hk)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isLive_of_point {z : Cone n ℂ} (hz : z ∈ P.points ℂ) {c : (k : ι) → Fin (n k + 1)}
     (hcz : ∀ k, z k (c k) ≠ 0) : P.IsLive c := fun k hk ↦
@@ -51,20 +51,20 @@ theorem isLive_of_point {z : Cone n ℂ} (hz : z ∈ P.points ℂ) {c : (k : ι)
 
 omit [Fintype ι] in
 /- English proof (translation)
-The claim follows from `fun h ↦ hc k ((P.mkF_eq_zero_iff _).mp h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mkF_X_ne_zero {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c) (k : ι) :
     P.mkF (X ⟨k, c k⟩) ≠ 0 := fun h ↦ hc k ((P.mkF_eq_zero_iff _).mp h)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.mpr fun k _ ↦ zpow_ne_zero _ (mkF_X_ne_zero P hc k)`.
+A detailed English derivation is pending.
 -/
 theorem chartPow_ne_zero {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c) (a : ι → ℤ) :
     P.chartPow c a ≠ 0 :=
   Finset.prod_ne_zero_iff.mpr fun k _ ↦ zpow_ne_zero _ (mkF_X_ne_zero P hc k)
 
 /- English proof (translation)
-Rewrite using `[ArithVariety.chartPow, ArithVariety.chartPow, ArithVariety.chartPow, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ ↦ by rw [Pi.add_apply, zpow_add₀ (mkF_X_ne_zero P hc k)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartPow_add {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c) (a b : ι → ℤ) :
     P.chartPow c (a + b) = P.chartPow c a * P.chartPow c b := by
@@ -72,9 +72,9 @@ theorem chartPow_add {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c) (a b : �
   exact Finset.prod_congr rfl fun k _ ↦ by rw [Pi.add_apply, zpow_add₀ (mkF_X_ne_zero P hc k)]
 
 /- English proof (translation)
-Establish `h` using `P.chart_homogeneous c hc he`. Establish `hne : (∏ k, P.mkF (X ⟨k, c k⟩) ^ δ k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (mkF_X_ne_zero P hc k)`. Establish `hp : P.chartPow c (fun k ↦ (δ k : ℤ)) = ∏ k, P.mkF (X ⟨k, c k⟩) ^ δ k`. Simplify using `only [ArithVariety.chartPow, zpow_natCast]`. Rewrite using `[hp, ← h, mul_div_cancel_left₀ _ hne]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eval₂_mem (fun i _ ↦ by rw [eq_intCast]; exact intCast_mem _ _) fun v ↦ Subring.subset_closure ⟨v, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem form_div_mem {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c) {e : MvPolynomial (Coord n) ℤ}
     {δ : ι → ℕ} (he : IsWeightedHomogeneous (coordDeg n) e δ) :
@@ -89,7 +89,7 @@ theorem form_div_mem {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c) {e : MvP
     fun v ↦ Subring.subset_closure ⟨v, rfl⟩
 
 /- English proof (translation)
-Establish `h1` using `(P.mkF_eq_zero_iff _).mpr he.2`. Rewrite `h1` using `[map_sub, map_mul, map_mul, sub_eq_zero]`. Establish `hden : P.mkF s.den ≠ 0` using `fun h ↦ s.den_not_mem ((P.mkF_eq_zero_iff _).mp h)`. Rewrite using `[IntegralSection.toFun, div_mul_eq_mul_div, eq_div_iff hden]`. Take the linear combination `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem mkF_chartForm {a : ι → ℤ} (s : IntegralSection P a) {c : (k : ι) → Fin (n k + 1)} {d : ι → ℕ}
     {e : MvPolynomial (Coord n) ℤ} (he : IsChartForm P a s.num s.den c d e) :
@@ -101,9 +101,9 @@ theorem mkF_chartForm {a : ι → ℤ} (s : IntegralSection P a) {c : (k : ι) �
   linear_combination h1
 
 /- English proof (translation)
-Take `⟨d, e, ⟨δ, he, hδ⟩, hmem⟩` from `s.regular c hc`. Establish `hmk` using `mkF_chartForm P s ⟨⟨δ, he, hδ⟩, hmem⟩`. Establish `hM : P.mkF (chartMonomial c d) = P.chartPow c (fun k ↦ (d k : ℤ))`. Simplify using `only [chartMonomial, map_prod, map_pow, ArithVariety.chartPow, zpow_natCast]`. Establish `hδ' : (fun k ↦ (δ k : ℤ)) = a + fun k ↦ (d k : ℤ)` using `funext fun k ↦ hδ k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : s.toFun / P.chartPow c a = P.mkF e / P.chartPow c (fun k ↦ (δ k : ℤ))`. Rewrite using `[hδ', chartPow_add P hc, hmk, hM, mul_div_mul_right _ _ (chartPow_ne_zero P hc _)]`. Rewrite using `[key]`. Conclude with `form_div_mem P hc he`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toFun_div_chartPow_mem {a : ι → ℤ} (s : IntegralSection P a) {c : (k : ι) → Fin (n k + 1)}
     (hc : P.IsLive c) : s.toFun / P.chartPow c a ∈ P.chartRing c := by
@@ -119,9 +119,9 @@ theorem toFun_div_chartPow_mem {a : ι → ℤ} (s : IntegralSection P a) {c : (
 
 omit [Fintype ι] in
 /- English proof (translation)
-Take `⟨f, g, δf, δg, hf, hg, hδ, hgP, rfl⟩` from `hx`. Take `⟨f', g', δf', δg', hf', hg', hδ', hgP', rfl⟩` from `hy`. Use `⟨f * f', g * g', δf + δf', δg + δg', hf.mul hf', hg.mul hg', fun k ↦ ?_, fun h ↦ (P.isPrime.mem_or_mem h).elim hgP hgP', ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Nat.cast_add]`. Take the linear combination `hδ k + hδ' k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[map_mul, map_mul, div_mul_div_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isOfDegree_mul {a b : ι → ℤ} {x y : P.FunField} (hx : P.IsOfDegree a x) (hy : P.IsOfDegree b y) :
     P.IsOfDegree (a + b) (x * y) := by
@@ -134,26 +134,26 @@ theorem isOfDegree_mul {a b : ι → ℤ} {x y : P.FunField} (hx : P.IsOfDegree 
   · rw [map_mul, map_mul, div_mul_div_comm]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨s.num, s.den, s.numDeg, s.denDeg, s.num_isHomogeneous, s.den_isHomogeneous, s.deg_eq, s.den_not_mem, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isOfDegree_toFun {a : ι → ℤ} (s : IntegralSection P a) : P.IsOfDegree a s.toFun :=
   ⟨s.num, s.den, s.numDeg, s.denDeg, s.num_isHomogeneous, s.den_isHomogeneous, s.deg_eq, s.den_not_mem, rfl⟩
 
 /- English proof (translation)
-Simplify using `only [IntegralSection.toFun, IntegralSection.pow, map_pow, div_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toFun_pow {a : ι → ℤ} (s : IntegralSection P a) (m : ℕ) : (s.pow m).toFun = s.toFun ^ m := by
   simp only [IntegralSection.toFun, IntegralSection.pow, map_pow, div_pow]
 
 /- English proof (translation)
-Simplify using `only [IntegralSection.toFun, IntegralSection.mul, map_mul, div_mul_div_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toFun_mul {a b : ι → ℤ} (s : IntegralSection P a) (t : IntegralSection P b) :
     (s.mul t).toFun = s.toFun * t.toFun := by
   simp only [IntegralSection.toFun, IntegralSection.mul, map_mul, div_mul_div_comm]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isOfDegree_mul P hs.degree (isOfDegree_toFun P u), fun c hc ↦ by rw [chartPow_add P hc, mul_div_mul_comm] exact Subalgebra.mul_mem _ (hs.integral c hc) ((integralClosure (P.chartRing c) P.FunField).algebraMap_mem (⟨_, toFun_div_chartPow_mem P u hc⟩ : P.chartRing c))⟩`.
+Supply the required witnesses or components.
 -/
 theorem isNormalSection_mul {a b : ι → ℤ} {s : P.FunField} (hs : P.IsNormalSection a s)
     (u : IntegralSection P b) : P.IsNormalSection (a + b) (s * u.toFun) :=
@@ -164,7 +164,7 @@ theorem isNormalSection_mul {a b : ι → ℤ} {s : P.FunField} (hs : P.IsNormal
         (⟨_, toFun_div_chartPow_mem P u hc⟩ : P.chartRing c))⟩
 
 /- English proof (translation)
-Establish `h` using `hs z hz c d e he hcz`. Rewrite `h` using `[Real.exp_zero, div_le_one (mul_pos (norm_pos_iff.mpr (evalCone_chartMonomial_ne_zero hcz d)) (A.metric_pos z hz.1))]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem chartForm_bound {A : HermLine n} {s : IntegralSection P A.deg} (hs : s.SupNormLE A 0)
     {z : Cone n ℂ} (hz : z ∈ P.points ℂ) {c : (k : ι) → Fin (n k + 1)} {d : ι → ℕ}
@@ -175,23 +175,21 @@ theorem chartForm_bound {A : HermLine n} {s : IntegralSection P A.deg} (hs : s.S
     (A.metric_pos z hz.1))] at h
 
 /- English proof (translation)
-Introduce `p₀ q₀ δp δq hp hq hδ hrep z hz`. Take `⟨c, hcz⟩ : ∃ c : (k : ι) → Fin (n k + 1), ∀ k, z k (c k) ≠ 0` from `by choose c hc using fun k ↦ Function.ne_iff.mp (hz.1 k)`. Conclude with `⟨c, hc⟩`. Establish `hc` using `isLive_of_point P hz hcz`. Take `⟨dg, eg, ⟨δg, heg, hδg⟩, hmg⟩` from `g.regular c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨dh, eh, ⟨δh, heh, hδh⟩, hmh⟩` from `h.regular c hc`. Establish `hfg : IsChartForm P L.deg g.num g.den c dg eg` using `⟨⟨δg, heg, hδg⟩, hmg⟩`. Establish `hfh : IsChartForm P (HermLine.standard n).deg h.num h.den c dh eh` using `⟨⟨δh, heh, hδh⟩, hmh⟩`. Establish `bg` using `chartForm_bound P hgs hz hfg hcz`. Establish `bh` using `chartForm_bound P hhs hz hfh hcz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrepr : P.mkF (p₀ * chartMonomial c dg ^ (q - r) * chartMonomial c dh ^ (m + 1)) = s * P.mkF (q₀ * eg ^ (q - r) * eh ^ (m + 1))`. Simplify using `only [map_mul, map_pow, mkF_chartForm P g hfg, mkF_chartForm P h hfh, hrep]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdeg : ∀ k, (((δp + (q - r) • dg + (m + 1) • dh) k : ℕ) : ℤ) = ((δq + (q - r) • δg + (m + 1) • δh) k : ℕ) + (L.pow (q * m + r)).deg k`. Introduce `k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1` using `hδ k`. Establish `e2` using `hδg k`. Establish `e3` using `hδh k`. Simplify using `only [HermLine.pow, HermLine.mul, HermLine.standard, Pi.add_apply, Pi.smul_apply] at e1 e2 e3 ⊢`. Simplify using `only [nsmul_eq_mul, smul_eq_mul, Nat.cast_add, Nat.cast_mul, Nat.cast_one] at e1 e2 e3 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Move the coercions through the operations in `[Nat.cast_sub hrq.le] at e1 e2 e3 ⊢`. Take the linear combination `e1 - ((q : ℤ) - r) * e2 - ((m : ℤ) + 1) * e3`. Establish `hb` using `hsS _ _ _ _ ((hp.mul ((isWeightedHomogeneous_chartMonomial c dg).pow (q - r))).mul ((isWeightedHomogeneous_chartMonomial c dh).pow (m + 1))) ((hq.mul (heg.pow (q - r))).mul (heh.pow (m + 1))) hdeg hrepr z hz`. Establish `hLm : (L.pow (q * m + r)).metric z = L.metric z ^ (q * m + r)` using `rfl`. Rewrite `hb` using `[hLm]`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [evalCone_mul, evalCone_pow, norm_mul, norm_pow] at hb`. Express the relevant statement in the definitionally equal form `‖evalCone z p₀‖ ≤ ‖evalCone z q₀‖ * (L.metric z ^ q * (HermLine.standard n).metric z) ^ (m + 1)`. Establish `hA : 0 < ‖evalCone z (chartMonomial c dg)‖` using `norm_pos_iff.mpr (evalCone_chartMonomial_ne_zero hcz dg)`. Establish `hB : 0 < ‖evalCone z (chartMonomial c dh)‖` using `norm_pos_iff.mpr (evalCone_chartMonomial_ne_zero hcz dh)`. Establish `hl : 0 < L.metric z` using `L.metric_pos z hz.1`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : 0 < (HermLine.standard n).metric z` using `(HermLine.standard n).metric_pos z hz.1`. Use `set A := ‖evalCone z (chartMonomial c dg)‖`. Use `set B := ‖evalCone z (chartMonomial c dh)‖`. Use `set l := L.metric z`. Use `set H := (HermLine.standard n).metric z`.
+Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hexp : q - r + (q * m + r) = q * (m + 1)` using `by zify [hrq.le]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : A ^ (q - r) * B ^ (m + 1) * ‖evalCone z p₀‖ ≤ A ^ (q - r) * B ^ (m + 1) * (‖evalCone z q₀‖ * (l ^ q * H) ^ (m + 1))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow (l ^ q), ← pow_mul, ← hexp, pow_add l (q - r)]`.
-
-Expand and normalize the polynomial expressions, which then agree. Conclude with `le_of_mul_le_mul_left key (by positivity)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isSmallFor_mul {L : HermLine n} {q m r : ℕ} (hrq : r < q) {g : IntegralSection P L.deg}
     {h : IntegralSection P (HermLine.standard n).deg} (hgs : g.SupNormLE L 0)
@@ -255,11 +253,11 @@ theorem isSmallFor_mul {L : HermLine n} {q m r : ℕ} (hrq : r < q) {g : Integra
 end MonomialMapNorm
 
 /- English proof (translation)
-Introduce `ι _ _ n P L _ q m r hrq g h hg0 hgs hh0 hhs`. Use `⟨fun s hsN hsS ↦ ⟨?_, MonomialMapNorm.isSmallFor_mul P hrq hgs hhs hsS⟩, fun s₁ s₂ e ↦ ?_⟩` and prove the remaining obligations. Establish `hdeg : (((L.pow q).mul (HermLine.standard n)).pow (m + 1)).deg = (L.pow (q * m + r)).deg + ((q - r) • L.deg + (m + 1) • (HermLine.standard n).deg)`. Use function extensionality and compare the values at `k`. Simplify using `only [HermLine.pow, HermLine.mul, Pi.add_apply, Pi.smul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [nsmul_eq_mul]`. Move the coercions through the operations in `[Nat.cast_sub hrq.le]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hdeg]`. Simplify `MonomialMapNorm.isNormalSection_mul P hsN ((g.pow (q - r)).mul (h.pow (m + 1)))` using `only [MonomialMapNorm.toFun_mul, MonomialMapNorm.toFun_pow, mul_assoc]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hu : g.toFun ^ (q - r) * h.toFun ^ (m + 1) ≠ 0` using `mul_ne_zero (pow_ne_zero _ hg0) (pow_ne_zero _ hh0)`. Simplify using `only [mul_assoc] at e`. Conclude with `mul_right_cancel₀ hu e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem MonomialMapNorm.proof : MonomialMapNorm.Statement := by
   intro ι _ _ n P L _ q m r hrq g h hg0 hgs hh0 hhs

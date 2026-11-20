@@ -13,11 +13,11 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Take `⟨C1, -, hpair⟩` from `rb_pairAt D μ hμ`. Set `f : Ix S → (Fin r → ℂ) × ℂ → ℂ` to `fun a q => (bcWeight k r (Tz k r D.z) (Tz k r D.z') q : ℂ) * inner ℂ (B.hsVec (B.JF D (x' a) (B.gq D q))) (B.hsVec (B.JF D (x a) (B.gq D q)))`. Establish `hint : ∀ a, Integrable (f a)` using `fun a => rb_int_pair D (x a) (x' a) (hx a) (hx' a)`. Establish `hae : (fun c : Fin r → ℂ => ((∏ a : Fin r, ‖c a‖ ^ (-2 : ℤ) : ℝ) : ℂ) * ∑ b, pairAt μ (Φ b) (Φ' b) c) =ᵐ[volume] fun c => ∑ b, (C1 : ℂ) * ∫ ζ, f b (c, ζ)` using `by filter_upwards [rb_ae_OmX] with c hc`. Rewrite using `[Finset.mul_sum]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hpair (x b) (x' b) (Φ b) (Φ' b) (hΦ b) (hΦ' b) c hc, mul_left_comm, ← integral_const_mul]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun ζ => ?_)` and prove the remaining obligations. Simplify using `only`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Rewrite using `[rb_weight hc]`. Both sides reduce to the same expression. Use `Integrable.congr ?_ hae.symm` and prove the remaining obligations. Conclude with `integrable_finset_sum _ fun b _ => ((hint b).integral_prod_left).const_mul _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem level_zero_form_integrable (D : B.RealPlaceData k r Wp Wq) (μ : Measure (Mt k r))
     (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ) (x x' : Ix S → B.Mat k r → (Wq →L[ℂ] Wp))
@@ -48,13 +48,11 @@ theorem level_zero_form_integrable (D : B.RealPlaceData k r Wp Wq) (μ : Measure
   exact integrable_finset_sum _ fun b _ => ((hint b).integral_prod_left).const_mul _
 
 /- English proof (translation)
-Establish `h` using `level_zero_form_integrable D μ hμ x x' Φ Φ' hx hx' hΦ hΦ'`. Set `e : {l : Fin r // (0 : Fin (r + 1)).val ≤ l.val} ≃ Fin r` to `Equiv.subtypeUnivEquiv (fun l => Nat.zero_le _)`. Establish `hmp` using `volume_measurePreserving_piCongrLeft (fun _ : Fin r => ℂ) e`. Establish `hv : ∀ (c' : Cf r 0) (l : {l : Fin r // (0 : Fin (r + 1)).val ≤ l.val}), (MeasurableEquiv.piCongrLeft (fun _ : Fin r => ℂ) e c') (e l) = c' l` using `fun c' l => Equiv.piCongrLeft_apply_apply _ _ _ _`. Establish `hg : ∀ c' : Cf r 0, glue 0 c c' = MeasurableEquiv.piCongrLeft (fun _ : Fin r => ℂ) e c'`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c'`. Use function extensionality and compare the values at `l`. Establish `h1` using `hv c' ⟨l, Nat.zero_le _⟩`. Simplify using `only [glue]`. Conclude with `h1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hfun : (fun c' : Cf r 0 => ((∏ l, ‖c' l‖ ^ (-2 : ℤ) : ℝ) : ℂ) * ∑ b, pairAt μ (Φ b) (Φ' b) (glue 0 c c')) = (fun c : Fin r → ℂ => ((∏ a : Fin r, ‖c a‖ ^ (-2 : ℤ) : ℝ) : ℂ) * ∑ b, pairAt μ (Φ b) (Φ' b) c) ∘ (MeasurableEquiv.piCongrLeft (fun _ : Fin r => ℂ) e)`. Use function extensionality and compare the values at `c'`. Simplify using `only [Function.comp, hg]`. Use `congr 2`. Conclude with `Fintype.prod_equiv e (fun l => ‖c' l‖ ^ (-2 : ℤ)) (fun a => ‖(MeasurableEquiv.piCongrLeft (fun _ : Fin r => ℂ) e c') a‖ ^ (-2 : ℤ)) (fun l => by rw [hv])`.
-
-Rewrite using `[hfun]`. Conclude with `(hmp.integrable_comp_emb (MeasurableEquiv.measurableEmbedding _)).2 h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_zero_form_integrable_compact (D : B.RealPlaceData k r Wp Wq) (μ : Measure (Mt k r))
     (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ) (x x' : Ix S → B.Mat k r → (Wq →L[ℂ] Wp))

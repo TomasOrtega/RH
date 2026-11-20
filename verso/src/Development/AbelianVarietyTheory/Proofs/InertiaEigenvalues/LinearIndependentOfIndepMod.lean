@@ -14,15 +14,13 @@ open Formalism.MainNotions.N (twistRep coefRep)
 open ReciprocityTheory.Def (Z1 H1)
 
 /- English proof (translation)
-Set `π : Representation k G ((Fin A.m → k) × k)` to `{ toFun := fun g => ((A.ρ g).coprod (LinearMap.toSpanSingleton k _ (z g))).prod (LinearMap.snd k _ _) map_one' := by`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `[h1]`. Use the proof step `map_mul' := fun g h => by`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨m, y⟩` from `x`. Simplify using `[hz g h]`. Use `abel }`. Take `⟨E, e, he⟩` from `exists_ob π`. Establish `he' : ∀ g x y, e (A.ρ g x + y • z g, y) = E.ρ g (e (x, y))` using `fun g x y => he g (x, y)`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨E, e, ⟨?_, e.toLinearMap ∘ₗ LinearMap.inl k _ _, e (0, 1), fun g x => ?_, ?_, ?_, fun g => ?_⟩, he'⟩` and prove the remaining obligations. Use `e.finrank_eq` as an intermediate fact. Simplify using `at this`. Conclude with `this.symm`. Simplify using `using he' g x 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `e.injective.comp LinearMap.inl_injective`. Introduce and unpack `⟨x, hx⟩`. Use `e.injective hx` as an intermediate fact. Simplify using `at this`. Rewrite using `[← he']`.
-
-Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, ← map_add]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ext {k G : Type} [Field k] [Group G] (A : Ob k G) (z : G → Fin A.m → k)
     (h1 : z 1 = 0) (hz : ∀ g h, z (g * h) = z g + A.ρ g (z h)) :
@@ -54,7 +52,7 @@ theorem exists_ext {k G : Type} [Field k] [Group G] (A : Ob k G) (z : G → Fin 
     simp
 
 /- English proof (translation)
-Establish `h : Ideal.span {c} = LinearMap.ker (Algebra.linearMap O k)`. Use extensionality with `x`. Rewrite using `[Ideal.mem_span_singleton, LinearMap.mem_ker, Algebra.linearMap_apply, hk]`. Conclude with `⟨(Submodule.quotEquivOfEq _ _ h).trans ((Algebra.linearMap O k).quotKerEquivOfSurjective hs), fun _ => rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_resEquiv {O k : Type} [CommRing O] [Field k] [Algebra O k] {c : O}
     (hs : Function.Surjective (algebraMap O k)) (hk : ∀ x, algebraMap O k x = 0 ↔ c ∣ x) :
@@ -69,11 +67,11 @@ section
 variable {O G k : Type} [CommRing O] [Group G] [TopologicalSpace G] [Field k] [Algebra O k]
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_resEquiv hs hk`. Take `⟨E, e, hE, he⟩` from `exists_ext A (fun g => q ((z : G → M ⊗[O] X) g)) (by simp [cocycle_one]) (fun g h => by rw [cocycle_mul z g h, map_add, hq])`. Use `⟨E, (q.prodCongr r).trans (e.restrictScalars O), hE, ?_⟩` and prove the remaining obligations. Introduce and unpack `σ ⟨m, y⟩`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `: twistRep (Ea W χ hc z) χ⁻¹ σ (m, Ideal.Quotient.mk _ y) = (twCoef W χ X σ m + y • (z : G → M ⊗[O] X) σ, Ideal.Quotient.mk _ y)`. Rewrite using `[Ea, twistRep_apply, twistRep_apply, smul_smul, extRep_apply]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.prodCongr_apply, LinearEquiv.restrictScalars_apply, map_add, map_smul, hq, hr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← he, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_ext_Ea {M : Type} [AddCommGroup M] [Module O M] (W : Representation O G M) (χ : G →* Oˣ)
     {X : Type} [AddCommGroup X] [Module O X] {c : O} (hc : ∀ x : X, c • x = 0)
@@ -99,13 +97,13 @@ theorem exists_ext_Ea {M : Type} [AddCommGroup M] [Module O M] (W : Representati
   rw [← he, algebraMap_smul]
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `y hy a`. Use `choose x hx using fun a => hs (y a)`. Rewrite using `[← hx, hk]`. Use `h x ?_ a` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [← map_smul, ← map_sum] at hy`. Take `⟨b, hb⟩` from `(Submodule.Quotient.mk_eq_zero _).mp hy`. Establish `e1 : ∑ a, x a • (Submodule.Quotient.mk (z a) : H1 π ⊤) = Submodule.mkQ _ (∑ a, x a • z a)`. Rewrite using `[map_sum]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Use `(Submodule.Quotient.mk_eq_zero _).mpr ⟨q.symm b, Submodule.mem_top, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Apply `q.injective` to reduce the goal to its premises. Use `congrFun hb g` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply, Finset.sum_apply, Pi.smul_apply, ← hx, algebraMap_smul] at this`. Express the relevant statement in the definitionally equal form `q (π g (q.symm b) - q.symm b) = _`. Rewrite using `[map_sub, hq, q.apply_symm_apply, this]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linearIndependent_of_indepMod {N : Type} [AddCommGroup N] [Module O N] (π : Representation O G N)
     {lam : O} (hs : Function.Surjective (algebraMap O k)) (hk : ∀ x, algebraMap O k x = 0 ↔ lam ∣ x)
@@ -134,9 +132,9 @@ theorem linearIndependent_of_indepMod {N : Type} [AddCommGroup N] [Module O N] (
 end
 
 /- English proof (translation)
-Take `⟨r, -⟩` from `exists_resEquiv hs hk`. Use `⟨((TensorProduct.lid O _).trans r).trans (LinearEquiv.funUnique (Fin 1) O k).symm, fun g x => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleTwistedCharClasses.twCoef_Wchi, map_smul]`. Establish `h : ω g = Units.map (algebraMap O k : O →* k) (Γ.ε g)` using `Units.ext (hω g)`. Establish `h2 : (((ω ^ (-((c : ℤ) - 1))) g : kˣ) : k) = algebraMap O k ((Γ.ε g) ^ (-((c : ℤ) - 1)) : Oˣ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.zpow_apply, h, ← map_zpow]`. Both sides reduce to the same expression. Establish `h3 : ∀ (θ : G →* kˣ) (v : Fin 1 → k), (chr θ).ρ g v = (θ g : k) • v` using `fun _ _ => rfl`. Rewrite using `[h3, h2, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_charEquiv {G : Type} [Group G] [TopologicalSpace G] {Qp LL O k : Type} [Field Qp] [Field LL]
     [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL] [Field k] [Algebra O k]
@@ -165,7 +163,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (D : TopData n r) (Γ : GalData G Qp LL O) {k : Type} [Field k] [Algebra O k]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[pow_one]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_smul_resK (x : GlobalTheory.IndefiniteRowSideFullHecke.InvariantsVanishing.resK Γ) : Γ.lam ^ 1 • x = 0 := by
   obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x
@@ -173,9 +171,9 @@ theorem lam_smul_resK (x : GlobalTheory.IndefiniteRowSideFullHecke.InvariantsVan
   exact Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))
 
 /- English proof (translation)
-Use `choose z hz hadm using hx`. Take `rfl : x = fun a => Submodule.Quotient.mk (z a)` from `funext fun a => (hz a).symm`. Use `⟨fun a g => q ((z a : G → V ⊗[O] X) g), fun a => ?_, linearIndependent_of_indepMod _ hs hk A q hq z hi⟩` and prove the remaining obligations. Take `⟨E, e, hE, he⟩` from `exists_ext_Ea W Γ.χ₁ hX hs (fun y => by rw [pow_one]; exact hk y) (z a) A q hq`. Take `⟨L, hL⟩` from `hM E _ _ e (hadm a) he`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨E, L, hE, hL⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_cocycles_gen (hs : Function.Surjective (algebraMap O k))
     (hk : ∀ x, algebraMap O k x = 0 ↔ Γ.lam ∣ x) {l : ℕ} {R : RingPG k l} {F : DFun R n G} (M : ModTh F D)
@@ -198,11 +196,11 @@ theorem exists_cocycles_gen (hs : Function.Surjective (algebraMap O k))
   exact ⟨E, L, hE, hL⟩
 
 /- English proof (translation)
-Rewrite `hx` using `[h0 _ 1 (lam_smul_resK Γ) le_rfl]`. Take `⟨q, hq⟩` from `exists_charEquiv Γ hs hk M.ω hω c`. Establish `key` using `exists_cocycles_gen PD emb D Γ hs hk M hM (Γ.Wchi c) (lam_smul_resK Γ) _ q hq x hx hi`. Use `clear hq q hx hi x hM`. Use `⟨fun hc hct => ?_, fun hc => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz, hli⟩` from `key`. Assume the negation of the conclusion as `hs0`. Set `a : Fin s` to `⟨0, by omega⟩`. Conclude with `hli.ne_zero a ((Submodule.Quotient.mk_eq_zero _).mpr (GlobalTheory.T.admissibleCocycles_neg_char_pow_mem_cob F M h1 h2 h3 ((c : ℤ) - 1) (by omega) (by omega) (z a) (hz a)))`. Establish `e : M.ω ^ (-((c : ℤ) - 1)) = 1` using `by simp [hc]`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `key` using `[e]`. Take `⟨z, hz, hli⟩` from `key`. Assume the negation of the conclusion as `hs0`. Establish `h2s : 2 ≤ s` using `by omega`. Conclude with `GlobalTheory.T.trivialLine_admissibleCocycles_not_independent F M h1 h2 h3 (fun a => z (Fin.castLE h2s a)) (fun a => hz _) (hli.comp _ (Fin.castLE_injective h2s))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bound_gen (hs : Function.Surjective (algebraMap O k))
     (hk : ∀ x, algebraMap O k x = 0 ↔ Γ.lam ∣ x) {l : ℕ} [Fact l.Prime] [CharP k l] [NeZero n] {R : RingPG k l}
@@ -238,9 +236,9 @@ theorem bound_gen (hs : Function.Surjective (algebraMap O k))
 end
 
 /- English proof (translation)
-Establish `hm` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer lam).mp hlam`. Establish `hl' : ((l : ℕ) : O) ∈ IsLocalRing.maximalIdeal O` using `hl`. Use `⟨?_, IsLocalRing.ResidueField O, inferInstance, inferInstance, ?_, IsLocalRing.residue_surjective, fun x => ?_⟩` and prove the remaining obligations. Use `Finite.of_surjective _ (Ideal.Quotient.factor_surjective (S := Ideal.span {((l : ℕ) : O) ^ 1}) ?_)` and prove the remaining obligations. Rewrite using `[pow_one, ← hm, Ideal.span_singleton_le_iff_mem]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hl'`. Rewrite using `[CharP.charP_iff_prime_eq_zero Fact.out, ← map_natCast (IsLocalRing.residue O), IsLocalRing.residue_eq_zero_iff]`. Conclude with `hl'`. Rewrite using `[IsLocalRing.ResidueField.algebraMap_eq, IsLocalRing.residue_eq_zero_iff, hm, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_res {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {l : ℕ} [Fact l.Prime]
     (hl : ¬ IsUnit ((l : ℕ) : O)) (hf : Finite (O ⧸ Ideal.span {((l : ℕ) : O) ^ 1})) {lam : O}
@@ -260,11 +258,9 @@ theorem exists_res {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing
   · rw [IsLocalRing.ResidueField.algebraMap_eq, IsLocalRing.residue_eq_zero_iff, hm, Ideal.mem_span_singleton]
 
 /- English proof (translation)
-Introduce `l _ P S hR`. Take `⟨hSt, -, h1, h2, h3⟩` from `S.hyp`. Take `⟨hd, -, hl⟩` from `GlobalTheory.FinExtIntegers.dvr_complete S.LL`. Take `⟨hfin, k, _, _, _, hs, hk⟩` from `exists_res hl ((GlobalTheory.LocalIntegers.good_integers l S.LL).2 1) hSt.2.2.2.2.2`. Take `⟨R, ι, -, F, M, hω, -, hM⟩` from `hR k ⟨hs, hk⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key` using `bound_gen (P.PD S.K) S.emb S.D S.Γ hs hk M h1 h2 h3 hω hM hfin`. Use `⟨fun c hc hct h0 s x hx hi => ?_, fun h0 s x hx hi => ?_⟩` and prove the remaining obligations. Establish `key'` using `key c (fun X _ _ _ => (h0 X).2.1)`. Conclude with `(key' s x hx hi).1 hc hct`. Establish `key'` using `key 1 (fun X _ _ _ => (h0 X).2.1)`.
-
-Conclude with `(key' s x hx hi).2 rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem resBound_chars : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P), S.Real →
     (∀ c : ℕ, 2 ≤ c → c ≤ S.D.t → S.Lem0 (S.Γ.Wchi c) → S.ResBound (S.Γ.Wchi c) 0) ∧

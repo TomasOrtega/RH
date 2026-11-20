@@ -32,29 +32,29 @@ theorem trG_val (X : GL (Fin k) A) :
   rfl
 
 /- English proof (translation)
-Use `ext1`. Simplify using `[trG_val, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trG_mul (X Y : GL (Fin k) A) : trG (X * Y) = trG Y * trG X := by
   ext1
   simp [trG_val, Matrix.transpose_mul]
 
 /- English proof (translation)
-Use `ext1`. Simplify using `[trG_val]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trG_one : trG (1 : GL (Fin k) A) = 1 := by
   ext1
   simp [trG_val]
 
 /- English proof (translation)
-Rewrite using `[eq_inv_iff_mul_eq_one, ← trG_mul, mul_inv_cancel, trG_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trG_inv (X : GL (Fin k) A) : trG X⁻¹ = (trG X)⁻¹ := by
   rw [eq_inv_iff_mul_eq_one, ← trG_mul, mul_inv_cancel, trG_one]
 
 /- English proof (translation)
-Establish `h` using `hT A k i j hij c (addHaar : Measure (Fin k → A)) inferInstance`. Establish `e : (phi X : (Fin k → A) → (Fin k → A)) = Matrix.mulVec (Matrix.transvection i j c)`. Use function extensionality and compare the values at `v`. Rewrite using `[phi_apply, hX]`. Apply `modM_of_map X (addHaar : Measure (Fin k → A))` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modM_transv (hT : TransvHaar) (X : GL (Fin k) A) (i j : Fin k) (hij : i ≠ j) (c : A)
     (hX : (X : Matrix (Fin k) (Fin k) A) = Matrix.transvection i j c) : modM X = 1 := by
@@ -67,7 +67,7 @@ theorem modM_transv (hT : TransvHaar) (X : GL (Fin k) A) (i j : Fin k) (hij : i 
   exact h
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Matrix.transvection, Matrix.transpose_apply, Matrix.one_apply, Matrix.single_apply]`. Discharge the remaining goals by the proof search in `aesop`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Search for a derivation from the available facts and logical rules.
 -/
 theorem transvection_transpose (i j : Fin k) (c : A) :
     (Matrix.transvection i j c).transpose = Matrix.transvection j i c := by
@@ -76,9 +76,9 @@ theorem transvection_transpose (i j : Fin k) (c : A) :
   aesop
 
 /- English proof (translation)
-Proceed by induction on `hX using Subgroup.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨i, j, c, hij, hx⟩ | ⟨d, hx⟩` into its components or cases. Rewrite using `[modM_transv hT x i j hij c hx, modM_transv hT (trG x) j i hij.symm c (by rw [trG_val, hx, transvection_transpose])]`. Establish `: trG x = x` using `by ext1`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[trG_val, hx, Matrix.diagonal_transpose]`. Rewrite using `[this]`. Consider the case `one => rw [trG_one]`. Consider the case `mul x y _ _ hx hy => rw [trG_mul, modM_mul, modM_mul, hx, hy, mul_comm]`. Consider the case `inv x _ hx => rw [trG_inv, modM_inv, modM_inv, hx]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem modM_tr_of_mem (hT : TransvHaar) (X : GL (Fin k) A)
     (hX : X ∈ Subgroup.closure ({g : GL (Fin k) A | ∃ i j c, i ≠ j ∧
@@ -101,7 +101,7 @@ theorem modM_tr_of_mem (hT : TransvHaar) (X : GL (Fin k) A)
 end Gen
 
 /- English proof (translation)
-Establish `h' : (x : ℝ) * x = 1` using `by exact_mod_cast h`. Establish `: (x : ℝ) = 1` using `by nlinarith [x.coe_nonneg]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nnreal_eq_one_of_mul_self {x : ℝ≥0} (h : x * x = 1) : x = 1 := by
   have h' : (x : ℝ) * x = 1 := by exact_mod_cast h
@@ -109,17 +109,15 @@ theorem nnreal_eq_one_of_mul_self {x : ℝ≥0} (h : x * x = 1) : x = 1 := by
   exact_mod_cast this
 
 /- English proof (translation)
-Introduce `F _ _ k G X hG hXG μ hμ`. Take `⟨hlc, hsc, ht2⟩` from `PI.VolStabSW.TopoAF.afTop_holds F`. Establish `: BorelSpace (AF F)` using `⟨rfl⟩`. Establish `hd` using `congrArg Matrix.det hXG`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdd : X.det * X.det = 1`. Establish `: (X.det * X.det) * G.det = 1 * G.det`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hG.mul_left_inj.1 this`. Establish `hX : IsUnit X.det` using `⟨⟨X.det, X.det, hdd, hdd⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Xu : GL (Fin k) (AF F)` to `Matrix.nonsingInvUnit X hX`. Set `Gu : GL (Fin k) (AF F)` to `Matrix.nonsingInvUnit G hG`. Establish `hrel : trG Xu * Gu * Xu = Gu` using `by ext1`. Conclude with `hXG`. Establish `hm` using `congrArg modM hrel`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hm` using `[modM_mul, modM_mul, modM_tr_of_mem h3 Xu (h2 (AF F) (h1 F) k Xu)]`. Establish `hpos : 0 < modM Gu` using `addEquivAddHaarChar_pos (phi Gu)`. Establish `hsq : modM Xu * modM Xu = 1`. Establish `: (modM Xu * modM Xu) * modM Gu = 1 * modM Gu`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_right_cancel₀ hpos.ne' this`. Establish `hmod` using `nnreal_eq_one_of_mul_self hsq`. Establish `e` using `map_phi_of_modM Xu hmod μ`. Establish `e2 : (phi Xu : (Fin k → AF F) → (Fin k → AF F)) = Matrix.mulVec X`. Use function extensionality and compare the values at `v`.
-
-Both sides reduce to the same expression. Rewrite `e` using `[e2]`. Conclude with `e`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orthInv_of (h1 : AdeleStableRankOne) (h2 : ElimSR1) (h3 : TransvHaar) : OrthInv := by
   intro F _ _ k G X hG hXG μ hμ

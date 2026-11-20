@@ -7,7 +7,7 @@ open PositivityTheory.Rg.Rsw
 namespace GlobalTheory.CompanionTheory.HeckeEtaExist
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RawLift.exists_hecke_resEta`.
+A detailed English derivation is pending.
 -/
 theorem heckeEta : HeckeEta :=
   GlobalTheory.RawLift.exists_hecke_resEta

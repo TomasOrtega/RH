@@ -18,7 +18,7 @@ def jY (a : ℕ) (τ : ι) : PY Unit a →ₐ[ℂ] PY ι a := rename fun x => (�
 def jZ (a b : ℕ) (τ : ι) : FP Unit a b →ₐ[ℂ] FP ι a b := rename fun x => (τ, x.2)
 
 /- English proof (translation)
-Establish `: (lft g).comp (jY a τ) = (jY a τ).comp (lft (fun _ : Unit => g τ))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[lft, jY, aeval_X, rename_X, map_sum, map_mul, rename_C]`. Conclude with `DFunLike.congr_fun this F`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lft_jY (g : ι → Matrix (Fin a) (Fin a) ℂ) (τ : ι) (F : PY Unit a) :
     lft g (jY a τ F) = jY a τ (lft (fun _ => g τ) F) := by
@@ -28,7 +28,7 @@ theorem lft_jY (g : ι → Matrix (Fin a) (Fin a) ℂ) (τ : ι) (F : PY Unit a)
   exact DFunLike.congr_fun this F
 
 /- English proof (translation)
-Establish `: (mvZ g h).comp (jZ a b τ) = (jZ a b τ).comp (mvZ (fun _ : Unit => g τ) (fun _ => h τ))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[mvZ, jZ, aeval_X, rename_X, map_sum, map_mul, rename_C]`. Conclude with `DFunLike.congr_fun this P`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mvZ_jZ (g : ι → Matrix (Fin a) (Fin a) ℂ) (h : ι → Matrix (Fin b) (Fin b) ℂ) (τ : ι) (P : FP Unit a b) :
     mvZ g h (jZ a b τ P) = jZ a b τ (mvZ (fun _ => g τ) (fun _ => h τ) P) := by
@@ -38,7 +38,7 @@ theorem mvZ_jZ (g : ι → Matrix (Fin a) (Fin a) ℂ) (h : ι → Matrix (Fin b
   exact DFunLike.congr_fun this P
 
 /- English proof (translation)
-Establish `: (subY hab y').comp (jY a τ) = (jZ a b τ).comp (subY hab (fun _ : Unit => y' τ))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[subY, jZ, jY, aeval_X, rename_X, map_sum, map_mul, rename_C]`. Conclude with `DFunLike.congr_fun this F`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem subY_jY (hab : a ≤ b) (y' : ι → Matrix (Fin b) (Fin b) ℂ) (τ : ι) (F : PY Unit a) :
     subY hab y' (jY a τ F) = jZ a b τ (subY hab (fun _ => y' τ) F) := by
@@ -48,15 +48,15 @@ theorem subY_jY (hab : a ≤ b) (y' : ι → Matrix (Fin b) (Fin b) ℂ) (τ : �
   exact DFunLike.congr_fun this F
 
 /- English proof (translation)
-Take `⟨e0, h1, h2⟩` from `GlobalTheory.T.exists_piTensorMvPolynomialEquiv_blocks ι (Unit × σ)`. Set `r : MvPolynomial (ι × Unit × σ) ℂ ≃ₐ[ℂ] MvPolynomial (ι × σ) ℂ` to `renameEquiv ℂ (Equiv.prodCongr (Equiv.refl ι) (Equiv.uniqueProd σ Unit))`. Establish `hr : ∀ τ (p : MvPolynomial (Unit × σ) ℂ), r (rename (Prod.mk τ) p) = rename (fun x : Unit × σ => (τ, x.2)) p`. Introduce `τ p`. Simplify using `only [r, renameEquiv_apply, rename_rename]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Use `⟨e0.trans r.toLinearEquiv, ?_, ?_⟩` and prove the remaining obligations. Introduce `f`. Simplify using `only [LinearEquiv.trans_apply, h1, AlgEquiv.toLinearEquiv_apply, map_prod, hr]`. Introduce `U`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hi, hran⟩` from `h2 U`. Establish `hc : (e0.trans r.toLinearEquiv).toLinearMap ∘ₗ (PiTensorProduct.map fun τ => (U τ).subtype) = r.toLinearEquiv.toLinearMap ∘ₗ (e0.toLinearMap ∘ₗ PiTensorProduct.map fun τ => (U τ).subtype)` using `rfl`. Rewrite using `[hc]`. Use `⟨r.toLinearEquiv.injective.comp hi, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.range_comp, hran, Submodule.map_span]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `p`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, ⟨f, hf, rfl⟩, rfl⟩`. Conclude with `⟨f, hf, by simp only [LinearEquiv.coe_coe, AlgEquiv.toLinearEquiv_apply, map_prod, hr]⟩`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨f, hf, rfl⟩`. Conclude with `⟨_, ⟨f, hf, rfl⟩, by simp only [LinearEquiv.coe_coe, AlgEquiv.toLinearEquiv_apply, map_prod, hr]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem tenU (ι σ : Type) [Fintype ι] [DecidableEq ι] :
     ∃ e : PiTensorProduct ℂ (fun _ : ι => MvPolynomial (Unit × σ) ℂ) ≃ₗ[ℂ] MvPolynomial (ι × σ) ℂ,
@@ -92,11 +92,11 @@ theorem tenU (ι σ : Type) [Fintype ι] [DecidableEq ι] :
       exact ⟨_, ⟨f, hf, rfl⟩, by simp only [LinearEquiv.coe_coe, AlgEquiv.toLinearEquiv_apply, map_prod, hr]⟩
 
 /- English proof (translation)
-Establish `hS : {p | ∃ f : Unit → MvPolynomial (Fin a × Fin a) ℂ, (∀ τ, f τ ∈ delSq ℂ a l) ∧ p = ten f} = (rename (Prod.mk () : Fin a × Fin a → Unit × Fin a × Fin a) : _ →ₐ[ℂ] PY Unit a).toLinearMap '' (delSq ℂ a l : Set _)`. Use extensionality with `p`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, rfl⟩`. Conclude with `⟨f (), hf (), by simp [ten]⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨f, hf, rfl⟩`. Conclude with `⟨fun _ => f, fun _ => hf, by simp [ten]⟩`. Establish `hC : CSpan (fun _ : Unit => l) = (delSq ℂ a l).map (rename (Prod.mk () : Fin a × Fin a → Unit × Fin a × Fin a) : _ →ₐ[ℂ] PY Unit a).toLinearMap`. Rewrite using `[CSpan, hS, Submodule.span_image, Submodule.span_eq]`. Simplify using `only [Vn, hC, Submodule.mem_map]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨G, ⟨f, hf, rfl⟩, rfl⟩`. Conclude with `⟨f, hf, by simp⟩`. Introduce and unpack `⟨f, hf, rfl⟩`. Conclude with `⟨_, ⟨f, hf, rfl⟩, by simp⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_vn_unit (l : DomWeight a) (n : ℕ) (F : PY Unit a) :
     F ∈ Vn (fun _ : Unit => l) (fun _ => n) ↔
@@ -119,15 +119,15 @@ theorem mem_vn_unit (l : DomWeight a) (n : ℕ) (F : PY Unit a) :
     exact ⟨_, ⟨f, hf, rfl⟩, by simp⟩
 
 /- English proof (translation)
-Establish `hj : ∀ (τ : ι) (f : MvPolynomial (Fin a × Fin a) ℂ), rename (fun x : Unit × Fin a × Fin a => (τ, x.2)) (rename (Prod.mk ()) f) = rename (Prod.mk τ) f`. Introduce `τ f`. Rewrite using `[rename_rename]`. Both sides reduce to the same expression. Establish `hd : ∀ τ : ι, rename (fun x : Unit × Fin a × Fin a => (τ, x.2)) (frDet ℂ a ()) = frDet ℂ a τ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `τ`. Simplify using `only [frDet]`. Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[rename_X]`. Rewrite using `[Vn, CSpan, Submodule.map_span]`. Use `congr 1`. Use extensionality with `p`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨F, hF, rfl⟩ choose f hf hF using fun τ => (mem_vn_unit (lam τ) (n τ) (F τ)).1 (hF τ)`. Use `⟨ten f, ⟨f, hf, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `[hF, map_mul, map_pow, hj, hd, ten, Finset.prod_mul_distrib]`. Introduce and unpack `⟨_, ⟨f, hf, rfl⟩, rfl⟩`. Use `⟨fun τ => rename (Prod.mk ()) (f τ) * frDet ℂ a () ^ n τ, fun τ => (mem_vn_unit _ _ _).2 ⟨f τ, hf τ, rfl⟩, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[map_mul, map_pow, hj, hd, ten, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem span_jY [Fintype ι] (lam : ι → DomWeight a) (n : ι → ℕ) :
     Submodule.span ℂ {p | ∃ f : ι → PY Unit a, (∀ τ, f τ ∈ Vn (fun _ : Unit => lam τ) (fun _ => n τ)) ∧
@@ -151,11 +151,11 @@ theorem span_jY [Fintype ι] (lam : ι → DomWeight a) (n : ι → ℕ) :
     simp [map_mul, map_pow, hj, hd, ten, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `f`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.coe_comp, Function.comp_apply, PiTensorProduct.map_tprod, LinearEquiv.coe_coe, hY1, AlgHom.toLinearMap_apply, map_prod, lft_jY]`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `σ _`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using `[LinearMap.restrict_apply]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `[Function.update_of_ne h, (GlobalTheory.T.fockSubstitution_identities Unit a a le_rfl).2.2.2.2.1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lftMap [Fintype ι] [DecidableEq ι] (eY : PiTensorProduct ℂ (fun _ : ι => PY Unit a) ≃ₗ[ℂ] PY ι a)
     (hY1 : ∀ f, eY (PiTensorProduct.tprod ℂ f) = ∏ τ, jY a τ (f τ)) (V : ι → Submodule ℂ (PY Unit a))
@@ -173,9 +173,9 @@ theorem lftMap [Fintype ι] [DecidableEq ι] (eY : PiTensorProduct ℂ (fun _ : 
   · simp [Function.update_of_ne h, (GlobalTheory.T.fockSubstitution_identities Unit a a le_rfl).2.2.2.2.1]
 
 /- English proof (translation)
-Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `f`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.coe_comp, Function.comp_apply, PiTensorProduct.map_tprod, LinearEquiv.coe_coe, hZ1, AlgHom.toLinearMap_apply, map_prod, mvZ_jZ]`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `σ _`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h, (GlobalTheory.T.fockSubstitution_identities Unit a b hab).2.2.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mvZMap [Fintype ι] [DecidableEq ι] (hab : a ≤ b) (eZ : PiTensorProduct ℂ (fun _ : ι => FP Unit a b) ≃ₗ[ℂ] FP ι a b)
     (hZ1 : ∀ f, eZ (PiTensorProduct.tprod ℂ f) = ∏ τ, jZ a b τ (f τ)) (τ : ι) (k : Matrix (Fin a) (Fin a) ℂ) :
@@ -206,19 +206,19 @@ def RepMaps {A B : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup B] [Modul
     simp [h, Finset.smul_sum, mul_smul]
 
 /- English proof (translation)
-Establish `hext : ∀ τ, ∃ T : PY Unit a →ₗ[ℂ] FP Unit a b, T ∘ₗ (Vn (fun _ : Unit => lam τ) (fun _ => n τ)).subtype = t τ` using `fun τ => LinearMap.exists_extend (t τ)`. Use `choose T hT using hext`. Establish `hH : ∀ τ, ∃ (m : ℕ) (y' : Fin m → Unit → Matrix (Fin b) (Fin b) ℂ) (s : Fin m → ℂ), (∀ j, IsInv (y' j)) ∧ ∀ F ∈ Vn (fun _ : Unit => lam τ) (fun _ => n τ), T τ F = ∑ j, s j • subY hab (y' j) F`. Introduce `τ`. Use `GlobalTheory.T.howeDualityUnitarySubstitutionSpan_unit a b hab ha (fun _ => lam τ) (fun _ => n τ) (T τ) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk F hF`. Establish `hk' : k = fun _ => k ()` using `funext fun u => by cases u; rfl`. Establish `e1 : T τ (lft k F) = t τ ((lft (fun _ : Unit => k ())).toLinearMap.restrict (fun F hF => hV τ (k ()) F hF) ⟨F, hF⟩)`. Rewrite using `[← hT τ, hk']`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e2 : T τ F = t τ ⟨F, hF⟩` using `by rw [← hT τ]; rfl`. Rewrite using `[e1, e2, hk']`. Conclude with `LinearMap.congr_fun (ht τ (k ()) (hk ())) ⟨F, hF⟩`. Use `choose m y' s hinv hrep using hH`. Set `eC` to `Fintype.equivFin (∀ τ, Fin (m τ))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Fintype.card (∀ τ, Fin (m τ)), fun i τ => y' τ (eC.symm i τ) (), fun i => ∏ τ, s τ (eC.symm i τ), ?_, ?_⟩` and prove the remaining obligations. Introduce `i τ`. Conclude with `hinv τ _ ()`. Introduce `v`. It suffices to establish `H : eZ.toLinearMap ∘ₗ PiTensorProduct.map t = ∑ i, (∏ τ, s τ (eC.symm i τ)) • ((subY hab (fun τ => y' τ (eC.symm i τ) ())).toLinearMap ∘ₗ eY.toLinearMap ∘ₗ PiTensorProduct.map (fun τ => (Vn (fun _ : Unit => lam τ) (fun _ => n τ)).subtype)) by`.
+Reduce the argument to an intermediate assertion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `LinearMap.congr_fun H v` as an intermediate fact. Simplify using `using this`. Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : ∀ τ j, (fun _ : Unit => y' τ j ()) = y' τ j` using `fun τ j => funext fun u => by cases u; rfl`. Establish `ht' : ∀ τ, t τ (f τ) = ∑ j, s τ j • subY hab (y' τ j) (f τ : PY Unit a)`. Introduce `τ`. Rewrite using `[← hT τ]`. Conclude with `hrep τ _ (f τ).2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.coe_comp, Function.comp_apply, PiTensorProduct.map_tprod, LinearEquiv.coe_coe, hY1, hZ1, LinearMap.sum_apply, LinearMap.smul_apply, AlgHom.toLinearMap_apply, map_prod, subY_jY, ht', map_sum, map_smul, hy, Submodule.coe_subtype]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ, ← Equiv.sum_comp eC.symm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Simplify using `only [Algebra.smul_def, Finset.prod_mul_distrib, map_prod]`.
+A detailed English derivation is pending.
 -/
 theorem pure_rep [Fintype ι] [DecidableEq ι] (hab : a ≤ b) (ha : 0 < a) (lam : ι → DomWeight a) (n : ι → ℕ)
     (eY : PiTensorProduct ℂ (fun _ : ι => PY Unit a) ≃ₗ[ℂ] PY ι a)
@@ -273,23 +273,21 @@ end GlobalTheory.KJInf.HoweDualityMaps
 open GlobalTheory.KJInf.HoweDualityMaps in
 
 /- English proof (translation)
-Introduce `ι _ a b hab ha lam n Q hQ`. Take `⟨eY, hY1, hY2⟩` from `tenU ι (Fin a × Fin a)`. Take `⟨eZ, hZ1, -⟩` from `tenU ι (Fin b × Fin a)`. Establish `hY1' : ∀ f, eY (PiTensorProduct.tprod ℂ f) = ∏ τ, jY a τ (f τ)` using `hY1`. Establish `hZ1' : ∀ f, eZ (PiTensorProduct.tprod ℂ f) = ∏ τ, jZ a b τ (f τ)` using `hZ1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `V : ι → Submodule ℂ (PY Unit a)` to `fun τ => Vn (fun _ : Unit => lam τ) (fun _ => n τ)`. Establish `hV : ∀ τ k, ∀ F ∈ V τ, lft (fun _ : Unit => k) F ∈ V τ` using `fun τ k F hF => (GlobalTheory.T.weylDeterminantTwistTensor_finiteDimensional_stable Unit a (fun _ => lam τ) (fun _ => n τ)).2 (fun _ => k) F hF`. Use `haveI : ∀ τ, FiniteDimensional ℂ (V τ) := fun τ => (GlobalTheory.T.weylDeterminantTwistTensor_finiteDimensional_stable Unit a (fun _ => lam τ) (fun _ => n τ)).1`. Set `ΦY` to `eY.toLinearMap ∘ₗ PiTensorProduct.map (fun τ => (V τ).subtype)`. Establish `hrange : LinearMap.range ΦY = Vn lam n`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hY2 V).2]`. Conclude with `span_jY lam n`. Set `Q'` to `eZ.symm.toLinearMap ∘ₗ Q ∘ₗ ΦY`. Set `R : ∀ τ, Set ((V τ →ₗ[ℂ] V τ) × (FP Unit a b →ₗ[ℂ] FP Unit a b))` to `fun τ => {p | ∃ k ∈ Matrix.unitaryGroup (Fin a) ℂ, p = ((lft (fun _ : Unit => k)).toLinearMap.restrict (fun F hF => hV τ k F hF), (mvZ (fun _ : Unit => k) (fun _ => 1)).toLinearMap)}`. Establish `hcomm : ∀ τ, ∀ p ∈ R τ, Q' ∘ₗ PiTensorProduct.map (Function.update (fun σ => (LinearMap.id : V σ →ₗ[ℂ] V σ)) τ p.1) = PiTensorProduct.map (Function.update (fun σ => (LinearMap.id : FP Unit a b →ₗ[ℂ] FP Unit a b)) τ p.2) ∘ₗ Q'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `τ _ ⟨k, hk, rfl⟩`. Establish `hU : IsUni (Function.update (1 : ι → Matrix (Fin a) (Fin a) ℂ) τ k)`. Introduce `σ`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `using hk`. Simplify using `only [Function.update_of_ne h, Pi.one_apply]`. Conclude with `one_mem _`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `eZ.injective` to reduce the goal to its premises. Establish `h1` using `LinearMap.congr_fun (lftMap eY hY1' V hV τ k) v`. Establish `h2` using `LinearMap.congr_fun (mvZMap hab eZ hZ1' τ k) (Q' v)`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, AlgHom.toLinearMap_apply] at h1 h2`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, Q', ΦY, LinearEquiv.apply_symm_apply] at h2 ⊢`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2, h1]`. Conclude with `hQ _ hU _ (hrange ▸ LinearMap.mem_range_self ΦY v)`. Establish `hsp` using `GlobalTheory.T.mem_span_tprod_of_commute_at_each_place ι (fun τ => V τ) (fun _ => FP Unit a b) R Q' hcomm`. Establish `hle : Submodule.span ℂ {T | ∃ t : ∀ τ, V τ →ₗ[ℂ] FP Unit a b, (∀ τ, ∀ p ∈ R τ, t τ ∘ₗ p.1 = p.2 ∘ₗ t τ) ∧ T = PiTensorProduct.map t} ≤ RepMaps hab ΦY eZ`. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `T ⟨t, ht, rfl⟩`. Conclude with `pure_rep hab ha lam n eY hY1' eZ hZ1' hV t (fun τ k hk => ht τ _ ⟨k, hk, rfl⟩)`. Take `⟨m, y', s, hinv, hrep⟩` from `hle hsp`. Use `⟨m, y', s, hinv, ?_⟩` and prove the remaining obligations. Introduce `F hF`.
-
-Rewrite `hF` using `[← hrange]`. Take `⟨v, rfl⟩` from `hF`. Use `hrep v` as an intermediate fact. Simplify `this` using `[Q']`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.KJInf.howeSpan_all : ∀ (ι : Type) [Fintype ι], HoweSpan ι := by
   intro ι _ a b hab ha lam n Q hQ
@@ -340,6 +338,6 @@ theorem GlobalTheory.KJInf.howeSpan_all : ∀ (ι : Type) [Fintype ι], HoweSpan
   simpa [Q'] using this
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.KJInf.howeSpan_all`.
+A detailed English derivation is pending.
 -/
 example : ∀ (ι : Type) [Fintype ι], HoweSpan ι := GlobalTheory.KJInf.howeSpan_all

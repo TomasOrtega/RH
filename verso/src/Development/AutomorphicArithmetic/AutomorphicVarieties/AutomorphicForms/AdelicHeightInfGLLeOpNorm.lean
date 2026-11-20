@@ -2,7 +2,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.S
 open NumberField Matrix GlobalTheory.CuspRep GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm UpperTheory.V UpperTheory.V.Fb
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun g : GL (Fin a) (InfiniteAdeleRing E) => g.val i j w) (map_cornerGL_of_hom (TR.sInf E) (RingHom.fst (InfiniteAdeleRing E) (Af E)) (TR.infEq E).toRingHom (fun _ => rfl) y)`. Establish `e : (Reduction.infAt w (TR.infGL E a y) : Matrix (Fin a) (Fin a) w.Completion) i j = (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).symm (y.val i j w)` using `h`. Establish `e0 : (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).symm 0 = 0` using `map_zero (InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).symm`. Rewrite using `[e, (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).symm.isometry.norm_map_of_map_zero e0]`. Conclude with `(norm_le_pi_norm (y.val i j) w).trans ((norm_le_pi_norm (TR.toL y.val i) j).trans (norm_le_pi_norm (TR.toL y.val) i))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ent (E : Type) [Field E] [NumberField E] [IsTotallyReal E] (a : ℕ) (y : GL (Fin a) (TR.Rinf E))
     (w : InfinitePlace E) (i j : Fin a) :
@@ -19,7 +19,7 @@ private theorem ent (E : Type) [Field E] [NumberField E] [IsTotallyReal E] (a : 
     ((norm_le_pi_norm (TR.toL y.val i) j).trans (norm_le_pi_norm (TR.toL y.val) i))
 
 /- English proof (translation)
-Establish `h1 : Reduction.finAt v (TR.infGL E a y) = Reduction.finAt v (1 : AdelicGLn.AdelicGL E a)`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `h` using `congrArg (fun g : GL (Fin a) (Af E) => g.val i j v) ((TR.pFin_infGL y).trans (map_one (GeneralLinearGroup.map (n := Fin a) (pFin E))).symm)`. Conclude with `h`. Rewrite using `[h1, Reduction.finAt_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finOne (E : Type) [Field E] [NumberField E] [IsTotallyReal E] (a : ℕ) (y : GL (Fin a) (TR.Rinf E))
     (v : IsDedekindDomain.HeightOneSpectrum (𝓞 E)) : Reduction.finAt v (TR.infGL E a y) = 1 := by
@@ -31,11 +31,11 @@ private theorem finOne (E : Type) [Field E] [NumberField E] [IsTotallyReal E] (a
   rw [h1, Reduction.finAt_one]
 
 /- English proof (translation)
-Introduce `E _ _ _ a`. Use `⟨∑ w : InfinitePlace E, w.mult, fun y => ?_⟩` and prove the remaining obligations. Establish `n1` using `norm_nonneg (TR.toL y.val)`. Establish `n2` using `norm_nonneg (TR.toL (y⁻¹).val)`. Unfold `AutomorphicForm.height`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[finprod_eq_one_of_forall_eq_one fun v => by rw [finOne, locHeight_one], mul_one, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_le_prod (fun w _ => (pow_pos (locHeight_pos _) _).le) fun w _ => pow_le_pow_left₀ (locHeight_pos _).le ?_ _` and prove the remaining obligations. Unfold `TR.height`. Use `locHeight_le (by linarith) (fun i j => ?_) fun i j => ?_` and prove the remaining obligations. Use `ent E a y w i j` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `ent E a y⁻¹ w i j` as an intermediate fact. Rewrite `this` using `[map_inv, Reduction.infAt_inv]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem UpperTheory.adelicHeight_infGL_le_opNorm :
     UpperTheory.V.Fb.HeightLe := by

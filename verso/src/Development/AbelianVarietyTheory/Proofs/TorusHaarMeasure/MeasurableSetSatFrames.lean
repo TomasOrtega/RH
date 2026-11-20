@@ -14,9 +14,9 @@ def satFrames (X : Data E r) (x0 : Frame X.Ψ r) (A : Set (V (nd X))) : Set (Fra
   {x | ∃ z ∈ A, ∃ b ∈ Bor X.Ψ r, x = rmul (cpt X x0 z) b}
 
 /- English proof (translation)
-Establish `h : Bor X.Ψ r = ⋂ τ : X.Ψ, ({b : Frame X.Ψ r | (mat b τ).det ≠ 0} ∩ ⋂ a : Fin r, ⋂ c : Fin r, ⋂ (_ : c < a), {b : Frame X.Ψ r | b τ a c = 0})`. Use extensionality with `b`. Simplify using `[Bor]`. Rewrite using `[h]`. Use `MeasurableSet.iInter fun τ => MeasurableSet.inter ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hM : Continuous fun b : Frame X.Ψ r => mat b τ` using `continuous_apply τ`. Conclude with `(isOpen_ne_fun hM.matrix_det continuous_const).measurableSet`. Use `MeasurableSet.iInter fun a => MeasurableSet.iInter fun c => MeasurableSet.iInter fun _ => ?_` and prove the remaining obligations. Conclude with `(isClosed_eq (by fun_prop) continuous_const).measurableSet`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurableSet_Bor (X : Data E r) : MeasurableSet (Bor X.Ψ r) := by
   have h : Bor X.Ψ r = ⋂ τ : X.Ψ, ({b : Frame X.Ψ r | (mat b τ).det ≠ 0} ∩
@@ -30,7 +30,7 @@ theorem measurableSet_Bor (X : Data E r) : MeasurableSet (Bor X.Ψ r) := by
     exact (isClosed_eq (by fun_prop) continuous_const).measurableSet
 
 /- English proof (translation)
-Use `continuous_pi fun τ => ?_` and prove the remaining obligations. Establish `hM : Continuous fun b : Frame X.Ψ r => mat b τ` using `continuous_apply τ`. Conclude with `(hM.comp continuous_fst).matrix_mul (hM.comp continuous_snd)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_rmul (X : Data E r) :
     Continuous fun p : Frame X.Ψ r × Frame X.Ψ r => rmul p.1 p.2 := by
@@ -39,7 +39,7 @@ theorem continuous_rmul (X : Data E r) :
   exact (hM.comp continuous_fst).matrix_mul (hM.comp continuous_snd)
 
 /- English proof (translation)
-Use `continuous_pi fun τ => ?_` and prove the remaining obligations. Establish `hM : Continuous fun b : Frame X.Ψ r => mat b τ` using `continuous_apply τ`. Conclude with `continuous_const.matrix_mul hM`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_lact (X : Data E r) (γ : GL (Fin r) E) :
     Continuous fun x : Frame X.Ψ r => lact γ x := by
@@ -48,9 +48,9 @@ theorem continuous_lact (X : Data E r) (γ : GL (Fin r) E) :
   exact continuous_const.matrix_mul hM
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `h1 : mat y τ * mat b τ = mat y τ * mat b' τ` using `congrFun h τ`. Establish `hu : IsUnit (mat y τ).det` using `isUnit_iff_ne_zero.mpr (hy τ).1`. Use `congrArg (fun M => (mat y τ)⁻¹ * M) h1` as an intermediate fact. Simplify using `only [Matrix.nonsing_inv_mul_cancel_left _ _ hu] at this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem rmul_right_cancel (X : Data E r) {y b b' : Frame X.Ψ r} (hy : y ∈ X.dom)
     (h : rmul y b = rmul y b') : b = b' := by
@@ -62,13 +62,13 @@ theorem rmul_right_cancel (X : Data E r) {y b b' : Frame X.Ψ r} (hy : y ∈ X.d
   exact this
 
 /- English proof (translation)
-Establish `h : satFrames X x0 A = (fun p : V (nd X) × Frame X.Ψ r => rmul (cpt X x0 p.1) p.2) '' (A ×ˢ Bor X.Ψ r)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, b, hb, rfl⟩`. Conclude with `⟨(z, b), ⟨hz, hb⟩, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨z, b⟩, ⟨hz, hb⟩, rfl⟩`. Conclude with `⟨z, hz, b, hb, rfl⟩`. Rewrite using `[h]`. Establish `: PolishSpace (Fin r → ℂ)` using `inferInstance`. Establish `: PolishSpace (Fin r → Fin r → ℂ)` using `inferInstance`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: PolishSpace (Frame X.Ψ r)` using `inferInstance`. Establish `: PolishSpace (V (nd X))` using `inferInstance`. Use `MeasurableSet.image_of_continuousOn_injOn (hA.prod (measurableSet_Bor X)) ?_ ?_` and prove the remaining obligations. Conclude with `((continuous_rmul X).comp (((FundSetPf.cont_cpt X x0).comp continuous_fst).prodMk continuous_snd)).continuousOn`. Introduce and unpack `⟨z, b⟩ ⟨hz, hb⟩ ⟨z', b'⟩ ⟨-, hb'⟩ hh`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `rfl : z = z'` from `FundSetPf.cpt_uniq X ho hb hb' hh`. Conclude with `Prod.ext rfl (rmul_right_cancel X (hAO hz) hh)`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_satFrames (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0)
     {A : Set (V (nd X))} (hA : MeasurableSet A) (hAO : A ⊆ OmF X x0) :
@@ -92,9 +92,9 @@ theorem measurableSet_satFrames (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth 
     exact Prod.ext rfl (rmul_right_cancel X (hAO hz) hh)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, b', hb', h⟩`. Use `⟨z, hz, rmul b' (ExtFPf.invF X b), ExtFPf.mul_mem X hb' (ExtFPf.invF_mem X hb), ?_⟩` and prove the remaining obligations. Rewrite using `[← ExtFPf.rmul_assoc, ← h, ExtFPf.rmul_assoc, ExtFPf.rmul_invF X hb, ExtFPf.rmul_oneF]`. Introduce and unpack `⟨z, hz, b', hb', rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨z, hz, rmul b' b, ExtFPf.mul_mem X hb' hb, by rw [ExtFPf.rmul_assoc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem rmul_mem_satFrames_iff (X : Data E r) (x0 : Frame X.Ψ r) (A : Set (V (nd X)))
     (x : Frame X.Ψ r) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) :
@@ -107,9 +107,9 @@ theorem rmul_mem_satFrames_iff (X : Data E r) (x0 : Frame X.Ψ r) (A : Set (V (n
     exact ⟨z, hz, rmul b' b, ExtFPf.mul_mem X hb' hb, by rw [ExtFPf.rmul_assoc]⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z', hz', b, hb, h⟩`. Rewrite `h` using `[← ExtFPf.rmul_oneF X (cpt X x0 z)]`. Rewrite using `[FundSetPf.cpt_uniq X ho (ExtFPf.oneF_mem X) hb h]`. Conclude with `hz'`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hz`. Conclude with `⟨z, hz, ExtFPf.oneF X, ExtFPf.oneF_mem X, (ExtFPf.rmul_oneF X _).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cpt_mem_satFrames_iff (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0)
     (A : Set (V (nd X))) (z : V (nd X)) : cpt X x0 z ∈ satFrames X x0 A ↔ z ∈ A := by
@@ -121,24 +121,24 @@ theorem cpt_mem_satFrames_iff (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X 
     exact ⟨z, hz, ExtFPf.oneF X, ExtFPf.oneF_mem X, (ExtFPf.rmul_oneF X _).symm⟩
 
 /- English proof (translation)
-The claim follows from `(FundSetPf.lact_rmul γ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem cpt_lact (X : Data E r) (x0 : Frame X.Ψ r) (γ : GL (Fin r) E) (z : V (nd X)) :
     cpt X (lact γ x0) z = lact γ (cpt X x0 z) := (FundSetPf.lact_rmul γ _ _).symm
 
 /- English proof (translation)
-Introduce `τ` and use `by rw [OntoS.gram_lact X hγ]; exact ho τ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isOrth_lact (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) {γ : GL (Fin r) E}
     (hγ : γ ∈ X.Γ) : IsOrth X (lact γ x0) := fun τ => by
   rw [OntoS.gram_lact X hγ]; exact ho τ
 
 /- English proof (translation)
-Establish `h1 : OmF X (lact γ x0) = OmF X x0`. Use extensionality with `z`. Use `show cpt X (lact γ x0) z ∈ X.dom ↔ cpt X x0 z ∈ X.dom`. Rewrite using `[cpt_lact]`. Use `⟨fun h => ?_, OntoS.dom_lact X hγ⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `OntoS.dom_lact X (X.Γ.inv_mem hγ) h` as an intermediate fact. Rewrite `this` using `[FundSetPf.lact_inv]`. Then use the resulting hypothesis. Establish `h2 : densF X (lact γ x0) = densF X x0`. Use function extensionality and compare the values at `z`. Simplify using `only [densF, dmin, cpt_lact, OntoS.gram_lact X hγ]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [muF, h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem muF_lact (X : Data E r) (x0 : Frame X.Ψ r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) :
     muF X (lact γ x0) = muF X x0 := by
@@ -155,11 +155,11 @@ theorem muF_lact (X : Data E r) (x0 : Frame X.Ψ r) {γ : GL (Fin r) E} (hγ : �
   simp only [muF, h1, h2]
 
 /- English proof (translation)
-Take `⟨z, hz, b, hb, h⟩` from `h`. Take `⟨z', hz', b', hb', h'⟩` from `h'`. Establish `hδ : γ'⁻¹ * γ ∈ X.Γ` using `X.Γ.mul_mem (X.Γ.inv_mem hγ') hγ`. Establish `e1 : lact (γ'⁻¹ * γ) (rmul (cpt X x0 z) b) = rmul (cpt X x0 z') b'`. Rewrite using `[← h, ← h', ← FundSetPf.lact_mul, mul_assoc, mul_inv_cancel, mul_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbb` using `ExtFPf.mul_mem X hb (ExtFPf.invF_mem X hb')`. Establish `e2 : cpt X x0 z' = lact (γ'⁻¹ * γ) (rmul (cpt X x0 z) (rmul b (ExtFPf.invF X b')))`. Rewrite using `[← ExtFPf.rmul_assoc, FundSetPf.lact_rmul, e1, ExtFPf.rmul_assoc, ExtFPf.rmul_invF X hb', ExtFPf.rmul_oneF]`. Take `rfl : z = z'` from `hF.2.2.1 z hz z' hz' _ hδ _ hbb e2`. Establish `e3 : lact (γ'⁻¹ * γ) (cpt X x0 z) = rmul (cpt X x0 z) (rmul b' (ExtFPf.invF X b))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← ExtFPf.rmul_assoc, ← e1, ← FundSetPf.lact_rmul, ExtFPf.rmul_assoc, ExtFPf.rmul_invF X hb, ExtFPf.rmul_oneF]`. Use `X.Γ_free _ hδ _ (hF.2.1 hz) _ (ExtFPf.mul_mem X hb' (ExtFPf.invF_mem X hb)) e3` as an intermediate fact. Conclude with `(inv_mul_eq_one.mp this).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unique_translate (X : Data E r) {x0 : Frame X.Ψ r} {FF : Set (V (nd X))}
     (hF : IsFundSet X x0 FF) {x : Frame X.Ψ r} {γ γ' : GL (Fin r) E} (hγ : γ ∈ X.Γ) (hγ' : γ' ∈ X.Γ)
@@ -181,15 +181,13 @@ theorem unique_translate (X : Data E r) {x0 : Frame X.Ψ r} {FF : Set (V (nd X))
   exact (inv_mul_eq_one.mp this).symm
 
 /- English proof (translation)
-Use `FundSetPf.countable_GL (E := E) (r := r)` as an intermediate fact. Establish `hS` using `measurableSet_satFrames X ho hF.1 hF.2.1`. Establish `hc : Measurable (cpt X x0)` using `(FundSetPf.cont_cpt X x0).measurable`. Set `φ : X.Γ → Frame X.Ψ r → ℝ≥0∞` to `fun γ => ((fun x => lact (γ.1)⁻¹ x) ⁻¹' satFrames X x0 FF).indicator ψ`. Establish `hφm : ∀ γ, Measurable (φ γ)` using `fun γ => hψ.indicator ((continuous_lact X _).measurable hS)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφB : ∀ γ, ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, φ γ (rmul x b) = φ γ x`. Introduce `γ x hx b hb`. Simplify using `only [φ, Set.indicator, Set.mem_preimage, FundSetPf.lact_rmul, rmul_mem_satFrames_iff X x0 FF _ hb, hB x hx b hb]`. Establish `h1 : ∀ᵐ z ∂muF X x0, ψ (cpt X x0 z) = ∑' γ : X.Γ, φ γ (cpt X x0 z)` using `by filter_upwards [hF.2.2.2] with z hz`. Take `⟨z', hz', γ, hγ, b, hb, h⟩` from `hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm : lact γ⁻¹ (cpt X x0 z) ∈ satFrames X x0 FF` using `⟨z', hz', b, hb, by rw [h, FundSetPf.lact_inv]⟩`. Rewrite using `[tsum_eq_single (⟨γ, hγ⟩ : X.Γ)]`. Conclude with `(Set.indicator_of_mem (s := (fun x => lact γ⁻¹ x) ⁻¹' satFrames X x0 FF) hm ψ).symm`. Introduce `γ' hne`. Use `Set.indicator_of_notMem (fun hm' => hne ?_) ψ` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.ext (unique_translate X hF γ'.2 hγ hm' hm)`. Rewrite using `[lintegral_congr_ae h1, lintegral_tsum (f := fun γ z => φ γ (cpt X x0 z)) fun γ => ((hφm γ).comp hc).aemeasurable, lintegral_tsum (f := fun (γ : X.Γ) z => ψ (lact γ.1 (cpt X x0 z))) fun γ : X.Γ => ((hψ.comp (continuous_lact X γ.1).measurable).comp hc).aemeasurable]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Rewrite using `[hM r X x0 (lact γ.1 x0) ho (isOrth_lact X ho γ.2) (φ γ) (hφm γ) (hφB γ), muF_lact X x0 γ.2, ← lintegral_indicator hF.1]`. Use `lintegral_congr fun z => ?_` and prove the remaining obligations.
-
-Simplify using `only [φ, Set.indicator, Set.mem_preimage, cpt_lact, FundSetPf.lact_inv, cpt_mem_satFrames_iff X ho]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lintegral_unfold (hM : MeasInvStatement (E := E)) (r : ℕ) (X : Data E r) (x0 : Frame X.Ψ r)
     (ho : IsOrth X x0) (FF : Set (V (nd X))) (hF : IsFundSet X x0 FF) (ψ : Frame X.Ψ r → ℝ≥0∞)

@@ -7,9 +7,9 @@ namespace ReciprocityTheory.ChartRestriction.T1
 open NumberField IsDedekindDomain Polynomial
 
 /- English proof (translation)
-Establish `h : (Matrix.blockDiagonal M).charmatrix = Matrix.blockDiagonal fun k => (M k).charmatrix`. Use extensionality with `⟨i, k⟩ ⟨j, k'⟩`. Distinguish the cases in `hk : k = k'`. Substitute `hk` using the available equality. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using `[Matrix.charmatrix_apply, Matrix.blockDiagonal_apply]`. Simplify using `[Matrix.charmatrix_apply, Matrix.blockDiagonal_apply, Matrix.diagonal_apply, hij]`. Simplify using `[Matrix.charmatrix_apply, Matrix.blockDiagonal_apply, Matrix.diagonal_apply, hk]`. Rewrite using `[Matrix.charpoly, h, Matrix.det_blockDiagonal]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -29,9 +29,9 @@ theorem lat_charpoly_blockDiagonal {R n o : Type*} [CommRing R] [Fintype n] [Dec
   rfl
 
 /- English proof (translation)
-Establish `hx : IsIntegral K x` using `IsIntegral.of_finite K x`. Set `pb` to `IntermediateField.adjoin.powerBasis hx`. Set `c` to `Module.finBasis (IntermediateField.adjoin K {x}) F`. Establish `hgen : algebraMap (IntermediateField.adjoin K {x}) F pb.gen = x`. Rewrite using `[IntermediateField.adjoin.powerBasis_gen]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `key` using `Algebra.smulTower_leftMulMatrix_algebraMap pb.basis c pb.gen`. Rewrite `key` using `[hgen]`. Rewrite using `[← LinearMap.charpoly_toMatrix (Algebra.lmul K F x) (pb.basis.smulTower c), ← Algebra.leftMulMatrix_apply, key]`. Rewrite using `[lat_charpoly_blockDiagonal, Finset.prod_const, Finset.card_univ, charpoly_leftMulMatrix, IntermediateField.adjoin.powerBasis_gen, IntermediateField.minpoly_gen, Fintype.card_fin]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lat_charpoly_lmul_field {K F : Type*} [Field K] [Field F] [Algebra K F] [FiniteDimensional K F] (x : F) :
     LinearMap.charpoly (Algebra.lmul K F x) = (minpoly K x) ^ Module.finrank (IntermediateField.adjoin K {x}) F := by
@@ -54,15 +54,15 @@ variable {E : Type} [Field E] [NumberField E]
 def lat_cp (θ : 𝓞 E) : Polynomial ℤ := LinearMap.charpoly (Algebra.lmul ℤ (𝓞 E) θ)
 
 /- English proof (translation)
-Rewrite using `[lat_cp, LinearMap.charpoly_natDegree, NumberField.RingOfIntegers.rank]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lat_cp_natDegree (θ : 𝓞 E) : (lat_cp θ).natDegree = Module.finrank ℚ E := by
   rw [lat_cp, LinearMap.charpoly_natDegree, NumberField.RingOfIntegers.rank]
 
 /- English proof (translation)
-Rewrite using `[lat_cp, ← LinearMap.charpoly_toMatrix (Algebra.lmul ℤ (𝓞 E) θ) (RingOfIntegers.basis E), ← Matrix.charpoly_map, ← LinearMap.charpoly_toMatrix (Algebra.lmul ℚ E (θ : E)) (integralBasis E)]`. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, LinearMap.toMatrix_apply, LinearMap.toMatrix_apply, integralBasis_apply]`. Establish `e : Algebra.lmul ℚ E (θ : E) (algebraMap (𝓞 E) E (RingOfIntegers.basis E j)) = algebraMap (𝓞 E) E (Algebra.lmul ℤ (𝓞 E) θ (RingOfIntegers.basis E j))` using `by first`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `rfl`. Consider the case `simp [map_mul]`. Rewrite using `[e, integralBasis_repr_apply]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem lat_cp_map (θ : 𝓞 E) :
     (lat_cp θ).map (algebraMap ℤ ℚ) = LinearMap.charpoly (Algebra.lmul ℚ E (θ : E)) := by
@@ -80,7 +80,7 @@ theorem lat_cp_map (θ : 𝓞 E) :
   rw [e, integralBasis_repr_apply]
 
 /- English proof (translation)
-Use `⟨Module.finrank (IntermediateField.adjoin ℚ {(θ : E)}) E, Module.finrank_pos, ?_⟩` and prove the remaining obligations. Apply `Polynomial.map_injective (algebraMap ℤ ℚ) (algebraMap ℤ ℚ).injective_int` to reduce the goal to its premises. Rewrite using `[lat_cp_map, lat_charpoly_lmul_field, Polynomial.map_pow, ← minpoly.isIntegrallyClosed_eq_field_fractions ℚ E (RingOfIntegers.isIntegral θ)]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem lat_cp_eq_minpoly_pow (θ : 𝓞 E) : ∃ r : ℕ, 1 ≤ r ∧ lat_cp θ = (minpoly ℤ θ) ^ r := by
   refine ⟨Module.finrank (IntermediateField.adjoin ℚ {(θ : E)}) E, Module.finrank_pos, ?_⟩

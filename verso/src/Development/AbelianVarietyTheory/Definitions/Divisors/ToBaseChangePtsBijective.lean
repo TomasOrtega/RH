@@ -30,7 +30,7 @@ variable {σ : R →+* R'} {τ : R' →+* R''} {A A' A'' : Type} [CommRing A] [B
   [CommRing A'] [Bialgebra R' A'] [CommRing A''] [Bialgebra R'' A'']
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_smul_of_algebraMap {A A' : Type} [CommRing A] [Algebra R A] [CommRing A']
     [Algebra R' A'] (f : A →+* A') (h : ∀ r, f (algebraMap R A r) = algebraMap R' A' (σ r))
@@ -51,7 +51,7 @@ Both sides reduce to the same expression.
 @[simp] theorem lin_apply (a : A) : f.lin a = f a := rfl
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one, f.smul_map, map_one, Algebra.algebraMap_eq_smul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_algebraMap (r : R) : f (algebraMap R A r) = algebraMap R' A' (σ r) := by
   rw [Algebra.algebraMap_eq_smul_one, f.smul_map, map_one, Algebra.algebraMap_eq_smul_one]
@@ -59,7 +59,7 @@ theorem map_algebraMap (r : R) : f (algebraMap R A r) = algebraMap R' A' (σ r) 
 abbrev two : A ⊗[R] A →ₛₗ[σ] A' ⊗[R'] A' := TensorProduct.map f.lin f.lin
 
 /- English proof (translation)
-The claim follows from `(f.comul_map a).symm`.
+A detailed English derivation is pending.
 -/
 theorem two_comul (a : A) : f.two (comul a) = comul (f a) := (f.comul_map a).symm
 
@@ -88,7 +88,7 @@ Both sides reduce to the same expression.
     (g : SemiBialgHom (RingHom.id R) A B) (a : A) : g.toBialgHom a = g a := rfl
 
 /- English proof (translation)
-Proceed by induction on `c with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a b => simp [h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem two_two (g : SemiBialgHom τ A' A'') {ρ : R →+* R''} (k : A →ₛₗ[ρ] A'')
     (h : ∀ a, k a = g (f a)) (c : A ⊗[R] A) : g.two (f.two c) = TensorProduct.map k k c := by
@@ -183,22 +183,22 @@ def cot : Cot R A →ₛₗ[σ] Cot R' A' :=
       rfl) with }
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `dUnit R' (f (a - algebraMap R A (counit a))) = _`. Rewrite using `[map_sub, f.map_algebraMap, dUnit, map_sub, AugCot.d_algebraMap, sub_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem cot_d (a : A) : f.cot (dUnit R a) = dUnit R' (f a) := by
   change dUnit R' (f (a - algebraMap R A (counit a))) = _
   rw [map_sub, f.map_algebraMap, dUnit, map_sub, AugCot.d_algebraMap, sub_zero]
 
 /- English proof (translation)
-Simplify using `[cobOne_apply, two_comul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem two_cobOne (b : A) : f.two (cobOne R A b) = cobOne R' A' (f b) := by
   simp [cobOne_apply, two_comul]
 
 /- English proof (translation)
-Proceed by induction on `c with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a b`. Establish `h : ∀ t : A ⊗[R] A, TensorProduct.map f.lin f.two (TensorProduct.assoc R A A A (t ⊗ₜ b)) = TensorProduct.assoc R' A' A' A' (f.two t ⊗ₜ f b)` using `fun t => by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [add_tmul, map_add, hx, hy]`. Consider the case `tmul a b => simp`. Simplify using `[cobTwo_apply, ← two_comul, h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem cobTwo_two (c : A ⊗[R] A) :
     cobTwo R' A' (f.two c) = TensorProduct.map f.lin f.two (cobTwo R A c) := by
@@ -215,9 +215,9 @@ theorem cobTwo_two (c : A ⊗[R] A) :
     simp [cobTwo_apply, ← two_comul, h]
 
 /- English proof (translation)
-Rewrite `hc`, the goal using `[mem_symCocycles]`. Use `⟨by rw [cobTwo_two, hc.1, map_zero], ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← hc.2]`. Generalize the expression as in `c = t`. Proceed by induction on `t with`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a b => simp`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem two_mem {c : A ⊗[R] A} (hc : c ∈ symCocycles R A) : f.two c ∈ symCocycles R' A' := by
   rw [mem_symCocycles] at hc ⊢
@@ -256,7 +256,7 @@ Both sides reduce to the same expression.
 variable {R A} in
 
 /- English proof (translation)
-Use `haveI : IsScalarTower R R' B := .of_algebraMap_eq hB`. Use `⟨fun x y h => ofConv_injective (Algebra.TensorProduct.ext (Subsingleton.elim _ _) (AlgHom.ext fun a => DFunLike.congr_fun (congrArg ofConv h) a)), fun x => ?_⟩` and prove the remaining obligations. Conclude with `⟨toConv (Algebra.TensorProduct.lift (Algebra.ofId R' B) x.ofConv fun _ _ => .all _ _), ofConv_injective (AlgHom.ext fun a => by simp)⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem toBaseChange_pts_bijective (B : Type) [CommRing B] [Algebra R B] [Algebra R' B]
     (hB : ∀ r, algebraMap R B r = algebraMap R' B (algebraMap R R' r)) :
@@ -280,7 +280,7 @@ Both sides reduce to the same expression.
     (a : A) : bcMap R' g (r ⊗ₜ a) = r ⊗ₜ g a := rfl
 
 /- English proof (translation)
-The claim follows from `BialgHom.ext fun x => by induction x with | zero => simp | add x y hx hy => simp only [map_add, hx, hy] | tmul r a => rw [← mul_one r, ← smul_eq_mul, ← smul_tmul', map_smul, map_smul, e]`.
+A detailed English derivation is pending.
 -/
 theorem bc_hom_ext {g h : R' ⊗[R] A →ₐc[R'] A'} (e : ∀ a, g (1 ⊗ₜ a) = h (1 ⊗ₜ a)) : g = h :=
   BialgHom.ext fun x => by
@@ -320,7 +320,7 @@ def SemiBialgHom.liftBC (f : SemiBialgHom (algebraMap R R') A A') : R' ⊗[R] A 
         | tmul a b => simp [hg])
 
 /- English proof (translation)
-The claim follows from `(Algebra.smul_def r (f a)).symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem SemiBialgHom.liftBC_tmul (f : SemiBialgHom (algebraMap R R') A A') (r : R')
     (a : A) : f.liftBC (r ⊗ₜ a) = r • f a := (Algebra.smul_def r (f a)).symm
@@ -349,7 +349,7 @@ variable {σ : O →+* O'} {τ : O' →+* O''} {G H : PDivGroup p O} {G' H' : PD
   {G'' : PDivGroup p O''}
 
 /- English proof (translation)
-The claim follows from `SemiHom.ext (funext fun n => SemiBialgHom.ext (RingHom.ext (h n)))`.
+A detailed English derivation is pending.
 -/
 theorem ext_apply {s t : SemiHom σ G' G} (h : ∀ n a, s.app n a = t.app n a) : s = t :=
   SemiHom.ext (funext fun n => SemiBialgHom.ext (RingHom.ext (h n)))
@@ -393,7 +393,7 @@ Both sides reduce to the same expression.
 @[simp] theorem funs_val (b : G.funs) (n : ℕ) : (s.funs b).1 n = s.app n (b.1 n) := rfl
 
 /- English proof (translation)
-Proceed by induction on `c with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a b => simp [s.res_app]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem res_two (n : ℕ) (c : G.A (n + 1) ⊗[O] G.A (n + 1)) :
     pullbackTwo (G'.res n) ((s.app (n + 1)).two c) = (s.app n).two (pullbackTwo (G.res n) c) := by
@@ -415,7 +415,7 @@ Both sides reduce to the same expression.
     (s.cocycles c).1 n = (s.app n).two (c.1 n) := rfl
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `AugCot.d_surjective _ w`. Simplify using `[s.res_app]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem res_cot (n : ℕ) (w : Cot O (G.A (n + 1))) :
     cotMap (G'.res n) ((s.app (n + 1)).cot w) = (s.app n).cot (cotMap (G.res n) w) := by
@@ -433,13 +433,13 @@ Both sides reduce to the same expression.
 @[simp] theorem omega_val (w : G.omega) (n : ℕ) : (s.omega w).1 n = (s.app n).cot (w.1 n) := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun n => (s.app n).two_cobOne _)`.
+A detailed English derivation is pending.
 -/
 theorem cocycles_cob (b : G.funs) : s.cocycles (G.cob b) = G'.cob (s.funs b) :=
   Subtype.ext (funext fun n => (s.app n).two_cobOne _)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun n => (s.app n).cot_d _)`.
+A detailed English derivation is pending.
 -/
 theorem omega_dFun (b : G.funs) : s.omega (G.dFun b) = G'.dFun (s.funs b) :=
   Subtype.ext (funext fun n => (s.app n).cot_d _)
@@ -464,13 +464,13 @@ Both sides reduce to the same expression.
     s.rig (G.rigMk (c, w)) = G'.rigMk (s.cocycles c, s.omega w) := rfl
 
 /- English proof (translation)
-The claim follows from `congrArg G'.rigMk (Prod.ext (map_zero s.cocycles) rfl)`.
+A detailed English derivation is pending.
 -/
 theorem rig_rigOfOmega (w : G.omega) : s.rig (G.rigOfOmega w) = G'.rigOfOmega (s.omega w) :=
   congrArg G'.rigMk (Prod.ext (map_zero s.cocycles) rfl)
 
 /- English proof (translation)
-Take `⟨⟨c, w⟩, rfl⟩` from `Submodule.mkQ_surjective _ x`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem rigToExt_rig (x : G.RigExt) : G'.rigToExt (s.rig x) = s.vecExt (G.rigToExt x) := by
   obtain ⟨⟨c, w⟩, rfl⟩ := Submodule.mkQ_surjective _ x
@@ -483,13 +483,13 @@ variable (t : SemiHom τ G'' G') {ρ : O →+* O''} (u : SemiHom ρ G'' G)
 include h
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun n => (s.app n).two_two _ _ (h n) _)`.
+A detailed English derivation is pending.
 -/
 theorem cocycles_cocycles (c : G.cocycles) : t.cocycles (s.cocycles c) = u.cocycles c :=
   Subtype.ext (funext fun n => (s.app n).two_two _ _ (h n) _)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun n => by obtain ⟨a, ha⟩ := AugCot.d_surjective _ (w.1 n) simp [← ha, h])`.
+A detailed English derivation is pending.
 -/
 theorem omega_omega (w : G.omega) : t.omega (s.omega w) = u.omega w :=
   Subtype.ext (funext fun n => by
@@ -497,7 +497,7 @@ theorem omega_omega (w : G.omega) : t.omega (s.omega w) = u.omega w :=
     simp [← ha, h])
 
 /- English proof (translation)
-Take `⟨⟨c, w⟩, rfl⟩` from `Submodule.mkQ_surjective _ x`. Conclude with `congrArg G''.rigMk (Prod.ext (s.cocycles_cocycles t u h c) (s.omega_omega t u h w))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rig_rig (x : G.RigExt) : t.rig (s.rig x) = u.rig x := by
   obtain ⟨⟨c, w⟩, rfl⟩ := Submodule.mkQ_surjective _ x
@@ -506,7 +506,7 @@ theorem rig_rig (x : G.RigExt) : t.rig (s.rig x) = u.rig x := by
 end Comp
 
 /- English proof (translation)
-The claim follows from `(s.rig_rig t _ (fun _ _ => rfl) x).symm`.
+A detailed English derivation is pending.
 -/
 theorem comp_rig (t : SemiHom τ G'' G') (x : G.RigExt) : (t.comp s).rig x = t.rig (s.rig x) :=
   (s.rig_rig t _ (fun _ _ => rfl) x).symm
@@ -519,7 +519,7 @@ Both sides reduce to the same expression.
 variable [Fact p.Prime]
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun w => Subtype.ext (funext fun n => by obtain ⟨a, ha⟩ := AugCot.d_surjective _ (w.1 n) simp [← ha])`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem ofHom_omega (f : G ⟶ H) : (ofHom f).omega = omegaMap G H f :=
   LinearMap.ext fun w => Subtype.ext (funext fun n => by
@@ -527,7 +527,7 @@ The claim follows from `LinearMap.ext fun w => Subtype.ext (funext fun n => by o
     simp [← ha])
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => by obtain ⟨⟨c, w⟩, rfl⟩ := Submodule.mkQ_surjective _ x exact congrArg G.rigMk (Prod.ext rfl (LinearMap.congr_fun (ofHom_omega f) w))`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem ofHom_rig (f : G ⟶ H) : (ofHom f).rig = rigExtMap f :=
   LinearMap.ext fun x => by
@@ -535,7 +535,7 @@ The claim follows from `LinearMap.ext fun x => by obtain ⟨⟨c, w⟩, rfl⟩ :
     exact congrArg G.rigMk (Prod.ext rfl (LinearMap.congr_fun (ofHom_omega f) w))
 
 /- English proof (translation)
-Rewrite using `[← ofHom_rig, ← ofHom_rig, ← comp_rig]`. Conclude with `(s'.rig_rig (ofHom f') _ h x).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rig_naturality (s' : SemiHom σ H' H) (f : G ⟶ H) (f' : G' ⟶ H')
     (h : ∀ n a, s.app n (f.app n a) = f'.app n (s'.app n a)) (x : H.RigExt) :
@@ -544,7 +544,7 @@ theorem rig_naturality (s' : SemiHom σ H' H) (f : G ⟶ H) (f' : G' ⟶ H')
   exact (s'.rig_rig (ofHom f') _ h x).symm
 
 /- English proof (translation)
-Rewrite using `[← ofHom_omega, ← ofHom_omega]`. Conclude with `((ofHom f).omega_omega s (s.comp (ofHom f)) (fun _ _ => rfl) w).trans (s'.omega_omega (ofHom f') _ h w).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem omega_naturality (s' : SemiHom σ H' H) (f : G ⟶ H) (f' : G' ⟶ H')
     (h : ∀ n a, s.app n (f.app n a) = f'.app n (s'.app n a)) (w : H.omega) :
@@ -612,7 +612,7 @@ Both sides reduce to the same expression.
 variable {O'} in
 
 /- English proof (translation)
-The claim follows from `hom_ext fun n => bc_hom_ext (h n)`.
+A detailed English derivation is pending.
 -/
 theorem baseChange_hom_ext {G' : PDivGroup p O'} {f g : G' ⟶ G.baseChange O'}
     (h : ∀ n a, f.app n (1 ⊗ₜ a) = g.app n (1 ⊗ₜ a)) : f = g :=
@@ -627,7 +627,7 @@ variable (p O) in
   map_comp _ _ := baseChange_hom_ext fun _ _ => rfl
 
 /- English proof (translation)
-The claim follows from `baseChange_hom_ext fun n a => by have h1 := map_mul ((toBaseChange O O' (H.A n)).pts (O' ⊗[O] G.A n) fun _ => rfl) (toPts ((baseChangeMap O' f).conv n)) (toPts ((baseChangeMap O' g).conv n)) have h2 := map_mul (ptsPush (H.A n) (Algebra.TensorProduct.includeRight : G.A n →ₐ[O] O' …`.
+A detailed English derivation is pending.
 -/
 theorem baseChangeMap_add (f g : G ⟶ H) :
     baseChangeMap O' (f + g) = baseChangeMap O' f + baseChangeMap O' g :=
@@ -646,7 +646,7 @@ def SemiHom.lift {G' : PDivGroup p O'} (s : SemiHom (algebraMap O O') G' G) :
   ⟨fun n => (s.app n).liftBC, fun n => bc_hom_ext fun a => by simp [s.res_app]⟩
 
 /- English proof (translation)
-The claim follows from `(s.app n).liftBC_tmul r a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem SemiHom.lift_app {G' : PDivGroup p O'} (s : SemiHom (algebraMap O O') G' G)
     (n : ℕ) (r : O') (a : G.A n) : s.lift.app n (r ⊗ₜ a) = r • s.app n a :=
@@ -668,7 +668,7 @@ section Examples
 variable [Fact p.Prime]
 
 /- English proof (translation)
-The claim follows from `SemiBialgHom.cot_d _ _`.
+A detailed English derivation is pending.
 -/
 example [Algebra O O'] (n : ℕ) : (((mu p O).toBase O').omega (dlogT p O)).1 n =
     dUnit O' ((1 : O') ⊗ₜ[O] muT O (p ^ n)) := SemiBialgHom.cot_d _ _

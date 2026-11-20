@@ -18,7 +18,7 @@ local notation "κ" => algebraMap (𝓞 K) K
 variable {𝔭 : Ideal (𝓞 F)}
 
 /- English proof (translation)
-Establish `e : starRingEnd K (h x y) = h y x` using `by first`. Consider the case `exact hs.eq x y`. Consider the case `exact hs x y`. Rewrite `e` using `[hxy, map_zero]`. Conclude with `e.symm`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm0 {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {x y : V} (hxy : h x y = 0) : h y x = 0 := by
   have e : starRingEnd K (h x y) = h y x := by
@@ -29,7 +29,7 @@ theorem symm0 {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {x y : V} (hxy 
   exact e.symm
 
 /- English proof (translation)
-Simplify using `only [LinearMap.map_smulₛₗ₂, LinearMap.smul_apply, map_smul, smul_eq_mul, starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_smul_smul (h : V →ₗ⋆[K] V →ₗ[K] K) (μ ν : K) (x y : V) :
     h (μ • x) (ν • y) = star μ * ν * h x y := by
@@ -37,9 +37,9 @@ theorem form_smul_smul (h : V →ₗ⋆[K] V →ₗ[K] K) (μ ν : K) (x y : V) 
   ring
 
 /- English proof (translation)
-Establish `hd0 : h e e ≠ 0` using `fun h0 => he (han e h0)`. Establish `hds : star (h e e) = h e e`. Establish `e' : starRingEnd K (h e e) = h e e` using `by first`. Consider the case `exact hs.eq e e`. Consider the case `exact hs e e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Rewrite `e'` using `[starRingEnd_apply]`. Then use the resulting hypothesis. Take `⟨μ, -, hμs, a, ha, ha2⟩` from `exists_scale_fixed hF h𝔭 hd0 hds`. Conclude with `⟨μ, a, by rw [form_smul_smul, hμs, ha], ha2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_normalise (hF : IsFixF K F) (h𝔭 : 𝔭.IsMaximal) {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hs : h.IsSymm) (han : ∀ x, h x x = 0 → x = 0) {e : V} (he : e ≠ 0) :
@@ -55,15 +55,15 @@ theorem exists_normalise (hF : IsFixF K F) (h𝔭 : 𝔭.IsMaximal) {h : V →�
   exact ⟨μ, a, by rw [form_smul_smul, hμs, ha], ha2⟩
 
 /- English proof (translation)
-Establish `hez` using `symm0 hs hze`. Take `⟨α, ν, hν, hW2, hW3⟩` from `exists_alpha hK hF h𝔭 hcp hc2 hap ha2`. Establish `hν' : star (κ α) * κ α = κ (ι ν)` using `by rw [← hν, map_mul]; rfl`. Use `set W := c * ν + a with hW`. Establish `hW0 : W ≠ 0` using `fun h0 => hW3 (h0 ▸ zero_mem _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : c ≠ 0` using `fun h0 => hc2 (h0 ▸ zero_mem _)`. Establish `ha0 : a ≠ 0` using `fun h0 => ha2 (h0 ▸ zero_mem _)`. Take `⟨μ₁, -, hμ₁s, b₁, hb₁, hb₁'⟩` from `exists_scale (K := K) (r := 1) (k := 0) hF h𝔭 (by simpa using hW2) (by simpa using hW3)`. Take `⟨μ₂, -, hμ₂s, b₂, hb₂, hb₂'⟩` from `exists_scale_int (K := K) hF h𝔭 (mul_ne_zero (mul_ne_zero hc0 ha0) hW0)`. Establish `hsι : ∀ t : 𝓞 F, star (κ (ι t)) = κ (ι t)` using `star_ι hF`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨μ₁ • (κ α • z + e), μ₂ • ((-κ (ι a)) • z + (star (κ α) * κ (ι c)) • e), b₁, b₂, ?_, ?_, by simpa using hb₁', hb₂', ?_, fun v hzv hev => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[form_smul_smul, hμ₁s, ← hb₁]`. Use `congr 1`. Simplify using `only [map_add, LinearMap.add_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, starRingEnd_apply, hz, he, hze, hez, hW, map_mul]`. Take the linear combination `κ (ι c) * hν'`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[form_smul_smul, hμ₂s, ← hb₂]`. Use `congr 1`. Simplify using `only [map_add, LinearMap.add_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, starRingEnd_apply, hz, he, hze, hez, hW, map_mul, star_neg, star_star, hsι]`. Take the linear combination `(κ (ι c) * κ (ι c) * κ (ι a)) * hν'`. Rewrite using `[form_smul_smul]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, LinearMap.add_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, starRingEnd_apply, hz, he, hze, hez, star_neg, star_mul', star_star, hsι]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [map_add, LinearMap.add_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, hzv, hev, mul_zero, add_zero]`. Simplify using `only [map_add, LinearMap.add_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, hzv, hev, mul_zero, add_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_pair (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (h𝔭 : 𝔭.IsMaximal)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {z e : V} {c a : 𝓞 F} (hze : h z e = 0)
@@ -105,7 +105,7 @@ theorem exists_pair (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : I
       smul_eq_mul, hzv, hev, mul_zero, add_zero]
 
 /- English proof (translation)
-Establish `e : ∀ c : 𝓞 F, κ (ι c) = algebraMap F K (c : F)` using `fun c => rfl`. Rewrite `hab` using `[e, e]`. Conclude with `RingOfIntegers.ext ((algebraMap F K).injective hab)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem κι_inj {a b : 𝓞 F} (hab : κ (ι a) = κ (ι b)) : a = b := by
   have e : ∀ c : 𝓞 F, κ (ι c) = algebraMap F K (c : F) := fun c => rfl
@@ -115,33 +115,29 @@ theorem κι_inj {a b : 𝓞 F} (hab : κ (ι a) = κ (ι b)) : a = b := by
 variable [FiniteDimensional K V]
 
 /- English proof (translation)
-Establish `hp` using `h𝔭.isPrime`. Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `_`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun i => i.elim0, fun i => i.elim0, x₀, n, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, hx, ?_, fun hm => hn (Ideal.pow_le_self two_ne_zero hm), Or.inl rfl⟩` and prove the remaining obligations. Rewrite using `[Finset.univ_eq_empty, Finset.prod_empty]`. Conclude with `fun h1 => h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Consider the case `succ r ih`. Introduce `hr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, a, z, c, ho, hzy, hny, hnz, hprod, hc2, hx₀⟩` from `ih (by omega)`. Take `⟨e₀, he₀, hoe⟩` from `GramDeterminantPositive.exists_ortho_ne_zero h (Fin.cons z y : Fin (r + 1) → V) (by omega)`. Take `⟨μ, ae, hne, hae2⟩` from `exists_normalise hF h𝔭 hs han he₀`. Establish `hze : h z (μ • e₀) = 0`. Use `hoe 0` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Fin.cons_zero]`. Rewrite using `[map_smul, this, smul_zero]`. Establish `hye : ∀ i, h (y i) (μ • e₀) = 0` using `fun i => by`. Use `hoe i.succ` as an intermediate fact. Rewrite `this` using `[Fin.cons_succ]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_smul, this, smul_zero]`. Use `set e := μ • e₀ with he`. Establish `key : ∃ u w : V, ∃ b₁ b₂ : 𝓞 F, h u u = κ (ι b₁) ∧ h w w = κ (ι b₂) ∧ b₁ ∉ 𝔭 ∧ b₂ ∉ 𝔭 ^ 2 ∧ h w u = 0 ∧ (∀ i, h u (y i) = 0 ∧ h w (y i) = 0) ∧ (u = x₀ ∨ ∃ i, y i = x₀)`. Distinguish the cases in `hcp : c ∈ 𝔭`. Establish `hx₀' : ∃ i, y i = x₀`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hx₀ with rfl | h1` into its components or cases. Conclude with `absurd hcp (by rw [κι_inj (hnz.symm.trans hx)]; exact hn)`. Conclude with `h1`. Distinguish the cases in `hap : ae ∈ 𝔭`. Take `⟨u, w, b₁, b₂, h1, h2, h3, h4, h5, h6⟩` from `exists_pair hK hF h𝔭 hs hze hnz hne hc2 hae2 hcp hap`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨u, w, b₁, b₂, h1, h2, h3, h4, h5, fun i => h6 _ (hzy i) (symm0 hs (hye i)), Or.inr hx₀'⟩`. Conclude with `⟨e, z, ae, c, hne, hnz, hap, hc2, hze, fun i => ⟨symm0 hs (hye i), hzy i⟩, Or.inr hx₀'⟩`. Conclude with `⟨z, e, c, ae, hnz, hne, hcp, hae2, symm0 hs hze, fun i => ⟨hzy i, symm0 hs (hye i)⟩, hx₀⟩`. Take `⟨u, w, b₁, b₂, h1, h2, h3, h4, h5, h6, h7⟩` from `key`. Use `⟨Fin.cons u y, Fin.cons b₁ a, w, b₂, ?_, ?_, ?_, h2, ?_, h4, Or.inr ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j`. Introduce `hij`. Conclude with `absurd rfl hij`. Introduce `_`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Fin.cons_zero, Fin.cons_succ]`. Conclude with `(h6 j).1`. Introduce `_`. Rewrite using `[Fin.cons_zero, Fin.cons_succ]`. Conclude with `symm0 hs (h6 i).1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `hij`. Rewrite using `[Fin.cons_succ, Fin.cons_succ]`. Conclude with `ho i j fun hh => hij (by rw [hh])`. Introduce `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.cons_zero]`. Conclude with `h5`. Rewrite using `[Fin.cons_succ]`. Conclude with `(h6 i).2`. Introduce `i`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.cons_zero, Fin.cons_zero]`. Conclude with `h1`. Rewrite using `[Fin.cons_succ, Fin.cons_succ]`. Conclude with `hny i`.
-
-Rewrite using `[Fin.prod_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Conclude with `fun hm => (hp.mem_or_mem hm).elim h3 hprod`. Break down `h7 with rfl | ⟨i, hi⟩` into its components or cases. Conclude with `⟨0, by rw [Fin.cons_zero]⟩`.
-
-Conclude with `⟨i.succ, by rw [Fin.cons_succ]; exact hi⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_family (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (h𝔭 : 𝔭.IsMaximal)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (han : ∀ x, h x x = 0 → x = 0) {x₀ : V} {n : 𝓞 F}

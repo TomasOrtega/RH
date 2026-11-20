@@ -13,7 +13,7 @@ section SpacesG
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 
 /- English proof (translation)
-Rewrite using `[diagForm_single_left]`. Simplify using `[sgn]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem z_anis_gen (n : ℕ) : diagForm (E := E) (n + 1) (fun _ => false) (Pi.single (Fin.last n) 1)
     (Pi.single (Fin.last n) 1) ≠ 0 := by
@@ -21,7 +21,7 @@ theorem z_anis_gen (n : ℕ) : diagForm (E := E) (n + 1) (fun _ => false) (Pi.si
   simp [sgn]
 
 /- English proof (translation)
-Rewrite using `[diagForm_single_right, extZero_last]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem z_orth_gen (n : ℕ) (x : Fin n → E) :
     diagForm (n + 1) (fun _ => false) (extZero n x) (Pi.single (Fin.last n) 1) = 0 := by
@@ -29,7 +29,7 @@ theorem z_orth_gen (n : ℕ) (x : Fin n → E) :
   simp
 
 /- English proof (translation)
-Use `⟨Pi.basisFun E (Fin n), (Pi.basisFun E (Fin n)).linearIndependent, (Pi.basisFun E (Fin n)).span_eq, rfl, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.basisFun_apply, Pi.basisFun_apply, diagForm_single]`. Simplify using `[sgn]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vstd_gen (n : ℕ) :
     Formalism.HermitianLatticesTheory.IsOrthoLattice (diagForm (E := E) n (fun _ => false)) (stdLat n) n := by
@@ -49,7 +49,7 @@ def gXr : ℕ → ℕ
   | _ + 2 => 9 + 2 * (2 * s + 15) + 1
 
 /- English proof (translation)
-Establish `: (Rt s).m = 2` using `rfl`. Take `rfl | rfl | rfl : j = 0 ∨ j = 1 ∨ j = 2` from `by omega`. Apply the tactic sequence `all_goals simp [gXr, Ranks.N, Ranks.rankY, Ranks.r, Rt] <;> omega`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gXr_eq (j : ℕ) (hj : j ≤ (Rt s).m) : gXr s j = (Rt s).N j := by
   have : (Rt s).m = 2 := rfl
@@ -135,9 +135,9 @@ def spacesG : Spaces (Rt s) F E where
   V_std := fun _ _ _ => vstd_gen _
 
 /- English proof (translation)
-Introduce `j hj τ`. Establish `: (Rt s).m = 2` using `rfl`. Take `rfl | rfl | rfl : j = 0 ∨ j = 1 ∨ j = 2` from `by omega`. Use `show ((8, 1) : ℕ × ℕ) = _`. Simplify using `[sigYD, Ranks.rankY, Ranks.r, Rt]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `show (((Rt s).rankY 1, 0) : ℕ × ℕ) = _`. Simplify using `[sigYD, Rt]`. Use `show (((Rt s).rankY 2, 0) : ℕ × ℕ) = _`. Simplify using `[sigYD, Rt]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem spacesG_Ysig : ∀ j, j ≤ (Rt s).m → ∀ τ : E →+* ℂ,
     ((spacesG s hstar cm T hT pz hpz hy).Y j).sig τ = sigYD (Rt s) j := by
@@ -238,7 +238,7 @@ abbrev rowsG : Rows.Data R where
 end RowsG
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `R.k_even`. Take `⟨b, hb⟩` from `R.t_odd`. Conclude with `⟨a + j * (b + 1), by unfold Ranks.N; rw [ha, hb]; ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem N_even (R : Ranks) (j : ℕ) : ∃ a : ℕ, R.N j = 2 * a := by
   obtain ⟨a, ha⟩ := R.k_even
@@ -246,11 +246,11 @@ theorem N_even (R : Ranks) (j : ℕ) : ∃ a : ℕ, R.N j = 2 * a := by
   exact ⟨a + j * (b + 1), by unfold Ranks.N; rw [ha, hb]; ring⟩
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `hc.e_int i`. Take `⟨a, ha⟩` from `N_even R i.1`. Take `⟨b, hb⟩` from `N_even R (i.1 + 1)`. Use `⟨⟨z - a, ?_⟩, ⟨z - b, ?_⟩⟩` and prove the remaining obligations. Unfold `sExp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[Nat.add_sub_cancel, ha, hz]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Unfold `sExp'`. Rewrite using `[hb, hz]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sInt (R : Ranks) (hc : HCParam R) (i : Fin R.m) :
     (∃ a : ℤ, sExp R (hc.e i) (i.1 + 1) = a) ∧ (∃ a : ℤ, sExp' R (hc.e i) (i.1 + 1) = a) := by
@@ -330,7 +330,7 @@ end MemberG
 def dstarG (Ts Gam : ℝ) : ℝ := (Ts * Gam ^ ((2 : ℝ) / 64)) ^ (64 : ℕ)
 
 /- English proof (translation)
-Establish `: 0 < Gam` using `by linarith`. Unfold `dstarG`. Check the signs of the components of the expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem dstarG_pos {Ts Gam : ℝ} (hTs : 0 < Ts) (hG : 1 < Gam) : 0 < dstarG Ts Gam := by
   have : 0 < Gam := by linarith
@@ -341,7 +341,7 @@ section Record
 abbrev TauG (s : ℕ) : Type := ↥((Rt s).Psi)
 
 /- English proof (translation)
-Rewrite using `[card_Psi]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem card_TauG (s : ℕ) : Fintype.card (TauG s) = (Rt s).f := by
   rw [card_Psi]; rfl
@@ -353,7 +353,7 @@ abbrev memG (hc : HCParam (Rt s)) (T : ℕ) [Fact T.Prime] (Ts : ℝ) (hTs : 0 <
   ⟨chainG hc (TauG s), atTG hc (TauG s) T (dstarG Ts Gam) (dstarG_pos hTs hG) Gam hG, periodG hc (TauG s)⟩
 
 /- English proof (translation)
-Establish `hG0 : 0 < Gam` using `by linarith`. Use `show (dstarG Ts Gam / ((1 : ℕ) : ℝ)) ^ ((1 : ℝ) / (((8 : ℕ) : ℝ) * ((8 : ℕ) : ℝ))) * Gam ^ (-(2 : ℝ) / (((8 : ℕ) : ℝ) * ((8 : ℕ) : ℝ))) = Ts`. Establish `h64 : ((8 : ℕ) : ℝ) * ((8 : ℕ) : ℝ) = ((64 : ℕ) : ℝ)` using `by norm_num`. Rewrite using `[Nat.cast_one, div_one, h64, one_div, dstarG, Real.pow_rpow_inv_natCast (by positivity) (by norm_num), mul_assoc, ← Real.rpow_add hG0]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem memG_Tstar (hc : HCParam (Rt s)) (T : ℕ) [Fact T.Prime] (Ts : ℝ) (hTs : 0 < Ts) (Gam : ℝ)
     (hG : 1 < Gam) : (memG hc T Ts hTs Gam hG).A.Tstar = Ts := by
@@ -366,7 +366,7 @@ theorem memG_Tstar (hc : HCParam (Rt s)) (T : ℕ) [Fact T.Prime] (Ts : ℝ) (hT
   norm_num
 
 /- English proof (translation)
-Rewrite using `[memG_Tstar]`. Use `⟨hw1, ?_⟩` and prove the remaining obligations. Use `show (T : ℝ) ≤ (1 + 1 / (((8 : ℕ) : ℝ) * ((8 : ℕ) : ℝ))) * Ts`. Evaluate the numerical expressions using `at hw2 ⊢`. Conclude with `hw2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem genericMember_level_near_lower (hc : HCParam (Rt s)) (T : ℕ) [Fact T.Prime] (Ts : ℝ) (hTs : 0 < Ts) (Gam : ℝ)
     (hG : 1 < Gam) (hw1 : Ts ≤ T) (hw2 : (T : ℝ) ≤ (1 + 1 / 64) * Ts) :
@@ -386,7 +386,7 @@ abbrev rowsHG (Ts : ℝ) (_hTs : 0 < Ts) (Gam : ℝ) (_hG : 1 < Gam) : Rows.Data
     (shaExample_nonneg H) (exampleClassGroupCard H) (exampleClassGroupCard_pos H)
 
 /- English proof (translation)
-Introduce `p _ e _ _` and use `shaExample_eq H p e hcard := rfl hg := hg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nHypG (Ts : ℝ) (hTs : 0 < Ts) (Gam : ℝ) (hG : 1 < Gam)
     (hg : ∀ k, (placesOver H.E (H.g k)).ncard = Module.finrank ℚ H.E) :
@@ -605,7 +605,7 @@ Both sides reduce to the same expression.
 -/
 theorem genericRecord_mem_A_T (u) : ((genericRecord H hc hgap hlet T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).mem u).A.T = T := rfl
 /- English proof (translation)
-The claim follows from `memG_Tstar hc T Ts hTs Gam hG`.
+A detailed English derivation is pending.
 -/
 theorem genericRecord_lowerLevel (u) : ((genericRecord H hc hgap hlet T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).mem u).A.Tstar = Ts := memG_Tstar hc T Ts hTs Gam hG
 /- English proof (translation)

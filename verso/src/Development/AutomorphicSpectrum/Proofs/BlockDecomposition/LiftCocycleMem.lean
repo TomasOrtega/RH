@@ -34,7 +34,7 @@ def bar : R ⧸ I ≃+* R := (Ideal.quotEquivOfEq hI).trans (RingEquiv.quotientB
 def gk (κ : O →+* R ⧸ I) : O →+* R := (bar hI).toRingHom.comp κ
 
 /- English proof (translation)
-Substitute `hI` using the available equality. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem mk_bar (x : R ⧸ I) : Ideal.Quotient.mk I (bar hI x) = x := by
   subst hI
@@ -42,7 +42,7 @@ theorem mk_bar (x : R ⧸ I) : Ideal.Quotient.mk I (bar hI x) = x := by
   rfl
 
 /- English proof (translation)
-The claim follows from `mk_bar hI (κ a)`.
+A detailed English derivation is pending.
 -/
 theorem mk_gk (κ : O →+* R ⧸ I) (a : O) : Ideal.Quotient.mk I (gk hI κ a) = κ a := mk_bar hI (κ a)
 
@@ -57,9 +57,9 @@ abbrev qF : XF hI q κ ⟶ Spec (CommRingCat.of R) := pullback.snd _ _
 variable {q κ} {γ : DividedPowers I} {p : ℕ}
 
 /- English proof (translation)
-Establish `h` using `(show PtOver X q κ (T.B ⧸ T.J) from T.y).2`. Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congrArg (fun f => Spec.map (CommRingCat.ofHom f)) (RingHom.ext fun a => ?_)` and prove the remaining obligations. Establish `hw` using `T.w (gk hI κ a)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hw` using `[mk_gk]`. Conclude with `hw`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_comp (T : Thick (nlFun γ p X q κ)) :
     pt T ≫ q = Spec.map (CommRingCat.ofHom ((Ideal.Quotient.mk T.J).comp T.i)) ≫
@@ -73,7 +73,7 @@ theorem pt_comp (T : Thick (nlFun γ p X q κ)) :
   exact hw
 
 /- English proof (translation)
-Use `φ.pt` as an intermediate fact. Unfold `pt`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pt_nat {T T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T') :
     pt T' = Spec.map (CommRingCat.ofHom (Ideal.quotientMap T'.J φ.φ φ.hle)) ≫ pt T := by
@@ -96,7 +96,7 @@ def fib : Pts (nlFun γ p X q κ) (qF hI q κ) where
   str T := pullback.lift_snd _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem fib_fst (T : Thick (nlFun γ p X q κ)) : (fib hI q κ γ p).pt T ≫ jF hI q κ = pt T := pullback.lift_fst _ _ _
 
@@ -117,7 +117,7 @@ def InY (W : Y.Opens) (T : Thick L) : Prop := ⊤ ≤ 𝔭.pt T ⁻¹ᵁ W
 def ev {W : Y.Opens} (T : Thick L) (h : InY 𝔭 W T) : Γ(Y, W) →+* T.B ⧸ T.J := GlobalTheory.Cris.evalAt (𝔭.pt T) W h
 
 /- English proof (translation)
-Establish `key : ∀ (y : Spec (CommRingCat.of (T'.B ⧸ T'.J)) ⟶ Y) (hy : y = Spec.map (CommRingCat.ofHom (Ideal.quotientMap T'.J φ.φ φ.hle)) ≫ 𝔭.pt T) (hh : ⊤ ≤ y ⁻¹ᵁ W), GlobalTheory.Cris.evalAt y W hh f = Ideal.quotientMap T'.J φ.φ φ.hle (ev 𝔭 T h f)`. Introduce `y hy hh`. Substitute `hy` using the available equality. Conclude with `evalAt_map (B := CommRingCat.of (T.B ⧸ T.J)) (B' := CommRingCat.of (T'.B ⧸ T'.J)) _ (𝔭.pt T) h hh f`. Conclude with `key _ (𝔭.nat φ) h'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ev_nat {W : Y.Opens} {T T' : Thick L} (φ : T ⟶ T') (h : InY 𝔭 W T) (h' : InY 𝔭 W T') (f : Γ(Y, W)) :
     ev 𝔭 T' h' f = Ideal.quotientMap T'.J φ.φ φ.hle (ev 𝔭 T h f) := by
@@ -129,13 +129,13 @@ theorem ev_nat {W : Y.Opens} {T T' : Thick L} (φ : T ⟶ T') (h : InY 𝔭 W T)
   exact key _ (𝔭.nat φ) h'
 
 /- English proof (translation)
-The claim follows from `evalAt_res (𝔭.pt T) hW h h' f`.
+A detailed English derivation is pending.
 -/
 theorem ev_res {W W' : Y.Opens} (hW : W' ≤ W) (T : Thick L) (h : InY 𝔭 W T) (h' : InY 𝔭 W' T) (f : Γ(Y, W)) :
     ev 𝔭 T h' (rs hW f) = ev 𝔭 T h f := evalAt_res (𝔭.pt T) hW h h' f
 
 /- English proof (translation)
-The claim follows from `evalAt_base qY (RingHom.id b.R) ((Ideal.Quotient.mk T.J).comp T.i) (𝔭.pt T) (by rw [RingHom.comp_id]; exact 𝔭.str T) h a`.
+A detailed English derivation is pending.
 -/
 theorem ev_str {W : Y.Opens} (T : Thick L) (h : InY 𝔭 W T) (a : b.R) :
     ev 𝔭 T h (strV qY W a) = Ideal.Quotient.mk T.J (T.i a) :=
@@ -147,7 +147,7 @@ def lft (W : Y.Opens) (T : Thick L) (f : Γ(Y, W)) : T.B :=
   if h : InY 𝔭 W T then Function.surjInv Ideal.Quotient.mk_surjective (ev 𝔭 T h f) else 0
 
 /- English proof (translation)
-Rewrite using `[lft, dif_pos h]`. Conclude with `Function.surjInv_eq _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lft_spec {W : Y.Opens} (T : Thick L) (h : InY 𝔭 W T) (f : Γ(Y, W)) :
     Ideal.Quotient.mk T.J (lft 𝔭 W T f) = ev 𝔭 T h f := by
@@ -168,7 +168,7 @@ def Rp {W : Y.Opens} (P : ObjectProperty (Thick L)) {d r : ℕ} (u : Fin d → �
       (show (sP P).A.obj (s.obj (Fin.last r)) from lft 𝔭 W (s.obj (Fin.last r)).obj (x I))) c
 
 /- English proof (translation)
-Establish `h` using `hP _ T.property`. Establish `h'` using `hP _ T'.property`. Express the relevant statement in the definitionally equal form `v T'.obj - φ.hom.φ (v T.obj) ∈ T'.obj.J`. Rewrite using `[← Ideal.Quotient.eq, hv _ h', ev_nat 𝔭 φ.hom h h' f, ← hv _ h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lift_sub_mem {W : Y.Opens} {P : ObjectProperty (Thick L)} (hP : ∀ T, P T → InY 𝔭 W T) (f : Γ(Y, W))
     (v : ∀ T : Thick L, T.B) (hv : ∀ (T : Thick L) (h : InY 𝔭 W T), Ideal.Quotient.mk T.J (v T) = ev 𝔭 T h f)
@@ -181,11 +181,9 @@ theorem lift_sub_mem {W : Y.Opens} {P : ObjectProperty (Thick L)} (hP : ∀ T, P
   rfl
 
 /- English proof (translation)
-Establish `hF` using `GlobalTheory.CompanionTheory.DPFil.isFil_sFil P`. Establish `hu' : ∀ i {T T' : P.FullSubcategory} (φ : T ⟶ T'), (show (sP P).A.obj T' from u i T'.obj) - ((sP P).A.map φ).hom (show (sP P).A.obj T from u i T.obj) ∈ (sP P).J.S T'` using `fun i _ _ φ => lift_sub_mem 𝔭 hP (t i) (u i) (hu i) φ`. Establish `hy : ∀ (I : Idx r d) {T T' : P.FullSubcategory} (φ : T ⟶ T'), (show (sP P).A.obj T' from lft 𝔭 W T'.obj (x I)) - ((sP P).A.map φ).hom (show (sP P).A.obj T from lft 𝔭 W T.obj (x I)) ∈ (sP P).J.S T'` using `fun I _ _ φ => lift_sub_mem 𝔭 hP (x I) (fun T => lft 𝔭 W T (x I)) (fun T h => lft_spec 𝔭 T h (x I)) φ`. Use `choose f hf hz using fun I : Idx r d => GlobalTheory.CompanionTheory.GrForm.stCocycle hF (fun i (T : P.FullSubcategory) => (show (sP P).A.obj T from u i T.obj)) hu' (fun T : P.FullSubcategory => (show (sP P).A.obj T from lft 𝔭 W T.obj (x I))) (hy I) I.1`. Establish `hd : CH.d (sq (sFil P r) (sFil P ((r : ℤ) + 1))) r (∑ I, f I) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun I _ => hf I`. Use `⟨(CH.cx (sq (sFil P r) (sFil P ((r : ℤ) + 1)))).cls (∑ I, f I) hd, ∑ I, f I, hd, rfl, ?_⟩` and prove the remaining obligations. Introduce `s`. Establish `e : (show sqM (sFil P r) (sFil P ((r : ℤ) + 1)) _ from (∑ I, f I) s) = ∑ I, (show sqM (sFil P r) (sFil P ((r : ℤ) + 1)) _ from f I s)` using `Finset.sum_apply _ _ _`.
-
-Rewrite using `[e, AddSubmonoidClass.coe_finset_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun I _ => hz I s`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rp (W : Y.Opens) {d : ℕ} (t : Fin d → Γ(Y, W)) (u : Fin d → ∀ T : Thick L, T.B) (hu : IsLift 𝔭 W t u)
     (P : ObjectProperty (Thick L)) (hP : ∀ T, P T → InY 𝔭 W T) (r : ℕ) (x : Idx r d → Γ(Y, W)) :
@@ -212,21 +210,21 @@ theorem exists_rp (W : Y.Opens) {d : ℕ} (t : Fin d → Γ(Y, W)) (u : Fin d �
   exact Finset.sum_congr rfl fun I _ => hz I s
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_add, lft_spec 𝔭 T h, lft_spec 𝔭 T h, lft_spec 𝔭 T h, map_add, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lft_add_sub {W : Y.Opens} (T : Thick L) (h : InY 𝔭 W T) (f g : Γ(Y, W)) :
     lft 𝔭 W T (f + g) - (lft 𝔭 W T f + lft 𝔭 W T g) ∈ T.J := by
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_add, lft_spec 𝔭 T h, lft_spec 𝔭 T h, lft_spec 𝔭 T h, map_add, sub_self]
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_neg, lft_spec 𝔭 T h, lft_spec 𝔭 T h, map_neg, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lft_neg_sub {W : Y.Opens} (T : Thick L) (h : InY 𝔭 W T) (f : Γ(Y, W)) :
     lft 𝔭 W T (-f) - (-lft 𝔭 W T f) ∈ T.J := by
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_neg, lft_spec 𝔭 T h, lft_spec 𝔭 T h, map_neg, sub_self]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `u i T'.obj - φ.hom.φ (u i T.obj) ∈ T'.obj.J`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, hu i _ (hP _ T'.property), ev_nat 𝔭 φ.hom (hP _ T.property) (hP _ T'.property), ← hu i _ (hP _ T.property)]`. Conclude with `sub_eq_zero.2 rfl`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_cocycle {W : Y.Opens} {d : ℕ} {t : Fin d → Γ(Y, W)} {u : Fin d → ∀ T : Thick L, T.B}
     (hu : IsLift 𝔭 W t u) (P : ObjectProperty (Thick L)) (hP : ∀ T, P T → InY 𝔭 W T) (i : Fin d)
@@ -238,9 +236,9 @@ theorem lift_cocycle {W : Y.Opens} {d : ℕ} {t : Fin d → Γ(Y, W)} {u : Fin d
   exact sub_eq_zero.2 rfl
 
 /- English proof (translation)
-Establish `hF : IsFil (sP P) (sFil P)` using `GlobalTheory.CompanionTheory.DPFil.isFil_sFil P`. Establish `hcoc` using `fun i {T T' : P.FullSubcategory} (φ : T ⟶ T') => lift_cocycle 𝔭 hu P hP i φ`. Prove the components needed by the constructor for the conclusion. Use `rep_add (fun s => ?_) hc hc'` and prove the remaining obligations. Use `sum_wz_sub hF (fun i T => u i T.obj) hcoc (fun I : Idx r d => I.1) s (fun I => (show (sP P).A.obj (s.obj (Fin.last r)) from lft 𝔭 W (s.obj (Fin.last r)).obj ((x + x') I))) (fun I => (show (sP P).A.obj (s.obj (Fin.last r)) from lft 𝔭 W (s.obj (Fin.last r)).obj (x I)) + (show (sP P …` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `only [mul_add, Finset.sum_add_distrib]`. Use `rep_neg (fun s => ?_) hc` and prove the remaining obligations. Use `sum_wz_sub hF (fun i T => u i T.obj) hcoc (fun I : Idx r d => I.1) s (fun I => (show (sP P).A.obj (s.obj (Fin.last r)) from lft 𝔭 W (s.obj (Fin.last r)).obj ((-x) I))) (fun I => -(show (sP P).A.obj (s.obj (Fin.last r)) from lft 𝔭 W (s.obj (Fin.last r)).obj (x I))) (fun I => lft_n …` as an intermediate fact. Simplify `this` using `only [mul_neg, Finset.sum_neg_distrib]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rp_add (W : Y.Opens) {d : ℕ} (t : Fin d → Γ(Y, W)) (u : Fin d → ∀ T : Thick L, T.B) (hu : IsLift 𝔭 W t u)
     (P : ObjectProperty (Thick L)) (hP : ∀ T, P T → InY 𝔭 W T) (r : ℕ) (x x' : Idx r d → Γ(Y, W))
@@ -264,7 +262,7 @@ theorem rp_add (W : Y.Opens) {d : ℕ} (t : Fin d → Γ(Y, W)) (u : Fin d → �
     simpa only [mul_neg, Finset.sum_neg_distrib] using this
 
 /- English proof (translation)
-Establish `h` using `hQ _ T.property`. Establish `h'` using `hQ _ T'.property`. Express the relevant statement in the definitionally equal form `u i T'.obj - φ.hom.φ (u i T.obj) ∈ T'.obj.J`. Use `Ideal.Quotient.eq.1 ?_` and prove the remaining obligations. Rewrite using `[hu i T'.obj h', ev_nat 𝔭 φ.hom h h' (t i), ← hu i T.obj h]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -280,7 +278,7 @@ theorem lift_cocycle_mem {W : Y.Opens} {d : ℕ} {t : Fin d → Γ(Y, W)} {u : F
   rfl
 
 /- English proof (translation)
-Use `Ideal.Quotient.eq.1 ?_` and prove the remaining obligations. Rewrite using `[lft_spec 𝔭 T h f, lft_spec 𝔭 T h' (rs hW f), ev_res 𝔭 hW T h h' f]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lft_res_sub_mem {W W' : Y.Opens} (hW : W' ≤ W) (T : Thick L) (h : InY 𝔭 W T) (h' : InY 𝔭 W' T) (f : Γ(Y, W)) :
     lft 𝔭 W T f - lft 𝔭 W' T (rs hW f) ∈ T.J := by
@@ -288,15 +286,15 @@ theorem lft_res_sub_mem {W W' : Y.Opens} (hW : W' ≤ W) (T : Thick L) (h : InY 
   rw [lft_spec 𝔭 T h f, lft_spec 𝔭 T h' (rs hW f), ev_res 𝔭 hW T h h' f]
 
 /- English proof (translation)
-Take `⟨f, hf, rfl, hz⟩` from `hc`. Establish `hF` using `GlobalTheory.CompanionTheory.DPFil.isFil_sFil P'`. Establish `hP'W : ∀ T, P' T → InY 𝔭 W T` using `fun T h => hP T (hPP T h)`. Use `⟨(resU (GF L r) hPP).pullC r f, ?_, rfl, ?_⟩` and prove the remaining obligations. Use `(resU (GF L r) hPP).d_pullC r f` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `this.trans ?_` and prove the remaining obligations. Establish `hf' : CH.d (P.ι ⋙ GF L r) r f = 0` using `hf`. Rewrite using `[hf', map_zero]`. Introduce `s`. Use `(hz (s ⋙ ObjectProperty.ιOfLE hPP)).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.Quotient.eq.2 ?_` and prove the remaining obligations. Establish `hdiff : ∀ I : Idx r d, wz (Φ` using `sP P') (fun i T => u i T.obj) I.1 s * ((show (sP P').A.obj (s.obj (Fin.last r)) from lft 𝔭 W (s.obj (Fin.last r)).obj (x I)) - (show (sP P').A.obj (s.obj (Fin.last r)) from lft 𝔭 W' (s.obj (Fin.last r)).obj (rs hW (x I)))) ∈ (sFil P' ((r : ℤ) + 1)).S (s.obj (Fin.last r)) := by`. Introduce `I`. Establish `hw` using `wz_mem hF (fun i T => u i T.obj) (fun i {T T'} φ => lift_cocycle_mem 𝔭 hu hP'W i φ) I.1 s`. Establish `hδ : (show (sP P').A.obj (s.obj (Fin.last r)) from lft 𝔭 W (s.obj (Fin.last r)).obj (x I)) - (show (sP P').A.obj (s.obj (Fin.last r)) from lft 𝔭 W' (s.obj (Fin.last r)).obj (rs hW (x I))) ∈ (sFil P' ((1 : ℕ) : ℤ)).S (s.obj (Fin.last r))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (sFil P' ((1 : ℕ) : ℤ)).S (s.obj (Fin.last r)) = (sP P').J.S (s.obj (Fin.last r))` using `hF.one _`. Rewrite using `[e]`. Conclude with `lft_res_sub_mem 𝔭 hW _ (hP'W _ (s.obj (Fin.last r)).property) (hP' _ (s.obj (Fin.last r)).property) (x I)`. Use `hF.mul r 1 _ hw hδ` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hsum` using `Ideal.sum_mem _ (t := Finset.univ) (fun I _ => hdiff I)`. Simplify using `only [mul_sub, Finset.sum_sub_distrib] at hsum`. Conclude with `hsum`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rp_res (W W' : Y.Opens) (hW : W' ≤ W) {d : ℕ} (t : Fin d → Γ(Y, W)) (u : Fin d → ∀ T : Thick L, T.B) (hu : IsLift 𝔭 W t u)
     (P P' : ObjectProperty (Thick L)) (hPP : P' ≤ P) (hP : ∀ T, P T → InY 𝔭 W T) (hP' : ∀ T, P' T → InY 𝔭 W' T)

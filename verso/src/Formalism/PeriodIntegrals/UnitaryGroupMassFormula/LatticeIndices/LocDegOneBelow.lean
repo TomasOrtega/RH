@@ -13,11 +13,11 @@ section K
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `hfin` using `Formalism.L2.SG.TypedSets.finite_over K l hl.out.ne_zero`. Use `set T := hfin.toFinset with hTdef`. Establish `hT : ∀ v, v ∈ T ↔ ((l : ℕ) : 𝓞 K) ∈ v.asIdeal` using `fun v => by`. Rewrite using `[hTdef, Set.Finite.mem_toFinset]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hsum` using `ReciprocityTheory.Gal.sum_locDegree l T hT`. Establish `hcard : T.card = Module.finrank ℚ K` using `by rw [← h, Set.ncard_eq_toFinset_card _ hfin]`. Establish `hpos : ∀ v ∈ T, (fun _ => 1) v ≤ ReciprocityTheory.Gal.locDegree v` using `fun v _ => Nat.mul_pos (Ideal.ramificationIdx_pos v.asIdeal ℤ) (Ideal.inertiaDeg_pos v.asIdeal ℤ)`. Establish `hall` using `(Finset.sum_eq_sum_iff_of_le hpos).1 (by`. Simplify using `only [Finset.sum_const, smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum, hcard])`. Establish `hm : w.asIdeal.ramificationIdx ℤ * w.asIdeal.inertiaDeg ℤ = 1` using `(hall w ((hT w).2 hw)).symm`. Conclude with `⟨Nat.eq_one_of_mul_eq_one_right hm, Nat.eq_one_of_mul_eq_one_left hm⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem locDeg_one (l : ℕ) [hl : Fact l.Prime]
     (h : {w : HeightOneSpectrum (𝓞 K) | ((l : ℕ) : 𝓞 K) ∈ w.asIdeal}.ncard = Module.finrank ℚ K)
@@ -43,11 +43,11 @@ section FE
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `p.isMaximal` as an intermediate fact. Take `⟨Q, hQm, hQo⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 E) p.asIdeal`. Establish `hQ0 : Q ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot p.ne_bot Q`. Set `w : HeightOneSpectrum (𝓞 E)` to `⟨Q, hQm.isPrime, hQ0⟩`. Establish `hw : ((l : ℕ) : 𝓞 E) ∈ w.asIdeal`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `(Ideal.mem_of_liesOver Q p.asIdeal ((l : ℕ) : 𝓞 F)).1 hp` as an intermediate fact. Simplify using `using this`. Take `⟨he, hf⟩` from `locDeg_one l h w hw`. Establish `hQp : Q.IsPrime` using `hQm.isPrime`. Establish `h1 : p.asIdeal.ramificationIdx ℤ ≤ Q.ramificationIdx ℤ` using `Ideal.ramificationIdx_below_le (R := ℤ) (q := p.asIdeal) (r := Q)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : p.asIdeal.inertiaDeg ℤ ≤ Q.inertiaDeg ℤ` using `Ideal.inertiaDeg_below_le (R := ℤ) (q := p.asIdeal) (r := Q)`. Establish `h3` using `Ideal.ramificationIdx_pos p.asIdeal ℤ`. Establish `h4` using `Ideal.inertiaDeg_pos p.asIdeal ℤ`. Express the relevant statement in the definitionally equal form `Q.ramificationIdx ℤ = 1 at he`. Express the relevant statement in the definitionally equal form `Q.inertiaDeg ℤ = 1 at hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -81,15 +81,15 @@ section Arith
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `hlo : p.asIdeal.LiesOver (Ideal.span {(l : ℤ)})` using `(ReciprocityTheory.Gal.liesOver_span_iff l p.asIdeal).2 hp`. Prove the components needed by the constructor for the conclusion. Use `Ideal.pow_inertiaDeg l p.asIdeal` as an intermediate fact. Rewrite `this` using `[hf, pow_one]`. Rewrite using `[this, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h2`. Establish `hmap : (Ideal.span {(l : ℤ)}).map (algebraMap ℤ (𝓞 F)) = Ideal.span {((l : ℕ) : 𝓞 F)}`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Simplify using the standard rewrite rules. Establish `hne : (Ideal.span {(l : ℤ)}).map (algebraMap ℤ (𝓞 F)) ≠ ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hmap, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hl.out.ne_zero` after adjusting the coercions. Establish `hm` using `IsDedekindDomain.ramificationIdx_eq_multiplicity (Ideal.span {(l : ℤ)}) p.asIdeal hne`. Rewrite `hm` using `[he, hmap]`. Establish `hdvd : p.asIdeal ^ 2 ∣ Ideal.span {((l : ℕ) : 𝓞 F)}` using `Ideal.dvd_span_singleton.2 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : FiniteMultiplicity p.asIdeal (Ideal.span {((l : ℕ) : 𝓞 F)})`. Apply `FiniteMultiplicity.of_not_isUnit` to reduce the goal to its premises. Rewrite using `[Ideal.isUnit_iff]`. Conclude with `p.isPrime.ne_top`. Rewrite using `[Ne, Ideal.zero_eq_bot, ← hmap]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `hne`. Use `hfin.le_multiplicity_of_pow_dvd hdvd` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem arith_of_loc (l : ℕ) [hl : Fact l.Prime] (p : HeightOneSpectrum (𝓞 F))
     (hp : ((l : ℕ) : 𝓞 F) ∈ p.asIdeal) (he : p.asIdeal.ramificationIdx ℤ = 1)

@@ -24,7 +24,7 @@ variable {D : D7}
 def SameAt (v : GlobalTheory.FinPl.Pl D) (𝔞 𝔟 : FI D) : Prop := ∀ s ∈ idAt D (· = v), s ∈ idV 𝔞 v ↔ s ∈ idV 𝔟 v
 
 /- English proof (translation)
-Establish `h3` using `(GlobalTheory.T.fractionalIdealCompletion_properties_at_place D ψ hψ v).2.2.1 𝔞 1 one_ne_zero s`. Rewrite `h3` using `[FractionalIdeal.spanSingleton_one, one_mul]`. Conclude with `(h3.1 hs).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_idAt_of_idV {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {v : GlobalTheory.FinPl.Pl D} {𝔞 : FI D}
     {s : AE D} (hs : s ∈ idV 𝔞 v) : s ∈ idAt D (· = v) := by
@@ -33,9 +33,9 @@ theorem mem_idAt_of_idV {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (
   exact (h3.1 hs).2
 
 /- English proof (translation)
-Introduce `s hs`. Establish `h2` using `(GlobalTheory.T.fractionalIdealCompletion_properties_at_place D ψ hψ v).2.1`. Rewrite using `[← h2 _ _ ha hb s hs, ← h2 _ _ ha' hb' s hs]`. Prove the components needed by the constructor for the conclusion. Introduce `h a haV`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `haA` using `mem_idAt_of_idV hψ haV`. Conclude with `(h𝔟 _ (Ideal.mul_mem_left _ s haA)).1 (h a ((h𝔞 a haA).2 haV))`. Introduce `h a haV`. Establish `haA` using `mem_idAt_of_idV hψ haV`. Conclude with `(h𝔟 _ (Ideal.mul_mem_left _ s haA)).2 (h a ((h𝔞 a haA).1 haV))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sameAt_div {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {v : GlobalTheory.FinPl.Pl D} {𝔞 𝔞' 𝔟 𝔟' : FI D}
     (ha : 𝔞 ≠ 0) (ha' : 𝔞' ≠ 0) (hb : 𝔟 ≠ 0) (hb' : 𝔟' ≠ 0) (h𝔞 : SameAt v 𝔞 𝔞') (h𝔟 : SameAt v 𝔟 𝔟') :
@@ -52,18 +52,18 @@ theorem sameAt_div {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) 
     exact (h𝔟 _ (Ideal.mul_mem_left _ s haA)).2 (h a ((h𝔞 a haA).1 haV))
 
 /- English proof (translation)
-Introduce `s hs` and use `(h1 s hs).trans (h2 s hs)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sameAt_trans {v : GlobalTheory.FinPl.Pl D} {𝔞 𝔟 𝔠 : FI D} (h1 : SameAt v 𝔞 𝔟) (h2 : SameAt v 𝔟 𝔠) : SameAt v 𝔞 𝔠 :=
   fun s hs => (h1 s hs).trans (h2 s hs)
 
 /- English proof (translation)
-Introduce `_ _` and use `Iff.rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem sameAt_refl (v : GlobalTheory.FinPl.Pl D) (𝔞 : FI D) : SameAt v 𝔞 𝔞 := fun _ _ => Iff.rfl
 
 /- English proof (translation)
-Establish `h1 : SameAt v (1 * 1⁻¹) (1 * 𝔫⁻¹)` using `sameAt_div hψ one_ne_zero hn one_ne_zero one_ne_zero h (sameAt_refl v 1)`. Establish `h2` using `sameAt_div hψ (by simp) (by simpa using hn) hc hc h1 (sameAt_refl v 𝔠)`. Simplify using `using h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sameAt_mul_of_one {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {v : GlobalTheory.FinPl.Pl D} {𝔠 𝔫 : FI D}
     (hc : 𝔠 ≠ 0) (hn : 𝔫 ≠ 0) (h : SameAt v 1 𝔫) : SameAt v 𝔠 (𝔠 * 𝔫) := by
@@ -75,7 +75,7 @@ theorem sameAt_mul_of_one {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ
 def col {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (i : Fin ρ) : Fin S.rank → D.host.E := fun k => d.e k i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem colMul_jX {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (i : Fin ρ) (a : AE D) :
     colMul d.jX i a = a • ratV (col d i) := by
@@ -83,7 +83,7 @@ theorem colMul_jX {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (i : Fin ρ
   rfl
 
 /- English proof (translation)
-Introduce `h`. Establish `h' : ∀ k, d.e k i = 0` using `fun k => congrFun h k`. Use `congrFun (congrFun d.e'e i) i` as an intermediate fact. Simplify using `[Matrix.mul_apply, h'] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem col_ne_zero {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (i : Fin ρ) : col d i ≠ 0 := by
   intro h
@@ -92,7 +92,7 @@ theorem col_ne_zero {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (i : Fin 
   simp [Matrix.mul_apply, h'] at this
 
 /- English proof (translation)
-Introduce `h`. Apply `hζ.2` to reduce the goal to its premises. Rewrite using `[← o.isoB, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Establish `: o.iB *ᵥ ζ = 0` using `h`. Rewrite using `[this, Matrix.mulVec_zero, Matrix.mulVec_zero, dotProduct_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem vecB_ne_zero {S₀ A L : HSp D} (o : OrthDec S₀ A L) {ζ : Fin L.rank → D.host.E} (hζ : IsLineVec L ζ) :
     vecB o ζ ≠ 0 := by
@@ -109,20 +109,20 @@ namespace GlobalTheory.Core.Mi.ChainLast
 variable {D : D7}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [colMul, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem smul_colMul' {m n : ℕ} (x : Mx D m n) (i : Fin n) (s t : AE D) : s • colMul x i t = colMul x i (s * t) := by
   funext k
   simp only [colMul, Pi.smul_apply, smul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Introduce `a ha`. Take `⟨-, h2, -, -, -, -, h7⟩` from `GlobalTheory.T.fractionalIdealCompletion_properties_at_place D ψ hψ v`. Establish `hAA : (D.host.AA : FI D) ≠ 0` using `GlobalTheory.CuspCharLattice.host_AA_ne_zero _`. Rewrite using `[← h𝔢 a ha, ← colMul_jX, hG.cols i a ha, h7]`. Establish `e : 𝔟 * (D.host.AA : FI D) = 𝔟 * ((D.host.AA : FI D)⁻¹)⁻¹` using `by rw [inv_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, ← h2 _ _ (inv_ne_zero hAA) h𝔟0 a ha]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩ t ht`. Establish `htA` using `mem_idAt_of_idV hψ ht`. Establish `h'` using `h t ht`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h'` using `[smul_colMul', show xZero J.d = J.d.jX from rfl, colMul_jX, h𝔟 _ (Ideal.mul_mem_left _ t ha)]`. Rewrite using `[mul_comm]`. Conclude with `h'`. Introduce `h`. Use `⟨fun k => Ideal.mul_mem_right _ _ ha, fun t ht => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `htA` using `mem_idAt_of_idV hψ ht`. Rewrite using `[smul_colMul', show xZero J.d = J.d.jX from rfl, colMul_jX, h𝔟 _ (Ideal.mul_mem_left _ t ha), mul_comm]`. Conclude with `h t ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cols_sameAt {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {ρ : ℕ} {B : BesLev D ρ} {J : JacLev D ρ}
     {LV : Lat B.V} {LV₀ : Lat B.V₀} {LW : Lat J.W} {LW₀ : Lat J.W₀} {v : GlobalTheory.FinPl.Pl D}
@@ -158,21 +158,21 @@ open GlobalTheory.SeeSaw.LastPrim in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, -, -, -, -⟩` from `GlobalTheory.T.fractionalIdealCompletion_properties_at_place D ψ hψ v`. Take `⟨n, hn⟩` from `i`. Simplify using `only at hi`. Take `rfl : n = ρ - 1` from `by omega`. Use `set i : Fin ρ := ⟨ρ - 1, hn⟩ with hi_def`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hρ : 0 < ρ` using `by omega`. Establish `hξ : D.host.xi0 ≠ 0` using `GlobalTheory.LocFrame.cmHost_imaginaryGenerator_ne_zero`. Establish `hAAb : (D.host.AAbar : FI D) ≠ 0` using `GlobalTheory.Member.LatSelfDual.AAbar_ne_zero D`. Establish `hL` using `colMul_jY_mem_latA_iff D ψ hψ J.W J.W₀ ρ J.d LW (𝔟 i) v i h𝔟0 (GlobalTheory.T.dualIsotropicLine_mem_completion_iff D ψ hψ J.W J.W₀ ρ J.d LW LW₀ 𝔟 v hG.sdW hmono i h𝔟0)`. Use `set 𝔑 : FI D := FractionalIdeal.spanSingleton _ D.host.xi0 * ((D.host.AAbar : FI D) * (𝔟 i)⁻¹) with h𝔑`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h𝔑0 : 𝔑 ≠ 0` using `mul_ne_zero (by simpa [FractionalIdeal.spanSingleton_eq_zero_iff] using hξ) (mul_ne_zero hAAb (inv_ne_zero h𝔟0))`. Establish `e : (D.host.AAbar : FI D) * (𝔟 i)⁻¹ = FractionalIdeal.spanSingleton _ D.host.xi0⁻¹ * 𝔑`. Rewrite using `[h𝔑, ← mul_assoc, FractionalIdeal.spanSingleton_mul_spanSingleton, inv_mul_cancel₀ hξ, FractionalIdeal.spanSingleton_one, one_mul]`. Establish `e3 : incA D (D.host.xi0⁻¹)⁻¹ * incA D (star D.host.xi0⁻¹) = -1`. Rewrite using `[← map_mul, inv_inv, star_inv₀, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, inv_neg, mul_neg, mul_inv_cancel₀ hξ, map_neg, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ a ∈ idAt D (· = v), ∀ y ∈ latV B.V₀ LV₀ (· = v), (Matrix.mulVec (show Matrix (Fin J.W.rank) (Fin B.V₀.rank) (AE D) from J.d.incAdj B.V₀ (a • yZero B.V₀ ρ (vecB B.o B.ζ))) y ∈ GlobalTheory.FinPl.latA J.W LW (· = v) ↔ a * cA D (∑ l, (∑ m, cA D (ratV (vecB B.o B.ζ) m) * gA B …`. Introduce `a ha y hy`. Establish `hzi : (∑ l, (∑ m, cA D (ratV (vecB B.o B.ζ) m) * gA B.V₀ m l) * y l) ∈ idAt D (· = v)` using `sum_mem fun l _ => Ideal.mul_mem_left _ _ (latV_entry_mem' hy l)`. Rewrite using `[incAdj_yZero_mulVec D ρ B J hρ a y, hL _ (Ideal.mul_mem_left _ _ hzi), map_mul, map_mul, cA_cA, GlobalTheory.DualPairCheck.cA_incA, e, h3 _ _ (inv_ne_zero hξ)]`. Establish `e4 : incA D (D.host.xi0⁻¹)⁻¹ * (incA D (star D.host.xi0⁻¹) * a * cA D (∑ l, (∑ m, cA D (ratV (vecB B.o B.ζ) m) * gA B.V₀ m l) * y l)) = -(a * cA D (∑ l, (∑ m, cA D (ratV (vecB B.o B.ζ) m) * gA B.V₀ m l) * y l))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← mul_assoc, ← mul_assoc, e3]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e4, neg_mem_iff]`. Conclude with `⟨fun h => h.1, fun h => ⟨h, Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ ha)⟩⟩`. Introduce `a ha`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e5 : 𝔑 * 𝔷 = 𝔑 * 𝔷⁻¹⁻¹` using `by rw [inv_inv]`. Rewrite using `[h1, ← hG.last hρ a ha, GlobalTheory.FinPl.LatMem.mem_latO_iff D B.V₀ J.W LV₀ LW hG.sdV₀ hG.sdW, e5, ← h2 _ _ (inv_ne_zero h𝔷0) h𝔑0 a ha]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hu⟩ g hg`. Take `⟨y, hy, hyg⟩` from `GlobalTheory.T.hermitianPairing_onto_inverseIdeal_at_place D ψ hψ B.V₀ B.A B.L B.o B.ζ LV₀ 𝔷 v hG.sdV₀ h𝔷 h𝔷0 g hg`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hyg]`. Conclude with `(key a ha y hy).1 (hu y hy)`. Introduce `h`. Establish `hcA : cA D a ∈ idAt D (· = v)` using `cA_mem_idAt'' ha`. Use `⟨fun k l => ?_, fun y hy => (key a ha y hy).2 (h _ (GlobalTheory.T.lineVector_pairing_mem_inverseIdealCompletion D ψ hψ B.V₀ B.A B.L B.o B.ζ LV₀ 𝔷 v hG.sdV₀ h𝔷 h𝔷0 y hy))⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e6` using `congrFun (incAdj_yZero_mulVec D ρ B J hρ a (Pi.single l 1)) k`. Rewrite `e6` using `[Matrix.mulVec_single_one]`. Use `(congrArg (· ∈ idAt D (· = v)) e6).mpr ?_` and prove the remaining obligations. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ hcA))`.
+A detailed English derivation is pending.
 -/
 theorem last_sameAt {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {ρ : ℕ} {B : BesLev D ρ} {J : JacLev D ρ}
     {LV : Lat B.V} {LV₀ : Lat B.V₀} {LW : Lat J.W} {LW₀ : Lat J.W₀} {v : GlobalTheory.FinPl.Pl D}
@@ -236,7 +236,7 @@ namespace GlobalTheory.Core.Mi.ChainLast
 variable {D : D7}
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem ideal_eq (𝔟 𝔷 : FI D) (h𝔟0 : 𝔟 ≠ 0) (h𝔷0 : 𝔷 ≠ 0) :
     𝔟 * (D.host.AA : FI D) * 𝔷⁻¹ *
@@ -252,17 +252,17 @@ end GlobalTheory.Core.Mi.ChainLast
 open GlobalTheory.Core.Mi.ChainLast in
 
 /- English proof (translation)
-Introduce `D ψ hψ ρ B J LV LV₀ LW LW₀ v hG i hi s hs`. Take `⟨-, h2, -, -, h5, -, -⟩` from `GlobalTheory.T.fractionalIdealCompletion_properties_at_place D ψ hψ v`. Take `⟨𝔢, h𝔢0, -, h𝔢⟩` from `GlobalTheory.T.selfDualLattice_rationalLineTrace_fractionalIdeal D B.V LV (col B.d i) hG.sdV (col_ne_zero _ _)`. Take `⟨𝔷, h𝔷0, -, h𝔷⟩` from `GlobalTheory.T.selfDualLattice_rationalLineTrace_fractionalIdeal D B.V₀ LV₀ (vecB B.o B.ζ) hG.sdV₀ (vecB_ne_zero B.o B.line)`. Set `𝔟 : ℕ → FI D` to `fun n => if h : n < ρ then Classical.choose (GlobalTheory.T.selfDualLattice_rationalLineTrace_fractionalIdeal D J.W LW (col J.d ⟨n, h⟩) hG.sdW (col_ne_zero _ _)) else 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `h𝔟 : ∀ j : Fin ρ, 𝔟 j ≠ 0 ∧ ∀ a ∈ idAt D (· = v), a • ratV (col J.d j) ∈ latV J.W LW (· = v) ↔ a ∈ idV (𝔟 j) v`. Introduce `j`. Establish `hs` using `Classical.choose_spec (GlobalTheory.T.selfDualLattice_rationalLineTrace_fractionalIdeal D J.W LW (col J.d j) hG.sdW (col_ne_zero _ _))`. Simplify using `only [𝔟, dif_pos j.2, Fin.eta]`. Conclude with `⟨hs.1, hs.2.2 v⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `hmono : GlobalTheory.SeeSaw.MonoId J.d LW LW₀ 𝔟 v` using `⟨hG.monoW, fun j a ha => by rw [colMul_jX]; exact (h𝔟 j).2 a ha⟩`. Establish `hA` using `cols_sameAt hψ hG i (h𝔟 i).1 (h𝔢 v) (h𝔟 i).2`. Establish `hB` using `last_sameAt hψ hG i hi h𝔷0 (h𝔷 v) (h𝔟 i).1 hmono`. Establish `hAA : (D.host.AA : FI D) ≠ 0` using `GlobalTheory.CuspCharLattice.host_AA_ne_zero _`. Establish `hAAb : (D.host.AAbar : FI D) ≠ 0` using `GlobalTheory.Member.LatSelfDual.AAbar_ne_zero D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hξ : D.host.xi0 ≠ 0` using `GlobalTheory.LocFrame.cmHost_imaginaryGenerator_ne_zero`. Establish `hb0 : 𝔟 i * (D.host.AA : FI D) ≠ 0` using `mul_ne_zero (h𝔟 i).1 hAA`. Establish `hN0 : FractionalIdeal.spanSingleton _ D.host.xi0 * ((D.host.AAbar : FI D) * (𝔟 i)⁻¹) * 𝔷 ≠ 0` using `mul_ne_zero (mul_ne_zero (by simpa [FractionalIdeal.spanSingleton_eq_zero_iff] using hξ) (mul_ne_zero hAAb (inv_ne_zero (h𝔟 i).1))) h𝔷0`. Establish `hC` using `sameAt_div hψ h𝔷0 h𝔷0 h𝔢0 hb0 (sameAt_refl v 𝔷) hA`. Establish `hD` using `sameAt_mul_of_one hψ (mul_ne_zero hb0 (inv_ne_zero h𝔷0)) hN0 hB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hD` using `[ideal_eq (𝔟 i) 𝔷 (h𝔟 i).1 h𝔷0]`. Rewrite using `[← h5 s hs, ← sameAt_trans hC hD s hs, ← h2 𝔷 𝔢 h𝔷0 h𝔢0 s hs]`. Prove the components needed by the constructor for the conclusion. Introduce `h a haV`. Establish `haA` using `mem_idAt_of_idV hψ haV`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h'` using `h a haA ((h𝔷 v a haA).2 haV)`. Rewrite `h'` using `[colMul_jX, h𝔢 v _ (Ideal.mul_mem_left _ s haA)]`. Then use the resulting hypothesis. Introduce `h a haA haz`. Rewrite using `[colMul_jX, h𝔢 v _ (Ideal.mul_mem_left _ s haA)]`. Conclude with `h a ((h𝔷 v a haA).1 haz)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Core.Mi.LatMatch.lastAt_of_goodBF : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (ρ : ℕ) (B : BesLev D ρ) (J : JacLev D ρ) (LV : Lat B.V) (LV₀ : Lat B.V₀) (LW : Lat J.W) (LW₀ : Lat J.W₀) (v : GlobalTheory.FinPl.Pl D), GoodBF ψ B J LV LV₀ LW LW₀ v → LastAt ψ B.d (vecB B.o B.ζ) LV LV₀ v := by
   intro D ψ hψ ρ B J LV LV₀ LW LW₀ v hG i hi s hs

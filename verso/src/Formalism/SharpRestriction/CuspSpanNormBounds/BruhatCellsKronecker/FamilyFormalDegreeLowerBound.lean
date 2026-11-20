@@ -9,15 +9,13 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Finset
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_nbij (fun b : Fin N => (b : ℕ)) (t := Finset.Ico ((a : ℕ) + 1) N) (g := fun j : ℕ => ((j : ℝ) - ((a : ℕ) : ℝ))) ?_ ?_ ?_ ?_]`. Rewrite using `[Finset.prod_Ico_eq_prod_range]`. Establish `e : ∀ k ∈ range (N - ((a : ℕ) + 1)), ((((a : ℕ) + 1 + k : ℕ) : ℝ) - ((a : ℕ) : ℝ)) = ((k + 1 : ℕ) : ℝ)`. Introduce `k _`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.prod_congr rfl e, ← Nat.cast_prod, Finset.prod_range_add_one_eq_factorial]`. Introduce `b hb`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Simplify using `only [Finset.mem_Ico]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `⟨hb, b.2⟩`. Introduce `x _ y _ hxy`. Conclude with `Fin.ext hxy`. Introduce `j hj`. Simplify using `only [Finset.coe_Ico, Set.mem_Ico] at hj`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨j, hj.2⟩, ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq]`. Use `show (a : ℕ) < j`. Use linear arithmetic over natural numbers and integers. Introduce `b _`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem szh_sf_inner_lemma (N : ℕ) (a : Fin N) :
     ∏ b ∈ univ.filter (fun b : Fin N => a < b), (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ)) =
@@ -47,9 +45,9 @@ private theorem szh_sf_inner_lemma (N : ℕ) (a : Fin N) :
     rfl
 
 /- English proof (translation)
-Repeatedly rewrite using `[szh_sf_inner_lemma]`. Use `(Fin.prod_univ_eq_prod_range (fun i : ℕ => ((N - (i + 1)).factorial : ℝ)) N).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (Finset.prod_range_reflect (fun i : ℕ => (i.factorial : ℝ)) N)` and prove the remaining obligations. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `i _`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show ((N - (i + 1)).factorial : ℝ) = ((N - 1 - i).factorial : ℝ)`. Rewrite using `[show N - (i + 1) = N - 1 - i by omega]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem szh_sf (N : ℕ) :
     ∏ a : Fin N, ∏ b ∈ univ.filter (fun b : Fin N => a < b), (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ)) =
@@ -63,9 +61,9 @@ theorem szh_sf (N : ℕ) :
   rw [show N - (i + 1) = N - 1 - i by omega]
 
 /- English proof (translation)
-Unfold `Formalism.QuantumDeterminants.fdegHC vand`. Rewrite using `[szh_sf]`. Use `congr 1`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `a _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `b hb`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Conclude with `abs_of_pos (sub_pos.mpr (h hb))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem szh_fdegHC {N : ℕ} (lam : Fin N → ℝ) (h : StrictAnti lam) :
     Formalism.QuantumDeterminants.fdegHC lam = vand lam / ∏ i ∈ range N, (i.factorial : ℝ) := by
@@ -80,9 +78,9 @@ theorem szh_fdegHC {N : ℕ} (lam : Fin N → ℝ) (h : StrictAnti lam) :
   exact abs_of_pos (sub_pos.mpr (h hb))
 
 /- English proof (translation)
-Unfold `vand`. Apply `Finset.prod_nonneg` to reduce the goal to its premises. Introduce `a _`. Apply `Finset.prod_nonneg` to reduce the goal to its premises. Introduce `b hb`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Conclude with `sub_nonneg.mpr (h hb).le`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem szh_vand_nonneg {N : ℕ} (lam : Fin N → ℝ) (h : StrictAnti lam) : 0 ≤ vand lam := by
   unfold vand
@@ -98,7 +96,7 @@ section Rec
 variable (D : D7)
 
 /- English proof (translation)
-Unfold `lamSH lamS bOne`. Simplify using `[h]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem szh_lam_node (τ : D.what₂.Tau) (a : Fin (2 * D.R.rS + D.R.k + 1)) (h : ¬ a.1 < D.R.k - 1) :
     lamSH D.R (D.hc τ) a = -bOne D τ (a.1 - (D.R.k - 1) + 1) := by
@@ -107,14 +105,14 @@ theorem szh_lam_node (τ : D.what₂.Tau) (a : Fin (2 * D.R.rS + D.R.k + 1)) (h 
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `epsSH epsS`. Simplify using `[h]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem szh_eps_cloud (a : Fin (2 * D.R.rS + D.R.k + 1)) (h : a.1 < D.R.k - 1) : epsSH D.R a = true := by
   unfold epsSH epsS
   simp [h]
 
 /- English proof (translation)
-Unfold `epsSH epsS`. Simplify using `[h]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem szh_eps_first (a : Fin (2 * D.R.rS + D.R.k + 1)) (h : a.1 = D.R.k - 1) : epsSH D.R a = true := by
   unfold epsSH epsS
@@ -123,13 +121,13 @@ theorem szh_eps_first (a : Fin (2 * D.R.rS + D.R.k + 1)) (h : a.1 = D.R.k - 1) :
 variable {D} {large₂ : SizeData₂ D} {C0 C' Cl Cg cb Cu cT CT : ℝ}
 
 /- English proof (translation)
-Establish `hr` using `dimS_eq D.R`. Unfold `StandingHypotheses at hH`. Simplify using `only [] at hH`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hd, -, -, hCl⟩` from `hH`. Establish `hk0 : (0 : ℝ) < D.R.k`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `D.R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 0 < D.R.k)` after adjusting the coercions. Establish `hm0 : (0 : ℝ) < D.R.m`. Use `D.R.two_le_m` as an intermediate fact. Conclude with `(by omega : 0 < D.R.m)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpos : 0 < Cl * ↑D.R.k * ↑D.R.m ^ 4 + ↑D.R.r * ↑D.R.m ^ 10` using `add_pos_of_pos_of_nonneg (mul_pos (mul_pos hCl hk0) (pow_pos hm0 4)) (by positivity)`. Rewrite using `[Fin.strictAnti_iff_succ_lt]`. Introduce `i`. Unfold `lamSH`. Establish `h` using `hd τ (Fin.cast hr (Fin.castSucc i)) (by have := i.2; simp only [Fin.coe_cast, Fin.coe_castSucc]; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : ∀ hh, (⟨(Fin.cast hr (Fin.castSucc i) : ℕ) + 1, hh⟩ : Fin D.R.r) = Fin.cast hr i.succ` using `fun hh => Fin.ext (by simp)`. Rewrite `h` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem szh_anti (hH : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT) (τ : D.what₂.Tau) : StrictAnti (lamSH D.R (D.hc τ)) := by
   have hr := dimS_eq D.R
@@ -155,11 +153,11 @@ theorem szh_anti (hH : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT) (τ :
   linarith
 
 /- English proof (translation)
-Use `⟨szh_anti hH τ, fun a => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `D.R.k_even`. Establish `hn : (((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) - 1) / 2 = ((D.R.rS + j : ℕ) : ℝ)`. Rewrite using `[hj]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hn]`. Unfold `lamSH lamS`. Use `split_ifs with h1 h2`. Take `⟨z, hz⟩` from `(D.hc τ).v_int ⟨_, h1⟩`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨z - ((D.R.rS + j : ℕ) : ℤ), by rw [hz]; push_cast; ring⟩`. Take `⟨z, hz⟩` from `(D.hc τ).b_int ⟨_, h2⟩`. Conclude with `⟨-z - ((D.R.rS + j : ℕ) : ℤ), by rw [hz]; push_cast; ring⟩`. Conclude with `⟨-((D.R.rS + j : ℕ) : ℤ), by push_cast; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem szh_hc (hH : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT) (τ : D.what₂.Tau) :
     Formalism.QuantumDeterminants.IsHCParam (lamSH D.R (D.hc τ)) := by
@@ -179,19 +177,17 @@ theorem szh_hc (hH : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT) (τ : D
   · exact ⟨-((D.R.rS + j : ℕ) : ℤ), by push_cast; ring⟩
 
 /- English proof (translation)
-Establish `hr` using `dimS_eq D.R`. Establish `hrdef : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `hkm` using `D.R.m_add_three_le_k`. Establish `hanti` using `szh_anti hH τ`. Unfold `StandingHypotheses at hH`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [] at hH`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hgap, -⟩` from `hH`. Establish `key : ∀ a b : Fin (2 * D.R.rS + D.R.k + 1), a < b → epsSH D.R a ≠ epsSH D.R b → Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * large₂.sc.L ≤ lamSH D.R (D.hc τ) a - lamSH D.R (D.hc τ) b`. Introduce `a b hab he`. Establish `hab' : (a : ℕ) < b` using `hab`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hbo` using `b.2`. Establish `hb1 : ¬ (b : ℕ) < D.R.k - 1`. Introduce `h1`. Conclude with `he (by rw [szh_eps_cloud D a (by omega), szh_eps_cloud D b h1])`. Establish `hb2 : (b : ℕ) ≠ D.R.k - 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h2`. Conclude with `he (by rw [szh_eps_cloud D a (by omega), szh_eps_first D b h2])`. Establish `hac : a ≤ (⟨(b : ℕ) - 1, by omega⟩ : Fin (2 * D.R.rS + D.R.k + 1))` using `by show (a : ℕ) ≤ (b : ℕ) - 1`. Use linear arithmetic over natural numbers and integers. Establish `hlac` using `hanti.antitone hac`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `szh_lam_node D τ ⟨(b : ℕ) - 1, by omega⟩ (by show ¬ (b : ℕ) - 1 < D.R.k - 1; omega)`. Establish `e2` using `szh_lam_node D τ b hb1`. Establish `i1 : (b : ℕ) - 1 - (D.R.k - 1) + 1 = (b : ℕ) - (D.R.k - 1)` using `by omega`. Simplify using `only [i1] at e1`. Establish `hg` using `hgap τ ((b : ℕ) - (D.R.k - 1)) (by omega) (by omega)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a b hab`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Conclude with `(key a b h hab).trans (le_abs_self _)`. Substitute `h` using the available equality.
-
-Conclude with `absurd rfl hab`. Rewrite using `[abs_sub_comm]`. Conclude with `(key b a h (Ne.symm hab)).trans (le_abs_self _)`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem szh_gap (hH : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT) (τ : D.what₂.Tau) :
     Formalism.QuantumDeterminants.GapAtLeast (epsSH D.R) (lamSH D.R (D.hc τ))
@@ -234,7 +230,7 @@ theorem szh_gap (hH : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT) (τ : 
     exact (key b a h (Ne.symm hab)).trans (le_abs_self _)
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.Scale.b`. Rewrite using `[← Real.exp_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem szh_b_sq (large₂ : SizeData₂ D) : large₂.sc.b ^ (2 : ℝ) = Real.exp (2 * large₂.sc.L) := by
   unfold Formalism.BasicNotions.Scale.b
@@ -243,11 +239,11 @@ theorem szh_b_sq (large₂ : SizeData₂ D) : large₂.sc.b ^ (2 : ℝ) = Real.e
   ring
 
 /- English proof (translation)
-Establish `hk1 : (1 : ℝ) ≤ D.R.k`. Use `D.R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 1 ≤ D.R.k)` after adjusting the coercions. Establish `hkC : (D.R.k : ℝ) ≤ (D.R.k : ℝ) ^ Cl`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions.
 
-Unfold `StandingHypotheses at hH`. Simplify using `only [] at hH`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hb, -⟩` from `hH`. Establish `hj` using `hb τ 1 le_rfl (by have := D.R.two_le_m; omega)`. Use `hkC.trans ((le_max_left _ _).trans (hj.1.trans (hj.2.trans (le_of_eq ?_))))` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Use `first`. Consider the case `exact szh_b_sq large₂`. Consider the case `(unfold Formalism.BasicNotions.Scale.b; rw [← Real.exp_nat_mul]; congr 1; push_cast; ring)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem szh_k_le (hH : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT) (h1 : 1 ≤ Cl) (τ : D.what₂.Tau) :
     (D.R.k : ℝ) ≤ Real.exp (2 * large₂.sc.L) := by

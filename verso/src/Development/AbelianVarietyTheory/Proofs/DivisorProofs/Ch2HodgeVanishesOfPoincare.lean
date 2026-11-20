@@ -17,17 +17,15 @@ noncomputable section
 namespace GlobalTheory.HodgeConjCh2
 
 /- English proof (translation)
-Introduce `h₀ h₁ h₂ p _ T _ hT A _ g hA hg hc`. Take `⟨S₁, S₂, e₁, e₂, hV, ⟨i₂⟩, ⟨i₁⟩, ⟨i₃⟩, ⟨j₁⟩, ⟨j₃⟩⟩` from `GlobalTheory.T.principally_polarized_abelian_short_exact h₀ h₁ h₂ p T hT A g hA hg hc`. Use `haveI : IsIntegral T := hT.1`. Establish `hT' : GlobalTheory.IndefiniteRowSideFullHecke.GenericFiniteMaps.IsProjSurface (ZMod p) T` using `⟨hT.1, hT.2.1, hT.2.2⟩`. Take `⟨hAdd, hDual, hFrob⟩` from `GlobalTheory.T.statement_prime_field p T hT'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hω : GlobalTheory.VB.IsVB (GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.hodge A) g` using `GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.isVB_hodge A hA g`. Establish `hω'` using `hω.dual`. Establish `hF` using `GlobalTheory.VB.IsVB.frobPull p (GlobalTheory.VB.natCast_eq_zero T p (ZMod p)) hω`. Establish `hF'` using `GlobalTheory.VB.IsVB.frobPull p (GlobalTheory.VB.natCast_eq_zero T p (ZMod p)) hω'`. Establish `a₁` using `hAdd S₁ e₁ g (2 * g) g (hω.of_iso i₁.symm) hV (hω'.of_iso i₃.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₂` using `hAdd S₂ e₂ g (2 * g) g (hF'.of_iso j₁.symm) (hV.of_iso i₂) (hF.of_iso j₃.symm)`. Rewrite `a₁` using `[GlobalTheory.IndefiniteRowSideFullHecke.GenericFiniteMaps.degCh2_congr i₁, GlobalTheory.IndefiniteRowSideFullHecke.GenericFiniteMaps.degCh2_congr i₃, hDual _ g hω]`. Rewrite `a₂` using `[GlobalTheory.IndefiniteRowSideFullHecke.GenericFiniteMaps.degCh2_congr j₁, GlobalTheory.IndefiniteRowSideFullHecke.GenericFiniteMaps.degCh2_congr j₃, hFrob _ g hω', hFrob _ g hω, hDual _ g hω, ← GlobalTheory.IndefiniteRowSideFullHecke.GenericFiniteMaps.degCh2_congr i₂, a₁]`. Establish `hp : (1 : ℚ) < (p : ℚ) ^ 2`. Establish `: (2 : ℚ) ≤ p` using `by exact_mod_cast (Fact.out : p.Prime).two_le`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hd : GlobalTheory.IndefiniteRowSideFullHecke.GenericFiniteMaps.degCh2 (ZMod p) (GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.hodge A) = 0`. Establish `: ((p : ℚ) ^ 2 - 1) * GlobalTheory.IndefiniteRowSideFullHecke.GenericFiniteMaps.degCh2 (ZMod p) (GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.hodge A) = 0`. Combine the linear equalities and inequalities to obtain the conclusion. Break down `mul_eq_zero.1 this with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h`. Rewrite `hd` using `[GlobalTheory.IndefiniteRowSideFullHecke.GenericFiniteMaps.degCh2_eq hω]`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.degCh2]`. Use `push_cast`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.CovTop.HypothesesXH → GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.PoincareDeRhamDuality →
     GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.Ch2HodgeVanishes := by

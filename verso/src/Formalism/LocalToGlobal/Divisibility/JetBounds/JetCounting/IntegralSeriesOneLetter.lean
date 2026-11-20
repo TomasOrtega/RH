@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.Divisibility.JetBounds.JetCounting.JetCountingPro
 namespace Formalism.L2.DIV.C
 
 /- English proof (translation)
-The claim follows from `integralFree_holds`.
+A detailed English derivation is pending.
 -/
 theorem hostIntFree : HostIntFree := integralFree_holds
 

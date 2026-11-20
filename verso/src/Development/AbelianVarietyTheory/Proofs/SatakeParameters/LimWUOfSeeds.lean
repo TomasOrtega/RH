@@ -20,11 +20,11 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.P
 namespace GlobalTheory.CongL
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hI : u.asIdeal ≠ w.asIdeal` using `fun h => hne (HeightOneSpectrum.ext h)`. Establish `htop : u.asIdeal ⊔ w.asIdeal = ⊤` using `Ideal.IsMaximal.coprime_of_ne u.isMaximal w.isMaximal hI`. Establish `h1 : (1 : 𝓞 E) ∈ u.asIdeal ⊔ w.asIdeal` using `htop ▸ Submodule.mem_top`. Take `⟨x, hx, y, hy, hxy⟩` from `Submodule.mem_sup.mp h1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hx'` using `hu x hx`. Establish `hy'` using `hw y hy`. Establish `hsum : ι.symm (τ ((x : E))) + ι.symm (τ ((y : E))) = 1`. Rewrite using `[← map_add, ← map_add]`. Establish `: ((x : E) + (y : E)) = 1` using `by exact_mod_cast congrArg (fun z : 𝓞 E => (z : E)) hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, map_one, map_one]`. Establish `hle` using `IsUltrametricDist.norm_add_le_max (ι.symm (τ ((x : E)))) (ι.symm (τ ((y : E))))`. Rewrite `hle` using `[hsum, norm_one]`. Conclude with `absurd hle (not_le.mpr (max_lt hx' hy'))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem overPl_unique {E : Type} [Field E] [NumberField E] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (τ : E →+* ℂ)
     {w u : HeightOneSpectrum (𝓞 E)} (hw : OverPl ι τ w) (hu : OverPl ι τ u) : u = w := by

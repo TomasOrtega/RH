@@ -37,7 +37,7 @@ Both sides reduce to the same expression.
 theorem cA_tmul (a : AF D.host.F) (e : D.host.E) : cA D (a ⊗ₜ[D.host.F] e) = a ⊗ₜ[D.host.F] star e := rfl
 
 /- English proof (translation)
-The claim follows from `Prod.ext h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem AF_ext {p q : AF D.host.F} (h1 : fstA D.host.F p = fstA D.host.F q) (h2 : sndA D.host.F p = sndA D.host.F q) :
     p = q := Prod.ext h1 h2
@@ -46,9 +46,9 @@ def basR (R : Type) [CommRing R] [Algebra D.host.F R] : Module.Basis (Fin 2) R (
   Algebra.TensorProduct.basis R (Eqv.basE D)
 
 /- English proof (translation)
-Establish `h0 : Eqv.basE D 0 = 1` using `by first`. Consider the case `exact Eqv.basE_zero D`. Consider the case `exact Eqv.basE_zero`. Consider the case `simp [Eqv.basE]`. Use `conv_lhs => rw [← (basR D R).sum_repr x]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[Fin.sum_univ_two, basR, Algebra.TensorProduct.basis_apply, h0, Eqv.basE_one, TensorProduct.smul_tmul']`.
+A detailed English derivation is pending.
 -/
 theorem decR {R : Type} [CommRing R] [Algebra D.host.F R] (x : R ⊗[D.host.F] D.host.E) :
     x = (basR D R).repr x 0 ⊗ₜ[D.host.F] (1 : D.host.E) + (basR D R).repr x 1 ⊗ₜ[D.host.F] Eqv.alphaE D := by
@@ -61,11 +61,11 @@ theorem decR {R : Type} [CommRing R] [Algebra D.host.F R] (x : R ⊗[D.host.F] D
   simp [Fin.sum_univ_two, basR, Algebra.TensorProduct.basis_apply, h0, Eqv.basE_one, TensorProduct.smul_tmul']
 
 /- English proof (translation)
-Establish `h0 : Eqv.basE D 0 = 1` using `by first`. Consider the case `exact Eqv.basE_zero D`. Consider the case `exact Eqv.basE_zero`. Consider the case `simp [Eqv.basE]`. Establish `e0 : x ⊗ₜ[D.host.F] (1 : D.host.E) = x • basR D R 0`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `[basR, Algebra.TensorProduct.basis_apply, h0, TensorProduct.smul_tmul']`. Establish `e1 : y ⊗ₜ[D.host.F] Eqv.alphaE D = y • basR D R 1`. Simplify using `[basR, Algebra.TensorProduct.basis_apply, Eqv.basE_one, TensorProduct.smul_tmul']`. Rewrite `h` using `[e0, e1]`. Establish `h'` using `congrArg (basR D R).repr h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_smul, Module.Basis.repr_self, map_zero] at h'`. Prove the components needed by the constructor for the conclusion. Simplify using `using congrArg (fun f => f 0) h'`. Simplify using `using congrArg (fun f => f 1) h'`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pair_eq_zero (R : Type) [CommRing R] [Algebra D.host.F R] (x y : R)
     (h : x ⊗ₜ[D.host.F] (1 : D.host.E) + y ⊗ₜ[D.host.F] Eqv.alphaE D = 0) : x = 0 ∧ y = 0 := by
@@ -86,9 +86,9 @@ theorem pair_eq_zero (R : Type) [CommRing R] [Algebra D.host.F R] (x y : R)
   · simpa using congrArg (fun f => f 1) h'
 
 /- English proof (translation)
-Establish `h1 : a ⊗ₜ[D.host.F] e = a • ((1 : R) ⊗ₜ[D.host.F] e)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `h2 : Algebra.lmul R (R ⊗[D.host.F] D.host.E) ((1 : R) ⊗ₜ[D.host.F] e) = (Algebra.lmul D.host.F D.host.E e).baseChange R`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, map_smul, smul_eq_mul, Algebra.trace_apply, h2, LinearMap.trace_baseChange, ← Algebra.trace_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_tmul {R : Type} [CommRing R] [Algebra D.host.F R] (a : R) (e : D.host.E) :
     Algebra.trace R (R ⊗[D.host.F] D.host.E) (a ⊗ₜ[D.host.F] e) =
@@ -102,7 +102,7 @@ theorem trace_tmul {R : Type} [CommRing R] [Algebra D.host.F R] (a : R) (e : D.h
   rw [h1, map_smul, smul_eq_mul, Algebra.trace_apply, h2, LinearMap.trace_baseChange, ← Algebra.trace_apply]
 
 /- English proof (translation)
-Establish `h2 : Module.finrank D.host.F D.host.E = 2`. Rewrite using `[Module.finrank_eq_card_basis (Eqv.basE D), Fintype.card_fin]`. Rewrite using `[← map_one (algebraMap D.host.F D.host.E), Algebra.trace_algebraMap, h2]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem traceE_one : Algebra.trace D.host.F D.host.E 1 = 2 := by
   have h2 : Module.finrank D.host.F D.host.E = 2 := by
@@ -111,9 +111,9 @@ theorem traceE_one : Algebra.trace D.host.F D.host.E 1 = 2 := by
   norm_num
 
 /- English proof (translation)
-Set `s : D.host.E ≃ₐ[D.host.F] D.host.E` to `AlgEquiv.ofAlgHom D.sp.cm.sig D.sp.cm.sig (AlgHom.ext fun x => star_star x) (AlgHom.ext fun x => star_star x)`. Establish `h` using `Algebra.trace_eq_of_algEquiv s (Eqv.alphaE D)`. Establish `e : s (Eqv.alphaE D) = -Eqv.alphaE D` using `Eqv.star_alphaE D`. Rewrite `h` using `[e, map_neg]`. Establish `h2 : (2 : D.host.F) * Algebra.trace D.host.F D.host.E (Eqv.alphaE D) = 0` using `by linear_combination -h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.1 h2).resolve_left two_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem traceE_alpha : Algebra.trace D.host.F D.host.E (Eqv.alphaE D) = 0 := by
   let s : D.host.E ≃ₐ[D.host.F] D.host.E :=
@@ -125,7 +125,7 @@ theorem traceE_alpha : Algebra.trace D.host.F D.host.E (Eqv.alphaE D) = 0 := by
   exact (mul_eq_zero.1 h2).resolve_left two_ne_zero
 
 /- English proof (translation)
-Use `conv_lhs => rw [decR D c]`. Rewrite using `[map_add, trace_tmul, trace_tmul, traceE_one, traceE_alpha, (algebraMap D.host.F (AF D.host.F)).map_zero, mul_zero, add_zero, map_ofNat, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem traceAE (c : AE D) :
     Algebra.trace (AF D.host.F) (AE D) c = 2 * (basR D (AF D.host.F)).repr c 0 := by
@@ -134,7 +134,7 @@ theorem traceAE (c : AE D) :
     mul_zero, add_zero, map_ofNat, mul_comm]
 
 /- English proof (translation)
-Use `conv_lhs => rw [decR D c]`. Rewrite using `[map_add, infPart_tmul, infPart_tmul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infPart_dec (c : AE D) :
     infPart D c = fstA D.host.F ((basR D (AF D.host.F)).repr c 0) ⊗ₜ[D.host.F] (1 : D.host.E) +
@@ -143,7 +143,7 @@ theorem infPart_dec (c : AE D) :
   rw [map_add, infPart_tmul, infPart_tmul]
 
 /- English proof (translation)
-Use `conv_lhs => rw [decR D c]`. Rewrite using `[map_add, finPart_tmul, finPart_tmul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPart_dec (c : AE D) :
     finPart D c = sndA D.host.F ((basR D (AF D.host.F)).repr c 0) ⊗ₜ[D.host.F] (1 : D.host.E) +
@@ -152,7 +152,7 @@ theorem finPart_dec (c : AE D) :
   rw [map_add, finPart_tmul, finPart_tmul]
 
 /- English proof (translation)
-Rewrite `h` using `[finPart_dec]`. Conclude with `pair_eq_zero D (Af D.host.F) _ _ h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_coord_zero (c : AE D) (h : finPart D c = 0) :
     sndA D.host.F ((basR D (AF D.host.F)).repr c 0) = 0 ∧ sndA D.host.F ((basR D (AF D.host.F)).repr c 1) = 0 := by
@@ -160,9 +160,9 @@ theorem fin_coord_zero (c : AE D) (h : finPart D c = 0) :
   exact pair_eq_zero D (Af D.host.F) _ _ h
 
 /- English proof (translation)
-Establish `h1'` using `h1`. Rewrite `h1'` using `[infPart_dec]`. Establish `hi` using `pair_eq_zero D (Ainf D.host.F) _ _ h1'`. Establish `hf` using `fin_coord_zero D c h2`. Establish `e0 : (basR D (AF D.host.F)).repr c 0 = 0` using `AF_ext D (by rw [hi.1, map_zero]) (by rw [hf.1, map_zero])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (basR D (AF D.host.F)).repr c 1 = 0` using `AF_ext D (by rw [hi.2, map_zero]) (by rw [hf.2, map_zero])`. Rewrite using `[decR D c, e0, e1, TensorProduct.zero_tmul, TensorProduct.zero_tmul, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_zero_of_parts (c : AE D) (h1 : infPart D c = 0) (h2 : finPart D c = 0) : c = 0 := by
   have h1' := h1
@@ -176,7 +176,7 @@ theorem eq_zero_of_parts (c : AE D) (h1 : infPart D c = 0) (h2 : finPart D c = 0
   rw [decR D c, e0, e1, TensorProduct.zero_tmul, TensorProduct.zero_tmul, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a e => rw [cA_tmul, finPart_tmul, finPart_tmul, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem finPart_cA (c : AE D) :
     finPart D (cA D c) = Algebra.TensorProduct.map (AlgHom.id D.host.F (Af D.host.F)) D.sp.cm.sig (finPart D c) := by
@@ -186,7 +186,7 @@ theorem finPart_cA (c : AE D) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a e => rw [cA_tmul, infPart_tmul, infPart_tmul, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem infPart_cA (c : AE D) :
     infPart D (cA D c) = Algebra.TensorProduct.map (AlgHom.id D.host.F (Ainf D.host.F)) D.sp.cm.sig (infPart D c) := by
@@ -196,26 +196,26 @@ theorem infPart_cA (c : AE D) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Rewrite using `[Eqv.gW_real, Complex.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_gW (w : NumberField.InfinitePlace D.host.F) (a : Ainf D.host.F) : conj (Eqv.gW D w a) = Eqv.gW D w a := by
   rw [Eqv.gW_real, Complex.conj_ofReal]
 
 /- English proof (translation)
-The claim follows from `Complex.conj_eq_iff_re.mp (conj_gW D w a)`.
+A detailed English derivation is pending.
 -/
 theorem ofReal_re_gW (w : NumberField.InfinitePlace D.host.F) (a : Ainf D.host.F) :
     (((Eqv.gW D w a).re : ℝ) : ℂ) = Eqv.gW D w a := Complex.conj_eq_iff_re.mp (conj_gW D w a)
 
 /- English proof (translation)
-Use `show Eqv.thetaC D ρ (infPart D ((1 : AF D.host.F) ⊗ₜ[D.host.F] e)) = _`. Rewrite using `[infPart_tmul, map_one, Eqv.thetaC_tmul, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thC_incA (ρ : D.what₂.Tau) (e : D.host.E) : Eqv.thetaC D ρ (infPart D (incA D e)) = tauE D ρ e := by
   show Eqv.thetaC D ρ (infPart D ((1 : AF D.host.F) ⊗ₜ[D.host.F] e)) = _
   rw [infPart_tmul, map_one, Eqv.thetaC_tmul, map_one, one_mul]
 
 /- English proof (translation)
-Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a e`. Rewrite using `[cA_tmul, infPart_tmul, infPart_tmul, Eqv.thetaC_tmul, Eqv.thetaC_tmul, Eqv.tauE_star, map_mul, conj_gW]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem thC_cA (ρ : D.what₂.Tau) (c : AE D) :
     Eqv.thetaC D ρ (infPart D (cA D c)) = conj (Eqv.thetaC D ρ (infPart D c)) := by
@@ -226,7 +226,7 @@ theorem thC_cA (ρ : D.what₂.Tau) (c : AE D) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Rewrite using `[infPart_dec, map_add, Eqv.thetaC_tmul, Eqv.thetaC_tmul, map_one, mul_one]`. Apply the tactic sequence `try rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thC_dec (ρ : D.what₂.Tau) (c : AE D) :
     Eqv.thetaC D ρ (infPart D c) = Eqv.gW D (Eqv.plW D ρ) (fstA D.host.F ((basR D (AF D.host.F)).repr c 0)) +
@@ -235,9 +235,9 @@ theorem thC_dec (ρ : D.what₂.Tau) (c : AE D) :
   try rfl
 
 /- English proof (translation)
-Rewrite using `[thC_dec, Complex.add_re, Complex.mul_re, Eqv.betaT_re]`. Establish `him : (Eqv.gW D (Eqv.plW D ρ) (fstA D.host.F ((basR D (AF D.host.F)).repr c 1))).im = 0`. Use `congrArg Complex.im (conj_gW D (Eqv.plW D ρ) (fstA D.host.F ((basR D (AF D.host.F)).repr c 1)))` as an intermediate fact. Simplify using `only [Complex.conj_im] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[him]`. Simplify using `only [mul_zero, zero_mul, sub_zero, add_zero]`. Conclude with `ofReal_re_gW D _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem re_thC (ρ : D.what₂.Tau) (c : AE D) :
     (((Eqv.thetaC D ρ (infPart D c)).re : ℝ) : ℂ) = Eqv.gW D (Eqv.plW D ρ) (fstA D.host.F ((basR D (AF D.host.F)).repr c 0)) := by
@@ -251,7 +251,7 @@ theorem re_thC (ρ : D.what₂.Tau) (c : AE D) :
   exact ofReal_re_gW D _ _
 
 /- English proof (translation)
-Establish `e : y = pairA D.host.F (fstA D.host.F y) 0` using `Prod.ext rfl hy`. Rewrite using `[← hψ.2.2 (Eqv.thetaC D) (Eqv.isInfFam_thetaC D), psiInf, ← e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_of_snd {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (y : AF D.host.F)
     (hy : sndA D.host.F y = 0) :
@@ -261,15 +261,13 @@ theorem psi_of_snd {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) 
   rw [← hψ.2.2 (Eqv.thetaC D) (Eqv.isInfFam_thetaC D), psiInf, ← e]
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.continuous_of_linearMap ((basR D (AF D.host.F)).coord k)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_coord (k : Fin 2) : Continuous fun c : AE D => (basR D (AF D.host.F)).repr c k :=
   IsModuleTopology.continuous_of_linearMap ((basR D (AF D.host.F)).coord k)
 
 /- English proof (translation)
-Establish `hf : Continuous (fstA D.host.F)` using `continuous_fst`. Establish `e : (fun c : AE D => Eqv.thetaC D ρ (infPart D c)) = fun c => Eqv.gW D (Eqv.plW D ρ) (fstA D.host.F ((basR D (AF D.host.F)).repr c 0)) + Eqv.gW D (Eqv.plW D ρ) (fstA D.host.F ((basR D (AF D.host.F)).repr c 1)) * Eqv.betaT D ρ`. Use function extensionality and compare the values at `c`. Conclude with `thC_dec D ρ c`. Rewrite using `[e]`.
-
-Conclude with `((Eqv.continuous_gW D _).comp (hf.comp (continuous_coord D 0))).add (((Eqv.continuous_gW D _).comp (hf.comp (continuous_coord D 1))).mul continuous_const)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_thC (ρ : D.what₂.Tau) : Continuous fun c : AE D => Eqv.thetaC D ρ (infPart D c) := by
   have hf : Continuous (fstA D.host.F) := continuous_fst
@@ -294,14 +292,14 @@ def emb (y : D.what₂.Tau → ℂ) : AE D :=
     pairA D.host.F (Eqv.preA D y 1) 0 ⊗ₜ[D.host.F] Eqv.alphaE D
 
 /- English proof (translation)
-Simplify using `only [emb, map_add, infPart_tmul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem infPart_emb (y : D.what₂.Tau → ℂ) : infPart D (emb y) = Eqv.splitInv D y := by
   simp only [emb, map_add, infPart_tmul]
   rfl
 
 /- English proof (translation)
-Rewrite using `[emb, map_add, finPart_tmul, finPart_tmul]`. Use `show (0 : Af D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E) + (0 : Af D.host.F) ⊗ₜ[D.host.F] Eqv.alphaE D = 0`. Rewrite using `[TensorProduct.zero_tmul, TensorProduct.zero_tmul, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPart_emb (y : D.what₂.Tau → ℂ) : finPart D (emb y) = 0 := by
   rw [emb, map_add, finPart_tmul, finPart_tmul]
@@ -309,13 +307,13 @@ theorem finPart_emb (y : D.what₂.Tau → ℂ) : finPart D (emb y) = 0 := by
   rw [TensorProduct.zero_tmul, TensorProduct.zero_tmul, add_zero]
 
 /- English proof (translation)
-Rewrite using `[infPart_emb, Eqv.thetaC_splitInv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem thC_emb (y : D.what₂.Tau → ℂ) (ρ : D.what₂.Tau) : Eqv.thetaC D ρ (infPart D (emb y)) = y ρ := by
   rw [infPart_emb, Eqv.thetaC_splitInv]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_parts D` to reduce the goal to its premises. Rewrite using `[map_sub, map_add, infPart_emb, infPart_emb, infPart_emb, ← Eqv.splitEquiv_symm, map_add, sub_self]`. Rewrite using `[map_sub, map_add, finPart_emb, finPart_emb, finPart_emb, add_zero, sub_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_add (y y' : D.what₂.Tau → ℂ) : emb (y + y') = emb y + emb y' := by
   rw [← sub_eq_zero]
@@ -324,17 +322,17 @@ theorem emb_add (y y' : D.what₂.Tau → ℂ) : emb (y + y') = emb y + emb y' :
   · rw [map_sub, map_add, finPart_emb, finPart_emb, finPart_emb, add_zero, sub_self]
 
 /- English proof (translation)
-Simplify using `using emb_add (D := D) 0 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem emb_zero : emb (0 : D.what₂.Tau → ℂ) = 0 := by
   simpa using emb_add (D := D) 0 0
 
 /- English proof (translation)
-Establish `e : (emb (D` using `D)) = fun y => pairA D.host.F (Eqv.preA D y 0) 0 • ((1 : AF D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E)) + pairA D.host.F (Eqv.preA D y 1) 0 • ((1 : AF D.host.F) ⊗ₜ[D.host.F] Eqv.alphaE D) := by`. Use function extensionality and compare the values at `y`. Simplify using `only [emb, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e]`. Establish `hp : ∀ k, Continuous fun y : D.what₂.Tau → ℂ => pairA D.host.F (Eqv.preA D y k) 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Unfold `pairA`. Conclude with `(Eqv.continuous_preA D k).prodMk continuous_const`. Establish `: ContinuousAdd (AE D)` using `IsModuleTopology.toContinuousAdd (AF D.host.F) _`. Establish `: ContinuousSMul (AF D.host.F) (AE D)` using `IsModuleTopology.toContinuousSMul (AF D.host.F) _`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : Continuous fun _ : D.what₂.Tau → ℂ => ((1 : AF D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E) : AE D)` using `continuous_const`. Establish `c2 : Continuous fun _ : D.what₂.Tau → ℂ => ((1 : AF D.host.F) ⊗ₜ[D.host.F] Eqv.alphaE D : AE D)` using `continuous_const`. Conclude with `((hp 0).smul c1).add ((hp 1).smul c2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_emb : Continuous (emb (D := D)) := by
   have e : (emb (D := D)) = fun y => pairA D.host.F (Eqv.preA D y 0) 0 • ((1 : AF D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E)) +
@@ -368,21 +366,21 @@ Both sides reduce to the same expression.
 theorem Lb_apply (u : V D m n) (i : Fin m) (j : Fin n) : Lb D m n u i j = emb fun ρ => u ρ i j := rfl
 
 /- English proof (translation)
-Rewrite using `[Lb_apply]`. Conclude with `finPart_emb _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPart_Lb (u : V D m n) (i : Fin m) (j : Fin n) : finPart D (Lb D m n u i j) = 0 := by
   rw [Lb_apply]
   exact finPart_emb _
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[compAt, Lb_apply, thC_emb]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem compAt_Lb (u : V D m n) (ρ : D.what₂.Tau) : compAt (Eqv.thetaC D) ρ (Lb D m n u) = Matrix.of (u ρ) := by
   ext i j
   simp [compAt, Lb_apply, thC_emb]
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Use `show Continuous fun u : V D m n => emb (D := D) fun ρ => u ρ i j`. Conclude with `continuous_emb.comp (by fun_prop)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_Lb : Continuous (Lb D m n) := by
   refine continuous_matrix fun i j => ?_
@@ -408,14 +406,14 @@ theorem sigH_apply (c : Mx D m n) (ρ : D.what₂.Tau) (i : Fin m) (j : Fin n) :
     sigH D m n c ρ i j = Eqv.thetaC D ρ (infPart D (c i j)) := rfl
 
 /- English proof (translation)
-Use `continuous_pi fun ρ => continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Conclude with `(continuous_thC D ρ).comp (continuous_id.matrix_elem i j)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_sigH : Continuous (sigH D m n) := by
   refine continuous_pi fun ρ => continuous_pi fun i => continuous_pi fun j => ?_
   exact (continuous_thC D ρ).comp (continuous_id.matrix_elem i j)
 
 /- English proof (translation)
-Rewrite using `[Lb_apply, infPart_emb, ← Eqv.splitEquiv_symm, RingEquiv.symm_apply_eq]`. Use function extensionality and compare the values at `ρ`. Rewrite using `[Eqv.splitEquiv_apply, sigH_apply]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem infPart_Lb_sigH (c : Mx D m n) (i : Fin m) (j : Fin n) :
     infPart D (Lb D m n (sigH D m n c) i j) = infPart D (c i j) := by
@@ -424,7 +422,7 @@ theorem infPart_Lb_sigH (c : Mx D m n) (i : Fin m) (j : Fin n) :
   rw [Eqv.splitEquiv_apply, sigH_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_parts D` to reduce the goal to its premises. Rewrite using `[map_sub, infPart_Lb_sigH, sub_self]`. Rewrite using `[map_sub, finPart_Lb, h, sub_self]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Lb_sigH (c : Mx D m n) (h : ∀ i j, finPart D (c i j) = 0) : Lb D m n (sigH D m n c) = c := by
   ext i j
@@ -438,11 +436,11 @@ open Classical in
 def sg (τ : D.what₂.Tau) (z : Matrix (Fin m) (Fin n) ℂ) : V D m n := fun ρ i j => if ρ = τ then z i j else 0
 
 /- English proof (translation)
-Establish `hfin : ∀ i j, finPart D (L t i j) = 0` using `fun i j => by`. Use `congrFun (congrFun (hL.2.1 t) i) j` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply, Matrix.zero_apply]`. Conclude with `this`. Rewrite using `[← Lb_sigH (L t) hfin]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `ρ i j`. Establish `h2` using `congrFun (congrFun (hL.2.2 t ρ) i) j`. Rewrite using `[sigH_apply, show Eqv.thetaC D ρ (infPart D (L t i j)) = compAt (Eqv.thetaC D) ρ (L t) i j from rfl, h2]`. Simplify using `only [Pi.smul_apply, sg]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp [Complex.real_smul]`.
+A detailed English derivation is pending.
 -/
 theorem line_eq (τ : D.what₂.Tau) (z : Matrix (Fin m) (Fin n) ℂ) (L : ℝ →+ Mx D m n)
     (hL : IsLineAt (Eqv.thetaC D) τ z L) (t : ℝ) : L t = Lb D m n (t • sg τ z) := by
@@ -459,28 +457,28 @@ theorem line_eq (τ : D.what₂.Tau) (z : Matrix (Fin m) (Fin n) ℂ) (L : ℝ �
   split_ifs <;> simp [Complex.real_smul]
 
 /- English proof (translation)
-The claim follows from `Classical.epsilon_spec (hLine (Eqv.thetaC D) (Eqv.isInfFam_thetaC D) m n τ z)`.
+A detailed English derivation is pending.
 -/
 theorem isLineAt_lineAt (hLine : LineAtExists D) (τ : D.what₂.Tau) (z : Matrix (Fin m) (Fin n) ℂ) :
     IsLineAt (Eqv.thetaC D) τ z (lineAt (Eqv.thetaC D) τ z) :=
   Classical.epsilon_spec (hLine (Eqv.thetaC D) (Eqv.isInfFam_thetaC D) m n τ z)
 
 /- English proof (translation)
-The claim follows from `line_eq τ z _ (isLineAt_lineAt hLine τ z) t`.
+A detailed English derivation is pending.
 -/
 theorem lineAt_eq (hLine : LineAtExists D) (τ : D.what₂.Tau) (z : Matrix (Fin m) (Fin n) ℂ) (t : ℝ) :
     lineAt (Eqv.thetaC D) τ z t = Lb D m n (t • sg τ z) :=
   line_eq τ z _ (isLineAt_lineAt hLine τ z) t
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ρ i j`. Apply the tactic sequence `by_cases h : ρ = τ <;> simp [sg, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_add (τ : D.what₂.Tau) (z w : Matrix (Fin m) (Fin n) ℂ) : sg τ (z + w) = sg (D := D) τ z + sg τ w := by
   funext ρ i j
   by_cases h : ρ = τ <;> simp [sg, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ρ i j`. Apply the tactic sequence `by_cases h : ρ = τ <;> simp [sg, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_smul (τ : D.what₂.Tau) (r : ℝ) (z : Matrix (Fin m) (Fin n) ℂ) : sg τ ((r : ℂ) • z) = r • sg (D := D) τ z := by
   funext ρ i j
@@ -493,19 +491,19 @@ section EM
 variable {m n : ℕ} (GS : Matrix (Fin n) (Fin n) ℂ) (GT : Matrix (Fin m) (Fin m) ℂ) (ξ : ℂ)
 
 /- English proof (translation)
-Simplify using `only [eM, Matrix.mul_add, Matrix.trace_add, mul_add, Complex.add_re]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eM_add_left (x x' w : Matrix (Fin m) (Fin n) ℂ) : eM GS GT ξ (x + x') w = eM GS GT ξ x w + eM GS GT ξ x' w := by
   simp only [eM, Matrix.mul_add, Matrix.trace_add, mul_add, Complex.add_re]
 
 /- English proof (translation)
-Simplify using `only [eM, Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul, Matrix.trace_add, mul_add, Complex.add_re]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eM_add_right (x w w' : Matrix (Fin m) (Fin n) ℂ) : eM GS GT ξ x (w + w') = eM GS GT ξ x w + eM GS GT ξ x w' := by
   simp only [eM, Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul, Matrix.trace_add, mul_add, Complex.add_re]
 
 /- English proof (translation)
-Establish `hr : star (r : ℂ) = (r : ℂ)` using `by rw [← starRingEnd_apply, Complex.conj_ofReal]`. Simplify using `only [eM, Matrix.conjTranspose_smul, hr, Matrix.mul_smul, Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eM_smul_right (r : ℝ) (x w : Matrix (Fin m) (Fin n) ℂ) : eM GS GT ξ x ((r : ℂ) • w) = r * eM GS GT ξ x w := by
   have hr : star (r : ℂ) = (r : ℂ) := by rw [← starRingEnd_apply, Complex.conj_ofReal]
@@ -514,21 +512,21 @@ theorem eM_smul_right (r : ℝ) (x w : Matrix (Fin m) (Fin n) ℂ) : eM GS GT ξ
   ring
 
 /- English proof (translation)
-Simplify using `[eM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eM_zero_left (w : Matrix (Fin m) (Fin n) ℂ) : eM GS GT ξ 0 w = 0 := by
   simp [eM]
 
 /- English proof (translation)
-Simplify using `[eM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eM_zero_right (x : Matrix (Fin m) (Fin n) ℂ) : eM GS GT ξ x 0 = 0 := by
   simp [eM]
 
 /- English proof (translation)
-Establish `key : (GS⁻¹ * xᴴ * GT * w).trace = star (GS⁻¹ * wᴴ * GT * x).trace`. Rewrite using `[← Matrix.trace_conjTranspose, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hT, Matrix.conjTranspose_nonsing_inv, hS, show xᴴ * (GT * (w * GS⁻¹)) = (xᴴ * GT * w) * GS⁻¹ by simp only [Matrix.mul_assoc], Matrix.tr …`. Simplify using `only [Matrix.mul_assoc]`. Establish `h1 : ξ.re = 0`. Use `congrArg Complex.re hξ` as an intermediate fact.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Complex.conj_re, Complex.neg_re] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `eM`. Rewrite using `[key, ← starRingEnd_apply]`. Simplify using `only [Complex.mul_re, Complex.conj_re, Complex.conj_im, h1]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -550,7 +548,7 @@ theorem eM_swap (hS : GSᴴ = GS) (hT : GTᴴ = GT) (hξ : starRingEnd ℂ ξ = 
   ring
 
 /- English proof (translation)
-Unfold `eM`. Conclude with `continuous_const.mul (Complex.continuous_re.comp (continuous_const.mul (Continuous.matrix_trace (continuous_const.matrix_mul continuous_id))))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_eM_left (w : Matrix (Fin m) (Fin n) ℂ) : Continuous fun z : Matrix (Fin m) (Fin n) ℂ => eM GS GT ξ z w := by
   unfold eM
@@ -570,7 +568,7 @@ def phR (a : WO S T) (u : V D T.rank S.rank) : ℝ :=
   ∑ ρ, eR S T ρ (compAt (Eqv.thetaC D) ρ a) (Matrix.of (u ρ))
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.conjTranspose_apply, gramAt, Matrix.map_apply, Matrix.map_apply, show star (tauE D ρ (W.gram j i)) = tauE D ρ (star (W.gram j i)) from (Eqv.tauE_star D ρ _).symm, ← Matrix.conjTranspose_apply, Brg.gram_herm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem gramAt_herm (W : HSp D) (ρ : D.what₂.Tau) : (gramAt D W ρ)ᴴ = gramAt D W ρ := by
   ext i j
@@ -579,18 +577,18 @@ theorem gramAt_herm (W : HSp D) (ρ : D.what₂.Tau) : (gramAt D W ρ)ᴴ = gram
     ← Matrix.conjTranspose_apply, Brg.gram_herm]
 
 /- English proof (translation)
-Rewrite using `[← Eqv.tauE_star, Brg.star_purely_imaginary_eq_neg, map_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_purely_imaginary_generator (ρ : D.what₂.Tau) : starRingEnd ℂ (tauE D ρ D.host.xi0) = -tauE D ρ D.host.xi0 := by
   rw [← Eqv.tauE_star, Brg.star_purely_imaginary_eq_neg, map_neg]
 
 /- English proof (translation)
-The claim follows from `eM_swap _ _ _ (gramAt_herm S ρ) (gramAt_herm T ρ) (conj_purely_imaginary_generator ρ) x w`.
+A detailed English derivation is pending.
 -/
 theorem eR_swap (ρ : D.what₂.Tau) (x w : Matrix (Fin T.rank) (Fin S.rank) ℂ) : eR S T ρ w x = -eR S T ρ x w := eM_swap _ _ _ (gramAt_herm S ρ) (gramAt_herm T ρ) (conj_purely_imaginary_generator ρ) x w
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[compAt, map_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem compAt_add {m n : ℕ} (ρ : D.what₂.Tau) (a a' : Mx D m n) :
     compAt (Eqv.thetaC D) ρ (a + a') = compAt (Eqv.thetaC D) ρ a + compAt (Eqv.thetaC D) ρ a' := by
@@ -598,7 +596,7 @@ theorem compAt_add {m n : ℕ} (ρ : D.what₂.Tau) (a a' : Mx D m n) :
   simp [compAt, map_add]
 
 /- English proof (translation)
-Unfold `phR`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[compAt_add]`. Conclude with `eM_add_left _ _ _ _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phR_add_left (a a' : WO S T) (u : V D T.rank S.rank) : phR S T (a + a') u = phR S T a u + phR S T a' u := by
   unfold phR
@@ -608,7 +606,7 @@ theorem phR_add_left (a a' : WO S T) (u : V D T.rank S.rank) : phR S T (a + a') 
   exact eM_add_left _ _ _ _ _ _
 
 /- English proof (translation)
-Unfold `phR`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply, ← Matrix.of_add_of]`. Conclude with `eM_add_right _ _ _ _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phR_add_right (a : WO S T) (u u' : V D T.rank S.rank) : phR S T a (u + u') = phR S T a u + phR S T a u' := by
   unfold phR
@@ -618,9 +616,9 @@ theorem phR_add_right (a : WO S T) (u u' : V D T.rank S.rank) : phR S T a (u + u
   exact eM_add_right _ _ _ _ _ _
 
 /- English proof (translation)
-Unfold `phR`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Establish `hm : Matrix.of ((r • u) ρ) = (r : ℂ) • Matrix.of (u ρ)`. Use extensionality with `i j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Complex.real_smul]`. Rewrite using `[hm]`. Conclude with `eM_smul_right _ _ _ _ _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phR_smul (a : WO S T) (r : ℝ) (u : V D T.rank S.rank) : phR S T a (r • u) = r * phR S T a u := by
   unfold phR
@@ -633,11 +631,11 @@ theorem phR_smul (a : WO S T) (r : ℝ) (u : V D T.rank S.rank) : phR S T a (r �
   exact eM_smul_right _ _ _ _ _ _
 
 /- English proof (translation)
-Unfold `phR`. Rewrite using `[Finset.sum_eq_single τ]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[sg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `ρ _ hρ`. Establish `hz : Matrix.of (sg (D` using `D) τ z ρ) = 0 := by`. Use extensionality with `i j`. Simplify using `[sg, hρ]`. Rewrite using `[hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eM_zero_right _ _ _ _`. Introduce `h`. Conclude with `absurd (Finset.mem_univ τ) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem phR_sg (a : WO S T) (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
     phR S T a (sg τ z) = eR S T τ (compAt (Eqv.thetaC D) τ a) z := by
@@ -656,7 +654,7 @@ theorem phR_sg (a : WO S T) (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S
     exact absurd (Finset.mem_univ τ) h
 
 /- English proof (translation)
-Use `symm`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[gramAt, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 (gram_det_ne W)), Matrix.map_one _ (map_zero _) (map_one _)]`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_inv_gram (W : HSp D) (ρ : D.what₂.Tau) : (W.gram⁻¹).map (tauE D ρ) = (gramAt D W ρ)⁻¹ := by
   symm
@@ -665,7 +663,7 @@ theorem map_inv_gram (W : HSp D) (ρ : D.what₂.Tau) : (W.gram⁻¹).map (tauE 
     Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Rewrite using `[Fin.hO_eq_trace]`. Unfold `Fin.hOM`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_mul]`. Unfold `Matrix.trace`. Conclude with `map_sum φ _ _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem map_hO {R : Type} [CommRing R] (φ : AE D →+* R) (a y : WO S T) :
     φ (hO S T a y) = ((Brg.GI S).map φ * ((y.map (cA D))ᵀ).map φ * (Brg.GG T).map φ * a.map φ).trace := by
@@ -676,15 +674,13 @@ theorem map_hO {R : Type} [CommRing R] (φ : AE D →+* R) (a y : WO S T) :
   exact map_sum φ _ _
 
 /- English proof (translation)
-Set `φ : AE D →+* ℂ` to `(Eqv.thetaC D ρ).comp (infPart D)`. Establish `hφ : ∀ c, Eqv.thetaC D ρ (infPart D c) = φ c` using `fun _ => rfl`. Rewrite using `[hφ, map_hO]`. Establish `e1 : (Brg.GI S).map φ = (gramAt D S ρ)⁻¹`. Rewrite using `[← map_inv_gram]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show ((S.gram⁻¹).map (incA D)).map φ = _`. Rewrite using `[Matrix.map_map]`. Use `congr 1`. Use function extensionality and compare the values at `e`. Conclude with `thC_incA D ρ e`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e2 : ((y.map (cA D))ᵀ).map φ = (compAt (Eqv.thetaC D) ρ y)ᴴ`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply, Matrix.conjTranspose_apply, compAt, ← hφ, thC_cA]`. Both sides reduce to the same expression. Establish `e3 : (Brg.GG T).map φ = gramAt D T ρ` using `by show ((T.gram).map (incA D)).map φ = _`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Matrix.map_map, gramAt]`. Use `congr 1`. Use function extensionality and compare the values at `e`. Conclude with `thC_incA D ρ e`. Rewrite using `[e1, e2, e3]`.
-
-Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem thC_hO (ρ : D.what₂.Tau) (a y : WO S T) :
     Eqv.thetaC D ρ (infPart D (hO S T a y)) =
@@ -713,19 +709,19 @@ theorem thC_hO (ρ : D.what₂.Tau) (a y : WO S T) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[finPart_cA, h, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finPart_cA_eq_zero (c : AE D) (h : finPart D c = 0) : finPart D (cA D c) = 0 := by
   rw [finPart_cA, h, map_zero]
 
 /- English proof (translation)
-Rewrite using `[infPart_cA, h, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem infPart_cA_eq_zero (c : AE D) (h : infPart D c = 0) : infPart D (cA D c) = 0 := by
   rw [infPart_cA, h, map_zero]
 
 /- English proof (translation)
-Establish `e : ((y.map (cA D))ᵀ).map (finPart D) = 0`. Use extensionality with `i j`. Conclude with `finPart_cA_eq_zero _ (hy _ _)`. Rewrite using `[map_hO, e, Matrix.mul_zero, Matrix.zero_mul, Matrix.zero_mul, Matrix.trace_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPart_hO (a y : WO S T) (hy : ∀ i j, finPart D (y i j) = 0) : finPart D (hO S T a y) = 0 := by
   have e : ((y.map (cA D))ᵀ).map (finPart D) = 0 := by
@@ -734,7 +730,7 @@ theorem finPart_hO (a y : WO S T) (hy : ∀ i j, finPart D (y i j) = 0) : finPar
   rw [map_hO, e, Matrix.mul_zero, Matrix.zero_mul, Matrix.zero_mul, Matrix.trace_zero]
 
 /- English proof (translation)
-Establish `e : a.map (finPart D) = 0`. Use extensionality with `i j`. Conclude with `ha _ _`. Rewrite using `[map_hO, e, Matrix.mul_zero, Matrix.trace_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPart_hO' (a y : WO S T) (ha : ∀ i j, finPart D (a i j) = 0) : finPart D (hO S T a y) = 0 := by
   have e : a.map (finPart D) = 0 := by
@@ -743,7 +739,7 @@ theorem finPart_hO' (a y : WO S T) (ha : ∀ i j, finPart D (a i j) = 0) : finPa
   rw [map_hO, e, Matrix.mul_zero, Matrix.trace_zero]
 
 /- English proof (translation)
-Establish `e : ((y.map (cA D))ᵀ).map (infPart D) = 0`. Use extensionality with `i j`. Conclude with `infPart_cA_eq_zero _ (hy _ _)`. Rewrite using `[map_hO, e, Matrix.mul_zero, Matrix.zero_mul, Matrix.zero_mul, Matrix.trace_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infPart_hO (a y : WO S T) (hy : ∀ i j, infPart D (y i j) = 0) : infPart D (hO S T a y) = 0 := by
   have e : ((y.map (cA D))ᵀ).map (infPart D) = 0 := by
@@ -752,7 +748,7 @@ theorem infPart_hO (a y : WO S T) (hy : ∀ i j, infPart D (y i j) = 0) : infPar
   rw [map_hO, e, Matrix.mul_zero, Matrix.zero_mul, Matrix.zero_mul, Matrix.trace_zero]
 
 /- English proof (translation)
-Establish `e : a.map (infPart D) = 0`. Use extensionality with `i j`. Conclude with `ha _ _`. Rewrite using `[map_hO, e, Matrix.mul_zero, Matrix.trace_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infPart_hO' (a y : WO S T) (ha : ∀ i j, infPart D (a i j) = 0) : infPart D (hO S T a y) = 0 := by
   have e : a.map (infPart D) = 0 := by
@@ -761,7 +757,7 @@ theorem infPart_hO' (a y : WO S T) (ha : ∀ i j, infPart D (a i j) = 0) : infPa
   rw [map_hO, e, Matrix.mul_zero, Matrix.trace_zero]
 
 /- English proof (translation)
-Establish `h1 : hO S T a b = 0` using `eq_zero_of_parts D _ (infPart_hO S T a b hb) (finPart_hO' S T a b ha)`. Establish `h2 : hO S T b a = 0` using `eq_zero_of_parts D _ (infPart_hO' S T b a hb) (finPart_hO S T b a ha)`. Unfold `symplOH symplO`. Rewrite using `[h1, h2, mul_zero, map_zero, mul_zero]`. Conclude with `⟨rfl, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem symplOH_real_fin (a b : WO S T) (ha : ∀ i j, finPart D (a i j) = 0) (hb : ∀ i j, infPart D (b i j) = 0) :
     symplOH S T a b = 0 ∧ symplOH S T b a = 0 := by
@@ -772,7 +768,7 @@ theorem symplOH_real_fin (a b : WO S T) (ha : ∀ i j, finPart D (a i j) = 0) (h
   exact ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Unfold `symplOH symplO`. Rewrite using `[traceAE, ← mul_assoc, ← map_ofNat (algebraMap D.host.F (AF D.host.F)) 2, ← map_mul]`. Evaluate the numerical expressions.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem symplOH_eq_coord (a y : WO S T) :
     symplOH S T a y = (basR D (AF D.host.F)).repr (incA D D.host.xi0 * hO S T a y) 0 := by
@@ -781,11 +777,11 @@ theorem symplOH_eq_coord (a y : WO S T) :
   norm_num
 
 /- English proof (translation)
-Use `set w := incA D D.host.xi0 * hO S T a y with hw`. Establish `hfw : finPart D w = 0` using `by rw [hw, RingHom.map_mul, finPart_hO S T a y hy, mul_zero]`. Rewrite using `[symplOH_eq_coord, psi_of_snd D hψ _ (fin_coord_zero D w hfw).1]`. Use `congr 1`. Establish `hρ : ∀ ρ, Eqv.thetaC D ρ (fstA D.host.F ((basR D (AF D.host.F)).repr w 0) ⊗ₜ[D.host.F] (1 : D.host.E)) = ((eR S T ρ (compAt (Eqv.thetaC D) ρ a) (compAt (Eqv.thetaC D) ρ y) / 2 : ℝ) : ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ρ`. Rewrite using `[Eqv.thetaC_tmul, map_one, mul_one, ← re_thC]`. Use `congr 1`. Rewrite using `[hw, (infPart D).map_mul, (Eqv.thetaC D ρ).map_mul, thC_incA, thC_hO, eR, eM]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl fun ρ _ => hρ ρ, ← Complex.ofReal_sum, ← Finset.sum_div]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem psi_real {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (a y : WO S T)
     (hy : ∀ i j, finPart D (y i j) = 0) :
@@ -807,7 +803,7 @@ theorem psi_real {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (a
   ring
 
 /- English proof (translation)
-Rewrite using `[psi_real S T hψ a (Lb D _ _ u) (fun i j => finPart_Lb u i j)]`. Simplify using `only [compAt_Lb, phR]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem psi_Lb {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (a : WO S T) (u : V D T.rank S.rank) :
     ψ (symplOH S T a (Lb D _ _ u)) = Complex.exp (-(Real.pi : ℂ) * Complex.I * (phR S T a u : ℂ)) := by
@@ -823,7 +819,7 @@ variable {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ}
 def G (f : WO S T → ℂ) (x : WO S T) : V D T.rank S.rank → ℂ := fun u => f (x + Lb D _ _ u)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Use `show f (x + Lb D _ _ a + Lb D _ _ u) = f (x + Lb D _ _ (a + u))`. Rewrite using `[map_add, add_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem G_shift (f : WO S T → ℂ) (x : WO S T) (a : V D T.rank S.rank) :
     G f (x + Lb D _ _ a) = fun u => G f x (a + u) := by
@@ -832,11 +828,11 @@ theorem G_shift (f : WO S T → ℂ) (x : WO S T) (a : V D T.rank S.rank) :
   rw [map_add, add_assoc]
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℝ (V D T.rank S.rank)`. Set `φ : (Fin (Module.finrank ℝ (V D T.rank S.rank)) → ℝ) →ₗ[ℝ] V D T.rank S.rank` to `b.equivFun.symm.toLinearMap`. Set `L' : (Fin (Module.finrank ℝ (V D T.rank S.rank)) → ℝ) →+ WO S T` to `(Lb D _ _).comp φ.toAddMonoidHom`. Establish `hc : Continuous L'` using `continuous_Lb.comp (LinearMap.continuous_of_finiteDimensional φ)`. Establish `h` using `hf.smooth _ L' hc (fun t => by ext i j; exact finPart_Lb _ i j) x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ψ' : V D T.rank S.rank →L[ℝ] (Fin (Module.finrank ℝ (V D T.rank S.rank)) → ℝ)` to `LinearMap.toContinuousLinearMap b.equivFun.toLinearMap`. Establish `e : G f x = (fun s => f (x + L' s)) ∘ ψ'`. Use function extensionality and compare the values at `u`. Use `show f (x + Lb D _ _ u) = f (x + Lb D _ _ (b.equivFun.symm (b.equivFun u)))`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h.comp ψ'.contDiff`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_G {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (x : WO S T) : ContDiff ℝ ∞ (G f x) := by
   let b := Module.finBasis ℝ (V D T.rank S.rank)
@@ -854,14 +850,14 @@ theorem contDiff_G {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (x : WO S T)
   exact h.comp ψ'.contDiff
 
 /- English proof (translation)
-The claim follows from `((contDiff_G hf x).differentiable (by simp)).differentiableAt.hasFDerivAt`.
+A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_G {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (x : WO S T) (u : V D T.rank S.rank) :
     HasFDerivAt (G f x) (fderiv ℝ (G f x) u) u :=
   ((contDiff_G hf x).differentiable (by simp)).differentiableAt.hasFDerivAt
 
 /- English proof (translation)
-Use `show ψ (symplOH S T x (Lb D _ _ u)) * f (x + Lb D _ _ u) = _`. Rewrite using `[psi_Lb S T hψ x u]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem heis_Lb (hψ : IsStdChar D ψ (-1)) (f : WO S T → ℂ) (x : WO S T) (u : V D T.rank S.rank) :
     heisO ψ S T (Lb D _ _ u) f x = Complex.exp (-(Real.pi : ℂ) * Complex.I * (phR S T x u : ℂ)) * G f x u := by
@@ -870,15 +866,15 @@ theorem heis_Lb (hψ : IsStdChar D ψ (-1)) (f : WO S T → ℂ) (x : WO S T) (u
   rfl
 
 /- English proof (translation)
-Establish `e : (fun t : ℝ => heisO ψ S T (Lb D _ _ (t • v)) f x) = fun t : ℝ => Complex.exp ((t : ℂ) * (-(Real.pi : ℂ) * Complex.I * (phR S T x v : ℂ))) * G f x (t • v)`. Use function extensionality and compare the values at `t`. Rewrite using `[heis_Lb hψ, phR_smul]`. Use `congr 2`. Use `push_cast`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `h1 : HasDerivAt (fun t : ℝ => Complex.exp ((t : ℂ) * (-(Real.pi : ℂ) * Complex.I * (phR S T x v : ℂ)))) (-(Real.pi : ℂ) * Complex.I * (phR S T x v : ℂ)) 0`. Establish `h` using `(((hasDerivAt_id ((0 : ℝ) : ℂ)).mul_const (-(Real.pi : ℂ) * Complex.I * (phR S T x v : ℂ))).cexp).comp_ofReal`. Simplify using `using h`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : HasDerivAt (fun t : ℝ => G f x (t • v)) (fderiv ℝ (G f x) 0 v) 0`. Establish `hl : HasDerivAt (fun t : ℝ => t • v) v 0`. Simplify using `using (hasDerivAt_id (0 : ℝ)).smul_const v`. Establish `hG : HasFDerivAt (G f x) (fderiv ℝ (G f x) 0) ((fun t : ℝ => t • v) 0)`. Simplify using `only [zero_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hd.hasFDerivAt`. Conclude with `hG.comp_hasDerivAt (0 : ℝ) hl`. Establish `h3 : HasDerivAt (fun t : ℝ => Complex.exp ((t : ℂ) * (-(Real.pi : ℂ) * Complex.I * (phR S T x v : ℂ))) * G f x (t • v)) _ 0` using `h1.mul h2`. Establish `e0 : G f x ((0 : ℝ) • v) = f x`. Rewrite using `[zero_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show f (x + Lb D _ _ 0) = f x`. Rewrite using `[map_zero, add_zero]`. Rewrite `h3` using `[e0]`. Simplify using `using h3`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_heis (hψ : IsStdChar D ψ (-1)) {f : WO S T → ℂ} (x : WO S T) (hd : DifferentiableAt ℝ (G f x) 0)
     (v : V D T.rank S.rank) :
@@ -913,7 +909,7 @@ theorem hasDerivAt_heis (hψ : IsStdChar D ψ (-1)) {f : WO S T → ℂ} (x : WO
   simpa using h3
 
 /- English proof (translation)
-Use `show deriv (fun t : ℝ => heisO ψ S T (lineAt (Eqv.thetaC D) τ z t) f x) 0 = _`. Simplify using `only [lineAt_eq hLine]`. Conclude with `(hasDerivAt_heis hψ x hd _).deriv`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dRho_eq (hψ : IsStdChar D ψ (-1)) (hLine : LineAtExists D) (τ : D.what₂.Tau)
     (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ} (x : WO S T) (hd : DifferentiableAt ℝ (G f x) 0) :
@@ -924,7 +920,7 @@ theorem dRho_eq (hψ : IsStdChar D ψ (-1)) (hLine : LineAtExists D) (τ : D.wha
   exact (hasDerivAt_heis hψ x hd _).deriv
 
 /- English proof (translation)
-Rewrite using `[dRho_eq hψ hLine τ z x hd]`. Simplify using `only [lineAt_eq hLine]`. Conclude with `hasDerivAt_heis hψ x hd _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_dRho (hψ : IsStdChar D ψ (-1)) (hLine : LineAtExists D) (τ : D.what₂.Tau)
     (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ} (x : WO S T) (hd : DifferentiableAt ℝ (G f x) 0) :
@@ -935,7 +931,7 @@ theorem hasDerivAt_dRho (hψ : IsStdChar D ψ (-1)) (hLine : LineAtExists D) (τ
   exact hasDerivAt_heis hψ x hd _
 
 /- English proof (translation)
-Set `l : AE D →ₗ[AF D.host.F] AE D` to `{ toFun := cA D, map_add' := (cA D).map_add, map_smul' := Formalism.IndefR.PHeisTh.cA_smul }`. Conclude with `IsModuleTopology.continuous_of_linearMap l`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem cont_cA : Continuous (cA D) := by
   let l : AE D →ₗ[AF D.host.F] AE D :=
@@ -943,9 +939,9 @@ theorem cont_cA : Continuous (cA D) := by
   exact IsModuleTopology.continuous_of_linearMap l
 
 /- English proof (translation)
-Establish `hh : Continuous fun y : WO S T => hO S T x y`. Unfold `hO`. Use `continuous_finsetSum _ fun a _ => continuous_finsetSum _ fun b _ => continuous_finsetSum _ fun c _ => continuous_finsetSum _ fun d _ => ?_` and prove the remaining obligations. Use `(((continuous_const.mul ?_).mul continuous_const).mul continuous_const)` and prove the remaining obligations. Conclude with `cont_cA.comp ((continuous_apply b).comp (continuous_apply c))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `htr : Continuous (Algebra.trace (AF D.host.F) (AE D))` using `IsModuleTopology.continuous_of_linearMap _`. Unfold `symplOH symplO`. Conclude with `continuous_const.mul (htr.comp (continuous_const.mul hh))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cont_symplOH_right (S T : HSp D) (x : WO S T) : Continuous fun y : WO S T => symplOH S T x y := by
   have hh : Continuous fun y : WO S T => hO S T x y := by
@@ -959,7 +955,7 @@ theorem cont_symplOH_right (S T : HSp D) (x : WO S T) : Continuous fun y : WO S 
   exact continuous_const.mul (htr.comp (continuous_const.mul hh))
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [compAt, Matrix.of_apply, Matrix.map_apply]`. Conclude with `(continuous_thC D ρ).comp (continuous_id.matrix_elem i j)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_compAt {m n : ℕ} (ρ : D.what₂.Tau) : Continuous fun x : Mx D m n => compAt (Eqv.thetaC D) ρ x := by
   refine continuous_matrix fun i j => ?_
@@ -967,7 +963,7 @@ theorem continuous_compAt {m n : ℕ} (ρ : D.what₂.Tau) : Continuous fun x : 
   exact (continuous_thC D ρ).comp (continuous_id.matrix_elem i j)
 
 /- English proof (translation)
-Unfold `phR`. Conclude with `continuous_finset_sum _ fun ρ _ => (continuous_eM_left _ _ _ _).comp (continuous_compAt ρ)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_phR (v : V D T.rank S.rank) : Continuous fun x : WO S T => phR S T x v := by
   unfold phR
@@ -996,27 +992,23 @@ Both sides reduce to the same expression.
 theorem lCL_apply (v u : V D T.rank S.rank) : lCL S T v u = phR S T (Lb D _ _ u) v := rfl
 
 /- English proof (translation)
-Take `⟨U, hUo, hU⟩` from `hf.level`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `x0`. Establish `: ContinuousAdd (AE D)` using `IsModuleTopology.toContinuousAdd (AF D.host.F) _`. Set `sg0 : WO S T → V D T.rank S.rank` to `fun x => sigH D _ _ (x - x0)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `b : WO S T → WO S T` to `fun x => x + Lb D _ _ (-(sg0 x)) + -x0`. Establish `hsc : Continuous sg0`. Establish `e : sg0 = fun x => sigH D _ _ x - sigH D _ _ x0` using `funext fun x => map_sub _ _ _`. Rewrite using `[e]`. Conclude with `continuous_sigH.sub continuous_const`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : Continuous b` using `(continuous_id.add (continuous_Lb.comp hsc.neg)).add continuous_const`. Establish `hb0 : b x0 = 0` using `by simp [b, sg0]`. Establish `hbinf : ∀ x i j, infPart D (b x i j) = 0`. Introduce `x i j`. Establish `e : b x = x - x0 - Lb D _ _ (sigH D _ _ (x - x0))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [b, sg0, map_neg]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `show infPart D ((x - x0) i j - Lb D _ _ (sigH D _ _ (x - x0)) i j) = 0`. Rewrite using `[(infPart D).map_sub, infPart_Lb_sigH, sub_self]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ0 : ∀ a, ψ a ≠ 0` using `fun a h => by`. Use `hψ.1.2.1 a` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Establish `key : ∀ x, b x ∈ U → fderiv ℝ (G f x) 0 v = (ψ (symplOH S T x0 (b x)))⁻¹ * fderiv ℝ (G f x0) (sg0 x) v`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `x hx`. Establish `hGx : G f x = fun u => (ψ (symplOH S T x0 (b x)))⁻¹ * G f x0 (sg0 x + u)`. Use function extensionality and compare the values at `u`. Establish `hx' : x + Lb D _ _ u = x0 + Lb D _ _ (sg0 x + u) + b x`. Simplify using `only [b, map_add, map_neg]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `hl` using `congrFun (hU (b x) hx (by ext i j; exact hbinf x i j)) (x0 + Lb D _ _ (sg0 x + u))`. Establish `h0` using `(symplOH_real_fin S T (Lb D _ _ (sg0 x + u)) (b x) (finPart_Lb _) (hbinf x)).1`. Express the relevant statement in the definitionally equal form `ψ (symplOH S T (x0 + Lb D _ _ (sg0 x + u)) (b x)) * f (x0 + Lb D _ _ (sg0 x + u) + b x) = f (x0 + Lb D _ _ (sg0 x + u)) at hl`. Rewrite `hl` using `[Fin.symplOH_add_left, h0, add_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show f (x + Lb D _ _ u) = (ψ (symplOH S T x0 (b x)))⁻¹ * f (x0 + Lb D _ _ (sg0 x + u))`. Rewrite using `[hx', ← hl, ← mul_assoc, inv_mul_cancel₀ (hψ0 _), one_mul]`. Rewrite using `[hGx]`. Establish `hc : HasFDerivAt (fun u => (ψ (symplOH S T x0 (b x)))⁻¹ * G f x0 (sg0 x + u)) ((ψ (symplOH S T x0 (b x)))⁻¹ • fderiv ℝ (G f x0) (sg0 x)) 0`. Establish `hd : HasFDerivAt (G f x0) (fderiv ℝ (G f x0) (sg0 x)) ((fun u : V D T.rank S.rank => sg0 x + u) 0)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [add_zero]`. Conclude with `hasFDerivAt_G hf x0 _`. Use `(hd.comp (0 : V D T.rank S.rank) ((hasFDerivAt_id (0 : V D T.rank S.rank)).const_add (sg0 x))).const_mul (ψ (symplOH S T x0 (b x)))⁻¹` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Rewrite using `[hc.fderiv]`.
-
-Simplify using the standard rewrite rules. Establish `hcont : Continuous fun x => (ψ (symplOH S T x0 (b x)))⁻¹ * fderiv ℝ (G f x0) (sg0 x) v`. Use `Continuous.mul ?_ ?_` and prove the remaining obligations. Conclude with `(hψ.1.1.comp ((cont_symplOH_right S T x0).comp hb)).inv₀ fun x => hψ0 _`. Conclude with `(((contDiff_G hf x0).continuous_fderiv (by simp)).comp hsc).clm_apply continuous_const`.
-
-Establish `hev : ∀ᶠ x in nhds x0, b x ∈ U` using `hb.continuousAt.preimage_mem_nhds (by rw [hb0]; exact hUo.mem_nhds U.zero_mem)`. Conclude with `hcont.continuousAt.congr (hev.mono fun x hx => (key x hx).symm)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_DG (hψ : IsStdChar D ψ (-1)) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (v : V D T.rank S.rank) :
     Continuous fun x : WO S T => fderiv ℝ (G f x) 0 v := by
@@ -1079,7 +1071,7 @@ theorem continuous_DG (hψ : IsStdChar D ψ (-1)) {f : WO S T → ℂ} (hf : IsT
   exact hcont.continuousAt.congr (hev.mono fun x hx => (key x hx).symm)
 
 /- English proof (translation)
-Use `show ψ (symplOH S T (ratW T S γ + w) w₀) * f (ratW T S γ + w + w₀) = ψ (-(symplOH S T (ratW T S γ) w)) * (ψ (symplOH S T w w₀) * f (w + w₀))`. Rewrite using `[add_assoc, hf.quasi, Fin.symplOH_add_left, Fin.symplOH_add_right, ← mul_assoc, ← AddChar.map_add_eq_mul, ← mul_assoc, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem heis_quasi {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (w₀ : WO S T)
     (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (w : WO S T) :
@@ -1092,9 +1084,7 @@ theorem heis_quasi {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (w₀ : WO S
   abel
 
 /- English proof (translation)
-Establish `e : (fun t : ℝ => heisO ψ S T (lineAt (Eqv.thetaC D) τ z t) f (ratW T S γ + w)) = fun t => ψ (-(symplOH S T (ratW T S γ) w)) * heisO ψ S T (lineAt (Eqv.thetaC D) τ z t) f w`. Use function extensionality and compare the values at `t`. Conclude with `heis_quasi hf _ γ w`. Use `show deriv _ 0 = _`. Rewrite using `[e]`.
-
-Conclude with `((hasDerivAt_dRho hψ hLine τ z w (hasFDerivAt_G hf w 0).differentiableAt).const_mul _).deriv`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dRho_quasi (hψ : IsStdChar D ψ (-1)) (hLine : LineAtExists D) (τ : D.what₂.Tau)
     (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
@@ -1110,11 +1100,11 @@ theorem dRho_quasi (hψ : IsStdChar D ψ (-1)) (hLine : LineAtExists D) (τ : D.
   exact ((hasDerivAt_dRho hψ hLine τ z w (hasFDerivAt_G hf w 0).differentiableAt).const_mul _).deriv
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `key : ∀ t : ℝ, heisO ψ S T (lineAt (Eqv.thetaC D) τ z t) f x = ψ (symplOH S T x u) * heisO ψ S T (lineAt (Eqv.thetaC D) τ z t) f (x + u)`. Introduce `t`. Rewrite using `[lineAt_eq hLine]`. Take `⟨h1, h2⟩` from `symplOH_real_fin S T (Lb D _ _ (t • sg τ z)) u (finPart_Lb _) hinf`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hf'` using `congrFun hu (x + Lb D _ _ (t • sg τ z))`. Use `show ψ (symplOH S T x (Lb D _ _ (t • sg τ z))) * f (x + Lb D _ _ (t • sg τ z)) = ψ (symplOH S T x u) * (ψ (symplOH S T (x + u) (Lb D _ _ (t • sg τ z))) * f (x + u + Lb D _ _ (t • sg τ z)))`. Rewrite using `[← hf']`. Use `show ψ (symplOH S T x (Lb D _ _ (t • sg τ z))) * (ψ (symplOH S T (x + Lb D _ _ (t • sg τ z)) u) * f (x + Lb D _ _ (t • sg τ z) + u)) = _`. Rewrite using `[Fin.symplOH_add_left, Fin.symplOH_add_left, h1, h2, add_zero, add_zero, add_right_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `show ψ (symplOH S T x u) * deriv _ 0 = deriv _ 0`. Rewrite using `[show (fun t : ℝ => heisO ψ S T (lineAt (Eqv.thetaC D) τ z t) f x) = fun t => ψ (symplOH S T x u) * heisO ψ S T (lineAt (Eqv.thetaC D) τ z t) f (x + u) from funext key]`. Conclude with `(((hasDerivAt_dRho hψ hLine τ z (x + u) (hasFDerivAt_G hf _ 0).differentiableAt).const_mul _).deriv).symm`.
+A detailed English derivation is pending.
 -/
 theorem dRho_level (hψ : IsStdChar D ψ (-1)) (hLine : LineAtExists D) (τ : D.what₂.Tau)
     (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (u : WO S T)
@@ -1140,9 +1130,9 @@ theorem dRho_level (hψ : IsStdChar D ψ (-1)) (hLine : LineAtExists D) (τ : D.
   exact (((hasDerivAt_dRho hψ hLine τ z (x + u) (hasFDerivAt_G hf _ 0).differentiableAt).const_mul _).deriv).symm
 
 /- English proof (translation)
-Rewrite using `[dRho_eq hψ hLine τ z _ (hasFDerivAt_G hf _ 0).differentiableAt, phR_add_left, lCL_apply]`. Use `congr 1`. Rewrite using `[G_shift]`. Establish `hd : HasFDerivAt (G f w) (fderiv ℝ (G f w) a) ((fun u : V D T.rank S.rank => a + u) 0)`. Simplify using `only [add_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hasFDerivAt_G hf w _`. Establish `hc : HasFDerivAt (fun u => G f w (a + u)) (fderiv ℝ (G f w) a) 0`. Use `hd.comp (0 : V D T.rank S.rank) ((hasFDerivAt_id (0 : V D T.rank S.rank)).const_add a)` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Rewrite using `[hc.fderiv]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dRho_chart (hψ : IsStdChar D ψ (-1)) (hLine : LineAtExists D) (τ : D.what₂.Tau)
     (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (w : WO S T)
@@ -1162,7 +1152,7 @@ theorem dRho_chart (hψ : IsStdChar D ψ (-1)) (hLine : LineAtExists D) (τ : D.
   rw [hc.fderiv]
 
 /- English proof (translation)
-Simplify using `only [dRho_chart hψ hLine τ z hf w]`. Establish `h1 : ContDiff ℝ ∞ fun a : V D T.rank S.rank => ((phR S T w (sg τ z) + lCL S T (sg τ z) a : ℝ) : ℂ)` using `Complex.ofRealCLM.contDiff.comp (contDiff_const.add (lCL S T (sg τ z)).contDiff)`. Establish `h2 : ContDiff ℝ ∞ fun a => fderiv ℝ (G f w) a (sg τ z)` using `(contDiff_infty_iff_fderiv.1 (contDiff_G hf w)).2.clm_apply contDiff_const`. Conclude with `((contDiff_const.mul h1).mul (contDiff_G hf w)).add h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_dRho_chart (hψ : IsStdChar D ψ (-1)) (hLine : LineAtExists D) (τ : D.what₂.Tau)
     (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (w : WO S T) :
@@ -1175,7 +1165,7 @@ theorem contDiff_dRho_chart (hψ : IsStdChar D ψ (-1)) (hLine : LineAtExists D)
   exact ((contDiff_const.mul h1).mul (contDiff_G hf w)).add h2
 
 /- English proof (translation)
-The claim follows from `dRho_quasi hψ hLine τ z hf γ w level := by obtain ⟨U, hUo, hU⟩ := hf.level refine ⟨U, hUo, fun u hu hinf => dRho_level hψ hLine τ z hf u (hU u hu hinf) fun i j => ?_⟩ have := congrFun (congrFun hinf i) j rw [Matrix.map_apply, Matrix.zero_apply] at this exact this cont := by have …`.
+A detailed English derivation is pending.
 -/
 theorem theta_dRho (hψ : IsStdChar D ψ (-1)) (hLine : LineAtExists D) (τ : D.what₂.Tau)
     (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
@@ -1213,13 +1203,13 @@ theorem theta_dRho (hψ : IsStdChar D ψ (-1)) (hLine : LineAtExists D) (τ : D.
     exact (contDiff_dRho_chart hψ hLine τ z hf w).comp A'.contDiff
 
 /- English proof (translation)
-Establish `hGg : G (dRho (heisO ψ S T) (Eqv.thetaC D) τ' w f) x = fun u => -(Real.pi : ℂ) * Complex.I * ((phR S T x (sg τ' w) + lCL S T (sg τ' w) u : ℝ) : ℂ) * G f x u + fderiv ℝ (G f x) u (sg τ' w)`. Use function extensionality and compare the values at `u`. Conclude with `dRho_chart hψ hLine τ' w hf x u`. Rewrite using `[hGg]`. Establish `hG0 : HasFDerivAt (G f x) (fderiv ℝ (G f x) 0) 0` using `hasFDerivAt_G hf x 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : HasFDerivAt (fun u : V D T.rank S.rank => -(Real.pi : ℂ) * Complex.I * ((phR S T x (sg τ' w) + lCL S T (sg τ' w) u : ℝ) : ℂ)) ((-(Real.pi : ℂ) * Complex.I) • (Complex.ofRealCLM.comp (lCL S T (sg τ' w)))) 0`. Establish `h1 : HasFDerivAt (fun u => phR S T x (sg τ' w) + lCL S T (sg τ' w) u) (lCL S T (sg τ' w)) 0` using `(lCL S T (sg τ' w)).hasFDerivAt.const_add _`. Establish `h2` using `(Complex.ofRealCLM.hasFDerivAt.comp (0 : V D T.rank S.rank) h1).const_mul (-(Real.pi : ℂ) * Complex.I)`. Simplify `h2` using `[Function.comp_def]`. Establish `hd2 : HasFDerivAt (fderiv ℝ (G f x)) (fderiv ℝ (fderiv ℝ (G f x)) 0) 0` using `(((contDiff_infty_iff_fderiv.1 (contDiff_G hf x)).2.differentiable (by simp)) 0).hasFDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : HasFDerivAt (fun u => fderiv ℝ (G f x) u (sg τ' w)) ((fderiv ℝ (fderiv ℝ (G f x)) 0).flip (sg τ' w)) 0`. Use `hd2.clm_apply (hasFDerivAt_const (sg (D := D) τ' w) (0 : V D T.rank S.rank))` as an intermediate fact. Simplify using `using this`. Establish `hall : HasFDerivAt (fun u : V D T.rank S.rank => -(Real.pi : ℂ) * Complex.I * ((phR S T x (sg τ' w) + lCL S T (sg τ' w) u : ℝ) : ℂ) * G f x u + fderiv ℝ (G f x) u (sg τ' w)) _ 0` using `(hl.mul hG0).add h3`. Rewrite using `[hall.fderiv]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[G]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fderiv_G_dRho (hψ : IsStdChar D ψ (-1)) (hLine : LineAtExists D) (τ' : D.what₂.Tau)
     (w : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (x : WO S T)
@@ -1256,11 +1246,11 @@ theorem fderiv_G_dRho (hψ : IsStdChar D ψ (-1)) (hLine : LineAtExists D) (τ' 
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[lCL_apply, phR_sg, compAt_Lb]`. Distinguish the cases in `h : τ = τ'`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i j`. Simplify using `[sg]`. Rewrite using `[if_neg h]`. Establish `hz : Matrix.of (sg (D` using `D) τ z τ') = 0 := by`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[sg, Ne.symm h]`. Rewrite using `[hz]`. Conclude with `eM_zero_left _ _ _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lCL_sg (τ τ' : D.what₂.Tau) (z w : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
     lCL S T (sg τ' w) (sg τ z) = if τ = τ' then eR S T τ z w else 0 := by
@@ -1281,7 +1271,7 @@ theorem lCL_sg (τ τ' : D.what₂.Tau) (z w : Matrix (Fin T.rank) (Fin S.rank) 
 end Calc
 
 /- English proof (translation)
-Introduce `ψ θ hψ hθ hLine S T τ z f hf`. Take `rfl` from `Eqv.eq_thetaC D hθ`. Conclude with `⟨theta_dRho hψ hLine τ z hf, fun x => hasDerivAt_dRho hψ hLine τ z x (hasFDerivAt_G hf x 0).differentiableAt⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem thetaDRho (D : D7) : ThetaDRho D := by
   intro ψ θ hψ hθ hLine S T τ z f hf
@@ -1289,15 +1279,15 @@ theorem thetaDRho (D : D7) : ThetaDRho D := by
   exact ⟨theta_dRho hψ hLine τ z hf, fun x => hasDerivAt_dRho hψ hLine τ z x (hasFDerivAt_G hf x 0).differentiableAt⟩
 
 /- English proof (translation)
-Introduce `ψ θ hψ hθ hLine S T τ`. Take `rfl` from `Eqv.eq_thetaC D hθ`. Establish `hdf : ∀ {f : WO S T → ℂ}, IsThetaFunO ψ S T f → ∀ x, DifferentiableAt ℝ (G f x) 0` using `fun hf x => (hasFDerivAt_G hf x 0).differentiableAt`. Use `⟨fun z w f hf => ?_, fun r z f hf => ?_, fun z c f g hf hg => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.add_apply]`. Rewrite using `[dRho_eq hψ hLine τ _ x (hdf hf x), dRho_eq hψ hLine τ _ x (hdf hf x), dRho_eq hψ hLine τ _ x (hdf hf x), sg_add, phR_add_right, map_add]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[dRho_eq hψ hLine τ _ x (hdf hf x), dRho_eq hψ hLine τ _ x (hdf hf x), sg_smul, phR_smul, map_smul, Complex.real_smul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hG : G (f + c • g) x = G f x + c • G g x` using `rfl`. Establish `hdg : DifferentiableAt ℝ (G (f + c • g) x) 0`. Rewrite using `[hG]`. Conclude with `(hdf hf x).add ((hdf hg x).const_smul c)`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dRho_eq hψ hLine τ z x hdg, dRho_eq hψ hLine τ z x (hdf hf x), dRho_eq hψ hLine τ z x (hdf hg x), hG, fderiv_add (hdf hf x) ((hdf hg x).const_smul c), fderiv_const_smul (hdf hg x)]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, Pi.add_apply, Pi.smul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dRhoLin (D : D7) : DRhoLin D := by
   intro ψ θ hψ hθ hLine S T τ
@@ -1329,11 +1319,11 @@ theorem dRhoLin (D : D7) : DRhoLin D := by
     ring
 
 /- English proof (translation)
-Introduce `ψ θ hψ hθ hLine S T τ τ' z w f hf`. Take `rfl` from `Eqv.eq_thetaC D hθ`. Establish `hg1` using `theta_dRho hψ hLine τ' w hf`. Establish `hg2` using `theta_dRho hψ hLine τ z hf`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hsym : IsSymmSndFDerivAt ℝ (G f x) 0` using `(contDiff_G hf x).contDiffAt.isSymmSndFDerivAt (by simp; exact WithTop.coe_le_coe.2 le_top)`. Rewrite using `[Pi.sub_apply, dRho_eq hψ hLine τ z x (hasFDerivAt_G hg1 x 0).differentiableAt, dRho_eq hψ hLine τ' w x (hasFDerivAt_G hg2 x 0).differentiableAt, fderiv_G_dRho hψ hLine τ' w hf x, fderiv_G_dRho hψ hLine τ z hf x, dRho_eq hψ hLine τ' w x (hasFDerivAt_G hf x 0).differentiableAt, dR …`. Distinguish the cases in `h : τ = τ'`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl, if_pos rfl, eR_swap S T τ z w, Pi.smul_apply, smul_eq_mul, eR]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, if_neg (Ne.symm h), if_neg h, Pi.zero_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dRhoComm (D : D7) : DRhoComm D := by
   intro ψ θ hψ hθ hLine S T τ τ' z w f hf

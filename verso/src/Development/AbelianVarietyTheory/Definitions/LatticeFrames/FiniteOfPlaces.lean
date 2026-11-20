@@ -18,9 +18,9 @@ namespace GlobalTheory.FinPl.PlacesTest
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h` using `((GlobalTheory.FinPl.AlmostAll.latA_eq_latV D).and ((GlobalTheory.FinPl.AeUnit.eventually_incA_mul_mem_intAt D D.host.xi0).and (GlobalTheory.FinPl.AeUnit.eventually_incA_mul_mem_intAt D D.host.xi0⁻¹))).and Z.eventually_cofinite_notMem`. Take `⟨v, ⟨e, ε, he, hε, hs⟩, ⟨h1, h2, h3⟩, hZ⟩` from `((Set.infinite_iff_frequently_cofinite.1 (infinite_splitIdem_places D)).and_eventually h).exists`. Take `⟨p, -, hp⟩` from `GlobalTheory.FinPl.SplitPoint.exists_splitPt D v e ε he hε hs`. Use `⟨v, p, hZ, by simp, by simp, fun _ _ _ => rfl, fun x => by simp [hp], fun _ => ?_⟩` and prove the remaining obligations. Unfold `SplitPt.UnitAA`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[hp]`. Conclude with `⟨fun a ha => ⟨h2 a ha, h3 a ha⟩, h1⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_one_place (D : D7) (Z : Finset (Pl D)) : ∃ (v : Pl D) (p : SplitPt D (Fv D.host.F v)),
     v ∉ Z ∧ Places (fun _ : Unit => p) [()] (· = v) := by
@@ -38,7 +38,7 @@ section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {ι : Type}
 
 /- English proof (translation)
-Establish `: Finite ι` using `Set.finite_univ_iff.1 ((List.finite_toSet I).subset fun i _ => h.all i)`. Conclude with `(Set.finite_range fun i => (p i).v).subset fun x hx => by`. Take `⟨i, rfl⟩` from `(h.mem x).1 hx`. Conclude with `⟨i, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_of_places {p : ι → SplitPt D k} {I : List ι} {P : Pl D → Prop} (h : Places p I P) : {x | P x}.Finite := by
   have : Finite ι := Set.finite_univ_iff.1 ((List.finite_toSet I).subset fun i _ => h.all i)
@@ -47,13 +47,13 @@ theorem finite_of_places {p : ι → SplitPt D k} {I : List ι} {P : Pl D → Pr
     exact ⟨i, rfl⟩
 
 /- English proof (translation)
-Introduce `h` and use `hij (h.inj hv)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_places_of_eq {p : ι → SplitPt D k} {I : List ι} {P : Pl D → Prop} {i j : ι} (hij : i ≠ j) (hv : (p i).v = (p j).v) :
     ¬ Places p I P := fun h => hij (h.inj hv)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨List.nodup_nil, fun i => i.elim, fun i => i.elim, fun _ => ⟨False.elim, fun ⟨i, _⟩ => i.elim⟩, fun i => i.elim⟩`.
+Supply the required witnesses or components.
 -/
 theorem places_empty (p : Empty → SplitPt D k) : Places p [] fun _ => False :=
   ⟨List.nodup_nil, fun i => i.elim, fun i => i.elim, fun _ => ⟨False.elim, fun ⟨i, _⟩ => i.elim⟩, fun i => i.elim⟩
@@ -62,13 +62,13 @@ variable {p : ι → SplitPt D k} {n n' : Type} [Fintype n] [DecidableEq n] [Fin
   {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {α : ∀ i, Frame (p i) S n'} {β : ∀ i, Frame (p i) T n} {LS : Lat S} {LT : Lat T}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨OffTest.combAt_single_zero P 1, fun f _ => OffTest.comb_single_zero ψ S T f⟩`.
+Supply the required witnesses or components.
 -/
 theorem reps_nil (Ψ : ι → Matrix n n' k → ℂ) (P : Pl D → Prop) : Reps ψ α β LS LT Ψ [] P (Finsupp.single 0 1) :=
   ⟨OffTest.combAt_single_zero P 1, fun f _ => OffTest.comb_single_zero ψ S T f⟩
 
 /- English proof (translation)
-Establish `h : ∀ u, heisO ψ S T u 0 = 0` using `fun u => by funext w; simp [heisO]`. Conclude with `⟨⟨fun _ _ => by simp, ⟨⊤, isOpen_univ, fun u _ _ => h u⟩, continuous_const, fun _ _ _ _ _ => contDiff_const⟩, fun u _ => h _, fun _ _ u _ _ => h u⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem vac_zero (P : Pl D → Prop) : Vac ψ S T LS LT P 0 := by
   have h : ∀ u, heisO ψ S T u 0 = 0 := fun u => by funext w; simp [heisO]
@@ -76,7 +76,7 @@ theorem vac_zero (P : Pl D → Prop) : Vac ψ S T LS LT P 0 := by
     fun u _ => h _, fun _ _ u _ _ => h u⟩
 
 /- English proof (translation)
-Take `⟨g, -, h1, h2, -, h3, -⟩` from `h.2 0 (vac_zero P)`. Conclude with `⟨h3, h1, h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sb_of_reps {Ψ : ι → Matrix n n' k → ℂ} {i : ι} {I : List ι} {P : Pl D → Prop} {c : WO S T →₀ ℂ}
     (h : Reps ψ α β LS LT Ψ (i :: I) P c) : Ψ i ∈ SB (Matrix n n' k) ∧ IsSelfDualC S LS ∧ IsSelfDualC T LT := by
@@ -86,7 +86,7 @@ theorem sb_of_reps {Ψ : ι → Matrix n n' k → ℂ} {i : ι} {I : List ι} {P
 end
 
 /- English proof (translation)
-Use `GlobalTheory.LinkKappa.symplO_ofAdj L L'' S τ (-1) (by simpa using hτ) x y` as an intermediate fact. Simplify using `only [symplOH, kap, this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem symplOH_kap {L L'' : HSp D} (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E)
     (hτ : τᴴ * (L.gram * τ) = (-(D.host.xi0 * star D.host.xi0)) • L''.gram) (S : HSp D) (x y : WO S L'') :
@@ -96,14 +96,14 @@ theorem symplOH_kap {L L'' : HSp D} (τ : Matrix (Fin L.rank) (Fin L''.rank) D.h
   simp
 
 /- English proof (translation)
-Simplify using `only [kap, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj, Matrix.mul_add, adj_add, Matrix.add_mul, smul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem kap_add {L L'' : HSp D} (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E) (S : HSp D) (x y : WO S L'') :
     kap τ S (x + y) = kap τ S x + kap τ S y := by
   simp only [kap, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj, Matrix.mul_add, adj_add, Matrix.add_mul, smul_add]
 
 /- English proof (translation)
-Simplify using `only [heisO, lastBi, OrthDec.boxT, map_add, Prod.fst_add, Prod.snd_add, kap_add]`. Rewrite using `[o.symplOH_resS, o''.symplOH_resT, ← map_add (o.resS S).symm]`. Simplify using `only [AddEquiv.apply_symm_apply, symplOH_kap τ hτ, AddChar.map_add_eq_mul, Prod.mk_add_mk]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lastBi_heis (ψ : AddChar (AF D.host.F) ℂ) {V₀ A L S X T L'' : HSp D} (o : OrthDec V₀ A L) (o'' : OrthDec X T L'')
     (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E)
@@ -116,14 +116,14 @@ theorem lastBi_heis (ψ : AddChar (AF D.host.F) ℂ) {V₀ A L S X T L'' : HSp D
   ring
 
 /- English proof (translation)
-Simplify using `[smallPair, liftA]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smallPair_zero {V₀ A L S T : HSp D} (o : OrthDec V₀ A L) (om₁ : Om V₀ S) (omT : Om S T) (vA : Vol A) (vS : Vol S)
     (vT : Vol T) (Ξ Φ₂ F) : smallPair o om₁ omT vA vS vT 0 Ξ Φ₂ F = 0 := by
   simp [smallPair, liftA]
 
 /- English proof (translation)
-Establish `h0 : (o.resS t.J.W).symm (0, 0) = 0` using `map_zero (o.resS t.J.W).symm`. Simplify using `only [smallPair, liftA, Last.Q, ho, h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem smallPair_eq_Q {ψ : AddChar (AF D.host.F) ℂ} {T : HSp D} {B : BesLev D 0} (t : Last ψ T B) (o : OrthDec B.V B.A B.L)
     (ho : ∀ a, o.emb (a, 1) = embA B.d B.o a) (φ Φ₁ Φ₂ F) :

@@ -10,14 +10,14 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum (IsCO rescale)
 namespace GlobalTheory.PosOne.Unif
 
 /- English proof (translation)
-Simplify using `[comb, Finsupp.linearCombination_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem comb_eq_lc {G : Type} (e : G →₀ ℂ) (F : G → ℂ) :
     comb e F = Finsupp.linearCombination ℂ F e := by
   simp [comb, Finsupp.linearCombination_apply, smul_eq_mul]
 
 /- English proof (translation)
-Use `conv_rhs => rw [comb_eq_lc]`. Simplify using `only [Finsupp.sum, map_sum, map_smul, Finsupp.linearCombination_mapDomain, comb_eq_lc, smul_eq_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem comb_translate {G : Type} [Group G] (e : G →₀ ℂ) (f : G → G →₀ ℂ) (F : G → ℂ) :
     comb e (fun g => comb (f g) (fun h => F (h * g))) =
@@ -30,14 +30,14 @@ def conjSub {G : Type} [Group G] (U : Subgroup G) (g : G) : Subgroup G :=
   U.comap (MulAut.conj g⁻¹).toMonoidHom
 
 /- English proof (translation)
-Simplify using `[conjSub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_conjSub {G : Type} [Group G] (U : Subgroup G) (g u : G) :
     u ∈ conjSub U g ↔ g⁻¹ * u * g ∈ U := by
   simp [conjSub]
 
 /- English proof (translation)
-Establish `: (conjSub U g : Set G) = (fun x => g⁻¹ * x * g) ⁻¹' (U : Set G)`. Use extensionality with `x`. Simplify using `[mem_conjSub]`. Rewrite using `[this]`. Conclude with `hU.preimage ((continuous_const.mul continuous_id).mul continuous_const)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_conjSub {G : Type} [Group G] [TopologicalSpace G] [ContinuousMul G] (U : Subgroup G)
     (hU : IsOpen (U : Set G)) (g : G) : IsOpen (conjSub U g : Set G) := by
@@ -47,7 +47,7 @@ theorem isOpen_conjSub {G : Type} [Group G] [TopologicalSpace G] [ContinuousMul 
   exact hU.preimage ((continuous_const.mul continuous_id).mul continuous_const)
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite `hu` using `[mem_conjSub]`. Establish `e1 : u * g = g * (g⁻¹ * u * g)` using `by group`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem fixed_conjSub {G A : Type} [Group G] [AddCommGroup A] [Module ℂ A] (σ : Representation ℂ G A)
     (U : Subgroup G) (v : A) (hv : ∀ u ∈ U, σ u v = v) (g : G) :
@@ -67,23 +67,23 @@ variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (c : ℕ)
 
 /- English proof (translation)
-Use `haveI : ν.IsAddHaarMeasure := hsd.1`. Introduce `q`. Proceed by induction on `q with`. Consider the case `zero`. Introduce `_ U _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Finsupp.single 1 1, Finsupp.single 1 1, ?_⟩` and prove the remaining obligations. Introduce `A _ _ σ _ l v _ _`. Simplify using `[comb, toOne_one]`. Consider the case `succ q ih`. Introduce `hc U hU`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hq1 : 1 ≤ q + 1` using `by omega`. Establish `hqc : q + 1 < c` using `by omega`. Establish `H1` using `fun g : GL (n ⊕ Fin c) k => GlobalTheory.T.exchange_eq_finiteTranslateComb_of_level k n c (q + 1) hq1 hqc ψ hψc hψ1 ν (conjSub U g) (isOpen_conjSub U hU g)`. Use `choose eg eg' heg using H1`. Establish `H2` using `fun g : GL (n ⊕ Fin c) k => ih (by omega) (conjSub U g) (isOpen_conjSub U hU g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose E E' hE using H2`. Take `⟨e₀, _e₀', he₀⟩` from `ih (by omega) U hU`. Take `⟨_e₁', e₁, he₁⟩` from `GlobalTheory.T.exchange_eq_finiteTranslateComb_of_level k n c (q + 1) hq1 hqc ψ hψc hψ1 ν U hU`. Use `⟨e₀.sum fun g a => a • (eg g).mapDomain (· * g), e₁.sum fun g a => a • (E' g).mapDomain (· * g), ?_⟩` and prove the remaining obligations. Introduce `A _ _ σ hsm l v hl hv`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨l', hl'eq, hl'pos⟩` from `(GlobalTheory.RootEx.Exchange.exchange_isPos k n c (q + 1) hq1 hqc ψ hψc hψ1 ν A σ hsm).2.1 l hl`. Establish `hfun : (⇑l' : A → ℂ) = exDown ν (q + 1) σ ⇑l` using `funext hl'eq`. Establish `htoOne : toOne ν σ (q + 1 + 1) ⇑l = toOne ν σ (q + 1) ⇑l'`. Rewrite using `[hfun]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hmul : ∀ g h : GL (n ⊕ Fin c) k, σ h (σ g v) = σ (h * g) v`. Introduce `g h`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
+Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[htoOne, (he₀ A σ hsm l' v hl'pos hv).1]`. Establish `: (fun g => l' (σ g v)) = fun g => comb (eg g) (fun h => l (σ (h * g) v))`. Use function extensionality and compare the values at `g`. Rewrite using `[hl'eq, (heg g A σ hsm l (σ g v) (fixed_conjSub σ U v hv g)).1 hl]`. Simplify using `only [hmul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `comb_translate e₀ eg (fun g => l (σ g v))`. Establish `hback` using `((GlobalTheory.RootEx.exDown_exUp_and_exUp_exDown k n c (q + 1) hq1 hqc ψ hψc hψ1 ν hsd A σ hsm l v).2 hl).symm`. Rewrite using `[hback, ← hfun, (he₁ A σ hsm l' v hv).2 hl'pos]`. Establish `: (fun g => l' (σ g v)) = fun g => comb (E' g) (fun h => toOne ν σ (q + 1 + 1) l (σ (h * g) v))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[(hE g A σ hsm l' (σ g v) hl'pos (fixed_conjSub σ U v hv g)).2, htoOne]`. Simplify using `only [hmul]`. Rewrite using `[this]`. Conclude with `comb_translate e₁ E' (fun g => toOne ν σ (q + 1 + 1) l (σ g v))`.
+A detailed English derivation is pending.
 -/
 theorem toOne_comb (ψ : AddChar k Circle) (hψc : Continuous ψ) (hψ1 : ψ ≠ 1) (ν : Measure k)
     (hsd : IsSelfDual ψ ν) : ∀ q : ℕ, q + 1 ≤ c → ∀ (U : Subgroup (GL (n ⊕ Fin c) k)),
@@ -143,7 +143,7 @@ end GlobalTheory.PosOne.Unif
 
 open GlobalTheory.PosOne.Unif in
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n _ _ c P hP hPc ψ hψc hψ1 ν hsd U hU`. Take `⟨q, rfl⟩ : ∃ q, P = q + 1` from `⟨P - 1, by omega⟩`. Take `⟨e, e', h⟩` from `toOne_comb k n c ψ hψc hψ1 ν hsd q hPc U hU`. Conclude with `⟨e, e', fun A _ _ σ hsm l v hl hv => h A σ hsm l v hl hv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.PosOne.toOne_uniform : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (c P : ℕ) (_ : 1 ≤ P) (_ : P ≤ c) (ψ : AddChar k Circle) (_ : Continuous ψ) (_ : ψ ≠ 1) (ν : Measure k) (_ : IsSelfDual ψ ν) (U : Subgroup (GL (n ⊕ Fin c) k)) (_ : IsOpen (U : Set (GL (n ⊕ Fin c) k))), ∃ e e' : GL (n ⊕ Fin c) k →₀ ℂ, ∀ (A : Type) [AddCommGroup A] [Module ℂ A] (σ : Representation ℂ (GL (n ⊕ Fin c) k) A) (_ : IsSmoothRep σ) (l : A →ₗ[ℂ] ℂ) (v : A), IsNEquiv ψ P σ l → (∀ u ∈ U, σ u v = v) → toOne ν σ P l v = comb e (fun g => l (σ g v)) ∧ l v = comb e' fun g => toOne ν σ P l (σ g v) := by
   intro k _ _ _ _ _ _ n _ _ c P hP hPc ψ hψc hψ1 ν hsd U hU

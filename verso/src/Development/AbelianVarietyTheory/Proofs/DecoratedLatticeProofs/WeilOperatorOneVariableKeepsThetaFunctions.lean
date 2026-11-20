@@ -21,13 +21,13 @@ namespace GlobalTheory.WeilSlice
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `[symplOH, symplO, hO]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplOH_zero_right' (S T : HSp D) (x : WO S T) : symplOH S T x 0 = 0 := by
   simp [symplOH, symplO, hO]
 
 /- English proof (translation)
-Simplify using `[symplOH, symplO, hO]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplOH_zero_left' (S T : HSp D) (x : WO S T) : symplOH S T 0 x = 0 := by
   simp [symplOH, symplO, hO]
@@ -47,14 +47,14 @@ theorem shiftA_apply {S A B : HSp D} (o : OrthDec S A B) (T : HSp D) (g : GA D A
     shiftA o T g h w = (o.resS T).symm (actO A T g⁻¹ h⁻¹ (o.resS T w).1, (o.resS T w).2) := rfl
 
 /- English proof (translation)
-Simplify using `only [actO_eq, inv_inv, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (mt T h), mt_mul_inv, Matrix.one_mul, mt_mul_inv, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_shift (A T : HSp D) (g : GA D A) (h : GA D T) (u : WO A T) : actO A T g h (actO A T g⁻¹ h⁻¹ u) = u := by
   simp only [actO_eq, inv_inv, Matrix.mul_assoc]
   rw [← Matrix.mul_assoc (mt T h), mt_mul_inv, Matrix.one_mul, mt_mul_inv, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `h1 : Continuous fun w : WO S T => (o.resS T w).1` using `continuous_fst.comp (o.continuous_resS T)`. Establish `h2 : Continuous fun w : WO S T => (o.resS T w).2` using `continuous_snd.comp (o.continuous_resS T)`. Use `(o.continuous_resS_symm T).comp (Continuous.prodMk ?_ h2)` and prove the remaining obligations. Simplify using `only [actO_eq]`. Conclude with `(continuous_const.matrix_mul h1).matrix_mul continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_shiftA {S A B : HSp D} (o : OrthDec S A B) (T : HSp D) (g : GA D A) (h : GA D T) :
     Continuous (shiftA o T g h) := by
@@ -65,7 +65,7 @@ theorem continuous_shiftA {S A B : HSp D} (o : OrthDec S A B) (T : HSp D) (g : G
   exact (continuous_const.matrix_mul h1).matrix_mul continuous_const
 
 /- English proof (translation)
-Rewrite using `[shiftA_apply, OrthDec.resS_symm_apply]`. Simplify using `only [OrthDec.resS_apply, actO_eq]`. Rewrite using `[Matrix.map_add _ (map_add (finPart D))]`. Simplify using `only [Matrix.map_mul, hw, Matrix.zero_mul, Matrix.mul_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem shiftA_fin {S A B : HSp D} (o : OrthDec S A B) (T : HSp D) (g : GA D A) (h : GA D T) (w : WO S T)
     (hw : w.map (finPart D) = 0) : (shiftA o T g h w).map (finPart D) = 0 := by
@@ -75,7 +75,7 @@ theorem shiftA_fin {S A B : HSp D} (o : OrthDec S A B) (T : HSp D) (g : GA D A) 
   simp only [Matrix.map_mul, hw, Matrix.zero_mul, Matrix.mul_zero, zero_add]
 
 /- English proof (translation)
-Rewrite using `[shiftA_apply, OrthDec.resS_symm_apply]`. Simplify using `only [OrthDec.resS_apply, actO_eq]`. Rewrite using `[Matrix.map_add _ (map_add (infPart D))]`. Simplify using `only [Matrix.map_mul, hw, Matrix.zero_mul, Matrix.mul_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem shiftA_inf {S A B : HSp D} (o : OrthDec S A B) (T : HSp D) (g : GA D A) (h : GA D T) (w : WO S T)
     (hw : w.map (infPart D) = 0) : (shiftA o T g h w).map (infPart D) = 0 := by
@@ -85,25 +85,23 @@ theorem shiftA_inf {S A B : HSp D} (o : OrthDec S A B) (T : HSp D) (g : GA D A) 
   simp only [Matrix.map_mul, hw, Matrix.zero_mul, Matrix.mul_zero, zero_add]
 
 /- English proof (translation)
-Take `⟨g, h⟩` from `p`. Establish `hstd` using `hom.std`. Take `⟨θ, hθ⟩` from `GlobalTheory.Member.exists_isInfFam_family D`. Establish `hslice` using `(GlobalTheory.T.thetaFunction_products_slices_orthogonalDecomposition D ψ hstd S A B T o).2.2.2`. Establish `hsob` using `(GlobalTheory.T.weil_operator_orth_summand_slices_sobolev_bounded D ψ θ hθ S A B T o).1 χ χ' om hom (g, h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.T.theta_of_heisenberg_intertwiner_bounded_at_zero D ψ hstd θ hθ S T S T (shiftA o T g h) (continuous_shiftA o T g h) (shiftA_fin o T g h) (shiftA_inf o T g h) (fun F x => om (g, h) (fun u => F ((o.resS T).symm (u, (o.resS T x).2))) (o.resS T x).1) ?_ ?_ ?_ f hf` and prove the remaining obligations. Establish `e : (fun F : WO S T → ℂ => om (g, h) (fun u => F ((o.resS T).symm (u, (o.resS T 0).2))) (o.resS T 0).1) = fun F => om (g, h) (fun u => F ((o.resS T).symm (u, 0))) 0`. Use function extensionality and compare the values at `F`. Simplify using `only [map_zero, Prod.fst_zero, Prod.snd_zero]`. Conclude with `e ▸ hsob`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `F w hF`. Use function extensionality and compare the values at `x`. Establish `hG` using `(hslice F hF).1 ((o.resS T x).2 + (o.resS T w).2)`. Establish `hin : (fun u => heisO ψ S T (shiftA o T g h w) F ((o.resS T).symm (u, (o.resS T x).2))) = ψ (symplOH B T (o.resS T x).2 (o.resS T w).2) • heisO ψ A T (actO A T g⁻¹ h⁻¹ (o.resS T w).1) (fun u => F ((o.resS T).symm (u, (o.resS T x).2 + (o.resS T w).2)))`. Use function extensionality and compare the values at `u`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [heisO, shiftA_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[o.symplOH_resS]`. Simplify using `only [AddEquiv.apply_symm_apply]`. Rewrite using `[← map_add, Prod.mk_add_mk, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `show om (g, h) (fun u => heisO ψ S T (shiftA o T g h w) F ((o.resS T).symm (u, (o.resS T x).2))) (o.resS T x).1 = _`. Rewrite using `[hin, map_smul, hom.om_heis g h _ _ hG, actO_shift]`. Simplify using `only [Pi.smul_apply, heisO, smul_eq_mul]`. Rewrite using `[o.symplOH_resS, map_add (o.resS T) x w, AddChar.map_add_eq_mul]`. Simplify using `only [Prod.fst_add, Prod.snd_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `F γ hF`. Establish `hr : ratW T S γ ∈ ratL T S` using `⟨γ, rfl⟩`. Take `⟨ha, hb⟩` from `(o.mem_ratL_resS T _).1 hr`. Establish `hsl : (fun u => F ((o.resS T).symm (u, (o.resS T (ratW T S γ)).2))) = fun u => F ((o.resS T).symm (u, 0))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `u`. Establish `hb' : (o.resS T).symm (0, (o.resS T (ratW T S γ)).2) ∈ ratL T S`. Use `(o.mem_ratL_resS T _).2 ?_` and prove the remaining obligations. Simplify using `only [AddEquiv.apply_symm_apply]`. Conclude with `⟨zero_mem _, hb⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨δ, hδ⟩` from `hb'`. Establish `hδ' : ratW T S δ = (o.resS T).symm (0, (o.resS T (ratW T S γ)).2)` using `hδ`. Establish `e : (o.resS T).symm (u, (o.resS T (ratW T S γ)).2) = ratW T S δ + (o.resS T).symm (u, 0)`. Rewrite using `[hδ', ← map_add, Prod.mk_add_mk, zero_add, add_zero]`. Rewrite using `[e, hF.quasi δ, hδ', o.symplOH_resS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [AddEquiv.apply_symm_apply, symplOH_zero_left', symplOH_zero_right', add_zero, neg_zero, AddChar.map_zero_eq_one, one_mul]`. Use `show om (g, h) (fun u => F ((o.resS T).symm (u, (o.resS T (ratW T S γ)).2))) (o.resS T (ratW T S γ)).1 = om (g, h) (fun u => F ((o.resS T).symm (u, (o.resS T 0).2))) (o.resS T 0).1`. Simplify using `only [map_zero, Prod.fst_zero, Prod.snd_zero]`. Rewrite using `[hsl]`. Take `⟨γa, hγa⟩` from `ha`.
-
-Establish `ea : (o.resS T (ratW T S γ)).1 = ratW T A γa + 0` using `by rw [add_zero]; exact hγa.symm`. Rewrite using `[ea, (hom.om_pres (g, h) _ ((hslice F hF).1 0)).quasi γa 0, symplOH_zero_right', neg_zero, AddChar.map_zero_eq_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem half (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S A B T : HSp D) (o : OrthDec S A B) (f : WO S T → ℂ)
     (hf : IsThetaFunO ψ S T f) (χ χ' : (AE D)ˣ →* Circle) (om : Om A T) (hom : IsWeilDatumO ψ A T χ χ' om)
@@ -167,16 +165,16 @@ theorem half (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S A B T : HSp D) (o : Or
       AddChar.map_zero_eq_one, one_mul]
 
 /- English proof (translation)
-Rewrite using `[OrthDec.resS_symm_apply, OrthDec.resS_symm_apply]`. Conclude with `add_comm _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resS_symm_swap {S A B : HSp D} (o : OrthDec S A B) (T : HSp D) (u : WO B T) (v : WO A T) :
     (o.symm.resS T).symm (u, v) = (o.resS T).symm (v, u) := by
   rw [OrthDec.resS_symm_apply, OrthDec.resS_symm_apply]; exact add_comm _ _
 
 /- English proof (translation)
-Introduce `D ψ S A B T o f hf`. Use `⟨fun χ χ' om hom p => half D ψ S A B T o f hf χ χ' om hom p, fun χ χ' om hom p => ?_⟩` and prove the remaining obligations. Establish `h2` using `half D ψ S B A T o.symm f hf χ χ' om hom p`. Establish `key : (fun x => om p (fun v => f ((o.resS T).symm ((o.resS T x).1, v))) (o.resS T x).2) = fun x => om p (fun u => f ((o.symm.resS T).symm (u, (o.symm.resS T x).2))) (o.symm.resS T x).1`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [resS_symm_swap]`. Both sides reduce to the same expression. Conclude with `key ▸ h2`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem weilSlice_theta : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S A B T : HSp D) (o : OrthDec S A B) (f : WO S T → ℂ), IsThetaFunO ψ S T f → (∀ (χ χ' : (AE D)ˣ →* Circle) (om : Om A T), IsWeilDatumO ψ A T χ χ' om → ∀ p, IsThetaFunO ψ S T fun x => om p (fun u => f ((o.resS T).symm (u, (o.resS T x).2))) (o.resS T x).1) ∧ ∀ (χ χ' : (AE D)ˣ →* Circle) (om : Om B T), IsWeilDatumO ψ B T χ χ' om → ∀ p, IsThetaFunO ψ S T fun x => om p (fun v => f ((o.resS T).symm ((o.resS T x).1, v))) (o.resS T x).2 := by
   intro D ψ S A B T o f hf

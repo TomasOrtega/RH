@@ -64,7 +64,7 @@ abbrev top (s : BlowupSequence X) : Scheme.{u} := s.obj s.length
 def topMap (s : BlowupSequence X) : s.top ⟶ X := s.structMap s.length
 
 /- English proof (translation)
-The claim follows from `Eq.trans (Category.assoc (s.down h) (s.down (Nat.zero_le i)) s.isoZero.hom).symm (congrArg (fun g => g ≫ s.isoZero.hom) (show s.down h ≫ s.down (Nat.zero_le i) = s.down (Nat.zero_le i') from (s.tower.map_comp (homOfLE h).op (homOfLE (Nat.zero_le i)).op).symm))`.
+A detailed English derivation is pending.
 -/
 theorem structMap_down (s : BlowupSequence X) {i i' : ℕ} (h : i ≤ i') :
     s.down h ≫ s.structMap i = s.structMap i' :=

@@ -10,16 +10,16 @@ open MeasureTheory Matrix NumberField IsDedekindDomain Formalism.BasicNotions Fo
 namespace GlobalTheory.ParahoricTopo
 
 /- English proof (translation)
-The claim follows from `Valued.isClopen_valuationSubring (P.adicCompletion L)`.
+A detailed English derivation is pending.
 -/
 theorem isClopen_OP {L : Type} [Field L] [NumberField L] (P : HeightOneSpectrum (𝓞 L)) :
     IsClopen ((OP P : Subring (P.adicCompletion L)) : Set (P.adicCompletion L)) :=
   Valued.isClopen_valuationSubring (P.adicCompletion L)
 
 /- English proof (translation)
-Establish `e : {y : P.adicCompletion L | ∃ o ∈ OP P, y = ϖ * o} = (fun y => ϖ⁻¹ * y) ⁻¹' ((OP P : Subring (P.adicCompletion L)) : Set (P.adicCompletion L))`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨o, ho, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← mul_assoc, inv_mul_cancel₀ hϖ, one_mul]` and apply the resulting hypothesis. Introduce `h`. Conclude with `⟨_, h, by rw [← mul_assoc, mul_inv_cancel₀ hϖ, one_mul]⟩`. Rewrite using `[e]`. Conclude with `(isClopen_OP P).preimage (continuous_const.mul continuous_id)`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClopen_mulSet {L : Type} [Field L] [NumberField L] (P : HeightOneSpectrum (𝓞 L))
     (ϖ : P.adicCompletion L) (hϖ : ϖ ≠ 0) :
@@ -37,15 +37,15 @@ theorem isClopen_mulSet {L : Type} [Field L] [NumberField L] (P : HeightOneSpect
   exact (isClopen_OP P).preimage (continuous_const.mul continuous_id)
 
 /- English proof (translation)
-Introduce `L _ _ P r c`. Use `letI := GlobalTheory.LocalData.complRel P`. Use `haveI := GlobalTheory.LocalData.isLocalField P`. Use `haveI : (Valued.v : Valuation (P.adicCompletion L) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `he` using `ValuativeRel.isEquiv (ValuativeRel.valuation (P.adicCompletion L)) (Valued.v : Valuation (P.adicCompletion L) (WithZero (Multiplicative ℤ)))`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hK : GlobalTheory.SplitWeil.KO (P.adicCompletion L) (Fin (r + c)) = GLint (OP P) (r + c)`. Use extensionality with `g`. Rewrite using `[GlobalTheory.SplitFlip.mem_KO_iff]`. Simplify using `only [he.le_one_iff_le_one, Valuation.mem_integer_iff]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS` using `isClopen_mulSet P (piP P : P.adicCompletion L) (Units.ne_zero _)`. Use `set B : Set (GL (Fin (r + c)) (P.adicCompletion L)) := {k | bDA (k : Matrix (Fin (r + c)) (Fin (r + c)) (P.adicCompletion L)) ∈ IIset (t := c) (a := r) (OP P) (piP P : P.adicCompletion L)} with hB`. Establish `hBe : B = ⋂ i : Fin c, ⋂ j : Fin r, (fun k : GL (Fin (r + c)) (P.adicCompletion L) => (k : Matrix (Fin (r + c)) (Fin (r + c)) (P.adicCompletion L)) (Fin.natAdd r i) (Fin.castAdd c j)) ⁻¹' {y : P.adicCompletion L | ∃ o ∈ OP P, y = (piP P : P.adicCompletion L) * o}`. Use extensionality with `k`. Simplify using `only [hB, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage, IIset, bDA, Matrix.submatrix_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcont : ∀ (i : Fin (r + c)) (j : Fin (r + c)), Continuous fun k : GL (Fin (r + c)) (P.adicCompletion L) => (k : Matrix (Fin (r + c)) (Fin (r + c)) (P.adicCompletion L)) i j` using `fun i j => (Units.continuous_val (M := Matrix (Fin (r + c)) (Fin (r + c)) (P.adicCompletion L))).matrix_elem i j`. Establish `hBc : IsClopen B`. Rewrite using `[hBe]`. Conclude with `isClopen_iInter_of_finite fun i => isClopen_iInter_of_finite fun j => hS.preimage (hcont _ _)`. Establish `hP : parJ (OP P) (piP P : P.adicCompletion L) r c = (GlobalTheory.SplitWeil.KO (P.adicCompletion L) (Fin (r + c)) : Set _) ∩ B`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hK]`. Both sides reduce to the same expression. Rewrite using `[hP]`. Conclude with `⟨GlobalTheory.SplitFlip.isOpen_KO.inter hBc.isOpen, GlobalTheory.SplitFlip.isCompact_KO.inter_right hBc.isClosed⟩`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_isCompact_parJ : ∀ (L : Type) [Field L] [NumberField L] (P : HeightOneSpectrum (𝓞 L)) (r c : ℕ), IsOpen (parJ (OP P) (piP P : P.adicCompletion L) r c) ∧ IsCompact (parJ (OP P) (piP P : P.adicCompletion L) r c) := by
   intro L _ _ P r c

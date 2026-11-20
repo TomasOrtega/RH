@@ -21,9 +21,9 @@ open scoped TensorProduct
 namespace GlobalTheory.BlowSmooth
 
 /- English proof (translation)
-Use `algebraize [σ]`. Establish `: IsLocalHom (algebraMap A B)` using `‹_›`. Set `e : (B ⧸ (maximalIdeal A).map σ) ≃+* ResidueField A ⊗[A] B` to `(Algebra.TensorProduct.quotIdealMapEquivTensorQuot B (maximalIdeal A)).toRingEquiv.trans (Algebra.TensorProduct.comm A B (A ⧸ maximalIdeal A)).toRingEquiv`. Establish `: IsRegularLocalRing (ResidueField A ⊗[A] B)` using `.of_ringEquiv e`. Establish `: Algebra.FormallySmooth (ResidueField A) (ResidueField A ⊗[A] B)` using `GlobalTheory.formallySmooth_of_isRegularLocalRing_of_perfectField _ _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.FinitePresentation A (Algebra.EssFiniteType.subalgebra A B)` using `Algebra.FinitePresentation.of_finiteType.1 inferInstance`. Conclude with `Algebra.FormallySmooth.of_formallySmooth_residueField_tensor (R := A) (S := B) (Algebra.EssFiniteType.submonoid A B)`.
+A detailed English derivation is pending.
 -/
 theorem formallySmooth_of_regular_fibre {A B : Type} [CommRing A] [IsLocalRing A] [IsNoetherianRing A] [CommRing B]
     [IsLocalRing B] (σ : A →+* B) [IsLocalHom σ] [PerfectField (ResidueField A)] (hf : σ.Flat) (he : σ.EssFiniteType)
@@ -42,9 +42,9 @@ theorem formallySmooth_of_regular_fibre {A B : Type} [CommRing A] [IsLocalRing A
     (Algebra.EssFiniteType.submonoid A B)
 
 /- English proof (translation)
-Establish `: Nontrivial (B ⧸ I)` using `Ideal.Quotient.nontrivial_iff.2 hI`. Establish `: IsLocalRing (B ⧸ I)` using `IsLocalRing.of_surjective' (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective`. Set `χ : (B ⧸ I) →+* (R ⧸ I.map φ)` to `Ideal.quotientMap (I.map φ) φ Ideal.le_comap_map`. Establish `hcomm : (Ideal.Quotient.mk (I.map φ)).comp φ = χ.comp (Ideal.Quotient.mk I)`. Use extensionality with `a`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[χ]`. Use `(GlobalTheory.RegSmooth.isRegularLocalRing_of_flat_of_map_maximalIdeal' χ (GlobalTheory.Pat.flat_quotientMap_map φ hf I) ?_).1` and prove the remaining obligations. Rewrite using `[← IsLocalRing.map_maximalIdeal_of_surjective (Ideal.Quotient.mk (I.map φ)) Ideal.Quotient.mk_surjective, ← hm, ← IsLocalRing.map_maximalIdeal_of_surjective (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective, Ideal.map_map, Ideal.map_map, hcomm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isRegularLocalRing_quotient_of_flat {B R : Type} [CommRing B] [IsLocalRing B] [IsNoetherianRing B] [CommRing R]
     [IsLocalRing R] (φ : B →+* R) (hf : φ.Flat) (hm : (maximalIdeal B).map φ = maximalIdeal R) (I : Ideal B) (hI : I ≠ ⊤)
@@ -60,13 +60,11 @@ theorem isRegularLocalRing_quotient_of_flat {B R : Type} [CommRing B] [IsLocalRi
     Ideal.map_map, hcomm]
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `CharP.exists q.ResidueField`. Break down `CharP.char_is_prime_or_zero q.ResidueField p with h | rfl` into its components or cases. Establish `: Fact p.Prime` using `⟨h⟩`. Establish `hq : q ≠ ⊥`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h1 : algebraMap o (⊥ : Ideal o).ResidueField (p : o) = 0` using `by rw [map_natCast]; exact CharP.cast_eq_zero _ p`. Rewrite `h1` using `[Ideal.algebraMap_residueField_eq_zero, Ideal.mem_bot]`. Conclude with `h.ne_zero (Nat.cast_eq_zero.1 h1)`. Establish `: q.IsMaximal` using `Ideal.IsPrime.isMaximal inferInstance hq`. Establish `: Algebra.FiniteType ℤ q.ResidueField` using `Algebra.FiniteType.of_surjective (IsScalarTower.toAlgHom ℤ o q.ResidueField) (Ideal.algebraMap_residueField_surjective q)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `_ : Algebra (ZMod p) q.ResidueField` to `ZMod.algebra _ p`. Use `IsScalarTower.of_algebraMap_eq' (R := ℤ) (S := ZMod p) (A := q.ResidueField) (RingHom.ext_int _ _)` as an intermediate fact. Establish `: Algebra.FiniteType (ZMod p) q.ResidueField` using `.of_restrictScalars_finiteType ℤ _ _`. Establish `: Module.Finite (ZMod p) q.ResidueField` using `finite_of_finite_type_of_isJacobsonRing _ _`. Conclude with `Algebra.IsAlgebraic.perfectField (ZMod p)`.
-
-Establish `: CharZero q.ResidueField` using `CharP.charP_to_charZero _ infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem perfectField_residueField {o : Type} [CommRing o] [IsDedekindDomain o] [CharZero o] [Algebra.FiniteType ℤ o]
     (q : Ideal o) [q.IsPrime] : PerfectField q.ResidueField := by
@@ -93,25 +91,23 @@ theorem perfectField_residueField {o : Type} [CommRing o] [IsDedekindDomain o] [
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Use `set y := ξ (closedPoint R) with hy`. Set `φ₀ : S.presheaf.stalk y →+* R` to `(Scheme.stalkClosedPointTo ξ).hom`. Set `σ` to `(s.stalkMap y).hom`. Set `L` to `Localization.AtPrime (s y).asIdeal`. Set `e` to `Spec.stalkIso (CommRingCat.of o) (s y)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `τ : L →+* S.presheaf.stalk y` to `σ.comp e.inv.hom`. Set `ρ : o →+* S.presheaf.stalk y` to `τ.comp (algebraMap o L)`. Establish `h3 : (Sp o).fromSpecStalk (s y) = Spec.map e.inv ≫ spMap (algebraMap o L)`. Use `(Spec.fromSpecStalk_eq (CommRingCat.of _) (s y)).trans ?_` and prove the remaining obligations. Rewrite using `[spMap, ← Spec.map_comp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg Spec.map (Spec.algebraMap_stalkIso_inv (R := CommRingCat.of _) (x := s y)).symm`. Establish `hb' : b = φ₀.comp ρ`. Establish `h1` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ`. Establish `h2` using `Scheme.SpecMap_stalkMap_fromSpecStalk s (x := y)`. Establish `key : spMap b = spMap (φ₀.comp ρ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hξ, ← h1, Category.assoc, ← h2, h3]`. Simplify using `only [spMap, ρ, τ, φ₀, σ, CommRingCat.ofHom_comp, Spec.map_comp, CommRingCat.ofHom_hom, Category.assoc]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective key)`. Establish `hq : (s y).asIdeal = (maximalIdeal R).comap b`. Establish `: s y = spMap b (closedPoint R)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hy, ← hξ, Scheme.Hom.comp_apply]`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `: IsLocallyNoetherian S` using `LocallyOfFiniteType.isLocallyNoetherian s`. Establish `hφ : Function.Injective φ₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : φ₀.Flat` using `het.1`. Use `algebraize [φ₀]`. Establish `: IsLocalHom (algebraMap (S.presheaf.stalk y) R)` using `inferInstanceAs (IsLocalHom (Scheme.stalkClosedPointTo ξ).hom)`. Use `Module.FaithfullyFlat.of_flat_of_isLocalHom (A := S.presheaf.stalk y) (B := R)` as an intermediate fact. Conclude with `FaithfulSMul.algebraMap_injective (S.presheaf.stalk y) R`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsDomain (S.presheaf.stalk y)` using `hφ.isDomain φ₀`. Establish `hρ : Function.Injective ρ`. Rewrite `hb` using `[hb']`. Conclude with `Function.Injective.of_comp (f := φ₀) hb`. Establish `hτ : τ.Flat` using `by algebraize [τ, ρ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FaithfulSMul o (S.presheaf.stalk y)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hρ`. Establish `: IsScalarTower o L (S.presheaf.stalk y)` using `IsScalarTower.of_algebraMap_eq' rfl`. Conclude with `(Module.flat_iff_of_isLocalization L (s y).asIdeal.primeCompl (S.presheaf.stalk y)).2 inferInstance`. Establish `hess : τ.EssFiniteType` using `RingHom.EssFiniteType.comp (RingHom.FiniteType.of_surjective _ e.commRingCatIsoToRingEquiv.symm.surjective).essFiniteType (LocallyOfFiniteType.stalkMap s y)`. Establish `: IsLocalHom e.inv.hom` using `isLocalHom_of_isIso e.inv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocalHom τ` using `RingHom.isLocalHom_comp _ _`. Establish `: PerfectField (ResidueField L)` using `hp (s y).asIdeal`. Establish `hI : ((maximalIdeal L).map τ).map φ₀ = ((maximalIdeal R).comap b).map b`. Rewrite using `[← hq, ← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_map, Ideal.map_map, RingHom.comp_assoc, ← hb']`. Establish `hne : (maximalIdeal L).map τ ≠ ⊤` using `ne_top_of_le_ne_top (maximalIdeal.isMaximal _).ne_top (Ideal.map_le_iff_le_comap.2 (IsLocalRing.maximalIdeal_comap τ).ge)`.
-
-Establish `hreg` using `isRegularLocalRing_quotient_of_flat φ₀ het.1 het.2.1 _ hne (hI ▸ hr)`. Establish `hs` using `formallySmooth_of_regular_fibre τ hτ hess hreg`. Conclude with `(RingHom.FormallySmooth.respectsIso.cancel_left_isIso e.inv (s.stalkMap y)).1 hs`.
+A detailed English derivation is pending.
 -/
 theorem formallySmooth_stalkMap {o : Type} [CommRing o] [IsDedekindDomain o] {S : Scheme.{0}} (s : S ⟶ Sp o)
     [LocallyOfFiniteType s] (hp : ∀ (q : Ideal o) [q.IsPrime], PerfectField q.ResidueField) {R : Type} [CommRing R] [IsDomain R]
@@ -172,11 +168,9 @@ theorem formallySmooth_stalkMap {o : Type} [CommRing o] [IsDedekindDomain o] {S 
   exact (RingHom.FormallySmooth.respectsIso.cancel_left_isIso e.inv (s.stalkMap y)).1 hs
 
 /- English proof (translation)
-Establish `hloc : IsZariskiLocalAtSource (@SmoothOfRelativeDimension n)` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `choose r W hW hr using H1.exists_dim f`. Use `IsZariskiLocalAtSource.of_iSup_eq_top (P := @SmoothOfRelativeDimension n) W (top_le_iff.1 fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hW x⟩) fun x => ?_` and prove the remaining obligations. Take `⟨_, hu, u, rfl⟩` from `hj.inter_open_nonempty _ (W x).2 ⟨x, hW x⟩`. Establish `h₁ : SmoothOfRelativeDimension (0 + r x) ((j ∣_ W x) ≫ (W x).ι ≫ f)` using `have := hr x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `inferInstance`. Establish `h₂ : SmoothOfRelativeDimension (0 + n) ((j ⁻¹ᵁ W x).ι ≫ j ≫ f)` using `inferInstance`. Rewrite `h₁` using `[← Category.assoc, morphismRestrict_ι, Category.assoc]`. Establish `e` using `H1.dim_unique _ h₁ h₂ ⟨u, hu⟩`. Rewrite `e` using `[zero_add, zero_add]`.
-
-Conclude with `e ▸ hr x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_of_dense {U X Y : Scheme.{0}} (f : X ⟶ Y) [Smooth f] (j : U ⟶ X) [IsOpenImmersion j]
     (hj : Dense (Set.range j)) (n : ℕ) (hn : SmoothOfRelativeDimension n (j ≫ f)) : SmoothOfRelativeDimension n f := by
@@ -193,19 +187,17 @@ theorem smoothOfRelativeDimension_of_dense {U X Y : Scheme.{0}} (f : X ⟶ Y) [S
   exact e ▸ hr x
 
 /- English proof (translation)
-Introduce `g hg φ hφ hns n hn hodd F Z z i OZ d S π j _ BD hmin hblow`. Establish `hiz : i ≫ z = F.s`. Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, ⟨-, -, -, h, -⟩, -⟩` from `hmin`. Conclude with `h`. Choose the witnesses or unpack the hypotheses as in `⟨hproj, hdense, hji⟩ : IsProjOver (π ≫ z) ∧ Dense (Set.range j) ∧ j ≫ π = i := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, -, -, -, -, h₁, h₂, h₃, -⟩` from `hblow`. Conclude with `⟨h₁, h₂, h₃⟩`. Establish `hjs : j ≫ π ≫ z = F.s` using `by rw [← Category.assoc, hji, hiz]`. Establish `: IsDedekindDomain (cycAway n)` using `GlobalTheory.CycAwayReg.isDedekindDomain_cycAway n`. Establish `: Algebra.FiniteType ℤ (cycAway n)` using `finiteType_cycAway n`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper (π ≫ z)` using `GlobalTheory.CommonModel.isProper_of_isProjOver hproj`. Establish `: LocallyOfFinitePresentation (π ≫ z)` using `inferInstance`. Establish `: Smooth (π ≫ z)`. Rewrite using `[← Scheme.Hom.smoothLocus_eq_top_iff, ← top_le_iff]`. Introduce and unpack `x -`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨C, G₁, _, y, α₁, ξ, hfam, hy, rfl⟩` from `GlobalTheory.T.exists_tautological_chart_at_siegel_blowup_point g hg φ hφ hns n hn hodd F Z z i OZ d S π j BD hmin hblow x`. Establish `: IsCommMonObj G₁` using `hfam.1.comm`. Take `⟨het, -⟩` from `GlobalTheory.T.tautologicalChart_centre_isCompletedEtaleLocalMap GlobalTheory.T.chartSeparation_data_defined_over_centre_field g hg φ hφ hns n hn hodd F Z z i OZ d S π j BD hmin hblow C G₁ y α₁ ξ hfam hy`. Take `⟨-, -, hinj, -, -, hreg⟩` from `TChart.Taut.isRegularLocalRing_and_isRelParam g n φ hn C`. Establish `hξ : ξ ≫ π ≫ z = spMap C.b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : jK C.R ≫ ξ ≫ π ≫ z = jK C.R ≫ spMap C.b`. Rewrite using `[← Category.assoc, ← hy, Category.assoc, hjs, hfam.2.2.2.2]`. Take `⟨c, hc⟩` from `Spec.map_surjective (ξ ≫ π ≫ z)`. Rewrite `h1` using `[← hc, jK, spMap, ← Spec.map_comp, ← Spec.map_comp]`. Establish `h2` using `congrArg CommRingCat.Hom.hom (Spec.map_injective h1)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc, spMap]`. Use `congr 1`. Use extensionality with `a`. Conclude with `IsFractionRing.injective C.R (FractionRing C.R) (congr($h2 a))`. Conclude with `formallySmooth_stalkMap (π ≫ z) (fun q _ => perfectField_residueField q) C.b ξ hξ hinj het hreg`.
-
-Conclude with `smoothOfRelativeDimension_of_dense (π ≫ z) j hdense _ (hjs ▸ F.smooth)`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_blowup : ∀ g : ℕ, 1 ≤ g → ∀ φ : InvFun ℤ, IsPolFan id g φ → NoSelfInt id g φ → ∀ n : ℕ, 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (z : Z ⟶ Sp (cycAway n)) (i : F.X ⟶ Z) (OZ : LB Z) (d : ℕ) (S : Scheme.{0}) (π : S ⟶ Z) (j : F.X ⟶ S) [IsOpenImmersion j] (BD : GlobalTheory.EffCartierData S), MinAt5 F z i OZ → BlowAt F z i φ d π j BD → SmoothOfRelativeDimension (g * (g + 1) / 2) (π ≫ z) := by
   intro g hg φ hφ hns n hn hodd F Z z i OZ d S π j _ BD hmin hblow

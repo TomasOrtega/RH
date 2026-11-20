@@ -51,7 +51,7 @@ theorem trForm_apply (G : Matrix (Fin r) (Fin r) E) (hG : ∀ a b, cc (G a b) = 
     (X Y : skewSub G) : ((trForm G hG hd X Y : maximalRealSubfield E) : E) = (X.1 * Y.1).trace := rfl
 
 /- English proof (translation)
-Rewrite using `[← Algebra.norm_norm (R := ℚ) (S := maximalRealSubfield E), Algebra.norm_algebraMap, Algebra.IsQuadraticExtension.finrank_eq_two, map_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_algebraMap_real (d : maximalRealSubfield E) :
     Algebra.norm ℚ (algebraMap (maximalRealSubfield E) E d) = (Algebra.norm ℚ d) ^ 2 := by
@@ -59,46 +59,44 @@ theorem norm_algebraMap_real (d : maximalRealSubfield E) :
     Algebra.IsQuadraticExtension.finrank_eq_two, map_pow]
 
 /- English proof (translation)
-The claim follows from `isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ (maximalRealSubfield E) E) (IsScalarTower.toAlgHom ℤ (maximalRealSubfield E) E).toRingHom.injective`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_coe_iff (x : maximalRealSubfield E) : IsIntegral ℤ (x : E) ↔ IsIntegral ℤ x :=
   isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ (maximalRealSubfield E) E)
     (IsScalarTower.toAlgHom ℤ (maximalRealSubfield E) E).toRingHom.injective
 
 /- English proof (translation)
-Introduce `E _ _ _ r G Λ e hr hΛ he hli`. Take `⟨hG, hd, hfg, hsp, -⟩` from `hΛ`. Establish `heV : ∀ i, e i ∈ skewSub G` using `fun i => ⟨(he i).1, (he i).2.1⟩`. Use `set v : Fin (r ^ 2 - 1) → skewSub G := fun i => ⟨e i, heV i⟩ with hv_def`. Establish `hve : (skewSub G).subtype ∘ v = e` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvli : LinearIndependent (maximalRealSubfield E) v` using `LinearIndependent.of_comp (skewSub G).subtype (by rw [hve]; exact hli)`. Establish `hmapv : Submodule.map (skewSub G).subtype (Submodule.span (maximalRealSubfield E) (Set.range v)) = Submodule.span _ (Set.range e)`. Rewrite using `[Submodule.map_span, ← Set.range_comp, hve]`. Establish `hspan : ⊤ ≤ Submodule.span (maximalRealSubfield E) (Set.range v)`. Introduce and unpack `⟨X, hX⟩ -`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.T.lie_basis_spans_unitary_lie E r G e hG hd heV hli X hX.1 hX.2`. Rewrite `h` using `[← hmapv]`. Take `⟨y, hy, hyX⟩` from `h`. Establish `: y = ⟨X, hX⟩` using `Subtype.ext hyX`. Rewrite using `[← this]` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `set b := Module.Basis.mk hvli hspan with hb`. Establish `hbv : ∀ i, b i = v i` using `fun i => Module.Basis.mk_apply hvli hspan i`. Use `set B := trForm G hG hd with hB`. Use `set f : skewSub G →+ Matrix (Fin r) (Fin r) E := (skewSub G).subtype.toAddMonoidHom with hf_def`. Establish `hf : Function.Injective f` using `Subtype.val_injective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set L' := (lieLat G Λ).comap f with hL'`. Establish `hLrange : lieLat G Λ ≤ f.range` using `fun X hX => ⟨⟨X, hX.1, hX.2.1⟩, rfl⟩`. Establish `hLmap : L'.map f = lieLat G Λ` using `AddSubgroup.map_comap_eq_self hLrange`. Establish `hsymm : B.IsSymm` using `⟨fun x y => Subtype.ext (by rw [hB, trForm_apply, trForm_apply]; exact Matrix.trace_mul_comm _ _)⟩`. Establish `hsep : ∀ X : skewSub G, (∀ Y : skewSub G, B X Y = 0) → X = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `X hX`. Apply `Subtype.ext` to reduce the goal to its premises. Use `GlobalTheory.T.eq_zero_of_trace_form_skew_hermitian E r G X.1 hG hd X.2.1 X.2.2 fun Y hY1 hY2 => ?_` and prove the remaining obligations. Use `congrArg (fun z : maximalRealSubfield E => (z : E)) (hX ⟨Y, hY1, hY2⟩)` as an intermediate fact. Simplify `this` using `[hB, trForm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hnd : B.Nondegenerate` using `⟨fun X hX => hsep X hX, fun Y hY => hsep Y fun X => by rw [hsymm.eq]; exact hY X⟩`. Establish `hbL : ∀ i, b i ∈ L'` using `fun i => by rw [hbv]; exact he i`. Establish `hsm : ∀ (a : 𝓞 (maximalRealSubfield E)) x, x ∈ L' → a • x ∈ L'`. Introduce `a x hx`. Use `⟨(a • x).2.1, (a • x).2.2, fun y hy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hc : IsIntegral ℤ (((a : maximalRealSubfield E) : E))` using `(isIntegral_coe_iff _).2 a.isIntegral_coe`. Establish `e1 : (f (a • x)) = (((a : maximalRealSubfield E) : E)) • x.1` using `rfl`. Rewrite using `[e1, smul_mulVec]`. Establish `e2 : (((a : maximalRealSubfield E) : E)) • (x.1 *ᵥ y) = (⟨_, (mem_integralClosure_iff ℤ E).2 hc⟩ : 𝓞 E) • (x.1 *ᵥ y)`. Rewrite using `[← algebraMap_smul E (⟨_, (mem_integralClosure_iff ℤ E).2 hc⟩ : 𝓞 E) (x.1 *ᵥ y)]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e2]`. Conclude with `Λ.smul_mem _ (hx.2.2 y hy)`. Establish `hint : ∀ x ∈ L', ∀ y ∈ L', IsIntegral ℤ (B x y)`. Introduce `x hx y hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← isIntegral_coe_iff, hB, trForm_apply]`. Use `GlobalTheory.T.trace_integral_of_preserved_lattice E r Λ _ hfg hsp fun z hz => ?_` and prove the remaining obligations. Rewrite using `[← mulVec_mulVec]`. Conclude with `hx.2.2 _ (hy.2.2 z hz)`. Establish `key` using `GlobalTheory.T.norm_gram_det_eq_index (maximalRealSubfield E) (skewSub G) (r ^ 2 - 1) b B L' hsymm hnd hbL hsm hint`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hdet : (Matrix.of fun i j => Matrix.trace (e i * e j)).det = algebraMap (maximalRealSubfield E) E (Matrix.of fun i j => B (b i) (b j)).det`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, hbv]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Both sides reduce to the same expression. Establish `I1 : (lieLat G Λ).relIndex (AddSubgroup.closure {Y : Matrix (Fin r) (Fin r) E | Y.trace = 0 ∧ (∀ u w, herm G (Y *ᵥ u) w + herm G u (Y *ᵥ w) = 0) ∧ ∀ X ∈ lieLat G Λ, IsIntegral ℤ (Matrix.trace (X * Y))}) = L'.relIndex (AddSubgroup.closure {y | ∀ x ∈ L', IsIntegral ℤ (B x y)})`. Rewrite using `[← AddSubgroup.relIndex_map_map_of_injective _ _ hf, hLmap, AddMonoidHom.map_closure]`. Use `congr 2`. Use extensionality with `Y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨⟨Y, h1, h2⟩, fun x hx => ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[← isIntegral_coe_iff, hB, trForm_apply]`. Conclude with `h3 _ hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Use `⟨y.2.1, y.2.2, fun X hX => ?_⟩` and prove the remaining obligations. Use `hy ⟨X, hX.1, hX.2.1⟩ hX` as an intermediate fact. Rewrite `this` using `[← isIntegral_coe_iff, hB, trForm_apply]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `I2 : (Submodule.span (𝓞 (maximalRealSubfield E)) (Set.range e)).toAddSubgroup.relIndex (lieLat G Λ) = (Submodule.span (𝓞 (maximalRealSubfield E)) (Set.range b)).toAddSubgroup.relIndex L'`. Rewrite using `[← AddSubgroup.relIndex_map_map_of_injective _ _ hf, hLmap]`. Use `congr 1`. Set `g : skewSub G →ₗ[𝓞 (maximalRealSubfield E)] Matrix (Fin r) (Fin r) E` to `{ toFun := Subtype.val, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `hg : (Submodule.span (𝓞 (maximalRealSubfield E)) (Set.range b)).map g = Submodule.span (𝓞 (maximalRealSubfield E)) (Set.range e)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `[g, hbv, v]`. Rewrite using `[← hg, Submodule.map_toAddSubgroup]`.
-
-Both sides reduce to the same expression. Rewrite using `[hdet, norm_algebraMap_real, I1, I2, ← key]`. Use `push_cast`. Rewrite using `[abs_pow, sq_abs]`.
+A detailed English derivation is pending.
 -/
 theorem abs_norm_gram_eq_index : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)) (e : Fin (r ^ 2 - 1) → Matrix (Fin r) (Fin r) E), 2 ≤ r → SelfDualLat G Λ → (∀ i, e i ∈ lieLat G Λ) → LinearIndependent (maximalRealSubfield E) e → |((Algebra.norm ℚ (Matrix.of fun i j => Matrix.trace (e i * e j)).det : ℚ) : ℝ)| = (((lieLat G Λ).relIndex (AddSubgroup.closure {Y : Matrix (Fin r) (Fin r) E | Y.trace = 0 ∧ (∀ u w, herm G (Y *ᵥ u) w + herm G u (Y *ᵥ w) = 0) ∧ ∀ X ∈ lieLat G Λ, IsIntegral ℤ (Matrix.trace (X * Y))}) : ℝ) * ((Submodule.span (𝓞 (maximalRealSubfield E)) (Set.range e)).toAddSubgroup.relIndex (lieLat G Λ) : ℝ) ^ 2) ^ 2 := by
   intro E _ _ _ r G Λ e hr hΛ he hli

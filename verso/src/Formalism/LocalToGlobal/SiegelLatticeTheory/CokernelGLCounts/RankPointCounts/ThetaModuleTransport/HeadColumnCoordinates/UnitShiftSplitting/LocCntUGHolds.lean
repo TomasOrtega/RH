@@ -4,14 +4,14 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 namespace Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUG
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M g hg r T T' hT hq Zh₁ Zh₂ Z₁ Z₂ e₁ e₂ u₁ u₂ _ _ hrel hG₁ hG₂ hT0`. Conclude with `Formalism.L2.SG.LocalCountModules.ThetaMbe0GWork.algGAllT_holds F E M g hg r T T' hT hq Zh₁ Zh₂ Z₁ Z₂ e₁ e₂ u₁ u₂ hrel hG₁ hG₂ hT0`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem algGUT_holds : AlgGUT := by
   intro F _ _ _ E _ _ _ _ M g hg r T T' hT hq Zh₁ Zh₂ Z₁ Z₂ e₁ e₂ u₁ u₂ _ _ hrel hG₁ hG₂ hT0
   exact Formalism.L2.SG.LocalCountModules.ThetaMbe0GWork.algGAllT_holds F E M g hg r T T' hT hq Zh₁ Zh₂ Z₁ Z₂ e₁ e₂ u₁ u₂ hrel hG₁ hG₂ hT0
 
 /- English proof (translation)
-The claim follows from `locCntUG_of_algGUT algGUT_holds`.
+A detailed English derivation is pending.
 -/
 theorem locCntUG_holds : Formalism.L2.SG.LocalCountModules.LocCntUG.LocCntUG := locCntUG_of_algGUT algGUT_holds
 

@@ -14,7 +14,7 @@ variable {ι : Type*} {H₁ : Type*} [NormedAddCommGroup H₁] [InnerProductSpac
   {H₂ : Type*} [NormedAddCommGroup H₂] [InnerProductSpace ℂ H₂]
 
 /- English proof (translation)
-Simplify using `only [Finsupp.linearCombination_apply, Finsupp.sum, sum_inner, inner_sum, inner_smul_left, inner_smul_right, hI]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inner_lc (y₁ : ι → H₁) (y₂ : ι → H₂)
     (hI : ∀ i j, inner ℂ (y₂ i) (y₂ j) = inner ℂ (y₁ i) (y₁ j)) (f f' : ι →₀ ℂ) :
@@ -24,7 +24,7 @@ theorem inner_lc (y₁ : ι → H₁) (y₂ : ι → H₂)
     inner_smul_right, hI]
 
 /- English proof (translation)
-Rewrite using `[@norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ, inner_lc y₁ y₂ hI]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_lc (y₁ : ι → H₁) (y₂ : ι → H₂)
     (hI : ∀ i j, inner ℂ (y₂ i) (y₂ j) = inner ℂ (y₁ i) (y₁ j)) (f : ι →₀ ℂ) :
@@ -32,7 +32,7 @@ theorem norm_lc (y₁ : ι → H₁) (y₂ : ι → H₂)
   rw [@norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ, inner_lc y₁ y₂ hI]
 
 /- English proof (translation)
-Establish `h : Finsupp.linearCombination ℂ y₁ f ∈ Submodule.span ℂ (Set.range y₁)`. Rewrite using `[← Finsupp.range_linearCombination]`. Conclude with `LinearMap.mem_range_self _ f`. Conclude with `Submodule.span_le.2 (Set.range_subset_iff.2 h₁) h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lc_mem (y₁ : ι → H₁) (C₁ : Submodule ℂ H₁) (h₁ : ∀ i, y₁ i ∈ C₁) (f : ι →₀ ℂ) :
     Finsupp.linearCombination ℂ y₁ f ∈ C₁ := by
@@ -44,9 +44,9 @@ def lcC (y₁ : ι → H₁) (C₁ : Submodule ℂ H₁) (h₁ : ∀ i, y₁ i �
   (Finsupp.linearCombination ℂ y₁).codRestrict C₁ (lc_mem y₁ C₁ h₁)
 
 /- English proof (translation)
-Introduce `x`. Rewrite using `[Topology.IsInducing.subtypeVal.closure_eq_preimage_closure_image]`. Use `show (x : H₁) ∈ closure (Subtype.val '' Set.range (lcC y₁ C₁ h₁))`. Establish `he : Subtype.val '' Set.range (lcC y₁ C₁ h₁) = (Submodule.span ℂ (Set.range y₁) : Set H₁)`. Rewrite using `[← Set.range_comp, ← Finsupp.range_linearCombination, LinearMap.coe_range]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[he, ← Submodule.topologicalClosure_coe]`. Conclude with `hd₁ x.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dense_lcC (y₁ : ι → H₁) (C₁ : Submodule ℂ H₁) (h₁ : ∀ i, y₁ i ∈ C₁)
     (hd₁ : C₁ ≤ (Submodule.span ℂ (Set.range y₁)).topologicalClosure) : DenseRange (lcC y₁ C₁ h₁) := by
@@ -62,11 +62,11 @@ theorem dense_lcC (y₁ : ι → H₁) (C₁ : Submodule ℂ H₁) (h₁ : ∀ i
 variable [CompleteSpace H₁] [CompleteSpace H₂]
 
 /- English proof (translation)
-Establish `: CompleteSpace C₁` using `hC₁.completeSpace_coe`. Establish `: CompleteSpace C₂` using `hC₂.completeSpace_coe`. Establish `hn : ∀ f, ‖lcC y₂ C₂ h₂ ((LinearEquiv.refl ℂ (ι →₀ ℂ)) f)‖ = ‖lcC y₁ C₁ h₁ f‖`. Introduce `f`. Use `show ‖(lcC y₂ C₂ h₂ f : H₂)‖ = ‖(lcC y₁ C₁ h₁ f : H₁)‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `norm_lc y₁ y₂ hI f`. Apply the tactic sequence `refine ⟨(LinearEquiv.refl ℂ (ι →₀ ℂ)).extendOfIsometry (lcC y₁ C₁ h₁) (lcC y₂ C₂ h₂) (dense_lcC y₁ C₁ h₁ hd₁) (dense_lcC y₂ C₂ h₂ hd₂) hn, ?_⟩`. Introduce `f x hx`. Establish `hx' : x = lcC y₁ C₁ h₁ f` using `Subtype.ext hx`. Substitute `hx'` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[LinearEquiv.extendOfIsometry_eq]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem gns_extend (y₁ : ι → H₁) (y₂ : ι → H₂)
     (hI : ∀ i j, inner ℂ (y₂ i) (y₂ j) = inner ℂ (y₁ i) (y₁ j))
@@ -91,13 +91,13 @@ theorem gns_extend (y₁ : ι → H₁) (y₂ : ι → H₂)
   rfl
 
 /- English proof (translation)
-Set `R : C₁ →L[ℂ] C₁` to `(T₁.comp C₁.subtypeL).codRestrict C₁ (fun y => hTC _ y.2)`. Set `A : C₁ →L[ℂ] H₂` to `C₂.subtypeL.comp (U.toLinearIsometry.toContinuousLinearMap.comp R)`. Set `B : C₁ →L[ℂ] H₂` to `T₂.comp (C₂.subtypeL.comp U.toLinearIsometry.toContinuousLinearMap)`. Establish `hAB : (A : C₁ → H₂) = B`. Use `(dense_lcC y₁ C₁ h₁ hd₁).equalizer A.continuous B.continuous (funext fun f => ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ((U (R (lcC y₁ C₁ h₁ f)) : C₂) : H₂) = T₂ ((U (lcC y₁ C₁ h₁ f) : C₂) : H₂)`. Establish `hR : ((R (lcC y₁ C₁ h₁ f) : C₁) : H₁) = Finsupp.linearCombination ℂ y₁ (Finsupp.mapDomain τ f)` using `by show T₁ (Finsupp.linearCombination ℂ y₁ f) = _`. Rewrite using `[Finsupp.linearCombination_mapDomain]`. Use `Finsupp.apply_linearCombination ℂ T₁.toLinearMap y₁ f` as an intermediate fact. Simplify using `only [ContinuousLinearMap.coe_coe] at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, show (⇑T₁ ∘ y₁) = y₁ ∘ τ from funext hT₁]`. Rewrite using `[hU _ _ hR, hU f _ rfl, Finsupp.linearCombination_mapDomain]`. Use `Finsupp.apply_linearCombination ℂ T₂.toLinearMap y₂ f` as an intermediate fact. Simplify using `only [ContinuousLinearMap.coe_coe] at this`. Rewrite using `[this, show (⇑T₂ ∘ y₂) = y₂ ∘ τ from funext hT₂]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hxy`. Establish `hx : x = R y` using `Subtype.ext hxy`. Substitute `hx` using the available equality. Conclude with `congrFun hAB y`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem gns_intertwine (y₁ : ι → H₁) (y₂ : ι → H₂)
     (C₁ : Submodule ℂ H₁) (C₂ : Submodule ℂ H₂) (h₁ : ∀ i, y₁ i ∈ C₁)

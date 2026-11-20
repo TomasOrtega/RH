@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ar
 open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory.Mean4O GlobalTheory.TrueGeo GlobalTheory.ProjVar
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CombChern.mInt_combPot_eq_inter` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMixedIntegralOfCombinedMetrics.lean&line=134#L134)
 -/

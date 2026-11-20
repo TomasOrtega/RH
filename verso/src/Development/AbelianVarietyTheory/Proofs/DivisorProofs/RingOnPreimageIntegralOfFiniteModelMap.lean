@@ -8,15 +8,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Points RatModel
 
 /- English proof (translation)
-Introduce `o₁ Ω₁ o₂ Ω₂ _ _ _ _ _ _ _ M₁ M₂ q hq hg U hUa hU b hb`. Establish `hpt : ⊤ ≤ (M₂.pt ≫ q) ⁻¹ᵁ U`. Rewrite using `[hg]`. Conclude with `fun x _ => M₁.top_le_preimage_pt hU (x := (spMap (algebraMap Ω₁ Ω₂)) x) trivial`. Establish `hV : (((q ⁻¹ᵁ U : M₂.Z.Opens)) : Set M₂.Z).Nonempty` using `⟨M₂.pt (IsLocalRing.closedPoint Ω₂), hpt (x := IsLocalRing.closedPoint Ω₂) trivial⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `h1 : ∀ a : Γ(M₁.Z, U), valF M₂.pt (q ⁻¹ᵁ U) ((q.app U).hom a) = algebraMap Ω₁ Ω₂ (valF M₁.pt U a)`. Introduce `a`. Use `(valR_comp M₂.pt q U a).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hg]`. Conclude with `valR_spMap_comp _ M₁.pt U (M₁.top_le_preimage_pt hU) a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : (q.app U).hom.IsIntegral` using `RingHom.IsIntegral.of_finite (hq.finite_app U hUa)`. Take `⟨g, rfl⟩` from `(RatModel.mem_ringOn_iff_exists hV).1 hb`. Take `⟨P, hPm, hP⟩` from `hint g`. Use `⟨P.map (M₁.res U hU), hPm.map _, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_map]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(RatModel.mem_ringOn_iff_exists hU).2 ⟨P.coeff i, (M₁.res_apply U hU _).symm⟩`. Establish `hc : (algebraMap Ω₁ Ω₂).comp (M₁.res U hU) = (M₂.res (q ⁻¹ᵁ U) hV).comp (q.app U).hom`. Use extensionality with `a`. Simplify using `only [RingHom.comp_apply, RatModel.res_apply]`. Conclude with `(h1 a).symm`.
-
-Rewrite using `[Polynomial.eval₂_map, hc, ← RatModel.res_apply _ _ hV, ← Polynomial.hom_eval₂, hP, map_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Poinc.finite_preimage_integral : ∀ (o₁ Ω₁ o₂ Ω₂ : Type) [CommRing o₁] [Field Ω₁] [Algebra o₁ Ω₁] [CommRing o₂] [Field Ω₂] [Algebra o₂ Ω₂] [Algebra Ω₁ Ω₂] (M₁ : RatModel o₁ Ω₁) (M₂ : RatModel o₂ Ω₂) (q : M₂.Z ⟶ M₁.Z), IsFinite q → M₂.pt ≫ q = spMap (algebraMap Ω₁ Ω₂) ≫ M₁.pt → ∀ U : M₁.Z.Opens, IsAffineOpen U → (U : Set M₁.Z).Nonempty → ∀ b ∈ M₂.ringOn ((q ⁻¹ᵁ U : M₂.Z.Opens) : Set M₂.Z), ∃ f : Polynomial Ω₁, f.Monic ∧ (∀ i, f.coeff i ∈ M₁.ringOn (U : Set M₁.Z)) ∧ Polynomial.eval₂ (algebraMap Ω₁ Ω₂) b f = 0 := by
   intro o₁ Ω₁ o₂ Ω₂ _ _ _ _ _ _ _ M₁ M₂ q hq hg U hUa hU b hb

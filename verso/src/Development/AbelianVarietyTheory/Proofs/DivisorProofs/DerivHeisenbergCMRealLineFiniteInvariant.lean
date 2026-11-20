@@ -17,7 +17,7 @@ open Formalism.IndefR.DatumF
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Unfold `symplOHF symplOF hOF`. Simplify using `only [Matrix.add_apply, mul_add, Finset.sum_add_distrib, map_add]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem symplOHF_add_left (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E)
     (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E) (x x' y : WOF F E nS nT) :
@@ -26,7 +26,7 @@ theorem symplOHF_add_left (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin n
   simp only [Matrix.add_apply, mul_add, Finset.sum_add_distrib, map_add]
 
 /- English proof (translation)
-Unfold `symplOHF symplOF hOF`. Simplify using `only [Matrix.add_apply, mul_add, add_mul, Finset.sum_add_distrib, map_add]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem symplOHF_add_right (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E)
     (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E) (x y y' : WOF F E nS nT) :
@@ -35,9 +35,9 @@ theorem symplOHF_add_right (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin 
   simp only [Matrix.add_apply, mul_add, add_mul, Finset.sum_add_distrib, map_add]
 
 /- English proof (translation)
-Establish `h1 : p (symplOF σ JS JT ξ₀ x y) = 0`. Unfold `symplOF hOF`. Rewrite using `[GlobalTheory.WeilVacMove.sum_reorder (cAF σ) (fun k i => incAF F E (JS⁻¹ k i)) (fun j l => incAF F E (JT j l)) x y]`. Apply the tactic sequence `refine GlobalTheory.FockCompare.map_trace_sesq_eq_zero p σ _ (fun k i => incAF F E (JS⁻¹ k i)) (fun j l => incAF F E (JT j l)) xᵀ yᵀ (h.imp (fun h => ?_) fun h => ?_) <;>`. Use extensionality with `i j`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components.
 
-Conclude with `congrFun (congrFun h j) i`. Unfold `symplOHF`. Rewrite using `[map_mul, h1, mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_symplOHF_eq_zero {B : Type} [CommRing B] [Algebra F B] (p : AF F →ₐ[F] B)
     (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E)
@@ -56,7 +56,7 @@ theorem map_symplOHF_eq_zero {B : Type} [CommRing B] [Algebra F B] (p : AF F →
   rw [map_mul, h1, mul_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Prod.ext (map_symplOHF_eq_zero (fstA F) σ JS JT ξ₀ u v (Or.inl hu)) (map_symplOHF_eq_zero (sndA F) σ JS JT ξ₀ u v (Or.inr hv)), Prod.ext (map_symplOHF_eq_zero (fstA F) σ JS JT ξ₀ v u (Or.inr hu)) (map_symplOHF_eq_zero (sndA F) σ JS JT ξ₀ v u (Or.inl hv))⟩`.
+Supply the required witnesses or components.
 -/
 theorem symplOHF_fin_real (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E)
     (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E) (u v : WOF F E nS nT)
@@ -68,11 +68,11 @@ theorem symplOHF_fin_real (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin n
       (map_symplOHF_eq_zero (sndA F) σ JS JT ξ₀ v u (Or.inl hv))⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B _ nS nT JS JT _ _ ξ₀ _ _ _ f L _ hL u hu hf`. Use function extensionality and compare the values at `w`. Establish `key : ∀ t : ℝ, B.ψ (symplOHF σ JS JT ξ₀ w u) * heisOF σ JS JT ξ₀ B.ψ (L t) f (w + u) = heisOF σ JS JT ξ₀ B.ψ (L t) f w`. Introduce `t`. Take `⟨h1, h2⟩` from `symplOHF_fin_real σ JS JT ξ₀ u (L t) hu (hL t)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hfx` using `congrFun hf (w + L t)`. Simplify using `only [heisOF] at hfx ⊢`. Use `conv_rhs => rw [← hfx]`. Rewrite using `[symplOHF_add_left, symplOHF_add_left, h1, h2, add_zero, add_zero, show w + u + L t = w + L t + u by abel]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `show B.ψ (symplOHF σ JS JT ξ₀ w u) * deriv (fun t : ℝ => heisOF σ JS JT ξ₀ B.ψ (L t) f (w + u)) 0 = _`. Rewrite using `[← deriv_const_mul_field]`. Conclude with `congrArg (fun g : ℝ → ℂ => deriv g 0) (funext key)`.
+A detailed English derivation is pending.
 -/
 theorem heisOF_deriv_fix : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

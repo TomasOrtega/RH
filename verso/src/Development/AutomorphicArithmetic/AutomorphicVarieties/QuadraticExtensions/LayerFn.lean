@@ -5,41 +5,35 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ n hz`. Take `⟨ζ0, hζ0⟩` from `hz`. Establish `hp : l.Prime` using `Fact.out`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : l ^ n ≠ 0` using `pow_ne_zero _ hp.ne_zero`. Use `haveI : NeZero ((l ^ n : ℕ) : Ω) := ⟨by exact_mod_cast hl⟩`. Use `haveI : NeZero (l ^ n) := ⟨hl⟩`. Establish `key : Fn F Ω l n = IntermediateField.adjoin F {b : Ω | ∃ k ∈ ({l ^ n} : Set ℕ), k ≠ 0 ∧ b ^ k = 1}`. Unfold `Fn`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use extensionality with `x`. Simplify using `only [Polynomial.mem_rootSet, Set.mem_singleton_iff, Set.mem_setOf_eq, exists_eq_left]`. Simplify using `only [map_sub, map_pow, Polynomial.aeval_X, map_one, sub_eq_zero, ne_eq, hl, not_false_eq_true, true_and]`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `fun h => h.2`. Introduce `h`. Use `⟨fun h0 => ?_, h⟩` and prove the remaining obligations. Use `congrArg Polynomial.natDegree h0` as an intermediate fact. Simplify using `at this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `hp.ne_zero this.1`. Use `haveI hcyc : IsCyclotomicExtension {l ^ n} F (Fn F Ω l n) := by`. Rewrite using `[key]`. Apply `IntermediateField.isCyclotomicExtension_adjoin_of_exists_isPrimitiveRoot` to reduce the goal to its premises. Introduce and unpack `k rfl -`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ n)`. Use `haveI : FiniteDimensional F (Fn F Ω l n) := IsCyclotomicExtension.finiteDimensional {l ^ n} F _`. Use `haveI : IsGalois F (Fn F Ω l n) := IsCyclotomicExtension.isGalois {l ^ n} F _`. Take `⟨μ, hμ⟩` from `IsCyclotomicExtension.exists_isPrimitiveRoot F (Fn F Ω l n) (Set.mem_singleton (l ^ n)) hl`. Use `set f := hμ.autToPow F with hf`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective f` using `hμ.autToPow_injective F`. Establish `hcardG : Nat.card Gal((Fn F Ω l n)/F) = Nat.card f.range` using `Nat.card_congr (MonoidHom.ofInjective hinj).toEquiv`. Establish `h0` using `hζ0.map_of_injective (algebraMap F (Fn F Ω l n)).injective`. Establish `hdvd : Nat.card Gal((Fn F Ω l n)/F) ∣ l ^ n`. Break down `n with _ | k` into its components or cases.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hcardG]`. Establish `: Nat.card f.range ∣ Nat.card (ZMod (l ^ 0))ˣ` using `Subgroup.card_subgroup_dvd_card _`. Establish `h1 : Nat.card (ZMod (l ^ 0))ˣ = 1`. Rewrite using `[pow_zero]`. Conclude with `Nat.card_unique`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(this.trans h1.dvd).trans (one_dvd _)`. Establish `hd : l ∣ l ^ (k + 1)` using `dvd_pow_self l (Nat.succ_ne_zero k) set g := ZMod.unitsMap hd with hg`. Establish `hle : f.range ≤ g.ker`. Introduce and unpack `_ ⟨σ, rfl⟩`. Rewrite using `[MonoidHom.mem_ker]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hω` using `hμ.pow_of_dvd (pow_ne_zero k hp.ne_zero) (pow_dvd_pow l (Nat.le_succ k))`. Establish `hlk : l ^ (k + 1) / l ^ k = l`. Rewrite using `[pow_succ, Nat.mul_div_cancel_left _ (pow_pos hp.pos k)]`. Rewrite `hω` using `[hlk]`. Use `haveI : NeZero l := ⟨hp.ne_zero⟩`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨i, -, hi⟩` from `h0.eq_pow_of_pow_eq_one hω.pow_eq_one`. Establish `hfix : σ (μ ^ l ^ k) = μ ^ l ^ k`. Rewrite using `[← hi, map_pow, AlgEquiv.commutes]`. Rewrite `hfix` using `[map_pow, ← IsPrimitiveRoot.autToPow_spec F hμ σ, ← pow_mul, mul_comm, pow_mul]`. Rewrite `hfix` using `[← hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Generalize the expression as in `f σ = u at hfix ⊢`. Take `⟨ω, hωd⟩ : ∃ ω, ω = μ ^ l ^ k` from `⟨_, rfl⟩`. Rewrite `hfix`, `hω` using `[← hωd]`. Establish `hmod : (u : ZMod (l ^ (k + 1))).val ≡ 1 [MOD l]`. Generalize the expression as in `(u : ZMod (l ^ (k + 1))).val = v at hfix ⊢`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Break down `Nat.eq_zero_or_pos v with rfl | hv` into its components or cases. It suffices to derive a contradiction. Rewrite `hfix` using `[pow_zero]`. Conclude with `hω.ne_one hp.one_lt hfix.symm`. Establish `hω0 : ω ≠ 0` using `hω.ne_zero hp.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ω ^ (v - 1) = 1`. Establish `h4` using `hfix`. Rewrite `h4` using `[← Nat.sub_add_cancel hv, pow_succ]`. Conclude with `mul_right_cancel₀ hω0 (h4.trans (one_mul ω).symm)`. Conclude with `((Nat.modEq_iff_dvd' hv).mpr ((hω.pow_eq_one_iff_dvd _).mp h3)).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc` using `(ZMod.natCast_eq_natCast_iff _ _ _).mpr hmod`. Use `ext`. Rewrite using `[hg, ZMod.unitsMap_def]`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe, ZMod.castHom_apply, Units.val_one]`. Rewrite using `[← ZMod.natCast_val]`.
-
-Simplify using `using hc`. Establish `hsurj : Function.Surjective g` using `ZMod.unitsMap_surjective hd`. Establish `hidx : g.ker.index = l - 1`. Rewrite using `[Subgroup.index_ker, MonoidHom.range_eq_top.mpr hsurj, Subgroup.card_top, Nat.card_eq_fintype_card, ZMod.card_units_eq_totient, Nat.totient_prime hp]`. Establish `hker : Nat.card g.ker = l ^ k`.
-
-Establish `h1` using `Subgroup.card_mul_index g.ker`. Rewrite `h1` using `[hidx, Nat.card_eq_fintype_card (α := (ZMod (l ^ (k + 1)))ˣ), ZMod.card_units_eq_totient, Nat.totient_prime_pow hp (Nat.succ_pos k)]`. Apply the tactic sequence `try simp only [Nat.add_sub_cancel] at h1`. Conclude with `Nat.eq_of_mul_eq_mul_right (Nat.sub_pos_of_lt hp.one_lt) h1`. Rewrite using `[hcardG]`.
-
-Combine the equalities or inequalities in the displayed calculation. Take `⟨m, hm, hmeq⟩` from `(Nat.dvd_prime_pow hp).mp hdvd`. Use `⟨m, hm, ⟨n, hcyc⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← IsGalois.card_aut_eq_finrank, hmeq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Two.layerFn :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (n : ℕ), (∃ ζ : F, IsPrimitiveRoot ζ l) → ∃ m, m ≤ n ∧ IsLayer l m F (Fn F Ω l n) := by

@@ -185,7 +185,7 @@ structure GenModel (b : GBase G R) (N : ℕ) where
   rep : ∀ (S : Scheme.{0}) (s' : S ⟶ Sp R) (o : GObj b N s'), ∃! f : S ⟶ X, f ≫ s = s' ∧ Nonempty (GObjMap o univ f)
 
 /- English proof (translation)
-Take `⟨_, D, ha, hn, hm⟩` from `GlobalTheory.UPel.HT.exists_datum_a_one`. Conclude with `⟨D.toG, ha, hn, hm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_gDatum_one_one_one : ∃ G : GDatum, G.a = 1 ∧ G.n = 1 ∧ G.m = 1 := by
   obtain ⟨_, D, ha, hn, hm⟩ := GlobalTheory.UPel.HT.exists_datum_a_one
@@ -206,20 +206,20 @@ instance nonempty_gBase_complex (G : GDatum) : Nonempty (GBase G ℂ) := ⟨{
       (isUnit_iff_ne_zero.mpr (sub_ne_zero.mpr hx)) }⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨b.ρ, b.ρ_root, b.t, b.t_ω, b.comax⟩`.
+Supply the required witnesses or components.
 -/
 example {p : ℕ} [Fact p.Prime] {D : Datum p} (b : Base D R) : GBase D.toG R :=
   ⟨b.ρ, b.ρ_root, b.t, b.t_ω, b.comax⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example {p : ℕ} [Fact p.Prime] (D : Datum p) :
     D.toG.La = D.La ∧ D.toG.EF = D.EF ∧ D.toG.a = D.a ∧ D.toG.m = D.m ∧ D.toG.n = D.n :=
   ⟨rfl, rfl, rfl, rfl, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(I.ker 1 one_pos x).2 ⟨x, (one_nsmul x).symm⟩`.
+A detailed English derivation is pending.
 -/
 example {k : Type} [Field k] {Q : Type} [Group Q] {act : G.O → Q → Q} {e : ℕ → Q → Q → kˣ → Prop}
     (I : GTateIso G k Q act e) (x : G.La) : I.ev 1 x = 1 :=

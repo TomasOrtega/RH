@@ -9,19 +9,17 @@ noncomputable section
 namespace GlobalTheory.CentAway
 
 /- English proof (translation)
-Set `ad : B →ₗ[ℚ] B` to `LinearMap.mulRight ℚ γ - LinearMap.mulLeft ℚ γ`. Establish `hex : Function.Exact f.toLinearMap ad`. Introduce `x`. Simplify using `only [ad, LinearMap.sub_apply, LinearMap.mulRight_apply, LinearMap.mulLeft_apply, sub_eq_zero, AlgHom.toLinearMap_apply]`. Conclude with `hcent x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmap : ∀ y, Algebra.TensorProduct.map (AlgHom.id R R) f y = LinearMap.lTensor R f.toLinearMap y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul t a => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `had : ∀ y : R ⊗[ℚ] B, y * ((1 : R) ⊗ₜ[ℚ] γ) - ((1 : R) ⊗ₜ[ℚ] γ) * y = LinearMap.lTensor R ad y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul t b`. Simplify using `[ad, Algebra.TensorProduct.tmul_mul_tmul, TensorProduct.tmul_sub]`. Consider the case `add x y hx hy => rw [map_add, ← hx, ← hy]`. Use `noncomm_ring`. Establish `hex'` using `Module.Flat.lTensor_exact R hex`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨?_, fun y => ?_⟩` and prove the remaining obligations. Establish `h` using `Module.Flat.lTensor_preserves_injective_linearMap (M := R) f.toLinearMap hf`. Introduce `a b hab`. Rewrite `hab` using `[hmap, hmap]`. Conclude with `h hab`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← sub_eq_zero, had, hex' y]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨z, hmap z⟩`. Introduce and unpack `⟨z, rfl⟩`.
-
-Conclude with `⟨z, (hmap z).symm⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem flat_centralizer (R B L : Type) [CommRing R] [Algebra ℚ R] [Ring B] [Algebra ℚ B] [Ring L] [Algebra ℚ L]
     (γ : B) (f : L →ₐ[ℚ] B) (hf : Function.Injective f)
@@ -74,11 +72,11 @@ theorem incl_tmul (R : Type) [CommRing R] [Algebra ℚ R] {G : HTGroup p} (P : P
     incl R P (a ⊗ₜ m) = a ⊗ₜ (m : G.C) := rfl
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CentSep.centralizer_eq_adjoin G.F G.C G.n G.rankC (P.γ : G.C) P.reg.2 P.reg.1`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hm : x ∈ Subalgebra.centralizer G.F {(P.γ : G.C)}`. Rewrite using `[Subalgebra.mem_centralizer_iff]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg`. Rewrite using `[Set.mem_singleton_iff.1 hg]`. Conclude with `hx.symm`. Rewrite `hm` using `[h]`. Conclude with `⟨⟨x, hm⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨m, rfl⟩`. Establish `hm : (m : G.C) ∈ Subalgebra.centralizer G.F {(P.γ : G.C)}` using `by rw [h]; exact m.2`. Rewrite `hm` using `[Subalgebra.mem_centralizer_iff]`. Conclude with `(hm _ (Set.mem_singleton _)).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cent_iff {G : HTGroup p} (P : Pair G) (x : G.C) :
     x * P.γ = P.γ * x ↔ x ∈ Set.range ((algF P).val.restrictScalars ℚ) := by
@@ -98,16 +96,16 @@ theorem cent_iff {G : HTGroup p} (P : Pair G) (x : G.C) :
     exact (hm _ (Set.mem_singleton _)).symm
 
 /- English proof (translation)
-The claim follows from `flat_centralizer R G.C (algF P) (P.γ : G.C) _ Subtype.val_injective (cent_iff P)`.
+A detailed English derivation is pending.
 -/
 theorem incl_facts (R : Type) [CommRing R] [Algebra ℚ R] {G : HTGroup p} (P : Pair G) :
     Function.Injective (incl R P) ∧ ∀ y : R ⊗[ℚ] G.C, y * inC G R P.γ = inC G R P.γ * y ↔ y ∈ Set.range (incl R P) :=
   flat_centralizer R G.C (algF P) (P.γ : G.C) _ Subtype.val_injective (cent_iff P)
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap ℚ (algF P)) (LinearMap.ker_eq_bot.2 (algebraMap ℚ (algF P)).injective)`. Establish `h1 : φ 1 = 1`. Use `LinearMap.congr_fun hφ 1` as an intermediate fact. Simplify using `using this`. Use `⟨(TensorProduct.AlgebraTensorModule.rid ℚ R R).toLinearMap ∘ₗ TensorProduct.AlgebraTensorModule.lTensor R R φ, fun a => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Algebra.TensorProduct.algebraMap_apply, h1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_retr (R : Type) [CommRing R] [Algebra ℚ R] {G : HTGroup p} (P : Pair G) :
     ∃ π : R ⊗[ℚ] algF P →ₗ[R] R, ∀ a, π (algebraMap R _ a) = a := by
@@ -121,7 +119,7 @@ theorem exists_retr (R : Type) [CommRing R] [Algebra ℚ R] {G : HTGroup p} (P :
   simp [Algebra.TensorProduct.algebraMap_apply, h1]
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `exists_retr R P`. Introduce `a b h`. Rewrite using `[← hπ a, ← hπ b, h]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem alg_inj (R : Type) [CommRing R] [Algebra ℚ R] {G : HTGroup p} (P : Pair G) :
     Function.Injective (algebraMap R (R ⊗[ℚ] algF P)) := by
@@ -130,9 +128,9 @@ theorem alg_inj (R : Type) [CommRing R] [Algebra ℚ R] {G : HTGroup p} (P : Pai
   rw [← hπ a, ← hπ b, h]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a m`. Rewrite using `[incl_tmul, starT_tmul]`. Simplify using `only [extC, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, incl_tmul, hc, inC, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, sh]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add, MulOpposite.unop_add, mul_add, add_mul]`.
+Treat this case separately.
 -/
 theorem incl_extC (R : Type) [CommRing R] [Algebra ℚ R] {G : HTGroup p} (P : Pair G) (c : algF P →ₐ[ℚ] algF P)
     (hc : ∀ m : algF P, ((c m : algF P) : G.C) = (P.β : G.C) * sh G (m : G.C) * ((P.β⁻¹ : G.Cˣ) : G.C))
@@ -148,9 +146,9 @@ theorem incl_extC (R : Type) [CommRing R] [Algebra ℚ R] {G : HTGroup p} (P : P
   | add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add, MulOpposite.unop_add, mul_add, add_mul]
 
 /- English proof (translation)
-Establish `h1` using `congrArg (incl R P) hy`. Rewrite `h1` using `[map_mul, incl_extC R P c hc, AlgHom.commutes]`. Establish `hb : inC G R ((P.β⁻¹ : G.Cˣ) : G.C) * inC G R P.β = 1` using `by rw [← map_mul, Units.inv_mul, map_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc, hb, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = _ := by rw [h1]`.
+A detailed English derivation is pending.
 -/
 theorem incl_sim (R : Type) [CommRing R] [Algebra ℚ R] {G : HTGroup p} (P : Pair G) (c : algF P →ₐ[ℚ] algF P)
     (hc : ∀ m : algF P, ((c m : algF P) : G.C) = (P.β : G.C) * sh G (m : G.C) * ((P.β⁻¹ : G.Cˣ) : G.C))
@@ -178,7 +176,7 @@ variable (R : Type) [CommRing R] [Algebra ℚ R] {G : HTGroup p} (P : Pair G) (c
 def nu (y : simR R (extC R c)) : Rˣ := (mem_simR.1 y.2).choose
 
 /- English proof (translation)
-The claim follows from `(mem_simR.1 y.2).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem nu_spec (y : simR R (extC R c)) :
     ((y : (R ⊗[ℚ] algF P)ˣ) : R ⊗[ℚ] algF P) * extC R c ((y : (R ⊗[ℚ] algF P)ˣ) : R ⊗[ℚ] algF P) =
@@ -186,7 +184,7 @@ theorem nu_spec (y : simR R (extC R c)) :
   (mem_simR.1 y.2).choose_spec
 
 /- English proof (translation)
-The claim follows from `Units.ext (alg_inj R P (by rw [← nu_spec, h]))`.
+A detailed English derivation is pending.
 -/
 theorem nu_eq (y : simR R (extC R c)) (s : Rˣ)
     (h : ((y : (R ⊗[ℚ] algF P)ˣ) : R ⊗[ℚ] algF P) * extC R c ((y : (R ⊗[ℚ] algF P)ˣ) : R ⊗[ℚ] algF P) =

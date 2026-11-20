@@ -12,13 +12,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `(IsNoetherian.noetherian (RingHom.ker (algebraMap R S)) : (RingHom.ker (algebraMap R S)).FG)`. Establish `hk : ∀ a ∈ s, ∃ m : M, (m : R) * a = 0`. Introduce `a ha`. Establish `: a ∈ RingHom.ker (algebraMap R S)` using `hs ▸ Submodule.subset_span ha`. Conclude with `(IsLocalization.map_eq_zero_iff M S a).1 this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose! m hm using hk`. Use `⟨∏ a ∈ s, (m a : R), Submonoid.prod_mem _ fun a _ => (m a).2, ?_⟩` and prove the remaining obligations. Establish `key : ∀ a ∈ Submodule.span R (s : Set R), (∏ a ∈ s, (m a : R)) * a = 0`. Introduce `a ha`. Proceed by induction on `ha using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mem b hb`. Rewrite using `[← Finset.prod_erase_mul _ _ hb, _root_.mul_assoc, hm b hb, mul_zero]`. Consider the case `zero => simp`. Consider the case `add b c _ _ hb hc => rw [mul_add, hb, hc, add_zero]`. Consider the case `smul r b _ hb => rw [smul_eq_mul, _root_.mul_left_comm, hb, mul_zero]`.
-
-Introduce `a ha`. Conclude with `key a (hs ▸ ha)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_mem_mul_eq_zero_of_algebraMap_eq_zero {R S : Type*} [CommRing R] [CommRing S]
     [Algebra R S] [IsNoetherianRing R] (M : Submonoid R) [IsLocalization M S] :
@@ -44,23 +42,19 @@ theorem exists_mem_mul_eq_zero_of_algebraMap_eq_zero {R S : Type*} [CommRing R] 
   exact key a (hs ▸ ha)
 
 /- English proof (translation)
-Take `⟨_, ⟨V, hV, rfl⟩, hxV, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Use `haveI : IsNoetherianRing Γ(X, V) := IsLocallyNoetherian.component_noetherian ⟨V, hV⟩`. Use `letI := X.presheaf.algebra_section_stalk (U := V) ⟨x, hxV⟩`. Use `haveI := hV.isLocalization_stalk ⟨x, hxV⟩`. Take `⟨f, hfM, hf⟩` from `exists_mem_mul_eq_zero_of_algebraMap_eq_zero (R := Γ(X, V)) (S := X.presheaf.stalk x) (hV.primeIdealOf ⟨x, hxV⟩).asIdeal.primeCompl`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : IsAffineOpen (X.basicOpen f)` using `hV.basicOpen f`. Establish `hxU : x ∈ X.basicOpen f`. Rewrite using `[X.mem_basicOpen f x hxV]`. Conclude with `IsLocalization.map_units (X.presheaf.stalk x) ⟨f, hfM⟩`. Use `letI : Algebra Γ(X, V) Γ(X, X.basicOpen f) := (X.presheaf.map (homOfLE (X.basicOpen_le f)).op).hom.toAlgebra`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsLocalization.Away f Γ(X, X.basicOpen f) := hV.isLocalization_basicOpen f`. Set `g : Γ(X, X.basicOpen f) →+* X.presheaf.stalk x` to `(X.presheaf.germ _ x hxU).hom`. Establish `hcomp : ∀ a : Γ(X, V), g (algebraMap Γ(X, V) Γ(X, X.basicOpen f) a) = algebraMap Γ(X, V) (X.presheaf.stalk x) a` using `fun a => X.presheaf.germ_res_apply (homOfLE (X.basicOpen_le f)) x hxU a`. Establish `hinj : Function.Injective g`. Rewrite using `[injective_iff_map_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `σ hσ`. Take `⟨⟨r, m⟩, hrm⟩` from `IsLocalization.surj (Submonoid.powers f) σ`. Establish `hr : algebraMap Γ(X, V) (X.presheaf.stalk x) r = 0`. Rewrite using `[← hcomp, ← hrm, map_mul, hσ, zero_mul]`. Establish `hfr` using `congrArg (algebraMap Γ(X, V) Γ(X, X.basicOpen f)) (hf r hr)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hfr` using `[map_mul, map_zero]`. Establish `hu : IsUnit (algebraMap Γ(X, V) Γ(X, X.basicOpen f) f)` using `IsLocalization.map_units Γ(X, X.basicOpen f) ⟨f, Submonoid.mem_powers f⟩`. Establish `hr0` using `hu.mul_right_eq_zero.1 hfr`. Establish `hmu : IsUnit (algebraMap Γ(X, V) Γ(X, X.basicOpen f) (m : Γ(X, V)))` using `IsLocalization.map_units Γ(X, X.basicOpen f) m`. Rewrite `hrm` using `[hr0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hmu.mul_left_eq_zero.1 hrm`. Use `haveI : IsDomain (X.presheaf.stalk x) := (hN x).1`. Use `haveI hD : IsDomain Γ(X, X.basicOpen f) := hinj.isDomain g`. Use `haveI : CharZero (X.residueField x) := h0 x`. Establish `hcz : CharZero Γ(X, X.basicOpen f)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `⟨fun a b hab => ?_⟩` and prove the remaining obligations. Use `congrArg ((X.residue x).hom.comp g) hab` as an intermediate fact. Simplify using `only [map_natCast] at this`. Conclude with `Nat.cast_injective this`. Establish `hIC : IsIntegrallyClosed Γ(X, X.basicOpen f)`.
-
-Use `IsIntegrallyClosed.of_localization_maximal fun p _ hp ↦ ?_` and prove the remaining obligations. Set `P : Spec Γ(X, X.basicOpen f)` to `⟨p, hp.isPrime⟩`. Establish `hy : hU.fromSpec P ∈ X.basicOpen f` using `hU.range_fromSpec.le ⟨P, rfl⟩`. Use `letI : Algebra Γ(X, X.basicOpen f) (X.presheaf.stalk (hU.fromSpec P)) := X.presheaf.algebra_section_stalk (U := X.basicOpen f) ⟨_, hy⟩`. Establish `h : IsLocalization p.primeCompl (X.presheaf.stalk (hU.fromSpec P))` using `hU.isLocalization_stalk' P hy`.
-
-Use `haveI := (hN (hU.fromSpec P)).1`. Use `haveI := (hN (hU.fromSpec P)).2`. Conclude with `IsIntegrallyClosed.of_equiv (R := X.presheaf.stalk (hU.fromSpec P)) (IsLocalization.algEquiv p.primeCompl (X.presheaf.stalk (hU.fromSpec P)) (Localization.AtPrime p)).toRingEquiv`. Conclude with `⟨⟨X.basicOpen f, hU⟩, hxU, hD, IsLocallyNoetherian.component_noetherian ⟨_, hU⟩, hIC, hcz⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_affineOpen_isIntegrallyClosed_charZero (X : Scheme.{0})
     (hN : Geo.Tor.IsNormalScheme X) (hL : IsLocallyNoetherian X)

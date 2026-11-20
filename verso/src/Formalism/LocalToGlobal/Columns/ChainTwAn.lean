@@ -16,9 +16,9 @@ def TwAnIntMap {N M : ℕ} (P : HeightOneSpectrum (𝓞 E)) (f : Sp E N →ₗ[E
   ∀ v : Sp E N, (∀ l, IntAt P (v l)) → ∀ l, IntAt P (f v l)
 
 /- English proof (translation)
-Distinguish the cases in `h : l = s`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `⟨1, 1, one_notMem P, by simp⟩`. Rewrite using `[Pi.single_eq_of_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨0, 1, one_notMem P, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem twAn_single_int {N : ℕ} (s : Fin N) (l : Fin N) : IntAt P ((Pi.single s (1 : E) : Sp E N) l) := by
   by_cases h : l = s
@@ -29,11 +29,11 @@ theorem twAn_single_int {N : ℕ} (s : Fin N) (l : Fin N) : IntAt P ((Pi.single 
     exact ⟨0, 1, one_notMem P, by simp⟩
 
 /- English proof (translation)
-Introduce `v hv l`. Establish `e : f v l = ∑ s, v s * f (Pi.single s 1) l`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f v, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Establish `: (fun j => if s = j then (1 : E) else 0) = Pi.single s 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[Pi.single_apply]`. Distinguish the cases in `hj : j = s`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg (Ne.symm hj), if_neg hj]`. Rewrite using `[this]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Finset.sum_induction _ (IntAt P) (fun _ _ ha hb => ha.add hb) ⟨0, 1, one_notMem P, by simp⟩ (fun s _ => (hv s).mul (h s l))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twAn_intMap_of_entries {N M : ℕ} (f : Sp E N →ₗ[E] Sp E M) (h : ∀ s l, IntAt P (f (Pi.single s 1) l)) :
     TwAnIntMap P f := by
@@ -54,11 +54,11 @@ theorem twAn_intMap_of_entries {N M : ℕ} (f : Sp E N →ₗ[E] Sp E M) (h : �
     (fun s _ => (hv s).mul (h s l))
 
 /- English proof (translation)
-Unfold `LocE.PhiQ at h`. Use `split_ifs at h with hc`. Establish `h1` using `hc.1 (LocE.fPos k₀ c n l.1) (LocE.fPos k₀ c' n' s.1) (framePos_lt hk l.2) (framePos_lt hk' s.2)`. Unfold `LocE.entB at h1`. Rewrite `h1` using `[frameIndex_framePos hk l.2, frameIndex_framePos hk' s.2, basisVec_eq_single s.2]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Loc.atN at h1`. Rewrite `h1` using `[dif_pos l.2]`. Establish `e0 : ∀ (N : ℕ) (p : ℕ), LocE.scE N (0 : ℕ → ℕ) p = 0` using `fun N p => by`. Unfold `LocE.scE`. Apply the tactic sequence `split_ifs <;> rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e0, e0, sub_self, zpow_zero, mul_one]`. Conclude with `h1`. Conclude with `absurd rfl h`.
+A detailed English derivation is pending.
 -/
 theorem twAn_phiQ_int (q : ℕ) (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {k₀ r c' n' c n : ℕ} (hk' : k₀ ≤ n') (hk : k₀ ≤ n)
     (x : HomE E (n' + c') (n + c)) (h : LocE.PhiQ (P := P) q ξ k₀ r c' n' c n x ≠ 0) (s : Fin (n' + c')) (l : Fin (n + c)) :
@@ -78,11 +78,11 @@ theorem twAn_phiQ_int (q : ℕ) (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {k₀ r
   · exact absurd rfl h
 
 /- English proof (translation)
-Unfold `Loc.E1 at h`. Establish `h1` using `right_ne_zero_of_mul h`. Take `⟨t, -, ht⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h1`. Establish `h2` using `left_ne_zero_of_mul ht`. Establish `h3` using `hsupp _ h2 (Fin.castAdd c' s) (Fin.castAdd c l)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Loc.xx1 xj t (Pi.single (Fin.castAdd c' s) 1) (Fin.castAdd c l) = xj (Pi.single s 1) l`. Unfold `Loc.xx1`. Rewrite using `[← LinearMap.toMatrix'_apply, LinearMap.toMatrix'_toLin', Matrix.of_apply]`. Establish `hf : ¬ Loc.IsFree n' n c (Fin.castAdd c l).1 (Fin.castAdd c' s).1` using `fun hf => absurd s.2 (not_lt.2 hf.1)`. Rewrite using `[dif_neg hf, dif_pos (show (Fin.castAdd c' s).1 < n' from s.2), dif_pos (show (Fin.castAdd c l).1 < n from l.2), LinearMap.toMatrix'_apply]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `h3` using `[e]`. Conclude with `h3`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_of_firstUnfolding_ne_zero {n' c' n c : ℕ} (Ψ : Loc.SF E K (n' + c') (n + c)) (a : ℕ) (qq : E)
     (hsupp : ∀ y, Ψ y ≠ 0 → ∀ s l, IntAt P (qq ^ a * y (Pi.single s 1) l))
@@ -105,19 +105,17 @@ theorem integral_of_firstUnfolding_ne_zero {n' c' n c : ℕ} (Ψ : Loc.SF E K (n
   exact h3
 
 /- English proof (translation)
-Use `set M := LocE.entB q k₀ c' n' c n 0 0 x with hM`. Use `set M' := LocE.entB q k₀ c' n' c n 0 0 x' with hM'`. Establish `k1 : ∀ p p', p < n + c → p' < n' + c' → (IntAt P (M' p p') ↔ IntAt P (M p p'))`. Introduce `p p' hp hp'`. Take `⟨d, hd, he⟩` from `hD p p' hp hp'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[he]`. Conclude with `ciIntAt_add_iff ((ciIntAt_q (q := q)).mul hd)`. Establish `k2 : ∀ p p', p < n + c → p' < n' + c' → (IntAt P (M' p p' / q) ↔ IntAt P (M p p' / q))`. Introduce `p p' hp hp'`. Take `⟨d, hd, he⟩` from `hD p p' hp hp'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[he, add_div, mul_div_cancel_left₀ _ hq0]`. Conclude with `ciIntAt_add_iff hd`. Establish `k3 : ∀ p p', p < n + c → p' < n' + c' → redP P (M' p p') = redP P (M p p')`. Introduce `p p' hp hp'`. Take `⟨d, hd, he⟩` from `hD p p' hp hp'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[he]`. Conclude with `redP_add_natCast_mul hq hd`. Establish `hc : ((∀ p p', p < n + c → p' < n' + c' → IntAt P (M' p p')) ∧ (∀ p p', r ≤ p → p < n + c → p' < r → IntAt P (M' p p' / q))) ↔ ((∀ p p', p < n + c → p' < n' + c' → IntAt P (M p p')) ∧ (∀ p p', r ≤ p → p < n + c → p' < r → IntAt P (M p p' / q)))`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun p p' hp hp' => (k1 p p' hp hp').1 (h1 p p' hp hp'), fun p p' h0 hp hp' => (k2 p p' hp (by omega)).1 (h2 p p' h0 hp hp')⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun p p' hp hp' => (k1 p p' hp hp').2 (h1 p p' hp hp'), fun p p' h0 hp hp' => (k2 p p' hp (by omega)).2 (h2 p p' h0 hp hp')⟩`. Simplify using `only [LocE.PhiQ]`. Rewrite using `[← hM, ← hM']`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Distinguish the cases in `hC : (∀ p p', p < n + c → p' < n' + c' → IntAt P (M p p')) ∧ (∀ p p', r ≤ p → p < n + c → p' < r → IntAt P (M p p' / q))`. Rewrite using `[if_pos (hc.2 hC), if_pos hC]`. Apply `ciUnitV_congr` to reduce the goal to its premises. Rewrite using `[redP_det (Matrix.of fun s t : Fin r => M' s.1 t.1) (fun s t => (hc.2 hC).1 s.1 t.1 (by omega) (by omega)), redP_det (Matrix.of fun s t : Fin r => M s.1 t.1) (fun s t => hC.1 s.1 t.1 (by omega) (by omega))]`. Use `congr 1`.
-
-Use extensionality with `s t`. Conclude with `k3 s.1 t.1 (by omega) (by omega)`. Rewrite using `[if_neg (fun h => hC (hc.1 h)), if_neg hC]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twAn_phiQ_congr (q : ℕ) (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0)
     {k₀ r c' n' c n : ℕ} (x x' : HomE E (n' + c') (n + c)) (hrn : r ≤ n + c) (hrn' : r ≤ n' + c')
@@ -166,9 +164,9 @@ theorem twAn_phiQ_congr (q : ℕ) (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (hq :
   · rw [if_neg (fun h => hC (hc.1 h)), if_neg hC]
 
 /- English proof (translation)
-Unfold `LocE.entB`. Rewrite using `[basisVec_eq_single (symFIdx_lt hk' hp')]`. Unfold `Loc.atN`. Rewrite using `[dif_pos (symFIdx_lt hk hp)]`. Establish `e0 : ∀ (N : ℕ) (p : ℕ), LocE.scE N (0 : ℕ → ℕ) p = 0` using `fun N p => by`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `LocE.scE`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[e0, e0, sub_self, zpow_zero, mul_one]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem frameEntry_unscaled_eq_coord (q : ℕ) {k₀ c' n' c n : ℕ} (hk' : k₀ ≤ n') (hk : k₀ ≤ n) (x : HomE E (n' + c') (n + c)) {p p' : ℕ}
     (hp : p < n + c) (hp' : p' < n' + c') :
@@ -184,13 +182,13 @@ theorem frameEntry_unscaled_eq_coord (q : ℕ) {k₀ c' n' c n : ℕ} (hk' : k�
   rw [e0, e0, sub_self, zpow_zero, mul_one]
 
 /- English proof (translation)
-Unfold `joinCol`. Establish `h1 : LinearMap.funLeft E E (Fin.castAdd c') (Pi.single (Fin.castAdd c' s) (1 : E)) = Pi.single s 1`. Use function extensionality and compare the values at `i`. Rewrite using `[LinearMap.funLeft_apply]`. Distinguish the cases in `h : i = s`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne (fun e => h (Fin.castAdd_injective _ _ e)), Pi.single_eq_of_ne h]`. Establish `h2 : atNL E (n' + c') n' (Pi.single (Fin.castAdd c' s) (1 : E)) = 0`. Unfold `atNL`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `split_ifs with h`. Use `show (Pi.single (Fin.castAdd c' s) (1 : E) : Fin (n' + c') → E) ⟨n', h⟩ = 0`. Rewrite using `[Pi.single_eq_of_ne]`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Simplify using `only [LinearMap.comp_apply, LinearMap.add_apply, LinearMap.smulRight_apply, h1, h2, zero_smul, add_zero]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twAn_joinCol_castAdd {n' c' n c : ℕ} (x₀ : HomE E n' n) (y' : Sp E n) (s : Fin n') :
     joinCol (c' := c') (c := c) x₀ y' (Pi.single (Fin.castAdd c' s) (1 : E)) = Loc.inX E n c (x₀ (Pi.single s 1)) := by
@@ -214,11 +212,11 @@ theorem twAn_joinCol_castAdd {n' c' n c : ℕ} (x₀ : HomE E n' n) (y' : Sp E n
   simp only [LinearMap.comp_apply, LinearMap.add_apply, LinearMap.smulRight_apply, h1, h2, zero_smul, add_zero]
 
 /- English proof (translation)
-Unfold `joinCol`. Establish `h1 : LinearMap.funLeft E E (Fin.castAdd c') (Pi.single (⟨n', by omega⟩ : Fin (n' + c')) (1 : E)) = 0`. Use function extensionality and compare the values at `i`. Rewrite using `[LinearMap.funLeft_apply, Pi.single_eq_of_ne]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Establish `h2 : atNL E (n' + c') n' (Pi.single (⟨n', by omega⟩ : Fin (n' + c')) (1 : E)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Unfold `atNL`. Rewrite using `[dif_pos (by omega)]`. Use `show (Pi.single (⟨n', by omega⟩ : Fin (n' + c')) (1 : E) : Fin (n' + c') → E) ⟨n', by omega⟩ = 1`. Conclude with `Pi.single_eq_same _ _`. Simplify using `only [LinearMap.comp_apply, LinearMap.add_apply, LinearMap.smulRight_apply, h1, h2, map_zero, one_smul, zero_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twAn_joinCol {n' c' n c : ℕ} (hc : 1 ≤ c') (x₀ : HomE E n' n) (y' : Sp E n) :
     joinCol (c' := c') (c := c) x₀ y' (Pi.single (⟨n', by omega⟩ : Fin (n' + c')) (1 : E)) = Loc.inX E n c y' := by
@@ -239,7 +237,7 @@ theorem twAn_joinCol {n' c' n c : ℕ} (hc : 1 ≤ c') (x₀ : HomE E n' n) (y' 
   simp only [LinearMap.comp_apply, LinearMap.add_apply, LinearMap.smulRight_apply, h1, h2, map_zero, one_smul, zero_add]
 
 /- English proof (translation)
-Unfold `joinCol`. Simplify using `only [LinearMap.comp_apply, LinearMap.add_apply, LinearMap.smulRight_apply, smul_add, map_add]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem twAn_joinCol_sub_y {n' c' n c : ℕ} (x₀ : HomE E n' n) (y' z : Sp E n) (v : Sp E (n' + c')) :
     joinCol (c' := c') (c := c) x₀ (y' + z) v - joinCol (c' := c') (c := c) x₀ y' v = Loc.inX E n c (atNL E (n' + c') n' v • z) := by
@@ -248,7 +246,7 @@ theorem twAn_joinCol_sub_y {n' c' n c : ℕ} (x₀ : HomE E n' n) (y' z : Sp E n
   abel
 
 /- English proof (translation)
-Unfold `joinCol`. Simplify using `only [LinearMap.comp_apply, LinearMap.add_apply, LinearMap.smulRight_apply, map_add]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem joinColumn_add_sub {n' c' n c : ℕ} (x₀ z : HomE E n' n) (y' : Sp E n) (v : Sp E (n' + c')) :
     joinCol (c' := c') (c := c) (x₀ + z) y' v - joinCol (c' := c') (c := c) x₀ y' v =
@@ -258,7 +256,7 @@ theorem joinColumn_add_sub {n' c' n c : ℕ} (x₀ z : HomE E n' n) (y' : Sp E n
   abel
 
 /- English proof (translation)
-Unfold `Loc.xx1`. Rewrite using `[← LinearMap.toMatrix'_apply, LinearMap.toMatrix'_toLin', Matrix.of_apply, ← LinearMap.toMatrix'_apply, LinearMap.toMatrix'_toLin', Matrix.of_apply]`. Apply the tactic sequence `split_ifs with h1 h2 <;> first | rfl | exact absurd h2 (by omega)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem columns_twAn_fact {n' c' n c : ℕ} (xj xj' : (Fin n' → E) →ₗ[E] (Fin n → E)) (t : Loc.FC n' c' n c → E)
     (s : Fin (n' + c')) (hs : n' ≤ s.1) (l : Fin (n + c)) :
@@ -269,9 +267,9 @@ theorem columns_twAn_fact {n' c' n c : ℕ} (xj xj' : (Fin n' → E) →ₗ[E] (
   split_ifs with h1 h2 <;> first | rfl | exact absurd h2 (by omega)
 
 /- English proof (translation)
-Unfold `Loc.xx1`. Rewrite using `[← LinearMap.toMatrix'_apply, LinearMap.toMatrix'_toLin', Matrix.of_apply, ← LinearMap.toMatrix'_apply, LinearMap.toMatrix'_toLin', Matrix.of_apply]`. Distinguish the cases in `hs : s.1 < n'`. Establish `hf : ¬ Loc.IsFree n' n c l.1 s.1` using `fun hf => absurd hs (not_lt.2 hf.1)`. Rewrite using `[dif_neg hf, dif_neg hf, dif_pos hs, dif_pos hs, dif_pos hs]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hl : l.1 < n`. Rewrite using `[dif_pos hl, dif_pos hl, dif_pos hl, LinearMap.toMatrix'_apply, LinearMap.toMatrix'_apply, LinearMap.add_apply, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[dif_neg hl, dif_neg hl, dif_neg hl, sub_self]`. Apply the tactic sequence `rw [dif_neg hs] split_ifs <;> simp`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unipotentExtension_add_sub {n' c' n c : ℕ} (xj z : (Fin n' → E) →ₗ[E] (Fin n → E)) (t : Loc.FC n' c' n c → E)
     (s : Fin (n' + c')) (l : Fin (n + c)) :
@@ -291,11 +289,11 @@ theorem unipotentExtension_add_sub {n' c' n c : ℕ} (xj z : (Fin n' → E) →�
     split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `Loc.chArg`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : n' + i + 1 < n' + c'`. Rewrite using `[basisVec_eq_single h]`. Unfold `Loc.atN`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `split_ifs with hl`. Conclude with `columns_twAn_fact xj xj' t _ (by show n' ≤ n' + i + 1; omega) _`. Both sides reduce to the same expression. Establish `e : Loc.eN E (n' + c') (n' + i + 1) = 0`. Use function extensionality and compare the values at `l`.
+Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Loc.eN`. Rewrite using `[if_neg (by omega)]`. Both sides reduce to the same expression. Rewrite using `[e, map_zero, map_zero]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charArg_unipotentExtension_indep {n' c' n c : ℕ} (xj xj' : (Fin n' → E) →ₗ[E] (Fin n → E)) (t : Loc.FC n' c' n c → E) :
     Loc.chArg (Loc.xx1 xj t) = Loc.chArg (Loc.xx1 xj' t) := by
@@ -315,7 +313,7 @@ theorem charArg_unipotentExtension_indep {n' c' n c : ℕ} (xj xj' : (Fin n' →
     rw [e, map_zero, map_zero]
 
 /- English proof (translation)
-Unfold `atNL`. Use `split_ifs`. Conclude with `twAn_single_int s _`. Use `show IntAt P 0`. Conclude with `⟨0, 1, one_notMem P, by simp⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem twAn_atNL_int {N : ℕ} (k : ℕ) (s : Fin N) : IntAt P (atNL E N k (Pi.single s (1 : E))) := by
   unfold atNL
@@ -325,7 +323,7 @@ theorem twAn_atNL_int {N : ℕ} (k : ℕ) (s : Fin N) : IntAt P (atNL E N k (Pi.
     exact ⟨0, 1, one_notMem P, by simp⟩
 
 /- English proof (translation)
-Rewrite using `[LinearMap.funLeft_apply]`. Conclude with `twAn_single_int s _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twAn_funLeft_int {n' c' : ℕ} (s : Fin (n' + c')) (l : Fin n') :
     IntAt P (LinearMap.funLeft E E (Fin.castAdd c') (Pi.single s (1 : E)) l) := by
@@ -333,7 +331,7 @@ theorem twAn_funLeft_int {n' c' : ℕ} (s : Fin (n' + c')) (l : Fin n') :
   exact twAn_single_int s _
 
 /- English proof (translation)
-Unfold `Loc.xx1`. Rewrite using `[← LinearMap.toMatrix'_apply, LinearMap.toMatrix'_toLin', Matrix.of_apply, dif_pos f.2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem unipotentExtension_freeCoord {n' c' n c : ℕ} (xj : (Fin n' → E) →ₗ[E] (Fin n → E)) (t : Loc.FC n' c' n c → E) (f : Loc.FC n' c' n c) :
     Loc.xx1 xj t (Pi.single f.1.2 1) f.1.1 = t f := by
@@ -341,9 +339,9 @@ theorem unipotentExtension_freeCoord {n' c' n c : ℕ} (xj : (Fin n' → E) →�
   rw [← LinearMap.toMatrix'_apply, LinearMap.toMatrix'_toLin', Matrix.of_apply, dif_pos f.2]
 
 /- English proof (translation)
-Unfold `Loc.xx1`. Rewrite using `[← LinearMap.toMatrix'_apply, LinearMap.toMatrix'_toLin', Matrix.of_apply, ← LinearMap.toMatrix'_apply, LinearMap.toMatrix'_toLin', Matrix.of_apply]`. Distinguish the cases in `hf : Loc.IsFree n' n c l.1 s.1`. Rewrite using `[dif_pos hf, dif_pos hf, dif_pos hf, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[dif_neg hf, dif_neg hf, dif_neg hf, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem xx1_add_sub_xx1_single_eq_dite {n' c' n c : ℕ} (xj : (Fin n' → E) →ₗ[E] (Fin n → E)) (t δ : Loc.FC n' c' n c → E)
     (s : Fin (n' + c')) (l : Fin (n + c)) :
@@ -358,11 +356,11 @@ theorem xx1_add_sub_xx1_single_eq_dite {n' c' n c : ℕ} (xj : (Fin n' → E) �
   · rw [dif_neg hf, dif_neg hf, dif_neg hf, sub_self]
 
 /- English proof (translation)
-Distinguish the cases in `h1 : n' + i + 1 < n' + c'`. Rewrite using `[basisVec_eq_single h1]`. Unfold `Loc.atN`. Distinguish the cases in `h2 : n + i < n + c`. Rewrite using `[dif_pos h2, dif_pos ⟨h1, h2⟩]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h2, dif_neg (fun h => h2 h.2)]`. Establish `e : Loc.eN E (n' + c') (n' + i + 1) = 0`. Use function extensionality and compare the values at `l`. Unfold `Loc.eN`. Rewrite using `[if_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e, map_zero, dif_neg (fun h => h1 h.1)]`. Unfold `Loc.atN`. Apply the tactic sequence `split_ifs <;> rfl`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem twAn_chArg_term {n' c' n c : ℕ} (x : (Fin (n' + c') → E) →ₗ[E] (Fin (n + c) → E)) (i : ℕ) :
     Loc.atN (x (Loc.eN E (n' + c') (n' + i + 1))) (n + i) =
@@ -391,7 +389,7 @@ variable {E K : Type} [Field E] [CharZero E] [Field K] {ι : Type} [Fintype ι] 
 def twAnPhi (q A i : ℕ) : E := (i : E) / (q : E) ^ A
 
 /- English proof (translation)
-Introduce `i j h`. Unfold `twAnPhi at h`. Use `(div_left_inj' (pow_ne_zero A hq)).1 h` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem twAnPhi_inj {q A : ℕ} (hq : (q : E) ≠ 0) : Function.Injective (twAnPhi (E := E) q A) := by
   intro i j h
@@ -400,13 +398,13 @@ theorem twAnPhi_inj {q A : ℕ} (hq : (q : E) ≠ 0) : Function.Injective (twAnP
   exact_mod_cast this
 
 /- English proof (translation)
-Use `symm`. Apply `Finset.sum_bij (fun k _ => fun f => twAnPhi (E := E) q A (k f))` to reduce the goal to its premises. Introduce `k _`. Rewrite using `[Fintype.mem_piFinset]`. Introduce `f`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.mem_image.2 ⟨k f, Finset.mem_range.2 (k f).2, rfl⟩`. Introduce `k _ k' _ h`. Use function extensionality and compare the values at `f`. Conclude with `Fin.ext (twAnPhi_inj hq (congrFun h f))`. Introduce `t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `ht` using `[Fintype.mem_piFinset]`. Establish `hc : ∀ f, ∃ i : Fin (q ^ (A + B)), twAnPhi (E` using `E) q A i = t f := fun f => by`. Take `⟨i, hi, he⟩` from `Finset.mem_image.1 (ht f)`. Conclude with `⟨⟨i, Finset.mem_range.1 hi⟩, he⟩`. Conclude with `⟨fun f => (hc f).choose, Finset.mem_univ _, funext fun f => (hc f).choose_spec⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Introduce `k _`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem twAn_sum_valsQ {q A B : ℕ} (hq : (q : E) ≠ 0) (G : (ι → E) → K) :
     ∑ t ∈ Fintype.piFinset (fun _ : ι => LocE.valsQ E q A B), G t =
@@ -431,17 +429,15 @@ theorem twAn_sum_valsQ {q A B : ℕ} (hq : (q : E) ≠ 0) (G : (ι → E) → K)
     rfl
 
 /- English proof (translation)
-Establish `hq0 : 0 < q` using `Nat.pos_of_ne_zero (fun h => hq (by rw [h, Nat.cast_zero]))`. Establish `hlt : ∀ i : Fin (q ^ (A + B)), q * i.1 < q ^ (A + 1 + B)` using `fun i => by`. Establish `: q ^ (A + 1 + B) = q * q ^ (A + B)` using `by rw [show A + 1 + B = (A + B) + 1 by omega, pow_succ']`. Rewrite using `[this]`. Conclude with `Nat.mul_lt_mul_of_pos_left i.2 hq0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Use `symm`. Apply `Fintype.sum_of_injective (fun k f => (⟨q * (k f).1, hlt (k f)⟩ : Fin (q ^ (A + 1 + B))))` to reduce the goal to its premises. Introduce `k k' h`. Use function extensionality and compare the values at `f`. Use `congrArg Fin.val (congrFun h f)` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Fin.ext (Nat.eq_of_mul_eq_mul_left hq0 this)`. Introduce `k hk`. Apply `hvan` to reduce the goal to its premises. Assume the negation of the conclusion as `hall`. Use `push Not at hall`.
+Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `hk` to reduce the goal to its premises. Use `⟨fun f => ⟨(k f).1 / q, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `e : q ^ (A + 1 + B) = q * q ^ (A + B)` using `by rw [show A + 1 + B = (A + B) + 1 by omega, pow_succ']`. Establish `h1 : (k f).1 < q * q ^ (A + B)` using `lt_of_lt_of_eq (k f).2 e`. Conclude with `(Nat.div_lt_iff_lt_mul hq0).2 (by rw [mul_comm]; exact h1)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `f`. Conclude with `Fin.ext (Nat.mul_div_cancel' (hall f))`. Introduce `k`. Use `congr 1`. Use function extensionality and compare the values at `f`.
-
-Unfold `twAnPhi`. Use `push_cast`. Rewrite using `[pow_succ]`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem twAn_sumA {q A B : ℕ} (hq : (q : E) ≠ 0) (G : (ι → E) → K)
     (hvan : ∀ k : ι → ℕ, (∃ f, ¬ q ∣ k f) → G (fun f => twAnPhi q (A + 1) (k f)) = 0) :
@@ -478,11 +474,11 @@ theorem twAn_sumA {q A B : ℕ} (hq : (q : E) ≠ 0) (G : (ι → E) → K)
     field_simp
 
 /- English proof (translation)
-Establish `hM : q * q ^ (A + B) = q ^ (A + B + 1)` using `by rw [pow_succ']`. Set `e : Fin q × Fin (q ^ (A + B)) ≃ Fin (q ^ (A + B + 1))` to `finProdFinEquiv.trans (finCongr hM)`. Establish `he : ∀ x : Fin q × Fin (q ^ (A + B)), (e x).1 = x.2.1 + q ^ (A + B) * x.1.1` using `fun x => by`. Simplify using `[e, finProdFinEquiv]`. Set `e' : (ι → Fin q) × (ι → Fin (q ^ (A + B))) ≃ (ι → Fin (q ^ (A + B + 1)))` to `(Equiv.arrowProdEquivProdArrow _ _ _).symm.trans (Equiv.arrowCongr (Equiv.refl ι) e)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `he' : ∀ x f, (e' x f).1 = (x.2 f).1 + q ^ (A + B) * (x.1 f).1` using `fun x f => he (x.1 f, x.2 f)`. Rewrite using `[← Fintype.sum_equiv e' (fun x => G (fun f => twAnPhi q A ((x.2 f).1 + q ^ (A + B) * (x.1 f).1))) (fun k => G (fun f => twAnPhi q A (k f))) (fun x => by simp only [he'])]`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [hinv (fun f => _) (fun f => _)]`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fun, Fintype.card_fin, nsmul_eq_mul]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem twAn_sumB {q A B : ℕ} (hq : (q : E) ≠ 0) (G : (ι → E) → K)
     (hinv : ∀ a b : ι → ℕ, G (fun f => twAnPhi q A (a f + q ^ (A + B) * b f)) = G (fun f => twAnPhi q A (a f))) :
@@ -504,15 +500,15 @@ theorem twAn_sumB {q A B : ℕ} (hq : (q : E) ≠ 0) (G : (ι → E) → K)
   rfl
 
 /- English proof (translation)
-Rewrite using `[twAn_sum_valsQ hq, twAn_sum_valsQ hq]`. Establish `stepA : ∀ A'', A ≤ A'' → ∀ B'', ∑ k : ι → Fin (q ^ (A'' + B'')), G (fun f => twAnPhi q A'' (k f)) = ∑ k : ι → Fin (q ^ (A + B'')), G (fun f => twAnPhi q A (k f))`. Introduce `A'' hA'' B''`. Proceed by induction on `A'', hA'' using Nat.le_induction with`. Consider the case `base => rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n hn ih`. Rewrite using `[← ih]`. Use `twAn_sumA (B := B'') hq G (hvan n (le_trans hA hn))` as an intermediate fact. Rewrite `this` using `[show n + 1 + B'' = (n + 1) + B'' from rfl]`. Conclude with `this`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `stepB : ∀ B'', B ≤ B'' → (((q : K) ^ B'')⁻¹) ^ Fintype.card ι * ∑ k : ι → Fin (q ^ (A' + B'')), G (fun f => twAnPhi q A' (k f)) = (((q : K) ^ B)⁻¹) ^ Fintype.card ι * ∑ k : ι → Fin (q ^ (A' + B)), G (fun f => twAnPhi q A' (k f))`. Introduce `B'' hB''`. Proceed by induction on `B'', hB'' using Nat.le_induction with`. Consider the case `base => rfl`. Consider the case `succ n hn ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ih]`. Establish `h1` using `twAn_sumB (A := A') (B := n) hq G (hinv A' n (le_trans hB hn))`. Establish `h2 : ∑ k : ι → Fin (q ^ (A' + (n + 1))), G (fun f => twAnPhi q A' (k f)) = ∑ k : ι → Fin (q ^ (A' + n + 1)), G (fun f => twAnPhi q A' (k f))` using `rfl`. Rewrite using `[h2, h1, ← mul_assoc]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, mul_inv, mul_pow, mul_assoc, ← mul_pow, inv_mul_cancel₀ hqK, one_pow, mul_one]`. Rewrite using `[stepB B' hBB, stepA A' hAA B]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twAn_deep_abs {q : ℕ} (hq : (q : E) ≠ 0) (hqK : (q : K) ≠ 0) (G : (ι → E) → K) {A0 B0 : ℕ}
     (hvan : ∀ A, A0 ≤ A → ∀ k : ι → ℕ, (∃ f, ¬ q ∣ k f) → G (fun f => twAnPhi q (A + 1) (k f)) = 0)
@@ -555,9 +551,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)}
 
 /- English proof (translation)
-Establish `e : lamYat (Pr` using `Pr) (R := R) j P = LocE.lamY P (qOf P) (R.N j) (cOf R j) 0 := by`. Unfold `lamYat`. Rewrite using `[if_neg hP]`. Rewrite using `[e]`. Unfold `LocE.lamY`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[ciMem_sclLat]`. Establish `h0 : ∀ l : ℕ, LocE.scE (R.N j) 0 l = 0` using `fun l => by`. Unfold `LocE.scE`. Apply the tactic sequence `split_ifs <;> rfl`. Simplify using `only [h0, zpow_zero, inv_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem twAn_lam_mem {j : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∉ Pr.vGs) (v : Sp X.E (R.N j + cOf R j)) :
     v ∈ lamYat (Pr := Pr) (R := R) j P ↔ ∀ l, IntAt P (v l) := by
@@ -573,14 +569,14 @@ theorem twAn_lam_mem {j : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∉ Pr
   simp only [h0, zpow_zero, inv_one, one_mul]
 
 /- English proof (translation)
-Introduce `v hv` and use `(twAn_lam_mem hP _).1 ((hb v ((twAn_lam_mem hP v).2 hv)).1)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem twAn_bdd_inv {j : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∉ Pr.vGs) {h : AutY X R j} (hb : TwBdd (Pr := Pr) j P h) :
     TwAnIntMap P (h⁻¹ : AutY X R j).toLinearMap := fun v hv =>
   (twAn_lam_mem hP _).1 ((hb v ((twAn_lam_mem hP v).2 hv)).1)
 
 /- English proof (translation)
-Use `(twAn_lam_mem hP _).1 ((hb v ((twAn_lam_mem hP v).2 hv)).2) l` as an intermediate fact. Simplify `this` using `[Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem twAn_bdd_q {j : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∉ Pr.vGs) {h : AutY X R j} (hb : TwBdd (Pr := Pr) j P h)
     (v : Sp X.E (R.N j + cOf R j)) (hv : ∀ l, IntAt P (v l)) (l : Fin (R.N j + cOf R j)) : IntAt P ((qOf P : X.E) ^ j * h v l) := by
@@ -588,18 +584,18 @@ theorem twAn_bdd_q {j : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∉ Pr.v
   simpa [Pi.smul_apply, smul_eq_mul] using this
 
 /- English proof (translation)
-Unfold `Ranks.N`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem twAn_k_le (j : ℕ) : R.k ≤ R.N j := by
   unfold Ranks.N
   omega
 
 /- English proof (translation)
-Unfold `omPhi Loc.om at h`. Establish `h1` using `right_ne_zero_of_mul h`. Unfold `PhiAt at h1`. Rewrite `h1` using `[if_neg hP]`. Establish `hz` using `twAn_intMap_of_entries _ (twAn_phiQ_int (qOf P.1) _ (twAn_k_le i) (twAn_k_le (i + 1)) _ h1)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hw` using `twAn_bdd_inv hP hba (Pi.single s 1) (fun l => twAn_single_int s l)`. Establish `h2` using `twAn_bdd_q hP hbb _ (hz _ hw) l`. Establish `e : hbe ((hbe.symm.toLinearMap ∘ₗ y ∘ₗ hal.toLinearMap) ((hal⁻¹ : AutY X R i) (Pi.single s 1))) = y (Pi.single s 1)` using `by show hbe (hbe.symm (y (hal (hal.symm (Pi.single s 1))))) = _`. Rewrite using `[LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Establish `e' : hbe ((hbe.symm.toLinearMap ∘ₗ y ∘ₗ hal.toLinearMap) ((hal⁻¹ : AutY X R i).toLinearMap (Pi.single s 1))) = y (Pi.single s 1)` using `e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[e']`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twAn_omPhi_supp {i : ℕ} (P : rowSG Pr sel mu) (hP : P.1 ∉ Pr.vGs) (hal : AutY X R i) (hbe : AutY X R (i + 1))
     (hba : TwBdd (Pr := Pr) i P.1 hal) (hbb : TwBdd (Pr := Pr) (i + 1) P.1 hbe) (y : HomE X.E (R.N i + cOf R i) (R.N (i + 1) + cOf R (i + 1)))
@@ -621,14 +617,14 @@ theorem twAn_omPhi_supp {i : ℕ} (P : rowSG Pr sel mu) (hP : P.1 ∉ Pr.vGs) (h
   exact h2
 
 /- English proof (translation)
-Use `IntAt.coe P ((qOf P : 𝓞 X.E) ^ n)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem twAn_qpow_int (P : HeightOneSpectrum (𝓞 X.E)) (n : ℕ) : IntAt P ((qOf P : X.E) ^ n) := by
   have := IntAt.coe P ((qOf P : 𝓞 X.E) ^ n)
   simpa using this
 
 /- English proof (translation)
-Establish `e : (qOf P : X.E) ^ b * z = (qOf P : X.E) ^ (b - a) * ((qOf P : X.E) ^ a * z)`. Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel hab]`. Rewrite using `[e]`. Conclude with `(twAn_qpow_int P _).mul h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twAn_qpow_mul {P : HeightOneSpectrum (𝓞 X.E)} {a b : ℕ} (hab : a ≤ b) {z : X.E} (h : IntAt P ((qOf P : X.E) ^ a * z)) :
     IntAt P ((qOf P : X.E) ^ b * z) := by
@@ -638,7 +634,7 @@ theorem twAn_qpow_mul {P : HeightOneSpectrum (𝓞 X.E)} {a b : ℕ} (hab : a �
   exact (twAn_qpow_int P _).mul h
 
 /- English proof (translation)
-Unfold `Ranks.r Ranks.N cOf`. Establish `: i * (R.t + 1) = i * R.t + i` using `by ring`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem twAn_r_le {i : ℕ} (hi : i + 1 ≤ R.m) : R.r ≤ R.N i + cOf R i := by
   unfold Ranks.r Ranks.N cOf
@@ -646,7 +642,7 @@ theorem twAn_r_le {i : ℕ} (hi : i + 1 ≤ R.m) : R.r ≤ R.N i + cOf R i := by
   omega
 
 /- English proof (translation)
-Establish `e : q ^ B = q ^ (B - i) * q ^ i` using `by rw [← pow_add, Nat.sub_add_cancel h]`. Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem twAn_scal {E : Type} [Field E] {q : E} (hq0 : q ≠ 0) {B i : ℕ} (h : i ≤ B) : q ^ (B - i) * ((q ^ B)⁻¹ * q ^ i) = 1 := by
   have e : q ^ B = q ^ (B - i) * q ^ i := by rw [← pow_add, Nat.sub_add_cancel h]
@@ -654,19 +650,17 @@ theorem twAn_scal {E : Type} [Field E] {q : E} (hq0 : q ≠ 0) {B i : ℕ} (h : 
   field_simp
 
 /- English proof (translation)
-Establish `hq0 : (qOf P.1 : X.E) ≠ 0` using `by exact_mod_cast hq.ne_zero`. Unfold `omPhi Loc.om`. Use `congr 1`. Unfold `PhiAt`. Rewrite using `[if_neg hP]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply `twAn_phiQ_congr (qOf P.1) _ (ciQ_mem P.1) hq0 _ _ (twAn_r_le (by omega)) (twAn_r_le (by omega))` to reduce the goal to its premises. Introduce `p p' hp hp'`. Rewrite using `[frameEntry_unscaled_eq_coord _ (twAn_k_le i) (twAn_k_le (i + 1)) _ hp hp', frameEntry_unscaled_eq_coord _ (twAn_k_le i) (twAn_k_le (i + 1)) _ hp hp']`. Use `set es : Sp X.E (R.N i + cOf R i) := Pi.single (⟨LocE.fIdx R.k (cOf R i) (R.N i) p', symFIdx_lt (twAn_k_le i) hp'⟩ : Fin _) 1 with hes`. Use `set l : Fin (R.N (i + 1) + cOf R (i + 1)) := ⟨LocE.fIdx R.k (cOf R (i + 1)) (R.N (i + 1)) p, symFIdx_lt (twAn_k_le (i + 1)) hp⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set q : X.E := (qOf P.1 : X.E) with hqd`. Set `D : HomE X.E (R.N i + cOf R i) (R.N (i + 1) + cOf R (i + 1))` to `((q ^ B)⁻¹) • (y' - y)`. Establish `hDint : TwAnIntMap P.1 D` using `twAn_intMap_of_entries D fun s l => by show IntAt P.1 (((q ^ B)⁻¹ • (y' - y)) (Pi.single s 1) l)`. Simplify `hyy s l` using `[LinearMap.smul_apply, LinearMap.sub_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`. Set `v : Sp X.E (R.N i + cOf R i)` to `(q ^ i) • hal es`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hv : ∀ l, IntAt P.1 (v l)` using `fun l => by`. Use `twAn_bdd_q hP hba es (fun l => twAn_single_int _ l) l` as an intermediate fact. Simplify `this` using `[v, Pi.smul_apply, smul_eq_mul]`. Establish `hg` using `twAn_bdd_inv hP hbb (D v) (hDint v hv)`. Establish `key : hbe.symm (y' (hal es)) - hbe.symm (y (hal es)) = q ^ (B - i) • (hbe⁻¹ : AutY X R (i + 1)) (D v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (hbe⁻¹ : AutY X R (i + 1)) (D v) = ((q ^ B)⁻¹ * q ^ i) • (hbe.symm (y' (hal es)) - hbe.symm (y (hal es)))` using `by show hbe.symm ((((q ^ B)⁻¹) • (y' - y)) ((q ^ i) • hal es)) = _`. Rewrite using `[LinearMap.smul_apply, map_smul, map_smul, map_smul, LinearMap.sub_apply, map_sub, smul_smul]`. Rewrite using `[e1, smul_smul, twAn_scal hq0 (by omega), one_smul]`. Use `⟨q ^ (B - i - 1) * ((hbe⁻¹ : AutY X R (i + 1)) (D v) l), (twAn_qpow_int P.1 _).mul (hg l), ?_⟩` and prove the remaining obligations. Establish `kl` using `congrFun key l`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul] at kl`. Use `show hbe.symm (y' (hal es)) l = hbe.symm (y (hal es)) l + q * _`. Establish `e2 : q * (q ^ (B - i - 1) * (hbe⁻¹ : AutY X R (i + 1)) (D v) l) = q ^ (B - i) * (hbe⁻¹ : AutY X R (i + 1)) (D v) l`. Rewrite using `[← mul_assoc, ← pow_succ']`. Use `congr 2`.
-
-Use linear arithmetic over natural numbers and integers. Rewrite using `[e2, ← kl]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem twAn_omPhi_congr {i : ℕ} (P : rowSG Pr sel mu) (hP : P.1 ∉ Pr.vGs) (hq : (qOf P.1).Prime) (hi : i + 2 ≤ R.m)
     (hal : AutY X R i) (hbe : AutY X R (i + 1)) (hba : TwBdd (Pr := Pr) i P.1 hal) (hbb : TwBdd (Pr := Pr) (i + 1) P.1 hbe)
@@ -711,9 +705,9 @@ theorem twAn_omPhi_congr {i : ℕ} (P : rowSG Pr sel mu) (hP : P.1 ∉ Pr.vGs) (
   ring
 
 /- English proof (translation)
-Introduce `i hi P hP hal hbe hba hbb x h s l`. Unfold `XiAt at h`. Establish `h1` using `right_ne_zero_of_mul h`. Unfold `E1at at h1`. Establish `h2` using `integral_of_firstUnfolding_ne_zero (omPhi Ch sel mu cst i P hal hbe) (i + 1) (qOf P.1 : X.E) (fun y hy s l => twAn_omPhi_supp P hP hal hbe hba hbb y hy s l) _ _ _ x h1 s l`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `twAn_qpow_mul (hA i hi) h2`.
+A detailed English derivation is pending.
 -/
 theorem twAn_xiSupp {m2 : ℕ} (hA : ∀ i, i < m2 → i + 1 ≤ cst.A) :
     ∀ i, i < m2 → ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → ∀ (hal : AutY X R i) (hbe : AutY X R (i + 1)),
@@ -728,9 +722,9 @@ theorem twAn_xiSupp {m2 : ℕ} (hA : ∀ i, i < m2 → i + 1 ≤ cst.A) :
   exact twAn_qpow_mul (hA i hi) h2
 
 /- English proof (translation)
-Introduce `P hP hal hba x₀ y' h i`. Establish `hc : 1 ≤ cOf R m2` using `by unfold cOf; omega`. Unfold `PsiAt at h`. Establish `h2` using `twAn_omPhi_supp P hP hal 1 hba (twBdd_one _ _) _ h ⟨R.N m2, by omega⟩ (Fin.castAdd _ i)`. Rewrite `h2` using `[twAn_joinCol hc, ciInX_castAdd]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `twAn_qpow_mul hM h2`.
+A detailed English derivation is pending.
 -/
 theorem twAn_psiSupp {m2 : ℕ} (hm : R.m = m2 + 2) (hM : m2 + 1 ≤ cst.M) :
     ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → ∀ hal : AutY X R m2, TwBdd (Pr := Pr) m2 P.1 hal →
@@ -744,7 +738,7 @@ theorem twAn_psiSupp {m2 : ℕ} (hm : R.m = m2 + 2) (hM : m2 + 1 ≤ cst.M) :
   exact twAn_qpow_mul hM h2
 
 /- English proof (translation)
-Introduce `P hP hal hba x₀ y' h s l`. Unfold `PsiAt at h`. Establish `h2` using `twAn_omPhi_supp P hP hal 1 hba (twBdd_one _ _) _ h (Fin.castAdd _ s) (Fin.castAdd _ l)`. Rewrite `h2` using `[twAn_joinCol_castAdd, ciInX_castAdd]`. Conclude with `twAn_qpow_mul hA h2`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twAn_psiSuppX {m2 : ℕ} (hA : m2 + 1 ≤ cst.A) :
     ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → ∀ hal : AutY X R m2, TwBdd (Pr := Pr) m2 P.1 hal →
@@ -757,16 +751,14 @@ theorem twAn_psiSuppX {m2 : ℕ} (hA : m2 + 1 ≤ cst.A) :
   exact twAn_qpow_mul hA h2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, 1, one_notMem P, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem twAn_zero_int (P : HeightOneSpectrum (𝓞 X.E)) : IntAt P (0 : X.E) := ⟨0, 1, one_notMem P, by simp⟩
 
 /- English proof (translation)
-Introduce `P hP hal hba x₀ y' z hz`. Unfold `PsiAt`. Apply `twAn_omPhi_congr P hP (hd P hP).1 (by omega) hal 1 hba (twBdd_one _ _) hM` to reduce the goal to its premises. Introduce `s l`. Establish `e` using `congrFun (twAn_joinCol_sub_y (c := cOf R (m2 + 1)) x₀ y' z (Pi.single s 1)) l`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `e` using `[Pi.sub_apply]`. Rewrite using `[e, ciInX_apply]`. Use `split_ifs with hl`. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_left_comm]`. Conclude with `(twAn_atNL_int _ s).mul (hz _)`.
-
-Rewrite using `[mul_zero]`. Conclude with `twAn_zero_int P.1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twAn_psiInv {m2 : ℕ} (hm : R.m = m2 + 2) (hM : m2 + 1 ≤ cst.M) (hd : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → TwDegOne X P.1) :
     ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → ∀ hal : AutY X R m2, TwBdd (Pr := Pr) m2 P.1 hal →
@@ -786,11 +778,11 @@ theorem twAn_psiInv {m2 : ℕ} (hm : R.m = m2 + 2) (hM : m2 + 1 ≤ cst.M) (hd :
     exact twAn_zero_int P.1
 
 /- English proof (translation)
-Introduce `P hP hal hba x₀ z y' hz`. Unfold `PsiAt`. Apply `twAn_omPhi_congr P hP (hd P hP).1 (by omega) hal 1 hba (twBdd_one _ _) hB` to reduce the goal to its premises. Introduce `s l`. Establish `e` using `congrFun (joinColumn_add_sub (c := cOf R (m2 + 1)) x₀ z y' (Pi.single s 1)) l`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `e` using `[Pi.sub_apply]`. Rewrite using `[e, ciInX_apply]`. Use `split_ifs with hl`. Establish `hZ : TwAnIntMap P.1 ((((qOf P.1 : X.E) ^ cst.B)⁻¹) • z)` using `twAn_intMap_of_entries _ fun s l => by`. Simplify `hz s l` using `[LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `hZ _ (fun l => twAn_funLeft_int s l) ⟨l.1, hl⟩` as an intermediate fact. Simplify `this` using `[LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[mul_zero]`. Conclude with `twAn_zero_int P.1`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twAn_psiInvX {m2 : ℕ} (hm : R.m = m2 + 2) (hB : m2 + 1 ≤ cst.B) (hd : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → TwDegOne X P.1) :
     ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → ∀ hal : AutY X R m2, TwBdd (Pr := Pr) m2 P.1 hal →
@@ -813,11 +805,11 @@ theorem twAn_psiInvX {m2 : ℕ} (hm : R.m = m2 + 2) (hB : m2 + 1 ≤ cst.B) (hd 
     exact twAn_zero_int P.1
 
 /- English proof (translation)
-Introduce `i hi P hP hal hbe hba hbb x z hz`. Establish `hsum : ∀ t, omPhi Ch sel mu cst i P hal hbe (Loc.xx1 (x + z) t) * cst.psi P (-Loc.chArg (Loc.xx1 (x + z) t)) = omPhi Ch sel mu cst i P hal hbe (Loc.xx1 x t) * cst.psi P (-Loc.chArg (Loc.xx1 x t))` using `fun t => by`. Rewrite using `[charArg_unipotentExtension_indep (x + z) x t]`. Use `congr 1`. Apply `twAn_omPhi_congr P hP (hd P hP).1 (by omega) hal hbe hba hbb (hB i hi)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `s l`. Rewrite using `[unipotentExtension_add_sub]`. Use `split_ifs with hs hl`. Conclude with `hz _ _`. Rewrite using `[mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `twAn_zero_int P.1`. Rewrite using `[mul_zero]`. Conclude with `twAn_zero_int P.1`. Simplify using `only [XiAt, E1at, Loc.E1, hsum]`.
+A detailed English derivation is pending.
 -/
 theorem twAn_xiInv {m2 : ℕ} (hm : R.m = m2 + 2) (hB : ∀ i, i < m2 → i + 1 ≤ cst.B)
     (hd : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → TwDegOne X P.1) :
@@ -842,9 +834,9 @@ theorem twAn_xiInv {m2 : ℕ} (hm : R.m = m2 + 2) (hB : ∀ i, i < m2 → i + 1 
   simp only [XiAt, E1at, Loc.E1, hsum]
 
 /- English proof (translation)
-Establish `hq0 : (qOf P : X.E) ≠ 0` using `by exact_mod_cast hq.ne_zero`. Establish `h3 : redP P (((k : ℤ) : X.E)) = 0`. Establish `e : (((k : ℤ) : X.E)) = (qOf P : X.E) * ((k : X.E) / (qOf P : X.E))` using `by push_cast; field_simp`. Rewrite using `[e, reduction_mul (ciIntAt_q (P := P) (q := qOf P)) h, redP_natCast_eq_zero (ciQ_mem P), zero_mul]`. Rewrite `h3` using `[redP_intCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `(owedC_intCast_eq_iff (A := 𝓞 X.E ⧸ P.asIdeal) hq (ciCard P) (k : ℤ) 0).1 (by rw [h3, Int.cast_zero])`. Rewrite `h4` using `[sub_zero]`. Conclude with `h4` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twAn_dvd_of_div {P : HeightOneSpectrum (𝓞 X.E)} (hq : (qOf P).Prime) (k : ℕ) (h : IntAt P ((k : X.E) / (qOf P : X.E))) :
     qOf P ∣ k := by
@@ -858,37 +850,31 @@ theorem twAn_dvd_of_div {P : HeightOneSpectrum (𝓞 X.E)} (hq : (qOf P).Prime) 
   exact_mod_cast h4
 
 /- English proof (translation)
-Introduce `A' B' hA' hB' i hi P hP hal hbe hba hbb`. Use function extensionality and compare the values at `xj`. Take `⟨hq, hu⟩` from `hd P hP`. Establish `hq0 : (qOf P.1 : X.E) ≠ 0` using `by exact_mod_cast hq.ne_zero`. Set `G : (Loc.FC (R.N i) (cOf R i) (R.N (i + 1)) (cOf R (i + 1)) → X.E) → X.K` to `fun t => omPhi Ch sel mu cst i P hal hbe (Loc.xx1 xj t) * cst.psi P (-Loc.chArg (Loc.xx1 xj t))`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hvan : ∀ A, i + 1 ≤ A → ∀ k : Loc.FC (R.N i) (cOf R i) (R.N (i + 1)) (cOf R (i + 1)) → ℕ, (∃ f, ¬ qOf P.1 ∣ k f) → G (fun f => twAnPhi (qOf P.1) (A + 1) (k f)) = 0`. Introduce `A hA0 k ⟨f, hf⟩`. Assume the negation of the conclusion as `hG`. Establish `hΦ` using `left_ne_zero_of_mul hG`. Establish `hs` using `twAn_omPhi_supp P hP hal hbe hba hbb _ hΦ f.1.2 f.1.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hs` using `[unipotentExtension_freeCoord]`. Establish `h2` using `twAn_qpow_mul hA0 hs`. Establish `e : (qOf P.1 : X.E) ^ A * twAnPhi (qOf P.1) (A + 1) (k f) = (k f : X.E) / (qOf P.1 : X.E)`. Unfold `twAnPhi`. Rewrite using `[pow_succ, mul_div_assoc']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_div_mul_left _ _ (pow_ne_zero A hq0)`. Rewrite `h2` using `[e]`. Conclude with `hf (twAn_dvd_of_div hq (k f) h2)`. Establish `hinv : ∀ A B, i + 1 ≤ B → ∀ a b : Loc.FC (R.N i) (cOf R i) (R.N (i + 1)) (cOf R (i + 1)) → ℕ, G (fun f => twAnPhi (qOf P.1) A (a f + (qOf P.1) ^ (A + B) * b f)) = G (fun f => twAnPhi (qOf P.1) A (a f))`. Introduce `A B hB0 a b`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `set t : Loc.FC (R.N i) (cOf R i) (R.N (i + 1)) (cOf R (i + 1)) → X.E := fun f => twAnPhi (qOf P.1) A (a f) with ht`. Use `set δ : Loc.FC (R.N i) (cOf R i) (R.N (i + 1)) (cOf R (i + 1)) → X.E := fun f => (qOf P.1 : X.E) ^ B * (b f : X.E) with hδ`. Establish `htd : (fun f => twAnPhi (E` using `X.E) (qOf P.1) A (a f + (qOf P.1) ^ (A + B) * b f)) = t + δ := by`. Use function extensionality and compare the values at `f`. Simplify using `only [ht, hδ, Pi.add_apply, twAnPhi]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[pow_add, add_div, mul_assoc, mul_div_cancel_left₀ _ (pow_ne_zero _ hq0)]`. Establish `hδint : ∀ f, IntAt P.1 (((qOf P.1 : X.E) ^ (i + 1))⁻¹ * δ f)` using `fun f => by`. Establish `e : ((qOf P.1 : X.E) ^ (i + 1))⁻¹ * δ f = (qOf P.1 : X.E) ^ (B - (i + 1)) * (b f : X.E)`. Simplify using `only [hδ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `: (qOf P.1 : X.E) ^ B = (qOf P.1 : X.E) ^ (B - (i + 1)) * (qOf P.1 : X.E) ^ (i + 1)`. Rewrite using `[← pow_add, Nat.sub_add_cancel hB0]`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(twAn_qpow_int P.1 _).mul (by exact_mod_cast ciIntAt_intCast (P := P.1) (b f : ℤ))`. Rewrite using `[htd]`. Establish `hΦ : omPhi Ch sel mu cst i P hal hbe (Loc.xx1 xj (t + δ)) = omPhi Ch sel mu cst i P hal hbe (Loc.xx1 xj t)`. Apply `twAn_omPhi_congr P hP hq (by omega) hal hbe hba hbb (le_refl (i + 1))` to reduce the goal to its premises. Introduce `s l`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[xx1_add_sub_xx1_single_eq_dite]`. Use `split_ifs with hf`. Conclude with `hδint _`. Rewrite using `[mul_zero]`. Conclude with `twAn_zero_int P.1`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `show omPhi Ch sel mu cst i P hal hbe (Loc.xx1 xj (t + δ)) * cst.psi P (-Loc.chArg (Loc.xx1 xj (t + δ))) = omPhi Ch sel mu cst i P hal hbe (Loc.xx1 xj t) * cst.psi P (-Loc.chArg (Loc.xx1 xj t))`. Rewrite using `[hΦ]`. Distinguish the cases in `h0 : omPhi Ch sel mu cst i P hal hbe (Loc.xx1 xj t) = 0`. Rewrite using `[h0, zero_mul, zero_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsupp` using `twAn_omPhi_supp P hP hal hbe hba hbb _ h0`. Establish `hDi` using `hD i hi P hP`. Establish `hdiff : IntAt P.1 (Loc.chArg (Loc.xx1 xj (t + δ)) - Loc.chArg (Loc.xx1 xj t))`. Unfold `Loc.chArg`. Rewrite using `[← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_induction _ (IntAt P.1) (fun _ _ ha hb => ha.add hb) (twAn_zero_int P.1) fun j _ => ?_` and prove the remaining obligations. Rewrite using `[twAn_chArg_term, twAn_chArg_term]`. Use `split_ifs with hj`. Rewrite using `[xx1_add_sub_xx1_single_eq_dite] split_ifs with hf`. Conclude with `(twAn_qpow_int P.1 B).mul (by exact_mod_cast ciIntAt_intCast (P := P.1) (b _ : ℤ))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `twAn_zero_int P.1`. Rewrite using `[sub_self]`. Conclude with `twAn_zero_int P.1`. Establish `hcD : IntAt P.1 ((qOf P.1 : X.E) ^ cst.D P * Loc.chArg (Loc.xx1 xj t))`. Unfold `Loc.chArg`.
-
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_induction _ (IntAt P.1) (fun _ _ ha hb => ha.add hb) (twAn_zero_int P.1) fun j _ => ?_` and prove the remaining obligations. Rewrite using `[twAn_chArg_term]`. Use `split_ifs with hj`. Conclude with `twAn_qpow_mul hDi (hsupp _ _)`.
-
-Rewrite using `[mul_zero]`. Conclude with `twAn_zero_int P.1`. Establish `e : -Loc.chArg (Loc.xx1 xj (t + δ)) = -Loc.chArg (Loc.xx1 xj t) + -(Loc.chArg (Loc.xx1 xj (t + δ)) - Loc.chArg (Loc.xx1 xj t))`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hc.psi_add P _ _ (by rw [mul_neg]; exact ciIntAt_neg hcD) (by rw [mul_neg]; exact ciIntAt_neg ((twAn_qpow_int P.1 _).mul hdiff)), hc.psi_int P _ (ciIntAt_neg hdiff), mul_one]`.
-
-Establish `H` using `twAn_deep_abs (ι := Loc.FC (R.N i) (cOf R i) (R.N (i + 1)) (cOf R (i + 1))) hq0 (hqK P hP) G hvan hinv (hA i hi) (hB i hi) hA' hB'`. Unfold `E1at Loc.E1`. Conclude with `H`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem twAn_deep {m2 : ℕ} (hm : R.m = m2 + 2) (hd : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → TwDegOne X P.1) (hc : cst.Ok)
     (hA : ∀ i, i < m2 → i + 1 ≤ cst.A) (hB : ∀ i, i < m2 → i + 1 ≤ cst.B)
@@ -986,7 +972,7 @@ theorem twAn_deep {m2 : ℕ} (hm : R.m = m2 + 2) (hd : ∀ P : rowSG Pr sel mu, 
   exact H
 
 /- English proof (translation)
-The claim follows from `twAn_deep hm hd hc (fun i hi => by omega) (fun i hi => by omega) (fun i hi P hP => by have := hD P hP; omega) hqK psiSupp := twAn_psiSupp hm hM psiInv := twAn_psiInv hm hM hd xiSupp := twAn_xiSupp (fun i hi => by omega) xiInv := twAn_xiInv hm (fun i hi => by omega) hd psiSuppX := …`.
+A detailed English derivation is pending.
 -/
 theorem twAnQ_of {m2 : ℕ} (hm : R.m = m2 + 2) (hd : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → TwDegOne X P.1) (hc : cst.Ok)
     (hA : m2 + 1 ≤ cst.A) (hB : m2 + 1 ≤ cst.B) (hM : m2 + 1 ≤ cst.M) (hD : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → m2 ≤ cst.D P)
@@ -1000,7 +986,7 @@ theorem twAnQ_of {m2 : ℕ} (hm : R.m = m2 + 2) (hd : ∀ P : rowSG Pr sel mu, P
   psiInvX := twAn_psiInvX hm hB hd
 
 /- English proof (translation)
-Establish `h2` using `R.two_le_m`. Use `twAnQ_of hm hd (twCst_ok hPr hCh h4 hK) (by show m2 + 1 ≤ R.m + 1; omega) (by show m2 + 1 ≤ R.m + 1; omega) (by show m2 + 1 ≤ R.m; omega) (fun P hP => by rw [twCst_D_Q hP]; omega) (fun P hP => ?_)` and prove the remaining obligations. Conclude with `(hd P hP).1.ne_zero` after adjusting the coercions.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem twAnQ_twCst {G : ChGlob X R.m} {m2 : ℕ} (hm : R.m = m2 + 2) (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.vGs, qOf w % 4 = 1)
     (hK : TwCstQ (Pr := Pr) sel mu G) (hd : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → TwDegOne X P.1) :

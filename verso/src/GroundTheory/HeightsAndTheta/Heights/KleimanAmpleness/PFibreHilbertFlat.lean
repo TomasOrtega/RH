@@ -13,7 +13,7 @@ noncomputable section
 universe u w
 
 /- English proof (translation)
-Establish `huniv : (Finset.univ : Finset (Finset (Fin 1))) = {∅, {0}}` using `by decide`. Establish `h0 : tensorSub ![L] ∅ = twistSys R x 0` using `rfl`. Establish `h1 : tensorSub ![L] {0} = (twistSys R x 0).twist L` using `rfl`. Rewrite using `[interSum, huniv, Finset.sum_pair (by decide), h0, h1, twistSys_zero_twist, twistSys_zero_twist]`. Simplify using `only [Finset.card_empty, Finset.card_singleton, Nat.sub_zero, Nat.sub_self, pow_one, pow_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -28,9 +28,9 @@ theorem interSum_single_eq {R : Type*} [CommRing R] {Ω : Type w} [Field Ω] [Al
   ring
 
 /- English proof (translation)
-Introduce `S _ _ F _ _ _ Ω _ _ _ _ N x M 𝔪 h𝔪 qq hq hconst hsub`. Establish `hM` using `h S F Ω N x M 𝔪 h𝔪 qq hq hconst 1 hsub`. Establish `hO` using `h S F Ω N x (twistBundle S x 0) 𝔪 h𝔪 qq hq hconst 1 hsub`. Use `filter_upwards [hM, hO] with c eM eO`. Establish `hO0 : (twistBundle S x 0).toSubSystem = twistSys S x 0` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `eO` using `[hO0, SubSystem.extend_twistSys, twistSys_zero_twist, twistSys_zero_twist]`. Rewrite using `[interSum_single_eq, interSum_single_eq, eM, eO]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FibreHilbertFlat.proof (h : FibreSectionsFlat.Statement.{u, w}) : FibreHilbertFlat.Statement.{u, w} := by
   intro S _ _ F _ _ _ Ω _ _ _ _ N x M 𝔪 h𝔪 qq hq hconst hsub

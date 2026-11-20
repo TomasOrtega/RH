@@ -29,7 +29,7 @@ section Gen
 variable {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Take `⟨B, h1, h2, h3⟩` from `h`. Conclude with `⟨(B.comp S.toSubmodule.subtype).compl₂ S.toSubmodule.subtype, fun v w => h1 _ _, fun v hv => h2 _ (fun h0 => hv (Subtype.ext h0)), fun g v w => h3 g v w⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isUnitarisable_sub {ρ : Representation ℂ G V} (h : IsUnitarisable ρ) (S : Subrepresentation ρ) :
     IsUnitarisable S.toRepresentation := by
@@ -38,7 +38,7 @@ theorem isUnitarisable_sub {ρ : Representation ℂ G V} (h : IsUnitarisable ρ)
     fun v hv => h2 _ (fun h0 => hv (Subtype.ext h0)), fun g v w => h3 g v w⟩
 
 /- English proof (translation)
-Take `⟨B, h1, h2, h3⟩` from `h`. Use `⟨(B.comp E.toLinearMap).compl₂ E.toLinearMap, fun v w => h1 _ _, fun v hv => h2 _ (fun h0 => hv (E.toLinearEquiv.map_eq_zero_iff.1 h0)), fun g v w => ?_⟩` and prove the remaining obligations. Establish `hc : ∀ u, E.toLinearMap (ρ g u) = σ g (E.toLinearMap u)` using `fun u => LinearMap.congr_fun (E.isIntertwining' g) u`. Simplify using `only [LinearMap.compl₂_apply, LinearMap.comp_apply, hc]`. Conclude with `h3 g _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnitarisable_of_equiv {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (E : ρ.Equiv σ)
     (h : IsUnitarisable σ) : IsUnitarisable ρ := by
@@ -51,13 +51,13 @@ theorem isUnitarisable_of_equiv {ρ : Representation ℂ G V} {σ : Representati
   exact h3 g _ _
 
 /- English proof (translation)
-Take `⟨B, -, h2, h3⟩` from `h`. Establish `e` using `h3 g v v`. Rewrite `e` using `[hc, LinearMap.map_smulₛₗ (B (c • v)), map_smul B c v, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul]`. Establish `hB : B v v ≠ 0` using `fun h0 => by`. Use `h2 v hv` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h0]`. Simplify using `at this`. Establish `hcc : c * (starRingEnd ℂ) c = 1`. Establish `e' : (c * (starRingEnd ℂ) c) * B v v = 1 * B v v`. Rewrite using `[one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(by ring : (c * (starRingEnd ℂ) c) * B v v = (starRingEnd ℂ) c * (c * B v v)).trans e`. Conclude with `mul_right_cancel₀ hB e'`. Rewrite `hcc` using `[Complex.mul_conj]`. Establish `hn : ‖c‖ ^ 2 = 1`. Rewrite using `[← Complex.normSq_eq_norm_sq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hcc` after adjusting the coercions. Establish `h0` using `norm_nonneg c`. Establish `h4 : (‖c‖ - 1) * (‖c‖ + 1) = 0` using `by ring_nf; linarith`. Apply the tactic sequence `rcases mul_eq_zero.1 h4 with h5 | h5 <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem norm_eq_one_of_unitarisable {ρ : Representation ℂ G V} (h : IsUnitarisable ρ) (g : G) {v : V} {c : ℂ}
     (hv : v ≠ 0) (hc : ρ g v = c • v) : ‖c‖ = 1 := by
@@ -101,7 +101,7 @@ def inclLe {N : ℕ} {X : GRep k N} {S T : Subrepresentation X.ρ} (h : S.toSubm
   isIntertwining' _ := by ext; rfl
 
 /- English proof (translation)
-The claim follows from `(DM_comp ψ j e (subIncl S) (subProj T S hc) (idH _) (fun v => (subProj_subIncl_right T S hc v).symm) a).symm.trans (DM_id ψ j e (idH _) (fun _ => rfl) a)`.
+A detailed English derivation is pending.
 -/
 theorem DM_proj_incl (ψ : AddChar k Circle) (j : ℕ) {N n : ℕ} (e : N = n + j) {X : GRep k N}
     (S T : Subrepresentation X.ρ) (hc : IsCompl T.toSubmodule S.toSubmodule) (a : (derivB ψ j ((subG S).cast e)).V) :
@@ -110,7 +110,7 @@ theorem DM_proj_incl (ψ : AddChar k Circle) (j : ℕ) {N n : ℕ} (e : N = n + 
     (DM_id ψ j e (idH _) (fun _ => rfl) a)
 
 /- English proof (translation)
-Introduce `a b hab` and use `by rw [← DM_proj_incl ψ j e S T hc a, ← DM_proj_incl ψ j e S T hc b, hab]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DM_subIncl_injective (ψ : AddChar k Circle) (j : ℕ) {N n : ℕ} (e : N = n + j) {X : GRep k N}
     (S T : Subrepresentation X.ρ) (hc : IsCompl T.toSubmodule S.toSubmodule) :
@@ -118,9 +118,9 @@ theorem DM_subIncl_injective (ψ : AddChar k Circle) (j : ℕ) {N n : ℕ} (e : 
   rw [← DM_proj_incl ψ j e S T hc a, ← DM_proj_incl ψ j e S T hc b, hab]
 
 /- English proof (translation)
-Take `⟨n, e, hnt⟩` from `h`. Assume the negation of the conclusion as `hX`. Rewrite `hX` using `[not_nontrivial_iff_subsingleton]`. Take `⟨y, hy⟩` from `exists_ne (0 : (derivB ψ j (X.cast e)).V)`. Apply `hy` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← DM_id ψ j e (idH X) (fun _ => rfl) y]`. Conclude with `DM_zero ψ j e (idH X) (fun v => Subsingleton.elim _ _) y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nontrivial_of_nd (ψ : AddChar k Circle) {N j : ℕ} (X : GRep k N) (h : ND ψ X j) : Nontrivial X.V := by
   obtain ⟨n, e, hnt⟩ := h
@@ -132,9 +132,9 @@ theorem nontrivial_of_nd (ψ : AddChar k Circle) {N j : ℕ} (X : GRep k N) (h :
   exact DM_zero ψ j e (idH X) (fun v => Subsingleton.elim _ _) y
 
 /- English proof (translation)
-Take `⟨n, e, hnt⟩` from `hnd`. Use `⟨n, e, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hS`. Rewrite `hS` using `[not_nontrivial_iff_subsingleton]`. Take `⟨a, ha⟩` from `exists_ne (0 : (derivB ψ h ((subG S₀).cast e)).V)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply `ha` to reduce the goal to its premises. Apply `DM_subIncl_injective ψ h e S₀ T₀ hc` to reduce the goal to its premises. Rewrite using `[DM_comp ψ h e (inclLe hle) (subIncl S) (subIncl S₀) (fun v => rfl) a, Subsingleton.elim (DM ψ h e (inclLe hle) a) 0, map_zero, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem nd_mono (ψ : AddChar k Circle) {N h : ℕ} {X : GRep k N} (S₀ S T₀ : Subrepresentation X.ρ)
     (hle : S₀.toSubmodule ≤ S.toSubmodule) (hc : IsCompl T₀.toSubmodule S₀.toSubmodule) (hnd : ND ψ (subG S₀) h) :
@@ -154,7 +154,7 @@ end Maps
 section Steps
 
 /- English proof (translation)
-Use `⟨Nat.findGreatest (ND ψ X) N, Nat.le_findGreatest (le_of_nd ψ X h₀) h₀, Nat.findGreatest_spec (le_of_nd ψ X h₀) h₀, fun j' hlt hj' => ?_⟩` and prove the remaining obligations. Conclude with `Nat.findGreatest_is_greatest hlt (le_of_nd ψ X hj') hj'`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_top (ψ : AddChar k Circle) {N : ℕ} (X : GRep k N) {j₀ : ℕ} (h₀ : ND ψ X j₀) :
     ∃ j, j₀ ≤ j ∧ ND ψ X j ∧ ∀ j', j < j' → ¬ ND ψ X j' := by
@@ -164,7 +164,7 @@ theorem exists_top (ψ : AddChar k Circle) {N : ℕ} (X : GRep k N) {j₀ : ℕ}
   exact Nat.findGreatest_is_greatest hlt (le_of_nd ψ X hj') hj'
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, N = m + 1` from `⟨N - 1, by omega⟩`. Take `⟨n, hn, hnt⟩` from `GlobalTheory.T.exists_nontrivial_derivative k ψ hψc hψ1 m (resM k X.ρ).V (resM k X.ρ).ρ (fun v => (hs v).preimage continuous_subtype_val) hX`. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hn`. Take `⟨E⟩` from `GlobalTheory.T.twisted_jacquet_iterated_phi_equiv k ψ n j (resM k X.ρ)`. Conclude with `⟨j + 1, by omega, n, rfl, E.symm.injective.nontrivial⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_nd_pos (ψ : AddChar k Circle) (hψc : Continuous ψ) (hψ1 : ψ ≠ 1) {N : ℕ} (X : GRep k N)
     (hN : 0 < N) (hs : IsSmooth X.ρ) (hX : Nontrivial X.V) : ∃ j, 1 ≤ j ∧ ND ψ X j := by
@@ -176,7 +176,7 @@ theorem exists_nd_pos (ψ : AddChar k Circle) (hψc : Continuous ψ) (hψ1 : ψ 
   exact ⟨j + 1, by omega, n, rfl, E.symm.injective.nontrivial⟩
 
 /- English proof (translation)
-Establish `hdet : GeneralLinearGroup.det (Prod.sc n x) = x ^ n` using `by ext; simp [Prod.sc]`. Simplify using `only [dpow, detChar_apply, hdet]`. Rewrite using `[val_absPow_ofReal, Complex.norm_of_nonneg (Real.rpow_nonneg (nabs_pos' k _).le _)]`. Rewrite using `[show nabs k (x ^ n) = nabs k x ^ n by simp [nabs, map_pow]]`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (nabs_pos' k x).le]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_dpow_sc (n : ℕ) (s : ℝ) (x : kˣ) :
     ‖((dpow n s (Prod.sc n x) : ℂˣ) : ℂ)‖ = nabs k x ^ ((n : ℝ) * s) := by
@@ -188,13 +188,13 @@ theorem norm_dpow_sc (n : ℕ) (s : ℝ) (x : kˣ) :
   rw [← Real.rpow_natCast, ← Real.rpow_mul (nabs_pos' k x).le]
 
 /- English proof (translation)
-Take `⟨hirr, hunit⟩` from `hT ψ hψc hψ1 n j π hj hs hi hu htop.1 htop.2`. Take `⟨j', rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`. Establish `hDs : IsSmooth (derivB ψ (j' + 1) π).ρ` using `GlobalTheory.CompanionTheory.BZCuspPair.isSmooth_deriv ψ j' hs`. Establish `hTs : IsSmooth ((derivB ψ (j' + 1) π).tw ((1 - ((j' + 1 : ℕ) : ℝ)) / 2)).ρ` using `isSmooth_twist hDs (isSmoothChar_of_isUnram (isUnram_absPow k _)).detChar`. Use `hirr` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c', hc'⟩` from `GroundTheory.Automorphic.exists_central_character ((PositivityTheory.PfBern.Props1.isSmooth_found_iff _).2 hTs) (z := Prod.sc n x) (Submonoid.mem_center_iff.2 fun g => (GlobalTheory.CuspRep.scalar_comm x g).symm)`. Establish `: Nontrivial (derivB ψ (j' + 1) π).V` using `htop.1`. Take `⟨v, hv⟩` from `exists_ne (0 : (derivB ψ (j' + 1) π).V)`. Establish `h1` using `norm_eq_one_of_unitarisable hunit (Prod.sc n x) hv (hc' v)`. Use `set d : ℂ := ((dpow n ((1 - ((j' + 1 : ℕ) : ℝ)) / 2) (Prod.sc n x) : ℂˣ) : ℂ) with hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htw : ((derivB ψ (j' + 1) π).tw ((1 - ((j' + 1 : ℕ) : ℝ)) / 2)).ρ (Prod.sc n x) v = d • (derivB ψ (j' + 1) π).ρ (Prod.sc n x) v` using `rfl`. Establish `hd0 : d ≠ 0` using `Units.ne_zero _`. Use `⟨v, d⁻¹ * c', hv, ?_, ?_⟩` and prove the remaining obligations. Establish `hc'' : c' • v = d • (derivB ψ (j' + 1) π).ρ (Prod.sc n x) v` using `(hc' v).symm.trans htw`. Rewrite using `[mul_smul, hc'', smul_smul, inv_mul_cancel₀ hd0, one_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, h1, mul_one, norm_inv, hd, norm_dpow_sc, ← Real.rpow_neg (nabs_pos' k x).le]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_eig_top (ψ : AddChar k Circle) (hψc : Continuous ψ) (hψ1 : ψ ≠ 1) (hT : DerivTop k) {n j : ℕ}
     (π : GRep k (n + j)) (hj : 1 ≤ j) (hs : IsSmooth π.ρ) (hi : π.ρ.IsIrreducible) (hu : IsUnitarisable π.ρ)
@@ -230,15 +230,13 @@ end Steps
 section Main
 
 /- English proof (translation)
-Use `{ exists_pair_ne := ⟨⊥, ⊤, fun h0 => ?_⟩, eq_bot_or_eq_top := fun S => ?_ }` and prove the remaining obligations. Conclude with `bot_ne_top (α := Submodule ℂ X.V) (congrArg Subrepresentation.toSubmodule h0)`. Assume the negation of the conclusion as `hS`. Rewrite `hS` using `[not_or]`. Take `⟨hS0, hS1⟩` from `hS`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hc⟩` from `hcompl S`. Establish `hT0 : T ≠ ⊥`. Introduce and unpack `rfl`. Apply `hS1` to reduce the goal to its premises. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h2` using `hc.sup_eq_top`. Rewrite `h2` using `[show (⊥ : Subrepresentation X.ρ).toSubmodule = ⊥ from rfl, sup_bot_eq]`. Conclude with `h2`. Use `(nd_iff ψ (subG S) e).1 (hdepth S hS0)` as an intermediate fact. Use `(nd_iff ψ (subG T) e).1 (hdepth T hT0)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ∀ a, DM ψ h e (X` using `X) (Y := subG T) (subProj S T hc) (DM ψ h e (X := subG S) (Y := X) (subIncl S) a) = 0 := fun a => (DM_comp ψ h e (X := subG S) (Y := X) (Z := subG T) (subIncl S) (subProj S T hc) (zeroH _ _) (fun v => (subProj_subIncl_left S T hc v).symm) a).symm.trans (DM_zero ψ h e _ (fun _ => …`. Establish `key` using `range_ne_bot_ne_top (DM ψ h e (X := subG S) (Y := X) (subIncl S)).toLinearMap (DM ψ h e (X := subG T) (Y := X) (subIncl T)).toLinearMap (DM ψ h e (X := X) (Y := subG T) (subProj S T hc)).toLinearMap (DM_subIncl_injective ψ h e S T hc.symm) h0 (DM_proj_incl ψ h e T S hc)`. Break down `eq_bot_or_eq_top_of_equiv_twist eqv hτ (LinearMap.range (DM ψ h e (X := subG S) (Y := X) (subIncl S)).toLinearMap) (by` into its components or cases. Introduce and unpack `g _ ⟨a, rfl⟩`. Conclude with `⟨_, DM_comm ψ h e (subIncl S) g a⟩) with h1 | h1`.
-
-Conclude with `key.1 h1`. Conclude with `key.2 h1`.
+Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem irreducible_of_top (ψ : AddChar k Circle) {N n h : ℕ} (X : GRep k N) (e : N = n + h) [Nontrivial X.V]
     (hcompl : ∀ S : Subrepresentation X.ρ, ∃ T : Subrepresentation X.ρ, IsCompl S.toSubmodule T.toSubmodule)
@@ -277,15 +275,15 @@ theorem irreducible_of_top (ψ : AddChar k Circle) {N n h : ℕ} (X : GRep k N) 
     · exact key.2 h1
 
 /- English proof (translation)
-Establish `hS₀nt : Nontrivial (subG S₀).V` using `Submodule.nontrivial_iff_ne_bot.2 (fun h0 => hS₀ (Subrepresentation.toSubmodule_injective h0))`. Break down `Nat.eq_zero_or_pos h with rfl | hpos` into its components or cases. Conclude with `⟨r + t, rfl, hS₀nt⟩`. Establish `htop'` using `(isTopD_iff ψ _ e).1 htop`. Establish `hN : 0 < r + t` using `by have := le_of_nd ψ _ htop'.1; omega`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨j₀, hj₀, hnd₀⟩` from `exists_nd_pos ψ hψc hψ1 (subG S₀) hN (isSmooth_sub hsm S₀) hS₀nt`. Take `⟨j, hjj, hndj, hgreat⟩` from `exists_top ψ (subG S₀) hnd₀`. Take `⟨T₀, hc⟩` from `hcompl S₀`. Establish `hjN` using `le_of_nd ψ _ hndj`. Establish `ej : r + t = (r + t - j) + j` using `by omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj` using `DM_subIncl_injective ψ j ej S₀ T₀ hc.symm`. Break down `lt_trichotomy j h with hlt | heq | hgt` into its components or cases. It suffices to derive a contradiction. Establish `htopS : Prod.IsTopD ψ ((subG S₀).cast ej)` using `(isTopD_iff ψ (subG S₀) ej).2 ⟨hndj, hgreat⟩`. Take `⟨x, hx⟩` from `GlobalTheory.CompanionTheory.CellOff.exists_nabs_lt k`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v, c, hv0, hv, hc'⟩` from `exists_eig_top ψ hψc hψ1 hT ((subG S₀).cast ej) (by omega) ((isSmooth_cast ej _).2 (isSmooth_sub hsm S₀)) ((isIrreducible_cast ej _).2 hirr) ((isUnitarisable_cast ej _).2 (isUnitarisable_sub hun S₀)) htopS x`. Establish `hne : DM ψ j ej (X` using `subG S₀) (Y := π₁.prod π₂) (subIncl S₀) v ≠ 0 := fun h0 => hv0 (hinj (h0.trans (map_zero _).symm))`. Establish `hev : (derivB ψ j ((π₁.prod π₂).cast ej)).ρ (Prod.sc (r + t - j) x) (DM ψ j ej (X` using `subG S₀) (Y := π₁.prod π₂) (subIncl S₀) v) = c • DM ψ j ej (X := subG S₀) (Y := π₁.prod π₂) (subIncl S₀) v := by`. Rewrite using `[← DM_comm ψ j ej (subIncl S₀) (Prod.sc (r + t - j) x) v, hv, map_smul]`. Establish `hlt'` using `hP ψ hψc hψ1 r t π₁ π₂ s₁ i₁ u₁ s₂ i₂ u₂ n h e htop (r + t - j) j ej hlt x hx _ c hne hev`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `heq ▸ hndj`. It suffices to derive a contradiction. Establish `: Nontrivial (derivB ψ j ((subG S₀).cast ej)).V` using `(nd_iff ψ _ ej).1 hndj`. Conclude with `htop'.2 j hgt ⟨_, ej, hinj.nontrivial⟩`.
+Combine the linear equalities and inequalities to obtain the conclusion. It suffices to derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nd_of_irr (hT : DerivTop k) (hP : PosProdD k) (ψ : AddChar k Circle) (hψc : Continuous ψ) (hψ1 : ψ ≠ 1)
     {r t : ℕ} (π₁ : GRep k r) (π₂ : GRep k t) (s₁ : IsSmooth π₁.ρ) (i₁ : π₁.ρ.IsIrreducible)
@@ -329,13 +327,13 @@ theorem nd_of_irr (hT : DerivTop k) (hP : PosProdD k) (ψ : AddChar k Circle) (h
     exact htop'.2 j hgt ⟨_, ej, hinj.nontrivial⟩
 
 /- English proof (translation)
-Introduce `N`. Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N IH`. Introduce `r t hN π₁ π₂ s₁ i₁ u₁ s₂ i₂ u₂`. Take `⟨E⟩` from `GlobalTheory.CompanionTheory.HighestDeriv.nonempty_prod2_equiv π₁.ρ π₂.ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Break down `Nat.eq_zero_or_pos N with hN0 | hpos` into its components or cases. Substitute `hN0` using the available equality. Take `⟨rfl, rfl⟩ : r = 0 ∧ t = 0` from `⟨by omega, by omega⟩`. Conclude with `(GlobalTheory.SmGL.MultiIrr.isIrreducible_iff_of_equiv E).2 (PositivityTheory.PfBern.Props2.prodGL0Irreducible_at _ _ π₁.ρ π₂.ρ i₁ i₂)`. Take `⟨n, h, e, hh, htop, r', t', e₂, σ₁, σ₂, χ, sm1, ir1, un1, sm2, ir2, un2, ⟨eqv⟩⟩` from `hTop ψ hψc hψ1 r t π₁ π₂ s₁ i₁ u₁ s₂ i₂ u₂ (by omega)`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hY` using `IH n (by omega) r' t' e₂ σ₁ σ₂ sm1 ir1 un1 sm2 ir2 un2`. Establish `hadm : IsAdmissible (π₁.prod π₂).ρ` using `PositivityTheory.PfBern.Props1.isAdmissible_of_equiv E (PositivityTheory.PfBern.Props1.admissibleProd_holds k r t π₁.V π₂.V π₁.ρ π₂.ρ (PositivityTheory.PfBern.Props1.irrSmoothAdmissible_holds k r π₁.V π₁.ρ s₁ i₁) (PositivityTheory.PfBern.Props1.irrSmoothAdmissible_holds k t π₂.V …`. Establish `hun : IsUnitarisable (π₁.prod π₂).ρ` using `isUnitarisable_of_equiv E (GlobalTheory.SmGL.UnitInd.isUnitarisable_prod₂ u₁ u₂)`. Establish `hcompl` using `PositivityTheory.PfBern.Props2.unitaryAdmissibleComplement_at (r + t) _ (π₁.prod π₂).ρ hadm hun`. Establish `: Nontrivial (π₁.prod π₂).V` using `nontrivial_of_nd ψ _ ((isTopD_iff ψ _ e).1 htop).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `irreducible_of_top ψ (π₁.prod π₂) e hcompl (fun S hS => ?_) _ ((isIrreducible_cast e₂ _).2 hY) χ eqv` and prove the remaining obligations. Take `⟨S₀, hS₀, hle, hirr⟩` from `exists_irreducible_le (π₁.prod π₂).ρ (GlobalTheory.T.compact_open_subgroups_basis k (r + t)) hadm hcompl S hS`. Take `⟨T₀, hc⟩` from `hcompl S₀`. Conclude with `nd_mono ψ S₀ S T₀ hle hc.symm (nd_of_irr hT hP ψ hψc hψ1 π₁ π₂ s₁ i₁ u₁ s₂ i₂ u₂ e htop hadm.1 hun hcompl S₀ hS₀ hirr)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem prod_irreducible (hT : DerivTop k) (hP : PosProdD k) (hTop : TopProdD k) (ψ : AddChar k Circle)
     (hψc : Continuous ψ) (hψ1 : ψ ≠ 1) : ∀ (N r t : ℕ), r + t = N → ∀ (π₁ : GRep k r) (π₂ : GRep k t),
@@ -373,7 +371,7 @@ end Main
 variable (k) in
 
 /- English proof (translation)
-Introduce `hT hP hTop r t V W _ _ _ _ π₁ π₂ s₁ i₁ u₁ s₂ i₂ u₂`. Take `⟨ψ, hψc, hψ1⟩` from `PositivityTheory.PfBern.Props1.existsAddChar_holds k`. Take `⟨E⟩` from `GlobalTheory.CompanionTheory.HighestDeriv.nonempty_prod2_equiv π₁ π₂`. Conclude with `(GlobalTheory.SmGL.MultiIrr.isIrreducible_iff_of_equiv E).1 (prod_irreducible hT hP hTop ψ hψc hψ1 (r + t) r t rfl ⟨V, π₁⟩ ⟨W, π₂⟩ s₁ i₁ u₁ s₂ i₂ u₂)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem bern_of_parts : DerivTop k → PosProdD k → TopProdD k → BernAt k := by
   intro hT hP hTop r t V W _ _ _ _ π₁ π₂ s₁ i₁ u₁ s₂ i₂ u₂

@@ -6,17 +6,15 @@ open Matrix GlobalTheory.SUCong
 namespace GlobalTheory.SkewCount
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `hp.exists_right_inv`. Establish `hs : ∀ a : ι → K, ∑ i, a i * γ i = a p * γ p + ∑ i : {i // i ≠ p}, a i * γ i` using `fun a => Fintype.sum_eq_add_sum_subtype_ne _ p`. Set `ext : ({i // i ≠ p} → K) → ι → K` to `fun b i => if h : i = p then -(∑ j : {j // j ≠ p}, b j * γ j) * v else b ⟨i, h⟩`. Establish `hext_ne : ∀ b (j : {j // j ≠ p}), ext b j = b j` using `fun b j => by`. Simplify using `only [ext, dif_neg j.2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hext_p : ∀ b, ext b p = -(∑ j : {j // j ≠ p}, b j * γ j) * v` using `fun b => by`. Simplify using `only [ext, dif_pos rfl]`. Set `e : {a : ι → K // ∑ i, a i * γ i = 0} ≃ ({i // i ≠ p} → K)` to `{ toFun := fun a i => a.1 i invFun := fun b => ⟨ext b, by`. Rewrite using `[hs, hext_p]`. Simplify using `only [hext_ne]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-(∑ j : {j // j ≠ p}, b j * γ j)) * hv⟩`. Use `left_inv := fun a => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = p`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `only`. Rewrite using `[hext_p]`. Establish `h0` using `a.2`. Rewrite `h0` using `[hs]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-v) * h0 + a.1 i * hv`. Conclude with `hext_ne (fun j => a.1 j) ⟨i, h⟩`. Use `right_inv := fun b => by`. Use function extensionality and compare the values at `j`. Conclude with `hext_ne b j }`.
-
-Rewrite using `[Nat.card_congr e, Nat.card_fun, Nat.card_eq_fintype_card (α := {i // i ≠ p}), Fintype.card_subtype_compl, Fintype.card_subtype_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_ker_linear {K : Type} [CommRing K] {ι : Type} [Fintype ι] [DecidableEq ι]
     (γ : ι → K) (p : ι) (hp : IsUnit (γ p)) :
@@ -64,7 +62,7 @@ def alp (τ : R →+* R) (v w x : R) : R := x - bet τ v x * w
 variable (τ : R →+* R) (k : Subring R) (w v : R)
 
 /- English proof (translation)
-Simplify using `only [bet, map_add, map_mul, hk a ha, hk b hb]`. Take the linear combination `b * hv`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem bet_dec (hk : ∀ x ∈ k, τ x = x) (hv : (w - τ w) * v = 1) {a b : R} (ha : a ∈ k)
     (hb : b ∈ k) : bet τ v (a + b * w) = b := by
@@ -72,7 +70,7 @@ theorem bet_dec (hk : ∀ x ∈ k, τ x = x) (hv : (w - τ w) * v = 1) {a b : R}
   linear_combination b * hv
 
 /- English proof (translation)
-Simplify using `only [alp, bet_dec τ k w v hk hv ha hb]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem alp_dec (hk : ∀ x ∈ k, τ x = x) (hv : (w - τ w) * v = 1) {a b : R} (ha : a ∈ k)
     (hb : b ∈ k) : alp τ v w (a + b * w) = a := by
@@ -80,7 +78,7 @@ theorem alp_dec (hk : ∀ x ∈ k, τ x = x) (hv : (w - τ w) * v = 1) {a b : R}
   ring
 
 /- English proof (translation)
-Take `⟨a, ha, b, hb, rfl⟩` from `hdec x`. Rewrite using `[bet_dec τ k w v hk hv ha hb]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem bet_mem (hk : ∀ x ∈ k, τ x = x) (hv : (w - τ w) * v = 1)
     (hdec : ∀ x : R, ∃ a ∈ k, ∃ b ∈ k, x = a + b * w) (x : R) : bet τ v x ∈ k := by
@@ -88,7 +86,7 @@ theorem bet_mem (hk : ∀ x ∈ k, τ x = x) (hv : (w - τ w) * v = 1)
   rwa [bet_dec τ k w v hk hv ha hb]
 
 /- English proof (translation)
-Take `⟨a, ha, b, hb, rfl⟩` from `hdec x`. Rewrite using `[alp_dec τ k w v hk hv ha hb]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem alp_mem (hk : ∀ x ∈ k, τ x = x) (hv : (w - τ w) * v = 1)
     (hdec : ∀ x : R, ∃ a ∈ k, ∃ b ∈ k, x = a + b * w) (x : R) : alp τ v w x ∈ k := by
@@ -96,7 +94,7 @@ theorem alp_mem (hk : ∀ x ∈ k, τ x = x) (hv : (w - τ w) * v = 1)
   rwa [alp_dec τ k w v hk hv ha hb]
 
 /- English proof (translation)
-Establish `h1 : τ w = 1 - w` using `by linear_combination hw`. Rewrite `hv` using `[h1]`. Simplify using `only [alp, bet, hx, hy]`. Take the linear combination `(-(x + y) * w) * hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem skew_entry (hw : w + τ w = 1) (hv : (w - τ w) * v = 1) {x y : R} (hx : τ x = -y)
     (hy : τ y = -x) : x = alp τ v w x * (1 - w) - alp τ v w y * w := by
@@ -166,13 +164,13 @@ def skewEquiv (hk : ∀ x ∈ k, τ x = x) (hw : w + τ w = 1) (hv : (w - τ w) 
     rw [e, alp_dec τ k w v hk hv (f p).2 (neg_mem (add_mem (f p).2 (f _).2))]
 
 /- English proof (translation)
-Establish `h1 : τ w = 1 - w` using `by linear_combination hw`. Establish `hg : ∀ a b, (γ (a, b) : R) = (H' b a * (1 - w) - H' a b * w) * v` using `fun a b => by`. Rewrite using `[hγ, bet]`. Simplify using `only [map_mul, map_sub, map_one, h1, hH']`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Fintype.sum_prod_type, Finset.sum_mul]`. Simplify using `only [hg]`. Establish `e1 : ∀ a, ∑ b, (f (a, b) : R) * ((H' b a * (1 - w) - H' a b * w) * v) = ∑ b, (f (a, b) : R) * H' b a * (1 - w) * v - ∑ b, (f (a, b) : R) * H' a b * w * v`. Introduce `a`. Rewrite using `[← Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun b _ => by ring`. Establish `e2 : ∀ a, (∑ b, H' a b * ((f (b, a) : R) * (1 - w) - (f (a, b) : R) * w)) * v = ∑ b, (f (b, a) : R) * H' a b * (1 - w) * v - ∑ b, (f (a, b) : R) * H' a b * w * v`. Introduce `a`. Rewrite using `[← Finset.sum_sub_distrib, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun b _ => by ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [e1, e2, Finset.sum_sub_distrib]`. Rewrite using `[Finset.sum_comm (f := fun a b => (f (a, b) : R) * H' b a * (1 - w) * v)]`.
+A detailed English derivation is pending.
 -/
 theorem trace_coord (hk : ∀ x ∈ k, τ x = x) (hw : w + τ w = 1) (H' : Matrix n n R)
     (hH' : ∀ i j, τ (H' j i) = H' i j) (f : n × n → k) (γ : n × n → k)
@@ -202,33 +200,31 @@ theorem trace_coord (hk : ∀ x ∈ k, τ x = x) (hw : w + τ w = 1) (H' : Matri
 end Skew
 
 /- English proof (translation)
-Introduce `R _ n _ _ τ k w Hb H' q hk hw hu hdec hfield hq hHb hinv`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Establish `h1 : τ w = 1 - w` using `by linear_combination hw`. Establish `hcT : Formalism.UG.cT τ H' = H'`. Establish `h2 : Formalism.UG.cT τ H' * Hb = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (Formalism.UG.cT τ) hinv` as an intermediate fact. Rewrite `this` using `[Formalism.UG.cT_mul, Formalism.UG.cT_one, hHb]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation. Establish `hH' : ∀ i j, τ (H' j i) = H' i j` using `fun i j => congrFun (congrFun hcT i) j`. Establish `hbm` using `bet_mem τ k w v hk hv hdec`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `γ : n × n → k` to `fun p => ⟨bet τ v (H' p.2 p.1 * (1 - w)), hbm _⟩`. Distinguish the cases in `hex : ∃ p, γ p ≠ 0`. Take `⟨p, hp⟩` from `hex`. Establish `hunit : IsUnit (γ p)`. Take `⟨y, hy, hxy⟩` from `hfield (γ p) (γ p).2 (fun h => hp (Subtype.ext h))`.
+Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨γ p, ⟨y, hy⟩, Subtype.ext hxy, by rw [mul_comm]; exact Subtype.ext hxy⟩, rfl⟩`. Establish `cond : ∀ f : n × n → k, (H' * ((skewEquiv τ k w v hk hw hv hdec (n` using `n)).symm f).1).trace = 0 ↔ ∑ p, f p * γ p = 0 := by`. Introduce `f`. Establish `hs` using `trace_coord τ k w v hk hw H' hH' f γ (fun _ => rfl)`. Establish `ht : (H' * ((skewEquiv τ k w v hk hw hv hdec (n` using `n)).symm f).1).trace = ∑ a, ∑ b, H' a b * ((f (b, a) : R) * (1 - w) - (f (a, b) : R) * w) := by`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply]`. Both sides reduce to the same expression. Rewrite using `[ht, ← Subtype.coe_inj, ZeroMemClass.coe_zero]`. Use `push_cast`. Rewrite using `[hs]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h, zero_mul]`. Introduce `h`. Take the linear combination `(w - τ w) * h - (∑ a, ∑ b, H' a b * ((f (b, a) : R) * (1 - w) - (f (a, b) : R) * w)) * hv`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Take a linear combination of the given relations to obtain the conclusion.
 
-Set `E` to `(leftEquiv τ Hb H' hHb hinv).trans ((Equiv.subtypeSubtypeEquivSubtypeInter (fun Z : Matrix n n R => Formalism.UG.cT τ Z = -Z) (fun Z => (H' * Z).trace = 0)).symm.trans (Equiv.subtypeEquiv (q := fun f : n × n → k => ∑ p, f p * γ p = 0) (skewEquiv τ k w v hk hw hv hdec) (fun Z => b …`. Use `cond (skewEquiv τ k w v hk hw hv hdec Z)` as an intermediate fact. Rewrite using `[Equiv.symm_apply_apply] at this)))` and apply the resulting hypothesis. Rewrite using `[Nat.card_congr E, card_ker_linear γ p hunit, hq, Fintype.card_prod, sq]`. Use `push_neg at hex`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : ∀ i j, H' i j = 0`. Establish `E : ∀ i j, H' i j * (1 - w) - H' j i * w = 0`. Introduce `i j`. Establish `h0 : bet τ v (H' i j * (1 - w)) = 0` using `congrArg Subtype.val (hex (j, i))`. Rewrite `h0` using `[bet]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_sub, map_one, h1, hH'] at h0`. Take the linear combination `(w - τ w) * h0 - (H' i j * (1 - w) - H' j i * w) * hv`. Introduce `i j`. Rewrite `hv` using `[h1]`. Take the linear combination `(-H' i j) * hv - v * (1 - w) * E i j - v * w * E j i`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h0 : H' = 0` using `Matrix.ext hz`. Establish `hsub : Subsingleton (Matrix n n R)`. Distinguish the cases in `hn : IsEmpty n`. Conclude with `⟨fun A B => Matrix.ext fun i => isEmptyElim i⟩`. Take `⟨i⟩` from `not_isEmpty_iff.mp hn`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h10 : (1 : R) = 0`. Use `congrFun (congrFun hinv i) i` as an intermediate fact. Rewrite `this` using `[h0, Matrix.mul_zero, Matrix.one_apply_eq]`. Conclude with `this.symm`. Use `haveI : Subsingleton R := subsingleton_of_zero_eq_one h10.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨fun A B => Matrix.ext fun _ _ => Subsingleton.elim _ _⟩`. Rewrite using `[Nat.card_of_subsingleton (⟨0, by simp [Formalism.UG.cT]⟩ : {Y : Matrix n n R // Formalism.UG.cT τ Y * Hb + Hb * Y = 0 ∧ Y.trace = 0})]`. Distinguish the cases in `hn : IsEmpty n`. Rewrite using `[Fintype.card_eq_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i⟩` from `not_isEmpty_iff.mp hn`. Establish `h10 : (1 : R) = 0`. Use `congrFun (congrFun hinv i) i` as an intermediate fact. Rewrite `this` using `[h0, Matrix.mul_zero, Matrix.one_apply_eq]`. Conclude with `this.symm`.
-
-Use `haveI : Subsingleton R := subsingleton_of_zero_eq_one h10.symm`. Use `haveI : Subsingleton k := ⟨fun a b => Subtype.ext (Subsingleton.elim _ _)⟩`. Rewrite using `[← hq, Nat.card_of_subsingleton (0 : k), one_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_skew_traceless :
     ∀ {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n] (τ : R →+* R) (k : Subring R)

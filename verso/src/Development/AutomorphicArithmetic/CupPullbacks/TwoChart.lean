@@ -11,7 +11,7 @@ namespace UpperTheory.P2
 abbrev tA : Γ(A1, ⊤) := (Scheme.ΓSpecIso (CommRingCat.of (Polynomial ℤ))).inv.hom Polynomial.X
 
 /- English proof (translation)
-Establish `h` using `v.2`. Rewrite `h` using `[Set.range_unique]`. Conclude with `Ideal.span_singleton_eq_top.1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unimodularRow_one_isUnit {A : Type} [CommRing A] (v : Um 1 A) : IsUnit (v.1 0) := by
   have h := v.2
@@ -19,9 +19,9 @@ theorem unimodularRow_one_isUnit {A : Type} [CommRing A] (v : Um 1 A) : IsUnit (
   exact Ideal.span_singleton_eq_top.1 h
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hb`. Establish `h1 : Ideal.map f (Ideal.span (Set.range ℓ)) = ⊤` using `by rw [h, Ideal.map_top]`. Rewrite `h1` using `[Ideal.map_span, ← Set.range_comp]`. Rewrite using `[eq_top_iff, ← h1, Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `: (f ∘ ℓ) i = ((↑u⁻¹ : B)) * (f (ℓ i) * u)`. Simplify using `[mul_comm, mul_assoc]`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_unit_mul {A B : Type} [CommRing A] [CommRing B] {M : ℕ} (f : A →+* B) (ℓ : Fin M → A)
     (h : Ideal.span (Set.range ℓ) = ⊤) {b : B} (hb : IsUnit b) :
@@ -39,7 +39,7 @@ theorem span_unit_mul {A B : Type} [CommRing A] [CommRing B] {M : ℕ} (f : A �
 def cu {Y : Spc} (c : Y ⟶ Dv 1) {p : ℕ} {T : Scheme.{0}} (y : Sx Y p T) (k : Fin (p + 1)) : Γ(T, ⊤) := (vx (y.map c) k).1 0
 
 /- English proof (translation)
-The claim follows from `unimodularRow_one_isUnit _`.
+A detailed English derivation is pending.
 -/
 theorem cu_unit {Y : Spc} (c : Y ⟶ Dv 1) {p : ℕ} {T : Scheme.{0}} (y : Sx Y p T) (k) : IsUnit (cu c y k) := unimodularRow_one_isUnit _
 
@@ -50,18 +50,18 @@ variable {Y : Spc} {S : Scheme.{0}} {M : ℕ} (s : Y ⟶ sch.obj S) (c : Y ⟶ D
 def pt {p : ℕ} {T : Scheme.{0}} (y : Sx Y p T) : T ⟶ S := y.map s
 
 /- English proof (translation)
-The claim follows from `map_along s y θ`.
+A detailed English derivation is pending.
 -/
 theorem pt_along {p r : ℕ} {T : Scheme.{0}} (y : Sx Y r T) (θ : SimplexCategory.mk p ⟶ SimplexCategory.mk r) :
     pt s (y.along θ) = pt s y := map_along s y θ
 
 /- English proof (translation)
-The claim follows from `map_res s g y`.
+A detailed English derivation is pending.
 -/
 theorem pt_res {p : ℕ} {V T : Scheme.{0}} (g : V ⟶ T) (y : Sx Y p T) : pt s (y.res g) = g ≫ pt s y := map_res s g y
 
 /- English proof (translation)
-Unfold `cu`. Rewrite using `[map_along, vx_along]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cu_along {p r : ℕ} {T : Scheme.{0}} (y : Sx Y r T) (θ : SimplexCategory.mk p ⟶ SimplexCategory.mk r) (k) :
     cu c (y.along θ) k = cu c y (θ.toOrderHom k) := by
@@ -69,7 +69,7 @@ theorem cu_along {p r : ℕ} {T : Scheme.{0}} (y : Sx Y r T) (θ : SimplexCatego
   rw [map_along, vx_along]
 
 /- English proof (translation)
-Unfold `cu`. Rewrite using `[map_res, vx_res]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cu_res {p : ℕ} {V T : Scheme.{0}} (g : V ⟶ T) (y : Sx Y p T) (k) : cu c (y.res g) k = g.appTop.hom (cu c y k) := by
   unfold cu
@@ -80,7 +80,7 @@ def linV (T : Scheme.{0}) (y : Sx Y 0 T) : Um M Γ(T, ⊤) :=
   ⟨fun i => (pt s y).appTop.hom (ℓ i) * cu c y 0, span_unit_mul _ ℓ hℓ (cu_unit c y 0)⟩
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `vx_prop (y.map c) hij`. Conclude with `⟨u, congrFun hu 0⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cu_prop {T : Scheme.{0}} {p : ℕ} (y : Sx Y p T) {i j : Fin (p + 1)} (hij : i ≤ j) :
     ∃ u : Γ(T, ⊤)ˣ, cu c y i = u * cu c y j := by
@@ -106,7 +106,7 @@ def lin : Y ⟶ Dv M :=
       ring)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(pt s (vtx y k)).appTop.hom (ℓ i) * cu c (vtx y k) 0 = _`. Establish `e1 : pt s (vtx y k) = pt s y` using `pt_along s y _`. Establish `e2 : cu c (vtx y k) 0 = cu c y k` using `cu_along c y _ 0`. Rewrite using `[e1, e2]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem vx_lin {p : ℕ} {T : Scheme.{0}} (y : Sx Y p T) (k) (i) :
     (vx (y.map (lin s c ℓ hℓ)) k).1 i = (pt s y).appTop.hom (ℓ i) * cu c y k := by
@@ -118,9 +118,9 @@ theorem vx_lin {p : ℕ} {T : Scheme.{0}} (y : Sx Y p T) (k) (i) :
 end Lin
 
 /- English proof (translation)
-Set `C : ComposableArrows (TU N Γ(T, ⊤)) 1` to `x.map ℓ`. Establish `e : lineUnit (ℓ ≫ Dv.line N) x = C.hom.1`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin 1) C.hom.1) = C.hom.1`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[Matrix.GeneralLinearGroup.scalar]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `C.hom.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem line_spec {Y : Spc} {N : ℕ} (ℓ : Y ⟶ Dv N) {T : Scheme.{0}} (x : Sx Y 1 T) :
     (vx (x.map ℓ) 0).1 = (lineUnit (ℓ ≫ Dv.line N) x : Γ(T, ⊤)) • (vx (x.map ℓ) 1).1 := by
@@ -144,7 +144,7 @@ def pe {S : Scheme.{0}} : WS E S ⟶ E := prod.fst ≫ prod.snd
 def pc {S : Scheme.{0}} : WS E S ⟶ Dv 1 := prod.snd
 
 /- English proof (translation)
-The claim follows from `vx_ext fun k => Subtype.ext (funext fun i => by obtain rfl : i = 0 := Subsingleton.elim _ _ exact h k)`.
+A detailed English derivation is pending.
 -/
 theorem lineSimplex_ext_of_coordinate {p : ℕ} {T : Scheme.{0}} {x y : Sx (Dv 1) p T} (h : ∀ k, (vx x k).1 0 = (vx y k).1 0) : x = y :=
   vx_ext fun k => Subtype.ext (funext fun i => by
@@ -152,16 +152,16 @@ theorem lineSimplex_ext_of_coordinate {p : ℕ} {T : Scheme.{0}} {x y : Sx (Dv 1
     exact h k)
 
 /- English proof (translation)
-The claim follows from `prod_sx_ext (prod_sx_ext h1 h2) (lineSimplex_ext_of_coordinate h3)`.
+A detailed English derivation is pending.
 -/
 theorem ws_ext {S : Scheme.{0}} {p : ℕ} {T : Scheme.{0}} {x y : Sx (WS E S) p T} (h1 : pt ps x = pt ps y)
     (h2 : x.map pe = y.map pe) (h3 : ∀ k, cu pc x k = cu pc y k) : x = y :=
   prod_sx_ext (prod_sx_ext h1 h2) (lineSimplex_ext_of_coordinate h3)
 
 /- English proof (translation)
-Take `⟨z, h1, h2⟩` from `prod_sx_mk (A := sch.obj S) (p := p) (T := T) s e`. Take `⟨x, h3, h4⟩` from `prod_sx_mk z c`. Use `⟨x, ?_, ?_, h4⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(x.map prod.fst).map prod.fst = s`. Rewrite using `[h3, h1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(x.map prod.fst).map prod.snd = e`. Rewrite using `[h3, h2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem ws_mk {S : Scheme.{0}} {p : ℕ} {T : Scheme.{0}} (s : T ⟶ S) (e : Sx E p T) (c : Sx (Dv 1) p T) :
     ∃ x : Sx (WS E S) p T, pt ps x = s ∧ x.map pe = e ∧ x.map pc = c := by
@@ -176,7 +176,7 @@ theorem ws_mk {S : Scheme.{0}} {p : ℕ} {T : Scheme.{0}} (s : T ⟶ S) (e : Sx 
 def ell (b : Fin 2) : Fin 2 → Γ(A1, ⊤) := fun i => if i = b then 1 else tA
 
 /- English proof (translation)
-The claim follows from `Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨b, by simp [ell]⟩) isUnit_one`.
+A detailed English derivation is pending.
 -/
 theorem ell_span (b : Fin 2) : Ideal.span (Set.range (ell b)) = ⊤ :=
   Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨b, by simp [ell]⟩) isUnit_one
@@ -184,20 +184,20 @@ theorem ell_span (b : Fin 2) : Ideal.span (Set.range (ell b)) = ⊤ :=
 def gch (b : Fin 2) : WS E A1 ⟶ E ⨯ Dv 2 := prod.lift pe (lin ps pc (ell b) (ell_span b))
 
 /- English proof (translation)
-Rewrite using `[← map_comp, gch, prod.lift_snd, vx_lin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vx_gch (b : Fin 2) {p : ℕ} {T : Scheme.{0}} (y : Sx (WS E A1) p T) (k) (i) :
     (vx ((y.map (gch b)).map prod.snd) k).1 i = (pt ps y).appTop.hom (ell b i) * cu pc y k := by
   rw [← map_comp, gch, prod.lift_snd, vx_lin]
 
 /- English proof (translation)
-Rewrite using `[← map_comp, gch, prod.lift_fst]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gch_pe (b : Fin 2) {p : ℕ} {T : Scheme.{0}} (y : Sx (WS E A1) p T) : (y.map (gch b)).map prod.fst = y.map pe := by
   rw [← map_comp, gch, prod.lift_fst]
 
 /- English proof (translation)
-Rewrite using `[vx_gch]`. Simplify using `[ell]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vx_gch_self (b : Fin 2) {p : ℕ} {T : Scheme.{0}} (y : Sx (WS E A1) p T) (k) :
     (vx ((y.map (gch b)).map prod.snd) k).1 b = cu pc y k := by
@@ -205,7 +205,7 @@ theorem vx_gch_self (b : Fin 2) {p : ℕ} {T : Scheme.{0}} (y : Sx (WS E A1) p T
   simp [ell]
 
 /- English proof (translation)
-Rewrite using `[vx_gch]`. Simplify using `[ell, hi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vx_gch_other (b i : Fin 2) (hi : i ≠ b) {p : ℕ} {T : Scheme.{0}} (y : Sx (WS E A1) p T) (k) :
     (vx ((y.map (gch b)).map prod.snd) k).1 i = (pt ps y).appTop.hom tA * cu pc y k := by
@@ -213,7 +213,7 @@ theorem vx_gch_other (b i : Fin 2) (hi : i ≠ b) {p : ℕ} {T : Scheme.{0}} (y 
   simp [ell, hi]
 
 /- English proof (translation)
-Use `fin_cases b`. Conclude with `⟨1, by decide, by decide⟩`. Conclude with `⟨0, by decide, by decide⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem other (b : Fin 2) : ∃ i : Fin 2, i ≠ b ∧ ∀ j : Fin 2, j = b ∨ j = i := by
   fin_cases b
@@ -235,23 +235,21 @@ instance gch_mono (b : Fin 2) : Mono (gch (E := E) b) := by
   · rw [← gch_pe b x, ← gch_pe b y, h]
 
 /- English proof (translation)
-Use `set v : Fin (p + 1) → Um 2 Γ(T, ⊤) := vx (x.map prod.snd) with hv`. Establish `hp : ∀ k, ∃ u : Γ(T, ⊤)ˣ, (v k).1 = (u : Γ(T, ⊤)) • (v 0).1`. Introduce `k`. Take `⟨u, hu⟩` from `vx_prop (x.map prod.snd) (Fin.zero_le k)`. Use `⟨u⁻¹, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(vx (x.map prod.snd) k).1 = _`. Rewrite using `[show (v 0).1 = _ from hu, smul_smul, Units.inv_mul, one_smul]`. Establish `hu : ∀ k, IsUnit ((v k).1 b)`. Introduce `k`. Take `⟨u, hu⟩` from `hp k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu]`. Conclude with `u.isUnit.mul h`. Set `cv : Fin (p + 1) → Um 1 Γ(T, ⊤)` to `fun k => ⟨fun _ => (v k).1 b, by`. Rewrite using `[Set.range_const, Ideal.span_singleton_eq_top]`. Conclude with `hu k⟩`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hcv : ∀ i j, ∃ u : Γ(T, ⊤)ˣ, (cv i).1 = (u : Γ(T, ⊤)) • (cv j).1`. Introduce `i j`. Take `⟨a, ha⟩` from `hu i`. Take `⟨c, hc⟩` from `hu j`. Use `⟨a * c⁻¹, funext fun _ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `(v i).1 b = ((a * c⁻¹ : Γ(T, ⊤)ˣ) : Γ(T, ⊤)) * (v j).1 b`. Rewrite using `[← ha, ← hc, Units.val_mul, mul_assoc, Units.inv_mul, mul_one]`. Take `⟨w, hw⟩` from `h`. Take `⟨i, hi, hall⟩` from `other b`. Take `⟨s, hs, -⟩` from `UpperTheory.affineLine_hom_existsUnique_of_globalSection T ((v 0).1 i * ((w⁻¹ : Γ(T, ⊤)ˣ) : Γ(T, ⊤)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, h1, h2, h3⟩` from `ws_mk (E := E) s (x.map prod.fst) (Dv.mk cv hcv)`. Use `⟨y, prod_sx_ext ?_ (vx_ext fun k => Subtype.ext (funext fun j => ?_))⟩` and prove the remaining obligations. Rewrite using `[gch_pe, h2]`. Establish `hck : cu pc y k = (v k).1 b`. Unfold `cu`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h3]`. Both sides reduce to the same expression. Break down `hall j with rfl | rfl` into its components or cases. Rewrite using `[vx_gch_self, hck]`. Rewrite using `[vx_gch_other _ _ hi, hck, h1, hs]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu'⟩` from `hp k`. Express the relevant statement in the definitionally equal form `_ = (v k).1 j`. Rewrite using `[hu']`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← hw]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem gch_sections (b : Fin 2) {p : ℕ} {T : Scheme.{0}} (x : Sx (E ⨯ Dv 2) p T)
     (h : IsUnit ((vx (x.map prod.snd) 0).1 b)) : ∃ y : Sx (WS E A1) p T, y.map (gch b) = x := by
@@ -300,11 +298,11 @@ theorem gch_sections (b : Fin 2) {p : ℕ} {T : Scheme.{0}} (x : Sx (E ⨯ Dv 2)
         _ = _ := by rw [Units.inv_mul, mul_one]
 
 /- English proof (translation)
-Establish `h` using `v.2`. Rewrite `h` using `[show Set.range v.1 = {v.1 0, v.1 1} from ?_]`. Then use the resulting hypothesis. Use extensionality with `z`. Simplify using `only [Set.mem_range, Set.mem_insert_iff, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨i, rfl⟩ fin_cases i`. Conclude with `Or.inl rfl`. Conclude with `Or.inr rfl`. Introduce and unpack `(rfl | rfl)`. Conclude with `⟨0, rfl⟩`.
+Assume the hypotheses and unpack their components. Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨1, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem span_pair {A : Type} [CommRing A] (v : Um 2 A) : Ideal.span {v.1 0, v.1 1} = ⊤ := by
   have h := v.2
@@ -321,9 +319,9 @@ theorem span_pair {A : Type} [CommRing A] (v : Um 2 A) : Ideal.span {v.1 0, v.1 
     · exact ⟨1, rfl⟩
 
 /- English proof (translation)
-Take `⟨S, hS, hP⟩` from `UpperTheory.locally_isUnit_or_isUnit_of_span_pair_eq_top U _ _ (span_pair (vx (y.map prod.snd) 0))`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations. Establish `key : ∀ b : Fin 2, IsUnit (g.appTop.hom ((vx (y.map prod.snd) 0).1 b)) → ∃ z : Sx (WS E A1) p V, z.map (gch b) = y.res g`. Introduce `b hb`. Use `gch_sections b _ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_res, vx_res]`. Conclude with `hb`. Break down `hP V g hg with h | h` into its components or cases. Conclude with `Or.inl (key 0 h)`. Conclude with `Or.inr (key 1 h)`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem gch_loc {p : ℕ} {U : Scheme.{0}} (y : Sx (E ⨯ Dv 2) p U) :
     Loc U fun V g => (∃ z : Sx (WS E A1) p V, z.map (gch 0) = y.res g) ∨ ∃ z : Sx (WS E A1) p V, z.map (gch 1) = y.res g := by
@@ -340,7 +338,7 @@ theorem gch_loc {p : ℕ} {U : Scheme.{0}} (y : Sx (E ⨯ Dv 2) p U) :
   · exact Or.inr (key 1 h)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, inferInstance, fun n => UpperTheory.epi_freeBiprodDesc_of_zariskiLocally_surjective R _ _ fun U y => gch_loc (p := n.unop.len) y⟩`.
+Supply the required witnesses or components.
 -/
 theorem gch_cover (R : Type) [CommRing R] : Cover2 R (gch (E := E) 0) (gch (E := E) 1) :=
   ⟨inferInstance, inferInstance, fun n => UpperTheory.epi_freeBiprodDesc_of_zariskiLocally_surjective R _ _ fun U y => gch_loc (p := n.unop.len) y⟩
@@ -353,11 +351,11 @@ Both sides reduce to the same expression.
 theorem wc_val {S : Scheme.{0}} (T : Scheme.{0}) (y : Sx (WS E S) 0 T) : (wc T y : Γ(T, ⊤)) = cu pc y 0 := rfl
 
 /- English proof (translation)
-Use `⟨fun {T' T} g x => Units.ext ?_, fun T x => Units.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cu pc (x.res g) 0 = g.appTop.hom (cu pc x 0)`. Conclude with `cu_res pc g x 0`. Establish `h` using `congrFun (line_spec (gch (E := E) b ≫ prod.snd) x) b`. Establish `e0 : (vx (x.map (gch b ≫ prod.snd)) 0).1 b = cu pc x 0` using `vx_gch_self b x 0`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (vx (x.map (gch b ≫ prod.snd)) 1).1 b = cu pc x 1` using `vx_gch_self b x 1`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h`. Rewrite `h` using `[e0, e1]`. Rewrite using `[Units.val_mul, wc_val, wc_val]`. Establish `c1 : cu pc (x.face 1) 0 = cu pc x 0` using `cu_along pc x (SimplexCategory.δ 1) 0`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c0 : cu pc (x.face 0) 0 = cu pc x 1` using `cu_along pc x (SimplexCategory.δ 0) 0`. Rewrite using `[c1, c0, h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gch_triv (b : Fin 2) : IsTrivBy ((gch (E := E) b ≫ prod.snd) ≫ Dv.line 2) wc := by
   refine ⟨fun {T' T} g x => Units.ext ?_, fun T x => Units.ext ?_⟩
@@ -376,12 +374,12 @@ theorem gch_triv (b : Fin 2) : IsTrivBy ((gch (E := E) b ≫ prod.snd) ≫ Dv.li
 def affineLineMorphismOfSection {T : Scheme.{0}} (a : Γ(T, ⊤)) : T ⟶ A1 := (UpperTheory.affineLine_hom_existsUnique_of_globalSection T a).exists.choose
 
 /- English proof (translation)
-The claim follows from `(UpperTheory.affineLine_hom_existsUnique_of_globalSection T a).exists.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem affineLineMorphismOfSection_coordinate {T : Scheme.{0}} (a : Γ(T, ⊤)) : (affineLineMorphismOfSection a).appTop.hom tA = a := (UpperTheory.affineLine_hom_existsUnique_of_globalSection T a).exists.choose_spec
 
 /- English proof (translation)
-The claim follows from `(UpperTheory.affineLine_hom_existsUnique_of_globalSection T _).unique rfl h.symm`.
+A detailed English derivation is pending.
 -/
 theorem affineLine_hom_ext {T : Scheme.{0}} {s s' : T ⟶ A1} (h : s.appTop.hom tA = s'.appTop.hom tA) : s = s' :=
   (UpperTheory.affineLine_hom_existsUnique_of_globalSection T _).unique rfl h.symm
@@ -389,19 +387,19 @@ theorem affineLine_hom_ext {T : Scheme.{0}} {s s' : T ⟶ A1} (h : s.appTop.hom 
 def mkW {Y : Spc} {S : Scheme.{0}} (s : Y ⟶ sch.obj S) (e : Y ⟶ E) (c : Y ⟶ Dv 1) : Y ⟶ WS E S := prod.lift (prod.lift s e) c
 
 /- English proof (translation)
-Rewrite using `[mkW, ps, ← Category.assoc, prod.lift_fst, prod.lift_fst]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem mkW_ps {Y : Spc} {S : Scheme.{0}} (s : Y ⟶ sch.obj S) (e : Y ⟶ E) (c : Y ⟶ Dv 1) : mkW s e c ≫ ps = s := by
   rw [mkW, ps, ← Category.assoc, prod.lift_fst, prod.lift_fst]
 
 /- English proof (translation)
-Rewrite using `[mkW, pe, ← Category.assoc, prod.lift_fst, prod.lift_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem mkW_pe {Y : Spc} {S : Scheme.{0}} (s : Y ⟶ sch.obj S) (e : Y ⟶ E) (c : Y ⟶ Dv 1) : mkW s e c ≫ pe = e := by
   rw [mkW, pe, ← Category.assoc, prod.lift_fst, prod.lift_snd]
 
 /- English proof (translation)
-Rewrite using `[mkW, pc, prod.lift_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem mkW_pc {Y : Spc} {S : Scheme.{0}} (s : Y ⟶ sch.obj S) (e : Y ⟶ E) (c : Y ⟶ Dv 1) : mkW s e c ≫ pc = c := by
   rw [mkW, pc, prod.lift_snd]
@@ -417,7 +415,7 @@ def tv {p : ℕ} {T : Scheme.{0}} (y : Sx (WS E (Gq q)) p T) : (Γ(T, ⊤))ˣ :=
   Units.map (pt ps y).appTop.hom.toMonoidHom (tq q)
 
 /- English proof (translation)
-Rewrite using `[Set.range_const, Ideal.span_singleton_eq_top]`. Conclude with `(tq q).isUnit`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tq_span : Ideal.span (Set.range fun _ : Fin 1 => ((tq q : (Γ(Gq q, ⊤))ˣ) : Γ(Gq q, ⊤))) = ⊤ := by
   rw [Set.range_const, Ideal.span_singleton_eq_top]
@@ -432,21 +430,21 @@ variable {q}
 variable {p : ℕ} {T : Scheme.{0}} (y : Sx (WS E (Gq q)) p T)
 
 /- English proof (translation)
-Rewrite using `[← map_comp, cA, mkW_pe]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pe_cA : (y.map (cA q)).map pe = y.map pe := by
   rw [← map_comp, cA, mkW_pe]
 
 /- English proof (translation)
-Rewrite using `[← map_comp, cB, mkW_pe]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pe_cB : (y.map (cB q)).map pe = y.map pe := by
   rw [← map_comp, cB, mkW_pe]
 
 /- English proof (translation)
-Establish `e : pt ps (y.map (cA q)) = pt ps y ≫ jB q`. Express the relevant statement in the definitionally equal form `y.map (cA q ≫ ps) = _`. Rewrite using `[cA, mkW_ps]`. Both sides reduce to the same expression. Rewrite using `[e, Scheme.Hom.comp_appTop]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(pt ps y).appTop.hom ((jB q).appTop.hom tA) = _`. Rewrite using `[jB, affineLineMorphismOfSection_coordinate]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem a_cA : (pt ps (y.map (cA q))).appTop.hom tA = ((tv q y)⁻¹ : (Γ(T, ⊤))ˣ) := by
   have e : pt ps (y.map (cA q)) = pt ps y ≫ jB q := by
@@ -459,9 +457,9 @@ theorem a_cA : (pt ps (y.map (cA q))).appTop.hom tA = ((tv q y)⁻¹ : (Γ(T, �
   rfl
 
 /- English proof (translation)
-Establish `e : pt ps (y.map (cB q)) = pt ps y ≫ jA q`. Express the relevant statement in the definitionally equal form `y.map (cB q ≫ ps) = _`. Rewrite using `[cB, mkW_ps]`. Both sides reduce to the same expression. Rewrite using `[e, Scheme.Hom.comp_appTop]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(pt ps y).appTop.hom ((jA q).appTop.hom tA) = _`. Rewrite using `[jA, affineLineMorphismOfSection_coordinate]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem a_cB : (pt ps (y.map (cB q))).appTop.hom tA = (tv q y : (Γ(T, ⊤))ˣ) := by
   have e : pt ps (y.map (cB q)) = pt ps y ≫ jA q := by
@@ -474,7 +472,7 @@ theorem a_cB : (pt ps (y.map (cB q))).appTop.hom tA = (tv q y : (Γ(T, ⊤))ˣ) 
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(vx (y.map (cA q ≫ pc)) k).1 0 = _`. Rewrite using `[cA, mkW_pc, vx_lin]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cu_cA (k) : cu pc (y.map (cA q)) k = (tv q y : (Γ(T, ⊤))ˣ) * cu pc y k := by
   change (vx (y.map (cA q ≫ pc)) k).1 0 = _
@@ -482,7 +480,7 @@ theorem cu_cA (k) : cu pc (y.map (cA q)) k = (tv q y : (Γ(T, ⊤))ˣ) * cu pc y
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(vx (y.map (cB q ≫ pc)) k).1 0 = _`. Rewrite using `[cB, mkW_pc]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cu_cB (k) : cu pc (y.map (cB q)) k = cu pc y k := by
   change (vx (y.map (cB q ≫ pc)) k).1 0 = _
@@ -490,9 +488,9 @@ theorem cu_cB (k) : cu pc (y.map (cB q)) k = cu pc y k := by
   rfl
 
 /- English proof (translation)
-Use `spc_hom_ext fun p T x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(x.map (cA q)).map (gch 0) = (x.map (cB q)).map (gch 1)`. Use `prod_sx_ext ?_ (vx_ext fun k => Subtype.ext (funext fun i => ?_))` and prove the remaining obligations. Rewrite using `[gch_pe, gch_pe, pe_cA, pe_cB]`. Use `fin_cases i`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(vx (((x.map (cA q)).map (gch 0)).map prod.snd) k).1 0 = (vx (((x.map (cB q)).map (gch 1)).map prod.snd) k).1 0`. Rewrite using `[vx_gch_self, vx_gch_other 1 0 (by decide), a_cB, cu_cA, cu_cB]`. Express the relevant statement in the definitionally equal form `(vx (((x.map (cA q)).map (gch 0)).map prod.snd) k).1 1 = (vx (((x.map (cB q)).map (gch 1)).map prod.snd) k).1 1`. Rewrite using `[vx_gch_self, vx_gch_other 0 1 (by decide), a_cA, cu_cA, cu_cB, ← mul_assoc, Units.inv_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem over_w : cA (E := E) q ≫ gch 0 = cB q ≫ gch 1 := by
   refine spc_hom_ext fun p T x => ?_
@@ -506,29 +504,27 @@ theorem over_w : cA (E := E) q ≫ gch 0 = cB q ≫ gch 1 := by
       rw [vx_gch_self, vx_gch_other 0 1 (by decide), a_cA, cu_cA, cu_cB, ← mul_assoc, Units.inv_mul, one_mul]
 
 /- English proof (translation)
-The claim follows from `hE T ⟨vtx e 0⟩`.
+A detailed English derivation is pending.
 -/
 theorem q_unit (hE : Inv q E) {p : ℕ} {T : Scheme.{0}} (e : Sx E p T) : IsUnit ((q : ℕ) : Γ(T, ⊤)) :=
   hE T ⟨vtx e 0⟩
 
 /- English proof (translation)
-Use `isPullback_of_sx (over_w) ?_ ?_` and prove the remaining obligations. Introduce `p T x x' h1 h2`. Establish `hc : ∀ k, cu pc x k = cu pc x' k`. Introduce `k`. Rewrite using `[← cu_cB x k, ← cu_cB x' k, h2]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `ht : tv q x = tv q x'`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← a_cB x, ← a_cB x', h2]`. Use `ws_ext ?_ ?_ hc` and prove the remaining obligations. Conclude with `(UpperTheory.multiplicativeGroup_hom_existsUnique_of_unit q T (q_unit hE (x.map pe)) (tv q x)).unique rfl ht.symm`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pe_cB x, ← pe_cB x', h2]`. Introduce `p T s t h`. Establish `he : s.map pe = t.map pe`. Rewrite using `[← gch_pe 0 s, ← gch_pe 1 t, h]`. Establish `h0 : ∀ k, cu pc s k = (pt ps t).appTop.hom tA * cu pc t k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Rewrite using `[← vx_gch_self 0 s k, h, vx_gch_other 1 0 (by decide)]`. Establish `h1 : ∀ k, (pt ps s).appTop.hom tA * cu pc s k = cu pc t k`. Introduce `k`. Rewrite using `[← vx_gch_other 0 1 (by decide) s k, h, vx_gch_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hst : (pt ps s).appTop.hom tA * (pt ps t).appTop.hom tA = 1`. Use `h1 0` as an intermediate fact. Rewrite `this` using `[h0 0, ← mul_assoc]`. Conclude with `(cu_unit pc t 0).mul_left_inj.1 (this.trans (one_mul _).symm)`. Set `τ : (Γ(T, ⊤))ˣ` to `⟨(pt ps t).appTop.hom tA, (pt ps s).appTop.hom tA, by rw [mul_comm]; exact hst, hst⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨sτ, hτ, -⟩` from `UpperTheory.multiplicativeGroup_hom_existsUnique_of_unit q T (q_unit hE (t.map pe)) τ`. Take `⟨x, e1, e2, e3⟩` from `ws_mk (E := E) sτ (t.map pe) (t.map pc)`. Establish `htv : tv q x = τ`. Unfold `tv`. Rewrite using `[e1, hτ]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcu : ∀ k, cu pc x k = cu pc t k`. Introduce `k`. Unfold `cu`. Rewrite using `[e3]`. Use `⟨x, ws_ext ?_ ?_ ?_, ws_ext ?_ ?_ ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `affineLine_hom_ext (by rw [a_cA, htv]; rfl)`. Rewrite using `[pe_cA, e2, he]`. Introduce `k`. Rewrite using `[cu_cA, htv, hcu, h0]`. Conclude with `affineLine_hom_ext (by rw [a_cB, htv])`.
-
-Rewrite using `[pe_cB, e2]`. Introduce `k`. Rewrite using `[cu_cB, hcu]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem over_pullback (hE : Inv q E) : IsPullback (cA (E := E) q) (cB q) (gch 0) (gch 1) := by
   refine isPullback_of_sx (over_w) ?_ ?_

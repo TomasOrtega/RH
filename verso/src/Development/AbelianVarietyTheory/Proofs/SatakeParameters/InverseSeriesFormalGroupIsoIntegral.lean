@@ -14,21 +14,19 @@ open Formalism.L2.KerInert.BeCob (vLT eLT)
 open GlobalTheory.CurveDictionary (cc_lgF' lgF_eq_logF)
 
 /- English proof (translation)
-Establish `hex` using `hOk.2.2.1`. Establish `hinv` using `hOk.2.2.2`. Use `set e := eLT hLT with he`. Establish `he1 : ‖e‖ = 1` using `Formalism.L2.G.Pend.norm_wToC_unit l _`. Establish `hene : e ≠ 0` using `by intro h; rw [h, norm_zero] at he1; exact zero_ne_one he1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set th0 := Formalism.L2.G.Pend.thOf hLT with hth0`. Establish `h00 : PowerSeries.constantCoeff th0 = 0` using `Formalism.L2.G.Pend.thOf_zero hLT`. Establish `hu : IsUnit (PowerSeries.coeff 1 th0)` using `Formalism.L2.G.Pend.thOf_unit hLT`. Use `set i0 := th0.substInvOfIsUnit hu with hi0`. Establish `hi00 : PowerSeries.constantCoeff i0 = 0` using `PowerSeries.constantCoeff_substInvOfIsUnit _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hR : PowerSeries.subst i0 th0 = PowerSeries.X` using `PowerSeries.subst_substInvOfIsUnit_right _ h00 hu`. Use `set thC := PowerSeries.map (wToC l) th0 with hthC`. Use `set iC := PowerSeries.map (wToC l) i0 with hiC`. Establish `hthC0 : PowerSeries.constantCoeff thC = 0`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, hthC, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, h00, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hiC0 : PowerSeries.constantCoeff iC = 0`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, hiC, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, hi00, map_zero]`. Establish `hRC : PowerSeries.subst iC thC = PowerSeries.X`. Establish `h` using `congrArg (MvPowerSeries.map (wToC l)) hR`. Rewrite `h` using `[PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero' hi00)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h.trans (MvPowerSeries.map_X _ _)`. Establish `hv0 : PowerSeries.constantCoeff (PowerSeries.C e⁻¹ * lgF ℂ_[l] l) = 0`. Rewrite using `[map_mul, cc_lgF', mul_zero]`. Establish `hlog : PowerSeries.subst thC (lgF ℂ_[l] l) = PowerSeries.C e * g.l`. Establish `h` using `Formalism.L2.G.Pend.thOf_log hLT`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[lgF_eq_logF]`. Conclude with `h`. Establish `hVT : PowerSeries.subst thC (vLT hLT) = PowerSeries.X`. Unfold `vLT`. Rewrite using `[PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hv0) (PowerSeries.HasSubst.of_constantCoeff_zero' hthC0), PowerSeries.subst_mul (PowerSeries.HasSubst.of_constantCoeff_zero' hthC0), PowerSeries.subst_C, hlog]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation.
 
-Establish `e1 : (MvPowerSeries.C e⁻¹ : PowerSeries ℂ_[l]) * (PowerSeries.C e * g.l) = g.l`. Rewrite using `[← mul_assoc]`. Use `show PowerSeries.C e⁻¹ * PowerSeries.C e * g.l = g.l`. Rewrite using `[← map_mul, inv_mul_cancel₀ hene, map_one, one_mul]`. Rewrite using `[e1]`.
-
-Conclude with `Formalism.L2.G.Pend.ex_l g hex hinv`. Use `⟨i0, ?_⟩` and prove the remaining obligations. Use `show iC = vLT hLT`. Use `symm`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem exists_witt_series_inverse_formalGroup_iso {l : ℕ} [Fact l.Prime] {g : G1 l} (hOk : g.Ok) (hLT : LTIso g) :
     ∃ w : PowerSeries (Formalism.MainNotions.FormalGroupSystem.WW l), PowerSeries.map (wToC l) w = vLT hLT := by
@@ -84,7 +82,7 @@ theorem exists_witt_series_inverse_formalGroup_iso {l : ℕ} [Fact l.Prime] {g :
     _ = iC := PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero' hiC0)
 
 /- English proof (translation)
-Introduce `l _ g hOk hLT n`. Take `⟨w, hw⟩` from `exists_witt_series_inverse_formalGroup_iso hOk hLT`. Rewrite using `[← hw, PowerSeries.coeff_map]`. Use `Formalism.L2.G.Pend.norm_wToC_pow_mul l 0 (PowerSeries.coeff n w)` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem v_integral : ∀ (l : ℕ) [Fact l.Prime] (g : G1 l), g.Ok → ∀ (hLT : LTIso g) (n : ℕ),
     ‖PowerSeries.coeff n (vLT hLT)‖ ≤ 1 := by

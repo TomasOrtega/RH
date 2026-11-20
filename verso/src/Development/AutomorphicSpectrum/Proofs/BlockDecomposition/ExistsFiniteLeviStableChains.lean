@@ -35,7 +35,7 @@ def chainsInL (lev : Fin n → ℕ) (d : ℕ) (S : Submodule ℂ V) : Submodule 
     exact ⟨fun A h => hx1 A (key A h), fun A h => hx2 A (key A h), fun A => S.smul_mem c (hx3 A)⟩
 
 /- English proof (translation)
-Set `L : chainsInL lev d S →ₗ[ℂ] (Finset (Lt n) → S)` to `LinearMap.pi fun A => LinearMap.codRestrict S ((LinearMap.proj A).comp (chainsInL lev d S).subtype) fun x => x.2.2.2 A`. Use `Module.Finite.of_injective L fun x y h => Subtype.ext (funext fun A => ?_)` and prove the remaining obligations. Conclude with `congrArg Subtype.val (congrFun h A)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_chainsInL (lev : Fin n → ℕ) (d : ℕ) (S : Submodule ℂ V) [FiniteDimensional ℂ S] :
     FiniteDimensional ℂ (chainsInL lev d S) := by
@@ -46,7 +46,7 @@ theorem finiteDimensional_chainsInL (lev : Fin n → ℕ) (d : ℕ) (S : Submodu
   exact congrArg Subtype.val (congrFun h A)
 
 /- English proof (translation)
-Simplify using `only [Lv, adLL, LinearMap.add_apply, LinearMap.sum_apply, Pi.add_apply, Finset.sum_apply, liftL_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [Module.End.mul_apply]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Lv_apply (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) (x : Cq n V)
     (A : Finset (Lt n)) :
@@ -58,9 +58,7 @@ theorem Lv_apply (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End �
   split_ifs <;> simp [Module.End.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[creL_apply]`. Use `split_ifs`. Use `S.smul_mem _ ?_` and prove the remaining obligations. Rewrite using `[annL_apply]`. Use `split_ifs`.
-
-Conclude with `S.zero_mem`. Conclude with `S.smul_mem _ (hx _)`. Conclude with `S.zero_mem`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem creL_annL_mem {S : Submodule ℂ V} {x : Cq n V} (hx : ∀ A, x A ∈ S) (l k : Lt n) (A : Finset (Lt n)) :
     creL k (annL l x) A ∈ S := by
@@ -74,11 +72,9 @@ theorem creL_annL_mem {S : Submodule ℂ V} {x : Cq n V} (hx : ∀ A, x A ∈ S)
   · exact S.zero_mem
 
 /- English proof (translation)
-Distinguish the cases in `c1 : q = l.2.1.1 ∧ k.1 = (false ^^ l.1) ∧ k.2.1 = (p, l.2.1.2)`. Use `show lev k.2.1.1 < lev k.2.1.2`. Rewrite using `[c1.2.2]`. Use `show lev p < lev l.2.1.2`. Rewrite using `[hpq, c1.1]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hl`. Distinguish the cases in `c2 : l.2.1.2 = p ∧ k.1 = (false ^^ l.1) ∧ k.2.1 = (l.2.1.1, q)`. Use `show lev k.2.1.1 < lev k.2.1.2`. Rewrite using `[c2.2.2]`. Use `show lev l.2.1.1 < lev q`.
-
-Rewrite using `[← hpq, ← c2.1]`. Conclude with `hl`. Conclude with `absurd (by rw [adCL, if_neg c1, if_neg c2, sub_zero]) h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inUU_of_adCL {lev : Fin n → ℕ} {p q : Fin n} (hpq : lev p = lev q) {l k : Lt n}
     (h : adCL false p q l k ≠ 0) (hl : inUU lev l) : inUU lev k := by
@@ -97,9 +93,9 @@ theorem inUU_of_adCL {lev : Fin n → ℕ} {p q : Fin n} (hpq : lev p = lev q) {
   · exact absurd (by rw [adCL, if_neg c1, if_neg c2, sub_zero]) h
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `h` to reduce the goal to its premises. Rewrite using `[Lv_apply, hc.1, zero_add]`. Use `Finset.sum_eq_zero fun l _ => Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `split_ifs with hl`. Distinguish the cases in `h0 : adCL false p q l k = 0`. Rewrite using `[h0, zero_smul]`. Rewrite using `[hc.2 l k hl h0, smul_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Lv_ne {lev : Fin n → ℕ} {E1 E2 : Fin n → Fin n → Module.End ℂ V} {p q : Fin n} {x : Cq n V}
     {A : Finset (Lt n)} (h : Lv lev E1 E2 p q x A ≠ 0) :
@@ -116,11 +112,11 @@ theorem Lv_ne {lev : Fin n → ℕ} {E1 E2 : Fin n → Fin n → Module.End ℂ 
   · rfl
 
 /- English proof (translation)
-Take `⟨hk, h1⟩` from `creL_ne h`. Take `⟨h2, h3⟩` from `annL_ne h1`. Establish `hs` using `hx _ h3`. Establish `hi : inUU lev l` using `hs l (mem_insert_self _ _)`. Use `⟨fun j hj => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `e : j = k`. Conclude with `e ▸ inUU_of_adCL hpq h0 hi`. Conclude with `hs j (mem_insert_of_mem (mem_erase.2 ⟨e, hj⟩))`. Establish `e1` using `hd _ h3`. Rewrite `e1` using `[card_insert_of_notMem h2]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `e2` using `card_erase_add_one hk`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem term_suppL {lev : Fin n → ℕ} {d : ℕ} {p q : Fin n} (hpq : lev p = lev q) {x : Cq n V}
     (hx : SuppL (inUU lev) x) (hd : DegL d x) {A : Finset (Lt n)} {l k : Lt n} (h0 : adCL false p q l k ≠ 0)
@@ -139,11 +135,9 @@ theorem term_suppL {lev : Fin n → ℕ} {d : ℕ} {p q : Fin n} (hpq : lev p = 
     omega
 
 /- English proof (translation)
-Take `⟨hx1, hx2, hx3⟩` from `hx`. Establish `hk : ∀ A, kA E1 E2 p q (x A) ≠ 0 → x A ≠ 0` using `fun A h h0 => h (by rw [h0, map_zero])`. Use `⟨fun A h => ?_, fun A h => ?_, fun A => ?_⟩` and prove the remaining obligations. Break down `Lv_ne h with h' | ⟨l, k, -, h0, h'⟩` into its components or cases. Conclude with `hx1 A (hk A h')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(term_suppL hpq hx1 hx2 h0 h').1`. Break down `Lv_ne h with h' | ⟨l, k, -, h0, h'⟩` into its components or cases. Conclude with `hx2 A (hk A h')`. Conclude with `(term_suppL hpq hx1 hx2 h0 h').2`. Rewrite using `[Lv_apply]`.
-
-Use `S.add_mem (hS p q _ (hx3 A)) (S.sum_mem fun l _ => S.sum_mem fun k _ => ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `S.smul_mem _ (creL_annL_mem hx3 l k A)`. Conclude with `S.zero_mem`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Lv_mem_chainsInL {lev : Fin n → ℕ} {d : ℕ} {E1 E2 : Fin n → Fin n → Module.End ℂ V}
     {S : Submodule ℂ V} (hS : ∀ a b, ∀ w ∈ S, kA E1 E2 a b w ∈ S) {p q : Fin n} (hpq : lev p = lev q)
@@ -164,9 +158,9 @@ theorem Lv_mem_chainsInL {lev : Fin n → ℕ} {d : ℕ} {E1 E2 : Fin n → Fin 
     · exact S.zero_mem
 
 /- English proof (translation)
-Introduce `n lev V _ _ E1 E2 d y hF hy hd`. Use `choose Sf hfd hmem hSt using hF`. Set `S : Submodule ℂ V` to `⨆ A, Sf (y A)`. Establish `: ∀ A, FiniteDimensional ℂ (Sf (y A))` using `fun A => hfd _`. Establish `: FiniteDimensional ℂ S` using `Submodule.finiteDimensional_iSup _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSs : ∀ a b, ∀ w ∈ S, kA E1 E2 a b w ∈ S` using `fun a b v hv => (iSup_le fun A z hz => Submodule.mem_iSup_of_mem A (hSt _ a b z hz) : S ≤ S.comap (kA E1 E2 a b)) hv`. Use `⟨chainsInL lev d S, finiteDimensional_chainsInL lev d S, ⟨hy, hd, fun A => Submodule.mem_iSup_of_mem A (hmem _)⟩, fun x hx => ⟨hx.1, hx.2.1⟩, fun p q hpq x hx => Lv_mem_chainsInL hSs hpq hx⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_stable : ∀ (n : ℕ) (lev : Fin n → ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (E1 E2 : Fin n → Fin n → Module.End ℂ V) (d : ℕ) (y : Cq n V),

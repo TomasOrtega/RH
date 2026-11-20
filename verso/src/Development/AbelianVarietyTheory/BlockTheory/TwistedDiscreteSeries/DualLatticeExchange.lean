@@ -103,7 +103,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Use extensionality with `(i | i)`. Simplify using `[rowE, lowU, inX, avec, fromBlocks_mulVec]`. Apply the tactic sequence `by_cases h : i.val + 1 = p <;> simp [rowE, lowU, inX, avec, fromBlocks_mulVec, mulVec, dotProduct, h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example (c p : ℕ) (u x : n → k) :
     (rowE c p u).val *ᵥ inX k n c x = inX k n c x + (u ⬝ᵥ x) • avec k n c p := by
@@ -112,9 +112,9 @@ example (c p : ℕ) (u x : n → k) :
   · by_cases h : i.val + 1 = p <;> simp [rowE, lowU, inX, avec, fromBlocks_mulVec, mulVec, dotProduct, h]
 
 /- English proof (translation)
-Use extensionality with `u`. Use `⟨fun h => mem_stdLat.2 fun i => ?_, fun h x hx => ?_⟩` and prove the remaining obligations. Use `h (Pi.single i 1) (mem_stdLat.2 fun j => by` as an intermediate fact. Rewrite using `[Pi.single_apply]`. Use `split_ifs`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `exacts [one_mem _, zero_mem _])`. Simplify using `using this`. Conclude with `sum_mem fun i _ => mul_mem (mem_stdLat.1 h i) (mem_stdLat.1 hx i)`.
+A detailed English derivation is pending.
 -/
 example : dualLat (stdLat k n) = stdLat k n := by
   ext u

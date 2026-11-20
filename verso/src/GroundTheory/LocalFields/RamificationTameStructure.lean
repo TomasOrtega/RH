@@ -16,9 +16,9 @@ variable (K L : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L]
 
 /- English proof (translation)
-Take `⟨β, -, -, -, -, hun, hdeg, hres⟩` from `exists_unramified_adjoin K L`. Use `set T := K⟮(β : L)⟯`. Take `⟨htow, hrest⟩` from `exists_pow_eq_uniformizer_of_isUnramified T hres he`. Establish `hfin : Module.finrank T L = ramificationIndex K L`. Use `ramificationIndex_mul_residueDegree T L` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hres, mul_one, htow]`. Conclude with `this.symm`. Conclude with `⟨T, hun, hdeg, hres, htow, hfin, hrest⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_tame_structure (he : Nat.Coprime (ramificationIndex K L) (ringChar 𝓀[K])) :
     ∃ T : IntermediateField K L, IsUnramified K T ∧

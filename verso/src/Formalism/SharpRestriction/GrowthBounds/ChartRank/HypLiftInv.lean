@@ -10,7 +10,7 @@ open Formalism.BasicNotions Formalism.MainNotions.G Formalism.L2.G Formalism.L2.
   Formalism.MainNotions.G.CmpJ.PCmpLiftDesc Formalism.MainNotions.G.CmpJ.PCmpLiftTw
 
 /- English proof (translation)
-Rewrite using `[show y * k⁻¹ * y⁻¹ = (b * y * k) * k⁻¹ * y⁻¹ by rw [← h]]`. Use `group`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem grp2 {Γ : Type} [Group Γ] (b y k : Γ) (h : y = b * y * k) : b = y * k⁻¹ * y⁻¹ := by
   rw [show y * k⁻¹ * y⁻¹ = (b * y * k) * k⁻¹ * y⁻¹ by rw [← h]]
@@ -24,27 +24,25 @@ variable {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hS H X β rep hok c g γ0 κ0 hγ0 hL hpt Q hQ γ hγ κ hyc y y' hy`. Establish `Hb` using `H β`. Take `⟨x, hx⟩ : ∃ x, x = bc (inclE (F` from `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ0 * ((S.K β).y c).1 * κ0.1 := ⟨_, rfl⟩`. Rewrite `hpt` using `[← hx]`. Establish `hxU : x ∈ UPts (sigD D) (gramN D i hi) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hx]`. Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ (PStabEq.bc_mem hγ0) ((S.K β).y c).2) (PStabEq.U_le κ0.2)`. Establish `hb : bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ = ((S.K β).y c).1 * κ.1⁻¹ * ((S.K β).y c).1⁻¹ := grp2 _ _ _ hyc`. Establish `hyU : ((S.K β).y c).1⁻¹ * bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ * ((S.K β).y c).1 ∈ (S.K β).lev.U := by`. Rewrite using `[hb, show ((S.K β).y c).1⁻¹ * (((S.K β).y c).1 * κ.1⁻¹ * ((S.K β).y c).1⁻¹) * ((S.K β).y c).1 = κ.1⁻¹ by group]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(S.K β).lev.U.inv_mem κ.2`. Establish `hδU : γ0 * γ * γ0⁻¹ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi)` using `Subgroup.mul_mem _ (Subgroup.mul_mem _ hγ0 hγ) (Subgroup.inv_mem _ hγ0)`. Establish `hδx : x⁻¹ * bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (γ0 * γ * γ0⁻¹) * x ∈ (S.K β).lev.U := PStabEq.conj_mem' x ((S.K β).y c).1 γ0 γ κ0 hx hyU`. Take `⟨⟨γ', hfix⟩, hγ'⟩` from `(PStabEq.stab_bij Hb.good Hb.int Hb.hypP (X.hypC β) Hb.bad_p Hb.actB Hb.gam Hb.gamU (rep c).1 (X.inj β _) (X.onto β _) (rep c).2 g hL ⟨x, hxU⟩ hpt).2 ⟨γ0 * γ * γ0⁻¹, hδU, hδx⟩`. Establish `hgam : (S.loc β).gamI (rep c).1 γ' = γ0 * γ * γ0⁻¹` using `congrArg Subtype.val hγ'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨κa, hκa⟩` from `awayEx_of Hb.good (S.K β).lev Hb.gam (rep c).1 γ'`. Take `⟨r, hr, hr1⟩` from `Hb.chi (rep c).1 γ' κa hκa`. Establish `hN : natActR (Hc S β).P D.what₂.LL (blkLL (S.loc β) (sigD D) (tEL D) S.pos ((S.loc β).gamI (rep c).1 γ')) Q = r • Q`. Apply `MvPolynomial.map_injective e e.injective` to reduce the goal to its premises. Establish `h1` using `hQ.2 γ' hfix`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[actX_map (S.loc β) (tEL D) S.pos e Hb.actB Hb.pos_emb (rep c).1 γ' Q]`. Establish `hr1' : algebraMap G.O G.Kf (((Hc S β).lev (rep c).1).χ γ' : G.O) * e r = 1` using `hr1`. Rewrite using `[mapE_smul e r Q, ← h1, ← algebraMap_smul G.Kf (((Hc S β).lev (rep c).1).χ γ' : G.O), smul_smul, mul_comm (e r), hr1', one_smul]`. Establish `e1 : x⁻¹ * bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (γ0 * γ * γ0⁻¹) * x = κ0.1⁻¹ * κ.1⁻¹ * κ0.1 := by`. Rewrite using `[hx, map_mul, map_mul, map_inv, hb]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `group`. Establish `ht : ∀ v ∈ S.bad, bc (prV (E` using `D.host.E) v) (κa * (κ0⁻¹ * κ * κ0)).1 = 1 := by`. Introduce `v hv`. Establish `hvp` using `Hb.bad_p v hv`. Establish `a1` using `hκa.2 v hvp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `a2 : bc (prV (E` using `D.host.E) v) ((S.loc β).yG (rep c).1) = bc (prV (E := D.host.E) v) x := (hpt.1 v hvp).symm`. Establish `key : bc (prV (E` using `D.host.E) v) κa.1 = bc (prV (E := D.host.E) v) (x⁻¹ * bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (γ0 * γ * γ0⁻¹) * x) := by`. Rewrite using `[a1, hgam]`. Simplify using `only [map_mul, map_inv, a2]`. Establish `e2 : (κa * (κ0⁻¹ * κ * κ0)).1 = κa.1 * (κ0.1⁻¹ * κ.1 * κ0.1)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Rewrite using `[e2, map_mul, key, ← map_mul, e1, show κ0.1⁻¹ * κ.1⁻¹ * κ0.1 * (κ0.1⁻¹ * κ.1 * κ0.1) = 1 by group, map_one]`. Establish `hc : ((S.K β).lev.chi κa : ℂ) * ((S.K β).lev.chi κ : ℂ) = 1`. Establish `h0` using `congrArg (fun w : ℂˣ => (w : ℂ)) ((S.K β).lev.chi_triv _ ht)`. Simplify using `only [map_mul, map_inv, Units.val_mul, Units.val_one, Units.val_inv_eq_inv_val] at h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hne : ((S.K β).lev.chi κ0 : ℂ) ≠ 0` using `Units.ne_zero _`. Clear denominators, using `at h0` for the nonvanishing conditions. Take the linear combination `h0`. Establish `hz : IsTr (atInf (embT D) ((S.loc β).gamI (rep c).1 γ').1) (foTrR (embT D) γ0 y') (foTrR (embT D) γ0 y)`. Rewrite using `[foIsTr_iff, hgam, (foIsTr_iff (embT D) γ y' y).1 hy, ← foTrR_mul, ← foTrR_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congr 1`. Use `group`. Establish `hE` using `evC_blk (S.loc β) (tEL D) S.pos (embT D) D.what₂.embLL (tEL_emb D) ((S.loc β).gamI (rep c).1 γ') (unit_of_std (S.loc β).B _ Hb.std (Hb.gamU _ γ')) (gramC (gramN D i hi) (embT D)) _ _ hz Q`. Rewrite `hE` using `[hN, Formalism.L2.G.Cmp.map_smul', map_smul, Pi.smul_apply, smul_eq_mul, hr]`. Use `show _ = ((S.K β).lev.chi κ : ℂ) * _`.
-
-Take the linear combination `(((S.K β).lev.chi κ : ℂ)) * hE - (evC (Hc S β).P (S.loc β).rk S.pos (gramC (gramN D i hi) (embT D)) (crdB (embT D) (S.loc β).B) (MvPolynomial.map D.what₂.embLL Q) (foTrR (embT D) γ0 y)) * hc`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cmpInvRaw_holds (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) : CmpInvRawOf S e := by
   intro hS H X β rep hok c g γ0 κ0 hγ0 hL hpt Q hQ γ hγ κ hyc y y' hy
@@ -115,13 +113,13 @@ theorem cmpInvRaw_holds (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) : Cm
     (crdB (embT D) (S.loc β).B) (MvPolynomial.map D.what₂.embLL Q) (foTrR (embT D) γ0 y)) * hc
 
 /- English proof (translation)
-The claim follows from `cmpLiftOf_of_raw S e hV (cmpInvRaw_holds S e)`.
+A detailed English derivation is pending.
 -/
 theorem cmpLiftOf_of_evVal (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (hV : ∀ β, EvValLe S β) : CmpLiftOf S e :=
   cmpLiftOf_of_raw S e hV (cmpInvRaw_holds S e)
 
 /- English proof (translation)
-The claim follows from `invLeOf_of_cmp S e (cmpLiftOf_of_evVal S e hV)`.
+A detailed English derivation is pending.
 -/
 theorem invLeOf_of_evVal (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (hV : ∀ β, EvValLe S β) : InvLeOf S e :=
   invLeOf_of_cmp S e (cmpLiftOf_of_evVal S e hV)
@@ -130,7 +128,7 @@ def EvValCAt (S : StepIn M i hi G) (β : S.Ch) : Prop :=
   EvValC (Hc S β).P (S.loc β).rk S.pos (gramC (gramN D i hi) (embT D)) (atInfGL (embT D) (S.loc β).B⁻¹) (M.lam i)
 
 /- English proof (translation)
-Introduce `Q hQ`. Rewrite using `[← h hw]`. Conclude with `Submodule.mem_map_of_mem hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evValLe_of (S : StepIn M i hi G) (β : S.Ch) (h : EvValCAt S β)
     (hw : WtTie (Hc S β).P (S.loc β).rk S.pos (M.lam i)) : EvValLe S β := by
@@ -139,7 +137,7 @@ theorem evValLe_of (S : StepIn M i hi G) (β : S.Ch) (h : EvValCAt S β)
   exact Submodule.mem_map_of_mem hQ
 
 /- English proof (translation)
-Introduce `hS H X`. Conclude with `cmpLiftOf_of_evVal S e (fun β => evValLe_of S β (h β) (H β).wt) hS H X`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cmpLiftOf_of_evValC (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (h : ∀ β, EvValCAt S β) : CmpLiftOf S e := by
   intro hS H X
@@ -153,7 +151,7 @@ variable {D : D7} {Tw : TwForms D} {u : D.what₂.Word} {μ : D.what₂.Tup} {w 
   {h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Fl : Fills (D.gat u w h)} {Lv : Levels Fl}
 
 /- English proof (translation)
-The claim follows from `cmpJHyp_of_cmp c Gt hS core ok twUnit valIntN iwF hfin X fun j hj => cmpLiftOf_of_evVal _ _ (hV j hj)`.
+A detailed English derivation is pending.
 -/
 theorem cmpJHyp_of_evVal (c : LatCmp D) {I : CmpJIn Tw u μ w h Lv} (Gt : GatTies D) (hS : BlockRationalityField)
     (core : ∀ j hj β, (I.at' j hj).st.Core (c.embW u w h) β) (ok : ∀ j hj, (I.at' j hj).st.okW w)
@@ -163,7 +161,7 @@ theorem cmpJHyp_of_evVal (c : LatCmp D) {I : CmpJIn Tw u μ w h Lv} (Gt : GatTie
   cmpJHyp_of_cmp c Gt hS core ok twUnit valIntN iwF hfin X fun j hj => cmpLiftOf_of_evVal _ _ (hV j hj)
 
 /- English proof (translation)
-The claim follows from `cmpJHyp_of_cmp c Gt hS core ok twUnit valIntN iwF hfin X fun j hj => cmpLiftOf_of_evValC _ _ (hV j hj)`.
+A detailed English derivation is pending.
 -/
 theorem cmpJHyp_of_evValC (c : LatCmp D) {I : CmpJIn Tw u μ w h Lv} (Gt : GatTies D) (hS : BlockRationalityField)
     (core : ∀ j hj β, (I.at' j hj).st.Core (c.embW u w h) β) (ok : ∀ j hj, (I.at' j hj).st.okW w)

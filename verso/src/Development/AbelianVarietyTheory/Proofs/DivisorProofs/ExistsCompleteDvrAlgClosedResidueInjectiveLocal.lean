@@ -11,9 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompleteClosedDvr
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ _`. Take `⟨D, _, _, _, φ, hac, hinj, hc⟩` from `GlobalTheory.UnifProperChar.exists_dvr_centre V (maximalIdeal V)`. Establish `: IsLocalHom φ` using `((IsLocalRing.local_hom_TFAE φ).out 0 4).mpr hc`. Establish `hb` using `AdicCompletion.residueField_map_bijective_of_fg (R := D) (maximalIdeal D).fg_of_isNoetherianRing`. Use `⟨AdicCompletion (maximalIdeal D) D, inferInstance, inferInstance, inferInstance, (algebraMap D _).comp φ, inferInstance, ?_, (GlobalTheory.injective_and_isLocalHom_adicCompletion_comp φ hinj).1, (GlobalTheory.injective_and_isLocalHom_adicCompletion_comp φ hinj).2⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `IsAlgClosed.of_ringEquiv (ResidueField D) _ (RingEquiv.ofBijective _ hb)`.
+A detailed English derivation is pending.
 -/
 theorem exists_complete_dvr_isAlgClosed : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] [IsNoetherianRing V], ¬ IsField V → Nonempty (ℚ →+* V) → ∃ (W : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsDiscreteValuationRing W) (ρ : V →+* W), IsAdicComplete (maximalIdeal W) W ∧ IsAlgClosed (ResidueField W) ∧ Function.Injective ρ ∧ IsLocalHom ρ := by
   intro V _ _ _ _ _ _

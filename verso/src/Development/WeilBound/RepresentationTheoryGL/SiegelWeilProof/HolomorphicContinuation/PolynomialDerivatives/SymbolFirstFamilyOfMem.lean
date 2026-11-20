@@ -19,7 +19,7 @@ def S (N : ℕ) : Submodule ℂ (Sym m n) := restrictSupport ℂ (U ε N)
 variable {ε}
 
 /- English proof (translation)
-Unfold `S`. Rewrite using `[mem_restrictSupport_iff]`. Conclude with `⟨fun h t ht => h ht, fun h t ht => h t ht⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_S {N : ℕ} {s : Sym m n} : s ∈ S ε N ↔ ∀ t ∈ s.support, t ∈ U ε N := by
   unfold S
@@ -27,7 +27,7 @@ theorem mem_S {N : ℕ} {s : Sym m n} : s ∈ S ε N ↔ ∀ t ∈ s.support, t 
   exact ⟨fun h t ht => h ht, fun h t ht => h t ht⟩
 
 /- English proof (translation)
-Introduce `t ht k hk`. Establish `hU` using `(mem_S.1 h t ht).2`. Break down `hk with hk | hk` into its components or cases. Conclude with `hU (Sum.inl k) (Finsupp.mem_support_iff.2 hk)`. Conclude with `hU (Sum.inr k) (Finsupp.mem_support_iff.2 hk)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem symbol_first_family_of_mem {N : ℕ} {s : Sym m n} (h : s ∈ S ε N) : SymbolInFirstFamily ε s := by
   intro t ht k hk
@@ -37,7 +37,7 @@ theorem symbol_first_family_of_mem {N : ℕ} {s : Sym m n} (h : s ∈ S ε N) : 
   · exact hU (Sum.inr k) (Finsupp.mem_support_iff.2 hk)
 
 /- English proof (translation)
-Use `mem_S.2 fun t ht => ⟨le_totalDegree ht, fun v hv => ?_⟩` and prove the remaining obligations. Break down `v with k | k` into its components or cases. Conclude with `h t ht k (Or.inl (Finsupp.mem_support_iff.1 hv))`. Conclude with `h t ht k (Or.inr (Finsupp.mem_support_iff.1 hv))`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem mem_S_of {s : Sym m n} (h : SymbolInFirstFamily ε s) : s ∈ S ε s.totalDegree := by
   refine mem_S.2 fun t ht => ⟨le_totalDegree ht, fun v hv => ?_⟩
@@ -46,7 +46,7 @@ theorem mem_S_of {s : Sym m n} (h : SymbolInFirstFamily ε s) : s ∈ S ε s.tot
   · exact h t ht k (Or.inr (Finsupp.mem_support_iff.1 hv))
 
 /- English proof (translation)
-Introduce `s hs`. Rewrite using `[mem_restrictTotalDegree, totalDegree, Finset.sup_le_iff]`. Conclude with `fun t ht => (mem_S.1 hs t ht).1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem S_le (N : ℕ) : S (n := n) ε N ≤ restrictTotalDegree ((Fin m × Fin n × Bool) ⊕ (Fin m × Fin n × Bool)) ℂ N := by
   intro s hs
@@ -57,15 +57,13 @@ instance (N : ℕ) : FiniteDimensional ℂ (S (n := n) ε N) :=
   Submodule.finiteDimensional_of_le (S_le N)
 
 /- English proof (translation)
-Unfold `symK`. Rewrite using `[mkDerivation_X]`. Apply the tactic sequence `rcases v with ⟨a, b, e⟩ | ⟨a, b, e⟩ <;> simp only [Sum.elim_inl, Sum.elim_inr]`. Distinguish the cases in `ha : ε a = true`. Rewrite using `[if_pos ha]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Conclude with `Or.inr ⟨Sum.inl (a, i, false), 1, by simp, by simp [inF1, ha]⟩`. Conclude with `Or.inl rfl`. Rewrite using `[if_neg ha]`. Use `split_ifs with h`.
+Prove the second alternative. Prove the first alternative. Rewrite the conclusion using the stated equalities. Prove the second alternative. Prove the first alternative.
 
-Conclude with `Or.inr ⟨Sum.inl (a, j, true), -1, by simp, by simp [inF1]; simpa using ha⟩`. Conclude with `Or.inl rfl`. Distinguish the cases in `ha : ε a = true`. Rewrite using `[if_pos ha]`. Use `split_ifs with h`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Prove the second alternative. Prove the first alternative. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Or.inr ⟨Sum.inr (a, j, false), -1, by simp, by simp [inF1, ha]⟩`. Conclude with `Or.inl rfl`. Rewrite using `[if_neg ha]`. Use `split_ifs with h`. Conclude with `Or.inr ⟨Sum.inr (a, i, true), 1, by simp, by simp [inF1]; simpa using ha⟩`.
-
-Conclude with `Or.inl rfl`.
+Prove the second alternative. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem symK_X (i j : Fin n) (v : (Fin m × Fin n × Bool) ⊕ (Fin m × Fin n × Bool)) :
     symK ε i j (X v) = 0 ∨ ∃ v', ∃ c : ℂ, symK ε i j (X v) = c • (X v' : Sym m n) ∧ inF1 ε (Sum.elim id id v') := by
@@ -88,7 +86,7 @@ theorem symK_X (i j : Fin n) (v : (Fin m × Fin n × Bool) ⊕ (Fin m × Fin n �
       · exact Or.inl rfl
 
 /- English proof (translation)
-Use `mem_S.2 fun t ht => ?_` and prove the remaining obligations. Use `support_monomial_subset ht` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`. Conclude with `this ▸ hu`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monomial_mem_S {N : ℕ} {u} (hu : u ∈ U ε N) (r : ℂ) : monomial u r ∈ S (n := n) ε N := by
   refine mem_S.2 fun t ht => ?_
@@ -97,24 +95,22 @@ theorem monomial_mem_S {N : ℕ} {u} (hu : u ∈ U ε N) (r : ℂ) : monomial u 
   exact this ▸ hu
 
 /- English proof (translation)
-The claim follows from `Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem deg_add (a b : (Fin m × Fin n × Bool) ⊕ (Fin m × Fin n × Bool) →₀ ℕ) :
     ((a + b).sum fun _ e => e) = (a.sum fun _ e => e) + (b.sum fun _ e => e) :=
   Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl)
 
 /- English proof (translation)
-Unfold `symK`. Rewrite using `[mkDerivation_monomial]`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun v hv => ?_)` and prove the remaining obligations. Simplify using `only`. Establish `hsymk` using `symK_X (ε := ε) i j v`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Unfold `symK at hsymk`. Rewrite `hsymk` using `[mkDerivation_X]`. Break down `hsymk with h0 | ⟨v', c, hc, hv'⟩` into its components or cases. Rewrite using `[h0, smul_zero]`. Conclude with `Submodule.zero_mem _`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, smul_eq_mul, mul_smul_comm, X, monomial_mul]`. Use `Submodule.smul_mem _ _ (monomial_mem_S ⟨?_, ?_⟩ _)` and prove the remaining obligations. Establish `hle : Finsupp.single v 1 ≤ t`. Rewrite using `[Finsupp.single_le_iff]`. Conclude with `Nat.one_le_iff_ne_zero.2 (Finsupp.mem_support_iff.1 hv)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `deg_add (t - Finsupp.single v 1) (Finsupp.single v 1)`. Rewrite `e1` using `[tsub_add_cancel_of_le hle]`. Rewrite using `[deg_add]`. Establish `: ((Finsupp.single v' 1 : _ →₀ ℕ).sum fun _ e => e) = ((Finsupp.single v 1 : _ →₀ ℕ).sum fun _ e => e)`. Simplify using `[Finsupp.sum_single_index]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this, ← e1]`. Conclude with `ht.1`. Introduce `w hw`. Break down `Finset.mem_union.1 (Finsupp.support_add hw) with hw | hw` into its components or cases. Conclude with `ht.2 w (Finsupp.support_tsub hw)`.
-
-Rewrite `hw` using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.mem_singleton]`. Conclude with `hw ▸ hv'`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symK_monomial_mem {N : ℕ} (i j : Fin n) {t} (ht : t ∈ U ε N) (r : ℂ) :
     symK ε i j (monomial t r) ∈ S (n := n) ε N := by
@@ -144,7 +140,7 @@ theorem symK_monomial_mem {N : ℕ} (i j : Fin n) {t} (ht : t ∈ U ε N) (r : �
         exact hw ▸ hv'
 
 /- English proof (translation)
-Rewrite using `[as_sum s, map_sum]`. Conclude with `Submodule.sum_mem _ fun t ht => symK_monomial_mem i j (mem_S.1 hs t ht) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symK_mem {N : ℕ} (i j : Fin n) {s : Sym m n} (hs : s ∈ S ε N) : symK ε i j s ∈ S ε N := by
   rw [as_sum s, map_sum]

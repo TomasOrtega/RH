@@ -18,9 +18,9 @@ set_option autoImplicit false
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Introduce `p _ R R' _ _ _ N hN A _ A' _ φ h hA hA' G G' t t' ψ ψ' hψ hψ' c hc`. Establish `hN' : (p : R') ^ N = 0`. Use `congrArg (algebraMap R R') hN` as an intermediate fact. Simplify using `using this`. Establish `h1` using `GlobalTheory.PtExtNat.isCan_pull p R R' A A' G G' t t' (algebraMap R R') φ (grpMor_of_isGrpPullback h) c.1 _ (hψ c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h1` using `[PDivGroup.SemiHom.rig_rigOfOmega]`. Establish `h2` using `hψ' ⟨_, hc⟩`. Conclude with `PDivGroup.rigOfOmega_injective_of_pow p R' N hN' G' (isCan_unique R' A' p G' t' _ hA' _ _ h2 h1)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem psi_baseChange : ∀ (p : ℕ) [Fact p.Prime] (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] (N : ℕ), (p : R) ^ N = 0 → ∀ (A : Over (Sp R)) [GrpObj A] (A' : Over (Sp R')) [GrpObj A'] (φ : A'.left ⟶ A.left) (h : IsGrpPullback A' A (spMap (algebraMap R R')) φ), IsAbelianScheme A → IsAbelianScheme A' → ∀ (G : PDivGroup p R) (G' : PDivGroup p R') (t : G.TorsionTower A) (t' : G'.TorsionTower A') (ψ : PrimitiveSubmodule A →ₗ[R] G.omega) (ψ' : PrimitiveSubmodule A' →ₗ[R'] G'.omega), (∀ c : PrimitiveSubmodule A, IsCan t c.1 (G.rigOfOmega (ψ c))) → (∀ c : PrimitiveSubmodule A', IsCan t' c.1 (G'.rigOfOmega (ψ' c))) → ∀ (c : PrimitiveSubmodule A) (hc : (GlobalTheory.Published.AbelianDeRham.bcMor h).pull c.1 ∈ PrimitiveSubmodule A'), ψ' ⟨_, hc⟩ = (t'.semiHom t (grpMor_of_isGrpPullback h)).omega (ψ c) := by
   intro p _ R R' _ _ _ N hN A _ A' _ φ h hA hA' G G' t t' ψ ψ' hψ hψ' c hc

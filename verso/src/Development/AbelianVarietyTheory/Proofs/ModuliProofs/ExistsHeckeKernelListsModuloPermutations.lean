@@ -20,7 +20,7 @@ open GlobalTheory.HkFam
 namespace GlobalTheory.HkPerm
 
 /- English proof (translation)
-Take `⟨h₁, h₂, h₃⟩` from `h`. Use `⟨fun j => h₁ _, ?_, fun k _ _ x => (h₃ k x).comp g.injective⟩` and prove the remaining obligations. Rewrite using `[h₂]`. Conclude with `(g.surjective.iUnion_comp (fun j => Set.range (σ j).left)).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lists_perm {S : Scheme.{0}} {G : Over S} [GrpObj G] {N n : ℕ} {σ : Fin n → (𝟙_ (Over S) ⟶ G)}
     {K : Set G.left} (h : Lists N σ K) (g : Equiv.Perm (Fin n)) : Lists N (fun j => σ (g j)) K := by
@@ -30,9 +30,7 @@ theorem lists_perm {S : Scheme.{0}} {G : Over S} [GrpObj G] {N n : ℕ} {σ : Fi
   exact (g.surjective.iUnion_comp (fun j => Set.range (σ j).left)).symm
 
 /- English proof (translation)
-Establish `: ∀ j, ∃ i, u i = v j` using `fun j => by`. Establish `: v j ∈ Set.range u` using `h ▸ Set.mem_range_self j`. Conclude with `this`. Use `choose g hg using this`. Establish `gi : Function.Injective g` using `fun a b e => hv (by rw [← hg, ← hg, e])`.
-
-Conclude with `⟨Equiv.ofBijective g (Finite.injective_iff_bijective.1 gi), hg⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_perm {α : Type} {n : ℕ} {u v : Fin n → α} (hu : Function.Injective u) (hv : Function.Injective v)
     (h : Set.range u = Set.range v) : ∃ g : Equiv.Perm (Fin n), ∀ j, u (g j) = v j := by
@@ -44,27 +42,25 @@ theorem exists_perm {α : Type} {n : ℕ} {u v : Fin n → α} (hu : Function.In
   exact ⟨Equiv.ofBijective g (Finite.injective_iff_bijective.1 gi), hg⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo P p i n hA`. Take `⟨Y, a, oY, m, σ, K, fa, ea, hL, hK, hu⟩` from `GlobalTheory.T.exists_finiteEtale_heckeKernel_lists E H D l P p i n Xo.X Xo.s Xo.univ hA`. Establish `hρ` using `fun g : Equiv.Perm (Fin n) => hu Y a oY.t m.toSABMap (fun j => σ (g j)) K (lists_perm hL g) hK`. Use `choose ρ hρ₁ hρ₂ using hρ`. Establish `r₁ : ∀ g, ρ g ≫ a = a` using `fun g => (hρ₁ g).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r₂ : ∀ g j, ρ g ≫ (σ j).left ≫ m.toSABMap.φ = (σ (g j)).left ≫ m.toSABMap.φ` using `fun g => (hρ₁ g).2`. Establish `one : ρ 1 = 𝟙 Y` using `(hρ₂ 1 _ ⟨by simp, fun j => by simp⟩).symm`. Establish `mul : ∀ g c, ρ (g * c) = ρ g ≫ ρ c` using `fun g c => (hρ₂ (g * c) _ ⟨by rw [Category.assoc, r₁, r₁], fun j => by`. Rewrite using `[Category.assoc, r₂, r₂]`. Use the proof step `rfl⟩).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `inj : ∀ (k : Type) [Field k] [IsAlgClosed k] (y : Sp k ⟶ Y), Function.Injective fun j => y ≫ (σ j).left ≫ m.toSABMap.φ`. Introduce `k _ _ y b c e`. Apply `hL.2.2 k y` to reduce the goal to its premises. Establish `w : ∀ j, (σ j).left ≫ oY.t.G.hom = 𝟙 Y` using `fun j => Over.w _`. Use `m.toSABMap.cart.1.hom_ext ?_ ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify `e` using `only [Category.assoc]`. Simplify using `only [Category.assoc, w]`. Establish `free : ∀ (k : Type) [Field k] [IsAlgClosed k] (y : Sp k ⟶ Y) (g : Equiv.Perm (Fin n)), y ≫ ρ g = y → g = 1`. Introduce `k _ _ y g e`. Use `ext1 j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Apply `inj k y` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `y ≫ (σ (g j)).left ≫ m.toSABMap.φ = y ≫ (σ j).left ≫ m.toSABMap.φ`. Rewrite using `[← r₂, ← Category.assoc, e]`. Establish `uq : ∀ (T : Scheme.{0}) (y y' : T ⟶ Y), y ≫ a = y' ≫ a → (∀ j, y ≫ (σ j).left ≫ m.toSABMap.φ = y' ≫ (σ j).left ≫ m.toSABMap.φ) → y = y'`. Introduce `T y y' e₁ e₂`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, _, _, _, _, m', -⟩` from `sabPull Out.CubePf.cubePull y oY.t`. Take `⟨mu, hmu⟩` from `GlobalTheory.ObjMaps.exists_sab_comp m.toSABMap m'`. Take `⟨τ, hτ, hL'⟩` from `GlobalTheory.HkSetPull.lists_pull m'.cart K _ n σ hL`. Establish `hτ' : ∀ j, y ≫ (σ j).left ≫ m.toSABMap.φ = (τ j).left ≫ mu.φ` using `fun j => by`. Rewrite using `[hmu, ← Category.assoc, ← hτ, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(hu T (y ≫ a) _ mu τ _ hL' (GlobalTheory.HkSetPull.heckeSet_pull D P p i m' K hK)).unique ⟨rfl, hτ'⟩ ⟨e₁.symm, fun j => (e₂ j).symm.trans (hτ' j)⟩`. Establish `hq` using `GlobalTheory.isQProjOver_comp_of_isFinite_noetherian (KA l) Y Xo.X a Xo.s fa Xo.qproj`. Take `⟨Hk, q, sH, hs, hG, sep, lft, -⟩` from `GlobalTheory.ZM.exists_isGaloisCover_of_isQProjOver (KA l) Y (a ≫ Xo.s) (Equiv.Perm (Fin n)) ρ hq one mul (fun g => by rw [← Category.assoc, r₁]) free`. Establish `hd` using `(GlobalTheory.ZM.galoisCover_descent Y Hk q _ ρ hG).1`. Take `⟨π₁, rfl, -⟩` from `hd Xo.X a r₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : π₁ ≫ Xo.s = sH` using `(hd _ ((q ≫ π₁) ≫ Xo.s) (fun g => by rw [← Category.assoc, r₁])).unique (Category.assoc _ _ _).symm hs`. Substitute `hs'` using the available equality. Establish `: IsSeparated π₁` using `IsSeparated.of_comp π₁ Xo.s`. Use `Xo.smooth` as an intermediate fact. Establish `: Smooth Xo.s` using `SmoothOfRelativeDimension.smooth D.dim Xo.s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: LocallyOfFiniteType π₁` using `locallyOfFiniteType_of_comp π₁ Xo.s`. Establish `: IsLocallyNoetherian Xo.X` using `LocallyOfFiniteType.isLocallyNoetherian Xo.s`. Take `⟨f₁, e₁⟩` from `isFinite_and_etale_of_comp_of_finite_etale_cover Y Hk Xo.X q π₁ hG.fin hG.etale hG.onto fa ea inferInstance inferInstance`. Use `⟨Y, Hk, q, π₁, oY, m, σ, K, hG.fin, hG.etale, hG.onto, f₁, e₁, hL, hK, fun k _ _ y y' => ⟨fun e => ?_, fun e => ?_⟩, fun T f t mu τ K' h₁ h₂ => (hu T f t mu τ K' h₁ h₂).exists⟩` and prove the remaining obligations. Take `⟨g, rfl, -⟩` from `hG.fibre k y y' e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨?_, by rw [← Category.assoc, e, Category.assoc]⟩` and prove the remaining obligations. Simplify using `only [Category.assoc, r₂]`. Conclude with `(g.surjective.range_comp (fun j => y ≫ (σ j).left ≫ m.toSABMap.φ)).symm`. Take `⟨g, hg⟩` from `exists_perm (inj k y) (inj k y') e.1`. Establish `: y ≫ ρ g = y'` using `uq _ _ _ (by rw [Category.assoc, r₁]; exact e.2) fun j => by`.
-
-Rewrite using `[Category.assoc, r₂]`. Conclude with `hg j`. Rewrite using `[← this, Category.assoc, hG.inv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lists_mod_perm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (𝔓 : Ideal (𝓞 E)) (p i n : ℕ), admitted l 𝔓 p → ∃ (Y Hk : Scheme.{0}) (q : Y ⟶ Hk) (π₁ : Hk ⟶ Xo.X) (oY : Ob D l ((q ≫ π₁) ≫ Xo.s)) (m : ObjMap oY Xo.univ (q ≫ π₁)) (σ : Fin n → (𝟙_ (Over Y) ⟶ oY.t.G)) (K : Set oY.t.G.left), IsFinite q ∧ Etale q ∧ Surjective q ∧ IsFinite π₁ ∧ Etale π₁ ∧ Lists (p ^ 2) σ K ∧ HeckeSet D oY.t 𝔓 p i K ∧ (∀ (k : Type) [Field k] [IsAlgClosed k] (y y' : Sp k ⟶ Y), y ≫ q = y' ≫ q ↔ Set.range (fun j => y ≫ (σ j).left ≫ m.toSABMap.φ) = Set.range (fun j => y' ≫ (σ j).left ≫ m.toSABMap.φ) ∧ y ≫ q ≫ π₁ = y' ≫ q ≫ π₁) ∧ ∀ (T : Scheme.{0}) (f : T ⟶ Xo.X) (t : SAB H T) (mu : SABMap t Xo.univ.t f) (τ : Fin n → (𝟙_ (Over T) ⟶ t.G)) (K' : Set t.G.left), Lists (p ^ 2) τ K' → HeckeSet D t 𝔓 p i K' → ∃ h : T ⟶ Y, h ≫ q ≫ π₁ = f ∧ ∀ j, h ≫ (σ j).left ≫ m.toSABMap.φ = (τ j).left ≫ mu.φ := by
   intro E _ _ _ H D l Xo P p i n hA

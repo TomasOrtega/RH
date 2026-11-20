@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.CellOff
 
 /- English proof (translation)
-Use extensionality with `v`. Establish `h` using `φ.isIntertwining ρ σ x v`. Rewrite `h` using `[h₁, h₂, map_smul]`. Establish `h3 : (l - m) • φ.toLinearMap v = 0`. Rewrite using `[sub_smul]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_eq_zero.2 h`. Rewrite using `[LinearMap.zero_apply]`. Conclude with `(smul_eq_zero.1 h3).resolve_left (sub_ne_zero.2 hne)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intertwining_eq_zero {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] {ρ : Representation ℂ G V} {σ : Representation ℂ G W}
@@ -45,9 +45,9 @@ def cellChar (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ j, (Σ i, c i j) ≃ m'
       (χ'.comp ((relEmb k f).comp ((swapBlocks k c).comp (relProj k g))))
 
 /- English proof (translation)
-Rewrite using `[w.1.2 p y]`. Take `⟨v, hv⟩` from `Submodule.Quotient.mk_surjective (GlobalTheory.PRep.twKer ρ (GlobalTheory.SmGL.relUnip k f) 1) (w.1.1 y)`. Rewrite using `[← hv]`. Establish `hT : ∀ (q : ∀ i, Levi k (c i)) (u : W), GlobalTheory.SmGL.relJac f ρ q (Submodule.Quotient.mk u : GlobalTheory.PRep.Jacquet ρ (GlobalTheory.SmGL.relUnip k f)) = ((((relDeltaHalf k c) q)⁻¹ : ℂˣ) : ℂ) • (Submodule.Quotient.mk (ρ (relEmb k f q) u) : GlobalTheory.PRep.Jacquet ρ (Glob …` using `fun _ _ => rfl`. Establish `hS : ∀ (r : relParab k g) (z : GlobalTheory.PRep.Jacquet ρ (GlobalTheory.SmGL.relUnip k f)), ((GlobalTheory.SmGL.twist ((GlobalTheory.SmGL.relJac f ρ).comp (swapBlocks k c)) (relDeltaHalf k fun j i => c i j)).comp (relProj k g)) r z = ((relDeltaHalf k (fun j i => c i j) (relProj …` using `fun _ _ => rfl`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hS, hT, hρ, Submodule.Quotient.mk_smul]`. Simplify using `only [cellChar, MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.inv_apply, Units.val_mul, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cellFunctor_law (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ j, (Σ i, c i j) ≃ m' j)
     (ρ : Representation ℂ (Levi k m) W) (χ' : Levi k m →* ℂˣ)
@@ -73,7 +73,7 @@ theorem cellFunctor_law (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ j, (Σ i, c 
   simp only [cellChar, MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.inv_apply, Units.val_mul, mul_smul]
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul, map_inv]`. Conclude with `mul_inv_cancel_comm _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cellChar_conj (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ j, (Σ i, c i j) ≃ m' j)
     (χ' : Levi k m →* ℂˣ) (p q : relParab k g) :
@@ -82,9 +82,9 @@ theorem cellChar_conj (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ j, (Σ i, c i 
   exact mul_inv_cancel_comm _ _
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Establish `hp : y * x * y⁻¹ ∈ relParab k g` using `hP _`. Establish `hyx : y * x = (y * x * y⁻¹) * y` using `by group`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : cellChar f g χ' ⟨y * x * y⁻¹, hp⟩ = cellChar f g χ' ⟨x, hP x⟩` using `cellChar_conj f g χ' ⟨x, hP x⟩ ⟨y, hP y⟩`. Use `show w.1.1 (y * x) = ((cellChar f g χ' ⟨x, hP x⟩ : ℂˣ) : ℂ) • w.1.1 y`. Rewrite using `[hyx, ← hc]`. Conclude with `cellFunctor_law f g ρ χ' hρ ⟨y * x * y⁻¹, hp⟩ y w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cellFunctor_of_top (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ j, (Σ i, c i j) ≃ m' j)
     (ρ : Representation ℂ (Levi k m) W) (χ' : Levi k m →* ℂˣ)
@@ -104,7 +104,7 @@ theorem cellFunctor_of_top (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ j, (Σ i,
   exact cellFunctor_law f g ρ χ' hρ ⟨y * x * y⁻¹, hp⟩ y w
 
 /- English proof (translation)
-Conclude with `intertwining_eq_zero φ x _ l (fun w => cellFunctor_central f g ρ χ' hρ x hx hcomm w) hσ hne`.
+A detailed English derivation is pending.
 -/
 theorem intertwining_zero_central {V : Type} [AddCommGroup V] [Module ℂ V]
     (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ j, (Σ i, c i j) ≃ m' j)
@@ -120,7 +120,7 @@ theorem intertwining_zero_central {V : Type} [AddCommGroup V] [Module ℂ V]
   exact intertwining_eq_zero φ x _ l (fun w => cellFunctor_central f g ρ χ' hρ x hx hcomm w) hσ hne
 
 /- English proof (translation)
-Conclude with `intertwining_eq_zero φ x _ l (fun w => cellFunctor_of_top f g ρ χ' hρ hP x w) hσ hne`.
+A detailed English derivation is pending.
 -/
 theorem intertwining_zero_of_top {V : Type} [AddCommGroup V] [Module ℂ V]
     (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ j, (Σ i, c i j) ≃ m' j)
@@ -134,7 +134,7 @@ theorem intertwining_zero_of_top {V : Type} [AddCommGroup V] [Module ℂ V]
 end Cell
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_isEmpty, Units.val_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_of_isEmpty {n : Type} [Fintype n] [DecidableEq n] [IsEmpty n] (g : GL n k) :
     GeneralLinearGroup.det g = 1 := by
@@ -142,17 +142,13 @@ theorem det_of_isEmpty {n : Type} [Fintype n] [DecidableEq n] [IsEmpty n] (g : G
   rw [Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_isEmpty, Units.val_one]
 
 /- English proof (translation)
-Use `haveI := h₀`. Use `haveI := h₁`. Establish `hA : ∀ x : kˣ, GlobalTheory.SmGL.absPow k 0 x = 1`. Introduce `x`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show ((GlobalTheory.SplitWeil.nabs k x : ℝ) : ℂ) ^ (0 : ℂ) = 1`. Conclude with `Complex.cpow_zero _`. Establish `hE : ∀ (i j : Bool), GlobalTheory.SmGL.detChar (c i j) (GlobalTheory.SmGL.absPow k (↑(GlobalTheory.SmGL.modExp (c i) j) / 2)) (q i j) = 1`. Introduce `i j`. Apply the tactic sequence `cases i <;> cases j`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show GlobalTheory.SmGL.absPow k _ (GeneralLinearGroup.det (q false false)) = 1`. Rewrite using `[det_of_isEmpty (q false false), map_one]`. Use `show GlobalTheory.SmGL.absPow k (↑(GlobalTheory.SmGL.modExp (c false) true) / 2) (GeneralLinearGroup.det (q false true)) = 1`. Rewrite using `[GlobalTheory.CellScalarTwo.modExp_true, Fintype.card_eq_zero]`. Simplify using `only [Nat.cast_zero, neg_zero, Int.cast_zero, zero_div]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hA _`. Use `show GlobalTheory.SmGL.absPow k (↑(GlobalTheory.SmGL.modExp (c true) false) / 2) (GeneralLinearGroup.det (q true false)) = 1`. Rewrite using `[GlobalTheory.CellScalarTwo.modExp_false, Fintype.card_eq_zero]`. Simplify using `only [Nat.cast_zero, Int.cast_zero, zero_div]`. Conclude with `hA _`.
-
-Use `show GlobalTheory.SmGL.absPow k _ (GeneralLinearGroup.det (q true true)) = 1`. Rewrite using `[det_of_isEmpty (q true true), map_one]`. Use `show (∏ i, (GlobalTheory.SmGL.deltaHalf k (c i)).comp (Pi.evalMonoidHom (fun i => Levi k (c i)) i)) q = 1`. Rewrite using `[MonoidHom.finsetProd_apply]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations.
-
-Use `show (∏ j, (GlobalTheory.SmGL.detChar (c i j) (GlobalTheory.SmGL.absPow k (↑(GlobalTheory.SmGL.modExp (c i) j) / 2))).comp (Pi.evalMonoidHom (fun j => GL (c i j) k) j)) (q i) = 1`. Rewrite using `[MonoidHom.finsetProd_apply]`. Conclude with `Finset.prod_eq_one fun j _ => hE i j`.
+A detailed English derivation is pending.
 -/
 theorem relDeltaHalf_eq_one (c : Bool → Bool → Type) [∀ i j, Fintype (c i j)]
     [∀ i j, DecidableEq (c i j)] (h₀ : IsEmpty (c false false)) (h₁ : IsEmpty (c true true))
@@ -198,7 +194,7 @@ def twoChar (χ₁ χ₂ : kˣ →* ℂˣ) (a b : Type) [Fintype a] [DecidableEq
 variable (k) in
 
 /- English proof (translation)
-Take `⟨z, -, hz⟩` from `GlobalTheory.CentralExponent.exists_nabs_lt_one k`. Conclude with `⟨z, hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_nabs_lt : ∃ s : kˣ, GlobalTheory.SplitWeil.nabs k s < 1 := by
   obtain ⟨z, -, hz⟩ := GlobalTheory.CentralExponent.exists_nabs_lt_one k
@@ -216,13 +212,11 @@ theorem twoChar_apply (χ₁ χ₂ : kˣ →* ℂˣ) (y : Levi k (Two (Fin a) (F
       χ₁ (GeneralLinearGroup.det (y false)) * χ₂ (GeneralLinearGroup.det (y true)) := rfl
 
 /- English proof (translation)
-Establish `key : ∀ (j : Bool) (t : Two (Fin a) (Fin b) j), GlobalTheory.SmGL.blk (g j) t = !j`. Introduce `j t`. Use `show ((g j).symm t).1 = !j`. Generalize the expression as in `(g j).symm t = u`. Take `⟨i, q⟩` from `u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `cases i <;> cases j`. Conclude with `absurd q.isLt (by omega)`. Both sides reduce to the same expression. Both sides reduce to the same expression. Conclude with `absurd q.isLt (by omega)`.
+Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show x ∈ Subgroup.pi Set.univ fun j => GlobalTheory.SmGL.parab k (g j)`. Rewrite using `[Subgroup.mem_pi]`. Introduce `j _`. Use `show Matrix.BlockTriangular ((x j : GL _ k) : Matrix _ _ k) (GlobalTheory.SmGL.blk (g j))`. Introduce `r s hrs`.
-
-Rewrite `hrs` using `[key, key]`. Conclude with `absurd hrs (lt_irrefl _)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_relParab_of_antidiag (B : SizeMatrix (Two (Fin a) (Fin b)) (Two (Fin a) (Fin b)))
     (g : ∀ j, (Σ i, Fin (B.1 i j)) ≃ Two (Fin a) (Fin b) j)
@@ -247,11 +241,11 @@ theorem mem_relParab_of_antidiag (B : SizeMatrix (Two (Fin a) (Fin b)) (Two (Fin
   exact absurd hrs (lt_irrefl _)
 
 /- English proof (translation)
-Use `haveI e00 : IsEmpty (Fin (B.1 false false)) := by rw [h₀]; infer_instance`. Use `haveI e11 : IsEmpty (Fin (B.1 true true)) := by rw [h₁]; infer_instance`. Establish `hb1 : GeneralLinearGroup.det (swapBlocks k (fun i j => Fin (B.1 i j)) (relProj k g ⟨x, hx⟩) false true) = GeneralLinearGroup.det (x true)`. Establish `hxt : x true ∈ GlobalTheory.SmGL.parab k (g true)` using `((Subgroup.mem_pi Set.univ).1 hx) true (Set.mem_univ _)`. Establish `h` using `GlobalTheory.SmGL.det_parab k (g true) ⟨x true, hxt⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[Fintype.prod_bool, det_of_isEmpty (n := Fin (B.1 true true)), one_mul]`. Conclude with `h.symm`. Establish `hb0 : GeneralLinearGroup.det (swapBlocks k (fun i j => Fin (B.1 i j)) (relProj k g ⟨x, hx⟩) true false) = GeneralLinearGroup.det (x false)`. Establish `hxf : x false ∈ GlobalTheory.SmGL.parab k (g false)` using `((Subgroup.mem_pi Set.univ).1 hx) false (Set.mem_univ _)`. Establish `h` using `GlobalTheory.SmGL.det_parab k (g false) ⟨x false, hxf⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[Fintype.prod_bool, det_of_isEmpty (n := Fin (B.1 false false)), mul_one]`. Conclude with `h.symm`. Simplify using `only [cellChar, MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.inv_apply]`. Rewrite using `[relDeltaHalf_eq_one (fun j i => Fin (B.1 i j)) e00 e11, relDeltaHalf_eq_one (fun i j => Fin (B.1 i j)) e00 e11, inv_one, one_mul, one_mul, twoChar_apply, relEmb_apply, relEmb_apply, det_leviEmb, det_leviEmb, Fintype.prod_bool, Fintype.prod_bool, det_of_isEmpty (n := Fin (B.1 fal …`.
+A detailed English derivation is pending.
 -/
 theorem cellChar_antidiag (B : SizeMatrix (Two (Fin a) (Fin b)) (Two (Fin a) (Fin b)))
     (f : ∀ i, (Σ j, Fin (B.1 i j)) ≃ Two (Fin a) (Fin b) i)
@@ -281,16 +275,16 @@ theorem cellChar_antidiag (B : SizeMatrix (Two (Fin a) (Fin b)) (Two (Fin a) (Fi
     det_of_isEmpty (n := Fin (B.1 false false)), det_of_isEmpty (n := Fin (B.1 true true)), mul_one, one_mul, hb1, hb0]
 
 /- English proof (translation)
-Use `haveI : Nonempty (Fin a) := ⟨⟨0, ha⟩⟩`. Conclude with `Matrix.GeneralLinearGroup.det_surjective t`.
+A detailed English derivation is pending.
 -/
 theorem exists_det_eq (ha : 0 < a) (t : kˣ) : ∃ y : GL (Fin a) k, GeneralLinearGroup.det y = t := by
   haveI : Nonempty (Fin a) := ⟨⟨0, ha⟩⟩
   exact Matrix.GeneralLinearGroup.det_surjective t
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `B.2`. Establish `e1` using `h1 false`. Establish `e2` using `h1 true`. Establish `e3` using `h2 false`. Establish `e4` using `h2 true`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Fintype.sum_bool] at e1 e2 e3 e4`. Establish `c0 : Fintype.card (Two (Fin a) (Fin b) false) = a` using `Fintype.card_fin a`. Establish `c1 : Fintype.card (Two (Fin a) (Fin b) true) = b` using `Fintype.card_fin b`. Rewrite `e1`, `e3` using `[c0]`. Rewrite `e2`, `e4` using `[c1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -310,11 +304,11 @@ theorem sizes (B : SizeMatrix (Two (Fin a) (Fin b)) (Two (Fin a) (Fin b))) :
   omega
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Establish `hv : ∀ (t : ℂ) (y : kˣ), ((absPow k t y : ℂˣ) : ℂ) = ((GlobalTheory.SplitWeil.nabs k y : ℝ) : ℂ) ^ t` using `fun _ _ => rfl`. Establish `hr : 0 ≤ GlobalTheory.SplitWeil.nabs k s` using `NNReal.coe_nonneg _`. Establish `hpow : GlobalTheory.SplitWeil.nabs k (s ^ n) = GlobalTheory.SplitWeil.nabs k s ^ n` using `by show ((MeasureTheory.distribHaarChar k (s ^ n) : NNReal) : ℝ) = ((MeasureTheory.distribHaarChar k s : NNReal) : ℝ) ^ n`. Rewrite using `[map_pow, NNReal.coe_pow]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_zpow_eq_zpow_val, hv, hv, hpow]`. Establish `e1 : ((z : ℂ) / 2) = (((z : ℝ) / 2 : ℝ) : ℂ)` using `by push_cast; ring`. Establish `e2 : ((1 : ℂ) / 2) = ((1 / 2 : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[e1, e2, ← Complex.ofReal_cpow (pow_nonneg hr n), ← Complex.ofReal_cpow hr, ← Complex.ofReal_zpow]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hr, ← Real.rpow_intCast, ← Real.rpow_mul hr]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem absPow_half (s : kˣ) (z : ℤ) (n : ℕ) :
     absPow k ((z : ℂ) / 2) (s ^ n) = (absPow k (1 / 2) s) ^ (z * n) := by
@@ -337,9 +331,9 @@ theorem absPow_half (s : kˣ) (z : ℤ) (n : ℕ) :
   ring
 
 /- English proof (translation)
-Establish `hv : ((absPow k (1 / 2) s : ℂˣ) : ℂ) = ((GlobalTheory.SplitWeil.nabs k s : ℝ) : ℂ) ^ ((1 : ℂ) / 2)` using `rfl`. Establish `hr0 : 0 < GlobalTheory.SplitWeil.nabs k s`. Establish `h1 : MeasureTheory.distribHaarChar k s * MeasureTheory.distribHaarChar k s⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`. Establish `h2 : MeasureTheory.distribHaarChar k s ≠ 0` using `left_ne_zero_of_mul_eq_one h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (0 : ℝ) < ((MeasureTheory.distribHaarChar k s : NNReal) : ℝ)`. Conclude with `pos_iff_ne_zero.2 h2` after adjusting the coercions. Establish `e2 : ((1 : ℂ) / 2) = ((1 / 2 : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[hv, e2, ← Complex.ofReal_cpow hr0.le, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.rpow_pos_of_pos hr0 _)]`. Conclude with `⟨Real.rpow_pos_of_pos hr0 _, Real.rpow_lt_one hr0.le hs (by norm_num)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem norm_absPow_half_lt {s : kˣ} (hs : GlobalTheory.SplitWeil.nabs k s < 1) :
     0 < ‖((absPow k (1 / 2) s : ℂˣ) : ℂ)‖ ∧ ‖((absPow k (1 / 2) s : ℂˣ) : ℂ)‖ < 1 := by
@@ -356,23 +350,21 @@ theorem norm_absPow_half_lt {s : kˣ} (hs : GlobalTheory.SplitWeil.nabs k s < 1)
   exact ⟨Real.rpow_pos_of_pos hr0 _, Real.rpow_lt_one hr0.le hs (by norm_num)⟩
 
 /- English proof (translation)
-Take `⟨sv, hsvT, hsvF⟩ : ∃ sv : Bool → kˣ, sv true = 1 ∧ sv false = s` from `⟨fun j => cond j 1 s, rfl, rfl⟩`. Take `⟨x, hxj⟩ : ∃ x : Levi k (Two (Fin a) (Fin b)), ∀ j, x j = GeneralLinearGroup.scalar (Two (Fin a) (Fin b) j) (sv j)` from `⟨fun j => _, fun j => rfl⟩`. Establish `hx : x ∈ relParab k g` using `scalar_mem g sv x hxj`. Establish `hcomm : ∀ y, y * x = x * y` using `scalar_comm sv x hxj`. Establish `hδ : ∀ (C : Bool → Bool → Type) [∀ i j, Fintype (C i j)] [∀ i j, DecidableEq (C i j)] (Q : ∀ i, Levi k (C i)) (t : Bool → Bool → kˣ), (∀ i j, GeneralLinearGroup.det (Q i j) = t i j ^ Fintype.card (C i j)) → relDeltaHalf k C Q = ∏ i, ∏ j, absPow k (↑(modExp (C i) j) / 2) (t i j ^ …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `C _ _ Q t hQ`. Use `show (∏ i, (GlobalTheory.SmGL.deltaHalf k (C i)).comp (Pi.evalMonoidHom (fun i => Levi k (C i)) i)) Q = _`. Rewrite using `[MonoidHom.finsetProd_apply]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show (∏ j, (GlobalTheory.SmGL.detChar (C i j) (absPow k (↑(modExp (C i) j) / 2))).comp (Pi.evalMonoidHom (fun j => GL (C i j) k) j)) (Q i) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MonoidHom.finsetProd_apply]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show absPow k (↑(modExp (C i) j) / 2) (GeneralLinearGroup.det (Q i j)) = _`. Rewrite using `[hQ]`. Establish `h1 : relDeltaHalf k (fun j i => Fin (B.1 i j)) (relProj k g ⟨x, hx⟩) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hδ (fun j i => Fin (B.1 i j)) (relProj k g ⟨x, hx⟩) (fun j _ => sv j) (fun j i => det_relProj g sv x hxj hx j i)]`. Simplify using `only [Fintype.prod_bool, hsvT, hsvF, one_pow, map_one, _root_.one_zpow, one_mul, mul_one, absPow_half, modExp_false, modExp_true, Fintype.card_fin]`. Rewrite using `[← _root_.zpow_add]`. Use `zpow_zero (absPow k (1 / 2) s) using 2` and compare the differences between its conclusion and the goal. Use `push_cast`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2 : relDeltaHalf k (fun i j => Fin (B.1 i j)) (swapBlocks k (fun i j => Fin (B.1 i j)) (relProj k g ⟨x, hx⟩)) = absPow k (1 / 2) s ^ (((B.1 true true * B.1 true false + B.1 false true * B.1 false false : ℕ)) : ℤ)`. Rewrite using `[hδ (fun i j => Fin (B.1 i j)) (swapBlocks k (fun i j => Fin (B.1 i j)) (relProj k g ⟨x, hx⟩)) (fun _ j => sv j) (fun i j => det_relProj g sv x hxj hx j i)]`. Simplify using `only [Fintype.prod_bool, hsvT, hsvF, one_pow, map_one, _root_.one_zpow, one_mul, mul_one, absPow_half, modExp_false, modExp_true, Fintype.card_fin]`. Rewrite using `[← _root_.zpow_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Apply the tactic sequence `all_goals (push_cast; ring)`. Establish `hτ : ∀ z, ‖((twoChar χ₁ χ₂ (Fin a) (Fin b) z : ℂˣ) : ℂ)‖ = 1`. Introduce `z`. Rewrite using `[twoChar_apply, Units.val_mul, norm_mul, u₁ _, u₂ _, one_mul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e1, e2, e3, e4⟩` from `sizes B`. Establish `hBeq : B.1 true false = B.1 false true` using `by omega`. Establish `hN : B.1 true true * B.1 true false + B.1 false true * B.1 false false ≠ 0`. Establish `hr : B.1 true true * B.1 false true + B.1 false true * B.1 false false = B.1 false true * (B.1 false false + B.1 true true)` using `by ring`. Rewrite using `[hBeq, hr]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Nat.mul_ne_zero hc hz`. Establish `hu` using `norm_absPow_half_lt hs`. Use `intertwining_zero_central f g ρ (fun y => twoChar χ₁ χ₂ (Fin a) (Fin b) y) hρ φ x hx hcomm _ (hρ x) ?_` and prove the remaining obligations. Rewrite using `[h1, h2, one_mul]`. Introduce `h`.
-
-Rewrite `h` using `[Units.val_mul, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val]`. Establish `hn` using `congrArg (fun z : ℂ => ‖z‖) h`. Rewrite `hn` using `[norm_mul, norm_inv, norm_zpow, hτ, hτ, mul_one, zpow_natCast, inv_eq_one]`. Conclude with `(pow_lt_one₀ hu.1.le hu.2 hN).ne hn`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cell_scalar_case {W : Type} [AddCommGroup W] [Module ℂ W] (χ₁ χ₂ : kˣ →* ℂˣ)
     (u₁ : IsUnitaryChar χ₁) (u₂ : IsUnitaryChar χ₂)
@@ -442,9 +434,9 @@ theorem cell_scalar_case {W : Type} [AddCommGroup W] [Module ℂ W] (χ₁ χ₂
   exact (pow_lt_one₀ hu.1.le hu.2 hN).ne hn
 
 /- English proof (translation)
-Establish `hP : ∀ z, z ∈ relParab k g` using `mem_relParab_of_antidiag B g h₀ h₁`. Use `intertwining_zero_of_top f g ρ (twoChar χ₁ χ₂ (Fin a) (Fin b)) hρ φ hP (GlobalTheory.SmGL.leviTwo k (Fin a) (Fin b) (y, 1)) _ (hρ _) ?_` and prove the remaining obligations. Rewrite using `[cellChar_antidiag B f g h₀ h₁ χ₁ χ₂ _ (hP _), twoChar_apply]`. Use `show ((χ₁ (GeneralLinearGroup.det (1 : GL (Fin b) k)) * χ₂ (GeneralLinearGroup.det y) : ℂˣ) : ℂ) ≠ ((χ₁ (GeneralLinearGroup.det y) * χ₂ (GeneralLinearGroup.det (1 : GL (Fin b) k)) : ℂˣ) : ℂ)`. Rewrite using `[map_one, map_one, map_one, one_mul, mul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun h => hy (Units.ext h).symm`.
+A detailed English derivation is pending.
 -/
 theorem cell_antidiag_case {W : Type} [AddCommGroup W] [Module ℂ W] (χ₁ χ₂ : kˣ →* ℂˣ)
     (B : SizeMatrix (Two (Fin a) (Fin b)) (Two (Fin a) (Fin b)))
@@ -465,9 +457,9 @@ theorem cell_antidiag_case {W : Type} [AddCommGroup W] [Module ℂ W] (χ₁ χ�
   exact fun h => hy (Units.ext h).symm
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hall`. Simplify using `only [not_exists, ne_eq, not_not] at hall`. Apply `h` to reduce the goal to its premises. Use `MonoidHom.ext fun t => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `exists_det_eq ha t`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `hall y`.
+A detailed English derivation is pending.
 -/
 theorem exists_sep (ha : 0 < a) {χ₁ χ₂ : kˣ →* ℂˣ} (h : χ₁ ≠ χ₂) :
     ∃ y : GL (Fin a) k, χ₁ (GeneralLinearGroup.det y) ≠ χ₂ (GeneralLinearGroup.det y) := by
@@ -479,9 +471,9 @@ theorem exists_sep (ha : 0 < a) {χ₁ χ₂ : kˣ →* ℂˣ} (h : χ₁ ≠ χ
   exact hall y
 
 /- English proof (translation)
-Distinguish the cases in `hz : B.1 false false + B.1 true true = 0`. Establish `h0 : B.1 false false = 0` using `by omega`. Establish `h1 : B.1 true true = 0` using `by omega`. Take `⟨e1, e2, e3, e4⟩` from `sizes B`. Establish `hab : a = b` using `by omega`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha : 0 < a` using `by omega`. Establish `hχ : χ₁ ≠ χ₂` using `hne.resolve_left (fun h => h hab)`. Take `⟨y, hy⟩` from `exists_sep ha hχ`. Conclude with `cell_antidiag_case χ₁ χ₂ B f g h0 h1 y hy ρ hρ φ`. Conclude with `cell_scalar_case χ₁ χ₂ u₁ u₂ B f g hc hz s hs ρ hρ φ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cell_zero {W : Type} [AddCommGroup W] [Module ℂ W] (χ₁ χ₂ : kˣ →* ℂˣ)
     (u₁ : IsUnitaryChar χ₁) (u₂ : IsUnitaryChar χ₂) (hne : a ≠ b ∨ χ₁ ≠ χ₂)
@@ -506,7 +498,7 @@ theorem cell_zero {W : Type} [AddCommGroup W] [Module ℂ W] (χ₁ χ₂ : kˣ 
 end TwoBlocks
 
 /- English proof (translation)
-Introduce `k _ _ _ _ a b χ₁ χ₂ _ _ u₁ u₂ hne B f g hc φ`. Take `⟨s, hs⟩` from `exists_nabs_lt k`. Conclude with `cell_zero χ₁ χ₂ u₁ u₂ hne B f g hc s hs _ (fun y v => by rw [extTensor_detRep_apply, twoChar_apply]) φ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem offCell_eq_zero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a b : ℕ) (χ₁ χ₂ : kˣ →* ℂˣ), IsSmoothChar χ₁ → IsSmoothChar χ₂ → IsUnitaryChar χ₁ → IsUnitaryChar χ₂ → (a ≠ b ∨ χ₁ ≠ χ₂) → ∀ (B : SizeMatrix (Two (Fin a) (Fin b)) (Two (Fin a) (Fin b))) (f : ∀ i, (Σ j, Fin (B.1 i j)) ≃ Two (Fin a) (Fin b) i) (g : ∀ j, (Σ i, Fin (B.1 i j)) ≃ Two (Fin a) (Fin b) j), B.1 false true ≠ 0 → ∀ φ : (cellFunctor f g ((extTensor (detRep (Fin a) χ₁) (detRep (Fin b) χ₂)).comp (leviTwo k (Fin a) (Fin b)).symm.toMonoidHom)).IntertwiningMap ((extTensor (detRep (Fin a) χ₁) (detRep (Fin b) χ₂)).comp (leviTwo k (Fin a) (Fin b)).symm.toMonoidHom), φ.toLinearMap = 0 := by
   intro k _ _ _ _ a b χ₁ χ₂ _ _ u₁ u₂ hne B f g hc φ

@@ -6,17 +6,15 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped nonZeroDivisors Pointwise
 
 /- English proof (translation)
-Introduce `Ω _ _ _ V hV hne T hT`. Set `S : Set (HeightOneSpectrum (𝓞 ℚ))` to `{v | v.asIdeal ∣ Ideal.span {(T : 𝓞 ℚ)}}`. Establish `hS : S.Finite` using `Ideal.finite_factors (by`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hT)` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hD` using `GlobalTheory.Published.ChebotarevDegreeOne.dense (F := ℚ) (Ω := Ω) GlobalTheory.Published.chebotarevDegreeOne' hS`. Take `⟨φ, hφV, v, hvS, hv1, B, hB, hF⟩` from `hD.inter_open_nonempty V hV hne`. Establish `hq : normV v = Ideal.absNorm v.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hprime : (normV v).Prime`. Rewrite using `[hq]`. Conclude with `((GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified ℚ).1 v).2 hv1`. Establish `hmem : ((normV v : ℕ) : 𝓞 ℚ) ∈ v.asIdeal`. Rewrite using `[hq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.absNorm_mem _`. Use `⟨normV v, B, φ, hprime, ?_, ?_, hF, hφV⟩` and prove the remaining obligations. Introduce `hdvd`. Apply `hvS` to reduce the goal to its premises. Use `show v.asIdeal ∣ Ideal.span {(T : 𝓞 ℚ)}`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ideal.dvd_span_singleton]`. Take `⟨c, hc⟩` from `hdvd`. Rewrite using `[hc, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hmem`. Use `show B.valuation ((normV v : ℕ) : Ω) < 1`.
-
-Use `(hB ((normV v : ℕ) : 𝓞 ℚ)).2 hmem` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ML.chebQ :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (V : Set (G ℚ Ω)), IsOpen V → V.Nonempty → ∀ T : ℕ, T ≠ 0 → ∃ (q : ℕ) (A : ValuationSubring Ω) (φ : G ℚ Ω), q.Prime ∧ ¬ q ∣ T ∧ Over A q ∧ IsFrob (F := ℚ) A q φ ∧ φ ∈ V := by

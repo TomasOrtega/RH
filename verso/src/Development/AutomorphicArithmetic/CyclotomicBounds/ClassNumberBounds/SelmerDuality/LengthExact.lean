@@ -8,11 +8,11 @@ variable {R : Type*} [Ring R] {A B C D : Type*} [AddCommGroup A] [Module R A] [A
   [Module R B] [AddCommGroup C] [Module R C] [AddCommGroup D] [Module R D]
 
 /- English proof (translation)
-Establish `h1 : Module.length R B = Module.length R A + Module.length R (LinearMap.range g)`. Use `Module.length_eq_add_of_exact f g.rangeRestrict hf g.surjective_rangeRestrict ?_` and prove the remaining obligations. Introduce `x`. Rewrite using `[← hfg x]`. Conclude with `Subtype.ext_iff`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Module.length R C = Module.length R (LinearMap.range g) + Module.length R D`. Use `Module.length_eq_add_of_exact (LinearMap.range g).subtype h (Submodule.injective_subtype _) hh ?_` and prove the remaining obligations. Introduce `x`. Rewrite using `[hgh x]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Conclude with `⟨⟨x, hx⟩, rfl⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `y.2`. Rewrite using `[h1, h2, add_assoc]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_add_of_exact₄ (f : A →ₗ[R] B) (g : B →ₗ[R] C) (h : C →ₗ[R] D)
     (hf : Function.Injective f) (hfg : Function.Exact f g) (hgh : Function.Exact g h)
@@ -36,7 +36,7 @@ theorem length_add_of_exact₄ (f : A →ₗ[R] B) (g : B →ₗ[R] C) (h : C �
   rw [h1, h2, add_assoc]
 
 /- English proof (translation)
-Establish `h1` using `length_add_of_exact₄ f g h hf hfg hgh hh`. Rewrite `h1` using `[← hAD, add_comm (Module.length R B)]`. Conclude with `(ENat.add_right_injective_of_ne_top hfin h1).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_eq_of_exact₄ (f : A →ₗ[R] B) (g : B →ₗ[R] C) (h : C →ₗ[R] D)
     (hf : Function.Injective f) (hfg : Function.Exact f g) (hgh : Function.Exact g h)
@@ -47,7 +47,7 @@ theorem length_eq_of_exact₄ (f : A →ₗ[R] B) (g : B →ₗ[R] C) (h : C →
   exact (ENat.add_right_injective_of_ne_top hfin h1).symm
 
 /- English proof (translation)
-Establish `h1` using `length_add_of_exact₄ (LinearMap.ker f).subtype f (LinearMap.range f).mkQ (Submodule.injective_subtype _) (LinearMap.exact_subtype_ker_map f) (LinearMap.exact_map_mkQ_range f) (Submodule.mkQ_surjective _)`. Rewrite `h1` using `[add_comm (Module.length R (LinearMap.ker f))]`. Conclude with `ENat.add_right_injective_of_ne_top hfin h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_ker_eq_length_coker (f : A →ₗ[R] A) (hfin : Module.length R A ≠ ⊤) :
     Module.length R (LinearMap.ker f) = Module.length R (A ⧸ LinearMap.range f) := by

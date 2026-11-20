@@ -7,13 +7,13 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Admis
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.N Polynomial GlobalTheory GlobalTheory.WeilDeligne GlobalTheory.CuspRep UpperTheory.V.Af UpperTheory.GalN.V
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ n r ι w A h hl hr hlt`. Establish `hc : Continuous fun g => (r g : Matrix (Fin n) (Fin n) (Qbar l))` using `Units.continuous_val.comp hr`. Establish `hd : deg (frob h) = 1` using `deg_frob (h := h)`. Establish `hF` using `deg_eq_one_iff.1 hd`. Establish `mem : ∀ x : Qbar l, ((r (frob h : Weil h).1 : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l)).charpoly.IsRoot x → ι x ∈ (wdOf h hl ι r).eig (frob h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite using `[WD.eig, charPol_wdOf hl ι hc]`. Rewrite using `[Polynomial.mem_roots ((Matrix.charpoly_monic _).map _).ne_zero]`. Conclude with `(Polynomial.isRoot_map_iff (f := ι.toRingHom) ι.injective).2 hx`. Use `⟨(frob h : Weil h).1, 1, le_rfl, by simpa using hF, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `α β hα hβ k hk e`. Establish `hlt'` using `hlt (frob h) hd _ (mem α hα) _ (mem β hβ)`. Establish `e' : ‖ι α‖ ^ k = (((normV w ^ 1 : ℕ) : ℝ) * ‖ι β‖) ^ k`. Use `congrArg (fun z => ‖ι z‖) e` as an intermediate fact. Simplify `this` using `[norm_pow, norm_mul, map_pow, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `e2 : ‖ι α‖ = ((normV w : ℕ) : ℝ) * ‖ι β‖`. Use `(pow_left_inj₀ (norm_nonneg _) (by positivity) (by omega)).1 e'` as an intermediate fact. Simplify using `using this`. Conclude with `absurd hlt' (by rw [e2]; exact lt_irrefl _)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.GalN.V.L.wwd :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (r : G F Ω →* GL (Fin n) (Qbar l)) (ι : Qbar l ≃+* ℂ) (w : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω) (h : IsPlaceOver A w) (hl : ((l : ℕ) : 𝓞 F) ∉ w.asIdeal), Continuous r → (∀ g : ↥(Weil h), deg g = 1 → ∀ α ∈ (wdOf h hl ι r).eig g, ∀ β ∈ (wdOf h hl ι r).eig g, ‖α‖ < ((normV w : ℕ) : ℝ) * ‖β‖) → UnlinkAt r w A := by

@@ -29,9 +29,9 @@ def KVIdentity {P : Type} [Fintype P] (B : S3.MassData P) (c : ℕ → TB.Pt E �
     B.c0 * B.c0' * B.KV = B.n0c * ∑' ρ : ℕ, ‖∑' p, c ρ p • Vt p‖ ^ 2
 
 /- English proof (translation)
-Introduce `Mb hMb`. Rewrite using `[hI.2]`. Use `mul_le_mul_of_nonneg_left ?_ hn` and prove the remaining obligations. Use `first`. Consider the case `exact hI.1.tsum_le_of_sum_le hMb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Consider the case `exact tsum_le_of_sum_le hI.1 hMb`. Consider the case `exact tsum_le_of_sum_le' (le_trans (by positivity) (hMb ∅)) hMb`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem kv_identity_bound {P : Type} [Fintype P] {B : S3.MassData P} {c : ℕ → TB.Pt E → ℂ} {Vt : TB.Pt E → H}
     (hI : KVIdentity B c Vt) (hn : 0 ≤ B.n0c) :
@@ -80,9 +80,9 @@ def CarrierFull (C₄ CA : ℝ) (G0 : Sz.Glob (InfinitePlace D.host.E)) (de de' 
 end Carrier
 
 /- English proof (translation)
-Apply the tactic sequence `first | unfold Formalism.L2.SG.DataInst.Compat at hC | skip`. Establish `hf` using `hC.2.2.2.2.2.2`. Use `show Fintype.card (InfinitePlace D.host.E) = D.R.f`. Rewrite using `[← hf]`. Use `first`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (Fintype.card_congr S.pl).symm.trans (Fintype.card_fin S.f)`. Consider the case `(rw [← Fintype.card_fin S.f]; exact (Fintype.card_congr S.pl).symm)`. Consider the case `(convert (Fintype.card_congr S.pl).symm using 1; simp)`.
+A detailed English derivation is pending.
 -/
 theorem glob_f_eq {D : D7} {Wp Wq : InfinitePlace D.host.E → Type} [∀ x, NormedAddCommGroup (Wp x)]
     [∀ x, InnerProductSpace ℂ (Wp x)] [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)]
@@ -98,9 +98,7 @@ theorem glob_f_eq {D : D7} {Wp Wq : InfinitePlace D.host.E → Type} [∀ x, Nor
   | (convert (Fintype.card_congr S.pl).symm using 1; simp)
 
 /- English proof (translation)
-Establish `hQ` using `hP`. Unfold `S3.MassData.Pos at hQ`. Use the proof step `casesm* _ ∧ _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `first | positivity | (unfold S3.MassData.n0c; positivity)`.
-
-Apply the tactic sequence `first | positivity | (unfold S3.MassData.c0 S3.MassData.c0'; positivity) | (unfold S3.MassData.c0; positivity)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pos_facts {P : Type} [Fintype P] {B : S3.MassData P} (hP : B.Pos) : 0 < B.n0c ∧ 0 < B.c0 * B.c0' := by
   have hQ := hP
@@ -111,9 +109,9 @@ theorem pos_facts {P : Type} [Fintype P] {B : S3.MassData P} (hP : B.Pos) : 0 < 
   · first | positivity | (unfold S3.MassData.c0 S3.MassData.c0'; positivity) | (unfold S3.MassData.c0; positivity)
 
 /- English proof (translation)
-Take `⟨hn, hc⟩` from `pos_facts hP`. Establish `h1 : 0 ≤ B.c0 * B.c0' * B.KV`. Rewrite using `[hI.2]`. Conclude with `mul_nonneg hn.le (tsum_nonneg fun _ => by positivity)`. Assume the negation of the conclusion as `hneg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_neg at hneg`. Establish `h2` using `mul_neg_of_pos_of_neg hc hneg`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem kv_nonneg {E : Type} [Field E] {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {P : Type} [Fintype P] {B : S3.MassData P} {c : ℕ → TB.Pt E → ℂ} {Vt : TB.Pt E → H}
@@ -128,7 +126,7 @@ theorem kv_nonneg {E : Type} [Field E] {H : Type} [NormedAddCommGroup H] [InnerP
   linarith
 
 /- English proof (translation)
-Establish `hQ` using `hP`. Unfold `S3.MassData.Pos at hQ`. Use the proof step `casesm* _ ∧ _`. Apply the tactic sequence `first | positivity | assumption | (unfold S3.MassData.deg; positivity)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pos_deg {P : Type} [Fintype P] {B : S3.MassData P} (hP : B.Pos) : 0 < B.deg := by
   have hQ := hP
@@ -137,7 +135,7 @@ theorem pos_deg {P : Type} [Fintype P] {B : S3.MassData P} (hP : B.Pos) : 0 < B.
   first | positivity | assumption | (unfold S3.MassData.deg; positivity)
 
 /- English proof (translation)
-Establish `hQ` using `hP`. Unfold `S3.MassData.Pos at hQ`. Use the proof step `casesm* _ ∧ _`. Apply the tactic sequence `first | positivity | assumption | (unfold S3.MassData.ρ0; positivity)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pos_rho {P : Type} [Fintype P] {B : S3.MassData P} (hP : B.Pos) : 0 < B.ρ0 := by
   have hQ := hP
@@ -165,7 +163,7 @@ def RowsInputP (D : D7) : Prop :=
         RowsPSD S δ M L u u' F0 what₂ ϖ (Formalism.L2.SG.PairVal.vRdef D u u' F0 what₂ δ M) κ nc α
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ S δ M hA L u u' hT hC _ F0 what₂ hR ϖ hϖ nc hF α hα hB`. Conclude with `h Wp Wq S δ M hA L u u' hT hC F0 what₂ hR ϖ hϖ nc hF α hα hB`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rowsInputP_of {D : D7} (h : Formalism.L2.SG.DataInst.RowsInputAt D) : RowsInputP D := by
   intro Wp Wq _ _ _ _ S δ M hA L u u' hT hC _ F0 what₂ hR ϖ hϖ nc hF α hα hB
@@ -174,17 +172,15 @@ theorem rowsInputP_of {D : D7} (h : Formalism.L2.SG.DataInst.RowsInputAt D) : Ro
 open Formalism.L2.SG.AdBridge Formalism.L2.SG.CntLocal Formalism.L2.SG.DataInst in
 
 /- English proof (translation)
-Take `⟨CA, C, h1, h2, h3, h5, hrest⟩` from `Formalism.L2.SG.TheoremS.pbApplied C₄ Cthr h4`. Use `⟨CA, C, h1, h2, h3, h5, fun C0 CG CDel cT Cb a1 a2 a3 a4 a5 a6 => ?_⟩` and prove the remaining obligations. Take `⟨k0, hk⟩` from `hrest C0 CG CDel cT Cb a1 a2 a3 a4 a5 a6`. Use `⟨k0, ?_⟩` and prove the remaining obligations. Introduce `D L X hb Y hF u u' G0 de de' l i0 i0' νq X0 ψ Lsp ϖ κ Q nc Th Cp Cf c5 Cn hne hI hb0 hCar hcard hk0 hSz h16 hCf hsize hTT hPH hLTr hϖ hFo hκ hSum hKVI hBI hLink hSplit hSN hRB hRNS hRNG hDst hE hA hId hK2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Wp, Wq, i1, i2, i3, i4, i5, S, _, _, _, _, _, _, _, _, _, hCA, hG, hde, hde', hl, hC, _, _, _, hRI⟩` from `hCar`. Substitute `hG hde hde' hl` using the available equality. Establish `hInst : J.Inst (dOf S Y.δ Y.M u u') S.pl S.G CA S.de S.de' ((D.mem u).A.T : ℝ) ((D.mem u').A.T : ℝ) S.l`. Establish `h` using `inst_dOf S Y.δ Y.M u u'`. Rewrite `h` using `[hCA, hC.2.2.2.2.1, hC.2.2.2.2.2.1]`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Establish `hLM` using `hLMA D Wp Wq S Y.δ Y.M Y.agree u u' hC`. Take `⟨-, hBdd, -, hαpos, hDens⟩` from `hDIA D hLTr hsize Y.δ Y.M Y.agree Lsp u u' hTT (X.Fu u) (Y.what₂ u) (Y.rowsOK u) ϖ hϖ`. Establish `hDI : PB.DensInput S.G.k S.G.r S.G.f (supDens Lsp Y.δ ϖ u u' (X.Fu u) (Y.what₂ u) / ∏' p, alpD u u' p)`. Rewrite using `[hC.2.1, hC.1, glob_f_eq S hC]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hDens`. Establish `hPSD` using `(hRIA D Wp Wq S Y.δ Y.M Y.agree Lsp u u' hTT hC hPH (X.Fu u) (Y.what₂ u) (Y.rowsOK u) ϖ hϖ nc hFo _ hαpos hBdd).2 κ hκ`. Establish `hKV' : KVIdentity (massDataY X hb Y u u' X0 ψ (supDens Lsp Y.δ ϖ u u' (X.Fu u) (Y.what₂ u) / ∏' p, alpD u u' p) C Th (Formalism.L2.SG.PairVal.vRdef D u u' (X.Fu u) (Y.what₂ u) Y.δ Y.M) Q i0 i0' νq) (rowVec (Formalism.L2.SG.PairVal.vRdef D u u' (X.Fu u) (Y.what₂ u) Y.δ Y.M) κ (nc …` using `hKVI`. Establish `hRows` using `rowsInput_of hC hPSD hSum _ rfl (kv_nonneg hKV' hBI.1) (kv_identity_bound hKV' (pos_facts hBI.1).1.le)`. Establish `: CompleteSpace (Formalism.L2.SG.PackageTie.HS (X.Vpi u') (X.Vpi u))` using `FiniteDimensional.complete ℂ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CompleteSpace (Formalism.L2.SG.TermOp.H1 X u u' (Y.what₂ u) (Y.what₂ u'))` using `FiniteDimensional.complete ℂ _`. Establish `hEL` using `Formalism.L2.SG.MassDataConc.energyLink_bCF X hb Y.hK (Y.FN u) (Y.FN u') u u' X0 ψ (Y.tO u u') (supDens Lsp Y.δ ϖ u u' (X.Fu u) (Y.what₂ u) / ∏' p, alpD u u' p) C Th (Formalism.L2.SG.PairVal.vRdef D u u' (X.Fu u) (Y.what₂ u) Y.δ Y.M) Q Y.M Y.δ i0 i0' νq _ rfl`. Rewrite `hEL` using `[hcard, ← hC.1, ← hC.2.2.2.2.2.2]`. Establish `hPB` using `hk D.host.E S.W (dOf S Y.δ Y.M u u') S.pl S.G L.sc.b Cp Cf Th S.de S.de' (D.mem u).A.T (D.mem u').A.T (D.duS u) (D.duS u') S.l hk0 hSz h16 hCf (unram_host D) hInst hLM _ _ _ _ _ hRI hDI _ _ hRows hBI hEL _ _ _ _ _ (Y.tO u u') c5 Cn hLink hSplit hSN hRB hRNS hRNG`. Use `⟨by rw [hDst] at hPB; exact hPB, ?_⟩` and prove the remaining obligations.
-
-Conclude with `packageTieConc D L hb0 Formalism.L2.SG.Pf.isoNorm X Y hF hI u u' hne (Formalism.L2.SG.Pf.dimTie X u) (Formalism.L2.SG.Pf.dimTie X u') hE hA hId hK2 (Formalism.L2.SG.Pf.normTie hF u u') ⟨_, _, S.G, S.de, (D.mem u).A.T, (D.duS u : ℝ), (D.duS u' : ℝ), ⟨rfl, rfl, rfl, hDst⟩, hPB⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem theoremS_rec
     (hLMA : ∀ D : D7, LocalModelAt D) (hDIA : ∀ D : D7, Formalism.L2.SG.Pf.LocCP.LocTied D → DensInputAt D) (hRIA : ∀ D : D7, RowsInputP D)
@@ -302,7 +298,7 @@ def SConc2 (D : D7) : Prop := Nonempty (STies D)
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h` using `finrank_cols hF (T.hI hF) u`. Unfold `Formalism.L2.SG.RowsConc.duC`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem STies.duC_eq (T : STies D) (hF : FinX T.Y) (u : D.what₂.Word) : Formalism.L2.SG.RowsConc.duC T.X T.Y u = (D.duS u : ℝ) := by
   have h := finrank_cols hF (T.hI hF) u
@@ -310,7 +306,7 @@ theorem STies.duC_eq (T : STies D) (hF : FinX T.Y) (u : D.what₂.Word) : Formal
   exact_mod_cast h
 
 /- English proof (translation)
-Use `first`. Consider the case `exact T.autTie.Dstar_eq.symm`. Consider the case `exact (Formalism.MainNotions.S.AutTie.Dstar_eq T.autTie).symm`. Consider the case `(rw [T.autTie.Dstar_eq]; rfl)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem STies.dstC_eq (T : STies D) : Formalism.L2.SG.RowsConc.DstC T.X = D.what₂.Dstar := by
   first
@@ -319,7 +315,7 @@ theorem STies.dstC_eq (T : STies D) : Formalism.L2.SG.RowsConc.DstC T.X = D.what
   | (rw [T.autTie.Dstar_eq]; rfl)
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.RowsConc.ConcTie`. Conclude with `⟨hK, hN, fun u => T.duC_eq hF u, T.dstC_eq, hW, hph, ⟨T.hb, T.ψ, T.measTie, T.ψ_char, T.ψ_std, T.measCompat, T.locCompat, hLT⟩, hTF⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem STies.concTie (T : STies D) (hF : FinX T.Y) (hK : T.X.LevelSubgroupNormalized)
     (hN : ∀ u, Formalism.L2.SG.PoincareInHH.Cut.NeatKu T.X u T.Y.hK) (hW : Formalism.L2.SG.WuDecay.WuDecay T.X)
@@ -330,7 +326,7 @@ theorem STies.concTie (T : STies D) (hF : FinX T.Y) (hK : T.X.LevelSubgroupNorma
     ⟨T.hb, T.ψ, T.measTie, T.ψ_char, T.ψ_std, T.measCompat, T.locCompat, hLT⟩, hTF⟩
 
 /- English proof (translation)
-Unfold `SConc`. Conclude with `⟨T.X, T.hb, T.Y, hF, T.autTie, hK, hCL, T.measTie, ⟨T.ψ, T.ψ_char, T.ψ_std, T.measCompat⟩, hW, hph, ⟨T.hI hF⟩⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem STies.sConc (T : STies D) (hF : FinX T.Y) (hK : T.X.LevelSubgroupNormalized) (hCL : ∀ u, ColsLink T.X u T.Y.hK) (hW : Formalism.L2.SG.WuDecay.WuDecay T.X)
     (hph : Integrable T.X.ph (Formalism.L2.SG.ProjRows.muInf T.X.B.I)) : SConc D := by
@@ -375,19 +371,19 @@ end GlobOf
 open Formalism.L2.SG.AdBridge Formalism.L2.SG.CntLocal Formalism.L2.SG.DataInst Formalism.L2.SG.RowsConc in
 
 /- English proof (translation)
-Take `⟨CA, C, h1, h2, h3, h5, hrest⟩` from `theoremS_rec hLMA hDIA hRIA C₄ Cthr h4`. Use `⟨CA, C, h1, h2, h3, h5, ?_⟩` and prove the remaining obligations. Introduce `C0 CG CDel cT Cb hC0 hCG hCDel hcT hCb hcTb`. Take `⟨k0, hk0⟩` from `hrest C0 CG CDel cT Cb hC0 hCG hCDel hcT hCb hcTb`. Use `⟨k0, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Cg cb Cw cTf CT C0f`. Take `⟨Cn, hCn, C'₀, Cl₀, hNG'⟩` from `hNG Cg cb Cw cTf CT C0f`. Use `⟨Cn, C'₀, Cl₀, hCn, ?_⟩` and prove the remaining obligations. Introduce `C' Cl hC' hCl D L T hF u u' G0 de de' l i0 i0' νq X0 Lsp ϖ κ Q nc Th Cp Cf huu hb hCar hcard hk hSz h16 hCf hk2 hSN hDst hRB hRNS hH0 hSt hCT hAC hmod hϖ hFo hRL hRS hRF hBI hLk hSI hKE hAT hID hpart`. Establish `hNGr` using `hNG' C' Cl hC' hCl D L T.X T.Y u u' hH0 hSt hCT hAC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hCar'` using `hCar`. Take `⟨Wp, Wq, i1, i2, i3, i4, i5, S, Tw, fw, ν', m₀, τ, Qm, Qim, eP, eQ, _, hSG, _, _, _, hComp, _⟩` from `hCar'`. Establish `hComp'` using `hComp`. Unfold `Formalism.L2.SG.DataInst.Compat at hComp'`. Establish `hGr : G0.r = D.R.rS` using `by rw [← hSG]; exact hComp'.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hGk : G0.k = D.R.k` using `by rw [← hSG]; exact hComp'.2.1`. Establish `hGf : G0.f = D.R.f` using `by rw [← hSG]; exact glob_f_eq S hComp`. Establish `hCT'` using `hCT`. Unfold `Formalism.L2.SG.RowsConc.ConcTie at hCT'`. Take `⟨_, _, hdu, hDs, _, _, ⟨_, _, _, _, _, _, _, hLT⟩, _⟩` from `hCT'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Establish `hPH : Formalism.MainNotions.S.Lat.PrimeHyp D u (Formalism.MainNotions.S.Lat.Tu D u')` using `by first`. Consider the case `exact Formalism.MainNotions.VanishingOnXAndXPlus.primeHyp_of_stand D u u' hSt`. Consider the case `exact Formalism.MainNotions.VanishingOnXAndXPlus.primeHyp_of_stand D u u' (by unfold Formalism.MainNotions.VanishingOnXAndXPlus.Stand; unfold Formalism.MainNotions.S.Cnt.Stand at hSt; exact hSt)`. Establish `hrat : (D.duS u : ℝ) * (D.duS u') / (G0.size de (D.mem u).A.T (D.duS u)).Dstar = Formalism.L2.SG.RowsConc.ddC T.X T.Y u u'`. Rewrite using `[hDst]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.L2.SG.RowsConc.ddC`. Rewrite using `[hdu u, hdu u', hDs]`. Establish `heL : Real.exp (-((1 / 3 : ℝ) * G0.k * G0.f * Real.log G0.k)) = Formalism.L2.SG.RowsConc.epsL D`. Unfold `Formalism.L2.SG.RowsConc.epsL`. Rewrite using `[hGk, hGf]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `heN : ((2 : ℝ) ^ (G0.k - 2 * G0.r - 5))⁻¹ * Real.exp (Cn * ((2 * G0.r + 2 : ℕ) : ℝ) ^ 5 * G0.f * Real.log L.sc.b) = Formalism.L2.SG.RowsConc.epsNG D L Cn`. Unfold `Formalism.L2.SG.RowsConc.epsNG Formalism.L2.SG.RowsConc.mR`. Rewrite using `[hGk, hGr, hGf]`. Apply the tactic sequence `exact hk0 D L T.X T.hb T.Y hF u u' G0 de de' l i0 i0' νq X0 T.ψ Lsp ϖ κ Q nc Th Cp Cf (1 / 3) Cn huu ⟨T.hI hF⟩ hb hCar hcard hk hSz h16 hCf hk2 hmod hPH hLT hϖ hFo hRL hRS hRF hBI hLk hSI hSN (by first | (rw [heL, hrat]; exact hRB) | (convert hRB using 1 <;> first | exact heL | e …`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem theoremS_recursion_fixed
     (hLMA : ∀ D : D7, LocalModelAt D) (hDIA : ∀ D : D7, Formalism.L2.SG.Pf.LocCP.LocTied D → DensInputAt D) (hRIA : ∀ D : D7, RowsInputP D)
@@ -507,9 +503,9 @@ abbrev anY : AnIn :=
 def MassDataPosY : Prop := (massDataY X hb Y u u' X0 ψ sd C Th vR Q i0 i0' νq).Pos
 
 /- English proof (translation)
-Use `⟨hPos, hForm, ?_, rfl, ?_, ?_, ?_, hLS hH, hMs hH, hCo hH, inOrdinary_bCF X hb Y.hK (Y.FN u) (Y.FN u') u u' X0 ψ (Y.tO u u') sd C Th vR Q Y.M Y.δ i0 i0' νq hP, hTy hH hP hLT hLT' hTF, hIx hH⟩` and prove the remaining obligations. Establish `hρ : (massDataY X hb Y u u' X0 ψ sd C Th vR Q i0 i0' νq).ρ0 ≠ 0` using `ne_of_gt (pos_rho hPos)`. Conclude with `inMass_bC X hb Y.hK (Y.FN u) (Y.FN u') u u' X0 (locOf X u u' ψ) (Y.tO u u') sd C Th _ hρ`. Use `show IntOO X u u' 1 = Formalism.L2.SG.MassDataConc.kapN D * DisintegrationConstant X u u' 1 * (IntC X u u' 1 / Formalism.L2.SG.MassDataConc.kapN D)`. Rewrite using `[mul_assoc, mul_div_assoc', mul_div_assoc', mul_div_cancel_left₀ _ hk]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `IntOO IntC`. Rewrite using `[hNu, ENNReal.toReal_mul, ENNReal.toReal_ofReal (cooOf_nonneg X u u' 1)]`. Use `show IntOO X u u' 1 ≤ 1 / degX X`. Conclude with `ENNReal.toReal_le_of_le_ofReal (one_div_nonneg.mpr (pos_deg hPos).le) hInf.2.2`. Conclude with `inVolumes_of_compat X hb Y.hK (Y.FN u) (Y.FN u') u u' X0 (locOf X u u' ψ) (anY X Y u u' ψ sd C Th vR Q i0 i0' νq) hVol hH ⟨ψ, hψ, hstd, hMC⟩ hdet`.
+A detailed English derivation is pending.
 -/
 theorem massDataInputs_Y (hPos : MassDataPosY X hb Y u u' X0 ψ sd C Th vR Q i0 i0' νq)
     (hForm : InFormC X hb Y.hK (Y.FN u) (Y.FN u') u u' X0 ψ (Y.tO u u') sd C Th vR Q Y.M Y.δ i0 i0' νq)
@@ -568,11 +564,11 @@ def CarrierC : Prop :=
 open Formalism.L2.SG.AdBridge Formalism.L2.SG.CntLocal Formalism.L2.SG.DataInst Formalism.L2.SG.RowsConc in
 
 /- English proof (translation)
-Take `⟨C₄, CA₀, h4, hC⟩` from `hCar`. Take `⟨CA, C, h1, h2, h3, h5, hrest⟩` from `theoremS_recursion_fixed hLMA hDIA hRIA hNG C₄ (max Cthr CA₀) h4`. Use `⟨C₄, CA, C, h4, le_trans (le_max_left _ _) h1, h2, h3, h5, fun C0 CG CDel cT Cb a1 a2 a3 a4 a5 a6 => ?_⟩` and prove the remaining obligations. Take `⟨k0, hk⟩` from `hrest C0 CG CDel cT Cb a1 a2 a3 a4 a5 a6`. Take `⟨k0c, hCk⟩` from `hC CA (le_trans (le_max_right _ _) h1) h2 C0 CG CDel cT Cb a1 a2 a3 a4 a5 a6`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max k0 k0c, fun Cg cb Cw cTf CT C0f => ?_⟩` and prove the remaining obligations. Take `⟨Cn, C'₀, Cl₀, hCn, hrow⟩` from `hk Cg cb Cw cTf CT C0f`. Take `⟨C'₁, Cl₁, hCc⟩` from `hCk Cg cb Cw cTf CT C0f`. Use `⟨Cn, max C'₀ C'₁, max Cl₀ Cl₁, hCn, fun C' Cl hC' hCl => ?_⟩` and prove the remaining obligations. Introduce `D L T hF u u' e τ i0 i0' νq X0 Lsp ϖ κ Q nc Th Cp Cf hne hb0 hii hPt hNu hPT hcard hk0 hSz h16 hCf hsize hSN hDst hRB hRNS hHyp0 hStand hCT hAC hTT hϖ hFo hκ hSum hKVI hBI hLink hSplit hE hA hId hK2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hCF` using `hCc C' Cl (le_trans (le_max_right _ _) hC') (le_trans (le_max_right _ _) hCl) D L T u u' e τ Cp Th i0 i0' νq X0 (supDens Lsp T.Y.δ ϖ u u' (T.X.Fu u) (T.Y.what₂ u) / ∏' p, alpD u u' p) C Th (Formalism.L2.SG.PairVal.vRdef D u u' (T.X.Fu u) (T.Y.what₂ u) T.Y.δ T.Y.M) Q hne (le_trans …`. Conclude with `hrow C' Cl (le_trans (le_max_left _ _) hC') (le_trans (le_max_left _ _) hCl) D L T hF u u' (gOf D e) (deOf D τ u) (deOf D τ u') (lOf D (deOf D τ u) (deOf D τ u')) i0 i0' νq X0 Lsp ϖ κ Q nc Th Cp Cf hne hb0 hCF hcard (le_trans (le_max_left _ _) hk0) hSz h16 hCf hsize hSN hDst hRB …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem theoremS_recursion_constants
     (hLMA : ∀ D : D7, LocalModelAt D) (hDIA : ∀ D : D7, Formalism.L2.SG.Pf.LocCP.LocTied D → DensInputAt D) (hRIA : ∀ D : D7, RowsInputP D)

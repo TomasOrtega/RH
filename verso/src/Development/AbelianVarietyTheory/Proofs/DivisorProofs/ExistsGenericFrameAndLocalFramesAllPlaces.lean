@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `x.denseRange.exists_mem_open V.isOpen hV`. Introduce `z _`. Establish `: z = y` using `Subsingleton.elim _ _`. Substitute `this` using the available equality. Conclude with `hy`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem top_le_preimage_of_isDominant {K : Type} [Field K] {C : Scheme.{0}} (x : Sp K ⟶ C) [IsDominant x]
     (V : C.Opens) (hV : (V : Set C).Nonempty) : ⊤ ≤ x ⁻¹ᵁ V := by
@@ -27,7 +27,7 @@ theorem top_le_preimage_of_isDominant {K : Type} [Field K] {C : Scheme.{0}} (x :
   exact hy
 
 /- English proof (translation)
-Introduce `z _`. Establish `hs : z ⤳ IsLocalRing.closedPoint R` using `(PrimeSpectrum.le_iff_specializes _ _).1 (IsLocalRing.le_maximalIdeal z.2.ne_top)`. Conclude with `(hs.map b.continuous).mem_open V.isOpen h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem top_le_preimage_of_closedPoint {R : Type} [CommRing R] [IsLocalRing R] {C : Scheme.{0}} (b : Sp R ⟶ C)
     (V : C.Opens) (h : b (IsLocalRing.closedPoint R) ∈ V) : ⊤ ≤ b ⁻¹ᵁ V := by
@@ -37,11 +37,9 @@ theorem top_le_preimage_of_closedPoint {R : Type} [CommRing R] [IsLocalRing R] {
   exact (hs.map b.continuous).mem_open V.isOpen h
 
 /- English proof (translation)
-Use `set M := (ht.basis (inf_le_right : V₀ ⊓ V ≤ V)).toMatrix (hs.basis (inf_le_left : V₀ ⊓ V ≤ V₀)) with hM`. Use `⟨⟨b, V, t, V₀ ⊓ V, inf_le_left, inf_le_right, hx, M, hb, hbV, ht, fun j => ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Use `(ht.basis (inf_le_right : V₀ ⊓ V ≤ V)).sum_repr (hs.basis (inf_le_left : V₀ ⊓ V ≤ V₀) j)` as an intermediate fact. Simplify using `only [IsFrame.basis_apply] at this`. Rewrite using `[hM]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Module.Basis.toMatrix_apply, IsFrame.basis_apply]`. Conclude with `this.symm`. Establish `hu : IsUnit M.det`. Use `Module.Basis.toMatrix_mul_toMatrix_flip (ht.basis (inf_le_right : V₀ ⊓ V ≤ V)) (hs.basis (inf_le_left : V₀ ⊓ V ≤ V₀))` as an intermediate fact. Conclude with `isUnit_iff_exists_inv.2 ⟨_, by rw [← Matrix.det_mul, this, Matrix.det_one]⟩`.
-
-Use `(hu.map (evAt x hx)).ne_zero` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem locFrame_of_frames {k K : Type} [Field k] [Field K] [Algebra k K] {C : Scheme.{0}} (x : Sp K ⟶ C)
     {W : C.Modules} {r : ℕ} {V₀ V : C.Opens} {s : Fin r → Γ(W, V₀)} {t : Fin r → Γ(W, V)}
@@ -66,26 +64,24 @@ theorem locFrame_of_frames {k K : Type} [Field k] [Field K] [Algebra k K] {C : S
     rwa [RingHom.map_det] at this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i j => by by_cases h : i = j <;> simp [Matrix.one_apply, h], by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem unimod_one' {k F : Type} [Field k] [Field F] [Algebra k F] {n : ℕ} (v : Place k F) :
     Unimod v (1 : Matrix (Fin n) (Fin n) F) :=
   ⟨fun i j => by by_cases h : i = j <;> simp [Matrix.one_apply, h], by simp⟩
 
 /- English proof (translation)
-Introduce `k K _ _ _ _ _ C _ x hx W r hW`. Use `haveI : IsDominant x := hx.2.1.1`. Establish `hxx : spMap (algebraMap K K) ≫ x = x`. Express the relevant statement in the definitionally equal form `spMap (RingHom.id K) ≫ x = x`. Conclude with `(congrArg (· ≫ x) (Spec.map_id _)).trans (Category.id_comp x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨V₀, s, hη, hs⟩` from `hW (x (IsLocalRing.closedPoint K))`. Establish `hV₀ : (V₀ : Set C).Nonempty` using `⟨_, hη⟩`. Establish `hcen : ∀ v : Place k K, ∃ b : Sp v.O ⟶ C, spMap v.O.subtype ≫ b = x` using `fun v => by`. Take `⟨b, hb, -⟩` from `GlobalTheory.T.existsUnique_centre_functionFieldPlace_curve k K K C x hx v`. Conclude with `⟨b, hb.trans hxx⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose b hb using hcen`. Establish `key : ∀ v, ∃ gv : Matrix (Fin r) (Fin r) K, LocFrame x s v gv ∧ gv.det ≠ 0 ∧ (⊤ ≤ b v ⁻¹ᵁ V₀ → gv = 1)`. Introduce `v`. Distinguish the cases in `hv : ⊤ ≤ b v ⁻¹ᵁ V₀`. Establish `hx' : ⊤ ≤ x ⁻¹ᵁ (V₀ ⊓ V₀)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inf_idem]`. Conclude with `top_le_preimage_of_isDominant x V₀ hV₀`. Take `⟨h1, h2⟩` from `locFrame_of_frames x hs hs v (b v) (hb v) hv hx'`. Use `⟨_, h1, h2, fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.toMatrix_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Take `⟨V, t, hc, ht⟩` from `hW (b v (IsLocalRing.closedPoint v.O))`. Establish `hbV` using `top_le_preimage_of_closedPoint (b v) V hc`. Establish `hx' : ⊤ ≤ x ⁻¹ᵁ (V₀ ⊓ V)` using `fun z hz => ⟨top_le_preimage_of_isDominant x V₀ hV₀ hz, top_le_preimage_of_isDominant x V ⟨_, hc⟩ hz⟩`. Take `⟨h1, h2⟩` from `locFrame_of_frames x hs ht v (b v) (hb v) hbV hx'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, h1, h2, fun h => absurd h hv⟩`. Use `choose g hg1 hg2 hg3 using key`. Use `⟨V₀, s, g, hV₀, hs, ⟨hg2, ?_⟩, hg1⟩` and prove the remaining obligations. Use `(GlobalTheory.T.finite_places_centre_outside_open k K K C x hx V₀ hV₀).subset fun v hv => ⟨b v, (hb v).trans hxx.symm, fun h => hv ?_⟩` and prove the remaining obligations. Rewrite using `[hg3 v h]`.
-
-Conclude with `unimod_one' v`.
+A detailed English derivation is pending.
 -/
 theorem exists_frame_locFrames : ∀ (k K : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field K] [Algebra k K] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)] (x : Sp K ⟶ C), IsGenOver k x →
   ∀ (W : C.Modules) (r : ℕ), IsVB W r → ∃ (V₀ : C.Opens) (s : Fin r → Γ(W, V₀)) (g : Place k K → Matrix (Fin r) (Fin r) K), (V₀ : Set C).Nonempty ∧ IsFrame s ∧ admitted g ∧ ∀ v, LocFrame x s v (g v) := by

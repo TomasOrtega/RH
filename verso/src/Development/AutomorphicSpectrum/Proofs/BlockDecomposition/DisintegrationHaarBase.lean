@@ -9,13 +9,11 @@ open scoped ENNReal NNReal
 namespace GlobalTheory.CompanionTheory.SW.FibreShift
 
 /- English proof (translation)
-Establish `hC : IsCompact (T' '' tsupport φ)` using `hc.isCompact.image_of_continuousOn (hT'.mono hs)`. Establish `hCW : T' '' tsupport φ ⊆ W`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `(hmem' w).2 (hs hw)`. Establish `hsup : ∀ v, v ∉ T' '' tsupport φ → φ (T v) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Assume the negation of the conclusion as `h`. Establish `h1 : T v ∈ tsupport φ` using `subset_tsupport _ h`. Conclude with `hv ⟨T v, h1, hinv v ((hmem v).1 (hs h1))⟩`. Establish `hts : tsupport (fun v => φ (T v)) ⊆ T' '' tsupport φ`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `closure_minimal ?_ hC.isClosed` and prove the remaining obligations. Introduce `v hv`. Assume the negation of the conclusion as `h`. Conclude with `hv (hsup v h)`. Use `⟨continuous_of_tsupport fun v hv => ?_, HasCompactSupport.intro hC hsup, hts.trans hCW⟩` and prove the remaining obligations.
-
-Conclude with `ContinuousAt.comp (g := φ) hφ.continuousAt (hT.continuousAt (hW.mem_nhds (hCW (hts hv))))`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem comp_shift_props {V : Type} [TopologicalSpace V] [T2Space V] {W : Set V} (hW : IsOpen W)
     {T T' : V → V} (hT : ContinuousOn T W) (hT' : ContinuousOn T' W)
@@ -42,7 +40,7 @@ theorem comp_shift_props {V : Type} [TopologicalSpace V] [T2Space V] {W : Set V}
   exact ContinuousAt.comp (g := φ) hφ.continuousAt (hT.continuousAt (hW.mem_nhds (hCW (hts hv))))
 
 /- English proof (translation)
-Take `⟨hi, hc1⟩` from `h.2.2 φ hφ hc hs`. Establish `hcont : Continuous fun b => ENNReal.ofReal (∫ v, φ v ∂(fib b))` using `ENNReal.continuous_ofReal.comp (continuousOn_univ.1 hc1)`. Conclude with `hcont.congr fun b => ofReal_integral_eq_lintegral_ofReal (hi b (Set.mem_univ b)) (Filter.Eventually.of_forall h0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_lintegral {V X Y : Type} [TopologicalSpace V] [MeasurableSpace V]
     [TopologicalSpace X] [MeasurableSpace X] {μ : Measure V} {ν : Measure X} {f : V → Y}
@@ -57,9 +55,9 @@ theorem continuous_lintegral {V X Y : Type} [TopologicalSpace V] [MeasurableSpac
     ofReal_integral_eq_lintegral_ofReal (hi b (Set.mem_univ b)) (Filter.Eventually.of_forall h0)
 
 /- English proof (translation)
-Rewrite using `[← lintegral_indicator hW]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v ∈ W`. Rewrite using `[Set.indicator_of_mem hv]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem hv, ha v hv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem setLIntegral_eq_lintegral {V : Type} [MeasurableSpace V] {μ : Measure V} {W : Set V}
     (hW : MeasurableSet W) {a : V → ℝ≥0∞} (ha : ∀ v, v ∉ W → a v = 0) :
@@ -72,21 +70,21 @@ theorem setLIntegral_eq_lintegral {V : Type} [MeasurableSpace V] {μ : Measure V
   · rw [Set.indicator_of_notMem hv, ha v hv]
 
 /- English proof (translation)
-Take `⟨hφs, hcs, hss⟩` from `comp_shift_props hW (hTc s) (hTc (-s)) (hTW s) (hTW (-s)) (hinv s) hφ hc hs`. Establish `hψm : Measurable fun v => ENNReal.ofReal (φ v)` using `ENNReal.measurable_ofReal.comp hφ.measurable`. Establish `hψ0 : ∀ v, v ∉ W → ENNReal.ofReal (φ v) = 0`. Introduce `v hv`. Rewrite using `[image_eq_zero_of_notMem_tsupport fun h => hv (hs h), ENNReal.ofReal_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hψs0 : ∀ v, v ∉ W → ENNReal.ofReal (φ (T s v)) = 0` using `fun v hv => hψ0 _ fun h => hv ((hTW s v).1 h)`. Establish `hD` using `continuous_lintegral hF hφ hc (hs.trans hWU) h0`. Establish `hD'` using `continuous_lintegral hF hφs hcs (hss.trans hWU) (fun v => h0 _)`. Establish `hDs : Continuous fun b => ∫⁻ v, ENNReal.ofReal (φ v) ∂(fib (b + s))` using `hD.comp (continuous_add_right s)`. Use `GlobalTheory.T.continuous_densities_eq_of_integrals_on_compacts X ν Set.univ isOpen_univ _ _ hD'.continuousOn hDs.continuousOn (fun S hS _ => ?_) c (Set.mem_univ c)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hSm` using `hS.measurableSet`. Establish `hS'm : MeasurableSet ((fun x : X => x - s) ⁻¹' S)` using `(continuous_sub_right s).measurable hSm`. Establish `e1` using `GlobalTheory.CompanionTheory.SW.FibreUniq.lintegral_preimage hι hg hf hW hWU hF (fun v => ENNReal.ofReal (φ (T s v))) (hψm.comp (hTm s)) hψs0 S hSm`. Establish `e2` using `GlobalTheory.CompanionTheory.SW.FibreUniq.lintegral_preimage hι hg hf hW hWU hF (fun v => ENNReal.ofReal (φ v)) hψm hψ0 _ hS'm`. Establish `hAm : Measurable ((g ⁻¹' ((fun x : X => x - s) ⁻¹' S)).indicator fun v => ENNReal.ofReal (φ v))` using `hψm.indicator (hg.measurable hS'm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA0 : ∀ v, v ∉ W → (g ⁻¹' ((fun x : X => x - s) ⁻¹' S)).indicator (fun v => ENNReal.ofReal (φ v)) v = 0` using `fun v hv => Set.indicator_apply_eq_zero.2 fun _ => hψ0 v hv`. Establish `hB0 : ∀ v, v ∉ W → (g ⁻¹' S).indicator (fun v => ENNReal.ofReal (φ (T s v))) v = 0` using `fun v hv => Set.indicator_apply_eq_zero.2 fun _ => hψs0 v hv`. Establish `hcomp : ∀ v, (g ⁻¹' S).indicator (fun v => ENNReal.ofReal (φ (T s v))) v = (g ⁻¹' ((fun x : X => x - s) ⁻¹' S)).indicator (fun v => ENNReal.ofReal (φ v)) (T s v)`. Introduce `v`. Distinguish the cases in `hv : v ∈ W`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hiff : T s v ∈ g ⁻¹' ((fun x : X => x - s) ⁻¹' S) ↔ v ∈ g ⁻¹' S`. Simplify using `only [Set.mem_preimage, hgT s v hv, add_sub_cancel_right]`. Distinguish the cases in `hvS : v ∈ g ⁻¹' S`. Rewrite using `[Set.indicator_of_mem hvS, Set.indicator_of_mem (hiff.2 hvS)]`. Rewrite using `[Set.indicator_of_notMem hvS, Set.indicator_of_notMem (fun h => hvS (hiff.1 h))]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB0 v hv, hA0 _ fun h => hv ((hTW s v).1 h)]`. Establish `hmid : ∫⁻ v in W, (g ⁻¹' S).indicator (fun v => ENNReal.ofReal (φ (T s v))) v ∂μ = ∫⁻ v in W, (g ⁻¹' ((fun x : X => x - s) ⁻¹' S)).indicator (fun v => ENNReal.ofReal (φ v)) v ∂μ`. Rewrite using `[setLIntegral_eq_lintegral hW.measurableSet hB0, setLIntegral_eq_lintegral hW.measurableSet hA0]`. Simplify using `only [hcomp]`. Rewrite using `[← lintegral_map hAm (hTm s), hTμ s]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hpre : (fun x : X => x + s) ⁻¹' ((fun x : X => x - s) ⁻¹' S) = S`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `htr` using `(measurePreserving_add_right ν s).setLIntegral_comp_preimage hS'm hD.measurable`. Rewrite `htr` using `[hpre]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← e1, hmid, e2, ← htr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lintegral_shift {V X Y : Type} [TopologicalSpace V] [T2Space V] [MeasurableSpace V]
     [BorelSpace V] [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X]
@@ -155,15 +153,15 @@ theorem lintegral_shift {V X Y : Type} [TopologicalSpace V] [T2Space V] [Measura
   rw [← e1, hmid, e2, ← htr]
 
 /- English proof (translation)
-Introduce `V X Y _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ ν _ _ _ f g ι hι hg hf U W hW hWU hne fib hF T hTm hTμ hTc hTW hinv hgT b hb`. Take `⟨v₀, hv₀⟩` from `hne`. Take `⟨φ, hφ, hc, hs, h0, -, h1⟩` from `GlobalTheory.CompanionTheory.SW.FibreFam.exists_bump (isCompact_singleton (x := v₀)) hW (Set.singleton_subset_iff.2 hv₀)`. Establish `hzero : ∀ c, ∫⁻ v, ENNReal.ofReal (φ v) ∂(fib c) = 0`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key` using `lintegral_shift hι hg hf hW hWU hF hTm hTμ hTc hTW hinv hgT hφ hc hs h0 (c - b) b`. Rewrite `key` using `[add_sub_cancel]`. Rewrite using `[← key, hb]`. Simplify using the standard rewrite rules. Establish `hm : Measurable fun v => ENNReal.ofReal (φ v)` using `ENNReal.measurable_ofReal.comp hφ.measurable`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `hF.2.1 _ hm`. Simplify using `only [hzero, lintegral_zero] at h2`. Establish `h3 : ∫⁻ v in W, ENNReal.ofReal (φ v) ∂μ = 0` using `le_antisymm (h2 ▸ lintegral_mono_set hWU) bot_le`. Establish `hae` using `(ae_restrict_iff' hW.measurableSet).1 ((lintegral_eq_zero_iff hm).1 h3)`. Establish `hOpen : IsOpen ({v | 0 < φ v} ∩ W)` using `(isOpen_lt continuous_const hφ).inter hW`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < μ ({v | 0 < φ v} ∩ W)` using `hOpen.measure_pos μ ⟨v₀, by simp [h1 v₀ rfl], hv₀⟩`. Establish `hnull` using `ae_iff.1 hae`. Use `hpos.ne' (measure_mono_null ?_ hnull)` and prove the remaining obligations. Introduce `v hv`. Rewrite using `[Set.mem_setOf_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hcon`. Establish `h4` using `hcon hv.2`. Simplify using `only [Pi.zero_apply, ENNReal.ofReal_eq_zero] at h4`. Conclude with `absurd hv.1 (not_lt.2 h4)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fib_ne_zero : ∀ (V X Y : Type) [TopologicalSpace V] [LocallyCompactSpace V] [SecondCountableTopology V] [T2Space V] [MeasurableSpace V] [BorelSpace V] [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X] [LocallyCompactSpace X] [SecondCountableTopology X] [T2Space X] [MeasurableSpace X] [BorelSpace X] (μ : Measure V) (ν : Measure X) [IsLocallyFiniteMeasure μ] [μ.IsOpenPosMeasure] [ν.IsAddHaarMeasure] (f : V → Y) (g : V → X) (ι : X → Y), Function.Injective ι → Continuous g → (∀ v, f v = ι (g v)) → ∀ (U W : Set V), IsOpen W → W ⊆ U → W.Nonempty → ∀ fib : X → Measure V, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ f ι U ν Set.univ fib → ∀ T : X → V → V, (∀ s, Measurable (T s)) → (∀ s, μ.map (T s) = μ) → (∀ s, ContinuousOn (T s) W) → (∀ s v, T s v ∈ W ↔ v ∈ W) → (∀ s, ∀ v ∈ W, T (-s) (T s v) = v) → (∀ s, ∀ v ∈ W, g (T s v) = g v + s) → ∀ b : X, fib b ≠ 0 := by
   intro V X Y _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ ν _ _ _ f g ι hι hg hf U W hW hWU hne fib hF T hTm hTμ

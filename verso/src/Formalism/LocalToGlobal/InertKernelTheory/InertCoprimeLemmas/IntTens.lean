@@ -16,7 +16,7 @@ section Part1
 variable {D : D7} {N N' n n' m m' : ℕ} (eR : Fin N' ≃ Fin n' × Fin m') (eC : Fin N ≃ Fin n × Fin m)
 
 /- English proof (translation)
-Simplify using `[Formalism.MainNotions.StandardLatticesGL3.stdL, Submodule.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_stdL_iff {k : ℕ} (x : Fin k → D.host.E) :
     x ∈ Formalism.MainNotions.StandardLatticesGL3.stdL D k ↔ ∀ i, x i ∈ (1 : Submodule (𝓞 D.host.E) D.host.E) := by
@@ -47,34 +47,34 @@ theorem sglB_apply (I : Fin n') (J : Fin n) (A : Matrix (Fin m') (Fin m) D.host.
     sglB (D := D) eR eC I J A a c = if (eR a).1 = I ∧ (eC c).1 = J then A (eR a).2 (eC c).2 else 0 := rfl
 
 /- English proof (translation)
-Use `ext`. Simplify using `[entB_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem entB_smulE (I : Fin n') (J : Fin n) (x : D.host.E) (A : Matrix (Fin N') (Fin N) D.host.E) :
     entB (D := D) eR eC I J (x • A) = x • entB eR eC I J A := by
   ext; simp [entB_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `ext a c; simp only [sglB_apply, Matrix.smul_apply, smul_eq_mul]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sglB_smulE (I : Fin n') (J : Fin n) (x : D.host.E) (A : Matrix (Fin m') (Fin m) D.host.E) :
     sglB (D := D) eR eC I J (x • A) = x • sglB eR eC I J A := by
   ext a c; simp only [sglB_apply, Matrix.smul_apply, smul_eq_mul]; split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem one_mem_zero : (0 : D.host.E) ∈ (1 : Submodule (𝓞 D.host.E) D.host.E) := Submodule.zero_mem _
 
 /- English proof (translation)
-Unfold `homL at hA ⊢`. Use `(Submodule.span_le.2 ?_ : _ ≤ (homL D (Formalism.MainNotions.StandardLatticesGL3.stdL D m) (Formalism.MainNotions.StandardLatticesGL3.stdL D m')).comap (entB (D := D) eR eC I J)) hA` and prove the remaining obligations. Introduce `B hB`. Use `Submodule.subset_span ?_` and prove the remaining obligations. Introduce `x hx`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx`, the goal using `[mem_stdL_iff]`. Introduce `u`. Use `set y : Fin N → D.host.E := fun c => if (eC c).1 = J then x (eC c).2 else 0 with hy`. Establish `hy1 : y ∈ Formalism.MainNotions.StandardLatticesGL3.stdL D N`. Rewrite using `[mem_stdL_iff]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Simplify using `only [hy]`. Use `split_ifs`. Conclude with `hx _`. Conclude with `Submodule.zero_mem _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `(mem_stdL_iff _).1 (hB y hy1) (eR.symm (I, u))`. Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Matrix.mulVec, dotProduct, entB_apply, hy]`. Rewrite using `[← Equiv.sum_comp eC.symm, Fintype.sum_prod_type]`. Simplify using `only [Equiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single J]`. Simplify using the standard rewrite rules. Introduce `J' _ hJ`. Simplify using `[hJ]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem entB_homL (I : Fin n') (J : Fin n) (A : Matrix (Fin N') (Fin N) D.host.E)
     (hA : A ∈ homL D (Formalism.MainNotions.StandardLatticesGL3.stdL D N) (Formalism.MainNotions.StandardLatticesGL3.stdL D N')) :
@@ -104,15 +104,15 @@ theorem entB_homL (I : Fin n') (J : Fin n) (A : Matrix (Fin N') (Fin N) D.host.E
   · simp
 
 /- English proof (translation)
-Unfold `homL at hA ⊢`. Use `(Submodule.span_le.2 ?_ : _ ≤ (homL D (Formalism.MainNotions.StandardLatticesGL3.stdL D N) (Formalism.MainNotions.StandardLatticesGL3.stdL D N')).comap (sglB (D := D) eR eC I J)) hA` and prove the remaining obligations. Introduce `B hB`. Use `Submodule.subset_span ?_` and prove the remaining obligations. Introduce `x hx`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx`, the goal using `[mem_stdL_iff]`. Introduce `a`. Use `set x' : Fin m → D.host.E := fun v => x (eC.symm (J, v)) with hx'`. Establish `hx1 : x' ∈ Formalism.MainNotions.StandardLatticesGL3.stdL D m`. Rewrite using `[mem_stdL_iff]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Conclude with `hx _`. Establish `h` using `(mem_stdL_iff _).1 (hB x' hx1) (eR a).2`. Distinguish the cases in `hI : (eR a).1 = I`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec, dotProduct, sglB_apply, hx', hI, true_and]`. Rewrite using `[← Equiv.sum_comp eC.symm, Fintype.sum_prod_type]`. Simplify using `only [Equiv.apply_symm_apply]`. Rewrite using `[Finset.sum_eq_single J]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `J' _ hJ`. Simplify using `[hJ]`. Simplify using the standard rewrite rules. Use `Submodule.zero_mem (1 : Submodule (𝓞 D.host.E) D.host.E) using 1` and compare the differences between its conclusion and the goal. Simplify using `[Matrix.mulVec, dotProduct, sglB_apply, hI]`.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sglB_homL (I : Fin n') (J : Fin n) (A : Matrix (Fin m') (Fin m) D.host.E)
     (hA : A ∈ homL D (Formalism.MainNotions.StandardLatticesGL3.stdL D m) (Formalism.MainNotions.StandardLatticesGL3.stdL D m')) :
@@ -149,7 +149,7 @@ section Part2
 variable {D : D7} {N N' n n' m m' : ℕ} (eR : Fin N' ≃ Fin n' × Fin m') (eC : Fin N ≃ Fin n × Fin m)
 
 /- English proof (translation)
-Unfold `YYl at hA ⊢`. Use `(Submodule.span_le.2 ?_ : _ ≤ (YYl D (Formalism.MainNotions.StandardLatticesGL3.stdL D m) (Formalism.MainNotions.StandardLatticesGL3.stdL D m')).comap (entB (D := D) eR eC I J)) hA` and prove the remaining obligations. Introduce and unpack `B ⟨a, ha, A', hA', rfl⟩`. Use `Submodule.subset_span ⟨a, ha, entB eR eC I J A', entB_homL eR eC I J A' hA', ?_⟩` and prove the remaining obligations. Conclude with `entB_smulE eR eC I J a A'`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem entB_YY (I : Fin n') (J : Fin n) (A : Matrix (Fin N') (Fin N) D.host.E)
     (hA : A ∈ YYl D (Formalism.MainNotions.StandardLatticesGL3.stdL D N) (Formalism.MainNotions.StandardLatticesGL3.stdL D N')) :
@@ -162,7 +162,7 @@ theorem entB_YY (I : Fin n') (J : Fin n) (A : Matrix (Fin N') (Fin N) D.host.E)
   exact entB_smulE eR eC I J a A'
 
 /- English proof (translation)
-Unfold `YYl at hA ⊢`. Use `(Submodule.span_le.2 ?_ : _ ≤ (YYl D (Formalism.MainNotions.StandardLatticesGL3.stdL D N) (Formalism.MainNotions.StandardLatticesGL3.stdL D N')).comap (sglB (D := D) eR eC I J)) hA` and prove the remaining obligations. Introduce and unpack `B ⟨a, ha, A', hA', rfl⟩`. Use `Submodule.subset_span ⟨a, ha, sglB eR eC I J A', sglB_homL eR eC I J A' hA', ?_⟩` and prove the remaining obligations. Conclude with `sglB_smulE eR eC I J a A'`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sglB_YY (I : Fin n') (J : Fin n) (A : Matrix (Fin m') (Fin m) D.host.E)
     (hA : A ∈ YYl D (Formalism.MainNotions.StandardLatticesGL3.stdL D m) (Formalism.MainNotions.StandardLatticesGL3.stdL D m')) :
@@ -175,9 +175,9 @@ theorem sglB_YY (I : Fin n') (J : Fin n) (A : Matrix (Fin m') (Fin m) D.host.E)
   exact sglB_smulE eR eC I J a A'
 
 /- English proof (translation)
-Use extensionality with `a c`. Simplify using `only [Matrix.sum_apply, sglB_apply, entB_apply]`. Rewrite using `[Finset.sum_eq_single (eR a).1, Finset.sum_eq_single (eC c).1]`. Simplify using the standard rewrite rules. Introduce `J _ hJ`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Ne.symm hJ]`. Simplify using the standard rewrite rules. Introduce `I _ hI`. Use `Finset.sum_eq_zero fun J _ => ?_` and prove the remaining obligations. Simplify using `[Ne.symm hI]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -194,9 +194,7 @@ theorem sum_sglB_entB (y : Matrix (Fin N') (Fin N) D.host.E) :
   · simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy I J`. Conclude with `entB_YY eR eC I J y hy`. Introduce `h`. Rewrite using `[← sum_sglB_entB eR eC y]`.
-
-Conclude with `Submodule.sum_mem _ fun I _ => Submodule.sum_mem _ fun J _ => sglB_YY eR eC I J _ (h I J)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_YY_iff (y : Matrix (Fin N') (Fin N) D.host.E) :
     y ∈ YYl D (Formalism.MainNotions.StandardLatticesGL3.stdL D N) (Formalism.MainNotions.StandardLatticesGL3.stdL D N') ↔
@@ -219,9 +217,9 @@ theorem prjB_apply (I : Fin n') (J : Fin n) (z : VC D N N') (τ : D.what₂.Tau)
     prjB (D := D) eR eC I J z τ u v = z τ (eR.symm (I, u)) (eC.symm (J, v)) := rfl
 
 /- English proof (translation)
-Unfold `La at hx ⊢`. Use `((AddSubgroup.closure_le _).2 ?_ : _ ≤ (La D T (Formalism.MainNotions.StandardLatticesGL3.stdL D m) (Formalism.MainNotions.StandardLatticesGL3.stdL D m')).comap (prjB (D := D) eR eC I J)) hx` and prove the remaining obligations. Introduce and unpack `z ⟨w, hw, A, hA, rfl⟩`. Use `AddSubgroup.subset_closure ⟨w, hw, entB eR eC I J A, entB_YY eR eC I J A hA, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ u v`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[prjB_apply, embV, entB_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prjB_La (T : Tor D) (I : Fin n') (J : Fin n) (x : VC D N N')
     (hx : x ∈ La D T (Formalism.MainNotions.StandardLatticesGL3.stdL D N) (Formalism.MainNotions.StandardLatticesGL3.stdL D N')) :
@@ -235,7 +233,7 @@ theorem prjB_La (T : Tor D) (I : Fin n') (J : Fin n) (x : VC D N N')
   simp [prjB_apply, embV, entB_apply]
 
 /- English proof (translation)
-Take `⟨k, hk, hkp, hks⟩` from `hs`. Use `⟨k, hk, hkp, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_nsmul]`. Conclude with `prjB_La eR eC T I J _ hks`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsB (T : Tor D) (p : ℕ) (I : Fin n') (J : Fin n) (s : VC D N N')
     (hs : TorsPrime D p (La D T (Formalism.MainNotions.StandardLatticesGL3.stdL D N) (Formalism.MainNotions.StandardLatticesGL3.stdL D N')) s) :
@@ -246,7 +244,7 @@ theorem torsB (T : Tor D) (p : ℕ) (I : Fin n') (J : Fin n) (s : VC D N N')
   exact prjB_La eR eC T I J _ hks
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_pos, Nat.coprime_one_left _, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem tors_zero (p : ℕ) {a b : ℕ} (La' : AddSubgroup (VC D a b)) : TorsPrime D p La' 0 :=
   ⟨1, one_pos, Nat.coprime_one_left _, by simp⟩
@@ -259,18 +257,18 @@ def bB {r : ℕ} (b : Fin r → Matrix (Fin m') (Fin m) D.host.E) (q : Fin (n' *
   sglB eR eC ((eIdx n' n r).symm q).1.1 ((eIdx n' n r).symm q).1.2 (b ((eIdx n' n r).symm q).2)
 
 /- English proof (translation)
-Simplify using `[bB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bB_eIdx {r : ℕ} (b : Fin r → Matrix (Fin m') (Fin m) D.host.E) (I : Fin n') (J : Fin n) (k : Fin r) :
     bB (D := D) eR eC b (eIdx n' n r ((I, J), k)) = sglB eR eC I J (b k) := by
   simp [bB]
 
 /- English proof (translation)
-Rewrite using `[← eR.symm.sum_comp, Fintype.sum_prod_type, Finset.sum_eq_single I]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[← eC.symm.sum_comp, Fintype.sum_prod_type, Finset.sum_eq_single J]`. Simplify using `[sglB_apply]`. Introduce `J' _ hJ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_eq_zero fun v _ => ?_` and prove the remaining obligations. Simplify using `[sglB_apply, hJ]`. Simplify using the standard rewrite rules. Introduce `I' _ hI`. Use `Finset.sum_eq_zero fun u _ => Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[sglB_apply, hI]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_sglB (I : Fin n') (J : Fin n) (A : Matrix (Fin m') (Fin m) D.host.E) :
     ∑ a, ∑ c, sglB (D := D) eR eC I J A a c = ∑ u, ∑ v, A u v := by
@@ -285,7 +283,7 @@ theorem sum_sglB (I : Fin n') (J : Fin n) (A : Matrix (Fin m') (Fin m) D.host.E)
   · simp
 
 /- English proof (translation)
-Simplify using `only [sglB_apply, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sglB_mul_conj (I J I' J') (A A' : Matrix (Fin m') (Fin m) D.host.E) (a : Fin N') (c : Fin N) :
     sglB (D := D) eR eC I J A a c * D.host.conj (sglB (D := D) eR eC I' J' A' a c) =
@@ -295,9 +293,9 @@ theorem sglB_mul_conj (I J I' J') (A A' : Matrix (Fin m') (Fin m) D.host.E) (a :
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Unfold `hYY`. Repeatedly rewrite using `[sglB_mul_conj]`. Use `split_ifs with h`. Rewrite using `[sum_sglB]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem hYY_sglB (I J I' J') (A A' : Matrix (Fin m') (Fin m) D.host.E) :
     hYY D (sglB (D := D) eR eC I J A) (sglB (D := D) eR eC I' J' A') = if I = I' ∧ J = J' then hYY D A A' else 0 := by
@@ -308,9 +306,9 @@ theorem hYY_sglB (I J I' J') (A A' : Matrix (Fin m') (Fin m) D.host.E) :
   · simp
 
 /- English proof (translation)
-Introduce `q q'`. Take `⟨⟨⟨I, J⟩, k⟩, rfl⟩` from `(eIdx n' n r).surjective q`. Take `⟨⟨⟨I', J'⟩, k'⟩, rfl⟩` from `(eIdx n' n r).surjective q'`. Rewrite using `[bB_eIdx, bB_eIdx, hYY_sglB, hb]`. Simplify using `only [(eIdx n' n r).injective.eq_iff, Prod.mk.injEq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `by_cases hI : I = I' <;> by_cases hJ : J = J' <;> by_cases hk : k = k' <;> simp [hI, hJ, hk]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem orth_bB {r : ℕ} (b : Fin r → Matrix (Fin m') (Fin m) D.host.E) (hb : Orthonormal D b) :
     Orthonormal D (bB (D := D) (n' := n') (n := n) eR eC b) := by
@@ -328,14 +326,14 @@ section Part3
 variable {D : D7} {N N' n n' m m' : ℕ} (eR : Fin N' ≃ Fin n' × Fin m') (eC : Fin N ≃ Fin n × Fin m)
 
 /- English proof (translation)
-Use `ext`. Simplify using `[entB_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem entB_Ksmul (I : Fin n') (J : Fin n) (g : D.host.K) (A : Matrix (Fin N') (Fin N) D.host.E) :
     entB (D := D) eR eC I J (g • A) = g • entB eR eC I J A := by
   ext; simp [entB_apply]
 
 /- English proof (translation)
-Use extensionality with `u v`. Simplify using `only [entB_apply, sglB_apply, Equiv.apply_symm_apply]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem entB_sglB (I J I' J') (A : Matrix (Fin m') (Fin m) D.host.E) :
     entB (D := D) eR eC I J (sglB eR eC I' J' A) = if I' = I ∧ J' = J then A else 0 := by
@@ -344,13 +342,13 @@ theorem entB_sglB (I J I' J') (A : Matrix (Fin m') (Fin m) D.host.E) :
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Rewrite `hb`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg q`. Take `⟨⟨⟨I, J⟩, k⟩, rfl⟩` from `(eIdx n' n r).surjective q`. Establish `h1` using `congrArg (entB (D := D) eR eC I J) hg`. Rewrite `h1` using `[map_sum, map_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[entB_Ksmul]`. Establish `h2 : ∑ k, g (eIdx n' n r ((I, J), k)) • b k = ∑ q, g q • entB (D` using `D) eR eC I J (bB (D := D) eR eC b q) := by`. Rewrite using `[← (eIdx n' n r).sum_comp, Fintype.sum_prod_type, Finset.sum_eq_single (I, J)]`. Simplify using `[bB_eIdx, entB_sglB]`. Introduce and unpack `⟨I', J'⟩ _ hne`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[bB_eIdx, entB_sglB, if_neg]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨h1, h2⟩; exact hne (by simp [h1, h2])`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `hb _ (h2.trans h1) k`.
+A detailed English derivation is pending.
 -/
 theorem linInd_bB {r : ℕ} (b : Fin r → Matrix (Fin m') (Fin m) D.host.E) (hb : LinearIndependent D.host.K b) :
     LinearIndependent D.host.K (bB (D := D) (n' := n') (n := n) eR eC b) := by
@@ -374,7 +372,7 @@ theorem linInd_bB {r : ℕ} (b : Fin r → Matrix (Fin m') (Fin m) D.host.E) (hb
   exact hb _ (h2.trans h1) k
 
 /- English proof (translation)
-Take `⟨⟨⟨I, J⟩, k⟩, rfl⟩` from `(eIdx n' n r).surjective q`. Take `⟨s, hs, hsb⟩` from `hb k`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[bB_eIdx, ← sglB_smulE]`. Conclude with `sglB_YY eR eC I J _ hsb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_bB {r : ℕ} (p : ℕ) (b : Fin r → Matrix (Fin m') (Fin m) D.host.E)
     (hb : ∀ k, ∃ s : ℕ, Nat.Coprime s p ∧ (s : D.host.E) • b k ∈ YYl D (Formalism.MainNotions.StandardLatticesGL3.stdL D m) (Formalism.MainNotions.StandardLatticesGL3.stdL D m'))
@@ -388,17 +386,15 @@ theorem mem_bB {r : ℕ} (p : ℕ) (b : Fin r → Matrix (Fin m') (Fin m) D.host
   exact sglB_YY eR eC I J _ hsb
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hyB` using `(mem_YY_iff eR eC y).1 hy`. Use `choose s hs c hc using fun I J => hb _ (hyB I J)`. Use `set S : ℕ := ∏ I, ∏ J, s I J with hS`. Establish `hdvd : ∀ I J, s I J ∣ S` using `fun I J => (Finset.dvd_prod_of_mem (fun J => s I J) (Finset.mem_univ J)).trans (Finset.dvd_prod_of_mem (fun I => ∏ J, s I J) (Finset.mem_univ I))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `⟨S, Nat.Coprime.prod_left fun I _ => Nat.Coprime.prod_left fun J _ => hs I J, fun q => (((S / s ((eIdx n' n r).symm q).1.1 ((eIdx n' n r).symm q).1.2 : ℕ) : 𝓞 D.host.K)) * c ((eIdx n' n r).symm q).1.1 ((eIdx n' n r).symm q).1.2 ((eIdx n' n r).symm q).2, ?_⟩` and prove the remaining obligations. Use extensionality with `a c'`. Establish `h1` using `congrArg (fun M => M (eR a).2 (eC c').2) (hc (eR a).1 (eC c').1)`. Simplify using `only [Matrix.smul_apply, entB_apply, Matrix.sum_apply, smul_eq_mul, Prod.mk.eta, Equiv.symm_apply_apply] at h1`. Simplify using `only [Matrix.smul_apply, Matrix.sum_apply, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← (eIdx n' n r).sum_comp, Fintype.sum_prod_type, Finset.sum_eq_single ((eR a).1, (eC c').1)]`. Simplify using `only [Equiv.symm_apply_apply, bB_eIdx, sglB_apply, and_self, if_true]`. Establish `e1 : ∀ k, (((((S / s (eR a).1 (eC c').1 : ℕ) : 𝓞 D.host.K) * c (eR a).1 (eC c').1 k : 𝓞 D.host.K) : D.host.K) : D.host.E) * b k (eR a).2 (eC c').2 = ((S / s (eR a).1 (eC c').1 : ℕ) : D.host.E) * ((((c (eR a).1 (eC c').1 k : 𝓞 D.host.K) : D.host.K) : D.host.E) * b k (eR a).2 (eC c …`. Introduce `k`. Use `push_cast`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e1]`. Rewrite using `[← Finset.mul_sum, ← h1, ← mul_assoc]`. Use `congr 1`. Rewrite using `[← Nat.cast_mul, Nat.div_mul_cancel (hdvd _ _)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨I', J'⟩ _ hne`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.symm_apply_apply, bB_eIdx, sglB_apply]`. Rewrite using `[if_neg, mul_zero]`. Introduce and unpack `⟨h1, h2⟩; exact hne (by simp [h1, h2])`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem span_bB {r : ℕ} (p : ℕ) (b : Fin r → Matrix (Fin m') (Fin m) D.host.E)
     (hb : ∀ y ∈ YYl D (Formalism.MainNotions.StandardLatticesGL3.stdL D m) (Formalism.MainNotions.StandardLatticesGL3.stdL D m'), ∃ s : ℕ, Nat.Coprime s p ∧
@@ -441,7 +437,7 @@ theorem span_bB {r : ℕ} (p : ℕ) (b : Fin r → Matrix (Fin m') (Fin m) D.hos
   · simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨linInd_bB eR eC b hb.1, mem_bB eR eC p b hb.2.1, span_bB eR eC p b hb.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem locBasis_bB {r : ℕ} (p : ℕ) (b : Fin r → Matrix (Fin m') (Fin m) D.host.E)
     (hb : LocBasis D p (YYl D (Formalism.MainNotions.StandardLatticesGL3.stdL D m) (Formalism.MainNotions.StandardLatticesGL3.stdL D m')) b) :
@@ -456,9 +452,9 @@ section Part4
 variable {D : D7} {N N' n n' m m' : ℕ} (eR : Fin N' ≃ Fin n' × Fin m') (eC : Fin N ≃ Fin n × Fin m)
 
 /- English proof (translation)
-Rewrite using `[← eR.symm.sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Establish `h : ∀ u, ∑ c, f (eR.symm (I, u)) c = ∑ J, ∑ v, f (eR.symm (I, u)) (eC.symm (J, v))` using `fun u => by`. Rewrite using `[← eC.symm.sum_comp, Fintype.sum_prod_type]`. Repeatedly rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `Finset.sum_comm`.
+A detailed English derivation is pending.
 -/
 theorem sum_blocks {M : Type*} [AddCommMonoid M] (f : Fin N' → Fin N → M) :
     ∑ a, ∑ c, f a c = ∑ I, ∑ J, ∑ u, ∑ v, f (eR.symm (I, u)) (eC.symm (J, v)) := by
@@ -470,9 +466,9 @@ theorem sum_blocks {M : Type*} [AddCommMonoid M] (f : Fin N' → Fin N → M) :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Rewrite using `[← eR.symm.prod_comp, Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun I _ => ?_` and prove the remaining obligations. Establish `h : ∀ u, ∏ c, f (eR.symm (I, u)) c = ∏ J, ∏ v, f (eR.symm (I, u)) (eC.symm (J, v))` using `fun u => by`. Rewrite using `[← eC.symm.prod_comp, Fintype.prod_prod_type]`. Repeatedly rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `Finset.prod_comm`.
+A detailed English derivation is pending.
 -/
 theorem prod_blocks {M : Type*} [CommMonoid M] (f : Fin N' → Fin N → M) :
     ∏ a, ∏ c, f a c = ∏ I, ∏ J, ∏ u, ∏ v, f (eR.symm (I, u)) (eC.symm (J, v)) := by
@@ -484,7 +480,7 @@ theorem prod_blocks {M : Type*} [CommMonoid M] (f : Fin N' → Fin N → M) :
   exact Finset.prod_comm
 
 /- English proof (translation)
-Simplify using `only [Formalism.MainNotions.TaylorLogMetric.Hf, prjB_apply, ← Finset.sum_div]`. Use `congr 1`. Rewrite using `[Finset.sum_congr rfl fun τ _ => sum_blocks eR eC (fun a c => x τ a c * (starRingEnd ℂ) (y τ a c)), Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun I _ => Finset.sum_comm`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Hf_blocks (T : Tor D) (x y : VC D N N') :
     Formalism.MainNotions.TaylorLogMetric.Hf D T x y = ∑ I, ∑ J, Formalism.MainNotions.TaylorLogMetric.Hf D T (prjB (D := D) eR eC I J x) (prjB (D := D) eR eC I J y) := by
@@ -495,9 +491,9 @@ theorem Hf_blocks (T : Tor D) (x y : VC D N N') :
   exact Finset.sum_congr rfl fun I _ => Finset.sum_comm
 
 /- English proof (translation)
-Unfold `U`. Repeatedly rewrite using `[Finset.prod_mul_distrib]`. Use `congr 1`. Unfold `tensPow`. Rewrite using `[prod_blocks eR eC]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Repeatedly rewrite using `[← Complex.exp_sum]`. Use `congr 1`. Rewrite using `[Hf_blocks eR eC T z s, Hf_blocks eR eC T s s]`. Simplify using `only [Finset.sum_sub_distrib, Finset.mul_sum, Finset.sum_div]`.
+Both sides reduce to the same expression. Rewrite the conclusion repeatedly using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem U_tensPow (T : Tor D) (θ : (D.what₂.Tau → ℂ) → ℂ) (s z : VC D N N') :
     U D T s (tensPow θ N N') z =
@@ -522,7 +518,7 @@ section Gen
 variable {σ τ : Type*} {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.subst_def, PowerSeries.subst_def, MvPowerSeries.rename_eq_subst, MvPowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero ha).const (MvPowerSeries.HasSubst.X_comp f), MvPowerSeries.rename_eq_subst]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rename_psubst (f : σ → τ) [Filter.TendstoCofinite f] {a : MvPowerSeries σ ℂ_[p]}
     (ha : MvPowerSeries.constantCoeff a = 0) (g : PowerSeries ℂ_[p]) :
@@ -532,7 +528,7 @@ theorem rename_psubst (f : σ → τ) [Filter.TendstoCofinite f] {a : MvPowerSer
       (MvPowerSeries.HasSubst.X_comp f), MvPowerSeries.rename_eq_subst]
 
 /- English proof (translation)
-Distinguish the cases in `h : MvPowerSeries.constantCoeff F = 0`. Rewrite using `[(MvPowerSeries.inv_eq_zero).2 h, map_zero, eq_comm, MvPowerSeries.inv_eq_zero, MvPowerSeries.constantCoeff_rename, h]`. Establish `h' : MvPowerSeries.constantCoeff (MvPowerSeries.rename f F) ≠ 0`. Rewrite using `[MvPowerSeries.constantCoeff_rename]` and apply the resulting hypothesis. Rewrite using `[MvPowerSeries.eq_inv_iff_mul_eq_one h', ← map_mul, mul_comm, MvPowerSeries.mul_inv_cancel F h, map_one]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem rename_inv (f : σ → τ) [Filter.TendstoCofinite f] (F : MvPowerSeries σ ℂ_[p]) :
     MvPowerSeries.rename f F⁻¹ = (MvPowerSeries.rename f F)⁻¹ := by
@@ -544,7 +540,7 @@ theorem rename_inv (f : σ → τ) [Filter.TendstoCofinite f] (F : MvPowerSeries
     rw [MvPowerSeries.eq_inv_iff_mul_eq_one h', ← map_mul, mul_comm, MvPowerSeries.mul_inv_cancel F h, map_one]
 
 /- English proof (translation)
-Introduce `n` and use `by rw [MvPowerSeries.coeff_rename] exact isPadicIntegral_sum _ _ fun x _ => hF x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem integralMv_rename (f : σ → τ) [Filter.TendstoCofinite f] {F : MvPowerSeries σ ℂ_[p]}
     (hF : IntegralMv F) : IntegralMv (MvPowerSeries.rename f F) := fun n => by
@@ -552,7 +548,7 @@ theorem integralMv_rename (f : σ → τ) [Filter.TendstoCofinite f] {F : MvPowe
   exact isPadicIntegral_sum _ _ fun x _ => hF x
 
 /- English proof (translation)
-Introduce `n` and use `by classical rw [MvPowerSeries.coeff_one] split_ifs · unfold IsIntP; simp · unfold IsIntP; simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem integralMv_one : IntegralMv (1 : MvPowerSeries σ ℂ_[p]) := fun n => by
   classical
@@ -562,7 +558,7 @@ theorem integralMv_one : IntegralMv (1 : MvPowerSeries σ ℂ_[p]) := fun n => b
   · unfold IsIntP; simp
 
 /- English proof (translation)
-The claim follows from `Finset.prod_induction _ IntegralMv (fun _ _ => integralMv_mul) integralMv_one h`.
+A detailed English derivation is pending.
 -/
 theorem integralMv_prod {ι : Type*} (s : Finset ι) (F : ι → MvPowerSeries σ ℂ_[p])
     (h : ∀ i ∈ s, IntegralMv (F i)) : IntegralMv (∏ i ∈ s, F i) :=
@@ -575,7 +571,7 @@ variable {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (Λ : AddSubgroup �
   (C : WeierstrassCurve.VariableChange ℂ_[p]) (wq : PowerSeries ℂ_[p])
 
 /- English proof (translation)
-Unfold `lamC`. Rewrite using `[dif_pos (zero_mem _)]`. Conclude with `map_zero lam`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamC_zero : lamC lam 0 = 0 := by
   unfold lamC
@@ -585,11 +581,11 @@ theorem lamC_zero : lamC lam 0 = 0 := by
 def idxK (r : ℕ) (I : Fin n') (J : Fin n) (k : Fin r) : Fin (n' * n * r) := eIdx n' n r ((I, J), k)
 
 /- English proof (translation)
-Simplify using `only [atLogA, map_sum, map_mul, AlgHom.commutes]`. Rewrite using `[← (eIdx n' n r).sum_comp, Fintype.sum_prod_type, Finset.sum_eq_single (I, J)]`. Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations. Rewrite using `[rename_psubst _ (MvPowerSeries.constantCoeff_X k'), MvPowerSeries.rename_X]`. Simplify using `[bB_eIdx, sglB_apply, blkIdx, idxK]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨I', J'⟩ _ hne`. Use `Finset.sum_eq_zero fun k' _ => ?_` and prove the remaining obligations. Rewrite using `[bB_eIdx, sglB_apply, if_neg]`. Simplify using `[lamC_zero]`. Simplify using `only [blkIdx, Equiv.apply_symm_apply]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨h1, h2⟩; exact hne (by simp [h1, h2])`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem atLogA_blk {r : ℕ} (b : Fin r → Matrix (Fin m') (Fin m) D.host.E) (I : Fin n') (J : Fin n)
     (k : D.what₂.Tau × Fin m' × Fin m) :
@@ -610,9 +606,7 @@ theorem atLogA_blk {r : ℕ} (b : Fin r → Matrix (Fin m') (Fin m) D.host.E) (I
   · simp
 
 /- English proof (translation)
-Use `show MvPowerSeries.subst (atLogA lam Λ C wq (bB (D := D) eR eC b)) _ = MvPowerSeries.rename (idxK r I J) (MvPowerSeries.subst (atLogA lam Λ C wq b) F)`. Rewrite using `[MvPowerSeries.rename_eq_subst, MvPowerSeries.rename_eq_subst, MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.HasSubst.X_comp _) (atLogA_hasSubst lam Λ C wq _), MvPowerSeries.subst_comp_subst_apply (atLogA_hasSubst lam Λ C wq b) (MvPowerSeries.HasSubst.X_comp _)]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[Function.comp_apply, MvPowerSeries.subst_X (atLogA_hasSubst lam Λ C wq _), ← MvPowerSeries.rename_eq_subst]`.
-
-Conclude with `atLogA_blk eR eC lam Λ C wq b I J k`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem atLog_rename {r : ℕ} (b : Fin r → Matrix (Fin m') (Fin m) D.host.E) (I : Fin n') (J : Fin n)
     (F : MvPowerSeries (D.what₂.Tau × Fin m' × Fin m) ℂ_[p]) :
@@ -629,9 +623,9 @@ theorem atLog_rename {r : ℕ} (b : Fin r → Matrix (Fin m') (Fin m) D.host.E) 
   exact atLogA_blk eR eC lam Λ C wq b I J k
 
 /- English proof (translation)
-Unfold `ePh`. Rewrite using `[if_neg hp2, if_neg hp2, ← (eIdx n' n r).prod_comp, Fintype.prod_prod_type, Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun I _ => Finset.prod_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[rename_inv, rename_psubst _ (MvPowerSeries.constantCoeff_X k), MvPowerSeries.rename_X]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ePh_blk (hp2 : p ≠ 2) (r : ℕ) :
     ePh lam Λ C wq (n' * n * r) = ∏ I : Fin n', ∏ J : Fin n, MvPowerSeries.rename (idxK r I J) (ePh lam Λ C wq r) := by
@@ -653,11 +647,11 @@ section TB
 variable {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Use extensionality with `ν`. Distinguish the cases in `h : ν = 0`. Substitute `h` using the available equality. Rewrite using `[taylorMv_coeff _ 0 0 (by simp), MvPowerSeries.coeff_one, if_pos rfl]`. Establish `hc : ∀ f : Fin 0 → n, Formalism.L2.Th1.H.cntVec f = 0` using `fun f => by`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i`. Simplify using `[Formalism.L2.Th1.H.cntVec_apply]`. Rewrite using `[Finset.filter_true_of_mem (fun f _ => hc f)]`. Simplify using the standard rewrite rules. Rewrite using `[taylorMv_coeff _ ν.degree ν rfl, MvPowerSeries.coeff_one]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : ν.degree ≠ 0`. Rewrite using `[Ne, Finsupp.degree_eq_zero_iff]` and apply the resulting hypothesis. Rewrite using `[if_neg h, iteratedFDeriv_const_of_ne hd]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem taylorMv_one : taylorMv (fun _ : n → ℂ => (1 : ℂ)) = 1 := by
   classical
@@ -676,7 +670,7 @@ theorem taylorMv_one : taylorMv (fun _ : n → ℂ => (1 : ℂ)) = 1 := by
     simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (analyticAt_const : AnalyticAt ℂ (fun _ : E => (1 : ℂ)) x)`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `(hH a).mul ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem analyticAt_finprod {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {x : E} {ι : Type*} (s : Finset ι)
     (H : ι → E → ℂ) (hH : ∀ i, AnalyticAt ℂ (H i) x) :
@@ -689,7 +683,7 @@ theorem analyticAt_finprod {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E
     exact (hH a).mul ih
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using taylorMv_one`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.prod_insert ha]`. Rewrite using `[taylorMvMul n (H a) (fun w => ∏ i ∈ s, H i w) (hH a) (analyticAt_finprod s H hH), ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem taylorMv_finprod {ι : Type*} (s : Finset ι) (H : ι → (n → ℂ) → ℂ) (hH : ∀ i, AnalyticAt ℂ (H i) 0) :
     taylorMv (fun w => ∏ i ∈ s, H i w) = ∏ i ∈ s, taylorMv (H i) := by
@@ -706,11 +700,9 @@ end TB
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `α`. Establish `h1` using `Formalism.L2.AlgTh.taylor_jet_expansion D.what₂.Tau a b G hG α`. Establish `h2` using `Formalism.L2.Ker.derivAt0_eq_taylor D G α`. Establish `hne : (α.prod fun _ n => (n.factorial : ℂ)) ≠ 0`. Rewrite using `[Finsupp.prod]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_ne_zero_iff.2 fun _ _ => Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)`. Use `show taylor D G α = _`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[h2, ← h1]`. Use `congr 1`.
-
-Simplify using `[Formalism.DworkPowerSeriesWeights.mfact, Finsupp.prod]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem taylorSer_eq_taylorMv [DecidableEq D.what₂.Tau] {a b : ℕ} (G : VC D a b → ℂ) (hG : AnalyticOnNhd ℂ G Set.univ) :
     taylorSer D G = taylorMv (fun z => G (Formalism.L2.AlgTh.flat D.what₂.Tau a b z)) := by
@@ -737,17 +729,17 @@ def blkCL (D : D7) {N N' n n' m m' : ℕ} (eR : Fin N' ≃ Fin n' × Fin m') (eC
     { toFun := blkPt D eR eC I J, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }
 
 /- English proof (translation)
-Introduce `D N N' n n' m m' eR eC G hG`. Set `M : Fin n' → Fin n → Matrix (D.what₂.Tau × Fin m' × Fin m) (D.what₂.Tau × Fin N' × Fin N) ℂ` to `fun I J => Matrix.of fun k k' => if k' = blkIdx D eR eC I J k then 1 else 0`. Establish `hM : ∀ I J (w : D.what₂.Tau × Fin N' × Fin N → ℂ), (M I J).mulVec w = fun k => w (blkIdx D eR eC I J k)`. Introduce `I J w`. Use function extensionality and compare the values at `k`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[M, Matrix.mulVec, dotProduct, ite_mul, Finset.sum_ite_eq']`. Establish `hflat : ∀ I J (w : D.what₂.Tau × Fin N' × Fin N → ℂ), Formalism.L2.AlgTh.flat D.what₂.Tau m m' ((M I J).mulVec w) = blkPt D eR eC I J (Formalism.L2.AlgTh.flat D.what₂.Tau N N' w)`. Introduce `I J w`. Rewrite using `[hM]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hGf : ∀ I J, AnalyticOnNhd ℂ (fun z => G I J (Formalism.L2.AlgTh.flat D.what₂.Tau m m' z)) Set.univ`. Introduce `I J z _`. Conclude with `(hG I J _ trivial).comp (((Formalism.L2.AlgTh.flat D.what₂.Tau m m').toContinuousLinearEquiv : (D.what₂.Tau × Fin m' × Fin m → ℂ) →L[ℂ] VC D m m').analyticAt z)`. Establish `hGfM : ∀ I J, AnalyticAt ℂ (fun w => G I J (Formalism.L2.AlgTh.flat D.what₂.Tau m m' ((M I J).mulVec w))) 0`. Introduce `I J`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(hGf I J _ trivial).comp ((LinearMap.toContinuousLinearMap (Matrix.mulVecLin (M I J))).analyticAt 0)`. Establish `hbig : AnalyticOnNhd ℂ (fun z => ∏ I, ∏ J, G I J (blkPt D eR eC I J z)) Set.univ`. Introduce `z _`. Conclude with `analyticAt_finprod _ _ fun I => analyticAt_finprod _ _ fun J => (hG I J _ trivial).comp ((blkCL D eR eC I J).analyticAt z)`. Rewrite using `[taylorSer_eq_taylorMv _ hbig]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Repeatedly rewrite using `[← hflat]`. Rewrite using `[taylorMv_finprod Finset.univ (fun I w => ∏ J, G I J (Formalism.L2.AlgTh.flat D.what₂.Tau m m' ((M I J).mulVec w))) (fun I => analyticAt_finprod _ _ fun J => hGfM I J)]`. Use `Finset.prod_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[taylorMv_finprod Finset.univ _ (fun J => hGfM I J)]`. Use `Finset.prod_congr rfl fun J _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[taylorMvComp _ _ (M I J) (fun z => G I J (Formalism.L2.AlgTh.flat D.what₂.Tau m m' z)) (hGf I J 0 trivial), ← taylorSer_eq_taylorMv _ (hG I J), linSubst, MvPowerSeries.rename_eq_subst]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[M, apply_ite MvPowerSeries.C, ite_mul, Finset.sum_ite_eq']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem taylor_product_blocks_factorization : TaylorProductOverBlocks := by
   intro D N N' n n' m m' eR eC G hG
@@ -794,15 +786,13 @@ variable {D : D7} {N N' n n' m m' : ℕ} (eR : Fin N' ≃ Fin n' × Fin m') (eC 
 variable {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p])
 
 /- English proof (translation)
-Establish `hT` using `hTB D N N' n n' m m' eR eC G (fun I J => (hG I J).1)`. Set `TQ : Fin n' → Fin n → MvPowerSeries (D.what₂.Tau × Fin m' × Fin m) Qbar` to `fun I J β => ⟨taylor D (G I J) β, (hG I J).2 β⟩`. Establish `h1 : ∀ I J, taylorSer D (G I J) = MvPowerSeries.map (algebraMap Qbar ℂ) (TQ I J)`. Introduce `I J`. Use extensionality with `β`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Establish `h2 : ∀ I J, pSer D lam (G I J) = MvPowerSeries.map lam (TQ I J)`. Introduce `I J`. Use extensionality with `β`. Use `show lamC lam (taylor D (G I J) β) = lam (TQ I J β)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Replace the relevant objects with their definitions.
 
-Unfold `lamC`. Rewrite using `[dif_pos ((hG I J).2 β)]`. Use extensionality with `α`. Express the relevant statement in the definitionally equal form `lamC lam (MvPowerSeries.coeff α (taylorSer D (fun z => ∏ I, ∏ J, G I J (blkPt D eR eC I J z)))) = _`. Rewrite using `[hT]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[h1, h2, MvPowerSeries.rename_map, ← map_prod]`. Rewrite using `[MvPowerSeries.coeff_map, MvPowerSeries.coeff_map]`. Unfold `lamC`. Use `split_ifs with h`. Both sides reduce to the same expression.
-
-Conclude with `absurd (SetLike.coe_mem _) h`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pSer_blk (hTB : TaylorProductOverBlocks) (G : Fin n' → Fin n → VC D m m' → ℂ) (hG : ∀ I J, AlgEnt D (G I J)) :
     pSer D lam (fun z => ∏ I, ∏ J, G I J (blkPt D eR eC I J z)) =
@@ -828,7 +818,7 @@ theorem pSer_blk (hTB : TaylorProductOverBlocks) (G : Fin n' → Fin n → VC D 
   · exact absurd (SetLike.coe_mem _) h
 
 /- English proof (translation)
-Simplify using `only [atLog_eq, map_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem atLog_prod (Λ : AddSubgroup ℂ) (C : WeierstrassCurve.VariableChange ℂ_[p]) (wq : PowerSeries ℂ_[p]) {r : ℕ}
     (b : Fin r → Matrix (Fin N') (Fin N) D.host.E)
@@ -839,11 +829,11 @@ theorem atLog_prod (Λ : AddSubgroup ℂ) (C : WeierstrassCurve.VariableChange �
 def eTwo (k : ℕ) : Fin (k + k) ≃ Fin k × Fin 2 := (finCongr (by omega : k + k = k * 2)).trans finProdFinEquiv.symm
 
 /- English proof (translation)
-Introduce `D cc δ B hcc hδ p _ hp5 hin lam H N N' hN hN' s hs`. Take `⟨n, rfl⟩` from `hN`. Take `⟨n', rfl⟩` from `hN'`. Establish `hp2 : p ≠ 2` using `by omega`. Take `⟨r, b, hloc, hon, -⟩` from `(H 0 (tors_zero p _)).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨n' * n * r, bB (eTwo n') (eTwo n) b, locBasis_bB (eTwo n') (eTwo n) p b hloc, orth_bB (eTwo n') (eTwo n) b hon, fun C wq hC hW => ?_⟩` and prove the remaining obligations. Establish `hfun : U D B.tor s (B.thZero (n + n) (n' + n')) = fun z => ∏ I, ∏ J, U D B.tor (prjB (eTwo n') (eTwo n) I J s) (B.thZero 2 2) (blkPt D (eTwo n') (eTwo n) I J z)`. Use function extensionality and compare the values at `(U_tensPow (eTwo n') (eTwo n) B.tor B.thMM s)`. Establish `hH` using `fun I J => H _ (torsB (eTwo n') (eTwo n) B.tor p I J s hs)`. Rewrite using `[hfun, pSer_blk (eTwo n') (eTwo n) lam hTB _ (fun I J => (hH I J).1), atLog_prod]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[atLog_rename]`. Rewrite using `[ePh_blk lam _ C wq hp2 r]`. Rewrite using `[← Finset.prod_mul_distrib]`. Repeatedly rewrite using `[← Finset.prod_mul_distrib, ← map_mul]`. Conclude with `integralMv_prod _ _ fun I _ => integralMv_prod _ _ fun J _ => integralMv_rename _ ((hH I J).2.2 C wq r b hC hW hloc hon)`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensFact_of (hTB : TaylorProductOverBlocks) : TensFact := by
   intro D cc δ B hcc hδ p _ hp5 hin lam H N N' hN hN' s hs
@@ -872,12 +862,12 @@ end Formalism.L2.KerInert.IntTens
 namespace Formalism.L2.KerInert
 
 /- English proof (translation)
-The claim follows from `IntTens.taylor_product_blocks_factorization`.
+A detailed English derivation is pending.
 -/
 theorem taylor_product_over_blocks : TaylorProductOverBlocks := IntTens.taylor_product_blocks_factorization
 
 /- English proof (translation)
-The claim follows from `IntTens.tensFact_of taylor_product_over_blocks`.
+A detailed English derivation is pending.
 -/
 theorem tensor_matrix_units_fact : TensFact := IntTens.tensFact_of taylor_product_over_blocks
 

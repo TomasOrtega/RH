@@ -5,17 +5,17 @@ open GlobalTheory.QCoh (pullbackSections)
 open GlobalTheory.Twist (resM)
 
 /- English proof (translation)
-Introduce `X Y f Q r U s V h y hQ hy hs`. Use `hQ.isQuasicoherent` as an intermediate fact. Take `⟨U', c, -, hx, hle, hc⟩` from `hQ.exists_affine (h hy : f y ∈ U)`. Use `set v : Fin r → Γ(Q, U') := fun k => resM Q hle (s k) with hv`. Establish `hT : V ⊓ f ⁻¹ᵁ U' ≤ f ⁻¹ᵁ U'` using `inf_le_right`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (f.appLE U' _ hT ((hc.basis le_rfl).det v))`. Establish `h1` using `hs (V ⊓ f ⁻¹ᵁ U') inf_le_left`. Rewrite `h1` using `[Ker.bijective_iff_isUnit_det ((hc.pullback f).basis (hT.trans (f.preimage_mono le_rfl)))]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Module.Basis.det_apply, Module.Basis.det_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(RingHom.map_det (f.appLE U' _ hT).hom _).trans ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `i j`. Use `Eq.trans (hc.pullback_basis_repr f le_rfl hT (v j) i).symm ?_` and prove the remaining obligations. Rewrite using `[Module.Basis.toMatrix_apply]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Conclude with `(QCoh.pullbackSections_res f Q hT hle _).trans (QCoh.res_pullbackSections f Q _ _ _).symm`. Establish `hb` using `Y.basicOpen_of_isUnit hu`. Rewrite `hb` using `[Scheme.basicOpen_appLE]`. Establish `hy' : y ∈ V ⊓ f ⁻¹ᵁ U'` using `⟨hy, hx⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hy'` using `[← hb]`. Use `⟨X.basicOpen ((hc.basis le_rfl).det v), (X.basicOpen_le _).trans hle, hy'.2, fun T hT => ?_⟩` and prove the remaining obligations. Simplify using `only [Twist.resM_resM]`. Rewrite using `[Ker.bijective_iff_isUnit_det (hc.basis ((hT.trans (X.basicOpen_le _)).trans le_rfl))]`. Establish `h2` using `hc.resG_det le_rfl (hT.trans (X.basicOpen_le _)) v`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hv, Twist.resM_resM] at h2`. Rewrite using `[← h2, ← LB.resG_resG (X.basicOpen_le _) hT]`. Conclude with `(X.toRingedSpace.isUnit_res_basicOpen _).map _`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.frame_extends_from_pullback :
     ∀ (X Y : Scheme.{0}) (f : Y ⟶ X) (Q : X.Modules) (r : ℕ) (U : X.Opens) (s : Fin r → Γ(Q, U)) (V : Y.Opens)

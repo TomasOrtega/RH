@@ -9,9 +9,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Spa
   [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Use `⟨fun g => ?_⟩` and prove the remaining obligations. Establish `e` using `Measure.isMulLeftInvariant_eq_smul (μ.map (· * g)) μ`. Establish `h` using `congrArg (fun m : Measure G => m univ) e`. Simplify using `only [Measure.smul_apply] at h`. Rewrite `h` using `[Measure.map_apply (measurable_mul_const g) MeasurableSet.univ, preimage_univ, ENNReal.smul_def, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (Measure.haarScalarFactor (μ.map (· * g)) μ : ℝ≥0∞) = 1` using `(ENNReal.mul_left_inj (isOpen_univ.measure_ne_zero μ univ_nonempty) (measure_ne_top μ _)).1 (by rw [← h, one_mul])`. Rewrite using `[e, ENNReal.coe_eq_one.1 h1, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem right_of_compact [CompactSpace G] (μ : Measure G) [μ.IsHaarMeasure] : μ.IsMulRightInvariant := by
   refine ⟨fun g => ?_⟩
@@ -27,13 +27,11 @@ variable (ν : Measure G) [ν.IsHaarMeasure] (m : Measure G) [SFinite m] {P : Se
 
 omit [T2Space G] in
 /- English proof (translation)
-Establish `c : ∀ g, ∫⁻ x, b (x⁻¹ * g) ∂m = ∫⁻ x, b x⁻¹ ∂m` using `fun g => by`. Take `⟨p, hp, k, hk, rfl⟩` from `hPK g`. Use `conv_lhs => rw [← hP p hp]`. Rewrite using `[lintegral_map (by fun_prop) (measurable_const_mul p)]`. Simplify using `[mul_assoc, hbK _ k hk]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun g => (lintegral_const_mul _ (by fun_prop)).symm` and prove the remaining obligations. Use `_ = ∫⁻ x, ∫⁻ g, b g * f (x * g) ∂ν ∂m := lintegral_lintegral_swap (Measurable.aemeasurable (by fun_prop))`. Use `_ = ∫⁻ x, ∫⁻ g, b (x⁻¹ * g) * f g ∂ν ∂m := by`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← lintegral_mul_left_eq_self _ x⁻¹]`. Simplify using the standard rewrite rules. Use `_ = ∫⁻ g, ∫⁻ x, b (x⁻¹ * g) * f g ∂m ∂ν := (lintegral_lintegral_swap (Measurable.aemeasurable (by fun_prop))).symm`. Use `_ = _ := by`. Rewrite using `[← lintegral_const_mul _ hf]`.
-
-Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[lintegral_mul_const _ (by fun_prop), c]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_eq (hP : ∀ p ∈ P, m.map (p * ·) = m) (hPK : ∀ g, ∃ p ∈ P, ∃ k ∈ K, g = p * k) {f b : G → ℝ≥0∞}
     (hf : Measurable f) (hb : Measurable b) (hbK : ∀ g, ∀ k ∈ K, b (g * k) = b g) :
@@ -58,9 +56,9 @@ theorem conv_eq (hP : ∀ p ∈ P, m.map (p * ·) = m) (hPK : ∀ g, ∃ p ∈ P
 
 omit [SFinite m] in
 /- English proof (translation)
-Use `haveI : IsFiniteMeasureOnCompacts m.inv := ⟨fun C hC => by`. Rewrite using `[Measure.inv_apply]`. Conclude with `hC.inv.measure_lt_top⟩`. Establish `h1` using `continuous_integral_apply_inv_mul (μ := m.inv) hf hs`. Establish `e : ∀ g, ∫⁻ x, ENNReal.ofReal (f (x * g)) ∂m = ENNReal.ofReal (∫ y, f (y⁻¹ * g) ∂m.inv)` using `fun g => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Measure.inv, integral_map measurable_inv.aemeasurable (Continuous.aestronglyMeasurable (by fun_prop))]`. Simplify using `only [inv_inv]`. Conclude with `(ofReal_integral_eq_lintegral_ofReal (f := fun x => f (x * g)) (Continuous.integrable_of_hasCompactSupport (by fun_prop) (hs.comp_homeomorph (Homeomorph.mulRight g))) (ae_of_all _ fun x => h0 (x * g))).symm`. Simplify using `only [e]`. Conclude with `ENNReal.continuous_ofReal.comp h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cont_M [IsFiniteMeasureOnCompacts m] {f : G → ℝ} (hf : Continuous f) (hs : HasCompactSupport f) (h0 : 0 ≤ f) :
     Continuous fun g => ∫⁻ x, ENNReal.ofReal (f (x * g)) ∂m := by
@@ -76,23 +74,21 @@ theorem cont_M [IsFiniteMeasureOnCompacts m] {f : G → ℝ} (hf : Continuous f)
   exact ENNReal.continuous_ofReal.comp h1
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `fin : ∀ {φ : G → ℝ}, Continuous φ → HasCompactSupport φ → ∫⁻ g, ENNReal.ofReal (φ g) ∂ν ≠ ⊤` using `fun h1 h2 => (h1.integrable_of_hasCompactSupport h2).lintegral_lt_top.ne`. Use `set A := ∫⁻ g, ENNReal.ofReal (f₀ g) ∂ν with hA`. Use `set B := ∫⁻ g, ENNReal.ofReal (f g) ∂ν with hB`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `u : G → ℝ≥0∞` to `fun g => A * ∫⁻ x, ENNReal.ofReal (f (x * g)) ∂m`. Set `v : G → ℝ≥0∞` to `fun g => B * ∫⁻ x, ENNReal.ofReal (f₀ (x * g)) ∂m`. Establish `hu : Continuous u` using `(ENNReal.continuous_const_mul (fin hf₀ hs₀)).comp (cont_M m hf hs h0)`. Establish `hv : Continuous v` using `(ENNReal.continuous_const_mul (fin hf hs)).comp (cont_M m hf₀ hs₀ h0₀)`. Establish `inv : ∀ {φ : G → ℝ}, Continuous φ → ∀ k ∈ K, ∫⁻ x, ENNReal.ofReal (φ (x * k)) ∂m = ∫⁻ x, ENNReal.ofReal (φ x) ∂m` using `fun h1 k hk => by conv_rhs => rw [← hK k hk]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[lintegral_map (by fun_prop) (measurable_mul_const k)]`. Take `⟨V, hV, hVK⟩` from `compact_open_separated_mul_left hKc (isOpen_lt hu hv) fun k hk => by`. Simplify `hlt` using `only [u, v, mem_setOf_eq, inv hf k hk, inv hf₀ k hk]`. Take `⟨C, hC, hC1⟩` from `exists_compact_mem_nhds (1 : G)`. Use `set W := interior (V ∩ C) * (K : Set G) with hW`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hWo : IsOpen W` using `isOpen_interior.mul_right`. Establish `hWK : ∀ g, ∀ k ∈ K, g * k ∈ W ↔ g ∈ W` using `fun g k hk => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, e⟩`. Conclude with `⟨a, ha, b * k⁻¹, K.mul_mem hb (K.inv_mem hk), by simp only at e ⊢; rw [← mul_assoc, e, mul_inv_cancel_right]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨a, ha, b * k, K.mul_mem hb hk, (mul_assoc _ _ _).symm⟩`. Establish `hb : Measurable (W.indicator (1 : G → ℝ≥0∞))` using `measurable_one.indicator hWo.measurableSet`. Establish `hbK : ∀ g, ∀ k ∈ K, W.indicator (1 : G → ℝ≥0∞) (g * k) = W.indicator 1 g` using `fun g k hk => by`. Apply the tactic sequence `by_cases h : g ∈ W <;> simp [h, hWK g k hk]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ {φ : G → ℝ}, Continuous φ → ∫⁻ g in W, ∫⁻ x, ENNReal.ofReal (φ (x * g)) ∂m ∂ν = (∫⁻ x, W.indicator 1 x⁻¹ ∂m) * ∫⁻ g, ENNReal.ofReal (φ g) ∂ν` using `fun {φ} h1 => by`. Rewrite using `[← conv_eq ν m hP hPK (f := fun g => ENNReal.ofReal (φ g)) (by fun_prop) hb hbK, ← lintegral_indicator hWo.measurableSet]`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : g ∈ W <;> simp [h]`. Establish `hfin : ∫⁻ x, W.indicator 1 x⁻¹ ∂m ≠ ⊤`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `: ∫⁻ x, W.indicator 1 x⁻¹ ∂m = m W⁻¹`. Rewrite using `[← lintegral_indicator_one hWo.inv.measurableSet]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `((measure_mono (inv_subset_inv.2 (mul_subset_mul_right (interior_subset.trans inter_subset_right)))).trans_lt (hC.mul hKc).inv.measure_lt_top).ne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ∫⁻ g in W, u g ∂ν = A * ((∫⁻ x, W.indicator 1 x⁻¹ ∂m) * B)`. Rewrite using `[lintegral_const_mul _ (cont_M m hf hs h0).measurable, key hf]`. Establish `e2 : ∫⁻ g in W, v g ∂ν = B * ((∫⁻ x, W.indicator 1 x⁻¹ ∂m) * A)`. Rewrite using `[lintegral_const_mul _ (cont_M m hf₀ hs₀ h0₀).measurable, key hf₀]`. Establish `h3` using `setLIntegral_strict_mono (μ := ν) (f := u) (g := v) hWo.measurableSet (hWo.measure_ne_zero ν ⟨1 * 1, mul_mem_mul (mem_interior_iff_mem_nhds.2 (Filter.inter_mem hV hC1)) K.one_mem⟩) hv.measurable (by rw [e1]; exact ENNReal.mul_ne_top (fin hf₀ hs₀) (ENNReal.mul_ne_top hfin (fin hf …`.
-
-Rewrite `h3` using `[e1, e2]`. Conclude with `h3.ne (by ring)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cross_le [IsFiniteMeasureOnCompacts m] (hP : ∀ p ∈ P, m.map (p * ·) = m) (hK : ∀ k ∈ K, m.map (· * k) = m)
     (hKc : IsCompact (K : Set G)) (hPK : ∀ g, ∃ p ∈ P, ∃ k ∈ K, g = p * k) {f f₀ : G → ℝ}
@@ -150,13 +146,13 @@ theorem cross_le [IsFiniteMeasureOnCompacts m] (hP : ∀ p ∈ P, m.map (p * ·)
   exact h3.ne (by ring)
 
 /- English proof (translation)
-Take `⟨⟨f₀, hf₀⟩, hs₀, h0₀, h1⟩` from `exists_continuous_nonneg_pos (1 : G)`. Establish `fin : ∀ (μ : Measure G) [IsFiniteMeasureOnCompacts μ] {φ : G → ℝ}, Continuous φ → HasCompactSupport φ → ∫⁻ g, ENNReal.ofReal (φ g) ∂μ ≠ ⊤` using `fun μ _ _ h1 h2 => (h1.integrable_of_hasCompactSupport h2).lintegral_lt_top.ne`. Use `set A := ∫⁻ g, ENNReal.ofReal (f₀ g) ∂ν with hA`. Establish `hA0 : A ≠ 0` using `fun h => by`. Use `(lintegral_eq_zero_iff (by fun_prop)).1 h` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(Continuous.ae_eq_iff_eq ν (ENNReal.continuous_ofReal.comp hf₀) continuous_zero).1 this`. Conclude with `h1 (le_antisymm (ENNReal.ofReal_eq_zero.1 (congrFun h2 1)) (h0₀ 1))`. Establish `hc : (∫⁻ g, ENNReal.ofReal (f₀ g) ∂m) / A ≠ ⊤` using `ENNReal.div_ne_top (fin m hf₀ hs₀) hA0`. Use `⟨_, hc, ?_⟩` and prove the remaining obligations. Use `lift (∫⁻ g, ENNReal.ofReal (f₀ g) ∂m) / A to ℝ≥0 using hc with c hc'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← ENNReal.smul_def]`. Use `Measure.ext_of_integral_eq_on_compactlySupported_nnreal fun f => ?_` and prove the remaining obligations. Establish `hf : Continuous fun x => (f x : ℝ)` using `by fun_prop`. Establish `hs : HasCompactSupport fun x => (f x : ℝ)` using `f.hasCompactSupport.comp_left (g := fun x : ℝ≥0 => (x : ℝ)) rfl`. Establish `h0 : 0 ≤ fun x => (f x : ℝ)` using `fun x => (f x).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `le_antisymm (cross_le ν m hP hK hKc hPK hf hs h0 hf₀ hs₀ h0₀) (cross_le ν m hP hK hKc hPK hf₀ hs₀ h0₀ hf hs h0)`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (ae_of_all _ h0) hf.aestronglyMeasurable, integral_eq_lintegral_of_nonneg_ae (ae_of_all _ h0) hf.aestronglyMeasurable, ENNReal.smul_def, lintegral_smul_measure, hc', smul_eq_mul, ENNReal.div_eq_inv_mul, mul_assoc, mul_comm (∫⁻ g, ENNReal.ofReal …`. Use `erw [e]`. Rewrite using `[← mul_assoc, ENNReal.inv_mul_cancel hA0 (fin ν hf₀ hs₀), one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem eq_smul [IsFiniteMeasureOnCompacts m] (hP : ∀ p ∈ P, m.map (p * ·) = m) (hK : ∀ k ∈ K, m.map (· * k) = m)
     (hKc : IsCompact (K : Set G)) (hPK : ∀ g, ∃ p ∈ P, ∃ k ∈ K, g = p * k) : ∃ c : ℝ≥0∞, c ≠ ⊤ ∧ m = c • ν := by

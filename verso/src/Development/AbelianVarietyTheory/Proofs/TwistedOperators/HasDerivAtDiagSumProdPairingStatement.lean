@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockFormApply
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.hasDerivAt_diag_sum_prod_pairing | exact GlobalTheory.hasDerivAt_diag_sum_prod_pairing | (intros; apply GlobalTheory.hasDerivAt_diag_sum_prod_pairing <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_hasDerivAt_diag_eq_sum_mul_pairings : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (β : V →ₗ[ℝ] V →ₗ[ℝ] ℝ), (∀ q, (∀ x, β x q = 0) → q = 0) →
     ∀ M : ℝ → V →ₗ[ℝ] V →ₗ[ℝ] ℂ, (∀ x y, DifferentiableAt ℝ (fun t => M t x y) 0) →

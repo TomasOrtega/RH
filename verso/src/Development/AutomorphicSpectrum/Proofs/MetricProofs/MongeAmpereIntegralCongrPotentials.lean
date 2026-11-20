@@ -15,9 +15,9 @@ namespace SamePotInt
 variable {D : ℕ}
 
 /- English proof (translation)
-Set `Φ : ((Fin D → ℂ) →L[ℂ] ℂ) →L[ℝ] ((Fin D → ℂ) →L[ℝ] ℝ)` to `(ContinuousLinearMap.compL ℝ (Fin D → ℂ) ℂ ℝ Complex.reCLM).comp (ContinuousLinearMap.restrictScalarsL ℂ (Fin D → ℂ) ℂ ℝ ℝ)`. Establish `hev : (fderiv ℝ fun z => (H z).re) =ᶠ[𝓝 y] fun z => Φ (fderiv ℂ H z)` using `by filter_upwards [hH.eventually_analyticAt] with z hz`. Establish `h1 : HasFDerivAt H ((fderiv ℂ H z).restrictScalars ℝ) z` using `hz.differentiableAt.hasFDerivAt.restrictScalars ℝ`. Conclude with `(Complex.reCLM.hasFDerivAt.comp z h1).fderiv`. Establish `hd : DifferentiableAt ℂ (fderiv ℂ H) y` using `hH.fderiv.differentiableAt`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fderiv ℂ (fderiv ℂ H) y, fun v w => ?_⟩` and prove the remaining obligations. Establish `h2 : HasFDerivAt (fun z => Φ (fderiv ℂ H z)) (Φ.comp ((fderiv ℂ (fderiv ℂ H) y).restrictScalars ℝ)) y` using `Φ.hasFDerivAt.comp y (hd.hasFDerivAt.restrictScalars ℝ)`. Rewrite using `[hev.fderiv_eq, h2.fderiv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_fderiv_fderiv_re {H : (Fin D → ℂ) → ℂ} {y : Fin D → ℂ} (hH : AnalyticAt ℂ H y) :
     ∃ B : (Fin D → ℂ) →L[ℂ] (Fin D → ℂ) →L[ℂ] ℂ, ∀ v w,
@@ -39,7 +39,7 @@ theorem exists_fderiv_fderiv_re {H : (Fin D → ℂ) → ℂ} {y : Fin D → ℂ
   rfl
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `exists_fderiv_fderiv_re hH`. Use extensionality with `i j`. Simplify using `only [hessC, Matrix.zero_apply, hB, map_smul, _root_.smul_apply, smul_eq_mul, Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hessC_re_eq_zero {H : (Fin D → ℂ) → ℂ} {y : Fin D → ℂ} (hH : AnalyticAt ℂ H y) :
     hessC (fun z => (H z).re) y = 0 := by
@@ -51,11 +51,11 @@ theorem hessC_re_eq_zero {H : (Fin D → ℂ) → ℂ} {y : Fin D → ℂ} (hH :
   ring
 
 /- English proof (translation)
-Establish `hb : ContDiffAt ℝ 2 (fun z => (H z).re) y` using `Complex.reCLM.contDiff.contDiffAt.comp y (hH.contDiffAt.restrict_scalars ℝ)`. Establish `h2 : fderiv ℝ (fderiv ℝ a') y = fderiv ℝ (fderiv ℝ a) y + fderiv ℝ (fderiv ℝ fun z => (H z).re) y`. Establish `hda : ∀ᶠ z in 𝓝 y, DifferentiableAt ℝ a z` using `(ha.eventually (by simp)).mono fun z hz => hz.differentiableAt (by norm_num)`. Establish `hdb : ∀ᶠ z in 𝓝 y, DifferentiableAt ℝ (fun z => (H z).re) z` using `(hb.eventually (by simp)).mono fun z hz => hz.differentiableAt (by norm_num)`. Establish `h1 : fderiv ℝ a' =ᶠ[𝓝 y] fun z => fderiv ℝ a z + fderiv ℝ (fun z => (H z).re) z` using `by filter_upwards [hev.eventuallyEq_nhds, hda, hdb] with z hz hza hzb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hz.fderiv_eq]`. Conclude with `fderiv_add hza hzb`. Rewrite using `[h1.fderiv_eq]`. Conclude with `fderiv_add ((ha.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)) ((hb.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num))`. Establish `h0` using `hessC_re_eq_zero hH`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[← add_zero (hessC a y), ← h0]`. Use extensionality with `i j`. Simplify using `only [hessC, Matrix.add_apply, h2, _root_.add_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hessC_eq_of_eventuallyEq_add_re {a a' : (Fin D → ℂ) → ℝ} {H : (Fin D → ℂ) → ℂ}
     {y : Fin D → ℂ} (ha : ContDiffAt ℝ 2 a y) (hH : AnalyticAt ℂ H y)
@@ -85,11 +85,11 @@ theorem hessC_eq_of_eventuallyEq_add_re {a a' : (Fin D → ℂ) → ℝ} {H : (F
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Establish `key : ∀ i, hessC (fun y' => (P i).φ ((A.chart j).symm y) ((A.chart j).symm y')) y = hessC (fun y' => (Q i).φ ((A.chart j).symm y) ((A.chart j).symm y')) y`. Introduce `i`. Take `⟨V, hVo, hxV, G, hG, hPQV⟩` from `hPQ i _ hU`. Establish `hsrc : (A.chart j).symm y ∈ (A.chart j).source` using `(A.chart j).map_target hy`. Establish `ha : ContDiffAt ℝ 2 (fun y' => (Q i).φ ((A.chart j).symm y) ((A.chart j).symm y')) y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hC i _ hU j hsrc`. Rewrite `h` using `[(A.chart j).right_inv hy]`. Conclude with `h`. Establish `hH : AnalyticAt ℂ (fun y' => G ((A.chart j).symm y')) y` using `hG j y ⟨hy, hxV⟩`. Use `hessC_eq_of_eventuallyEq_add_re ha hH ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hV : (A.chart j).symm ⁻¹' V ∈ 𝓝 y` using `((A.chart j).continuousAt_symm hy).preimage_mem_nhds (hVo.mem_nhds hxV)`. Use `filter_upwards [hV] with z hz`. Conclude with `sub_eq_iff_eq_add'.mp (hPQV _ hz)`. Simplify using `only [locDens, maDens, key]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem locDens_eq_of_samePot (A : FinHolAtlas e X) {U : Set X} {P Q : Fin e → LocPot X}
     (hPQ : ∀ i, SamePot A U (P i) (Q i)) (hC : ∀ i, ∀ x ∈ U, IsTwiceDifferentiableAt A (Q i) x) (j : Fin A.n)
@@ -115,15 +115,15 @@ theorem locDens_eq_of_samePot (A : FinHolAtlas e X) {U : Set X} {P Q : Fin e →
 end SamePotInt
 
 /- English proof (translation)
-Introduce `e X _ _ _ A U P Q g g' hN hPQ hC hg`. Establish `hpt : ∀ (j : Fin A.n) (y : Fin e → ℂ), y ∈ (A.chart j).target → (A.chart j).symm y ∈ U → g ((A.chart j).symm y) = g' ((A.chart j).symm y) ∧ locDens A P j y = locDens A Q j y` using `fun j y hy hU => ⟨hg _ hU, SamePotInt.locDens_eq_of_samePot A hPQ hC j hy hU⟩`. Establish `hae : ∀ (j : Fin A.n), ∀ᵐ y ∂(MeasureTheory.volume : MeasureTheory.Measure (Fin e → ℂ)), y ∈ (A.chart j).target → (A.chart j).symm y ∈ U`. Introduce `j`. Rewrite using `[MeasureTheory.ae_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `MeasureTheory.measure_mono_null ?_ (hN j)` and prove the remaining obligations. Introduce `y hy`. Simplify using `only [Set.mem_ofPred_eq, Classical.not_imp] at hy`. Conclude with `⟨hy.1, hy.2⟩`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion.
 
-Distinguish the cases in `h : Nonempty (ChartPartition A)`. Simplify using `only [mInt, dif_pos h, integralWith]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `MeasureTheory.setIntegral_congr_ae (A.chart j).open_target.measurableSet ?_` and prove the remaining obligations. Use `filter_upwards [hae j] with y hy hyt`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `hpt j y hyt (hy hyt)`. Simplify using `only [h1, h2]`. Simplify using `only [mInt, dif_neg h]`. Unfold `MIntegrable`. Use `forall_congr' fun j => forall_congr' fun K => forall_congr' fun hK => forall_congr' fun hKc => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `MeasureTheory.integrableOn_congr_fun_ae ?_` and prove the remaining obligations. Rewrite using `[Filter.EventuallyEq, MeasureTheory.ae_restrict_iff' hKc.isClosed.measurableSet]`. Use `filter_upwards [hae j] with y hy hyK`. Take `⟨h1, h2⟩` from `hpt j y (hK hyK) (hy (hK hyK))`. Simplify using `only [h1, h2]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mInt_congr_samePot : ∀ (e : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas e X) (U : Set X) (P Q : Fin e → LocPot X) (g g' : X → ℝ), IsNull A Uᶜ →

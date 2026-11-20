@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Ferr
 open UpperTheory.V.FW
 
 /- English proof (translation)
-Establish `h : ((Polynomial.X : Polynomial k) - 1) ^ l ^ n = Polynomial.X ^ l ^ n - 1`. Rewrite using `[sub_pow_char_pow, one_pow]`. Use `congrArg (Polynomial.aeval x) h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem UpperTheory.V.FW.phiDvd_pow (l : ℕ) [Fact l.Prime] (n : ℕ) (k A : Type) [Field k] [CharP k l]
     [CommRing A] [Algebra k A] (x : A) : (x - 1) ^ l ^ n = x ^ l ^ n - 1 := by
@@ -13,19 +13,17 @@ private theorem UpperTheory.V.FW.phiDvd_pow (l : ℕ) [Fact l.Prime] (n : ℕ) (
   simpa using this
 
 /- English proof (translation)
-Rewrite `hφ` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨f, rfl⟩` from `hφ`. Express the relevant statement in the definitionally equal form `¬ T ^ N ∣ Polynomial.aeval T f at h`. Use `show Polynomial.aeval T f ∣ T ^ N`. Establish `hf0 : f ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `h (by simp)`. Take `⟨q, hq, hnd⟩` from `Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd f hf0 0`. Simplify using `only [map_zero, sub_zero] at hq hnd`. Rewrite `hnd` using `[Polynomial.X_dvd_iff]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hu : IsUnit (Polynomial.aeval T q)`. Take `⟨r, hr⟩ : Polynomial.X ∣ q - Polynomial.C (q.coeff 0)` from `Polynomial.X_dvd_iff.2 (by simp)`. Establish `hq' : q = Polynomial.C (q.coeff 0) + Polynomial.X * r` using `sub_eq_iff_eq_add'.mp hr`. Establish `hev : Polynomial.aeval T q = algebraMap k A (q.coeff 0) + T * Polynomial.aeval T r` using `by conv_lhs => rw [hq']`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hnil : IsNilpotent (T * Polynomial.aeval T r)`. Take `⟨M, hM⟩` from `hT`. Conclude with `⟨M, by rw [mul_pow, hM, zero_mul]⟩`. Establish `hc : IsUnit (algebraMap k A (q.coeff 0))` using `(Ne.isUnit hnd).map _`. Rewrite using `[hev]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `exact hnil.isUnit_add_right_of_commute hc (Commute.all _ _)`. Consider the case `(rw [add_comm]; exact hnil.isUnit_add_right_of_commute hc (Commute.all _ _))`. Establish `hφ : Polynomial.aeval T f = T ^ Polynomial.rootMultiplicity 0 f * Polynomial.aeval T q` using `by conv_lhs => rw [hq]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hv : N ≤ Polynomial.rootMultiplicity 0 f`. It suffices to derive a contradiction. Conclude with `h (hφ ▸ dvd_mul_of_dvd_left (pow_dvd_pow T hv) _)`. Use `push_neg at hv`. Rewrite using `[hφ]`.
-
-Use `⟨↑hu.unit⁻¹ * T ^ (N - Polynomial.rootMultiplicity 0 f), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pow_add, Nat.add_sub_cancel' hv.le]`. Use `_ = T ^ Polynomial.rootMultiplicity 0 f * Polynomial.aeval T q * (↑hu.unit⁻¹ * T ^ (N - Polynomial.rootMultiplicity 0 f)) := by`. Rewrite using `[mul_assoc, ← mul_assoc (Polynomial.aeval T q), hu.mul_val_inv, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.FW.phiDvd_nil (k A : Type) [Field k] [CommRing A] [Algebra k A] (T φ : A)
     (hT : IsNilpotent T) (hφ : φ ∈ Algebra.adjoin k {T}) (N : ℕ) (h : ¬ T ^ N ∣ φ) : φ ∣ T ^ N := by
@@ -70,19 +68,17 @@ private theorem UpperTheory.V.FW.phiDvd_nil (k A : Type) [Field k] [CommRing A] 
           rw [mul_assoc, ← mul_assoc (Polynomial.aeval T q), hu.mul_val_inv, one_mul]
 
 /- English proof (translation)
-Introduce `l _ b K k G Q _ _ _ _ p π γ χ θ hγ hp hπ hπγ hne`. Use `set T : MonoidAlgebra k G := MonoidAlgebra.of k G γ - 1 with hT`. Establish `hof : ∀ m : ℕ, MonoidAlgebra.of k G (γ ^ m) ∈ Algebra.adjoin k {T}`. Introduce `m`. Establish `e : MonoidAlgebra.of k G (γ ^ m) = (T + 1) ^ m` using `by rw [hT, sub_add_cancel, map_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Subalgebra.pow_mem _ (Subalgebra.add_mem _ (Algebra.self_mem_adjoin_singleton k T) (Subalgebra.one_mem _)) _`. Establish `hfin : IsOfFinOrder γ` using `isOfFinOrder_iff_pow_eq_one.2 ⟨l ^ b, pow_pos (Fact.out : l.Prime).pos _, hγ⟩`. Establish `hmem : tw χ p θ ∈ Algebra.adjoin k {T}`. Rewrite using `[← MonoidAlgebra.sum_coeff_single θ, map_finsuppSum, Finsupp.sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Subalgebra.sum_mem _ fun g _ => ?_` and prove the remaining obligations. Rewrite using `[tw_single]`. Take `⟨m, hm⟩` from `(hfin.mem_powers_iff_mem_zpowers).2 (hp g)`. Establish `e : MonoidAlgebra.single (p g) (θ.coeff g * ↑(χ g)) = (θ.coeff g * ↑(χ g)) • MonoidAlgebra.of k G (γ ^ m)`. Rewrite using `[← (show γ ^ m = p g from hm), MonoidAlgebra.of_apply, MonoidAlgebra.smul_single', mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Subalgebra.smul_mem _ (hof m) _`. Establish `hTnil : IsNilpotent T` using `⟨l ^ b, by rw [hT, phiDvd_pow l b k, ← map_pow, hγ, map_one, sub_self]⟩`. Use `phiDvd_nil k _ T _ hTnil hmem _ ?_` and prove the remaining obligations. Introduce `hdvd`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hne` to reduce the goal to its premises. Use `set ψ := MonoidAlgebra.mapDomainAlgHom k k π with hψ`. Establish `hcomp : ψ.comp (tw χ p) = tw χ π`. Use `MonoidAlgebra.algHom_ext (fun g => ?_) (Subsingleton.elim _ _)` and prove the remaining obligations. Simplify using `[hψ, tw_single, hπ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hψT : ψ T ^ l ^ K = 0`. Rewrite using `[← map_pow, hT, phiDvd_pow l K k, map_sub, map_pow, map_one]`. Simplify using `[hψ, MonoidAlgebra.of_apply, MonoidAlgebra.single_pow, ← map_pow, hπγ, MonoidAlgebra.one_def]`. Take `⟨c, hc⟩` from `hdvd`. Establish `h1 : tw χ π θ = ψ (tw χ p θ)` using `by rw [← hcomp]; rfl`.
-
-Rewrite using `[h1, hc, map_mul, map_pow, hψT, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.FW.phiDvd :
     ∀ (l : ℕ) [Fact l.Prime] (b K : ℕ) (k G Q : Type) [Field k] [CharP k l] [CommGroup G] [CommGroup Q] (p : G →* G) (π : G →* Q) (γ : G) (χ : G →* kˣ) (θ : MonoidAlgebra k G), γ ^ l ^ b = 1 → (∀ g, p g ∈ Subgroup.zpowers γ) → (∀ g, π (p g) = π g) → π γ ^ l ^ K = 1 → tw χ π θ ≠ 0 → tw χ p θ ∣ (MonoidAlgebra.of k G γ - 1) ^ l ^ K := by

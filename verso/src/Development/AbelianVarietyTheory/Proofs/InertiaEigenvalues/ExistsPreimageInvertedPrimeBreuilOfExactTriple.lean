@@ -15,11 +15,11 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} {T : PhiMod O K l e a μ}
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `exists_pow_smul_eq_zero_of_isFiniteLength (l : A O K) (isUnit_one_sub_mul_l l) _ h`. Use `⟨n, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h1` using `hn (Submodule.Quotient.mk ⟨y, hy⟩)`. Rewrite `h1` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Express the relevant statement in the definitionally equal form `_ ∈ (G.imM).comap T.M.subtype at h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h1` using `[Submodule.mem_comap, Hom.imM, Submodule.mem_map]`. Take `⟨x, hx, hxy⟩` from `h1`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Rewrite `hxy` using `[LinearMap.restrictScalars_apply]`. Rewrite using `[hxy]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `τ i`. Simplify using `[Algebra.smul_def]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem exists_pow_of_coker (G : Hom Q T) (h : IsFiniteLength (A O K) G.coker) :
     ∃ n : ℕ, ∀ y ∈ T.M, ∃ x ∈ Q.M, G.app x = (l : K) ^ n • y := by
@@ -40,21 +40,21 @@ theorem exists_pow_of_coker (G : Hom Q T) (h : IsFiniteLength (A O K) G.coker) :
 open IntegralLeftInverseExactTriple in
 
 /- English proof (translation)
-Establish `h1 : ∀ j : μ, ∃ x ∈ Q.M, G.app x = ((l : K) ^ n) • (Pi.single τ (Pi.single j 1) : Vec K a μ)` using `fun j => hG _ (mem_M_single T τ _ fun i => by`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `one_mem _`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `zero_mem _)`. Use `choose x hxM hx using h1`. Set `Xm : Matrix κ μ K⟦X⟧` to `Matrix.of fun k j => x j τ k`. Establish `hXA : ∀ k j, Xm k j ∈ A O K` using `fun k j => mem_vecs.1 (mem_tot.1 (hxM j) τ) k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hGX : G.mat τ * Xm = ((l : K) ^ n) • (1 : Matrix μ μ K⟦X⟧)`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `congrFun (congrFun (hx j) τ) i` as an intermediate fact. Rewrite `this` using `[Hom.app_apply, Pi.smul_apply, Pi.single_eq_same]`. Rewrite using `[Matrix.mul_apply, Matrix.smul_apply, Matrix.one_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.mulVec, dotProduct, Xm, Pi.single_apply, eq_comm]`. Set `Z : Matrix κ κ K⟦X⟧` to `((l : K) ^ n) • (1 : Matrix κ κ K⟦X⟧) - Xm * G.mat τ`. Establish `hZA : ∀ k k', Z k k' ∈ A O K` using `fun k k' => sub_mem (smul_one_mem κ n k k') (Subalgebra.sum_mem _ fun j _ => mul_mem (hXA _ _) (G.mem _ _ _))`. Establish `hGZ : G.mat τ * Z = 0`. Simplify using `only [Z, Matrix.mul_sub, Matrix.mul_smul, Matrix.mul_one, ← Matrix.mul_assoc, hGX, Matrix.smul_mul, Matrix.one_mul, sub_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : ∀ k : κ, ∃ w ∈ P.M, F.app w = Pi.single τ (fun k' => Z k' k)`. Introduce `k`. Establish `hm` using `mem_M_single Q τ (fun k' => Z k' k) fun k' => hZA k' k`. Establish `hz : G.mat τ *ᵥ (fun k' => Z k' k) = 0`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `congrFun (congrFun hGZ i) k` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Take `⟨w, hw, h⟩` from `(hFG.exact _ hm).1 (by rw [app_single, hz, Pi.single_zero])`. Conclude with `⟨w, hw, h⟩`. Use `choose w hwM hw using h2`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `W : Matrix ι κ K⟦X⟧` to `Matrix.of fun i k => w k τ i`. Establish `hWA : ∀ i k, W i k ∈ A O K` using `fun i k => mem_vecs.1 (mem_tot.1 (hwM k) τ) i`. Establish `hFW : F.mat τ * W = Z`. Use `Matrix.ext fun i k => ?_` and prove the remaining obligations. Use `congrFun (congrFun (hw k) τ) i` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Hom.app_apply, Pi.single_eq_same]`. Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, W]`. Use `⟨W, Xm, hWA, hXA, ?_⟩` and prove the remaining obligations. Rewrite using `[hFW, sub_add_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem exists_split (F : Hom P Q) (G : Hom Q T) (hFG : IsExactTriple F G) (n : ℕ)
     (hG : ∀ y ∈ T.M, ∃ x ∈ Q.M, G.app x = (l : K) ^ n • y) (τ : ZMod a) :
@@ -102,7 +102,7 @@ theorem exists_split (F : Hom P Q) (G : Hom Q T) (hFG : IsExactTriple F G) (n : 
   rw [hFW, sub_add_cancel]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_frob_smul_one (n : ℕ) :
     ((l : K) ^ n • (1 : Matrix κ κ K⟦X⟧)).map (frob K l) = (l : K) ^ n • (1 : Matrix κ κ K⟦X⟧) := by
@@ -122,15 +122,15 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} {T : PhiMod O K l e a μ}
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `exists_pow_of_coker G hFG.finiteLength`. Establish `hAB : ∀ f ∈ A O K, f ∈ invL l (S O K e)` using `fun f hf => le_away _ _ (A_le_S l e hf)`. Take `⟨c, hc, hvc⟩` from `Q.mem_extc.1 (mem_tot.1 hv τ)`. Take `⟨W, Xm, hWA, -, hsplit⟩` from `exists_split F G hFG n hn (τ - 1)`. Establish `hGc : (G.mat (τ - 1)).map (frob K l) *ᵥ c = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `congrFun hGv τ`. Rewrite `h1` using `[Pi.zero_apply, Hom.app_apply, hvc, Matrix.mulVec_mulVec, G.comm, ← Matrix.mulVec_mulVec]`. Establish `h2 : (T.mxInv τ * T.mx τ) *ᵥ ((G.mat (τ - 1)).map (frob K l) *ᵥ c) = 0`. Rewrite using `[← Matrix.mulVec_mulVec, h1, Matrix.mulVec_zero]`. Rewrite `h2` using `[T.mxInv_mul_mx, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hs : (F.mat (τ - 1)).map (frob K l) * W.map (frob K l) + Xm.map (frob K l) * (G.mat (τ - 1)).map (frob K l) = (l : K) ^ n • (1 : Matrix κ κ K⟦X⟧)`. Establish `: (F.mat (τ - 1) * W + Xm * G.mat (τ - 1)).map (frob K l).toRingHom = ((l : K) ^ n • (1 : Matrix κ κ K⟦X⟧)).map (frob K l).toRingHom` using `by rw [hsplit]`. Rewrite `this` using `[Matrix.map_add _ (map_add _), Matrix.map_mul, Matrix.map_mul]`. Rewrite using `[← map_frob_smul_one]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc2 : (l : K) ^ n • c = (F.mat (τ - 1)).map (frob K l) *ᵥ (W.map (frob K l) *ᵥ c)`. Use `congrArg (· *ᵥ c) hs` as an intermediate fact. Rewrite `this` using `[Matrix.add_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hGc, Matrix.mulVec_zero, add_zero, Matrix.smul_mulVec, Matrix.one_mulVec]`. Conclude with `this.symm`. Use `⟨((l : K) ^ n)⁻¹ • (W.map (frob K l) *ᵥ c), fun i => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.smul_apply, PowerSeries.smul_eq_C_mul]`. Use `mul_mem (HasK.C_mem _) (Subalgebra.sum_mem _ fun k _ => mul_mem ?_ (hc k))` and prove the remaining obligations. Conclude with `hAB _ (frob_mem_A l (hWA i k))`. Rewrite using `[hvc, Matrix.mulVec_mulVec, F.comm, ← Matrix.mulVec_mulVec, Matrix.mulVec_smul, ← hc2, inv_smul_smul₀ (pow_ne_zero _ (l_ne_zero l))]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_comp [NeZero e] (F : Hom P Q) (G : Hom Q T) (hFG : IsExactTriple F G)
     {v : Vec K a κ} (hv : v ∈ Q.ext (invL l (S O K e))) (hGv : G.app v = 0) (τ : ZMod a) :
@@ -170,9 +170,7 @@ end GlobalTheory.BK.ExtExact
 open PowerSeries GlobalTheory.BK Matrix in
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ l e a _ _ _ ι κ μ _ _ _ _ _ _ P Q T F G hFG v hv hGv`. Use `choose c' hc' hvc' using fun τ => ExtExact.exists_comp F G hFG hv hGv τ`. Use `⟨fun τ => P.mx τ *ᵥ c' τ, mem_tot.2 fun τ => P.mem_extc.2 ⟨_, hc' τ, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ`. Rewrite using `[Hom.app_apply]`.
-
-Conclude with `(hvc' τ).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BK.exists_preimage_invL_S_of_exactTriple : ∀ (O K : Type) [CommRing O] [NormedField K]
     [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) [Fact l.Prime] [NeZero e]

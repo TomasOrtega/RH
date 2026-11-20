@@ -15,20 +15,20 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.Reg.Transfer
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `Ideal.exists_maximal (𝓞 K)`. Conclude with `⟨⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField K)⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_place (K : Type) [Field K] [NumberField K] : Nonempty (HeightOneSpectrum (𝓞 K)) := by
   obtain ⟨m, hm⟩ := Ideal.exists_maximal (𝓞 K)
   exact ⟨⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField K)⟩⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c h r U`. Establish `hs : ∀ {a n} {f : Rul Xo c}, f ∈ Formalism.L2.PjFree.cusp Xo c U a n → f ∈ sec Xo c a n` using `fun hf => Formalism.L2.PjFree.cusp_le_sec Xo c U _ _ hf`. Take `⟨la0⟩` from `nonempty_place c.F`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `w F h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun la y' => ?_, fun q => ?_⟩` and prove the remaining obligations. Take `⟨S, -⟩` from `(h la).1`. Conclude with `integral_place S (hs F.2) (fun v hv => h0 la ⟨v, hv⟩) y'.1 y'.2`. Take `⟨S, hQ⟩` from `(h la0).1`. Conclude with `integral_trivial S hQ (hs F.2) (fun v hv => h0 la0 ⟨v, hv⟩) q.1 q.2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `wL wE n ws et nu c' hc' hNZ hyp`. Use `⟨fun la y' => ?_, fun q => ?_⟩` and prove the remaining obligations. Take `⟨S, hSF, -⟩` from `(h la).2 wL.1.1 wL.1.2 n (fun i => (ws i).1) (fun i => hs (ws i).2) hNZ`. Conclude with `⟨integral_place S (hs et.2) (fun v hv => (hyp la ⟨v, hv⟩).1) y'.1 y'.2, fun hT => combined_place S _ hSF (fun k => hs (ws k).2) (hs et.2) (nu la) c' hc' (fun v hv => hyp la ⟨v, hv⟩) y'.1 y'.2 hT⟩`. Take `⟨S, hSF, hQ⟩` from `(h la0).2 wL.1.1 wL.1.2 n (fun i => (ws i).1) (fun i => hs (ws i).2) hNZ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨integral_trivial S hQ (hs et.2) (fun v hv => (hyp la0 ⟨v, hv⟩).1) q.1 q.2, fun hT => combined_trivial S hQ _ hSF (fun k => hs (ws k).2) (hs et.2) (nu la0) c' hc' (fun v hv => hyp la0 ⟨v, hv⟩) q.1 q.2 hT⟩`. Introduce `a n _ m ws hws hNZ nu hyp la v hv`. Take `⟨S, hSF, -⟩` from `(h la).2 a n m ws (fun i => hs (hws i)) hNZ`. Conclude with `family_place S ws hSF (fun i => hs (hws i)) (nu la) (hyp la) v hv`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem transferLaw_of_normalCharts :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), (∀ la : HeightOneSpectrum (𝓞 c.F), (∃ S : SCharts Xo c la, S.CovQ) ∧ ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n m : ℕ) (ws : Fin m → Rul Xo c), (∀ i, ws i ∈ sec Xo c a n) → Formalism.L2.PjFree.NoCommonZero Xo c ws → ∃ S : SCharts Xo c la, S.FamW ws ∧ S.CovQ) → ∀ (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Formalism.L2.PjFree.Unf Xo c σ r), Formalism.L2.PjFree.regular₂ Xo c U := by

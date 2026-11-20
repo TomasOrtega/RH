@@ -9,13 +9,13 @@ open Classical
 namespace GlobalTheory.RealWeilF
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ nS nT θ ι hι w`. Use `⟨w - iotaVF ι (piWF θ w), piWF θ w, ?_, by abel⟩` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.zero_apply]`. Use `set a := infPartF F E ((w - iotaVF ι (piWF θ w)) i j) with ha`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hθ : ∀ w', θ w' a = 0`. Introduce `w'`. Rewrite using `[ha, Matrix.sub_apply, map_sub, map_sub]`. Simplify using `only [iotaVF, piWF, Matrix.of_apply]`. Rewrite using `[hι.comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sub_self _`. Establish `h0` using `hι.ext (Formalism.L2.Fam.ThC.pairE a 0) (Formalism.L2.Fam.ThC.snd_pairE a 0) (by`. Introduce `w'`. Establish `: infPartF F E (Formalism.L2.Fam.ThC.pairE a 0) = a` using `Formalism.L2.Fam.ThC.fst_pairE a 0`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hθ w')`. Establish `: infPartF F E (Formalism.L2.Fam.ThC.pairE a 0) = a` using `Formalism.L2.Fam.ThC.fst_pairE a 0`. Rewrite using `[← this, h0, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_realZero_add_iotaVF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (nS nT : ℕ)
     (θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ)) (ι : (InfinitePlace F → ℂ) →+ AEF F E), IsChartF θ ι →

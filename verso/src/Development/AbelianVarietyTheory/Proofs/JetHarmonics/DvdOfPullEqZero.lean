@@ -27,16 +27,16 @@ open GlobalTheory.IntegralBox
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => SecOps.sec_ext h, fun h j => congrArg (fun s : SecMod D k α => LB.Sec.f s j) h⟩`.
+Supply the required witnesses or components.
 -/
 theorem dvd_iff (D : DegPre V) {k : ℕ} {α : D.X} (a : V) (σ τ : SecMod D k α) :
     (∀ j, LB.Sec.f σ j = constFn D.P.A.hom _ a * LB.Sec.f τ j) ↔ σ = a • τ :=
   ⟨fun h => SecOps.sec_ext h, fun h j => congrArg (fun s : SecMod D k α => LB.Sec.f s j) h⟩
 
 /- English proof (translation)
-Take `⟨b, hb, hb'⟩` from `exists_basis (residue V) D hT hk α`. Take `⟨c, rfl⟩` from `hb σ`. Establish `h0` using `hb' (fun i => residue V (c i)) (by simpa only [map_sum, map_smulₛₗ] using h)`. Establish `hd : ∀ i, ϖ ∣ c i` using `fun i => by`. Rewrite using `[← Ideal.mem_span_singleton, ← hϖ.maximalIdeal_eq, ← residue_eq_zero_iff]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun h0 i`. Use `choose d hd using hd`. Conclude with `⟨∑ i, d i • b i, by simp only [hd, Finset.smul_sum, smul_smul]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dvd_of_pull_eq_zero (hT : TwistBaseChangeStatement) {ϖ : V} (hϖ : Irreducible ϖ) (D : DegPre V) {k : ℕ}
     (hk : 1 ≤ k) {α : D.X} (σ : SecMod D k α) (h : pullBC (residue V) D k α σ = 0) :
@@ -51,9 +51,9 @@ theorem dvd_of_pull_eq_zero (hT : TwistBaseChangeStatement) {ϖ : V} (hϖ : Irre
   exact ⟨∑ i, d i • b i, by simp only [hd, Finset.smul_sum, smul_smul]⟩
 
 /- English proof (translation)
-Take `⟨b, -, hb'⟩` from `exists_basis (residue V) D hT le_rfl α`. Set `i₀ : Fin (1 ^ D.P.g)` to `⟨0, by simp⟩`. Use `⟨b i₀, fun h => ?_⟩` and prove the remaining obligations. Establish `h0` using `hb' (Pi.single i₀ 1) (by`. Rewrite using `[Finset.sum_eq_single i₀, h, smul_zero]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i _ hi`. Rewrite using `[Pi.single_eq_of_ne hi, zero_smul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h)`. Simplify using `using congrFun h0 i₀`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_pull_ne_zero (hT : TwistBaseChangeStatement) (D : DegPre V) (α : D.X) :
     ∃ σ : SecMod D 1 α, pullBC (residue V) D 1 α σ ≠ 0 := by
@@ -69,17 +69,15 @@ theorem exists_pull_ne_zero (hT : TwistBaseChangeStatement) (D : DegPre V) (α :
   simpa using congrFun h0 i₀
 
 /- English proof (translation)
-Introduce `V _ _ _ _ ϖ hϖ n D D' pD F _ _ θ Θ ⟨σ, σF, hs, he, hn⟩ hB`. Establish `hT` using `GlobalTheory.twistBaseChange_and_valuation_statements.1`. Establish `hex : ∀ α : D.toPre.X, ∃ s : SecMod D.toPre 1 α, pullBC (residue V) D.toPre 1 α s ≠ 0 ∧ (α = 0 → GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre F α) (DegPre.famε 1) (θ.s α) (D.toPre.famφB α) (DegPre.famε 1) s (DegPre.prB D.toPre F).left 1)` using `fun α => by`. Distinguish the cases in `hα : α = 0`. Substitute `hα` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `⟨σ, fun h => ?_, fun _ => ?_⟩` and prove the remaining obligations. Take `⟨τ, hτ⟩` from `dvd_of_pull_eq_zero hT hϖ D.toPre le_rfl σ h`. Conclude with `hn ⟨τ, (dvd_iff D.toPre ϖ σ τ).2 hτ⟩`. Rewrite using `[show θ.s 0 = σF from SecOps.sec_ext he]`. Conclude with `hs`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨s, hs⟩` from `exists_pull_ne_zero hT D.toPre α`. Conclude with `⟨s, hs, fun h => absurd h hα⟩`. Use `choose f hf hf' using hex`. Use `⟨boxFamB pD 1 (fun _ α => f α) 0, Θ.s 0, UnitBallBox.box_secScal pD hB (isBoxFamB_boxFamB pD 1 _) 0 (fun i => hf' _ (by rw [map_zero]; rfl)), fun _ => rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨τ, hτ⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `(dvd_iff D'.toPre ϖ _ τ).1 hτ`. Establish `h2 : residue V ϖ = 0` using `(residue_eq_zero_iff _).2 (by`. Rewrite using `[hϖ.maximalIdeal_eq]`. Conclude with `Ideal.mem_span_singleton_self ϖ)`. Establish `h3 : pullBC (residue V) D'.toPre 1 0 (boxFamB pD 1 (fun _ α => f α) 0) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg _ h1).trans ((map_smulₛₗ (pullBC (residue V) D'.toPre 1 0) ϖ τ).trans (by rw [h2, zero_smul]))`. Establish `h4` using `box_indep (residue V) pD (m := 1) (fun α _ => f α) (fun α c hc => by`. Rewrite `hc` using `[Fin.sum_univ_one, smul_eq_zero]`. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`.
-
-Conclude with `hc.resolve_right (hf α)) 0 (fun _ => 1) (Finset.sum_eq_zero fun a _ => (congrArg _ h3).trans (smul_zero _))`. Conclude with `one_ne_zero (congrFun h4 fun _ => 0)`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] (ϖ : V), Irreducible ϖ → ∀ (n : ℕ) (D D' : DegData V (maximalIdeal V)) (pD : IsPowDeg D'.toPre D.toPre n) (F : Type) [Field F] [Algebra (FractionRing V) F] (θ : Fam D.toPre F 1) (Θ : Fam D'.toPre F 1), ThFrame D ϖ F θ → IsBoxFam pD F 1 Θ (fun _ => θ) → ThFrame D' ϖ F Θ := by
   intro V _ _ _ _ ϖ hϖ n D D' pD F _ _ θ Θ ⟨σ, σF, hs, he, hn⟩ hB

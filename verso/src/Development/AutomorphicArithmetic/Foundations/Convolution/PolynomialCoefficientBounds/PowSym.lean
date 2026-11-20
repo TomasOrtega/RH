@@ -3,11 +3,11 @@ import Mathlib
 open MvPolynomial Filter Topology
 
 /- English proof (translation)
-Introduce `n f i`. Establish `hs : (aeval (fun r : Fin n => (X r : MvPolynomial (Fin n) ℂ) ^ f) (esymm (Fin n) ℂ (i + 1))).IsSymmetric`. Introduce `e`. Establish `h : (rename e).comp (aeval (fun r : Fin n => (X r : MvPolynomial (Fin n) ℂ) ^ f)) = (aeval (fun r : Fin n => (X r : MvPolynomial (Fin n) ℂ) ^ f)).comp (rename e : MvPolynomial (Fin n) ℂ →ₐ[ℂ] MvPolynomial (Fin n) ℂ)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `r`. Simplify using the standard rewrite rules. Establish `h2` using `DFunLike.congr_fun h (esymm (Fin n) ℂ (i + 1))`. Simplify using `only [AlgHom.comp_apply] at h2`. Rewrite using `[h2, esymm_isSymmetric (Fin n) ℂ (i + 1) e]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg⟩` from `esymmAlgHom_surjective (σ := Fin n) ℂ (n := n) (by simp) ⟨_, (mem_symmetricSubalgebra _).2 hs⟩`. Use `⟨g, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hg` as an intermediate fact. Rewrite `this` using `[esymmAlgHom_apply]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.FX.esymm_pow :
     ∀ (n f : ℕ) (i : Fin n), ∃ g : MvPolynomial (Fin n) ℂ, aeval (fun j : Fin n => esymm (Fin n) ℂ (j + 1)) g = aeval (fun r : Fin n => (X r : MvPolynomial (Fin n) ℂ) ^ f) (esymm (Fin n) ℂ (i + 1)) := by

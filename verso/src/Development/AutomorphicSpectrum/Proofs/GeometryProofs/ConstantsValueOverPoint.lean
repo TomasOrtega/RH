@@ -11,9 +11,9 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree GroundTheory.Heights₂.Heig
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.FamEx.OverVal
 
 /- English proof (translation)
-Use `letI : Algebra O F := φ.toAlgebra`. Establish `h` using `GlobalTheory.CompanionTheory.Ar.Flat.ConstReg.genMap_germ_const z s hz ⟨genPt z, specializes_rfl⟩ o`. Establish `e : genMap z ⟨genPt z, specializes_rfl⟩ = (Scheme.stalkClosedPointTo z).hom`. Use extensionality with `t`. Simplify using `only [genMap, TopCat.Presheaf.stalkSpecializes_refl]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg (fun q : X.presheaf.stalk (genPt z) ⟶ CommRingCat.of F => q.hom t) (Category.id_comp (Scheme.stalkClosedPointTo z))`. Rewrite `h` using `[e]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closedPoint_germ_const {X : Scheme.{0}} {F : Type} [Field F] {O : Type} [CommRing O]
     (s : X ⟶ Spec (CommRingCat.of O)) (z : Spec (CommRingCat.of F) ⟶ X) (φ : O →+* F)
@@ -31,7 +31,7 @@ theorem closedPoint_germ_const {X : Scheme.{0}} {F : Type} [Field F] {O : Type} 
   exact h
 
 /- English proof (translation)
-Use `letI : Algebra O Ω := ψ.toAlgebra`. Conclude with `⟨all _, _, GlobalTheory.CompanionTheory.Ar.Flat.ConstReg.genMap_germ_const ξ s hs ⟨centre z, all _⟩ o, closedPoint_germ_const s z φ hz o⟩`.
+Equip the data with the indicated structure. Supply the required witnesses or components.
 -/
 theorem val_const {X : Scheme.{0}} {Ω : Type} [Field Ω] {F : Type} [Field F] {O : Type} [CommRing O]
     (ξ : Spec (CommRingCat.of Ω) ⟶ X) (all : ∀ q : X, genPt ξ ⤳ q)
@@ -49,7 +49,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp.FamEx
 open GlobalTheory.CompanionTheory.Ar.RootHt.ArchB OverVal
 
 /- English proof (translation)
-Take `⟨x, hx, -, hk⟩` from `h`. Establish `h1 : z ≫ 𝔐.f ≫ Y.s = x ≫ Y.j ≫ Y.s`. Rewrite using `[← Category.assoc, ← hx, Category.assoc]`. Rewrite using `[h1, Model.j, Category.assoc, pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over, ← Category.assoc, hk]`. Conclude with `(Spec.map_comp _ _).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOver_base {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Tor.Level H}
     {Xo : Moduli D l} {c : Coeff l} {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)} {S : Finset ℕ} {Ω : Type} [Field Ω]
@@ -63,9 +63,9 @@ theorem isOver_base {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host
   exact (Spec.map_comp _ _).symm
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 z κ p h x`. Use `haveI : FiniteDimensional ℚ c.F := c.fin`. Use `haveI : NumberField c.F := { to_charZero := inferInstance, to_finiteDimensional := c.fin }`. Establish `hc : ∀ o : 𝓞 c.F, ValAt 𝔐.ξ z (𝔐.cst (algebraMap (𝓞 c.F) c.F o)) (κ (algebraMap (𝓞 c.F) c.F o))` using `fun o => val_const 𝔐.ξ 𝔐.all (𝔐.f ≫ Y.s) (𝔐.cst.comp (algebraMap (𝓞 c.F) c.F)) 𝔐.cst_over z (κ.comp (algebraMap (𝓞 c.F) c.F)) (isOver_base h) o`. Take `⟨a, n, hn, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 c.F) x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn0 : algebraMap (𝓞 c.F) c.F n ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 c.F) c.F)).2 (nonZeroDivisors.ne_zero hn)`. Establish `hk0 : κ (algebraMap (𝓞 c.F) c.F n) ≠ 0` using `(map_ne_zero κ).2 hn0`. Rewrite using `[map_div₀, map_div₀, div_eq_mul_inv, div_eq_mul_inv]`. Conclude with `val_mul (hc a) (by simpa only [map_inv₀] using val_inv₀ hk0 (hc n))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_cst : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (z : Sp ℂ ⟶ 𝔐.X) (κ : c.F →+* ℂ) (p : Sp ℂ ⟶ Xo.X), IsOver 𝔐 z κ p → ∀ x : c.F, ValAt 𝔐.ξ z (𝔐.cst x) (κ x) := by
   intro E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 z κ p h x

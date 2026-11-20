@@ -10,17 +10,15 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.Unita
 namespace GlobalTheory.UnitaryBC
 
 /- English proof (translation)
-Take `⟨m, p, e, hpe, hdec⟩` from `GlobalTheory.T.autFormDefiniteUnitary_eq_sum_polynomial_mul_autForm E n φ hφ`. Use `choose p' hp' hpp using fun i => GlobalTheory.T.exists_conj_polynomial_definiteUnitary_rational E n σ (p i) (hpe i).1`. Take `⟨hD, -, -, a, b, -, -, hab, -⟩` from `GlobalTheory.T.definiteUnitary_realApprox_and_finite_infinite_split E n`. Take `⟨φ', hc, hl, hk, hv⟩` from `GlobalTheory.T.exists_definiteUnitary_function_polynomial_mul_smooth E n m p' (fun i g => σ (e i g.1)) hp' (fun i => by`. Use `⟨ { carrier := {k : finU E n | RU E n k (e i) = e i} one_mem' := by simp mul_mem' := fun {x y} hx hy => by` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq] at hx hy ⊢`. Rewrite using `[Subgroup.coe_mul, map_mul, Module.End.mul_apply, hy, hx]`. Use the proof step `inv_mem' := fun {x} hx => by`. Simplify using `only [Set.mem_setOf_eq] at hx ⊢`. Use `conv_lhs => rw [← hx]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, Subgroup.coe_inv, inv_mul_cancel, map_one, Module.End.one_apply] }, ?_, ?_⟩`. Conclude with `(hpe i).2.level`. Introduce `u hu g`. Conclude with `congrArg σ (congrFun (show RU E n u (e i) = e i from hu) g.1))`. Establish `key : ∀ γ ∈ ratU E n, ∀ x : UA E n, cInf x = cInf γ → φ' x = σ (φ x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `γ hγ x hx`. Establish `h1 : cInf (b x).1 = cInf γ`. Rewrite using `[← hx]`. Use `conv_rhs => rw [hab x, map_mul, show cInf (a x).1 = 1 from (a x).2, one_mul]`. Use `conv_lhs => rw [hab x, hv]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [hab x, hdec, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_mul, hpp i γ hγ _ h1]`. Use `⟨φ', ⟨hc, fun γ hγ g => ?_, hl, hk⟩, fun g hg => key 1 (one_mem _) g (by rw [map_one]; exact hg)⟩` and prove the remaining obligations. Establish `hc2 : Continuous fun x => φ' (γ * x)` using `hc.comp (continuous_const.mul continuous_id)`. Use `congrFun (Continuous.ext_on hD hc2 hc ?_) g` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨δ, hδ, u, hu, rfl⟩`. Establish `hu' : cInf u = 1` using `hu`. Express the relevant statement in the definitionally equal form `φ' (γ * (δ * u)) = φ' (δ * u)`. Rewrite using `[key (γ * δ) (mul_mem hγ hδ) _ (by simp only [map_mul, hu', mul_one]), key δ hδ _ (by simp only [map_mul, hu', mul_one]), hφ.left γ hγ]`.
+A detailed English derivation is pending.
 -/
 theorem exists_conj_isAutFormU (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (σ : ℂ ≃+* ℂ)
     (φ : UA E n → ℂ) (hφ : IsAutFormU φ) :

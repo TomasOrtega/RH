@@ -11,14 +11,14 @@ def P (s : ℂ) (G : ℂ → ℂ) (d : ℂ) : Prop :=
   ∃ L : ℂ →L[ℝ] ℂ, HasFDerivAt G L s ∧ L Complex.I - Complex.I * L 1 = d
 
 /- English proof (translation)
-Use `⟨_, hg.hasFDerivAt.restrictScalars ℝ, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma wirtinger_eq_zero_of_hasDerivAt {s : ℂ} {g : ℂ → ℂ} {g' : ℂ} (hg : HasDerivAt g g' s) : P s g 0 := by
   refine ⟨_, hg.hasFDerivAt.restrictScalars ℝ, ?_⟩
   simp
 
 /- English proof (translation)
-Take `⟨L, hL, hd⟩` from `hG`. Take `⟨M, hM, he⟩` from `hH`. Use `⟨L - M, hL.sub hM, ?_⟩` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.sub_apply]`. Rewrite using `[← hd, ← he]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -31,9 +31,9 @@ lemma wirtinger_sub {s : ℂ} {G H : ℂ → ℂ} {d e : ℂ} (hG : P s G d) (hH
   rw [← hd, ← he]; ring
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨0, by simpa using hasFDerivAt_const (0 : ℂ) s, by simp⟩`. Consider the case `insert a S ha ih`. Take `⟨L, hL, hd⟩` from `h a (Finset.mem_insert_self _ _)`. Take `⟨M, hM, he⟩` from `ih (fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨L + M, ?_, ?_⟩` and prove the remaining obligations. Use `(hL.add hM).congr_of_eventuallyEq (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `[Finset.sum_insert ha]`. Rewrite using `[Finset.sum_insert ha, ← hd, ← he]`. Simplify using `only [ContinuousLinearMap.add_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -51,7 +51,7 @@ lemma wirtinger_sum {s : ℂ} {ι : Type} (S : Finset ι) (G : ι → ℂ → �
     · rw [Finset.sum_insert ha, ← hd, ← he]; simp only [ContinuousLinearMap.add_apply]; ring
 
 /- English proof (translation)
-Establish `h1 : HasFDerivAt (fun z => starRingEnd ℂ (b z)) ((Complex.conjCLE : ℂ →L[ℝ] ℂ).comp ((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ) b').restrictScalars ℝ)) s` using `Complex.conjCLE.hasFDerivAt.comp s (hb.hasFDerivAt.restrictScalars ℝ)`. Establish `h2 : HasFDerivAt (fun z : ℂ => z ^ j) ((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ) ((j : ℂ) * s ^ (j - 1))).restrictScalars ℝ) s` using `((hasDerivAt_pow j s).hasFDerivAt.restrictScalars ℝ)`. Use `⟨_, h1.mul h2, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma wirtinger_conj_mul_pow {s : ℂ} {b : ℂ → ℂ} {b' : ℂ} (hb : HasDerivAt b b' s) (j : ℕ) :
     P s (fun z => starRingEnd ℂ (b z) * z ^ j) (-2 * Complex.I * s ^ j * starRingEnd ℂ b') := by
@@ -66,13 +66,13 @@ lemma wirtinger_conj_mul_pow {s : ℂ} {b : ℂ → ℂ} {b' : ℂ} (hb : HasDer
   ring
 
 /- English proof (translation)
-Introduce `w f h p hf hh s hs`. Establish `he : ∀ (g : ℍ → ℂ) (z : ℂ), 0 < z.im → eichler w g (ofComplex z) = ∑ j ∈ Finset.range (w + 1), C ((w.choose j : ℂ) * GlobalTheory.EichlerChange.ecoef w g j z) * X ^ j`. Introduce `g z hz`. Rewrite using `[ofComplex_apply_of_im_pos hz]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hF : P s (fun z => ∑ j ∈ Finset.range (w + 1), (w.choose j : ℂ) * GlobalTheory.EichlerChange.ecoef w f j z * z ^ j) (∑ j ∈ Finset.range (w + 1), (0 : ℂ))` using `wirtinger_sum _ _ _ fun j _ => wirtinger_eq_zero_of_hasDerivAt (((GlobalTheory.EichlerChange.hasDerivAt_ecoef w f hf j s hs).const_mul _).mul (hasDerivAt_pow j s))`. Establish `hH : P s (fun z => ∑ j ∈ Finset.range (w + 1), starRingEnd ℂ ((w.choose j : ℂ) * GlobalTheory.EichlerChange.ecoef w h j z) * z ^ j) (∑ j ∈ Finset.range (w + 1), -2 * Complex.I * s ^ j * starRingEnd ℂ ((w.choose j : ℂ) * ((h ∘ ofComplex) s * (-s) ^ (w - j))))` using `wirtinger_sum _ _ _ fun j _ => wirtinger_conj_mul_pow ((GlobalTheory.EichlerChange.hasDerivAt_ecoef w h hh j s hs).const_mul _) j`. Take `⟨L, hL, hd⟩` from `wirtinger_sub (wirtinger_sub hF hH) (wirtinger_eq_zero_of_hasDerivAt (Polynomial.hasDerivAt p s))`. Use `⟨L, hL.congr_of_eventuallyEq ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [isOpen_upperHalfPlaneSet.mem_nhds hs] with z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he f z hz, he h z hz]`. Simplify using `[Polynomial.map_sum, eval_finset_sum]`. Rewrite using `[hd]`. Establish `hb : (s - (starRingEnd ℂ) s) ^ w = ∑ j ∈ Finset.range (w + 1), s ^ j * (-(starRingEnd ℂ) s) ^ (w - j) * (w.choose j : ℂ)`. Rewrite using `[sub_eq_add_neg, add_pow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb, Finset.mul_sum, Finset.sum_mul, Finset.sum_const_zero]`. Simplify using `only [zero_sub, sub_zero, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, map_mul, map_natCast, map_pow, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem wirtinger_eichler : ∀ (w : ℕ) (f h : ℍ → ℂ) (p : ℂ[X]), MDifferentiable 𝓘(ℂ) 𝓘(ℂ) f →
     MDifferentiable 𝓘(ℂ) 𝓘(ℂ) h → ∀ s : ℂ, 0 < s.im → ∃ L : ℂ →L[ℝ] ℂ,

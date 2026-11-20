@@ -9,9 +9,9 @@ namespace RankOnePf
 variable {W : Type} [AddCommGroup W] [Module ℚ W]
 
 /- English proof (translation)
-Proceed by induction on `k generalizing w with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Simplify using `only [pow_succ, Module.End.mul_apply]`. Rewrite using `[ih, hHX, map_add, map_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use `module`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem rankOne_H_X_pow (X H : Module.End ℚ W) (hHX : ∀ w, H (X w) = X (H w) + (2 : ℚ) • X w)
     (k : ℕ) (w : W) : H ((X ^ k) w) = (X ^ k) (H w) + ((2 * k : ℕ) : ℚ) • (X ^ k) w := by
@@ -24,9 +24,9 @@ theorem rankOne_H_X_pow (X H : Module.End ℚ W) (hHX : ∀ w, H (X w) = X (H w)
     module
 
 /- English proof (translation)
-Proceed by induction on `k generalizing w with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Simplify using `only [pow_succ, Module.End.mul_apply]`. Rewrite using `[ih, hHY, map_sub, map_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use `module`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem rankOne_H_Y_pow (Y H : Module.End ℚ W) (hHY : ∀ w, H (Y w) = Y (H w) - (2 : ℚ) • Y w)
     (k : ℕ) (w : W) : H ((Y ^ k) w) = (Y ^ k) (H w) - ((2 * k : ℕ) : ℚ) • (Y ^ k) w := by
@@ -39,9 +39,9 @@ theorem rankOne_H_Y_pow (Y H : Module.End ℚ W) (hHY : ∀ w, H (Y w) = Y (H w)
     module
 
 /- English proof (translation)
-Proceed by induction on `k generalizing w with`. Consider the case `zero => simp [hXY]`. Consider the case `succ k ih`. Establish `h1 : (Y ^ (k + 1 + 1)) w = (Y ^ (k + 1)) (Y w)`. Rewrite using `[pow_succ Y (k + 1), Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, ih, hXY, hHY]`. Simplify using `only [map_add, map_sub, map_smul, pow_succ, Module.End.mul_apply]`. Use `push_cast`. Use `module`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem rankOne_X_Y_pow (X Y H : Module.End ℚ W) (hXY : ∀ w, X (Y w) = Y (X w) + H w)
     (hHY : ∀ w, H (Y w) = Y (H w) - (2 : ℚ) • Y w) (k : ℕ) (w : W) :
@@ -58,7 +58,7 @@ theorem rankOne_X_Y_pow (X Y H : Module.End ℚ W) (hXY : ∀ w, X (Y w) = Y (X 
     module
 
 /- English proof (translation)
-Establish `h1 : (n.factorial : ℚ) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero n`. Simplify using `only [coef, Nat.factorial_succ, add_zero, Nat.factorial_zero]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rankOne_coef_succ (n : ℕ) :
     coef 0 (n + 1) * (((n + 1) * (n + 1 + 1) : ℕ) : ℚ) = - coef 0 n := by
@@ -77,41 +77,37 @@ namespace GlobalTheory.LeviCut
 open RankOnePf in
 
 /- English proof (translation)
-Introduce `W _ _ N K D hG hB o q ho hq hoq T hoT hqT`. Establish `hqo : q ≠ o` using `Ne.symm hoq`. Establish `hH : ∀ x, (D o o - D q q) x = D o o x - D q q x` using `fun x => rfl`. Establish `hHT : (D o o - D q q) T = 0` using `by rw [hH, hoT, hqT, sub_zero]`. Establish `hXY : ∀ w, D o q (D q o w) = D q o (D o q w) + (D o o - D q q) w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w`. Establish `e` using `LinearMap.congr_fun (hG o q q o ho hq hq ho) w`. Rewrite `e` using `[if_pos (rfl : q = q), if_pos (rfl : o = o)]`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at e`. Rewrite using `[hH]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_eq_iff_eq_add'.mp e`. Establish `hHX : ∀ w, (D o o - D q q) (D o q w) = D o q ((D o o - D q q) w) + (2 : ℚ) • D o q w`. Introduce `w`. Establish `e1` using `LinearMap.congr_fun (hG o o o q ho ho ho hq) w`. Rewrite `e1` using `[if_pos (rfl : o = o), if_neg hqo]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, LinearMap.zero_apply, sub_zero] at e1`. Establish `e2` using `LinearMap.congr_fun (hG q q o q hq hq ho hq) w`. Rewrite `e2` using `[if_neg hqo, if_pos (rfl : q = q)]`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, LinearMap.zero_apply, zero_sub, LinearMap.neg_apply] at e2`. Rewrite using `[hH, hH, map_sub, sub_eq_iff_eq_add'.mp e1, sub_eq_iff_eq_add'.mp e2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `module`. Establish `hHY : ∀ w, (D o o - D q q) (D q o w) = D q o ((D o o - D q q) w) - (2 : ℚ) • D q o w`. Introduce `w`. Establish `e1` using `LinearMap.congr_fun (hG o o q o ho ho hq ho) w`. Rewrite `e1` using `[if_neg hoq, if_pos (rfl : o = o)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, LinearMap.zero_apply, zero_sub, LinearMap.neg_apply] at e1`. Establish `e2` using `LinearMap.congr_fun (hG q q q o hq hq hq ho) w`. Rewrite `e2` using `[if_pos (rfl : q = q), if_neg hoq]`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, LinearMap.zero_apply, sub_zero] at e2`. Rewrite using `[hH, hH, map_sub, sub_eq_iff_eq_add'.mp e1, sub_eq_iff_eq_add'.mp e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Use `module`. Prove the components needed by the constructor for the conclusion. Establish `hterm : ∀ m : ℕ, D o q ((D q o ^ (m + 1)) ((D o q ^ (m + 1)) T)) = (D q o ^ (m + 1)) ((D o q ^ (m + 1 + 1)) T) + (((m + 1) * (m + 1 + 1) : ℕ) : ℚ) • (D q o ^ m) ((D o q ^ (m + 1)) T)`. Introduce `m`. Establish `hx : D o q ((D o q ^ (m + 1)) T) = (D o q ^ (m + 1 + 1)) T`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[pow_succ' (D o q) (m + 1), Module.End.mul_apply]`. Rewrite using `[rankOne_X_Y_pow _ _ _ hXY hHY, rankOne_H_X_pow _ _ hHX, hHT, map_zero, zero_add, hx, map_smul]`. Use `push_cast`. Use `module`. Establish `hsum : ∀ n : ℕ, D o q (∑ k ∈ Finset.range (n + 1), coef 0 k • (D q o ^ k) ((D o q ^ k) T)) = coef 0 n • (D q o ^ n) ((D o q ^ (n + 1)) T)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ, map_add, ih, map_smul, hterm n]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc` using `rankOne_coef_succ n`. Rewrite using `[show coef 0 n = -(coef 0 (n + 1) * (((n + 1) * (n + 1 + 1) : ℕ) : ℚ)) by rw [hc, neg_neg]]`. Use `module`. Establish `hXK : (D o q ^ (K + 1)) T = 0`. Use `hB o ho q hq ((2 * (K + 1) : ℕ) : ℤ) _ ?_ (by push_cast; omega)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `rankOne_H_X_pow _ _ hHX (K + 1) T`. Rewrite `h` using `[hHT, map_zero, zero_add, hH]`. Rewrite using `[Int.cast_natCast]`. Conclude with `h`. Establish `hp : proj K 0 (D o q) (D q o) T = ∑ k ∈ Finset.range (K + 1), coef 0 k • (D q o ^ k) ((D o q ^ k) T)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [proj, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply]`. Rewrite using `[hp, hsum K, hXK, map_zero, smul_zero]`. Introduce `hXT`. Establish `hYterm : ∀ k : ℕ, D o q ((D q o ^ (k + 1)) T) = -((((k + 1) * k : ℕ) : ℚ)) • (D q o ^ k) T`. Introduce `k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rankOne_X_Y_pow _ _ _ hXY hHY, hXT, hHT, map_zero, map_zero, smul_zero, add_zero, zero_sub, neg_smul]`. Establish `hYK : (D q o ^ (K + 1)) T = 0`. Use `hB q hq o ho ((2 * (K + 1) : ℕ) : ℤ) _ ?_ (by push_cast; omega)` and prove the remaining obligations. Establish `h` using `rankOne_H_Y_pow _ _ hHY (K + 1) T`. Rewrite `h` using `[hHT, map_zero, zero_sub, hH]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Int.cast_natCast, ← neg_sub, h, neg_neg]`. Establish `hdesc : ∀ d i : ℕ, i + d = K → (D q o ^ (i + 1)) T = 0`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i hi`. Rewrite `hi` using `[add_zero]`. Substitute `hi` using the available equality. Conclude with `hYK`. Consider the case `succ d ih`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Introduce `i hi`. Establish `h2` using `ih (i + 1) (by omega)`. Establish `h3` using `hYterm (i + 1)`. Rewrite `h3` using `[h2, map_zero]`. Break down `smul_eq_zero.mp h3.symm with h | h` into its components or cases.
-
-It suffices to derive a contradiction. Establish `: ((((i + 1 + 1) * (i + 1) : ℕ) : ℚ)) ≠ 0` using `by positivity`. Conclude with `this (neg_eq_zero.mp h)`. Conclude with `h`. Use `hdesc K 0 (by omega)` as an intermediate fact.
-
-Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem rankOne : RankOne := by
   intro W _ _ N K D hG hB o q ho hq hoq T hoT hqT

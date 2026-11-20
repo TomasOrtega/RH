@@ -13,26 +13,26 @@ variable {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
 def inW (k r : ℕ) (i : Fin (2 * r + k + 1)) : Prop := r ≤ i.val ∧ i.val ≤ r + k
 
 /- English proof (translation)
-Simplify using `[bvec]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mulVec_bvec_apply (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (i j) :
     (g *ᵥ bvec j) i = g i j := by
   simp [bvec]
 
 /- English proof (translation)
-Simplify using `[bvec, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma bvec_apply (i j : Fin (2 * r + k + 1)) : bvec j i = if i = j then 1 else 0 := by
   simp [bvec, Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `only [UWset, Set.mem_setOf_eq] at hh`. Take `⟨-, hfix, -⟩` from `hh`. Establish `key : h *ᵥ bvec j = bvec j`. Unfold `inW at hj`. Distinguish the cases in `hjr : j.val < r`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Establish `h1` using `(hfix ⟨j.val, hjr⟩).1`. Establish `e : eI k r ⟨j.val, hjr⟩ = j` using `Fin.ext rfl`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis. Establish `ha : 2 * r + k - j.val < r`. Use `j.isLt` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `h1` using `(hfix ⟨2 * r + k - j.val, ha⟩).2`. Establish `e : esI k r ⟨2 * r + k - j.val, ha⟩ = j`. Apply `Fin.ext` to reduce the goal to its premises. Use `show 2 * r + k - (2 * r + k - j.val) = j.val`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `j.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[e]`. Then use the resulting hypothesis. Rewrite using `[← mulVec_bvec_apply h i j, key, bvec_apply]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma uw_col_out {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hh : h ∈ UWset k r z)
     (j : Fin (2 * r + k + 1)) (hj : ¬ inW k r j) (i : Fin (2 * r + k + 1)) :
@@ -58,9 +58,9 @@ lemma uw_col_out {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (h
   rw [← mulVec_bvec_apply h i j, key, bvec_apply]
 
 /- English proof (translation)
-Unfold `inW at hi ⊢`. Unfold `piI`. Rewrite using `[if_neg hi]`. Use `show ¬ (r ≤ 2 * r + k - i.val ∧ 2 * r + k - i.val ≤ r + k)`. Use `i.isLt` as an intermediate fact.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 lemma piI_not_inW {i : Fin (2 * r + k + 1)} (hi : ¬ inW k r i) : ¬ inW k r (piI k r i) := by
   unfold inW at hi ⊢
@@ -71,21 +71,21 @@ lemma piI_not_inW {i : Fin (2 * r + k + 1)} (hi : ¬ inW k r i) : ¬ inW k r (pi
   omega
 
 /- English proof (translation)
-Establish `hx` using `x.isLt`. Establish `hi` using `i.isLt`. Distinguish the cases in `hW : r ≤ i.val ∧ i.val ≤ r + k`. Establish `hp : piI k r i = i`. Unfold `piI`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `if_pos hW`. Rewrite using `[hp]`. Unfold `Hpk`. Establish `n1 : ¬ (i.val < r ∧ i.val + x.val = 2 * r + k)` using `by omega`. Rewrite using `[if_neg n1]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hxi : x = i`. Substitute `hxi` using the available equality. Establish `n2 : ¬ (x.val < r ∧ x.val + x.val = 2 * r + k)` using `by omega`. Rewrite using `[if_neg n2, if_pos ⟨hW.1, hW.2, rfl⟩, if_pos rfl]`. Establish `hxv : x.val ≠ i.val` using `fun h => hxi (Fin.ext h)`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n2 : ¬ (x.val < r ∧ i.val + x.val = 2 * r + k)` using `by omega`. Establish `n3 : ¬ (r ≤ i.val ∧ i.val ≤ r + k ∧ i = x)` using `fun h => hxi h.2.2.symm`. Rewrite using `[if_neg n2, if_neg n3, if_neg hxi]`. Establish `hp : piI k r i = ⟨2 * r + k - i.val, by omega⟩`. Unfold `piI`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `if_neg hW`. Rewrite using `[hp]`. Unfold `Hpk`. Establish `hc : ¬ (i.val = r + k)` using `by omega`. Establish `n3 : ¬ (r ≤ i.val ∧ i.val ≤ r + k ∧ i = x)` using `fun h => hW ⟨h.1, h.2.1⟩`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_neg hc]`. Distinguish the cases in `hxi : x.val = 2 * r + k - i.val`. Establish `hx' : x = ⟨2 * r + k - i.val, by omega⟩` using `Fin.ext hxi`. Rewrite using `[if_pos hx']`. Distinguish the cases in `hir : i.val < r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_pos ⟨hir, by omega⟩]`. Establish `n1 : ¬ (i.val < r ∧ i.val + x.val = 2 * r + k)` using `fun h => hir h.1`. Establish `p2 : x.val < r ∧ i.val + x.val = 2 * r + k` using `⟨by omega, by omega⟩`. Rewrite using `[if_neg n1, if_pos p2]`. Establish `hx' : ¬ x = ⟨2 * r + k - i.val, by omega⟩` using `fun h => hxi (congrArg Fin.val h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n1 : ¬ (i.val < r ∧ i.val + x.val = 2 * r + k)` using `by omega`. Establish `n2 : ¬ (x.val < r ∧ i.val + x.val = 2 * r + k)` using `by omega`. Rewrite using `[if_neg hx', if_neg n1, if_neg n2, if_neg n3]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma Hpk_applyUnitaryQuotientCompactness (i x : Fin (2 * r + k + 1)) :
     Hpk k r i x = if x = piI k r i then (if i.val = r + k then (-1 : ℂ) else 1) else 0 := by
@@ -129,13 +129,11 @@ private lemma Hpk_applyUnitaryQuotientCompactness (i x : Fin (2 * r + k + 1)) :
       rw [if_neg hx', if_neg n1, if_neg n2, if_neg n3]
 
 /- English proof (translation)
-Distinguish the cases in `hW : r ≤ i.val ∧ i.val ≤ r + k`. Establish `hp : piI k r i = i`. Unfold `piI`. Conclude with `if_pos hW`. Rewrite using `[hp, hp]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi` using `i.isLt`. Establish `hp : piI k r i = ⟨2 * r + k - i.val, by omega⟩`. Unfold `piI`. Conclude with `if_neg hW`. Rewrite using `[hp]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hW' : ¬ (r ≤ 2 * r + k - i.val ∧ 2 * r + k - i.val ≤ r + k)` using `by omega`. Unfold `piI`. Rewrite using `[if_neg hW']`. Apply `Fin.ext` to reduce the goal to its premises. Use `show 2 * r + k - (2 * r + k - i.val) = i.val`.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private lemma piI_piI' (i : Fin (2 * r + k + 1)) : piI k r (piI k r i) = i := by
   by_cases hW : r ≤ i.val ∧ i.val ≤ r + k
@@ -156,17 +154,17 @@ private lemma piI_piI' (i : Fin (2 * r + k + 1)) : piI k r (piI k r i) = i := by
     omega
 
 /- English proof (translation)
-Distinguish the cases in `hj : inW k r j`. Establish `hi : ¬ inW k r i` using `fun h' => hij ⟨h', hj⟩`. Establish `hne : i ≠ j` using `fun e => hi (by rw [e]; exact hj)`. Rewrite using `[if_neg hne]`. Establish `hh'` using `hh`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [UWset, Set.mem_setOf_eq] at hh'`. Establish `hU : hᴴ * Hpk k r * h = Hpk k r` using `hh'.1`. Establish `hp` using `piI_not_inW hi`. Establish `hcol : ∀ x, h x (piI k r i) = if x = piI k r i then 1 else 0` using `fun x => uw_col_out hh _ hp x`. Establish `hrowp : ∀ y, (hᴴ * Hpk k r) (piI k r i) y = Hpk k r (piI k r i) y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (piI k r i)]`. Rewrite using `[Matrix.conjTranspose_apply, hcol, if_pos rfl, star_one, one_mul]`. Introduce `x _ hx`. Rewrite using `[Matrix.conjTranspose_apply, hcol, if_neg hx, star_zero, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hm`. Conclude with `absurd (Finset.mem_univ _) hm`. Establish `e` using `congrFun (congrFun hU (piI k r i)) j`. Rewrite `e` using `[Matrix.mul_apply]`. Simplify using `only [hrowp] at e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[Finset.sum_eq_single i]`. Rewrite `e` using `[Hpk_applyUnitaryQuotientCompactness (piI k r i) i, Hpk_applyUnitaryQuotientCompactness (piI k r i) j, piI_piI', if_pos rfl, if_neg (Ne.symm hne)]`. Apply the tactic sequence `have hc : (if (piI k r i).val = r + k then (-1 : ℂ) else 1) ≠ 0 := by split_ifs <;> norm_num`. Conclude with `(mul_eq_zero.mp e).resolve_left hc`. Introduce `y _ hy`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Hpk_applyUnitaryQuotientCompactness (piI k r i) y, piI_piI', if_neg hy, zero_mul]`. Introduce `hm`. Conclude with `absurd (Finset.mem_univ _) hm`. Conclude with `uw_col_out hh j hj i`.
+A detailed English derivation is pending.
 -/
 lemma uw_block {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hh : h ∈ UWset k r z)
     (i j : Fin (2 * r + k + 1)) (hij : ¬ (inW k r i ∧ inW k r j)) :
@@ -205,18 +203,18 @@ lemma uw_block {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hh 
   · exact uw_col_out hh j hj i
 
 /- English proof (translation)
-Simplify using `only [UWset, UH, Set.mem_setOf_eq]`. Use `⟨by simp, fun a => ⟨by simp, by simp⟩, by simp⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 lemma one_mem_UW : (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) ∈ UWset k r z := by
   simp only [UWset, UH, Set.mem_setOf_eq]
   refine ⟨by simp, fun a => ⟨by simp, by simp⟩, by simp⟩
 
 /- English proof (translation)
-Simplify using `only [UWset, UH, Set.mem_setOf_eq] at ha hb ⊢`. Take `⟨ha1, ha2, ha3⟩` from `ha`. Take `⟨hb1, hb2, hb3⟩` from `hb`. Use `⟨?_, fun i => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_mul]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [ha1, hb1]`. Rewrite using `[← Matrix.mulVec_mulVec, (hb2 i).1, (ha2 i).1]`. Rewrite using `[← Matrix.mulVec_mulVec, (hb2 i).2, (ha2 i).2]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mulVec_mulVec, hb3, ha3]`.
+A detailed English derivation is pending.
 -/
 lemma mul_mem_UW {a b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (ha : a ∈ UWset k r z) (hb : b ∈ UWset k r z) : a * b ∈ UWset k r z := by
@@ -233,11 +231,11 @@ lemma mul_mem_UW {a b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
   · rw [← Matrix.mulVec_mulVec, hb3, ha3]
 
 /- English proof (translation)
-Distinguish the cases in `hW : r ≤ i.val ∧ i.val ≤ r + k`. Establish `hp : piI k r i = i`. Unfold `piI`. Conclude with `if_pos hW`. Rewrite using `[hp]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hi` using `i.isLt`. Establish `hp : piI k r i = ⟨2 * r + k - i.val, by omega⟩`. Unfold `piI`. Conclude with `if_neg hW`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hp]`. Establish `h1 : ¬ (i.val = r + k)` using `by omega`. Establish `h2 : ¬ ((⟨2 * r + k - i.val, by omega⟩ : Fin (2 * r + k + 1)).val = r + k)` using `by show ¬ (2 * r + k - i.val = r + k)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h1, if_neg h2, one_mul]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sign_mul_sign_piI_eq_one (i : Fin (2 * r + k + 1)) :
     (if i.val = r + k then (-1 : ℂ) else 1) *
@@ -260,11 +258,11 @@ private lemma sign_mul_sign_piI_eq_one (i : Fin (2 * r + k + 1)) :
     rw [if_neg h1, if_neg h2, one_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply, Finset.sum_eq_single (piI k r i)]`. Rewrite using `[Hpk_applyUnitaryQuotientCompactness i (piI k r i), if_pos rfl, Hpk_applyUnitaryQuotientCompactness (piI k r i) j, piI_piI']`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[if_pos rfl, if_pos rfl, sign_mul_sign_piI_eq_one]`. Rewrite using `[if_neg (Ne.symm hij), if_neg hij, mul_zero]`. Introduce `x _ hx`. Rewrite using `[Hpk_applyUnitaryQuotientCompactness i x, if_neg hx, zero_mul]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 private lemma Hpk_mul_Hpk : Hpk k r * Hpk k r = 1 := by
   ext i j
@@ -280,9 +278,9 @@ private lemma Hpk_mul_Hpk : Hpk k r * Hpk k r = 1 := by
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `hU' : aᴴ * Hpk k r * a = Hpk k r` using `hU`. Establish `hl : (Hpk k r * aᴴ * Hpk k r) * a = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hU', Hpk_mul_Hpk]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.inv_eq_left_inv hl]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma inv_fix {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hU : a ∈ UH (Hpk k r))
     {v : Fin (2 * r + k + 1) → ℂ} (hv : a *ᵥ v = v) : a⁻¹ *ᵥ v = v := by
@@ -296,13 +294,11 @@ lemma inv_fix {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hU :
     _ = v := by rw [Matrix.mulVec_mulVec, hl, Matrix.one_mulVec]
 
 /- English proof (translation)
-Simplify using `only [UWset, Set.mem_setOf_eq] at ha ⊢`. Take `⟨ha1, ha2, ha3⟩` from `ha`. Establish `hU : aᴴ * Hpk k r * a = Hpk k r` using `ha1`. Establish `hl : (Hpk k r * aᴴ * Hpk k r) * a = 1`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hU, Hpk_mul_Hpk]`. Establish `hinv : a⁻¹ = Hpk k r * aᴴ * Hpk k r` using `Matrix.inv_eq_left_inv hl`. Establish `hr : a * a⁻¹ = 1`. Establish `hla : a⁻¹ * a = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hinv]`. Conclude with `hl`. Conclude with `Matrix.mul_nonsing_inv a (Matrix.isUnit_det_of_left_inverse hla)`. Use `⟨?_, fun i => ⟨inv_fix ha1 (ha2 i).1, inv_fix ha1 (ha2 i).2⟩, inv_fix ha1 ha3⟩` and prove the remaining obligations. Use `show (a⁻¹)ᴴ * Hpk k r * a⁻¹ = Hpk k r`.
-
-Establish `hrH : (a⁻¹)ᴴ * aᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, hr, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma inv_mem_UW {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (ha : a ∈ UWset k r z) : a⁻¹ ∈ UWset k r z := by
@@ -328,9 +324,9 @@ lemma inv_mem_UW {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     _ = Hpk k r := by rw [hrH, hr, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Simplify using `only [Sset, Set.mem_setOf_eq]`. Use `⟨h, hh, 1, ?_, (Matrix.mul_one h).symm⟩` and prove the remaining obligations. Simplify using `only [Nset, UH, Set.mem_setOf_eq]`. Use `⟨by simp, fun a i _ => ?_, fun i j _ _ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma uw_sub_S {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hh : h ∈ UWset k r z) :
     h ∈ Sset k r z := by
@@ -342,7 +338,7 @@ lemma uw_sub_S {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hh 
   · rw [Matrix.one_apply]
 
 /- English proof (translation)
-Simplify using `only [Sset, Set.mem_setOf_eq]`. Conclude with `⟨1, one_mem_UW, n, hn, (Matrix.one_mul n).symm⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 lemma n_sub_S {n : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hn : n ∈ Nset k r) :
     n ∈ Sset k r z := by

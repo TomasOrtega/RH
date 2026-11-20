@@ -13,29 +13,27 @@ open scoped ENNReal
 namespace CVI
 
 /- English proof (translation)
-Use `set c := max (g 0) 0 with hc`. Establish `hc0 : 0 ≤ c` using `le_max_right _ _`. Establish `hofr : ∀ p, ENNReal.ofReal (g p) = ENNReal.ofReal (max (g p) 0)`. Introduce `p`. Break down `le_total (g p) 0 with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[max_eq_right h, ENNReal.ofReal_of_nonpos h, ENNReal.ofReal_zero]`. Rewrite using `[max_eq_left h]`. Rewrite using `[Metric.tendsto_nhdsWithin_nhds]`. Introduce `ε hε`. Take `⟨δ, hδ, hδg⟩` from `Metric.continuousAt_iff.1 hg (ε / 2) (by linarith)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨δ, hδ, fun ρ hρ hρδ => ?_⟩` and prove the remaining obligations. Establish `hρ0 : 0 < ρ` using `hρ`. Establish `hρδ' : ρ < δ`. Rewrite `hρδ` using `[Real.dist_eq, sub_zero, abs_of_pos hρ0]`. Conclude with `hρδ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbd : ∀ p ∈ ball (0 : E) ρ, |max (g p) 0 - c| < ε / 2`. Introduce `p hp`. Establish `h1 : dist p 0 < δ` using `lt_trans (mem_ball.1 hp) hρδ'`. Establish `h2` using `hδg h1`. Rewrite `h2` using `[Real.dist_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `lt_of_le_of_lt (abs_max_sub_max_le_abs _ _ _) h2`. Establish `hBpos : μ (ball (0 : E) ρ) ≠ 0` using `(measure_ball_pos μ 0 hρ0).ne'`. Establish `hBfin : μ (ball (0 : E) ρ) ≠ ⊤` using `measure_ball_lt_top.ne`. Establish `hBr : 0 < (μ (ball (0 : E) ρ)).toReal` using `ENNReal.toReal_pos hBpos hBfin`. Establish `hup : ∫⁻ p in ball (0 : E) ρ, ENNReal.ofReal (g p) ∂μ ≤ ENNReal.ofReal (c + ε / 2) * μ (ball (0 : E) ρ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← setLIntegral_const]`. Use `setLIntegral_mono' measurableSet_ball fun p hp => ?_` and prove the remaining obligations. Rewrite using `[hofr]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Use `hbd p hp` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `this` using `[abs_lt]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlo : ENNReal.ofReal (c - ε / 2) * μ (ball (0 : E) ρ) ≤ ∫⁻ p in ball (0 : E) ρ, ENNReal.ofReal (g p) ∂μ`. Rewrite using `[← setLIntegral_const]`. Use `setLIntegral_mono' measurableSet_ball fun p hp => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[hofr]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Use `hbd p hp` as an intermediate fact. Rewrite `this` using `[abs_lt]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : ENNReal.ofReal (c + ε / 2) * μ (ball (0 : E) ρ) ≠ ⊤` using `ENNReal.mul_ne_top ENNReal.ofReal_ne_top hBfin`. Establish `hup'` using `ENNReal.toReal_mono hfin hup`. Establish `hlo'` using `ENNReal.toReal_mono (ne_top_of_le_ne_top hfin hup) hlo`. Rewrite `hup'` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal (by linarith)]`. Rewrite `hlo'` using `[ENNReal.toReal_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hlo'' : (c - ε / 2) * (μ (ball (0 : E) ρ)).toReal ≤ (∫⁻ p in ball (0 : E) ρ, ENNReal.ofReal (g p) ∂μ).toReal`. Use `le_trans ?_ hlo'` and prove the remaining obligations. Apply `mul_le_mul_of_nonneg_right _ hBr.le` to reduce the goal to its premises. Rewrite using `[ENNReal.toReal_ofReal']`. Conclude with `le_max_left _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA1 : c - ε / 2 ≤ (∫⁻ p in ball (0 : E) ρ, ENNReal.ofReal (g p) ∂μ).toReal / (μ (ball (0 : E) ρ)).toReal`. Rewrite using `[le_div_iff₀ hBr]`. Conclude with `hlo''`. Establish `hA2 : (∫⁻ p in ball (0 : E) ρ, ENNReal.ofReal (g p) ∂μ).toReal / (μ (ball (0 : E) ρ)).toReal ≤ c + ε / 2`. Rewrite using `[div_le_iff₀ hBr]`.
-
-Conclude with `hup'`. Rewrite using `[Real.dist_eq, abs_lt]`. Apply the tactic sequence `constructor <;> linarith`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem ratio_tendsto {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure] (g : E → ℝ) (hg : ContinuousAt g 0) :
@@ -105,27 +103,23 @@ theorem ratio_tendsto {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [Fin
   constructor <;> linarith
 
 /- English proof (translation)
-Take `⟨-, hpres⟩` from `sumLPres_holds n ε m h hmh horth ι η L₀ L₁`. Use `set Ls := sumL ε m h hmh L₀ L₁ with hLs`. Establish `hLc : Continuous Ls` using `Ls.continuous_of_finiteDimensional`. Establish `hL0 : Ls 0 = 0` using `map_zero Ls`. Establish `hnorm : ∀ p, ‖Ls p‖ ≤ 2 * ‖p‖`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p`. Establish `e : ‖Ls p‖ = ‖(L₀ p.1 : EuclideanSpace ℝ (Fin n × Fin n × Bool)) + (L₁ p.2 : _)‖` using `rfl`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : ‖(L₀ p.1 : EuclideanSpace ℝ (Fin n × Fin n × Bool))‖ = ‖p.1‖`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearIsometryEquiv.norm_map L₀ p.1]`. Both sides reduce to the same expression. Establish `e2 : ‖(L₁ p.2 : EuclideanSpace ℝ (Fin n × Fin n × Bool))‖ = ‖p.2‖`. Rewrite using `[← LinearIsometryEquiv.norm_map L₁ p.2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Use `_ ≤ ‖p‖ + ‖p‖ := add_le_add (norm_fst_le p) (norm_snd_le p)`. Use `_ = 2 * ‖p‖ := by ring`. Establish `hC : ∀ S ⊆ ball (0 : EuclideanSpace ℝ ι × EuclideanSpace ℝ η) (r₀ / 2), MeasurableSet S → Formalism.REAL.muG ε ((fun p : EuclideanSpace ℝ ι × EuclideanSpace ℝ η => cayR ε ((L₀ p.1 : EuclideanSpace ℝ (Fin n × Fin n × Bool)) + (L₁ p.2 : EuclideanSpace ℝ (Fin n × Fin n × Bool)))) '' …`. Introduce `S hS hSm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨hIm, hint⟩` from `hpres S hSm`. Establish `hsub : Ls '' S ⊆ ball (0 : gLie ε) r₀`. Introduce and unpack `_ ⟨q, hq, rfl⟩`. Establish `hq'` using `hS hq`. Rewrite `hq'`, the goal using `[mem_ball_zero_iff]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[hnorm q]`. Establish `e : (fun p : EuclideanSpace ℝ ι × EuclideanSpace ℝ η => cayR ε ((L₀ p.1 : EuclideanSpace ℝ (Fin n × Fin n × Bool)) + (L₁ p.2 : EuclideanSpace ℝ (Fin n × Fin n × Bool)))) '' S = (fun x : gLie ε => cayR ε (x : EuclideanSpace ℝ (Fin n × Fin n × Bool))) '' (Ls '' S)`. Rewrite using `[Set.image_image]`. Both sides reduce to the same expression. Rewrite using `[e, hf _ hsub hIm]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hint (fun x => ENNReal.ofReal (f₀ x)) (ENNReal.measurable_ofReal.comp hfm)`. Establish `hFc : ContinuousAt (fun p => f₀ (Ls p)) 0` using `ContinuousAt.comp (x := 0) (show ContinuousAt f₀ (Ls 0) by rw [hL0]; exact hfc) hLc.continuousAt`. Establish `hHaar : (volume : Measure (EuclideanSpace ℝ ι × EuclideanSpace ℝ η)).IsAddHaarMeasure`. Rewrite using `[Measure.volume_eq_prod]`. Use `infer_instance`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hL : CayLiftU` using `cayLiftU_of (cayPsiU_of psiSmooth_holds psiMeas_holds (psiInv_of lieSkew_holds skewLie_holds caySkew_holds cayId_holds))`. Take `⟨U, hU, ψ, ψ', hψ, hinj, hψ0, hψc, hψm, hψ'm, hdc, hd0, heq⟩` from `hL n ε m h hmh horth ι η L₀ L₁`. Establish `hr₁ : 0 < r₀ / 2` using `by positivity`. Establish `hpre : ψ ⁻¹' ball 0 (r₀ / 2) ∈ 𝓝 (0 : EuclideanSpace ℝ ι × EuclideanSpace ℝ η)` using `hψc.preimage_mem_nhds (by rw [hψ0]; exact ball_mem_nhds _ hr₁)`. Take `⟨r, hr, hrs⟩` from `Metric.mem_nhds_iff.1 (Filter.inter_mem hU hpre)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨r, hr, fun p => |(ψ' p).det| * f₀ (Ls (ψ p)), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `chart_change_cont (fun p => f₀ (Ls p)) ψ ψ' 0 hψc (by rw [hψ0]; exact hFc) hdc`. Simplify using `only`. Rewrite using `[hd0, hψ0, hL0, one_mul]`. Conclude with `(continuous_abs.measurable.comp (ContinuousLinearMap.continuous_det.measurable.comp hψ'm)).mul (hfm.comp (hLc.measurable.comp hψm))`.
-
-Introduce `A hA hAm`. Establish `hAU : A ⊆ ball 0 r` using `hA`. Establish `e : (fun p : EuclideanSpace ℝ ι × EuclideanSpace ℝ η => expR ε (L₀ p.1 : EuclideanSpace ℝ (Fin n × Fin n × Bool)) * expR ε (L₁ p.2 : EuclideanSpace ℝ (Fin n × Fin n × Bool))) '' A = ((fun p => cayR ε ((L₀ p.1 : EuclideanSpace ℝ (Fin n × Fin n × Bool)) + (L₁ p.2 : EuclideanSpace ℝ …`. Use `Set.image_congr fun p hp => ?_` and prove the remaining obligations. Conclude with `(heq p (hrs (hAU hp)).1).symm`.
-
-Rewrite using `[e]`. Conclude with `chart_change volume _ _ (ball 0 (r₀ / 2)) (fun p => f₀ (Ls p)) hC ψ ψ' (ball 0 r) (fun p hp => (hψ p (hrs hp).1).mono fun q hq => (hrs hq).1) (hinj.mono fun q hq => (hrs hq).1) (by rintro _ ⟨q, hq, rfl⟩; exact (hrs hq).2) A hAU hAm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expDens_gen {n : ℕ} (ε : Fin n → Bool) (r₀ : ℝ) (hr₀ : 0 < r₀) (f₀ : gLie ε → ℝ) (hfm : Measurable f₀)
     (hfc : ContinuousAt f₀ 0)
@@ -208,9 +202,9 @@ theorem expDens_gen {n : ℕ} (ε : Fin n → Bool) (r₀ : ℝ) (hr₀ : 0 < r�
       (by rintro _ ⟨q, hq, rfl⟩; exact (hrs hq).2) A hAU hAm
 
 /- English proof (translation)
-Unfold `expR`. Use `split_ifs with h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[unrealify_zero', NormedSpace.exp_zero]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem expR_zero' {n : ℕ} (ε : Fin n → Bool) : expR ε (0 : EuclideanSpace ℝ (Fin n × Fin n × Bool)) = 1 := by
   unfold expR
@@ -225,37 +219,35 @@ end CVI
 open CVI in
 
 /- English proof (translation)
-Introduce `n ε hG r₀ hr₀ f₀ hfm hfc hf`. Set `L₀` to `(stdOrthonormalBasis ℝ (gLie ε)).repr.symm`. Set `L₁` to `(stdOrthonormalBasis ℝ (⊥ : Submodule ℝ (EuclideanSpace ℝ (Fin n × Fin n × Bool)))).repr.symm`. Establish `hmh : gLie ε ⊔ (⊥ : Submodule ℝ (EuclideanSpace ℝ (Fin n × Fin n × Bool))) = gLie ε` using `sup_bot_eq _`. Establish `horth : ∀ x ∈ gLie ε, ∀ y ∈ (⊥ : Submodule ℝ (EuclideanSpace ℝ (Fin n × Fin n × Bool))), inner ℝ x y = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x _ y hy`. Rewrite using `[(Submodule.mem_bot ℝ).1 hy, inner_zero_right]`. Take `⟨r, hr, D, hDc, hD0, -, hD⟩` from `expDens_gen ε r₀ hr₀ f₀ hfm hfc hf _ _ hmh horth _ _ L₀ L₁`. Take `⟨-, hpres⟩` from `sumLPres_holds n ε _ _ hmh horth _ _ L₀ L₁`. Use `set Ls := sumL ε _ _ hmh L₀ L₁ with hLs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy0 : ∀ y, ((L₁ y : (⊥ : Submodule ℝ (EuclideanSpace ℝ (Fin n × Fin n × Bool)))) : EuclideanSpace ℝ (Fin n × Fin n × Bool)) = 0` using `fun y => (Submodule.mem_bot ℝ).1 (L₁ y).2`. Establish `hyz : ∀ y : EuclideanSpace ℝ (Fin (Module.finrank ℝ ↥(⊥ : Submodule ℝ (EuclideanSpace ℝ (Fin n × Fin n × Bool))))), y = 0` using `fun y => by`. Establish `h1 : L₁ y = 0` using `Subtype.ext (hy0 y)`. Establish `h2` using `congrArg L₁.symm h1`. Rewrite `h2` using `[LinearIsometryEquiv.symm_apply_apply, map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hLsv : ∀ p, ((Ls p : gLie ε) : EuclideanSpace ℝ (Fin n × Fin n × Bool)) = ((L₀ p.1 : gLie ε) : EuclideanSpace ℝ (Fin n × Fin n × Bool))` using `fun p => by show ((L₀ p.1 : gLie ε) : EuclideanSpace ℝ (Fin n × Fin n × Bool)) + (L₁ p.2 : EuclideanSpace ℝ _) = _`. Rewrite using `[hy0, add_zero]`. Establish `hnorm : ∀ p, ‖Ls p‖ = ‖p‖` using `fun p => by`. Establish `e1 : ‖Ls p‖ = ‖L₀ p.1‖` using `by show ‖((Ls p : gLie ε) : EuclideanSpace ℝ (Fin n × Fin n × Bool))‖ = ‖((L₀ p.1 : gLie ε) : EuclideanSpace ℝ (Fin n × Fin n × Bool))‖`. Rewrite using `[hLsv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, LinearIsometryEquiv.norm_map, Prod.norm_def, hyz p.2, norm_zero, max_eq_left (norm_nonneg _)]`. Establish `hball : ∀ ρ, Ls '' ball 0 ρ = ball (0 : gLie ε) ρ` using `fun ρ => by`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_ball_zero_iff, hnorm]`. Conclude with `mem_ball_zero_iff.1 hp`. Introduce `hx`. Use `⟨(L₀.symm x, 0), ?_, ?_⟩` and prove the remaining obligations. Establish `e : Ls (L₀.symm x, 0) = x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hLsv]`. Simplify using the standard rewrite rules. Rewrite using `[mem_ball_zero_iff, ← hnorm, e]`. Conclude with `mem_ball_zero_iff.1 hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hLsv]`. Simplify using the standard rewrite rules. Establish `hexp : ∀ ρ, (fun p : EuclideanSpace ℝ (Fin (Module.finrank ℝ (gLie ε))) × EuclideanSpace ℝ (Fin (Module.finrank ℝ ↥(⊥ : Submodule ℝ (EuclideanSpace ℝ (Fin n × Fin n × Bool))))) => expR ε ((L₀ p.1 : gLie ε) : EuclideanSpace ℝ (Fin n × Fin n × Bool)) * expR ε ((L₁ p.2 : (⊥ : Submod …` using `fun ρ => by`. Use extensionality with `g`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, rfl⟩`. Use `⟨Ls p, by rw [← hball]; exact ⟨p, hp, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hy0, expR_zero', mul_one, hLsv]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (((expR ε _ : Formalism.REAL.UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = _`. Conclude with `expR_val ε _ (lieSkew_holds n ε _ (L₀ p.1).2)`. Introduce and unpack `⟨x, hx, hgx⟩`. Use `⟨(L₀.symm x, 0), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_ball_zero_iff, ← hnorm]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : Ls (L₀.symm x, 0) = x`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hLsv]`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mem_ball_zero_iff.1 hx`. Simplify using `only [hy0, expR_zero', mul_one, LinearIsometryEquiv.apply_symm_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[expR_val ε _ (lieSkew_holds n ε _ x.2)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hgx.symm`. Establish `hvol : ∀ ρ, volume (ball (0 : gLie ε) ρ) = volume (ball (0 : EuclideanSpace ℝ (Fin (Module.finrank ℝ (gLie ε))) × EuclideanSpace ℝ (Fin (Module.finrank ℝ ↥(⊥ : Submodule ℝ (EuclideanSpace ℝ (Fin n × Fin n × Bool)))))) ρ)` using `fun ρ => by`. Use `(hpres (ball 0 ρ) measurableSet_ball).2 (fun _ => 1) measurable_const` as an intermediate fact. Rewrite `this` using `[hball]`. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hHaar : (volume : Measure (EuclideanSpace ℝ (Fin (Module.finrank ℝ (gLie ε))) × EuclideanSpace ℝ (Fin (Module.finrank ℝ ↥(⊥ : Submodule ℝ (EuclideanSpace ℝ (Fin n × Fin n × Bool))))))).IsAddHaarMeasure`. Rewrite using `[Measure.volume_eq_prod]`. Use `infer_instance`. Establish `hT` using `ratio_tendsto (volume : Measure (EuclideanSpace ℝ (Fin (Module.finrank ℝ (gLie ε))) × EuclideanSpace ℝ (Fin (Module.finrank ℝ ↥(⊥ : Submodule ℝ (EuclideanSpace ℝ (Fin n × Fin n × Bool))))))) D hDc`. Establish `hlim : Tendsto (ratioAt ε) (𝓝[>] 0) (𝓝 (max (D 0) 0))`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hT.congr' (Filter.eventuallyEq_of_mem (Ioo_mem_nhdsGT hr) fun ρ hρ => ?_)` and prove the remaining obligations. Rewrite using `[ratioAt, ← hexp, hD _ (ball_subset_ball hρ.2.le) measurableSet_ball, hvol]`. Establish `hu` using `tendsto_nhds_unique hG.1 hlim`. Rewrite `hu` using `[hD0]`. Break down `le_total (f₀ 0) 0 with h | h` into its components or cases.
-
-Rewrite `hu` using `[max_eq_right h]`. Combine the linear relations using `[hG.2]`. Rewrite `hu` using `[max_eq_left h]`. Conclude with `hu.symm`.
+A detailed English derivation is pending.
 -/
 theorem cayValId_holds : CayValId := by
   intro n ε hG r₀ hr₀ f₀ hfm hfc hf

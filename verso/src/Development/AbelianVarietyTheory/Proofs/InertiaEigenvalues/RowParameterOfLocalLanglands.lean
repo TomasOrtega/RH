@@ -23,9 +23,9 @@ namespace GlobalTheory.GalLoc.RowParamAt
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨⟨D, cf, jE, A, cg, au, rep, row, low, Pq, S, hk, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, eq⟩, pack⟩` from `nt`. Substitute `eq` using the available equality. Establish `e1 : Rw.locR = A.row.locR` using `eq_of_heq hRw`. Introduce `i σ w`. Rewrite using `[e1]`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Au.locW i σ w`.
+A detailed English derivation is pending.
 -/
 theorem locW_of_nTrue {hL : GlobalTheory.Published.LocalLanglandsGL} {D' : D7} {cf' : CharFrame D'} {C' : NChoice D'}
     {tp' : TupTied D' cf' C'} (nt : NTrue hL D' cf' C' tp') (Rw : RowSide D') (hRw : HEq Rw.locR nt.A.row.locR) :
@@ -38,9 +38,9 @@ theorem locW_of_nTrue {hL : GlobalTheory.Published.LocalLanglandsGL} {D' : D7} {
   exact Au.locW i σ w
 
 /- English proof (translation)
-Introduce `hN _ hL`. Use `GlobalTheory.GalLoc.atMem_imp (GlobalTheory.GalLoc.atMem_and (GlobalTheory.GalLoc.atMem_and (GlobalTheory.T.good_cuspidal_parameter_local_side hN hL) (GlobalTheory.T.twisted_place_local_index hN hL)) (GlobalTheory.T.exists_twisted_place hL)) ?_` and prove the remaining obligations. Introduce `K B f T w Z Wt p0 t nch n xd c _ H Rw hRw`. Take `⟨⟨hp, hl⟩, v, hv⟩` from `H`. Establish `hW` using `locW_of_nTrue c.a.nt Rw hRw`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `GlobalTheory.TwInputs.rowParam_of_cuspParam (w.D Z) Rw (hp Rw hRw) ?_ (GlobalTheory.FixedPlaceSplit.isSplitPl_plGw _)` and prove the remaining obligations. Introduce `j h1 h2 σ hσ hg`. Take `⟨i, -, -⟩` from `hl v hv j h1 h2 σ hσ`. Conclude with `GlobalTheory.HeightCounting.CuspOfParam.goodRow_cuspidal (w.D Z) Rw ⟨i⟩ hW (hp Rw hRw) j h1 h2 σ hσ hg`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rowParam_atMem : PrN → SerN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t nch n c =>
     ∀ Rw : RowSide (w.D Z), HEq Rw.locR c.a.nt.A.row.locR → GlobalTheory.TwInputs.RowParam (w.D Z) Rw := by

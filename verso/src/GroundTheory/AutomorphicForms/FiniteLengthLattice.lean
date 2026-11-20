@@ -15,9 +15,9 @@ def HasFiniteLength (ρ : Representation ℂ G V) : Prop :=
 variable {ρ : Representation ℂ G V}
 
 /- English proof (translation)
-Rewrite using `[HasFiniteLength, isFiniteLength_iff_isNoetherian_isArtinian, isNoetherian_iff', IsArtinian]`. Set `e` to `Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := ρ)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨e.strictMono.wellFoundedLT, e.strictMono.wellFoundedGT⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨e.symm.strictMono.wellFoundedGT, e.symm.strictMono.wellFoundedLT⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem hasFiniteLength_iff :
     HasFiniteLength ρ ↔
@@ -31,21 +31,21 @@ theorem hasFiniteLength_iff :
     exact ⟨e.symm.strictMono.wellFoundedGT, e.symm.strictMono.wellFoundedLT⟩
 
 /- English proof (translation)
-The claim follows from `(hasFiniteLength_iff.1 h).1`.
+A detailed English derivation is pending.
 -/
 theorem HasFiniteLength.wellFoundedLT (h : HasFiniteLength ρ) :
     WellFoundedLT (Subrepresentation ρ) :=
   (hasFiniteLength_iff.1 h).1
 
 /- English proof (translation)
-The claim follows from `(hasFiniteLength_iff.1 h).2`.
+A detailed English derivation is pending.
 -/
 theorem HasFiniteLength.wellFoundedGT (h : HasFiniteLength ρ) :
     WellFoundedGT (Subrepresentation ρ) :=
   (hasFiniteLength_iff.1 h).2
 
 /- English proof (translation)
-Rewrite using `[hasFiniteLength_iff]`. Use `⟨hΛ.wellFoundedLT, ?_⟩` and prove the remaining obligations. Establish `h1 : WellFoundedLT (∀ i, (α i)ᵒᵈ)` using `Pi.wellFoundedLT`. Establish `h2 : WellFoundedGT (∀ i, α i)` using `⟨h1.wf⟩`. Conclude with `hΛ.wellFoundedGT`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_of_strictMono {ι : Type*} [Finite ι] {α : ι → Type*}
     [∀ i, PartialOrder (α i)] [∀ i, WellFoundedLT (α i)] [∀ i, WellFoundedGT (α i)]
@@ -57,14 +57,14 @@ theorem hasFiniteLength_of_strictMono {ι : Type*} [Finite ι] {α : ι → Type
   exact hΛ.wellFoundedGT
 
 /- English proof (translation)
-Establish `: Subsingleton ρ.asModule` using `inferInstanceAs (Subsingleton V)`. Conclude with `IsFiniteLength.of_subsingleton`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_of_subsingleton [Subsingleton V] : HasFiniteLength ρ := by
   have : Subsingleton ρ.asModule := inferInstanceAs (Subsingleton V)
   exact IsFiniteLength.of_subsingleton
 
 /- English proof (translation)
-Establish `: Finite (Subrepresentation ρ)` using `Finite.of_equiv _ IsSimpleOrder.equivBool.symm`. Rewrite using `[hasFiniteLength_iff]`. Conclude with `⟨Finite.to_wellFoundedLT, Finite.to_wellFoundedGT⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem hasFiniteLength_of_isIrreducible [ρ.IsIrreducible] : HasFiniteLength ρ := by
   classical
@@ -92,23 +92,23 @@ def subrepComap (f : Representation.IntertwiningMap ρ σ) (B : Subrepresentatio
     exact B.apply_mem_toSubmodule g hx
 
 /- English proof (translation)
-Introduce `_ _ h _ ⟨x, hx, hxy⟩` and use `⟨x, h hx, hxy⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem subrepMap_mono (f : Representation.IntertwiningMap ρ σ) : Monotone (subrepMap f) :=
   fun _ _ h _ ⟨x, hx, hxy⟩ => ⟨x, h hx, hxy⟩
 
 /- English proof (translation)
-Introduce `_ _ h _ hx` and use `h hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem subrepComap_mono (f : Representation.IntertwiningMap ρ σ) : Monotone (subrepComap f) :=
   fun _ _ h _ hx => h hx
 
 /- English proof (translation)
-Use `hσ.wellFoundedLT` as an intermediate fact. Use `hσ.wellFoundedGT` as an intermediate fact. Use `hasFiniteLength_of_strictMono (ι := Unit) (α := fun _ => Subrepresentation σ) (fun A _ => subrepMap f A) fun A B hAB => ?_` and prove the remaining obligations. Use `lt_of_le_of_ne (fun _ => subrepMap_mono f hAB.le) fun h => hAB.ne ?_` and prove the remaining obligations. Establish `h1` using `congrFun h ()`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_antisymm hAB.le fun x hx => ?_` and prove the remaining obligations. Take `⟨y, hy, hyx⟩ : f x ∈ subrepMap f A` from `by show f x ∈ subrepMap f A`. Rewrite using `[show subrepMap f A = subrepMap f B from h1]`. Conclude with `⟨x, hx, rfl⟩`. Rewrite using `[← hf hyx]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`.
+A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_of_injective (f : Representation.IntertwiningMap ρ σ)
     (hf : Injective f) (hσ : HasFiniteLength σ) : HasFiniteLength ρ := by
@@ -127,9 +127,9 @@ theorem hasFiniteLength_of_injective (f : Representation.IntertwiningMap ρ σ)
   exact hy
 
 /- English proof (translation)
-Use `hρ.wellFoundedLT` as an intermediate fact. Use `hρ.wellFoundedGT` as an intermediate fact. Use `hasFiniteLength_of_strictMono (ι := Unit) (α := fun _ => Subrepresentation ρ) (fun B _ => subrepComap f B) fun A B hAB => ?_` and prove the remaining obligations. Use `lt_of_le_of_ne (fun _ => subrepComap_mono f hAB.le) fun h => hAB.ne ?_` and prove the remaining obligations. Establish `h1` using `congrFun h ()`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_antisymm hAB.le fun y hy => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hf y`. Establish `hx : x ∈ subrepComap f B` using `hy`. Rewrite `hx` using `[← show subrepComap f A = subrepComap f B from h1]`. Conclude with `hx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_of_surjective (f : Representation.IntertwiningMap ρ σ)
     (hf : Surjective f) (hρ : HasFiniteLength ρ) : HasFiniteLength σ := by
@@ -150,25 +150,23 @@ end MapComap
 section Filtration
 
 /- English proof (translation)
-Use `fun j => (hσ j).wellFoundedLT` as an intermediate fact. Use `fun j => (hσ j).wellFoundedGT` as an intermediate fact. Set `cut : ∀ j : Fin k, Subrepresentation ρ → Subrepresentation (ρ.subrepresentation (Vf (j + 1)) (hV (j + 1)))` to `fun j A => ⟨A.toSubmodule.comap (Vf (j + 1)).subtype, fun g x hx => A.apply_mem_toSubmodule g hx⟩`. Use `hasFiniteLength_of_strictMono (α := fun j => Subrepresentation (σ j)) (fun A j => subrepMap (Ψ j) (cut j A)) fun A B hAB => ?_` and prove the remaining obligations. Establish `hmono' : ∀ j, subrepMap (Ψ j) (cut j A) ≤ subrepMap (Ψ j) (cut j B)` using `fun j => subrepMap_mono _ (fun x hx => hAB.le hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Pi.lt_def]`. Use `⟨hmono', ?_⟩` and prove the remaining obligations. Establish `hex : ∃ j, j < k ∧ ∃ x ∈ B, x ∈ Vf (j + 1) ∧ x ∉ A`. Take `⟨x, hxB, hxA⟩` from `SetLike.exists_of_lt hAB`. Establish `hk0 : k ≠ 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `hk` using `[h0]`. Conclude with `hxA (by`. Establish `: x ∈ (⊤ : Submodule ℂ V)` using `trivial`. Rewrite `this` using `[← hk]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(Submodule.mem_bot ℂ).1 this]`. Conclude with `A.toSubmodule.zero_mem)`. Use `⟨k - 1, by omega, x, hxB, ?_, hxA⟩` and prove the remaining obligations. Rewrite using `[Nat.sub_add_cancel (Nat.pos_of_ne_zero hk0), hk]`. Discharge the goal by the elementary cases of `trivial`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `j₀` to `Nat.find hex`. Take `⟨hj₀k, x, hxB, hxV, hxA⟩` from `Nat.find_spec hex`. Establish `hbelow : ∀ y ∈ B, y ∈ Vf j₀ → y ∈ A`. Introduce `y hyB hyV`. Break down `Nat.eq_zero_or_pos j₀ with h | h` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hyV` using `[h, h0]`. Rewrite using `[(Submodule.mem_bot ℂ).1 hyV]`. Conclude with `A.toSubmodule.zero_mem`. Assume the negation of the conclusion as `hyA`. Take `⟨m, hm⟩ : ∃ m, j₀ = m + 1` from `⟨j₀ - 1, by omega⟩`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Nat.find_min hex (m := m) (by omega)` as an intermediate fact. Conclude with `this ⟨by omega, y, hyB, by rw [← hm]; exact hyV, hyA⟩`. Use `⟨⟨j₀, hj₀k⟩, lt_of_le_of_ne (hmono' _) fun heq => hxA ?_⟩` and prove the remaining obligations. Establish `hmem : Ψ ⟨j₀, hj₀k⟩ ⟨x, hxV⟩ ∈ subrepMap (Ψ ⟨j₀, hj₀k⟩) (cut ⟨j₀, hj₀k⟩ B)` using `⟨⟨x, hxV⟩, hxB, rfl⟩`. Establish `heq' : subrepMap (Ψ ⟨j₀, hj₀k⟩) (cut ⟨j₀, hj₀k⟩ A) = subrepMap (Ψ ⟨j₀, hj₀k⟩) (cut ⟨j₀, hj₀k⟩ B)` using `heq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hmem` using `[← heq']`. Take `⟨y, hyA, hyx⟩` from `hmem`. Establish `hyx' : Ψ ⟨j₀, hj₀k⟩ y = Ψ ⟨j₀, hj₀k⟩ ⟨x, hxV⟩` using `hyx`. Establish `hd : Ψ ⟨j₀, hj₀k⟩ (⟨x, hxV⟩ - y) = 0` using `by rw [map_sub, hyx', sub_self]`. Rewrite `hd` using `[hΨ]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyA' : (y : V) ∈ A` using `hyA`. Establish `hdB : ((⟨x, hxV⟩ - y : Vf (j₀ + 1)) : V) ∈ B` using `B.toSubmodule.sub_mem hxB (hAB.le hyA')`. Use `hbelow _ hdB hd` as an intermediate fact. Establish `hx' : x = ((⟨x, hxV⟩ - y : Vf (j₀ + 1)) : V) + y` using `by simp`. Rewrite using `[hx']`.
-
-Conclude with `A.toSubmodule.add_mem this hyA'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_of_filtration {k : ℕ} (Vf : ℕ → Submodule ℂ V)
     (hV : ∀ i (g : G), Vf i ≤ (Vf i).comap (ρ g)) (h0 : Vf 0 = ⊥) (hk : Vf k = ⊤)

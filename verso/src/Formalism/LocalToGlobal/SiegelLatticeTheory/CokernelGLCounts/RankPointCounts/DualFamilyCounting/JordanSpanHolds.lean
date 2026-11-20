@@ -9,13 +9,13 @@ namespace Formalism.L2.SG.Pf.G3
 open Formalism.HermitianLattices.Ext.L3 Formalism.HermitianLattices.Ext.L3.U0 Formalism.HermitianLattices.Ext.L3.WA
 
 /- English proof (translation)
-Introduce `K F V _ _ _ _ _ _ _ _ _ _ hK hF P hP n b v`. Establish `hPp` using `hP.isPrime`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Take `⟨s, hs, hsv⟩` from `Formalism.HermitianLatticesTheory.locBasic_mem_locS.mp hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 K)).mp hsv`. Establish `hs0` using `algebraMap_ne_zero_of_mem_hcompl hPp hs`. Use `⟨fun i => algebraMap (𝓞 K) K (c i) / algebraMap (𝓞 K) K s, fun i => div_mem_locRing hPp (c i) hs, ?_⟩` and prove the remaining obligations. Establish `e : v = (algebraMap (𝓞 K) K s)⁻¹ • (algebraMap (𝓞 K) K s • v)`. Rewrite using `[smul_smul, inv_mul_cancel₀ hs0, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, algebraMap_smul, ← hc, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul K (c i) (b i), smul_smul]`. Simplify using `only [div_eq_inv_mul]`. Introduce and unpack `⟨d, hd, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Use `Submodule.sum_mem _ fun i _ => smul_mem_loc hPp (hd i) ?_` and prove the remaining obligations. Conclude with `Formalism.HermitianLatticesTheory.locBasic_le_locS _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem local_span_holds : LocSpan := by
   intro K F V _ _ _ _ _ _ _ _ _ _ hK hF P hP n b v
@@ -38,13 +38,13 @@ theorem local_span_holds : LocSpan := by
     exact Formalism.HermitianLatticesTheory.locBasic_le_locS _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Introduce `K F V _ _ _ _ _ _ _ _ _ _ _ L hL 𝔭 h𝔭 n b hb`. Rewrite using `[eq_top_iff, ← hL.span_eq_top, Submodule.span_le]`. Introduce `x hx`. Establish `hx' : x ∈ locF 𝔭 (Submodule.span (𝓞 K) (Set.range b))`. Rewrite using `[hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LocF.le_locF 𝔭 L hx`. Take `⟨t, ht, htx⟩` from `(LocF.mem_locF_iff h𝔭.isPrime _ x).mp hx'`. Establish `ht0 : algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) t) ≠ 0`. Introduce `h0`. Apply `ht` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1 : algebraMap (𝓞 F) (𝓞 K) t = 0` using `FaithfulSMul.algebraMap_injective (𝓞 K) K (by rw [h0, map_zero])`. Establish `h2 : t = 0` using `FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 K) (by rw [h1, map_zero])`. Rewrite using `[h2]`. Conclude with `𝔭.zero_mem`. Establish `hmem` using `Submodule.span_le_restrictScalars (𝓞 K) K (Set.range b) htx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : x = (algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) t))⁻¹ • (algebraMap (𝓞 F) (𝓞 K) t • x)`. Rewrite using `[← algebraMap_smul K (algebraMap (𝓞 F) (𝓞 K) t) x, smul_smul, inv_mul_cancel₀ ht0, one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hmem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jordan_span_holds : JordSpan := by
   intro K F V _ _ _ _ _ _ _ _ _ _ _ L hL 𝔭 h𝔭 n b hb

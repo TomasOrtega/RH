@@ -8,31 +8,29 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory.JR.TildeTest
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ψ hψ μK hμ φ' hφ`. Use `set T : A.K → A.K → ℂ := fun c u => A.tilde μK ψ φ' c u with hTdef`. Establish `hslice : ∀ c, IsTest (fun u => T c u)`. Introduce `c`. Establish `hnd` using `(GlobalTheory.T.etaleHermitianPair_structure_facts F E A).2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(GlobalTheory.T.selfDual_measure_exists_unique_fourier_inversion F E ψ hψ A.K (Algebra.traceForm F A.K) (Algebra.traceForm_isSymm F) hnd).2 μK hμ (fun b => φ' (b, c)) (GlobalTheory.TestFn.slice_test φ' hφ c)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Simplify using `only [hTdef, Et.tilde, fourB, Algebra.traceForm_apply, Et.psiK]`. Use `congr 1`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `b`. Rewrite using `[mul_comm u b]`. Take `⟨V, hV, hVf⟩` from `GlobalTheory.TestFn.unif_const (A.K × A.K) φ' hφ`. Use `set V₂ : Set A.K := {v | ((0 : A.K), v) ∈ V} with hV₂def`. Establish `hV₂ : V₂ ∈ 𝓝 (0 : A.K)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous (fun v : A.K => ((0 : A.K), v))` using `by fun_prop`. Conclude with `hc.continuousAt.preimage_mem_nhds (by rw [show ((0 : A.K), (0 : A.K)) = (0 : A.K × A.K) from rfl]; exact hV)`. Establish `hshift : ∀ c c', c' - c ∈ V₂ → ∀ u, T c' u = T c u`. Introduce `c c' hcc u`. Simplify using `only [hTdef, Et.tilde]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `b`. Use `hVf (b, c) (0, c' - c) hcc` as an intermediate fact. Simplify using `only [Prod.mk_add_mk, add_zero, add_sub_cancel] at this`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hnbhd : ∀ c : A.K, {c' | c' - c ∈ V₂} ∈ 𝓝 c`. Introduce `c`. Establish `hc : Continuous (fun c' : A.K => c' - c)` using `by fun_prop`. Conclude with `hc.continuousAt.preimage_mem_nhds (by simpa using hV₂)`. Establish `hlc : IsLocallyConstant (fun p : A.K × A.K => T p.1 p.2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce and unpack `⟨c₀, u₀⟩`. Establish `hu : {u | T c₀ u = T c₀ u₀} ∈ 𝓝 u₀` using `((hslice c₀).1.isOpen_fiber _).mem_nhds rfl`. Rewrite using `[nhds_prod_eq]`. Use `filter_upwards [prod_mem_prod (hnbhd c₀) hu] with p hp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hshift c₀ p.1 hp.1 p.2]`. Conclude with `hp.2`. Use `⟨hlc, ?_⟩` and prove the remaining obligations. Establish `hC₂ : IsCompact (Prod.snd '' tsupport φ')` using `hφ.2.image continuous_snd`. Take `⟨t, -, hcover⟩` from `hC₂.elim_nhds_subcover (fun c => {c' | c' - c ∈ V₂}) (fun c _ => hnbhd c)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hK : IsCompact ((Prod.snd '' tsupport φ') ×ˢ ⋃ c ∈ t, tsupport (fun u => T c u))` using `hC₂.prod (t.isCompact_biUnion fun c _ => (hslice c).2)`. Establish `hzero : ∀ c ∉ Prod.snd '' tsupport φ', ∀ u, T c u = 0`. Introduce `c hc u`. Establish `h0 : ∀ b, φ' (b, c) = 0` using `fun b => image_eq_zero_of_notMem_tsupport (fun h => hc ⟨(b, c), h, rfl⟩)`. Simplify using `[hTdef, Et.tilde, h0]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hsupp : Function.support (fun p : A.K × A.K => T p.1 p.2) ⊆ (Prod.snd '' tsupport φ') ×ˢ ⋃ c ∈ t, tsupport (fun u => T c u)`. Introduce and unpack `⟨c, u⟩ hp`. Establish `hc : c ∈ Prod.snd '' tsupport φ'`. Assume the negation of the conclusion as `hc`. Conclude with `hp (hzero c hc u)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `⟨hc, ?_⟩` and prove the remaining obligations. Take `⟨c', hc't, hcc'⟩` from `Set.mem_iUnion₂.mp (hcover hc)`. Use `Set.mem_iUnion₂.mpr ⟨c', hc't, subset_tsupport _ ?_⟩` and prove the remaining obligations. Use `show T c' u ≠ 0`. Rewrite using `[← hshift c' c hcc' u]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp`. Establish `hclosed : IsClosed (Function.support (fun p : A.K × A.K => T p.1 p.2))`. Use `(hlc.isOpen_fiber 0).isClosed_compl` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `p`.
-
-Simplify using `[Function.mem_support]`. Establish `hts : tsupport (fun p : A.K × A.K => T p.1 p.2) = Function.support (fun p : A.K × A.K => T p.1 p.2)` using `hclosed.closure_eq`. Unfold `HasCompactSupport`. Rewrite using `[hts]`. Conclude with `hK.of_isClosed_subset hclosed hsupp`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∀ (μK : Measure A.K), μK.IsAddHaarMeasure → ∀ φ' : A.K × A.K → ℂ, IsTest φ' → IsTest (fun p : A.K × A.K => A.tilde μK ψ φ' p.1 p.2) := by
   intro F E _ _ _ _ _ A ψ hψ μK hμ φ' hφ

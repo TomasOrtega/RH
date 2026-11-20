@@ -5,13 +5,13 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨lam, hlam⟩` from `(finrank_eq_one_iff_of_nonzero' y hy).mp hW (ι x)`. Establish `hιx : ι x ≠ 0`. Introduce `h`. Conclude with `hx (hι (h.trans ι.map_zero.symm))`. Establish `hl : lam ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Rewrite `hlam` using `[zero_smul]`. Conclude with `hιx hlam.symm`. Establish `key : ∀ t : O, ι (t • x) = lam • (t • y)`. Introduce `t`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← algebraMap_smul C t x, ι.map_smul, ← hlam, ← algebraMap_smul C t y, smul_smul, smul_smul, mul_comm]`. Use `⟨lam, hl, hlam.symm, ?_⟩` and prove the remaining obligations. Use extensionality with `w`. Simplify using `only [Set.mem_image, SetLike.mem_coe, Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨v, ⟨t, rfl⟩, rfl⟩`. Conclude with `⟨t • y, ⟨t, rfl⟩, (key t).symm⟩`. Introduce and unpack `⟨v, ⟨t, rfl⟩, rfl⟩`. Conclude with `⟨t • x, ⟨t, rfl⟩, key t⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem injective_into_line_span_eq_smul_span (C : Type) [Field C] (O : Type) [CommRing O]
     [Algebra O C] (V W : Type) [AddCommGroup V] [Module C V] [Module O V] [IsScalarTower O C V]
@@ -42,7 +42,7 @@ theorem injective_into_line_span_eq_smul_span (C : Type) [Field C] (O : Type) [C
     exact ⟨t • x, ⟨t, rfl⟩, key t⟩
 
 /- English proof (translation)
-The claim follows from `@injective_into_line_span_eq_smul_span`.
+A detailed English derivation is pending.
 -/
 example : ∀ (C : Type) [Field C] (O : Type) [CommRing O] [Algebra O C] (V W : Type) [AddCommGroup V] [Module C V] [Module O V] [IsScalarTower O C V] [AddCommGroup W] [Module C W] [Module O W] [IsScalarTower O C W] (ι : V →ₗ[C] W) (x : V) (y : W), Function.Injective ι → Module.finrank C W = 1 → x ≠ 0 → y ≠ 0 → ∃ lam : C, lam ≠ 0 ∧ ι x = lam • y ∧ ι '' (Submodule.span O {x} : Set V) = (fun w => lam • w) '' (Submodule.span O {y} : Set W) :=
   @injective_into_line_span_eq_smul_span

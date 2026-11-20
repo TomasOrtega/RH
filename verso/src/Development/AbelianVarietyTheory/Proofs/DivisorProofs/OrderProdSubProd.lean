@@ -5,13 +5,13 @@ namespace GlobalTheory.OrderProductDifference
 open MvPowerSeries
 
 /- English proof (translation)
-Use `revert ha hb hab`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro _ _ _`. Simplify using the standard rewrite rules. Consider the case `@insert j s hj ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ha hb hab`. Establish `ih'` using `ih (fun i hi => ha i (Finset.mem_insert_of_mem hi)) (fun i hi => hb i (Finset.mem_insert_of_mem hi)) (fun i hi => hab i (Finset.mem_insert_of_mem hi))`. Establish `key : ∏ i ∈ insert j s, a i - ∏ i ∈ insert j s, b i = a j * (∏ i ∈ s, a i - ∏ i ∈ s, b i) + (a j - b j) * ∏ i ∈ s, b i`. Rewrite using `[Finset.prod_insert hj, Finset.prod_insert hj]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hbs : ∑ i ∈ s, ((k i : ℕ) : ℕ∞) ≤ MvPowerSeries.order (∏ i ∈ s, b i)` using `le_trans (Finset.sum_le_sum fun i hi => hb i (Finset.mem_insert_of_mem hi)) (MvPowerSeries.le_order_prod _ _)`. Rewrite using `[key, Finset.sum_insert hj]`. Use `le_trans ?_ MvPowerSeries.min_order_le_add` and prove the remaining obligations. Use `le_min ?_ ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem order_prod_sub_prod {R τ ι : Type} [CommRing R] (s : Finset ι)
     (a b : ι → MvPowerSeries τ R) (k : ι → ℕ)
@@ -49,7 +49,7 @@ theorem order_prod_sub_prod {R τ ι : Type} [CommRing R] (s : Finset ι)
         _ ≤ _ := MvPowerSeries.le_order_mul
 
 /- English proof (translation)
-Introduce `s a b k ha hb hab` and use `order_prod_sub_prod s a b k ha hb hab`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem target : ∀ {R τ ι : Type} [inst : CommRing R] (s : Finset ι) (a b : ι → MvPowerSeries τ R) (k : ι → ℕ), (∀ i ∈ s, (↑(k i) : ℕ∞) ≤ MvPowerSeries.order (a i)) → (∀ i ∈ s, (↑(k i) : ℕ∞) ≤ MvPowerSeries.order (b i)) → (∀ i ∈ s, (↑(k i) : ℕ∞) + (1 : ℕ∞) ≤ MvPowerSeries.order (a i - b i)) → ∑ i ∈ s, (↑(k i) : ℕ∞) + (1 : ℕ∞) ≤ MvPowerSeries.order (∏ i ∈ s, a i - ∏ i ∈ s, b i) :=
   fun s a b k ha hb hab => order_prod_sub_prod s a b k ha hb hab

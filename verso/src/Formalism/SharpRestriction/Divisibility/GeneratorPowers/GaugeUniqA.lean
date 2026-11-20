@@ -21,23 +21,23 @@ def pullUnit {Y Z : Scheme.{0}} (h : Z ⟶ Y) (u : Γ(Y, ⊤)ˣ) : Γ(Z, ⊤)ˣ 
 variable {X Y Z : Scheme.{0}} (L : LB X)
 
 /- English proof (translation)
-Conclude with `gen_ratio (LB.LinComb L φ ε) (wchart_cover L hL φ) t' t ht' ht`.
+A detailed English derivation is pending.
 -/
 theorem ratio_of_gen (hL : L.IsLB) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (t t' : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (ht' : t'.IsGen) : ∃ u, IsScaled u t t' := by
   exact gen_ratio (LB.LinComb L φ ε) (wchart_cover L hL φ) t' t ht' ht
 
 /- English proof (translation)
-Introduce `j`. Rewrite using `[map_one, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem scaled_one {M : LB Y} (t : LB.Gen M) : IsScaled 1 t t := by
   intro j
   rw [map_one, one_mul]
 
 /- English proof (translation)
-Establish `h1' : ∀ j, t'.s j = res le_top u * t.s j` using `h1`. Establish `h2' : ∀ j, s'.s j = res le_top v * s.s j` using `h2`. Introduce `j`. Simplify using `only [LB.mulGen]`. Use `erw [h1' (j ∘ Sum.inl), h2' (j ∘ Sum.inr)]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul]`. Use `erw [res_res, res_res]`. Rewrite using `[mul_mul_mul_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem scaled_mul {K K' : Type} [Fintype K] [Fintype K'] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ) {u v : Γ(Y, ⊤)ˣ} {t t' : LB.Gen (LB.LinComb L φ ε)}
@@ -54,7 +54,7 @@ theorem scaled_mul {K K' : Type} [Fintype K] [Fintype K'] (φ : K → (Y ⟶ X))
   rfl
 
 /- English proof (translation)
-Introduce `j`. Use `show t'.s j ^ k = res le_top (u ^ k) * t.s j ^ k`. Rewrite using `[h j, mul_pow, map_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scaled_pow {M : LB Y} (t t' : LB.Gen M) (u : Γ(Y, ⊤)ˣ)
     (h : IsScaled u t t') (k : ℕ) :
@@ -64,7 +64,7 @@ theorem scaled_pow {M : LB Y} (t t' : LB.Gen M) (u : Γ(Y, ⊤)ˣ)
   rw [h j, mul_pow, map_pow]
 
 /- English proof (translation)
-Rewrite using `[ReciprocityTheory.ChartRestriction.G.DVR.pullU_res, res_res]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pullUnit_res (h : Z ⟶ Y) {V : Y.Opens} {W : Z.Opens} (hWV : W ≤ h ⁻¹ᵁ V) (u : Γ(Y, ⊤)ˣ) :
     res hWV (pullU h V (res (le_top : V ≤ ⊤) u)) = res le_top (pullUnit h u) := by
@@ -72,7 +72,7 @@ theorem pullUnit_res (h : Z ⟶ Y) {V : Y.Opens} {W : Z.Opens} (hWV : W ≤ h �
   rfl
 
 /- English proof (translation)
-Establish `hs' : ∀ j, t'.s j = res le_top u * t.s j` using `hs`. Introduce `j`. Simplify using `only [LB.pullGen]`. Use `erw [hs' j, map_mul, map_mul, pullUnit_res]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scaled_pull {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ) (h : Z ⟶ Y) {u : Γ(Y, ⊤)ˣ}
     {t t' : LB.Gen (LB.LinComb L φ ε)} (hs : IsScaled u t t') :
@@ -83,17 +83,15 @@ theorem scaled_pull {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → �
   erw [hs' j, map_mul, map_mul, pullUnit_res]
 
 /- English proof (translation)
-Establish `h₁' : ∀ j, t₁'.s j = res le_top U₁ * t₁.s j` using `h₁`. Establish `h₂' : ∀ j, t₂'.s j = res le_top U₂ * t₂.s j` using `h₂`. Establish `key : ∀ {U V : Y.Opens} (hle : V ≤ U) (a b : Γ(Y, U)ˣ), res hle (a * b) = res hle a * res hle b` using `fun hle a b => map_mul _ a b`. Establish `hch : ∀ (ψ : Y ⟶ X) (y : Y), ∃ i, ψ y ∈ L.U i`. Introduce `ψ y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy` using `wchart_cover L hL (fun _ : Fin 1 => ψ) (show y ∈ (⊤ : Y.Opens) from trivial)`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Conclude with `⟨j 0, Set.mem_iInter.1 hj 0⟩`. Apply `Units.ext` to reduce the goal to its premises. Establish `hcov : ∀ y : Y, ∃ W : Y.Opens, y ∈ W ∧ (Y.presheaf.map (homOfLE (le_top : W ≤ ⊤)).op).hom (U₁ : Γ(Y, ⊤)) = (Y.presheaf.map (homOfLE (le_top : W ≤ ⊤)).op).hom (U₂ : Γ(Y, ⊤))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `y`. Use `choose ch hc using fun ψ => hch ψ y`. Set `j : K → L.ι` to `fun k => ch (φ k)`. Set `j' : K' → L.ι` to `fun k => ch (φ' k)`. Establish `hj : LB.Coh L φ j` using `fun k1 k2 e => show ch (φ k1) = ch (φ k2) by rw [e]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj' : LB.Coh L φ' j'` using `fun k1 k2 e => show ch (φ' k1) = ch (φ' k2) by rw [e]`. Establish `hjj : ∀ k k', φ k = φ' k' → j k = j' k'` using `fun k k' e => show ch (φ k) = ch (φ' k') by rw [e]`. Establish `hyW : y ∈ LB.wchart L φ j ⊓ LB.wchart L φ' j'` using `⟨Set.mem_iInter.2 fun k => hc (φ k), Set.mem_iInter.2 fun k => hc (φ' k)⟩`. Establish `E` using `c j j' hj hj' hjj`. Establish `E'` using `c' j j' hj hj' hjj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `E'` using `[h₁' j, h₂' j']`. Use `erw [key, key, res_res, res_res, E] at E'`. Establish `E2` using `mul_right_cancel E'`. Conclude with `⟨_, hyW, congrArg Units.val E2⟩`. Use `choose W hyW hW using hcov`.
-
-Conclude with `TopCat.Sheaf.eq_of_locally_eq' Y.sheaf W ⊤ (fun y => homOfLE le_top) (fun y _ => TopologicalSpace.Opens.mem_iSup.2 ⟨y, hyW y⟩) _ _ hW`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem corr_scaled (hL : L.IsLB) {K K' : Type} [Fintype K] [Fintype K'] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ) (t₁ t₁' : LB.Gen (LB.LinComb L φ ε))
@@ -134,11 +132,11 @@ theorem corr_scaled (hL : L.IsLB) {K K' : Type} [Fintype K] [Fintype K'] (φ : K
     (fun y _ => TopologicalSpace.Opens.mem_iSup.2 ⟨y, hyW y⟩) _ _ hW
 
 /- English proof (translation)
-Set `τ'' : LB.Gen (LB.LinComb L (K` to `Fin 1) (fun _ => ψ) fun _ => a) := ⟨fun j => res le_top U * τ.s j⟩`. Establish `h₂' : ∀ j, t₂'.s j = res le_top U * t₂.s j` using `h₂`. Establish `hc'' : LB.Gen.Corr L _ _ _ _ τ'' t₂'`. Introduce `j j' hj hj' hm`. Use `c j j' hj hj' hm` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show res _ (res le_top U * τ.s j) = res _ (t₂'.s j')`. Rewrite using `[h₂' j']`. Use `erw [map_mul, map_mul, this, res_res, res_res]`. Both sides reduce to the same expression. Establish `he` using `GermFun.gen_eq_of_corr L hL ψ a φ' ε' τ'' τ' t₂' hc'' c'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Rewrite using `[← he]`.
+A detailed English derivation is pending.
 -/
 theorem corr_scaled_left (hL : L.IsLB) (ψ : Y ⟶ X) (a : ℤ) {K' : Type} [Fintype K'] (φ' : K' → (Y ⟶ X))
     (ε' : K' → ℤ) (τ τ' : LB.Gen (LB.LinComb L (K := Fin 1) (fun _ => ψ) fun _ => a))

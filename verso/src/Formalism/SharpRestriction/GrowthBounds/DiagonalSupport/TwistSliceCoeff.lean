@@ -17,13 +17,13 @@ def offT (mo : ι × Fin n →₀ ℕ) : ι × Fin n →₀ ℕ := mo.filter fun
 def onT (mo : ι × Fin n →₀ ℕ) : ι × Fin n →₀ ℕ := mo.filter fun v => v.1 ∈ T
 
 /- English proof (translation)
-The claim follows from `Finsupp.filter_add_filter_not mo _`.
+A detailed English derivation is pending.
 -/
 theorem onT_add_offT (mo : ι × Fin n →₀ ℕ) : onT T mo + offT T mo = mo :=
   Finsupp.filter_add_filter_not mo _
 
 /- English proof (translation)
-Introduce `v hv`. Rewrite `hv` using `[offT, Finsupp.support_filter, Finset.mem_filter]`. Conclude with `hv.2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem offT_support (mo : ι × Fin n →₀ ℕ) : ∀ v ∈ (offT T mo).support, v.1 ∉ T := by
   intro v hv
@@ -31,7 +31,7 @@ theorem offT_support (mo : ι × Fin n →₀ ℕ) : ∀ v ∈ (offT T mo).suppo
   exact hv.2
 
 /- English proof (translation)
-Introduce `v hv`. Rewrite `hv` using `[onT, Finsupp.support_filter, Finset.mem_filter]`. Conclude with `hv.2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onT_support (mo : ι × Fin n →₀ ℕ) : ∀ v ∈ (onT T mo).support, v.1 ∈ T := by
   intro v hv
@@ -39,22 +39,22 @@ theorem onT_support (mo : ι × Fin n →₀ ℕ) : ∀ v ∈ (onT T mo).support
   exact hv.2
 
 /- English proof (translation)
-The claim follows from `Finsupp.filter_add`.
+A detailed English derivation is pending.
 -/
 theorem offT_add (a b : ι × Fin n →₀ ℕ) : offT T (a + b) = offT T a + offT T b := Finsupp.filter_add
 
 /- English proof (translation)
-The claim follows from `(Finsupp.filter_eq_self_iff _ _).2 fun v hv => h v (Finsupp.mem_support_iff.2 hv)`.
+A detailed English derivation is pending.
 -/
 theorem offT_eq_self (M : ι × Fin n →₀ ℕ) (h : ∀ v ∈ M.support, v.1 ∉ T) : offT T M = M :=
   (Finsupp.filter_eq_self_iff _ _).2 fun v hv => h v (Finsupp.mem_support_iff.2 hv)
 
 /- English proof (translation)
-Use extensionality with `v`. Rewrite using `[offT, Finsupp.filter_apply]`. Distinguish the cases in `hv : v.1 ∉ T`. Rewrite using `[if_pos hv]`. Establish `h1` using `h v.1 hv`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `multideg at h1`. Establish `h2 : m (v.1, v.2) ≤ ∑ c : Fin n, m (v.1, c)` using `Finset.single_le_sum (f := fun c : Fin n => m (v.1, c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ v.2)`. Rewrite `h2` using `[h1]`. Conclude with `Nat.le_zero.1 h2`. Rewrite using `[if_neg hv]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem offT_eq_zero (m : ι × Fin n →₀ ℕ) (h : ∀ i, i ∉ T → multideg m i = 0) : offT T m = 0 := by
   ext v
@@ -71,7 +71,7 @@ theorem offT_eq_zero (m : ι × Fin n →₀ ℕ) (h : ∀ i, i ∉ T → multid
     rfl
 
 /- English proof (translation)
-Unfold `multideg`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`. Rewrite using `[onT, Finsupp.filter_apply, if_neg hi]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem multideg_onT (mo : ι × Fin n →₀ ℕ) (i : ι) (hi : i ∉ T) : multideg (onT T mo) i = 0 := by
   unfold multideg
@@ -90,9 +90,9 @@ section Sl2
 variable {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (T : Set ι) (F : MvPolynomial (ι × Fin n) R)
 
 /- English proof (translation)
-Establish `h1 : ∀ M ∈ F.support.image (offT T), sliceT T F M * monomial M 1 = ∑ mo ∈ F.support.filter (fun mo => offT T mo = M), monomial mo (F.coeff mo)`. Introduce `M _`. Rewrite using `[sliceT, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun mo hmo => ?_` and prove the remaining obligations. Rewrite using `[monomial_mul, mul_one, ← (Finset.mem_filter.1 hmo).2, onT_add_offT]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl h1, Finset.sum_fiberwise_of_maps_to (fun mo hmo => Finset.mem_image_of_mem (offT T) hmo)]`. Conclude with `F.as_sum`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slice_sum : F = ∑ M ∈ F.support.image (offT T), sliceT T F M * monomial M 1 := by
   have h1 : ∀ M ∈ F.support.image (offT T), sliceT T F M * monomial M 1 =
@@ -106,7 +106,7 @@ theorem slice_sum : F = ∑ M ∈ F.support.image (offT T), sliceT T F M * monom
   exact F.as_sum
 
 /- English proof (translation)
-Take `⟨mo, hmo, rfl⟩` from `mem_support_sum_monomial _ _ _ _ h`. Conclude with `⟨mo, (Finset.mem_filter.1 hmo).1, (Finset.mem_filter.1 hmo).2, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem slice_support (M mo' : ι × Fin n →₀ ℕ) (h : mo' ∈ (sliceT T F M).support) :
     ∃ mo ∈ F.support, offT T mo = M ∧ onT T mo = mo' := by
@@ -114,7 +114,7 @@ theorem slice_support (M mo' : ι × Fin n →₀ ℕ) (h : mo' ∈ (sliceT T F 
   exact ⟨mo, (Finset.mem_filter.1 hmo).1, (Finset.mem_filter.1 hmo).2, rfl⟩
 
 /- English proof (translation)
-Use `Subalgebra.sum_mem _ fun mo hmo => ?_` and prove the remaining obligations. Rewrite using `[mem_supported, vars_monomial (mem_support_iff.1 (Finset.mem_filter.1 hmo).1)]`. Introduce `v hv`. Conclude with `onT_support T mo v hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem slice_supported (M : ι × Fin n →₀ ℕ) : sliceT T F M ∈ supported R {v : ι × Fin n | v.1 ∈ T} := by
   refine Subalgebra.sum_mem _ fun mo hmo => ?_
@@ -125,7 +125,7 @@ theorem slice_supported (M : ι × Fin n →₀ ℕ) : sliceT T F M ∈ supporte
 variable (LL : Letters ι) (S : Set ι) (j : Fin n)
 
 /- English proof (translation)
-Take `⟨u, hu, hmu⟩` from `twistSub_support LL S j _ m hm`. Take `⟨mo, _, _, rfl⟩` from `slice_support T F M u hu`. Conclude with `offT_eq_zero T m fun i hi => (hmu i).trans (multideg_onT T mo i hi)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem twist_slice_off (M m : ι × Fin n →₀ ℕ) (hm : m ∈ (twistSub LL S j (sliceT T F M)).support) :
     offT T m = 0 := by
@@ -134,15 +134,15 @@ theorem twist_slice_off (M m : ι × Fin n →₀ ℕ) (hm : m ∈ (twistSub LL 
   exact offT_eq_zero T m fun i hi => (hmu i).trans (multideg_onT T mo i hi)
 
 /- English proof (translation)
-Establish `hoff : ∀ M' ∈ F.support.image (offT T), ∀ v ∈ M'.support, v.1 ∉ T`. Introduce `M' hM'`. Take `⟨mo, _, rfl⟩` from `Finset.mem_image.1 hM'`. Conclude with `offT_support T mo`. Establish `hsum : twistSub LL S j F = ∑ M' ∈ F.support.image (offT T), twistSub LL S j (sliceT T F M') * monomial M' 1` using `by conv_lhs => rw [slice_sum T F]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun M' hM' => ?_` and prove the remaining obligations. Rewrite using `[map_mul, twistSub_monomial_off LL S j M' fun v hv hvS => hoff M' hM' v hv (hST hvS)]`. Rewrite using `[hsum, coeff_sum, Finset.sum_eq_single M]`. Rewrite using `[coeff_mul_monomial', if_pos le_add_self, add_tsub_cancel_right, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `M' hM' hne`. Rewrite using `[coeff_mul_monomial']`. Use `split_ifs with hle`. Assume the negation of the conclusion as `hc`. Establish `hc' : (twistSub LL S j (sliceT T F M')).coeff (m + M - M') ≠ 0` using `left_ne_zero_of_mul hc`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `twist_slice_off T F LL S j M' _ (mem_support_iff.2 hc')`. Establish `h2` using `twist_slice_off T F LL S j M m hm`. Establish `h3 : m + M - M' + M' = m + M` using `tsub_add_cancel_of_le hle`. Establish `h4` using `congrArg (offT T) h3`. Rewrite `h4` using `[offT_add, offT_add, h1, h2, zero_add, zero_add, offT_eq_self T M' (hoff M' hM'), offT_eq_self T M (hoff M hM)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hne h4`. Both sides reduce to the same expression. Introduce `h`. Conclude with `absurd hM h`.
+A detailed English derivation is pending.
 -/
 theorem twist_slice_coeff (hST : S ⊆ T) (M : ι × Fin n →₀ ℕ) (hM : M ∈ F.support.image (offT T))
     (m : ι × Fin n →₀ ℕ) (hm : m ∈ (twistSub LL S j (sliceT T F M)).support) :
@@ -178,13 +178,11 @@ theorem twist_slice_coeff (hST : S ⊆ T) (M : ι × Fin n →₀ ℕ) (hM : M �
 end Sl2
 
 /- English proof (translation)
-Introduce `R _ _ ι n _ LL T F`. Use `⟨F.support.image (offT T), sliceT T F, ?_, fun M _ => slice_supported T F M, slice_sum T F, ?_, ?_⟩` and prove the remaining obligations. Introduce `M hM`. Take `⟨mo, _, rfl⟩` from `Finset.mem_image.1 hM`. Conclude with `offT_support T mo`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `M _ mo' hmo'`. Take `⟨mo, hmo, rfl, rfl⟩` from `slice_support T F M mo' hmo'`. Rewrite using `[onT_add_offT]`. Conclude with `hmo`. Introduce `M hM S hST`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `val_lam_of_subset _ _ _ _ _ _ fun j => sDegs_subset_of _ _ _ _ _ _ _ fun k hk => ?_` and prove the remaining obligations. Introduce `m`. Distinguish the cases in `hm : m ∈ (twistSub LL S j (sliceT T F M)).support`. Rewrite using `[← twist_slice_coeff T F LL S j hST M hM m hm]`. Conclude with `hk _`.
-
-Rewrite using `[notMem_support_iff.1 hm]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valSlice : ValSlice := by
   intro R _ _ ι n _ LL T F

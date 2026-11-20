@@ -13,13 +13,9 @@ open scoped TensorProduct
 namespace GlobalTheory.KeyOriginNoeth
 
 /- English proof (translation)
-Use `letI iRD : Algebra R D := (baseHom A R D).toAlgebra`. Use `haveI : IsScalarTower R (GlobalTheory.LocAcyc.GenFib A R) D := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Set `M` to `Algebra.algebraMapSubmonoid R (nonZeroDivisors A)`. Use `haveI : Module.Flat R (GlobalTheory.LocAcyc.GenFib A R) := IsLocalization.flat _ M`. Use `haveI : Module.Flat R D := Module.Flat.trans R (GlobalTheory.LocAcyc.GenFib A R) D`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Algebra.FormallyEtale R (GlobalTheory.LocAcyc.GenFib A R) := Algebra.FormallyEtale.of_isLocalization M`. Use `haveI : Algebra.FormallyEtale R D := Algebra.FormallyEtale.comp R (GlobalTheory.LocAcyc.GenFib A R) D`. Use `haveI : Algebra.EssFiniteType R (GlobalTheory.LocAcyc.GenFib A R) := Algebra.EssFiniteType.of_isLocalization _ M`. Use `haveI : Algebra.EssFiniteType R D := Algebra.EssFiniteType.comp R (GlobalTheory.LocAcyc.GenFib A R) D`. Establish `h1 : Module.Finite R (integralClosure R (R ⊗[R] D))` using `GlobalTheory.RootFibre.finite_integralClosure R D R`.
-
-Establish `e` using `AlgEquiv.mapIntegralClosure (Algebra.TensorProduct.lid R D)`. Establish `h2 : Module.Finite R (integralClosure R D)` using `Module.Finite.equiv e.toLinearEquiv`. Use `letI := GlobalTheory.KeyOriginNoeth.closureAlg A R D`. Set `f : integralClosure R D ≃ₗ[R] GlobalTheory.KeyOriginNoeth.closure A R D` to `{ toFun := fun x => ⟨x.1, x.2⟩ invFun := fun x => ⟨x.1, x.2⟩ map_add' := fun _ _ => rfl map_smul' := fun r x => by`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Use `show r • x.1 = (baseHom A R D r) * x.1`. Both sides reduce to the same expression. Use `left_inv := fun _ => rfl`. Use `right_inv := fun _ => rfl }`. Conclude with `Module.Finite.equiv f`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finite_closure (A R D : Type) [CommRing A] [IsDomain A] [CommRing R] [IsDomain R] [IsIntegrallyClosed R]
     [IsNoetherianRing R] [Algebra A R] [CommRing D] [Algebra (GlobalTheory.LocAcyc.GenFib A R) D]

@@ -15,7 +15,7 @@ noncomputable def casimirGL2 : U 2 :=
     e (1, 0) * e (0, 1)
 
 /- English proof (translation)
-Rewrite using `[rep_apply_of_highestWeight φ lam hup hH (commute_e_diag_of_mem (mem_centralizerT_of_mem_center z.2)), eval_harishChandraHom, add_sub_cancel_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rep_center_apply_of_highestWeight {V : Type*} [AddCommGroup V] [Module ℂ V]
     (φ : U n →ₐ[ℂ] Module.End ℂ V) {v : V} (lam : Fin n → ℂ)
@@ -41,16 +41,16 @@ noncomputable def conjU (g : (gl n)ˣ) : U n →ₐ[ℂ] U n :=
   UniversalEnvelopingAlgebra.lift ℂ ((UniversalEnvelopingAlgebra.ι ℂ).comp (conjAlgHom g).toLieHom)
 
 /- English proof (translation)
-Simplify using `[conjU, conjAlgHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conjU_ι (g : (gl n)ˣ) (X : gl n) :
     conjU g (UniversalEnvelopingAlgebra.ι ℂ X) = UniversalEnvelopingAlgebra.ι ℂ ((g : gl n) * X * ↑g⁻¹) := by
   simp [conjU, conjAlgHom]
 
 /- English proof (translation)
-Establish `: (conjU g).comp (conjU g⁻¹) = AlgHom.id ℂ (U n)`. Apply `UniversalEnvelopingAlgebra.hom_ext` to reduce the goal to its premises. Use extensionality with `X`. Simplify using `only [LieHom.coe_comp, Function.comp_apply, AlgHom.toLieHom_apply, AlgHom.comp_apply, conjU_ι, AlgHom.id_apply, inv_inv]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[mul_assoc]`. Conclude with `congrArg (fun F : U n →ₐ[ℂ] U n => F u) this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conjU_conjU_inv (g : (gl n)ˣ) (u : U n) : conjU g (conjU g⁻¹ u) = u := by
   have : (conjU g).comp (conjU g⁻¹) = AlgHom.id ℂ (U n) := by
@@ -63,7 +63,7 @@ theorem conjU_conjU_inv (g : (gl n)ˣ) (u : U n) : conjU g (conjU g⁻¹ u) = u 
   exact congrArg (fun F : U n →ₐ[ℂ] U n => F u) this
 
 /- English proof (translation)
-Rewrite `hz`, the goal using `[Subalgebra.mem_center_iff]`. Introduce `u`. Rewrite using `[← conjU_conjU_inv g u, ← map_mul, ← map_mul, hz]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjU_mem_center {g : (gl n)ˣ} {z : U n} (hz : z ∈ Subalgebra.center ℂ (U n)) :
     conjU g z ∈ Subalgebra.center ℂ (U n) := by
@@ -72,7 +72,7 @@ theorem conjU_mem_center {g : (gl n)ˣ} {z : U n} (hz : z ∈ Subalgebra.center 
   rw [← conjU_conjU_inv g u, ← map_mul, ← map_mul, hz]
 
 /- English proof (translation)
-Establish `hz' : conjU g⁻¹ z ∈ Subalgebra.center ℂ (U n)` using `conjU_mem_center hz`. Use `⟨eval (lam + rhoVec n) (harishChandraHom ⟨_, hz'⟩), ?_⟩` and prove the remaining obligations. Use `rep_center_apply_of_highestWeight (φ.comp (conjU g)) lam hup hH ⟨_, hz'⟩` as an intermediate fact. Simplify `this` using `[conjU_conjU_inv]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rep_center_apply_mem_span_of_conj {V : Type*} [AddCommGroup V] [Module ℂ V]
     (φ : U n →ₐ[ℂ] Module.End ℂ V) (g : (gl n)ˣ) {v : V} (lam : Fin n → ℂ)

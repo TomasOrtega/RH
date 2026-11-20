@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.PartialCocycle
 
 /- English proof (translation)
-Establish `key : X.presheaf.map (homOfLE hle).op ≫ f.app V ≫ Z.presheaf.germ (f ⁻¹ᵁ V) z hz = f.app U ≫ Z.presheaf.germ (f ⁻¹ᵁ U) z (hle hz)`. Rewrite using `[← Scheme.Hom.germ_stalkMap, ← Scheme.Hom.germ_stalkMap, ← Category.assoc, TopCat.Presheaf.germ_res]`. Unfold `gm`. Rewrite using `[dif_pos hz, dif_pos (hle hz)]`. Use `ext`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [MonoidHom.comp_apply, Units.coe_map]`. Unfold `res pullU`. Establish `h2` using `congrArg (fun g => g.hom (u : Γ(X, U))) key`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at h2`. Conclude with `h2`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem gm_res_eq_gm {X Z : Scheme.{0}} (f : Z ⟶ X) (z : Z) {U V : X.Opens} (hle : V ≤ U)
     (hz : f z ∈ V) (u : Γ(X, U)ˣ) : gm f z V (res hle u) = gm f z U u := by
@@ -33,9 +33,9 @@ private theorem gm_res_eq_gm {X Z : Scheme.{0}} (f : Z ⟶ X) (z : Z) {U V : X.O
   exact h2
 
 /- English proof (translation)
-Establish `hz : f z ∈ (M.U a ⊓ L.U b) ⊓ (M.U a' ⊓ L.U b')` using `⟨⟨ha, hb⟩, ⟨ha', hb'⟩⟩`. Establish `h₁ : (M.U a ⊓ L.U b) ⊓ (M.U a' ⊓ L.U b') ≤ M.U a ⊓ L.U b` using `inf_le_left`. Establish `h₂ : (M.U a ⊓ L.U b) ⊓ (M.U a' ⊓ L.U b') ≤ M.U a ⊓ M.U a'` using `le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left)`. Establish `h₃ : (M.U a ⊓ L.U b) ⊓ (M.U a' ⊓ L.U b') ≤ L.U b ⊓ L.U b'` using `le_inf (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right)`. Establish `h₄ : (M.U a ⊓ L.U b) ⊓ (M.U a' ⊓ L.U b') ≤ M.U a' ⊓ L.U b'` using `inf_le_right`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hw (a, b) (a', b')`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_mul, map_inv, gm_res_eq_gm f z h₂ hz, gm_res_eq_gm f z h₃ hz]`. Conclude with `congrArg _ (gm_res_eq_gm f z h₄ hz _)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_iso {X Z : Scheme.{0}} {L M : LB X} {w : LB.Iso L M} (hw : w.IsGen) (f : Z ⟶ X) (z : Z)
     (a a' : M.ι) (b b' : L.ι) (ha : f z ∈ M.U a) (ha' : f z ∈ M.U a') (hb : f z ∈ L.U b) (hb' : f z ∈ L.U b') :
@@ -58,7 +58,7 @@ theorem gm_iso {X Z : Scheme.{0}} {L M : LB X} {w : LB.Iso L M} (hw : w.IsGen) (
       exact congrArg _ (gm_res_eq_gm f z h₄ hz _)
 
 /- English proof (translation)
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 private theorem algebraMap_OmS_eq_algebraMap_comp {G : Type*} [CommGroup G] (A B C s t u : G) :
     A * B⁻¹ * s * (B * C⁻¹ * t) * (A * C⁻¹ * u)⁻¹ = s * t * u⁻¹ := by
@@ -67,7 +67,7 @@ private theorem algebraMap_OmS_eq_algebraMap_comp {G : Type*} [CommGroup G] (A B
   abel
 
 /- English proof (translation)
-Unfold `gm`. Rewrite using `[dif_pos hz]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem gm_val_eq_germ_app' {X Z : Scheme.{0}} (g : Z ⟶ X) (z : Z) (U : X.Opens) (hz : g z ∈ U)
     (u : Γ(X, U)ˣ) : ((gm g z U u : Z.presheaf.stalk z)) = Z.presheaf.germ (g ⁻¹ᵁ U) z hz (g.app U u.val) := by
@@ -76,48 +76,42 @@ private theorem gm_val_eq_germ_app' {X Z : Scheme.{0}} (g : Z ⟶ X) (z : Z) (U 
   rfl
 
 /- English proof (translation)
-Conclude with `gm_val_eq_germ_app' (𝟙 X) z U hz u`.
+A detailed English derivation is pending.
 -/
 private theorem gm_id_val_eq_germ' {X : Scheme.{0}} (z : X) (U : X.Opens) (hz : z ∈ U)
     (u : Γ(X, U)ˣ) : ((gm (𝟙 X) z U u : X.presheaf.stalk z)) = X.presheaf.germ U z hz u.val := by
   exact gm_val_eq_germ_app' (𝟙 X) z U hz u
 
 /- English proof (translation)
-Introduce `X S p e V₁ V₂ V₃ M₁ M₂ M₃ w₁₂ w₂₃ w₁₃ hep hrig hU₁ hU₂ hU₃ hg₁₂ hg₂₃ hg₁₃ hcoc y a b c hya hyb hyc`. Set `T : M₁.ι × M₂.ι × M₃.ι → X.Opens` to `fun i => M₁.U i.1 ⊓ M₂.U i.2.1 ⊓ M₃.U i.2.2`. Establish `l₁ : ∀ i, T i ≤ M₁.U i.1 ⊓ M₂.U i.2.1` using `fun i => inf_le_left`. Establish `l₂ : ∀ i, T i ≤ M₂.U i.2.1 ⊓ M₃.U i.2.2` using `fun i => le_inf (inf_le_left.trans inf_le_right) inf_le_right`. Establish `l₃ : ∀ i, T i ≤ M₁.U i.1 ⊓ M₃.U i.2.2` using `fun i => le_inf (inf_le_left.trans inf_le_left) inf_le_right`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `t : ∀ i, Γ(X, T i)ˣ` to `fun i => res (l₁ i) (w₁₂.s (i.1, i.2.1)) * res (l₂ i) (w₂₃.s (i.2.1, i.2.2)) * (res (l₃ i) (w₁₃.s (i.1, i.2.2)))⁻¹`. Establish `hprod : ∀ {Z : Scheme.{0}} (g : Z ⟶ X) (z : Z) i (hz : g z ∈ T i), gm g z (T i) (t i) = gm g z (M₁.U i.1 ⊓ M₂.U i.2.1) (w₁₂.s (i.1, i.2.1)) * gm g z (M₂.U i.2.1 ⊓ M₃.U i.2.2) (w₂₃.s (i.2.1, i.2.2)) * (gm g z (M₁.U i.1 ⊓ M₃.U i.2.2) (w₁₃.s (i.1, i.2.2)))⁻¹`. Introduce `Z g z i hz`. Simplify using `only [t, map_mul, map_inv]`. Conclude with `congrArg₂ _ (congrArg₂ _ (gm_res_eq_gm g z (l₁ i) hz _) (gm_res_eq_gm g z (l₂ i) hz _)) (congrArg _ (gm_res_eq_gm g z (l₃ i) hz _))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hindep : ∀ {Z : Scheme.{0}} (g : Z ⟶ X) (z : Z) i j (hi : g z ∈ T i) (hj : g z ∈ T j), gm g z (T i) (t i) = gm g z (T j) (t j)`. Introduce `Z g z i j hi hj`. Rewrite using `[hprod g z i hi, hprod g z j hj]`. Take `⟨⟨hi1, hi2⟩, hi3⟩` from `hi`. Take `⟨⟨hj1, hj2⟩, hj3⟩` from `hj`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gm_iso hg₁₂ g z i.1 j.1 i.2.1 j.2.1 hi1 hj1 hi2 hj2, gm_iso hg₂₃ g z i.2.1 j.2.1 i.2.2 j.2.2 hi2 hj2 hi3 hj3, gm_iso hg₁₃ g z i.1 j.1 i.2.2 j.2.2 hi1 hj1 hi3 hj3]`. Conclude with `algebraMap_OmS_eq_algebraMap_comp _ _ _ _ _ _`. Establish `hcompat : TopCat.Presheaf.IsCompatible X.sheaf.1 T (fun i => (t i).val)`. Introduce `i j`. Apply `TopCat.Presheaf.section_ext X.sheaf` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Use `show X.presheaf.germ (T i ⊓ T j) z hz (X.presheaf.map (TopologicalSpace.Opens.infLELeft (T i) (T j)).op (t i).val) = X.presheaf.germ (T i ⊓ T j) z hz (X.presheaf.map (TopologicalSpace.Opens.infLERight (T i) (T j)).op (t j).val)`. Rewrite using `[TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply]`. Rewrite using `[← gm_id_val_eq_germ' z (T i) _ (t i), ← gm_id_val_eq_germ' z (T j) _ (t j)]`. Conclude with `congrArg Units.val (hindep (𝟙 X) z i j hz.1 hz.2)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, -⟩` from `X.sheaf.existsUnique_gluing T (fun i => (t i).val) hcompat`. Establish `hcov : p ⁻¹ᵁ (V₁ ⊓ V₂ ⊓ V₃) ≤ iSup T`. Introduce `x hx`. Take `⟨⟨h1, h2⟩, h3⟩` from `hx`. Establish `m1 : x ∈ ⨆ a, M₁.U a` using `by rw [hU₁]; exact h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `m2 : x ∈ ⨆ a, M₂.U a` using `by rw [hU₂]; exact h2`. Establish `m3 : x ∈ ⨆ a, M₃.U a` using `by rw [hU₃]; exact h3`. Take `⟨a₁, ha₁⟩` from `TopologicalSpace.Opens.mem_iSup.1 m1`. Take `⟨a₂, ha₂⟩` from `TopologicalSpace.Opens.mem_iSup.1 m2`. Take `⟨a₃, ha₃⟩` from `TopologicalSpace.Opens.mem_iSup.1 m3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨(a₁, a₂, a₃), ⟨⟨ha₁, ha₂⟩, ha₃⟩⟩`. Establish `hV : V₁ ⊓ V₂ ⊓ V₃ ≤ e ⁻¹ᵁ (p ⁻¹ᵁ (V₁ ⊓ V₂ ⊓ V₃))`. Introduce `x hx`. Use `show (e ≫ p) x ∈ V₁ ⊓ V₂ ⊓ V₃`. Rewrite using `[hep]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Set `u : Γ(X, p ⁻¹ᵁ (V₁ ⊓ V₂ ⊓ V₃))` to `X.presheaf.map (homOfLE hcov).op s`. Establish `hsT : ∀ i (z : X) (hz : z ∈ T i) (hz' : z ∈ iSup T), X.presheaf.germ (iSup T) z hz' s = X.presheaf.germ (T i) z hz (t i).val`. Introduce `i z hz hz'`. Establish `h` using `hs i`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only at h`. Rewrite using `[← h]`. Conclude with `(TopCat.Presheaf.germ_res_apply X.presheaf (TopologicalSpace.Opens.leSupr T i) z hz s).symm`. Establish `hu1 : (e.appLE (p ⁻¹ᵁ (V₁ ⊓ V₂ ⊓ V₃)) (V₁ ⊓ V₂ ⊓ V₃) hV).hom u = 1`. Apply `TopCat.Presheaf.section_ext S.sheaf` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `x hx`. Establish `hex : e x ∈ p ⁻¹ᵁ (V₁ ⊓ V₂ ⊓ V₃)` using `hV hx`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hcov hex)`. Use `show S.presheaf.germ _ x hx ((e.appLE (p ⁻¹ᵁ (V₁ ⊓ V₂ ⊓ V₃)) (V₁ ⊓ V₂ ⊓ V₃) hV).hom u) = S.presheaf.germ _ x hx 1`. Rewrite using `[map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `k1 : e.appLE (p ⁻¹ᵁ (V₁ ⊓ V₂ ⊓ V₃)) (V₁ ⊓ V₂ ⊓ V₃) hV ≫ S.presheaf.germ _ x hx = X.presheaf.germ (p ⁻¹ᵁ (V₁ ⊓ V₂ ⊓ V₃)) (e x) hex ≫ e.stalkMap x`. Rewrite using `[Scheme.Hom.germ_stalkMap, Scheme.Hom.appLE, Category.assoc, TopCat.Presheaf.germ_res]`. Establish `k2` using `congrArg (fun g => g.hom u) k1`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at k2`. Rewrite using `[k2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg1 : gm e x (T i) (t i) = 1`. Rewrite using `[hprod e x i hi]`. Take `⟨⟨hi1, hi2⟩, hi3⟩` from `hi`. Rewrite using `[hcoc x i.1 i.2.1 i.2.2 hi1 hi2 hi3, mul_inv_cancel]`. Rewrite using `[← Units.val_one, ← hg1, gm_val_eq_germ_app' e x (T i) hi]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [u]`. Use `erw [TopCat.Presheaf.germ_res_apply, hsT i (e x) hi, Scheme.Hom.germ_stalkMap_apply]`. Establish `hu : u = 1` using `hrig _ u hV hu1`. Establish `hyT : y ∈ T (a, b, c)` using `⟨⟨hya, hyb⟩, hyc⟩`. Establish `hyS : y ∈ iSup T` using `TopologicalSpace.Opens.mem_iSup.2 ⟨(a, b, c), hyT⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `fin : gm (𝟙 X) y (T (a, b, c)) (t (a, b, c)) = 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[gm_id_val_eq_germ' y _ hyT, Units.val_one, ← hsT (a, b, c) y hyT hyS]`. Establish `hyV : y ∈ p ⁻¹ᵁ (V₁ ⊓ V₂ ⊓ V₃)`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
-
-Use `(le_iSup M₁.U a) hya` as an intermediate fact. Rewrite `this` using `[hU₁]`. Conclude with `this`. Use `(le_iSup M₂.U b) hyb` as an intermediate fact. Rewrite `this` using `[hU₂]`.
-
-Conclude with `this`. Use `(le_iSup M₃.U c) hyc` as an intermediate fact. Rewrite `this` using `[hU₃]`. Conclude with `this`. Establish `k3` using `congrArg (X.presheaf.germ (p ⁻¹ᵁ (V₁ ⊓ V₂ ⊓ V₃)) y hyV) hu`.
-
-Simplify using `only [u, map_one] at k3`. Use `erw [TopCat.Presheaf.germ_res_apply] at k3`. Conclude with `k3`. Rewrite `fin` using `[hprod (𝟙 X) y (a, b, c) hyT]`. Conclude with `mul_inv_eq_one.1 fin`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cocycle_of_rigid : ∀ (X S : Scheme.{0}) (p : X ⟶ S) (e : S ⟶ X) (V₁ V₂ V₃ : S.Opens) (M₁ M₂ M₃ : LB X) (w₁₂ : LB.Iso M₂ M₁) (w₂₃ : LB.Iso M₃ M₂) (w₁₃ : LB.Iso M₃ M₁), e ≫ p = 𝟙 S → (∀ (V : S.Opens) (u : Γ(X, p ⁻¹ᵁ V)) (h : V ≤ e ⁻¹ᵁ (p ⁻¹ᵁ V)), (e.appLE _ V h).hom u = 1 → u = 1) → ⨆ a, M₁.U a = p ⁻¹ᵁ V₁ → ⨆ a, M₂.U a = p ⁻¹ᵁ V₂ → ⨆ a, M₃.U a = p ⁻¹ᵁ V₃ → w₁₂.IsGen → w₂₃.IsGen → w₁₃.IsGen → (∀ (x : S) a b c, e x ∈ M₁.U a → e x ∈ M₂.U b → e x ∈ M₃.U c → gm e x (M₁.U a ⊓ M₂.U b) (w₁₂.s (a, b)) * gm e x (M₂.U b ⊓ M₃.U c) (w₂₃.s (b, c)) = gm e x (M₁.U a ⊓ M₃.U c) (w₁₃.s (a, c))) → ∀ (y : X) a b c, y ∈ M₁.U a → y ∈ M₂.U b → y ∈ M₃.U c → gm (𝟙 X) y (M₁.U a ⊓ M₂.U b) (w₁₂.s (a, b)) * gm (𝟙 X) y (M₂.U b ⊓ M₃.U c) (w₂₃.s (b, c)) = gm (𝟙 X) y (M₁.U a ⊓ M₃.U c) (w₁₃.s (a, c)) := by
   intro X S p e V₁ V₂ V₃ M₁ M₂ M₃ w₁₂ w₂₃ w₁₃ hep hrig hU₁ hU₂ hU₃ hg₁₂ hg₂₃ hg₁₃ hcoc y a b c hya hyb hyc

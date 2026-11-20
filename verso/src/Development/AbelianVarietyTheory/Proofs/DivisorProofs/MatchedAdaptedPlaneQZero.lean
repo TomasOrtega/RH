@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.ThKTowerCT
 
 /- English proof (translation)
-Take `⟨T, -, m, m', f, φ, f', φ', hf, -, rfl, -⟩` from `h`. Use `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨f i, (hf i).1, φ i, (hf i).2.1, ?_, rfl⟩` and prove the remaining obligations. Conclude with `Filter.mem_of_superset T.finite_toSet.compl_mem_cofinite fun v hv => (hf i).2.2 v hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem polData_fst {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} {X : Chars F E} {R : RealMaps F a a'} {Rf : FinMaps F a a'}
@@ -30,7 +30,7 @@ theorem polData_fst {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   exact Filter.mem_of_superset T.finite_toSet.compl_mem_cofinite fun v hv => (hf i).2.2 v hv
 
 /- English proof (translation)
-Take `⟨T, -, m, m', f, φ, f', φ', -, hf', -, rfl, -⟩` from `h`. Use `Submodule.sum_mem _ fun j _ => Submodule.subset_span ⟨f' j, (hf' j).1, φ' j, (hf' j).2.1, ?_, rfl⟩` and prove the remaining obligations. Conclude with `Filter.mem_of_superset T.finite_toSet.compl_mem_cofinite fun v hv => (hf' j).2.2 v hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem polData_snd {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} {X : Chars F E} {R : RealMaps F a a'} {Rf : FinMaps F a a'}
@@ -41,19 +41,17 @@ theorem polData_snd {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   exact Filter.mem_of_superset T.finite_toSet.compl_mem_cofinite fun v hv => (hf' j).2.2 v hv
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM hq hp d₁ W₁ H' i₀ i₁ hH' c Φ Φ' hΦ' hPM hct hdec Φ₁ Φ₁' hΦ₁' hPM₁ μ 𝓕 hμ h𝓕 d₂ H hH V₁ M₁ e hJ hM₁ he`. Establish `hT` using `hM.triple`. Establish `hP` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT).1`. Establish `hΦ₁S : Φ₁ ∈ schA F (Fin a × Fin (a + a'))` using `GlobalTheory.ThK.LeftInvV.polData_le_schA hT.geo.hM (polData_fst hPM₁)`. Take `⟨hc1, hr1⟩` from `GlobalTheory.T.continuous_left_invariant_theta hKP F E σ B a a' G X om om' hT Φ (polData_fst hPM)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hc2, hr2⟩` from `GlobalTheory.T.continuous_left_invariant_dual hKP F E σ B a a' G X om om' hT Φ' ⟨polData_snd hPM, hΦ'⟩`. Establish `hfc : Continuous (fun h => G.M.I om Φ h - c * G.M'.I om' Φ' h)` using `hc1.sub (continuous_const.mul hc2)`. Establish `hfr : ∀ p ∈ ratU σ G.W.J, ∀ h, G.M.I om Φ (p * h) - c * G.M'.I om' Φ' (p * h) = G.M.I om Φ h - c * G.M'.I om' Φ' h` using `fun p hp h => by rw [hr1 p hp h, hr2 p hp h]`. Take `⟨C₀, hC⟩` from `GlobalTheory.T.pair_hyp_plane_adapted_lift hKP F E σ B a (a + a') G.V G.W G.M _ _ om _ _ _ _ hP d₁ W₁ H' i₀ i₁ hH' d₂ H hH V₁ M₁ e hJ hM₁ he`. Use `⟨starRingEnd ℂ C₀, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `μN 𝓕N hN h𝓕N hmass g`. Take `⟨T, γ, hTc, hTu, hTp, hγ, hsum, hbd, hct1⟩` from `hC Φ₁ hΦ₁S g`. Establish `hint` using `GlobalTheory.T.pair_plane_hyperbolic_reduction hKP F E σ B a (a + a') G.V G.W G.M _ _ om _ _ _ _ hP d₂ H hH _ hfc hdec Φ₁ hΦ₁S μ 𝓕 hμ h𝓕 μN 𝓕N hN h𝓕N hmass g`. Take `⟨hI2, h0⟩` from `GlobalTheory.T.skew_space_fundamental_domain_integral hKP F E σ B (a + a') d₁ G.W W₁ H' i₀ i₁ _ _ hT.base hT.geo.hW hH' μ 𝓕 hμ h𝓕 _ hfc hfr hct hdec T γ hTc hTu hTp hγ hsum hbd`. Take `⟨i1, i2, i3, i4⟩` from `GlobalTheory.UnipCT.topFacts σ G.W.J`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩`. Use `haveI hNf : IsFiniteMeasure (μN.restrict 𝓕N) := ⟨by rw [Measure.restrict_apply_univ, hmass]; exact ENNReal.one_lt_top⟩`. Use `haveI : SFinite (μN.restrict 𝓕N) := @instSFiniteOfSigmaFinite _ _ _ (@IsFiniteMeasure.toSigmaFinite _ _ _ hNf)`. Establish `key : ∀ h, ∫ u in 𝓕N, (G.M.I om Φ h - c * G.M'.I om' Φ' h) * (starRingEnd ℂ) (theta om Φ₁ (u.1 * g) h) ∂μN = (G.M.I om Φ h - c * G.M'.I om' Φ' h) * (starRingEnd ℂ) (C₀ * thetaSum F (e (om (g, h) Φ₁))) + (G.M.I om Φ h - c * G.M'.I om' Φ' h) * (starRingEnd ℂ) (∑' w, T (γ w * h))`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[integral_const_mul, integral_conj, hct1 μN 𝓕N hN h𝓕N hmass h, map_add, mul_add]`. Use `haveI : SigmaCompactSpace (UA σ G.W.J) := inferInstance`. Use `haveI : SigmaFinite μ := inferInstance`. Use `haveI : SFinite μ := instSFiniteOfSigmaFinite`. Use `haveI : SigmaFinite (μ.restrict 𝓕) := MeasureTheory.Restrict.sigmaFinite μ 𝓕`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `haveI : SFinite (μ.restrict 𝓕) := @instSFiniteOfSigmaFinite _ _ _ this`. Establish `hI : Integrable (fun h => (G.M.I om Φ h - c * G.M'.I om' Φ' h) * (starRingEnd ℂ) (C₀ * thetaSum F (e (om (g, h) Φ₁))) + (G.M.I om Φ h - c * G.M'.I om' Φ' h) * (starRingEnd ℂ) (∑' w, T (γ w * h))) (μ.restrict 𝓕)` using `hint.integral_prod_right.congr (Filter.Eventually.of_forall fun h => key h)`. Establish `hI1 : Integrable (fun h => (G.M.I om Φ h - c * G.M'.I om' Φ' h) * (starRingEnd ℂ) (C₀ * thetaSum F (e (om (g, h) Φ₁)))) (μ.restrict 𝓕)` using `(hI.sub hI2).congr (Filter.Eventually.of_forall fun h => by simp)`. Rewrite using `[integral_integral_swap hint]`. Repeatedly rewrite using `[key]`.
-
-Rewrite using `[integral_add hI1 hI2, h0, add_zero, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem unfold : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf → G.q = 0 → 1 ≤ G.p →

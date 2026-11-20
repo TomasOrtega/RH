@@ -17,7 +17,7 @@ def matB (lam : Fin n → ℤ) (F : Module.End ℂ (MvPolynomial (Fin n × Fin n
   fun i j => Cxc.extL lam i (F ((wb lam j : Formalism.BasicNotions.nablaSq ℂ n (dw lam)) : MvPolynomial (Fin n × Fin n) ℂ))
 
 /- English proof (translation)
-Rewrite using `[Cxc.extL_spec, Module.Basis.repr_self, Finsupp.single_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp_all [eq_comm]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem extL_wb (lam : Fin n → ℤ) (i j : Jd n lam) :
     Cxc.extL lam i ((wb lam j : Formalism.BasicNotions.nablaSq ℂ n (dw lam)) : MvPolynomial (Fin n × Fin n) ℂ) =
@@ -26,9 +26,9 @@ theorem extL_wb (lam : Fin n → ℤ) (i j : Jd n lam) :
   split_ifs <;> simp_all [eq_comm]
 
 /- English proof (translation)
-Establish `hs` using `(wb lam).sum_repr ⟨g, hg⟩`. Establish `e : g = ∑ l, (wb lam).repr ⟨g, hg⟩ l • ((wb lam l : Formalism.BasicNotions.nablaSq ℂ n (dw lam)) : MvPolynomial (Fin n × Fin n) ℂ)`. Establish `h2 : ((∑ l, (wb lam).repr ⟨g, hg⟩ l • wb lam l : Formalism.BasicNotions.nablaSq ℂ n (dw lam)) : MvPolynomial (Fin n × Fin n) ℂ) = g` using `by rw [hs]`. Use `conv_lhs => rw [← h2]`. Rewrite using `[Submodule.coe_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.coe_smul]`. Use `conv_rhs => rw [e]`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, smul_eq_mul, mul_comm, Cxc.extL_spec lam l ⟨g, hg⟩]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extL_expand (lam : Fin n → ℤ) (i : Jd n lam) (F : Module.End ℂ (MvPolynomial (Fin n × Fin n) ℂ))
     {g : MvPolynomial (Fin n × Fin n) ℂ} (hg : g ∈ Formalism.BasicNotions.nablaSq ℂ n (dw lam)) :
@@ -47,7 +47,7 @@ theorem extL_expand (lam : Fin n → ℤ) (i : Jd n lam) (F : Module.End ℂ (Mv
   rw [map_smul, map_smul, smul_eq_mul, mul_comm, Cxc.extL_spec lam l ⟨g, hg⟩]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [matB, Module.End.mul_apply]`. Rewrite using `[extL_expand lam i F (hG _ (wb lam j).2)]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem matB_mul (lam : Fin n → ℤ) (F G : Module.End ℂ (MvPolynomial (Fin n × Fin n) ℂ))
     (hG : ∀ g ∈ Formalism.BasicNotions.nablaSq ℂ n (dw lam), G g ∈ Formalism.BasicNotions.nablaSq ℂ n (dw lam)) :
@@ -58,33 +58,33 @@ theorem matB_mul (lam : Fin n → ℤ) (F G : Module.End ℂ (MvPolynomial (Fin 
   rw [extL_expand lam i F (hG _ (wb lam j).2)]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[matB]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem matB_add (lam : Fin n → ℤ) (F G : Module.End ℂ (MvPolynomial (Fin n × Fin n) ℂ)) :
     matB lam (F + G) = matB lam F + matB lam G := by
   ext i j; simp [matB]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[matB]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem matB_sub (lam : Fin n → ℤ) (F G : Module.End ℂ (MvPolynomial (Fin n × Fin n) ℂ)) :
     matB lam (F - G) = matB lam F - matB lam G := by
   ext i j; simp [matB]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[matB]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem matB_zero (lam : Fin n → ℤ) : matB lam 0 = 0 := by
   ext i j; simp [matB]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [matB, Module.End.one_apply]`. Conclude with `extL_wb lam i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem matB_one (lam : Fin n → ℤ) : matB lam 1 = 1 := by
   ext i j; simp only [matB, Module.End.one_apply]; exact extL_wb lam i j
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[matB]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem matB_smul (lam : Fin n → ℤ) (s : ℂ) (F : Module.End ℂ (MvPolynomial (Fin n × Fin n) ℂ)) :
     matB lam (s • F) = s • matB lam F := by
@@ -96,13 +96,11 @@ Both sides reduce to the same expression.
 theorem At_eq (lam : Fin n → ℤ) (a b : Fin n) : At lam a b = matB lam (Et lam a b) := rfl
 
 /- English proof (translation)
-Proceed by induction on `k generalizing a b with`. Consider the case `zero`. Simplify using `only [pow_zero, Matrix.one_apply]`. Use `split_ifs`. Conclude with `(matB_one lam).symm`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(matB_zero lam).symm`. Consider the case `succ k ih`. Rewrite using `[pow_succ', pow_succ', Matrix.mul_apply, Matrix.mul_apply]`. Rewrite using `[show (∑ c, Et lam a c * (Et lam ^ k) c b) = ∑ c, Et lam a c * (Et lam ^ k) c b from rfl]`. Establish `hs : ∀ (s : Finset (Fin n)), matB lam (∑ c ∈ s, Et lam a c * (Et lam ^ k) c b) = ∑ c ∈ s, matB lam (Et lam a c) * matB lam ((Et lam ^ k) c b)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [matB_zero]`. Consider the case `insert x s hx ih2`. Rewrite using `[Finset.sum_insert hx, Finset.sum_insert hx, matB_add, ih2, matB_mul lam _ _ (fun g hg => Etpow_mem lam k x b hg)]`.
-
-Rewrite using `[hs]`. Conclude with `Finset.sum_congr rfl fun c _ => by rw [ih, At_eq]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem At_pow (lam : Fin n → ℤ) (k : ℕ) (a b : Fin n) : (At lam ^ k) a b = matB lam ((Et lam ^ k) a b) := by
   induction k generalizing a b with
@@ -126,9 +124,9 @@ theorem At_pow (lam : Fin n → ℤ) (k : ℕ) (a b : Fin n) : (At lam ^ k) a b 
     exact Finset.sum_congr rfl fun c _ => by rw [ih, At_eq]
 
 /- English proof (translation)
-Introduce `n lam hlam k`. Use extensionality with `i j`. Rewrite using `[Matrix.trace, Matrix.sum_apply]`. Simplify using `only [Matrix.diag_apply, At_pow, matB]`. Establish `e : ∑ a, Cxc.extL lam i ((Et lam ^ k) a a ((wb lam j : Formalism.BasicNotions.nablaSq ℂ n (dw lam)) : MvPolynomial (Fin n × Fin n) ℂ)) = Cxc.extL lam i ((Et lam ^ k).trace ((wb lam j : Formalism.BasicNotions.nablaSq ℂ n (dw lam)) : MvPolynomial (Fin n × Fin n) ℂ))`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.trace, LinearMap.sum_apply, map_sum]`. Both sides reduce to the same expression. Rewrite using `[e, trace_on_model lam hlam k (wb lam j).2, map_smul, extL_wb, gelfC_eq, Matrix.smul_apply]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem atTrace' : AtTrace := by
   intro n lam hlam k
@@ -142,11 +140,11 @@ theorem atTrace' : AtTrace := by
   rw [e, trace_on_model lam hlam k (wb lam j).2, map_smul, extL_wb, gelfC_eq, Matrix.smul_apply]
 
 /- English proof (translation)
-Establish `h` using `glRel_Et lam a b c d`. Establish `hm : ∀ x y, ∀ g ∈ Formalism.BasicNotions.nablaSq ℂ n (dw lam), Et lam x y g ∈ Formalism.BasicNotions.nablaSq ℂ n (dw lam)` using `fun x y g hg => Et_mem lam x y hg`. Use `congrArg (matB lam) h` as an intermediate fact. Rewrite `this` using `[matB_sub, matB_mul lam _ _ (hm c d), matB_mul lam _ _ (hm a b), matB_sub]`. Rewrite using `[At_eq, At_eq, At_eq, At_eq, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp [At_eq, matB_zero]`. Distinguish the cases in `h1 : a = d`. Substitute `h1` using the available equality. Simplify using `[At_eq]`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `h2 : ¬ d = a` using `fun e => h1 e.symm`. Simplify using `[h1, h2, matB_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem glRel_At (lam : Fin n → ℤ) (a b c d : Fin n) :
     At lam a b * At lam c d - At lam c d * At lam a b =
@@ -165,7 +163,7 @@ theorem glRel_At (lam : Fin n → ℤ) (a b c d : Fin n) :
       simp [h1, h2, matB_zero]
 
 /- English proof (translation)
-Proceed by induction on `m generalizing a b with`. Consider the case `zero => rw [GlobalTheory.CompanionTheory.WaveMult.GlTranspose.epw_zero, pow_zero, Matrix.one_apply]`. Consider the case `succ m ih`. Rewrite using `[GlobalTheory.CompanionTheory.WaveMult.GlTranspose.epw_succ, pow_succ', Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun c _ => by rw [ih, Matrix.of_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epw_eq_pow {A : Type} [Ring A] (e : Fin n → Fin n → A) (m : ℕ) (a b : Fin n) :
     GlobalTheory.CompanionTheory.WaveMult.Epw e m a b = ((Matrix.of e) ^ m) a b := by
@@ -176,14 +174,14 @@ theorem epw_eq_pow {A : Type} [Ring A] (e : Fin n → Fin n → A) (m : ℕ) (a 
     exact Finset.sum_congr rfl fun c _ => by rw [ih, Matrix.of_apply]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.CompanionTheory.WaveMult.trE, Matrix.trace, Matrix.diag_apply, epw_eq_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trE_eq {A : Type} [Ring A] (e : Fin n → Fin n → A) (m : ℕ) :
     GlobalTheory.CompanionTheory.WaveMult.trE e m = ((Matrix.of e) ^ m).trace := by
   simp only [GlobalTheory.CompanionTheory.WaveMult.trE, Matrix.trace, Matrix.diag_apply, epw_eq_pow]
 
 /- English proof (translation)
-Establish `: (Matrix.of fun a b => -(e a b)) = (-1 : ℂ) • Matrix.of e` using `by ext a b; simp`. Rewrite using `[this, smul_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_neg_of {A : Type} [Ring A] [Algebra ℂ A] (e : Fin n → Fin n → A) (m : ℕ) :
     (Matrix.of fun a b => -(e a b)) ^ m = ((-1 : ℂ) ^ m) • (Matrix.of e) ^ m := by
@@ -191,15 +189,13 @@ theorem pow_neg_of {A : Type} [Ring A] [Algebra ℂ A] (e : Fin n → Fin n → 
   rw [this, smul_pow]
 
 /- English proof (translation)
-Introduce `n lam hlam k`. Use `set A := Matrix (Jd n lam) (Jd n lam) ℂ`. Use `set e : Fin n → Fin n → A := fun a b => At lam a b`. Establish `he : ∀ a b c d, e a b * e c d - e c d * e a b = (if b = c then e a d else 0) - (if a = d then e c b else 0)` using `fun a b c d => glRel_At lam a b c d`. Establish `hT` using `GlobalTheory.CompanionTheory.WaveMult.GlTranspose.trE_transpose_eq_phiSeq n e he k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `htr : GlobalTheory.CompanionTheory.WaveMult.trE e = fun m => algebraMap ℂ A (GlobalTheory.Dec.gelfVal (infOf lam true) m)`. Use function extensionality and compare the values at `m`. Rewrite using `[trE_eq, Algebra.algebraMap_eq_smul_one]`. Conclude with `atTrace' n lam hlam m`. Establish `hφ` using `GlobalTheory.CompanionTheory.WaveMult.GenTr.map_phiSeq (algebraMap ℂ A) (n : ℂ) (GlobalTheory.Dec.gelfVal (infOf lam true)) k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hφ` using `[map_natCast]`. Establish `hneg` using `GlobalTheory.CompanionTheory.WaveMult.ValPhi.gelfVal_neg_eq_phiSeq n (infOf lam true) k`. Establish `hinf : (fun a => -(infOf lam true a)) = infOf lam false`. Use function extensionality and compare the values at `a`. Simplify using `[infOf]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hneg` using `[hinf]`. Establish `h1 : (Matrix.of fun a b => -(At lam b a)) ^ k = ((-1 : ℂ) ^ k) • (Matrix.of fun a b => e b a) ^ k` using `pow_neg_of (fun a b => e b a) k`. Establish `h2 : GlobalTheory.CompanionTheory.WaveMult.phiSeq (n : A) (fun m => algebraMap ℂ A (GlobalTheory.Dec.gelfVal (infOf lam true) m)) k = algebraMap ℂ A (GlobalTheory.CompanionTheory.WaveMult.phiSeq (n : ℂ) (GlobalTheory.Dec.gelfVal (infOf lam true)) k)`. Rewrite using `[hφ]`. Both sides reduce to the same expression.
-
-Rewrite using `[h1, Matrix.trace_smul, ← trE_eq, hT, htr, h2, ← hneg, Algebra.algebraMap_eq_smul_one, smul_smul, ← mul_assoc, ← mul_pow]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem atTraceT' : AtTraceT := by
   intro n lam hlam k

@@ -13,21 +13,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.HopfFn
 
 /- English proof (translation)
-Use `Fintype.ofFinite X` as an intermediate fact. Use `Fintype.ofFinite Y` as an intermediate fact. Set `Φ : P →ₗ[R] (X → K)` to `LinearMap.pi (fun x => (φ x).toLinearMap)`. Set `Ψ : Q →ₗ[R] (Y → K)` to `LinearMap.pi (fun y => (ψ y).toLinearMap)`. Establish `hΦ : Function.Injective Φ`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `p hp`. Conclude with `hφ p (fun x => congr_fun hp x)`. Establish `hΨ : Function.Injective Ψ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q hq`. Conclude with `hψ q (fun y => congr_fun hq y)`. Establish `: Module.Flat R K` using `IsLocalization.flat K (nonZeroDivisors R)`. Establish `hfl : Module.Flat R (Y → K)` using `Module.Flat.trans R K (Y → K)`. Set `e` to `(IsLocalization.moduleTensorEquiv (nonZeroDivisors R) K (X → K) (Y → K)).symm.restrictScalars R`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `g` to `(TensorProduct.piScalarRight K K (X → K) Y).restrictScalars R`. Set `L : P ⊗[R] Q →ₗ[R] (Y → X → K)` to `g.toLinearMap ∘ₗ e.toLinearMap ∘ₗ (Φ.rTensor (Y → K)) ∘ₗ (Ψ.lTensor P)`. Establish `hL : Function.Injective L` using `g.injective.comp (e.injective.comp ((Module.Flat.rTensor_preserves_injective_linearMap Φ hΦ).comp (Module.Flat.lTensor_preserves_injective_linearMap Ψ hΨ)))`. Establish `he : ∀ (u : X → K) (v : Y → K), e (u ⊗ₜ[R] v) = u ⊗ₜ[K] v`. Introduce `u v`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show (IsLocalization.moduleTensorEquiv (nonZeroDivisors R) K (X → K) (Y → K)).symm _ = _`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Establish `key : ∀ s : P ⊗[R] Q, ∀ x y, L s y x = Algebra.TensorProduct.lift (φ x) (ψ y) (fun _ _ => .all _ _) s`. Introduce `s x y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul p q`. Simplify using `only [L, LinearMap.comp_apply, LinearMap.lTensor_tmul, LinearMap.rTensor_tmul, LinearEquiv.coe_coe, he]`. Simplify using `[g, Φ, Ψ, mul_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add a b ha hb => simp only [map_add, Pi.add_apply, ha, hb]`. Apply `hL` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `y x`. Rewrite using `[key]`.
-
-Conclude with `ht x y`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensor_eq_zero_of_lift_eq_zero {R K : Type} [CommRing R] [IsDomain R] [Field K]
     [Algebra R K] [IsFractionRing R K]
@@ -103,7 +101,7 @@ Both sides reduce to the same expression.
 
 omit [IsDomain R] [IsFractionRing R K] [Finite M] in
 /- English proof (translation)
-Simplify using `[ev2]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem ev2_tmul (a b : M) (f g : O) :
     ev2 O a b (f ⊗ₜ g) = (f : M → K) a * (g : M → K) b := by
@@ -111,13 +109,13 @@ Simplify using `[ev2]`.
 
 omit [IsDomain R] [IsFractionRing R K] [Finite M] in
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext h)`.
+A detailed English derivation is pending.
 -/
 theorem ev_inj (f g : O) (h : ∀ a, ev O a f = ev O a g) : f = g :=
   Subtype.ext (funext h)
 
 /- English proof (translation)
-The claim follows from `sub_eq_zero.mp (tensor_eq_zero_of_lift_eq_zero (ev O) (ev O) (fun p hp => ev_inj O p 0 fun a => by rw [hp, map_zero]) (fun p hp => ev_inj O p 0 fun a => by rw [hp, map_zero]) _ fun a b => by rw [map_sub]; exact sub_eq_zero.mpr (h a b))`.
+A detailed English derivation is pending.
 -/
 theorem ev2_inj [Module.Flat R O] (s t : O ⊗[R] O) (h : ∀ a b, ev2 O a b s = ev2 O a b t) :
     s = t :=
@@ -127,7 +125,7 @@ theorem ev2_inj [Module.Flat R O] (s t : O ⊗[R] O) (h : ∀ a b, ev2 O a b s =
     fun a b => by rw [map_sub]; exact sub_eq_zero.mpr (h a b))
 
 /- English proof (translation)
-The claim follows from `sub_eq_zero.mp (tensor_eq_zero_of_lift_eq_zero (ev O) (fun p : M × M => ev2 O p.1 p.2) (fun p hp => ev_inj O p 0 fun a => by rw [hp, map_zero]) (fun q hq => sub_eq_zero.mp (by have := ev2_inj O q 0 fun a b => by rw [hq (a, b), map_zero] rw [this, sub_zero])) _ fun a p => by rw [m …`.
+A detailed English derivation is pending.
 -/
 theorem ev3_inj [Module.Flat R O] (s t : O ⊗[R] (O ⊗[R] O))
     (h : ∀ a b c, lift (ev O a) (ev2 O b c) (fun _ _ => .all _ _) s =
@@ -147,7 +145,7 @@ def comulFun (f : O) : O ⊗[R] O := Classical.choose (hΔ f.1 f.2)
 
 omit [IsDomain R] [IsFractionRing R K] [Finite M] in
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (hΔ f.1 f.2) a b`.
+A detailed English derivation is pending.
 -/
 theorem comulFun_spec (f : O) (a b : M) :
     ev2 O a b (comulFun O hΔ f) = (f : M → K) (a * b) :=
@@ -167,7 +165,7 @@ def counitFun (f : O) : R := Classical.choose (hε f.1 f.2)
 
 omit [IsDomain R] [IsFractionRing R K] [Finite M] in
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (hε f.1 f.2)`.
+A detailed English derivation is pending.
 -/
 theorem counitFun_spec (f : O) : algebraMap R K (counitFun O hε f) = (f : M → K) 1 :=
   Classical.choose_spec (hε f.1 f.2)
@@ -183,7 +181,7 @@ def counit : O →ₐ[R] R where
   commutes' r := IsFractionRing.injective R K (by rw [counitFun_spec]; simp)
 
 /- English proof (translation)
-The claim follows from `counitFun_spec O hε f`.
+A detailed English derivation is pending.
 -/
 theorem counit_spec (f : O) : algebraMap R K (counit O hε f) = (f : M → K) 1 :=
   counitFun_spec O hε f
@@ -217,17 +215,17 @@ variable {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFract
   (hS : ∀ f ∈ O, (fun a => f a⁻¹) ∈ O)
 
 /- English proof (translation)
-The claim follows from `comulFun_spec O hΔ f a b`.
+A detailed English derivation is pending.
 -/
 theorem ev2_comul (a b : M) (f : O) : ev2 O a b (comul O hΔ f) = (f : M → K) (a * b) :=
   comulFun_spec O hΔ f a b
 
 /- English proof (translation)
-Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `x y`. Establish `key : ∀ u : O ⊗[R] O, lift (ev O a) (ev2 O b c) (fun _ _ => .all _ _) (Algebra.TensorProduct.assoc R R R O O O (u ⊗ₜ y)) = ev2 O a b u * (y : M → K) c`. Introduce `u`. Proceed by induction on `u using TensorProduct.induction_on with`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul p q => simp [ev2]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add u v hu hv => simp only [TensorProduct.add_tmul, map_add, hu, hv, add_mul]`. Simplify using `only [AlgHom.comp_apply, map_tmul, AlgHom.id_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe, AlgEquiv.coe_algHom]`.
+Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[key, ev2_comul, ev2_tmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coassoc_left (a b c : M) :
     (lift (ev O a) (ev2 O b c) (fun _ _ => .all _ _)).comp
@@ -247,7 +245,7 @@ theorem coassoc_left (a b c : M) :
   rw [key, ev2_comul, ev2_tmul]
 
 /- English proof (translation)
-Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `x y`. Simplify using `only [AlgHom.comp_apply, map_tmul, AlgHom.id_apply, lift_tmul, ev2_comul, ev2_tmul, ev_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem coassoc_right (a b c : M) :
     (lift (ev O a) (ev2 O b c) (fun _ _ => .all _ _)).comp (map (.id R O) (comul O hΔ))
@@ -258,9 +256,9 @@ theorem coassoc_right (a b c : M) :
     ev_apply]
 
 /- English proof (translation)
-Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `f`. Apply `ev3_inj O` to reduce the goal to its premises. Introduce `a b c`. Establish `h1` using `congrArg (fun φ => φ (comul O hΔ f)) (coassoc_left O hΔ a b c)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun φ => φ (comul O hΔ f)) (coassoc_right O hΔ a b c)`. Simplify using `only [AlgHom.comp_apply, AlgEquiv.coe_algHom] at h1 h2 ⊢`. Rewrite using `[h1, h2, ev2_comul, ev2_comul, _root_.mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coassoc : (Algebra.TensorProduct.assoc R R R O O O).toAlgHom.comp
       ((map (comul O hΔ) (.id R O)).comp (comul O hΔ))
@@ -275,11 +273,11 @@ theorem coassoc : (Algebra.TensorProduct.assoc R R R O O O).toAlgHom.comp
   rw [h1, h2, ev2_comul, ev2_comul, _root_.mul_assoc]
 
 /- English proof (translation)
-Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `f`. Apply `(Algebra.TensorProduct.lid R O).injective` to reduce the goal to its premises. Simplify using `only [AlgHom.coe_coe, AlgEquiv.coe_algHom, AlgEquiv.apply_symm_apply, AlgHom.comp_apply]`. Apply `ev_inj O` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a`. Establish `key : (ev O a).comp ((Algebra.TensorProduct.lid R O).toAlgHom.comp (map (counit O hε) (.id R O))) = ev2 O 1 a`. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `x y`. Simplify using `only [AlgHom.comp_apply, map_tmul, AlgHom.id_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe, AlgEquiv.coe_algHom, Algebra.TensorProduct.lid_tmul, ev2_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_smul, Algebra.smul_def, counit_spec]`. Both sides reduce to the same expression. Use `congrArg (fun φ => φ (comul O hΔ f)) key` as an intermediate fact. Simplify using `only [AlgHom.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe, AlgEquiv.coe_algHom] at this`. Rewrite using `[this, ev2_comul, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -305,11 +303,11 @@ theorem rTensor_counit : (map (counit O hε) (.id R O)).comp (comul O hΔ)
   rfl
 
 /- English proof (translation)
-Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `f`. Apply `(Algebra.TensorProduct.rid R R O).injective` to reduce the goal to its premises. Simplify using `only [AlgHom.coe_coe, AlgEquiv.coe_algHom, AlgEquiv.apply_symm_apply, AlgHom.comp_apply]`. Apply `ev_inj O` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a`. Establish `key : (ev O a).comp ((Algebra.TensorProduct.rid R R O).toAlgHom.comp (map (.id R O) (counit O hε))) = ev2 O a 1`. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `x y`. Simplify using `only [AlgHom.comp_apply, map_tmul, AlgHom.id_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe, AlgEquiv.coe_algHom, Algebra.TensorProduct.rid_tmul, ev2_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_smul, Algebra.smul_def, counit_spec, _root_.mul_comm]`. Both sides reduce to the same expression. Use `congrArg (fun φ => φ (comul O hΔ f)) key` as an intermediate fact. Simplify using `only [AlgHom.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe, AlgEquiv.coe_algHom] at this`. Rewrite using `[this, ev2_comul, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -352,7 +350,7 @@ abbrev bialg : Bialgebra R O :=
     (lTensor_counit O hΔ hε)
 
 /- English proof (translation)
-Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `x y`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem antipode_left (a : M) :
     (ev O a).comp (lift (antipode O hS) (.id R O) (fun _ _ => .all _ _)) = ev2 O a⁻¹ a := by
@@ -361,7 +359,7 @@ theorem antipode_left (a : M) :
   simp
 
 /- English proof (translation)
-Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `x y`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem antipode_right (a : M) :
     (ev O a).comp (lift (.id R O) (antipode O hS) (fun _ _ => .all _ _)) = ev2 O a a⁻¹ := by
@@ -394,11 +392,11 @@ abbrev hopf : HopfAlgebra R O :=
       rw [this, ev2_comul, _root_.mul_inv_cancel, AlgHom.commutes, counit_spec])
 
 /- English proof (translation)
-Use `letI := bialg O hΔ hε`. Prove the components needed by the constructor for the conclusion. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `f`. Apply `ev2_inj O` to reduce the goal to its premises.
+Equip the data with the indicated structure. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a b`. Establish `hc : ∀ t : O ⊗[R] O, ev2 O a b (TensorProduct.comm R O O t) = ev2 O b a t`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul p q => simp [_root_.mul_comm]`. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`. Use `show ev2 O a b (TensorProduct.comm R O O (comul O hΔ f)) = ev2 O a b (comul O hΔ f)`. Rewrite using `[hc, ev2_comul, ev2_comul, _root_.mul_comm]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cocomm : letI := bialg O hΔ hε; IsCocomm R O := by
   letI := bialg O hΔ hε
@@ -417,11 +415,11 @@ theorem cocomm : letI := bialg O hΔ hε; IsCocomm R O := by
   rw [hc, ev2_comul, ev2_comul, _root_.mul_comm]
 
 /- English proof (translation)
-Use `letI := bialg O hΔ hε`. Rewrite using `[AlgHom.convMul_def]`. Use `congr 1`. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `f`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : (lmul' R).comp (map (ev O a) (ev O b)) = ev2 O a b`. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `x y`. Simplify using the standard rewrite rules. Use `congrArg (fun φ => φ (comul O hΔ f)) key` as an intermediate fact.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [AlgHom.comp_apply] at this`. Use `show ev O (a * b) f = (lmul' R) (map (ev O a) (ev O b) (comul O hΔ f))`. Rewrite using `[this, ev2_comul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ev_convMul (a b : M) : letI := bialg O hΔ hε;
     toConv (ev O (a * b)) = toConv (ev O a) * toConv (ev O b) := by
@@ -443,9 +441,7 @@ theorem ev_convMul (a b : M) : letI := bialg O hΔ hε;
 end
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ M _ _ O _ _ _ hΔ hS hε`. Use `haveI : Module.Flat R O := inferInstance`. Use `letI := bialg O hΔ hε`. Use `letI H := hopf O hΔ hε hS`. Use `⟨O, inferInstance, H, cocomm O hΔ hε, AlgEquiv.refl, fun a b => ?_⟩` and prove the remaining obligations.
-
-Conclude with `ev_convMul O hΔ hε a b`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_hopfAlgebra_of_subalgebra_fun : ∀ (R K : Type) [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K] (M : Type) [CommGroup M] [Finite M] (O : Subalgebra R (M → K)), Module.Finite R O → Module.Projective R O → (∀ f : M → K, ∃ r : R, r ≠ 0 ∧ r • f ∈ O) → (∀ f ∈ O, ∃ T : O ⊗[R] O, ∀ a b : M, Algebra.TensorProduct.lift ((Pi.evalAlgHom R (fun _ : M => K) a).comp O.val) ((Pi.evalAlgHom R (fun _ : M => K) b).comp O.val) (fun _ _ => .all _ _) T = f (a * b)) → (∀ f ∈ O, (fun a => f a⁻¹) ∈ O) → (∀ f ∈ O, ∃ c : R, algebraMap R K c = f 1) → ∃ (A : Type) (_ : CommRing A) (_ : HopfAlgebra R A) (_ : IsCocomm R A) (io : A ≃ₐ[R] O), ∀ a b : M, toConv (((Pi.evalAlgHom R (fun _ : M => K) (a * b)).comp O.val).comp io.toAlgHom) = toConv (((Pi.evalAlgHom R (fun _ : M => K) a).comp O.val).comp io.toAlgHom) * toConv (((Pi.evalAlgHom R (fun _ : M => K) b).comp O.val).comp io.toAlgHom) := by
   intro R K _ _ _ _ _ M _ _ O _ _ _ hΔ hS hε

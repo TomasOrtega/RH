@@ -21,7 +21,7 @@ def ClaimRL (M : Model F E) (r n : ℕ) : Prop := M.split = none → ClaimR M r 
 def ClaimRG (M : Model F E) (r n : ℕ) : Prop := M.split.isSome = true → ClaimR M r n
 
 /- English proof (translation)
-Break down `hs : M.split with _ | g` into its components or cases. Conclude with `hL hs`. Conclude with `hG (by rw [hs]; rfl)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem claimR_of_modes (M : Model F E) (r n : ℕ) (hL : ClaimRL M r n) (hG : ClaimRG M r n) :
     ClaimR M r n := by
@@ -30,29 +30,27 @@ theorem claimR_of_modes (M : Model F E) (r n : ℕ) (hL : ClaimRL M r n) (hG : C
   · exact hG (by rw [hs]; rfl)
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact Submodule.subset_span ⟨Sum.inl j.castSucc, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem X_le_span_left {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) {r : ℕ}
     (f f' : Fin (r + 1) → V) : H.X f ≤ Submodule.span E (Set.range (Sum.elim f f')) :=
   Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact Submodule.subset_span ⟨Sum.inl j.castSucc, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact Submodule.subset_span ⟨Sum.inr j.castSucc, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem X_le_span_right {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) {r : ℕ}
     (f f' : Fin (r + 1) → V) : H.X f' ≤ Submodule.span E (Set.range (Sum.elim f f')) :=
   Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact Submodule.subset_span ⟨Sum.inr j.castSucc, rfl⟩)
 
 /- English proof (translation)
-Introduce `m`. Establish `hU' : IsCompl (Submodule.span E (Set.range (Sum.elim t.f t.f'))) (H.perp (Submodule.span E (Set.range (Sum.elim t.f t.f'))))`. Rewrite using `[← hermSp_W0_eq_perp_span_range_MMfam]`. Conclude with `hU`. Establish `hmU : (m : V) ∈ Submodule.span E (Set.range (Sum.elim t.f t.f'))` using `spanMM_le_U H t m.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hpx⟩` from `((local_hermitian_glue F E M hM V H t.abelian₂ hgen.1.1 _ hU').1 (m : V) hmU).2 (fun y hy hyU => m.2.2 y (hgen.2.2.2 y hy (span_frames_le_MM H t hyU)))`. Establish `hx' : x ∈ Submodule.span E (Set.range (Sum.elim t.f t.f')) ⊔ H.perp (Submodule.span E (Set.range (Sum.elim t.f t.f')))`. Rewrite using `[hU'.sup_eq_top]`. Conclude with `Submodule.mem_top`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 hx'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpa : ((Submodule.linearProjOfIsCompl _ _ hU' x : ↥(Submodule.span E (Set.range (Sum.elim t.f t.f')))) : V) = a`. Rewrite using `[← hab, map_add]`. Establish `e1` using `Submodule.projectionOnto_apply_left hU' ⟨a, ha⟩`. Establish `e2` using `Submodule.projectionOnto_apply_right hU' ⟨b, hb⟩`. Simplify using `only [Submodule.linearProjOfIsCompl] at *`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, add_zero]`. Establish `hma : (m : V) = a` using `by rw [← hpx, hpa]`. Establish `hbW : b ∈ H.W0 t.f t.f'` using `by rw [hermSp_W0_eq_perp_span_range_MMfam]; exact hb`. Use `⟨⟨b, hbW⟩, ?_⟩` and prove the remaining obligations. Use `show (m : V) + b ∈ t.abelian₂`.
-
-Rewrite using `[hma, hab]`. Conclude with `hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surj_MMsharp (M : Model F E) (hM : M.OK) {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V)
     {r : ℕ} (t : Term V M r) (hgen : H.IsGeneric t)
@@ -86,35 +84,33 @@ theorem surj_MMsharp (M : Model F E) (hM : M.OK) {V : Type} [AddCommGroup V] [Mo
   exact hx
 
 /- English proof (translation)
-Introduce `hs V _ _ H hn t₁ f₂ f₂' φ φ' hyp Λ₂ hg hth θ hθ`. Establish `hT₁` using `hyp.1.1`. Establish `hT₂` using `hg.1`. Establish `hF₁ : Formalism.MainNotions.ThinScalesBound.FrameK H t₁.f t₁.T` using `⟨hT₁.2.1.2.1, hT₁.2.1.2.2.1⟩`. Establish `hF₁' : Formalism.MainNotions.ThinScalesBound.FrameK H t₁.f' t₁.T'` using `⟨hT₁.2.2.1.2.1, hT₁.2.2.1.2.2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD₂ : IsUnit (H.Dl f₂ f₂' (r + 1))` using `hT₂.2.2.2.1`. Establish `hD₁ : IsUnit (H.Dl t₁.f t₁.f' (r + 1))` using `hT₁.2.2.2.1`. Take `⟨ψ, -, hψc⟩` from `corrIso_holds M r n V H hn t₁ f₂ f₂' φ φ' hyp hD₂`. Establish `hU₁ : IsCompl (Submodule.span E (Set.range (Sum.elim t₁.f t₁.f'))) (H.W0 t₁.f t₁.f')` using `isCompl_span_frames_W0 H t₁.f t₁.f' t₁.T t₁.T' hF₁ hF₁' hD₁ (isUnit_Gdet H _ _ _ _ hT₁.2.2.2.2.1)`. Establish `hU₂ : IsCompl (Submodule.span E (Set.range (Sum.elim f₂ f₂'))) (H.W0 f₂ f₂')` using `isCompl_span_frames_W0 H f₂ f₂' t₁.T t₁.T' hyp.2.1 hyp.2.2.1 hD₂ (isUnit_Gdet H _ _ _ _ hT₂.2.2.2.2.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMM₁ : MMo H t₁ ≤ t₁.abelian₂` using `Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact hyp.1.2.1 i)`. Establish `hMM₂ : MMo H (⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ : Term V M r) ≤ Λ₂` using `Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact hg.2.1 i)`. Establish `hth' : ∀ w : ↥(H.W0 t₁.f t₁.f'), (w : V) ∈ t₁.abelian₂ ↔ (ψ w : V) ∈ Λ₂` using `fun w => hth w (ψ w) ((hψc _ _).2 ⟨w.2, rfl⟩)`. Establish `hθ' : ∀ m₁ m₂, θ (ddMk H t₁ m₁) = ddMk H (⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ : Term V M r) m₂ ↔ ∃ w : ↥(H.W0 t₁.f t₁.f'), (m₁ : V) + w ∈ t₁.abelian₂ ∧ (m₂ : V) + ψ w ∈ Λ₂`. Introduce `m₁ m₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hθ m₁ m₂]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n₁, n₂, hc, h1, h2⟩`. Take `⟨hn₁, hψn⟩` from `(hψc _ _).1 hc`. Conclude with `⟨⟨n₁, hn₁⟩, h1, by rw [hψn]; exact h2⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨w, h1, h2⟩`. Conclude with `⟨w, ψ w, (hψc _ _).2 ⟨w.2, rfl⟩, h1, h2⟩`. Establish `hsurj₁` using `surj_MMsharp M hM H t₁ hyp.1 hU₁`. Establish `hC1 : ∀ w : ↥(H.W0 t₁.f t₁.f'), φ (H.mkW t₁.f ⟨w, mem_perp_isotropicSpan_of_mem_framePerp H w.2⟩) = H.mkW f₂ ⟨ψ w, mem_perp_isotropicSpan_of_mem_framePerp H (ψ w).2⟩`. Introduce `w`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨_, _, c₁, _⟩` from `(hψc w (ψ w)).2 ⟨w.2, rfl⟩`. Conclude with `c₁`. Establish `hC1' : ∀ w : ↥(H.W0 t₁.f t₁.f'), φ' (H.mkW t₁.f' ⟨w, mem_perp_isotropicSpan_of_mem_framePerp' H w.2⟩) = H.mkW f₂' ⟨ψ w, mem_perp_isotropicSpan_of_mem_framePerp' H (ψ w).2⟩`. Introduce `w`. Take `⟨_, _, _, c₂⟩` from `(hψc w (ψ w)).2 ⟨w.2, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `c₂`. Establish `hZ₁ : IsUnit (H.Zhat t₁.f t₁.f').det` using `by rw [← Dl_succ]; exact hD₁`. Establish `hZ₁' : IsUnit (H.Zhat t₁.f' t₁.f).det` using `det_Zhat_swap_unit H _ _ hZ₁`. Establish `hzφ : φ (H.mkW t₁.f ⟨t₁.f (Fin.last r), z_mem_perpX H hF₁⟩) = H.mkW f₂ ⟨f₂ (Fin.last r), z_mem_perpX H hyp.2.1⟩`. Establish `e` using `hyp.2.2.2.2.1 ⟨_, z_mem_perpX H hF₁⟩ ⟨_, z_mem_perpX H hyp.2.1⟩ rfl rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using e`. Establish `hzφ' : φ' (H.mkW t₁.f' ⟨t₁.f' (Fin.last r), z_mem_perpX H hF₁'⟩) = H.mkW f₂' ⟨f₂' (Fin.last r), z_mem_perpX H hyp.2.2.1⟩`. Establish `e` using `hyp.2.2.2.2.2 ⟨_, z_mem_perpX H hF₁'⟩ ⟨_, z_mem_perpX H hyp.2.2.1⟩ rfl rfl`. Simplify using `using e`. Take `⟨u, hu⟩` from `hD₂`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hoφ : φ (H.mkW t₁.f ⟨H.om' t₁.f t₁.f', om'_mem_perpX H _ _⟩) = ((↑u⁻¹ : E) * H.Dl t₁.f t₁.f' (r + 1)) • H.mkW f₂ ⟨H.om' f₂ f₂', om'_mem_perpX H _ _⟩`. Establish `e : H.Dl f₂ f₂' (r + 1) • φ (H.mkW t₁.f ⟨H.om' t₁.f t₁.f', om'_mem_perpX H _ _⟩) = H.Dl t₁.f t₁.f' (r + 1) • H.mkW f₂ ⟨H.om' f₂ f₂', om'_mem_perpX H _ _⟩` using `hyp.2.2.2.1.2.2.2.1 _ _ rfl rfl`. Rewrite `e` using `[← hu]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, Units.inv_mul, one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `_ = _ := by rw [e, smul_smul]`. Take `⟨u', hu'⟩ : IsUnit (M.L.cj (H.Dl f₂ f₂' (r + 1)))` from `by rw [← hu]; exact (Units.isUnit u).map _`. Establish `hoφ' : φ' (H.mkW t₁.f' ⟨H.om' t₁.f' t₁.f, om'_mem_perpX H _ _⟩) = ((↑u'⁻¹ : E) * M.L.cj (H.Dl t₁.f t₁.f' (r + 1))) • H.mkW f₂' ⟨H.om' f₂' f₂, om'_mem_perpX H _ _⟩`. Establish `e : M.L.cj (H.Dl f₂ f₂' (r + 1)) • φ' (H.mkW t₁.f' ⟨H.om' t₁.f' t₁.f, om'_mem_perpX H _ _⟩) = M.L.cj (H.Dl t₁.f t₁.f' (r + 1)) • H.mkW f₂' ⟨H.om' f₂' f₂, om'_mem_perpX H _ _⟩` using `hyp.2.2.2.1.2.2.2.2.1 _ _ (om'_swap H _ _) (om'_swap H _ _)`. Rewrite `e` using `[← hu']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, Units.inv_mul, one_smul]`. Use `_ = _ := by rw [e, smul_smul]`. Establish `hC2` using `cond_second_of_iso H t₁.f t₁.f' f₂ f₂' t₁.T t₁.T hF₁ hyp.2.1 hZ₁ φ _ hzφ hoφ`. Establish `hC2''` using `cond_second_of_iso H t₁.f' t₁.f f₂' f₂ t₁.T' t₁.T' hF₁' hyp.2.2.1 hZ₁' φ' _ hzφ' hoφ'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hC2' : ∀ u ∈ Submodule.span E (Set.range (Sum.elim t₁.f t₁.f')), ∀ hu : u ∈ H.perp (H.X t₁.f'), ∃ u' ∈ Submodule.span E (Set.range (Sum.elim f₂ f₂')), ∃ hu' : u' ∈ H.perp (H.X f₂'), φ' (H.mkW t₁.f' ⟨u, hu⟩) = H.mkW f₂' ⟨u', hu'⟩`. Introduce `v hv hvp`. Rewrite `hv` using `[← U_swap]`. Take `⟨v', hv', hv'p, e⟩` from `hC2'' v hv hvp`. Rewrite `hv'` using `[U_swap]`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `⟨v', hv', hv'p, e⟩`. Establish `hL` using `claimR_side H t₁ ⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ Λ₂ ψ hU₂ hU₁ hT₁.1 hT₂.1 hMM₁ hMM₂ hth' θ hθ' hsurj₁ t₁.f f₂ (X_le_span_left H f₂ f₂') (fun _ h => mem_perp_isotropicSpan_of_mem_framePerp H h) (fun _ h => mem_perp_isotropicSpan_of_mem_framePerp H h) φ hC1 hC2`. Establish `hL'` using `claimR_side H t₁ ⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ Λ₂ ψ hU₂ hU₁ hT₁.1 hT₂.1 hMM₁ hMM₂ hth' θ hθ' hsurj₁ t₁.f' f₂' (X_le_span_right H f₂ f₂') (fun _ h => mem_perp_isotropicSpan_of_mem_framePerp' H h) (fun _ h => mem_perp_isotropicSpan_of_mem_framePerp' H h) φ' hC1' hC2'`. Prove the components needed by the constructor for the conclusion. Introduce `hR`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨fun _ => ⟨hL.1 hR.1, hL'.1 hR.2.2.1⟩, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite `hg` using `[hs]`. Conclude with `absurd hg (by simp)`. Introduce and unpack `⟨h1, -⟩`. Take `⟨a, b⟩` from `h1 hs`.
-
-Use `⟨hL.2 a, hyp.2.2.2.2.1, hL'.2 b, hyp.2.2.2.2.2, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite `hg` using `[hs]`. Conclude with `absurd hg (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem claimRL_at (M : Model F E) (r n : ℕ) (hM : M.OK) : ClaimRL M r n := by
   intro hs V _ _ H hn t₁ f₂ f₂' φ φ' hyp Λ₂ hg hth θ hθ

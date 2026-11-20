@@ -11,7 +11,7 @@ open GlobalTheory.FunObj.SqNum (nuH halfRank IsTor)
 open GlobalTheory.CMVal GlobalTheory.HeckeGal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ThmAUpper.read_twisted_alt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FReadTwisted.lean&line=22#L22)
 -/

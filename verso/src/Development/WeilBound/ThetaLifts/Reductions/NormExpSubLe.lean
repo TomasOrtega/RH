@@ -13,7 +13,7 @@ def mq (S : Eu l →L[ℝ] Eu l) : Sch l →L[ℂ] Sch l :=
   smulLeftCLM ℂ fun x : Eu l => ((-π * ⟪x, S x⟫ : ℝ) : ℂ) * I
 
 /- English proof (translation)
-Establish `h2 : Function.HasTemperateGrowth fun x : Eu l => -π * ⟪x, S x⟫` using `(Function.HasTemperateGrowth.const _).mul (temperate_quad S)`. Establish `h3 : Function.HasTemperateGrowth fun x : Eu l => ((-π * ⟪x, S x⟫ : ℝ) : ℂ) * I` using `(ofRealCLM.hasTemperateGrowth.comp h2).mul (Function.HasTemperateGrowth.const _)`. Rewrite using `[mq, smulLeftCLM_apply_apply h3, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mq_apply (S : Eu l →L[ℝ] Eu l) (f : Sch l) (x : Eu l) : mq S f x = ((-π * ⟪x, S x⟫ : ℝ) : ℂ) * I * f x := by
   have h2 : Function.HasTemperateGrowth fun x : Eu l => -π * ⟪x, S x⟫ :=
@@ -23,9 +23,9 @@ theorem mq_apply (S : Eu l →L[ℝ] Eu l) (f : Sch l) (x : Eu l) : mq S f x = (
   rw [mq, smulLeftCLM_apply_apply h3, smul_eq_mul]
 
 /- English proof (translation)
-Establish `: exp ((a : ℂ) * I) - exp ((b : ℂ) * I) = exp ((b : ℂ) * I) * (exp (I * ((a - b : ℝ) : ℂ)) - 1)`. Rewrite using `[mul_sub, mul_one, ← Complex.exp_add]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this, norm_mul, norm_exp_ofReal_mul_I, one_mul]`. Conclude with `Real.norm_exp_I_mul_ofReal_sub_one_le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_exp_sub_le (a b : ℝ) : ‖exp ((a : ℂ) * I) - exp ((b : ℂ) * I)‖ ≤ |a - b| := by
   have : exp ((a : ℂ) * I) - exp ((b : ℂ) * I) = exp ((b : ℂ) * I) * (exp (I * ((a - b : ℝ) : ℂ)) - 1) := by
@@ -37,7 +37,7 @@ theorem norm_exp_sub_le (a b : ℝ) : ‖exp ((a : ℂ) * I) - exp ((b : ℂ) * 
   exact Real.norm_exp_I_mul_ofReal_sub_one_le
 
 /- English proof (translation)
-Take `⟨K, hK, h⟩` from `h.isBigO_sub.exists_nonneg`. Conclude with `⟨K, hK, h.bound⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_lip {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] {S : ℝ → F} {S' : F} {t₀ : ℝ}
     (h : HasDerivAt S S' t₀) : ∃ K : ℝ, 0 ≤ K ∧ ∀ᶠ t in 𝓝 t₀, ‖S t - S t₀‖ ≤ K * |t - t₀| := by
@@ -45,7 +45,7 @@ theorem exists_lip {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] {S : �
   exact ⟨K, hK, h.bound⟩
 
 /- English proof (translation)
-Introduce `f` and use `by obtain ⟨K, hK, hb⟩ := exists_lip h set N := Module.finrank ℝ (EuclideanSpace ℝ l) + 1 with hN obtain ⟨C, hC, hf⟩ := exists_decay f (N + 2) refine hasDerivAt_schwartz_to_L2 (C := π * K * C) (fun x => ?_) ?_ · simp only [ph_apply, mq_apply] have h1 : HasDerivAt (fun t => S t x) …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ld_ph {S : ℝ → Eu l →L[ℝ] Eu l} {S' : Eu l →L[ℝ] Eu l} {t₀ : ℝ} (h : HasDerivAt S S' t₀) :
     LD (fun t => ph (S t)) (fun f => mq S' (ph (S t₀) f)) t₀ := fun f => by
@@ -85,19 +85,17 @@ Both sides reduce to the same expression.
 theorem vf_apply (H : Eu l →L[ℝ] Eu l) (f : Sch l) (x : Eu l) : vf H f x = fderiv ℝ f x (H x) := rfl
 
 /- English proof (translation)
-Take `⟨K, hK, hb⟩` from `exists_lip h`. Use `set N := Module.finrank ℝ (EuclideanSpace ℝ l) + 1 with hN`. Take `⟨C, hC, hf⟩` from `exists_decay (fderivCLM ℝ (Eu l) ℂ f) (N + 1)`. Use `hasDerivAt_schwartz_to_L2 (C := 2 ^ (N + 1) * C * K) (fun x => ?_) ?_` and prove the remaining obligations. Establish `h1 : HasDerivAt (fun t => H t x) (H' x) t₀` using `by simpa using h.clm_apply (hasDerivAt_const t₀ x)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(f.hasFDerivAt (H t₀ x)).comp_hasDerivAt t₀ h1`. Rewrite `h2` using `[h0]`. Conclude with `h2.congr_of_eventuallyEq (hF.mono fun t ht => ht x)`. Establish `hs : ∀ᶠ t in 𝓝 t₀, ‖H t - H t₀‖ ≤ 1 / 2`. Use `(tendsto_iff_norm_sub_tendsto_zero.1 h.continuousAt).eventually (ge_mem_nhds (show (0 : ℝ) < 1 / 2 by norm_num))` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Use `filter_upwards [hb, hF, hs] with t ht hFt hst x`. Rewrite using `[← hN, hFt, hF.self_of_nhds, h0]`. Establish `e : ‖H t x - x‖ ≤ ‖H t - H t₀‖ * ‖x‖`. Use `(H t - H t₀).le_opNorm x` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[ContinuousLinearMap.sub_apply]`. Simplify `this` using `only [h0, ContinuousLinearMap.one_apply]`. Establish `hw : 0 < 1 + ‖x‖` using `by positivity`. Establish `hm` using `(convex_closedBall x (‖x‖ / 2)).norm_image_sub_le_of_norm_fderiv_le (𝕜 := ℝ) (f := f) (C := 2 ^ (N + 1) * C / (1 + ‖x‖) ^ (N + 1)) (x := x) (y := H t x) (fun y _ => f.differentiableAt) (fun y hy => by`. Rewrite using `[le_div_iff₀ (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h1 : 1 + ‖x‖ ≤ 2 * (1 + ‖y‖)`. Establish `h2` using `norm_sub_norm_le x y`. Rewrite `hy` using `[mem_closedBall_iff_norm']`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use the proof step `(Metric.mem_closedBall_self (by positivity)) (by`. Rewrite using `[mem_closedBall_iff_norm]`. Use polynomial arithmetic with `[norm_nonneg x])`. Establish `e2 : ‖H t x - x‖ ≤ K * |t - t₀| * (1 + ‖x‖)` using `e.trans (by gcongr; simp)`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `mul_le_mul_of_nonneg_left (hm.trans ?_) (by positivity)` and prove the remaining obligations. Use `gcongr`. Use `_ = _ := by rw [pow_succ (1 + ‖x‖) N]; field_simp`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ld_dil_one {H : ℝ → Eu l →L[ℝ] Eu l} {H' : Eu l →L[ℝ] Eu l} {t₀ : ℝ} (h : HasDerivAt H H' t₀) (h0 : H t₀ = 1)
     (f : Sch l) {F : ℝ → Sch l} (hF : ∀ᶠ t in 𝓝 t₀, ∀ x, F t x = f (H t x)) :
@@ -140,7 +138,7 @@ theorem ld_dil_one {H : ℝ → Eu l →L[ℝ] Eu l} {H' : Eu l →L[ℝ] Eu l} 
       _ = _ := by rw [pow_succ (1 + ‖x‖) N]; field_simp
 
 /- English proof (translation)
-Introduce `f` and use `by refine ld_dil_one (h.const_mul (Ring.inverse (B t₀))) (Ring.inverse_mul_cancel _ h0) _ ?_ filter_upwards [h.continuousAt.eventually (Units.isOpen.mem_nhds h0)] with t ht x rw [dil_apply ht, dil_apply h0, ← ContinuousLinearMap.mul_apply, ← mul_assoc, Ring.mul_inverse_cancel _ h …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ld_dil {B : ℝ → Eu l →L[ℝ] Eu l} {B' : Eu l →L[ℝ] Eu l} {t₀ : ℝ} (h : HasDerivAt B B' t₀) (h0 : IsUnit (B t₀)) :
     LD (fun t => dil (B t)) (fun f => vf (Ring.inverse (B t₀) * B') (dil (B t₀) f)) t₀ := fun f => by
@@ -149,9 +147,9 @@ theorem ld_dil {B : ℝ → Eu l →L[ℝ] Eu l} {B' : Eu l →L[ℝ] Eu l} {t�
   rw [dil_apply ht, dil_apply h0, ← ContinuousLinearMap.mul_apply, ← mul_assoc, Ring.mul_inverse_cancel _ h0, one_mul]
 
 /- English proof (translation)
-Establish `h1` using `(ld_ph (hA.mul hB).neg).mul (LD.const (fouInv l) t₀) (.of_forall fun t => iso_ph _)`. Establish `h2` using `(LD.const (fou l) t₀).mul h1 (.of_forall fun t => iso_fou)`. Establish `h3` using `((ld_dil hA h.self_of_nhds.1).smul hc.ofReal_comp).mul h2 (h.mono fun t ht => iso_dil ht.1 ht.2)`. Establish `h4` using `(ld_ph (hC.mul hA)).mul h3 (.of_forall fun t => iso_ph _)`. Use `⟨_, h4, fun e1 e2 e3 e4 f => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e5 : fou l (fouInv l f) = f`. Rewrite using `[← ContinuousLinearMap.mul_apply, fou_mul_fouInv, ContinuousLinearMap.one_apply]`. Simplify using `[e1, e2, e3, e4, ph_zero, dil_one, e5]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem ld_big {Ai B C : ℝ → Eu l →L[ℝ] Eu l} {Ai' B' C' : Eu l →L[ℝ] Eu l} {c : ℝ → ℝ} {c' t₀ : ℝ}
     (hA : HasDerivAt Ai Ai' t₀) (hB : HasDerivAt B B' t₀) (hC : HasDerivAt C C' t₀) (hc : HasDerivAt c c' t₀)

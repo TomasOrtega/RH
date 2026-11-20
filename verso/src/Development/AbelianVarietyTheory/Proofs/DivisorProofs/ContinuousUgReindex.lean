@@ -18,7 +18,7 @@ variable {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c : E →ₐ[R] E
 variable {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
 
 /- English proof (translation)
-Unfold `GlobalTheory.WeilM.symp`. Rewrite using `[← map_sub, ← mul_sub]`. Use `congr 2`. Simplify using `only [GlobalTheory.WeilM.hTens, GlobalTheory.WeilM.dbl, Fintype.sum_sum_type, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.neg_apply, Matrix.submatrix_apply, id, mul_zero, zero_mul, Finset.su …`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem symp_dbl (ξ : E) (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix (α ⊕ α) β E) :
     GlobalTheory.WeilM.symp c ξ (GlobalTheory.WeilM.dbl JA) JB x y =
@@ -33,9 +33,9 @@ theorem symp_dbl (ξ : E) (JA : Matrix α α E) (JB : Matrix β β E) (x y : Mat
     mul_neg, neg_mul, Finset.sum_neg_distrib, sub_eq_add_neg]
 
 /- English proof (translation)
-Unfold `GlobalTheory.WeilM.symp GlobalTheory.WeilM.hTens`. Use `congr 2`. Rewrite using `[← e.sum_comp]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← e.sum_comp]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.reindex_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symp_reindex {ι ι' : Type} [Fintype ι] [DecidableEq ι] [Fintype ι'] [DecidableEq ι'] (e : ι ≃ ι') (ξ : E)
     (JA : Matrix ι ι E) (JB : Matrix β β E) (x y : Matrix ι' β E) :
@@ -90,7 +90,7 @@ theorem dblRows_e {ξ : E} {JA : Matrix α α E} {JB : Matrix β β E} {κ : Typ
         Sum.elim (d.e (x.submatrix Sum.inl id)).2 (-(d.e (x.submatrix Sum.inr id)).2)) := rfl
 
 /- English proof (translation)
-Introduce `w₁ w₂`. Establish `h1 : (Matrix.fromCols w₁ w₂)ᵀ.submatrix Sum.inl id = w₁ᵀ` using `by ext i j; simp [Matrix.fromCols]`. Establish `h2 : (Matrix.fromCols w₁ w₂)ᵀ.submatrix Sum.inr id = w₂ᵀ` using `by ext i j; simp [Matrix.fromCols]`. Express the relevant statement in the definitionally equal form `(dblRows d).e (Matrix.fromCols w₁ w₂)ᵀ = (Sum.elim (d.e w₁ᵀ).1 (d.e w₂ᵀ).1, Sum.elim (d.e w₁ᵀ).2 (-(d.e w₂ᵀ).2))`. Rewrite using `[dblRows_e, h1, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isDblCoord_transD {ξ : E} {JA : Matrix α α E} {JB : Matrix β β E} {κ : Type} [Fintype κ]
     (d : GlobalTheory.WeilM.Darboux (GlobalTheory.WeilM.symp c ξ JA JB) κ) :
@@ -153,7 +153,7 @@ theorem ugReindex_coe (e : ι ≃ ι') {J : Matrix ι ι E} {J' : Matrix ι' ι'
       Matrix.reindex e e ((g : GL ι E) : Matrix ι ι E) := rfl
 
 /- English proof (translation)
-Use `Continuous.subtype_mk (Continuous.comp (Continuous.units_map _ ?_) continuous_subtype_val) _` and prove the remaining obligations. Conclude with `continuous_id.matrix_submatrix _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_ugReindex [TopologicalSpace E] (e : ι ≃ ι') {J : Matrix ι ι E} {J' : Matrix ι' ι' E}
     (hJ : Matrix.reindex e e J = J') : Continuous (ugReindex (c := c) e hJ) := by
@@ -170,9 +170,9 @@ variable {ι ι' β : Type} [Fintype ι] [DecidableEq ι] [Fintype ι'] [Decidab
   {JA : Matrix ι ι E} {JB : Matrix β β E} {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.WeilM.Darboux.rho]`. Use `congr 1`. Use `show d.e wᵀ = d.e ((w.submatrix id e.symm)ᵀ.submatrix e id)`. Use `congr 1`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem rho_transD_reindex (e : ι ≃ ι') (d : GlobalTheory.WeilM.Darboux (GlobalTheory.WeilM.symp c ξ JA JB) κ) (J' : Matrix ι' ι' E)
     (hJ : Matrix.reindex e e JA = J') (w : Matrix β ι E) :
@@ -185,7 +185,7 @@ theorem rho_transD_reindex (e : ι ≃ ι') (d : GlobalTheory.WeilM.Darboux (Glo
   simp
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.WeilM.actB, ugReindex_coe, Matrix.reindex_apply, Matrix.transpose_submatrix]`. Conclude with `Matrix.submatrix_mul_equiv _ _ _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actB_reindex (e : ι ≃ ι') {J' : Matrix ι' ι' E} (hJ : Matrix.reindex e e JA = J') (g : GlobalTheory.WeilM.UG c JA)
     (w : Matrix β ι E) :
@@ -194,7 +194,7 @@ theorem actB_reindex (e : ι ≃ ι') {J' : Matrix ι' ι' E} (hJ : Matrix.reind
   exact Matrix.submatrix_mul_equiv _ _ _ _ _
 
 /- English proof (translation)
-Use `⟨⟨fun g φ hφ => h.pres _ φ hφ, fun g w φ hφ => ?_, fun g l hl => h.adm _ l hl⟩, h.unit.comp _, h.cont.comp (continuous_ugReindex e hJ)⟩` and prove the remaining obligations. Simplify using `only [MonoidHom.comp_apply]`. Rewrite using `[rho_transD_reindex e d J' hJ, rho_transD_reindex e d J' hJ, h.impl _ _ φ hφ, actB_reindex]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUSplitting_reindex (e : ι ≃ ι') (d : GlobalTheory.WeilM.Darboux (GlobalTheory.WeilM.symp c ξ JA JB) κ) (J' : Matrix ι' ι' E)
     (hJ : Matrix.reindex e e JA = J') {f : GlobalTheory.WeilM.UG c J' →* Module.End ℂ ((κ → R) → ℂ)}
@@ -206,9 +206,9 @@ theorem isUSplitting_reindex (e : ι ≃ ι') (d : GlobalTheory.WeilM.Darboux (G
   rw [rho_transD_reindex e d J' hJ, rho_transD_reindex e d J' hJ, h.impl _ _ φ hφ, actB_reindex]
 
 /- English proof (translation)
-Introduce `l hl hinv p t hpt φ hφ`. Use `h l hl (fun z φ hφ => ?_) (ugReindex e hJ p) t ?_ φ hφ` and prove the remaining obligations. Establish `hz : (z * Cyᵀ).submatrix id e.symm = z * (Cy.submatrix e.symm id)ᵀ`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `hinv z φ hφ` as an intermediate fact. Rewrite `this` using `[rho_transD_reindex e d J' hJ, hz]`. Then use the resulting hypothesis. Rewrite using `[ugReindex_coe, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, hpt]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem siegelRule_reindex (e : ι ≃ ι') (d : GlobalTheory.WeilM.Darboux (GlobalTheory.WeilM.symp c ξ JA JB) κ) (J' : Matrix ι' ι' E)
     (hJ : Matrix.reindex e e JA = J') {f : GlobalTheory.WeilM.UG c J' →* Module.End ℂ ((κ → R) → ℂ)} (χ : Eˣ →* Circle)
@@ -235,9 +235,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Substitute `hA` using the available equality. Rewrite using `[GlobalTheory.Doubling.gram_hdbl]`. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Apply the tactic sequence `simp only [GlobalTheory.WeilM.dbl, incM, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, GlobalTheory.Doubling.dblGram, GlobalTheory.Doubling.blkMat, Matrix.transpose_apply, Matrix.map_apply] <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem reindex_dbl_incM (T : HSp D) {JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E} (hA : JA = T.gramᵀ) :
     Matrix.reindex finSumFinEquiv finSumFinEquiv (GlobalTheory.WeilM.dbl (incM D.host.F JA)) =
@@ -268,9 +268,9 @@ abbrev coDbl {S T : HSp D} {ξ : AF D.host.F ⊗[D.host.F] D.host.E} {JA : Matri
   reindexRows finSumFinEquiv (dblRows co) _ (reindex_dbl_incM T hA)
 
 /- English proof (translation)
-Introduce `x`. Take `⟨y₁, z₁, h₁⟩` from `hrat (x.submatrix (finSumFinEquiv ∘ Sum.inl) id)`. Take `⟨y₂, z₂, h₂⟩` from `hrat (x.submatrix (finSumFinEquiv ∘ Sum.inr) id)`. Use `⟨Sum.elim y₁ y₂, Sum.elim z₁ (-z₂), ?_⟩` and prove the remaining obligations. Establish `e₁ : ((incM D.host.F x).submatrix finSumFinEquiv id).submatrix Sum.inl id = incM D.host.F (x.submatrix (finSumFinEquiv ∘ Sum.inl) id)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e₂ : ((incM D.host.F x).submatrix finSumFinEquiv id).submatrix Sum.inr id = incM D.host.F (x.submatrix (finSumFinEquiv ∘ Sum.inr) id)` using `rfl`. Rewrite using `[coDbl, reindexRows_e, dblRows_e, e₁, e₂, h₁, h₂]`. Apply the tactic sequence `refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> rcases i with i | i <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coDbl_rat {S T : HSp D} {ξ : AF D.host.F ⊗[D.host.F] D.host.E} {JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E}
     {JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E} (hA : JA = T.gramᵀ) {κ : Type} [Fintype κ]
@@ -294,12 +294,12 @@ theorem coDbl_rat {S T : HSp D} {ξ : AF D.host.F ⊗[D.host.F] D.host.E} {JA : 
   refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> rcases i with i | i <;> simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_const, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHeckeChar_one : IsHeckeChar D 1 := ⟨continuous_const, fun _ => rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hr.1, fun η hη a => by have h4 := hη.2.2.1 (idF D a) have h5 : Units.map (Algebra.norm (AF D.host.F) : AE D →* AF D.host.F) (idF D a) = a ^ 2 := Units.ext (by change Algebra.norm (AF D.host.F) (algebraMap (AF D.host.F) (AE D) a.1) = _ have := GlobalTheory.Doubling.t2Space_adeleR …`.
+Supply the required witnesses or components.
 -/
 theorem resEta_one_dblSp (T : HSp D) {χ : (AE D)ˣ →* Circle} {k : ℕ} (hr : ResEta D χ k) :
     ResEta D 1 (GlobalTheory.Doubling.dblSp T).rank :=

@@ -6,7 +6,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLat
 namespace Formalism.L2.SG.Pf.Cnt
 
 /- English proof (translation)
-Introduce `D T u`. Take `⟨Λ, hΛ⟩` from `Formalism.L2.SG.Pf.latSub T.X u 1`. Conclude with `⟨Λ, Formalism.L2.SG.Pf.latRowLat T.X u 1 Λ hΛ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lattice_exists_holds : RowLatExists := by
   intro D T u

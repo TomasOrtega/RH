@@ -23,21 +23,19 @@ noncomputable section
 namespace GlobalTheory.Mum.TensPolRel
 
 /- English proof (translation)
-Introduce `R _ _ _ Q k hk`. Take `⟨z⟩ : Nonempty (TK R).left` from `inferInstanceAs (Nonempty (PrimeSpectrum (FractionRing R)))`. Use `haveI := Q.isAb.proper`. Take `⟨J, hJ, iJ⟩` from `GlobalTheory.Mum.TensPol.exists_int Q.B Q.M.L Q.M.isLB z`. Set `E : (FractionRing R)ˣ →* ((TK R).left.presheaf.stalk z)ˣ` to `Units.map (ev z).toMonoidHom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hE : Function.Injective E` using `Units.map_injective (ev_inj z)`. Establish `hτ : ∀ a b, ∃ v ∈ unitsS z, val (Q.tau a b) (𝟙 _) z J = E (k a b) * v` using `fun a b => by`. Take `⟨u, -, hu⟩` from `hk a b`. Use `⟨_, GlobalTheory.Mum.TensPol.val_mem z iJ _ (fun i => ?_) _ u, (hu z J hJ).trans (congrArg (· * _) (gm_unitOn z _))⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> exact Over.w _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose v hv ev' using hτ`. Use `⟨fun a b => ?_, fun a a' b => ?_⟩` and prove the remaining obligations. Use `⟨k b a * (k a b)⁻¹, mem_unitsK z ?_, by rw [inv_mul_cancel_right]⟩` and prove the remaining obligations. Establish `e` using `Q.tau_symm a b z J hJ`. Rewrite `e` using `[ev', ev']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: E (k b a * (k a b)⁻¹) = v a b * (v b a)⁻¹`. Rewrite using `[map_mul, map_inv]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e'` using `congrArg Additive.ofMul e`. Simplify using `only [ofMul_mul, ofMul_inv] at e' ⊢`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `(norm := abel) -e'`. Conclude with `this ▸ mul_mem (hv a b) (inv_mem (hv b a))`. Use `⟨k (a + a') b * (k a b * k a' b)⁻¹, mem_unitsK z ?_, by rw [inv_mul_cancel_right]⟩` and prove the remaining obligations. Establish `e` using `Q.tau_add a a' b z J hJ`. Establish `hc : cubV Q.cub z J (toUnit (TK R) ≫ Q.c a) (toUnit (TK R) ≫ Q.c a') (toUnit (TK R) ≫ Q.c b) ∈ unitsS z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← val_cub Q.cub (toUnit (TK R)) hJ]`. Use `GlobalTheory.Mum.TensPol.val_mem z iJ _ (fun i => ?_) _ _` and prove the remaining obligations. Conclude with `Over.w (lift (Q.c a) (lift (Q.c a') (Q.c b)) ≫ psum Q.B (x3 Q.B) i.down)`. Rewrite `e` using `[ev', ev', ev']`. Generalize the expression as in `cubV Q.cub z J (toUnit (TK R) ≫ Q.c a) (toUnit (TK R) ≫ Q.c a') (toUnit (TK R) ≫ Q.c b) = w at e hc`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: E (k (a + a') b * (k a b * k a' b)⁻¹) = v a b * v a' b * (v (a + a') b)⁻¹ * w⁻¹`. Rewrite using `[map_mul, map_inv, map_mul]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e'` using `congrArg Additive.ofMul e`. Simplify using `only [ofMul_mul, ofMul_inv] at e' ⊢`.
-
-Take the linear combination `(norm := abel) e'`. Conclude with `this ▸ mul_mem (mul_mem (mul_mem (hv a b) (hv a' b)) (inv_mem (hv _ b))) (inv_mem hc)`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem tauCoord_rel : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (Q : GlobalTheory.PolDeg.Data R) (k : Q.X → Q.X → (FractionRing R)ˣ), (∀ a b, Q.TauCoord a b (k a b)) → (∀ a b, ∃ u ∈ unitsK R, k b a = u * k a b) ∧ ∀ a a' b, ∃ u ∈ unitsK R, k (a + a') b = u * (k a b * k a' b) := by
   intro R _ _ _ Q k hk

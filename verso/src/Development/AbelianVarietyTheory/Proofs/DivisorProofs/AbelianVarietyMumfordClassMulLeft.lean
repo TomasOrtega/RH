@@ -11,9 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Introduce `K _ A c Y x x' y`. Take `⟨L, hL, rfl⟩` from `GlobalTheory.CechPic.cls_surj c`. Establish `h` using `GlobalTheory.CubeTop.cubeTheorem (Sp K) A.X A.ab L hL Y x x' y`. Establish `hl` using `LB.isLB_linComb hL (fun k : Fin 8 ↦ (![x * x' * y, x * x', x * y, x' * y, x, x', y, 1] k).left) ![1, -1, -1, -1, 1, 1, 1, -1]`. Establish `e` using `(GlobalTheory.CechPic.cls_eq_zero_iff hl).2 h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[GlobalTheory.CechPic.cls_linComb hL _ _ hl, Fin.sum_univ_eight]`. Simplify using `only [Matrix.cons_val, Matrix.cons_val_zero, Matrix.cons_val_one, one_smul, neg_smul] at e`. Rewrite using `[AbVar.lam_eq, AbVar.lam_eq, AbVar.lam_eq]`. Simplify using `only [GlobalTheory.CechPic.lam, _root_.mul_one]`. Rewrite using `[← sub_eq_zero, ← e]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/

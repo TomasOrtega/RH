@@ -17,7 +17,7 @@ def prF (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] : AF F �
   Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add s t hs ht => rw [map_add, map_add, hs, ht]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem prF_incF {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (t : Af F ⊗[F] E) :
     prF F E (incF F E t) = t := by
@@ -29,7 +29,7 @@ theorem prF_incF {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] 
 def inrA {F : Type} [Field F] [NumberField F] (a : Af F) : AF F := LinearMap.inr F (Ainf F) (Af F) a
 
 /- English proof (translation)
-Use `show a • (Algebra.TensorProduct.includeRight (x i) : AF F ⊗[F] E) = _`. Rewrite using `[Algebra.TensorProduct.includeRight_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_incV {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (a : AF F) (x : Fin n → E) (i : Fin n) : (a • GlobalTheory.ThK.incV F x) i = a ⊗ₜ[F] x i := by
@@ -37,9 +37,9 @@ theorem smul_incV {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   rw [Algebra.TensorProduct.includeRight_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Establish `hle : Formalism.MainNotions.StandardLattice.latHat F E (X.L : Set (Fin n → E)) ≤ (GlobalTheory.ThK.latHat X).comap ((incF F E).compLeft (Fin n)).toAddMonoidHom`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, x, hx, rfl⟩`. Use `AddSubgroup.subset_closure ⟨inrA a, ?_, fun v => ha v, x, hx, ?_⟩` and prove the remaining obligations. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F (0 : Ainf F) = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `map_zero _`. Use function extensionality and compare the values at `i`. Rewrite using `[smul_incV]`. Both sides reduce to the same expression. Conclude with `hle hy`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem incF_mem {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (X : Spc F E n) (y : Fin n → Af F ⊗[F] E) (hy : y ∈ Formalism.MainNotions.StandardLattice.latHat F E (X.L : Set (Fin n → E))) :
@@ -57,9 +57,9 @@ theorem incF_mem {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   exact hle hy
 
 /- English proof (translation)
-Establish `hle : GlobalTheory.ThK.latHat X ≤ (Formalism.MainNotions.StandardLattice.latHat F E (X.L : Set (Fin n → E))).comap ((prF F E).toLinearMap.compLeft (Fin n)).toAddMonoidHom`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, -, ha, x, hx, rfl⟩`. Use `AddSubgroup.subset_closure ⟨sndA F a, fun v => ha v, x, hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show prF F E ((a • GlobalTheory.ThK.incV F x) i) = _`. Rewrite using `[smul_incV]`. Both sides reduce to the same expression. Conclude with `hle hz`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem prF_mem {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (X : Spc F E n) (z : Fin n → AF F ⊗[F] E) (hz : z ∈ GlobalTheory.ThK.latHat X) :
@@ -76,9 +76,9 @@ theorem prF_mem {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
   exact hle hz
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n X m hm y hy`. Establish `h` using `prF_mem X _ (hm _ (incF_mem X y hy))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Establish `e` using `RingHom.map_mulVec (prF F E).toRingHom m (fun j => incF F E (y j)) i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at e`. Rewrite using `[e]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `(prF_incF (y j)).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem finite_part : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (m : Matrix (Fin n) (Fin n) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)),

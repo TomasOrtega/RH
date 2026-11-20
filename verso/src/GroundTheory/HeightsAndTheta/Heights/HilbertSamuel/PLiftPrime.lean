@@ -5,7 +5,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem LiftPrime.proof (h : Lift.Statement) : LiftPrime.Statement := h
 

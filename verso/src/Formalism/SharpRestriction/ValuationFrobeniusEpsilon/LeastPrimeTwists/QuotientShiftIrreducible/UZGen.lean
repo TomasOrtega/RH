@@ -18,7 +18,7 @@ def GMod.quotsMk : (ts : List (Deg k × R)) → (F : GMod B R k) → F.M →ₗ[
       (GMod.quotsMk ts (F.quot s)).comp (LinearMap.range (LinearMap.lsmul R F.M s)).mkQ
 
 /- English proof (translation)
-Proceed by induction on `ts generalizing F with`. Consider the case `nil => exact Function.surjective_id`. Consider the case `cons p ts ih`. Take `⟨d, s⟩` from `p`. Conclude with `(ih (F.quot s)).comp (Submodule.mkQ_surjective _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GMod.quotsMk_surjective (ts : List (Deg k × R)) (F : GMod B R k) :
     Function.Surjective (GMod.quotsMk ts F) := by
@@ -29,11 +29,11 @@ theorem GMod.quotsMk_surjective (ts : List (Deg k × R)) (F : GMod B R k) :
     exact (ih (F.quot s)).comp (Submodule.mkQ_surjective _)
 
 /- English proof (translation)
-Unfold `secs`. Rewrite using `[← Ideal.span_union]`. Use `congr 1`. Use extensionality with `r`. Simplify using `only [List.mem_cons, Prod.mk.injEq, Set.mem_ofPred_eq, Set.singleton_union, Set.mem_insert_iff]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨d', ⟨-, rfl⟩ | h⟩`. Conclude with `Or.inl rfl`. Conclude with `Or.inr ⟨d', h⟩`. Introduce and unpack `(rfl | ⟨d', h⟩)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨d, Or.inl ⟨rfl, rfl⟩⟩`. Conclude with `⟨d', Or.inr h⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem secs_cons (d : Deg k) (s : R) (ts : List (Deg k × R)) :
     secs ((d, s) :: ts) = Ideal.span {s} ⊔ secs ts := by
@@ -51,14 +51,14 @@ theorem secs_cons (d : Deg k) (s : R) (ts : List (Deg k × R)) :
     · exact ⟨d', Or.inr h⟩
 
 /- English proof (translation)
-Unfold `secs`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem secs_nil : secs ([] : List (Deg k × R)) = ⊥ := by
   unfold secs
   simp
 
 /- English proof (translation)
-Rewrite using `[Submodule.ideal_span_singleton_smul]`. Use extensionality with `x`. Simplify using `[Submodule.mem_smul_pointwise_iff_exists]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem range_lsmul_eq (M : Type) [AddCommGroup M] [Module R M] (s : R) :
     LinearMap.range (LinearMap.lsmul R M s) = Ideal.span {s} • (⊤ : Submodule R M) := by
@@ -67,11 +67,11 @@ theorem range_lsmul_eq (M : Type) [AddCommGroup M] [Module R M] (s : R) :
   simp [Submodule.mem_smul_pointwise_iff_exists]
 
 /- English proof (translation)
-Proceed by induction on `ts generalizing F with`. Consider the case `nil`. Rewrite using `[secs_nil, Submodule.bot_smul]`. Conclude with `LinearMap.ker_id`. Consider the case `cons p ts ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨d, s⟩` from `p`. Establish `h1 : LinearMap.ker (GMod.quotsMk ((d, s) :: ts) F) = (LinearMap.ker (GMod.quotsMk ts (F.quot s))).comap (LinearMap.range (LinearMap.lsmul R F.M s)).mkQ` using `LinearMap.ker_comp _ _`. Rewrite using `[h1, ih (F.quot s), secs_cons, Submodule.sup_smul]`. Establish `h2 : (secs ts • (⊤ : Submodule R (F.quot s).M)) = (secs ts • (⊤ : Submodule R F.M)).map (LinearMap.range (LinearMap.lsmul R F.M s)).mkQ`. Rewrite using `[Submodule.map_smul'', Submodule.map_top, Submodule.range_mkQ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[h2, Submodule.comap_map_mkQ, range_lsmul_eq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GMod.ker_quotsMk (ts : List (Deg k × R)) (F : GMod B R k) :
     LinearMap.ker (GMod.quotsMk ts F) = secs ts • (⊤ : Submodule R F.M) := by
@@ -92,9 +92,9 @@ theorem GMod.ker_quotsMk (ts : List (Deg k × R)) (F : GMod B R k) :
     rw [h2, Submodule.comap_map_mkQ, range_lsmul_eq]
 
 /- English proof (translation)
-Proceed by induction on `ts generalizing F with`. Consider the case `nil`. Conclude with `(Submodule.map_id _).symm`. Consider the case `cons p ts ih`. Take `⟨d, s⟩` from `p`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `ih (F.quot s)`. Establish `h3 : (F.quots ((d, s) :: ts)).gr m = ((F.quot s).quots ts).gr m` using `rfl`. Rewrite using `[h3, h1]`. Conclude with `(Submodule.map_comp ((LinearMap.range (LinearMap.lsmul R F.M s)).mkQ.restrictScalars B) ((GMod.quotsMk ts (F.quot s)).restrictScalars B) (F.gr m)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GMod.quots_gr (ts : List (Deg k × R)) (F : GMod B R k) (m : Deg k) :
     (F.quots ts).gr m = (F.gr m).map ((GMod.quotsMk ts F).restrictScalars B) := by
@@ -175,7 +175,7 @@ def GMod.ann0Equiv (F : GMod B R k) (β : B) (m : Deg k) :
 end
 
 /- English proof (translation)
-Proceed by induction on `ts generalizing F with`. Consider the case `nil => exact hF`. Consider the case `cons p ts ih`. Take `⟨d, s⟩` from `p`. Conclude with `ih (F.quot s) (fun p hp => hv p (List.mem_cons_of_mem _ hp)) ((ruleGr k X F hF).2.2 d s (hv (d, s) List.mem_cons_self).2).1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem quots_isGr {k : ℕ} (X : HidaSetting k) (ts : List (Deg k × X.R)) (F : X.Mod) (hv : Valid X.𝒜 ts)
     (hF : F.IsGr X.𝒜) : (F.quots ts).IsGr X.𝒜 := by
@@ -187,7 +187,7 @@ theorem quots_isGr {k : ℕ} (X : HidaSetting k) (ts : List (Deg k × X.R)) (F :
       ((ruleGr k X F hF).2.2 d s (hv (d, s) List.mem_cons_self).2).1
 
 /- English proof (translation)
-Use `show ((Module.length B ((F.quot (algebraMap B R β)).gr m)).toNat : ℤ) - ((Module.length B ((F.ann (algebraMap B R β) 0).gr m)).toNat : ℤ) = _`. Rewrite using `[(F.quot0Equiv hF β m).length_eq, (F.ann0Equiv β m).length_eq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_single0 {k : ℕ} {B R : Type} [CommRing B] [CommRing R] [Algebra B R] (F : GMod B R k)
     (hF : DirectSum.IsInternal F.gr) (β : B) (m : Deg k) :

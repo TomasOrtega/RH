@@ -10,9 +10,9 @@ open MvPowerSeries Formalism.FG.SolveVAux
 variable {E σ τ Y : Type} [CommRing E] [AddCommGroup Y]
 
 /- English proof (translation)
-Proceed by induction on `e using Finsupp.induction_linear with`. Consider the case `zero => rw [P_zero, map_zero]`. Conclude with `one_mem_wtPart E w'`. Consider the case `add e₁ e₂ h₁ h₂ => rw [P_add, map_add]`. Conclude with `mul_mem_wtPart E w' h₁ h₂`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `single i n`. Rewrite using `[P_single, Finsupp.weight_single]`. Conclude with `SetLike.pow_mem_graded n (hw i)`.
+A detailed English derivation is pending.
 -/
 private theorem ift_P_mem {w : σ → Y} {w' : τ → Y} {k : σ → MvPowerSeries τ E}
     (hw : ∀ i, k i ∈ wtPart E w' (w i)) (e : σ →₀ ℕ) : P k e ∈ wtPart E w' (Finsupp.weight w e) := by
@@ -24,9 +24,9 @@ private theorem ift_P_mem {w : σ → Y} {w' : τ → Y} {k : σ → MvPowerSeri
     exact SetLike.pow_mem_graded n (hw i)
 
 /- English proof (translation)
-Introduce `n hn`. Rewrite using `[coeff_subst (hasSubst_of_low hk)]`. Use `finsum_eq_zero_of_forall_eq_zero fun e => ?_` and prove the remaining obligations. Distinguish the cases in `he : Finsupp.weight w e = j`. Use `ift_P_mem hw e n (he ▸ hn)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `only [P] at this`. Rewrite using `[this, smul_zero]`. Rewrite using `[hg e he, zero_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ift_subst_mem [Finite σ] {w : σ → Y} {w' : τ → Y} {k : σ → MvPowerSeries τ E}
     (hk : ∀ i, Low 1 (k i)) (hw : ∀ i, k i ∈ wtPart E w' (w i)) {j : Y} {g : MvPowerSeries σ E}
@@ -41,9 +41,9 @@ private theorem ift_subst_mem [Finite σ] {w : σ → Y} {w' : τ → Y} {k : σ
   · rw [hg e he, zero_smul]
 
 /- English proof (translation)
-Introduce `d hd`. Rewrite using `[coeff_subst (hasSubst_of_low hk)]`. Use `finsum_eq_zero_of_forall_eq_zero fun e => ?_` and prove the remaining obligations. Break down `lt_or_ge e.degree N with he | he` into its components or cases. Rewrite using `[hg e he, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `low_P hk e d (by omega)` as an intermediate fact. Simplify using `only [P] at this`. Rewrite using `[this, smul_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ift_subst_low [Finite σ] {k : σ → MvPowerSeries τ E} (hk : ∀ i, Low 1 (k i)) {N : ℕ}
     {g : MvPowerSeries σ E} (hg : Low N g) : Low N (subst k g) := by
@@ -57,11 +57,9 @@ private theorem ift_subst_low [Finite σ] {k : σ → MvPowerSeries τ E} (hk : 
     rw [this, smul_zero]
 
 /- English proof (translation)
-Establish `hs : ∀ n i, Formalism.FG.SolveVAux.seq G g n i ∈ wtPart E w' (w i)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact fun i => zero_mem _`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `i`. Rewrite using `[seq_succ]`. Conclude with `sub_mem (hGw i) (ift_subst_mem (seq_low hG hg n) ih (hgw i))`. Introduce `d hd`. Rewrite using `[coeff_lim]`.
-
-Conclude with `hs _ i d hd`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ift_lim_mem [Finite σ] {w : σ → Y} {w' : τ → Y} {G : σ → MvPowerSeries τ E}
     {g : σ → MvPowerSeries σ E} (hG : ∀ j, Low 1 (G j)) (hg : ∀ j, Low 2 (g j))
@@ -80,7 +78,7 @@ private theorem ift_lim_mem [Finite σ] {w : σ → Y} {w' : τ → Y} {G : σ �
   exact hs _ i d hd
 
 /- English proof (translation)
-Introduce `d hd`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hd with h | h` into its components or cases. Conclude with `(low_one_iff p).2 h0 d h`. Take `⟨i, rfl⟩` from `degree_eq_one d h`. Conclude with `h1 i`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem ift_low_two {p : MvPowerSeries σ E} (h0 : constantCoeff p = 0)
     (h1 : ∀ i, coeff (Finsupp.single i 1) p = 0) : Low 2 p := by
@@ -91,7 +89,7 @@ private theorem ift_low_two {p : MvPowerSeries σ E} (h0 : constantCoeff p = 0)
     exact h1 i
 
 /- English proof (translation)
-Rewrite using `[coeff_X]`. Simplify using `[Finsupp.single_left_inj one_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem ift_coeff_X [DecidableEq σ] (i j : σ) :
     coeff (Finsupp.single i 1) (X j : MvPowerSeries σ E) = if i = j then 1 else 0 := by
@@ -100,7 +98,7 @@ private theorem ift_coeff_X [DecidableEq σ] (i j : σ) :
   simp [Finsupp.single_left_inj one_ne_zero]
 
 /- English proof (translation)
-Use `ift_low_two (by simp [map_sum]) fun i => ?_` and prove the remaining obligations. Simplify using `[map_sum, ift_coeff_X, coeff_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem ift_expand [Fintype σ] (g : MvPowerSeries σ E) :
     Low 2 (g - (constantCoeff g • 1 + ∑ s, coeff (Finsupp.single s 1) g • X s)) := by
@@ -111,7 +109,7 @@ private theorem ift_expand [Fintype σ] (g : MvPowerSeries σ E) :
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Establish `h' : L * c = 1` using `(Matrix.mul_eq_one_comm_of_equiv (Fintype.equivOfCardEq hc)).1 h`. Establish `: ∑ i, L k i • ∑ k', c i k' • v k' = ∑ k', (L * c) k k' • v k'`. Simplify using `only [Finset.smul_sum, Matrix.mul_apply, Finset.sum_smul, smul_smul]`. Conclude with `Finset.sum_comm`. Simplify `this.symm` using `[hv, h', Matrix.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem ift_span {E ι κ M : Type} [Field E] [Fintype ι] [Fintype κ] [DecidableEq κ] [AddCommGroup M]
     [Module E M] (hc : Fintype.card κ = Fintype.card ι) (c : Matrix κ ι E) (L : Matrix ι κ E) (h : c * L = 1)
@@ -125,31 +123,27 @@ private theorem ift_span {E ι κ M : Type} [Field E] [Fintype ι] [Fintype κ] 
 
 open MvPowerSeries Formalism.FG.SolveVAux in
 /- English proof (translation)
-Introduce `E τ ι Y _ _ _ _ wt z hz hcard hc`. Use `choose c hc using hc`. Set `G : τ → MvPowerSeries {i // wt i ≠ 0} E` to `fun i => if h : wt i = 0 then 0 else X ⟨i, h⟩`. Set `g : τ → MvPowerSeries τ E` to `fun i => if h : wt i = 0 then ∑ k, c i h k • z k - X i else 0`. Establish `hG : ∀ j, Low 1 (G j)` using `fun j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[low_one_iff]`. Simplify using `only [G]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hg : ∀ j, Low 2 (g j)` using `fun j => by`. Simplify using `only [g]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with h`. Use `ift_low_two (by simp [map_sum, fun k => (hz k).2]) fun i => ?_` and prove the remaining obligations. Rewrite using `[map_sub, hc, sub_self]`. Conclude with `low_of_zero _`. Establish `hGw : ∀ i, G i ∈ wtPart E (fun i : {i // wt i ≠ 0} => wt i) (wt i)` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [G]`. Use `split_ifs with h`. Conclude with `zero_mem _`. Conclude with `X_mem_wtPart E (fun i : {i // wt i ≠ 0} => wt i) ⟨i, h⟩`. Establish `hgw : ∀ i, g i ∈ wtPart E wt (wt i)` using `fun i => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify using `only [g]`. Use `split_ifs with h`. Use `sub_mem (Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ ?_) (X_mem_wtPart E wt i)` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `(hz k).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Establish `hl` using `lim_low hG hg`. Establish `hs` using `hasSubst_of_low hl`. Set `ψ : MvPowerSeries τ E →ₐ[E] MvPowerSeries {i // wt i ≠ 0} E` to `substAlgHom hs`. Establish `hψ : ∀ f, ψ f = subst (Formalism.FG.SolveVAux.lim G g) f` using `fun f => substAlgHom_apply hs f`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hX : ∀ i, ψ (X i) = G i - ψ (g i)` using `fun i => by`. Rewrite using `[hψ, hψ, subst_X hs]`. Conclude with `(lim_fixed hG hg i).symm`. Establish `hlow : ∀ f, Low 2 f → Low 2 (ψ f)` using `fun f hf => by rw [hψ]; exact ift_subst_low hl hf`. Establish `key : ∀ f (d : {i // wt i ≠ 0} →₀ ℕ), d.degree < 2 → coeff d (ψ f) = constantCoeff f * coeff d (1 : MvPowerSeries {i // wt i ≠ 0} E) + ∑ s, coeff (Finsupp.single s 1) f * coeff d (G s)` using `fun f d hd => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hlow _ (ift_expand f) d hd` as an intermediate fact. Rewrite `this` using `[map_sub, map_sub, sub_eq_zero]`. Rewrite using `[this]`. Simplify using `only [map_add, map_smul, map_one, map_sum, hX, map_sub, hlow _ (hg _) d hd, sub_zero, smul_eq_mul]`. Use `⟨ψ, fun j f hf => ?_, ?_, fun f => ?_, fun f i => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hψ]`. Conclude with `ift_subst_mem hl (ift_lim_mem hG hg hGw hgw) hf`. Use `ift_span (E := E) (κ := {i // wt i = 0}) (by rw [← hcard, Nat.card_eq_fintype_card]) (Matrix.of fun i k => c i.1 i.2 k) (Matrix.of fun k i => coeff (Finsupp.single i.1 1) (z k)) ?_ (fun k => ψ (z k)) fun i => ?_` and prove the remaining obligations. Use extensionality with `i i'`. Use `hc i.1 i.2 i'.1` as an intermediate fact.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[ift_coeff_X]`. Simplify using `only [map_sum, map_smul, smul_eq_mul] at this`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, this, Matrix.one_apply, Subtype.ext_iff, eq_comm]`. Use `hX i.1` as an intermediate fact. Simplify using `only [G, g, dif_pos i.2, map_sub, map_sum, map_smul] at this`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.of_apply]`. Take the linear combination `this`. Use `key f 0 (by simp)` as an intermediate fact. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, this]`. Simplify using `[fun s => hG s 0 (by simp)]`.
-
-Rewrite using `[key f _ (by simp), Finset.sum_eq_single i.1]`. Simplify using `[G, i.2, coeff_one]`. Introduce `s _ hs`. Simplify using `only [G]`. Use `split_ifs with h`.
-
-Simplify using the standard rewrite rules. Rewrite using `[ift_coeff_X, if_neg (fun h' => hs (by rw [h'])), mul_zero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.M.ift_holds :
     ∀ (E τ ι X : Type) [Field E] [Fintype τ] [Fintype ι] [AddCommGroup X] (wt : τ → X) (z : ι → MvPowerSeries τ E),

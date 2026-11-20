@@ -13,9 +13,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.AV.FrobEx
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `absFrob (ptOver K (AlgebraicClosure K)) = Spec.map (CommRingCat.ofHom ((FiniteField.frobeniusAlgEquivOfAlgebraic K (AlgebraicClosure K) : AlgebraicClosure K ≃ₐ[K] AlgebraicClosure K) : AlgebraicClosure K →+* AlgebraicClosure K))`. Use `haveI : IsAffine (ptOver K (AlgebraicClosure K)).left := inferInstanceAs (IsAffine (Spec _))`. Apply `ext_of_isAffine` to reduce the goal to its premises. Rewrite using `[← cancel_epi (Scheme.ΓSpecIso (.of (AlgebraicClosure K))).inv]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.ΓSpecIso_inv_naturality]`. Use extensionality with `c`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom]`. Establish `e : ((FiniteField.frobeniusAlgEquivOfAlgebraic K (AlgebraicClosure K) : AlgebraicClosure K →+* AlgebraicClosure K) c) = c ^ Fintype.card K` using `FiniteField.frobeniusAlgEquivOfAlgebraic_apply K (AlgebraicClosure K) c`. Conclude with `((congrArg (Scheme.ΓSpecIso (CommRingCat.of (AlgebraicClosure K))).inv.hom e).trans (map_pow _ c _)).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem frobOver_ptOver (K : Type) [Field K] [Fintype K] :
     frobOver (ptOver K (AlgebraicClosure K)) =
@@ -36,7 +36,7 @@ theorem frobOver_ptOver (K : Type) [Field K] [Fintype K] :
   exact ((congrArg (Scheme.ΓSpecIso (CommRingCat.of (AlgebraicClosure K))).inv.hom e).trans (map_pow _ c _)).symm
 
 /- English proof (translation)
-Use `letI : IsMonHom (frobOver A.X) := (frobG_frobOver A.X).1`. Introduce `x`. Rewrite using `[mk_hom, ← frobOver_comm, frobOver_ptOver]`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isFrob_frobOver (K : Type) [Field K] [Fintype K] (A : AbVar K) :
     letI : IsMonHom (frobOver A.X) := (frobG_frobOver A.X).1

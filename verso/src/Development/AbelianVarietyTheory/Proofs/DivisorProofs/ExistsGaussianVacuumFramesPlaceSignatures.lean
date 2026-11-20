@@ -27,14 +27,14 @@ theorem cplxD_apply (c : ∀ w : ι, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) �
     cplxD ι P Q R S c w a b = lineSign a b * Complex.I * c w a b := rfl
 
 /- English proof (translation)
-Use extensionality with `w a b`. Apply the tactic sequence `rcases lineSign_cases a b with h | h <;> simp [cplxD_apply, h, ← mul_assoc]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cplxD_cplxD (c : ∀ w : ι, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) : cplxD ι P Q R S (cplxD ι P Q R S c) = -c := by
   ext w a b
   rcases lineSign_cases a b with h | h <;> simp [cplxD_apply, h, ← mul_assoc]
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl fun w _ => Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases lineSign_cases a b with h | h <;> simp [cplxD_apply, h]`. Take the linear combination `(-(c w a b * (starRingEnd ℂ) (c' w a b))) * Complex.I_mul_I`. Take the linear combination `(c w a b * (starRingEnd ℂ) (c' w a b)) * Complex.I_mul_I`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem herm_cplxD [Fintype ι] (c c' : ∀ w : ι, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) :
     ∑ w, ∑ a, ∑ b, lineSign a b * cplxD ι P Q R S c w a b * star (cplxD ι P Q R S c' w a b) =
@@ -45,9 +45,9 @@ theorem herm_cplxD [Fintype ι] (c c' : ∀ w : ι, Matrix (Ix (P w) (Q w)) (Ix 
   · linear_combination (c w a b * (starRingEnd ℂ) (c' w a b)) * Complex.I_mul_I
 
 /- English proof (translation)
-Establish `h : ∀ w a b, (lineSign a b * c w a b * star (cplxD ι P Q R S c w a b)).im = -Complex.normSq (c w a b)`. Introduce `w a b`. Apply the tactic sequence `rcases lineSign_cases a b with h | h <;> simp [cplxD_apply, h, Complex.normSq_apply] <;> ring`. Simplify using `only [Complex.im_sum, h, Finset.sum_neg_distrib]`. Choose the witnesses or unpack the hypotheses as in `⟨w, a, b, hw⟩ : ∃ w a b, c w a b ≠ 0 := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h0`. Use `push_neg at h0`. Conclude with `hc (by ext w a b; exact h0 w a b)`. Establish `: 0 < ∑ w, ∑ a, ∑ b, Complex.normSq (c w a b)` using `Finset.sum_pos' (fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _) ⟨w, Finset.mem_univ _, Finset.sum_pos' (fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _) ⟨a, Finset.mem_univ _, Finset.sum_pos' (fun _ _ => Complex.normS …`. Combine the linear equalities and inequalities to obtain the conclusion.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem herm_cplxD_pos [Fintype ι] (c : ∀ w : ι, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) (hc : c ≠ 0) :
     0 < -2 * (∑ w, ∑ a, ∑ b, lineSign a b * c w a b * star (cplxD ι P Q R S c w a b)).im := by
@@ -67,9 +67,9 @@ theorem herm_cplxD_pos [Fintype ι] (c : ∀ w : ι, Matrix (Ix (P w) (Q w)) (Ix
   linarith
 
 /- English proof (translation)
-Use extensionality with `w' a' b'`. Rewrite using `[cplxD_apply]`. Distinguish the cases in `hw : w' = w`. Substitute `hw` using the available equality. Distinguish the cases in `hab : a = a' ∧ b = b'`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Take `⟨rfl, rfl⟩` from `hab`. Apply the tactic sequence `rcases lineSign_cases a b with h | h <;> simp [h]`. Simplify using `[Matrix.single_apply, hab]`. Simplify using `[hw]`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cplxD_single [DecidableEq ι] (w : ι) (a : Ix (P w) (Q w)) (b : Ix (R w) (S w)) :
     cplxD ι P Q R S (Pi.single w (Matrix.single a b 1)) =
@@ -87,39 +87,33 @@ theorem cplxD_single [DecidableEq ι] (w : ι) (a : Ix (P w) (Q w)) (b : Ix (R w
 end Sign
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ α β κ _ _ _ _ _ P Q R S τ JA JB d a₀ b₀ A C D hCM hFr hD`. Establish `hU` using `fun c : ∀ w : InfinitePlace F, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ => GlobalTheory.T.existsUnique_archimedeanMatrix_adeleExtension_of_components σ τ hCM (fun w => A w * c w * (C w)ᵀ)`. Use `choose U hU hU' using hU`. Establish `hadd : ∀ c c', U (c + c') = U c + U c'` using `fun c c' => by`. Use `(hU' (c + c') _ ⟨fun u hu => ?_, fun w => ?_⟩).symm` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_add, (hU c).1 u hu, (hU c').1 u hu, add_zero]`. Rewrite using `[Matrix.map_add _ (map_add _), (hU c).2, (hU c').2, Pi.add_apply, Matrix.mul_add, Matrix.add_mul]`. Establish `hsmul : ∀ (r : ℝ) c, U (r • c) = realAd F r • U c` using `fun r c => by`. Use `(hU' (r • c) _ ⟨fun u hu => ?_, fun w => ?_⟩).symm` and prove the remaining obligations. Rewrite using `[smul_comm, (hU c).1 u hu, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.T.realScalarArchimedeanAdele_smul_matrix_realPlace σ τ hCM, (hU c).2, Pi.smul_apply, Matrix.mul_smul, Matrix.smul_mul]`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Set `p : (∀ w : InfinitePlace F, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) →ₗ[ℝ] (κ → mixedEmbedding.mixedSpace F)` to `{ toFun := fun c i => evI F ((d.e (U c)).1 i) map_add' := fun c c' => by`. Use function extensionality and compare the values at `i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hadd, map_add]`. Conclude with `map_add (evR F) _ _`. Use the proof step `map_smul' := fun r c => by`. Use function extensionality and compare the values at `i`. Rewrite using `[hsmul, map_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `evI_realAd_mul r _ }`. Set `q : (∀ w : InfinitePlace F, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) →ₗ[ℝ] (κ → mixedEmbedding.mixedSpace F)` to `{ toFun := fun c i => evI F ((d.e (U c)).2 i) map_add' := fun c c' => by`. Use function extensionality and compare the values at `i`. Rewrite using `[hadd, map_add]`. Conclude with `map_add (evR F) _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `map_smul' := fun r c => by`. Use function extensionality and compare the values at `i`. Rewrite using `[hsmul, map_smul]`. Conclude with `evI_realAd_mul r _ }`. Establish `hω : ∀ c c', trPair F κ (p c) (q c') - trPair F κ (p c') (q c) = -2 * (∑ w, ∑ a, ∑ b, lineSign a b * c w a b * star (c' w a b)).im` using `fun c c' => by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← GlobalTheory.T.archimedean_trace_symplectic_orthonormal_frames σ τ JA JB a₀ b₀ A C hCM hFr (U c) (U c') c c' (hU c).1 (hU c').1 (hU c).2 (hU c').2, d.form, trPair_apply, trPair_apply, ← map_sub, ← evR_apply]`. Simplify using `only [dotProduct, map_sub, map_sum, map_mul]`. Both sides reduce to the same expression. Establish `hs : Function.Surjective (p.prod q)`. Introduce and unpack `⟨v, v'⟩`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `u` to `d.e.symm (fun i => infAd (v i), fun i => infAd (v' i))`. Establish `hu : At (evI F) u` using `fun t ht => by`. Rewrite using `[← map_smul, LinearEquiv.map_eq_zero_iff]`. Use extensionality with `i`. Conclude with `mul_infAd t ht _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `mul_infAd t ht _`. Use `choose A' hA' using fun w => (hFr.2.1 w).2`. Use `choose C' hC' using fun w => (hFr.2.2 w).2`. Establish `huc : u = U fun w => A' w * u.map (piInf (τ w)) * (C' w)ᵀ` using `hU' _ _ ⟨hu, fun w => by`. Establish `: (C' w)ᵀ * (C w)ᵀ = 1` using `by rw [← Matrix.transpose_mul, hC', Matrix.transpose_one]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this, Matrix.mul_one, ← Matrix.mul_assoc, hA', Matrix.one_mul]⟩`. Use `⟨fun w => A' w * u.map (piInf (τ w)) * (C' w)ᵀ, Prod.ext (funext fun i => ?_) (funext fun i => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evI F ((d.e (U _)).1 i) = v i`. Rewrite using `[← huc, LinearEquiv.apply_symm_apply, evI_infAd]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `evI F ((d.e (U _)).2 i) = v' i`. Rewrite using `[← huc, LinearEquiv.apply_symm_apply, evI_infAd]`. Take `⟨X, Y, hX, hY, hYp, hXY⟩` from `exists_siegel (trPair F κ) p q (cplxD _ P Q R S) cplxD_cplxD (fun c c' => by rw [hω, hω, herm_cplxD]) (fun c hc => by rw [hω]; exact herm_cplxD_pos c hc) hs`. Take `⟨f, hf0, hf⟩` from `exists_gaussian X Y hX hY hYp`. Use `⟨f, hf0, fun w a b u u' hu hu' hc hc' => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `hU' _ u ⟨hu, hc⟩`. Establish `e2` using `hU' _ u' ⟨hu', hc'⟩`. Use `set c : ∀ w : InfinitePlace F, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ := Pi.single w (Matrix.single a b 1) with hcdef`. Use `set c' : ∀ w : InfinitePlace F, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ := Pi.single w (Matrix.single a b Complex.I) with hcdef'`. Establish `hJ : cplxD _ P Q R S c = (lineSign a b).re • c'` using `cplxD_single w a b`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Use extensionality with `x`. Establish `h1` using `hXY c x`. Establish `h2` using `hXY (cplxD _ P Q R S c) x`. Rewrite `h2` using `[cplxD_cplxD]`. Rewrite `h1`, `h2` using `[hJ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [map_smul, map_neg, smul_eq_mul] at h1 h2`. Establish `k1 : D u f x = 2 * Real.pi * Complex.I * ((X x (p c) : ℝ) + Complex.I * (Y x (p c) : ℝ)) * f x - 2 * Real.pi * Complex.I * (trPair F κ x (q c) : ℝ) * f x`. Rewrite using `[hD u hu, hf, e1]`. Both sides reduce to the same expression. Establish `k2 : D u' f x = 2 * Real.pi * Complex.I * ((X x (p c') : ℝ) + Complex.I * (Y x (p c') : ℝ)) * f x - 2 * Real.pi * Complex.I * (trPair F κ x (q c') : ℝ) * f x`.
-
-Rewrite using `[hD u' hu', hf, e2]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `D u f x + (lineSign a b * Complex.I) * D u' f x = 0`. Rewrite using `[k1, k2]`. Establish `h1'` using `congrArg (fun t : ℝ => (t : ℂ)) h1`.
-
-Establish `h2'` using `congrArg (fun t : ℝ => (t : ℂ)) h2`. Establish `hl : (((lineSign a b).re : ℝ) : ℂ) = lineSign a b`. Apply the tactic sequence `rcases lineSign_cases a b with h | h <;> simp [h]`. Move the coercions through the operations in `at h1' h2'`. Rewrite `h1'`, `h2'` using `[hl]`.
-
-Take the linear combination `(2 * Real.pi * Complex.I * f x) * h1' + (2 * Real.pi * Complex.I * Complex.I * f x) * h2' + (2 * Real.pi * Complex.I * f x * lineSign a b * (Y x (p c') : ℝ)) * Complex.I_mul_I`.
+Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_vacuumD : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {α β κ : Type}
     [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] {P Q R S : InfinitePlace F → ℕ}

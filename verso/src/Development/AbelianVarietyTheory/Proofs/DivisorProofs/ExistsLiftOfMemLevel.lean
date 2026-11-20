@@ -9,9 +9,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LevelRankR
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R i P κ' hκ`. Establish `hp : rTup (R.βW i) (R.datWp i P) (finE (Wc D i) κ') ∈ P.H` using `hκ.2.2`. Use `⟨⟨_, hp⟩, ⟨hκ.1, hκ.2.1, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h2 : ext1 (R.datWp i P).P.H (R.datWp i P).P.chi (rTup (R.βW i) (R.datWp i P) (finE (Wc D i) κ')) = P.chi ⟨_, hp⟩` using `extendOne_of_mem _ hp`. Unfold `levChi levFn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[h2]`. Establish `hs : (R.datWp i P).s = 0` using `rfl`. Establish `hQ : (R.datWp i P).Q = ∅` using `rfl`. Rewrite using `[hs, hQ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_lift_of_mem_level : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), ∀ (i : Fin D.R.m) (P : LevelP R.Pg D.R.r ℂ) (κ' : GA D (Wc D i)), κ' ∈ levG (Wc D i) (R.βW i) (R.datWp i P) → ∃ g0 : P.H, IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) g0.1 κ' ∧ levChi (Wc D i) (R.βW i) (R.datWp i P) κ' = ((P.chi g0 : ℂˣ) : ℂ) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R i P κ' hκ

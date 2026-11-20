@@ -10,7 +10,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.DifferentAtBasePlace
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Establish `h` using `Nat.mod_mod_of_dvd p hk`. Rewrite `h` using `[hp, Nat.mod_self, Nat.mod_eq_of_lt hk1]`. Conclude with `one_ne_zero h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_of_mod_eq_one' {p M k : ℕ} (hp : p % M = 1) (hk : k ∣ M) (hk1 : 1 < k) : p ≠ k := by
   rintro rfl
@@ -19,14 +19,14 @@ theorem ne_of_mod_eq_one' {p M k : ℕ} (hp : p % M = 1) (hk : k ∣ M) (hk1 : 1
   exact one_ne_zero h
 
 /- English proof (translation)
-Rewrite using `[natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow D.host.F (𝓞 D.host.F) D.host.E (𝓞 D.host.E)]`. Conclude with `Dvd.dvd.mul_left (dvd_pow_self _ Module.finrank_pos.ne') _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natAbs_discr_F_dvd (D : D7) : (discr D.host.F).natAbs ∣ (discr D.host.E).natAbs := by
   rw [natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow D.host.F (𝓞 D.host.F) D.host.E (𝓞 D.host.E)]
   exact Dvd.dvd.mul_left (dvd_pow_self _ Module.finrank_pos.ne') _
 
 /- English proof (translation)
-Take `⟨hp, hm, -⟩` from `leastSplitAuxiliaryPrimeThetaChain_spec D`. Introduce `h`. Establish `hc : q0 D ∣ Formalism.BasicNotions.LevelStarExponents.condE D` using `D.host.der.discr_primes.1 _ hp (Int.natCast_dvd.2 (h.trans (natAbs_discr_F_dvd D)))`. Conclude with `ne_of_mod_eq_one' hm (dvd_mul_of_dvd_right hc _) hp.one_lt rfl`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem leastSplitAuxiliaryPrime_not_dvd_discr_base (D : D7) : ¬ q0 D ∣ (discr D.host.F).natAbs := by
   obtain ⟨hp, hm, -⟩ := leastSplitAuxiliaryPrimeThetaChain_spec D
@@ -36,11 +36,11 @@ theorem leastSplitAuxiliaryPrime_not_dvd_discr_base (D : D7) : ¬ q0 D ∣ (disc
   exact ne_of_mod_eq_one' hm (dvd_mul_of_dvd_right hc _) hp.one_lt rfl
 
 /- English proof (translation)
-Introduce `h`. Establish `hdisc : ((discr D.host.F : ℤ) : 𝓞 D.host.F) ∈ G.pl.v0.asIdeal` using `Ideal.le_of_dvd h (discr_mem_differentIdeal D.host.F (𝓞 D.host.F))`. Establish `hq : ((q0 D : ℕ) : 𝓞 D.host.F) ∈ G.pl.v0.asIdeal` using `G.pl.basePlace_over_qZero`. Establish `hcop : IsCoprime (q0 D : ℤ) (discr D.host.F)`. Rewrite using `[Int.isCoprime_iff_gcd_eq_one, Int.gcd_comm, Int.gcd, Int.natAbs_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd (leastSplitAuxiliaryPrimeThetaChain_spec D).1).2 (leastSplitAuxiliaryPrime_not_dvd_discr_base D))`. Take `⟨u, v, huv⟩` from `hcop`. Apply `G.pl.v0.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Use `congrArg (Int.cast : ℤ → 𝓞 D.host.F) huv` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at this`. Rewrite using `[← this]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ (by exact_mod_cast hq)) (Ideal.mul_mem_left _ _ hdisc)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_dvd_different {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) :
     ¬ G.pl.v0.asIdeal ∣ differentIdeal ℤ (𝓞 D.host.F) := by

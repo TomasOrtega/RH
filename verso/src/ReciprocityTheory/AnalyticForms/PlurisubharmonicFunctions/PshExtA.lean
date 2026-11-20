@@ -7,38 +7,34 @@ namespace ReciprocityTheory.AnForm.A.PlurisubharmonicExtension
 
 section
 /- English proof (translation)
-Simplify using `only [circleAverage, smul_eq_mul, intervalIntegral.integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cA_mul (b : ℝ) (f : ℂ → ℝ) (c : ℂ) (R : ℝ) :
     circleAverage (fun z => b * f z) c R = b * circleAverage f c R := by
   simp only [circleAverage, smul_eq_mul, intervalIntegral.integral_const_mul]; ring
 
 /- English proof (translation)
-Use `set K := closedBall c r \ ⋃ e ∈ E, ball e (η / 2) with hK`. Establish `hKc : IsCompact K` using `(isCompact_closedBall c r).diff (isOpen_biUnion fun e _ => isOpen_ball)`. Establish `hKE : K ⊆ closedBall c r \ ↑E`. Introduce `x hx`. Use `⟨hx.1, fun hxE => hx.2 ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Set.mem_biUnion hxE (mem_ball_self (by linarith))`. Establish `hζ0K : ζ0 ∈ K`. Use `⟨hζ0, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion, mem_ball, not_exists]`. Introduce `e he hd`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpos : 0 < dist ζ0 e` using `dist_pos.2 (fun h => hζ0E (h ▸ he))`. Conclude with `lt_irrefl _ (hpunct e he ζ0 ⟨hζ0, hζ0E⟩ hpos (by linarith))`. Take `⟨ζ1, hζ1K, hmax⟩` from `hKc.exists_isMaxOn ⟨ζ0, hζ0K⟩ (hcont.mono hKE)`. Establish `h10 : k ζ0 ≤ k ζ1` using `hmax hζ0K`. Establish `hin : dist ζ1 c < r`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `(mem_closedBall.1 hζ1K.1).lt_or_eq with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (hsph ζ1 (mem_sphere.2 h)) (not_lt.2 h10)`. Establish `hfar : ∀ e ∈ E, η ≤ dist ζ1 e`. Introduce `e he`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `h2 : η / 2 ≤ dist ζ1 e`. Assume the negation of the conclusion as `h3`. Use `push Not at h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `hζ1K.2 (Set.mem_biUnion he (mem_ball.2 h3))`. Conclude with `absurd (hpunct e he ζ1 (hKE hζ1K) (by linarith) hlt) (not_lt.2 h10)`. Use `set s := min (r - dist ζ1 c) (η / 2) / 2 with hs`. Establish `hm0 : 0 < min (r - dist ζ1 c) (η / 2)` using `lt_min (by linarith) (by linarith)`. Establish `hs0 : 0 < s` using `by rw [hs]; linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs1 : s ≤ (r - dist ζ1 c) / 2`. Use `min_le_left (r - dist ζ1 c) (η / 2)` as an intermediate fact. Rewrite using `[hs]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs2 : s ≤ η / 4`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `min_le_right (r - dist ζ1 c) (η / 2)` as an intermediate fact. Rewrite using `[hs]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsK : closedBall ζ1 s ⊆ K`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hx'` using `mem_closedBall.1 hx`. Use `⟨mem_closedBall.2 ?_, ?_⟩` and prove the remaining obligations. Combine the linear relations using `[dist_triangle x ζ1 c]`. Simplify using `only [Set.mem_iUnion, mem_ball, not_exists, not_lt]`. Introduce `e he`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h1` using `hfar e he`. Establish `h2` using `dist_triangle ζ1 x e`. Rewrite `h2` using `[dist_comm ζ1 x]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsB : closedBall ζ1 s ⊆ ball c r \ ↑E`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx`. Use `⟨mem_ball.2 ?_, (hKE (hsK hx)).2⟩` and prove the remaining obligations. Establish `hx'` using `mem_closedBall.1 hx`. Combine the linear relations using `[dist_triangle x ζ1 c]`. Establish `hlt` using `hsub ζ1 s hs0 hsB`.
-
-Establish `hle : circleAverage k ζ1 s ≤ k ζ1`. Apply `circleAverage_mono_on_of_le_circle` to reduce the goal to its premises. Apply `ContinuousOn.circleIntegrable hs0.le` to reduce the goal to its premises. Conclude with `(hcont.mono hKE).mono (sphere_subset_closedBall.trans hsK)`. Introduce `x hx`.
-
-Rewrite `hx` using `[abs_of_pos hs0]`. Conclude with `hmax (hsK (sphere_subset_closedBall hx))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mp_core {k : ℂ → ℝ} {c ζ0 : ℂ} {r η : ℝ} {E : Finset ℂ}
     (hζ0 : ζ0 ∈ closedBall c r) (hζ0E : ζ0 ∉ E) (hη : 0 < η)
@@ -109,15 +105,15 @@ theorem mp_core {k : ℂ → ℝ} {c ζ0 : ℂ} {r η : ℝ} {E : Finset ℂ}
   linarith
 
 /- English proof (translation)
-Establish `hpt : ∀ ζ ∈ sphere a |s|, ‖ζ - c‖ ^ 2 = (‖a - c‖ ^ 2 + s ^ 2) + 2 * ((starRingEnd ℂ (a - c)) * (ζ - a)).re`. Introduce `ζ hζ`. Rewrite `hζ` using `[abs_of_nonneg hs, mem_sphere, dist_eq_norm]`. Establish `: ζ - c = (a - c) + (ζ - a)` using `by ring`. Rewrite using `[this, ← hζ, ← Complex.normSq_eq_norm_sq, ← Complex.normSq_eq_norm_sq, ← Complex.normSq_eq_norm_sq, Complex.normSq_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Complex.mul_re]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[circleAverage_congr_sphere hpt]`. Establish `hh : circleAverage (fun ζ => (starRingEnd ℂ (a - c)) * (ζ - a)) a s = 0`. Rewrite using `[circleAverage_of_differentiable_on_off_countable (s := ∅) Set.countable_empty]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Conclude with `(by fun_prop : Continuous fun ζ : ℂ => (starRingEnd ℂ (a - c)) * (ζ - a)).continuousOn`. Introduce `z _`. Use `fun_prop`. Establish `hre : circleAverage (fun ζ => ((starRingEnd ℂ (a - c)) * (ζ - a)).re) a s = 0`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : CircleIntegrable (fun ζ => (starRingEnd ℂ (a - c)) * (ζ - a)) a s` using `(by fun_prop : Continuous fun ζ : ℂ => (starRingEnd ℂ (a - c)) * (ζ - a)).continuousOn.circleIntegrable'`. Use `Complex.reCLM.circleAverage_comp_comm h2` as an intermediate fact. Simplify using `only [Function.comp_def, Complex.reCLM_apply] at this`. Rewrite using `[this, hh]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : circleAverage (fun x => 2 * ((starRingEnd ℂ) (a - c) * (x - a)).re) a s = 2 * circleAverage (fun x => ((starRingEnd ℂ) (a - c) * (x - a)).re) a s` using `cA_mul _ _ _ _`. Rewrite using `[circleAverage_fun_add, circleAverage_const, h2, hre]`. Simplify using the standard rewrite rules. Conclude with `(continuous_const).continuousOn.circleIntegrable'`. Conclude with `(by fun_prop : Continuous fun ζ : ℂ => 2 * ((starRingEnd ℂ (a - c)) * (ζ - a)).re).continuousOn.circleIntegrable'`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem circleAverage_norm_sub_sq (a c : ℂ) {s : ℝ} (hs : 0 ≤ s) :
     circleAverage (fun ζ => ‖ζ - c‖ ^ 2) a s = ‖a - c‖ ^ 2 + s ^ 2 := by
@@ -154,9 +150,9 @@ noncomputable def pert (E : Finset ℂ) (c : ℂ) (ε δ : ℝ) (ζ : ℂ) : ℝ
   ε * ∑ f ∈ E, log ‖ζ - f‖ + δ * ‖ζ - c‖ ^ 2
 
 /- English proof (translation)
-Establish `hlog : ∀ f ∈ E, ContinuousOn (fun ζ : ℂ => log ‖ζ - f‖) (↑E)ᶜ`. Introduce `f hf`. Apply `ContinuousOn.log (by fun_prop)` to reduce the goal to its premises. Introduce `x hx hx0`. Rewrite `hx0` using `[norm_eq_zero, sub_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hx (hx0 ▸ hf)`. Unfold `pert`. Conclude with `(continuousOn_const.mul (continuousOn_finsetSum E hlog)).add (by fun_prop)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pert_continuousOn (E : Finset ℂ) (c : ℂ) (ε δ : ℝ) :
     ContinuousOn (pert E c ε δ) (↑E)ᶜ := by
@@ -170,19 +166,19 @@ theorem pert_continuousOn (E : Finset ℂ) (c : ℂ) (ε δ : ℝ) :
   exact (continuousOn_const.mul (continuousOn_finsetSum E hlog)).add (by fun_prop)
 
 /- English proof (translation)
-Establish `hlogc : ∀ f ∈ E, ContinuousOn (fun ζ : ℂ => log ‖ζ - f‖) (sphere a |s|)`. Introduce `f hf`. Apply `ContinuousOn.log (by fun_prop)` to reduce the goal to its premises. Introduce `x hx hx0`. Rewrite `hx0` using `[norm_eq_zero, sub_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[abs_of_pos hs]`. Conclude with `hE f hf (hx0 ▸ hx)`. Establish `hli : ∀ f ∈ E, CircleIntegrable (fun ζ : ℂ => log ‖ζ - f‖) a s` using `fun f hf => (hlogc f hf).circleIntegrable'`. Establish `hsumc : ContinuousOn (fun ζ : ℂ => ∑ f ∈ E, log ‖ζ - f‖) (sphere a |s|)` using `continuousOn_finsetSum E hlogc`. Establish `hqi : CircleIntegrable (fun ζ : ℂ => δ * ‖ζ - c‖ ^ 2) a s` using `(by fun_prop : Continuous fun ζ : ℂ => δ * ‖ζ - c‖ ^ 2).continuousOn.circleIntegrable'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsi : CircleIntegrable (fun ζ : ℂ => ε * ∑ f ∈ E, log ‖ζ - f‖) a s` using `(continuousOn_const.mul hsumc).circleIntegrable'`. Use `⟨hsi.add hqi, ?_⟩` and prove the remaining obligations. Unfold `pert`. Rewrite using `[circleAverage_fun_add hsi hqi]`. Establish `h1 : circleAverage (fun ζ : ℂ => ε * ∑ f ∈ E, log ‖ζ - f‖) a s = ε * ∑ f ∈ E, circleAverage (fun ζ : ℂ => log ‖ζ - f‖) a s`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show circleAverage (fun ζ : ℂ => ε * ∑ f ∈ E, log ‖ζ - f‖) a s = ε * circleAverage (fun ζ : ℂ => ∑ f ∈ E, log ‖ζ - f‖) a s from cA_mul _ _ _ _]`. Rewrite using `[circleAverage_fun_sum hli]`. Establish `h2 : circleAverage (fun ζ : ℂ => δ * ‖ζ - c‖ ^ 2) a s = δ * (‖a - c‖ ^ 2 + s ^ 2)`. Rewrite using `[show circleAverage (fun ζ : ℂ => δ * ‖ζ - c‖ ^ 2) a s = δ * circleAverage (fun ζ : ℂ => ‖ζ - c‖ ^ 2) a s from cA_mul _ _ _ _]`. Rewrite using `[circleAverage_norm_sub_sq a c hs.le]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2]`. Establish `h3 : ∑ f ∈ E, log ‖a - f‖ ≤ ∑ f ∈ E, circleAverage (fun ζ : ℂ => log ‖ζ - f‖) a s`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `f hf`. Establish `haf : a - f ≠ 0` using `sub_ne_zero.2 (fun h => haE (h ▸ hf))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[circleAverage_log_norm_sub_const_eq_log_radius_add_posLog hs.ne']`. Establish `: log ‖a - f‖ = log s + log (s⁻¹ * ‖a - f‖)`. Rewrite using `[log_mul (inv_ne_zero hs.ne') (norm_ne_zero_iff.2 haf), log_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: log (s⁻¹ * ‖a - f‖) ≤ log⁺ (s⁻¹ * ‖a - f‖)` using `le_max_right _ _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4` using `mul_le_mul_of_nonneg_left h3 hε`. Use the polynomial consequences of the given equalities and inequalities.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem pert_submean {E : Finset ℂ} {c a : ℂ} {s ε δ : ℝ} (hs : 0 < s) (hε : 0 ≤ ε)
     (haE : a ∉ E) (hE : ∀ f ∈ E, f ∉ sphere a s) :
@@ -234,43 +230,39 @@ end
 section
 
 /- English proof (translation)
-Establish `hsph : sphere (0 : ℂ) r ⊆ closedBall 0 r \ ↑F` using `fun x hx => ⟨sphere_subset_closedBall hx, fun hxF => by`. Establish `h1` using `hFr x hxF`. Rewrite `h1` using `[mem_ball]`. Rewrite `hx` using `[mem_sphere]`. Use the proof step `linarith⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ, hΦc, hΦs, hΦ0, hΦm⟩` from `poisson_ext hr (hc.mono hsph)`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Use `set γ := g 0 - Φ 0 with hγ`. Establish `hγ0 : 0 < γ` using `by rw [hγ, hΦ0]; linarith`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Choose the witnesses or unpack the hypotheses as in `⟨BΦ, hBΦ⟩ : ∃ BΦ, ∀ ζ ∈ closedBall (0 : ℂ) r, -Φ ζ ≤ BΦ := by`. Take `⟨M, hM⟩` from `(isCompact_closedBall (0 : ℂ) r).bddAbove_image hΦc.neg`. Conclude with `⟨M, fun ζ hζ => hM ⟨ζ, hζ, rfl⟩⟩`. Use `set L := (F.card : ℝ) * log (2 * r) - ∑ f ∈ F, log ‖(0 : ℂ) - f‖ with hL`. Use `set ε := γ / (4 * (|L| + 1)) with hε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `set δ := γ / (4 * (r ^ 2 + 1)) with hδ`. Establish `hε0 : 0 < ε` using `by positivity`. Establish `hδ0 : 0 < δ` using `by positivity`. Establish `hεL : ε * L < γ / 4`. Establish `: ε * (|L| + 1) = γ / 4` using `by rw [hε]; field_simp`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use polynomial arithmetic with `[le_abs_self L]`. Establish `hδr : δ * r ^ 2 < γ / 4`. Establish `: δ * (r ^ 2 + 1) = γ / 4` using `by rw [hδ]; field_simp`. Use the polynomial consequences of the given equalities and inequalities. Use `set k : ℂ → ℝ := fun ζ => (g ζ - Φ ζ) + pert F 0 ε δ ζ with hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hk0 : k 0 = γ + ε * ∑ f ∈ F, log ‖(0 : ℂ) - f‖`. Simplify using `[hk, pert, hγ]`. Establish `hlog2r : ∀ ζ ∈ closedBall (0 : ℂ) r \ ↑F, ∀ f ∈ F, log ‖ζ - f‖ ≤ log (2 * r)`. Introduce `ζ hζ f hf`. Establish `hne : ζ - f ≠ 0` using `sub_ne_zero.2 (fun h => hζ.2 (h ▸ hf))`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `log_le_log (norm_pos_iff.2 hne)` to reduce the goal to its premises. Establish `h1` using `mem_closedBall_zero_iff.1 hζ.1`. Establish `h2` using `mem_ball_zero_iff.1 (hFr f hf)`. Combine the equalities or inequalities in the displayed calculation. Establish `hsumle : ∀ ζ ∈ closedBall (0 : ℂ) r \ ↑F, ∑ f ∈ F, log ‖ζ - f‖ ≤ (F.card : ℝ) * log (2 * r)`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ζ hζ`. Use `Finset.sum_le_sum (fun f hf => hlog2r ζ hζ f hf)` as an intermediate fact. Simplify using `using this`. Take `⟨η, hη, hηp⟩` from `hgrow ε hε0 (k 0 - BΦ - δ * r ^ 2 - ε * ((F.card : ℝ) * |log (2 * r)|))`. Apply `mp_core (k := k) (c := 0) (ζ0 := 0) (r := r) (E := F) (η := η) (by simp [hr.le]) hF0 hη` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `((hc.sub (hΦc.mono Set.sdiff_subset))).add ((pert_continuousOn F 0 ε δ).mono ?_)` and prove the remaining obligations. Introduce `x hx`. Conclude with `hx.2`. Introduce `ζ hζ`. Establish `hζ'` using `hsph hζ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : g ζ - Φ ζ = 0` using `by rw [hΦs ζ hζ]; ring`. Establish `h2 : ‖ζ - 0‖ ^ 2 = r ^ 2`. Rewrite using `[sub_zero, mem_sphere_zero_iff_norm.1 hζ]`. Establish `h00 : δ * ‖(0 : ℂ) - 0‖ ^ 2 = 0` using `by simp`. Simplify using `only [hk, pert, h1, h2]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hsumle ζ hζ'` as an intermediate fact. Establish `h3` using `mul_le_mul_of_nonneg_left this hε0.le`. Establish `: ε * L = ε * ((F.card : ℝ) * log (2 * r)) - ε * ∑ f ∈ F, log ‖(0 : ℂ) - f‖`. Rewrite using `[hL]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `e he ζ hζ _ hd`. Establish `hgp` using `hηp e he ζ hζ hd`. Establish `hsplit : ∑ f ∈ F, log ‖ζ - f‖ = log ‖ζ - e‖ + ∑ f ∈ F.erase e, log ‖ζ - f‖` using `(Finset.add_sum_erase F _ he).symm`. Establish `herase : ∑ f ∈ F.erase e, log ‖ζ - f‖ ≤ (F.card : ℝ) * |log (2 * r)|`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `Finset.erase_subset e F`. Establish `hq : ‖ζ - 0‖ ^ 2 ≤ r ^ 2`. Rewrite using `[sub_zero]`. Use `mem_closedBall_zero_iff.1 hζ.1` as an intermediate fact.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `gcongr`. Establish `hP` using `hBΦ ζ hζ.1`. Establish `hk' : k ζ = g ζ - Φ ζ + (ε * ∑ f ∈ F, log ‖ζ - f‖ + δ * ‖ζ - 0‖ ^ 2)` using `rfl`. Rewrite using `[hk', hsplit]`. Establish `: δ * ‖ζ - 0‖ ^ 2 ≤ δ * r ^ 2` using `mul_le_mul_of_nonneg_left hq hδ0.le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: ε * ∑ f ∈ F.erase e, log ‖ζ - f‖ ≤ ε * ((F.card : ℝ) * |log (2 * r)|)` using `mul_le_mul_of_nonneg_left herase hε0.le`. Use the polynomial consequences of the given equalities and inequalities. Introduce `a s hs hsub'`. Establish `haF : a ∉ F` using `(hsub' (mem_closedBall_self hs.le)).2`. Establish `hFs : ∀ f ∈ F, f ∉ sphere a s` using `fun f hf hfs => (hsub' (sphere_subset_closedBall hfs)).2 hf`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hpi, hpm⟩` from `pert_submean (c := 0) (δ := δ) hs hε0.le haF hFs`. Establish `hsB : sphere a |s| ⊆ closedBall (0 : ℂ) r \ ↑F`. Rewrite using `[abs_of_pos hs]`. Introduce `x hx`. Use `hsub' (sphere_subset_closedBall hx)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨ball_subset_closedBall this.1, this.2⟩`. Establish `hgi : CircleIntegrable g a s` using `(hc.mono hsB).circleIntegrable'`. Establish `hΦi : CircleIntegrable Φ a s` using `(hΦc.mono (hsB.trans Set.sdiff_subset)).circleIntegrable'`. Establish `hav : circleAverage k a s = circleAverage g a s - circleAverage Φ a s + circleAverage (pert F 0 ε δ) a s`. Establish `e1` using `circleAverage_fun_add (hgi.sub hΦi) hpi`.
-
-Establish `e2 : circleAverage (g - Φ) a s = circleAverage g a s - circleAverage Φ a s` using `circleAverage_fun_sub hgi hΦi`. Simplify using `only [Pi.sub_apply] at e1`. Rewrite using `[hk, e1, e2]`. Establish `hΦa : circleAverage Φ a s = Φ a` using `hΦm a s hs (fun x hx => (hsub' hx).1)`. Establish `hga` using `hsub a s hs hsub'`.
-
-Rewrite using `[hav, hΦa]`. Establish `: 0 < δ * s ^ 2` using `by positivity`. Simplify using `only [hk]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem smg2 {g : ℂ → ℝ} {r : ℝ} {F : Finset ℂ} (hr : 0 < r) (hF0 : (0 : ℂ) ∉ F)
     (hFr : ∀ f ∈ F, f ∈ ball (0 : ℂ) r)
@@ -393,11 +385,11 @@ theorem smg2 {g : ℂ → ℝ} {r : ℝ} {F : Finset ℂ} (hr : 0 < r) (hF0 : (0
     linarith
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `hB`. Use `smg2 hr hF0 hFr hc ?_ hsub` and prove the remaining obligations. Introduce `ε hε T`. Use `⟨exp ((T - B) / ε), exp_pos _, ?_⟩` and prove the remaining obligations. Introduce `e he ζ hζ hd`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : ζ - e ≠ 0` using `sub_ne_zero.2 (fun h => hζ.2 (h ▸ he))`. Establish `hlog : log ‖ζ - e‖ < (T - B) / ε`. Rewrite `hd` using `[dist_eq_norm]`. Conclude with `(log_lt_iff_lt_exp (norm_pos_iff.2 hne)).2 hd`. Establish `: ε * log ‖ζ - e‖ < T - B`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_lt_mul_of_pos_left hlog hε` as an intermediate fact. Rewrite `this` using `[mul_div_cancel₀ _ hε.ne']`. Then use the resulting hypothesis. Combine the linear relations using `[hB ζ hζ]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem smg {g : ℂ → ℝ} {r : ℝ} {F : Finset ℂ} (hr : 0 < r) (hF0 : (0 : ℂ) ∉ F)
     (hFr : ∀ f ∈ F, f ∈ ball (0 : ℂ) r)
@@ -420,9 +412,9 @@ theorem smg {g : ℂ → ℝ} {r : ℝ} {F : Finset ℂ} (hr : 0 < r) (hF0 : (0 
   linarith [hB ζ hζ]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Take `⟨ζ1, hζ1, hmax⟩` from `(isCompact_sphere (0 : ℂ) r).exists_isMaxOn (NormedSpace.sphere_nonempty.2 hr.le) hc`. Establish `hle : circleAverage g 0 r ≤ g ζ1`. Apply `circleAverage_mono_on_of_le_circle` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hc.circleIntegrable hr.le`. Introduce `x hx`. Rewrite `hx` using `[abs_of_pos hr]`. Conclude with `hmax hx`. Combine the linear relations using `[hno ζ1 hζ1]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_sphere_ge {g : ℂ → ℝ} {r : ℝ} (hr : 0 < r)
     (hc : ContinuousOn g (sphere 0 r)) (h : g 0 ≤ circleAverage g 0 r) :

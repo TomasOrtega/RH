@@ -18,7 +18,7 @@ section Schur
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {μ : Measure (GA D V)} {𝓕 : Set (GA D V)}
 
 /- English proof (translation)
-The claim follows from `ipM_spec M μ 𝓕 T T' (by by_contra hn exact h (by rw [ipM, dif_neg hn]))`.
+A detailed English derivation is pending.
 -/
 theorem isMultiplicityInner_of_ne_zero {T T' : MMap M} (h : ipM M μ 𝓕 T T' ≠ 0) : IsMultIP M μ 𝓕 T T' (ipM M μ 𝓕 T T') :=
   ipM_spec M μ 𝓕 T T' (by
@@ -26,13 +26,13 @@ theorem isMultiplicityInner_of_ne_zero {T T' : MMap M} (h : ipM M μ 𝓕 T T' �
     exact h (by rw [ipM, dif_neg hn]))
 
 /- English proof (translation)
-Establish `key : ∀ x y : H.H, inner ℂ x y ≠ (0 : ℂ) → ∃ c, IsMultIP M μ 𝓕 (H.e x) (H.e y) c ∧ inner ℂ x y = d * c` using `fun x y hxy => ⟨_, isMultiplicityInner_of_ne_zero fun h0 => hxy (by rw [h, h0, mul_zero]), h x y⟩`. Distinguish the cases in `hxy : inner ℂ x y = (0 : ℂ)`. Use `swap`. Conclude with `key x y hxy`. Distinguish the cases in `hx : x = 0`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hx` using the available equality. Use `⟨0, fun v v' => ?_, by simp⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hxx : inner ℂ x x ≠ (0 : ℂ)` using `inner_self_ne_zero.2 hx`. Take `⟨c₁, h₁, e₁⟩` from `key x x hxx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c₂, h₂, e₂⟩` from `key x (x + y) (by rwa [inner_add_right, hxy, add_zero])`. Use `⟨c₂ - c₁, fun v v' => ?_, by rw [mul_sub, ← e₁, ← e₂, inner_add_right]; ring⟩` and prove the remaining obligations. Establish `hf : (fun g => star (H.e x v g) * H.e y v' g) = fun g => star (H.e x v g) * H.e (x + y) v' g - star (H.e x v g) * H.e x v' g`. Use function extensionality and compare the values at `g`. Simplify using `only [map_add, MultilinearMap.add_apply, Pi.add_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hf]`. Use `⟨(h₂ v v').1.sub (h₁ v v').1, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_sub (h₂ v v').1 (h₁ v v').1, (h₂ v v').2, (h₁ v v').2, sub_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_schur (H : HMod (MMap M)) (d : ℂ) (h : ∀ x y : H.H, inner ℂ x y = d * ipM M μ 𝓕 (H.e x) (H.e y)) (x y : H.H) :
     ∃ c, IsMultIP M μ 𝓕 (H.e x) (H.e y) c ∧ inner ℂ x y = d * c := by
@@ -59,23 +59,23 @@ theorem exists_schur (H : HMod (MMap M)) (d : ℂ) (h : ∀ x y : H.H, inner ℂ
   rw [integral_sub (h₂ v v').1 (h₁ v v').1, (h₂ v v').2, (h₁ v v').2, sub_mul]
 
 /- English proof (translation)
-The claim follows from `Finset.prod_eq_one fun τ _ => by rw [inner_self_eq_norm_sq_to_K, hv τ]; simp`.
+A detailed English derivation is pending.
 -/
 theorem prod_inner_self {v : M.Vec} (hv : IsUnitV v) : ∏ τ, ⟪(v τ : M.H τ), (v τ : M.H τ)⟫_ℂ = 1 :=
   Finset.prod_eq_one fun τ _ => by rw [inner_self_eq_norm_sq_to_K, hv τ]; simp
 
 /- English proof (translation)
-Use `set s : ℂ := ∏ τ, ⟪(v τ : M.H τ), (v' τ : M.H τ)⟫_ℂ with hs`. Take `⟨c₁, h₁, e₁⟩` from `exists_schur H d h x x`. Take `⟨c₂, h₂, e₂⟩` from `exists_schur H d h y y`. Take `⟨c₃, h₃, e₃⟩` from `exists_schur H d h x y`. Establish `i₁` using `(h₁ v v).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i₂` using `(h₂ v' v').2`. Establish `i₃` using `(h₃ v v').2`. Rewrite `i₁` using `[prod_inner_self hv, mul_one]`. Rewrite `i₂` using `[prod_inner_self hv', mul_one, ← hxy, i₁]`. Rewrite `i₃` using `[← hxy, i₁, ← hs]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `n₁ : inner ℂ x x = inner ℂ y y` using `by rw [e₁, e₂, i₂]`. Establish `n₂ : inner ℂ x (s • y) = inner ℂ x x` using `by rw [inner_smul_right, e₃, e₁, i₃]; ring`. Establish `hn : ‖x‖ = ‖y‖`. Use `congrArg RCLike.re n₁` as an intermediate fact. Rewrite `this` using `[inner_self_eq_norm_sq, inner_self_eq_norm_sq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).1 this`. Establish `hs1 : ‖s‖ ≤ 1`. Rewrite using `[hs, norm_prod]`. Use `Finset.prod_le_one (fun _ _ => norm_nonneg _) fun τ _ => ?_` and prove the remaining obligations. Use `norm_inner_le_norm (𝕜 := ℂ) (v τ : M.H τ) (v' τ : M.H τ)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[hv τ, hv' τ, mul_one]`. Then use the resulting hypothesis. Use `⟨?_, hn⟩` and prove the remaining obligations. Establish `h4` using `norm_sub_sq (𝕜 := ℂ) x (s • y)`. Rewrite `h4` using `[n₂, inner_self_eq_norm_sq, norm_smul, ← hn]`. Establish `h5 : ‖s‖ * ‖x‖ ≤ ‖x‖` using `mul_le_of_le_one_left (norm_nonneg _) hs1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : (‖s‖ * ‖x‖) ^ 2 ≤ ‖x‖ ^ 2` using `pow_le_pow_left₀ (by positivity) h5 2`. Establish `h7 : ‖x - s • y‖ ^ 2 = 0` using `le_antisymm (by linarith) (sq_nonneg _)`. Conclude with `sub_eq_zero.1 (norm_eq_zero.1 (pow_eq_zero_iff two_ne_zero |>.1 h7))`.
+A detailed English derivation is pending.
 -/
 theorem eq_smul_of_eval_eq (H : HMod (MMap M)) (d : ℂ) (h : ∀ x y : H.H, inner ℂ x y = d * ipM M μ 𝓕 (H.e x) (H.e y))
     {v v' : M.Vec} (hv : IsUnitV v) (hv' : IsUnitV v') {x y : H.H} (hxy : H.e x v = H.e y v') :
@@ -110,7 +110,7 @@ theorem eq_smul_of_eval_eq (H : HMod (MMap M)) (d : ℂ) (h : ∀ x y : H.H, inn
   exact sub_eq_zero.1 (norm_eq_zero.1 (pow_eq_zero_iff two_ne_zero |>.1 h7))
 
 /- English proof (translation)
-Use `(eq_smul_of_eval_eq H d h hv hv hxy).1` as an intermediate fact. Rewrite `this` using `[prod_inner_self hv, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem eq_of_eval_eq (H : HMod (MMap M)) (d : ℂ) (h : ∀ x y : H.H, inner ℂ x y = d * ipM M μ 𝓕 (H.e x) (H.e y))
     {v : M.Vec} (hv : IsUnitV v) {x y : H.H} (hxy : H.e x v = H.e y v) : x = y := by
@@ -118,9 +118,9 @@ theorem eq_of_eval_eq (H : HMod (MMap M)) (d : ℂ) (h : ∀ x y : H.H, inner �
   rwa [prod_inner_self hv, one_smul] at this
 
 /- English proof (translation)
-Distinguish the cases in `hs : (∏ τ, ⟪(v τ : M.H τ), (v' τ : M.H τ)⟫_ℂ) = 0`. Use `⟨1, one_ne_zero, fun f => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `eq_smul_of_eval_eq H d h hv hv' (hxy f)`. Rewrite `h1` using `[hs, zero_smul]`. Rewrite `h2` using `[h1, norm_zero]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1, norm_eq_zero.1 h2.symm, smul_zero]`. Conclude with `⟨_, hs, fun f => (eq_smul_of_eval_eq H d h hv hv' (hxy f)).1⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_smul_of_eval_eq (H : HMod (MMap M)) (d : ℂ) (h : ∀ x y : H.H, inner ℂ x y = d * ipM M μ 𝓕 (H.e x) (H.e y))
     {v v' : M.Vec} (hv : IsUnitV v) (hv' : IsUnitV v') {C : Type} {x y : C → H.H} (hxy : ∀ f, H.e (x f) v = H.e (y f) v') :
@@ -142,7 +142,7 @@ variable {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algeb
   {W : (L →+* ℂ) → Type} [∀ σ, NormedAddCommGroup (W σ)] [∀ σ, InnerProductSpace ℂ (W σ)] {G : Type} [Group G]
 
 /- English proof (translation)
-Take `⟨n, b, hb, h1, h2, h3, h4⟩` from `h`. Establish `h5 : LinearIndependent K fun k => (⟨b k, hb k⟩ : F.WK)` using `LinearIndependent.of_comp F.WK.subtype h1`. Establish `h6 : ⊤ ≤ Submodule.span K (Set.range fun k => (⟨b k, hb k⟩ : F.WK))` using `((Submodule.span_range_subtype_eq_top_iff _ hb).2 h2).ge`. Use `⟨n, (Basis.mk h5 h6).map e.symm, Basis.mk h3 h4.ge, fun k => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_bases (F : FormsL L K WL W G) (h : F.IsKsForm) (e : C ≃ₗ[K] F.WK) :
     ∃ (n : ℕ) (b : Basis (Fin n) K C) (B : Basis (Fin n) L WL), ∀ k, B k = (e (b k) : WL) := by
@@ -154,7 +154,7 @@ theorem exists_bases (F : FormsL L K WL W G) (h : F.IsKsForm) (e : C ≃ₗ[K] F
   simp
 
 /- English proof (translation)
-Rewrite using `[← LinearEquiv.eq_symm_apply, Basis.equivFun_symm_apply]`. Use `conv_lhs => rw [← b.sum_repr f]`. Simplify using `only [map_sum, map_smul, Submodule.coe_sum, Submodule.coe_smul, crd_apply, hB, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem equivFun_eq_crd {F : FormsL L K WL W G} {e : C ≃ₗ[K] F.WK} {n : ℕ} {b : Basis (Fin n) K C} {B : Basis (Fin n) L WL}
     (hB : ∀ k, B k = (e (b k) : WL)) (f : C) : B.equivFun (e f : WL) = crd L b f := by
@@ -163,13 +163,13 @@ theorem equivFun_eq_crd {F : FormsL L K WL W G} {e : C ≃ₗ[K] F.WK} {n : ℕ}
   simp only [map_sum, map_smul, Submodule.coe_sum, Submodule.coe_smul, crd_apply, hB, algebraMap_smul]
 
 /- English proof (translation)
-Take `⟨n, b, B, hB⟩` from `exists_bases F h e`. Use `⟨fun m x hx => ?_, ?_⟩` and prove the remaining obligations. Establish `h3 : LinearIndependent ℂ fun k => F.j σ (B k)`. Use `(h1 n b b.linearIndependent).units_smul fun _ => Units.mk0 s hs` as an intermediate fact. Use `this using 2 with k` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[hB, hy]`. Both sides reduce to the same expression. Establish `h4` using `extB_indep σ h3 (hx.map' B.equivFun.toLinearMap B.equivFun.ker)`. Use `h4 using 2 with k` and compare the differences between its conclusion and the goal. Use `conv_lhs => rw [← B.sum_repr (x k)]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_smulₛₗ]`. Both sides reduce to the same expression. Rewrite using `[eq_top_iff, ← h2, Submodule.span_le]`. Introduce and unpack `_ ⟨f, rfl⟩`. Establish `: y f = s⁻¹ • F.j σ (e f : WL)` using `by rw [hy, smul_smul, inv_mul_cancel₀ hs, one_smul]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem indep_span (F : FormsL L K WL W G) (h : F.IsKsForm) (e : C ≃ₗ[K] F.WK) (σ : L →+* ℂ) {y : C → W σ} {s : ℂ} (hs : s ≠ 0)
     (hy : ∀ f, F.j σ (e f : WL) = s • y f)
@@ -198,7 +198,7 @@ theorem indep_span (F : FormsL L K WL W G) (h : F.IsKsForm) (e : C ≃ₗ[K] F.W
 variable {X : Type} [AddCommGroup X] [Module ℂ X]
 
 /- English proof (translation)
-Take `⟨n, b, B, hB⟩` from `exists_bases F h e`. Introduce `g x`. Rewrite using `[← B.sum_repr x]`. Simplify using `only [map_sum, map_smulₛₗ, Finset.smul_sum, RingHom.id_apply, hB, hf]`. Conclude with `Finset.sum_congr rfl fun k _ => smul_comm _ _ _`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rhoIs_of_form (F : FormsL L K WL W G) (h : F.IsKsForm) (e : C ≃ₗ[K] F.WK) (σ : L →+* ℂ) (E : W σ →ₗ[ℂ] X)
     (act : G → X →ₗ[ℂ] X) (chi : G →* Lˣ) (ρ : G →* (WL →ₗ[L] WL))
@@ -211,7 +211,7 @@ theorem rhoIs_of_form (F : FormsL L K WL W G) (h : F.IsKsForm) (e : C ≃ₗ[K] 
   exact Finset.sum_congr rfl fun k _ => smul_comm _ _ _
 
 /- English proof (translation)
-Take `⟨n, b, B, hB⟩` from `exists_bases F h e`. Use `⟨(B.equivFun.symm.conjRingEquiv : _ →* _).comp (rhoB L b ρC), fun g f => ?_⟩` and prove the remaining obligations. Use `show B.equivFun.symm (rhoB L b ρC g (B.equivFun (e f : WL))) = _`. Rewrite using `[equivFun_eq_crd hB, rhoB_crd, ← equivFun_eq_crd hB, LinearEquiv.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ext_action (F : FormsL L K WL W G) (h : F.IsKsForm) (e : C ≃ₗ[K] F.WK) (ρC : G →* (C →ₗ[K] C)) :
     ∃ ρ : G →* (WL →ₗ[L] WL), ∀ g f, ρ g (e f : WL) = (e (ρC g f) : WL) := by
@@ -221,7 +221,7 @@ theorem exists_ext_action (F : FormsL L K WL W G) (h : F.IsKsForm) (e : C ≃ₗ
   rw [equivFun_eq_crd hB, rhoB_crd, ← equivFun_eq_crd hB, LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `h0`. Conclude with `(h 1 (fun _ => x) (linearIndependent_unique_iff.2 h0)).ne_zero 0 hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem injective_of_indep {σ : L →+* ℂ} (j : WL →ₛₗ[σ] W σ)
     (h : ∀ (m : ℕ) (x : Fin m → WL), LinearIndependent L x → LinearIndependent ℂ fun k => j (x k)) : Function.Injective j := by
@@ -239,9 +239,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec}
 
 /- English proof (translation)
-Establish `h1` using `(hu i σ).2`. Rewrite `h1` using `[h]`. Use `subsingleton_of_forall_eq 0 fun x => ?_` and prove the remaining obligations. Establish `hx : x ∈ Submodule.span ℂ (Set.range (0 : Cu T κ i →ₛₗ[res T σ] (R.HW i σ).H))` using `h1 ▸ Submodule.mem_top`. Use `(Submodule.mem_bot ℂ).1 ((Submodule.span_le.2 ?_ : _ ≤ (⊥ : Submodule ℂ _)) hx)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨f, rfl⟩`. Conclude with `(Submodule.mem_bot ℂ).2 rfl`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem subsingleton_of_jTop (hu : JUnif T R κ v₀) {i : Fin D.R.m} {σ : D.what₂.LL →+* ℂ} (h : jTop T R κ v₀ i σ = 0) :
     Subsingleton (R.HW i σ).H := by
@@ -254,7 +254,7 @@ theorem subsingleton_of_jTop (hu : JUnif T R κ v₀) {i : Fin D.R.m} {σ : D.wh
   exact (Submodule.mem_bot ℂ).2 rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `hn (subsingleton_of_jTop hu ?_)` and prove the remaining obligations. Distinguish the cases in `hV : T.V ((i : ℕ) + 1) (res T σ) = Wc D i`. Conclude with `jTop_good0 T R κ v₀ hσ hV fun h' => h ⟨hV, h'⟩`. Rewrite using `[jTop, if_pos hσ, dif_neg hV]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jEvAt_of_nontrivial (hu : JUnif T R κ v₀) {i : Fin D.R.m} {σ : D.what₂.LL →+* ℂ} (hσ : GoodEmb T.Q.c (res T σ))
     (hn : ¬ Subsingleton (R.HW i σ).H) : ∃ hV, JEvAt T R κ v₀ i σ hV := by
@@ -265,7 +265,7 @@ theorem jEvAt_of_nontrivial (hu : JUnif T R κ v₀) {i : Fin D.R.m} {σ : D.wha
   · rw [jTop, if_pos hσ, dif_neg hV]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Conclude with `hn (subsingleton_of_jTop hu (by rw [jTop, if_neg hσ, dif_neg h]))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem jEvBarAt_of_nontrivial (hu : JUnif T R κ v₀) {i : Fin D.R.m} {σ : D.what₂.LL →+* ℂ} (hσ : ¬ GoodEmb T.Q.c (res T σ))
     (hn : ¬ Subsingleton (R.HW i σ).H) : ∃ hV, JEvBarAt T R κ i σ hV := by
@@ -273,7 +273,7 @@ theorem jEvBarAt_of_nontrivial (hu : JUnif T R κ v₀) {i : Fin D.R.m} {σ : D.
   exact hn (subsingleton_of_jTop hu (by rw [jTop, if_neg hσ, dif_neg h]))
 
 /- English proof (translation)
-Take `⟨jK, hjK⟩` from `h`. Take `⟨j', hj'⟩` from `exists_ext_of_isKsForm (R.FW i) (t.ks i) (t.e i) σ jK`. Conclude with `t.ev i σ hσ hV ⟨j', fun f => (congrArg (evAt R i σ (v₀ i σ)) (hj' f)).trans (hjK f)⟩ f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem evAt_jK (t : FWTie T R κ v₀) {i : Fin D.R.m} {σ : D.what₂.LL →+* ℂ} (hσ : GoodEmb T.Q.c (res T σ))
     {hV : T.V ((i : ℕ) + 1) (res T σ) = Wc D i} (h : JEvAt T R κ v₀ i σ hV) (f : Cu T κ i) :
@@ -283,9 +283,9 @@ theorem evAt_jK (t : FWTie T R κ v₀) {i : Fin D.R.m} {σ : D.what₂.LL →+*
   exact t.ev i σ hσ hV ⟨j', fun f => (congrArg (evAt R i σ (v₀ i σ)) (hj' f)).trans (hjK f)⟩ f
 
 /- English proof (translation)
-Distinguish the cases in `hn : Subsingleton (R.HW i σ).H`. Conclude with `⟨1, one_ne_zero, fun f => Subsingleton.elim _ _⟩`. Distinguish the cases in `hσ : GoodEmb T.Q.c (res T σ)`. Take `⟨hV, h⟩` from `jEvAt_of_nontrivial hu hσ hn`. Conclude with `exists_smul_of_eval_eq (R.HW i σ) _ (he i σ).2.2 (t.hv₀ i σ).norm (t.hv₀ i σ).norm fun f => (evAt_jK t hσ h f).trans (jTop_good T R κ v₀ hσ hV h f).symm`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hV, h⟩` from `jEvBarAt_of_nontrivial hu hσ hn`. Take `⟨v, hv, h1⟩` from `(hb i σ hσ hV).1 h`. Take `⟨v', hv', h2⟩` from `jTop_bar T R κ v₀ hσ hV h`. Conclude with `exists_smul_of_eval_eq (R.HW i σ) _ (he i σ).2.2 hv hv' fun f => (h1 f).trans (h2 f).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_jK_eq_smul (t : FWTie T R κ v₀) (he : R.models_HW) (hb : BarTie t) (hu : JUnif T R κ v₀) (i : Fin D.R.m)
     (σ : D.what₂.LL →+* ℂ) : ∃ s : ℂ, s ≠ 0 ∧ ∀ f, t.jK i σ f = s • jTop T R κ v₀ i σ f := by
@@ -301,7 +301,7 @@ theorem exists_jK_eq_smul (t : FWTie T R κ v₀) (he : R.models_HW) (hb : BarTi
     exact exists_smul_of_eval_eq (R.HW i σ) _ (he i σ).2.2 hv hv' fun f => (h1 f).trans (h2 f).symm
 
 /- English proof (translation)
-Take `⟨s, hs, h⟩` from `exists_jK_eq_smul t he hb hu i σ`. Conclude with `indep_span (C := Cu T κ i) (R.FW i) (t.ks i) (t.e i) σ hs h (hu i σ).1 (hu i σ).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem indep_span_of_tie (t : FWTie T R κ v₀) (he : R.models_HW) (hb : BarTie t) (hu : JUnif T R κ v₀) (i : Fin D.R.m)
     (σ : D.what₂.LL →+* ℂ) :
@@ -311,9 +311,7 @@ theorem indep_span_of_tie (t : FWTie T R κ v₀) (he : R.models_HW) (hb : BarTi
   exact indep_span (C := Cu T κ i) (R.FW i) (t.ks i) (t.e i) σ hs h (hu i σ).1 (hu i σ).2
 
 /- English proof (translation)
-Establish `h1 : ChiIs R i (R.FW i).chi` using `fun g => (hc i g).trans (Units.coe_prod _ _).symm`. Establish `h2 : ChiIs R i (chiTop R i)`. Establish `hex : ∃ chi, ChiIs R i chi` using `⟨_, h1⟩`. Rewrite using `[chiTop, dif_pos hex]`. Conclude with `hex.choose_spec`.
-
-Conclude with `MonoidHom.ext fun g => Units.ext (D.what₂.embLL.injective ((h1 g).trans (h2 g).symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_eq_chiTop (hc : R.grp_chiW) (i : Fin D.R.m) : (R.FW i).chi = chiTop R i := by
   have h1 : ChiIs R i (R.FW i).chi := fun g => (hc i g).trans (Units.coe_prod _ _).symm
@@ -330,16 +328,16 @@ theorem jK_apply (t : FWTie T R κ v₀) (i : Fin D.R.m) (σ : D.what₂.LL →+
     t.jK i σ f = (R.FW i).j σ ((t.e i f : (R.FW i).WK) : Fin (R.nW i) → D.what₂.LL) := rfl
 
 /- English proof (translation)
-Rewrite using `[hx, hx', map_smul, map_smul, map_smul, h, smul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem equiv_smul {H X : Type} [AddCommGroup H] [Module ℂ H] [AddCommGroup X] [Module ℂ X] (E : H →ₗ[ℂ] X) (a : X →ₗ[ℂ] X)
     {s c : ℂ} {x x' y y' : H} (hx : x = s • y) (hx' : x' = s • y') (h : E y = c • a (E y')) : E x = c • a (E x') := by
   rw [hx, hx', map_smul, map_smul, map_smul, h, smul_comm]
 
 /- English proof (translation)
-Take `⟨ρC, hρ⟩` from `hg i`. Take `⟨ρ, h1⟩` from `exists_ext_action (C := Cu T κ i) (R.FW i) (t.ks i) (t.e i) ρC`. Use `⟨ρ, fun σ => rhoIs_of_form (C := Cu T κ i) (R.FW i) (t.ks i) (t.e i) σ (R.HW i σ).e (actW R i σ) (R.FW i).chi ρ fun g f => ?_⟩` and prove the remaining obligations. Take `⟨s, -, h⟩` from `exists_jK_eq_smul t he hb hu i σ`. Establish `h2` using `hρ.1 σ g f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h2` using `[← chi_eq_chiTop hc i]`. Establish `h3` using `(congrArg ((R.FW i).j σ) (h1 g f)).trans ((jK_apply t i σ (ρC g f)).symm.trans (h (ρC g f)))`. Establish `h4` using `(jK_apply t i σ f).symm.trans (h f)`. Establish `h5` using `equiv_smul (R.HW i σ).e (actW R i σ g) h3 h4 h2`. Conclude with `h5`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_rhoIs_all (t : FWTie T R κ v₀) (he : R.models_HW) (hc : R.grp_chiW) (hb : BarTie t) (hu : JUnif T R κ v₀)
     (hg : GeoAct T R κ v₀) (i : Fin D.R.m) :
@@ -357,9 +355,9 @@ theorem exists_rhoIs_all (t : FWTie T R κ v₀) (he : R.models_HW) (hc : R.grp_
   exact h5
 
 /- English proof (translation)
-Introduce `i σ`. Use `⟨(indep_span_of_tie t he hb hu i σ).1, (indep_span_of_tie t he hb hu i σ).2, ?_⟩` and prove the remaining obligations. Take `⟨ρ, hρ⟩` from `exists_rhoIs_all t he hc hb hu hg i`. Take `⟨σ₁, h1⟩` from `h0 i`. Establish `e : (R.FW i).ρ = ρ` using `RhoIs.unique (injective_of_indep (W := fun σ => (R.HW i σ).H) _ (indep_span_of_tie t he hb hu i σ₁).1) (he i σ₁).1 h1 (hρ σ₁)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `hρ σ`. Rewrite `h2` using `[← e]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lUnif_of_rhoIs_at (t : FWTie T R κ v₀) (he : R.models_HW) (hc : R.grp_chiW) (hb : BarTie t) (hu : JUnif T R κ v₀)
     (hg : GeoAct T R κ v₀)
@@ -375,7 +373,7 @@ theorem lUnif_of_rhoIs_at (t : FWTie T R κ v₀) (he : R.models_HW) (hc : R.grp
   exact h2
 
 /- English proof (translation)
-Establish `h2 : Formalism.L2.DIV.ext1 (flagL (R.datWp i R.triv)).P.H (flagL (R.datWp i R.triv)).P.chi (Formalism.L2.DIV.rTup (R.βW i) (flagL (R.datWp i R.triv)) (finE (Wc D i) k)) = 1` using `subgroupCharExtension_one_apply _ _`. Unfold `levChi Formalism.L2.DIV.levFn`. Rewrite using `[h2]`. Use `show ((1 * (∏ PP ∈ R.Pg, ∏ c ∈ Finset.range 0, _) * ∏ PP ∈ ∅, _ : ℂˣ) : ℂ) = 1`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem levChi_flag_datWp (i : Fin D.R.m) (k : GA D (Wc D i)) :
     levChi (Wc D i) (R.βW i) (flagL (R.datWp i R.triv)) k = 1 := by
@@ -387,11 +385,11 @@ theorem levChi_flag_datWp (i : Fin D.R.m) (k : GA D (Wc D i)) :
   simp
 
 /- English proof (translation)
-Distinguish the cases in `hk : ∃ k, IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) k`. Use `⟨hk.choose, hk.choose_spec, fun x v h => ?_⟩ show actG0 (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) (x v) h = _` and prove the remaining obligations. Unfold `actG0`. Rewrite using `[dif_pos hk]`. Simplify using `only [levChi_flag_datWp, inv_one, one_mul]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `absurd (subsingleton_of_forall_eq 0 fun x => ?_) hn` and prove the remaining obligations. Establish `h1 : (R.HW i σ).e (R.gW i σ g (R.gW i σ g⁻¹ x)) = 0`. Rewrite using `[hw]`. Use `MultilinearMap.ext fun v => ?_` and prove the remaining obligations. Use `show actG0 (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) _ = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `dif_neg hk`. Rewrite `h1` using `[Representation.self_inv_apply]`. Conclude with `(he i σ).1 (h1.trans (map_zero _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem exists_lift_actW (he : R.models_HW) (hw : R.models_gW) {i : Fin D.R.m} {σ : D.what₂.LL →+* ℂ}
     (hn : ¬ Subsingleton (R.HW i σ).H) (g : G) :
@@ -413,9 +411,9 @@ theorem exists_lift_actW (he : R.models_HW) (hw : R.models_gW) {i : Fin D.R.m} {
     exact (he i σ).1 (h1.trans (map_zero _).symm)
 
 /- English proof (translation)
-Establish `h2 : actW R i σ g ((R.HW i σ).e y) = (R.HW i σ).e (R.gW i σ g y)` using `(hw i σ g _).symm`. Establish `h3 : x = c • R.gW i σ g y`. Use `eq_of_eval_eq (R.HW i σ) _ (he i σ).2.2 hv (funext fun h' => ?_)` and prove the remaining obligations. Establish `h4 : (R.HW i σ).e (c • R.gW i σ g y) = c • actW R i σ g ((R.HW i σ).e y)`. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(R.HW i σ).e.map_smul _ _`. Rewrite using `[h4]`. Conclude with `(h h').trans (congrArg (c * ·) (hk _ v h').symm)`. Rewrite using `[h2]`. Conclude with `(congrArg (R.HW i σ).e h3).trans ((R.HW i σ).e.map_smul _ _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem equiv_of_values (he : R.models_HW) (hw : R.models_gW) {i : Fin D.R.m} {σ : D.what₂.LL →+* ℂ} {v : (R.MW i σ).Vec}
     (hv : IsUnitV v) {g : G} {k : GA D (Wc D i)} (hk : ∀ (x : MMap (R.MW i σ)) v h, actW R i σ g x v h = x v (h * k))
@@ -434,11 +432,11 @@ theorem equiv_of_values (he : R.models_HW) (hw : R.models_gW) {i : Fin D.R.m} {�
 variable {O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)}
 
 /- English proof (translation)
-Establish `hk : ActKeeps (κ` using `κ) O i := fun g f hf => by`. Take `⟨k, hk, -⟩` from `exists_lift_actW he hw hn g`. Conclude with `(hq g k hk f hf).1`. Use `rhoIs_of_form (C := Cu T κ i) (R.FW i) (t.ks i) (t.e i) σ (R.HW i σ).e (actW R i σ) (R.FW i).chi (R.FW i).ρ fun g f => ?_` and prove the remaining obligations. Take `⟨k, hk1, hk2⟩` from `exists_lift_actW he hw hn g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0` using `(hr i).1 hk g f`. Use `h0.elim fun hf h1 => ?_` and prove the remaining obligations. Establish `h5` using `fun h => ((congrFun (hφ ⟨_, hf⟩) h).trans ((hq g k hk1 f f.2).2 h)).trans (congrArg (σ (((R.FW i).chi g : D.what₂.LLˣ) : D.what₂.LL) * ·) (congrFun (hφ f) (h * k)).symm)`. Establish `h6` using `equiv_of_values he hw hv hk2 h5`. Establish `h7` using `(congrArg ((R.FW i).j σ) h1.symm).trans (jK_apply t i σ ⟨_, hf⟩).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h8` using `(congrArg (R.HW i σ).e h7).trans h6`. Rewrite `h8` using `[jK_apply]`. Conclude with `h8`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rhoIs_of_values (t : FWTie T R κ v₀) (he : R.models_HW) (hw : R.models_gW) (hr : RhoGeo t O) {i : Fin D.R.m}
     {σ : D.what₂.LL →+* ℂ} (hn : ¬ Subsingleton (R.HW i σ).H) {v : (R.MW i σ).Vec} (hv : IsUnitV v)
@@ -465,7 +463,7 @@ theorem rhoIs_of_values (t : FWTie T R κ v₀) (he : R.models_HW) (hw : R.model
   exact h8
 
 /- English proof (translation)
-Introduce `g x` and use `by rw [Subsingleton.elim ((R.FW i).j σ ((R.FW i).ρ g x)) 0, Subsingleton.elim ((R.FW i).j σ x) 0, map_zero, map_zero, smul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rhoIs_of_subsingleton {i : Fin D.R.m} {σ : D.what₂.LL →+* ℂ} (hn : Subsingleton (R.HW i σ).H) :
     RhoIs σ ((R.FW i).j σ) (R.HW i σ).e (actW R i σ) (R.FW i).chi (R.FW i).ρ := fun g x => by
@@ -473,7 +471,7 @@ theorem rhoIs_of_subsingleton {i : Fin D.R.m} {σ : D.what₂.LL →+* ℂ} (hn 
 
 omit [Algebra T.Q.c.F D.what₂.LL] in
 /- English proof (translation)
-Establish `key : ∀ (W : HSp D) (hV : T.V ((i : ℕ) + 1) σ = W) (g : GA D W), phiC T hV a f g = (lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) a : ℂ) * castDict hV (adel (T.V ((i : ℕ) + 1) σ) (T.dict ((i : ℕ) + 1) σ) (muPin (T.V ((i : ℕ) + 1) σ) (T.dict ((i : ℕ) + 1) σ) (T.mu ((i : ℕ) + 1) σ) (T.cE ( …`. Introduce `W hV g`. Substitute `hV` using the available equality. Both sides reduce to the same expression. Conclude with `key _ hV h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem phiC_eq_phiAt (i : Fin D.R.m) (σ : T.Q.c.F →+* ℂ) (hV : T.V ((i : ℕ) + 1) σ = Wc D i)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) (f : T.R ((i : ℕ) + 1)) (h : GA D (Wc D i)) :
@@ -488,7 +486,7 @@ theorem phiC_eq_phiAt (i : Fin D.R.m) (σ : T.Q.c.F →+* ℂ) (hV : T.V ((i : �
   exact key _ hV h
 
 /- English proof (translation)
-Take `⟨h1, y, hy, h2⟩` from `hq g k hk f hf`. Use `⟨h1, y, D.what₂.embLL.injective ((hc i g).trans hy.symm), fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[phiC_eq_phiAt, phiC_eq_phiAt, h2, mul_left_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem phiC_equiv (hc : R.grp_chiW) {i : Fin D.R.m} {σ' : T.Q.c.F →+* ℂ} {hV : T.V ((i : ℕ) + 1) σ' = Wc D i}
     (hq : EqAt T R κ (O i) σ' hV (T.cE ((i : ℕ) + 1) σ')) (g : G) (k : GA D (Wc D i))
@@ -502,11 +500,11 @@ theorem phiC_equiv (hc : R.grp_chiW) {i : Fin D.R.m} {σ' : T.Q.c.F →+* ℂ} {
   rw [phiC_eq_phiAt, phiC_eq_phiAt, h2, mul_left_comm]
 
 /- English proof (translation)
-Distinguish the cases in `hn : Subsingleton (R.HW i σ).H`. Conclude with `rhoIs_of_subsingleton hn`. Distinguish the cases in `hσ : GoodEmb T.Q.c (res T σ)`. Take `⟨hV, h⟩` from `jEvAt_of_nontrivial hu hσ hn`. Use `rhoIs_of_values t he hw hr hn (t.hv₀ i σ).norm (φ := phiC T hV (wtA (κ i))) (evAt_jK t hσ h) fun g k hk f hf => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h3, y, hy, h4⟩` from `phiC_equiv hc (h1 hσ hV) g k hk f hf`. Conclude with `⟨h3, fun h => by rw [hy]; exact h4 h⟩`. Take `⟨hV, h⟩` from `jEvBarAt_of_nontrivial hu hσ hn`. Take `⟨v, hv, h5⟩` from `(hb i σ hσ hV).1 h`. Use `rhoIs_of_values t he hw hr hn hv (φ := fun f g => starRingEnd ℂ (phiC T hV (wtA (κ i)) f g)) h5 fun g k hk f hf => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h3, y, hy, h4⟩` from `phiC_equiv hc (h2 hσ hV) g k hk f hf`. Use `⟨h3, fun h => ?_⟩` and prove the remaining obligations. Use `show starRingEnd ℂ _ = _ * starRingEnd ℂ _`. Rewrite using `[hy, h4, map_mul]`. Conclude with `congrArg (· * _) (Complex.conj_conj _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rhoIs_of_eqAt (t : FWTie T R κ v₀) (he : R.models_HW) (hw : R.models_gW) (hc : R.grp_chiW) (hb : BarTie t)
     (hr : RhoGeo t O) (hu : JUnif T R κ v₀) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ)
@@ -541,7 +539,7 @@ def EquivConstExistBase : Prop :=
   ∀ (i : Fin D.R.m) (hV : T.V ((i : ℕ) + 1) T.toCore.σ₀ = Wc D i), ∃ c', CUnit c' ∧ EqAt T R κ (O i) T.toCore.σ₀ hV c'
 
 /- English proof (translation)
-Introduce `i hV` and use `h i _ T.good_σ₀ hV`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem EquivConstExist.base (h : EquivConstExist T R κ O) : EquivConstExistBase T R κ O :=
   fun i hV => h i _ T.good_σ₀ hV
@@ -549,7 +547,7 @@ theorem EquivConstExist.base (h : EquivConstExist T R κ O) : EquivConstExistBas
 variable {F : Face D A}
 
 /- English proof (translation)
-Introduce `i σ` and use `⟨(indep_span_of_tie t hM.HW hb hu i σ).1, (indep_span_of_tie t hM.HW hb hu i σ).2, rhoIs_of_eqAt t hM.HW hM.gW hG.chiW hb hr hu i σ (fun h hV => ha i _ h hV (hx i _ h hV)) fun h hV => ha i _ (good_resC T h) hV (hx i _ (good_resC T h) hV)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem lUnif_of_rhoGeo_equivAll (t : FWTie T R κ v₀) (hM : R.IsModels) (hG : R.IsGrp F) (hb : BarTie t) (hr : RhoGeo t O)
     (ha : EquivAll T R κ O) (hx : EquivConstExist T R κ O) (hu : JUnif T R κ v₀) : R.LUnif := fun i σ =>

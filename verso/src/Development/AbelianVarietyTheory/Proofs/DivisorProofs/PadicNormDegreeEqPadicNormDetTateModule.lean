@@ -14,9 +14,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Rewrite using `[PadicInt.norm_def]`. Use `push_cast`. Establish `h` using `Padic.eq_padicNorm (p := l) (n : ℚ)`. Move the coercions through the operations in `at h`. Rewrite using `[h, padicNorm.eq_zpow_of_nonzero (by exact_mod_cast hn), padicValRat.of_nat]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem norm_natCast_padicInt (l : ℕ) [Fact l.Prime] {n : ℕ} (hn : n ≠ 0) :
     ‖((n : ℕ) : ℤ_[l])‖ = (l : ℝ) ^ (-(padicValNat l n : ℤ)) := by
@@ -29,13 +29,13 @@ theorem norm_natCast_padicInt (l : ℕ) [Fact l.Prime] {n : ℕ} (hn : n ≠ 0) 
   rfl
 
 /- English proof (translation)
-Introduce `K _ l _ hl A f`. Take `⟨hfree, hfin, -, hVfin, -⟩` from `tl_free_finrank K l hl A`. Distinguish the cases in `hf : IsIsogeny (A := A) (B := A) f`. Take `⟨-, -, hpos, -⟩` from `isogeny_flat_finrank K A A f hf`. Take `⟨-, hcard⟩` from `GlobalTheory.T.tateModuleMap_injective_card_coker_of_isogeny K l hl A A f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hdet` using `GlobalTheory.T.norm_det_eq_inv_card_coker l (Tl l A) (tmap l A A f) (padicValNat l (deg f)) hcard`. Express the relevant statement in the definitionally equal form `_ = ‖LinearMap.det (tmap l A A f)‖`. Rewrite using `[hdet, norm_natCast_padicInt l hpos.ne']`. Establish `hdeg : deg (A` using `A) (B := A) f = 0 := by rw [deg, if_neg hf]`. Rewrite using `[hdeg, Nat.cast_zero, norm_zero, eq_comm, norm_eq_zero]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Apply `hf` to reduce the goal to its premises. Rewrite using `[(GlobalTheory.T.isFinite_iff_tateModuleMap_injective_and_isogeny_iff K l hl A A f).2]`. Establish `hu : IsUnit (LinearMap.det (vmap l f))`. Rewrite using `[vmap, LinearMap.det_baseChange]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isUnit_iff_ne_zero).2 ((map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective ℤ_[l] ℚ_[l])).2 hne)`. Rewrite `hu` using `[← LinearMap.isUnit_iff_isUnit_det]`. Conclude with `(Module.End.isUnit_iff _).1 hu`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_deg_eq_norm_det : ∀ (K : Type) [Field K] (l : ℕ) [Fact l.Prime], (l : K) ≠ 0 → ∀ (A : AbVar K) (f : End A),
     ‖((deg (A := A) (B := A) f : ℕ) : ℤ_[l])‖ = ‖LinearMap.det (tend l A f)‖ := by

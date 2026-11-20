@@ -8,7 +8,7 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 namespace PositivityTheory.Xgn.NormalLatticeRange
 
 /- English proof (translation)
-Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (g : R' →+* R'') :
     (dualMap g).comp (dualMap f) = dualMap (g.comp f) := by
@@ -16,7 +16,7 @@ theorem dualMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R'']
   ext <;> simp [dualMap]
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, dualMap_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem specMap_dualMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R')
     (g : R' →+* R'') :
@@ -25,7 +25,7 @@ theorem specMap_dualMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommR
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp, dualMap_comp]
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, Over.comp_left]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem one_left {S : Scheme.{0}} (G : Over S) [GrpObj G] {T : Scheme.{0}} (x : T ⟶ S) :
     (1 : Over.mk x ⟶ G).left = x ≫ (η[G] : 𝟙_ (Over S) ⟶ G).left := by
@@ -33,11 +33,11 @@ theorem one_left {S : Scheme.{0}} (G : Over S) [GrpObj G] {T : Scheme.{0}} (x : 
   congr 1
 
 /- English proof (translation)
-Use `⟨Over.homMk (Spec.map (CommRingCat.ofHom (dualMap φ)) ≫ v.left) ?_, ?_, rfl⟩` and prove the remaining obligations. Establish `hw` using `Over.w v`. Simplify using `only [Category.assoc, hw, epsAt, Over.mk_hom]`. Rewrite using `[← hx, ← Spec.map_comp_assoc, ← Spec.map_comp_assoc, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 3`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `RingHom.ext fun r => TrivSqZeroExt.ext (by simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]) (by simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl])`. Unfold `IsTanAt at hv ⊢`. Rewrite `hv`, the goal using `[one_left]`. Simplify using `only [Over.homMk_left]`. Establish `hring : (TrivSqZeroExt.fstHom R' R' R').toRingHom.comp (dualMap φ) = φ.comp (TrivSqZeroExt.fstHom R R R).toRingHom` using `RingHom.ext fun a => by simp [dualMap]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hring, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, hv, ← hx, Category.assoc]`.
+A detailed English derivation is pending.
 -/
 theorem transport {S : Scheme.{0}} (G : Over S) [GrpObj G] {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R')
     (x : Spec (CommRingCat.of R) ⟶ S) (x' : Spec (CommRingCat.of R') ⟶ S)
@@ -63,15 +63,15 @@ end PositivityTheory.Xgn.NormalLatticeRange
 
 open PositivityTheory.Xgn.NormalLatticeRange in
 /- English proof (translation)
-Introduce `X Ω _ ξ h G _ E _ _ M p Ep _ _ Mp j hj`. Simplify using `only [spMap] at hj`. Establish `hgen1 : (genMap ξ p).comp (regIso h p).symm.toRingHom = algebraMap (regAt ξ p) Ω` using `RingHom.ext fun r => congrArg Subtype.val ((regIso h p).apply_symm_apply r)`. Establish `hgen2 : (algebraMap (regAt ξ p) Ω).comp (regIso h p).toRingHom = genMap ξ p` using `RingHom.ext fun a => rfl`. Apply `Set.Subset.antisymm` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hle : M.lat p ≤ LinearMap.range j`. Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `e ⟨v, hv, he⟩`. Take `⟨v', hv', hv'l⟩` from `transport G (regIso h p).toRingHom (X.fromSpecStalk p.1) (regPt h p) rfl v hv`. Take `⟨e', he'⟩` from `Mp.onto v' hv'`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨e', M.inj (Over.OverMorphism.ext ?_)⟩` and prove the remaining obligations. Rewrite using `[hj, he', hv'l, he, ← Category.assoc, specMap_dualMap_comp, hgen2]`. Conclude with `fun e he => LinearMap.mem_range.1 (hle he)`. Introduce and unpack `_ ⟨e', rfl⟩`. Establish `hx : Spec.map (CommRingCat.ofHom (regIso h p).symm.toRingHom) ≫ regPt h p = X.fromSpecStalk p.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hid : (regIso h p).symm.toRingHom.comp (regIso h p).toRingHom = RingHom.id _`. Use extensionality with `a`. Simplify using the standard rewrite rules. Simplify using `only [regPt, spMap]`. Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hid]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Take `⟨v', hv', hv'l⟩` from `transport G (regIso h p).symm.toRingHom (regPt h p) (X.fromSpecStalk p.1) hx (Mp.pt e') (Mp.tan e')`. Conclude with `Submodule.subset_span ⟨v', hv', by rw [hj, hv'l, ← Category.assoc, specMap_dualMap_comp, hgen1]⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.normal_lattice_range : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (h : IsCptGen ξ) (G : Over X) [GrpObj G] (E : Type) [AddCommGroup E] [Module Ω E] (M : LieModel G ξ E) (p : Cpt ξ) (Ep : Type) [AddCommGroup Ep] [Module (regAt ξ p) Ep] (Mp : LieModel G (regPt h p) Ep) (j : Ep →ₗ[regAt ξ p] E), (∀ e, (M.pt (j e)).left = spMap (dualMap (algebraMap (regAt ξ p) Ω)) ≫ (Mp.pt e).left) → (M.lat p : Set E) = Set.range j := by
   intro X Ω _ ξ h G _ E _ _ M p Ep _ _ Mp j hj

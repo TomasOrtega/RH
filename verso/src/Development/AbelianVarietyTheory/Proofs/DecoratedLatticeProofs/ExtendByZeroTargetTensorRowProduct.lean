@@ -11,7 +11,7 @@ namespace GlobalTheory.FinPl.ExtZero
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [mul_left_comm, hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHalf_mul {e : AE D} {l m n : ℕ} (M : Mx D l m) {x : Mx D m n} (hx : IsHalf e x) : IsHalf e (M ⬝ x) := by
   intro i j
@@ -19,14 +19,14 @@ theorem isHalf_mul {e : AE D} {l m n : ℕ} (M : Mx D l m) {x : Mx D m n} (hx : 
   exact Finset.sum_congr rfl fun l _ => by rw [mul_left_comm, hx]
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [Matrix.add_apply, mul_add, hx i j, hy i j]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isHalf_add {e : AE D} {m n : ℕ} {x y : Mx D m n} (hx : IsHalf e x) (hy : IsHalf e y) : IsHalf e (x + y) := by
   intro i j
   simp only [Matrix.add_apply, mul_add, hx i j, hy i j]
 
 /- English proof (translation)
-Use `⟨fun h => ⟨isHalf_mul _ h, isHalf_mul _ h⟩, fun h => ?_⟩` and prove the remaining obligations. Use `(o.resT T).symm_apply_apply t` as an intermediate fact. Rewrite using `[← this, OrthDec.resT_symm_apply, OrthDec.resT_apply]`. Conclude with `isHalf_add (isHalf_mul _ h.1) (isHalf_mul _ h.2)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHalf_resT_iff {S A L T : HSp D} (o : OrthDec S A L) {e : AE D} (t : WO T S) :
     IsHalf e t ↔ IsHalf e (o.pA ⬝ t) ∧ IsHalf e (o.pB ⬝ t) := by
@@ -41,27 +41,25 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
 
 /- English proof (translation)
-Rewrite using `[rat, Matrix.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_rat_pr {l m : ℕ} (M : Matrix (Fin l) (Fin m) D.host.E) : (rat M).map p.pr = M.map (p.pr.comp (incA D)) := by
   rw [rat, Matrix.map_map]; rfl
 
 /- English proof (translation)
-Use `set ι : D.host.E →+* k := p.pr.comp (incA D) with hι`. Establish `hinj : Function.Injective ι` using `ι.injective`. Use `set c := p.pr (incA D (star ζ ⬝ᵥ L.gram *ᵥ ζ)) with hc`. Establish `hc0 : c ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hζ.2` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `h`. Use `set M := fromRows (α.b' * o.pA.map p.pr) (replicateRow (Fin 1) (c⁻¹ • ((fun j => p.pr (incA D ((star ζ ᵥ* L.gram) j))) ᵥ* o.pB.map p.pr))) with hM`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcol : (fun i => p.pr (ratV (vecB o ζ) i)) = o.iB.map ι *ᵥ fun j => ι (ζ j)`. Use function extensionality and compare the values at `i`. Simplify using `only [ratV, vecB]`. Conclude with `(RingHom.map_mulVec ι o.iB ζ i)`. Establish `hpA : o.pA.map p.pr = o.qA.map ι` using `map_rat_pr _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpB : o.pB.map p.pr = o.qB.map ι` using `map_rat_pr _`. Establish `hjA : o.jA.map p.pr = o.iA.map ι` using `map_rat_pr _`. Establish `key : M * α₀.b = 1`. Rewrite using `[hs, hM, Matrix.fromRows_mul, Matrix.mul_fromCols, Matrix.mul_fromCols, Matrix.fromRows_fromCols_eq_fromBlocks, ← Matrix.fromBlocks_one]`. Establish `eA : o.qA.map ι * o.iA.map ι = 1` using `by rw [← Matrix.map_mul, o.qA_iA]; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eAB : o.qA.map ι * o.iB.map ι = 0` using `by rw [← Matrix.map_mul, o.qA_iB]; simp`. Establish `eBA : o.qB.map ι * o.iA.map ι = 0` using `by rw [← Matrix.map_mul, o.qB_iA]; simp`. Establish `eB : o.qB.map ι * o.iB.map ι = 1` using `by rw [← Matrix.map_mul, o.qB_iB]; simp`. Establish `hu : (fun j => p.pr (incA D ((star ζ ᵥ* L.gram) j))) = fun j => ι ((star ζ ᵥ* L.gram) j)` using `rfl`. Establish `hdot : (fun j => ι ((star ζ ᵥ* L.gram) j)) ⬝ᵥ (fun j => ι (ζ j)) = c`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, Matrix.dotProduct_mulVec, ← RingHom.comp_apply, ← hι, RingHom.map_dotProduct]`. Both sides reduce to the same expression. Rewrite using `[hcol, hpA, hpB, hjA, hu, ← Matrix.smul_vecMul, Matrix.replicateRow_vecMul, Matrix.replicateCol_mulVec]`. Use `congr 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (o.qA.map ι), eA, Matrix.one_mul, α.b'b]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (o.qA.map ι), eAB, Matrix.zero_mul, Matrix.mul_zero]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (o.qB.map ι), eBA, Matrix.zero_mul, Matrix.mul_zero]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (o.qB.map ι), eB, Matrix.one_mul, Matrix.replicateRow_mul_replicateCol]`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, smul_dotProduct, hdot, smul_eq_mul, inv_mul_cancel₀ hc0]`.
-
-Use `fin_cases i`. Use `fin_cases j`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sumFrame_b' {S A L : HSp D} (o : OrthDec S A L) (ζ : Fin L.rank → D.host.E) (hζ : IsLineVec L ζ)
     (α : Frame p A n') (α₀ : Frame p S (n' ⊕ Fin 1)) (hs : IsSumFrame o ζ α α₀) :
@@ -108,9 +106,9 @@ theorem sumFrame_b' {S A L : HSp D} (o : OrthDec S A L) (ζ : Fin L.rank → D.h
     _ = M := by rw [Matrix.mul_assoc, α₀.bb', Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[rd, sumFrame_b' o ζ hζ α α₀ hs, Matrix.fromRows_mul, Matrix.fromRows_mul]`. Use `congr 1`. Rewrite using `[rd, Matrix.map_mul, Matrix.mul_assoc α.b']`. Rewrite using `[← Matrix.replicateRow_vecMul, ← Matrix.replicateRow_vecMul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hv : (fun i => p.pr (((fun j => incA D ((star ζ ᵥ* L.gram) j)) ᵥ* (o.pB ⬝ t)) i)) = (fun j => p.pr (incA D ((star ζ ᵥ* L.gram) j))) ᵥ* (o.pB ⬝ t).map p.pr`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_vecMul p.pr _ _ i`. Rewrite using `[zrow, hv, Matrix.map_mul]`. Simplify using `only [Matrix.smul_vecMul, Matrix.vecMul_vecMul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rd_sumFrame {S A L T : HSp D} (o : OrthDec S A L) (ζ : Fin L.rank → D.host.E) (hζ : IsLineVec L ζ)
     (α : Frame p A n') (α₀ : Frame p S (n' ⊕ Fin 1)) (β : Frame p T n) (hs : IsSumFrame o ζ α α₀) (t : WO T S) :
@@ -127,11 +125,11 @@ theorem rd_sumFrame {S A L T : HSp D} (o : OrthDec S A L) (ζ : Fin L.rank → D
     simp only [Matrix.smul_vecMul, Matrix.vecMul_vecMul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Simplify using `only [OrthDec.boxT, extFun, rowFun]`. Rewrite using `[OrthDec.resT_apply]`. Distinguish the cases in `h : IsHalf p.e t`. Establish `h'` using `(isHalf_resT_iff o t).1 h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[if_pos h, if_pos h'.1, if_pos h'.2, rd_sumFrame o ζ hζ α α₀ β hs t]`. Both sides reduce to the same expression. Rewrite using `[if_neg h]`. Distinguish the cases in `hA : IsHalf p.e (o.pA ⬝ t)`. Rewrite using `[if_neg fun hB => h ((isHalf_resT_iff o t).2 ⟨hA, hB⟩), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hA, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem extFun_tensRow (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (S A L T : HSp D)

@@ -17,7 +17,7 @@ def frameMat (k : ℕ) (u : Fin (k + 1) → ℂ) : Matrix (Fin (k + 1)) (Fin (k 
   else (if i = j then 1 else 0) + u i * star (u j) * (((1 + ‖u (Fin.last k)‖)⁻¹ : ℝ) : ℂ)
 
 /- English proof (translation)
-Distinguish the cases in `h : i = Fin.last k`. Substitute `h` using the available equality. Simplify using `[frameMat]`. Simplify using `[frameMat, h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem frameMat_col (k : ℕ) (u : Fin (k + 1) → ℂ) (i : Fin (k + 1)) :
     frameMat k u i (Fin.last k) = u i := by
@@ -26,7 +26,7 @@ theorem frameMat_col (k : ℕ) (u : Fin (k + 1) → ℂ) (i : Fin (k + 1)) :
   · simp [frameMat, h]
 
 /- English proof (translation)
-Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem frameMat_star_mul_self (t : ℂ) : star t * t = ((‖t‖ ^ 2 : ℝ) : ℂ) := by
   rw [Complex.star_def, Complex.conj_mul']
@@ -37,27 +37,27 @@ section
 variable (k : ℕ) (u : Fin (k + 1) → ℂ)
 
 /- English proof (translation)
-Simplify using `[frameMat, (Fin.castSucc_lt_last x).ne, (Fin.castSucc_lt_last i).ne, Fin.castSucc_inj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frameMat_cc (x i : Fin k) : frameMat k u x.castSucc i.castSucc =
     (if x = i then 1 else 0) + u x.castSucc * star (u i.castSucc) * (((1 + ‖u (Fin.last k)‖)⁻¹ : ℝ) : ℂ) := by
   simp [frameMat, (Fin.castSucc_lt_last x).ne, (Fin.castSucc_lt_last i).ne, Fin.castSucc_inj]
 
 /- English proof (translation)
-Simplify using `[frameMat, (Fin.castSucc_lt_last i).ne]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frameMat_lc (i : Fin k) : frameMat k u (Fin.last k) i.castSucc =
     u (Fin.last k) * (((‖u (Fin.last k)‖)⁻¹ : ℝ) : ℂ) * star (u i.castSucc) := by
   simp [frameMat, (Fin.castSucc_lt_last i).ne]
 
 /- English proof (translation)
-Simplify using `[frameMat, (Fin.castSucc_lt_last x).ne]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frameMat_cl (x : Fin k) : frameMat k u x.castSucc (Fin.last k) = u x.castSucc := by
   simp [frameMat, (Fin.castSucc_lt_last x).ne]
 
 /- English proof (translation)
-Simplify using `[frameMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frameMat_ll : frameMat k u (Fin.last k) (Fin.last k) = u (Fin.last k) := by
   simp [frameMat]
@@ -65,39 +65,35 @@ theorem frameMat_ll : frameMat k u (Fin.last k) (Fin.last k) = u (Fin.last k) :=
 end
 
 /- English proof (translation)
-Rewrite using `[Complex.star_def, Complex.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frameMat_star_ofReal (x : ℝ) : star ((x : ℝ) : ℂ) = (x : ℂ) := by
   rw [Complex.star_def, Complex.conj_ofReal]
 
 /- English proof (translation)
-Use `set t := u (Fin.last k) with ht`. Use `set n : ℝ := ‖t‖ with hn`. Use `set c : ℝ := (1 + n)⁻¹ with hc`. Use `set m : ℝ := n⁻¹ with hm`. Establish `ht2 : star t * t = (n : ℂ) ^ 2` using `by rw [frameMat_star_mul_self]; push_cast; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hreal : (∑ l : Fin k, ‖u l.castSucc‖ ^ 2 : ℝ) = n ^ 2 - 1`. Establish `h1` using `hu`. Simplify using `only [frameMat_star_mul_self] at h1`. Conclude with `h1` after adjusting the coercions. Establish `hn1 : 1 ≤ n ^ 2`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `: 0 ≤ (∑ l : Fin k, ‖u l.castSucc‖ ^ 2 : ℝ)` using `Finset.sum_nonneg (fun _ _ => by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnpos : 0 < n`. Establish `: 0 ≤ n` using `norm_nonneg _`. Break down `this.eq_or_lt with h | h` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hn1` using `[← h]`. Evaluate the numerical expressions using `at hn1`. Conclude with `h`. Establish `key : (2 : ℂ) * (c : ℂ) + ((n : ℂ) ^ 2 - 1) * (c : ℂ) ^ 2 - (n : ℂ) ^ 2 * (m : ℂ) ^ 2 = 0`. Establish `: (2 * c + (n ^ 2 - 1) * c ^ 2 - n ^ 2 * m ^ 2 : ℝ) = 0`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, hm]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions. Establish `key2 : (1 : ℂ) + ((n : ℂ) ^ 2 - 1) * (c : ℂ) - (n : ℂ) ^ 2 * (m : ℂ) = 0`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `: (1 + (n ^ 2 - 1) * c - n ^ 2 * m : ℝ) = 0`. Rewrite using `[hc, hm]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Establish `hne : ∀ x : Fin k, (Fin.last k = x.castSucc) = False` using `fun x => eq_false (fun h => Fin.castSucc_ne_last x h.symm)`. Establish `hne' : ∀ x : Fin k, (x.castSucc = Fin.last k) = False` using `fun x => eq_false (Fin.castSucc_ne_last x)`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Hb, Matrix.mul_diagonal, Matrix.conjTranspose_apply, Fin.sum_univ_castSucc]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the cases of `i using Fin.lastCases with`. Consider the case `last`. Consider the cases of `j using Fin.lastCases with`. Consider the case `last`. Simplify using `only [frameMat_ll, frameMat_cl, Matrix.diagonal_apply, hne', if_true, if_false, mul_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hu]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `cast j`. Simplify using `only [frameMat_ll, frameMat_cl, frameMat_lc, frameMat_cc, Matrix.diagonal_apply, hne, hne', if_true, if_false, mul_one, ← ht, ← hn, ← hc, ← hm]`. Establish `hpt : ∀ x : Fin k, star (u x.castSucc) * ((if x = j then (1 : ℂ) else 0) + u x.castSucc * star (u j.castSucc) * (c : ℂ)) = (if x = j then star (u j.castSucc) else 0) + star (u x.castSucc) * u x.castSucc * (star (u j.castSucc) * (c : ℂ))`.
+Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `intro x; split_ifs with h <;> [subst h; skip] <;> ring`. Rewrite using `[Finset.sum_congr rfl (fun x _ => hpt x)]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true, ← Finset.sum_mul, hu, star_mul, frameMat_star_ofReal, star_star]`. Take the linear combination `(star (u j.castSucc)) * key2 + (star (u j.castSucc) * (c : ℂ) - star (u j.castSucc) * (m : ℂ)) * ht2`. Consider the case `cast i`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Consider the cases of `j using Fin.lastCases with`. Consider the case `last`. Simplify using `only [frameMat_ll, frameMat_cl, frameMat_lc, frameMat_cc, Matrix.diagonal_apply, hne, hne', if_true, if_false, mul_one, ← ht, ← hn, ← hc, ← hm]`. Establish `hpt : ∀ x : Fin k, star ((if x = i then (1 : ℂ) else 0) + u x.castSucc * star (u i.castSucc) * (c : ℂ)) * u x.castSucc = (if x = i then u i.castSucc else 0) + star (u x.castSucc) * u x.castSucc * (u i.castSucc * (c : ℂ))`. Apply the tactic sequence `intro x; split_ifs with h <;> [subst h; skip] <;> simp only [star_add, star_mul, frameMat_star_ofReal, star_star, star_one, star_zero] <;> ring`.
+Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Rewrite using `[Finset.sum_congr rfl (fun x _ => hpt x)]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true, ← Finset.sum_mul, hu, star_mul, frameMat_star_ofReal, star_star]`. Take the linear combination `(u i.castSucc) * key2 + (u i.castSucc * (c : ℂ) - u i.castSucc * (m : ℂ)) * ht2`. Consider the case `cast j`. Simplify using `only [frameMat_ll, frameMat_cl, frameMat_lc, frameMat_cc, Matrix.diagonal_apply, hne, hne', if_true, if_false, mul_one, Fin.castSucc_inj, ← ht, ← hn, ← hc, ← hm]`.
-
-Establish `hpt : ∀ x : Fin k, star ((if x = i then (1 : ℂ) else 0) + u x.castSucc * star (u i.castSucc) * (c : ℂ)) * ((if x = j then (1 : ℂ) else 0) + u x.castSucc * star (u j.castSucc) * (c : ℂ)) = (if x = i then (if i = j then 1 else 0) + u i.castSucc * star (u j.castSucc) * (c : ℂ) else …`. Apply the tactic sequence `intro x; split_ifs <;> subst_vars <;> first`. Consider the case `exact (‹¬ _ = _› rfl).elim`. Consider the case `(simp only [star_add, star_mul, frameMat_star_ofReal, star_star, star_one, star_zero]; ring)`. Rewrite using `[Finset.sum_congr rfl (fun x _ => hpt x)]`.
-
-Simplify using `only [Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true, ← Finset.sum_mul, hu, star_mul, frameMat_star_ofReal, star_star]`. Take the linear combination `(u i.castSucc * star (u j.castSucc)) * key + (u i.castSucc * star (u j.castSucc) * (c : ℂ) ^ 2 - u i.castSucc * star (u j.castSucc) * (m : ℂ) ^ 2) * ht2`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem frameMat_unitary (k : ℕ) (u : Fin (k + 1) → ℂ)
     (hu : ∑ l : Fin k, star (u l.castSucc) * u l.castSucc = star (u (Fin.last k)) * u (Fin.last k) - 1) :
@@ -196,11 +192,11 @@ Both sides reduce to the same expression.
 theorem frame_wI_val (k r : ℕ) (j : Fin (k + 1)) : (wI k r j).val = r + j.val := rfl
 
 /- English proof (translation)
-Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Rewrite using `[if_pos rfl]`. Distinguish the cases in `hj : j.val < r ∨ r + k < j.val`. Rewrite using `[hz j hj, mul_zero, mul_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Unfold `Hpk frameCoef`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | simp_all`. Rewrite using `[if_neg hij]`. Distinguish the cases in `hj : j.val < r ∨ r + k < j.val`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hz j hj, mul_zero]`. Establish `hv : j.val ≠ i.val` using `fun h => hij (Fin.ext h)`. Unfold `Hpk`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | simp_all | simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem frame_Hpk_mul (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (i j : Fin (2 * r + k + 1)) :
     Hpk k r i j * z j = if j = i then frameCoef k r i * z i else 0 := by
@@ -220,17 +216,17 @@ theorem frame_Hpk_mul (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k
       split_ifs <;> first | (exfalso; omega) | simp_all | simp
 
 /- English proof (translation)
-Establish `hrow : ∀ i, (Hpk k r *ᵥ z) i = frameCoef k r i * z i`. Introduce `i`. Use `show ∑ j, Hpk k r i j * z j = _`. Rewrite using `[Finset.sum_congr rfl (fun j _ => frame_Hpk_mul k r z hz i j)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `show ∑ i, star (z i) * (Hpk k r *ᵥ z) i = _`. Simplify using `only [hrow]`. Establish `hinj : Function.Injective (wI k r)`. Introduce `a b h`. Establish `h'` using `congrArg Fin.val h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h'` using `[frame_wI_val, frame_wI_val]`. Conclude with `Fin.ext (by omega)`. Establish `hsub : ∑ i, star (z i) * (frameCoef k r i * z i) = ∑ i ∈ Finset.univ.image (wI k r), star (z i) * (frameCoef k r i * z i)`. Use `symm`. Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce `i _ hi`. Establish `hn : ¬ (r ≤ i.val ∧ i.val ≤ r + k)`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `hi (Finset.mem_image.2 ⟨⟨i.val - r, by omega⟩, Finset.mem_univ _, Fin.ext (by rw [frame_wI_val]; simp; omega)⟩)`. Simplify using `[frameCoef, hn]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc1 : ∀ l : Fin k, frameCoef k r (wI k r l.castSucc) = 1`. Introduce `l`. Establish `hl` using `l.isLt`. Establish `h1 : r ≤ r + (l : ℕ) ∧ r + (l : ℕ) ≤ r + k` using `by omega`. Establish `h3 : (l : ℕ) ≠ k` using `by omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[frameCoef, frame_wI_val, h1, h3]`. Establish `hc2 : frameCoef k r (wI k r (Fin.last k)) = -1`. Simplify using `[frameCoef, frame_wI_val]`. Rewrite using `[hsub, Finset.sum_image (fun a _ b _ h => hinj h), Fin.sum_univ_castSucc]`. Simplify using `only [hc1, hc2, one_mul, neg_one_mul, mul_neg, sub_eq_add_neg]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame_herm (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) :
     herm (Hpk k r) z z = ∑ l : Fin k, star (z (wI k r l.castSucc)) * z (wI k r l.castSucc) -

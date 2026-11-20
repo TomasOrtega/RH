@@ -23,12 +23,12 @@ variable {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)}
 def rep (x : Pts P) : (Σ k, ι k) → ℂ := x.2.choose
 
 /- English proof (translation)
-The claim follows from `x.2.choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem rep_mem (x : Pts P) : rep x ∈ conePts P := x.2.choose_spec.1
 
 /- English proof (translation)
-The claim follows from `x.2.choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem proj_rep (x : Pts P) : proj (rep x) = x.1 := x.2.choose_spec.2
 
@@ -58,7 +58,7 @@ def bd (D : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (p : (k : K) → ι k) :
   ((chartIdeal (P ⊔ D) p).map (renR (Σ k, ι k) : MvPolynomial (Σ k, ι k) ℂ →+* _)).radical
 
 /- English proof (translation)
-The claim follows from `Ideal.finite_minimalPrimes_of_isNoetherianRing _ I`.
+A detailed English derivation is pending.
 -/
 theorem finite_minimalPrimes (I : Ideal (MvPolynomial (Σ k, ι k) ℂ)) : I.minimalPrimes.Finite :=
   Ideal.finite_minimalPrimes_of_isNoetherianRing _ I
@@ -81,16 +81,16 @@ def ordAlong (Q P : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (f : MvPolynomial (Σ
   sSup {m : ℕ | ∃ s ∉ Q, s * f ∈ Q ^ m ⊔ P}
 
 /- English proof (translation)
-Conclude with `(Set.Finite.mem_toFinset _).1 ((finite_minimalPrimes (P ⊔ D)).toFinset.equivFin.symm k).2`.
+A detailed English derivation is pending.
 -/
 theorem compIdeal_mem (D : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (k : Fin (rc P D)) :
     compIdeal P D k ∈ (P ⊔ D).minimalPrimes := by
   exact (Set.Finite.mem_toFinset _).1 ((finite_minimalPrimes (P ⊔ D)).toFinset.equivFin.symm k).2
 
 /- English proof (translation)
-Unfold `lift`. Use `split_ifs with h`. Take `⟨k, i⟩` from `q`. Simplify using `only at h`. Substitute `h` using the available equality.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[affCoord, hx k]`. Simplify using `[coord, renPt]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval_lift (p : (k : K) → ι k) (x : Pts P) (hx : x ∈ src P p) (q : Σ k, ι k) :
     eval (coord P p x) (lift p q) = affCoord p (rep x) q := by

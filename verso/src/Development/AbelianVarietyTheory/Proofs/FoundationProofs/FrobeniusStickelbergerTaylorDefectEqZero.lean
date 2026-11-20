@@ -27,7 +27,7 @@ def entireRing : Subring (ℂ → ℂ) where
     exact (hF.neg : Differentiable ℂ (fun z => -F z))
 
 /- English proof (translation)
-Simplify using `[tay, PowerSeries.coeff_mk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tay_coeff (F : ℂ → ℂ) (n : ℕ) : PowerSeries.coeff n (tay F) = coef1 F n := by
   simp [tay, PowerSeries.coeff_mk]
@@ -59,7 +59,7 @@ def scaleE (β : ℂ) (F : entireRing) : entireRing :=
   ⟨fun z => F.1 (β * z), F.2.comp (differentiable_id.const_mul β)⟩
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_rescale]`. Use `show β ^ n * PowerSeries.coeff n (tay F.1) = PowerSeries.coeff n (tay (fun z => F.1 (β * z)))`. Rewrite using `[tay_coeff, tay_coeff, GlobalTheory.SerTransport.taylorCoeff_scale_entire F.2]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rescale_tayHom (β : ℂ) (F : entireRing) :
     PowerSeries.rescale β (tayHom F) = tayHom (scaleE β F) := by
@@ -73,19 +73,19 @@ end GlobalTheory.FrobStick
 namespace GlobalTheory.FrobStick
 
 /- English proof (translation)
-Introduce `hLine hRestr hId Λ hL v hv`. Establish `hS : Differentiable ℂ (sgStar Λ)` using `hL.differentiable`. Establish `hQ : Differentiable ℂ (sqTh Λ v)` using `hL.differentiable_sqTh v`. Establish `hdS : Differentiable ℂ (deriv (sgStar Λ))` using `fun z => ((hS.analyticAt z).deriv).differentiableAt`. Establish `hdQ : Differentiable ℂ (deriv (sqTh Λ v))` using `fun z => ((hQ.analyticAt z).deriv).differentiableAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : Differentiable ℂ (colA Λ)` using `(hS.pow 3 : Differentiable ℂ (fun z => sgStar Λ z ^ 3))`. Establish `hB : Differentiable ℂ (colB Λ v)` using `(hS.mul (hQ.add ((hS.pow 2).const_mul (wpF Λ v))) : Differentiable ℂ (fun z => sgStar Λ z * (sqTh Λ v z + wpF Λ v * sgStar Λ z ^ 2)))`. Establish `hC : Differentiable ℂ (colC Λ v)` using `((hS.mul hdQ).sub ((hdS.const_mul 2).mul hQ) : Differentiable ℂ (fun z => sgStar Λ z * deriv (sqTh Λ v) z - 2 * deriv (sgStar Λ) z * sqTh Λ v z))`. Set `a : Fin 3 → entireRing` to `![⟨colA Λ, hA⟩, ⟨colB Λ v, hB⟩, ⟨colC Λ v, hC⟩]`. Set `s : entireRing` to `⟨sgStar Λ, hS⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `ha : ∀ j, tay (![colA Λ, colB Λ v, colC Λ v] j) = tayHom (a j)`. Apply the tactic sequence `intro j; fin_cases j <;> rfl`. Apply `hLine ℂ` to reduce the goal to its premises. Introduce `t`. Rewrite using `[hRestr]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (Matrix.of fun i j => PowerSeries.rescale (t i) (tay (![colA Λ, colB Λ v, colC Λ v] j))) = tayHom.mapMatrix (Matrix.of fun i j => scaleE (t i) (a j))`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, ha, rescale_tayHom]`. Establish `es : tay (sgStar Λ) = tayHom s` using `rfl`. Rewrite using `[e1, ← RingHom.map_det, es, rescale_tayHom, rescale_tayHom, rescale_tayHom, rescale_tayHom, show (2 : PowerSeries ℂ) = tayHom 2 from (map_ofNat tayHom 2).symm, ← map_mul, ← map_mul, ← map_mul, ← map_mul, ← map_sub]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `map_zero tayHom` and compare the differences between its conclusion and the goal. Use `Subtype.ext (funext fun z => ?_)` and prove the remaining obligations. Set `φ : entireRing →+* ℂ` to `(Pi.evalRingHom (fun _ : ℂ => ℂ) z).comp entireRing.subtype`. Rewrite using `[ZeroMemClass.coe_zero, Pi.zero_apply]`. Establish `hφ : ∀ x : entireRing, (x : ℂ → ℂ) z = φ x` using `fun x => rfl`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hφ]`. Rewrite using `[map_sub, RingHom.map_det, map_mul, map_mul, map_mul, map_mul, map_ofNat]`. Establish `hm : φ.mapMatrix (Matrix.of fun i j => scaleE (t i) (a j)) = Matrix.of fun i j => ![colA Λ, colB Λ v, colC Λ v] j ((fun i => t i * z) i)`. Apply the tactic sequence `ext i j; fin_cases j <;> rfl`. Rewrite using `[hm, hId Λ hL v hv (fun i => t i * z)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ - 2 * sgStar Λ ((t 0 + t 1 + t 2) * z) * sgStar Λ ((t 0 - t 1) * z) * sgStar Λ ((t 1 - t 2) * z) * sgStar Λ ((t 2 - t 0) * z) = 0`. Simplify using `only [add_mul, sub_mul, sub_self]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem tay_defect_eq_zero : (∀ (K : Type) [Field K] [Infinite K] (Φ : MvPowerSeries (Fin 3) K), (∀ t : Fin 3 → K, (MvPowerSeries.subst (fun i => (PowerSeries.C (t i) * PowerSeries.X : PowerSeries K)) Φ : PowerSeries K) = 0) → Φ = 0) → (∀ (R : Type) [CommRing R] (f : Fin 3 → PowerSeries R) (s : PowerSeries R) (t : Fin 3 → R), (MvPowerSeries.subst (fun i => (PowerSeries.C (t i) * PowerSeries.X : PowerSeries R)) (GlobalTheory.FrobStick.defect f s) : PowerSeries R) = Matrix.det (Matrix.of fun i j => PowerSeries.rescale (t i) (f j)) - 2 * PowerSeries.rescale (t 0 + t 1 + t 2) s * PowerSeries.rescale (t 0 - t 1) s * PowerSeries.rescale (t 1 - t 2) s * PowerSeries.rescale (t 2 - t 0) s) → (∀ (Λ : AddSubgroup ℂ), IsLat Λ → ∀ v : ℂ, v ∉ Λ → ∀ z : Fin 3 → ℂ, Matrix.det (Matrix.of fun i j => ![GlobalTheory.FrobStick.colA Λ, GlobalTheory.FrobStick.colB Λ v, GlobalTheory.FrobStick.colC Λ v] j (z i)) = 2 * sgStar Λ (z 0 + z 1 + z 2) * sgStar Λ (z 0 - z 1) * sgStar Λ (z 1 - z 2) * sgStar Λ (z 2 - z 0)) → ∀ (Λ : AddSubgroup ℂ), IsLat Λ → ∀ v : ℂ, v ∉ Λ → GlobalTheory.FrobStick.defect (fun j => GlobalTheory.FrobStick.tay (![GlobalTheory.FrobStick.colA Λ, GlobalTheory.FrobStick.colB Λ v, GlobalTheory.FrobStick.colC Λ v] j)) (GlobalTheory.FrobStick.tay (sgStar Λ)) = 0 := by
   intro hLine hRestr hId Λ hL v hv

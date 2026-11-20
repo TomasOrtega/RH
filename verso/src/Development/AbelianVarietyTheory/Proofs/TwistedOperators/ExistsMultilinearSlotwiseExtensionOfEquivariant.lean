@@ -21,9 +21,9 @@ def Invariant (A B : ∀ τ, Submodule ℂ (H τ)) (Rk Rg : ∀ τ, Set ((H τ �
       ∀ r ∈ Rg τ, ∀ x ∈ B τ, T (update u τ (r.1 x)) = r.2 (T (update u τ x)))
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [MultilinearMap.toLinearMap_apply]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[update_of_ne hj, h j hj]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem toLinearMap_congr (T : MultilinearMap ℂ H E) {w w' : ∀ τ, H τ} (i : ι)
     (h : ∀ j, j ≠ i → w j = w' j) : T.toLinearMap w i = T.toLinearMap w' i := by
@@ -36,7 +36,7 @@ theorem toLinearMap_congr (T : MultilinearMap ℂ H E) {w w' : ∀ τ, H τ} (i 
   · simp [update_of_ne hj, h j hj]
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [MultilinearMap.toLinearMap_apply, LinearMap.add_apply]`. Rewrite using `[update_comm h, update_comm h, update_comm h, T.map_update_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem toLinearMap_update_add (T : MultilinearMap ℂ H E) {i j : ι} (h : i ≠ j) (w : ∀ τ, H τ)
     (x y : H i) : T.toLinearMap (update w i (x + y)) j =
@@ -46,7 +46,7 @@ theorem toLinearMap_update_add (T : MultilinearMap ℂ H E) {i j : ι} (h : i �
   rw [update_comm h, update_comm h, update_comm h, T.map_update_add]
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [MultilinearMap.toLinearMap_apply, LinearMap.smul_apply]`. Rewrite using `[update_comm h, update_comm h, T.map_update_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem toLinearMap_update_smul (T : MultilinearMap ℂ H E) {i j : ι} (h : i ≠ j) (w : ∀ τ, H τ)
     (c : ℂ) (x : H i) : T.toLinearMap (update w i (c • x)) j = c • T.toLinearMap (update w i x) j := by
@@ -62,75 +62,65 @@ variable {ι : Type} [DecidableEq ι] {H : ι → Type} [∀ τ, AddCommGroup (H
   {E : Type} [AddCommGroup E] [Module ℂ E]
 
 /- English proof (translation)
-Take `⟨hTa, hTb, hTc⟩` from `hT`. Use `set D' := piecewiseSubmodule A B (insert τ₀ s) with hD'`. Establish `hD'0 : D' τ₀ = B τ₀` using `if_pos (Finset.mem_insert_self τ₀ s)`. Establish `hBD' : ∀ x ∈ B τ₀, x ∈ D' τ₀` using `fun x hx => by rw [hD'0]; exact hx`. Establish `hD'B : ∀ x ∈ D' τ₀, x ∈ B τ₀` using `fun x hx => by rw [← hD'0]; exact hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD'ne : ∀ τ, τ ≠ τ₀ → D' τ = piecewiseSubmodule A B s τ`. Introduce `τ hτ`. Simplify using `only [hD', piecewiseSubmodule, Finset.mem_insert, hτ, false_or]`. Establish `hAD' : ∀ τ, ∀ x ∈ A τ, x ∈ D' τ`. Introduce `τ x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hD', piecewiseSubmodule]`. Use `split_ifs`. Conclude with `hAB τ hx`. Conclude with `hx`. Establish `hD0 : piecewiseSubmodule A B s τ₀ = A τ₀` using `if_neg hτ₀`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hret` using `fun τ => (D' τ).subtype.exists_leftInverse_of_injective (Submodule.ker_subtype _)`. Use `choose g hg using hret`. Set `R : ∀ τ, H τ →ₗ[ℂ] H τ` to `fun τ => (D' τ).subtype ∘ₗ g τ`. Establish `hRmem : ∀ τ x, R τ x ∈ D' τ` using `fun τ x => (g τ x).2`. Establish `hRid : ∀ τ, ∀ x ∈ D' τ, R τ x = x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ x hx`. Use `congrArg (fun f => ((f ⟨x, hx⟩ : D' τ) : H τ)) (hg τ)` as an intermediate fact. Simplify `this` using `[R]`. Establish `goodL : ∀ w : ∀ τ, H τ, (∀ τ', τ' ≠ τ₀ → w τ' ∈ D' τ') → ∀ r ∈ Rk τ₀, ∀ x ∈ A τ₀, T.toLinearMap w τ₀ (r.1 x) = r.2 (T.toLinearMap w τ₀ x)`. Introduce `w hw r hr x hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [MultilinearMap.toLinearMap_apply]`. Conclude with `hTb τ₀ hτ₀ w (fun τ' h => by rw [← hD'ne τ' h]; exact hw τ' h) r hr x hx`. Use `choose! Ext hExtC hExtG hExtA using hext τ₀`. Establish `ExtAdd : ∀ L₁ L₂ : H τ₀ →ₗ[ℂ] E, (∀ r ∈ Rk τ₀, ∀ x ∈ A τ₀, L₁ (r.1 x) = r.2 (L₁ x)) → (∀ r ∈ Rk τ₀, ∀ x ∈ A τ₀, L₂ (r.1 x) = r.2 (L₂ x)) → ∀ b ∈ B τ₀, Ext (L₁ + L₂) b = Ext L₁ b + Ext L₂ b`. Introduce `L₁ L₂ h₁ h₂ b hb`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h₁₂ : ∀ r ∈ Rk τ₀, ∀ x ∈ A τ₀, (L₁ + L₂) (r.1 x) = r.2 ((L₁ + L₂) x)`. Introduce `r hr x hx`. Simplify using `only [LinearMap.add_apply, map_add, h₁ r hr x hx, h₂ r hr x hx]`. Use `huniq τ₀ (Ext (L₁ + L₂) - Ext L₁ - Ext L₂) (sub_mem (sub_mem (hExtC _ h₁₂) (hExtC _ h₁)) (hExtC _ h₂)) (by` as an intermediate fact. Introduce `x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.sub_apply, LinearMap.add_apply, hExtA _ h₁₂ x hx, hExtA _ h₁ x hx, hExtA _ h₂ x hx]`. Use the proof step `abel) b hb`. Simplify using `only [LinearMap.sub_apply] at this`. Rewrite `this` using `[sub_sub, sub_eq_zero]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `ExtSmul : ∀ (c : ℂ) (L : H τ₀ →ₗ[ℂ] E), (∀ r ∈ Rk τ₀, ∀ x ∈ A τ₀, L (r.1 x) = r.2 (L x)) → ∀ b ∈ B τ₀, Ext (c • L) b = c • Ext L b`. Introduce `c L h b hb`. Establish `hc : ∀ r ∈ Rk τ₀, ∀ x ∈ A τ₀, (c • L) (r.1 x) = r.2 ((c • L) x)`. Introduce `r hr x hx`. Simplify using `only [LinearMap.smul_apply, map_smul, h r hr x hx]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `huniq τ₀ (Ext (c • L) - c • Ext L) (sub_mem (hExtC _ hc) (Submodule.smul_mem _ c (hExtC _ h))) (by` as an intermediate fact. Introduce `x hx`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, hExtA _ hc x hx, hExtA _ h x hx, sub_self]) b hb`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply] at this`. Rewrite `this` using `[sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Establish `hPupd : ∀ (v : ∀ τ, H τ) (i : ι) (z : H i), (fun τ => R τ (update v i z τ)) = update (fun τ => R τ (v τ)) i (R i z)`. Introduce `v i z`. Use function extensionality and compare the values at `j`. Conclude with `apply_update (fun k => (R k : H k → H k)) v i z j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmemU : ∀ (v : ∀ τ, H τ) (i : ι) (z : H i) τ', update (fun τ => R τ (v τ)) i (R i z) τ' ∈ D' τ'`. Introduce `v i z τ'`. Rewrite using `[← hPupd]`. Conclude with `hRmem _ _`. Set `f : (∀ τ, H τ) → E` to `fun v => Ext (T.toLinearMap (fun τ => R τ (v τ)) τ₀) (R τ₀ (v τ₀))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `h0position : ∀ (v : ∀ τ, H τ) (x : H τ₀), f (update v τ₀ x) = Ext (T.toLinearMap (fun τ => R τ (v τ)) τ₀) (R τ₀ x)`. Introduce `v x`. Use `show Ext (T.toLinearMap (fun τ => R τ (update v τ₀ x τ)) τ₀) (R τ₀ (update v τ₀ x τ₀)) = _`. Rewrite using `[update_self, toLinearMap_congr T (w := fun τ => R τ (update v τ₀ x τ)) (w' := fun τ => R τ (v τ)) τ₀ (fun j hj => by simp only [update_of_ne hj])]`. Establish `hiposition : ∀ i, i ≠ τ₀ → ∀ (v : ∀ τ, H τ) (z : H i), f (update v i z) = Ext (T.toLinearMap (update (fun τ => R τ (v τ)) i (R i z)) τ₀) (R τ₀ (v τ₀))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `i hi v z`. Use `show Ext (T.toLinearMap (fun τ => R τ (update v i z τ)) τ₀) (R τ₀ (update v i z τ₀)) = _`. Rewrite using `[hPupd, update_of_ne (Ne.symm hi)]`. Establish `hRB : ∀ x, R τ₀ x ∈ B τ₀` using `fun x => hD'B _ (hRmem τ₀ x)`. Establish `hgU : ∀ (v : ∀ τ, H τ) (i : ι) (z : H i), ∀ r ∈ Rk τ₀, ∀ x ∈ A τ₀, T.toLinearMap (update (fun τ => R τ (v τ)) i (R i z)) τ₀ (r.1 x) = r.2 (T.toLinearMap (update (fun τ => R τ (v τ)) i (R i z)) τ₀ x)` using `fun v i z => goodL _ (fun τ' _ => hmemU v i z τ')`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `T' : MultilinearMap ℂ H E` to `MultilinearMap.mk' f (by`. Introduce `v i x y`. Distinguish the cases in `hi : i = τ₀`. Substitute `hi` using the available equality. Rewrite using `[h0position, h0position, h0position, map_add, map_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hiposition i hi, hiposition i hi, hiposition i hi, map_add, toLinearMap_update_add T hi, ExtAdd _ _ (hgU v i x) (hgU v i y) _ (hRB _)])`. Use the proof step `(by`. Introduce `v i c x`. Distinguish the cases in `hi : i = τ₀`. Substitute `hi` using the available equality.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h0position, h0position, map_smul, map_smul]`. Rewrite using `[hiposition i hi, hiposition i hi, map_smul, toLinearMap_update_smul T hi, ExtSmul _ _ (hgU v i x) _ (hRB _)])`. Establish `hT'apply : ∀ v, T' v = f v` using `fun v => rfl`. Establish `goodval : ∀ v : ∀ τ, H τ, (∀ τ', τ' ≠ τ₀ → v τ' ∈ D' τ') → T' v = Ext (T.toLinearMap v τ₀) (R τ₀ (v τ₀))`. Introduce `v hv`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hT'apply]`. Use `show Ext (T.toLinearMap (fun τ => R τ (v τ)) τ₀) (R τ₀ (v τ₀)) = _`. Rewrite using `[toLinearMap_congr T (w := fun τ => R τ (v τ)) (w' := v) τ₀ (fun j hj => hRid j _ (hv j hj))]`. Establish `hgen : ∀ τ (u : ∀ τ, H τ), (∀ τ', τ' ≠ τ → u τ' ∈ D' τ') → ∀ y ∈ D' τ, ∀ τ', update u τ y τ' ∈ D' τ'`. Introduce `τ u hu y hy τ'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Rewrite using `[update_self]`. Conclude with `hy`. Rewrite using `[update_of_ne h]`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hu τ' h`. Establish `hshift : ∀ τ (u : ∀ τ, H τ), (∀ τ', τ' ≠ τ → u τ' ∈ D' τ') → ∀ a ∈ A τ₀, ∀ τ', τ' ≠ τ → update u τ₀ a τ' ∈ piecewiseSubmodule A B s τ'`. Introduce `τ u hu a ha τ' h`. Distinguish the cases in `h' : τ' = τ₀`. Substitute `h'` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[update_self, hD0]`. Conclude with `ha`. Rewrite using `[update_of_ne h', ← hD'ne τ' h']`. Conclude with `hu τ' h`. Establish `hposition0 : ∀ u : ∀ τ, H τ, (∀ τ', τ' ≠ τ₀ → u τ' ∈ D' τ') → T'.toLinearMap u τ₀ ∈ C τ₀ ∧ ∀ r ∈ Rg τ₀, ∀ x ∈ B τ₀, T' (update u τ₀ (r.1 x)) = r.2 (T' (update u τ₀ x))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `u hu`. Establish `hL` using `goodL u hu`. Establish `key : ∀ x, T' (update u τ₀ x) = Ext (T.toLinearMap u τ₀) (R τ₀ x)`. Introduce `x`. Rewrite using `[goodval _ (fun τ' h => by rw [update_of_ne h]; exact hu τ' h), update_self, toLinearMap_congr T (w := update u τ₀ x) (w' := u) τ₀ (fun j hj => update_of_ne hj _ _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Use `hC τ₀ _ (hExtC _ hL) _ ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[MultilinearMap.toLinearMap_apply, key, hRid _ _ (hBD' _ hx)]`. Introduce `r hr x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[key, key, hRid _ _ (hBD' _ (hRg τ₀ r hr x hx)), hRid _ _ (hBD' _ hx), hExtG _ hL r hr x hx]`. Establish `hpositionEq : ∀ τ, τ ≠ τ₀ → ∀ u : ∀ τ, H τ, (∀ τ', τ' ≠ τ → u τ' ∈ D' τ') → ∀ r, r ∈ Rk τ ∪ Rg τ → ∀ y₁ y₂, y₁ ∈ D' τ → y₂ ∈ D' τ → (∀ a ∈ A τ₀, T (update (update u τ₀ a) τ y₁) = r.2 (T (update (update u τ₀ a) τ y₂))) → T' (update u τ y₁) = r.2 (T' (update u τ y₂))`. Introduce `τ hτ u hu r hr y₁ y₂ hy₁ hy₂ hA`. Establish `hu0 : u τ₀ ∈ D' τ₀` using `hu τ₀ (Ne.symm hτ)`. Establish `hg₁` using `goodL _ (fun τ' _ => hgen τ u hu y₁ hy₁ τ')`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hg₂` using `goodL _ (fun τ' _ => hgen τ u hu y₂ hy₂ τ')`. Rewrite using `[goodval _ (fun τ' _ => hgen τ u hu y₁ hy₁ τ'), goodval _ (fun τ' _ => hgen τ u hu y₂ hy₂ τ')]`. Simplify using `only [update_of_ne (Ne.symm hτ)]`. Rewrite using `[hRid _ _ hu0]`. Use `huniq τ₀ (Ext (T.toLinearMap (update u τ y₁) τ₀) - r.2 ∘ₗ Ext (T.toLinearMap (update u τ y₂) τ₀)) (sub_mem (hExtC _ hg₁) (hpostC τ τ₀ hτ r hr _ (hExtC _ hg₂))) (by` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Introduce a local definition for the expression.
 
-Introduce `a ha`. Rewrite using `[LinearMap.sub_apply, LinearMap.comp_apply, hExtA _ hg₁ a ha, hExtA _ hg₂ a ha, MultilinearMap.toLinearMap_apply, MultilinearMap.toLinearMap_apply, update_comm hτ, update_comm hτ, hA a ha, sub_self]) (u τ₀) (hD'B _ hu0)`. Rewrite `this` using `[LinearMap.sub_apply, LinearMap.comp_apply, sub_eq_zero]`. Then use the resulting hypothesis. Use `⟨T', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Establish `hL` using `goodL u (fun τ' _ => hAD' τ' _ (hu τ'))`. Rewrite using `[goodval u (fun τ' _ => hAD' τ' _ (hu τ')), hRid τ₀ _ (hAD' τ₀ _ (hu τ₀)), hExtA _ hL _ (hu τ₀), MultilinearMap.toLinearMap_apply, update_eq_self, hTa u hu]`. Introduce `τ hτ u hu r hr x hx`. Establish `hne : τ ≠ τ₀` using `fun h => hτ (h ▸ Finset.mem_insert_self τ₀ s)`. Establish `hτs : τ ∉ s` using `fun h => hτ (Finset.mem_insert_of_mem h)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hpositionEq τ hne u hu r (Set.mem_union_left _ hr) _ _ (hAD' _ _ (hRk τ r hr x hx)) (hAD' _ _ hx) (fun a ha => hTb τ hτs (update u τ₀ a) (hshift τ u hu a ha) r hr x hx)`. Introduce `τ hτ u hu`. Distinguish the cases in `hne : τ = τ₀`. Substitute `hne` using the available equality. Conclude with `hposition0 u hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hτs : τ ∈ s`. Break down `Finset.mem_insert.1 hτ with h | h` into its components or cases. Conclude with `absurd h hne`. Conclude with `h`. Establish `hBDτ : ∀ x ∈ B τ, x ∈ D' τ` using `fun x hx => by`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hD'ne τ hne]`. Simplify using `only [piecewiseSubmodule, if_pos hτs]`. Conclude with `hx`. Prove the components needed by the constructor for the conclusion. Set `F : H τ →ₗ[ℂ] H τ₀ →ₗ[ℂ] E` to `LinearMap.mk₂ ℂ (fun w b => T' (update (update u τ w) τ₀ b)) (by intro w₁ w₂ b; rw [update_comm hne, update_comm hne, update_comm hne, T'.map_update_add]) (by intro c w b; rw [update_comm hne, update_comm hne, T'.map_update_smul]) (by intro w b₁ b₂; rw [T'.map_update_add]) (by in …`.
-
-Establish `hF1 : ∀ w ∈ B τ, F w ∈ C τ₀`. Introduce `w hw`. Establish `h` using `(hposition0 (update u τ w) (fun τ' _ => hgen τ u hu w (hBDτ w hw) τ')).1`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `b`.
-
-Simplify using `only [F, LinearMap.mk₂_apply, MultilinearMap.toLinearMap_apply]`. Establish `hF2 : ∀ a ∈ A τ₀, F.flip a ∈ C τ`. Introduce `a ha`. Use `hC τ _ (hTc τ hτs (update u τ₀ a) (hshift τ u hu a ha)).1 _ ?_` and prove the remaining obligations. Introduce `x hx`.
-
-Establish `hw : ∀ τ', τ' ≠ τ₀ → update (update u τ x) τ₀ a τ' ∈ D' τ'` using `fun τ' h => by`. Rewrite using `[update_of_ne h]`. Conclude with `hgen τ u hu x (hBDτ x hx) τ'`. Rewrite using `[LinearMap.flip_apply, LinearMap.mk₂_apply, MultilinearMap.toLinearMap_apply, goodval _ hw, update_self, hRid _ _ (hAD' _ _ ha), hExtA _ (goodL _ hw) a ha, MultilinearMap.toLinearMap_apply, update_idem, update_comm hne]`. Establish `hF3` using `hbs τ τ₀ hne F hF1 hF2 (u τ₀) (hD'B _ (hu τ₀ (Ne.symm hne)))`.
-
-Use `hF3 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Rewrite using `[LinearMap.flip_apply, LinearMap.mk₂_apply, MultilinearMap.toLinearMap_apply]`. Use `congr 1`. Rewrite using `[eq_comm, update_eq_self_iff]`.
-
-Conclude with `(update_of_ne (Ne.symm hne) _ _).symm`. Introduce `r hr x hx`. Conclude with `hpositionEq τ hne u hu r (Set.mem_union_right _ hr) _ _ (hBDτ _ (hRg τ r hr x hx)) (hBDτ _ hx) (fun a ha => (hTc τ hτs (update u τ₀ a) (hshift τ u hu a ha)).2 r hr x hx)`.
+A detailed English derivation is pending.
 -/
 theorem invariant_insert (A B : ∀ τ, Submodule ℂ (H τ)) (hAB : ∀ τ, A τ ≤ B τ)
     (Rk Rg : ∀ τ, Set ((H τ → H τ) × (E →ₗ[ℂ] E)))
@@ -355,11 +345,11 @@ theorem invariant_insert (A B : ∀ τ, Submodule ℂ (H τ)) (hAB : ∀ τ, A �
 end GlobalTheory.FactorwiseExtension
 
 /- English proof (translation)
-Introduce `ι _ _ H _ _ E _ _ A B hAB Rk Rg hRk hRg C hC hext huniq hpostC _hcomm hbs T₀ h0`. Choose the witnesses or unpack the hypotheses as in `⟨T, hTa, -, hTc⟩ : ∃ T, GlobalTheory.FactorwiseExtension.Invariant A B Rk Rg C T₀ Finset.univ T := by`. Use `Finset.induction_on (motive := fun s => ∃ T, GlobalTheory.FactorwiseExtension.Invariant A B Rk Rg C T₀ s T) Finset.univ ?_ ?_` and prove the remaining obligations. Use `⟨T₀, fun u _ => rfl, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ _ u hu r hr x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h0 τ u (fun τ' h => by simpa [GlobalTheory.FactorwiseExtension.piecewiseSubmodule] using hu τ' h) r hr x hx`. Introduce `τ h`. Simplify using `at h`. Introduce and unpack `τ₀ s hτ₀ ⟨T, hT⟩`. Conclude with `GlobalTheory.FactorwiseExtension.invariant_insert A B hAB Rk Rg hRk hRg C hC hext huniq hpostC hbs T₀ s τ₀ hτ₀ T hT`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨T, hTa, fun τ u hu => hTc τ (Finset.mem_univ τ) u (fun τ' h => ?_)⟩` and prove the remaining obligations. Simplify `hu τ' h` using `[GlobalTheory.FactorwiseExtension.piecewiseSubmodule]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FactorwiseExtension.exists_multilinear_positionwise_extension : ∀ {ι : Type} [Fintype ι] [DecidableEq ι] {H : ι → Type} [∀ τ, AddCommGroup (H τ)] [∀ τ, Module ℂ (H τ)]
     {E : Type} [AddCommGroup E] [Module ℂ E] (A B : ∀ τ, Submodule ℂ (H τ)), (∀ τ, A τ ≤ B τ) →

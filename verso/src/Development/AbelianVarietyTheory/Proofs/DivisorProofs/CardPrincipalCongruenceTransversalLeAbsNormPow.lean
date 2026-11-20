@@ -12,15 +12,13 @@ open GlobalTheory.Mem.Col2.SplitChar (finIdl)
 noncomputable section
 
 /- English proof (translation)
-Introduce `D 𝔪 h𝔪 a R hR huniq`. Take `⟨hne, hle⟩` from `GlobalTheory.congLev_relIndex_le D 𝔪 h𝔪 a`. Set `Q` to `intG D a ⧸ (congLev D 𝔪 a).subgroupOf (intG D a)`. Use `haveI : Finite Q := Nat.finite_of_card_ne_zero hne`. Set `f : R → Q` to `fun r => QuotientGroup.mk (⟨(r : GA D a), hR r r.2⟩ : intG D a)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf : Function.Injective f`. Introduce and unpack `⟨r, hr⟩ ⟨r', hr'⟩ h`. Establish `h1` using `QuotientGroup.eq.1 h`. Rewrite `h1` using `[Subgroup.mem_subgroupOf]`. Establish `h2 : r⁻¹ * r' ∈ congLev D 𝔪 a` using `h1`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `((mem_congLev_iff D 𝔪 a _).1 h2).2`. Establish `h4 : CongOne D 𝔪 (r'⁻¹ * r')`. Rewrite using `[inv_mul_cancel]`. Conclude with `congOne_one 𝔪 a`. Take `⟨s, -, hs⟩` from `huniq r' (hR r' hr')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hs r ⟨hr, h3⟩`. Establish `e2` using `hs r' ⟨hr', h4⟩`. Conclude with `Subtype.ext (e1.trans e2.symm)`. Establish `hc` using `Nat.card_le_card_of_injective f hf`. Rewrite `hc` using `[Nat.card_eq_fintype_card, Fintype.card_coe]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.card_congRep_le : ∀ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)), 𝔪 ≠ ⊥ → ∀ (a : ℕ) (R : Finset (GA D a)), (∀ r ∈ R, r ∈ intG D a) → (∀ k ∈ intG D a, ∃! r, r ∈ R ∧ CongOne D 𝔪 (r⁻¹ * k)) → R.card ≤ Ideal.absNorm 𝔪 ^ (a ^ 2) := by
   intro D 𝔪 h𝔪 a R hR huniq

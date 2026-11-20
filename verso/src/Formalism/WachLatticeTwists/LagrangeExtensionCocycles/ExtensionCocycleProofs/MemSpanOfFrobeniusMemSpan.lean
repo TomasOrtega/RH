@@ -9,9 +9,9 @@ namespace Formalism.RepresentationBoundsCohomology.N2
 open Polynomial
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Conclude with `⟨1, by simp⟩`. Introduce `b s hb ih h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_insert hb, Finset.sum_insert hb, pow_add]`. Conclude with `(h b (Finset.mem_insert_self b s)).mul_mul (ih fun x hx => h x (Finset.mem_insert_of_mem hx))`.
+A detailed English derivation is pending.
 -/
 private theorem assoc_prod_lemma {O : Type} [CommMonoid O] (s : Finset ℤ) (f : ℤ → O) (y : O)
     (e : ℤ → ℕ) (h : ∀ b ∈ s, Associated (f b) (y ^ e b)) :
@@ -27,11 +27,9 @@ private theorem assoc_prod_lemma {O : Type} [CommMonoid O] (s : Finset ℤ) (f :
       (ih fun x hx => h x (Finset.mem_insert_of_mem hx))
 
 /- English proof (translation)
-Distinguish the cases in `h0 : h = 0`. Rewrite using `[h0]`. Conclude with `dvd_zero _`. Establish `hle : S.val.map c ≤ h.roots`. Rewrite using `[Multiset.le_iff_subset (Multiset.Nodup.map_on (fun a ha b hb hab => hc a ha b hb hab) S.nodup)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨a, ha, rfl⟩` from `Multiset.mem_map.1 hx`. Conclude with `(mem_roots h0).2 (hr a ha)`. Establish `h1` using `(Multiset.prod_X_sub_C_dvd_iff_le_roots h0 (S.val.map c)).2 hle`. Rewrite `h1` using `[Multiset.map_map]`.
-
-Conclude with `h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prod_dvd_lemma_2 {O : Type} [CommRing O] [IsDomain O] (S : Finset ℤ) (c : ℤ → O)
     (hc : ∀ a ∈ S, ∀ b ∈ S, c a = c b → a = b) (h : O[X])
@@ -50,23 +48,21 @@ private theorem prod_dvd_lemma_2 {O : Type} [CommRing O] [IsDomain O] (S : Finse
   exact h1
 
 /- English proof (translation)
-Introduce `ℓ _ O _ _ S₁ S₂ c sg hdisj hassoc`. Distinguish the cases in `hE0 : ((ℓ : O) ^ lagE ℓ sg S₁ S₂) = 0`. Rewrite using `[hE0, map_zero]`. Conclude with `Ideal.zero_mem _`. Establish `hK : ∀ a ∈ S₁, (∑ b ∈ S₂, (sg + padicValInt ℓ (a - b))) + (∑ b ∈ S₁.erase a, (sg + padicValInt ℓ (a - b))) ≤ lagE ℓ sg S₁ S₂`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Unfold `lagE`. Conclude with `Finset.le_sup (f := fun a => (∑ b ∈ S₂, (sg + padicValInt ℓ (a - b))) + ∑ b ∈ S₁.erase a, (sg + padicValInt ℓ (a - b))) ha`. Establish `hinj : ∀ a ∈ S₁, ∀ b ∈ S₁, c a = c b → a = b`. Introduce `a ha b hb hcab`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `h1` using `hassoc a (Finset.mem_union_left _ ha) b (Finset.mem_union_left _ hb) hne`. Rewrite `h1` using `[hcab, sub_self]`. Establish `h2 : (ℓ : O) ^ (sg + padicValInt ℓ (a - b)) = 0` using `h1.eq_zero_iff.1 rfl`. Apply `hE0` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `pow_eq_zero_of_le ?_ h2` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hw : ∀ a, ∃ w : O, a ∈ S₁ → (∏ b ∈ S₂, (c a - c b)) * (∏ b ∈ S₁.erase a, (c a - c b)) * w = (ℓ : O) ^ lagE ℓ sg S₁ S₂`. Introduce `a`. Distinguish the cases in `ha : a ∈ S₁`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Associated (∏ b ∈ S₂, (c a - c b)) ((ℓ : O) ^ ∑ b ∈ S₂, (sg + padicValInt ℓ (a - b)))` using `assoc_prod_lemma S₂ (fun b => c a - c b) (ℓ : O) (fun b => sg + padicValInt ℓ (a - b)) (fun b hb => hassoc a (Finset.mem_union_left _ ha) b (Finset.mem_union_right _ hb) (fun h => Finset.disjoint_left.1 hdisj ha (by rw [h]; exact hb)))`. Establish `h1 : Associated (∏ b ∈ S₁.erase a, (c a - c b)) ((ℓ : O) ^ ∑ b ∈ S₁.erase a, (sg + padicValInt ℓ (a - b)))` using `assoc_prod_lemma (S₁.erase a) (fun b => c a - c b) (ℓ : O) (fun b => sg + padicValInt ℓ (a - b)) (fun b hb => hassoc a (Finset.mem_union_left _ ha) b (Finset.mem_union_left _ (Finset.mem_of_mem_erase hb)) (fun h => Finset.ne_of_mem_erase hb h.symm))`. Take `⟨u, hu⟩` from `h2.mul_mul h1`. Use `⟨(u : O) * (ℓ : O) ^ (lagE ℓ sg S₁ S₂ - ((∑ b ∈ S₂, (sg + padicValInt ℓ (a - b))) + ∑ b ∈ S₁.erase a, (sg + padicValInt ℓ (a - b)))), fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, hu, ← pow_add, ← pow_add, Nat.add_sub_of_le (hK a ha)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨0, fun h => absurd h ha⟩`. Use `choose w hw using hw`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : ∃ q : O[X], ∀ a ∈ S₁, q.eval (c a) = w a * ∏ b ∈ S₁.erase a, (c a - c b) := by`. Use `⟨∑ a' ∈ S₁, C (w a') * ∏ b ∈ S₁.erase a', (X - C (c b)), fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[eval_finset_sum, Finset.sum_eq_single a]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[eval_prod]`. Introduce `a' _ hne`. Rewrite using `[eval_mul, eval_prod, Finset.prod_eq_zero (Finset.mem_erase.2 ⟨hne.symm, ha⟩) (by simp), mul_zero]`. Introduce `h`. Conclude with `absurd ha h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r, hr⟩` from `prod_dvd_lemma_2 S₁ c hinj ((∏ b ∈ S₂, (X - C (c b))) * q - C ((ℓ : O) ^ lagE ℓ sg S₁ S₂)) (fun a ha => by`. Rewrite using `[eval_sub, sub_eq_zero, eval_mul, hq a ha, eval_C, ← hw a ha, eval_prod]`. Simplify using `only [eval_sub, eval_X, eval_C]`. Use the proof step `ring)`. Rewrite using `[Ideal.mem_span_pair]`.
-
-Conclude with `⟨-r, q, by linear_combination hr⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lagrange_annihilation : StatLagrange := by
   intro ℓ _ O _ _ S₁ S₂ c sg hdisj hassoc
@@ -134,9 +130,9 @@ theorem lagrange_annihilation : StatLagrange := by
   exact ⟨-r, q, by linear_combination hr⟩
 
 /- English proof (translation)
-Introduce `ℓ _ O _ _ S₁ S₂ c sg P _ _ g hdisj hassoc h1 h2 x`. Take `⟨p₁, p₂, hp⟩` from `Ideal.mem_span_pair.1 (lagrange_annihilation ℓ O S₁ S₂ c sg hdisj hassoc)`. Establish `h3 : aeval g (C ((ℓ : O) ^ lagE ℓ sg S₁ S₂)) = 0`. Rewrite using `[← hp, map_add, map_mul, map_mul, h1, h2, mul_zero, mul_zero, add_zero]`. Rewrite `h3` using `[aeval_C, Algebra.algebraMap_eq_smul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : (((ℓ : O) ^ lagE ℓ sg S₁ S₂) • (1 : Module.End O P)) x = (0 : Module.End O P) x`. Rewrite using `[h3]`. Conclude with `h4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lagrange_resolvent_kills_class : StatLagrangeKill := by
   intro ℓ _ O _ _ S₁ S₂ c sg P _ _ g hdisj hassoc h1 h2 x
@@ -154,7 +150,7 @@ variable {ℓ : ℕ} [Fact ℓ.Prime] {A : Type} [CommRing A] [Algebra ℤ_[ℓ]
   {D : Type} [AddCommGroup D] [Module A D] [Module ℤ_[ℓ] D] [IsScalarTower ℤ_[ℓ] A D]
 
 /- English proof (translation)
-Unfold `GPair.Kills at h ⊢`. Introduce `n hn`. Rewrite using `[mul_smul]`. Conclude with `P.N'.smul_mem b (h n hn)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GPair.kills_mul (P : GPair G D) {a : A} (b : A) (h : P.Kills a) : P.Kills (b * a) := by
   unfold GPair.Kills at h ⊢
@@ -163,7 +159,7 @@ theorem GPair.kills_mul (P : GPair G D) {a : A} (b : A) (h : P.Kills a) : P.Kill
   exact P.N'.smul_mem b (h n hn)
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `hab`. Rewrite using `[mul_comm]`. Conclude with `P.kills_mul k h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GPair.kills_of_dvd (P : GPair G D) {a b : A} (hab : a ∣ b) (h : P.Kills a) : P.Kills b := by
   obtain ⟨k, rfl⟩ := hab
@@ -171,9 +167,9 @@ theorem GPair.kills_of_dvd (P : GPair G D) {a b : A} (hab : a ∣ b) (h : P.Kill
   exact P.kills_mul k h
 
 /- English proof (translation)
-Establish `h` using `PadicInt.unitCoeff_spec hc`. Rewrite `h` using `[hv]`. Use `⟨↑(PadicInt.unitCoeff hc)⁻¹, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm (PadicInt.unitCoeff hc : ℤ_[ℓ]), mul_assoc, Units.mul_inv, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = c * ↑(PadicInt.unitCoeff hc)⁻¹ := by rw [← h]`.
+A detailed English derivation is pending.
 -/
 theorem dvd_pow_of_val {c : ℤ_[ℓ]} (hc : c ≠ 0) {v : ℕ} (hv : c.valuation = v) :
     c ∣ (ℓ : ℤ_[ℓ]) ^ v := by
@@ -186,7 +182,7 @@ theorem dvd_pow_of_val {c : ℤ_[ℓ]} (hc : c ≠ 0) {v : ℕ} (hv : c.valuatio
     _ = c * ↑(PadicInt.unitCoeff hc)⁻¹ := by rw [← h]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hc`. Rewrite using `[show (ℓ : A) ^ v = algebraMap ℤ_[ℓ] A ((ℓ : ℤ_[ℓ]) ^ v) by simp, hk, map_mul, mul_comm (algebraMap ℤ_[ℓ] A c), mul_assoc]`. Conclude with `P.kills_mul _ h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GPair.kills_pow_of_dvd (P : GPair G D) {c : ℤ_[ℓ]} {v : ℕ} {a : A}
     (hc : c ∣ (ℓ : ℤ_[ℓ]) ^ v) (h : P.Kills (algebraMap ℤ_[ℓ] A c * a)) :
@@ -199,13 +195,11 @@ theorem GPair.kills_pow_of_dvd (P : GPair G D) {c : ℤ_[ℓ]} {v : ℕ} {a : A}
 end
 
 /- English proof (translation)
-Introduce `ℓ _ A _ _ G D _ _ _ _ P s H hs h2 hv hK`. Set `Bs : Formalism.LIFT.Base ℓ A` to `{ φA := AlgHom.id _ _, γA := G.γ, X := G.X, Q := 1, u := G.u comm := fun _ => rfl φX := by simp γX := G.γX γQ := ⟨0, by simp, by simp⟩ }`. Set `W (N : Submodule A D) (hN : ∀ x ∈ N, ∃ x' ∈ N, P.γ x - x = G.X • x') : Formalism.LIFT.WD Bs 0 D` to `{ N := N, φ := LinearMap.id, γ := P.γ φ_smul := fun _ _ => rfl γ_smul := P.γ_smul comm := fun _ => rfl X_inj := P.X_inj Q_bij := by`. Establish `: (fun x : D => (1 : A) • x) = id` using `by funext x; simp`. Use `show Function.Bijective (fun x : D => (1 : A) • x)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Function.bijective_id`. Use `φ_N := fun x hx => by simpa using hx`. Use `γ_N := hN }`. Set `f : Formalism.LIFT.Hom (W P.N' P.γ_N') (W P.N P.γ_N)` to `{ f := LinearMap.id, φ_comm := fun _ => rfl, γ_comm := fun _ => rfl, N_le := fun x hx => P.le hx }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key` using `Formalism.LIFT.lift_WBTail ℓ A Bs 0 D D (W P.N' P.γ_N') (W P.N P.γ_N) f s H hs h2 hv (fun n hn => ⟨G.X ^ H • n, hK n hn, rfl⟩)`. Introduce `n hn`. Take `⟨n₁, hn₁, h⟩` from `key n hn`. Establish `h' : n₁ = ((ℓ : ℤ_[ℓ]) ^ eWB ℓ H s) • n` using `h`. Establish `e : ((ℓ : ℤ_[ℓ]) ^ eWB ℓ H s) • n = ((ℓ : A) ^ eWB ℓ H s) • n`.
-
-Rewrite using `[← algebraMap_smul A ((ℓ : ℤ_[ℓ]) ^ eWB ℓ H s) n, map_pow, map_natCast]`. Rewrite using `[← e, ← h']`. Conclude with `hn₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_lemma_case_b_holds : StatWB := by
   intro ℓ _ A _ _ G D _ _ _ _ P s H hs h2 hv hK
@@ -240,9 +234,9 @@ theorem unit_lemma_case_b_holds : StatWB := by
   exact hn₁
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ k ih`. Take `⟨t', ht'⟩` from `ih`. Use `⟨a ^ k * t + t' * (a + X * t), ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_succ, ht', pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem add_mul_pow_exists {A : Type} [CommRing A] (a X t : A) (k : ℕ) :
     ∃ t', (a + X * t) ^ k = a ^ k + X * t' := by
@@ -255,15 +249,15 @@ theorem add_mul_pow_exists {A : Type} [CommRing A] (a X t : A) (k : ℕ) :
     ring
 
 /- English proof (translation)
-Introduce `ℓ _ A _ _ G D _ _ _ _ P c j h`. Take `⟨t, ht⟩` from `G.γX`. Take `⟨t', ht'⟩` from `add_mul_pow_exists (algebraMap ℤ_[ℓ] A (G.u : ℤ_[ℓ])) G.X t (j + 1)`. Unfold `GPair.Kills at h ⊢`. Introduce `n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨n₂, hn₂N, hn₂⟩` from `P.γ_N n hn`. Take `⟨m, hmN, hm⟩` from `P.γ_N' _ (h n hn)`. Establish `hγ : G.γ (algebraMap ℤ_[ℓ] A c * G.X ^ (j + 1)) = algebraMap ℤ_[ℓ] A c * G.X ^ (j + 1) * ((algebraMap ℤ_[ℓ] A (G.u : ℤ_[ℓ])) ^ (j + 1) + G.X * t')`. Rewrite using `[map_mul, map_pow, AlgHom.commutes, ht, mul_pow, ht']`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `hm` using `[P.γ_smul, hγ]`. Establish `hγn : P.γ n = n + G.X • n₂`. Rewrite using `[← hn₂]`. Normalize the expressions using the abelian group laws. Rewrite `hm` using `[hγn]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hw : (algebraMap ℤ_[ℓ] A (G.u : ℤ_[ℓ])) ^ (j + 1) • n₂ + t' • n + (G.X * t') • n₂ ∈ P.N` using `P.N.add_mem (P.N.add_mem (P.N.smul_mem _ hn₂N) (P.N.smul_mem _ hn)) (P.N.smul_mem _ hn₂N)`. Establish `hx : (algebraMap ℤ_[ℓ] A (c * ((G.u : ℤ_[ℓ]) ^ (j + 1) - 1)) * G.X ^ j) • n = m - (algebraMap ℤ_[ℓ] A c * G.X ^ (j + 1)) • ((algebraMap ℤ_[ℓ] A (G.u : ℤ_[ℓ])) ^ (j + 1) • n₂ + t' • n + (G.X * t') • n₂)`. Use `sub_eq_zero.1 (P.X_inj _ ?_)` and prove the remaining obligations. Simplify using `only [map_mul, map_sub, map_pow, map_one]`. Take the linear combination `(norm := module) hm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hx]`. Conclude with `P.N'.sub_mem hmN (h _ hw)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descent_reduces_level : StatDescentStep := by
   intro ℓ _ A _ _ G D _ _ _ _ P c j h
@@ -294,13 +288,13 @@ theorem descent_reduces_level : StatDescentStep := by
   exact P.N'.sub_mem hmN (h _ hw)
 
 /- English proof (translation)
-Introduce `ℓ _ A _ _ G D _ _ _ _ P s j hjs h`. Establish `key : ∀ d i, i + d = s → P.Kills (algebraMap ℤ_[ℓ] A (∏ k ∈ Finset.Ioc i s, ((G.u : ℤ_[ℓ]) ^ k - 1)) * G.X ^ i)`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `i hi`. Substitute `hi` using the available equality. Simplify using `using h`. Consider the case `succ d ih`. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `ih (i + 1) (by omega)`. Establish `h2` using `descent_reduces_level ℓ A G D P (∏ k ∈ Finset.Ioc (i + 1) s, ((G.u : ℤ_[ℓ]) ^ k - 1)) i h1`. Establish `h3 : ∏ k ∈ Finset.Ioc i s, ((G.u : ℤ_[ℓ]) ^ k - 1) = (∏ k ∈ Finset.Ioc (i + 1) s, ((G.u : ℤ_[ℓ]) ^ k - 1)) * ((G.u : ℤ_[ℓ]) ^ (i + 1) - 1)`. Rewrite using `[← Finset.prod_Ioc_consecutive _ (by omega : i ≤ i + 1) (by omega : i + 1 ≤ s), Nat.Ioc_succ_singleton, Finset.prod_singleton, mul_comm]`. Rewrite using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`. Conclude with `key (s - j) j (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem mem_span_of_frobenius_mem_span : StatDescent := by
   intro ℓ _ A _ _ G D _ _ _ _ P s j hjs h

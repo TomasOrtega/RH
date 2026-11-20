@@ -7,7 +7,7 @@ open Matrix MeasureTheory Set Filter Topology GlobalTheory.IndefiniteRowSideFull
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.TorsionForm.ReframeHor.fderiv_reframe_hor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFderivReframeHorizontal.lean&line=75#L75)
 -/

@@ -10,19 +10,17 @@ open GlobalTheory.CompanionTheory.Ar.Crv
 namespace GlobalTheory.CompanionTheory.Ar.Crv
 
 /- English proof (translation)
-Introduce `K _ C V _ _ _ V' _ _ _ V'' _ _ _ L L' L'' f g hL' hSE`. Take `⟨hf, hfg, hg, hL, hL''⟩` from `hSE`. Establish `hsub` using `GlobalTheory.T.sub_and_quotient_bundles K C V' L' (LinearMap.range f) hL'`. Take `⟨e1, he1⟩ : ∃ e : V ≃ₗ[K] LinearMap.range f, ∀ x, (e x : V') = f x` from `⟨LinearEquiv.ofInjective f hf, fun x => by simp⟩`. Establish `hker : LinearMap.range f = LinearMap.ker g` using `(LinearMap.exact_iff.mp hfg).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e2, he2⟩ : ∃ e : (V' ⧸ LinearMap.range f) ≃ₗ[K] V'', ∀ y, e (Submodule.Quotient.mk y) = g y` from `⟨(Submodule.quotEquivOfEq _ _ hker).trans (LinearMap.quotKerEquivOfSurjective g hg), fun y => by simp [Submodule.quotEquivOfEq_mk, LinearMap.quotKerEquivOfSurjective_apply_mk]⟩`. Establish `hc1 : ∀ (i : C.I) (x : LinearMap.range f), x ∈ GlobalTheory.CompanionTheory.Ar.Crv.sub C L' (LinearMap.range f) i ↔ e1.symm x ∈ L i`. Introduce `i x`. Simplify using `only [GlobalTheory.CompanionTheory.Ar.Crv.sub, AddSubgroup.mem_comap]`. Rewrite using `[hL i, ← he1, LinearEquiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Iff.rfl`. Establish `hc2 : ∀ (i : C.I) (z : V' ⧸ LinearMap.range f), z ∈ GlobalTheory.CompanionTheory.Ar.Crv.quot C L' (LinearMap.range f) i ↔ e2 z ∈ L'' i`. Introduce `i z`. Simplify using `only [GlobalTheory.CompanionTheory.Ar.Crv.quot]`. Rewrite using `[AddSubgroup.mem_map]`.
+Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Establish `h2 : e2 (Submodule.Quotient.mk y) ∈ L'' i`. Rewrite using `[he2]`. Conclude with `(hL'' i (g y)).2 ⟨y, hy, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h2`. Introduce `hz`. Take `⟨y, hy, hyz⟩` from `(hL'' i _).1 hz`. Use `⟨y, hy, e2.injective ?_⟩` and prove the remaining obligations. Establish `h3 : e2 (Submodule.Quotient.mk y) = e2 z` using `by rw [he2, hyz]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `h3`. Take `⟨hLb, hdL⟩` from `GlobalTheory.T.degree_invariant_linear_equiv K C (LinearMap.range f) V (GlobalTheory.CompanionTheory.Ar.Crv.sub C L' (LinearMap.range f)) L e1.symm hsub.1 hc1`. Take `⟨hL''b, hdL''⟩` from `GlobalTheory.T.degree_invariant_linear_equiv K C (V' ⧸ LinearMap.range f) V'' (GlobalTheory.CompanionTheory.Ar.Crv.quot C L' (LinearMap.range f)) L'' e2 hsub.2 hc2`. Use `⟨hLb, hL''b, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.degree_additive_sub_quotient K C V' L' (LinearMap.range f) hL']`.
-
-Unfold `GlobalTheory.CompanionTheory.Ar.Crv.subDeg`. Rewrite using `[hdL, hdL'']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_shortExact : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type) [AddCommGroup V] [Module K V] [FiniteDimensional K V] (V' : Type) [AddCommGroup V'] [Module K V'] [FiniteDimensional K V'] (V'' : Type) [AddCommGroup V''] [Module K V''] [FiniteDimensional K V''] (L : C.I → AddSubgroup V) (L' : C.I → AddSubgroup V') (L'' : C.I → AddSubgroup V'') (f : V →ₗ[K] V') (g : V' →ₗ[K] V''), IsBun C L' → ShortExact C L L' L'' f g → IsBun C L ∧ IsBun C L'' ∧ deg C L' = deg C L + deg C L'' := by
   intro K _ C V _ _ _ V' _ _ _ V'' _ _ _ L L' L'' f g hL' hSE

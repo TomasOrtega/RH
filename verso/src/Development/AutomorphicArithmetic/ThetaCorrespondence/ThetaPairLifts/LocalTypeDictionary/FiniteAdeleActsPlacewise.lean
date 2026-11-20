@@ -16,15 +16,13 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 namespace GlobalTheory.LocActV
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.AdelicU GlobalTheory.WeilM
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B a a' G X om om' hT`. Take `⟨S₀, hS₀⟩` from `_root_.GlobalTheory.T.lattice_stabilizer_fixes_vacuum_vector hPr F E σ B a a' G X om om' hT`. Establish `key : ∀ {n : ℕ} (Y : Spc F E n) (M : Model σ Y G.W) (χX χW : Chr F E) (ω : Rep σ Y G.W) (r s r' s' : ℕ), GlobalTheory.ThK.IsPair B M χX χW ω r s r' s' → (∀ v ∉ S₀, ∀ k ∈ GlobalTheory.InertSph.KAt σ Y v, Acts (evFin F v) (ω (k, 1)) (M.vac v) (M.vac v)) → ∀ g : UA σ Y.J, (∀ u : AF …`. Introduce `n Y M χX χW ω r s r' s' hP hsph g hg f φ hφ hvac`. Take `⟨S₁, hS₁⟩` from `GlobalTheory.T.exists_finset_adelicUnitary_preserves_lattice_almost_all σ Y hP.herm.lat g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hfin` using `Filter.eventually_cofinite.1 hvac`. Use `set S : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) := S₀ ∪ S₁ ∪ hfin.toFinset with hSdef`. Take `⟨gS, k, hgk, hgS, hkS, hkI, hkL⟩` from `GlobalTheory.T.exists_adelicUnitary_factor_finiteSetOfPlaces σ Y g S`. Take `⟨φ', hφ'SB, hφ'off, hφ'aug, hφ'eq⟩` from `GlobalTheory.T.finiteSupport_unitaryPoint_replaces_pureTensorFactors σ B Y G.W M χX χW ω r s r' s' hP S gS hgS f φ hφ hvac`. Establish `hk : ω (k, 1) (pure f φ) = pure f φ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.latticeStabilizers_fix_vacua_fixes_pureTensor_left σ B Y G.W M χX χW ω r s r' s' hP S (fun v hv => hsph v (fun h => hv (by simp [hSdef, h]))) k (fun u hu => by rw [hkI u hu]; exact hg u hu) hkS (fun w hw z hz => ?_) f φ hφ (fun w hw => ?_)` and prove the remaining obligations. Establish `hw1 : w ∉ S₁` using `fun h => hw (by simp [hSdef, h])`. Rewrite using `[(hkL w hw z hz).1, (hkL w hw z hz).2]`. Conclude with `hS₁ w hw1 z hz`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw (by simp [hSdef, hne])`. Use `⟨φ', hφ'SB, ?_, hφ'aug, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hvac, S.finite_toSet.compl_mem_cofinite] with v hv hvS`. Rewrite using `[hφ'off v hvS, hv]`. Establish `e : ((g, 1) : UA σ Y.J × UA σ G.W.J) = (gS, 1) * (k, 1)`.
-
-Rewrite using `[hgk, Prod.mk_mul_mk, one_mul]`. Rewrite using `[e, map_mul, Module.End.mul_apply, hk, hφ'eq]`. Conclude with `⟨fun g hg f φ hφ hvac => key G.V G.M _ _ om _ _ _ _ (GlobalTheory.ThK.Inhab.pairV hT) (fun v hv => (hS₀ v hv).1) g hg f φ hφ hvac, fun g hg f φ hφ hvac => key G.V' G.M' _ _ om' _ _ _ _ (GlobalTheory.ThK.Inhab.pairV' hT) (fun v hv => (hS₀ v hv).2) g hg f φ hφ hvac⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_adele_acts_placewise : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
@@ -93,7 +91,7 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.LocActV.finite_adele_acts_placewise | exact _root_.GlobalTheory.LocActV.finite_adele_acts_placewise | (intros; apply _root_.GlobalTheory.LocActV.finite_adele_acts_placewise <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.local_action_finite_places : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)

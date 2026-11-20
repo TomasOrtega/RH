@@ -4,9 +4,9 @@ open Set Filter Topology Metric
 namespace GlobalTheory.CompanionTheory.Metric
 
 /- English proof (translation)
-Establish `h` using `Complex.dist_le_div_mul_dist_of_mapsTo_ball (R₂ := M) hd (by`. Introduce `y hy`. Rewrite using `[mem_closedBall, h0, dist_zero_right]`. Conclude with `hM y hy) hx`. Rewrite `h` using `[h0, dist_zero_right, dist_zero_right]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem norm_le_mul_norm_div_of_bounded_on_ball {V W : Type} [NormedAddCommGroup V]
     [NormedSpace ℂ V] [NormedAddCommGroup W] [NormedSpace ℂ W] {ψ : V → W} {R M : ℝ}
@@ -22,9 +22,9 @@ theorem norm_le_mul_norm_div_of_bounded_on_ball {V W : Type} [NormedAddCommGroup
     _ = M * ‖x‖ / R := by ring
 
 /- English proof (translation)
-Introduce `b hbm s hs t ht`. Establish `h1 : ∀ s ∈ ball (0 : V) R, ∀ t ∈ ball (0 : V) R, ‖G (b, s, t)‖ ≤ ‖s‖ / R`. Introduce `s hs t ht`. Establish `hd : DifferentiableOn ℂ (fun s' => G (b, s', t)) (ball (0 : V) R)` using `hG.comp ((differentiableOn_const b).prodMk (differentiableOn_id.prodMk (differentiableOn_const t))) (by intro s' hs'; exact ⟨hbm, hs', ht⟩)`. Establish `h` using `norm_le_mul_norm_div_of_bounded_on_ball hd (hz b hbm t ht).2 (fun s' hs' => hb _ ⟨hbm, hs', ht⟩) hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[one_mul]`. Then use the resulting hypothesis. Establish `hd : DifferentiableOn ℂ (fun t' => G (b, s, t')) (ball (0 : V) R)` using `hG.comp ((differentiableOn_const b).prodMk ((differentiableOn_const s).prodMk differentiableOn_id)) (by intro t' ht'; exact ⟨hbm, hs, ht'⟩)`. Establish `h` using `norm_le_mul_norm_div_of_bounded_on_ball hd (hz b hbm s hs).1 (fun t' ht' => h1 s hs t' ht') ht`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_le_of_vanishing_on_axes {B V W : Type} [NormedAddCommGroup B] [NormedSpace ℂ B]
     [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommGroup W] [NormedSpace ℂ W]

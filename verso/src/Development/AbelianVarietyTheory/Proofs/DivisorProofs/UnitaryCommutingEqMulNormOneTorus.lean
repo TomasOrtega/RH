@@ -9,11 +9,11 @@ noncomputable section
 namespace GlobalTheory.KapTorus
 
 /- English proof (translation)
-Establish `key : ∀ s ∈ Algebra.adjoin K.E {u}, ∀ y, f (s * y) = s * f y`. Introduce `s hs`. Proceed by induction on `hs using Algebra.adjoin_induction with`. Consider the case `mem x hx => rw [Set.mem_singleton_iff.1 hx]`. Conclude with `hcomm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `algebraMap c => intro y`. Rewrite using `[← Algebra.smul_def, hsmul, Algebra.smul_def]`. Consider the case `add x y _ _ hx hy => intro z`. Rewrite using `[add_mul, hadd, hx, hy, add_mul]`. Consider the case `mul x y _ _ hx hy => intro z`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, hx, hy, mul_assoc]`. Introduce `y`. Use `key y (hu ▸ Algebra.mem_top) 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Rewrite using `[this, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_of_comm_gen {K : GlobalTheory.UnitLemma.UQ} (B : GlobalTheory.UnitLemma.InvAlg K) (u : B.A)
     (hu : Algebra.adjoin K.E {u} = ⊤) (f : B.A → B.A) (hadd : ∀ y z, f (y + z) = f y + f z)
@@ -34,9 +34,9 @@ theorem mul_of_comm_gen {K : GlobalTheory.UnitLemma.UQ} (B : GlobalTheory.UnitLe
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `e1 : ∀ y y' : Fin n → w.adicCompletion E, stdH w y y' = y ⬝ᵥ (fun k => cj w (y' k))` using `fun _ _ => rfl`. Establish `hmap : (fun k => cj w ((h *ᵥ v') k)) = (h.map (cj w)) *ᵥ (fun k => cj w (v' k))`. Use function extensionality and compare the values at `k`. Simplify using `[Matrix.mulVec, dotProduct, map_sum]`. Establish `ht : hᵀ * h.map (cj w) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrArg Matrix.transpose hh` as an intermediate fact. Simplify `this` using `[cT, Matrix.transpose_mul]`. Rewrite using `[e1, e1, hmap, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ht, Matrix.one_mulVec]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem stdH_unitary (w : Pl E) {n : ℕ} (h : Matrix (Fin n) (Fin n) (w.adicCompletion E))
     (hh : cT (cj w) h * 1 * h = 1) (v v' : Fin n → w.adicCompletion E) :
@@ -52,36 +52,34 @@ theorem stdH_unitary (w : Pl E) {n : ℕ} (h : Matrix (Fin n) (Fin n) (w.adicCom
     Matrix.one_mulVec]
 
 /- English proof (translation)
-Simplify using `[stdH, Pi.single_apply, apply_ite (cj w)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem stdH_single (w : Pl E) {n : ℕ} (v : Fin n → w.adicCompletion E) (i : Fin n) :
     stdH w v (Pi.single i 1) = v i := by
   simp [stdH, Pi.single_apply, apply_ite (cj w)]
 
 /- English proof (translation)
-Introduce `E _ _ _ w hw K e B Q u x n γ ψ hfit hmod h hU hc`. Take `⟨hsm, hu, hst⟩` from `hmod`. Establish `conj : ∀ g : GLw n w, g * γ = γ * g → ∀ y, ψ.symm (g.val *ᵥ ψ y) = ψ.symm (g.val *ᵥ ψ 1) * y`. Introduce `g hg`. Apply `mul_of_comm_gen B u hfit.1 (fun y => ψ.symm (g.val *ᵥ ψ y))` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y z`. Simplify using `[map_add, Matrix.mulVec_add]`. Introduce `c y`. Apply `ψ.injective` to reduce the goal to its premises. Simplify using `only [hsm, ψ.apply_symm_apply, Matrix.mulVec_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Introduce `y`. Apply `ψ.injective` to reduce the goal to its premises. Simplify using `only [hu, ψ.apply_symm_apply, Matrix.mulVec_mulVec]`. Rewrite using `[← Units.val_mul, ← Units.val_mul, hg]`. Establish `hc' : h⁻¹ * γ = γ * h⁻¹` using `(Commute.inv_left (show Commute h γ from hc)).eq`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set a := ψ.symm (h.val *ᵥ ψ 1) with ha_def`. Use `set b := ψ.symm ((h⁻¹ : GLw n w).val *ᵥ ψ 1) with hb_def`. Establish `hab : a * b = 1`. Rewrite using `[← conj h hc b, hb_def, ψ.apply_symm_apply, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec, ψ.symm_apply_apply]`. Set `t : B.Aˣ` to `⟨a, b, hab, by rw [mul_comm]; exact hab⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hspec : ∀ y, ψ ((t : B.A) * y) = h.val *ᵥ ψ y`. Introduce `y`. Use `show ψ (a * y) = _`. Rewrite using `[← conj h hc y, ψ.apply_symm_apply]`. Establish `htor : torusOf w B ψ h = t` using `torusOf_spec w B ψ h t hspec`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[htor]`. Use `⟨?_, hspec⟩` and prove the remaining obligations. Establish `hUJ : cT (cj w) h.val * 1 * h.val = 1`. Establish `: h ∈ UJ (cj w) (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E))`. Unfold `UL at hU`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hU` using `[if_neg hw]`. Then use the resulting hypothesis. Conclude with `this`. Establish `hinv : ∀ y z, B.herm x ((t : B.A) * y) ((t : B.A) * z) = B.herm x y z`. Introduce `y z`. Apply `e.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hst, ← hst, hspec, hspec, stdH_unitary w h.val hUJ]`. Establish `hzero : ∀ y z, B.herm x (((t : B.A) * B.σ (t : B.A) - 1) * y) z = 0`. Introduce `y z`. Establish `h1 : B.herm x (((t : B.A) * B.σ (t : B.A) - 1) * y) z = B.herm x ((t : B.A) * y) ((t : B.A) * z) - B.herm x y z`. Unfold `GlobalTheory.UnitLemma.InvAlg.herm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← map_sub]`. Use `congr 1`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, hinv, sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hnd : ∀ m : B.A, (∀ z, B.herm x m z = 0) → m = 0`. Introduce `m hm`. Apply `ψ.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg e (hm (ψ.symm (Pi.single i 1)))` as an intermediate fact. Rewrite `this` using `[← hst, ψ.apply_symm_apply, stdH_single, map_zero]`. Simplify using `using this`. Use `hnd _ (hzero 1)` as an intermediate fact. Rewrite `this` using `[mul_one, sub_eq_zero]`.
-
-Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torusOf_mem_of_mem_UL_commute : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E), ¬ IsSplitAt w → ∀ (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E) (B : GlobalTheory.UnitLemma.InvAlg K) (Q : (w.adicCompletion E)[X]) (u x : B.A) (n : ℕ) (γ : GLw n w) (ψ : B.A ≃+ (Fin n → w.adicCompletion E)), Fits w e B Q u → IsModelMap w e B u x γ ψ → ∀ h : GLw n w, h ∈ UL n w → h * γ = γ * h → torusOf w B ψ h ∈ B.T ∧ ∀ y, ψ ((torusOf w B ψ h : B.A) * y) = h.val *ᵥ ψ y := by
   intro E _ _ _ w hw K e B Q u x n γ ψ hfit hmod h hU hc

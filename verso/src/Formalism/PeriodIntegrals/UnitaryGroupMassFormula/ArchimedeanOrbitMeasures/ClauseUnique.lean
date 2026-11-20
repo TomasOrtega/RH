@@ -37,11 +37,9 @@ def GinfTest : Prop :=
     ∃ K, MeasurableSet K ∧ 0 < X.measG.μGinf K ∧ X.measG.μGinf K < ⊤
 
 /- English proof (translation)
-Establish `hI0 : I ≠ 0`. Introduce `h`. Rewrite `ea` using `[h, mul_zero]`. Conclude with `h0.ne' ea`. Establish `hIt : I ≠ ⊤`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite `ea` using `[h]`. Break down `eq_or_ne a 0 with h2 | h2` into its components or cases. Rewrite `ea` using `[h2, zero_mul]`. Conclude with `h0.ne' ea`.
-
-Rewrite `ea` using `[ENNReal.mul_top h2]`. Conclude with `h1.ne ea`. Conclude with `(ENNReal.mul_left_inj hI0 hIt).1 (ea.symm.trans eb)`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ennreal_volume_ratio_step_cancel {x a b I : ENNReal} (h0 : 0 < x) (h1 : x < ⊤) (ea : x = a * I) (eb : x = b * I) : a = b := by
   have hI0 : I ≠ 0 := by
@@ -54,11 +52,11 @@ theorem ennreal_volume_ratio_step_cancel {x a b I : ENNReal} (h0 : 0 < x) (h1 : 
   exact (ENNReal.mul_left_inj hI0 hIt).1 (ea.symm.trans eb)
 
 /- English proof (translation)
-Take `⟨⟨μ, hμ⟩, ha1⟩` from `ha`. Take `⟨⟨ν, hν⟩, ha2⟩` from `ha1 μ hμ`. Take `⟨⟨fib, hfib⟩, ha3⟩` from `ha2 ν hν`. Establish `hb3` using `((hb.2 μ hμ).2 ν hν).2 fib hfib`. Establish `ha4` using `ha3 fib hfib`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `s : (Fin (D.R.rS + 1 + D.R.rS) → Fin X.B.I.n → Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) → HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J` to `fun y => if h : ∃ g : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J, g • ratTup (Ainf X.B.I.F) (tupH (frameOf X u')) = y then h.choose else 1`. Establish `hs : ∀ y, (∃ g : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J, g • ratTup (Ainf X.B.I.F) (tupH (frameOf X u')) = y) → s y • ratTup (Ainf X.B.I.F) (tupH (frameOf X u')) = y`. Introduce `y hy`. Simplify using `only [s, dif_pos hy]`. Conclude with `hy.choose_spec`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hf : Measurable (K.indicator (1 : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J → ENNReal))` using `measurable_const.indicator hK`. Establish `ea` using `ha4 _ hf s hs`. Establish `eb` using `hb3 _ hf s hs`. Rewrite `ea`, `eb` using `[lintegral_indicator_one hK]`. Conclude with `ennreal_volume_ratio_step_cancel h0 h1 ea eb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clause_unique {D : D7} (X : HidaSetting D) (ψ : AddChar (AF X.B.I.F) ℂ) (u' : D.what₂.Word)
     (hT : ∀ i j, X.B.I.cm.sig (gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u')) j i) =
@@ -90,7 +88,7 @@ theorem clause_unique {D : D7} (X : HidaSetting D) (ψ : AddChar (AF X.B.I.F) �
   exact ennreal_volume_ratio_step_cancel h0 h1 ea eb
 
 /- English proof (translation)
-Introduce `D X hb FdN FdN' u u' ψ hH hM hS hGD hT a' ha' hAC`. Take `⟨K, hK, h0, h1⟩` from `hG X hb FdN FdN' u u' hH`. Establish `e` using `clause_unique X ψ u' hT K hK h0 h1 a' (aVal X u') hAC (hV X hb FdN FdN' u u' ψ hH hM hS hGD hT)`. Establish `hpos : 0 < ENNReal.ofReal (aVal X u')` using `e ▸ ENNReal.ofReal_pos.2 ha'`. Conclude with `(ENNReal.ofReal_eq_ofReal_iff ha'.le (ENNReal.ofReal_pos.1 hpos).le).1 e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem aprimeInfS_of (hV : AinfValue) (hG : GinfTest) : AprimeInfS := by
   intro D X hb FdN FdN' u u' ψ hH hM hS hGD hT a' ha' hAC

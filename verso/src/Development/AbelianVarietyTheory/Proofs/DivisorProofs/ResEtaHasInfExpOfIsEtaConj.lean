@@ -25,19 +25,19 @@ variable {E : Type} [Field E] [NumberField E]
 noncomputable def rt (P : HeightOneSpectrum (𝓞 E)) : ℝ := (Real.sqrt ((Ideal.absNorm P.asIdeal : ℕ) : ℝ))⁻¹
 
 /- English proof (translation)
-The claim follows from `inv_pos.2 (Real.sqrt_pos.2 (Nat.cast_pos.2 (Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 P.ne_bot))))`.
+A detailed English derivation is pending.
 -/
 theorem rt_pos (P : HeightOneSpectrum (𝓞 E)) : 0 < rt P :=
   inv_pos.2 (Real.sqrt_pos.2 (Nat.cast_pos.2 (Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 P.ne_bot))))
 
 /- English proof (translation)
-Rewrite using `[rt, inv_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rt_sq (P : HeightOneSpectrum (𝓞 E)) : rt P ^ 2 = ((Ideal.absNorm P.asIdeal : ℕ) : ℝ)⁻¹ := by
   rw [rt, inv_pow, Real.sq_sqrt (Nat.cast_nonneg _)]
 
 /- English proof (translation)
-Take `⟨u, hu, hk⟩` from `GlobalTheory.EtaConjChar.exists_unit_part P k`. Generalize the expression as in `ordF P k = n at hk ⊢`. Rewrite using `[hk, Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, GlobalTheory.EtaConjLocal.mk_unit P hu, GlobalTheory.EtaConjLocal.mk_unif, mul_one, ← rt_sq, sq, sq, mul_zpow]`.
+Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 -/
 theorem mk_eq (P : HeightOneSpectrum (𝓞 E)) (k : Eˣ) : FinitePlace.mk P (k : E) = (rt P ^ ordF P k) ^ 2 := by
   obtain ⟨u, hu, hk⟩ := GlobalTheory.EtaConjChar.exists_unit_part P k
@@ -46,9 +46,9 @@ theorem mk_eq (P : HeightOneSpectrum (𝓞 E)) (k : Eˣ) : FinitePlace.mk P (k :
     GlobalTheory.EtaConjLocal.mk_unif, mul_one, ← rt_sq, sq, sq, mul_zpow]
 
 /- English proof (translation)
-Establish `h` using `prod_abs_eq_one k.ne_zero`. Rewrite `h` using `[← hφ.prod_comp, ← finprod_comp_equiv FinitePlace.equivHeightOneSpectrum.symm, finprod_eq_prod_of_mulSupport_subset (s := S)]`. Rewrite using `[← sq_eq_sq₀ (mul_nonneg (Finset.prod_nonneg fun _ _ => norm_nonneg _) (Finset.prod_nonneg fun P _ => (zpow_pos (rt_pos P) _).le)) zero_le_one, one_pow, mul_pow, ← Finset.prod_pow, ← Finset.prod_pow, ← h]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [InfinitePlace.apply, IsTotallyComplex.mult_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.prod_congr rfl fun P _ => (mk_eq P k).symm`. Introduce `P hP`. Use `hS P fun h0 => hP ?_` and prove the remaining obligations. Conclude with `(mk_eq P k).trans (by rw [h0]; simp)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem prod_rt [IsTotallyComplex E] {I : Type} [Fintype I] (φ : I → E →+* ℂ)
     (hφ : Function.Bijective fun i => InfinitePlace.mk (φ i)) (k : Eˣ) (S : Finset (HeightOneSpectrum (𝓞 E)))
@@ -67,9 +67,9 @@ theorem prod_rt [IsTotallyComplex E] {I : Type} [Fintype I] (φ : I → E →+* 
     exact (mk_eq P k).trans (by rw [h0]; simp)
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.HeckeProduct.productRule χ ∅ (fun v _ => hu v) k`. Simplify using `only [Finset.prod_empty, mul_one, Finset.notMem_empty, not_false_eq_true, finprod_true] at h`. Rewrite `h` using `[finprod_eq_prod_of_mulSupport_subset (s := S) _ (fun P hP => hS P fun h0 => hP (by simp [h0]))]`. Establish `h'` using `congrArg (Units.val : ℂˣ → ℂ) h`. Simplify using `only [Units.val_mul, Units.coe_prod, Units.val_zpow_eq_zpow_val, Units.val_one] at h'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_zpow, Finset.prod_mul_distrib]`. Rewrite using `[← mul_assoc, h', one_mul]`. Use `push_cast`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem prod_val (χ : HChar E) (hu : ∀ P, χ.UnrAt P) (k : Eˣ) (S : Finset (HeightOneSpectrum (𝓞 E)))
     (hS : ∀ P, ordF P k ≠ 0 → P ∈ S) :
@@ -86,9 +86,9 @@ theorem prod_val (χ : HChar E) (hu : ∀ P, χ.UnrAt P) (k : Eˣ) (S : Finset (
   rfl
 
 /- English proof (translation)
-Introduce `x`. Establish `hc : IsClopen {x : (P.adicCompletion E)ˣ | IsUnitAt P x}`. Use `(Valued.isClopen_sphere (P.adicCompletion E) (r := 1) one_ne_zero).preimage (Units.continuous_val (M := P.adicCompletion E))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `[IsUnitAt]`. Use `(GlobalTheory.Mem.Chr.Determ.denseRange_atFin P).induction_on (p := fun x => IsUnitAt P x → χ.loc P x = 1) x ?_ fun k hk => h k ((P.valuedAdicCompletion_eq_valuation' _).symm.trans hk)` and prove the remaining obligations. Conclude with `isClosed_imp hc.2 (isClosed_eq (χ.2.1.comp (GlobalTheory.Mem.UnrAe.continuous_localIdele P)) continuous_const)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem unrAt_of_locK (χ : HChar E) (P : HeightOneSpectrum (𝓞 E))
     (h : ∀ u : Eˣ, P.valuation E (u : E) = 1 → χ.locK P u = 1) : χ.UnrAt P := by
@@ -110,13 +110,13 @@ variable {L : Type} [Field L] (ι σ : L →+* ℂ) {χ χ' : HChar E} (hu : ∀
 include hu hu' hy hy'
 
 /- English proof (translation)
-Take `⟨t, ht1, ht2⟩` from `ht k`. Set `S` to `(GlobalTheory.HeckeProduct.finite_ordF k).toFinset`. Establish `hS : ∀ P, ordF P k ≠ 0 → P ∈ S` using `fun P hP => (Set.Finite.mem_toFinset _).2 hP`. Establish `h1` using `prod_val χ hu k S hS`. Establish `h2` using `prod_val χ' hu' k S hS`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (fun r : ℝ => (r : ℂ)) (prod_rt φ hφ k S hS)`. Establish `h4 : ((χ.inf k : ℂˣ) : ℂ) * ((∏ i, ‖φ i k‖ : ℝ) : ℂ) = ∏ i, φ i k`. Rewrite using `[hi k, Complex.ofReal_prod, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [zpow_one, div_mul_cancel₀ _ (by simp)]`. Simplify using `only [← hy, ← hy', ← map_zpow₀, ← map_prod] at h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.ofReal_mul, Complex.ofReal_one] at h3`. Generalize the expression as in `∏ P ∈ S, y P ^ ordF P k = Y at h1 h2`. Generalize the expression as in `((∏ P ∈ S, rt P ^ ordF P k : ℝ) : ℂ) = r at h1 h2 h3`. Generalize the expression as in `((∏ i, ‖φ i k‖ : ℝ) : ℂ) = s at h3 h4`. Establish `h5 : Y * t = 1` using `ι.injective (by`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_one, ht1, ← h4, ← h3, ← h1]`. Use the proof step `ring)`. Establish `h6 : σ Y * (∏ i, φ i k) = 1` using `by rw [← ht2, ← map_mul, h5, map_one]`. Use `Units.ext ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem inf_eq [IsTotallyComplex E] {I : Type} [Fintype I] (φ : I → E →+* ℂ)
     (hφ : Function.Bijective fun i => InfinitePlace.mk (φ i)) (hi : χ.HasInf φ fun _ => 1)
@@ -145,15 +145,15 @@ theorem inf_eq [IsTotallyComplex E] {I : Type} [Fintype I] (φ : I → E →+* �
     _ = _ := by rw [h2, h3, mul_one]
 
 /- English proof (translation)
-Establish `key : ∀ (ψ : HChar E), (∀ P, ψ.UnrAt P) → ∏ P ∈ aboveF (L` using `E) F v, (((ψ.val P : ℂˣ) : ℂ) * (rt P : ℂ)) ^ ordF v k = ((ψ.resFin v k : ℂˣ) : ℂ) * ((Ideal.absNorm v.asIdeal : ℕ) : ℂ)⁻¹ ^ ordF v k := by`. Introduce `ψ hψ`. Establish `h1 : ∏ P ∈ aboveF (L` using `E) F v, rt P = ((Ideal.absNorm v.asIdeal : ℕ) : ℝ)⁻¹ := by`. Rewrite using `[← sq_eq_sq₀ (Finset.prod_nonneg fun P _ => (rt_pos P).le) (by positivity), ← Finset.prod_pow]`. Simplify using `only [rt_sq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.prod_inv_distrib, ← Nat.cast_prod, GlobalTheory.ToricDistribution.prod_absNorm hF, h2, Nat.cast_pow, inv_pow]`. Simplify using `only [mul_zpow, Finset.prod_mul_distrib]`. Use `congr 1`. Rewrite using `[HChar.resFin_apply, Units.coe_prod]`. Use `Finset.prod_congr rfl fun P hP => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.HeckeProduct.locK_unr ψ (hψ P), GlobalTheory.ToricDistribution.ordF_up hF, GlobalTheory.ToricDistribution.mem_aboveF.1 hP, Units.val_zpow_eq_zpow_val]`. Rewrite using `[Finset.prod_zpow, ← Complex.ofReal_prod, h1]`. Simplify using the standard rewrite rules. Establish `h1` using `key χ hu`. Establish `h3` using `key χ' hu'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [← hy, ← hy', ← map_zpow₀, ← map_prod] at h1 h3`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z : L, ∀ f : L →+* ℂ, f z = ((χ.resFin v k : ℂˣ) : ℂ) := by`. Rewrite using `[hr.1, etaFin]`. Use `split_ifs`. Conclude with `⟨(-1) ^ ordF v k, fun f => by simp⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨1, fun f => by simp⟩`. Establish `h4 : ∏ P ∈ aboveF (L` using `E) F v, y P ^ ordF v k = z * ((Ideal.absNorm v.asIdeal : ℕ) : L)⁻¹ ^ ordF v k := ι.injective (by rw [h1, map_mul, hz, map_zpow₀, map_inv₀, map_natCast])`. Rewrite `h3` using `[h4, map_mul, hz, map_zpow₀, map_inv₀, map_natCast]`. Use `Units.ext (mul_right_cancel₀ (zpow_ne_zero _ (inv_ne_zero ?_)) h3.symm)` and prove the remaining obligations. Conclude with `Nat.cast_ne_zero.2 (Ideal.absNorm_eq_zero_iff.not.2 v.ne_bot)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem resFin_eq {F : Type} [Field F] [NumberField F] [Algebra F E] (h2 : Module.finrank F E = 2)
     (hF : ∀ P : HeightOneSpectrum (𝓞 E), Algebra.IsUnramifiedAt (𝓞 F) P.asIdeal) (hr : χ.ResEta F)
@@ -191,19 +191,17 @@ theorem resFin_eq {F : Type} [Field F] [NumberField F] [Algebra F E] (h2 : Modul
 end General
 
 /- English proof (translation)
-Establish `hu' : ∀ P, χ'.UnrAt P` using `fun P => unrAt_of_locK χ' P (GlobalTheory.EtaConjChar.locK_eq_one hc' hη.2.1 P)`. Establish `hy : ∀ P, ∃ y : D.what₂.LL, D.what₂.embLL y = ((χ.val P : ℂˣ) : ℂ) * (rt P : ℂ) ∧ σ y = ((χ'.val P : ℂˣ) : ℂ) * (rt P : ℂ)`. Introduce `P`. Take `⟨ι, h1, h2, h3⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Take `⟨e, he, -⟩` from `GlobalTheory.PlaceIdem.exists_isPlIdem D ι h1 h2 h3 P`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy1, hy2⟩` from `hη.2.2 P e he (locU he.1 (unif P)) rfl`. Rewrite `hy1` using `[hc.2 P e he _ (locU he.1 (unif P)) rfl]`. Rewrite `hy2` using `[hc'.2 P e he _ (locU he.1 (unif P)) rfl]`. Conclude with `⟨y, hy1, hy2⟩`. Use `choose y hy hy' using hy`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨c, -, hcm, -⟩` from `GlobalTheory.Mem.HostCM.host_cm D.R D.host`. Use `haveI := hcm.cplx`. Take `⟨hb, hl⟩` from `(labels_overK σ).1 hσ`. Establish `hinf : ∀ k, (χ' * χ⁻¹).inf k = 1` using `fun k => by`. Rewrite using `[HChar.inf_mul, HChar.inf_inv, mul_inv_eq_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `inf_eq D.what₂.embLL σ hχ.unr hu' y hy hy' (embPsi D.host) hcm.bij hχ.inf (fun a => ?_) k` and prove the remaining obligations. Use `⟨∏ τ, labLL D τ a, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod, ← D.eTau.prod_comp]`. Conclude with `Finset.prod_congr rfl fun τ _ => embLL_embE D _`. Rewrite using `[map_prod, ← D.eTau.prod_comp, ← hb.prod_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.prod_congr rfl fun ρ _ => RingHom.congr_fun (hl ρ) a`. Take `⟨n, hn, ho⟩` from `GlobalTheory.Mem.FinOrder.finite_order_of_inf_eq_one _ _ hinf`. Establish `hp : ∀ x, (χ' * χ⁻¹).1 x ^ n = 1` using `fun x => congrArg (fun ξ : HChar D.host.E => ξ.1 x) ho`. Establish `hξ : IsClsF D.host (χ' * χ⁻¹)`. Use `⟨HChar.isUnitary_of_order hn ho, fun P => (hu' P).mul (hχ.unr P).inv, hinf, fun v k => ?_, fun w k => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[HChar.resFin_mul, HChar.resFin_inv, mul_inv_eq_one]`. Conclude with `resFin_eq D.what₂.embLL σ hχ.unr hu' y hy hy' hcm.rank (GlobalTheory.BaseChangeExistsCompare.unram_of_cm D D.sp.cm) hχ.res v k`. Rewrite using `[HChar.resInf_apply]`. Conclude with `Finset.prod_eq_one fun w' _ => GlobalTheory.ToricDistribution.locInf_of_pow hn.ne' hp w' _`. Use `hχ.mul_cls hξ` as an intermediate fact.
-
-Rewrite `this` using `[mul_comm χ', mul_inv_cancel_left]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem isEtaT_of_conj {D : D7} {σ : D.what₂.LL →+* ℂ} (hσ : OverK σ) {η η' : (AE D)ˣ →* Circle} {χ χ' : HChar D.host.E}
     (hc : ChrEq η χ) (hc' : ChrEq η' χ') (hχ : IsEtaT D.host χ) (hη : IsEtaConj σ η η') : IsEtaT D.host χ' := by
@@ -242,9 +240,9 @@ theorem isEtaT_of_conj {D : D7} {σ : D.what₂.LL →+* ℂ} (hσ : OverK σ) {
   rwa [mul_comm χ', mul_inv_cancel_left] at this
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hR _ σ hσ η' hη`. Take `⟨χ', hc⟩` from `GlobalTheory.HeckeTensorRead.exists_hchar_chrEq D η' hη.1`. Establish `h` using `isEtaT_of_conj hσ hR.lev.eta hc R.C.isEta hη`. Establish `he` using `GlobalTheory.Mem.EtaTilde.isEta_res D η' χ' hc h`. Use `⟨⟨⟨_, he⟩, fun η hη' a => ?_⟩, fun τ => ⟨1, by norm_num, ?_, fun θ hθ x hx hx' => ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(GlobalTheory.IdeleNormChar.existsUnique_isEta D).unique hη' he, pow_one, MonoidHom.comp_apply]`. Take `⟨⟨θ', hθ'⟩, -⟩` from `GlobalTheory.Member.infiniteAdele_bijective D`. Conclude with `⟨fun τ => θ' (tauE D τ), fun τ => hθ' _⟩`. Rewrite using `[GlobalTheory.Mem.EtaTilde.val_infinite D η' χ' hc h.unr _ h.inf θ hθ x hx, Finset.prod_eq_single τ (fun τ' _ hτ => by rw [hx' τ' hτ]; simp) (by simp)]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem resEta_hasInfExp_of_isEtaConj : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.Char F → ∀ (i : Fin D.R.m), ∀ (σ : D.what₂.LL →+* ℂ), OverK σ → ∀ η', IsEtaConj σ R.eta η' → ResEta D η' 1 ∧ ∀ ρ, HasInfExp D η' ρ (1 / 2) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hR _ σ hσ η' hη

@@ -13,25 +13,23 @@ noncomputable section
 namespace GlobalTheory.DefU
 
 /- English proof (translation)
-Introduce `E _ _ _ n π w hw`. Take `⟨e, he⟩` from `GlobalTheory.T.splitPlace_unitaryLocalPoints_equiv_GL E n w hw`. Take `⟨σ₀, hadm, hirr, f, hf0, hfm, hf⟩` from `GlobalTheory.T.exists_admissible_localComponent_definiteUnitary E n π w`. Take `⟨r, -, -, hr2⟩` from `GlobalTheory.T.exists_continuous_retraction_onto_unitaryLocalPoints E n w`. Establish `hsym : ∀ x : locU n w, e.symm (cLoc w (x : UA E n)) = x` using `fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← he, e.symm_apply_apply]`. Establish `hcl : ∀ g, cLoc w ((e.symm g : locU n w) : UA E n) = g` using `fun g => by`. Rewrite using `[← he, e.apply_symm_apply]`. Set `ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) σ₀.V` to `σ₀.ρ.comp e.symm.toMulEquiv.toMonoidHom`. Establish `hρ : ∀ g v, ρ g v = σ₀.ρ (e.symm g) v` using `fun _ _ => rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `σ : SmIrr (GL (Fin n) (w.adicCompletion E))` to `{ V := σ₀.V ρ := ρ smooth := fun v => (σ₀.smooth v).preimage e.symm.continuous irred := GlobalTheory.CuspMult.isIrreducible_comp_mulEquiv σ₀.ρ e.symm.toMulEquiv σ₀.irred }`. Establish `hf' : ∀ (x : locU n w) v, f (σ₀.ρ x v) = RU E n x (f v)` using `hf`. Use `⟨σ, GlobalTheory.CuspMult.isAdmissible_comp_equiv σ₀.ρ e.symm hadm, ⟨σ.irred, f, hf0, hfm, fun x v => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (ρ (cLoc w (x : UA E n)) v) = _`. Rewrite using `[hρ, hsym, hf']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨φ, hφ, h0, hK⟩`. Set `F : σ₀.ρ.IntertwiningMap (π.rep.comp (locU n w).subtype)` to `⟨f.codRestrict π.V hfm, fun x => LinearMap.ext fun v => Subtype.ext (hf' x v)⟩`. Establish `hF0 : F ≠ 0` using `fun h => hf0 (LinearMap.ext fun v => congrArg Subtype.val (DFunLike.congr_fun h v))`. Establish `hsup` using `(GlobalTheory.T.irreducibleRep_isotypic_of_centraliser_factor (UA E n) (locU n w) π.V σ₀.V σ₀.V π.rep (locU n w).subtype σ₀.ρ σ₀.ρ π.isIrreducible_rep σ₀.irred σ₀.irred (fun g => ⟨r g, fun y => hr2 g y⟩) F hF0).1`. Take `⟨v, hv0, hv⟩` from `GlobalTheory.CuspRep.LocSph.exists_fixed_of_mem_iSup (π.rep.comp (locU n w).subtype) σ₀.ρ σ₀.irred (fun h : σ₀.ρ.IntertwiningMap (π.rep.comp (locU n w).subtype) => h.toLinearMap) (fun h g u => LinearMap.congr_fun (h.isIntertwining' g) u) {k | cLoc w (k : UA E n) ∈ GlobalTheory.LF …`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `hb`. Establish `hmem : v ∈ fixed ρ (GlobalTheory.LFun.KGL w n)` using `fun g => by`. Establish `h1 : σ₀.ρ (e.symm g.1) v = v` using `hv _ (by`. Establish `h2 : cLoc w ((e.symm g.1 : locU n w) : UA E n) ∈ GlobalTheory.LFun.KGL w n`. Rewrite using `[hcl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `g.2`. Conclude with `h2)`. Simplify `h1` using `[hρ]`. Establish `hb' : fixed ρ (GlobalTheory.LFun.KGL w n) = ⊥` using `hb`. Rewrite `hmem` using `[hb']`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hv0 ((Submodule.mem_bot _).1 hmem)`. Introduce `hsph`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hsph`. Establish `hinj : Function.Injective f`. Establish `hk` using `((GlobalTheory.CuspRep.isIrreducible_iff _).1 σ₀.irred).2 (LinearMap.ker f) (fun g u hu => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hu`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hf', hu, map_zero])`. Break down `hk with h | h` into its components or cases. Conclude with `LinearMap.ker_eq_bot.1 h`. Conclude with `absurd (LinearMap.ker_eq_top.1 h) hf0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `⟨f v, hfm v, fun h => hv0 (hinj (h.trans (map_zero f).symm)), fun x hx hk => ?_⟩` and prove the remaining obligations. Establish `h1 : σ₀.ρ (⟨x, hx⟩ : locU n w) v = v`. Establish `h2 : ρ (cLoc w x) v = v` using `by simpa using hv ⟨_, hk⟩`. Rewrite `h2` using `[hρ, hsym (⟨x, hx⟩ : locU n w)]`. Then use the resulting hypothesis. Establish `h3` using `hf' ⟨x, hx⟩ v`.
-
-Rewrite `h3` using `[h1]`. Conclude with `h3.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_locComp_split : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (π : AutSub E n) (w : HeightOneSpectrum (𝓞 E)), IsSplitAt w → ∃ σ : SmIrr (GL (Fin n) (w.adicCompletion E)), IsAdmissible σ.ρ ∧ π.IsLocComp w σ ∧ (IsUnramU π.V w ↔ GlobalTheory.LGrp.IsSpherical σ.ρ (GlobalTheory.LFun.KGL w n)) := by
   intro E _ _ _ n π w hw

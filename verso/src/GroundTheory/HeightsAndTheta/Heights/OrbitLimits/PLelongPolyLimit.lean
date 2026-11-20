@@ -15,7 +15,7 @@ open GroundTheory.Heights₂.Heights (varInt SmoothNear localMult linEval linFor
 open GroundTheory.Heights₂.Heights.ComplexSets (zeroSet)
 
 /- English proof (translation)
-Take `⟨U, hU, hJU, hgU⟩` from `hg`. Establish `hinit : ContDiff ℝ ∞ (fun x : Fin (n + 1) → ℂ => Fin.init x)` using `contDiff_pi.2 fun i => contDiff_apply ℝ ℂ (Fin.castSucc i)`. Conclude with `⟨(fun x => Fin.init x) ⁻¹' U, hU.preimage hinit.continuous, fun x hx => hJU (init_mem_zeroSet p hx), hgU.comp hinit.contDiffOn fun _ hx => hx⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem smoothNear_comp_init {n : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} (p : MvPolynomial (Fin n) ℂ)
     {g : (Fin n → ℂ) → ℝ} (hg : SmoothNear (zeroSet J) g) :
@@ -27,32 +27,32 @@ theorem smoothNear_comp_init {n : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} (p
     fun x hx => hJU (init_mem_zeroSet p hx), hgU.comp hinit.contDiffOn fun _ hx => hx⟩
 
 /- English proof (translation)
-Simplify using `[linEval, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linEval_single_last {n : ℕ} (x : Fin (n + 1) → ℂ) :
     linEval (Pi.single (Fin.last n) 1) x = x (Fin.last n) := by
   simp [linEval, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `n d J p f k φ hJ hd hp hf hfc hφ hk hk0`. Take `⟨R, hR⟩` from `hfc.isCompact.exists_bound_of_continuousOn (MvPolynomial.continuous_eval p).continuousOn`. Set `χ : ContDiffBump (0 : ℂ)` to `⟨|R| + 1, |R| + 2, by positivity, by linarith⟩`. Set `F : (Fin (n + 1) → ℂ) → ℝ` to `fun x => f (Fin.init x) * χ (x (Fin.last n))`. Set `Φ : Fin d → (Fin (n + 1) → ℂ) → ℝ` to `fun j x => φ j (Fin.init x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `k' : (Fin (n + 1) → ℂ) → ℝ` to `fun x => k (Fin.init x)`. Establish `hFγ : (fun x => F (graphPt p x)) = f`. Use function extensionality and compare the values at `x`. Simplify using `only [F, graphPt_init, graphPt_last]`. Distinguish the cases in `hx : x ∈ tsupport f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[χ.one_of_mem_closedBall, mul_one]`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Conclude with `(hR x hx).trans (by show R ≤ |R| + 1; linarith [le_abs_self R])`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, zero_mul]`. Establish `hΦγ : (fun j x => Φ j (graphPt p x)) = φ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j x`. Simplify using `only [Φ, graphPt_init]`. Establish `hF : SmoothNear (zeroSet (graphIdeal J p)) F`. Take `⟨U, hU, hJU, hfU⟩` from `smoothNear_comp_init p hf`. Conclude with `⟨U, hU, hJU, hfU.mul ((χ.contDiff.comp (contDiff_apply ℝ ℂ (Fin.last n))).contDiffOn)⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hFc : HasCompactSupport F`. Use `HasCompactSupport.intro ((hfc.isCompact.prod χ.hasCompactSupport.isCompact).image (Continuous.finSnoc (A := fun _ => ℂ) continuous_fst continuous_snd : Continuous fun q : (Fin n → ℂ) × ℂ => (Fin.snoc q.1 q.2 : Fin (n + 1) → ℂ))) fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hx ⟨(Fin.init x, x (Fin.last n)), ⟨subset_tsupport _ (left_ne_zero_of_mul h), subset_tsupport _ (right_ne_zero_of_mul h)⟩, Fin.snoc_init_self x⟩`. Establish `hΦ : ∀ j, SmoothNear (zeroSet (graphIdeal J p)) (Φ j)` using `fun j => smoothNear_comp_init p (hφ j)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key` using `hWeight (n + 1) d (graphIdeal J p) (Pi.single (Fin.last n) 1) F k' Φ (graphIdeal_isPrime hJ p) ((ringKrullDim_graphIdeal J p).trans hd) (by rw [linForm_single]; exact X_last_not_mem_graphIdeal hp) hF hFc hΦ (smoothNear_comp_init p hk) (fun x hx => hk0 _ (init_mem_zeroSet p hx))`. Simplify using `only [linEval_single_last, linForm_single] at key`. Rewrite `key` using `[minimalPrimes_graphIdeal_sup, finsum_mem_image (graphIdeal_injective p).injOn]`. Establish `hsum : ∀ W ∈ (J ⊔ Ideal.span {p}).minimalPrimes, (localMult (graphIdeal J p ⊔ Ideal.span {X (Fin.last n)}) (graphIdeal W p) : ℝ) * varInt (graphIdeal W p) d F Φ = (localMult (J ⊔ Ideal.span {p}) W : ℝ) * varInt W d f φ`. Introduce `W hW`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWp : W.IsPrime` using `hW.1.1`. Establish `hsub : zeroSet (graphIdeal W p) ⊆ zeroSet (graphIdeal J p)` using `fun x hx q hq => hx q (graphIdeal_mono p (le_sup_left.trans hW.1.2) hq)`. Establish `hm : localMult (graphIdeal (J ⊔ Ideal.span {p}) p) (graphIdeal W p) = localMult (J ⊔ Ideal.span {p}) W` using `hMult _ _ (graphHom p).toRingHom _ _ (graphHom_surjective p) hWp`. Establish `hv` using `hGraph n d W p F Φ hWp (let ⟨U, hU, hJU, hFU⟩ := hF; ⟨U, hU, hsub.trans hJU, hFU⟩) (fun j => let ⟨U, hU, hJU, hΦU⟩ := hΦ j; ⟨U, hU, hsub.trans hJU, hΦU⟩)`. Rewrite using `[graphIdeal_sup_span, hm, hv, hFγ, hΦγ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `key` using `[finsum_mem_congr rfl hsum]`. Use `key.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with ε (hε : 0 < ε)`. Take `⟨U, hU, hJU, hkU⟩` from `smoothNear_comp_init p hk`. Establish `hG : SmoothNear (zeroSet (graphIdeal J p)) (fun x => Real.log (‖x (Fin.last n)‖ ^ 2 + ε * k' x ^ 2) / 2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨U ∩ k' ⁻¹' Set.Ioi 0, hkU.continuousOn.isOpen_inter_preimage hU isOpen_Ioi, fun x hx => ⟨hJU hx, hk0 _ (init_mem_zeroSet p hx)⟩, ?_⟩` and prove the remaining obligations. Use `ContDiffOn.div_const (ContDiffOn.log ?_ fun x hx => ?_) _` and prove the remaining obligations. Conclude with `((contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ (Fin.last n))).contDiffOn.add (contDiffOn_const.mul ((hkU.mono Set.inter_subset_left).pow 2))`. Conclude with `(add_pos_of_nonneg_of_pos (sq_nonneg _) (mul_pos hε (pow_pos hx.2 2))).ne'`. Rewrite using `[hGraph n (d + 1) J p F _ hJ hF (fun j => Fin.cases hG hΦ j), hFγ]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `j x`. Use `Fin.cases ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using `[graphPt_init, graphPt_last, k']`. Simplify using `[Φ, graphPt_init]`.
+A detailed English derivation is pending.
 -/
 theorem LelongPolyLimit.proof (hGraph : VarIntGraph.Statement) (hMult : LocalMultComap.Statement)
     (hWeight : LelongWeightLimit.Statement) : LelongPolyLimit.Statement := by

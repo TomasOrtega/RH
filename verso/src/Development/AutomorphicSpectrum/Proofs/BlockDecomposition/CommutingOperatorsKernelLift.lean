@@ -12,11 +12,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.FormalAlg.Lift
 
 /- English proof (translation)
-Use `letI : Module R N := Module.compHom N ((MvPolynomial.C : R' →+* MvPolynomial ι R').comp f)`. Use `letI : Module (MvPolynomial ι R) N := Module.compHom N (MvPolynomial.map f : MvPolynomial ι R →+* MvPolynomial ι R')`. Use `haveI : IsScalarTower R (MvPolynomial ι R) N := ⟨fun r q m => by`. Express the relevant statement in the definitionally equal form `(MvPolynomial.map f (r • q)) • m = (MvPolynomial.C (f r) : MvPolynomial ι R') • (MvPolynomial.map f q) • m`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, mul_smul]⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `ψ : ∀ n, A n →ₗ[R] N` to `fun n => { toFun := φ n, map_add' := map_add _, map_smul' := fun r a => hr n r a }`. Establish `hψ : ∀ i n a, ψ (n + 1) (x i n a) = (MvPolynomial.X i : MvPolynomial ι R) • ψ n a`. Introduce `i n a`. Express the relevant statement in the definitionally equal form `φ (n + 1) (x i n a) = (MvPolynomial.map f (MvPolynomial.X i)) • φ n a`. Rewrite using `[MvPolynomial.map_X]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hX i n a`. Use `⟨(GrSum.lift hx ψ hψ).toAddMonoidHom, fun n a => GrSum.lift_of hx ψ hψ n a, fun q u => ?_⟩` and prove the remaining obligations. Conclude with `(GrSum.lift hx ψ hψ).map_smul q u`.
+A detailed English derivation is pending.
 -/
 theorem exists_grSum_semilift {ι : Type} {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R')
     {A : ℤ → Type} [∀ n, AddCommGroup (A n)] [∀ n, Module R (A n)]
@@ -55,7 +55,7 @@ variable {ι : Type} [LinearOrder ι] {R : Type} [CommRing R] {g : ℕ} {ρ : Fi
   {mm : ι → ∀ e t S, T e t S →ₗ[R] T e (t + 1) S}
 
 /- English proof (translation)
-Rewrite using `[mem_Ks hS, map_smul]`. Conclude with `H.smul_eq_zero_of_mem hS (m := e + 1) (n := 0) (by omega) hr (by simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_Ks (H : TowerAx ρ res p mm) {e : ℕ} {t : ℤ} {S : Finset ι} (hS : S.Nonempty)
     {r : R} (hr : r ∈ Ideal.span (Set.range ρ) ^ (e + 1)) (y : T (e + 1) t S) :
@@ -67,11 +67,11 @@ variable (hc : ∀ e S, OperatorsCommute (ι := ι) (R := R) (A := fun t => T e 
   fun j t => mm j e t S)
 
 /- English proof (translation)
-Set `μ : ∀ t, T (e + 1) t S →+ Ks p e t S` to `fun t => { toFun := fun y => ⟨r • y, smul_mem_Ks H hS hr y⟩ map_zero' := Subtype.ext (smul_zero r) map_add' := fun a b => Subtype.ext (smul_add r a b) }`. Take `⟨Φ, h1, h2⟩` from `exists_grSum_semilift (MvPolynomial.C : R →+* MvPolynomial (Fin g) R) (hc (e + 1) S) (N := H.Tot hc S) (fun t => ((H.ops hc S).of e t).comp (μ t)) (fun t c a => by`. Simplify using `only [AddMonoidHom.comp_apply]`. Rewrite using `[BiOps.C_C_smul_of]`. Use `congr 1`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Subtype.ext (smul_comm r c a))`. Use the proof step `(fun j t a => by`. Simplify using `only [AddMonoidHom.comp_apply]`. Rewrite using `[BiOps.X_smul_of]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `r • mm j (e + 1) t S a = mm j (e + 1) t S (r • a)`. Rewrite using `[map_smul])`. Conclude with `⟨Φ, h1, h2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mulMap (H : TowerAx ρ res p mm) {e : ℕ} {r : R}
     (hr : r ∈ Ideal.span (Set.range ρ) ^ (e + 1)) {S : Finset ι} (hS : S.Nonempty) :
@@ -134,19 +134,17 @@ def unitIdeal (H : TowerAx ρ res p mm) (one : ∀ e (i : ι), T e 0 {i}) (i : �
     exact Q.smul_mem _ ma
 
 /- English proof (translation)
-Establish `hS : ({i} : Finset ι).Nonempty` using `Finset.singleton_nonempty i`. Proceed by induction on `e with`. Consider the case `zero`. Rewrite using `[zero_add, pow_one, Ideal.span_le]`. Introduce and unpack `_ ⟨l, rfl⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, hQ l⟩`. Consider the case `succ e ih`. Rewrite using `[pow_succ, Ideal.mul_le]`. Introduce `u hu v hv`. Take `⟨h, hm⟩` from `ih hu`.
+Supply the required witnesses or components. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨l, rfl⟩` from `hv`. Establish `hmem : u * ρ l ∈ Ideal.span (Set.range ρ) ^ (e + 1 + 1)`. Rewrite using `[pow_succ]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_mul hu (rho_mem l)`. Establish `h'` using `smul_mem_Ks H hS hmem (one (e + 1 + 1) i)`. Use `⟨h', ?_⟩` and prove the remaining obligations. Establish `hb : p (e + 1) 0 {i} (u • one (e + 1 + 1) i) = ((⟨u • one (e + 1) i, h⟩ : Ks p e 0 {i}) : T (e + 1) 0 {i})`. Rewrite using `[map_smul, hone]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (⟨(u * ρ l) • one (e + 1 + 1) i, h'⟩ : Ks p (e + 1) 0 {i}) = (H.ops hc {i}).y l e 0 ⟨u • one (e + 1) i, h⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(u * ρ l) • one (e + 1 + 1) i = (H.yK l e 0 {i} ⟨u • one (e + 1) i, h⟩ : _)`. Rewrite using `[H.coe_yK l hS _ _ hb, smul_smul, mul_comm]`. Rewrite using `[e1, ← BiOps.C_X_smul_of]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Q.smul_mem _ hm`. Consider the case `zero => simpa using zero_mem (unitIdeal hc H one i Q (e + 1))`. Consider the case `add a b _ _ ha hb`. Rewrite using `[mul_add]`. Conclude with `add_mem ha hb`.
-
-Consider the case `smul c a _ ha`. Rewrite using `[smul_eq_mul, mul_left_comm]`. Conclude with `Ideal.mul_mem_left _ c ha`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_le_unitIdeal (H : TowerAx ρ res p mm) (one : ∀ e (i : ι), T e 0 {i})
     (hone : ∀ e i, p e 0 {i} (one (e + 1) i) = one e i) (i : ι)
@@ -191,9 +189,9 @@ theorem pow_le_unitIdeal (H : TowerAx ρ res p mm) (one : ∀ e (i : ι), T e 0 
       exact Ideal.mul_mem_left _ c ha
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `ha`. Take `⟨k', hk'⟩` from `hb`. Use `⟨k + k', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `add_mem ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[add_comm, pow_add, mul_smul]`. Conclude with `Q.smul_mem _ hk`. Rewrite using `[pow_add, mul_smul]`. Conclude with `Q.smul_mem _ hk'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_smul_add_mem {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (Q : Submodule A M)
     (x : A) {a b : M} (ha : ∃ k : ℕ, x ^ k • a ∈ Q) (hb : ∃ k : ℕ, x ^ k • b ∈ Q) :
@@ -209,17 +207,17 @@ theorem pow_smul_add_mem {A M : Type} [CommRing A] [AddCommGroup M] [Module A M]
     exact Q.smul_mem _ hk'
 
 /- English proof (translation)
-Establish `hS : ({i} : Finset ι).Nonempty` using `Finset.singleton_nonempty i`. Establish `hker : ∀ (e : ℕ) (t : ℤ) (x : T (e + 1) t {i}), x ∈ Ks p e t {i} ↔ x ∈ Ideal.span (Set.range ρ) ^ (e + 1) • (⊤ : Submodule R (T (e + 1) t {i}))`. Introduce `e t x`. Rewrite using `[← H.ker_eq e t {i} hS, mem_Ks hS, LinearMap.mem_ker]`. Proceed by induction on `m using (H.ops hc {i}).induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `h0 => exact ⟨0, by simp⟩`. Consider the case `hadd a b ha hb => exact pow_smul_add_mem Q _ ha hb`. Consider the case `hof e t a`. Take `⟨x, hx⟩` from `a`. Establish `hx'` using `(hker e t x).1 hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-It suffices to establish `hs : ∀ x ∈ Ideal.span (Set.range ρ) ^ (e + 1) • (⊤ : Submodule R (T (e + 1) t {i})), ∀ h : x ∈ Ks p e t {i}, ∃ k : ℕ, (MvPolynomial.X i : MvPolynomial ι (MvPolynomial (Fin g) R)) ^ k • (H.ops hc {i}).of e t ⟨x, h⟩ ∈ Q from hs x hx' hx`. Introduce `x hx`. Proceed by induction on `hx using Submodule.smul_induction_on' with`. Consider the case `smul r hr y _`. Introduce `h`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, q, t', w, hw, e1⟩` from `hform (e + 1) t y`. Take `⟨Φ, hΦ1, hΦ2⟩` from `exists_mulMap hc H hr hS`. Establish `e2` using `congrArg Φ e1`. Rewrite `e2` using `[hΦ2, map_add, hΦ2, hΦ1, hΦ1, hΦ1, map_pow, MvPolynomial.map_X]`. Establish `hz : r • w = 0` using `H.smul_eq_zero_of_mem (e := e + 1) hS (m := e + 1) (n := 1) rfl hr (by simpa using hw)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : (⟨r • w, smul_mem_Ks H hS hr w⟩ : Ks p e t' {i}) = 0` using `Subtype.ext hz`. Rewrite `e2` using `[e3, map_zero, add_zero]`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[show (⟨r • y, h⟩ : Ks p e t {i}) = ⟨r • y, smul_mem_Ks H hS hr y⟩ from rfl, e2]`. Conclude with `Q.smul_mem _ (hQ e r hr)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add a ha b hb iha ihb`. Introduce `h`. Establish `e1 : (⟨a + b, h⟩ : Ks p e t {i}) = ⟨a, (hker e t a).2 ha⟩ + ⟨b, (hker e t b).2 hb⟩` using `rfl`. Rewrite using `[e1, map_add]`. Conclude with `pow_smul_add_mem Q _ (iha _) (ihb _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_mem (H : TowerAx ρ res p mm) (one : ∀ e (i : ι), T e 0 {i}) (i : ι)
     (hform : ∀ e t (a : T e t {i}), ∃ (k : ℕ) (q : MvPolynomial ι R) (t' : ℤ) (w : T e t' {i}),
@@ -272,9 +270,9 @@ theorem exists_pow_smul_mem (H : TowerAx ρ res p mm) (one : ∀ e (i : ι), T e
 end Tower
 
 /- English proof (translation)
-Introduce `ι _ R _ g ρ T _ _ res p mm hc H one hone hform i`. Establish `hS : ({i} : Finset ι).Nonempty` using `Finset.singleton_nonempty i`. Set `f : Fin g → H.Tot hc {i}` to `fun l => (H.ops hc {i}).of 0 0 ⟨ρ l • one (0 + 1) i, smul_mem_Ks H hS (by simpa using rho_mem l) _⟩`. Use `⟨Finset.univ.image f, fun m => ?_⟩` and prove the remaining obligations. Use `set Q := Submodule.span (MvPolynomial ι (MvPolynomial (Fin g) R)) ((Finset.univ.image f : Finset (H.Tot hc {i})) : Set (H.Tot hc {i})) with hQdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hf : ∀ l, f l ∈ Q` using `fun l => Submodule.subset_span (by simp)`. Use `exists_pow_smul_mem hc H one i (hform · i) Q (fun e r hr => ?_) m` and prove the remaining obligations. Take `⟨_, h⟩` from `pow_le_unitIdeal hc H one hone i Q hf e hr`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tot_singleton_finite_up_to_X :
     ∀ (ι : Type) [LinearOrder ι] (R : Type) [CommRing R] (g : ℕ) (ρ : Fin g → R) (T : ℕ → ℤ → Finset ι → Type) [∀ e t S, AddCommGroup (T e t S)] [∀ e t S, Module R (T e t S)] (res : ∀ e t (S S' : Finset ι), S ⊆ S' → T e t S →ₗ[R] T e t S') (p : ∀ e t S, T (e + 1) t S →ₗ[R] T e t S) (mm : ι → ∀ e t S, T e t S →ₗ[R] T e (t + 1) S) (hc : ∀ e S, OperatorsCommute (ι := ι) (R := R) (A := fun t => T e t S) fun j t => mm j e t S) (H : TowerAx ρ res p mm) (one : ∀ e (i : ι), T e 0 {i}), (∀ e i, p e 0 {i} (one (e + 1) i) = one e i) → (∀ e i t (a : T e t {i}), ∃ (k : ℕ) (q : MvPolynomial ι R) (t' : ℤ) (w : T e t' {i}), w ∈ Ideal.span (Set.range ρ) • (⊤ : Submodule R (T e t' {i})) ∧ (MvPolynomial.X i : MvPolynomial ι R) ^ k • GrSum.of (hc e {i}) t a = q • GrSum.of (hc e {i}) 0 (one e i) + GrSum.of (hc e {i}) t' w) → ∀ i : ι, ∃ s : Finset (H.Tot hc {i}), ∀ m : H.Tot hc {i}, ∃ k : ℕ, (MvPolynomial.X i : MvPolynomial ι (MvPolynomial (Fin g) R)) ^ k • m ∈ Submodule.span (MvPolynomial ι (MvPolynomial (Fin g) R)) (s : Set (H.Tot hc {i})) := by

@@ -9,21 +9,19 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open MvPolynomial Topology
 
 /- English proof (translation)
-Introduce `z hz`. Rewrite using `[mem_closure_iff_nhds]`. Introduce `t ht`. Assume the negation of the conclusion as `hne`. Use `set e := Fintype.equivFin σ with he`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `set J : Ideal (MvPolynomial (Fin (Fintype.card σ)) ℂ) := I.comap (rename e.symm) with hJ`. Establish `hre : ∀ q : MvPolynomial (Fin (Fintype.card σ)) ℂ, rename e (rename e.symm q) = q`. Introduce `q`. Rewrite using `[rename_rename, show (⇑e ∘ ⇑e.symm) = id from funext e.apply_symm_apply, rename_id_apply]`. Establish `hre' : ∀ p : MvPolynomial σ ℂ, rename e.symm (rename e p) = p`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `p`. Rewrite using `[rename_rename, show (⇑e.symm ∘ ⇑e) = id from funext e.symm_apply_apply, rename_id_apply]`. Establish `hJp : J.IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hmemJ : ∀ y : Fin (Fintype.card σ) → ℂ, y ∘ e ∈ zeroSetIn I → y ∈ zeroLocus J`. Introduce `y hy q hq`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hre q, eval_rename]`. Conclude with `hy _ hq`. Establish `hJZ : ∀ y : Fin (Fintype.card σ) → ℂ, y ∈ zeroLocus J → y ∘ e ∈ zeroSetIn I`. Introduce `y hy p hp`. Use `hy (rename e p) (by rw [hJ, Ideal.mem_comap, hre']; exact hp)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[eval_rename]`. Then use the resulting hypothesis. Establish `hx : z ∘ e.symm ∈ zeroLocus J` using `hmemJ _ (by`. Rewrite using `[Function.comp_assoc, show (⇑e.symm ∘ ⇑e) = id from funext e.symm_apply_apply]`. Conclude with `hz)`. Establish `hcont : Continuous fun y : Fin (Fintype.card σ) → ℂ => y ∘ e` using `continuous_pi fun i => continuous_apply _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hlim : Filter.Tendsto (fun y : Fin (Fintype.card σ) → ℂ => y ∘ e) (𝓝 (z ∘ e.symm)) (𝓝 z)`. Use `hcont.tendsto (z ∘ e.symm)` as an intermediate fact. Rewrite `this` using `[Function.comp_assoc, show (⇑e.symm ∘ ⇑e) = id from funext e.symm_apply_apply, Function.comp_id]`. Then use the resulting hypothesis. Establish `hev : ∀ᶠ y in 𝓝 (z ∘ e.symm), y ∈ zeroLocus J → eval y (rename e h) = 0` using `by filter_upwards [hlim ht] with y hyt hyJ`. Rewrite using `[eval_rename]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hne'`. Conclude with `hne ⟨y ∘ e, hyt, hJZ y hyJ, hne'⟩`. Establish `hmem` using `hvan _ J (rename e h) _ hJp hx hev`. Apply `hh` to reduce the goal to its premises. Rewrite `hmem` using `[hJ, Ideal.mem_comap, hre']`.
-
-Conclude with `hmem`.
+A detailed English derivation is pending.
 -/
 theorem zeroSetIn_subset_closure_diff (hvan : VanishNearPoint.Statement) {σ : Type} [Fintype σ]
     (I : Ideal (MvPolynomial σ ℂ)) (h : MvPolynomial σ ℂ) (hI : I.IsPrime) (hh : h ∉ I) :
@@ -69,9 +67,9 @@ theorem zeroSetIn_subset_closure_diff (hvan : VanishNearPoint.Statement) {σ : T
   exact hmem
 
 /- English proof (translation)
-Introduce `σ _ I h w hI hnorm hh hw U hU`. Take `⟨B, hBo, hwB, hBU, hpre⟩` from `hcon σ I h w hI hnorm hh hw U hU`. Use `⟨B, hBo, hwB, hBU, hpre, ?_⟩` and prove the remaining obligations. Introduce and unpack `z ⟨hzZ, hzB⟩`. Establish `h1 : z ∈ B ∩ closure (zeroSetIn I \ {z | eval z h = 0})` using `⟨hzB, zeroSetIn_subset_closure_diff hvan I h hI hh hzZ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `closure_mono ?_ (hBo.inter_closure h1)` and prove the remaining obligations. Introduce and unpack `y ⟨hyB, hyZ, hyh⟩`. Conclude with `⟨⟨hyZ, hyB⟩, hyh⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem NormalLocallyIrreducible.proof (hvan : VanishNearPoint.Statement)
     (hcon : NormalComplementConnected.Statement) : NormalLocallyIrreducible.Statement := by

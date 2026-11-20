@@ -17,13 +17,13 @@ section Alg
 variable {A : Type} [Ring A] [Algebra ℂ A]
 
 /- English proof (translation)
-Use `⟨fun i => ∑ k ∈ s, (f k).coeff i • a k, ?_, fun u => ?_⟩` and prove the remaining obligations. Use `show ∑ k ∈ s, (f k).coeff d • a k = a k₀`. Rewrite using `[Finset.sum_eq_single_of_mem k₀ hk₀ fun k hk hne => by`. Rewrite using `[coeff_eq_zero_of_natDegree_lt (hlt k hk hne), zero_smul]]`. Rewrite using `[← hd, hm.coeff_natDegree, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hk' : (f k).natDegree < d + 1`. Distinguish the cases in `h : k = k₀`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, hd]`. Use linear arithmetic over natural numbers and integers. Use `hlt k hk h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[eval_eq_sum_range' hk', Finset.sum_smul]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyMap_of_sum {ι : Type} (s : Finset ι) (f : ι → ℂ[X]) (a : ι → A) (d : ℕ) (k₀ : ι) (hk₀ : k₀ ∈ s)
     (hm : (f k₀).Monic) (hd : (f k₀).natDegree = d) (hlt : ∀ k ∈ s, k ≠ k₀ → (f k).natDegree < d) :
@@ -45,9 +45,9 @@ theorem polyMap_of_sum {ι : Type} (s : Finset ι) (f : ι → ℂ[X]) (a : ι �
     rw [smul_smul, mul_comm]
 
 /- English proof (translation)
-Take `⟨d, a, ha, hp⟩` from `hp`. Establish `hdeg : ∀ i, ((X - C t) ^ i).natDegree = i` using `fun i => by`. Rewrite using `[(monic_X_sub_C t).natDegree_pow, natDegree_X_sub_C, mul_one]`. Take `⟨b, hb, e⟩` from `polyMap_of_sum (Finset.range (d + 1)) (fun i => (X - C t) ^ i) a d d (Finset.self_mem_range_succ d) ((monic_X_sub_C t).pow d) (hdeg d) fun k hk hne => by`. Rewrite using `[hdeg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.mem_range.1 hk` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨d, b, hb.trans ha, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[hp, ← e]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem monic_shift {p : ℂ → A} (t : ℂ)
     (hp : ∃ (d : ℕ) (a : ℕ → A), a d = 1 ∧ ∀ u, p u = ∑ i ∈ Finset.range (d + 1), u ^ i • a i) :

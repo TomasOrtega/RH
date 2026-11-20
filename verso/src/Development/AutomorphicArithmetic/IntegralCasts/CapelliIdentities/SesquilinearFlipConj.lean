@@ -1,7 +1,7 @@
 import Mathlib
 
 /- English proof (translation)
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.SesquilinearFlipConj.aux1 :
     SMulCommClass ℂ ℂ ℂ := by
@@ -37,17 +37,17 @@ end UpperTheory.Reformulated.B.SesquilinearFlipConj.Helpers
 
 open UpperTheory.Reformulated.B.SesquilinearFlipConj.Helpers in
 /- English proof (translation)
-Introduce `G V _ _ _ ρ hS`. Take `⟨B, hB0, hBinv⟩` from `hS`. Distinguish the cases in `hH : B + flipConj B = 0`. Establish `hrel : ∀ v w, B v w + starRingEnd ℂ (B w v) = 0`. Introduce `v w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun F : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ => F v w) hH` as an intermediate fact. Simplify `this` using `[flipConj_apply]`. Use `⟨Complex.I • B, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hB0` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: (-Complex.I) • (Complex.I • B) = B`. Rewrite using `[smul_smul]`. Simplify using the standard rewrite rules. Rewrite using `[← this, h, smul_zero]`. Introduce `v w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hrel v w`. Establish `h2 : starRingEnd ℂ (B v w) = - B w v`. Use `congrArg (starRingEnd ℂ) h1` as an intermediate fact. Simplify using `at this`. Take the linear combination `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [LinearMap.smul_apply, smul_eq_mul, map_mul, Complex.conj_I, h2]`. Expand and normalize the polynomial expressions, which then agree. Introduce `g v w`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul, hBinv]`. Use `⟨B + flipConj B, hH, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v w`. Simplify using `only [LinearMap.add_apply, flipConj_apply, map_add, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Introduce `g v w`. Simplify using `only [LinearMap.add_apply, flipConj_apply, hBinv]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Reformulated.B.SesquilinearFlipConj.main :
     ∀ {G V : Type} [inst : Group G] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module ℂ V] {ρ : Representation ℂ G V},

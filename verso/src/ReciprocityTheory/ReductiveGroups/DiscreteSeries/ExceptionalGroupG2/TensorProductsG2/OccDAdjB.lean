@@ -17,19 +17,19 @@ variable {n : ℕ}
 def adjSg (ε : Fin n → Bool) (c : Fin n) : ℂ := if ε c then 1 else -1
 
 /- English proof (translation)
-Apply the tactic sequence `unfold adjSg; split_ifs <;> norm_num`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem adjSg_mul_self (ε : Fin n → Bool) (c : Fin n) : adjSg ε c * adjSg ε c = 1 := by
   unfold adjSg; split_ifs <;> norm_num
 
 /- English proof (translation)
-Apply the tactic sequence `unfold adjSg; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem adjSg_conj (ε : Fin n → Bool) (c : Fin n) : (starRingEnd ℂ) (adjSg ε c) = adjSg ε c := by
   unfold adjSg; split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `adjSign adjSg`. Apply the tactic sequence `cases ε a <;> cases ε b <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem adjSign_eq_adjSg (ε : Fin n → Bool) (a b : Fin n) : adjSign ε a b = adjSg ε a * adjSg ε b := by
   unfold adjSign adjSg
@@ -45,14 +45,14 @@ def adjR (ε : Fin n → Bool) (M : Submodule ℂ X) (ps : (Fin n → X) →ₗ[
 variable {ε : Fin n → Bool} {M : Submodule ℂ X} {ps : (Fin n → X) →ₗ[ℂ] X}
 
 /- English proof (translation)
-Rewrite using `[h.2 c y hy, ← mul_assoc, adjSg_mul_self, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adjR_inv {x : X} {u : Fin n → X} (h : adjR ε M ps x u) (c : Fin n) {y : X} (hy : y ∈ M) :
     inner ℂ x (ps (Pi.single c y)) = adjSg ε c * inner ℂ (u c) y := by
   rw [h.2 c y hy, ← mul_assoc, adjSg_mul_self, one_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Establish `hm : u c - u' c ∈ M` using `M.sub_mem (tset_mem.1 h.1 c) (tset_mem.1 h'.1 c)`. Establish `h0 : inner ℂ (u c - u' c) (u c - u' c) = (0 : ℂ)`. Rewrite using `[inner_sub_left, h.2 c _ hm, h'.2 c _ hm, sub_self]`. Conclude with `sub_eq_zero.1 (inner_self_eq_zero.1 h0)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjR_unique {x : X} {u u' : Fin n → X} (h : adjR ε M ps x u) (h' : adjR ε M ps x u') : u = u' := by
   funext c
@@ -62,7 +62,7 @@ theorem adjR_unique {x : X} {u u' : Fin n → X} (h : adjR ε M ps x u) (h' : ad
   exact sub_eq_zero.1 (inner_self_eq_zero.1 h0)
 
 /- English proof (translation)
-Use `⟨(tensSub M).add_mem h.1 h'.1, fun c y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, inner_add_left, inner_add_left, h.2 c y hy, h'.2 c y hy, mul_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem adjR_add {x x' : X} {u u' : Fin n → X} (h : adjR ε M ps x u) (h' : adjR ε M ps x' u') :
     adjR ε M ps (x + x') (u + u') := by
@@ -70,7 +70,7 @@ theorem adjR_add {x x' : X} {u u' : Fin n → X} (h : adjR ε M ps x u) (h' : ad
   rw [Pi.add_apply, inner_add_left, inner_add_left, h.2 c y hy, h'.2 c y hy, mul_add]
 
 /- English proof (translation)
-Use `⟨(tensSub M).smul_mem r h.1, fun c y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, inner_smul_left, inner_smul_left, h.2 c y hy]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem adjR_smul {x : X} {u : Fin n → X} (h : adjR ε M ps x u) (r : ℂ) : adjR ε M ps (r • x) (r • u) := by
   refine ⟨(tensSub M).smul_mem r h.1, fun c y hy => ?_⟩
@@ -78,9 +78,9 @@ theorem adjR_smul {x : X} {u : Fin n → X} (h : adjR ε M ps x u) (r : ℂ) : a
   ring
 
 /- English proof (translation)
-Use `choose g hg using hex`. Set `φ : M' →ₗ[ℂ] (Fin n → X)` to `{ toFun := fun x => g x.1 x.2 map_add' := fun x y => (adjR_unique (hg _ (x + y).2) (adjR_add (hg _ x.2) (hg _ y.2))).trans rfl map_smul' := fun r x => (adjR_unique (hg _ (r • x).2) (adjR_smul (hg _ x.2) r)).trans rfl }`. Take `⟨ι, hι⟩` from `LinearMap.exists_extend φ`. Use `⟨ι, fun x hx => ?_⟩` and prove the remaining obligations. Establish `: ι x = g x hx` using `LinearMap.congr_fun hι ⟨x, hx⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hg x hx`.
+A detailed English derivation is pending.
 -/
 theorem adjR_linear {M' : Submodule ℂ X} (hex : ∀ x ∈ M', ∃ u, adjR ε M ps x u) :
     ∃ ι : X →ₗ[ℂ] (Fin n → X), ∀ x ∈ M', adjR ε M ps x (ι x) := by
@@ -105,11 +105,9 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
   {E : Fin n → Fin n → Module.End ℂ D}
 
 /- English proof (translation)
-Use `tset_mem.2 fun c => ?_` and prove the remaining obligations. Establish `hu'` using `tset_mem.1 hu`. Consider the cases of `dual`. Simplify using `only [tensF, cond_false, tensV_coord]`. Use `M.add_mem (hME a b _ (hu' c)) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs`. Conclude with `hu' b`. Conclude with `M.zero_mem`. Simplify using `only [tensF, cond_true, tensVd_coord]`. Use `M.sub_mem (hME a b _ (hu' c)) ?_` and prove the remaining obligations.
-
-Use `split_ifs`. Conclude with `hu' a`. Conclude with `M.zero_mem`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem adjB_tensF_mem (dual : Bool) {M : Submodule ℂ D} (hME : ∀ a b, ∀ v ∈ M, E a b v ∈ M)
     {u : Fin n → D} (hu : u ∈ tensSub M) (a b : Fin n) : tensF dual E a b u ∈ tensSub M := by
@@ -128,19 +126,19 @@ theorem adjB_tensF_mem (dual : Bool) {M : Submodule ℂ D} (hME : ∀ a b, ∀ v
     · exact M.zero_mem
 
 /- English proof (translation)
-Use `⟨adjB_tensF_mem dual hME h.1 a b, fun c y hy => ?_⟩` and prove the remaining obligations. Establish `hsc : ∀ d, (Pi.single c y : Fin n → D) d ∈ M` using `tset_mem.1 (adjA_single_mem c hy)`. Establish `e1` using `adjSg_mul_self ε c`. Rewrite using `[hU a b x, ← hps2 b a _ (adjA_single_mem c hy), adjSign_eq_adjSg]`. Consider the cases of `dual`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Establish `hT : tensF false E b a (Pi.single c y) = Pi.single c (E b a y) + Pi.single b ((Pi.single c y : Fin n → D) a)`. Use function extensionality and compare the values at `d`. Simplify using `only [tensF, cond_false, tensV_coord, Pi.add_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp_all`. Rewrite using `[hT, map_add, inner_add_right, adjR_inv h c (hME b a y hy), adjR_inv h b (hsc a)]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [tensF, cond_false, tensV_coord, inner_add_left, hU a b (u c) y, adjSign_eq_adjSg]`. Distinguish the cases in `hca : c = a`. Substitute `hca` using the available equality. Establish `e2` using `adjSg_mul_self ε b`. Simplify using `only [Pi.single_eq_same, if_true]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-(adjSg ε c * adjSg ε b * inner ℂ (u c) (E b c y)) - inner ℂ (u b) y * adjSg ε b * adjSg ε b) * e1 + (-inner ℂ (u b) y) * e2`. Establish `hac : a ≠ c` using `Ne.symm hca`. Simplify using `only [hca, if_false, inner_zero_left, inner_zero_right, add_zero, mul_zero, Pi.single_apply, hac]`. Take the linear combination `(-(adjSg ε a * adjSg ε b * inner ℂ (u c) (E b a y))) * e1`. Establish `hT : tensF true E b a (Pi.single c y) = Pi.single c (E b a y) - Pi.single a ((Pi.single c y : Fin n → D) b)`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `d`. Simplify using `only [tensF, cond_true, tensVd_coord, Pi.sub_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp_all`. Rewrite using `[hT, map_sub, inner_sub_right, adjR_inv h c (hME b a y hy), adjR_inv h a (hsc b)]`. Simplify using `only [tensF, cond_true, tensVd_coord, inner_sub_left, hU a b (u c) y, adjSign_eq_adjSg]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hcb : c = b`. Substitute `hcb` using the available equality. Establish `e2` using `adjSg_mul_self ε a`. Simplify using `only [Pi.single_eq_same, if_true]`. Take the linear combination `(-(adjSg ε a * adjSg ε c * inner ℂ (u c) (E c a y)) + inner ℂ (u a) y * adjSg ε a * adjSg ε a) * e1 + (inner ℂ (u a) y) * e2`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hbc : b ≠ c` using `Ne.symm hcb`. Simplify using `only [hcb, if_false, inner_zero_left, inner_zero_right, sub_zero, mul_zero, Pi.single_apply, hbc]`. Take the linear combination `(-(adjSg ε a * adjSg ε b * inner ℂ (u c) (E b a y))) * e1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem adjB_E (dual : Bool) (hU : IsInfUnitary ε E) {M : Submodule ℂ D} (hME : ∀ a b, ∀ v ∈ M, E a b v ∈ M)
     {ps : (Fin n → D) →ₗ[ℂ] D} (hps2 : ∀ a b, ∀ f ∈ tensSub M, ps (tensF dual E a b f) = E a b (ps f))
@@ -186,9 +184,9 @@ theorem adjB_E (dual : Bool) (hU : IsInfUnitary ε E) {M : Submodule ℂ D} (hME
       linear_combination (-(adjSg ε a * adjSg ε b * inner ℂ (u c) (E b a y))) * e1
 
 /- English proof (translation)
-Establish `h1` using `congrFun (congrFun hk.2 c) d`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul] at h1`. Establish `key : ∀ s t : Bool, s ≠ t → k c d * (if t = true then 1 else -1) = (if s = true then 1 else -1) * k c d → k c d = 0`. Introduce `s t hst h2`. Apply the tactic sequence `cases s <;> cases t`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `absurd rfl hst`. Apply the tactic sequence `simp only [Bool.false_eq_true, ↓reduceIte, mul_one, one_mul] at h2 first | exact h2 | linear_combination h2 / 2 | linear_combination -h2 / 2`. Apply the tactic sequence `simp only [Bool.false_eq_true, ↓reduceIte, mul_one, one_mul] at h2 first | exact h2 | linear_combination h2 / 2 | linear_combination -h2 / 2`. Conclude with `absurd rfl hst`. Conclude with `key _ _ h h1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adjB_block {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) {c d : Fin n} (h : ε c ≠ ε d) :
     k c d = 0 := by
@@ -207,7 +205,7 @@ theorem adjB_block {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) {c d : 
   exact key _ _ h h1
 
 /- English proof (translation)
-Distinguish the cases in `h : ε c = ε d`. Apply the tactic sequence `rw [show adjSg ε c * adjSg ε d = 1 by unfold adjSg; rw [h]; split_ifs <;> norm_num, mul_one]`. Rewrite using `[adjB_block hk h]`. Apply the tactic sequence `cases dual <;> simp`.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem adjB_sgn {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (dual : Bool) (c d : Fin n) :
     (starRingEnd ℂ) (cond dual (star (k c d)) (k c d)) * (adjSg ε c * adjSg ε d) =
@@ -218,11 +216,11 @@ theorem adjB_sgn {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (dual : B
     cases dual <;> simp
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify `Unitary.star_mem hk.1` using `[Matrix.star_eq_conjTranspose]`. Establish `h` using `congrArg Matrix.conjTranspose hk.2`. Simplify using `only [Matrix.conjTranspose_mul] at h`. Establish `hJ : (Jm ε)ᴴ = Jm ε`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Jm, Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.star_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `h` using `[hJ]`. Conclude with `h.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjB_star_Kset {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) : kᴴ ∈ Kset ε := by
   refine ⟨?_, ?_⟩
@@ -239,11 +237,9 @@ theorem adjB_star_Kset {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) : k
     exact h.symm
 
 /- English proof (translation)
-Establish `hkU : k ∈ UJset ε` using `smd_inUJ_of_Kset hk`. Establish `hkhU : kᴴ ∈ UJset ε` using `smd_inUJ_of_Kset (adjB_star_Kset hk)`. Establish `hkk : k * kᴴ = 1`. Use `hk.1` as an intermediate fact. Rewrite `this` using `[Matrix.mem_unitaryGroup_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `this` using `[Matrix.star_eq_conjTranspose]`. Establish `hinv : σ k (σ kᴴ w) = w`. Use `hσ.1.2 k hkU kᴴ hkhU` as an intermediate fact. Rewrite `this` using `[hkk, hσ.1.1]`. Conclude with `(congrArg (fun T : H →L[ℂ] H => T w) this).symm`.
-
-Use `conv_lhs => rw [← hinv]`. Conclude with `inner_map_map_of_isURep hσ hkU v (σ kᴴ w)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjB_inner (hσ : IsURepOn (UJset ε) σ) {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (v w : H) :
     inner ℂ (σ k v) w = inner ℂ v (σ kᴴ w) := by

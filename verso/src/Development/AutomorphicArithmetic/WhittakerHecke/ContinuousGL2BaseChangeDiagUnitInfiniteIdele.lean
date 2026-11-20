@@ -8,17 +8,13 @@ open scoped Classical
 open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 
 /- English proof (translation)
-Introduce `E _ _`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hc : Continuous (AdeleBaseChange.adeleMap ℚ E)` using `AdeleBaseChange.continuous_adeleMap`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Units.continuous_val.matrix_map hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Units.continuous_coe_inv.matrix_map hc`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j`. Conclude with `continuous_const`. Conclude with `continuous_const`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `continuous_const`. Conclude with `Units.continuous_val`. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j`. Conclude with `continuous_const`. Conclude with `continuous_const`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_const`. Conclude with `Units.continuous_coe_inv`. Set `u : ℝ → (TR.Rinf ℚ)ˣ` to `fun t => ⟨fun _ => Real.exp t, fun _ => (Real.exp t)⁻¹,`. Use function extensionality and compare the values at `fun _ => mul_inv_cancel₀ (Real.exp_ne_zero t),`. Use function extensionality and compare the values at `fun _ => inv_mul_cancel₀ (Real.exp_ne_zero t)⟩`.
-
-Establish `hu : Continuous u`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_pi fun _ => Real.continuous_exp`. Conclude with `continuous_pi fun _ => (Real.continuous_exp.inv₀ Real.exp_ne_zero)`. Establish `he : (fun t : ℝ => iy (Real.exp t)) = fun t => TR.infId ℚ (u t)`.
-
-Use function extensionality and compare the values at `t`. Simplify using `only [iy, dif_neg (Real.exp_ne_zero t)]`. Both sides reduce to the same expression. Rewrite using `[he]`. Conclude with `(TR.continuous_infId ℚ).comp hu`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.continuous_GL2BaseChange_diagUnit_infiniteIdele :
     ∀ (E : Type) [Field E] [NumberField E], Continuous (em E) ∧ Continuous (dM : (A ℚ)ˣ → GL (Fin 2) (A ℚ)) ∧ Continuous (fun t : ℝ => iy (Real.exp t)) := by

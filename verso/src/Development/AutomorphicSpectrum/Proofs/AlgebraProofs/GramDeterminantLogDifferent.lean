@@ -16,7 +16,7 @@ open Matrix GlobalTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionT
 open scoped ComplexOrder
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.L1.KE.norm_le_one_of_integral_int _ (map_isIntegral_int j (RingOfIntegers.isIntegral_coe b))`.
+A detailed English derivation is pending.
 -/
 theorem norm_coe_le_one {E : Type} [Field E] [NumberField E] {ℓ : Nat.Primes} (j : E →+* ℂ_[ℓ]) (b : 𝓞 E) :
     ‖j (b : E)‖ ≤ 1 :=
@@ -24,7 +24,7 @@ theorem norm_coe_le_one {E : Type} [Field E] [NumberField E] {ℓ : Nat.Primes} 
     (map_isIntegral_int j (RingOfIntegers.isIntegral_coe b))
 
 /- English proof (translation)
-Establish `h1` using `PadicComplex.norm_extends' (ℓ : ℕ) (n : ℚ_[ℓ])`. Establish `h2 : ‖(n : ℚ_[ℓ])‖ = 1` using `Padic.norm_natCast_eq_one_iff.2 ((Nat.Prime.coprime_iff_not_dvd ℓ.2).2 h)`. Rewrite `h1` using `[h2]`. Simplify using `using h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_natCast_eq_one {ℓ : Nat.Primes} {n : ℕ} (h : ¬ (ℓ : ℕ) ∣ n) : ‖(n : ℂ_[ℓ])‖ = 1 := by
   have h1 := PadicComplex.norm_extends' (ℓ : ℕ) (n : ℚ_[ℓ])
@@ -34,7 +34,7 @@ theorem norm_natCast_eq_one {ℓ : Nat.Primes} {n : ℕ} (h : ¬ (ℓ : ℕ) ∣
   simpa using h1
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_det]`. Use `GlobalTheory.T.ultrametric_det_norm_le ℂ_[ℓ] I (j.mapMatrix M) 1 zero_le_one (fun a b => by` as an intermediate fact. Take `⟨t, ht⟩` from `h a b`. Simplify `norm_coe_le_one j t)` using `[ht]`. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_det_le_one {E : Type} [Field E] [NumberField E] {ℓ : Nat.Primes} (j : E →+* ℂ_[ℓ])
     {I : Type} [Fintype I] [DecidableEq I] (M : Matrix I I E) (h : ∀ a b, ∃ t : 𝓞 E, M a b = t) :
@@ -46,27 +46,25 @@ theorem norm_det_le_one {E : Type} [Field E] [NumberField E] {ℓ : Nat.Primes} 
   simpa using this
 
 /- English proof (translation)
-Take `⟨hli, n₀, hn₀, hspan⟩` from `hx`. Take `⟨-, hadd1, hadd2, hsm1, hsm2, -, -⟩` from `GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D`. Take `⟨-, hdual⟩` from `GlobalTheory.T.sesq_unimodular_dual E H D`. Establish `hδE : (δ : E) ≠ 0` using `by simpa using hδ0`. Set `S` to `Submodule.span (𝓞 E) (Set.range x)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `b : Module.Basis I (𝓞 E) S` to `Module.Basis.span hli`. Establish `hb : ∀ i, ((b i : S) : D.La) = x i` using `fun i => congrArg Subtype.val (Module.Basis.span_apply hli i)`. Set `g : D.La →ₗ[𝓞 E] S` to `LinearMap.codRestrict S ((n₀ : 𝓞 E) • LinearMap.id) (fun y => by`. Simplify `hspan y)` using `[Nat.cast_smul_eq_nsmul]`. Establish `hg : ∀ y, ((g y : S) : D.La) = (n₀ : 𝓞 E) • y` using `fun y => by simp [g]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Set `c : I → D.La →ₗ[𝓞 E] 𝓞 E` to `fun k => (b.coord k).comp g`. Establish `hc : ∀ y, (n₀ : 𝓞 E) • y = ∑ m, c m y • x m` using `fun y => by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => by rw [Submodule.coe_smul, hb]; rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcx : ∀ k a, c k (x a) = if a = k then (n₀ : 𝓞 E) else 0` using `fun k a => by`. Establish `: g (x a) = (n₀ : 𝓞 E) • b a` using `Subtype.ext (by simp [hg, hb])`. Simplify using `[c, this, Module.Basis.coord_apply, Finsupp.single_apply]`. Set `f : I → D.La →ₗ[𝓞 E] E` to `fun k => (LinearMap.mulLeft (𝓞 E) ((n₁ : E) * (δ : E)⁻¹)).comp ((Algebra.linearMap (𝓞 E) E).comp (c k))`. Establish `hf : ∀ k y, f k y = (n₁ : E) * (δ : E)⁻¹ * (c k y : E)` using `fun k y => rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : ∀ k, ∃ y, ∀ z, f k z = sesq D z y` using `fun k => by`. Use `hdual (f k) fun δ' hδ' z => ?_` and prove the remaining obligations. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 (hgen δ' hδ')`. Use `⟨t * c k z, ?_⟩` and prove the remaining obligations. Establish `ht' : (t : E) * (δ : E) = (n₁ : E) * (δ' : E)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun u : 𝓞 E => (u : E)) ht` as an intermediate fact. Simplify using `using this`. Rewrite using `[hf]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-(c k z : E)) * ht'`. Use `choose y hy using hex`. Set `sA : D.La → D.La →+ E` to `fun z => AddMonoidHom.mk' (fun w => sesq D z w) (hadd2 z)`. Use `⟨Matrix.of fun m k => ((H.bar (c m (y k)) : 𝓞 E) : E), n₀ * n₀ * n₁, fun a b' => ⟨_, rfl⟩, ?_, n₀, hn₀, rfl⟩` and prove the remaining obligations. Use extensionality with `a k`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : sesq D (x a) ((n₀ : 𝓞 E) • y k) = ∑ m, IsCMField.complexConj E ((c m (y k) : 𝓞 E) : E) * sesq D (x a) (x m)`. Rewrite using `[hc (y k)]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : sesq D (x a) ((n₀ : 𝓞 E) • y k) = (n₀ : E) * f k (x a)`. Rewrite using `[hsm2, hy]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `key` using `[h2]`. Simplify using `only [Matrix.mul_apply, Matrix.smul_apply, Matrix.of_apply, gramE, smul_eq_mul, H.bar_eq, Matrix.one_apply]`. Establish `h3 : ∑ m, (δ : E) * sesq D (x a) (x m) * IsCMField.complexConj E ((c m (y k) : 𝓞 E) : E) = (δ : E) * ((n₀ : E) * f k (x a))`. Rewrite using `[key, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `Finset.sum_congr rfl fun m _ => by ring`. Rewrite using `[h3, hf, hcx]`. Distinguish the cases in `hak : a = k`. Simplify using `[hak]`. Clear the denominators using the available nonvanishing facts.
-
-Simplify using `[hak]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_inverse {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     {I : Type} [Fintype I] [DecidableEq I] (x : I → D.La) (ℓ : ℕ) (hx : IsLocBasis (𝓞 E) ℓ x)
@@ -134,17 +132,17 @@ theorem exists_inverse {E : Type} [Field E] [NumberField E] [IsCMField E] (H : H
   · simp [hak]
 
 /- English proof (translation)
-Introduce `E _ _ _ H D I _ _ x ℓ hx j`. Take `⟨δ, hδ, hδ0, ⟨n₁, hn₁, hgen⟩, hnorm⟩` from `GlobalTheory.T.ideal_padic_generator_log_norm E (differentIdeal ℤ (𝓞 E)) ℓ differentIdeal_ne_bot`. Take `⟨C, N, hC, hmul, n₀, hn₀, rfl⟩` from `exists_inverse H D x ℓ hx δ hδ0 n₁ hgen`. Take `⟨-, -, -, -, -, -, hint⟩` from `GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D`. Establish `hM : ‖j ((δ : E) • gramE D x).det‖ ≤ 1` using `norm_det_le_one j _ fun a b => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `hint δ hδ (x a) (x b)`. Conclude with `⟨t, by simpa [gramE] using ht⟩`. Establish `hCn : ‖j C.det‖ ≤ 1` using `norm_det_le_one j C hC`. Establish `hprod : ‖j ((δ : E) • gramE D x).det‖ * ‖j C.det‖ = 1`. Establish `hN : Matrix.det (((n₀ * n₀ * n₁ : ℕ) : E) • (1 : Matrix I I E)) = ((n₀ * n₀ * n₁ : ℕ) : E) ^ Fintype.card I`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_smul, Matrix.det_one, _root_.mul_one]`. Rewrite using `[← norm_mul, ← map_mul, ← Matrix.det_mul, hmul, hN, map_pow, norm_pow, map_natCast, Nat.cast_mul, Nat.cast_mul, norm_mul, norm_mul, norm_natCast_eq_one hn₀, norm_natCast_eq_one hn₁]`. Simplify using the standard rewrite rules. Establish `hu : ‖j ((δ : E) • gramE D x).det‖ = 1`. Use `le_antisymm hM ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite `hu` using `[Matrix.det_smul, map_mul, norm_mul, map_pow, norm_pow]`. Establish `hj : ‖j (δ : E)‖ ≠ 0`. Simplify using `using hδ0`. Establish `hd : ‖j (gramE D x).det‖ ≠ 0`.
+Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `hu` using `[h0, mul_zero]`. Conclude with `zero_ne_one hu`. Establish `hl` using `congrArg Real.log hu`. Rewrite `hl` using `[Real.log_mul (pow_ne_zero _ hj) hd, Real.log_pow, Real.log_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hnorm j]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem log_norm_det_gramE : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (I : Type) [Fintype I] [DecidableEq I] (x : I → D.La) (ℓ : Nat.Primes), IsLocBasis (𝓞 E) ℓ x → ∀ j : E →+* ℂ_[ℓ], Real.log ‖j (gramE D x).det‖ = -(Fintype.card I : ℝ) * logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) := by
   intro E _ _ _ H D I _ _ x ℓ hx j

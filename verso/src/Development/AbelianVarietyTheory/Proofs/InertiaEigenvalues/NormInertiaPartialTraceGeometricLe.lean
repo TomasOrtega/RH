@@ -8,9 +8,9 @@ open scoped Formalism.Per
 namespace GlobalTheory.PartialTraceGain
 
 /- English proof (translation)
-Proceed by induction on `b with`. Consider the case `zero => simp`. Consider the case `succ b ih`. Rewrite using `[Nat.mul_succ, Finset.sum_range_add, ih, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_range_succ, add_comm (a * b) i]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem sum_range_mul_eq {M : Type*} [AddCommMonoid M] (f : ℕ → M) (a b : ℕ) :
     ∑ i ∈ Finset.range (a * b), f i = ∑ i ∈ Finset.range a, ∑ j ∈ Finset.range b, f (i + a * j) := by
@@ -22,7 +22,7 @@ theorem sum_range_mul_eq {M : Type*} [AddCommMonoid M] (f : ℕ → M) (a b : �
     rw [Finset.sum_range_succ, add_comm (a * b) i]
 
 /- English proof (translation)
-Establish `h : ((l : ℕ) : Om l) = algebraMap ℚ_[l] (Om l) (l : ℚ_[l])` using `by simp`. Rewrite using `[h, norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_natCast_lt_one (l : ℕ) [Fact l.Prime] : ‖((l : ℕ) : Om l)‖ < 1 := by
   have h : ((l : ℕ) : Om l) = algebraMap ℚ_[l] (Om l) (l : ℚ_[l]) := by simp
@@ -36,7 +36,7 @@ def fixedAdd {l : ℕ} [Fact l.Prime] (H : Subgroup (GQ l)) : AddSubgroup (Om l)
   neg_mem' := fun {a} ha g hg => by rw [map_neg, ha g hg]
 
 /- English proof (translation)
-Introduce `g hg`. Establish `h1` using `hx _ (hH.conj_mem' g hg σ)`. Establish `h2 : g * σ = σ * (σ⁻¹ * g * σ)` using `by group`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem apply_mem_fixedAdd {l : ℕ} [Fact l.Prime] {H : Subgroup (GQ l)} (hH : H.Normal)
     (σ : GQ l) {x : Om l} (hx : x ∈ fixedAdd H) : σ x ∈ fixedAdd H := by
@@ -48,9 +48,9 @@ theorem apply_mem_fixedAdd {l : ℕ} [Fact l.Prime] {H : Subgroup (GQ l)} (hH : 
     _ = σ x := by rw [h1]
 
 /- English proof (translation)
-Establish `h1 : σ (∑ j ∈ Finset.range m, (σ ^ j) x) = ∑ j ∈ Finset.range m, (σ ^ (j + 1)) x`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[pow_succ']`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2` using `Finset.sum_range_succ' (fun j => (σ ^ j) x) m`. Rewrite `h2` using `[Finset.sum_range_succ, hx]`. Rewrite using `[h1]`. Simplify using `using h2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem apply_sum_pow {l : ℕ} [Fact l.Prime] (σ : GQ l) (m : ℕ) {x : Om l}
     (hx : (σ ^ m) x = x) :
@@ -65,9 +65,9 @@ theorem apply_sum_pow {l : ℕ} [Fact l.Prime] (σ : GQ l) (m : ℕ) {x : Om l}
   simpa using h2.symm
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => rfl`. Consider the case `succ i ih`. Rewrite using `[pow_succ]`. Express the relevant statement in the definitionally equal form `(σ ^ i) (σ y) = y`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hy, ih]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_apply_of_fixed {l : ℕ} [Fact l.Prime] (σ : GQ l) {y : Om l} (hy : σ y = y) (i : ℕ) :
     (σ ^ i) y = y := by
@@ -79,27 +79,25 @@ theorem pow_apply_of_fixed {l : ℕ} [Fact l.Prime] (σ : GQ l) {y : Om l} (hy :
     rw [hy, ih]
 
 /- English proof (translation)
-Introduce `l hl γ hγ H k hN hI hIle hpow hgen`. Establish `hp : l.Prime` using `hl.out`. Establish `hl1 : (1 : ℝ) ≤ (l : ℝ)` using `by exact_mod_cast hp.one_le`. Establish `ha0 : 0 ≤ ‖((l : ℕ) : Om l)‖` using `norm_nonneg _`. Establish `ha1` using `norm_natCast_lt_one l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpk : (1 : ℝ) ≤ (l : ℝ) ^ (k + 1)` using `one_le_pow₀ hl1`. Establish `he0 : (0 : ℝ) < (1 : ℝ) / (l : ℝ) ^ (k + 1)` using `by positivity`. Establish `he1 : (1 : ℝ) / (l : ℝ) ^ (k + 1) ≤ 1`. Rewrite using `[div_le_one (by positivity)]; exact hpk`. Use `set ρ : ℝ := ‖((l : ℕ) : Om l)‖ ^ ((1 : ℝ) / (l : ℝ) ^ (k + 1)) with hρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hρ0 : 0 ≤ ρ` using `Real.rpow_nonneg ha0 _`. Establish `hρ1 : ρ < 1` using `Real.rpow_lt_one ha0 ha1 he0`. Establish `haρ : ‖((l : ℕ) : Om l)‖ ≤ ρ`. Use `Real.rpow_le_rpow_of_exponent_ge' ha0 ha1.le he0.le he1` as an intermediate fact. Rewrite `this` using `[Real.rpow_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hmax : max (ρ ^ (l - 1)) ‖((l : ℕ) : Om l)‖ ≤ ρ`. Use `max_le ?_ haρ` and prove the remaining obligations. Establish `h2` using `hp.two_le`. Conclude with `pow_le_of_le_one hρ0 hρ1.le (by omega)`. Use `⟨ρ, hρ0, hρ1, fun n => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `n with`. Consider the case `zero => intro x _`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `x hx`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set σ : GQ l := γ ^ l ^ n with hσ`. Establish `hσl : σ ^ l = γ ^ l ^ (n + 1)` using `by rw [hσ, ← pow_mul, ← pow_succ]`. Establish `hxS : x ∈ fixedAdd (H (n + 1))` using `hx`. Use `set y : Om l := ∑ j ∈ Finset.range l, (σ ^ j) x with hy`. Establish `hyS : y ∈ fixedAdd (H (n + 1))` using `sum_mem fun j _ => apply_mem_fixedAdd (hN _) _ hxS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hσy : σ y = y` using `apply_sum_pow σ l (by rw [hσl]; exact hx _ (hpow _))`. Establish `hyH : ∀ g ∈ H n, g y = y`. Introduce `g hg`. Take `⟨i, hi⟩` from `hgen n g hg`. Establish `h1` using `hyS _ hi`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h2 : g = σ ^ i * ((σ ^ i)⁻¹ * g)` using `by group`. Combine the equalities or inequalities in the displayed calculation. Both sides reduce to the same expression. Use `_ = y := by rw [h1, pow_apply_of_fixed σ hσy]`. Establish `hmove : ∀ z ∈ fixedAdd (H (n + 1)), ‖σ z - z‖ ≤ ρ * ‖z‖`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z hz`. Use `GlobalTheory.T.norm_inertia_pow_prime_pow_sub_le l γ hγ (H (n + 1)) (hN _) (hI _) (k + (n + 1)) (n + 1) (hIle _) (hpow _) n (by omega) z hz` as an intermediate fact. Rewrite `this` using `[show k + (n + 1) - n = k + 1 by omega]`. Then use the resulting hypothesis. Establish `hyn : ‖y‖ ≤ ρ * ‖x‖` using `(GlobalTheory.T.norm_sum_pow_apply_le_and_norm_pow_prime_sub_le l σ (fixedAdd (H (n + 1))) ρ hρ0 hρ1.le (fun z hz => apply_mem_fixedAdd (hN _) σ hz) hmove x hxS).1.trans (mul_le_mul_of_nonneg_right hmax (norm_nonneg _))`. Establish `hsum : ∑ i ∈ Finset.range (l ^ (n + 1)), (γ ^ i) x = ∑ i ∈ Finset.range (l ^ n), (γ ^ i) y`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, sum_range_mul_eq]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hy, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[pow_add, pow_mul]`.
-
-Both sides reduce to the same expression. Rewrite using `[hsum]`. Combine the equalities or inequalities in the displayed calculation.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_sum_pow_le : ∀ (l : ℕ) [Fact l.Prime] (γ : GQ l), γ ∈ (MaximalUnramifiedExtension l).fixingSubgroup → ∀ (H : ℕ → Subgroup (GQ l)) (k : ℕ), (∀ n, (H n).Normal) → (∀ n, (H n).index ≠ 0) → (∀ n, (H n).index ≤ l ^ (k + n)) → (∀ n, γ ^ l ^ n ∈ H n) → (∀ n, ∀ h ∈ H n, ∃ i : ℕ, ((γ ^ l ^ n) ^ i)⁻¹ * h ∈ H (n + 1)) → ∃ ρ : ℝ, 0 ≤ ρ ∧ ρ < 1 ∧ ∀ (n : ℕ) (x : Om l), (∀ g ∈ H n, g x = x) → ‖∑ i ∈ Finset.range (l ^ n), (γ ^ i) x‖ ≤ ρ ^ n * ‖x‖ := by
   intro l hl γ hγ H k hN hI hIle hpow hgen

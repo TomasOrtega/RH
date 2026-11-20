@@ -12,9 +12,9 @@ noncomputable def gauss2 : SchwartzMap ℂ ℂ :=
     (gaussianSchwartz ℂ)
 
 /- English proof (translation)
-Establish `h2 : Real.sqrt 2 ^ 2 = 2` using `Real.sq_sqrt (by norm_num)`. Establish `hn : ‖(Real.sqrt 2 : ℝ) • z‖ ^ 2 = 2 * Complex.normSq z`. Rewrite using `[norm_smul, mul_pow, Real.norm_eq_abs, sq_abs, h2, Complex.normSq_eq_norm_sq]`. Simplify using `only [gauss2, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, LinearEquiv.coe_toContinuousLinearEquiv', LinearEquiv.smulOfNeZero_apply, gaussianSchwartz_apply]`. Rewrite using `[hn, Complex.ofReal_exp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gauss2_apply (z : ℂ) :
     gauss2 z = Complex.exp (-2 * Real.pi * ((Complex.normSq z : ℝ) : ℂ)) := by
@@ -30,23 +30,23 @@ theorem gauss2_apply (z : ℂ) :
   ring
 
 /- English proof (translation)
-The claim follows from `(Complex.conjCLE.toContinuousLinearMap.hasTemperateGrowth).pow m`.
+A detailed English derivation is pending.
 -/
 theorem hasTemperateGrowth_conj_pow (m : ℕ) :
     Function.HasTemperateGrowth (fun z : ℂ => conj z ^ m) :=
   (Complex.conjCLE.toContinuousLinearMap.hasTemperateGrowth).pow m
 
 /- English proof (translation)
-The claim follows from `((ContinuousLinearMap.id ℝ ℂ).hasTemperateGrowth).pow m`.
+A detailed English derivation is pending.
 -/
 theorem hasTemperateGrowth_pow (m : ℕ) :
     Function.HasTemperateGrowth (fun z : ℂ => z ^ m) :=
   ((ContinuousLinearMap.id ℝ ℂ).hasTemperateGrowth).pow m
 
 /- English proof (translation)
-Distinguish the cases in `hn : 0 ≤ n`. Use `⟨SchwartzMap.smulLeftCLM ℂ (fun z : ℂ => conj z ^ n.natAbs) gauss2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply (hasTemperateGrowth_conj_pow _), gauss2_apply, smul_eq_mul, PhiInf, if_pos hn]`. Use `⟨SchwartzMap.smulLeftCLM ℂ (fun z : ℂ => z ^ n.natAbs) gauss2, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `z`. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply (hasTemperateGrowth_pow _), gauss2_apply, smul_eq_mul, PhiInf, if_neg hn]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem phiInf_mem (n : ℤ) : PhiInf n ∈ SchC := by
   by_cases hn : 0 ≤ n
@@ -60,13 +60,13 @@ theorem phiInf_mem (n : ℤ) : PhiInf n ∈ SchC := by
       smul_eq_mul, PhiInf, if_neg hn]
 
 /- English proof (translation)
-Establish `hN : Complex.normSq (z * u) = Complex.normSq z`. Rewrite using `[map_mul, Complex.normSq_eq_norm_sq u, hu]`. Simplify using the standard rewrite rules. Establish `hc : conj u = u⁻¹`. Apply `eq_inv_of_mul_eq_one_right` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hu]`. Simplify using the standard rewrite rules. Distinguish the cases in `hn : 0 ≤ n`. Use `lift n to ℕ using hn`. Simplify using `only [PhiInf, if_pos (Int.natCast_nonneg n), Int.natAbs_natCast, hN, map_mul, mul_pow, hc, inv_pow, _root_.zpow_neg, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hneg : 0 ≤ -n` using `by omega`. Take `⟨m, hm⟩` from `Int.eq_ofNat_of_zero_le hneg`. Establish `hab : n.natAbs = m` using `by omega`. Simplify using `only [PhiInf, if_neg hn, hab, hN, mul_pow, hm, zpow_natCast]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem phiInf_circle (n : ℤ) (z u : ℂ) (hu : ‖u‖ = 1) :
     PhiInf n (z * u) = u ^ (-n) * PhiInf n z := by
@@ -89,7 +89,7 @@ theorem phiInf_circle (n : ℤ) (z u : ℂ) (hu : ‖u‖ = 1) :
     ring
 
 /- English proof (translation)
-Introduce `n` and use `⟨phiInf_mem n, fun z u hu => phiInf_circle n z u hu⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem phiIso : PHIISO := fun n => ⟨phiInf_mem n, fun z u hu => phiInf_circle n z u hu⟩
 

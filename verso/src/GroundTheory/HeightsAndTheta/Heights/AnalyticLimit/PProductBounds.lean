@@ -15,15 +15,15 @@ open ReciprocityTheory.AnForm.M (FinHolAtlas LocPot IsPotential mInt MIntegrable
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (RegChartData)
 
 /- English proof (translation)
-Introduce `D X _ _ _ A R Om C₁`. Take `⟨CE, hCE⟩` from `hT A R Om C₁`. Use `⟨Om.vol, CE, fun th u hf => ⟨?_, hCE th u hf⟩⟩` and prove the remaining obligations. Establish `hpot : ∀ i, IsPotential A (potForm (th i) (u i))` using `fun i => isPotentialAdd A _ _ (hf i).1.th_pot (isPotential_ofFun A _ (hf i).2)`. Establish `hnull` using `DivisorNull.proof A R`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hind : mInt A (fun i => potForm (th i) (u i)) (R.Yo.indicator 1) = mInt A (fun i => potForm (th i) (u i)) (fun _ => 1)` using `mIntCongrNull A _ R.Yoᶜ hnull.1 hnull.2 _ _ fun x hx => by`. Establish `hx' : x ∈ R.Yo` using `by simpa using hx`. Simplify using `[Set.indicator_of_mem hx']`. Establish `hstokes : mInt A (fun i => potForm (th i) (u i)) (fun _ => 1) = mInt A th (fun _ => 1)` using `massIndep A th u (fun i => (hf i).1.th_pot) (fun i => (hf i).2)`. Use `⟨?_, hind.trans hstokes, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j K hK hKc`. Establish `h1` using `mIntegrableCont A _ hpot (fun _ => (1 : ℝ)) continuous_const j K hK hKc`. Establish `hO : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' R.Yo)` using `(A.chart j).continuousOn_symm.isOpen_inter_preimage (A.chart j).open_target R.isOpen_Yo`. Use `(h1.indicator hO.measurableSet).congr_fun (fun y hy => ?_) hKc.measurableSet` and prove the remaining obligations. Distinguish the cases in `hy' : (A.chart j).symm y ∈ R.Yo`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hyO : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' R.Yo` using `⟨hK hy, hy'⟩`. Simplify using `[Set.indicator_of_mem hyO, Set.indicator_of_mem hy']`. Establish `hyO : y ∉ (A.chart j).target ∩ (A.chart j).symm ⁻¹' R.Yo` using `fun h => hy' h.2`. Simplify using `[Set.indicator_of_notMem hyO, Set.indicator_of_notMem hy']`. Rewrite using `[← hstokes]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hM A R Om C₁ th u hf`.
+A detailed English derivation is pending.
 -/
 theorem ProductBounds.proof (hM : ListProductMass.Statement) (hT : ListTailLogSmooth.Statement) :
     ProductBounds.Statement := by

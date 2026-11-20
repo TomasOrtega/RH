@@ -2,17 +2,17 @@ import Mathlib
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `k A _ _ _ ε hnil d x D hD`. Set `M : Matrix (Fin d) (Fin d) A` to `Matrix.of fun i j => D i (x j)`. Establish `hε : (ε : A →+* k).mapMatrix M = 1`. Use extensionality with `i j`. Simplify using `[M, hD, Matrix.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hdet : ε M.det = 1`. Establish `h` using `RingHom.map_det (ε : A →+* k) M`. Rewrite `h` using `[hε, Matrix.det_one]`. Simplify using `using h`. Establish `hunit : IsUnit M.det`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `hnil`. Establish `hmem : M.det - 1 ∈ RingHom.ker ε` using `by simp [RingHom.mem_ker, hdet]`. Establish `hN : IsNilpotent (M.det - 1)` using `⟨n, by`. Establish `h : (M.det - 1) ^ n ∈ (RingHom.ker ε) ^ n` using `Ideal.pow_mem_pow hmem n`. Rewrite `h` using `[hn]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h⟩`. Establish `h` using `hN.isUnit_one_add`. Simplify using `using h`. Use `⟨fun i => ∑ l, (M⁻¹ i l) • D l, fun i j => ?_⟩` and prove the remaining obligations. Establish `hinv : M⁻¹ * M = 1` using `Matrix.nonsing_inv_mul M hunit`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `congrFun (congrFun hinv i) j`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[← h]`. Establish `hev` using `map_sum (AddMonoidHom.mk' (fun δ : Derivation k A A => δ (x j)) (fun a b => rfl)) (fun l => M⁻¹ i l • D l) Finset.univ`. Simplify using `only [AddMonoidHom.mk'_apply] at hev`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hev]`. Simplify using `[M]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem GlobalTheory.derivation_normalise_family : ∀ (k A : Type) [Field k] [CommRing A] [Algebra k A] (ε : A →ₐ[k] k), IsNilpotent (RingHom.ker ε) → ∀ (d : ℕ) (x : Fin d → A) (D : Fin d → Derivation k A A), (∀ i j, ε (D i (x j)) = if i = j then 1 else 0) → ∃ E : Fin d → Derivation k A A, ∀ i j, E i (x j) = if i = j then 1 else 0 := by
   intro k A _ _ _ ε hnil d x D hD

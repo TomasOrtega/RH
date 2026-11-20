@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.TContNbhd
 
 /- English proof (translation)
-Set `f : R →+* (NormedField.valuation (K` to `C)).integer := (algebraMap R C).codRestrict _ (fun r => by`. Rewrite using `[Valuation.mem_integer_iff, NormedField.valuation_apply, ← NNReal.coe_le_coe]`. Conclude with `hR r)`. Establish `h1 : IsIntegral (NormedField.valuation (K` using `C)).integer x := hx.map_of_comp_eq f (RingHom.id C) (by ext r; rfl)`. Establish `h2` using `(Valuation.integer.integers (NormedField.valuation (K := C))).mem_of_integral h1`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Valuation.mem_integer_iff, NormedField.valuation_apply, ← NNReal.coe_le_coe]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_isIntegral' {R C : Type} [CommRing R] [NormedField C] [IsUltrametricDist C]
     [Algebra R C] (hR : ∀ r : R, ‖algebraMap R C r‖ ≤ 1) {x : C} (hx : IsIntegral R x) : ‖x‖ ≤ 1 := by
@@ -29,7 +29,7 @@ theorem norm_le_one_of_isIntegral' {R C : Type} [CommRing R] [NormedField C] [Is
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `‖((algebraMap ℤ_[l] ↥LL.1 r : ↥LL.1) : PadicAlgCl l)‖ ≤ 1`. Establish `: ((algebraMap ℤ_[l] ↥LL.1 r : ↥LL.1) : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) (r : ℚ_[l])` using `rfl`. Rewrite using `[this, norm_algebraMap']`. Conclude with `PadicInt.norm_le_one r`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_algebraMap_le (LL : FinExt l) (r : ℤ_[l]) : ‖algebraMap ℤ_[l] ↥LL.1 r‖ ≤ 1 := by
   change ‖((algebraMap ℤ_[l] ↥LL.1 r : ↥LL.1) : PadicAlgCl l)‖ ≤ 1
@@ -38,13 +38,13 @@ theorem norm_algebraMap_le (LL : FinExt l) (r : ℤ_[l]) : ‖algebraMap ℤ_[l]
   exact PadicInt.norm_le_one r
 
 /- English proof (translation)
-The claim follows from `norm_le_one_of_isIntegral' (R := ℤ_[l]) (norm_algebraMap_le LL) c.2`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_mem (LL : FinExt l) (c : ↥(OL LL)) : ‖(c : ↥LL.1)‖ ≤ 1 :=
   norm_le_one_of_isIntegral' (R := ℤ_[l]) (norm_algebraMap_le LL) c.2
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `‖((l : ↥LL.1) : PadicAlgCl l)‖ < 1`. Establish `: ((l : ↥LL.1) : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])` using `by simp`. Rewrite using `[this, norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_natCast_lt_one (LL : FinExt l) : ‖(l : ↥LL.1)‖ < 1 := by
   change ‖((l : ↥LL.1) : PadicAlgCl l)‖ < 1
@@ -53,17 +53,15 @@ theorem norm_natCast_lt_one (LL : FinExt l) : ‖(l : ↥LL.1)‖ < 1 := by
   exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-Introduce `l _ LL T U hU`. Take `⟨s, hs⟩` from `T.L.fg`. Set `f : (↥s → ↥LL.1) → T.V` to `fun a => ∑ t : ↥s, a t • (t : T.V)`. Establish `hf : Continuous f` using `continuous_finset_sum _ fun t _ => (continuous_apply t).smul continuous_const`. Establish `h0 : f 0 = 0` using `by simp [f]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpre : f ⁻¹' U ∈ nhds (0 : ↥s → ↥LL.1)` using `hf.continuousAt.preimage_mem_nhds (by rw [h0]; exact hU)`. Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.1 hpre`. Take `⟨m, hm⟩` from `exists_pow_lt_of_lt_one hε (norm_natCast_lt_one LL)`. Use `⟨m, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[← hs]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, -, hc⟩` from `Submodule.mem_span_finset.1 hx`. Set `a : ↥s → ↥LL.1` to `fun t => (l : ↥LL.1) ^ m * ((c t : ↥(OL LL)) : ↥LL.1)`. Establish `ha : ‖a‖ < ε`. Use `(pi_norm_lt_iff hε).2 fun t => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `hfa : f a = ((l : ↥LL.1) ^ m) • x`. Rewrite using `[← hc, Finset.smul_sum]`. Simplify using `only [f, a]`. Rewrite using `[← Finset.sum_coe_sort s]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_smul]`. Use `congr 1`. Conclude with `algebraMap_smul (↥LL.1) (c t) (t : T.V)`. Establish `: a ∈ f ⁻¹' U` using `hball (mem_ball_zero_iff.2 ha)`. Rewrite `this` using `[Set.mem_preimage, hfa]`.
-
-Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l) (T : QLat LL) (U : Set T.V), U ∈ nhds (0 : T.V) → ∃ m : ℕ, ∀ x ∈ T.L.T, ((l : ↥LL.1) ^ m) • x ∈ U := by
   intro l _ LL T U hU

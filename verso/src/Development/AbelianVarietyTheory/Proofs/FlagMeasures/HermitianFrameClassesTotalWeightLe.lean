@@ -11,9 +11,9 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL.TotalWeight
 
 /- English proof (translation)
-Establish `h2 : (q : ℝ) ^ m ≤ (q : ℝ) ^ (m + a)`. Break down `Nat.eq_zero_or_pos q with hq | hq` into its components or cases. Substitute `hq` using the available equality. Break down `Nat.eq_zero_or_pos m with hm | hm` into its components or cases. Substitute `hm` using the available equality.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Simplify using `using h1`. Simplify using `[hm.ne']`. Conclude with `pow_le_pow_right₀ (by exact_mod_cast hq) (Nat.le_add_right _ _)`. Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem natCast_pow_le_pow_of_exponent_le (q m a e e' : ℕ) (he : e ≤ e') (h1 : (1 : ℝ) ≤ (q : ℝ) ^ (m + a)) :
     (q : ℝ) ^ (e * m) ≤ ((q : ℝ) ^ (m + a)) ^ e' := by
@@ -30,13 +30,13 @@ theorem natCast_pow_le_pow_of_exponent_le (q m a e e' : ℕ) (he : e ≤ e') (h1
     _ ≤ _ := pow_le_pow_right₀ h1 he
 
 /- English proof (translation)
-Take `⟨d, Λ, hT⟩` from `h`. Take `⟨ha, hD, -, -, h1, -⟩` from `GlobalTheory.HL.Defect.exponents_and_defect L r k S d Λ hT`. Establish `hth : 0 ≤ S.vth`. Unfold `Frames.vth`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hHp : S.Hp = (S.q : ℝ) ^ ((S.vth + S.vD).toNat + S.a.toNat)`. Unfold `Frames.Hp`. Rewrite using `[← zpow_natCast]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Int.toNat_of_nonneg ha, Int.toNat_of_nonneg (add_nonneg hth hD)]`. Expand and normalize the polynomial expressions, which then agree. Use `(GlobalTheory.HL.ClassCount.sumCls_le_encard L r k S).trans ((GlobalTheory.IntClsCount.main L r k S hD).trans ?_)` and prove the remaining obligations. Establish `he : r * (r + 1) ≤ 3 * (r + 1) ^ 2` using `by nlinarith`. Rewrite `h1`, the goal using `[hHp]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `key` using `ENNReal.ofReal_le_ofReal (natCast_pow_le_pow_of_exponent_le S.q _ _ _ _ he h1)`. Rewrite `key` using `[ENNReal.ofReal_pow (Nat.cast_nonneg _), ENNReal.ofReal_natCast]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sumCls_one_le {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E]

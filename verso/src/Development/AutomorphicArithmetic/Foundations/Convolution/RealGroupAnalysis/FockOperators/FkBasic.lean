@@ -6,17 +6,15 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F _ _ _ O`. Establish `hs : ∀ (N : Submodule ℂ (S4 F)) (m : ℕ), O.Fk N (m + 1) = O.Fk N m ⊔ ⨆ w, ⨆ i, (O.Fk N m).map (O.x w i)` using `fun _ _ => rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `N N' h m m' hm`. Establish `h1 : ∀ k, O.Fk N k ≤ O.Fk N' k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact h`. Consider the case `succ k ih`. Rewrite using `[hs, hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sup_le_sup ih (iSup_mono fun w => iSup_mono fun i => Submodule.map_mono ih)`. Establish `h2 : Monotone (O.Fk N')` using `monotone_nat_of_le_succ fun k => by`. Rewrite using `[hs]`. Conclude with `le_sup_left`. Conclude with `(h1 m).trans (h2 hm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `N m w i φ hφ`. Rewrite using `[hs]`. Use `Submodule.mem_sup_right ?_` and prove the remaining obligations. Use `Submodule.mem_iSup_of_mem w ?_` and prove the remaining obligations. Use `Submodule.mem_iSup_of_mem i ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `Submodule.mem_map_of_mem hφ`. Introduce `N hN m`. Proceed by induction on `m with`. Consider the case `zero => exact hN`. Consider the case `succ k ih`.
-
-Rewrite using `[hs]`. Use `haveI := ih`. Use `haveI : ∀ w : InfinitePlace F, FiniteDimensional ℂ (⨆ i, (O.Fk N k).map (O.x w i) : Submodule ℂ (S4 F)) := fun w => Submodule.finiteDimensional_iSup _`. Use `haveI : FiniteDimensional ℂ (⨆ w, ⨆ i, (O.Fk N k).map (O.x w i) : Submodule ℂ (S4 F)) := Submodule.finiteDimensional_iSup _`. Conclude with `Submodule.finiteDimensional_sup _ _`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.fkBasic :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (O : Ops F), (∀ N N' : Submodule ℂ (S4 F), N ≤ N' → ∀ m m', m ≤ m' → O.Fk N m ≤ O.Fk N' m') ∧

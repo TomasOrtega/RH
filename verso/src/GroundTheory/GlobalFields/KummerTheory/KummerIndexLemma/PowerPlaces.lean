@@ -23,26 +23,26 @@ def radicalGroup (y : Kˣ) : Subgroup Kˣ :=
 variable {K p}
 
 /- English proof (translation)
-The claim follows from `le_sup_right`.
+A detailed English derivation is pending.
 -/
 theorem unitsPow_le_radicalGroup (y : Kˣ) : unitsPow K p ≤ radicalGroup K p y :=
   le_sup_right
 
 /- English proof (translation)
-The claim follows from `le_sup_left (a := Subgroup.zpowers y) (Subgroup.mem_zpowers y)`.
+A detailed English derivation is pending.
 -/
 theorem mem_radicalGroup_self (y : Kˣ) : y ∈ radicalGroup K p y :=
   le_sup_left (a := Subgroup.zpowers y) (Subgroup.mem_zpowers y)
 
 /- English proof (translation)
-The claim follows from `sup_le ((Subgroup.zpowers_le).2 hy) hH`.
+A detailed English derivation is pending.
 -/
 theorem radicalGroup_le {y : Kˣ} {H : Subgroup Kˣ} (hy : y ∈ H) (hH : unitsPow K p ≤ H) :
     radicalGroup K p y ≤ H :=
   sup_le ((Subgroup.zpowers_le).2 hy) hH
 
 /- English proof (translation)
-Rewrite using `[radicalClasses, radicalGroup, Subgroup.map_sup, MonoidHom.map_zpowers, QuotientGroup.map_mk'_self, sup_bot_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem radicalClasses_radicalGroup (y : Kˣ) :
     radicalClasses K p (radicalGroup K p y) =
@@ -51,7 +51,7 @@ theorem radicalClasses_radicalGroup (y : Kˣ) :
     QuotientGroup.map_mk'_self, sup_bot_eq]
 
 /- English proof (translation)
-Rewrite using `[Nat.card_congr (radicalQuotientEquiv K p _).toEquiv, radicalClasses_radicalGroup, Nat.card_zpowers]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natCard_radicalQuotient (y : Kˣ) :
     Nat.card (radicalGroup K p y ⧸ (unitsPow K p).subgroupOf (radicalGroup K p y)) =
@@ -67,7 +67,7 @@ instance finite_radicalQuotient [NeZero p] (y : Kˣ) :
     ⟨p, NeZero.pos p, UnitsModPow.pow_eq_one _ _ _⟩)).ne'
 
 /- English proof (translation)
-Rewrite using `[natCard_radicalQuotient]`. Use `orderOf_eq_prime (UnitsModPow.pow_eq_one _ _ _) ?_` and prove the remaining obligations. Rewrite using `[ne_eq, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem natCard_radicalQuotient_of_not_mem [Fact p.Prime] {y : Kˣ} (hy : y ∉ unitsPow K p) :
     Nat.card (radicalGroup K p y ⧸ (unitsPow K p).subgroupOf (radicalGroup K p y)) = p := by
@@ -79,14 +79,14 @@ variable [Fact p.Prime] [HasEnoughRootsOfUnity K p] (Ω : Type*) [Field Ω] [Alg
   [IsSepClosed Ω]
 
 /- English proof (translation)
-Rewrite using `[finrank_kummerExtension, natCard_radicalQuotient_of_not_mem hy]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_kummerExtension_radicalGroup {y : Kˣ} (hy : y ∉ unitsPow K p) :
     finrank K (kummerExtension K p Ω (radicalGroup K p y)) = p := by
   rw [finrank_kummerExtension, natCard_radicalQuotient_of_not_mem hy]
 
 /- English proof (translation)
-The claim follows from `isCyclic_of_prime_card (p := p) (by rw [IsGalois.card_aut_eq_finrank, finrank_kummerExtension_radicalGroup Ω hy])`.
+A detailed English derivation is pending.
 -/
 theorem isCyclic_kummerExtension_radicalGroup {y : Kˣ} (hy : y ∉ unitsPow K p) :
     IsCyclic Gal(kummerExtension K p Ω (radicalGroup K p y)/K) :=
@@ -94,14 +94,14 @@ theorem isCyclic_kummerExtension_radicalGroup {y : Kˣ} (hy : y ∉ unitsPow K p
     rw [IsGalois.card_aut_eq_finrank, finrank_kummerExtension_radicalGroup Ω hy])
 
 /- English proof (translation)
-The claim follows from `unitsPowIn_kummerExtension K p Ω _ (unitsPow_le_radicalGroup y)`.
+A detailed English derivation is pending.
 -/
 theorem unitsPowIn_kummerExtension_radicalGroup (y : Kˣ) :
     unitsPowIn K p (kummerExtension K p Ω (radicalGroup K p y)) = radicalGroup K p y :=
   unitsPowIn_kummerExtension K p Ω _ (unitsPow_le_radicalGroup y)
 
 /- English proof (translation)
-Establish `h` using `mem_radicalGroup_self (p := p) y`. Rewrite `h` using `[← unitsPowIn_kummerExtension_radicalGroup Ω y]`. Conclude with `mem_unitsPowIn.1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_kummerExtension_radicalGroup (y : Kˣ) :
     ∃ α : kummerExtension K p Ω (radicalGroup K p y), α ^ p = algebraMap K _ (y : K) := by
@@ -120,33 +120,31 @@ universe u
 variable {K : Type u} [Field K] [NumberField K] {p : ℕ} [Fact p.Prime] [HasEnoughRootsOfUnity K p]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Simplify using `only [not_exists, not_and, not_not] at hcon`. Set `Ω` to `AlgebraicClosure K`. Set `L` to `kummerExtension K p Ω (radicalGroup K p a)`. Establish `hL : unitsPowIn K p L = radicalGroup K p a` using `unitsPowIn_kummerExtension_radicalGroup Ω a`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨α, hα⟩` from `exists_pow_eq_kummerExtension_radicalGroup (p := p) Ω a`. Establish `: HasEnoughRootsOfUnity L p` using `hasEnoughRootsOfUnity_of_ringHom (algebraMap K L) p`. Set `xL : Lˣ` to `Units.map (algebraMap K L : K →* L) x`. Establish `hxL : xL ∉ unitsPow L p`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hx` to reduce the goal to its premises. Rewrite using `[← hL]`. Conclude with `Subgroup.mem_comap.2 h`. Set `L'` to `kummerExtension L p (AlgebraicClosure L) (radicalGroup L p xL)`. Establish `hfin : finrank L L' = p` using `finrank_kummerExtension_radicalGroup _ hxL`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsCyclic Gal(L'/L)` using `isCyclic_kummerExtension_radicalGroup _ hxL`. It suffices to establish `h : ∀ᶠ w : HeightOneSpectrum (𝓞 L) in cofinite, SplitsCompletely L' w by`. Establish `h1` using `hFI.finrank_eq_one_of_eventually_splitsCompletely h`. Rewrite `h1` using `[hfin]`. Conclude with `(Fact.out : p.Prime).one_lt.ne' h1`.
+Reduce the argument to an intermediate assertion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hev : ∀ᶠ w : HeightOneSpectrum (𝓞 L) in cofinite, below K w ∉ S` using `tendsto_below.eventually hS.eventually_cofinite_notMem`. Use `filter_upwards [hev] with w hw`. Rewrite using `[splitsCompletely_kummerExtension_iff]`. It suffices to establish `key : xL ∈ unitsPowIn L p (w.adicCompletion L) by`. Introduce `c hc`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `mem_unitsPowIn.1 (radicalGroup_le key (unitsPow_le_unitsPowIn L p _) hc)`. Use `set v := below K w`. Establish `hpv : (p : 𝓞 K) ∉ v.asIdeal` using `fun h ↦ hw (hpS v h)`. Set `ιK : Kˣ →* (w.adicCompletion L)ˣ` to `Units.map (algebraMap K (w.adicCompletion L) : K →* _)`. Set `ιv : (v.adicCompletion K)ˣ →* (w.adicCompletion L)ˣ` to `Units.map (algebraMap (v.adicCompletion K) (w.adicCompletion L) : _ →* _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `κ : Kˣ →* (v.adicCompletion K)ˣ` to `Units.map (algebraMap K (v.adicCompletion K) : K →* _)`. Establish `hικ (z : Kˣ) : ιv (κ z) = ιK z`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [ιv, ιK, κ, Units.coe_map, MonoidHom.coe_coe]`. Conclude with `(IsScalarTower.algebraMap_apply K (v.adicCompletion K) (w.adicCompletion L) _).symm`.
+Simplify using the standard rewrite rules. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hxLw : ((ιK x : (w.adicCompletion L)ˣ) : w.adicCompletion L) = algebraMap L (w.adicCompletion L) (xL : L)`. Simplify using `only [ιK, xL, Units.coe_map, MonoidHom.coe_coe]`. Conclude with `IsScalarTower.algebraMap_apply K L (w.adicCompletion L) _`. It suffices to establish `h : ιK x ∈ unitsPow (w.adicCompletion L) p by`. Take `⟨b, hb⟩` from `mem_unitsPow.1 h`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `mem_unitsPowIn.2 ⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[← hxLw, ← hb, Units.val_pow_eq_pow_val]`. Distinguish the cases in `ha : a ∈ unitsPowIn K p (v.adicCompletion K)`. Take `⟨b, hb⟩` from `mem_unitsPow.1 (Subgroup.mem_comap.1 (hcon v hw ha))`. Use `mem_unitsPow.2 ⟨ιv b, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← map_pow, hb]`. Conclude with `hικ x`. Establish `ha' : κ a ∉ unitsPow (v.adicCompletion K) p` using `fun h ↦ ha (Subgroup.mem_comap.2 h)`. Take `⟨k, hk⟩` from `exists_mul_zpow_inv_mem_unitsPow v p hpv (units_map_mem_localUnits v (haS v hw)) (units_map_mem_localUnits v (hxS v hw)) ha'`. Take `⟨b, hb⟩` from `mem_unitsPow.1 hk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hα0 : algebraMap L (w.adicCompletion L) (α : L) ≠ 0`. Rewrite using `[ne_eq, map_eq_zero]`. Introduce `h0`. Establish `h1 : (α : kummerExtension K p Ω (radicalGroup K p a)) = 0` using `h0`. Rewrite `hα` using `[h1, zero_pow (Fact.out : p.Prime).ne_zero, eq_comm, map_eq_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `a.ne_zero hα`. Set `αw : (w.adicCompletion L)ˣ` to `Units.mk0 _ hα0`. Establish `hαw : αw ^ p = ιK a`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [αw, ιK, Units.val_pow_eq_pow_val, Units.val_mk0, Units.coe_map, MonoidHom.coe_coe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow]`. Express the relevant statement in the definitionally equal form `algebraMap L (w.adicCompletion L) ((α ^ p : kummerExtension K p Ω _) : L) = _`. Rewrite using `[hα, IsScalarTower.algebraMap_apply K L (w.adicCompletion L)]`. Use `mem_unitsPow.2 ⟨ιv b * αw ^ k, ?_⟩` and prove the remaining obligations. Establish `hb' : ιv b ^ p = ιK x * (ιK a ^ k)⁻¹`.
-
-Rewrite using `[← map_pow, hb, map_mul, map_inv, map_zpow, hικ, hικ]`. Establish `hαk : (αw ^ k) ^ p = ιK a ^ k`. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hαw]`. Rewrite using `[mul_pow, hb', hαk, inv_mul_cancel_right]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GroundTheory.Global.FirstInequality.exists_place_mem_unitsPowIn_not_mem
     (hFI : FirstInequality.{u}) {a x : Kˣ} (hx : x ∉ radicalGroup K p a)

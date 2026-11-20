@@ -18,7 +18,7 @@ section Gen
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩ t`. Conclude with `⟨c t, rfl⟩`. Introduce `h choose c hc using h`. Conclude with `⟨c, funext hc⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_ratV_iff {ι : Type} (x : ι → Ad E) : x ∈ ratV E ι ↔ ∀ t, ∃ c : E, algebraMap E (Ad E) c = x t := by
   constructor
@@ -40,7 +40,7 @@ def reix {ι κ : Type} (τ : κ ≃ ι) : (κ → Ad E) ≃ₜ+ (ι → Ad E) w
   continuous_invFun := continuous_pi fun _ => continuous_apply _
 
 /- English proof (translation)
-Simplify using `only [mem_ratV_iff]`. Express the relevant statement in the definitionally equal form `(∀ t, ∃ c : E, algebraMap E (Ad E) c = w (τ.symm t)) ↔ _`. Conclude with `⟨fun h s => by simpa using h (τ s), fun h t => h _⟩`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Supply the required witnesses or components.
 -/
 theorem reix_mem {ι κ : Type} (τ : κ ≃ ι) (w : κ → Ad E) : reix E τ w ∈ ratV E ι ↔ w ∈ ratV E κ := by
   simp only [mem_ratV_iff]
@@ -48,7 +48,7 @@ theorem reix_mem {ι κ : Type} (τ : κ ≃ ι) (w : κ → Ad E) : reix E τ w
   exact ⟨fun h s => by simpa using h (τ s), fun h t => h _⟩
 
 /- English proof (translation)
-Use `⟨h.1.comp (reix E τ).continuous, fun γ hγ w => ?_⟩` and prove the remaining obligations. Use `h.2 (reix E τ γ) ((reix_mem τ γ).2 hγ) (reix E τ w)` as an intermediate fact. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem per_reix {ι κ : Type} (τ : κ ≃ ι) {Φ : (ι → Ad E) → ℂ} (h : Per (ratV E ι) Φ) :
     Per (ratV E κ) (fun w => Φ (w ∘ τ.symm)) := by
@@ -57,14 +57,14 @@ theorem per_reix {ι κ : Type} (τ : κ ≃ ι) {Φ : (ι → Ad E) → ℂ} (h
   exact this
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.quotientAverage_map_lattice_equiv _ _ _ _ (isCoLat_ratV E κ) (isCoLat_ratV E ι) (reix E τ) (reix_mem τ) Φ h).symm`.
+A detailed English derivation is pending.
 -/
 theorem avg_reix {ι κ : Type} [Fintype ι] [Fintype κ] (τ : κ ≃ ι) {Φ : (ι → Ad E) → ℂ} (h : Per (ratV E ι) Φ) :
     avg (ratV E ι) Φ = avg (ratV E κ) (fun w => Φ (w ∘ τ.symm)) :=
   (GlobalTheory.T.quotientAverage_map_lattice_equiv _ _ _ _ (isCoLat_ratV E κ) (isCoLat_ratV E ι) (reix E τ) (reix_mem τ) Φ h).symm
 
 /- English proof (translation)
-Rewrite using `[avg_reix τ h]`. Conclude with `GlobalTheory.T.quotientAverage_sum_index_fubini E κ₁ κ₂ _ (per_reix τ h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_sum_reix {ι κ₁ κ₂ : Type} [Fintype ι] [Fintype κ₁] [Fintype κ₂] (τ : κ₁ ⊕ κ₂ ≃ ι)
     {Φ : (ι → Ad E) → ℂ} (h : Per (ratV E ι) Φ) :
@@ -83,7 +83,7 @@ section Main
 variable {E : Type} [Field E] [NumberField E] {a : ℕ} {ψ : AddChar (Ad E) ℂ}
 
 /- English proof (translation)
-Apply the tactic sequence `funext s; cases s <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sumElim_add_left {κ₁ κ₂ : Type} (c : κ₁ → E) (n : κ₁ → Ad E) (w : κ₂ → Ad E) :
     Sum.elim ((fun t => algebraMap E (Ad E) (c t)) + n) w =
@@ -91,7 +91,7 @@ theorem sumElim_add_left {κ₁ κ₂ : Type} (c : κ₁ → E) (n : κ₁ → A
   funext s; cases s <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `funext s; cases s <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sumElim_add_right {κ₁ κ₂ : Type} (c : κ₂ → E) (n : κ₁ → Ad E) (w : κ₂ → Ad E) :
     Sum.elim n ((fun t => algebraMap E (Ad E) (c t)) + w) =
@@ -99,7 +99,7 @@ theorem sumElim_add_right {κ₁ κ₂ : Type} (c : κ₂ → E) (n : κ₁ → 
   funext s; cases s <;> simp
 
 /- English proof (translation)
-Establish `e : blkU (((fun t => algebraMap E (Ad E) (c t)) + v) ∘ σ.symm) = ratGL E a (blkU (c ∘ σ.symm)) * blkU (v ∘ σ.symm)`. Rewrite using `[ratGL_blkU]`. Conclude with `posU_add _ _ _`. Rewrite using `[e, mul_assoc, hl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blk_rat {r' m' : ℕ} {κ : Type} [Fintype κ] (σ : κ ≃ UnipotentBlockColumnIndex a r' m') {f : GA E a → ℂ}
     (hl : ∀ (c : UnipotentBlockColumnIndex a r' m' → E) g, f (ratGL E a (blkU c) * g) = f g) (c : κ → E) (v : κ → Ad E) (h : GA E a) :
@@ -111,7 +111,7 @@ theorem blk_rat {r' m' : ℕ} {κ : Type} [Fintype κ] (σ : κ ≃ UnipotentBlo
   rw [e, mul_assoc, hl]
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun s => match s with | Sum.inl _ => continuous_const | Sum.inr l => continuous_apply l`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sumElim_right {κ₁ κ₂ : Type} (n : κ₁ → Ad E) :
     Continuous fun w : κ₂ → Ad E => Sum.elim n w :=
@@ -120,7 +120,7 @@ theorem continuous_sumElim_right {κ₁ κ₂ : Type} (n : κ₁ → Ad E) :
     | Sum.inr l => continuous_apply l
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun s => match s with | Sum.inl l => (continuous_apply l).comp continuous_fst | Sum.inr l => (continuous_apply l).comp continuous_snd`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sumElim {κ₁ κ₂ : Type} : Continuous fun p : (κ₁ → Ad E) × (κ₂ → Ad E) => Sum.elim p.1 p.2 :=
   continuous_pi fun s => match s with
@@ -128,7 +128,7 @@ theorem continuous_sumElim {κ₁ κ₂ : Type} : Continuous fun p : (κ₁ → 
     | Sum.inr l => (continuous_apply l).comp continuous_snd
 
 /- English proof (translation)
-Use `⟨hc.comp (((continuous_posU _).comp ((reix E σ).continuous.comp (continuous_sumElim_right n))).mul continuous_const), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩ w`. Express the relevant statement in the definitionally equal form `f (blkU (Sum.elim n ((fun t => algebraMap E (Ad E) (c t)) + w) ∘ σ.symm) * h) = _`. Rewrite using `[sumElim_add_right, blk_rat σ hl]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem per_position {r' m' : ℕ} {κ₁ κ₂ : Type} [Fintype κ₁] [Fintype κ₂] (σ : κ₁ ⊕ κ₂ ≃ UnipotentBlockColumnIndex a r' m')
     {f : GA E a → ℂ} (hc : Continuous f) (hl : ∀ (c : UnipotentBlockColumnIndex a r' m' → E) g, f (ratGL E a (blkU c) * g) = f g)
@@ -140,9 +140,9 @@ theorem per_position {r' m' : ℕ} {κ₁ κ₂ : Type} [Fintype κ₁] [Fintype
   rw [sumElim_add_right, blk_rat σ hl]
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : r ≤ (t.1.1 : ℕ)`. Establish `e : (colEquiv a r (m + 1)).symm t = Sum.inl ⟨t, h⟩` using `Equiv.sumCompl_symm_apply_of_pos (p := fun t : UnipotentBlockColumnIndex a (m + 1) (m + 1) => r ≤ (t.1.1 : ℕ)) h`. Simplify using `only [Function.comp, e, Sum.elim_inl]`. Establish `: (eLast a (m + 1) t : E) = 0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [eLast]`. Rewrite using `[if_neg]`. Use linear arithmetic over natural numbers and integers. Simplify using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 theorem dot_col {r m : ℕ} (hr : r ≤ m) (z : HiIx a r (m + 1) → Ad E) (y : LoIx a r (m + 1) → Ad E) :
     dot (eLast a (m + 1)) (Sum.elim z y ∘ (colEquiv a r (m + 1)).symm) =
@@ -158,35 +158,33 @@ theorem dot_col {r m : ℕ} (hr : r ≤ m) (z : HiIx a r (m + 1) → Ad E) (y : 
     simp [this]
 
 /- English proof (translation)
-Establish `hr1 : r ≤ m + 1` using `by omega`. Establish `hl : ∀ {r' : ℕ} (c : UnipotentBlockColumnIndex a r' (m + 1) → E) g, f (ratGL E a (blkU c) * g) = f g` using `fun c g => hf.left _ (isMir_blkU c) g`. Establish `hA : ∀ n : UnipotentBlockColumnIndex a r m → Ad E, colT ψ (m + 1) f (blkU n * g) = avg (ratV E (HiIx a r (m + 1))) (fun z => avg (ratV E (LoIx a r (m + 1))) (fun y => ψ (-dot (eLast a (m + 1)) (Sum.elim z y ∘ (colEquiv a r (m + 1)).symm)) * f (blkU (Sum.elim z y ∘ (colEquiv a r ( …`. Introduce `n`. Unfold `colT coefF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Conclude with `avg_sum_reix (colEquiv a r (m + 1)) (per_coef hψ _ hf.cont hl _)`. Establish `hB : ∀ (n : UnipotentBlockColumnIndex a r m → Ad E) (z : HiIx a r (m + 1) → Ad E), avg (ratV E (LoIx a r (m + 1))) (fun y => ψ (-dot (eLast a (m + 1)) (Sum.elim z y ∘ (colEquiv a r (m + 1)).symm)) * f (blkU (Sum.elim z y ∘ (colEquiv a r (m + 1)).symm) * (blkU n * g))) = ψ (-dot ( …`. Introduce `n z`. Establish `e : ∀ y : LoIx a r (m + 1) → Ad E, ψ (-dot (eLast a (m + 1)) (Sum.elim z y ∘ (colEquiv a r (m + 1)).symm)) * f (blkU (Sum.elim z y ∘ (colEquiv a r (m + 1)).symm) * (blkU n * g)) = ψ (-dot (eLast a (m + 1)) (Sum.elim z 0 ∘ (colEquiv a r (m + 1)).symm)) * f (blkU (Sum.elim n (y + - …`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dot_col hr, ← mul_assoc, blkU_col_mul_blkU hr1, mul_assoc, sub_eq_add_neg]`. Repeatedly rewrite using `[e]`. Rewrite using `[avg_const_mul]`. Conclude with `congrArg _ (GlobalTheory.T.quotientAverage_translate_invariant _ _ (isCoLat_ratV _ _) (fun w => f (blkU (Sum.elim n w ∘ (blkEquiv a r m hr1).symm) * (blkU (Sum.elim z 0 ∘ (colEquiv a r (m + 1)).symm) * g))) (per_position (blkEquiv a r m hr1) hf.cont hl n _) (-corr n z))`. Take `⟨Φ₂, hΦ₂⟩ : ∃ Φ₂ : (UnipotentBlockColumnIndex a r m → Ad E) × (HiIx a r (m + 1) → Ad E) → ℂ, ∀ p, Φ₂ p = avg (ratV E (LoIx a r (m + 1))) (fun y => ψ (-dot (eLast a (m + 1)) (Sum.elim p.2 y ∘ (colEquiv a r (m + 1)).symm)) * f (blkU (Sum.elim p.2 y ∘ (colEquiv a r (m + 1)).symm) * …` from `⟨_, fun _ => rfl⟩`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨H, hH⟩ : ∃ H : (UnipotentBlockColumnIndex a r m → Ad E) × (HiIx a r (m + 1) → Ad E) → ℂ, ∀ p, H p = avg (ratV E (LoIx a r (m + 1))) (fun w => f (blkU (Sum.elim p.1 w ∘ (blkEquiv a r m hr1).symm) * (blkU (Sum.elim p.2 0 ∘ (colEquiv a r (m + 1)).symm) * g)))` from `⟨_, fun _ => rfl⟩`. Establish `hΦH : ∀ p, Φ₂ p = ψ (-dot (eLast a (m + 1)) (Sum.elim p.2 0 ∘ (colEquiv a r (m + 1)).symm)) * H p`. Introduce `p`. Rewrite using `[hΦ₂, hH, hB]`. Establish `hHc : Continuous H`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : H = fun p => avg (ratV E (LoIx a r (m + 1))) (fun w => (fun q : ((UnipotentBlockColumnIndex a r m → Ad E) × (HiIx a r (m + 1) → Ad E)) × (LoIx a r (m + 1) → Ad E) => f (blkU (Sum.elim q.1.1 q.2 ∘ (blkEquiv a r m hr1).symm) * (blkU (Sum.elim q.1.2 0 ∘ (colEquiv a r (m + 1)).sy …` using `funext hH`. Rewrite using `[e]`. Use `GlobalTheory.T.continuous_quotientAverage_periodic_family (LoIx a r (m + 1) → Ad E) (ratV E (LoIx a r (m + 1))) (isCoLat_ratV E _) ((UnipotentBlockColumnIndex a r m → Ad E) × (HiIx a r (m + 1) → Ad E)) (fun q => f (blkU (Sum.elim q.1.1 q.2 ∘ (blkEquiv a r m hr1).symm) * (blkU (Su …` and prove the remaining obligations. Establish `c₁ : Continuous fun q : ((UnipotentBlockColumnIndex a r m → Ad E) × (HiIx a r (m + 1) → Ad E)) × (LoIx a r (m + 1) → Ad E) => Sum.elim q.1.1 q.2` using `continuous_sumElim.comp (continuous_fst.fst.prodMk continuous_snd)`. Establish `c₂ : Continuous fun q : ((UnipotentBlockColumnIndex a r m → Ad E) × (HiIx a r (m + 1) → Ad E)) × (LoIx a r (m + 1) → Ad E) => Sum.elim q.1.2 (0 : LoIx a r (m + 1) → Ad E)` using `continuous_sumElim.comp (continuous_fst.snd.prodMk continuous_const)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hf.cont.comp (((continuous_posU _).comp ((reix E (blkEquiv a r m hr1)).continuous.comp c₁)).mul (((continuous_posU _).comp ((reix E (colEquiv a r (m + 1))).continuous.comp c₂)).mul continuous_const))`. Introduce `x γ hγ y`. Conclude with `(per_position (blkEquiv a r m hr1) hf.cont hl x.1 _).2 γ hγ y`. Establish `hψc : Continuous fun p : (UnipotentBlockColumnIndex a r m → Ad E) × (HiIx a r (m + 1) → Ad E) => ψ (-dot (eLast a (m + 1)) (Sum.elim p.2 0 ∘ (colEquiv a r (m + 1)).symm))` using `hψ.cont.comp ((continuous_dot _).comp ((reix E (colEquiv a r (m + 1))).continuous.comp (continuous_sumElim.comp (continuous_snd.prodMk continuous_const)))).neg`. Establish `hPer : Per ((ratV E (UnipotentBlockColumnIndex a r m)).prod (ratV E (HiIx a r (m + 1)))) Φ₂`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[funext hΦH]`. Conclude with `hψc.mul hHc`. Introduce `γ hγ p`. Rewrite `hγ` using `[AddSubgroup.mem_prod]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨c₁, hc₁⟩, ⟨c₂, hc₂⟩⟩` from `hγ`. Establish `e₁ : γ.1 = fun t => algebraMap E (Ad E) (c₁ t)` using `hc₁.symm`. Establish `e₂ : γ.2 = fun t => algebraMap E (Ad E) (c₂ t)` using `hc₂.symm`. Establish `s₁ : Φ₂ (γ + p) = Φ₂ (p.1, γ.2 + p.2)`. Rewrite using `[show γ + p = (γ.1 + p.1, γ.2 + p.2) from rfl, hΦH, hΦH]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Use `congr 1`. Rewrite using `[hH, hH]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Express the relevant statement in the definitionally equal form `f (blkU (Sum.elim (γ.1 + p.1) w ∘ _) * _) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e₁, sumElim_add_left, blk_rat _ hl]`. Establish `s₂ : Φ₂ (p.1, γ.2 + p.2) = Φ₂ p`. Rewrite using `[hΦ₂, hΦ₂]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ψ (-dot _ (Sum.elim (γ.2 + p.2) y ∘ _)) * f (blkU (Sum.elim (γ.2 + p.2) y ∘ _) * _) = _`. Establish `hm` using `hψ.map_dot (eLast a (m + 1)) (Sum.elim c₂ 0 ∘ (colEquiv a r (m + 1)).symm) (Sum.elim p.2 y ∘ (colEquiv a r (m + 1)).symm)`. Rewrite using `[e₂, sumElim_add_left, blk_rat _ hl, AddChar.map_neg_eq_inv, AddChar.map_neg_eq_inv]`. Use `congr 1`. Conclude with `congrArg _ hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[s₁, s₂]`. Establish `hD : ∀ z : HiIx a r (m + 1) → Ad E, avg (ratV E (UnipotentBlockColumnIndex a r m)) (fun n => Φ₂ (n, z)) = 0`. Introduce `z`. Repeatedly rewrite using `[hΦH]`. Rewrite using `[avg_const_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : avg (ratV E (UnipotentBlockColumnIndex a r m)) (fun n => H (n, z)) = avg (ratV E (UnipotentBlockColumnIndex a r (m + 1))) (fun w => f (blkU w * (blkU (Sum.elim z 0 ∘ (colEquiv a r (m + 1)).symm) * g)))`. Rewrite using `[avg_sum_reix (blkEquiv a r m hr1) (per_blk hf.cont hl _)]`. Repeatedly rewrite using `[hH]`. Rewrite using `[e, hf.van r h0 hr1, mul_zero]`. Establish `hA' : (fun n => colT ψ (m + 1) f (blkU n * g)) = fun n => avg (ratV E (HiIx a r (m + 1))) (fun z => Φ₂ (n, z))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use function extensionality and compare the values at `n`. Rewrite using `[hA]`. Repeatedly rewrite using `[hΦ₂]`. Rewrite using `[hA', GlobalTheory.T.quotientAverage_adelicRationalPoints_comm E _ _ Φ₂ hPer]`. Repeatedly rewrite using `[hD]`.
-
-Simplify using `using avg_const_mul (ratV E (HiIx a r (m + 1))) 0 (fun _ => (1 : ℂ))`.
+A detailed English derivation is pending.
 -/
 theorem colT_avg_blk_eq_zero (hψ : StdPsi ψ) (m : ℕ) (f : GA E a → ℂ) (hf : Good ψ (m + 1) f)
     (r : ℕ) (h0 : 0 < r) (hr : r ≤ m) (g : GA E a) :
@@ -306,7 +304,7 @@ theorem colT_avg_blk_eq_zero (hψ : StdPsi ψ) (m : ℕ) (f : GA E a → ℂ) (h
 end Main
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ hψ m f _ hf r h0 hr g` and use `colT_avg_blk_eq_zero hψ m f hf r h0 hr g`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CuspGeneric.avg_colT_blk_eq_zero : ∀ (E : Type) [Field E] [NumberField E] (a : ℕ) (ψ : AddChar (Ad E) ℂ),
     StdPsi ψ → ∀ (m : ℕ) (f : GA E a → ℂ), m + 1 < a → Good ψ (m + 1) f → ∀ r, 0 < r → r ≤ m → ∀ g : GA E a,

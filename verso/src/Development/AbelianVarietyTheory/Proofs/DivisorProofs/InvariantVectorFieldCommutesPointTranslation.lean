@@ -21,29 +21,27 @@ open GlobalTheory.HeatTrans
 namespace GlobalTheory.Heat
 
 /- English proof (translation)
-Use `set T := tr G x with hTdef`. Establish `key : ∀ (U : G.left.Opens) (hU : IsAffineOpen U) (hle : U ≤ T ⁻¹ᵁ O), (G.left.presheaf.map (homOfLE hle).op).hom (dd (T ⁻¹ᵁ O) (pbT T f (T ⁻¹ᵁ O))) = (G.left.presheaf.map (homOfLE hle).op).hom (pbT T (dd O f) (T ⁻¹ᵁ O))`. Introduce `U hU hle`. Set `g : Sp Γ(G.left, U) ⟶ G.left` to `hU.fromSpec`. Set `φ : R →+* Γ(G.left, U)` to `(Spec.preimage (g ≫ G.hom)).hom`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : g ≫ G.hom = spMap φ` using `by simp [φ, spMap]`. Establish `hgU : ⊤ ≤ g ⁻¹ᵁ U` using `hU.fromSpec_preimage_self.ge`. Establish `hgO : ⊤ ≤ g ⁻¹ᵁ (T ⁻¹ᵁ O)` using `hgU.trans (g.preimage_mono hle)`. Establish `hgTO : ⊤ ≤ (g ≫ T) ⁻¹ᵁ O` using `hgO`. Establish `e : (dualMap φ).comp (algebraMap R (DualNumber R)) = (algebraMap Γ(G.left, U) (DualNumber Γ(G.left, U))).comp φ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `hv : (tv v).left ≫ G.hom = spMap (algebraMap R (DualNumber R))` using `(Over.w (tv v)).trans (Category.comp_id _)`. Establish `h2 : (spMap (dualMap φ) ≫ (tv v).left) ≫ G.hom = (tEpsG (g ≫ G.hom)).hom` using `by show _ = spMap (algebraMap Γ(G.left, U) (DualNumber Γ(G.left, U))) ≫ g ≫ G.hom`. Use `(Category.assoc _ _ _).trans ((congrArg (spMap (dualMap φ) ≫ ·) hv).trans ?_)` and prove the remaining obligations. Rewrite using `[hφ, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `g' : tEpsG (g ≫ G.hom) ⟶ G` to `Over.homMk (spMap (algebraMap Γ(G.left, U) (DualNumber Γ(G.left, U))) ≫ g) (Category.assoc _ _ _)`. Set `v' : tEpsG (g ≫ G.hom) ⟶ G` to `Over.homMk (spMap (dualMap φ) ≫ (tv v).left) h2`. Establish `htr : IsTr G φ g v (g' * v').left` using `⟨g', v', rfl, rfl, rfl⟩`. Establish `hval` using `hinv.2 _ φ g _ (T ⁻¹ᵁ O) (pbT T f (T ⁻¹ᵁ O)) hφ hgO htr`. Establish `hT' : (g ≫ T) ≫ G.hom = g ≫ G.hom` using `by rw [Category.assoc, hTdef, tr_hom]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ₁ : (g ≫ T) ≫ G.hom = spMap φ` using `hT'.trans hφ`. Establish `eo : tEpsG ((g ≫ T) ≫ G.hom) = tEpsG (g ≫ G.hom)` using `congrArg tEpsG hT'`. Set `g'₁ : tEpsG ((g ≫ T) ≫ G.hom) ⟶ G` to `eqToHom eo ≫ (g' * (toUnit _ ≫ x))`. Set `v'₁ : tEpsG ((g ≫ T) ≫ G.hom) ⟶ G` to `eqToHom eo ≫ v'`. Establish `hl : ∀ k : tEpsG (g ≫ G.hom) ⟶ G, (eqToHom eo ≫ k).left = k.left`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Rewrite using `[Over.comp_left]`. Simplify using the standard rewrite rules. Establish `hg'T : g' ≫ (𝟙 G * (toUnit G ≫ x)) = g' * (toUnit _ ≫ x)`. Rewrite using `[MonObj.comp_mul, Category.comp_id, ← Category.assoc, toUnit_unique (g' ≫ toUnit G) (toUnit _)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hwT : (g' * v') ≫ (𝟙 G * (toUnit G ≫ x)) = (g' * (toUnit _ ≫ x)) * v'`. Rewrite using `[MonObj.comp_mul, Category.comp_id, ← Category.assoc, toUnit_unique ((g' * v') ≫ toUnit G) (toUnit _), _root_.mul_assoc, _root_.mul_comm v', ← _root_.mul_assoc]`. Establish `htr₁ : IsTr G φ (g ≫ T) v ((g' * v').left ≫ T)`. Use `⟨g'₁, v'₁, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (eqToHom eo ≫ (g' * (toUnit _ ≫ x))).left = _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hl, ← hg'T, Over.comp_left]`. Both sides reduce to the same expression. Use `show (eqToHom eo ≫ v').left = _`. Rewrite using `[hl]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `show (eqToHom eo ≫ (g' * (toUnit _ ≫ x)) * (eqToHom eo ≫ v')).left = _`. Rewrite using `[← MonObj.comp_mul, hl, ← hwT, Over.comp_left]`. Both sides reduce to the same expression. Establish `hval₁` using `hinv.2 _ φ (g ≫ T) _ O f hφ₁ hgTO htr₁`. Establish `hpb : ∀ s : Γ(G.left, O), pbT T s (T ⁻¹ᵁ O) = (T.app O).hom s` using `fun s => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.KS.pbT_of_le T le_rfl, Scheme.Hom.app_eq_appLE]`. Establish `hL : valR g (T ⁻¹ᵁ O) (dd (T ⁻¹ᵁ O) (pbT T f (T ⁻¹ᵁ O))) = valR (g ≫ T) O (dd O f)`. Rewrite using `[← hval, ← hval₁, GlobalTheory.HolHom.valR_comp, hpb]`. Establish `hR : valR g (T ⁻¹ᵁ O) (pbT T (dd O f) (T ⁻¹ᵁ O)) = valR (g ≫ T) O (dd O f)`. Rewrite using `[GlobalTheory.HolHom.valR_comp, hpb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← GlobalTheory.DetRatio.valR_fromSpec hU ((G.left.presheaf.map (homOfLE hle).op).hom _), ← GlobalTheory.DetRatio.valR_fromSpec hU ((G.left.presheaf.map (homOfLE hle).op).hom (pbT T (dd O f) (T ⁻¹ᵁ O))), GlobalTheory.HolHom.valR_res g hle _ hgU, GlobalTheory.HolHom.valR_res g hle …`. Conclude with `hL.trans hR.symm`. Use `G.left.sheaf.eq_of_locally_eq' (fun k : {U : G.left.Opens // IsAffineOpen U ∧ U ≤ T ⁻¹ᵁ O} => k.1) _ (fun k => homOfLE k.2.2) ?_ _ _ fun k => ?_` and prove the remaining obligations. Introduce `y hy`. Take `⟨U, hU, hyU, hUO⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp G.left.isBasis_affineOpens hy`.
-
-Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨U, hU, hUO⟩, hyU⟩`. Conclude with `key k.1 k.2.1 k.2.2`.
+A detailed English derivation is pending.
 -/
 theorem IsInv.pbT_tr_preimage {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]
     (v : TanM (𝟙 (Sp R)) G) (dd : Fld G.left) (hinv : IsInv G v dd) (x : 𝟙_ (Over (Sp R)) ⟶ G)
@@ -119,7 +117,7 @@ theorem IsInv.pbT_tr_preimage {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj 
   · exact key k.1 k.2.1 k.2.2
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.KS.rsT_pbT (tr G x) le_rfl hO' f, ← GlobalTheory.KS.rsT_pbT (tr G x) le_rfl hO' (dd O f), GlobalTheory.KS.rsT_of_le hO', GlobalTheory.KS.rsT_of_le hO', hinv.1.2.2 _ _ hO' le_top, IsInv.pbT_tr_preimage G v dd hinv x O f]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsInv.pbT_tr {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (v : TanM (𝟙 (Sp R)) G)
     (dd : Fld G.left) (hinv : IsInv G v dd) (x : 𝟙_ (Over (Sp R)) ⟶ G) (O O' : G.left.Opens)

@@ -21,11 +21,11 @@ def swapCurry (α β : Type) : (α × β → ℝ) ≃ᵐ (β → α → ℝ) whe
     exact (measurable_pi_apply p.1).comp (measurable_pi_apply p.2)
 
 /- English proof (translation)
-Establish `h : (volume : Measure (α × β → ℝ)) = (volume : Measure (β → α → ℝ)).map (swapCurry α β).symm`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply (MeasurableEquiv.measurable _) (MeasurableSet.univ_pi hs)]`. Establish `e : (swapCurry α β).symm ⁻¹' Set.univ.pi s = Set.univ.pi (fun b => Set.univ.pi (fun a => s (a, b)))`. Use extensionality with `f`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_preimage, Set.mem_univ_pi]`. Conclude with `⟨fun H b a => H (a, b), fun H p => H p.2 p.1⟩`. Rewrite using `[e, volume_pi, Measure.pi_pi]`. Repeatedly rewrite using `[volume_pi, Measure.pi_pi]`. Rewrite using `[Fintype.prod_prod_type_right]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(swapCurry α β).measurable, ?_⟩` and prove the remaining obligations. Rewrite using `[h, Measure.map_map (MeasurableEquiv.measurable _) (MeasurableEquiv.measurable _)]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem swapCurry_measurePreserving (α β : Type) [Fintype α] [Fintype β] :
     MeasurePreserving (swapCurry α β) volume volume := by
@@ -48,18 +48,18 @@ theorem swapCurry_measurePreserving (α β : Type) [Fintype α] [Fintype β] :
 variable {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-The claim follows from `(swapCurry_measurePreserving ι (InfinitePlace F)).integral_comp' f`.
+A detailed English derivation is pending.
 -/
 theorem integral_cur (f : (InfinitePlace F → ι → ℝ) → ℂ) :
     ∫ x : ι × InfinitePlace F → ℝ, f (cur x) = ∫ z, f z :=
   (swapCurry_measurePreserving ι (InfinitePlace F)).integral_comp' f
 
 /- English proof (translation)
-Establish `h : ∀ i w, (DM B ρ *ᵥ y) (i, w) = (B.map (ρ w) *ᵥ cur y w) i`. Introduce `i w`. Simplify using `only [mulVec, dotProduct, DM, Fintype.sum_prod_type_right, blockDiagonal_apply, cur]`. Rewrite using `[Finset.sum_eq_single w]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `v _ hv`. Simplify using `[hv.symm]`. Simplify using the standard rewrite rules. Rewrite using `[dotProduct, Fintype.sum_prod_type_right]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [dotProduct, h, cur]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dot_DM [DecidableEq (InfinitePlace F)] (B : Matrix ι ι F)
     (ρ : InfinitePlace F → (F →+* ℝ)) (x y : ι × InfinitePlace F → ℝ) :
@@ -77,7 +77,7 @@ theorem dot_DM [DecidableEq (InfinitePlace F)] (B : Matrix ι ι F)
   simp only [dotProduct, h, cur]
 
 /- English proof (translation)
-Introduce `F _ _ ι _ _ _ M B ρ P hQ τ hτ y`. Establish `h` using `(GlobalTheory.CompanionTheory.SW.GaussFou.gauss_fourier F ι M B ρ P hQ τ hτ).2.2.2 (cur y)`. Rewrite using `[← h, ← integral_cur (F := F) (ι := ι) (fun z => gauss B ρ P τ z * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * ((∑ w, z w ⬝ᵥ (B.map (ρ w) *ᵥ cur y w) : ℝ) : ℂ)))]`. Simplify using `only [dot_DM]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gauss_fourier_flat : ∀ (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι] [DecidableEq ι] [DecidableEq (InfinitePlace F)] (M : ℕ) (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)) (P : InfinitePlace F → Matrix ι ι ℝ), QSetup M B ρ P → ∀ τ : InfinitePlace F → ℂ, (∀ w, 0 < (τ w).im) → ∀ y : ι × InfinitePlace F → ℝ, ((Real.sqrt |((Algebra.norm ℚ B.det : ℚ) : ℝ)| : ℝ) : ℂ) * ∫ x : ι × InfinitePlace F → ℝ, gauss B ρ P τ (cur x) * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * ((x ⬝ᵥ (DM B ρ *ᵥ y) : ℝ) : ℂ)) = cG B ρ P τ * gauss B ρ P (fun w => -(τ w)⁻¹) (cur y) := by
   intro F _ _ ι _ _ _ M B ρ P hQ τ hτ y

@@ -6,15 +6,15 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open ReciprocityTheory.Neutral.Bridge.HCFR
 
 /- English proof (translation)
-Establish `hcont : Continuous (Complex.ofRealHom.comp (NumberField.InfinitePlace.Completion.extensionEmbeddingOfIsReal hw))` using `Complex.continuous_ofReal.comp (NumberField.InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hw).continuous`. Set `i0 : {i : w.Completion →+* ℂ // Continuous i}` to `⟨_, hcont⟩`. Establish `huniq : ∀ i : {i : w.Completion →+* ℂ // Continuous i}, i = i0`. Introduce `i`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `x`. Set `E` to `NumberField.InfinitePlace.Completion.isometryEquivRealOfIsReal hw`. Set `g : ℝ →+* ℂ` to `(i : w.Completion →+* ℂ).comp (NumberField.InfinitePlace.Completion.ringEquivRealOfIsReal hw).symm.toRingHom`. Establish `hg : Continuous g` using `i.2.comp E.symm.continuous`. Establish `hg'` using `Complex.ringHom_eq_ofReal_of_continuous hg`.
+By extensionality, compare the relevant components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : (NumberField.InfinitePlace.Completion.ringEquivRealOfIsReal hw).symm (NumberField.InfinitePlace.Completion.extensionEmbeddingOfIsReal hw x) = x` using `(NumberField.InfinitePlace.Completion.ringEquivRealOfIsReal hw).symm_apply_apply x`. Use `congrArg (fun f : ℝ →+* ℂ => f (NumberField.InfinitePlace.Completion.extensionEmbeddingOfIsReal hw x)) hg'` as an intermediate fact. Simplify using `only [g, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, hx] at this`. Simplify `this` using `[i0]`. Unfold `infPow`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.prod_eq_single w]`. Rewrite using `[finprod_eq_single _ i0 (fun j hj => absurd (huniq j) hj)]`. Rewrite using `[ReciprocityTheory.Neutral.Bridge.HCFR.infIdele_fst_self, ha]`. Simplify using the standard rewrite rules. Introduce `w' _ hne`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[ReciprocityTheory.Neutral.Bridge.HCFR.infIdele_fst_ne F w w' hne]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ w) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.infPow_infIdele_neg_one_of_const_of_isReal {F : Type} [Field F] [NumberField F] (a : (F →+* ℂ) → ℤ)
     (a0 : ℤ) (ha : ∀ φ, a φ = a0) (w : InfinitePlace F) (hw : w.IsReal) :
@@ -51,15 +51,15 @@ private theorem UpperTheory.infPow_infIdele_neg_one_of_const_of_isReal {F : Type
     exact absurd (Finset.mem_univ w) h
 
 /- English proof (translation)
-Introduce `hP F Ω _ _ _ _ _ _ l _ ι χ μ hμ hs v v'`. Take `⟨-, art, a, hart, halg, hlad⟩` from `hμ`. Establish `hpar` using `hP F χ a halg`. Establish `key : ∀ w : InfinitePlace F, ∃ c : G F Ω, IsConjEl c ∧ ((χ.locInf w (-1) : ℂˣ) : ℂ) = ι (μ c) * (-1) ^ (a v.embedding)`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨j, c, hc, hw⟩` from `GlobalTheory.HilbertFromArtin.exists_conj (Ω := Ω) w (NumberField.IsTotallyReal.isReal w)`. Use `⟨c, ⟨j, hc⟩, ?_⟩` and prove the remaining obligations. Establish `hart'` using `GlobalTheory.HilbertFromArtin.art_sign_eq hart j c hc`. Rewrite `hart'` using `[hw]`. Establish `h` using `hlad _ c hart'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hl : lPow ι a (ReciprocityTheory.Neutral.Bridge.HCFR.infIdele F w (-1)) = 1`. Simplify using `[GlobalTheory.HeckeGal.lPow, ReciprocityTheory.Neutral.Bridge.HCFR.infIdele_snd, GlobalTheory.HeckeGal.locPow_one]`. Rewrite `h` using `[hl, mul_one, UpperTheory.infPow_infIdele_neg_one_of_const_of_isReal a (a v.embedding) (fun φ => hpar φ v.embedding) w (NumberField.IsTotallyReal.isReal w)]`. Establish `h2` using `congrArg ι h`. Rewrite `h2` using `[RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h2]`. Establish `hne : ((-1 : ℂ) ^ (a v.embedding)) ≠ 0` using `zpow_ne_zero _ (by norm_num)`. Rewrite using `[mul_assoc, inv_mul_cancel₀ hne, mul_one]`. Both sides reduce to the same expression. Take `⟨c, hc, hcv⟩` from `key v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨c', hc', hcv'⟩` from `key v'`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hcv, hcv', hs c c' hc hc']`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.sign_at_infinity_of_parallel_weight :
     UpperTheory.V.Af.Sol.Parallel → UpperTheory.V.Af.Sol.SignOf := by

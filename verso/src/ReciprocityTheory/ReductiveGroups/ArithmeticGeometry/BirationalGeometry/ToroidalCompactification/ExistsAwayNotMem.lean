@@ -12,14 +12,14 @@ namespace ReciprocityTheory.ChartRestriction.G.Chart
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-The claim follows from `Subsingleton.elim f g`.
+A detailed English derivation is pending.
 -/
 theorem ofId_ext {S : Type} [CommRing S] {B : Type} [CommRing B] [Algebra S B] (f g : S →ₐ[S] B) : f = g := Subsingleton.elim f g
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hle : Ideal.span (Set.range s) ≤ p`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hne k`. Rewrite `hle` using `[hs, top_le_iff]`. Conclude with `Ideal.IsPrime.ne_top ‹p.IsPrime› hle`.
+A detailed English derivation is pending.
 -/
 theorem exists_away_not_mem {S : Type} [CommRing S] {n : ℕ} (s : Fin n → S) (hs : Ideal.span (Set.range s) = ⊤)
     (p : Ideal S) [p.IsPrime] : ∃ k, s k ∉ p := by
@@ -44,13 +44,13 @@ def awayAtPrime (t : S) (ht : t ∉ p) : Algebra (Localization.Away t) (Localiza
     ((Submonoid.powers_le (P := p.primeCompl)).mpr ht)
 
 /- English proof (translation)
-Take `⟨n, s, hs, hC⟩` from `exists_cover G`. Establish `C : ∀ k, Chart (Gs G (s k))` using `fun k => (hC k).some`. Take `⟨k0, hk0⟩` from `exists_away_not_mem s hs p`. Establish `hle : Submonoid.powers (s k0) ≤ p.primeCompl` using `(Submonoid.powers_le (P := p.primeCompl)).mpr hk0`. Set `_` to `awayAtPrime p (s k0) hk0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: IsScalarTower S (Localization.Away (s k0)) (Localization.AtPrime p)` using `IsLocalization.localization_isScalarTower_of_submonoid_le _ _ (Submonoid.powers (s k0)) p.primeCompl hle`. Establish `: Algebra.FinitePresentation (Localization.Away (s k0)) Γ((Gs G (s k0)).left, (C k0).U)` using `fp_chart (C k0)`. Set `M` to `p.primeCompl.map (algebraMap S (Localization.Away (s k0)))`. Establish `hM : IsLocalization (Algebra.algebraMapSubmonoid (Localization.Away (s k0)) M) (Localization.AtPrime p)`. Establish `e : Algebra.algebraMapSubmonoid (Localization.Away (s k0)) M = M`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Algebra.algebraMapSubmonoid, Algebra.algebraMap_self]`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `IsLocalization.isLocalization_of_submonoid_le _ _ (Submonoid.powers (s k0)) p.primeCompl hle`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨_, ⟨q, hq, rfl⟩, y₀, hy₀, he⟩` from `tanS_lift (C k0) (A := Localization.Away (s k0)) M hy'`. Take `⟨N, w, hw, hwr⟩` from `tan_extend s hs C k0 hy₀`. Use `⟨s k0 ^ N * q, p.primeCompl.mul_mem (p.primeCompl.pow_mem hk0 N) hq, w, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[show Algebra.ofId S (Localization.AtPrime p) = (IsScalarTower.toAlgHom S (Localization.Away (s k0)) (Localization.AtPrime p)).comp (Algebra.ofId S (Localization.Away (s k0))) from ofId_ext _ _, ← res_res, hwr, res_scale, he, scale_scale, map_pow, AlgHom.commutes, ← IsScalarTower …`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tan_prime_lift {y' : sp (R₀ := S) (DualNumber (Localization.AtPrime p)) ⟶ G} (hy' : TanS y') :
     ∃ q ∈ p.primeCompl, ∃ w : sp (R₀ := S) (DualNumber S) ⟶ G, TanS w ∧
@@ -81,19 +81,17 @@ theorem tan_prime_lift {y' : sp (R₀ := S) (DualNumber (Localization.AtPrime p)
     map_pow, AlgHom.commutes, ← IsScalarTower.algebraMap_apply, map_mul, map_pow]
 
 /- English proof (translation)
-Take `⟨n, s, hs, hC⟩` from `exists_cover G`. Establish `C : ∀ k, Chart (Gs G (s k))` using `fun k => (hC k).some`. Take `⟨k0, hk0⟩` from `exists_away_not_mem s hs p`. Establish `hle : Submonoid.powers (s k0) ≤ p.primeCompl` using `(Submonoid.powers_le (P := p.primeCompl)).mpr hk0`. Set `_` to `awayAtPrime p (s k0) hk0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: IsScalarTower S (Localization.Away (s k0)) (Localization.AtPrime p)` using `IsLocalization.localization_isScalarTower_of_submonoid_le _ _ (Submonoid.powers (s k0)) p.primeCompl hle`. Establish `: Algebra.FinitePresentation (Localization.Away (s k0)) Γ((Gs G (s k0)).left, (C k0).U)` using `fp_chart (C k0)`. Set `M` to `p.primeCompl.map (algebraMap S (Localization.Away (s k0)))`. Establish `hM : IsLocalization (Algebra.algebraMapSubmonoid (Localization.Away (s k0)) M) (Localization.AtPrime p)`. Establish `e : Algebra.algebraMapSubmonoid (Localization.Away (s k0)) M = M`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Algebra.algebraMapSubmonoid, Algebra.algebraMap_self]`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `IsLocalization.isLocalization_of_submonoid_le _ _ (Submonoid.powers (s k0)) p.primeCompl hle`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hwk : ∀ k, TanS (spMap (dualMapS (Algebra.ofId S (Localization.Away (s k)))) ≫ w)` using `fun k => tanS_restrict _ hw`. Establish `hone : ∀ (A : Type) [CommRing A] [Algebra S A], TanS (1 : sp (R₀` using `S) (DualNumber A) ⟶ G) := fun A _ _ => comp_one' _`. Take `⟨_, ⟨q₀, hq₀, rfl⟩, hc0⟩` from `tanS_uniq (C k0) (A := Localization.Away (s k0)) (A' := Localization.AtPrime p) M (hwk k0) (hone _) (by`. Rewrite using `[res_res, comp_one', show (IsScalarTower.toAlgHom S (Localization.Away (s k0)) (Localization.AtPrime p)).comp (Algebra.ofId S (Localization.Away (s k0))) = Algebra.ofId S (Localization.AtPrime p) from ofId_ext _ _, h1])`. Rewrite `hc0` using `[comp_one']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ k, ∃ N : ℕ, spMap (scaleS (S` using `S) (algebraMap S (Localization.Away (s k)) (s k0) ^ N)) ≫ spMap (scaleS (S := S) (algebraMap S (Localization.Away (s k)) q₀)) ≫ spMap (dualMapS (Algebra.ofId S (Localization.Away (s k)))) ≫ w = spMap (scaleS (S := S) (algebraMap S (Localization.Away (s k)) (s k0) ^ N)) ≫ 1 := by`. Introduce `k`. Apply `tanS_away_uniq (C k) (A := Localization.Away (s k)) (s k0) (tanS_scale _ (hwk k)) (hone _)` to reduce the goal to its premises. Rewrite using `[comp_one', res_scale, res_res, AlgHom.commutes, show (qL (s k) (s k0)).comp (Algebra.ofId S (Localization.Away (s k))) = (qR (s k) (s k0)).comp (Algebra.ofId S (Localization.Away (s k0))) from ofId_ext _ _, ← res_res, show algebraMap S (Qv (s k) (s k0)) q₀ = qR (s k) (s k0) (alg …`. Rewrite `hc0` using `[show algebraMap (Localization.Away (s k0)) (Localization.Away (s k0)) (algebraMap S (Localization.Away (s k0)) q₀) = algebraMap S (Localization.Away (s k0)) q₀ from rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc0, comp_one']`. Use `choose N hN using h2`. Set `N₂` to `Finset.univ.sup N`. Use `⟨s k0 ^ N₂ * q₀, p.primeCompl.mul_mem (p.primeCompl.pow_mem hk0 N₂) hq₀, ?_⟩` and prove the remaining obligations. Use `tan_ext_cover s hs fun k => ?_` and prove the remaining obligations.
-
-Rewrite using `[comp_one', res_scale, Algebra.ofId_apply, map_mul, map_pow, ← scale_scale, scale_pow_mono _ (Finset.le_sup (f := N) (Finset.mem_univ k)) (hN k), comp_one']`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tan_prime_uniq {w : sp (R₀ := S) (DualNumber S) ⟶ G} (hw : TanS w)
     (h1 : spMap (dualMapS (Algebra.ofId S (Localization.AtPrime p))) ≫ w = 1) :

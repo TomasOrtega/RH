@@ -15,19 +15,19 @@ variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂}
 open GlobalTheory.TwistInputsTest GlobalTheory.TwAll
 
 /- English proof (translation)
-Introduce `hs eps' he hF S hS A`. Use `choose z hz using fun b => (h5 i hi b).1`. Establish `hAB` using `fun j hj b => abHyp_fam Y E i hi j hj b z (hz b) S h3 h5 h11 (hF j hj b) (hS j hj b)`. Take `⟨Q, k, ψ₀, hall⟩` from `h2 i hi hs eps' he (fam Y i z S) hAB (levs Y i S ∪ A)`. Use `⟨Q, k, ψ₀, fun n hn => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hn'` using `hall n hn`. Generalize the expression as in `ψ₀ ^ n = ψ' at hn' ⊢`. Take `⟨hok, ha, hc, hd, M, χ, hχ, epsB, h0, hsum, H⟩` from `hn'`. Establish `key : ∀ j ∈ Finset.Icc 1 D.R.m, ∀ b : Bool, _` using `fun j hj b => by`. Take `⟨htw, hu, hdis⟩` from `twOK_of_psiOk i _ Q k ψ' hok b`.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `export_at Y E i hi j hj b (S j b) h3 h7 (hF j hj b) (hS j hj b) k Q _ htw hu (epsB j b) ?_` and prove the remaining obligations. Introduce `T hT hle`. Take `⟨-, hfg, hsp, -⟩` from `h3 i hi j hj b`. Establish `hA : (fam Y i z S).A j b = AO Y i j b` using `zO_eq Y i j b _ (hz b)`. Establish `hTh : (fam Y i z S).Th j b = (Th Y i j b (SgJ Y E i j b)).map (AO Y i j b)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (hS j hj b).2.2, RFam.Th, hA]`. Both sides reduce to the same expression. Rewrite using `[← hTh]`. Use `H j hj b T ?_ fun a ha => ?_` and prove the remaining obligations. Establish `: Submodule.span (FractionRing (X.O i)) ((fam Y i z S).B j b : Set (Y.Fm i j b)) = V0 Y i j b` using `span_of_isLatIn (isLatIn_B Y i j b hfg hsp)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hT`. Establish `ha' : a ∈ S j b` using `ha`. Rewrite `htw`, `hle` using `[hχ, psiAt_comp]`. Establish `hlev : Disjoint Q (Y.lev i j b a)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hdis.mono_right (le_trans ?_ Finset.subset_union_left)` and prove the remaining obligations. Introduce `v hv`. Simplify using `only [levs, Finset.mem_biUnion]`. Conclude with `⟨j, hj, b, Finset.mem_univ _, a, ha', hv⟩`. Rewrite using `[hA]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `hle ⟨_, ?_, rfl⟩` and prove the remaining obligations. Use `Submodule.span_mono ?_ (h10 i hi j hj b k Q M _ htw a hlev)` and prove the remaining obligations. Conclude with `Set.biUnion_subset_biUnion_left (Set.singleton_subset_iff.2 ((hS j hj b).1 ha'))`. Conclude with `⟨hok, ⟨epsB, h0, hsum, fun j hj b => (key j hj b).1⟩, fun j hj b => (key j hj b).2, ha, hc, hd⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem twistModule_all_character_powers_of_admissible (bkP : BKPh X) (E : ExpDat Y) (N0 : X.Tw → ℕ) (h2 : TwAll.admissibleIndexBoundAllPowers Y bkP N0) (h3 : IsotypicPartsInternalDirectSum Y E)
     (h5 : GroupAlgebraIntegrality Y) (h7 : admT4 Y E) (h10 : TwistedSeriesSpecialisation Y) (h11 : GoodLatticePoints Y) (i : X.Tw) (hi : X.NonzeroIndexPlace i) :
@@ -72,7 +72,7 @@ end GlobalTheory.ExportFromInputs
 open GlobalTheory.TwAll in
 
 /- English proof (translation)
-Introduce and unpack `D bkP E N0 ⟨-, -, h3, -, h5, h7, -, -, h10, h11⟩ h2 i hi`. Conclude with `GlobalTheory.ExportFromInputs.twistModule_all_character_powers_of_admissible D.nexp _ E N0 h2 h3 h5 h7 h10 h11 i hi`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.exportAll_of_inputs :
     ∀ (D : Formalism.BasicNotions.D7) (bkP : Formalism.MainNotions.BlochKatoReduction.BK D) (E : Formalism.MainNotions.IntegralHeckeForms.XD D) (N0 : D.ntw.Tw → ℕ),

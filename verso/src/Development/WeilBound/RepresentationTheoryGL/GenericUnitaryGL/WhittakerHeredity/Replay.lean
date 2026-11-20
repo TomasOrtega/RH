@@ -5,7 +5,7 @@ open GlobalTheory.BZMir.Leib
 namespace PositivityTheory.rg.gu.hered2
 
 /- English proof (translation)
-Introduce `k _ _ _ _` and use `GlobalTheory.CompanionTheory.Rodier.whitHeredity k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem whitHeredity_all :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],

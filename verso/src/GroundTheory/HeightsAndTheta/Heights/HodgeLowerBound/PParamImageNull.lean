@@ -9,7 +9,7 @@ namespace GroundTheory.Heights₂.Heights.LowerBoundFree
 open MvPolynomial MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[segre, torusSmul, Finset.prod_mul_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ParamImageNull.segre_torusSmul {K : Type} [Fintype K] {ι : K → Type} (c : K → ℂ) (v : (Σ k, ι k) → ℂ) :
     segre (torusSmul c v) = (∏ k, c k) • segre v := by
@@ -17,7 +17,7 @@ theorem ParamImageNull.segre_torusSmul {K : Type} [Fintype K] {ι : K → Type} 
   simp [segre, torusSmul, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Use `differentiableAt_pi.2 fun x => ?_` and prove the remaining obligations. Simplify using `only [segre]`. Establish `hk : ∀ k, DifferentiableAt ℂ (fun u => f u ⟨k, x k⟩) w` using `fun k => differentiableAt_pi.1 hf ⟨k, x k⟩`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ParamImageNull.differentiableAt_segre_comp {K : Type} [Fintype K] {ι : K → Type} {d : ℕ}
     {f : (Fin d → ℂ) → (Σ k, ι k) → ℂ} {w : Fin d → ℂ} (hf : DifferentiableAt ℂ f w) :
@@ -28,19 +28,17 @@ theorem ParamImageNull.differentiableAt_segre_comp {K : Type} [Fintype K] {ι : 
   fun_prop
 
 /- English proof (translation)
-Introduce `K _ ι _ P d m V A γ N _hV hAV hA hγ hN Ψ _`. Use `set G : Fin m → (Fin d → ℂ) → Fin (d + 1) → ℂ := fun i w => Ψ (segre (γ i w)) with hG`. Use `set F : Fin m → (Fin d → ℂ) → Fin d → ℂ := fun i w l => G i w l.succ / G i w 0 with hF`. Establish `hsub : {y : Fin d → ℂ | ∃ z ∈ mcPts P, z ∈ N ∧ Ψ (segre z) = Fin.cons 1 y} ⊆ ⋃ i, F i '' (A i ∩ {w | G i w 0 ≠ 0})`. Introduce and unpack `y ⟨z, hzP, hzN, hzy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨i, w, hw, c, hc, rfl⟩` from `hN z ⟨hzN, hzP⟩`. Rewrite `hzy` using `[ParamImageNull.segre_torusSmul, map_smul]`. Establish `h0` using `congrFun hzy 0`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Fin.cons_zero] at h0`. Establish `hG0 : G i w 0 ≠ 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Rewrite `h` using `[hG]`. Simplify using `only at h`. Rewrite `h0` using `[h, mul_zero]`. Conclude with `zero_ne_one h0`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `Set.mem_iUnion.2 ⟨i, w, ⟨hw, hG0⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `l`. Establish `hl` using `congrFun hzy l.succ`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Fin.cons_succ] at hl`. Simplify using `only [hF]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[div_eq_iff hG0, ← hl]`. Establish `h0' : (∏ k, c k) * G i w 0 = 1` using `h0`. Combine the equalities or inequalities in the displayed calculation. Use `measure_mono_null hsub (measure_iUnion_null fun i => ?_)` and prove the remaining obligations. Use `addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero volume ?_ (measure_mono_null Set.inter_subset_left (hA i))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w ⟨hwA, hw0⟩`. Establish `hγw : DifferentiableAt ℂ (γ i) w` using `(hγ i w (hAV i hwA)).differentiableAt`. Establish `hGw : DifferentiableAt ℂ (G i) w` using `(LinearMap.toContinuousLinearMap Ψ).differentiableAt.comp w (ParamImageNull.differentiableAt_segre_comp hγw)`. Establish `hFw : DifferentiableAt ℂ (F i) w`. Use `differentiableAt_pi.2 fun l => ?_` and prove the remaining obligations.
-
-Use `show DifferentiableAt ℂ (fun u => G i u l.succ / G i u 0) w`. Simplify using `only [div_eq_mul_inv]`. Conclude with `(differentiableAt_pi.1 hGw l.succ).mul ((differentiableAt_pi.1 hGw 0).inv hw0)`. Conclude with `(hFw.restrictScalars ℝ).differentiableWithinAt`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ParamImageNull.proof : ParamImageNull.Statement := by
   intro K _ ι _ P d m V A γ N _hV hAV hA hγ hN Ψ _

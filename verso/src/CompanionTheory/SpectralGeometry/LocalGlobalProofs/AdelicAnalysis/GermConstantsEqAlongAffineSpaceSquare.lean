@@ -16,20 +16,20 @@ section Form
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] {σ : A →+* A} {J : Matrix n n A}
 
 /- English proof (translation)
-Simplify using `[hform, dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_eq_dot (x y : n → A) : hform σ J x y = (σ ∘ x) ⬝ᵥ J *ᵥ y := by
   simp [hform, dotProduct, mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem comp_mulVec' (P : Matrix n n A) (x : n → A) : σ ∘ (P *ᵥ x) = P.map σ *ᵥ (σ ∘ x) := by
   funext i
   simp [mulVec, dotProduct]
 
 /- English proof (translation)
-Rewrite using `[hform_eq_dot, hform_eq_dot, comp_mulVec', cT, ← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec _ (_ᵀ), vecMul_transpose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_mulVec' (P Q : Matrix n n A) (x y : n → A) :
     hform σ J (P *ᵥ x) (Q *ᵥ y) = hform σ (cT σ P * J * Q) x y := by
@@ -37,28 +37,28 @@ theorem hform_mulVec' (P Q : Matrix n n A) (x y : n → A) :
     dotProduct_mulVec _ (_ᵀ), vecMul_transpose]
 
 /- English proof (translation)
-Simplify using `[hform, Finset.mul_sum, sub_mul, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_sub_left (x d y : n → A) (c : A) :
     hform σ J (x - c • d) y = hform σ J x y - σ c * hform σ J d y := by
   simp [hform, Finset.mul_sum, sub_mul, mul_assoc]
 
 /- English proof (translation)
-Simplify using `[hform, Finset.mul_sum, mul_sub, mul_left_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_sub_right (x d y : n → A) (c : A) :
     hform σ J x (y - c • d) = hform σ J x y - c * hform σ J x d := by
   simp [hform, Finset.mul_sum, mul_sub, mul_left_comm]
 
 /- English proof (translation)
-Simplify using `[hform, Finset.mul_sum, mul_left_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_smul_right' (d y : n → A) (c : A) :
     hform σ J y (c • d) = c * hform σ J y d := by
   simp [hform, Finset.mul_sum, mul_left_comm]
 
 /- English proof (translation)
-Simplify using `only [hform, map_sum, map_mul, hσ, hJ]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hform_conj_symm (hσ : ∀ a, σ (σ a) = a) (hJ : ∀ i j, σ (J j i) = J i j) (x y : n → A) :
     σ (hform σ J x y) = hform σ J y x := by
@@ -77,7 +77,7 @@ def qrMat (σ : A →+* A) (J : Matrix n n A) (d : n → A) (c : A) : Matrix n n
   1 - c • vecMulVec d ((σ ∘ d) ᵥ* J)
 
 /- English proof (translation)
-Rewrite using `[qrMat, sub_mulVec, one_mulVec, smul_mulVec, vecMulVec_mulVec, hform_eq_dot, dotProduct_mulVec]`. Use function extensionality and compare the values at `i`. Simplify using `[mul_comm, mul_left_comm]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem qrMat_mulVec (d : n → A) (c : A) (z : n → A) :
     qrMat σ J d c *ᵥ z = z - (c * hform σ J d z) • d := by
@@ -86,14 +86,14 @@ theorem qrMat_mulVec (d : n → A) (c : A) (z : n → A) :
   simp [mul_comm, mul_left_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `using congrFun (h (Pi.single j 1)) i`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ext_mulVec' {P Q : Matrix n n A} (h : ∀ z, P *ᵥ z = Q *ᵥ z) : P = Q := by
   ext i j
   simpa using congrFun (h (Pi.single j 1)) i
 
 /- English proof (translation)
-The claim follows from `ext_mulVec' fun z => by rw [← mulVec_mulVec, qrMat_mulVec, qrMat_mulVec, hform_sub_right, one_mulVec] funext i simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul] linear_combination (-hform σ J d z * d i) * hc`.
+A detailed English derivation is pending.
 -/
 theorem qrMat_mul (d : n → A) {c c' : A} (hc : c + c' = c * c' * hform σ J d d) :
     qrMat σ J d c * qrMat σ J d c' = 1 := ext_mulVec' fun z => by
@@ -103,7 +103,7 @@ theorem qrMat_mul (d : n → A) {c c' : A} (hc : c + c' = c * c' * hform σ J d 
   linear_combination (-hform σ J d z * d i) * hc
 
 /- English proof (translation)
-Establish `: σ ∘ (Pi.single i 1 : n → A) = Pi.single i 1`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `by_cases h : k = i <;> simp [h]`. Rewrite using `[hform_eq_dot, this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hform_single' (i j : n) :
     hform σ J (Pi.single i 1) (Pi.single j 1) = J i j := by
@@ -114,7 +114,7 @@ theorem hform_single' (i j : n) :
   simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[← hform_single' (σ := σ) (J := _ * J * _) i j, ← hform_mulVec', qrMat_mulVec, qrMat_mulVec, hform_sub_left, hform_sub_right, hform_sub_right, map_mul, hform_conj_symm hσ hJ, hform_single']`. Take the linear combination `(-hform σ J (Pi.single i 1) d * hform σ J d (Pi.single j 1)) * hc`.
+By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem qrMat_isometry (hσ : ∀ a, σ (σ a) = a) (hJ : ∀ i j, σ (J j i) = J i j) (d : n → A) (c : A)
     (hc : c + σ c = c * σ c * hform σ J d d) :
@@ -134,25 +134,23 @@ def qr (hσ : ∀ a, σ (σ a) = a) (hJ : ∀ i j, σ (J j i) = J i j) (d : n �
 end Refl
 
 /- English proof (translation)
-Take `⟨bi, hb⟩` from `hβ.exists_right_inv`. Take `⟨ui, hui⟩` from `hu.exists_right_inv`. Use `set β := hform σ J x x with hβdef`. Use `set w := hform σ J y x with hw`. Establish `hyy : hform σ J y y = β` using `hxy.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxyw : hform σ J x y = σ w` using `by rw [hw, hform_conj_symm hσ hJ]`. Establish `hσβ : σ β = β` using `hform_conj_symm hσ hJ x x`. Establish `hσε : σ (σ ε) = ε` using `hσ ε`. Establish `hσb : σ bi = bi`. Establish `h1 : β * σ bi = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `congrArg σ hb` as an intermediate fact. Rewrite `this` using `[map_mul, hσβ, map_one]`. Then use the resulting hypothesis. Take the linear combination `bi * h1 - σ bi * hb`. Establish `hσui : (β - ε * σ w) * σ ui = 1`. Use `congrArg σ hui` as an intermediate fact.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, map_sub, map_mul, hσβ, hσε, map_one]`. Then use the resulting hypothesis. Use `set d : Fin M → A := x - ε • y with hd`. Establish `hdx : hform σ J d x = β - σ ε * w` using `hform_sub_left x y x ε`. Establish `hdy : hform σ J d y = σ w - σ ε * β`. Rewrite using `[hd, hform_sub_left, hxyw, hyy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hdd : hform σ J d d = (β - σ ε * w) + (β - ε * σ w) + (ε * σ ε - 1) * β`. Rewrite using `[hform_sub_right, hdx, hdy]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc₁ : (1 - σ ε) * bi + σ ((1 - σ ε) * bi) = (1 - σ ε) * bi * σ ((1 - σ ε) * bi) * hform σ J y y`. Rewrite using `[map_mul, map_sub, map_one, hσε, hσb, hyy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-(1 - ε - σ ε + ε * σ ε) * bi) * hb + (-bi) * hε`. Establish `hc₂ : ui + σ ui = ui * σ ui * hform σ J d d`. Rewrite using `[hdd, hε]`. Take the linear combination `(-σ ui) * hui + (-ui) * hσui`. Use `⟨((qr hσ hJ y _ hc₁ * qr hσ hJ d ui hc₂ : UJ σ J) : GL (Fin M) A), SetLike.coe_mem _, ?_, ?_⟩` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : qrMat σ J d ui *ᵥ x = ε • y`. Rewrite using `[qrMat_mulVec, hdx, mul_comm ui, hui, one_smul, hd]`. Simplify using the standard rewrite rules. Establish `h3 : qrMat σ J y ((1 - σ ε) * bi) *ᵥ (ε • y) = y`. Rewrite using `[qrMat_mulVec, hform_smul_right', hyy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `((1 - σ ε) * ε * y i) * (-hb) + (y i) * hε`. Use `show (qrMat σ J y ((1 - σ ε) * bi) * qrMat σ J d ui) *ᵥ x = y`. Rewrite using `[← mulVec_mulVec, h2, h3]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `z hxz hyz`. Establish `hdz : hform σ J d z = 0`. Rewrite using `[hd, hform_sub_left, hxz, hyz]`. Simplify using the standard rewrite rules. Use `show (qrMat σ J y ((1 - σ ε) * bi) * qrMat σ J d ui) *ᵥ z = z`.
-
-Establish `h2 : qrMat σ J d ui *ᵥ z = z`. Rewrite using `[qrMat_mulVec, hdz, mul_zero, zero_smul, sub_zero]`. Rewrite using `[← mulVec_mulVec, h2, qrMat_mulVec, hyz, mul_zero, zero_smul, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitary_carry (A : Type) [CommRing A] (σ : A →+* A) (hσ : ∀ y, σ (σ y) = y) (M : ℕ)
     (J : Matrix (Fin M) (Fin M) A) (hJ : ∀ i j, σ (J j i) = J i j) (x y : Fin M → A) (ε : A)

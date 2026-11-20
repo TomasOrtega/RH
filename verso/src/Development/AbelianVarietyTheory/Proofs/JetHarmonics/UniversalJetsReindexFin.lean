@@ -23,26 +23,26 @@ def ofAt (A : Type) [CommRing A] [Algebra V A] : overAt (𝟙 (Sp V)) A ⟶ Char
   Over.homMk (𝟙 _) (by simp)
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (Category.comp_id _)`.
+A detailed English derivation is pending.
 -/
 theorem toAt_ofAt (A : Type) [CommRing A] [Algebra V A] : toAt (V := V) A ≫ ofAt A = 𝟙 _ :=
   Over.OverMorphism.ext (Category.comp_id _)
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (Category.comp_id _)`.
+A detailed English derivation is pending.
 -/
 theorem ofAt_toAt (A : Type) [CommRing A] [Algebra V A] : ofAt (V := V) A ≫ toAt A = 𝟙 _ :=
   Over.OverMorphism.ext (Category.comp_id _)
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext ((Category.comp_id _).trans (Category.id_comp _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem spMap_toAt {A B : Type} [CommRing A] [Algebra V A] [CommRing B] [Algebra V B] (f : A →ₐ[V] B) :
     Chart.spMap f ≫ toAt A = toAt B ≫ Formalism.L2.Pj.homAt (𝟙 (Sp V)) f :=
   Over.OverMorphism.ext ((Category.comp_id _).trans (Category.id_comp _).symm)
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext ((Category.id_comp _).trans (Category.comp_id _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem ofAt_spMap {A B : Type} [CommRing A] [Algebra V A] [CommRing B] [Algebra V B] (f : A →ₐ[V] B) :
     ofAt B ≫ Chart.spMap f = Formalism.L2.Pj.homAt (𝟙 (Sp V)) f ≫ ofAt A :=
@@ -60,7 +60,7 @@ def ren {κ : Type} {N : ℕ} (β : Fin N ≃ κ) (m : ℕ) : Chart.JetR V (Fin 
       exact ⟨β i, by simp⟩)
 
 /- English proof (translation)
-Use `show Ideal.Quotient.mk _ (MvPolynomial.rename β (MvPolynomial.X i)) = _`. Rewrite using `[MvPolynomial.rename_X]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ren_zR {κ : Type} {N : ℕ} (β : Fin N ≃ κ) (m : ℕ) (i : Fin N) :
     ren (V := V) β m (Chart.zR m i) = Ideal.Quotient.mk _ (MvPolynomial.X (β i)) := by
@@ -68,7 +68,7 @@ theorem ren_zR {κ : Type} {N : ℕ} (β : Fin N ≃ κ) (m : ℕ) (i : Fin N) :
   rw [MvPolynomial.rename_X]
 
 /- English proof (translation)
-The claim follows from `Chart.jet_ext fun j => by rw [Chart.jetAug_zR] show jetAug (ren (V := V) β m (Chart.zR m j)) = 0 rw [ren_zR] show MvPolynomial.aeval (fun _ : κ => (0 : V)) (MvPolynomial.X (β j)) = 0 simp`.
+A detailed English derivation is pending.
 -/
 theorem aug_ren {κ : Type} {N : ℕ} (β : Fin N ≃ κ) (m : ℕ) :
     (jetAug : Jet V κ m →ₐ[V] V).comp (ren (V := V) β m).toAlgHom = Chart.jetAug V (Fin N) m :=
@@ -80,7 +80,7 @@ theorem aug_ren {κ : Type} {N : ℕ} (β : Fin N ≃ κ) (m : ℕ) :
     simp
 
 /- English proof (translation)
-The claim follows from `Chart.jet_ext fun j => rfl`.
+A detailed English derivation is pending.
 -/
 theorem trunc_ren {κ : Type} {N : ℕ} (β : Fin N ≃ κ) (m : ℕ) :
     (jetTrunc : Jet V κ (m + 1) →ₐ[V] Jet V κ m).comp (ren (V := V) β (m + 1)).toAlgHom =
@@ -88,7 +88,7 @@ theorem trunc_ren {κ : Type} {N : ℕ} (β : Fin N ≃ κ) (m : ℕ) :
   Chart.jet_ext fun j => rfl
 
 /- English proof (translation)
-Rewrite using `[← aug_ren β m]`. Conclude with `AlgHom.ext fun a => by simp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aug_symm {κ : Type} {N : ℕ} (β : Fin N ≃ κ) (m : ℕ) :
     (Chart.jetAug V (Fin N) m).comp (ren (V := V) β m).symm.toAlgHom = jetAug := by
@@ -96,7 +96,7 @@ theorem aug_symm {κ : Type} {N : ℕ} (β : Fin N ≃ κ) (m : ℕ) :
   exact AlgHom.ext fun a => by simp
 
 /- English proof (translation)
-The claim follows from `AlgHom.ext fun a => by obtain ⟨b, rfl⟩ := (ren (V := V) β (m + 1)).surjective a have h : jetTrunc (ren (V := V) β (m + 1) b) = ren (V := V) β m (Chart.jetTruncR V (Fin N) m b) := AlgHom.congr_fun (trunc_ren (V := V) β m) b show Chart.jetTruncR V (Fin N) m ((ren (V := V) β (m + 1) …`.
+A detailed English derivation is pending.
 -/
 theorem trunc_symm {κ : Type} {N : ℕ} (β : Fin N ≃ κ) (m : ℕ) :
     (Chart.jetTruncR V (Fin N) m).comp (ren (V := V) β (m + 1)).symm.toAlgHom =
@@ -110,7 +110,7 @@ theorem trunc_symm {κ : Type} {N : ℕ} (β : Fin N ≃ κ) (m : ℕ) :
     rw [h, AlgEquiv.symm_apply_apply, AlgEquiv.symm_apply_apply]
 
 /- English proof (translation)
-The claim follows from `Chart.jet_ext fun j => by rw [AlgHom.comp_apply, Chart.jetAug_zR, map_zero] show Ideal.Quotient.mk _ (MvPolynomial.X j) = 0 rw [Ideal.Quotient.eq_zero_iff_mem, zero_add, pow_one] exact Ideal.subset_span ⟨j, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem zero_eq (N m : ℕ) : Chart.jetZeroR V (Fin N) m =
     (Algebra.ofId V (Chart.JetR V (Fin N) 0)).comp (Chart.jetAug V (Fin N) m) :=
@@ -126,17 +126,15 @@ namespace GlobalTheory.PowGerm
 open UnivConv
 
 /- English proof (translation)
-Introduce `V _ G _ κ z hz N β`. Take `⟨h1, h2, h3⟩` from `hz`. Use `⟨fun m => Chart.spMap (ren (V := V) β m).symm.toAlgHom ≫ toAt _ ≫ z m, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `m`. Rewrite using `[← Category.assoc, Chart.spMap_comp, trunc_symm, ← Chart.spMap_comp, Category.assoc, ← Category.assoc (Chart.spMap jetTrunc), spMap_toAt, Category.assoc, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `m`. Rewrite using `[← Category.assoc, Chart.spMap_comp, zero_eq, AlgHom.comp_assoc, aug_symm, ← Chart.spMap_comp, Category.assoc, ← Category.assoc (Chart.spMap jetAug), spMap_toAt, Category.assoc, h2, ← Category.assoc]`. Conclude with `MonObj.comp_one _`. Introduce `A _ _ aug m hm y hy`. Take `⟨φ, ⟨hφ1, hφ2⟩, hu⟩` from `h3 A aug m hm (ofAt A ≫ y) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, ← ofAt_spMap, Category.assoc, hy]`. Conclude with `MonObj.comp_one _)`. Use `⟨φ.comp (ren (V := V) β m).toAlgHom, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← AlgHom.comp_assoc, hφ1, aug_ren]`. Establish `e : (φ.comp (ren (V` using `V) β m).toAlgHom).comp (ren (V := V) β m).symm.toAlgHom = φ := AlgHom.ext fun a => by simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← Category.assoc, Chart.spMap_comp, e, ← Category.assoc, spMap_toAt, Category.assoc, ← hφ2, ← Category.assoc, toAt_ofAt, Category.id_comp]`. Introduce and unpack `ψ ⟨hψ1, hψ2⟩`. Establish `e` using `hu (ψ.comp (ren (V := V) β m).symm.toAlgHom) ⟨by rw [← AlgHom.comp_assoc, hψ1, aug_symm], by`. Rewrite using `[hψ2, ← Category.assoc (Chart.spMap ψ), Chart.spMap_comp, ← Category.assoc, ofAt_spMap, Category.assoc, ← Category.assoc (ofAt _), ofAt_toAt, Category.id_comp]⟩`. Rewrite using `[← e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `AlgHom.ext fun a => by simp`. Introduce `m`. Use `⟨ren β m, ren_zR β m, ?_⟩` and prove the remaining obligations. Establish `e : Chart.spMap (ren (V` using `V) β m).toAlgHom ≫ Chart.spMap (ren (V := V) β m).symm.toAlgHom ≫ toAt _ ≫ z m = toAt _ ≫ z m := by`. Establish `e' : (ren (V` using `V) β m).toAlgHom.comp (ren (V := V) β m).symm.toAlgHom = AlgHom.id V _ := AlgHom.ext fun a => by simp`.
-
-Establish `e'' : Chart.spMap (AlgHom.id V (Jet V κ m)) = 𝟙 _` using `Over.OverMorphism.ext (Spec.map_id _)`. Rewrite using `[← Category.assoc, Chart.spMap_comp, e', e'', Category.id_comp]`. Conclude with `(Category.id_comp _).symm.trans (congrArg CommaMorphism.left e).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem univConv : UnivConvSt := by
   intro V _ G _ κ z hz N β

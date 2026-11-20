@@ -12,7 +12,7 @@ namespace GJGlobal
 variable {J J' : ℝ → ℂ}
 
 /- English proof (translation)
-Rewrite using `[locallyIntegrableOn_iff (isOpen_Ioi.isLocallyClosed)]`. Introduce `k hk hkc`. Conclude with `((hJ.mono hk).integrableOn_compact hkc).indicator measurableSet_Ici`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem locallyIntegrableOn_indicator_Ici (hJ : ContinuousOn J (Ioi 0)) :
     LocallyIntegrableOn ((Ici (1 : ℝ)).indicator J) (Ioi 0) := by
@@ -21,7 +21,7 @@ theorem locallyIntegrableOn_indicator_Ici (hJ : ContinuousOn J (Ioi 0)) :
   exact ((hJ.mono hk).integrableOn_compact hkc).indicator measurableSet_Ici
 
 /- English proof (translation)
-Rewrite using `[locallyIntegrableOn_iff (isOpen_Ioi.isLocallyClosed)]`. Introduce `k hk hkc`. Conclude with `((hJ.mono hk).integrableOn_compact hkc).indicator measurableSet_Ioi`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem locallyIntegrableOn_indicator_Ioi (hJ : ContinuousOn J (Ioi 0)) :
     LocallyIntegrableOn ((Ioi (1 : ℝ)).indicator J) (Ioi 0) := by
@@ -30,7 +30,7 @@ theorem locallyIntegrableOn_indicator_Ioi (hJ : ContinuousOn J (Ioi 0)) :
   exact ((hJ.mono hk).integrableOn_compact hkc).indicator measurableSet_Ioi
 
 /- English proof (translation)
-Use `EventuallyEq.trans_isBigO ?_ h` and prove the remaining obligations. Use `filter_upwards [hA] with t ht`. Conclude with `indicator_of_mem ht J`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isBigO_indicator_atTop {A : Set ℝ} (hA : A ∈ atTop) {a : ℝ}
     (h : J =O[atTop] (· ^ (-a))) : A.indicator J =O[atTop] (· ^ (-a)) := by
@@ -39,7 +39,7 @@ theorem isBigO_indicator_atTop {A : Set ℝ} (hA : A ∈ atTop) {a : ℝ}
   exact indicator_of_mem ht J
 
 /- English proof (translation)
-Use `EventuallyEq.trans_isBigO (f₂ := fun _ => (0 : ℂ)) ?_ (isBigO_zero _ _)` and prove the remaining obligations. Use `filter_upwards [Ioo_mem_nhdsGT (show (0 : ℝ) < 1 by norm_num)] with t ht`. Conclude with `indicator_of_notMem (fun h => absurd (hA h) (not_le.2 ht.2)) J`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isBigO_indicator_nhdsGT {A : Set ℝ} (hA : A ⊆ Ici 1) (b : ℝ) :
     A.indicator J =O[𝓝[>] 0] (· ^ (-b)) := by
@@ -48,7 +48,7 @@ theorem isBigO_indicator_nhdsGT {A : Set ℝ} (hA : A ⊆ Ici 1) (b : ℝ) :
   exact indicator_of_notMem (fun h => absurd (hA h) (not_le.2 ht.2)) J
 
 /- English proof (translation)
-Introduce `w`. Conclude with `mellin_differentiableAt_of_isBigO_rpow hloc (isBigO_indicator_atTop hAt (hd (w.re + 1))) (lt_add_one _) (isBigO_indicator_nhdsGT hA (w.re - 1)) (sub_one_lt _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem differentiable_mellin_indicator {A : Set ℝ} (hA : A ⊆ Ici 1) (hAt : A ∈ atTop)
     (hloc : LocallyIntegrableOn (A.indicator J) (Ioi 0))
@@ -58,9 +58,9 @@ theorem differentiable_mellin_indicator {A : Set ℝ} (hA : A ⊆ Ici 1) (hAt : 
     (lt_add_one _) (isBigO_indicator_nhdsGT hA (w.re - 1)) (sub_one_lt _)
 
 /- English proof (translation)
-Establish `: (fun t : ℝ => (t : ℂ) ^ (w - 1) • A.indicator J t) = A.indicator (fun t : ℝ => (t : ℂ) ^ (w - 1) • J t)`. Use function extensionality and compare the values at `t`. Apply the tactic sequence `by_cases ht : t ∈ A <;> simp [ht]`. Unfold `MellinConvergent`. Rewrite using `[this]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc.indicator hA`.
+A detailed English derivation is pending.
 -/
 theorem mellinConvergent_indicator {A : Set ℝ} (hA : MeasurableSet A) {w : ℂ}
     (hc : MellinConvergent J w) : MellinConvergent (A.indicator J) w := by
@@ -73,9 +73,9 @@ theorem mellinConvergent_indicator {A : Set ℝ} (hA : MeasurableSet A) {w : ℂ
   exact hc.indicator hA
 
 /- English proof (translation)
-Establish `h1` using `mellinConvergent_indicator (J := J) (A := Ici 1) measurableSet_Ici hc`. Establish `h2` using `mellinConvergent_indicator (J := J) (A := Iio 1) measurableSet_Iio hc`. Unfold `mellin`. Rewrite using `[← integral_add h1 h2]`. Use `setIntegral_congr_fun measurableSet_Ioi fun t _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← smul_add]`. Use `congr 1`. Use `Set.indicator_self_add_compl (Ici (1 : ℝ)) J` as an intermediate fact. Rewrite `this` using `[compl_Ici]`. Conclude with `(congrFun this t).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mellin_eq_add_of_convergent {w : ℂ} (hc : MellinConvergent J w) :
     mellin J w = mellin ((Ici (1 : ℝ)).indicator J) w + mellin ((Iio (1 : ℝ)).indicator J) w := by
@@ -91,11 +91,11 @@ theorem mellin_eq_add_of_convergent {w : ℂ} (hc : MellinConvergent J w) :
   exact (congrFun this t).symm
 
 /- English proof (translation)
-Establish `e : mellin ((Iio (1 : ℝ)).indicator J) w = mellin (fun t : ℝ => (t : ℂ) ^ (-(κ : ℂ)) • (fun u : ℝ => (Ioi (1 : ℝ)).indicator J' u⁻¹) t) w`. Unfold `mellin`. Use `setIntegral_congr_fun measurableSet_Ioi fun t (ht : 0 < t) => ?_` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Distinguish the cases in `h1 : t < 1`. Establish `: 1 < t⁻¹` using `one_lt_inv₀ ht |>.2 h1`. Rewrite using `[indicator_of_mem (show t ∈ Iio 1 from h1), indicator_of_mem (show t⁻¹ ∈ Ioi 1 from this), hsym t ht]`. Establish `: ¬ 1 < t⁻¹` using `fun h => h1 ((one_lt_inv₀ ht).1 h)`. Rewrite using `[indicator_of_notMem (show t ∉ Iio 1 from h1), indicator_of_notMem (show t⁻¹ ∉ Ioi 1 from this), mul_zero]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, mellin_cpow_smul, mellin_comp_inv]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mellin_indicator_Iio_eq {κ : ℝ} (hsym : ∀ t : ℝ, 0 < t → J t = (t : ℂ) ^ (-(κ : ℂ)) * J' t⁻¹)
     (w : ℂ) :
@@ -118,9 +118,9 @@ theorem mellin_indicator_Iio_eq {κ : ℝ} (hsym : ∀ t : ℝ, 0 < t → J t = 
   ring
 
 /- English proof (translation)
-Unfold `mellin`. Use `setIntegral_congr_ae measurableSet_Ioi ?_` and prove the remaining obligations. Establish `h : ∀ᵐ t : ℝ, t ≠ 1`. Simplify using `[ae_iff, measure_singleton]`. Use `filter_upwards [h] with t ht _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Distinguish the cases in `h1 : 1 < t`. Rewrite using `[indicator_of_mem (show t ∈ Ici 1 from h1.le), indicator_of_mem (show t ∈ Ioi 1 from h1)]`. Establish `h2 : ¬ 1 ≤ t` using `fun h => h1 (lt_of_le_of_ne h (Ne.symm ht))`. Rewrite using `[indicator_of_notMem (show t ∉ Ici 1 from h2), indicator_of_notMem (show t ∉ Ioi 1 from h1)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mellin_indicator_Ici_eq_Ioi (f : ℝ → ℂ) (w : ℂ) :
     mellin ((Ici (1 : ℝ)).indicator f) w = mellin ((Ioi (1 : ℝ)).indicator f) w := by
@@ -136,7 +136,7 @@ theorem mellin_indicator_Ici_eq_Ioi (f : ℝ → ℂ) (w : ℂ) :
     rw [indicator_of_notMem (show t ∉ Ici 1 from h2), indicator_of_notMem (show t ∉ Ioi 1 from h1)]
 
 /- English proof (translation)
-Introduce `t ht`. Establish `harg : (t : ℂ).arg ≠ Real.pi`. Rewrite using `[arg_ofReal_of_nonneg ht.le]`. Conclude with `Real.pi_pos.ne`. Rewrite using `[hsym t⁻¹ (inv_pos.2 ht), inv_inv, ← mul_assoc, ofReal_inv, inv_cpow _ _ harg, mul_inv_cancel₀ (cpow_ne_zero_iff.2 (Or.inl (ofReal_ne_zero.2 ht.ne'))), one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm_of_symm {κ : ℝ} (hsym : ∀ t : ℝ, 0 < t → J t = (t : ℂ) ^ (-(κ : ℂ)) * J' t⁻¹) :
     ∀ t : ℝ, 0 < t → J' t = (t : ℂ) ^ (-(κ : ℂ)) * J t⁻¹ := by
@@ -148,11 +148,11 @@ theorem symm_of_symm {κ : ℝ} (hsym : ∀ t : ℝ, 0 < t → J t = (t : ℂ) ^
     mul_inv_cancel₀ (cpow_ne_zero_iff.2 (Or.inl (ofReal_ne_zero.2 ht.ne'))), one_mul]
 
 /- English proof (translation)
-Establish `hsym'` using `symm_of_symm hsym`. Establish `hIoi : Ioi (1 : ℝ) ∈ atTop` using `Ioi_mem_atTop 1`. Establish `hIci : Ici (1 : ℝ) ∈ atTop` using `Ici_mem_atTop 1`. Establish `d1` using `differentiable_mellin_indicator (subset_refl _) hIci (locallyIntegrableOn_indicator_Ici hJ) hdJ`. Establish `d2` using `differentiable_mellin_indicator Ioi_subset_Ici_self hIoi (locallyIntegrableOn_indicator_Ioi hJ') hdJ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d1'` using `differentiable_mellin_indicator (subset_refl _) hIci (locallyIntegrableOn_indicator_Ici hJ') hdJ'`. Establish `d2'` using `differentiable_mellin_indicator Ioi_subset_Ici_self hIoi (locallyIntegrableOn_indicator_Ioi hJ) hdJ`. Use `⟨fun w => mellin ((Ici (1 : ℝ)).indicator J) w + mellin ((Ioi (1 : ℝ)).indicator J') (κ - w), fun w => mellin ((Ici (1 : ℝ)).indicator J') w + mellin ((Ioi (1 : ℝ)).indicator J) (κ - w), d1.add (d2.comp ((differentiable_const _).sub differentiable_id)), d1'.add (d2'.comp ((differ …` and prove the remaining obligations. Introduce `w hc`. Rewrite using `[mellin_eq_add_of_convergent hc, mellin_indicator_Iio_eq hsym]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hc`. Rewrite using `[mellin_eq_add_of_convergent hc, mellin_indicator_Iio_eq hsym']`. Introduce `w`. Simplify using `only [sub_sub_cancel]`. Rewrite using `[add_comm, mellin_indicator_Ici_eq_Ioi J, mellin_indicator_Ici_eq_Ioi J']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_entire_of_symm {κ : ℝ} (hJ : ContinuousOn J (Ioi 0)) (hJ' : ContinuousOn J' (Ioi 0))
     (hsym : ∀ t : ℝ, 0 < t → J t = (t : ℂ) ^ (-(κ : ℂ)) * J' t⁻¹)

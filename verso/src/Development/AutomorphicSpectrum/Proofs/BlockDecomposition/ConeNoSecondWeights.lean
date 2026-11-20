@@ -15,9 +15,9 @@ def tri (e : Fin n → Fin n → ℝ) (a b c : Fin n) : ℝ :=
   e a b * e a c + e b a * e b c + e c a * e c b
 
 /- English proof (translation)
-Establish `h1 : ∑ a, (∑ b, e a b) ^ 2 = ∑ a, ∑ b, ∑ c, e a b * e a c`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[sq, Finset.sum_mul_sum]`. Establish `h2 : ∑ a, ∑ b, ∑ c, e b a * e b c = ∑ a, ∑ b, ∑ c, e a b * e a c` using `Finset.sum_comm`. Establish `h3 : ∑ a, ∑ b, ∑ c, e c a * e c b = ∑ a, ∑ b, ∑ c, e a b * e a c` using `(Finset.sum_congr rfl fun a _ => Finset.sum_comm).trans Finset.sum_comm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `tri`. Simplify using `only [Finset.sum_add_distrib]`. Rewrite using `[h1, h2, h3]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tri_sum (e : Fin n → Fin n → ℝ) :
     ∑ a, ∑ b, ∑ c, tri e a b c = 3 * ∑ a, (∑ b, e a b) ^ 2 := by
@@ -33,15 +33,15 @@ theorem tri_sum (e : Fin n → Fin n → ℝ) :
   ring
 
 /- English proof (translation)
-Unfold `tri triT`. Rewrite using `[ha a b, ha a c, ha b c]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Distinguish the cases in `hac : a = c`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Substitute `hac` using the available equality. Simplify using `[h0]`. Establish `hn : ¬ (a = a ∧ a = c)` using `fun h => hac h.2`. Rewrite using `[if_neg hn, h0 a]`. Apply the tactic sequence `rcases hs a c hac with h | h <;> rw [h] <;> norm_num`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hn : ¬ (a = b ∧ b = c)` using `fun h => hab h.1`. Rewrite using `[if_neg hn]`. Distinguish the cases in `hbc : b = c`. Substitute `hbc` using the available equality. Rewrite using `[h0 b]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases hs a b hab with h | h <;> rw [h] <;> norm_num`. Distinguish the cases in `hac : a = c`. Substitute `hac` using the available equality. Rewrite using `[h0 a, ha a b]`. Apply the tactic sequence `rcases hs a b hab with h | h <;> rw [h] <;> norm_num`.
+Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases hs a b hab with h | h <;> rcases hs b c hbc with h' | h' <;>`. Apply the tactic sequence `rcases hs a c hac with h'' | h'' <;> rw [h, h', h''] <;> norm_num`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tri_le (e : Fin n → Fin n → ℝ) (h0 : ∀ a, e a a = 0) (ha : ∀ a b, e b a = - e a b)
     (hs : ∀ a b, a ≠ b → e a b = 1 ∨ e a b = -1) (a b c : Fin n) : tri e a b c ≤ triT a b c := by
@@ -69,12 +69,12 @@ theorem tri_le (e : Fin n → Fin n → ℝ) (h0 : ∀ a, e a a = 0) (ha : ∀ a
           rcases hs a c hac with h'' | h'' <;> rw [h, h', h''] <;> norm_num
 
 /- English proof (translation)
-Simplify using `[sgn0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cone_sign_self (a : Fin n) : sgn0 a a = 0 := by simp [sgn0]
 
 /- English proof (translation)
-Unfold `sgn0`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Simplify using `[h, h.not_gt]`. Simplify using `[h]`. Simplify using `[h, h.not_gt]`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cone_sign_antisymmetric (a b : Fin n) : sgn0 b a = - sgn0 a b := by
   unfold sgn0
@@ -84,9 +84,9 @@ theorem cone_sign_antisymmetric (a b : Fin n) : sgn0 b a = - sgn0 a b := by
   · simp [h, h.not_gt]
 
 /- English proof (translation)
-Unfold `tri triT sgn0`. Apply the tactic sequence `rcases lt_trichotomy a b with h1 | h1 | h1 <;> rcases lt_trichotomy b c with h2 | h2 | h2 <;>`. Apply the tactic sequence `rcases lt_trichotomy a c with h3 | h3 | h3 <;>`. Use `first`. Consider the case `(exfalso; order)`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `(subst_vars; simp [*, ne_of_lt, ne_of_gt, not_lt_of_gt, lt_asymm]; done)`. Consider the case `(subst_vars; simp [*, ne_of_lt, ne_of_gt, not_lt_of_gt, lt_asymm]; norm_num; done)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tri_sgn (a b c : Fin n) : tri sgn0 a b c = triT a b c := by
   unfold tri triT sgn0
@@ -98,13 +98,13 @@ theorem tri_sgn (a b c : Fin n) : tri sgn0 a b c = triT a b c := by
     | (subst_vars; simp [*, ne_of_lt, ne_of_gt, not_lt_of_gt, lt_asymm]; norm_num; done)
 
 /- English proof (translation)
-Establish `h : ∀ b, sgn0 a b = (if a < b then (1:ℝ) else 0) - (if b < a then (1:ℝ) else 0)`. Introduce `b`. Unfold `sgn0`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Simplify using `[h, h.not_gt]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Simplify using `[h, h.not_gt]`. Simplify using `only [h, Finset.sum_sub_distrib, Finset.sum_boole]`. Establish `c1 : ((univ.filter fun b => a < b).card : ℝ) = (n : ℝ) - 1 - (a : ℕ)`. Establish `: (univ.filter fun b => a < b) = Finset.Ioi a` using `by ext; simp`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, Fin.card_Ioi]`. Use `a.isLt` as an intermediate fact. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `c2 : ((univ.filter fun b => b < a).card : ℝ) = (a : ℕ)`. Establish `: (univ.filter fun b => b < a) = Finset.Iio a` using `by ext; simp`. Rewrite using `[this, Fin.card_Iio]`. Rewrite using `[c1, c2]`. Unfold `rhoV`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -134,13 +134,13 @@ def sgnB (B : Finset (Fin n × Fin n)) (a b : Fin n) : ℝ :=
   sgn0 a b - 2 * ((if (a, b) ∈ B then 1 else 0) - (if (b, a) ∈ B then 1 else 0))
 
 /- English proof (translation)
-Simplify using `[sgnB, cone_sign_self]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sgnB_self (B : Finset (Fin n × Fin n)) (a : Fin n) : sgnB B a a = 0 := by
   simp [sgnB, cone_sign_self]
 
 /- English proof (translation)
-Unfold `sgnB`. Rewrite using `[cone_sign_antisymmetric a b]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sgnB_anti (B : Finset (Fin n × Fin n)) (a b : Fin n) : sgnB B b a = - sgnB B a b := by
   unfold sgnB
@@ -148,9 +148,9 @@ theorem sgnB_anti (B : Finset (Fin n × Fin n)) (a b : Fin n) : sgnB B b a = - s
   ring
 
 /- English proof (translation)
-Unfold `sgnB sgn0`. Break down `lt_or_gt_of_ne hab with h | h` into its components or cases. Establish `hn : (b, a) ∉ B` using `fun hm => absurd (hB _ hm) (not_lt_of_gt h)`. Apply the tactic sequence `by_cases hm : (a, b) ∈ B <;> simp [h, hn, hm] <;> norm_num`. Establish `hn : (a, b) ∉ B` using `fun hm => absurd (hB _ hm) (not_lt_of_gt h)`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases hm : (b, a) ∈ B <;> simp [h, h.not_gt, hn, hm] <;> norm_num`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgnB_sign {B : Finset (Fin n × Fin n)} (hB : ∀ p ∈ B, p.1 < p.2) (a b : Fin n) (hab : a ≠ b) :
     sgnB B a b = 1 ∨ sgnB B a b = -1 := by
@@ -162,9 +162,9 @@ theorem sgnB_sign {B : Finset (Fin n × Fin n)} (hB : ∀ p ∈ B, p.1 < p.2) (a
     by_cases hm : (b, a) ∈ B <;> simp [h, h.not_gt, hn, hm] <;> norm_num
 
 /- English proof (translation)
-Use `Finset.card_bij (fun p _ => p.2) ?_ ?_ ?_` and prove the remaining obligations. Introduce `p hp`. Take `⟨h1, h2⟩` from `Finset.mem_filter.1 hp`. Use `Finset.mem_filter.2 ⟨Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← h2]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Introduce `p hp q hq h`. Conclude with `Prod.ext (((Finset.mem_filter.1 hp).2).trans ((Finset.mem_filter.1 hq).2).symm) h`. Introduce `b hb`. Conclude with `⟨(a, b), Finset.mem_filter.2 ⟨(Finset.mem_filter.1 hb).2, rfl⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_fst (B : Finset (Fin n × Fin n)) (a : Fin n) :
     (B.filter fun p => p.1 = a).card = (univ.filter fun b => (a, b) ∈ B).card := by
@@ -180,9 +180,9 @@ theorem card_fst (B : Finset (Fin n × Fin n)) (a : Fin n) :
     exact ⟨(a, b), Finset.mem_filter.2 ⟨(Finset.mem_filter.1 hb).2, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Use `Finset.card_bij (fun p _ => p.1) ?_ ?_ ?_` and prove the remaining obligations. Introduce `p hp`. Take `⟨h1, h2⟩` from `Finset.mem_filter.1 hp`. Use `Finset.mem_filter.2 ⟨Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← h2]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Introduce `p hp q hq h`. Conclude with `Prod.ext h (((Finset.mem_filter.1 hp).2).trans ((Finset.mem_filter.1 hq).2).symm)`. Introduce `b hb`. Conclude with `⟨(b, a), Finset.mem_filter.2 ⟨(Finset.mem_filter.1 hb).2, rfl⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_snd (B : Finset (Fin n × Fin n)) (a : Fin n) :
     (B.filter fun p => p.2 = a).card = (univ.filter fun b => (b, a) ∈ B).card := by
@@ -198,7 +198,7 @@ theorem card_snd (B : Finset (Fin n × Fin n)) (a : Fin n) :
     exact ⟨(b, a), Finset.mem_filter.2 ⟨(Finset.mem_filter.1 hb).2, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Unfold `sgnB`. Rewrite using `[Finset.sum_sub_distrib, sum_sgn, ← Finset.mul_sum, Finset.sum_sub_distrib, Finset.sum_boole, Finset.sum_boole]`. Unfold `wtB`. Rewrite using `[card_fst, card_snd]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_sgnB (B : Finset (Fin n × Fin n)) (a : Fin n) :
     ∑ b, sgnB B a b = 2 * (rhoV n a - wtB B a) := by
@@ -210,9 +210,9 @@ theorem sum_sgnB (B : Finset (Fin n × Fin n)) (a : Fin n) :
   ring
 
 /- English proof (translation)
-Establish `h : ∑ a, ∑ b, ∑ c, tri (sgnB B) a b c ≤ ∑ a, ∑ b, ∑ c, tri sgn0 a b c` using `Finset.sum_le_sum fun a _ => Finset.sum_le_sum fun b _ => Finset.sum_le_sum fun c _ => by`. Rewrite using `[tri_sgn]`. Conclude with `tri_le _ (sgnB_self B) (sgnB_anti B) (sgnB_sign hB) a b c`. Rewrite `h` using `[tri_sum, tri_sum]`. Simplify using `only [sum_sgnB, sum_sgn, mul_pow, ← Finset.mul_sum] at h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `nsq`. Simplify using `only [Pi.sub_apply]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem nsq_rho_sub_le {B : Finset (Fin n × Fin n)} (hB : ∀ p ∈ B, p.1 < p.2) :
     nsq (rhoV n - wtB B) ≤ nsq (rhoV n) := by
@@ -227,9 +227,9 @@ theorem nsq_rho_sub_le {B : Finset (Fin n × Fin n)} (hB : ∀ p ∈ B, p.1 < p.
   linarith
 
 /- English proof (translation)
-Establish `h : ∀ c, wtB B c = ∑ p ∈ B, ((if p.1 = c then (1:ℝ) else 0) - (if p.2 = c then (1:ℝ) else 0))`. Introduce `c`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_boole, Finset.sum_boole]`. Both sides reduce to the same expression. Simplify using `only [h, Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `[mul_sub, Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem dot_wtB (f : Fin n → ℝ) (B : Finset (Fin n × Fin n)) :
     ∑ c, f c * wtB B c = ∑ p ∈ B, (f p.1 - f p.2) := by
@@ -243,9 +243,9 @@ theorem dot_wtB (f : Fin n → ℝ) (B : Finset (Fin n × Fin n)) :
   simp [mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [hQ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ∀ x, f x * ((c a b : ℝ) * ((if x = a then 1 else 0) - (if x = b then 1 else 0))) = (c a b : ℝ) * ((if x = a then f x else 0) - (if x = b then f x else 0))`. Introduce `x`. Apply the tactic sequence `split_ifs <;> ring`. Simplify using `only [this, ← Finset.mul_sum, Finset.sum_sub_distrib]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dot_cone (f : Fin n → ℝ) (c : Fin n → Fin n → ℕ) (Q : Fin n → ℝ)
     (hQ : ∀ x, Q x = ∑ a, ∑ b, (c a b : ℝ) * ((if x = a then 1 else 0) - (if x = b then 1 else 0))) :
@@ -263,7 +263,7 @@ theorem dot_cone (f : Fin n → ℝ) (c : Fin n → Fin n → ℕ) (Q : Fin n �
   simp
 
 /- English proof (translation)
-Unfold `nsq`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => by simp only [Pi.add_apply]; ring`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsq_add (x y : Fin n → ℝ) : nsq (x + y) = nsq x + 2 * ∑ a, x a * y a + nsq y := by
   unfold nsq
@@ -271,7 +271,7 @@ theorem nsq_add (x y : Fin n → ℝ) : nsq (x + y) = nsq x + 2 * ∑ a, x a * y
   exact Finset.sum_congr rfl fun a _ => by simp only [Pi.add_apply]; ring
 
 /- English proof (translation)
-Unfold `nsq`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => by simp only [Pi.sub_apply]; ring`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsq_sub (x y : Fin n → ℝ) : nsq (x - y) = nsq x - 2 * ∑ a, x a * y a + nsq y := by
   unfold nsq
@@ -279,7 +279,7 @@ theorem nsq_sub (x y : Fin n → ℝ) : nsq (x - y) = nsq x - 2 * ∑ a, x a * y
   exact Finset.sum_congr rfl fun a _ => by simp only [Pi.sub_apply]; ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Conclude with `absurd (hlev.1 (not_lt.1 hn)) (not_le.2 h)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem lt_of_lev {lam : Fin n → ℤ} {lev : Fin n → ℕ} (hlev : IsLev lam lev) {a b : Fin n}
     (h : lev a < lev b) : a < b := by
@@ -287,7 +287,7 @@ theorem lt_of_lev {lam : Fin n → ℤ} {lev : Fin n → ℕ} (hlev : IsLev lam 
   exact absurd (hlev.1 (not_lt.1 hn)) (not_le.2 h)
 
 /- English proof (translation)
-Unfold `rhoV`. Establish `: ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem rhoV_gap {a b : Fin n} (h : a < b) : 0 < rhoV n a - rhoV n b := by
   unfold rhoV
@@ -295,13 +295,11 @@ theorem rhoV_gap {a b : Fin n} (h : a < b) : 0 < rhoV n a - rhoV n b := by
   linarith
 
 /- English proof (translation)
-Establish `hab` using `lt_of_lev hlev h`. Establish `h1 : (lam b : ℝ) ≤ lam a` using `by exact_mod_cast hlam hab.le`. Establish `h2 : (univ.filter fun c => lev b < lev c).card < (univ.filter fun c => lev a < lev c).card`. Use `Finset.card_lt_card ⟨fun c hc => ?_, fun hs => ?_⟩` and prove the remaining obligations. Use `(Finset.mem_filter.1 hc).2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Finset.mem_filter.2 ⟨Finset.mem_univ _, h.trans this⟩`. Use `hs (Finset.mem_filter.2 ⟨Finset.mem_univ b, h⟩)` as an intermediate fact. Conclude with `lt_irrefl _ (Finset.mem_filter.1 this).2`. Establish `h3 : (univ.filter fun c => lev c < lev a).card ≤ (univ.filter fun c => lev c < lev b).card`. Use `Finset.card_le_card fun c hc => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Finset.mem_filter.1 hc).2` as an intermediate fact. Conclude with `Finset.mem_filter.2 ⟨Finset.mem_univ _, this.trans h⟩`. Establish `h2' : ((univ.filter fun c => lev b < lev c).card : ℝ) < ((univ.filter fun c => lev a < lev c).card : ℝ)`. Conclude with `h2` after adjusting the coercions. Establish `h3' : ((univ.filter fun c => lev c < lev a).card : ℝ) ≤ ((univ.filter fun c => lev c < lev b).card : ℝ)`.
-
-Conclude with `h3` after adjusting the coercions. Unfold `muQ rhoU`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem muQ_gap {lam : Fin n → ℤ} (hlam : Antitone lam) {lev : Fin n → ℕ} (hlev : IsLev lam lev)
     {a b : Fin n} (h : lev a < lev b) : 0 < muQ lam lev a - muQ lam lev b := by
@@ -325,19 +323,19 @@ theorem muQ_gap {lam : Fin n → ℤ} (hlam : Antitone lam) {lev : Fin n → ℕ
   linarith
 
 /- English proof (translation)
-Introduce `n lam hlam lev hlev ν hc hN`. Take `⟨B, hne, hBl, -, w, hw⟩` from `hN`. Take `⟨c, hcl, hcQ⟩` from `hc`. Establish `hB : ∀ p ∈ B, p.1 < p.2` using `fun p hp => lt_of_lev hlev (hBl p hp)`. Establish `e1 : nsq (ν + rhoV n) = nsq (muQ lam lev + rhoV n - wtB B)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hw]`. Unfold `nsq`. Conclude with `Equiv.sum_comp w fun a => (muQ lam lev + rhoV n - wtB B) a ^ 2`. Establish `e2 : nsq (muQ lam lev + rhoV n) ≤ nsq (ν + rhoV n)`. Establish `hs : ν + rhoV n = (muQ lam lev + rhoV n) + (ν - muQ lam lev)` using `by abel`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, nsq_add (muQ lam lev + rhoV n), dot_cone _ c _ hcQ]`. Establish `hd : 0 ≤ ∑ a, ∑ b, (c a b : ℝ) * ((muQ lam lev + rhoV n) a - (muQ lam lev + rhoV n) b)`. Use `Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : c a b = 0`. Simplify using `[h0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hl` using `hcl a b h0`. Establish `g1` using `muQ_gap hlam hlev hl`. Establish `g2` using `rhoV_gap (lt_of_lev hlev hl)`. Simplify using `only [Pi.add_apply]`. Conclude with `mul_nonneg (Nat.cast_nonneg _) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hq : 0 ≤ nsq (ν - muQ lam lev)` using `Finset.sum_nonneg fun a _ => sq_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e3 : nsq (muQ lam lev + rhoV n - wtB B) < nsq (muQ lam lev + rhoV n)`. Establish `h1` using `nsq_rho_sub_le hB`. Rewrite `h1` using `[nsq_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpos : 0 < ∑ a, muQ lam lev a * wtB B a`. Rewrite using `[dot_wtB]`. Conclude with `Finset.sum_pos (fun p hp => muQ_gap hlam hlev (hBl p hp)) hne`. Establish `hsplit : ∑ a, (muQ lam lev + rhoV n) a * wtB B a = ∑ a, muQ lam lev a * wtB B a + ∑ a, rhoV n a * wtB B a`. Rewrite using `[← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `Finset.sum_congr rfl fun a _ => by simp only [Pi.add_apply]; ring`. Rewrite using `[nsq_sub, hsplit]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem cone_weight_not_in_second : ConeWeightsNotSecondType := by
   intro n lam hlam lev hlev ν hc hN

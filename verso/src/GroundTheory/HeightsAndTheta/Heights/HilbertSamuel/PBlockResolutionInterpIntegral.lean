@@ -18,25 +18,21 @@ variable {D : ℕ} {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀
   {Ω : Type} [Field Ω] [CharZero Ω]
 
 /- English proof (translation)
-Use `set x0 := (d.R.A.chart j).symm y with hx0`. Use `set a : (Fin D → ℂ) → ℝ := fun y' => Real.log (d.A.h (d.R.lift x0 ((d.R.A.chart j).symm y'))) with ha`. Use `set b : (Fin D → ℂ) → ℝ := fun y' => Real.log (A'.h (d.R.lift x0 ((d.R.A.chart j).symm y'))) with hb`. Establish `hV : IsOpen ((d.R.A.chart j).target ∩ (d.R.A.chart j).symm ⁻¹' d.R.U x0)` using `(d.R.A.chart j).isOpen_inter_preimage_symm (d.R.isOpen_U x0)`. Establish `hyV : y ∈ (d.R.A.chart j).target ∩ (d.R.A.chart j).symm ⁻¹' d.R.U x0` using `⟨hy, d.R.mem_U x0⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsm : ∀ {L : HermLine ι}, IsSmoothHerm L → ∀ᶠ y' in 𝓝 y, ContDiffAt ℝ 2 (fun y'' => Real.log (L.h (d.R.lift x0 ((d.R.A.chart j).symm y'')))) y'`. Introduce `L hL`. Use `filter_upwards [hV.mem_nhds hyV] with y' hy'`. Conclude with `contDiffAt_infty.mp ((AnResBridge.contDiffOn_potOf d.R hL x0 j).contDiffAt (hV.mem_nhds hy')) 2` after adjusting the coercions. Establish `hH` using `gaamix_cxHessian_comb (ψ := fun y' => (1 - t) * a y' + t * b y') (1 - t) t (hsm d.semipos.1) (hsm hA') (Filter.EventuallyEq.refl _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `set H₀ := cxHessian a y`. Use `set H₁ := cxHessian b y`. Establish `hL : locDens d.R.A (fun _ => blockInterpPot d d.A A' t) j y = ReciprocityTheory.AnForm.maDens (fun _ y' => (1 - t) * a y' + t * b y') y` using `rfl`. Establish `hR : ∀ i, locDens d.R.A (fun k : Fin D => if k.val < i then AnResBridge.potOf d.R A' else AnResBridge.potOf d.R d.A) j y = ReciprocityTheory.AnForm.maDens (fun k => if k.val < i then b else a) y`. Introduce `i`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `show ReciprocityTheory.AnForm.maDens _ y = _`. Use `congr 1`. Use function extensionality and compare the values at `k y'`. Distinguish the cases in `hk : k.val < i`. Simplify using `only [hk, if_true]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `only [hk, if_false]`. Both sides reduce to the same expression. Establish `hpure : (fun _ : Fin D => ReciprocityTheory.AnForm.hessC (fun y' => (1 - t) * a y' + t * b y') y) = fun _ => (t : ℂ) • H₁ + (1 - (t : ℂ)) • H₀`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `show cxHessian _ y = _`. Rewrite using `[hH, add_comm]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hmix : ∀ i, (fun k : Fin D => ReciprocityTheory.AnForm.hessC (if k.val < i then b else a) y) = fun k : Fin D => if k.val < i then H₁ else H₀`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `i`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k.val < i`. Simplify using `only [hk, if_true]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hk, if_false]`. Both sides reduce to the same expression. Rewrite using `[hL]`. Simplify using `only [hR]`. Unfold `ReciprocityTheory.AnForm.maDens`.
-
-Rewrite using `[hpure, ReciprocityTheory.AnForm.A.mdisc_const, ReciprocityTheory.AnForm.A.det_smul_add_smul_eq_sum_mdisc, Complex.re_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hmix i]`. Establish `e : (D.choose i : ℂ) * (t : ℂ) ^ i * (1 - (t : ℂ)) ^ (D - i) = ((D.choose i * t ^ i * (1 - t) ^ (D - i) : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[e, Complex.re_ofReal_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem locDens_interp (d : HSMBlockDatum D K ι Ω) {A' : HermLine ι} (hA' : IsSmoothHerm A')
     (t : ℝ) (j : Fin d.R.A.n) {y : Fin D → ℂ} (hy : y ∈ (d.R.A.chart j).target) :
@@ -99,13 +95,13 @@ theorem locDens_interp (d : HSMBlockDatum D K ι Ω) {A' : HermLine ι} (hA' : I
   ring
 
 /- English proof (translation)
-Establish `hA : IsSmoothHerm d.A` using `d.semipos.1`. Establish `hE : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}`. Establish `e : {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {z | z ⟨k, i⟩ ≠ 0}`. Use extensionality with `z`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`. Establish `hΦ : ContinuousOn (fun z : (Σ k, ι k) → ℂ => Real.log (A'.h z / d.A.h z)) {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}` using `(hA'.continuousOn.div hA.continuousOn fun z hz => (d.A.pos z hz).ne').log fun z hz => (div_pos (A'.pos z hz) (d.A.pos z hz)).ne'`. Establish `hdeg' : A'.a = d.A.a` using `hdeg.trans d.deg.symm`. Use `continuous_iff_continuousAt.2 fun x₀ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hU` using `(d.R.isOpen_U x₀).mem_nhds (d.R.mem_U x₀)`. Establish `hl : ContinuousAt (d.R.lift x₀) x₀` using `(continuousOn_pi.2 fun p => AnResBridge.continuousOn_lift d.R x₀ p).continuousAt hU`. Establish `h0 : d.R.lift x₀ x₀ ∈ {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}` using `(d.R.mem x₀ x₀ (d.R.mem_U x₀)).1`. Establish `h2 : ContinuousAt (fun x => Real.log (A'.h (d.R.lift x₀ x) / d.A.h (d.R.lift x₀ x))) x₀` using `(hΦ.continuousAt (hE.mem_nhds h0)).comp hl`. Use `h2.congr ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [hU] with x hx`. Take `⟨c, hc0, he⟩` from `d.R.compat x x₀ x ⟨d.R.mem_U x, hx⟩`. Use `show _ = Real.log (A'.h (d.R.lift x x) / d.A.h (d.R.lift x x))`. Establish `hp : (∏ k, ‖c k‖ ^ d.A.a k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.mpr (hc0 k))`. Rewrite using `[he, A'.smul c _ hc0, d.A.smul c _ hc0, hdeg', mul_div_mul_left _ _ hp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_logRatio (d : HSMBlockDatum D K ι Ω) {A' : HermLine ι} (hdeg : A'.a = unitDeg d.k₀)
     (hA' : IsSmoothHerm A') :
@@ -139,15 +135,13 @@ theorem continuous_logRatio (d : HSMBlockDatum D K ι Ω) {A' : HermLine ι} (hd
   rw [he, A'.smul c _ hc0, d.A.smul c _ hc0, hdeg', mul_div_mul_left _ _ hp]
 
 /- English proof (translation)
-Establish `hg` using `continuous_logRatio d hdeg hA'`. Establish `hΦ : ∀ (i : ℕ) (k : Fin D), IsPotential d.R.A (if k.val < i then AnResBridge.potOf d.R A' else AnResBridge.potOf d.R d.A)`. Introduce `i k`. Use `split_ifs`. Conclude with `AnResBridge.isPotential_potOf d.R hA'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Conclude with `AnResBridge.isPotential_potOf d.R d.semipos.1`. Unfold `mInt`. Distinguish the cases in `hP : Nonempty (ChartPartition d.R.A)`. Simplify using `only [dif_pos hP]`. Unfold `integralWith`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hint : ∀ i ∈ Finset.range (D + 1), Integrable (fun y => (D.choose i : ℝ) * t ^ i * (1 - t) ^ (D - i) * (hP.some.χ j ((d.R.A.chart j).symm y) * Real.log (A'.h (blockPt d ((d.R.A.chart j).symm y)) / d.A.h (blockPt d ((d.R.A.chart j).symm y))) * locDens d.R.A (fun k : Fin D => if k. …` using `fun i _ => (integrableOn_weight d.R.A hP.some _ _ (mIntegrableCont d.R.A _ (hΦ i) _ hg) j).const_mul _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `setIntegral_congr_fun (d.R.A.chart j).open_target.measurableSet fun y hy => ?_` and prove the remaining obligations. Rewrite using `[locDens_interp d hA' t j hy, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Use `_ = _ := by`. Rewrite using `[integral_finsetSum _ hint]`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => integral_const_mul _ _`. Simplify using `only [dif_neg hP, mul_zero, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mInt_interp (d : HSMBlockDatum D K ι Ω) {A' : HermLine ι} (hdeg : A'.a = unitDeg d.k₀)
     (hA' : IsSmoothHerm A') (t : ℝ) :
@@ -195,9 +189,9 @@ theorem mInt_interp (d : HSMBlockDatum D K ι Ω) {A' : HermLine ι} (hdeg : A'.
   · simp only [dif_neg hP, mul_zero, Finset.sum_const_zero]
 
 /- English proof (translation)
-Introduce `D K _ _ ι _ Ω _ _ d A' hdeg hA'`. Unfold `blockMetricInt`. Simplify using `only [mInt_interp d hdeg hA']`. Rewrite using `[intervalIntegral.integral_finsetSum fun i _ => (Continuous.intervalIntegrable (by fun_prop) _ _)]`. Rewrite using `[Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[intervalIntegral.integral_mul_const, ReciprocityTheory.GeometryOfNumbersTheory.integral_bernstein D i (Nat.lt_succ_iff.mp (Finset.mem_range.mp hi))]`. Establish `hD : (D : ℝ) + 1 ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem proof : BlockResolutionInterpIntegral.Statement := by
   intro D K _ _ ι _ Ω _ _ d A' hdeg hA'

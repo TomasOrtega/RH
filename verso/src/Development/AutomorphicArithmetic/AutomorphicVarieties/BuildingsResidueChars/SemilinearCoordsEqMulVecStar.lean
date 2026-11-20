@@ -2,7 +2,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob Matrix
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `h` using `RingHom.map_mulVec (starRingEnd L) N v i`. Conclude with `h`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma star_mulVec_fin_three {L : Type} [CommRing L] [StarRing L] (N : Matrix (Fin 3) (Fin 3) L) (v : Fin 3 → L) :
     star (N *ᵥ v) = N.map star *ᵥ star v := by
@@ -11,9 +11,9 @@ private lemma star_mulVec_fin_three {L : Type} [CommRing L] [StarRing L] (N : Ma
   exact h
 
 /- English proof (translation)
-Introduce `K _ Δ τ d A N e v hAN he hv hN x`. Establish `hNv : A *ᵥ star (N *ᵥ v) = d.re • (N *ᵥ v) + d.im • (algebraMap K (Lsq K Δ) τ • (N *ᵥ v) - v)`. Rewrite using `[star_mulVec_fin_three, Matrix.mulVec_mulVec, hAN, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, hN]`. Establish `hs : star (x.1 • e + x.2.re • v + x.2.im • (N *ᵥ v)) = star x.1 • star e + star x.2.re • star v + star x.2.im • star (N *ᵥ v)`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[mul_comm]`. Rewrite using `[hs, Matrix.mulVec_add, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.mulVec_smul, he, hv, hNv]`. Use function extensionality and compare the values at `i`. Simplify using `only [semi, sigL, Pi.add_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

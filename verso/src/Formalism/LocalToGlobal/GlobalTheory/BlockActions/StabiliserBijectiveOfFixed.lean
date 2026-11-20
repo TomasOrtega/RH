@@ -15,11 +15,11 @@ def StabFix (Tf : FormsTiedSym D u Ch chOf) : Prop :=
     ((Tf.til.ga c).1.1 * γ.1.1 * ((Tf.til.ga c)⁻¹).1.1) *ᵥ Tf.til.z0 = Tf.til.z0
 
 /- English proof (translation)
-Establish `hTp : ((D.mem u).A.T : ℕ).Prime` using `(D.mem u).A.T_prime`. Take `⟨a, ha⟩` from `Tf.til.lastCoordinateUniformizerVector_spans_orthogonal_line`. Establish `hT0 : (((D.mem u).A.T : ℕ) : D.host.E) ≠ 0` using `by exact_mod_cast hTp.ne_zero`. Establish `ha0 : a ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hzz` using `Tf.til.hermitianForm_lastCoordinateUniformizerVector_self`. Rewrite `hzz` using `[ha, h0, zero_smul]`. Apply `hT0` to reduce the goal to its premises. Rewrite using `[← hzz]`. Simplify using `[hform]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `y`. Take `⟨x, s, hy⟩` from `span_iXc_zc D y`. Conclude with `⟨x, s / a, by rw [hy, ha, smul_smul, div_mul_cancel₀ s ha0]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem span_with_orthogonal_vector (Tf : FormsTiedSym D u Ch chOf) :
     ∀ y, ∃ (x : Fin (D.R.N D.R.m - 1) → D.host.E) (s : D.host.E), y = iXc D x + s • Tf.til.z0 := by
@@ -36,15 +36,15 @@ theorem span_with_orthogonal_vector (Tf : FormsTiedSym D u Ch chOf) :
   exact ⟨x, s / a, by rw [hy, ha, smul_smul, div_mul_cancel₀ s ha0]⟩
 
 /- English proof (translation)
-Establish `hC` using `crdFacts_of Tf`. Establish `hTp : ((D.mem u).A.T : ℕ).Prime` using `(D.mem u).A.T_prime`. Use `set σ : D.host.E →+* D.host.E := (sigD D : D.host.E →+* D.host.E) with hσdef`. Use `set J := gramN D D.R.m le_rfl with hJ`. Use `set z0 := Tf.til.z0 with hz0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `Tf.til.lastCoordinateUniformizerVector_spans_orthogonal_line`. Rewrite `ha` using `[← hz0]`. Establish `hzz : hform σ J z0 z0 = (((D.mem u).A.T : ℕ) : D.host.E)` using `Tf.til.hermitianForm_lastCoordinateUniformizerVector_self`. Establish `hT0 : (((D.mem u).A.T : ℕ) : D.host.E) ≠ 0` using `by exact_mod_cast hTp.ne_zero`. Establish `horth : ∀ x, hform σ J (iXc D x) z0 = 0 ∧ hform σ J z0 (iXc D x) = 0` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[ha, hform_smul_right, hform_smul_left, (hC.orth x).1, (hC.orth x).2]`. Simplify using the standard rewrite rules. Establish `hγ : ∀ x y, hform σ J (Γ *ᵥ x) (Γ *ᵥ y) = hform σ J x y` using `fun x y => hform_UJ σ J Γ hΓ x y`. Take `⟨δ, hδ, hδi⟩` from `fix_restrict σ J (gramP D) (iXc D) (iXc_injective D) z0 hC.iso horth (span_with_orthogonal_vector Tf) (by rw [hzz]; exact hT0) Γ hγ hfix`. Use `⟨δ, ⟨?_, ?_⟩, hδi⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [Matrix.toLin'_apply, ← mulVec_mulVec]`. Use `show Γ *ᵥ ((iXm D).map (RingHom.id D.host.E) *ᵥ x) = (iXm D).map (RingHom.id D.host.E) *ᵥ (δ *ᵥ x)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : (iXm D).map (RingHom.id D.host.E) = iXm D` using `by ext i j; rfl`. Rewrite using `[hm, iXm, LinearMap.toMatrix'_mulVec, LinearMap.toMatrix'_mulVec, hδ]`. Establish `: (fun a => (RingHom.id D.host.E) (z0 a)) = z0` using `rfl`. Rewrite using `[this]`. Conclude with `hfix`.
+A detailed English derivation is pending.
 -/
 theorem ext_of_fix (Tf : FormsTiedSym D u Ch chOf) (Γ : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) D.host.E)
     (hΓ : cT (sigD D : D.host.E →+* D.host.E) Γ * gramN D D.R.m le_rfl * Γ = gramN D D.R.m le_rfl)
@@ -79,11 +79,11 @@ theorem ext_of_fix (Tf : FormsTiedSym D u Ch chOf) (Γ : Matrix (Fin (D.R.N D.R.
     rw [this]; exact hfix
 
 /- English proof (translation)
-Establish `hm : (iXm D).map (RingHom.id D.host.E) = iXm D` using `by ext i j; rfl`. Establish `hz : (fun a => (RingHom.id D.host.E) (Tf.til.z0 a)) = Tf.til.z0` using `rfl`. Take `⟨a1, b1⟩` from `h1`. Take `⟨a2, b2⟩` from `h2`. Rewrite `a1`, `a2` using `[hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `b1`, `b2` using `[hz]`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Simplify using `only [Matrix.toLin'_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨x, s, rfl⟩` from `span_with_orthogonal_vector Tf y`. Establish `hx : iXc D x = iXm D *ᵥ x` using `by simp only [iXm, LinearMap.toMatrix'_mulVec]`. Rewrite using `[hx, mulVec_add, mulVec_add, mulVec_smul, mulVec_smul, b1, b2, mulVec_mulVec, mulVec_mulVec, a1, a2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_unique (Tf : FormsTiedSym D u Ch chOf) {δ : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E}
     {Γ1 Γ2 : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) D.host.E}
@@ -105,21 +105,17 @@ theorem ext_unique (Tf : FormsTiedSym D u Ch chOf) {δ : Matrix (Fin (D.R.N D.R.
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Use `set Km := Tf.cls D.R.m le_rfl (Or.inr rfl) with hKm`. Establish `key : ∀ s : (D.mem u).C.stab D.R.m ((D.fm u).til c), ∃ (s' : (D.fm u).stabilizer₂ c) (δ : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E), IsExt D Tf.til.z0 (RingHom.id D.host.E) δ ((Tf.til.ga c).1.1 * (Km.stabI ((D.fm u).til c) s).1.1 * ((Tf.til.ga c)⁻¹).1.1) ∧ …`. Introduce `s`. Use `set γ := Km.stabI ((D.fm u).til c) s with hγ`. Establish `hU : cT (sigD D : D.host.E →+* D.host.E) ((Tf.til.ga c).1.1 * γ.1.1 * ((Tf.til.ga c)⁻¹).1.1) * gramN D D.R.m le_rfl * ((Tf.til.ga c).1.1 * γ.1.1 * ((Tf.til.ga c)⁻¹).1.1) = gramN D D.R.m le_rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `(Tf.til.ga c * γ * (Tf.til.ga c)⁻¹).2`. Establish `e : (Tf.til.ga c * γ * (Tf.til.ga c)⁻¹).1.1 = (Tf.til.ga c).1.1 * γ.1.1 * ((Tf.til.ga c)⁻¹).1.1`. Simplify using `only [Subgroup.coe_mul, Units.val_mul]`. Establish `h1 : cT (sigD D : D.host.E →+* D.host.E) (Tf.til.ga c * γ * (Tf.til.ga c)⁻¹).1.1 * gramN D D.R.m le_rfl * (Tf.til.ga c * γ * (Tf.til.ga c)⁻¹).1.1 = gramN D D.R.m le_rfl` using `h0`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨δ, hδE, hδi⟩` from `ext_of_fix Tf _ hU (hF c γ ⟨s, rfl⟩)`. Establish `hΓu : IsUnit ((Tf.til.ga c).1.1 * γ.1.1 * ((Tf.til.ga c)⁻¹).1.1).det`. Rewrite using `[← Units.val_mul, ← Units.val_mul]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).mp (Units.isUnit _)`. Establish `hδu` using `isUnit_of_extE Tf δ _ hΓu hδE`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set Δ : GL (Fin (D.R.N D.R.m - 1)) D.host.E := ((Matrix.isUnit_iff_isUnit_det δ).mpr hδu).unit with hΔdef`. Establish `hΔv : Δ.1 = δ` using `IsUnit.unit_spec _`. Establish `hΔ : Δ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramP D)` using `by show cT _ Δ.1 * gramP D * Δ.1 = gramP D`. Rewrite using `[hΔv]`. Conclude with `unitary_of_hform _ _ _ hδi`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s', hs'⟩` from `stab_restrict Tf c γ ⟨s, rfl⟩ ⟨Δ, hΔ⟩ (by rw [show (⟨Δ, hΔ⟩ : UJ _ _).1.1 = δ from hΔv]; exact hδE)`. Conclude with `⟨s', δ, hδE, by rw [hs']; exact hΔv⟩`. Use `choose g δf hδE hδv using key`. Use `⟨g, fun s1 s2 h12 => ?_⟩` and prove the remaining obligations. Establish `hδ12 : δf s1 = δf s2` using `by rw [← hδv s1, ← hδv s2, h12]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hΓ` using `ext_unique Tf (hδE s1) (hδ12 ▸ hδE s2)`. Apply `Km.stabI_inj ((D.fm u).til c)` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Establish `hi : ((Tf.til.ga c)⁻¹).1.1 * (Tf.til.ga c).1.1 = 1`.
-
-Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel]`. Both sides reduce to the same expression. Use `congrArg (fun M => ((Tf.til.ga c)⁻¹).1.1 * M * (Tf.til.ga c).1.1) hΓ` as an intermediate fact. Simplify using `only [← Matrix.mul_assoc, hi, Matrix.one_mul] at this`. Simplify using `only [Matrix.mul_assoc, hi, Matrix.mul_one] at this`.
-
-Conclude with `this`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stab_back (Tf : FormsTiedSym D u Ch chOf) (hF : StabFix Tf) (c : (D.fm u).clsP) :
     ∃ g : (D.mem u).C.stab D.R.m ((D.fm u).til c) → (D.fm u).stabilizer₂ c, Function.Injective g := by
@@ -167,7 +163,7 @@ theorem stab_back (Tf : FormsTiedSym D u Ch chOf) (hF : StabFix Tf) (c : (D.fm u
   exact this
 
 /- English proof (translation)
-The claim follows from `stabiliser_bijective_of_injection (fun D u Ch chOf Tf c => stab_back Tf (hF D u Ch chOf Tf) c)`.
+A detailed English derivation is pending.
 -/
 theorem stabiliser_bijective_of_fixed
     (hF : ∀ (D : D7) (u : D.what₂.Word) (Ch : ℕ → Type) (chOf : ∀ i, (D.mem u).C.cls i → Ch i) (Tf : FormsTiedSym D u Ch chOf),

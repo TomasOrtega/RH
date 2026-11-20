@@ -12,7 +12,7 @@ section Generic
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Use `⟨S.frame.map (Matrix.toLinearEquiv S.frame Q hQ), ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[Module.Basis.toMatrix_apply, Matrix.toLinearEquiv_apply, Matrix.toLin_self, Finsupp.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem exists_basis (S : HSpace E) (Q : Matrix (Fin S.rank) (Fin S.rank) E) (hQ : IsUnit Q.det) :
     ∃ b : Module.Basis (Fin S.rank) E S.V, Q = S.frame.toMatrix b := by
@@ -21,14 +21,14 @@ theorem exists_basis (S : HSpace E) (Q : Matrix (Fin S.rank) (Fin S.rank) E) (hQ
   simp [Module.Basis.toMatrix_apply, Matrix.toLinearEquiv_apply, Matrix.toLin_self, Finsupp.single_apply]
 
 /- English proof (translation)
-Use `letI := Module.Basis.invertibleToMatrix S.frame b`. Conclude with `Matrix.isUnit_det_of_invertible _`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem isUnit_det (S : HSpace E) (b : Module.Basis (Fin S.rank) E S.V) : IsUnit (S.frame.toMatrix b).det := by
   letI := Module.Basis.invertibleToMatrix S.frame b
   exact Matrix.isUnit_det_of_invertible _
 
 /- English proof (translation)
-Use `conv_rhs => rw [← S.frame.sum_repr (b i), ← S.frame.sum_repr (b j)]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Module.Basis.toMatrix_apply, HSpace.gram, map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum, RingHom.id_apply, starRingEnd_apply]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gram_change (S : HSpace E) (b : Module.Basis (Fin S.rank) E S.V) (i j : Fin S.rank) :
     (((S.frame.toMatrix b).map star)ᵀ * S.gram * S.frame.toMatrix b) i j = S.hT (b i) (b j) := by
@@ -39,9 +39,9 @@ theorem gram_change (S : HSpace E) (b : Module.Basis (Fin S.rank) E S.V) (i j : 
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring
 
 /- English proof (translation)
-Introduce `h0`. Use `b.ne_zero i (S.nondeg.2 _ fun x => ?_)` and prove the remaining obligations. Rewrite using `[← b.sum_repr x, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hk : k = i`. Rewrite using `[hk, h0, smul_zero]`. Rewrite using `[ho k i hk, smul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem diag_ne_zero (S : HSpace E) (b : Module.Basis (Fin S.rank) E S.V)
     (ho : ∀ i j, i ≠ j → S.hT (b i) (b j) = 0) (i : Fin S.rank) : S.hT (b i) (b i) ≠ 0 := by
@@ -55,7 +55,7 @@ theorem diag_ne_zero (S : HSpace E) (b : Module.Basis (Fin S.rank) E S.V)
   · rw [ho k i hk, smul_zero]
 
 /- English proof (translation)
-Rewrite using `[← Complex.conj_eq_iff_re, ← hτ]`. Conclude with `congrArg τ (S.herm.eq x x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_real (S : HSpace E) (τ : E →+* ℂ) (hτ : ∀ x, τ (star x) = starRingEnd ℂ (τ x)) (x : S.V) :
     (((τ (S.hT x x)).re : ℝ) : ℂ) = τ (S.hT x x) := by
@@ -63,7 +63,7 @@ theorem diag_real (S : HSpace E) (τ : E →+* ℂ) (hτ : ∀ x, τ (star x) = 
   exact congrArg τ (S.herm.eq x x)
 
 /- English proof (translation)
-Rewrite using `[linearMap_toMatrix_mul_basis_toMatrix]`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal, LinearMap.toMatrix_apply, hs, Module.Basis.toMatrix_apply, map_smul, Finsupp.smul_apply, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem toMatrix_mul_diag (S : HSpace E) (b : Module.Basis (Fin S.rank) E S.V) (s : Module.End E S.V)
     (c : Fin S.rank → E) (hs : ∀ i, s (b i) = c i • b i) :
@@ -74,13 +74,13 @@ theorem toMatrix_mul_diag (S : HSpace E) (b : Module.Basis (Fin S.rank) E S.V) (
     smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Use `⟨fun i h => ?_, ?_, fun s hs => ?_⟩` and prove the remaining obligations. Use `diag_real S τ hτ (b i)` as an intermediate fact. Rewrite `this` using `[h, Complex.ofReal_zero]`. Conclude with `diag_ne_zero S b ho i ((map_eq_zero τ).1 this.symm)`. Establish `e : ((S.frame.toMatrix b).map τ)ᴴ = (((S.frame.toMatrix b).map star)ᵀ).map τ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply, hτ]`. Rewrite using `[e, ← Matrix.map_mul, ← Matrix.map_mul]`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, gram_change]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq, diag_real S τ hτ]`. Rewrite using `[Matrix.diagonal_apply_ne _ hij, ho i j hij, map_zero]`. Apply the tactic sequence `have h := toMatrix_mul_diag S b s (fun i => if 0 < (τ (S.hT (b i) (b i))).re then (1 : E) else -1) (fun i => by rw [hs i]; split_ifs <;> simp)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.map_mul, h, Matrix.map_mul, Matrix.diagonal_map (map_zero τ)]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem orthogonal_basis (S : HSpace E) (b : Module.Basis (Fin S.rank) E S.V)
     (ho : ∀ i j, i ≠ j → S.hT (b i) (b j) = 0) (τ : E →+* ℂ) (hτ : ∀ x, τ (star x) = starRingEnd ℂ (τ x)) :
@@ -116,7 +116,7 @@ end Generic
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D V`. Conclude with `⟨exists_basis V, fun b => ⟨isUnit_det V b, gram_change V b, fun ho τ => orthogonal_basis V b ho (tauE D τ) (tauE_star τ)⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem basis_matrix : ∀ (D : D7) (V : HSp D), (∀ Q : Matrix (Fin V.rank) (Fin V.rank) D.host.E, IsUnit Q.det → ∃ b : Module.Basis (Fin V.rank) D.host.E V.V, Q = V.frame.toMatrix b) ∧ ∀ b : Module.Basis (Fin V.rank) D.host.E V.V, IsUnit (V.frame.toMatrix b).det ∧ (∀ i j, (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (V.frame.toMatrix b) * V.gram * V.frame.toMatrix b) i j = V.hT (b i) (b j)) ∧ ((∀ i j, i ≠ j → V.hT (b i) (b j) = 0) → ∀ τ : D.what₂.Tau, (∀ i, (tauE D τ (V.hT (b i) (b i))).re ≠ 0) ∧ ((V.frame.toMatrix b).map (tauE D τ))ᴴ * gramAt D V τ * (V.frame.toMatrix b).map (tauE D τ) = Matrix.diagonal (fun i => (((tauE D τ (V.hT (b i) (b i))).re : ℝ) : ℂ)) ∧ ∀ s : Module.End D.host.E V.V, (∀ i, s (b i) = if 0 < (tauE D τ (V.hT (b i) (b i))).re then b i else -b i) → thAt V τ s * (V.frame.toMatrix b).map (tauE D τ) = (V.frame.toMatrix b).map (tauE D τ) * Matrix.diagonal (fun i => if 0 < (tauE D τ (V.hT (b i) (b i))).re then (1 : ℂ) else -1)) := by
   intro D V

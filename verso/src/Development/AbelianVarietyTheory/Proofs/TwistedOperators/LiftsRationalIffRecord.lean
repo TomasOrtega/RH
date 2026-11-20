@@ -42,7 +42,7 @@ def LevelIn (b : Bool) (V : ∀ j t, Submodule K (A.FL j t)) : Prop :=
   ∀ j t, ∀ x ∈ V j t, X.θ' j t (X.jL j t x) ∈ LinearMap.range (X.w0C b j)
 
 /- English proof (translation)
-Introduce `j` and use `by obtain ⟨N, ψ, h1, h2, -⟩ := h j exact ⟨N, ψ, h1, h2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem liftTest_of_liftTestB {b : Bool} (h : LiftTestB X b) : LiftTest X := fun j => by
   obtain ⟨N, ψ, h1, h2, -⟩ := h j
@@ -75,7 +75,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3)
 
 /- English proof (translation)
-Rewrite using `[cxPhase_eq]`. Simplify using `only [cj_cj]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem toCx3_liftTestB (b : Bool) :
     LiftTestB (R.toCx3 F) b ↔ LiftTestB (cxPhase R.toRealDat F.lv2 fun j => cj (twAt D.what₂.embLL A3.A.v0) (R.phs j)) b := by

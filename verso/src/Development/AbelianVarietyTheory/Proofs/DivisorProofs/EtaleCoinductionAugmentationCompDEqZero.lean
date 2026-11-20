@@ -38,7 +38,7 @@ def coindCx (φ : R →+* S) (J : Shv R) : CochainComplex (Shv R) ℕ :=
       rw [← Functor.map_comp, ← op_comp, HomologicalComplex.d_comp_d, op_zero, Functor.map_zero])
 
 /- English proof (translation)
-Simplify using `[coindCx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coindCx_d (φ : R →+* S) (J : Shv R) (n : ℕ) :
     (coindCx φ J).d n (n + 1) = (homSh J).map ((scalarsRes φ).complex.d (n + 1) n).op :=
@@ -60,7 +60,7 @@ def coindToHom (φ : R →+* S) (J : Shv R) : (restr φ).obj ((coind φ).obj J) 
      naturality := fun _ _ _ => rfl }⟩
 
 /- English proof (translation)
-Rewrite using `[← Functor.map_comp, ← op_comp, ProjectiveResolution.complex_d_comp_π_f_zero_assoc, zero_comp, op_zero, Functor.map_zero, comp_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem etaleCoinductionAugmentation_comp_d_eq_zero (φ : R →+* S) (J : Shv R) :
     coindToHom φ J ≫ (homSh J).map ((scalarsRes φ).π.f 0 ≫
@@ -78,7 +78,7 @@ def coindAug (φ : R →+* S) (J : Shv R) :
     exact (Category.assoc _ _ _).trans (etaleCoinductionAugmentation_comp_d_eq_zero φ J))
 
 /- English proof (translation)
-The claim follows from `HomologicalComplex.mkHomFromSingle_f _ _`.
+A detailed English derivation is pending.
 -/
 theorem coindAug_f_zero (φ : R →+* S) (J : Shv R) :
     (coindAug φ J).f 0 = (HomologicalComplex.singleObjXSelf (ComplexShape.up ℕ) 0 _).hom ≫ coindToHom φ J ≫

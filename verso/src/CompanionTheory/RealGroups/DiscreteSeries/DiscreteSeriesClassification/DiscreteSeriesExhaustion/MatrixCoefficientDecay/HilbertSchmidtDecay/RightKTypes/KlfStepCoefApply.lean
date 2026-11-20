@@ -19,7 +19,7 @@ theorem klf_stepCoef_apply (X : GMod n) (z : ℂ) (c : X.V →ₗ[ℂ] (Matrix (
     stepCoef X z c j u g = ∑ i, g j i * c ((Subtype.val u : Fin n → X.V) i) g := rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨i, j⟩ v`. Simplify using `only [klf_stepCoef_apply]`. Conclude with `continuous_finsetSum _ fun a _ => ((S7.continuous_toM ε).matrix_elem j a).mul (h i _)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem klf_contFam_step {ε : Fin n → Bool} {X : GMod n} {I : Type} {c : CoefFam X I} (h : ContFam ε c) (z : ℂ) :
     ContFam ε (X := step X z) (fun p : I × Fin n => stepCoef X z (c p.1) p.2) := by
@@ -28,13 +28,13 @@ theorem klf_contFam_step {ε : Fin n → Bool} {X : GMod n} {I : Type} {c : Coef
   exact continuous_finsetSum _ fun a _ => ((S7.continuous_toM ε).matrix_elem j a).mul (h i _)
 
 /- English proof (translation)
-Introduce and unpack `⟨i, j⟩`. Take `⟨r, is, β, B, hB, hc⟩` from `h i`. Use `⟨n * r, fun m => (is (finProdFinEquiv.symm m).2, (finProdFinEquiv.symm m).1), fun m k => S7.toMK k j (finProdFinEquiv.symm m).1 * β (finProdFinEquiv.symm m).2 k, |B|, ?_, ?_⟩` and prove the remaining obligations. Introduce `m k`. Rewrite using `[norm_mul]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ‖S7.toMK k j (finProdFinEquiv.symm m).1‖ ≤ 1` using `entry_norm_bound_of_unitary (U := S7.toMK k) k.2.1 _ _`. Combine the equalities or inequalities in the displayed calculation. Introduce `v g k`. Rewrite using `[← finProdFinEquiv.sum_comp]`. Simplify using `only [Equiv.symm_apply_apply, Fintype.sum_prod_type, klf_stepCoef_apply, hc, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem leftExp_step {ε : Fin n → Bool} {X : GMod n} {I : Type} {c : CoefFam X I} (h : LeftExp ε c) (z : ℂ) :
     LeftExp ε (X := step X z) (fun p : I × Fin n => stepCoef X z (c p.1) p.2) := by
@@ -60,9 +60,9 @@ theorem leftExp_step {ε : Fin n → Bool} {X : GMod n} {I : Type} {c : CoefFam 
     ring
 
 /- English proof (translation)
-Proceed by induction on `ss generalizing X I χ with`. Consider the case `nil`. Introduce and unpack `⟨i, js⟩`. Take `⟨r, is, β, B, hB, hc⟩` from `h i`. Conclude with `⟨r, fun l => (is l, js), β, B, hB, hc⟩`.
+Proceed by induction. Treat this case separately. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `cons s ss ih`. Introduce and unpack `⟨i, js⟩`. Take `⟨r, is, β, B, hB, hc⟩` from `ih (leftExp_step h (χ s)) (χ + Pi.single s 1) ((i, js.headD s), js.tail)`. Conclude with `⟨r, fun l => ((is l).1.1, (is l).1.2 :: (is l).2), β, B, hB, hc⟩`.
+Treat this case separately. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem leftExp_path {ε : Fin n → Bool} {X : GMod n} {I : Type} {c : CoefFam X I} (h : LeftExp ε c)
     (χ : Fin n → ℂ) (ss : List (Fin n)) :
@@ -78,7 +78,7 @@ theorem leftExp_path {ε : Fin n → Bool} {X : GMod n} {I : Type} {c : CoefFam 
     exact ⟨r, fun l => ((is l).1.1, (is l).1.2 :: (is l).2), β, B, hB, hc⟩
 
 /- English proof (translation)
-Proceed by induction on `ss generalizing X I χ with`. Consider the case `nil => exact fun p => h p.1`. Consider the case `cons s ss ih`. Introduce and unpack `⟨i, js⟩`. Conclude with `ih (klf_contFam_step h (χ s)) (χ + Pi.single s 1) ((i, js.headD s), js.tail)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem contFam_path {ε : Fin n → Bool} {X : GMod n} {I : Type} {c : CoefFam X I} (h : ContFam ε c)
     (χ : Fin n → ℂ) (ss : List (Fin n)) :
@@ -90,19 +90,17 @@ theorem contFam_path {ε : Fin n → Bool} {X : GMod n} {I : Type} {c : CoefFam 
     exact ih (klf_contFam_step h (χ s)) (χ + Pi.single s 1) ((i, js.headD s), js.tail)
 
 /- English proof (translation)
-Introduce `ξ`. Take `⟨S, hfin, hξ, hS⟩` from `(hK.mem _).1 ξ.2`. Establish `hSD : ∀ x ∈ S, x ∈ D` using `fun x hx => (hK.mem _).2 ⟨S, hfin, hx, hS⟩`. Set `b` to `stdOrthonormalBasis ℂ S`. Establish `hmem : ∀ k : S7.KG ε, σ (S7.toMK k⁻¹) (ξ : H) ∈ S` using `fun k => hS _ (k⁻¹).2 _ hξ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hUJ : ∀ g : S7.UJ ε, S7.toM g ∈ Formalism.MainNotions.S.UJset ε` using `fun g => g.2`. Use `⟨Module.finrank ℂ S, fun l => ⟨(b l : H), hSD _ (b l).2⟩, fun l k => ⟪σ (S7.toMK k⁻¹) (ξ : H), (b l : H)⟫_ℂ, ‖(ξ : H)‖, ?_, ?_⟩` and prove the remaining obligations. Introduce `l k`. Use `(norm_inner_le_norm _ _).trans ?_` and prove the remaining obligations. Establish `h1 : ‖(b l : H)‖ = 1` using `b.orthonormal.1 l`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h1, mul_one, hU.2.1 _ (hUJ _)]`. Introduce `v g k show ⟪(ξ : H), σ (S7.toMK k * S7.toM g) (v : H)⟫_ℂ = ∑ l, ⟪σ (S7.toMK k⁻¹) (ξ : H), (b l : H)⟫_ℂ * ⟪(b l : H), σ (S7.toM g) (v : H)⟫_ℂ`. Establish `hkg : S7.toMK k * S7.toM g = S7.toM ((k : S7.UJ ε) * g)` using `rfl`. Set `L : H →ₗᵢ[ℂ] H` to `⟨(σ (S7.toMK k⁻¹)).toLinearMap, hU.2.1 _ (hUJ _)⟩`. Establish `e1` using `L.inner_map_map (ξ : H) (σ (S7.toMK k * S7.toM g) (v : H))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e2 : L (σ (S7.toMK k * S7.toM g) (v : H)) = σ (S7.toM g) (v : H)`. Establish `h3` using `hU.1.2 (S7.toMK k⁻¹) (hUJ _) (S7.toMK k * S7.toM g) (hkg ▸ hUJ _)`. Establish `h4 : S7.toMK k⁻¹ * (S7.toMK k * S7.toM g) = S7.toM g` using `by show S7.toM (((k : S7.UJ ε))⁻¹ * ((k : S7.UJ ε) * g)) = S7.toM g`. Rewrite using `[inv_mul_cancel_left]`. Rewrite `h3` using `[h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h3]`. Both sides reduce to the same expression. Rewrite using `[← e1, e2]`. Establish `e3 : σ (S7.toMK k⁻¹) (ξ : H) = ∑ l, ⟪(b l : H), σ (S7.toMK k⁻¹) (ξ : H)⟫_ℂ • (b l : H)`. Use `congrArg (Subtype.val : S → H) (b.sum_repr' ⟨_, hmem k⟩)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this.symm`. Use `show ⟪σ (S7.toMK k⁻¹) (ξ : H), _⟫_ℂ = _`. Use `conv_lhs => rw [e3]`. Rewrite using `[sum_inner]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[inner_smul_left, inner_conj_symm]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leftExp_base {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
@@ -146,7 +144,7 @@ theorem leftExp_base {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [In
     rw [inner_smul_left, inner_conj_symm]
 
 /- English proof (translation)
-Introduce `ξ v`. Establish `h : Continuous fun g : S7.UJ ε => σ (S7.toM g) (v : H)` using `(hU.2.2 (v : H)).comp_continuous (S7.continuous_toM ε) fun g => g.2`. Conclude with `continuous_const.inner h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contFam_base {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}

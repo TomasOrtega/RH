@@ -14,7 +14,7 @@ namespace GlobalTheory.CompanionTheory.LFUDom
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Establish `hb` using `(bdd_of_mem hy).mul (bdd_zpow (F := F) (n : ℤ))`. Rewrite `hb` using `[zero_add, zpow_natCast, h, ← zpow_natCast]`. Conclude with `le_of_bdd_zpow hb` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_of_mul_pow_eq_pow {m n : ℕ} {y : F} (hy : y ∈ 𝒪[F])
     (h : y * (GLnLocal.uniformizer F : F) ^ n = (GLnLocal.uniformizer F : F) ^ m) : n ≤ m := by
@@ -25,9 +25,9 @@ theorem le_of_mul_pow_eq_pow {m n : ℕ} {y : F} (hy : y ∈ 𝒪[F])
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 
 /- English proof (translation)
-Establish `h00` using `congrFun (congrFun h 0) 0`. Establish `h10` using `congrFun (congrFun h 1) 0`. Establish `h01` using `congrFun (congrFun h 0) 1`. Establish `h11` using `congrFun (congrFun h 1) 1`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two] at h00 h10 h01 h11`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨h00, ?_, h01, h11⟩` and prove the remaining obligations. Simplify using `using h10`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem entries_of_mul_eq {K : Matrix (Fin 2) (Fin 2) F} {x y z x' y' z' : F}
     (h : K * !![x', y'; 0, z'] = !![x, y; 0, z]) :
@@ -42,17 +42,17 @@ theorem entries_of_mul_eq {K : Matrix (Fin 2) (Fin 2) F} {x y z x' y' z' : F}
   simpa using h10
 
 /- English proof (translation)
-Take `⟨i, j, c⟩` from `a`. Take `⟨i', j', c'⟩` from `b`. Simplify using `only at h`. Establish `hϖ : (GLnLocal.uniformizer F : F) ≠ 0` using `Cartan.uniformizer_ne_zero F`. Take `⟨hO, hI⟩` from `(mem_integralGL_iff F 2).1 h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set κ := rowRep i j c * (rowRep i' j' c')⁻¹ with hκ`. Establish `e1 : (κ : Matrix (Fin 2) (Fin 2) F) * (rowRep i' j' c' : Matrix (Fin 2) (Fin 2) F) = (rowRep i j c : Matrix (Fin 2) (Fin 2) F)`. Rewrite using `[← Units.val_mul, hκ, inv_mul_cancel_right]`. Establish `e2 : ((κ⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) * (rowRep i j c : Matrix (Fin 2) (Fin 2) F) = (rowRep i' j' c' : Matrix (Fin 2) (Fin 2) F)`. Rewrite using `[← Units.val_mul, hκ, _root_.mul_inv_rev, inv_inv, inv_mul_cancel_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1`, `e2` using `[coe_rowRep, coe_rowRep]`. Take `⟨p1, r1, q1, s1⟩` from `entries_of_mul_eq e1`. Take `⟨p2, r2, q2, s2⟩` from `entries_of_mul_eq e2`. Establish `hr : (κ : Matrix (Fin 2) (Fin 2) F) 1 0 = 0` using `(mul_eq_zero.1 r1).resolve_right (pow_ne_zero _ hϖ)`. Establish `hr' : ((κ⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) 1 0 = 0` using `(mul_eq_zero.1 r2).resolve_right (pow_ne_zero _ hϖ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `s1` using `[hr, zero_mul, zero_add]`. Rewrite `s2` using `[hr', zero_mul, zero_add]`. Establish `hi : i = i'` using `le_antisymm (le_of_mul_pow_eq_pow (hI 0 0) p2) (le_of_mul_pow_eq_pow (hO 0 0) p1)`. Establish `hj : j = j'` using `le_antisymm (le_of_mul_pow_eq_pow (hI 1 1) s2) (le_of_mul_pow_eq_pow (hO 1 1) s1)`. Substitute `hi hj` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hp : (κ : Matrix (Fin 2) (Fin 2) F) 0 0 = 1` using `mul_right_cancel₀ (pow_ne_zero i hϖ) (by rw [p1, one_mul])`. Rewrite `q1` using `[hp, one_mul]`. Establish `hb : Bdd F (j : ℤ) (digitSum F j c - digitSum F j c')`. Use `(bdd_of_mem (hO 0 1)).mul (bdd_zpow (F := F) (j : ℤ))` as an intermediate fact. Rewrite `this` using `[zero_add, zpow_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← q1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eq_of_bdd_digitSum_sub j hb]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowRep_unique (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (a b : Σ _ : ℕ, Σ j : ℕ, (Fin j → 𝓀[F]))

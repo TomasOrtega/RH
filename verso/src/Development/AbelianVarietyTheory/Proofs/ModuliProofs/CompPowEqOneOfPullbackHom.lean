@@ -10,15 +10,15 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.HomExt
 
 /- English proof (translation)
-Set `pc : Over.mk (c ≫ Γ.hom) ⟶ Γ` to `Over.homMk c`. Set `ps : Over.mk (s ≫ pullback.snd G.hom g) ⟶ (Over.pullback g).obj G` to `Over.homMk s`. Establish `ht : (Over.mk (s ≫ pullback.snd G.hom g)).hom ≫ g = c ≫ Γ.hom`. Simplify using `only [Over.mk_hom, Category.assoc, ← pullback.condition, reassoc_of% h₁, Over.w]`. Establish `hp : GlobalTheory.TorsionLift.ptsEquiv g G _ _ ht ps = pc ≫ p`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.TorsionLift.ptsEquiv_left]`. Simplify `h₁` using `[ps, pc]`. Establish `hq : GlobalTheory.TorsionLift.ptsEquiv g G' _ _ ht (ps ≫ F) = pc ≫ q`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[GlobalTheory.TorsionLift.ptsEquiv_left]`. Simplify `h₂` using `[ps, pc]`. Establish `h1 : (1 : Over.mk (c ≫ Γ.hom) ⟶ G) = pc ≫ 1` using `(MonObj.comp_one pc).symm`. Establish `hpn : (pc ≫ p) ^ n = 1`. Rewrite using `[← MonObj.comp_pow, h1]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `h`. Establish `hps : ps ^ n = 1`. Apply `(GlobalTheory.TorsionLift.ptsEquiv g G _ _ ht).injective` to reduce the goal to its premises. Rewrite using `[map_pow, hp, hpn, map_one]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hqn : (pc ≫ q) ^ n = 1`. Rewrite using `[← hq, ← map_pow, ← MonObj.pow_comp, hps, MonObj.one_comp, map_one]`. Establish `key : pc ≫ q ^ n = pc ≫ 1`. Rewrite using `[MonObj.comp_pow, hqn, MonObj.comp_one]`. Conclude with `congrArg (fun x => Over.Hom.left x) key`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_pow_eq_one_of_pullback_hom {X T Z : Scheme.{0}} (g : T ⟶ X) {G G' Γ : Over X}
     [GrpObj G] [GrpObj G'] (F : (Over.pullback g).obj G ⟶ (Over.pullback g).obj G') [IsMonHom F]
@@ -55,9 +55,9 @@ theorem comp_pow_eq_one_of_pullback_hom {X T Z : Scheme.{0}} (g : T ⟶ X) {G G'
   exact congrArg (fun x => Over.Hom.left x) key
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use `⟨ReciprocityTheory.ChartRestriction.G.Geo.Tor.pullCompIso p f G, inferInstance, ?_⟩` and prove the remaining obligations. Establish `key` using `congrArg (fun x => Over.Hom.left x) (conjugateEquiv_counit (Over.mapPullbackAdj (p ≫ f)) ((Over.mapPullbackAdj p).comp (Over.mapPullbackAdj f)) (Over.mapComp p f).symm.hom G)`. Establish `e : (ReciprocityTheory.ChartRestriction.G.Geo.Tor.pullCompIso p f G).hom.left = ((conjugateEquiv (Over.mapPullbackAdj (p ≫ f)) ((Over.mapPullbackAdj p).comp (Over.mapPullbackAdj f)) (Over.mapComp p f).symm.hom).app G).left` using `rfl`. Rewrite using `[e]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `key` using `[Adjunction.comp_counit_app]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_iso_pullback_pullback {X T Z : Scheme.{0}} (p : Z ⟶ T) (f : T ⟶ X) (r : Z ⟶ X)
     (h : p ≫ f = r) (G : Over X) [GrpObj G] :
@@ -77,7 +77,7 @@ theorem exists_iso_pullback_pullback {X T Z : Scheme.{0}} (p : Z ⟶ T) (f : T �
   simpa [Adjunction.comp_counit_app] using key
 
 /- English proof (translation)
-Simplify using the standard rewrite rules. Conclude with `pullback.lift_fst _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma pullback_map_left_comp_fst {S S' : Scheme.{0}} (φ : S' ⟶ S) {A B : Over S} (F : A ⟶ B) :
     ((Over.pullback φ).map F).left ≫ pullback.fst B.hom φ = pullback.fst A.hom φ ≫ F.left := by
@@ -85,21 +85,21 @@ private lemma pullback_map_left_comp_fst {S S' : Scheme.{0}} (φ : S' ⟶ S) {A 
   exact pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Establish `huj : (c ≫ pullback.snd G.hom j) ≫ j = spMap (algebraMap T K) ≫ (a ≫ G.hom)`. Rewrite using `[Category.assoc, ← pullback.condition, reassoc_of% hc]`. Take `⟨e₁, he₁, hf₁⟩` from `exists_iso_pullback_pullback (c ≫ pullback.snd G.hom j) j _ huj G`. Take `⟨e₁', he₁', hf₁'⟩` from `exists_iso_pullback_pullback (c ≫ pullback.snd G.hom j) j _ huj G'`. Take `⟨e₂, he₂, hf₂⟩` from `exists_iso_pullback_pullback (spMap (algebraMap T K)) (a ≫ G.hom) _ rfl G`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e₂', he₂', hf₂'⟩` from `exists_iso_pullback_pullback (spMap (algebraMap T K)) (a ≫ G.hom) _ rfl G'`. Set `fK` to `e₂.inv ≫ e₁.hom ≫ (Over.pullback (c ≫ pullback.snd G.hom j)).map f ≫ e₁'.inv ≫ e₂'.hom`. Establish `hfK : IsMonHom fK` using `inferInstance`. Take `⟨F, ⟨hF, hFK⟩, -⟩` from `H T K ((Over.pullback (a ≫ G.hom)).obj G) ((Over.pullback (a ≫ G.hom)).obj G') (ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsSemiAbelian.pullback (a ≫ G.hom) G hG) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsSemiAbelian.pullback (a ≫ G.hom) G' hG') fK hfK`. Establish `hs : a ≫ G.hom = 𝟙 _ ≫ a ≫ G.hom` using `(Category.id_comp _).symm`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨F, pullback.lift a (𝟙 _) hs, hF, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _, ?_⟩` and prove the remaining obligations. Establish `hK : (spMap (algebraMap T K) ≫ pullback.lift a (𝟙 _) hs) ≫ ((Over.pullback (a ≫ G.hom)).obj G).hom = 𝟙 _ ≫ spMap (algebraMap T K)` using `by show (spMap (algebraMap T K) ≫ pullback.lift a (𝟙 _) hs) ≫ pullback.snd G.hom (a ≫ G.hom) = _`. Rewrite using `[Category.assoc, pullback.lift_snd, Category.comp_id, Category.id_comp]`. Use `set σK := pullback.lift _ _ hK with hσK`. Establish `inv_fst₁' : e₁'.inv.left ≫ pullback.fst G'.hom (spMap (algebraMap T K) ≫ a ≫ G.hom) = pullback.fst (pullback.snd G'.hom j) (c ≫ pullback.snd G.hom j) ≫ pullback.fst G'.hom j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hf₁', ← Category.assoc, ← Over.comp_left, e₁'.inv_hom_id]`. Simplify using the standard rewrite rules. Establish `inv_fst₂ : e₂.inv.left ≫ pullback.fst G.hom (spMap (algebraMap T K) ≫ a ≫ G.hom) = pullback.fst (pullback.snd G.hom (a ≫ G.hom)) (spMap (algebraMap T K)) ≫ pullback.fst G.hom (a ≫ G.hom)`. Rewrite using `[← hf₂, ← Category.assoc, ← Over.comp_left, e₂.inv_hom_id]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpt : σK ≫ e₂.inv.left ≫ e₁.hom.left ≫ pullback.fst _ _ = c`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc] erw [hf₁]`. Rewrite using `[inv_fst₂, hσK]`. Use `erw [pullback.lift_fst_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, pullback.lift_fst, hc]`. Establish `hcond : pullback.fst (((Over.pullback j).obj G).hom) (c ≫ pullback.snd G.hom j) ≫ pullback.snd G.hom j = pullback.snd _ _ ≫ c ≫ pullback.snd G.hom j` using `pullback.condition`. Establish `hw₁ : e₁.hom.left ≫ pullback.snd (((Over.pullback j).obj G).hom) (c ≫ pullback.snd G.hom j) = pullback.snd G.hom (spMap (algebraMap T K) ≫ a ≫ G.hom)` using `Over.w e₁.hom`. Establish `hw₂ : e₂.inv.left ≫ pullback.snd G.hom (spMap (algebraMap T K) ≫ a ≫ G.hom) = pullback.snd (((Over.pullback (a ≫ G.hom)).obj G).hom) (spMap (algebraMap T K))` using `Over.w e₂.inv`. Simplify using `only [Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcond, reassoc_of% hw₁, reassoc_of% hw₂, hσK, pullback.lift_snd_assoc, Category.id_comp]`. Establish `step : spMap (algebraMap T K) ≫ pullback.lift a (𝟙 _) hs ≫ F.left = σK ≫ fK.left ≫ pullback.fst _ _`. Rewrite using `[← hFK, hσK, pullback_map_left_comp_fst, pullback.lift_fst_assoc, Category.assoc]`. Establish `hmap : ((Over.pullback (c ≫ pullback.snd G.hom j)).map f).left ≫ pullback.fst (pullback.snd G'.hom j) (c ≫ pullback.snd G.hom j) = pullback.fst (((Over.pullback j).obj G).hom) (c ≫ pullback.snd G.hom j) ≫ f.left` using `pullback_map_left_comp_fst _ f`. Rewrite using `[reassoc_of% step]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [fK, Over.comp_left, Category.assoc]`. Use `erw [hf₂']`. Rewrite using `[inv_fst₁', reassoc_of% hmap, reassoc_of% hpt]`.
+A detailed English derivation is pending.
 -/
 theorem exists_hom_along_dvr
     (H : ∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K]

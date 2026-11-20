@@ -12,19 +12,19 @@ namespace PositivityTheory.SiegelWeilFormula.KWhit
 open PositivityTheory.SiegelWeilFormula
 
 /- English proof (translation)
-Unfold `LinRedC`. Introduce `hT hTC hL hU hS c F E _ _ _ _ _ σ d hE k cs Φs hK x hW`. Establish `hTT : TTheta` using `hT.2.2.2.1`. Establish `hTA : ThetaAuto` using `hT.2.2.2.2`. Establish `hsch : ∀ i, Φs i ∈ d.sch` using `fun i => (hK i).1`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ : (∑ i : Fin k, cs i • Φs i) ∈ d.sch` using `lin_sum_mem d Finset.univ cs Φs (fun i _ => hsch i)`. Establish `hunf` using `fun i => hU F E σ d (s0 d.m d.n) (d.sec0 (Φs i)) (hS F E σ d (Φs i) (hK i)) (hE (Φs i) (hK i))`. Use `choose t ht using hunf`. Establish `hpsi : ∀ a, ‖d.B.ψ a‖ = 1` using `fun a => GlobalTheory.StdCharFromIsStd.norm_psi d.ok.good.std a`. Unfold `WhitAtC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `nb lam 𝓖 hcd ε w hw T hT'`. Establish `hval : c * d.orb T ((d.om x) (∑ i : Fin k, cs i • Φs i)) = ∑ i : Fin k, cs i * (c * d.orb T ((d.om x) (Φs i)))`. Establish `hI : d.I (∑ i : Fin k, cs i • Φs i) = ∑ i : Fin k, cs i • d.I (Φs i)`. Use function extensionality and compare the values at `y`. Rewrite using `[lin_I_sum d hTT hTA Finset.univ cs Φs (fun i _ => hsch i) y]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_apply]`. Establish `h1` using `hTC F E σ d _ hΦ nb lam 𝓖 hcd T x`. Rewrite using `[← h1, hI, lin_fc_sum hL d hcd T hT' x Finset.univ cs (fun i => d.I (Φs i)) (fun i => ((hTA F E σ d).2.2 (Φs i) (hsch i)).2.1) (fun i => ((hTA F E σ d).2.2 (Φs i) (hsch i)).2.2), Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[hTC F E σ d _ (hsch i) nb lam 𝓖 hcd T x]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hval]`. Establish `hsum` using `lin_holValueAt_sum Finset.univ cs (fun i z => ∫ β, flat d.a (d.sec0 (Φs i)) (s0 d.m d.n) z (w * nb β * x) * d.B.ψ (-d.tt (↑↑T * ↑β)) ∂lam) (fun i => c * d.orb T ((d.om x) (Φs i))) (s0 d.m d.n) (fun i _ => hW i nb lam 𝓖 hcd ε w hw T hT')`. Use `HolValueAt.congr hsum ⟨∑ i : Fin k, |t i|, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hz' : ∀ i, t i < z.re` using `fun i => lt_of_le_of_lt ((le_abs_self _).trans (Finset.single_le_sum (f := fun j => |t j|) (fun j _ => abs_nonneg _) (Finset.mem_univ i))) hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ i, MeasureTheory.Integrable (fun β => flat d.a (d.sec0 (Φs i)) (s0 d.m d.n) z (w * nb β * x) * d.B.ψ (-d.tt (↑↑T * ↑β))) lam` using `fun i => ((ht i z (hz' i) nb lam 𝓖 hcd ε w hw x).1).mul_bdd (lin_psi_meas d _).aestronglyMeasurable (Filter.Eventually.of_forall (fun β => (hpsi _).le))`. Simplify using `only`. Repeatedly rewrite using `[← MeasureTheory.integral_const_mul]`. Rewrite using `[← MeasureTheory.integral_finset_sum]`. Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall (fun β => ?_))` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [flat, section_linear_finset_sum, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Conclude with `fun i _ => (hint i).const_mul (cs i)`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem linRedC : LinRedC := by
   unfold LinRedC

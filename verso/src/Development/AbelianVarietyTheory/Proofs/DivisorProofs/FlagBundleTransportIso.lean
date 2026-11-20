@@ -15,15 +15,15 @@ namespace GlobalTheory.CovTest
 open CategoryTheory AlgebraicGeometry
 
 /- English proof (translation)
-Establish `nat : ∀ a, (Scheme.Modules.pullback y).map ((Scheme.Modules.pullback π).map (e a).hom) ≫ (Scheme.Modules.pullbackComp y π).hom.app (E' a) ≫ (Scheme.Modules.pullbackCongr w).hom.app (E' a) = (Scheme.Modules.pullbackComp y π).hom.app (E a) ≫ (Scheme.Modules.pullbackCongr w).hom.app …`. Introduce `a`. Rewrite using `[← Category.assoc, ← Functor.comp_map, (Scheme.Modules.pullbackComp y π).hom.naturality (e a).hom, Category.assoc, (Scheme.Modules.pullbackCongr w).hom.naturality (e a).hom]`. Prove the components needed by the constructor for the conclusion. Introduce `h a i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨e0, he⟩` from `h a i`. Use `⟨e0, ?_⟩` and prove the remaining obligations. Establish `he'` using `congrArg (· ≫ (Scheme.Modules.pullback g).map (e a).hom) he`. Simplify using `only [Vert.Flag.ofIso, Iso.symm_hom, Functor.mapIso_inv, Category.assoc] at he'`. Rewrite `he'` using `[← Functor.map_comp, Iso.inv_hom_id, CategoryTheory.Functor.map_id, Category.comp_id]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Vert.Flag.ofIso, Functor.mapIso_hom, Functor.map_comp, Category.assoc]`. Rewrite using `[nat a]`. Conclude with `he'`. Introduce `h a i`. Take `⟨e0, he⟩` from `h a i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e0, ?_⟩` and prove the remaining obligations. Simplify using `only [Vert.Flag.ofIso, Functor.mapIso_hom, Functor.map_comp, Category.assoc] at he`. Rewrite `he` using `[nat a]`. Simplify using `only [Vert.Flag.ofIso, Iso.symm_hom, Functor.mapIso_inv]`. Rewrite using `[← Category.assoc, he]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc]`. Rewrite using `[← Functor.map_comp, Iso.hom_inv_id, CategoryTheory.Functor.map_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFlagBundle_cond_iso {B Y T : Scheme.{0}} (π : Y ⟶ B) {ι : Type} (E E' : ι → B.Modules) (r : ι → ℕ)
     (e : ∀ a, E a ≅ E' a) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a))
@@ -67,9 +67,9 @@ theorem isFlagBundle_cond_iso {B Y T : Scheme.{0}} (π : Y ⟶ B) {ι : Type} (E
     rw [← Functor.map_comp, Iso.hom_inv_id, CategoryTheory.Functor.map_id, Category.comp_id]
 
 /- English proof (translation)
-Introduce `B Y π ι E E' r fl hfl he`. Establish `e : ∀ a, E a ≅ E' a` using `fun a => (he a).some`. Use `⟨fun a => (fl a).ofIso ((Scheme.Modules.pullback π).mapIso (e a)), fun T g fl'' => ?_⟩` and prove the remaining obligations. Take `⟨g', ⟨w, hg⟩, hu⟩` from `hfl T g (fun a => (fl'' a).ofIso ((Scheme.Modules.pullback g).mapIso (e a)).symm)`. Use `⟨g', ⟨w, (isFlagBundle_cond_iso π E E' r e fl g fl'' g' w).1 hg⟩, fun y ⟨wy, hy⟩ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hu y ⟨wy, (isFlagBundle_cond_iso π E E' r e fl g fl'' y wy).2 hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem isFlagBundle_of_iso : ∀ (B Y : Scheme.{0}) (π : Y ⟶ B) (ι : Type) (E E' : ι → B.Modules) (r : ι → ℕ) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), IsFlagBundle π E r fl → (∀ a, Nonempty (E a ≅ E' a)) → ∃ fl' : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E' a)) (r a), IsFlagBundle π E' r fl' := by
   intro B Y π ι E E' r fl hfl he

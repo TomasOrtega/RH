@@ -17,7 +17,7 @@ def IdealLike (S : Subring K) (P : K → Prop) : Prop :=
   (∀ a b, P a → P b → P (a - b)) ∧ (∀ x ∈ S, ∀ a, P a → P (x * a)) ∧ ¬ P 1
 
 /- English proof (translation)
-Use `hP.1 a _ ha (hP.2.1 (-1) (S.neg_mem S.one_mem) b hb)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem IdealLike.add {S : Subring K} {P : K → Prop} (hP : IdealLike S P) {a b : K} (ha : P a)
     (hb : P b) : P (a + b) := by
@@ -26,7 +26,7 @@ theorem IdealLike.add {S : Subring K} {P : K → Prop} (hP : IdealLike S P) {a b
   ring
 
 /- English proof (translation)
-Use `hP.2.1 _ hμ.2.2 _ h` as an intermediate fact. Rewrite `this` using `[← mul_assoc, inv_mul_cancel₀ hμ.1, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IdealLike.cancel {S : Subring K} {P : K → Prop} (hP : IdealLike S P) {μ a : K}
     (hμ : IsUnitIn S μ) (h : P (μ * a)) : P a := by
@@ -34,7 +34,7 @@ theorem IdealLike.cancel {S : Subring K} {P : K → Prop} (hP : IdealLike S P) {
   rwa [← mul_assoc, inv_mul_cancel₀ hμ.1, one_mul] at this
 
 /- English proof (translation)
-Introduce `h`. Apply `hP.2.2` to reduce the goal to its premises. Use `hP.1 _ _ h (hP.add (hP.2.1 x hx ε hε) (hP.2.1 y hy η hη))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -49,21 +49,21 @@ theorem IdealLike.not_one_add {S : Subring K} {P : K → Prop} (hP : IdealLike S
   ring
 
 /- English proof (translation)
-Establish `hμS` using `hμ.2.1`. Establish `hγS : γ ∈ S`. Establish `e : γ = 1 - α * ε - β * η` using `by linear_combination hγ`. Rewrite using `[e]`. Conclude with `S.sub_mem (S.sub_mem S.one_mem (S.mul_mem hα hε)) (S.mul_mem hβ hη)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcμ : c + μ ∈ S` using `S.add_mem hc hμS`. Establish `m5 : γ + ε + c * η ∈ S` using `S.add_mem (S.add_mem hγS hε) (S.mul_mem hc hη)`. Establish `m6 : γ + ε + (c + μ) * η ∈ S` using `S.add_mem (S.add_mem hγS hε) (S.mul_mem hcμ hη)`. Establish `m7 : γ + c * ε + η ∈ S` using `S.add_mem (S.add_mem hγS (S.mul_mem hc hε)) hη`. Establish `m8 : γ + (c + μ) * ε + η ∈ S` using `S.add_mem (S.add_mem hγS (S.mul_mem hcμ hε)) hη`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `x1 : 1 - α ∈ S` using `S.sub_mem S.one_mem hα`. Establish `y1 : 1 - β ∈ S` using `S.sub_mem S.one_mem hβ`. Establish `n5 : ∀ {R : K → Prop}, IdealLike S R → R ε → R η → ¬ R (γ + ε + c * η)` using `fun hR h1 h2 => hR.not_one_add h1 h2 x1 (S.sub_mem hc hβ) (by linear_combination hγ)`. Establish `n6 : ¬ P (γ + ε + (c + μ) * η)` using `hP.not_one_add hPε hPη x1 (S.sub_mem hcμ hβ) (by linear_combination hγ)`. Establish `n7 : ¬ P (γ + c * ε + η)` using `hP.not_one_add hPε hPη (S.sub_mem hc hα) y1 (by linear_combination hγ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n8 : ¬ P (γ + (c + μ) * ε + η)` using `hP.not_one_add hPε hPη (S.sub_mem hcμ hα) y1 (by linear_combination hγ)`. Distinguish the cases in `hQη : Q η`. Distinguish the cases in `hQε : Q ε`. Conclude with `Or.inl (hunit _ m5 (n5 hP hPε hPη) (n5 hQ hQε hQη))`. Distinguish the cases in `h7 : Q (γ + c * ε + η)`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Prove the first alternative. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h8 : Q (γ + (c + μ) * ε + η)`. It suffices to derive a contradiction. Apply `hQε` to reduce the goal to its premises. Apply `hQ.cancel hμ` to reduce the goal to its premises. Use `hQ.1 _ _ h8 h7 using 1` and compare the differences between its conclusion and the goal.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `Or.inr (Or.inr (Or.inr (hunit _ m8 n8 h8)))`. Conclude with `Or.inr (Or.inr (Or.inl (hunit _ m7 n7 h7)))`. Distinguish the cases in `h5 : Q (γ + ε + c * η)`. Distinguish the cases in `h6 : Q (γ + ε + (c + μ) * η)`.
+Prove the second alternative. Prove the second alternative. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Apply `hQη` to reduce the goal to its premises. Apply `hQ.cancel hμ` to reduce the goal to its premises. Use `hQ.1 _ _ h6 h5 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Prove the second alternative.
 
-Conclude with `Or.inr (Or.inl (hunit _ m6 n6 h6))`. Conclude with `Or.inl (hunit _ m5 (n5 hP hPε hPη) h5)`.
+Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem plane_ring_half {S : Subring K} {P Q : K → Prop} (hP : IdealLike S P) (hQ : IdealLike S Q)
     (hunit : ∀ a ∈ S, ¬ P a → ¬ Q a → IsUnitIn S a)
@@ -114,23 +114,21 @@ theorem plane_ring_half {S : Subring K} {P Q : K → Prop} (hP : IdealLike S P) 
     · exact Or.inl (hunit _ m5 (n5 hP hPε hPη) h5)
 
 /- English proof (translation)
-Distinguish the cases in `hUε : IsUnitIn S ε`. Conclude with `Or.inl hUε`. Distinguish the cases in `hUη : IsUnitIn S η`. Conclude with `Or.inr (Or.inl hUη)`. Establish `hε' : P ε ∨ Q ε`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Consider separately whether the proposition holds or fails. Prove the second alternative. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hh`. Use `push Not at hh`. Conclude with `hUε (hunit ε hε hh.1 hh.2)`. Establish `hη' : P η ∨ Q η`. Assume the negation of the conclusion as `hh`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Consider separately whether the proposition holds or fails. Prove the second alternative.
 
-Use `push Not at hh`. Conclude with `hUη (hunit η hη hh.1 hh.2)`. Distinguish the cases in `hPP : P ε ∧ P η`. Conclude with `Or.inr (Or.inr (Or.inr (plane_ring_half hP hQ hunit hε hη hα hβ hc hμ hγ hPP.1 hPP.2)))`. Distinguish the cases in `hQQ : Q ε ∧ Q η`.
+Consider separately whether the proposition holds or fails. Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inr (Or.inr (Or.inr (plane_ring_half hQ hP (fun a ha h1 h2 => hunit a ha h2 h1) hε hη hα hβ hc hμ hγ hQQ.1 hQQ.2)))`. Use `Or.inr (Or.inr (Or.inl ?_))` and prove the remaining obligations. Establish `m3 : ε + μ * η ∈ S` using `S.add_mem hε (S.mul_mem hμ.2.1 hη)`. Break down `hε' with hPε | hQε` into its components or cases. Establish `hPη : ¬ P η` using `fun h => hPP ⟨hPε, h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hQη : Q η` using `hη'.resolve_left hPη`. Establish `hQε : ¬ Q ε` using `fun h => hQQ ⟨h, hQη⟩`. Use `hunit _ m3 (fun h3 => ?_) (fun h3 => ?_)` and prove the remaining obligations. Apply `hPη` to reduce the goal to its premises. Apply `hP.cancel hμ` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hP.1 _ _ h3 hPε using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Apply `hQε` to reduce the goal to its premises. Use `hQ.1 _ _ h3 (hQ.2.1 μ hμ.2.1 η hQη) using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hQη : ¬ Q η` using `fun h => hQQ ⟨hQε, h⟩`. Establish `hPη : P η` using `hη'.resolve_right hQη`. Establish `hPε : ¬ P ε` using `fun h => hPP ⟨h, hPη⟩`. Use `hunit _ m3 (fun h3 => ?_) (fun h3 => ?_)` and prove the remaining obligations. Apply `hPε` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `hP.1 _ _ h3 (hP.2.1 μ hμ.2.1 η hPη) using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Apply `hQη` to reduce the goal to its premises. Apply `hQ.cancel hμ` to reduce the goal to its premises. Use `hQ.1 _ _ h3 hQε using 1` and compare the differences between its conclusion and the goal.
-
-Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem plane_ring_core {S : Subring K} {P Q : K → Prop} (hP : IdealLike S P) (hQ : IdealLike S Q)
     (hunit : ∀ a ∈ S, ¬ P a → ¬ Q a → IsUnitIn S a)
@@ -183,19 +181,17 @@ theorem plane_ring_core {S : Subring K} {P Q : K → Prop} (hP : IdealLike S P) 
       ring
 
 /- English proof (translation)
-Set `A : AddSubgroup K` to `{ carrier := {a | ∃ m ∈ N, B v m = a} zero_mem' := ⟨0, N.zero_mem, by simp⟩ add_mem' := by`. Introduce and unpack `_ _ ⟨m, hm, rfl⟩ ⟨m', hm', rfl⟩`. Conclude with `⟨m + m', N.add_mem hm hm', by simp⟩`. Use the proof step `neg_mem' := by`. Introduce and unpack `_ ⟨m, hm, rfl⟩`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨-m, N.neg_mem hm, by simp⟩ }`. Establish `hA : ∀ s ∈ S, ∀ a ∈ A, s * a ∈ A`. Introduce and unpack `s hs _ ⟨m, hm, rfl⟩`. Conclude with `⟨s • m, hsm s hs m hm, by simp⟩`. Establish `hA0 : ∃ a ∈ A, a ≠ 0` using `⟨B v m0, ⟨m0, hm0, rfl⟩, hne⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAb : ∃ t : K, t ≠ 0 ∧ ∀ a ∈ A, t * a ∈ S`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Simplify using `using hint v hv m hm`. Take `⟨β, hβA, hβ0, hdiv⟩` from `hS.principal A hA hA0 hAb`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m1, hm1, hβ⟩` from `hβA`. Establish `hx : (star β)⁻¹ • v ∈ N`. Apply `hdual` to reduce the goal to its premises. Introduce `m hm`. Establish `h1` using `hdiv (B v m) ⟨m, hm, rfl⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : B m ((star β)⁻¹ • v) = star (B v m * β⁻¹)`. Rewrite using `[map_smul, smul_eq_mul, ← hsym v m, star_mul', star_inv₀]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hS.star_mem _ h1`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `hprim _ hx`. Establish `hβi : β⁻¹ ∈ S`. Use `hS.star_mem _ hc` as an intermediate fact. Rewrite `this` using `[star_inv₀, star_star]`. Then use the resulting hypothesis. Use `⟨β⁻¹ • m1, hsm _ hβi _ hm1, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_smul, smul_eq_mul, hβ, inv_mul_cancel₀ hβ0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plane_partner {S : Subring K} (hS : IsHermSemilocal S) (B : V →ₗ⋆[K] V →ₗ[K] K)
     (hsym : ∀ x y, star (B x y) = B y x) {N : AddSubgroup V} (hsm : ∀ a ∈ S, ∀ m ∈ N, a • m ∈ N)
@@ -238,17 +234,15 @@ theorem plane_partner {S : Subring K} (hS : IsHermSemilocal S) (B : V →ₗ⋆[
   rw [map_smul, smul_eq_mul, hβ, inv_mul_cancel₀ hβ0]
 
 /- English proof (translation)
-Set `A : AddSubgroup K` to `{ carrier := {c | c • w ∈ N} zero_mem' := by simp [N.zero_mem] add_mem' := by`. Introduce `a b ha hb`. Use `show (a + b) • w ∈ N`. Rewrite using `[add_smul]`. Conclude with `N.add_mem ha hb`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `neg_mem' := by`. Introduce `a ha`. Use `show (-a) • w ∈ N`. Rewrite using `[neg_smul]`. Conclude with `N.neg_mem ha }`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hA : ∀ s ∈ S, ∀ a ∈ A, s * a ∈ A`. Introduce `s hs a ha`. Use `show (s * a) • w ∈ N`. Rewrite using `[mul_smul]`. Conclude with `hsm s hs _ ha`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht0, htw⟩` from `hspan`. Establish `hAb : ∃ t : K, t ≠ 0 ∧ ∀ a ∈ A, t * a ∈ S`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Use `hint z hz _ ha` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify `this` using `[map_smul, hzw]`. Take `⟨α, hαA, hα0, hdiv⟩` from `hS.principal A hA ⟨t, htw, ht0⟩ hAb`. Use `⟨α, hα0, hαA, fun c hc => ?_⟩` and prove the remaining obligations. Establish `h1 : c * α ∈ A` using `by show (c * α) • w ∈ N`. Rewrite using `[mul_smul]` and apply the resulting hypothesis.
-
-Use `hdiv _ h1` as an intermediate fact. Rewrite `this` using `[mul_assoc, mul_inv_cancel₀ hα0, mul_one]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem plane_prim {S : Subring K} (hS : IsHermSemilocal S) (B : V →ₗ⋆[K] V →ₗ[K] K)
     {N : AddSubgroup V} (hsm : ∀ a ∈ S, ∀ m ∈ N, a • m ∈ N) (hint : ∀ x ∈ N, ∀ y ∈ N, B x y ∈ S)
@@ -310,13 +304,13 @@ def InI (p I : Ideal (𝓞 K)) (a : K) : Prop :=
     a = algebraMap (𝓞 K) K r / algebraMap (𝓞 K) K s
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ _ ⟨r₁, s₁, hs₁, hr₁, rfl⟩ ⟨r₂, s₂, hs₂, hr₂, rfl⟩`. Establish `h1` using `algebraMap_ne_zero_of_mem_hcompl hp hs₁`. Establish `h2` using `algebraMap_ne_zero_of_mem_hcompl hp hs₂`. Use `⟨r₁ * s₂ - s₁ * r₂, s₁ * s₂, mul_mem hs₁ hs₂, I.sub_mem (I.mul_mem_right _ hr₁) (I.mul_mem_left _ hr₂), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[div_sub_div _ _ h1 h2, map_sub, map_mul, map_mul, map_mul]`. Introduce `x hx a ha`. Take `⟨r, s, hs, hr, rfl⟩` from `ha`. Take `⟨k, t, ht, rfl⟩` from `(mem_locR_iff hp x).1 ((mem_locRing p x).1 hx)`. Use `⟨k * r, t * s, mul_mem ht hs, I.mul_mem_left k hr, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[div_mul_div_comm, map_mul, map_mul]`. Introduce and unpack `⟨r, s, hs, hr, h1⟩`. Establish `h0` using `algebraMap_ne_zero_of_mem_hcompl hp hs`. Rewrite `h1` using `[eq_div_iff h0, one_mul]`. Establish `hsr : s = r` using `RingOfIntegers.ext h1`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hI s hs (hsr ▸ hr)`.
+A detailed English derivation is pending.
 -/
 theorem plane_idealLike {p : Ideal (𝓞 K)} (hp : p.IsPrime) (I : Ideal (𝓞 K))
     (hI : ∀ s ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) p, s ∉ I) : IdealLike (locRing p) (InI p I) := by
@@ -339,7 +333,7 @@ theorem plane_idealLike {p : Ideal (𝓞 K)} (hp : p.IsPrime) (I : Ideal (𝓞 K
     exact hI s hs (hsr ▸ hr)
 
 /- English proof (translation)
-Take `⟨r, s, hs, rfl⟩` from `(mem_locR_iff hp a).1 ((mem_locRing p a).1 ha)`. Rewrite using `[isUnitIn_div_iff hp r hs, mem_hcompl_iff hp]`. Conclude with `⟨fun hr => h1 ⟨r, s, hs, hr, rfl⟩, fun hr => h2 ⟨r, s, hs, hr, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem plane_unit {p : Ideal (𝓞 K)} (hp : p.IsPrime) {a : K} (ha : a ∈ locRing p)
     (h1 : ¬ InI p p a) (h2 : ¬ InI p (Formalism.HermitianLatticesTheory.conjIdeal (K := K) p) a) : IsUnitIn (locRing p) a := by
@@ -348,7 +342,7 @@ theorem plane_unit {p : Ideal (𝓞 K)} (hp : p.IsPrime) {a : K} (ha : a ∈ loc
   exact ⟨fun hr => h1 ⟨r, s, hs, hr, rfl⟩, fun hr => h2 ⟨r, s, hs, hr, rfl⟩⟩
 
 /- English proof (translation)
-Take `⟨r, s, hs, hr, rfl⟩` from `h`. Use `⟨ReciprocityTheory.ChartRestriction.L3.conjO K r, ReciprocityTheory.ChartRestriction.L3.conjO K s, conjO_mem_hcompl hs, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_conjIdeal_iff, conjO_conjO]`. Conclude with `hr`. Rewrite using `[algebraMap_conjO, algebraMap_conjO, star_div₀]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plane_star₁ {p : Ideal (𝓞 K)} {a : K} (h : InI p p a) :
     InI p (Formalism.HermitianLatticesTheory.conjIdeal (K := K) p) (star a) := by
@@ -359,7 +353,7 @@ theorem plane_star₁ {p : Ideal (𝓞 K)} {a : K} (h : InI p p a) :
   · rw [algebraMap_conjO, algebraMap_conjO, star_div₀]
 
 /- English proof (translation)
-Take `⟨r, s, hs, hr, rfl⟩` from `h`. Use `⟨ReciprocityTheory.ChartRestriction.L3.conjO K r, ReciprocityTheory.ChartRestriction.L3.conjO K s, conjO_mem_hcompl hs, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(mem_conjIdeal_iff p r).1 hr`. Rewrite using `[algebraMap_conjO, algebraMap_conjO, star_div₀]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plane_star₂ {p : Ideal (𝓞 K)} {a : K} (h : InI p (Formalism.HermitianLatticesTheory.conjIdeal (K := K) p) a) :
     InI p p (star a) := by
@@ -371,57 +365,55 @@ theorem plane_star₂ {p : Ideal (𝓞 K)} {a : K} (h : InI p (Formalism.Hermiti
 end Ring
 
 /- English proof (translation)
-Introduce `K _ _ _ V _ _ _ h hK hs _ p hp N z b hN hz hprim hnu hb hbb hw`. Take `⟨w, hzw, hww⟩` from `hw`. Establish `hS` using `isHermSemilocal_locRing hK hp`. Establish `hpP` using `hp.isPrime`. Establish `hsym : ∀ x y, star (h x y) = h y x` using `fun x y => hs.eq x y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPl : IdealLike (locRing p) (InI p p)` using `plane_idealLike hpP p (fun s hs' => ((mem_hcompl_iff hpP s).1 hs').1)`. Establish `hQl : IdealLike (locRing p) (InI p (Formalism.HermitianLatticesTheory.conjIdeal (K` using `K) p)) := plane_idealLike hpP _ (fun s hs' => ((mem_hcompl_iff hpP s).1 hs').2)`. Establish `hunit : ∀ a ∈ locRing p, ¬ InI p p a → ¬ InI p (Formalism.HermitianLatticesTheory.conjIdeal (K` using `K) p) a → IsUnitIn (locRing p) a := fun a ha h1 h2 => plane_unit hpP ha h1 h2`. Establish `hζS : h z z ∈ locRing p` using `hN.int z hz z hz`. Establish `hζr : star (h z z) = h z z` using `hsym z z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : InI p p (h z z) ∧ InI p (Formalism.HermitianLatticesTheory.conjIdeal (K` using `K) p) (h z z) := by`. Distinguish the cases in `h1 : InI p p (h z z)`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Use `plane_star₁ h1` as an intermediate fact. Rewrite `this` using `[hζr]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : InI p (Formalism.HermitianLatticesTheory.conjIdeal (K` using `K) p) (h z z) := by`. Assume the negation of the conclusion as `h2`. Conclude with `hnu (hunit _ hζS h1 h2)`. Use `⟨?_, h2⟩` and prove the remaining obligations. Use `plane_star₂ h2` as an intermediate fact.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hζr]`. Then use the resulting hypothesis. Establish `hu : IsUnitIn (locRing p) (1 - b * h z z)`. Establish `hm : 1 - b * h z z ∈ locRing p` using `(locRing p).sub_mem (locRing p).one_mem ((locRing p).mul_mem hb hζS)`. Use `hunit _ hm (fun h1 => hPl.2.2 ?_) (fun h1 => hQl.2.2 ?_)` and prove the remaining obligations. Use `hPl.add h1 (hPl.2.1 b hb _ hJ.1) using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `hQl.add h1 (hQl.2.1 b hb _ hJ.2) using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Take `⟨q, hq⟩ : ∃ q : V →ₗ⋆[K] V →ₗ[K] K, ∀ x y, q x y = h x y - b * h x z * h z y` from `⟨planeForm h z b, planeForm_apply h z b⟩`. Establish `hqsym : ∀ x y, star (q x y) = q y x`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Rewrite using `[hq, hq, star_sub, star_mul', star_mul', hbb, hsym, hsym, hsym]`. Expand and normalize the polynomial expressions, which then agree. Establish `hqint : ∀ x ∈ N, ∀ y ∈ N, q x y ∈ locRing p`. Introduce `x hx y hy`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq]`. Conclude with `(locRing p).sub_mem (hN.int x hx y hy) ((locRing p).mul_mem ((locRing p).mul_mem hb (hN.int x hx z hz)) (hN.int z hz y hy))`. Establish `hqz : ∀ x, q z x = (1 - b * h z z) * h z x`. Introduce `x`. Rewrite using `[hq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hqdual : ∀ x, (∀ m ∈ N, q m x ∈ locRing p) → x ∈ N`. Introduce `x hx`. Establish `hzx : h z x ∈ locRing p`. Use `(locRing p).mul_mem hu.2.2 (hx z hz)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[hqz, ← mul_assoc, inv_mul_cancel₀ hu.1, one_mul]`. Then use the resulting hypothesis. Establish `hx' : x - (b * h z x) • z ∈ N`. Apply `hN.dual` to reduce the goal to its premises. Introduce `m hm`. Use `hx m hm using 1` and compare the differences between its conclusion and the goal.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hq, map_sub, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `N.add_mem hx' (hN.smul_mem _ ((locRing p).mul_mem hb hzx) z hz)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hwz : h w z = 1` using `by rw [← hsym, hzw, star_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hqw : q w w = 0` using `by rw [hq, hwz, hzw, hww]; ring`. Take `⟨α, hα0, heN, heprim⟩` from `plane_prim hS h hN.smul_mem hN.int hz hzw (hN.span w)`. Establish `hze : h z (α • w) = α` using `by rw [map_smul, smul_eq_mul, hzw, mul_one]`. Establish `hqee : q (α • w) (α • w) = 0`. Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, hqw, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hqez : q (α • w) z ≠ 0`. Rewrite using `[← hqsym, hqz, hze, star_mul']`. Conclude with `mul_ne_zero (star_ne_zero.mpr hu.1) (star_ne_zero.mpr hα0)`. Generalize the expression as in `α • w = e at heN heprim hze hqee hqez`. Take `⟨f₀, hf₀N, hef₀⟩` from `plane_partner hS q hqsym hN.smul_mem hqint hqdual heN heprim hz hqez`.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf₀e : q f₀ e = 1` using `by rw [← hqsym, hef₀, star_one]`. Take `⟨c₁, hc₁S, hc₁⟩` from `exists_trace_eq hS (s := -q f₀ f₀) ((locRing p).neg_mem (hqint f₀ hf₀N f₀ hf₀N)) (by rw [star_neg, hqsym])`. Establish `hfN : f₀ + c₁ • e ∈ N` using `N.add_mem hf₀N (hN.smul_mem c₁ hc₁S e heN)`. Establish `hqef : q e (f₀ + c₁ • e) = 1`. Rewrite using `[map_add, map_smul, smul_eq_mul, hqee, mul_zero, add_zero, hef₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hqff : q (f₀ + c₁ • e) (f₀ + c₁ • e) = 0`. Simplify using `only [map_add, map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, hqee, hef₀, hf₀e]`. Take the linear combination `hc₁`. Generalize the expression as in `f₀ + c₁ • e = f at hfN hqef hqff`. Establish `hqfe : q f e = 1` using `by rw [← hqsym, hqef, star_one]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, htN, hzt⟩` from `plane_partner hS h hsym hN.smul_mem hN.int hN.dual hz hprim heN (by rw [hze]; exact hα0)`. Establish `hgN : t - q f t • e - q e t • f ∈ N` using `N.sub_mem (N.sub_mem htN (hN.smul_mem _ (hqint f hfN t htN) e heN)) (hN.smul_mem _ (hqint e heN t htN) f hfN)`. Establish `hqeg : q e (t - q f t • e - q e t • f) = 0`. Simplify using `only [map_sub, map_smul, smul_eq_mul, hqee, hqef]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hqfg : q f (t - q f t • e - q e t • f) = 0`. Simplify using `only [map_sub, map_smul, smul_eq_mul, hqff, hqfe]`. Expand and normalize the polynomial expressions, which then agree. Establish `hzg : q f t * h z e + q e t * h z f + h z (t - q f t • e - q e t • f) = 1`. Simplify using `only [map_sub, map_smul, smul_eq_mul, hzt]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hαS` using `hqint f hfN t htN`. Establish `hβS` using `hqint e heN t htN`. Generalize the expression as in `q f t = α' at hgN hqeg hqfg hzg hαS`. Generalize the expression as in `q e t = β' at hgN hqeg hqfg hzg hβS`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `t - α' • e - β' • f = g at hgN hqeg hqfg hzg`. Establish `hqge : q g e = 0` using `by rw [← hqsym, hqeg, star_zero]`. Establish `hqgf : q g f = 0` using `by rw [← hqsym, hqfg, star_zero]`. Take `⟨c, hcS, hc⟩` from `exists_trace_eq hS (s := -q g g) ((locRing p).neg_mem (hqint g hgN g hgN)) (by rw [star_neg, hqsym])`. Take `⟨θ, -, hμ⟩` from `hS.unram`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hμs : star (θ - star θ) = -(θ - star θ)` using `by rw [star_sub, star_star]; ring`. Generalize the expression as in `θ - star θ = μ at hμ hμs`. Establish `key : ∀ s a d : K, s ∈ locRing p → a ∈ locRing p → d ∈ locRing p → star s * s * q g g + star a * d + star d * a = 0 → IsUnitIn (locRing p) (s * h z g + a * h z e + d * h z f) → ∃ y ∈ N, h z y = 1 ∧ h y y = b`. Introduce `s a d hs' ha hd hn hU`. Establish `hXN : s • g + a • e + d • f ∈ N` using `N.add_mem (N.add_mem (hN.smul_mem s hs' g hgN) (hN.smul_mem a ha e heN)) (hN.smul_mem d hd f hfN)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hzX : h z (s • g + a • e + d • f) = s * h z g + a * h z e + d * h z f`. Simplify using `only [map_add, map_smul, smul_eq_mul]`. Establish `hqX : q (s • g + a • e + d • f) (s • g + a • e + d • f) = 0`. Rewrite using `[← hn]`. Simplify using `only [map_add, map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, RingHom.id_apply, hqee, hqff, hqef, hqfe, hqeg, hqge, hqfg, hqgf]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨(s * h z g + a * h z e + d * h z f)⁻¹ • (s • g + a • e + d • f), hN.smul_mem _ hU.2.2 _ hXN, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, hzX, inv_mul_cancel₀ hU.1]`. Establish `h1 : h z ((s * h z g + a * h z e + d * h z f)⁻¹ • (s • g + a • e + d • f)) = 1`. Rewrite using `[map_smul, smul_eq_mul, hzX, inv_mul_cancel₀ hU.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : h ((s * h z g + a * h z e + d * h z f)⁻¹ • (s • g + a • e + d • f)) z = 1`. Rewrite using `[← hsym, h1, star_one]`. Establish `h3` using `hq ((s * h z g + a * h z e + d * h z f)⁻¹ • (s • g + a • e + d • f)) ((s * h z g + a * h z e + d * h z f)⁻¹ • (s • g + a • e + d • f))`. Rewrite `h3` using `[h1, h2]`. Establish `h4 : q ((s * h z g + a * h z e + d * h z f)⁻¹ • (s • g + a • e + d • f)) ((s * h z g + a * h z e + d * h z f)⁻¹ • (s • g + a • e + d • f)) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, hqX, mul_zero]`. Rewrite `h3` using `[h4]`. Take the linear combination `-h3`. Establish `hS0 : (0 : K) ∈ locRing p` using `(locRing p).zero_mem`. Establish `hS1 : (1 : K) ∈ locRing p` using `(locRing p).one_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hμS : μ ∈ locRing p` using `hμ.2.1`. Establish `hcμ : c + μ ∈ locRing p` using `(locRing p).add_mem hcS hμS`. Break down `plane_ring_core hPl hQl hunit (hN.int z hz e heN) (hN.int z hz f hfN) hαS hβS hcS hμ hzg with h1 | h1 | h1 | h1 | h1 | h1 | h1` into its components or cases. Conclude with `key 0 1 0 hS0 hS1 hS0 (by simp) (by convert h1 using 1; ring)`. Conclude with `key 0 0 1 hS0 hS0 hS1 (by simp) (by convert h1 using 1; ring)`.
-
-Conclude with `key 0 1 μ hS0 hS1 hμS (by rw [hμs]; simp) (by convert h1 using 1; ring)`. Conclude with `key 1 1 c hS1 hS1 hcS (by rw [star_one]; linear_combination hc) (by convert h1 using 1; ring)`. Conclude with `key 1 1 (c + μ) hS1 hS1 hcμ (by rw [star_one, star_add, hμs]; linear_combination hc) (by convert h1 using 1; ring)`. Conclude with `key 1 c 1 hS1 hcS hS1 (by rw [star_one]; linear_combination hc) (by convert h1 using 1; ring)`. Conclude with `key 1 (c + μ) 1 hS1 hcμ hS1 (by rw [star_one, star_add, hμs]; linear_combination hc) (by convert h1 using 1; ring)`.
+A detailed English derivation is pending.
 -/
 theorem primitive_plane_local : Z0.PrimPlaneLoc := by
   intro K _ _ _ V _ _ _ h hK hs _ p hp N z b hN hz hprim hnu hb hbb hw

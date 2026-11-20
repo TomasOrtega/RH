@@ -17,11 +17,11 @@ namespace GlobalTheory.HermDiagCM
 open ComplexConjugate
 
 /- English proof (translation)
-Set `B : (Fin n → ℂ) →ₗ[ℝ] (Fin n → ℂ) →ₗ[ℝ] ℝ` to `LinearMap.mk₂ ℝ (fun v v' => (v ⬝ᵥ M.mulVec (star v')).im) (fun a b c => by simp [add_dotProduct]) (fun r a b => by simp [smul_dotProduct]) (fun a b c => by simp [star_add, Matrix.mulVec_add, dotProduct_add]) (fun r a b => by simp [star_smul, Matrix.mulVec_smul, dotProduct_smul])`. Establish `h1 : ∀ v ∈ Λ, B v = 0` using `fun v hv => LinearMap.ext_on hs (fun v' hv' => by simpa [B] using h0 v hv v' hv')`. Establish `hB : B = 0` using `LinearMap.ext_on hs (fun v hv => by simpa using h1 v hv)`. Establish `him : ∀ z w : Fin n → ℂ, (z ⬝ᵥ M.mulVec (star w)).im = 0` using `fun z w => by`. Use `congrArg (fun f => f z w) hB` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[B]`. Establish `hall : ∀ z w : Fin n → ℂ, z ⬝ᵥ M.mulVec (star w) = 0` using `fun z w => by`. Apply `Complex.ext` to reduce the goal to its premises. Use `him (Complex.I • z) w` as an intermediate fact. Simplify `this` using `[smul_dotProduct]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using him z w`. Use extensionality with `i j`. Use `hall (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single, single_dotProduct]`.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem matrix_eq_zero_of_im_form {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ)
     (Λ : Submodule ℤ (Fin n → ℂ)) (hs : Submodule.span ℝ (Λ : Set (Fin n → ℂ)) = ⊤)
@@ -52,17 +52,17 @@ section CM
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Set `f : I × Bool → (E →+* ℂ)` to `fun p => cond p.2 (ComplexEmbedding.conjugate (φ p.1)) (φ p.1)`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, a⟩ ⟨j, b⟩ hij`. Establish `uniq : ∀ k l, φ k = φ l ∨ φ k = ComplexEmbedding.conjugate (φ l) → k = l`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce `k l hkl`. Take `⟨m, -, hm⟩` from `hφ (φ k)`. Conclude with `(hm k (Or.inl rfl)).trans (hm l hkl).symm`. Apply the tactic sequence `cases a <;> cases b <;> simp only [f, cond_true, cond_false] at hij`. Simplify using `[uniq i j (Or.inl hij)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hij'` using `uniq i j (Or.inr hij)`. Substitute `hij'` using the available equality. Conclude with `absurd (ComplexEmbedding.isReal_iff.mpr hij.symm) (IsTotallyComplex.complexEmbedding_not_isReal (φ i))`. Establish `hij'` using `uniq j i (Or.inr hij.symm)`. Substitute `hij'` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd (ComplexEmbedding.isReal_iff.mpr hij) (IsTotallyComplex.complexEmbedding_not_isReal (φ j))`. Establish `: φ i = φ j`. Use `congrArg ComplexEmbedding.conjugate hij` as an intermediate fact. Simplify using `using this`. Simplify using `[uniq i j (Or.inl this)]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `σ`. Take `⟨i, hi, -⟩` from `hφ σ`. Break down `hi with h | h` into its components or cases. Conclude with `⟨(i, false), h.symm⟩`. Conclude with `⟨(i, true), h.symm⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Fintype.sum_bijective f hf (fun p => f p w) (fun σ => σ w) (fun _ => rfl), Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Fintype.sum_bool]`. Simplify using `[f, ComplexEmbedding.conjugate_coe_eq, add_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_embeddings_eq {I : Type} [Fintype I] (φ : I → E →+* ℂ) (hφ : GlobalTheory.CMVal.IsCMType φ)
     (w : E) : ∑ σ : E →+* ℂ, σ w = ∑ i, (φ i w + conj (φ i w)) := by
@@ -100,7 +100,7 @@ theorem sum_embeddings_eq {I : Type} [Fintype I] (φ : I → E →+* ℂ) (hφ :
   simp [f, ComplexEmbedding.conjugate_coe_eq, add_comm]
 
 /- English proof (translation)
-Set `eq : (E →+* ℂ) ≃ (E →+* ℂ)` to `{ toFun := fun σ => (g : ℂ →+* ℂ).comp σ invFun := fun σ => (g.symm : ℂ →+* ℂ).comp σ left_inv := fun σ => by ext x; simp right_inv := fun σ => by ext x; simp }`. Conclude with `Fintype.sum_equiv eq _ _ (fun σ => by simp [eq])`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem sum_embeddings_map (g : ℂ ≃+* ℂ) (w : E) :
     ∑ σ : E →+* ℂ, g (σ w) = ∑ σ : E →+* ℂ, σ w := by
@@ -112,9 +112,9 @@ theorem sum_embeddings_map (g : ℂ ≃+* ℂ) (w : E) :
   exact Fintype.sum_equiv eq _ _ (fun σ => by simp [eq])
 
 /- English proof (translation)
-Establish `e1 : σ (β * x * IsCMField.complexConj E x') = σ β * (σ x * conj (σ x'))`. Rewrite using `[map_mul, map_mul, IsCMField.complexEmbedding_complexConj]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, map_mul, hβ]`. Establish `hs` using `Complex.sub_conj (σ x * conj (σ x'))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Move the coercions through the operations in `at hs`. Take the linear combination `(-σ β) * hs`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem term_eq (σ : E →+* ℂ) (β x x' : E) (hβ : conj (σ β) = -σ β) :
     (2 * Complex.I * σ β) * (((σ x * conj (σ x')).im : ℝ) : ℂ) =
@@ -133,35 +133,33 @@ end GlobalTheory.HermDiagCM
 open ComplexConjugate in
 
 /- English proof (translation)
-Introduce `K _ _ d δ io hd hδ g hg E _ _ _ _ I _ φ hφ hio n e Λ L hs hΛ h β hh N hN Hm hHm hform`. Establish `hconj : ∀ (σ : E →+* ℂ) (y : E), conj (σ y) = σ (IsCMField.complexConj E y)` using `fun σ y => (IsCMField.complexEmbedding_complexConj E σ y).symm`. Establish `hgcomp : ∀ i y, ((g : ℂ →+* ℂ).comp (φ i)) y = g (φ i y)` using `fun i y => rfl`. Establish `hβi : ∀ i, conj (φ i β) = -(φ i β)`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : conj ((h i : ℂ)) = (h i : ℂ)` using `Complex.conj_ofReal _`. Rewrite `h2` using `[hh i, map_mul, map_mul, Complex.conj_I, map_ofNat]`. Establish `h3 : (2 * Complex.I : ℂ) ≠ 0` using `by simp`. Establish `h4 : (2 * Complex.I) * conj (φ i β) = (2 * Complex.I) * (-(φ i β))`. Take the linear combination `-h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `mul_left_cancel₀ h3 h4`. Establish `hcβ : ∀ i, IsCMField.complexConj E β = -β` using `fun i => (φ i).injective (by rw [← hconj, hβi, map_neg])`. Establish `hgc : ∀ i y, conj (g (φ i y)) = g (conj (φ i y))`. Introduce `i y`. Rewrite using `[← hgcomp, hconj, hconj, hgcomp]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgβ : ∀ i, conj (g (φ i β)) = -(g (φ i β))`. Introduce `i`. Rewrite using `[hgc, hβi, map_neg]`. Use `set h' : I → ℝ := fun i => ((2 * Complex.I * g (φ i β)) / N).re with hh'def`. Establish `hh' : ∀ i, (h' i : ℂ) = 2 * Complex.I * g (φ i β) / N`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Conclude with `Complex.conj_eq_iff_re.mp (by`. Rewrite using `[map_div₀, map_mul, map_mul, Complex.conj_I, hgβ i, map_ofNat, Complex.conj_ofReal]`. Use the proof step `ring)`. Establish `hN' : (N : ℂ) ≠ 0` using `by exact_mod_cast hN.ne'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the argument to an intermediate assertion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨h', ?_, ?_⟩` and prove the remaining obligations. Use `set D : Matrix (Fin n) (Fin n) ℂ := Matrix.diagonal (fun j ↦ (h' (e j) : ℂ)) with hD`. It suffices to establish `Hm - D = 0 from sub_eq_zero.mp this`. Apply `matrix_eq_zero_of_im_form (Hm - D) Λ hs` to reduce the goal to its premises. Introduce `v hv v' hv'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx, rfl⟩` from `(hΛ v).mp hv`. Take `⟨x', hx', rfl⟩` from `(hΛ v').mp hv'`. Rewrite using `[Matrix.sub_mulVec, dotProduct_sub, Complex.sub_im, hform x hx x' hx', sub_eq_zero]`. Establish `hDv : ((fun j ↦ g (φ (e j) x)) ⬝ᵥ D.mulVec (star fun j ↦ g (φ (e j) x'))).im = ∑ i, h' i * (g (φ i x) * conj (g (φ i x'))).im`. Rewrite using `[dotProduct, Complex.im_sum]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Equiv.sum_comp e (fun i => h' i * (g (φ i x) * conj (g (φ i x'))).im)]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Simplify using `only [hD, Matrix.mulVec_diagonal, Pi.star_apply, Complex.star_def]`. Rewrite using `[mul_left_comm, Complex.im_ofReal_mul]`. Rewrite using `[hDv]`.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Use `push_cast`. Simplify using `only [hh, hh']`. Use `set w := β * x * IsCMField.complexConj E x' with hw`. Establish `A : ∀ i, 2 * Complex.I * g (φ i β) / N * (((g (φ i x) * conj (g (φ i x'))).im : ℝ) : ℂ) = (N : ℂ)⁻¹ * (g (φ i w) + conj (g (φ i w)))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Use `term_eq ((g : ℂ →+* ℂ).comp (φ i)) β x x' (by rw [hgcomp]; exact hgβ i)` as an intermediate fact. Simplify using `only [hgcomp] at this`. Rewrite using `[div_eq_mul_inv, mul_comm _ (N : ℂ)⁻¹, _root_.mul_assoc, this]`. Establish `B : ∀ i, 2 * Complex.I * φ i β * (((φ i x * conj (φ i x')).im : ℝ) : ℂ) = φ i w + conj (φ i w)` using `fun i => term_eq (φ i) β x x' (hβi i)`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_congr rfl (fun i _ => A i), Finset.sum_congr rfl (fun i _ => B i), ← Finset.mul_sum]`. Use `congr 1`. Rewrite using `[← sum_embeddings_eq φ hφ w, ← sum_embeddings_map g w, ← map_sum, sum_embeddings_eq φ hφ w, map_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_add, hgc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `i`. Establish `key : g (Complex.I * (Real.sqrt d : ℂ)) = Complex.I * (Real.sqrt d : ℂ)`. Establish `hsq : (Complex.I * (Real.sqrt d : ℂ)) ^ 2 = -(d : ℂ)`. Rewrite using `[mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hio2 : (io δ) ^ 2 = -(d : ℂ)` using `by rw [← map_pow, hδ, map_neg, map_natCast]`. Establish `hprod : (io δ - Complex.I * (Real.sqrt d : ℂ)) * (io δ + Complex.I * (Real.sqrt d : ℂ)) = 0`. Take the linear combination `hio2 - hsq`. Break down `mul_eq_zero.mp hprod with h1 | h1` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h5 : Complex.I * (Real.sqrt d : ℂ) = io δ` using `by linear_combination -h1`. Rewrite using `[h5, hg]`. Establish `h5 : Complex.I * (Real.sqrt d : ℂ) = -io δ` using `by linear_combination h1`. Rewrite using `[h5, map_neg, hg]`. Rewrite using `[hh i, hh' i]`.
-
-Establish `e2 : 2 * Complex.I * φ i β * (Real.sqrt d : ℂ) = 2 * φ i β * (Complex.I * (Real.sqrt d : ℂ))`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, map_mul, map_mul, key, map_ofNat]`. Clear the denominators using the available nonvanishing facts.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HermDiagCM.diagonal_of_conj_form : ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (io : K →+* ℂ), 0 < d → δ ^ 2 = -(d : K) →
     ∀ g : ℂ ≃+* ℂ, (∀ x, g (io x) = io x) →

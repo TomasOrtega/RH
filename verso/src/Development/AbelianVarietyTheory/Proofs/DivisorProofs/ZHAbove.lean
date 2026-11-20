@@ -32,7 +32,7 @@ def ZHAbove (X₁ : Setup F W i) (Y : RatModel X₁.o₁ X₁.Ω₁) (πY : Y.Z 
     X₁.M.IsHom Y (AlgHom.id X₁.o₁ X₁.Ω₁) πY ∧ IsProper πY
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨AddEquiv.refl _, fun _ _ => rfl, fun _ _ h => h⟩`.
+Supply the required witnesses or components.
 -/
 theorem LatTo.refl {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {ev : X₁.M.Z.presheaf.stalk z₁ →+* V}
     {X : Type} [AddCommGroup X] {m : ℕ} {t : Fin m → V} {δ : Fin m → LinearMap.BilinForm ℤ X}
@@ -40,7 +40,7 @@ theorem LatTo.refl {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {ev : X�
   ⟨AddEquiv.refl _, fun _ _ => rfl, fun _ _ h => h⟩
 
 /- English proof (translation)
-Take `⟨K₀, e₀, l₀⟩` from `h₀`. Take `⟨K₁, e₁, l₁⟩` from `h₁`. Use `⟨K₀.trans K₁, fun a mu => ?_, fun a mu h => l₁ _ _ (l₀ _ _ h)⟩` and prove the remaining obligations. Simplify using `only [AddEquiv.trans_apply]`. Rewrite using `[e₀, e₁]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem LatTo.trans {V₀ : Type} [CommRing V₀] [IsDomain V₀] [IsLocalRing V₀] {ev₀ : X₁.M.Z.presheaf.stalk z₁ →+* V₀}
     {X₀ : Type} [AddCommGroup X₀] {m₀ : ℕ} {t₀ : Fin m₀ → V₀} {δ₀ : Fin m₀ → LinearMap.BilinForm ℤ X₀}
@@ -57,7 +57,7 @@ theorem LatTo.trans {V₀ : Type} [CommRing V₀] [IsDomain V₀] [IsLocalRing V
   rw [e₀, e₁]
 
 /- English proof (translation)
-The claim follows from `LatTo.refl 𝔪`.
+A detailed English derivation is pending.
 -/
 example {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {ev : X₁.M.Z.presheaf.stalk z₁ →+* V}
     {X : Type} [AddCommGroup X] {m : ℕ} {t : Fin m → V} {δ : Fin m → LinearMap.BilinForm ℤ X}

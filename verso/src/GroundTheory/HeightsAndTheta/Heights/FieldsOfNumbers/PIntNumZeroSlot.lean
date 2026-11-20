@@ -13,23 +13,23 @@ section
 variable {K : Type*}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Simplify using `[diffStep]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem diffStep_zero_left (h : (K → ℤ) → ℤ) : diffStep 0 h = 0 := by
   funext m
   simp [diffStep]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Simplify using `[diffStep]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem diffStep_zero_right (b : K → ℤ) : diffStep b (0 : (K → ℤ) → ℤ) = 0 := by
   funext m
   simp [diffStep]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp at hl`. Consider the case `cons a t ih`. Rewrite using `[List.foldr_cons]`. Break down `List.mem_cons.mp hl with rfl | ht` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `diffStep_zero_left _`. Rewrite using `[ih ht]`. Conclude with `diffStep_zero_right a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem foldr_diffStep_eq_zero_of_mem (l : List (K → ℤ)) (hl : (0 : K → ℤ) ∈ l)
     (h : (K → ℤ) → ℤ) : l.foldr diffStep h = 0 := by
@@ -43,14 +43,14 @@ theorem foldr_diffStep_eq_zero_of_mem (l : List (K → ℤ)) (hl : (0 : K → �
       exact diffStep_zero_right a
 
 /- English proof (translation)
-The claim follows from `foldr_diffStep_eq_zero_of_mem _ (List.mem_ofFn.mpr ⟨i, hi⟩) h`.
+A detailed English derivation is pending.
 -/
 theorem mixedDiff_coord_zero {n : ℕ} (bs : Fin n → K → ℤ) (i : Fin n) (hi : bs i = 0)
     (h : (K → ℤ) → ℤ) : mixedDiff bs h = 0 :=
   foldr_diffStep_eq_zero_of_mem _ (List.mem_ofFn.mpr ⟨i, hi⟩) h
 
 /- English proof (translation)
-Establish `hs : ∀ᶠ m in atTop, h (m + -b) = 0` using `(tendsto_atTop_add_const_right atTop (-b) tendsto_id).eventually hh`. Use `filter_upwards [hh, hs] with m h1 h2`. Simplify using `only [diffStep, h1, ← sub_eq_add_neg] at h2 ⊢`. Rewrite using `[h2, sub_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diffStep_eventually_zero {b : K → ℤ} {h : (K → ℤ) → ℤ}
     (hh : ∀ᶠ m in atTop, h m = 0) : ∀ᶠ m in atTop, diffStep b h m = 0 := by
@@ -61,7 +61,7 @@ theorem diffStep_eventually_zero {b : K → ℤ} {h : (K → ℤ) → ℤ}
   rw [h2, sub_zero]
 
 /- English proof (translation)
-Unfold `mixedDiff`. Proceed by induction on `List.ofFn bs with`. Consider the case `nil => simpa using hh`. Consider the case `cons a t ih => exact diffStep_eventually_zero ih`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem mixedDiff_eventually_zero {n : ℕ} (bs : Fin n → K → ℤ) {h : (K → ℤ) → ℤ}
     (hh : ∀ᶠ m in atTop, h m = 0) : ∀ᶠ m in atTop, mixedDiff bs h m = 0 := by
@@ -71,7 +71,7 @@ theorem mixedDiff_eventually_zero {n : ℕ} (bs : Fin n → K → ℤ) {h : (K �
   | cons a t ih => exact diffStep_eventually_zero ih
 
 /- English proof (translation)
-Unfold `eventualValue`. Establish `hex : ∃ c, ∀ᶠ m in atTop, f m = c` using `⟨0, hf⟩`. Rewrite using `[dif_pos hex]`. Take `⟨m, h1, h2⟩` from `(hex.choose_spec.and hf).exists`. Rewrite using `[← h1, h2]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem eventualValue_eq_zero {f : (K → ℤ) → ℤ} (hf : ∀ᶠ m in atTop, f m = 0) :
     eventualValue f = 0 := by
@@ -84,9 +84,9 @@ theorem eventualValue_eq_zero {f : (K → ℤ) → ℤ} (hf : ∀ᶠ m in atTop,
 end
 
 /- English proof (translation)
-Rewrite `h1`, `h2` using `[← WithBot.coe_natCast, ← WithTop.coe_natCast]`. Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => exact absurd h1 (not_le.mpr (WithBot.bot_lt_coe _))`. Consider the case `coe y`. Proceed by induction on `y using WithTop.recTopCoe with`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `top => exact absurd h2 (not_lt.mpr (WithBot.coe_le_coe.mpr le_top))`. Consider the case `coe z`. Establish `hz : (t : ℤ) ≤ z` using `WithTop.coe_le_coe.mp (WithBot.coe_le_coe.mp h1)`. Use `⟨z.toNat, ?_⟩` and prove the remaining obligations. Rewrite using `[← WithBot.coe_natCast, ← WithTop.coe_natCast, Int.toNat_of_nonneg (by omega)]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_nat_of_le_of_lt {x : WithBot (WithTop ℤ)} {t n : ℕ}
     (h1 : (t : WithBot (WithTop ℤ)) ≤ x) (h2 : x < n) : ∃ d : ℕ, x = d := by
@@ -102,15 +102,13 @@ theorem exists_nat_of_le_of_lt {x : WithBot (WithTop ℤ)} {t n : ℕ}
       rw [← WithBot.coe_natCast, ← WithTop.coe_natCast, Int.toNat_of_nonneg (by omega)]
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ I`. Use `⟨fun n bs i hi => ?_, fun hI n bs hn => ?_⟩` and prove the remaining obligations. Unfold `intNum`. Use `eventualValue_eq_zero (Eventually.of_forall fun m => ?_)` and prove the remaining obligations. Rewrite using `[mixedDiff_coord_zero bs i hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Unfold `intNum`. Apply `eventualValue_eq_zero` to reduce the goal to its premises. Distinguish the cases in `hR : IsRelevant I`. Distinguish the cases in `hd : ∃ d : ℕ, relDim I = d`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Take `⟨d, hd⟩` from `hd`. Establish `hdn : d < n`. Rewrite `hn` using `[hd]`. Conclude with `hn` after adjusting the coercions. Conclude with `(h₁ F K ι I hI hR d hd).2 n hdn bs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, hp⟩` from `h₂ F K ι I hI`. Establish `hp0 : p = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hd (exists_nat_of_le_of_lt ((h₃ F K ι I hI).1 hR p hp hne) hn)`. Apply `mixedDiff_eventually_zero` to reduce the goal to its premises.
-
-Use `filter_upwards [hp] with m hm`. Rewrite `hm` using `[hp0, map_zero]`. Conclude with `hm` after adjusting the coercions. Conclude with `mixedDiff_eventually_zero bs ((h₃ F K ι I hI).2 hR)`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IntNumZeroSlot.proof (h₁ : MixedDiffConst.Statement.{u})
     (h₂ : HilbEventuallyPoly.Statement.{u}) (h₃ : HilbDegreeBound.Statement.{u}) :

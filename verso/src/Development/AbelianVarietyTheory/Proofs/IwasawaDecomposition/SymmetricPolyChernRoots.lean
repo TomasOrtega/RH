@@ -26,7 +26,7 @@ def splitEquiv : MvPolynomial (Root m) R ≃ₐ[R]
   (renameEquiv R (rootSplit τ₀)).trans (sumAlgEquiv R _ _)
 
 /- English proof (translation)
-Establish `e : rootSplit τ₀ (⟨τ₀, i⟩ : Root m) = Sum.inl i` using `GlobalTheory.InnerAutomorphism.sigmaSplit_self (fun τ => Fin (m τ)) τ₀ i`. Simplify using `[splitEquiv, e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem splitEquiv_X_self (i : Fin (m τ₀)) :
     splitEquiv R τ₀ (X (⟨τ₀, i⟩ : Root m)) = X i := by
@@ -34,7 +34,7 @@ theorem splitEquiv_X_self (i : Fin (m τ₀)) :
   simp [splitEquiv, e]
 
 /- English proof (translation)
-Establish `e : rootSplit τ₀ (⟨τ, i⟩ : Root m) = Sum.inr ⟨⟨τ, h⟩, i⟩` using `GlobalTheory.InnerAutomorphism.sigmaSplit_of_ne (fun τ => Fin (m τ)) h i`. Simplify using `[splitEquiv, e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem splitEquiv_X_ne {τ : ι} (h : τ ≠ τ₀) (i : Fin (m τ)) :
     splitEquiv R τ₀ (X (⟨τ, i⟩ : Root m)) = C (X ⟨⟨τ, h⟩, i⟩) := by
@@ -42,18 +42,18 @@ theorem splitEquiv_X_ne {τ : ι} (h : τ ≠ τ₀) (i : Fin (m τ)) :
   simp [splitEquiv, e]
 
 /- English proof (translation)
-Rewrite using `[AlgEquiv.symm_apply_eq, splitEquiv_X_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem splitEquiv_symm_X (i : Fin (m τ₀)) :
     (splitEquiv R τ₀).symm (X i) = X (⟨τ₀, i⟩ : Root m) := by
   rw [AlgEquiv.symm_apply_eq, splitEquiv_X_self]
 
 /- English proof (translation)
-Rewrite using `[AlgEquiv.symm_apply_eq]`. Proceed by induction on `c using MvPolynomial.induction_on with`. Consider the case `C r`. Simplify using `only [rename_C]`. Express the relevant statement in the definitionally equal form `_ = splitEquiv R τ₀ (algebraMap R _ r)`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[AlgEquiv.commutes]`. Both sides reduce to the same expression. Consider the case `add p q hp hq => simp [map_add, ← hp, ← hq]`. Consider the case `mul_X p y hp`. Simplify using `only [map_mul, rename_X]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hp, splitEquiv_X_ne R τ₀ y.1.2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem splitEquiv_symm_C (c : MvPolynomial (Root (fun τ : {τ // τ ≠ τ₀} => m τ.1)) R) :
     (splitEquiv R τ₀).symm (C c) = rename (fun y => (⟨y.1.1, y.2⟩ : Root m)) c := by
@@ -69,7 +69,7 @@ theorem splitEquiv_symm_C (c : MvPolynomial (Root (fun τ : {τ // τ ≠ τ₀}
     rw [← hp, splitEquiv_X_ne R τ₀ y.1.2]
 
 /- English proof (translation)
-Simplify using `[chernRootsOver, esymm, map_sum, map_prod, splitEquiv_symm_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem splitEquiv_symm_esymm (j : ℕ) :
     (splitEquiv R τ₀).symm (esymm (Fin (m τ₀)) (MvPolynomial (Root (fun τ : {τ // τ ≠ τ₀} => m τ.1)) R) j) =
@@ -77,9 +77,9 @@ theorem splitEquiv_symm_esymm (j : ℕ) :
   simp [chernRootsOver, esymm, map_sum, map_prod, splitEquiv_symm_X]
 
 /- English proof (translation)
-Establish `: ((splitEquiv R τ₀).toAlgHom.comp (rename (Equiv.sigmaCongrRight (Function.update (1 : ∀ τ, Equiv.Perm (Fin (m τ))) τ₀ σ)))) = ((rename σ).restrictScalars R).comp (splitEquiv R τ₀).toAlgHom`. Use extensionality with `⟨τ, i⟩ : 1`. Distinguish the cases in `h : τ = τ₀`. Substitute `h` using the available equality. Simplify using `[splitEquiv_X_self]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[splitEquiv_X_ne R τ₀ h, Function.update_of_ne h]`. Conclude with `congrArg (· S) (congrArg DFunLike.coe this)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem splitEquiv_rename_update (σ : Equiv.Perm (Fin (m τ₀))) (S : MvPolynomial (Root m) R) :
     splitEquiv R τ₀ (rename (Equiv.sigmaCongrRight
@@ -94,9 +94,9 @@ theorem splitEquiv_rename_update (σ : Equiv.Perm (Fin (m τ₀))) (S : MvPolyno
   exact congrArg (· S) (congrArg DFunLike.coe this)
 
 /- English proof (translation)
-Establish `: ((splitEquiv R τ₀).toAlgHom.comp (rename (Equiv.sigmaCongrRight (fun τ => if h : τ = τ₀ then (1 : Equiv.Perm (Fin (m τ))) else w' ⟨τ, h⟩)))) = (mapAlgHom (rename (Equiv.sigmaCongrRight w'))).comp (splitEquiv R τ₀).toAlgHom`. Use extensionality with `⟨τ, i⟩ : 1`. Distinguish the cases in `h : τ = τ₀`. Substitute `h` using the available equality. Simplify using `[splitEquiv_X_self]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[splitEquiv_X_ne R τ₀ h, h]`. Conclude with `congrArg (· S) (congrArg DFunLike.coe this)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem splitEquiv_rename_rest (w' : ∀ τ : {τ // τ ≠ τ₀}, Equiv.Perm (Fin (m τ.1))) (S : MvPolynomial (Root m) R) :
     splitEquiv R τ₀ (rename (Equiv.sigmaCongrRight
@@ -112,9 +112,9 @@ theorem splitEquiv_rename_rest (w' : ∀ τ : {τ // τ ≠ τ₀}, Equiv.Perm (
   exact congrArg (· S) (congrArg DFunLike.coe this)
 
 /- English proof (translation)
-Proceed by induction on `T using MvPolynomial.induction_on with`. Consider the case `C r => simp [chernRootsOver]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p x hp`. Simplify using `only [map_mul, hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `[chernRootsOver, rename_rename]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem rename_chernRootsOver (T : MvPolynomial ({τ // τ ≠ τ₀} × ℕ) R) :
     rename (fun y : Root (fun τ : {τ // τ ≠ τ₀} => m τ.1) => (⟨y.1.1, y.2⟩ : Root m))
@@ -132,25 +132,25 @@ theorem rename_chernRootsOver (T : MvPolynomial ({τ // τ ≠ τ₀} × ℕ) R)
 end Split
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `ι _ _ hc R _ m S _`. Use `haveI : IsEmpty ι := Fintype.card_eq_zero_iff.mp hc`. Rewrite using `[eq_C_of_isEmpty S]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `succ n ih`. Introduce `ι _ _ hc R _ m S hS`. Take `⟨τ₀⟩ : Nonempty ι` from `Fintype.card_pos_iff.mp (by omega)`. Establish `hc' : Fintype.card {τ // τ ≠ τ₀} = n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `[Fintype.card_subtype_compl, hc]`. Set `R'` to `MvPolynomial (Root (fun τ : {τ // τ ≠ τ₀} => m τ.1)) R`. Set `f : Fin (m τ₀) → MvPolynomial (Fin (m τ₀)) R'` to `fun i => esymm (Fin (m τ₀)) R' (↑i + 1)`. Establish `hsym : splitEquiv R τ₀ S ∈ symmetricSubalgebra (Fin (m τ₀)) R'`. Rewrite using `[mem_symmetricSubalgebra]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `σ`. Rewrite using `[← splitEquiv_rename_update, hS]`. Take `⟨T, hT⟩` from `esymmAlgHom_fin_surjective R' (m := m τ₀) (n := m τ₀) le_rfl ⟨_, hsym⟩`. Establish `hT' : aeval f T = splitEquiv R τ₀ S`. Rewrite using `[← esymmAlgHom_apply, hT]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcoef : ∀ d, coeff d T ∈ (chernRootsOver R (fun τ : {τ // τ ≠ τ₀} => m τ.1)).range`. Introduce `d`. Apply `ih _ hc' R` to reduce the goal to its premises. Introduce `w'`. Establish `hinv : MvPolynomial.map (rename (Equiv.sigmaCongrRight w')).toRingHom T = T`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `esymmAlgHom_fin_injective R' (m := m τ₀) (n := m τ₀) le_rfl` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[esymmAlgHom_apply, esymmAlgHom_apply]`. Express the relevant statement in the definitionally equal form `aeval f _ = aeval f T`. Rewrite using `[hT', ← hS (fun τ => if h : τ = τ₀ then 1 else w' ⟨τ, h⟩), splitEquiv_rename_rest, ← hT', aeval_def, aeval_def, algebraMap_eq, eval₂_map, eval₂_comp_left, map_comp_C]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(map_esymm _ _ _ _).symm`. Use `congrArg (coeff d) hinv` as an intermediate fact. Rewrite `this` using `[coeff_map]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Set `k : MvPolynomial (Fin (m τ₀)) R' →+* MvPolynomial (Root m) R` to `(splitEquiv R τ₀).symm.toRingEquiv.toRingHom`. Establish `hSE : S = k (eval₂ C f T)`. Express the relevant statement in the definitionally equal form `S = (splitEquiv R τ₀).symm _`. Rewrite using `[← algebraMap_eq, ← aeval_def, hT', AlgEquiv.symm_apply_apply]`. Establish `key : k (eval₂ C f T) = eval₂ (k.comp C) (k ∘ f) T` using `eval₂_comp_left k C f T`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hSE, key, eval₂_eq]`. Use `Subalgebra.sum_mem _ fun d _ => Subalgebra.mul_mem _ ?_ (Subalgebra.prod_mem _ fun i _ => Subalgebra.pow_mem _ ?_ _)` and prove the remaining obligations. Take `⟨Tc, hTc⟩` from `(AlgHom.mem_range _).mp (hcoef d)`. Rewrite using `[RingHom.comp_apply, ← hTc]`. Express the relevant statement in the definitionally equal form `(splitEquiv R τ₀).symm (C _) ∈ _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[splitEquiv_symm_C, rename_chernRootsOver]`. Conclude with `AlgHom.mem_range_self _ _`. Express the relevant statement in the definitionally equal form `(splitEquiv R τ₀).symm (esymm _ _ _) ∈ _`. Rewrite using `[splitEquiv_symm_esymm]`. Conclude with `AlgHom.mem_range_self _ _`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_chernRootsOver (n : ℕ) : ∀ (ι : Type) [Fintype ι] [DecidableEq ι], Fintype.card ι = n →
     ∀ (R : Type) [CommRing R] (m : ι → ℕ) (S : MvPolynomial (Root m) R),
@@ -210,7 +210,7 @@ theorem mem_range_chernRootsOver (n : ℕ) : ∀ (ι : Type) [Fintype ι] [Decid
       exact AlgHom.mem_range_self _ _
 
 /- English proof (translation)
-Introduce `ι _ m S hS`. Take `⟨R, hR⟩` from `(AlgHom.mem_range _).mp (mem_range_chernRootsOver _ ι rfl ℝ m S hS)`. Conclude with `⟨R, hR⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_chernRoots_eq_of_blockSymmetric : ∀ (ι : Type) [Fintype ι] (m : ι → ℕ) (S : MvPolynomial (Root m) ℝ),
     (∀ w : ∀ τ, Equiv.Perm (Fin (m τ)), rename (Equiv.sigmaCongrRight w) S = S) →

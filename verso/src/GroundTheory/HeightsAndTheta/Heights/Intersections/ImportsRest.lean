@@ -12,13 +12,11 @@ namespace GroundTheory.Heights₂.Heights.Inter
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v p _ W' n i' hv hp hW hV hch G' J' hJ`. Establish `hfib` using `h₁ K ι K' ι' κ v p W' n hv hp hW hV G'`. Establish `hz : ∀ k : FibreBlock κ, G'.x' ⟨k.1, i' k.1⟩ ≠ 0`. Introduce `k h0`. Apply `hch k.1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hX : (X ⟨k.1, i' k.1⟩ : MRing ι') ∈ W'`. Rewrite using `[← G'.genericFibre_ker_target, RingHom.mem_ker, aeval_X]`. Conclude with `h0`. Simplify using `using Ideal.mem_map_of_mem (MvPolynomial.map (Int.castRingHom (ZMod p))) hX`. Establish `hj : IsChart (fibreIdeal κ G') (fun k => i' k.1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk`. Apply `hz k` to reduce the goal to its premises. Rewrite `hk` using `[fibreIdeal, RingHom.mem_ker, aeval_X]`. Conclude with `hk`. Rewrite using `[hJ.1 _ Fin.elim0 _ hfib hj, h₃ K ι K' ι' κ v p W' n i' hv hp hW hV hch G']`.
-
-Use `congr 1`. Conclude with `(h₂ (FibreBlock κ) (fibreIdx ι' κ) G'.Φ G'.Φ' (fun q => G'.x' ⟨q.1.1, q.2⟩) (fun k => i' k.1) hz hfib.1.2.1).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem VerticalDegree.proof (h₁ : FibreDimensionZero.Statement) (h₂ : ChartRankAdjoin.Statement)
     (h₃ : VerticalDegreeAfterAdjoining.Statement) : VerticalDegree.Statement := by

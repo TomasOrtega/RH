@@ -17,7 +17,7 @@ namespace GlobalTheory.KJReal
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `GlobalTheory.WeilParts.detPlus`. Establish `e2 : (1 + 1 : Matrix (Fin m × Fin n) (Fin m × Fin n) ℂ) = (2 : ℂ) • 1`. Rewrite using `[two_smul]`. Rewrite using `[Matrix.transpose_one, Matrix.one_kronecker_one, sub_self, smul_zero, add_zero, e2, Matrix.smul_mul, Matrix.one_mul, smul_smul, show (1 / 2 * 2 : ℂ) = 1 by norm_num, one_smul, Matrix.det_kronecker, Matrix.det_transpose, Fintype.card_fin, Fintype.card_fin]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem detPlus_one_one {m n : ℕ} (a : Matrix (Fin n) (Fin n) ℂ) (b : Matrix (Fin m) (Fin m) ℂ) :
     GlobalTheory.WeilParts.detPlus 1 1 a b = b.det ^ n * a.det ^ m := by
@@ -29,9 +29,9 @@ theorem detPlus_one_one {m n : ℕ} (a : Matrix (Fin n) (Fin n) ℂ) (b : Matrix
     Matrix.det_transpose, Fintype.card_fin, Fintype.card_fin]
 
 /- English proof (translation)
-Rewrite using `[inv_pow, ← zpow_natCast b, ← zpow_natCast a, ← zpow_neg a, ← zpow_neg a]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 2`. Rewrite using `[hT]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hS]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exp_identity (a b : ℂ) (ha : a ≠ 0) (hb : b ≠ 0) (e mS mT : ℤ) (nS nT : ℕ) (hS : (nS : ℤ) = mS + mS)
     (hT : (nT : ℤ) = mT + mT) :

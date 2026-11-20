@@ -12,11 +12,11 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.N GlobalTheory.The
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hs`. Apply `h` to reduce the goal to its premises. Set `c : 𝓞 H.E →+* 𝓞 H.E` to `RingOfIntegers.mapRingHom (H.conj : H.E →+* H.E)`. Establish `hc : ∀ x y : 𝓞 H.E, (y : H.E) = H.conj (x : H.E) → y = c x` using `fun x y hy => RingOfIntegers.ext hy`. Establish `hle : w.asIdeal ≤ w.asIdeal.comap c`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Assume the negation of the conclusion as `hx'`. Conclude with `hs ⟨x, hx, fun y hy => by rw [hc x y hy]; exact hx'⟩`. Establish `heq : w.asIdeal = w.asIdeal.comap c` using `w.isMaximal.eq_of_le (Ideal.comap_ne_top c w.isPrime.ne_top) hle`. Introduce `x y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc x y hy, ← Ideal.mem_comap, ← heq]`.
+A detailed English derivation is pending.
 -/
 theorem isSplitPl_of_not_isConjPl (w : IsDedekindDomain.HeightOneSpectrum (𝓞 H.E))
     (h : ¬ IsConjPl H w w) : IsSplitPl H w := by
@@ -37,13 +37,13 @@ theorem isSplitPl_of_not_isConjPl (w : IsDedekindDomain.HeightOneSpectrum (𝓞 
 variable (N : NData R H what₂) (A : NAut N)
 
 /- English proof (translation)
-Introduce `k v` and use `isSplitPl_of_not_isConjPl _ (A.plGw_nconj k v v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem typePlSplit : TypePlSplit N A := fun k v =>
   isSplitPl_of_not_isConjPl _ (A.plGw_nconj k v v)
 
 /- English proof (translation)
-Rewrite using `[Check.iso_char N A hL, Check.iso_append]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isoLoc_lift (hL : ParamLaws N A) (i : N.Loc) (Sig : List (Part A.CG)) (w : PlE H) :
     isoLoc N A (twistIso N A (Sig ++ [muPart N A i]) A.etaTinv) w =
@@ -52,9 +52,9 @@ theorem isoLoc_lift (hL : ParamLaws N A) (i : N.Loc) (Sig : List (Part A.CG)) (w
   rfl
 
 /- English proof (translation)
-Establish `hl : ∀ k, (fun v => A.items₂ k (A.plGw k v) (isoLoc N A Sig (A.plGw k v))) = N.lab k σ`. Introduce `k`. Use function extensionality and compare the values at `v`. Rewrite using `[h _ (typePlSplit N A k v), A.lab_loc i k σ v]`. Unfold `NData.goodRow goodSig`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `forall_congr' fun k => ?_` and prove the remaining obligations. Rewrite using `[hl k]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem goodRow_iff_goodSig {i : N.Loc} {σ : what₂.FT} {Sig : List (Part A.CG)}
     (h : ∀ w, IsSplitPl H w → isoLoc N A Sig w = A.locW i σ w) :
@@ -68,7 +68,7 @@ theorem goodRow_iff_goodSig {i : N.Loc} {σ : what₂.FT} {Sig : List (Part A.CG
   rw [hl k]
 
 /- English proof (translation)
-Take `⟨P, hP, hB⟩` from `h`. Take `⟨P', hP', hB'⟩` from `h'`. Establish `e` using `hloc P P' x hP hP' w hw`. Rewrite `e` using `[← hB.2.2.2.1 w hw, ← hB'.2.2.2.1 w hw, isoLoc_lift N A hL, isoLoc_lift N A hL]`. Conclude with `(hL w).2.2.2.2 _ _ _ ((hL w).2.2.2.1 _ _ _ (A.locG_dim _ w) e)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoLoc_eq_of_hasParamX (hL : ParamLaws N A) {i : N.Loc} (hloc : LocOfPt N A i) {x : N.X i}
     {Sig Sig' : List (Part A.CG)} (h : HasParamX N A i x Sig) (h' : HasParamX N A i x Sig')
@@ -80,17 +80,17 @@ theorem isoLoc_eq_of_hasParamX (hL : ParamLaws N A) {i : N.Loc} (hloc : LocOfPt 
   exact (hL w).2.2.2.2 _ _ _ ((hL w).2.2.2.1 _ _ _ (A.locG_dim _ w) e)
 
 /- English proof (translation)
-Unfold `GoodPart goodPartM`. Apply `le_antisymm` to reduce the goal to its premises. Use `iSup₂_le fun σ hσ => ?_` and prove the remaining obligations. Take `⟨hg, Sig₀, hW₀, x₀, hx₀⟩` from `hσ`. Distinguish the cases in `hb : what₂.isot (N.j i) σ = ⊥`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hb]`. Conclude with `bot_le`. Take `⟨P, hP⟩` from `h1 i σ hb`. Take `⟨Sig, hW, hB⟩` from `hlift σ P hP`. Take `⟨y, hy⟩` from `hpt P x₀ fun w hw => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, hp'⟩` from `hx₀ w hw`. Use `⟨p, ?_, hp'⟩` and prove the remaining obligations. Rewrite using `[hp, ← hB.2.2.2.1 w hw.1, isoLoc_lift N A hL, isoLoc_lift N A hL, hW₀.2.2 w hw.1, hW.2.2 w hw.1]`. Establish `hX : HasParamX N A i y Sig` using `⟨P, hy, hB⟩`. Establish `hZ : y ∈ ZgoodN N A i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨P, hy, _, hB, ?_⟩, Sig, hX, (goodRow_iff_goodSig N A hW.2.2).1 hg⟩` and prove the remaining obligations. Conclude with `List.mem_map.2 ⟨muPart N A i, by simp, rfl⟩`. Use `le_iSup₂_of_le y hZ (le_iSup₂_of_le Sig hX ?_)` and prove the remaining obligations. Conclude with `le_iSup₂_of_le (f := fun σ (_ : σ ∈ {σ | HasParamW N A i σ Sig}) => what₂.isot (N.j i) σ) σ hW le_rfl`. Use `iSup₂_le fun x hx => iSup₂_le fun Sig hX => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Unfold `MjSig`. Use `iSup₂_le fun σ hW => ?_` and prove the remaining obligations. Take `⟨-, Sig', hX', hg⟩` from `hx`. Establish `hgood : N.goodRow σ` using `(goodRow_iff_goodSig N A (i := i) fun w hw => (isoLoc_eq_of_hasParamX N A hL hloc hX' hX w hw).trans (hW.2.2 w hw)).2 hg`. Establish `hat : AtM N A i σ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P, hP, hB⟩` from `hX`. Use `⟨Sig, hW, x, fun w hw => ⟨heckePol N i x w, ?_, rfl⟩⟩` and prove the remaining obligations. Rewrite using `[hB.2.2.2.1 w hw.1]`. Conclude with `A.pt_loc i P x hP w hw`. Conclude with `le_iSup₂_of_le (f := fun σ (_ : σ ∈ {σ | N.goodRow σ ∧ AtM N A i σ}) => what₂.isot (N.j i) σ) σ ⟨hgood, hat⟩ le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem goodPart_of_lifts (i : N.Loc) (h1 : ThetaOne N A) (hL : ParamLaws N A)
     (hlift : LiftParam N A i) (hpt : PtLocal N A i) (hloc : LocOfPt N A i) : GoodPart N A i := by

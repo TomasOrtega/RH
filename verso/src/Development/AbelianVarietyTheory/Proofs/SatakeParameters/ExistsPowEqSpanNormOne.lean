@@ -16,11 +16,11 @@ section Ideals
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `hu : IsUnit 𝔞` using `IsUnit.of_mul_eq_one 𝔟 h`. Establish `hv : IsUnit 𝔟` using `IsUnit.of_mul_eq_one 𝔞 (by rw [mul_comm]; exact h)`. Set `I : FractionalIdeal (𝓞 K)⁰ K` to `⟨𝔞, FractionalIdeal.isFractional_of_fg (Submodule.fg_of_isUnit hu)⟩`. Set `J : FractionalIdeal (𝓞 K)⁰ K` to `⟨𝔟, FractionalIdeal.isFractional_of_fg (Submodule.fg_of_isUnit hv)⟩`. Establish `hIJ : I * J = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `FractionalIdeal.coeToSubmodule_injective` to reduce the goal to its premises. Simplify using `only [FractionalIdeal.coe_mul, FractionalIdeal.coe_one]`. Conclude with `h`. Set `U : (FractionalIdeal (𝓞 K)⁰ K)ˣ` to `Units.mkOfMulEqOne I J hIJ`. Establish `h1 : ClassGroup.mk K (U ^ Fintype.card (ClassGroup (𝓞 K))) = 1` using `by rw [map_pow, pow_card_eq_one]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `ClassGroup.mk_eq_one_iff.1 h1`. Use `⟨_, a, Fintype.card_pos (α := ClassGroup (𝓞 K)), ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, Units.val_pow_eq_pow_val, FractionalIdeal.coe_pow]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_span {𝔞 𝔟 : Submodule (𝓞 K) K} (h : 𝔞 * 𝔟 = 1) :
     ∃ (n : ℕ) (a : K), 0 < n ∧ 𝔞 ^ n = Submodule.span (𝓞 K) {a} := by
@@ -41,7 +41,7 @@ theorem exists_pow_eq_span {𝔞 𝔟 : Submodule (𝓞 K) K} (h : 𝔞 * 𝔟 =
 
 omit [NumberField K] in
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `Submodule.mem_one.1 hx`. Conclude with `Submodule.mem_one.2 ⟨⟨c r, map_isIntegral_int c r.isIntegral_coe⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem map_mem_one (c : K →+* K) {x : K} (hx : x ∈ (1 : Submodule (𝓞 K) K)) : c x ∈ (1 : Submodule (𝓞 K) K) := by
   obtain ⟨r, rfl⟩ := Submodule.mem_one.1 hx
@@ -49,7 +49,7 @@ theorem map_mem_one (c : K →+* K) {x : K} (hx : x ∈ (1 : Submodule (𝓞 K) 
 
 omit [NumberField K] in
 /- English proof (translation)
-The claim follows from `| 0, x, hx => by rw [pow_zero] at *; exact map_mem_one c hx | n + 1, x, hx => by rw [pow_succ] at * refine Submodule.mul_induction_on hx (fun a ha b hb => ?_) (fun a b ha hb => ?_) · rw [map_mul]; exact Submodule.mul_mem_mul (map_mem_pow c h n a ha) (h b hb) · rw [map_add]; exact …`.
+A detailed English derivation is pending.
 -/
 theorem map_mem_pow (c : K →+* K) {𝔞 𝔟 : Submodule (𝓞 K) K} (h : ∀ x ∈ 𝔞, c x ∈ 𝔟) :
     ∀ (n : ℕ), ∀ x ∈ 𝔞 ^ n, c x ∈ 𝔟 ^ n
@@ -61,17 +61,17 @@ theorem map_mem_pow (c : K →+* K) {𝔞 𝔟 : Submodule (𝓞 K) K} (h : ∀ 
     · rw [map_add]; exact add_mem ha hb
 
 /- English proof (translation)
-Take `⟨n, a, hn, ha⟩` from `exists_pow_eq_span h`. Establish `hb' : 𝔟 ^ n = Submodule.span (𝓞 K) {c a}`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Establish `h1` using `map_mem_pow c (fun x hx => (hb x).1 hx) n y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[ha, Submodule.mem_span_singleton]`. Take `⟨r, hr⟩` from `h1`. Use `Submodule.mem_span_singleton.2 ⟨⟨c r, map_isIntegral_int c r.isIntegral_coe⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc y, ← hr, Algebra.smul_def r, map_mul]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Conclude with `map_mem_pow c (fun x hx => (hb _).2 (by rwa [hc])) n a (ha ▸ Submodule.mem_span_singleton_self a)`. Establish `h2 : Submodule.span (𝓞 K) {a * c a} = 1`. Rewrite using `[← Set.singleton_mul_singleton, ← Submodule.span_mul_span, ← ha, ← hb', ← mul_pow, h, one_pow]`. Establish `h0 : a * c a ≠ 0` using `fun h0 => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h0, Submodule.span_singleton_eq_bot.2 rfl]`. Establish `: (1 : K) ∈ (⊥ : Submodule (𝓞 K) K)` using `h2 ▸ Submodule.mem_one.2 ⟨1, map_one _⟩`. Simplify using `at this`. Establish `a0 : a ≠ 0` using `left_ne_zero_of_mul h0`. Establish `c0 : c a ≠ 0` using `right_ne_zero_of_mul h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n + n, a / c a, by omega, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, hc]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[pow_add, ha, Submodule.span_mul_span, Set.singleton_mul_singleton, ← mul_one (Submodule.span (𝓞 K) {a / c a}), ← h2, Submodule.span_mul_span, Set.singleton_mul_singleton]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_span_normOne (c : K →+* K) (hc : ∀ x, c (c x) = x) {𝔞 𝔟 : Submodule (𝓞 K) K}
     (hb : ∀ x, x ∈ 𝔟 ↔ c x ∈ 𝔞) (h : 𝔞 * 𝔟 = 1) :
@@ -106,9 +106,9 @@ theorem exists_pow_eq_span_normOne (c : K →+* K) (hc : ∀ x, c (c x) = x) {�
 end Ideals
 
 /- English proof (translation)
-Set `` to `D.host.cmStar`. Establish `hs : ∀ x : D.host.E, star x = D.host.conj x` using `bridge_star_holds D.R D.host`. Introduce and unpack `𝔞 ⟨𝔟, hb, h⟩`. Take `⟨n, z, hn, hz, e⟩` from `exists_pow_eq_span_normOne (D.host.conj : D.host.E →+* D.host.E) (fun x => by change D.host.conj (D.host.conj x) = x; rw [← hs, ← hs, star_star]) hb h`. Establish `hz' : star z * z = 1` using `by rw [hs]; exact hz`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨n, ⟨z, hz', by rw [mul_comm]; exact hz'⟩, hn, e⟩`.
+Supply the required witnesses or components.
 -/
 theorem normOne_pow (D : D7) : NormOnePowerPrincipal D := by
   let := D.host.cmStar
@@ -125,7 +125,7 @@ variable {K : Type} [Field K] [NumberField K] {C : Type} [NormedField C] [IsUltr
 
 omit [NumberField K] in
 /- English proof (translation)
-The claim follows from `norm_le_one_of_isIntegral (map_isIntegral_int ψ a.isIntegral_coe)`.
+A detailed English derivation is pending.
 -/
 theorem norm_int_le (a : 𝓞 K) : ‖ψ (a : K)‖ ≤ 1 := norm_le_one_of_isIntegral (map_isIntegral_int ψ a.isIntegral_coe)
 
@@ -156,7 +156,7 @@ def lamTau (τ : D.what₂.Tau) : D.host.E →+* ℂ_[l] :=
   lam.comp ((embT D τ).codRestrict Qbar (emb_mem (embT D τ)))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Unfold `tauEmb lamC`. Rewrite using `[dif_pos (emb_mem (embT D τ) x)]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tauEmb_eq (τ : D.what₂.Tau) : tauEmb D lam τ = lamTau D lam τ := by
   funext x

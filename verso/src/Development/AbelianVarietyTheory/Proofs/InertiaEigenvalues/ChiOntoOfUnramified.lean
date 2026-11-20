@@ -8,11 +8,9 @@ namespace GlobalTheory.UnramCyc
 open PowerSeries in
 
 /- English proof (translation)
-Introduce `l _ P K hK c`. Establish `hnorm : ‖((c : ℤ_[l]) : ℚ_[l])‖ = 1`. Rewrite using `[PadicInt.padic_norm_e_of_padicInt]`. Conclude with `PadicInt.norm_units c`. Take `⟨g, hg, hgc⟩` from `_root_.GlobalTheory.Cyc.exists_chi_eq K P.χQ P.χQ_cyc _ hnorm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hK0 : _root_.Formalism.BasicNotions.Loc.K0 K = K.1`. Unfold `_root_.Formalism.BasicNotions.Loc.K0`. Conclude with `inf_eq_left.mpr hK`. Use `⟨g, ?_, hgc⟩` and prove the remaining obligations. Unfold `_root_.Formalism.BasicNotions.Loc.GK`.
-
-Rewrite using `[← hK0]`. Conclude with `hg`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UnramCyc.chi_onto_of_unramified : ∀ {l : ℕ} [Fact l.Prime] (P : _root_.Formalism.BasicNotions.LocPrime l) (K : _root_.Formalism.BasicNotions.Loc.FinExt l),
     K.1 ≤ _root_.Formalism.BasicNotions.Loc.MaximalUnramifiedExtension l → ∀ c : ℤ_[l]ˣ, ∃ g ∈ _root_.Formalism.BasicNotions.Loc.GK K, (P.χQ g : ℚ_[l]) = ((c : ℤ_[l]) : ℚ_[l]) := by

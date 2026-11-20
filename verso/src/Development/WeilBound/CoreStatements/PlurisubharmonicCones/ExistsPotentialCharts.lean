@@ -28,26 +28,26 @@ section One
 variable {γ : (Fin D.n → ℂ) → (Σ k, J k) → ℂ} {e e' : OpenPartialHomeomorph M.Xc (Fin D.n → ℂ)}
 
 /- English proof (translation)
-The claim follows from `h.target ▸ e.map_source hx`.
+A detailed English derivation is pending.
 -/
 theorem IsChartOf.mem_ball (h : IsChartOf M γ e) {x : M.Xc} (hx : x ∈ e.source) : e x ∈ ball (0 : Fin D.n → ℂ) 1 :=
   h.target ▸ e.map_source hx
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.good.mem _ (h.mem_ball hx), by rw [← h.symm, e.left_inv hx]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsChartOf.sec (h : IsChartOf M γ e) (x : M.Xc) (hx : x ∈ e.source) :
     γ (e x) ∈ mcPts (mCoordIdeal D.y) ∧ M.proj (γ (e x)) = x :=
   ⟨h.good.mem _ (h.mem_ball hx), by rw [← h.symm, e.left_inv hx]⟩
 
 /- English proof (translation)
-Introduce `j y hy` and use `analyticAt_pi_iff.1 ((h.good.an _ (h.mem_ball hy.2)).comp_of_eq ((h.compat j).1 y hy) rfl) p`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsChartOf.holo (h : IsChartOf M γ e) (p : Σ k, J k) : M.atlas.HoloOn e.source fun x => γ (e x) p :=
   fun j y hy => analyticAt_pi_iff.1 ((h.good.an _ (h.mem_ball hy.2)).comp_of_eq ((h.compat j).1 y hy) rfl) p
 
 /- English proof (translation)
-Rewrite using `[h.target]`. Conclude with `(ContDiffOn.comp hr (h.good.an.contDiffOn_of_completeSpace.restrict_scalars ℝ) fun t ht => (h.good.mem t ht).1).log fun t ht => (ref.pos _ (h.good.mem t ht).1).ne'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsChartOf.q_smooth (h : IsChartOf M γ e) {ref : HermLine J} (hr : IsSmoothHerm ref) :
     ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun t => Real.log (ref.h (γ t))) e.target := by
@@ -56,9 +56,9 @@ theorem IsChartOf.q_smooth (h : IsChartOf M γ e) {ref : HermLine J} (hr : IsSmo
     fun t ht => (h.good.mem t ht).1).log fun t ht => (ref.pos _ (h.good.mem t ht).1).ne'
 
 /- English proof (translation)
-Establish `hs : closedBall (0 : Fin D.n → ℂ) r ⊆ e.target` using `h.target ▸ closedBall_subset_ball (hr.trans_le hr')`. Establish `hc : IsClosed (e.symm '' closedBall 0 r)` using `((isCompact_closedBall _ _).image_of_continuousOn (e.continuousOn_symm.mono hs)).isClosed`. Establish `hsub : e.source ∩ e ⁻¹' ball 0 r ⊆ e.symm '' closedBall 0 r` using `fun x hx => ⟨e x, ball_subset_closedBall hx.2, e.left_inv hx.1⟩`. Use `(closure_minimal hsub hc).trans ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨e.map_target (hs ht), ?_⟩` and prove the remaining obligations. Rewrite using `[mem_preimage, e.right_inv (hs ht)]`. Conclude with `closedBall_subset_ball hr ht`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsChartOf.closure_sub (h : IsChartOf M γ e) {r r' : ℝ} (hr : r < r') (hr' : r' ≤ 1) :
     closure (e.source ∩ e ⁻¹' ball 0 r) ⊆ e.source ∩ e ⁻¹' ball 0 r' := by
@@ -75,16 +75,16 @@ theorem IsChartOf.closure_sub (h : IsChartOf M γ e) {r r' : ℝ} (hr : r < r') 
   exact closedBall_subset_ball hr ht
 
 /- English proof (translation)
-The claim follows from `(M.fibre _ hz _ (h.sec _ hs).1).1 (h.sec _ hs).2.symm`.
+A detailed English derivation is pending.
 -/
 theorem IsChartOf.torus (h : IsChartOf M γ e) {z : (Σ k, J k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal D.y))
     (hs : M.proj z ∈ e.source) : ∃ c : K → ℂ, (∀ k, c k ≠ 0) ∧ γ (e (M.proj z)) = torusSmul c z :=
   (M.fibre _ hz _ (h.sec _ hs).1).1 (h.sec _ hs).2.symm
 
 /- English proof (translation)
-Take `⟨c, hc, he⟩` from `h.torus hz hs`. Establish `ht : star (e (M.proj z)) ∈ e'.target` using `h'.target ▸ star_mem_ball.2 (h.mem_ball hs)`. Establish `key : M.proj (conjVec z) = e'.symm (star (e (M.proj z)))`. Rewrite using `[h'.symm]`. Use `(M.fibre _ (SncPiece.conj_mem hz) _ (h'.good.mem _ (h'.target ▸ ht))).2 ⟨fun k => starRingEnd ℂ (c k), fun k => (map_ne_zero _).2 (hc k), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [cj, star_star, he, conj_torus]`. Rewrite using `[key]`. Conclude with `⟨e'.map_target ht, e'.right_inv ht⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem IsChartOf.conj (h : IsChartOf M γ e) (h' : IsChartOf M (cj γ) e') {z : (Σ k, J k) → ℂ}
     (hz : z ∈ mcPts (mCoordIdeal D.y)) (hs : M.proj z ∈ e.source) :
@@ -100,7 +100,7 @@ theorem IsChartOf.conj (h : IsChartOf M γ e) (h' : IsChartOf M (cj γ) e') {z :
   exact ⟨e'.map_target ht, e'.right_inv ht⟩
 
 /- English proof (translation)
-Use `⟨fun hs => ?_, fun hs => (h.conj h' hz hs).1⟩` and prove the remaining obligations. Use `(h'.conj (e' := e) (by rwa [cj_cj]) (SncPiece.conj_mem hz) hs).1` as an intermediate fact. Rewrite `this` using `[SncPiece.conj_conj]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsChartOf.conj_iff (h : IsChartOf M γ e) (h' : IsChartOf M (cj γ) e') {z : (Σ k, J k) → ℂ}
     (hz : z ∈ mcPts (mCoordIdeal D.y)) : M.proj (conjVec z) ∈ e'.source ↔ M.proj z ∈ e.source := by
@@ -109,7 +109,7 @@ theorem IsChartOf.conj_iff (h : IsChartOf M γ e) (h' : IsChartOf M (cj γ) e') 
   rwa [SncPiece.conj_conj] at this
 
 /- English proof (translation)
-Rewrite using `[mem_inter_iff, mem_inter_iff, h.conj_iff h' hz]`. Use `and_congr_right fun hs => ?_` and prove the remaining obligations. Rewrite using `[mem_preimage, mem_preimage, (h.conj h' hz hs).2, star_mem_ball]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsChartOf.conj_ball (h : IsChartOf M γ e) (h' : IsChartOf M (cj γ) e') {z : (Σ k, J k) → ℂ}
     (hz : z ∈ mcPts (mCoordIdeal D.y)) (r : ℝ) :
@@ -119,9 +119,9 @@ theorem IsChartOf.conj_ball (h : IsChartOf M γ e) (h' : IsChartOf M (cj γ) e')
   rw [mem_preimage, mem_preimage, (h.conj h' hz hs).2, star_mem_ball]
 
 /- English proof (translation)
-Take `⟨c, hc, he⟩` from `h.torus hz hs`. Rewrite using `[he]`. Use `⟨fun hb => D.bd_torus z hb c hc, fun hb => ?_⟩` and prove the remaining obligations. Use `D.bd_torus _ hb (fun k => (c k)⁻¹) fun k => inv_ne_zero (hc k)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `p`. Simplify using `[torusSmul, inv_mul_cancel_left₀ (hc p.1)]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem IsChartOf.mem_bd (h : IsChartOf M γ e) {z : (Σ k, J k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal D.y))
     (hs : M.proj z ∈ e.source) : z ∈ D.Bd ↔ γ (e (M.proj z)) ∈ D.Bd := by
@@ -168,16 +168,16 @@ noncomputable def famCharts {N : ℕ} (γ : Fin N → (Fin D.n → ℂ) → (Σ 
     exact ⟨V, hV, hyV, G, hG, fun z hz => he z ⟨⟨hz.1.1, hz.2⟩, hz.1.2⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(D.chart a).analytic, (D.chart a).mem, (D.chart a).injective, GlobalTheory.T.chart_local_analytic_trivialization K J II Ψ Ω W D a⟩`.
+Supply the required witnesses or components.
 -/
 theorem good_chart (D : ComponentData II Ψ K J Ω W) (a : Fin D.nCharts) :
     Good (n := D.n) (mCoordIdeal D.y) (D.chart a).γ :=
   ⟨(D.chart a).analytic, (D.chart a).mem, (D.chart a).injective, GlobalTheory.T.chart_local_analytic_trivialization K J II Ψ Ω W D a⟩
 
 /- English proof (translation)
-Establish `h : ∀ b : ℝ, 0 < b → ∀ᶠ ε in 𝓝[>] (0 : ℝ), 2 * ε ≤ b` using `fun b hb => by filter_upwards [Ioo_mem_nhdsGT (half_pos hb)] with ε hε`. Combine the linear relations using `[hε.2]`. Establish `h2 : ∀ᶠ ε in 𝓝[>] (0 : ℝ), ∀ i, t₀ i ≠ 0 → 2 * ε ≤ ‖t₀ i‖` using `eventually_all.2 fun i => by`. Distinguish the cases in `hi : t₀ i = 0`. Conclude with `Eventually.of_forall fun _ h0 => absurd hi h0`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `(h _ (norm_pos_iff.2 hi)).mono fun _ h1 _ => h1`. Take `⟨ε, ⟨⟨h1, h3⟩, h4⟩, h5⟩` from `((((h r hr).and (h (1 / 2) (by norm_num))).and h2).and self_mem_nhdsWithin).exists`. Conclude with `⟨ε, h5, h1, by linarith, h4⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eps {n : ℕ} (t₀ : Fin n → ℂ) {r : ℝ} (hr : 0 < r) :
     ∃ ε : ℝ, 0 < ε ∧ 2 * ε ≤ r ∧ ε ≤ 1 / 4 ∧ ∀ i, t₀ i ≠ 0 → 2 * ε ≤ ‖t₀ i‖ := by
@@ -200,33 +200,29 @@ open ReciprocityTheory.AnForm (levi)
 
 open LevelTowerAlt.Charts Metric Set in
 /- English proof (translation)
-Introduce `K _ J _ II Ψ _ Ω _ _ W _ _ D M ref r hr hrc hr0`. Set `I` to `{p : Fin D.nCharts × (Fin D.n → ℂ) // ‖p.2‖ ≤ 1 / 2}`. Use `choose ε hε0 hεr hε4 hεs using fun p : I => exists_eps p.1.2 (hr0 p.1.1 p.1.2)`. Set `g : I → (Fin D.n → ℂ) → (Σ k, J k) → ℂ` to `fun p t => (D.chart p.1.1).γ (p.1.2 + (ε p : ℂ) • t)`. Set `g' : I × Bool → (Fin D.n → ℂ) → (Σ k, J k) → ℂ` to `fun i => cond i.2 (cj (g i.1)) (g i.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : ∀ p, Good (mCoordIdeal D.y) (g p)` using `fun p => (good_chart D p.1.1).affine p.2 (hε0 p) (hε4 p)`. Establish `hg' : ∀ i, Good (mCoordIdeal D.y) (g' i)`. Introduce and unpack `⟨p, _ | _⟩`. Use `exacts [hg p, (hg p).cj]`. Establish `hg0 : ∀ p, g p 0 = (D.chart p.1.1).γ p.1.2` using `fun p => congrArg (D.chart p.1.1).γ (by rw [smul_zero, add_zero] : p.1.2 + (ε p : ℂ) • (0 : Fin D.n → ℂ) = p.1.2)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose E hEt hEs hEc using fun i => (hg' i).exists_chart M`. Establish `hE : ∀ i, IsChartOf M (g' i) (E i)` using `fun i => ⟨hg' i, hEt i, hEs i, hEc i⟩`. Take `⟨F, hF⟩` from `isCompact_univ.elim_finite_subcover (fun p : I => (E (p, false)).source ∩ E (p, false) ⁻¹' ball 0 (1 / 4)) (fun p => (E _).isOpen_inter_preimage isOpen_ball) (fun x _ => by`. Take `⟨z, hz, rfl⟩` from `M.surj x`. Take `⟨a, t, ht, c, hc, e⟩` from `D.chart_cover z hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (0 : Fin D.n → ℂ) ∈ (E (⟨(a, t), ht⟩, false)).target` using `hEt _ ▸ mem_ball_self one_pos`. Establish `e0 : g' (⟨(a, t), ht⟩, false) 0 = (D.chart a).γ t` using `hg0 ⟨(a, t), ht⟩`. Establish `e1 : M.proj z = (E (⟨(a, t), ht⟩, false)).symm 0`. Rewrite using `[hEs]`. Conclude with `((M.fibre _ ((hg' _).mem _ (mem_ball_self one_pos)) _ hz).2 ⟨c, hc, by rw [e0]; exact e⟩).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mem_iUnion.2 ⟨⟨(a, t), ht⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Use `⟨(E _).map_target h0, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_preimage, (E _).right_inv h0]`. Conclude with `mem_ball_self (by norm_num))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `sg` to `(Fintype.equivFin (F × Bool)).symm`. Set `ix : Fin (Fintype.card (F × Bool)) → I × Bool` to `fun j => ((sg j).1.1, (sg j).2)`. Set `fl : Equiv.Perm (F × Bool)` to `Equiv.prodCongr (Equiv.refl _) Equiv.boolNot`. Set `κ : Equiv.Perm (Fin (Fintype.card (F × Bool)))` to `(sg.trans fl).trans sg.symm`. Establish `hκ : ∀ j, ix (κ j) = ((ix j).1, !(ix j).2)` using `fun j => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 
-Simplify using `[ix, κ, fl, Equiv.boolNot]`. Establish `hcj : ∀ j, g' (ix (κ j)) = cj (g' (ix j))` using `fun j => by`. Rewrite using `[hκ]`. Break down `ix j with ⟨p, _ | _⟩` into its components or cases. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(cj_cj _).symm`. Establish `hκκ : ∀ j, κ (κ j) = j` using `fun j => by`. Establish `: ∀ x, fl (fl x) = x` using `fun x => by simp [fl, Equiv.boolNot, Prod.map]`. Simplify using `only [κ, Equiv.trans_apply, Equiv.apply_symm_apply, this, Equiv.symm_apply_apply]`. Establish `hqq : ∀ j t, Real.log (ref.h (g' (ix (κ j)) (star t))) = Real.log (ref.h (g' (ix j) t))` using `fun j t => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hcj]`. Simplify using `only [cj, star_star]`. Conclude with `congrArg Real.log (hrc _)`. Establish `hcov : ∀ x, ∃ j, x ∈ (E (ix j)).source ∩ E (ix j) ⁻¹' ball 0 (1 / 4)` using `fun x => by`. Take `⟨p, hp, hx⟩` from `mem_iUnion₂.1 (hF (mem_univ x))`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨sg.symm (⟨p, hp⟩, false), ?_⟩` and prove the remaining obligations. Simplify `hx` using `only [ix, Equiv.apply_symm_apply]`. Establish `hdis : ∀ i : I × Bool, (∀ t, g' i t = (D.chart i.1.1.1).γ (i.1.1.2 + (ε i.1 : ℂ) • t)) ∨ ∀ t, g' i t = conjVec ((D.chart i.1.1.1).γ (i.1.1.2 + (ε i.1 : ℂ) • star t))`. Introduce and unpack `⟨p, _ | _⟩`. Use `exacts [Or.inl fun _ => rfl, Or.inr fun _ => rfl]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨famCharts (fun j => g' (ix j)) (fun j => E (ix j)) (fun j => hE _) hcov ref hr, fun j => Finset.univ.filter fun i => (i : ℕ) < (D.chart (ix j).1.1.1).a ∧ (ix j).1.1.2 i = 0, κ, fun x y hy => ⟨_, OpenPartialHomeomorph.open_source _, hy, subset_rfl, _, (hE _).sec, (hE _).holo, fun …` and prove the remaining obligations. Establish `hs' : M.proj z ∈ (E (ix j)).source` using `hs`. Establish `ht : ‖E (ix j) (M.proj z)‖ < 2` using `(mem_ball_zero_iff.1 ((hE _).mem_ball hs')).trans one_lt_two`. Express the relevant statement in the definitionally equal form `_ ↔ E (ix j) (M.proj z) ∈ _`. Rewrite using `[(hE _).mem_bd hz hs']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Break down `hdis (ix j) with h | h` into its components or cases. Rewrite using `[h, SncPiece.mem_bd_iff D (ix j).1.2 (hε0 _) (hε4 _) (fun i _ hi => hεs _ i hi) ht]`. Simplify using `[ReciprocityTheory.AnForm.A.coordDiv]`. Rewrite using `[h, SncPiece.conj_mem_bd_iff, SncPiece.mem_bd_iff D (ix j).1.2 (hε0 _) (hε4 _) (fun i _ hi => hεs _ i hi) (by rwa [norm_star])]`. Simplify using `[ReciprocityTheory.AnForm.A.coordDiv]`.
-
-Conclude with `(hdis (ix j)).imp (fun h t _ => (hEs _ t).trans (congrArg M.proj (h t))) fun h t _ => (hEs _ t).trans (congrArg M.proj (h t))`. Establish `h' : IsChartOf M (cj (g' (ix j))) (E (ix (κ j)))` using `hcj j ▸ hE (ix (κ j))`. Conclude with `⟨(hE _).conj_iff h' hz, (hE _).conj_ball h' hz _, (hE _).conj_ball h' hz _, fun hs => ((hE _).conj h' hz hs).2⟩`. Use `(hdis (ix j)).imp (fun h t _ => ⟨(hEs _ t).trans (congrArg M.proj (h t)), ?_⟩) fun h t _ => ⟨(hEs _ t).trans (congrArg M.proj (h t)), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Real.log (ref.h (g' (ix j) t)) = _`.
-
-Rewrite using `[h]`. Express the relevant statement in the definitionally equal form `Real.log (ref.h (g' (ix j) t)) = _`. Rewrite using `[h]`. Conclude with `congrArg Real.log (hrc _)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LevelTowerAlt.exists_potential_charts : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : Ψ → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (D : ComponentData II Ψ K J Ω W) (M : XModel D) (ref : HermLine J) (r : Fin D.nCharts → (Fin D.n → ℂ) → ℝ), IsSmoothHerm ref → IsConjInvariantH ref → (∀ a t, 0 < r a t) → ∃ (P : GroundTheory.Heights₂.Heights.Regular.PotentialCharts M.atlas) (S : Fin P.N → Finset (Fin D.n)) (κ : Equiv.Perm (Fin P.N)), ThRef M ref P.th ∧ Adapted M P S ∧ FromSnc M P ∧ SymmCharts M P κ ∧ ∀ j, ∃ (a : Fin D.nCharts) (t₀ : Fin D.n → ℂ) (ε : ℝ), ‖t₀‖ ≤ 1 / 2 ∧ 0 < ε ∧ 2 * ε ≤ r a t₀ ∧ ε ≤ 1 / 4 ∧ ((∀ t ∈ (P.chart j).target, (P.chart j).symm t = M.proj ((D.chart a).γ (t₀ + (ε : ℂ) • t)) ∧ P.q j t = Real.log (ref.h ((D.chart a).γ (t₀ + (ε : ℂ) • t)))) ∨ ∀ t ∈ (P.chart j).target, (P.chart j).symm t = M.proj (conjVec ((D.chart a).γ (t₀ + (ε : ℂ) • star t))) ∧ P.q j t = Real.log (ref.h ((D.chart a).γ (t₀ + (ε : ℂ) • star t)))) := by
   intro K _ J _ II Ψ _ Ω _ _ W _ _ D M ref r hr hrc hr0

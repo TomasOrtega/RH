@@ -46,42 +46,42 @@ def mapDown (V W : HSp D) (x : WA V W) : Matrix (Fin V.rank) (Fin W.rank) (AEf D
   HMul.hMul (x.map (finPart D)) (gramFin W)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[mapUp, Matrix.mul_apply, add_mul, Finset.sum_add_distrib]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mapUp_add (V W : HSp D) (x y : WA V W) : mapUp V W (x + y) = mapUp V W x + mapUp V W y := by
   ext i j
   simp [mapUp, Matrix.mul_apply, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[mapDown, Matrix.mul_apply, add_mul, Finset.sum_add_distrib]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mapDown_add (V W : HSp D) (x y : WA V W) : mapDown V W (x + y) = mapDown V W x + mapDown V W y := by
   ext i j
   simp [mapDown, Matrix.mul_apply, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[mapUp, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mapUp_neg (V W : HSp D) (x : WA V W) : mapUp V W (-x) = -mapUp V W x := by
   ext i j
   simp [mapUp, Matrix.mul_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[mapDown, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mapDown_neg (V W : HSp D) (x : WA V W) : mapDown V W (-x) = -mapDown V W x := by
   ext i j
   simp [mapDown, Matrix.mul_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[mapUp, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mapUp_zero (V W : HSp D) : mapUp V W 0 = 0 := by
   ext i j
   simp [mapUp, Matrix.mul_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[mapDown, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mapDown_zero (V W : HSp D) : mapDown V W 0 = 0 := by
   ext i j
@@ -146,7 +146,7 @@ def HyperspecialFixesVacuum (Wl : WeilTied D X T) : Prop :=
       ∀ g ∈ KsphC V S, ∀ h ∈ KsphC W S, ∀ Φ : X.Sch V W, IsVacuum Wl V W S Φ → Wl.om V W χ χ' (g, h) Φ = Φ
 
 /- English proof (translation)
-Introduce `l hl` and use `h l ⟨⟨hl.1.1, fun v hv => hl.1.2 v (hS hv)⟩, hl.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsVacuum.mono (Wl : WeilTied D X T) (V W : HSp D) {S S' : Finset (HeightOneSpectrum (𝓞 D.host.F))} (hS : S ⊆ S')
     {Φ : X.Sch V W} (h : IsVacuum Wl V W S Φ) : IsVacuum Wl V W S' Φ :=

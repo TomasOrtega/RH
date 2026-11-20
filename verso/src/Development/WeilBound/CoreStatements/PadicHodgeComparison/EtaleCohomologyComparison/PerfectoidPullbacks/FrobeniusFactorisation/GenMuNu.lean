@@ -12,7 +12,7 @@ namespace CrystallineSemistableComparison.IterG
 variable {O : Type} [CommRing O] {F : B.Fn O} {b : Base} {ht : b.t = 1} {κ κ' : O →+* b.R ⧸ b.I}
 
 /- English proof (translation)
-Establish `h1` using `comp_eq (ht := ht) c Pi d₁ si hi d₂ Po so (PtN P N) (strN P str N) ho hpt j x`. Establish `h2` using `iter_pull (ht := ht) c dφ P str hc j N x`. Conclude with `h1.trans h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gen_mu_nu {Λ : Type} [CommRing Λ] (c : Λ →+* b.R) {φb : b.R →+* b.R} (dφ : IsDPMorphism b.γ b.γ φb)
     (P : F.ptK κ ⟶ F.ptK κ) (str : ∀ (B₀ : CommRingCat.{0}) (y : (F.ptK κ).obj B₀) (r : b.R),

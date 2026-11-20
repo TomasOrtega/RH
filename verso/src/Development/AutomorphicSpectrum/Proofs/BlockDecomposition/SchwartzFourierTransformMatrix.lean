@@ -6,7 +6,7 @@ open MeasureTheory
 namespace GlobalTheory.CompanionTheory.FourierMatrix
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.P6.r12b.GlobalTheory.CompanionTheory.FourierMatrix.exists_schwartz_bilinear_transform μ B hB φ`.
+A detailed English derivation is pending.
 -/
 theorem exists_schwartz_bilinear_transform {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V)
@@ -17,7 +17,7 @@ theorem exists_schwartz_bilinear_transform {V : Type*} [NormedAddCommGroup V] [N
   _root_.UpperTheory.Reformulated.B.P6.r12b.GlobalTheory.CompanionTheory.FourierMatrix.exists_schwartz_bilinear_transform μ B hB φ
 
 /- English proof (translation)
-Simplify using `[Matrix.trace, Matrix.mul_apply, Matrix.conjTranspose_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trace_conjTranspose_mul (m n : ℕ) (u v : Fin m → Fin n → ℂ) :
     Matrix.trace ((Matrix.of u)ᴴ * Matrix.of v) = ∑ j, ∑ i, star (u i j) * v i j := by
@@ -61,13 +61,13 @@ theorem traceForm_apply (m n : ℕ) (s : ℂ) (u v : Fin m → Fin n → ℂ) :
     traceForm m n s u v = (s * Matrix.trace ((Matrix.of u)ᴴ * Matrix.of v)).re := rfl
 
 /- English proof (translation)
-Establish `h0` using `h (fun i j => star s * u i j)`. Rewrite `h0` using `[traceForm_apply, trace_conjTranspose_mul]`. Establish `h1 : s * ∑ j, ∑ i, star (u i j) * (star s * u i j) = ((Complex.normSq s * ∑ j, ∑ i, Complex.normSq (u i j) : ℝ) : ℂ)`. Use `push_cast`. Simplify using `only [Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.normSq_eq_conj_mul_self, Complex.normSq_eq_conj_mul_self]`. Simplify using `only [Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h0` using `[h1, Complex.ofReal_re]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsn : Complex.normSq s ≠ 0` using `by simpa [Complex.normSq_eq_zero] using hs`. Establish `h2 : ∑ j, ∑ i, Complex.normSq (u i j) = 0`. Break down `mul_eq_zero.mp h0 with h3 | h3` into its components or cases. Conclude with `absurd h3 hsn`. Conclude with `h3`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i j`. Establish `h3` using `(Finset.sum_eq_zero_iff_of_nonneg (fun j _ => Finset.sum_nonneg fun i _ => Complex.normSq_nonneg (u i j))).mp h2 j (Finset.mem_univ j)`. Establish `h4` using `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => Complex.normSq_nonneg (u i j))).mp h3 i (Finset.mem_univ i)`. Simplify `h4` using `[Complex.normSq_eq_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem traceForm_nondegenerate (m n : ℕ) (s : ℂ) (hs : s ≠ 0) (u : Fin m → Fin n → ℂ)
     (h : ∀ v, traceForm m n s u v = 0) : u = 0 := by
@@ -96,9 +96,9 @@ theorem traceForm_nondegenerate (m n : ℕ) (s : ℂ) (hs : s ≠ 0) (u : Fin m 
   simpa [Complex.normSq_eq_zero] using h4
 
 /- English proof (translation)
-Introduce `m n C s hs φ`. Use `haveI : Measure.IsAddHaarMeasure (volume : Measure (Fin n → ℂ)) := Measure.pi.isAddHaarMeasure _`. Use `haveI : Measure.IsAddHaarMeasure (volume : Measure (Fin m → Fin n → ℂ)) := Measure.pi.isAddHaarMeasure _`. Take `⟨ψ, hψ⟩` from `exists_schwartz_bilinear_transform (volume : Measure (Fin m → Fin n → ℂ)) (traceForm m n s) (traceForm_nondegenerate m n s hs) φ`. Use `⟨C • ψ, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `u`. Simplify using `only [SchwartzMap.smul_apply, hψ, smul_eq_mul, traceForm_apply]`.
+A detailed English derivation is pending.
 -/
 theorem exists_schwartz_trace_transform :
     ∀ (m n : ℕ) (C s : ℂ), s ≠ 0 → ∀ φ : SchwartzMap (Fin m → Fin n → ℂ) ℂ,

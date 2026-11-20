@@ -9,15 +9,15 @@ open MvPolynomial NumberField Filter Topology ReciprocityTheory.ChartRestriction
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Introduce `Ψ _ _ N j p τ fr hj hp`. Use `⟨Bound₂.ep N j p fr, Bound₂.abs_ep_le hj hp fr, fun h => ?_, fun h => ?_, fun Q => Bound₂.delta_one hj p τ fr Q⟩` and prove the remaining obligations. Establish `e : (fun n : ℕ => ((p : ℝ)⁻¹) ^ (n + 1) * Bound₂.rk N j (fr n)) = fun n : ℕ => (j : ℝ) / (p : ℝ) ^ (n + 1)`. Use function extensionality and compare the values at `n`. Take `⟨σ, hσ⟩` from `h n`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hσ, inv_pow, div_eq_inv_mul]`. Both sides reduce to the same expression. Unfold `Bound₂.ep`. Rewrite using `[e, (ep_split p j hp).tsum_eq, sub_self]`. Establish `e : (fun n : ℕ => ((p : ℝ)⁻¹) ^ (n + 1) * Bound₂.rk N j (fr n)) = fun n : ℕ => (if Even (n + 1) then (j : ℝ) else (N : ℝ) - j) / (p : ℝ) ^ (n + 1)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `n`. Rewrite using `[inv_pow, div_eq_inv_mul]`. Use `congr 1`. Break down `hs : fr n with σ | σ` into its components or cases. Establish `: Odd n` using `(h n).1 ⟨σ, hs⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[if_pos this.add_one]`. Both sides reduce to the same expression. Establish `: ¬ Odd n` using `fun ho => by`. Take `⟨σ', h'⟩` from `(h n).2 ho`. Rewrite `h'` using `[hs]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the cases of `h'`. Rewrite using `[if_neg (by simpa [Nat.even_add_one] using this)]`. Both sides reduce to the same expression. Unfold `Bound₂.ep`. Rewrite using `[e, (ep_inert p N j hp hj).1.tsum_eq]`.
+Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

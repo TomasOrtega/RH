@@ -14,7 +14,7 @@ namespace GlobalTheory.FlatTrans
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k)
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.LocChar.ι_mul, GlobalTheory.LocChar.ι_mul, p.ι_π, p.ι_π]`. Establish `h` using `GlobalTheory.LocChar.e_mul_ι p m`. Take the linear combination `(a * c * p.e + a * c) * h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ι_sandwich (a c : AE D) (m : k) : p.ι (p.π a * m * p.π c) = a * p.ι m * c := by
   rw [GlobalTheory.LocChar.ι_mul, GlobalTheory.LocChar.ι_mul, p.ι_π, p.ι_π]
@@ -22,7 +22,7 @@ theorem ι_sandwich (a c : AE D) (m : k) : p.ι (p.π a * m * p.π c) = a * p.ι
   linear_combination (a * c * p.e + a * c) * h
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Finset.sum_mul, map_sum, ι_sandwich]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mul_map_ι_mul {a b l m : Type} [Fintype a] [Fintype b] (A : Matrix m a (AE D)) (M : Matrix a b k)
     (C : Matrix b l (AE D)) : A * M.map p.ι * C = (A.map p.π * M * C.map p.π).map p.ι := by
@@ -30,15 +30,15 @@ theorem mul_map_ι_mul {a b l m : Type} [Fintype a] [Fintype b] (A : Matrix m a 
   simp only [Matrix.mul_apply, Matrix.map_apply, Finset.sum_mul, map_sum, ι_sandwich]
 
 /- English proof (translation)
-Use `ext`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem map_incA_map {a b : ℕ} (M : Matrix (Fin a) (Fin b) D.host.E) : (M.map (incA D)).map p.π = M.map p.pr := by
   ext; rfl
 
 /- English proof (translation)
-Take `⟨-, he, v, ε, hε, hsum⟩` from `p.split`. Use `⟨v, fun y => GlobalTheory.FinPl.Model.mem_idAt_iff.2 ?_⟩` and prove the remaining obligations. Establish `hε'` using `GlobalTheory.AdelicU.Supp.isPlaceIdem_iff.1 hε`. Substitute `hε'` using the available equality. Rewrite using `[← hsum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `GlobalTheory.LocChar.e_mul_ι p y`. Establish `h2 : cA D p.e * p.e = 0` using `by rw [mul_comm]; exact he`. Take the linear combination `(1 - cA D p.e) * h1 + p.ι y * h2`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ι_mem_idAt : ∃ v, ∀ y : k, p.ι y ∈ GlobalTheory.FinPl.idAt D (· = v) := by
   obtain ⟨-, he, v, ε, hε, hsum⟩ := p.split
@@ -51,7 +51,7 @@ theorem ι_mem_idAt : ∃ v, ∀ y : k, p.ι y ∈ GlobalTheory.FinPl.idAt D (·
   linear_combination (1 - cA D p.e) * h1 + p.ι y * h2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hΦ.1.comp_continuous (continuous_add_const t), hΦ.2.comp_homeomorph (Homeomorph.addRight t)⟩`.
+Supply the required witnesses or components.
 -/
 theorem sb_translate {X : Type} [TopologicalSpace X] [AddGroup X] [IsTopologicalAddGroup X] {Φ : X → ℂ}
     (hΦ : Φ ∈ SB X) (t : X) : (fun z => Φ (z + t)) ∈ SB X :=
@@ -64,11 +64,11 @@ def bigPt (c ρ : ℕ) (x : Matrix n (n' ⊕ Unit) k) : Matrix (n ⊕ Fin c) (n'
   fromBlocks x.toCols₁ (Matrix.of fun r i => if i.val = ρ then x r (Sum.inr ()) else 0) 0 0
 
 /- English proof (translation)
-Unfold `GlobalTheory.LocFlat.flCol GlobalTheory.RootEx.opE`. Use `congr 1`. Use function extensionality and compare the values at `e`. Establish `h1 : affPt (ρ + 1) t.toCols₁ e + GlobalTheory.LocFlat.colAt n' c (ρ + 1) (fun r => t r (Sum.inr ())) + bigPt c ρ x = affPt (ρ + 1) (t + x).toCols₁ e + GlobalTheory.LocFlat.colAt n' c (ρ + 1) (fun r => (t + x) r (Sum.inr ()))`. Use extensionality with `i j`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Simplify using `[affPt, basePt, GlobalTheory.LocFlat.colAt, bigPt, add_right_comm]`. Apply the tactic sequence `by_cases h : j.val = ρ <;> simp [affPt, basePt, GlobalTheory.LocFlat.colAt, bigPt, h, add_assoc]`. Simplify using `[affPt, basePt, GlobalTheory.LocFlat.colAt, bigPt]`. Simplify using `[affPt, basePt, GlobalTheory.LocFlat.colAt, bigPt]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h2 : ch (affPt (ρ + 1) t.toCols₁ e) = ch (affPt (ρ + 1) (t + x).toCols₁ e)`. Simplify using `[ch, affPt, basePt]`. Simplify using `only [h1, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem flCol_translate [MeasurableSpace k] [BorelSpace k] (ψ : AddChar k Circle) (ν : Measure k) (c ρ : ℕ)
     (Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ) (x t : Matrix n (n' ⊕ Unit) k) :
@@ -91,7 +91,7 @@ theorem flCol_translate [MeasurableSpace k] [BorelSpace k] (ψ : AddChar k Circl
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [DecidableEq n] [DecidableEq n'] in
 
 /- English proof (translation)
-Use extensionality with `r s`. Establish `hj' : ∀ j : Fin (c + 1), j.val = ρ ↔ j = j₀` using `fun j => by rw [← hj, Fin.val_inj]`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, bigPt, hβ, hγ, hj', hγ', Finset.sum_ite_irrel]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mul_bigPt_mul {a b : Type} {c ρ : ℕ} (j₀ : Fin (c + 1)) (hj : j₀.val = ρ) (β : Matrix a (n ⊕ Fin c) k) (β₀ : Matrix a n k)
     (γ : Matrix (n' ⊕ Fin (c + 1)) b k) (γ₀ : Matrix (n' ⊕ Unit) b k) (hβ : ∀ r i, β r (Sum.inl i) = β₀ r i)
@@ -104,9 +104,9 @@ theorem mul_bigPt_mul {a b : Type} {c ρ : ℕ} (j₀ : Fin (c + 1)) (hj : j₀.
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Set `σ : n' ⊕ Unit → n' ⊕ Fin (c + 1)` to `Sum.map id fun _ => j₀`. Establish `hq : F₀.β * F.γ.submatrix σ id = q` using `by conv_rhs => rw [← Matrix.mul_one q, ← F.βγ, ← Matrix.mul_assoc]`. Use extensionality with `r s`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, Fintype.sum_sum_type, Fintype.sum_sum_type, Finset.sum_eq_single j₀ (fun j _ hj => by rw [h3 r j hj, zero_mul]) (by simp), h2]`. Simplify using `[h1, σ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hγ : F₀.γ * q = F.γ.submatrix σ id` using `by rw [← hq, ← Matrix.mul_assoc, F₀.γβ, Matrix.one_mul]`. Rewrite using `[hγ]`. Conclude with `⟨fun _ _ => rfl, fun _ => rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem rows_of_inverse {N N₀ c : ℕ} (j₀ : Fin (c + 1)) (F : Frame k N (n' ⊕ Fin (c + 1))) (F₀ : Frame k N₀ (n' ⊕ Unit))
     (q : Matrix (Fin N₀) (Fin N) k) (h1 : ∀ r i, (q * F.β) r (Sum.inl i) = F₀.β r (Sum.inl i))
@@ -126,9 +126,7 @@ theorem rows_of_inverse {N N₀ c : ℕ} (j₀ : Fin (c + 1)) (F : Frame k N (n'
 end Local
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_incA_map, ← Matrix.map_mul]`. Conclude with `(congrArg (·.map p.π) d.p0_j0).trans (Matrix.map_one _ (map_zero _) (map_one _))`. Rewrite using `[← map_incA_map, ← Matrix.map_mul]`. Conclude with `(congrArg (·.map p.π) d.p0_jX).trans (Matrix.map_zero _ (map_zero _))`.
-
-Rewrite using `[← map_incA_map, ← Matrix.map_mul]`. Conclude with `(congrArg (·.map p.π) d.p0_jY).trans (Matrix.map_zero _ (map_zero _))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_laws {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) :
     d.p0.map p.π * d.i₀.map p.pr = 1 ∧ d.p0.map p.π * d.e.map p.pr = 0 ∧ d.p0.map p.π * d.e'.map p.pr = 0 := by
@@ -148,15 +146,15 @@ Both sides reduce to the same expression.
 theorem pr_eq : p.pr = prHom p := rfl
 
 /- English proof (translation)
-Take `⟨hc, hinl, hlt, heq, hgt⟩` from `hB`. Take `⟨q1, q2, q3⟩` from `proj_laws p B.d`. Set `j₀ : Fin (c + 1)` to `⟨ρ, by omega⟩`. Establish `col : ∀ (r : Fin B.V₀.rank) (j : n' ⊕ Fin (c + 1)) (a : k) (y : Fin B.V.rank → k), (∀ r', FV.β r' j = a * y r') → (B.d.p0.map p.π * FV.β) r j = a * (B.d.p0.map p.π *ᵥ y) r` using `fun r j a y h => by`. Simplify using `only [Matrix.mul_apply, h, Matrix.mulVec, dotProduct, Finset.mul_sum, mul_left_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨g1, g2⟩` from `rows_of_inverse j₀ FV F₀ (B.d.p0.map p.π) (fun r i => by`. Rewrite using `[hC.1, ← Matrix.one_mul (B.o.iA.map p.pr * FA.β), ← q1, Matrix.mul_assoc, Matrix.mul_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun r' _ => ?_` and prove the remaining obligations. Rewrite using `[hinl, pr_eq, Matrix.map_mul, Matrix.mul_assoc])`. Use the proof step `(fun r => by`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[col r _ s (B.d.i₀.map p.pr *ᵥ fun i => p.pr (vecB B.o B.ζ i)) fun r' => by`. Rewrite using `[heq j₀ rfl, pr_eq, RingHom.map_mulVec]`. Use the proof step `rfl, Matrix.mulVec_mulVec, q1, Matrix.one_mulVec, hC.2])`. Use the proof step `(fun r j hj => by`. Establish `hj' : j.val ≠ ρ` using `fun h => hj (Fin.ext h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `lt_or_gt_of_ne hj' with h | h` into its components or cases. Rewrite using `[col r _ _ _ (hlt ⟨j.val, h⟩ j rfl)]`. Conclude with `mul_eq_zero_of_right _ (congrFun (congrFun q2 r) ⟨j.val, h⟩)`. Use `j.2` as an intermediate fact. Rewrite using `[col r _ _ _ (hgt ⟨2 * ρ - j.val, by omega⟩ j (by simp only; omega))]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Conclude with `mul_eq_zero_of_right _ (congrFun (congrFun q3 r) ⟨2 * ρ - j.val, by omega⟩))`. Rewrite using `[HypDec.matrixExtendByZero_apply, HypDec.wittDecomp_inclAnisotropicHom_apply, Place.up, Place.up, mul_bigPt_mul j₀ rfl FW.β _ FV.γ _ hJ.2.1 g1 g2, ← map_incA_map]`. Use `Eq.trans ?_ (mul_map_ι_mul p J.d.j0 _ B.d.p0).symm` and prove the remaining obligations. Simplify using `only [Matrix.mul_assoc]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem up_bigPt {ρ : ℕ} (B : BesLev D ρ) (J : JacLev D ρ) (s hh : k) {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n']
     [DecidableEq n'] {c : ℕ} (FA : Frame k B.A.rank n') (F₀ : Frame k B.V₀.rank (n' ⊕ Unit))
@@ -193,11 +191,11 @@ theorem up_bigPt {ρ : ℕ} (B : BesLev D ρ) (J : JacLev D ρ) (s hh : k) {n n'
   rfl
 
 /- English proof (translation)
-Introduce `D _ hFLs _ k _ _ _ _ _ _ p ν hν ψ ψk hpc ρ B J st s _ n n' _ _ _ _ c FA F₀ FV G₀ FW hC hB hJ Tm hTm L₀ hL₀ x Ψ Ψ' hΨ`. Establish `hψc : Continuous ψk` using `((GlobalTheory.T.weilCharacter_splitPlace_exists_continuous_nontrivial D k p ψ st.weil.std).2.1 ψk hpc).1`. Establish `hc : c = 2 * ρ` using `hJ.1`. Take `⟨Φ, hΦ, hΦΨ⟩` from `((GlobalTheory.T.flatMaps_preserve_schwartzBruhat_and_surjective k ψk ν hψc hν n n' c (ρ + 1) (by omega)).1 (by omega)).2 Ψ.1 Ψ.2`. Establish `h1 : flatBF st (Tm ⟨Φ, hΦ⟩) = L₀ Ψ` using `hL₀ _ _ hΦΨ.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : flatBF st (Tm ⟨_, sb_translate hΦ (bigPt c ρ x)⟩) = L₀ Ψ'` using `hL₀ _ _ (by`. Use function extensionality and compare the values at `t`. Rewrite using `[hΨ, ← hΦΨ]`. Conclude with `(flCol_translate ψk ν c ρ Φ x t).symm)`. Establish `h3` using `hTm.trans (bigPt c ρ x) ⟨Φ, hΦ⟩ ⟨_, sb_translate hΦ (bigPt c ρ x)⟩ fun _ => rfl`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `ι_mem_idAt p`. Rewrite using `[← h2, h3, up_bigPt p B J s _ FA F₀ FV G₀ FW hC hB hJ, ← h1]`. Conclude with `((hFLs ψ (· = v)).1 ρ B J st).Heisenberg₂.core _ (hTm.theta _) _ fun i j => hv _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factor_trans : ∀ (D : D7), FlatLaw D → GlobalTheory.FinPl.FlatLaws D → OmLoc D → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (p : Place D k) (ν : Measure k), ν.IsAddHaarMeasure → ∀ (ψ : AddChar (AF D.host.F) ℂ) (ψk : AddChar k Circle), p.IsChar ψ ψk → ∀ (ρ : ℕ) (B : BesLev D ρ) (J : JacLev D ρ) (st : StepBF ψ B J) (s : k), s ≠ 0 → ∀ (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (c : ℕ) (FA : Frame k B.A.rank n') (F₀ : Frame k B.V₀.rank (n' ⊕ Unit)) (FV : Frame k B.V.rank (n' ⊕ Fin (c + 1))) (G₀ : Frame k J.W₀.rank n) (FW : Frame k J.W.rank (n ⊕ Fin c)), p.IsCoreFrame B s FA F₀ → p.IsBesFrame B s FA FV → p.IsJacFrame J s (p.hz B) G₀ FW → ∀ (Tm : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) →ₗ[ℂ] (WO B.V J.W → ℂ)), p.IsModel ψ FV FW Tm → ∀ (L₀ : SB (Matrix n (n' ⊕ Unit) k) →ₗ[ℂ] (WO B.V₀ J.W₀ → ℂ)), (∀ (Φ : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)) (Ψ : SB (Matrix n (n' ⊕ Unit) k)), Ψ.1 = GlobalTheory.LocFlat.flCol ψk ν (ρ + 1) Φ.1 → flatBF st (Tm Φ) = L₀ Ψ) → ∀ (x : Matrix n (n' ⊕ Unit) k) (Ψ Ψ' : SB (Matrix n (n' ⊕ Unit) k)), (∀ t, Ψ'.1 t = Ψ.1 (t + x)) → L₀ Ψ' = heisO ψ B.V₀ J.W₀ (p.up F₀ G₀ x) (L₀ Ψ) := by
   intro D _ hFLs _ k _ _ _ _ _ _ p ν hν ψ ψk hpc ρ B J st s _ n n' _ _ _ _ c FA F₀ FV G₀ FW hC hB hJ Tm hTm L₀ hL₀ x Ψ Ψ' hΨ

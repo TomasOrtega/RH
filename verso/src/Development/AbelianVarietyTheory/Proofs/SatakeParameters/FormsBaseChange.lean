@@ -10,7 +10,7 @@ namespace GlobalTheory.W1.Base
 variable (k K L : Type) [Field k] [Field K] [Field L] [Algebra k K] [Algebra k L] [Algebra K L] [IsScalarTower k K L]
 
 /- English proof (translation)
-Rewrite using `[ExteriorAlgebra.ιMulti_apply, ExteriorAlgebra.ιMulti_apply, map_list_prod, List.map_ofFn]`. Conclude with `congrArg (fun l => List.prod l) (congrArg List.ofFn (funext fun i => by show mapDR k K L (ExteriorAlgebra.ι K (v i)) = _`. Rewrite using `[mapDR, ExteriorAlgebra.lift_ι_apply]`. Use the proof step `rfl))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapDR_ιMulti (n : ℕ) (v : Fin n → Ω[K⁄k]) :
     mapDR k K L (ExteriorAlgebra.ιMulti K n v) =
@@ -23,7 +23,7 @@ theorem mapDR_ιMulti (n : ℕ) (v : Fin n → Ω[K⁄k]) :
 variable {k K L} in
 
 /- English proof (translation)
-Rewrite using `[ExteriorAlgebra.basis_apply_ofCard _ rfl, ExteriorAlgebra.basis_apply_ofCard _ rfl, ExteriorAlgebra.ιMulti_family, ExteriorAlgebra.ιMulti_family, mapDR_ιMulti]`. Conclude with `congrArg _ (funext fun i => (h _).symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapDR_basis {I : Type} [LinearOrder I] (bK : Module.Basis I K Ω[K⁄k]) (bL : Module.Basis I L Ω[L⁄k])
     (h : ∀ i, bL i = KaehlerDifferential.map k k K L (bK i)) (s : Finset I) :
@@ -35,9 +35,9 @@ theorem mapDR_basis {I : Type} [LinearOrder I] (bK : Module.Basis I K Ω[K⁄k])
 variable {k K L} in
 
 /- English proof (translation)
-Establish `: ((bL.ExteriorAlgebra.coord s).restrictScalars K ∘ₗ (mapDR k K L).toLinearMap) = Algebra.linearMap K L ∘ₗ bK.ExteriorAlgebra.coord s`. Use `bK.ExteriorAlgebra.ext fun t => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, AlgHom.toLinearMap_apply, mapDR_basis bK bL h, LinearMap.coe_restrictScalars, Module.Basis.coord_apply, Module.Basis.repr_self, Algebra.linearMap_apply]`. Distinguish the cases in `hts : t = s`. Substitute `hts` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Finsupp.single_apply, hts]`. Conclude with `congrArg (· ω) this`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repr_mapDR {I : Type} [LinearOrder I] (bK : Module.Basis I K Ω[K⁄k]) (bL : Module.Basis I L Ω[L⁄k])
     (h : ∀ i, bL i = KaehlerDifferential.map k k K L (bK i)) (ω : DR k K) (s : Finset I) :
@@ -57,15 +57,13 @@ end GlobalTheory.W1.Base
 namespace GlobalTheory.W1.Base
 
 /- English proof (translation)
-Introduce `k K L _ _ _ _ _ _ _ _ _`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap k K).injective`. Use `haveI : Algebra.IsSeparable K L := Algebra.IsAlgebraic.isSeparable_of_perfectField`. Use `haveI : Algebra.FormallyEtale K L := Algebra.FormallyEtale.of_isSeparable K L`. Set `I` to `Module.Basis.ofVectorSpaceIndex K Ω[K⁄k]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `letI : LinearOrder I := linearOrderOfSTO WellOrderingRel`. Set `bK : Module.Basis I K Ω[K⁄k]` to `Module.Basis.ofVectorSpace K Ω[K⁄k]`. Set `bL : Module.Basis I L Ω[L⁄k]` to `(bK.baseChange L).map (tensorKaehlerEquivOfFormallyEtale k K L)`. Establish `h : ∀ i, bL i = KaehlerDifferential.map k k K L (bK i)` using `fun i => by`. Simplify using `only [bL, Module.Basis.map_apply, Module.Basis.baseChange_apply, tensorKaehlerEquivOfFormallyEtale_apply, mapBaseChange_tmul, one_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `set BK := bK.ExteriorAlgebra`. Use `set BL := bL.ExteriorAlgebra`. Use `⟨fun y => ?_, fun m b ω hb hsum j => ?_⟩` and prove the remaining obligations. Use `set S := (BL.repr y).support`. Use `⟨S.card, fun j => BL.repr y (S.equivFin.symm j), fun j => BK (S.equivFin.symm j), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [BK, BL, mapDR_basis bK bL h]`. Use `conv_lhs => rw [← BL.linearCombination_repr y, Finsupp.linearCombination_apply, Finsupp.sum, ← Finset.sum_coe_sort]`. Conclude with `(Fintype.sum_equiv S.equivFin _ _ fun _ => by rw [Equiv.symm_apply_apply])`. Establish `hc : ∀ s, ∀ j, BK.repr (ω j) s = 0`. Introduce `s`.
-
-Establish `h0` using `congrArg (fun z => BL.repr z s) hsum`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, map_zero, Finsupp.coe_zero, Pi.zero_apply, BK, BL, repr_mapDR bK bL h] at h0`. Use `Fintype.linearIndependent_iff.1 hb (fun j => BK.repr (ω j) s) ?_` and prove the remaining obligations. Simplify `h0` using `[Algebra.smul_def, mul_comm]`. Conclude with `BK.repr.injective (Finsupp.ext fun s => by simpa using hc s j)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem forms_baseChange : ∀ (k K L : Type) [Field k] [CharZero k] [Field K] [Field L] [Algebra k K] [Algebra k L]
     [Algebra K L] [IsScalarTower k K L] [FiniteDimensional K L],

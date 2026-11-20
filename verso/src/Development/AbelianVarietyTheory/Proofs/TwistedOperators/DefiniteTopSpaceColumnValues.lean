@@ -31,13 +31,11 @@ namespace GlobalTheory.CoreOnto
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
 /- English proof (translation)
-Take `⟨hc, hs⟩` from `GlobalTheory.CoefModel.realGL_laws hθ (Xp G)`. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig (Xp G).gram`. Use `GlobalTheory.CoefModel.coefOf_is _ _ _ (fun h hh => ?_) (fun h τ => ?_) (fun τ => ?_) (fun g hg => ?_)` and prove the remaining obligations. Establish `: GlobalTheory.CoefModel.realGL θ (Xp G) h = 1` using `funext fun τ => by show Formalism.UG.bc (θ τ) (infHom (Xp G) h) = 1`. Rewrite using `[show infHom (Xp G) h = 1 from hh, map_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.comp_apply, this, map_one]`. Conclude with `GlobalTheory.CoefModel.invTr_unitary (g := GlobalTheory.CoefModel.realGL θ (Xp G) h τ) (GlobalTheory.RecDictModel.archM_unitary _ (hθ τ) h)`. Use `((hc τ).comp continuous_inv).matrix_transpose.congr fun h => ?_ show Matrix.transpose (GlobalTheory.CoefModel.realGL θ (Xp G) h⁻¹ τ : Matrix (Fin (Xp G).rank) (Fin (Xp G).rank) ℂ) = _` and prove the remaining obligations. Rewrite using `[map_inv]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h, e⟩` from `hs (invTrK g) fun τ => by`. Use `GlobalTheory.CoefModel.invTr_unitary (hg τ)` as an intermediate fact. Rewrite `this` using `[← Matrix.transpose_nonsing_inv, Matrix.nonsing_inv_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (posDef_Xp G _).isUnit), Matrix.transpose_transpose]`. Then use the resulting hypothesis. Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, e]`.
-
-Conclude with `funext fun τ => GlobalTheory.CoefModel.invTr_invTr _`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefPlus_is (G : GridData L sc) (θ : InfFam D) (hθ : IsInfFam θ) : (coefPlus G θ).Is := by
   obtain ⟨hc, hs⟩ := GlobalTheory.CoefModel.realGL_laws hθ (Xp G)
@@ -62,9 +60,9 @@ theorem coefPlus_is (G : GridData L sc) (θ : InfFam D) (hθ : IsInfFam θ) : (c
     exact funext fun τ => GlobalTheory.CoefModel.invTr_invTr _
 
 /- English proof (translation)
-Introduce `τ a`. Take `⟨-, q, -, hS⟩` from `M.enum τ`. Establish `h : (q a, M.ε τ a) ∈ Node.par D sc.cGap (.core D.R.m) τ` using `hS ▸ Finset.mem_image_of_mem _ (Finset.mem_univ a)`. Establish `e : Node.par D sc.cGap (.core D.R.m) τ = (num D sc.cGap τ).parX 0` using `(num D sc.cGap τ).parPi_m`. Rewrite `h` using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, -, hx⟩` from `Finset.mem_image.1 h`. Conclude with `(congrArg Prod.snd hx).symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eps_core_m (G : GridData L sc) (M : DSModel (G.V (.core D.R.m)) (Node.par D sc.cGap (.core D.R.m))) :
     ∀ τ a, M.ε τ a = true := by
@@ -77,7 +75,7 @@ theorem eps_core_m (G : GridData L sc) (M : DSModel (G.V (.core D.R.m)) (Node.pa
   exact (congrArg Prod.snd hx).symm
 
 /- English proof (translation)
-Introduce `D _ T L μ0 _ sc G W Mv _ M y hy w`. Take `⟨pr, hpr⟩` from `GlobalTheory.T.exists_dualPair_positiveWeightCoefficientSpace G W.θ W.θ_is M`. Take `⟨c, hc, e⟩` from `GlobalTheory.T.exists_column_perfectPairing_definiteCoreNode G W.θ W.θ_is M (eps_core_m G M) (coefPlus_is G W.θ W.θ_is) pr hpr y hy`. Use `⟨c, hc, pr.flip w, ?_⟩` and prove the remaining obligations. Substitute `e` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality.
 
 Both sides reduce to the same expression.
 -/

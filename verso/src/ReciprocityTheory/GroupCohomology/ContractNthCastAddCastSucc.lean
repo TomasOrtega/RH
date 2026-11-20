@@ -17,14 +17,14 @@ section S1
 variable {G : Type u} [Group G]
 
 /- English proof (translation)
-Simplify using `only [Fin.partialProd, Fin.val_last]`. Rewrite using `[List.take_of_length_le (by simp)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_ofFn_eq_partialProd {n : ℕ} (f : Fin n → G) : (List.ofFn f).prod = Fin.partialProd f (Fin.last n) := by
   simp only [Fin.partialProd, Fin.val_last]
   rw [List.take_of_length_le (by simp)]
 
 /- English proof (translation)
-Rewrite using `[prod_ofFn_eq_partialProd, prod_ofFn_eq_partialProd, Fin.partialProd_contractNth]`. Simplify using `only [Function.comp_apply]`. Use `congr 1`. Use `ext`. Simplify using `[Fin.succAbove]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem prod_ofFn_contractNth {m : ℕ} (h : Fin (m + 1) → G) (j : Fin m) :
     (List.ofFn (Fin.contractNth j.castSucc (· * ·) h)).prod = (List.ofFn h).prod := by
@@ -35,13 +35,13 @@ theorem prod_ofFn_contractNth {m : ℕ} (h : Fin (m + 1) → G) (j : Fin m) :
   simp [Fin.succAbove]
 
 /- English proof (translation)
-The claim follows from `congrArg g (Fin.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem apply_eq_of_val_eq {n : ℕ} (g : Fin n → G) {i j : Fin n} (h : (i : ℕ) = j) : g i = g j :=
   congrArg g (Fin.ext h)
 
 /- English proof (translation)
-Rewrite using `[apply_eq_of_val_eq g h, apply_eq_of_val_eq g h']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_eq_mul_of_val_eq {n : ℕ} (g : Fin n → G) {i j k l : Fin n} (h : (i : ℕ) = j) (h' : (k : ℕ) = l) :
     g i * g k = g j * g l := by rw [apply_eq_of_val_eq g h, apply_eq_of_val_eq g h']
@@ -49,7 +49,7 @@ theorem mul_eq_mul_of_val_eq {n : ℕ} (g : Fin n → G) {i j k l : Fin n} (h : 
 variable {p q : ℕ} (e : p + 1 + q = p + q + 1) (g : Fin (p + q + 1) → G)
 
 /- English proof (translation)
-Simplify using `only [Fin.contractNth, Fin.val_succ, Fin.val_castSucc, Fin.val_last, Fin.val_castAdd]`. Apply the tactic sequence `split_ifs <;> first | omega | exact apply_eq_of_val_eq g (by simp <;> omega) | exact mul_eq_mul_of_val_eq g (by simp <;> omega) (by simp <;> omega)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem contractNth_castAdd_castSucc (j i : Fin p) : (Fin.castAdd (q + 1) j).contractNth (· * ·) g (Fin.castAdd q i) =
     (Fin.castSucc j).contractNth (· * ·) (fun i : Fin (p + 1) => g (Fin.cast e (Fin.castAdd q i))) i := by
@@ -57,7 +57,7 @@ theorem contractNth_castAdd_castSucc (j i : Fin p) : (Fin.castAdd (q + 1) j).con
   split_ifs <;> first | omega | exact apply_eq_of_val_eq g (by simp <;> omega) | exact mul_eq_mul_of_val_eq g (by simp <;> omega) (by simp <;> omega)
 
 /- English proof (translation)
-Simplify using `only [Fin.contractNth, Fin.val_succ, Fin.val_castSucc, Fin.val_last, Fin.val_castAdd, Fin.val_natAdd]`. Apply the tactic sequence `split_ifs <;> first | omega | exact apply_eq_of_val_eq g (by simp <;> omega) | exact mul_eq_mul_of_val_eq g (by simp <;> omega) (by simp <;> omega)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem contractNth_castAdd_natAdd (j : Fin p) (k : Fin q) : (Fin.castAdd (q + 1) j).contractNth (· * ·) g (Fin.natAdd p k) =
     g (Fin.natAdd p k).succ := by
@@ -65,7 +65,7 @@ theorem contractNth_castAdd_natAdd (j : Fin p) (k : Fin q) : (Fin.castAdd (q + 1
   split_ifs <;> first | omega | exact apply_eq_of_val_eq g (by simp <;> omega) | exact mul_eq_mul_of_val_eq g (by simp <;> omega) (by simp <;> omega)
 
 /- English proof (translation)
-Simplify using `only [Fin.contractNth, Fin.val_succ, Fin.val_castSucc, Fin.val_last, Fin.val_castAdd, Fin.val_natAdd]`. Apply the tactic sequence `split_ifs <;> first | omega | exact apply_eq_of_val_eq g (by simp <;> omega) | exact mul_eq_mul_of_val_eq g (by simp <;> omega) (by simp <;> omega)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem contractNth_natAdd_castAdd (k : Fin (q + 1)) (i : Fin p) : (Fin.natAdd p k).contractNth (· * ·) g (Fin.castAdd q i) =
     g (Fin.castAdd (q + 1) i) := by
@@ -73,7 +73,7 @@ theorem contractNth_natAdd_castAdd (k : Fin (q + 1)) (i : Fin p) : (Fin.natAdd p
   split_ifs <;> first | omega | exact apply_eq_of_val_eq g (by simp <;> omega) | exact mul_eq_mul_of_val_eq g (by simp <;> omega) (by simp <;> omega)
 
 /- English proof (translation)
-Simplify using `only [Fin.contractNth, Fin.val_succ, Fin.val_castSucc, Fin.val_last, Fin.val_castAdd, Fin.val_natAdd]`. Apply the tactic sequence `split_ifs <;> first | omega | exact apply_eq_of_val_eq g (by simp <;> omega) | exact mul_eq_mul_of_val_eq g (by simp <;> omega) (by simp <;> omega)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem contractNth_natAdd_natAdd (k : Fin (q + 1)) (l : Fin q) : (Fin.natAdd p k).contractNth (· * ·) g (Fin.natAdd p l) =
     k.contractNth (· * ·) (fun j : Fin (q + 1) => g (Fin.natAdd p j)) l := by
@@ -81,19 +81,19 @@ theorem contractNth_natAdd_natAdd (k : Fin (q + 1)) (l : Fin q) : (Fin.natAdd p 
   split_ifs <;> first | omega | exact apply_eq_of_val_eq g (by simp <;> omega) | exact mul_eq_mul_of_val_eq g (by simp <;> omega) (by simp <;> omega)
 
 /- English proof (translation)
-The claim follows from `apply_eq_of_val_eq g (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem cast_castAdd_succ (i : Fin p) : g (Fin.cast e (Fin.castAdd q i.succ)) = g (Fin.castAdd q i).succ :=
   apply_eq_of_val_eq g (by simp)
 
 /- English proof (translation)
-The claim follows from `apply_eq_of_val_eq g (by simp; omega)`.
+A detailed English derivation is pending.
 -/
 theorem cast_natAdd_succ (j : Fin q) : g (Fin.cast e (Fin.natAdd (p + 1) j)) = g (Fin.natAdd p j).succ :=
   apply_eq_of_val_eq g (by simp; omega)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Fin.contractNth, Fin.val_succ, Fin.val_castSucc, Fin.val_last, Fin.val_castAdd, Fin.val_last]`. Apply the tactic sequence `split_ifs <;> first | omega | exact apply_eq_of_val_eq g (by simp <;> omega) | exact mul_eq_mul_of_val_eq g (by simp <;> omega) (by simp <;> omega)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem contractNth_last_cast : (Fin.last p).contractNth (· * ·) (fun i : Fin (p + 1) => g (Fin.cast e (Fin.castAdd q i))) =
     fun i => g (Fin.castAdd (q + 1) i) := by
@@ -102,12 +102,12 @@ theorem contractNth_last_cast : (Fin.last p).contractNth (· * ·) (fun i : Fin 
   split_ifs <;> first | omega | exact apply_eq_of_val_eq g (by simp <;> omega) | exact mul_eq_mul_of_val_eq g (by simp <;> omega) (by simp <;> omega)
 
 /- English proof (translation)
-The claim follows from `apply_eq_of_val_eq g (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem cast_castAdd_zero : g (Fin.cast e (Fin.castAdd q 0)) = g 0 := apply_eq_of_val_eq g (by simp)
 
 /- English proof (translation)
-Rewrite using `[List.ofFn_succ, List.prod_cons, cast_castAdd_zero e g]`. Simplify using `only [cast_castAdd_succ e g]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_ofFn_cast_zero : (List.ofFn fun i : Fin (p + 1) => g (Fin.cast e (Fin.castAdd q i))).prod =
     g 0 * (List.ofFn fun i : Fin p => g (Fin.castAdd q i).succ).prod := by
@@ -115,7 +115,7 @@ theorem prod_ofFn_cast_zero : (List.ofFn fun i : Fin (p + 1) => g (Fin.cast e (F
   simp only [cast_castAdd_succ e g]
 
 /- English proof (translation)
-Rewrite using `[List.ofFn_succ', List.prod_concat]`. Use `congr 1`. Apply the tactic sequence `all_goals first | exact apply_eq_of_val_eq g (by simp) | (congr 1; funext i; exact apply_eq_of_val_eq g (by simp)) | (congr 2; funext i; exact apply_eq_of_val_eq g (by simp))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem prod_ofFn_cast_last : (List.ofFn fun i : Fin (p + 1) => g (Fin.cast e (Fin.castAdd q i))).prod =
     (List.ofFn fun i : Fin p => g (Fin.castAdd (q + 1) i)).prod * g (Fin.natAdd p (0 : Fin (q + 1))) := by
@@ -128,7 +128,7 @@ end S1
 section S2
 variable {R : Type u} [CommRing R] {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 /- English proof (translation)
-Substitute `h0 h1 h2` using the available equality. Rewrite using `[eq_neg_of_add_eq_zero_left h3]`. Normalize the expressions using the abelian group laws.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem cupProduct_abelian_identity {V : Type*} [AddCommGroup V] {a b s1 s1' s2 s2' l f : V} (h0 : s1 = s1') (h1 : a = b) (h2 : s2 = s2')
     (h3 : l + f = 0) : a + (s1 + s2) = b + (s1' + l) + (f + s2') := by
@@ -137,11 +137,11 @@ theorem cupProduct_abelian_identity {V : Type*} [AddCommGroup V] {a b s1 s1' s2 
   abel
 
 /- English proof (translation)
-Establish `e : p + 1 + q = p + q + 1` using `by omega`. Simplify using `only [dn_apply, cupFun, map_add, map_sum, map_smul, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_add, Finset.smul_sum, smul_smul]`. Rewrite using `[Fin.sum_univ_castSucc (n := p)]`. Rewrite using `[show ∀ F : Fin (p + q + 1) → P.V, ∑ j, F j = ∑ j : Fin p, F (Fin.castAdd (q + 1) j) + ∑ k : Fin (q + 1), F (Fin.natAdd p k) from fun F => Fin.sum_univ_add (a := p) (b := q + 1) F]`. Simplify using `only [contractNth_castAdd_castSucc e g, contractNth_castAdd_natAdd g, contractNth_natAdd_castAdd g, contractNth_natAdd_natAdd g, cast_castAdd_succ e g, cast_natAdd_succ e g, contractNth_last_cast e g, cast_castAdd_zero e g, prod_ofFn_contractNth, Fin.val_castAdd, Fin.val_castSucc …`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `cupProduct_abelian_identity rfl ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[prod_ofFn_cast_zero e g, map_mul, Module.End.mul_apply, b.equiv]`. Conclude with `Finset.sum_congr rfl fun x _ => by rw [← pow_add, add_assoc]`. Establish `hu : (fun j : Fin q => g (Fin.natAdd p j).succ) = fun i => g (Fin.natAdd p i.succ)`. Apply the tactic sequence `funext fun j => apply_eq_of_val_eq g (by simp <;> omega)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prod_ofFn_cast_last e g, map_mul, Module.End.mul_apply, hu, pow_succ, mul_neg_one, neg_smul, neg_add_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem cupProduct_leibniz {M N P : TRep R G} (b : Pairing M N P) (p q : ℕ) (f : (Fin p → G) → M.V)
     (f' : (Fin q → G) → N.V) (g : Fin (p + q + 1) → G) :
@@ -168,7 +168,7 @@ end S2
 section S3
 variable {R : Type u} [CommRing R] {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 /- English proof (translation)
-Establish `hpr : Continuous fun g : Fin (p + q) → G => (List.ofFn fun i => g (Fin.castAdd q i)).prod`. Simplify using `only [List.ofFn_eq_map]`. Conclude with `continuous_list_prod _ fun i _ => continuous_apply _`. Conclude with `b.cont.comp (f := fun g : Fin (p + q) → G => (f fun i => g (Fin.castAdd q i), N.rho (List.ofFn fun i => g (Fin.castAdd q i)).prod (f' fun j => g (Fin.natAdd p j)))) ((hf.comp (continuous_pi fun i => continuous_apply _)).prodMk (N.cont.comp (f := fun g : Fin (p + q) → G => ((List. …`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cupProduct_continuous {M N P : TRep R G} (b : Pairing M N P) (p q : ℕ) {f : (Fin p → G) → M.V}
     {f' : (Fin q → G) → N.V} (hf : Continuous f) (hf' : Continuous f') :
@@ -216,7 +216,7 @@ Both sides reduce to the same expression.
 theorem cochain_differential_val (M : TRep R G) (n : ℕ) (z : M.coch.X n) : (M.coch.d n z).1 = dn M.rho n z.1 := rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨w, Subtype.ext (funext fun g => (hz g).symm)⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem mem_coboundaries_of_eq_d {P : TRep R G} {m n : ℕ} (h : m = n + 1) (z : P.coch.X m) (w : P.coch.X n)
     (hz : ∀ g, z.1 g = dn P.rho n w.1 fun i => g (Fin.cast h.symm i)) : z ∈ P.coch.B m := by
@@ -224,9 +224,9 @@ theorem mem_coboundaries_of_eq_d {P : TRep R G} {m n : ℕ} (h : m = n + 1) (z :
   exact ⟨w, Subtype.ext (funext fun g => (hz g).symm)⟩
 
 /- English proof (translation)
-Break down `p with _ | p` into its components or cases. Establish `h0 : x = 0` using `(Submodule.mem_bot R).1 hx`. Substitute `h0` using the available equality. Rewrite using `[map_zero, LinearMap.zero_apply]`. Conclude with `Submodule.zero_mem _`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, rfl⟩` from `hx`. Establish `hy' : dn N.rho q y.1 = 0` using `congrArg Subtype.val hy`. Use `mem_coboundaries_of_eq_d (by omega) _ (cupCoch b p q u y) fun g => ?_` and prove the remaining obligations. Rewrite using `[cupCoch_val, cupCoch_val, cochain_differential_val, cupProduct_leibniz, hy']`. Simplify using `[cupFun]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cupProduct_coboundary_left {M N P : TRep R G} (b : Pairing M N P) (p q : ℕ) (x : M.coch.X p)
     (hx : x ∈ M.coch.B p) (y : N.coch.X q) (hy : N.coch.d q y = 0) :
@@ -243,11 +243,11 @@ theorem cupProduct_coboundary_left {M N P : TRep R G} (b : Pairing M N P) (p q :
     simp [cupFun]
 
 /- English proof (translation)
-Break down `q with _ | q` into its components or cases. Establish `h0 : y = 0` using `(Submodule.mem_bot R).1 hy`. Substitute `h0` using the available equality. Rewrite using `[map_zero]`. Conclude with `Submodule.zero_mem _`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, rfl⟩` from `hy`. Establish `hx' : dn M.rho p x.1 = 0` using `congrArg Subtype.val hx`. Use `mem_coboundaries_of_eq_d (n := p + q) rfl _ ((-1 : R) ^ p • cupCoch b p q x v) fun g => ?_` and prove the remaining obligations. Rewrite using `[cupCoch_val, cochain_differential_val, cochain_smul_val, cupCoch_val, map_smul, Pi.smul_apply, cupProduct_leibniz, hx']`. Simplify using `only [cupFun, Pi.zero_apply, map_zero, LinearMap.zero_apply, zero_add, smul_smul, ← mul_pow, mul_neg_one, neg_neg, one_pow, one_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem cupProduct_coboundary_right {M N P : TRep R G} (b : Pairing M N P) (p q : ℕ) (x : M.coch.X p)
     (hx : M.coch.d p x = 0) (y : N.coch.X q) (hy : y ∈ N.coch.B q) :
@@ -270,7 +270,7 @@ end S3
 section S4
 variable {R : Type u} [CommRing R] {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 /- English proof (translation)
-Establish `hx' : dn M.rho p x.1 = 0` using `congrArg Subtype.val hx`. Establish `hy' : dn N.rho q y.1 = 0` using `congrArg Subtype.val hy`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Rewrite using `[cochain_differential_val, cupCoch_val, cupProduct_leibniz, hx', hy', cochain_zero_val]`. Simplify using `[cupFun]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cupProduct_cocycle {M N P : TRep R G} (b : Pairing M N P) (p q : ℕ) (x : M.coch.X p)
     (hx : M.coch.d p x = 0) (y : N.coch.X q) (hy : N.coch.d q y = 0) :
@@ -302,7 +302,7 @@ def cupCoh {M N P : TRep R G} (b : Pairing M N P) (p q : ℕ) : M.H p →ₗ[R] 
       exact cupProduct_coboundary_right b p q x.1 (LinearMap.mem_ker.1 x.2) y.1 hy))
 
 /- English proof (translation)
-Introduce `p q x y hx hy`. Conclude with `⟨cupCoch b p q x y, cupProduct_cocycle b p q x hx y hy, rfl, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem cupCoh_isCup {M N P : TRep R G} (b : Pairing M N P) : IsCup b (cupCoh b) := by
   intro p q x y hx hy

@@ -20,7 +20,7 @@ variable {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam
   {B : Type} [CommRing B] {X : Scheme.{0}} {s : X ⟶ Sp B} {σ : B →+* Hol F.V}
 
 /- English proof (translation)
-Take `⟨U, hU, hy, -⟩` from `exists_isAffineOpen_mem_and_subset (x := y (default : PrimeSpectrum ℂ)) (U := ⊤) trivial`. Use `⟨U, hU, fun p _ ↦ ?_⟩` and prove the remaining obligations. Establish `: p = (default : PrimeSpectrum ℂ)` using `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Substitute `this` using the available equality. Conclude with `hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_affine_pt (y : Sp ℂ ⟶ X) : ∃ U : X.Opens, IsAffineOpen U ∧ ⊤ ≤ y ⁻¹ᵁ U := by
   obtain ⟨U, hU, hy, -⟩ := exists_isAffineOpen_mem_and_subset (x := y (default : PrimeSpectrum ℂ)) (U := ⊤) trivial
@@ -30,7 +30,7 @@ theorem exists_affine_pt (y : Sp ℂ ⟶ X) : ∃ U : X.Opens, IsAffineOpen U �
   exact hy
 
 /- English proof (translation)
-The claim follows from `(u.hol U 0).1`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_dom (u : Unif F s σ) (U : X.Opens) : IsOpen {p : Tot I g | p.1 ∈ F.V ∧ ⊤ ≤ u.E p ⁻¹ᵁ U} :=
   (u.hol U 0).1
@@ -69,17 +69,17 @@ def pairCharts (u₁ : Unif F₁ s₁ σ₁) (u₂ : Unif F₂ s₂ σ₂) (b : 
   maps h := h.1
 
 /- English proof (translation)
-Set `Φ : Tot I₁ g₁ → Tot I₂ g₂` to `fun p ↦ (b p.1, M p.2)`. Establish `hΦ : ∀ l (p : Tot I₁ g₁), p.1 ∈ F₁.V → Φ (F₁.shift l p) = F₂.shift (A l) (Φ p)`. Introduce `l p hp`. Simplify using `only [Φ, Fam.shift, map_add, hτ l p.1 hp]`. Establish `hcont : ContinuousOn Φ {p : Tot I₁ g₁ | p.1 ∈ F₁.V}` using `(hb.continuousOn.comp continuous_fst.continuousOn fun p hp ↦ hp).prodMk (M.continuous_of_finiteDimensional.comp continuous_snd).continuousOn`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨pairCharts u₁ u₂ b M A, charts u₂, fun k ↦ ⟨k.1.2, k.2.2.1⟩, ⟨?_, ?_⟩, fun k ↦ k.2.1.2, fun k ↦ k.2.2, fun k ↦ k.2.2.2, fun l k' k h ↦ h.2⟩` and prove the remaining obligations. Introduce `p hp`. Take `⟨U₁, hU₁, h₁⟩` from `exists_affine_pt (u₁.E p)`. Take `⟨U₂, hU₂, h₂⟩` from `exists_affine_pt (u₂.E (Φ p))`. Set `O₁` to `{q : Tot I₁ g₁ | q.1 ∈ F₁.V ∧ ⊤ ≤ u₁.E q ⁻¹ᵁ U₁}`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `O₂` to `{q : Tot I₂ g₂ | q.1 ∈ F₂.V ∧ ⊤ ≤ u₂.E q ⁻¹ᵁ U₂}`. Establish `hO₂ : IsOpen O₂` using `isOpen_dom u₂ U₂`. Establish `hO₁ : IsOpen (O₁ ∩ Φ ⁻¹' O₂)` using `(hcont.mono fun q hq ↦ hq.1).isOpen_inter_preimage (isOpen_dom u₁ U₁) hO₂`. Use `⟨⟨(⟨O₁ ∩ Φ ⁻¹' O₂, hO₁⟩, ⟨O₂, hO₂⟩), ⟨fun q hq ↦ hq.1.1, U₁, hU₁, fun q hq ↦ hq.1.2⟩, ⟨fun q hq ↦ hq.1, U₂, hU₂, fun q hq ↦ hq.2⟩, fun q hq ↦ hq.2⟩, ?_⟩` and prove the remaining obligations. Conclude with `⟨⟨hp, h₁⟩, hbV _ hp, h₂⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Introduce `l k₁ k₂ p hp hp'`. Establish `hb₁` using `k₁.2.1.1`. Establish `hb₂` using `k₁.2.2.1.1`. Establish `o₁ : IsOpen ((k₁.1.1 : Set (Tot I₁ g₁)) ∩ F₁.shift l ⁻¹' k₂.1.1)` using `(F₁.shift_analytic l hb₁).continuousOn.isOpen_inter_preimage k₁.1.1.isOpen k₂.1.1.isOpen`. Establish `o₂ : IsOpen ((k₁.1.2 : Set (Tot I₂ g₂)) ∩ F₂.shift (A l) ⁻¹' k₂.1.2)` using `(F₂.shift_analytic (A l) hb₂).continuousOn.isOpen_inter_preimage k₁.1.2.isOpen k₂.1.2.isOpen`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨U₁, hU₁, h₁⟩` from `k₁.2.1.2`. Take `⟨U₂, hU₂, h₂⟩` from `k₁.2.2.1.2`. Use `⟨⟨(⟨_, o₁⟩, ⟨_, o₂⟩), ⟨fun q hq ↦ hb₁ q hq.1, U₁, hU₁, fun q hq ↦ h₁ q hq.1⟩, ⟨fun q hq ↦ hb₂ q hq.1, U₂, hU₂, fun q hq ↦ h₂ q hq.1⟩, fun q hq ↦ ⟨k₁.2.2.2 q hq.1, ?_⟩⟩, ⟨hp, hp'⟩, ⟨fun q hq ↦ ?_, fun q hq ↦ ?_⟩, ⟨fun q hq ↦ hq.2, fun q hq ↦ hq.2⟩⟩` and prove the remaining obligations. Use `show F₂.shift (A l) (Φ q) ∈ k₂.1.2`. Rewrite using `[← hΦ l q (hb₁ q hq.1)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `k₂.2.2.2 _ hq.2`. Rewrite using `[F₁.shift_zero]`. Conclude with `hq.1`. Rewrite using `[map_zero, F₂.shift_zero]`. Conclude with `hq.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pair (u₁ : Unif F₁ s₁ σ₁) (u₂ : Unif F₂ s₂ σ₂) (b : (I₁ → ℂ) → I₂ → ℂ)
     (hb : AnalyticOnNhd ℂ b F₁.V) (hbV : ∀ z ∈ F₁.V, b z ∈ F₂.V)

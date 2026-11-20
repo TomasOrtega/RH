@@ -20,11 +20,11 @@ noncomputable section
 namespace GlobalTheory.NefPow
 
 /- English proof (translation)
-Establish `hex (L : HermLB p) : ∃ h, L.IsArithHeight h` using `(HE k X p D hX).1 L`. Set `ht (L : HermLB p) : ℝ` to `(hex L).choose x`. Establish `hht {L : HermLB p} {h : X → ℝ} (H : L.IsArithHeight h) : ht L = h x` using `congrFun ((hex L).choose_spec.unique hX H) x`. Establish `hiso {L M : HermLB p} (e : L.Isometric M) : ht L = ht M` using `(hht (e.isArithHeight hX (hex L).choose_spec)).symm`. Establish `hadd (L M : HermLB p) : ht (L.tens M) = ht L + ht M` using `PtHtComb.height_tens hX (hex L).choose_spec (hex M).choose_spec (hex _).choose_spec hx`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `F₀ : HermLB.IsomClass p → ℝ` to `Quotient.lift (s := HermLB.isometrySetoid p) ht fun L M e => hiso e`. Set `F : HermLB.IsomClass p →+ ℝ` to `AddMonoidHom.mk' F₀ (by`. Introduce and unpack `⟨L⟩ ⟨M⟩`. Conclude with `hadd L M)`. Establish `hF (L : HermLB p) : F L.icls = ht L` using `rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hht H', ← hht H, ← hF, ← hF, HermLB.icls_pow, map_nsmul, nsmul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem height_pow (HE : GlobalTheory.Published.ArExists) {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X]
     {p : X ⟶ Sp k} {D : ℕ} (hX : IsArithVar p D) {x : X} (hx : IsAlgPt x) (L : HermLB p) (n : ℕ)
@@ -45,13 +45,13 @@ theorem height_pow (HE : GlobalTheory.Published.ArExists) {k : Type} [CommRing k
   rw [← hht H', ← hht H, ← hF, ← hF, HermLB.icls_pow, map_nsmul, nsmul_eq_mul]
 
 /- English proof (translation)
-Introduce `HC k _ X _ p D hX M n N`. Establish `HE` using `HC.arExists`. Establish `hex (L : HermLB p) : ∃ h, L.IsArithHeight h` using `(HE k X p D hX).1 L`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Take `⟨h₀, H₀⟩` from `hex (HermLB.triv p)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Establish `H : (M.pow 0).IsArithHeight h₀` using `M.isometric_pow_zero.symm.isArithHeight hX H₀`. Establish `T` using `(H₀.isNef_iff hX).1 (HermLB.isNef_triv p D)`. Conclude with `(H.isNef_iff hX).2 ⟨N.semiPos.pow 0, T.2⟩`. Establish `: Module.Finite ℤ k` using `hX.finite`. Use `⟨N.semiPos.pow n, (nefFib_pow_iff k X p hX.isProjOver M n hn).2 N.vertical, fun Z i _ _ _ hc hd => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h, H⟩` from `hex M`. Take `⟨h', H'⟩` from `hex (M.pow n)`. Take `⟨r, hr⟩` from `exists_isRatSec ((M.pow n).restr i).isLB`. Take `⟨r₀, hr₀, h0⟩` from `N.horizontal Z i hc hd`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← H'.point Z i hc hd r hr, height_pow HE hX (HtSelfInter.isAlgPt_genericPoint i hc hd) M n H H', H.point Z i hc hd r₀ hr₀]`. Conclude with `mul_nonneg (Nat.cast_nonneg _) h0`.
+A detailed English derivation is pending.
 -/
 theorem isNef_pow : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (M : HermLB p) (n : ℕ), M.IsNef D → (M.pow n).IsNef D := by
@@ -76,7 +76,7 @@ theorem isNef_pow : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k
     exact mul_nonneg (Nat.cast_nonneg _) h0
 
 /- English proof (translation)
-The claim follows from `isNef_pow`.
+A detailed English derivation is pending.
 -/
 example : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (M : HermLB p) (n : ℕ), M.IsNef D → (M.pow n).IsNef D := isNef_pow

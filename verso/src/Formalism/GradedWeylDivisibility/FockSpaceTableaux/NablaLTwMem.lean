@@ -5,13 +5,13 @@ open MvPolynomial
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Introduce `R K _ _ _ m lam g hg F`. Establish `hd : g.det ≠ 0` using `hg.ne_zero`. Unfold `nablaLTw nablaL`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨G, hG, rfl⟩`. Rewrite `hG` using `[Submodule.mem_comap]`. Express the relevant statement in the definitionally equal form `g.det ^ lam (Fin.last m) • rowAct K g (g.det ^ (-(lam (Fin.last m))) • G) ∈ _`. Rewrite using `[map_smul, smul_smul, ← zpow_add₀ hd, add_neg_cancel, zpow_zero, one_smul]`. Conclude with `hG`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hF`. Use `⟨g.det ^ (lam (Fin.last m)) • F, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap]`. Express the relevant statement in the definitionally equal form `rowAct K g (g.det ^ (lam (Fin.last m)) • F) ∈ _`. Rewrite using `[map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `hF`. Express the relevant statement in the definitionally equal form `g.det ^ (-(lam (Fin.last m))) • g.det ^ (lam (Fin.last m)) • F = F`. Rewrite using `[smul_smul, ← zpow_add₀ hd, neg_add_cancel, zpow_zero, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nabla_twist_mem : NablaLTwMem := by
   intro R K _ _ _ m lam g hg F

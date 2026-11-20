@@ -30,23 +30,23 @@ namespace GlobalTheory.EigLineSumCM
 open Classical in
 
 /- English proof (translation)
-Introduce `E _ _ _ c hc R _ _ K _ _ _ _ H _ _ I _ φ ρ Fil B hL hT hI`. Take `⟨hfree, hfin, hrank, hline, -⟩` from `hL`. Set `g : I × Bool → (E →+* K)` to `fun p => if p.2 then φ p.1 else GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar (φ p.1)`. Establish `hg_or : ∀ p : I × Bool, g p = φ p.1 ∨ g p = GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar (φ p.1)`. Apply the tactic sequence `rintro ⟨i, b⟩; cases b <;> simp [g]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hgbij : Function.Bijective g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, b⟩ ⟨j, b'⟩ h`. Establish `hij : i = j`. Take `⟨k, -, hk⟩` from `hT (g (i, b))`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hk i (hg_or (i, b))`. Establish `h2` using `hk j (by rw [h]; exact hg_or (j, b'))`. Rewrite using `[h1, h2]`. Substitute `hij` using the available equality. Establish `hne` using `GlobalTheory.LowerOps.bar_ne_self (φ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Apply the tactic sequence `cases b <;> cases b'`. Both sides reduce to the same expression. Establish `h' : GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar (φ i) = φ i` using `by simpa [g] using h`. Conclude with `absurd h' hne`. Establish `h' : φ i = GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar (φ i)` using `by simpa [g] using h`.
+Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Conclude with `absurd h'.symm hne`. Both sides reduce to the same expression. Introduce `σ`. Take `⟨i, hi, -⟩` from `hT σ`. Break down `hi with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨(i, true), by simp [g, h]⟩`. Conclude with `⟨(i, false), by simp [g, h]⟩`. Establish `hcard : Nat.card (E →+* K) = Module.finrank ℚ E`. Rewrite using `[← Nat.card_eq_of_bijective g hgbij, Nat.card_prod, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, Fintype.card_bool, ← hI, mul_comm]`. Set `f : orderC c → Module.End K (K ⊗[R] H)` to `fun a => (ρ a).baseChange K`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomm : ∀ a b, Commute (f a) (f b)` using `fun a b => by show (ρ a).baseChange K * (ρ b).baseChange K = (ρ b).baseChange K * (ρ a).baseChange K`. Rewrite using `[← LinearMap.baseChange_mul, ← LinearMap.baseChange_mul, ← map_mul, ← map_mul, mul_comm]`. Establish `hind0` using `Module.End.independent_iInf_maxGenEigenspace_of_forall_mapsTo f (fun i j φ => Module.End.mapsTo_maxGenEigenspace_of_comm (hcomm j i) φ)`. Establish `hinj : Function.Injective (fun σ : E →+* K => fun a : orderC c => σ a)` using `fun σ σ' h => GlobalTheory.EigLineSum.ringHom_eq_of_eq_on_orderC hc (fun a => congrFun h a)`. Establish `hind : iSupIndep (fun σ : E →+* K => GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.eigK ρ σ)` using `(hind0.comp hinj).mono fun σ => iInf_mono fun a => Module.End.eigenspace_le_maxGenEigenspace`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Finite (E →+* K) := Finite.of_surjective g hgbij.2`. Use `haveI := Fintype.ofFinite (E →+* K)`. Establish `htot : Module.finrank K (K ⊗[R] H) = Module.finrank ℚ E`. Rewrite using `[Module.finrank_baseChange, hrank]`. Establish `hinjD : Function.Injective (DirectSum.coeLinearMap (fun σ : E →+* K => GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.eigK ρ σ))` using `hind.dfinsupp_lsum_injective`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `hdim : Module.finrank K (DirectSum (E →+* K) fun σ => GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.eigK ρ σ) = Module.finrank K (K ⊗[R] H)`. Rewrite using `[Module.finrank_directSum, htot, ← hcard, Nat.card_eq_fintype_card]`. Simplify using `[hline]`. Conclude with `⟨hinjD, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).1 hinjD⟩`.
+A detailed English derivation is pending.
 -/
 theorem eigK_isInternal_of_cmType : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (c : Ideal (OF E)), c ≠ ⊥ →
     ∀ (R : Type) [CommRing R] [IsDomain R] (K : Type) [Field K] [Algebra R K] [IsFractionRing R K] [DecidableEq (E →+* K)] (H : Type)

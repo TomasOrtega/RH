@@ -28,9 +28,9 @@ noncomputable section
 namespace GlobalTheory.ConjFrame
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hc : ∀ y, (GlobalTheory.StdFrame.tensCastR (rfl : F1 = F1)).symm y = (Algebra.TensorProduct.comm F1 (FiniteAdeleRing (𝓞 F1) F1) E).symm y` using `fun _ => rfl`. Simplify using `only [hc]`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a b => simp [Formalism.UG.sigR, Algebra.TensorProduct.map_tmul, hστ]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem comm_tensCastR_symm_map {E : Type} [Field E] [NumberField E] {F1 F2 : Subfield E} (h : F1 = F2)
     (σ : E →ₐ[F1] E) (τ : E →ₐ[F2] E) (hστ : ∀ x, σ x = τ x) (x : E ⊗[F2] FiniteAdeleRing (𝓞 F2) F2) :
@@ -48,7 +48,7 @@ theorem comm_tensCastR_symm_map {E : Type} [Field E] [NumberField E] {F1 F2 : Su
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Introduce `D hF x`. Conclude with `comm_tensCastR_symm_map hF D.sp.cm.sig ((IsCMField.complexConj D.host.E).toAlgHom) (fun _ => rfl) x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem swapAE_conjAL : ∀ {D : D7} (hF : D.host.F = maximalRealSubfield D.host.E) (x : ReciprocityTheory.Aut.AL D.host.E), Formalism.IndefR.Lev.swapAE D ((GlobalTheory.StdFrame.tensCastR hF).symm (ReciprocityTheory.Aut.conjAL D.host.E x)) = Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) (Formalism.IndefR.Lev.swapAE D ((GlobalTheory.StdFrame.tensCastR hF).symm x)) := by
   intro D hF x

@@ -17,9 +17,9 @@ def VolOneAEC : Prop :=
 def MXAE : Prop := {v : PlX X | MX X u u' ψ v ≠ alX X u u' v}.Finite
 
 /- English proof (translation)
-Establish `hs : ∀ b ∉ hfin.toFinset, f b = 1`. Introduce `b hb`. Assume the negation of the conclusion as `hne`. Conclude with `hb (hfin.mem_toFinset.2 hne)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Use `first`. Consider the case `exact multipliable_of_ne_finset_one hs`. Consider the case `exact (hasProd_prod_of_ne_finset_one hs).multipliable`. Rewrite using `[tprod_eq_prod hs]`. Conclude with `Finset.prod_pos (fun a _ => hpos a)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem multipliable_and_tprod_pos_of_finite_ne_one {α : Type*} (f : α → ℝ) (hpos : ∀ a, 0 < f a)
     (hfin : {a | ¬ f a = 1}.Finite) : Multipliable f ∧ 0 < ∏' a, f a := by
@@ -35,9 +35,9 @@ private theorem multipliable_and_tprod_pos_of_finite_ne_one {α : Type*} (f : α
     exact Finset.prod_pos (fun a _ => hpos a)
 
 /- English proof (translation)
-Unfold `VolOneAEC at h1`. Unfold `LocPosC at h2`. Unfold `AlConvC at h3`. Establish `hU` using `multipliable_and_tprod_pos_of_finite_ne_one (fun v : OrdX X => localVolumeUnit X ψ v.1) (fun v => (h2 v.1).2.1) (Set.Finite.preimage Subtype.val_injective.injOn (h1.subset (fun v (hv : ¬ localVolumeUnit X ψ v = 1) hall => hv hall.1)))`. Establish `hZ` using `multipliable_and_tprod_pos_of_finite_ne_one (ZZX X u u' ψ) (fun v => (h2 v).2.2.1) (h1.subset (fun v hv hall => hv hall.2.1))`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : ∀ l, Multipliable (PPX X u u' ψ l) ∧ 0 < ∏' v : PlX X, PPX X u u' ψ l v` using `fun l => multipliable_and_tprod_pos_of_finite_ne_one (PPX X u u' ψ l) (fun v => (h2 v).2.2.2.1 l) (h1.subset (fun v hv hall => hv (hall.2.2.1 l)))`. Establish `hJ` using `multipliable_and_tprod_pos_of_finite_ne_one (jacX X) (fun v => (h2 v).2.2.2.2.2) (h1.subset (fun v hv hall => hv hall.2.2.2))`. Unfold `ProdConv`. Conclude with `⟨fun v => ⟨fun _ => (h2 v).1, (h2 v).2.1, (h2 v).2.2.1, (h2 v).2.2.2.1, (h2 v).2.2.2.2.1⟩, trivial, trivial, hU.1, hU.2, hZ.1, hZ.2, hP, h3.1, h3.2, hJ.1, hJ.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem prodConv_of_vol_locPos (h1 : VolOneAEC X u u' ψ) (hM : MXAE X u u' ψ) (h2 : LocPosC X u u' ψ) (h3 : AlConvC X u u') :
     ProdConv X u u' ψ := by

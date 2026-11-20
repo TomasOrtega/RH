@@ -30,15 +30,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Set `_` to `io.toAlgebra`. Introduce `y₀ hy0`. Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull Out.CubePf.cubePull yt Y.t`. Take `⟨t', m1, m2, -⟩` from `genFibre Xo c Out.CubePf.cubePull T io O β Y yt z hz hzs _ m`. Establish `hx : (z ≫ pullback.fst _ _) ≫ Xo.s = sOf c T.Fr`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hzs]`. Use `show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Take `⟨x₀, hx₀, u₀, htan₀, heig₀, hbas₀, s₀, hgen₀⟩` from `y₀`. Express the relevant statement in the definitionally equal form `x₀ = z ≫ pullback.fst _ _ at hy0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality.
 
-Substitute `hy0` using the available equality. Take `⟨ub, u, hub, htan, heig, hbas, htri⟩` from `lieFree Xo c T io _ t' _ m1 m2 hx u₀ htan₀ heig₀ hbas₀`. Take `⟨θ, s, hθ, hmatch, hgen, a, ha⟩` from `GlobalTheory.DepthSum.thetaFrame_trait Xo c T io O β Y yt z hz hzs _ m t' m1 m2 s₀ hgen₀`. Set `y : FrPt Xo c T.Fr` to `⟨z ≫ pullback.fst _ _, hx, u, htan, heig, hbas, s, hgen⟩`. Use `choose cf hcf using htri`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Treat this case separately.
 
-Set `tt : Ix Dw → T.Frˣ` to `fun o => match o with`. Consider the case `none => a`. Consider the case `some p => (hcf p.1 p.2).1.unit`. Establish `hFB : FrBor tt ⟨z ≫ pullback.fst _ _, hx₀, u₀, htan₀, heig₀, hbas₀, s₀, hgen₀⟩ y`. Use `⟨rfl, fun τ i => ⟨cf τ i, (hcf τ i).1.unit_spec.symm, (hcf τ i).2.1, (hcf τ i).2.2⟩, 𝟙 _, Category.id_comp _, Category.id_comp _, fun i h => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(Scheme.Hom.appLE (𝟙 (Gx (z ≫ pullback.fst _ _))) _ _ h).hom (scal (z ≫ pullback.fst _ _) (a : T.Fr) i * s₀.f i) = s.f i`. Rewrite using `[ha i, Scheme.Hom.appLE, Scheme.Hom.id_app]`. Use `erw [Category.id_comp, show (homOfLE h).op = 𝟙 _ from Subsingleton.elim _ _, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression. Conclude with `⟨⟨y, GlobalTheory.NonIntegralFrameExample.spread_holds Xo c T.Fr y, _, t', m1, m2, ⟨ub, hub⟩, θ, hθ, hmatch⟩, tt, hFB⟩`.
+Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_intFr_frBor (T : CDVR) (io : c.F →+* T.Fr) (O : Type) [CommRing O] (β : O →+* c.F)
     (Y : Model Xo c β) (yt : Sp T.V ⟶ Y.X) (z : Sp T.Fr ⟶ Xo.XF c)
@@ -87,16 +87,16 @@ open IsLocalRing ReciprocityTheory.ChartRestriction.G.Out
 open scoped CategoryTheory.Obj
 
 /- English proof (translation)
-The claim follows from `charZero_of_injective_ringHom ((residue V).comp (Spec.preimage f).hom).injective`.
+A detailed English derivation is pending.
 -/
 theorem charZero_residue_of_map {K : Type} [Field K] [CharZero K] (V : Type) [CommRing V] [IsLocalRing V]
     (f : Sp V ⟶ Sp K) : CharZero (ResidueField V) :=
   charZero_of_injective_ringHom ((residue V).comp (Spec.preimage f).hom).injective
 
 /- English proof (translation)
-Establish `h₀ : IsSemiAbelian ((Over.pullback (spMap (residue W))).obj G)` using `IsSemiAbelian.pullback _ G hG`. Take `⟨k', _, _, hk, Sx, ⟨d⟩⟩` from `GlobalTheory.UnifAfterExt.exists_finite_split _ h₀`. Establish `: Algebra.IsSeparable (ResidueField W) k'` using `inferInstance`. Take `⟨W', i1, i2, i3, i4, i5, hf, hi, -, -, e, he⟩` from `GlobalTheory.unramExt W k'`. Use `⟨W', i1, i2, i3, i4, i5, hf, hi, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : (e.symm.toRingHom.comp (algebraMap (ResidueField W) k')).comp (residue W) = (residue W').comp (algebraMap W W')` using `RingHom.ext fun v => e.symm_apply_eq.2 (he v).symm`. Take `⟨j, hj, -⟩` from `grpPullback_iso (((isGrpPullback_pullback _ (spMap e.symm.toRingHom)).comp ((isGrpPullback_pullback _ (spMap (algebraMap (ResidueField W) k'))).comp (isGrpPullback_pullback G (spMap (residue W))))).congr (f' := spMap (residue W') ≫ spMap (algebraMap W W')) (by rw [← Category.asso …`. Conclude with `⟨_, isGt_of_iso j (GtBaseChange.isGt_extBC (spMap e.symm.toRingHom) Sx _ d)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_split_baseChange (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W]
     [IsAdicComplete (maximalIdeal W) W] [CharZero (ResidueField W)] (G : Over (Sp W)) [GrpObj G]
@@ -134,21 +134,21 @@ open IsLocalRing
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `_ E _ _ _ H Dw l Xo c TF T io`. Use `letI := io.toAlgebra`. Introduce `P w hw`. Establish `hz : FlagMod.frX P ≫ TF.Y.j = spMap (algebraMap T.V T.Fr) ≫ w`. Rewrite using `[hw, (TF.X.lies_ptY P).1]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzs : FlagMod.frX P ≫ pullback.snd _ _ = spMap io` using `FlagMod.frX_snd P`. Take `⟨y₀, tt, hB⟩` from `exists_intFr_frBor T io c.F (RingHom.id c.F) TF.Y w (FlagMod.frX P) hz hzs P (FlagMod.frX_fst P).symm`. Choose the witnesses or unpack the hypotheses as in `⟨G₀, ⟨m₀⟩⟩ : ∃ G₀ : SAB H (Sp T.V), Nonempty (SABMap G₀ TF.Y.t w) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull w TF.Y.t`. Conclude with `⟨_, ⟨m⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨t₀, m1₀, m2₀, -⟩` from `genFibre Xo c Out.CubePf.cubePull T io c.F (RingHom.id c.F) TF.Y w _ hz hzs G₀ m₀`. Establish `: CharZero (ResidueField T.V)` using `charZero_residue_of_map T.V (w ≫ TF.Y.s)`. Take `⟨W, _, _, _, _, _, hf, hi, hS⟩` from `exists_split_baseChange T.V G₀.G G₀.semi`. Establish `: CharZero W` using `charZero_of_injective_ringHom hi`. Set `T' : CDVR` to `{ V := W }`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `j : T.V →+* T'.V` to `algebraMap T.V W`. Establish `hfin : j.Finite` using `RingHom.finite_algebraMap.2 hf`. Take `⟨i, r, hr0, hφ, hv, -⟩` from `GlobalTheory.EtaVal.finite_extension_ramification_embedding T T' j hi hfin`. Use `letI := (i.comp io).toAlgebra`. Set `ψ : T.Fr →ₐ[c.F] T'.Fr` to `{ i with commutes' := fun _ => rfl }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Take `⟨z', hz'⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.abelianSchemeLaws_all.1.secBaseChange E H Dw l Xo c T.Fr T'.Fr ψ y₀.1`. Set `y' : IntFr Xo c T' (i.comp io)` to `⟨z', GlobalTheory.NonIntegralFrameExample.spread_holds Xo c T'.Fr z', GlobalTheory.IntegralExt.integral_baseChange T T' io (i.comp io) j hi ψ hφ y₀.1 z' hz' y₀.2.2⟩`. Choose the witnesses or unpack the hypotheses as in `⟨G, ⟨mG⟩⟩ : ∃ G : SAB H (Sp T'.V), Nonempty (SABMap G TF.Y.t (spMap j ≫ w)) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull (spMap j ≫ w) TF.Y.t`. Conclude with `⟨_, ⟨m⟩⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hι : i.comp (algebraMap T.V T.Fr) = (algebraMap T'.V T'.Fr).comp j` using `RingHom.ext hφ`. Establish `hio : spMap (algebraMap T'.V T'.Fr) ≫ spMap j = spMap i ≫ spMap (algebraMap T.V T.Fr)`. Rewrite using `[GlobalTheory.EtaVal.spMap_comp_spMap, GlobalTheory.EtaVal.spMap_comp_spMap, hι]`. Establish `hz2 : (spMap i ≫ FlagMod.frX P) ≫ TF.Y.j = spMap (algebraMap T'.V T'.Fr) ≫ spMap j ≫ w`. Rewrite using `[Category.assoc, hz, ← Category.assoc, ← hio, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzs2 : (spMap i ≫ FlagMod.frX P) ≫ pullback.snd _ _ = spMap (i.comp io)`. Rewrite using `[Category.assoc, hzs, GlobalTheory.EtaVal.spMap_comp_spMap]`. Take `⟨t', m1, m2, -⟩` from `genFibre Xo c Out.CubePf.cubePull T' (i.comp io) c.F (RingHom.id c.F) TF.Y (spMap j ≫ w) _ hz2 hzs2 G mG`. Establish `hx' : y'.1.x = (spMap i ≫ FlagMod.frX P) ≫ pullback.fst _ _`. Rewrite using `[Category.assoc, FlagMod.frX_fst, ← hB.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz'.1`. Take `⟨Pu, -⟩` from `GlobalTheory.IntegralExt.exists_unif_of_split T T' j i hφ m1₀ m2₀ (Category.assoc _ _ _) m1 m2 hS`. Establish `hloc : IsLocalHom j` using `hfin.to_isIntegral.isLocalHom hi`. Use `⟨T', i, j, r, y', G, mG, Pu, t', (by rw [hx']; exact m1), m2, hr0, hv, hι, fun a ha => map_nonunit j a ha, ?_⟩` and prove the remaining obligations. Rewrite using `[TF.X.ptY_frBor hB, ← TF.X.ptY_frMap hz']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ext_intFr_unif : Hypotheses2 → ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (TF : TorFlag Xo c) (T : Formalism.L2.Pj.CDVR) (io : c.F →+* T.Fr), letI := io.toAlgebra; ∀ (P : FrPt Xo c T.Fr) (w : Sp T.V ⟶ TF.Y.X), spMap (algebraMap T.V T.Fr) ≫ w = TF.X.ptY P ≫ TF.X.π → ∃ (T' : Formalism.L2.Pj.CDVR) (i : T.Fr →+* T'.Fr) (j : T.V →+* T'.V) (r : ℕ) (y' : IntFr Xo c T' (i.comp io)) (G : SAB H (Sp T'.V)) (_ : SABMap G TF.Y.t (spMap j ≫ w)) (_ : PELUnif (IsLocalRing.maximalIdeal T'.V) G) (t' : SAB H (Sp T'.Fr)) (_ : letI := (i.comp io).toAlgebra; SABMap t' Xo.univ.t y'.1.x) (_ : SABMap t' G (spMap (algebraMap T'.V T'.Fr))), 0 < r ∧ (∀ x, Formalism.L2.Pj.vV T'.V (i x) = (r : ℤ) * Formalism.L2.Pj.vV T.V x) ∧ i.comp (algebraMap T.V T.Fr) = (algebraMap T'.V T'.Fr).comp j ∧ (∀ a ∈ IsLocalRing.maximalIdeal T.V, j a ∈ IsLocalRing.maximalIdeal T'.V) ∧ (letI := (i.comp io).toAlgebra; TF.X.ptY y'.1 = spMap i ≫ TF.X.ptY P) := by
   intro _ E _ _ _ H Dw l Xo c TF T io

@@ -9,7 +9,7 @@ open Complex Filter Topology
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
 /- English proof (translation)
-Establish `h : τ.1 X.ξ0 ≠ 0` using `(map_ne_zero τ.1).mpr X.ξ0_ne`. Use `show 0 < 2 * ‖τ.1 X.ξ0‖`. Conclude with `mul_pos two_pos (norm_pos_iff.mpr h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem d4l4_c_pos {r : ℕ} (X : Data E r) (τ : X.Ψ) : 0 < X.c τ := by
   have h : τ.1 X.ξ0 ≠ 0 := (map_ne_zero τ.1).mpr X.ξ0_ne
@@ -18,13 +18,13 @@ theorem d4l4_c_pos {r : ℕ} (X : Data E r) (τ : X.Ψ) : 0 < X.c τ := by
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[differentiable_pi]`. Introduce `τ`. Rewrite using `[differentiable_pi]`. Introduce `a`. Rewrite using `[differentiable_pi]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `b`. Establish `hu : Differentiable ℂ (fun z : ℂ => Function.update s τ0 z τ)`. Distinguish the cases in `h : τ = τ0`. Substitute `h` using the available equality. Simplify using `using differentiable_id`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `differentiable_const (s τ)` using `[Function.update_of_ne h]`. Introduce `z`. Simplify using `only [Data.flowV, Matrix.mul_apply, Data.flowMatV, Matrix.of_apply, mat]`. Use `DifferentiableAt.fun_sum fun k _ => ?_` and prove the remaining obligations. Apply `DifferentiableAt.mul_const` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `DifferentiableAt.const_sub` to reduce the goal to its premises. Apply `DifferentiableAt.mul_const` to reduce the goal to its premises. Apply `DifferentiableAt.mul_const` to reduce the goal to its premises. Apply `DifferentiableAt.const_mul` to reduce the goal to its premises. Conclude with `hu z`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem d4l4_diff_flow {r : ℕ} (X : Data E r) (e : X.Ψ → Fin r → ℂ) (x : Frame X.Ψ r)
     (s : X.Ψ → ℂ) (τ0 : X.Ψ) :
@@ -51,35 +51,31 @@ theorem d4l4_diff_flow {r : ℕ} (X : Data E r) (e : X.Ψ → Fin r → ℂ) (x 
   exact hu z
 
 /- English proof (translation)
-Introduce `r X e he G hG m x hx hreal s hs`. Establish `hdom : ∀ s' : X.Ψ → ℂ, X.flowV e s' x ∈ X.dom ↔ ∀ τ, 0 < 1 + (s' τ).im / X.ttV e x τ` using `fun s' => (flowDomainCriterion_holds (E := E) r X e he x hx s').1`. Use `set H : (X.Ψ → ℂ) → ℂ := fun s' => G (X.flowV e s' x) - cexp (4 * Real.pi * I * ∑ τ, m τ * s' τ) * G x with hH`. It suffices to establish `key : ∀ A : Finset X.Ψ, ∀ s' : X.Ψ → ℂ, (∀ τ ∉ A, (s' τ).im = 0) → X.flowV e s' x ∈ X.dom → H s' = 0 by`. Conclude with `sub_eq_zero.mp (key Finset.univ s (fun τ h => absurd (Finset.mem_univ τ) h) hs)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `A`. Proceed by induction on `A using Finset.induction_on with`. Consider the case `empty`. Introduce `s' hs' _`. Establish `hre : ∀ τ, (((s' τ).re : ℝ) : ℂ) = s' τ` using `fun τ => Complex.ext (by simp) (by simp [hs' τ (by simp)])`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0` using `hreal (fun τ => (s' τ).re)`. Simplify using `only [hre] at h0`. Simplify using `only [hH, h0, sub_self]`. Consider the case `insert τ0 A hτ0 ih`. Introduce `s' hs' hdom'`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcond` using `(hdom s').mp hdom'`. Use `set V : Set ℂ := {z | 0 < 1 + z.im / X.ttV e x τ0} with hVdef`. Establish `hVo : IsOpen V` using `isOpen_lt continuous_const (by fun_prop)`. Establish `hVc : Convex ℝ V`. Introduce `z hz w hw a b ha hb hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hVdef, Set.mem_setOf_eq] at hz hw ⊢`. Establish `him : (a • z + b • w).im = a * z.im + b * w.im` using `by simp`. Establish `h1 : 1 + (a * z.im + b * w.im) / X.ttV e x τ0 = a * (1 + z.im / X.ttV e x τ0) + b * (1 + w.im / X.ttV e x τ0)`. Take the linear combination `(-1 : ℝ) * hab`. Rewrite using `[him, h1]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `ha.lt_or_eq with ha' | ha'` into its components or cases. Conclude with `add_pos_of_pos_of_nonneg (mul_pos ha' hz) (mul_nonneg hb hw.le)`. Establish `hb1 : b = 1` using `by linarith`. Rewrite using `[← ha', hb1]`. Simplify using `using hw`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hreal0 : ∀ y : ℝ, (y : ℂ) ∈ V` using `by intro y; simp [hVdef]`. Establish `hmaps : ∀ z ∈ V, X.flowV e (Function.update s' τ0 z) x ∈ X.dom`. Introduce `z hz`. Rewrite using `[hdom]`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Distinguish the cases in `h : τ = τ0`. Substitute `h` using the available equality. Simplify `hz` using `[hVdef]`. Simplify `hcond τ` using `[Function.update_of_ne h]`. Establish `hu : ∀ τ, Differentiable ℂ (fun z : ℂ => Function.update s' τ0 z τ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `τ`. Distinguish the cases in `h : τ = τ0`. Substitute `h` using the available equality. Simplify using `using differentiable_id`. Simplify `differentiable_const (s' τ)` using `[Function.update_of_ne h]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdiff : DifferentiableOn ℂ (fun z => H (Function.update s' τ0 z)) V`. Establish `h1 : DifferentiableOn ℂ (fun z => G (X.flowV e (Function.update s' τ0 z) x)) V` using `hG.comp (d4l4_diff_flow X e x s' τ0).differentiableOn (fun z hz => hmaps z hz)`. Establish `hsum : Differentiable ℂ (fun z : ℂ => ∑ τ, m τ * Function.update s' τ0 z τ)`. Introduce `z`. Conclude with `DifferentiableAt.fun_sum fun τ _ => ((hu τ) z).const_mul (m τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : Differentiable ℂ (fun z : ℂ => cexp (4 * Real.pi * I * ∑ τ, m τ * Function.update s' τ0 z τ) * G x)` using `((hsum.const_mul (4 * Real.pi * I)).cexp).mul_const (G x)`. Conclude with `h1.sub h2.differentiableOn`. Establish `han : AnalyticOnNhd ℂ (fun z => H (Function.update s' τ0 z)) V` using `hdiff.analyticOnNhd hVo`. Establish `hzero_real : ∀ y : ℝ, H (Function.update s' τ0 (y : ℂ)) = 0`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `ih` to reduce the goal to its premises. Introduce `τ hτ`. Distinguish the cases in `h : τ = τ0`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[Function.update_of_ne h]`. Conclude with `hs' τ (by simp [h, hτ])`. Conclude with `hmaps _ (hreal0 y)`. Establish `hfreq : ∃ᶠ z in 𝓝[≠] (0 : ℂ), H (Function.update s' τ0 z) = 0`. Establish `ht : Filter.Tendsto (fun y : ℝ => (y : ℂ)) (𝓝[≠] (0 : ℝ)) (𝓝[≠] (0 : ℂ))`.
-
-Establish `h3` using `Complex.continuous_ofReal.continuousWithinAt.tendsto_nhdsWithin (s := {(0 : ℝ)}ᶜ) (t := {(0 : ℂ)}ᶜ) (x := 0) (fun y hy => by simpa using hy)`. Rewrite `h3` using `[Complex.ofReal_zero]`. Then use the resulting hypothesis. Conclude with `ht.frequently (Filter.Eventually.frequently (Filter.Eventually.of_forall hzero_real))`. Establish `h0V : (0 : ℂ) ∈ V` using `by simp [hVdef]`. Establish `hEq` using `han.eqOn_zero_of_preconnected_of_frequently_eq_zero hVc.isPreconnected h0V hfreq`.
-
-Establish `h4` using `hEq (hcond τ0)`. Simplify using `using h4`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem holomorphic_periodicity_extension : HolomorphicPeriodicityExtension (E := E) := by
   classical

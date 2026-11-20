@@ -19,7 +19,7 @@ def lsB (D : Formalism.BasicNotions.D7) (cc : Ideal (𝓞 D.host.K)) (r : D.host
   Submodule.pi Set.univ fun _ => bInv D cc r
 
 /- English proof (translation)
-Simplify using `[lsB, Submodule.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_lsB {D : Formalism.BasicNotions.D7} {cc : Ideal (𝓞 D.host.K)} {r : D.host.E} {a : ℕ} {y : Fin a → D.host.E} :
     y ∈ lsB D cc r a ↔ ∀ i, y i ∈ bInv D cc r := by

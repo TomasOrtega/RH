@@ -5,15 +5,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
 /- English proof (translation)
-Set `R` to `Localization.AtPrime P`. Set `φ : R →ₗ[R] LocalizedModule P.primeCompl M` to `LinearMap.toSpanSingleton R _ (LocalizedModule.mk m0 1)`. Establish `hs : Function.Surjective φ`. Introduce `y`. Proceed by induction on `y using LocalizedModule.induction_on with`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `_ m s`. Take `⟨b, hb, a, hab⟩` from `hc m`. Use `⟨Localization.mk a (⟨b, hb⟩ * s), ?_⟩` and prove the remaining obligations. Use `show Localization.mk a ((⟨b, hb⟩ : P.primeCompl) * s) • LocalizedModule.mk m0 (1 : P.primeCompl) = _`. Rewrite using `[LocalizedModule.mk_smul_mk, mul_one, ← hab]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `LocalizedModule.mk_cancel_common_left (⟨b, hb⟩ : P.primeCompl) s m`. Establish `hker : maximalIdeal R ≤ LinearMap.ker φ`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_le_iff_le_comap]`. Introduce `p hp`. Take `⟨b, hb, h⟩` from `hk p hp m0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show algebraMap B R p • LocalizedModule.mk m0 (1 : P.primeCompl) = 0`. Rewrite using `[algebraMap_smul, LocalizedModule.smul'_mk, ← LocalizedModule.zero_mk (1 : P.primeCompl), LocalizedModule.mk_eq]`. Use `⟨⟨b, hb⟩, ?_⟩` and prove the remaining obligations. Simplify `h` using `[Submonoid.smul_def, mul_smul]`. Establish `hs' : Function.Surjective ((maximalIdeal R).liftQ φ hker)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `y`. Take `⟨r, rfl⟩` from `hs y`. Conclude with `⟨Submodule.Quotient.mk r, rfl⟩`. Establish `hsimple : IsSimpleModule R (R ⧸ maximalIdeal R)` using `isSimpleModule_iff_isCoatom.2 (Ideal.isMaximal_def.1 inferInstance)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem localized_length_le_one {B M : Type} [CommRing B] [AddCommGroup M] [Module B M] (P : Ideal B) [P.IsPrime]
     (hk : ∀ p ∈ P, ∀ m : M, ∃ b, b ∉ P ∧ (b * p) • m = 0)
@@ -50,17 +50,15 @@ private theorem localized_length_le_one {B M : Type} [CommRing B] [AddCommGroup 
     _ = 1 := Module.length_eq_one R _
 
 /- English proof (translation)
-Set `ψ : 𝒜 0 →ₐ[O] A ⧸ I` to `(Ideal.Quotient.mkₐ O I).comp (IsScalarTower.toAlgHom O (𝒜 0) A)`. Establish `hfg : (Subalgebra.toSubmodule ψ.range).FG`. Establish `: Subalgebra.toSubmodule ψ.range = (𝒜 0).map (Ideal.Quotient.mkₐ O I).toLinearMap`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨b, b.2, rfl⟩`. Introduce and unpack `⟨b, hb, rfl⟩`. Conclude with `⟨⟨b, hb⟩, rfl⟩`. Rewrite using `[this]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`. Take `⟨q, hq, hq0⟩` from `IsIntegral.of_mem_of_fg ψ.range hfg (ψ p) ⟨p, rfl⟩`. Take `⟨r, hr, hr0⟩` from `Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd q hq.ne_zero 0`. Rewrite `hr0` using `[Polynomial.dvd_iff_isRoot]`. Use `⟨Polynomial.aeval p r, ?_, q.rootMultiplicity 0, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Polynomial.aeval_algHom_apply, hp, ← map_zero (algebraMap O K), Polynomial.aeval_algebraMap_apply]`. Introduce `h`. Conclude with `hr0 (FaithfulSMul.algebraMap_injective O K h)`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Establish `h1 : ψ (Polynomial.aeval p q) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Polynomial.aeval_algHom_apply]`. Conclude with `hq0`. Rewrite `h1` using `[hr]`. Simplify using `only [map_mul, map_pow, map_sub, Polynomial.aeval_X, Polynomial.aeval_C, map_zero, sub_zero] at h1`. Rewrite using `[map_mul, map_pow, mul_comm]`.
-
-Conclude with `h1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nilpotent_modulo_kernel {O K A : Type} [CommRing O] [IsDomain O] [Field K] [Algebra O K] [FaithfulSMul O K]
     [CommRing A] [Algebra O A] (𝒜 : ℤ → Submodule O A) [GradedAlgebra 𝒜] (I : Ideal A) (h2 : M2 𝒜 I)
@@ -92,35 +90,29 @@ private theorem nilpotent_modulo_kernel {O K A : Type} [CommRing O] [IsDomain O]
     exact h1
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ K _ _ _ _ A _ _ 𝒜 _ _ x hx I hI h2 h4 σ hσ w`. Choose the witnesses or unpack the hypotheses as in `⟨τ, ⟨f, hf, g, hg, hτ⟩, hστ⟩ : ∃ τ : 𝒜 0, (∃ f ∈ 𝒜 (-2), ∃ g ∈ 𝒜 2, (τ : A) = f * g) ∧ σ τ ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hσ (Ideal.span_le.2 fun b hb => hcon b hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `red : ∀ (j : ℤ) (h : A), h ∈ 𝒜 j → ∀ b : 𝒜 0, σ b ≠ 0 → ∀ n : ℕ, (b : A) * h ^ n ∈ I → ∃ b' : 𝒜 0, σ b' ≠ 0 ∧ (b' : A) * h ∈ I`. Introduce `j h hh b hb n hn`. Take `⟨N, c, hc, hmem⟩` from `(slice_holds O K A 𝒜 x hx I hI h2 h4 f hf g hg).2 ((b : A) * h) (by`. Introduce `ξ hξ _ _`. Use `hξ _ hn` as an intermediate fact.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[map_mul, map_pow, mul_eq_zero]`. Rewrite using `[map_mul, mul_eq_zero]`. Conclude with `this.imp id fun h' => eq_zero_of_pow_eq_zero h')`. Establish `hhom : c • (g ^ N * ((b : A) * h)) ∈ 𝒜 (N • (2 : ℤ) + (0 + j))` using `Submodule.smul_mem _ c (SetLike.mul_mem_graded (SetLike.pow_mem_graded N hg) (SetLike.mul_mem_graded b.2 hh))`. Take `⟨m, hm⟩` from `deh_holds O A 𝒜 I hI (-2) _ f _ (by norm_num) hf hhom hmem`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨c • (τ ^ (N + m) * b), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, map_mul, map_pow, Algebra.smul_def]`. Conclude with `mul_ne_zero ((map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective O K)).2 hc) (mul_ne_zero (pow_ne_zero _ hστ) hb)`. Establish `: ((c • (τ ^ (N + m) * b) : 𝒜 0) : A) * h = (f ^ N * g ^ m) * (f ^ m * c • (g ^ N * ((b : A) * h)))`. Rewrite using `[Submodule.coe_smul, SetLike.GradeZero.coe_mul, SetLike.GradeZero.coe_pow, hτ, Algebra.smul_def, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `I.mul_mem_left _ hm`. Choose the witnesses or unpack the hypotheses as in `⟨e, he, e', k, hee⟩ : ∃ e ∈ 𝒜 (-2 * w), ∃ e' : A, ∃ k : ℕ, e * e' = (τ : A) ^ k := by`. Take `⟨k, rfl | rfl⟩` from `Int.eq_nat_or_neg w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨f ^ k, ?_, g ^ k, k, by rw [hτ, mul_pow]⟩` and prove the remaining obligations. Use `SetLike.pow_mem_graded k hf` as an intermediate fact. Rewrite `this` using `[nsmul_eq_mul, mul_comm]`. Then use the resulting hypothesis. Use `⟨g ^ k, ?_, f ^ k, k, by rw [hτ, mul_pow, mul_comm]⟩` and prove the remaining obligations. Use `SetLike.pow_mem_graded k hg` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[nsmul_eq_mul, show (k : ℤ) * 2 = -2 * -(k : ℤ) by ring]`. Then use the resulting hypothesis. Establish `hprod : ∀ h ∈ 𝒜 w, ∀ h' ∈ 𝒜 w, h * h' * e ∈ 𝒜 0` using `fun h hh h' hh' => by`. Use `SetLike.mul_mem_graded (SetLike.mul_mem_graded hh hh') he` as an intermediate fact. Rewrite `this` using `[show w + w + -2 * w = 0 by ring]`. Then use the resulting hypothesis. Establish `cyc : ∃ h0 ∈ 𝒜 w, ∀ h ∈ 𝒜 w, ∃ b : 𝒜 0, σ b ≠ 0 ∧ ∃ a : 𝒜 0, (b : A) * h - (a : A) * h0 ∈ I`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hall : ∀ h (hh : h ∈ 𝒜 w), σ ⟨h * h * e, hprod h hh h hh⟩ = 0`. Use `⟨0, zero_mem _, fun h hh => ?_⟩` and prove the remaining obligations. Take `⟨b, hb, n, hn⟩` from `nilpotent_modulo_kernel 𝒜 I h2 σ _ (hall h hh)`. Take `⟨b', hb', h'⟩` from `red w h hh (b * (τ ^ k) ^ n) (by`. Rewrite using `[map_mul, map_pow, map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `mul_ne_zero hb (pow_ne_zero _ (pow_ne_zero _ hστ))) (2 * n) (by`. Establish `: ((b * (τ ^ k) ^ n : 𝒜 0) : A) * h ^ (2 * n) = e' ^ n * ((b : A) * (h * h * e) ^ n)`. Rewrite using `[SetLike.GradeZero.coe_mul, SetLike.GradeZero.coe_pow, SetLike.GradeZero.coe_pow, ← hee]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `I.mul_mem_left _ hn)`. Conclude with `⟨b', hb', 0, by simpa using h'⟩`. Use `push Not at hall`. Take `⟨h0, hh0, hne⟩` from `hall`. Use `⟨h0, hh0, fun h hh => ⟨_, hne, ⟨h * h0 * e, hprod h hh h0 hh0⟩, ?_⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `: h0 * h0 * e * h - h * h0 * e * h0 = 0` using `by ring`. Use `show h0 * h0 * e * h - h * h0 * e * h0 ∈ I`. Rewrite using `[this]`. Conclude with `I.zero_mem`. Take `⟨h0, hh0, hcyc⟩` from `cyc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : (RingHom.ker σ).IsPrime := RingHom.ker_isPrime σ`. Use `localized_length_le_one (RingHom.ker σ) ?_ (⟨Ideal.Quotient.mk I h0, h0, hh0, rfl⟩ : aPiece 𝒜 I w) ?_` and prove the remaining obligations. Introduce and unpack `p hp ⟨_, h, hh, rfl⟩`. Take `⟨b, hb, n, hn⟩` from `nilpotent_modulo_kernel 𝒜 I h2 σ p hp`. Take `⟨b', hb', h'⟩` from `red (0 + w) ((p : A) * h) (SetLike.mul_mem_graded p.2 hh) b hb n (by`.
-
-Rewrite using `[mul_pow, ← mul_assoc]`. Conclude with `I.mul_mem_right _ hn)`. Use `⟨b', hb', Subtype.ext ?_⟩` and prove the remaining obligations. Use `show Ideal.Quotient.mk I (((b' : A) * p) * h) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, mul_assoc]`.
-
-Conclude with `h'`. Introduce and unpack `⟨_, h, hh, rfl⟩`. Take `⟨b, hb, a, hab⟩` from `hcyc h hh`. Use `⟨b, hb, a, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show Ideal.Quotient.mk I ((b : A) * h) = Ideal.Quotient.mk I ((a : A) * h0)`.
-
-Conclude with `Ideal.Quotient.eq.2 hab`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.M.locLen_quotientWeightPiece_le_one :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]

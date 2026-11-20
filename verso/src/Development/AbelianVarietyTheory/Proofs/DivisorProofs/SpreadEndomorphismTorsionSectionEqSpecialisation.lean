@@ -17,9 +17,9 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.TorsCmp
 
 /- English proof (translation)
-Establish `e : ∀ k, f ≫ (x₀ ^ k).left = (x ^ k).left ≫ pullback.fst B.hom f` using `fun k => GlobalTheory.ZH.MultInt.pow_left_pullback f B (T := 𝟙_ (Over S')) (T₀ := 𝟙_ (Over S)) f (by simp) x x₀ hx k`. Establish `e0` using `e 0`. Establish `eN` using `e N`. Rewrite `eN` using `[h, ← pow_zero x₀, e0]`. Rewrite using `[← pow_zero x]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `eN.symm`. Conclude with `(Over.w (x ^ N)).trans (Over.w (x ^ 0)).symm`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem pow_eq_one_of_pullback {S S' : Scheme.{0}} (f : S' ⟶ S) (B : Over S) [GrpObj B]
     (x : 𝟙_ (Over S') ⟶ (Over.pullback f).obj B) (x₀ : 𝟙_ (Over S) ⟶ B)
@@ -41,21 +41,19 @@ end GlobalTheory.TorsCmp
 open GlobalTheory.TorsCmp in
 
 /- English proof (translation)
-Introduce `k₀ K _ _ _ _ B _ hB R g Ψ f₀ σ hΨ hf₀ hσ₁ hσ₂ hf N hN y₀ hy₀ c hc₁ hc₂`. Use `haveI := hΨ`. Use `haveI := hf₀`. Use `haveI : IsAbelianScheme ((Over.pullback (spMap (algebraMap k₀ R))).obj B) := GlobalTheory.isAbelianScheme_overPullback _ B hB`. Establish `hgf : spMap g.toRingHom ≫ spMap (algebraMap k₀ R) = 𝟙 _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `: g.toRingHom.comp (algebraMap k₀ R) = RingHom.id k₀`. Use extensionality with `r`. Conclude with `g.commutes r`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Spec.map_id _`. Establish `hNR : IsUnit (N : Γ(Sp R, ⊤))`. Establish `h1 : IsUnit (N : k₀)` using `Ne.isUnit hN`. Establish `h2 : IsUnit (N : R)` using `by simpa using h1.map (algebraMap k₀ R)`. Simplify using `using h2.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `cc : 𝟙_ (Over (Sp R)) ⟶ (Over.pullback (spMap (algebraMap k₀ R))).obj B` to `Over.homMk c (by exact hc₂)`. Set `bb : 𝟙_ (Over (Sp R)) ⟶ (Over.pullback (spMap (algebraMap k₀ R))).obj B` to `Over.homMk (pullback.lift (spMap (algebraMap k₀ R) ≫ y₀.left ≫ f₀.left) (𝟙 _) (by`. Rewrite using `[Category.assoc, Category.assoc, Over.w f₀, Over.w y₀, Category.id_comp]`. Use the proof step `rfl))`. Use the proof step `(pullback.lift_snd _ _ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcc : cc ^ N = 1` using `pow_eq_one_of_pullback _ B cc y₀ hc₁.symm N hy₀`. Establish `ha : (cc ≫ Ψ) ^ N = 1` using `by rw [← MonObj.pow_comp, hcc, MonObj.one_comp]`. Establish `hb : bb ^ N = 1`. Use `pow_eq_one_of_pullback _ B bb (y₀ ≫ f₀) (pullback.lift_fst _ _ _).symm N ?_` and prove the remaining obligations. Rewrite using `[← MonObj.pow_comp, hy₀, MonObj.one_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hxc : spMap g.toRingHom ≫ c = y₀.left ≫ σ`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hc₁, reassoc_of% hgf, Category.assoc, hσ₁, Category.comp_id]`. Rewrite using `[Category.assoc, hc₂, Category.assoc, hσ₂, ← Category.assoc, Over.w y₀]`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hpt : spMap g.toRingHom ≫ (cc ≫ Ψ).left = spMap g.toRingHom ≫ bb.left`. Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `spMap g.toRingHom ≫ c ≫ Ψ.left ≫ _ = spMap g.toRingHom ≫ pullback.lift _ _ _ ≫ _`. Rewrite using `[reassoc_of% hxc, ← hf, pullback.lift_fst, reassoc_of% hgf]`. Rewrite using `[Category.assoc, Category.assoc]`.
-
-Conclude with `congrArg _ ((Over.w (cc ≫ Ψ)).trans (Over.w bb).symm)`. Establish `hab` using `GlobalTheory.HkFam.ListedSubgroup.section_eq _ hNR ha hb (spMap g.toRingHom) hpt`. Use `congrArg (fun z => z.left ≫ pullback.fst B.hom (spMap (algebraMap k₀ R))) hab` as an intermediate fact. Simplify using `only [cc, bb, Over.comp_left, Over.homMk_left, Category.assoc] at this`. Rewrite using `[this, pullback.lift_fst]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TorsCmp.torsion_section_eq : ∀ (k₀ K : Type) [Field k₀] [IsAlgClosed k₀] [Field K] [Algebra k₀ K] (B : Over (Sp k₀)) [GrpObj B], IsAbelianScheme B → ∀ (R : Subalgebra k₀ K) (g : R →ₐ[k₀] k₀) (Ψ : (Over.pullback (spMap (algebraMap k₀ R))).obj B ⟶ (Over.pullback (spMap (algebraMap k₀ R))).obj B) (f₀ : B ⟶ B) (σ : B.left ⟶ pullback B.hom (spMap (algebraMap k₀ R))), IsMonHom Ψ → IsMonHom f₀ → σ ≫ pullback.fst _ _ = 𝟙 _ → σ ≫ pullback.snd _ _ = B.hom ≫ spMap g.toRingHom → f₀.left = σ ≫ Ψ.left ≫ pullback.fst _ _ → ∀ (N : ℕ), (N : k₀) ≠ 0 → ∀ y₀ : 𝟙_ (Over (Sp k₀)) ⟶ B, y₀ ^ N = 1 → ∀ c : Sp R ⟶ pullback B.hom (spMap (algebraMap k₀ R)), c ≫ pullback.fst _ _ = spMap (algebraMap k₀ R) ≫ y₀.left → c ≫ pullback.snd _ _ = 𝟙 _ → c ≫ Ψ.left ≫ pullback.fst _ _ = spMap (algebraMap k₀ R) ≫ y₀.left ≫ f₀.left := by
   intro k₀ K _ _ _ _ B _ hB R g Ψ f₀ σ hΨ hf₀ hσ₁ hσ₂ hf N hN y₀ hy₀ c hc₁ hc₂

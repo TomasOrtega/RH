@@ -25,7 +25,7 @@ noncomputable section
 namespace GlobalTheory.Poinc.Sep.CoefInt
 
 /- English proof (translation)
-Use `⟨⟨fun j => t.s j * res le_top u⟩, fun i j => ?_, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ht i j, _root_.mul_assoc]`. Use `congrArg (fun q => _ * (_ * q)) (unit_ext fun y hy => ?_)` and prove the remaining obligations. Conclude with `((gm_res _ y _ hy _).trans (gm_res _ y le_top hy.1 _)).trans ((gm_res _ y _ hy _).trans (gm_res _ y le_top hy.2 _)).symm`. Conclude with `(map_mul _ _ _).trans ((mul_comm _ _).trans (congrArg (· * _) (gm_res r z le_top (hJ.mem φ r) u)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rescale_gen {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (u : Γ(Y, ⊤)ˣ) :
@@ -39,7 +39,7 @@ theorem rescale_gen {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K
   · exact (map_mul _ _ _).trans ((mul_comm _ _).trans (congrArg (· * _) (gm_res r z le_top (hJ.mem φ r) u)))
 
 /- English proof (translation)
-Rewrite using `[toUnit_left_eq, GlobalTheory.RatioVal.gs_specMap, ← CommRingCat.comp_apply, Iso.inv_hom_id, CommRingCat.id_apply]`. Conclude with `(GlobalTheory.RatioVal.gs_id_const z _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_top {V : Type} [CommRing V] [IsDomain V] (a : V) (z : (TF (R := V) (FractionRing V)).left) :
     gs (toUnit (TF (R := V) (FractionRing V))).left z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom a) =
@@ -48,7 +48,7 @@ theorem gs_top {V : Type} [CommRing V] [IsDomain V] (a : V) (z : (TF (R := V) (F
   exact (GlobalTheory.RatioVal.gs_id_const z _).symm
 
 /- English proof (translation)
-Use `show (Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom ε) = ε`. Rewrite using `[← CommRingCat.comp_apply, Iso.inv_hom_id, CommRingCat.id_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_map_map {V : Type} [CommRing V] (ε : Vˣ) :
     ((Units.map (Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom.toMonoidHom
@@ -61,41 +61,37 @@ end GlobalTheory.Poinc.Sep.CoefInt
 namespace GlobalTheory.Poinc.Sep.CoefInt
 
 /- English proof (translation)
-Introduce `N₁ hN₁ V₁ _ _ _ hV hunit D hPE hTB X C _ e u mo hmo hT τ₀ m N s ε hs hτ hmo2`. Use `haveI : IsNoetherianRing V₁ := hV.1`. Use `haveI : IsIntegrallyClosed V₁ := hV.2.1`. Establish `hN1 : 1 ≤ N₁` using `by omega`. Take `⟨th, g, b, w, hgb, ho, hcov, hw, hcoef, ⟨c₀, hc₀⟩, hbN, hfr, -⟩` from `thetaTerms_integral D hN1 e _ hT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨θ, hθ, -, hlamE, -, -⟩` from `ThetaOne.main hV D`. Take `⟨lam, hlam, -⟩` from `hlamE (FractionRing V₁) th`. Establish `hψ0` using `GlobalTheory.T.psi_zero_mul_rigidificationK_eq_one V₁ D hTB`. Establish `ht : ∀ c, ∃ t : LB.Gen (LB.LinComb D.P.L ![(η[D.P.A]).left, (b c).left] (DegPre.lineε 1)), t.IsGen ∧ ∀ z J, Good D.P.L z J → val t (toUnit (TF (R` using `V₁) (FractionRing V₁))).left z J = val (w c) (𝟙 _) z J := by`. Introduce `c`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t', ht'⟩` from `GlobalTheory.Poinc.Sep.ConjPt.exists_gen_local (D := D) ![(η[D.P.A]).left, (b c).left] (DegPre.lineε 1)`. Take `⟨ε', hε'⟩` from `hfr c t' ht'`. Take `⟨t, htg, htv⟩` from `rescale_gen D.P.L _ _ t' ht' (Units.map (Scheme.ΓSpecIso (CommRingCat.of V₁)).inv.hom.toMonoidHom ε')`. Use `⟨t, htg, fun z J hJ => Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[htv _ _ z J hJ, Units.val_mul, hε' z J hJ, gm_top_eq, unit_map_map]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose t htg htv using ht`. Establish `hχ : ∀ mu c, ∃ χt : LB.Gen (LB.LinComb D.P.L ![(D.c (e mu) * b c).left, (D.c (e mu)).left, (b c).left, (η[D.P.A]).left] DegPre.gtε), χt.IsGen ∧ (∀ z J, Good D.P.L z J → val χt (toUnit (TF (R` using `V₁) (FractionRing V₁))).left z J = val ((g c).s (e mu)) (𝟙 _) z J) ∧ (∀ z J, Good D.P.L z J → ∏ i ∈ Finset.range N₁, cubV D.cub z J (toUnit (TF (R := V₁) (FractionRing V₁)) ≫ D.c (e mu)) (toUnit (TF (R := V₁) (FractionRing V₁)) ≫ b c ^ i) (toUnit (TF (R := V₁) (FractionRing V₁)) …`. Introduce `mu c`. Take `⟨t', ht'⟩` from `GlobalTheory.Poinc.Sep.ConjPt.exists_gen_local (D := D) ![(D.c (e mu) * b c).left, (D.c (e mu)).left, (b c).left, (η[D.P.A]).left] DegPre.gtε`. Take `⟨ε', h1, h2⟩` from `char_unit hN1 (g c) (b c) (hgb c) (ho c) (e mu) t' ht'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨χt, hg, hv⟩` from `rescale_gen D.P.L _ _ t' ht' (Units.map (Scheme.ΓSpecIso (CommRingCat.of V₁)).inv.hom.toMonoidHom ε')`. Use `⟨χt, hg, fun z J hJ => Units.ext ?_, fun z J hJ => Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hv _ _ z J hJ, Units.val_mul, h1 z J hJ, gm_top_eq, unit_map_map]`. Rewrite using `[h2 z J hJ, hv _ _ z J hJ, mul_pow, Units.val_mul]`. Simplify using `only [Units.val_pow_eq_pow_val]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[gm_top_eq, unit_map_map]`. Use `choose χt hχg hχv hχc using hχ`. Establish `hG : ∀ mu c, ∃ G : V₁, ∀ (Z : Scheme.{0}) (r : Z ⟶ Sp V₁) (z : Z) J, Good D.P.L z J → gs r z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of V₁)).inv.hom G) = sval (θ : LB.Sec (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1))) (r ≫ (b c * D.c (e mu)).left) z J ^ 2 * (val (t c) r z J ^ 2 * val ( …` using `fun mu c => GlobalTheory.T.thetaSquare_product_isFunction_on_spec V₁ D θ (b c) (e mu) (t c) (htg c) (χt mu c) (hχg mu c) (τ₀ (e mu) (-e mu)) (hτ _ _).1`. Use `choose G hGv using hG`. Establish `hk` using `fun mu => GlobalTheory.T.psi_sq_genericPoint_eq_monomial_mul_symmetric V₁ D hPE hψ0 τ₀ _ _ _ hτ (e mu)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose k hkv hkψ using hk`. Take `⟨z⟩` from `exists_pt (R := V₁) (F := FractionRing V₁)`. Take `⟨J, hJ⟩` from `exists_good' D.P.isLB z`. Establish `key : ∀ mu c, algebraMap V₁ (FractionRing V₁) (u mu c * mo mu) ^ 2 = lam ^ 2 * (k mu : FractionRing V₁) * algebraMap V₁ (FractionRing V₁) (G mu c)`. Introduce `mu c`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `E1` using `GlobalTheory.T.thetaFamily_coefficient_integral_torusPoint V₁ D θ lam th hlam hψ0 (e mu) (g c) (b c) (hgb c) (w c) _ (hcoef mu c) z J hJ`. Establish `E2` using `hkψ mu z J hJ`. Establish `E3` using `hGv mu c _ (toUnit (TF (R := V₁) (FractionRing V₁))).left z J hJ`. Rewrite `E3` using `[gs_top, htv c z J hJ, hχv mu c z J hJ]`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val] at E2 E3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Apply `cst_inj z` to reduce the goal to its premises. Rewrite `E2`, `E3` using `[cst_eq]`. Rewrite `E1` using `[cst_eq, cst_eq]`. Rewrite using `[cst_eq, cst_eq, map_pow (cstH z), E1, map_mul (cstH z), map_mul (cstH z), map_pow (cstH z), E3, mul_pow, mul_pow, mul_pow, mul_pow, E2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj` using `IsFractionRing.injective V₁ (FractionRing V₁)`. Establish `hsplit : ∀ mu, (k mu : FractionRing V₁) = (∏ j, algebraMap V₁ (FractionRing V₁) (s (.inl j)) ^ ε (.inl j) (e mu) (e mu)) * ∏ j, algebraMap V₁ (FractionRing V₁) (s (.inr j)) ^ ε (.inr j) (e mu) (e mu)`. Introduce `mu`. Rewrite using `[hkv mu, ← Fintype.prod_sum_type (fun j => algebraMap V₁ (FractionRing V₁) (s j) ^ ε j (e mu) (e mu))]`. Conclude with `Fintype.prod_equiv finSumFinEquiv.symm _ _ (fun _ => rfl)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hk0 : (k 0 : FractionRing V₁) = 1`. Rewrite using `[hkv]`. Simplify using the standard rewrite rules. Establish `hl0 : lam ^ 2 * algebraMap V₁ (FractionRing V₁) (G 0 c₀) = 1`. Use `key 0 c₀` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hc₀, map_one, one_pow, hk0, _root_.mul_one]`. Conclude with `this.symm`. Take `⟨c₁, hc₁⟩` from `GlobalTheory.T.isUnit_coefficient_of_thetaSquare_integralTorsion N₁ hN₁ V₁ hV hunit D θ hθ C b hcov`. Establish `hb1 : b c₁ * D.c (e 0) = b c₁` using `by rw [map_zero, ThetaOne.c_zero, _root_.mul_one]`. Establish `hG1 : IsUnit (G 0 c₁)` using `hc₁ (G 0 c₁) (fun Z r z J => val (t c₁) r z J ^ 2 * val (χt 0 c₁) r z J ^ 2 * val D.sym (r ≫ (D.c (e 0)).left) z J * (val (τ₀ (e 0) (-e 0)) r z J)⁻¹ * (rigV D r z J ^ 2)⁻¹) (fun Z r z J hJ => by rw [hGv 0 c₁ Z r z J hJ, hb1])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hs₀u : IsUnit (G 0 c₀)`. Establish `k1` using `key 0 c₁`. Rewrite `k1` using `[hk0, _root_.mul_one]`. Use `IsUnit.of_mul_eq_one ((u 0 c₁ * mo 0) ^ 2 * ↑hG1.unit⁻¹) (hinj ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_one, map_pow, k1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hGne : algebraMap V₁ (FractionRing V₁) (G 0 c₁) * algebraMap V₁ (FractionRing V₁) ↑hG1.unit⁻¹ = 1`. Rewrite using `[← map_mul, IsUnit.mul_val_inv, map_one]`. Take the linear combination `(algebraMap V₁ (FractionRing V₁) (G 0 c₀) * lam ^ 2) * hGne + hl0`. Establish `hP : ∀ mu, algebraMap V₁ (FractionRing V₁) ((∏ k, (hs k).unit ^ ε (.inr k) (e mu) (e mu) : V₁ˣ) : V₁) = ∏ k, algebraMap V₁ (FractionRing V₁) (s (.inr k)) ^ ε (.inr k) (e mu) (e mu)`. Introduce `mu`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.coe_prod, map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(((Units.map (algebraMap V₁ (FractionRing V₁)).toMonoidHom ((hs k).unit ^ ε (.inr k) (e mu) (e mu)) : (FractionRing V₁)ˣ)) : FractionRing V₁) = _`. Rewrite using `[map_zpow, Units.val_zpow_eq_zpow_val, Units.coe_map, IsUnit.unit_spec]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨θ, b, t, χt, G 0 c₀, G, hθ, hbN, fun c => ⟨htg c, fun κ hκ Z r z' J' hJ' => ?_⟩, fun mu c => ⟨hχg mu c, fun T z' J' hJ' => GlobalTheory.T.cubicalProduct_identity_of_genericPoint V₁ D N₁ (b c) (D.c (e mu)) (hbN c) (χt mu c) (hχg mu c) (hχc mu c) T z' J' hJ'⟩, hs₀u, fun mu c => ?_ …` and prove the remaining obligations. Use `GlobalTheory.T.integralFrame_identity_of_genericPoint V₁ D N₁ (b c) (hbN c) (t c) (htg c) κ hκ (fun y I hI => ?_) Z r z' J' hJ'` and prove the remaining obligations. Rewrite using `[htv c y I hI]`. Use `(hw c).2 κ hκ y I hI` as an intermediate fact. Rewrite `this` using `[show (g c).b.left = (toUnit (TF (R := V₁) (FractionRing V₁))).left ≫ (b c).left from congrArg (fun q => q.left) (hgb c)]`. Then use the resulting hypothesis.
-
-Apply `hinj` to reduce the goal to its premises. Establish `km` using `key mu c`. Rewrite `km` using `[hsplit, map_mul, mul_pow, ← hmo2 mu]`. Establish `hmo0 : algebraMap V₁ (FractionRing V₁) (mo mu) ^ 2 ≠ 0` using `pow_ne_zero _ ((map_ne_zero_iff _ hinj).2 (hmo mu).1)`. Establish `h3 : algebraMap V₁ (FractionRing V₁) (u mu c) ^ 2 = lam ^ 2 * (∏ j, algebraMap V₁ (FractionRing V₁) (s (.inr j)) ^ ε (.inr j) (e mu) (e mu)) * algebraMap V₁ (FractionRing V₁) (G mu c)` using `mul_left_cancel₀ hmo0 (by linear_combination km)`.
-
-Rewrite using `[map_mul, map_mul, map_pow, hP, h3]`. Take the linear combination `((∏ j, algebraMap V₁ (FractionRing V₁) (s (.inr j)) ^ ε (.inr j) (e mu) (e mu)) * algebraMap V₁ (FractionRing V₁) (G mu c)) * hl0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem integral_sq_terms : ∀ (N₁ : ℕ), 2 ≤ N₁ → ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ →
     (∀ m : ℕ, m ≠ 0 → IsUnit (m : V₁)) → ∀ (D : DegPre V₁), D.PsiEven → D.TauBimult →

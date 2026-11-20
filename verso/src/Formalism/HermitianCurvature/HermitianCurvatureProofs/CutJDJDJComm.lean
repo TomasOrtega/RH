@@ -22,9 +22,9 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.P.WeakThresholdClauses.WeakDominationThreshold`. Establish `hn : nDim k r = 2 * (r : ℝ) + k + 1` using `by unfold nDim; push_cast; ring`. Rewrite `h` using `[hn]`. Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : (r : ℝ) * (4 * (r : ℝ) + 2 * (k : ℝ) - 1) * (6 * (r : ℝ) + 1) < 12 * ((r : ℝ) + 1) * (2 * (r : ℝ) + k + 1) ^ 2`. Use polynomial arithmetic with `[pow_nonneg hr 3, mul_nonneg hr (mul_nonneg hk hk), mul_nonneg (mul_nonneg hr hr) hk, mul_nonneg hr hr, mul_nonneg hr hk, mul_nonneg hk hk]`. Establish `hpos : 0 < 12 * ((r : ℝ) + 1) * (2 * (r : ℝ) + k + 1) ^ 2` using `by positivity`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jdc_thrW (o : ℕ) (A d : ℝ) (hd : 0 ≤ d)
     (h : 12 * ((r : ℝ) + 1) * nDim k r ^ 2 + 6 * (r : ℝ) * (o : ℝ) + d ≤ A) :
@@ -42,7 +42,7 @@ theorem jdc_thrW (o : ℕ) (A d : ℝ) (hd : 0 ≤ d)
   constructor <;> linarith
 
 /- English proof (translation)
-Introduce `g hg`. Unfold `JF.Om Q.OmPlus at hg`. Unfold `B.GPos`. Conclude with `⟨hg.1, hg.2.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem jdc_om_sub_gpos (Db : B.RealPlaceData k r Wp Wq) : JF.Om k r Db.z Db.z' ⊆ B.GPos Db := by
   intro g hg
@@ -51,11 +51,9 @@ theorem jdc_om_sub_gpos (Db : B.RealPlaceData k r Wp Wq) : JF.Om k r Db.z Db.z' 
   exact ⟨hg.1, hg.2.2⟩
 
 /- English proof (translation)
-Use `⟨hg, ?_, h.1⟩` and prove the remaining obligations. Introduce `l hl`. Break down `Nat.eq_zero_or_pos l.val with h0 | h0` into its components or cases. Establish `e : l = ⟨0, by omega⟩` using `Fin.ext h0`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.QuantumDeterminants.Dmin`. Rewrite using `[Matrix.det_isEmpty]`. Conclude with `one_ne_zero`. Establish `e : l = ⟨((⟨l.val - 1, by omega⟩ : Fin r) : ℕ) + 1, by omega⟩` using `Fin.ext (by simp; omega)`. Rewrite using `[e]`.
-
-Conclude with `h.2 _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jdc_om_of (z z' : Fin (2 * r + k + 1) → ℂ) {g : B.Mat k r} (hg : g ∈ B.GV k r)
     (h : 0 < Formalism.QuantumDeterminants.Gf k r z z' g ∧ ∀ a : Fin r, Formalism.QuantumDeterminants.Dmin k r z z' g ⟨(a : ℕ) + 1, by omega⟩ ≠ 0) :
@@ -73,7 +71,7 @@ theorem jdc_om_of (z z' : Fin (2 * r + k + 1) → ℂ) {g : B.Mat k r} (hg : g �
     exact h.2 _
 
 /- English proof (translation)
-Unfold `JF.Om Q.OmPlus at hg`. Take `⟨_, hD, hG⟩` from `hg`. Conclude with `⟨hG, fun a => hD _ (show (a : ℕ) + 1 ≤ r from a.isLt)⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem jdc_of_om (z z' : Fin (2 * r + k + 1) → ℂ) {g : B.Mat k r} (hg : g ∈ JF.Om k r z z') :
     0 < Formalism.QuantumDeterminants.Gf k r z z' g ∧ ∀ a : Fin r, Formalism.QuantumDeterminants.Dmin k r z z' g ⟨(a : ℕ) + 1, by omega⟩ ≠ 0 := by
@@ -88,7 +86,7 @@ section gen2
 variable {k r : ℕ} {E₁ E₂ : Type*} [NormedAddCommGroup E₁] [NormedSpace ℂ E₁] [NormedAddCommGroup E₂] [NormedSpace ℂ E₂]
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Conclude with `hf g₀ (h hg₀)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem jdc_ckOn_mono {m : ℕ∞} {UU VV : Set (B.Mat k r)} (h : UU ⊆ VV) {f : B.Mat k r → E₁} (hf : B.CkOn m VV f) :
     B.CkOn m UU f := by
@@ -96,9 +94,9 @@ theorem jdc_ckOn_mono {m : ℕ∞} {UU VV : Set (B.Mat k r)} (h : UU ⊆ VV) {f 
   exact hf g₀ (h hg₀)
 
 /- English proof (translation)
-Unfold `B.CkOn at *`. Introduce `g₀ hg₀`. Take `⟨U₁, a', hU₁, hg₁, ha', hea⟩` from `ha g₀ hg₀`. Take `⟨U₂, Φ', hU₂, hg₂, hΦ', heΦ⟩` from `hΦ g₀ hg₀`. Use `⟨U₁ ∩ U₂, fun g => a' g (Φ' g), hU₁.inter hU₂, ⟨hg₁, hg₂⟩, ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hr : ContDiffOn ℝ _ (fun g => (ContinuousLinearMap.restrictScalarsL ℂ E₁ E₂ ℝ ℝ) (a' g)) (U₁ ∩ U₂)` using `(ContinuousLinearMap.restrictScalarsL ℂ E₁ E₂ ℝ ℝ).contDiff.comp_contDiffOn (ha'.mono Set.inter_subset_left)`. Conclude with `hr.clm_apply (hΦ'.mono Set.inter_subset_right)`. Introduce `g hg hgG`. Simplify using `only [hea g hg.1 hgG, heΦ g hg.2 hgG]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jdc_ckOn_ap {UU : Set (B.Mat k r)} {a : B.Mat k r → (E₁ →L[ℂ] E₂)} {Φ : B.Mat k r → E₁}
     (ha : B.CkOn ⊤ UU a) (hΦ : B.CkOn ⊤ UU Φ) : B.CkOn ⊤ UU (fun g => a g (Φ g)) := by
@@ -114,7 +112,7 @@ theorem jdc_ckOn_ap {UU : Set (B.Mat k r)} {a : B.Mat k r → (E₁ →L[ℂ] E�
     simp only [hea g hg.1 hgG, heΦ g hg.2 hgG]
 
 /- English proof (translation)
-Rewrite using `[← Formalism.FourierDecayAlt.P.BetaSesquilinearity.Dw_wR]`. Apply `Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_Dw (fun x hx => Formalism.FourierDecayAlt.P.BetaSesquilinearity.lie_LR (u := []) (by simp) hw x (by simpa [Formalism.FourierDecayAlt.P.BetaSesquilinearity.wL] using hx))` to reduce the goal to its premises. Establish `e : ((⊤ : ℕ∞) + ((Formalism.FourierDecayAlt.P.BetaSesquilinearity.wR w).length : ℕ∞)) = ⊤` using `top_add _`. Rewrite using `[e]`. Conclude with `hf`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jdc_ckOn_Rw {UU : Set (B.Mat k r)} {w : List (B.Mat k r)} (hw : ∀ X ∈ w, B.inLie k r X)
     {f : B.Mat k r → E₁} (hf : B.CkOn ⊤ UU f) : B.CkOn ⊤ UU (B.Rw w f) := by
@@ -132,7 +130,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-The claim follows from `| [], _ => by have e : B.opApply ([] : B.DiffOp k r Wp Wq) J = fun _ => 0 := by funext g; simp [B.opApply] rw [e]; exact Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_zero | T :: Θ, h => by have e : B.opApply (T :: Θ) J = fun g => T.coef g (B.Rw T.word J g) + B.opApply Θ J …`.
+A detailed English derivation is pending.
 -/
 theorem jdc_ckOn_opApply {UU : Set (B.Mat k r)} {J : B.Mat k r → (Wq →L[ℂ] Wp)} (hJ : B.CkOn ⊤ UU J) :
     ∀ Θ : B.DiffOp k r Wp Wq, (∀ T ∈ Θ, B.CkOn ⊤ UU T.coef) → B.CkOn ⊤ UU (B.opApply Θ J)
@@ -147,9 +145,9 @@ theorem jdc_ckOn_opApply {UU : Set (B.Mat k r)} {J : B.Mat k r → (Wq →L[ℂ]
       (jdc_ckOn_opApply hJ Θ (fun T' hT' => h T' (by simp [hT'])))
 
 /- English proof (translation)
-Unfold `B.CkOn`. Unfold `Q.SmoothLev at hJ`. Introduce `g₀ hg₀`. Unfold `JF.Om Q.OmPlus at hg₀`. Take `⟨hgG, hD, hG⟩` from `hg₀`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Establish `hmem : g₀ ∈ Q.Glev k r 0 ∩ {g | 0 < Formalism.QuantumDeterminants.Gf k r z z' g ∧ ∀ a : Fin r, Formalism.QuantumDeterminants.Dmin k r z z' g ⟨(a : ℕ) + 1, by omega⟩ ≠ 0}` using `⟨⟨hgG, fun a ha => absurd ha (Nat.not_lt_zero _)⟩, hG, fun a => hD _ (show (a : ℕ) + 1 ≤ r from a.isLt)⟩`. Take `⟨U, F, hU, hgU, hF, hJF⟩` from `hJ g₀ hmem`. Use `⟨U, F, hU, hgU, hF, ?_⟩` and prove the remaining obligations. Introduce `g hg hgV`. Conclude with `hJF g hg ⟨hgV, fun a ha => absurd ha (Nat.not_lt_zero _)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem jdc_ckOn_om (z z' : Fin (2 * r + k + 1) → ℂ) {J : B.Mat k r → (Wq →L[ℂ] Wp)}
     (hJ : Q.SmoothLev k r 0 {g | 0 < Formalism.QuantumDeterminants.Gf k r z z' g ∧
@@ -171,15 +169,15 @@ theorem jdc_ckOn_om (z z' : Fin (2 * r + k + 1) → ℂ) {J : B.Mat k r → (Wq 
 variable [FiniteDimensional ℂ Wp]
 
 /- English proof (translation)
-Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Db.haarW` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Db.haarN` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Db.haarW'` as an intermediate fact. Establish `hN` using `bessel_unipotent_equiv_holds Wp Wq k r Db.z Db.z' cStd Db.π Db.π' Db.μW Db.μN Db.μW' H Db.z_mem Db.z'_mem Db.haarN.conc (fun n₀ h => Db.haarN.left n₀ h)`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g₀ hg₀`. Establish `hg₀O : g₀ ∈ JF.Om k r Db.z Db.z'` using `jdc_om_of _ _ hg₀.1.1 hg₀.2`. Establish `hck` using `jdc_ckOn_opApply (jdc_ckOn_om Db.z Db.z' hJ.1) Θ (fun T hT => jdc_ckOn_mono (jdc_om_sub_gpos Db) (hSC T hT).1)`. Take `⟨U, f', hU, hgU, hc, he⟩` from `hck g₀ hg₀O`. Use `⟨U ∩ Q.OmPlus k r Db.z Db.z', f', hU.inter (Formalism.FourierDecayAlt.P.PositiveOrbitOpen.omPlus_open _ _), ⟨hgU, hg₀O.2⟩, hc.mono Set.inter_subset_left, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g hg hgG`. Establish `hgO : g ∈ JF.Om k r Db.z Db.z'` using `⟨hgG.1, hg.2⟩`. Rewrite using `[← hH g hgO]`. Conclude with `he g hg.1 hgG.1`. Introduce `g _ n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `hN g n hn.1 1 WeylGroupFacts.mem_n_one`. Rewrite `e` using `[Matrix.mul_one, Formalism.FourierDecayAlt.P.BesselCapelliCommutation.psi_one Db.z'_mem, mul_one]`. Conclude with `e`. Introduce `g _ n hn`. Establish `e` using `hN g 1 WeylGroupFacts.mem_n_one n hn.1`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `e` using `[Matrix.one_mul, Formalism.FourierDecayAlt.P.BesselCapelliCommutation.psi_one Db.z_mem, one_mul]`. Conclude with `e`. Introduce `g _ h hh h' hh'`. Conclude with `Formalism.FourierDecayAlt.P5.jf_uEquiv Db H g hh hh'`.
+A detailed English derivation is pending.
 -/
 theorem jdc_ffl (Db : B.RealPlaceData k r Wp Wq) (Θ : B.DiffOp k r Wp Wq) (hSC : B.SmoothCoef (B.GPos Db) Θ)
     {J : B.Mat k r → (Wq →L[ℂ] Wp)}
@@ -219,11 +217,11 @@ theorem jdc_ffl (Db : B.RealPlaceData k r Wp Wq) (Θ : B.DiffOp k r Wp Wq) (hSC 
 end gen3
 
 /- English proof (translation)
-Use `⟨12, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v Θ d A hd hSC hC _hG hA F _hCk hCC hJF`. Establish `hT` using `jdc_thrW (k := S.G.k) (r := S.G.r) (B.opOrder Θ) A d hd hA`. Establish `hCOm : B.Commutes (T v).base (JF.Om S.G.k S.G.r (T v).base.z (T v).base.z') Θ` using `fun p hp f' hf' g hg => hC p hp f' hf' g (jdc_om_sub_gpos _ hg)`. Establish `hth` using `Formalism.FourierDecayAlt.P.orbital_commutes_on_open_set _ _ _ _ (T v).base A (B.opOrder Θ) F Θ _ subset_rfl le_rfl hT (hCC _) hCOm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`. Establish `hTT : (D.parOf S v).TT = Tz S.G.k S.G.r (T v).base.z * Tz S.G.k S.G.r (T v).base.z'`. Rewrite using `[hPl.2.2.2.1, hPl.2.2.2.2.1]`. Both sides reduce to the same expression. Use `⟨jdc_ffl (T v).base Θ hSC hJF _ hth, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Establish `hq : x ∈ JF.QDom S.G.k S.G.r (T v).base.z (T v).base.z'` using `⟨hx.1, by rw [← hTT]; exact hx.2⟩`. Conclude with `hth _ (Formalism.FourierDecayAlt.P.BigCellHermitian.gqDom (T v).base hq)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem transfer_commutation_holds : JDJComm := by
   refine ⟨12, ?_⟩

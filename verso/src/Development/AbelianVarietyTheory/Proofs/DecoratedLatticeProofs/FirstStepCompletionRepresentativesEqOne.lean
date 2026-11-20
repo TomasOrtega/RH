@@ -9,7 +9,7 @@ namespace GlobalTheory.TwBridge.ZeroReps
 open GlobalTheory.SymBridge
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [toLoc, LinearMap.id_apply, Pi.single_apply, Matrix.one_apply, e.injective.eq_iff]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem toLoc_id {X : Fields} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ι : X.E →+* k) {A : Type} [DecidableEq A] {n : ℕ} (e : A ≃ Fin n) :
@@ -19,15 +19,13 @@ theorem toLoc_id {X : Fields} {k : Type} [Field k] [ValuativeRel k] [Topological
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hN : R.N 0 = R.k` using `by simp [Ranks.N]`. Establish `hb : ∀ a : XIx (Fin R.k) (Fin R.t) 0 ⊕ Fin c, yPos xPos (R.N 0) a < R.N 0 + cOf R 0`. Introduce and unpack `(((i | i) | p) | i)`. Simplify using `only [yPos, Sum.elim_inl, xPos]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `i.elim0`. Conclude with `p.1.elim0`. Simplify using `only [yPos, Sum.elim_inr]`. Use linear arithmetic over natural numbers and integers. Set `f : XIx (Fin R.k) (Fin R.t) 0 ⊕ Fin c → Fin (R.N 0 + cOf R 0)` to `fun a => ⟨yPos xPos (R.N 0) a, hb a⟩`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hf : Function.Bijective f`. Use `(Fintype.bijective_iff_injective_and_card _).2 ⟨?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rintro (((i | i) | p) | i) (((i' | i') | p') | i') hh <;>`. Simplify using `only [f, Fin.mk.injEq, yPos, Sum.elim_inl, Sum.elim_inr, xPos] at hh`. Apply the tactic sequence `all_goals first`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact i.elim0 | exact i'.elim0 | exact p.1.elim0 | exact p'.1.elim0`. Consider the case `(congr 1; first | (congr 2; exact Fin.ext hh) | exact Fin.ext (by omega))`. Consider the case `omega`. Simplify using `only [Fintype.card_sum, Fintype.card_prod, Fintype.card_fin]`. Rewrite using `[hN]`.
-
-Use linear arithmetic over natural numbers and integers. Conclude with `⟨Equiv.ofBijective f hf, fun a => rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isOrdY_zero (R : Ranks) (c : ℕ) (hc : c = cOf R 0) :
     ∃ e : XIx (Fin R.k) (Fin R.t) 0 ⊕ Fin c ≃ Fin (R.N 0 + cOf R 0), IsOrdY e := by
@@ -53,13 +51,13 @@ theorem exists_isOrdY_zero (R : Ranks) (c : ℕ) (hc : c = cOf R 0) :
   exact ⟨Equiv.ofBijective f hf, fun a => rfl⟩
 
 /- English proof (translation)
-Introduce `X Pr R Ch sel S₀ mu cst σ₀ P k _ _ _ _ ι s W _ _ ν _ _ hA L G hL _ c h`. Establish `hm : R.m = s + 2` using `hA.steps`. Establish `hcO : c + 1 = cOf R 0` using `by unfold cOf; omega`. Take `⟨b₀, -⟩` from `hL.zero_uniq`. Use extensionality with `g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, e, -, hg⟩`. Rewrite `hg` using `[hL.zero_h]`. Apply `Units.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hg]`. Conclude with `toLoc_id ι e`. Introduce and unpack `rfl`. Take `⟨e, he⟩` from `exists_isOrdY_zero R (c + 1) hcO`. Use `⟨b₀, e, he, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL.zero_h]`. Conclude with `(toLoc_id ι e).symm`.
+A detailed English derivation is pending.
 -/
 theorem reps_zero : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S₀ : Set ℕ) (mu : Tup X.F X.E X.K S₀) (cst : LocCst X (rowSG Pr sel mu)) (σ₀ : X.K →+* ℂ) (P : rowSG Pr sel mu) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : X.E →+* k) (s : ℕ) (W : TwData k) [MeasurableSpace k] [BorelSpace k] (ν : Measure k), IsUnitVol ν → cst.Ok → AtTwist (R := R) sel mu cst σ₀ P ι s W → ∀ (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (G : ChGlob X R.m), L.Ok Ch sel mu cst G s → IdxProd sel mu cst L → ∀ c (h : 0 + c = s), {g : GL (XIx (Fin R.k) (Fin R.t) (0) ⊕ Fin (c + 1)) k | ∃ b : L.β 0, IsGL ι (L.h 0 b P) g} = {1} := by
   classical

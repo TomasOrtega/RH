@@ -24,7 +24,7 @@ variable {K Fr : Type} [Field K] [CommRing Fr] [Algebra K Fr] (J : Ideal Fr)
   {ι : Type} {R : ι → Type} [∀ c, CommRing (R c)] [∀ c, Algebra K (R c)] (φ : ∀ c, Fr →ₐ[K] R c)
 
 /- English proof (translation)
-Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hf`. Rewrite using `[map_add, (RingHom.mem_ker).1 hb, add_zero]`. Conclude with `Ideal.mem_map_of_mem _ ha`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_of_mem_sup {c : ι} {f : Fr} (hf : f ∈ J ⊔ RingHom.ker (φ c)) : φ c f ∈ Ideal.map (φ c) J := by
   obtain ⟨a, ha, b, hb, rfl⟩ := Submodule.mem_sup.1 hf
@@ -32,11 +32,11 @@ theorem map_mem_of_mem_sup {c : ι} {f : Fr} (hf : f ∈ J ⊔ RingHom.ker (φ c
   exact Ideal.mem_map_of_mem _ ha
 
 /- English proof (translation)
-Take `⟨a, p, hp, he⟩` from `hloc r`. Establish `hu : IsUnit (Ideal.Quotient.mk (J ⊔ RingHom.ker (φ c)) p)` using `LocalUnitReduction.isUnit_mk_of_forall_prime fun Q hQ hIQ => hp Q hQ (le_sup_left.trans hIQ) (le_sup_right.trans hIQ)`. Take `⟨q', hq⟩` from `hu.exists_left_inv`. Take `⟨q, rfl⟩` from `Ideal.Quotient.mk_surjective q'`. Establish `h1 : q * p - 1 ∈ J ⊔ RingHom.ker (φ c)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, hq, map_one, sub_self]`. Use `⟨q * a, ?_⟩` and prove the remaining obligations. Establish `h2` using `Ideal.mul_mem_right r _ (map_mem_of_mem_sup J φ h1)`. Establish `e : φ c (q * a) - r = φ c (q * p - 1) * r`. Rewrite using `[map_sub, map_mul, map_mul, map_one, ← he]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]` and apply the resulting hypothesis.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_sub_mem {c : ι}
     (hloc : ∀ r : R c, ∃ a p : Fr,
@@ -56,11 +56,11 @@ theorem exists_sub_mem {c : ι}
   rwa [e]
 
 /- English proof (translation)
-Use `choose b hb using fun c => exists_sub_mem J φ (hloc c) (r c)`. Establish `hcop : Pairwise (Function.onFun IsCoprime fun c => J ⊔ RingHom.ker (φ c))`. Introduce `c c' hcc'`. Use `show IsCoprime (J ⊔ RingHom.ker (φ c)) (J ⊔ RingHom.ker (φ c'))`. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Conclude with `hcc' (hone M hM.isPrime ((le_sup_left.trans le_sup_left).trans hle) c c' ((le_sup_right.trans le_sup_left).trans hle) ((le_sup_right.trans le_sup_right).trans hle))`. Take `⟨f, hf⟩` from `Ideal.exists_forall_sub_mem_ideal hcop b`. Use `⟨f, fun c => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1` using `map_mem_of_mem_sup J φ (hf c)`. Establish `h2` using `Ideal.add_mem _ h1 (hb c)`. Rewrite `h2` using `[map_sub, sub_add_sub_cancel]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_forall_sub_mem [Finite ι]
     (hone : ∀ Q : Ideal Fr, Q.IsPrime → J ≤ Q → ∀ c c', RingHom.ker (φ c) ≤ Q → RingHom.ker (φ c') ≤ Q → c = c')
@@ -83,19 +83,17 @@ theorem exists_forall_sub_mem [Finite ι]
   rwa [map_sub, sub_add_sub_cancel] at h2
 
 /- English proof (translation)
-Use `letI inst : ∀ c, Module K (R c ⧸ Ideal.map (φ c) J) := fun c => ((Ideal.Quotient.mk (Ideal.map (φ c) J)).comp (algebraMap K (R c))).toModule`. Use `letI : Fintype ι := Fintype.ofFinite ι`. Set `f : Fr →ₗ[K] M` to `(LinearMap.toSpanSingleton Fr M e0).restrictScalars K`. Set `g : Fr →ₗ[K] (∀ c, R c ⧸ Ideal.map (φ c) J)` to `{ toFun := fun b c => Ideal.Quotient.mk (Ideal.map (φ c) J) (φ c b) map_add' := fun a b => funext fun c => by simp map_smul' := fun k b => funext fun c => by show Ideal.Quotient.mk _ (φ c (k • b)) = Ideal.Quotient.mk _ (algebraMap K (R c) k) * Ideal.Quotient.mk _ (φ c b)`. Rewrite using `[map_smul, Algebra.smul_def, map_mul] }`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hf : Function.Surjective f` using `hs`. Establish `hg : Function.Surjective g`. Introduce `x`. Use `choose r hr using fun c => Ideal.Quotient.mk_surjective (x c)`. Take `⟨b, hb⟩` from `exists_forall_sub_mem J φ hone hloc r`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨b, funext fun c => (Ideal.Quotient.eq.2 (hb c)).trans (hr c)⟩`. Establish `hker : LinearMap.ker f = LinearMap.ker g`. Use extensionality with `b`. Rewrite using `[LinearMap.mem_ker, LinearMap.mem_ker]`. Use `(hk b).trans ⟨fun hb => funext fun c => ?_, fun hb => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem _ hb)`. Conclude with `LocalUnitReduction.mem_of_forall_sup_ker J φ hinj hone fun c => LocalUnitReduction.mem_sup_ker J φ (hloc c) (Ideal.Quotient.eq_zero_iff_mem.1 (congrFun hb c))`. Set `e : M ≃ₗ[K] (∀ c, R c ⧸ Ideal.map (φ c) J)` to `(f.quotKerEquivOfSurjective hf).symm ≪≫ₗ Submodule.quotEquivOfEq _ _ hker ≪≫ₗ g.quotKerEquivOfSurjective hg`. Establish `he : ∀ b, e (f b) = g b`. Introduce `b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1 : (f.quotKerEquivOfSurjective hf).symm (f b) = Submodule.Quotient.mk b`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Use `show g.quotKerEquivOfSurjective hg (Submodule.quotEquivOfEq _ _ hker ((f.quotKerEquivOfSurjective hf).symm (f b))) = _`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨⟨e, fun b c => congrFun (he b) c⟩, ?_⟩` and prove the remaining obligations. Set `bs : Module.Basis (Fin n) K M` to `Module.Basis.mk hli hsp.ge`. Use `haveI : Module.Finite K M := Module.Finite.of_basis bs`. Use `haveI : Module.Finite K (∀ c, R c ⧸ Ideal.map (φ c) J) := Module.Finite.equiv e`.
-
-Use `haveI : ∀ c, Module.Finite K (R c ⧸ Ideal.map (φ c) J) := fun c => Module.Finite.of_surjective (LinearMap.proj (R := K) (φ := fun c => R c ⧸ Ideal.map (φ c) J) c) (Function.surjective_eval c)`. Rewrite using `[finsum_eq_sum_of_fintype, ← Module.finrank_pi_fintype, ← e.finrank_eq, Module.finrank_eq_card_basis bs, Fintype.card_fin]`.
+A detailed English derivation is pending.
 -/
 theorem exists_equiv_pi [Finite ι] (hinj : ∀ f : Fr, (∀ c, φ c f = 0) → f = 0)
     (hone : ∀ Q : Ideal Fr, Q.IsPrime → J ≤ Q → ∀ c c', RingHom.ker (φ c) ≤ Q → RingHom.ker (φ c') ≤ Q → c = c')
@@ -160,7 +158,7 @@ variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} 
   (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO))
 
 /- English proof (translation)
-The claim follows from `algebraMap_smul (OsK X la G.w) b m`.
+A detailed English derivation is pending.
 -/
 theorem fractionToIntegralSection_smul_eq (b : ↥(Frac0 X la G.w)) (m : SectionSheafQuotient X la G.w wF) : toOsK X la G.w b • m = b • m :=
   algebraMap_smul (OsK X la G.w) b m
@@ -169,9 +167,7 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on hz (fun r hr n _ => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Establish `e : ((r • n : ↥(HK X la G.w wF)) : Lw X la G.w) = (r : Lw X la G.w) * (n : Lw X la G.w)` using `rfl`. Rewrite using `[e, map_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem (phiZ X la G.N Ω gF G.w) hr)`. Rewrite using `[Submodule.coe_add, map_add]`.
-
-Conclude with `Ideal.add_mem _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lwZ_mem (Ω : Type) [CommRing Ω] [Algebra B.KO Ω] (gF : X.Forms →ₐ[B.KO] Ω) (z : ↥(HK X la G.w wF))
     (hz : z ∈ Jid X la G.w • (⊤ : Submodule ↥(Frac0 X la G.w) ↥(HK X la G.w wF))) :
@@ -187,11 +183,9 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Use `set x0 := toHK0 X la G.w wF ⟨emb X la G.N (X.inc wF g0), emb_mem_Vw X la G.N wF g0⟩ with hx0`. Use `set x1 := toHK0 X la G.w wF ⟨emb X la G.N (X.inc wF F), emb_mem_Vw X la G.N wF F⟩ with hx1`. Establish `h0 : toA0K X la G.w wF (b • x0 - x1) = 0`. Rewrite using `[map_sub, map_smul, sub_eq_zero]`. Conclude with `hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `lwZ_mem X G la Ω gF _ ((reduction_eq_zero_iff_mem_ideal_smul X la G.w wF _).1 h0)`. Establish `e : ((b • x0 - x1 : ↥(HK X la G.w wF)) : Lw X la G.w) = (b : Lw X la G.w) * algebraMap (Rp X la G.N) (Lw X la G.w) (emb X la G.N (X.inc wF g0)) - algebraMap (Rp X la G.N) (Lw X la G.w) (emb X la G.N (X.inc wF F))`. Rewrite using `[Submodule.coe_sub, Submodule.coe_smul, hx0, hx1, coe_toHK0, coe_toHK0]`. Both sides reduce to the same expression. Rewrite `h1` using `[e, map_sub, map_mul]`.
-
-Rewrite using `[← map_mul]`. Conclude with `Ideal.Quotient.eq.2 h1`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_eq (Ω : Type) [CommRing Ω] [Algebra B.KO Ω] (gF : X.Forms →ₐ[B.KO] Ω) (g0 F : B.Cusp j wF)
     (b : ↥(Frac0 X la G.w)) (hb : b • resF G la g0 = resF G la F) :
@@ -219,11 +213,11 @@ set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hs : ∀ m : SectionSheafQuotient X la G.w wF, ∃ b : ↥(Frac0 X la G.w), b • resF G la g0 = m`. Introduce `m`. Take `⟨u, hu⟩` from `hgen.2 m`. Take `⟨b, rfl⟩` from `toOsK_surjective X la G.w u`. Conclude with `⟨b, (fractionToIntegralSection_smul_eq X G la b _).symm.trans hu⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hk : ∀ b : ↥(Frac0 X la G.w), b • resF G la g0 = 0 ↔ b ∈ Jid X la G.w`. Introduce `b`. Rewrite using `[← fractionToIntegralSection_smul_eq, ← toOsK_eq_zero_iff]`. Use `⟨fun hb => hgen.1 (hb.trans (zero_smul _ _).symm), fun hb => by rw [hb, zero_smul]⟩` and prove the remaining obligations. Take `⟨⟨e, he⟩, hn⟩` from `exists_equiv_pi (Jid X la G.w) (fun Z => phiZ X la G.N (Ω Z) (gF Z) G.w) hinj hone hloc (resF G la g0) hs hk (tL G la) hB.1 hB.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨e, fun F Z => ?_⟩, hn⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hs (resF G la F)`. Establish `h1` using `he b Z`. Rewrite `h1` using `[hb]`. Conclude with `(congrArg (· * _) h1).trans (ratio_eq X G la (Ω Z) (gF Z) g0 F b hb)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tie_of {ι : Type} [Finite ι] (Ω : ι → Type) [∀ Z, CommRing (Ω Z)] [∀ Z, Algebra B.KO (Ω Z)]
     (gF : ∀ Z, X.Forms →ₐ[B.KO] Ω Z) (g0 : B.Cusp j wF)
@@ -271,9 +265,7 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D T h j hj hG ka wL wF G hT S g0 la hH hB`. Use `haveI : Finite (Comp (T.Q.Xo j) T.Q.c) := CompFin.finite_comp _ _`. Establish `hV` using `GlobalTheory.Reg.genValInj_record D T h j hj hG`. Establish `hC` using `GlobalTheory.Reg.compSplit_record D T h j hj hG`. Take `⟨M⟩` from `GlobalTheory.T.curveModel_exists_all_primes_allPoints D T h j hj hG hT hV hC (fun ka wL wF G => (GlobalTheory.T.birational_of_formRatios_full_trdeg D T h j hj hG ka wL wF G).2) hG ka wL wF G la S g0 hH.1 hH.2.1 hH.2.2.1 hH.2.2.2`.
-
-Conclude with `tie_of (recPlus h j hj) G la (fun Z : Comp (T.Q.Xo j) T.Q.c => Om Z) (fun Z => formsEvR j hG hT Z) g0 (curveInj h j hj hG hT hV G la) (hone_of h j hj hG hT hC ka wL wF G S g0 la hH) (GlobalTheory.curveLoc_of_countQAt D T h j hj hG hT (GlobalTheory.T.countQAtSt_generic_section_pri …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tieS : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c) (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData (recPlus h j hj) ka wL wF) (hT : GenFromTest (T.Q.Xo j) T.Q.c hG) (S : Scal (recB h.toLawsCore)) (g0 : (recB h.toLawsCore).Cusp j wF) (la : HeightOneSpectrum (𝓞 (recB h.toLawsCore).KO)), CurveHyp h j hj hG ka wL wF G S g0 → InBasis G la → TieSSt h j hj hG hT G la g0 := by
   intro D T h j hj hG ka wL wF G hT S g0 la hH hB

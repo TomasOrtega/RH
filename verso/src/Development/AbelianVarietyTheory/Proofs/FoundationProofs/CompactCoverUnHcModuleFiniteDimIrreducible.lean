@@ -11,7 +11,7 @@ open scoped TensorProduct
 namespace GlobalTheory.CompactCoverIrr
 
 /- English proof (translation)
-Introduce and unpack `(a | a) (b | b) hab`. Conclude with `(hab trivial).elim`. Conclude with `b.elim0`. Conclude with `a.elim0`. Conclude with `a.elim0`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isKC_of_compact {n : ℕ} (X : Mat n 0) : IsKC X := by
   rintro (a | a) (b | b) hab
@@ -21,15 +21,13 @@ theorem isKC_of_compact {n : ℕ} (X : Mat n 0) : IsKC X := by
   · exact a.elim0
 
 /- English proof (translation)
-Establish `hg` using `GlobalTheory.CoverKGen.kset_gen n 0 (by omega) T g (isKC_of_compact _)`. Establish `key : (∀ x ∈ N.map j, τ.π g x ∈ N.map j) ∧ (∀ x ∈ N.map j, τ.π g⁻¹ x ∈ N.map j)`. Proceed by induction on `hg using Subgroup.closure_induction with`. Consider the case `mem k hk`. Take `⟨X, ⟨hX, -⟩, rfl⟩` from `hk`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hf` using `GlobalTheory.RealPar.flow_mem_map j (M.act X) N (hN X) (fun t => τ.π (T.expt (t • X))) (by simp [T.expt_zero]) (fun s t => by simp only [T.expt_add X hX, map_mul]) (hj.2.2 X hX)`. Establish `hinv : (T.expt X)⁻¹ = T.expt ((-1 : ℝ) • X)`. Establish `h` using `T.expt_add X hX 1 (-1)`. Rewrite `h` using `[add_neg_cancel, zero_smul, T.expt_zero, one_smul]`. Conclude with `(eq_inv_of_mul_eq_one_right h.symm).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hf 1` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Rewrite using `[hinv]`. Conclude with `hf (-1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `one => refine ⟨fun x hx => ?_, fun x hx => ?_⟩ <;> simpa using hx`. Consider the case `mul a b _ _ ha hb`. Use `⟨fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `ha.1 _ (hb.1 x hx)`.
-
-Rewrite using `[mul_inv_rev, map_mul]`. Conclude with `hb.2 _ (ha.2 x hx)`. Consider the case `inv a _ ha => exact ⟨ha.2, by rw [inv_inv]; exact ha.1⟩`. Conclude with `key.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem map_stable {n : ℕ} (hn : 1 ≤ n) (T : GrpData n 0) (τ : URep T) (M : GKMod n 0) (j : M.V →ₗ[ℂ] τ.H)
     (hj : IsHCMod τ M j) (N : Submodule ℂ M.V) [FiniteDimensional ℂ N]
@@ -61,9 +59,9 @@ theorem map_stable {n : ℕ} (hn : 1 ≤ n) (T : GrpData n 0) (τ : URep T) (M :
   exact key.1
 
 /- English proof (translation)
-Break down `hτ.2 (N.map j) (Submodule.closed_of_finiteDimensional _) hN with h | h` into its components or cases. Use `left`. Apply `Submodule.map_injective_of_injective hj` to reduce the goal to its premises. Rewrite using `[h, Submodule.map_bot]`. Use `right`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, h⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `v _`. Take `⟨w, hw, hwv⟩ : j v ∈ N.map j` from `h ▸ Submodule.mem_top`. Conclude with `hj hwv ▸ hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_bot_or_top {n : ℕ} (T : GrpData n 0) (τ : URep T) (M : GKMod n 0) (j : M.V →ₗ[ℂ] τ.H)
     (hτ : IrrU τ) (hj : Function.Injective j) (N : Submodule ℂ M.V) [FiniteDimensional ℂ N]
@@ -80,13 +78,11 @@ theorem eq_bot_or_top {n : ℕ} (T : GrpData n 0) (τ : URep T) (M : GKMod n 0) 
     exact hj hwv ▸ hw
 
 /- English proof (translation)
-Introduce `n hn T τ M j hτ hj hM`. Take `⟨v, hv⟩` from `exists_ne (0 : M.V)`. Take `⟨W, hWf, hvW, hWs⟩` from `M.kfin v`. Establish `hW` using `(eq_bot_or_top T τ M j hτ hj.1 W (map_stable hn T τ M j hj W fun Z => hWs Z (isKC_of_compact Z))).resolve_left (fun h => hv (by rw [h] at hvW; exact hvW))`. Establish `hfin : FiniteDimensional ℂ M.V`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hWf` using `[hW.1]`. Conclude with `Module.Finite.equiv (Submodule.topEquiv : (⊤ : Submodule ℂ M.V) ≃ₗ[ℂ] M.V)`. Establish `hsurj : ∀ x, ∃ v', j v' = x` using `fun x => by`. Take `⟨w, -, hw⟩ : x ∈ W.map j` from `hW.2 ▸ Submodule.mem_top`. Conclude with `⟨w, hw⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hfin, ⟨hM, fun N hN => ?_⟩, fun h v => hsurj _, fun N hN => ?_⟩` and prove the remaining obligations. Conclude with `(eq_bot_or_top T τ M j hτ hj.1 N (map_stable hn T τ M j hj N hN)).imp_right And.left`. Use `(eq_bot_or_top T τ M j hτ hj.1 N ?_).imp_right And.left` and prove the remaining obligations. Introduce and unpack `g _ ⟨w, hw, rfl⟩`. Take `⟨v', hv'⟩` from `hsurj (τ.π g (j w))`.
-
-Conclude with `⟨v', hN g w hw v' hv', hv'⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hcMod_finite_irr : ∀ (n : ℕ), 1 ≤ n → ∀ (T : GrpData n 0) (τ : URep T) (M : GKMod n 0) (j : M.V →ₗ[ℂ] τ.H), IrrU τ → IsHCMod τ M j → Nontrivial M.V → FiniteDimensional ℂ M.V ∧ IrrGK M ∧ (∀ h v, ∃ v', j v' = τ.π h (j v)) ∧ ∀ N : Submodule ℂ M.V, (∀ h, ∀ v ∈ N, ∀ v', j v' = τ.π h (j v) → v' ∈ N) → N = ⊥ ∨ N = ⊤ := by
   intro n hn T τ M j hτ hj hM

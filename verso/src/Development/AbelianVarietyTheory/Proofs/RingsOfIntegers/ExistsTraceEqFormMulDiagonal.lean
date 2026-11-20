@@ -8,15 +8,15 @@ open IsLocalRing
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `hΦ : ∀ f : R →ₗ[A] A, ∑ i, ∑ j, (M i j * f (b i)) • b j = b.equivFun.symm (Matrix.vecMul (fun i => f (b i)) M)`. Introduce `f`. Rewrite using `[b.equivFun_symm_apply, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.vecMul, dotProduct, Finset.sum_smul, mul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `set J : R := ∑ i, ∑ j, M i j • (b i * b j) with hJ`. Set `lam : R →ₗ[A] A` to `b.constr A (Matrix.vecMul (b.equivFun 1) M⁻¹)`. Establish `h1 : ∑ i, ∑ j, (M i j * lam (b i)) • b j = 1`. Establish `e : (fun i => lam (b i)) = Matrix.vecMul (b.equivFun 1) M⁻¹`. Use function extensionality and compare the values at `fun i => b.constr_basis A _ i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΦ, e, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hu, Matrix.vecMul_one, LinearEquiv.symm_apply_apply]`. Establish `h2 : ∑ i, ∑ j, (M i j * (lam ∘ₗ LinearMap.mulRight A J) (b i)) • b j = J`. Use `annihilator_diagonal_form_swap b M h lam J` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.mulRight_apply]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← smul_mul_assoc, ← Finset.sum_mul]`. Rewrite using `[h1, one_mul]`. Establish `h3` using `annihilator_diagonal_trace b M h`. Rewrite `h3` using `[← hJ, ← h2, hΦ, hΦ]`. Establish `h4` using `congrArg (fun v => Matrix.vecMul v M⁻¹) (b.equivFun.symm.injective h3)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hu, Matrix.vecMul_one] at h4`. Establish `h5 : Algebra.trace A R = lam ∘ₗ LinearMap.mulRight A J` using `b.ext fun i => congrFun h4 i`. Conclude with `⟨lam, fun x => by rw [h5]; rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_trace_eq_of_isUnit_det {A R : Type} [CommRing A] [CommRing R] [Algebra A R]
     {d : ℕ} (b : Module.Basis (Fin d) A R) (M : Matrix (Fin d) (Fin d) A)
@@ -57,27 +57,25 @@ namespace GlobalTheory
 open IsLocalRing
 
 /- English proof (translation)
-Introduce `A R _ _ _ _ _ _ Δ ε hε hnil hΔ hne`. Set `b` to `Module.finBasis A R`. Set `M : Matrix (Fin (Module.finrank A R)) (Fin (Module.finrank A R)) A` to `Matrix.of fun i j => (b.tensorProduct b).repr Δ (i, j)`. Establish `hM : Δ = ∑ i, ∑ j, M i j • TensorProduct.tmul A (b i) (b j)` using `by conv_lhs => rw [← (b.tensorProduct b).sum_repr Δ, Fintype.sum_prod_type]`. Simplify using `[M]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hJ : Algebra.TensorProduct.lmul' (S` using `R) A Δ = ∑ i, ∑ j, M i j • (b i * b j) := by`. Rewrite using `[hM]`. Simplify using the standard rewrite rules. Rewrite using `[hJ]`. Use `TraceDiagonal.exists_trace_eq_of_isUnit_det b M (fun x => by rw [← hM, mul_comm, hΔ]) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `k` to `ResidueField A`. Set `I : Ideal R` to `(maximalIdeal A).map (algebraMap A R)`. Use `letI : Algebra k (R ⧸ I) := Ideal.Quotient.algebraQuotientMapQuotient`. Use `haveI : IsScalarTower A k (R ⧸ I) := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Take `⟨lift, hlift⟩` from `(residue_surjective (R := A)).hasRightInverse`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hεa : ∀ a, ε (algebraMap A R a) = residue A a` using `fun a => RingHom.congr_fun hε a`. Set `ev : R →ₐ[A] k` to `{ ε with commutes' := hεa }`. Establish `hev : ∀ x, ev x = ε x` using `fun _ => rfl`. Set `n : Ideal R` to `Ideal.span (Set.range fun i => b i - algebraMap A R (lift (ε (b i))))`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : ∃ N, n ^ N ≤ I := by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.exists_pow_le_of_le_radical_of_fg ?_ (Submodule.fg_span (Set.finite_range _))` and prove the remaining obligations. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hnil _ (by rw [map_sub, hεa, hlift, sub_self])`. Take `⟨s, hs⟩` from `TensorProduct.exists_finset Δ`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Matrix.det_transpose]`. Use `DiscrJacobian.isUnit_det_of_productMap_ne_zero (C := R ⧸ I) b n N hN ev ?_ ?_ (Ideal.Quotient.mkₐ A I) (Algebra.TensorProduct.comm A R R Δ) M.transpose ?_ ?_ ?_` and prove the remaining obligations. Introduce `w hw`. Establish `: n ≤ RingHom.ker ev` using `Ideal.span_le.2 (by`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [SetLike.mem_coe, RingHom.mem_ker, hev]`. Rewrite using `[map_sub, hεa, hlift, sub_self])`. Conclude with `this hw`. Introduce `w`. Use `⟨∑ i, b.repr w i * lift (ε (b i)), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : w - algebraMap A R (∑ i, b.repr w i * lift (ε (b i))) = ∑ i, algebraMap A R (b.repr w i) * (b i - algebraMap A R (lift (ε (b i))))` using `by conv_lhs => lhs; rw [← b.sum_repr w]`. Simplify using `only [map_sum, map_mul, mul_sub, Finset.sum_sub_distrib, Algebra.smul_def]`. Rewrite using `[e]`. Conclude with `n.sum_mem fun j _ => n.mul_mem_left _ (Ideal.subset_span ⟨j, rfl⟩)`. Rewrite using `[hM, Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `x`. Use `congrArg (Algebra.TensorProduct.comm A R R) (hΔ x)` as an intermediate fact. Rewrite `this` using `[map_mul, map_sub, map_zero, Algebra.TensorProduct.comm_tmul, Algebra.TensorProduct.comm_tmul]`. Take the linear combination `-this`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h0`. Use `hne s hs lift hlift (Ideal.Quotient.eq_zero_iff_mem.1 ?_)` and prove the remaining obligations. Rewrite using `[← h0, hs, map_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Establish `e : algebraMap k (R ⧸ I) (ε p.1) = Ideal.Quotient.mk I (algebraMap A R (lift (ε p.1)))` using `by conv_lhs => rw [← hlift (ε p.1)]`.
-
-Both sides reduce to the same expression. Rewrite using `[Algebra.smul_def, map_mul, ← e, mul_comm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_trace_eq_form_mul_diagonal : ∀ (A R : Type) [CommRing A] [IsLocalRing A] [CommRing R] [Algebra A R] [Module.Free A R] [Module.Finite A R] (Δ : TensorProduct A R R) (ε : R →+* ResidueField A), ε.comp (algebraMap A R) = residue A → (∀ x : R, ε x = 0 → ∃ m : ℕ, x ^ m ∈ (maximalIdeal A).map (algebraMap A R)) → (∀ x : R, (TensorProduct.tmul A x 1 - TensorProduct.tmul A 1 x) * Δ = 0) → (∀ (s : Finset (R × R)), Δ = ∑ p ∈ s, TensorProduct.tmul A p.1 p.2 → ∀ lift : ResidueField A → A, (∀ z, residue A (lift z) = z) → ∑ p ∈ s, lift (ε p.1) • p.2 ∉ (maximalIdeal A).map (algebraMap A R)) → ∃ lam : R →ₗ[A] A, ∀ x : R, Algebra.trace A R x = lam (x * Algebra.TensorProduct.lmul' (S := R) A Δ) := by
   intro A R _ _ _ _ _ _ Δ ε hε hnil hΔ hne

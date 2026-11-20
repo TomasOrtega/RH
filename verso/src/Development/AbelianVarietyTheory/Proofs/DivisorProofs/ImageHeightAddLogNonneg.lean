@@ -14,13 +14,13 @@ open scoped ENNReal Classical
 namespace GlobalTheory.ImageHeightNonneg
 
 /- English proof (translation)
-Take `⟨N, n', b, w', A, δ, f, hF, hf, e⟩` from `hh`. Establish `hF' : IsFrame Nm L b (Matrix.of fun j k => b.repr (w k) j) A`. Use `⟨?_, ?_, hF.herm, hF.conj, hF.norm⟩` and prove the remaining obligations. Simplify using `only [Matrix.of_apply, Module.Basis.sum_repr]`. Conclude with `hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : Submodule.span K (Set.range w) = ⊤` using `by rw [← hs, ← hw, Submodule.span_span_of_tower]`. Establish `h2` using `congrArg (Submodule.map b.equivFun.toLinearMap) h1`. Rewrite `h2` using `[Submodule.map_span, ← Set.range_comp, Submodule.map_top, LinearEquiv.range]`. Conclude with `h2`. Establish `h1` using `GlobalTheory.ImageHeightUnique.formHeight_linSubst hF hF' δ f`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[Module.Basis.toMatrix_self, GlobalTheory.HeightUnique.linSubst_one]`. Take `⟨y, hy, -⟩` from `hf.exists_point`. Take `⟨j, -⟩` from `Function.ne_iff.1 hy`. Establish `h2` using `GlobalTheory.FormHtLower.formHeight_ge (Λ := abelian₂) (Fin.pos j) hF'.full hF'.herm (fun k σ => (hF.norm σ (w k)).trans_le (hle k σ)) hf.ne_zero hf.homog`. Rewrite `h2` using `[h1, ← e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpos : (0 : ℝ) < ((d : ℝ) + 1) * δ` using `mul_pos (by positivity) (Nat.cast_pos.2 hf.pos)`. Use `nonneg_of_mul_nonneg_right (a := ((d : ℝ) + 1) * δ) ?_ hpos` and prove the remaining obligations. Move the coercions through the operations in `at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem IsImageHeight.neg_log_le {K V Ω : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] [Field Ω] [Algebra K Ω] {Nm : (K →+* ℂ) → V → ℝ} {L : Submodule (𝓞 K) V}
@@ -48,7 +48,7 @@ theorem IsImageHeight.neg_log_le {K V Ω : Type} [Field K] [NumberField K] [AddC
   linarith
 
 /- English proof (translation)
-Establish `hL : Submodule.span (𝓞 K) (Set.range w) = L` using `le_antisymm (Submodule.span_le.2 fun x hx => (hw.gen x).2 (Submodule.subset_span hx)) fun x hx => Submodule.span_le_restrictScalars ℤ (𝓞 K) _ ((hw.gen x).1 hx)`. Establish `hK : ∀ σ : K →+* ℂ, (starRingEnd ℂ).comp σ ≠ σ` using `fun σ h => IsTotallyComplex.complexEmbedding_not_isReal σ h`. Conclude with `IsImageHeight.neg_log_le hs hL hw.le (isImageHeight_imageHeight (exists_isImageHeight_iff.2 ⟨exists_isFrame hK hc hG (hL ▸ Submodule.fg_span (Set.finite_range _)) hs, hd⟩))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem imageHeight_add_log_nonneg (K V Ω : Type) [Field K] [NumberField K] [IsTotallyComplex K] [AddCommGroup V]
     [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Field Ω] [Algebra K Ω] (Nm : (K →+* ℂ) → V → ℝ)
@@ -64,7 +64,7 @@ theorem imageHeight_add_log_nonneg (K V Ω : Type) [Field K] [NumberField K] [Is
     ⟨exists_isFrame hK hc hG (hL ▸ Submodule.fg_span (Set.finite_range _)) hs, hd⟩))
 
 /- English proof (translation)
-Introduce `_` and use `imageHeight_add_log_nonneg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem imageHeight_nonneg : Hypotheses2 → ∀ (K V Ω : Type) [Field K] [NumberField K] [IsTotallyComplex K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Field Ω] [Algebra K Ω] (Nm : (K →+* ℂ) → V → ℝ) (L : Submodule (𝓞 K) V) (ev : V →ₗ[K] Ω) (d n : ℕ) (w : Fin n → V) (abelian₂ : ℝ), HasGram Nm → (∀ σ x, Nm ((starRingEnd ℂ).comp σ) x = Nm σ x) → Submodule.span K (L : Set V) = ⊤ → IsShortGen Nm L w abelian₂ → 0 < imageDeg ev d → 0 ≤ imageHeight Nm L ev d + Real.log abelian₂ :=
   fun _ => imageHeight_add_log_nonneg

@@ -6,7 +6,7 @@ open GlobalTheory.Count Formalism.MainNotions.S Formalism.HN Formalism.REAL Matr
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.UnipQuot.exists_quot_prob` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FExistsUnipotentQuotientInvariantProbability.lean&line=146#L146)
 -/

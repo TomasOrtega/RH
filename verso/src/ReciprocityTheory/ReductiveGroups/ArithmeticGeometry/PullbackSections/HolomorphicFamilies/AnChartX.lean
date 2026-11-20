@@ -17,7 +17,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {σ' : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)}
 
 /- English proof (translation)
-Use `show (toUnit X ≫ η[M]).left = _`. Rewrite using `[Over.comp_left]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem one_left'' {T : Scheme.{0}} {X : Over T} {M : Over T} [GrpObj M] :
     (1 : X ⟶ M).left = X.hom ≫ η[M].left := by
@@ -30,11 +30,11 @@ def anE (F : FamilyUnif Xo σ' ty) (i : Fin F.n) (P : (F.Di i).La →+ (Fin g �
   fun z => (F.ex i P z).left
 
 /- English proof (translation)
-Establish `hper : IsHolPeriods (F.Di i) ty (Set.univ : Set (Fin 0 → ℂ)) (fun _ => P)` using `⟨fun _ _ => hP, fun _ => differentiableOn_const _⟩`. Establish `h2` using `(F.hol i 0 Set.univ (fun _ => P) isOpen_univ hper).2`. Introduce `U f`. Take `⟨ho, hd⟩` from `h2 U f`. Establish `hι : Differentiable ℂ (fun z : Fin g → ℂ => ((0 : Fin 0 → ℂ), z))` using `by fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc` using `hd.comp hι.differentiableOn (Set.mapsTo_preimage _ _)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `ho.preimage hι.continuous using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Simplify using `[anE]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `hc using 1 all_goals` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Simplify using `[anE]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem anHol (F : FamilyUnif Xo σ' ty) (i : Fin F.n) (P : (F.Di i).La →+ (Fin g → ℂ))
     (hP : IsPeriod (F.Di i) ty P) : IsHolFam (anE F i P) := by
@@ -71,7 +71,7 @@ Both sides reduce to the same expression.
 theorem anX_left (m : ℕ) : (anX F i P hP y hy m).left = jetPt (anE F i P) (anHol F i P hP) m := rfl
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, anX_left, anX_left]`. Conclude with `jetPt_trunc (e := anE F i P) (hol := anHol F i P hP) m`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem anX_trunc (m : ℕ) :
     homAt y.x (jetTrunc : Jet ℂ (Fin 1 × Fin g) (m + 1) →ₐ[ℂ] Jet ℂ (Fin 1 × Fin g) m) ≫ anX F i P hP y hy (m + 1) =
@@ -82,17 +82,17 @@ theorem anX_trunc (m : ℕ) :
 
 include hP in
 /- English proof (translation)
-Simplify using `using F.ex_add i P hP 0 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ex_zero_eq_one : F.ex i P 0 = 1 := by
   simpa using F.ex_add i P hP 0 0
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, anX_left]`. Use `(jetPt_aug (anE F i P) (anHol F i P hP) m).trans ?_` and prove the remaining obligations. Use `show (F.ex i P 0).left = _`. Rewrite using `[ex_zero_eq_one F i P hP, one_left'', one_left'']`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[← hy]`. Establish `hid : spMap (RingHom.id ℂ) = 𝟙 _` using `by first`. Consider the case `simp [spMap]`. Consider the case `(simp only [spMap]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show CommRingCat.ofHom (RingHom.id ℂ) = 𝟙 _ from rfl, Spec.map_id])`. Simplify using `[overAt, hid]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem anX_zero (m : ℕ) :
     homAt y.x (jetAug : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] ℂ) ≫ anX F i P hP y hy m = 1 := by
@@ -111,13 +111,13 @@ theorem anX_zero (m : ℕ) :
   simp [overAt, hid]
 
 /- English proof (translation)
-Establish `key : ∀ a : Lt1 Dw → ℂ, ∀ j, ∑ ℓ, a ℓ * (if j = e'.symm ℓ then (1 : ℂ) else 0) = a (e' j)`. Introduce `a j`. Rewrite using `[Fintype.sum_eq_single (e' j)]`. Simplify using the standard rewrite rules. Introduce `ℓ hℓ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : j ≠ e'.symm ℓ`. Introduce `h`. Apply `hℓ` to reduce the goal to its premises. Rewrite using `[h, Equiv.apply_symm_apply]`. Simplify using `[hne]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨fun ℓ => v (e'.symm ℓ), fun j => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `ℓ`. Establish `h1` using `ha (e'.symm ℓ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `h1` using `[key, Equiv.apply_symm_apply]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basis_single (e' : Fin g ≃ Lt1 Dw) (v : Fin g → ℂ) :
     ∃! a : Lt1 Dw → ℂ, ∀ j, ∑ ℓ, a ℓ * (if j = e'.symm ℓ then (1 : ℂ) else 0) = v j := by
@@ -143,27 +143,25 @@ def anAct (ty : Fin g → (E →+* ℂ)) (a : 𝓞 E) : Fin g → MvPowerSeries 
   fun k => MvPowerSeries.C (ty k (a : E)) * MvPowerSeries.X ((0 : Fin 1), k)
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Unfold `jetSubstP jetScaleP`. Rewrite using `[Formalism.MainNotions.ModuliIntegralCharts.H1.GermD.jetMap_mk, Formalism.MainNotions.ModuliIntegralCharts.H1.GermD.jetMap_mk]`. Establish `key : ∀ p : Fin 1 × Fin g, Ideal.Quotient.mk (orig ℂ (Fin 1 × Fin g) ^ (m + 1)) (psTrunc m (anAct ty a p.2) - MvPolynomial.C (MvPolynomial.constantCoeff (psTrunc m (anAct ty a p.2)))) = Ideal.Quotient.mk (orig ℂ (Fin 1 × Fin g) ^ (m + 1)) (MvPolynomial.C (ty p.2 (a : E)) * MvPoly …`. Introduce and unpack `⟨i, k⟩`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hi : i = 0` using `Subsingleton.elim _ _`. Substitute `hi` using the available equality. Use `set q : Fin 1 × Fin g := ((0 : Fin 1), k) with hq`. Establish `hps : psTrunc m (anAct ty a k) = if Finsupp.single q 1 ∈ (degLE m : Finset ((Fin 1 × Fin g) →₀ ℕ)) then MvPolynomial.C (ty k (a : E)) * MvPolynomial.X q else 0`. Unfold `psTrunc anAct`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hmem : Finsupp.single q 1 ∈ (degLE m : Finset ((Fin 1 × Fin g) →₀ ℕ))`. Rewrite using `[if_pos hmem, Finset.sum_eq_single (Finsupp.single q 1)]`. Simplify using `[MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_X, MvPolynomial.C_mul_X_eq_monomial, hq]`. Introduce `e _ he`. Simplify using `[MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_X, ← hq, he]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd hmem h`. Rewrite using `[if_neg hmem]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `e he`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hne : e ≠ Finsupp.single q 1` using `fun h => hmem (h ▸ he)`. Simplify using `[MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_X, ← hq, hne]`. Rewrite using `[hps]`. Distinguish the cases in `hm0 : m = 0`. Substitute `hm0` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnot : Finsupp.single q 1 ∉ (degLE 0 : Finset ((Fin 1 × Fin g) →₀ ℕ))`. Introduce `hmem`. Rewrite `hmem` using `[degLE, Finset.mem_filter]`. Use `hmem.2` as an intermediate fact. Rewrite `this` using `[Finsupp.sum_single_index rfl]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hnot]`. Simplify using `only [map_zero, sub_zero]`. Use `symm`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, zero_add, pow_one]`.
+Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨q, rfl⟩)`. Establish `hmem : Finsupp.single q 1 ∈ (degLE m : Finset ((Fin 1 × Fin g) →₀ ℕ))`. Rewrite using `[degLE, Finset.mem_filter, Finsupp.sum_single_index rfl]`. Use `⟨Finset.mem_image.2 ⟨fun j => if j = q then ⟨1, by omega⟩ else 0, Finset.mem_univ _, ?_⟩, by omega⟩` and prove the remaining obligations. Use extensionality with `j`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hj : j = q`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj, Finsupp.single_apply, Ne.symm hj]`. Rewrite using `[if_pos hmem]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[MvPolynomial.constantCoeff_X, hq]`. Use `show (Ideal.Quotient.mkₐ ℂ _) (MvPolynomial.aeval _ f) = (Ideal.Quotient.mkₐ ℂ _) (MvPolynomial.aeval _ f)`. Rewrite using `[← AlgHom.comp_apply, ← AlgHom.comp_apply, MvPolynomial.comp_aeval, MvPolynomial.comp_aeval]`. Use `congr 2`. Use function extensionality and compare the values at `p`.
-
-Conclude with `key p`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem jetSubstP_anAct (m : ℕ) (a : 𝓞 E) (b : Jet ℂ (Fin 1 × Fin g) m) :
     jetSubstP m (fun p : Fin 1 × Fin g => psTrunc m (anAct ty a p.2)) b =
@@ -228,13 +226,13 @@ theorem jetSubstP_anAct (m : ℕ) (a : 𝓞 E) (b : Jet ℂ (Fin 1 × Fin g) m) 
   exact key p
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left, anX_left, homAt, Over.homMk_left]`. Establish `hol'` using `isHolFam_comp (anE F i P) (anHol F i P hP) (Xo.univ.t.act.act a).left`. Establish `hc : ∀ z, anE F i P z ≫ (Xo.univ.t.act.act a).left = anE F i P (fun k => ty k (a : E) * z k)` using `fun z => by`. Unfold `anE`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[F.ex_lin i P hP a z, Over.comp_left]`. Establish `h0 : (fun z => anE F i P z ≫ (Xo.univ.t.act.act a).left) 0 = anE F i P 0` using `by show anE F i P 0 ≫ (Xo.univ.t.act.act a).left = anE F i P 0`. Rewrite using `[hc]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Establish `hloc : IsLocalHom ((jetSubstP m fun p : Fin 1 × Fin g => psTrunc m (anAct ty a p.2) : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] Jet ℂ (Fin 1 × Fin g) m) : Jet ℂ (Fin 1 × Fin g) m →+* Jet ℂ (Fin 1 × Fin g) m)`. Unfold `jetSubstP`. Conclude with `isLocalHom_jetMap _ _`. Rewrite using `[jetPt_comp (anE F i P) (anHol F i P hP) (Xo.univ.t.act.act a).left _ hol' (fun z => rfl) m]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(jetPt_precomp (anE F i P) (fun z => anE F i P z ≫ (Xo.univ.t.act.act a).left) (anHol F i P hP) hol' h0 m ((jetSubstP m fun p : Fin 1 × Fin g => psTrunc m (anAct ty a p.2) : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] Jet ℂ (Fin 1 × Fin g) m) : Jet ℂ (Fin 1 × Fin g) m →+* Jet ℂ (Fin 1 × Fin g) …` and prove the remaining obligations. Introduce `U hU f`. Repeatedly rewrite using `[hc]`. Rewrite using `[jetOf_scale m (fun k => ty k (a : E)) (contDiffAt_val (e := anE F i P) (hol := anHol F i P hP) hU f)]`. Conclude with `jetSubstP_anAct m a _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem anX_act (m : ℕ) (a : 𝓞 E) :
     anX F i P hP y hy m ≫ Xo.univ.t.act.act a =
@@ -266,9 +264,9 @@ theorem anX_act (m : ℕ) (a : 𝓞 E) :
   exact jetSubstP_anAct m a _
 
 /- English proof (translation)
-Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Simplify using `only [jetTan, jetAug, liftJet]`. Apply the tactic sequence `try simp only [Ideal.Quotient.liftₐ_apply]`. Use `erw [Ideal.Quotient.lift_mk, Ideal.Quotient.lift_mk]`. Apply the tactic sequence `try simp only [AlgHom.coe_toRingHom, RingHom.coe_coe]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C r => simp [TrivSqZeroExt.algebraMap_eq_inl]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p j hp`. Apply the tactic sequence `by_cases hj : j = ℓ <;> simp [hj, hp]`.
+Treat this case separately. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem fst_jetTan (ℓ : Fin 1 × Fin g) (a : Jet ℂ (Fin 1 × Fin g) (0 + 1)) :
     ((jetTan ℓ : Jet ℂ (Fin 1 × Fin g) (0 + 1) →ₐ[ℂ] DualNumber ℂ) a).fst =
@@ -285,7 +283,7 @@ theorem fst_jetTan (ℓ : Fin 1 × Fin g) (a : Jet ℂ (Fin 1 × Fin g) (0 + 1))
     by_cases hj : j = ℓ <;> simp [hj, hp]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [epsMul]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem epsMul_algebraMap (cc : ℂ) (a : ℂ) : epsMul cc (algebraMap ℂ (DualNumber ℂ) a) = algebraMap ℂ _ a := by
   ext <;> simp [epsMul]
@@ -298,7 +296,7 @@ def epsHom (x : Sp ℂ ⟶ Xo.X) (cc : ℂ) : tEps x ⟶ tEps x :=
     exact RingHom.ext fun a => epsMul_algebraMap cc a)
 
 /- English proof (translation)
-Establish `h : (epsMul (0 : ℂ)).comp ((jetTan ℓ : Jet ℂ (Fin 1 × Fin g) (0 + 1) →ₐ[ℂ] DualNumber ℂ) : Jet ℂ (Fin 1 × Fin g) (0 + 1) →+* DualNumber ℂ) = (algebraMap ℂ (DualNumber ℂ)).comp ((jetAug : Jet ℂ (Fin 1 × Fin g) (0 + 1) →ₐ[ℂ] ℂ) : Jet ℂ (Fin 1 × Fin g) (0 + 1) →+* ℂ)`. Use `RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[epsMul, fst_jetTan, TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `[epsMul, TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem spMap_epsMul_zero_jetTan (ℓ : Fin 1 × Fin g) :
     spMap (epsMul (0 : ℂ)) ≫ spMap ((jetTan ℓ : Jet ℂ (Fin 1 × Fin g) (0 + 1) →ₐ[ℂ] DualNumber ℂ) :
@@ -314,19 +312,19 @@ theorem spMap_epsMul_zero_jetTan (ℓ : Fin 1 × Fin g) :
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, h]
 
 /- English proof (translation)
-Apply the tactic sequence `ext x <;> simp [epsMul]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem epsMul_one : epsMul (1 : ℂ) = RingHom.id (DualNumber ℂ) := by
   ext x <;> simp [epsMul]
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro u j`. Conclude with `j.elim0`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u j h`. Rewrite using `[List.ofFn_succ, List.prod_cons]`. Consider the cases of `j using Fin.cases with`. Consider the case `zero`. Establish `h1 : (List.ofFn fun i : Fin n => u i.succ).prod = 1`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `List.prod_eq_one` to reduce the goal to its premises. Introduce `x hx`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `h i.succ (Fin.succ_ne_zero i)`. Rewrite using `[h1, _root_.mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ j'`. Rewrite using `[h 0 (Fin.succ_ne_zero j').symm, _root_.one_mul]`. Conclude with `ih (fun i => u i.succ) j' (fun i hi => h i.succ (fun e => hi (Fin.succ_injective _ e)))`.
+A detailed English derivation is pending.
 -/
 private theorem prod_ofFn_single_lemma {M : Type*} [Monoid M] :
     ∀ (n : ℕ) (u : Fin n → M) (j : Fin n), (∀ i, i ≠ j → u i = 1) → (List.ofFn u).prod = u j := by
@@ -349,11 +347,11 @@ private theorem prod_ofFn_single_lemma {M : Type*} [Monoid M] :
       exact ih (fun i => u i.succ) j' (fun i hi => h i.succ (fun e => hi (Fin.succ_injective _ e)))
 
 /- English proof (translation)
-Use `⟨fun k => if k = j0 then homAt y.x (jetTan ((0 : Fin 1), j0) : Jet ℂ (Fin 1 × Fin g) (0 + 1) →ₐ[ℂ] DualNumber ℂ) ≫ anX F i P hP y hy (0 + 1) else 1, fun k => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hk : k = j0`. Substitute `hk` using the available equality. Simplify using `only [if_true, epsMul_one]`. Simplify using `[spMap]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_neg hk]`. Rewrite using `[one_left'']`. Simplify using `only [Over.comp_left, homAt, Over.homMk_left, anX_left]`. Rewrite using `[← Category.assoc, spMap_epsMul_zero_jetTan, Category.assoc, jetPt_aug]`. Unfold `anE`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[ex_zero_eq_one F i P hP, one_left'']`. Simplify using `only [Over.mk_hom, Category.assoc, hy]`. Rewrite using `[prod_ofFn_single_lemma g _ j0 (fun k hk => if_neg hk), if_pos rfl]`. Simplify using `only [Over.comp_left, homAt, Over.homMk_left, anX_left]`. Conclude with `jetPt_tan (anE F i P) (anHol F i P hP) ((0 : Fin 1), j0) vt hd`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem anX_tan (j0 : Fin g) (vt : Sp (DualNumber ℂ) ⟶ Xo.univ.t.G.left)
     (hd : IsDerivAt0 (anE F i P) (Pi.single j0 1) vt) :

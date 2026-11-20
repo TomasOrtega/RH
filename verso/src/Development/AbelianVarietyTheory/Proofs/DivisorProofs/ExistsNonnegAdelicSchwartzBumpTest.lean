@@ -16,33 +16,29 @@ open Topology Filter
 namespace GlobalTheory.AdelicBumpTest
 
 /- English proof (translation)
-Introduce `F _ _ κ _ U hU`. Set `e' : (κ → mixedEmbedding.mixedSpace F) × (κ → FiniteAdeleRing (𝓞 F) F) → (κ → AdeleRing (𝓞 F) F)` to `fun p i => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (p.1 i), p.2 i)`. Establish `he' : Continuous e'` using `continuous_pi fun i => ((GlobalTheory.Core.Rk.RapidInt.continuous_ofMixed F).comp ((continuous_apply i).comp continuous_fst)).prodMk ((continuous_apply i).comp continuous_snd)`. Establish `he'0 : e' (0, 0) = 0`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Prod.ext ?_ rfl` and prove the remaining obligations. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm 0 = 0`. Conclude with `map_zero _`. Establish `hpre : e' ⁻¹' U ∈ 𝓝 ((0 : κ → mixedEmbedding.mixedSpace F), (0 : κ → FiniteAdeleRing (𝓞 F) F))` using `he'.continuousAt.preimage_mem_nhds (by rw [he'0]; exact hU)`. Take `⟨V₁, hV₁, V₂, hV₂, hsub⟩` from `mem_nhds_prod_iff.mp hpre`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.mp hV₁`. Set `b : ContDiffBump (0 : κ → mixedEmbedding.mixedSpace F)` to `⟨ε / 2, ε, half_pos hε, half_lt_self hε⟩`. Establish `h1 : HasCompactSupport (fun x => ((b x : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)`. Set `f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ` to `h1.toSchwartzMap (Complex.ofRealCLM.contDiff.comp b.contDiff)`. Establish `hf : ∀ y, f y = ((b y : ℝ) : ℂ)` using `fun y => rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Choose the witnesses or unpack the hypotheses as in `⟨L, hLo, hLc, hL⟩ : ∃ L : AddSubgroup (FiniteAdeleRing (𝓞 F) F), IsOpen (L : Set (FiniteAdeleRing (𝓞 F) F)) ∧ IsCompact (L : Set (FiniteAdeleRing (𝓞 F) F)) ∧ ∀ u : κ → FiniteAdeleRing (𝓞 F) F, (∀ i, u i ∈ L) → u ∈ V₂ := by`. Set `q` to `Fintype.equivFin κ`. Establish `hc : Continuous fun (u : Fin (Fintype.card κ) → FiniteAdeleRing (𝓞 F) F) (i : κ) => u (q i)` using `continuous_pi fun i => continuous_apply _`. Establish `hV' : (fun (u : Fin (Fintype.card κ) → FiniteAdeleRing (𝓞 F) F) (i : κ) => u (q i)) ⁻¹' V₂ ∈ 𝓝 (0 : Fin (Fintype.card κ) → FiniteAdeleRing (𝓞 F) F)` using `hc.continuousAt.preimage_mem_nhds hV₂`. Take `⟨L, hLo, hLc, hL⟩` from `GlobalTheory.SWQ.FinAnnih.basis_nhds (F := F) _ hV'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨L, hLo, hLc, fun u hu => ?_⟩` and prove the remaining obligations. Use `hL (fun l => u (q.symm l)) fun l => hu _` as an intermediate fact. Simplify using `using this`. Set `S : Set (κ → FiniteAdeleRing (𝓞 F) F)` to `Set.pi Set.univ fun _ => (L : Set (FiniteAdeleRing (𝓞 F) F))`. Establish `hSo : IsOpen S` using `isOpen_set_pi Set.finite_univ fun _ _ => hLo`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hSc : IsClosed S` using `isClosed_set_pi fun _ _ => AddSubgroup.isClosed_of_isOpen L hLo`. Set `g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ` to `S.indicator 1`. Establish `hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `(IsLocallyConstant.iff_exists_open _).2 fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Distinguish the cases in `hx : x ∈ S`. Conclude with `⟨S, hSo, hx, fun y hy => by simp only [g, Set.indicator_of_mem hy, Set.indicator_of_mem hx, Pi.one_apply]⟩`. Conclude with `⟨Sᶜ, hSc.isOpen_compl, hx, fun y hy => by simp only [g, Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]⟩`. Conclude with `HasCompactSupport.intro (isCompact_univ_pi fun _ => hLc) fun x hx => Set.indicator_of_notMem hx _`. Use `⟨pureA F f g, Submodule.subset_span ⟨f, g, hg, rfl⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(f.continuous.comp (continuous_pi fun i => (GlobalTheory.Core.Rk.RapidInt.continuous_toMixed F).comp (continuous_fst.comp (continuous_apply i)))).mul (hg.1.continuous.comp (continuous_pi fun i => continuous_snd.comp (continuous_apply i)))`. Introduce `x hx`. Establish `hx1 : f (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1) ≠ 0` using `left_ne_zero_of_mul hx`. Establish `hx2 : g (fun i => (x i).2) ≠ 0` using `right_ne_zero_of_mul hx`. Establish `hb : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1) ∈ V₁`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `hball ?_` and prove the remaining obligations. Rewrite using `[← b.support_eq]`. Introduce `h0`. Apply `hx1` to reduce the goal to its premises. Rewrite using `[hf, h0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hS : (fun i => (x i).2) ∈ S`. Assume the negation of the conclusion as `h`. Conclude with `hx2 (Set.indicator_of_notMem h _)`. Establish `hmem` using `hsub (Set.mk_mem_prod hb (hL _ fun i => hS i (Set.mem_univ i)))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxe : e' ((fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1), fun i => (x i).2) = x`. Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Conclude with `(InfiniteAdeleRing.ringEquiv_mixedSpace F).symm_apply_apply _`. Rewrite using `[← hxe]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hmem`. Introduce `x show (f _ * g _).im = 0 ∧ 0 ≤ (f _ * g _).re`. Rewrite using `[hf]`. Distinguish the cases in `h : (fun i => (x i).2) ∈ S`. Simplify using `only [g, Set.indicator_of_mem h, Pi.one_apply, mul_one, Complex.ofReal_im, Complex.ofReal_re, true_and]`.
-
-Conclude with `b.nonneg`. Simplify using `only [g, Set.indicator_of_notMem h, mul_zero, Complex.zero_im, Complex.zero_re, le_refl, and_self]`. Use `show f _ * g _ = 1`. Establish `h0 : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((0 : κ → AdeleRing (𝓞 F) F) i).1) = 0`. Use function extensionality and compare the values at `i`.
-
-Conclude with `map_zero _`. Establish `hS0 : (fun i => ((0 : κ → AdeleRing (𝓞 F) F) i).2) ∈ S` using `fun i _ => L.zero_mem`. Rewrite using `[h0, hf, b.one_of_mem_closedBall (Metric.mem_closedBall_self (half_pos hε).le)]`. Simplify using `only [g, Set.indicator_of_mem hS0, Pi.one_apply, Complex.ofReal_one, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_nonneg_test : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (U : Set (κ → AF F)), U ∈ nhds 0 →
     ∃ Φ ∈ schA F κ, Continuous Φ ∧ (∀ x, Φ x ≠ 0 → x ∈ U) ∧ (∀ x, (Φ x).im = 0 ∧ 0 ≤ (Φ x).re) ∧ Φ 0 = 1 := by

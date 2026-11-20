@@ -14,7 +14,7 @@ section Inverse
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `h.2 1 trivial`. Simplify using `at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem notMem_mcPts_top_inv (z : (Σ k, ι k) → ℂ) : z ∉ mcPts (⊤ : Ideal (MRing ι)) := by
   intro h
@@ -22,7 +22,7 @@ theorem notMem_mcPts_top_inv (z : (Σ k, ι k) → ℂ) : z ∉ mcPts (⊤ : Ide
   simp at h1
 
 /- English proof (translation)
-Take `⟨c, -, rfl⟩` from `h`. Use `show c k * z ⟨k, i⟩ * z ⟨k, i'⟩ = c k * z ⟨k, i'⟩ * z ⟨k, i⟩`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem minors_of_sameOrbit_inv {a z : (Σ k, ι k) → ℂ} (h : SameOrbit a z) (k : K) (i i' : ι k) :
     a ⟨k, i⟩ * z ⟨k, i'⟩ = a ⟨k, i'⟩ * z ⟨k, i⟩ := by
@@ -31,9 +31,9 @@ theorem minors_of_sameOrbit_inv {a z : (Σ k, ι k) → ℂ} (h : SameOrbit a z)
   ring
 
 /- English proof (translation)
-Use `choose q hq using hz`. Use `⟨fun k => a ⟨k, q k⟩ / z ⟨k, q k⟩, fun k => ?_, ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `ha k`. Use `div_ne_zero (fun h0 => hi ?_) (hq k)` and prove the remaining obligations. Establish `h1` using `h k i (q k)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h0, zero_mul]`. Conclude with `(mul_eq_zero.mp h1).resolve_right (hq k)`. Use function extensionality and compare the values at `⟨k, i⟩ show a ⟨k, i⟩ = a ⟨k, q k⟩ / z ⟨k, q k⟩ * z ⟨k, i⟩`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff (hq k)]`. Conclude with `h k i (q k)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sameOrbit_of_minors_inv {a z : (Σ k, ι k) → ℂ} (ha : ∀ k, ∃ i, a ⟨k, i⟩ ≠ 0)
     (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0)
@@ -53,13 +53,11 @@ theorem sameOrbit_of_minors_inv {a z : (Σ k, ι k) → ℂ} (ha : ∀ k, ∃ i,
 end Inverse
 
 /- English proof (translation)
-Introduce `K _ ι _ P e R hX`. Establish `hs : ∀ z ∈ mcPts P, ∃ x, SameOrbit (R.lift x x) z` using `fun z hz => R.surj z hz (notMem_mcPts_top_inv z)`. Use `choose! r hr using hs`. Use `⟨r, hr, fun z₀ hz₀ => ?_⟩` and prove the remaining obligations. Use `isCompact_univ.le_nhds_of_unique_clusterPt (by simp) fun x' _ hx' => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨G, hG, hGr⟩` from `mapClusterPt_iff_ultrafilter.mp hx'`. Establish `hUx : R.U x' ∈ 𝓝 x'` using `(R.isOpen_U x').mem_nhds (R.mem_U x')`. Establish `hGS : ∀ᶠ z in (G : Filter _), z ∈ mcPts P` using `hG self_mem_nhdsWithin`. Establish `hGU : ∀ᶠ z in (G : Filter _), r z ∈ R.U x'` using `hGr hUx`. Establish `hGz : (G : Filter _) ≤ 𝓝 z₀` using `hG.trans nhdsWithin_le_nhds`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmin : ∀ᶠ z in (G : Filter _), SameOrbit (R.lift x' (r z)) z` using `by filter_upwards [hGS, hGU] with z h1 h2`. Conclude with `orbit_trans (R.compat x' (r z) (r z) ⟨h2, R.mem_U _⟩) (hr z h1)`. Establish `ha : ∀ p, Tendsto (fun z => R.lift x' (r z) p) (G : Filter _) (𝓝 (R.lift x' x' p))` using `fun p => (((continuousOn_lift R x' p).continuousAt hUx).tendsto).comp hGr`. Establish `hzc : ∀ p, Tendsto (fun z : (Σ k, ι k) → ℂ => z p) (G : Filter _) (𝓝 (z₀ p))` using `fun p => ((continuous_apply p).tendsto z₀).comp hGz`. Establish `hsame : SameOrbit (R.lift x' x') z₀` using `sameOrbit_of_minors_inv (R.mem x' x' (R.mem_U x')).1 hz₀.1 fun k i i' => tendsto_nhds_unique_of_eventuallyEq ((ha _).mul (hzc _)) ((ha _).mul (hzc _)) (hmin.mono fun z hz => minors_of_sameOrbit_inv hz k i i')`.
-
-Conclude with `R.inj x' (r z₀) (notMem_mcPts_top_inv _) (orbit_trans hsame (orbit_symm (hr z₀ hz₀)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_continuousOn_inv_pts : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (P : Ideal (MRing ι)) (e : ℕ) (R : AnLogRes P ⊤ e), Nonempty R.X →

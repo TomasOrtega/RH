@@ -33,14 +33,14 @@ section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_eq {A : Type} [CommRing A] (τ : A →+* A) {n : ℕ} (J : Matrix (Fin n) (Fin n) A) (x y : Fin n → A) :
     Formalism.UG.hform τ J x y = (τ ∘ x) ⬝ᵥ (J.mulVec y) := by
   simp [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[hform_eq, hform_eq]`. Establish `e : τ ∘ M.mulVec x = (M.map τ).mulVec (τ ∘ x)`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec τ M x i`. Rewrite using `[e, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Formalism.UG.cT, Matrix.mulVec_transpose, dotProduct_comm, Matrix.dotProduct_mulVec, dotProduct_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hform_mulVec {A : Type} [CommRing A] (τ : A →+* A) {m n : ℕ} (J' : Matrix (Fin m) (Fin m) A)
     (M : Matrix (Fin m) (Fin n) A) (x y : Fin n → A) :
@@ -52,7 +52,7 @@ theorem hform_mulVec {A : Type} [CommRing A] (τ : A →+* A) {m n : ℕ} (J' : 
     dotProduct_comm, Matrix.dotProduct_mulVec, dotProduct_comm]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem comm_comm' (v : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] Fv F v) :
     Algebra.TensorProduct.comm F (Fv F v) E (Algebra.TensorProduct.comm F E (Fv F v) x) = x := by
@@ -62,7 +62,7 @@ theorem comm_comm' (v : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] Fv F v) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem comm_comm'' (v : HeightOneSpectrum (𝓞 F)) (x : Fv F v ⊗[F] E) :
     Algebra.TensorProduct.comm F E (Fv F v) (Algebra.TensorProduct.comm F (Fv F v) E x) = x := by
@@ -72,7 +72,7 @@ theorem comm_comm'' (v : HeightOneSpectrum (𝓞 F)) (x : Fv F v ⊗[F] E) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [Formalism.UG.sigR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem comm_sigR' (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] Fv F v) :
     Algebra.TensorProduct.comm F E (Fv F v) (Formalism.UG.sigR σ (Fv F v) x) =
@@ -83,27 +83,25 @@ theorem comm_sigR' (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (x : E 
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Take `⟨cm, hcm⟩ : ∃ cm : E ⊗[F] Fv F v →+* Fv F v ⊗[F] E, cm = (Algebra.TensorProduct.comm F E (Fv F v)).toRingEquiv.toRingHom` from `⟨_, rfl⟩`. Take `⟨cb, hcb⟩ : ∃ cb : Fv F v ⊗[F] E →+* E ⊗[F] Fv F v, cb = (Algebra.TensorProduct.comm F (Fv F v) E).toRingEquiv.toRingHom` from `⟨_, rfl⟩`. Establish `ecm : ∀ {m k : ℕ} (X : Matrix (Fin m) (Fin k) (E ⊗[F] Fv F v)), X.map (Algebra.TensorProduct.comm F E (Fv F v)) = X.map cm`. Introduce `m k X`. Substitute `hcm` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Both sides reduce to the same expression. Establish `bc1 : ∀ x, cb (cm x) = x` using `fun x => by subst hcm hcb; exact comm_comm' v x`. Establish `bc2 : ∀ x, cm (cb x) = x` using `fun x => by subst hcm hcb; exact comm_comm'' v x`. Establish `bcm : ∀ {m k : ℕ} (X : Matrix (Fin m) (Fin k) (E ⊗[F] Fv F v)), (X.map cm).map cb = X`. Introduce `m k X`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i l`. Conclude with `bc1 _`. Simplify using `only [ecm]`. Establish `hab : jv.map cm * jv'.map cm = 1` using `by rw [← Matrix.map_mul, k1, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hba : jv'.map cm * jv.map cm = 1` using `by rw [← Matrix.map_mul, k2, Matrix.map_one _ (map_zero _) (map_one _)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Fv F v) σ) (jv.map cm) * JR (F` using `F) (Fv F v) J' * jv.map cm = JR (F := F) (Fv F v) J := by`. Establish `e` using `congrArg (fun X => X.map cm) hiso`. Simplify using `only [Matrix.map_mul] at e`. Use `e using 3` and compare the differences between its conclusion and the goal. Use extensionality with `i k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Substitute using the available equality.
 
-Substitute `hcm` using the available equality. Conclude with `(comm_sigR' σ v _).symm`. Use extensionality with `i k`. Substitute `hcm` using the available equality. Simplify using `[JR, Formalism.UG.inclE, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR]`.
+By extensionality, compare the relevant components. Substitute using the available equality. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Substitute using the available equality.
 
-Use extensionality with `i k`. Substitute `hcm` using the available equality. Simplify using `[JR, Formalism.UG.inclE, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR]`. Apply the tactic sequence `obtain ⟨φ, hφ⟩ := GlobalTheory.T.exists_localUnitaryGroupIso_conj_isometry σ J J' v _ _ hab hba hJ`. Use `⟨φ, ?_, hφ⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `injv : Function.Injective jv.mulVec` using `fun x y hxy => by`. Use `congrArg jv'.mulVec hxy` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, k2]`. Establish `hA : (jv.map cm).map cb = jv` using `bcm jv`. Use `⟨LinearEquiv.ofLinear (Matrix.mulVecLin (jv.map cm)) (Matrix.mulVecLin (jv'.map cm)) (LinearMap.ext fun x => by simp [Matrix.mulVec_mulVec, hab]) (LinearMap.ext fun x => by simp [Matrix.mulVec_mulVec, hba]), fun y y' => ?_, fun y => ?_, fun g y => ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `show GlobalTheory.AdelicU.hLin σ J' (Fv F v) ((jv.map cm).mulVec y) ((jv.map cm).mulVec y') = GlobalTheory.AdelicU.hLin σ J (Fv F v) y y'`. Unfold `GlobalTheory.AdelicU.hLin hR`. Rewrite using `[hform_mulVec, hJ]`. Use `show (jv.map cm).mulVec y ∈ GlobalTheory.AdelicU.latLoc F Λ' v ↔ y ∈ GlobalTheory.AdelicU.latLoc F Λ v`. Establish `ecb : ∀ {m : ℕ} (z : Fin m → Fv F v ⊗[F] E), (fun i => Algebra.TensorProduct.comm F (Fv F v) E (z i)) = cb ∘ z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Introduce `m z`. Substitute `hcb` using the available equality. Both sides reduce to the same expression. Rewrite using `[GlobalTheory.T.mem_localLatticeCompletion_iff_comm_mem, GlobalTheory.T.mem_localLatticeCompletion_iff_comm_mem, ecb, ecb]`. Establish `e : cb ∘ (jv.map cm).mulVec y = jv.mulVec (cb ∘ y)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Function.comp_apply, RingHom.map_mulVec, hA]`. Rewrite using `[e]`. Use `injv.mem_set_image (s := (Formalism.L2.Herm.locL v Λ : Set (Fin r → E ⊗[F] Fv F v))) (a := cb ∘ y)` as an intermediate fact. Rewrite `this` using `[hlat]`.
-
-Conclude with `this`. Use `show (GlobalTheory.AdelicU.matHom _ σ J' (φ g)).val.mulVec ((jv.map cm).mulVec y) = (jv.map cm).mulVec ((GlobalTheory.AdelicU.matHom _ σ J g).val.mulVec y)`. Rewrite using `[hφ, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, hba, Matrix.mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locData (σ : E →ₐ[F] E) {r r' : ℕ} (J : Matrix (Fin r) (Fin r) E) (J' : Matrix (Fin r') (Fin r') E)
     (Λ : Submodule (𝓞 E) (Fin r → E)) (Λ' : Submodule (𝓞 E) (Fin r' → E)) (v : HeightOneSpectrum (𝓞 F))
@@ -168,7 +166,7 @@ theorem locData (σ : E →ₐ[F] E) {r r' : ℕ} (J : Matrix (Fin r) (Fin r) E)
     rw [hφ, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, hba, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `e : ∀ {m k : ℕ} (X : Matrix (Fin m) (Fin k) (E ⊗[F] Fv F v)), (X.map (Algebra.TensorProduct.comm F E (Fv F v))).map (Algebra.TensorProduct.comm F (Fv F v) E) = X`. Introduce `m k X`. Use extensionality with `i l`. Conclude with `comm_comm' v _`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, e, e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem assemble (v : HeightOneSpectrum (𝓞 F)) {r r' : ℕ} (jv : Matrix (Fin r') (Fin r) (E ⊗[F] Fv F v))
     (jv' : Matrix (Fin r) (Fin r') (E ⊗[F] Fv F v)) (M : Matrix (Fin r) (Fin r) (Fv F v ⊗[F] E)) :
@@ -185,13 +183,13 @@ end Gen
 set_option maxHeartbeats 3000000 in
 
 /- English proof (translation)
-Introduce `D V V' j Φ₀ hj hΦ`. Take `⟨j', h1, h2⟩` from `GlobalTheory.FinAdIdent.exists_inv hj.1.1`. Establish `key` using `fun v => locData D.sp.cm.sig V.gram V'.gram (frameLat V) (frameLat V') v (j.map (Formalism.UG.prV (E := D.host.E) v)) (j'.map (Formalism.UG.prV (E := D.host.E) v)) (GlobalTheory.HeckeTrans.map_mul_one _ h1) (GlobalTheory.HeckeTrans.map_mul_one _ h2) (GlobalTheory.FinAdIdent.isLoc …`. Use `choose jl hjl hjm using key`. Use `⟨jl, hjl, fun v g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `GlobalTheory.T.finiteAdelicUnitaryPoint_ext_localComponents` to reduce the goal to its premises. Introduce `u`. Establish `hc` using `hΦ (locFin V v g)`. Establish `e1` using `congrArg (fun X => GlobalTheory.IndefiniteRowSideFullHecke.IsometryCarriesCharacter.mmul X j') hc`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.IsometryCarriesCharacter.mmul, Matrix.mul_assoc, h1, Matrix.mul_one] at e1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, Matrix.map_mul, Matrix.map_mul]`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[GlobalTheory.T.finitePart_localToFiniteAdelic_component_self V u g, GlobalTheory.T.finitePart_localToFiniteAdelic_component_self V' u (jl u g), hjm]`. Rewrite using `[← Matrix.mul_assoc]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `assemble (F := D.host.F) (E := D.host.E) u _ _ _`. Rewrite using `[GlobalTheory.T.finitePart_localToFiniteAdelic_component_ne V hu, GlobalTheory.T.finitePart_localToFiniteAdelic_component_ne V' hu, Matrix.one_mul, ← Matrix.map_mul, h1, Matrix.map_one _ (map_zero _) (map_one _)]`.
+A detailed English derivation is pending.
 -/
 theorem isom_locComponents : ∀ (D : D7) (V V' : HSp D) (j : Matrix (Fin V'.rank) (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (Φ₀ : GfC V ≃ₜ* GfC V'), GlobalTheory.IndefiniteRowSideFullHecke.IsometryCarriesCharacter.IsLatIsom V V' (frameLat V) (frameLat V') j → GlobalTheory.IndefiniteRowSideFullHecke.IsometryCarriesCharacter.IsConjBy V V' j Φ₀ → ∃ jl : ∀ v, GLoc D.sp.cm.sig V.gram v ≃ₜ* GLoc D.sp.cm.sig V'.gram v, (∀ v, IsLatticeConj (frameLat V) (frameLat V') (jl v)) ∧ ∀ v g, Φ₀ (locFin V v g) = locFin V' v (jl v g) := by
   intro D V V' j Φ₀ hj hΦ

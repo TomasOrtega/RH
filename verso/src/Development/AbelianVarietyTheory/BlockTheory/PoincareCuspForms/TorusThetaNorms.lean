@@ -95,7 +95,7 @@ def thetaNorm {n : ℕ} (q : ℕ) (α : 𝓞 E) (d : ℕ) (P : MvPolynomial (I2.
   Real.pi ^ (-(d : ℝ) / 2) * ‖T.thetaVal q (actL α) P fun k => -T.φ (embR D (y k))‖
 
 /- English proof (translation)
-Establish `h1` using `T.dim_mem τ`. Establish `h2` using `i.isLt`. Conclude with `⟨⟨D.p0 + i, by omega⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_col_mem (τ : D.Ψ) (i : Fin (T.X.dim τ.1)) : ∃ a : Fin r, (a : ℕ) = D.p0 + i := by
   have h1 := T.dim_mem τ
@@ -103,7 +103,7 @@ theorem exists_col_mem (τ : D.Ψ) (i : Fin (T.X.dim τ.1)) : ∃ a : Fin r, (a 
   exact ⟨⟨D.p0 + i, by omega⟩, rfl⟩
 
 /- English proof (translation)
-Establish `h1` using `T.dim_conj τ`. Establish `h2` using `i.isLt`. Establish `h3` using `D.p0_le`. Conclude with `⟨⟨D.p0 - 1 - i, by omega⟩, by simp only; omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_col_conj (τ : D.Ψ) (i : Fin (T.X.dim (ComplexEmbedding.conjugate τ.1))) :
     ∃ a : Fin r, (a : ℕ) + i + 1 = D.p0 := by

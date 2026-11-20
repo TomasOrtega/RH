@@ -16,11 +16,11 @@ section Hint
 variable {Γ Γ' : Type} [Group Γ] [Group Γ']
 
 /- English proof (translation)
-Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Simplify using `[GlobalTheory.CompanionTheory.FamClP.hint_zero]`. Establish `hs : rStab (fun x => c * u x) = rStab u`. Use extensionality with `r`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [GlobalTheory.CompanionTheory.FamClP.mem_rStab']`. Prove the components needed by the constructor for the conclusion. Introduce `h x`. Conclude with `mul_left_cancel₀ hc (h x)`. Introduce `h x`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h x]`. Unfold `hint`. Rewrite using `[hs, mul_left_comm, ← smul_eq_mul c (∑ᶠ _ : Γ ⧸ (rStab u ⊓ K), _), smul_finsum]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hint_const_mul (K : Subgroup Γ) (u : Γ → ℂ) (c : ℂ) :
     hint K (fun x => c * u x) = c * hint K u := by
@@ -42,7 +42,7 @@ theorem hint_const_mul (K : Subgroup Γ) (u : Γ → ℂ) (c : ℂ) :
 variable [TopologicalSpace Γ] [IsTopologicalGroup Γ] [TopologicalSpace Γ'] [IsTopologicalGroup Γ']
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Establish `ho : IsOpen ((L.subgroupOf K : Subgroup K) : Set K)` using `hL.preimage continuous_subtype_val`. Use `haveI := Subgroup.quotient_finite_of_isOpen (L.subgroupOf K) ho`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero {K L : Subgroup Γ} (hK : IsCompact (K : Set Γ)) (hL : IsOpen (L : Set Γ)) :
     L.relIndex K ≠ 0 := by
@@ -52,9 +52,9 @@ theorem relIndex_ne_zero {K L : Subgroup Γ} (hK : IsCompact (K : Set Γ)) (hL :
   exact Subgroup.index_ne_zero_of_finite
 
 /- English proof (translation)
-Use `haveI : DiscreteTopology (Γ ⧸ L) := QuotientGroup.discreteTopology hL`. Establish `hf : ((QuotientGroup.mk : Γ → Γ ⧸ L) '' C).Finite` using `(hC.image QuotientGroup.continuous_mk).finite_of_discrete`. Use `⟨hf.toFinset, ((L.relIndex K : ℕ) : ℂ)⁻¹, fun u hu hs => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.HintLevel.hint_eq_level Γ K L u hLK (fun l hl x => hu l hl x) (relIndex_ne_zero hK hL)]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_eq_sum_of_support_subset _ fun q hq => ?_` and prove the remaining obligations. Simplify using `only [Set.Finite.coe_toFinset]`. Conclude with `⟨q.out, hs _ hq, QuotientGroup.out_eq' q⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hint_lin {K L : Subgroup Γ} {C : Set Γ} (hK : IsCompact (K : Set Γ)) (hL : IsOpen (L : Set Γ)) (hLK : L ≤ K)
     (hC : IsCompact C) : ∃ (T : Finset (Γ ⧸ L)) (c : ℂ), ∀ u : Γ → ℂ, (∀ l ∈ L, ∀ x, u (x * l) = u x) →
@@ -70,17 +70,15 @@ theorem hint_lin {K L : Subgroup Γ} {C : Set Γ} (hK : IsCompact (K : Set Γ)) 
   exact ⟨q.out, hs _ hq, QuotientGroup.out_eq' q⟩
 
 /- English proof (translation)
-Take `⟨T₁, c₁, e₁⟩` from `hint_lin hK₁ hL₁ hLK₁ hC₁`. Take `⟨T₂, c₂, e₂⟩` from `hint_lin hK₂ hL₂ hLK₂ hC₂`. Establish `i₂ : ∀ x, hint K₂ (F x) = c₂ * ∑ q ∈ T₂, F x q.out` using `fun x => e₂ _ (fun l hl y => h₂ l hl x y) fun y hy => (hs x y hy).2`. Establish `i₁ : ∀ y, hint K₁ (fun x => F x y) = c₁ * ∑ q ∈ T₁, F q.out y` using `fun y => e₁ _ (fun l hl x => h₁ l hl x y) fun x hx => (hs x y hx).1`. Establish `o₁ : hint K₁ (fun x => hint K₂ (F x)) = c₁ * ∑ q ∈ T₁, hint K₂ (F q.out)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `e₁ (fun x => hint K₂ (F x)) (fun l hl x => ?_) fun x hx => ?_` and prove the remaining obligations. Conclude with `congrArg (hint K₂) (funext fun y => h₁ l hl x y)`. Assume the negation of the conclusion as `hn`. Use `hx ?_` and prove the remaining obligations. Establish `: F x = fun _ => (0 : ℂ)` using `funext fun y => by`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h0`. Conclude with `hn (hs x y h0).1`. Use `show hint K₂ (F x) = 0`. Rewrite using `[this, GlobalTheory.CompanionTheory.FamClP.hint_zero]`. Establish `o₂ : hint K₂ (fun y => hint K₁ fun x => F x y) = c₂ * ∑ q ∈ T₂, hint K₁ (fun x => F x q.out)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `e₂ (fun y => hint K₁ fun x => F x y) (fun l hl y => ?_) fun y hy => ?_` and prove the remaining obligations. Conclude with `congrArg (hint K₁) (funext fun x => h₂ l hl x y)`. Assume the negation of the conclusion as `hn`. Use `hy ?_` and prove the remaining obligations. Establish `: (fun x => F x y) = fun _ => (0 : ℂ)` using `funext fun x => by`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `h0`. Conclude with `hn (hs x y h0).2`. Use `show hint K₁ (fun x => F x y) = 0`. Rewrite using `[this, GlobalTheory.CompanionTheory.FamClP.hint_zero]`. Rewrite using `[o₁, o₂]`.
-
-Simplify using `only [i₁, i₂, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun q _ => Finset.sum_congr rfl fun q' _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hint_comm {K₁ L₁ : Subgroup Γ} {K₂ L₂ : Subgroup Γ'} {C₁ : Set Γ} {C₂ : Set Γ'}
     (hK₁ : IsCompact (K₁ : Set Γ)) (hL₁ : IsOpen (L₁ : Set Γ)) (hLK₁ : L₁ ≤ K₁) (hC₁ : IsCompact C₁)
@@ -133,7 +131,7 @@ def Sm [TopologicalSpace Γ] (e : Γ →* Y) (G : Y → ℂ) : Prop :=
   IsOpen (((rStab G).comap e : Subgroup Γ) : Set Γ)
 
 /- English proof (translation)
-Rewrite using `[(hf.2 l hl x).2, map_mul, ← mul_assoc, hG]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem term_inv [TopologicalSpace Γ] {e : Γ →* Y} {A : Subgroup Γ} {f : Γ → ℂ} {G : Y → ℂ} (hf : IsHecke A f) (z : Y)
     {l : Γ} (hl : l ∈ A) (hG : e l ∈ rStab G) (x : Γ) : f (x * l) * G (z * e (x * l)) = f x * G (z * e x) := by
@@ -142,19 +140,17 @@ theorem term_inv [TopologicalSpace Γ] {e : Γ →* Y} {A : Subgroup Γ} {f : Γ
 variable [TopologicalSpace Γ] [IsTopologicalGroup Γ] [TopologicalSpace Γ'] [IsTopologicalGroup Γ']
 
 /- English proof (translation)
-The claim follows from `subset_tsupport _ (left_ne_zero_of_mul h)`.
+A detailed English derivation is pending.
 -/
 theorem term_supp {f : Γ → ℂ} {G : Y → ℂ} {e : Γ →* Y} {z : Y} (x : Γ) (h : f x * G (z * e x) ≠ 0) : x ∈ tsupport f :=
   subset_tsupport _ (left_ne_zero_of_mul h)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Set `L : Subgroup Γ` to `A ⊓ (rStab G).comap e ⊓ (rStab G').comap e ⊓ K`. Establish `hL : IsOpen (L : Set Γ)` using `((hA.inter hG).inter hG').inter hKo`. Take `⟨T, d, h⟩` from `hint_lin hK hL (inf_le_right : L ≤ K) hf.1.isCompact`. Establish `a1` using `h (fun m => f m * G (z * e m)) (fun l hl x => term_inv hf z hl.1.1.1 hl.1.1.2 x) (fun x hx => term_supp x hx)`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `a2` using `h (fun m => f m * G' (z * e m)) (fun l hl x => term_inv hf z hl.1.1.1 hl.1.2 x) (fun x hx => term_supp x hx)`. Establish `a3` using `h (fun m => f m * (G + c • G') (z * e m)) (fun l hl x => by`. Establish `e1` using `term_inv (e := e) hf z hl.1.1.1 hl.1.1.2 x`. Establish `e2` using `term_inv (e := e) hf z hl.1.1.1 hl.1.2 x`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, mul_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, mul_left_comm, e2, mul_left_comm])`. Use the proof step `(fun x hx => subset_tsupport _ (left_ne_zero_of_mul hx))`. Use `show hint K (fun m => f m * (G + c • G') (z * e m)) = hint K (fun m => f m * G (z * e m)) + c * hint K (fun m => f m * G' (z * e m))`. Rewrite using `[a1, a2, a3]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, mul_add, Finset.sum_add_distrib, Finset.mul_sum]`.
-
-Use `congr 1`. Conclude with `Finset.sum_congr rfl fun q _ => by ring`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem act_add {e : Γ →* Y} {K A : Subgroup Γ} {f : Γ → ℂ} {G G' : Y → ℂ} (hK : IsCompact (K : Set Γ))
     (hKo : IsOpen (K : Set Γ)) (hA : IsOpen (A : Set Γ)) (hf : IsHecke A f) (hG : Sm e G) (hG' : Sm e G') (c : ℂ) :
@@ -178,17 +174,17 @@ theorem act_add {e : Γ →* Y} {K A : Subgroup Γ} {f : Γ → ℂ} {G G' : Y �
   exact Finset.sum_congr rfl fun q _ => by ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Set `L₁ : Subgroup Γ` to `A₁ ⊓ (rStab G).comap e₁ ⊓ K₁`. Set `L₂ : Subgroup Γ'` to `A₂ ⊓ (rStab G).comap e₂ ⊓ K₂`. Establish `hL₁ : IsOpen (L₁ : Set Γ)` using `(hA₁.inter hG₁).inter hKo₁`. Establish `hL₂ : IsOpen (L₂ : Set Γ')` using `(hA₂.inter hG₂).inter hKo₂`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `F : Γ → Γ' → ℂ` to `fun x y => f₁ x * (f₂ y * G (z * e₁ x * e₂ y))`. Establish `l : act e₁ K₁ f₁ (act e₂ K₂ f₂ G) z = hint K₁ (fun x => hint K₂ (F x))` using `by show hint K₁ (fun m => f₁ m * hint K₂ (fun m' => f₂ m' * G (z * e₁ m * e₂ m'))) = _`. Conclude with `congrArg (hint K₁) (funext fun x => (hint_const_mul _ _ _).symm)`. Establish `r : act e₂ K₂ f₂ (act e₁ K₁ f₁ G) z = hint K₂ (fun y => hint K₁ fun x => F x y)` using `by show hint K₂ (fun m' => f₂ m' * hint K₁ (fun m => f₁ m * G (z * e₂ m' * e₁ m))) = _`. Use `congrArg (hint K₂) (funext fun y => ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hint_const_mul]`. Use `congrArg (hint K₁) (funext fun x => ?_)` and prove the remaining obligations. Use `show f₂ y * (f₁ x * G (z * e₂ y * e₁ x)) = f₁ x * (f₂ y * G (z * e₁ x * e₂ y))`. Establish `e : z * e₂ y * e₁ x = z * e₁ x * e₂ y` using `by rw [mul_assoc, ← hc, ← mul_assoc]`. Rewrite using `[e, mul_left_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[l, r]`. Use `hint_comm hK₁ hL₁ inf_le_right hf₁.1.isCompact hK₂ hL₂ inf_le_right hf₂.1.isCompact F (fun l hl x y => ?_) (fun l hl x y => ?_) (fun x y h => ?_)` and prove the remaining obligations. Use `show f₁ (x * l) * (f₂ y * G (z * e₁ (x * l) * e₂ y)) = f₁ x * (f₂ y * G (z * e₁ x * e₂ y))`. Establish `hl' : e₁ l ∈ rStab G` using `hl.1.2`. Establish `e : z * e₁ (x * l) * e₂ y = z * e₁ x * e₂ y * e₁ l`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Simplify using `only [mul_assoc]`. Rewrite using `[hc l y]`. Rewrite using `[(hf₁.2 l hl.1.1 x).2, e, hl']`. Use `show f₁ x * (f₂ (y * l) * G (z * e₁ x * e₂ (y * l))) = f₁ x * (f₂ y * G (z * e₁ x * e₂ y))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hl' : e₂ l ∈ rStab G` using `hl.1.2`. Establish `e : z * e₁ x * e₂ (y * l) = z * e₁ x * e₂ y * e₂ l` using `by simp only [map_mul, mul_assoc]`. Rewrite using `[(hf₂.2 l hl.1.1 y).2, e, hl']`. Conclude with `⟨subset_tsupport _ (left_ne_zero_of_mul h), subset_tsupport _ (left_ne_zero_of_mul (right_ne_zero_of_mul h))⟩`.
+A detailed English derivation is pending.
 -/
 theorem act_comm {e₁ : Γ →* Y} {e₂ : Γ' →* Y} {K₁ A₁ : Subgroup Γ} {K₂ A₂ : Subgroup Γ'} {f₁ : Γ → ℂ} {f₂ : Γ' → ℂ}
     {G : Y → ℂ} (hK₁ : IsCompact (K₁ : Set Γ)) (hKo₁ : IsOpen (K₁ : Set Γ)) (hA₁ : IsOpen (A₁ : Set Γ))
@@ -230,19 +226,17 @@ theorem act_comm {e₁ : Γ →* Y} {e₂ : Γ' →* Y} {K₁ A₁ : Subgroup Γ
       subset_tsupport _ (left_ne_zero_of_mul (right_ne_zero_of_mul h))⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Set `L₁ : Subgroup Γ` to `A ⊓ B ⊓ K`. Set `L₂ : Subgroup Γ` to `B ⊓ (rStab G).comap e ⊓ K`. Establish `hL₁ : IsOpen (L₁ : Set Γ)` using `(hA.inter hB).inter hKo`. Establish `hL₂ : IsOpen (L₂ : Set Γ)` using `(hB.inter hG).inter hKo`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `F : Γ → Γ → ℂ` to `fun x y => f x * (g (x⁻¹ * y) * G (z * e y))`. Establish `l : act e K (fun m => hint K fun m' => f m' * g (m'⁻¹ * m)) G z = hint K (fun y => hint K fun x => F x y)` using `by show hint K (fun m => (hint K fun m' => f m' * g (m'⁻¹ * m)) * G (z * e m)) = _`. Use `congrArg (hint K) (funext fun y => ?_)` and prove the remaining obligations. Rewrite using `[mul_comm, ← hint_const_mul]`. Use `congrArg (hint K) (funext fun x => ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show G (z * e y) * (f x * g (x⁻¹ * y)) = f x * (g (x⁻¹ * y) * G (z * e y))`. Expand and normalize the polynomial expressions, which then agree. Establish `r : act e K f (act e K g G) z = hint K (fun x => hint K (F x))` using `by show hint K (fun m => f m * hint K (fun m' => g m' * G (z * e m * e m'))) = _`. Use `congrArg (hint K) (funext fun x => ?_)` and prove the remaining obligations. Rewrite using `[← GlobalTheory.CompanionTheory.FamClP.hint_left K (fun m' => g m' * G (z * e x * e m')) x⁻¹, ← hint_const_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (hint K) (funext fun y => ?_)` and prove the remaining obligations. Use `show f x * (g (x⁻¹ * y) * G (z * e x * e (x⁻¹ * y))) = f x * (g (x⁻¹ * y) * G (z * e y))`. Establish `e' : z * e x * e (x⁻¹ * y) = z * e y` using `by simp [map_mul, mul_assoc]`. Rewrite using `[e']`. Rewrite using `[l, r]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hint_comm hK hL₁ inf_le_right hf.1.isCompact hK hL₂ inf_le_right (hf.1.isCompact.mul hg.1.isCompact) F (fun l hl x y => ?_) (fun l hl x y => ?_) (fun x y h => ?_)).symm` and prove the remaining obligations. Use `show f (x * l) * (g ((x * l)⁻¹ * y) * G (z * e y)) = f x * (g (x⁻¹ * y) * G (z * e y))`. Establish `: (x * l)⁻¹ * y = l⁻¹ * (x⁻¹ * y)` using `by group`. Rewrite using `[(hf.2 l hl.1.1 x).2, this, (hg.2 l⁻¹ (inv_mem hl.1.2) _).1]`. Use `show f x * (g (x⁻¹ * (y * l)) * G (z * e (y * l))) = f x * (g (x⁻¹ * y) * G (z * e y))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl' : e l ∈ rStab G` using `hl.1.2`. Establish `e' : z * e (y * l) = z * e y * e l` using `by simp only [map_mul, mul_assoc]`. Establish `e2 : x⁻¹ * (y * l) = x⁻¹ * y * l` using `(mul_assoc _ _ _).symm`. Rewrite using `[e2, (hg.2 l hl.1.1 _).2, e', hl']`. Establish `h1 : f x ≠ 0` using `left_ne_zero_of_mul h`.
-
-Establish `h2 : g (x⁻¹ * y) ≠ 0` using `left_ne_zero_of_mul (right_ne_zero_of_mul h)`. Conclude with `⟨subset_tsupport _ h1, Set.mem_mul.2 ⟨x, subset_tsupport _ h1, x⁻¹ * y, subset_tsupport _ h2, by group⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem act_conv {e : Γ →* Y} {K A B : Subgroup Γ} {f g : Γ → ℂ} {G : Y → ℂ} (hK : IsCompact (K : Set Γ))
     (hKo : IsOpen (K : Set Γ)) (hA : IsOpen (A : Set Γ)) (hB : IsOpen (B : Set Γ)) (hf : IsHecke A f) (hg : IsHecke B g)
@@ -290,7 +284,7 @@ def Lev [TopologicalSpace P] (fH : P →* Y) (G : Y → ℂ) : Prop :=
 variable [TopologicalSpace P] [IsTopologicalGroup P]
 
 /- English proof (translation)
-Take `⟨U, hU, hUG⟩` from `hG`. Use `Subgroup.isOpen_mono (H₁ := U.comap ε) (fun l hl x => ?_) (hU.preimage hε)` and prove the remaining obligations. Conclude with `hUG _ hl x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sm_of_lev {fH : P →* Y} {ε : Γ →* P} (hε : Continuous ε) {G : Y → ℂ} (hG : Lev fH G) : Sm (fH.comp ε) G := by
   obtain ⟨U, hU, hUG⟩ := hG
@@ -298,15 +292,15 @@ theorem sm_of_lev {fH : P →* Y} {ε : Γ →* P} (hε : Continuous ε) {G : Y 
   exact hUG _ hl x
 
 /- English proof (translation)
-Establish `hSm` using `sm_of_lev hε hG`. Take `⟨U, hU, hUG⟩` from `hG`. Set `L : Subgroup Γ` to `A ⊓ U.comap ε ⊓ K`. Establish `hL : IsOpen (L : Set Γ)` using `(hA.inter (hU.preimage hε)).inter hKo`. Take `⟨T, d, h⟩` from `hint_lin hK hL (inf_le_right : L ≤ K) hf.1.isCompact`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsum : ∀ z, act (fH.comp ε) K f G z = d * ∑ q ∈ T, f q.out * G (z * fH (ε q.out))` using `fun z => h (fun m => f m * G (z * (fH.comp ε) m)) (fun l hl x => term_inv hf z hl.1.1 (show (fH.comp ε) l ∈ rStab G from hUG _ hl.1.2) x) (fun x hx => term_supp x hx)`. Set `U' : Subgroup P` to `⨅ q ∈ T, U.comap (MulAut.conj (ε (Quotient.out q))⁻¹).toMonoidHom`. Use `⟨U', ?_, fun u hu x => ?_⟩` and prove the remaining obligations. Establish `: (U' : Set P) = ⋂ q ∈ T, (fun y => (ε (Quotient.out q))⁻¹ * y * ((ε (Quotient.out q))⁻¹)⁻¹) ⁻¹' (U : Set P)`. Use extensionality with `y`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[U', Subgroup.mem_iInf, MulAut.conj_apply]`. Rewrite using `[this]`. Conclude with `isOpen_biInter_finset fun q _ => hU.preimage (by fun_prop)`. Rewrite using `[hsum, hsum]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations. Establish `hq' : (ε q.out)⁻¹ * u * ε q.out ∈ U`. Use `(Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hu q) hq)` as an intermediate fact. Simplify `this` using `[MulAut.conj_apply]`. Establish `e1 : x * fH u * fH (ε q.out) = x * fH (ε q.out) * fH ((ε q.out)⁻¹ * u * ε q.out)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_inv]`. Use `group`. Rewrite using `[e1, hUG _ hq']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_lev {fH : P →* Y} {ε : Γ →* P} (hε : Continuous ε) {K A : Subgroup Γ} {f : Γ → ℂ} {G : Y → ℂ}
     (hK : IsCompact (K : Set Γ)) (hKo : IsOpen (K : Set Γ)) (hA : IsOpen (A : Set Γ)) (hf : IsHecke A f)

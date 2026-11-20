@@ -45,19 +45,19 @@ theorem mapH2Add_mk (ρ₁ : Representation R₁ Γ M₁) (ρ₂ : Representatio
       Submodule.Quotient.mk (twoCocycleMapOfEquivariantAdd ρ₁ ρ₂ u hu z) := rfl
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx` using `[AddMonoidHom.mem_ker, mapH2Add_mk, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Take `⟨c, hc, hcf⟩` from `(separated_dvr_second_cohomology_mem ρ₃ _).1 hx`. Establish `hsc : Continuous (Function.surjInv hsurj ∘ c)` using `(continuous_of_discreteTopology (f := Function.surjInv hsurj)).comp hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : d1 ρ₂ (Function.surjInv hsurj ∘ c) ∈ Z2 ρ₂` using `coboundaries2_le_cocycles2 ρ₂ h₂ ((separated_dvr_second_cohomology_mem ρ₂ _).2 ⟨_, hsc, rfl⟩)`. Establish `hf' : f.1 - d1 ρ₂ (Function.surjInv hsurj ∘ c) ∈ Z2 ρ₂` using `(Z2 ρ₂).sub_mem f.2 hb`. Establish `hker : ∀ q, p ((f.1 - d1 ρ₂ (Function.surjInv hsurj ∘ c)) q) = 0`. Introduce and unpack `⟨g, h⟩`. Establish `e : ρ₃ g (c h) - c (g * h) + c g = p (f.1 (g, h))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e0` using `congrFun hcf (g, h)`. Rewrite `e0` using `[d1_apply]`. Conclude with `e0`. Rewrite using `[Pi.sub_apply, d1_apply, map_sub, map_add, map_sub, hp]`. Simplify using `only [Function.comp_apply, Function.surjInv_eq hsurj]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, sub_self]`. Take `⟨k, hk⟩ : ∃ k : Γ × Γ → M₁, ∀ q, u (k q) = (f.1 - d1 ρ₂ (Function.surjInv hsurj ∘ c)) q` from `⟨fun q => Function.invFun u _, fun q => Function.invFun_eq (hex _ (hker q))⟩`. Establish `hkc : Continuous k`. Establish `hk' : k = Function.invFun u ∘ (f.1 - d1 ρ₂ (Function.surjInv hsurj ∘ c))`. Use function extensionality and compare the values at `q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.comp_apply, ← hk q, Function.leftInverse_invFun hinj]`. Rewrite using `[hk']`. Conclude with `(continuous_of_discreteTopology (f := Function.invFun u)).comp ((mem_cocycles2 ρ₂ _).1 hf').1`. Establish `hkZ : k ∈ Z2 ρ₁`. Use `(mem_cocycles2 ρ₁ k).2 ⟨hkc, fun g h t => hinj ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zero, map_sub, map_add, map_sub, hu, hk, hk, hk, hk]`. Conclude with `((mem_cocycles2 ρ₂ _).1 hf').2 g h t`. Use `AddMonoidHom.mem_range.2 ⟨Submodule.Quotient.mk ⟨k, hkZ⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mapH2Add_mk, Submodule.Quotient.eq, Submodule.mem_comap]`. Use `(separated_dvr_second_cohomology_mem ρ₂ _).2 ⟨-(Function.surjInv hsurj ∘ c), hsc.neg, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `q`. Rewrite using `[map_neg, Pi.neg_apply]`. Use `show _ = u (k q) - f.1 q`. Rewrite using `[hk q, Pi.sub_apply]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem ker_le_range [ContinuousMul Γ] (ρ₁ : Representation R₁ Γ M₁)
     (ρ₂ : Representation R₂ Γ M₂) (ρ₃ : Representation R₃ Γ M₃) (h₂ : ContAction ρ₂)
@@ -108,13 +108,11 @@ theorem ker_le_range [ContinuousMul Γ] (ρ₁ : Representation R₁ Γ M₁)
   abel
 
 /- English proof (translation)
-Establish `eA : Nat.card f.ker * Nat.card f.range = Nat.card A`. Rewrite using `[← AddSubgroup.index_ker]`. Conclude with `AddSubgroup.card_mul_index _`. Establish `eB : Nat.card g.ker * Nat.card g.range = Nat.card B`. Rewrite using `[← AddSubgroup.index_ker]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `AddSubgroup.card_mul_index _`. Establish `h1 : Nat.card g.ker ≤ Nat.card f.range` using `AddSubgroup.card_le_of_le h`. Establish `h2 : Nat.card g.range ≤ Nat.card C` using `Nat.card_le_card_of_injective Subtype.val Subtype.val_injective`. Establish `hpos : 0 < Nat.card f.range * Nat.card C` using `Nat.mul_pos Nat.card_pos Nat.card_pos`. Establish `hk : Nat.card f.ker ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[not_le]`. Establish `hlt : Nat.card f.range * Nat.card C < Nat.card f.range * Nat.card C`. Combine the equalities or inequalities in the displayed calculation. Conclude with `lt_irrefl _ hlt`.
-
-Rewrite `hk` using `[AddSubgroup.card_le_one_iff_eq_bot]`. Conclude with `(AddMonoidHom.ker_eq_bot_iff f).1 hk`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injective_of_card {A B C : Type} [AddCommGroup A] [AddCommGroup B] [AddCommGroup C]
     [Finite A] [Finite B] [Finite C] (f : A →+ B) (g : B →+ C) (h : g.ker ≤ f.range)
@@ -152,7 +150,7 @@ variable (l : ℕ) [Fact l.Prime] (n : ℕ)
 
 omit [Fact l.Prime] in
 /- English proof (translation)
-Rewrite using `[ZMod.val_natCast, pow_one]`. Use `conv_rhs => rw [← Nat.mod_add_div x l]`. Rewrite using `[mul_add, Nat.cast_add, ← mul_assoc, ← pow_succ, Nat.cast_mul (l ^ (n + 1)), ZMod.natCast_self, zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mul_val (x : ℕ) :
     ((l ^ n * (x : ZMod (l ^ 1)).val : ℕ) : ZMod (l ^ (n + 1))) = ((l ^ n * x : ℕ) : _) := by
@@ -174,15 +172,15 @@ theorem iota_apply (b : ZMod (l ^ 1)) :
     iota l n b = ((l ^ n * b.val : ℕ) : ZMod (l ^ (n + 1))) := rfl
 
 /- English proof (translation)
-Rewrite using `[iota_apply, pow_mul_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iota_natCast (x : ℕ) : iota l n x = ((l ^ n * x : ℕ) : ZMod (l ^ (n + 1))) := by
   rw [iota_apply, pow_mul_val]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `b hb`. Rewrite `hb` using `[iota_apply, CharP.cast_eq_zero_iff (ZMod (l ^ (n + 1))) (l ^ (n + 1)), pow_succ, Nat.mul_dvd_mul_iff_left (pow_pos (Fact.out : l.Prime).pos n)]`. Establish `hlt : b.val < l` using `by simpa using ZMod.val_lt b`. Rewrite using `[← ZMod.val_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.eq_zero_of_dvd_of_lt hb hlt`.
+A detailed English derivation is pending.
 -/
 theorem iota_injective : Function.Injective (iota l n) := by
   rw [injective_iff_map_eq_zero]
@@ -194,9 +192,9 @@ theorem iota_injective : Function.Injective (iota l n) := by
   exact Nat.eq_zero_of_dvd_of_lt hb hlt
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `ZMod.natCast_zmod_surjective b`. Use `set w := PadicInt.toZModPow (n + 1) u with hw`. Establish `h1 : PadicInt.toZModPow 1 u = ((w.val : ℕ) : ZMod (l ^ 1))`. Rewrite using `[← PadicInt.zmod_cast_comp_toZModPow 1 (n + 1) (by omega), RingHom.comp_apply, ZMod.castHom_apply, ZMod.cast_eq_val]`. Establish `h2 : ((w.val : ℕ) : ZMod (l ^ (n + 1))) = w` using `ZMod.natCast_zmod_val w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, ← Nat.cast_mul, iota_natCast, iota_natCast]`. Use `conv_rhs => rw [← h2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem iota_mul (u : ℤ_[l]) (b : ZMod (l ^ 1)) :
     iota l n (PadicInt.toZModPow 1 u * b) = PadicInt.toZModPow (n + 1) u * iota l n b := by
@@ -216,7 +214,7 @@ def red : ZMod (l ^ (n + 1)) →+* ZMod (l ^ n) :=
   ZMod.castHom (pow_dvd_pow l (Nat.le_succ n)) (ZMod (l ^ n))
 
 /- English proof (translation)
-Conclude with `RingHom.congr_fun (PadicInt.zmod_cast_comp_toZModPow n (n + 1) (Nat.le_succ n)) u`.
+A detailed English derivation is pending.
 -/
 theorem red_toZModPow (u : ℤ_[l]) :
     red l n (PadicInt.toZModPow (n + 1) u) = PadicInt.toZModPow n u := by
@@ -224,15 +222,15 @@ theorem red_toZModPow (u : ℤ_[l]) :
 
 omit [Fact l.Prime] in
 /- English proof (translation)
-Conclude with `ZMod.ringHom_surjective (red l n)`.
+A detailed English derivation is pending.
 -/
 theorem red_surjective : Function.Surjective (red l n) := by
   exact ZMod.ringHom_surjective (red l n)
 
 /- English proof (translation)
-Establish `h0 : ((m.val : ℕ) : ZMod (l ^ n)) = 0`. Rewrite using `[← ZMod.cast_eq_val]`. Conclude with `hm`. Rewrite `h0` using `[CharP.cast_eq_zero_iff (ZMod (l ^ n)) (l ^ n)]`. Take `⟨t, ht⟩` from `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨t, by rw [iota_natCast, ← ht, ZMod.natCast_zmod_val]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_iota_of_red (m : ZMod (l ^ (n + 1))) (hm : red l n m = 0) :
     ∃ k, iota l n k = m := by
@@ -246,9 +244,9 @@ theorem exists_iota_of_red (m : ZMod (l ^ (n + 1))) (hm : red l n m = 0) :
 end Cyclic
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Establish `: Subsingleton (ZMod (l ^ 0))` using `by rw [pow_zero]; infer_instance`. Establish `: Subsingleton (H2 (muLoc F l 0 A))` using `⟨fun x y => by`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg _ (Subtype.ext (funext fun _ => Subsingleton.elim _ _))⟩`. Conclude with `(Nat.card_of_subsingleton (0 : H2 (muLoc F l 0 A))).trans (pow_zero l).symm`. Take `⟨⟨e⟩, -⟩` from `hD F Ω l r (ZMod (l ^ r)) A (muLoc F l r A) v hr hA (GlobalTheory.TameQuot.contAction_muDec A l r)`. Conclude with `(Nat.card_congr e.toEquiv).trans (Nat.card_zmod _)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem card_H2_muLoc (hD : LocalTateDuality) (F Ω : Type) [Field F] [NumberField F] [Field Ω]
     [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω)
@@ -267,11 +265,11 @@ theorem card_H2_muLoc (hD : LocalTateDuality) (F Ω : Type) [Field F] [NumberFie
     exact (Nat.card_congr e.toEquiv).trans (Nat.card_zmod _)
 
 /- English proof (translation)
-Introduce `hD F Ω _ _ _ _ _ l _ A v hA n w a ha hrel`. Establish `hu : ∀ (g : Dec (F` using `F) A) (m : ZMod (l ^ 1)), iota l n (muLoc F l 1 A g m) = muLoc F l (n + 1) A g (iota l n m) := fun g m => iota_mul l n ((cycZ F Ω l (g : G F Ω) : ℤ_[l]ˣ) : ℤ_[l]) m`. Establish `hp : ∀ (g : Dec (F` using `F) A) (m : ZMod (l ^ (n + 1))), (red l n).toAddMonoidHom (muLoc F l (n + 1) A g m) = muLoc F l n A g ((red l n).toAddMonoidHom m) := by`. Introduce `g m`. Use `show red l n (PadicInt.toZModPow (n + 1) ((cycZ F Ω l (g : G F Ω) : ℤ_[l]ˣ) : ℤ_[l]) * m) = PadicInt.toZModPow n ((cycZ F Ω l (g : G F Ω) : ℤ_[l]ˣ) : ℤ_[l]) * red l n m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, red_toZModPow]`. Establish `hcard : ∀ r, Nat.card (H2 (muLoc F l r A)) = l ^ r` using `card_H2_muLoc hD F Ω l A v hA`. Establish `: ∀ r, Finite (H2 (muLoc F l r A))` using `fun r => Nat.finite_of_card_ne_zero (by rw [hcard r]; exact pow_ne_zero _ (Fact.out : l.Prime).ne_zero)`. Establish `hinj` using `injective_of_card (secondCohomologyMapOfEquivariantAdd (muLoc F l 1 A) (muLoc F l (n + 1) A) (iota l n) hu) (secondCohomologyMapOfEquivariantAdd (muLoc F l (n + 1) A) (muLoc F l n A) (red l n).toAddMonoidHom hp) (ker_le_range _ _ _ (GlobalTheory.TameQuot.contAction_muDec A l (n + …`. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero, mapH2Add_mk, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Use `(separated_dvr_second_cohomology_mem _ _).2 ⟨a, ha, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `⟨g, h⟩`. Rewrite using `[d1_apply]`. Conclude with `(hrel g h).trans (iota_apply l n _).symm`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_eq_zero_of_coboundary : LocalTateDuality → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)), IsPlaceOver A v → ∀ (n : ℕ) (w : Z2 (muLoc F l 1 A)) (a : Dec (F := F) A → ZMod (l ^ (n + 1))), Continuous a → (∀ g h : Dec (F := F) A, ((cycMod F Ω l (n + 1) g : (ZMod (l ^ (n + 1)))ˣ) : ZMod (l ^ (n + 1))) * a h - a (g * h) + a g = ((l ^ n * (w.1 (g, h)).val : ℕ) : ZMod (l ^ (n + 1)))) → (Submodule.Quotient.mk w : H2 (muLoc F l 1 A)) = 0 := by
   intro hD F Ω _ _ _ _ _ l _ A v hA n w a ha hrel

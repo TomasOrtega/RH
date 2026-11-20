@@ -11,7 +11,7 @@ namespace GlobalTheory.SiegelSetGL
 variable (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun w => ((InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp (continuous_apply w)).comp continuous_fst`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pInfC : Continuous (pInf E) :=
   continuous_pi fun w =>
@@ -19,25 +19,25 @@ theorem continuous_pInfC : Continuous (pInf E) :=
       (continuous_apply w)).comp continuous_fst
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_id.matrix_map (continuous_pInfC E))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mapInf : Continuous (GeneralLinearGroup.map (n := Fin a) (pInf E)) :=
   Continuous.units_map _ (continuous_id.matrix_map (continuous_pInfC E))
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_id.matrix_map (continuous_snd : Continuous (pFin E)))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mapFin : Continuous (GeneralLinearGroup.map (n := Fin a) (pFin E)) :=
   Continuous.units_map _ (continuous_id.matrix_map (continuous_snd : Continuous (pFin E)))
 
 /- English proof (translation)
-Introduce `E _ _ _ a ω hω hωB t ht`. Use `set pI := GeneralLinearGroup.map (n := Fin a) (pInf E)`. Use `set pF := GeneralLinearGroup.map (n := Fin a) (pFin E)`. Establish `hωI : IsCompact (pI '' ω)` using `hω.image (continuous_mapInf E a)`. Establish `hup : ∀ b ∈ pI '' ω, b.val.BlockTriangular id`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨b, hb, rfl⟩ i j hij`. Establish `h0 : (b : Matrix (Fin a) (Fin a) (Ad E)) i j = 0` using `hωB hb hij`. Express the relevant statement in the definitionally equal form `pInf E ((b : Matrix (Fin a) (Fin a) (Ad E)) i j) = 0`. Rewrite using `[h0, map_zero]`. Take `⟨Ω0, hΩ0, hΩ⟩` from `GlobalTheory.T.exists_compact_coneDiagonal_conj_upperTriangular E a (pI '' ω) hωI hup t ht`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hK` using `isCompact_maxCompact (K := E) (n := a)`. Use `⟨Ω0 * pI '' (maxCompact (K := E) (n := a) : Set (AdelicGLn.AdelicGL E a)), pF '' ω * pF '' (maxCompact (K := E) (n := a) : Set (AdelicGLn.AdelicGL E a)), hΩ0.mul (hK.image (continuous_mapInf E a)), (hω.image (continuous_mapFin E a)).mul (hK.image (continuous_mapFin E a)), ?_⟩` and prove the remaining obligations. Introduce `r d hr hrt hd b hb k hk`. Use `⟨(d⁻¹ * pI b * d) * pI k, Set.mul_mem_mul (hΩ r d hr hrt hd _ ⟨b, hb, rfl⟩) ⟨k, hk, rfl⟩, pF b * pF k, Set.mul_mem_mul ⟨b, hb, rfl⟩ ⟨k, hk, rfl⟩, ?_⟩` and prove the remaining obligations. Apply `ga_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `pI (b * infGL E a d * k) = pI (infGL E a (d * (d⁻¹ * pI b * d * pI k)) * finGL E a (pF b * pF k))`. Simplify using `only [map_mul, pI, pInf_infGL, pInf_finGL, mul_one]`. Use `group`. Express the relevant statement in the definitionally equal form `pF (b * infGL E a d * k) = pF (infGL E a (d * (d⁻¹ * pI b * d * pI k)) * finGL E a (pF b * pF k))`. Simplify using `only [map_mul, pF, pFin_infGL, pFin_finGL, mul_one, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_compact_decomp : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (ω : Set (AdelicGLn.AdelicGL E a)), IsCompact ω →

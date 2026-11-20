@@ -7,15 +7,15 @@ open scoped Classical
 namespace GlobalTheory.Shin
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[gal]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gal_id_eq {F : Type} [Field F] (n : ℕ) (y : GL (Fin n) F) : gal (RingHom.id F) n y = y := by
   ext i j; simp [gal]
 
 /- English proof (translation)
-Unfold `hcTw`. Use `congr 1`. Establish `h : ∀ z : GL (Fin n) F, z⁻¹ * (y⁻¹ * x * gal t n y) * gal t n z = (y * z)⁻¹ * x * gal t n (y * z)`. Introduce `z`. Simplify using `only [map_mul, mul_inv_rev]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `group`. Repeatedly rewrite using `[h]`. Conclude with `finsum_comp_equiv (Equiv.mulLeft y) (f := fun w : GL (Fin n) F => if InPar a (w⁻¹ * x * gal t n w) then α (tlG a (w⁻¹ * x * gal t n w)) * β (brG a b (w⁻¹ * x * gal t n w)) else 0)`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hcTw_twisted_class {F : Type} [Field F] (t : F →+* F) (a b n : ℕ) (α : GL (Fin a) F → ℂ)
     (β : GL (Fin b) F → ℂ) (x y : GL (Fin n) F) :
@@ -31,7 +31,7 @@ theorem hcTw_twisted_class {F : Type} [Field F] (t : F →+* F) (a b n : ℕ) (�
       α (tlG a (w⁻¹ * x * gal t n w)) * β (brG a b (w⁻¹ * x * gal t n w)) else 0)
 
 /- English proof (translation)
-Introduce `x y`. Use `hcTw_twisted_class (RingHom.id F) a b n α β x y` as an intermediate fact. Rewrite `this` using `[gal_id_eq]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hc_isCl {F : Type} [Field F] (a b n : ℕ) (α : GL (Fin a) F → ℂ) (β : GL (Fin b) F → ℂ) :
     IsCl (hc a b α β n) := by
@@ -41,9 +41,9 @@ theorem hc_isCl {F : Type} [Field F] (a b n : ℕ) (α : GL (Fin a) F → ℂ) (
   exact this
 
 /- English proof (translation)
-Introduce `x y`. Unfold `psiG`. Set `e : (Fin n → F) ≃ₗ[F] (Fin n → F)` to `LinearEquiv.ofLinear (Matrix.toLin' ((y⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)) (Matrix.toLin' ((y : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)) (by rw [← Matrix.toLin'_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.toLin'_one]) (by rw [← Matrix.toLin'_mul, ← U …`. Establish `he : e.conj (Matrix.toLin' ((x : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)) = Matrix.toLin' (((y⁻¹ * x * y : GL (Fin n) F)) : Matrix (Fin n) (Fin n) F)`. Rewrite using `[LinearEquiv.conj_apply, Units.val_mul, Units.val_mul, Matrix.toLin'_mul, Matrix.toLin'_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← he, psi_conj]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiG_isCl {F : Type} [Field F] (S : F[X] → ℂ) (n : ℕ) : IsCl (psiG S n) := by
   intro x y
@@ -60,9 +60,9 @@ theorem psiG_isCl {F : Type} [Field F] (S : F[X] → ℂ) (n : ℕ) : IsCl (psiG
   rw [← he, psi_conj]
 
 /- English proof (translation)
-Introduce `x y`. Unfold `chG`. Use `congr 1`. Use `Matrix.charpoly_units_conj (y⁻¹ : GL (Fin n) F) (x : Matrix (Fin n) (Fin n) F)` as an intermediate fact. Rewrite using `[← this, Units.val_mul, Units.val_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[← Matrix.coe_units_inv, inv_inv]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem chG_isCl {F : Type} [Field F] (S : F[X] → ℂ) (n : ℕ) : IsCl (chG S n) := by
   intro x y
@@ -74,7 +74,7 @@ theorem chG_isCl {F : Type} [Field F] (S : F[X] → ℂ) (n : ℕ) : IsCl (chG S
   rw [← Matrix.coe_units_inv, inv_inv]
 
 /- English proof (translation)
-Introduce `F _ _ t a b n α β`. Conclude with `⟨fun x y => hcTw_twisted_class t a b n α β x y, hc_isCl a b n α β, fun S => ⟨psiG_isCl S n, chG_isCl S n⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem twisted_class_main : ∀ (F : Type) [Field F] [Finite F], ∀ (t : F →+* F) (a b n : ℕ) (α : GL (Fin a) F → ℂ) (β : GL (Fin b) F → ℂ), (∀ x y, hcTw t a b α β n (y⁻¹ * x * gal t n y) = hcTw t a b α β n x) ∧ IsCl (hc a b α β n) ∧ ∀ S : F[X] → ℂ, IsCl (psiG S n) ∧ IsCl (chG S n) := by
   intro F _ _ t a b n α β

@@ -15,14 +15,14 @@ open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts
 namespace GlobalTheory.CoverNorm
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem appLE_apply_congr {X Z : Scheme.{0}} {a c : Z ⟶ X} (e : a = c) (U : X.Opens) (W : Z.Opens)
     (h₁ : W ≤ a ⁻¹ᵁ U) (h₂ : W ≤ c ⁻¹ᵁ U) (s : Γ(X, U)) : (a.appLE U W h₁).hom s = (c.appLE U W h₂).hom s := by
   subst e; rfl
 
 /- English proof (translation)
-Establish `h0 : t ≠ 0` using `h.ne_zero`. Rewrite using `[unitAt_iff ((map_ne_zero _).2 h0), ← map_inv₀]`. Conclude with `⟨ProjSpace.regAt_fnMap_of g hη h.regAt, ProjSpace.regAt_fnMap_of g hη h.inv.regAt⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem unitAt_fnMap_of {X Z : Scheme.{0}} [IsIntegral X] [IsIntegral Z] (g : Z ⟶ X)
     (hη : g (genericPoint Z) ⤳ genericPoint X) {x : Z} {t : X.functionField} (h : UnitAt (g x) t) :
@@ -32,35 +32,33 @@ theorem unitAt_fnMap_of {X Z : Scheme.{0}} [IsIntegral X] [IsIntegral Z] (g : Z 
   exact ⟨ProjSpace.regAt_fnMap_of g hη h.regAt, ProjSpace.regAt_fnMap_of g hη h.inv.regAt⟩
 
 /- English proof (translation)
-Introduce `F _ _ Y V V' b hb g hj hπ hg L f a l h`. Take `⟨r, hr, hu, hc, hfin⟩` from `h`. Establish `hgη : g (genericPoint V'.G) ⤳ genericPoint V.G` using `specializes_of_eq hg`. Use `set ψ := SmallSec.fnMap g hgη with hψ`. Take `⟨hη, e⟩` from `V.φ_eq_fnMap`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hη', e'⟩` from `V'.φ_eq_fnMap`. Establish `hφ : ∀ t, V'.φ t = ψ (V.φ t)`. Introduce `t`. Rewrite using `[e', e, ← ProjSpace.fnMap_comp g V.π hgη hη (ProjSpace.comp_genericPoint_specializes _ _ hgη hη) t]`. Conclude with `ProjSpace.fnMap_congr hπ.symm _ _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπx : ∀ x, V.π (g x) = V'.π x` using `fun x => by rw [← hπ]; rfl`. Establish `hch : ∀ (i : ((L.pull b hb).B.pull V'.j).ι), ∀ x ∈ ((L.pull b hb).B.pull V'.j).U i, g x ∈ (L.B.pull V.j).U (fun _ => i PUnit.unit PUnit.unit)`. Introduce `i x hx`. Establish `h1` using `Set.mem_iInter.1 (InducedPull.chart_le L.B b V'.j i hx) PUnit.unit`. Establish `h2 : (V'.j ≫ b) x = V.j (g x)` using `by rw [hj]; rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Use `show V.j (g x) ∈ L.B.U _`. Rewrite using `[← h2]`. Conclude with `h1`. Set `r' : ((L.pull b hb).B.pull V'.j).ι → V'.G.functionFieldˣ` to `fun i => Units.map ψ.toMonoidHom (r fun _ => i PUnit.unit PUnit.unit)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hr' : ∀ i, (r' i : V'.G.functionField) = ψ (r fun _ => i PUnit.unit PUnit.unit)` using `fun _ => rfl`. Use `⟨r', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Establish `h0 : genericPoint V.G ∈ (L.B.pull V.j).U (fun _ => i PUnit.unit PUnit.unit) ⊓ (L.B.pull V.j).U (fun _ => j PUnit.unit PUnit.unit)`. Rewrite using `[← hg]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `⟨hch i _ hij.1, hch j _ hij.2⟩`. Establish `le : ((L.pull b hb).B.pull V'.j).U i ⊓ ((L.pull b hb).B.pull V'.j).U j ≤ g ⁻¹ᵁ ((L.B.pull V.j).U (fun _ => i PUnit.unit PUnit.unit) ⊓ (L.B.pull V.j).U (fun _ => j PUnit.unit PUnit.unit))` using `fun x hx => ⟨hch i x hx.1, hch j x hx.2⟩`. Rewrite using `[hr', hr', hr _ _ h0, map_mul, ← ProjSpace.fnOf_appLE g hgη le h0 hij]`. Use `congr 2`. Establish `k1` using `InducedPull.val_pull_g L.B V.j (fun _ => i PUnit.unit PUnit.unit) (fun _ => j PUnit.unit PUnit.unit) (InducedPull.inf_le _ _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `k2` using `InducedPull.val_pull_g (L.B.pull b) V'.j i j (InducedPull.inf_le _ _ _ _)`. Establish `k3` using `InducedPull.val_pull_g L.B b (i PUnit.unit) (j PUnit.unit) (InducedPull.inf_le _ _ _ _)`. Use `(congrArg _ k1).trans (k2.trans ?_).symm` and prove the remaining obligations. Use `(congrArg _ k3).trans ?_` and prove the remaining obligations. Rewrite using `[← RingHom.comp_apply, ← RingHom.comp_apply, ← CommRingCat.hom_comp, ← CommRingCat.hom_comp, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Conclude with `appLE_apply_congr hj _ _ _ _ _`. Introduce `i x hx`. Rewrite using `[hr', hφ, ← map_mul, ← hπx]`. Conclude with `unitAt_fnMap_of g hgη (hu _ _ (hch i x hx))`. Introduce `σ z y y' i e1 e2 hi`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `z0 : CxPts (V.π ≫ Y.str) σ` to `⟨z.1 ≫ g, by rw [Category.assoc, ← Category.assoc g, hπ]; exact z.2⟩`. Set `y0` to `Points.PtsOver.map b hb _ y'`. Establish `e1' : y.1 = z0.1 ≫ V.π`. Rewrite using `[e1]`. Use `show z.1 ≫ V'.π = (z.1 ≫ g) ≫ V.π`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hπ]`. Establish `e2' : y0.1 = z0.1 ≫ V.j` using `by show y'.1 ≫ b = (z.1 ≫ g) ≫ V.j`. Rewrite using `[e2, Category.assoc, hj, Category.assoc]`. Establish `hi0 : under z0 ∈ (L.B.pull V.j).U (fun _ => i PUnit.unit PUnit.unit)` using `hch i _ hi`. Establish `H` using `hc σ z0 y y0 (fun _ => i PUnit.unit PUnit.unit) e1' e2' hi0`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hπ0 : V.π (under z0) = under y` using `by show _ = y.1 _`. Rewrite using `[e1']`. Both sides reduce to the same expression. Establish `hU` using `hu _ _ hi0`. Rewrite `hU` using `[hπ0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw : ((L.pull b hb).φ _).φ (i PUnit.unit) y' = (L.φ _).φ (i PUnit.unit PUnit.unit) y0` using `(L.φ _).pull_φ b hb (i PUnit.unit) y'`. Rewrite using `[H, hr', hφ, ← map_mul, hw, SmallSec.ratVal_eq_valAt z (ProjSpace.regAt_fnMap_of g hgη hU.regAt), SmallSec.ratVal_eq_valAt z0 hU.regAt, SmallSec.valAt_fnMap g hgη z.1 hU.regAt]`. Introduce `v e y z yt i e1 e2 hi`. Establish `e1' : (z ≫ g) ≫ V.π = y.1` using `by rw [Category.assoc, hπ, e1]`. Establish `e2' : spMap e.O.subtype ≫ (yt ≫ b) = (z ≫ g) ≫ V.j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, e2, Category.assoc, hj, Category.assoc]`. Establish `hi' : ⊤ ≤ (yt ≫ b) ⁻¹ᵁ L.B.U (i PUnit.unit PUnit.unit)` using `fun x hx => Set.mem_iInter.1 (hi hx) PUnit.unit`. Establish `H` using `hfin v e y (z ≫ g) (yt ≫ b) (fun _ => i PUnit.unit PUnit.unit) e1' e2' hi'`. Establish `hmem : below (z ≫ g) ∈ (L.B.pull V.j).U (fun _ => i PUnit.unit PUnit.unit)`. Establish `h1 : ((z ≫ g) ≫ V.j) (IsLocalRing.closedPoint _) ∈ L.B.U (i PUnit.unit PUnit.unit)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e2']`. Conclude with `hi' (Set.mem_univ _)`. Conclude with `Set.mem_iInter.2 fun _ => h1`. Establish `hπ0 : V.π (below (z ≫ g)) = below y.1`. Rewrite using `[← e1']`.
-
-Both sides reduce to the same expression. Establish `hU` using `hu _ _ hmem`. Rewrite `hU` using `[hπ0]`. Rewrite using `[H, hr', hφ, ← map_mul, SmallSec.valAt_fnMap g hgη z hU.regAt]`.
+A detailed English derivation is pending.
 -/
 theorem norms_pull : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (V' : Cover Y) (b : V'.X ⟶ V.X)
     (hb : b ≫ V.p = V'.p) (g : V'.G ⟶ V.G), V'.j ≫ b = g ≫ V.j → g ≫ V.π = V'.π →

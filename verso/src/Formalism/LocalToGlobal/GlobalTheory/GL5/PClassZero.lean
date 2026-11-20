@@ -15,7 +15,7 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Establish `hL : L = ⊥` using `Subsingleton.elim _ _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hL]`. Conclude with `Submodule.fg_bot`. Conclude with `Subsingleton.elim _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_of_subsingleton [Subsingleton V] (L : Submodule (𝓞 K) V) : Submodule.IsLattice K L := by
   have hL : L = ⊥ := Subsingleton.elim _ _
@@ -24,17 +24,15 @@ theorem isLattice_of_subsingleton [Subsingleton V] (L : Submodule (𝓞 K) V) : 
   · exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Establish `hsub : ∀ M N : Submodule (𝓞 K) V, M = N` using `fun M N => Subsingleton.elim _ _`. Establish `hgen : L ∈ Formalism.HermitianLatticesTheory.genus h L` using `⟨isLattice_of_subsingleton L, fun p _ => ⟨1, one_mem _, hsub _ _⟩⟩`. Establish `hreps : Formalism.ThetaLiftIndependence.IsClassReps h L {L}`. Use `⟨fun M hM => ?_, fun M _ => ⟨L, ⟨Finset.mem_singleton_self _, 1, one_mem _, hsub _ _⟩, ?_⟩⟩` and prove the remaining obligations. Rewrite `hM` using `[Finset.mem_singleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hM]`. Conclude with `hgen`. Introduce `N hN`. Conclude with `Finset.mem_singleton.mp hN.1`. Establish `hex : ∃ s, Formalism.ThetaLiftIndependence.IsClassReps h L s` using `⟨_, hreps⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmem : L ∈ hex.choose`. Take `⟨N, ⟨hN, -⟩, -⟩` from `hex.choose_spec.2 L hgen`. Rewrite `hN` using `[hsub N L]`. Then use the resulting hypothesis. Establish `heq : hex.choose = {L}`. Use extensionality with `M`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `_`. Conclude with `hsub _ _`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hmem`. Establish `haut : Nat.card (Formalism.ThetaLiftIndependence.autL h L) = 1`. Rewrite using `[Nat.card_eq_one_iff_unique]`. Use `⟨⟨fun a b => Subtype.ext (LinearEquiv.ext fun x => Subsingleton.elim _ _)⟩, ⟨⟨1, one_mem _, hsub _ _⟩⟩⟩` and prove the remaining obligations. Unfold `Formalism.HermitianLatticesTheory.mass`.
-
-Rewrite using `[dif_pos hex, heq, Finset.sum_singleton, haut]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mass_of_subsingleton [Subsingleton V] (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V) :
     Formalism.HermitianLatticesTheory.mass h L = 1 := by
@@ -67,7 +65,7 @@ theorem mass_of_subsingleton [Subsingleton V] (h : V →ₗ⋆[K] V →ₗ[K] K)
 end Triv
 
 /- English proof (translation)
-Establish `: IsEmpty (Fin W.rank)` using `by rw [hrk]; infer_instance`. Conclude with `W.frame.repr.toEquiv.subsingleton`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem subsingleton_of_rank_zero {E : Type} [Field E] [NumberField E] [StarRing E] (W : HSpace E)
     (hrk : W.rank = 0) : Subsingleton W.V := by
@@ -75,9 +73,9 @@ theorem subsingleton_of_rank_zero {E : Type} [Field E] [NumberField E] [StarRing
   exact W.frame.repr.toEquiv.subsingleton
 
 /- English proof (translation)
-Substitute `hM` using the available equality. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Set `a' : HR R σ J` to `a`. Set `b' : HR R σ J` to `b`. Establish `e : (a' : GL (Fin 0) (R ⊗[F] E)) = (b' : GL (Fin 0) (R ⊗[F] E))` using `Units.ext (Matrix.ext fun i _ => Fin.elim0 i)`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Subtype.ext e`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_HA_zero {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (hM : M = 0) : Subsingleton (HA R σ J) := by
@@ -90,7 +88,7 @@ theorem subsingleton_HA_zero {F E : Type} [Field F] [Field E] [Algebra F E] (R :
   exact Subtype.ext e
 
 /- English proof (translation)
-Introduce `W _ _ hrk`. Use `subsingleton_of_rank_zero W hrk` as an intermediate fact. Rewrite using `[mass_of_subsingleton]`. Unfold `massI`. Rewrite using `[mass_of_subsingleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem genusMassAt_zero (D : D7) : GenusMassAt D 0 := by
   intro W _ _ hrk
@@ -100,7 +98,7 @@ theorem genusMassAt_zero (D : D7) : GenusMassAt D 0 := by
   rw [mass_of_subsingleton]
 
 /- English proof (translation)
-Introduce `W _ _ hrk`. Use `subsingleton_HA_zero (AF D.host.F) D.sp.cm.sig W.gram hrk` as an intermediate fact. Conclude with `⟨1, fun _ => 1, fun x => ⟨0, 1, 1, Subsingleton.elim _ _⟩, fun i j _ _ _ _ _ => Subsingleton.elim i j⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem classFinAt_zero (D : D7) : ClassFinAt D 0 := by
   intro W _ _ hrk
@@ -108,11 +106,11 @@ theorem classFinAt_zero (D : D7) : ClassFinAt D 0 := by
   exact ⟨1, fun _ => 1, fun x => ⟨0, 1, 1, Subsingleton.elim _ _⟩, fun i j _ _ _ _ _ => Subsingleton.elim i j⟩
 
 /- English proof (translation)
-Introduce `W _ _ hrk m g hcov hdisj`. Use `subsingleton_of_rank_zero W hrk` as an intermediate fact. Use `subsingleton_HA_zero (AF D.host.F) D.sp.cm.sig W.gram hrk` as an intermediate fact. Take `⟨i0, -⟩` from `hcov 1`. Establish `: Unique (Fin m)` using `⟨⟨i0⟩, fun j => hdisj j i0 1 1 1 1 (Subsingleton.elim _ _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : Nat.card (Unfold.stab (GamA D W) (StabFin.SFin D.sp.cm.sig W.gram (L0c D W)) (g i0)) = 1`. Rewrite using `[Nat.card_eq_one_iff_unique]`. Use `⟨⟨fun a b => Subtype.ext (Subtype.ext (Subsingleton.elim _ _))⟩, ⟨⟨1, ?_⟩⟩⟩` and prove the remaining obligations. Establish `e : (g i0)⁻¹ * (((1 : GamA D W) : HA (AF D.host.F) D.sp.cm.sig W.gram) * g i0) = 1` using `Subsingleton.elim _ _`. Use `show (g i0)⁻¹ * (((1 : GamA D W) : HA (AF D.host.F) D.sp.cm.sig W.gram) * g i0) ∈ StabFin.SFin D.sp.cm.sig W.gram (L0c D W)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(StabFin.SFin D.sp.cm.sig W.gram (L0c D W)).one_mem`. Rewrite using `[mass_of_subsingleton, Fintype.sum_unique, show (default : Fin m) = i0 from Subsingleton.elim _ _, hc]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem classMassAt_zero (D : D7) : ClassMassAt D 0 := by
   intro W _ _ hrk m g hcov hdisj
@@ -133,7 +131,7 @@ theorem classMassAt_zero (D : D7) : ClassMassAt D 0 := by
   simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨genusMassAt_zero D, classFinAt_zero D, classMassAt_zero D⟩`.
+Supply the required witnesses or components.
 -/
 theorem classItemsAt_zero (D : D7) : ClassItemsAt D 0 :=
   ⟨genusMassAt_zero D, classFinAt_zero D, classMassAt_zero D⟩
@@ -141,7 +139,7 @@ theorem classItemsAt_zero (D : D7) : ClassItemsAt D 0 :=
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
 /- English proof (translation)
-The claim follows from `volume_mass_of_items D hT hV (classItemsAt_zero D) hI1 hI2`.
+A detailed English derivation is pending.
 -/
 theorem volume_mass_of_low_ranks (D : D7) (hT : VolTie D) (hV : VolRatioTrue D) (hI1 : ClassItemsAt D 1)
     (hI2 : ClassItemsAt D 2) : VolumeEqMass₂ D :=

@@ -20,23 +20,19 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.FexTheta
 
 /- English proof (translation)
-Introduce `K _ _ h2 hC c n t M hM Sv m g hg`. Take `⟨hfinμ, hae, -⟩` from `GlobalTheory.T.unit_measure_finite_compact_support Sv`. Use `haveI := hfinμ`. Use `haveI : Countable K := (Module.finBasis ℚ K).equivFun.toEquiv.injective.countable`. Take `⟨-, N, B, -, hN, -, hbd, hmeas⟩` from `GlobalTheory.T.product_theta_locally_constant_bounded K h2 c M hM Sv m g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Wa, hWa, A, hAb, -⟩` from `GlobalTheory.T.real_weil_action_local_bound_continuous n t (GL2Classical.realPart g) hg.2`. Take `⟨hctm, hct1⟩` from `GlobalTheory.T.twisted_coefficient_measurable_bounded K c M Sv m`. Establish `hmem : GL2Classical.realPart g ∈ Wa` using `mem_of_mem_nhds hWa`. Use `set L : Set K := {ξ : K | ∃ a : 𝓞 K, (N : K) * ξ = a} with hL`. Use `set b : K → ℝ := L.indicator (fun ξ => |A| * |B| * ((1 + ‖embC K ξ‖) ^ 4)⁻¹) with hb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hbsum : Summable b`. Rewrite using `[hb, ← summable_subtype_iff_indicator]`. Conclude with `(GlobalTheory.T.summable_inverse_quartic_over_lattice K h2 hC N hN).mul_left _`. Use `set F : K → (∀ v : Sv, (Qv v.1)ˣ) → ℂ := fun ξ u => ctM M Sv m u * thT n t (twM M Sv m u) g ξ with hF`. Establish `hFm : ∀ ξ, Measurable (F ξ)` using `fun ξ => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [hF, thT]`. Conclude with `hctm.mul ((hmeas ξ).const_mul _)`. Establish `hFb : ∀ ξ, ∀ᵐ u ∂muU Sv, ‖F ξ u‖ ≤ b ξ` using `fun ξ => by filter_upwards [hae] with u hu`. Take `⟨h1, h3⟩` from `hbd u hu ξ`. Establish `hp : 0 ≤ ((1 + ‖embC K ξ‖) ^ 4)⁻¹` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : ‖piRc (chC n (Complex.I * t)) (GL2Classical.realPart g) (PhiInf n) (embC K ξ)‖ ≤ |A| * ((1 + ‖embC K ξ‖) ^ 4)⁻¹` using `(hAb _ hmem _).trans (mul_le_mul_of_nonneg_right (le_abs_self A) hp)`. Distinguish the cases in `h0 : ∏ᶠ v, (twM M Sv m u v).val (finAt v g) ξ = 0`. Establish `: F ξ u = 0` using `by simp only [hF, thT, h0, mul_zero]`. Rewrite using `[this, norm_zero]`. Conclude with `Set.indicator_nonneg (fun _ _ => by positivity) _`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hξ : ξ ∈ L` using `h3 h0`. Establish `hbξ : b ξ = |A| * |B| * ((1 + ‖embC K ξ‖) ^ 4)⁻¹` using `Set.indicator_of_mem hξ _`. Rewrite using `[hbξ]`. Simplify using `only [hF, thT, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hct1 u`. Conclude with `h1.trans (le_abs_self B)`. Use `_ = |A| * |B| * ((1 + ‖embC K ξ‖) ^ 4)⁻¹ := by ring`. Establish `hFi : ∀ ξ, Integrable (F ξ) (muU Sv)` using `fun ξ => Integrable.of_bound (hFm ξ).aestronglyMeasurable (b ξ) (hFb ξ)`. Establish `hsum : Summable fun ξ => ∫ u, ‖F ξ u‖ ∂muU Sv`.
-
-Use `Summable.of_nonneg_of_le (fun ξ => integral_nonneg fun _ => norm_nonneg _) (fun ξ => ?_) (hbsum.mul_right ((muU Sv).real Set.univ))` and prove the remaining obligations. Use `norm_integral_le_of_norm_le_const (μ := muU Sv) (f := fun u => ‖F ξ u‖) (C := b ξ) (by filter_upwards [hFb ξ] with u hu; simpa using hu)` as an intermediate fact. Conclude with `(le_abs_self _).trans (by simpa using this)`. Establish `key` using `hasSum_integral_of_summable_integral_norm hFi hsum`. Establish `hint : (∫ u, ∑' ξ, F ξ u ∂muU Sv) = ∫ u, ctM M Sv m u * thP n t (twM M Sv m u) g ∂muU Sv`.
-
-Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [hF, thP, tsum_mul_left]`. Rewrite `key` using `[hint]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_aT : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → IsTotallyComplex K →
     ∀ (c : HeckeCharacter K) (n : ℤ) (t : ℝ) (M : ∀ v : Pl, LM c v), AdmM M →

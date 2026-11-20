@@ -15,19 +15,19 @@ namespace GlobalTheory.Transport.EntryAny
 open GlobalTheory.Transport.Entry
 
 /- English proof (translation)
-Introduce `B X I hI l u a i hm al be P p q p' q' k y k' y' hp hpN hp' hpN' hq hq'`. Establish `hX` using `(GlobalTheory.Mem.FieldsLaws.fields_satisfy_definite_laws B).1`. Establish `hL` using `hI.idx_ok a`. Establish `hq0 : ((Formalism.L2.Col.qOf P.1 : ℕ) : B.fields.E) ≠ 0` using `Nat.cast_ne_zero.2 (GlobalTheory.Transport.Entry.qOf_pos P.1).ne'`. Distinguish the cases in `hP : P.1 ∈ (B.primes X).vGs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Take `⟨M, hM, H⟩` from `exists_modulus hp hp' hq hq' ⟨P.1, hP⟩ (pow_ne_zero (I.cst a).B hq0)`. Use `⟨M, hM, fun M₀ hM₀ x x₀ hx => ?_⟩` and prove the remaining obligations. Take `⟨U, U', hU, hU', h⟩` from `H M₀ hM₀ x x₀ hx`. Establish `hu` using `exp_le_val_qOf (GlobalTheory.UnfoldTwoSided.degOne_bad hX.ok l.pr hI.sel_ok P)`. Unfold `Formalism.L2.Col.frsF`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [dif_pos hP]`. Use `(eq_of_near (P := P.1) _ hq0 (val_qOf_lt_one P.1) (pow_ne_zero (I.cst a).B hq0) (fun κ κ' hκ hκ' z => ?_) (hL.xiInv i (by omega) al be P) _ _ U U' (hU.mono hu) (hU'.mono hu) h).symm` and prove the remaining obligations. Use `xiAt_inFr hX l.pr hI.ch_ok hI.sel_ok hL (by omega) al be P κ κ' ?_ ?_ z` and prove the remaining obligations. Rewrite using `[hL.depthG P hP, pow_one]`. Conclude with `hκ`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL.depthG P hP, pow_one]`. Conclude with `hκ'`. Establish `hQ : P.1 ∈ I.Q a` using `(Finset.mem_union.1 P.2).resolve_left hP`. Use `⟨Formalism.L2.Col.qOf P.1 ^ (I.cst a).B, pow_pos (GlobalTheory.Transport.Entry.qOf_pos P.1) _, fun M₀ hM₀ x x₀ hx => ?_⟩` and prove the remaining obligations. Establish `hd` using `GlobalTheory.Transport.TwistRead.qread I u a i P hQ (GlobalTheory.Mem.Df.disjoint_vGs_Q I hI l a) p q p' q' k y k' y' hp hpN hp' hpN' hq hq' M₀ x x₀ hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set z₀ := Formalism.L2.Col.inFr (Formalism.L2.Col.frsF I.sel (I.tup a) p.1.1 P) (Formalism.L2.Col.frsF I.sel (I.tup a) p'.1.1 P) x₀ with hz₀`. Use `set z₁ := Formalism.L2.Col.inFr (Formalism.L2.Col.frsF I.sel (I.tup a) q.1.1 P) (Formalism.L2.Col.frsF I.sel (I.tup a) q'.1.1 P) x with hz₁`. Establish `hMv : P.1.valuation B.fields.E ((M₀ : ℕ) : B.fields.E) ≤ P.1.valuation B.fields.E (((Formalism.L2.Col.qOf P.1 : ℕ) : B.fields.E) ^ (I.cst a).B)`. Take `⟨c, rfl⟩` from `hM₀`. Rewrite using `[Nat.cast_mul, map_mul, Nat.cast_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_of_le_one_right' ?_` and prove the remaining obligations. Simplify using `using P.1.valuation_le_one (K := B.fields.E) (c : 𝓞 B.fields.E)`. Establish `e : z₁ = z₀ + (z₁ - z₀)` using `by abel`. Rewrite using `[e]`. Use `(hL.xiInv i (by omega) al be P z₀ (z₁ - z₀) fun s l => ?_).symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `intAt_inv_mul (pow_ne_zero _ hq0) ?_` and prove the remaining obligations. Establish `e2 : (z₁ - z₀) (Pi.single s 1) l = (LinearMap.toMatrix' z₁ - LinearMap.toMatrix' z₀) l s`. Rewrite using `[Matrix.sub_apply, LinearMap.toMatrix'_apply, LinearMap.toMatrix'_apply, LinearMap.sub_apply, Pi.sub_apply]`. Rewrite using `[e2]`. Conclude with `(hd l s).trans hMv`.
+A detailed English derivation is pending.
 -/
 theorem entry_transport_any : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (l : I.Laws) (u : B.Word) (a : I.ι) (i : ℕ) (hm : i + 2 < B.R.m) (al : (I.idx a).β i) (be : (I.idx a).β (i + 1)) (P : Formalism.L2.Col.rowSG (B.primes X) I.sel (I.tup a))
     (p q : PtAt B.R I.sel (I.tup a) (I.cst a) u (i)) (p' q' : PtAt B.R I.sel (I.tup a) (I.cst a) u (i + 1))

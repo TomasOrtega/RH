@@ -7,9 +7,9 @@ namespace Formalism.MainNotions.TestSideCounting
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNotions.SourceCleaning Formalism.MainNotions.Pf14
 
 /- English proof (translation)
-Establish `hk3 : k ≤ k ^ 3` using `le_self_pow₀ hk (by norm_num)`. Establish `hr2 : 4 ≤ r ^ 2`. Establish `h` using `pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 2) hr 2`. Evaluate the numerical expressions using `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hQ5 : 1 ≤ Q ^ 5` using `one_le_pow₀ hQ`. Establish `hW : 8 ≤ cS + (r * N * c0 + z)`. Establish `: 0 ≤ r * N * c0` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hchain : 2 * k * 4 * 1 * 1 * 8 * 2 ≤ C * k ^ 3 * r ^ 2 * N * Q ^ 5 * (cS + (r * N * c0 + z)) * Y` using `by gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -30,19 +30,17 @@ theorem num_size2 (C k r N Q cS c0 z Y a : ℝ) (hC : 2 ≤ C) (hk : 1 ≤ k) (h
   linarith
 
 /- English proof (translation)
-Establish `hp' : (1 : ℝ) < p` using `by exact_mod_cast hp`. Establish `hlog : 0 ≤ Real.logb p a` using `Real.logb_nonneg hp' ha`. Unfold `kap1`. Rewrite using `[Nat.cast_sum]`. Establish `hterm : ∀ s, (((if ellWt (lamAt X s) = 0 then 0 else N0 (m + 1) * deF p (m + 1) (ellWt (lamAt X s)) : ℕ)) : ℝ) ≤ if s ∈ TT then 2 * ((m + 1 : ℕ) : ℝ) ^ 2 * Real.logb p a else 0`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `s`. Distinguish the cases in `hs : s ∈ TT`. Rewrite using `[if_pos hs] split_ifs with hz`. Rewrite using `[Nat.cast_zero]`. Conclude with `mul_nonneg (by positivity) hlog`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_mul]`. Establish `hN0 : ((N0 (m + 1) : ℕ) : ℝ) ≤ ((m + 1 : ℕ) : ℝ) ^ 2`. Establish `: N0 (m + 1) ≤ (m + 1) ^ 2`. Unfold `N0`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hde : ((deF p (m + 1) (ellWt (lamAt X s)) : ℕ) : ℝ) ≤ 2 * Real.logb p a`. Unfold `deF`. Establish `hpos : (0 : ℝ) < ((ellWt (lamAt X s) + (m + 1) - 1 : ℕ) : ℝ)`. Establish `: 0 < ellWt (lamAt X s) + (m + 1) - 1` using `by omega`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hle : ((ellWt (lamAt X s) + (m + 1) - 1 : ℕ) : ℝ) ≤ a ^ 2`. Establish `h2 : ((ellWt (lamAt X s) + (m + 1) - 1 : ℕ) : ℝ) ≤ ((ellWt (lamAt X s) + (m + 1) : ℕ) : ℝ)`. Conclude with `Nat.sub_le _ _` after adjusting the coercions. Establish `h3` using `h1 s hs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Rewrite `h2` using `[Nat.cast_add]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[if_neg hs, if_pos (h0 s hs), Nat.cast_zero]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem log_size_bound_le (p n' m : ℕ) (TT : Finset (Fin n')) (X : Fin n' → Fin (m + 1) → ℤ) (a : ℝ) (hp : 1 < p) (ha : 1 ≤ a)
     (h0 : ∀ s, s ∉ TT → ellWt (lamAt X s) = 0)
@@ -94,23 +92,23 @@ theorem log_size_bound_le (p n' m : ℕ) (TT : Finset (Fin n')) (X : Fin n' → 
         ring
 
 /- English proof (translation)
-The claim follows from `Fin.ext (by simp [lastIdx])`.
+A detailed English derivation is pending.
 -/
 theorem lastIdx_eq (m : ℕ) : lastIdx (m + 1) = Fin.last m :=
   Fin.ext (by simp [lastIdx])
 
 /- English proof (translation)
-Simplify using `[ellWt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ellWt_zero (m : ℕ) : ellWt (0 : Fin (m + 1) → ℤ) = 0 := by
   simp [ellWt]
 
 /- English proof (translation)
-Establish `hne : Fin.last m ≠ 0`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [lamAt, flW, ellWt, lastIdx_eq]`. Use `split_ifs`. Rewrite using `[Pi.single_eq_same, Pi.single_eq_of_ne hne, sub_zero]`. Simplify using the standard rewrite rules. Simplify using `only [Fin.rev_zero, Fin.rev_last, Pi.single_eq_same, Pi.single_eq_of_ne hne, neg_zero, zero_sub, neg_neg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem ellWt_flat {n' m : ℕ} (hm : 1 ≤ m) (d : Fin n' → ℕ) (s : Fin n') : ellWt (lamAt (flW (m := m) d) s) = d s := by
   have hne : Fin.last m ≠ 0 := by
@@ -127,33 +125,31 @@ theorem ellWt_flat {n' m : ℕ} (hm : 1 ≤ m) (d : Fin n' → ℕ) (s : Fin n')
     simp
 
 /- English proof (translation)
-Introduce `p n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar H`. Establish `hkc` using `rank_mul_conductor_div_le_one hC H`. Take `⟨hp, hr, _, hN1, hW, hY, _, hk, _, hD, hc, hsz⟩` from `H`. Establish `hm2 : 2 ≤ m` using `by omega`. Establish `hN1pos : 1 ≤ orbitWindowCount r de h x` using `by unfold orbitWindowCount; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNnat : 1 ≤ TT.card`. Break down `Nat.eq_zero_or_pos TT.card with h0' | h0'` into its components or cases. Rewrite `hN1` using `[h0', Nat.mul_zero]`. Establish `: 0 < orbitWindowCount r de h x ^ 2` using `by positivity`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `h0'`. Establish `hN : (1 : ℝ) ≤ (TT.card : ℝ)` using `by exact_mod_cast hNnat`. Establish `hk1 : (1 : ℝ) ≤ ((m + 1 : ℕ) : ℝ)`. Establish `: 1 ≤ m + 1` using `by omega`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr2 : (2 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hp1 : (1 : ℝ) < p`. Establish `: 1 < p` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hQ : (1 : ℝ) ≤ (p : ℝ) ^ goodG' r de h x` using `one_le_pow₀ hp1.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY2 : (2 : ℝ) ≤ Y` using `le_trans hr2 hY`. Establish `hc0 : (0 : ℝ) ≤ c0` using `Nat.cast_nonneg _`. Establish `hz : (0 : ℝ) ≤ 2 * (r : ℝ) * n' * cpp` using `by positivity`. Establish `hcS : (8 : ℝ) ≤ cStar`. Establish `: 8 ≤ cStar` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `h8` using `num_size2 C _ _ _ _ _ _ _ Y a hC hk1 hr2 hN hQ hcS hc0 hz hY2 hsz`. Establish `ha8 : 8 ≤ a` using `by linarith`. Establish `hapos : 0 < a` using `by linarith`. Establish `hkc' : ((m + 1 : ℕ) : ℝ) * c0 ≤ a` using `by rwa [div_le_one hapos] at hkc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc0a : (c0 : ℝ) ≤ a` using `le_trans (le_mul_of_one_le_left hc0 hk1) hkc'`. Establish `hsq : 4 * a ≤ a ^ 2` using `by nlinarith`. Establish `A` using `log_size_bound_le p n' m TT (topW TT lam0) a (by omega) (by linarith) (fun s hs => by rw [lamAt_zero (by simp [topW, hs])]; exact ellWt_zero m) (fun s hs => by`. Rewrite using `[lamAt_congr (show topW TT lam0 s = lam0 s by simp [topW, hs])]`. Take `⟨hb, hdom, hw⟩` from `hW`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨e0, elast, _⟩` from `(hb s).1 hs`. Take `⟨w1, w2, hb0, hbc⟩` from `hw s hs`. Establish `hzz : lamAt lam0 s 0 - lamAt lam0 s (Fin.last m) = aT s + bT s`. Unfold `lamAt`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e0, elast]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Fin.rev_zero, Fin.rev_last]`. Rewrite using `[e0, elast]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `haT : 0 ≤ aT s`. Establish `: (0 : ℝ) ≤ (aT s : ℝ)`. Establish `: (0 : ℝ) ≤ cpp` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this` after adjusting the coercions.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ((ellWt (lamAt lam0 s) : ℕ) : ℝ) = ((aT s + bT s : ℤ) : ℝ)`. Unfold `ellWt`. Rewrite using `[lastIdx_eq, hzz, ← Int.cast_natCast, Int.toNat_of_nonneg (by omega)]`. Establish `hbT : (bT s : ℝ) ≤ c0`. Establish `: bT s ≤ c0` using `by omega`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Establish `hcp : (0 : ℝ) ≤ cpp` using `Nat.cast_nonneg _`. Rewrite using `[e1]`. Use `push_cast`. Move the coercions through the operations in `at h8`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `linarith)`. Establish `B` using `log_size_bound_le p n' m TT (flW (m := m) (dT TT lam0)) a (by omega) (by linarith) (fun s hs => by rw [ellWt_flat (by omega)]; simp [dT, hs]) (fun s hs => by`. Rewrite using `[ellWt_flat (by omega)]`. Use `(flatDeg_bounds hm2 hapos.le hW s hs).2` as an intermediate fact. Simplify using `only [dT, if_pos hs]`.
-
-Use `push_cast`. Move the coercions through the operations in `at h8`. Use the proof step `linarith)`. Rewrite using `[Nat.cast_add]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sizeStep (C : ℝ) (hC : 2 ≤ C) : SizeStep C 4 := by
   intro p n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar H
@@ -230,12 +226,12 @@ theorem sizeStep (C : ℝ) (hC : 2 ≤ C) : SizeStep C 4 := by
   linarith
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨4, 2, by norm_num, by norm_num, fun C hC => sizeStep C hC⟩`.
+Supply the required witnesses or components.
 -/
 theorem restSize : RestSize := ⟨4, 2, by norm_num, by norm_num, fun C hC => sizeStep C hC⟩
 
 /- English proof (translation)
-The claim follows from `restCloudB_of_two D CLa Ck Crk Cdeg hop restSize`.
+A detailed English derivation is pending.
 -/
 theorem restCloudB_of_op (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) (hop : RestTSOp D CLa Ck Crk Cdeg) :
     RestCloudB D CLa Ck Crk Cdeg :=

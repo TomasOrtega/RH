@@ -17,36 +17,36 @@ namespace GlobalTheory.CompanionTheory.SW.Core.Dens
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Introduce `v` and use `add_mem (hx v) (hy v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma oh_add {x y : A F} (hx : x ∈ Oh F) (hy : y ∈ Oh F) : x + y ∈ Oh F :=
   fun v => add_mem (hx v) (hy v)
 
 /- English proof (translation)
-Introduce `v` and use `neg_mem (hx v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma oh_neg {x : A F} (hx : x ∈ Oh F) : -x ∈ Oh F :=
   fun v => neg_mem (hx v)
 
 /- English proof (translation)
-Introduce `v` and use `mul_mem (hx v) (hy v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma oh_mul {x y : A F} (hx : x ∈ Oh F) (hy : y ∈ Oh F) : x * y ∈ Oh F :=
   fun v => mul_mem (hx v) (hy v)
 
 /- English proof (translation)
-The claim follows from `(((GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.2.2.1) (r : F)).2 ⟨r, rfl⟩`.
+A detailed English derivation is pending.
 -/
 lemma oh_alg (r : 𝓞 F) : algebraMap F (A F) (r : F) ∈ Oh F :=
   (((GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.2.2.1) (r : F)).2 ⟨r, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(map_natCast _ n).symm`.
+A detailed English derivation is pending.
 -/
 lemma nat_cast_eq (n : ℕ) : (n : A F) = algebraMap F (A F) (n : F) := (map_natCast _ n).symm
 
 /- English proof (translation)
-Establish `h : (((n : 𝓞 F)) : F) = (n : F)` using `by simp`. Rewrite using `[nat_cast_eq, ← h]`. Conclude with `oh_alg _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma oh_nat (n : ℕ) : (n : A F) ∈ Oh F := by
   have h : (((n : 𝓞 F)) : F) = (n : F) := by simp
@@ -54,22 +54,22 @@ lemma oh_nat (n : ℕ) : (n : A F) ∈ Oh F := by
   exact oh_alg _
 
 /- English proof (translation)
-Establish `hN' : (N : F) ≠ 0` using `by exact_mod_cast hN.ne'`. Rewrite using `[nat_cast_eq, ← map_mul, one_div, inv_mul_cancel₀ hN', map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma nat_inv_mul {N : ℕ} (hN : 0 < N) : algebraMap F (A F) (1 / (N : F)) * (N : A F) = 1 := by
   have hN' : (N : F) ≠ 0 := by exact_mod_cast hN.ne'
   rw [nat_cast_eq, ← map_mul, one_div, inv_mul_cancel₀ hN', map_one]
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.1).preimage (continuous_const.mul continuous_id)`.
+A detailed English derivation is pending.
 -/
 lemma setS_isOpen (a : ℕ) : IsOpen {x : A F | (a : A F) * x ∈ Oh F} :=
   ((GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.1).preimage (continuous_const.mul continuous_id)
 
 /- English proof (translation)
-Establish `hc : IsCompact ((fun x : A F => algebraMap F (A F) (1 / (a : F)) * x) '' Oh F)` using `((GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.1).image (continuous_const.mul continuous_id)`. Use `hc using 1` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨(a : A F) * y, hy, by show algebraMap F (A F) (1 / (a : F)) * ((a : A F) * y) = y`. Rewrite using `[← mul_assoc, nat_inv_mul ha, one_mul]⟩`. Introduce and unpack `⟨x, hx, rfl⟩ show (a : A F) * _ ∈ Oh F`. Rewrite using `[← mul_assoc, mul_comm (a : A F), nat_inv_mul ha, one_mul]`. Conclude with `hx`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma setS_isCompact {a : ℕ} (ha : 0 < a) : IsCompact {x : A F | (a : A F) * x ∈ Oh F} := by
   have hc : IsCompact ((fun x : A F => algebraMap F (A F) (1 / (a : F)) * x) '' Oh F) :=
@@ -87,14 +87,14 @@ lemma setS_isCompact {a : ℕ} (ha : 0 < a) : IsCompact {x : A F | (a : A F) * x
     exact hx
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma setL_eq (ι : Type) (a : ℕ) : {x : ι → A F | ∀ i, (a : A F) * x i ∈ Oh F} =
     Set.pi Set.univ fun _ => {x : A F | (a : A F) * x ∈ Oh F} := by
   ext x; simp
 
 /- English proof (translation)
-Rewrite using `[setL_eq]`. Conclude with `isCompact_univ_pi fun _ => setS_isCompact ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma setL_isCompact (ι : Type) {a : ℕ} (ha : 0 < a) :
     IsCompact {x : ι → A F | ∀ i, (a : A F) * x i ∈ Oh F} := by
@@ -102,7 +102,7 @@ lemma setL_isCompact (ι : Type) {a : ℕ} (ha : 0 < a) :
   exact isCompact_univ_pi fun _ => setS_isCompact ha
 
 /- English proof (translation)
-Rewrite using `[setL_eq]`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => setS_isOpen a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma setL_isOpen (ι : Type) [Fintype ι] (a : ℕ) :
     IsOpen {x : ι → A F | ∀ i, (a : A F) * x i ∈ Oh F} := by
@@ -110,11 +110,11 @@ lemma setL_isOpen (ι : Type) [Fintype ι] (a : ℕ) :
   exact isOpen_set_pi Set.finite_univ fun _ _ => setS_isOpen a
 
 /- English proof (translation)
-Use `haveI : T2Space (A F) := (GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.1`. Establish `hK` using `setL_isCompact (F := F) ι ha`. Establish `hO` using `setL_isOpen (F := F) ι a`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `(IsLocallyConstant.iff_exists_open _).2 fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x ∈ {x : ι → A F | ∀ i, (a : A F) * x i ∈ Oh F}`. Use `⟨_, hO, hx, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [indL]`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem hx]`. Use `⟨_, hK.isClosed.isOpen_compl, hx, fun y hy => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [indL]`. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]`. Use `HasCompactSupport.intro hK fun x hx => ?_` and prove the remaining obligations. Simplify using `only [indL]`. Conclude with `Set.indicator_of_notMem hx _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma indL_SB (ι : Type) [Fintype ι] {a : ℕ} (ha : 0 < a) :
     SB (indL a : (ι → A F) → ℂ) := by
@@ -137,7 +137,7 @@ lemma indL_SB (ι : Type) [Fintype ι] {a : ℕ} (ha : 0 < a) :
 def Hs (F : Type) [Field F] [NumberField F] (N : ℕ) : Set (A F) := {x | ∃ y ∈ Oh F, x = (N : A F) * y}
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `hx`. Take `⟨w, hw, rfl⟩` from `hy`. Conclude with `⟨u + w, oh_add hu hw, by ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma hs_add {N : ℕ} {x y : A F} (hx : x ∈ Hs F N) (hy : y ∈ Hs F N) : x + y ∈ Hs F N := by
   obtain ⟨u, hu, rfl⟩ := hx
@@ -145,41 +145,41 @@ lemma hs_add {N : ℕ} {x y : A F} (hx : x ∈ Hs F N) (hy : y ∈ Hs F N) : x +
   exact ⟨u + w, oh_add hu hw, by ring⟩
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `hx`. Conclude with `⟨-u, oh_neg hu, by ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma hs_neg {N : ℕ} {x : A F} (hx : x ∈ Hs F N) : -x ∈ Hs F N := by
   obtain ⟨u, hu, rfl⟩ := hx
   exact ⟨-u, oh_neg hu, by ring⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun v => zero_mem _, by ring⟩`.
+Supply the required witnesses or components.
 -/
 lemma hs_zero (N : ℕ) : (0 : A F) ∈ Hs F N :=
   ⟨0, fun v => zero_mem _, by ring⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, oh_alg r, by rw [map_mul, nat_cast_eq]⟩`.
+Supply the required witnesses or components.
 -/
 lemma hs_alg (N : ℕ) (r : 𝓞 F) : algebraMap F (A F) ((N : F) * (r : F)) ∈ Hs F N :=
   ⟨_, oh_alg r, by rw [map_mul, nat_cast_eq]⟩
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `hx`. Conclude with `oh_mul (oh_nat N) hu`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma hs_sub_oh {N : ℕ} {x : A F} (hx : x ∈ Hs F N) : x ∈ Oh F := by
   obtain ⟨u, hu, rfl⟩ := hx
   exact oh_mul (oh_nat N) hu
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.2.2.2.2.2 N hN`.
+A detailed English derivation is pending.
 -/
 lemma hs_isOpen {N : ℕ} (hN : 0 < N) : IsOpen (Hs F N) :=
   (GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.2.2.2.2.2 N hN
 
 /- English proof (translation)
-Take `⟨u, hu, he⟩` from `h`. Establish `hN' : (N : F) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `h2 : algebraMap F (A F) (c / (N : F)) = u`. Establish `: c / (N : F) = (1 / (N : F)) * c` using `by field_simp`. Rewrite using `[this, map_mul, he, ← mul_assoc, nat_inv_mul hN, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : algebraMap F (A F) (c / (N : F)) ∈ Oh F` using `h2 ▸ hu`. Take `⟨r, hr⟩` from `((GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.2.2.1 _).1 h3`. Conclude with `⟨r, by rw [hr]; field_simp⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma hs_alg_iff {N : ℕ} (hN : 0 < N) {c : F} (h : algebraMap F (A F) c ∈ Hs F N) :
     ∃ r : 𝓞 F, c = (N : F) * (r : F) := by
@@ -204,37 +204,35 @@ def congN (F : Type) [Field F] [NumberField F] (N : ℕ) : Setoid F where
         exact ⟨r + t, by push_cast; rw [mul_add, ← hr, ← ht]; ring⟩ }
 
 /- English proof (translation)
-Use `haveI := hlf`. Use `haveI : SecondCountableTopology (A F) := (GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.1`. Establish `hdense : DenseRange (algebraMap F (A F))` using `(GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.2.1`. Establish `hHo : IsOpen (Hs F N)` using `hs_isOpen hN`. Set `st` to `congN F N`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `s : Set F` to `Set.range (fun q : Quotient st => q.out)`. Establish `hs : ∀ b ∈ s, ∀ b' ∈ s, (∃ r : 𝓞 F, b - b' = (N : F) * (r : F)) → b = b'`. Introduce and unpack `_ ⟨q, rfl⟩ _ ⟨q', rfl⟩ h`. Establish `: q = q'` using `Quotient.out_equiv_out.1 h`. Rewrite using `[this]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum` using `((GlobalTheory.T.denominator_power_summable F M hM N hN).2.2 s hs)`. Establish `hden0` using `(GlobalTheory.T.denominator_power_summable F M hM N hN).2.1`. Establish `hscount : Countable s`. Establish `hc` using `hsum.countable_support`. Establish `: Function.support (fun b : s => ((den (b : F) : ℝ) ^ M)⁻¹) = Set.univ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `b`. Use `hden0 b` as an intermediate fact. Simplify using `only [Function.mem_support, Set.mem_univ, iff_true]`. Check the signs of the components of the expression. Rewrite `hc` using `[this]`.
+Simplify using the standard rewrite rules. Check the signs of the components of the expression. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Set.countable_univ_iff.1 hc`. Set `T : s → Set (A F)` to `fun b => {y | y - algebraMap F (A F) (b : F) ∈ Hs F N}`. Establish `hTo : ∀ b, IsOpen (T b)` using `fun b => hHo.preimage (continuous_id.sub continuous_const)`. Establish `hTd : Pairwise (Function.onFun Disjoint T)`. Introduce `b b' hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Set.disjoint_left.2 fun y hy hy' => hne (Subtype.ext ?_)` and prove the remaining obligations. Establish `h : algebraMap F (A F) ((b : F) - (b' : F)) ∈ Hs F N`. Use `hs_add hy' (hs_neg hy)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `hs _ b.2 _ b'.2 (hs_alg_iff hN h)`. Establish `hTc : ⋃ b, T b = Set.univ`. Use `Set.eq_univ_of_forall fun y => ?_` and prove the remaining obligations. Establish `hW : IsOpen {z : A F | z - y ∈ Hs F N}` using `hHo.preimage (continuous_id.sub continuous_const)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b', hb'⟩` from `hdense.exists_mem_open hW ⟨y, by simpa using hs_zero N⟩`. Set `q : Quotient st` to `Quotient.mk st b'`. Take `⟨r, hr⟩ : st.r q.out b'` from `Quotient.mk_out (s := st) b'`. Use `Set.mem_iUnion.2 ⟨⟨q.out, q, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h2 : algebraMap F (A F) ((N : F) * (r : F)) ∈ Hs F N` using `hs_alg N r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `show y - algebraMap F (A F) q.out ∈ Hs F N`. Establish `h3 : q.out = b' + (N : F) * (r : F)` using `by rw [← hr]; ring`. Establish `h4` using `hs_neg (hs_add hb' h2)`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[h3, map_add]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hconst : ∀ b : s, ∀ y ∈ T b, f y = f (algebraMap F (A F) (b : F))`. Introduce `b y hy`. Take `⟨u, hu, he⟩` from `hy`. Establish `: y = algebraMap F (A F) (b : F) + (N : A F) * u` using `by rw [← he]; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this, hper u hu]`. Establish `hcont : Continuous f`. Use `IsLocallyConstant.continuous ((IsLocallyConstant.iff_exists_open _).2 fun y => ?_)` and prove the remaining obligations. Use `⟨{z | z - y ∈ Hs F N}, hHo.preimage (continuous_id.sub continuous_const), by simpa using hs_zero N, ?_⟩` and prove the remaining obligations. Introduce `z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu, he⟩` from `hz`. Establish `: z = y + (N : A F) * u` using `by rw [← he]; ring`. Rewrite using `[this, hper u hu]`. Establish `hmeasT : ∀ b, lf (T b) ≤ 1`. Introduce `b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Establish `: lf (T b) = lf (Hs F N)`. Use `measure_preimage_add_right lf (-algebraMap F (A F) (b : F)) (Hs F N)` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Use extensionality with `y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[T, sub_eq_add_neg]`. Rewrite using `[this, ← h1]`. Conclude with `measure_mono fun x hx => hs_sub_oh hx`. Use `⟨hcont.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `hnn : ∀ b : s, 0 ≤ C * ((den (b : F) : ℝ) ^ M)⁻¹` using `fun b => (norm_nonneg _).trans (hdec b)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : ∫⁻ y, ‖f y‖ₑ ∂lf ≤ ENNReal.ofReal (∑' b : s, C * ((den (b : F) : ℝ) ^ M)⁻¹)`. Rewrite using `[ENNReal.ofReal_tsum_of_nonneg hnn (hsum.mul_left C)]`. Combine the equalities or inequalities in the displayed calculation. Use `ENNReal.tsum_le_tsum fun b => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[mul_one, ← ofReal_norm_eq_enorm]`. Conclude with `ENNReal.ofReal_le_ofReal (hdec b)`. Conclude with `lt_of_le_of_lt hb ENNReal.ofReal_lt_top`.
+A detailed English derivation is pending.
 -/
 theorem integrable_of_periodic [MeasurableSpace (A F)] [BorelSpace (A F)] (lf : Measure (A F))
     (hlf : lf.IsAddHaarMeasure) (h1 : lf (Oh F) = 1) (f : A F → ℂ) {N : ℕ} (hN : 0 < N)
@@ -324,45 +322,39 @@ theorem integrable_of_periodic [MeasurableSpace (A F)] [BorelSpace (A F)] (lf : 
   exact lt_of_le_of_lt hb ENNReal.ofReal_lt_top
 
 /- English proof (translation)
-Introduce `F _ _ _ _ lf hlf h1 ψ hψ ι _ _ M B ρ P hQ hM a ha`. Use `haveI := hlf`. Take `⟨hLC, hSC, hT2, hOc, hOo, -⟩` from `GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F`. Use `haveI := hLC`. Use `haveI := hSC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hT2`. Establish `hQ' : QSetup M B ρ P` using `hQ`. Take `⟨hTR, hcard, hsym, hdet, -⟩` from `hQ`. Establish `hψc : Continuous ψ` using `hψ.1`. Set `L : Set (ι → A F)` to `{x | ∀ i, (a : A F) * x i ∈ Oh F}`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hLm : MeasurableSet L` using `(setL_isOpen (F := F) ι a).measurableSet`. Set `μ0 : Measure (ι → A F)` to `Measure.pi fun _ => lf`. Use `haveI : IsFiniteMeasureOnCompacts μ0 := inferInstance`. Set `q : (ι → A F) → A F` to `qf (hf F) (Bf B)`. Establish `hqc : Continuous q`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `continuous_const.mul ?_` and prove the remaining obligations. Conclude with `Continuous.dotProduct continuous_id (Continuous.matrix_mulVec continuous_const continuous_id)`. Set `m : Measure (A F)` to `(μ0.restrict L).map q`. Establish `mU : ∀ U : Set (A F), MeasurableSet U → m U = μ0 {x | (∀ i, (a : A F) * x i ∈ Oh F) ∧ q x ∈ U}`. Introduce `U hU`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.map_apply hqc.measurable hU, Measure.restrict_apply (hqc.measurable hU)]`. Use `congr 1`. Use extensionality with `x`. Conclude with `and_comm`. Establish `hLfin : μ0 L < ⊤` using `(setL_isCompact (F := F) ι ha).measure_lt_top`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI hmfin : IsFiniteMeasure m := by`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[mU _ MeasurableSet.univ]`. Conclude with `lt_of_le_of_lt (measure_mono fun x hx => hx.1) hLfin`. Set `s : ℝ` to `Real.sqrt |((Algebra.norm ℚ B.det : ℚ) : ℝ)|`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hs0 : 0 < s`. Use `Real.sqrt_pos.2 (abs_pos.2 ?_)` and prove the remaining obligations. Conclude with `(Algebra.norm_ne_zero_iff.2 hdet)` after adjusting the coercions. Establish `hk0 : 0 < kap F`. Use `inv_pos.2 (Real.sqrt_pos.2 (abs_pos.2 ?_))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `discr_ne_zero F` after adjusting the coercions. Set `c : ℝ` to `kap F ^ Fintype.card ι * s⁻¹`. Establish `hc0 : 0 < c` using `by positivity`. Set `fs : A F → ℂ` to `fstar ψ (hf F) (Bf B) (muF B lf) (indL a)`. Set `mh : A F → ℂ` to `fun y => ∫ x, ψ (x * y) ∂m`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hfst : ∀ y, fs y = (c : ℂ) * mh y`. Introduce `y`. Establish `hcm : Continuous fun x : A F => ψ (x * y)` using `hψc.comp (continuous_id.mul continuous_const)`. Simplify using `only [fs, mh, fstar, muF]`. Rewrite using `[integral_smul_measure, integral_map hqc.aemeasurable hcm.aestronglyMeasurable]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ENNReal.toReal_ofReal hc0.le, Complex.real_smul]`. Use `congr 1`. Rewrite using `[← integral_indicator hLm]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Distinguish the cases in `hu : u ∈ L`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Set.indicator_of_mem hu]`. Simplify using `only [opU, indL]`. Rewrite using `[Set.indicator_of_mem hu, mul_one, mul_comm y]`. Rewrite using `[Set.indicator_of_notMem hu]`. Simplify using `only [opU, indL]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Set.indicator_of_notMem hu, mul_zero]`. Establish `hint : Integrable fs lf`. Take `⟨N, hN, hper⟩` from `GlobalTheory.T.weil_operator_integral_invariance F lf hlf h1 ψ hψ ι M B ρ P hQ' (indL a) (indL_SB ι ha)`. Take `⟨C, hC⟩` from `GlobalTheory.T.fourier_coefficient_growth_bound F lf hlf h1 ψ hψ ι M B ρ P hQ' (indL a) (indL_SB ι ha)`. Conclude with `integrable_of_periodic lf hlf h1 fs hN (fun x hx y => (hper x hx).2 y) hM hC`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hmh : mh = fun y => ((c : ℂ))⁻¹ * fs y`. Use function extensionality and compare the values at `y`. Rewrite using `[hfst y, ← mul_assoc, inv_mul_cancel₀ (by exact_mod_cast hc0.ne'), one_mul]`. Establish `hint' : Integrable mh lf`. Rewrite using `[hmh]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hint.const_mul _`. Establish `hint'' : Integrable mh (ENNReal.ofReal (kap F) • lf)` using `hint'.smul_measure ENNReal.ofReal_ne_top`. Take `⟨D, hDc, hD0, hDe, hDm⟩` from `GlobalTheory.T.positive_definite_density (A F) (fun x y => ψ (x * y)) _ (GlobalTheory.T.adeles_self_dual F lf hlf h1 ψ hψ) m hmfin hint''`. Use `⟨fun y => kap F * D y, continuous_const.mul hDc, fun y => mul_nonneg hk0.le (hD0 y), ?_, hint, ?_⟩` and prove the remaining obligations. Introduce `U hU`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e1` using `hDm U hU`. Rewrite `e1` using `[mU U hU]`. Use `show μ0 _ = _`. Rewrite using `[e1, Measure.restrict_smul, lintegral_smul_measure, smul_eq_mul, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[ENNReal.ofReal_mul hk0.le]`. Introduce `z`. Establish `e2` using `hDe z`. Rewrite `e2` using `[integral_smul_measure, ENNReal.toReal_ofReal hk0.le, Complex.real_smul]`. Establish `e3 : ∫ y, fs y * ψ (-z * y) ∂lf = (c : ℂ) * ∫ y, mh y * ψ (-z * y) ∂lf`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [hfst y]`. Expand and normalize the polynomial expressions, which then agree. Use `show ∫ y, fs y * ψ (-z * y) ∂lf = _`.
-
-Rewrite using `[e3]`. Establish `e4 : (c : ℂ) = ((kap F ^ (2 * M - 2) * s⁻¹ * kap F * kap F : ℝ) : ℂ)`. Establish `: kap F ^ (2 * M) = kap F ^ (2 * M - 2) * kap F * kap F`. Rewrite using `[mul_assoc, ← pow_two, ← pow_add]`. Use `congr 1`.
-
-Use linear arithmetic over natural numbers and integers. Simplify using `only [c, hcard, this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e5 : (((kap F ^ (2 * M - 2) * s⁻¹ * (kap F * D z)) : ℝ) : ℂ) = ((kap F ^ (2 * M - 2) * s⁻¹ * kap F : ℝ) : ℂ) * (D z : ℂ)` using `by push_cast; ring`.
-
-Use `show _ = (((kap F ^ (2 * M - 2) * s⁻¹ * (kap F * D z)) : ℝ) : ℂ)`. Rewrite using `[e5, e2, e4]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem density_main : ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpace (A F)] [BorelSpace (A F)] (lf : Measure (A F)), lf.IsAddHaarMeasure → lf (Oh F) = 1 → ∀ ψ : AddChar (A F) ℂ, IsStdChar F ψ → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (M : ℕ) (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)) (P : InfinitePlace F → Matrix ι ι ℝ), QSetup M B ρ P → 3 ≤ M → ∀ a : ℕ, 0 < a → ∃ Df : A F → ℝ, Continuous Df ∧ (∀ y, 0 ≤ Df y) ∧ (∀ U : Set (A F), MeasurableSet U → (Measure.pi fun _ : ι => lf) {x | (∀ i, (a : A F) * x i ∈ Oh F) ∧ qf (hf F) (Bf B) x ∈ U} = ∫⁻ y in U, ENNReal.ofReal (Df y) ∂lf) ∧ Integrable (fstar ψ (hf F) (Bf B) (muF B lf) (indL a)) lf ∧ ∀ z : A F, ∫ y, fstar ψ (hf F) (Bf B) (muF B lf) (indL a) y * ψ (-z * y) ∂lf = ((kap F ^ (2 * M - 2) * (Real.sqrt |((Algebra.norm ℚ B.det : ℚ) : ℝ)|)⁻¹ * Df z : ℝ) : ℂ) := by
   intro F _ _ _ _ lf hlf h1 ψ hψ ι _ _ M B ρ P hQ hM a ha

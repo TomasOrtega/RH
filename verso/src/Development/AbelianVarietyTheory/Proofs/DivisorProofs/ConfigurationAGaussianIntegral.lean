@@ -24,28 +24,28 @@ namespace GlobalTheory.ThK.VacDualPart
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, Matrix.vecMul_transpose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_vecMulVec {m k : Type} [Fintype m] [Fintype k] (A : Matrix m m ℂ) (B : Matrix k k ℂ) (a : m → ℂ)
     (b : k → ℂ) : A * Matrix.vecMulVec a b * Bᵀ = Matrix.vecMulVec (A *ᵥ a) (B *ᵥ b) := by
   rw [Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, Matrix.vecMul_transpose]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_vecMulVec {m k : Type} (f : AE F E →+* ℂ) (a : m → AE F E) (b : k → AE F E) :
     (Matrix.vecMulVec a b).map f = Matrix.vecMulVec (fun i => f (a i)) (fun j => f (b j)) := by
   ext i j; simp [Matrix.vecMulVec_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec f A z i`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem map_mulVec' {m k : Type} [Fintype k] (f : AE F E →+* ℂ) (A : Matrix m k (AE F E)) (z : k → AE F E) :
     (fun i => f ((A *ᵥ z) i)) = A.map f *ᵥ fun j => f (z j) := by
   funext i; exact RingHom.map_mulVec f A z i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `congrFun (congrFun (GlobalTheory.CartanConjSkew.incM_map_piInf (F := F) (Matrix.replicateCol Unit x) τ) i) ()` as an intermediate fact. Simplify `this` using `[incM, incV, Matrix.replicateCol]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem piInf_incV {n : ℕ} {w : InfinitePlace F} (τ : EmbOver E w) (x : Fin n → E) :
     (fun i => piInf τ (incV F x i)) = fun i => τ.1 (x i) := by
@@ -54,17 +54,15 @@ theorem piInf_incV {n : ℕ} {w : InfinitePlace F} (τ : EmbOver E w) (x : Fin n
   simpa [incM, incV, Matrix.replicateCol] using this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' X om om' hC hT g hg y z`. Take `⟨ε, hε⟩` from `hg`. Establish `hcm` using `hT.base.cm`. Use `choose c hc0 hc using fun w => (hC.hH.cartan w).2`. Use `choose c' hc'0 hc' using fun w => (hC.hH'.cartan w).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose y₁ hy₁ using fun i => GlobalTheory.PolRangeInf.exists_at_inf_values hcm B.emb (fun w => ((((ε w : ℤ) : ℂ) * Complex.I * c' w) • (G.V.θ w *ᵥ fun j => piInf (B.emb w) (y j))) i)`. Use `choose z₁ hz₁ using fun i => GlobalTheory.PolRangeInf.exists_at_inf_values hcm B.emb (fun w => ((((ε w : ℤ) : ℂ) * Complex.I * c w) • (G₁.W.θ w *ᵥ fun j => piInf (B.emb w) (z j))) i)`. Use `⟨y₁, z₁, ?_⟩` and prove the remaining obligations. Use `set U := Matrix.vecMulVec y (incV F H'.y) + Matrix.vecMulVec (incV F H.y) (incM F H'.ι *ᵥ z) with hU`. Use `set U' := Matrix.vecMulVec y₁ (incV F H'.x) + Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ z₁) with hU'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hat : ∀ V : Matrix (Fin (b + 2)) (Fin (b + 2 + a')) (AE F E), At (evI F) (realAd F 1 • V)` using `fun V c hc => by`. Rewrite using `[smul_smul, mul_realAd_eq_zero c hc, zero_smul]`. Establish `hmap : ∀ w, (realAd F 1 • U').map (piInf (B.emb w)) = (((ε w : ℤ) : ℂ) * Complex.I) • (G.V.θ w * (realAd F 1 • U).map (piInf (B.emb w)) * (G.W.θ w)ᵀ)`. Introduce `w`. Rewrite using `[GlobalTheory.RealScalar.realAd_smul_map σ B.emb hcm, GlobalTheory.RealScalar.realAd_smul_map σ B.emb hcm, Complex.ofReal_one, one_smul, one_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eY : (fun i => piInf (B.emb w) (y₁ i)) = (((ε w : ℤ) : ℂ) * Complex.I * c' w) • (G.V.θ w *ᵥ fun j => piInf (B.emb w) (y j))`. Use function extensionality and compare the values at `fun i => (hy₁ i).2 w`. Establish `eZ : (fun i => piInf (B.emb w) (z₁ i)) = (((ε w : ℤ) : ℂ) * Complex.I * c w) • (G₁.W.θ w *ᵥ fun j => piInf (B.emb w) (z j))`. Use function extensionality and compare the values at `fun i => (hz₁ i).2 w`. Establish `θV2 : G.V.θ w * G.V.θ w = 1` using `(hT.geo.hV.cartan w).1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `θW2 : G.W.θ w * G.W.θ w = 1` using `(hT.geo.hW.cartan w).1`. Establish `eι` using `(hC.hH'.cartan w).1`. Simplify using `only [hU, hU', Matrix.map_add _ (map_add _), map_vecMulVec, map_mulVec', piInf_incV, GlobalTheory.CartanConjSkew.incM_map_piInf, eY, eZ, Matrix.mul_add, Matrix.add_mul, conj_vecMulVec, hc w, hc' w, Matrix.mulVec_smul, Matrix.mulVec_mulVec, θV2, θW2, Matrix.one_mulVec, eι, smul_ad …`. Simplify using `only [Matrix.smul_vecMulVec, Matrix.vecMulVec_smul, smul_smul]`. Establish `key` using `hε (realAd F 1 • U) (realAd F 1 • U') (hat U) (hat U') hmap`.
-
-Express the relevant statement in the definitionally equal form `dOp (coordI G.M (realAd F 1 • U')).1 (coordI G.M (realAd F 1 • U')).2 g = Complex.I • dOp (coordI G.M (realAd F 1 • U)).1 (coordI G.M (realAd F 1 • U)).2 g at key`. Rewrite `key` using `[coordI_one, coordI_one]`. Rewrite using `[key, smul_smul]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dOp_dual_vac : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a'))

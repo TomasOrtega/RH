@@ -11,7 +11,7 @@ section Sums
 variable {σ : Type*}
 
 /- English proof (translation)
-Use `Finset.induction_on t ?_ ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_empty, fockInner_zero_left]`. Introduce `i t hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, fockInner_add_left, ih]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 lemma fockInner_sum_left {ι : Type*} (t : Finset ι) (f : ι → MvPolynomial σ ℂ)
     (Q : MvPolynomial σ ℂ) :
@@ -23,7 +23,7 @@ lemma fockInner_sum_left {ι : Type*} (t : Finset ι) (f : ι → MvPolynomial �
     rw [Finset.sum_insert hi, Finset.sum_insert hi, fockInner_add_left, ih]
 
 /- English proof (translation)
-Use `Finset.induction_on t ?_ ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_empty, fockInner_zero_right]`. Introduce `i t hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, fockInner_add_right, ih]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 lemma fockInner_sum_right {ι : Type*} (t : Finset ι) (f : ι → MvPolynomial σ ℂ)
     (P : MvPolynomial σ ℂ) :
@@ -39,44 +39,44 @@ end Sums
 variable {p q r s : ℕ}
 
 /- English proof (translation)
-Rewrite using `[FockH1Action.omE, if_neg h, add_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma omE_apply_of_ne {l l' : Ln p q r s} (h : l ≠ l') (P : Pol p q r s) :
     omE l l' P = raiB l (lowB l' P) := by
   rw [FockH1Action.omE, if_neg h, add_zero]; rfl
 
 /- English proof (translation)
-Rewrite using `[FockH1Action.raiB, if_pos h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem raiB_apply_eq_X_mul_of_linePos {m : FockH1Action.Ln p q r s} (h : FockH1Action.linePos m = true)
     (P : FockH1Action.Pol p q r s) : FockH1Action.raiB m P = X m * P := by
   rw [FockH1Action.raiB, if_pos h]; rfl
 
 /- English proof (translation)
-Rewrite using `[FockH1Action.raiB, if_neg (by simp [h])]; rfl`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem raiB_apply_eq_neg_pderiv_of_not_linePos {m : FockH1Action.Ln p q r s} (h : FockH1Action.linePos m = false)
     (P : FockH1Action.Pol p q r s) : FockH1Action.raiB m P = -(pderiv m P) := by
   rw [FockH1Action.raiB, if_neg (by simp [h])]; rfl
 
 /- English proof (translation)
-Rewrite using `[FockH1Action.lowB, if_pos h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem lowB_apply_eq_pderiv_of_linePos {m : FockH1Action.Ln p q r s} (h : FockH1Action.linePos m = true)
     (P : FockH1Action.Pol p q r s) : FockH1Action.lowB m P = pderiv m P := by
   rw [FockH1Action.lowB, if_pos h]; rfl
 
 /- English proof (translation)
-Rewrite using `[FockH1Action.lowB, if_neg (by simp [h])]; rfl`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem lowB_apply_eq_X_mul_of_not_linePos {m : FockH1Action.Ln p q r s} (h : FockH1Action.linePos m = false)
     (P : FockH1Action.Pol p q r s) : FockH1Action.lowB m P = X m * P := by
   rw [FockH1Action.lowB, if_neg (by simp [h])]; rfl
 
 /- English proof (translation)
-Establish `hne : l ≠ l'` using `fun e => h (e ▸ rfl)`. Rewrite using `[omE_apply_of_ne hne, omE_apply_of_ne (Ne.symm hne)]`. Apply the tactic sequence `cases hl : FockH1Action.linePos l <;> cases hl' : FockH1Action.linePos l'`. Conclude with `absurd (hl.trans hl'.symm) h`. Rewrite using `[lowB_apply_eq_pderiv_of_linePos hl', raiB_apply_eq_neg_pderiv_of_not_linePos hl, lowB_apply_eq_X_mul_of_not_linePos hl, raiB_apply_eq_X_mul_of_linePos hl', fockInner_neg_left, fockInner_pderiv, fockInner_pderiv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lowB_apply_eq_X_mul_of_not_linePos hl', raiB_apply_eq_X_mul_of_linePos hl, lowB_apply_eq_pderiv_of_linePos hl, raiB_apply_eq_neg_pderiv_of_not_linePos hl', fockInner_neg_right, neg_neg, fockInner_X_mul, fockInner_X_mul]`. Conclude with `absurd (hl.trans hl'.symm) h`.
+A detailed English derivation is pending.
 -/
 lemma omE_adj {l l' : Ln p q r s} (h : linePos l ≠ linePos l') (P Q : Pol p q r s) :
     fockInner (omE l l' P) Q = - fockInner P (omE l' l Q) := by
@@ -91,7 +91,7 @@ lemma omE_adj {l l' : Ln p q r s} (h : linePos l ≠ linePos l') (P Q : Pol p q 
   · exact absurd (hl.trans hl'.symm) h
 
 /- English proof (translation)
-Simplify using `[FockH1Action.omAct, LinearMap.sum_apply, LinearMap.smulRight_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma omAct_apply (M : Matrix (Ln p q r s) (Ln p q r s) ℂ) (P : Pol p q r s) :
     omAct p q r s M P = ∑ l, ∑ l', M l l' • omE l l' P := by
@@ -101,11 +101,11 @@ def Mixed (M : Matrix (Ln p q r s) (Ln p q r s) ℂ) : Prop :=
   ∀ l l', M l l' ≠ 0 → linePos l ≠ linePos l'
 
 /- English proof (translation)
-Rewrite using `[omAct_apply, omAct_apply]`. Simplify using `only [fockInner_sum_left, fockInner_sum_right, fockInner_smul_left, fockInner_smul_right, Matrix.conjTranspose_apply]`. Use `conv_rhs => rw [Finset.sum_comm]`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Distinguish the cases in `hz : M l l' = 0`. Simplify using `[hz]`. Rewrite using `[omE_adj (hM l l' hz), mul_neg]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 lemma omAct_adj (M : Matrix (Ln p q r s) (Ln p q r s) ℂ) (hM : Mixed M) (P Q : Pol p q r s) :
     fockInner (omAct p q r s M P) Q = - fockInner P (omAct p q r s Mᴴ Q) := by
@@ -123,13 +123,13 @@ lemma omAct_adj (M : Matrix (Ln p q r s) (Ln p q r s) ℂ) (hM : Mixed M) (P Q :
     rfl
 
 /- English proof (translation)
-Apply the tactic sequence `cases a <;> cases b <;> simp_all [FockH1Action.sameBlock]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sameBlock_symm {a b : Ix p q} (h : sameBlock a b) : sameBlock b a := by
   cases a <;> cases b <;> simp_all [FockH1Action.sameBlock]
 
 /- English proof (translation)
-Introduce `a b hab`. Simplify using `[Matrix.conjTranspose_apply, h b a (sameBlock_symm hab)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 lemma isPC_ct {Z : Mat p q} (h : IsPC Z) : IsPC Zᴴ := by
   intro a b hab
@@ -150,9 +150,9 @@ lemma fockAct2_eq (Z : Mat r s) :
   rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨a, c⟩ ⟨b, d⟩ hne`. Simplify using `only [Matrix.kroneckerMap_apply] at hne`. Distinguish the cases in `hcd : c = d`. Substitute `hcd` using the available equality. Establish `hs : ¬ FockH1Action.sameBlock a b` using `fun hab => hne (by rw [hZ a b hab, zero_mul])`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Use `clear hne hZ`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> rcases c with c | c <;>`. Simplify using `[FockH1Action.sameBlock, FockH1Action.linePos]`. Conclude with `absurd (by rw [Matrix.one_apply_ne hcd, mul_zero]) hne`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify the hypotheses and the goal together. A detailed English derivation is pending.
 -/
 lemma mixed1 {Z : Mat p q} (hZ : IsPC Z) :
     Mixed (Matrix.kroneckerMap (fun a b => a * b) Z (1 : Mat r s)) := by
@@ -167,9 +167,9 @@ lemma mixed1 {Z : Mat p q} (hZ : IsPC Z) :
   · exact absurd (by rw [Matrix.one_apply_ne hcd, mul_zero]) hne
 
 /- English proof (translation)
-Introduce and unpack `⟨a, c⟩ ⟨b, d⟩ hne`. Simplify using `only [Matrix.kroneckerMap_apply] at hne`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Establish `hs : ¬ FockH1Action.sameBlock c d` using `fun hcd => hne (by rw [hZ c d hcd, mul_zero])`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Use `clear hne hZ`. Apply the tactic sequence `rcases a with a | a <;> rcases c with c | c <;> rcases d with d | d <;>`. Simplify using `[FockH1Action.sameBlock, FockH1Action.linePos]`. Conclude with `absurd (by rw [Matrix.one_apply_ne hab, zero_mul]) hne`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify the hypotheses and the goal together. A detailed English derivation is pending.
 -/
 lemma mixed2 {Z : Mat r s} (hZ : IsPC Z) :
     Mixed (Matrix.kroneckerMap (fun a b => a * b) (1 : Mat p q) Z) := by
@@ -184,9 +184,9 @@ lemma mixed2 {Z : Mat r s} (hZ : IsPC Z) :
   · exact absurd (by rw [Matrix.one_apply_ne hab, zero_mul]) hne
 
 /- English proof (translation)
-Use extensionality with `⟨a, c⟩ ⟨b, d⟩`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.kroneckerMap_apply]`. Distinguish the cases in `hcd : c = d`. Substitute `hcd` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.one_apply_ne hcd, Matrix.one_apply_ne (Ne.symm hcd)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma conjTranspose_kronecker_one (Z : Mat p q) :
     (Matrix.kroneckerMap (fun a b => a * b) Z (1 : Mat r s))ᴴ =
@@ -198,9 +198,9 @@ lemma conjTranspose_kronecker_one (Z : Mat p q) :
   · rw [Matrix.one_apply_ne hcd, Matrix.one_apply_ne (Ne.symm hcd)]; simp
 
 /- English proof (translation)
-Use extensionality with `⟨a, c⟩ ⟨b, d⟩`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.kroneckerMap_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.one_apply_ne hab, Matrix.one_apply_ne (Ne.symm hab)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma conjTranspose_one_kronecker (Z : Mat r s) :
     (Matrix.kroneckerMap (fun a b => a * b) (1 : Mat p q) Z)ᴴ =
@@ -212,7 +212,7 @@ lemma conjTranspose_one_kronecker (Z : Mat r s) :
   · rw [Matrix.one_apply_ne hab, Matrix.one_apply_ne (Ne.symm hab)]; simp
 
 /- English proof (translation)
-Rewrite using `[fockAct1_eq, fockAct1_eq, omAct_adj _ (mixed1 hZ), conjTranspose_kronecker_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fockAct1_adj {Z : Mat p q} (hZ : IsPC Z) (P Q : Pol p q r s) :
     fockInner (fockAct1 p q r s Z P) Q = - fockInner P (fockAct1 p q r s Zᴴ Q) := by
@@ -220,7 +220,7 @@ theorem fockAct1_adj {Z : Mat p q} (hZ : IsPC Z) (P Q : Pol p q r s) :
     omAct_adj _ (mixed1 hZ), conjTranspose_kronecker_one]
 
 /- English proof (translation)
-Rewrite using `[fockAct2_eq, fockAct2_eq, omAct_adj _ (mixed2 hZ), conjTranspose_one_kronecker]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fockAct2_adj {Z : Mat r s} (hZ : IsPC Z) (P Q : Pol p q r s) :
     fockInner (fockAct2 p q r s Z P) Q = - fockInner P (fockAct2 p q r s Zᴴ Q) := by

@@ -76,9 +76,9 @@ def IsRangeN (T : HostType) (x : ℝ) (e : ℕ) : Prop :=
   2 ≤ e ∧ x ^ (2 + 8 * T.eps) / (2 * T.o) ≤ (2 ^ e : ℝ) ∧ (2 ^ e : ℝ) ≤ 2 * x ^ (2 + 8 * T.eps)
 
 /- English proof (translation)
-Establish `h1 : x ^ (2 : ℝ) ≤ x ^ (2 + 8 * T.eps)` using `Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith [T.eps_pos])`. Rewrite `h1` using `[Real.rpow_two]`. Establish `h2` using `h.1`. Establish `ho : (1 : ℝ) ≤ T.o` using `by exact_mod_cast T.o_pos`. Use `⟨?_, le_trans (div_le_div_of_nonneg_left (by positivity) (by norm_num) (by linarith)) h2, h.2⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hlt`. Establish `h4 : (2 : ℝ) ^ e ≤ 2 ^ 1` using `pow_le_pow_right₀ (by norm_num) (by omega)`. Use the polynomial consequences of the given equalities and inequalities.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem IsRangeText.isRangeN {T : HostType} {x : ℝ} {e : ℕ} (h : IsRangeText T x e) (hx : 3 ≤ x) :
     IsRangeN T x e := by

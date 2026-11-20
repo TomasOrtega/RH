@@ -68,18 +68,18 @@ def LiftNonvanishing (D : D7) : Prop :=
     ∃ f, IsThetaFunO ψ A W f ∧ ∃ h, up om m f u h ≠ 0
 
 /- English proof (translation)
-Simplify using `[prin, below]`.
+Simplify using the standard rewrite rules.
 -/
 example : prin A L ∅ = levelFin D.sp.cm.sig A.gram L := by simp [prin, below]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨one_mul _, by simp, by rw [mul_one]; exact h _⟩`.
+Supply the required witnesses or components.
 -/
 example (τ : D.what₂.Tau) (h : ∀ τ : D.host.E →+* ℂ, (A.gram.map τ).PosDef) : IsCartanInv (gramAt D A τ) 1 :=
   ⟨one_mul _, by simp, by rw [mul_one]; exact h _⟩
 
 /- English proof (translation)
-Simplify using `[LFun.segFam, LFun.seg, (h w hw).1]`.
+Simplify using the standard rewrite rules.
 -/
 example (S : Finset (FinPl D)) (r t : ℕ) (c : LFun.Fam D.host.E) (h : IsSmallFam S r c) (χ : (AE D)ˣ →* Circle)
     (w : FinPlE D) (hw : w.under (𝓞 D.host.F) ∉ S) : ((c + LFun.segFam (LFun.val χ) t) w).card = r + t := by

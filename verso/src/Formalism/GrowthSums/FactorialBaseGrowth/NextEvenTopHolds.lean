@@ -10,29 +10,27 @@ namespace Formalism.GrowthSums
 open Formalism.G0
 
 /- English proof (translation)
-Introduce `n T L₂ K r u M₀ G' N₁ hr hu hn hG hT hgood i hi`. Take `⟨_, hTiles, _⟩` from `hgood`. Use `set ℓ := (6 * r + 1) * u with hℓ`. Establish `hℓpos : 0 < ℓ` using `Nat.mul_pos (by omega) (by omega)`. Establish `h2u : 2 * u ≤ ℓ` using `by rw [hℓ]; nlinarith`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set t := n / ℓ with ht`. Establish `htM : M₀ + 1 ≤ t` using `(Nat.le_div_iff_mul_le hℓpos).2 hn`. Establish `hnt : n < t * ℓ + ℓ`. Establish `h1 : ℓ * t + n % ℓ = n` using `Nat.div_add_mod n ℓ`. Establish `h2` using `Nat.mod_lt n hℓpos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h3 : t * ℓ = ℓ * t` using `Nat.mul_comm _ _`. Use linear arithmetic over natural numbers and integers. Choose the witnesses or unpack the hypotheses as in `⟨si, hsi_lt, hsi_le, hsi_case⟩ : ∃ si, si < t ∧ si * ℓ ≤ i ∧ (i < si * ℓ + ℓ ∨ si + 1 = t) := by`. Distinguish the cases in `hc : i < t * ℓ`. Use `⟨i / ℓ, ?_, Nat.div_mul_le_self i ℓ, Or.inl ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(Nat.div_lt_iff_lt_mul hℓpos).2 hc`. Conclude with `Nat.lt_div_mul_add hℓpos`. Use `⟨t - 1, by omega, ?_, Or.inr (by omega)⟩` and prove the remaining obligations. Establish `: (t - 1) * ℓ ≤ t * ℓ` using `Nat.mul_le_mul_right _ (by omega)`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `htpos : 0 < t` using `by omega`. Take `⟨j, hj, hM⟩` from `hTiles ((si + 1) % t) (Nat.mod_lt _ htpos)`. Rewrite `hM` using `[Nat.mod_add_mod]`. Take `⟨s, hs⟩ : ∃ s, s = (si + 1 + j) % t` from `⟨_, rfl⟩`. Rewrite `hM` using `[← hs]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hslt : s < t` using `hs ▸ Nat.mod_lt _ htpos`. Establish `hsc : s = si + 1 + j ∨ s + t = si + 1 + j`. Distinguish the cases in `hc : si + 1 + j < t`. Use `left`. Rewrite using `[hs, Nat.mod_eq_of_lt hc]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `right`. Rewrite using `[hs, Nat.mod_eq_sub_mod (by omega), Nat.mod_eq_of_lt (by omega)]`. Use linear arithmetic over natural numbers and integers. Take `⟨x, hx, hxe⟩` from `(hM 2 (by omega) (by omega)).2 even_two`. Establish `hxmem : x ∈ T ∩ cell r u s 2` using `by rw [hx]; exact mem_singleton_self x`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hxmem` using `[mem_inter]`. Take `⟨hxT, hxc⟩` from `hxmem`. Simplify using `only [cell, mem_Ico] at hxc`. Rewrite `hxc` using `[← hℓ]`. Establish `hxn : x < n` using `mem_range.1 (hT hxT)`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hjl : j * ℓ ≤ M₀ * ℓ` using `Nat.mul_le_mul_right _ hj`. Establish `hG5 : (M₀ + 5) * ℓ = M₀ * ℓ + 5 * ℓ` using `by ring`. Establish `key : ∃ D, 1 ≤ D ∧ D ≤ G' ∧ (i + D) % n = x`. Break down `hsc with hA | hB` into its components or cases. Establish `e : s * ℓ = si * ℓ + ℓ + j * ℓ` using `by rw [hA]; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `⟨x - i, by omega, by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[show i + (x - i) = x by omega, Nat.mod_eq_of_lt hxn]`. Establish `e : s * ℓ + t * ℓ = si * ℓ + ℓ + j * ℓ` using `by rw [← add_mul, hB]; ring`. Establish `hssi : s ≤ si` using `by omega`. Establish `e2 : s * ℓ ≤ si * ℓ` using `Nat.mul_le_mul_right _ hssi`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hxi : i < x`. Use `⟨x - i, by omega, by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[show i + (x - i) = x by omega, Nat.mod_eq_of_lt hxn]`. Use `⟨x + n - i, by omega, by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[show i + (x + n - i) = x + n by omega, Nat.add_mod_right, Nat.mod_eq_of_lt hxn]`.
-
-Take `⟨D, hD1, hD2, hDx⟩` from `key`. Conclude with `⟨D, mem_Icc.2 ⟨hD1, hD2⟩, by rw [hDx]; exact ⟨hxT, hxe⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem next_even_top_holds : NextEvenTop := by
   intro n T L₂ K r u M₀ G' N₁ hr hu hn hG hT hgood i hi
@@ -94,33 +92,31 @@ theorem next_even_top_holds : NextEvenTop := by
   exact ⟨D, mem_Icc.2 ⟨hD1, hD2⟩, by rw [hDx]; exact ⟨hxT, hxe⟩⟩
 
 /- English proof (translation)
-Introduce `n T L₂ K r u M₀ G' N₁ hr hu hn hG hT hgood`. Establish `hnext` using `next_even_top_holds n T L₂ K r u M₀ G' N₁ hr hu hn hG hT hgood`. Take `⟨_, _, hInt⟩` from `hgood`. Establish `hℓpos : 0 < (6 * r + 1) * u` using `Nat.mul_pos (by omega) (by omega)`. Establish `hnpos : 0 < n` using `lt_of_lt_of_le (Nat.mul_pos (by omega) hℓpos) hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGpos : 0 < G'` using `lt_of_lt_of_le (Nat.mul_pos (by omega) hℓpos) hG`. Prove the components needed by the constructor for the conclusion. Establish `hsub : range n ⊆ (T ×ˢ Icc 1 G').image (fun p => (p.1 + n * G' - p.2) % n)`. Introduce `i hi`. Rewrite `hi` using `[mem_range]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨D, hD, hDT, -⟩` from `hnext i hi`. Rewrite `hD` using `[mem_Icc]`. Rewrite using `[mem_image]`. Use `⟨((i + D) % n, D), mem_product.2 ⟨hDT, mem_Icc.2 hD⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h1` using `Nat.div_add_mod (i + D) n`. Take `⟨q, hq⟩ : ∃ q, q = (i + D) / n` from `⟨_, rfl⟩`. Take `⟨x, hx⟩ : ∃ x, x = (i + D) % n` from `⟨_, rfl⟩`. Rewrite `h1` using `[← hq, ← hx]`. Rewrite using `[← hx]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hqG : q ≤ G'`. Assume the negation of the conclusion as `hc`. Establish `: n * (G' + 1) ≤ n * q` using `Nat.mul_le_mul_left _ (by omega)`. Establish `: n * (G' + 1) = n * G' + n` using `by ring`. Establish `: G' ≤ n * G'` using `Nat.le_mul_of_pos_left _ hnpos`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `h2 : n * (G' - q) = n * G' - n * q` using `Nat.mul_sub n G' q`. Establish `h3 : n * q ≤ n * G'` using `Nat.mul_le_mul_left _ hqG`. Establish `h4 : x + n * G' - D = i + n * (G' - q)` using `by omega`. Rewrite using `[h4, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt hi]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hcov : T ⊆ (T.image (fun p => p / G')).biUnion (fun c => T ∩ window n (c * G') G')`. Introduce `p hp`. Rewrite using `[mem_biUnion]`. Use `⟨p / G', mem_image_of_mem _ hp, mem_inter.2 ⟨hp, ?_⟩⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpn : p < n` using `mem_range.1 (hT hp)`. Unfold `window`. Rewrite using `[mem_image]`. Establish `h1` using `Nat.lt_div_mul_add (a := p) hGpos`. Establish `h2` using `Nat.div_mul_le_self p G'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨p - p / G' * G', mem_range.2 (by omega), ?_⟩` and prove the remaining obligations. Rewrite using `[show p / G' * G' + (p - p / G' * G') = p by omega, Nat.mod_eq_of_lt hpn]`. Establish `hcard : T.card ≤ (T.image (fun p => p / G')).card * N₁`. Combine the equalities or inequalities in the displayed calculation. Apply `sum_le_sum` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `c hc`. Take `⟨p, hp, rfl⟩` from `mem_image.1 hc`. Apply `hInt` to reduce the goal to its premises. Use `Nat.div_mul_le_self p G'` as an intermediate fact. Use `mem_range.1 (hT hp)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `_ = _ := by rw [sum_const, smul_eq_mul]`. Establish `himg : (T.image (fun p => p / G')).card ≤ n / G' + 1`. Combine the equalities or inequalities in the displayed calculation. Apply `card_le_card` to reduce the goal to its premises.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Take `⟨p, hp, rfl⟩` from `mem_image.1 hc`. Rewrite using `[mem_range]`. Use `Nat.div_le_div_right (c := G') (mem_range.1 (hT hp)).le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `_ = _ := card_range _`. Establish `h5 : (n / G' + 1) * G' ≤ n + G'`. Use `Nat.div_mul_le_self n G'` as an intermediate fact. Rewrite using `[add_mul, one_mul]`. Use linear arithmetic over natural numbers and integers.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem top_count_holds : TopCount := by
   intro n T L₂ K r u M₀ G' N₁ hr hu hn hG hT hgood

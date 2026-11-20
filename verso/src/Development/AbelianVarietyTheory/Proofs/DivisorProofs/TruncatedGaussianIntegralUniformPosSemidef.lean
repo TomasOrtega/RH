@@ -10,23 +10,23 @@ noncomputable def qf {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (w : V n) : ℂ 
   ∑ j, ∑ l, A j l * w j * (starRingEnd ℂ) (w l)
 
 /- English proof (translation)
-Simplify using `only [qf, Matrix.add_apply, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem qf_add {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) (w : V n) :
     qf (A + B) w = qf A w + qf B w := by
   simp only [qf, Matrix.add_apply, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [qf, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem qf_smul {n : ℕ} (c : ℂ) (A : Matrix (Fin n) (Fin n) ℂ) (w : V n) :
     qf (c • A) w = c * qf A w := by
   simp only [qf, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_sq_eq]`. Simplify using `only [qf, Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `push_cast`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qf_one {n : ℕ} (w : V n) : qf (1 : Matrix (Fin n) (Fin n) ℂ) w = ((‖w‖ ^ 2 : ℝ) : ℂ) := by
   rw [EuclideanSpace.norm_sq_eq]
@@ -36,9 +36,9 @@ theorem qf_one {n : ℕ} (w : V n) : qf (1 : Matrix (Fin n) (Fin n) ℂ) w = ((�
   rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]; push_cast; ring
 
 /- English proof (translation)
-Establish `h` using `hH.dotProduct_mulVec_nonneg (fun j => (starRingEnd ℂ) (w j))`. Establish `e : star (fun j => (starRingEnd ℂ) (w j)) ⬝ᵥ (H.mulVec (fun j => (starRingEnd ℂ) (w j))) = qf H w`. Simplify using `only [qf, dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.conj_conj]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e]`. Conclude with `(Complex.le_def.mp h).1`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qf_re_nonneg {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (hH : H.PosSemidef) (w : V n) :
     0 ≤ (qf H w).re := by
@@ -51,9 +51,9 @@ theorem qf_re_nonneg {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (hH : H.PosSemid
   exact (Complex.le_def.mp h).1
 
 /- English proof (translation)
-Establish `h : IsCompact (Set.pi Set.univ fun _ : Fin n => Set.pi Set.univ fun _ : Fin n => closedBall (0 : ℂ) C)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall 0 C`. Establish `e : {H : Matrix (Fin n) (Fin n) ℂ | ∀ j l, ‖H j l‖ ≤ C} = (Set.pi Set.univ fun _ : Fin n => Set.pi Set.univ fun _ : Fin n => closedBall (0 : ℂ) C : Set (Matrix (Fin n) (Fin n) ℂ))`. Use extensionality with `H`. Use `show _ ↔ ∀ j ∈ Set.univ, ∀ l ∈ Set.univ, H j l ∈ closedBall (0 : ℂ) C`. Simplify using `[mem_closedBall, dist_zero_right]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_bdd (n : ℕ) (C : ℝ) :
     IsCompact {H : Matrix (Fin n) (Fin n) ℂ | ∀ j l, ‖H j l‖ ≤ C} := by
@@ -69,7 +69,7 @@ theorem isCompact_bdd (n : ℕ) (C : ℝ) :
   rw [e]; exact h
 
 /- English proof (translation)
-Take `⟨K, hK⟩` from `(isCompact_bdd n C).exists_bound_of_continuousOn (continuous_id.matrix_det).continuousOn`. Use `⟨max K 0, le_max_right _ _, fun H hH => (hK H hH).trans (le_max_left _ _)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_det_bound (n : ℕ) (C : ℝ) : ∃ K : ℝ, 0 ≤ K ∧
     ∀ H : Matrix (Fin n) (Fin n) ℂ, (∀ j l, ‖H j l‖ ≤ C) → ‖H.det‖ ≤ K := by
@@ -78,9 +78,9 @@ theorem exists_det_bound (n : ℕ) (C : ℝ) : ∃ K : ℝ, 0 ≤ K ∧
   refine ⟨max K 0, le_max_right _ _, fun H hH => (hK H hH).trans (le_max_left _ _)⟩
 
 /- English proof (translation)
-Establish `hev : ∀ᶠ t : ℝ in 𝓝 0, ∀ H ∈ {H : Matrix (Fin n) (Fin n) ℂ | ∀ j l, ‖H j l‖ ≤ C}, ‖(H + (t : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)).det - H.det‖ < r`. Use `(isCompact_bdd n C).eventually_forall_of_forall_eventually fun H _ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun z : ℝ × Matrix (Fin n) (Fin n) ℂ => ‖(z.2 + (z.1 : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)).det - z.2.det‖` using `by fun_prop`. Establish `h0 : ‖(H + ((0 : ℝ) : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)).det - H.det‖ = 0` using `by simp`. Use `hc.continuousAt (x := ((0 : ℝ), H))` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.eventually (gt_mem_nhds (by simpa [h0] using hr))`. Take `⟨t, ht, htpos⟩` from `((hev.filter_mono nhdsWithin_le_nhds).and (self_mem_nhdsWithin (s := Set.Ioi (0 : ℝ)) (a := 0))).exists`. Conclude with `⟨t, htpos, fun H hH => ht H hH⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_det_shift (n : ℕ) (C r : ℝ) (hr : 0 < r) : ∃ η : ℝ, 0 < η ∧
     ∀ H : Matrix (Fin n) (Fin n) ℂ, (∀ j l, ‖H j l‖ ≤ C) →
@@ -99,14 +99,14 @@ theorem exists_det_shift (n : ℕ) (C r : ℝ) (hr : 0 < r) : ∃ η : ℝ, 0 < 
   exact ⟨t, htpos, fun H hH => ht H hH⟩
 
 /- English proof (translation)
-Rewrite using `[qf_smul, qf_one, ← Complex.ofReal_mul, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qf_smul_one_re {n : ℕ} (c : ℝ) (w : V n) :
     (qf ((c : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)) w).re = c * ‖w‖ ^ 2 := by
   rw [qf_smul, qf_one, ← Complex.ofReal_mul, Complex.ofReal_re]
 
 /- English proof (translation)
-Rewrite using `[qf_smul, qf_add, qf_smul, qf_one, Complex.re_ofReal_mul, Complex.add_re, ← Complex.ofReal_mul, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qf_shift_re {n : ℕ} (m η : ℝ) (H : Matrix (Fin n) (Fin n) ℂ) (w : V n) :
     (qf ((m : ℂ) • (H + (η : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ))) w).re =
@@ -115,27 +115,25 @@ theorem qf_shift_re {n : ℕ} (m η : ℝ) (H : Matrix (Fin n) (Fin n) ℂ) (w :
     ← Complex.ofReal_mul, Complex.ofReal_re]
 
 /- English proof (translation)
-Establish `hm0 : (0 : ℝ) < m` using `by exact_mod_cast hm`. Use `set Hη := H + (η : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) with hHη`. Establish `hηpd : ((η : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)).PosDef` using `Matrix.PosDef.one.smul (a := η) hη`. Establish `hHηpd : Hη.PosDef` using `Matrix.PosDef.posSemidef_add hH hηpd`. Establish `hMpd : ((m : ℂ) • Hη).PosDef` using `hHηpd.smul (a := (m : ℝ)) hm0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set b : ℝ := m * η / 2 with hb`. Establish `hb0 : 0 < b` using `by positivity`. Establish `hGpd : ((b : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)).PosDef` using `Matrix.PosDef.one.smul (a := b) hb0`. Take `⟨hfi, hfint⟩` from `GlobalTheory.T.integral_exp_neg_hermitian_form_posDef n _ hMpd`. Take `⟨hgi, hgint⟩` from `GlobalTheory.T.integral_exp_neg_hermitian_form_posDef n _ hGpd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `set f : V n → ℝ := fun w => Real.exp (-(m * ((qf H w).re + η * ‖w‖ ^ 2))) with hf`. Use `set g : V n → ℝ := fun w => Real.exp (-(b * ‖w‖ ^ 2)) with hg`. Establish `ef : (fun w : V n => Real.exp (-(∑ j, ∑ l, ((m : ℂ) • Hη) j l * w j * (starRingEnd ℂ) (w l)).re)) = f`. Use function extensionality and compare the values at `w`. Conclude with `congrArg (fun x => Real.exp (-x)) (qf_shift_re m η H w)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `eg : (fun w : V n => Real.exp (-(∑ j, ∑ l, ((b : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)) j l * w j * (starRingEnd ℂ) (w l)).re)) = g`. Use function extensionality and compare the values at `w`. Conclude with `congrArg (fun x => Real.exp (-x)) (qf_smul_one_re b w)`. Rewrite `hfi`, `hfint` using `[ef]`. Rewrite `hgi`, `hgint` using `[eg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hD : ((m : ℂ) • Hη).det.re = (m : ℝ) ^ n * Hη.det.re`. Rewrite using `[Matrix.det_smul, Fintype.card_fin, show ((m : ℂ)) ^ n = (((m : ℝ) ^ n : ℝ) : ℂ) by push_cast; rfl, Complex.re_ofReal_mul]`. Establish `hGd : ((b : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)).det.re = b ^ n`. Rewrite using `[Matrix.det_smul, Fintype.card_fin, Matrix.det_one, mul_one, ← Complex.ofReal_pow, Complex.ofReal_re]`. Rewrite `hfint` using `[hD]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hgint` using `[hGd]`. Establish `hDpos : 0 < Hη.det.re`. Use `hHηpd.det_pos` as an intermediate fact. Conclude with `(Complex.lt_def.mp this).1`. Establish `hsplit` using `integral_add_compl (s := ball (0 : V n) δ) measurableSet_ball hfi`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `htail : ∫ w in (ball (0 : V n) δ)ᶜ, f w ≤ Real.exp (-(m * η * δ ^ 2 / 2)) * ∫ w, g w`. Rewrite using `[← integral_const_mul]`. Use `(setIntegral_mono_on hfi.integrableOn (hgi.const_mul _).integrableOn measurableSet_ball.compl fun w hw => ?_).trans (setIntegral_le_integral (hgi.const_mul _) (Eventually.of_forall fun w => by positivity))` and prove the remaining obligations. Establish `hw' : δ ≤ ‖w‖` using `by simpa [mem_ball, dist_zero_right] using hw`. Establish `hq` using `qf_re_nonneg H hH w`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hf, hg]`. Rewrite using `[← Real.exp_add, Real.exp_le_exp]`. Establish `h1 : δ ^ 2 ≤ ‖w‖ ^ 2` using `pow_le_pow_left₀ hδ.le hw' 2`. Establish `h2 : 0 ≤ (m : ℝ) * η` using `by positivity`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h1 h2, mul_nonneg hm0.le hq]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hmain : (m : ℝ) ^ n * ∫ w in ball (0 : V n) δ, f w = Real.pi ^ n / Hη.det.re - (m : ℝ) ^ n * ∫ w in (ball (0 : V n) δ)ᶜ, f w`. Rewrite using `[eq_sub_iff_add_eq, ← mul_add, hsplit, hfint]`. Clear the denominators using the available nonvanishing facts. Establish `hT : (m : ℝ) ^ n * (Real.exp (-(m * η * δ ^ 2 / 2)) * ∫ w, g w) = Real.exp (-(m * η * δ ^ 2 / 2)) * (2 * Real.pi / η) ^ n`. Rewrite using `[hgint, hb]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Clear the denominators using the available nonvanishing facts. Establish `h1 : η ^ n * η⁻¹ ^ n = 1` using `by rw [← mul_pow, mul_inv_cancel₀ hη.ne', one_pow]`. Establish `h2 : (1 / 2 : ℝ) ^ n * 2 ^ n = 1` using `by rw [← mul_pow]; norm_num`. Take the linear combination `(-((m : ℝ) ^ n * Real.pi ^ n * (1 / 2 : ℝ) ^ n * 2 ^ n)) * h1 - ((m : ℝ) ^ n * Real.pi ^ n) * h2`. Use `show _ ≤ (m : ℝ) ^ n * ∫ w in ball (0 : V n) δ, f w`.
-
-Rewrite using `[hmain, ← hT]`. Use `mul_le_mul_of_nonneg_left htail (pow_nonneg hm0.le n)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem trunc_lower {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (hH : H.PosSemidef) (η δ : ℝ)
     (hη : 0 < η) (hδ : 0 < δ) (m : ℕ) (hm : 1 ≤ m) :
@@ -207,27 +205,23 @@ theorem trunc_lower {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (hH : H.PosSemide
   linarith
 
 /- English proof (translation)
-Introduce `n C ε hε`. Use `set P : ℝ := Real.pi ^ n with hPdef`. Establish `hP : 0 < P` using `pow_pos Real.pi_pos n`. Use `set r : ℝ := ε * P / 2 with hrdef`. Establish `hr : 0 < r` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hK0, hK⟩` from `exists_det_bound n C`. Take `⟨η, hη, hηd⟩` from `exists_det_shift n C r hr`. Use `⟨η, hη, fun δ hδ => ?_⟩` and prove the remaining obligations. Use `set A : ℝ := K / P + ε with hAdef`. Establish `hA : 0 < A` using `by positivity`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set K2 : ℝ := K + r with hK2def`. Establish `hK2 : 0 < K2` using `by positivity`. Establish `hs : 0 < r / K2 / A` using `by positivity`. Establish `hT : Tendsto (fun m : ℕ => Real.exp (-(m * η * δ ^ 2 / 2)) * (2 * Real.pi / η) ^ n) atTop (𝓝 0)`. Establish `h1 : Tendsto (fun m : ℕ => (m : ℝ) * (η * δ ^ 2 / 2)) atTop atTop` using `tendsto_natCast_atTop_atTop.atTop_mul_const (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h2` using `(Real.tendsto_exp_neg_atTop_nhds_zero.comp h1).mul_const ((2 * Real.pi / η) ^ n)`. Rewrite `h2` using `[zero_mul]`. Use `h2.congr fun m => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `filter_upwards [hT.eventually (gt_mem_nhds hs), eventually_ge_atTop 1] with m hm hm1`. Introduce `H hH hC`. Establish `hl` using `trunc_lower H hH η δ hη hδ m hm1`. Use `show 1 ≤ _ * _ * ∫ w in ball (0 : V n) δ, Real.exp (-(m * ((qf H w).re + η * ‖w‖ ^ 2)))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set I := ∫ w in ball (0 : V n) δ, Real.exp (-(m * ((qf H w).re + η * ‖w‖ ^ 2)))`. Use `set T := Real.exp (-(m * η * δ ^ 2 / 2)) * (2 * Real.pi / η) ^ n with hTdef`. Establish `hT0 : 0 ≤ T` using `by positivity`. Use `set d := H.det.re with hddef`. Use `set D := (H + (η : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)).det.re with hDdef`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd0 : 0 ≤ d`. Use `(Complex.le_def.mp hH.det_nonneg).1` as an intermediate fact. Simplify using `using this`. Establish `hdK : d ≤ K` using `(Complex.re_le_norm _).trans (hK H hC)`. Establish `hDd : D - d < r`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `(Complex.re_le_norm _).trans_lt (hηd H hC)` as an intermediate fact. Rewrite `this` using `[Complex.sub_re]`. Conclude with `this`. Establish `hDpos : 0 < D`. Establish `hηpd : ((η : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)).PosDef` using `Matrix.PosDef.one.smul (a := η) hη`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Complex.lt_def.mp (Matrix.PosDef.posSemidef_add hH hηpd).det_pos).1`. Establish `e1 : (d / P + ε) * (P / D) = (d + ε * P) / D` using `by field_simp`. Establish `e2 : r / K2 ≤ r / D` using `div_le_div_of_nonneg_left hr.le hDpos (by linarith)`. Establish `e3 : 1 + r / D ≤ (d + ε * P) / D`. Rewrite using `[le_div_iff₀ hDpos, add_mul, div_mul_cancel₀ _ hDpos.ne']`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `e4 : (d / P + ε) * T ≤ A * T` using `mul_le_mul_of_nonneg_right (by have := div_le_div_of_nonneg_right hdK hP.le; linarith) hT0`. Establish `e5 : A * T < r / K2`. Use `(lt_div_iff₀ hA).mp hm` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `e6 : (d / P + ε) * (P / D - T) ≤ (d / P + ε) * ((m : ℝ) ^ n * I)` using `mul_le_mul_of_nonneg_left hl (by positivity)`. Rewrite using `[mul_assoc]`. Rewrite `e6` using `[mul_sub, e1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem trunc_gauss : ∀ (n : ℕ) (C ε : ℝ), 0 < ε → ∃ η : ℝ, 0 < η ∧ ∀ δ : ℝ, 0 < δ →
     ∀ᶠ m : ℕ in atTop, ∀ H : Matrix (Fin n) (Fin n) ℂ, H.PosSemidef → (∀ j l, ‖H j l‖ ≤ C) →

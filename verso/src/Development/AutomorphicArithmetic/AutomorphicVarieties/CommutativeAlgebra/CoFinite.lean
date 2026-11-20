@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `Submodule.smul_induction_on hx (fun a ha y _ i => ?_) (fun a b ha hb i => ?_)` and prove the remaining obligations. Conclude with `J.mul_mem_right _ ha`. Conclude with `J.add_mem (ha i) (hb i)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hx`. Rewrite using `[pi_eq_sum_univ x]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hx i) Submodule.mem_top`.
+A detailed English derivation is pending.
 -/
 private theorem mem_smul_top_pi {R : Type} [CommRing R] (J : Ideal R) {r : ℕ} (x : Fin r → R) :
     x ∈ J • (⊤ : Submodule R (Fin r → R)) ↔ ∀ i, x i ∈ J := by
@@ -19,13 +19,13 @@ private theorem mem_smul_top_pi {R : Type} [CommRing R] (J : Ideal R) {r : ℕ} 
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hx i) Submodule.mem_top
 
 /- English proof (translation)
-Use `⟨fun {f} hf => ?_⟩` and prove the remaining obligations. Establish `hc : ∀ i : Fin r, ∃ L : R, ∀ n, f n i ≡ L [SMOD (I ^ n • ⊤ : Submodule R R)]`. Introduce `i`. Use `IsPrecomplete.prec' (f := fun n => f n i) ?_` and prove the remaining obligations. Introduce `m n hmn`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hf hmn`. Rewrite `h`, the goal using `[SModEq.sub_mem]`. Rewrite `h` using `[mem_smul_top_pi]`. Use `h i` as an intermediate fact. Simplify `this` using `[Ideal.smul_top_eq_map, smul_eq_mul, Ideal.mul_top]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `choose L hL using hc`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, mem_smul_top_pi]`. Introduce `i`. Use `hL i n` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[SModEq.sub_mem]`. Simplify `this` using `[smul_eq_mul, Ideal.mul_top]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem isPrecomplete_pi {R : Type} [CommRing R] (I : Ideal R) [IsPrecomplete I R] (r : ℕ) :
     IsPrecomplete I (Fin r → R) := by
@@ -48,23 +48,21 @@ private theorem isPrecomplete_pi {R : Type} [CommRing R] (I : Ideal R) [IsPrecom
   simpa [smul_eq_mul, Ideal.mul_top] using this
 
 /- English proof (translation)
-Take `⟨r, φ, hφ⟩` from `Module.Finite.exists_fin' R M`. Use `haveI := isPrecomplete_pi I r`. Establish `himg : ∀ n : ℕ, (I ^ n • ⊤ : Submodule R M) = Submodule.map φ (I ^ n • ⊤)`. Introduce `n`. Rewrite using `[Submodule.map_smul'', Submodule.map_top, LinearMap.range_eq_top.2 hφ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun {f} hf => ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ n, f (n + 1) - f n ∈ (I ^ n • ⊤ : Submodule R M)`. Introduce `n`. Use `SModEq.sub_mem.1 (hf (Nat.le_succ n))` as an intermediate fact. Rewrite using `[← neg_sub]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `neg_mem this`. Establish `hd : ∀ n, ∃ d : Fin r → R, d ∈ (I ^ n • ⊤ : Submodule R (Fin r → R)) ∧ φ d = f (n + 1) - f n`. Introduce `n`. Use `hmem n` as an intermediate fact. Rewrite `this` using `[himg n, Submodule.mem_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `this`. Use `choose d hdmem hdφ using hd`. Take `⟨y0, hy0⟩` from `hφ (f 0)`. Use `set g : ℕ → (Fin r → R) := fun n => y0 + ∑ k ∈ Finset.range n, d k with hg`. Establish `hgφ : ∀ n, φ (g n) = f n`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [hg, hy0]`. Consider the case `succ n ih`. Establish `: g (n + 1) = g n + d n`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Simplify using `only [hg, Finset.sum_range_succ]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, map_add, ih, hdφ]`. Normalize the expressions using the abelian group laws. Establish `hgc : ∀ {m n : ℕ}, m ≤ n → g m ≡ g n [SMOD (I ^ m • ⊤ : Submodule R (Fin r → R))]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `m n hmn`. Rewrite using `[SModEq.sub_mem]`. Establish `: g m - g n = -∑ k ∈ Finset.Ico m n, d k`. Rewrite using `[Finset.sum_Ico_eq_sub _ hmn]`. Simplify using `only [hg]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Use `neg_mem (Submodule.sum_mem _ fun k hk => ?_)` and prove the remaining obligations. Conclude with `Submodule.smul_mono_left (Ideal.pow_le_pow_right (Finset.mem_Ico.1 hk).1) (hdmem k)`. Take `⟨L, hL⟩` from `IsPrecomplete.prec' g hgc`.
-
-Use `⟨φ L, fun n => ?_⟩` and prove the remaining obligations. Establish `h1` using `(hL n).map φ`. Rewrite `h1` using `[hgφ, ← himg n]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isPrecomplete_finite {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [Module.Finite R M] (I : Ideal R) [IsPrecomplete I R] : IsPrecomplete I M := by
@@ -110,15 +108,15 @@ private theorem isPrecomplete_finite {R M : Type} [CommRing R] [AddCommGroup M] 
   exact h1
 
 /- English proof (translation)
-Establish `hsm : ∀ (K : Ideal R) (x : R), x ∈ (K • (⊤ : Submodule R R)) ↔ x ∈ K`. Introduce `K x`. Simplify using `[smul_eq_mul, Ideal.mul_top]`. Establish `he' : I ^ (e + 1) ≤ J` using `le_trans (Ideal.pow_le_pow_right (Nat.le_succ e)) he`. Establish `hpow : ∀ k, I ^ ((e + 1) * k) ≤ J ^ k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[pow_mul]`. Conclude with `Ideal.pow_right_mono he' k`. Use `⟨fun {f} hf => ?_⟩` and prove the remaining obligations. Establish `hgc : ∀ {m n : ℕ}, m ≤ n → f ((e + 1) * m) ≡ f ((e + 1) * n) [SMOD (J ^ m • ⊤ : Submodule R R)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m n hmn`. Establish `h` using `hf (Nat.mul_le_mul_left (e + 1) hmn)`. Rewrite `h`, the goal using `[SModEq.sub_mem, hsm]`. Conclude with `hpow m h`. Take `⟨L, hL⟩` from `hJ.prec' (fun k => f ((e + 1) * k)) hgc`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Establish `h1` using `hf (show n ≤ (e + 1) * n by nlinarith)`. Establish `h2` using `hL n`. Rewrite `h1`, `h2`, the goal using `[SModEq.sub_mem, hsm]`. Establish `h3 : f ((e + 1) * n) - L ∈ I ^ n` using `Ideal.pow_right_mono hJI n h2`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Ideal.add_mem _ h1 h3` as an intermediate fact. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 private theorem prec_cofinal {R : Type*} [CommRing R] {I J : Ideal R} (hJI : J ≤ I) {e : ℕ}
     (he : I ^ e ≤ J) (hJ : IsPrecomplete J R) : IsPrecomplete I R := by
@@ -147,23 +145,17 @@ private theorem prec_cofinal {R : Type*} [CommRing R] {I J : Ideal R} (hJI : J �
   simpa using this
 
 /- English proof (translation)
-Introduce `O _ _ R _ _ _ R' _ _ _ _ _ _ hres`. Use `haveI : IsNoetherianRing R := IsCO.toIsNoetherian (O := O)`. Use `haveI : IsNoetherian R R' := inferInstance`. Use `haveI hN : IsNoetherianRing R' := isNoetherian_of_tower R this`. Use `haveI : Algebra.IsIntegral R R' := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI hcompl : IsAdicComplete (maximalIdeal R) R := IsCO.complete (O := O)`. Establish `hcomap : ∀ P : Ideal R', P.IsPrime → maximalIdeal R ≤ P.comap (algebraMap R R') → P = maximalIdeal R'`. Introduce `P hP hle`. Establish `hcm : (P.comap (algebraMap R R')).IsMaximal`. Establish `hne : P.comap (algebraMap R R') ≠ ⊤` using `(Ideal.IsPrime.comap (algebraMap R R')).ne_top`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: P.comap (algebraMap R R') = maximalIdeal R` using `le_antisymm (IsLocalRing.le_maximalIdeal hne) hle`. Rewrite using `[this]`. Use `infer_instance`. Use `haveI := Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := R) P hcm`. Conclude with `IsLocalRing.eq_maximalIdeal this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcm' : (maximalIdeal R').comap (algebraMap R R') = maximalIdeal R` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := R) (maximalIdeal R'))`. Establish `hloc : IsLocalHom (algebraMap R R')`. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hna`. Establish `: a ∈ maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal a).2 hna`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[← hcm', Ideal.mem_comap]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 this ha`. Use `set J : Ideal R' := (maximalIdeal R).map (algebraMap R R') with hJdef`. Establish `hJI : J ≤ maximalIdeal R'`. Rewrite using `[hJdef, Ideal.map_le_iff_le_comap, hcm']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrad : maximalIdeal R' ≤ J.radical`. Rewrite using `[Ideal.radical_eq_sInf]`. Use `le_sInf fun P hP => ?_` and prove the remaining obligations. Take `⟨hJP, hPp⟩` from `hP`. Rewrite using `[hcomap P hPp (Ideal.map_le_iff_le_comap.1 hJP)]`.
-
-Take `⟨e, he⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg hrad (IsNoetherian.noetherian _)`. Use `haveI : IsPrecomplete (maximalIdeal R) R' := isPrecomplete_finite (R := R) (M := R') (maximalIdeal R)`. Establish `hJp : IsPrecomplete J R'`. Rewrite using `[hJdef]`. Conclude with `IsPrecomplete.map_algebraMap_iff.2 this`.
-
-Establish `hprec : IsPrecomplete (maximalIdeal R') R'` using `prec_cofinal hJI he hJp`. Use `haveI : IsLocalHom (algebraMap O R) := IsCO.isLocalHom`. Establish `hlocO : IsLocalHom (algebraMap O R')`. Rewrite using `[IsScalarTower.algebraMap_eq O R R']`. Use `infer_instance`.
-
-Conclude with `{ complete := { toIsHausdorff := inferInstance, toIsPrecomplete := hprec } isLocalHom := hlocO res_surj := hres }`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.co_finite :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (R' : Type) [CommRing R'] [Algebra O R'] [Algebra R R'] [IsScalarTower O R R'] [Module.Finite R R'] [IsLocalRing R'],

@@ -15,17 +15,17 @@ noncomputable def invPowHom (i : ℕ) : ℕ →* ℝ where
   map_mul' a b := by push_cast; rw [mul_pow, mul_inv]
 
 /- English proof (translation)
-Introduce `i hi P hP`. Establish `hs : Summable (fun n : ℕ => 1 / ((n : ℝ) + 1) ^ i)`. Use `(summable_nat_add_iff 1).2 (Real.summable_one_div_nat_pow.2 (by omega : 1 < i))` as an intermediate fact. Simplify using `using this`. Establish `hs' : Summable (invPowHom i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `Real.summable_one_div_nat_pow.2 (by omega : 1 < i)` as an intermediate fact. Simplify `this` using `[invPowHom]`. Establish `hlt : ∀ {p : ℕ}, p.Prime → ‖invPowHom i p‖ < 1`. Introduce `p hp`. Establish `h1 : (1 : ℝ) < (p : ℝ) ^ i` using `one_lt_pow₀ (by exact_mod_cast hp.one_lt) (by omega)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [invPowHom, MonoidHom.coe_mk, OneHom.coe_mk, norm_inv, norm_pow, Real.norm_natCast]`. Conclude with `inv_lt_one_of_one_lt₀ h1`. Establish `hE` using `(EulerProduct.summable_and_hasSum_factoredNumbers_prod_filter_prime_geometric hlt P).2`. Establish `hfilt : P.filter Nat.Prime = P` using `Finset.filter_true_of_mem hP`. Rewrite `hE` using `[hfilt]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hfac : ∀ p ∈ P, 0 < 1 - ((p : ℝ) ^ i)⁻¹`. Introduce `p hp`. Establish `h1 : (1 : ℝ) < (p : ℝ) ^ i` using `one_lt_pow₀ (by exact_mod_cast (hP p hp).one_lt) (by omega)`. Conclude with `sub_pos.2 (inv_lt_one_of_one_lt₀ h1)`. Establish `hpos : 0 < ∏ p ∈ P, (1 - ((p : ℝ) ^ i)⁻¹)` using `Finset.prod_pos hfac`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : ∏ p ∈ P, (1 - invPowHom i p)⁻¹ ≤ ∑' n : ℕ, invPowHom i n`. Rewrite using `[← hE.tsum_eq]`. Conclude with `Summable.tsum_subtype_le (⇑(invPowHom i)) _ (fun n => by change 0 ≤ ((n : ℝ) ^ i)⁻¹; positivity) hs'`. Establish `hz : ∑' n : ℕ, invPowHom i n = ∑' n : ℕ, 1 / ((n : ℝ) + 1) ^ i`. Rewrite using `[hs'.tsum_eq_zero_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[invPowHom, show i ≠ 0 by omega]`. Rewrite `hle` using `[hz, Finset.prod_inv_distrib]`. Simplify using `only [invPowHom, MonoidHom.coe_mk, OneHom.coe_mk] at hle`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem inv_zeta_le_prod_primes : ∀ (i : ℕ), 2 ≤ i → ∀ P : Finset ℕ, (∀ p ∈ P, p.Prime) →
     (∑' n : ℕ, 1 / ((n : ℝ) + 1) ^ i)⁻¹ ≤ ∏ p ∈ P, (1 - ((p : ℝ) ^ i)⁻¹) := by
@@ -62,13 +62,11 @@ theorem inv_zeta_le_prod_primes : ∀ (i : ℕ), 2 ≤ i → ∀ P : Finset ℕ,
     _ = _ := inv_inv _
 
 /- English proof (translation)
-Introduce `E _ _ _ r v hr hnp`. Set `_ : Field (𝓞 (maximalRealSubfield E) ⧸ v.asIdeal)` to `Ideal.Quotient.field _`. Establish `hc : Nat.card (𝓞 (maximalRealSubfield E) ⧸ v.asIdeal) = Ideal.absNorm v.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `h` using `GlobalTheory.FiniteOrders.card_specialLinearGroup hc (Fin r) (Fintype.card_fin r) hr`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq : (0 : ℝ) < Ideal.absNorm v.asIdeal`. Establish `: Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `locFactor resOrder`. Rewrite using `[if_neg hnp]`. Establish `h' : (Nat.card (Matrix.SpecialLinearGroup (Fin r) (𝓞 (maximalRealSubfield E) ⧸ v.asIdeal)) : ℝ) = (Ideal.absNorm v.asIdeal : ℝ) ^ (r ^ 2 - 1) * ∏ i ∈ Finset.Icc 2 r, (1 - ((Ideal.absNorm v.asIdeal : ℝ) ^ i)⁻¹)`. Use `congrArg (fun x : ℚ => (x : ℝ)) h` as an intermediate fact. Move the coercions through the operations in `at this`.
-
-Conclude with `this`. Rewrite using `[h', mul_div_cancel_left₀ _ (pow_ne_zero _ hq.ne')]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_locFactor_of_not_prime : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ)
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))), 1 ≤ r →
@@ -93,31 +91,29 @@ theorem le_locFactor_of_not_prime : ∀ (E : Type) [Field E] [NumberField E] [Is
   rw [h', mul_div_cancel_left₀ _ (pow_ne_zero _ hq.ne')]
 
 /- English proof (translation)
-Introduce `E _ _ _ r hr hm`. Set `g : ℝ → ℝ` to `fun x => ∏ i ∈ Finset.Icc 2 r, (1 - (x ^ i)⁻¹)`. Use `set Z : ℝ := ∏ i ∈ Finset.Icc 2 r, ∑' n : ℕ, 1 / ((n : ℝ) + 1) ^ i with hZdef`. Establish `hzeta : ∀ i ∈ Finset.Icc 2 r, 1 ≤ ∑' n : ℕ, 1 / ((n : ℝ) + 1) ^ i`. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hi2 : 2 ≤ i` using `(Finset.mem_Icc.1 hi).1`. Establish `hs : Summable (fun n : ℕ => 1 / ((n : ℝ) + 1) ^ i)`. Use `(summable_nat_add_iff 1).2 (Real.summable_one_div_nat_pow.2 (by omega : 1 < i))` as an intermediate fact. Simplify using `using this`. Use `hs.le_tsum 0 (fun j _ => by positivity)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hZ : 0 < Z` using `Finset.prod_pos fun i hi => lt_of_lt_of_le one_pos (hzeta i hi)`. Establish `hf : fdeg E = Module.finrank ℚ (maximalRealSubfield E)`. Establish `h2 : Module.finrank (maximalRealSubfield E) E = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Unfold `fdeg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E, h2]`. Use linear arithmetic over natural numbers and integers. Establish `g_nonneg : ∀ x : ℝ, 1 ≤ x → 0 ≤ g x` using `fun x hx => Finset.prod_nonneg fun i _ => sub_nonneg.2 (inv_le_one_of_one_le₀ (one_le_pow₀ hx))`. Establish `g_le_one : ∀ x : ℝ, 1 ≤ x → g x ≤ 1` using `fun x hx => Finset.prod_le_one (fun i _ => sub_nonneg.2 (inv_le_one_of_one_le₀ (one_le_pow₀ hx))) fun i _ => sub_le_self _ (by positivity)`. Establish `g_mono : ∀ x y : ℝ, 1 ≤ x → x ≤ y → g x ≤ g y` using `fun x y hx hxy => Finset.prod_le_prod (fun i _ => sub_nonneg.2 (inv_le_one_of_one_le₀ (one_le_pow₀ hx))) fun i _ => sub_le_sub_left (inv_anti₀ (by positivity) (pow_le_pow_left₀ (by linarith) hxy i)) _`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hloc : ∀ v, g (Ideal.absNorm v.asIdeal) ≤ locFactor E r v`. Introduce `v`. Distinguish the cases in `hp : (v.asIdeal.map (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E))).IsPrime`. Conclude with `GlobalTheory.T.local_factor_lower_bound E r v (by omega) hp`. Conclude with `le_locFactor_of_not_prime E r v (by omega) hp`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `pv : HeightOneSpectrum (𝓞 (maximalRealSubfield E)) → ℕ` to `ReciprocityTheory.Neutral.Bridge.ratPrimeBelow`. Establish `hN : ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)), (pv v).Prime ∧ pv v ≤ Ideal.absNorm v.asIdeal`. Introduce `v`. Establish `hp` using `ReciprocityTheory.Neutral.Bridge.ratPrimeBelow_prime v`. Take `⟨f, hfv⟩` from `ReciprocityTheory.Neutral.Bridge.absNorm_eq_ratPrimeBelow_pow v`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `v.isPrime.ne_top`. Establish `hf0 : f ≠ 0` using `by rintro rfl; rw [pow_zero] at hfv; exact h1 hfv`. Use `⟨hp, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hfv]`. Conclude with `Nat.le_self_pow hf0 _`. Establish `key : ∀ s : Finset (HeightOneSpectrum (𝓞 (maximalRealSubfield E))), (Z ^ fdeg E)⁻¹ ≤ ∏ v ∈ s, locFactor E r v`. Introduce `s`. Use `set T := s.image pv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hp1 : ∀ p ∈ T, (1 : ℝ) ≤ p`. Introduce `p hp`. Take `⟨v, -, rfl⟩` from `Finset.mem_image.1 hp`. Conclude with `(hN v).1.one_lt.le` after adjusting the coercions. Establish `s1 : ∏ v ∈ s, g (pv v) ≤ ∏ v ∈ s, locFactor E r v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_le_prod (fun v _ => g_nonneg _ (by exact_mod_cast (hN v).1.one_lt.le)) fun v _ => (g_mono _ _ (by exact_mod_cast (hN v).1.one_lt.le) (by exact_mod_cast (hN v).2)).trans (hloc v)` and prove the remaining obligations. Establish `s2 : ∏ v ∈ s, g (pv v) = ∏ p ∈ T, g p ^ (s.filter fun v => pv v = p).card`. Rewrite using `[Finset.prod_comp (fun p : ℕ => g p) pv]`. Establish `s3 : ∏ p ∈ T, g p ^ fdeg E ≤ ∏ p ∈ T, g p ^ (s.filter fun v => pv v = p).card`. Use `Finset.prod_le_prod (fun p hp => pow_nonneg (g_nonneg _ (hp1 p hp)) _) fun p hp => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `pow_le_pow_of_le_one (g_nonneg _ (hp1 p hp)) (g_le_one _ (hp1 p hp)) ?_` and prove the remaining obligations. Rewrite using `[hf]`. Take `⟨v, -, rfl⟩` from `Finset.mem_image.1 hp`. Conclude with `ReciprocityTheory.Neutral.Bridge.card_fiber_ratPrimeBelow_le id Function.injective_id s (pv v) (hN v).1`. Establish `s4 : Z⁻¹ ≤ ∏ p ∈ T, g p`.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.prod_comm, hZdef, ← Finset.prod_inv_distrib]`. Use `Finset.prod_le_prod (fun i _ => by positivity) fun i hi => ?_` and prove the remaining obligations. Use `inv_zeta_le_prod_primes i (Finset.mem_Icc.1 hi).1 T fun p hp => ?_` and prove the remaining obligations. Take `⟨v, -, rfl⟩` from `Finset.mem_image.1 hp`. Conclude with `(hN v).1`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `hle : (Z ^ fdeg E)⁻¹ ≤ ∏' v, locFactor E r v` using `ge_of_tendsto hm.hasProd (Filter.Eventually.of_forall key)`. Establish `hpos : 0 < (Z ^ fdeg E)⁻¹` using `by positivity`. Use `⟨hpos.trans_le hle, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem tprod_locFactor_bound : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ), 2 ≤ r →
     Multipliable (locFactor E r) → 0 < ∏' v, locFactor E r v ∧

@@ -31,7 +31,7 @@ theorem presheafRes_sectionsPresheaf (F : X.Modules) {W W' : X.Opens} (h : W' �
     presheafRes (sectionsPresheaf R F) h = sectionsOn.res R F h := rfl
 
 /- English proof (translation)
-The claim follows from `(TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing (C := ModuleCat.{u} R) (X := X.toPresheafedSpace.carrier) (sectionsPresheaf R F)).2 ((TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing (C := AddCommGrpCat.{u}) F.presheaf).1 F.isSheaf) @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem isSheaf_sectionsPresheaf (F : X.Modules) :
     Presheaf.IsSheaf (Opens.grothendieckTopology X) (sectionsPresheaf R F) :=
@@ -42,7 +42,7 @@ theorem isSheaf_sectionsPresheaf (F : X.Modules) :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun (sectionsOn.res_comp_res R F h h') x`.
+A detailed English derivation is pending.
 -/
 theorem sectionsOn.res_res (F : X.Modules) {W W' W'' : X.Opens} (h : W' ≤ W) (h' : W'' ≤ W')
     (x : sectionsOn F W) :
@@ -55,7 +55,7 @@ def sectionsOn.congrOpens (F : X.Modules) {W W' : X.Opens} (h : W = W') :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem sectionsOn.congrOpens_apply (F : X.Modules) {W W' : X.Opens} (h : W = W')
     (x : sectionsOn F W) : sectionsOn.congrOpens R F h x = sectionsOn.res R F h.ge x := rfl
@@ -104,7 +104,7 @@ variable {F} in
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simps]`.
+A detailed English derivation is pending.
 -/
 theorem cechCubeMap_app (φ : F ⟶ G) (s : Finset ι) :
     ((cechCubeMap R V U φ).app s).hom = sectionsOn.map R φ (cechOpen V U s) := rfl
@@ -183,14 +183,14 @@ theorem cech_X (p : ℕ) : (cech R F V U).X p = ModuleCat.of R
     (∀ s : {s : Finset ι // s.card = p + 1}, sectionsOn F (V ⊓ ⨅ i ∈ s.1, U i)) := rfl
 
 /- English proof (translation)
-The claim follows from `cechComplex_d _ p`.
+A detailed English derivation is pending.
 -/
 theorem cech_d (p : ℕ) :
     (cech R F V U).d p (p + 1) = ModuleCat.ofHom (Cube.d (cechCube R F V U) (p + 1)) :=
   cechComplex_d _ p
 
 /- English proof (translation)
-Rewrite using `[cech_d]`. Conclude with `Cube.d_apply (cechCube R F V U) (p + 1) x t`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cech_d_apply (p : ℕ)
     (x : ∀ s : {s : Finset ι // s.card = p + 1}, sectionsOn F (cechOpen V U s.1))
@@ -241,14 +241,14 @@ variable {F} in
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem cechMap_comp (φ : F ⟶ G) (ψ : G ⟶ H) :
     cechMap R V U (φ ≫ ψ) = cechMap R V U φ ≫ cechMap R V U ψ := rfl
 
 @[simp]
 /- English proof (translation)
-The claim follows from `(cechHFunctor R V U n).map_id F`.
+A detailed English derivation is pending.
 -/
 theorem cechHMap_id (n : ℕ) : cechHMap R V U (𝟙 F) n = 𝟙 _ := (cechHFunctor R V U n).map_id F
 
@@ -256,7 +256,7 @@ variable {F} in
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `(cechHFunctor R V U n).map_comp φ ψ`.
+A detailed English derivation is pending.
 -/
 theorem cechHMap_comp (φ : F ⟶ G) (ψ : G ⟶ H) (n : ℕ) :
     cechHMap R V U (φ ≫ ψ) n = cechHMap R V U φ n ≫ cechHMap R V U ψ n :=
@@ -265,7 +265,7 @@ theorem cechHMap_comp (φ : F ⟶ G) (ψ : G ⟶ H) (n : ℕ) :
 variable {F} in
 
 /- English proof (translation)
-The claim follows from `(cechHFunctor R V U n).map_add`.
+A detailed English derivation is pending.
 -/
 theorem cechHMap_add (φ ψ : F ⟶ G) (n : ℕ) :
     cechHMap R V U (φ + ψ) n = cechHMap R V U φ n + cechHMap R V U ψ n :=
@@ -283,7 +283,7 @@ def cechHMapIso (e : F ≅ G) (n : ℕ) : cechH R F V U n ≅ cechH R G V U n :=
 variable {F} in
 
 /- English proof (translation)
-The claim follows from `homologyMap_cechClass (cechCubeMap R V U φ) n x _ rfl`.
+A detailed English derivation is pending.
 -/
 theorem cechHMap_cechClass (φ : F ⟶ G) (n : ℕ)
     (x : LinearMap.ker (Cube.d (cechCube R F V U) (n + 1))) :
@@ -292,7 +292,7 @@ theorem cechHMap_cechClass (φ : F ⟶ G) (n : ℕ)
   homologyMap_cechClass (cechCubeMap R V U φ) n x _ rfl
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `cechClass_surjective (cechCube R F V U) n x`. Conclude with `(homologyMap_cechClass (cechCubeMap R V U _) n x (r • x) rfl).trans (map_smul (cechClass (cechCube R F V U) n) r x)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cechHMap_smulHom_apply (r : R) (n : ℕ) (x : cechH R F V U n) :
     (cechHMap R V U (smulHom F (algebraMap R Γ(X, ⊤) r)) n).hom x = r • x := by
@@ -301,7 +301,7 @@ theorem cechHMap_smulHom_apply (r : R) (n : ℕ) (x : cechH R F V U n) :
     (map_smul (cechClass (cechCube R F V U) n) r x)
 
 /- English proof (translation)
-The claim follows from `cechFunctor_shortExact (S.map (cechCubeFunctor R V U)) fun s hs => ModuleCat.shortComplex_shortExact _ (h s hs).2.1 (h s hs).1 (h s hs).2.2`.
+A detailed English derivation is pending.
 -/
 theorem cechModulesFunctor_shortExact (S : ShortComplex X.Modules)
     (h : ∀ s : Finset ι, s.Nonempty →
@@ -313,19 +313,19 @@ theorem cechModulesFunctor_shortExact (S : ShortComplex X.Modules)
     ModuleCat.shortComplex_shortExact _ (h s hs).2.1 (h s hs).1 (h s hs).2.2
 
 /- English proof (translation)
-The claim follows from `isZero_cechComplex_X _ h`.
+A detailed English derivation is pending.
 -/
 theorem isZero_cech_X [Fintype ι] {n : ℕ} (h : Fintype.card ι ≤ n) :
     IsZero ((cech R F V U).X n) := isZero_cechComplex_X _ h
 
 /- English proof (translation)
-The claim follows from `isZero_cechComplex_homology _ h`.
+A detailed English derivation is pending.
 -/
 theorem isZero_cechH [Fintype ι] {n : ℕ} (h : Fintype.card ι ≤ n) :
     IsZero (cechH R F V U n) := isZero_cechComplex_homology _ h
 
 /- English proof (translation)
-The claim follows from `ModuleCat.isZero_iff_subsingleton.1 (isZero_cechH R F V U h)`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_cechH [Fintype ι] {n : ℕ} (h : Fintype.card ι ≤ n) :
     Subsingleton (cechH R F V U n) := ModuleCat.isZero_iff_subsingleton.1 (isZero_cechH R F V U h)
@@ -347,7 +347,7 @@ variable {F V U} in
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `congrArg cechComplexMap (presheafCubeRes_naturality (sectionsPresheafMap R φ) (cechOpen_mono (le_top (a := V)) fun _ => le_rfl))`.
+A detailed English derivation is pending.
 -/
 theorem cechTopIso_naturality (h : ∀ i, U i ≤ V) (φ : F ⟶ G) :
     cechMap R ⊤ U φ ≫ (cechTopIso R G h).hom = (cechTopIso R F h).hom ≫ cechMap R V U φ :=
@@ -360,7 +360,7 @@ def cechInfIso : cech R F V U ≅ cech R F V fun i => V ⊓ U i :=
 
 @[simp]
 /- English proof (translation)
-The claim follows from `d_presheafCechAug (sectionsPresheaf R F) V U x`.
+A detailed English derivation is pending.
 -/
 theorem d_cechRestrictions (x : sectionsOn F V) :
     Cube.d (cechCube R F V U) 1 (cechRestrictions R F V U x) = 0 :=
@@ -369,7 +369,7 @@ theorem d_cechRestrictions (x : sectionsOn F V) :
 def toCechH : sectionsOn F V →ₗ[R] cechH R F V U 0 := presheafToCechH (sectionsPresheaf R F) V U
 
 /- English proof (translation)
-The claim follows from `presheafToCechH_apply (sectionsPresheaf R F) V U x`.
+A detailed English derivation is pending.
 -/
 theorem toCechH_apply (x : sectionsOn F V) : toCechH R F V U x =
     cechClass (cechCube R F V U) 0 ⟨cechRestrictions R F V U x, d_cechRestrictions R F V U x⟩ :=
@@ -378,7 +378,7 @@ theorem toCechH_apply (x : sectionsOn F V) : toCechH R F V U x =
 variable {F} in
 
 /- English proof (translation)
-The claim follows from `homologyMap_presheafToCechH V U (sectionsPresheafMap R φ) x`.
+A detailed English derivation is pending.
 -/
 theorem cechHMap_toCechH (φ : F ⟶ G) (x : sectionsOn F V) :
     (cechHMap R V U φ 0).hom (toCechH R F V U x) = toCechH R G V U (sectionsOn.map R φ V x) :=
@@ -390,7 +390,7 @@ omit [LinearOrder ι] in
 include hc in
 
 /- English proof (translation)
-The claim follows from `presheafCechAug_injective (T := X.toPresheafedSpace.carrier) (isSheaf_sectionsPresheaf R F) hc`.
+A detailed English derivation is pending.
 -/
 theorem cechRestrictions_injective : Function.Injective (cechRestrictions R F V U) :=
   presheafCechAug_injective (T := X.toPresheafedSpace.carrier) (isSheaf_sectionsPresheaf R F) hc
@@ -398,7 +398,7 @@ theorem cechRestrictions_injective : Function.Injective (cechRestrictions R F V 
 include hc in
 
 /- English proof (translation)
-The claim follows from `presheafCechAug_exact (T := X.toPresheafedSpace.carrier) (isSheaf_sectionsPresheaf R F) hc`.
+A detailed English derivation is pending.
 -/
 theorem cechRestrictions_exact :
     Function.Exact (cechRestrictions R F V U) (Cube.d (cechCube R F V U) 1) :=
@@ -407,7 +407,7 @@ theorem cechRestrictions_exact :
 include hc in
 
 /- English proof (translation)
-The claim follows from `presheafCube_exactAt_zero_one (T := X.toPresheafedSpace.carrier) (isSheaf_sectionsPresheaf R F) hc`.
+A detailed English derivation is pending.
 -/
 theorem cechCube_exactAt_zero_one :
     (cubeComplex (cechCube R F V U)).ExactAt 0 ∧ (cubeComplex (cechCube R F V U)).ExactAt 1 :=
@@ -417,7 +417,7 @@ theorem cechCube_exactAt_zero_one :
 include hc in
 
 /- English proof (translation)
-The claim follows from `presheafToCechH_bijective (T := X.toPresheafedSpace.carrier) (isSheaf_sectionsPresheaf R F) hc`.
+A detailed English derivation is pending.
 -/
 theorem toCechH_bijective : Function.Bijective (toCechH R F V U) :=
   presheafToCechH_bijective (T := X.toPresheafedSpace.carrier) (isSheaf_sectionsPresheaf R F) hc
@@ -427,14 +427,14 @@ def cechHZeroEquiv : cechH R F V U 0 ≃ₗ[R] sectionsOn F V :=
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem cechHZeroEquiv_symm_apply (x : sectionsOn F V) :
     (cechHZeroEquiv R F hc).symm x = toCechH R F V U x := rfl
 
 @[simp]
 /- English proof (translation)
-The claim follows from `(cechHZeroEquiv R F hc).apply_symm_apply x`.
+A detailed English derivation is pending.
 -/
 theorem cechHZeroEquiv_toCechH (x : sectionsOn F V) :
     cechHZeroEquiv R F hc (toCechH R F V U x) = x := (cechHZeroEquiv R F hc).apply_symm_apply x
@@ -442,7 +442,7 @@ theorem cechHZeroEquiv_toCechH (x : sectionsOn F V) :
 variable {F} in
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `(toCechH_bijective R F hc).2 x`. Rewrite using `[cechHMap_toCechH, cechHZeroEquiv_toCechH, cechHZeroEquiv_toCechH]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cechHZeroEquiv_map (φ : F ⟶ G) (x : cechH R F V U 0) :
     cechHZeroEquiv R G hc ((cechHMap R V U φ 0).hom x) =
@@ -456,7 +456,7 @@ def cechHZeroEquivCohOn : cechH R F V U 0 ≃ₗ[R] cohOn F V 0 :=
 variable {F} in
 
 /- English proof (translation)
-Apply `(cohOn.zeroEquiv R G V).injective` to reduce the goal to its premises. Simplify using `only [cechHZeroEquivCohOn, LinearEquiv.trans_apply, LinearEquiv.apply_symm_apply, cohOn.zeroEquiv_map, cechHZeroEquiv_map]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem cechHZeroEquivCohOn_map (φ : F ⟶ G) (x : cechH R F V U 0) :
     cechHZeroEquivCohOn R G hc ((cechHMap R V U φ 0).hom x) =
@@ -526,7 +526,7 @@ theorem cechHScalarsEquiv_apply (n : ℕ) (x : cechH R F V U n) :
     cechHScalarsEquiv R F V U S n x = (cechCubeScalars R F V U S).homology n x := rfl
 
 /- English proof (translation)
-The claim follows from `map_smulₛₗ ((cechCubeScalars R F V U S).homology n) r x`.
+A detailed English derivation is pending.
 -/
 theorem cechHScalarsEquiv_smul (n : ℕ) (r : R) (x : cechH R F V U n) :
     cechHScalarsEquiv R F V U S n (r • x) = algebraMap R S r • cechHScalarsEquiv R F V U S n x :=
@@ -535,7 +535,7 @@ theorem cechHScalarsEquiv_smul (n : ℕ) (r : R) (x : cechH R F V U n) :
 variable {F} in
 
 /- English proof (translation)
-The claim follows from `(cechCubeScalars R F V U S).homology_naturality (cechCubeScalars R G V U S) (cechCubeMap R V U φ) (cechCubeMap S V U φ) (fun _ _ _ => rfl) n x`.
+A detailed English derivation is pending.
 -/
 theorem cechHScalarsEquiv_map (φ : F ⟶ G) (n : ℕ) (x : cechH R F V U n) :
     cechHScalarsEquiv R G V U S n ((cechHMap R V U φ n).hom x) =
@@ -556,7 +556,7 @@ theorem cechAbHEquiv_apply (n : ℕ) (x : cechAbH F.presheaf V U n) :
 variable {F} in
 
 /- English proof (translation)
-The claim follows from `(cechAbCubeToCube R F V U).homology_naturality (cechAbCubeToCube R G V U) (cechAbCubeMap V U φ.mapPresheaf) (cechCubeMap R V U φ) (fun _ _ _ => rfl) n x`.
+A detailed English derivation is pending.
 -/
 theorem cechAbHEquiv_map (φ : F ⟶ G) (n : ℕ) (x : cechAbH F.presheaf V U n) :
     cechAbHEquiv R G V U n ((cechAbHMap V U φ.mapPresheaf n).hom x) =
@@ -565,7 +565,7 @@ theorem cechAbHEquiv_map (φ : F ⟶ G) (n : ℕ) (x : cechAbH F.presheaf V U n)
     (cechAbCubeMap V U φ.mapPresheaf) (cechCubeMap R V U φ) (fun _ _ _ => rfl) n x
 
 /- English proof (translation)
-Rewrite using `[cechAbHEquiv_map, cechHMap_smulHom_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_cechAbHEquiv (r : R) (n : ℕ) (x : cechAbH F.presheaf V U n) :
     r • cechAbHEquiv R F V U n x = cechAbHEquiv R F V U n
@@ -573,7 +573,7 @@ theorem smul_cechAbHEquiv (r : R) (n : ℕ) (x : cechAbH F.presheaf V U n) :
   rw [cechAbHEquiv_map, cechHMap_smulHom_apply]
 
 /- English proof (translation)
-The claim follows from `(cechAbCubeToCube R F V U).homology_cechAugHomology _`.
+A detailed English derivation is pending.
 -/
 theorem cechAbHEquiv_toCechAbH (x : sectionsOn F V) :
     cechAbHEquiv R F V U 0 (toCechAbH F.presheaf V U (sectionsOn.toΓ F V x)) =
@@ -587,7 +587,7 @@ section Morphism
 variable (g : Y ⟶ X) (V : X.Opens) (U : ι → X.Opens)
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `mem_cechOpen.trans (mem_cechOpen (V := g ⁻¹ᵁ V) (U := fun i => g ⁻¹ᵁ U i)).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem preimage_cechOpen (s : Finset ι) :
     g ⁻¹ᵁ cechOpen V U s = cechOpen (g ⁻¹ᵁ V) (fun i => g ⁻¹ᵁ U i) s := by
@@ -619,7 +619,7 @@ theorem sectionsOn.toΓ_mapOver (W : X.Opens) (x : sectionsOn F W) :
   rfl
 
 /- English proof (translation)
-The claim follows from `ConcreteCategory.congr_hom (φ.mapPresheaf.naturality (homOfLE h).op) x`.
+A detailed English derivation is pending.
 -/
 theorem sectionsOn.mapOver_res {W W' : X.Opens} (h : W' ≤ W) (x : sectionsOn F W) :
     sectionsOn.mapOver hσ φ W' (sectionsOn.res R F h x) =
@@ -644,7 +644,7 @@ theorem cechCubeMapOver_app (s : Finset ι) (x : sectionsOn F (cechOpen V U s)) 
       (sectionsOn.mapOver hσ φ (cechOpen V U s) x) := rfl
 
 /- English proof (translation)
-The claim follows from `(sectionsOn.congrOpens S G (preimage_cechOpen g V U s)).bijective`.
+A detailed English derivation is pending.
 -/
 theorem cechCubeMapOver_id_bijective (s : Finset ι) : Function.Bijective
     ((cechCubeMapOver V U hσ (𝟙 ((Scheme.Modules.pushforward g).obj G))).app s) :=
@@ -662,7 +662,7 @@ def cechCubePushforwardIso : cechCube R ((Scheme.Modules.pushforward g).obj G) V
     (cechCubeMapOver (σ := RingHom.id R) V U hg (𝟙 _)).app_res
 
 /- English proof (translation)
-The claim follows from `rfl @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem cechCubePushforwardIso_hom_app_apply (s : Finset ι)
     (x : sectionsOn G (g ⁻¹ᵁ cechOpen V U s)) :
@@ -671,7 +671,7 @@ theorem cechCubePushforwardIso_hom_app_apply (s : Finset ι)
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `NatTrans.ext (funext fun s => ModuleCat.hom_ext (LinearMap.ext fun x => sectionsOn.res_map R ψ (preimage_cechOpen g V U s).ge x))`.
+A detailed English derivation is pending.
 -/
 theorem cechCubePushforwardIso_naturality {G' : Y.Modules} (ψ : G ⟶ G') :
     cechCubeMap R V U ((Scheme.Modules.pushforward g).map ψ) ≫
@@ -703,7 +703,7 @@ def cechTwoXOne : (cech R F V U).X 1 ≃ₗ[R] sectionsOn F (V ⊓ (U 0 ⊓ U 1)
   Cube.termTwoFinTwo (cechCube R F V U) ≪≫ₗ sectionsOn.congrOpens R F (cechOpen_pair V U 0 1)
 
 /- English proof (translation)
-Rewrite using `[cech_d R F V U 0]`. Use `(congrArg (sectionsOn.congrOpens R F (cechOpen_pair V U 0 1)) (Cube.d_one_finTwo (cechCube R F V U) x)).trans ((map_sub _ _ _).trans ?_)` and prove the remaining obligations. Conclude with `congrArg₂ (· - ·) ((sectionsOn.res_res R F _ _ _).trans (sectionsOn.res_res R F (cechOpen_singleton V U 1).ge _ _).symm) ((sectionsOn.res_res R F _ _ _).trans (sectionsOn.res_res R F (cechOpen_singleton V U 0).ge _ _).symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cechTwo_d (x : (cech R F V U).X 0) :
     cechTwoXOne R F V U (((cech R F V U).d 0 1).hom x) =
@@ -719,7 +719,7 @@ theorem cechTwo_d (x : (cech R F V U).X 0) :
       (sectionsOn.res_res R F (cechOpen_singleton V U 0).ge _ _).symm)
 
 /- English proof (translation)
-The claim follows from `Prod.ext (sectionsOn.res_res R F _ (cechOpen_singleton V U 0).ge x) (sectionsOn.res_res R F _ (cechOpen_singleton V U 1).ge x)`.
+A detailed English derivation is pending.
 -/
 theorem cechTwoXZero_cechRestrictions (x : sectionsOn F V) :
     cechTwoXZero R F V U (cechRestrictions R F V U x) =
@@ -728,13 +728,13 @@ theorem cechTwoXZero_cechRestrictions (x : sectionsOn F V) :
     (sectionsOn.res_res R F _ (cechOpen_singleton V U 1).ge x)
 
 /- English proof (translation)
-The claim follows from `isZero_cech_X R F V U (by rwa [Fintype.card_fin])`.
+A detailed English derivation is pending.
 -/
 theorem isZero_cechTwo_X {n : ℕ} (h : 2 ≤ n) : IsZero ((cech R F V U).X n) :=
   isZero_cech_X R F V U (by rwa [Fintype.card_fin])
 
 /- English proof (translation)
-Use `haveI := Cube.subsingleton_term (cechCube R F V U) (p := 0 + 2 + 1) (by simp)`. Rewrite using `[cech_d R F V U 0]`. Use `(HomologicalComplex.exactAt_iff_isZero_homology _ _).symm.trans ((cechComplex_exactAt_succ_iff (cechCube R F V U) 0).trans (forall_congr' fun x => ?_))` and prove the remaining obligations. Conclude with `⟨fun h => h.1 (Subsingleton.elim _ _), fun h => ⟨fun _ => h, fun _ => Subsingleton.elim _ _⟩⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isZero_cechH_one_iff_surjective :
     IsZero (cechH R F V U 1) ↔ Function.Surjective ((cech R F V U).d 0 1).hom := by
@@ -769,7 +769,7 @@ theorem basicOpenFamily_apply (f : ι → A) (i : ι) :
     basicOpenFamily f i = PrimeSpectrum.basicOpen (f i) := rfl
 
 /- English proof (translation)
-Establish `h₀ : IsLocalizedModule.Away f (tilde.toOpen M W).hom`. Substitute `h` using the available equality. Use `infer_instance`. Conclude with `IsLocalizedModule.of_linearEquiv (.powers f) (tilde.toOpen M W).hom (sectionsOn.specEquiv (tilde M) W).symm`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isLocalizedModule_tildeToSections (f : A) {W : (Spec A).Opens}
     (h : W = PrimeSpectrum.basicOpen f) : IsLocalizedModule.Away f (tildeToSections M W) := by
@@ -780,9 +780,9 @@ theorem isLocalizedModule_tildeToSections (f : A) {W : (Spec A).Opens}
     (tilde.toOpen M W).hom (sectionsOn.specEquiv (tilde M) W).symm
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[cechOpen_empty, Finset.prod_empty]`. Conclude with `PrimeSpectrum.basicOpen_one.symm`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cechOpen_insert, ih, Finset.prod_insert ha]`. Conclude with `(PrimeSpectrum.basicOpen_mul _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem cechOpen_basicOpenFamily (f : ι → A) (s : Finset ι) :
     cechOpen ⊤ (basicOpenFamily f) s = PrimeSpectrum.basicOpen (∏ i ∈ s, f i) := by
@@ -796,7 +796,7 @@ theorem cechOpen_basicOpenFamily (f : ι → A) (s : Finset ι) :
     exact (PrimeSpectrum.basicOpen_mul _ _).symm
 
 /- English proof (translation)
-The claim follows from `PrimeSpectrum.iSup_basicOpen_eq_top_iff`.
+A detailed English derivation is pending.
 -/
 theorem iSup_basicOpenFamily_eq_top_iff (f : ι → A) :
     ⨆ i, basicOpenFamily f i = ⊤ ↔ Ideal.span (Set.range f) = ⊤ :=
@@ -808,7 +808,7 @@ def locCubeIsoCechCube (f : ι → A) : locCube f M ≅ cechCube A (tilde M) ⊤
     fun h m => res_tildeToSections M (cechOpen_anti _ _ h) m
 
 /- English proof (translation)
-The claim follows from `cubeComplex_exactAt_of_isLocalizedModule _ f (fun s => tildeToSections M (cechOpen ⊤ (basicOpenFamily f) s)) (fun s => isLocalizedModule_tildeToSections M _ (cechOpen_basicOpenFamily f s)) (fun h m => res_tildeToSections M (cechOpen_anti _ _ h) m) hf p`.
+A detailed English derivation is pending.
 -/
 theorem cechCube_tilde_exactAt [LinearOrder ι] [Finite ι] {f : ι → A}
     (hf : Ideal.span (Set.range f) = ⊤) (p : ℕ) :
@@ -819,7 +819,7 @@ theorem cechCube_tilde_exactAt [LinearOrder ι] [Finite ι] {f : ι → A}
     (fun h m => res_tildeToSections M (cechOpen_anti _ _ h) m) hf p
 
 /- English proof (translation)
-The claim follows from `(HomologicalComplex.exactAt_iff_isZero_homology _ _).1 ((cechComplex_exactAt_succ_iff_cube _ p).2 (cechCube_tilde_exactAt M hf (p + 2)))`.
+A detailed English derivation is pending.
 -/
 theorem isZero_cechH_tilde_succ [LinearOrder ι] [Finite ι] {f : ι → A}
     (hf : Ideal.span (Set.range f) = ⊤) (p : ℕ) :
@@ -847,7 +847,7 @@ def awayTransition {a b : A} (h : a ∣ b) :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `LocalizedModule.lift_mk_one _ _ _ m`.
+A detailed English derivation is pending.
 -/
 theorem awayTransition_mk_one {a b : A} (h : a ∣ b) (m : M) :
     awayTransition M h (LocalizedModule.mk m 1) = LocalizedModule.mk m 1 :=
@@ -860,7 +860,7 @@ def sectionsAwayEquiv (f : A) {W : (Spec A).Opens} (h : W = PrimeSpectrum.basicO
 
 @[simp]
 /- English proof (translation)
-The claim follows from `haveI := isLocalizedModule_tildeToSections M f h IsLocalizedModule.linearEquiv_apply (.powers f) _ _ m`.
+A detailed English derivation is pending.
 -/
 theorem sectionsAwayEquiv_tildeToSections (f : A) {W : (Spec A).Opens}
     (h : W = PrimeSpectrum.basicOpen f) (m : M) :
@@ -869,7 +869,7 @@ theorem sectionsAwayEquiv_tildeToSections (f : A) {W : (Spec A).Opens}
   IsLocalizedModule.linearEquiv_apply (.powers f) _ _ m
 
 /- English proof (translation)
-Use `haveI := isLocalizedModule_tildeToSections M a h`. Use `IsLocalizedModule.ext (.powers a) (tildeToSections M W) (isUnit_powers_of_dvd hab (LocalizedModule.mkLinearMap _ M)) (j := (sectionsAwayEquiv M b h').toLinearMap ∘ₗ sectionsOn.res A (tilde M) hW) (k := awayTransition M hab ∘ₗ (sectionsAwayEquiv M a h).toLinearMap) (by ext m; simp …` as an intermediate fact. Conclude with `congr($this x)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sectionsAwayEquiv_res {a b : A} (hab : a ∣ b) {W W' : (Spec A).Opens}
     (h : W = PrimeSpectrum.basicOpen a) (h' : W' = PrimeSpectrum.basicOpen b) (hW : W' ≤ W)
@@ -898,7 +898,7 @@ Both sides reduce to the same expression.
 theorem twoCharts_one : twoCharts f g 1 = PrimeSpectrum.basicOpen g := rfl
 
 /- English proof (translation)
-The claim follows from `(top_inf_eq _).trans (PrimeSpectrum.basicOpen_mul f g).symm`.
+A detailed English derivation is pending.
 -/
 theorem twoCharts_inf : ⊤ ⊓ (twoCharts f g 0 ⊓ twoCharts f g 1) = PrimeSpectrum.basicOpen (f * g) :=
   (top_inf_eq _).trans (PrimeSpectrum.basicOpen_mul f g).symm
@@ -913,7 +913,7 @@ def twoChartsXOne :
   cechTwoXOne A (tilde M) ⊤ (twoCharts f g) ≪≫ₗ sectionsAwayEquiv M (f * g) (twoCharts_inf f g)
 
 /- English proof (translation)
-The claim follows from `(congrArg (sectionsAwayEquiv M (f * g) (twoCharts_inf f g)) (cechTwo_d A (tilde M) ⊤ (twoCharts f g) x)).trans ((map_sub _ _ _).trans (congrArg₂ (· - ·) (sectionsAwayEquiv_res M _ (top_inf_eq _) _ _ _) (sectionsAwayEquiv_res M _ (top_inf_eq _) _ _ _)))`.
+A detailed English derivation is pending.
 -/
 theorem twoCharts_d (x : (cech A (tilde M) ⊤ (twoCharts f g)).X 0) :
     twoChartsXOne M f g (((cech A (tilde M) ⊤ (twoCharts f g)).d 0 1).hom x) =
@@ -925,7 +925,7 @@ theorem twoCharts_d (x : (cech A (tilde M) ⊤ (twoCharts f g)).X 0) :
       (sectionsAwayEquiv_res M _ (top_inf_eq _) _ _ _)))
 
 /- English proof (translation)
-The claim follows from `Prod.ext (sectionsAwayEquiv_tildeToSections M f (top_inf_eq _) m) (sectionsAwayEquiv_tildeToSections M g (top_inf_eq _) m)`.
+A detailed English derivation is pending.
 -/
 theorem twoChartsXZero_cechRestrictions (m : M) :
     twoChartsXZero M f g (cechRestrictions A (tilde M) ⊤ (twoCharts f g) (tildeToSections M ⊤ m)) =
@@ -934,9 +934,9 @@ theorem twoChartsXZero_cechRestrictions (m : M) :
     (sectionsAwayEquiv_tildeToSections M g (top_inf_eq _) m)
 
 /- English proof (translation)
-Rewrite using `[isZero_cechH_one_iff_surjective]`. Prove the components needed by the constructor for the conclusion. Introduce `h z`. Take `⟨x, hx⟩` from `h ((twoChartsXOne M f g).symm z)`. Conclude with `⟨_, _, by rw [← twoCharts_d, hx, LinearEquiv.apply_symm_apply]⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `h z`. Take `⟨a, b, hab⟩` from `h (twoChartsXOne M f g z)`. Use `⟨(twoChartsXZero M f g).symm (a, b), (twoChartsXOne M f g).injective ?_⟩` and prove the remaining obligations. Rewrite using `[twoCharts_d, LinearEquiv.apply_symm_apply, hab]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isZero_cechH_twoCharts_one_iff : IsZero (cechH A (tilde M) ⊤ (twoCharts f g) 1) ↔
     ∀ z, ∃ a b, awayTransition M (dvd_mul_left g f) b - awayTransition M (dvd_mul_right f g) a =
@@ -952,7 +952,7 @@ theorem isZero_cechH_twoCharts_one_iff : IsZero (cechH A (tilde M) ⊤ (twoChart
     rw [twoCharts_d, LinearEquiv.apply_symm_apply, hab]
 
 /- English proof (translation)
-The claim follows from `(Ideal.eq_top_iff_one _).2 (by simpa using Ideal.add_mem _ (Ideal.subset_span (s := Set.range ![f, 1 - f]) ⟨0, rfl⟩) (Ideal.subset_span ⟨1, rfl⟩))`.
+A detailed English derivation is pending.
 -/
 theorem span_range_pair_one_sub : Ideal.span (Set.range ![f, 1 - f]) = ⊤ :=
   (Ideal.eq_top_iff_one _).2 (by
@@ -960,7 +960,7 @@ theorem span_range_pair_one_sub : Ideal.span (Set.range ![f, 1 - f]) = ⊤ :=
       (Ideal.subset_span ⟨1, rfl⟩))
 
 /- English proof (translation)
-The claim follows from `(iSup_basicOpenFamily_eq_top_iff _).2 (span_range_pair_one_sub f)`.
+A detailed English derivation is pending.
 -/
 theorem iSup_twoCharts_one_sub : ⨆ i, twoCharts f (1 - f) i = ⊤ :=
   (iSup_basicOpenFamily_eq_top_iff _).2 (span_range_pair_one_sub f)
@@ -969,7 +969,7 @@ def cechHZeroTwoChartsEquiv : cechH A (tilde M) ⊤ (twoCharts f (1 - f)) 0 ≃�
   cechHZeroTildeEquiv M (span_range_pair_one_sub f)
 
 /- English proof (translation)
-The claim follows from `isZero_cechH_tilde_succ M (span_range_pair_one_sub f) p`.
+A detailed English derivation is pending.
 -/
 theorem isZero_cechH_twoCharts_succ (p : ℕ) :
     IsZero (cechH A (tilde M) ⊤ (twoCharts f (1 - f)) (p + 1)) :=
@@ -985,7 +985,7 @@ def cechHZeroStructureTwoChartsEquiv :
     cechHZeroTwoChartsEquiv (ModuleCat.of A A) f
 
 /- English proof (translation)
-The claim follows from `(isZero_cechH_twoCharts_succ (ModuleCat.of A A) f p).of_iso (cechHMapIso A ⊤ (twoCharts f (1 - f)) tildeSelf (p + 1)).symm`.
+A detailed English derivation is pending.
 -/
 theorem isZero_cechH_structure_twoCharts_succ (p : ℕ) :
     IsZero (cechH A (structureModule (Spec A)) ⊤ (twoCharts f (1 - f)) (p + 1)) :=
@@ -993,15 +993,13 @@ theorem isZero_cechH_structure_twoCharts_succ (p : ℕ) :
     (cechHMapIso A ⊤ (twoCharts f (1 - f)) tildeSelf (p + 1)).symm
 
 /- English proof (translation)
-Take `⟨a, b, hab⟩` from `(isZero_cechH_twoCharts_one_iff (ModuleCat.of A A) f g).1 (h.of_iso (cechHMapIso A ⊤ (twoCharts f g) tildeSelf 1)) (LocalizedModule.mk (1 : A) ⟨f * g, 1, pow_one _⟩)`. Take `⟨n, a', ha⟩` from `IsLocalizedModule.Away.surj (LocalizedModule.mkLinearMap _ _) f a`. Take `⟨k, b', hb⟩` from `IsLocalizedModule.Away.surj (LocalizedModule.mkLinearMap _ _) g b`. Set `l : A →ₗ[A] LocalizedModule (.powers (f * g)) A` to `LocalizedModule.mkLinearMap _ _`. Establish `h₁ : f ^ n • awayTransition (ModuleCat.of A A) (dvd_mul_right f g) a = l a'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← map_smul, ha]`. Conclude with `awayTransition_mk_one (ModuleCat.of A A) _ a'`. Establish `h₂ : g ^ k • awayTransition (ModuleCat.of A A) (dvd_mul_left g f) b = l b'`. Rewrite using `[← map_smul, hb]`. Conclude with `awayTransition_mk_one (ModuleCat.of A A) _ b'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h₃ : (f * g) • LocalizedModule.mk (1 : A) (⟨f * g, 1, pow_one _⟩ : Submonoid.powers (f * g)) = l 1`. Rewrite using `[LocalizedModule.smul'_mk]`. Conclude with `LocalizedModule.mk_cancel (⟨f * g, 1, pow_one _⟩ : Submonoid.powers (f * g)) (1 : A)`. Establish `h₄ : l ((f ^ n * g ^ k) • (1 : A)) = l ((f ^ n * (f * g)) • b' - (g ^ k * (f * g)) • a')`. Rewrite using `[map_sub, map_smul, map_smul, map_smul, ← h₁, ← h₂, ← h₃, ← hab]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Simplify using `only [smul_sub, smul_smul]`. Apply the tactic sequence `congr 2 <;> ring`. Take `⟨m, hm⟩` from `IsLocalizedModule.Away.exists_of_eq (f * g) h₄`. Use `⟨n + m, k + m, -(f ^ (m + 1) * a'), g ^ (m + 1) * b', ?_⟩` and prove the remaining obligations. Simplify using `only [smul_eq_mul, mul_pow] at hm`.
-
-Take the linear combination `hm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_pow_eq_of_isZero_cechH
     (h : IsZero (cechH A (structureModule (Spec A)) ⊤ (twoCharts f g) 1)) :
@@ -1033,7 +1031,7 @@ theorem exists_pow_mul_pow_eq_of_isZero_cechH
 end Affine
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(cechHZeroStructureTwoChartsEquiv (A := .of ℤ) 3).toEquiv.nontrivial, isZero_cechH_structure_twoCharts_succ (A := .of ℤ) 3 0⟩`.
+Supply the required witnesses or components.
 -/
 example :
     letI := algebraΓSpec (.of ℤ)
@@ -1045,7 +1043,7 @@ example :
     isZero_cechH_structure_twoCharts_succ (A := .of ℤ) 3 0⟩
 
 /- English proof (translation)
-The claim follows from `letI := algebraΓSpec (.of ℤ) haveI := (cechHZeroStructureTwoChartsEquiv (A := .of ℤ) 3).toEquiv.nontrivial (cechAbHEquiv (CommRingCat.of ℤ) (structureModule (Spec (.of ℤ))) ⊤ (twoCharts (A := .of ℤ) 3 (1 - 3)) 0).toEquiv.nontrivial`.
+A detailed English derivation is pending.
 -/
 example : Nontrivial (cechAbH (structureModule (Spec (.of ℤ))).presheaf ⊤
     (twoCharts (A := .of ℤ) 3 (1 - 3)) 0) :=
@@ -1055,7 +1053,7 @@ example : Nontrivial (cechAbH (structureModule (Spec (.of ℤ))).presheaf ⊤
     (twoCharts (A := .of ℤ) 3 (1 - 3)) 0).toEquiv.nontrivial
 
 /- English proof (translation)
-Rewrite using `[twoCharts_d, LinearEquiv.apply_symm_apply, map_zero, awayTransition_mk_one, zero_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example {A : CommRingCat.{u}} (M : ModuleCat.{u} A) (f g : A) (m : M) :
     twoChartsXOne M f g (((cech A (tilde M) ⊤ (twoCharts f g)).d 0 1).hom
@@ -1063,7 +1061,7 @@ example {A : CommRingCat.{u}} (M : ModuleCat.{u} A) (f g : A) (m : M) :
   rw [twoCharts_d, LinearEquiv.apply_symm_apply, map_zero, awayTransition_mk_one, zero_sub]
 
 /- English proof (translation)
-Introduce `h`. Take `⟨n, k, a, b, hab⟩` from `exists_pow_mul_pow_eq_of_isZero_cechH (A := .of (Polynomial ℤ)) (Polynomial.C 2) Polynomial.X h`. Establish `h₁ : (Polynomial.C (2 : ℤ) ^ n * Polynomial.X ^ k).coeff k = (Polynomial.C (2 : ℤ) ^ (n + 1) * b + Polynomial.X ^ (k + 1) * a).coeff k` using `congrArg (fun p : Polynomial ℤ => p.coeff k) hab`. Rewrite `h₁` using `[← map_pow, ← map_pow, Polynomial.coeff_add, Polynomial.coeff_C_mul, Polynomial.coeff_C_mul, Polynomial.coeff_X_pow_self, Polynomial.coeff_X_pow_mul', if_neg (by omega), add_zero, pow_succ, mul_assoc]`. Establish `h₂` using `mul_left_cancel₀ (by positivity : (2 : ℤ) ^ n ≠ 0) h₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/

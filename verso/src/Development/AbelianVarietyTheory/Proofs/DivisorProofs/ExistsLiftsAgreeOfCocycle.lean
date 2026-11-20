@@ -13,16 +13,16 @@ noncomputable section
 namespace GlobalTheory.SecGlue.Cocycle
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp_spMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C]
     (a : A →+* B) (b : B →+* C) : spMap b ≫ spMap a = spMap (b.comp a) := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Introduce `y`. Take `⟨⟨a, ⟨_, m, rfl⟩⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers (π r)) y`. Take `⟨b, rfl⟩` from `hπ a`. Use `⟨IsLocalization.mk' _ b (⟨r ^ m, m, rfl⟩ : Submonoid.powers r), ?_⟩` and prove the remaining obligations. Simplify using `only [Localization.awayMap, IsLocalization.Away.map, IsLocalization.map_mk']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem awayMap_surjective {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →+* R₀)
     (hπ : Function.Surjective π) (r : R) : Function.Surjective (Localization.awayMap π r) := by
@@ -36,9 +36,9 @@ theorem awayMap_surjective {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R 
   simp
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨⟨a, ⟨_, m, rfl⟩⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers r) x`. Rewrite `hx` using `[RingHom.mem_ker]`. Simplify using `only [Localization.awayMap, IsLocalization.Away.map, IsLocalization.map_mk'] at hx`. Rewrite `hx` using `[IsLocalization.mk'_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨⟨_, p, rfl⟩, hp⟩` from `hx`. Rewrite using `[IsLocalization.mk'_mem_map_algebraMap_iff]`. Use `⟨r ^ p, ⟨p, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker, map_mul, map_pow]`. Conclude with `hp`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_awayMap_le {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →+* R₀) (r : R) :
     RingHom.ker (Localization.awayMap π r) ≤
@@ -55,7 +55,7 @@ theorem ker_awayMap_le {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →+
   exact hp
 
 /- English proof (translation)
-Use `le_bot_iff.1 ((Ideal.pow_right_mono (ker_awayMap_le π r) 2).trans ?_)` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow, h2, Ideal.map_bot]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_awayMap_sq {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →+* R₀)
     (h2 : RingHom.ker π ^ 2 = ⊥) (r : R) :
@@ -64,9 +64,9 @@ theorem ker_awayMap_sq {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →+
   rw [← Ideal.map_pow, h2, Ideal.map_bot]
 
 /- English proof (translation)
-Set `J : Ideal S'` to `(RingHom.ker q).map g`. Establish `hle : RingHom.ker q ≤ RingHom.ker ((Ideal.Quotient.mk J).comp g)`. Introduce `x hx`. Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_map_of_mem g hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `g' : T →+* S' ⧸ J` to `RingHom.liftOfSurjective q hq ⟨(Ideal.Quotient.mk J).comp g, hle⟩`. Establish `hg' : g'.comp q = (Ideal.Quotient.mk J).comp g` using `RingHom.liftOfSurjective_comp q hq _`. Use `GlobalTheory.T.isAffineCombination_independent_of_chart Y V V' hV hV' S' (S' ⧸ J) (Ideal.Quotient.mk J) Ideal.Quotient.mk_surjective ?_ ι _ _ _ _ (fun i => ?_) (isCombIn_spMap_comp Y V S S' g ι u c w a hC) hu` and prove the remaining obligations. Rewrite using `[Ideal.mk_ker, ← Ideal.map_pow, h2, Ideal.map_bot]`. Rewrite using `[← Category.assoc, ← Category.assoc, spMap_comp_spMap, ← hg', ← spMap_comp_spMap, Category.assoc, Category.assoc, hw i]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCombIn_restrict_chart {Y : Scheme.{0}} {V V' : Y.Opens} (hV : IsAffineOpen V)
     (hV' : IsAffineOpen V') {S T S' : Type} [CommRing S] [CommRing T] [CommRing S']
@@ -89,11 +89,11 @@ theorem isCombIn_restrict_chart {Y : Scheme.{0}} {V V' : Y.Opens} (hV : IsAffine
       Category.assoc, Category.assoc, hw i]
 
 /- English proof (translation)
-Take `⟨hu, hc, hw, e⟩` from `h`. Take `⟨hu', hc', hw', e'⟩` from `h'`. Use `eq_of_chartHom_eq hW c c' hc hc' fun x => ?_` and prove the remaining obligations. Establish `key : ∀ k, chartHom W (w k) (hw k) x - chartHom W u hu x = (chartHom W (w' k) (hw' k) x - chartHom W u' hu' x) - b k * (chartHom W u hu x - chartHom W u' hu' x)`. Introduce `k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨_, _, _, e''⟩` from `hco k`. Use `e'' x` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_two]`. Establish `this' : chartHom W (w k) (hw k) x = chartHom W u' hu' x + (1 * (chartHom W (w' k) (hw' k) x - chartHom W u' hu' x) + (1 - b k) * (chartHom W u hu x - chartHom W u' hu' x))` using `this`. Rewrite using `[this']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e x, e' x]`. Simplify using `only [key, mul_sub (a _) (_ - _), Finset.sum_sub_distrib, ← mul_assoc, ← Finset.sum_mul, hab]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eq_of_cocycle {Y : Scheme.{0}} {W : Y.Opens} (hW : IsAffineOpen W) {S : Type} [CommRing S]
     {κ : Type} [Fintype κ] (u u' c c' : Sp S ⟶ Y) (w w' : κ → (Sp S ⟶ Y)) (a b : κ → S)
@@ -118,13 +118,13 @@ theorem eq_of_cocycle {Y : Scheme.{0}} {W : Y.Opens} (hW : IsAffineOpen W) {S : 
   ring
 
 /- English proof (translation)
-Introduce `R R₀ _ _ π hπ h2 X g₀ hg₀ κ _ f hf V hV e he he₀ heV N t ht ht₀ htV n s W hs hW heW hco`. Establish `hpow : Ideal.span (Set.range fun k => f k ^ N) = ⊤`. Use `Ideal.span_pow_eq_top _ hf N` as an intermediate fact. Rewrite `this` using `[← Set.range_comp]`. Then use the resulting hypothesis. Take `⟨a, ha⟩ : ∃ a : κ → R, ∑ k, a k * f k ^ N = 1` from `Ideal.mem_span_range_iff_exists_fun.1 (hpow ▸ Submodule.mem_top)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `hte : ∀ j k, spMap (Localization.awayMap π (f j)) ≫ t k j = spMap (Localization.awayMap π (f j)) ≫ e j` using `fun j k => (ht₀ k j).trans (he₀ j).symm`. Use `choose c hc hc₀ hcp using fun j => GlobalTheory.T.exists_affineCombination_squareZero_lifts_chart X.left (V j) (hV j) _ _ (Localization.awayMap π (f j)) (awayMap_surjective π hπ _) (ker_awayMap_sq π h2 _) κ (e j) (fun k => t k j) (fun k => algebraMap R _ (a k)) (heV j) (hte j)`. Use `⟨c, fun j => (hcp j R X.hom fun k => (ht k j).trans (he j).symm).trans (he j), fun j => (hc₀ j).trans (he₀ j), fun j l => ?_⟩` and prove the remaining obligations. Use `hom_ext_of_span_eq_top _ _ (s j l) (hs j l) _ _ _ fun i => ?_` and prove the remaining obligations. Take `⟨hlW, -⟩` from `hco j l j i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hjW` using `heW j l i`. Rewrite `hlW`, `hjW` using `[← Category.assoc, spMap_comp_spMap]`. Establish `h₁` using `isCombIn_restrict_chart (hV j) (hW j l i) _ (awayMap_surjective π hπ _) (ker_awayMap_sq π h2 _) _ _ _ _ _ (hte j) (hc j) hjW`. Establish `h₂` using `isCombIn_restrict_chart (hV l) (hW j l i) _ (awayMap_surjective π hπ _) (ker_awayMap_sq π h2 _) _ _ _ _ _ (hte l) (hc l) hlW`. Simplify using `only [RingHom.comp_apply, IsLocalization.Away.awayToAwayRight_eq, IsLocalization.Away.awayToAwayLeft_eq, ← IsScalarTower.algebraMap_apply, ← spMap_comp_spMap, Category.assoc] at h₁ h₂`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_of_cocycle (hW j l i) _ _ _ _ _ _ _ (fun k => algebraMap R (Localization.Away (s j l i)) (f k) ^ N) ?_ h₁ h₂ fun k => hco j l k i` and prove the remaining obligations. Simplify using `only [← map_pow, ← map_mul, ← map_sum, ha, map_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_lifts_agree_of_cocycle : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π → RingHom.ker π ^ 2 = ⊥ →
     ∀ (X : Over (Sp R)), ∀ g₀ : Sp R₀ ⟶ X.left, g₀ ≫ X.hom = spMap π →

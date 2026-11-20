@@ -14,13 +14,13 @@ def thF (Y : GT ι) (q : ℕ) (F : EuclideanSpace ℂ ι → ℂ) (v : Euclidean
   paTh Y q F v * (starRingEnd ℂ) (F v) * (paW q v : ℂ)
 
 /- English proof (translation)
-Take `⟨C, hC0, hb⟩` from `paU_pt (q := q) hF`. Establish `hL` using `lat_summable (c := c) hP hA Y hq hR0 hlat hR`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `v0`. Use `set R := ‖v0‖ + 1 with hRdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hon : ContinuousOn (fun v => ∑' γ : lat Y.b, Y.ka γ * paU q γ F v) (Metric.ball v0 1)`. Use `continuousOn_tsum (u := fun γ : lat Y.b => C * (1 + R) ^ c * Real.exp ((q * Real.pi) * R ^ 2) * ((1 + ‖(γ : EuclideanSpace ℂ ι)‖) ^ (2 * c) * Real.exp (-(q * Real.pi) * ‖(γ : EuclideanSpace ℂ ι)‖ ^ 2 / 4))) (fun γ => (continuous_const.mul (paU_continuous (q := q) _ hF)).continuou …` and prove the remaining obligations. Rewrite using `[norm_mul, Y.ka_abs γ γ.2, one_mul]`. Use `(hb γ v).trans ?_` and prove the remaining obligations. Establish `hvR : ‖v‖ ≤ R`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Metric.mem_ball.1 hv`. Rewrite `h1` using `[dist_eq_norm]`. Establish `h2` using `norm_sub_norm_le v v0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hv0` using `norm_nonneg v`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : 0 ≤ (q : ℝ) * Real.pi` using `by positivity`. Establish `hsq : (q * Real.pi) * ‖v‖ ^ 2 ≤ (q * Real.pi) * R ^ 2` using `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hv0 hvR 2) hq0`. Use `gcongr`. Conclude with `hon.continuousAt (Metric.ball_mem_nhds v0 one_pos)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem paTh_continuous (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) (Y : GT ι) {q c : ℕ} {R0 : ℝ}
     (hq : 1 ≤ q) (hR0 : 0 < R0)
@@ -53,23 +53,19 @@ theorem paTh_continuous (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) (Y 
   exact hon.continuousAt (Metric.ball_mem_nhds v0 one_pos)
 
 /- English proof (translation)
-Use `lat_countable (ι := ι) Y.b` as an intermediate fact. Take `⟨C, hC0, hU⟩` from `paU_int hq hF hF`. Take `⟨C', hC'0, hb⟩` from `paU_pt (q := q) hF`. Establish `hL` using `lat_summable (c := c) hP hA Y hq hR0 hlat hR`. Establish `hcont : Continuous (thF Y q F)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `paTh_continuous hP hA Y hq hR0 hlat hR hF` as an intermediate fact. Use `paPoly_continuous hF` as an intermediate fact. Use `paW_continuous (ι := ι) q` as an intermediate fact. Unfold `thF`. Use `fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨hcont.aestronglyMeasurable, ?_⟩, hcont⟩` and prove the remaining obligations. Use `set g : lat Y.b → EuclideanSpace ℂ ι → ℝ := fun γ v => ‖paU q γ F v‖ * ‖F v‖ * paW q v with hg`. Establish `hg0 : ∀ γ v, 0 ≤ g γ v` using `fun γ v => by have := (paW_pos q v).le; simp only [hg]; positivity`. Establish `hpt : ∀ v, Summable (fun γ : lat Y.b => ‖paU q γ F v‖)` using `fun v => Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun γ => hb γ v) (hL.mul_left (C' * (1 + ‖v‖) ^ c * Real.exp ((q * Real.pi) * ‖v‖ ^ 2)))`. Establish `hgs : ∀ v, Summable (fun γ => g γ v)` using `fun v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `(hpt v).mul_right (‖F v‖ * paW q v)` using `only [hg, mul_assoc]`. Establish `hfle : ∀ v, ‖thF Y q F v‖ ≤ ∑' γ, g γ v`. Introduce `v`. Establish `hth : ‖paTh Y q F v‖ ≤ ∑' γ : lat Y.b, ‖paU q γ F v‖`. Unfold `paTh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_tsum_le_tsum_norm ?_).trans (le_of_eq ?_)` and prove the remaining obligations. Use `(hpt v).congr fun γ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Y.ka_abs γ γ.2, one_mul]`. Conclude with `tsum_congr fun γ => by rw [norm_mul, Y.ka_abs γ γ.2, one_mul]`. Simplify using `only [hg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[tsum_mul_right, tsum_mul_right, thF, norm_mul, norm_mul, RCLike.norm_conj, Complex.norm_real, Real.norm_of_nonneg (paW_pos q v).le]`. Use `(paW_pos q v).le` as an intermediate fact. Use `gcongr`. Establish `hsI : Summable (fun γ : lat Y.b => ∫ v, g γ v)` using `Summable.of_nonneg_of_le (fun γ => integral_nonneg (hg0 γ)) (fun γ => (hU γ).2) (hL.mul_left C)`. Use `show ∫⁻ v, ‖thF Y q F v‖ₑ < ⊤`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun v => ?_` and prove the remaining obligations. Rewrite using `[← ofReal_norm, ← ENNReal.ofReal_tsum_of_nonneg (fun γ => hg0 γ v) (hgs v)]`. Conclude with `ENNReal.ofReal_le_ofReal (hfle v)`. Use `_ = ∑' γ, ∫⁻ v, ENNReal.ofReal (g γ v) := lintegral_tsum (fun γ => (hU γ).1.aestronglyMeasurable.aemeasurable.ennreal_ofReal)`.
-
-Use `_ = ∑' γ, ENNReal.ofReal (∫ v, g γ v) := by`. Use `congr 1`. Use function extensionality and compare the values at `γ`. Rewrite using `[ofReal_integral_eq_lintegral_ofReal (hU γ).1 (Filter.Eventually.of_forall (hg0 γ))]`. Use `_ = ENNReal.ofReal (∑' γ, ∫ v, g γ v) := (ENNReal.ofReal_tsum_of_nonneg (fun γ => integral_nonneg (hg0 γ)) hsI).symm`.
-
-Use `_ < ⊤ := ENNReal.ofReal_lt_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thF_integrable (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) (Y : GT ι) {q c : ℕ} {R0 : ℝ}
     (hq : 1 ≤ q) (hR0 : 0 < R0)
@@ -123,15 +119,15 @@ theorem thF_integrable (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) (Y :
     _ < ⊤ := ENNReal.ofReal_lt_top
 
 /- English proof (translation)
-Establish `hH : ∀ v w : EuclideanSpace ℂ ι, Hf v w = inner ℂ w v` using `fun v w => by`. Rewrite using `[Hf, PiLp.inner_apply]`. Apply the tactic sequence `try rfl`. Establish `hn : ∀ v : EuclideanSpace ℂ ι, ((‖v‖ ^ 2 : ℝ) : ℂ) = inner ℂ v v` using `fun v => by`. Rewrite using `[inner_self_eq_norm_sq_to_K]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Use `first`. Consider the case `rfl`. Consider the case `simp`. Consider the case `norm_cast`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hexp : ∀ r : ℝ, ((Real.exp r : ℝ) : ℂ) = cexp (r : ℂ)` using `fun r => Complex.ofReal_exp r`. Simplify using `only [paW, hH, hexp]`. Rewrite using `[← Complex.exp_conj, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Establish `h1 : ((-(↑q * Real.pi) * ‖x + γ‖ ^ 2 : ℝ) : ℂ) = -((q : ℂ) * Real.pi) * inner ℂ (x + γ) (x + γ)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ((-(↑q * Real.pi) * ‖x‖ ^ 2 : ℝ) : ℂ) = -((q : ℂ) * Real.pi) * inner ℂ x x`. Rewrite using `[← hn]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2]`. Simplify using `only [inner_add_left, inner_add_right, inner_neg_left, inner_neg_right, map_sub, map_mul, map_div₀, map_neg, Complex.conj_ofReal, map_natCast, map_ofNat, inner_conj_symm, neg_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem key2 (q : ℕ) (γ x : EuclideanSpace ℂ ι) :
     cexp (q * Real.pi * Hf x γ + q * Real.pi * Hf γ γ / 2) * ((paW q (x + γ) : ℝ) : ℂ) =
@@ -165,15 +161,15 @@ theorem key2 (q : ℕ) (γ x : EuclideanSpace ℂ ι) :
   ring
 
 /- English proof (translation)
-Establish `hH : ∀ v w : EuclideanSpace ℂ ι, Hf v w = inner ℂ w v` using `fun v w => by`. Rewrite using `[Hf, PiLp.inner_apply]`. Apply the tactic sequence `try rfl`. Simplify using `only [paTh]`. Rewrite using `[← tsum_mul_left, ← (Equiv.addLeft g).tsum_eq (fun γ : lat Y.b => Y.ka γ * paU q γ F ((g : EuclideanSpace ℂ ι) + x))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_addLeft, Submodule.coe_add]`. Rewrite using `[hC g g.2 γ γ.2]`. Simplify using `only [paU]`. Establish `harg : (g : EuclideanSpace ℂ ι) + x - ((g : EuclideanSpace ℂ ι) + (γ : EuclideanSpace ℂ ι)) = x - γ` using `by abel`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[harg]`. Establish `hAB : -((Real.pi : ℂ) * (q : ℂ) * ((Hf (g : EuclideanSpace ℂ ι) (γ : EuclideanSpace ℂ ι)).im : ℂ)) * I + ((q : ℂ) * (Real.pi : ℂ) * Hf ((g : EuclideanSpace ℂ ι) + x) ((g : EuclideanSpace ℂ ι) + (γ : EuclideanSpace ℂ ι)) - (q : ℂ) * (Real.pi : ℂ) * Hf ((g : EuclideanSpace ℂ ι) + ( …`. Simplify using `only [hH, inner_add_left, inner_add_right]`. Establish `hc : inner ℂ (g : EuclideanSpace ℂ ι) (γ : EuclideanSpace ℂ ι) = (starRingEnd ℂ) (inner ℂ (γ : EuclideanSpace ℂ ι) (g : EuclideanSpace ℂ ι))` using `(inner_conj_symm _ _).symm`. Establish `hre : (starRingEnd ℂ) (inner ℂ (γ : EuclideanSpace ℂ ι) (g : EuclideanSpace ℂ ι)) = inner ℂ (γ : EuclideanSpace ℂ ι) (g : EuclideanSpace ℂ ι) - 2 * ((inner ℂ (γ : EuclideanSpace ℂ ι) (g : EuclideanSpace ℂ ι)).im : ℂ) * I`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `Complex.sub_conj (inner ℂ (γ : EuclideanSpace ℂ ι) (g : EuclideanSpace ℂ ι))`. Move the coercions through the operations in `at hs`. Take the linear combination `-hs`. Rewrite using `[hc, hre]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `key : cexp (-((Real.pi : ℂ) * (q : ℂ) * ((Hf (g : EuclideanSpace ℂ ι) (γ : EuclideanSpace ℂ ι)).im : ℂ)) * I) * cexp ((q : ℂ) * (Real.pi : ℂ) * Hf ((g : EuclideanSpace ℂ ι) + x) ((g : EuclideanSpace ℂ ι) + (γ : EuclideanSpace ℂ ι)) - (q : ℂ) * (Real.pi : ℂ) * Hf ((g : EuclideanSp …`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add, hAB]`. Take the linear combination `(Y.ka g * Y.ka γ * F (x - γ)) * key`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem paTh_add_lattice {Y : GT ι} {q : ℕ} (hC : Coc Y q) (F : EuclideanSpace ℂ ι → ℂ)
     (x : EuclideanSpace ℂ ι) (g : lat Y.b) :
@@ -221,17 +217,15 @@ private theorem paTh_add_lattice {Y : GT ι} {q : ℕ} (hC : Coc Y q) (F : Eucli
   linear_combination (Y.ka g * Y.ka γ * F (x - γ)) * key
 
 /- English proof (translation)
-Establish `h0 : Y.ka 0 = 1`. Establish `h00` using `hC 0 (Submodule.zero_mem _) 0 (Submodule.zero_mem _)`. Establish `hz : Hf (0 : EuclideanSpace ℂ ι) (0 : EuclideanSpace ℂ ι) = 0` using `by simp [Hf]`. Rewrite `h00` using `[add_zero, hz, Complex.zero_im]`. Simplify using `only [Complex.ofReal_zero, mul_zero, neg_zero, zero_mul, Complex.exp_zero, mul_one] at h00`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hn : Y.ka 0 ≠ 0`. Introduce `h`. Establish `h1` using `Y.ka_abs 0 (Submodule.zero_mem _)`. Rewrite `h1` using `[h, norm_zero]`. Conclude with `zero_ne_one h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_left_cancel₀ hn (h00.symm.trans (mul_one _).symm)`. Establish `hneg : (Hf (g : EuclideanSpace ℂ ι) (-(g : EuclideanSpace ℂ ι))).im = 0`. Establish `e1 : Hf (g : EuclideanSpace ℂ ι) (-(g : EuclideanSpace ℂ ι)) = -Hf (g : EuclideanSpace ℂ ι) (g : EuclideanSpace ℂ ι)`. Simplify using `[Hf, Finset.sum_neg_distrib]`. Rewrite using `[e1, Complex.neg_im, neg_eq_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Hf, Complex.mul_conj, Complex.im_sum]`. Establish `hg` using `hC (g : EuclideanSpace ℂ ι) g.2 (-(g : EuclideanSpace ℂ ι)) (Submodule.neg_mem _ g.2)`. Rewrite `hg` using `[add_neg_cancel, h0, hneg]`. Simplify using `only [Complex.ofReal_zero, mul_zero, neg_zero, zero_mul, Complex.exp_zero, mul_one] at hg`. Establish `hconj : (starRingEnd ℂ) (Y.ka g) * Y.ka g = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, Y.ka_abs g g.2]`. Evaluate the numerical expressions. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hconj, one_mul]`. Use `_ = (starRingEnd ℂ) (Y.ka g) * (Y.ka g * Y.ka (-(g : EuclideanSpace ℂ ι))) := by ring`.
-
-Use `_ = (starRingEnd ℂ) (Y.ka g) := by rw [← hg, mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ka_neg_eq_conj {Y : GT ι} {q : ℕ} (hC : Coc Y q) (g : lat Y.b) :
     Y.ka (-(g : EuclideanSpace ℂ ι)) = (starRingEnd ℂ) (Y.ka g) := by
@@ -265,15 +259,15 @@ private theorem ka_neg_eq_conj {Y : GT ι} {q : ℕ} (hC : Coc Y q) (g : lat Y.b
     _ = (starRingEnd ℂ) (Y.ka g) := by rw [← hg, mul_one]
 
 /- English proof (translation)
-Establish `hpt : ∀ g : lat Y.b, thF Y q F (g +ᵥ x) = paTh Y q F x * (paW q x : ℂ) * (starRingEnd ℂ) (Y.ka (-(g : EuclideanSpace ℂ ι)) * paU q (-(g : EuclideanSpace ℂ ι)) F x)`. Introduce `g`. Establish `hv : (g +ᵥ x : EuclideanSpace ℂ ι) = (g : EuclideanSpace ℂ ι) + x` using `rfl`. Rewrite using `[hv]`. Unfold `thF`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[paTh_add_lattice hC F x g, ka_neg_eq_conj hC g]`. Establish `hk` using `key2 q (g : EuclideanSpace ℂ ι) x`. Rewrite `hk` using `[add_comm x (g : EuclideanSpace ℂ ι)]`. Simplify using `only [paU, map_mul, Complex.conj_conj, sub_neg_eq_add]`. Rewrite using `[add_comm x (g : EuclideanSpace ℂ ι)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(Y.ka g * paTh Y q F x * (starRingEnd ℂ) (F ((g : EuclideanSpace ℂ ι) + x))) * hk`. Rewrite using `[tsum_congr hpt, tsum_mul_left]`. Establish `hsum : ∑' g : lat Y.b, (starRingEnd ℂ) (Y.ka (-(g : EuclideanSpace ℂ ι)) * paU q (-(g : EuclideanSpace ℂ ι)) F x) = (starRingEnd ℂ) (paTh Y q F x)`. Simplify using `only [paTh]`. Rewrite using `[starRingEnd_apply, tsum_star]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (Equiv.neg (lat Y.b)).tsum_eq (fun g : lat Y.b => star (Y.ka g * paU q g F x))]`. Use `tsum_congr fun g => ?_` and prove the remaining obligations. Simplify using `only [Equiv.neg_apply, Submodule.coe_neg, starRingEnd_apply]`. Rewrite using `[hsum]`. Establish `hmc : paTh Y q F x * (starRingEnd ℂ) (paTh Y q F x) = ((‖paTh Y q F x‖ ^ 2 : ℝ) : ℂ)` using `by first`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Consider the case `(rw [Complex.mul_conj']; push_cast; ring)`. Move the coercions through the operations in `at hmc ⊢`. Take the linear combination `(paW q x : ℂ) * hmc`.
+Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem unfold_pt {Y : GT ι} {q : ℕ} (hC : Coc Y q) (F : EuclideanSpace ℂ ι → ℂ) (x : EuclideanSpace ℂ ι) :
     ∑' g : lat Y.b, thF Y q F (g +ᵥ x) = ((‖paTh Y q F x‖ ^ 2 * paW q x : ℝ) : ℂ) := by
@@ -314,11 +308,11 @@ instance lat_vaddInv (Y : GT ι) :
     exact measure_preimage_add volume (g : EuclideanSpace ℂ ι) s⟩
 
 /- English proof (translation)
-Use `lat_countable (ι := ι) Y.b` as an intermediate fact. Take `⟨hfi, hfc⟩` from `thF_integrable hP hA Y hq hR0 hlat hR hF`. Establish `hfd` using `ZSpan.isAddFundamentalDomain Y.b (volume : Measure (EuclideanSpace ℂ ι))`. Establish `e1 : paIP q (paTh Y q F) F = ∑' g : lat Y.b, ∫ x in ZSpan.fundamentalDomain Y.b, thF Y q F (g +ᵥ x)` using `hfd.integral_eq_tsum'' (thF Y q F) hfi`. Establish `hmeas : ∀ g : lat Y.b, AEStronglyMeasurable (fun x => thF Y q F (g +ᵥ x)) (volume.restrict (ZSpan.fundamentalDomain Y.b))` using `fun g => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Submodule.vadd_def, vadd_eq_add]`. Conclude with `(hfc.comp (continuous_const.add continuous_id)).aestronglyMeasurable`. Establish `hfin : ∑' g : lat Y.b, ∫⁻ x in ZSpan.fundamentalDomain Y.b, ‖thF Y q F (g +ᵥ x)‖ₑ ≠ ⊤`. Rewrite using `[← hfd.lintegral_eq_tsum'' (fun x => ‖thF Y q F x‖ₑ)]`. Conclude with `hfi.2.ne`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses repeatedly using the stated equalities.
 
-Rewrite `e1` using `[← integral_tsum hmeas hfin]`. Rewrite `e1` using `[unfold_pt hC F]`. Rewrite using `[e1, integral_complex_ofReal, Complex.ofReal_re, GT.l2, setAverage_eq, measureReal_def, vol_eq, ENNReal.toReal_one, inv_one, one_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem paUnfold_w (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) (Y : GT ι) {q c : ℕ} {R0 : ℝ}
     (hq : 1 ≤ q) (hR0 : 0 < R0)

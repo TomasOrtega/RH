@@ -16,7 +16,7 @@ namespace GlobalTheory.CechPer.LogDer
 open Filter Topology
 
 /- English proof (translation)
-Establish `hm : HasFDerivAt (fun w => c w * d w) (c z • fderiv ℂ d z + d z • fderiv ℂ c z) z` using `hc.hasFDerivAt.mul hd.hasFDerivAt`. Rewrite using `[h.fderiv_eq, hm.fderiv, h.eq_of_nhds]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem logDer_mul {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {f c d : E → ℂ} {z : E}
     (h : f =ᶠ[𝓝 z] fun w => c w * d w) (hc : DifferentiableAt ℂ c z) (hd : DifferentiableAt ℂ d z)
@@ -30,11 +30,11 @@ theorem logDer_mul {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {f c d 
   ring
 
 /- English proof (translation)
-Set `ℓ : (Fin g → ℂ) →L[ℂ] ℂ` to `∑ i, m i • ContinuousLinearMap.proj i`. Establish `hℓ : ∀ w, ℓ w = w ⬝ᵥ m`. Introduce `w`. Simplify using `[ℓ, dotProduct, mul_comm]`. Establish `H` using `(((ℓ.hasFDerivAt (x := z)).const_mul b).add_const c).cexp.const_mul a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hfun : (fun w : Fin g → ℂ => a * Complex.exp (b * (w ⬝ᵥ m) + c)) = fun w => a * Complex.exp (b * ℓ w + c)`. Use function extensionality and compare the values at `w`. Rewrite using `[hℓ]`. Use `⟨a • (Complex.exp (b * ℓ z + c) • (b • ℓ)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `H`. Introduce `v`. Simplify using `only [FunLike.coe_smul, Pi.smul_apply, smul_eq_mul, hℓ]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_factor {g : ℕ} (a b c : ℂ) (m z : Fin g → ℂ) :
     ∃ D : (Fin g → ℂ) →L[ℂ] ℂ, HasFDerivAt (fun w : Fin g → ℂ => a * Complex.exp (b * (w ⬝ᵥ m) + c)) D z ∧
@@ -56,29 +56,27 @@ theorem hasFDerivAt_factor {g : ℕ} (a b c : ℂ) (m z : Fin g → ℂ) :
     ring
 
 /- English proof (translation)
-Introduce `A _ g L u hA _ H χ hAH v`. Take `⟨hopen, hdval, hshift, -, hinf, -, -, -, -, hev, -, -⟩` from `GlobalTheory.T.uniformisation_preimage_value_rules A g L u`. Establish `hfrd : ∀ i, DifferentiableOn ℂ (u.fr i) (pre u.ex (L.U i))` using `u.10`. Establish `hfr0 : ∀ i, ∀ z ∈ pre u.ex (L.U i), u.fr i z ≠ 0` using `fun i z hz => u.11 i z hz`. Establish `hfrg : ∀ i j, ∀ z ∈ pre u.ex (L.U i ⊓ L.U j), u.fr i z = val u.ex (L.U i ⊓ L.U j) (L.g i j : Γ(A.left, L.U i ⊓ L.U j)) z * u.fr j z` using `fun i j z hz => u.12 i j z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfra : ∀ i, ∀ z ∈ pre u.ex (L.U i), DifferentiableAt ℂ (u.fr i) z` using `fun i z hz => (hfrd i).differentiableAt ((hopen _).mem_nhds hz)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i z hz`. Set `e : ReciprocityTheory.L2DbarEstimates.V g ≃L[ℂ] (Fin g → ℂ)` to `EuclideanSpace.equiv (Fin g) ℂ`. Establish `hpre : IsOpen (e ⁻¹' pre u.ex (L.U i))` using `(hopen _).preimage e.continuous`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsm` using `ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn g (u.fr i ∘ e) _ hpre ((hfrd i).comp e.differentiableOn (fun y hy => hy))`. Establish `hsm' : ContDiffOn ℂ (↑(⊤ : ℕ∞)) (u.fr i) (pre u.ex (L.U i))`. Establish `h2` using `hsm.comp e.symm.contDiff.contDiffOn (fun y hy => by simpa using hy)`. Establish `h3 : (u.fr i ∘ e) ∘ e.symm = u.fr i`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis. Apply the tactic sequence `have hca := (hsm'.contDiffAt ((hopen _).mem_nhds hz)).fderiv_right (m := 1) (by first | exact WithTop.coe_le_coe.2 le_top | exact_mod_cast (le_top : (2 : ℕ∞) ≤ ⊤))`. Establish `h1 : DifferentiableAt ℂ (fun w => fderiv ℂ (u.fr i) w v) z` using `(hca.differentiableAt one_ne_zero).clm_apply (differentiableAt_const v)`. Establish `h4` using `h1.mul ((hfra i z hz).inv (hfr0 i z hz))`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [div_eq_mul_inv]`. Conclude with `h4.differentiableWithinAt`. Introduce `i j`. Use `set U := L.U i ⊓ L.U j with hU`. Use `set G : Γ(A.left, U) := (L.g i j).val with hG`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set G' : Γ(A.left, U) := ((L.g i j)⁻¹ : (Γ(A.left, U))ˣ).val with hG'`. Take `⟨-, hring, hcongr, -, -, -⟩` from `GlobalTheory.T.isRegularOnOpenUniformised_subalgebra_restrict A g L u U`. Establish `hder : IsReg u.ex U fun z => fderiv ℂ (val u.ex U G) z v` using `GlobalTheory.T.isRegular_fderiv_constant_vector_uniformised A g L u hA U G v`. Establish `hinv : IsReg u.ex U (val u.ex U G')` using `⟨G', fun z _ => rfl⟩`. Establish `hprod` using `(hring _ _ hder hinv).2.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hcongr _ _ hprod ?_` and prove the remaining obligations. Introduce `z hz`. Establish `hzij : z ∈ pre u.ex (L.U i) ∩ pre u.ex (L.U j)` using `by rw [← hinf]; exact hz`. Establish `hGG : val u.ex U G z * val u.ex U G' z = 1`. Take `⟨e, he⟩` from `hev U z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : G * G' = 1` using `Units.mul_inv _`. Rewrite using `[he, he]`. Conclude with `(map_mul e G G').symm.trans ((congrArg e h1).trans (map_one e))`. Establish `hG0 : val u.ex U G z ≠ 0` using `left_ne_zero_of_mul_eq_one hGG`. Establish `hev' : ∀ᶠ w in 𝓝 z, u.fr i w = val u.ex U G w * u.fr j w` using `Filter.eventually_of_mem ((hopen U).mem_nhds hz) (fun w hw => hfrg i j w hw)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key` using `logDer_mul hev' ((hdval U G).differentiableAt ((hopen U).mem_nhds hz)) (hfra j z hzij.2) hG0 (hfr0 j z hzij.2) v`. Simplify using `only [Pi.sub_apply, Pi.mul_apply]`. Rewrite using `[key, eq_inv_of_mul_eq_one_right hGG]`. Expand and normalize the polynomial expressions, which then agree. Introduce `i l z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set m := H.mulVec (star (l : Fin g → ℂ)) with hm`. Establish `hzl : z + (l : Fin g → ℂ) ∈ pre u.ex (L.U i)` using `(hshift (L.U i) l z).2 hz`. Establish `hχ : χ l ≠ 0`. Introduce `h0`. Use `hAH.2.2.1 l` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`. Take `⟨D, hD, hDv⟩` from `hasFDerivAt_factor (χ l) (Real.pi : ℂ) ((Real.pi : ℂ) / 2 * ((l : Fin g → ℂ) ⬝ᵥ m)) m z`. Establish `hev' : ∀ᶠ w in 𝓝 z, u.fr i w = (χ l * Complex.exp ((Real.pi : ℂ) * (w ⬝ᵥ m) + (Real.pi : ℂ) / 2 * ((l : Fin g → ℂ) ⬝ᵥ m))) * u.fr i (w + l)` using `Filter.eventually_of_mem ((hopen _).mem_nhds hz) (fun w hw => hAH.2.2.2 l i w hw)`. Establish `hdl : DifferentiableAt ℂ (fun w => u.fr i (w + l)) z` using `(hfra i _ hzl).comp z (differentiableAt_id.add_const _)`.
-
-Establish `key` using `logDer_mul hev' hD.differentiableAt hdl (mul_ne_zero hχ (Complex.exp_ne_zero _)) (hfr0 i _ hzl) v`. Rewrite `key` using `[hD.fderiv, hDv, fderiv_comp_add_right]`. Establish `hE : χ l * Complex.exp ((Real.pi : ℂ) * (z ⬝ᵥ m) + (Real.pi : ℂ) / 2 * ((l : Fin g → ℂ) ⬝ᵥ m)) ≠ 0` using `mul_ne_zero hχ (Complex.exp_ne_zero _)`. Rewrite using `[key, mul_div_cancel_left₀ _ hE]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), IsAbelianScheme A → L.IsLB → ∀ (H : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ), u.IsAH H χ → ∀ v : Fin g → ℂ, (∀ i, DifferentiableOn ℂ (fun z => fderiv ℂ (u.fr i) z v / u.fr i z) (pre u.ex (L.U i))) ∧ (∀ i j, IsReg u.ex (L.U i ⊓ L.U j) ((fun z => fderiv ℂ (u.fr i) z v / u.fr i z) - fun z => fderiv ℂ (u.fr j) z v / u.fr j z)) ∧ ∀ i (l : u.Λ), ∀ z ∈ pre u.ex (L.U i), fderiv ℂ (u.fr i) (z + l) v / u.fr i (z + l) = fderiv ℂ (u.fr i) z v / u.fr i z - Real.pi * (v ⬝ᵥ H.mulVec (star (l : Fin g → ℂ))) := by
   intro A _ g L u hA _ H χ hAH v

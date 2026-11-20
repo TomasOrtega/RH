@@ -18,7 +18,7 @@ def thick (S : Set X) (Λ : AddSubgroup X) : Set X := {x | ∃ s ∈ S, x - s �
 
 omit [MeasurableSpace X] [OpensMeasurableSpace X] in
 /- English proof (translation)
-Establish `e : thick S Λ = ⋃ s ∈ S, (fun x => x - s) ⁻¹' (Λ : Set X)`. Use extensionality with `x`. Simplify using `[thick]`. Rewrite using `[e]`. Conclude with `isOpen_biUnion fun s _ => hΛ.preimage (continuous_id.sub continuous_const)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_thick (S : Set X) (Λ : AddSubgroup X) (hΛ : IsOpen (Λ : Set X)) :
     IsOpen (thick S Λ) := by
@@ -29,17 +29,15 @@ theorem isOpen_thick (S : Set X) (Λ : AddSubgroup X) (hΛ : IsOpen (Λ : Set X)
   exact isOpen_biUnion fun s _ => hΛ.preimage (continuous_id.sub continuous_const)
 
 /- English proof (translation)
-Establish `hfib : ∀ c : X ⧸ Λ, m1 (((↑) : X → X ⧸ Λ) ⁻¹' {c}) = m2 (((↑) : X → X ⧸ Λ) ⁻¹' {c}) ∧ MeasurableSet (((↑) : X → X ⧸ Λ) ⁻¹' {c})`. Introduce `c`. Take `⟨y, rfl⟩` from `QuotientAddGroup.mk_surjective c`. Establish `e : ((↑) : X → X ⧸ Λ) ⁻¹' {(y : X ⧸ Λ)} = {z | z - y ∈ Λ}`. Use extensionality with `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[QuotientAddGroup.eq_iff_sub_mem]`. Rewrite using `[e]`. Conclude with `⟨h y, (hΛ.preimage (continuous_id.sub continuous_const)).measurableSet⟩`. Take `⟨t, ht⟩` from `hS.elim_finite_subcover (fun s : S => {z : X | z - (s : X) ∈ Λ}) (fun s => hΛ.preimage (continuous_id.sub continuous_const)) (fun x hx => mem_iUnion.mpr ⟨⟨x, hx⟩, by simp⟩)`. Establish `hT : thick S Λ = ⋃ c ∈ t.image (fun s : S => ((s : X) : X ⧸ Λ)), ((↑) : X → X ⧸ Λ) ⁻¹' {c}`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [thick, mem_ofPred_eq, mem_iUnion, mem_preimage, mem_singleton_iff, Finset.mem_image, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hxs⟩`. Take `⟨s', hs't, hss'⟩` from `mem_iUnion₂.mp (ht hs)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨((s' : X) : X ⧸ Λ), ⟨s', hs't, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[QuotientAddGroup.eq_iff_sub_mem]`. Establish `e : x - (s' : X) = (x - s) + (s - s')` using `by abel`. Rewrite using `[e]`. Conclude with `Λ.add_mem hxs hss'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨c, ⟨s', _, rfl⟩, hx⟩`. Conclude with `⟨s', s'.2, (QuotientAddGroup.eq_iff_sub_mem).mp hx⟩`. Rewrite using `[hT, measure_biUnion_finset, measure_biUnion_finset]`. Conclude with `Finset.sum_congr rfl fun c _ => (hfib c).1`. Apply the tactic sequence `all_goals first`.
-
-Consider the case `exact fun c _ c' _ hne => (Set.disjoint_singleton.mpr hne).preimage _`. Consider the case `exact fun c _ => (hfib c).2`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem measure_thick_eq (m1 m2 : Measure X) (Λ : AddSubgroup X) (hΛ : IsOpen (Λ : Set X))
     (h : ∀ y, m1 {z | z - y ∈ Λ} = m2 {z | z - y ∈ Λ}) (S : Set X) (hS : IsCompact S) :
@@ -82,11 +80,11 @@ theorem measure_thick_eq (m1 m2 : Measure X) (Λ : AddSubgroup X) (hΛ : IsOpen 
 omit [MeasurableSpace X] [OpensMeasurableSpace X] in
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [mem_iInter]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Assume the negation of the conclusion as `hxS`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hN : (fun u => x - u) ⁻¹' Sᶜ ∈ 𝓝 (0 : X)`. Apply `(continuous_const.sub continuous_id).continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Simplify using `using hSc.isOpen_compl.mem_nhds hxS`. Take `⟨n, hn⟩` from `hb _ hN`. Take `⟨s, hs, hxs⟩` from `hx n`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hmem` using `hn hxs`. Simplify using `only [mem_preimage, mem_compl_iff, sub_sub_cancel] at hmem`. Conclude with `hmem hs`. Introduce `hx n`. Conclude with `⟨x, hx, by simp⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem iInter_thick (S : Set X) (hSc : IsClosed S) (Λ : ℕ → AddSubgroup X)
     (hb : ∀ N ∈ 𝓝 (0 : X), ∃ n, (Λ n : Set X) ⊆ N) : ⋂ n, thick S (Λ n) = S := by
@@ -107,9 +105,9 @@ theorem iInter_thick (S : Set X) (hSc : IsClosed S) (Λ : ℕ → AddSubgroup X)
     exact ⟨x, hx, by simp⟩
 
 /- English proof (translation)
-Establish `hmono : Antitone fun n => thick S (Λ n)`. Introduce `a c hac x hx`. Take `⟨s, hs, hxs⟩` from `hx`. Conclude with `⟨s, hs, hanti hac hxs⟩`. Establish `hnull : ∀ (μ : Measure X) n, NullMeasurableSet (thick S (Λ n)) μ` using `fun μ n => (isOpen_thick S (Λ n) (hΛo n)).measurableSet.nullMeasurableSet`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `heq : ∀ n, m1 (thick S (Λ n)) = m2 (thick S (Λ n))` using `fun n => measure_thick_eq m1 m2 (Λ n) (hΛo n) (h n) S hS`. Rewrite using `[← iInter_thick S hSc Λ hb, hmono.measure_iInter (hnull m1) ⟨0, measure_ne_top _ _⟩, hmono.measure_iInter (hnull m2) ⟨0, by rw [← heq 0]; exact measure_ne_top _ _⟩]`. Simplify using `only [heq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem measure_eq_of_cos (m1 m2 : Measure X) [IsFiniteMeasure m1]
     (Λ : ℕ → AddSubgroup X) (hΛo : ∀ n, IsOpen (Λ n : Set X)) (hanti : Antitone Λ)
@@ -131,17 +129,15 @@ theorem measure_eq_of_cos (m1 m2 : Measure X) [IsFiniteMeasure m1]
 end CosMeas
 
 /- English proof (translation)
-Unfold `CosDens`. Introduce `X _ _ _ _ _ _ ν m _ _ H hHo _ hanti hb c0 κ hm0 hcos S hS`. Establish `hle : ∀ n, H n ≤ H 0` using `fun n => hanti (Nat.zero_le n)`. Establish `hcos' : ∀ n y, m {z | z - y ∈ H n} = ((κ • ν).restrict {z | z - c0 ∈ H 0}) {z | z - y ∈ H n}`. Introduce `n y`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmeas : MeasurableSet {z : X | z - y ∈ H n}` using `((hHo n).preimage (continuous_id.sub continuous_const)).measurableSet`. Rewrite using `[Measure.restrict_apply hmeas, Measure.smul_apply, smul_eq_mul]`. Distinguish the cases in `hy : y - c0 ∈ H 0`. Establish `hsub : {z : X | z - y ∈ H n} ∩ {z | z - c0 ∈ H 0} = {z | z - y ∈ H n}`. Apply `inter_eq_left.mpr` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `z hz`. Establish `e : z - c0 = (z - y) + (y - c0)` using `by abel`. Use `show z - c0 ∈ H 0`. Rewrite using `[e]`. Conclude with `(H 0).add_mem (hle n hz) hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsub]`. Conclude with `hcos n y hy`. Establish `hout : ∀ z, z - y ∈ H n → z - c0 ∉ H 0`. Introduce `z hz hz0`. Apply `hy` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : y - c0 = (z - c0) - (z - y)` using `by abel`. Rewrite using `[e]`. Conclude with `(H 0).sub_mem hz0 (hle n hz)`. Establish `hempty : {z : X | z - y ∈ H n} ∩ {z | z - c0 ∈ H 0} = ∅`. Use extensionality with `z`.
-
-Simplify using `only [mem_inter_iff, mem_ofPred_eq, mem_empty_iff_false, iff_false, not_and]`. Conclude with `hout z`. Rewrite using `[hempty, measure_empty, mul_zero]`. Conclude with `measure_mono_null (fun z hz => hout z hz) hm0`. Rewrite using `[measure_eq_of_cos m _ H hHo hanti hb hcos' S hS hS.isClosed, Measure.restrict_apply hS.isClosed.measurableSet, Measure.smul_apply, smul_eq_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cosDens_holds : CosDens := by
   unfold CosDens

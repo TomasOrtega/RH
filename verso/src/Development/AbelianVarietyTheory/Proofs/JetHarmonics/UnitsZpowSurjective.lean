@@ -3,15 +3,13 @@ import Mathlib
 namespace GlobalTheory.DivisibleUnits
 
 /- English proof (translation)
-Establish `nat_root : ∀ (m : ℕ), 0 < m → ∀ x : Fˣ, ∃ y : Fˣ, y ^ m = x`. Introduce `m hm x`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (x : F) hm`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hz` using `[zero_pow hm.ne']`. Conclude with `x.ne_zero hz.symm`. Use `⟨Units.mk0 z hz0, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `[hz]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Break down `Int.lt_or_gt_of_ne hn with h | h` into its components or cases. Take `⟨y, hy⟩` from `nat_root n.natAbs (Int.natAbs_pos.mpr hn) x⁻¹`. Use `⟨y, ?_⟩` and prove the remaining obligations. Use `show y ^ n = x`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: n = -(n.natAbs : ℤ)` using `by omega`. Rewrite using `[this, zpow_neg, zpow_natCast, hy, inv_inv]`. Take `⟨y, hy⟩` from `nat_root n.natAbs (Int.natAbs_pos.mpr hn) x`. Use `⟨y, ?_⟩` and prove the remaining obligations. Use `show y ^ n = x`.
-
-Establish `: n = (n.natAbs : ℤ)` using `by omega`. Rewrite using `[this, zpow_natCast, hy]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem units_zpow_surjective {F : Type} [Field F] [IsAlgClosed F] {n : ℤ} (hn : n ≠ 0) :
     Function.Surjective (fun a : Fˣ => a ^ n) := by
@@ -45,7 +43,7 @@ noncomputable def divisibleUnits (F : Type) [Field F] [IsAlgClosed F] :
     exact ⟨Additive.ofMul y, by simpa using congrArg Additive.ofMul hy⟩)
 
 /- English proof (translation)
-Use `letI := divisibleUnits F`. Take `⟨h, hh⟩` from `(Module.Baer.of_divisible (Additive Fˣ)).extension_property_addMonoidHom (MonoidHom.toAdditive Φ) hΦ (MonoidHom.toAdditive χ)`. Use `⟨MonoidHom.toAdditive.symm h, fun x => ?_⟩` and prove the remaining obligations. Use `DFunLike.congr_fun hh (Additive.ofMul x)` as an intermediate fact. Conclude with `this`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_extension {H M F : Type} [CommGroup H] [CommGroup M] [Field F] [IsAlgClosed F]
     (Φ : H →* M) (hΦ : Function.Injective Φ) (χ : H →* Fˣ) :
@@ -58,7 +56,7 @@ theorem exists_extension {H M F : Type} [CommGroup H] [CommGroup M] [Field F] [I
   exact this
 
 /- English proof (translation)
-Introduce `Φ hΦ χ` and use `exists_extension Φ hΦ χ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem target : ∀ {H M F : Type} [inst : CommGroup H] [inst_1 : CommGroup M] [inst_2 : Field F] [IsAlgClosed F] (Φ : H →* M), Function.Injective (⇑Φ : H → M) → ∀ (χ : H →* Fˣ), ∃ (κ : M →* Fˣ), ∀ (x : H), (κ : M → Fˣ) ((Φ : H → M) x) = (χ : H → Fˣ) x :=
   fun Φ hΦ χ => exists_extension Φ hΦ χ

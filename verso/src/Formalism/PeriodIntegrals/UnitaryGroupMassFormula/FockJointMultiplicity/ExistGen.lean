@@ -11,7 +11,7 @@ section Deriv
 variable {R A : Type*} [CommRing R] [CommRing A] [Algebra R A]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, D.leibniz, h a (Finset.mem_insert_self a s), ih (fun i hi => h i (Finset.mem_insert_of_mem hi))]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem deriv_prod_eq_zero {ι : Type*} (D : Derivation R A A) (s : Finset ι) (f : ι → A)
     (h : ∀ i ∈ s, D (f i) = 0) : D (∏ i ∈ s, f i) = 0 := by
@@ -24,18 +24,18 @@ theorem deriv_prod_eq_zero {ι : Type*} (D : Derivation R A A) (s : Finset ι) (
     simp
 
 /- English proof (translation)
-Rewrite using `[D.leibniz_pow, h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem deriv_pow_eq_zero (D : Derivation R A A) (a : A) (n : ℕ) (h : D a = 0) :
     D (a ^ n) = 0 := by
   rw [D.leibniz_pow, h]; simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, D.leibniz, ih, Finset.sum_insert ha, Finset.erase_insert ha]`. Simplify using `only [smul_eq_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[add_comm, Finset.mul_sum]`. Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i hi`. Establish `hne : i ≠ a` using `fun h => ha (h ▸ hi)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Finset.erase_insert_of_ne hne.symm, Finset.prod_insert (fun h => ha (Finset.mem_of_mem_erase h))]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem deriv_finset_prod {ι : Type*} [DecidableEq ι] (D : Derivation R A A) (s : Finset ι)
     (f : ι → A) : D (∏ i ∈ s, f i) = ∑ i ∈ s, (∏ j ∈ s.erase i, f j) * D (f i) := by
@@ -53,11 +53,11 @@ theorem deriv_finset_prod {ι : Type*} [DecidableEq ι] (D : Derivation R A A) (
     ring
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply, map_sum]`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `σ _`. Rewrite using `[Units.smul_def, map_zsmul, deriv_finset_prod, Finset.smul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[Units.smul_def]`. Use `congr 1`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ i)]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `j hj`. Rewrite using `[Matrix.updateCol_ne (Finset.ne_of_mem_erase hj)]`. Rewrite using `[Matrix.updateCol_self]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem deriv_det {n : Type*} [Fintype n] [DecidableEq n] (D : Derivation R A A)
     (M : Matrix n n A) :
@@ -79,11 +79,11 @@ theorem deriv_det {n : Type*} [Fintype n] [DecidableEq n] (D : Derivation R A A)
   · rw [Matrix.updateCol_self]
 
 /- English proof (translation)
-Rewrite using `[deriv_det]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i _`. Break down `h i with h0 | ⟨i', hne, c, hc⟩` into its components or cases. Establish `: (fun k => D (M k i)) = 0` using `funext h0`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[this]`. Simplify using `using Matrix.det_updateCol_smul M i (0 : A) 0`. Establish `: (fun k => D (M k i)) = c • (fun k => M k i')` using `funext fun k => by simp [hc k]`. Rewrite using `[this, Matrix.det_updateCol_smul]`. Rewrite using `[Matrix.det_zero_of_column_eq hne.symm]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `k`. Simplify using `[Matrix.updateCol_self, Matrix.updateCol_ne hne]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem deriv_det_eq_zero {n : Type*} [Fintype n] [DecidableEq n] (D : Derivation R A A)
     (M : Matrix n n A)
@@ -104,7 +104,7 @@ theorem deriv_det_eq_zero {n : Type*} [Fintype n] [DecidableEq n] (D : Derivatio
       simp [Matrix.updateCol_self, Matrix.updateCol_ne hne]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_transpose]`. Conclude with `deriv_det_eq_zero D M.transpose h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deriv_det_eq_zero_rows {n : Type*} [Fintype n] [DecidableEq n] (D : Derivation R A A)
     (M : Matrix n n A)
@@ -123,9 +123,9 @@ def minorPolynomial (R : Type*) [CommRing R] {k : ℕ} (g : Fin k → Fin k → 
   (Matrix.of fun i j => (X (g i j) : MvPolynomial σ R)).det
 
 /- English proof (translation)
-Establish `e : minorPolynomial R g = rename (fun x : Fin k × Fin k => g x.1 x.2) (Matrix.mvPolynomialX (Fin k) (Fin k) R).det`. Rewrite using `[AlgHom.map_det, minorPolynomial]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.mvPolynomialX]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Introduce `h`. Apply `Matrix.det_mvPolynomialX_ne_zero (m := Fin k) (R := R)` to reduce the goal to its premises. Conclude with `(rename_injective _ hg) (by rw [h, map_zero])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem minorPolynomial_ne_zero [IsDomain R] {k : ℕ} (g : Fin k → Fin k → σ)
     (hg : Function.Injective (fun x : Fin k × Fin k => g x.1 x.2)) : minorPolynomial R g ≠ 0 := by
@@ -141,11 +141,11 @@ theorem minorPolynomial_ne_zero [IsDomain R] {k : ℕ} (g : Fin k → Fin k → 
   exact (rename_injective _ hg) (by rw [h, map_zero])
 
 /- English proof (translation)
-Rewrite using `[minorPolynomial, Matrix.det_apply']`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises. Introduce `τ _`. Establish `hp : IsWeightedHomogeneous w (∏ i, (Matrix.of fun i j => (X (g i j) : MvPolynomial σ R)) (τ i) i) (∑ i, w (g (τ i) i))` using `IsWeightedHomogeneous.prod _ _ _ fun i _ => isWeightedHomogeneous_X _ _ _`. Establish `hc : ∑ i, w (g (τ i) i) = ∑ i, u i + ∑ j, v j`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hw, Finset.sum_add_distrib]`. Use `congr 1`. Conclude with `Equiv.sum_comp τ u`. Rewrite `hp` using `[hc]`. Establish `h0 : IsWeightedHomogeneous w (((Equiv.Perm.sign τ : ℤ) : MvPolynomial σ R)) 0`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← map_intCast (C : R →+* MvPolynomial σ R)]`. Conclude with `isWeightedHomogeneous_C _ _`. Use `h0.mul hp` as an intermediate fact. Rewrite `this` using `[zero_add]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minorPolynomial_isWeightedHomogeneous {k : ℕ} (g : Fin k → Fin k → σ) (w : σ → ℕ) (u v : Fin k → ℕ)
     (hw : ∀ i j, w (g i j) = u i + v j) :
@@ -171,9 +171,9 @@ theorem minorPolynomial_isWeightedHomogeneous {k : ℕ} (g : Fin k → Fin k →
   exact this
 
 /- English proof (translation)
-Rewrite using `[minorPolynomial, Matrix.det_apply']`. Apply `Subalgebra.sum_mem` to reduce the goal to its premises. Introduce `τ _`. Apply `Subalgebra.mul_mem` to reduce the goal to its premises. Conclude with `Subalgebra.intCast_mem _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subalgebra.prod_mem` to reduce the goal to its premises. Introduce `i _`. Simplify using `only [Matrix.of_apply]`. Conclude with `Algebra.subset_adjoin ⟨g (τ i) i, hS _ _, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem minorPolynomial_mem_supported {k : ℕ} (g : Fin k → Fin k → σ) (S : Set σ) (hS : ∀ i j, g i j ∈ S) :
     minorPolynomial R g ∈ supported R S := by
@@ -189,7 +189,7 @@ theorem minorPolynomial_mem_supported {k : ℕ} (g : Fin k → Fin k → σ) (S 
     exact Algebra.subset_adjoin ⟨g (τ i) i, hS _ _, rfl⟩
 
 /- English proof (translation)
-Apply `pderiv_eq_zero_of_notMem_vars` to reduce the goal to its premises. Introduce `h`. Conclude with `hv ((mem_supported.1 hf) h)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pderiv_eq_zero_of_supported {S : Set σ} {f : MvPolynomial σ R} (hf : f ∈ supported R S)
     {v : σ} (hv : v ∉ S) : pderiv v f = 0 := by
@@ -198,9 +198,9 @@ theorem pderiv_eq_zero_of_supported {S : Set σ} {f : MvPolynomial σ R} (hf : f
   exact hv ((mem_supported.1 hf) h)
 
 /- English proof (translation)
-Distinguish the cases in `hv : v ∈ S`. Rewrite `hf`, the goal using `[supported_eq_range_rename]`. Take `⟨g, rfl⟩` from `hf`. Use `pderiv_rename (R := R) Subtype.val_injective (⟨v, hv⟩ : S) g` as an intermediate fact. Simplify using `only at this`.
+Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `pderiv v (rename Subtype.val g) ∈ _`. Rewrite using `[this]`. Conclude with `AlgHom.mem_range_self _ _`. Rewrite using `[pderiv_eq_zero_of_supported hf hv]`. Conclude with `Subalgebra.zero_mem _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pderiv_mem_supported {S : Set σ} {f : MvPolynomial σ R} (hf : f ∈ supported R S)
     (v : σ) : pderiv v f ∈ supported R S := by

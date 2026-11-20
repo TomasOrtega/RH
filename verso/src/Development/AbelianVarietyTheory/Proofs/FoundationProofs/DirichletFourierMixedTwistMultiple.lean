@@ -11,39 +11,35 @@ noncomputable section
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Introduce `N l ν ω φ a c hN hl hc hφ htw hcu hau`. Use `haveI : NeZero N := ⟨hN.ne'⟩`. Use `haveI : NeZero l := ⟨hl.ne'⟩`. Use `haveI : NeZero (N * l) := ⟨(Nat.mul_pos hN hl).ne'⟩`. Establish `hlu : IsUnit (l : ZMod N)` using `(ZMod.unitOfCoprime l hc.symm).isUnit`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hNu : IsUnit (N : ZMod l)` using `(ZMod.unitOfCoprime N hc).isUnit`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `haN : IsUnit ((a : ZMod l) * N)` using `hau.mul hNu`. Establish `hωaN : ω ((a : ZMod l) * N) ≠ 0` using `(haN.map ω).ne_zero`. Establish `hνcl : ν (-(c : ZMod N) * l) ≠ 0` using `((hcu.neg.mul hlu).map ν).ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `⟨ν (-(c : ZMod N) * l) * (ω ((a : ZMod l) * N))⁻¹, mul_ne_zero hνcl (inv_ne_zero hωaN), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ x, mul_comm (hat φ x)]`. Set `f : ZMod N × ZMod l → ZMod (N * l)` to `fun p => ((p.1.val * l + p.2.val * N : ℕ) : ZMod (N * l))`. Establish `hcN : ∀ k : ℕ, ZMod.castHom (Dvd.intro l rfl : N ∣ N * l) (ZMod N) (k : ZMod (N * l)) = (k : ZMod N)` using `fun k => map_natCast _ k`. Establish `hcl : ∀ k : ℕ, ZMod.castHom (Dvd.intro_left N rfl : l ∣ N * l) (ZMod l) (k : ZMod (N * l)) = (k : ZMod l)` using `fun k => map_natCast _ k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective f`. Introduce `p q hpq`. Establish `h1` using `congrArg (ZMod.castHom (Dvd.intro l rfl : N ∣ N * l) (ZMod N)) hpq`. Establish `h2` using `congrArg (ZMod.castHom (Dvd.intro_left N rfl : l ∣ N * l) (ZMod l)) hpq`. Simplify using `only [f, hcN, hcl] at h1 h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h1 h2`. Simplify using `only [ZMod.natCast_self, mul_zero, add_zero, zero_add, ZMod.natCast_zmod_val] at h1 h2`. Conclude with `Prod.ext (hlu.mul_right_cancel h1) (hNu.mul_right_cancel h2)`. Establish `hbij : Function.Bijective f`. Rewrite using `[Fintype.bijective_iff_injective_and_card]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hinj, by simp [ZMod.card]⟩`. Rewrite using `[hat_eq_sum_std, hat_eq_sum_std, hat_eq_sum_std, ← Fintype.sum_bijective f hbij _ _ (fun _ => rfl), Finset.sum_mul_sum, ← Finset.univ_product_univ, Finset.sum_product, Finset.mul_sum]`. Use `Fintype.sum_congr _ _ (fun p => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Fintype.sum_congr _ _ (fun q => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Establish `hN1 : ZMod.castHom (Dvd.intro l rfl : N ∣ N * l) (ZMod N) (f (p, q)) = p * l`. Simplify using `only [f, hcN]`. Use `push_cast`. Simplify using `[ZMod.natCast_self]`. Establish `hl1 : ZMod.castHom (Dvd.intro_left N rfl : l ∣ N * l) (ZMod l) (f (p, q)) = q * N`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [f, hcl]`. Use `push_cast`. Simplify using `[ZMod.natCast_self]`. Establish `htq` using `htw ((a : ZMod l) * N) q haN`. Establish `hval : ν (-(c : ZMod N) * ZMod.castHom (Dvd.intro l rfl : N ∣ N * l) (ZMod N) (f (p, q))) * φ ((a : ZMod l) * ZMod.castHom (Dvd.intro_left N rfl : l ∣ N * l) (ZMod l) (f (p, q))) = ν (-(c : ZMod N) * l) * (ω ((a : ZMod l) * N))⁻¹ * (ν p * φ q)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN1, hl1, htq]`. Establish `e1 : -(c : ZMod N) * (p * l) = (-(c : ZMod N) * l) * p` using `by ring`. Establish `e2 : (a : ZMod l) * (q * N) = (a : ZMod l) * N * q` using `by ring`. Rewrite using `[e1, e2, map_mul]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Establish `he : (ZMod.stdAddChar (f (p, q) * (x : ZMod (N * l))) : ℂ) = ZMod.stdAddChar (p * (x : ZMod N)) * ZMod.stdAddChar (q * (x : ZMod l))`. Establish `: f (p, q) * (x : ZMod (N * l)) = ((((p.val * l + q.val * N : ℕ) : ℤ) * x : ℤ) : ZMod (N * l))`. Simplify using `only [f]`. Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, ZMod.stdAddChar_coe, stdAddChar_nat_mul_int p x, stdAddChar_nat_mul_int q x, ← Complex.exp_add]`. Use `congr 1`. Establish `hN' : (N : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hN.ne'`. Establish `hl' : (l : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hl.ne'`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hval, he]`. Expand and normalize the polynomial expressions, which then agree. Introduce `d hd y`. Establish `hdN : IsUnit (d : ZMod N)` using `isUnit_of_isCoprime d (by`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hd` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this.of_mul_right_left)`. Establish `hdl : IsUnit (d : ZMod l)` using `isUnit_of_isCoprime d (by`. Use `hd` as an intermediate fact.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Move the coercions through the operations in `at this`. Conclude with `this.of_mul_right_right)`. Establish `h1 : ZMod.castHom (Dvd.intro l rfl : N ∣ N * l) (ZMod N) (y * d) = ZMod.castHom (Dvd.intro l rfl : N ∣ N * l) (ZMod N) y * (d : ZMod N)`. Rewrite using `[map_mul, map_intCast]`. Establish `h2 : ZMod.castHom (Dvd.intro_left N rfl : l ∣ N * l) (ZMod l) (y * d) = ZMod.castHom (Dvd.intro_left N rfl : l ∣ N * l) (ZMod l) y * (d : ZMod l)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_intCast]`. Rewrite using `[h1, h2]`. Use `set u := ZMod.castHom (Dvd.intro l rfl : N ∣ N * l) (ZMod N) y`. Use `set v := ZMod.castHom (Dvd.intro_left N rfl : l ∣ N * l) (ZMod l) y`. Establish `hν0 : ν (d : ZMod N) ≠ 0` using `(hdN.map ν).ne_zero`.
-
-Establish `htv` using `htw (d : ZMod l) ((a : ZMod l) * v) hdl`. Establish `e1 : -(c : ZMod N) * (u * d) = (-(c : ZMod N) * u) * d` using `by ring`. Establish `e2 : (a : ZMod l) * (v * d) = (d : ZMod l) * ((a : ZMod l) * v)` using `by ring`. Rewrite using `[e1, e2, map_mul ν (-(c : ZMod N) * u) (d : ZMod N)]`. Unfold `ch`.
-
-Rewrite using `[MulChar.inv_apply_eq_inv', htv]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem hat_mix_twist : ∀ (N l : ℕ) (ν : DirichletCharacter ℂ N) (ω : DirichletCharacter ℂ l) (φ : ZMod l → ℂ) (a c : ℤ),
     0 < N → 0 < l → N.Coprime l → (∀ x : ℤ, hat φ x = ch ω x) →

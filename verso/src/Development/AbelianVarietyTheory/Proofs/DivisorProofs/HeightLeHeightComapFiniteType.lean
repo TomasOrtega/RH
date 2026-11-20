@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.HeightContract
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.CA.height_le_height_comap_of_eval₂_surjective f hf x hgen halg q`.
+A detailed English derivation is pending.
 -/
 theorem step (R S : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [CommRing S] [IsDomain S]
     (f : R →+* S) (hf : Function.Injective f) (x : S) (hgen : Function.Surjective (Polynomial.eval₂RingHom f x))
@@ -17,29 +17,27 @@ theorem step (R S : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [CommRi
   ReciprocityTheory.CA.height_le_height_comap_of_eval₂_surjective f hf x hgen halg q
 
 /- English proof (translation)
-Introduce `A B _ _ _ _ _ _ _ _ _ q _`. Establish `key : ∀ s : Finset B, ∀ (q : Ideal (Algebra.adjoin A (s : Set B))) [q.IsPrime], q.height ≤ (q.comap (algebraMap A (Algebra.adjoin A (s : Set B)))).height`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `q _`. Use `step A _ (algebraMap A _) (FaithfulSMul.algebraMap_injective _ _) 0 ?_ ⟨Polynomial.X, Polynomial.X_ne_zero, by simp⟩ q` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Rewrite `hy` using `[Finset.coe_empty, Algebra.adjoin_empty, Algebra.mem_bot]`. Take `⟨a, rfl⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Polynomial.C a, Subtype.ext (by simp)⟩`. Consider the case `insert x s _ ih`. Introduce `q _`. Establish `hle : Algebra.adjoin A (s : Set B) ≤ Algebra.adjoin A ((insert x s : Finset B) : Set B)` using `Algebra.adjoin_mono (by simp)`. Establish `: Algebra.FiniteType A (Algebra.adjoin A (s : Set B))` using `Algebra.FiniteType.adjoin_of_finite s.finite_toSet`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsNoetherianRing (Algebra.adjoin A (s : Set B))` using `Algebra.FiniteType.isNoetherianRing A _`. Establish `hx : x ∈ Algebra.adjoin A ((insert x s : Finset B) : Set B)` using `Algebra.subset_adjoin (by simp)`. Establish `h1` using `step _ _ (Subalgebra.inclusion hle).toRingHom (Subalgebra.inclusion_injective hle) ⟨x, hx⟩ ?_ ?_ q`. Establish `h2` using `ih (q.comap (Subalgebra.inclusion hle).toRingHom)`. Rewrite `h2` using `[Ideal.comap_comap]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : (Subalgebra.inclusion hle).toRingHom.comp (algebraMap A (Algebra.adjoin A (s : Set B))) = algebraMap A (Algebra.adjoin A ((insert x s : Finset B) : Set B))` using `RingHom.ext fun a => Subtype.ext rfl`. Rewrite `h2` using `[hc]`. Conclude with `h1.trans h2`. Introduce and unpack `⟨y, hy⟩`. Proceed by induction on `hy using Algebra.adjoin_induction with`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Consider the case `mem y hy`. Rewrite `hy` using `[Finset.coe_insert]`. Break down `hy with rfl | hy` into its components or cases. Conclude with `⟨Polynomial.X, by simp⟩`. Conclude with `⟨Polynomial.C ⟨y, Algebra.subset_adjoin hy⟩, Subtype.ext (by simp)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `algebraMap a => exact ⟨Polynomial.C (algebraMap A _ a), Subtype.ext (by simp)⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨p, hp⟩` from `hy`. Take `⟨q, hq⟩` from `hz`. Conclude with `⟨p + q, by rw [map_add, hp, hq]; rfl⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `mul y z _ _ hy hz`. Take `⟨p, hp⟩` from `hy`. Take `⟨q, hq⟩` from `hz`. Conclude with `⟨p * q, by rw [map_mul, hp, hq]; rfl⟩`. Take `⟨g, hg, h0⟩` from `Algebra.IsAlgebraic.isAlgebraic (R := A) x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g.map (algebraMap A _), (Polynomial.map_ne_zero_iff (FaithfulSMul.algebraMap_injective _ _)).2 hg, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Polynomial.eval₂_map]`. Use `Polynomial.hom_eval₂ g ((Subalgebra.inclusion hle).toRingHom.comp (algebraMap A (Algebra.adjoin A (s : Set B)))) (Algebra.adjoin A ((insert x s : Finset B) : Set B)).val.toRingHom ⟨x, hx⟩` as an intermediate fact. Conclude with `this.trans h0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `Algebra.FiniteType.out (R := A) (A := B)`. Establish `: Algebra.FiniteType A (Algebra.adjoin A (s : Set B))` using `Algebra.FiniteType.adjoin_of_finite s.finite_toSet`. Establish `: IsNoetherianRing (Algebra.adjoin A (s : Set B))` using `Algebra.FiniteType.isNoetherianRing A _`. Establish `h1` using `step _ _ (Algebra.adjoin A (s : Set B)).val.toRingHom Subtype.val_injective 0 ?_ ⟨Polynomial.X, Polynomial.X_ne_zero, by simp⟩ q`. Establish `h2` using `key s (q.comap (Algebra.adjoin A (s : Set B)).val.toRingHom)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[Ideal.comap_comap]`. Establish `hc : (Algebra.adjoin A (s : Set B)).val.toRingHom.comp (algebraMap A (Algebra.adjoin A (s : Set B))) = algebraMap A B` using `RingHom.ext fun a => rfl`. Rewrite `h2` using `[hc]`. Conclude with `h1.trans h2`. Introduce `y`.
-
-Establish `hy : y ∈ Algebra.adjoin A (s : Set B)` using `hs ▸ Algebra.mem_top`. Conclude with `⟨Polynomial.C ⟨y, hy⟩, by simp⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem height_le_height_comap : ∀ (R S : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [CommRing S]
     [IsDomain S] [Algebra R S] [FaithfulSMul R S] [Algebra.FiniteType R S] [Algebra.IsAlgebraic R S]

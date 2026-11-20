@@ -13,19 +13,19 @@ section Gen
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy v k _ _ _`. Conclude with `mem_eigenspace_iff.1 ((Submodule.mem_iInf _).1 hy (N.hT i v k))`. Introduce `hy`. Use `(Submodule.mem_iInf _).2 fun f => mem_eigenspace_iff.2 ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `f`. Establish `hf'` using `hf`. Rewrite `hf'` using `[← N.T_gen i]`. It suffices to establish `key : ∀ g (hg' : g ∈ Algebra.adjoin (N.O i) {g : N.X i → N.O i | ∃ v k, IsSplitPl H v ∧ v ∉ placesOver H.E (N.l i) ∧ v ∉ N.S i ∧ v ∉ N.Q i ∧ 1 ≤ k ∧ k ≤ R.nV ∧ g = (N.hT i v k : N.X i → N.O i)}), ∀ hg : g ∈ N.T i, ((N.act i ⟨g, hg⟩).baseChange (FractionRing (N.O i))) y = algebraM …`. Introduce `g hg'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hg' using Algebra.adjoin_induction with`. Consider the case `mem g hg0`. Introduce `hg`. Take `⟨v, k, h1, h2, h3, h4, h5, h6, rfl⟩` from `hg0`. Conclude with `hy v k ⟨h1, h2, h3, h4⟩ h5 h6`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `algebraMap r`. Introduce `hg`. Establish `e : (⟨algebraMap (N.O i) (N.X i → N.O i) r, hg⟩ : N.T i) = algebraMap (N.O i) (N.T i) r` using `rfl`. Rewrite using `[e, AlgHom.commutes, Algebra.algebraMap_eq_smul_one, LinearMap.baseChange_smul, LinearMap.baseChange_one]`. Simplify using `[algebraMap_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `add g g' hg1 hg2 ih1 ih2`. Introduce `hg`. Establish `m1 : g ∈ N.T i` using `N.T_gen i ▸ hg1`. Establish `m2 : g' ∈ N.T i` using `N.T_gen i ▸ hg2`. Establish `e : (⟨g + g', hg⟩ : N.T i) = ⟨g, m1⟩ + ⟨g', m2⟩` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[e, map_add, LinearMap.baseChange_add, LinearMap.add_apply, ih1 m1, ih2 m2, Pi.add_apply, map_add, add_smul]`. Consider the case `mul g g' hg1 hg2 ih1 ih2`. Introduce `hg`. Establish `m1 : g ∈ N.T i` using `N.T_gen i ▸ hg1`. Establish `m2 : g' ∈ N.T i` using `N.T_gen i ▸ hg2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (⟨g * g', hg⟩ : N.T i) = ⟨g, m1⟩ * ⟨g', m2⟩` using `rfl`. Rewrite using `[e, map_mul, LinearMap.baseChange_mul, Module.End.mul_apply, ih2 m2, LinearMap.map_smul, ih1 m1, smul_smul, Pi.mul_apply, map_mul, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem heckeEig_mem_iff_gens (N : NData R H what₂) (i : N.Loc) (x : N.X i)
     (y : TensorProduct (N.O i) (FractionRing (N.O i)) (N.Mt i)) :
@@ -80,9 +80,9 @@ variable {D : D7} {Pl : PlSide D} {M : MtFam D} {C : NChoice D} {big : D.what₂
   {X : LocNd (lay0 D)} {T : LocTw X}
 
 /- English proof (translation)
-Take `⟨-, h2⟩` from `(X.nd.locs_mem j w i).1 h`. Establish `hl : X.nd.l i = D.what₂.places.resChar w` using `by rw [← X.nd.w_l i, h2]`. Establish `hS : v ∈ X.nd.S i ↔ v ∈ placesS D (D.what₂.places.resChar w)`. Rewrite using `[X.nd.S_def, hl]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `SplitOut GenAt`. Rewrite using `[hS, ← Sp.Q_eq j w i h, hl]`. The claim follows by propositional logic.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. The claim follows by propositional logic.
 -/
 theorem genAt_iff_splitOut (Sp : NdSpec Pl M C big X T) {j : ℕ} {w : D.what₂.places.Pl} {i : X.nd.Loc}
     (h : i ∈ X.nd.locs j w) (v : PlE D.host) (k : ℕ) :
@@ -96,25 +96,23 @@ theorem genAt_iff_splitOut (Sp : NdSpec Pl M C big X T) {j : ℕ} {w : D.what₂
   tauto
 
 /- English proof (translation)
-Use `set Fam := (⨅ (v : PlE D.host) (k : ℕ) (_ : GenAt D (D.what₂.places.resChar w) (Sp.B.Qc j w) v k), Module.End.eigenspace (Sp.B.hK j w v k) (algebraMap (Sp.B.Oc j w) (FractionRing (Sp.B.Oc j w)) (Sp.phO j w i h ((X.nd.hT i v k : X.nd.X i → X.nd.O i) x)))) with hFam_def`. Establish `hFam : ∀ e, e ∈ Fam ↔ ∀ v k, GenAt D (D.what₂.places.resChar w) (Sp.B.Qc j w) v k → Sp.B.hK j w v k e = algebraMap (Sp.B.Oc j w) (FractionRing (Sp.B.Oc j w)) (Sp.phO j w i h ((X.nd.hT i v k : X.nd.X i → X.nd.O i) x)) • e`. Introduce `e`. Simplify using `only [Fam, Submodule.mem_iInf, mem_eigenspace_iff]`. Establish `hval : ∀ v k (hvk : GenAt D (D.what₂.places.resChar w) (Sp.B.Qc j w) v k), algebraMap (Sp.B.Oc j w) (FractionRing (Sp.B.Oc j w)) (Sp.phO j w i h ((X.nd.hT i v k : X.nd.X i → X.nd.O i) x)) = NCov.pt (Sp.ptX j w i h x).1 ⟨Sp.B.hK j w v k, Algebra.subset_adjoin ⟨v, k, hvk, rfl⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v k hvk`. Simplify using `only [NCov.pt]`. Rewrite using `[Sp.ptX_hT j w i h x v k hvk]`. Establish `hE : ∀ e, e ∈ Fam ↔ e ∈ NCov.E (Formalism.L2.heckeAlg Sp.B j w) (Sp.ptX j w i h x).1`. Introduce `e`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hFam, NCov.mem_E_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `hy _ ⟨v, k, hvk, rfl⟩`. Rewrite using `[← hval v k hvk]`. Conclude with `hy v k hvk`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hy v k hvk`. Rewrite using `[hval v k hvk]`. Conclude with `hy _ ⟨v, k, hvk, rfl⟩`. Establish `hpsi : ∀ y, y ∈ heckeEig (X.nd.T i) (X.nd.act i) x ↔ Sp.Psi j w i h y ∈ Fam`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[heckeEig_mem_iff_gens, hFam]`. Prove the components needed by the constructor for the conclusion. Introduce `hy v k hvk`. Take `⟨hso, hk1, hk2⟩` from `(genAt_iff_splitOut Sp h v k).2 hvk`. Establish `e` using `congrArg (Sp.Psi j w i h) (hy v k hso hk1 hk2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `e` using `[Sp.act_hK j w i h v k hvk, LinearMap.map_smulₛₗ]`. Rewrite using `[e]`. Use `congr 1`. Conclude with `Sp.phK_alg j w i h _`. Introduce `hy v k hso hk1 hk2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hvk` using `(genAt_iff_splitOut Sp h v k).1 ⟨hso, hk1, hk2⟩`. Apply `Sp.Psi_inj j w i h` to reduce the goal to its premises. Rewrite using `[Sp.act_hK j w i h v k hvk, LinearMap.map_smulₛₗ, hy v k hvk]`. Use `congr 1`. Conclude with `(Sp.phK_alg j w i h _).symm`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `f : ↥(heckeEig (X.nd.T i) (X.nd.act i) x) →ₛₗ[(Sp.phK j w i h).toRingHom] Sp.B.V j w` to `(Sp.Psi j w i h).comp (heckeEig (X.nd.T i) (X.nd.act i) x).subtype`. Express the relevant statement in the definitionally equal form `Module.finrank _ ↥(heckeEig (X.nd.T i) (X.nd.act i) x) = _`. Use `finrank_eq_of_semilinear (Sp.phK j w i h) f Fam ?_ ?_` and prove the remaining obligations. Introduce `a b hab`. Conclude with `Subtype.ext (Sp.Psi_inj j w i h hab)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `e`. Prove the components needed by the constructor for the conclusion. Introduce `he`. Establish `hp : e ∈ NCov.part (Formalism.L2.heckeAlg Sp.B j w) (Sp.mx j w i)`. Use `NCov.E_le_part (Formalism.L2.heckeAlg Sp.B j w) (Sp.ptX j w i h x).1 ((hE e).1 he)` as an intermediate fact.
-
-Rewrite `this` using `[(Sp.ptX j w i h x).2.1]`. Then use the resulting hypothesis. Take `⟨z, rfl⟩` from `(Sp.Psi_range j w i h e).1 hp`. Conclude with `⟨⟨z, (hpsi z).2 he⟩, rfl⟩`. Introduce and unpack `⟨⟨z, hz⟩, rfl⟩`. Conclude with `(hpsi z).1 hz`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mult_eq_finrank_jointEig (D : D7) (Pl : PlSide D) (M : MtFam D) (C : NChoice D)
     (big : D.what₂.places.Pl → Finset ℂ) (X : LocNd (lay0 D)) (T : LocTw X) (Sp : NdSpec Pl M C big X T) (j : ℕ)

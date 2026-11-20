@@ -12,21 +12,21 @@ namespace GlobalTheory.Dec.FormF
 variable {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply, star_sum, star_mul']`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma map_star_mul (a b : Matrix (Fin n) (Fin n) ℂ) : (a * b).map star = a.map star * b.map star := by
   ext i j
   simp only [Matrix.map_apply, Matrix.mul_apply, star_sum, star_mul']
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma map_star_star (a : Matrix (Fin n) (Fin n) ℂ) : (a.map star).map star = a := by
   ext i j
   simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma map_star_one : (1 : Matrix (Fin n) (Fin n) ℂ).map star = 1 := by
   ext i j
@@ -34,14 +34,14 @@ lemma map_star_one : (1 : Matrix (Fin n) (Fin n) ℂ).map star = 1 := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma map_star_ct (a : Matrix (Fin n) (Fin n) ℂ) : (a.map star)ᴴ = aᴴ.map star := by
   ext i j
   simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Formalism.REAL.Jm, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Jm_star (ε : Fin n → Bool) : (Jm ε).map star = Jm ε := by
   ext i j
@@ -49,9 +49,7 @@ lemma Jm_star (ε : Fin n → Bool) : (Jm ε).map star = Jm ε := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h' : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε` using `h`. Use `show (g.map star)ᴴ * Formalism.REAL.Jm ε * g.map star = Formalism.REAL.Jm ε`. Establish `e` using `congrArg (fun m : Matrix (Fin n) (Fin n) ℂ => m.map star) h'`. Simplify using `only [map_star_mul, Jm_star] at e`. Rewrite using `[map_star_ct]`.
-
-Conclude with `e`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma UJ_star {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (h : g ∈ UJset ε) : g.map star ∈ UJset ε := by
   have h' : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε := h
@@ -62,9 +60,9 @@ lemma UJ_star {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (h : g ∈ 
   exact e
 
 /- English proof (translation)
-Establish `h' : g ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ g * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * g` using `h`. Take `⟨hu, hc⟩` from `h'`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite `hu`, the goal using `[Matrix.mem_unitaryGroup_iff]`. Establish `e` using `congrArg (fun m : Matrix (Fin n) (Fin n) ℂ => m.map star) hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_star_mul, map_star_one, Matrix.star_eq_conjTranspose] at e`. Rewrite using `[Matrix.star_eq_conjTranspose, map_star_ct]`. Conclude with `e`. Establish `e` using `congrArg (fun m : Matrix (Fin n) (Fin n) ℂ => m.map star) hc`. Simplify `e` using `only [map_star_mul, Jm_star]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma K_star {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (h : g ∈ Kset ε) : g.map star ∈ Kset ε := by
   have h' : g ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ g * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * g := h
@@ -79,13 +77,13 @@ lemma K_star {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (h : g ∈ K
     simpa only [map_star_mul, Jm_star] using e
 
 /- English proof (translation)
-Establish `h' : (Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0) ∧ X * Formalism.REAL.Jm ε = -(Formalism.REAL.Jm ε * X)` using `h`. Take `⟨hg, hp⟩` from `h'`. Use `show ((X.map star)ᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X.map star = 0) ∧ X.map star * Formalism.REAL.Jm ε = -(Formalism.REAL.Jm ε * X.map star)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun m : Matrix (Fin n) (Fin n) ℂ => m.map star) hg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : ∀ M N : Matrix (Fin n) (Fin n) ℂ, (M + N).map star = M.map star + N.map star` using `fun M N => by`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hz : (0 : Matrix (Fin n) (Fin n) ℂ).map star = 0`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [ha, hz, map_star_mul, Jm_star] at e`. Rewrite using `[map_star_ct]`. Conclude with `e`. Establish `e` using `congrArg (fun m : Matrix (Fin n) (Fin n) ℂ => m.map star) hp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hn : ∀ M : Matrix (Fin n) (Fin n) ℂ, (-M).map star = -(M.map star)` using `fun M => by`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Simplify `e` using `only [hn, map_star_mul, Jm_star]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma P_star {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (h : inP ε X) : inP ε (X.map star) := by
   have h' : (Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0) ∧ X * Formalism.REAL.Jm ε = -(Formalism.REAL.Jm ε * X) := h
@@ -111,7 +109,7 @@ lemma P_star {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (h : inP ε 
     simpa only [hn, map_star_mul, Jm_star] using e
 
 /- English proof (translation)
-Establish `e : ∀ M : Matrix (Fin n) (Fin n) ℂ, M.map star = Mᴴᵀ` using `fun M => by`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[e (NormedSpace.exp X), e X, Matrix.exp_transpose, Matrix.exp_conjTranspose]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma exp_star (X : Matrix (Fin n) (Fin n) ℂ) :
     (NormedSpace.exp X).map star = NormedSpace.exp (X.map star) := by
@@ -121,9 +119,9 @@ lemma exp_star (X : Matrix (Fin n) (Fin n) ℂ) :
   rw [e (NormedSpace.exp X), e X, Matrix.exp_transpose, Matrix.exp_conjTranspose]
 
 /- English proof (translation)
-Establish `e : ∀ (N : ℕ) (M : Matrix (Fin N) (Fin N) ℂ), (M.map star).det = star M.det`. Introduce `N M`. Rewrite using `[← Matrix.det_conjTranspose, ← Matrix.det_transpose Mᴴ]`. Use `congr 1`. Simplify using `only [GlobalTheory.Dec.Phi, star_prod, star_zpow₀]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Use `congr 1`. Simplify using `only [Formalism.MainNotions.S.leadMinor]`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma Phi_star (lam : Fin n → ℝ) (z : Matrix (Fin n) (Fin n) ℂ) : Phi lam (z.map star) = star (Phi lam z) := by
   have e : ∀ (N : ℕ) (M : Matrix (Fin N) (Fin N) ℂ), (M.map star).det = star M.det := by
@@ -138,7 +136,7 @@ lemma Phi_star (lam : Fin n → ℝ) (z : Matrix (Fin n) (Fin n) ℂ) : Phi lam 
   rfl
 
 /- English proof (translation)
-Establish `h' : g ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ g * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * g` using `h`. Take `⟨hu, hc⟩` from `h'`. Use `show gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε`. Rewrite using `[Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, ← Matrix.star_eq_conjTranspose, Matrix.mem_unitaryGroup_iff'.mp hu, Matrix.one_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma K_UJ {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (h : g ∈ Kset ε) : g ∈ UJset ε := by
   have h' : g ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ g * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * g := h
@@ -148,14 +146,14 @@ lemma K_UJ {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (h : g ∈ Kse
     Matrix.mem_unitaryGroup_iff'.mp hu, Matrix.one_mul]
 
 /- English proof (translation)
-Use `⟨one_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.one_mul, Matrix.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma one_K (ε : Fin n → Bool) : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ Kset ε := by
   refine ⟨one_mem _, ?_⟩
   rw [Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `h' : g ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ g * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * g` using `h`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `Matrix.mem_unitaryGroup_iff'.mp h'.1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma K_inv {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (h : g ∈ Kset ε) : g⁻¹ = gᴴ := by
   have h' : g ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ g * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * g := h
@@ -164,22 +162,22 @@ lemma K_inv {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (h : g ∈ Ks
   exact Matrix.mem_unitaryGroup_iff'.mp h'.1
 
 /- English proof (translation)
-Establish `h' : g ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ g * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * g` using `h`. Conclude with `⟨⟨⟨g, star g, Matrix.mem_unitaryGroup_iff.mp h'.1, Matrix.mem_unitaryGroup_iff'.mp h'.1⟩, rfl⟩, h'.2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 lemma K_KC {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (h : g ∈ Kset ε) : g ∈ KC ε := by
   have h' : g ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ g * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * g := h
   exact ⟨⟨⟨g, star g, Matrix.mem_unitaryGroup_iff.mp h'.1, Matrix.mem_unitaryGroup_iff'.mp h'.1⟩, rfl⟩, h'.2⟩
 
 /- English proof (translation)
-Establish `h' : (Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0) ∧ X * Formalism.REAL.Jm ε = -(Formalism.REAL.Jm ε * X)` using `h`. Take `⟨hg, hp⟩` from `h'`. Establish `hJJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1` using `Formalism.REAL.Jm_mul_self ε`. Establish `h1 : Xᴴ * Formalism.REAL.Jm ε = X * Formalism.REAL.Jm ε`. Rewrite using `[hp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eq_neg_of_add_eq_zero_left hg`. Establish `hH : Xᴴ = X`. Combine the equalities or inequalities in the displayed calculation. Establish `hYH : ((2⁻¹ : ℝ) • X)ᴴ = (2⁻¹ : ℝ) • X`. Rewrite using `[Matrix.conjTranspose_smul, hH, star_trivial]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hYY : (2⁻¹ : ℝ) • X + (2⁻¹ : ℝ) • X = X`. Rewrite using `[← add_smul]`. Evaluate the numerical expressions. Rewrite using `[← hYY, Formalism.REAL.exp_add_self]`. Establish `hE` using `Formalism.REAL.exp_conjTranspose_of_hermitian hYH`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : NormedSpace.exp ((2⁻¹ : ℝ) • X) * NormedSpace.exp ((2⁻¹ : ℝ) • X) = (NormedSpace.exp ((2⁻¹ : ℝ) • X))ᴴ * NormedSpace.exp ((2⁻¹ : ℝ) • X)`. Rewrite using `[hE]`. Rewrite using `[hsq]`. Apply `Matrix.PosDef.conjTranspose_mul_self` to reduce the goal to its premises. Introduce `u v huv`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `congrArg (NormedSpace.exp (-((2⁻¹ : ℝ) • X))).mulVec huv`. Simplify `e` using `only [Matrix.mulVec_mulVec, Formalism.REAL.matrix_exp_neg_mul_exp, Matrix.one_mulVec]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma exp_posDef {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (h : inP ε X) : (NormedSpace.exp X).PosDef := by
   have h' : (Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0) ∧ X * Formalism.REAL.Jm ε = -(Formalism.REAL.Jm ε * X) := h
@@ -209,7 +207,7 @@ lemma exp_posDef {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (h : inP
   simpa only [Matrix.mulVec_mulVec, Formalism.REAL.matrix_exp_neg_mul_exp, Matrix.one_mulVec] using e
 
 /- English proof (translation)
-Take `⟨⟨h1, hm⟩, hi, hc⟩` from `h`. Conclude with `⟨⟨h1, fun a ha b hb => hm a (K_UJ ha) b (K_UJ hb)⟩, fun g hg v => hi g (K_UJ hg) v, fun v => (hc v).mono (fun g hg => K_UJ hg)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma URep_K {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (h : IsURepOn (UJset ε) σ) : IsURepOn (Kset ε) σ := by
@@ -219,9 +217,7 @@ lemma URep_K {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProdu
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `h g₀ hg₀`. Establish `hFc : ContinuousAt F g₀` using `hF.continuousOn.continuousAt (hU.mem_nhds hgU)`. Use `hFc.continuousWithinAt.congr_of_eventuallyEq ?_ (hfF g₀ hgU hg₀)` and prove the remaining obligations. Use `filter_upwards [inter_mem_nhdsWithin (UJset ε) (hU.mem_nhds hgU)] with g hg`.
-
-Conclude with `hfF g hg.2 hg.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma smooth_cont {ε : Fin n → Bool} {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (h : SmoothOnG ε f) :
     ContinuousOn f (UJset ε) := by

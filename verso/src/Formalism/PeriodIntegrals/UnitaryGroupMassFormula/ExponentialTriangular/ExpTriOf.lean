@@ -9,11 +9,11 @@ noncomputable section
 namespace PI.ET
 
 /- English proof (translation)
-Unfold `PI.ExpTri`. Introduce `n X Y Z U hX hY hZ hU hexp`. Take `⟨ξ, hξ⟩` from `hS n X hX`. Take `⟨η, hη⟩` from `hS n Y hY`. Take `⟨ζ, hζ⟩` from `hS n Z hZ`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hmaj, hsum⟩` from `hH n X Y Z U ξ η ζ hξ hη hζ hU hexp`. Establish `hζ'` using `hζ`. Take `⟨hanti, -⟩` from `hζ'`. Establish `hsq : ∑ i, ζ i ^ 2 ≤ ∑ i, (ξ i + η i) ^ 2` using `hA n ζ (fun i => ξ i + η i) hanti hmaj hsum`. Rewrite using `[hHS n Z ζ hζ, hHS n X ξ hξ, hHS n Y η hη]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_trans (Real.sqrt_le_sqrt hsq) (hE n ξ η)`.
+A detailed English derivation is pending.
 -/
 theorem expTri_of (hS : SpecExists) (hHS : HSEq) (hH : Horn) (hA : AbelSq) (hE : EuclTri) :
     PI.ExpTri := by

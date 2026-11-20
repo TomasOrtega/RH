@@ -14,7 +14,7 @@ variable {G Γ W : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerProdu
   {ι : Γ →* G} {ρ : Γ →* Module.End ℂ W} {J : Subgroup G} {χ : J →* ℂˣ}
 
 /- English proof (translation)
-Use `Nat.card_congr (Equiv.subtypeEquiv (MulAut.conj γ⁻¹).toEquiv fun δ => ?_)` and prove the remaining obligations. Establish `e : (ι γ * h * k)⁻¹ * ι δ * (ι γ * h * k) = (k : G)⁻¹ * (h⁻¹ * ι ((MulAut.conj γ⁻¹).toEquiv δ) * h) * k`. Simplify using `[mul_assoc]`. Rewrite using `[mem_stab, mem_stab, e, J.mul_mem_cancel_right k.2, J.mul_mem_cancel_left (J.inv_mem k.2)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_stab (γ : Γ) (h : G) (k : J) :
     Nat.card (stab ι J (ι γ * h * k)) = Nat.card (stab ι J h) := by
@@ -25,9 +25,9 @@ theorem card_stab (γ : Γ) (h : G) (k : J) :
   rw [mem_stab, mem_stab, e, J.mul_mem_cancel_right k.2, J.mul_mem_cancel_left (J.inv_mem k.2)]
 
 /- English proof (translation)
-Use `choose s γ k hs using fun i => (hy (y' i)).exists`. Establish `hinj : Function.Injective s`. Introduce `i j hij`. Use `(hy' (y' i)).unique ⟨1, 1, by simp⟩ ⟨γ i * (γ j)⁻¹, (k j)⁻¹ * k i, ?_⟩` and prove the remaining obligations. Rewrite using `[hs i, hs j, hij]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_assoc]`. Unfold `adInner`. Use `Fintype.sum_bijective s (Finite.injective_iff_bijective.1 hinj) _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[hs i, card_stab, hF, hF', inner_smul_left, inner_smul_right, ← mul_assoc (starRingEnd ℂ _), Complex.conj_mul', hχ, hρ]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adInner_indep (hρ : ∀ γ x x', inner ℂ (ρ γ x) (ρ γ x') = inner ℂ x x') (hχ : ∀ k, ‖(χ k : ℂ)‖ = 1)
     {I : Type} [Fintype I] {y y' : I → G} (hy : IsReps ι J y) (hy' : IsReps ι J y')
@@ -48,9 +48,9 @@ theorem adInner_indep (hρ : ∀ γ x x', inner ℂ (ρ γ x) (ρ γ x') = inner
 variable {Q : Subgroup G} {ch : Q →* ℂˣ}
 
 /- English proof (translation)
-Introduce `γ h k`. Establish `hk` using `hn κ κ.2 k k.2`. Establish `e : ι γ * h * k * κ = ι γ * (h * κ) * ((⟨_, hk⟩ : J) : G)` using `by simp [mul_assoc]`. Establish `e2 : χ ⟨_, hk⟩ = χ k`. Rewrite using `[← hch, ← hch]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (⟨_, hJ hk⟩ : Q) = κ⁻¹ * ⟨k, hJ k.2⟩ * κ` using `rfl`. Rewrite using `[this, map_mul, map_mul, map_inv, mul_right_comm, inv_mul_cancel, one_mul]`. Unfold `g0Act`. Rewrite using `[e, hF, e2, map_smul, smul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem reductionGroupAction_mem_adelicForms (hJ : J ≤ Q) (hn : ∀ κ ∈ Q, ∀ k ∈ J, κ⁻¹ * k * κ ∈ J) (hch : ∀ k : J, ch ⟨k, hJ k.2⟩ = χ k)
     (κ : Q) {F : G → W} (hF : F ∈ AdForms ι ρ J χ) : g0Act ch κ F ∈ AdForms ι ρ J χ := by
@@ -65,17 +65,17 @@ theorem reductionGroupAction_mem_adelicForms (hJ : J ≤ Q) (hn : ∀ κ ∈ Q, 
   rw [e, hF, e2, map_smul, smul_comm]
 
 /- English proof (translation)
-Establish `hn' : ∀ k ∈ J, (κ : G) * k * (κ : G)⁻¹ ∈ J` using `fun k hk => by`. Simplify using `using hn _ (Q.inv_mem κ.2) k hk`. Establish `hy' : IsReps ι J fun i => y i * κ`. Introduce `h`. Use `(existsUnique_congr fun i => ?_).1 (hy (h * (κ : G)⁻¹))` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, k, e⟩`. Use `⟨γ, ⟨_, hn κ κ.2 k k.2⟩, ?_⟩` and prove the remaining obligations. Rewrite `e` using `[mul_inv_eq_iff_eq_mul]`. Rewrite using `[e]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_assoc]`. Introduce and unpack `⟨γ, k, e⟩`. Use `⟨γ, ⟨_, hn' k k.2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Simplify using `[mul_assoc]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← adInner_indep hρ hχ hy hy' hF hF']`. Unfold `adInner g0Act`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hs : stab ι J (y i * κ) = stab ι J (y i)`. Use extensionality with `δ`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[mem_stab, mem_stab]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify `hn' _ h` using `[mul_assoc]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `hn κ κ.2 _ h` using `[mul_assoc]`. Rewrite using `[hs, inner_smul_left, inner_smul_right, ← mul_assoc (starRingEnd ℂ _), Complex.conj_mul', Units.val_inv_eq_inv_val, norm_inv, hκ]`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adInner_g0Act (hρ : ∀ γ x x', inner ℂ (ρ γ x) (ρ γ x') = inner ℂ x x') (hχ : ∀ k, ‖(χ k : ℂ)‖ = 1)
     (hn : ∀ κ ∈ Q, ∀ k ∈ J, κ⁻¹ * k * κ ∈ J) (κ : Q) (hκ : ‖(ch κ : ℂ)‖ = 1)
@@ -111,11 +111,11 @@ theorem adInner_g0Act (hρ : ∀ γ x x', inner ℂ (ρ γ x) (ρ γ x') = inner
   simp
 
 /- English proof (translation)
-Take `⟨-, hr, hi⟩` from `hM`. Establish `hχ : ∀ k, ‖(χ k : ℂ)‖ = 1` using `fun k => by`. Rewrite using `[← hch]`. Conclude with `hn1 _`. Establish `hx : M.e x ∈ AdForms ι ρ J χ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hr]`. Conclude with `⟨x, rfl⟩`. Establish `hm` using `reductionGroupAction_mem_adelicForms hJ hn hch κ hx`. Rewrite `hm` using `[← hr]`. Take `⟨x', hx'⟩` from `hm`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x', hx', ?_⟩` and prove the remaining obligations. Establish `e : inner ℂ x' x' = inner ℂ x x`. Rewrite using `[hi, hi, hx']`. Conclude with `adInner_g0Act hρ hχ hn κ (hn1 _) hy hx hx`. Rewrite using `[@norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ _ _ _ _ x, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_g0Act (hρ : ∀ γ x x', inner ℂ (ρ γ x) (ρ γ x') = inner ℂ x x') (hn1 : ∀ q, ‖(ch q : ℂ)‖ = 1)
     (hJ : J ≤ Q) (hn : ∀ κ ∈ Q, ∀ k ∈ J, κ⁻¹ * k * κ ∈ J) (hch : ∀ k : J, ch ⟨k, hJ k.2⟩ = χ k)
@@ -137,7 +137,7 @@ theorem exists_g0Act (hρ : ∀ γ x x', inner ℂ (ρ γ x) (ρ γ x') = inner 
   rw [@norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ _ _ _ _ x, e]
 
 /- English proof (translation)
-Rewrite using `[← hz, ← Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem twistedTranslate_apply_eq_inv_smul {a : G} (ha : a ∈ Q) (F : G → W) (h : G) {z : ℂ} (hz : ((ch ⟨a, ha⟩ : ℂˣ) : ℂ) = z) :
     g0Act ch ⟨a, ha⟩ F h = z⁻¹ • F (h * a) := by
@@ -149,9 +149,9 @@ end Generic
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h2 : Formalism.L2.DIV.ext1 (flagL L).P.H (flagL L).P.chi (Formalism.L2.DIV.rTup β (flagL L) x) = 1` using `subgroupCharExtension_one_apply _ _`. Unfold `Formalism.L2.DIV.levFn`. Rewrite using `[h2, one_mul, Units.val_mul, norm_mul, Units.coe_prod, Units.coe_prod, norm_prod, norm_prod, Finset.prod_eq_one, Finset.prod_eq_one, one_mul]`. Introduce `PP _`. Conclude with `norm_residueChar_eq_one PP _ _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `PP _`. Rewrite using `[Units.coe_prod, norm_prod]`. Conclude with `Finset.prod_eq_one fun c _ => norm_residueChar_eq_one PP _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_levFn_flagL (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     (x : GL (Fin V.rank) (Lev.EAf D)) : ‖((levFn β (flagL L) x : ℂˣ) : ℂ)‖ = 1 := by
@@ -167,9 +167,9 @@ theorem norm_levFn_flagL (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : Lev
     exact Finset.prod_eq_one fun c _ => norm_residueChar_eq_one PP _ _
 
 /- English proof (translation)
-Establish `h1 : a ∈ parLev D.sp.cm V.gram β L` using `ha.1`. Establish `h2 : b ∈ parLev D.sp.cm V.gram β L` using `hb.1`. Establish `h3 : rTup β L b = 1` using `Subgroup.mem_bot.1 hb.2`. Establish `h4 : a⁻¹ * b ∈ parLev D.sp.cm V.gram β L` using `Subgroup.mul_mem _ (Subgroup.inv_mem _ h1) h2`. Establish `h5 : rTup β L (a⁻¹ * b * a) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[rTup_mul h4 h1, rTup_mul (Subgroup.inv_mem _ h1) h2, rTup_inv h1, h3, mul_one, inv_mul_cancel]`. Conclude with `⟨Subgroup.mul_mem _ h4 h1, Subgroup.mem_bot.2 h5⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem conj_mem_flag1L (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     {a b : GL (Fin V.rank) (Lev.EAf D)} (ha : a ∈ lev D.sp.cm V.gram β (flagL L))
@@ -183,7 +183,7 @@ theorem conj_mem_flag1L (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevD
   exact ⟨Subgroup.mul_mem _ h4 h1, Subgroup.mem_bot.2 h5⟩
 
 /- English proof (translation)
-Introduce `κ hκ k hk`. Establish `h` using `conj_mem_flag1L V β L (a := Formalism.UG.bc (swapAE D) κ.1) (b := Formalism.UG.bc (swapAE D) k.1) hκ hk`. Rewrite `h` using `[← map_inv, ← map_mul, ← map_mul]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levEnv_normal (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) :
     ∀ κ ∈ (levEnv V β L).Q, ∀ k ∈ (levEnv V β L).J, κ⁻¹ * k * κ ∈ (levEnv V β L).J := by
@@ -199,7 +199,7 @@ theorem levEnv_ch (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.h
     (q : (levEnv V β L).Q) : (levEnv V β L).ch q = levFn β (flagL L) (Formalism.UG.bc (swapAE D) q.1.1) := rfl
 
 /- English proof (translation)
-Establish `h : finE V κ ∈ lev D.sp.cm V.gram β (flagL L)` using `⟨hκ.2.1, Subgroup.mem_top _⟩`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_levEnv_Q {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank}
     {g0 : G0 L.Pg L.r} {κ : GA D V} (hκ : IsLevelLift V β L g0 κ) :
@@ -208,7 +208,7 @@ theorem mem_levEnv_Q {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat 
   exact h
 
 /- English proof (translation)
-Rewrite using `[levEnv_ch]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem levEnv_ch_lift {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank}
     {κ : GA D V} (hq : (finHom V).rangeRestrict κ ∈ (levEnv V β L).Q) :
@@ -217,9 +217,9 @@ theorem levEnv_ch_lift {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDa
   rfl
 
 /- English proof (translation)
-Establish `hq` using `mem_levEnv_Q hκ`. Establish `hch : ∀ q, ‖(((levEnv V β L).ch q : ℂˣ) : ℂ)‖ = 1` using `fun q => by`. Rewrite using `[levEnv_ch]`. Conclude with `norm_levFn_flagL V β L _`. Establish `hρ : ∀ (γ : GQ V) (u u' : c.W), inner ℂ ((c.ρ.comp (GQ V).subtype) γ u) ((c.ρ.comp (GQ V).subtype) γ u') = inner ℂ u u'` using `fun γ u u' => hc.2.1 γ.1 u u'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∃ x' : M.H, M.e x' = Bridge.g0Act (levEnv V β L).ch ⟨_, hq⟩ (M.e x) ∧ ‖x'‖ = ‖x‖` using `exists_g0Act (W := c.coef.W) (ι := Bridge.ratF V) (ρ := c.coef.ρ) (χ := (levEnv V β L).χ) (ch := (levEnv V β L).ch) hρ hch (levEnv V β L).J_le (levEnv_normal V β L) (levEnv V β L).ch_J hy M hM ⟨_, hq⟩ x`. Take `⟨x', hx', hn⟩` from `key`. Use `⟨x', fun h => ?_, hn⟩` and prove the remaining obligations. Use `Eq.trans ?_ (twistedTranslate_apply_eq_inv_smul (ch := (levEnv V β L).ch) hq (M.e x) h (levEnv_ch_lift hq))` and prove the remaining obligations. Conclude with `congrFun hx' h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_translate (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     (c : CoefA V) (hc : c.Is) (M : HMod (Bridge.Gf V → c.W)) {I : Type} [Fintype I] (y : I → Bridge.Gf V)
@@ -248,7 +248,7 @@ end GlobalTheory.RowClassSum
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R _ hH hc t g0 κ hκ y`. Conclude with `RowClassSum.exists_translate _ R.βX (R.datXt t) R.cX hc (R.HX t) _ (R.B.R t).pres.reps (hH t) g0 κ hκ y`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rowForms_translate_unitary : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.toLevCh.Is A.μ0 → R.models_HX → R.models_cX → ∀ t g0 κ, IsLevelLift D.sp.X' R.βX (R.datXt t) g0 κ → ∀ y : (R.HX t).H, ∃ y' : (R.HX t).H, (∀ h, (R.HX t).e y' h = (levChi _ R.βX (flagL (R.datXt t)) κ)⁻¹ • (R.HX t).e y (h * (finHom _).rangeRestrict κ)) ∧ ‖y'‖ = ‖y‖ := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R _ hH hc t g0 κ hκ y

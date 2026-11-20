@@ -19,9 +19,9 @@ def HasVal (ϖ : V) (c : FractionRing V) (n : ℤ) : Prop :=
   ∃ u : Vˣ, c = algebraMap V (FractionRing V) ϖ ^ n * algebraMap V (FractionRing V) (u : V)
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hx' : x ∈ ⋂ k, (φ' k).base ⁻¹' (L.U (j k) : Set X)` using `hx`. Use `show f.base x ∈ ⋂ k, (φ k).base ⁻¹' (L.U (j k) : Set X)`. Simplify using `only [Set.mem_iInter, Set.mem_preimage] at hx' ⊢`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hx' k`. Rewrite `h` using `[hφ k]`. Simplify using `using h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma wchart_le_preimage {X Y Z : Scheme.{0}} (L : LB X) {Ix : Type} [Fintype Ix] (f : Z ⟶ Y)
     (φ : Ix → (Y ⟶ X)) (φ' : Ix → (Z ⟶ X)) (hφ : ∀ k, φ' k = f ≫ φ k) (j : Ix → L.ι) :
@@ -47,7 +47,7 @@ namespace QForm
 variable (D : DegPre V)
 
 /- English proof (translation)
-Simplify using `only [ptK, Over.comp_left]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 -/
 lemma ptK_eq (χ : D.X) : ptK (D.c χ) = jK V ≫ (D.c χ).left := by
   simp only [ptK, Over.comp_left]

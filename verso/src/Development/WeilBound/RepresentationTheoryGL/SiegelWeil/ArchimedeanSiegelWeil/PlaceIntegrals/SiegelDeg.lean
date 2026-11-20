@@ -15,9 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.WeilSiegel.Deg
 
 /- English proof (translation)
-Introduce `D r V ψ θ μ lam ν φ hH β hβ`. Take `⟨a, t, γ, ha, hγ, rfl⟩` from `GlobalTheory.T.singular_hermitian_congruent_block_normal_form D r β hβ`. Rewrite using `[GlobalTheory.T.frame_integral_congruence_invariant D V ν r φ γ a ha, ← GlobalTheory.T.whittaker_coefficient_congruence_pullback D r V ψ μ lam φ γ a ha hH.2.2.2.1 hH.2.2.2.2.1]`. Establish `hH'` using `GlobalTheory.T.hypotheses_preserved_by_linear_pullback D r V ψ θ μ lam ν φ a ha hH`. Distinguish the cases in `hx : ∃ x : Matrix (Fin V.rank) (Fin r) D.host.E, x.rank = r ∧ gramQ V x = γ.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `GlobalTheory.T.siegel_weil_rank_coefficient D r V ψ θ μ lam ν (pull a φ) hH' t γ hγ hx`. Conclude with `GlobalTheory.T.frame_integral_eq_coefficient_nonrepresented D r V ψ θ μ lam ν (pull a φ) hH' t γ hγ hx`.
+A detailed English derivation is pending.
 -/
 theorem siegelDeg : PositivityTheory.GramSchwartzFunctions.BC.SiegelDeg := by
   intro D r V ψ θ μ lam ν φ hH β hβ

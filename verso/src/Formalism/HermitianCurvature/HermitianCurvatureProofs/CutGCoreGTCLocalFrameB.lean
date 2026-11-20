@@ -18,14 +18,14 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[B.hsVec]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gcl_hsVec_add (A A' : Wq →L[ℂ] Wp) : B.hsVec (A + A') = B.hsVec A + B.hsVec A' := by
   ext i
   simp [B.hsVec]
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Use extensionality with `i`. Simplify using `[B.hsVec]`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, gcl_hsVec_add, ih]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem gcl_hsVec_sum {ι : Type} (s : Finset ι) (A : ι → (Wq →L[ℂ] Wp)) :
     B.hsVec (∑ i ∈ s, A i) = ∑ i ∈ s, B.hsVec (A i) := by
@@ -37,16 +37,16 @@ theorem gcl_hsVec_sum {ι : Type} (s : Finset ι) (A : ι → (Wq →L[ℂ] Wp))
     rw [Finset.sum_insert ha, Finset.sum_insert ha, gcl_hsVec_add, ih]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[B.hsVec]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gcl_hsVec_smul (c : ℂ) (A : Wq →L[ℂ] Wp) : B.hsVec (c • A) = c • B.hsVec A := by
   ext i
   simp [B.hsVec]
 
 /- English proof (translation)
-Establish `hre : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun ζ : ℂ => ζ.re)` using `Complex.reCLM.contDiff`. Establish `him : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun ζ : ℂ => ζ.im)` using `Complex.imCLM.contDiff`. Establish `h1 : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun ζ : ℂ => Complex.normSq ζ - P.TT)`. Repeatedly rewrite using `[Complex.normSq_apply]`. Conclude with `((hre.mul hre).add (him.mul him)).sub contDiff_const`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun ζ : ℂ => wR P.k P.TT ζ) (Ann P)`. Simplify using `only [wR]`. Conclude with `((h1.pow _).contDiffOn).sqrt (fun ζ hζ => (pow_pos (sub_pos.2 hζ) _).ne')`. Conclude with `Complex.ofRealCLM.contDiff.comp_contDiffOn h2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gcl_wRc_smooth (P : M.Par) :
     ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun ζ : ℂ => ((wR P.k P.TT ζ : ℝ) : ℂ)) (Ann P) := by
@@ -61,7 +61,7 @@ theorem gcl_wRc_smooth (P : M.Par) :
   exact Complex.ofRealCLM.contDiff.comp_contDiffOn h2
 
 /- English proof (translation)
-Establish `h : 0 < Complex.normSq ζ - P.TT` using `sub_pos.2 hζ`. Establish `hw : 0 < wR P.k P.TT ζ`. Unfold `wR`. Conclude with `Real.sqrt_pos.2 (pow_pos h _)`. Conclude with `Complex.ofReal_ne_zero.2 hw.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gcl_wR_ne (P : M.Par) {ζ : ℂ} (hζ : ζ ∈ Ann P) : ((wR P.k P.TT ζ : ℝ) : ℂ) ≠ 0 := by
   have h : 0 < Complex.normSq ζ - P.TT := sub_pos.2 hζ
@@ -71,9 +71,7 @@ theorem gcl_wR_ne (P : M.Par) {ζ : ℂ} (hζ : ζ ∈ Ann P) : ((wR P.k P.TT ζ
   exact Complex.ofReal_ne_zero.2 hw.ne'
 
 /- English proof (translation)
-Establish `hd : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun y => fderiv ℝ g y) s` using `((contDiffOn_infty_iff_fderiv_of_isOpen hs).1 hg).2`. Establish `h1 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun y => fderiv ℝ g y 1) s` using `hd.clm_apply contDiffOn_const`. Establish `hI : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun y => fderiv ℝ g y Complex.I) s` using `hd.clm_apply contDiffOn_const`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `contDiffOn_const.mul (h1.sub (contDiffOn_const.mul hI))`.
-
-Conclude with `contDiffOn_const.mul (h1.add (contDiffOn_const.mul hI))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gcl_dZ_smooth {g : ℂ → ℂ} {s : Set ℂ} (hs : IsOpen s) (hg : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) g s) :
     ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (NF.dZ g) s ∧ ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (NF.dZb g) s := by
@@ -88,13 +86,13 @@ theorem gcl_dZ_smooth {g : ℂ → ℂ} {s : Set ℂ} (hs : IsOpen s) (hg : Cont
   · exact contDiffOn_const.mul (h1.add (contDiffOn_const.mul hI))
 
 /- English proof (translation)
-Establish `hmap : HasFDerivAt (fun ζ : ℂ => (x.1, ζ)) ((0 : ℂ →L[ℝ] (Fin r → ℂ)).prod (ContinuousLinearMap.id ℝ ℂ)) x.2` using `(hasFDerivAt_const x.1 x.2).prodMk (hasFDerivAt_id x.2)`. Establish `hF' : HasFDerivAt F (fderiv ℝ F x) (x.1, x.2)`. Simplify using `using hF.hasFDerivAt`. Establish `hcomp : HasFDerivAt (fun ζ => F (x.1, ζ)) ((fderiv ℝ F x).comp ((0 : ℂ →L[ℝ] (Fin r → ℂ)).prod (ContinuousLinearMap.id ℝ ℂ))) x.2` using `hF'.comp x.2 hmap`. Establish `hd : ∀ v : ℂ, fderiv ℝ (fun ζ => F (x.1, ζ)) x.2 v = fderiv ℝ F x (0, v)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v`. Rewrite using `[hcomp.fderiv]`. Simplify using the standard rewrite rules. Establish `e1 : MA.dirE (r` using `r) M.vz = ((0 : Fin r → ℂ), (1 : ℂ)) := by`. Simplify using `[MA.dirE, M.vz]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2 : MA.dirE (r` using `r) M.vzb = ((0 : Fin r → ℂ), (1 : ℂ)) := by`. Simplify using `[MA.dirE, M.vzb]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [MA.wirt, NF.dZ, e1, hd]`. Apply the tactic sequence `simp [M.vz] <;> ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [MA.wirt, NF.dZb, e2, hd]`. Apply the tactic sequence `simp [M.vzb] <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gcl_wirt_slice {r : ℕ} (F : MA.E r → ℂ) (x : MA.E r) (hF : DifferentiableAt ℝ F x) :
     MA.wirt M.vz F x = NF.dZ (fun ζ => F (x.1, ζ)) x.2 ∧
@@ -122,7 +120,7 @@ theorem gcl_wirt_slice {r : ℕ} (F : MA.E r → ℂ) (x : MA.E r) (hF : Differe
     simp [M.vzb] <;> ring
 
 /- English proof (translation)
-Distinguish the cases in `hx : x ∈ NF.QR k r z z'`. Simplify using `[NF.radR, Set.indicator, hx, Finset.sum_apply]`. Simplify using `[NF.radR, Set.indicator, hx]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem gcl_radR_sum {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ}
     {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {ι : Type} (s : Finset ι) (F : ι → Q.Fn k r E)
@@ -133,9 +131,9 @@ theorem gcl_radR_sum {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {μsec : �
   · simp [NF.radR, Set.indicator, hx]
 
 /- English proof (translation)
-Establish `hmem` using `radial_space_smoothness Wp Wq P Bs hpl hk e he Φ ρ`. Establish `hq : q.1 ∈ NF.QR P.k P.r Bs.z Bs.z'`. Take `⟨h1, h2⟩` from `q.2`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[hpl.2.2.2.1, hpl.2.2.2.2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`. Establish `h1 : ((trR P Bs e Φ ρ : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) = rawR P Bs.μsec e (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) ρ`. Simplify using `only [trR, MA.toSm, dif_pos hmem]`. Rewrite using `[h1]`. Simplify using `[rawR, NF.radR, Set.indicator_of_mem hq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gcl_trR_val (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π')
     (hk : 2 ≤ P.k) (e : M.Ty P → ℂ → (Wq →L[ℂ] Wp)) (he : IsFrameB P Bs e)

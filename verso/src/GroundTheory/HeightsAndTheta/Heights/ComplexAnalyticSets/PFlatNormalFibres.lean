@@ -11,7 +11,7 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open IsLocalRing RingTheory.Sequence
 
 /- English proof (translation)
-Introduce `hd` and use `by have := h (by rwa [ringKrullDim_eq_of_ringEquiv e]) exact IsRegularLocalRing.of_ringEquiv e`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SerreRAt.of_ringEquiv {A B : Type*} [CommRing A] [CommRing B] (e : A ≃+* B) {k : ℕ}
     (h : SerreRAt A k) : SerreRAt B k := fun hd => by
@@ -19,11 +19,11 @@ theorem SerreRAt.of_ringEquiv {A B : Type*} [CommRing A] [CommRing B] (e : A ≃
   exact IsRegularLocalRing.of_ringEquiv e
 
 /- English proof (translation)
-Take `⟨rs, hmem, hreg, hlen⟩` from `h`. Use `⟨rs.map e, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `r hr`. Take `⟨s, hs, rfl⟩` from `List.mem_map.mp hr`. Use `hmem s hs` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this`, the goal using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `fun hu => this ((isUnit_map_iff e s).mp hu)`. Use `(AddEquiv.isWeaklyRegular_congr (e := e.toAddEquiv) ?_).mp hreg` and prove the remaining obligations. Conclude with `List.forall₂_map_right_iff.mpr (List.forall₂_same.mpr fun r _ x => by`. Simplify using `[smul_eq_mul])`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[List.length_map, ← ringKrullDim_eq_of_ringEquiv e]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem SerreSAt.of_ringEquiv {A B : Type*} [CommRing A] [CommRing B] [IsLocalRing A] [IsLocalRing B]
     (e : A ≃+* B) {k : ℕ} (h : SerreSAt A k) : SerreSAt B k := by
@@ -45,7 +45,7 @@ noncomputable def localizationAtMaximalEquiv (B : Type*) [CommRing B] [IsLocalRi
     simpa [Ideal.primeCompl, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, IsUnit.mem_submonoid_iff] using hx)).toRingEquiv.symm
 
 /- English proof (translation)
-Introduce `P _` and use `⟨inferInstance, isIntegrallyClosed_of_isLocalization (Localization.AtPrime P) P.primeCompl P.primeCompl_le_nonZeroDivisors⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem normalRing_of_isIntegrallyClosed (B : Type*) [CommRing B] [IsDomain B] [IsIntegrallyClosed B] :
     NormalRing B := fun P _ =>
@@ -53,7 +53,7 @@ theorem normalRing_of_isIntegrallyClosed (B : Type*) [CommRing B] [IsDomain B] [
     P.primeCompl_le_nonZeroDivisors⟩
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(hC B inferInstance).mp (normalRing_of_isIntegrallyClosed B)`. Conclude with `⟨(h1 (maximalIdeal B)).of_ringEquiv (localizationAtMaximalEquiv B), (h2 (maximalIdeal B)).of_ringEquiv (localizationAtMaximalEquiv B)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem serreAt_of_isIntegrallyClosed (hC : SerreCriterion.Statement) (B : Type) [CommRing B] [IsLocalRing B]
     [IsNoetherianRing B] [IsDomain B] [IsIntegrallyClosed B] : SerreRAt B 1 ∧ SerreSAt B 2 := by
@@ -62,9 +62,9 @@ theorem serreAt_of_isIntegrallyClosed (hC : SerreCriterion.Statement) (B : Type)
     (h2 (maximalIdeal B)).of_ringEquiv (localizationAtMaximalEquiv B)⟩
 
 /- English proof (translation)
-Introduce `R S _ _ _ hRn hSn hloc hflat hdom hic hfib`. Take `⟨hR1, hR2⟩` from `(hC R hRn).mp (normalRing_of_isIntegrallyClosed R)`. Establish `hfib' : ∀ (P : Ideal S) [P.IsPrime], SerreRAt (primeFibreLocalRing R P) 1 ∧ SerreSAt (primeFibreLocalRing R P) 2` using `fun P _ => by`. Take `⟨h1, h2⟩` from `hfib P`. Conclude with `serreAt_of_isIntegrallyClosed hC _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hN : NormalRing S` using `(hC S hSn).mpr ⟨hR R S hRn hSn hflat 1 hR1 fun P _ => (hfib' P).1, hS R S hRn hSn hflat 2 hR2 fun P _ => (hfib' P).2⟩`. Take `⟨hd, hi⟩` from `hN (maximalIdeal S)`. Conclude with `⟨(localizationAtMaximalEquiv S).symm.toMulEquiv.isDomain, IsIntegrallyClosed.of_equiv (localizationAtMaximalEquiv S)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem FlatNormalFibres.proof (hC : SerreCriterion.Statement) (hR : SerreRFlatAscent.Statement)
     (hS : SerreSFlatAscent.Statement) : FlatNormalFibres.Statement := by

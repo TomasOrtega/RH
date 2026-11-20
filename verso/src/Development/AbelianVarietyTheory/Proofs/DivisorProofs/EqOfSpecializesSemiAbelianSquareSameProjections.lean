@@ -13,11 +13,11 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ G _ hG x hx hxc p q hp hq hpq hs`. Use `haveI : Smooth G.hom := hG.smooth`. Establish `hfin : IsFinite (G.left.fromSpecResidueField x ≫ G.hom)` using `GlobalTheory.T.isFinite_fromSpecResidueField_comp_of_closed R G inferInstance x hx hxc`. Set `j : pullback (pullback.fst G.hom G.hom) (G.left.fromSpecResidueField x) ⟶ pullback G.hom G.hom` to `pullback.fst _ _`. Apply the tactic sequence `let e := pullbackSymmetry (pullback.fst G.hom G.hom) (G.left.fromSpecResidueField x) ≪≫ pullbackRightPullbackFstIso G.hom G.hom (G.left.fromSpecResidueField x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hk : j ≫ pullback.snd G.hom G.hom = e.hom ≫ pullback.snd _ _`. Simplify using `[e, j, pullbackRightPullbackFstIso_hom_snd]`. Establish `hkf : IsFinite (j ≫ pullback.snd G.hom G.hom)` using `by rw [hk]; infer_instance`. Establish `hr : Set.range j = (pullback.fst G.hom G.hom) ⁻¹' {x}`. Simplify using `only [j, Scheme.Pullback.range_fst, Scheme.range_fromSpecResidueField]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨p', rfl⟩ : p ∈ Set.range j` from `by rw [hr]; exact hp`. Take `⟨q', rfl⟩ : q ∈ Set.range j` from `by rw [hr]; exact hq`. Establish `hs' : p' ⤳ q'` using `(j.isEmbedding.toIsInducing.specializes_iff).mp hs`. Use `(GlobalTheory.finite_fibre_and_eq_of_specializes_of_isFinite _ _ _ hkf ((j ≫ pullback.snd G.hom G.hom) q')).2 p' q' (by simpa using hpq) rfl hs'` as an intermediate fact. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_specializes_of_fst_eq_of_snd_eq :
     ∀ (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G], IsSemiAbelian G →

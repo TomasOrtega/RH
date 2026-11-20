@@ -13,29 +13,27 @@ open GLnLocal MeasureTheory Measure Polynomial ValuativeRel
 open scoped NNReal ENNReal
 
 /- English proof (translation)
-Use `set N : ℕ := e * (-j₀).toNat with hN`. Establish `hNj : ∀ j, j₀ ≤ j → (0 : ℤ) ≤ (N : ℤ) + e * j`. Introduce `j hj'`. Establish `: (-j₀ : ℤ) ≤ ((-j₀).toNat : ℤ)` using `Int.self_le_toNat _`. Establish `he : (0 : ℤ) ≤ e` using `Int.natCast_nonneg e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `[hN]`. Use the polynomial consequences of the given equalities and inequalities. Use `set S : Finset ℤ := Finset.Ico j₀ j₁`. Use `set Pn : ℂ[X] := (1 - C β * X ^ e) * ∑ j ∈ S, C (β ^ j) * X ^ ((N : ℤ) + e * j).toNat * P j + C (β ^ j₁) * X ^ ((N : ℤ) + e * j₁).toNat * P j₁ with hPn`. Use `⟨Pn, N, fun x hx hlt => ?_⟩` and prove the remaining obligations.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne : (1 : ℂ) - β * x ^ e ≠ 0`. Introduce `h`. Establish `: β * x ^ e = 1` using `by linear_combination -h`. Rewrite `hlt` using `[this, norm_one]`. Conclude with `lt_irrefl _ hlt`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hxN : x ^ N ≠ 0` using `pow_ne_zero _ hx`. Establish `hpow : ∀ j, j₀ ≤ j → (β * x ^ e) ^ j * x ^ N = β ^ j * x ^ ((N : ℤ) + e * j).toNat`. Introduce `j hj'`. Rewrite using `[mul_zpow, ← zpow_natCast x ((N : ℤ) + e * j).toNat, Int.toNat_of_nonneg (hNj j hj'), zpow_add₀ hx, zpow_natCast, ← zpow_natCast x e, ← _root_.zpow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `set f : ℤ → ℂ := fun j => (β * x ^ e) ^ j * (P j).eval x`. Establish `hfin : HasSum (fun j => if j < j₁ then f j else 0) (∑ j ∈ S, f j)`. Establish `h : HasSum (fun j : ℤ => if j < j₁ then f j else 0) (∑ j ∈ S, (if j < j₁ then f j else 0))` using `hasSum_sum_of_ne_finset_zero fun j hj => ?_`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `only [S, Finset.mem_Ico] at hj`. Simplify using `[hj.2]`. Simplify using `only [S, Finset.mem_Ico, not_and_or, not_le] at hj split_ifs with h`. Break down `hj with hj | hj` into its components or cases. Simplify using `[f, h0 j hj]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd h hj`. Both sides reduce to the same expression. Establish `hz : β * x ^ e ≠ 0` using `mul_ne_zero hβ (pow_ne_zero _ hx)`. Establish `htail : HasSum (fun j => if j < j₁ then 0 else f j) ((β * x ^ e) ^ j₁ * (P j₁).eval x * (1 - β * x ^ e)⁻¹)`. Establish `hg : HasSum (fun k : ℕ => (β * x ^ e) ^ j₁ * (P j₁).eval x * (β * x ^ e) ^ k) ((β * x ^ e) ^ j₁ * (P j₁).eval x * (1 - β * x ^ e)⁻¹)` using `(hasSum_geometric_of_norm_lt_one hlt).mul_left _`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hinj : Function.Injective (fun k : ℕ => j₁ + (k : ℤ))` using `fun a b h => by`. Simplify using `using h`. Rewrite using `[← hinj.hasSum_iff fun j hj => ?_]`. Use `hg using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply, f]`. Rewrite using `[if_neg (by omega), h1 _ (by omega), zpow_add₀ hz, zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree. Use `split_ifs with h`. Both sides reduce to the same expression.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `absurd ⟨(j - j₁).toNat, by simp; omega⟩ hj`. Establish `htot` using `hfin.add htail`. Establish `hf : (fun j => (if j < j₁ then f j else 0) + (if j < j₁ then 0 else f j)) = f`. Apply the tactic sequence `funext j; split_ifs <;> simp`. Rewrite `htot` using `[hf]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `htot using 1` and compare the differences between its conclusion and the goal. Rewrite using `[div_eq_iff (mul_ne_zero hxN hne)]`. Simplify using `only [Pn, eval_add, eval_mul, eval_sub, eval_one, eval_C, eval_pow, eval_X, eval_finsetSum]`. Establish `hS : ∀ j ∈ S, β ^ j * x ^ ((N : ℤ) + e * j).toNat * (P j).eval x = f j * x ^ N` using `fun j hj => by`. Simplify using `only [S, Finset.mem_Ico] at hj`.
-
-Simplify using `only [f]`. Rewrite using `[← hpow j hj.1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl hS, ← Finset.sum_mul, ← hpow j₁ hj]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem hasSum_geom_poly {β : ℂ} (hβ : β ≠ 0) (e : ℕ) {P : ℤ → ℂ[X]} {j₀ j₁ : ℤ} (hj : j₀ ≤ j₁)
     (h0 : ∀ j < j₀, P j = 0) (h1 : ∀ j ≥ j₁, P j = P j₁) :
@@ -115,9 +113,9 @@ theorem hasSum_geom_poly {β : ℂ} (hβ : β ≠ 0) (e : ℕ) {P : ℤ → ℂ[
   field_simp
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun k : ℕ => j₀ + (k : ℤ))` using `fun x y h => by simpa using h`. Establish `hsupp : Function.support a ⊆ Set.range (fun k : ℕ => j₀ + (k : ℤ))`. Introduce `j hj`. Assume the negation of the conclusion as `hj'`. Apply `hj` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `h0 j ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Conclude with `hj' ⟨(j - j₀).toNat, by simp; omega⟩`. Rewrite using `[← hinj.tsum_eq hsupp]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem tsum_int_lt_top_of_le_geom {a : ℤ → ℝ≥0∞} {j₀ : ℤ} {M r : ℝ≥0∞} (hM : M ≠ ∞) (hr : r < 1)
     (h0 : ∀ j < j₀, a j = 0) (h1 : ∀ k : ℕ, a (j₀ + k) ≤ M * r ^ k) : ∑' j, a j < ∞ := by
@@ -135,9 +133,9 @@ theorem tsum_int_lt_top_of_le_geom {a : ℤ → ℝ≥0∞} {j₀ : ℤ} {M r : 
     _ < ∞ := ENNReal.mul_lt_top hM.lt_top (ENNReal.inv_lt_top.2 (tsub_pos_of_lt hr))
 
 /- English proof (translation)
-Rewrite using `[tsum_of_nat_of_neg_add_one ENNReal.summable ENNReal.summable]`. Use `ENNReal.add_lt_top.2 ⟨?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Use `h₂ k` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this ⊢`. Conclude with `this`. Use `_ = M * (1 - r₂)⁻¹ := by rw [ENNReal.tsum_mul_left, ENNReal.tsum_geometric]`. Use `_ < ∞ := ENNReal.mul_lt_top hM.lt_top (ENNReal.inv_lt_top.2 (tsub_pos_of_lt hr₂))`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem tsum_int_lt_top_of_le_geom₂ {a : ℤ → ℝ≥0∞} {M r₁ r₂ : ℝ≥0∞} (hM : M ≠ ∞) (hr₁ : r₁ < 1)
     (hr₂ : r₂ < 1) (h₁ : ∀ k : ℕ, a k ≤ M * r₁ ^ k) (h₂ : ∀ k : ℕ, a (-(k + 1 : ℤ)) ≤ M * r₂ ^ k) :
@@ -171,9 +169,9 @@ namespace IsCentralCoeff
 variable {α : ℂ} {c : GL (Fin m) F → ℂ}
 
 /- English proof (translation)
-Proceed by induction on `j using Int.induction_on generalizing g with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[_root_.zpow_add_one, mul_assoc, ih, hc.mul_left, zpow_add_one₀ hc.ne_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `pred k ih`. Establish `h` using `hc.mul_left ((centralUnif F m)⁻¹ * g)`. Rewrite `h` using `[mul_inv_cancel_left]`. Rewrite using `[_root_.zpow_sub_one, mul_assoc, ih, zpow_sub_one₀ hc.ne_zero, h]`. Clear denominators, using `[hc.ne_zero]` for the nonvanishing conditions.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem zpow_mul (hc : IsCentralCoeff m α c) (j : ℤ) (g : GL (Fin m) F) :
     c (centralUnif F m ^ j * g) = α ^ j * c g := by
@@ -189,11 +187,11 @@ theorem zpow_mul (hc : IsCentralCoeff m α c) (j : ℤ) (g : GL (Fin m) F) :
     field_simp [hc.ne_zero]
 
 /- English proof (translation)
-Use `⟨hc.continuous.comp continuous_inv, inv_ne_zero hc.ne_zero, fun g => ?_, ?_⟩` and prove the remaining obligations. Use `show c (centralUnif F m * g)⁻¹ = α⁻¹ * c g⁻¹`. Establish `e` using `centralUnif_zpow_mul_comm (-1) g⁻¹`. Establish `h2` using `hc.zpow_mul (-1) g⁻¹`. Rewrite `e`, `h2` using `[zpow_neg_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[zpow_neg_one]`. Rewrite using `[mul_inv_rev, ← e, h2]`. Take `⟨C, hC, hCs⟩` from `hc.support`. Use `⟨(fun g => g⁻¹) '' C, hC.image continuous_inv, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `hCs _ hg`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨-j, ⟨_, hj, ?_⟩⟩` and prove the remaining obligations. Use `show (centralUnif F m ^ j * g⁻¹)⁻¹ = _`. Rewrite using `[mul_inv_rev, inv_inv, ← zpow_neg, ← centralUnif_zpow_mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv (hc : IsCentralCoeff m α c) : IsCentralCoeff m α⁻¹ (fun g => c g⁻¹) := by
   refine ⟨hc.continuous.comp continuous_inv, inv_ne_zero hc.ne_zero, fun g => ?_, ?_⟩
@@ -211,15 +209,15 @@ theorem inv (hc : IsCentralCoeff m α c) : IsCentralCoeff m α⁻¹ (fun g => c 
     rw [mul_inv_rev, inv_inv, ← zpow_neg, ← centralUnif_zpow_mul_comm]
 
 /- English proof (translation)
-Take `⟨C, hC, hCs⟩` from `hc.support`. Establish `hm : (1 : ℤ) ≤ m` using `by exact_mod_cast Nat.one_le_iff_ne_zero.2 (NeZero.ne m)`. Establish `hcont : Continuous (ordDet : GL (Fin m) F → ℤ)` using `isLocallyConstant_ordDet_GL.continuous`. Take `⟨d₁, hd₁⟩` from `(hC.image hcont).bddAbove`. Take `⟨d₀, hd₀⟩` from `(hC.image hcont).bddBelow`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨⋃ j ∈ Finset.Icc (-|d₀| - 1) |d₁|, (fun h => centralUnif F m ^ (-j) * h) '' C, (Finset.Icc (-|d₀| - 1) |d₁|).isCompact_biUnion fun j _ => hC.image (continuous_mul_left _), fun g hg hcg => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `hCs g hcg`. Establish `h1` using `hd₁ ⟨_, hj, rfl⟩`. Establish `h0` using `hd₀ ⟨_, hj, rfl⟩`. Simplify using `only [ordDet_centralUnif_zpow_mul] at h1 h0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨hg0, hg1⟩` from `hg`. Simplify using `only [zero_mul, zero_add] at hg0 hg1`. Use `Set.mem_biUnion (x := j) ?_ ⟨_, hj, by show centralUnif F m ^ (-j) * (centralUnif F m ^ j * g) = g` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← zpow_add, neg_add_cancel, zpow_zero, one_mul]⟩`. Simplify using `only [Finset.coe_Icc, Set.mem_Icc]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `hlt push Not at hlt`. Establish `hj1 : j + 1 < 0` using `by linarith [abs_nonneg d₀]`. Establish `h2 : (j + 1) * (m : ℤ) ≤ j + 1` using `by nlinarith`. Establish `h3 : (j + 1) * (m : ℤ) = j * m + m` using `by ring`.
+Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear relations using `[neg_abs_le d₀]`. Assume the negation of the conclusion as `hlt push Not at hlt`. Establish `: j ≤ j * (m : ℤ)` using `by nlinarith [abs_nonneg d₁]`. Use polynomial arithmetic with `[le_abs_self d₁]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem exists_compact_tile [NeZero m] (hc : IsCentralCoeff m α c) :
     ∃ K : Set (GL (Fin m) F), IsCompact K ∧ ∀ g ∈ tile F m 0, c g ≠ 0 → g ∈ K := by
@@ -255,9 +253,9 @@ theorem exists_compact_tile [NeZero m] (hc : IsCentralCoeff m α c) :
     nlinarith [le_abs_self d₁]
 
 /- English proof (translation)
-Take `⟨K, hK, hKc⟩` from `hc.exists_compact_tile`. Take `⟨B, hB⟩` from `hK.exists_bound_of_continuousOn hc.continuous.continuousOn`. Use `⟨max B 0, le_max_right _ _, fun g hg => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : c g = 0`. Rewrite using `[h, norm_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_max_right _ _`. Conclude with `(hB g (hKc g hg h)).trans (le_max_left _ _)`.
+A detailed English derivation is pending.
 -/
 theorem exists_bound_tile [NeZero m] (hc : IsCentralCoeff m α c) :
     ∃ B : ℝ, 0 ≤ B ∧ ∀ g ∈ tile F m 0, ‖c g‖ ≤ B := by
@@ -271,9 +269,9 @@ theorem exists_bound_tile [NeZero m] (hc : IsCentralCoeff m α c) :
 end IsCentralCoeff
 
 /- English proof (translation)
-Establish `hϖ : (uniformizer F : F) ≠ 0` using `Cartan.uniformizer_ne_zero F`. Proceed by induction on `j using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[_root_.zpow_add_one, Units.val_mul, ih, coe_centralUnif, smul_mul_smul_comm, one_mul, ← zpow_add_one₀ hϖ]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `pred k ih`. Establish `hinv : (((centralUnif F m)⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) = ((uniformizer F : F)⁻¹) • (1 : Matrix (Fin m) (Fin m) F)`. Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[coe_centralUnif, smul_mul_smul_comm, one_mul, mul_inv_cancel₀ hϖ, one_smul]`. Rewrite using `[_root_.zpow_sub_one, Units.val_mul, ih, hinv, smul_mul_smul_comm, one_mul, ← zpow_sub_one₀ hϖ]`.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_centralUnif_zpow (j : ℤ) :
     ((centralUnif F m ^ j : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) =
@@ -293,11 +291,11 @@ theorem coe_centralUnif_zpow (j : ℤ) :
       ← zpow_sub_one₀ hϖ]
 
 /- English proof (translation)
-Take `⟨r, A, -, hsupp⟩` from `hΦ.exists_invariant`. Use `⟨A, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hϖ : (uniformizer F : F) ≠ 0` using `Cartan.uniformizer_ne_zero F`. Establish `hent` using `hsupp _ hg`. Establish `hmem : (((uniformizer F : F) ^ A) • (g : Matrix (Fin m) (Fin m) F)).det ∈ 𝒪[F]` using `det_mem_integer fun i j => by simpa using hent i j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : (((uniformizer F : F) ^ A) • (g : Matrix (Fin m) (Fin m) F)).det ≠ 0`. Rewrite using `[Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ (pow_ne_zero _ hϖ)) (det_ne_zero g)`. Establish `h` using `ord_nonneg_of_mem_integer hmem hne`. Rewrite `h` using `[Matrix.det_smul, LocalField.ord_mul (pow_ne_zero _ (pow_ne_zero _ hϖ)) (det_ne_zero g), ← pow_mul, LocalField.ord_pow hϖ, LocalField.ord_uniformizer (irreducible_uniformizer F)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fintype.card_fin] at h`. Unfold `ordDet`. Move the coercions through the operations in `at h`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem IsSchwartzBruhat.exists_ordDet_ge {Φ : Matrix (Fin m) (Fin m) F → ℂ}
     (hΦ : IsSchwartzBruhat Φ) :
@@ -321,7 +319,7 @@ theorem IsSchwartzBruhat.exists_ordDet_ge {Φ : Matrix (Fin m) (Fin m) F → ℂ
   nlinarith
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `hΦ.1.continuous.bounded_above_of_compact_support hΦ.2`. Conclude with `⟨max B 0, le_max_right _ _, fun X => (hB X).trans (le_max_left _ _)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsSchwartzBruhat.exists_bound {Φ : Matrix (Fin m) (Fin m) F → ℂ} (hΦ : IsSchwartzBruhat Φ) :
     ∃ B : ℝ, 0 ≤ B ∧ ∀ X, ‖Φ X‖ ≤ B := by
@@ -334,11 +332,11 @@ variable [MeasurableSpace (GL (Fin m) F)] [BorelSpace (GL (Fin m) F)] [NeZero m]
   {c : GL (Fin m) F → ℂ}
 
 /- English proof (translation)
-Take `⟨h0, h1⟩` from `hg`. Simplify using `only [zero_mul, zero_add] at h0 h1`. Rewrite using `[detPow_eq_qs_zpow, norm_zpow, ← Int.toNat_of_nonneg h0, zpow_natCast]`. Establish `hk : (ordDet g).toNat ≤ m` using `by omega`. Distinguish the cases in `ht : ‖qs F s‖ ≤ 1`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `pow_le_one₀ (norm_nonneg (qs F s)) ht (n := (ordDet g).toNat)` as an intermediate fact. Use `pow_nonneg (norm_nonneg (qs F s)) m` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `push Not at ht`. Use `pow_le_pow_right₀ ht.le hk` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem norm_detPow_le_of_mem_tile {g : GL (Fin m) F} (hg : g ∈ tile F m 0) (s : ℂ) :
     ‖detPow g s‖ ≤ 1 + ‖qs F s‖ ^ m := by
@@ -355,11 +353,9 @@ theorem norm_detPow_le_of_mem_tile {g : GL (Fin m) F} (hg : g ∈ tile F m 0) (s
     linarith
 
 /- English proof (translation)
-Take `⟨K, hK, hKc⟩` from `hc.exists_compact_tile`. Take `⟨B, hB0, hB⟩` from `hc.exists_bound_tile`. Use `set b : ℝ≥0∞ := ENNReal.ofReal (B * (1 + ‖qs F s‖ ^ m))`. Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `setLIntegral_mono (measurable_const.indicator hKm) fun g hg => ?_` and prove the remaining obligations. Distinguish the cases in `hcg : c g = 0`. Simplify using `[hcg]`. Rewrite using `[Set.indicator_of_mem (hKc g hg hcg), ← ofReal_norm, norm_mul]`. Conclude with `ENNReal.ofReal_le_ofReal (mul_le_mul (hB g hg) (norm_detPow_le_of_mem_tile hg s) (norm_nonneg _) hB0)`.
-
-Use `_ ≤ ∫⁻ g, K.indicator (fun _ => b) g ∂μ := setLIntegral_le_lintegral _ _`. Use `_ = b * μ K := lintegral_indicator_const hKm b`. Use `_ < ∞ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hK.measure_lt_top`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsCentralCoeff.lintegral_tile_lt_top (hc : IsCentralCoeff m α c)
     (μ : Measure (GL (Fin m) F)) [μ.IsHaarMeasure] (s : ℂ) :
@@ -381,21 +377,21 @@ theorem IsCentralCoeff.lintegral_tile_lt_top (hc : IsCentralCoeff m α c)
     _ < ∞ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hK.measure_lt_top
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `hΦ.exists_ordDet_ge`. Take `⟨BΦ, hBΦ0, hBΦ⟩` from `hΦ.exists_bound`. Use `set ρ : ℝ := ‖α * qs F s ^ m‖ with hρdef`. Establish `hρ0 : 0 < ρ` using `norm_pos_iff.2 (mul_ne_zero hc.ne_zero (pow_ne_zero _ (qs_ne_zero s)))`. Use `set K₁ := ∫⁻ g in tile F m 0, ‖c g * detPow g s‖ₑ ∂μ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK₁ : K₁ ≠ ∞` using `(hc.lintegral_tile_lt_top μ s).ne`. Establish `hm : (0 : ℤ) < m` using `by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne m)`. Establish `hval : ∀ (j : ℤ) (g : GL (Fin m) F), Φ ((centralUnif F m ^ j * g : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) * detPow (centralUnif F m ^ j * g) s * c (centralUnif F m ^ j * g) = Φ ((centralUnif F m ^ j * g : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) * (α * qs F s ^ m) ^ j * (c g …`. Introduce `j g`. Rewrite using `[detPow_centralUnif_zpow_mul, IsCentralCoeff.zpow_mul hc, mul_zpow, mul_comm j, _root_.zpow_mul, zpow_natCast]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[lintegral_eq_tsum_tile μ]`. Use `tsum_int_lt_top_of_le_geom (j₀ := -(A : ℤ)) (r := ENNReal.ofReal ρ) (M := ENNReal.ofReal (BΦ * ρ ^ (-(A : ℤ))) * K₁) (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hK₁) (ENNReal.ofReal_lt_one.2 hs) (fun j hj => ?_) (fun k => ?_)` and prove the remaining obligations. Use `(setLIntegral_congr_fun (measurableSet_tile 0) fun g hg => ?_).trans (lintegral_zero) show ‖_‖ₑ = 0` and prove the remaining obligations. Rewrite using `[enorm_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hΦne : Φ ((centralUnif F m ^ j * g : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) ≠ 0`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `hA _ hΦne`. Rewrite `h1` using `[ordDet_centralUnif_zpow_mul]`. Take `⟨-, hg1⟩` from `hg`. Simplify using `only [zero_mul, zero_add] at hg1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `: (j + 1) * (m : ℤ) ≤ -(A : ℤ) * m` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun g => ?_` and prove the remaining obligations. Rewrite using `[hval, enorm_mul, enorm_mul, ← ofReal_norm, ← ofReal_norm, norm_zpow, ← hρdef, zpow_add₀ hρ0.ne', zpow_natCast]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul_left ?_ _` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (norm_nonneg _), ← ENNReal.ofReal_pow hρ0.le, ← ENNReal.ofReal_mul (mul_nonneg hBΦ0 (zpow_nonneg hρ0.le _))]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `h1` using `hBΦ ((centralUnif F m ^ (-(A : ℤ) + k) * g : GL (Fin m) F) : Matrix (Fin m) (Fin m) F)`. Establish `h2 : 0 ≤ ρ ^ (-(A : ℤ)) * ρ ^ k` using `mul_nonneg (zpow_nonneg hρ0.le _) (pow_nonneg hρ0.le _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `_ = _ := by rw [lintegral_const_mul' _ _ (by`. Conclude with `ENNReal.mul_ne_top ENNReal.ofReal_ne_top (ENNReal.pow_ne_top ENNReal.ofReal_ne_top))]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem IsCentralCoeff.lintegral_zeta_lt_top (hc : IsCentralCoeff m α c)
     (μ : Measure (GL (Fin m) F)) [μ.IsHaarMeasure] {Φ : Matrix (Fin m) (Fin m) F → ℂ}
@@ -455,7 +451,7 @@ theorem IsCentralCoeff.lintegral_zeta_lt_top (hc : IsCentralCoeff m α c)
                   ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(((hΦ.1.continuous.comp Units.continuous_val).mul (continuous_detPow s)).mul hc.continuous).aestronglyMeasurable, hc.lintegral_zeta_lt_top μ hΦ hs⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsCentralCoeff.integrable_zeta (hc : IsCentralCoeff m α c)
     (μ : Measure (GL (Fin m) F)) [μ.IsHaarMeasure] {Φ : Matrix (Fin m) (Fin m) F → ℂ}
@@ -465,11 +461,11 @@ theorem IsCentralCoeff.integrable_zeta (hc : IsCentralCoeff m α c)
       hc.continuous).aestronglyMeasurable, hc.lintegral_zeta_lt_top μ hΦ hs⟩
 
 /- English proof (translation)
-Take `⟨r, A, hinv, -⟩` from `hΦ.exists_invariant`. Use `⟨(r : ℤ) + B, fun j hj g hg => ?_⟩` and prove the remaining obligations. Establish `hϖ : (GLnLocal.uniformizer F : F) ≠ 0` using `Cartan.uniformizer_ne_zero F`. Establish `hϖO : (GLnLocal.uniformizer F : F) ∈ 𝒪[F]` using `(GLnLocal.uniformizer F).2`. Use `set t : ℕ := (j - r - B).toNat with ht`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjt : j = (r : ℤ) + B + t` using `by omega`. Establish `h` using `hinv 0 ((centralUnif F m ^ j * g : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) (fun i l => ?_)`. Rewrite `h` using `[zero_add]`. Then use the resulting hypothesis. Use `⟨(GLnLocal.uniformizer F : F) ^ t * ((GLnLocal.uniformizer F : F) ^ B * (g : Matrix (Fin m) (Fin m) F) i l), mul_mem (pow_mem hϖO t) (mem_valBall_neg_iff.1 (hg i l)), ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, coe_centralUnif_zpow, Matrix.smul_mul, one_mul, Matrix.smul_apply, smul_eq_mul, hjt, zpow_add₀ hϖ, zpow_add₀ hϖ, zpow_natCast, zpow_natCast, zpow_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem IsSchwartzBruhat.exists_eq_zero_of_small {Φ : Matrix (Fin m) (Fin m) F → ℂ}
     (hΦ : IsSchwartzBruhat Φ) (B : ℕ) :
@@ -492,37 +488,33 @@ theorem IsSchwartzBruhat.exists_eq_zero_of_small {Φ : Matrix (Fin m) (Fin m) F 
     ring
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `hΦ.exists_ordDet_ge`. Take `⟨BΦ, hBΦ0, hBΦ⟩` from `hΦ.exists_bound`. Take `⟨K, hK, hKc⟩` from `hc.exists_compact_tile`. Take `⟨B, hB⟩` from `exists_valBall_of_isCompact (hK.image Units.continuous_val)`. Take `⟨J, hJ⟩` from `hΦ.exists_eq_zero_of_small B`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hm : (0 : ℤ) < m` using `by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne m)`. Use `set J₁ : ℤ := max J (-(A : ℤ))`. Use `set a : ℤ → ℕ → ℂ := fun j k => ∫ g in tile F m 0, (if ordDet g = k then Φ ((centralUnif F m ^ j * g : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) * c g else 0) ∂μ with hadef`. Use `set P : ℤ → ℂ[X] := fun j => ∑ k ∈ Finset.range m, C (a j k) * X ^ k with hPdef`. Establish `hzero : ∀ j < -(A : ℤ), ∀ g ∈ tile F m 0, Φ ((centralUnif F m ^ j * g : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `j hj g hg`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hA _ hne`. Rewrite `h1` using `[ordDet_centralUnif_zpow_mul]`. Take `⟨-, hg1⟩` from `hg`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Simplify using `only [zero_mul, zero_add] at hg1`. Establish `: (j + 1) * (m : ℤ) ≤ -(A : ℤ) * m` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `h0 : ∀ j < -(A : ℤ), P j = 0`. Introduce `j hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Establish `: a j k = 0`. Use `(setIntegral_congr_fun (measurableSet_tile 0) fun g hg => ?_).trans (integral_zero _ _)` and prove the remaining obligations. Use `show (if ordDet g = (k : ℤ) then _ else 0) = 0`. Rewrite using `[hzero j hj g hg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Rewrite using `[this, map_zero, zero_mul]`. Establish `h1 : ∀ j ≥ J₁, P j = P J₁`. Introduce `j hj`. Establish `hcoef : ∀ k, a j k = a J₁ k` using `fun k => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `setIntegral_congr_fun (measurableSet_tile 0) fun g hg => ?_` and prove the remaining obligations. Distinguish the cases in `hcg : c g = 0`. Simplify using `[hcg]`. Establish `hgK` using `hKc g hg hcg`. Establish `hent` using `hB _ ⟨g, hgK, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hJ j (le_trans (le_max_left _ _) hj) g hent, hJ J₁ (le_max_left _ _) g hent]`. Simplify using `only [hPdef, hcoef]`. Take `⟨Pn, N, hsum⟩` from `hasSum_geom_poly hc.ne_zero m (le_max_right J (-(A : ℤ))) h0 h1`. Use `⟨Pn, N, fun s hs => ?_⟩` and prove the remaining obligations. Establish `hint` using `hc.integrable_zeta μ hΦ hs`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h` using `hasSum_integral_tile μ hint`. Use `h.unique ?_` and prove the remaining obligations. Use `hsum (qs F s) (qs_ne_zero s) hs using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Use `set x := qs F s with hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcint : IntegrableOn (fun g => ‖c g‖) (tile F m 0) μ`. Use `⟨hc.continuous.norm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `h0` using `hc.lintegral_tile_lt_top μ 0`. Establish `he : ∀ g : GL (Fin m) F, ‖c g * detPow g 0‖ₑ = ‖‖c g‖‖ₑ` using `fun g => by`. Rewrite using `[detPow, Complex.cpow_zero, mul_one, enorm_norm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [he] at h0`. Conclude with `h0`. Establish `hpiece : ∀ k : ℕ, IntegrableOn (fun g => if ordDet g = (k : ℤ) then Φ ((centralUnif F m ^ j * g : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) * c g else 0) (tile F m 0) μ`. Introduce `k`. Use `Integrable.mono' (hcint.const_mul BΦ) ?_ (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmeas : MeasurableSet {g : GL (Fin m) F | ordDet g = (k : ℤ)}` using `(isClopen_shell F m k).isOpen.measurableSet`. Establish `hcont : Continuous fun g : GL (Fin m) F => Φ ((centralUnif F m ^ j * g : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) * c g` using `(hΦ.1.continuous.comp (Units.continuous_val.comp (continuous_const_mul _))).mul hc.continuous`. Conclude with `(hcont.aestronglyMeasurable.indicator hmeas).congr (Filter.Eventually.of_forall fun g => by simp [Set.indicator_apply])`. Use `split_ifs`. Rewrite using `[norm_mul]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_right (hBΦ _) (norm_nonneg _)`. Rewrite using `[norm_zero]`. Conclude with `mul_nonneg hBΦ0 (norm_nonneg _)`. Establish `hpt : ∀ g ∈ tile F m 0, Φ ((centralUnif F m ^ j * g : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) * detPow (centralUnif F m ^ j * g) s * c (centralUnif F m ^ j * g) = (α * x ^ m) ^ j * ∑ k ∈ Finset.range m, x ^ k * (if ordDet g = (k : ℤ) then Φ ((centralUnif F m ^ j * g : GL (Fin m …`. Introduce `g hg`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨hg0, hg1⟩` from `hg`. Simplify using `only [zero_mul, zero_add] at hg0 hg1`. Establish `hk : (ordDet g).toNat ∈ Finset.range m` using `Finset.mem_range.2 (by omega)`. Rewrite using `[Finset.sum_eq_single_of_mem _ hk (fun k _ hk' => by`. Rewrite using `[if_neg (by omega), mul_zero])]`.
-
-Rewrite using `[if_pos (Int.toNat_of_nonneg hg0).symm, detPow_centralUnif_zpow_mul, IsCentralCoeff.zpow_mul hc, detPow_eq_qs_zpow, ← hx, mul_zpow, mul_comm j, _root_.zpow_mul, zpow_natCast, ← Int.toNat_of_nonneg hg0, zpow_natCast]`. Simplify using `only [Int.toNat_natCast]`. Expand and normalize the polynomial expressions, which then agree. Use `show ∫ g in tile F m 0, Φ ((centralUnif F m ^ j * g : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) * detPow (centralUnif F m ^ j * g) s * c (centralUnif F m ^ j * g) ∂μ = _`. Rewrite using `[setIntegral_congr_fun (measurableSet_tile 0) hpt, integral_const_mul, integral_finsetSum _ (fun k _ => (hpiece k).const_mul _)]`.
-
-Simplify using `only [integral_const_mul, hPdef, eval_finsetSum, eval_mul, eval_C, eval_pow, eval_X, hadef]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem IsCentralCoeff.exists_eq_div_zeta (hc : IsCentralCoeff m α c)
     (μ : Measure (GL (Fin m) F)) [μ.IsHaarMeasure] {Φ : Matrix (Fin m) (Fin m) F → ℂ}
@@ -634,31 +626,25 @@ theorem IsCentralCoeff.exists_eq_div_zeta (hc : IsCentralCoeff m α c)
   ring
 
 /- English proof (translation)
-Use `set q : ℝ := (LocalField.residueCard F : ℝ) with hqdef`. Establish `hq : 1 < q` using `by rw [hqdef]; exact_mod_cast LocalField.one_lt_residueCard (K := F)`. Establish `hqm : 1 ≤ q ^ m` using `one_le_pow₀ hq.le`. Establish `hqm0 : 0 < q ^ m` using `by positivity`. Use `set ρ : ℝ := ‖α * qs F s ^ m‖ with hρdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ0 : 0 < ρ` using `norm_pos_iff.2 (mul_ne_zero hc.ne_zero (pow_ne_zero _ (qs_ne_zero s)))`. Use `set K₁ := ∫⁻ g in tile F m 0, ‖c g * detPow g s‖ₑ ∂μ`. Establish `hK₁ : K₁ ≠ ∞` using `(hc.lintegral_tile_lt_top μ s).ne`. Establish `hm : (0 : ℤ) < m` using `by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne m)`. Establish `hval : ∀ (j : ℤ) (g : GL (Fin m) F), c (centralUnif F m ^ j * g) * detPow (centralUnif F m ^ j * g) s = (α * qs F s ^ m) ^ j * (c g * detPow g s)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `j g`. Rewrite using `[detPow_centralUnif_zpow_mul, IsCentralCoeff.zpow_mul hc, mul_zpow, mul_comm j, _root_.zpow_mul, zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `hw : ∀ (j : ℤ) (g : GL (Fin m) F), g ∈ tile F m 0 → min 1 ((q ^ m) ^ ordDet (centralUnif F m ^ j * g)) ≤ min 1 ((q ^ m) ^ ((j + 1) * m))`. Introduce `j g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨-, hg1⟩` from `hg`. Simplify using `only [zero_mul, zero_add] at hg1`. Use `min_le_min le_rfl (zpow_le_zpow_right₀ hqm ?_)` and prove the remaining obligations. Rewrite using `[ordDet_centralUnif_zpow_mul]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[lintegral_eq_tsum_tile μ]`. Use `set M : ℝ≥0∞ := B * K₁ * ENNReal.ofReal (max 1 ρ⁻¹)`. Use `tsum_int_lt_top_of_le_geom₂ (M := M) (r₁ := ENNReal.ofReal ρ) (r₂ := ENNReal.ofReal ((q ^ m) ^ (-(m : ℤ)) / ρ)) (ENNReal.mul_ne_top (ENNReal.mul_ne_top hB hK₁) ENNReal.ofReal_ne_top) (ENNReal.ofReal_lt_one.2 hs) (ENNReal.ofReal_lt_one.2 ((div_lt_one hρ0).2 hs')) (fun k => ?_) (fu …` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_mono' (measurableSet_tile 0) fun g hg => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hval, enorm_mul, ← ofReal_norm, norm_zpow, ← hρdef, zpow_natCast, ENNReal.ofReal_pow hρ0.le]`. Establish `hJg` using `hJ (centralUnif F m ^ ((k : ℕ) : ℤ) * g)`. Establish `hmin : ENNReal.ofReal (min 1 ((q ^ m) ^ ordDet (centralUnif F m ^ ((k : ℕ) : ℤ) * g))) ≤ 1` using `ENNReal.ofReal_le_one.2 (min_le_left _ _)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hJg.trans (by gcongr)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `_ = _ := by ring`. Use `_ = (B * ENNReal.ofReal ρ ^ k) * K₁ := lintegral_const_mul' _ _ (ENNReal.mul_ne_top hB (ENNReal.pow_ne_top ENNReal.ofReal_ne_top))`. Use `_ ≤ M * ENNReal.ofReal ρ ^ k := by`. Establish `: (1 : ℝ≥0∞) ≤ ENNReal.ofReal (max 1 ρ⁻¹)`. Rewrite using `[← ENNReal.ofReal_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.ofReal_le_ofReal (le_max_left _ _)`. Combine the equalities or inequalities in the displayed calculation. Use `set j : ℤ := -((k : ℤ) + 1) with hj`. Establish `hr : (q ^ m) ^ ((j + 1) * m) = ((q ^ m) ^ (-(m : ℤ))) ^ k`. Rewrite using `[hj, show (-((k : ℤ) + 1) + 1) * (m : ℤ) = -(m : ℤ) * k by ring, _root_.zpow_mul, zpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hρj : ρ ^ j = ρ⁻¹ * (ρ⁻¹) ^ k`. Rewrite using `[hj, zpow_neg, zpow_add₀ hρ0.ne', zpow_one, zpow_natCast, mul_inv, mul_comm, inv_pow]`. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_mono' (measurableSet_tile 0) fun g hg => ?_` and prove the remaining obligations. Rewrite using `[hval, enorm_mul, ← ofReal_norm, norm_zpow, ← hρdef, ← hj]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hJg` using `hJ (centralUnif F m ^ j * g)`. Establish `hmin` using `ENNReal.ofReal_le_ofReal ((hw j g hg).trans (min_le_right _ _))`. Rewrite `hmin` using `[hr]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hJg.trans (by gcongr)`.
-
-Use `_ = _ := by`. Establish `h1 : 0 ≤ ρ⁻¹` using `inv_nonneg.2 hρ0.le`. Establish `h2 : 0 ≤ ρ⁻¹ ^ k` using `pow_nonneg h1 k`. Establish `h3 : 0 ≤ ((q ^ m) ^ (-(m : ℤ))) ^ k` using `pow_nonneg (zpow_nonneg hqm0.le _) k`. Rewrite using `[hρj, div_eq_mul_inv, mul_pow, ENNReal.ofReal_mul h1, ENNReal.ofReal_mul h1, ENNReal.ofReal_mul h3]`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ = (B * ENNReal.ofReal (ρ⁻¹ * ((q ^ m) ^ (-(m : ℤ)) / ρ) ^ k)) * K₁ := lintegral_const_mul' _ _ (ENNReal.mul_ne_top hB ENNReal.ofReal_ne_top)`. Use `_ ≤ M * ENNReal.ofReal ((q ^ m) ^ (-(m : ℤ)) / ρ) ^ k := by`. Rewrite using `[ENNReal.ofReal_mul (inv_nonneg.2 hρ0.le), ENNReal.ofReal_pow (div_nonneg (zpow_nonneg (by positivity) _) hρ0.le)]`. Establish `: ENNReal.ofReal ρ⁻¹ ≤ ENNReal.ofReal (max 1 ρ⁻¹)` using `ENNReal.ofReal_le_ofReal (le_max_right _ _)`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem IsCentralCoeff.lintegral_weight_lt_top (hc : IsCentralCoeff m α c)
     (μ : Measure (GL (Fin m) F)) [μ.IsHaarMeasure] {J : GL (Fin m) F → ℝ≥0∞} {B : ℝ≥0∞}

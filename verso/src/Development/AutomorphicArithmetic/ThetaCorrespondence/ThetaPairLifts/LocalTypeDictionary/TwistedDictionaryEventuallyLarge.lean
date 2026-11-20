@@ -21,23 +21,21 @@ end GlobalTheory.DictFree
 namespace GlobalTheory.DictFree
 open Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 MvPolynomial
 /- English proof (translation)
-Introduce `hP hI`. Take `⟨CF0, hCF⟩` from `_root_.GlobalTheory.T.translated_jets_dictionary hP hI`. Use `⟨CF0, fun ε CF hCF0 => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hx⟩` from `hCF ε CF hCF0`. Use `⟨x₀, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `D large₂ hε hx₀ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hIs hAt`. Establish `H2` using `hx D large₂ hε hx₀ Γ Pl0 T A Ks R F hS ch hIs hAt`. Introduce `t p hp k d hk hcos hz hP' x y`. Take `⟨Ls, Lt, κ, hLs, hLt, hκ, hdiff, hq, htr⟩` from `H2 p hp x y`. Take `⟨n, c, w, hwL, hwf, hcI, hcN, hvec⟩` from `GlobalTheory.T.cosetDatumVector_finite_heisenbergCombination ch.S.toGridChoice t p hp k d hk hcos hz hP'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose ζ s hζ hs hjet using fun i => htr k hk (w i) (hwL i)`. Use `⟨Ls, Lt, κ, n, fun i => oppQ p (c i) * ζ i, s, hLs, hLt, hκ, hs, fun i => ?_, fun ρ => ?_, hq, fun mon => ?_⟩` and prove the remaining obligations. Take `⟨m, hm, hζm⟩` from `hζ i`. Establish `hζi : IsIntegral ℤ (ζ i)` using `⟨Polynomial.X ^ m - 1, Polynomial.monic_X_pow_sub_C 1 hm.ne', by simp [hζm]⟩`. Establish `e : (k : Qbar) ^ (D.R.f * (ch.G.pS p).rank * (ch.G.pT p).rank) * (oppQ p (c i) * ζ i) = oppQ p ((k : Qbar) ^ (D.R.f * (ch.G.pS p).rank * (ch.G.pT p).rank) * c i) * ζ i`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `((hcI i).map (oppQ p).toIntAlgHom).mul hζi`. Establish `h1 : ∀ i, ‖ρ (ζ i)‖ = 1` using `fun i => by`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 
-Take `⟨m, hm, hζm⟩` from `hζ i`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').1 (by rw [← norm_pow, ← map_pow, hζm, map_one, norm_one])`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul, h1, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `_ ≤ 1 := hcN _`. Establish `hvac : IsThetaFunO ch.W.ψ _ _ (ch.S.Z.vac p)` using `(ch.S.Z.vac_is p hp).2.theta show jetTab ch.W ch.S.N.frC p (ch.S.Z.vec d) _ _ mon = _`. Rewrite using `[hvec, jetTab_comb ch.W ch.S.N.frC p hvac _ w hwf]`. Simplify using `only [hjet]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `set Gt := Iop D (tor0 D D.host.ccK ch.S.Z.δ) (La0 D (tor0 D D.host.ccK ch.S.Z.δ) _ _) (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D D.host.ccK ch.S.Z.δ) Ls Lt) (ch.S.Z.e0 p) with hGt`. Use `set M := MvPolynomial.monomial (mon.mapDomain (fvar ch.G p)) (1 : ℂ)`. Use `set Per := (mon.mapDomain (fvar ch.G p)).prod fun v e => period ch.S.Z.δ v.1 ^ e`. Establish `hGi : ∀ i, Differentiable ℂ (fun z => κ * ((ζ i : ℂ) * Formalism.MainNotions.TaylorLogMetric.U D (tor0 D D.host.ccK ch.S.Z.δ) (s i) Gt z))` using `fun i => ((differentiable_U _ (s i) hdiff).const_mul _).const_mul _`. Establish `hfun : (fun z => κ * ∑ i, ((oppQ p (c i) * ζ i : Qbar) : ℂ) * Formalism.MainNotions.TaylorLogMetric.U D (tor0 D D.host.ccK ch.S.Z.δ) (s i) Gt z) = ∑ i ∈ Finset.univ, ((oppQ p (c i) : Qbar) : ℂ) • fun z => κ * ((ζ i : ℂ) * Formalism.MainNotions.TaylorLogMetric.U D (tor0 D D.host.c …`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hfun, GlobalTheory.NormSum.RepInv.applyAt0_sum _ _ _ hGi, Finset.mul_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[oppQ_coe]`. Simplify using `only [map_mul, opp_opp]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem twisted_dictionary_eventually_large : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → Big fun ch => GlobalTheory.SumSize.DictAt ch := by
   intro hP hI
@@ -100,7 +98,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.DictFree.twisted_dictionary_eventually_large | exact _root_.GlobalTheory.DictFree.twisted_dictionary_eventually_large | (intros; apply _root_.GlobalTheory.DictFree.twisted_dictionary_eventually_large <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.twisted_dictionary_correspondence : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → Big fun ch => GlobalTheory.SumSize.DictAt ch := by
   first | exact @_root_.GlobalTheory.DictFree.twisted_dictionary_eventually_large | exact _root_.GlobalTheory.DictFree.twisted_dictionary_eventually_large | (intros; apply _root_.GlobalTheory.DictFree.twisted_dictionary_eventually_large <;> assumption)

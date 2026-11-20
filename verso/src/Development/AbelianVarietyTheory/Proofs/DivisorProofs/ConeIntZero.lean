@@ -31,7 +31,7 @@ theorem cone_apply (Φ : Fn F n d) (y : Fin n₁ × Fin d₁ → AF F) :
 variable {B M om e K μK μ u ν z}
 
 /- English proof (translation)
-Establish `hT : IsLinearMap ℂ (M.co.rho B.ψ w)` using `⟨fun f g => funext fun x => mul_add _ _ _, fun c f => funext fun x => mul_left_comm _ _ _⟩`. Rewrite using `[hT.map_add, hT.map_smul, hT.map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_lin (w : Matrix (Fin n) (Fin d) (AE F E)) (a b : ℂ) (Φ Ψ : Fn F n d) :
     M.co.rho B.ψ w (a • Φ + b • Ψ) = a • M.co.rho B.ψ w Φ + b • M.co.rho B.ψ w Ψ := by
@@ -40,7 +40,7 @@ theorem rho_lin (w : Matrix (Fin n) (Fin d) (AE F E)) (a b : ℂ) (Φ Ψ : Fn F 
   rw [hT.map_add, hT.map_smul, hT.map_smul]
 
 /- English proof (translation)
-Simplify using `only [coneInt, map_add, map_smul, rho_lin, LinearMap.map_add, LinearMap.map_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coneInt_lin (a b : ℂ) (Φ Ψ : Fn F n d) (k : UA σ X.J) (l : (AE F E)ˣ) (y : Fin n₁ × Fin d₁ → AF F) :
     coneInt B M om e u ν z (a • Φ + b • Ψ) k l y =
@@ -50,7 +50,7 @@ theorem coneInt_lin (a b : ℂ) (Φ Ψ : Fn F n d) (k : UA σ X.J) (l : (AE F E)
   ring
 
 /- English proof (translation)
-Establish `h` using `coneInt_lin (B := B) (M := M) (om := om) (e := e) (u := u) (ν := ν) (z := z) 0 0 0 0 k l y`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coneInt_zero (k : UA σ X.J) (l : (AE F E)ˣ) (y : Fin n₁ × Fin d₁ → AF F) :
     coneInt B M om e u ν z 0 k l y = 0 := by
@@ -58,18 +58,18 @@ theorem coneInt_zero (k : UA σ X.J) (l : (AE F E)ˣ) (y : Fin n₁ × Fin d₁ 
   simpa using h
 
 /- English proof (translation)
-Introduce `y` and use `by simp only [coneInt_zero, integral_zero] exact ⟨fun _ => integrable_zero _ _ _, integrable_zero _ _ _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intOK_zero : IntOK B M om e K μK μ u ν z 0 := fun y => by
   simp only [coneInt_zero, integral_zero]
   exact ⟨fun _ => integrable_zero _ _ _, integrable_zero _ _ _⟩
 
 /- English proof (translation)
-Establish `inner : ∀ y (k : K), ∫ l, coneInt B M om e u ν z (a • Φ + b • Ψ) k.1 l y ∂μ = a * ∫ l, coneInt B M om e u ν z Φ k.1 l y ∂μ + b * ∫ l, coneInt B M om e u ν z Ψ k.1 l y ∂μ` using `fun y k => by`. Simplify using `only [coneInt_lin]`. Rewrite using `[integral_add (((hΦ y).1 k).const_mul a) (((hΨ y).1 k).const_mul b), integral_const_mul, integral_const_mul]`. Use `⟨fun y => ⟨fun k => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [coneInt_lin]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `(((hΦ y).1 k).const_mul a).add (((hΨ y).1 k).const_mul b)`. Simplify using `only [inner y]`. Conclude with `((hΦ y).2.const_mul a).add ((hΨ y).2.const_mul b)`. Use function extensionality and compare the values at `y`. Rewrite using `[cone_apply]`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [inner y]`. Rewrite using `[integral_add ((hΦ y).2.const_mul a) ((hΨ y).2.const_mul b), integral_const_mul, integral_const_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem intOK_lin (a b : ℂ) {Φ Ψ : Fn F n d} (hΦ : IntOK B M om e K μK μ u ν z Φ) (hΨ : IntOK B M om e K μK μ u ν z Ψ) :
     IntOK B M om e K μK μ u ν z (a • Φ + b • Ψ) ∧

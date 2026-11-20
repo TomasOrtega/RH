@@ -10,21 +10,21 @@ universe u
 namespace EisTube
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.gaussian_integrable_finite_dim`.
+A detailed English derivation is pending.
 -/
 theorem gaussInt : ∀ (ι : Type) [Fintype ι] (c : ℝ), 0 < c →
     MeasureTheory.Integrable (fun y : ι → ℝ => Real.exp (-(c * ∑ i, y i ^ 2))) :=
   GlobalTheory.T.gaussian_integrable_finite_dim
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.polynomial_times_gaussian_bounded`.
+A detailed English derivation is pending.
 -/
 theorem polyGaussBdd : ∀ (ι : Type) [Fintype ι] (c : ℝ), 0 < c → ∀ N : ℕ, ∃ M : ℝ, ∀ y : ι → ℝ,
     (1 + ‖y‖) ^ N * Real.exp (-(c * ∑ i, y i ^ 2)) ≤ M :=
   GlobalTheory.T.polynomial_times_gaussian_bounded
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.fourier_inversion_finite_dim`.
+A detailed English derivation is pending.
 -/
 theorem fourierInvCoord : ∀ (ι : Type) [Fintype ι] (g : (ι → ℝ) → ℂ), Continuous g → MeasureTheory.Integrable g →
     MeasureTheory.Integrable (fun t : ι → ℝ =>
@@ -34,7 +34,7 @@ theorem fourierInvCoord : ∀ (ι : Type) [Fintype ι] (g : (ι → ℝ) → ℂ
   GlobalTheory.T.fourier_inversion_finite_dim
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.contour_shift_tube_domain`.
+A detailed English derivation is pending.
 -/
 theorem tubeShift : ∀ (ι : Type) [Fintype ι] (Ω : Set (ι → ℝ)), IsOpen Ω → IsPreconnected Ω →
     ∀ H : (ι → ℂ) → ℂ, DifferentiableOn ℂ H {z | (fun i => (z i).re) ∈ Ω} →
@@ -46,7 +46,7 @@ theorem tubeShift : ∀ (ι : Type) [Fintype ι] (Ω : Set (ι → ℝ)), IsOpen
   GlobalTheory.T.contour_shift_tube_domain
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.contour_shift_parametrised_integral`.
+A detailed English derivation is pending.
 -/
 theorem laplaceEntire : ∀ (ι : Type) [Fintype ι] (P : Type u) [TopologicalSpace P] [FirstCountableTopology P] (h : P → ℝ), (∀ p, 0 ≤ h p) →
     (∀ p, ∃ U ∈ nhds p, BddAbove (h '' U)) →

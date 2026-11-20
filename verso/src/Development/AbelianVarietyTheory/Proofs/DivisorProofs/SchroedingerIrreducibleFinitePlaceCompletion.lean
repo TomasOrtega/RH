@@ -19,13 +19,13 @@ namespace GlobalTheory.SchrIrred
 open ValuativeRel
 
 /- English proof (translation)
-Establish `hle : ∀ y : k, ‖ψ y‖ ≤ 1`. Introduce `y`. Establish `hK : IsCompact ((fun u : k => y * u) '' (𝒪[k] : Set k))` using `(IsNonarchimedeanLocalField.isCompact_closedBall k 1).image (by fun_prop)`. Take `⟨C, hC⟩` from `(hK.image (continuous_norm.comp hψ)).isBounded.exists_norm_le`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at h`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt C h`. Establish `hmem : ‖ψ (y * (n : k))‖ ∈ (fun z => ‖ψ z‖) '' ((fun u : k => y * u) '' (𝒪[k] : Set k))` using `⟨y * n, ⟨n, natCast_mem _ n, rfl⟩, rfl⟩`. Establish `h2` using `hC _ hmem`. Rewrite `h2` using `[Real.norm_of_nonneg (norm_nonneg _), mul_comm, ← nsmul_eq_mul, AddChar.map_nsmul_eq_pow, norm_pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ψ x * ψ (-x) = 1` using `by rw [← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`. Establish `h2 : ‖ψ x‖ * ‖ψ (-x)‖ = 1` using `by rw [← norm_mul, h1, norm_one]`. Establish `a` using `hle x`. Establish `b` using `hle (-x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[norm_nonneg (ψ x), norm_nonneg (ψ (-x))]`.
+A detailed English derivation is pending.
 -/
 theorem norm_addChar_eq_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ψ : AddChar k ℂ) (hψ : Continuous ψ) (x : k) : ‖ψ x‖ = 1 := by
@@ -72,7 +72,7 @@ def colH (k : Type) [TopologicalSpace k] (κ : Type) : (κ → k) ≃ₜ Matrix 
     exact (continuous_apply () ).comp (continuous_apply i)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.1.comp_continuous h.continuous, hf.2.comp_homeomorph h⟩`.
+Supply the required witnesses or components.
 -/
 theorem sb_comp {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (h : X ≃ₜ Y) {f : Y → ℂ}
     (hf : f ∈ GlobalTheory.WeilM.SB Y) : f ∘ h ∈ GlobalTheory.WeilM.SB X :=
@@ -85,27 +85,27 @@ namespace GlobalTheory.SchrIrred
 open ValuativeRel
 
 /- English proof (translation)
-Set `e` to `colH k κ`. Set `L : (Matrix κ Unit k → ℂ) →ₗ[ℂ] ((κ → k) → ℂ)` to `LinearMap.funLeft ℂ ℂ e`. Establish `hL : ∀ Φ, L Φ = Φ ∘ e` using `fun _ => rfl`. Establish `hcirc : Continuous (toCircle ψk hc)`. Establish `: Continuous (fun x => ((toCircle ψk hc x : Circle) : ℂ))` using `hc`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `continuous_induced_rng.2 this`. Establish `hne1 : toCircle ψk hc ≠ 1`. Introduce `h`. Apply `h1` to reduce the goal to its premises. Use extensionality with `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `congrArg (fun χ : AddChar k Circle => ((χ x : Circle) : ℂ)) h` as an intermediate fact. Simplify `this` using `[coe_toCircle]`. Establish `hW : N.comap L ≤ GlobalTheory.SplitWeil.SB (Matrix κ Unit k)`. Introduce `Φ hΦ`. Establish `h` using `sb_comp e.symm (hN hΦ)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (Φ ∘ e) ∘ e.symm = Φ` using `by funext M; simp`. Rewrite using `[← this]`. Conclude with `h`. Establish `hT : ∀ Φ ∈ N.comap L, ∀ x : Matrix κ Unit k, (fun t => Φ (t + x)) ∈ GlobalTheory.SplitWeil.SB (Matrix κ Unit k) → (fun t => Φ (t + x)) ∈ N.comap L`. Introduce `Φ hΦ x _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hΦ`, the goal using `[Submodule.mem_comap, hL]`. Establish `h` using `hS (e.symm x, 0) _ hΦ`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Establish `he : e (y + e.symm x) = e y + x` using `by ext i j; cases j; rfl`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[schr, he]`. Establish `hM : ∀ Φ ∈ N.comap L, ∀ b : Matrix κ Unit k, (fun t => ((toCircle ψk hc (∑ r, ∑ q, b r q * t r q) : Circle) : ℂ) * Φ t) ∈ GlobalTheory.SplitWeil.SB (Matrix κ Unit k) → (fun t => ((toCircle ψk hc (∑ r, ∑ q, b r q * t r q) : Circle) : ℂ) * Φ t) ∈ N.comap L`. Introduce `Φ hΦ b _`. Rewrite `hΦ`, the goal using `[Submodule.mem_comap, hL]`. Establish `h` using `hS (0, fun r => b r ()) _ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Simplify using `only [schr, Function.comp_apply, coe_toCircle, zero_dotProduct, mul_zero, add_zero]`. Use `congr 2`. Simplify using `only [dotProduct, Finset.univ_unique, Finset.sum_singleton]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun r _ => mul_comm _ _`. Establish `h0' : φ₀ ∘ e.symm ∈ N.comap L`. Rewrite using `[Submodule.mem_comap, hL]`. Establish `: (φ₀ ∘ e.symm) ∘ e = φ₀` using `by funext y; simp`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `h0`. Establish `hne' : φ₀ ∘ e.symm ≠ 0`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `y`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrFun h (e y)` as an intermediate fact. Simplify using `using this`. Establish `hall` using `GlobalTheory.IrredSB.sb_irreducible k κ Unit (toCircle ψk hc) hcirc hne1 (N.comap L) hW hT hM _ h0' hne'`. Use `le_antisymm hN fun φ hφ => ?_` and prove the remaining obligations. Establish `hm : φ ∘ e.symm ∈ N.comap L`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hall]`. Conclude with `sb_comp e.symm hφ`. Rewrite `hm` using `[Submodule.mem_comap, hL]`. Establish `: (φ ∘ e.symm) ∘ e = φ` using `by funext y; simp`. Rewrite `hm` using `[this]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem schr_irreducible_local (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [CharZero k] [Invertible (2 : k)] {κ : Type} [Fintype κ] (ψk : AddChar k ℂ) (hc : Continuous ψk) (h1 : ψk ≠ 1)
@@ -176,7 +176,7 @@ end GlobalTheory.SchrIrred
 namespace GlobalTheory.SchrIrred
 
 /- English proof (translation)
-Introduce `F _ _ v κ _ ψk hc h1 N hN hS φ₀ h0 hne`. Use `haveI : CharZero (Fv F v) := charZero_of_injective_algebraMap (algebraMap F (Fv F v)).injective`. Conclude with `schr_irreducible_local (Fv F v) ψk hc h1 N hN hS φ₀ h0 hne`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem schr_irreducible : ∀ {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) {κ : Type} [Fintype κ] (ψk : AddChar (Fv F v) ℂ), Continuous ψk → ψk ≠ 1 →
     ∀ N : Submodule ℂ ((κ → Fv F v) → ℂ), N ≤ GlobalTheory.WeilM.SB (κ → Fv F v) → (∀ w, ∀ φ ∈ N, schr ψk w φ ∈ N) → ∀ φ₀ ∈ N, φ₀ ≠ 0 →

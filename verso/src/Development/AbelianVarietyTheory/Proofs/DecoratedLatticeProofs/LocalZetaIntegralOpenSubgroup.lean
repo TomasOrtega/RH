@@ -10,15 +10,15 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum (IsCO rescale)
 namespace GlobalTheory.PosOne
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n n' _ _ _ _ c p hp1 hpc ψ hψc hψ ν _ μ _ J hJ Φ`. Take `⟨Λ, hΛ, hper⟩` from `exists_isOpen_addSubgroup_add_eq Φ.2.1 Φ.2.2`. Take `⟨Ω, hΩ, hcov⟩` from `opE_support_compact_mod_R k n n' c p hp1 hpc ψ hψc hψ ν (tsupport Φ.1) Φ.2.2 Λ hΛ`. Take `⟨F, hF⟩` from `hΩ.elim_finite_subcover (fun w : GL (n ⊕ Fin c) k => (fun g => w⁻¹ * g) ⁻¹' (J : Set _)) (fun w => hJ.preimage (continuous_const.mul continuous_id)) (fun w _ => Set.mem_iUnion.2 ⟨w, by simp [J.one_mem]⟩)`. Set `rep : GL (n ⊕ Fin c) k → GL (n ⊕ Fin c) k` to `fun w => Quotient.out (DoubleCoset.mk (R k n c p) J w)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hrep : ∀ w, DoubleCoset.mk (R k n c p) J (rep w) = DoubleCoset.mk (R k n c p) J w` using `fun w => DoubleCoset.out_eq' _ _ _`. Use `⟨F.image rep, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha b hb hab`. Simplify using `only [Finset.coe_image, Set.mem_image] at ha hb`. Take `⟨w₁, -, rfl⟩` from `ha`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨w₂, -, rfl⟩` from `hb`. Rewrite `hab` using `[hrep, hrep]`. Simplify using `only [rep, hab]`. Introduce `h hh`. Take `⟨x₀, hx₀⟩` from `Function.ne_iff.1 hh`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, w, hw, rfl⟩` from `hcov μ Φ.1 (subset_tsupport _) (fun x y hy => hper x y hy) (fun _ => 1) (IsLocallyConstant.const 1) h x₀ (by simpa using hx₀)`. Take `⟨i, hi⟩` from `Set.mem_iUnion.1 (hF hw)`. Take `⟨hiF, hiw⟩` from `Set.mem_iUnion.1 hi`. Use `⟨rep i, Finset.mem_image_of_mem _ hiF, ?_⟩` and prove the remaining obligations. Rewrite using `[hrep, eq_comm, DoubleCoset.eq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨r, hr, i⁻¹ * w, hiw, by group⟩`.
+Supply the required witnesses or components.
 -/
 theorem covers_opE_finite : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (c p : ℕ) (_ : 1 ≤ p) (_ : p ≤ c) (ψ : AddChar k Circle) (_ : Continuous ψ) (_ : ψ ≠ 1) (ν : Measure k) [ν.IsAddHaarMeasure] (μ : kˣ →* ℂˣ) (_ : IsOpen (μ.ker : Set kˣ)) (J : Subgroup (GL (n ⊕ Fin c) k)) (_ : IsOpen (J : Set (GL (n ⊕ Fin c) k))) (Φ : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)), ∃ T, Covers p J T fun h => opE ψ ν p (om μ 1 h Φ.1) := by
   intro k _ _ _ _ _ _ n n' _ _ _ _ c p hp1 hpc ψ hψc hψ ν _ μ _ J hJ Φ

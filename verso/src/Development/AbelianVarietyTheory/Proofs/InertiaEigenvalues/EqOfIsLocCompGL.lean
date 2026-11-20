@@ -17,13 +17,13 @@ open scoped ContDiff
 namespace GlobalTheory.DiscSMO
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset ι, ∃ Θ : Module.End ℂ ((∀ i, X i) → ℂ), ∀ f : ∀ i, X i → ℂ, Θ (fun m => ∏ i, f i (m i)) = fun m => ∏ i, (if i ∈ s then T i (f i) else f i) (m i)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, fun f => by simp⟩`. Consider the case `insert i s hi ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨Θ, hΘ⟩` from `ih`. Set `Θi : Module.End ℂ ((∀ i, X i) → ℂ)` to `{ toFun := fun F m => T i (fun x => F (Function.update m i x)) (m i) map_add' := fun F G => funext fun m => congrFun (map_add (T i) _ _) (m i) map_smul' := fun z F => funext fun m => congrFun (map_smul (T i) z _) (m i) }`. Use `⟨Θi * Θ, fun f => funext fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, hΘ]`. Establish `e : (fun x => ∏ j, (if j ∈ s then T j (f j) else f j) (Function.update m i x j)) = (∏ j ∈ Finset.univ.erase i, (if j ∈ s then T j (f j) else f j) (m j)) • f i`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ i), Function.update_self, if_neg hi, Pi.smul_apply, smul_eq_mul]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun j hj => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hj)]`. Express the relevant statement in the definitionally equal form `T i (fun x => ∏ j, (if j ∈ s then T j (f j) else f j) (Function.update m i x j)) (m i) = _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_smul, ← Finset.prod_erase_mul _ _ (Finset.mem_univ i), if_pos (Finset.mem_insert_self i s), Pi.smul_apply, smul_eq_mul]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun j hj => by simp [Finset.ne_of_mem_erase hj]`. Take `⟨Θ, hΘ⟩` from `key Finset.univ`. Conclude with `⟨Θ, fun f => by simpa using hΘ f⟩`.
+Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_tensorOp {ι : Type} [Fintype ι] {X : ι → Type} (T : ∀ i, Module.End ℂ (X i → ℂ)) :
     ∃ Θ : Module.End ℂ ((∀ i, X i) → ℂ), ∀ f : ∀ i, X i → ℂ,
@@ -65,13 +65,13 @@ def cptFin : Subgroup (GA E a) :=
   (Unitary.toUnits (R := Matrix (Fin a) (Fin a) (Cinf E))).range.comap (Matrix.GeneralLinearGroup.map (pInf E))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨k, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem mul_mem_cptFin (k : Kinf E a) (g : GL (Fin a) (Af E)) :
     infGL E a (Unitary.toUnits k) * finGL E a g ∈ cptFin E a := ⟨k, by simp⟩
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hy`. Conclude with `⟨k, _, by rw [hk]; exact (infGL_mul_finGL y).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_of_mem_cptFin {y : GA E a} (hy : y ∈ cptFin E a) :
     ∃ (k : Kinf E a) (g : GL (Fin a) (Af E)), y = infGL E a (Unitary.toUnits k) * finGL E a g := by
@@ -81,7 +81,7 @@ theorem exists_of_mem_cptFin {y : GA E a} (hy : y ∈ cptFin E a) :
 def prodForm (φ : ∀ i, (π i).V) : (∀ i, GA E (n i)) → ℂ := fun m => ∏ i, (φ i).1.1 (m i)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨φ, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem prodForm_mem (φ : ∀ i, (π i).V) : prodForm φ ∈ tensorForms π := Submodule.subset_span ⟨φ, rfl⟩
 
@@ -90,12 +90,12 @@ structure IsTensorOf (T : ∀ i, (π i).V →ₗ[ℂ] (π' i).V) (Θ : Module.En
   prod : ∀ φ, Θ (prodForm φ) = prodForm fun i => T i (φ i)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ => rfl, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTensorOf_id : IsTensorOf (π := π) (fun _ => LinearMap.id) 1 := ⟨fun _ _ _ => rfl, fun _ => rfl⟩
 
 /- English proof (translation)
-Use `choose g hg using fun i => LinearMap.exists_leftInverse_of_injective ((Sm E (n i)).subtype ∘ₗ (π i).V.subtype) (LinearMap.ker_eq_bot.2 (Subtype.val_injective.comp Subtype.val_injective))`. Take `⟨Θ, hΘ⟩` from `exists_tensorOp fun i => ((Sm E (n i)).subtype ∘ₗ (π' i).V.subtype) ∘ₗ T i ∘ₗ g i`. Use `⟨Θ, hT, fun φ => (hΘ fun i => (φ i).1.1).trans (funext fun m => Finset.prod_congr rfl fun i _ => ?_)⟩` and prove the remaining obligations. Conclude with `congrArg (fun v => (T i v).1.1 (m i)) (LinearMap.congr_fun (hg i) (φ i))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isTensorOf (T : ∀ i, (π i).V →ₗ[ℂ] (π' i).V) (hT : ∀ i o φ, T i ((π i).op o φ) = (π' i).op o (T i φ)) :
     ∃ Θ, IsTensorOf T Θ := by
@@ -106,9 +106,9 @@ theorem exists_isTensorOf (T : ∀ i, (π i).V →ₗ[ℂ] (π' i).V) (hT : ∀ 
   exact congrArg (fun v => (T i v).1.1 (m i)) (LinearMap.congr_fun (hg i) (φ i))
 
 /- English proof (translation)
-Establish `h` using `HasDerivAt.fun_finsetProd (u := Finset.univ) fun i _ => hasDerivAt_curve (φ i).1 (m i) (γ i) (Z i) (h0 i) (hγ i)`. Use `h.congr_deriv (Eq.symm ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[prodForm, ← Finset.prod_erase_mul _ _ (Finset.mem_univ i), Function.update_self, smul_eq_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hj), h0, map_one, mul_one]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hasDerivAt_prodForm (γ : ∀ i, ℝ → GL (Fin (n i)) (Cinf E)) (Z : ∀ i, Lie E (n i)) (h0 : ∀ i, γ i 0 = 1)
     (hγ : ∀ i, HasDerivAt (fun t => toL (γ i t).val) (Z i) 0) (φ : ∀ i, (π i).V) (m : ∀ i, GA E (n i)) :
@@ -125,9 +125,9 @@ theorem hasDerivAt_prodForm (γ : ∀ i, ℝ → GL (Fin (n i)) (Cinf E)) (Z : �
   rw [Function.update_of_ne (Finset.ne_of_mem_erase hj), h0, map_one, mul_one]
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`. Take `⟨φ, rfl⟩` from `hF`. Use `contDiffAt_prod fun i _ => ?_` and prove the remaining obligations. Use `(contDiffAt_chart (φ i).1.2 (m i) (val_mem_invSet (b y₀ i))).comp y₀ (hb i)` as an intermediate fact.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `only [Function.comp_def, chart_val]`. Consider the case `zero => exact contDiffAt_const`. Consider the case `add F F' _ _ hF hF' => exact hF.add hF'`. Consider the case `smul z F _ hF => exact contDiffAt_const.mul hF`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem contDiffAt_tensorForms {P : Type} [NormedAddCommGroup P] [NormedSpace ℝ P] {y₀ : P}
     (b : P → ∀ i, GL (Fin (n i)) (Cinf E)) (hb : ∀ i, ContDiffAt ℝ ∞ (fun y => toL (b y i).val) y₀)
@@ -148,7 +148,7 @@ namespace IsTensorOf
 variable {T : ∀ i, (π i).V →ₗ[ℂ] (π' i).V} {Θ : Module.End ℂ ((∀ i, GA E (n i)) → ℂ)}
 
 /- English proof (translation)
-Use `(Submodule.span_le (p := (tensorForms π').comap Θ)).2 ?_ hF` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, rfl⟩`. Express the relevant statement in the definitionally equal form `Θ (prodForm φ) ∈ tensorForms π'`. Rewrite using `[h.prod]`. Conclude with `prodForm_mem _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem (h : IsTensorOf T Θ) {F : (∀ i, GA E (n i)) → ℂ} (hF : F ∈ tensorForms π) : Θ F ∈ tensorForms π' := by
   refine (Submodule.span_le (p := (tensorForms π').comap Θ)).2 ?_ hF
@@ -158,7 +158,7 @@ theorem mem (h : IsTensorOf T Θ) {F : (∀ i, GA E (n i)) → ℂ} (hF : F ∈ 
   exact prodForm_mem _
 
 /- English proof (translation)
-Use `(Submodule.span_le (p := LinearMap.eqLocus (Θ' * Θ) 1)).2 ?_ hF` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, rfl⟩`. Express the relevant statement in the definitionally equal form `Θ' (Θ (prodForm φ)) = prodForm φ`. Simplify using `only [h.prod, h'.prod, e]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem inv (h : IsTensorOf T Θ) {T' : ∀ i, (π' i).V →ₗ[ℂ] (π i).V} {Θ' : Module.End ℂ ((∀ i, GA E (n i)) → ℂ)}
     (h' : IsTensorOf T' Θ') (e : ∀ i v, T' i (T i v) = v) {F : (∀ i, GA E (n i)) → ℂ} (hF : F ∈ tensorForms π) :
@@ -169,9 +169,9 @@ theorem inv (h : IsTensorOf T Θ) {T' : ∀ i, (π' i).V →ₗ[ℂ] (π i).V} {
   simp only [h.prod, h'.prod, e]
 
 /- English proof (translation)
-Use `choose k g e using fun i => exists_of_mem_cptFin (hx i)`. Use `(Submodule.span_le (p := LinearMap.eqLocus (Θ * LinearMap.funLeft ℂ ℂ (· * x)) (LinearMap.funLeft ℂ ℂ (· * x) * Θ))).2 ?_ hF` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, rfl⟩`. Establish `key : ∀ {π : ∀ i, CuspSub E (n i)} (φ : ∀ i, (π i).V), (fun m => prodForm φ (m * x)) = prodForm fun i => (π i).op (.cpt (k i)) ((π i).op (.fin (g i)) (φ i))` using `fun φ => funext fun m => Finset.prod_congr rfl fun i _ => by`. Rewrite using `[Pi.mul_apply, e, ← mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `Θ (fun m => prodForm φ (m * x)) = fun m => Θ (prodForm φ) (m * x)`. Simplify using `only [key, h.prod, h.comm]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem translate (h : IsTensorOf T Θ) {x : ∀ i, GA E (n i)} (hx : ∀ i, x i ∈ cptFin E (n i))
     {F : (∀ i, GA E (n i)) → ℂ} (hF : F ∈ tensorForms π) : Θ (fun m => F (m * x)) = fun m => Θ F (m * x) := by
@@ -188,15 +188,15 @@ theorem translate (h : IsTensorOf T Θ) {x : ∀ i, GA E (n i)} (hx : ∀ i, x i
   simp only [key, h.prod, h.comm]
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`. Take `⟨φ, rfl⟩` from `hF`. Use `⟨_, hasDerivAt_prodForm γ Z h0 hγ φ, fun m => ?_⟩` and prove the remaining obligations. Use `hasDerivAt_prodForm γ Z h0 hγ (fun i => T i (φ i)) m` as an intermediate fact.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[← h.prod]`. Use `this.congr_deriv (congrFun (Eq.symm ?_) m)` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[h.prod, ← h.comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `Function.apply_update (fun i v => T i v) φ i _ j`. Consider the case `zero => exact ⟨0, fun m => hasDerivAt_const _ _, fun m => by simpa using hasDerivAt_const _ _⟩`. Consider the case `add F F' _ _ hF hF'`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨G, h1, h2⟩` from `hF`. Take `⟨G', h1', h2'⟩` from `hF'`. Conclude with `⟨G + G', fun m => (h1 m).add (h1' m), fun m => by rw [map_add, map_add]; exact (h2 m).add (h2' m)⟩`. Consider the case `smul z F _ hF`. Take `⟨G, h1, h2⟩` from `hF`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨z • G, fun m => (h1 m).const_mul z, fun m => by rw [map_smul, map_smul]; exact (h2 m).const_mul z⟩`.
+A detailed English derivation is pending.
 -/
 theorem deriv (h : IsTensorOf T Θ) (γ : ∀ i, ℝ → GL (Fin (n i)) (Cinf E)) (Z : ∀ i, Lie E (n i)) (h0 : ∀ i, γ i 0 = 1)
     (hγ : ∀ i, HasDerivAt (fun t => toL (γ i t).val) (Z i) 0) {F : (∀ i, GA E (n i)) → ℂ} (hF : F ∈ tensorForms π) :
@@ -227,11 +227,11 @@ theorem deriv (h : IsTensorOf T Θ) (γ : ∀ i, ℝ → GL (Fin (n i)) (Cinf E)
 end IsTensorOf
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hp`. Use `set y := Matrix.GeneralLinearGroup.map (pInf E) (leviProj (Ad E) e p i) with hy`. Establish `h1 : ∀ a b, y.val a b = k.1 (e ⟨i, a⟩) (e ⟨i, b⟩)` using `fun a b => (congrArg (fun z : GL (Fin N) (Cinf E) => z.val (e ⟨i, a⟩) (e ⟨i, b⟩)) hk).symm`. Establish `h2 : ∀ a b, (y⁻¹).val a b = star k.1 (e ⟨i, a⟩) (e ⟨i, b⟩)` using `fun a b => by`. Establish `hk' : (Unitary.toUnits k)⁻¹ = Matrix.GeneralLinearGroup.map (pInf E) (p⁻¹).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, ← map_inv]`. Both sides reduce to the same expression. Rewrite using `[hy, ← map_inv, ← Pi.inv_apply, ← map_inv]`. Conclude with `(congrArg (fun z : GL (Fin N) (Cinf E) => z.val (e ⟨i, a⟩) (e ⟨i, b⟩)) hk').symm`. Establish `h3 : star y.val = (y⁻¹).val`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b : 2`. Rewrite using `[h2, Matrix.star_apply, Matrix.star_apply, h1]`. Conclude with `⟨⟨y.val, by rw [h3, Units.inv_mul], by rw [h3, Units.mul_inv]⟩, Units.ext rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem leviProj_mem_cptFin (e : (Σ i, Fin (n i)) ≃ Fin N) (p : parab (Ad E) e) (hp : p.1 ∈ cptFin E N) (i : Fin c) :
     leviProj (Ad E) e p i ∈ cptFin E (n i) := by
@@ -257,7 +257,7 @@ def res (y : GA E N) : (GA E N → ℂ) →ₗ[ℂ] ((∀ i, GA E (n i)) → ℂ
   LinearMap.funLeft ℂ ℂ fun m => leviEmb (Ad E) (stdBlocks n h) m * y
 
 /- English proof (translation)
-Take `⟨k, g, rfl⟩` from `exists_of_mem_cptFin hy`. Conclude with `hφ.2.2.2 k g`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem res_mem {φ : Sm E N} (hφ : φ ∈ indForms h π) {y : GA E N} (hy : y ∈ cptFin E N) :
     res h y φ.1 ∈ tensorForms π := by
@@ -265,13 +265,13 @@ theorem res_mem {φ : Sm E N} (hφ : φ ∈ indForms h π) {y : GA E N} (hy : y 
   exact hφ.2.2.2 k g
 
 /- English proof (translation)
-Use `⟨fun u hu g => ?_, ?_, ?_, fun k' g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (u * g * _) = φ.1 (g * _)`. Rewrite using `[mul_assoc, hφ.1 u hu]`. Establish `ho : IsOpen {x | finRep E N x φ = φ}` using `hφ.2.1`. Use `isOpen_stab_of_mem_nhds _ _ (Filter.mem_of_superset (ho.mem_nhds (by simp)) fun x hx => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx' : finRep E N x φ = φ` using `hx`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Use `congrArg (fun ψ : Sm E N => ψ.1 (g * infGL E N (Unitary.toUnits k))) hx'` as an intermediate fact. Express the relevant statement in the definitionally equal form `φ.1 (g * infGL E N _ * finGL E N x) = _ at this`. Express the relevant statement in the definitionally equal form `φ.1 (g * finGL E N x * infGL E N _) = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[mul_assoc, ← infGL_comm, ← mul_assoc]`. Conclude with `this`. Establish `hf : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => cptRep E N k φ))` using `hφ.2.2.1`. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ (Set.range fun k => cptRep E N k φ)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k', rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `Submodule.subset_span ⟨k' * k, by simp only [map_mul]; rfl⟩`. Use `res_mem hφ (mul_mem (mul_mem_cptFin k' g) (mul_mem_cptFin k 1))` as an intermediate fact. Use `this using 2 with m` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `φ.1 (_ * infGL E N _) = φ.1 _`. Simplify using `only [map_one, mul_one, mul_assoc]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cpt_mem_indForms {φ : Sm E N} (hφ : φ ∈ indForms h π) (k : Kinf E N) : cptRep E N k φ ∈ indForms h π := by
   refine ⟨fun u hu g => ?_, ?_, ?_, fun k' g => ?_⟩
@@ -297,7 +297,7 @@ theorem cpt_mem_indForms {φ : Sm E N} (hφ : φ ∈ indForms h π) (k : Kinf E 
     simp only [map_one, mul_one, mul_assoc]
 
 /- English proof (translation)
-Take `⟨k, g, rfl⟩` from `exists_of_mem_cptFin hy`. Rewrite using `[map_mul]`. Conclude with `cpt_mem_indForms (fin_mem_indForms hφ g) k`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rt_mem_indForms {φ : Sm E N} (hφ : φ ∈ indForms h π) {y : GA E N} (hy : y ∈ cptFin E N) :
     rt E N y φ ∈ indForms h π := by
@@ -307,7 +307,7 @@ theorem rt_mem_indForms {φ : Sm E N} (hφ : φ ∈ indForms h π) {y : GA E N} 
 
 variable (h) in
 /- English proof (translation)
-Take `⟨u, hu, m, k, g, e⟩` from `GlobalTheory.IwasawaAdelic.iwasawa E n h x`. Conclude with `⟨(m, _), mul_mem_cptFin k g, u, hu, e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_iw (x : GA E N) : ∃ q : (∀ i, GA E (n i)) × GA E N, q.2 ∈ cptFin E N ∧
     ∃ u ∈ unipRad (Ad E) (stdBlocks n h), x = u * leviEmb (Ad E) (stdBlocks n h) q.1 * q.2 := by
@@ -324,17 +324,17 @@ namespace IsTensorOf
 variable {T : ∀ i, (π i).V →ₗ[ℂ] (π' i).V} {Θ : Module.End ℂ ((∀ i, GA E (n i)) → ℂ)}
 
 /- English proof (translation)
-Use `set x := u * leviEmb (Ad E) (stdBlocks n h) m * y with hx`. Take `⟨hy', u', hu', e'⟩` from `(exists_iw h x).choose_spec`. Express the relevant statement in the definitionally equal form `Θ (res h (exists_iw h x).choose.2 φ.1) (exists_iw h x).choose.1 = _`. Generalize the expression as in `(exists_iw h x).choose = q at hy' e'`. Take `⟨m', y'⟩` from `q`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only at hy' e' ⊢`. Set `e` to `stdBlocks n h`. Set `U : parab (Ad E) e` to `⟨u, unipRad_le_parab _ _ hu⟩`. Set `U' : parab (Ad E) e` to `⟨u', unipRad_le_parab _ _ hu'⟩`. Set `M : parab (Ad E) e` to `⟨_, leviEmb_mem_parab _ e m⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `M' : parab (Ad E) e` to `⟨_, leviEmb_mem_parab _ e m'⟩`. Set `p` to `(U' * M')⁻¹ * (U * M)`. Establish `hp : p.1 = y' * y⁻¹`. Express the relevant statement in the definitionally equal form `(u' * leviEmb (Ad E) e m')⁻¹ * (u * leviEmb (Ad E) e m) = _`. Rewrite using `[eq_mul_inv_iff_mul_eq, mul_assoc, inv_mul_eq_iff_eq_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `e'`. Establish `hl : leviProj (Ad E) e p = m'⁻¹ * m`. Simplify using `only [p, map_mul, map_inv, (coe_mem_unipRad _ U).1 hu, (coe_mem_unipRad _ U').1 hu', M, M', leviProj_leviEmb, one_mul]`. Take `⟨v, hv, ev⟩` from `exists_levi_mul_unip _ e p`. Establish `hm : ∀ i, (m'⁻¹ * m) i ∈ cptFin E (n i)` using `fun i => hl ▸ leviProj_mem_cptFin e p (hp ▸ mul_mem hy' (inv_mem hy)) i`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hr : res h y' φ.1 = fun z => res h y φ.1 (z * (m'⁻¹ * m))` using `funext fun z => by`. Express the relevant statement in the definitionally equal form `φ.1 (leviEmb _ e z * y') = φ.1 (leviEmb _ e _ * y)`. Use `set L := leviEmb (Ad E) e (z * (m'⁻¹ * m)) with hL`. Establish `hv'` using `(Subgroup.mem_normalizer_iff.1 (leviEmb_mem_normalizer _ e (z * (m'⁻¹ * m))) v).1 hv`. Rewrite using `[← hφ.1 _ hv' (L * y), ← hL]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `ev` using `[hp, hl, mul_inv_eq_iff_eq_mul]`. Rewrite using `[ev, mul_assoc (L * v), inv_mul_cancel_left, hL, map_mul _ z]`. Simplify using `only [mul_assoc]`. Rewrite using `[hr, H.translate hm (res_mem hφ hy)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem indOp_apply (H : IsTensorOf T Θ) {φ : Sm E N} (hφ : φ ∈ indForms h π) {u y : GA E N}
     (hu : u ∈ unipRad (Ad E) (stdBlocks n h)) (hy : y ∈ cptFin E N) (m : ∀ i, GA E (n i)) :
@@ -372,7 +372,7 @@ theorem indOp_apply (H : IsTensorOf T Θ) {φ : Sm E N} (hφ : φ ∈ indForms h
   simp
 
 /- English proof (translation)
-The claim follows from `funext fun m => by have := H.indOp_apply hφ (one_mem _) hy m rwa [one_mul] at this`.
+A detailed English derivation is pending.
 -/
 theorem indOp_levi (H : IsTensorOf T Θ) {φ : Sm E N} (hφ : φ ∈ indForms h π) {y : GA E N} (hy : y ∈ cptFin E N) :
     res h y (indOp h Θ φ.1) = Θ (res h y φ.1) := funext fun m => by
@@ -380,7 +380,7 @@ theorem indOp_levi (H : IsTensorOf T Θ) {φ : Sm E N} (hφ : φ ∈ indForms h 
   rwa [one_mul] at this
 
 /- English proof (translation)
-Take `⟨⟨m, y⟩, hy, v, hv, rfl⟩` from `exists_iw h x`. Rewrite using `[← mul_assoc, ← mul_assoc, H.indOp_apply hφ (mul_mem hu hv) hy, H.indOp_apply hφ hv hy]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem indOp_left (H : IsTensorOf T Θ) {φ : Sm E N} (hφ : φ ∈ indForms h π) {u : GA E N}
     (hu : u ∈ unipRad (Ad E) (stdBlocks n h)) (x : GA E N) : indOp h Θ φ.1 (u * x) = indOp h Θ φ.1 x := by
@@ -388,7 +388,7 @@ theorem indOp_left (H : IsTensorOf T Θ) {φ : Sm E N} (hφ : φ ∈ indForms h 
   rw [← mul_assoc, ← mul_assoc, H.indOp_apply hφ (mul_mem hu hv) hy, H.indOp_apply hφ hv hy]
 
 /- English proof (translation)
-Take `⟨⟨m, y⟩, hy, v, hv, rfl⟩` from `exists_iw h x`. Rewrite using `[mul_assoc _ y, H.indOp_apply hφ hv (mul_mem hy hz), H.indOp_apply (rt_mem_indForms hφ hz) hv hy]`. Conclude with `congrFun (congrArg Θ (funext fun m => congrArg φ.1 (mul_assoc _ _ _))) m`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indOp_rt (H : IsTensorOf T Θ) {φ : Sm E N} (hφ : φ ∈ indForms h π) {z : GA E N} (hz : z ∈ cptFin E N)
     (x : GA E N) : indOp h Θ (rt E N z φ).1 x = indOp h Θ φ.1 (x * z) := by
@@ -399,7 +399,7 @@ theorem indOp_rt (H : IsTensorOf T Θ) {φ : Sm E N} (hφ : φ ∈ indForms h π
 end IsTensorOf
 
 /- English proof (translation)
-The claim follows from `funext fun x => by obtain ⟨⟨m, y⟩, hy, v, hv, rfl⟩ := exists_iw h x rw [mul_assoc, hf v hv, hf' v hv] exact congrFun (e y hy) m`.
+A detailed English derivation is pending.
 -/
 theorem ext_res {f f' : GA E N → ℂ} (hf : ∀ u ∈ unipRad (Ad E) (stdBlocks n h), ∀ x, f (u * x) = f x)
     (hf' : ∀ u ∈ unipRad (Ad E) (stdBlocks n h), ∀ x, f' (u * x) = f' x)
@@ -409,9 +409,9 @@ theorem ext_res {f f' : GA E N → ℂ} (hf : ∀ u ∈ unipRad (Ad E) (stdBlock
   exact congrFun (e y hy) m
 
 /- English proof (translation)
-Introduce and unpack `g x ⟨y, hy⟩`. Take `rfl : x = toL y.val` from `hy.symm`. Establish `e : chart f g = chart f (g * infGL E a y) ∘ lmul (toL (y⁻¹).val)`. Rewrite using `[← chart_mul, mul_assoc, ← map_mul, mul_inv_cancel, map_one, mul_one]`. Establish `e1 : lmul (toL (y⁻¹).val) (toL y.val) = oneL E a` using `y.inv_mul`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `(ContDiffAt.comp _ ?_ (lmul (toL (y⁻¹).val)).contDiff.contDiffAt).contDiffWithinAt` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `hf _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Sm_of_one {f : GA E a → ℂ} (hf : ∀ g, ContDiffAt ℝ ∞ (chart f g) (oneL E a)) : f ∈ Sm E a := by
   rintro g x ⟨y, hy⟩
@@ -425,11 +425,11 @@ theorem mem_Sm_of_one {f : GA E a → ℂ} (hf : ∀ g, ContDiffAt ℝ ∞ (char
   exact hf _
 
 /- English proof (translation)
-Establish `e : chart f g = chart (fun x => f (x * infGL E a y)) g ∘ rmul (toL (y⁻¹).val)`. Rewrite using `[← chart_rt_inf]`. Simplify using `only [mul_assoc, ← map_mul, inv_mul_cancel, map_one, mul_one]`. Establish `e1 : rmul (toL (y⁻¹).val) (toL y.val) = oneL E a` using `y.mul_inv`. Establish `e2 : lmul (toL y.val) (oneL E a) = toL y.val` using `mul_one y.val`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[chart_mul, e]`. Use `ContDiffAt.comp _ ?_ (lmul (toL y.val)).contDiff.contDiffAt` and prove the remaining obligations. Rewrite using `[e2]`. Use `ContDiffAt.comp _ ?_ (rmul (toL (y⁻¹).val)).contDiff.contDiffAt` and prove the remaining obligations. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_chart_mul {f : GA E a → ℂ} {g : GA E a} {y : GL (Fin a) (Cinf E)}
     (hf : ContDiffAt ℝ ∞ (chart (fun x => f (x * infGL E a y)) g) (oneL E a)) :
@@ -449,15 +449,13 @@ theorem contDiffAt_chart_mul {f : GA E a → ℂ} {g : GA E a} {y : GL (Fin a) (
 variable (h) in
 
 /- English proof (translation)
-Take `⟨p, k, hp, hk, hp1, hk1, hpk⟩` from `GlobalTheory.T.iwasawa_decomposition_smooth_near_one E n (stdBlocks n h)`. Take `⟨r, ψ, C, hψ, hC, e⟩` from `GlobalTheory.KFinExp.exists_expansion E N φ hφ.2.2.1`. Establish `hψ' : ∀ j, ψ j ∈ indForms h π` using `fun j => Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `cpt_mem_indForms hφ k) (hψ j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r, fun j => res h 1 (ψ j).1, fun j y => C j (toL (k y).1), fun y => leviProj _ _ (p y), fun j => res_mem (hψ' j) (one_mem _), fun j => ContDiffAt.comp _ (by rw [hk1]; exact hC j) hk, fun i => contDiffAt_pi.2 fun s => contDiffAt_pi.2 fun t => contDiffAt_pi.1 (contDiffAt_pi.1 hp _ …` and prove the remaining obligations. Use `filter_upwards [hpk] with y hy`. Take `⟨u, hu, eu⟩` from `exists_levi_mul_unip _ _ (p y)`. Establish `hy' : y = toL ((p y).1 * Unitary.toUnits (k y)).val` using `hy`. Establish `hky : infGL E N (Unitary.toUnits (k y)) ∈ cptFin E N` using `by simpa using mul_mem_cptFin (k y) 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set L := leviEmb (Ad E) (stdBlocks n h) fun i => m i * infGL E (n i) (leviProj _ _ (p y) i) with hL`. Establish `hu'` using `(Subgroup.mem_normalizer_iff.1 (leviEmb_mem_normalizer _ _ _) _).1 (GlobalTheory.IwasawaAdelic.infGL_mem_unipRad E n h u hu) |> (hL ▸ ·)`. Establish `ex : leviEmb (Ad E) (stdBlocks n h) m * infGL E N ((p y).1 * Unitary.toUnits (k y)) = L * infGL E N u * L⁻¹ * L * infGL E N (Unitary.toUnits (k y))`. Rewrite using `[inv_mul_cancel_right, map_mul]`. Use `conv_lhs => rw [eu]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul, GlobalTheory.LieTensor.infGL_leviEmb, ← mul_assoc, ← mul_assoc, ← map_mul]`. Both sides reduce to the same expression. Establish `er : res h (infGL E N (Unitary.toUnits (k y))) φ.1 = ∑ j, C j (toL (k y).1) • res h 1 (ψ j).1`. Establish `: res h (infGL E N (Unitary.toUnits (k y))) φ.1 = res h 1 (cptRep E N (k y) φ).1`. Use function extensionality and compare the values at `fun m => congrArg (fun z => φ.1 (z * infGL E N (Unitary.toUnits (k y)))) (mul_one _).symm`.
-
-Rewrite using `[this, e]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, map_sum, map_smul]`. Use `conv_lhs => rw [hy', chart_val, ex, hL, H.indOp_apply hφ hu' hky, er]`. Simplify using `only [map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_expansion {φ : Sm E N} (hφ : φ ∈ indForms h π) :
     ∃ (r : ℕ) (F : Fin r → (∀ i, GA E (n i)) → ℂ) (C : Fin r → Lie E N → ℂ) (b : Lie E N → ∀ i, GL (Fin (n i)) (Cinf E)),
@@ -497,7 +495,7 @@ theorem exists_expansion {φ : Sm E N} (hφ : φ ∈ indForms h π) :
   simp only [map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-The claim follows from `ext_res (fun _ hu => isTensorOf_id.indOp_left hφ hu) hφ.1 fun _ hy => isTensorOf_id.indOp_levi hφ hy`.
+A detailed English derivation is pending.
 -/
 theorem indOp_one {φ : Sm E N} (hφ : φ ∈ indForms h π) : indOp h 1 φ.1 = φ.1 :=
   ext_res (fun _ hu => isTensorOf_id.indOp_left hφ hu) hφ.1 fun _ hy => isTensorOf_id.indOp_levi hφ hy
@@ -507,11 +505,11 @@ namespace IsTensorOf
 variable {T : ∀ i, (π i).V →ₗ[ℂ] (π' i).V} {Θ : Module.End ℂ ((∀ i, GA E (n i)) → ℂ)}
 
 /- English proof (translation)
-Establish `key : ∀ {φ : Sm E N}, φ ∈ indForms h π → ∀ m, ContDiffAt ℝ ∞ (chart (indOp h Θ φ.1) (leviEmb (Ad E) (stdBlocks n h) m)) (oneL E N)` using `fun hφ m => by`. Take `⟨r, F, C, b, hF, hC, hb, -, e⟩` from `exists_expansion h hφ`. Conclude with `ContDiffAt.congr_of_eventuallyEq (ContDiffAt.sum fun j _ => (hC j).mul (contDiffAt_tensorForms b hb (H.mem (hF j)) m)) (e H m)`. Use `mem_Sm_of_one fun x => ?_` and prove the remaining obligations. Take `⟨⟨m, y⟩, hy, v, hv, rfl⟩` from `exists_iw h x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, g, e⟩` from `exists_of_mem_cptFin hy`. Simplify using `only at e ⊢`. Rewrite using `[e, infGL_comm, ← mul_assoc]`. Use `contDiffAt_chart_mul ?_` and prove the remaining obligations. Rewrite using `[← chart_rt_fin]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `key (rt_mem_indForms hφ hy) m using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Simplify using `only [chart, H.indOp_rt hφ hy]`. Simplify using `only [mul_assoc, H.indOp_left hφ hv, e]`. Rewrite using `[← infGL_comm (Unitary.toUnits k) g]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indOp_mem_Sm (H : IsTensorOf T Θ) {φ : Sm E N} (hφ : φ ∈ indForms h π) : indOp h Θ φ.1 ∈ Sm E N := by
   have key : ∀ {φ : Sm E N}, φ ∈ indForms h π → ∀ m,
@@ -538,20 +536,18 @@ def indMap (H : IsTensorOf T Θ) : indForms h π →ₗ[ℂ] Sm E N :=
   (indOp h Θ ∘ₗ (Sm E N).subtype ∘ₗ (indForms h π).subtype).codRestrict _ fun φ => H.indOp_mem_Sm φ.2
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext (H.indOp_rt φ.2 hz))`.
+A detailed English derivation is pending.
 -/
 theorem indMap_rt (H : IsTensorOf T Θ) (φ : indForms h π) {z : GA E N} (hz : z ∈ cptFin E N) :
     H.indMap h ⟨_, rt_mem_indForms φ.2 hz⟩ = rt E N z (H.indMap h φ) :=
   Subtype.ext (funext (H.indOp_rt φ.2 hz))
 
 /- English proof (translation)
-Establish `hf : ∀ g, finGL E N g ∈ cptFin E N` using `fun g => by simpa using mul_mem_cptFin 1 g`. Establish `hk : ∀ k : Kinf E N, infGL E N (Unitary.toUnits k) ∈ cptFin E N` using `fun k => by simpa using mul_mem_cptFin k 1`. Use `⟨fun u hu => H.indOp_left φ.2 hu, ?_, ?_, fun k g => ?_⟩` and prove the remaining obligations. Establish `ho : IsOpen {x | finRep E N x φ.1 = φ.1}` using `φ.2.2.1`. Use `isOpen_stab_of_mem_nhds _ _ (Filter.mem_of_superset (ho.mem_nhds (by simp)) fun x hx => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(H.indMap_rt φ (hf x)).symm.trans (congrArg _ (Subtype.ext hx))`. Establish `: FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => cptRep E N k φ.1))` using `φ.2.2.2.1`. Establish `: FiniteDimensional ℂ ((Submodule.span ℂ (Set.range fun k => cptRep E N k φ.1)).comap (indForms h π).subtype)` using `(Submodule.comapSubtypeEquivOfLe (Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `cpt_mem_indForms φ.2 k))).symm.finiteDimensional`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Submodule.finiteDimensional_of_le (S₂ := ((Submodule.span ℂ (Set.range fun k => cptRep E N k φ.1)).comap (indForms h π).subtype).map (H.indMap h)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨⟨_, rt_mem_indForms φ.2 (hk k)⟩, Submodule.subset_span ⟨k, rfl⟩, H.indMap_rt φ (hk k)⟩`. Use `H.mem (res_mem φ.2 (mul_mem_cptFin k g))` as an intermediate fact. Rewrite `this` using `[← H.indOp_levi φ.2 (mul_mem_cptFin k g)]`.
-
-Conclude with `this`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indMap_mem (H : IsTensorOf T Θ) (φ : indForms h π) : H.indMap h φ ∈ indForms h π' := by
   have hf : ∀ g, finGL E N g ∈ cptFin E N := fun g => by simpa using mul_mem_cptFin 1 g
@@ -574,13 +570,13 @@ theorem indMap_mem (H : IsTensorOf T Θ) (φ : indForms h π) : H.indMap h φ �
     exact this
 
 /- English proof (translation)
-Take `⟨r, F, C, b, hF, hC, hb, hb1, e⟩` from `exists_expansion h φ.2`. Set `l : ℝ → Lie E N` to `fun t => oneL E N + t • X`. Establish `l0 : l 0 = oneL E N` using `by simp [l]`. Establish `hl : HasDerivAt l X 0` using `(((hasDerivAt_id (0 : ℝ)).smul_const X).const_add (oneL E N)).congr_deriv (one_smul _ _)`. Establish `hd : ∀ {Y : Type} [NormedAddCommGroup Y] [NormedSpace ℝ Y] {f : Lie E N → Y}, ContDiffAt ℝ ∞ f (oneL E N) → HasDerivAt (fun t => f (l t)) (fderiv ℝ f (oneL E N) X) 0` using `fun hf => HasFDerivAt.comp_hasDerivAt (0 : ℝ) (by rw [l0]; exact (hf.differentiableAt (by simp)).hasFDerivAt) hl`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose G h1 h2 using fun j => H.deriv (fun i t => b (l t) i) _ (fun i => by simp only [l0, hb1]; rfl) (fun i => hd (hb i)) (hF j)`. Establish `key : ∀ {π' : ∀ i, CuspSub E (n i)} {T : ∀ i, (π i).V →ₗ[ℂ] (π' i).V} {Θ : Module.End ℂ ((∀ i, GA E (n i)) → ℂ)} (H : IsTensorOf T Θ), (∀ j m, HasDerivAt (fun t => Θ (F j) fun i => m i * infGL E (n i) (b (l t) i)) (Θ (G j) m) 0) → res h 1 (lie E N X (H.indMap h φ)).1 = Θ (∑ j, (f …` using `fun H h2 => funext fun m => by`. Establish `a1` using `hd (contDiffAt_chart (H.indOp_mem_Sm φ.2) (leviEmb (Ad E) (stdBlocks n h) m) isUnit_one)`. Establish `a2` using `(HasDerivAt.fun_sum (u := Finset.univ) fun j _ => (hd (hC j)).mul (h2 j m)).congr_of_eventuallyEq (f₁ := fun t => chart (indOp h _ φ.1.1) (leviEmb (Ad E) (stdBlocks n h) m) (l t)) ((l0 ▸ hl.continuousAt.tendsto :).eventually (e H m))`. Express the relevant statement in the definitionally equal form `lieD X _ (_ * 1) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_one]`. Use `(a1.unique a2).trans ?_` and prove the remaining obligations. Simplify using `[l0, hb1]`. Establish `e1` using `key isTensorOf_id h1`. Rewrite `e1` using `[show isTensorOf_id.indMap h φ = φ.1 from Subtype.ext (indOp_one φ.2)]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key H h2, e1]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem res_lie (H : IsTensorOf T Θ) (φ : indForms h π) (X : Lie E N) :
     res h 1 (lie E N X (H.indMap h φ)).1 = Θ (res h 1 (lie E N X φ.1).1) := by
@@ -611,11 +607,11 @@ theorem res_lie (H : IsTensorOf T Θ) (φ : indForms h π) (X : Lie E N) :
   rfl
 
 /- English proof (translation)
-Use `Subtype.ext (ext_res (H.indMap_mem _).1 (GlobalTheory.SpehInfChar.lie_mem_indForms n h π' X _ (H.indMap_mem φ)).1 fun y hy => ?_)` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨X', hX⟩ : ∃ X', rt E N y * lie E N X = lie E N X' * rt E N y := by`. Take `⟨k, g, rfl⟩` from `exists_of_mem_cptFin hy`. Use `⟨toL ((Unitary.toUnits k).val * Matrix.of X * ((Unitary.toUnits k)⁻¹).val), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, mul_assoc, ← lie_rt_fin, ← mul_assoc, ← mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (· * _) (GlobalTheory.CapAdInv.rt_lie (Unitary.toUnits k) (Matrix.of X))`. Establish `e : ∀ ψ : Sm E N, res h y (lie E N X ψ).1 = res h 1 (lie E N X' (rt E N y ψ)).1` using `fun ψ => funext fun m => by`. Use `congrArg (fun f : Module.End ℂ (Sm E N) => (f ψ).1 (leviEmb (Ad E) (stdBlocks n h) m * 1)) hX` as an intermediate fact. Simplify using `only [Module.End.mul_apply, rt_apply, mul_one] at this`. Express the relevant statement in the definitionally equal form `_ = (lie E N X' (rt E N y ψ)).1 (_ * 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_one]`. Conclude with `this`. Rewrite using `[e, ← H.indMap_rt φ hy, H.res_lie, ← e]`. Conclude with `H.indOp_levi (GlobalTheory.SpehInfChar.lie_mem_indForms n h π X φ.1 φ.2) hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indMap_lie (H : IsTensorOf T Θ) (φ : indForms h π) (X : Lie E N) :
     H.indMap h ⟨_, GlobalTheory.SpehInfChar.lie_mem_indForms n h π X φ.1 φ.2⟩ = lie E N X (H.indMap h φ) := by
@@ -638,17 +634,15 @@ theorem indMap_lie (H : IsTensorOf T Θ) (φ : indForms h π) (X : Lie E N) :
 end IsTensorOf
 
 /- English proof (translation)
-Use `choose T hT using hi`. Take `⟨Θ, H⟩` from `exists_isTensorOf (fun i => (T i).toLinearMap) hT`. Take `⟨Θ', H'⟩` from `exists_isTensorOf (fun i => (T i).symm.toLinearMap) fun i o φ => (T i).injective (by rw [hT]; simp)`. Take `⟨g, hg⟩` from `LinearMap.exists_extend (H'.indMap h)`. Establish `hg' : ∀ φ (hφ : φ ∈ indForms h π'), g φ = H'.indMap h ⟨φ, hφ⟩` using `fun φ hφ => LinearMap.congr_fun hg ⟨φ, hφ⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, hc⟩` from `hV`. Use `⟨f ∘ₗ g, ?_, fun o φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.map_comp, ← hf]`. Use `congr 1`. Use `le_antisymm ?_ fun φ hφ => ⟨_, H.indMap_mem ⟨φ, hφ⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Conclude with `hg' φ hφ ▸ H'.indMap_mem _`. Rewrite using `[hg' _ (H.indMap_mem ⟨φ, hφ⟩)]`. Use `Subtype.ext (ext_res (H'.indMap_mem _).1 hφ.1 fun y hy => ?_)` and prove the remaining obligations. Use `(H'.indOp_levi (H.indMap_mem ⟨φ, hφ⟩) hy).trans ((congrArg Θ' (H.indOp_levi hφ hy)).trans ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `H.inv H' (fun i => (T i).symm_apply_apply) (res_mem hφ hy)`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hg' φ hφ, ← hc o _ (H'.indMap_mem _)]`. Use `congr 1`. Consider the cases of `o with`. Consider the case `fin x`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Treat this case separately. Establish an intermediate fact.
 
-Establish `hx : finGL E N x ∈ cptFin E N` using `by simpa using mul_mem_cptFin 1 x`. Conclude with `(hg' _ (rt_mem_indForms hφ hx)).trans (H'.indMap_rt ⟨φ, hφ⟩ hx)`. Consider the case `cpt k`. Establish `hx : infGL E N (Unitary.toUnits k) ∈ cptFin E N` using `by simpa using mul_mem_cptFin k 1`. Conclude with `(hg' _ (rt_mem_indForms hφ hx)).trans (H'.indMap_rt ⟨φ, hφ⟩ hx)`.
-
-Consider the case `lie X => exact (hg' _ (GlobalTheory.SpehInfChar.lie_mem_indForms n h π' X φ hφ)).trans (H'.indMap_lie ⟨φ, hφ⟩ X)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isQuotOf_of_iso (hi : ∀ i, (π i).Iso (π' i)) {V : Submodule ℂ (Sm E N)} (hV : IsQuotOf V (indForms h π)) :
     IsQuotOf V (indForms h π') := by
@@ -681,7 +675,7 @@ theorem isQuotOf_of_iso (hi : ∀ i, (π i).Iso (π' i)) {V : Submodule ℂ (Sm 
     | lie X => exact (hg' _ (GlobalTheory.SpehInfChar.lie_mem_indForms n h π' X φ hφ)).trans (H'.indMap_lie ⟨φ, hφ⟩ X)
 
 /- English proof (translation)
-Take `⟨h, ν, hν, hq⟩` from `e`. Conclude with `⟨h, ν, hν, isQuotOf_of_iso (fun i => hi.twist (ν i)) hq⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSpehOf_of_iso {d : ℕ} {V : Submodule ℂ (Sm E N)} {π π' : CuspSub E a} (hi : π.Iso π') (e : IsSpehOf V π d) :
     IsSpehOf V π' d := by
@@ -692,17 +686,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.Published GlobalTheory.LFun GlobalTheory.SpehPair in
 
 /- English proof (translation)
-Introduce `hD hJ E _ _ _ N hN V V' hV hV' hloc`. Take `⟨h1, h2, -, -, h5⟩` from `hD E N hN`. Take `⟨a, d, π, hu, hn, e⟩` from `h1 V hV`. Take `⟨a', d', π', hu', hn', e'⟩` from `h1 V' hV'`. Establish `p` using `e.mul_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `p'` using `e'.mul_eq`. Establish `hd : 1 ≤ d` using `Nat.pos_of_mul_pos_right (p ▸ hN : 0 < d * a)`. Establish `ha : 1 ≤ a` using `Nat.pos_of_mul_pos_left (p ▸ hN : 0 < d * a)`. Establish `hd' : 1 ≤ d'` using `Nat.pos_of_mul_pos_right (p' ▸ hN : 0 < d' * a')`. Establish `ha' : 1 ≤ a'` using `Nat.pos_of_mul_pos_left (p' ▸ hN : 0 < d' * a')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hν` using `GlobalTheory.HeckeGal.Model.absPow_isAbsPow E`. Establish `hc` using `h5 V hV a d π hn e`. Establish `hc'` using `h5 V' hV' a' d' π' hn' e'`. Take `⟨s, hs⟩` from `hJ.unitary (ι := Fin d) (κ := Fin d') (fun _ => CG.mk π) (fun _ => CG.mk π') (fun _ => ha) (fun _ => ha') (fun _ => (CG.isUnitary_mk _).2 hu) (fun _ => (CG.isUnitary_mk _).2 hu') _ hν (fun i => -spehExp d i) (fun i => -spehExp d' i) (by filter_upwards [eventually_spherical hV] wi …`. Take `⟨τ, hτ, hτ'⟩` from `hloc w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, -, hσ, -⟩` from `hc.exLoc w`. Take `⟨σ', -, hσ', -⟩` from `hc'.exLoc w`. Take `⟨T, hT⟩` from `GlobalTheory.SatInd.exists_hasSatGL_of_isIrreducible τ.smooth τ.irred (hw τ hτ)`. Take `⟨B, hB, eB⟩` from `exists_sat_twist hd hσ (hc.loc w σ τ hσ hτ) hT _ hν`. Take `⟨B', hB', eB'⟩` from `exists_sat_twist hd' hσ' (hc'.loc w σ' τ hσ' hτ') hT _ hν`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨B, B', hB, hB', eB.trans eB'.symm⟩)`. Take `rfl : d = d'` from `by simpa using Fintype.card_congr s`. Establish `e2` using `(hs ⟨0, hd⟩).1`. Take `rfl : a = a'` from `(Sigma.mk.inj e2).1`. Establish `hi : π.Iso π'` using `Quotient.exact (eq_of_heq (Sigma.mk.inj e2).2)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(h2 a d π' p hn').unique ⟨hV, isSpehOf_of_iso hi e⟩ ⟨hV', e'⟩`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_isLocCompGL : DiscreteSpectrumGL → JacquetShalikaRigidity → ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ), 1 ≤ N → ∀ V V' : Submodule ℂ (Sm E N), IsDiscrete V → IsDiscrete V' → (∀ w : HeightOneSpectrum (𝓞 E), ∃ σ : SmIrr (GL (Fin N) (w.adicCompletion E)), IsLocCompGL V w σ ∧ IsLocCompGL V' w σ) → V = V' := by
   intro hD hJ E _ _ _ N hN V V' hV hV' hloc

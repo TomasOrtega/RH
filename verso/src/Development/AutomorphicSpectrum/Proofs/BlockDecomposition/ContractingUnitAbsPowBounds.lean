@@ -10,11 +10,11 @@ open Filter Topology MeasureTheory GlobalTheory.PRep GlobalTheory.SplitWeil Glob
 namespace GlobalTheory.CompanionTheory.TopNilp
 
 /- English proof (translation)
-Introduce `k _ _ _ _ t ht`. Establish `hpos : 0 < nabs k t` using `nabs_pos' k t`. Use `⟨hpos, ?_, fun d => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hge`. Establish `h1 : valuation k ((1 : kˣ) : k) ≤ valuation k (t : k)` using `(nabs_le_iff 1 t).1 (by rw [nabs_one k]; exact not_lt.1 hge)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `h1` using `[Units.val_one, map_one]`. Take `⟨r, hr, hr1⟩` from `Valuation.IsNontrivial.exists_lt_one (v := valuation k)`. Establish `hr0 : r ≠ 0` using `by simpa using hr`. Establish `hnh : cball (Units.mk0 r hr0) ∈ 𝓝 (0 : k)` using `(isOpen_cball _).mem_nhds (by simp [cball])`. Take `⟨n, hn⟩` from `(ht.eventually hnh).exists`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2 : valuation k ((t : k) ^ n) ≤ valuation k r` using `hn`. Rewrite `h2` using `[map_pow]`. Conclude with `absurd ((one_le_pow₀ h1).trans h2) (not_le.2 hr1)`. Rewrite using `[val_absPow, Complex.cpow_natCast, norm_pow, Complex.norm_real, Real.norm_of_nonneg hpos.le]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nabs_absPow_of_tendsto_zero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (t : kˣ), Filter.Tendsto (fun n : ℕ => (t : k) ^ n) Filter.atTop (nhds 0) → 0 < nabs k t ∧ nabs k t < 1 ∧ ∀ d : ℕ, ‖((absPow k (d : ℂ) t : ℂˣ) : ℂ)‖ = nabs k t ^ d := by
   intro k _ _ _ _ t ht

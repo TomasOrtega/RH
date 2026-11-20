@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitFormu
 namespace GlobalTheory.ThinScaleLiterature
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.ZerosNearOne.main, GlobalTheory.ZeroBounds.explicit_formula_and_window_count⟩`.
+Supply the required witnesses or components.
 -/
 theorem litThin : Formalism.MainNotions.LitThin :=
   ⟨GlobalTheory.ZerosNearOne.main, GlobalTheory.ZeroBounds.explicit_formula_and_window_count⟩

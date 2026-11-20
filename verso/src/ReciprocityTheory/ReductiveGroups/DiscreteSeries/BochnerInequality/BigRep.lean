@@ -9,7 +9,7 @@ section BigRepA
 variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M]
 
 /- English proof (translation)
-Conclude with `PiLp.ext h`.
+A detailed English derivation is pending.
 -/
 theorem big_ext {k : ℕ} {F G : Big n k M} (h : ∀ κ, F κ = G κ) : F = G := by
   exact PiLp.ext h
@@ -21,7 +21,7 @@ theorem mAct_apply (E : Fin n → Fin n → Module.End ℂ M) (k : ℕ) (a b : F
     (mAct E k a b F) κ = E a b (F κ) := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((if (κ i).1 = a then coord k (Function.update κ i (b, (κ i).2)) else 0) - (if (κ i).2 = b then coord k (Function.update κ i ((κ i).1, a)) else 0) : Big n k M →ₗ[ℂ] M) F = _`. Rewrite using `[LinearMap.sub_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem factorAd_apply (k : ℕ) (i : Fin k) (a b : Fin n) (F : Big n k M) (κ : Fin k → Fin n × Fin n) :
     (factorAd (M := M) k i a b F) κ =
@@ -34,11 +34,11 @@ theorem factorAd_apply (k : ℕ) (i : Fin k) (a b : Fin n) (F : Big n k M) (κ :
   split_ifs <;> rfl
 
 /- English proof (translation)
-Simplify using `only [add_mul, mul_add, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_add_distrib]`. Establish `e1 : ∑ j, m * s' j = ∑ j, s' j * m` using `Finset.sum_congr rfl fun j _ => h1 j`. Establish `e2 : ∑ i, s i * m' = ∑ i, m' * s i` using `Finset.sum_congr rfl fun i _ => h2 i`. Establish `e3 : ∑ x, ∑ i, s i * s' x - ∑ x, ∑ i, s' i * s x = ∑ i, (s i * s' i - s' i * s i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_comm (f := fun x i => s' i * s x), ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_eq_single x (fun i _ hix => sub_eq_zero.2 (h3 i x hix)) (by simp)`. Rewrite using `[e1, e2, ← e3]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem commutator_add_sum_eq {R : Type*} [Ring R] {k : ℕ} (m m' : R) (s s' : Fin k → R)
     (h1 : ∀ j, m * s' j = s' j * m) (h2 : ∀ i, s i * m' = m' * s i)
@@ -60,9 +60,9 @@ theorem commutator_add_sum_eq {R : Type*} [Ring R] {k : ℕ} (m m' : R) (s s' : 
 variable {E : Fin n → Fin n → Module.End ℂ M}
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `F`. Apply `big_ext` to reduce the goal to its premises. Introduce `κ`. Establish `h` using `LinearMap.congr_fun (hE a b c d) (F κ)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `clear hE`. Apply the tactic sequence `by_cases hbc : b = c <;> by_cases hda : d = a <;>`. Simplify using `[mAct_apply, Module.End.mul_apply, PiLp.sub_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify the hypotheses and the goal together. A detailed English derivation is pending.
 -/
 theorem mAct_rel (hE : IsGlRep E) (k : ℕ) (a b c d : Fin n) :
     mAct E k a b * mAct E k c d - mAct E k c d * mAct E k a b =
@@ -77,9 +77,9 @@ theorem mAct_rel (hE : IsGlRep E) (k : ℕ) (a b c d : Fin n) :
     simp_all [mAct_apply, Module.End.mul_apply, PiLp.sub_apply]
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `F`. Apply `big_ext` to reduce the goal to its premises. Introduce `κ`. Simplify using `only [Module.End.mul_apply, mAct_apply, factorAd_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp [map_sub]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mAct_factorAd_comm (k : ℕ) (i : Fin k) (a b c d : Fin n) :
     mAct E k a b * factorAd k i c d = factorAd k i c d * mAct E k a b := by
@@ -91,9 +91,9 @@ theorem mAct_factorAd_comm (k : ℕ) (i : Fin k) (a b c d : Fin n) :
   split_ifs <;> simp [map_sub]
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `F`. Apply `big_ext` to reduce the goal to its premises. Introduce `κ`. Simplify using `only [Module.End.mul_apply, factorAd_apply, Function.update_of_ne hij, Function.update_of_ne hij.symm, Function.update_comm hij.symm]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> abel`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem factorAd_comm_of_ne (k : ℕ) {i j : Fin k} (hij : i ≠ j) (a b c d : Fin n) :
     factorAd (M := M) k i a b * factorAd k j c d = factorAd k j c d * factorAd k i a b := by
@@ -106,9 +106,9 @@ theorem factorAd_comm_of_ne (k : ℕ) {i j : Fin k} (hij : i ≠ j) (a b c d : F
   split_ifs <;> abel
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `F`. Apply `big_ext` to reduce the goal to its premises. Introduce `κ`. Apply the tactic sequence `by_cases hbc : b = c <;> by_cases hda : d = a <;>`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [hbc, hda, if_true, if_false, LinearMap.sub_apply, LinearMap.zero_apply, Module.End.mul_apply, PiLp.sub_apply, PiLp.zero_apply, factorAd_apply, Function.update_self, Function.update_idem] <;>`. Apply the tactic sequence `generalize κ i = p <;>`. Apply the tactic sequence `obtain ⟨p1, p2⟩ := p <;>`. Apply the tactic sequence `simp only <;>`. Apply the tactic sequence `split_ifs <;> subst_vars <;> first | rfl | abel1 | (simp_all <;> abel1) | simp_all`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem factorAd_commutator (k : ℕ) (i : Fin k) (a b c d : Fin n) :
     factorAd (M := M) k i a b * factorAd k i c d - factorAd k i c d * factorAd k i a b =
@@ -132,7 +132,7 @@ variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin 
   {E : Fin n → Fin n → Module.End ℂ M} {V : Submodule ℂ M}
 
 /- English proof (translation)
-Use `show coord k κ ((mAct E k a b + ∑ i, factorAd k i a b : Module.End ℂ (Big n k M)) F) = E a b (F κ) + ∑ i, coord k κ (factorAd k i a b F)`. Rewrite using `[LinearMap.add_apply, map_add, LinearMap.sum_apply, map_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bAct_apply (k : ℕ) (a b : Fin n) (F : Big n k M) (κ : Fin k → Fin n × Fin n) :
     (bAct E k a b F) κ = E a b (F κ) + ∑ i, (factorAd k i a b F) κ := by
@@ -162,15 +162,15 @@ theorem swSnd_apply {k : ℕ} (i : Fin k) (a b : Fin n) (κ : Fin k → Fin n ×
     swSnd i a b κ = Function.update κ i ((κ i).1, Equiv.swap a b (κ i).2) := rfl
 
 /- English proof (translation)
-Rewrite using `[PiLp.inner_apply, PiLp.inner_apply]`. Simplify using `only [factorAd_apply, inner_sub_left, inner_sub_right, Finset.sum_sub_distrib]`. Use `congr 1`. Rewrite using `[← Equiv.sum_comp (swFst i a b)]`. Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[swFst_apply]`. Simplify using `only [Function.update_self, Function.update_idem]`. Distinguish the cases in `h : (κ i).1 = b`. Establish `hκ : Function.update κ i (b, (κ i).2) = κ` using `by conv_rhs => rw [← Function.update_eq_self i κ]`. Rewrite using `[← h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (by rw [h, Equiv.swap_apply_right]), if_pos h, hκ, h, Equiv.swap_apply_right]`. Establish `h' : Equiv.swap a b (κ i).1 ≠ a`. Rewrite using `[Ne, Equiv.swap_apply_eq_iff, Equiv.swap_apply_left]` and apply the resulting hypothesis. Rewrite using `[if_neg h', if_neg h, inner_zero_left, inner_zero_right]`. Rewrite using `[← Equiv.sum_comp (swSnd i a b)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations. Rewrite using `[swSnd_apply]`. Simplify using `only [Function.update_self, Function.update_idem]`. Distinguish the cases in `h : (κ i).2 = a`. Establish `hκ : Function.update κ i ((κ i).1, a) = κ` using `by conv_rhs => rw [← Function.update_eq_self i κ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[← h]`. Rewrite using `[if_pos (by rw [h, Equiv.swap_apply_left]), if_pos h, hκ, h, Equiv.swap_apply_left]`. Establish `h' : Equiv.swap a b (κ i).2 ≠ b`. Rewrite using `[Ne, Equiv.swap_apply_eq_iff, Equiv.swap_apply_right]` and apply the resulting hypothesis. Rewrite using `[if_neg h', if_neg h, inner_zero_left, inner_zero_right]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem factorAd_adjoint (k : ℕ) (i : Fin k) (a b : Fin n) (F G : Big n k M) :
     inner ℂ (factorAd k i a b F) G = inner ℂ F (factorAd k i b a G) := by
@@ -203,7 +203,7 @@ theorem factorAd_adjoint (k : ℕ) (i : Fin k) (a b : Fin n) (F G : Big n k M) :
       rw [if_neg h', if_neg h, inner_zero_left, inner_zero_right]
 
 /- English proof (translation)
-Simplify using `only [ncV, Submodule.mem_iInf, Submodule.mem_comap]`. Conclude with `Iff.rfl`.
+Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ncV_iff {k : ℕ} (F : Big n k M) :
     F ∈ ncV ε V k ↔ ∀ κ : Fin k → Fin n × Fin n,
@@ -212,7 +212,7 @@ theorem mem_ncV_iff {k : ℕ} (F : Big n k M) :
   exact Iff.rfl
 
 /- English proof (translation)
-Establish `h` using `(mem_ncV_iff F).1 hF κ`. Use `split_ifs at h`. Conclude with `h`. Rewrite using `[(Submodule.mem_bot ℂ).1 h]`. Conclude with `V.zero_mem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ncV_mem {k : ℕ} {F : Big n k M} (hF : F ∈ ncV ε V k) (κ : Fin k → Fin n × Fin n) :
     F κ ∈ V := by
@@ -223,7 +223,7 @@ theorem ncV_mem {k : ℕ} {F : Big n k M} (hF : F ∈ ncV ε V k) (κ : Fin k �
     exact V.zero_mem
 
 /- English proof (translation)
-Establish `h` using `(mem_ncV_iff F).1 hF κ`. Rewrite `h` using `[if_neg (fun hc => hc j hj)]`. Conclude with `(Submodule.mem_bot ℂ).1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ncV_eq_zero {k : ℕ} {F : Big n k M} (hF : F ∈ ncV ε V k) {κ : Fin k → Fin n × Fin n}
     (j : Fin k) (hj : ε (κ j).1 = ε (κ j).2) : F κ = 0 := by
@@ -238,7 +238,7 @@ variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin 
   {E : Fin n → Fin n → Module.End ℂ M} {V : Submodule ℂ M}
 
 /- English proof (translation)
-Introduce `a b c d`. Simplify using `only [bAct]`. Rewrite using `[commutator_add_sum_eq _ _ _ _ (fun j => mAct_factorAd_comm k j a b c d) (fun i => (mAct_factorAd_comm k i c d a b).symm) (fun i j hij => factorAd_comm_of_ne k hij a b c d), mAct_rel hE]`. Simplify using `only [factorAd_commutator]`. Apply the tactic sequence `by_cases hbc : b = c <;> by_cases hda : d = a <;> simp [hbc, hda, Finset.sum_sub_distrib] <;> abel`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bAct_isGlRep (hE : IsGlRep E) (k : ℕ) : IsGlRep (bAct E k) := by
   intro a b c d
@@ -250,9 +250,9 @@ theorem bAct_isGlRep (hE : IsGlRep E) (k : ℕ) : IsGlRep (bAct E k) := by
   by_cases hbc : b = c <;> by_cases hda : d = a <;> simp [hbc, hda, Finset.sum_sub_distrib] <;> abel
 
 /- English proof (translation)
-Introduce `a b hab F G`. Simplify using `only [bAct, LinearMap.add_apply, LinearMap.sum_apply, inner_add_left, inner_add_right, sum_inner, inner_sum, factorAd_adjoint]`. Use `congr 1`. Rewrite using `[PiLp.inner_apply, PiLp.inner_apply]`. Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mAct_apply, mAct_apply, hU a b, adjSign, if_pos hab, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bAct_isKUnitary (hU : IsInfUnitary ε E) (k : ℕ) : IsKUnitary ε (bAct E k) := by
   intro a b hab F G
@@ -264,21 +264,19 @@ theorem bAct_isKUnitary (hU : IsInfUnitary ε E) (k : ℕ) : IsKUnitary ε (bAct
   rw [mAct_apply, mAct_apply, hU a b, adjSign, if_pos hab, one_mul]
 
 /- English proof (translation)
-Introduce `a b hab F hF`. Rewrite using `[mem_ncV_iff]`. Introduce `κ`. Rewrite using `[bAct_apply]`. Use `split_ifs with hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `add_mem (hV a b hab _ (ncV_mem hF κ)) (Submodule.sum_mem _ fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[factorAd_apply]`. Apply the tactic sequence `refine Submodule.sub_mem _ ?_ ?_ <;> split_ifs <;> first | exact ncV_mem hF _ | exact Submodule.zero_mem _`. Use `push_neg at hc`. Take `⟨j, hj⟩` from `hc`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.mem_bot, ncV_eq_zero hF j hj, map_zero, zero_add]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[factorAd_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `z1 : (if (κ i).1 = a then F (Function.update κ i (b, (κ i).2)) else 0) = 0` using `by split_ifs with h1`. Apply `ncV_eq_zero hF i` to reduce the goal to its premises. Simplify using `only [Function.update_self]`. Rewrite using `[← hab, ← h1]`. Conclude with `hj`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Both sides reduce to the same expression. Establish `z2 : (if (κ i).2 = b then F (Function.update κ i ((κ i).1, a)) else 0) = 0` using `by split_ifs with h2`. Apply `ncV_eq_zero hF i` to reduce the goal to its premises. Simplify using `only [Function.update_self]`. Rewrite using `[hab, ← h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hj`. Both sides reduce to the same expression. Rewrite using `[z1, z2, sub_zero]`. Establish `hu : ∀ x : Fin n × Fin n, ε ((Function.update κ i x) j).1 = ε ((Function.update κ i x) j).2`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Function.update_of_ne (Ne.symm hij)]`. Conclude with `hj`. Establish `z1 : (if (κ i).1 = a then F (Function.update κ i (b, (κ i).2)) else 0) = 0` using `by split_ifs`. Conclude with `ncV_eq_zero hF j (hu _)`. Both sides reduce to the same expression.
-
-Establish `z2 : (if (κ i).2 = b then F (Function.update κ i ((κ i).1, a)) else 0) = 0` using `by split_ifs`. Conclude with `ncV_eq_zero hF j (hu _)`. Both sides reduce to the same expression. Rewrite using `[z1, z2, sub_zero]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ncV_kStable (hV : IsKStableSub ε E V) (k : ℕ) :
     IsKStableSub ε (bAct E k) (ncV ε V k) := by
@@ -328,9 +326,9 @@ theorem ncV_kStable (hV : IsKStableSub ε E V) (k : ℕ) :
       rw [z1, z2, sub_zero]
 
 /- English proof (translation)
-Use `haveI := hV`. Set `f : ncV ε V k →ₗ[ℂ] ((Fin k → Fin n × Fin n) → V)` to `LinearMap.pi fun κ => LinearMap.codRestrict V ((coord k κ).comp (ncV ε V k).subtype) (fun F => ncV_mem F.2 κ)`. Use `FiniteDimensional.of_injective f ?_` and prove the remaining obligations. Introduce `F G h`. Apply `Subtype.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `big_ext` to reduce the goal to its premises. Introduce `κ`. Conclude with `congrArg Subtype.val (congrFun h κ)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_ncV (hV : FiniteDimensional ℂ V) (k : ℕ) :
     FiniteDimensional ℂ (ncV ε V k) := by

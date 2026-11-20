@@ -10,7 +10,7 @@ open GlobalTheory.SumSize GlobalTheory.RowClaim
 namespace GlobalTheory.SumSize
 
 /- English proof (translation)
-Take `⟨CF0, h⟩` from `GlobalTheory.T.dictionary_size_bound hP hI`. Use `⟨CF0, fun CF hCF => ⟨0, fun ε C _ => ?_⟩⟩` and prove the remaining obligations. Take `⟨x₀, hx⟩` from `h ε CF hCF`. Conclude with `⟨x₀, fun D large₂ he hx0 Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hIs hAt _ => hx D large₂ he hx0 Γ Pl0 T A Ks R F hS ch hIs hAt⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dictK_of_normSum (hP : GlobalTheory.FunPr.Hypotheses₂) (hI : ∀ D, GlobalTheory.NormSum.Inp D) : DictK := by
   obtain ⟨CF0, h⟩ := GlobalTheory.T.dictionary_size_bound hP hI

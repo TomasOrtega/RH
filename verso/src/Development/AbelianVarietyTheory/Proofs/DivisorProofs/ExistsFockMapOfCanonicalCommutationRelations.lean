@@ -21,7 +21,7 @@ namespace GlobalTheory.CCRFock
 open MvPolynomial
 
 /- English proof (translation)
-Simplify using `[polEval, Module.End.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem polEval_X {V : Type} [AddCommGroup V] [Module ℂ V] {ι : Type} (m : ι → Module.End ℂ V)
     (hm : ∀ i j, m i * m j = m j * m i) (f₀ : V) (i : ι) (p : MvPolynomial ι ℂ) :
@@ -29,14 +29,14 @@ theorem polEval_X {V : Type} [AddCommGroup V] [Module ℂ V] {ι : Type} (m : ι
   simp [polEval, Module.End.mul_apply]
 
 /- English proof (translation)
-Simplify using `[polEval]`.
+Simplify using the standard rewrite rules.
 -/
 theorem polEval_one {V : Type} [AddCommGroup V] [Module ℂ V] {ι : Type} (m : ι → Module.End ℂ V)
     (hm : ∀ i j, m i * m j = m j * m i) (f₀ : V) : polEval m hm f₀ 1 = f₀ := by
   simp [polEval]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.RealLift.atPl]`. Conclude with `PiTensorProduct.map_update_add (s := fun _ : W => MvPolynomial Λ ℂ) (t := fun _ : W => MvPolynomial Λ ℂ) (fun _ => LinearMap.id) w A B`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem atPl_add {W Λ : Type} [Fintype W] [DecidableEq W] (w : W) (A B : Module.End ℂ (MvPolynomial Λ ℂ)) :
     GlobalTheory.RealLift.atPl (V := fun _ : W => MvPolynomial Λ ℂ) w (A + B) =
@@ -45,7 +45,7 @@ theorem atPl_add {W Λ : Type} [Fintype W] [DecidableEq W] (w : W) (A B : Module
   exact PiTensorProduct.map_update_add (s := fun _ : W => MvPolynomial Λ ℂ) (t := fun _ : W => MvPolynomial Λ ℂ) (fun _ => LinearMap.id) w A B
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.RealLift.atPl]`. Conclude with `PiTensorProduct.map_update_smul (s := fun _ : W => MvPolynomial Λ ℂ) (t := fun _ : W => MvPolynomial Λ ℂ) (fun _ => LinearMap.id) w c A`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem atPl_smul {W Λ : Type} [Fintype W] [DecidableEq W] (w : W) (c : ℂ) (A : Module.End ℂ (MvPolynomial Λ ℂ)) :
     GlobalTheory.RealLift.atPl (V := fun _ : W => MvPolynomial Λ ℂ) w (c • A) = c • GlobalTheory.RealLift.atPl (V := fun _ : W => MvPolynomial Λ ℂ) w A := by
@@ -53,7 +53,7 @@ theorem atPl_smul {W Λ : Type} [Fintype W] [DecidableEq W] (w : W) (c : ℂ) (A
   exact PiTensorProduct.map_update_smul (s := fun _ : W => MvPolynomial Λ ℂ) (t := fun _ : W => MvPolynomial Λ ℂ) (fun _ => LinearMap.id) w c A
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(PiTensorProduct.mapMultilinear ℂ (fun _ : W => MvPolynomial Λ ℂ) (fun _ : W => MvPolynomial Λ ℂ)).toLinearMap (fun _ => LinearMap.id) w, fun A => by simp [GlobalTheory.RealLift.atPl]⟩`.
+Supply the required witnesses or components.
 -/
 theorem atPl_linear {W Λ : Type} [Fintype W] [DecidableEq W] (w : W) :
     ∃ L : Module.End ℂ (MvPolynomial Λ ℂ) →ₗ[ℂ] Module.End ℂ (⨂[ℂ] _ : W, MvPolynomial Λ ℂ),
@@ -62,19 +62,17 @@ theorem atPl_linear {W Λ : Type} [Fintype W] [DecidableEq W] (w : W) :
     simp [GlobalTheory.RealLift.atPl]⟩
 
 /- English proof (translation)
-Introduce `V _ _ W _ _ P Q R S H hadd hsmul hccr f₀ hf₀ hvac`. Establish `hm : ∀ i j, fockM H i * fockM H j = fockM H j * fockM H i` using `GlobalTheory.T.heisenberg_creation_operators_commute_of_ccr H hadd hsmul hccr`. Establish `hcr` using `GlobalTheory.T.heisenberg_annihilation_creation_commutator_eq_delta H hadd hsmul hccr`. Establish `hd0 : ∀ j, fockD H j f₀ = 0`. Introduce and unpack `⟨w, a, b⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h` using `hvac w a b`. Simplify using `only [fockD, unitAt, LinearMap.neg_apply, LinearMap.smul_apply, LinearMap.add_apply]`. Rewrite using `[h, smul_zero, neg_zero]`. Establish `hpd` using `GlobalTheory.T.commutingOperatorsPolynomialEval_pderiv (fockM H) (fockD H) hm f₀ hcr hd0`. Establish `hinj0 : Function.Injective (polEval (fockM H) hm f₀)` using `GlobalTheory.T.injective_of_map_pderiv_eq_and_map_one_ne_zero _ (fockD H) hpd (by rw [polEval_one]; exact hf₀)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨polEval (fockM H) hm f₀ ∘ₗ polMap W (Ix P Q × Ix R S), hinj0.comp (GlobalTheory.T.tensorPolynomialsToProductVariables_injective W _), ?_⟩` and prove the remaining obligations. Establish `hX : ∀ (w : W) (l : Ix P Q × Ix R S) T, polEval (fockM H) hm f₀ (polMap W (Ix P Q × Ix R S) (GlobalTheory.RealLift.atPl (V` using `fun _ : W => MvPolynomial (Ix P Q × Ix R S) ℂ) w (LinearMap.mulLeft ℂ (MvPolynomial.X l)) T)) = fockM H (w, l) (polEval (fockM H) hm f₀ (polMap W (Ix P Q × Ix R S) T)) := by`. Introduce `w l T`. Establish `h` using `LinearMap.congr_fun (GlobalTheory.T.tensorPolynomialsToProductVariables_comp_mulLeft_X W (Ix P Q × Ix R S) w l) T`. Simplify using `only [LinearMap.comp_apply, LinearMap.mulLeft_apply] at h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, polEval_X]`. Establish `hD : ∀ (w : W) (l : Ix P Q × Ix R S) T, polEval (fockM H) hm f₀ (polMap W (Ix P Q × Ix R S) (GlobalTheory.RealLift.atPl (V` using `fun _ : W => MvPolynomial (Ix P Q × Ix R S) ℂ) w (MvPolynomial.pderiv l).toLinearMap T)) = fockD H (w, l) (polEval (fockM H) hm f₀ (polMap W (Ix P Q × Ix R S) T)) := by`. Introduce `w l T`. Establish `h` using `LinearMap.congr_fun (GlobalTheory.T.tensorPolynomialsToProductVariables_comp_pderiv W (Ix P Q × Ix R S) w l) T`. Simplify using `only [LinearMap.comp_apply, Derivation.coeFn_coe] at h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, hpd]`. Use `choose L hL using fun w : W => atPl_linear (Λ := Ix P Q × Ix R S) w`. Introduce `c T`. Establish `hsum : ∀ w, GlobalTheory.RealLift.atPl (V` using `fun _ : W => MvPolynomial (Ix P Q × Ix R S) ℂ) w (heisOp (c w)) = ∑ l : Ix P Q × Ix R S, ((((Real.sqrt (2 * Real.pi) : ℝ) : ℂ) * coefM (c w l.1 l.2) (lineSign l.1 l.2)) • GlobalTheory.RealLift.atPl (V := fun _ : W => MvPolynomial (Ix P Q × Ix R S) ℂ) w (LinearMap.mulLeft ℂ (MvPol …`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `clear hX hD hpd hinj0 hcr hm hd0 hvac hccr hsmul hadd hf₀`. Rewrite using `[← hL w (heisOp (c w)), GlobalTheory.T.fockHeisenbergOperatorOfCoords_eq_sum_mulLeft_pderiv (c w), map_sum]`. Simplify using `only [map_add, map_smul]`. Simplify using `only [hL]`. Rewrite using `[GlobalTheory.T.heisenberg_family_expand_creation_annihilation H hadd hsmul c]`.
-
-Simplify using `only [GlobalTheory.RealLift.sumPl, hsum, LinearMap.comp_apply, LinearMap.sum_apply, LinearMap.add_apply, LinearMap.smul_apply, map_sum, map_add, map_smul, hX, hD]`. Use `conv_rhs => rw [Fintype.sum_prod_type]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fock_map_of_ccr : ∀ {V : Type} [AddCommGroup V] [Module ℂ V] {W : Type} [Fintype W] [DecidableEq W] {P Q R S : ℕ}
     (H : (W → Matrix (Ix P Q) (Ix R S) ℂ) → Module.End ℂ V),

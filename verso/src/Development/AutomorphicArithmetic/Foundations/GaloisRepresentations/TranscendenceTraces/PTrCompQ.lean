@@ -4,13 +4,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Introduce `hHl hC hWC l _ n i W Z S r p _ _ w' w hr hp hl`. Establish `hlZ : IsUnit ((l : ℕ) : Γ(Z, ⊤))`. Simplify using `using hl.map p.appTop.hom`. Establish `hcomp : trHl l (r ≫ p) (Wt.mul r w' w) n i = trHl l p w n i ∘ₗ trHl l r w' n i`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Use `haveI : NeZero (l ^ k) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `hlk : IsUnit ((l ^ k : ℕ) : Γ(S, ⊤))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_pow]`. Conclude with `hl.pow k`. Rewrite using `[LinearMap.comp_apply, hHl l n i p w hp hl, hHl l n i r w' hr hlZ, hHl l n i (r ≫ p) _ (hWC r p w' w hr hp) hl]`. Conclude with `hC (l ^ k) n i r p w' w hr hp hlk _`. Unfold `trHQ`.
-
-Rewrite using `[hcomp, LinearMap.baseChange_comp]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.trCompQ_of :
     TrHl → TrComp → WtComp → TrCompQ := by

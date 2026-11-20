@@ -9,7 +9,7 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.Fc GlobalTheory.M
 namespace GlobalTheory.AtG
 
 /- English proof (translation)
-Introduce `hJ D L EX Dx hT hS i w hw u hu μ hμ`. Conclude with `GlobalTheory.T.periodValuationBound_typePrimePlace_of_chainAgreement hJ D L EX Dx μ (hT μ hμ) i (hS i) w hw u hu`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem jetTableBound_constantOne_of_chainAgreement : JetSplitAmb → ∀ (D : D7) (L : SizeData₂ D) (EX : ErrX D) (Dx : DivX D),
     (∀ μ, (μ = D.what₂.mu0 ∨ ∃ w, μ = D.what₂.muAt w) → TiesAt D EX Dx μ) → (∀ i, GlobalTheory.IndefiniteRowSideFullHecke.BadPrimesPeriodBound.SizeAt D i) →

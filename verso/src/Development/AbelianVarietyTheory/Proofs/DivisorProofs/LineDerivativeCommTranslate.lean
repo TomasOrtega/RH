@@ -11,15 +11,13 @@ noncomputable def nd : (k : ℕ) → ((Fin k → ℝ) → ℂ) → ℂ
   | k + 1, h => deriv (fun s : ℝ => nd k (fun s' => h (Fin.cons s s'))) 0
 
 /- English proof (translation)
-Rewrite using `[minSmoothness_of_isRCLikeNormedField]`. Conclude with `WithTop.coe_le_coe.2 le_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_le : minSmoothness ℝ 2 ≤ (∞ : WithTop ℕ∞) := by
   rw [minSmoothness_of_isRCLikeNormedField]; exact WithTop.coe_le_coe.2 le_top
 
 /- English proof (translation)
-Use `contDiff_pi.2 fun i => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`. Use `fun_prop`. Simplify using `only [Fin.cons_succ]`.
-
-Conclude with `(contDiff_apply ℝ ℝ j).comp contDiff_fst`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_cons (k : ℕ) {Y : Type} [NormedAddCommGroup Y] [NormedSpace ℝ Y] :
     ContDiff ℝ ∞ (fun p : (Fin k → ℝ) × (ℝ × Y) => (Fin.cons p.2.1 p.1 : Fin (k+1) → ℝ)) := by
@@ -29,7 +27,7 @@ theorem contDiff_cons (k : ℕ) {Y : Type} [NormedAddCommGroup Y] [NormedSpace �
   · simp only [Fin.cons_succ]; exact (contDiff_apply ℝ ℝ j).comp contDiff_fst
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun s' : ℝ => (s', y)) ((1 : ℝ), (0 : Y)) s` using `(hasDerivAt_id s).prodMk (hasDerivAt_const s y)`. Conclude with `((hG.differentiable (by simp)) (s, y)).hasFDerivAt.comp_hasDerivAt s h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_fst {Y : Type} [NormedAddCommGroup Y] [NormedSpace ℝ Y] (G : ℝ × Y → ℂ)
     (hG : ContDiff ℝ ∞ G) (s : ℝ) (y : Y) :
@@ -39,7 +37,7 @@ theorem hasDerivAt_fst {Y : Type} [NormedAddCommGroup Y] [NormedSpace ℝ Y] (G 
   exact ((hG.differentiable (by simp)) (s, y)).hasFDerivAt.comp_hasDerivAt s h1
 
 /- English proof (translation)
-The claim follows from `| 0, Y, _, _, H, hH => by simp only [nd] exact hH.comp (contDiff_const.prodMk contDiff_id) | k + 1, Y, _, _, H, hH => by let G : ℝ × Y → ℂ := fun p => nd k (fun s' => H (Fin.cons p.1 s') p.2) have hG : ContDiff ℝ ∞ G := by have := smooth_nd k (Y := ℝ × Y) (fun s' p => H (Fin.cons …`.
+A detailed English derivation is pending.
 -/
 theorem smooth_nd : ∀ (k : ℕ) {Y : Type} [NormedAddCommGroup Y] [NormedSpace ℝ Y]
     (H : (Fin k → ℝ) → Y → ℂ), ContDiff ℝ ∞ (fun p : (Fin k → ℝ) × Y => H p.1 p.2) →
@@ -65,7 +63,7 @@ end GlobalTheory.LineDerWord
 namespace GlobalTheory.LineDerWord
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun t' : ℝ => (s, t')) ((0 : ℝ), (1 : ℝ)) t` using `(hasDerivAt_const t s).prodMk (hasDerivAt_id t)`. Conclude with `((hG.differentiable (by simp)) (s, t)).hasFDerivAt.comp_hasDerivAt t h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_snd (G : ℝ × ℝ → ℂ) (hG : ContDiff ℝ ∞ G) (s t : ℝ) :
     HasDerivAt (fun t' : ℝ => G (s, t')) (fderiv ℝ G (s, t) (0, 1)) t := by
@@ -74,13 +72,11 @@ theorem hasDerivAt_snd (G : ℝ × ℝ → ℂ) (hG : ContDiff ℝ ∞ G) (s t :
   exact ((hG.differentiable (by simp)) (s, t)).hasFDerivAt.comp_hasDerivAt t h1
 
 /- English proof (translation)
-Establish `e1 : (fun t => deriv (fun s => G (s, t)) 0) = fun t => fderiv ℝ G (0, t) (1, 0)`. Use function extensionality and compare the values at `t`. Conclude with `(hasDerivAt_fst G hG 0 t).deriv`. Establish `e2 : (fun s => deriv (fun t' => G (s, t')) t₀) = fun s => fderiv ℝ G (s, t₀) (0, 1)`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hasDerivAt_snd G hG s t₀).deriv`. Rewrite using `[e1, e2]`. Establish `hd : ContDiff ℝ ∞ (fderiv ℝ G)` using `(contDiff_infty_iff_fderiv.1 hG).2`. Establish `hdd : Differentiable ℝ (fderiv ℝ G)` using `hd.differentiable (by simp)`. Establish `ha : HasDerivAt (fun t : ℝ => fderiv ℝ G (0, t)) (fderiv ℝ (fderiv ℝ G) (0, t₀) (0, 1)) t₀` using `(hdd (0, t₀)).hasFDerivAt.comp_hasDerivAt t₀ ((hasDerivAt_const t₀ (0:ℝ)).prodMk (hasDerivAt_id t₀))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : HasDerivAt (fun s : ℝ => fderiv ℝ G (s, t₀)) (fderiv ℝ (fderiv ℝ G) (0, t₀) (1, 0)) 0` using `(hdd (0, t₀)).hasFDerivAt.comp_hasDerivAt 0 ((hasDerivAt_id (0:ℝ)).prodMk (hasDerivAt_const (0:ℝ) t₀))`. Establish `ha'` using `(ContinuousLinearMap.apply ℝ ℂ ((1:ℝ), (0:ℝ))).hasFDerivAt.comp_hasDerivAt t₀ ha`. Establish `hb'` using `(ContinuousLinearMap.apply ℝ ℂ ((0:ℝ), (1:ℝ))).hasFDerivAt.comp_hasDerivAt 0 hb`. Establish `hsym : IsSymmSndFDerivAt ℝ G (0, t₀)` using `hG.contDiffAt.isSymmSndFDerivAt two_le`. Simplify using `only [Function.comp_def, ContinuousLinearMap.apply_apply] at ha' hb'`.
-
-Rewrite using `[hb'.deriv, hsym]`. Conclude with `ha'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem swap (G : ℝ × ℝ → ℂ) (hG : ContDiff ℝ ∞ G) (t₀ : ℝ) :
     HasDerivAt (fun t => deriv (fun s => G (s, t)) 0)
@@ -104,7 +100,7 @@ theorem swap (G : ℝ × ℝ → ℂ) (hG : ContDiff ℝ ∞ G) (t₀ : ℝ) :
   exact ha'
 
 /- English proof (translation)
-The claim follows from `| 0, H, hH, t₀ => by simp only [nd] have : ContDiff ℝ ∞ (H Fin.elim0) := hH.comp (contDiff_const.prodMk contDiff_id) exact ((this.differentiable (by simp)) t₀).hasDerivAt | k + 1, H, hH, t₀ => by let G : ℝ × ℝ → ℂ := fun p => nd k (fun s' => H (Fin.cons p.1 s') p.2) have hG : Con …`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_nd : ∀ (k : ℕ) (H : (Fin k → ℝ) → ℝ → ℂ),
     ContDiff ℝ ∞ (fun p : (Fin k → ℝ) × ℝ => H p.1 p.2) → ∀ t₀ : ℝ,
@@ -140,7 +136,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
 /- English proof (translation)
-The claim follows from `| [], g => by simp [nd] | β :: l, g => by simp only [List.foldr_cons, lineDer, List.length_cons, nd] congr 1 funext t rw [foldr_lineDer_eq_nd φ l (g * β t)] congr 1 funext s' simp [List.ofFn_succ, mul_assoc] rfl`.
+A detailed English derivation is pending.
 -/
 theorem foldr_lineDer_eq_nd (φ : GAd σ J → ℂ) : ∀ (l : List (ℝ → GAd σ J)) (g : GAd σ J),
     l.foldr lineDer φ g = nd l.length (fun s => φ (g * (List.ofFn fun i => l.get i (s i)).prod))
@@ -160,9 +156,7 @@ end GlobalTheory.LineDerWord
 namespace GlobalTheory.LineDerWord
 
 /- English proof (translation)
-Use `contDiff_pi.2 fun i => ?_` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.snoc_last]`. Conclude with `contDiff_snd`. Simplify using `only [Fin.snoc_castSucc]`.
-
-Conclude with `(contDiff_apply ℝ ℝ j).comp contDiff_fst`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_snoc (k : ℕ) :
     ContDiff ℝ ∞ (fun p : (Fin k → ℝ) × ℝ => (Fin.snoc p.1 p.2 : Fin (k+1) → ℝ)) := by
@@ -172,15 +166,15 @@ theorem contDiff_snoc (k : ℕ) :
   · simp only [Fin.snoc_castSucc]; exact (contDiff_apply ℝ ℝ j).comp contDiff_fst
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J f hf l hl γ hγ g`. Establish `e1 : (fun t : ℝ => l.foldr lineDer (fun x => f (x * γ t)) g) = fun t => nd l.length (fun s => f (g * (List.ofFn fun i => l.get i (s i)).prod * γ t))`. Use function extensionality and compare the values at `t`. Rewrite using `[foldr_lineDer_eq_nd]`. Establish `e2 : l.foldr lineDer (lineDer γ f) g = nd l.length (fun s => deriv (fun t => f (g * (List.ofFn fun i => l.get i (s i)).prod * γ t)) 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[foldr_lineDer_eq_nd]`. Both sides reduce to the same expression. Rewrite using `[e1, e2]`. Use `hasDerivAt_nd l.length (fun s t => f (g * (List.ofFn fun i => l.get i (s i)).prod * γ t)) ?_ 0` and prove the remaining obligations. Set `β : Fin (l.length + 1) → ℝ → GAd σ J` to `Fin.snoc (α := fun _ => ℝ → GAd σ J) (fun i => l.get i) γ`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hβ : ∀ i, IsRealLine σ J (β i)`. Introduce `i`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [β, Fin.snoc_last]`. Conclude with `hγ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [β, Fin.snoc_castSucc]`. Conclude with `hl _ (List.get_mem l j)`. Establish `hs` using `(hf (l.length + 1) β hβ g).comp (contDiff_snoc l.length)`. Use `hs using 2 with p` and compare the differences between its conclusion and the goal. Simplify using `only [Function.comp_apply]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[List.ofFn_succ']`. Simplify using `only [β, Fin.snoc_castSucc, Fin.snoc_last, List.concat_eq_append, List.prod_append, List.prod_singleton, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_foldr_lineDer_translate : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (f : GAd σ J → ℂ), IsSm σ J f →

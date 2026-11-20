@@ -12,7 +12,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Lelong
 open GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-The claim follows from `LelongLimitAtBranches.proof GlobalTheory.CompanionTheory.Ar.branchIntDecompose GlobalTheory.CompanionTheory.Ar.SliceBranch.sliceBranchInt PolydiscLelongLimit.proof GlobalTheory.CompanionTheory.Ar.Branch.branchProperAtPoint`.
+A detailed English derivation is pending.
 -/
 theorem lelongLimitAtBranches : LelongLimitAtBranches.Statement :=
   LelongLimitAtBranches.proof GlobalTheory.CompanionTheory.Ar.branchIntDecompose GlobalTheory.CompanionTheory.Ar.SliceBranch.sliceBranchInt

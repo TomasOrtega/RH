@@ -36,7 +36,7 @@ def baseFieldToGlobalSections {X : Scheme.{u}} (k : Type u) [Field k]
   RingHom.comp (Scheme.Hom.appTop p).hom (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom
 
 /- English proof (translation)
-Use `⟨AffineSpace.homOfVector (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin 1))) (fun i : ULift.{u, 0} (Fin M ⊕ Fin 1) => Sum.elim (fun b : Fin M => AffineSpace.coord (Spec (CommRingCat.of k)) (⟨Sum.inl b⟩ : ULift.{u, 0} (Fin M ⊕ Fin 1))) (fun j : Fin 1 => AffineSpace.coord …` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `b`. Simplify using `[pullbackCoord_def]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem exists_translateLastCoord (k : Type u) [Field k] (M : ℕ) (a : k) :
     ∃ f : affineSpaceTimesLine k M ⟶ affineSpaceTimesLine k M,
@@ -70,7 +70,7 @@ def translateLastCoord (k : Type u) [Field k] (M : ℕ) (a : k) : affineSpaceTim
 
 @[simp]
 /- English proof (translation)
-The claim follows from `(exists_translateLastCoord k M a).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem translateLastCoord_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (M : ℕ) (a : k) :
     translateLastCoord k M a ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin 1)) =
@@ -78,7 +78,7 @@ theorem translateLastCoord_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k
   (exists_translateLastCoord k M a).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_translateLastCoord k M a).choose_spec.2.1 b`.
+A detailed English derivation is pending.
 -/
 theorem pullbackCoord_translateLastCoord_inl (k : Type u) [Field k] (M : ℕ) (a : k) (b : Fin M) :
     pullbackCoord (translateLastCoord k M a) (⟨Sum.inl b⟩ : ULift.{u, 0} (Fin M ⊕ Fin 1)) =
@@ -87,7 +87,7 @@ theorem pullbackCoord_translateLastCoord_inl (k : Type u) [Field k] (M : ℕ) (a
   (exists_translateLastCoord k M a).choose_spec.2.1 b
 
 /- English proof (translation)
-The claim follows from `(exists_translateLastCoord k M a).choose_spec.2.2`.
+A detailed English derivation is pending.
 -/
 theorem translateLastCoord_appTop_lastCoordinate (k : Type u) [Field k] (M : ℕ) (a : k) :
     (ConcreteCategory.hom (Scheme.Hom.appTop (translateLastCoord k M a))) (lastCoordinate k M) =
@@ -106,7 +106,7 @@ private theorem baseFieldToGlobalSections_apply (k : Type u) [Field k] {X : Sche
   rfl
 
 /- English proof (translation)
-Rewrite using `[baseFieldToGlobalSections_apply, baseFieldToGlobalSections_apply, Scheme.Hom.comp_appTop, CommRingCat.comp_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem appTop_baseFieldToGlobalSections (k : Type u) [Field k] {X Y : Scheme.{u}}
     (f : X ⟶ Y) (p : Y ⟶ Spec (CommRingCat.of k)) (a : k) :
@@ -116,7 +116,7 @@ private theorem appTop_baseFieldToGlobalSections (k : Type u) [Field k] {X Y : S
     CommRingCat.comp_apply]
 
 /- English proof (translation)
-The claim follows from `map_neg (baseFieldToGlobalSections k p) a`.
+A detailed English derivation is pending.
 -/
 private theorem baseFieldToGlobalSections_neg (k : Type u) [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (a : k) :
@@ -124,13 +124,13 @@ private theorem baseFieldToGlobalSections_neg (k : Type u) [Field k] {X : Scheme
   map_neg (baseFieldToGlobalSections k p) a
 
 /- English proof (translation)
-Establish `hstruct : ∀ b : k, translateLastCoord k M b ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin 1)) = affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin 1))` using `translateLastCoord_comp_affineSpaceIndexedByToSpec k M`. Establish `hconst : ∀ b c : k, (ConcreteCategory.hom (Scheme.Hom.appTop (translateLastCoord k M b))) (baseFieldToGlobalSections k (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin 1))) c) = baseFieldToGlobalSections k (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin 1))) c`. Introduce `b c`. Rewrite using `[appTop_baseFieldToGlobalSections, hstruct b]`. Establish `H0 : (translateLastCoord k M a ≫ translateLastCoord k M (-a)) ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin 1)) = 𝟙 (affineSpaceTimesLine k M) ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hstruct, hstruct, Category.id_comp]`. Establish `H : ∀ i : ULift.{u, 0} (Fin M ⊕ Fin 1), (ConcreteCategory.hom (Scheme.Hom.appTop (translateLastCoord k M a ≫ translateLastCoord k M (-a)))) (AffineSpace.coord (Spec (CommRingCat.of k)) i) = (ConcreteCategory.hom (Scheme.Hom.appTop (𝟙 (affineSpaceTimesLine k M)))) (AffineSpace.coo …`. Introduce and unpack `⟨b | j⟩`. Establish `h1` using `pullbackCoord_translateLastCoord_inl k M a b`. Establish `h2` using `pullbackCoord_translateLastCoord_inl k M (-a) b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1`, `h2` using `[pullbackCoord_def]`. Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.comp_apply, h2, h1, Scheme.Hom.id_appTop, CommRingCat.id_apply]`. Establish `h1` using `translateLastCoord_appTop_lastCoordinate k M a`. Establish `h2` using `translateLastCoord_appTop_lastCoordinate k M (-a)`. Rewrite using `[← lastCoordinate_eq_coord k M j, Scheme.Hom.comp_appTop, CommRingCat.comp_apply, h2, map_add, h1, hconst, map_neg, Scheme.Hom.id_appTop, CommRingCat.id_apply, add_neg_cancel_right]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `AffineSpace.hom_ext` to reduce the goal to its premises. Conclude with `H0`. Conclude with `H`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem translateLastCoord_comp_translateLastCoord_neg (k : Type u) [Field k] (M : ℕ) (a : k) :
     translateLastCoord k M a ≫ translateLastCoord k M (-a) = 𝟙 (affineSpaceTimesLine k M) := by
@@ -168,7 +168,7 @@ theorem translateLastCoord_comp_translateLastCoord_neg (k : Type u) [Field k] (M
   · exact H
 
 /- English proof (translation)
-Establish `h` using `translateLastCoord_comp_translateLastCoord_neg k M (-a)`. Rewrite `h` using `[neg_neg]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem translateLastCoord_neg_comp_translateLastCoord (k : Type u) [Field k] (M : ℕ) (a : k) :
     translateLastCoord k M (-a) ≫ translateLastCoord k M a = 𝟙 (affineSpaceTimesLine k M) := by
@@ -183,7 +183,7 @@ def translateLastCoordIso (k : Type u) [Field k] (M : ℕ) (a : k) : affineSpace
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem translateLastCoordIso_hom (k : Type u) [Field k] (M : ℕ) (a : k) :
     (translateLastCoordIso k M a).hom = translateLastCoord k M a := rfl
@@ -196,11 +196,11 @@ theorem translateLastCoordIso_inv (k : Type u) [Field k] (M : ℕ) (a : k) :
     (translateLastCoordIso k M a).inv = translateLastCoord k M (-a) := rfl
 
 /- English proof (translation)
-Use `⟨AffineSpace.homOfVector (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M))) (fun i : ULift.{u, 0} (Fin M ⊕ Fin 1) => Sum.elim (fun b : Fin M => AffineSpace.coord (Spec (CommRingCat.of k)) (⟨b⟩ : ULift.{u, 0} (Fin M))) (fun _ : Fin 1 => baseFieldToGlobalSections k (affineSpaceI …` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `isClosedImmersion_of_coord_surjective _ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce and unpack `⟨b⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨AffineSpace.coord (Spec (CommRingCat.of k)) (⟨Sum.inl b⟩ : ULift.{u, 0} (Fin M ⊕ Fin 1)), by simp⟩`. Apply `AffineSpace.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, projLeft_comp_affineSpaceIndexedByToSpec]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨b⟩`.
+Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.comp_apply, projLeft_appTop_coord]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem exists_sliceAtLastCoord (k : Type u) [Field k] (M : ℕ) (a : k) :
     ∃ f : affineSpaceIndexedBy k (ULift.{u, 0} (Fin M)) ⟶ affineSpaceTimesLine k M,
@@ -239,7 +239,7 @@ def sliceAtLastCoord (k : Type u) [Field k] (M : ℕ) (a : k) :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `(exists_sliceAtLastCoord k M a).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem sliceAtLastCoord_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (M : ℕ) (a : k) :
     sliceAtLastCoord k M a ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin 1)) =
@@ -247,7 +247,7 @@ theorem sliceAtLastCoord_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] 
   (exists_sliceAtLastCoord k M a).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_sliceAtLastCoord k M a).choose_spec.2.1`.
+A detailed English derivation is pending.
 -/
 theorem isClosedImmersion_sliceAtLastCoord (k : Type u) [Field k] (M : ℕ) (a : k) :
     IsClosedImmersion (sliceAtLastCoord k M a) :=
@@ -259,7 +259,7 @@ instance instIsClosedImmersionHeightSlice (k : Type u) [Field k] (M : ℕ) (a : 
 
 @[simp]
 /- English proof (translation)
-The claim follows from `(exists_sliceAtLastCoord k M a).choose_spec.2.2.1 @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem sliceAtLastCoord_comp_projLeft (k : Type u) [Field k] (M : ℕ) (a : k) :
     sliceAtLastCoord k M a ≫ projLeft k M 1 = 𝟙 (affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))) :=
@@ -267,7 +267,7 @@ theorem sliceAtLastCoord_comp_projLeft (k : Type u) [Field k] (M : ℕ) (a : k) 
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[← Category.assoc, sliceAtLastCoord_comp_projLeft, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sliceAtLastCoord_comp_projLeft_assoc (k : Type u) [Field k] (M : ℕ) (a : k) {Z : Scheme.{u}}
     (g : affineSpaceIndexedBy k (ULift.{u, 0} (Fin M)) ⟶ Z) :
@@ -275,7 +275,7 @@ theorem sliceAtLastCoord_comp_projLeft_assoc (k : Type u) [Field k] (M : ℕ) (a
   rw [← Category.assoc, sliceAtLastCoord_comp_projLeft, Category.id_comp]
 
 /- English proof (translation)
-The claim follows from `(exists_sliceAtLastCoord k M a).choose_spec.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem sliceAtLastCoord_appTop_lastCoordinate (k : Type u) [Field k] (M : ℕ) (a : k) :
     (ConcreteCategory.hom (Scheme.Hom.appTop (sliceAtLastCoord k M a))) (lastCoordinate k M) =
@@ -298,7 +298,7 @@ def coproductSliceMap (k : Type u) [Field k] (M : ℕ) {ι : Type u} (e : ι →
 
 @[simp]
 /- English proof (translation)
-Simplify using `[coproductSliceMap]`. Use the proof step `@[simp]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sigma_ι_coproductSliceMap (k : Type u) [Field k] (M : ℕ) {ι : Type u} (e : ι → k) (A : ι → Scheme.{u})
     (ρ : ∀ i, A i ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))) (i : ι) :
@@ -307,7 +307,7 @@ theorem sigma_ι_coproductSliceMap (k : Type u) [Field k] (M : ℕ) {ι : Type u
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[← Category.assoc, sigma_ι_coproductSliceMap, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_ι_coproductSliceMap_assoc (k : Type u) [Field k] (M : ℕ) {ι : Type u} (e : ι → k)
     (A : ι → Scheme.{u}) (ρ : ∀ i, A i ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))) (i : ι)
@@ -316,7 +316,7 @@ theorem sigma_ι_coproductSliceMap_assoc (k : Type u) [Field k] (M : ℕ) {ι : 
   rw [← Category.assoc, sigma_ι_coproductSliceMap, Category.assoc]
 
 /- English proof (translation)
-Establish `hp : pullbackAlongProjection k M G = (ConcreteCategory.hom (Scheme.Hom.appTop (projLeft k M 1))) G` using `rfl`. Rewrite using `[hp, ← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, sliceAtLastCoord_comp_projLeft, Scheme.Hom.id_appTop, CommRingCat.id_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sliceAtLastCoord_appTop_pullbackAlongProjection (k : Type u) [Field k] (M : ℕ) (a : k)
     (G : ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).presheaf.obj (Opposite.op ⊤))) :
@@ -327,7 +327,7 @@ private theorem sliceAtLastCoord_appTop_pullbackAlongProjection (k : Type u) [Fi
     Scheme.Hom.id_appTop, CommRingCat.id_apply]
 
 /- English proof (translation)
-Rewrite using `[appTop_baseFieldToGlobalSections, sliceAtLastCoord_comp_affineSpaceIndexedByToSpec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem sliceAtLastCoord_appTop_baseFieldToGlobalSections (k : Type u) [Field k] (M : ℕ) (a x : k) :
     (ConcreteCategory.hom (Scheme.Hom.appTop (sliceAtLastCoord k M a)))
@@ -344,13 +344,11 @@ private def lagrangeBasisSection (k : Type u) [Field k] (M : ℕ) {ι : Type u} 
         baseFieldToGlobalSections k (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin 1))) (e l))
 
 /- English proof (translation)
-Establish `hlag : lagrangeBasisSection k M e j = baseFieldToGlobalSections k (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin 1))) ((∏ l ∈ Finset.univ.erase j, (e j - e l))⁻¹) * ∏ l ∈ Finset.univ.erase j, (lastCoordinate k M - baseFieldToGlobalSections k (affineSpaceIndexedByToSpec …` using `rfl`. Rewrite using `[hlag, map_mul, map_prod]`. Simplify using `only [map_sub, sliceAtLastCoord_appTop_baseFieldToGlobalSections, sliceAtLastCoord_appTop_lastCoordinate]`. Establish `hprod : (∏ l ∈ Finset.univ.erase j, (baseFieldToGlobalSections k (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M))) (e i) - baseFieldToGlobalSections k (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M))) (e l))) = baseFieldToGlobalSections k (affineSpaceIndexedByToSpec k (UL …`. Rewrite using `[map_prod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun l _ => (map_sub _ _ _).symm`. Rewrite using `[hprod, ← map_mul]`. Distinguish the cases in `hji : j = i`. Rewrite using `[if_pos hji, ← hji]`. Establish `hne : (∏ l ∈ Finset.univ.erase j, (e j - e l)) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `l hl`. Conclude with `sub_ne_zero_of_ne fun hcon => (Finset.mem_erase.mp hl).1 (he hcon).symm`. Rewrite using `[inv_mul_cancel₀ hne, map_one]`. Establish `hz : (∏ l ∈ Finset.univ.erase j, (e i - e l)) = 0` using `Finset.prod_eq_zero (Finset.mem_erase.mpr ⟨fun hc => hji hc.symm, Finset.mem_univ i⟩) (sub_self (e i))`.
-
-Rewrite using `[if_neg hji, hz, mul_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sliceAtLastCoord_appTop_lagrangeSection (k : Type u) [Field k] (M : ℕ) {ι : Type u}
     [Fintype ι] [DecidableEq ι] (e : ι → k) (he : Function.Injective e) (i j : ι) :
@@ -386,9 +384,9 @@ private theorem sliceAtLastCoord_appTop_lagrangeSection (k : Type u) [Field k] (
     rw [if_neg hji, hz, mul_zero, map_zero]
 
 /- English proof (translation)
-Rewrite using `[map_sum, Finset.sum_eq_single_of_mem i (Finset.mem_univ i)]`. Simplify using `only [map_mul, sliceAtLastCoord_appTop_pullbackAlongProjection, sliceAtLastCoord_appTop_lagrangeSection k M e he i i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `only [map_mul, sliceAtLastCoord_appTop_lagrangeSection k M e he i j]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg hj, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem sliceAtLastCoord_appTop_sum_mul_lagrangeSection (k : Type u) [Field k] (M : ℕ) {ι : Type u}
     [Fintype ι] [DecidableEq ι] (e : ι → k) (he : Function.Injective e)
@@ -404,11 +402,11 @@ private theorem sliceAtLastCoord_appTop_sum_mul_lagrangeSection (k : Type u) [Fi
     rw [if_neg hj, mul_zero]
 
 /- English proof (translation)
-Establish `hv : ∀ (v : ↑((∐ A).presheaf.obj (Opposite.op ⊤))) (c : ULift.{u, 0} (Fin 1)), (ConcreteCategory.hom (Scheme.Hom.appTop (AffineSpace.homOfVector q (fun _ : ULift.{u, 0} (Fin 1) => v)))) (AffineSpace.coord (Spec (CommRingCat.of k)) c) = v`. Introduce `v c`. Simplify using the standard rewrite rules. Establish `hfg : AffineSpace.homOfVector q (fun _ : ULift.{u, 0} (Fin 1) => s) = AffineSpace.homOfVector q (fun _ : ULift.{u, 0} (Fin 1) => t)`. Use `Limits.Sigma.hom_ext _ _ fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `c`. Simplify using `only [Scheme.Hom.comp_appTop, CommRingCat.comp_apply]`. Rewrite using `[hv s c, hv t c]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h i`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hfg]`. Use `_ = t := hv t ⟨0⟩`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coproduct_globalSections_ext (k : Type u) [Field k] {ι : Type u} (A : ι → Scheme.{u})
     (q : (∐ A) ⟶ Spec (CommRingCat.of k))
@@ -441,9 +439,9 @@ private theorem coproduct_globalSections_ext (k : Type u) [Field k] {ι : Type u
     _ = t := hv t ⟨0⟩
 
 /- English proof (translation)
-Establish `haffine : IsAffine (∐ A)` using `inferInstance`. Establish `hsurj : ∀ F : ↑((∐ A).presheaf.obj (Opposite.op ⊤)), ∃ H : ↑((affineSpaceTimesLine k M).presheaf.obj (Opposite.op ⊤)), (ConcreteCategory.hom (Scheme.Hom.appTop (coproductSliceMap k M e A ρ))) H = F`. Introduce `F`. Use `⟨∑ j : ι, pullbackAlongProjection k M (globalSectionLift k M (ρ j) ((ConcreteCategory.hom (Scheme.Hom.appTop (Sigma.ι A j))) F)) * lagrangeBasisSection k M e j, ?_⟩` and prove the remaining obligations. Use `coproduct_globalSections_ext k A (Sigma.desc fun j => ρ j ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M))) _ _ fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, sigma_ι_coproductSliceMap, Scheme.Hom.comp_appTop, CommRingCat.comp_apply, sliceAtLastCoord_appTop_sum_mul_lagrangeSection k M e he (fun j => globalSectionLift k M (ρ j) ((ConcreteCategory.hom (Scheme.Hom.appTop (Sigma.ι A j))) …`. Conclude with `IsClosedImmersion.of_surjective_of_isAffine (coproductSliceMap k M e A ρ) hsurj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosedImmersion_coproductSliceMap (k : Type u) [Field k] (M : ℕ) {ι : Type u} [Fintype ι]
     [DecidableEq ι] (e : ι → k) (he : Function.Injective e) (A : ι → Scheme.{u})
@@ -468,7 +466,7 @@ theorem isClosedImmersion_coproductSliceMap (k : Type u) [Field k] (M : ℕ) {ι
   exact IsClosedImmersion.of_surjective_of_isAffine (coproductSliceMap k M e A ρ) hsurj
 
 /- English proof (translation)
-Use `CategoryTheory.Limits.Sigma.hom_ext _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[sigma_ι_coproductSliceMap_assoc, sliceAtLastCoord_comp_affineSpaceIndexedByToSpec, hq i]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem coproductSliceMap_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (M : ℕ) {ι : Type u} (e : ι → k)
     (A : ι → Scheme.{u}) (ρ : ∀ i, A i ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M)))
@@ -479,7 +477,7 @@ theorem coproductSliceMap_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k]
   rw [sigma_ι_coproductSliceMap_assoc, sliceAtLastCoord_comp_affineSpaceIndexedByToSpec, hq i]
 
 /- English proof (translation)
-Take `⟨⟨i, y⟩, rfl⟩` from `(sigmaMk A).surjective x`. Conclude with `⟨i, y, (sigmaMk_mk A i y).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem sigma_ι_base_jointly_surjective {ι : Type u} (A : ι → Scheme.{u}) (x : ↥(∐ A)) :
     ∃ (j : ι) (b : ↥(A j)), (Sigma.ι A j).base b = x := by
@@ -487,7 +485,7 @@ private theorem sigma_ι_base_jointly_surjective {ι : Type u} (A : ι → Schem
   exact ⟨i, y, (sigmaMk_mk A i y).symm⟩
 
 /- English proof (translation)
-Use `show (Sigma.ι A j ≫ coproductSliceMap k M e A ρ).base b = (ρ j ≫ sliceAtLastCoord k M (e j)).base b`. Rewrite using `[sigma_ι_coproductSliceMap]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coproductSliceMap_base_sigma_ι (k : Type u) [Field k] (M : ℕ) {ι : Type u} (e : ι → k)
     (A : ι → Scheme.{u}) (ρ : ∀ i, A i ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))) (j : ι)
@@ -498,7 +496,7 @@ private theorem coproductSliceMap_base_sigma_ι (k : Type u) [Field k] (M : ℕ)
   rw [sigma_ι_coproductSliceMap]
 
 /- English proof (translation)
-Establish `hdef : sliceSeparatingFunction k M e i = ∏ l ∈ Finset.univ.erase i, (lastCoordinate k M - baseFieldToGlobalSections k (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin 1))) (e l))` using `rfl`. Rewrite using `[hdef, map_prod, map_prod]`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_sub, sliceAtLastCoord_appTop_lastCoordinate, appTop_baseFieldToGlobalSections, sliceAtLastCoord_comp_affineSpaceIndexedByToSpec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sliceAtLastCoord_appTop_sliceSeparatingFunction_eq_prod_sub (k : Type u) [Field k] (M : ℕ) {ι : Type u}
     [Fintype ι] [DecidableEq ι] (e : ι → k) (i j : ι) :
@@ -515,7 +513,7 @@ private theorem sliceAtLastCoord_appTop_sliceSeparatingFunction_eq_prod_sub (k :
     sliceAtLastCoord_comp_affineSpaceIndexedByToSpec]
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.comp_apply, sliceAtLastCoord_appTop_sliceSeparatingFunction_eq_prod_sub, appTop_baseFieldToGlobalSections]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem comp_sliceAtLastCoord_appTop_sliceSeparatingFunction (k : Type u) [Field k] (M : ℕ) {ι : Type u}
     [Fintype ι] [DecidableEq ι] (e : ι → k) (A : ι → Scheme.{u})
@@ -528,11 +526,11 @@ private theorem comp_sliceAtLastCoord_appTop_sliceSeparatingFunction (k : Type u
     appTop_baseFieldToGlobalSections]
 
 /- English proof (translation)
-Establish `hne0 : (∏ l ∈ Finset.univ.erase i, (e i - e l)) ≠ 0`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `l hl`. Conclude with `sub_ne_zero.2 fun hx => (Finset.mem_erase.1 hl).1 (he hx).symm`. Establish `hunit : IsUnit ((ConcreteCategory.hom (Scheme.Hom.appTop (ρ i ≫ sliceAtLastCoord k M (e i)))) (sliceSeparatingFunction k M e i))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[comp_sliceAtLastCoord_appTop_sliceSeparatingFunction]`. Conclude with `IsUnit.map _ (isUnit_iff_ne_zero.2 hne0)`. Establish `hbasic : (Opens.map (ρ i ≫ sliceAtLastCoord k M (e i)).base).obj (sliceSeparatingOpen k M e i) = (A i).basicOpen ((ConcreteCategory.hom (Scheme.Hom.appTop (ρ i ≫ sliceAtLastCoord k M (e i)))) (sliceSeparatingFunction k M e i))` using `Scheme.preimage_basicOpen _ _`. Establish `hpre : (Opens.map (ρ i ≫ sliceAtLastCoord k M (e i)).base).obj (sliceSeparatingOpen k M e i) = ⊤`. Rewrite using `[hbasic]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(A i).basicOpen_of_isUnit hunit`. Establish `hmem : b ∈ (Opens.map (ρ i ≫ sliceAtLastCoord k M (e i)).base).obj (sliceSeparatingOpen k M e i)`. Rewrite using `[hpre]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `hmem`.
+Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 private theorem mem_sliceSeparatingOpen (k : Type u) [Field k] (M : ℕ) {ι : Type u} [Fintype ι]
     [DecidableEq ι] (e : ι → k) (he : Function.Injective e) (A : ι → Scheme.{u})
@@ -558,9 +556,9 @@ private theorem mem_sliceSeparatingOpen (k : Type u) [Field k] (M : ℕ) {ι : T
   exact hmem
 
 /- English proof (translation)
-Establish `hzero : (∏ l ∈ Finset.univ.erase i, (e j - e l)) = 0` using `Finset.prod_eq_zero (Finset.mem_erase.2 ⟨hne, Finset.mem_univ j⟩) (sub_self _)`. Establish `hbasic : (Opens.map (ρ j ≫ sliceAtLastCoord k M (e j)).base).obj (sliceSeparatingOpen k M e i) = (A j).basicOpen ((ConcreteCategory.hom (Scheme.Hom.appTop (ρ j ≫ sliceAtLastCoord k M (e j)))) (sliceSeparatingFunction k M e i))` using `Scheme.preimage_basicOpen _ _`. Establish `hpre : (Opens.map (ρ j ≫ sliceAtLastCoord k M (e j)).base).obj (sliceSeparatingOpen k M e i) = ⊥`. Rewrite using `[hbasic, comp_sliceAtLastCoord_appTop_sliceSeparatingFunction, hzero, map_zero, Scheme.basicOpen_zero]`. Introduce `hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem' : b ∈ (Opens.map (ρ j ≫ sliceAtLastCoord k M (e j)).base).obj (sliceSeparatingOpen k M e i)` using `hmem`. Rewrite `hmem'` using `[hpre]`. Simplify using `at hmem'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem not_mem_sliceSeparatingOpen_of_ne (k : Type u) [Field k] (M : ℕ) {ι : Type u} [Fintype ι]
     [DecidableEq ι] (e : ι → k) (A : ι → Scheme.{u})
@@ -582,13 +580,11 @@ private theorem not_mem_sliceSeparatingOpen_of_ne (k : Type u) [Field k] (M : �
   simp at hmem'
 
 /- English proof (translation)
-Establish `hqcj : ∀ j, QuasiCompact (ρ j ≫ sliceAtLastCoord k M (e j))` using `fun j => inferInstance`. Use `⟨fun V hV1 hV2 => ?_⟩` and prove the remaining obligations. Establish `hset : ⇑(coproductSliceMap k M e A ρ).base ⁻¹' V = ⋃ j, ⇑(Sigma.ι A j).base '' (⇑(ρ j ≫ sliceAtLastCoord k M (e j)).base ⁻¹' V)`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce `y hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨j, b, rfl⟩` from `sigma_ι_base_jointly_surjective A y`. Use `Set.mem_iUnion.2 ⟨j, b, ?_, rfl⟩` and prove the remaining obligations. Use `show (ρ j ≫ sliceAtLastCoord k M (e j)).base b ∈ V`. Rewrite using `[← coproductSliceMap_base_sigma_ι k M e A ρ j b]`. Conclude with `hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y hy`. Take `⟨j, hj⟩` from `Set.mem_iUnion.1 hy`. Take `⟨b, hb, rfl⟩` from `hj`. Use `show (coproductSliceMap k M e A ρ).base ((Sigma.ι A j).base b) ∈ V`. Rewrite using `[coproductSliceMap_base_sigma_ι]`.
-
-Conclude with `hb`. Rewrite using `[hset]`. Use `isCompact_iUnion fun j => ?_` and prove the remaining obligations. Conclude with `(QuasiCompact.isCompact_preimage (f := ρ j ≫ sliceAtLastCoord k M (e j)) V hV1 hV2).image (Sigma.ι A j).continuous`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem quasiCompact_coproductSliceMap (k : Type u) [Field k] (M : ℕ) {ι : Type u} [Fintype ι]
     (e : ι → k) (A : ι → Scheme.{u})
@@ -617,15 +613,13 @@ private theorem quasiCompact_coproductSliceMap (k : Type u) [Field k] (M : ℕ) 
     (Sigma.ι A j).continuous
 
 /- English proof (translation)
-Establish `: QuasiCompact (coproductSliceMap k M e A ρ)` using `quasiCompact_coproductSliceMap k M e A ρ`. Establish `: QuasiCompact (ρ i ≫ sliceAtLastCoord k M (e i))` using `inferInstance`. Establish `hfun : ⇑(Scheme.Opens.ι (X` using `A i) ((Opens.map (ρ i ≫ sliceAtLastCoord k M (e i)).base).obj U) ≫ Sigma.ι A i).base = ⇑(Sigma.ι A i).base ∘ ⇑(Scheme.Opens.ι (X := A i) ((Opens.map (ρ i ≫ sliceAtLastCoord k M (e i)).base).obj U)).base :=`. Use function extensionality and compare the values at `fun _ => rfl`. Establish `hrange : Set.range ⇑(Scheme.Opens.ι (X` using `A i) ((Opens.map (ρ i ≫ sliceAtLastCoord k M (e i)).base).obj U) ≫ Sigma.ι A i).base = Set.range ⇑(Scheme.Opens.ι (X := ∐ A) ((Opens.map (coproductSliceMap k M e A ρ).base).obj U)).base := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[hfun, Set.range_comp, Scheme.Opens.range_ι, Scheme.Opens.range_ι]`. Use `show ⇑(Sigma.ι A i).base '' (⇑(ρ i ≫ sliceAtLastCoord k M (e i)).base ⁻¹' (U : Set ↥(affineSpaceTimesLine k M))) = ⇑(coproductSliceMap k M e A ρ).base ⁻¹' (U : Set ↥(affineSpaceTimesLine k M))`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨b, hb, rfl⟩ show (coproductSliceMap k M e A ρ).base ((Sigma.ι A i).base b) ∈ (U : Set ↥(affineSpaceTimesLine k M))`. Rewrite using `[coproductSliceMap_base_sigma_ι]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hb`. Introduce `y hy`. Take `⟨j, b, rfl⟩` from `sigma_ι_base_jointly_surjective A y`. Establish `hb : (ρ j ≫ sliceAtLastCoord k M (e j)).base b ∈ (U : Set ↥(affineSpaceTimesLine k M))`. Establish `hy' : (coproductSliceMap k M e A ρ).base ((Sigma.ι A j).base b) ∈ (U : Set ↥(affineSpaceTimesLine k M))` using `hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hy'` using `[coproductSliceMap_base_sigma_ι]`. Then use the resulting hypothesis. Break down `eq_or_ne j i with rfl | hne` into its components or cases. Conclude with `⟨b, hb, rfl⟩`. Conclude with `absurd (hU hb) (not_mem_sliceSeparatingOpen_of_ne k M e A ρ i j hne b)`. Use `(ker_comap_ι_eq_ker_of_isIso_comp (coproductSliceMap k M e A ρ) U ((ρ i ≫ sliceAtLastCoord k M (e i)) ∣_ U) (IsOpenImmersion.isoOfRangeEq _ _ hrange).hom ?_).trans (ker_comap_ι_eq_ker_morphismRestrict (ρ i ≫ sliceAtLastCoord k M (e i)) U).symm` and prove the remaining obligations.
-
-Rewrite using `[← cancel_mono U.ι, Category.assoc, morphismRestrict_ι, ← Category.assoc, IsOpenImmersion.isoOfRangeEq_hom_fac, Category.assoc, sigma_ι_coproductSliceMap, morphismRestrict_ι]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comap_ker_coproductSliceMap_eq_of_le_sliceSeparatingOpen (k : Type u) [Field k] (M : ℕ) {ι : Type u}
     [Fintype ι] [DecidableEq ι] (e : ι → k) (A : ι → Scheme.{u})
@@ -672,13 +666,13 @@ private theorem comap_ker_coproductSliceMap_eq_of_le_sliceSeparatingOpen (k : Ty
     IsOpenImmersion.isoOfRangeEq_hom_fac, Category.assoc, sigma_ι_coproductSliceMap, morphismRestrict_ι]
 
 /- English proof (translation)
-Apply `AffineSpace.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, translateLastCoord_comp_affineSpaceIndexedByToSpec, affineSpaceInl_comp_affineSpaceIndexedByToSpec, sliceAtLastCoord_comp_affineSpaceIndexedByToSpec]`. Introduce and unpack `⟨b | j⟩`. Establish `h0` using `sliceAtLastCoord_comp_projLeft k M a`. Establish `h1` using `congrArg (fun m : affineSpaceIndexedBy k (ULift.{u, 0} (Fin M)) ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M)) => (ConcreteCategory.hom (Scheme.Hom.appTop m)) (AffineSpace.coord (Spec (CommRingCat.of k)) (⟨b⟩ : ULift.{u, 0} (Fin M)))) h0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Scheme.Hom.comp_appTop, CommRingCat.comp_apply, projLeft_appTop_coord, Scheme.Hom.id_appTop, CommRingCat.id_apply] at h1`. Rewrite using `[h1, Scheme.Hom.comp_appTop, CommRingCat.comp_apply]`. Establish `h2` using `pullbackCoord_translateLastCoord_inl k M a b`. Rewrite `h2` using `[pullbackCoord_def]`. Rewrite using `[h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `pullbackCoord_affineSpaceInl_inl k M 1 b`. Rewrite `h3` using `[pullbackCoord_def]`. Rewrite using `[h3]`. Rewrite using `[← lastCoordinate_eq_coord k M j, sliceAtLastCoord_appTop_lastCoordinate, Scheme.Hom.comp_appTop, CommRingCat.comp_apply, translateLastCoord_appTop_lastCoordinate, map_add, appTop_baseFieldToGlobalSections, affineSpaceInl_comp_affineSpaceIndexedByToSpec]`. Establish `h4` using `pullbackCoord_affineSpaceInl_inr k M 1 (0 : Fin 1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h4` using `[pullbackCoord_def]`. Rewrite using `[lastCoordinate_eq, h4, zero_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sliceAtLastCoord_eq_affineSpaceInl_comp_translateLastCoord (k : Type u) [Field k] (M : ℕ) (a : k) :
     sliceAtLastCoord k M a = affineSpaceInl k M 1 ≫ translateLastCoord k M a := by
@@ -708,7 +702,7 @@ private theorem sliceAtLastCoord_eq_affineSpaceInl_comp_translateLastCoord (k : 
       rw [lastCoordinate_eq, h4, zero_add]
 
 /- English proof (translation)
-Establish `h1 : HasSmoothCoordCodim (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin 1))) (σ ≫ affineSpaceInl k M 1) (c + 1)` using `HasSmoothCoordCodim.comp_affineSpaceInl hsm k σ 1 hσ`. Establish `h2` using `h1.comp_iso_hom (translateLastCoordIso k M a) (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin 1))) (by simp)`. Rewrite using `[sliceAtLastCoord_eq_affineSpaceInl_comp_translateLastCoord, ← Category.assoc]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hasSmoothCoordCodim_comp_sliceAtLastCoord (hsm : AffineSpaceIsSmooth.{u}) (k : Type u)
     [Field k] (M c : ℕ) (a : k) {B : Scheme.{u}}
@@ -724,11 +718,11 @@ private theorem hasSmoothCoordCodim_comp_sliceAtLastCoord (hsm : AffineSpaceIsSm
   exact h2
 
 /- English proof (translation)
-Rewrite using `[hasSmoothCoordCodim_iff]`. Introduce `x`. Take `⟨i, a, rfl⟩` from `sigma_ι_base_jointly_surjective A x`. Establish `hpiece` using `hasSmoothCoordCodim_comp_sliceAtLastCoord hsm k M c (e i) (ρ i) (h i)`. Rewrite `hpiece` using `[hasSmoothCoordCodim_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨W, hW, q, hqS, hqstruct, hkerW⟩` from `hpiece a`. Establish `: Smooth q` using `hqS`. Use `⟨W ⊓ sliceSeparatingOpen k M e i, ?_, (affineSpaceTimesLine k M).homOfLE (inf_le_left) ≫ q, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Use `show (coproductSliceMap k M e A ρ).base ((Sigma.ι A i).base a) ∈ W ⊓ sliceSeparatingOpen k M e i`. Rewrite using `[coproductSliceMap_base_sigma_ι]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hW, mem_sliceSeparatingOpen k M e he A ρ i a⟩`. Rewrite using `[Category.assoc, hqstruct, ← Category.assoc, Scheme.homOfLE_ι]`. Establish `hcrux` using `comap_ker_coproductSliceMap_eq_of_le_sliceSeparatingOpen k M e A ρ i (W ⊓ sliceSeparatingOpen k M e i) inf_le_right`. Rewrite using `[Scheme.IdealSheafData.comap_comp, ← hkerW, restrictIdeal_eq_comap_ι, restrictIdeal_eq_comap_ι, ← Scheme.IdealSheafData.comap_comp, Scheme.homOfLE_ι]`. Conclude with `hcrux`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSmoothCoordCodim_coproductSliceMap (hsm : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k]
     (M c : ℕ) {ι : Type u} [Fintype ι] [DecidableEq ι] (e : ι → k) (he : Function.Injective e)
@@ -762,7 +756,7 @@ def componentSliceOpen (k : Type u) [Field k] (M : ℕ) {ι : Type u} [Fintype �
   (Opens.map (coproductSliceMap k M e A ρ).base).obj (sliceSeparatingOpen k M e i)
 
 /- English proof (translation)
-Rewrite using `[sigma_ι_coproductSliceMap]`. Conclude with `comp_sliceAtLastCoord_appTop_sliceSeparatingFunction k M e A ρ i j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sigma_ι_comp_coproductSliceMap_appTop_sliceSeparatingFunction (k : Type u) [Field k] (M : ℕ) {ι : Type u}
     [Fintype ι] [DecidableEq ι] (e : ι → k) (A : ι → Scheme.{u})
@@ -775,9 +769,9 @@ private theorem sigma_ι_comp_coproductSliceMap_appTop_sliceSeparatingFunction (
   exact comp_sliceAtLastCoord_appTop_sliceSeparatingFunction k M e A ρ i j
 
 /- English proof (translation)
-Establish `hpre : (Opens.map (Sigma.ι A i ≫ coproductSliceMap k M e A ρ).base).obj (sliceSeparatingOpen k M e i) = (A i).basicOpen ((ConcreteCategory.hom (Scheme.Hom.appTop (Sigma.ι A i ≫ coproductSliceMap k M e A ρ))) (sliceSeparatingFunction k M e i))` using `Scheme.preimage_basicOpen _ _`. Rewrite using `[hpre, sigma_ι_comp_coproductSliceMap_appTop_sliceSeparatingFunction k M e A ρ i i]`. Establish `hne : (∏ l ∈ Finset.univ.erase i, (e i - e l)) ≠ 0`. Use `Finset.prod_ne_zero_iff.mpr fun l hl => ?_` and prove the remaining obligations. Conclude with `sub_ne_zero_of_ne fun hcon => (Finset.mem_erase.mp hl).1 (he hcon).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Scheme.basicOpen_of_isUnit` to reduce the goal to its premises. Conclude with `IsUnit.map (baseFieldToGlobalSections k (ρ i ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M)))) (isUnit_iff_ne_zero.mpr hne)`.
+A detailed English derivation is pending.
 -/
 private theorem preimage_sliceSeparatingOpen_self (k : Type u) [Field k] (M : ℕ) {ι : Type u} [Fintype ι]
     [DecidableEq ι] (e : ι → k) (he : Function.Injective e) (A : ι → Scheme.{u})
@@ -796,7 +790,7 @@ private theorem preimage_sliceSeparatingOpen_self (k : Type u) [Field k] (M : �
     (isUnit_iff_ne_zero.mpr hne)
 
 /- English proof (translation)
-Establish `hpre : (Opens.map (Sigma.ι A j ≫ coproductSliceMap k M e A ρ).base).obj (sliceSeparatingOpen k M e i) = (A j).basicOpen ((ConcreteCategory.hom (Scheme.Hom.appTop (Sigma.ι A j ≫ coproductSliceMap k M e A ρ))) (sliceSeparatingFunction k M e i))` using `Scheme.preimage_basicOpen _ _`. Establish `hzero : (∏ l ∈ Finset.univ.erase i, (e j - e l)) = 0` using `Finset.prod_eq_zero (Finset.mem_erase.mpr ⟨hij, Finset.mem_univ j⟩) (sub_self (e j))`. Rewrite using `[hpre, sigma_ι_comp_coproductSliceMap_appTop_sliceSeparatingFunction k M e A ρ i j, hzero, map_zero]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem preimage_sliceSeparatingOpen_of_ne (k : Type u) [Field k] (M : ℕ) {ι : Type u}
     [Fintype ι] [DecidableEq ι] (e : ι → k) (A : ι → Scheme.{u})
@@ -812,13 +806,13 @@ private theorem preimage_sliceSeparatingOpen_of_ne (k : Type u) [Field k] (M : �
   simp
 
 /- English proof (translation)
-Rewrite using `[Scheme.Opens.range_ι]`. Use `Set.Subset.antisymm ?_ ?_` and prove the remaining obligations. Introduce and unpack `x ⟨y, rfl⟩`. Establish `hy : y ∈ (Opens.map (Sigma.ι A i ≫ coproductSliceMap k M e A ρ).base).obj (sliceSeparatingOpen k M e i)`. Rewrite using `[preimage_sliceSeparatingOpen_self k M e he A ρ i]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Conclude with `hy`. Introduce `x hx`. Take `⟨j, y, rfl⟩` from `sigma_ι_base_jointly_surjective A x`. Distinguish the cases in `hij : j = i`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hij` using the available equality. Conclude with `Set.mem_range_self y`. It suffices to derive a contradiction. Establish `hy : y ∈ (Opens.map (Sigma.ι A j ≫ coproductSliceMap k M e A ρ).base).obj (sliceSeparatingOpen k M e i)` using `hx`. Rewrite `hy` using `[preimage_sliceSeparatingOpen_of_ne k M e A ρ i j hij]`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hy' : y ∈ ((⊥ : (A j).Opens) : Set ↥(A j))` using `hy`. Rewrite `hy'` using `[TopologicalSpace.Opens.coe_bot]`. Conclude with `(Set.mem_empty_iff_false y).mp hy'`.
+A detailed English derivation is pending.
 -/
 private theorem range_sigma_ι_eq_range_componentSliceOpen_ι (k : Type u) [Field k] (M : ℕ)
     {ι : Type u} [Fintype ι] [DecidableEq ι] (e : ι → k) (he : Function.Injective e)
@@ -846,7 +840,7 @@ private theorem range_sigma_ι_eq_range_componentSliceOpen_ι (k : Type u) [Fiel
       exact (Set.mem_empty_iff_false y).mp hy'
 
 /- English proof (translation)
-Establish `hrange` using `range_sigma_ι_eq_range_componentSliceOpen_ι k M e he A ρ i`. Use `⟨IsOpenImmersion.isoOfRangeEq (Sigma.ι A i) (componentSliceOpen k M e A ρ i).ι hrange, ?_⟩` and prove the remaining obligations. Apply `IsOpenImmersion.isoOfRangeEq_hom_fac` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 -/
 private theorem exists_iso_componentSliceOpen (k : Type u) [Field k] (M : ℕ) {ι : Type u} [Fintype ι]
     [DecidableEq ι] (e : ι → k) (he : Function.Injective e) (A : ι → Scheme.{u})
@@ -865,7 +859,7 @@ def componentIsoSliceOpen (k : Type u) [Field k] (M : ℕ) {ι : Type u} [Fintyp
 
 @[simp]
 /- English proof (translation)
-The claim follows from `(exists_iso_componentSliceOpen k M e he A ρ i).choose_spec @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem componentIsoSliceOpen_hom_comp_ι (k : Type u) [Field k] (M : ℕ) {ι : Type u} [Fintype ι]
     [DecidableEq ι] (e : ι → k) (he : Function.Injective e) (A : ι → Scheme.{u})
@@ -875,7 +869,7 @@ theorem componentIsoSliceOpen_hom_comp_ι (k : Type u) [Field k] (M : ℕ) {ι :
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[← Category.assoc, componentIsoSliceOpen_hom_comp_ι]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem componentIsoSliceOpen_hom_comp_ι_assoc (k : Type u) [Field k] (M : ℕ) {ι : Type u} [Fintype ι]
     [DecidableEq ι] (e : ι → k) (he : Function.Injective e) (A : ι → Scheme.{u})
@@ -892,7 +886,7 @@ abbrev coproductSliceMapReindexed (k : Type u) [Field k] (M : ℕ) {ι : Type u}
     (affineSpaceIsoOfEquiv (uliftFinSumEquiv.{u} M 1) (Spec (CommRingCat.of k))).hom
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, affineSpaceIsoOfEquiv_hom_comp_toSpec]`. Conclude with `coproductSliceMap_comp_affineSpaceIndexedByToSpec k M e A ρ q hq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coproductSliceMapReindexed_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (M : ℕ) {ι : Type u} (e : ι → k)
     (A : ι → Scheme.{u}) (ρ : ∀ i, A i ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M)))
@@ -903,7 +897,7 @@ theorem coproductSliceMapReindexed_comp_affineSpaceIndexedByToSpec (k : Type u) 
   exact coproductSliceMap_comp_affineSpaceIndexedByToSpec k M e A ρ q hq
 
 /- English proof (translation)
-Establish `: IsClosedImmersion (coproductSliceMap k M e A ρ)` using `isClosedImmersion_coproductSliceMap k M e he A ρ`. Conclude with `(hasSmoothCoordCodim_coproductSliceMap hsm k M c e he A ρ h).comp_iso_hom (affineSpaceIsoOfEquiv (uliftFinSumEquiv.{u} M 1) (Spec (CommRingCat.of k))) (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin (M + 1)))) (affineSpaceIsoOfEquiv_hom_comp_toSpec k (uliftFinSumEquiv.{u} M 1))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasSmoothCoordCodim_coproductSliceMapReindexed (hsm : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k]
     (M c : ℕ) {ι : Type u} [Fintype ι] [DecidableEq ι] (e : ι → k) (he : Function.Injective e)

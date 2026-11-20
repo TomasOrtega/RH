@@ -21,7 +21,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 omit [StarRing E] in
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Valuation.map_sum_le _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (hA i j) (hv j)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_mulVec_le {P : HeightOneSpectrum (𝓞 E)} {n : ℕ} (A : Matrix (Fin n) (Fin n) E)
     (hA : ∀ i j, P.valuation E (A i j) ≤ 1) {v : Fin n → E} (hv : ∀ i, P.valuation E (v i) ≤ 1) (i : Fin n) :
@@ -35,7 +35,7 @@ def matE {n : ℕ} (M : Matrix (Fin n) (Fin n) (𝓞 E)) : Matrix (Fin n) (Fin n
 
 omit [StarRing E] in
 /- English proof (translation)
-The claim follows from `(RingHom.map_det _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem det_matE {n : ℕ} (M : Matrix (Fin n) (Fin n) (𝓞 E)) : (matE M).det = algebraMap (𝓞 E) E M.det :=
   (RingHom.map_det _ _).symm
@@ -47,7 +47,7 @@ def frOf {n : ℕ} (M : Matrix (Fin n) (Fin n) (𝓞 E)) : Sp E n ≃ₗ[E] Sp E
 
 omit [StarRing E] in
 /- English proof (translation)
-Rewrite using `[frOf, dif_pos h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem frOf_apply {n : ℕ} {M : Matrix (Fin n) (Fin n) (𝓞 E)} (h : IsUnit (matE M).det) (v : Sp E n) :
     frOf M v = matE M *ᵥ v := by
@@ -57,7 +57,7 @@ theorem frOf_apply {n : ℕ} {M : Matrix (Fin n) (Fin n) (𝓞 E)} (h : IsUnit (
 
 omit [StarRing E] in
 /- English proof (translation)
-Use `show frOf M (Pi.single j 1) i = _`. Rewrite using `[frOf_apply h]`. Simplify using `[matE, Matrix.mulVec_single_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mat_frOf {n : ℕ} {M : Matrix (Fin n) (Fin n) (𝓞 E)} (h : IsUnit (matE M).det) (i j : Fin n) :
     mat (frOf M) i j = algebraMap (𝓞 E) E (M i j) := by
@@ -66,13 +66,13 @@ theorem mat_frOf {n : ℕ} {M : Matrix (Fin n) (Fin n) (𝓞 E)} (h : IsUnit (ma
   simp [matE, Matrix.mulVec_single_one]
 
 /- English proof (translation)
-Establish `hv : P.valuation E (matE M).det = 1`. Rewrite using `[det_matE]`. Conclude with `(HeightOneSpectrum.valuation_of_algebraMap P _).trans (HeightOneSpectrum.intValuation_eq_one_iff.2 hM)`. Establish `h0 : (matE M).det ≠ 0` using `fun h => by rw [h, map_zero] at hv; exact zero_ne_one hv`. Establish `hu : IsUnit (matE M).det` using `isUnit_iff_ne_zero.2 h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hent : ∀ i j, P.valuation E (matE M i j) ≤ 1` using `fun i j => HeightOneSpectrum.valuation_le_one P (M i j)`. Establish `hinv : ∀ i j, P.valuation E ((matE M)⁻¹ i j) ≤ 1`. Introduce `i j`. Rewrite using `[Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, map_mul, Ring.inverse_eq_inv', map_inv₀, hv, inv_one, one_mul]`. Establish `e : (matE M).adjugate = matE M.adjugate` using `(RingHom.map_adjugate _ _).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `HeightOneSpectrum.valuation_le_one P _`. Use `⟨hu, fun v => ?_⟩` and prove the remaining obligations. Use `show _ ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (stdLat E n) ↔ v ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (stdLat E n)`. Rewrite using `[mem_localization_standardLattice, mem_localization_standardLattice, frOf_apply hu]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [CharValCompare.intAt_iff]`. Use `⟨fun h i => ?_, fun h i => val_mulVec_le _ hent h i⟩` and prove the remaining obligations. Use `val_mulVec_le _ hinv h i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isFr_frOf {n : ℕ} {P : HeightOneSpectrum (𝓞 E)} {M : Matrix (Fin n) (Fin n) (𝓞 E)} (hM : M.det ∉ P.asIdeal) :
     IsUnit (matE M).det ∧ CharValCompare.IsFr P (stdLat E n) (frOf M) := by
@@ -97,31 +97,29 @@ theorem isFr_frOf {n : ℕ} {P : HeightOneSpectrum (𝓞 E)} {M : Matrix (Fin n)
   rwa [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec] at this
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `⟨1, ⟨BasePoint.stdPt E 0, ⟨one_mem _, fun z => ?_, fun P => (Finset.notMem_empty _ P.2).elim, fun P => (Finset.notMem_empty _ P.2).elim, fun P => (Finset.notMem_empty _ P.2).elim⟩, rfl⟩, fun _ _ _ i => i.elim0, fun _ r => r.elim0⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim z 0, Matrix.mulVec_zero]`. Conclude with `iff_of_true (zero_mem _) (zero_mem _)`. Use `haveI : NeZero n := ⟨hn.ne'⟩`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `lift : ∀ P : HeightOneSpectrum (𝓞 E), 𝓞 E ⧸ P.asIdeal → 𝓞 E` to `fun P => Function.surjInv (Ideal.Quotient.mk_surjective (I := P.asIdeal))`. Establish `hlift : ∀ (P : HeightOneSpectrum (𝓞 E)) c, Ideal.Quotient.mk P.asIdeal (lift P c) = c` using `fun P c => Function.surjInv_eq _ c`. Set `M : HeightOneSpectrum (𝓞 E) → Matrix (Fin n) (Fin n) (𝓞 E)` to `fun P => if h : P ∈ Q then (x ⟨P, h⟩ : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.asIdeal)).map (lift P) else 1`. Establish `hM : ∀ (P : Q) r j, M P.1 r j = lift P.1 ((x P).1 r j)` using `fun P r j => by`. Simplify using `only [M, dif_pos P.2]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hdet : ∀ P ∈ Q, (M P).det ∉ P.asIdeal`. Introduce `P hP hmem`. Establish `h1 : (Ideal.Quotient.mk P.asIdeal) (M P).det = (x ⟨P, hP⟩ : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.asIdeal)).det`. Rewrite using `[RingHom.map_det]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use extensionality with `r j`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, hM ⟨P, hP⟩ r j, hlift]`. Rewrite `h1` using `[Ideal.Quotient.eq_zero_iff_mem.2 hmem]`. Establish `hu : IsUnit (x ⟨P, hP⟩ : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.asIdeal)).det` using `Matrix.isUnits_det_units (x ⟨P, hP⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hu` using `[← h1]`. Use `haveI : P.asIdeal.IsPrime := P.isPrime`. Conclude with `not_isUnit_zero hu`. Establish `hfr : ∀ P ∈ Q, CharValCompare.IsFr P (Formalism.UG.CS.globLat (1 : GL (Fin n) (AfE F E)) (stdLat E n)) (frOf (M P))`. Introduce `P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[globLat_one_std]`. Conclude with `(isFr_frOf (hdet P hP)).2`. Take `⟨g, hg, c1, c2, c3⟩` from `exists_modify (hc := hc) hQ (one_mem (UAd hc n)) (fun P => frOf (M P)) hfr`. Rewrite `c1` using `[globLat_one_std]`. Use `⟨g, ⟨BasePoint.stdPt E n, ⟨hg, c1, fun P => (Finset.notMem_empty _ P.2).elim, fun P => (Finset.notMem_empty _ P.2).elim, fun P => (Finset.notMem_empty _ P.2).elim⟩, rfl⟩, fun w hw hw' i j => ?_, fun P r j => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e1 : ∀ i j, adAt F w (((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) i j) = if i = j then 1 else 0`. Introduce `i j`. Establish `h` using `c3 w hw hw' (Pi.single j 1) i`. Establish `hv : (fun k => Formalism.UG.inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) ((Pi.single j (1 : E) : Fin n → E) k)) = Pi.single j 1 := by`. Use extensionality with `k`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hk]`. Establish `h' : adAt F w ((((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ Pi.single j 1) i) = adAt F w ((((1⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ Pi.single j 1) i)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← hv]`. Conclude with `h`. Rewrite `h'` using `[inv_one, Units.val_one, Matrix.one_mulVec, Matrix.mulVec_single_one]`. Establish `h'' : adAt F w (((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) i j) = adAt F w ((Pi.single j 1 : Fin n → AfE F E) i)` using `h'`. Rewrite using `[h'', Pi.single_apply]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij]`. Establish `hMi : (((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E))).map (adAt F w) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `a b`. Rewrite using `[Matrix.map_apply, e1, Matrix.one_apply]`. Establish `hgg : (g : Matrix (Fin n) (Fin n) (AfE F E)) * ((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hMg : (g : Matrix (Fin n) (Fin n) (AfE F E)).map (adAt F w) = 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `congrArg (fun M => M.map (adAt F w)) hgg`. Simplify using `only [Matrix.map_mul, hMi, mul_one] at h`. Rewrite using `[h, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h` using `congrFun (congrFun hMg i) j`. Rewrite `h` using `[Matrix.map_apply, Matrix.one_apply]`.
-
-Conclude with `h`. Rewrite using `[c2 P.1 P.2 r j, mat_frOf (isFr_frOf (hdet P.1 P.2)).1, ← hlift P.1 ((x P).1 r j), ← hM P r j]`. Conclude with `hasRes_coe _ _`.
+A detailed English derivation is pending.
 -/
 theorem exists_lift (hc : CMData F E) (n : ℕ) (Q : Finset (HeightOneSpectrum (𝓞 E)))
     (hQ : ∀ P ∈ Q, conjPrime₂ P ∉ Q) (x : ∀ P : Q, GL (Fin n) (𝓞 E ⧸ P.1.asIdeal)) :
@@ -209,9 +207,9 @@ end GlobalTheory.Mem.Col2.TC.ChTw.Match.UnitaryLift
 namespace GlobalTheory.Mem.Col2.TC.ChTw.Match.UnitaryLift
 
 /- English proof (translation)
-Take `⟨a, b, hab⟩` from `(Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp hq).2 hpq)).map (Int.castRingHom A)`. Establish `e1 : (Int.castRingHom A) (p : ℤ) = (p : A)` using `by simp`. Establish `e2 : (Int.castRingHom A) (q : ℤ) = (q : A)` using `by simp`. Rewrite `hab` using `[e1, e2]`. Apply `hI` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Ideal.eq_top_iff_one, ← hab]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem false_of_primes_mem {A : Type} [CommRing A] {I : Ideal A} (hI : I ≠ ⊤) {p q : ℕ} (hp : p.Prime)
     (hq : q.Prime) (hpq : p ≠ q) (h1 : (p : A) ∈ I) (h2 : (q : A) ∈ I) : False := by
@@ -230,31 +228,27 @@ namespace GlobalTheory.Mem.Col2.TC.ChTw.Match
 open UnitaryLift
 
 /- English proof (translation)
-Introduce `B X I _ l u n x`. Establish `hPr` using `l.pr`. Establish `hne : ∀ i, B.fields.conjO ((B.primes X).piG i) ≠ 0` using `fun i h => by`. Establish `e` using `hPr.piG_norm i`. Rewrite `e` using `[h, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hPr.g_prime i).ne_zero (by exact_mod_cast e.symm)`. Establish `hvG : ∀ w : HeightOneSpectrum (𝓞 B.fields.E), w ∈ (B.primes X).vGs → ∃ i, B.fields.conjO ((B.primes X).piG i) ∈ w.asIdeal`. Introduce `w h`. Break down `Finset.mem_union.1 h with h | h` into its components or cases. Use `exacts [⟨0, (mem_divs (hne 0) w).1 h⟩, ⟨1, (mem_divs (hne 1) w).1 h⟩]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hgI : ∀ w : HeightOneSpectrum (𝓞 B.fields.E), w ∈ (B.primes X).vGs ∨ conjPrime₂ w ∈ (B.primes X).vGs → ∃ i, (((B.primes X).g i : ℕ) : 𝓞 B.fields.E) ∈ w.asIdeal`. Introduce and unpack `w (h | h)`. Take `⟨i, hi⟩` from `hvG w h`. Conclude with `⟨i, by rw [← hPr.piG_norm i]; exact Ideal.mul_mem_left _ _ hi⟩`. Take `⟨i, hi⟩` from `hvG _ h`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨i, ?_⟩` and prove the remaining obligations. Rewrite using `[← hPr.piG_norm i]`. Apply `Ideal.mul_mem_right` to reduce the goal to its premises. Establish `h2` using `(mem_conjP w _).1 hi`. Rewrite `h2` using `[show cO B.fields.E (B.fields.conjO ((B.primes X).piG i)) = (B.primes X).piG i from cO_cO _]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgne : ∀ i i' : Fin 2, i ≠ i' → (B.primes X).g i ≠ (B.primes X).g i'`. Introduce `i i' h`. Apply the tactic sequence `fin_cases i <;> fin_cases i'`. Conclude with `absurd rfl h`. Conclude with `hPr.g_ne`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `fun e => hPr.g_ne e.symm`. Conclude with `absurd rfl h`. Establish `hQ : ∀ P ∈ (B.primes X).vGs, conjPrime₂ P ∉ (B.primes X).vGs`. Introduce `P hP hP'`. Take `⟨i, hi⟩` from `hvG P hP`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Take `⟨i', hi'⟩` from `hvG _ hP'`. Establish `hi''` using `(mem_conjP P _).1 hi'`. Rewrite `hi''` using `[show cO B.fields.E (B.fields.conjO ((B.primes X).piG i')) = (B.primes X).piG i' from cO_cO _]`. Distinguish the cases in `e : i = i'`. Substitute `e` using the available equality.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, b, hab⟩` from `hPr.piG_cop i`. Apply `P.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hab]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hi'') (Ideal.mul_mem_left _ _ hi)`. Establish `h1 : (((B.primes X).g i : ℕ) : 𝓞 B.fields.E) ∈ P.asIdeal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hPr.piG_norm i]`. Conclude with `Ideal.mul_mem_left _ _ hi`. Establish `h2 : (((B.primes X).g i' : ℕ) : 𝓞 B.fields.E) ∈ P.asIdeal`. Rewrite using `[← hPr.piG_norm i']`. Conclude with `Ideal.mul_mem_right _ _ hi''`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `false_of_primes_mem P.isPrime.ne_top (hPr.g_prime i) (hPr.g_prime i') (hgne i i' e) h1 h2`. Take `⟨t, hpt, hoff, hres⟩` from `exists_lift (F := B.host.F) B.sp.cm n _ hQ x`. Use `⟨t, hpt, fun v hv => ?_, hres⟩` and prove the remaining obligations. Use `GlobalTheory.Mem.Col2.AdPlace.bc_prV_eq_one_of_adAt _ _ n v t fun w hw i j => ?_` and prove the remaining obligations. Establish `hunder : ∀ m : ℕ, ((m : ℕ) : 𝓞 B.fields.E) ∈ w.asIdeal → ((m : ℕ) : 𝓞 B.host.F) ∈ v.asIdeal`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Introduce `m hm`. Rewrite using `[← hw]`. Use `show ((m : ℕ) : 𝓞 B.host.F) ∈ w.asIdeal.under (𝓞 B.host.F)`. Rewrite using `[Ideal.under_def, Ideal.mem_comap, map_natCast]` and apply the resulting hypothesis. Establish `hfree : w ∉ (B.primes X).vGs ∧ conjPrime₂ w ∉ (B.primes X).vGs`.
-
-Assume the negation of the conclusion as `hcon`. Take `⟨k, hk⟩` from `hgI w (by tauto)`. Establish `hkv` using `hunder _ hk`. Break down `hv with hv | hv` into its components or cases. Establish `hT : (((B.primes X).T u : ℕ) : 𝓞 B.host.F) ∈ v.asIdeal` using `hv`.
-
-Conclude with `false_of_primes_mem v.isPrime.ne_top (hPr.T_prime u) (hPr.g_prime k) (hPr.T_ne_g u k) hT hkv`. Conclude with `hv k hkv`. Conclude with `hoff w hfree.1 hfree.2 i j`.
+A detailed English derivation is pending.
 -/
 theorem exists_unitary_lift : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (u : B.Word) (n : ℕ)
     (x : ∀ w : (B.primes X).vGs, GL (Fin n) (𝓞 B.fields.E ⧸ w.1.asIdeal)), ∃ t : GA B n,

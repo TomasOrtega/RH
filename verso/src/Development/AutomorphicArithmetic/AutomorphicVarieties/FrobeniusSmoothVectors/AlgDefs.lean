@@ -11,9 +11,7 @@ section Lau
 variable {C K : Type} [CommRing C] [CommRing K] [Algebra C K] (P : ℤ → Submodule C K) [SetLike.GradedMonoid P]
 
 /- English proof (translation)
-Rewrite using `[AddMonoidAlgebra.coeff_mul]`. Use `Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Simplify using `only`. Use `split_ifs with e`. Conclude with `h a b e`.
-
-Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. A detailed English derivation is pending.
 -/
 theorem coeff_mul_mem {p q : AddMonoidAlgebra K ℤ} (j : ℤ) (M : Submodule C K)
     (h : ∀ a b, a + b = j → p.coeff a * q.coeff b ∈ M) : (p * q).coeff j ∈ M := by
@@ -39,14 +37,12 @@ def lauSub : Subalgebra C (AddMonoidAlgebra K ℤ) where
     · exact zero_mem _
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_lauSub {p : AddMonoidAlgebra K ℤ} : p ∈ lauSub P ↔ ∀ j, p.coeff j ∈ P j := Iff.rfl
 
 /- English proof (translation)
-Introduce `i`. Rewrite using `[AddMonoidAlgebra.coeff_single, Finsupp.single_apply]`. Use `split_ifs with e`. Substitute `e` using the available equality. Conclude with `hx`.
-
-Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem single_mem_lauSub {j : ℤ} {x : K} (hx : x ∈ P j) : AddMonoidAlgebra.single j x ∈ lauSub P := by
   classical
@@ -86,7 +82,7 @@ def vertex (h : HasVertex P) : Ideal (lauSub P) where
 
 variable {P} in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_vertex (h : HasVertex P) {p : lauSub P} :
     p ∈ vertex h ↔ ∃ c ∈ maximalIdeal C, algebraMap C K c = p.1.coeff 0 := Iff.rfl
@@ -110,7 +106,7 @@ instance : SetLike.GradedMonoid (ρ.part C) where
     exact ⟨L ++ M, by simp only [List.map_append, List.sum_append, h1, h2], by simp⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨[(g, i, j)], by simp, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem NRep.r_mem_part (g : F.G0) (i j : Fin n) : ρ.r g i j ∈ ρ.part C (w n i - w n j) :=
   Submodule.subset_span ⟨[(g, i, j)], by simp, by simp⟩

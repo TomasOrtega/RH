@@ -14,15 +14,15 @@ noncomputable section
 namespace FibreLocal
 
 /- English proof (translation)
-The claim follows from `sphereInv_thm.1`.
+A detailed English derivation is pending.
 -/
 @[local instance] theorem isProbabilityMeasure_sphere : IsProbabilityMeasure sphereMeasure :=
   sphereInv_thm.1
 
 /- English proof (translation)
-Establish `h` using `(Commute.all (-(X 1 : MvPolynomial (Fin 2) ℝ)) (X 0)).geom_sum₂_mul (2 * k)`. Establish `hs : ∑ j ∈ Finset.range (2 * k), (-1 : ℝ) ^ j • ((X 0 : MvPolynomial (Fin 2) ℝ) ^ (2 * k - 1 - j) * X 1 ^ j) = ∑ i ∈ Finset.range (2 * k), (-(X 1 : MvPolynomial (Fin 2) ℝ)) ^ i * X 0 ^ (2 * k - 1 - i)`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_pow, map_neg, map_one, neg_pow (X 1 : MvPolynomial (Fin 2) ℝ)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[gPoly, hs]`. Rewrite `h` using `[(even_two_mul k).neg_pow]`. Take the linear combination `(-(X 1 : MvPolynomial (Fin 2) ℝ)) * h`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem add_mul_gPoly (k : ℕ) :
     (X 0 + X 1 : MvPolynomial (Fin 2) ℝ) * gPoly k = X 1 * (X 0 ^ (2 * k) - X 1 ^ (2 * k)) := by
@@ -38,7 +38,7 @@ theorem add_mul_gPoly (k : ℕ) :
   linear_combination (-(X 1 : MvPolynomial (Fin 2) ℝ)) * h
 
 /- English proof (translation)
-Establish `hne : (X 0 + X 1 : MvPolynomial (Fin 2) ℝ) ≠ 0`. Introduce `h`. Use `congrArg (eval ![1, 0]) h` as an intermediate fact. Simplify using `at this`. Conclude with `mul_left_cancel₀ hne (by rw [add_mul_gPoly, (FlagBundles.GKernelIdentity.full ℝ k).1])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gPoly_eq (k : ℕ) : gPoly k = FlagBundles.gKernel ℝ k := by
   have hne : (X 0 + X 1 : MvPolynomial (Fin 2) ℝ) ≠ 0 := by
@@ -48,13 +48,13 @@ theorem gPoly_eq (k : ℕ) : gPoly k = FlagBundles.gKernel ℝ k := by
   exact mul_left_cancel₀ hne (by rw [add_mul_gPoly, (FlagBundles.GKernelIdentity.full ℝ k).1])
 
 /- English proof (translation)
-Rewrite using `[dgPoly, FlagBundles.gMixed, gPoly_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dgPoly_eq (k : ℕ) : dgPoly k = FlagBundles.gMixed k := by
   rw [dgPoly, FlagBundles.gMixed, gPoly_eq]
 
 /- English proof (translation)
-The claim follows from `FlagBundles.FibreIntegralInvariant.integrable_kernel FlagBundles.FibreConstantClosedForm.full`.
+A detailed English derivation is pending.
 -/
 theorem integrable_kernel :
     Integrable (fun p : S2 × S2 => (1 / 2 : ℝ) * Real.log ((1 - inner ℝ (p.1 : E3) (p.2 : E3)) / 2))
@@ -62,7 +62,7 @@ theorem integrable_kernel :
   FlagBundles.FibreIntegralInvariant.integrable_kernel FlagBundles.FibreConstantClosedForm.full
 
 /- English proof (translation)
-The claim follows from `FlagBundles.FibreIntegralInvariant.integrable_term integrable_kernel f hf`.
+A detailed English derivation is pending.
 -/
 theorem integrable_mul (f : S2 × S2 → ℝ) (hf : Continuous f) :
     Integrable (fun p : S2 × S2 =>
@@ -71,9 +71,7 @@ theorem integrable_mul (f : S2 × S2 → ℝ) (hf : Continuous f) :
   FlagBundles.FibreIntegralInvariant.integrable_term integrable_kernel f hf
 
 /- English proof (translation)
-Establish `h2 : Continuous fun p => (![u p, v p] : Fin 2 → ℝ)`. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Simplify using `using hu`. Simplify using `using hv`.
-
-Conclude with `(MvPolynomial.continuous_eval g).comp h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_evalPair (g : MvPolynomial (Fin 2) ℝ) (u v : S2 × S2 → ℝ) (hu : Continuous u)
     (hv : Continuous v) : Continuous fun p => eval ![u p, v p] g := by
@@ -85,7 +83,7 @@ theorem continuous_evalPair (g : MvPolynomial (Fin 2) ℝ) (u v : S2 × S2 → �
   exact (MvPolynomial.continuous_eval g).comp h2
 
 /- English proof (translation)
-Establish `hc : Continuous fun p : S2 × S2 => eval ![(p.1 : E3) 2, (p.2 : E3) 2] (dgPoly k)` using `continuous_evalPair _ _ _ ((EuclideanSpace.proj (2 : Fin 3)).continuous.comp (continuous_subtype_val.comp continuous_fst)) ((EuclideanSpace.proj (2 : Fin 3)).continuous.comp (continuous_subtype_val.comp continuous_snd))`. Rewrite using `[kappa, FlagBundles.fibreConstant, neg_inj]`. Use `(integral_prod _ (integrable_mul _ hc)).symm.trans ?_` and prove the remaining obligations. Repeatedly rewrite using `[dgPoly_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem kappa_eq (k : ℕ) : kappa k = -FlagBundles.fibreConstant k := by
   have hc : Continuous fun p : S2 × S2 => eval ![(p.1 : E3) 2, (p.2 : E3) 2] (dgPoly k) :=
@@ -98,15 +96,15 @@ theorem kappa_eq (k : ℕ) : kappa k = -FlagBundles.fibreConstant k := by
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[inner_zero_left, zero_pow (by omega : 2 * m ≠ 0), zero_pow (by omega : m ≠ 0)]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `set r : ℝ := ‖a‖ with hr`. Establish `hr0 : r ≠ 0` using `norm_ne_zero_iff.mpr ha`. Use `set u : E3 := r⁻¹ • a with hu`. Establish `hu1 : ‖u‖ = 1` using `by rw [hu, norm_smul, norm_inv, norm_norm, ← hr, inv_mul_cancel₀ hr0]`. Establish `hin : ∀ n : S2, inner ℝ a (n : E3) = r * inner ℝ (n : E3) u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Rewrite using `[hu, inner_smul_right, real_inner_comm, ← mul_assoc, mul_inv_cancel₀ hr0, one_mul]`. Establish `hA` using `(archimedes_thm u u u (fun t => (r * t) ^ (2 * m)) hu1 (Continuous.intervalIntegrable (by fun_prop) _ _)).2.1`. Repeatedly rewrite using `[hin]`. Rewrite using `[hA]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[mul_pow]`. Rewrite using `[intervalIntegral.integral_const_mul, integral_pow, real_inner_self_eq_norm_sq, ← hr]`. Establish `h1 : ((-1 : ℝ)) ^ (2 * m + 1) = -1` using `by rw [pow_succ, (even_two_mul m).neg_one_pow]; ring`. Rewrite using `[h1, ← pow_mul]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem sphere_moment (a : E3) (m : ℕ) :
     ∫ n : S2, inner ℝ a (n : E3) ^ (2 * m) ∂sphereMeasure = inner ℝ a a ^ m / (2 * m + 1) := by
@@ -135,9 +133,9 @@ theorem sphere_moment (a : E3) (m : ℕ) :
     ring
 
 /- English proof (translation)
-Rewrite using `[momentPoly, map_sum]`. Simplify using `only [eval_monomial]`. Repeatedly rewrite using `[← integral_mul_const]`. Rewrite using `[← integral_finsetSum _ (fun m _ => (hQ m).mul_const _)]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `p`. Rewrite using `[eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `[Finsupp.prod]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval_momentPoly {Ω : Type*} [MeasurableSpace Ω] (μ : Measure Ω) (w : Ω → ℝ)
     (Q : MvPolynomial (Fin 3) (Ω → ℝ)) (hQ : ∀ m, Integrable (fun p => w p * coeff m Q p) μ)
@@ -158,7 +156,7 @@ def coordS (i : Fin 3) : C(S2, ℝ) :=
   ⟨fun n => (n : E3) i, (EuclideanSpace.proj i).continuous.comp continuous_subtype_val⟩
 
 /- English proof (translation)
-Rewrite using `[map_pow, dotPoly]`. Simplify using `only [map_sum, map_mul, map_X, map_C]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem dotPoly_id_pow (N : ℕ) :
     (dotPoly (id : S2 → S2)) ^ N =
@@ -168,17 +166,17 @@ theorem dotPoly_id_pow (N : ℕ) :
   rfl
 
 /- English proof (translation)
-Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `a`. Establish `hQ : ∀ m, Integrable (fun p : S2 => (1 : ℝ) * coeff m ((dotPoly (id : S2 → S2)) ^ (2 * k - 2)) p) sphereMeasure`. Introduce `m`. Rewrite using `[dotPoly_id_pow, coeff_map]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [one_mul]`. Conclude with `(ContinuousMap.continuous (coeff m ((∑ i, X i * C (coordS i)) ^ (2 * k - 2)))).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Rewrite using `[pushMomentPoly, smul_eval, eval_momentPoly _ _ _ hQ]`. Establish `he : ∀ p : S2, eval₂ (Pi.evalRingHom (fun _ : S2 => ℝ) p) a ((dotPoly id) ^ (2 * k - 2)) = inner ℝ (WithLp.toLp 2 a : E3) (p : E3) ^ (2 * k - 2)`. Introduce `p`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eval₂_pow, dotPoly]`. Simplify using `[eval₂_sum, PiLp.inner_apply, mul_comm]`. Repeatedly rewrite using `[he, one_mul]`. Establish `hkk : 2 * k - 2 = 2 * (k - 1)` using `by omega`. Rewrite using `[hkk, sphere_moment]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `haa : inner ℝ (WithLp.toLp 2 a : E3) (WithLp.toLp 2 a) = ∑ i, a i ^ 2`. Rewrite using `[real_inner_self_eq_norm_sq, EuclideanSpace.norm_sq_eq]`. Simplify using `[sq_abs]`. Rewrite using `[haa]`. Simplify using `only [map_neg, map_pow, map_sum, eval_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc : ((k - 1 : ℕ) : ℝ) = (k : ℝ) - 1` using `by rw [Nat.cast_sub hk, Nat.cast_one]`. Rewrite using `[hc]`. Establish `hk' : (2 * ((k : ℝ) - 1) + 1) ≠ 0`. Establish `: (1 : ℝ) ≤ k` using `by exact_mod_cast hk`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pushMomentPoly_eq (k : ℕ) (hk : 1 ≤ k) :
     pushMomentPoly k = -(∑ i, X i ^ 2) ^ (k - 1) := by
@@ -214,9 +212,9 @@ theorem pushMomentPoly_eq (k : ℕ) (hk : 1 ≤ k) :
   ring
 
 /- English proof (translation)
-Establish `hQ : aeval ![dotPoly (Prod.fst : S2 × S2 → S2), dotPoly Prod.snd] (dgPoly k) = FlagBundles.FibreIntegralInvariant.fibreQ k`. Rewrite using `[FlagBundles.FibreIntegralInvariant.fibreQ, dgPoly_eq]`. Use `congrArg (fun x => aeval x (FlagBundles.gMixed k)) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `r`. Apply the tactic sequence `fin_cases r <;> simp [dotPoly]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[FlagBundles.FibreIntegralInvariant.fibrePoly_eq, fibreMomentPoly, momentPoly, hQ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fibreMomentPoly_eq (k : ℕ) : fibreMomentPoly k = FlagBundles.fibrePoly k := by
   have hQ : aeval ![dotPoly (Prod.fst : S2 × S2 → S2), dotPoly Prod.snd] (dgPoly k) =
@@ -229,13 +227,13 @@ theorem fibreMomentPoly_eq (k : ℕ) : fibreMomentPoly k = FlagBundles.fibrePoly
   rfl
 
 /- English proof (translation)
-Use `⟨fun k a => ?_, fun k B _ _ a => ?_, fun k hk a => ?_, fun k hk B _ _ a => ?_, fun k => ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun p : S2 × S2 => eval ![inner ℝ a (p.1 : E3), inner ℝ a (p.2 : E3)] (dgPoly k)` using `continuous_evalPair _ _ _ (continuous_const.inner (continuous_subtype_val.comp continuous_fst)) (continuous_const.inner (continuous_subtype_val.comp continuous_snd))`. Use `(integral_prod _ (integrable_mul _ hc)).symm.trans ?_` and prove the remaining obligations. Repeatedly rewrite using `[dgPoly_eq]`. Rewrite using `[kappa_eq, neg_neg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `FlagBundles.FibreIntegralInvariant.full.1 k a`. Rewrite using `[fibreMomentPoly_eq, FlagBundles.FibreIntegralInvariant.full.2 k B a, kappa_eq, neg_neg]`. Establish `hkk : 2 * k - 2 = 2 * (k - 1)` using `by omega`. Rewrite using `[hkk, sphere_moment]`. Establish `hc : ((k - 1 : ℕ) : ℝ) = (k : ℝ) - 1` using `by rw [Nat.cast_sub hk, Nat.cast_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Establish `hk' : (2 * ((k : ℝ) - 1) + 1) ≠ 0`. Establish `: (1 : ℝ) ≤ k` using `by exact_mod_cast hk`. Combine the linear equalities and inequalities to obtain the conclusion. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[pushMomentPoly_eq k hk]`. Simplify using `[map_neg, map_pow, map_sum, aeval_X]`. Rewrite using `[kappa_eq, FlagBundles.fibreConstant_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem proof : FibreLocal.Statement := by
   refine ⟨fun k a => ?_, fun k B _ _ a => ?_, fun k hk a => ?_, fun k hk B _ _ a => ?_, fun k => ?_⟩

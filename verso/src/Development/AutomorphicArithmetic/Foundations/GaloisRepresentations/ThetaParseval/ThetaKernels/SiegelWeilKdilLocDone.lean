@@ -16,7 +16,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 namespace PositivityTheory.SiegelWeilFormula.Kdil
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.Kdil.locFamG_of'_k hT hA _root_.PositivityTheory.SiegelWeilFormula.KFock.goodAwayEx_k hFP hLI`.
+A detailed English derivation is pending.
 -/
 theorem locFamG_done_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) (hA : _root_.PositivityTheory.SiegelWeilFormula.SiegelWeilDatumProperties) (hFP : FPSw) (hLI : _root_.PositivityTheory.SiegelWeilFormula.LocInst_k) : _root_.PositivityTheory.SiegelWeilFormula.Kdil.LocFamG_k :=
   _root_.PositivityTheory.SiegelWeilFormula.Kdil.locFamG_of'_k hT hA _root_.PositivityTheory.SiegelWeilFormula.KFock.goodAwayEx_k hFP hLI

@@ -14,9 +14,9 @@ instance whPres : PreservesColimitsOfShape (Discrete WalkingPair) ((SimplicialOb
 instance chainsPres : PreservesColimitsOfShape (Discrete WalkingPair) (chains R) := by
   unfold chains chainsN; infer_instance
 /- English proof (translation)
-Introduce `R _ U V`. Establish `h : IsIso (coprodComparison (chains R) U V)` using `inferInstance`. Establish `e : biprod.desc ((chains R).map (coprod.inl : U ⟶ U ⨿ V)) ((chains R).map (coprod.inr : V ⟶ U ⨿ V)) = (biprod.isoCoprod _ _).hom ≫ coprodComparison (chains R) U V`. Apply the tactic sequence `apply biprod.hom_ext' <;> simp [coprodComparison, coprod.inl_desc, coprod.inr_desc]`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem chainsCoprod : LateralTheory.E.BinPf.ChainsCoprod := by
   intro R _ U V
@@ -27,7 +27,7 @@ theorem chainsCoprod : LateralTheory.E.BinPf.ChainsCoprod := by
   rw [e]; infer_instance
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.ProdAcycPf.Bin_of hD chainsCoprod`.
+A detailed English derivation is pending.
 -/
 theorem bin_of (hD : LateralTheory.E.BinPf.DescEqv) : LateralTheory.E.ProdAcycPf.Bin :=
   LateralTheory.E.ProdAcycPf.Bin_of hD chainsCoprod

@@ -12,14 +12,14 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test.InfReal
 noncomputable def bumpLine : ContDiffBump (0 : ℝ) := ⟨1 / 2, 1, by norm_num, by norm_num⟩
 
 /- English proof (translation)
-Apply `ContDiffBump.zero_of_le_dist` to reduce the goal to its premises. Simplify `hy` using `[bumpLine, Real.dist_eq]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem bumpLine_eq_zero {y : ℝ} (hy : 1 ≤ |y|) : bumpLine y = 0 := by
   apply ContDiffBump.zero_of_le_dist
   simpa [bumpLine, Real.dist_eq] using hy
 
 /- English proof (translation)
-Rewrite using `[Measure.integral_comp_mul_left (fun y => bumpLine y) c]`. Establish `h : 0 < ∫ y : ℝ, bumpLine y` using `bumpLine.integral_pos`. Establish `: 0 < |c⁻¹|` using `abs_pos.mpr (inv_ne_zero hc.ne')`. Simplify using `using mul_pos this h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem integral_bumpLine_scaled_pos {c : ℝ} (hc : 0 < c) :
     0 < ∫ y : ℝ, bumpLine (c * y) := by
@@ -29,15 +29,15 @@ theorem integral_bumpLine_scaled_pos {c : ℝ} (hc : 0 < c) :
   simpa using mul_pos this h
 
 /- English proof (translation)
-Establish `hsm : ContDiff ℝ (⊤ : ℕ∞) (fun y : ℝ => ((bumpLine (c * y) : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp (bumpLine.contDiff.comp (contDiff_const.mul contDiff_id))`. Establish `hcs : HasCompactSupport (fun y : ℝ => ((bumpLine (c * y) : ℝ) : ℂ))`. Apply `HasCompactSupport.intro (K := Metric.closedBall 0 (1 / c)) (isCompact_closedBall _ _)` to reduce the goal to its premises. Introduce `y hy`. Establish `h1 : 1 / c < |y|` using `by simpa [Real.dist_eq] using hy`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : 1 ≤ |c * y|`. Rewrite using `[abs_mul, abs_of_pos hc]`. Rewrite `h1` using `[div_lt_iff₀ hc]`. Use the polynomial consequences of the given equalities and inequalities. Simplify using `[bumpLine_eq_zero h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules.
 
-Set `S : SchwartzMap ℝ ℂ` to `hcs.toSchwartzMap hsm`. Establish `hI : Integrable (fun u : ℝ => (FourierTransform.fourier S) u)` using `(FourierTransform.fourier S).integrable`. Establish `hI2` using `hI.comp_mul_left' (neg_ne_zero.mpr ha)`. Use `hI2.congr (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `only [SchwartzMap.fourier_coe, Real.fourier_real_eq_integral_exp_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `hS : S y = ((bumpLine (c * y) : ℝ) : ℂ)` using `rfl`. Simplify using `only [hS, smul_eq_mul]`. Rewrite using `[mul_comm]`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integrable_osc_line {c a : ℝ} (hc : 0 < c) (ha : a ≠ 0) :
     Integrable (fun s : ℝ => ∫ y : ℝ, ((bumpLine (c * y) : ℝ) : ℂ) *
@@ -68,17 +68,17 @@ theorem integrable_osc_line {c a : ℝ} (hc : 0 < c) (ha : a ≠ 0) :
   ring
 
 /- English proof (translation)
-Establish `hpos : ∀ k : ℕ, (0 : ℝ) < (k : ℝ) + 1` using `fun k => by positivity`. Establish `hts : ∀ k : ℕ, tsupport (fun x : P → ℝ => ∏ w, bumpLine (((k : ℝ) + 1) * x w)) ⊆ Metric.closedBall 0 (1 / ((k : ℝ) + 1))`. Introduce `k`. Apply `closure_minimal _ Metric.isClosed_closedBall` to reduce the goal to its premises. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Metric.mem_closedBall, dist_zero_right, pi_norm_le_iff_of_nonneg (by have := hpos k; positivity)]`. Introduce `w`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Apply `hx` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.prod_eq_zero (Finset.mem_univ w)` to reduce the goal to its premises. Apply `bumpLine_eq_zero` to reduce the goal to its premises. Rewrite using `[abs_mul, abs_of_pos (hpos k)]`. Rewrite `hlt` using `[Real.norm_eq_abs, div_lt_iff₀ (hpos k)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun k x => ∏ w, bumpLine (((k : ℝ) + 1) * x w), fun k => ⟨?_, ?_, ?_, ?_⟩, hts, fun k => ?_⟩` and prove the remaining obligations. Conclude with `continuous_finset_prod _ fun w _ => bumpLine.continuous.comp (continuous_const.mul (continuous_apply w))`. Conclude with `(isCompact_closedBall (0 : P → ℝ) _).of_isClosed_subset (isClosed_tsupport _) (hts k)`. Conclude with `fun x => Finset.prod_nonneg fun w _ => bumpLine.nonneg`. Rewrite using `[integral_fintype_prod_volume_eq_prod (fun _ (y : ℝ) => bumpLine (((k : ℝ) + 1) * y))]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.prod_pos fun w _ => integral_bumpLine_scaled_pos (hpos k)`. Establish `hI` using `Integrable.fintype_prod (f := fun (w : P) (s : ℝ) => ∫ y : ℝ, ((bumpLine (((k : ℝ) + 1) * y) : ℝ) : ℂ) * Complex.exp (2 * Real.pi * Complex.I * ((a w * (y * s) : ℝ) : ℂ))) (fun w => integrable_osc_line (hpos k) (ha w))`. Use `hI.congr (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← integral_fintype_prod_volume_eq_prod (fun (w : P) (y : ℝ) => ((bumpLine (((k : ℝ) + 1) * y) : ℝ) : ℂ) * Complex.exp (2 * Real.pi * Complex.I * ((a w * (y * t w) : ℝ) : ℂ)))]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Finset.prod_mul_distrib]`. Use `push_cast`. Rewrite using `[Finset.mul_sum, Complex.exp_sum]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bumps (P : Type) [Fintype P] (a : P → ℝ) (ha : ∀ w, a w ≠ 0) :
     ∃ g : ℕ → (P → ℝ) → ℝ, (∀ k, Continuous (g k) ∧ HasCompactSupport (g k) ∧ (∀ x, 0 ≤ g k x) ∧ 0 < ∫ x, g k x) ∧ (∀ k, tsupport (g k) ⊆ Metric.closedBall 0 (1 / ((k : ℝ) + 1))) ∧ ∀ k, Integrable (fun t : P → ℝ => ∫ x, (g k x : ℂ) * Complex.exp (2 * Real.pi * Complex.I * ((∑ w, a w * (x w * t w) : ℝ) : ℂ))) := by

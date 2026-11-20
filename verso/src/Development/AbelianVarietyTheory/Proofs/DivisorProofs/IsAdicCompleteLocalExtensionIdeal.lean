@@ -27,7 +27,7 @@ abbrev ovAlg : Algebra (v.adicCompletionIntegers F) (intLoc F E v) := (ovIncl (E
 attribute [local instance] ovAlg
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `a ⊗ₜ[F] (x : E) = (a ⊗ₜ[F] (1 : E)) * ((1 : Fv F v) ⊗ₜ[F] (x : E))`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem tmul_eq_smul {a : Fv F v} (ha : a ∈ v.adicCompletionIntegers F) (x : 𝓞 E) :
     (⟨a ⊗ₜ[F] (x : E), tmul_mem_intLoc ha x⟩ : intLoc F E v) =
@@ -38,13 +38,13 @@ theorem tmul_eq_smul {a : Fv F v} (ha : a ∈ v.adicCompletionIntegers F) (x : �
   rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]
 
 /- English proof (translation)
-Set `b` to `RingOfIntegers.basis E`. Set `N : Submodule (v.adicCompletionIntegers F) (intLoc F E v)` to `Submodule.span _ (Set.range fun i => intLocIncl v (b i))`. Establish `hincl : ∀ x : 𝓞 E, intLocIncl v x ∈ N`. Introduce `x`. Rewrite using `[← b.sum_repr x, map_sum]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Conclude with `Submodule.smul_of_tower_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `key : ∀ y : Fv F v ⊗[F] E, y ∈ intLoc F E v → ∃ h : y ∈ intLoc F E v, (⟨y, h⟩ : intLoc F E v) ∈ N`. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `intLoc_induction (p := fun y => ∃ h : y ∈ intLoc F E v, (⟨y, h⟩ : intLoc F E v) ∈ N) (fun a ha x => ⟨tmul_mem_intLoc ha x, ?_⟩) ⟨zero_mem _, zero_mem N⟩ (fun y z ⟨hy, hy'⟩ ⟨hz, hz'⟩ => ⟨add_mem hy hz, add_mem hy' hz'⟩) (fun y ⟨hy, hy'⟩ => ⟨neg_mem hy, neg_mem hy'⟩) hy` and prove the remaining obligations. Rewrite using `[tmul_eq_smul v ha x]`. Conclude with `N.smul_mem _ (hincl x)`. Use `⟨⟨Finset.univ.image fun i => intLocIncl v (b i), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_image, Finset.coe_univ, Set.image_univ, eq_top_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨y, hy⟩ -`. Take `⟨_, h⟩` from `key y hy`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem finite : Module.Finite (v.adicCompletionIntegers F) (intLoc F E v) := by
   classical
@@ -78,7 +78,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 attribute [local instance] ovAlg
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.GaussCompletion.map_asIdeal, extIdeal, Ideal.map_map, Ideal.map_map]`. Use `congr 1`. Use extensionality with `s`. Express the relevant statement in the definitionally equal form `(1 : Fv (maximalRealSubfield E) v) ⊗ₜ[maximalRealSubfield E] ((algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s : 𝓞 E) : E) = ((algebraMap (𝓞 (maximalRealSubfield E)) (v.adicCompletionIntegers (maximalRealSubfield E)) s : v.adicCompletionIntegers (maximalRealSubfield E)) : Fv (maxi …`. Conclude with `GlobalTheory.SelfDualGenus.locEmb_algebraMap v s`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem extIdeal_map_eq (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) :
     (extIdeal v).map (intLocIncl (E := E) v) =
@@ -94,7 +94,7 @@ theorem extIdeal_map_eq (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) :
   exact GlobalTheory.SelfDualGenus.locEmb_algebraMap v s
 
 /- English proof (translation)
-Introduce `E _ _ _ _ v`. Use `haveI := GlobalTheory.SelfDualGenus.isAdicComplete_adicCompletionIntegers v`. Use `haveI := finite (E := E) v`. Rewrite using `[extIdeal_map_eq]`. Conclude with `GlobalTheory.isAdicComplete_map_of_finite _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdicComplete : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E →
     ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)),

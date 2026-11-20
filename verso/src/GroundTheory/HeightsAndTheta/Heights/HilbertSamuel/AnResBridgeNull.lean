@@ -15,17 +15,15 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {P J : Ideal (MRing ι)} {e : ℕ} (R : AnRes P J e)
 
 /- English proof (translation)
-Apply `ReciprocityTheory.AnForm.volume_eq_zero_of_locally_in_analytic_zero_set` to reduce the goal to its premises. Introduce and unpack `u0 ⟨hu0, h00, -⟩`. Use `set x0 := (R.A.chart j).symm u0`. Use `set V := (R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' R.U x0 with hVdef`. Establish `hV : IsOpen V` using `(R.A.chart j).isOpen_inter_preimage_symm (R.isOpen_U x0)`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgc : ContinuousOn (fun u => Ψ (segre (R.lift x0 ((R.A.chart j).symm u))) 0) V` using `fun u hu => (analyticAt_pi_iff.mp (analyticAt_segre_lift R Ψ x0 j hu) 0).continuousAt.continuousWithinAt`. Use `set O := V ∩ (fun u => Ψ (segre (R.lift x0 ((R.A.chart j).symm u))) 0) ⁻¹' {0}ᶜ with hOdef`. Establish `hO : IsOpen O` using `hgc.isOpen_inter_preimage hV isOpen_compl_singleton`. Establish `hu0O : u0 ∈ O` using `⟨⟨hu0, R.mem_U x0⟩, h00⟩`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.mp hO u0 hu0O`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h0 : ∀ u ∈ Metric.ball u0 r, Ψ (segre (R.lift ((R.A.chart j).symm u) ((R.A.chart j).symm u))) 0 ≠ 0`. Introduce `u hu`. Take `⟨μ, hμ, hμeq⟩` from `psi_lift_eq R (hball hu).1.2 Ψ`. Rewrite using `[hμeq, Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_ne_zero hμ (hball hu).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hQa : AnalyticOnNhd ℂ (brQ R Ψ ∘ (R.A.chart j).symm) (Metric.ball u0 r)`. Introduce `u hu`. Use `analyticAt_brQ R Ψ _ j ((R.A.chart j).map_target (hball hu).1.1) (h0 u hu)` as an intermediate fact. Rewrite `this` using `[(R.A.chart j).right_inv (hball hu).1.1]`. Then use the resulting hypothesis. Use `⟨Metric.ball u0 r, Metric.isOpen_ball, Metric.mem_ball_self hr, (convex_ball u0 r).isPreconnected, fun u => LinearMap.det (fderiv ℂ (brQ R Ψ ∘ (R.A.chart j).symm) u : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)), fun u hu => analyticAt_det_fderiv (hQa u hu), ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hall push Not at hall`. Conclude with `not_flat R Ψ hP hΨ j Metric.isOpen_ball (fun u hu => (hball hu).1.1) ⟨u0, Metric.mem_ball_self hr⟩ h0 hQa hall`. Introduce and unpack `w ⟨⟨hwt, hw0, k, hk, hdk⟩, -⟩`. Use `det_brQ_chart R Ψ (j := j) ((R.A.chart j).map_target hwt) hk hw0` as an intermediate fact. Rewrite `this` using `[(R.A.chart j).right_inv hwt]`.
-
-Use `show LinearMap.det (fderiv ℂ (brQ R Ψ ∘ (R.A.chart j).symm) w : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)) = 0`. Rewrite using `[this, hdk, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ram_null' (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ))
     (hP : IsArithVar P (e + 1)) (hΨ : IsGoodProj P Ψ) (j : Fin R.A.n) :
@@ -69,35 +67,29 @@ theorem ram_null' (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) �
     rw [this, hdk, zero_mul]
 
 /- English proof (translation)
-Apply `ReciprocityTheory.AnForm.volume_eq_zero_of_locally_in_analytic_zero_set` to reduce the goal to its premises. Introduce and unpack `u0 ⟨hu0, -⟩`. Use `set x0 := (R.A.chart j).symm u0`. Use `set V := (R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' R.U x0 with hVdef`. Establish `hV : IsOpen V` using `(R.A.chart j).isOpen_inter_preimage_symm (R.isOpen_U x0)`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.mp hV u0 ⟨hu0, R.mem_U x0⟩`. Use `set f : (Fin e → ℂ) → ℂ := fun u => Ψ (segre (R.lift x0 ((R.A.chart j).symm u))) 0 with hfdef`. Establish `hfa : AnalyticOnNhd ℂ f V` using `fun u hu => analyticAt_pi_iff.mp (analyticAt_segre_lift R Ψ x0 j hu) 0`. Use `⟨Metric.ball u0 r, Metric.isOpen_ball, Metric.mem_ball_self hr, (convex_ball u0 r).isPreconnected, f, hfa.mono hball, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hall push Not at hall`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hgood` using `hΨ _ (R.mem x0 x0 (R.mem_U x0))`. Choose the witnesses or unpack the hypotheses as in `⟨i0, hi0⟩ : ∃ i0, Ψ (segre (R.lift x0 x0)) i0 ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hgood (funext h)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi0ne : i0 ≠ 0`. Introduce and unpack `rfl`. Conclude with `hi0 (hall u0 (Metric.mem_ball_self hr))`. Use `set m : Fin e := i0.pred hi0ne`. Establish `hm : m.succ = i0` using `Fin.succ_pred i0 hi0ne`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set Ψ' : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ) := (LinearMap.funLeft ℂ ℂ (Equiv.swap (0 : Fin (e + 1)) i0)).comp Ψ with hΨ'def`. Establish `hΨ'app : ∀ w i, Ψ' w i = Ψ w (Equiv.swap 0 i0 i)` using `fun w i => rfl`. Establish `hΨ' : IsGoodProj P Ψ'`. Introduce `z hz h`. Use `hΨ z hz (funext fun i => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrFun h (Equiv.swap 0 i0 i)` as an intermediate fact. Rewrite `this` using `[hΨ'app, Equiv.swap_apply_self]`. Conclude with `this`. Establish `hg'c : ContinuousOn (fun u => Ψ' (segre (R.lift x0 ((R.A.chart j).symm u))) 0) (Metric.ball u0 r)` using `fun u hu => (analyticAt_pi_iff.mp (analyticAt_segre_lift R Ψ' x0 j (hball hu)) 0).continuousAt.continuousWithinAt`. Use `set O := Metric.ball u0 r ∩ (fun u => Ψ' (segre (R.lift x0 ((R.A.chart j).symm u))) 0) ⁻¹' {0}ᶜ with hOdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hO : IsOpen O` using `hg'c.isOpen_inter_preimage Metric.isOpen_ball isOpen_compl_singleton`. Establish `hu0O : u0 ∈ O`. Use `⟨Metric.mem_ball_self hr, ?_⟩` and prove the remaining obligations. Use `show Ψ' (segre (R.lift x0 x0)) 0 ≠ 0`. Rewrite using `[hΨ'app, Equiv.swap_apply_left]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `hi0`. Establish `h0O : ∀ u ∈ O, Ψ' (segre (R.lift ((R.A.chart j).symm u) ((R.A.chart j).symm u))) 0 ≠ 0`. Introduce `u hu`. Take `⟨μ, hμ, hμeq⟩` from `psi_lift_eq R (hball hu.1).2 Ψ'`. Rewrite using `[hμeq, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `mul_ne_zero hμ hu.2`. Establish `hanO : AnalyticOnNhd ℂ (brQ R Ψ' ∘ (R.A.chart j).symm) O`. Introduce `u hu`. Use `analyticAt_brQ R Ψ' _ j ((R.A.chart j).map_target (hball hu.1).1) (h0O u hu)` as an intermediate fact. Rewrite `this` using `[(R.A.chart j).right_inv (hball hu.1).1]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzero : ∀ u ∈ O, (brQ R Ψ' ∘ (R.A.chart j).symm) u m = 0`. Introduce `u hu`. Simplify using `only [Function.comp_apply, brQ]`. Rewrite using `[hm, hΨ'app, Equiv.swap_apply_right]`. Take `⟨μ, hμ, hμeq⟩` from `psi_lift_eq R (hball hu.1).2 Ψ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hμeq, Pi.smul_apply, smul_eq_mul]`. Establish `: f u = 0` using `hall u hu.1`. Simplify using `only [hfdef] at this`. Rewrite using `[this, mul_zero, zero_div]`. Establish `hdetO : ∀ u ∈ O, LinearMap.det (fderiv ℂ (brQ R Ψ' ∘ (R.A.chart j).symm) u : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)) = 0`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `u hu`. Establish `hcoord : (fun v => (brQ R Ψ' ∘ (R.A.chart j).symm) v m) =ᶠ[𝓝 u] fun _ => 0` using `by filter_upwards [hO.mem_nhds hu] with v hv`. Conclude with `hzero v hv`. Establish `hd : HasFDerivAt (fun v => (brQ R Ψ' ∘ (R.A.chart j).symm) v m) ((ContinuousLinearMap.proj m).comp (fderiv ℂ (brQ R Ψ' ∘ (R.A.chart j).symm) u)) u` using `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin e => ℂ) m).hasFDerivAt.comp u (hanO u hu).differentiableAt.hasFDerivAt`. Establish `hd0 : HasFDerivAt (fun v => (brQ R Ψ' ∘ (R.A.chart j).symm) v m) (0 : (Fin e → ℂ) →L[ℂ] ℂ) u` using `(hasFDerivAt_const (0 : ℂ) u).congr_of_eventuallyEq hcoord`.
-
-Establish `hrow` using `hd.unique hd0`. Use `det_eq_zero_of_coord m fun v => ?_` and prove the remaining obligations. Use `congrArg (fun T : (Fin e → ℂ) →L[ℂ] ℂ => T v) hrow` as an intermediate fact. Simplify using `using this`. Conclude with `not_flat R Ψ' hP hΨ' j hO (fun u hu => (hball hu.1).1) ⟨u0, hu0O⟩ h0O hanO hdetO`.
-
-Introduce and unpack `w ⟨⟨hwt, hw0⟩, hwb⟩`. Take `⟨μ, hμ, hμeq⟩` from `psi_lift_eq R (hball hwb).2 Ψ`. Use `congrFun hμeq 0` as an intermediate fact. Rewrite `this` using `[Pi.smul_apply, smul_eq_mul]`. Establish `hw0' : Ψ (segre (R.lift ((R.A.chart j).symm w) ((R.A.chart j).symm w))) 0 = 0` using `hw0`.
-
-Rewrite `this` using `[hw0']`. Conclude with `(mul_eq_zero.mp this.symm).resolve_left hμ`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volume_projection_zeroSet_null (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ))
     (hP : IsArithVar P (e + 1)) (hΨ : IsGoodProj P Ψ) (j : Fin R.A.n) :

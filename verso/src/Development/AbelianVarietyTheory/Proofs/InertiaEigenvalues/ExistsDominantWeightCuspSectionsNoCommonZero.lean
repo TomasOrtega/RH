@@ -13,7 +13,7 @@ open scoped TensorProduct Matrix
 namespace GlobalTheory.BpfUniform
 
 /- English proof (translation)
-The claim follows from `exists_weight_of_pointwise GlobalTheory.ScalarPoin.exists_cusp_ne`.
+A detailed English derivation is pending.
 -/
 theorem exists_weight_noCommonZero : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → ∃ (b : (D.host.E →+* ℂ) × ℕ → ℕ) (m : ℕ), Dom b m ∧ LastPos (T.Q.Dw j) b ∧ 4 * (Module.finrank ℚ D.host.E * D.R.r) + 4 ≤ m ∧ ∀ k, ∀ x ∈ ((T.U j σ).X k).dom, ∃ P ∈ Formalism.L2.Pj.holSub0 (T.U j σ).X (laU (T.U j σ) b m), P k x ≠ 0 :=
   exists_weight_of_pointwise GlobalTheory.ScalarPoin.exists_cusp_ne

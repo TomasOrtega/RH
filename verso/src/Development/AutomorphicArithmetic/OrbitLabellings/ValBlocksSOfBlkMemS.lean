@@ -11,15 +11,13 @@ open Formalism.IncomingBounds Formalism.L2.Pj Formalism.L2.FormalSeriesBounds Fo
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 
 /- English proof (translation)
-Introduce `C _ _ V d _ hd hhd Orb _ I J _ _ X n FFimg ν hV F nW hnW ga hMem hAlt hj hrk hga`. Introduce `L hAtt hOne hRows hWt`. Establish `hwt : ∀ o, ∀ q ∈ L o, ∀ (g : Fin 2) (a : ZMod d) (k : ℕ), GlobalTheory.wt (X o) q.1 g a k ≠ 0 → k ≤ (X o).rkF g a`. Introduce `o q hq g a k hne`. Use `fin_cases g`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : GlobalTheory.wt (X o) q.1 0 a k + GlobalTheory.wt (X o) q.1 1 (a + hd) k ≤ ga o a k`. Rewrite using `[← hWt o a k]`. Conclude with `le_sum_map (L o) (fun q => GlobalTheory.wt (X o) q.1 0 a k + GlobalTheory.wt (X o) q.1 1 (a + hd) k) hq`. Apply `hga o a k` to reduce the goal to its premises. Establish `: GlobalTheory.wt (X o) q.1 0 a k ≠ 0` using `hne`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hs : a + hd + hd = a` using `by rw [add_assoc, hhd, add_zero]`. Establish `hle : GlobalTheory.wt (X o) q.1 0 (a + hd) k + GlobalTheory.wt (X o) q.1 1 (a + hd + hd) k ≤ ga o (a + hd) k`. Rewrite using `[← hWt o (a + hd) k]`. Conclude with `le_sum_map (L o) (fun q => GlobalTheory.wt (X o) q.1 0 (a + hd) k + GlobalTheory.wt (X o) q.1 1 (a + hd + hd) k) hq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hle` using `[hs]`. Establish `hne' : GlobalTheory.wt (X o) q.1 1 a k ≠ 0` using `hne`. Establish `h0 : ga o (a + hd) k ≠ 0` using `by omega`. Use `hga o (a + hd) k h0` as an intermediate fact. Rewrite `this` using `[← hrk o (a + hd), hs]`.
-
-Conclude with `this`. Establish `hOK : ∀ o, ∀ q ∈ L o, GlobalTheory.AttainsOK (X o) (F o) q.1 q.2` using `fun o q hq => attainsOK_of (X o) (F o) (Or.inl (hAlt o)) (hj o) q.1 q.2 (hwt o q hq) (hAtt o q hq)`. Establish `hsum : ∑ o, (List.map (fun q => GlobalTheory.what₂ (X o).n q.1) (L o)).sum ≤ n` using `by omega`. Conclude with `val_lists hV jetProd F L hOK hsum (hMem L hOne hWt)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.valBlocksS_of_blkMemS :
     ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (d : ℕ) [NeZero d] (hd : ZMod d), hd + hd = 0 →

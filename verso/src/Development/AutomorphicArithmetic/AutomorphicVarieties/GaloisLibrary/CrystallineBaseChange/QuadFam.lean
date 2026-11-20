@@ -6,7 +6,7 @@ import Mathlib.NumberTheory.LSeries.PrimesInAP
 open NumberField
 
 /- English proof (translation)
-Take `⟨K, hF, hN, hr, hd⟩` from `KStar.Consta.exists_quadField hp h4`. Establish `hp0 : p ≠ 0` using `hp.ne_zero`. Establish `htc : IsTotallyComplex K` using `(KStar.Choice.exists_sq_eq_neg_of_discr hr hp0 hd).2`. Establish `hq : Algebra.IsQuadraticExtension ℚ K` using `{ finrank_eq_two' := hr }`. Conclude with `⟨K, hF, hN, IsCMField.ofCMExtension ℚ K, hr, hd⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem quadFam_one (p : ℕ) (hp : p.Prime) (h4 : p % 4 = 3) :
     ∃ (K : Type) (_ : Field K) (_ : NumberField K) (_ : IsCMField K),
@@ -19,13 +19,13 @@ private theorem quadFam_one (p : ℕ) (hp : p.Prime) (h4 : p % 4 = 3) :
   exact ⟨K, hF, hN, IsCMField.ofCMExtension ℚ K, hr, hd⟩
 
 /- English proof (translation)
-Introduce `N`. Establish `hS : {p : ℕ | p.Prime ∧ p % 4 = 3}.Infinite`. Apply `Set.infinite_of_forall_exists_gt` to reduce the goal to its premises. Introduce `n`. Take `⟨p, hpn, hpp, hmod⟩` from `Nat.forall_exists_prime_gt_and_modEq n (q := 4) (a := 3) (by norm_num) (by norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨p, ⟨hpp, hmod⟩, hpn⟩`. Set `e` to `hS.natEmbedding`. Set `q : Fin N → ℕ` to `fun i => (e i.val).1`. Establish `hq : ∀ i, (q i).Prime ∧ q i % 4 = 3` using `fun i => (e i.val).2`. Establish `hinj : ∀ i j, q i = q j → i = j` using `fun i j h => Fin.ext (e.injective (Subtype.ext h))`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose K hF hN hC hr hd using fun i => quadFam_one (q i) (hq i).1 (hq i).2`. Use `⟨K, hF, hN, hC, hr, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Rewrite using `[hd i, hd j]`. Establish `hne : q i ≠ q j` using `fun h => hij (hinj i j h)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcop : Nat.Coprime (q i) (q j)` using `(Nat.coprime_primes (hq i).1 (hq j).1).2 hne`. Conclude with `(Nat.isCoprime_iff_coprime.2 hcop).neg_neg`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Br.quadFam :
     UpperTheory.V.Br.QuadFam := by

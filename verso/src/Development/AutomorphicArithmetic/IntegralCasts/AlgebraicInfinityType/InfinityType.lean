@@ -40,14 +40,14 @@ def twist (t : InfinityType F n) (s : ℂ) : InfinityType F n where
   pairs_conjugate σ := by simp [t.pairs_conjugate]
 
 /- English proof (translation)
-Simplify using `[exponents, t.pairs_conjugate]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exponents_conjugate (t : InfinityType F n) (σ : F →+* ℂ) :
     t.exponents (ComplexEmbedding.conjugate σ) = (t.pairs σ).map Prod.snd := by
   simp [exponents, t.pairs_conjugate]
 
 /- English proof (translation)
-Simplify using `only [IsAlgebraic, IsLAlgebraic, exponents, twist, Multiset.map_map, Multiset.forall_mem_map_iff, Function.comp]`. Use `forall_congr' fun σ => forall₂_congr fun p _ => exists_congr fun m => ?_` and prove the remaining obligations. Apply the tactic sequence `constructor <;> intro h <;> linear_combination h`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isAlgebraic_iff_twist (t : InfinityType F n) :
     t.IsAlgebraic ↔ (t.twist ((1 - (n : ℂ)) / 2)).IsLAlgebraic := by

@@ -7,9 +7,9 @@ namespace GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization
 open MvPolynomial
 
 /- English proof (translation)
-Use `⟨(1 / ((n : ℚ) + 1)) • (Polynomial.bernoulli (n + 1)).comp (Polynomial.X + 1), fun t => ?_⟩` and prove the remaining obligations. Establish `h1` using `Polynomial.bernoulli_eval_one_add (n + 1) (t - 1 + 1)`. Simplify using `only [Polynomial.eval_smul, Polynomial.eval_comp, Polynomial.eval_add, Polynomial.eval_X, Polynomial.eval_one, smul_eq_mul]`. Rewrite `h1` using `[show (1 : ℚ) + (t - 1 + 1) = t + 1 by ring, show t - 1 + 1 = t by ring]`. Rewrite using `[show t - 1 + 1 = t by ring, h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : (n : ℚ) + 1 ≠ 0` using `by positivity`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_poly_backDiff_pow (n : ℕ) :
     ∃ P : Polynomial ℚ, ∀ t : ℚ, P.eval t - P.eval (t - 1) = t ^ n := by
@@ -25,19 +25,19 @@ theorem exists_poly_backDiff_pow (n : ℕ) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `q using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Take `⟨P, hP⟩` from `exists_poly_backDiff_pow (u k)`. Use `⟨monomial (u.erase k) a * Polynomial.aeval (X k : MvPolynomial K ℚ) P, fun x => ?_⟩` and prove the remaining obligations. Establish `hm : ∀ y : K → ℚ, (∀ i, i ≠ k → y i = x i) → eval y (monomial (u.erase k) a) = eval x (monomial (u.erase k) a)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `y hy`. Simplify using `only [eval_monomial]`. Use `congr 1`. Apply `Finsupp.prod_congr` to reduce the goal to its premises. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hi` using `[Finsupp.support_erase, Finset.mem_erase]`. Rewrite using `[hy i hi.1]`. Establish `hP' : ∀ y : K → ℚ, eval y (Polynomial.aeval (X k : MvPolynomial K ℚ) P) = P.eval (y k)`. Introduce `y`. Use `clear hP`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add, Polynomial.eval_add, hp, hq]`. Consider the case `monomial n c => simp [Polynomial.aeval_monomial]`. Establish `hu : monomial u a = monomial (u.erase k) a * X k ^ (u k)`. Rewrite using `[X_pow_eq_monomial, monomial_mul, mul_one, add_comm, Finsupp.single_add_erase]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy : ∀ i, i ≠ k → (x - Pi.single k (1 : ℚ) : K → ℚ) i = x i`. Introduce `i hi`. Simplify using `[hi]`. Rewrite using `[hu, map_mul, map_mul, map_mul, hm _ hy, hP', hP', map_pow, eval_X]`. Establish `hk : (x - Pi.single k (1 : ℚ) : K → ℚ) k = x k - 1` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk]`. Take the linear combination `(eval x (monomial (u.erase k) a)) * hP (x k)`. Consider the case `add p q hp hq`. Take `⟨R₁, h₁⟩` from `hp`. Take `⟨R₂, h₂⟩` from `hq`.
+Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨R₁ + R₂, fun x => by simp only [map_add]; linear_combination h₁ x + h₂ x⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_mvpoly_backDiff {K : Type} [DecidableEq K] (k : K) (q : MvPolynomial K ℚ) :
     ∃ R : MvPolynomial K ℚ, ∀ x : K → ℚ, eval x R - eval (x - Pi.single k 1) R = eval x q := by
@@ -75,31 +75,31 @@ theorem exists_mvpoly_backDiff {K : Type} [DecidableEq K] (k : K) (q : MvPolynom
     exact ⟨R₁ + R₂, fun x => by simp only [map_add]; linear_combination h₁ x + h₂ x⟩
 
 /- English proof (translation)
-Introduce `K _ _ h hq`. Use `choose q hq using hq`. Use `choose R hR using fun k => exists_mvpoly_backDiff k (q k)`. Establish `step : ∀ k (m : K → ℤ) (t : ℤ), h (Function.update m k t) - eval (fun j => ((Function.update m k t j : ℤ) : ℚ)) (R k) = h (Function.update m k (t - 1)) - eval (fun j => ((Function.update m k (t - 1) j : ℤ) : ℚ)) (R k)`. Introduce `k m t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hq k (Function.update m k t)`. Establish `e2` using `hR k (fun j => ((Function.update m k t j : ℤ) : ℚ))`. Establish `s : Function.update m k t - Pi.single k 1 = Function.update m k (t - 1)`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = k`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj]`. Establish `s' : (fun j => ((Function.update m k t j : ℤ) : ℚ)) - Pi.single k 1 = fun j => ((Function.update m k (t - 1) j : ℤ) : ℚ)`. Use function extensionality and compare the values at `j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj]`. Rewrite `e1` using `[s]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `e2` using `[s']`. Take the linear combination `e1 - e2`. Establish `line : ∀ k (m : K → ℤ) (t : ℤ), h (Function.update m k t) - eval (fun j => ((Function.update m k t j : ℤ) : ℚ)) (R k) = h (Function.update m k 0) - eval (fun j => ((Function.update m k 0 j : ℤ) : ℚ)) (R k)`. Introduce `k m t`. Proceed by induction on `t using Int.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rfl`. Consider the case `succ i ih => rw [step, add_sub_cancel_right, ih]`. Consider the case `pred i ih => rw [← ih, step k m (-(i : ℤ))]`. Establish `key : ∀ s : Finset K, ∃ p : MvPolynomial K ℚ, ∀ m : K → ℤ, (∀ j ∉ s, m j = 0) → h m = eval (fun j => (m j : ℚ)) p`. Introduce `s`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨C (h 0), fun m hm => ?_⟩` and prove the remaining obligations. Rewrite using `[eval_C]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately.
 
-Use function extensionality and compare the values at `j`. Conclude with `hm j (Finset.notMem_empty j)`. Consider the case `insert k s hk ih`. Take `⟨p, hp⟩` from `ih`. Set `z : K → MvPolynomial K ℚ` to `fun j => if j = k then 0 else X j`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨bind₁ z p + R k - bind₁ z (R k), fun m hm => ?_⟩` and prove the remaining obligations. Establish `hm0 : ∀ j ∉ s, Function.update m k 0 j = 0`. Introduce `j hj`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hjk]`. Conclude with `hm j (by simp [hjk, hj])`. Establish `hz : ∀ P : MvPolynomial K ℚ, eval (fun j => (m j : ℚ)) (bind₁ z P) = eval (fun j => ((Function.update m k 0 j : ℤ) : ℚ)) P`. Introduce `P`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p j hp`. Simplify using `only [map_mul, hp, bind₁_X_right, eval_X]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using `[z]`. Simplify using `[z, hj]`. Establish `e` using `line k m (m k)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Rewrite `e` using `[Function.update_eq_self]`. Rewrite using `[map_sub, map_add, hz, hz, ← hp _ hm0]`. Take the linear combination `e`. Take `⟨p, hp⟩` from `key Finset.univ`. Conclude with `⟨p, fun m => hp m (fun j hj => absurd (Finset.mem_univ j) hj)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem PolyOfDiffsExact.full : PolyOfDiffsExact.Statement := by
   intro K _ _ h hq

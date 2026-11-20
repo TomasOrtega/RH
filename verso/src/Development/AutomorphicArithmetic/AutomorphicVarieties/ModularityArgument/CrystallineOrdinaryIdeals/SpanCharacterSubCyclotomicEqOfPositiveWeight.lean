@@ -7,9 +7,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Mod
 namespace GlobalTheory.CharCycIdeal
 
 /- English proof (translation)
-Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`. Introduce `x hx`. Take `⟨f, hf, hJ⟩` from `Submodule.exists_le_ker_of_notMem (p := J.restrictScalars ℚ_[l]) (v := x) hx`. Establish `hc : Continuous f` using `IsModuleTopology.continuous_of_linearMap f`. Use `Filter.mem_of_superset ((isOpen_ne.preimage hc).mem_nhds (x := x) hf) fun y hy h => hy ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hJ (x := y) h`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_ideal {l : ℕ} [Fact l.Prime] {B : Type} [CommRing B] [Algebra ℚ_[l] B] [TopologicalSpace B]
     [IsModuleTopology ℚ_[l] B] (J : Ideal B) : IsClosed (J : Set B) := by
@@ -21,25 +21,21 @@ theorem isClosed_ideal {l : ℕ} [Fact l.Prime] {B : Type} [CommRing B] [Algebra
   exact hJ (x := y) h
 
 /- English proof (translation)
-Introduce `l _ G _ _ _ φ hφ E _ _ _ _ _ B _ _ _ _ _ _ _ _ _ _ π hπ χ hχ w hw hI σ hσ`. Establish `hA : ∀ g : GQ l, (cycA l l B g : B) = algebraMap ℚ_[l] B (((cyc l l g : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l])` using `fun g => IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] B _`. Use `split_ifs with h1`. Substitute `h1` using the available equality. Use `le_antisymm ?_ (Ideal.span_mono (Set.singleton_subset_iff.2 ⟨σ, rfl⟩))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set J := Ideal.span {(χ σ : B) - (cycA l l B (φ σ) : B)} with hJ`. Establish `hε : Continuous fun g => (cycA l l B (φ g) : B)`. Simplify using `only [hA]`. Establish `h0 : Continuous (algebraMap ℚ_[l] B)` using `IsModuleTopology.continuous_of_linearMap (Algebra.linearMap ℚ_[l] B)`. Establish `h2 : Continuous fun x : ℤ_[l] => (x : ℚ_[l])` using `continuous_subtype_val`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `h0.comp (h2.comp (Units.continuous_val.comp ((UpperTheory.V.Loc.cycFacts l l).1.comp hφ.continuous)))`. Set `q : Bˣ →* (B ⧸ J)ˣ` to `Units.map (Ideal.Quotient.mk J : B →* B ⧸ J)`. Set `H : Subgroup G` to `(q.comp χ).eqLocus (q.comp ((cycA l l B).comp φ))`. Establish `hH : ∀ g, g ∈ H ↔ (χ g : B) - (cycA l l B (φ g) : B) ∈ J` using `fun g => by`. Rewrite using `[← Ideal.Quotient.eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.ext_iff`. Establish `hcl : IsClosed (H : Set G)`. Establish `: (H : Set G) = (fun g => (χ g : B) - (cycA l l B (φ g) : B)) ⁻¹' (J : Set B)` using `Set.ext hH`. Rewrite using `[this]`. Conclude with `(isClosed_ideal (l := l) J).preimage (hχ.sub hε)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : (Iq l).comap φ ⊔ Subgroup.zpowers σ ≤ H`. Use `sup_le (fun g hg => ?_) ((Subgroup.zpowers_le).2 ?_)` and prove the remaining obligations. Rewrite using `[hH, hI g hg, zpow_one, sub_self]`. Conclude with `J.zero_mem`. Rewrite using `[hH]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.subset_span rfl`. Establish `htop` using `Subgroup.topologicalClosure_minimal _ hle hcl`. Rewrite `htop` using `[hσ]`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(hH g).1 (htop (Subgroup.mem_top g))`. Take `⟨s, ⟨⟨g, rfl⟩, hg⟩, hs⟩` from `((UpperTheory.V.Loc.cycInertia l).2 φ.range hφ.isOpen_range).2`. Take `⟨n, rfl⟩ : ∃ n : ℕ, w = ((n + 2 : ℕ) : ℤ)` from `⟨(w - 2).toNat, by omega⟩`. Use `Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨g, rfl⟩) ?_` and prove the remaining obligations. Use `show IsUnit ((χ g : B) - (cycA l l B (φ g) : B))`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hI g hg, zpow_natCast, Units.val_pow_eq_pow_val, hA, ← map_pow, ← map_sub]`. Use `IsUnit.map _ (Ne.isUnit fun h => hs ?_)` and prove the remaining obligations. Use `isOfFinOrder_iff_pow_eq_one.2 ⟨n + 1, n.succ_pos, ?_⟩` and prove the remaining obligations. Establish `h2 : cyc l l (φ g) ^ (n + 2) = cyc l l (φ g)`. Apply `Units.ext` to reduce the goal to its premises.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val]`. Use `push_cast`. Conclude with `sub_eq_zero.1 h`. Rewrite `h2` using `[pow_succ]`.
-
-Conclude with `mul_eq_right.1 h2`.
+A detailed English derivation is pending.
 -/
 theorem span_range_sub_cyc : ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) {E : Type} [Field E] [Algebra ℚ_[l] E] [FiniteDimensional ℚ_[l] E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] ℚ_[l] E] {B : Type} [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [TopologicalSpace B] [IsModuleTopology ℚ_[l] B] [IsTopologicalRing B] [Algebra ℤ_[l] B] [IsScalarTower ℤ_[l] ℚ_[l] B] [Algebra E B] [IsScalarTower ℚ_[l] E B] (π : B →ₐ[E] E) (hπ : ∀ a, π a = 0 → IsNilpotent a) (χ : G →* Bˣ), Continuous (fun g => (χ g : B)) → ∀ w : ℤ, 1 ≤ w → (∀ g, φ g ∈ Iq l → χ g = cycA l l B (φ g) ^ w) → ∀ σ : G, ((Iq l).comap φ ⊔ Subgroup.zpowers σ).topologicalClosure = ⊤ → Ideal.span (Set.range fun g => (χ g : B) - (cycA l l B (φ g) : B)) = (if w = 1 then Ideal.span {(χ σ : B) - (cycA l l B (φ σ) : B)} else ⊤) := by
   intro l _ G _ _ _ φ hφ E _ _ _ _ _ B _ _ _ _ _ _ _ _ _ _ π hπ χ hχ w hw hI σ hσ

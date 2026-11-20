@@ -10,27 +10,27 @@ namespace GlobalTheory.LKCx.ConjR
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Simplify using `only [sh, map_mul, MulOpposite.unop_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sh_mul' (G : HTGroup p) (a b : G.C) : sh G (a * b) = sh G b * sh G a := by
   simp only [sh, map_mul, MulOpposite.unop_mul]
 
 /- English proof (translation)
-Rewrite using `[← sh_mul', Units.inv_mul]`. Simplify using `[sh]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sh_unit_mul_inv (G : HTGroup p) (y : G.Cˣ) : sh G (y : G.C) * sh G ((y⁻¹ : G.Cˣ) : G.C) = 1 := by
   rw [← sh_mul', Units.inv_mul]; simp [sh]
 
 /- English proof (translation)
-Take `⟨z, sr, hsr, hβ, hγ⟩` from `hR`. Use `⟨y'⁻¹ * z * y, s' / (s * sr), div_pos hs' (mul_pos hs hsr), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def] at hP hP' hβ ⊢ set a : G.Cˣ := y'⁻¹`. Establish `E : s' • ((y' : G.C) * B * sh G y') = (sr * s) • ((z : G.C) * (y * B * sh G y) * sh G z)`. Rewrite using `[← hP', hβ, hP, mul_smul, mul_smul_comm, smul_mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `E2` using `congrArg (fun X => (a : G.C) * X * sh G a) E`. Establish `ha1 : (a : G.C) * y' = 1` using `Units.inv_mul y'`. Establish `ha2 : sh G (y' : G.C) * sh G a = 1` using `sh_unit_mul_inv G y'`. Establish `L : (a : G.C) * (s' • ((y' : G.C) * B * sh G y')) * sh G a = s' • (B : G.C)`. Rewrite using `[mul_smul_comm, smul_mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = _ := by rw [ha1, ha2, one_mul, mul_one]`. Establish `R : (a : G.C) * ((sr * s) • ((z : G.C) * (y * B * sh G y) * sh G z)) * sh G a = (sr * s) • (((a * z * y : G.Cˣ) : G.C) * B * sh G ((a * z * y : G.Cˣ) : G.C))`.
+Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul_comm, smul_mul_assoc]`. Use `congr 1`. Simplify using `only [Units.val_mul, sh_mul', mul_assoc]`. Rewrite `E2` using `[L, R]`. Establish `hne : (sr * s) ≠ 0` using `(mul_pos hsr hs).ne'`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show s' / (s * sr) = (sr * s)⁻¹ * s' by rw [div_eq_inv_mul, mul_comm s sr], mul_smul, E2, smul_smul, inv_mul_cancel₀ hne, one_smul]`. Rewrite using `[hγ]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_of_rel (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P P' : Pair G) (B y y' : G.Cˣ) (s s' : ℚ)
     (hs : 0 < s) (hs' : 0 < s')

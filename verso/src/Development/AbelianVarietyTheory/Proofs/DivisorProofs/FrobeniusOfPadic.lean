@@ -11,7 +11,7 @@ variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)
   [IsAdicComplete (Ideal.span {(p : O)}) O]
 
 /- English proof (translation)
-Rewrite using `[WittVector.frobenius_eq_map_frobenius]`. Use extensionality with `n`. Simplify using `only [phiInv, WittVector.map_coeff]`. Conclude with `frobenius_apply_frobeniusEquiv_symm (PreTilt O p) p _`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frobenius_phiInv' (a : Ainf p O) : WittVector.frobenius (phiInv p O a) = a := by
   rw [WittVector.frobenius_eq_map_frobenius]
@@ -20,7 +20,7 @@ theorem frobenius_phiInv' (a : Ainf p O) : WittVector.frobenius (phiInv p O a) =
   exact frobenius_apply_frobeniusEquiv_symm (PreTilt O p) p _
 
 /- English proof (translation)
-Rewrite using `[WittVector.frobenius_eq_map_frobenius]`. Use extensionality with `n`. Simplify using `only [phiInv, WittVector.map_coeff]`. Conclude with `frobeniusEquiv_symm_apply_frobenius (PreTilt O p) p _`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phiInv_frobenius' (a : Ainf p O) : phiInv p O (WittVector.frobenius a) = a := by
   rw [WittVector.frobenius_eq_map_frobenius]
@@ -29,7 +29,7 @@ theorem phiInv_frobenius' (a : Ainf p O) : phiInv p O (WittVector.frobenius a) =
   exact frobeniusEquiv_symm_apply_frobenius (PreTilt O p) p _
 
 /- English proof (translation)
-Establish `key : ((_root_.frobeniusEquiv (PreTilt O p) p).symm : PreTilt O p →+* PreTilt O p).comp (ZMod.castHom (dvd_refl p) (PreTilt O p)) = ZMod.castHom (dvd_refl p) (PreTilt O p)` using `Subsingleton.elim _ _`. Simplify using `only [phiInv, ofPadic, RingHom.comp_apply]`. Use extensionality with `n`. Simplify using `only [WittVector.map_coeff]`. Conclude with `RingHom.congr_fun key _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phiInv_ofPadic (c : ℤ_[p]) : phiInv p O (ofPadic p O c) = ofPadic p O c := by
   have key : ((_root_.frobeniusEquiv (PreTilt O p) p).symm : PreTilt O p →+* PreTilt O p).comp
@@ -41,9 +41,9 @@ theorem phiInv_ofPadic (c : ℤ_[p]) : phiInv p O (ofPadic p O c) = ofPadic p O 
   exact RingHom.congr_fun key _
 
 /- English proof (translation)
-Establish `key : (_root_.frobenius (PreTilt O p) p).comp (ZMod.castHom (dvd_refl p) (PreTilt O p)) = ZMod.castHom (dvd_refl p) (PreTilt O p)` using `Subsingleton.elim _ _`. Rewrite using `[WittVector.frobenius_eq_map_frobenius]`. Simplify using `only [ofPadic, RingHom.comp_apply]`. Use extensionality with `n`. Simplify using `only [WittVector.map_coeff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `RingHom.congr_fun key _`.
+A detailed English derivation is pending.
 -/
 theorem frobenius_ofPadic (c : ℤ_[p]) :
     WittVector.frobenius (ofPadic p O c) = ofPadic p O c := by
@@ -69,13 +69,13 @@ namespace GlobalTheory.DetInv
 open PsiPhi in
 
 /- English proof (translation)
-Introduce `p _ O _ _ _ Λ _ _`. Use `⟨fun c => phiInv_ofPadic c, Function.bijective_iff_has_inverse.mpr ⟨WittVector.frobenius, frobenius_phiInv', phiInv_frobenius'⟩, (Algebra.TensorProduct.map (phiInvAlg (p := p) (O := O)) (AlgHom.id ℤ_[p] Λ)).toRingHom, (Algebra.TensorProduct.map (frobAlg (p := p) (O := O)) (AlgHom …` and prove the remaining obligations. Introduce `r`. Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a l`. Express the relevant statement in the definitionally equal form `(frobAlg (phiInvAlg a)) ⊗ₜ l = a ⊗ₜ l`. Conclude with `congrArg (· ⊗ₜ[ℤ_[p]] l) (frobenius_phiInv' a)`. Consider the case `add x y hx hy => simp only [map_add] at hx hy ⊢`. Rewrite using `[hx, hy]`.
+Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a l`. Express the relevant statement in the definitionally equal form `(phiInvAlg (frobAlg a)) ⊗ₜ l = a ⊗ₜ l`.
+Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Treat this case separately.
 
-Conclude with `congrArg (· ⊗ₜ[ℤ_[p]] l) (phiInv_frobenius' a)`. Consider the case `add x y hx hy => simp only [map_add] at hx hy ⊢`. Rewrite using `[hx, hy]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_phi_tensor : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] (Λ : Type) [CommRing Λ] [Algebra ℤ_[p] Λ],

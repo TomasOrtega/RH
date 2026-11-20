@@ -1,23 +1,21 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `O σ _ _ f hf`. Establish `hc : ∀ n : σ →₀ ℕ, ∃ o : Option σ, n ≠ 0 → ∃ i, o = some i ∧ n i ≠ 0`. Introduce `n`. Distinguish the cases in `h : n = 0`. Conclude with `⟨none, fun h' => absurd h h'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Take `⟨i, hi⟩` from `Finsupp.ne_iff.mp h`. Conclude with `⟨some i, fun _ => ⟨i, rfl, hi⟩⟩`. Use `choose c hc using hc`. Set `g : σ → MvPowerSeries σ O` to `fun i m => if c (m + Finsupp.single i 1) = some i then MvPowerSeries.coeff (m + Finsupp.single i 1) f else 0`. Establish `hg : ∀ i m, MvPowerSeries.coeff m (g i) = if c (m + Finsupp.single i 1) = some i then MvPowerSeries.coeff (m + Finsupp.single i 1) f else 0` using `fun _ _ => rfl`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (i : σ) (n : σ →₀ ℕ), MvPowerSeries.coeff n (MvPowerSeries.X i * g i) = if n i ≠ 0 ∧ c n = some i then MvPowerSeries.coeff n f else 0`. Introduce `i n`. Rewrite using `[MvPowerSeries.X_def, MvPowerSeries.coeff_monomial_mul]`. Distinguish the cases in `h : n i = 0`. Establish `h' : ¬ Finsupp.single i 1 ≤ n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h', if_neg (fun hh => hh.1 h)]`. Establish `h' : Finsupp.single i 1 ≤ n`. Rewrite using `[Finsupp.single_le_iff]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos h', one_mul, hg, tsub_add_cancel_of_le h']`. Simplify using `[h]`. Establish `hsum : f = ∑ i, MvPowerSeries.X i * g i`. Use extensionality with `n`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Simplify using `only [key]`. Distinguish the cases in `h : n = 0`. Substitute `h` using the available equality. Simplify using `using hf`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi, hn⟩` from `hc n h`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[if_pos ⟨hn, hi⟩]`. Introduce `j _ hj`. Rewrite using `[if_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨_, h2⟩`. Conclude with `hj (Option.some.inj (h2.symm.trans hi))`. Introduce `h2`. Conclude with `absurd (Finset.mem_univ i) h2`. Rewrite using `[hsum]`.
-
-Conclude with `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨i, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.MemSpanVariable.mem_span_X :
     ∀ {O σ : Type} [inst : CommRing O] [Fintype σ]

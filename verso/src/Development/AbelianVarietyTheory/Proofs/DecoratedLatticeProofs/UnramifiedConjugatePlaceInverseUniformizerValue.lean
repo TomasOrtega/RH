@@ -29,17 +29,17 @@ namespace GlobalTheory.SplitUnr
 open GlobalTheory.LFun
 
 /- English proof (translation)
-Introduce `D χ hr w w' hww hne hu`. Establish `hE` using `GlobalTheory.AdelicU.isCMExt_host D`. Establish `hres` using `(GlobalTheory.LFun.resEta_iff χ 0).1 hr`. Take `⟨⟨η, hη⟩, hμ⟩` from `hres`. Generalize the expression as in `hv : w'.under (𝓞 D.host.F) = v at hww`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨τ', hτ', -⟩` from `GlobalTheory.AdelicU.existsUnique_splitPrime_eq hE hne.symm hv hww`. Establish `key : ∀ a : (Fv D.host.F v)ˣ, locChar χ w' (Units.map (complMap hv).toMonoidHom a) = (locChar χ w (Units.map (complMap hww).toMonoidHom a))⁻¹`. Introduce `a`. Establish `e : locIdele D.host.F w (Units.map (complMap hww).toMonoidHom a) * locIdele D.host.F w' (Units.map (complMap hv).toMonoidHom a) = ideleMap D.host.F D.host.E (Units.map (Algebra.norm (AF D.host.F) : AF D.host.F ⊗[D.host.F] D.host.E →* AF D.host.F) (locIdele D.host.F w (Units.map ( …` using `Units.ext (by`. Rewrite using `[Units.val_mul, ← GlobalTheory.LFun.SplitVal.sigR_locIdele hE hww hv hne]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.Doubling.algebraMap_norm_eq hE _).symm)`. Establish `k` using `congrArg χ e`. Rewrite `k` using `[hμ η hη, pow_zero, map_mul]`. Establish `k2` using `(map_mul Circle.toUnits _ _).symm.trans ((congrArg Circle.toUnits k).trans (map_one _))`. Conclude with `eq_inv_of_mul_eq_one_right k2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hunr : UnrAt χ w'`. Introduce `x hx`. Use `set a : (Fv D.host.F v)ˣ := Units.map (ConjPlace.complEquiv hE hv hτ').symm.toRingHom.toMonoidHom x with ha`. Establish `hax : Units.map (complMap hv).toMonoidHom a = x` using `Units.ext ((ConjPlace.complEquiv hE hv hτ').apply_symm_apply (x : _))`. Rewrite using `[← hax, key, hu _ ?_, inv_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Take `⟨τ, hτ, -⟩` from `GlobalTheory.AdelicU.existsUnique_splitPrime_eq hE hne hww hv`. Unfold `Formalism.L2.Host.IsUnitAt at hx ⊢`. Establish `h1 : Valued.v ((complMap hv) (a : Fv D.host.F v)) = 1`. Rewrite using `[show (complMap hv) (a : Fv D.host.F v) = (x : _) from congrArg Units.val hax]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `h1` using `[ConjPlace.valued_complMap hE hv hτ']`. Express the relevant statement in the definitionally equal form `Valued.v (complMap hww (a : Fv D.host.F v)) = 1`. Rewrite using `[ConjPlace.valued_complMap hE hww hτ, h1]`. Conclude with `⟨hunr, eq_inv_of_mul_eq_one_right (ResEta.val_mul_val hE.2.2.1 ((GlobalTheory.LFun.resEta_iff χ 0).1 hr) hne hww hv hu hunr)⟩`.
+A detailed English derivation is pending.
 -/
 theorem unrAt_and_val_inv : ∀ (D : D7) (χ : (AE D)ˣ →* Circle), ResEta D χ 0 → ∀ w w' : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = w'.under (𝓞 D.host.F) → w ≠ w' → GlobalTheory.LFun.UnrAt (F := D.host.F) χ w → GlobalTheory.LFun.UnrAt (F := D.host.F) χ w' ∧ GlobalTheory.LFun.val (F := D.host.F) χ w' = (GlobalTheory.LFun.val (F := D.host.F) χ w)⁻¹ := by
   intro D χ hr w w' hww hne hu

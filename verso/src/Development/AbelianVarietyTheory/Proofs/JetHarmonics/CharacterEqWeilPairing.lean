@@ -18,17 +18,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `haveI : NeZero M := ⟨hM.ne'⟩`. Use `haveI : Module.Projective ℤ Dw.La := by`. Take `⟨s, hs⟩` from `Module.projective_def'.1 Dw.proj`. Use `haveI : Module.Free ℤ (Dw.La →₀ 𝓞 E) := inferInstance`. Conclude with `Module.Projective.of_split (s.restrictScalars ℤ) ((Finsupp.linearCombination (𝓞 E) id).restrictScalars ℤ) (LinearMap.ext fun x => LinearMap.congr_fun hs x)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `f : ℤ →ₗ[ℤ] Additive Fˣ` to `LinearMap.toSpanSingleton ℤ (Additive Fˣ) (Additive.ofMul ζ)`. Establish `hmem : ∀ a, φ.toIntLinearMap a ∈ LinearMap.range f`. Introduce `a`. Establish `h1 : Additive.toMul (φ a) ∈ rootsOfUnity M F`. Rewrite using `[mem_rootsOfUnity, ← toMul_nsmul, ← map_nsmul, hφ]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Both sides reduce to the same expression. Take `⟨i, -, hi⟩` from `hζ.eq_pow_of_mem_rootsOfUnity h1`. Use `⟨i, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(i : ℤ) • Additive.ofMul ζ = φ a`. Rewrite using `[natCast_zsmul, ← ofMul_pow, hi]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Take `⟨ψ, hψ⟩` from `Module.projective_lifting_property f.rangeRestrict (φ.toIntLinearMap.codRestrict _ hmem) f.surjective_rangeRestrict`. Take `⟨d, hd⟩` from `Dw.unimod.2 ψ`. Use `⟨-d, fun a => ?_⟩` and prove the remaining obligations. Establish `skew : Dw.EF a (-d) = ψ a`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `Dw.alt (d + a)` as an intermediate fact. Simplify using `only [map_add, LinearMap.add_apply, Dw.alt] at this`. Rewrite using `[map_neg, ← hd]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : f (ψ a) = φ a` using `congrArg Subtype.val (LinearMap.congr_fun hψ a)`.
-
-Rewrite using `[skew, ← h2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem datum_character_eq_zpow {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (Dw : Datum H)
     {F : Type} [Field F] {M : ℕ} (hM : 0 < M) {ζ : Fˣ} (hζ : IsPrimitiveRoot ζ M)
@@ -64,23 +62,23 @@ theorem datum_character_eq_zpow {E : Type} [Field E] [NumberField E] [IsCMField 
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ _ F _ _ A`. Set `_` to `H.starRing`. Introduce `oA Dw I N k hN hk hco β u u' hβ huu κ hκ`. Establish `hM : 0 < k * N` using `Nat.mul_pos hk hN`. Establish `hlin : ∀ (c : 𝓞 E) b, I.ev (k * N) (c • b) = I.ev (k * N) b ≫ oA.act c` using `fun c b => I.lin _ c b`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, k', htk⟩` from `(Nat.isCoprime_iff_coprime.2 hco).map (Int.castRingHom (𝓞 E))`. Simplify using `only [eq_intCast, Int.cast_natCast] at htk`. Choose the witnesses or unpack the hypotheses as in `⟨ε, w, v, hw, hv⟩ : ∃ ε w v : 𝓞 E, β * ε = ((k * N : ℕ) : 𝓞 E) * w ∧ 1 = ε + v * β := by`. Use `⟨k * k' * u' * star β, k' * u', star β * t + k * k' * u, ?_, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← hβ]`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(-(k * k' : 𝓞 E)) * huu - htk - t * hβ`. Establish `hzero : ∀ (c : 𝓞 E) (a : Dw.La), I.ev (k * N) ((((k * N : ℕ) : 𝓞 E) * c) • a) = 1`. Introduce `c a`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_smul, Nat.cast_smul_eq_nsmul]`. Conclude with `(I.ker _ hM _).2 ⟨_, rfl⟩`. Establish `hkill : ∀ a, I.ev (k * N) (ε • a) ≫ oA.act β = 1`. Introduce `a`. Rewrite using `[← hlin, smul_smul, hw, hzero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfix : ∀ a, I.ev (k * N) a ≫ oA.act β = 1 → I.ev (k * N) (ε • a) = I.ev (k * N) a`. Introduce `a ha`. Take `⟨f, hf⟩` from `(I.ker _ hM (β • a)).1 (by rw [hlin]; exact ha)`. Establish `h1 : a = ε • a + (k * N) • (v • f)`. Rewrite using `[smul_comm (k * N) v f, ← hf, smul_smul, ← add_smul, ← hv, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `conv_rhs => rw [h1, I.add, (I.ker _ hM _).2 ⟨_, rfl⟩, _root_.mul_one]`. Set `φ : Dw.La →+ Additive Fˣ` to `AddMonoidHom.mk' (fun a => Additive.ofMul (κ (I.ev (k * N) (ε • a)))) (fun a b => by rw [smul_add, I.add, hκ _ _ (hkill a) (hkill b), ofMul_mul])`. Establish `hφ : ∀ a, φ ((k * N) • a) = 0`. Introduce `a`. Rewrite using `[← map_zero φ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Additive.ofMul (κ (I.ev (k * N) (ε • (k * N) • a))) = Additive.ofMul (κ (I.ev (k * N) (ε • 0)))`. Rewrite using `[smul_comm ε (k * N) a, (I.ker _ hM _).2 ⟨_, rfl⟩, smul_zero, (I.ker _ hM 0).2 ⟨0, (smul_zero _).symm⟩]`. Take `⟨d, hd⟩` from `datum_character_eq_zpow Dw hM (I.ζ_prim _ hM) φ hφ`. Use `⟨I.ev (k * N) (H.bar ε • d), ?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[← hlin, smul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `I.ev (k * N) ((H.bar β * H.bar ε) • d) = 1`. Rewrite using `[← map_mul, hw, map_mul, map_natCast, hzero]`. Establish `hzN : z ^ N = 1` using `pow_eq_one_of_kill oA.toRingAct (by rw [_root_.mul_comm]; exact hβ) z hz`. Take `⟨a, rfl⟩` from `(I.onto _ hM z).1 (by rw [pow_mul', hzN, one_pow])`. Establish `h1 : κ (I.ev (k * N) a) = I.ζ (k * N) ^ Dw.EF a (H.bar ε • d)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Dw.adj, ← hd]`. Express the relevant statement in the definitionally equal form `_ = κ (I.ev (k * N) (ε • ε • a))`. Rewrite using `[hfix _ (hkill a), hfix a hz]`. Rewrite using `[h1]`. Conclude with `I.isom _ hM _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem character_eq_weil_pairing :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] (F : Type) [Field F] [Algebra (FractionRing R) F] (A : PolAV (Sp (FractionRing R))), letI := H.starRing; ∀ (oA : A.OAct (𝓞 E)) (Dw : Datum H) (_I : TateIso Dw F (TFK (R := R) F ⟶ A.A) (fun a g => g ≫ oA.act a) (fun n g g' c => WeilIs A.A A.L n g g' (unitOn c))) (N k : ℕ), 1 ≤ N → 1 ≤ k → Nat.Coprime N k → ∀ β u u' : 𝓞 E, β * star β = (N : 𝓞 E) → u * β + u' * star β = 1 → ∀ κ : (TFK (R := R) F ⟶ A.A) → Fˣ, (∀ z z', z ≫ oA.act β = 1 → z' ≫ oA.act β = 1 → κ (z * z') = κ z * κ z') → ∃ b : TFK (R := R) F ⟶ A.A, b ≫ oA.act (star β) = 1 ∧ ∀ z, z ≫ oA.act β = 1 → WeilIs A.A A.L ((k * N : ℕ) : ℤ) z b (unitOn (κ z)) := by

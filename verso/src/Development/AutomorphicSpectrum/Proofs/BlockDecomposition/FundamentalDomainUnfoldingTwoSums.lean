@@ -24,43 +24,41 @@ namespace GlobalTheory.CompanionTheory.UnfoldFam
 open GlobalTheory.CompanionTheory.UnfoldAbs
 
 /- English proof (translation)
-Introduce `A X Y U _ _ _ lam _ Λ _ 𝓖 h𝓖 h1 _ _ c y0 F F0 ch hF hch hnorm hmul hΛ Um hUm τ hτ hcτ hbd e he hfib hτe hF0 hν`. Use `haveI : IsFiniteMeasure (lam.restrict 𝓖) := ⟨by simp [h1]⟩`. Establish `hUm0 : ∀ q, 0 ≤ Um q`. Introduce `q`. Take `⟨l, hl⟩` from `hbd 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hl ((τ l).symm q)` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Conclude with `(norm_nonneg _).trans this`. Establish `hb : ∀ b, Summable (fun q => ‖F q b‖) ∧ ∑' q, ‖F q b‖ ≤ ∑' q, Um q`. Introduce `b`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨l, hl⟩` from `hbd b`. Establish `hs : Summable (fun q => Um (τ l q))` using `(τ l).summable_iff.mpr hUm`. Establish `hs1 : Summable (fun q => ‖F q b‖)` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hl hs`. Use `⟨hs1, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsub : ∀ {Z : Type} (j : Z → X), Function.Injective j → ∀ b, Summable (fun z => ‖F (j z) b‖) ∧ ∑' z, ‖F (j z) b‖ ≤ ∑' q, Um q`. Introduce `Z j hj b`. Use `⟨(hb b).1.comp_injective hj, ?_⟩` and prove the remaining obligations. Conclude with `(tsum_comp_le_tsum_of_inj (hb b).1 (fun _ => norm_nonneg _) hj).trans (hb b).2`. Establish `key : ∀ {Z : Type} [Countable Z] (j : Z → X), Function.Injective j → HasSum (fun z => ∫ b in 𝓖, F (j z) b * ch b ∂lam) (∫ b in 𝓖, (∑' z, F (j z) b) * ch b ∂lam)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `Z _ j hj`. Use `hasSum_integral_of_norm_bound (lam.restrict 𝓖) (fun z b => F (j z) b * ch b) (fun z => ((hF (j z)).mul hch).restrict) (∑' q, Um q) (fun b => by` as an intermediate fact. Simplify `hsub j hj b)` using `[hnorm]`. Simplify `this` using `only [tsum_mul_right]`. Establish `heu : ∀ u, Function.Injective (fun l : Λ => e (l, u))` using `fun u a b h => (Prod.mk.inj (he h)).1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hF0e : ∀ u, F0 u = F (e (0, u))`. Introduce `u`. Use function extensionality and compare the values at `b`. Use `hF0 0 u b` as an intermediate fact. Simplify using `using this.symm`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm0 : ∀ u, AEStronglyMeasurable (F0 u) lam` using `fun u => hF0e u ▸ hF (e (0, u))`. Establish `hSs : ∀ u, Summable (fun l : Λ => Um (e (l, u)))` using `fun u => hUm.comp_injective (heu u)`. Establish `hS0 : ∀ u, 0 ≤ ∑' l : Λ, Um (e (l, u))` using `fun u => tsum_nonneg fun _ => hUm0 _`. Establish `horb : ∀ u b, Summable (fun l : Λ => ‖F0 u ((l : A) + b)‖) ∧ ∑' l : Λ, ‖F0 u ((l : A) + b)‖ ≤ ∑' l : Λ, Um (e (l, u))`. Introduce `u b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨l0, hl0⟩` from `hbd b`. Establish `hle : ∀ l : Λ, ‖F0 u ((l : A) + b)‖ ≤ Um (e (l0 + l, u))`. Introduce `l`. Rewrite using `[← hF0 l u b, ← hτe l l0 u]`. Conclude with `hl0 _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `hs : Summable (fun l : Λ => Um (e (l0 + l, u)))` using `(Equiv.addLeft l0).summable_iff.mpr (hSs u)`. Establish `hs1 : Summable (fun l : Λ => ‖F0 u ((l : A) + b)‖)` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hle hs`. Use `⟨hs1, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hint0 : ∀ u, Integrable (F0 u) lam` using `fun u => integrable_of_lattice_bound lam Λ 𝓖 h𝓖 h1 (F0 u) (hm0 u) _ (horb u)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hnb : ∀ u, ∫ b, ‖F0 u b‖ ∂lam ≤ ∑' l : Λ, Um (e (l, u))`. Introduce `u`. Rewrite using `[integral_norm_eq_lintegral_enorm (hm0 u)]`. Use `ENNReal.toReal_le_of_le_ofReal (hS0 u) ?_` and prove the remaining obligations. Establish `ee : ∫⁻ b, ‖F0 u b‖ₑ ∂lam = ∑' l : Λ, ∫⁻ b in 𝓖, ‖F0 u ((l : A) + b)‖ₑ ∂lam` using `h𝓖.lintegral_eq_tsum'' _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmeas : ∀ l : Λ, AEMeasurable (fun b => ‖F0 u ((l : A) + b)‖ₑ) (lam.restrict 𝓖)` using `fun l => (((hm0 u).comp_measurePreserving (measurePreserving_add_left lam (l : A))).enorm).restrict`. Rewrite using `[ee, ← lintegral_tsum hmeas]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono (fun b => ?_)` and prove the remaining obligations. Repeatedly rewrite using `[← ofReal_norm_eq_enorm]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) (horb u b).1]`. Conclude with `ENNReal.ofReal_le_ofReal (horb u b).2`. Use `_ = ENNReal.ofReal (∑' l : Λ, Um (e (l, u))) := by simp [h1]`. Use `⟨fun u => ⟨hint0 u, hnb u⟩, ?_⟩` and prove the remaining obligations. Establish `hT` using `key (Z := X) id Function.injective_id`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [id] at hT`. Establish `hsig` using `(Equiv.sigmaFiberEquiv c).hasSum_iff.mpr hT`. Establish `hg : HasSum (fun y => ∫ b in 𝓖, (∑' z : {x // c x = y}, F z b) * ch b ∂lam) (∫ b in 𝓖, (∑' q, F q b) * ch b ∂lam)` using `hsig.sigma (fun y => key (Z := {x // c x = y}) Subtype.val Subtype.val_injective)`. Establish `hzero : ∀ y, y ≠ y0 → ∫ b in 𝓖, (∑' z : {x // c x = y}, F z b) * ch b ∂lam = 0`. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨ν, hν1, hνq⟩` from `hν y hy`. Use `setIntegral_eq_zero_of_translate lam Λ 𝓖 h𝓖 _ ν (ch ν) hν1 (fun l b => ?_) (fun b => ?_)` and prove the remaining obligations. Establish `hs : ∑' z : {x // c x = y}, F z ((l : A) + b) = ∑' z : {x // c x = y}, F z b`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hs, hmul, hΛ, one_mul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hs : ∑' z : {x // c x = y}, F z (ν + b) = ∑' z : {x // c x = y}, F z b` using `tsum_congr fun z => hνq z z.2 b`. Rewrite using `[hs, hmul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hT'` using `hg.unique (hasSum_single y0 (fun y hy => hzero y hy))`. Rewrite using `[hT']`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Set `ee : Λ × U ≃ {x // c x = y0}` to `Equiv.ofBijective (fun p => ⟨e p, (hfib _).2 ⟨p, rfl⟩⟩) ⟨fun a b h => he (congrArg Subtype.val h), fun q => by`. Take `⟨p, hp⟩` from `(hfib q).1 q.2`. Conclude with `⟨p, Subtype.ext hp⟩⟩`. Establish `hsum : ∀ b, ∑' z : {x // c x = y0}, F z b = ∑' p : Λ × U, F (e p) b` using `fun b => (ee.tsum_eq (fun z => F z b)).symm`. Repeatedly rewrite using `[hsum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK` using `key e he`. Establish `hK' : HasSum (fun p : U × Λ => ∫ b in 𝓖, F (e (p.2, p.1)) b * ch b ∂lam) (∫ b in 𝓖, (∑' p : Λ × U, F (e p) b) * ch b ∂lam)` using `(Equiv.prodComm U Λ).hasSum_iff.mpr hK`. Use `hK'.prod_fiberwise (fun u => ?_)` and prove the remaining obligations. Establish `hs` using `hK'.summable.prod_factor u`. Establish `hint1 : Integrable (fun b => F0 u b * ch b) lam` using `(hint0 u).mono ((hint0 u).aestronglyMeasurable.mul hch) (ae_of_all _ fun b => by simp [hnorm])`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hval : ∫ b, F0 u b * ch b ∂lam = ∑' l : Λ, ∫ b in 𝓖, F (e (l, u)) b * ch b ∂lam`. Rewrite using `[h𝓖.integral_eq_tsum'' _ hint1]`. Use `tsum_congr fun l => ?_` and prove the remaining obligations. Use `integral_congr_ae (ae_of_all _ fun b => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `F0 u ((l : A) + b) * ch ((l : A) + b) = F (e (l, u)) b * ch b`.
-
-Rewrite using `[hF0, hmul, hΛ, one_mul]`. Rewrite using `[hval]`. Conclude with `hs.hasSum`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unfold_fam : ∀ {A X Y U : Type} [AddCommGroup A] [MeasurableSpace A] [MeasurableAdd A]
     (lam : Measure A) [lam.IsAddLeftInvariant] (Λ : AddSubgroup A) [Countable Λ] (𝓖 : Set A)

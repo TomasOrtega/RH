@@ -27,7 +27,7 @@ def pG (P : S.Presents s i) (L : LB X) : PCh P L ⥤ AffOp X₀ where
   map a := (homOfLE (leOfHom a)).op
 
 /- English proof (translation)
-Use `haveI := P.isOpen T`. Unfold `GlobalTheory.PresCharts.chartOpen`. Conclude with `isAffineOpen_opensRange _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isAffineOpen_chartOpen (P : S.Presents s i) (T : AffOp X₀) :
     IsAffineOpen (GlobalTheory.PresCharts.chartOpen P T) := by
@@ -40,9 +40,9 @@ def pH (P : S.Presents s i) (L : LB X) : PCh P L ⥤ GlobalTheory.LBObs.Model.Ch
   map {p q} a := homOfLE (GlobalTheory.PresCharts.chartOpen_le P ((pG P L).map a))
 
 /- English proof (translation)
-Establish `k : ∀ (x : X₀) (U : X₀.Opens), x ∈ U → ∃ t : PCh P L, x ∈ opOf (pG P L) t ∧ opOf (pG P L) t ≤ U` using `fun x U hx ↦ by`. Take `⟨m, hm⟩` from `LB.mem_of_cover hL (i x)`. Take `⟨_, ⟨W, hW, rfl⟩, h1, h2⟩` from `X₀.isBasis_affineOpens.exists_subset_of_mem_open (show x ∈ ((U ⊓ i ⁻¹ᵁ L.U m : X₀.Opens) : Set X₀) from ⟨hx, hm⟩) (U ⊓ i ⁻¹ᵁ L.U m).isOpen`. Use `⟨⟨(⟨W, hW⟩, m), fun y hy ↦ ?_⟩, h1, fun y hy ↦ (h2 hy).1⟩` and prove the remaining obligations. Take `⟨y₀, hy₀, rfl⟩` from `GlobalTheory.PresCharts.exists_of_mem_chartOpen hI P _ y hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(h2 hy₀).2`. Use `⟨k, fun t₁ t₂ x U hx h₁ h₂ ↦ ?_⟩` and prove the remaining obligations. Take `⟨t, h1, h2⟩` from `k x (opOf (pG P L) t₁ ⊓ opOf (pG P L) t₂ ⊓ U) ⟨⟨h₁, h₂⟩, hx⟩`. Conclude with `⟨t, ⟨homOfLE (h2.trans (inf_le_left.trans inf_le_left))⟩, ⟨homOfLE (h2.trans (inf_le_left.trans inf_le_right))⟩, h1, h2.trans inf_le_right⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isBas_pG (hI : I ^ 2 = 0) (P : S.Presents s i) {L : LB X} (hL : L.IsLB) : IsBas (opOf (pG P L)) := by
   have k : ∀ (x : X₀) (U : X₀.Opens), x ∈ U → ∃ t : PCh P L, x ∈ opOf (pG P L) t ∧ opOf (pG P L) t ≤ U :=
@@ -64,15 +64,13 @@ end GlobalTheory.LBObsZero
 open GlobalTheory.LBObsZero in
 
 /- English proof (translation)
-Introduce `R R₀ _ _ I hI π hπ hk R₁ _ _ α X₀ s₀ S X s i P L h hL`. Establish `hH : ∀ T : PCh P L, opOf (pG P L) T ≤ i ⁻¹ᵁ opOf (GlobalTheory.LBObs.Model.chG L) ((pH P L).obj T)` using `fun T ↦ GlobalTheory.PresCharts.le_preimage_chartOpen P _`. Set `w : ∀ (T T' : GlobalTheory.LBObs.Model.Ch L) (_ : T ⟶ T'), Γ(X, opOf (GlobalTheory.LBObs.Model.chG L) T')ˣ` to `fun T T' a ↦ res (le_inf T'.2 ((opOf_le (GlobalTheory.LBObs.Model.chG L) a).trans T.2)) (L.g T'.1.2 T.1.2)`. Establish `hw : IsFrame L _ _ w` using `GlobalTheory.LBObs.Model.isFrame_ch hL`. Establish `hfr` using `isFrame_pull X _ _ _ L w X₀ i (PCh P L) (opOf (pG P L)) (opOf_le (pG P L)) (pH P L) hH hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcoc` using `GlobalTheory.LBObs.Model.isCoc_of_isFrame hL hw`. Use `choose σ hσ using fun T ↦ GlobalTheory.Obs.Model.exists_isSig hI hπ α (((ofSys S).restrict (pG P L)).p T) (Pre.semi _ T) (Pre.surj _ T) (Pre.ker _ T)`. Use `⟨PCh P L, inferInstance, inferInstance, pG P L, isBas_pG hI P hL, _, hfr, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Use `⟨fun T T' a ↦ Units.map (GlobalTheory.PresCharts.chartSec P ((pG P L).obj T')).hom.toMonoidHom (w _ _ ((pH P L).map a)), σ, 0, fun T T' a ↦ ?_, hσ, (map_zero _).symm, fun T T' T'' a b ↦ ⟨map_zero _, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg (fun f ↦ f.hom (w _ _ ((pH P L).map a)).val) (GlobalTheory.PresCharts.appLE_chartSec P ((pG P L).obj T') (hH T'))` as an intermediate fact. Conclude with `this.symm`. Establish `e0 : (0 : Z2 (ext R₁ ((pG P L) ⋙ OAff s₀))).1 T T' T'' a b = 0` using `rfl`. Rewrite using `[e0, map_zero, add_zero, _root_.one_mul]`. Establish `e1` using `hcoc ((pH P L).map a) ((pH P L).map b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e1` using `[← Functor.map_comp]`. Establish `e2` using `congrArg (fun f ↦ f.hom (w _ _ ((pH P L).map a)).val) (GlobalTheory.PresCharts.res_chartSec P ((pG P L).map b))`. Use `show (mp S.F ((pG P L).map b)) ((GlobalTheory.PresCharts.chartSec P ((pG P L).obj T')).hom (w _ _ ((pH P L).map a)).val) * (GlobalTheory.PresCharts.chartSec P ((pG P L).obj T'')).hom (w _ _ ((pH P L).map b)).val = (GlobalTheory.PresCharts.chartSec P ((pG P L).obj T'')).hom (w _ _ …`. Rewrite using `[e1, Units.val_mul]`. Use `erw [map_mul]`.
-
-Use `congr 1`. Conclude with `e2.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LBObs.isObL_pull_zero : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (R₁ : Type) [CommRing R₁] [Algebra R₀ R₁] (α : Aug I π R₁) (X₀ : Scheme.{0}) (s₀ : X₀ ⟶ Sp R₀) (S : Sys I π s₀) (X : Scheme.{0}) (s : X ⟶ Sp R) (i : X₀ ⟶ X) (P : S.Presents s i) (L : LB X), IsPullback i s₀ s (spMap π) → L.IsLB → IsObL S α (L.pull i) 0 := by
   intro R R₀ _ _ I hI π hπ hk R₁ _ _ α X₀ s₀ S X s i P L h hL

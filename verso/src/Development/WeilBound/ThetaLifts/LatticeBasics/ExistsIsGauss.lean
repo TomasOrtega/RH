@@ -20,7 +20,7 @@ open GlobalTheory.CompanionTheory.CMAdele
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use `haveI : IsEmpty {w : InfinitePlace F // w.IsComplex} := ⟨fun w => InfinitePlace.not_isReal_iff_isComplex.2 w.2 (IsTotallyReal.isReal w.1)⟩`. Rewrite using `[Algebra.trace_prod_apply, Subsingleton.elim (evI F a).2 0, map_zero, add_zero, Algebra.trace_eq_matrix_trace (Pi.basisFun ℝ _), Matrix.trace]`. Use `Fintype.sum_equiv (Equiv.subtypeUnivEquiv IsTotallyReal.isReal) _ _ fun w => ?_` and prove the remaining obligations. Simplify using `only [Matrix.diag, Algebra.leftMulMatrix_eq_repr_mul, Pi.basisFun_repr, Pi.basisFun_apply, Pi.mul_apply, Pi.single_eq_same, mul_one, Equiv.subtypeUnivEquiv_apply]`. Conclude with `congrArg Complex.re (InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply w.2 (a.1 w.1))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trace_evI (hF : IsTotallyReal F) (a : AF F) : Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F a) =
     ∑ w : InfinitePlace F, (InfinitePlace.Completion.extensionEmbedding w (a.1 w)).re := by
@@ -34,9 +34,9 @@ theorem trace_evI (hF : IsTotallyReal F) (a : AF F) : Algebra.trace ℝ (mixedEm
   exact congrArg Complex.re (InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply w.2 (a.1 w.1))
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, star_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, star_add]`. Consider the case `tmul a x`. Express the relevant statement in the definitionally equal form `piInf τ (a ⊗ₜ[F] σ x) = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[piInf_tmul, piInf_tmul, h.2.2.2, star_mul', show star (InfinitePlace.Completion.extensionEmbedding w (a.1 w)) = _ from Complex.conj_eq_iff_im.2 (im_extension h.1 w _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem piInf_cA (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) (z : AE F E) :
     piInf τ (cA σ z) = star (piInf τ z) := by
@@ -49,9 +49,9 @@ theorem piInf_cA (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) (
       Complex.conj_eq_iff_im.2 (im_extension h.1 w _)]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, add_zero]`. Conclude with `map_zero _`. Consider the case `add x y hx hy`. Simplify using `only [map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_add_add_comm, ← hx, ← hy]`. Conclude with `map_add _ _ _`. Consider the case `tmul a x`. Express the relevant statement in the definitionally equal form `_ = _ + piInf τ (a ⊗ₜ[F] σ x)`. Rewrite using `[trace_tmul, piInf_tmul, piInf_tmul, ← mul_add, ← map_add, ← trace_cm h, ← piInf_tmul, Algebra.algebraMap_eq_smul_one (A := E), ← TensorProduct.smul_tmul, piInf_tmul, map_one, mul_one, Algebra.smul_def, mul_comm]`.
+Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_trace (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) (z : AE F E) :
     InfinitePlace.Completion.extensionEmbedding w ((Algebra.trace (AF F) (AE F E) z).1 w) = piInf τ z + piInf τ (cA σ z) := by
@@ -68,7 +68,7 @@ theorem ext_trace (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) 
       Algebra.smul_def, mul_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `(piInf_tmul τ 1 (J i j)).trans (by rw [show (1 : AF F).1 w = 1 from rfl, map_one, one_mul]; rfl)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem map_incM {w : InfinitePlace F} (τ : EmbOver E w) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     (incM F J).map (piInf τ) = J.map τ.1 := by
@@ -78,9 +78,9 @@ theorem map_incM {w : InfinitePlace F} (τ : EmbOver E w) {n : ℕ} (J : Matrix 
 variable {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
 
 /- English proof (translation)
-Rewrite using `[trace_evI h.1]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `e : (v.map (cA σ)).map (piInf (τ w)) = (v.map (piInf (τ w))).map star`. Use extensionality with `i j`. Conclude with `piInf_cA h _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[symp, ext_trace h (τ w), piInf_cA h, neg_one_mul, map_neg, hTens_tr, AddMonoidHom.map_trace (piInf (τ w)), Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, Matrix.transpose_map, map_incM, map_incM, e, ← hf]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem trace_symp (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (u v : Matrix (Fin n) (Fin d) (AE F E)) :
     Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F (symp (cA σ) (-1) (incM F X.J) (incM F W.J) u v)) =
@@ -97,7 +97,7 @@ theorem trace_symp (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E
   ring
 
 /- English proof (translation)
-Establish `a : ∀ {u}, At (evI F) u → ∀ c : AF F, evI F c = 0 → c • M.co.e u = 0` using `fun hu c hc => by`. Rewrite using `[← map_smul, hu c hc, map_zero]`. Use `M.co.e.injective (Prod.ext (funext fun i => ?_) (funext fun i => ?_))` and prove the remaining obligations. Rewrite using `[← lift_evI (z := (M.co.e u).1 i) fun c hc => congrFun (congrArg Prod.fst (a hu c hc)) i, ← lift_evI (z := (M.co.e v).1 i) fun c hc => congrFun (congrArg Prod.fst (a hv c hc)) i, congrFun h1 i]`. Rewrite using `[← lift_evI (z := (M.co.e u).2 i) fun c hc => congrFun (congrArg Prod.snd (a hu c hc)) i, ← lift_evI (z := (M.co.e v).2 i) fun c hc => congrFun (congrArg Prod.snd (a hv c hc)) i, congrFun h2 i]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_coord (M : Model σ X W) {u v : Matrix (Fin n) (Fin d) (AE F E)} (hu : At (evI F) u) (hv : At (evI F) v)
     (h1 : (fun i => evI F ((M.co.e u).1 i)) = fun i => evI F ((M.co.e v).1 i))
@@ -111,7 +111,7 @@ theorem eq_of_coord (M : Model σ X W) {u v : Matrix (Fin n) (Fin d) (AE F E)} (
       ← lift_evI (z := (M.co.e v).2 i) fun c hc => congrFun (congrArg Prod.snd (a hv c hc)) i, congrFun h2 i]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `sub_eq_zero.1 (eq_zero_of_piInf σ h τ _ (fun c hc => ?_) fun w => ?_)` and prove the remaining obligations. Apply the tactic sequence `rw [smul_sub, at_entry hu i j c hc, at_entry hv i j c hc, sub_zero]`. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.2 (congrFun (congrFun (e w) i) j)`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_piInf (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) {u v : Matrix (Fin n) (Fin d) (AE F E)}
     (hu : At (evI F) u) (hv : At (evI F) v) (e : ∀ w, u.map (piInf (τ w)) = v.map (piInf (τ w))) : u = v := by
@@ -127,27 +127,27 @@ def tr (κ : Type) [Fintype κ] : (κ → mixedEmbedding.mixedSpace F) →ₗ[�
     (fun t y b => by simp only [linForm_apply, Pi.smul_apply, mul_smul_comm, ← Finset.smul_sum, map_smul])
 
 /- English proof (translation)
-The claim follows from `linForm_apply b y`.
+A detailed English derivation is pending.
 -/
 theorem tr_apply {κ : Type} [Fintype κ] (y b : κ → mixedEmbedding.mixedSpace F) :
     tr κ y b = Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (∑ i, y i * b i) := linForm_apply b y
 
 /- English proof (translation)
-Establish `h` using `hB.cm`. Take `⟨S, J, sAt, sev, sJ⟩` from `exists_real_structure σ h B.emb M.co.e fun w => cs (X.θ w) (W.θ w)`. Establish `hom : ∀ p q, om (tr (Fin n × Fin d)) p q = ∑ w, -(2 * (hf (X.J.map (B.emb w).1) (W.J.map (B.emb w).1) ((S p).map (piInf (B.emb w))) ((S q).map (piInf (B.emb w)))).re)` using `fun p q => by`. Establish `es : ∀ a b : AF F, evI F (a - b) = evI F a - evI F b` using `fun a b => map_sub (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1`. Rewrite using `[← trace_symp h, M.co.form, es, map_sub, om, tr_apply, tr_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [dotProduct, evI_sum, evI_mul, congrFun (sev _).1, congrFun (sev _).2]`. Establish `hA : ∀ w, (X.J.map (B.emb w).1)ᴴ = X.J.map (B.emb w).1` using `fun w => by`. Use extensionality with `i j`. Rewrite using `[Matrix.conjTranspose_apply, Matrix.map_apply, Matrix.map_apply, ← h.2.2.2, hX.herm]`. Establish `hC : ∀ w, (Complex.I • W.J.map (B.emb w).1)ᴴ = Complex.I • W.J.map (B.emb w).1` using `fun w => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, star_mul', ← h.2.2.2, hW.skew]`. Simplify using the standard rewrite rules. Take `⟨Q, Q', f, pos, hf', hv⟩` from `exists_vacuum (tr (F := F) (Fin n × Fin d)) (fun x y => by simp only [tr_apply, mul_comm]) J (fun p q => by`. Simplify using `only [hom, sJ, hf_cs (hX.cartan _) (hW.cartan _), Complex.neg_re, ← Finset.sum_neg_distrib, mul_neg])`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use the proof step `(fun p q => by simp only [hom, sJ, hf_cs_cs (hX.cartan _) (hW.cartan _)])`. Use the proof step `(fun p hp => by`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w, (S p).map (piInf (B.emb w)) ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: S p = 0` using `eq_of_piInf h B.emb (sAt p) (fun c _ => smul_zero c) fun w => by rw [hn]; simp`. Establish `e` using `sev p`. Rewrite `e` using `[this, map_zero]`. Conclude with `hp (Prod.ext (e.1.symm.trans (funext fun _ => evI_zero)) (e.2.symm.trans (funext fun _ => evI_zero)))`. Simplify using `only [hom, sJ]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `Finset.sum_pos' (fun v _ => ?_) ⟨w, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : (S p).map (piInf (B.emb v)) = 0`. Simplify using `[hv, hf]`. Combine the linear relations using `[hf_neg (hA v) (hC v) (hX.cartan v) (hW.cartan v) hv]`. Combine the linear relations using `[hf_neg (hA w) (hC w) (hX.cartan w) (hW.cartan w) hw])`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Q, Q', f, pos, hf', fun _ => 1, fun u u' hu hu' e g g' hg hg' => ?_⟩` and prove the remaining obligations. Set `p` to `(fun i => evI F ((M.co.e u).1 i), fun i => evI F ((M.co.e u).2 i))`. Establish `e1 : S p = u` using `eq_of_coord M (sAt p) hu (sev p).1 (sev p).2`. Establish `e2 : u' = S (J p)` using `eq_of_piInf h B.emb hu' (sAt _) fun w => by`. Rewrite using `[e, sJ, e1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[cs]`. Rewrite using `[actsD_unique M hB.std hu hg, actsD_unique M hB.std hu' hg']`. Use extensionality with `x`. Rewrite using `[SchwartzMap.smul_apply, dOp_apply, dOp_apply, e2, (sev _).1, (sev _).2]`. Conclude with `hv p x`.
+A detailed English derivation is pending.
 -/
 theorem exists_isGauss {B : Base F E} (M : Model σ X W) {r s r' s' : ℕ} (hB : B.IsGood σ) (hX : X.IsHerm σ B r s)
     (hW : W.IsSkew σ B r' s') :
@@ -200,7 +200,7 @@ theorem exists_isGauss {B : Base F E} (M : Model σ X W) {r s r' s' : ℕ} (hB :
   exact hv p x
 
 /- English proof (translation)
-Take `⟨Q, Q', f, pos, hf', hG⟩` from `exists_isGauss M hB hX hW`. Conclude with `schwartz_functional_eq_zero_of_dense Q Q' 1 f one_ne_zero pos hf' _ (Submodule.mem_sInf.2 fun _ hN => hN.1 _ hG) (fock_mul_linear F E σ n d X W M B.ψ B.emb hB.std) T hT`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pol_dense {B : Base F E} (M : Model σ X W) {r s r' s' : ℕ} (hB : B.IsGood σ) (hX : X.IsHerm σ B r s)
     (hW : W.IsSkew σ B r' s') (T : SInf F (Fin n × Fin d) →L[ℂ] ℂ) (hT : ∀ f ∈ M.Pol B.ψ B.emb, T f = 0) : T = 0 := by
@@ -211,7 +211,7 @@ theorem pol_dense {B : Base F E} (M : Model σ X W) {r s r' s' : ℕ} (hB : B.Is
 end Dense
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, -, φ, h1, h2, rfl⟩`. Conclude with `Dense.pure_mem f ⟨h1, (h2.and hp.good.std).mono fun v hv => hv.1.trans hv.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem polSch : PolSch := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp
@@ -220,15 +220,13 @@ theorem polSch : PolSch := by
   exact Dense.pure_mem f ⟨h1, (h2.and hp.good.std).mono fun v hv => hv.1.trans hv.2⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp h0 hz Φ hΦ`. Take `⟨hc, hcont⟩` from `hW F E σ B n d X W M χX χW om r s r' s' hp (Or.inr h0)`. Establish `add` using `fun Φ Ψ => PositivityTheory.ThKG.I_add (Φ := Φ) (Ψ := Ψ) hp.weil fun Φ h => (hc Φ h).1`. Use function extensionality and compare the values at `h`. Establish `key : ∀ Φ ∈ Submodule.span ℂ {Φ | ∃ f φ, Dense.Good φ ∧ Φ = pure (F` using `F) (κ := Fin n × Fin d) f φ}, Φ ∈ schA F _ ∧ M.I om Φ h = 0 := fun Φ hΦ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `zero => exact ⟨zero_mem _, congrFun (PositivityTheory.ThKG.I_zero M om) h⟩`. Consider the case `add x y _ _ hx hy => exact ⟨add_mem hx.1 hy.1, by rw [add _ _ hx.1 hy.1, hx.2, hy.2, add_zero]⟩`. Consider the case `smul a x _ hx => exact ⟨Submodule.smul_mem _ _ hx.1, by rw [PositivityTheory.ThKG.I_smul, hx.2, mul_zero]⟩`. Consider the case `mem x hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨f, φ, hφ, rfl⟩` from `hx`. Establish `hm : ∀ f, pure f φ ∈ schA F _` using `fun f => Dense.pure_mem f hφ`. Set `T : SInf F (Fin n × Fin d) →L[ℂ] ℂ` to `{ toFun := fun f => M.I om (pure f φ) h map_add' := fun f g => by`. Rewrite using `[← add _ _ (hm f) (hm g)]`. Conclude with `congrArg (M.I om · h) (funext fun _ => add_mul _ _ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_smul' := fun c f => by`. Rewrite using `[RingHom.id_apply, smul_eq_mul, ← PositivityTheory.ThKG.I_smul]`. Conclude with `congrArg (M.I om · h) (funext fun _ => mul_assoc _ _ _)`. Use `cont := hcont _ (Dense.pf_mem hφ) h }`. Use `Dense.pol_dense M hp.base hp.herm hp.skew T fun g hg => congrFun (hz _ (Submodule.subset_span ⟨g, hg, φ, hφ.1, (hφ.2.and hp.good.std).mono fun v hv => hv.1.trans hv.2.symm, rfl⟩)) h` as an intermediate fact.
-
-Conclude with `⟨hm f, DFunLike.congr_fun this f⟩`. Conclude with `(key Φ (Dense.schA_le hΦ)).2`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem schToPol_of (hW : WeilConv) : SchToPol := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp h0 hz Φ hΦ

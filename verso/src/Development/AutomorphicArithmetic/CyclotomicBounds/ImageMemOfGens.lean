@@ -10,21 +10,21 @@ open scoped Pointwise
 variable {R : Ranks} (H : Host R)
 
 /- English proof (translation)
-Take `⟨hq, hd, hq8, hd16, -⟩` from `H.hyp`. Establish `hdq : Nat.Coprime H.d H.q` using `(Nat.coprime_primes hd hq).2 (by omega)`. Establish `hsq : Nat.Coprime H.QS H.q` using `Nat.Coprime.coprime_dvd_right (dvd_mul_right _ _) H.QS_coprime`. Establish `hcop : Nat.Coprime (H.QS * H.d) H.q` using `Nat.Coprime.mul hsq hdq`. Take `⟨x, hx1, hx2⟩` from `Nat.chineseRemainder hcop 1 (H.q - 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hq2 : 2 ≤ H.q` using `hq.two_le`. Establish `hxm : Nat.Coprime x (H.QS * H.d)`. Unfold `Nat.Coprime`. Rewrite using `[Nat.ModEq.gcd_eq hx1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hxq : Nat.Coprime x H.q`. Unfold `Nat.Coprime`. Rewrite using `[Nat.ModEq.gcd_eq hx2]`. Establish `: H.q - 1 + 1 = H.q` using `by omega`. Rewrite using `[← this, Nat.gcd_comm]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hxN : Nat.Coprime x H.condN`. Establish `e : H.condN = H.QS * H.d * H.q` using `by simp only [Formalism.HC.HostRaw.condN]; ring`. Rewrite using `[e]`. Conclude with `Nat.Coprime.mul_right hxm hxq`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ZMod.unitOfCoprime x hxN, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast]`. Use `Nat.ModEq.trans ?_ hx1` and prove the remaining obligations. Use `Nat.ModEq.of_dvd ?_ (Nat.mod_modEq x _)` and prove the remaining obligations. Conclude with `⟨H.q, by simp only [Formalism.HC.HostRaw.condN]; ring⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h` using `H.flPS (ZMod.unitOfCoprime x hxN)`. Rewrite `h` using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast]`. Establish `hJ : jacobiSym ((x % H.condN : ℕ) : ℤ) H.q = -1`. Rewrite using `[jacobiSym.mod_left]`. Establish `h3 : ((x % H.condN : ℕ) : ℤ) % (H.q : ℤ) = (-1 : ℤ) % (H.q : ℤ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqN : H.q ∣ H.condN` using `⟨H.QS * H.d, by simp only [Formalism.HC.HostRaw.condN]; ring⟩`. Establish `h4 : x % H.condN % H.q = H.q - 1`. Rewrite using `[Nat.mod_mod_of_dvd _ hqN, hx2, Nat.mod_eq_of_lt (by omega)]`. Rewrite using `[← Int.natCast_mod, h4]`. Move the coercions through the operations in `[Nat.cast_sub (by omega : 1 ≤ H.q)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [show (-1 : ℤ) = ((H.q : ℤ) - 1) + (-1) * (H.q : ℤ) by ring, Int.add_mul_emod_self_right, Int.emod_eq_of_lt] <;> omega`. Rewrite using `[h3, ← jacobiSym.mod_left, jacobiSym.at_neg_one (hq.odd_of_ne_two (by omega))]`. Conclude with `ZMod.χ₄_nat_three_mod_four (by omega)`. Rewrite `h` using `[hJ]`. Conclude with `Units.ext (by simpa using h)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_neg : ∃ u : (ZMod H.condN)ˣ, (u : ZMod H.condN).val ≡ 1 [MOD H.QS * H.d] ∧ (H.art u).1.1 = -1 := by
   obtain ⟨hq, hd, hq8, hd16, -⟩ := H.hyp
@@ -65,35 +65,33 @@ theorem exists_unit_neg : ∃ u : (ZMod H.condN)ˣ, (u : ZMod H.condN).val ≡ 1
     exact Units.ext (by simpa using h)
 
 /- English proof (translation)
-Take `⟨hq, hd, hq8, hd16, -⟩` from `H.hyp`. Use `haveI : Fact (Nat.Prime H.q) := ⟨hq⟩`. Take `⟨u0, hu0, hneg⟩` from `exists_unit_neg H`. Establish `hdq : Nat.Coprime H.d H.q` using `(Nat.coprime_primes hd hq).2 (by omega)`. Establish `hsq : Nat.Coprime H.QS H.q` using `Nat.Coprime.coprime_dvd_right (dvd_mul_right _ _) H.QS_coprime`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcop : Nat.Coprime (H.QS * H.d) H.q` using `Nat.Coprime.mul hsq hdq`. Establish `hN : H.condN = H.QS * H.d * H.q` using `by simp only [Formalism.HC.HostRaw.condN]; ring`. Establish `hNpos : 0 < H.condN`. Rewrite using `[hN]`. Conclude with `Nat.mul_pos (Nat.mul_pos H.QS_pos hd.pos) hq.pos`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : NeZero H.condN := ⟨hNpos.ne'⟩`. Establish `hfq : H.condN.factorization H.q = 1`. Rewrite using `[hN, Nat.factorization_mul (Nat.mul_pos H.QS_pos hd.pos).ne' hq.ne_zero, Finsupp.add_apply, Nat.Prime.factorization_self hq, Nat.factorization_eq_zero_of_not_dvd]`. Introduce `h`. Conclude with `hq.one_lt.ne' (Nat.Coprime.eq_one_of_dvd (Nat.Coprime.symm hcop) h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfac : H.condN / H.q ^ H.condN.factorization H.q = H.QS * H.d`. Rewrite using `[hfq, pow_one, hN, Nat.mul_div_cancel _ hq.pos]`. Establish `hmN : H.QS * H.d ∣ H.condN` using `⟨H.q, hN⟩`. Establish `hqN : H.q ∣ H.condN` using `⟨H.QS * H.d, by rw [hN]; ring⟩`. Set `f : (ZMod H.condN)ˣ →* (ZMod (H.QS * H.d))ˣ` to `Units.map (ZMod.castHom hmN (ZMod (H.QS * H.d))).toMonoidHom`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hmem : ∀ u : (ZMod H.condN)ˣ, u ∈ f.ker ↔ (u : ZMod H.condN).val ≡ 1 [MOD H.QS * H.d]`. Introduce `u`. Rewrite using `[MonoidHom.mem_ker, Units.ext_iff]`. Express the relevant statement in the definitionally equal form `((u : ZMod H.condN).cast : ZMod (H.QS * H.d)) = 1 ↔ _`. Rewrite using `[ZMod.cast_eq_val, ← Nat.cast_one, ZMod.natCast_eq_natCast_iff]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `fq : f.ker →* (ZMod H.q)ˣ` to `(Units.map (ZMod.castHom hqN (ZMod H.q)).toMonoidHom).comp f.ker.subtype`. Establish `hinj : Function.Injective fq`. Introduce `a b hab`. Establish `ha` using `(hmem a).1 a.2`. Establish `hb` using `(hmem b).1 b.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hab' : ((a.1 : (ZMod H.condN)ˣ) : ZMod H.condN).val ≡ ((b.1 : (ZMod H.condN)ˣ) : ZMod H.condN).val [MOD H.q]`. Rewrite using `[← ZMod.natCast_eq_natCast_iff]`. Use `congrArg (fun x : (ZMod H.q)ˣ => (x : ZMod H.q)) hab` as an intermediate fact. Express the relevant statement in the definitionally equal form `(((a.1 : (ZMod H.condN)ˣ) : ZMod H.condN).cast : ZMod H.q) = ((b.1 : (ZMod H.condN)ˣ) : ZMod H.condN).cast at this`. Rewrite `this` using `[ZMod.cast_eq_val, ZMod.cast_eq_val]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hall : ((a.1 : (ZMod H.condN)ˣ) : ZMod H.condN).val ≡ ((b.1 : (ZMod H.condN)ˣ) : ZMod H.condN).val [MOD H.condN]`. Establish `h0` using `(Nat.modEq_and_modEq_iff_modEq_mul hcop).1 ⟨ha.trans hb.symm, hab'⟩`. Rewrite `h0` using `[← hN]`. Then use the resulting hypothesis. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hall` using `[← ZMod.natCast_eq_natCast_iff, ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]`. Conclude with `hall`. Use `haveI : IsCyclic f.ker := isCyclic_of_injective fq hinj`. Take `⟨c, hc⟩` from `IsCyclic.exists_generator (α := f.ker)`. Establish `hc2 : H.art (c : (ZMod H.condN)ˣ) ^ 2 = 1` using `H.art_q _ ((hmem _).1 c.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ u : (ZMod H.condN)ˣ, u ∈ f.ker → H.art u = 1 ∨ H.art u = H.art c`. Introduce `u hu`. Take `⟨k, hk⟩` from `Subgroup.mem_zpowers_iff.1 (hc ⟨u, hu⟩)`. Establish `hu' : u = (c : (ZMod H.condN)ˣ) ^ k`. Rewrite using `[← Subgroup.coe_zpow, hk]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hu', map_zpow]`. Establish `hc2' : H.art (c : (ZMod H.condN)ˣ) ^ (2 : ℤ) = 1` using `by rw [zpow_ofNat]; exact hc2`. Break down `Int.even_or_odd' k with ⟨j, rfl | rfl⟩` into its components or cases. Use `left`. Rewrite using `[zpow_mul, hc2', one_zpow]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `right`. Rewrite using `[zpow_add, zpow_mul, hc2', one_zpow, one_mul, zpow_one]`. Establish `hu0k : u0 ∈ f.ker` using `(hmem u0).2 hu0`. Establish `hg : H.art u0 = H.art c`. Break down `key u0 hu0k with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, Prod.fst_one, Prod.fst_one] at hneg; exact absurd hneg (by decide)`. Conclude with `h`. Use `⟨H.art u0, ?_, ?_⟩` and prove the remaining obligations. Introduce `h; rw [h, Prod.fst_one, Prod.fst_one] at hneg; exact absurd hneg (by decide)`. Introduce `P _ _ σ`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[H.der.inertia H.q P σ, hfac]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, he⟩`. Rewrite using `[he]`. Break down `key u ((hmem u).2 hu) with h | h` into its components or cases.
-
-Conclude with `Or.inl h`. Conclude with `Or.inr (h.trans hg.symm)`. Introduce and unpack `(h | h)`. Conclude with `⟨1, (hmem 1).1 (one_mem _), by rw [h, map_one]⟩`. Conclude with `⟨u0, hu0, h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inertia_q : ∃ g : R.GG, g ≠ 1 ∧ ∀ (P : Ideal (𝓞 H.E)) [P.IsPrime] [P.LiesOver (span {(H.q : ℤ)})]
     (σ : H.E ≃ₐ[ℚ] H.E), (∀ x : 𝓞 H.E, σ • x - x ∈ P) ↔ (H.gal σ = 1 ∨ H.gal σ = g) := by

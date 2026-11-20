@@ -12,12 +12,12 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Desc.SLF PositivityTheory.R
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem lc_le {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (m : ℕ) : Lc Z m ≤ GzS Z := inf_le_left
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, Subgroup.mem_subgroupOf, Set.mem_preimage, Lc, Subgroup.mem_inf]`. Conclude with `⟨fun h => h.2, fun h => ⟨x.2, h⟩⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem coe_lc_subgroupOf {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (m : ℕ) :
     (((Lc Z m).subgroupOf (GzS Z) : Subgroup (GzS Z)) : Set (GzS Z)) =
@@ -27,7 +27,7 @@ theorem coe_lc_subgroupOf {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)
   exact ⟨fun h => h.2, fun h => ⟨x.2, h⟩⟩
 
 /- English proof (translation)
-Rewrite using `[coe_lc_subgroupOf]`. Conclude with `(GLnLocal.isOpen_congruenceSubgroup k n m).preimage continuous_subtype_val`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_lc {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (m : ℕ) :
     IsOpen (((Lc Z m).subgroupOf (GzS Z) : Subgroup (GzS Z)) : Set (GzS Z)) := by
@@ -35,9 +35,9 @@ theorem isOpen_lc {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (m : �
   exact (GLnLocal.isOpen_congruenceSubgroup k n m).preimage continuous_subtype_val
 
 /- English proof (translation)
-Rewrite using `[Subtype.isCompact_iff]`. Establish `e : Subtype.val '' (((Lc Z m).subgroupOf (GzS Z) : Subgroup (GzS Z)) : Set (GzS Z)) = (GzS Z : Set (GL (Fin n) k)) ∩ (GLnLocal.congruenceSubgroup k n m : Set (GL (Fin n) k))`. Use extensionality with `x`. Simplify using `only [Set.mem_image, SetLike.mem_coe, Subgroup.mem_subgroupOf, Set.mem_inter_iff, Lc, Subgroup.mem_inf]`. Conclude with `⟨fun ⟨y, hy, hyx⟩ => hyx ▸ hy, fun hx => ⟨⟨x, hx.1⟩, hx, rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Rewrite using `[e]`. Conclude with `(GLnLocal.isCompact_congruenceSubgroup k n m).inter_left (isClosed_GzS Z)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_lc {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (m : ℕ) :
     IsCompact (((Lc Z m).subgroupOf (GzS Z) : Subgroup (GzS Z)) : Set (GzS Z)) := by
@@ -51,15 +51,13 @@ theorem isCompact_lc {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (m 
   exact (GLnLocal.isCompact_congruenceSubgroup k n m).inter_left (isClosed_GzS Z)
 
 /- English proof (translation)
-Introduce `n Z hZ g`. Express the relevant statement in the definitionally equal form `modularCharacterFun g = 1`. Take `⟨c, hc⟩` from `hI n Z hZ g.1 g.2`. Take `⟨hle, heq, hne⟩` from `hc c le_rfl (c + c) le_rfl`. Establish `hmap : (Lc Z c).map (MulAut.conj g.1).toMonoidHom ≤ GzS Z`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `Subgroup.mem_map.1 hx`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Conclude with `(GzS Z).mul_mem ((GzS Z).mul_mem g.2 (lc_le Z c hy)) ((GzS Z).inv_mem g.2)`. Use `modularCharacterFun_eq_one g ((Lc Z c).subgroupOf (GzS Z)) (((Lc Z c).map (MulAut.conj g.1).toMonoidHom).subgroupOf (GzS Z)) ((Lc Z (c + c)).subgroupOf (GzS Z)) (isCompact_lc Z c) (isOpen_lc Z c) (isOpen_lc Z (c + c)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.mem_map_equiv, MulAut.conj_symm_apply, Subgroup.coe_mul, Subgroup.coe_inv]`. Introduce `x hx`. Rewrite `hx`, the goal using `[Subgroup.mem_subgroupOf]`. Conclude with `(hle hx).1`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `x hx`. Rewrite `hx`, the goal using `[Subgroup.mem_subgroupOf]`. Conclude with `(hle hx).2`. Rewrite using `[Subgroup.relIndex_subgroupOf hmap, Subgroup.relIndex_subgroupOf (lc_le Z c)]`. Conclude with `heq`.
-
-Rewrite using `[Subgroup.relIndex_subgroupOf (lc_le Z c)]`. Conclude with `hne`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unimod_of_indexSym (hI : IndexSym (k := k)) : Unimod (k := k) := by
   intro n Z hZ g

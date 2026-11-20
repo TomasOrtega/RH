@@ -17,7 +17,7 @@ def back : XIx (Fin κ) t 0 ⊕ Fin (s + 1) → Fin κ ⊕ Fin (s + 1) :=
   fun r => (ixZero (Fin κ ⊕ Fin (s + 1)) t).symm ((stdOrd (Fin κ) t 0 (s + 1) (Nat.zero_add _)).symm r)
 
 /- English proof (translation)
-Unfold `back`. Rewrite using `[show (stdOrd (Fin κ) t 0 (s + 1) (Nat.zero_add _)).symm (.inl (.inl (.inl i))) = .inl (.inl i) from (Equiv.symm_apply_eq _).2 rfl]`. Conclude with `(Equiv.symm_apply_eq _).2 rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem back_eps (i : Fin κ) : back (s := s) t (.inl (.inl (.inl i))) = .inl i := by
   unfold back
@@ -26,7 +26,7 @@ theorem back_eps (i : Fin κ) : back (s := s) t (.inl (.inl (.inl i))) = .inl i 
   exact (Equiv.symm_apply_eq _).2 rfl
 
 /- English proof (translation)
-Unfold `back`. Rewrite using `[show (stdOrd (Fin κ) t 0 (s + 1) (Nat.zero_add _)).symm (.inr i) = .inl (.inr i) from (Equiv.symm_apply_eq _).2 (standardOrderExtendedBasis_apply_low_block (Fin κ) t (l := s + 1) 0 (s + 1) (Nat.zero_add _) i).symm]`. Conclude with `(Equiv.symm_apply_eq _).2 rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelZeroOldIndexOfNew_inr (i : Fin (s + 1)) : back (κ := κ) t (.inr i) = .inr i := by
   unfold back
@@ -35,13 +35,13 @@ theorem levelZeroOldIndexOfNew_inr (i : Fin (s + 1)) : back (κ := κ) t (.inr i
   exact (Equiv.symm_apply_eq _).2 rfl
 
 /- English proof (translation)
-Apply the tactic sequence `rcases r with r | r <;> simp [scal]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem scal_ne_zero (ϖ : kˣ) (r : XIx (Fin κ) t 0 ⊕ Fin (s + 1)) : scal t ϖ r ≠ 0 := by
   rcases r with r | r <;> simp [scal]
 
 /- English proof (translation)
-Use `show (embA _ (SplitFlip.diagGL fun i : Fin (s + 1) => S.ϖ ^ (i.val + 1))).val = _`. Simplify using `only [embA, Units.coe_map, MonoidHom.coe_mk, OneHom.coe_mk, SplitFlip.diagGL_val]`. Rewrite using `[← diagonal_one, fromBlocks_diagonal]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem bas_val : ((S.T t).bas 0 (s + 1) (Nat.zero_add _)).val = diagonal (scal t S.ϖ) := by
   show (embA _ (SplitFlip.diagGL fun i : Fin (s + 1) => S.ϖ ^ (i.val + 1))).val = _
@@ -50,7 +50,7 @@ theorem bas_val : ((S.T t).bas 0 (s + 1) (Nat.zero_add _)).val = diagonal (scal 
   congr 1
 
 /- English proof (translation)
-Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[bas_val, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `r`. Conclude with `mul_inv_cancel₀ (scal_ne_zero t S.ϖ r)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem bas_inv_val : (((S.T t).bas 0 (s + 1) (Nat.zero_add _))⁻¹).val = diagonal fun r => (scal t S.ϖ r)⁻¹ := by
   refine Units.inv_eq_of_mul_eq_one_right ?_
@@ -59,7 +59,7 @@ theorem bas_inv_val : (((S.T t).bas 0 (s + 1) (Nat.zero_add _))⁻¹).val = diag
   funext r; exact mul_inv_cancel₀ (scal_ne_zero t S.ϖ r)
 
 /- English proof (translation)
-Rewrite using `[upZero_apply, Units.val_mul, Units.val_mul, bas_val, bas_inv_val, mul_diagonal, diagonal_mul, reGL_val, reGL_val]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem upZero_entry (x : GL (Fin κ ⊕ Fin (s + 1)) k) (r c : XIx (Fin κ) t 0 ⊕ Fin (s + 1)) :
     (upZero S t x).val r c = scal t S.ϖ r * x.val (back t r) (back t c) * (scal t S.ϖ c)⁻¹ := by
@@ -67,22 +67,20 @@ theorem upZero_entry (x : GL (Fin κ ⊕ Fin (s + 1)) k) (r c : XIx (Fin κ) t 0
   rfl
 
 /- English proof (translation)
-The claim follows from `(Equiv.symm_apply_eq _).2 rfl`.
+A detailed English derivation is pending.
 -/
 theorem xZero_symm (i : Fin κ) : (xZero (Fin κ) t).symm (.inl (.inl i)) = i := (Equiv.symm_apply_eq _).2 rfl
 
 /- English proof (translation)
-Rewrite `hn`, the goal using `[Model.mem_N_iff]`. Introduce `r c h`. Rewrite using `[upZero_entry]`. Break down `r with ((r | r) | ⟨r, _⟩) | r` into its components or cases. Break down `c with ((c | c) | ⟨c, _⟩) | c` into its components or cases.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[back_eps, back_eps, hn _ _ (by simp [lev])]`. Distinguish the cases in `e : r = c`. Substitute `e` using the available equality. Simplify using `[scal]`. Simplify using `[scal, Matrix.one_apply, e]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `c.elim0`. Conclude with `c.elim0`. Rewrite using `[back_eps, levelZeroOldIndexOfNew_inr, hn _ _ (by simpa [lev] using h)]`. Simplify using `[Matrix.one_apply]`. Conclude with `r.elim0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `r.elim0`. Break down `c with ((c | c) | ⟨c, _⟩) | c` into its components or cases. Rewrite using `[back_eps, levelZeroOldIndexOfNew_inr, hn _ _ (by simpa [lev] using h)]`. Simplify using `[Matrix.one_apply]`. Conclude with `c.elim0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `c.elim0`. Rewrite using `[levelZeroOldIndexOfNew_inr, levelZeroOldIndexOfNew_inr, hn _ _ (by simpa [lev] using h)]`. Distinguish the cases in `e : r = c`. Substitute `e` using the available equality. Simplify using `[scal, Matrix.one_apply]`.
-
-Simplify using `[Matrix.one_apply, e]`.
+A detailed English derivation is pending.
 -/
 theorem upZero_mem_N {n : GL (Fin κ ⊕ Fin (s + 1)) k} (hn : n ∈ N k (Fin κ) (s + 1) (S.ρ + 1)) :
     upZero S t n ∈ N k (XIx (Fin κ) t 0) (s + 1) (S.ρ + 1) := by
@@ -112,11 +110,11 @@ theorem upZero_mem_N {n : GL (Fin κ ⊕ Fin (s + 1)) k} (hn : n ∈ N k (Fin κ
       · simp [Matrix.one_apply, e]
 
 /- English proof (translation)
-Establish `hϖ : (S.ϖ : k) ≠ 0` using `S.ϖ.ne_zero`. Unfold `simpleSum`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[upZero_entry, levelZeroOldIndexOfNew_inr, levelZeroOldIndexOfNew_inr]`. Simplify using `only [scal, Sum.elim_inr, h, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem simpleSum_upZero (n : GL (Fin κ ⊕ Fin (s + 1)) k) :
     simpleSum (upZero S t n) = ((S.ϖ⁻¹ : kˣ) : k) * simpleSum n := by
@@ -134,9 +132,9 @@ theorem simpleSum_upZero (n : GL (Fin κ ⊕ Fin (s + 1)) k) :
   · simp
 
 /- English proof (translation)
-Unfold `superSum`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Establish `: i ≠ j` using `by rintro rfl; omega`. Simplify using `[Matrix.one_apply, this]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem superSum_one : superSum Fin.val (1 : Matrix (Fin κ) (Fin κ) k) = 0 := by
   unfold superSum
@@ -147,9 +145,9 @@ theorem superSum_one : superSum Fin.val (1 : Matrix (Fin κ) (Fin κ) k) = 0 := 
   · rfl
 
 /- English proof (translation)
-Rewrite using `[S.sym.2 n, simpleSum_upZero]`. Establish `h11 : (n : GL (Fin κ ⊕ Fin (s + 1)) k).val.toBlocks₁₁ = 1`. Rewrite `hn` using `[Model.mem_N_iff]`. Use extensionality with `i j`. Simplify `hn (.inl i) (.inl j) (by simp [lev])` using `[toBlocks₁₁, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[h11, superSum_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lam_eq (n : S.P.J) (hn : n.1 ∈ N k (Fin κ) (s + 1) (S.ρ + 1)) :
     ((S.P.lam n : ℂˣ) : ℂ) = (S.ψ (simpleSum (upZero S t n.1)) : ℂ) := by
@@ -162,15 +160,13 @@ theorem lam_eq (n : S.P.J) (hn : n.1 ∈ N k (Fin κ) (s + 1) (S.ρ + 1)) :
   simp
 
 /- English proof (translation)
-Use extensionality with `r c`. Rewrite using `[upZero_entry]`. Break down `r with ((r | r) | ⟨r, _⟩) | r` into its components or cases. Break down `c with ((c | c) | ⟨c, _⟩) | c` into its components or cases. Rewrite using `[back_eps, back_eps]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[embX, scal, reGL_val, xZero_symm]`. Conclude with `c.elim0`. Conclude with `c.elim0`. Rewrite using `[back_eps, levelZeroOldIndexOfNew_inr]`. Simplify using `[embX]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `r.elim0`. Conclude with `r.elim0`. Break down `c with ((c | c) | ⟨c, _⟩) | c` into its components or cases. Rewrite using `[levelZeroOldIndexOfNew_inr, back_eps]`. Simplify using `[embX]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `c.elim0`. Conclude with `c.elim0`. Rewrite using `[levelZeroOldIndexOfNew_inr, levelZeroOldIndexOfNew_inr]`. Distinguish the cases in `e : r = c`. Substitute `e` using the available equality.
-
-Simplify using `[embX, scal, Matrix.one_apply]`. Simplify using `[embX, Matrix.one_apply, e]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem upZero_embX (γ : GL (Fin κ) k) :
     upZero S t (embX (s + 1) γ) = embX (s + 1) (reGL (xZero (Fin κ) t) γ) := by
@@ -197,7 +193,7 @@ theorem upZero_embX (γ : GL (Fin κ) k) :
       · simp [embX, Matrix.one_apply, e]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ s κ S t _ _`. Conclude with `⟨fun n hn => ⟨upZero_mem_N S t hn, lam_eq S t n hn⟩, upZero_embX S t⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem upZero_N_embX : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (s κ : ℕ) (S : GlobalTheory.SymChain.SymData k s κ) (t : Type) [Fintype t] [DecidableEq t], (∀ n : S.P.J, n.1 ∈ GlobalTheory.RootEx.N k (Fin κ) (s + 1) (S.ρ + 1) → GlobalTheory.LevZeroGen.upZero S t n.1 ∈ GlobalTheory.RootEx.N k (GlobalTheory.StepData.XIx (Fin κ) t 0) (s + 1) (S.ρ + 1) ∧ ((S.P.lam n : ℂˣ) : ℂ) = (S.ψ (GlobalTheory.RootEx.simpleSum (GlobalTheory.LevZeroGen.upZero S t n.1)) : ℂ)) ∧ ∀ γ : GL (Fin κ) k, GlobalTheory.LevZeroGen.upZero S t (GlobalTheory.RootEx.embX (s + 1) γ) = GlobalTheory.RootEx.embX (s + 1) (GlobalTheory.StepData.reGL (GlobalTheory.LevZeroGen.xZero (Fin κ) t) γ) := by
   intro k _ _ _ _ s κ S t _ _

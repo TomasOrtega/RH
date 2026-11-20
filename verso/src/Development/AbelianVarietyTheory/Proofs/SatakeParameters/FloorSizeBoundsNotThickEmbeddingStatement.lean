@@ -6,7 +6,7 @@ import Formalism.FrobeniusOrbits.HostCorollaries
 open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HTW.size_not_thick` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FFloorSizeBoundsNotThickEmbedding.lean&line=8#L8)
 -/

@@ -27,14 +27,14 @@ open scoped ComplexConjugate
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Simplify using `[herm, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_std (x y : Fin r → E) :
     herm (1 : Matrix (Fin r) (Fin r) E) x y = ∑ a, x a * cc (y a) := by
   simp [herm, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[herm_std, map_sum, Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, emb_cc, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_herm_self (φ : E →+* ℂ) (x : Fin r → E) :
     φ (herm (1 : Matrix (Fin r) (Fin r) E) x x) = ((∑ a, ‖φ (x a)‖ ^ 2 : ℝ) : ℂ) := by
@@ -47,7 +47,7 @@ def stdLat (E : Type) [Field E] [NumberField E] (r : ℕ) : Submodule (𝓞 E) (
 
 omit [IsCMField E] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩ a`. Conclude with `(y a).isIntegral_coe`. Introduce `h`. Conclude with `⟨fun a => ⟨x a, h a⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_stdLat (x : Fin r → E) : x ∈ stdLat E r ↔ ∀ a, IsIntegral ℤ (x a) := by
   constructor
@@ -58,9 +58,9 @@ theorem mem_stdLat (x : Fin r → E) : x ∈ stdLat E r ↔ ∀ a, IsIntegral �
 
 omit [IsCMField E] in
 /- English proof (translation)
-Rewrite using `[mem_stdLat]`. Introduce `a`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `using isIntegral_one`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `isIntegral_zero` using `[h]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem single_mem_stdLat (b : Fin r) : (Pi.single b 1 : Fin r → E) ∈ stdLat E r := by
   rw [mem_stdLat]
@@ -70,17 +70,17 @@ theorem single_mem_stdLat (b : Fin r) : (Pi.single b 1 : Fin r → E) ∈ stdLat
   · simpa [h] using isIntegral_zero
 
 /- English proof (translation)
-Establish `hfin` using `NumberField.Embeddings.finite_of_norm_le (K := E) (A := ℂ) 1`. Establish `hpi` using `Set.Finite.pi' (fun _ : Fin r => Set.Finite.pi' (fun _ : Fin r => hfin))`. Use `Set.Finite.of_finite_image (hpi.subset ?_) ?_ (f := fun γ : GL (Fin r) E => fun a b => (γ : Matrix (Fin r) (Fin r) E) a b)` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, ⟨hh, hl⟩, rfl⟩ a b`. Establish `hv : ∀ i, Matrix.mulVec (γ : Matrix (Fin r) (Fin r) E) (Pi.single b 1) i = (γ : Matrix (Fin r) (Fin r) E) i b`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce `i`. Simplify using the standard rewrite rules. Use `⟨?_, fun φ => ?_⟩` and prove the remaining obligations. Use `(mem_stdLat _).1 ((hl _).1 (single_mem_stdLat b)) a` as an intermediate fact. Rewrite `this` using `[hv]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1` using `congrArg φ (hh (Pi.single b 1) (Pi.single b 1))`. Rewrite `h1` using `[emb_herm_self, emb_herm_self]`. Establish `h2` using `Complex.ofReal_injective h1`. Establish `h3 : ∑ i, ‖φ ((Pi.single b 1 : Fin r → E) i)‖ ^ 2 = 1`. Rewrite using `[Finset.sum_eq_single b]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `i _ hi`. Simplify using `[hi]`. Simplify using the standard rewrite rules. Rewrite `h2` using `[h3]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hv] at h2`. Establish `h4 : ‖φ ((γ : Matrix (Fin r) (Fin r) E) a b)‖ ^ 2 ≤ 1`. Rewrite using `[← h2]`. Conclude with `Finset.single_le_sum (f := fun i => ‖φ ((γ : Matrix (Fin r) (Fin r) E) i b)‖ ^ 2) (fun i _ => sq_nonneg _) (Finset.mem_univ a)`. Use polynomial arithmetic with `[norm_nonneg (φ ((γ : Matrix (Fin r) (Fin r) E) a b))]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ _ δ _ h`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Conclude with `congrFun (congrFun h a) b`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem stab_finite :
     {γ : GL (Fin r) E | IsUStab (1 : Matrix (Fin r) (Fin r) E) (stdLat E r) γ}.Finite := by
@@ -116,9 +116,9 @@ theorem stab_finite :
     exact congrFun (congrFun h a) b
 
 /- English proof (translation)
-Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `h1` using `emb_herm_self φ x`. Rewrite `h1` using `[h, map_zero]`. Establish `h2 : ∑ a, ‖φ (x a)‖ ^ 2 = 0` using `by exact_mod_cast h1.symm`. Use function extensionality and compare the values at `a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h3` using `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => sq_nonneg _)).1 h2 a (Finset.mem_univ a)`. Establish `h4 : φ (x a) = 0` using `by simpa using h3`. Conclude with `(map_eq_zero_iff φ φ.injective).1 h4`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_herm_self {x : Fin r → E}
     (h : herm (1 : Matrix (Fin r) (Fin r) E) x x = 0) : x = 0 := by
@@ -132,31 +132,19 @@ theorem eq_zero_of_herm_self {x : Fin r → E}
   exact (map_eq_zero_iff φ φ.injective).1 h4
 
 /- English proof (translation)
-Set `X : FD.Data E 1` to `inhab`. Conclude with `⟨`. Use the proof step `{ Ψ := X.Ψ cmType := X.cmType Gm := 1 Gm_herm := by`. Introduce `a b`. Distinguish the cases in `h : a = b`.
+Introduce a local definition for the expression. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `[cc_one]`. Simplify using `[h, Ne.symm h, cc_zero]`. Use `Gm_det := by simp`. Use `p0 := r`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `p0_le := le_rfl`. Use `signature := by`. Introduce `τ`. Use `⟨1, by simp, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[gram, hermC, col, sgn, Matrix.one_apply, apply_ite]`. Simplify using `[gram, hermC, col, sgn, Matrix.one_apply, apply_ite, h, Ne.symm h]`. Use `Λ := stdLat E r`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Λ_fg := by`. Unfold `stdLat`. Rewrite using `[LinearMap.range_eq_map]`. Conclude with `Module.Finite.fg_top.map _`. Use `Λ_span := by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[pi_eq_sum_univ' x]`. Conclude with `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span (single_mem_stdLat b))`. Use `den := 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `den_ne := one_ne_zero`. Use `Λ_int := by`. Introduce `x hx y hy`. Rewrite using `[herm_std, show ((1 : 𝓞 E) : E) = 1 by simp, one_mul]`. Conclude with `IsIntegral.sum _ fun a _ => ((mem_stdLat x).1 hx a).mul (isIntegral_cc ((mem_stdLat y).1 hy a))`.
-
-Use `Γ := ⊥`. Use `Γ_stab := by`. Introduce `γ hγ`. Rewrite `hγ` using `[Subgroup.mem_bot]`. Substitute `hγ` using the available equality.
-
-Simplify using `[IsUStab]`. Use `Γ_index := ⟨(stab_finite (E := E) (r := r)).toFinset, fun γ hγ => ⟨γ, (Set.Finite.mem_toFinset _).2 hγ, by simp⟩⟩`. Use `Γ_free := fun γ hγ _ _ _ _ _ => Subgroup.mem_bot.mp hγ`. Use `χ := fun _ _ => 1`. Use `χ_mul := by intros; simp`.
-
-Use `χ_add := by intros; simp`. Use `χ_fin := fun _ => ⟨1, one_pos, by intros; simp⟩`. Use `ξ0 := X.ξ0`. Use `ξ0_im := X.ξ0_im`. Use `ξ0_ne := X.ξ0_ne`.
-
-Use `κ0 := X.κ0`. Use `κ0_xi := X.κ0_xi`. Use `κ0_sign := X.κ0_sign`. Use `m := 1`. Use `m_pos := one_pos`.
-
-Use `transv := by`. Introduce `ξ _ hiso s _ _`. Establish `hξ` using `eq_zero_of_herm_self hiso`. Use `⟨1, Subgroup.one_mem _, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`.
-
-Simplify using `[transvMat, hξ, Matrix.one_apply] }⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_data (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) :
     Nonempty (FD.Data E r) := by
@@ -231,7 +219,7 @@ theorem nonempty_data (E : Type) [Field E] [NumberField E] [IsCMField E] (r : �
 end DefiniteData
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c h σ`. Take `⟨X⟩` from `DefiniteData.nonempty_data E (Dw.p + Dw.q)`. Take `⟨y⟩` from `GlobalTheory.nonempty_frPt_complex GlobalTheory.closing_of_abelianSchemeLaws GlobalTheory.firstFiveLaws.2.1.secTwist E H Dw l Xo c h σ`. Conclude with `⟨{ Comp := Unit, X := fun _ => X, un := fun _ _ => y }, ⟨()⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_unf_nonempty_comp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → ∀ σ : c.F →+* ℂ, ∃ U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q), Nonempty U.Comp := by
   intro E _ _ _ H Dw l Xo c h σ

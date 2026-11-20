@@ -23,7 +23,7 @@ def unitToPush : GlobalTheory.LB.unitMod X ⟶ (Scheme.Modules.pushforward i).ob
   SheafOfModules.unitToPushforwardObjUnit i.toRingCatSheafHom
 
 /- English proof (translation)
-Apply `Twist.hom_ext` to reduce the goal to its premises. Introduce `V s j`. Express the relevant statement in the definitionally equal form `resG T (Twist.le_pull_inf i V j) ((i.appLE _ _ (GlobalTheory.LB.pull_inf_le i V (fun _ => j))).hom (GlobalTheory.LB.coord s j)) = (i.app _).hom (GlobalTheory.LB.coord s j)`. Rewrite using `[GlobalTheory.LB.resG_appLE, ← Scheme.Hom.appLE_eq_app]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem toPushforward_comp (M : LB X) :
     GlobalTheory.LB.toPushforward M i ≫ ((Scheme.Modules.pushforward i).map (Twist.unitTwistIso (M.pull i)).inv ≫
@@ -49,11 +49,9 @@ end GlobalTheory.SerreOnto
 open CategoryTheory.Limits in
 
 /- English proof (translation)
-Introduce `k _ _ X p hp L hL T i _`. Use `letI : Algebra k Γ(X, ⊤) := (p.appTop.hom.comp (Scheme.ΓSpecIso (.of k)).inv.hom).toAlgebra`. Establish `hf : ∀ r, algebraMap k Γ(X, ⊤) r = p.appTop.hom ((Scheme.ΓSpecIso (.of k)).inv.hom r)` using `fun _ => rfl`. Use `haveI := (isProper_and_exists_isAmpleLB_of_isProjOver hp).1`. Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian p`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : QCoh.IsFiniteQC (kernel (GlobalTheory.SerreOnto.unitToPush i)) := QCoh.IsFiniteQC.of_mono (kernel.ι (GlobalTheory.SerreOnto.unitToPush i))`. Use `filter_upwards [hL.eventually_subsingleton_coh_twist hf (kernel (GlobalTheory.SerreOnto.unitToPush i))] with N hN`. Establish `hM : (lbPow L N).IsLB` using `isLB_lbPow hL.isLB N`. Use `haveI := GlobalTheory.PinchLift.epi_toPushforward_of_closedImm i hM`. Set `φ` to `GlobalTheory.LB.toPushforward (lbPow L N) i`.
-
-Set `S` to `ShortComplex.mk (kernel.ι φ) φ (kernel.condition φ)`. Establish `hS : S.ShortExact` using `ShortComplex.ShortExact.mk' (S.exact_of_f_is_kernel (kernelIsKernel φ)) inferInstance inferInstance`. Use `cohOn.app_surjective hS ⊤ ?_` and prove the remaining obligations. Conclude with `(cohOn.mapIso Γ(X, ⊤) ⊤ 1 (GlobalTheory.SerreOnto.kernelIso i _ hM)).toEquiv.subsingleton_congr.2 (hN 1 one_pos)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.surjective_toPushforward_app_top_lbPow : ∀ (k : Type) [CommRing k] [IsNoetherianRing k]
     (X : Scheme.{0}) (p : X ⟶ Sp k), IsProjOver p → ∀ (L : LB X), IsAmpleLB L →

@@ -5,19 +5,17 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h1 : I ⊔ (⨅ P ∈ S, P.asIdeal) = ⊤`. Use `Ideal.sup_iInf_eq_top fun P hP => ?_` and prove the remaining obligations. Take `⟨s, hs, hsP⟩` from `hI P hP`. Assume the negation of the conclusion as `hne`. Use `P.isMaximal.eq_of_le hne le_sup_right` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hsP (this ▸ (le_sup_left : I ≤ I ⊔ P.asIdeal) hs)`. Establish `h2 : (1 : R) ∈ I ⊔ (⨅ P ∈ S, P.asIdeal)` using `h1 ▸ Submodule.mem_top`. Take `⟨s0, hs0, π, hπ, hsum⟩` from `Submodule.mem_sup.1 h2`. Establish `hπ' : ∀ P ∈ S, π ∈ P.asIdeal`. Introduce `P hP`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 hπ P) hP`. Establish `key : ∃ i j : ℕ, i < j ∧ Ideal.Quotient.mk (Ideal.span {c}) (π ^ i) = Ideal.Quotient.mk (Ideal.span {c}) (π ^ j)`. Take `⟨i, j, hij, h⟩` from `Finite.exists_ne_map_eq_of_infinite (fun i : ℕ => Ideal.Quotient.mk (Ideal.span {c}) (π ^ i))`. Break down `lt_or_gt_of_ne hij with h' | h'` into its components or cases. Conclude with `⟨i, j, h', h⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨j, i, h', h.symm⟩`. Take `⟨i, j, hij, h⟩` from `key`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq.1 h)`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_lt hij`. Use `⟨1 - π ^ i, ?_, 1 - π ^ (d + 1), r, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: (1 - π) ∣ 1 - π ^ i` using `by simpa using sub_dvd_pow_sub_pow (1 : R) π i`. Take `⟨u, hu⟩` from `this`. Establish `hs : 1 - π = s0` using `by rw [← hsum]; ring`. Rewrite using `[hu, hs]`. Conclude with `I.mul_mem_right _ hs0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `P hP hmem`. Establish `: π ^ (d + 1) ∈ P.asIdeal` using `P.asIdeal.pow_mem_of_mem (hπ' P hP) _ (Nat.succ_pos d)`. Establish `h1 : (1 : R) ∈ P.asIdeal` using `by simpa using P.asIdeal.add_mem hmem this`. Conclude with `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Rewrite using `[← hr]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_mem_one_sub_loc_dvd {R : Type} [CommRing R] [IsDedekindDomain R] (S : Finset (HeightOneSpectrum R))
     (I : Ideal R) (hI : ∀ P ∈ S, ∃ s ∈ I, s ∉ P.asIdeal) (c : R) [Finite (R ⧸ Ideal.span {c})] :
@@ -55,45 +53,41 @@ theorem exists_mem_one_sub_loc_dvd {R : Type} [CommRing R] [IsDedekindDomain R] 
   · rw [← hr]; ring
 
 /- English proof (translation)
-Introduce `E _ _ _ a b S N N' cA cB hN hN' hA hB`. Take `⟨G, hG⟩` from `hN.fg`. Establish `hA' : (cA : E) ≠ 0` using `by exact_mod_cast hA.ne'`. Establish `hB' : (cB : E) ≠ 0` using `by exact_mod_cast hB.ne'`. Establish `memD : ∀ x : HomE E a b, x ∈ divLat cA (homAt S N N') ↔ ∀ P ∈ S, ∀ y ∈ localization₂ P.asIdeal N, (cA : 𝓞 E) • x y ∈ localization₂ P.asIdeal N'` using `fun x => Iff.rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `memM : ∀ x : HomE E a b, x ∈ mulLat cB (homAt S N N') ↔ ∃ h ∈ homAt S N N', (cB : 𝓞 E) • h = x` using `fun x => Iff.rfl`. Establish `memH : ∀ x : HomE E a b, x ∈ homAt S N N' ↔ ∀ P ∈ S, ∀ y ∈ localization₂ P.asIdeal N, x y ∈ localization₂ P.asIdeal N'` using `fun x => Iff.rfl`. Set `ev : HomE E a b →ₗ[𝓞 E] (G → Sp E b)` to `{ toFun := fun x g => (cA : 𝓞 E) • x g map_add' := by intro x y; funext g; simp map_smul' := by intro r x; funext g; simp [smul_comm r] }`. Establish `ev_inj : Function.Injective ev`. Rewrite using `[injective_iff_map_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Establish `hsp : Submodule.span E (G : Set (Sp E a)) = ⊤`. Rewrite using `[← hN.span_eq_top, ← hG, Submodule.span_span_of_tower]`. Use `LinearMap.ext_on hsp fun g hg => ?_` and prove the remaining obligations. Use `congrFun hx ⟨g, hg⟩` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : (cA : E) • x g = 0`. Rewrite using `[Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Conclude with `this`. Simplify `(smul_eq_zero.1 h2).resolve_left hA'` using `[hA']`. Set `T : Submodule (𝓞 E) (G → Sp E b)` to `Submodule.pi Set.univ fun _ => N'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hT : T.FG` using `Submodule.fg_pi fun _ => hN'.fg`. Set `Z : Submodule (𝓞 E) (HomE E a b)` to `T.comap ev`. Establish `memZ : ∀ x : HomE E a b, x ∈ Z ↔ ∀ g : G, (cA : 𝓞 E) • x g ∈ N'` using `fun x => ⟨fun h g => h g trivial, fun h g _ => h g⟩`. Establish `hZ : Z.FG`. Establish `: Module.Finite (𝓞 E) T` using `Module.Finite.iff_fg.2 hT`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Finite (𝓞 E) Z` using `Module.Finite.of_injective (ev.restrict (p := Z) (q := T) fun x hx => hx) (by`. Introduce `x y hxy`. Conclude with `Subtype.ext (ev_inj (congrArg Subtype.val hxy)))`. Conclude with `Module.Finite.iff_fg.1 this`. Establish `hZD : Z ≤ divLat cA (homAt S N N')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite using `[memD]`. Introduce `P hP y hy`. Take `⟨s, hs, hsy⟩` from `(mem_locP P N y).1 hy`. Establish `: ∀ w ∈ N, (cA : 𝓞 E) • x w ∈ N'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Introduce `w hw`. Rewrite `hw` using `[← hG]`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem g hg => exact (memZ x).1 hx ⟨g, hg⟩`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `add u v _ _ hu hv => rw [map_add, smul_add]`. Conclude with `N'.add_mem hu hv`. Consider the case `smul r u _ hu => rw [LinearMap.map_smul_of_tower, smul_comm]`. Conclude with `N'.smul_mem r hu`. Use `(mem_locP P N' _).2 ⟨s, hs, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `this _ hsy`. Rewrite `h` using `[LinearMap.map_smul_of_tower, smul_comm]`. Then use the resulting hypothesis. Establish `: Module.Finite (𝓞 E) Z` using `Module.Finite.iff_fg.2 hZ`. Establish `hc : ((cB : 𝓞 E) * cA) ≠ 0`. Establish `: cB * cA ≠ 0` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `this` after adjusting the coercions. Establish `: Finite (𝓞 E ⧸ Ideal.span {(cB : 𝓞 E) * cA})` using `Ideal.finiteQuotientOfFreeOfNeBot _ (by simpa [Ideal.span_singleton_eq_bot] using hc)`. Establish `hsurj : Function.Surjective (((mulLat cB (homAt S N N')).comap (divLat cA (homAt S N N')).subtype).mkQ ∘ₗ Submodule.inclusion hZD)`. Introduce `q`. Take `⟨⟨x, hx⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `I : Ideal (𝓞 E)` to `Z.comap (LinearMap.toSpanSingleton (𝓞 E) _ x)`. Establish `hI : ∀ P ∈ S, ∃ s ∈ I, s ∉ P.asIdeal`. Introduce `P hP`. Establish `h1 : ∀ g : G, ∃ s ∉ P.asIdeal, s • (cA : 𝓞 E) • x g ∈ N'` using `fun g => (mem_locP P N' _).1 ((memD x).1 hx P hP g (le_locP P N (hG ▸ Submodule.subset_span g.2)))`. Use `choose f hf hf' using h1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨∏ g, f g, ?_, ?_⟩` and prove the remaining obligations. Use `show (∏ g, f g) • x ∈ Z`. Rewrite using `[memZ]`. Introduce `g`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ g), LinearMap.smul_apply, smul_comm, mul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `N'.smul_mem _ (hf' g)`. Introduce `h`. Use `P.isPrime` as an intermediate fact. Take `⟨g, _, hg⟩` from `Ideal.IsPrime.prod_mem_iff.1 h`. Conclude with `hf g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs, t, r, ht, htr⟩` from `exists_mem_one_sub_loc_dvd S I hI ((cB : 𝓞 E) * cA)`. Use `⟨⟨s • x, hs⟩, ?_⟩` and prove the remaining obligations. Use `symm`. Use `(Submodule.Quotient.eq _).2 ?_` and prove the remaining obligations. Use `show x - s • x ∈ mulLat cB (homAt S N N')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBinv : ∀ {W : Type} [AddCommGroup W] [Module E W] [Module (𝓞 E) W] (w : W), (cB : 𝓞 E) • (cB : E)⁻¹ • w = w`. Introduce `W _ _ _ w`. Rewrite using `[Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul E, smul_smul, mul_inv_cancel₀ hB', one_smul]`. Rewrite using `[memM]`. Use `⟨(cB : E)⁻¹ • (x - s • x), ?_, hBinv _⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[memH]`. Introduce `P hP y hy`. Take `⟨u, hu, huy⟩` from `(mem_locP P N' _).1 ((memD x).1 hx P hP y hy)`. Use `(mem_locP P N' _).2 ⟨u * t, fun h => (P.isPrime.mem_or_mem h).elim hu (ht P hP), ?_⟩` and prove the remaining obligations. Establish `e1 : t • ((cB : E)⁻¹ • (x - s • x)) y = r • (cA : 𝓞 E) • x y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (x - s • x) y = (1 - s) • x y` using `by simp [sub_smul]`. Rewrite using `[LinearMap.smul_apply, smul_comm, e2, smul_smul t, htr, mul_assoc, mul_smul, smul_comm, hBinv, mul_comm, mul_smul]`. Rewrite using `[mul_smul, e1, smul_comm]`. Conclude with `N'.smul_mem r huy`. Use `Module.Finite.of_surjective _ hsurj` as an intermediate fact.
-
-Establish `: Module.Finite ℤ (↥(divLat cA (homAt S N N')) ⧸ (mulLat cB (homAt S N N')).comap (divLat cA (homAt S N N')).subtype)` using `Module.Finite.trans (𝓞 E) _`. Use `Module.finite_of_fg_torsion _ ?_` and prove the remaining obligations. Introduce `q`. Take `⟨⟨x, hx⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Use `⟨⟨((cB * cA : ℕ) : ℤ), mem_nonZeroDivisors_of_ne_zero (by positivity)⟩, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Submonoid.mk_smul, natCast_zsmul, ← Nat.cast_smul_eq_nsmul (𝓞 E), ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Use `show ((cB * cA : ℕ) : 𝓞 E) • x ∈ mulLat cB (homAt S N N')`. Rewrite using `[memM]`. Conclude with `⟨(cA : 𝓞 E) • x, hx, by rw [smul_smul, Nat.cast_mul]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_divLat_quot_mulLat_homAt :
     ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (a b : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (N : Submodule (𝓞 E) (Sp E a)) (N' : Submodule (𝓞 E) (Sp E b)) (cA cB : ℕ), Submodule.IsLattice E N → Submodule.IsLattice E N' → 0 < cA → 0 < cB → Finite (↥(divLat cA (homAt S N N')) ⧸ (mulLat cB (homAt S N N')).comap (divLat cA (homAt S N N')).subtype) := by

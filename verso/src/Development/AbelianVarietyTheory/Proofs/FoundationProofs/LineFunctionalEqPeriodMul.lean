@@ -6,35 +6,31 @@ open TensorProduct GroundTheory.PAdicHodge UniformSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `l _ M S _ _ B g ρ L F hgal m σ hσB hσeq hσ0`. Establish `hsm : ∀ (a : PadicAlgCl l) (z : ℂ_[l]), a • z = (a : ℂ_[l]) * z` using `fun a z => by`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Use `set y : Fin m → ℂ_[l] := fun i => L (σ i ![0, 1]) with hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hLv : ∀ i v, L (σ i v) = (v 1 : ℂ_[l]) * y i`. Introduce `i v`. Establish `hv : v = v 0 • ![1, 0] + v 1 • ![0, 1]`. Apply the tactic sequence `ext j; fin_cases j <;> simp`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hall : ∀ i, y i = 0`. Use `⟨0, 1, norm_one, fun i v => ?_⟩` and prove the remaining obligations. Rewrite using `[hLv, hall i]`. Simplify using the standard rewrite rules. Use `push_neg at hall`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i₀, hy0⟩` from `hall`. Establish `hex : ∀ i, ∃ Sf : Finset (PadicAlgCl l × B), σ i ![0, 1] = ∑ q ∈ Sf, q.1 ⊗ₜ[ℤ_[l]] (q.2 : M)`. Introduce `i`. Take `⟨t, ht⟩` from `hσB i ![0, 1]`. Take `⟨Sf, rfl⟩` from `TensorProduct.exists_finset t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Sf, ?_⟩` and prove the remaining obligations. Rewrite using `[← ht, map_sum]`. Simplify using `[LinearMap.baseChange_tmul]`. Use `choose Sf hSf using hex`. Use `set T : Finset (PadicAlgCl l) := F ∪ Finset.univ.biUnion (fun i => (Sf i).image Prod.fst) with hT`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set K : IntermediateField ℚ_[l] (PadicAlgCl l) := IntermediateField.adjoin ℚ_[l] (T : Set (PadicAlgCl l)) with hK`. Use `haveI : FiniteDimensional ℚ_[l] K := IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Establish `hTK : ∀ a ∈ T, a ∈ K` using `fun a ha => IntermediateField.subset_adjoin _ _ (by simpa using ha)`. Establish `hFK : ∀ a ∈ F, a ∈ K` using `fun a ha => hTK a (Finset.mem_union_left _ ha)`. Establish `hSK : ∀ i, ∀ q ∈ Sf i, q.1 ∈ K` using `fun i q hq => hTK _ (Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, Finset.mem_image_of_mem _ hq⟩))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmul : ∀ τ : PadicAlgCl l ≃ₐ[K] PadicAlgCl l, ∃ c : PadicAlgCl l, ∀ i, τ • y i = (c : ℂ_[l]) * y i`. Introduce `τ`. Take `⟨s, hs⟩` from `hgal K hFK τ`. Use `⟨ρ s 1 1, fun i => ?_⟩` and prove the remaining obligations. Establish `h1 : L (LinearMap.baseChange (PadicAlgCl l) (g s) (σ i ![0, 1])) = τ • y i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hy]`. Simplify using `only`. Rewrite using `[hSf i, map_sum, map_sum, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.baseChange_tmul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `e1 : ∀ x : M, q.1 ⊗ₜ[ℤ_[l]] x = q.1 • ((1 : PadicAlgCl l) ⊗ₜ[ℤ_[l]] x)` using `fun x => by`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e1, e1 (q.2 : M), map_smul, map_smul, hsm, hsm, hs _ q.2.2, smul_mul', gal_smul_coe, show τ q.1 = q.1 from τ.commutes ⟨q.1, hSK i q hq⟩]`. Rewrite using `[← h1, hσeq, hLv]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Establish `hfix : ∀ i, ∃ k : K, ((k : PadicAlgCl l) : ℂ_[l]) = y i / y i₀`. Introduce `i`. Use `exists_eq_coe_of_forall_smul_eq fun τ => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `hmul τ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : τ • y i₀ ≠ 0`. Rewrite using `[← norm_ne_zero_iff, norm_smul_gal, norm_ne_zero_iff]`. Conclude with `hy0`. Establish `hc0 : (c : ℂ_[l]) ≠ 0`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `hne` to reduce the goal to its premises. Rewrite using `[hc, h0, zero_mul]`. Rewrite using `[smul_div₀', hc, hc]`. Clear the denominators using the available nonvanishing facts. Use `choose k hk using hfix`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `(Completion.denseRange_coe (α := PadicAlgCl l)).exists_dist_lt (y i₀) (norm_pos_iff.2 hy0)`. Rewrite `ha` using `[dist_eq_norm]`. Establish `hna : ‖(a : ℂ_[l])‖ = ‖y i₀‖`. Establish `e : (a : ℂ_[l]) = -(y i₀ - (a : ℂ_[l])) + y i₀` using `by ring`. Rewrite using `[e, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [norm_neg]; exact ha.ne), norm_neg, max_eq_right ha.le]`.
-
-Establish `ha0 : (a : ℂ_[l]) ≠ 0`. Rewrite using `[← norm_ne_zero_iff, hna, norm_ne_zero_iff]`. Conclude with `hy0`. Use `⟨fun i => (k i : PadicAlgCl l) * a, y i₀ / (a : ℂ_[l]), ?_, fun i v => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, hna, div_self (norm_ne_zero_iff.2 hy0)]`.
-
-Rewrite using `[hLv, Completion.coe_mul, Completion.coe_mul, hk i]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem line_functional_eq_period_mul : ∀ (l : ℕ) [Fact l.Prime] (M S : Type) [AddCommGroup M] [Module ℤ_[l] M] (B : Submodule ℤ_[l] M)
   (g : S → Module.End ℤ_[l] M) (ρ : S → Matrix (Fin 2) (Fin 2) (PadicAlgCl l))

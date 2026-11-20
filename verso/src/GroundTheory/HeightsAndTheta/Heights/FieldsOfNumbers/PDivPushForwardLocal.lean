@@ -16,11 +16,9 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Use `choose v hv using hW.relevant`. Use `hW.isPrime` as an intermediate fact. Use `⟨∏ k, (X ⟨k, v k⟩ : MRing ι F) ^ c k, ?_, ?_⟩` and prove the remaining obligations. Establish `hprod` using `IsWeightedHomogeneous.prod (w := blockWeight ι) Finset.univ (fun k => (X ⟨k, v k⟩ : MRing ι F) ^ c k) (fun k => c k • blockWeight ι ⟨k, v k⟩) (fun k _ => (isWeightedHomogeneous_X F (blockWeight ι) _).pow (c k))`. Establish `hc : (∑ k, c k • blockWeight ι ⟨k, v k⟩) = c`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k'`. Simplify using `[blockWeight, Finset.sum_apply, Pi.single_apply]`. Rewrite `hprod` using `[hc]`. Conclude with `hprod`. Rewrite using `[Ideal.IsPrime.prod_mem_iff]`.
-
-Introduce and unpack `⟨k, -, hk⟩`. Conclude with `hv k (Ideal.IsPrime.mem_of_pow_mem this _ hk)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_form_not_mem {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} {F : Type u}
     [Field F] {W : Ideal (MRing ι F)} (hW : IsMultiProjPrime W) (c : K → ℕ) :
@@ -41,25 +39,23 @@ theorem exists_form_not_mem {K : Type} [Fintype K] [DecidableEq K] {ι : K → T
     exact hv k (Ideal.IsPrime.mem_of_pow_mem this _ hk)
 
 /- English proof (translation)
-Introduce `F _ K K' _ _ _ _ j ι' _ P' hP' n hdim hdimP c a ha haP W hW hWd M hM1 hM0`. Use `hP'.isPrime` as an intermediate fact. Establish `hP` using `isMultiProjPrime_contractPrime j ι' hP'`. Distinguish the cases in `hPW : contractPrime j P' ⊔ Ideal.span {a} ≤ W`. Use `hW.isPrime` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hPle : contractPrime j P' ≤ W` using `le_trans le_sup_left hPW`. Take `⟨h, hh, hhW⟩` from `exists_form_not_mem hW c`. Set `α : degZeroLoc (contractPrime j P') {W}` to `⟨_, div_mem_degZeroLoc _ _ ha hh (fun hm => hhW (hPle hm)) (fun W₁ h₁ => (Set.mem_singleton_iff.mp h₁) ▸ hhW)⟩`. Establish `hα0 : α ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0'` using `congrArg Subtype.val h0`. Apply the tactic sequence `rcases div_eq_zero_iff.mp h0' with h' | h' <;>`. Rewrite `h'` using `[IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `haP h'`. Conclude with `hhW (hPle h')`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨hNo, hLo⟩, hdA⟩` from `h3 F K _ _ hP W hW hPle`. Take `⟨hfin, htf, hrk⟩` from `h4 F K K' j ι' P' hP' n hdim hdimP W hW hWd hPle`. Establish `key` using `ReciprocityTheory.ChartRestriction.G.AI.dimOneTorsionFreeFormula _ (degZeroLoc P' (fibrePrimes j P' W)) α (hdA n hdimP hWd) hα0`. Take `⟨N, hN, hMN⟩` from `h5 F K K' j ι' P' hP' n hdim hdimP c a h ha hh haP W hW hWd hPle hhW M hM1 hM0 α rfl`. Take `⟨hmin, hfinm⟩` from `h1 F K _ _ hP.isPrime n hdimP a haP W hW.isPrime hWd hPW`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcone` using `h2 F K _ _ hP W hW hPle c a h ha hh hhW α rfl`. Establish `hdc : divCycle (contractPrime j P') a W = ((multAt (contractPrime j P' ⊔ Ideal.span {a}) W).toNat : ℤ)`. Unfold `divCycle`. Rewrite using `[dif_pos ⟨hmin, hW.relevant⟩]`. Rewrite using `[hMN, hdc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `key` using `[hN, hrk, ← hcone]`. Take `⟨m, hm⟩` from `ENat.ne_top_iff_exists.mp hfinm`. Rewrite `key`, the goal using `[← hm]`. Establish `hNm : N = relDeg j P' * m` using `by exact_mod_cast key`. Rewrite using `[hNm, ENat.toNat_natCast]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hR : divCycle (contractPrime j P') a W = 0`. Unfold `divCycle`. Rewrite using `[dif_neg]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h, -⟩`. Conclude with `hPW h.1.2`. Rewrite using `[hR, mul_zero]`. Unfold `cycEval`. Use `finsum_eq_zero_of_forall_eq_zero fun W' => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hD : divCycle P' (rename (blockIncl j ι') a) W' = 0`. Rewrite using `[hD, zero_mul]`. Use `mul_eq_zero_of_right _ (hM0 W' fun hc => hPW ?_)` and prove the remaining obligations. Unfold `divCycle at hD`. Use `split_ifs at hD with hm`.
-
-Rewrite using `[← hc]`. Use `sup_le (Ideal.comap_mono (le_trans le_sup_left hm.1.1.2)) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hm.1.1.2 (Ideal.mem_sup_right (Ideal.subset_span rfl))`. Conclude with `absurd rfl hD`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DivPushForwardLocal.proof (h1 : DivCycleMinimal.Statement.{u})
     (h2 : ConeLocalLength.Statement.{u}) (h3 : DegZeroLocalRing.Statement.{u})

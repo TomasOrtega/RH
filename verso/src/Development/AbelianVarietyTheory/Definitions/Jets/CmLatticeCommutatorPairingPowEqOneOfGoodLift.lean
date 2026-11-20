@@ -119,13 +119,13 @@ namespace Basic
 open Filter Topology
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `[logS, coeff_log]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem logS_eq : (logS : ℂ_[q]⟦X⟧) = PowerSeries.log ℂ_[q] := by
   ext n; simp [logS, coeff_log]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[map_sub, coeff_map, binomialSeries_coeff, smul_eq_mul, mul_one, mulS, coeff_mk, coeff_one]`. Break down `n with _ | n` into its components or cases. Simplify using the standard rewrite rules. Simplify using `only [Nat.succ_ne_zero, if_false, sub_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -138,11 +138,11 @@ theorem mulS_eq (a : ℤ_[q]) :
   · simp only [Nat.succ_ne_zero, if_false, sub_zero]; rfl
 
 /- English proof (translation)
-Establish `h1 : eis d k = ∑' w : ({w : ℂ | InOK d w ∧ w ≠ 0} : Set ℂ), (fun z : ℂ => (z ^ (2 * k))⁻¹) w`. Simplify using `only [eis, one_div]`. Both sides reduce to the same expression. Establish `h2 : L.G (2 * k) = ∑' w : (L.lattice : Set ℂ), (fun z : ℂ => (z ^ (2 * k))⁻¹) w` using `rfl`. Rewrite using `[h1, h2, tsum_subtype _ fun z : ℂ => (z ^ (2 * k))⁻¹, tsum_subtype _ fun z : ℂ => (z ^ (2 * k))⁻¹]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `tsum_congr fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality. Simplify using `[Set.indicator, hk.ne']`. Establish `e : z ∈ {w : ℂ | InOK d w ∧ w ≠ 0} ↔ z ∈ (L.lattice : Set ℂ)` using `by simp [hz, h z]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hL : z ∈ (L.lattice : Set ℂ)`. Rewrite using `[Set.indicator_of_mem hL, Set.indicator_of_mem (e.2 hL)]`. Rewrite using `[Set.indicator_of_notMem hL, Set.indicator_of_notMem (fun h' => hL (e.1 h'))]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eis_eq {d : ℕ} {L : PeriodPair} (h : IsOK d L) {k : ℕ} (hk : 0 < k) : eis d k = L.G (2 * k) := by
   have h1 : eis d k = ∑' w : ({w : ℂ | InOK d w ∧ w ≠ 0} : Set ℂ), (fun z : ℂ => (z ^ (2 * k))⁻¹) w := by
@@ -163,15 +163,15 @@ variable {q : ℕ} [Fact q.Prime] in
 open Filter Topology in
 
 /- English proof (translation)
-Establish `hG : ∀ k, 0 < k → _root_.GlobalTheory.MomOne.eis d k = L.G (2 * k)`. Introduce `k hk`. Unfold `_root_.GlobalTheory.MomOne.eis PeriodPair.G`. Establish `e1` using `tsum_subtype {w : ℂ | _root_.GlobalTheory.MomOne.InOK d w ∧ w ≠ 0} (fun w : ℂ => 1 / w ^ (2 * k))`. Establish `e2` using `tsum_subtype (L.lattice : Set ℂ) (fun w : ℂ => (w ^ (2 * k))⁻¹)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `e1.trans (Eq.trans ?_ e2.symm)` and prove the remaining obligations. Use `congr 1`. Use extensionality with `z`. Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `: (2 * k) ≠ 0` using `by omega`. Simplify using `[Set.indicator, zero_pow this]`. Establish `hz' : z ∈ (L.lattice : Set ℂ) ↔ _root_.GlobalTheory.MomOne.InOK d z` using `h z`. Distinguish the cases in `hm : _root_.GlobalTheory.MomOne.InOK d z`. Simplify using `[Set.indicator, hz, hm, hz'.2 hm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[Set.indicator, hm, mt hz'.1 hm]`. Establish `hdisc : _root_.GlobalTheory.MomOne.discr d = L.g₂ ^ 3 - 27 * L.g₃ ^ 2`. Unfold `_root_.GlobalTheory.MomOne.discr PeriodPair.g₂ PeriodPair.g₃`. Rewrite using `[hG 2 (by norm_num), hG 3 (by norm_num)]`. Use `⟨hdisc, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hdisc, ← _root_.GlobalTheory.latticeCurve_Δ]`. Conclude with `_root_.GlobalTheory.latticeCurve_Δ_ne_zero L`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.MomOne.Basic.discr_eq {d : ℕ} {L : PeriodPair}
     (h : _root_.GlobalTheory.MomOne.IsOK d L) :
@@ -215,9 +215,9 @@ variable {q : ℕ} [Fact q.Prime] in
 open Filter Topology in
 
 /- English proof (translation)
-Introduce `z`. Rewrite using `[PeriodPair.mem_lattice]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, n, rfl⟩`. Conclude with `⟨m, n, by simp [_root_.GlobalTheory.MomOne.Basic.okPair]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨u, v, rfl⟩`. Conclude with `⟨u, v, by simp [_root_.GlobalTheory.MomOne.Basic.okPair]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.MomOne.Basic.isOK_okPair (d : ℕ) (hd : 0 < d) :
     _root_.GlobalTheory.MomOne.IsOK d (_root_.GlobalTheory.MomOne.Basic.okPair d hd) := by
@@ -232,9 +232,9 @@ theorem _root_.GlobalTheory.MomOne.Basic.isOK_okPair (d : ℕ) (hd : 0 < d) :
 open Cardinal in
 
 /- English proof (translation)
-Establish `h : ∀ x : X, ∃ s : ℕ → A, Filter.Tendsto (fun n => f (s n)) Filter.atTop (nhds x)` using `fun x => by`. Take `⟨u, hu, hx⟩` from `mem_closure_iff_seq_limit.1 (hf x)`. Use `choose s hs using hu`. Conclude with `⟨s, by simpa only [hs] using hx⟩`. Use `choose s hs using h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinj : Function.Injective s` using `fun x y hxy => tendsto_nhds_unique (hs x) (by rw [hxy]; exact hs y)`. Use `(Cardinal.mk_le_of_injective hinj).trans ?_` and prove the remaining obligations. Rewrite using `[← Cardinal.power_def, Cardinal.mk_nat]`. Conclude with `(Cardinal.power_le_power_right hA).trans_eq Cardinal.continuum_power_aleph0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_le_of_denseRange {A X : Type} [MetricSpace X] (f : A → X) (hf : DenseRange f) (hA : #A ≤ 𝔠) :
     #X ≤ 𝔠 := by
@@ -255,11 +255,11 @@ variable {q : ℕ} [Fact q.Prime] in
 open Filter Topology in
 open Cardinal in
 /- English proof (translation)
-Establish `h : ∀ x : X, ∃ u : ℕ → Y, Tendsto (i ∘ u) atTop (𝓝 x)`. Introduce `x`. Establish `hx : x ∈ closure (Set.range i)` using `by rw [hi.closure_range]; trivial`. Take `⟨v, hv, hlim⟩` from `mem_closure_iff_seq_limit.1 hx`. Use `choose u hu using hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨u, ?_⟩` and prove the remaining obligations. Establish `: i ∘ u = v` using `funext fun n => hu n`. Rewrite using `[this]`. Conclude with `hlim`. Use `choose u hu using h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Cardinal.mk_le_of_injective (f := u) fun x y hxy => ?_` and prove the remaining obligations. Use `hu y` as an intermediate fact. Rewrite `this` using `[← hxy]`. Conclude with `tendsto_nhds_unique (hu x) this`.
+A detailed English derivation is pending.
 -/
 private theorem cardinal_le_seq_of_denseRange {X Y : Type} [TopologicalSpace X]
     [FrechetUrysohnSpace X] [T2Space X] (i : Y → X) (hi : DenseRange i) : #X ≤ #(ℕ → Y) := by
@@ -283,9 +283,9 @@ variable {q : ℕ} [Fact q.Prime] in
 open Filter Topology in
 open Cardinal in
 /- English proof (translation)
-Establish `hQ : #ℚ_[q] ≤ 𝔠`. Combine the equalities or inequalities in the displayed calculation. Establish `hA : #(PadicAlgCl q) ≤ 𝔠` using `(Algebra.IsAlgebraic.cardinalMk_le_max ℚ_[q] (PadicAlgCl q)).trans (max_le hQ aleph0_le_continuum)`. Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Take `⟨f, -, -, hf⟩` from `Perfect.exists_nat_bool_injection (PerfectSpace.univ_perfect (α := ℚ_[q])) ⟨0, trivial⟩`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 -/
 private theorem cardinal_padicComplex_eq_continuum (q : ℕ) [Fact q.Prime] : #ℂ_[q] = 𝔠 := by
   have hQ : #ℚ_[q] ≤ 𝔠 := by
@@ -313,7 +313,7 @@ open Filter Topology in
 open Cardinal in
 
 /- English proof (translation)
-Use `IsAlgClosed.ringEquiv_of_equiv_of_charZero ?_ ?_` and prove the remaining obligations. Rewrite using `[Cardinal.mk_complex]`. Conclude with `aleph0_lt_continuum`. Conclude with `Cardinal.eq.1 (by rw [Cardinal.mk_complex, cardinal_padicComplex_eq_continuum])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.MomOne.Basic.nonempty_iso (q : ℕ) [Fact q.Prime] :
     Nonempty (ℂ ≃+* ℂ_[q]) := by
@@ -322,17 +322,15 @@ theorem _root_.GlobalTheory.MomOne.Basic.nonempty_iso (q : ℕ) [Fact q.Prime] :
   · exact Cardinal.eq.1 (by rw [Cardinal.mk_complex, cardinal_padicComplex_eq_continuum])
 
 /- English proof (translation)
-Establish `hne : W.Δ ≠ 0` using `by intro h; simp [h] at hΔ`. Use `haveI : W.IsElliptic := ⟨hne.isUnit⟩`. Take `⟨L, C, hC⟩` from `exists_variableChange_eq_latticeCurve (W.map (ι.symm : ℂ_[q] →+* ℂ))`. Establish `e4` using `congrArg WeierstrassCurve.c₄ hC`. Establish `e6` using `congrArg WeierstrassCurve.c₆ hC`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e4` using `[WeierstrassCurve.variableChange_c₄, WeierstrassCurve.map_c₄, latticeCurve_c₄]`. Establish `l6 : (latticeCurve L).c₆ = 216 * L.g₃`. Simplify using `only [latticeCurve, WeierstrassCurve.c₆, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `e6` using `[WeierstrassCurve.variableChange_c₆, WeierstrassCurve.map_c₆, l6]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : ((C.u⁻¹ : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Use `⟨L, ((C.u⁻¹ : ℂˣ) : ℂ), hu, h1, h2, h3, h4, h6, hΔ, ?_, ?_⟩` and prove the remaining obligations. Establish `: L.g₂ / ((C.u⁻¹ : ℂˣ) : ℂ) ^ 4 = ι.symm W.c₄ / 12`. Establish `e : (ι.symm : ℂ_[q] →+* ℂ) W.c₄ = ι.symm W.c₄` using `rfl`. Rewrite `e4` using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `-e4`. Use `show W.c₄ / 12 = ι _`. Rewrite using `[this, map_div₀, RingEquiv.apply_symm_apply, map_ofNat]`. Establish `: L.g₃ / ((C.u⁻¹ : ℂˣ) : ℂ) ^ 6 = ι.symm W.c₆ / 216`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (ι.symm : ℂ_[q] →+* ℂ) W.c₆ = ι.symm W.c₆` using `rfl`. Rewrite `e6` using `[e]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-e6`. Use `show W.c₆ / 216 = ι _`.
-
-Rewrite using `[this, map_div₀, RingEquiv.apply_symm_apply, map_ofNat]`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ok_of (ι : ℂ ≃+* ℂ_[q]) (W : WeierstrassCurve ℂ_[q]) (h1 : ‖W.a₁‖ ≤ 1) (h2 : ‖W.a₂‖ ≤ 1)
     (h3 : ‖W.a₃‖ ≤ 1) (h4 : ‖W.a₄‖ ≤ 1) (h6 : ‖W.a₆‖ ≤ 1) (hΔ : ‖W.Δ‖ = 1) :
@@ -370,7 +368,7 @@ variable {q : ℕ} [Fact q.Prime] in
 open Filter Topology in
 
 /- English proof (translation)
-Establish `h1 : (m : ℂ_[q]) = (((m : ℚ_[q]) : PadicAlgCl q) : ℂ_[q])` using `by simp`. Rewrite using `[h1, PadicComplex.norm_extends, PadicAlgCl.norm_extends, Padic.norm_natCast_eq_one_iff]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.MomOne.Basic.norm_nat_eq_one {m : ℕ} (h : Nat.Coprime q m) :
     ‖(m : ℂ_[q])‖ = 1 := by
@@ -379,11 +377,11 @@ theorem _root_.GlobalTheory.MomOne.Basic.norm_nat_eq_one {m : ℕ} (h : Nat.Copr
   exact h
 
 /- English proof (translation)
-Take `⟨ι⟩` from `nonempty_iso q`. Establish `hq : q.Prime` using `Fact.out`. Distinguish the cases in `h : q = 37`. Take `⟨L, c, H⟩` from `exists_ok_of ι ⟨0, -1, 1, 0, 0⟩ (by simp) (by simp) (by simp) (by simp) (by simp) (by`. Establish `: (⟨0, -1, 1, 0, 0⟩ : WeierstrassCurve ℂ_[q]).Δ = -((11 : ℕ) : ℂ_[q])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`. Evaluate the numerical expressions. Rewrite using `[this, norm_neg]; exact norm_nat_eq_one (by subst h; norm_num))`. Conclude with `⟨_, H⟩`. Take `⟨L, c, H⟩` from `exists_ok_of ι ⟨0, 0, 1, -1, 0⟩ (by simp) (by simp) (by simp) (by simp) (by simp) (by`.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `: (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℂ_[q]).Δ = ((37 : ℕ) : ℂ_[q])`. Simplify using `only [WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`. Evaluate the numerical expressions. Rewrite using `[this]; exact norm_nat_eq_one ((Nat.coprime_primes hq (by norm_num)).2 h))`. Conclude with `⟨_, H⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_ok (q : ℕ) [Fact q.Prime] : ∃ M : Mdl q, M.Ok := by
   obtain ⟨ι⟩ := nonempty_iso q
@@ -403,21 +401,19 @@ theorem exists_ok (q : ℕ) [Fact q.Prime] : ∃ M : Mdl q, M.Ok := by
     exact ⟨_, H⟩
 
 /- English proof (translation)
-Establish `ha` using `M.L.analyticAt_weierstrassPExcept 0`. Establish `hb` using `M.L.analyticAt_derivWeierstrassPExcept 0`. Use `set β := M.ι.symm (M.W.b₂ / 12)`. Use `set a1 := M.ι.symm M.W.a₁`. Use `set a3 := M.ι.symm M.W.a₃`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hAd⟩ : ∃ A : ℂ → ℂ, A = fun z => (1 + z ^ 2 * M.L.weierstrassPExcept 0 z) / M.c ^ 2 - β * z ^ 2` from `⟨_, rfl⟩`. Establish `hA : AnalyticAt ℂ A 0` using `by rw [hAd]; fun_prop`. Take `⟨B, hBd⟩ : ∃ B : ℂ → ℂ, B = fun z => ((z ^ 3 * M.L.derivWeierstrassPExcept 0 z - 2) / M.c ^ 3 - a1 * z * A z - a3 * z ^ 3) / 2` from `⟨_, rfl⟩`. Establish `hB : AnalyticAt ℂ B 0` using `by rw [hBd]; fun_prop`. Establish `hA0 : A 0 = 1 / M.c ^ 2` using `by simp [hAd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB0 : B 0 = -1 / M.c ^ 3` using `by simp [hBd]; ring`. Establish `hB0' : B 0 ≠ 0` using `by rw [hB0]; exact div_ne_zero (by norm_num) (pow_ne_zero _ hc)`. Establish `hx : ∀ z : ℂ, z ≠ 0 → M.x z = A z / z ^ 2`. Introduce `z hz`. Establish `h` using `M.L.weierstrassPExcept_add 0 z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [ZeroMemClass.coe_zero, sub_zero] at h`. Rewrite using `[Mdl.x, ← h, hAd]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hy : ∀ z : ℂ, z ≠ 0 → M.y z = B z / z ^ 3`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `z hz`. Establish `h` using `M.L.derivWeierstrassPExcept_sub 0 z`. Simplify using `only [ZeroMemClass.coe_zero, sub_zero] at h`. Rewrite using `[Mdl.y, ← h, hBd, hx z hz]`. Simplify using `only [a1, a3]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `hQ : AnalyticAt ℂ (fun z => -A z / B z) 0` using `hA.neg.div hB hB0'`. Establish `h` using `(hasDerivAt_id (0 : ℂ)).mul hQ.differentiableAt.hasDerivAt`. Establish `e : -A 0 / B 0 = M.c` using `by rw [hA0, hB0]; field_simp`. Simplify using `only [id, zero_mul, add_zero, one_mul, e] at h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `h.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hB.continuousAt.eventually_ne hB0', M.L.compl_lattice_sdiff_singleton_mem_nhds 0] with z h2 h3`. Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality. Simplify using `[Mdl.u]`.
-
-Establish `: z ∉ M.L.lattice` using `fun h => h3 ⟨h, hz⟩`. Simplify using `only [Mdl.u, if_neg this, hx z hz, hy z hz, Pi.mul_apply, id]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_u (M : Mdl q) (hc : M.c ≠ 0) : HasDerivAt M.u M.c 0 := by
   have ha := M.L.analyticAt_weierstrassPExcept 0
@@ -460,11 +456,11 @@ theorem hasDerivAt_u (M : Mdl q) (hc : M.c ≠ 0) : HasDerivAt M.u M.c 0 := by
     field_simp
 
 /- English proof (translation)
-Use `set P := PowerSeries.map (M.ι : ℂ →+* ℂ_[q]) (tay M.u) with hP`. Establish `h0 : constantCoeff P = 0`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, hP, coeff_map, tay, coeff_mk]`. Simplify using `[Mdl.u]`. Establish `h1 : IsUnit (coeff 1 P)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP, coeff_map, tay, coeff_mk]`. Simplify using `[(hasDerivAt_u M h.1).deriv, h.1]`. Establish `e : hat M.ι (P.substInvOfIsUnit h1) M.u = X` using `subst_substInvOfIsUnit_right P h0 h1`. Use `⟨P.substInvOfIsUnit h1, ⟨h, constantCoeff_substInvOfIsUnit _ _, ?_, ?_⟩, e⟩` and prove the remaining obligations. Apply the tactic sequence `intro n; rw [e, coeff_X]; split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_chart (M : Mdl q) (h : M.Ok) : ∃ ℓ, M.Chart ℓ ∧ hat M.ι ℓ M.u = X := by
   set P := PowerSeries.map (M.ι : ℂ →+* ℂ_[q]) (tay M.u) with hP
@@ -480,7 +476,7 @@ theorem exists_chart (M : Mdl q) (h : M.Ok) : ∃ ℓ, M.Chart ℓ ∧ hat M.ι 
   · rw [e]; simp
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `exists_ok q`. Take `⟨ℓ, h, -⟩` from `exists_chart M hM`. Conclude with `⟨M, ℓ, h⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_model_chart (q : ℕ) [Fact q.Prime] : ∃ (M : Mdl q) (ℓ : ℂ_[q]⟦X⟧), M.Chart ℓ := by
   obtain ⟨M, hM⟩ := exists_ok q
@@ -493,15 +489,15 @@ variable {q : ℕ} [Fact q.Prime] in
 open Filter Topology in
 
 /- English proof (translation)
-Take `⟨v, ⟨u, w, rfl⟩, -, rfl⟩` from `h`. Establish `hq : 0 < q` using `(Fact.out : q.Prime).pos`. Establish `hs : Real.sqrt d ≠ 0` using `by positivity`. Establish `hd2 : Real.sqrt d ^ 2 = d` using `Real.sq_sqrt (by positivity)`. Establish `him : ((q : ℂ) ^ n).im = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Complex.ofReal_natCast, ← Complex.ofReal_pow, Complex.ofReal_im]`. Establish `hre : ((q : ℂ) ^ n).re = (q : ℝ) ^ n`. Rewrite using `[← Complex.ofReal_natCast, ← Complex.ofReal_pow, Complex.ofReal_re]`. Establish `hIm : (_root_.GlobalTheory.MomOne.h1 d 1 ((s : ℂ) * ((u : ℂ) + (w : ℂ) * _root_.GlobalTheory.MomOne.wK d) / (q : ℂ) ^ n)).im = -((s : ℝ) * w) / (q : ℝ) ^ n`. Simplify using `[_root_.GlobalTheory.MomOne.h1, _root_.GlobalTheory.MomOne.wK, Complex.div_im, Complex.div_re, Complex.mul_im, Complex.mul_re, him, hre]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hd2]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : _root_.GlobalTheory.MomOne.kap1 d 1 ((s : ℂ) * ((u : ℂ) + (w : ℂ) * _root_.GlobalTheory.MomOne.wK d) / (q : ℂ) ^ n) ^ (q ^ n) = 1`. Unfold `_root_.GlobalTheory.MomOne.kap1`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Complex.exp_nat_mul, hIm]`. Establish `hqn : ((q : ℂ) ^ n) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hq.ne')`. Establish `: ((q ^ n : ℕ) : ℂ) * (-(2 * (Real.pi : ℂ) * Complex.I) * ((-((s : ℝ) * w) / (q : ℝ) ^ n : ℝ) : ℂ)) = ((s * w : ℤ) : ℂ) * (2 * Real.pi * Complex.I)`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[this, Complex.exp_int_mul_two_pi_mul_I]`. Rewrite using `[← map_pow, key, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.MomOne.Basic.cmLatticeCommutatorPairing_pow_eq_one_of_good_lift (ι : ℂ ≃+* ℂ_[q]) {d n s : ℕ}
     (hd : 0 < d) {y : ℂ} (h : _root_.GlobalTheory.MomOne.Good ι d n s y) :
@@ -534,27 +530,27 @@ theorem _root_.GlobalTheory.MomOne.Basic.cmLatticeCommutatorPairing_pow_eq_one_o
   rw [← map_pow, key, map_one]
 
 /- English proof (translation)
-Establish `hsq : ((Real.sqrt (7 : ℕ) : ℝ) : ℂ) ^ 2 = 7` using `by exact_mod_cast Real.sq_sqrt (Nat.cast_nonneg 7)`. Establish `hs : Real.sqrt (7 : ℕ) ≠ 0` using `by positivity`. Establish `hw : wK 7 * (1 - wK 7) = 2`. Rewrite using `[wK]`. Take the linear combination `(-((Real.sqrt (7 : ℕ) : ℝ) : ℂ) ^ 2 / 4) * Complex.I_sq + 1 / 4 * hsq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hc : conj (wK 7) = 1 - wK 7`. Simplify using `only [wK, map_add, map_mul, map_div₀, map_one, map_ofNat, Complex.conj_I, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Use `set a := ι (wK 7)`. Establish `ha : a * (1 - a) = 2` using `by have := congrArg ι hw; simpa [map_ofNat] using this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ‖(2 : ℂ_[2])‖ = 1 / 2`. Establish `: (2 : ℂ_[2]) = algebraMap ℚ_[2] ℂ_[2] ((2 : ℕ) : ℚ_[2])` using `by simp [map_ofNat]`. Rewrite using `[this, norm_algebraMap', Padic.norm_p]`. Evaluate the numerical expressions. Establish `hp : ‖a‖ * ‖1 - a‖ = 1 / 2` using `by rw [← norm_mul, ha, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hor : ‖a‖ ≤ 1 / 2 ∨ ‖1 - a‖ ≤ 1 / 2`. Use `IsUltrametricDist.norm_add_le_max a (1 - a)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel, norm_one, le_max_iff]`. Break down `this with h | h` into its components or cases. Use `right`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[norm_nonneg (1 - a)]`. Use `left`. Use polynomial arithmetic with `[norm_nonneg a]`. Establish `hk : ∀ (u : ℤ) (e : ℤ), (e = 1 ∨ e = -1) → kap1 7 1 (((1 : ℕ) : ℂ) * (u + e * wK 7) / ((2 : ℕ) : ℂ) ^ 1) = -1`. Introduce `u e he`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `him : (h1 7 1 (((1 : ℕ) : ℂ) * (u + e * wK 7) / ((2 : ℕ) : ℂ) ^ 1)).im = -e / 2`. Rewrite using `[h1, Complex.im_ofReal_mul, one_mul, Complex.conj_im]`. Simplify using `[wK]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[kap1, him]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Break down `he with rfl | rfl` into its components or cases. Rewrite using `[← Complex.exp_pi_mul_I]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← Complex.exp_neg_pi_mul_I]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : ((2 : ℕ) : ℝ) ^ (-(2 * (1 : ℕ) : ℤ)) = 1 / 4` using `by norm_num`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Break down `hor with h | h` into its components or cases. Use `⟨_, ⟨_, ⟨-1, -1, rfl⟩, ?_, rfl⟩, hk _ _ (.inr rfl)⟩` and prove the remaining obligations. Establish `: conj (((-1 : ℤ) : ℂ) + (-1 : ℤ) * wK 7) = wK 7 ^ 2`. Rewrite using `[map_add, map_mul, hc, map_intCast]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Take the linear combination `hw`. Rewrite using `[this, map_pow, norm_pow, hb]`. Use polynomial arithmetic with `[norm_nonneg a]`. Use `⟨_, ⟨_, ⟨-2, 1, rfl⟩, ?_, rfl⟩, hk _ _ (.inl rfl)⟩` and prove the remaining obligations. Establish `: conj (((-2 : ℤ) : ℂ) + (1 : ℤ) * wK 7) = (1 - wK 7) ^ 2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[map_add, map_mul, hc, map_intCast, map_intCast]`. Use `push_cast`. Take the linear combination `hw`. Rewrite using `[this, map_pow, norm_pow, hb, map_sub, map_one]`. Use polynomial arithmetic with `[norm_nonneg (1 - a)]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_good [Fact (Nat.Prime 2)] (ι : ℂ ≃+* ℂ_[2]) : ∃ y, Good ι 7 1 1 y ∧ kap1 7 1 y = -1 := by
   have hsq : ((Real.sqrt (7 : ℕ) : ℝ) : ℂ) ^ 2 = 7 := by exact_mod_cast Real.sq_sqrt (Nat.cast_nonneg 7)
@@ -597,7 +593,7 @@ theorem exists_good [Fact (Nat.Prime 2)] (ι : ℂ ≃+* ℂ_[2]) : ∃ y, Good 
     rw [this, map_pow, norm_pow, hb, map_sub, map_one]; nlinarith [norm_nonneg (1 - a)]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[shiftS, coeff_mk, tsum_eq_single 1 (fun m hm => by simp [coeff_X, hm])]`. Apply the tactic sequence `rcases n with _ | _ | n <;> simp [coeff_X, coeff_one, mul_add, Nat.choose_eq_zero_of_lt]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem shiftS_X (ζ : ℂ_[q]) : shiftS ζ X = C ζ * (1 + X) - 1 := by
   ext n
@@ -610,14 +606,14 @@ variable {q : ℕ} [Fact q.Prime] in
 open Filter Topology in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.MomOne.h1`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem _root_.GlobalTheory.MomOne.Basic.cmLatticeHermitianForm_mul_left (d : ℕ) (a z w : ℂ) :
     _root_.GlobalTheory.MomOne.h1 d (a * z) w = a * _root_.GlobalTheory.MomOne.h1 d z w := by
   unfold _root_.GlobalTheory.MomOne.h1; ring
 
 /- English proof (translation)
-Establish `hs : Real.sqrt d ≠ 0` using `by positivity`. Rewrite using `[h1, Complex.im_ofReal_mul, one_mul, Complex.conj_im]`. Establish `: (wK d).im = Real.sqrt d / 2` using `by simp [wK]`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem riemannForm_im_eq_neg_one {d : ℕ} (hd : 0 < d) : (h1 d 1 (wK d)).im = -1 := by
   have hs : Real.sqrt d ≠ 0 := by positivity
@@ -627,17 +623,17 @@ theorem riemannForm_im_eq_neg_one {d : ℕ} (hd : 0 < d) : (h1 d 1 (wK d)).im = 
   field_simp
 
 /- English proof (translation)
-The claim follows from `Or.inl ⟨rfl, rfl⟩`.
+Prove the first alternative.
 -/
 example : Split 7 2 := Or.inl ⟨rfl, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Or.inr ⟨by norm_num, by norm_num⟩`.
+Prove the second alternative.
 -/
 example : Split 7 11 := Or.inr ⟨by norm_num, by norm_num⟩
 
 /- English proof (translation)
-Evaluate the numerical expressions using `[Split]`.
+Evaluate the numerical expressions.
 -/
 example : ¬ Split 7 3 := by norm_num [Split]
 
@@ -647,9 +643,9 @@ variable {q : ℕ} [Fact q.Prime] in
 open Filter Topology in
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[_root_.GlobalTheory.MomOne.shiftS, coeff_mk, tsum_eq_single n]`. Simplify using the standard rewrite rules. Introduce `m hm`. Break down `lt_or_gt_of_ne hm with hlt | hgt` into its components or cases.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[Nat.choose_eq_zero_of_lt hlt]`. Establish `: m - n ≠ 0` using `by omega`. Simplify using `[zero_pow this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.MomOne.Basic.shiftS_one (f : ℂ_[q]⟦X⟧) :
     _root_.GlobalTheory.MomOne.shiftS 1 f = f := by

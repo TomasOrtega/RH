@@ -8,7 +8,7 @@ section
 variable {O R : Type} [CommRing O] [CommRing R] [Algebra O R] {X : Type} [AddCommGroup X]
 
 /- English proof (translation)
-Use `Ideal.pow_le_pow_right hn ?_` and prove the remaining obligations. Rewrite using `[Finsupp.degree_apply, ← Finset.prod_pow_eq_pow_sum]`. Conclude with `Ideal.prod_mem_prod fun i _ => Ideal.pow_mem_pow (hz i) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma prod_pow_mem {S σ : Type} [CommRing S] (I : Ideal S) (z : σ → S) (hz : ∀ i, z i ∈ I)
     (m : σ →₀ ℕ) {n : ℕ} (hn : n ≤ m.degree) : (m.prod fun i k => z i ^ k) ∈ I ^ n := by
@@ -17,7 +17,7 @@ private lemma prod_pow_mem {S σ : Type} [CommRing S] (I : Ideal S) (z : σ → 
   exact Ideal.prod_mem_prod fun i _ => Ideal.pow_mem_pow (hz i) _
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.monomial_one_eq, Finsupp.prod, Finsupp.prod, map_prod]`. Simplify using `[WPres.z]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma π_monomial (W : WPres O X R) (m : W.σ →₀ ℕ) :
     W.π (monomial m 1) = m.prod fun i k => W.z i ^ k := by
@@ -25,13 +25,13 @@ private lemma π_monomial (W : WPres O X R) (m : W.σ →₀ ℕ) :
   simp [WPres.z]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `x _`. Take `⟨f, hf⟩` from `W.surj x`. Conclude with `⟨f, hf, by simp⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `succ n ih`. Introduce `x hx`. Rewrite `hx` using `[pow_succ]`. Use `Submodule.mul_induction_on hx (fun a ha b hb => ?_) ?_` and prove the remaining obligations. Take `⟨f, rfl, hf⟩` from `ih a ha`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩` from `W.surj b`. Rewrite `hb` using `[RingHom.mem_ker, W.origin_π]`. Use `⟨f * g, map_mul _ _ _, le_trans ?_ (le_order_mul)⟩` and prove the remaining obligations. Use `push_cast`. Conclude with `add_le_add hf (one_le_order_iff_constCoeff_eq_zero.2 hb)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ _ ⟨f, rfl, hf⟩ ⟨g, rfl, hg⟩`. Conclude with `⟨f + g, map_add _ _ _, le_trans (le_min hf hg) (min_order_le_add)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma exists_order (W : WPres O X R) (h : W.HasOrigin) (n : ℕ) :
     ∀ x ∈ RingHom.ker (W.origin h) ^ n, ∃ f, W.π f = x ∧ (n : ℕ∞) ≤ f.order := by
@@ -54,14 +54,14 @@ private lemma exists_order (W : WPres O X R) (h : W.HasOrigin) (n : ℕ) :
       exact ⟨f + g, map_add _ _ _, le_trans (le_min hf hg) (min_order_le_add)⟩
 
 /- English proof (translation)
-Rewrite using `[RingHom.mem_ker, WPres.z, W.origin_π]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma z_mem_ker (W : WPres O X R) (h : W.HasOrigin) (i : W.σ) : W.z i ∈ RingHom.ker (W.origin h) := by
   rw [RingHom.mem_ker, WPres.z, W.origin_π]
   simp
 
 /- English proof (translation)
-Introduce `k hk` and use `by classical rw [coeff_monomial, if_neg] rintro rfl exact hk rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private lemma monomial_mem {σ : Type} (wt : σ → X) (m : σ →₀ ℕ) (c : O) :
     monomial m c ∈ wtPart O wt (Finsupp.weight wt m) := fun k hk => by
@@ -71,9 +71,9 @@ private lemma monomial_mem {σ : Type} (wt : σ → X) (m : σ →₀ ℕ) (c : 
   exact hk rfl
 
 /- English proof (translation)
-Establish `hx' : x ∈ ⨆ j, W.part j` using `hx`. Use `Submodule.iSup_induction W.part (motive := fun x => ∃ (T : Finset X) (f : MvPowerSeries W.σ O), W.π f = x ∧ ∀ m, Finsupp.weight W.wt m ∉ T → coeff m f = 0) hx' ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `j _ ⟨f, hf, rfl⟩`. Conclude with `⟨{j}, f, rfl, fun m hm => hf m (by simpa using hm)⟩`. Conclude with `⟨∅, 0, map_zero _, fun _ _ => map_zero _⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Introduce and unpack `_ _ ⟨T, f, rfl, hf⟩ ⟨U, g, rfl, hg⟩`. Use `⟨T ∪ U, f + g, map_add _ _ _, fun m hm => ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[Finset.mem_union, not_or]`. Rewrite using `[map_add, hf m hm.1, hg m hm.2, add_zero]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private lemma A_fin (W : WPres O X R) (x : R) (hx : x ∈ W.A) :
     ∃ (T : Finset X) (f : MvPowerSeries W.σ O), W.π f = x ∧
@@ -91,13 +91,11 @@ private lemma A_fin (W : WPres O X R) (x : R) (hx : x ∈ W.A) :
     rw [map_add, hf m hm.1, hg m hm.2, add_zero]
 
 /- English proof (translation)
-Take `⟨T, f, hf, hT⟩` from `A_fin W _ hx`. Use `⟨T, ?_⟩` and prove the remaining obligations. Establish `h1 : f = ∑ j ∈ T, wcomp O W.wt j f`. Use extensionality with `m`. Rewrite using `[map_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [coeff_wcomp]`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with hm`. Both sides reduce to the same expression. Conclude with `hT m hm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : f - g ∈ RingHom.ker W.π` using `by rw [RingHom.mem_ker, map_sub, hf, sub_self]`. Rewrite using `[← hf]`. Use `conv_lhs => rw [h1, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `W.homog _ h2 j` as an intermediate fact.
-
-Rewrite `this` using `[RingHom.mem_ker, map_sub, map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private lemma A_sum (W : WPres O X R) (g : MvPowerSeries W.σ O) (hx : W.π g ∈ W.A) :
     ∃ T : Finset X, W.π g = ∑ j ∈ T, W.π (wcomp O W.wt j g) := by
@@ -122,25 +120,21 @@ private lemma A_sum (W : WPres O X R) (g : MvPowerSeries W.σ O) (hx : W.π g �
 end
 
 /- English proof (translation)
-Introduce `O R _ _ _ X _ _ _ _ W h n`. Use `⟨le_antisymm (fun x hx => ?_) ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, hgn⟩` from `exists_order W h n _ hx`. Establish `hg' : W.π g = (x : R)` using `hg`. Take `⟨T, hT⟩` from `A_sum W g (hg' ▸ x.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hx' : x = ∑ j ∈ T, (⟨W.π (wcomp O W.wt j g), W.part_le_A ⟨_, wcomp_mem O W.wt j g, rfl⟩⟩ : W.A)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hg', hT]`. Simplify using the standard rewrite rules. Rewrite using `[hx']`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Take `⟨μ, hμ, hs⟩` from `part_span O R X W {m | Finsupp.weight W.wt m = j ∧ n ≤ m.degree} j (fun _ hm => hm.1)`. Take `⟨b, hb, hbs⟩` from `hs (wcomp O W.wt j g) (fun m hm => by`. Rewrite using `[coeff_wcomp]`. Use `split_ifs with h1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `coeff_of_lt_order (lt_of_lt_of_le ?_ hgn)` and prove the remaining obligations. Establish `: ¬ n ≤ m.degree` using `fun h2 => hm ⟨h1, h2⟩`. Conclude with `not_le.1 this` after adjusting the coercions. Use the proof step `rfl)`. Establish `h3 : (⟨W.π (wcomp O W.wt j g), W.part_le_A ⟨_, wcomp_mem O W.wt j g, rfl⟩⟩ : W.A) = ∑ m ∈ μ, (⟨W.π (b m), W.part_le_A ⟨_, hb m, rfl⟩⟩ : W.A) * m.prod fun i k => W.zA i ^ k`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show W.π (wcomp O W.wt j g) = _`. Rewrite using `[hbs, map_sum]`. Simplify using `[π_monomial, Finsupp.prod, WPres.zA]`. Rewrite using `[h3]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.sum_mem _ fun m hm => Ideal.mul_mem_left _ _ (prod_pow_mem (RingHom.ker (W.originA h)) W.zA (fun i => z_mem_ker W h i) m (hμ hm).2)`. Conclude with `Ideal.le_comap_pow (K := RingHom.ker (W.origin h)) W.A.val n`. Take `⟨f, rfl⟩` from `W.surj x`. Establish `hfin : {m : W.σ →₀ ℕ | m.degree < n}.Finite` using `(Finsupp.finite_of_degree_le n).subset fun m (hm : m.degree < n) => hm.le`. Use `set t : MvPowerSeries W.σ O := ∑ m ∈ hfin.toFinset, monomial m (coeff m f) with ht`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `htA : W.π t ∈ W.A`. Rewrite using `[ht, map_sum]`. Conclude with `Subalgebra.sum_mem _ fun m _ => W.part_le_A ⟨_, monomial_mem W.wt m _, rfl⟩`. Use `⟨⟨_, htA⟩, ?_⟩` and prove the remaining obligations. Establish `key : ∃ μ : Finset (W.σ →₀ ℕ), (μ : Set _) ⊆ {m : W.σ →₀ ℕ | n ≤ m.degree} ∧ ∀ f : MvPowerSeries W.σ O, (∀ m, m ∉ {m : W.σ →₀ ℕ | n ≤ m.degree} → coeff m f = 0) → ∃ b : (W.σ →₀ ℕ) → MvPowerSeries W.σ O, (∀ m, b m ∈ wtPart O (fun _ : W.σ => (0 : X)) 0) ∧ f = ∑ m ∈ μ, b m * monomia …` using `part_span O (MvPowerSeries W.σ O) X (WPres.free O fun _ : W.σ => (0 : X)) {m : W.σ →₀ ℕ | n ≤ m.degree} 0 (fun (m : W.σ →₀ ℕ) _ => by show Finsupp.weight (fun _ : W.σ => (0 : X)) m = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finsupp.weight_apply, Finsupp.sum])`. Take `⟨μ, hμ, hs⟩` from `key`. Take `⟨b, -, hbs'⟩` from `hs (f - t) (fun m hm => by`. Establish `hm0 : m.degree < n` using `not_le.1 hm`. Establish `hm' : m ∈ hfin.toFinset` using `hfin.mem_toFinset.2 hm0`.
-
-Rewrite using `[map_sub, ht, map_sum]`. Simplify using `only [coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq, if_pos hm', sub_self])`. Use `show W.π f - W.π t ∈ _`. Rewrite using `[← map_sub, hbs', map_sum]`.
-
-Use `Ideal.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Rewrite using `[map_mul, π_monomial]`. Conclude with `Ideal.mul_mem_left _ _ (prod_pow_mem _ _ (fun i => z_mem_ker W h i) m (hμ hm))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.ker_pow :
     ∀ (O R : Type) [CommRing O] [CommRing R] [Algebra O R] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] [DecidableEq X] (W : WPres O X R) (h : W.HasOrigin) (n : ℕ),

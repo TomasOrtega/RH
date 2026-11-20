@@ -9,9 +9,9 @@ noncomputable section
 namespace GlobalTheory.EtC.FlatLoc
 
 /- English proof (translation)
-Establish `he : e ≠ 0`. Introduce and unpack `rfl; exact NeZero.ne Q (by rw [← hQ, mul_zero])`. Establish `h1 : ((e * r.val : ℕ) : ZMod Q) = 0` using `by push_cast; rw [ZMod.natCast_zmod_val]; exact hr`. Rewrite `h1` using `[ZMod.natCast_eq_zero_iff]`. Establish `h2 : e * q ∣ e * r.val` using `by rw [mul_comm e q, hQ]; exact h1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `Nat.dvd_of_mul_dvd_mul_left (Nat.pos_of_ne_zero he) h2`. Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[← ZMod.natCast_zmod_val r, ht]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem zmod_dvd_of_mul_eq_zero (Q q e : ℕ) [NeZero Q] (hQ : q * e = Q) (r : ZMod Q)
     (hr : (e : ZMod Q) * r = 0) : ∃ s : ZMod Q, r = (q : ZMod Q) * s := by
@@ -25,11 +25,11 @@ theorem zmod_dvd_of_mul_eq_zero (Q q e : ℕ) [NeZero Q] (hQ : q * e = Q) (r : Z
   rw [← ZMod.natCast_zmod_val r, ht]; push_cast; ring
 
 /- English proof (translation)
-Establish `hs : ∑ _i : Unit, (e : ULift.{1} (ZMod Q)) • n = 0`. Simplify `hn` using `[Nat.cast_smul_eq_nsmul]`. Take `⟨k, a, y, hx, ha⟩` from `Module.Flat.isTrivialRelation_of_sum_smul_eq_zero (f := fun _ : Unit => (e : ULift.{1} (ZMod Q))) (x := fun _ : Unit => n) hs`. Establish `hb : ∀ j, ∃ s : ZMod Q, (a () j).down = (q : ZMod Q) * s` using `fun j => by`. Use `zmod_dvd_of_mul_eq_zero Q q e hQ _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg ULift.down (ha j)` as an intermediate fact. Simplify using `using this`. Use `choose s hs using hb`. Use `⟨∑ j, (ULift.up (s j) : ULift.{1} (ZMod Q)) • y j, ?_⟩` and prove the remaining obligations. Rewrite using `[show n = ∑ j, a () j • y j from hx (), Finset.smul_sum]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod Q)), smul_smul]`. Use `congr 1`. Apply `ULift.ext` to reduce the goal to its premises. Simplify using `[hs j]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flat_dvd (Q q e : ℕ) [NeZero Q] (hQ : q * e = Q) (N : Type*) [AddCommGroup N]
     [Module (ULift.{1} (ZMod Q)) N] [Module.Flat (ULift.{1} (ZMod Q)) N] (n : N) (hn : e • n = 0) :
@@ -52,15 +52,15 @@ theorem flat_dvd (Q q e : ℕ) [NeZero Q] (hQ : q * e = Q) (N : Type*) [AddCommG
   simp [hs j]
 
 /- English proof (translation)
-Introduce `Q q e _ hQ M hM U x hx`. Take `⟨P, φ, hsurj, hinj, hflat⟩` from `hM`. Establish `hnat : ∀ {W V : Scheme.{0}} (k : W ⟶ V) (p : P.obj (op V)), (φ.app (op W)).hom ((P.map k.op).hom p) = Sec.res k ((φ.app (op V)).hom p)` using `fun k p => by`. Use `LinearMap.congr_fun (congrArg ModuleCat.Hom.hom (φ.naturality k.op)) p` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hres : ∀ {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (s : Sec M U), Sec.res k (Sec.res g s) = Sec.res (k ≫ g) s`. Introduce `W V U k g s`. Simplify using `only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`. Use `loc_trans U _ (loc_mono U _ _ (hsurj U x) fun V g hpg => ?_)` and prove the remaining obligations. Take `⟨p, hp⟩` from `hpg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hep : (φ.app (op V)).hom (e • p) = 0`. Rewrite using `[map_nsmul, hp]`. Use `show e • (M.obj.map g.op).hom x = 0`. Rewrite using `[← map_nsmul, hx, map_zero]`. Use `loc_mono V _ _ (hinj V (e • p) hep) fun W k hk => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hW : Nonempty W`. Use `haveI := hflat W hW`. Take `⟨p', hp'⟩` from `flat_dvd Q q e hQ _ ((P.map k.op).hom p) (by rw [← map_nsmul]; exact hk)`. Use `⟨(φ.app (op W)).hom p', ?_⟩` and prove the remaining obligations. Rewrite using `[← hres, ← hp, ← hnat, hp', map_nsmul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsEmpty W := not_nonempty_iff.mp hW`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_zero]`. Conclude with `(sec_ext_glue (ZMod Q) M W).1 _ _ (loc_of_isEmpty W _)`.
+A detailed English derivation is pending.
 -/
 theorem flat_loc : ∀ (Q q e : ℕ) [NeZero Q], q * e = Q → ∀ (M : Shv (ZMod Q)), FlatS M → ∀ (U : Scheme.{0}) (x : Sec M U),
     e • x = 0 → Loc U fun V g => ∃ y : Sec M V, Sec.res g x = q • y := by

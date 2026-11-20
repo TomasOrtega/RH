@@ -6,7 +6,7 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory.FiniteHeight
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.PowerSeriesFlat.flat_mvPowerSeries`.
+A detailed English derivation is pending.
 -/
 theorem flat_mvPowerSeries_of_isNoetherianRing :
     ∀ (T : Type) [CommRing T] [IsNoetherianRing T] (σ : Type),

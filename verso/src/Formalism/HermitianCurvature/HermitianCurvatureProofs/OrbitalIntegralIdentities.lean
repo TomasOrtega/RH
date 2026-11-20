@@ -16,9 +16,9 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Fo
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `ho : (0 : ℝ) ≤ o` using `Nat.cast_nonneg o`. Move the coercions through the operations in `at h`. Apply the tactic sequence `constructor <;>`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use polynomial arithmetic with `[mul_nonneg (mul_nonneg hr hr) (mul_nonneg hr hr), mul_nonneg (mul_nonneg hr hr) (mul_nonneg hr hk), mul_nonneg (mul_nonneg hr hr) hr, mul_nonneg hr hr, mul_nonneg (mul_nonneg hr hr) hk, mul_nonneg hr hk, mul_nonneg (mul_nonneg hr hr) ho, mul_nonneg hr ho]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem thrW_of (k r o : ℕ) (A : ℝ)
     (h : 12 * ((r : ℝ) + 1) ^ 2 * ((o : ℝ) + r * ((2 * r + k + 1 : ℕ) : ℝ) + 1) ≤ A) :
@@ -33,7 +33,7 @@ theorem thrW_of (k r o : ℕ) (A : ℝ)
       mul_nonneg (mul_nonneg hr hr) ho, mul_nonneg hr ho]
 
 /- English proof (translation)
-Take `⟨c, hck, hb⟩` from `h`. Use `⟨c, ?_, fun u v hu hv hl g hg => hb u v hu hv (by omega) g hg⟩` and prove the remaining obligations. Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hf', hfe⟩` from `hck g₀ hg₀`. Conclude with `⟨U, f', hU, hgU, hf'.of_le (by exact_mod_cast Nat.le_succ o), hfe⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inCC_pred {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A : ℝ} {o : ℕ}
     {F : Mat k r → E} (h : InCC A (o + 1) F) : InCC A o F := by
@@ -49,7 +49,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Introduce `g hg`. Simplify using `only [Formalism.FourierDecayAlt.C6.bigPos, Formalism.FourierDecayAlt.C6.domL, Set.mem_ofPred_eq] at hg`. Take `⟨hgv, hgf, hd⟩` from `hg`. Use `show g ∈ GV k r ∩ Q.OmPlus k r D.z D.z'`. Conclude with `⟨hgv, fun l _ => hd l (Finset.mem_univ l), hgf⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bigPos_sub (D : RealPlaceData k r Wp Wq) : Formalism.FourierDecayAlt.C6.bigPos D ⊆ Om k r D.z D.z' := by
   intro g hg
@@ -59,16 +59,16 @@ theorem bigPos_sub (D : RealPlaceData k r Wp Wq) : Formalism.FourierDecayAlt.C6.
   exact ⟨hgv, fun l _ => hd l (Finset.mem_univ l), hgf⟩
 
 /- English proof (translation)
-Use `⟨hg, fun a ha => ?_⟩` and prove the remaining obligations. Simplify using `at ha`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem glev0 {g : Mat k r} (hg : g ∈ GV k r) : g ∈ Q.Glev k r 0 := by
   refine ⟨hg, fun a ha => ?_⟩
   simp at ha
 
 /- English proof (translation)
-Establish `h` using `Formalism.QuantumDeterminants.BesselUnipotentEquiv.star_psi_inv z cStd hz n hn`. Rewrite using `[← h]`. Unfold `psi`. Rewrite using `[Complex.star_def, ← Complex.exp_conj, ← Complex.exp_neg]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[Complex.conj_ofReal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psi_inv {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {n : Mat k r} (hn : n ∈ Nset k r) :
     psi k r z cStd n⁻¹ = (psi k r z cStd n)⁻¹ := by
@@ -80,7 +80,7 @@ theorem psi_inv {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {n : Mat k r
   simp [Complex.conj_ofReal]
 
 /- English proof (translation)
-Unfold `xiTau lam psi`. Use `push_cast`. Rewrite using `[← Complex.exp_neg, ← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem xiTau_eq (D : RealPlaceData k r Wp Wq) (p : SS k r) :
     xiTau D (1, 1) p = psi k r D.z cStd (Matrix.of p.1.2) * (psi k r D.z' cStd (Matrix.of p.2.2))⁻¹ := by
@@ -93,15 +93,15 @@ theorem xiTau_eq (D : RealPlaceData k r Wp Wq) (p : SS k r) :
 variable [FiniteDimensional ℂ Wp]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hp`. Use `FiniteDimensional.complete ℂ Wp` as an intermediate fact. Use `FiniteDimensional.complete ℂ Wq` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite D.haarW` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite D.haarN` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite D.haarW'` as an intermediate fact. Establish `hN` using `Formalism.FourierDecayAlt.P.unipotent_radical_closed k r`. Establish `hW` using `Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r D.z`. Establish `hW'` using `Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r D.z'`. Establish `hU` using `Formalism.QuantumDeterminants.bessel_unitary_equiv_holds Wp Wq k r D.z D.z' cStd D.π D.π' D.μW D.μN D.μW' F D.z_mem D.z'_mem D.haarN.conc D.haarW.conc D.haarW'.conc D.haarW.left D.haarW'.left (Formalism.FourierDecayAlt.P.conjugation_invariance_every_setting k r Wp Wq D) D.π_rep D …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNe` using `Formalism.QuantumDeterminants.bessel_unipotent_equiv_holds Wp Wq k r D.z D.z' cStd D.π D.π' D.μW D.μN D.μW' F D.z_mem D.z'_mem D.haarN.conc D.haarN.left`. Establish `key : JF D F (sgs p g) = (psi k r D.z cStd (Matrix.of p.1.2)⁻¹ * psi k r D.z' cStd (Matrix.of p.2.2)) • (D.π (Matrix.of p.1.1)⁻¹).comp ((JF D F g).comp (D.π' (Matrix.of p.2.1)))`. Unfold `Formalism.FourierDecayAlt.B.JF Formalism.FourierDecayAlt.B.sgs`. Rewrite using `[show (Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ * g * Matrix.of p.2.2 * Matrix.of p.2.1 = (Matrix.of p.1.1)⁻¹ * ((Matrix.of p.1.2)⁻¹ * g * Matrix.of p.2.2) * Matrix.of p.2.1 by`. Simplify using `only [Matrix.mul_assoc]]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hU _ _ (hW.inv_mem _ h1) _ h3, hNe _ _ (hN.inv_mem _ h2) _ h4, ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]`. Use extensionality with `x`. Simplify using `only [rho, key, ContinuousLinearMap.comp_apply, _root_.smul_apply, map_smul]`. Rewrite using `[Formalism.QuantumDeterminants.BesselUnitaryEquiv.rep_inv D.π'_rep h3 (hW'.inv_mem _ h3) (Matrix.mul_nonsing_inv _ (hW'.unit _ h3)) x, Formalism.QuantumDeterminants.BesselUnitaryEquiv.rep_inv D.π_rep h1 (hW.inv_mem _ h1) (Matrix.mul_nonsing_inv _ (hW.unit _ h1))]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[xiTau_eq, psi_inv D.z_mem h2, mul_inv, inv_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jf_equiv (D : RealPlaceData k r Wp Wq) (F : Mat k r → (Wq →L[ℂ] Wp)) (p : SS k r) (hp : D.inSS p)
     (g : Mat k r) : rho D p (JF D F) g = (xiTau D (1, 1) p)⁻¹ • JF D F g := by
@@ -146,11 +146,11 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Fo
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Use `⟨12, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `k r Wp Wq _ _ _ _ _ _ D Θ A F _ hcomm hA hF`. Establish `hthr` using `Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.thrW_of k r (opOrder Θ) A hA`. Establish `hF'` using `Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.inCC_pred hF`. Take `⟨hck, -⟩` from `Formalism.FourierDecayAlt.P.WeakDominationWordBounds.orbital_derivative_words_weak k r Wp Wq D A (opOrder Θ) F hthr hF'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`. Establish `hO` using `Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.bigPos_sub D hg₀`. Take `⟨U, f', hU, hgU, hf', hfe⟩` from `hck g₀ ⟨Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 hO.1, hO.2⟩`. Conclude with `⟨U, f', hU, hgU, by exact_mod_cast hf', fun g hg hgv => hfe g hg (Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 hgv)⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `p hp g _`. Conclude with `Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.jf_equiv D F p hp g`. Introduce `g hg`. Conclude with `(Formalism.FourierDecayAlt.P.orbital_commutes_on_open_set k r Wp Wq D A (opOrder Θ) F Θ _ (Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.bigPos_sub D) le_rfl hthr hF' hcomm g hg).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem orbital_integral_commutes_large : Formalism.FourierDecayAlt.C6.JCommuteBig := by
   refine ⟨12, by norm_num, ?_⟩

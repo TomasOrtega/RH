@@ -11,17 +11,17 @@ def LineChart : Prop := ∀ {L S : Scheme.{0}} (l : L ⟶ S), IsLine l → ∀ (
       j ≫ l = Spec.map (CommRingCat.ofHom Polynomial.C) ≫ j0
 
 /- English proof (translation)
-Introduce `A _ n`. Proceed by induction on `n with`. Consider the case `zero`. Set `E` to `(MvPolynomial.isEmptyAlgEquiv A (Fin 0)).symm.toRingEquiv.toCommRingCatIso`. Establish `hE : E.hom = CommRingCat.ofHom (algebraMap A (MvPolynomial (Fin 0) A))`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `a`. Conclude with `(MvPolynomial.isEmptyAlgEquiv A (Fin 0)).symm.commutes a`. Use `⟨Spec (CommRingCat.of A), 𝟙 _, Spec.map E.hom, IterLine.iso _ inferInstance, inferInstance, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.comp_id, hE]`. Consider the case `succ n ih`. Take `⟨P, q, j, hq, hj, hjq⟩` from `ih`. Take `⟨L, l, hl⟩` from `hEx P`. Take `⟨j1, hj1, hj1l⟩` from `hLC l hl (MvPolynomial (Fin n) A) j hj`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `F` to `(MvPolynomial.finSuccEquiv A n).symm`. Set `E` to `F.toRingEquiv.toCommRingCatIso`. Establish `hE : CommRingCat.ofHom (algebraMap A (MvPolynomial (Fin n) A)) ≫ CommRingCat.ofHom Polynomial.C ≫ E.hom = CommRingCat.ofHom (algebraMap A (MvPolynomial (Fin (n + 1)) A))`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Apply `RingHom.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Establish `h1 : (Polynomial.C (algebraMap A (MvPolynomial (Fin n) A) a)) = algebraMap A (Polynomial (MvPolynomial (Fin n) A)) a` using `rfl`. Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply]`. Rewrite using `[h1]`. Conclude with `F.commutes a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hj1'` using `hj1`. Use `⟨L, l ≫ q, Spec.map E.hom ≫ j1, IterLine.comp l q hl hq, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, reassoc_of% hj1l, hjq, ← hE, Spec.map_comp, Spec.map_comp, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_of (hEx : LineEx) (hLC : LineChart) : Chart := by
   intro A _ n

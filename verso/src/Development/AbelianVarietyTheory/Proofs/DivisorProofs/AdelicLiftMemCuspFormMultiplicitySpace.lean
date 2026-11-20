@@ -20,13 +20,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues GlobalTheory.Ade
 namespace GlobalTheory.LowRow.CuspLift
 
 /- English proof (translation)
-Introduce `hP D G _ _ Pl0 T A Ks _ _ _ R F`. Introduce `i t σ s P cμ cη m ω BW f₀ f c io hd ν 𝓕 hν φ hφ`. Take `⟨hcore, -, hemb, -, -, hom, -, -, hpt, hc, hio⟩` from `id hd`. Establish `h5` using `GlobalTheory.Core5.of_core hcore`. Establish `hm` using `h5.models`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : ∀ τ, (gramAt D (Vc D i) τ).PosDef` using `fun τ => by`. Use `D.sp.V_sig ((i : ℕ) + 1) (tauE D τ)` as an intermediate fact. Rewrite `this` using `[hm.vpos i]`. Conclude with `GlobalTheory.DefiniteQuotient.posDef_of_signature this`. Take `⟨hM, w, hw⟩` from `GlobalTheory.T.liftModel_holomorphic_overReflexField R F h5 i σ s hemb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: IsTopologicalGroup (GA D (Vc D i))` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Establish `hF` using `GlobalTheory.ThetaIntegrand.form_continuous (finHom (Vc D i)).rangeRestrict (GQ (Vc D i)) c.ρ hc.2.2.1 (eventually_grpOf (Vc D i) (R.βV i) (datV i R.Pg (R.Q t) P m)) hφ`. Establish `key` using `GlobalTheory.DefLift.ThetaMap.exists_member hP hom hm.inf hpos hM hw hc (pureTensorO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i σ)) (R.BV i) BW f) hpt hio (GlobalTheory.T.lowering_part_kills_fock_product_minors R F i t σ s P cμ cη m ω BW f₀ f c io hd) (J := levS _ (R.βW …`. Take `⟨Θ, hΘ, hΘv⟩` from `key`. Use `⟨Θ, Submodule.subset_span hΘ, fun v g => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΘv v]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem liftIsCuspC : GlobalTheory.Published.CuspRapidDecay → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type}
     {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)

@@ -23,9 +23,9 @@ namespace GlobalTheory.ProdFiniteLength
 open GlobalTheory.SmGL
 
 /- English proof (translation)
-Apply `PiTensorProduct.ext` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `only [LinearMap.compMultilinearMap_apply, piTensor_tprod, PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `b`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `h : b = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Pi.mulSingle_eq_of_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem piTensor_mulSingle_eq_map {α : Type} [DecidableEq α] {Γ X : α → Type} [∀ a, Group (Γ a)]
     [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (ρ : ∀ a, Representation ℂ (Γ a) (X a)) (a : α)
@@ -42,23 +42,19 @@ theorem piTensor_mulSingle_eq_map {α : Type} [DecidableEq α] {Γ X : α → Ty
   · simp [h, Pi.mulSingle_eq_of_ne h]
 
 /- English proof (translation)
-Set `A : Subalgebra ℂ (Module.End ℂ V)` to `Algebra.adjoin ℂ (Set.range π)`. Establish `hmem : ∀ g, π g ∈ A` using `fun g => Algebra.subset_adjoin ⟨g, rfl⟩`. Use `haveI : IsSimpleOrder (Subrepresentation π) := hirr`. Use `haveI : IsSimpleModule A V := by`. Rewrite using `[isSimpleModule_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `{ exists_pair_ne := ?_, eq_bot_or_eq_top := fun U => ?_ }` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : V, x ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `(bot_ne_top : (⊥ : Subrepresentation π) ≠ ⊤)` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `v`. Simplify using `[h v]`. Use `⟨⊥, ⊤, fun h => hx ?_⟩` and prove the remaining obligations. Establish `: x ∈ (⊤ : Submodule A V)` using `trivial`. Rewrite `this` using `[← h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis. By extensionality, compare the relevant components.
 
-Conclude with `(Submodule.mem_bot A).1 this`. Set `W : Subrepresentation π` to `{ toSubmodule := U.restrictScalars ℂ apply_mem_toSubmodule := fun g v hv => U.smul_mem (⟨π g, hmem g⟩ : A) hv }`. Break down `IsSimpleOrder.eq_bot_or_eq_top W with h | h` into its components or cases. Use `left`. Use extensionality with `v`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Establish `: v ∈ W.toSubmodule` using `hv`. Rewrite `this` using `[h]`. Conclude with `(Submodule.mem_bot A).2 this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `hv`. Rewrite using `[(Submodule.mem_bot A).1 hv]`. Conclude with `U.zero_mem`. Use `right`. Use `eq_top_iff.2 fun v _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `: v ∈ (⊤ : Subrepresentation π).toSubmodule` using `trivial`. Rewrite `this` using `[← h]`. Conclude with `this`. Establish `hscal : ∀ φ : Module.End A V, ∃ c : ℂ, ∀ m, φ m = c • m`. Introduce `φ`.
-
-Take `⟨c, hc⟩` from `hS (φ.restrictScalars ℂ) fun g x => φ.map_smul (⟨π g, hmem g⟩ : A) x`. Conclude with `⟨c, fun m => by simpa using LinearMap.congr_fun hc m⟩`. Set `F : Module.End (Module.End A V) V` to `{ toFun := fun m => f m map_add' := fun x y => by simp map_smul' := fun φ m => by`. Take `⟨c, hc⟩` from `hscal φ`. Simplify using `only [Module.End.smul_def, RingHom.id_apply, hc, map_smul] }`.
-
-Take `⟨r, hr⟩` from `jacobson_density F s`. Conclude with `⟨r, r.2, fun x hx => (hr x hx).symm⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mem_adjoin_eq {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ G V) (hirr : π.IsIrreducible)
@@ -115,45 +111,37 @@ theorem exists_mem_adjoin_eq {G V : Type} [Group G] [AddCommGroup V] [Module ℂ
   exact ⟨r, r.2, fun x hx => (hr x hx).symm⟩
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype α`. Establish `hnt : ∀ a, Nontrivial (X a)` using `fun a => by haveI : IsSimpleOrder (Subrepresentation (ρ a)) := hirr a`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Apply `(bot_ne_top : (⊥ : Subrepresentation (ρ a)) ≠ ⊤)` to reduce the goal to its premises.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `v`. Conclude with `⟨fun _ => trivial, fun _ => Subsingleton.elim v 0⟩`. Use `haveI : ∀ a, Nontrivial (X a) := hnt`. Use `haveI : Nontrivial (PiTensorProduct ℂ fun a => X a) := GlobalTheory.ProdSupport.nontrivial_piTensor X hnt`. Establish `hcomp : ∀ (f g : ∀ a, X a →ₗ[ℂ] X a) (x : PiTensorProduct ℂ fun a => X a), PiTensorProduct.map (fun a => f a ∘ₗ g a) x = PiTensorProduct.map f (PiTensorProduct.map g x)`.
+By extensionality, compare the relevant components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `f g x`. Rewrite using `[PiTensorProduct.map_comp]`. Both sides reduce to the same expression. Use `show IsSimpleOrder (Subrepresentation (piTensor ρ))`. Use `{ exists_pair_ne := ⟨⊥, ⊤, fun h => ?_⟩, eq_bot_or_eq_top := fun U => ?_ }` and prove the remaining obligations.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, hx⟩` from `exists_ne (0 : PiTensorProduct ℂ fun a => X a)`. Establish `: x ∈ (⊤ : Subrepresentation (piTensor ρ)).toSubmodule` using `trivial`. Rewrite `this` using `[← h]`. Conclude with `hx this`. Distinguish the cases in `hU : ∀ x ∈ U.toSubmodule, x = 0`.
+Consider separately whether the proposition holds or fails. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `left`. Use extensionality with `v`. Use `⟨hU v, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[show v = 0 from h]`. Conclude with `U.toSubmodule.zero_mem`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `push_neg at hU`. Take `⟨x, hxU, hx0⟩` from `hU`. Use `right`. Set `Asub : ∀ a, Subalgebra ℂ (Module.End ℂ (X a))` to `fun i => { carrier := {T | ∀ x ∈ U.toSubmodule, PiTensorProduct.map (Function.update (fun b => (LinearMap.id : X b →ₗ[ℂ] X b)) i T) x ∈ U.toSubmodule} mul_mem' := fun {a b} ha hb x hx => by`. Use `ha _ (hb x hx)` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[← hcomp]`. Use `this using 3` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `ρ`. Distinguish the cases in `hρ : ρ = i`. Substitute `hρ` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `[Module.End.mul_eq_comp]`. Simplify using `[Function.update_of_ne hρ]`. Use the proof step `add_mem' := fun {a b} ha hb x hx => by`. Rewrite using `[PiTensorProduct.map_update_add]`. Conclude with `U.toSubmodule.add_mem (ha x hx) (hb x hx)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `algebraMap_mem' := fun c x hx => by`. Rewrite using `[Algebra.algebraMap_eq_smul_one, PiTensorProduct.map_update_smul]`. Establish `: Function.update (fun ρ => (LinearMap.id : X ρ →ₗ[ℂ] X ρ)) i (1 : Module.End ℂ (X i)) = fun ρ => (LinearMap.id : X ρ →ₗ[ℂ] X ρ)` using `Function.update_eq_self i _`. Rewrite using `[this, PiTensorProduct.map_id]`. Conclude with `U.toSubmodule.smul_mem c hx }`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hA : ∀ a, Algebra.adjoin ℂ (Set.range (ρ a)) ≤ Asub a` using `fun a => Algebra.adjoin_le (by`. Introduce and unpack `_ ⟨g, rfl⟩ y hy`. Rewrite using `[← piTensor_mulSingle_eq_map]`. Conclude with `U.apply_mem_toSubmodule _ hy)`. Establish `h3 : ∀ T : ∀ a, Module.End ℂ (X a), (∀ a, T a ∈ Asub a) → ∀ y ∈ U.toSubmodule, PiTensorProduct.map T y ∈ U.toSubmodule`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Introduce `T hT`. Establish `h2 : ∀ s : Finset α, ∀ y ∈ U.toSubmodule, PiTensorProduct.map (fun a => if a ∈ s then T a else LinearMap.id) y ∈ U.toSubmodule`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro y hy`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hy`. Consider the case `insert j s hj ih`. Introduce `y hy`. Use `hT j _ (ih y hy)` as an intermediate fact. Rewrite `this` using `[← hcomp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `this using 3` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = j`. Substitute `hb` using the available equality. Simplify using `[hj]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `[hb]`. Introduce `y hy`. Simplify using `using h2 Finset.univ y hy`. Establish `htop : U.toSubmodule = ⊤`. Rewrite using `[eq_top_iff, ← PiTensorProduct.span_tprod_eq_top, Submodule.span_le]`.
+Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨v, rfl⟩`. Set `b` to `fun a => Module.Free.chooseBasis ℂ (X a)`. Set `B` to `Basis.piTensorProduct b`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp⟩ : ∃ p, B.repr x p ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `push_neg at hcon`. Conclude with `hx0 (B.repr.map_eq_zero_iff.1 (Finsupp.ext hcon))`. Set `f : ∀ a, Module.End ℂ (X a)` to `fun a => ((b a).coord (p a)).smulRight (v a)`. Establish `hT : ∀ a, ∃ T ∈ Asub a, ∀ y ∈ (B.repr x).support.image (fun q => b a (q a)), T y = f a y` using `fun a => by`. Take `⟨T, hT1, hT2⟩` from `exists_mem_adjoin_eq (ρ a) (hirr a) (hS a) (f a) ((B.repr x).support.image (fun q => b a (q a)))`.
-
-Conclude with `⟨T, hA a hT1, hT2⟩`. Use `choose T hTA hTf using hT`. Establish `e : PiTensorProduct.map f = (B.coord p).smulRight (PiTensorProduct.tprod ℂ v)`. Use extensionality with `w`. Simplify using `only [LinearMap.compMultilinearMap_apply, PiTensorProduct.map_tprod, LinearMap.smulRight_apply, Module.Basis.coord_apply, B, f, Basis.piTensorProduct_repr_tprod_apply]`.
-
-Conclude with `(PiTensorProduct.tprod ℂ).map_smul_univ _ v`. Establish `hmap : PiTensorProduct.map T x = PiTensorProduct.map f x`. Rewrite using `[← B.linearCombination_repr x, Finsupp.linearCombination_apply, map_finsuppSum, map_finsuppSum]`. Use `Finsupp.sum_congr fun q hq => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, Basis.piTensorProduct_apply, PiTensorProduct.map_tprod, PiTensorProduct.map_tprod]`.
-
-Use `congr 2`. Use function extensionality and compare the values at `a`. Conclude with `hTf a _ (Finset.mem_image_of_mem _ hq)`. Establish `h4` using `h3 T hTA x hxU`. Rewrite `h4` using `[hmap, e]`.
-
-Conclude with `(U.toSubmodule.smul_mem_iff hp).1 h4`. Use extensionality with `y`. Conclude with `⟨fun _ => trivial, fun _ => by rw [htop]; trivial⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem piTensor_isIrreducible_of_schur {α : Type} [Finite α] {Γ X : α → Type} [∀ a, Group (Γ a)]
     [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (ρ : ∀ a, Representation ℂ (Γ a) (X a))
@@ -272,7 +260,7 @@ theorem piTensor_isIrreducible_of_schur {α : Type} [Finite α] {Γ X : α → T
   exact ⟨fun _ => trivial, fun _ => by rw [htop]; trivial⟩
 
 /- English proof (translation)
-Introduce `hBZ k _ _ _ _ s n d σ e`. Take `⟨hAdm, -, hInd, -⟩` from `hBZ k`. Establish `hirr : (piTensor fun a => (σ a).π).IsIrreducible` using `piTensor_isIrreducible_of_schur (fun a => (σ a).π) (fun a => (σ a).irr) fun a φ hφ => GlobalTheory.SchurAdm.schur_admissible (GL (Fin (d a)) k) (KO k (Fin (d a))) GlobalTheory.SplitFlip.isOpen_KO GlobalTheory.SplitFlip.isCompact_KO (σ a).V (σ a).π (σ a).irr (hAdm (Fin (d a)) (σ a …`. Conclude with `hInd (Fin s) (Fin n) (fun a => Fin (d a)) e _ _ (isSmooth_piTensor fun a => (σ a).smooth) (hasFiniteLength_of_isIrreducible hirr)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem multiProd_hasFiniteLength : GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k]
     [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (s n : ℕ) (d : Fin s → ℕ)

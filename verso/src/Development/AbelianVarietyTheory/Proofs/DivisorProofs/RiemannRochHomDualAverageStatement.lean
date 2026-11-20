@@ -12,7 +12,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.GenericFiniteMaps
 open GlobalTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.RRDev.psi_eq_genRank_mul_degCh2` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRiemannRochHomDualAverage.lean&line=18#L18)
 -/

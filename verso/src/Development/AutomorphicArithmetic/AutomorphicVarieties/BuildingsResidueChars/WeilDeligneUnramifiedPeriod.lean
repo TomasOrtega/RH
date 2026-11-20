@@ -6,9 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedIsCr
 open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Module TensorProduct GlobalTheory.Pst Polynomial
 
 /- English proof (translation)
-Establish `h1 : ∀ j, T (e j) ⊗ₜ[Q] c (w' j) = ∑ i, e i ⊗ₜ[Q] c (algebraMap Q B (e.repr (T (e j)) i) * w' j)`. Introduce `j`. Use `conv_lhs => rw [← e.sum_repr (T (e j))]`. Rewrite using `[sum_tmul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_tmul, ← Algebra.smul_def, map_smul]`. Simplify using `only [h1]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← tmul_sum, ← map_sum, h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem key {Q V B B' : Type} [Field Q] [AddCommGroup V] [Module Q V] [CommRing B] [Algebra Q B]
     [AddCommGroup B'] [Module Q B'] {n : ℕ} (e : Basis (Fin n) Q V) (T : V →ₗ[Q] V) (c : B →ₗ[Q] B')
@@ -26,7 +26,7 @@ private theorem key {Q V B B' : Type} [Field Q] [AddCommGroup V] [Module Q V] [C
   rw [← tmul_sum, ← map_sum, h]
 
 /- English proof (translation)
-Use `congrArg (fun x => TensorProduct.lid Q B' (LinearMap.rTensor B' (e.coord k) x)) h` as an intermediate fact. Simplify `this` using `[map_sum, Finsupp.single_apply, ite_smul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem eq_zero {Q V B' : Type} [Field Q] [AddCommGroup V] [Module Q V]
     [AddCommGroup B'] [Module Q B'] {n : ℕ} (e : Basis (Fin n) Q V) (w : Fin n → B')
@@ -35,7 +35,7 @@ private theorem eq_zero {Q V B' : Type} [Field Q] [AddCommGroup V] [Module Q V]
   simpa [map_sum, Finsupp.single_apply, ite_smul] using this
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', pow_succ', Module.End.mul_apply, ih, phiV_tmul, phiSt_C, AlgHom.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem phiV_pow {l : ℕ} [Fact l.Prime] (P : LocPrime l)
     (LL : Type) [Field LL] [Algebra ℚ_[l] LL] (k : ℕ) (v : LL) (b : P.R.B) :
@@ -45,19 +45,15 @@ private theorem phiV_pow {l : ℕ} [Fact l.Prime] (P : LocPrime l)
   | succ k ih => rw [pow_succ', pow_succ', Module.End.mul_apply, ih, phiV_tmul, phiSt_C, AlgHom.mul_apply]
 
 /- English proof (translation)
-Introduce `l _ K L η hη hI`. Use `haveI := GlobalTheory.UnramifiedCrys.compactSpace_GK K`. Use `haveI : FiniteDimensional ℚ_[l] ↥L.1 := L.2`. Use `haveI : IsModuleTopology ℚ_[l] ↥L.1 := isModuleTopologyOfFiniteDimensional`. Establish `hη' : Continuous fun g => (η g : ↥L.1)` using `continuous_induced_rng.2 hη`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, e, M, hMc, hM⟩` from `UpperTheory.galois_representation_integral_lattice l ↥(GK K) ↥L.1 (V.Loc.resCoef ℚ_[l] (V.Loc.chRep η)) (fun x => hη'.mul continuous_const)`. Take `⟨W, hW, hWg, hWφ⟩` from `UpperTheory.crystalline_frobenius_algebraic_elements l K n M hMc (fun g hg => by`. Rewrite using `[← map_one M]`. Use extensionality with `i j`. Apply `PadicInt.ext` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hM, hM, map_one]`. Use `congr 2`. Express the relevant statement in the definitionally equal form `(η g : ↥L.1) * e j = e j`. Rewrite using `[hI g hg, Units.val_one, one_mul])`. Use `haveI := nontrivial_B (V.Loc.PP l)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Nonempty (Fin n) := e.index_nonempty`. Set `j₀ : Fin n` to `Classical.arbitrary _`. Set `c : V.Loc.Bcr l →ₗ[ℚ_[l]] Bst (V.Loc.PP l)` to `(CAlgHom : V.Loc.Bcr l →ₐ[ℚ_[l]] Bst (V.Loc.PP l)).toLinearMap`. Establish `hk : ∀ (g : ↥(GK K)) (f : V.Loc.Bcr l → V.Loc.Bcr l), (M g).map (fun z => algebraMap ℚ_[l] (V.Loc.Bcr l) (z : ℚ_[l])) * W.map f = W → ∑ j, ((η g : ↥L.1) * e j) ⊗ₜ[ℚ_[l]] (C (f (W j j₀)) : Bst (V.Loc.PP l)) = ∑ i, e i ⊗ₜ[ℚ_[l]] C (W i j₀)`. Introduce `g f h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `key e (V.Loc.resCoef ℚ_[l] (V.Loc.chRep η) g) c (fun i => W i j₀) (fun i => f (W i j₀)) fun i => ?_` and prove the remaining obligations. Use `congrFun (congrFun h i) j₀` as an intermediate fact. Simplify `this` using `only [Matrix.mul_apply, Matrix.map_apply, hM]`. Use `⟨∑ i, e i ⊗ₜ[ℚ_[l]] C (W i j₀), fun h0 => ?_, fun g => ?_, fun g k hg => ?_⟩` and prove the remaining obligations. Use `hW.ne_zero (Matrix.det_eq_zero_of_column_eq_zero j₀ fun i => ?_)` and prove the remaining obligations.
-
-Conclude with `C_eq_zero.1 (eq_zero e (fun i => (C (W i j₀) : Bst (V.Loc.PP l))) h0 i)`. Rewrite using `[map_sum]`. Simplify using `only [stRep_tmul, actSt_C]`. Conclude with `hk g _ (hWg g)`. Rewrite using `[map_sum, Finset.smul_sum]`.
-
-Simplify using `only [phiV_pow, smul_tmul']`. Conclude with `hk g _ (hWφ g k hg)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.weilDeligne_unramified_period :
     UpperTheory.V.Af.Wd.UnrPer := by

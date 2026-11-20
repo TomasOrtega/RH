@@ -19,21 +19,21 @@ namespace GlobalTheory.FunObj.StdVertex
 set_option maxHeartbeats 6000000 in
 
 /- English proof (translation)
-Introduce `D V Λ hsig hpos hΛ S hS`. Take `⟨fr0, hfr0⟩` from `GlobalTheory.T.exists_orthonormalBasis_definite_hermitianSpace D V hsig hpos`. Take `⟨x, hxx⟩` from `GlobalTheory.T.exists_finiteAdelicUnitary_moves_selfDualLattice D V fr0 Λ hfr0 hΛ`. Establish `hx : x ∈ GfC V` using `hxx.1`. Establish `hxL` using `hxx.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨γ, h, k, hr⟩` from `GlobalTheory.T.idempotent_support_hermitian_decomposition D V fr0 S hS x hx`. Establish `hγ` using `hr.1`. Establish `hh` using `hr.2.1`. Establish `hsupp` using `hr.2.2.1`. Establish `hkL` using `hr.2.2.2.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxe` using `hr.2.2.2.2.2`. Take `⟨u, hur⟩` from `GlobalTheory.T.rationalUnitary_conj_splitSupported_finiteAdelicPoint D V S γ h hγ hh hsupp`. Establish `hu : u ∈ GfC V` using `hur.1`. Establish `hue` using `hur.2.2`. Use `⟨γ * fr0, ⟨u, hu⟩, ?_, hur.2.1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (γ * fr0).1 = Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) fr0.1 * Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) γ.1`. Simplify using `only [Formalism.UG.cT, Units.val_mul, Matrix.map_mul, Matrix.transpose_mul]`. Rewrite using `[e1, Units.val_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = 1 := by rw [hγ, hfr0]`. Introduce `v`. Establish `hγγ : γ.1.map (eToEAf D) * (γ⁻¹).1.map (eToEAf D) = 1`. Rewrite using `[← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hKK : (Formalism.IndefR.Lev.finE V k).1 * ((Formalism.IndefR.Lev.finE V k)⁻¹).1 = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `h1 : ∀ w, w ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) (colLat fr0) ↔ ((Formalism.IndefR.Lev.finE V k)⁻¹).1 *ᵥ w ∈ Formalism.L2.Herm.hatL (F := D.host.F) (colLat fr0) := fun w => by`. Rewrite using `[hkL (((Formalism.IndefR.Lev.finE V k)⁻¹).1 *ᵥ w), Matrix.mulVec_mulVec, hKK, Matrix.one_mulVec]`. Establish `key : (Formalism.IndefR.Lev.finE V x).1 *ᵥ (((Formalism.IndefR.Lev.finE V k)⁻¹).1 *ᵥ ((γ⁻¹).1.map (eToEAf D) *ᵥ v)) = (Formalism.IndefR.Lev.finE V u).1 *ᵥ v`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hxe, hue]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hKK, Matrix.mul_one]`. Establish `s1` using `GlobalTheory.T.mem_completedLattice_columnLattice_mul_iff D γ fr0 v`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s2` using `h1 ((γ⁻¹).1.map (eToEAf D) *ᵥ v)`. Establish `s3` using `hxL (((Formalism.IndefR.Lev.finE V k)⁻¹).1 *ᵥ ((γ⁻¹).1.map (eToEAf D) *ᵥ v))`. Rewrite `s3` using `[key]`. Conclude with `s1.trans (s2.trans s3)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_std_vertex : ∀ (D : D7) (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)), V.SigOK →
     (∀ τ, V.sig τ = (V.rank, 0)) → IsSelfDualC V Λ → ∀ S : Finset ℕ, (∀ q ∈ S, q.Prime) →

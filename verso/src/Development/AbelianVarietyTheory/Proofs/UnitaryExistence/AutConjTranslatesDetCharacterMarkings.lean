@@ -18,25 +18,25 @@ open scoped TensorProduct Matrix nonZeroDivisors
 variable (F : Type) {E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨-, e, cI, hc, hL, -⟩` from `GlobalTheory.exists_pseudoBasis_adapted E n L ⊤ hfg hsp`. Establish `key` using `mem_hat_pseudoBasis_iff F E n L e cI hL`. Set `P : Matrix (Fin n) (Fin n) (RA F E)` to `Matrix.of fun i a => fv F (e a) i`. Set `Q : Matrix (Fin n) (Fin n) (RA F E)` to `Matrix.of fun b i => (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ e.repr (Pi.single i 1) b`. Establish `hP : ∀ w : Fin n → RA F E, P *ᵥ w = ∑ a, w a • fv F (e a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `w`. Use function extensionality and compare the values at `i`. Simplify using `[P, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Establish `hQ : ∀ w b, (Q *ᵥ w) b = adCoord F e b w`. Introduce `w b`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `∑ i : Fin n, _ = ∑ i : Fin n, _`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `hQP : Q * P = 1`. Use `Matrix.ext_of_mulVec_single fun i => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `b`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mulVec_mulVec, hQ, hP, adCoord_sum, Matrix.one_mulVec]`. Establish `hPQ : P * Q = 1` using `mul_eq_one_comm.1 hQP`. Establish `key' : ∀ w, P *ᵥ w ∈ hat F (L : Set (Fin n → E)) ↔ ∀ a, w a ∈ hat1 F (cI a : Set E)`. Introduce `w`. Rewrite using `[hP]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `key w`. Set `k : Matrix (Fin n) (Fin n) (RA F E)` to `Q * G * P`. Establish `hPk : P * k = G * P`. Simplify using `only [k, ← Matrix.mul_assoc, hPQ, Matrix.one_mul]`. Establish `hkdet : k.det = G.det`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: Q.det * P.det = 1` using `by rw [← Matrix.det_mul, hQP, Matrix.det_one]`. Simplify using `only [k, Matrix.det_mul]`. Take the linear combination `G.det * this`. Establish `hk : ∀ i j, k i j ∈ hat1 F ((cI i * (cI j)⁻¹ : FractionalIdeal (𝓞 E)⁰ E) : Set E)`. Introduce `i j`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `mem_adelicCompletion_mul_inv_fractionalIdeal F _ _ _ (hc j) fun x hx => ?_` and prove the remaining obligations. Establish `h1 : P *ᵥ (Pi.single j ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] x)) ∈ hat F (L : Set (Fin n → E))`. Rewrite using `[key']`. Introduce `a`. Distinguish the cases in `ha : a = j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `ha` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `one_tmul_mem_adelicCompletionOfElementSet F hx`. Rewrite using `[Pi.single_eq_of_ne ha]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2` using `hg _ h1`. Rewrite `h2` using `[Matrix.mulVec_mulVec, ← hPk, ← Matrix.mulVec_mulVec, key']`. Establish `h3` using `h2 i`. Rewrite `h3` using `[Matrix.mulVec_single, Pi.smul_apply, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op]`. Then use the resulting hypothesis. Establish `hd` using `det_mem_adelicCompletionOfElementSet F cI (fun j => (cI j)⁻¹) k hk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hd` using `[← Finset.prod_mul_distrib, Finset.prod_eq_one fun i _ => mul_inv_cancel₀ (hc i), hkdet]`. Establish `e1 : ((1 : FractionalIdeal (𝓞 E)⁰ E) : Set E) = Set.range (algebraMap (𝓞 E) E)`. Use extensionality with `x`. Conclude with `FractionalIdeal.mem_one_iff _`. Rewrite `hd` using `[e1]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem det_mem_int {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (G : Matrix (Fin n) (Fin n) (RA F E))
     (hfg : L.FG) (hsp : Submodule.span E (L : Set (Fin n → E)) = ⊤)
@@ -97,7 +97,7 @@ theorem det_mem_int {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (G : Matrix
 omit [NumberField E] in
 
 /- English proof (translation)
-Use `mul_mem_adelicCompletionOfElementSet_of_mul_mem F ?_ hx hy` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩ _ ⟨b, hb, rfl⟩`. Conclude with `⟨a * b, I.mul_mem_left a hb, map_mul _ _ _⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem int_mul_mem (I : Ideal (𝓞 E)) {x y : RA F E} (hx : x ∈ hat1 F (Set.range (algebraMap (𝓞 E) E)))
     (hy : y ∈ hat1 F (algebraMap (𝓞 E) E '' (I : Set (𝓞 E)))) :
@@ -109,11 +109,11 @@ theorem int_mul_mem (I : Ideal (𝓞 E)) {x y : RA F E} (hx : x ∈ hat1 F (Set.
 omit [NumberField E] in
 
 /- English proof (translation)
-Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, _, ⟨b, hb, rfl⟩, rfl⟩` from `hz`. Take `⟨t, rfl⟩` from `Ideal.mem_span_singleton.1 hb`. Use `⟨_, tmul_mem_adelicCompletion_of_integral F ha ⟨t, rfl⟩, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_natCast, ← nsmul_eq_mul, TensorProduct.tmul_smul]`. Consider the case `zero => exact ⟨0, zero_mem _, (smul_zero _).symm⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨u, hu, rfl⟩` from `hx`. Take `⟨w, hw, rfl⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨u + w, add_mem hu hw, (smul_add _ _ _).symm⟩`. Consider the case `neg x _ hx`. Take `⟨u, hu, rfl⟩` from `hx`. Conclude with `⟨-u, neg_mem hu, (smul_neg _ _).symm⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_nsmul_of_mem (M : ℕ) {x : RA F E}
     (hx : x ∈ hat1 F (algebraMap (𝓞 E) E '' (Ideal.span {(M : 𝓞 E)} : Ideal (𝓞 E)))) :
@@ -136,21 +136,21 @@ theorem exists_nsmul_of_mem (M : ℕ) {x : RA F E}
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `hO : ∀ x ∈ Set.range (algebraMap (𝓞 E) E), c x ∈ Set.range (algebraMap (𝓞 E) E)`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨⟨c y, (RingOfIntegers.isIntegral_coe y).map c.toRingEquiv.toRingHom.toIntAlgHom⟩, rfl⟩`. Establish `h₂'` using `galoisAut_mem_adelicCompletionOfElementSet F c hO h₂`. Use `set s := sg (FiniteAdeleRing (𝓞 F) F) c with hs`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : d₁ * s d₂ ∈ hat1 F (Set.range (algebraMap (𝓞 E) E))` using `mul_mem_adelicCompletionOfElementSet_of_mul_mem F (by rintro _ ⟨x, rfl⟩ _ ⟨y, rfl⟩; exact ⟨x * y, map_mul _ _ _⟩) h₁ h₂'`. Establish `hI : d₁ * s d₂ - 1 ∈ hat1 F (algebraMap (𝓞 E) E '' (I : Set (𝓞 E)))`. Use `int_mul_mem F I h₂' (sub_mem (int_mul_mem F I h₂ s₁) (int_mul_mem F I h₁ s₂))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Take the linear combination `n₂`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hI' : d₁ * s d₂ - 1 ∈ hat1 F (algebraMap (𝓞 E) E '' (I' : Set (𝓞 E)))`. Establish `h3 : s (d₁ * s d₂ - 1) ∈ hat1 F (algebraMap (𝓞 E) E '' (I' : Set (𝓞 E)))`. Use `galoisAut_mem_adelicCompletionOfElementSet F c ?_ hI` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Take `⟨b', hb', e⟩` from `hc b hb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨b', hb', e⟩`. Establish `n₃` using `congrArg s n₂`. Rewrite `n₃` using `[map_mul, map_one]`. Use `neg_mem (int_mul_mem F I' he h3)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_mul, map_one]`. Take the linear combination `(s d₂ * s (s d₂)) * n₁ + n₃`. Take `⟨b, hb, b', hb', hbb⟩` from `Submodule.mem_sup.1 ((Ideal.eq_top_iff_one _).1 hsup)`. Establish `hβ : ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (b : E) : RA F E) + (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (b' : E) = 1`. Rewrite using `[← TensorProduct.tmul_add, Algebra.TensorProduct.one_def]`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `congrArg (fun x : 𝓞 E => (x : E)) hbb` as an intermediate fact. Simplify using `using this`. Apply `exists_nsmul_of_mem F M` to reduce the goal to its premises. Rewrite using `[← hmul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hK : ∀ x ∈ algebraMap (𝓞 E) E '' (I : Set (𝓞 E)), ∀ y ∈ algebraMap (𝓞 E) E '' (I' : Set (𝓞 E)), x * y ∈ algebraMap (𝓞 E) E '' ((I * I' : Ideal (𝓞 E)) : Set (𝓞 E))`. Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩`. Conclude with `⟨x * y, Ideal.mul_mem_mul hx hy, map_mul _ _ _⟩`. Establish `t₁` using `mul_mem_adelicCompletionOfElementSet_of_mul_mem F hK (one_tmul_mem_adelicCompletionOfElementSet F ⟨b, hb, rfl⟩) hI'`. Establish `t₂` using `mul_mem_adelicCompletionOfElementSet_of_mul_mem F hK hI (one_tmul_mem_adelicCompletionOfElementSet F ⟨b', hb', rfl⟩)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `add_mem t₁ t₂ using 1` and compare the differences between its conclusion and the goal. Take the linear combination `(1 - d₁ * s d₂) * hβ`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem quot_cong_one (c : E ≃ₐ[F] E) (M : ℕ) (I I' : Ideal (𝓞 E)) (hsup : I ⊔ I' = ⊤)
     (hmul : I * I' = Ideal.span {(M : 𝓞 E)}) (hc : ∀ b ∈ I, ∃ b' ∈ I', ((b' : 𝓞 E) : E) = c (b : E))
@@ -208,7 +208,7 @@ open scoped TensorProduct Matrix
 open GlobalTheory.CompRat
 
 /- English proof (translation)
-Unfold `gLat`. Rewrite using `[Set.image_image, map_mul, Units.val_mul]`. Conclude with `Set.image_congr fun z _ => (Matrix.mulVec_mulVec _ _ _).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gLat_mul {D : D7} (V : HSp D) (u v : GA D V) :
     gLat V (u * v) = (finHom V u).1.mulVec '' gLat V v := by
@@ -217,7 +217,7 @@ theorem gLat_mul {D : D7} (V : HSp D) (u v : GA D V) :
   exact Set.image_congr fun z _ => (Matrix.mulVec_mulVec _ _ _).symm
 
 /- English proof (translation)
-Unfold `gLat`. Rewrite using `[map_one, Units.val_one]`. Conclude with `(Set.image_congr fun z _ => Matrix.one_mulVec z).trans (Set.image_id' _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gLat_one {D : D7} (V : HSp D) : gLat V 1 = latHat V := by
   unfold gLat
@@ -225,9 +225,7 @@ theorem gLat_one {D : D7} (V : HSp D) : gLat V 1 = latHat V := by
   exact (Set.image_congr fun z _ => Matrix.one_mulVec z).trans (Set.image_id' _)
 
 /- English proof (translation)
-Establish `h : gLat V v⁻¹ = latHat V`. Establish `h1` using `gLat_mul V v⁻¹ v`. Rewrite `h1` using `[inv_mul_cancel, gLat_one, hv]`. Conclude with `h1.symm`. Rewrite using `[gLat_mul, h]`.
-
-Conclude with `hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gLat_mul_inv {D : D7} (V : HSp D) {u v : GA D V} (hu : gLat V u = latHat V) (hv : gLat V v = latHat V) :
     gLat V (u * v⁻¹) = latHat V := by
@@ -239,9 +237,9 @@ theorem gLat_mul_inv {D : D7} (V : HSp D) {u v : GA D V} (hu : gLat V u = latHat
   exact hu
 
 /- English proof (translation)
-Take `⟨h1, -, h2, h3, -⟩` from `latHat_eq_hat_and_gram D V`. Use `det_mem_int D.host.F (latC V) _ h2 h3 fun z hz => ?_` and prove the remaining obligations. Rewrite `hz`, the goal using `[← h1]`. Establish `: (finHom V u).1 *ᵥ z ∈ gLat V u` using `⟨z, hz, rfl⟩`. Rewrite `this` using `[hu]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem det_int_of_gLat {D : D7} (V : HSp D) {u : GA D V} (hu : gLat V u = latHat V) :
     (finHom V u).1.det ∈ GlobalTheory.AdLat.hat1 D.host.F (Set.range (algebraMap (𝓞 D.host.E) D.host.E)) := by
@@ -255,15 +253,15 @@ theorem det_int_of_gLat {D : D7} (V : HSp D) {u : GA D V} (hu : gLat V u = latHa
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D H Dw l Xo c σ V r C hC hpq τ hτ hfix π hπ xi hK hQ`. Take `⟨Cv, io, hio, -⟩` from `hfix`. Take `⟨⟨s, hs⟩, -⟩` from `GlobalTheory.T.conjugation_acts_on_cm_torsion_by_multiplication D.host.E H Cv τ hτ io hio l.M (lt_of_lt_of_le (by norm_num) l.three_le)`. Establish `step` using `GlobalTheory.T.marking_conjugate_component_adelic D H Dw l Xo c σ V r C hC hpq τ hτ Cv io s π hs hπ`. Distinguish the cases in `hex : ∃ h γ k h' γ', C.Mark h k γ ∧ C.Mark h' (π k) γ'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Take `⟨h₀, γ₀, k₀, h₀', γ₀', m₀, m₀'⟩` from `hex`. Take `⟨-, -, u₀, hu₀, -, hd₀⟩` from `step _ _ _ _ _ m₀ m₀'`. Use `⟨_, ⟨u₀⁻¹, rfl⟩, fun h γ k h' γ' m m' => ?_⟩` and prove the remaining obligations. Take `⟨δ, hδ, u, hu, he, hd⟩` from `step _ _ _ _ _ m m'`. Establish `n₀` using `(finHom_herm_det D V u₀).2.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq` using `quot_cong_one D.host.F (cF D) l.M l.Mb _ l.coprime l.prod (fun b hb => ⟨H.bar b, Ideal.mem_map_of_mem (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) hb, H.bar_eq b⟩) _ _ _ (det_int_of_gLat V hu) (det_int_of_gLat V hu₀) (finHom_herm_det D V u).2.1 n₀ hd hd₀`. Establish `hinv : (((Matrix.GeneralLinearGroup.det (finHom V u₀))⁻¹ : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ) : Af D.host.F ⊗[D.host.F] D.host.E) = GlobalTheory.AdLat.sg (Af D.host.F) (cF D) (finHom V u₀).1.det` using `Units.inv_eq_of_mul_eq_one_right n₀`. Establish `h1` using `hK (u * u₀⁻¹) (gLat_mul_inv V hu hu₀) (by`. Rewrite using `[map_mul, map_inv, map_mul, map_inv, Units.val_mul, hinv]`. Conclude with `hq)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun g => xi (Matrix.GeneralLinearGroup.det g)) he`. Establish `h3` using `hQ δ hδ`. Generalize the expression as in `finHom V (γ' * h') = A at h2 ⊢`. Generalize the expression as in `finHom V (γ * h) = B at h2 ⊢`. Simplify using `only [map_mul, map_inv] at h1 h2 ⊢`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h3, one_mul]`. Rewrite using `[← h2, mul_inv_eq_one.1 h1, mul_comm, mul_inv_cancel_right]`. Use `⟨_, ⟨1, rfl⟩, fun h γ k h' γ' m m' => (hex ⟨h, γ, k, h', γ', m, m'⟩).elim⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem conj_translates_det : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (C : Ctx Xo c σ V r), C.OK → (Dw.p = 0 ∨ Dw.q = 0 ∨ 3 ≤ Dw.p + Dw.q) → ∀ τ : ℂ ≃+* ℂ, τ H.rt0 = H.rt0 → FixesCurve H τ 1 → ∀ π : Fin C.F.n → Fin C.F.n, ConjugationPermutesPeriods C.F τ π → ∀ xi : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ →* ℂˣ, (∀ u : GA D V, gLat V u = latHat V → (∃ w ∈ GlobalTheory.AdLat.hat1 D.host.F (Set.range (algebraMap (𝓞 D.host.E) D.host.E)), ((Matrix.GeneralLinearGroup.det (finHom V (u)) : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ) : (Af D.host.F ⊗[D.host.F] D.host.E)) - 1 = (l.M : ℕ) • w) → xi (Matrix.GeneralLinearGroup.det (finHom V (u))) = 1) → (∀ γ ∈ GQ V, xi (Matrix.GeneralLinearGroup.det (finHom V (γ))) = 1) → ∃ κ : ℂˣ, (∃ u : GA D V, κ = xi (Matrix.GeneralLinearGroup.det (finHom V (u)))) ∧ ∀ h γ k h' γ', C.Mark h k γ → C.Mark h' (π k) γ' → xi (Matrix.GeneralLinearGroup.det (finHom V (γ' * h'))) = κ * xi (Matrix.GeneralLinearGroup.det (finHom V (γ * h))) := by
   intro D H Dw l Xo c σ V r C hC hpq τ hτ hfix π hπ xi hK hQ

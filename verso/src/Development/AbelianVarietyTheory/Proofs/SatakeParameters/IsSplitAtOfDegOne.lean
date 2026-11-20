@@ -31,13 +31,13 @@ namespace GlobalTheory.CongEx
 open UpperTheory.V.Af
 
 /- English proof (translation)
-Establish `hp : (Ideal.span {(l : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Int.prime_iff_natAbs_prime.2 (by simpa using (Fact.out : l.Prime))).irreducible`. Establish `hker : RingHom.ker (algebraMap ℤ (𝓞 E)) ≤ Ideal.span {(l : ℤ)}`. Introduce `x hx`. Rewrite `hx` using `[RingHom.mem_ker]`. Establish `: x = 0` using `by exact_mod_cast (algebraMap ℤ (𝓞 E)).injective_int (hx.trans (map_zero _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `zero_mem _`. Take `⟨Q, hQ, hQc⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 E) _ hker`. Establish `hl : ((l : ℕ) : 𝓞 E) ∈ Q`. Establish `: (l : ℤ) ∈ Q.comap (algebraMap ℤ (𝓞 E))` using `by rw [hQc]; exact Ideal.mem_span_singleton_self _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Use `⟨⟨Q, hQ.isPrime, fun h => ?_⟩, hl⟩` and prove the remaining obligations. Rewrite `hQc` using `[h]`. Establish `h0 : (l : ℤ) ∈ Ideal.span {(l : ℤ)}` using `Ideal.mem_span_singleton_self _`. Rewrite `h0` using `[← hQc, Ideal.comap_bot_of_injective _ (algebraMap ℤ (𝓞 E)).injective_int]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(Fact.out : l.Prime).ne_zero` as an intermediate fact. Simplify the hypotheses and the goal together.
+Simplify the hypotheses and the goal together. A detailed English derivation is pending.
 -/
 theorem exists_place_over (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prime] :
     ∃ w : HeightOneSpectrum (𝓞 E), ((l : ℕ) : 𝓞 E) ∈ w.asIdeal := by
@@ -60,7 +60,7 @@ theorem exists_place_over (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l
   simp_all
 
 /- English proof (translation)
-Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions. Conclude with `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_not_mem_l (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prime] :
     ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ((l : ℕ) : 𝓞 E) ∉ w.asIdeal := by

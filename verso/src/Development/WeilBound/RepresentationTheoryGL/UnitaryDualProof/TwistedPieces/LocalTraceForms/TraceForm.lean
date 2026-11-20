@@ -10,23 +10,23 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.TP
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.RgUd.TP.Loc.Ptf.traceForm k`.
+A detailed English derivation is pending.
 -/
 theorem traceForm : TraceForm k := PositivityTheory.RgUd.TP.Loc.Ptf.traceForm k
 /- English proof (translation)
-The claim follows from `PositivityTheory.RgUd.TP.Loc.Uni.unimod k`.
+A detailed English derivation is pending.
 -/
 theorem unimod : TraceForm k → PositivityTheory.RgUd.T.Desc.SLF.Unimod (k := k) := PositivityTheory.RgUd.TP.Loc.Uni.unimod k
 /- English proof (translation)
-The claim follows from `PositivityTheory.RgUd.TP.Loc.Psplit.locOff_of k (PositivityTheory.RgUd.TP.Loc.Psplit.split k) (PositivityTheory.RgUd.TP.Loc.Psplit.locChi k)`.
+A detailed English derivation is pending.
 -/
 theorem locOff : LocOff k := PositivityTheory.RgUd.TP.Loc.Psplit.locOff_of k (PositivityTheory.RgUd.TP.Loc.Psplit.split k) (PositivityTheory.RgUd.TP.Loc.Psplit.locChi k)
 /- English proof (translation)
-The claim follows from `PositivityTheory.RgUd.TP.Loc.Psplit.locAll_of k (PositivityTheory.RgUd.TP.Loc.Psplit.split k) (PositivityTheory.RgUd.TP.Loc.Psplit.locChi k)`.
+A detailed English derivation is pending.
 -/
 theorem locAll : LocAll k := PositivityTheory.RgUd.TP.Loc.Psplit.locAll_of k (PositivityTheory.RgUd.TP.Loc.Psplit.split k) (PositivityTheory.RgUd.TP.Loc.Psplit.locChi k)
 /- English proof (translation)
-The claim follows from `PositivityTheory.RgUd.TP.Loc.Ptransl.transl`.
+A detailed English derivation is pending.
 -/
 theorem transl : Transl k := PositivityTheory.RgUd.TP.Loc.Ptransl.transl
 

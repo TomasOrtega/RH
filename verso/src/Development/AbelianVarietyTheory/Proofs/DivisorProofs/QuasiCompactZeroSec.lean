@@ -23,7 +23,7 @@ abbrev opModule : Module Oᵐᵒᵖ M :=
   Module.compHom M ((RingHom.id O).fromOpposite fun x y => Commute.all x y)
 
 /- English proof (translation)
-The claim follows from `@IsCentralScalar.mk O M _ (opModule O M).toSMul fun _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem opModule_central : @IsCentralScalar O M _ (opModule O M).toSMul :=
   @IsCentralScalar.mk O M _ (opModule O M).toSMul fun _ _ => rfl
@@ -44,7 +44,7 @@ def zeroSec : 𝟙_ (Over (Sp O)) ⟶ TM O M :=
     congr 1)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isAffineOpen_top (Sp O), isAffineOpen_top (Spec (CommRingCat.of (TrivSqZeroExt O M))), le_top, le_top⟩`.
+Supply the required witnesses or components.
 -/
 theorem isChart : IsChart (TM O M).hom (sec (zeroSec O M)) ⊤ ⊤ :=
   ⟨isAffineOpen_top (Sp O), isAffineOpen_top (Spec (CommRingCat.of (TrivSqZeroExt O M))), le_top, le_top⟩
@@ -58,7 +58,7 @@ abbrev toTsze : Γ((TM O M).left, ⊤) →+* TrivSqZeroExt O M :=
 abbrev toO : Γ(Sp O, ⊤) →+* O := (Scheme.ΓSpecIso (CommRingCat.of O)).hom.hom
 
 /- English proof (translation)
-Rewrite using `[appLE_top]`. Conclude with `congr($(Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap O (TrivSqZeroExt O M)))) r)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toTsze_base (r : Γ(Sp O, ⊤)) :
     toTsze O M ((TM O M).hom.appLE ⊤ ⊤ le_top r) = algebraMap O _ (toO O r) := by
@@ -66,7 +66,7 @@ theorem toTsze_base (r : Γ(Sp O, ⊤)) :
   exact congr($(Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap O (TrivSqZeroExt O M)))) r)
 
 /- English proof (translation)
-Rewrite using `[appLE_top]`. Conclude with `congr($(Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (TrivSqZeroExt.fstHom O O M).toRingHom)) b)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toO_sec (b : Γ((TM O M).left, ⊤)) :
     toO O ((sec (zeroSec O M)).appLE ⊤ ⊤ le_top b) = (toTsze O M b).fst := by
@@ -104,7 +104,7 @@ theorem sndFn_apply (b : Γ((TM O M).left, ⊤)) :
     sndFn O M b = (toTsze O M b).snd := rfl
 
 /- English proof (translation)
-Use `letI := (isChart O M).algebra`. Use `letI := topModule O M`. Rewrite using `[sndFn_apply, sndFn_apply, sndFn_apply, map_mul, TrivSqZeroExt.snd_mul, op_smul_eq_smul]`. Express the relevant statement in the definitionally equal form `_ = (toO O ((sec (zeroSec O M)).appLE ⊤ ⊤ le_top a) • (toTsze O M b).snd : M) + toO O ((sec (zeroSec O M)).appLE ⊤ ⊤ le_top b) • (toTsze O M a).snd`. Rewrite using `[toO_sec, toO_sec]`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem sndFn_der (a b : Γ((TM O M).left, ⊤)) :
     letI := (isChart O M).algebra; letI := topModule O M
@@ -128,7 +128,7 @@ def kappa : Γ(conormal (sec (zeroSec O M)), ⊤) →+ M :=
     ((isChart O M).augCotEquiv (sec_hom _)).symm.toLinearMap.toAddMonoidHom
 
 /- English proof (translation)
-Use `letI := (isChart O M).algebra`. Use `letI := topModule O M`. Express the relevant statement in the definitionally equal form `(AugCot.lift ((isChart O M).aug (sec_hom _)) (sndFn O M) (sndFn_der O M)) (((isChart O M).augCotEquiv (sec_hom _)).symm (d (sec_hom (zeroSec O M)) le_top b)) = _`. Rewrite using `[← (isChart O M).augCotEquiv_d (sec_hom _) b, LinearEquiv.symm_apply_apply, AugCot.lift_d]`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem kappa_d (b : Γ((TM O M).left, ⊤)) :
     kappa O M (d (sec_hom (zeroSec O M)) le_top b) = (toTsze O M b).snd := by
@@ -187,13 +187,11 @@ variable {p : ℕ} {O : Type} [CommRing O] {G : PDivGroup p O} {A : Over (Sp O)}
   {M : Type} [AddCommGroup M] [Module O M] [Module Oᵐᵒᵖ M] [IsCentralScalar O M]
 
 /- English proof (translation)
-Establish `h1` using `(t.eq_one_iff n (Bialgebra.counitAlgHom O (G.A n))).2 fun a => by simp`. Establish `h2` using `congrArg Over.Hom.left h1`. Simplify using `only [Over.comp_left] at h2`. Use `ext1`. Simplify using `only [Over.comp_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : (zeroSec O M).left ≫ (spOver φ).left = (spOver (Bialgebra.counitAlgHom O (G.A n))).left`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun f => f a) (congrArg AlgHom.toRingHom hφ)`. Rewrite using `[← Category.assoc, e, h2]`. Establish `hu : (toUnit (Over.mk (spMap (algebraMap O O)))).left = 𝟙 (Sp O)`. Rewrite using `[Over.toUnit_left]`. Conclude with `Spec.map_id _`.
-
-Express the relevant statement in the definitionally equal form `(toUnit (Over.mk (spMap (algebraMap O O)))).left ≫ η[A].left = η[A].left`. Use `erw [hu]`. Conclude with `Category.id_comp _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem zeroSec_spOver_y (t : G.TorsionTower A) (n : ℕ) (φ : G.A n →ₐ[O] TrivSqZeroExt O M)
     (hφ : (TrivSqZeroExt.fstHom O O M).comp φ = Bialgebra.counitAlgHom O (G.A n)) :
@@ -223,7 +221,7 @@ def univ (n : ℕ) : G.A n →ₐ[O] TrivSqZeroExt O (Cot O (G.A n)) :=
   AugCot.toSqZero (Bialgebra.counitAlgHom O (G.A n)) LinearMap.id
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `[univ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem fst_comp_univ (n : ℕ) :
     (TrivSqZeroExt.fstHom O O (Cot O (G.A n))).comp (univ G n) =

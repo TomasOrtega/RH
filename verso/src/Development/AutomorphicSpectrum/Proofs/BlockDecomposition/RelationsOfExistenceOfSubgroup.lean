@@ -11,15 +11,15 @@ open LocalGlobalAboveLAlt
 namespace GlobalTheory.CompanionTheory.LocalParam
 
 /- English proof (translation)
-Establish `h0 : aeval f ((X - 1 : ℂ[X]) ^ n) = 0`. Rewrite using `[← hc]`. Conclude with `LinearMap.aeval_self_charpoly f`. Establish `hd : minpoly ℂ f ∣ (X - 1 : ℂ[X]) ^ n` using `minpoly.dvd ℂ f h0`. Establish `hsq : Squarefree (minpoly ℂ f)` using `hs.minpoly_squarefree`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hirr : Irreducible (X - 1 : ℂ[X])`. Simplify using `using irreducible_X_sub_C (1 : ℂ)`. Take `⟨i, hi, hu⟩` from `(dvd_prime_pow hirr.prime n).1 hd`. Establish `hd1 : minpoly ℂ f ∣ (X - 1 : ℂ[X])`. Break down `Nat.lt_or_ge i 2 with h2 | h2` into its components or cases.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `interval_cases i`. Use `hu.dvd` as an intermediate fact. Simplify using `using (this.trans (by simp))`. Simplify using `using hu.dvd`. It suffices to derive a contradiction.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. It suffices to derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (X - 1 : ℂ[X]) * (X - 1) ∣ minpoly ℂ f`. Use `Dvd.dvd.trans ?_ hu.symm.dvd` and prove the remaining obligations. Rewrite using `[← pow_two]`. Conclude with `pow_dvd_pow _ h2`. Conclude with `hirr.not_isUnit (hsq _ this)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : aeval f (X - 1 : ℂ[X]) = 0`. Take `⟨q, hq⟩` from `hd1`. Rewrite using `[hq, map_mul, minpoly.aeval, zero_mul]`. Simplify `h1` using `[sub_eq_zero]`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_charpoly {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (f : Module.End ℂ V) (hs : f.IsSemisimple) (n : ℕ) (hc : f.charpoly = (X - 1) ^ n) : f = 1 := by
@@ -47,13 +47,13 @@ theorem eq_one_of_charpoly {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDi
   simpa [sub_eq_zero] using h1
 
 /- English proof (translation)
-Establish `e1 : ∑ i ∈ Finset.range (B.charpoly.natDegree + 1), B.charpoly.coeff i * LinearMap.trace ℂ V (A * B ^ i) = 0`. Establish `h` using `LinearMap.aeval_self_charpoly B`. Rewrite `h` using `[aeval_eq_sum_range]`. Use `congrArg (fun T => LinearMap.trace ℂ V (A * T)) h` as an intermediate fact. Simplify `this` using `[Finset.mul_sum, map_sum, mul_smul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e2 : ∑ i ∈ Finset.range (B.charpoly.natDegree + 1), B.charpoly.coeff i * LinearMap.trace ℂ V' (A' * B' ^ i) = 0`. Establish `h` using `LinearMap.aeval_self_charpoly B'`. Rewrite `h` using `[aeval_eq_sum_range, ← hB]`. Use `congrArg (fun T => LinearMap.trace ℂ V' (A' * T)) h` as an intermediate fact. Simplify `this` using `[Finset.mul_sum, map_sum, mul_smul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `e1`, `e2` using `[Finset.sum_range_succ']`. Establish `e3 : ∑ i ∈ Finset.range B.charpoly.natDegree, B.charpoly.coeff (i + 1) * LinearMap.trace ℂ V (A * B ^ (i + 1)) = ∑ i ∈ Finset.range B.charpoly.natDegree, B.charpoly.coeff (i + 1) * LinearMap.trace ℂ V' (A' * B' ^ (i + 1))` using `Finset.sum_congr rfl fun i _ => by rw [ht (i + 1) i.succ_pos]`. Establish `e4 : B.charpoly.coeff 0 * (LinearMap.trace ℂ V A - LinearMap.trace ℂ V' A') = 0`. Simplify using `only [pow_zero, mul_one] at e1 e2`. Take the linear combination `e1 - e2 - e3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp e4).resolve_left h0)`.
+A detailed English derivation is pending.
 -/
 theorem trace_eq_of_pos {V V' : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     [AddCommGroup V'] [Module ℂ V'] [FiniteDimensional ℂ V']
@@ -85,9 +85,9 @@ theorem trace_eq_of_pos {V V' : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDi
   exact sub_eq_zero.mp ((mul_eq_zero.mp e4).resolve_left h0)
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `LinearMap.det_eq_sign_charpoly_coeff B`. Rewrite `h1` using `[h, mul_zero]`. Establish `h2 : IsUnit (LinearMap.det B)` using `hB.map (LinearMap.det : Module.End ℂ V →* ℂ)`. Rewrite `h2` using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `not_isUnit_zero h2`.
+A detailed English derivation is pending.
 -/
 theorem charpoly_coeff_zero_ne {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (B : Module.End ℂ V) (hB : IsUnit B) : B.charpoly.coeff 0 ≠ 0 := by
@@ -99,7 +99,7 @@ theorem charpoly_coeff_zero_ne {V : Type*} [AddCommGroup V] [Module ℂ V] [Fini
   exact not_isUnit_zero h2
 
 /- English proof (translation)
-Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ (Module.finBasis ℂ V) f, Matrix.trace_eq_sum_roots_charpoly, LinearMap.charpoly_toMatrix]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_eq_roots_sum {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (f : Module.End ℂ V) : LinearMap.trace ℂ V f = f.charpoly.roots.sum := by
@@ -107,11 +107,11 @@ theorem trace_eq_roots_sum {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDi
     Matrix.trace_eq_sum_roots_charpoly, LinearMap.charpoly_toMatrix]
 
 /- English proof (translation)
-Establish `hr : ∀ (T : Matrix (Fin n) (Fin n) ℂ) (j : ℕ), (T ^ j).trace = (T.charpoly.roots.map (· ^ j)).sum`. Introduce `T j`. Rewrite using `[Matrix.trace_eq_sum_roots_charpoly, GlobalTheory.CharpolyPow.roots_charpoly_pow]`. Establish `he : ∀ k, M.charpoly.roots.esymm k = M'.charpoly.roots.esymm k` using `GlobalTheory.EsymmVirt.esymm_eq_of_psum_eq _ _ fun j hj => by rw [← hr, ← hr, h j hj]`. Establish `hc : ∀ T : Matrix (Fin n) (Fin n) ℂ, Multiset.card T.charpoly.roots = T.charpoly.natDegree` using `fun T => IsAlgClosed.card_roots_eq_natDegree`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `k`. Break down `Nat.lt_or_ge n k with hk | hk` into its components or cases. Rewrite using `[coeff_eq_zero_of_natDegree_lt (by rwa [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]), coeff_eq_zero_of_natDegree_lt (by rwa [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin])]`. Establish `hd : ∀ T : Matrix (Fin n) (Fin n) ℂ, T.charpoly.natDegree = n` using `fun T => by`. Rewrite using `[Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_eq_esymm_roots_of_card (hc M) (by rwa [hd]), coeff_eq_esymm_roots_of_card (hc M') (by rwa [hd]), hd, hd, he, (Matrix.charpoly_monic M).leadingCoeff, (Matrix.charpoly_monic M').leadingCoeff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_eq_of_trace_pow {n : ℕ} (M M' : Matrix (Fin n) (Fin n) ℂ)
     (h : ∀ j : ℕ, 0 < j → (M ^ j).trace = (M' ^ j).trace) : M.charpoly = M'.charpoly := by
@@ -134,9 +134,9 @@ theorem charpoly_eq_of_trace_pow {n : ℕ} (M M' : Matrix (Fin n) (Fin n) ℂ)
       (Matrix.charpoly_monic M).leadingCoeff, (Matrix.charpoly_monic M').leadingCoeff]
 
 /- English proof (translation)
-Take `⟨M, rfl⟩ : ∃ M, Matrix.toLin' M = f` from `⟨_, Matrix.toLin'_toMatrix' f⟩`. Take `⟨M', rfl⟩ : ∃ M, Matrix.toLin' M = f'` from `⟨_, Matrix.toLin'_toMatrix' f'⟩`. Rewrite using `[Matrix.charpoly_toLin', Matrix.charpoly_toLin']`. Use `charpoly_eq_of_trace_pow M M' fun j hj => ?_` and prove the remaining obligations. Use `h j hj` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[← Matrix.toLin'_pow, ← Matrix.toLin'_pow, Matrix.trace_toLin'_eq, Matrix.trace_toLin'_eq]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem charpoly_eq_of_trace_pow' {n : ℕ} (f f' : Module.End ℂ (Fin n → ℂ))
     (h : ∀ j : ℕ, 0 < j → LinearMap.trace ℂ _ (f ^ j) = LinearMap.trace ℂ _ (f' ^ j)) :
@@ -149,11 +149,11 @@ theorem charpoly_eq_of_trace_pow' {n : ℕ} (f f' : Module.End ℂ (Fin n → �
   rwa [← Matrix.toLin'_pow, ← Matrix.toLin'_pow, Matrix.trace_toLin'_eq, Matrix.trace_toLin'_eq] at this
 
 /- English proof (translation)
-Use `⟨{ carrier := {u | ∃ m : ℤ, u * g ^ m ∈ K} one_mem' := ⟨0, by simpa using K.one_mem⟩ mul_mem' := ?_ inv_mem' := ?_ }, fun k hk => ⟨0, by simpa using hk⟩, ⟨-1, by simpa using K.one_mem⟩, fun u hu => hu⟩` and prove the remaining obligations. Introduce and unpack `u v ⟨a, ha⟩ ⟨b, hb⟩`. Use `⟨a + b, ?_⟩` and prove the remaining obligations. Use `K.mul_mem ha (hK (-a) _ hb)` as an intermediate fact. Establish `e : u * g ^ a * (g ^ (-a) * (v * g ^ b) * g ^ (- -a)) = u * v * g ^ (a + b)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[neg_neg, zpow_neg, zpow_add]`. Use `group`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Introduce and unpack `u ⟨a, ha⟩`. Use `⟨-a, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hK a _ (K.inv_mem ha)` as an intermediate fact. Establish `e : g ^ a * (u * g ^ a)⁻¹ * g ^ (-a) = u⁻¹ * g ^ (-a)`. Rewrite using `[zpow_neg]`. Use `group`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_adjoin {G : Type*} [Group G] (K : Subgroup G) (g : G)
     (hK : ∀ m : ℤ, ∀ k ∈ K, g ^ m * k * g ^ (-m) ∈ K) :
@@ -177,11 +177,9 @@ theorem exists_adjoin {G : Type*} [Group G] (K : Subgroup G) (g : G)
     rwa [e] at this
 
 /- English proof (translation)
-Establish `hfin : Finite (f '' (U : Set G))` using `hf`. Establish `: Finite (↥U ⧸ H.subgroupOf U)`. Use `Finite.of_injective (fun a : ↥U ⧸ H.subgroupOf U => (⟨f (a.out : G), _, a.out.2, rfl⟩ : f '' (U : Set G))) ?_` and prove the remaining obligations. Introduce `a b hab`. Establish `h1 : f (a.out : G) = f (b.out : G)` using `congrArg Subtype.val hab`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `hfib _ a.out.2 _ b.out.2 h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Subgroup.mem_subgroupOf]`. Simplify using `using h2)`. Use `_ = b := QuotientGroup.out_eq' b`.
-
-Conclude with `Subgroup.index_ne_zero_of_finite`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero_of_fibres {G S : Type*} [Group G] {H U : Subgroup G} (f : G → S)
     (hf : (f '' (U : Set G)).Finite)
@@ -205,7 +203,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Proceed by induction on `hU with`. Consider the case `top => simp`. Consider the case `@step U V _ hle _ hr _ ih`. Rewrite using `[← Subgroup.relIndex_mul_index hle]`. Conclude with `mul_ne_zero hr ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_ne_zero_of_sub {U : Subgroup ↥(Weil h)} (hU : LocalGlobalAboveLAlt.Sub U) : U.index ≠ 0 := by
   induction hU with
@@ -215,7 +213,7 @@ theorem index_ne_zero_of_sub {U : Subgroup ↥(Weil h)} (hU : LocalGlobalAboveLA
     exact mul_ne_zero hr ih
 
 /- English proof (translation)
-Consider the cases of `hU with`. Consider the case `top => simp`. Consider the case `step _ _ _ _ ho => exact ho`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem isOpen_of_sub {U : Subgroup ↥(Weil h)} (hU : LocalGlobalAboveLAlt.Sub U) :
     IsOpen {s : ↥(Ine (F := E) A) | ineIncl h s ∈ U} := by
@@ -224,9 +222,9 @@ theorem isOpen_of_sub {U : Subgroup ↥(Weil h)} (hU : LocalGlobalAboveLAlt.Sub 
   | step _ _ _ _ ho => exact ho
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Use `eq_one_of_charpoly _ (b.semisimple g) (WD.lpDim (WD.mk b)) ?_` and prove the remaining obligations. Rewrite using `[← WD.charPol_mk]`. Conclude with `hg`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hg`. Unfold `Triv`. Rewrite using `[WD.charPol_mk, hg, LinearMap.charpoly_one, WD.lpDim_mk]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triv_mk_iff {n : ℕ} (b : WDRep h (Fin n → ℂ)) (g : ↥(Weil h)) :
     Triv (WD.mk b) g ↔ b.ρ g = 1 := by
@@ -239,9 +237,9 @@ theorem triv_mk_iff {n : ℕ} (b : WDRep h (Fin n → ℂ)) (g : ↥(Weil h)) :
     rw [WD.charPol_mk, hg, LinearMap.charpoly_one, WD.lpDim_mk]
 
 /- English proof (translation)
-Establish `hle : ⁅U, U⁆ ≤ (degHom h).ker`. Rewrite using `[Subgroup.commutator_le]`. Introduce `a _ b _`. Rewrite using `[MonoidHom.mem_ker, degHom_apply, ofAdd_eq_one, commutatorElement_def]`. Simplify using `only [deg_mul, deg_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `hle hu` as an intermediate fact. Rewrite `this` using `[MonoidHom.mem_ker, degHom_apply, ofAdd_eq_one]`. Then use the resulting hypothesis.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem deg_of_mem_commutator {U : Subgroup ↥(Weil h)} {u : ↥(Weil h)} (hu : u ∈ ⁅U, U⁆) :
     deg u = 0 := by
@@ -255,37 +253,33 @@ theorem deg_of_mem_commutator {U : Subgroup ↥(Weil h)} {u : ↥(Weil h)} (hu :
   rwa [MonoidHom.mem_ker, degHom_apply, ofAdd_eq_one] at this
 
 /- English proof (translation)
-Set `K : Subgroup ↥(Weil h)` to `MonoidHom.ker b.ρ ⊓ ((degHom h).ker ⊓ U)`. Establish `hKm : ∀ k, k ∈ K ↔ b.ρ k = 1 ∧ deg k = 0 ∧ k ∈ U` using `fun k => by`. Simplify using `only [K, Subgroup.mem_inf, MonoidHom.mem_ker, degHom_apply, ofAdd_eq_one]`. Establish `hconj : ∀ m : ℤ, ∀ k ∈ K, g ^ m * k * g ^ (-m) ∈ K`. Introduce `m k hk`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2, h3⟩` from `(hKm k).1 hk`. Use `(hKm _).2 ⟨?_, ?_, U.mul_mem (U.mul_mem (U.zpow_mem hg m) h3) (U.zpow_mem hg (-m))⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, h1, mul_one, ← map_mul, ← zpow_add, add_neg_cancel, zpow_zero, map_one]`. Simplify using `only [deg_mul, deg_zpow, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨H, hKH, hgH, hH⟩` from `exists_adjoin K g hconj`. Establish `hHU : H ≤ U`. Introduce `u hu`. Take `⟨m, hm⟩` from `hH u hu`. Establish `h1` using `((hKm _).1 hm).2.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `U.mul_mem h1 (U.zpow_mem hg (-m))`. Simplify `h2` using `[mul_assoc, zpow_neg]`. Establish `hcomm : ⁅U, U⁆ ≤ H`. Introduce `u hu`. Use `hKH ((hKm u).2 ⟨(triv_mk_iff b u).1 (hc u hu), deg_of_mem_commutator hu, ?_⟩)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : ⁅U, U⁆ ≤ U`. Rewrite using `[Subgroup.commutator_le]`. Introduce `a ha c hc'`. Rewrite using `[commutatorElement_def]`. Conclude with `U.mul_mem (U.mul_mem (U.mul_mem ha hc') (U.inv_mem ha)) (U.inv_mem hc')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hle hu`. Establish `hopen : IsOpen {s : ↥(Ine (F` using `E) A) | ineIncl h s ∈ H} := by`. Establish `h1 : IsOpen ({s : ↥(Ine (F` using `E) A) | b.ρ (ineIncl h s) = 1} ∩ {s : ↥(Ine (F := E) A) | ineIncl h s ∈ U}) := b.smooth.inter (isOpen_of_sub hU)`. Establish `h2 : (1 : ↥(Ine (F` using `E) A)) ∈ ({s : ↥(Ine (F := E) A) | b.ρ (ineIncl h s) = 1} ∩ {s : ↥(Ine (F := E) A) | ineIncl h s ∈ U}) := by`. Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> simp [U.one_mem]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `Subgroup.isOpen_of_mem_nhds (H.comap (ineIncl h)) (g := 1) (Filter.mem_of_superset (h1.mem_nhds h2) fun s hs => hKH ((hKm _).2 ⟨hs.1, deg_ineIncl s, hs.2⟩))`. Establish `hdeg : ∀ u : ↥(Weil h), deg u = deg g * (deg u / deg g) + deg u % deg g` using `fun u => (Int.mul_ediv_add_emod _ _).symm`. Set `f : ↥(Weil h) → ℤ × Module.End ℂ (Fin n → ℂ)` to `fun u => (deg u % deg g, b.ρ (frob h ^ (-(deg u % deg g)) * u * g ^ (-(deg u / deg g))))`. Establish `hidx : H.relIndex U ≠ 0`. Use `relIndex_ne_zero_of_fibres f ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.Finite.subset ((Set.finite_Ico (0 : ℤ) |deg g|).prod b.smooth.finite_range) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, _, rfl⟩`. Use `⟨⟨Int.emod_nonneg _ hd, Int.emod_lt_abs _ hd⟩, ?_⟩` and prove the remaining obligations. Establish `h0 : deg (frob h ^ (-(deg u % deg g)) * u * g ^ (-(deg u / deg g))) = 0`. Simplify using `only [deg_mul, deg_zpow, deg_frob]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take the linear combination `hdeg u`. Conclude with `⟨⟨_, deg_eq_zero_iff.mp h0⟩, rfl⟩`. Introduce `u hu v hv hf`. Establish `h1` using `congrArg Prod.fst hf`. Establish `h2` using `congrArg Prod.snd hf`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Simplify using `only [f] at h1 h2`. Rewrite `h2` using `[← h1]`. Use `set r := deg u % deg g`. Use `set p := deg u / deg g with hp`. Use `set p' := deg v / deg g with hp'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `t : ↥(Weil h)` to `g ^ p * u⁻¹ * v * g ^ (-p')`. Establish `ht : t = (frob h ^ (-r) * u * g ^ (-p))⁻¹ * (frob h ^ (-r) * v * g ^ (-p'))`. Simplify using `only [t, zpow_neg]`. Use `group`. Establish `hρ : b.ρ t = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[ht, map_mul, ← h2, ← map_mul, inv_mul_cancel, map_one]`. Establish `hdv : deg v = deg g * p' + r` using `by rw [hdeg v, ← h1]`. Establish `hdu : deg u = deg g * p + r` using `hdeg u`. Establish `hdt : deg t = 0`. Simplify using `only [t, deg_mul, deg_zpow, deg_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `hdv - hdu`. Establish `htU : t ∈ U` using `U.mul_mem (U.mul_mem (U.mul_mem (U.zpow_mem hg _) (U.inv_mem hu)) hv) (U.zpow_mem hg _)`. Establish `htH : t ∈ H` using `hKH ((hKm t).2 ⟨hρ, hdt, htU⟩)`. Establish `e : u⁻¹ * v = g ^ (-p) * t * g ^ p'`. Simplify using `only [t, zpow_neg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `group`. Rewrite using `[e]`. Conclude with `H.mul_mem (H.mul_mem (H.zpow_mem hgH _) htH) (H.zpow_mem hgH _)`. Establish `hSub : LocalGlobalAboveLAlt.Sub H` using `LocalGlobalAboveLAlt.Sub.step hU hHU hcomm hidx hopen`. Establish `hTriv : ∀ u ∈ H, deg u = 0 → Triv (WD.mk b) u`.
-
-Introduce `u hu h0`. Take `⟨m, hm⟩` from `hH u hu`. Establish `h1` using `((hKm _).1 hm).2.1`. Simplify using `only [deg_mul, deg_zpow, h0, zero_add] at h1`. Establish `hm0 : m = 0` using `(mul_eq_zero.mp h1).resolve_right hd`.
-
-Rewrite `hm` using `[hm0, zpow_zero, mul_one]`. Conclude with `(triv_mk_iff b u).2 ((hKm u).1 hm).1`. Conclude with `(hM.2 H hSub hTriv).2 g hgH`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charPol_of_deg_ne {x : WD h} {n : ℕ} (b : WDRep h (Fin n → ℂ)) (hM : Main x (WD.mk b))
     {U : Subgroup ↥(Weil h)} (hU : LocalGlobalAboveLAlt.Sub U) (hc : ∀ g ∈ ⁅U, U⁆, Triv (WD.mk b) g)
@@ -374,11 +368,9 @@ theorem charPol_of_deg_ne {x : WD h} {n : ℕ} (b : WDRep h (Fin n → ℂ)) (hM
   exact (hM.2 H hSub hTriv).2 g hgH
 
 /- English proof (translation)
-Distinguish the cases in `hd : deg g = 0`. Take `⟨k0, hk0, -, hΦ⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero (index_ne_zero_of_sub hU) (frob h) set Φ := frob h ^ k0 with hΦdef`. Establish `hdΦ : deg Φ = k0` using `by simp [hΦdef]`. Establish `hΦ0 : deg Φ ≠ 0` using `by rw [hdΦ]; exact_mod_cast hk0.ne'`. Use `charpoly_eq_of_trace_pow' _ _ fun j _ => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_pow, ← map_pow]`. Use `trace_eq_of_pos _ (a.ρ Φ) _ (b.ρ Φ) (hpos Φ hΦ hΦ0) (charpoly_coeff_zero_ne _ ((Group.isUnit Φ).map a.ρ)) fun k hk => ?_` and prove the remaining obligations. Rewrite using `[← map_pow, ← map_pow, ← map_mul, ← map_mul, trace_eq_roots_sum, trace_eq_roots_sum, hpos _ (U.mul_mem (U.pow_mem hg j) (U.pow_mem hΦ k)) ?_]`. Simplify using `only [deg_mul, deg_pow, hd, mul_zero, zero_add]`. Conclude with `mul_ne_zero (by exact_mod_cast hk.ne') hΦ0`.
-
-Conclude with `hpos g hg hd`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem charpoly_of_pos {n : ℕ} (a b : WDRep h (Fin n → ℂ)) {U : Subgroup ↥(Weil h)} (hU : LocalGlobalAboveLAlt.Sub U)
     (hpos : ∀ t ∈ U, deg t ≠ 0 → (a.ρ t).charpoly = (b.ρ t).charpoly)
@@ -401,11 +393,11 @@ theorem charpoly_of_pos {n : ℕ} (a b : WDRep h (Fin n → ℂ)) {U : Subgroup 
 end Place
 
 /- English proof (translation)
-Introduce `hE E Ω _ _ _ _ _ A w h x y hM`. Take `⟨U0, hU0, -, hT⟩` from `hE E Ω A w h y`. Use `⟨hM.1, (hM.2 U0 hU0 hT).1, ?_⟩` and prove the remaining obligations. Introduce `U hU hc g hg`. Take `⟨n, a, rfl⟩` from `WD.exists_rep x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨m, b, rfl⟩` from `WD.exists_rep y`. Establish `hnm : n = m` using `by simpa using hM.1`. Substitute `hnm` using the available equality. Establish `hpos : ∀ t ∈ U, deg t ≠ 0 → (a.ρ t).charpoly = (b.ρ t).charpoly`. Introduce `t ht hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `charPol_of_deg_ne b hM hU hc ht hd` as an intermediate fact. Rewrite `this` using `[WD.charPol_mk, WD.charPol_mk]`. Then use the resulting hypothesis. Rewrite using `[WD.charPol_mk, WD.charPol_mk]`. Conclude with `charpoly_of_pos a b hU hpos hg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relOfMain_of_exSub : ExSub → RelOfMain := by
   intro hE E Ω _ _ _ _ _ A w h x y hM

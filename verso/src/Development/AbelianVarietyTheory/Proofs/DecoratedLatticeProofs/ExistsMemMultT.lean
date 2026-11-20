@@ -20,7 +20,7 @@ section Comp
 variable {D : D7} (θ : InfFam D) (V : HSp D) {n : ℕ} (hn : V.rank = n)
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Conclude with `GlobalTheory.PrincInLevel.swap_mem_UPts _ _ _ (GlobalTheory.UnitarySplit.finHom_mem V g)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem finN_mem_UPts (g : GA D V) : finN V hn g ∈ Formalism.UG.UPts D.sp.cm.sig (V.gram.reindex (finCongr hn) (finCongr hn))
     (FiniteAdeleRing (𝓞 D.host.F) D.host.F) := by
@@ -28,7 +28,7 @@ theorem finN_mem_UPts (g : GA D V) : finN V hn g ∈ Formalism.UG.UPts D.sp.cm.s
   exact GlobalTheory.PrincInLevel.swap_mem_UPts _ _ _ (GlobalTheory.UnitarySplit.finHom_mem V g)
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Conclude with `Units.ext (Matrix.ext h)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem finN_eq (g : GA D V) (y : GL (Fin n) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F))
     (h : ∀ i j, (Formalism.UG.bc (Lev.swapAE D) (finHom V g)).1 i j = y.1 (finCongr hn i) (finCongr hn j)) : finN V hn g = y := by
@@ -36,9 +36,9 @@ theorem finN_eq (g : GA D V) (y : GL (Fin n) (D.host.E ⊗[D.host.F] FiniteAdele
   exact Units.ext (Matrix.ext h)
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Take `⟨δ, hδ, e⟩` from `hγ`. Use `⟨δ, hδ, ?_, fun τ => ?_⟩` and prove the remaining obligations. Use `show Formalism.UG.bc _ (Formalism.UG.bc _ (matHom V γ)) = _`. Rewrite using `[show matHom V γ = _ from e.symm]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `show (Formalism.UG.bc _ (Formalism.UG.bc _ (matHom V γ))).1 = _`. Rewrite using `[show matHom V γ = _ from e.symm]`. Conclude with `Matrix.ext fun i j => (hθ τ).1 _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rat' (hθ : IsInfFam θ) {γ : GA D V} (hγ : γ ∈ GQ V) :
     ∃ δ ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) (V.gram.reindex (finCongr hn) (finCongr hn)),
@@ -55,9 +55,9 @@ theorem exists_rat' (hθ : IsInfFam θ) {γ : GA D V} (hγ : γ ∈ GQ V) :
     exact Matrix.ext fun i j => (hθ τ).1 _
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `h : IsAtTau θ V τ g (atTau θ V τ g)` using `GlobalTheory.PointAtPlaceHom.atTau_spec hθ V τ hg`. Use `show Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gram (θ ρ) (atTau θ V τ g) = Function.update (fun _ => (1 : Matrix (Fin V.rank) (Fin V.rank) ℂ)) τ g ρ`. Distinguish the cases in `c : ρ = τ`. Substitute `c` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_self]`. Conclude with `h.2.1`. Rewrite using `[Function.update_of_ne c]`. Conclude with `h.2.2 ρ c`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infN_atTau (hθ : IsInfFam θ) (τ : D.what₂.Tau) {g : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (ρ : D.what₂.Tau) :
@@ -78,11 +78,9 @@ open Formalism.L2.Col in
 attribute [local instance] Algebra.TensorProduct.rightAlgebra in
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `letI := rlt_top D.host.F D.host.E`. Use `haveI := rlt_isModTop D.host.F D.host.E`. Use `haveI := rlt_topRing (F := D.host.F) (E := D.host.E)`.
+Substitute using the available equality. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsModuleTopology (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) := ⟨rfl⟩`. Establish `hs : Continuous (Lev.swapAE D)` using `by haveI := IsModuleTopology.toContinuousAdd (FiniteAdeleRing (𝓞 D.host.F) D.host.F) (Lev.EAf D)`. Use `(IsModuleTopology.continuous_of_linearMap (LinearEquiv.ofBijective (rlt_comm (F := D.host.F) (E := D.host.E)) (TensorProduct.comm _ _ _).bijective).symm.toLinearMap).congr fun z => ?_` and prove the remaining obligations. Use `(LinearEquiv.symm_apply_eq _).2 ?_` and prove the remaining obligations. Conclude with `((Algebra.TensorProduct.comm D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.host.E).symm_apply_apply z).symm`.
-
-Establish `hf : Continuous fun κ : GA D V => (finN V rfl κ).1` using `(GlobalTheory.Mem.VolExists.continuous_finMat (σ := D.sp.cm.sig) V.gram).matrix_map hs`. Use `Units.continuous_iff.2 ⟨hf, (hf.comp continuous_inv).congr fun κ => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Units.val (map_inv (finN V rfl) κ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_finN : letI := tensTopL (F := D.host.F) (E := D.host.E) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)
     Continuous fun κ : GA D V =>
@@ -116,26 +114,26 @@ def finPt (h : GA D D.sp.X') : Formalism.UG.UPts (sigD D) (gramP D) (FiniteAdele
   ⟨finN D.sp.X' (rankP D) h, finN_mem_UPts D.sp.X' (rankP D) h⟩
 
 /- English proof (translation)
-The claim follows from `map_mul (finN D.sp.X' (rankP D)) h k`.
+A detailed English derivation is pending.
 -/
 theorem finPt_mul (h k : GA D D.sp.X') : (finPt (h * k)).1 = (finPt h).1 * (finPt k).1 := map_mul (finN D.sp.X' (rankP D)) h k
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (map_one (finN D.sp.X' (rankP D)))`.
+A detailed English derivation is pending.
 -/
 theorem finPt_one : (finPt (1 : GA D D.sp.X')) = 1 := Subtype.ext (map_one (finN D.sp.X' (rankP D)))
 
 abbrev infPt : GA D D.sp.X' →* (D.what₂.Tau → GL (Fin (D.R.N D.R.m - 1)) ℂ) := infN θ D.sp.X' (rankP D) (Equiv.refl _)
 
 /- English proof (translation)
-The claim follows from `finN_eq _ (rankP D) h y hh.2`.
+A detailed English derivation is pending.
 -/
 theorem finPt_of_hasMat {h : GA D D.sp.X'} {y} (hh : HasMat h y) : (finPt h).1 = y := finN_eq _ (rankP D) h y hh.2
 
 variable {g : Formalism.UG.UPts (sigD D) (gramP D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) → FrP D → ℂ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Use `hg.1 1 (one_mem _) (finPt h) (finPt (h * k)) κ ?_ y y fun τ => ?_` and prove the remaining obligations. Rewrite using `[map_one, one_mul, finPt_mul, hk]`. Use `show y.1 τ = (1 : Matrix _ _ D.host.E).map (embT D τ) * y.1 τ`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_level (hg : g ∈ AdForms K.lev (embT D) (sgT u)) (h k : GA D D.sp.X') (κ : K.lev.U) (hk : (finPt k).1 = κ.1) :
     g (finPt (h * k)) = (K.lev.chi κ : ℂ) • g (finPt h) := by
@@ -146,9 +144,9 @@ theorem form_level (hg : g ∈ AdForms K.lev (embT D) (sgT u)) (h k : GA D D.sp.
     rw [Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]
 
 /- English proof (translation)
-Take `⟨δ, hδ, e1, e2⟩` from `exists_rat' θ D.sp.X' (rankP D) hθ hγ`. Use function extensionality and compare the values at `y`. Use `hg.1 δ hδ (finPt h) (finPt (γ * h)) 1 (by` as an intermediate fact. Rewrite using `[finPt_mul, ← e1]`. Conclude with `(mul_one _).symm) (frL _ (infPt θ γ) y) y fun τ => congrArg (· * y.1 τ) (e2 τ)`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_one, Units.val_one, one_mul]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem form_left (hθ : IsInfFam θ) (hg : g ∈ AdForms K.lev (embT D) (sgT u)) {γ : GA D D.sp.X'} (hγ : γ ∈ GQ D.sp.X')
     (h : GA D D.sp.X') : lT _ (infPt θ γ) (g (finPt (γ * h))) = g (finPt h) := by
@@ -161,9 +159,9 @@ theorem form_left (hθ : IsInfFam θ) (hg : g ∈ AdForms K.lev (embT D) (sgT u)
   exact this
 
 /- English proof (translation)
-Use `letI := tensTopL (F := D.host.F) (E := D.host.E) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)`. Establish `hc : Continuous (finPt (D` using `D)) := (continuous_finN D.sp.X' (rankP D)).subtype_mk _`. Establish `h1` using `(hK.preimage hc).mem_nhds (x := 1) (by`. Rewrite using `[Set.mem_preimage, finPt_one]`. Conclude with `⟨one_mem _, map_one K.lev.chi⟩)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `filter_upwards [h1] with k hk h`. Take `⟨hx, e⟩` from `hk`. Rewrite using `[form_level hg h k ⟨_, hx⟩ rfl, e, Units.val_one, one_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_locally (hK : letI := tensTopL (F := D.host.F) (E := D.host.E) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)
       IsOpen {x : Formalism.UG.UPts (sigD D) (gramP D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) |
@@ -183,25 +181,25 @@ def valAt (g : Formalism.UG.UPts (sigD D) (gramP D) (FiniteAdeleRing (𝓞 D.hos
     FrP D → ℂ := lT _ (infPt θ h) (g (finPt h))
 
 /- English proof (translation)
-Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[finPt_mul, show (finPt k).1 = 1 from finN_of_inf (rankP D) hk, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem finPt_mul_inf (h : GA D D.sp.X') {k : GA D D.sp.X'} (hk : k ∈ GinfC D.sp.X') : finPt (h * k) = finPt h := by
   refine Subtype.ext ?_
   rw [finPt_mul, show (finPt k).1 = 1 from finN_of_inf (rankP D) hk, mul_one]
 
 /- English proof (translation)
-The claim follows from `infN_of_fin θ (rankP D) _ hk`.
+A detailed English derivation is pending.
 -/
 theorem infPt_of_fin {k : GA D D.sp.X'} (hk : k ∈ GfC D.sp.X') : infPt θ k = 1 := infN_of_fin θ (rankP D) _ hk
 
 /- English proof (translation)
-The claim follows from `lT_mem _ _ _ (hg.2 _ (Set.mem_univ _))`.
+A detailed English derivation is pending.
 -/
 theorem valAt_mem (hg : g ∈ AdForms K.lev (embT D) (sgT u)) (h : GA D D.sp.X') :
     valAt θ g h ∈ ValC (gramC (gramP D) (embT D)) (sgT u) := lT_mem _ _ _ (hg.2 _ (Set.mem_univ _))
 
 /- English proof (translation)
-Unfold `valAt`. Establish `e : infPt θ (h * k) = infPt θ h` using `((infPt θ).map_mul h k).trans ((congrArg (infPt θ h * ·) (infPt_of_fin θ hk.1)).trans (mul_one _))`. Rewrite using `[form_level hg h k κ (finPt_of_hasMat hk), e]`. Conclude with `LinearMap.map_smul _ _ _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_level (hg : g ∈ AdForms K.lev (embT D) (sgT u)) (h : GA D D.sp.X') {k : GA D D.sp.X'} {κ : K.lev.U}
     (hk : HasMat k κ.1) : valAt θ g (h * k) = (K.lev.chi κ : ℂ) • valAt θ g h := by
@@ -212,7 +210,7 @@ theorem valAt_level (hg : g ∈ AdForms K.lev (embT D) (sgT u)) (h : GA D D.sp.X
   exact LinearMap.map_smul _ _ _
 
 /- English proof (translation)
-Unfold `valAt`. Rewrite using `[infPt_of_fin θ hh.1, lT_one, show finPt h = y from Subtype.ext (finPt_of_hasMat hh)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem valAt_of_hasMat {h : GA D D.sp.X'} {y : Formalism.UG.UPts (sigD D) (gramP D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)}
     (hh : HasMat h y.1) : valAt θ g h = g y := by
@@ -220,7 +218,7 @@ theorem valAt_of_hasMat {h : GA D D.sp.X'} {y : Formalism.UG.UPts (sigD D) (gram
   rw [infPt_of_fin θ hh.1, lT_one, show finPt h = y from Subtype.ext (finPt_of_hasMat hh)]
 
 /- English proof (translation)
-Establish `e : y = frL _ (infPt θ (atTau θ D.sp.X' τ a)) y'` using `Subtype.ext (funext fun ρ => (hy ρ).trans (congrArg (· * y'.1 ρ) (infN_atTau θ _ (rankP D) hθ τ ha ρ).symm))`. Unfold `valAt`. Rewrite using `[finPt_mul_inf h (GlobalTheory.PointAtPlaceHom.atTau_mem _ τ a), map_mul (infPt θ), lT_mul, e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valAt_atTau (hθ : IsInfFam θ) (h : GA D D.sp.X') (τ : D.what₂.Tau) {a : Matrix (Fin D.sp.X'.rank) (Fin D.sp.X'.rank) ℂ}
     (ha : a ∈ Formalism.QuantumDeterminants.UH (gramAt D D.sp.X' τ)) (y y' : FrP D)
@@ -236,9 +234,9 @@ theorem valAt_atTau (hθ : IsInfFam θ) (h : GA D D.sp.X') (τ : D.what₂.Tau) 
 variable (Bf : (FrP D → ℂ) →ₗ⋆[ℂ] (FrP D → ℂ) →ₗ[ℂ] ℂ)
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℂ (ValC (gramC (gramP D) (embT D)) (sgT u)) := GlobalTheory.Mem.Col2.valC_finiteDimensional (embT D) (RingHom.id ℂ) (sgT u)`. Set `l : (FrP D → ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun F => star (Bf F f) map_add' := fun F F' => by rw [map_add, LinearMap.add_apply, star_add] map_smul' := fun c F => by simp }`. Establish `h1` using `isAutFunDef_of θ (rankP D) (Equiv.refl _) hθ (gramC (gramP D) (embT D)) (sgT u) (fun h => g (finPt h)) (fun h => hg.2 _ (Set.mem_univ _)) (fun γ hγ h => form_left θ hθ hg hγ h) (form_locally hK hg) (fun k hk h => by rw [finPt_mul_inf h hk]) l`. Establish `h2` using `GlobalTheory.Mem.AutConj.isAutFunSm_star D θ hθ _ _ ((GlobalTheory.DefiniteForms.autFunDefIffSm D θ hθ _ D.sp.X'_sig (GlobalTheory.DefiniteEnd.end_definite D) _).1 h1)`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `h`. Conclude with `(star_star _).symm`.
+A detailed English derivation is pending.
 -/
 theorem isAutFunSm_pair (hθ : IsInfFam θ)
     (hK : letI := tensTopL (F := D.host.F) (E := D.host.E) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)
@@ -264,15 +262,15 @@ theorem isAutFunSm_pair (hθ : IsInfFam θ)
 end Main
 
 /- English proof (translation)
-Introduce `D u K θ hθ S M j hj J χ hJ hK Bf hB g hg`. Set `T : SmT M →ₗ[ℂ] (GA D D.sp.X' → ℂ)` to `LinearMap.pi fun h => Bf (valAt θ g h) ∘ₗ j`. Establish `hT : ∀ x h, T x h = Bf (valAt θ g h) (j x)` using `fun _ _ => rfl`. Establish `hs` using `D.sp.X'_sig`. Establish `hd` using `GlobalTheory.DefiniteEnd.end_definite D`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨T, (mem_multT θ M J χ T).2 (Submodule.subset_span ⟨fun v => isAutFunSm_pair θ Bf hθ hK hg _, fun v => GlobalTheory.DefiniteEnd.isCuspFun_of_definite hs hd _, fun v k hk h => ?_, fun τ a ha v w hw => ?_, fun τ v x => ?_⟩), fun c v h hh => ?_⟩` and prove the remaining obligations. Take `⟨κ, hκ⟩` from `(hJ.1 k).1 hk show Bf (valAt θ g (h * k)) _ = χ k * Bf (valAt θ g h) _`. Rewrite using `[hJ.2 k κ hκ, valAt_level θ hg h hκ, LinearMap.map_smulₛₗ₂]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `h show Bf (valAt θ g h) (j _) = Bf (valAt θ g (h * atTau θ D.sp.X' τ a)) (j _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `hB (Function.update (fun _ => 1) τ a) (fun ρ => ?_) _ _ _ _ (valAt_mem θ hg _) (hj.range ▸ LinearMap.mem_range_self j _) fun y y' hy => ⟨valAt_atTau θ hθ h τ ha y y' hy, hj.eqv τ a ha v w hw y y' fun ρ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `c : ρ = τ`. Substitute `c` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne c] show (1 : Matrix _ _ ℂ).conjTranspose * _ * 1 = _`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`. Use `(hy ρ).trans ?_` and prove the remaining obligations. Distinguish the cases in `c : ρ = τ`. Substitute `c` using the available equality. Simplify using `only [Function.update_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.update_of_ne c, Matrix.reindex_apply, Matrix.submatrix_one_equiv]`. Use `haveI := GlobalTheory.DefiniteEnd.finiteDimensional_model hs hd M τ`. Conclude with `GlobalTheory.DefiniteEnd.exists_sobCont M τ _ v x`. Rewrite using `[hT, valAt_of_hasMat θ hh]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_multT : ∀ (D : D7) (u : D.what₂.Word) (K : ClsPTied u) (θ : InfFam D), IsInfFam θ → ∀ (S : D.what₂.Tau → SPar) (M : DSModel D.sp.X' S) (j : SmT M →ₗ[ℂ] (FrP D → ℂ)), IsJ u M j → ∀ (J : Set (GA D D.sp.X')) (χ : GA D D.sp.X' → ℂ), TopLev K J χ → (letI := tensTopL (F := D.host.F) (E := D.host.E) (FiniteAdeleRing (𝓞 D.host.F) D.host.F); IsOpen {x : Formalism.UG.UPts (sigD D) (gramP D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) | ∃ hx : x.1 ∈ K.lev.U, K.lev.chi ⟨x.1, hx⟩ = 1}) → ∀ (Bf : (FrP D → ℂ) →ₗ⋆[ℂ] (FrP D → ℂ) →ₗ[ℂ] ℂ), (∀ a : D.what₂.Tau → Matrix (Fin D.sp.X'.rank) (Fin D.sp.X'.rank) ℂ, (∀ τ, a τ ∈ Formalism.QuantumDeterminants.UH (gramAt D D.sp.X' τ)) → ∀ f f' f₁ f₁' : FrP D → ℂ, f ∈ ValC (gramC (gramP D) (embT D)) (sgT u) → f' ∈ ValC (gramC (gramP D) (embT D)) (sgT u) → (∀ y y' : FrP D, IsTr (fun τ => (a τ).reindex (finCongr (rankP D)) (finCongr (rankP D))) y' y → f₁ y = f y' ∧ f₁' y = f' y') → Bf f₁ f₁' = Bf f f') → ∀ g ∈ AdForms K.lev (embT D) (sgT u), ∃ T ∈ MultT θ M J χ, ∀ (c : (D.fm u).clsP) (v : SmT M) (h : GA D D.sp.X'), HasMat h (K.y c).1 → T v h = Bf (g (K.y c)) (j v) := by
   intro D u K θ hθ S M j hj J χ hJ hK Bf hB g hg

@@ -6,33 +6,31 @@ open scoped TensorProduct ENNReal nonZeroDivisors
 namespace GlobalTheory.SnMass.VolN
 
 /- English proof (translation)
-Introduce `G X B _ _ V _ ρ NN o deg c L D ho h1 hmul hst hL0 hD hco htr hL hon hinj x hx`. Use `haveI := Fintype.ofFinite B`. Establish `hgx : ∀ (g : G) (y : X), y ∈ NN → ρ g y ∈ NN` using `fun g y hy => hst g y hy`. Establish `step : ∀ (d : ℕ) (T : Finset B), (∀ β ∈ T, deg β = d) → (∃ g : G, ∀ β, deg β < d → c β (ρ g x) ∈ D β) → ∃ g : G, ∀ β, (deg β < d ∨ β ∈ T) → c β (ρ g x) ∈ D β`. Introduce `d T`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Introduce `_ ⟨g, hg⟩`. Use `⟨g, fun β hβ => ?_⟩` and prove the remaining obligations. Break down `hβ with hβ | hβ` into its components or cases.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `hg β hβ`. Simplify using `at hβ`. Consider the case `insert b T hb ih`. Introduce `hT h0`. Take `⟨g, hg⟩` from `ih (fun β hβ => hT β (Finset.mem_insert_of_mem hβ)) h0`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hbd : deg b = d` using `hT b (Finset.mem_insert_self b T)`. Take `⟨l, ⟨hlL, hlD⟩, -⟩` from `hD b (c b (ρ g x))`. Take `⟨h, hhl, hh0⟩` from `hon b l hlL`. Establish `hlow : ∀ β, deg β < d → c β (ρ h o) = 0` using `fun β hβ => hh0 β (fun e => by subst e; omega) (by omega)`. Establish `htrans` using `htr d h hlow (ρ g x) (hgx g x hx)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h * g, fun β hβ => ?_⟩` and prove the remaining obligations. Rewrite using `[hmul]`. Distinguish the cases in `hβb : β = b`. Substitute `hβb` using the available equality. Rewrite using `[htrans β (by omega), hhl]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hlD`. Establish `hle : deg β ≤ d`. Break down `hβ with hβ | hβ` into its components or cases. Use linear arithmetic over natural numbers and integers. Conclude with `(hT β hβ).le`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Establish `hold : deg β < d ∨ β ∈ T`. Break down `hβ with hβ | hβ` into its components or cases. Conclude with `Or.inl hβ`. Conclude with `Or.inr ((Finset.mem_insert.mp hβ).resolve_left hβb)`. Rewrite using `[htrans β hle, hh0 β hβb (by omega), add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `hg β hold`. Establish `exD : ∀ d : ℕ, ∃ g : G, ∀ β, deg β < d → c β (ρ g x) ∈ D β`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => exact ⟨1, fun β hβ => absurd hβ (Nat.not_lt_zero _)⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Consider the case `succ d ih`. Take `⟨g, hg⟩` from `step d (Finset.univ.filter (fun β => deg β = d)) (fun β hβ => (Finset.mem_filter.mp hβ).2) ih`. Use `⟨g, fun β hβ => hg β ?_⟩` and prove the remaining obligations. Break down `Nat.lt_succ_iff_lt_or_eq.mp hβ with h | h` into its components or cases. Conclude with `Or.inl h`.
+Prove the second alternative. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Or.inr (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩)`. Take `⟨M, hM⟩` from `(Set.finite_range deg).bddAbove`. Take `⟨g₀, hg₀⟩` from `exD (M + 1)`. Use `⟨g₀, fun β => hg₀ β (Nat.lt_succ_of_le (hM ⟨β, rfl⟩)), ?_⟩` and prove the remaining obligations. Introduce `g₂ hg₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg₁ : ∀ β, c β (ρ g₀ x) ∈ D β` using `fun β => hg₀ β (Nat.lt_succ_of_le (hM ⟨β, rfl⟩))`. Establish `hy : ρ g₀ x ∈ NN` using `hgx g₀ x hx`. Establish `hδy : ρ (g₂ * g₀⁻¹) (ρ g₀ x) = ρ g₂ x`. Rewrite using `[← hmul, inv_mul_cancel_right]`. Establish `vanish : ∀ d : ℕ, ∀ β, deg β < d → c β (ρ (g₂ * g₀⁻¹) o) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => exact fun β hβ => absurd hβ (Nat.not_lt_zero _)`. Consider the case `succ d ih`. Introduce `β hβ`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Break down `Nat.lt_succ_iff_lt_or_eq.mp hβ with h | h` into its components or cases. Conclude with `ih β h`. Establish `hin : c β (ρ (g₂ * g₀⁻¹) o) ∈ L β` using `hL _ β (fun β' hβ' => ih β' (by omega))`. Establish `hadd` using `htr d (g₂ * g₀⁻¹) ih (ρ g₀ x) hy β h.le`. Rewrite `hadd` using `[hδy]`.
-
-Establish `hmem : c β (ρ g₀ x) + c β (ρ (g₂ * g₀⁻¹) o) ∈ D β` using `hadd ▸ hg₂ β`. Establish `hzero : c β (ρ g₀ x) + 0 ∈ D β` using `by simpa using hg₁ β`. Conclude with `(hD β (c β (ρ g₀ x))).unique ⟨hin, hmem⟩ ⟨hL0 β, hzero⟩`. Establish `hone : g₂ * g₀⁻¹ = 1` using `hinj _ (fun β => vanish (M + 1) β (Nat.lt_succ_of_le (hM ⟨β, rfl⟩)))`. Conclude with `mul_inv_eq_one.mp hone`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem existsUnique_layered_fundamentalDomain :
     ∀ {G X B : Type} [Group G] [Finite B] {V : B → Type} [∀ β, AddCommGroup (V β)] (ρ : G → X → X) (NN : Set X) (o : X) (deg : B → ℕ) (c : ∀ β, X → V β) (L D : ∀ β, Set (V β)), o ∈ NN → (∀ x, ρ 1 x = x) → (∀ g h x, ρ (g * h) x = ρ g (ρ h x)) → (∀ g, ∀ x ∈ NN, ρ g x ∈ NN) → (∀ β, (0 : V β) ∈ L β) → (∀ β v, ∃! l, l ∈ L β ∧ v + l ∈ D β) → (∀ β, c β o = 0) → (∀ (d : ℕ) (g : G), (∀ β, deg β < d → c β (ρ g o) = 0) → ∀ x ∈ NN, ∀ β, deg β ≤ d → c β (ρ g x) = c β x + c β (ρ g o)) → (∀ (g : G) (β : B), (∀ β', deg β' < deg β → c β' (ρ g o) = 0) → c β (ρ g o) ∈ L β) → (∀ β, ∀ l ∈ L β, ∃ g : G, c β (ρ g o) = l ∧ ∀ β', β' ≠ β → deg β' ≤ deg β → c β' (ρ g o) = 0) → (∀ g : G, (∀ β, c β (ρ g o) = 0) → g = 1) → ∀ x ∈ NN, ∃! g : G, ∀ β, c β (ρ g x) ∈ D β := by

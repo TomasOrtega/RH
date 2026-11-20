@@ -4,6 +4,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PolReOf2T
 open NumberField IsDedekindDomain GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.ThetaK.polRe_of2T`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.HoweDualityUnitaryAlt.polRe_of2T : PositivityTheory.ThKR.JoinTri → PositivityTheory.HoweDualityUnitaryAlt.MaxFinT → PositivityTheory.ThKF.ArchOp → PositivityTheory.ThKF.ArchLie → PositivityTheory.ThKF.ArchUniq → PositivityTheory.ThKF.PolCount → PositivityTheory.ThKF.CartanConj → PositivityTheory.ThKF.CartanMove → GlobalTheory.ThK.KCoinv → PositivityTheory.ThKF.ILeft → GlobalTheory.ThK.PolRe := GlobalTheory.CompanionTheory.ThetaK.polRe_of2T

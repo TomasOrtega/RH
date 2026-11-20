@@ -14,7 +14,7 @@ import Development.AutomorphicArithmetic.ResidueCharacters.TwistK
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations
 
 /- English proof (translation)
-Establish `hres : ElementDenominator.CrystallineRestrictionToExtension D.loc` using `GlobalTheory.T.crystalline_restrict_finite_extension_jumps D`. Establish `hF` using `GlobalTheory.FontaineAll.fontaineAt_all D l`. Take `⟨_J, hA⟩` from `GlobalTheory.LocInputs.ties_and_inputs_of_duality_euler htd hec D HW F`. Conclude with `⟨UpperTheory.N.liftK_of D HW F l h54 hres hF, UpperTheory.N.invariants_killed_over_cyclotomic_subfield_of_admissible D HW F l hW (fun K s LL h => GlobalTheory.T.torsion_exponent_kills_invariants_of_good hbk htd hec D HW F Cm l K s LL h) hres hF, UpperTheory.N.tbK_of D HW F l (Glo …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.N.locAll_of (hbk : GlobalTheory.Published.BlochKatoLocal) (htd : Formalism.GaloisCohomology.LocalTateDualityK)
     (hec : Formalism.GaloisCohomology.LocalEulerCharK) (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)

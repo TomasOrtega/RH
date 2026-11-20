@@ -8,7 +8,7 @@ open NumberField MeasureTheory GlobalTheory.CuspRep UpperTheory.V UpperTheory.V.
 open scoped Matrix MatrixGroups
 
 /- English proof (translation)
-Establish `e1` using `h.intervalIntegral_add_zsmul_eq (N' : ℤ) 0 fun a b => hc.intervalIntegrable a b`. Establish `e2` using `h'.intervalIntegral_add_zsmul_eq (N : ℤ) 0 fun a b => hc.intervalIntegrable a b`. Simplify using `only [zero_add, zsmul_eq_mul, Int.cast_natCast] at e1 e2`. Rewrite `e2` using `[h0, mul_zero, mul_comm, e1]`. Conclude with `(mul_eq_zero.1 e2).resolve_left (Nat.cast_ne_zero.2 hN'.ne')`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem two_periods {f : ℝ → ℂ} (hc : Continuous f) {N N' : ℕ} (hN' : 0 < N') (h : Function.Periodic f N)
     (h' : Function.Periodic f N') (h0 : ∫ t in (0 : ℝ)..N', f t = 0) : ∫ t in (0 : ℝ)..N, f t = 0 := by
@@ -19,14 +19,14 @@ private theorem two_periods {f : ℝ → ℂ} (hc : Continuous f) {N N' : ℕ} (
   exact (mul_eq_zero.1 e2).resolve_left (Nat.cast_ne_zero.2 hN'.ne')
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_succ, add_comm]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem aff_add {R : Type} [CommRing R] (x y : R) : aff 1 (x + y) = aff 1 x * aff 1 y := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_succ, add_comm]
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin 2) (Fin 2) (Ad ℚ)) i j - TR.sInf ℚ ((1 : Matrix (Fin 2) (Fin 2) (TR.Rinf ℚ)) i j) + TR.sInf ℚ (algebraMap ℝ (TR.Rinf ℚ) ((aff 1 t).val i j)) = (aff 1 _).val i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem upR_aff (t : ℝ) : upR (aff 1 t) = aff 1 (TR.sInf ℚ (algebraMap ℝ (TR.Rinf ℚ) t)) := by
   refine Units.ext (Matrix.ext fun i j => ?_)
@@ -35,7 +35,7 @@ private theorem upR_aff (t : ℝ) : upR (aff 1 t) = aff 1 (TR.sInf ℚ (algebraM
   fin_cases i <;> fin_cases j <;> simp [aff]
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap ℚ (Ad ℚ) ((aff 1 q).val i j) = (aff 1 _).val i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ratGL_aff (q : ℚ) : ratGL ℚ 2 (aff 1 q) = aff 1 (algebraMap ℚ (Ad ℚ) q) := by
   refine Units.ext (Matrix.ext fun i j => ?_)
@@ -43,17 +43,17 @@ private theorem ratGL_aff (q : ℚ) : ratGL ℚ 2 (aff 1 q) = aff 1 (algebraMap 
   fin_cases i <;> fin_cases j <;> simp [aff]
 
 /- English proof (translation)
-Introduce `φ hl ho hct r h0 h1 _ _ μ D hμ hD g`. Take `rfl : r = 1` from `by omega`. Take `⟨i1, i2, -, i3, -, hu, hx⟩` from `UpperTheory.eisenstein_constantTerm_upperBlock ℚ`. Establish `hφ` using `smCont ℚ 2 φ ho`. Take `⟨N, hN, hper⟩` from `autPer φ hl ho g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `e : ℝ → BlockIx 2 1 → Ad ℚ` to `fun t _ => TR.sInf ℚ (algebraMap ℝ (TR.Rinf ℚ) t)`. Establish `he : Continuous e` using `continuous_pi fun _ => (((TR.continuous_infEq ℚ).comp (continuous_algebraMap ℝ (TR.Rinf ℚ))).prodMk continuous_const : Continuous fun t : ℝ => ((TR.infEq ℚ (algebraMap ℝ (TR.Rinf ℚ) t), 0) : InfiniteAdeleRing ℚ × Af ℚ))`. Establish `hadd : ∀ t x, unip (e t + x) = upR (aff 1 t) * unip x` using `fun t x => by`. Rewrite using `[hx, hx, upR_aff, ← aff_add]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hψ : Continuous fun x : BlockIx 2 1 → Ad ℚ => φ.1 (unip x * g)` using `hφ.comp (hu.mul continuous_const)`. Use `avgZero _ (ratN ℚ 2 1) μ D hμ hD _ hψ ?_ e he N (Nat.cast_pos.2 hN) fun x => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩ x`. Establish `: ∀ y : BlockIx 2 1 → Ad ℚ, y ⟨(0, 1), by decide⟩ = algebraMap ℚ (Ad ℚ) (q ⟨(0, 1), by decide⟩) → unip (y + x) = ratGL ℚ 2 (aff 1 (q ⟨(0, 1), by decide⟩)) * unip x` using `fun y hy => by`. Rewrite using `[hx, hx, ratGL_aff, ← aff_add, ← hy]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this _ rfl, mul_assoc, hl]`. Take `⟨N', hN', hp', hz⟩` from `hct (unip x * g)`. Establish `ef : (fun t : ℝ => φ.1 (upR (aff 1 t) * (unip x * g))) = fun t => φ.1 (unip (e t + x) * g)`. Use function extensionality and compare the values at `fun t => by rw [hadd, mul_assoc]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hp : Function.Periodic (fun t : ℝ => φ.1 (upR (aff 1 t) * (unip x * g))) N` using `fun t => by`. Use `hper (e t + x)` as an intermediate fact. Rewrite `this` using `[hadd, mul_assoc]`. Use `beta_reduce`. Rewrite using `[add_comm t, aff_add, map_mul, mul_assoc, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp`, `hp'`, `hz` using `[ef]`. Conclude with `two_periods (hψ.comp (he.add continuous_const)) hN' hp hp' hz`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Nf.cuspCrit :
     UpperTheory.V.Af.Nf.CuspCrit := by

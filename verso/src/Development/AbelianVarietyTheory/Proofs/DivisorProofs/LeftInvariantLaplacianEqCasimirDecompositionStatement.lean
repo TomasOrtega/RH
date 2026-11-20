@@ -7,7 +7,7 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.HCF GlobalTheory.CuspQuot Glo
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HCAlpha.lapOp_eq_casKOp_add_cas | exact GlobalTheory.HCAlpha.lapOp_eq_casKOp_add_cas | (intros; apply GlobalTheory.HCAlpha.lapOp_eq_casKOp_add_cas <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.leftInvariantLaplacian_eq_casimir_decomposition : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ),
     lapOp E a = (2 : ℂ) • casKOp E a + ∑ τ : E →+* ℂ, (4 : ℂ) • Formalism.REAL.Cas (Eop (a := a) τ) := by

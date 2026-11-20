@@ -8,23 +8,21 @@ open Matrix GlobalTheory.PRep GlobalTheory.BZMir GlobalTheory.SplitWeil GlobalTh
 namespace GlobalTheory.CompanionTheory.MirFourier
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n E _ _ φ s S hinv hsupp`. Use `set L := polyBall (k := k) n s with hL`. Set `q : Multiplicative (Fin n → k) → Multiplicative (Fin n → k) ⧸ L` to `QuotientGroup.mk`. Establish `hopen : IsOpen (L : Set (Multiplicative (Fin n → k)))` using `isOpen_polyBall n s`. Establish `hcov : ∃ T : Finset (Multiplicative (Fin n → k)), ((polyBall (k` using `k) n S : Subgroup _) : Set (Multiplicative (Fin n → k))) ⊆ ⋃ x ∈ T, (fun y => x * y) '' (L : Set (Multiplicative (Fin n → k))) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(isCompact_polyBall n S).elim_finite_subcover (fun x : Multiplicative (Fin n → k) => (fun y => x * y) '' (L : Set (Multiplicative (Fin n → k)))) (fun x => (Homeomorph.mulLeft x).isOpenMap _ hopen) ?_ |>.imp fun T hT => ?_` and prove the remaining obligations. Introduce `x _`. Conclude with `Set.mem_iUnion.2 ⟨x, 1, L.one_mem, by simp⟩`. Simplify using `using hT`. Take `⟨T, hT⟩` from `hcov`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : Multiplicative (Fin n → k) ⧸ L → (Fin n → k)` to `fun c => (Quotient.out c).toAdd`. Establish `hf : Function.Injective f` using `fun a b hab => Quotient.out_injective (Multiplicative.toAdd.injective hab)`. Establish `hmem : ∀ (v : Fin n → k) (c : Multiplicative (Fin n → k) ⧸ L), Multiplicative.ofAdd (v - f c) ∈ L ↔ q (Multiplicative.ofAdd v) = c`. Introduce `v c`. Establish `hc : q (Quotient.out c) = c` using `QuotientGroup.out_eq' c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hinvEq : Multiplicative.ofAdd (v - f c) = ((Multiplicative.ofAdd v)⁻¹ * Quotient.out c)⁻¹`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Simplify using `[f, sub_eq_add_neg, add_comm]`. Rewrite using `[hinvEq, L.inv_mem_iff, ← QuotientGroup.eq]`. Conclude with `(by rw [hc] : q (Multiplicative.ofAdd v) = q (Quotient.out c) ↔ _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hval : ∀ v : Fin n → k, φ (f (q (Multiplicative.ofAdd v))) = φ v`. Introduce `v`. Establish `h` using `hinv (f (q (Multiplicative.ofAdd v))) (v - f (q (Multiplicative.ofAdd v))) ((hmem v _).2 rfl)`. Rewrite `h` using `[add_sub_cancel]`. Conclude with `h.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(T.image q).image f, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_image (fun a _ b _ h => hf h)]`. Distinguish the cases in `hv : q (Multiplicative.ofAdd v) ∈ T.image q`. Rewrite using `[Finset.sum_eq_single_of_mem _ hv (fun b _ hb => if_neg (fun h => hb ((hmem v b).1 h).symm)), if_pos ((hmem v _).2 rfl), hval]`. Establish `h0 : φ v = 0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Take `⟨x, hx, y, hy, hxy⟩` from `Set.mem_iUnion₂.1 (hT (hsupp v hne))`. Use `hv (Finset.mem_image.2 ⟨x, hx, ?_⟩)` and prove the remaining obligations. Establish `hxv : x⁻¹ * Multiplicative.ofAdd v ∈ L`. Rewrite using `[← hxy]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hy`. Conclude with `QuotientGroup.eq.2 hxv`. Rewrite using `[h0]`. Use `(Finset.sum_eq_zero fun b hb => if_neg fun h => hv ?_).symm` and prove the remaining obligations. Rewrite using `[(hmem v b).1 h]`.
-
-Conclude with `hb`.
+A detailed English derivation is pending.
 -/
 theorem exists_finset_eq_sum_polyBall_translates :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (E : Type) [AddCommGroup E] [Module ℂ E] (φ : (Fin n → k) → E) (s S : kˣ), (∀ v a : Fin n → k, Multiplicative.ofAdd a ∈ polyBall (k := k) n s → φ (v + a) = φ v) → (∀ v : Fin n → k, φ v ≠ 0 → Multiplicative.ofAdd v ∈ polyBall (k := k) n S) → ∃ R : Finset (Fin n → k), ∀ v : Fin n → k, φ v = ∑ x ∈ R, @ite _ (Multiplicative.ofAdd (v - x) ∈ polyBall (k := k) n s) (Classical.propDecidable _) (φ x) 0 := by

@@ -17,15 +17,15 @@ section Abs
 variable {M : Type} [AddCommGroup M] [Module ℂ M]
 
 /- English proof (translation)
-Rewrite `ha`, `hb`, the goal using `[Module.End.mem_maxGenEigenspace]`. Take `⟨k1, hk1⟩` from `ha`. Take `⟨k2, hk2⟩` from `hb`. Establish `hA : Commute (A - a • 1) B` using `h.sub_left ((Commute.one_left B).smul_left a)`. Establish `hB : Commute B (B - b • 1)` using `(Commute.refl B).sub_right ((Commute.one_right B).smul_right b)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAB : Commute (A - a • 1) (B - b • 1)` using `hA.sub_right ((Commute.one_right _).smul_right b)`. Establish `hXY : Commute ((A - a • 1) * B) (a • (B - b • 1))` using `(hAB.mul_left hB).smul_right a`. Establish `hsum : A * B - (a * b) • (1 : Module.End ℂ M) = (A - a • 1) * B + a • (B - b • 1)`. Rewrite using `[sub_mul, smul_mul_assoc, one_mul, smul_sub, smul_smul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hX : ∀ m, ((A - a • 1) * B) ^ m = B ^ m * (A - a • 1) ^ m` using `fun m => by`. Rewrite using `[hA.eq, hA.symm.mul_pow]`. Use `⟨k1 + k2, ?_⟩` and prove the remaining obligations. Rewrite using `[hsum, hXY.add_pow, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Module.End.mul_apply, Module.End.natCast_apply, map_nsmul]`. It suffices to establish `hz : ((((A - a • 1) * B) ^ m) * (a • (B - b • 1)) ^ (k1 + k2 - m)) x = 0 by`. Rewrite using `[hz, smul_zero]`. Break down `le_or_gt k1 m with h1 | h1` into its components or cases. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le' h1`.
+Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Rewrite using `[(hXY.pow_pow _ _).eq, hX, pow_add (A - a • 1)]`. Simplify using `only [Module.End.mul_apply, hk1, map_zero]`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le' (show k2 ≤ k1 + k2 - m by omega)`. Rewrite using `[hd, smul_pow, pow_add (B - b • 1)]`. Simplify using `only [Module.End.mul_apply, LinearMap.smul_apply, hk2, map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem gen_mul {A B : Module.End ℂ M} (h : Commute A B) {a b : ℂ} {x : M}
     (ha : x ∈ A.maxGenEigenspace a) (hb : x ∈ B.maxGenEigenspace b) : x ∈ (A * B).maxGenEigenspace (a * b) := by
@@ -56,7 +56,7 @@ private theorem gen_mul {A B : Module.End ℂ M} (h : Commute A B) {a b : ℂ} {
     simp only [Module.End.mul_apply, LinearMap.smul_apply, hk2, map_zero, smul_zero]
 
 /- English proof (translation)
-Use `show y ∈ Module.End.genEigenspace (U.restrict hU) c ⊤ ↔ (y : M) ∈ U.genEigenspace c ⊤`. Rewrite using `[Module.End.genEigenspace_restrict]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. A detailed English derivation is pending.
 -/
 private theorem gen_restrict (p : Submodule ℂ M) (U : Module.End ℂ M) (hU : ∀ y ∈ p, U y ∈ p) (c : ℂ) (y : p) :
     y ∈ Module.End.maxGenEigenspace (U.restrict hU) c ↔ (y : M) ∈ U.maxGenEigenspace c := by
@@ -65,7 +65,7 @@ private theorem gen_restrict (p : Submodule ℂ M) (U : Module.End ℂ M) (hU : 
   exact Iff.rfl
 
 /- English proof (translation)
-Establish `hrw : c⁻¹ • T - e • (1 : Module.End ℂ M) = c⁻¹ • (T - (c * e) • 1)`. Rewrite using `[smul_sub, smul_smul, ← mul_assoc, inv_mul_cancel₀ hc, one_mul]`. Simplify using `only [Module.End.mem_maxGenEigenspace, hrw, smul_pow, LinearMap.smul_apply, smul_eq_zero, pow_eq_zero_iff', inv_eq_zero, hc, false_and, false_or]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem gen_smul (T : Module.End ℂ M) {c : ℂ} (hc : c ≠ 0) (e : ℂ) (y : M) :
     y ∈ (c⁻¹ • T).maxGenEigenspace e ↔ y ∈ T.maxGenEigenspace (c * e) := by
@@ -77,13 +77,11 @@ private theorem gen_smul (T : Module.End ℂ M) {c : ℂ} (hc : c ≠ 0) (e : �
 variable {G : Type} [Group G] (I : Iwa G) (π : Representation ℂ G M)
 
 /- English proof (translation)
-Establish `hmap : ∀ g ∈ I.P, ∀ y ∈ fixd π I.N, I.uOp π g y ∈ fixd π I.N` using `fun g hg y hy => (uOpMul G I ℂ M π g 1 hg (one_mem _) y hy).1`. Set `A'` to `(I.uOp π a).restrict (hmap a ha)`. Set `B'` to `(I.uOp π b).restrict (hmap b hb)`. Set `C'` to `(I.uOp π (a * b)).restrict (hmap (a * b) (mul_mem ha hb))`. Establish `hAB : A' * B' = C'` using `LinearMap.ext fun y => Subtype.ext (by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [A', B', C', Module.End.mul_apply, LinearMap.restrict_coe_apply]`. Conclude with `(uOpMul G I ℂ M π a b ha hb y y.2).2.1)`. Establish `hba : b * a = a * b` using `I.comm b (I.P_le b hb) a (I.P_le a ha)`. Establish `hBA : B' * A' = C'` using `LinearMap.ext fun y => Subtype.ext (by`. Simplify using `only [A', B', C', Module.End.mul_apply, LinearMap.restrict_coe_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hba]`. Conclude with `(uOpMul G I ℂ M π b a hb ha y y.2).2.1)`. Establish `hcomm : Commute A' B'` using `hAB.trans hBA.symm`. Establish `key` using `gen_mul hcomm ((gen_restrict _ _ (hmap a ha) s ⟨F, hF⟩).2 h1) ((gen_restrict _ _ (hmap b hb) t ⟨F, hF⟩).2 h2)`. Rewrite `key` using `[hAB]`.
-
-Conclude with `(gen_restrict _ _ (hmap (a * b) (mul_mem ha hb)) _ ⟨F, hF⟩).1 key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gen_two {a b : G} (ha : a ∈ I.P) (hb : b ∈ I.P) {F : M} (hF : F ∈ fixd π I.N) {s t : ℂ}
     (h1 : F ∈ (I.uOp π a).maxGenEigenspace s) (h2 : F ∈ (I.uOp π b).maxGenEigenspace t) :
@@ -108,11 +106,11 @@ private theorem gen_two {a b : G} (ha : a ∈ I.P) (hb : b ∈ I.P) {F : M} (hF 
   exact (gen_restrict _ _ (hmap (a * b) (mul_mem ha hb)) _ ⟨F, hF⟩).1 key
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `nil`. Use `⟨one_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[List.map_nil, List.map_nil, List.prod_nil, List.prod_nil, Module.End.mem_maxGenEigenspace]`. Use `⟨1, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_one, LinearMap.sub_apply, one_smul, Module.End.one_apply, (uOpMul G I ℂ M π 1 1 (one_mem _) (one_mem _) F hF).2.2.1, sub_self]`. Consider the case `cons k t ih`. Establish `hk` using `h k List.mem_cons_self`. Establish `ht` using `ih fun k' hk' => h k' (List.mem_cons_of_mem _ hk')`. Simplify using `only [List.map_cons, List.prod_cons]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨mul_mem hk.1 ht.1, gen_two I π hk.1 ht.1 hF hk.2 ht.2⟩`.
+Supply the required witnesses or components.
 -/
 private theorem gen_list {F : M} (hF : F ∈ fixd π I.N) {κ : Type} (a : κ → G) (μ : κ → ℂ) (s : List κ)
     (h : ∀ k ∈ s, a k ∈ I.P ∧ F ∈ (I.uOp π (a k)).maxGenEigenspace (μ k)) :
@@ -133,11 +131,11 @@ private theorem gen_list {F : M} (hF : F ∈ fixd π I.N) {κ : Type} (a : κ �
 end Abs
 
 /- English proof (translation)
-Rewrite using `[Pi.list_prod_apply, List.map_map]`. Proceed by induction on `s with`. Consider the case `nil => simp at hw`. Consider the case `cons v t ih`. Rewrite `hs` using `[List.nodup_cons]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [List.map_cons, List.prod_cons, Function.comp_apply]`. Distinguish the cases in `hvw : v = w`. Substitute `hvw` using the available equality. Rewrite using `[Pi.mulSingle_eq_same, List.prod_eq_one, mul_one]`. Introduce `x hx`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu, rfl⟩` from `List.mem_map.1 hx`. Conclude with `Pi.mulSingle_eq_of_ne (fun h => hs.1 (by rw [h]; exact hu)) _`. Rewrite using `[Pi.mulSingle_eq_of_ne (Ne.symm hvw), one_mul]`. Conclude with `ih hs.2 ((List.mem_cons.1 hw).resolve_left (Ne.symm hvw))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prod_single {σ : Type} [DecidableEq σ] {G : σ → Type} [∀ v, Group (G v)] (g : ∀ v, G v) (w : σ) (s : List σ)
     (hs : s.Nodup) (hw : w ∈ s) : (s.map fun v => (Pi.mulSingle v (g v) : ∀ v, G v)).prod w = g w := by
@@ -157,7 +155,7 @@ private theorem prod_single {σ : Type} [DecidableEq σ] {G : σ → Type} [∀ 
       exact ih hs.2 ((List.mem_cons.1 hw).resolve_left (Ne.symm hvw))
 
 /- English proof (translation)
-Simplify using `only [al, upow, Nat.not_lt_zero, ite_false, zpow_zero]`. Conclude with `map_one _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem al_zero (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) :
     al k n 0 = 1 := by
@@ -170,7 +168,7 @@ variable {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAl
   {c : Coef l} (H : HSet L Ω l n c) (ι : Qbar l ≃+* ℂ)
 
 /- English proof (translation)
-Use `(map_ne_zero ι).2 (Finset.prod_ne_zero_iff.2 fun i _ => ?_)` and prove the remaining obligations. Use `finprod_induction (p := fun y : Qbar l => y ≠ 0) one_ne_zero (fun _ _ => mul_ne_zero) fun e => ?_` and prove the remaining obligations. Conclude with `zpow_ne_zero _ ((map_ne_zero e.1).2 (Units.ne_zero _))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem lowVal_ne (lam : Wt L l n) (v : H.V) (j : ℕ) : H.lowVal ι lam v j ≠ 0 := by
   refine (map_ne_zero ι).2 (Finset.prod_ne_zero_iff.2 fun i _ => ?_)
@@ -182,7 +180,7 @@ end Set
 end UpperTheory.V.Z.J.D
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[List.range_succ, List.map_append, List.prod_append, ih, Finset.prod_range_succ]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem list_range_map_prod_eq_finset_prod (n : ℕ) (f : ℕ → ℂ) : ((List.range n).map f).prod = ∏ j ∈ Finset.range n, f j := by
   induction n with
@@ -192,35 +190,33 @@ private theorem list_range_map_prod_eq_finset_prod (n : ℕ) (f : ℕ → ℂ) :
     simp
 
 /- English proof (translation)
-Introduce `L Ω _ _ _ _ _ l _ n c H hAx A _ _ _ θ hθ ι x lam d ξ c0 sp hsp K ev hev`. Establish `hinr : ∀ (F : Fin H.m → H.X.Fn ℂ d) (v : H.V) (j : Fin n), F ∈ (H.opC ι lam d (Sum.inr (v, j))).maxGenEigenspace (ev (Sum.inr (v, j))) ↔ F ∈ (H.X.I.uOp (H.X.rpF ℂ d H.m) (alV n H.Sl v (↑j + 1))).maxGenEigenspace (H.lowVal ι lam v (↑j + 1) * ev (Sum.inr (v, j)))` using `fun F v j => gen_smul _ (lowVal_ne H ι lam v _) _ F`. Set `e : H.V → ℕ → ℂ` to `fun v j => if h : 0 < j ∧ j ≤ n then ev (Sum.inr (v, ⟨j - 1, by omega⟩)) else 1`. Establish `hnorm : ‖ι.symm (∏ v, ∏ j ∈ Finset.range n, e v j)‖ = 1`. Simplify using `only [map_prod, norm_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.prod_eq_one fun v _ => Finset.prod_eq_one fun j _ => ?_` and prove the remaining obligations. Simplify using `only [e]`. Use `split_ifs with h`. Conclude with `hev _ _`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hz : H.X.I.z = (Finset.univ.toList.map fun v => ((List.range n).map (alV n H.Sl v)).prod).prod`. Use function extensionality and compare the values at `w`. Establish `h1 : ∀ v, ((List.range n).map (alV n H.Sl v)).prod = Pi.mulSingle v ((List.range n).map (al (IsDedekindDomain.HeightOneSpectrum.adicCompletion L (H.Sl v)) n)).prod`. Introduce `v`. Rewrite using `[← MonoidHom.mulSingle_apply, map_list_prod, List.map_map]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `only [h1]`. Rewrite using `[prod_single _ w _ (Finset.nodup_toList _) (Finset.mem_toList.2 (Finset.mem_univ w))]`. Conclude with `(glBridge _ n ℂ 1).2.2.2.2.2.2.2.2.1`. Establish `hlev : ∀ F ∈ fixd (H.X.rpF ℂ d H.m) H.X.I.N, (∀ (v : H.V) (j : Fin n), F ∈ (H.X.I.uOp (H.X.rpF ℂ d H.m) (alV n H.Sl v (↑j + 1))).maxGenEigenspace (H.lowVal ι lam v (↑j + 1) * ev (Sum.inr (v, j)))) → F ∈ (H.uzC ι lam d).maxGenEigenspace (∏ v, ∏ j ∈ Finset.range n, e v j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `F hF hU`. Establish `h1 : ∀ v, ∀ j ∈ List.range n, alV n H.Sl v j ∈ H.X.I.P ∧ F ∈ (H.X.I.uOp (H.X.rpF ℂ d H.m) (alV n H.Sl v j)).maxGenEigenspace (H.lowVal ι lam v j * e v j)`. Introduce `v j hj`. Rewrite `hj` using `[List.mem_range]`. Use `⟨Up.singleP (fun v => glIwa (IsDedekindDomain.HeightOneSpectrum.adicCompletion L (H.Sl v)) n) v _ (al_mem _ n j), ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `j with _ | j` into its components or cases. Establish `h0 : alV n H.Sl v 0 = 1`. Rewrite using `[alV, al_zero]`. Conclude with `Pi.mulSingle_one v`. Establish `hl : H.lowVal ι lam v 0 = 1` using `by simp [HSet.lowVal]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `he : e v 0 = 1` using `dif_neg (by omega)`. Rewrite using `[h0, hl, he, one_mul, Module.End.mem_maxGenEigenspace]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, LinearMap.sub_apply, one_smul, Module.End.one_apply, (uOpMul _ H.X.I ℂ _ (H.X.rpF ℂ d H.m) 1 1 (one_mem _) (one_mem _) F hF).2.2.1, sub_self]`. Establish `hj' : j < n` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : e v (j + 1) = ev (Sum.inr (v, ⟨j, hj'⟩))` using `dif_pos ⟨Nat.succ_pos j, by omega⟩`. Rewrite using `[he]`. Conclude with `hU v ⟨j, hj'⟩`. Establish `h2 : ∀ v ∈ Finset.univ.toList, ((List.range n).map (alV n H.Sl v)).prod ∈ H.X.I.P ∧ F ∈ (H.X.I.uOp (H.X.rpF ℂ d H.m) ((List.range n).map (alV n H.Sl v)).prod).maxGenEigenspace ((List.range n).map fun j => H.lowVal ι lam v j * e v j).prod` using `fun v _ => gen_list H.X.I (H.X.rpF ℂ d H.m) hF (alV n H.Sl v) (fun j => H.lowVal ι lam v j * e v j) (List.range n) (h1 v)`. Establish `h3` using `(gen_list H.X.I (H.X.rpF ℂ d H.m) hF (fun v => ((List.range n).map (alV n H.Sl v)).prod) (fun v => ((List.range n).map fun j => H.lowVal ι lam v j * e v j).prod) Finset.univ.toList h2).2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[← hz]`. Establish `hc : (∏ v, ∏ j ∈ Finset.range n, H.lowVal ι lam v j) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => Finset.prod_ne_zero_iff.2 fun j _ => lowVal_ne H ι lam v j`. Use `(gen_smul (H.X.I.uOp (H.X.rpF ℂ d H.m) H.X.I.z) hc _ F).2 ?_` and prove the remaining obligations. Establish `hμ : (∏ v, ∏ j ∈ Finset.range n, H.lowVal ι lam v j) * (∏ v, ∏ j ∈ Finset.range n, e v j) = (Finset.univ.toList.map fun v => ((List.range n).map fun j => H.lowVal ι lam v j * e v j).prod).prod`. Rewrite using `[Finset.prod_map_toList, ← Finset.prod_mul_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[list_range_map_prod_eq_finset_prod, ← Finset.prod_mul_distrib]`. Rewrite using `[hμ]`. Conclude with `h3`. Apply `le_antisymm` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Introduce `F hF`. Rewrite `hF` using `[zPart, Submodule.mem_inf, Submodule.mem_iInf]`. Take `⟨hO, hE⟩` from `hF`. Establish `hle : H.OrdAt θ ι x.toRingHom lam ξ K c0 ≤ H.ClAt θ ι x.toRingHom lam ξ K c0`. Unfold `HSet.OrdAt`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `iSup_le fun μ => inf_le_left`. Establish `hC` using `hle hO`. Simplify using `only [HSet.ClAt, Submodule.mem_inf, Submodule.mem_iInf] at hC`. Take `⟨⟨⟨⟨hB, hK⟩, hN⟩, hNm⟩, hEig⟩` from `hC`. Simplify using `only [zL, eigL, Submodule.mem_inf, Submodule.mem_iInf]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨⟨⟨hB, hK⟩, ⟨⟨hN, hNm⟩, hEig⟩, fun v j => (hinr F v j).1 (hE _)⟩, fun p => hE _⟩`. Introduce `F hF`. Simplify using `only [zL, eigL, Submodule.mem_inf, Submodule.mem_iInf] at hF`. Take `⟨⟨⟨hB, hK⟩, ⟨⟨hN, hNm⟩, hEig⟩, hU⟩, hP⟩` from `hF`. Establish `hC : F ∈ H.ClAt θ ι x.toRingHom lam ξ K c0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Simplify using `only [HSet.ClAt, Submodule.mem_inf, Submodule.mem_iInf]`. Conclude with `⟨⟨⟨⟨hB, hK⟩, hN⟩, hNm⟩, hEig⟩`. Establish `hE : ∀ i, F ∈ (H.opC ι lam d i).maxGenEigenspace (ev i)`. Introduce and unpack `(p | ⟨v, j⟩)`. Conclude with `hP p`.
-
-Conclude with `(hinr F v j).2 (hU v j)`. Rewrite using `[zPart, Submodule.mem_inf, Submodule.mem_iInf]`. Use `⟨?_, hE⟩` and prove the remaining obligations. Unfold `HSet.OrdAt`. Conclude with `Submodule.mem_iSup_of_mem (⟨_, hnorm⟩ : { μ : ℂ // ‖ι.symm μ‖ = 1 }) (Submodule.mem_inf.2 ⟨hC, hlev F hN hU⟩)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.J.D.zEq :
     ZEq := by

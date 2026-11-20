@@ -16,9 +16,9 @@ namespace GlobalTheory.HodgeTateGlobal
 section General
 
 /- English proof (translation)
-Proceed by induction on `hG using IsWeightedHomogeneous.induction_on with`. Consider the case `zero => rw [map_zero]`. Conclude with `isHomogeneous_zero _ _ _`. Consider the case `add p q _ _ hp hq => rw [map_add]`. Conclude with `hp.add hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `monomial d r hr`. Rewrite using `[aeval_monomial, ← hr, Finsupp.weight_apply, Finsupp.prod, Finsupp.sum, algebraMap_eq]`. Use `IsHomogeneous.C_mul ?_ r` and prove the remaining obligations. Use `IsHomogeneous.prod _ _ _ fun i _ => ?_` and prove the remaining obligations. Simplify `(hf i).pow (d i)` using `[mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isHomogeneous_aeval_of_weighted {σ τ : Type} (w : σ → ℕ) (f : σ → MvPolynomial τ ℚ)
     (hf : ∀ v, (f v).IsHomogeneous (w v)) {m : ℕ} {G : MvPolynomial σ ℚ} (hG : G.IsWeightedHomogeneous w m) :
@@ -33,13 +33,13 @@ theorem isHomogeneous_aeval_of_weighted {σ τ : Type} (w : σ → ℕ) (f : σ 
     simpa [mul_comm] using (hf i).pow (d i)
 
 /- English proof (translation)
-Establish `hs : ∀ P, Summable fun n : ℕ => c ^ (n + 1) * U (s n) P` using `fun P => by`. Take `⟨B, hB⟩` from `(Set.finite_range fun i => |U i P|).bddAbove`. Use `Summable.of_norm_bounded (g := fun n : ℕ => c ^ n * (c * B)) ((summable_geometric_of_lt_one hc0 hc1).mul_right _) fun n => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_mul, abs_of_nonneg (pow_nonneg hc0 _), pow_succ, mul_assoc]`. Use `hB ⟨s n, rfl⟩` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `gcongr`. Proceed by induction on `hQ using IsWeightedHomogeneous.induction_on with`. Consider the case `zero => simp`. Consider the case `add p q _ _ hp hq`. Simplify using `only [map_add, mul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hs p).tsum_add (hs q), hp, hq]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `monomial d r hr`. Establish `e1 : (monomial d r : MvPolynomial σ ℝ) = r • toR (monomial d (1 : ℚ))`. Simplify using `[toR, smul_monomial]`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Simplify using `only [map_smul, smul_eq_mul]`. Rewrite using `[h _ (isWeightedHomogeneous_monomial w d 1 hr)]`. Simplify using `only [mul_left_comm _ r, tsum_mul_left]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem real_of_rat {σ ι : Type} [Finite ι] (w : σ → ℕ) (m : ℕ) (L : MvPolynomial σ ℝ →ₗ[ℝ] ℝ)
     (U : ι → MvPolynomial σ ℝ →ₗ[ℝ] ℝ) (s : ℕ → ι) (i₀ : ι) (c l e : ℝ) (hc0 : 0 ≤ c) (hc1 : c < 1)
@@ -70,7 +70,7 @@ theorem real_of_rat {σ ι : Type} [Finite ι] (w : σ → ℕ) (m : ℕ) (L : M
     ring
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Use `Finset.sum_bij (fun l _ => Fin.castLE hj l) (fun l _ => by simp) (fun a _ b _ e => Fin.castLE_injective hj e) (fun i hi => ⟨⟨i, by simpa using hi⟩, mem_univ _, rfl⟩) fun l _ => h _ _ rfl` and prove the remaining obligations.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem sum_low {A : Type*} [AddCommMonoid A] {N r j : ℕ} (hr : r = j) (hj : j ≤ N) (f : Fin r → A) (g : Fin N → A)
     (h : ∀ (l : Fin r) (i : Fin N), (i : ℕ) = l → f l = g i) :
@@ -80,7 +80,7 @@ theorem sum_low {A : Type*} [AddCommMonoid A] {N r j : ℕ} (hr : r = j) (hj : j
     (fun i hi => ⟨⟨i, by simpa using hi⟩, mem_univ _, rfl⟩) fun l _ => h _ _ rfl
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Use `Finset.sum_bij (fun l _ => ⟨j + l, by omega⟩) (fun l _ => by simp) (fun a _ b _ e => Fin.ext (by simpa using e)) (fun i hi => ?_) fun l _ => h _ _ rfl` and prove the remaining obligations. Establish `: j ≤ (i : ℕ)` using `by simpa using hi`. Conclude with `⟨⟨i - j, by omega⟩, mem_univ _, Fin.ext (by simp only; omega)⟩`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem sum_high {A : Type*} [AddCommMonoid A] {N r j : ℕ} (hr : r = N - j) (f : Fin r → A) (g : Fin N → A)
     (h : ∀ (l : Fin r) (i : Fin N), (i : ℕ) = j + l → f l = g i) :
@@ -93,7 +93,7 @@ theorem sum_high {A : Type*} [AddCommMonoid A] {N r j : ℕ} (hr : r = N - j) (f
   exact ⟨⟨i - j, by omega⟩, mem_univ _, Fin.ext (by simp only; omega)⟩
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter_add_sum_filter_not univ (fun i : Fin N => (i : ℕ) < j)]`. Simplify using `only [not_lt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_split {A : Type*} [AddCommMonoid A] {N : ℕ} (j : ℕ) (g : Fin N → A) :
     ∑ i, g i = ∑ i ∈ univ.filter (fun i : Fin N => (i : ℕ) < j), g i +
@@ -102,7 +102,7 @@ theorem sum_split {A : Type*} [AddCommMonoid A] {N : ℕ} (j : ℕ) (g : Fin N �
   simp only [not_lt]
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `sub_dvd_pow_sub_pow (a + Z.cD V) a n`. Establish `: (a + Z.cD V) ^ n * Q = a ^ n * Q + Z.cD V * (b * Q)` using `by linear_combination Q * hb`. Rewrite using `[this, map_add, hc, Z.cD_divP, zero_mul, map_zero, add_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem capDeg_divP_pow {Z : ITh}
     (hc : ∀ (E E' : Z.VDiv) (a : Z.Ch), Z.capDeg E (Z.cD E' * a) = Z.capDeg E' (Z.cD E * a))
@@ -126,16 +126,16 @@ def divDiff (k : ℕ) (r : Rt D.what₂.Tau N) : MvPolynomial (Vm D.what₂.Tau 
   ∑ a ∈ range k, X (Sum.inl (false, r)) ^ a * X (Sum.inl (true, r)) ^ (k - 1 - a)
 
 /- English proof (translation)
-Simplify `(isWeightedHomogeneous_X ℚ (wt D.what₂.Tau N) (Sum.inl v)).pow k` using `[wt]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem homog_X_pow (v : Bool × Rt D.what₂.Tau N) (k : ℕ) :
     (X (Sum.inl v) ^ k : MvPolynomial (Vm D.what₂.Tau N) ℚ).IsWeightedHomogeneous (wt D.what₂.Tau N) k := by
   simpa [wt] using (isWeightedHomogeneous_X ℚ (wt D.what₂.Tau N) (Sum.inl v)).pow k
 
 /- English proof (translation)
-Break down `σ with τ | τ` into its components or cases. Conclude with `IsWeightedHomogeneous.sum _ _ _ fun i _ => homog_X_pow _ _`. Use `IsWeightedHomogeneous.sum _ _ _ fun i _ => ?_` and prove the remaining obligations. Use `(isWeightedHomogeneous_C (wt D.what₂.Tau N) ((-1 : ℚ) ^ k)).mul (homog_X_pow (false, (τ, i)) k)` as an intermediate fact. Rewrite using `[neg_pow]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem homog_liePow (j k : ℕ) (σ : EmbC D) :
     (liePow (N := N) j k σ).IsWeightedHomogeneous (wt D.what₂.Tau N) k := by
@@ -147,7 +147,7 @@ theorem homog_liePow (j k : ℕ) (σ : EmbC D) :
     simpa using this
 
 /- English proof (translation)
-Use `IsWeightedHomogeneous.sum _ _ _ fun a ha => ?_` and prove the remaining obligations. Use `(homog_X_pow (false, r) a).mul (homog_X_pow (true, r) (k - 1 - a))` as an intermediate fact. Rewrite `this` using `[show a + (k - 1 - a) = k - 1 by have := mem_range.1 ha; omega]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem homog_divDiff (k : ℕ) (r : Rt D.what₂.Tau N) :
     (divDiff k r).IsWeightedHomogeneous (wt D.what₂.Tau N) (k - 1) := by
@@ -156,16 +156,16 @@ theorem homog_divDiff (k : ℕ) (r : Rt D.what₂.Tau N) :
   rwa [show a + (k - 1 - a) = k - 1 by have := mem_range.1 ha; omega] at this
 
 /- English proof (translation)
-Apply the tactic sequence `rcases σ with τ | τ <;> simp [chLie, liePow, toR, collapse]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chLie_eq (j k : ℕ) (σ : EmbC D) :
     chLie j k σ = C ((Nat.factorial k : ℝ)⁻¹) * collapse D N (toR (liePow j k σ)) := by
   rcases σ with τ | τ <;> simp [chLie, liePow, toR, collapse]
 
 /- English proof (translation)
-Establish `h : ∀ i, dRt D.what₂.Tau N (τ, i) * toR (divDiff k (τ, i) * G) = (X (Sum.inl (false, (τ, i))) ^ k - X (Sum.inl (true, (τ, i))) ^ k) * toR G` using `fun i => by`. Rewrite using `[← geom_sum₂_mul]`. Simplify using `only [dRt, divDiff, toR, map_mul, map_sum, map_pow, map_X]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h, tagDR, tagHT, pk, map_mul, map_sum, map_pow, rename_X, rename_C, smul_eq_C_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_sub, ← Finset.sum_sub_distrib, mul_assoc, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tag_sub (τ : D.what₂.Tau) (k : ℕ) (G : MvPolynomial (Vm D.what₂.Tau N) ℚ) :
     (tagDR D.what₂.Tau N (C ((Nat.factorial k : ℝ)⁻¹) * pk D N τ k) -
@@ -182,7 +182,7 @@ theorem tag_sub (τ : D.what₂.Tau) (k : ℕ) (G : MvPolynomial (Vm D.what₂.T
 variable {p : ℕ} [Fact p.Prime] {rk : Emb D p → ℕ} (M : Mdl D p N rk) (rt : Bool × Rt D.what₂.Tau N → M.Z.LB)
 
 /- English proof (translation)
-Use `isHomogeneous_aeval_of_weighted _ _ ?_ hG` and prove the remaining obligations. Introduce and unpack `(r | ⟨_ | _, k⟩)`. Conclude with `isHomogeneous_X _ _`. Use `all_goals`. Conclude with `IsHomogeneous.C_mul ((IsHomogeneous.sum _ _ _ fun l _ => isHomogeneous_X_pow _ _).add (IsHomogeneous.sum _ _ _ fun l _ => isHomogeneous_X_pow _ _)) _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem homog_evV {m : ℕ} {G : MvPolynomial (Vm D.what₂.Tau N) ℚ} (hG : G.IsWeightedHomogeneous (wt D.what₂.Tau N) m) :
     (evV M rt G).IsHomogeneous m := by
@@ -194,27 +194,27 @@ theorem homog_evV {m : ℕ} {G : MvPolynomial (Vm D.what₂.Tau N) ℚ} (hG : G.
       (IsHomogeneous.sum _ _ _ fun l _ => isHomogeneous_X_pow _ _)) _
 
 /- English proof (translation)
-Simplify using `[evC, evQ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evC_mul (G H : MvPolynomial (Vm D.what₂.Tau N) ℚ) : evC M rt (G * H) = evC M rt G * evC M rt H := by
   simp [evC, evQ]
 
 /- English proof (translation)
-Simplify using `[evC, evQ, evV, divDiff, Gk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evC_divDiff (k : ℕ) (r : Rt D.what₂.Tau N) :
     evC M rt (divDiff k r) = Gk M.Z k (M.Z.c1 (rt (false, r))) (M.Z.c1 (rt (true, r))) := by
   simp [evC, evQ, evV, divDiff, Gk]
 
 /- English proof (translation)
-Simplify using `[evC, evQ, evV, liePow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evC_liePow_inl (j k : ℕ) (τ : D.what₂.Tau) : evC M rt (liePow j k (Sum.inl τ)) =
     ∑ i ∈ univ.filter (fun i : Fin N => (i : ℕ) < j), M.Z.c1 (rt (false, (τ, i))) ^ k := by
   simp [evC, evQ, evV, liePow]
 
 /- English proof (translation)
-Simplify using `[evC, evQ, evV, liePow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evC_liePow_inr (j k : ℕ) (τ : D.what₂.Tau) : evC M rt (liePow j k (Sum.inr τ)) =
     ∑ i ∈ univ.filter (fun i : Fin N => j ≤ (i : ℕ)), (-M.Z.c1 (rt (false, (τ, i)))) ^ k := by
@@ -227,9 +227,9 @@ section Galois
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hcc : D.R.cc * D.R.cc = 1` using `D.R.toFrame.cc_mul_cc`. Unfold `ofGG`. Use `split_ifs with h h'`. Simplify using `[toGG]`. Simplify using `[toGG, mul_assoc, hcc]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `absurd h' (not_not.2 (by`. Assume the negation of the conclusion as `h''`. Conclude with `h ((Formalism.L2.Geo.mem_Psi_iff_mul_cc_notMem g).2 h'')))`.
+A detailed English derivation is pending.
 -/
 theorem toGG_ofGG (g : D.R.GG) : toGG D (ofGG D g) = g := by
   have hcc : D.R.cc * D.R.cc = 1 := D.R.toFrame.cc_mul_cc
@@ -244,11 +244,11 @@ theorem toGG_ofGG (g : D.R.GG) : toGG D (ofGG D g) = g := by
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, mul_one, ← h]`. Both sides reduce to the same expression. Consider the case `succ n ih`. Establish `e : phiPow D (n + 1) τ = phiPow D 1 (phiPow D n τ)`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact.
 
-Unfold `phiPow`. Rewrite using `[pow_succ', pow_one]`. Both sides reduce to the same expression. Establish `e2 : D.host.sigmaOf (g * frobG D p ^ n * frobG D p) = D.host.sigmaOf (g * frobG D p ^ n) * D.host.sigmaOf (frobG D p)` using `map_mul (D.host.gal).symm _ _`. Rewrite using `[e, GlobalTheory.T.frobenius_power_embedding D p hp, ← RingHom.comp_assoc, ih, pow_succ (frobG D p), ← mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `Host.emb`. Rewrite using `[e2]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comp_phiPow (hp : UnramE D p) (jc : KW p →+* ℂ) (τ : Emb D p) (g : D.R.GG)
     (h : jc.comp τ = D.host.emb g) (n : ℕ) : jc.comp (phiPow D n τ) = D.host.emb (g * frobG D p ^ n) := by
@@ -266,9 +266,9 @@ theorem comp_phiPow (hp : UnramE D p) (jc : KW p →+* ℂ) (τ : Emb D p) (g : 
     rw [e2]; rfl
 
 /- English proof (translation)
-Establish `hcc : D.R.cc * D.R.cc = 1` using `D.R.toFrame.cc_mul_cc`. Establish `hc : ∀ (a : Emb D p) g, jc.comp a = D.host.emb g → jc.comp (cEmb D a) = D.host.emb (g * D.R.cc)` using `fun a g e => by`. Rewrite using `[Formalism.L2.Geo.emb_mul_cc_comp, ← e]`. Both sides reduce to the same expression. Establish `h1` using `hc _ _ h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [toGG, mul_assoc, hcc, mul_one] at h1`. Use `⟨cEmb D τ, h1, RingHom.ext fun x => jc.injective ?_⟩` and prove the remaining obligations. Conclude with `RingHom.congr_fun (h.trans (hc _ _ h1).symm) x`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_cEmb (jc : KW p →+* ℂ) (τ : Emb D p) (τ₀ : D.what₂.Tau)
     (h : jc.comp τ = D.host.emb (toGG D (Sum.inr τ₀))) :
@@ -283,7 +283,7 @@ theorem exists_cEmb (jc : KW p →+* ℂ) (τ : Emb D p) (τ₀ : D.what₂.Tau)
   exact RingHom.congr_fun (h.trans (hc _ _ h1).symm) x
 
 /- English proof (translation)
-Unfold `rkOf`. Conclude with `if_pos ⟨τ₀, h⟩`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rkOf_eq (jc : KW p →+* ℂ) (τ : Emb D p) (τ₀ : D.what₂.Tau) (h : jc.comp τ = tauEmb D τ₀) (N j : ℕ) :
     rkOf (PsiOf D jc) N j τ = j := by
@@ -300,9 +300,9 @@ variable {D : D7} {XD : DivX D} (T : Loc D XD) {S : letI := D.host.cmStar; HSpac
 include hS
 
 /- English proof (translation)
-Break down `σ with τ₀ | τ₀` into its components or cases. Rewrite using `[evC_liePow_inl]`. Use `sum_low (rkOf_eq _ τ τ₀ h _ _) (XD.shv S κ).j_lt.le _ _ fun l i hi => ?_` and prove the remaining obligations. Rewrite using `[(T.rt_lie S κ hS p la z τ₀ τ h l i hi).1]`. Take `⟨τ', h', rfl⟩` from `exists_cEmb _ τ τ₀ h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `(md XD S κ p la z).om_dual τ'`. Rewrite using `[evC_liePow_inr, ← e.sum_comp]`. Use `sum_high (by rw [rkOf_eq _ τ' τ₀ h']) _ _ fun l i hi => ?_` and prove the remaining obligations. Rewrite using `[(T.rt_om S κ hS p la z τ₀ τ' h' l i hi).1, he, neg_neg]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lie_pow_eq (τ : Emb D p) (σ : EmbC D) (h : (XD.jC p la).comp τ = D.host.emb (toGG D σ)) (k : ℕ) :
     ∑ l, (md XD S κ p la z).Z.c1 (((md XD S κ p la z).lie τ).x l) ^ k =
@@ -320,7 +320,7 @@ theorem lie_pow_eq (τ : Emb D p) (σ : EmbC D) (h : (XD.jC p la).comp τ = D.ho
 omit hS in
 
 /- English proof (translation)
-Use `h5 p la z (H * G) (hm ▸ hH.mul hG)` as an intermediate fact. Rewrite using `[chDiv, h, ← evC_mul, div_right_comm, this, mul_assoc, ← smul_eq_C_mul, map_smul, ← map_mul, smul_eq_mul, div_eq_inv_mul]`. Simplify using `only [toR, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chDiv_eq_chern (h5 : adm5 D XD T S κ) {r : ℕ} (x : Fin r → (md XD S κ p la z).Z.LB) {k m : ℕ}
     (hm : k + m = dimFl D.what₂.Tau (XD.shv S κ).N) {H G : MvPolynomial (Vm D.what₂.Tau (XD.shv S κ).N) ℚ}
@@ -339,7 +339,7 @@ theorem chDiv_eq_chern (h5 : adm5 D XD T S κ) {r : ℕ} (x : Fin r → (md XD S
 end Model
 
 /- English proof (translation)
-Rewrite using `[sub_div, ← tsum_div_const, div_right_comm, h']`. Use `congr 1`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[mul_div_assoc, h, mul_comm (n + 1), pow_mul, inv_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tsum_div_sub (a b : ℕ → ℝ) (u v c e : ℝ) (p k : ℕ) (h : ∀ n, a n / c = b n) (h' : u / c = v) :
     ((∑' n : ℕ, ((p : ℝ) ^ ((n + 1) * k))⁻¹ * a n) - u / e) / c =
@@ -350,7 +350,7 @@ theorem tsum_div_sub (a b : ℕ → ℝ) (u v c e : ℝ) (p k : ℕ) (h : ∀ n,
   rw [mul_div_assoc, h, mul_comm (n + 1), pow_mul, inv_pow]
 
 /- English proof (translation)
-The claim follows from `inv_lt_one_of_one_lt₀ (one_lt_pow₀ (by exact_mod_cast hp.one_lt) (by omega))`.
+A detailed English derivation is pending.
 -/
 theorem inv_pow_lt_one {p k : ℕ} (hp : p.Prime) (hk : 1 ≤ k) : ((p : ℝ) ^ k)⁻¹ < 1 :=
   inv_lt_one_of_one_lt₀ (one_lt_pow₀ (by exact_mod_cast hp.one_lt) (by omega))

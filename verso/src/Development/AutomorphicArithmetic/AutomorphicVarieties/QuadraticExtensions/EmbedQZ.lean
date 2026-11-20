@@ -6,9 +6,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Pointwise
 
 /- English proof (translation)
-Establish `hm` using `PadicInt.sub_zmodRepr_mem z`. Rewrite `hm` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton']`. Take `⟨b, hb⟩` from `hm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sub_smul, sub_add_cancel]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = z.zmodRepr • x := by`. Rewrite using `[← hb, mul_smul, hx, smul_zero, zero_add, Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem embQ_smul (l : ℕ) [Fact l.Prime] {M : Type} [AddCommGroup M] [Module ℤ_[l] M] (z : ℤ_[l]) (x : M)
     (hx : (l : ℤ_[l]) • x = 0) : z • x = z.zmodRepr • x := by
@@ -21,21 +21,19 @@ private theorem embQ_smul (l : ℕ) [Fact l.Prime] {M : Type} [AddCommGroup M] [
         rw [← hb, mul_smul, hx, smul_zero, zero_add, Nat.cast_smul_eq_nsmul]
 
 /- English proof (translation)
-Take `⟨hfin, hc⟩` from `hcard`. Use `letI : Module (ZMod l) T := AddCommGroup.zmodModule hTn`. Use `haveI := Fintype.ofFinite T`. Use `haveI hF : Module.Finite (ZMod l) T := Module.Finite.of_finite`. Use `haveI hFr : Module.Free (ZMod l) T := Module.Free.of_divisionRing (ZMod l) T`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set d := Module.finrank (ZMod l) T with hd_def`. Establish `hcardT : Fintype.card T = l ^ d`. Rewrite using `[Module.card_eq_pow_finrank (K := ZMod l) (V := T), ZMod.card]`. Establish `hd : d ≤ r`. Establish `: l ^ d ≤ l ^ r` using `by rw [← hcardT, ← Nat.card_eq_fintype_card]; exact hc`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Nat.pow_le_pow_iff_right hl.out.one_lt).mp this`. Set `b` to `@Module.finBasis (ZMod l) T _ _ _ hFr _ hF`. Set `E` to `b.equivFun`. Establish `hadd : ∀ s t : T, E.toFun (s + t) = E.toFun s + E.toFun t` using `E.map_add'`. Establish `hzero : E.toFun 0 = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use `hadd 0 0` as an intermediate fact. Simplify using `only [add_zero] at this`. Conclude with `left_eq_add.mp this`. Set `g : T →+ (Fin r → ZMod l)` to `{ toFun := fun t i => if h : (i : ℕ) < d then E.toFun t ⟨i, h⟩ else 0 map_zero' := by`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : (i : ℕ) < d`. Simplify using `only [h, dif_pos, hzero, Pi.zero_apply]`. Simplify using `only [h, dif_neg, not_false_eq_true, Pi.zero_apply]`. Use the proof step `map_add' := by`. Introduce `s t`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : (i : ℕ) < d`. Simplify using `only [h, dif_pos, hadd, Pi.add_apply]`. Simplify using `only [h, dif_neg, not_false_eq_true, Pi.add_apply, add_zero] }`. Use `⟨g, ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation.
 
-Introduce `s t hst`. Establish `key : E.toFun s = E.toFun t`. Use function extensionality and compare the values at `j`. Use `congr_fun hst (Fin.castLE hd j)` as an intermediate fact. Simplify using `only [g, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Fin.coe_castLE, Fin.eta] at this`.
-
-Rewrite `this` using `[dif_pos j.isLt, dif_pos j.isLt]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 private theorem embQ_fl (l : ℕ) [hl : Fact l.Prime] (T : Type) [AddCommGroup T] (r : ℕ) (hTn : ∀ x : T, l • x = 0)
     (hcard : CardLe T (l ^ r)) : ∃ g : T →+ (Fin r → ZMod l), Function.Injective g := by
@@ -82,29 +80,27 @@ private theorem embQ_fl (l : ℕ) [hl : Fact l.Prime] (T : Type) [AddCommGroup T
     _ = t := E.left_inv t
 
 /- English proof (translation)
-Introduce `l _ D _ _ r htors hcard`. Use `set Tl := Submodule.torsionBy ℤ_[l] D (l : ℤ_[l]) with hTl`. Establish `hTl' : ∀ t : Tl, (l : ℤ_[l]) • t = 0`. Introduce `t`. Establish `h` using `t.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Submodule.mem_torsionBy_iff]`. Conclude with `Subtype.ext h`. Establish `hTn : ∀ t : Tl, l • t = 0`. Introduce `t`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℤ_[l]]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hTl' t`. Take `⟨g, hg⟩` from `embQ_fl l Tl r hTn hcard`. Take `⟨ι, hιinj, hιrange, -⟩` from `UpperTheory.V.Kum.zmodToQZ l 1`. Set `e : ZMod l ≃+* ZMod (l ^ 1)` to `ZMod.ringEquivCongr (pow_one l).symm`. Establish `hιl : ∀ a, (l : ℤ_[l]) • ι a = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `a`. Use `(hιrange (ι a)).mp ⟨a, rfl⟩` as an intermediate fact. Simplify using `using this`. Set `ψ : Fin r → Tl →+ QZ l` to `fun i => ((ι : ZMod (l ^ 1) →+ QZ l).comp e.toAddMonoidHom).comp ((Pi.evalAddMonoidHom (fun _ => ZMod l) i).comp g)`. Establish `hψl : ∀ i t, (l : ℤ_[l]) • ψ i t = 0` using `fun i t => hιl _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Set `ψL : Fin r → Tl →ₗ[ℤ_[l]] QZ l` to `fun i => { toFun := ψ i map_add' := (ψ i).map_add map_smul' := by`. Introduce `z t`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[embQ_smul l z t (hTl' t), map_nsmul, ← embQ_smul l z (ψ i t) (hψl i t)] }`. Establish `hext` using `fun i => (UpperTheory.V.PropA.qzInj l).out Tl.subtype Subtype.val_injective (ψL i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose y hy using hext`. Use `⟨LinearMap.pi y, ?_⟩` and prove the remaining obligations. Establish `hzeroT : ∀ t : Tl, (∀ i, y i t = 0) → t = 0`. Introduce `t ht`. Establish `hgt : g t = 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Establish `h1` using `hy i t`. Rewrite `h1` using `[Submodule.coe_subtype, ht i]`. Establish `h2 : ι (e (g t i)) = ι 0`. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1.symm`. Establish `h3` using `hιinj h2`. Simplify using `using h3`. Conclude with `hg (by rw [hgt, map_zero])`. Rewrite using `[injective_iff_map_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Establish `hxi : ∀ x : D, LinearMap.pi y x = 0 → ∀ i, y i x = 0`. Introduce `x hx i`. Use `congr_fun hx i` as an intermediate fact. Simplify using `using this`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `htors x`. Proceed by induction on `k generalizing x with`. Consider the case `zero`. Simplify using `using hk`. Consider the case `succ k ih`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlx : (l : ℤ_[l]) • x = 0`. Apply `ih ((l : ℤ_[l]) • x)` to reduce the goal to its premises. Rewrite using `[map_smul, hx, smul_zero]`. Rewrite using `[← mul_smul, ← pow_succ]`. Conclude with `hk`.
-
-Establish `hmem : x ∈ Tl` using `(Submodule.mem_torsionBy_iff _ _).mpr hlx`. Use `hzeroT ⟨x, hmem⟩ (hxi x hx)` as an intermediate fact. Simplify using `using congrArg Subtype.val this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Two.embedQZ :
     ∀ (l : ℕ) [Fact l.Prime] (D : Type) [AddCommGroup D] [Module ℤ_[l] D] (r : ℕ), (∀ x : D, ∃ k : ℕ, (l : ℤ_[l]) ^ k • x = 0) → CardLe (Submodule.torsionBy ℤ_[l] D (l : ℤ_[l])) (l ^ r) →

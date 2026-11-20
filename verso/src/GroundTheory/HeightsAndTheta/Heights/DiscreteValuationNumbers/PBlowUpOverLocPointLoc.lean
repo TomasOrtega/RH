@@ -16,9 +16,9 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective _ _)]`. Introduce `h`. Apply `hFb` to reduce the goal to its premises. Use `show F ∈ RingHom.ker (aeval (blowUpSubst P u))`. Rewrite using `[RingHom.mem_ker]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show aeval (blowUpSubst P u) F = 0`. Rewrite using `[aeval_blowUpSubst_of_isMultiHomog P u hF, h, map_zero, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem blowUpEval_ne_zero_of_not_mem {K : Type} [DecidableEq K] {ι : K → Type} {J : Type} {O : Type u}
     [CommRing O] {P : Ideal (MRing ι O)} [P.IsPrime] {u : J → MRing ι O} {F : MRing (extIdx ι J) O}
@@ -33,52 +33,48 @@ theorem blowUpEval_ne_zero_of_not_mem {K : Type} [DecidableEq K] {ι : K → Typ
   rw [aeval_blowUpSubst_of_isMultiHomog P u hF, h, map_zero, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc, div_mul_div_comm, mul_comm a b, mul_div_mul_left _ _ hb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem div_mul_div_mul_cancel_of_ne_zero {F : Type*} [Field F] (a b c w : F) (hb : b ≠ 0) :
     a / b * (b / c * w) = a / c * w := by
   rw [← mul_assoc, div_mul_div_comm, mul_comm a b, mul_div_mul_left _ _ hb]
 
 /- English proof (translation)
-Introduce `O _ _ _ K _ _ ι _ J _ P n hP N u hu hu' c x hx hxP W hWmin hWrel`. Use `hP.multiProj.isPrime` as an intermediate fact. Introduce `W' hW'p hmh hW'rel hbl hW'W`. Establish `hBR : blowUpOverLoc P W u ≤ blowUpLocRing P u W'` using `iInf₂_le W' ⟨hW'p, hmh, hW'rel, hbl, hW'W.le⟩`. Establish `: (blowUpOf P u).IsPrime` using `RingHom.ker_isPrime _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨φ, hφ⟩` from `BlowUpLocRingIso.proof O K ι J P u W' hbl`. Take `⟨hlocT, hunitT⟩` from `HomLocRingIsLocal.proof HomLocRingMem.proof O (Option K) (extIdx ι J) (blowUpOf P u) W' hW'p hbl`. Establish `: IsLocalRing (blowUpLocRing P u W')` using `φ.isLocalRing`. Establish `hPW : P ≤ W` using `le_sup_left.trans hWmin.1.2`. Establish `hWp : W.IsPrime` using `hWmin.1.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hlocA, hunitA⟩` from `HomLocRingIsLocal.proof HomLocRingMem.proof O K ι P W hWp hPW`. Set `𝔫 : Ideal (blowUpOverLoc P W u)` to `(IsLocalRing.maximalIdeal (blowUpLocRing P u W')).comap (Subring.inclusion hBR)`. Establish `hcomapA : (𝔫.comap (algebraMap (homLocRing P W) (blowUpOverLoc P W u))).IsMaximal`. Establish `hle : IsLocalRing.maximalIdeal (homLocRing P W) ≤ 𝔫.comap (algebraMap (homLocRing P W) (blowUpOverLoc P W u))`. Introduce and unpack `⟨z, hz⟩ ha`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `ha` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Take `⟨b, f, g, hf, hg, hgW, rfl⟩` from `(HomLocRingMem.proof O K ι P W hWp hPW z).mp hz`. Establish `hfW : f ∈ W`. Assume the negation of the conclusion as `hfW`. Conclude with `ha ((hunitA b f g hf hg hgW hz).mpr hfW)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hgW' : liftForm (J` using `J) g ∉ W' := fun h => hgW (by rw [← hW'W]; exact h)`. Establish `hfW' : liftForm (J` using `J) f ∈ W' := by rw [← hW'W] at hfW; exact hfW`. Establish `hlf` using `isMultiHomog_liftForm (J := J) hf`. Establish `hlg` using `isMultiHomog_liftForm (J := J) hg`. Establish `hz' : algebraMap (MRing (extIdx ι J) O ⧸ blowUpOf P u) (FractionRing (MRing (extIdx ι J) O ⧸ blowUpOf P u)) (Ideal.Quotient.mk _ (liftForm f)) / algebraMap (MRing (extIdx ι J) O ⧸ blowUpOf P u) (FractionRing (MRing (extIdx ι J) O ⧸ blowUpOf P u)) (Ideal.Quotient.mk _ (liftForm g) …` using `Subring.subset_closure ⟨liftMDeg b, _, _, hlf, hlg, hgW', rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnu : ¬ IsUnit (⟨_, hz'⟩ : homLocRing (blowUpOf P u) W')` using `fun h => (hunitT _ _ _ hlf hlg hgW' hz').mp h hfW'`. Establish `hφz : Subring.inclusion hBR (algebraMap (homLocRing P W) (blowUpOverLoc P W u) ⟨_, hz⟩) = φ ⟨_, hz'⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hφ _ _ _ hlf hlg hgW', blowUpEval_liftForm, blowUpEval_liftForm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, hφz, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_map_iff]`. Conclude with `hnu`. Establish `hne : 𝔫.comap (algebraMap (homLocRing P W) (blowUpOverLoc P W u)) ≠ ⊤` using `Ideal.comap_ne_top _ (Ideal.comap_ne_top _ (IsLocalRing.maximalIdeal.isMaximal _).ne_top)`. Rewrite using `[le_antisymm (IsLocalRing.le_maximalIdeal hne) hle]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hfinite, -⟩` from `hfin O K ι J P n hP N u hu hu' c x hx hxP W hWmin hWrel`. Establish `h𝔫 : 𝔫.IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap 𝔫 hcomapA`. Use `⟨hBR, 𝔫, h𝔫, ?_⟩` and prove the remaining obligations. Take `⟨W₁, hW₁p, hW₁h, hW₁r, hW₁b, -, h₁, hl₁⟩` from `hcen O K ι J P n hP N u hu hu' c x hx hxP W hWmin hWrel 𝔫 h𝔫`. Set `_` to `(Subring.inclusion h₁).toAlgebra`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h𝔫.isPrime` as an intermediate fact. Establish `hl : IsLocalization.AtPrime (blowUpLocRing P u W₁) 𝔫` using `hl₁`. Establish `hunitB : ∀ s : blowUpOverLoc P W u, s ∉ 𝔫 → IsUnit (Subring.inclusion hBR s)`. Introduce `s hs`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hs ((IsLocalRing.mem_maximalIdeal _).mpr h)`. Establish `h3 : blowUpLocRing P u W₁ ≤ blowUpLocRing P u W'`. Introduce `z hz`. Take `⟨⟨b, s⟩, hbs⟩` from `IsLocalization.surj 𝔫.primeCompl (⟨z, hz⟩ : blowUpLocRing P u W₁)`. Take `⟨t, ht⟩` from `(hunitB s s.2).exists_right_inv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `e₁ : z * ((s : blowUpOverLoc P W u) : FractionRing (MRing ι O ⧸ P)) = ((b : blowUpOverLoc P W u) : FractionRing (MRing ι O ⧸ P))` using `congrArg Subtype.val hbs`. Establish `e₂ : ((s : blowUpOverLoc P W u) : FractionRing (MRing ι O ⧸ P)) * (t : FractionRing (MRing ι O ⧸ P)) = 1` using `congrArg Subtype.val ht`. Establish `hzt : z = ((b : blowUpOverLoc P W u) : FractionRing (MRing ι O ⧸ P)) * t`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hzt]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(blowUpLocRing P u W').mul_mem (hBR b.2) t.2`. Establish `hdom : ∀ (y : FractionRing (MRing ι O ⧸ P)) (hy₁ : y ∈ blowUpLocRing P u W₁) (hy' : y ∈ blowUpLocRing P u W'), IsUnit (⟨y, hy'⟩ : blowUpLocRing P u W') → IsUnit (⟨y, hy₁⟩ : blowUpLocRing P u W₁)`. Introduce `y hy₁ hy' hyu`. Take `⟨⟨b, s⟩, hbs⟩` from `IsLocalization.surj 𝔫.primeCompl (⟨y, hy₁⟩ : blowUpLocRing P u W₁)`. Establish `e₁ : y * ((s : blowUpOverLoc P W u) : FractionRing (MRing ι O ⧸ P)) = ((b : blowUpOverLoc P W u) : FractionRing (MRing ι O ⧸ P))` using `congrArg Subtype.val hbs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hb : b ∉ 𝔫`. Introduce `hb`. Establish `hb' : Subring.inclusion hBR b ∈ IsLocalRing.maximalIdeal (blowUpLocRing P u W')` using `hb`. Apply `(IsLocalRing.mem_maximalIdeal _).mp hb'` to reduce the goal to its premises. Establish `hprod : Subring.inclusion hBR b = (⟨y, hy'⟩ : blowUpLocRing P u W') * Subring.inclusion hBR s` using `Subtype.ext e₁.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hprod]`. Conclude with `hyu.mul (hunitB s s.2)`. Establish `hbu : IsUnit (algebraMap (blowUpOverLoc P W u) (blowUpLocRing P u W₁) b)` using `IsLocalization.map_units (M := 𝔫.primeCompl) _ (⟨b, hb⟩ : 𝔫.primeCompl)`. Rewrite `hbu` using `[← hbs]`. Conclude with `isUnit_of_mul_isUnit_left hbu`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : blowUpLocRing P u W' ≤ blowUpLocRing P u W₁`. Use `Subring.closure_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `z ⟨d, F, G, hF, hG, hGW', rfl⟩`. Take `⟨i, hi⟩` from `powMonomial_not_mem hW₁p hW₁r d`. Establish `hH` using `isMultiHomog_powMonomial (R := O) d i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hσH : algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (blowUpEval P u (powMonomial d i)) ≠ 0` using `blowUpEval_ne_zero_of_not_mem hH (fun h => hi (hW₁b h))`. Establish `hσG : algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (blowUpEval P u G) ≠ 0` using `blowUpEval_ne_zero_of_not_mem hG (fun h => hGW' (hbl h))`. Establish `hy₁ : algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (blowUpEval P u G) / algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (blowUpEval P u (powMonomial d i)) ∈ blowUpLocRing P u W₁` using `Subring.subset_closure ⟨d, G, _, hG, hH, hi, rfl⟩`. Establish `hFH : algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (blowUpEval P u F) / algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (blowUpEval P u (powMonomial d i)) ∈ blowUpLocRing P u W₁` using `Subring.subset_closure ⟨d, F, _, hF, hH, hi, rfl⟩`. Establish `hinv : algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (blowUpEval P u (powMonomial d i)) / algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (blowUpEval P u G) ∈ blowUpLocRing P u W'` using `Subring.subset_closure ⟨d, _, G, hH, hG, hGW', rfl⟩`.
+Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hyu : IsUnit (⟨_, h3 hy₁⟩ : blowUpLocRing P u W')`. Use `IsUnit.of_mul_eq_one (⟨_, hinv⟩ : blowUpLocRing P u W') (Subtype.ext ?_)` and prove the remaining obligations. Use `show algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (blowUpEval P u G) / algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (blowUpEval P u (powMonomial d i)) * (algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (blowUpEval P u (powMonomial d i)) / algeb …`. Clear the denominators using the available nonvanishing facts. Take `⟨v, hv⟩` from `hdom _ hy₁ (h3 hy₁) hyu`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `e : algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (blowUpEval P u G) / algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (blowUpEval P u (powMonomial d i)) * (((v⁻¹ : (blowUpLocRing P u W₁)ˣ) : blowUpLocRing P u W₁) : FractionRing (MRing ι O ⧸ P)) = 1`. Use `congrArg Subtype.val v.mul_inv` as an intermediate fact. Rewrite `this` using `[hv]`. Conclude with `this`. Establish `hz : algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (blowUpEval P u F) / algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (blowUpEval P u G) = algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (blowUpEval P u F) / algebraMap (MRing ι O ⧸ P) (FractionRi …`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hz]`. Conclude with `(blowUpLocRing P u W₁).mul_mem hFH (Subtype.property _)`. Establish `heq : W₁ = W'` using `hinj O K ι J P u W₁ W' hW₁p hW₁h hW₁r hW₁b hW'p hmh hW'rel hbl (le_antisymm h3 h5)`. Substitute `heq` using the available equality.
-
-Conclude with `hl`.
+A detailed English derivation is pending.
 -/
 theorem BlowUpOverLocPointLoc.proof (hfin : BlowUpOverLocFinite.Statement.{u})
     (hcen : BlowUpOverLocMaxCentre.Statement.{u}) (hinj : BlowUpLocRingInj.Statement.{u}) :

@@ -4,29 +4,29 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GeometricSideEstim
 open UpperTheory.V.Lit.Geo
 
 /- English proof (translation)
-Introduce `N`. Choose the witnesses or unpack the hypotheses as in `⟨⟨K, hK, hK1⟩⟩ : Nonempty {K : ℝ // K ^ N * Real.exp (-K) < 1 / (2 * Real.exp Real.pi) ∧ 1 ≤ K} := by`. Take `⟨K, hK⟩` from `(((Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero N).eventually (gt_mem_nhds (show (0 : ℝ) < 1 / (2 * Real.exp Real.pi) by positivity))).and (Filter.eventually_ge_atTop (1 : ℝ))).exists`. Conclude with `⟨⟨K, hK⟩⟩`. Establish `hK0 : 0 ≤ K` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `ha : Real.exp (-Real.pi * (K - 1)) * K ^ N ≤ 1 / 2`. Establish `e1 : Real.exp (-Real.pi * (K - 1)) = Real.exp Real.pi * Real.exp (-(Real.pi * K))`. Rewrite using `[← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : Real.exp (-(Real.pi * K)) ≤ Real.exp (-K)` using `Real.exp_le_exp.mpr (by nlinarith [Real.pi_gt_three])`. Establish `hKN : 0 ≤ K ^ N` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Use `⟨2 * K ^ N, by positivity, ?_⟩` and prove the remaining obligations. Introduce `ι q i₀ μ hS hμ hμ1 hgap`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hKμ : 1 / μ ≤ K / μ` using `by gcongr`. Take `⟨hsY, hY⟩` from `hS.2 (1 / μ) (K / μ) (by positivity) hKμ`. Establish `hsX : Summable fun i => Real.exp (-Real.pi * (K / μ * q i))` using `(hS.2 (K / μ) (K / μ) (by positivity) le_rfl).1`. Establish `hsI : Summable (fun i => if i = i₀ then (1 : ℝ) else 0)` using `(hasSum_ite_eq i₀ (1 : ℝ)).summable`. Establish `hX2 : ∑' i, Real.exp (-Real.pi * (K / μ * q i)) ≤ 1 + Real.exp (-Real.pi * (K - 1)) * ∑' i, Real.exp (-Real.pi * (1 / μ * q i))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Summable.tsum_le_tsum (fun i => ?_) hsX (hsI.add (hsY.mul_left _))` and prove the remaining obligations. Distinguish the cases in `h : i = i₀`. Establish `hq` using `hS.1 i`. Establish `h0 : -Real.pi * (K / μ * q i) ≤ 0`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 ≤ K / μ * q i` using `by positivity`. Use polynomial arithmetic with `[Real.pi_pos]`. Establish `h1` using `Real.exp_le_one_iff.mpr h0`. Establish `h2 : 0 ≤ Real.exp (-Real.pi * (K - 1)) * Real.exp (-Real.pi * (1 / μ * q i))` using `by positivity`. Rewrite using `[if_pos h]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hr : 1 ≤ q i / μ`. Rewrite using `[le_div_iff₀ hμ]`. Combine the linear relations using `[hgap i h]`. Rewrite using `[if_neg h, zero_add, ← Real.exp_add]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `e3 : K / μ * q i = K * (q i / μ)` using `by ring`. Establish `e4 : 1 / μ * q i = q i / μ` using `by ring`. Rewrite using `[e3, e4]`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hK1) (sub_nonneg.2 hr), Real.pi_pos]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `_ = 1 + Real.exp (-Real.pi * (K - 1)) * ∑' i, Real.exp (-Real.pi * (1 / μ * q i)) := by`. Rewrite using `[Summable.tsum_add hsI (hsY.mul_left _), tsum_mul_left]`. Use `congr 1`. Conclude with `tsum_ite_eq i₀ (fun _ => (1 : ℝ))`. Establish `eK : K / μ / (1 / μ) = K` using `by field_simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hY` using `[eK]`. Establish `hX0 : 0 ≤ ∑' i, Real.exp (-Real.pi * (K / μ * q i))` using `tsum_nonneg fun i => (Real.exp_pos _).le`. Establish `hX : ∑' i, Real.exp (-Real.pi * (K / μ * q i)) ≤ 2`. Establish `ha0 : 0 ≤ Real.exp (-Real.pi * (K - 1))` using `(Real.exp_pos _).le`. Use `mul_le_mul_of_nonneg_left hY ha0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `h1K : 1 ≤ K / μ`. Rewrite using `[le_div_iff₀ hμ]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨-, hS1⟩` from `hS.2 1 (K / μ) one_pos h1K`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [one_mul, div_one] at hS1`. Establish `hpow : 0 ≤ (K / μ) ^ N` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.geometric_side_upper_bound :
     ThetaUp := by

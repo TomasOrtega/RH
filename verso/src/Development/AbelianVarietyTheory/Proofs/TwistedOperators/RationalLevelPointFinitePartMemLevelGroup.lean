@@ -35,21 +35,15 @@ open Formalism.MainNotions.StandardLattice (latHat intAf)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Use `set N := Ideal.absNorm 𝔪 with hNdef`. Establish `hN0 : N ≠ 0` using `fun h => h𝔪 (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `hNE : ((N : 𝓞 E)) ∈ 𝔪` using `Ideal.absNorm_mem 𝔪`. Use `set c₁ : 𝓞 F := (N : 𝓞 F) with hc₁`. Establish `hc₁0 : c₁ ≠ 0` using `Nat.cast_ne_zero.2 hN0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc₁m : algebraMap (𝓞 F) (𝓞 E) c₁ ∈ 𝔪` using `by rw [hc₁, map_natCast]; exact hNE`. Establish `hfin : {v : HeightOneSpectrum (𝓞 F) | v.asIdeal ∣ Ideal.span {c₁}}.Finite` using `Ideal.finite_factors (by rwa [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot])`. Use `set P := hfin.toFinset with hP`. Establish `hmemP : ∀ v, v ∈ P ↔ c₁ ∈ v.asIdeal` using `fun v => by`. Rewrite using `[hP, Set.Finite.mem_toFinset, Set.mem_setOf_eq, Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `choose ind hind1 hind0 using (exists_ind (F := F))`. Use `set e₁ : FiniteAdeleRing (𝓞 F) F := ∑ v ∈ P, ind v with he₁`. Establish `hev : ∀ w, evalV F w e₁ = if w ∈ P then 1 else 0` using `fun w => by`. Rewrite using `[he₁, map_sum]`. Use `split_ifs with hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_eq_single w (fun b _ hb => hind0 b w (Ne.symm hb)) (fun h => absurd hw h), hind1]`. Conclude with `Finset.sum_eq_zero fun b hb => hind0 b w (fun h => hw (h ▸ hb))`. Establish `hsplit : x = ((1 - e₁) ⊗ₜ[F] (1 : E)) • x + ∑ v ∈ P, (ind v ⊗ₜ[F] (1 : E)) • x`. Rewrite using `[← Finset.sum_smul, ← TensorProduct.sum_tmul, ← he₁, ← add_smul, ← TensorProduct.add_tmul, sub_add_cancel, Algebra.TensorProduct.one_def.symm, one_smul]`. Rewrite using `[hsplit]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `add_mem ?_ (sum_mem fun v hv => ?_)` and prove the remaining obligations. Use `vanish_smul_mem L 𝔪 hc₁0 hc₁m (fun w => ?_) (fun w hw => ?_) hx` and prove the remaining obligations. Rewrite using `[map_sub, map_one, hev]`. Use `split_ifs`. Rewrite using `[sub_self]`.
-
-Conclude with `zero_mem _`. Rewrite using `[sub_zero]`. Conclude with `one_mem _`. Rewrite using `[map_sub, map_one, hev, if_pos ((hmemP w).2 hw), sub_self]`. Distinguish the cases in `hI : 𝔪.comap (algebraMap (𝓞 F) (𝓞 E)) ≤ v.asIdeal`.
-
-Conclude with `hloc v hI (ind v) (hind1 v) (hind0 v)`. Take `⟨c, hc, hcv⟩` from `SetLike.not_le_iff_exists.1 hI`. Establish `hc0 : c ≠ 0` using `fun h => hcv (h ▸ zero_mem _)`. Use `vanish_smul_mem L 𝔪 hc0 hc (ind_int (hind1 v) (hind0 v)) (fun w hw => hind0 v w ?_) hx` and prove the remaining obligations. Introduce and unpack `rfl`.
-
-Conclude with `hcv hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_of_loc (L : Submodule (𝓞 E) (Fin n → E)) (𝔪 : Ideal (𝓞 E)) (h𝔪 : 𝔪 ≠ ⊥)
     {x : Fin n → FiniteAdeleRing (𝓞 F) F ⊗[F] E} (hx : x ∈ latHat F E (L : Set (Fin n → E)))
@@ -98,9 +92,9 @@ end Core
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `u`. Rewrite using `[h₂ u]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u₁, hu₁, rfl⟩`. Take `⟨u₀, hu₀, rfl⟩` from `(h u₁).1 hu₁`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨u₀, hu₀, by rw [Matrix.mulVec_mulVec]⟩`. Introduce and unpack `⟨u₀, hu₀, rfl⟩`. Conclude with `⟨m *ᵥ u₀, (h _).2 ⟨u₀, hu₀, rfl⟩, by rw [Matrix.mulVec_mulVec]⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mov_comp {k : ℕ} {m m₂ : Matrix (Fin k) (Fin k) (AfE D)} {L L' L'' : Lt D.host.E k}
     (h : IsMov m L L') (h₂ : IsMov m₂ L' L'') : IsMov (m₂ * m) L L'' := by
@@ -114,7 +108,7 @@ theorem mov_comp {k : ℕ} {m m₂ : Matrix (Fin k) (Fin k) (AfE D)} {L L' L'' :
     exact ⟨m *ᵥ u₀, (h _).2 ⟨u₀, hu₀, rfl⟩, by rw [Matrix.mulVec_mulVec]⟩
 
 /- English proof (translation)
-Establish `h' : P • A' = P • 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.smul_mul, ← Matrix.smul_mul, h', Matrix.smul_mul, one_mul, Matrix.smul_mul, ← Matrix.mul_smul, hB, Matrix.mul_smul, mul_one]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_sandwich {R : Type} [CommRing R] {k : ℕ} (P : R) (A A' G B : Matrix (Fin k) (Fin k) R)
     (hA : P • A = P • 1) (hB : P • B = P • 1) (e : A * A' = 1) : P • (A' * G * B) = P • G := by
@@ -126,7 +120,7 @@ theorem smul_sandwich {R : Type} [CommRing R] {k : ℕ} (P : R) (A A' G B : Matr
     Matrix.mul_smul, mul_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, toAf, Matrix.map_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one, TensorProduct.tmul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem map_mulVec_toAf {k : ℕ} (M : Matrix (Fin k) (Fin k) D.host.E) (u : Fin k → D.host.E) :
     (M.map fun x => (1 : Af D.host.F) ⊗ₜ[D.host.F] x) *ᵥ toAf u = toAf (M *ᵥ u) := by
@@ -135,7 +129,7 @@ theorem map_mulVec_toAf {k : ℕ} (M : Matrix (Fin k) (Fin k) D.host.E) (u : Fin
     TensorProduct.tmul_sum]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [toAf, Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem toAf_smul {k : ℕ} (c : 𝓞 D.host.E) (u : Fin k → D.host.E) :
     toAf (c • u) = ((1 : Af D.host.F) ⊗ₜ[D.host.F] (c : D.host.E) : AfE D) • toAf u := by
@@ -144,21 +138,21 @@ theorem toAf_smul {k : ℕ} (c : 𝓞 D.host.E) (u : Fin k → D.host.E) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[smul_sub, smul_sub, ← Matrix.smul_mulVec, h, Matrix.smul_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_step {R : Type} [CommRing R] {k : ℕ} (P : R) (K G : Matrix (Fin k) (Fin k) R) (u w : Fin k → R)
     (h : P • K = P • G) : P • (K *ᵥ u - w) = P • (G *ᵥ u - w) := by
   rw [smul_sub, smul_sub, ← Matrix.smul_mulVec, h, Matrix.smul_mulVec]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [toAf, Pi.sub_apply, TensorProduct.tmul_sub]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem toAf_sub {k : ℕ} (u w : Fin k → D.host.E) : (toAf (u - w) : Fin k → AfE D) = toAf u - toAf w := by
   funext i
   simp only [toAf, Pi.sub_apply, TensorProduct.tmul_sub]
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨1, fun v => by rw [map_one]; exact one_mem _, u, hu, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem toAf_mem {k : ℕ} {L : Lt D.host.E k} {u : Fin k → D.host.E} (hu : u ∈ L) : toAf u ∈ hatV L :=
   AddSubgroup.subset_closure ⟨1, fun v => by rw [map_one]; exact one_mem _, u, hu, rfl⟩
@@ -168,29 +162,27 @@ end GlobalTheory.Ker.LevMove.Rat
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D S T C Lv γ κ hred a f g₁ g₂ L ha hf hrat h1 h2 t1 t2 hLfg hLs hMfg m1 m2`. Use `set G : Matrix (Fin T.rank) (Fin T.rank) (AfE D) := (γ : Matrix (Fin T.rank) (Fin T.rank) D.host.E).map fun x => (1 : Af D.host.F) ⊗ₜ[D.host.F] x with hGdef`. Establish `hfa : fmt T a = 1` using `(((GlobalTheory.Ker.Grp.rational_points_and_parts D S T C).2.2.2 T).2.2.2.1 a ha).1`. Establish `hff : fmt T f = G`. Establish `e : fmt T (a * f) = G`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fmt, hrat, Matrix.map_map]`. Both sides reduce to the same expression. Rewrite using `[← e, GlobalTheory.Ker.LevMove.fmt_mul', hfa, one_mul]`. Establish `hfull : C.X.Λ.FG ∧ Submodule.span D.host.E (C.X.Λ : Set (Fin T.rank → D.host.E)) = ⊤` using `⟨C.X.Λ_fg, C.X.Λ_span⟩`. Establish `e1 : fmt T g₁ * fmt T g₁⁻¹ = 1`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GlobalTheory.Ker.LevMove.fmt_mul', mul_inv_cancel, GlobalTheory.Ker.LevMove.fmt_one']`. Establish `e2 : fmt T g₂ * fmt T g₂⁻¹ = 1`. Rewrite using `[← GlobalTheory.Ker.LevMove.fmt_mul', mul_inv_cancel, GlobalTheory.Ker.LevMove.fmt_one']`. Take `⟨hto, -, -, lawsΛ⟩` from `GlobalTheory.Ker.isMov_laws D T.rank C.X.Λ hfull`. Take `⟨-, -, hG, -⟩` from `GlobalTheory.Ker.isMov_laws D T.rank L ⟨hLfg, hLs⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hinv2, -, -, -⟩` from `(lawsΛ _ _ e2).2 (mapL γ L) hMfg m2`. Establish `hk : IsMov (fmt T (g₂⁻¹ * f * g₁)) C.X.Λ C.X.Λ`. Rewrite using `[GlobalTheory.Ker.LevMove.fmt_mul', GlobalTheory.Ker.LevMove.fmt_mul', hff]`. Conclude with `GlobalTheory.Ker.LevMove.Rat.mov_comp m1 (GlobalTheory.Ker.LevMove.Rat.mov_comp (hG γ) hinv2)`. Take `⟨κ', hκ', hcong⟩` from `hred`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨mul_mem (mul_mem (inv_mem h2) hf) h1, hk, κ', hκ', fun i => ?_⟩` and prove the remaining obligations. Establish `hb : toAf (Lv.β i) ∈ hatV C.X.Λ` using `GlobalTheory.Ker.LevMove.Rat.toAf_mem (Lv.β_mem i)`. Establish `hw : toAf (∑ j, κ' j i • Lv.β j) ∈ hatV C.X.Λ` using `GlobalTheory.Ker.LevMove.Rat.toAf_mem (sum_mem fun j _ => Submodule.smul_mem _ _ (Lv.β_mem j))`. Use `GlobalTheory.Ker.LevMove.Rat.mem_of_loc (F := D.host.F) C.X.Λ Lv.𝔪 Lv.ne_bot (sub_mem ((hk _).2 ⟨_, hb, rfl⟩) hw) ?_` and prove the remaining obligations. Introduce `v hv α a1 a0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `P1` using `GlobalTheory.Ker.LevMove.smul_fmt_sub_one t1 hv a1 a0`. Establish `P2` using `GlobalTheory.Ker.LevMove.smul_fmt_sub_one t2 hv a1 a0`. Use `set P : AfE D := α ⊗ₜ[D.host.F] (1 : D.host.E) with hPdef`. Establish `hPint : α ∈ Formalism.MainNotions.StandardLattice.intAf D.host.F` using `GlobalTheory.Ker.LevMove.ind_int a1 a0`. Establish `q1 : P • fmt T g₁ = P • 1` using `by rw [smul_sub] at P1; exact sub_eq_zero.1 P1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `q2 : P • fmt T g₂ = P • 1` using `by rw [smul_sub] at P2; exact sub_eq_zero.1 P2`. Establish `qk : P • fmt T (g₂⁻¹ * f * g₁) = P • G`. Rewrite using `[GlobalTheory.Ker.LevMove.fmt_mul', GlobalTheory.Ker.LevMove.fmt_mul', hff]`. Conclude with `GlobalTheory.Ker.LevMove.Rat.smul_sandwich P _ _ _ _ q2 q1 e2`. Take `⟨d, hd⟩ : ∃ d : Fin T.rank → D.host.E, d = (γ : Matrix (Fin T.rank) (Fin T.rank) D.host.E) *ᵥ Lv.β i - ∑ j, κ' j i • Lv.β j` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : P • (fmt T (g₂⁻¹ * f * g₁) *ᵥ toAf (Lv.β i) - toAf (∑ j, κ' j i • Lv.β j)) = P • toAf d`. Rewrite using `[GlobalTheory.Ker.LevMove.Rat.smul_step P _ _ _ _ qk, GlobalTheory.Ker.LevMove.Rat.map_mulVec_toAf, ← GlobalTheory.Ker.LevMove.Rat.toAf_sub, hd]`. Establish `hPd : P • toAf d ∈ hatV C.X.Λ`. Rewrite using `[← hx]`. Conclude with `GlobalTheory.Ker.LevMove.int_smul_mem C.X.Λ hPint (sub_mem ((hk _).2 ⟨_, hb, rfl⟩) hw)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `P • _ ∈ hatV (Lv.𝔪 • C.X.Λ)`. Rewrite using `[hx]`. Take `⟨s, hs, hsd⟩` from `hcong i`. Rewrite `hsd` using `[← hd]`. Take `⟨u, hu, m, hm, hum⟩` from `Ideal.isCoprime_iff_exists.1 hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨t, rfl⟩` from `Ideal.mem_span_singleton'.1 hu`. Establish `hsplit : P • toAf d = P • toAf ((t * s) • d) + ((1 : Af D.host.F) ⊗ₜ[D.host.F] ((m : 𝓞 D.host.E) : D.host.E) : AfE D) • (P • toAf d)`. Establish `hum' : ((t * s : 𝓞 D.host.E) : D.host.E) + ((m : 𝓞 D.host.E) : D.host.E) = 1`. Use `congrArg (algebraMap (𝓞 D.host.E) D.host.E) hum` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.Ker.LevMove.Rat.toAf_smul, smul_comm P, ← add_smul, ← TensorProduct.tmul_add, hum', Algebra.TensorProduct.one_def.symm, one_smul]`. Rewrite using `[hsplit]`. Use `add_mem ?_ (GlobalTheory.Ker.LevMove.ideal_smul_mem C.X.Λ Lv.𝔪 hm hPd)` and prove the remaining obligations. Use `GlobalTheory.Ker.LevMove.int_smul_mem _ hPint (GlobalTheory.Ker.LevMove.Rat.toAf_mem ?_)` and prove the remaining obligations. Rewrite using `[mul_smul]`.
-
-Conclude with `Submodule.smul_mem _ t hsd`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Ker.LevMove.levK_of_rat_moves : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (Lv : SW.Level C.X) (γ : GL (Fin T.rank) D.host.E) (κ : Lv.J), Lv.Red (fun i => (γ : Matrix (Fin T.rank) (Fin T.rank) D.host.E) *ᵥ Lv.β i) κ → ∀ (a f g₁ g₂ : GA D T) (L : Lt D.host.E T.rank), a ∈ GinfC T → f ∈ GfC T → IsRatOf T γ (a * f) → g₁ ∈ GfC T → g₂ ∈ GfC T → TrivAt T (C.under Lv) g₁ → TrivAt T (C.under Lv) g₂ → L.FG → Submodule.span D.host.E (L : Set (Fin T.rank → D.host.E)) = ⊤ → (mapL γ L).FG → IsMov (fmt T g₁) C.X.Λ L → IsMov (fmt T g₂) C.X.Λ (mapL γ L) → C.LevK Lv (g₂⁻¹ * f * g₁) κ := by
   intro D S T C Lv γ κ hred a f g₁ g₂ L ha hf hrat h1 h2 t1 t2 hLfg hLs hMfg m1 m2

@@ -13,13 +13,11 @@ noncomputable section
 namespace GlobalTheory.FormalAlg.TowerVA
 
 /- English proof (translation)
-Establish `hEq : GlobalTheory.AbLaw.pw (N 0) c = GlobalTheory.AbLaw.pw (GlobalTheory.AbLaw.pw (N 0) p) k`. Rewrite using `[hc]`. Conclude with `congrArg (fun g => (⟨(N 0).ι, (N 0).U, g⟩ : LB (Y 0).left)) (funext fun i => funext fun j => zpow_mul ((N 0).g i j) _ _)`. Establish `h0 : ∃ (n' : ℕ) (s' : Fin (n' + 1) → LB.Sec (GlobalTheory.AbLaw.pw (N 0) c)), VeryAmpleBy (Y 0).hom (GlobalTheory.AbLaw.pw (N 0) c) s'`. Rewrite using `[hEq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.AbLaw.veryAmpleBy_pw _ _ _ _ n s (isLB_pw (hN 0) _) hs k hk`. Take `⟨n', s0, hs0⟩` from `h0`. Establish `hL : ∀ e, (GlobalTheory.AbLaw.pw (N e) c).IsLB ∧ (v e).IsGen` using `fun e => ⟨isLB_pw (hN e) _, hv e⟩`. Establish `hiso : LBIso (GlobalTheory.AbLaw.pw (N 0) c) (GlobalTheory.AbLaw.pw (GlobalTheory.AbLaw.pw (N 0) p) k)` using `hEq ▸ lbIso_refl (isLB_pw (hN 0) _)`. Use `choose σ hσ0 hσ using fun j => hlift (fun e => GlobalTheory.AbLaw.pw (N e) c) v hL hiso (s0 j)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Use `⟨n', fun e j => σ j e, fun e j => hσ j e, ?_⟩` and prove the remaining obligations. Introduce and unpack `(_ | e)`. Use `show VeryAmpleBy _ _ (fun j => σ j 0)`. Simplify using `only [hσ0]`. Conclude with `hs0`.
-
-Take `⟨j₀, hj, w, hw, hr⟩` from `tower I Y β hβ (fun e => GlobalTheory.AbLaw.pw (N e) c) v hL (fun e j => σ j e) (fun e j => hσ j e) e`. Simplify using `only [hσ0] at hr`. Conclude with `GlobalTheory.AbLaw.veryAmpleBy_of_isNilpotent _ _ _ (Ideal.Quotient.factor_surjective _) (GlobalTheory.Degen.isNilpotent_ker_factor_pow I _) _ _ _ _ j₀ hj _ _ w n' _ _ (hL _).1 (hL _).1 ((isGen_iff _).2 hw) hr hs0`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_compatible_of_lift (R : Type) [CommRing R] (I : Ideal R)
     (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left)
@@ -59,11 +57,9 @@ theorem exists_compatible_of_lift (R : Type) [CommRing R] (I : Ideal R)
       ((isGen_iff _).2 hw) hr hs0
 
 /- English proof (translation)
-Introduce `R _ _ I Y β hβ N hN hamp`. Take `⟨d, hd1, hd⟩` from `GlobalTheory.T.exists_consecutive_veryAmple_powers_relAmple (R ⧸ I ^ (0 + 1)) (Y 0) (N 0) (hN 0) hamp`. Take `⟨n₁, s₁, hs₁⟩` from `hd d (Or.inl rfl)`. Take `⟨n₂, s₂, hs₂⟩` from `hd (d + 1) (Or.inr rfl)`. Take `⟨k₁, hk₁⟩` from `GlobalTheory.T.exists_uniform_lift_sections_thickeningTower R I Y β hβ _ n₁ s₁ (isLB_pw (hN 0) _) hs₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k₂, hk₂⟩` from `GlobalTheory.T.exists_uniform_lift_sections_thickeningTower R I Y β hβ _ n₂ s₂ (isLB_pw (hN 0) _) hs₂`. Use `⟨d * (1 + (d + 1) * max k₁ k₂), Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega)), ?_⟩` and prove the remaining obligations. Establish `ht1 : ∀ m t : ℕ, 1 ≤ m → t ≤ 1 + m * t` using `fun m t hm => by nlinarith`. Introduce and unpack `c (rfl | rfl) v hv`. Conclude with `exists_compatible_of_lift R I Y β hβ N hN d (1 + (d + 1) * max k₁ k₂) _ (by omega) (by push_cast; ring) n₁ s₁ hs₁ (hk₁ _ (le_trans (le_max_left _ _) (ht1 _ _ (by omega)))) v hv`.
-
-Conclude with `exists_compatible_of_lift R I Y β hβ N hN (d + 1) (1 + d * max k₁ k₂) _ (by omega) (by push_cast; ring) n₂ s₂ hs₂ (hk₂ _ (le_trans (le_max_right _ _) (ht1 _ _ hd1))) v hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_veryAmple_compatible : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R), ∀ (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left), (∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans R I e)) → ∀ N : ∀ e, LB (Y e).left, (∀ e, (N e).IsLB) → RelAmple (Y 0) (N 0) → ∃ a : ℕ, 1 ≤ a ∧ ∀ c : ℕ, c = a ∨ c = a + 1 → ∀ v : ∀ e, LB.Iso (GlobalTheory.AbLaw.pw (N e) c) ((GlobalTheory.AbLaw.pw (N (e + 1)) c).pull (β e)), (∀ e, (v e).IsGen) → ∃ (n : ℕ) (s : ∀ e, Fin (n + 1) → LB.Sec (GlobalTheory.AbLaw.pw (N e) c)), (∀ e j, Rel (β e) (v e) (s (e + 1) j) (s e j)) ∧ ∀ e, VeryAmpleBy (Y e).hom (GlobalTheory.AbLaw.pw (N e) c) (s e) := by
   intro R _ _ I Y β hβ N hN hamp

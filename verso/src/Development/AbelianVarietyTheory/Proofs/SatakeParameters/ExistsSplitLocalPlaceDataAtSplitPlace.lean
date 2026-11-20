@@ -21,19 +21,17 @@ open GlobalTheory.FinPl GlobalTheory.FinPl.SplitPoint GlobalTheory.IdemModTwo Gl
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `h`. Establish `hm : ∀ x : 𝓞 D.host.E, x ∈ (Formalism.DivisionValues.conjPl s.w).asIdeal ↔ IsCMField.ringOfIntegersComplexConj D.host.E x ∈ s.w.asIdeal`. Introduce `x`. Use `show x ∈ Ideal.map (Formalism.DivisionValues.cO D.host.E) s.w.asIdeal ↔ _`. Establish `e0 : (Formalism.DivisionValues.cO D.host.E).symm x = IsCMField.ringOfIntegersComplexConj D.host.E x` using `RingOfIntegers.ext rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_map_of_equiv]`. Use `⟨fun ⟨y, hy, hxy⟩ => ?_, fun hx => ⟨_, hx, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← e0, ← hxy, RingEquiv.symm_apply_apply]`. Conclude with `hy`. Rewrite using `[← e0, RingEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw : (GlobalTheory.SplitConjPlace.conjSP s).w = s.w`. Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.SplitConjPlace.mem_conj_w, ← hm, h]`. Establish `hv : ∀ x : D.host.E, Valued.v ((s.i.comp (IsCMField.complexConj D.host.E).toAlgHom).toRingHom x) = s.w.valuation D.host.E x`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `PI.CompAtExist.muV_eq (GlobalTheory.SplitConjPlace.conjSP s) x`. Rewrite `h1` using `[hw]`. Conclude with `h1`. Take `⟨φ, hφc, hφ, -⟩` from `GlobalTheory.DenseCompl.exists_extension s.w s.v _ hv`. Take `⟨c, hc, -, hci⟩` from `GlobalTheory.SplitCompl.exists_ringEquiv D.host.E s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg : ∀ y, φ (c y) = y`. Introduce `y`. Use `(HeightOneSpectrum.denseRange_algebraMap (maximalRealSubfield D.host.E) s.v).induction_on (p := fun y => φ (c y) = y) y (isClosed_eq (hφc.comp hc) continuous_id) fun a => ?_` and prove the remaining obligations. Establish `e1` using `s.i.commutes a`. Rewrite using `[← e1, hci, hφ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.coe_comp, Function.comp_apply, AlgEquiv.coe_algHom]`. Rewrite using `[AlgEquiv.commutes]`. Apply `IsCMField.complexConj_ne_one D.host.E` to reduce the goal to its premises. Use `AlgEquiv.ext fun x => s.i.toRingHom.injective ?_` and prove the remaining obligations. Establish `h2` using `hg (s.i x)`.
-
-Rewrite `h2` using `[hci, hφ]`. Conclude with `h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjPl_ne {D : D7} (s : SplitPlace D.host.E) : Formalism.DivisionValues.conjPl s.w ≠ s.w := by
   intro h
@@ -72,9 +70,9 @@ theorem conjPl_ne {D : D7} (s : SplitPlace D.host.E) : Formalism.DivisionValues.
   exact h2
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hvw : v1 = w`. Use `HeightOneSpectrum.ext (Ideal.ext fun a => ?_)` and prove the remaining obligations. Rewrite using `[← HeightOneSpectrum.valuation_lt_one_iff_mem (K := F1), ← HeightOneSpectrum.valuation_lt_one_iff_mem (K := F1), hv]`. Substitute `hvw` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Conclude with `⟨RingHom.id _, continuous_id, fun a => rfl, fun z => ⟨z, rfl, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_transport {E : Type} [Field E] [NumberField E] {F1 F2 : Subfield E} (h : F1 = F2)
     (v1 : HeightOneSpectrum (𝓞 F1)) (w : HeightOneSpectrum (𝓞 F2))
@@ -92,7 +90,7 @@ theorem exists_transport {E : Type} [Field E] [NumberField E] {F1 F2 : Subfield 
   exact ⟨RingHom.id _, continuous_id, fun a => rfl, fun z => ⟨z, rfl, rfl⟩⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem tensCastR_one_tmul {E : Type} [Field E] [NumberField E] {F1 F2 : Subfield E} (h : F1 = F2) (x : E) :
     Formalism.IndefR.principalLevelFrame.tensCastR h ((1 : FiniteAdeleRing (𝓞 F1) F1) ⊗ₜ[F1] x) = x ⊗ₜ[F2] (1 : FiniteAdeleRing (𝓞 F2) F2) := by
@@ -102,39 +100,33 @@ theorem tensCastR_one_tmul {E : Type} [Field E] [NumberField E] {F1 F2 : Subfiel
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D s hF`. Take `⟨e, he⟩` from `GlobalTheory.Hk3.SplitMatch.exists_isIdemAt (conjPl_ne s)`. Take `⟨-, -, v, ε, hε, hs⟩` from `he.1`. Establish `hsa : SplitAt D v e` using `splitAt_of he.1 hε hs`. Establish `hP` using `splitPrime_emb hsa s.w he`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : ∀ x : D.host.E, Valued.v ((emb hsa).toRingHom x) = s.w.valuation D.host.E x`. Introduce `x`. Rewrite using `[← hP]`. Conclude with `GlobalTheory.AdelicU.valued_apply_eq_valuation (emb hsa) x`. Take `⟨φ, hφc, hφ, -⟩` from `GlobalTheory.DenseCompl.exists_extension s.w v _ hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `g : D.host.F →+* s.w.adicCompletion D.host.E` to `(algebraMap D.host.E (s.w.adicCompletion D.host.E)).comp (algebraMap D.host.F D.host.E)`. Establish `hg : ∀ a, Valued.v (g a) = v.valuation D.host.F a`. Introduce `a`. Simplify using `only [g, RingHom.comp_apply]`. Rewrite using `[GlobalTheory.Idele.valued_algebraMap, ← hf, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes, GlobalTheory.Idele.valued_algebraMap]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, hψc, hψ, -⟩` from `GlobalTheory.DenseCompl.exists_extension v s.w g hg`. Establish `hcomp : ∀ y, φ (ψ y) = y`. Introduce `y`. Use `(HeightOneSpectrum.denseRange_algebraMap D.host.F v).induction_on (p := fun y => φ (ψ y) = y) y (isClosed_eq (hφc.comp hψc) continuous_id) fun a => ?_` and prove the remaining obligations. Rewrite using `[hψ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [g, RingHom.comp_apply]`. Rewrite using `[hφ]`. Conclude with `(emb hsa).commutes a`. Set `e0` to `RingEquiv.ofBijective φ ⟨φ.injective, fun y => ⟨ψ y, hcomp y⟩⟩`. Establish `he0 : ∀ y, e0.symm y = ψ y` using `fun y => e0.injective (by rw [e0.apply_symm_apply]; exact (hcomp y).symm)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦc : Continuous e0.symm` using `hψc.congr fun y => (he0 y).symm`. Establish `hΦc' : Continuous e0` using `hφc`. Establish `hΦ : ∀ x : D.host.E, e0.symm (emb hsa x) = algebraMap D.host.E (s.w.adicCompletion D.host.E) x`. Introduce `x`. Establish `h1` using `e0.symm_apply_apply (algebraMap D.host.E (s.w.adicCompletion D.host.E) x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(congrArg e0.symm (hφ x)).symm.trans h1`. Take `⟨c, hc, -, hci⟩` from `GlobalTheory.SplitCompl.exists_ringEquiv D.host.E s`. Establish `hvv : ∀ a : D.host.F, v.valuation D.host.F a = s.v.valuation (maximalRealSubfield D.host.E) ⟨a, hF.le a.2⟩`. Introduce `a`. Establish `h1` using `hf (algebraMap D.host.F D.host.E a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `PI.CompAtExist.muV_eq s (algebraMap (maximalRealSubfield D.host.E) D.host.E ⟨a, hF.le a.2⟩)`. Rewrite using `[← GlobalTheory.Idele.valued_algebraMap, ← GlobalTheory.Idele.valued_algebraMap, ← (emb hsa).commutes, ← s.i.commutes]`. Conclude with `h1.trans h2.symm`. Take `⟨κ, hκc, hκa, hκz⟩` from `exists_transport hF v s.v hvv`. Establish `hΦκ : ∀ y, e0.symm y = c (κ y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Use `(HeightOneSpectrum.denseRange_algebraMap D.host.F v).induction_on (p := fun y => e0.symm y = c (κ y)) y (isClosed_eq hΦc (hc.comp hκc)) fun a => ?_` and prove the remaining obligations. Establish `h1 : algebraMap D.host.F (v.adicCompletion D.host.F) a = emb hsa (algebraMap D.host.F D.host.E a)` using `((emb hsa).commutes a).symm`. Establish `h2 : algebraMap (maximalRealSubfield D.host.E) (s.v.adicCompletion (maximalRealSubfield D.host.E)) ⟨a, hF.le a.2⟩ = s.i (algebraMap (maximalRealSubfield D.host.E) D.host.E ⟨a, hF.le a.2⟩)` using `(s.i.commutes _).symm`. Rewrite using `[hκa]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Rewrite using `[hci]`. Rewrite using `[h1]`. Rewrite using `[hΦ]`. Set `p : GlobalTheory.LocMod.Place D (s.w.adicCompletion D.host.E)` to `{ e := e split := he.1 π := e0.symm.toRingHom.comp (comp hsa) ι := (sec D v e).comp e0.toRingHom.toAddMonoidHom π_ι := fun x => by show e0.symm (comp hsa (sec D v e (e0 x))) = x`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Rewrite using `[comp_sec, RingEquiv.symm_apply_apply]`. Use `ι_π := fun a => by show sec D v e (e0 (e0.symm (comp hsa a))) = e * a`. Rewrite using `[RingEquiv.apply_symm_apply, sec_comp]`. Use `cont_π := hΦc.comp (continuous_comp hsa)`. Use `cont_ι := continuous_sec.comp hΦc' }`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨p, c, ⟨he.1.1, ⟨v, ε, hε, Or.inl ⟨he.1.2.1, hs⟩⟩, he.2⟩, hc, hci, fun a => ?_⟩` and prove the remaining obligations. Use `show e0.symm (comp hsa a) = _`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul y x`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hyx : y ⊗ₜ[D.host.F] x = algebraMap (AF D.host.F) (AE D) y * incA D x` using `by show _ = (y ⊗ₜ[D.host.F] (1 : D.host.E)) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] x)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[hyx, map_mul, map_mul, map_mul, map_mul, map_mul, map_mul]`. Use `congr 1`. Rewrite using `[comp_algebraMap, hΦκ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z', hz1, hz2⟩` from `hκz y.2`. Establish `e1 : Formalism.L2.Theta.finPart D (algebraMap (AF D.host.F) (AE D) y) = y.2 ⊗ₜ[D.host.F] (1 : D.host.E)` using `rfl`. Rewrite using `[e1]`. Use `show _ = c (s.proj (Formalism.IndefR.principalLevelFrame.tensCastR hF (y.2 ⊗ₜ[D.host.F] (1 : D.host.E))))`. Rewrite using `[hz1]`.
-
-Use `show c (κ (y.2 v)) = c (s.i 1 * z' s.v)`. Rewrite using `[map_one, one_mul, hz2]`. Use `show e0.symm (emb hsa x) = _`. Rewrite using `[hΦ]`. Establish `e1 : Formalism.L2.Theta.finPart D (incA D x) = (1 : Af D.host.F) ⊗ₜ[D.host.F] x` using `rfl`.
-
-Rewrite using `[e1]`. Use `show _ = c (s.proj (Formalism.IndefR.principalLevelFrame.tensCastR hF ((1 : Af D.host.F) ⊗ₜ[D.host.F] x)))`. Rewrite using `[tensCastR_one_tmul]`. Use `show _ = c (s.i x * ReciprocityTheory.Aut.evalAt D.host.E s.v 1)`. Rewrite using `[map_one, mul_one, hci]`.
-
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_place : ∀ (D : D7) (s : SplitPlace D.host.E) (hF : D.host.F = maximalRealSubfield D.host.E),
     ∃ (p : GlobalTheory.LocMod.Place D (s.w.adicCompletion D.host.E))

@@ -27,15 +27,13 @@ def GreenSymmetry.Statement : Prop :=
         cycleIntegral h (divCycle W u') e (fsLog h u) + coneIntegral h W (e + 1) (fsLog h u')
 
 /- English proof (translation)
-Establish `h0 : linForm (fun j : Fin 2 => if j = 0 then (1 : ℂ) else 0) = X 0`. Simplify using `[linForm]`. Establish `h1 : linForm (fun j : Fin 2 => if j = 1 then (1 : ℂ) else 0) = X 1`. Simplify using `[linForm]`. Use `⟨LineChowForm.isProjPrime_line, ⟨LineChowForm.D2, LineChowForm.isChowForm_line⟩, LineChowForm.linForm_line, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1, Ideal.mem_bot]`. Conclude with `X_ne_zero _`. Introduce `W' hW' hX1`. Rewrite `hX1` using `[h1]`. Establish `hmem : W' ∈ relComps ((⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) ⊔ Ideal.span {linForm (fun j : Fin 2 => if j = 0 then (1 : ℂ) else 0)})`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Apply `Finsupp.mem_support_iff.mp hW'` to reduce the goal to its premises. Simplify using `only [divCycle, fundCycle, Finsupp.onFinset_apply]`. Conclude with `if_neg hc`. Take `⟨hmin, j, hj⟩` from `hmem`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hX0 : X 0 ∈ W'`. Apply `hmin.1.2` to reduce the goal to its premises. Rewrite using `[h0]`. Conclude with `Ideal.mem_sup_right (Ideal.subset_span rfl)`. Use `fin_cases j`.
-
-Conclude with `hj hX0`. Conclude with `hj hX1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GreenSymmetry.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) ∧

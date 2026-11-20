@@ -18,21 +18,21 @@ open UpperTheory.BaseChangeIdentities.FrameWordIdentity
 attribute [local instance] borelG borelF borelA GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `hA hO hF hR E _ _ _ n π S T F₀ F i p`. Take `⟨g, b⟩` from `p`. Establish `hP : (↑F.d.P : Set (Pl E)) ⊆ F₀.Sec` using `(hF hR E n π S T F₀ F).2.2.2`. Establish `hok : ∀ L, F.d.IsGen (F₀.C.a i) (F₀.C.le i) L → L.Ok F.d.P` using `fun L hL => (hO E n F.d F.ok (F₀.C.a i) (F₀.C.le i)).2.2.2 L hL`. Establish `hadj : ∀ L, F.d.IsGen (F₀.C.a i) (F₀.C.le i) L → adjF (F.ψ i L) = F.ψ i L.adj` using `fun L hL => (hA E F.d.kap F₀.Sec F.d.P (F.B i) (Equiv.refl _) F₀.hSec hP L L (hok L hL) (hok L hL)).2.2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heL : (F.d.eL (F₀.C.a i)).adj = F.d.eL (F₀.C.a i)`. Establish `hm` using `LocComm.adj_m F.d (a := F₀.C.a i) (ha := F₀.C.le i) (L := F.d.eL (F₀.C.a i)) (Or.inl rfl)`. Establish `hs : (F.d.eL (F₀.C.a i)).adj.s = (F.d.eL (F₀.C.a i)).s`. Use function extensionality and compare the values at `w`. Conclude with `LocComm.lfStar_idem _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `ht : (F.d.eL (F₀.C.a i)).adj.t = (F.d.eL (F₀.C.a i)).t`. Use function extensionality and compare the values at `w`. Conclude with `LocComm.lfStar_idem _`. Consider the cases of `h : F.d.eL (F₀.C.a i) with`. Consider the case `mk m s t`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hm`, `hs`, `ht` using `[h]`. Simplify using `only [LM.adj] at hm hs ht ⊢`. Rewrite using `[LM.mk.injEq]`. Conclude with `⟨hm, hs, ht⟩`. Establish `heψ : adjF (F.ψ i (F.d.eL (F₀.C.a i))) = F.ψ i (F.d.eL (F₀.C.a i))`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hadj _ (Or.inl rfl), heL]`. Break down `g with _ | x | x` into its components or cases. Use `Or.inr ?_` and prove the remaining obligations. Consider the cases of `b`. Conclude with `⟨F.t₀ i, rfl, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Supply the required witnesses or components. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨(F.t₀ i).adj, rfl, heψ⟩`. Distinguish the cases in `hi : i = x.1`. Use `Or.inr ?_` and prove the remaining obligations. Consider the cases of `b`. Conclude with `⟨F.tD i x.2.1 x.2.2.1 x.2.2.2.1 x.2.2.2.2, by simp [gl, RunFrame.g, hi], rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(F.tD i x.2.1 x.2.2.1 x.2.2.2.1 x.2.2.2.2).adj, by simp [gl, RunFrame.g, hi, BGen.adj], heψ⟩` and prove the remaining obligations. Use `Or.inl ?_` and prove the remaining obligations. Consider the cases of `b`. Conclude with `⟨F.dval x, by simp [gl, RunFrame.g, hi], rfl⟩`. Conclude with `⟨starRingEnd ℂ (F.dval x), by simp [gl, RunFrame.g, hi, BGen.adj], rfl⟩`.
+Split into cases according to the possible forms of the given data. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Use `Or.inr ?_` and prove the remaining obligations. Consider the cases of `b`. Conclude with `⟨F.ptL i (F.d.hL _ (F₀.C.le i) x.1.1 x.2.1 x.2.2), rfl, by simp [lt, locL]; rfl⟩`. Conclude with `⟨(F.ptL i (F.d.hL _ (F₀.C.le i) x.1.1 x.2.1 x.2.2)).adj, rfl, (hadj _ (Or.inr ⟨x.1.1, x.2.1, x.2.2, x.1.2.2, rfl⟩)).trans (by simp [lt, locL])⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.BaseChangeIdentities.FrameWordIdentity.psilet_pf :
     FmAlg → LocOk → FrFacts → PsiLet := by

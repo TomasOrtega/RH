@@ -15,7 +15,7 @@ def nv : GL (Fin 1) (Kn p K r) →* ℝ where
   map_mul' a b := by simp [norm_mul]
 
 /- English proof (translation)
-Use `show ‖((((GeneralLinearGroup.det g : (Kn p K r)ˣ) : Kn p K r) : PadicAlgCl p))‖ = _`. Rewrite using `[GeneralLinearGroup.val_det_apply, Matrix.det_fin_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nv_apply (g : GL (Fin 1) (Kn p K r)) :
     nv p K r g = ‖(((g : Matrix (Fin 1) (Fin 1) (Kn p K r)) 0 0 : Kn p K r) : PadicAlgCl p)‖ := by
@@ -23,7 +23,7 @@ theorem nv_apply (g : GL (Fin 1) (Kn p K r)) :
   rw [GeneralLinearGroup.val_det_apply, Matrix.det_fin_one]
 
 /- English proof (translation)
-Use `show 0 < ‖((((GeneralLinearGroup.det g : (Kn p K r)ˣ) : Kn p K r) : PadicAlgCl p))‖`. Use `norm_pos_iff.2 fun h => (GeneralLinearGroup.det g).ne_zero ?_` and prove the remaining obligations. Conclude with `Subtype.ext h`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nv_pos (g : GL (Fin 1) (Kn p K r)) : 0 < nv p K r g := by
   show 0 < ‖((((GeneralLinearGroup.det g : (Kn p K r)ˣ) : Kn p K r) : PadicAlgCl p))‖
@@ -31,13 +31,13 @@ theorem nv_pos (g : GL (Fin 1) (Kn p K r)) : 0 < nv p K r g := by
   exact Subtype.ext h
 
 /- English proof (translation)
-The claim follows from `eq_inv_of_mul_eq_one_right (by rw [← map_mul, mul_inv_cancel, map_one])`.
+A detailed English derivation is pending.
 -/
 theorem nv_inv (g : GL (Fin 1) (Kn p K r)) : nv p K r g⁻¹ = (nv p K r g)⁻¹ :=
   eq_inv_of_mul_eq_one_right (by rw [← map_mul, mul_inv_cancel, map_one])
 
 /- English proof (translation)
-Apply `GeneralLinearGroup.ext` to reduce the goal to its premises. Introduce `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[Matrix.mul_apply, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comm {R : Type} [CommRing R] (a b : GL (Fin 1) R) : a * b = b * a := by
   apply GeneralLinearGroup.ext
@@ -46,21 +46,19 @@ theorem comm {R : Type} [CommRing R] (a b : GL (Fin 1) R) : a * b = b * a := by
   simp [Matrix.mul_apply, mul_comm]
 
 /- English proof (translation)
-The claim follows from `mem_Obar_iff`.
+A detailed English derivation is pending.
 -/
 theorem mem_intR {x : Kn p K r} : x ∈ intR p K r ↔ ‖(x : PadicAlgCl p)‖ ≤ 1 :=
   mem_Obar_iff
 
 /- English proof (translation)
-Rewrite `h` using `[nv_apply]`. Establish `hinv : (((g⁻¹ : GL (Fin 1) (Kn p K r)) : Matrix (Fin 1) (Fin 1) (Kn p K r)) 0 0) * ((g : Matrix (Fin 1) (Fin 1) (Kn p K r)) 0 0) = 1`. Use `congrArg (fun M : Matrix (Fin 1) (Fin 1) (Kn p K r) => M 0 0) (Units.inv_mul g)` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`. Establish `hi : ‖((((g⁻¹ : GL (Fin 1) (Kn p K r)) : Matrix (Fin 1) (Fin 1) (Kn p K r)) 0 0 : Kn p K r) : PadicAlgCl p)‖ = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg (fun x : Kn p K r => ‖(x : PadicAlgCl p)‖) hinv` as an intermediate fact. Simplify `this` using `[norm_mul, h]`. Establish `h0 : (((g : Matrix (Fin 1) (Fin 1) (Kn p K r)) 0 0 : Kn p K r) : PadicAlgCl p) ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0, norm_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one h`. Use `⟨⟨Matrix.of fun _ _ => ⟨_, (mem_intR p K r).2 h.le⟩, Matrix.of fun _ _ => ⟨_, (mem_intR p K r).2 hi.le⟩, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mul_apply, h0]`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[Matrix.mul_apply, h0]`.
-
-Apply `GeneralLinearGroup.ext` to reduce the goal to its premises. Introduce `i j`. Use `fin_cases i`. Use `fin_cases j`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_Kint_of_nv (g : GL (Fin 1) (Kn p K r)) (h : nv p K r g = 1) : g ∈ Kint p K 1 r := by
   rw [nv_apply] at h
@@ -86,9 +84,7 @@ theorem mem_Kint_of_nv (g : GL (Fin 1) (Kn p K r)) (h : nv p K r g = 1) : g ∈ 
     rfl
 
 /- English proof (translation)
-Apply `GeneralLinearGroup.ext` to reduce the goal to its premises. Introduce `i j`. Use `fin_cases i`. Use `fin_cases j`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Conclude with `(frobK p K).commutes ⟨_, hg⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem sig_eq_of_mem (g : GL (Fin 1) (Kn p K r))
     (hg : (((g : Matrix (Fin 1) (Fin 1) (Kn p K r)) 0 0 : Kn p K r) : PadicAlgCl p) ∈ K) :
@@ -100,7 +96,7 @@ theorem sig_eq_of_mem (g : GL (Fin 1) (Kn p K r))
   exact (frobK p K).commutes ⟨_, hg⟩
 
 /- English proof (translation)
-Use `show g * δ = δ * sig p K 1 r g`. Rewrite using `[sig_eq_of_mem p K r g hg, comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_twCent_of_mem (δ g : GL (Fin 1) (Kn p K r))
     (hg : (((g : Matrix (Fin 1) (Fin 1) (Kn p K r)) 0 0 : Kn p K r) : PadicAlgCl p) ∈ K) :
@@ -109,11 +105,11 @@ theorem mem_twCent_of_mem (δ g : GL (Fin 1) (Kn p K r))
   rw [sig_eq_of_mem p K r g hg, comm]
 
 /- English proof (translation)
-Take `⟨y, hy, hxy⟩` from `norm_Kn p K hK hr ((x : Matrix (Fin 1) (Fin 1) (Kn p K r)) 0 0).2`. Establish `hxy' : nv p K r x = ‖y‖` using `by rw [nv_apply]; exact hxy`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Rewrite `hxy'` using `[norm_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(nv_pos p K r x).ne' hxy'`. Set `u : (Kn p K r)ˣ` to `Units.mk0 ⟨y, le_Kn p K r hy⟩ (fun h => hy0 (congrArg Subtype.val h))`. Set `t : GL (Fin 1) (Kn p K r)` to `Units.map (Matrix.scalar (Fin 1) : Kn p K r →+* Matrix (Fin 1) (Fin 1) (Kn p K r)).toMonoidHom u`. Establish `ht00 : (((t : Matrix (Fin 1) (Fin 1) (Kn p K r)) 0 0 : Kn p K r) : PadicAlgCl p) = y`. Simplify using `[t, u]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t, mem_twCent_of_mem p K r δ t (by rw [ht00]; exact hy), t⁻¹ * x, mem_Kint_of_nv p K r _ ?_, (mul_inv_cancel_left t x).symm⟩` and prove the remaining obligations. Rewrite using `[map_mul, nv_inv, hxy', nv_apply, ht00]`. Conclude with `inv_mul_cancel₀ (norm_ne_zero_iff.2 hy0)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_decomp (hK : FiniteDimensional ℚ_[p] K) (hr : 0 < r) (δ x : GL (Fin 1) (Kn p K r)) :
     ∃ t ∈ GlobalTheory.BCT.twCent (sig p K 1 r) δ, ∃ k ∈ Kint p K 1 r, x = t * k := by

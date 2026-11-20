@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.Cont.HeightIo
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.BlockHeight.heightGL_blk_le D.host.F finSumFinEquiv (Formalism.L2.Theta.matHom (dblSp V) (io V (g₁, g₂))) (Formalism.L2.Theta.matHom V g₁) (Formalism.L2.Theta.matHom V g₂) rfl rfl`. Use `show ((GlobalTheory.AdelicU.heightGL D.host.F _ : ℝ≥0) : ℝ) ≤ ((GlobalTheory.AdelicU.heightGL D.host.F _ : ℝ≥0) : ℝ) * ((GlobalTheory.AdelicU.heightGL D.host.F _ : ℝ≥0) : ℝ)`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem height_io_le_mul {D : D7} (V : HSp D) (g₁ g₂ : GA D V) :
     GlobalTheory.Grow.height (dblSp V) (io V (g₁, g₂)) ≤ GlobalTheory.Grow.height V g₁ * GlobalTheory.Grow.height V g₂ := by
@@ -28,7 +28,7 @@ theorem height_io_le_mul {D : D7} (V : HSp D) (g₁ g₂ : GA D V) :
   exact_mod_cast h
 
 /- English proof (translation)
-Introduce `D V`. Use `⟨1, 1, fun g₁ g₂ => ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul, pow_one]`. Conclude with `height_io_le_mul V g₁ g₂`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_io_bound : ∀ (D : D7) (V : HSp D), ∃ (C : ℝ) (c : ℕ), ∀ g₁ g₂ : GA D V,
     GlobalTheory.Grow.height (dblSp V) (io V (g₁, g₂)) ≤ C * (GlobalTheory.Grow.height V g₁ * GlobalTheory.Grow.height V g₂) ^ c := by

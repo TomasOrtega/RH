@@ -17,7 +17,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.RowVal.OneVac
 
 /- English proof (translation)
-Establish `hz : ∀ (X Y : HSp D) (u : WO X Y), heisO ψ X Y u (0 : WO X Y → ℂ) = 0` using `fun X Y u => by`. Simplify using `using GlobalTheory.SeeSaw.Scale.heisO_smul ψ X Y u 0 0`. Establish `h : ∀ (X Y : HSp D) (Λ : AddSubgroup (WO X Y)), IsThetaFunO ψ X Y (0 : WO X Y → ℂ) ∧ IsLatVac (heisO ψ X Y) Λ (0 : WO X Y → ℂ)` using `fun X Y Λ => ⟨⟨fun γ w => by simp, ⟨⊤, isOpen_univ, fun u _ _ => hz X Y u⟩, continuous_const, fun k L hL hf w => contDiff_const⟩, fun u _ => hz X Y _, fun e _ u _ _ => hz X Y u⟩`. Conclude with `⟨⟨continuous_const, fun v => h A S _, fun u => h S A' _⟩, fun n L L' _ _ _ _ u v => contDiff_const⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isBiVac_zero {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (A S A' : HSp D) (LA : Set (Fin A.rank → D.host.E))
     (LS : Set (Fin S.rank → D.host.E)) (LA' : Set (Fin A'.rank → D.host.E)) :
@@ -34,11 +34,11 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn 
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R)
 
 /- English proof (translation)
-Take `⟨hb, z, hz, htw⟩` from `h₂`. Use `⟨hb, z, hz, fun P p hp => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hex : ∃ (t : T) (M : Vol ch.G), M.Is t`. Take `⟨t₀, M₀, hM₀⟩` from `hex`. Take `⟨b₀, hb₀⟩` from `hb t₀`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨fun j => ((z t₀ j : ℂ)⁻¹) • conAt ch.W hM₀ (fockD ch.W t₀ (fun j => ch.rm.vT D.R.m j) P) (p * b₀) j, fun j hj hj' => ?_, fun t M hM b hbt j hj hj' => ?_⟩` and prove the remaining obligations. Take `⟨hv, hs⟩` from `h₁ t₀ M₀ hM₀ b₀ hb₀ P p hp j hj hj'`. Conclude with `⟨GlobalTheory.SeeSaw.Scale.isBiVac_smul _ hv, GlobalTheory.SeeSaw.Scale.isBiSmooth_smul _ hs⟩`. Establish `e` using `htw t t₀ M M₀ hM hM₀ b b₀ hbt hb₀ P p hp j hj hj'`. Rewrite using `[smul_comm, ← e, smul_smul, inv_mul_cancel₀ (z t₀ j).ne_zero, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨0, fun j _ _ => isBiVac_zero _ _ _ _ _ _ _, fun t M hM => absurd ⟨t, M, hM⟩ hex⟩`.
+Supply the required witnesses or components.
 -/
 theorem vacAt_of (h₁ : VacReal ch) (h₂ : VacTw ch) : VacAt ch := by
   obtain ⟨hb, z, hz, htw⟩ := h₂
@@ -55,7 +55,7 @@ theorem vacAt_of (h₁ : VacReal ch) (h₂ : VacTw ch) : VacAt ch := by
   · exact ⟨0, fun j _ _ => isBiVac_zero _ _ _ _ _ _ _, fun t M hM => absurd ⟨t, M, hM⟩ hex⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RowReal.big_mono (Q := fun ch => VacReal ch ∧ VacTw ch) (fun ch h => vacAt_of ch h.1 h.2) (Big.and GlobalTheory.T.unfoldedVacuaAreRealDatum_largeDepth GlobalTheory.T.unfoldedVacua_differ_by_twist_values_largeDepth)`.
+A detailed English derivation is pending.
 -/
 theorem big_vacAt : Big fun ch => VacAt ch :=
   GlobalTheory.RowReal.big_mono (Q := fun ch => VacReal ch ∧ VacTw ch) (fun ch h => vacAt_of ch h.1 h.2)

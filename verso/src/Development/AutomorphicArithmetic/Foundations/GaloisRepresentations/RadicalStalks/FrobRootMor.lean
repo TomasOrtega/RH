@@ -12,7 +12,7 @@ namespace UpperTheory.Gal.Ord.RootBuild
 variable {p : ℕ} [hp : Fact p.Prime] {X Y : Scheme.{0}} [IsReduced X]
 
 /- English proof (translation)
-Establish `hU` using `GlobalTheory.SS.FrobField.cast_zero h U`. Establish `hs` using `map_sub (GlobalTheory.SS.FrobField.powHom Γ(X, U) p 1 hp.out hU) a b`. Establish `e2 : (a - b) ^ p = 0`. Simplify `hs` using `[GlobalTheory.SS.FrobField.powHom, e]`. Conclude with `sub_eq_zero.mp (IsReduced.eq_zero _ ⟨p, e2⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem pow_inj (h : (p : Γ(X, ⊤)) = 0) (U : X.Opens) {a b : Γ(X, U)} (e : a ^ p = b ^ p) :
     a = b := by
@@ -28,7 +28,7 @@ variable (ψ : X ⟶ Y)
 private def rt (U : Y.Opens) (s : Γ(Y, U)) : Γ(X, ψ ⁻¹ᵁ U) := (H U s).choose
 
 /- English proof (translation)
-The claim follows from `(H U s).choose_spec`.
+A detailed English derivation is pending.
 -/
 private theorem rt_pow (U : Y.Opens) (s : Γ(Y, U)) : rt ψ H U s ^ p = ψ.app U s := (H U s).choose_spec
 
@@ -71,9 +71,9 @@ private def rootMor (h : (p : Γ(X, ⊤)) = 0) : X ⟶ Y :=
     exact isUnit_of_map_unit (ψ.stalkMap x).hom _ hu⟩⟩⟩
 
 /- English proof (translation)
-Use `Scheme.Hom.ext rfl ?_` and prove the remaining obligations. Introduce `U`. Use `erw [eqToHom_refl, op_id, CategoryTheory.Functor.map_id, Category.comp_id]`. Use extensionality with `s`. Establish `e` using `GlobalTheory.VB.frob_app p h (rootMor ψ H h ⁻¹ᵁ U) (rt ψ H U s)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (rt_pow ψ H U s)` and prove the remaining obligations. Conclude with `e`.
+A detailed English derivation is pending.
 -/
 private theorem frob_rootMor (h : (p : Γ(X, ⊤)) = 0) : GlobalTheory.VB.frob X p h ≫ rootMor ψ H h = ψ := by
   refine Scheme.Hom.ext rfl ?_
@@ -87,7 +87,7 @@ private theorem frob_rootMor (h : (p : Γ(X, ⊤)) = 0) : GlobalTheory.VB.frob X
 end UpperTheory.Gal.Ord.RootBuild
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ h ψ H` and use `⟨UpperTheory.Gal.Ord.RootBuild.rootMor ψ H h, UpperTheory.Gal.Ord.RootBuild.frob_rootMor ψ H h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.Ord.root0 :
     ∀ (p : ℕ) [Fact p.Prime] (X Y : Scheme.{0}) [IsReduced X] (h : (p : Γ(X, ⊤)) = 0) (ψ : X ⟶ Y),

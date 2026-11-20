@@ -7,7 +7,7 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 open IndefiniteRowSideFullHecke.NumbersDVR.Bundles IndefiniteRowSideFullHecke.NumbersDVR.Bundles.FlagRestrict
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ ι _ x d N V _ _ B _ Q _ hQ hPQ`. Take `⟨_, hQh, hQr⟩` from `hQ`. Use `⟨mcIdeal_genPt Q hQh, resBundle B hPQ, rfl, fun fl => ?_⟩` and prove the remaining obligations. Take `⟨fl', h1, h2⟩` from `exists_resFlag hPQ hQr fl`. Conclude with `⟨fl', h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem FullFlagRestriction.proof : FullFlagRestriction.Statement := by
   intro O _ _ _ Ω _ _ K _ ι _ x d N V _ _ B _ Q _ hQ hPQ

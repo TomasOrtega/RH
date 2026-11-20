@@ -8,11 +8,11 @@ open scoped Formalism.Per
 namespace GlobalTheory.TameCoeff
 
 /- English proof (translation)
-Introduce `l _ a e _ h1 h2 LL`. Use `⟨?_, fun hU => ?_⟩` and prove the remaining obligations. Establish `: FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Establish `: FiniteDimensional ℚ_[l] ↥(Kunr l a)` using `(unrExt l a).2`. Conclude with `⟨⟨LL.1 ⊔ Kunr l a, inferInstance⟩, le_sup_left, ⟨le_sup_right⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Take `⟨_, ω, hω, -, -⟩` from `exists_gen l a`. Establish `hlt` using `one_lt_pow_l l a`. Establish `hmem : ω ∈ LL.1` using `HasUnr.le (a := a) (IntermediateField.subset_adjoin _ _ (show ω ^ l ^ a = ω by`. Rewrite using `[← Nat.sub_add_cancel hlt.le, pow_succ, hω.pow_eq_one, one_mul]))`. Establish `he : e = l ^ a - 1` using `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `{ succ_eq := h1 not_dvd := h2 finite := LL.2 prim := ⟨⟨ω, hmem⟩, he ▸ (IsPrimitiveRoot.map_iff_of_injective (f := LL.1.val) Subtype.val_injective).1 hω⟩ }`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a], e + 1 = l ^ a → ¬ l ∣ a → ∀ LL : FinExt l,
     (∃ LL' : FinExt l, LL.1 ≤ LL'.1 ∧ HasUnr a LL') ∧ (HasUnr a LL → TameDescentExponentData ↥LL.1 l e a) := by

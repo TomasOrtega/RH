@@ -11,15 +11,11 @@ section Alg
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Establish `hRdef : p.R = (MvPolynomial (Fin p.n) K ⧸ p.I)` using `rfl`. Use `haveI : IsReduced p.R := (Ideal.isRadical_iff_quotient_reduced p.I).1 p.rad`. Use `haveI : IsJacobsonRing p.R := inferInstanceAs (IsJacobsonRing (MvPolynomial (Fin p.n) K ⧸ p.I))`. Use `haveI hFT : Algebra.FiniteType K p.R := Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ K p.I) (Ideal.Quotient.mkₐ_surjective K p.I)`. Establish `hrad : (⊥ : Ideal p.R).IsRadical` using `fun x ⟨k, hk⟩ => (Submodule.mem_bot _).2 (IsNilpotent.eq_zero ⟨k, (Submodule.mem_bot _).1 hk⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Establish `hjac : (⊥ : Ideal p.R).jacobson = ⊥` using `by first`. Consider the case `exact IsJacobsonRing.out inferInstance hrad`. Consider the case `exact IsJacobsonRing.out' ⊥ hrad`. Establish `ha : a ∈ (⊥ : Ideal p.R).jacobson` using `by set_option synthInstance.maxHeartbeats 400000 in`. Use `Ideal.mem_sInf.2 fun J hJ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Establish `hJm : J.IsMaximal` using `hJ.2`. Use `letI := Ideal.Quotient.field J`. Use `haveI : Algebra.FiniteType K (p.R ⧸ J) := Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ K J) (Ideal.Quotient.mkₐ_surjective K J)`. Use `haveI : Module.Finite K (p.R ⧸ J) := finite_of_finite_type_of_isJacobsonRing K (p.R ⧸ J)`. Use `haveI : Algebra.IsIntegral K (p.R ⧸ J) := Algebra.IsIntegral.of_finite K _`.
-
-Use `haveI : Algebra.IsAlgebraic K (p.R ⧸ J) := Algebra.IsIntegral.isAlgebraic`. Set `ι : (p.R ⧸ J) →ₐ[K] M` to `IsAlgClosed.lift`. Establish `h0` using `h (ι.comp (Ideal.Quotient.mkₐ K J))`. Establish `h1 : ι (Ideal.Quotient.mk J a) = ι 0`. Rewrite using `[map_zero]`.
-
-Conclude with `h0`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 (ι.toRingHom.injective h1)`. Rewrite `ha` using `[hjac]`. Conclude with `(Submodule.mem_bot _).1 ha`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pts {M : Type} [Field M] [IsAlgClosed M] [Algebra K M] (p : TRing K) (a : p.R)
     (h : ∀ ψ : p.R →ₐ[K] M, ψ a = 0) : a = 0 := by
@@ -55,7 +51,7 @@ theorem eq_zero_of_pts {M : Type} [Field M] [IsAlgClosed M] [Algebra K M] (p : T
   exact (Submodule.mem_bot _).1 ha
 
 /- English proof (translation)
-Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`. Use `haveI : IsAlgClosed (CAt σ) := inferInstanceAs (IsAlgClosed ℂ)`. Conclude with `eq_zero_of_pts (M := CAt σ) p a h`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_cpts (σ : K →+* ℂ) (p : TRing K) (a : p.R) (h : ∀ ψ : p.R →ₐ[K] CAt σ, ψ a = 0) : a = 0 := by
   letI : Field (CAt σ) := inferInstanceAs (Field ℂ)
@@ -72,23 +68,21 @@ Both sides reduce to the same expression.
 theorem cvalR_algebraMap (σ : K →+* ℂ) (t : K) : cvalR σ (algebraMap K (CAt σ) t) = σ t := rfl
 
 /- English proof (translation)
-Set `L : IntermediateField K Kb` to `IntermediateField.adjoin K (Set.range v)`. Use `haveI : FiniteDimensional K L := IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Set `u : Fin m → L` to `fun i => ⟨v i, IntermediateField.subset_adjoin K _ ⟨i, rfl⟩⟩`. Establish `hu : ∀ i, algebraMap L Kb (u i) = v i` using `fun i => rfl`. Establish `hg : ∀ (g : L →ₐ[K] Kb) (φ : p.R →ₐ[K] Kb), ∑ i, g (u i) * φ (a i) = 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g φ`. Set `G : Kb →ₐ[K] Kb` to `g.liftNormal Kb`. Establish `hb : Function.Bijective G` using `Algebra.IsAlgebraic.algHom_bijective G`. Set `Ge : Kb ≃ₐ[K] Kb` to `AlgEquiv.ofBijective G hb`. Establish `h1` using `h ((Ge.symm : Kb →ₐ[K] Kb).comp φ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg G h1`. Rewrite `h2` using `[map_zero, map_sum]`. Use `Eq.trans ?_ h2` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← hu i, AlgHom.liftNormal_commutes]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `show φ (a i) = G (Ge.symm (φ (a i)))`. Conclude with `(Ge.apply_symm_apply (φ (a i))).symm`. Establish `htr : ∀ lam : L, ∀ i, Algebra.trace K L (lam * u i) = 0`. Introduce `lam`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hpt : ∀ φ : p.R →ₐ[K] Kb, φ (∑ i, Algebra.trace K L (lam * u i) • a i) = 0`. Introduce `φ`. Rewrite using `[map_sum]`. Establish `: ∀ i, φ (Algebra.trace K L (lam * u i) • a i) = (∑ g : L →ₐ[K] Kb, g (lam * u i)) * φ (a i)`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, Algebra.smul_def, ← trace_eq_sum_embeddings]`. Repeatedly rewrite using `[this, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun g _ => ?_` and prove the remaining obligations. Use `hg g φ` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_assoc]`. Use `_ = 0 := by rw [this, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h0` using `eq_zero_of_pts p _ hpt`. Conclude with `fun i => (Fintype.linearIndependent_iff.1 ha _ h0) i`. Use function extensionality and compare the values at `i`. Establish `hz : u i = 0`. Use `(traceForm_nondegenerate K L).1 (u i) fun lam => ?_` and prove the remaining obligations.
-
-Rewrite using `[Algebra.traceForm_apply, mul_comm]`. Conclude with `htr lam i`. Rewrite using `[← hu i, hz, map_zero]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem linIndep_alg_pts [CharZero K] {Kb : Type} [Field Kb] [IsAlgClosed Kb] [Algebra K Kb] [Normal K Kb] (p : TRing K) {m : ℕ} (a : Fin m → p.R)
     (ha : LinearIndependent K a) (v : Fin m → Kb)
@@ -142,15 +136,13 @@ theorem linIndep_alg_pts [CharZero K] {Kb : Type} [Field Kb] [IsAlgClosed Kb] [A
   rfl
 
 /- English proof (translation)
-Use `letI : Algebra K ℂ := σ.toAlgebra`. Set `ι : AlgebraicClosure K →ₐ[K] ℂ` to `IsAlgClosed.lift`. Set `Kb` to `AlgebraicClosure K`. Use `letI : Module Kb ℂ := Module.compHom ℂ (ι.toRingHom : Kb →+* ℂ)`. Establish `hsm : ∀ (c : Kb) (z : ℂ), c • z = ι c * z` using `fun _ _ => rfl`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hw`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, w j ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Conclude with `hw (funext hne)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Choose the witnesses or unpack the hypotheses as in `⟨ℓ, hℓ⟩ : ∃ ℓ : Module.Dual Kb ℂ, ℓ (w j) ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Conclude with `hj ((Module.forall_dual_apply_eq_zero_iff Kb (w j)).1 hne)`. Establish `hv` using `linIndep_alg_pts (Kb := AlgebraicClosure K) p a ha (fun i => ℓ (w i)) fun φ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `congrArg ℓ (h (ι.comp φ : p.R →ₐ[K] ℂ))`. Rewrite `h1` using `[map_zero, map_sum]`. Use `Eq.trans ?_ h1` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e : w i * cvalR σ ((ι.comp φ : p.R →ₐ[K] ℂ) (a i)) = φ (a i) • w i`.
-
-Rewrite using `[hsm, mul_comm]`. Both sides reduce to the same expression. Use `erw [e, map_smul, smul_eq_mul, mul_comm]`. Conclude with `hℓ (congrFun hv j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem linIndep_cpts [CharZero K] (σ : K →+* ℂ) (p : TRing K) {m : ℕ} (a : Fin m → p.R)
     (ha : LinearIndependent K a) (w : Fin m → ℂ)
@@ -181,17 +173,15 @@ theorem linIndep_cpts [CharZero K] (σ : K →+* ℂ) (p : TRing K) {m : ℕ} (a
   exact hℓ (congrFun hv j)
 
 /- English proof (translation)
-Set `S : Submodule K p.R` to `Submodule.span K (Set.range a)`. Use `haveI : FiniteDimensional K S := FiniteDimensional.span_of_finite K (Set.finite_range a)`. Set `e` to `Module.finBasis K S`. Set `t : Fin r → Fin (Module.finrank K S) → K` to `fun j l => e.repr ⟨a j, Submodule.subset_span ⟨j, rfl⟩⟩ l`. Establish `hat : ∀ j, a j = ∑ l, t j l • (e l : p.R)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Use `e.sum_repr ⟨a j, Submodule.subset_span ⟨j, rfl⟩⟩` as an intermediate fact. Establish `h2` using `congrArg (fun x : S => (x : p.R)) this`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h2`. Conclude with `h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hind : LinearIndependent K (fun l => (e l : p.R))` using `e.linearIndependent.map' S.subtype (Submodule.ker_subtype S)`. Establish `key` using `linIndep_cpts σ p (fun l => (e l : p.R)) hind (fun l => ∑ j, σ (t j l) * w j) fun ψ => by`. Rewrite using `[← h ψ]`. Repeatedly rewrite using `[hat, map_sum, map_smul, Algebra.smul_def, map_mul, cvalR_algebraMap, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hk : ∀ l, ∑ j, t j l • toCAt σ (w j) = 0`. Introduce `l`. Use `congrFun key l` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Pi.zero_apply] at this`. Conclude with `this`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[hat, Finset.smul_sum, map_sum, map_smul, smul_eq_mul, Finset.sum_smul, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
-
-Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Use `_ = 0 := by simp [hk]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descend_cpts [CharZero K] (σ : K →+* ℂ) (p : TRing K) {r : ℕ} (a : Fin r → p.R) (w : Fin r → ℂ)
     (h : ∀ ψ : p.R →ₐ[K] CAt σ, ∑ j, w j * cvalR σ (ψ (a j)) = 0) (θ : Module.Dual K (CAt σ)) :

@@ -5,27 +5,25 @@ open scoped NNReal ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ _ _ _ _ _ _ M μK hM hμ φ hφ hinv`. Use `haveI := hμ`. Use `haveI : CompactSpace M := isCompact_iff_compactSpace.mp hM.isCompact`. Use `haveI : BorelSpace M := Subtype.borelSpace _`. Take `⟨μM, hH, h1⟩ : ∃ μM : Measure M, μM.IsHaarMeasure ∧ μM Set.univ = 1` from `⟨Measure.haarMeasure ⊤, inferInstance, by simpa using Measure.haarMeasure_self (G := M) (K₀ := ⊤)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hH`. Use `haveI : IsProbabilityMeasure μM := ⟨h1⟩`. Establish `hφ'm : Measurable (hφ.mk φ)` using `hφ.measurable_mk`. Establish `hN₀m : MeasurableSet (toMeasurable μK {x | φ x ≠ hφ.mk φ x})` using `measurableSet_toMeasurable _ _`. Establish `hN₀0 : μK (toMeasurable μK {x | φ x ≠ hφ.mk φ x}) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Rewrite using `[measure_toMeasurable]`. Conclude with `ae_iff.mp hφ.ae_eq_mk`. Establish `hsub : {x | φ x ≠ hφ.mk φ x} ⊆ toMeasurable μK {x | φ x ≠ hφ.mk φ x}` using `subset_toMeasurable _ _`. Generalize the expression as in `toMeasurable μK {x | φ x ≠ hφ.mk φ x} = N₀ at hN₀m hN₀0 hsub`. Generalize the expression as in `hφ.mk φ = φ' at hφ'm hsub`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmul : Measurable (fun p : K × M => ((p.2 : K))⁻¹ * p.1)` using `((measurable_subtype_coe.comp measurable_snd).inv).mul measurable_fst`. Establish `hind : Measurable (N₀.indicator (1 : K → ℝ≥0∞))` using `measurable_one.indicator hN₀m`. Establish `hψm : Measurable (fun k : K => ∫⁻ m : M, φ' ((m : K)⁻¹ * k) ∂μM)` using `(hφ'm.comp hmul).lintegral_prod_right'`. Establish `hhm : Measurable (fun k : K => ∫⁻ m : M, N₀.indicator 1 ((m : K)⁻¹ * k) ∂μM)` using `(hind.comp hmul).lintegral_prod_right'`. Establish `inv_avg : ∀ g : K → ℝ≥0∞, ∀ m₀ ∈ M, ∀ k, ∫⁻ m : M, g ((m : K)⁻¹ * (m₀ * k)) ∂μM = ∫⁻ m : M, g ((m : K)⁻¹ * k) ∂μM`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g m₀ hm₀ k`. Rewrite using `[← lintegral_mul_left_eq_self _ (⟨m₀, hm₀⟩ : M)]`. Use `congr 1`. Use extensionality with `m`. Simplify using `[mul_assoc]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun k => ∫⁻ m : M, φ' ((m : K)⁻¹ * k) ∂μM, {k | ∫⁻ m : M, N₀.indicator 1 ((m : K)⁻¹ * k) ∂μM ≠ 0}, hψm, hhm (measurableSet_singleton 0).compl, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hint : ∫⁻ k, ∫⁻ m : M, N₀.indicator 1 ((m : K)⁻¹ * k) ∂μM ∂μK = 0`. Rewrite using `[lintegral_lintegral_swap (f := fun k (m : M) => N₀.indicator (1 : K → ℝ≥0∞) ((m : K)⁻¹ * k)) (hind.comp hmul).aemeasurable]`. Establish `: ∀ m : M, ∫⁻ k, N₀.indicator (1 : K → ℝ≥0∞) ((m : K)⁻¹ * k) ∂μK = 0`. Introduce `m`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[lintegral_mul_left_eq_self (fun k => N₀.indicator (1 : K → ℝ≥0∞) k), lintegral_indicator_one hN₀m, hN₀0]`. Simplify using `[this]`. Use `(lintegral_eq_zero_iff hhm).mp hint` as an intermediate fact. Rewrite `this` using `[Filter.EventuallyEq, ae_iff]`. Simplify using `using this`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `m hm k`. Simplify using `only [Set.mem_setOf_eq, inv_avg _ m hm k]`. Introduce `m hm k`. Conclude with `inv_avg _ m hm k`. Introduce `k hk`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk0 : ∫⁻ m : M, N₀.indicator 1 ((m : K)⁻¹ * k) ∂μM = 0` using `by simpa using hk`. Establish `hmk : Measurable (fun m : M => N₀.indicator (1 : K → ℝ≥0∞) ((m : K)⁻¹ * k))` using `hind.comp (measurable_subtype_coe.inv.mul_const k)`. Establish `hae` using `(lintegral_eq_zero_iff hmk).mp hk0`. Establish `: ∫⁻ m : M, φ' ((m : K)⁻¹ * k) ∂μM = ∫⁻ _m : M, φ k ∂μM`. Apply `lintegral_congr_ae` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [hae] with m hm`. Establish `hnot : (m : K)⁻¹ * k ∉ N₀`. Introduce `hmem`. Simplify using `[Set.indicator_of_mem hmem] at hm`. Establish `he : φ ((m : K)⁻¹ * k) = φ' ((m : K)⁻¹ * k)`.
-
-Assume the negation of the conclusion as `hne`. Conclude with `hnot (hsub hne)`. Rewrite using `[← he, hinv _ (M.inv_mem m.2) k]`. Use `show φ k = ∫⁻ m : M, φ' ((m : K)⁻¹ * k) ∂μM`. Rewrite using `[this, lintegral_const, h1, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_measurable_invariant_modification_of_closedSubgroup :
     ∀ (K : Type) [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K] [SecondCountableTopology K]

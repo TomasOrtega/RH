@@ -9,7 +9,7 @@ open scoped Matrix
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Unfold `minorAt`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eval_minorAt_frame {a d : ℕ} (x₀ : Var ι d a → ℂ) (τ : ι) (s : Fin a → Fin d) :
     eval x₀ (minorAt τ s) = ((Matrix.of fun (r : Fin d) (i : Fin a) => x₀ (τ, r, i)).submatrix s id).det := by
@@ -20,11 +20,11 @@ theorem eval_minorAt_frame {a d : ℕ} (x₀ : Var ι d a → ℂ) (τ : ι) (s 
   simp
 
 /- English proof (translation)
-Rewrite using `[rsub_X, Fintype.sum_prod_type, Finset.sum_eq_single τ]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single j]`. Simplify using `[frameMat, Matrix.conjTranspose_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[frameMat, Matrix.conjTranspose_apply, Ne.symm hb]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Use `Finset.sum_eq_zero fun w _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[frameMat, Matrix.conjTranspose_apply, Ne.symm hb]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem rsub_frame_X {a d : ℕ} (x₀ : Var ι d a → ℂ) (τ : ι) (i j : Fin a) :
     rsub (frameMat x₀)ᴴ (X (τ, i, j)) = ∑ r : Fin d, C (star (x₀ (τ, r, i))) * (X (τ, r, j) : Pol ι d a) := by
@@ -48,9 +48,9 @@ open scoped Matrix
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Rewrite using `[AlgHom.map_det]`. Use `set A : Matrix (Fin d) (Fin a) ℂ := Matrix.of fun (r : Fin d) (i : Fin a) => x₀ (τ, r, i) with hA`. Establish `hM : (rsub (frameMat x₀)ᴴ : MvPolynomial (ι × Fin a × Fin a) ℂ →ₐ[ℂ] Pol ι d a).mapMatrix (Matrix.of fun i j : Fin a => (X (τ, i, j) : MvPolynomial (ι × Fin a × Fin a) ℂ)) = (Aᴴ.map (C : ℂ →+* Pol ι d a)) * xMat τ d a`. Use extensionality with `i j`. Simplify using `[rsub_frame_X, xMat, Matrix.mul_apply, hA, Matrix.conjTranspose_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM, det_mul_eq_sum_sm]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[eval_minorAt_frame, ← hA, Matrix.submatrix_map, ← Matrix.det_conjTranspose, Matrix.conjTranspose_submatrix]`. Conclude with `(RingHom.map_det _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rsub_frame_det {a d : ℕ} (x₀ : Var ι d a → ℂ) (τ : ι) :
     rsub (frameMat x₀)ᴴ ((Matrix.of fun i j : Fin a => (X (τ, i, j) : MvPolynomial (ι × Fin a × Fin a) ℂ)).det) =
@@ -69,9 +69,9 @@ theorem rsub_frame_det {a d : ℕ} (x₀ : Var ι d a → ℂ) (τ : ι) :
     exact (RingHom.map_det _ _).symm
 
 /- English proof (translation)
-Unfold `detG`. Simplify using `only [map_prod, map_pow, rsub_frame_det]`. Rewrite using `[Finset.prod_congr rfl fun τ _ => (Fin.prod_const (n τ) _).symm]`. Rewrite using `[Finset.prod_congr rfl fun τ _ => Fintype.prod_sum _, Fintype.prod_sum]`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `prodMinors`. Simplify using `only [map_prod, star_prod, smul_eq_C_mul, Finset.prod_mul_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem rsub_frame_detG {a d : ℕ} (n : ι → ℕ) (x₀ : Var ι d a → ℂ) :
     rsub (frameMat x₀).conjTranspose (detG a n) =
@@ -89,7 +89,7 @@ end GlobalTheory.MinorFrame
 namespace GlobalTheory.MinorFrame
 
 /- English proof (translation)
-Introduce `_ _ n x₀` and use `rsub_frame_detG n x₀`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rsub_frame_detG_eq_sum : ∀ {ι : Type} [Fintype ι] (a d : ℕ) (n : ι → ℕ) (x₀ : Var ι d a → ℂ),
     rsub (frameMat x₀).conjTranspose (detG a n) =

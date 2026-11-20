@@ -17,43 +17,39 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Use `letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra`. Use `haveI : FiniteDimensional (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.omS_finite hd h c).1`. Establish `hn : 0 < d.N + 1` using `Nat.succ_pos _`. Use `haveI := sphereMeasure_isProbability hn`. Use `haveI := blockSphereMeasure_isProbability (B := d.D) hn`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj` using `IsFractionRing.injective (KTp K d.D d.N) (KTf K d.D d.N)`. Use `set ra := ratio (Ω := Ω c) (d.wx x c) (d.w (d.jc c) c) with hra`. Establish `hmem` using `d.linearCombination_mem_section hd x c`. Establish `hra0 : ra ≠ 0` using `d.ratio_base_ne_zero hd c hmem (hx c)`. Take `⟨κ3, hκ3, hN⟩` from `(d.norm_factorization hd h).1 c ra hra0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a1, b1, ha1, hb1, hsplit1⟩` from `d.hint_good_split hd h c _ (fun p _ hp => d.hint_good_of_ne c p hp)`. Rewrite `hN` using `[hsplit1]`. Establish `hNm0 : Algebra.norm (KTf K d.D d.N) (algebraMap (Ω c) (OmS (Ω c) d.D d.N) ra) ≠ 0` using `Algebra.norm_ne_zero_iff.2 ((map_ne_zero_iff _ (algebraMap (Ω c) _).injective).2 hra0)`. Establish `hb10 : b1 ≠ 0`. Introduce and unpack `rfl`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hN` using `[map_zero, div_zero, mul_zero]`. Conclude with `hNm0 hN`. Establish `ha10 : a1 ≠ 0`. Introduce and unpack `rfl`. Rewrite `hN` using `[map_zero, zero_div, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result.
 
-Conclude with `hNm0 hN`. Use `set a1' : KTp K d.D d.N := MvPolynomial.C κ3 * a1 with ha1'`. Establish `hkey1 : Algebra.norm (KTf K d.D d.N) (algebraMap (Ω c) (OmS (Ω c) d.D d.N) ra) * algebraMap (KTp K d.D d.N) (KTf K d.D d.N) b1 = algebraMap (KTp K d.D d.N) (KTf K d.D d.N) a1'`. Establish `hbne : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) b1 ≠ 0` using `(map_ne_zero_iff _ hinj).2 hb10`. Rewrite using `[hN, ha1', map_mul, ← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply]`.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Take `⟨F', hF', hF'0, hFmh, -, -⟩` from `d.componentForm_properties hd h c`. Establish `hFF : F' = F` using `hinj (hF'.trans hF.symm)`. Substitute `hFF` using the available equality. Take `⟨a2, b2, ha2, hb2, hsplit2⟩` from `d.hint_good_split hd h c (fun p => d.nPMM h c (d.w (d.jc c) c) p) (fun p _ hp => d.hint_good_of_ne c p (f := fun w => (d.fze h c w : ℤ) * d.ordMM c (d.Wres c w) (d.w (d.jc c) c)) hp)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hfZ : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) F' = Algebra.norm (KTf K d.D d.N) (d.rationalBaseRow c) * (algebraMap (KTp K d.D d.N) (KTf K d.D d.N) a2 / algebraMap (KTp K d.D d.N) (KTf K d.D d.N) b2)`. Rewrite using `[hF, ← hsplit2]`. Both sides reduce to the same expression. Establish `hb20 : b2 ≠ 0`. Introduce and unpack `rfl`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hfZ` using `[map_zero, div_zero, mul_zero, ← map_zero (algebraMap (KTp K d.D d.N) (KTf K d.D d.N))]`. Conclude with `hFne (hinj hfZ)`. Establish `ha20 : a2 ≠ 0`. Introduce and unpack `rfl`. Rewrite `hfZ` using `[map_zero, zero_div, mul_zero, ← map_zero (algebraMap (KTp K d.D d.N) (KTf K d.D d.N))]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `hFne (hinj hfZ)`. Establish `hkey2 : Algebra.norm (KTf K d.D d.N) (d.rationalBaseRow c) * algebraMap (KTp K d.D d.N) (KTf K d.D d.N) a2 = algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (F' * b2)`. Establish `hbne : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) b2 ≠ 0` using `(map_ne_zero_iff _ hinj).2 hb20`. Rewrite using `[map_mul, hfZ]`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hpoly : MvPolynomial.C κ * a1' * a2 = d.translatedForm x F' * b2 * b1`. Apply `mul_left_cancel₀ hFne` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Establish `hs'` using `hs`. Unfold `heightSubstitutionCondition at hs'`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hkey2` using `[map_mul]`. Establish `hCk : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (MvPolynomial.C κ) = algebraMap K (KTf K d.D d.N) κ`. Rewrite using `[← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply]`. Simplify using `only [map_mul, hCk]`. Take the linear combination `(-(algebraMap (KTp K d.D d.N) (KTf K d.D d.N) F' * algebraMap K (KTf K d.D d.N) κ * algebraMap (KTp K d.D d.N) (KTf K d.D d.N) a2)) * hkey1 + (algebraMap (KTp K d.D d.N) (KTf K d.D d.N) b1 * algebraMap (KTp K d.D d.N) (KTf K d.D d.N) a2) * hs' + (algebraMap (KTp K d.D d.N) (KTf K …`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin` using `(d.places_over_la hd h la c).1`. Establish `hZ : ∀ w ∈ d.PlOver la c, d.ordMM c (d.Wres c w) (d.wx x c) = (w (algebraMap (Ω c) (OmS (Ω c) d.D d.N) ra)).untopD 0 - (w (d.rationalBaseRow c)).untopD 0`. Introduce `w hw`. Take `⟨hv, -, j0, hj0, hint, hunit⟩` from `d.admissible_over_prime hd h la c w hw`. Conclude with `d.ordMinMax_at_good_place hd c w hv j0 hj0 hint hunit hmem (hx c)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hNla : d.localHeightAtPrime h (d.wx x) c la = (d.nLa h c la (algebraMap (Ω c) (OmS (Ω c) d.D d.N) ra) : ℝ) - (d.nLa h c la (d.rationalBaseRow c) : ℝ)`. Unfold `localHeightAtPrime nLa`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin]`. Use `push_cast`. Rewrite using `[← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun w hw => ?_` and prove the remaining obligations. Rewrite using `[hZ w (hfin.mem_toFinset.1 hw)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `ha1'0 : a1' ≠ 0` using `mul_ne_zero (by simpa using hκ3) ha10`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hraS : algebraMap (Ω c) (OmS (Ω c) d.D d.N) ra ≠ 0` using `(map_ne_zero_iff _ (algebraMap (Ω c) _).injective).2 hra0`. Establish `hw0 : d.rationalBaseRow c ≠ 0`. Introduce `h0`. Rewrite `hkey2` using `[h0, Algebra.norm_zero, zero_mul]`. Conclude with `mul_ne_zero hFne hb20 (hinj (hkey2.symm.trans (map_zero _).symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p1` using `d.pf_fin hd h c _ hraS a1' b1 ha1'0 hb10 hkey1 la`. Establish `p2` using `d.pf_fin hd h c _ hw0 (F' * b2) a2 (mul_ne_zero hFne hb20) ha20 hkey2 la`. Use `set v := FinitePlace.mk la with hv`. Establish `hg` using `congrArg (gaussAbs v) hpoly`. Rewrite `hg` using `[gauss_abs_mul v _ _ (mul_ne_zero (by simpa using hκ) ha1'0) ha20, gauss_abs_mul v _ _ (by simpa using hκ) ha1'0, HeightMultiplicativity.gaussAbs_C, gauss_abs_mul v _ _ (mul_ne_zero hFx hb20) hb10, gauss_abs_mul v _ _ hFx hb20]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hl` using `congrArg Real.log hg`. Establish `hk0 : 0 < v κ` using `(FinitePlace.pos_iff).2 hκ`. Establish `q1` using `gauss_abs_pos_of_ne_zero v a1' ha1'0`. Establish `q2` using `gauss_abs_pos_of_ne_zero v a2 ha20`. Establish `q3` using `gauss_abs_pos_of_ne_zero v _ hFx`.
-
-Establish `q4` using `gauss_abs_pos_of_ne_zero v b2 hb20`. Establish `q5` using `gauss_abs_pos_of_ne_zero v b1 hb10`. Establish `q6` using `gauss_abs_pos_of_ne_zero v F' hFne`. Rewrite `hl` using `[Real.log_mul (by positivity) q2.ne', Real.log_mul hk0.ne' q1.ne', Real.log_mul (by positivity) q5.ne', Real.log_mul q3.ne' q4.ne']`. Rewrite `p2` using `[gauss_abs_mul v _ _ hFne hb20, Real.log_mul q6.ne' q4.ne']`.
-
-Rewrite using `[hNla]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem finite_local_height_term (hd : d.AxH 𝒜) (h : d.S1) (x : Fin (d.N + 1) → K)
     (hx : ∀ c, d.wx x c ≠ 0) (c : ι) (F : KTp K d.D d.N) (κ : K) (hκ : κ ≠ 0)

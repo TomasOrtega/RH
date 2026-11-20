@@ -6,21 +6,19 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Pointwise
 
 /- English proof (translation)
-Take `⟨-, h2, h3, h4⟩` from `placeDict F Ω`. Establish `hfin : (Above F N).Finite`. Establish `h0 : Ideal.span {(N : 𝓞 F)} ≠ 0`. Simplify using `using hN`. Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Ideal.dvd_span_singleton.2 hv`. Set `T : ValuationSubring Ω → Set (G F Ω)` to `fun A => (fun p : G F Ω × G F Ω => p.1 * p.2 * p.1⁻¹) '' (Set.univ ×ˢ H A)`. Establish `hT : ∀ A, IsCompact (T A)` using `fun A => (isCompact_univ.prod (hcl A).isCompact).image (by fun_prop)`. Set `P : HeightOneSpectrum (𝓞 F) → Set (G F Ω)` to `fun v => if h : ∃ A : ValuationSubring Ω, IsPlaceOver A v then T h.choose else ∅`. Establish `hP : ∀ v, IsCompact (P v)` using `fun v => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [P]`. Use `split_ifs`. Use `exacts [hT _, isCompact_empty]`. Establish `e : {g : G F Ω | ∃ A : ValuationSubring Ω, A.valuation (N : Ω) < 1 ∧ g ∈ H A} = ⋃ v ∈ Above F N, P v`. Use extensionality with `σ`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_iUnion]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨A, hA, hσ⟩`. Take `⟨v, hv⟩` from `h2 A (h3 A N hN hA)`. Use `⟨v, (h4 A v N hv).1 hA, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `h : ∃ A : ValuationSubring Ω, IsPlaceOver A v` using `⟨A, hv⟩`. Simplify using `only [P, dif_pos h]`. Take `⟨g, hg⟩` from `exists_smul_eq_of_isPlaceOver (F := F) h.choose_spec hv`. Use `⟨(g, g⁻¹ * σ * g), ⟨trivial, hconj _ g σ (hg ▸ hσ)⟩, ?_⟩` and prove the remaining obligations. Simplify using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨v, hv, hσ⟩`. Simplify using `only [P] at hσ`. Use `split_ifs at hσ with h`. Take `⟨⟨g, τ⟩, ⟨-, hτ⟩, rfl⟩` from `hσ`. Use `⟨g • h.choose, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.Cut.ShaBound.valuation_smul_lt_one_iff, map_natCast]`. Conclude with `(h4 _ v N h.choose_spec).2 hv`. Use `hconj (g • h.choose) g⁻¹ τ (by rw [inv_smul_smul]; exact hτ)` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Conclude with `hσ.elim`.
-
-Rewrite using `[e]`. Conclude with `hfin.isCompact_biUnion fun v _ => hP v`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Kum.compact_union (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] (N : ℕ) (hN : N ≠ 0) (H : ValuationSubring Ω → Set (G F Ω)) (hcl : ∀ A, IsClosed (H A))
@@ -69,7 +67,7 @@ private theorem UpperTheory.V.Kum.compact_union (F Ω : Type) [Field F] [NumberF
   exact hfin.isCompact_biUnion fun v _ => hP v
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ N hN`. Conclude with `⟨compact_union F Ω N hN (fun A => (Dec (F := F) A : Set (G F Ω))) (fun A => isClosed_Dec A) fun A g σ h => GlobalTheory.Cut.ShaBound.conj_mem_Dec h, compact_union F Ω N hN (fun A => (Ine (F := F) A : Set (G F Ω))) (fun A => isClosed_Ine A) fun A g σ h => GlobalTheory.Cut.ShaBound …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Kum.decCompact :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (N : ℕ), N ≠ 0 → IsCompact {g : G F Ω | ∃ A : ValuationSubring Ω, A.valuation (N : Ω) < 1 ∧ g ∈ Dec (F := F) A} ∧ IsCompact {g : G F Ω | ∃ A : ValuationSubring Ω, A.valuation (N : Ω) < 1 ∧ g ∈ Ine (F := F) A} := by

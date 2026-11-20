@@ -13,9 +13,9 @@ namespace GlobalTheory.TContMul
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.LatticePowerScalar.exists_pow_smul_mem_lattice`. Consider the case `exact _root_.GlobalTheory.LatticePowerScalar.exists_pow_smul_mem_lattice`. Consider the case `(apply _root_.GlobalTheory.LatticePowerScalar.exists_pow_smul_mem_lattice <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LatticePowerScalar.exists_pow_smul_mem_lattice <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.LatticePowerScalar.exists_pow_smul_mem_lattice <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LatticePowerScalar.exists_pow_smul_mem_lattice ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_mem (LL : FinExt l) (T : QLat LL) (v : T.V)
     (hv : v ∈ Submodule.span ↥LL.1 (T.L.T : Set T.V)) : ∃ n : ℕ, ((l : ↥LL.1) ^ n) • v ∈ T.L.T := by
@@ -28,7 +28,7 @@ theorem exists_pow_smul_mem (LL : FinExt l) (T : QLat LL) (v : T.V)
   | (intros; exact _root_.GlobalTheory.LatticePowerScalar.exists_pow_smul_mem_lattice ..)
 
 /- English proof (translation)
-Introduce `l _ LL T v`. Establish `hv : v ∈ Submodule.span ↥LL.1 (T.L.T : Set T.V)` using `by rw [T.L.span]; trivial`. Take `⟨n, hn⟩` from `exists_pow_smul_mem LL T v hv`. Conclude with `⟨n, _, hn, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l) (T : QLat LL) (v : T.V), ∃ n : ℕ, ∃ x ∈ T.L.T, x = ((l : ↥LL.1) ^ n) • v := by
   intro l _ LL T v

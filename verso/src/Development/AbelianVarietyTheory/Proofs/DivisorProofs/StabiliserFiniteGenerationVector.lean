@@ -16,25 +16,21 @@ namespace GlobalTheory.IrrAn
 open ReciprocityTheory.AnForm.M
 
 /- English proof (translation)
-Introduce `d Y _ A S Z₁ Z₂ hS _ hL hA1 hA2 hsub`. Distinguish the cases in `h1 : S ⊆ Z₁`. Conclude with `Or.inl h1`. Use `right`. Take `⟨x0, hx0S, hx0Z⟩` from `Set.not_subset.1 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hZ1c : IsClosed Z₁` using `GlobalTheory.IrrAn.isClosed_of_isAnalyticSubset A hA1`. Set `G : Set Y` to `{x | ∀ᶠ y in 𝓝 x, y ∈ S → y ∈ Z₂}`. Establish `hGo : IsOpen G`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Filter.Eventually.eventually_nhds hx`. Establish `hGcl : ∀ x ∈ S, x ∈ closure (S ∩ G) → x ∈ G`. Introduce `x hxS hx`. Take `⟨W, hW, hxW, r, f, hf, hZW⟩` from `hA2 x`. Take `⟨N, hN, hxN, hNW, hNid⟩` from `hL x hxS W hW hxW`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x', hx'N, hx'S, hx'G⟩` from `mem_closure_iff.1 hx N hN hxN`. Establish `hvan : ∀ i, ∀ y ∈ S ∩ N, f i y = 0`. Introduce `i`. Use `hNid (f i) (hf i) x' ⟨hx'S, hx'N⟩ ?_` and prove the remaining obligations. Use `filter_upwards [hx'G, hN.mem_nhds hx'N] with y hy hyN hyS`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hyZW : y ∈ Z₂ ∩ W` using `⟨hy hyS, hNW hyN⟩`. Rewrite `hyZW` using `[hZW]`. Conclude with `hyZW.2 i`. Use `show ∀ᶠ y in 𝓝 x, y ∈ S → y ∈ Z₂`. Use `filter_upwards [hN.mem_nhds hxN] with y hyN hyS`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hy : y ∈ {y ∈ W | ∀ i, f i y = 0}` using `⟨hNW hyN, fun i => hvan i y ⟨hyS, hyN⟩⟩`. Rewrite `hy` using `[← hZW]`. Conclude with `hy.1`. Establish `hx0G : x0 ∈ G` using `by show ∀ᶠ y in 𝓝 x0, y ∈ S → y ∈ Z₂ filter_upwards [hZ1c.isOpen_compl.mem_nhds hx0Z] with y hy hyS`. Conclude with `(hsub hyS).resolve_left hy`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hSG : S ⊆ G` using `by haveI := Subtype.preconnectedSpace hS`. Set `T : Set S` to `Subtype.val ⁻¹' G`. Establish `hTc : IsClopen T`. Use `⟨?_, hGo.preimage continuous_subtype_val⟩` and prove the remaining obligations. Use `isClosed_of_closure_subset fun x hx => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[closure_subtype]`. Apply `hGcl x x.2` to reduce the goal to its premises. Use `closure_mono ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `⟨y.2, hy⟩`.
-
-Break down `isClopen_iff.1 hTc with h | h` into its components or cases. Establish `hm : (⟨x0, hx0S⟩ : S) ∈ T` using `hx0G`. Rewrite `hm` using `[h]`. Conclude with `absurd hm (Set.notMem_empty _)`. Introduce `x hx`.
-
-Establish `hm : (⟨x, hx⟩ : S) ∈ T` using `by rw [h]; trivial`. Conclude with `hm`. Introduce `x hx`. Conclude with `Filter.Eventually.self_of_nhds (hSG hx) hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem subset_or_subset_of_locIdent : ∀ (d : ℕ) (Y : Type) [TopologicalSpace Y] (A : FinHolAtlas d Y) (S Z₁ Z₂ : Set Y), IsPreconnected S → S.Nonempty → GlobalTheory.IrrAn.LocIdent A S → A.IsAnalyticSubset Z₁ → A.IsAnalyticSubset Z₂ → S ⊆ Z₁ ∪ Z₂ → S ⊆ Z₁ ∨ S ⊆ Z₂ := by
   intro d Y _ A S Z₁ Z₂ hS _ hL hA1 hA2 hsub

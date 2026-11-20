@@ -16,11 +16,11 @@ variable {K L : FiniteSubfield} [Fact (K ≤ L)] {S : Set (HeightOneSpectrum (�
   (hL : ∀ x : L.1, algebraMap L.1 ℚ̄ x ∈ maxUnramifiedOutside K.1 ℚ̄ S)
 
 /- English proof (translation)
-Take `⟨ζ, hζ⟩` from `hζ`. Introduce `g t`. Establish `hfix : ∀ x : L.1, (g : galUnramifiedOutside K.1 ℚ̄ S) (gsEmbedding hL x) = gsEmbedding hL x` using `(mem_gsOpenSubgroup_iff S hL g).1 g.2`. Establish `hprim : IsPrimitiveRoot (gsEmbedding hL ζ) ℓ` using `hζ.map_of_injective (gsEmbedding hL).injective`. Express the relevant statement in the definitionally equal form `Additive (rootsOfUnity ℓ (maxUnramifiedOutside K.1 ℚ̄ S)) at t`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `set u : rootsOfUnity ℓ (maxUnramifiedOutside K.1 ℚ̄ S) := Additive.toMul t with hu`. Take `⟨k, -, hk⟩` from `hprim.eq_pow_of_pow_eq_one (ξ := ((u : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifiedOutside K.1 ℚ̄ S)) (by rw [← Units.val_pow_eq_pow_val, (mem_rootsOfUnity _ _).1 u.2, Units.val_one])`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(g : galUnramifiedOutside K.1 ℚ̄ S) ((u : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifiedOutside K.1 ℚ̄ S) = _`. Rewrite using `[← hk, map_pow, hfix]`. Conclude with `hk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem roots_trivial (hζ : ∃ ζ : L.1, IsPrimitiveRoot ζ ℓ) :
     ∀ (g : (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) (t : gsRootsZMod S ℓ),
@@ -48,17 +48,17 @@ instance moduleFinite_gsRootsZMod : Module.Finite (ZMod ℓ) (gsRootsZMod S ℓ)
   exact Module.Finite.of_finite
 
 /- English proof (translation)
-Establish `hmap : ∀ g : ℚ̄ ≃ₐ[ℚ] ℚ̄, g ∈ K.1.fixingSubgroup → ∀ x ∈ L.1, g x ∈ L.1`. Introduce `g hg x hx`. Set `g' : ℚ̄ ≃ₐ[K.1] ℚ̄` to `AlgEquiv.ofRingEquiv (f := g.toRingEquiv) (fun c => (IntermediateField.mem_fixingSubgroup_iff _ _).1 hg c c.2)`. Set `gS : galUnramifiedOutside K.1 ℚ̄ S` to `g'.restrictNormal (maxUnramifiedOutside K.1 ℚ̄ S)`. Establish `hgS : ∀ y : maxUnramifiedOutside K.1 ℚ̄ S, ((gS y : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) = g y` using `fun y => g'.restrictNormal_commutes _ y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hxS : x ∈ maxUnramifiedOutside K.1 ℚ̄ S` using `hL ⟨x, hx⟩`. Establish `he : gsEmbedding hL ⟨x, hx⟩ = ⟨x, hxS⟩` using `Subtype.ext rfl`. Establish `key` using `mem_of_forall_gsOpenSubgroup_fixes S hL (gS ⟨x, hxS⟩) (fun σ hσ => by`. Establish `hc : gS⁻¹ * σ * gS ∈ gsOpenSubgroup S hL`. Use `h.conj_mem σ hσ gS⁻¹` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[mul_assoc]`. Establish `hfx : (gS⁻¹ * σ * gS) ⟨x, hxS⟩ = ⟨x, hxS⟩`. Use `(mem_gsOpenSubgroup_iff S hL _).1 hc ⟨x, hx⟩` as an intermediate fact. Rewrite `this` using `[he]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [AlgEquiv.mul_apply]`. Rewrite using `[← AlgEquiv.mul_apply gS, mul_inv_cancel, AlgEquiv.one_apply]`. Use `_ = gS ⟨x, hxS⟩ := by rw [hfx])`. Rewrite `key` using `[hgS]`. Then use the resulting hypothesis. Establish `: (L.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup).Normal` using `⟨fun n hn g => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hn`, the goal using `[Subgroup.mem_subgroupOf, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Establish `hx'` using `hmap _ (inv_mem g.2) x hx`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, AlgEquiv.mul_apply]`. Rewrite using `[hn _ hx']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `AlgEquiv.apply_symm_apply _ x⟩`. Use `FiniteSubfield.isGalois_of_normal (F := K) (E := L)` as an intermediate fact. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem normal_of_gsOpenSubgroup_normal
     (h : (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).Normal) : Normal K.1 L.1 := by
@@ -96,7 +96,7 @@ theorem normal_of_gsOpenSubgroup_normal
 open scoped Classical in
 
 /- English proof (translation)
-Establish `h2 : Fintype.card {v : InfinitePlace K.1 // v.IsComplex} = Fintype.card {v : InfinitePlace K.1 // ¬ v.IsReal}` using `Fintype.card_congr (Equiv.subtypeEquivRight fun v => InfinitePlace.not_isReal_iff_isComplex.symm)`. Establish `h` using `Fintype.card_subtype_compl (fun v : InfinitePlace K.1 => v.IsReal)`. Establish `h3` using `Fintype.card_subtype_le (fun v : InfinitePlace K.1 => v.IsReal)`. Rewrite using `[h2, h]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_infinitePlace_eq (K : FiniteSubfield) : Fintype.card (InfinitePlace K.1) =
     Fintype.card {v : InfinitePlace K.1 // v.IsReal} + Fintype.card {v : InfinitePlace K.1 // v.IsComplex} := by

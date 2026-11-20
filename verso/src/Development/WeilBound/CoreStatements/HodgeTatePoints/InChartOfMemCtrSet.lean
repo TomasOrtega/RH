@@ -9,9 +9,9 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberFiel
 namespace PositivityTheory.HtPt.Mb
 
 /- English proof (translation)
-Use `⟨c, hc, fun a ha => ?_⟩` and prove the remaining obligations. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨j, rfl⟩` from `hy`. Conclude with `hx j`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `algebraMap r => exact ho r`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`. Consider the case `mul y z _ _ hy hz => rw [map_mul]`. Conclude with `mul_mem hy hz`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_ctrSet_of {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {κ : Type} {x : κ → Ω}
     {X' : Scheme.{0}} {Ω' : Type} [Field Ω'] {ξ' : Spec (CommRingCat.of Ω') ⟶ X'} {i : Ω →+* Ω'} {p' : Cpt ξ'}
@@ -27,11 +27,11 @@ theorem mem_ctrSet_of {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o 
   | mul y z _ _ hy hz => rw [map_mul]; exact mul_mem hy hz
 
 /- English proof (translation)
-Introduce `o _ Ω _ _ κ κ' x Ω' _ _ i w M' hi p'`. Take `⟨⟨c, l⟩, hc⟩` from `M'.tie.cover p'`. Establish `h0 : i (x c) * w l ≠ 0` using `hc.1`. Establish `h1` using `left_ne_zero_of_mul h0`. Establish `h2` using `right_ne_zero_of_mul h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨mem_ctrSet_of c ((map_ne_zero i).1 h1) (fun r => ?_) fun j => ?_, l, h2, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[hi]`. Conclude with `(M'.tie.ring (c, l) hc.1 _).1 (Subalgebra.algebraMap_mem _ r) p' hc`. Use `hc.2 (j, l)` as an intermediate fact. Simplify using `only [joinCo] at this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[mul_div_mul_right _ _ h2, ← map_div₀]`. Then use the resulting hypothesis. Use `hc.2 (c, j)` as an intermediate fact. Simplify using `only [joinCo] at this`. Rewrite `this` using `[mul_div_mul_left _ _ h1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem join_charts : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ κ' : Type) (x : κ → Ω) (Ω' : Type) [Field Ω'] [Algebra o Ω'] (i : Ω →+* Ω') (w : κ' → Ω') (M' : PModel o (joinCo i x w)), (∀ a : o, i (algebraMap o Ω a) = algebraMap o Ω' a) → ∀ p' : Cpt M'.ξ, p' ∈ ctrSet o x i M'.ξ ∧ ∃ l, InChart M'.ξ w l p' := by
   intro o _ Ω _ _ κ κ' x Ω' _ _ i w M' hi p'

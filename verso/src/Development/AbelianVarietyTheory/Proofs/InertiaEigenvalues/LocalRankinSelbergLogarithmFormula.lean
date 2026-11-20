@@ -10,11 +10,11 @@ open Complex ComplexConjugate NumberField IsDedekindDomain GlobalTheory.CuspRep 
 namespace GlobalTheory.JSLog
 
 /- English proof (translation)
-Proceed by induction on `S using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a S ih`. Establish `ha : ‖a‖ < 1` using `h a (Multiset.mem_cons_self a S)`. Establish `ih'` using `ih fun w hw => h w (Multiset.mem_cons_of_mem hw)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : Summable fun r : ℕ => ‖a‖ ^ (r + 1)` using `(summable_geometric_of_lt_one (norm_nonneg _) ha).comp_injective (add_left_injective 1)`. Use `(hg.add ih').of_nonneg_of_le (fun _ => norm_nonneg _) fun r => ?_` and prove the remaining obligations. Simplify using `only [Multiset.map_cons, Multiset.sum_cons, add_div]`. Use `(norm_add_le _ _).trans (add_le_add ?_ le_rfl)` and prove the remaining obligations. Rewrite using `[norm_div, norm_pow]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (1 : ℝ) ≤ ‖((r + 1 : ℕ) : ℂ)‖`. Rewrite using `[Complex.norm_natCast]`. Conclude with `Nat.succ_pos r` after adjusting the coercions. Conclude with `div_le_self (pow_nonneg (norm_nonneg _) _) h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summable_norm_log_terms (S : Multiset ℂ) (h : ∀ w ∈ S, ‖w‖ < 1) :
     Summable fun r : ℕ => ‖(S.map fun w => w ^ (r + 1)).sum / ((r + 1 : ℕ) : ℂ)‖ := by
@@ -34,7 +34,7 @@ theorem summable_norm_log_terms (S : Multiset ℂ) (h : ∀ w ∈ S, ‖w‖ < 1
     exact div_le_self (pow_nonneg (norm_nonneg _) _) h1
 
 /- English proof (translation)
-Use `GlobalTheory.JSW.LogPos.hasSum_log S h` as an intermediate fact. Rewrite `this` using `[← hasSum_nat_add_iff' 1]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasSum_log_succ (S : Multiset ℂ) (h : ∀ w ∈ S, ‖w‖ < 1) :
     HasSum (fun r : ℕ => (S.map fun w => w ^ (r + 1)).sum / ((r + 1 : ℕ) : ℂ)) (S.map fun w => -log (1 - w)).sum := by
@@ -43,7 +43,7 @@ theorem hasSum_log_succ (S : Multiset ℂ) (h : ∀ w ∈ S, ‖w‖ < 1) :
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[Multiset.map_map]`. Use `GlobalTheory.JSW.LogPos.sum_pow_product z r A B` as an intermediate fact. Simplify using `only [Function.comp_def]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_pow_product_succ (z : ℂ) (r : ℕ) (A B : Multiset ℂˣ) :
     (((A ×ˢ B).map fun p : ℂˣ × ℂˣ => (p.1 : ℂ) * p.2 * z).map (fun w => w ^ r)).sum =
@@ -54,15 +54,13 @@ theorem sum_pow_product_succ (z : ℂ) (r : ℕ) (A B : Multiset ℂˣ) :
   rw [this]; ring
 
 /- English proof (translation)
-Rewrite using `[Complex.norm_natCast_cpow_of_pos hq, neg_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_natCast_cpow_neg (q : ℕ) (hq : 0 < q) (s : ℂ) : ‖(q : ℂ) ^ (-s)‖ = (q : ℝ) ^ (-s.re) := by
   rw [Complex.norm_natCast_cpow_of_pos hq, neg_re]
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos q with rfl | hq` into its components or cases. Distinguish the cases in `hs : s = 0`. Simplify using `[hs]`. Rewrite using `[Nat.cast_zero, Complex.zero_cpow (neg_ne_zero.2 hs), norm_zero, Nat.cast_zero]`. Conclude with `Real.rpow_nonneg le_rfl _`.
-
-Conclude with `(norm_natCast_cpow_neg q hq s).le`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_natCast_cpow_neg_le (q : ℕ) (s : ℂ) : ‖(q : ℂ) ^ (-s)‖ ≤ (q : ℝ) ^ (-s.re) := by
   rcases Nat.eq_zero_or_pos q with rfl | hq
@@ -73,19 +71,17 @@ theorem norm_natCast_cpow_neg_le (q : ℕ) (s : ℂ) : ‖(q : ℂ) ^ (-s)‖ �
   · exact (norm_natCast_cpow_neg q hq s).le
 
 /- English proof (translation)
-Rewrite using `[← Complex.cpow_nat_mul, neg_mul_eq_mul_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cpow_neg_mul_nat (q : ℕ) (s : ℂ) (n : ℕ) : (q : ℂ) ^ (-((n : ℂ) * s)) = ((q : ℂ) ^ (-s)) ^ n := by
   rw [← Complex.cpow_nat_mul, neg_mul_eq_mul_neg]
 
 /- English proof (translation)
-Use `set z : ℂ := (q : ℂ) ^ (-s) with hz`. Use `set S := (A ×ˢ B).map fun p : ℂˣ × ℂˣ => (p.1 : ℂ) * p.2 * z with hS`. Establish `hSn : ∀ w ∈ S, ‖w‖ < 1`. Introduce `w hw`. Take `⟨p, hp, rfl⟩` from `Multiset.mem_map.1 hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hp` using `[Multiset.mem_product]`. Rewrite using `[norm_mul, norm_mul, hz]`. Conclude with `lt_of_le_of_lt (mul_le_mul_of_nonneg_left (norm_natCast_cpow_neg_le q s) (mul_nonneg (norm_nonneg _) (norm_nonneg _))) (h _ hp.1 _ hp.2)`. Establish `hterm : ∀ r : ℕ, (A.map fun a : ℂˣ => (a : ℂ) ^ (r + 1)).sum * (B.map fun b : ℂˣ => (b : ℂ) ^ (r + 1)).sum * (q : ℂ) ^ (-(((r + 1 : ℕ) : ℂ) * s)) / ((r + 1 : ℕ) : ℂ) = (S.map fun w => w ^ (r + 1)).sum / ((r + 1 : ℕ) : ℂ)`. Introduce `r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hS, sum_pow_product_succ, cpow_neg_mul_nat, ← hz]`. Simplify using `only [hterm]`. Use `⟨summable_norm_log_terms S hSn, ?_⟩` and prove the remaining obligations. Establish `hloc : locL q A B s = (S.map fun w => (1 - w)⁻¹).prod`. Simplify using `only [locL, hS, Multiset.map_map, Function.comp_def, hz]`.
-
-Rewrite using `[hloc, GlobalTheory.JSW.LogPos.prod_inv_one_sub_eq_exp S hSn, (hasSum_log_succ S hSn).tsum_eq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locL_eq_exp (q : ℕ) (A B : Multiset ℂˣ) (s : ℂ)
     (h : ∀ α ∈ A, ∀ β ∈ B, ‖(α : ℂ)‖ * ‖(β : ℂ)‖ * (q : ℝ) ^ (-s.re) < 1) :
@@ -120,7 +116,7 @@ namespace GlobalTheory.JSLog
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-Establish `hex : ∃ B, π.HasSat w B` using `h w hw`. Unfold `sat`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSat_sat {a : ℕ} {π : CG E a} {T : Finset (HeightOneSpectrum (𝓞 E))} (h : UnrOutside T π)
     {w : HeightOneSpectrum (𝓞 E)} (hw : w ∉ T) : π.HasSat w (sat π w) := by
@@ -130,7 +126,7 @@ theorem hasSat_sat {a : ℕ} {π : CG E a} {T : Finset (HeightOneSpectrum (𝓞 
   exact hex.choose_spec
 
 /- English proof (translation)
-Unfold `sat`. Use `split_ifs with h`. Conclude with `Multiset.card_eq_zero.1 h.choose_spec.card`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sat_zero (π : CG E 0) (w : HeightOneSpectrum (𝓞 E)) : sat π w = 0 := by
   unfold sat
@@ -139,7 +135,7 @@ theorem sat_zero (π : CG E 0) (w : HeightOneSpectrum (𝓞 E)) : sat π w = 0 :
   · rfl
 
 /- English proof (translation)
-Establish `h0 : HasProd f 0`. Establish `: Filter.Tendsto (fun s : Finset ι => ∏ b ∈ s, f b) Filter.atTop (nhds 0)` using `tendsto_const_nhds.congr' (Filter.eventually_atTop.2 ⟨{i}, fun s hs => (Finset.prod_eq_zero (hs (Finset.mem_singleton_self i)) hi).symm⟩)`. Conclude with `this`. Conclude with `h.unique h0`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasProd_eq_zero_of_eq_zero {ι : Type*} {f : ι → ℂ} {P : ℂ} (h : HasProd f P) {i : ι} (hi : f i = 0) :
     P = 0 := by
@@ -152,19 +148,17 @@ theorem hasProd_eq_zero_of_eq_zero {ι : Type*} {f : ι → ℂ} {P : ℂ} (h : 
   exact h.unique h0
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Rewrite `hα` using `[sat_zero]`. Simplify using `at hα`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hq : (1 : ℝ) < Ideal.absNorm w.asIdeal` using `by exact_mod_cast NumberField.HeightOneSpectrum.one_lt_absNorm w`. Establish `hq0 : (0 : ℝ) < Ideal.absNorm w.asIdeal` using `by linarith`. Use `set M := ‖(α : ℂ)‖ ^ 2 with hM`. Establish `hM0 : 0 < M` using `by linarith`. Use `set x := Real.logb (Ideal.absNorm w.asIdeal : ℝ) M with hxdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : 1 < x`. Rewrite using `[hxdef, Real.lt_logb_iff_rpow_lt hq hM0, Real.rpow_one]`. Conclude with `hlt`. Establish `hqx : (Ideal.absNorm w.asIdeal : ℝ) ^ x = M` using `Real.rpow_logb hq0 hq.ne' hM0`. Take `⟨L, hL, -, -⟩` from `GlobalTheory.T.rankinSelberg_partialL_pole_at_one_conj E a π ha hu T hT`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨hP, hL1⟩` from `hL x hx`. Establish `hzero : locL (Ideal.absNorm (⟨w, hw⟩ : {w : HeightOneSpectrum (𝓞 E) // w ∉ T}).1.asIdeal) (sat π w) ((sat π w).map (Units.map (starRingEnd ℂ).toMonoidHom)) (x : ℂ) = 0`. Unfold `locL`. Apply `Multiset.prod_eq_zero` to reduce the goal to its premises. Use `Multiset.mem_map.2 ⟨(α, Units.map (starRingEnd ℂ).toMonoidHom α), Multiset.mem_product.2 ⟨hα, Multiset.mem_map_of_mem _ hα⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (α : ℂ) * ((Units.map (starRingEnd ℂ).toMonoidHom α : ℂˣ) : ℂ) = (M : ℂ)`. Rewrite using `[Units.coe_map]`. Express the relevant statement in the definitionally equal form `(α : ℂ) * conj (α : ℂ) = _`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hM]`. Establish `e2 : ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (-(x : ℂ)) = ((M⁻¹ : ℝ) : ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.JSW.LogPos.cpow_neg_eq, Real.rpow_neg (Nat.cast_nonneg _), hqx]`. Simplify using `only`. Rewrite using `[e1, e2, ← Complex.ofReal_mul, mul_inv_cancel₀ hM0.ne', Complex.ofReal_one, sub_self, inv_zero]`. Use `hasProd_eq_zero_of_eq_zero hP hzero` as an intermediate fact. Establish `h0 : L x = 0` using `by exact_mod_cast this`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sq_norm_le {a : ℕ} {π : CG E a} (hu : π.IsUnitary) {T : Finset (HeightOneSpectrum (𝓞 E))}
     (hT : UnrOutside T π) {w : HeightOneSpectrum (𝓞 E)} (hw : w ∉ T) {α : ℂˣ} (hα : α ∈ sat π w) :
@@ -202,9 +196,9 @@ theorem sq_norm_le {a : ℕ} {π : CG E a} (hu : π.IsUnitary) {T : Finset (Heig
   linarith
 
 /- English proof (translation)
-Establish `hq0 : 0 < q` using `by linarith`. Establish `huv : u * v ≤ q` using `by nlinarith [sq_nonneg (u - v)]`. Establish `h1 : q ^ (-x) < q⁻¹`. Rewrite using `[← Real.rpow_neg_one]; exact Real.rpow_lt_rpow_of_exponent_lt hq (by linarith)`. Establish `h2 : 0 < q ^ (-x)` using `Real.rpow_pos_of_pos hq0 _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem pair_lt_one {u v q x : ℝ} (hu : 0 ≤ u) (hv : 0 ≤ v) (hq : 1 < q) (hx : 1 < x) (huq : u ^ 2 ≤ q)
     (hvq : v ^ 2 ≤ q) : u * v * q ^ (-x) < 1 := by
@@ -218,13 +212,13 @@ theorem pair_lt_one {u v q x : ℝ} (hu : 0 ≤ u) (hv : 0 ≤ v) (hq : 1 < q) (
     _ = 1 := mul_inv_cancel₀ hq0.ne'
 
 /- English proof (translation)
-The claim follows from `Multiset.map_congr rfl fun b _ => Units.ext (by rw [Units.coe_map, Units.coe_star]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem map_conj_eq_map_star (B : Multiset ℂˣ) : B.map (Units.map (starRingEnd ℂ).toMonoidHom) = B.map star :=
   Multiset.map_congr rfl fun b _ => Units.ext (by rw [Units.coe_map, Units.coe_star]; rfl)
 
 /- English proof (translation)
-Rewrite using `[map_conj_eq_map_star, GlobalTheory.JSW.LogPos.sum_pow_star]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_pow_map_conj (n : ℕ) (B : Multiset ℂˣ) :
     ((B.map (Units.map (starRingEnd ℂ).toMonoidHom)).map fun b : ℂˣ => (b : ℂ) ^ n).sum =
@@ -232,9 +226,9 @@ theorem sum_pow_map_conj (n : ℕ) (B : Multiset ℂˣ) :
   rw [map_conj_eq_map_star, GlobalTheory.JSW.LogPos.sum_pow_star]
 
 /- English proof (translation)
-Establish `h0 : Filter.Tendsto (fun s : Finset ι => ∏ i ∈ s, ((Real.exp (f i) : ℝ) : ℂ)) Filter.atTop (nhds P)` using `h`. Establish `h1 : Filter.Tendsto (fun s : Finset ι => Real.exp (∑ i ∈ s, f i)) Filter.atTop (nhds P.re)`. Use `((Complex.continuous_re.tendsto P).comp h0).congr fun s => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, ← Complex.ofReal_prod, Complex.ofReal_re, Real.exp_sum]`. Take `⟨s0, hs0⟩` from `Filter.eventually_atTop.1 (h1.eventually (gt_mem_nhds (lt_add_one P.re)))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `summable_of_sum_le (c := P.re + 1) (fun i => hf i) fun s => ?_` and prove the remaining obligations. Establish `hs` using `hs0 (s ∪ s0) Finset.subset_union_right`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem summable_of_hasProd_exp {ι : Type*} [DecidableEq ι] (f : ι → ℝ) (hf : ∀ i, 0 ≤ f i) {P : ℂ}
     (h : HasProd (fun i => ((Real.exp (f i) : ℝ) : ℂ)) P) : Summable f := by
@@ -251,17 +245,15 @@ theorem summable_of_hasProd_exp {ι : Type*} [DecidableEq ι] (f : ι → ℝ) (
     _ ≤ P.re + 1 := hs.le
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Simplify using `only [sat_zero, Multiset.map_zero, Multiset.sum_zero, map_zero, mul_zero, zero_div]`. Conclude with `summable_zero`. Take `⟨L, hL, -, -⟩` from `GlobalTheory.T.rankinSelberg_partialL_pole_at_one_conj E a σ ha hσ T hT`. Take `⟨hP, -⟩` from `hL x hx`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hloc : ∀ w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T}, ∃ Lw : ℝ, HasSum (fun n : ℕ => ((Ideal.absNorm w.1.asIdeal : ℝ) ^ (-x)) ^ n * normSq ((sat σ w.1).map fun b : ℂˣ => (b : ℂ) ^ n).sum / n) Lw ∧ locL (Ideal.absNorm w.1.asIdeal) (sat σ w.1) ((sat σ w.1).map star) x = Real.exp Lw`. Introduce `w`. Establish `hq : (1 : ℝ) < Ideal.absNorm w.1.asIdeal`. Conclude with `NumberField.HeightOneSpectrum.one_lt_absNorm w.1` after adjusting the coercions. Use `GlobalTheory.JSW.LogPos.locL_conj_eq_exp _ _ _ (fun b hb => sq_norm_le hσ hT w.2 hb) x ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (Ideal.absNorm w.1.asIdeal : ℝ) ^ (-x) < (Ideal.absNorm w.1.asIdeal : ℝ)⁻¹`. Rewrite using `[← Real.rpow_neg_one]; exact Real.rpow_lt_rpow_of_exponent_lt hq (by linarith)`. Establish `hq0 : (0 : ℝ) < Ideal.absNorm w.1.asIdeal` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Use `choose Lw hsum heq using hloc`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hterm0 : ∀ (w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T}) (n : ℕ), 0 ≤ ((Ideal.absNorm w.1.asIdeal : ℝ) ^ (-x)) ^ n * normSq ((sat σ w.1).map fun b : ℂˣ => (b : ℂ) ^ n).sum / (n : ℝ)` using `fun w n => div_nonneg (mul_nonneg (pow_nonneg (Real.rpow_nonneg (Nat.cast_nonneg _) _) n) (normSq_nonneg _)) (Nat.cast_nonneg n)`. Establish `hLw0 : ∀ w, 0 ≤ Lw w` using `fun w => (hsum w).nonneg (hterm0 w)`. Establish `hP' : HasProd (fun w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} => ((Real.exp (Lw w) : ℝ) : ℂ)) (L x : ℂ)`. Use `hP.congr_fun fun w => ?_` and prove the remaining obligations. Rewrite using `[← heq w, map_conj_eq_map_star]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hLs : Summable Lw` using `summable_of_hasProd_exp Lw hLw0 hP'`. Establish `hshift : ∀ w, HasSum (fun r : ℕ => ((Ideal.absNorm w.1.asIdeal : ℝ) ^ (-x)) ^ (r + 1) * normSq ((sat σ w.1).map fun b : ℂˣ => (b : ℂ) ^ (r + 1)).sum / ((r + 1 : ℕ) : ℝ)) (Lw w)`. Introduce `w`. Use `(hasSum_nat_add_iff' 1).2 (hsum w)` as an intermediate fact. Simplify using `using this`.
-
-Use `(summable_prod_of_nonneg fun p => hterm0 p.1 (p.2 + 1)).2 ⟨fun w => (hshift w).summable, ?_⟩` and prove the remaining obligations. Conclude with `hLs.congr fun w => ((hshift w).tsum_eq).symm`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem summable_diag {a : ℕ} (σ : CG E a) (hσ : σ.IsUnitary)
     (T : Finset (HeightOneSpectrum (𝓞 E))) (hT : UnrOutside T σ) (x : ℝ) (hx : 1 < x) :
@@ -313,21 +305,19 @@ namespace GlobalTheory.JSLog
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-Use `set F : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} × ℕ → ℂ := fun p => ((sat σ p.1.1).map fun α : ℂˣ => (α : ℂ) ^ (p.2 + 1)).sum * conj ((sat σ' p.1.1).map fun β : ℂˣ => (β : ℂ) ^ (p.2 + 1)).sum * ((Ideal.absNorm p.1.1.asIdeal : ℕ) : ℂ) ^ (-(((p.2 + 1 : ℕ) : ℂ) * (x : ℂ))) / ((p.2 + …`. Establish `hD` using `summable_diag σ hσ T hT x hx`. Establish `hD'` using `summable_diag σ' hσ' T hT' x hx`. Establish `hbound : ∀ p : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} × ℕ, ‖F p‖ ≤ (((Ideal.absNorm p.1.1.asIdeal : ℝ) ^ (-x)) ^ (p.2 + 1) * normSq ((sat σ p.1.1).map fun b : ℂˣ => (b : ℂ) ^ (p.2 + 1)).sum / ((p.2 + 1 : ℕ) : ℝ) + ((Ideal.absNorm p.1.1.asIdeal : ℝ) ^ (-x)) ^ (p.2 + 1) * normSq (( …`. Introduce and unpack `⟨w, r⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hq : 0 < Ideal.absNorm w.1.asIdeal` using `(NumberField.HeightOneSpectrum.one_lt_absNorm w.1).trans' Nat.one_pos`. Use `set u := ‖((sat σ w.1).map fun b : ℂˣ => (b : ℂ) ^ (r + 1)).sum‖`. Use `set v := ‖((sat σ' w.1).map fun b : ℂˣ => (b : ℂ) ^ (r + 1)).sum‖`. Use `set t := ((Ideal.absNorm w.1.asIdeal : ℝ) ^ (-x)) ^ (r + 1) with ht`. Establish `ht0 : 0 ≤ t` using `pow_nonneg (Real.rpow_nonneg (Nat.cast_nonneg _) _) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : (0 : ℝ) < ((r + 1 : ℕ) : ℝ)` using `by exact_mod_cast Nat.succ_pos r`. Establish `hFn : ‖F (w, r)‖ = u * v * t / ((r + 1 : ℕ) : ℝ)`. Simplify using `only [hF, norm_div, norm_mul, Complex.norm_conj, Complex.norm_natCast]`. Rewrite using `[cpow_neg_mul_nat, norm_pow, norm_natCast_cpow_neg _ hq, Complex.ofReal_re]`. Rewrite using `[hFn, Complex.normSq_eq_norm_sq, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : u * v * t ≤ t * (u ^ 2 + v ^ 2) / 2` using `by nlinarith [mul_nonneg ht0 (sq_nonneg (u - v))]`. Combine the equalities or inequalities in the displayed calculation. Establish `hFn : Summable fun p => ‖F p‖` using `((hD.add hD').div_const 2).of_nonneg_of_le (fun _ => norm_nonneg _) hbound`. Establish `hFs : Summable F` using `hFn.of_norm`. Establish `hfib : ∀ w, HasSum (fun r => F (w, r)) (∑' r, F (w, r))` using `fun w => (hFs.prod_factor w).hasSum`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hHS : HasSum (fun w => ∑' r, F (w, r)) (∑' p, F p)` using `hFs.hasSum.prod_fiberwise hfib`. Establish `hEq : ∑' w, ∑' r, F (w, r) = ∑' p, F p` using `hHS.tsum_eq`. Establish `hHS' : HasSum (fun w => ∑' r, F (w, r)) (∑' w, ∑' r, F (w, r))` using `hEq ▸ hHS`. Use `⟨hFn, hHS', ?_⟩` and prove the remaining obligations. Use `hHS'.cexp using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `w`. Establish `hq : 0 < Ideal.absNorm w.1.asIdeal` using `(NumberField.HeightOneSpectrum.one_lt_absNorm w.1).trans' Nat.one_pos`. Establish `hqr : (1 : ℝ) < Ideal.absNorm w.1.asIdeal` using `by exact_mod_cast NumberField.HeightOneSpectrum.one_lt_absNorm w.1`. Establish `hcond : ∀ α ∈ sat σ w.1, ∀ β ∈ (sat σ' w.1).map (Units.map (starRingEnd ℂ).toMonoidHom), ‖(α : ℂ)‖ * ‖(β : ℂ)‖ * (Ideal.absNorm w.1.asIdeal : ℝ) ^ (-(x : ℂ).re) < 1`. Introduce `α hα β hβ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨β0, hβ0, rfl⟩` from `Multiset.mem_map.1 hβ`. Establish `hnb : ‖((Units.map (starRingEnd ℂ).toMonoidHom β0 : ℂˣ) : ℂ)‖ = ‖(β0 : ℂ)‖`. Rewrite using `[Units.coe_map]`. Conclude with `Complex.norm_conj _`. Rewrite using `[hnb, Complex.ofReal_re]`.
-
-Conclude with `pair_lt_one (norm_nonneg _) (norm_nonneg _) hqr hx (sq_norm_le hσ hT w.2 hα) (sq_norm_le hσ' hT' w.2 hβ0)`. Rewrite using `[(locL_eq_exp _ _ _ _ hcond).2]`. Simplify using `only [Function.comp_apply, hF, sum_pow_map_conj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasProd_locL_conj {a b : ℕ} (σ : CG E a) (σ' : CG E b)
     (hσ : σ.IsUnitary) (hσ' : σ'.IsUnitary) (T : Finset (HeightOneSpectrum (𝓞 E)))
@@ -400,14 +390,14 @@ theorem hasProd_locL_conj {a b : ℕ} (σ : CG E a) (σ' : CG E b)
   simp only [Function.comp_apply, hF, sum_pow_map_conj]
 
 /- English proof (translation)
-Simplify using `[Multiset.bind_def, Multiset.pure_def, Multiset.bind_singleton, Multiset.map_map, Function.comp_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psum_coeM (A : Multiset ℂˣ) (n : ℕ) :
     (A.map fun α => (α : ℂ) ^ n).sum = (A.map fun α : ℂˣ => (α : ℂ) ^ n).sum := by
   simp [Multiset.bind_def, Multiset.pure_def, Multiset.bind_singleton, Multiset.map_map, Function.comp_def]
 
 /- English proof (translation)
-Simplify using `[Multiset.bind_def, Multiset.pure_def, Multiset.bind_singleton, Multiset.map_map, Function.comp_def, map_multiset_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psum_conj_coeM (A : Multiset ℂˣ) (n : ℕ) :
     (A.map fun β => (starRingEnd ℂ (β : ℂ)) ^ n).sum = conj (A.map fun α : ℂˣ => (α : ℂ) ^ n).sum := by
@@ -415,11 +405,11 @@ theorem psum_conj_coeM (A : Multiset ℂˣ) (n : ℕ) :
     map_multiset_sum]
 
 /- English proof (translation)
-Use `⟨fun q A B s _ h => ?_, fun E _ _ _ a b σ σ' hσ hσ' T hT hT' x hx => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `all_goals simp only [psum_coeM, psum_conj_coeM]`. Establish `h' : ∀ α ∈ A, ∀ β ∈ B, ‖(α : ℂ)‖ * ‖(β : ℂ)‖ * (q : ℝ) ^ (-s.re) < 1` using `fun α hα β hβ => by`. Simplify `h α hα β hβ` using `only [norm_mul]`. Take `⟨hs, he⟩` from `locL_eq_exp q A B s h'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Nat.cast_add, Nat.cast_one] at hs he`. Conclude with `⟨_, hs.of_norm.hasSum, he⟩`. Take `⟨h1, -, h3⟩` from `hasProd_locL_conj σ σ' hσ hσ' T hT hT' x hx`. Simplify using `only [Nat.cast_add, Nat.cast_one] at h1 h3`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hF` using `h1.of_norm`. Rewrite using `[(hF.hasSum.prod_fiberwise fun w => (hF.prod_factor w).hasSum).tsum_eq.symm]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logRankinSelberg : (∀ (q : ℕ) (A B : Multiset ℂˣ) (s : ℂ), 1 < q → (∀ α ∈ A, ∀ β ∈ B, ‖(α : ℂ) * (β : ℂ)‖ * (q : ℝ) ^ (-s.re) < 1) → ∃ L : ℂ, HasSum (fun r : ℕ => (A.map fun α => (α : ℂ) ^ (r + 1)).sum * (B.map fun β => (β : ℂ) ^ (r + 1)).sum * (q : ℂ) ^ (-(((r : ℂ) + 1) * s)) / ((r : ℂ) + 1)) L ∧ locL q A B s = Complex.exp L) ∧ (∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a b : ℕ) (σ : CG E a) (σ' : CG E b), σ.IsUnitary → σ'.IsUnitary → ∀ T : Finset (HeightOneSpectrum (𝓞 E)), UnrOutside T σ → UnrOutside T σ' → ∀ x : ℝ, 1 < x → Summable (fun p : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} × ℕ => ‖((sat σ p.1.1).map fun α => (α : ℂ) ^ (p.2 + 1)).sum * ((sat σ' p.1.1).map fun β => (starRingEnd ℂ (β : ℂ)) ^ (p.2 + 1)).sum * (Ideal.absNorm p.1.1.asIdeal : ℂ) ^ (-(((p.2 : ℂ) + 1) * (x : ℂ))) / ((p.2 : ℂ) + 1)‖) ∧ HasProd (fun w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} => locL (Ideal.absNorm w.1.asIdeal) (sat σ w.1) ((sat σ' w.1).map (Units.map (starRingEnd ℂ).toMonoidHom)) (x : ℂ)) (Complex.exp (∑' p : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} × ℕ, ((sat σ p.1.1).map fun α => (α : ℂ) ^ (p.2 + 1)).sum * ((sat σ' p.1.1).map fun β => (starRingEnd ℂ (β : ℂ)) ^ (p.2 + 1)).sum * (Ideal.absNorm p.1.1.asIdeal : ℂ) ^ (-(((p.2 : ℂ) + 1) * (x : ℂ))) / ((p.2 : ℂ) + 1)))) := by
   refine ⟨fun q A B s _ h => ?_, fun E _ _ _ a b σ σ' hσ hσ' T hT hT' x hx => ?_⟩

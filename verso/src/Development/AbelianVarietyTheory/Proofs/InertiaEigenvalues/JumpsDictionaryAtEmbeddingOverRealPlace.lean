@@ -9,31 +9,31 @@ namespace GlobalTheory.JumpDictRec
 open GlobalTheory.JumpDictionaryFoundation
 
 /- English proof (translation)
-Introduce `D hW hB hG hC i τ ρ b hτ`. Establish `hs` using `shift_embOver D ρ b`. Use `⟨shift D (embOver D ρ b), ?_, fun w hw => ?_⟩` and prove the remaining obligations. Apply `Multiset.map_injective (f := fun q : ℚ => (q : ℂ)) Rat.cast_injective` to reduce the goal to its premises. Rewrite using `[Multiset.map_map, Multiset.map_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `e0` using `D.naut.locAut_hodgeTateWeightsLevelZero_def i τ`. Rewrite `e0` using `[hτ]`. Establish `e1 : (D.naut.locAutHodgeTateWeightsLevelZero i τ).map ((fun q : ℚ => (q : ℂ)) ∘ fun n : ℤ => (n : ℚ)) = (D.naut.locAutHodgeTateWeightsLevelZero i τ).map (fun n : ℤ => (n : ℂ))` using `Multiset.map_congr rfl fun n _ => by simp`. Rewrite using `[e1, e0]`. Consider the cases of `b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Rewrite using `[(hW i ρ).1, Multiset.map_map]`. Use `Multiset.map_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, sgnOf, hs]`. Use `push_cast`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Evaluate the numerical expressions.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[(hW i ρ).2, Multiset.map_map]`. Use `Multiset.map_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, sgnOf, hs]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree. Establish `ht : 1 ≤ D.R.t`. Take `⟨u, v, -, hv, -⟩` from `exists_halves D.R`. Use linear arithmetic over natural numbers and integers.
+Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers.
 
-Establish `hz : ∀ φ, ∃ z : ℤ, (D.naut.infG (D.naut.tw (D.naut.muC i) D.naut.etaTinv) φ).map (· + (blockExp D 1 : ℂ)) = {(z : ℂ)}`. Introduce `φ`. Take `⟨ρ', b', rfl⟩` from `exists_embOver D φ`. Take `⟨a, ha⟩` from `firstJump_int D i ρ' b'`. Use `⟨-a, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inf_block D hB, ha]`. Use `push_cast`. Simplify using the standard rewrite rules. Use `choose z hz using hz`. Take `⟨r, hrc, hrf, hrd, hrj⟩` from `hG i _ _ z hz`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr : r = mapRep (iotaOQ D.nd D.naut i) (chiGL D i 1)`. Establish `h` using `eq_of_frob D.nd hC i (a := fun g => ((r g : GL (Fin 1) (Qbar (D.nd.l i))) : Matrix (Fin 1) (Fin 1) (Qbar (D.nd.l i))) 0 0) (b := fun g => iotaOQ D.nd D.naut i ((D.nd.chi i 1 g : (D.nd.O i)ˣ) : D.nd.O i)) ((continuous_apply 0).comp ((continuous_apply 0).comp hrc)) ((continuous_iot …`. Establish `e1` using `hrf v hv.2.1 (D.naut.chi_mu i v hv).1 B σ hB' hσ`. Rewrite `e1` using `[chi_frob D i 1 le_rfl ht v hv B σ hB' hσ, Multiset.singleton_inj]`. Conclude with `((D.naut.iotaQC i).injective e1).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Use extensionality with `g a c`. Take `rfl : a = 0` from `Subsingleton.elim _ _`. Take `rfl : c = 0` from `Subsingleton.elim _ _`. Use `(congrFun h g).trans ?_` and prove the remaining obligations. Rewrite using `[← chiGL_apply D i 1 g 0 0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Substitute using the available equality.
 
-Both sides reduce to the same expression. Substitute `hr` using the available equality. Use `⟨hrd w hw, ?_⟩` and prove the remaining obligations. Establish `hq : firstJump D i ρ b + (((1 : ℕ) : ℚ) - 1) = ((-z (embOver D ρ b) : ℤ) : ℚ)`. Establish `e` using `(inf_block D hB i 1 ρ b).symm.trans (hz _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[Multiset.singleton_inj]`. Establish `e' : -(firstJump D i ρ b + (((1 : ℕ) : ℚ) - 1)) = (z (embOver D ρ b) : ℚ)` using `by exact_mod_cast e`. Rewrite using `[Int.cast_neg, ← e', neg_neg]`. Rewrite using `[hrj, hτ, Multiset.map_singleton, ← hq, hs]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 
-Consider the cases of `b`. Simplify using `only [firstJump, sgnOf, Ranks.nV]`. Use `push_cast`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [firstJump, sgnOf, Ranks.nV]`. Use `push_cast`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main : ∀ D : D7, WeightParam D → BlockCharParam D → GlobalTheory.JumpDictionaryFoundation.AlgebraicCharacter_at D →
     GlobalTheory.TwSys.Cheb → ∀ (i : D.nd.Loc) (τ : D.host.E →+* Qbar (D.nd.l i)) (ρ : D.what₂.Tau) (b : Bool),

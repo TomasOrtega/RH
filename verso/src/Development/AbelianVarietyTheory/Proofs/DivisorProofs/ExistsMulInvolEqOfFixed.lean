@@ -3,29 +3,27 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `hne`. Set `F : Subfield k` to `τ.eqLocusField (RingHom.id k)`. Establish `hd : b - τ b ≠ 0` using `sub_ne_zero.mpr (Ne.symm hb)`. Set `f : F × F → k` to `fun p => (p.1 : k) + (p.2 : k) * b`. Establish `hf : Function.Bijective f`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨α, β⟩ ⟨α', β'⟩ h`. Establish `ea : τ (α : k) = α` using `α.2`. Establish `eb : τ (β : k) = β` using `β.2`. Establish `ea' : τ (α' : k) = α'` using `α'.2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eb' : τ (β' : k) = β'` using `β'.2`. Establish `h0 : (α : k) + β * b = α' + β' * b` using `h`. Establish `h1 : τ ((α : k) + β * b) = τ ((α' : k) + β' * b)` using `by rw [h0]`. Rewrite `h1` using `[map_add, map_mul, map_add, map_mul, ea, eb, ea', eb']`. Establish `hβ : (β : k) = β'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ((β : k) - β') * (b - τ b) = 0` using `by linear_combination h0 - h1`. Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases. Conclude with `sub_eq_zero.mp h3`. Conclude with `absurd h3 hd`. Establish `hα : (α : k) = α'`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `h0` using `[hβ]`. Take the linear combination `h0`. Conclude with `Prod.ext (Subtype.ext hα) (Subtype.ext hβ)`. Introduce `x`. Establish `hβ : τ ((x - τ x) / (b - τ b)) = (x - τ x) / (b - τ b)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_div₀, map_sub, map_sub, hτ x, hτ b, ← neg_sub x (τ x), ← neg_sub b (τ b), neg_div_neg_eq]`. Establish `hm : (x - τ x) / (b - τ b) * (b - τ b) = x - τ x` using `div_mul_cancel₀ _ hd`. Establish `hα : τ (x - (x - τ x) / (b - τ b) * b) = x - (x - τ x) / (b - τ b) * b`. Rewrite using `[map_sub, map_mul, hβ]`. Take the linear combination `hm`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `⟨(⟨x - (x - τ x) / (b - τ b) * b, hα⟩, ⟨(x - τ x) / (b - τ b), hβ⟩), ?_⟩` and prove the remaining obligations. Use `show x - (x - τ x) / (b - τ b) * b + (x - τ x) / (b - τ b) * b = x`. Expand and normalize the polynomial expressions, which then agree. Establish `hcard : Nat.card k = Nat.card F ^ 2`. Rewrite using `[← Nat.card_congr (Equiv.ofBijective f hf), Nat.card_prod, sq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hq : 1 < Nat.card F` using `Finite.one_lt_card`. Establish `hrank : Module.finrank F k = 2`. Establish `h` using `Module.natCard_eq_pow_finrank (K := F) (V := k)`. Rewrite `h` using `[hcard]`. Conclude with `(Nat.pow_right_injective hq h).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Set `τ' : k ≃ₐ[F] k` to `AlgEquiv.ofBijective { τ with commutes' := fun r => r.2 } hτ.bijective`. Establish `hτ' : ∀ x, τ' x = τ x` using `fun _ => rfl`. Establish `hne1 : (1 : k ≃ₐ[F] k) ≠ τ'`. Introduce `h`. Apply `hb` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hτ' b, ← h]`. Both sides reduce to the same expression. Establish `hcardG : Fintype.card (k ≃ₐ[F] k) = 2`. Rewrite using `[← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank, hrank]`. Establish `huniv : (Finset.univ : Finset (k ≃ₐ[F] k)) = {1, τ'}`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `symm`. Apply `Finset.eq_of_subset_of_card_le (Finset.subset_univ _)` to reduce the goal to its premises. Rewrite using `[Finset.card_univ, hcardG, Finset.card_pair hne1]`. Take `⟨a, ha⟩` from `FiniteField.norm_surjective F k ⟨c, hc⟩`. Establish `h` using `Algebra.norm_eq_prod_automorphisms F a`.
-
-Rewrite `h` using `[ha, huniv, Finset.prod_pair hne1]`. Use `⟨a, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_mul_invol_eq_of_fixed (k : Type) [Field k] [Finite k] (τ : k →+* k)
     (hτ : Function.Involutive τ) (hne : ∃ b : k, τ b ≠ b) (c : k) (hc : τ c = c) :

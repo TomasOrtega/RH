@@ -15,20 +15,20 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨o, trivial, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem incl_mem (o : 𝓞 E) : inclR (F := F) (Fv F v) (o : E) ∈ OEv (E := E) v :=
   Submodule.subset_span ⟨o, trivial, rfl⟩
 
 /- English proof (translation)
-Establish `h` using `incl_mem (F := F) (E := E) v 1`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem one_mem_oev : (1 : Fv F v ⊗[F] E) ∈ OEv (E := E) v := by
   have h := incl_mem (F := F) (E := E) v 1
   simpa using h
 
 /- English proof (translation)
-Establish `hO : IsOpen ((v.adicCompletionIntegers F : Set (Fv F v)))` using `Valued.isOpen_integer _`. Establish `hU : IsOpen {k : Fv F v | (k - c) * ε⁻¹ ∈ v.adicCompletionIntegers F}` using `hO.preimage ((continuous_id.sub continuous_const).mul continuous_const)`. Take `⟨b, hb⟩` from `(HeightOneSpectrum.denseRange_algebraMap (v := v) (K := F)).exists_mem_open hU ⟨c, by simp [zero_mem]⟩`. Use `⟨b, _, hb, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem denseF (c ε : Fv F v) (hε : ε ≠ 0) :
     ∃ b : F, ∃ o ∈ v.adicCompletionIntegers F, algebraMap F (Fv F v) b - c = ε * o := by
@@ -41,14 +41,14 @@ theorem denseF (c ε : Fv F v) (hε : ε ≠ 0) :
   field_simp
 
 /- English proof (translation)
-Simplify using `[inclR, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tmul_eq (c : Fv F v) (x : E) :
     c ⊗ₜ[F] x = algebraMap (Fv F v) (Fv F v ⊗[F] E) c * inclR (F := F) (Fv F v) x := by
   simp [inclR, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul]
 
 /- English proof (translation)
-Rewrite using `[← IsScalarTower.algebraMap_apply]`. Simplify using `[inclR]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem alg_alg (b : F) :
     algebraMap (Fv F v) (Fv F v ⊗[F] E) (algebraMap F (Fv F v) b) = inclR (F := F) (Fv F v) (algebraMap F E b) := by
@@ -56,19 +56,17 @@ theorem alg_alg (b : F) :
   simp [inclR]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, Submodule.zero_mem _, by simp⟩`. Consider the case `tmul c x`. Take `⟨m, hm, hint⟩` from `exists_integral_multiples ℤ ℚ (L := E) {x}`. Establish `hi : IsIntegral ℤ (m • x)` using `hint x (Finset.mem_singleton_self x)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set o : 𝓞 E := ⟨m • x, hi⟩ with ho`. Use `set mF : Fv F v := algebraMap F (Fv F v) (m : F) with hmF`. Establish `hmF0 : mF ≠ 0` using `(map_ne_zero _).2 (Int.cast_ne_zero.2 hm)`. Establish `hMF0 : algebraMap F (Fv F v) (M : F) ≠ 0` using `(map_ne_zero _).2 (Int.cast_ne_zero.2 hM)`. Take `⟨b, u, hu, hb⟩` from `denseF v (c / mF) (algebraMap F (Fv F v) (M : F)) hMF0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨algebraMap F E b * (m • x), (⟨-u, neg_mem hu⟩ : v.adicCompletionIntegers F) • inclR (F := F) (Fv F v) (o : E), Submodule.smul_mem _ _ (incl_mem v o), ?_⟩` and prove the remaining obligations. Establish `hb' : mF * algebraMap F (Fv F v) b - c = mF * (algebraMap F (Fv F v) (M : F) * u)`. Rewrite using `[← hb]`. Clear the denominators using the available nonvanishing facts. Establish `hb''` using `congrArg (algebraMap (Fv F v) (Fv F v ⊗[F] E)) hb'`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_sub, map_mul, hmF, alg_alg, map_intCast] at hb''`. Establish `ho' : inclR (F` using `F) (Fv F v) (o : E) = (m : Fv F v ⊗[F] E) * inclR (F := F) (Fv F v) x := by`. Rewrite using `[ho]`. Use `show inclR (F := F) (Fv F v) (m • x) = _`. Rewrite using `[zsmul_eq_mul, map_mul, map_intCast]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hs : (⟨-u, neg_mem hu⟩ : v.adicCompletionIntegers F) • inclR (F` using `F) (Fv F v) (o : E) = -(algebraMap (Fv F v) (Fv F v ⊗[F] E) u * inclR (F := F) (Fv F v) (o : E)) := by`. Rewrite using `[← neg_mul, ← map_neg, ← Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[hs, ho', tmul_eq, zsmul_eq_mul, map_mul, map_mul, map_intCast]`. Take the linear combination `(-(inclR (F := F) (Fv F v) x)) * hb''`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `add t t' h1 h2`. Take `⟨e1, w1, hw1, he1⟩` from `h1`. Take `⟨e2, w2, hw2, he2⟩` from `h2`. Use `⟨e1 + e2, w1 + w2, Submodule.add_mem _ hw1 hw2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`.
-
-Take the linear combination `he1 + he2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem approx (M : ℤ) (hM : M ≠ 0) (t : Fv F v ⊗[F] E) :
     ∃ e : E, ∃ w ∈ OEv (E := E) v, t - inclR (F := F) (Fv F v) e = (M : Fv F v ⊗[F] E) * w := by
@@ -110,13 +108,11 @@ Both sides reduce to the same expression.
 theorem trV_tmul (c : Fv F v) (x : E) : trV v (c ⊗ₜ[F] x) = Algebra.trace F E x • c := rfl
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨o, _, rfl⟩` from `hx`. Express the relevant statement in the definitionally equal form `trV v ((1 : Fv F v) ⊗ₜ[F] (o : E)) ∈ _`. Rewrite using `[trV_tmul, Algebra.smul_def, mul_one]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hI : IsIntegral ℤ (Algebra.trace F E (o : E))` using `Algebra.isIntegral_trace (RingOfIntegers.isIntegral_coe o)`. Use `set r : 𝓞 F := ⟨_, (mem_integralClosure_iff ℤ F).2 hI⟩ with hr`. Establish `h1 : Algebra.trace F E (o : E) = (r : F)` using `rfl`. Use `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (v := v) (r : F)` as an intermediate fact. Rewrite using `[h1, HeightOneSpectrum.mem_adicCompletionIntegers, show algebraMap F (Fv F v) (r : F) = ((r : F) : Fv F v) from rfl, this, HeightOneSpectrum.valuation_of_algebraMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `v.intValuation_le_one r`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ h1 h2 => rw [map_add]`. Conclude with `add_mem h1 h2`.
-
-Consider the case `smul c x _ h`. Express the relevant statement in the definitionally equal form `trV v ((c : Fv F v) • x) ∈ _`. Rewrite using `[map_smul, smul_eq_mul]`. Conclude with `mul_mem c.2 h`.
+Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trV_mem {x : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) : trV v x ∈ v.adicCompletionIntegers F := by
   induction hx using Submodule.span_induction with
@@ -138,7 +134,7 @@ theorem trV_mem {x : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) : trV v x ∈ 
     rw [map_smul, smul_eq_mul]; exact mul_mem c.2 h
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, trV_tmul, ← map_one (algebraMap F E), Algebra.trace_algebraMap, nsmul_eq_mul, mul_one, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trV_alg (c : Fv F v) :
     trV v (algebraMap (Fv F v) (Fv F v ⊗[F] E) c) = algebraMap F (Fv F v) (Module.finrank F E : F) * c := by
@@ -146,11 +142,11 @@ theorem trV_alg (c : Fv F v) :
     ← map_one (algebraMap F E), Algebra.trace_algebraMap, nsmul_eq_mul, mul_one, Algebra.smul_def]
 
 /- English proof (translation)
-Take `⟨β, rfl⟩` from `WithZero.ne_zero_iff_exists.1 hb`. Establish `ha0 : a ≠ 0` using `ne_of_gt (lt_trans zero_lt_one ha)`. Take `⟨α, rfl⟩` from `WithZero.ne_zero_iff_exists.1 ha0`. Establish `hα : 0 < Multiplicative.toAdd α`. Establish `h` using `WithZero.coe_lt_coe.1 (show ((1 : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) < α from ha)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Multiplicative.ofAdd_lt.1 h`. Use `⟨(Multiplicative.toAdd β).natAbs + 1, ?_⟩` and prove the remaining obligations. Rewrite using `[← WithZero.coe_pow, ← WithZero.coe_mul, ← WithZero.coe_one, WithZero.coe_lt_coe, ← Multiplicative.toAdd_lt, toAdd_mul, toAdd_pow, toAdd_one]`. Rewrite using `[nsmul_eq_mul]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `h3 : (|Multiplicative.toAdd β| + 1) * 1 ≤ (|Multiplicative.toAdd β| + 1) * Multiplicative.toAdd α` using `mul_le_mul_of_nonneg_left (by omega) (by positivity)`. Combine the linear relations using `[neg_abs_le (Multiplicative.toAdd β)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem pow_unbdd {a b : WithZero (Multiplicative ℤ)} (ha : 1 < a) (hb : b ≠ 0) :
     ∃ k : ℕ, 1 < b * a ^ k := by
@@ -169,11 +165,11 @@ theorem pow_unbdd {a b : WithZero (Multiplicative ℤ)} (ha : 1 < a) (hb : b ≠
   linarith [neg_abs_le (Multiplicative.toAdd β)]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[HeightOneSpectrum.mem_adicCompletionIntegers, not_le]`. Establish `hpow : ∀ k : ℕ, algebraMap (Fv F v) (Fv F v ⊗[F] E) (c ^ k) ∈ OEv (E` using `E) v := by`. Introduce `k`. Proceed by induction on `k with`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => rw [pow_zero, map_one]`. Conclude with `one_mem_oev v`. Consider the case `succ k ih => rw [pow_succ, map_mul]`. Conclude with `oev_mul v ih hc`. Establish `hd0 : algebraMap F (Fv F v) (Module.finrank F E : F) ≠ 0` using `(map_ne_zero _).2 (Nat.cast_ne_zero.2 Module.finrank_pos.ne')`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `pow_unbdd hn ((Valuation.ne_zero_iff _).2 hd0)`. Use `trV_mem v (hpow k)` as an intermediate fact. Rewrite `this` using `[trV_alg, HeightOneSpectrum.mem_adicCompletionIntegers, map_mul, map_pow]`. Conclude with `absurd this (not_le.2 hk)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_of_alg (c : Fv F v) (hc : algebraMap (Fv F v) (Fv F v ⊗[F] E) c ∈ OEv (E := E) v) :
     c ∈ v.adicCompletionIntegers F := by

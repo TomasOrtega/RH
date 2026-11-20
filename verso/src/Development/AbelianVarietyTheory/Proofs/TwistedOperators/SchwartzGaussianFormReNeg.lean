@@ -6,19 +6,19 @@ open MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hg0 : g 0 ≠ 0`. Introduce `h0`. Apply `hg` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[hform x, h0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Assume the negation of the conclusion as `hre`. Use `push_neg at hre`. Take `⟨C, hC, hdec⟩` from `g.decay 1 0`. Establish `hgn : 0 < ‖g 0‖` using `norm_pos_iff.mpr hg0`.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvn : 0 < ‖v‖` using `norm_pos_iff.mpr hv`. Use `set s : ℝ := (C + 1) / (‖v‖ * ‖g 0‖) with hs`. Establish `hspos : 0 < s` using `by positivity`. Establish `key` using `hdec (s • v)`. Rewrite `key` using `[norm_iteratedFDeriv_zero, pow_one, hform (s • v)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hM : M (s • v) (s • v) = ((s ^ 2 : ℝ) : ℂ) * M v v`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_smul]`. Rewrite using `[Complex.real_smul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[hM, norm_mul, Complex.norm_exp]`. Establish `hexp : 1 ≤ Real.exp ((((s ^ 2 : ℝ) : ℂ) * M v v).re)`. Apply `Real.one_le_exp` to reduce the goal to its premises. Rewrite using `[Complex.re_ofReal_mul]`. Check the signs of the components of the expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnorm : ‖s • v‖ = s * ‖v‖`. Rewrite using `[norm_smul, Real.norm_eq_abs, abs_of_pos hspos]`. Rewrite `key` using `[hnorm]`. Establish `h1 : s * ‖v‖ * ‖g 0‖ = C + 1`. Rewrite using `[hs]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `h2 : s * ‖v‖ * ‖g 0‖ ≤ s * ‖v‖ * (‖g 0‖ * Real.exp ((((s ^ 2 : ℝ) : ℂ) * M v v).re))`. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem schwartz_gaussian_form_re_neg {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (M : V →ₗ[ℝ] V →ₗ[ℝ] ℂ) (g : SchwartzMap V ℂ) (hg : g ≠ 0)

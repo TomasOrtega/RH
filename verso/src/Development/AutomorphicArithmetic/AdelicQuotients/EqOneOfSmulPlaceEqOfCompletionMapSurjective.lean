@@ -7,11 +7,9 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Loc PositivityTheory.Rg.
 open scoped NumberField.AdeleRing
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ q w hs σ hσ`. Establish `h : w.1 = σ • w.1` using `(congrArg Subtype.val hσ).symm`. Use `haveI : w.1.asIdeal.LiesOver q.asIdeal := w.2`. Establish `hid : ∀ y, galHom σ w.1 w.1 h y = y`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `hs y`. Conclude with `galHom_completionMap q σ w.1 w.1 h a`. Use `AlgEquiv.ext fun x ↦ ?_` and prove the remaining obligations. Establish `h2` using `galHom_algebraMap σ w.1 w.1 h x`. Rewrite `h2` using `[hid]`.
-
-Conclude with `(algebraMap E (w.1.adicCompletion E)).injective h2.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.eq_one_of_smul_place_eq_of_completionMap_surjective :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (q : HeightOneSpectrum (𝓞 F)) (w : PlacesOver E q), Function.Surjective (completionMap q w.1) →

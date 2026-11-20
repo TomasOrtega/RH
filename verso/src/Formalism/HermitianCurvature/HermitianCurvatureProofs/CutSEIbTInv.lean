@@ -14,9 +14,9 @@ variable {K A S : Type} [Field K] [StarRing K] [Ring A] [StarRing A] [Algebra K 
   [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Establish `hs` using `congrArg star hW.2.2`. Simplify using `only [star_mul, star_add] at hs`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Ts, YangianSpanCharacter.T.Tm, Matrix.mul_apply, Fin.sum_univ_two, Matrix.conjTranspose_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[← star_mul, hW.1, star_one]`. Rewrite using `[← algebraMap_star_comm, hY, mul_add, add_mul, add_mul, one_mul, hs, Algebra.commutes]`. Normalize the expressions using the abelian group laws. Rewrite using `[← star_mul, hW.2.1, star_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem plus_inv (σ : Site A) (hW : YangianSpanCharacter.T.WeylRel σ.p σ.c σ.ci) (Y : K) (hY : star Y = Y) :
     (!![0, -star σ.ci; star σ.c, algebraMap K A (Y + 1) + star σ.p] : M2 A) * (Ts σ Y)ᴴ = 1 := by
@@ -31,9 +31,9 @@ theorem plus_inv (σ : Site A) (hW : YangianSpanCharacter.T.WeylRel σ.p σ.c σ
   · rw [← star_mul, hW.2.1, star_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Ts, YangianSpanCharacter.T.Tm, Matrix.mul_apply, Fin.sum_univ_two, Matrix.conjTranspose_apply]`. Conclude with `hW.2.1`. Rewrite using `[mul_add, add_mul, sub_mul, one_mul, hW.2.2, Algebra.commutes]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Conclude with `hW.1`.
+A detailed English derivation is pending.
 -/
 theorem minus_inv (σ : Site A) (hW : YangianSpanCharacter.T.WeylRel σ.p σ.c σ.ci) (Y : K) :
     (!![0, -σ.ci; σ.c, algebraMap K A (Y - 1) + σ.p] : M2 A) * ((Ts σ Y).map star)ᴴ = 1 := by
@@ -46,7 +46,7 @@ theorem minus_inv (σ : Site A) (hW : YangianSpanCharacter.T.WeylRel σ.p σ.c �
   · exact hW.1
 
 /- English proof (translation)
-Unfold `lift0`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp [io]`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_zero_one : (lift0 (1 : M2 A) : M2 (SlopeTestRemainingChoices S A)) = 1 := by
   unfold lift0
@@ -55,9 +55,9 @@ theorem lift_zero_one : (lift0 (1 : M2 A) : M2 (SlopeTestRemainingChoices S A)) 
   split_ifs <;> simp [io]
 
 /- English proof (translation)
-Unfold `ivlet vlet`. Rewrite using `[Formalism.FourierDecayAlt.P.Wd1.ins_star _ _ (Formalism.FourierDecayAlt.P.Wd7.freeOf2_lift _ _), ← Formalism.FourierDecayAlt.P.Wd1.ins_mul _ _ _ (Formalism.FourierDecayAlt.P.Wd7.freeOf2_lift _ _), Formalism.FourierDecayAlt.P.Wd7.liftMatrix_conjTranspose, ← Formalism.FourierDecay …`. Consider the cases of `hpl : l.plus`. Simplify using `only [Bool.false_eq_true, ite_false]`. Rewrite using `[minus_inv σ hW l.pt, lift_zero_one, Formalism.FourierDecayAlt.P.Wd1.ins_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ite_true]`. Rewrite using `[plus_inv σ hW l.pt hl, lift_zero_one, Formalism.FourierDecayAlt.P.Wd1.ins_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ivlet_mul_star (σ : Site A) (hW : YangianSpanCharacter.T.WeylRel σ.p σ.c σ.ci) (l : Letter K S)
     (hl : star l.pt = l.pt) : ivlet σ l * star (vlet σ l) = 1 := by
@@ -72,7 +72,7 @@ theorem ivlet_mul_star (σ : Site A) (hW : YangianSpanCharacter.T.WeylRel σ.p �
     rw [plus_inv σ hW l.pt hl, lift_zero_one, Formalism.FourierDecayAlt.P.Wd1.ins_one]
 
 /- English proof (translation)
-The claim follows from `| [], _ => by simp [ibT, bT] | l :: w, h => by have hw := ibT_mul_star σ hσ w (fun l' hl' => h l' (List.mem_cons_of_mem _ hl')) rw [ibT, bT, star_mul, mul_assoc, ← mul_assoc (ibT σ w), hw, one_mul, ivlet_mul_star σ hσ.1 l (h l (by simp))]`.
+A detailed English derivation is pending.
 -/
 theorem ibT_mul_star (σ : Site A) (hσ : IsSite σ) :
     ∀ w : List (Letter K S), (∀ l ∈ w, star l.pt = l.pt) → ibT σ w * star (bT σ w) = 1
@@ -85,7 +85,7 @@ theorem ibT_mul_star (σ : Site A) (hσ : IsSite σ) :
 end IbTInvPf
 
 /- English proof (translation)
-Introduce `K A S _ _ _ _ _ _ _ _ σ w hσ hw`. Conclude with `IbTInvPf.ibT_mul_star σ hσ w hw`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem boundary_torus_invariance : IbTInv := by
   intro K A S _ _ _ _ _ _ _ _ σ w hσ hw

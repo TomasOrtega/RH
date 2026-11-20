@@ -12,9 +12,9 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Reciprocity
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hH k _ _ d F ι _ u c P q hc hq0 hq1 hq2 hP m G`. Take `⟨Y, hY⟩` from `GE.exp_cut m q hq0 0`. Establish `hY' : FB.expS k (m • q) = 1 + q * Y`. Rewrite using `[hY]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hY', mul_add, mul_one, GE.dpolyOf_add_f, map_add, show G * (q * Y) = (G * Y) * q by ring, hH k d F ι u c q hc hq0 hq1 hq2 P (G * Y), hP, GE.dpolyOf_zero_P, map_zero, mul_zero, add_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem wickVanish_of_half : GE.HalfSt → G2.WickOperatorVanishing := by
   intro hH k _ _ d F ι _ u c P q hc hq0 hq1 hq2 hP m G

@@ -14,7 +14,7 @@ variable (p : ℕ) [hp : Fact p.Prime] [CharP 𝓀[K] p] [CharZero K]
 
 omit [ValuativeRel K] [IsNonarchimedeanLocalField K] [CharZero K] in
 /- English proof (translation)
-Rewrite using `[expSeries, tsum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `k hk`. Simplify using `[zero_pow hk]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem expSeries_zero : expSeries (0 : K) = 1 := by
   rw [expSeries, tsum_eq_single 0]
@@ -23,7 +23,7 @@ theorem expSeries_zero : expSeries (0 : K) = 1 := by
     simp [zero_pow hk]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [expSeries_zero]`. Consider the case `succ m ih`. Rewrite using `[succ_nsmul, expSeries_add p (nsmul_mem hx m) hx ha, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem expSeries_nsmul {a : ℤ} {x : K} (hx : x ∈ valBall K a)
     (ha : (absRamificationIndex K : ℤ) < (p - 1 : ℤ) * a) (m : ℕ) :
@@ -34,17 +34,17 @@ theorem expSeries_nsmul {a : ℤ} {x : K} (hx : x ∈ valBall K a)
     rw [succ_nsmul, expSeries_add p (nsmul_mem hx m) hx ha, ih, pow_succ]
 
 /- English proof (translation)
-Establish `hcx : c * x ∈ valBall K a`. Simplify using `using valBall_antitone (by omega : a ≤ d + a) (mul_mem_valBall hc hx)`. Establish `hs` using `summable_expSeries p hcx ha`. Rewrite using `[expSeries, hs.tsum_eq_zero_add, ((summable_nat_add_iff 1).mpr hs).tsum_eq_zero_add]`. Simplify using `only [pow_zero, Nat.factorial_zero, Nat.cast_one, div_one, zero_add, pow_one, Nat.factorial_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: ∀ t : K, 1 + (c * x + t) - 1 - c * x = t` using `fun t ↦ by ring`. Rewrite using `[this]`. Use `tsum_mem_valBall fun k ↦ ?_` and prove the remaining obligations. Establish `h1 : (c * x) ^ (k + 1 + 1) / ((k + 1 + 1).factorial : K) = c ^ (k + 1 + 1) * (x ^ (k + 1 + 1) / ((k + 1 + 1).factorial : K))`. Rewrite using `[mul_pow, mul_div_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Establish `hxk` using `expTerm_mem p hx (k + 1 + 1)`. Establish `hck` using `pow_mem_valBall hc (k + 1 + 1)`. Use `valBall_antitone ?_ (mul_mem_valBall hck hxk)` and prove the remaining obligations. Establish `h0` using `sub_one_mul_padicValNat_factorial_lt_of_ne_zero p (by omega : k + 1 + 1 ≠ 0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set v := padicValNat p (k + 1 + 1).factorial`. Use `set e := absRamificationIndex K`. Establish `hp2 : (2 : ℤ) ≤ p` using `by exact_mod_cast hp.out.two_le`. Establish `hp1 : ((p - 1 : ℕ) : ℤ) = (p : ℤ) - 1`. Rewrite using `[Nat.cast_sub hp.out.one_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `h0' : (((p - 1) * v : ℕ) : ℤ) < k + 1 + 1` using `by exact_mod_cast h0`. Move the coercions through the operations in `[hp1] at h0'`. Establish `he : (0 : ℤ) ≤ e` using `by positivity`. Establish `h0'' : ((p : ℤ) - 1) * v ≤ k + 1` using `by linarith`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : (e : ℤ) + 1 ≤ ((p : ℤ) - 1) * a` using `by linarith`. Establish `hk : (0 : ℤ) ≤ k + 1` using `by positivity`. Establish `hkd : (0 : ℤ) ≤ k * d` using `by positivity`. Use `push_cast`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h0'' he, mul_le_mul_of_nonneg_left ha' hk]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem expSeries_mul_sub_one_sub_mem {a d : ℤ} {x c : K} (hx : x ∈ valBall K a)
     (ha : (absRamificationIndex K : ℤ) < (p - 1 : ℤ) * a) (hc : c ∈ valBall K d) (hd : 0 ≤ d) :
@@ -82,15 +82,15 @@ theorem expSeries_mul_sub_one_sub_mem {a d : ℤ} {x c : K} (hx : x ∈ valBall 
   nlinarith [mul_le_mul_of_nonneg_left h0'' he, mul_le_mul_of_nonneg_left ha' hk]
 
 /- English proof (translation)
-Establish `ha1` using `one_le_of_lt_sub_one_mul p ha`. Establish `hy : expSeries x - 1 ∈ valBall K 1` using `valBall_antitone ha1 (expSeries_sub_one_mem p hx ha)`. Establish `h1` using `tendsto_logSeries p hy`. Simplify using `only [add_sub_cancel] at h1`. Use `tendsto_nhds_unique h1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← tendsto_sub_nhds_zero_iff, tendsto_zero_iff_valBall]`. Introduce `N`. Rewrite using `[eventually_atTop]`. Use `set e := absRamificationIndex K`. Establish `he` using `one_le_absRamificationIndex (K := K) p`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨N.toNat, fun k hk ↦ ?_⟩` and prove the remaining obligations. Establish `hm0 : p ^ k ≠ 0` using `pow_ne_zero _ hp.out.ne_zero`. Establish `hm : ((p ^ k : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.mpr hm0`. Establish `heq : (expSeries x ^ (p ^ k) - 1) / ((p ^ k : ℕ) : K) - x = (expSeries (((p ^ k : ℕ) : K) * x) - 1 - ((p ^ k : ℕ) : K) * x) / ((p ^ k : ℕ) : K)`. Rewrite using `[← expSeries_nsmul p hx ha, nsmul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[heq]`. Establish `hmem` using `expSeries_mul_sub_one_sub_mem p hx ha (natCast_prime_pow_mem_valBall p k) (by positivity)`. Establish `hdiv` using `div_natCast_mem_valBall p hmem hm0`. Use `valBall_antitone ?_ hdiv` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[padicValNat.prime_pow]`. Establish `h2 : N ≤ (N.toNat : ℤ)` using `Int.self_le_toNat N`. Establish `h3 : (N.toNat : ℤ) ≤ k` using `by exact_mod_cast hk`. Establish `he' : (1 : ℤ) ≤ e` using `by exact_mod_cast he`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem logSeries_expSeries_sub_one {a : ℤ} {x : K} (hx : x ∈ valBall K a)
     (ha : (absRamificationIndex K : ℤ) < (p - 1 : ℤ) * a) :
@@ -129,9 +129,9 @@ end ExpLog
 section Iso
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Establish `hset` using `hϖ.maximalIdeal_pow_eq_setOfPred_le_v_coe_pow (v := valuation K) n`. Establish `: y ∈ 𝓂[K] ^ n ↔ y ∈ ((𝓂[K] ^ n : Ideal 𝒪[K]) : Set 𝒪[K])` using `Iff.rfl`. Rewrite using `[this, hset, mem_valBall]`. Use `show valuation K (y : K) ≤ valuation K (ϖ : K) ^ n ↔ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, ← normalizedValuation_le_iff, map_pow, normalizedValuation_uniformizer hϖ, ← WithZero.exp_nsmul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_maximalIdeal_pow_iff_valBall {n : ℕ} {y : 𝒪[K]} :
     y ∈ 𝓂[K] ^ n ↔ (y : K) ∈ valBall K n := by
@@ -145,7 +145,7 @@ theorem mem_maximalIdeal_pow_iff_valBall {n : ℕ} {y : 𝒪[K]} :
   simp
 
 /- English proof (translation)
-Rewrite using `[← normalizedValuation_le_one_iff]`. Conclude with `hx.trans (by rw [← WithZero.exp_zero, WithZero.exp_le_exp]; omega)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_integer_of_mem_valBall {n : ℤ} (hn : 0 ≤ n) {x : K} (hx : x ∈ valBall K n) :
     x ∈ 𝒪[K] := by
@@ -168,7 +168,7 @@ noncomputable def valBallEquivMaximalIdealPow (n : ℕ) :
 variable (p : ℕ) [hp : Fact p.Prime] [CharP 𝓀[K] p] [CharZero K]
 
 /- English proof (translation)
-Use `one_le_of_lt_sub_one_mul p hn` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem one_le_of_lt_sub_one_mul_nat {n : ℕ}
     (hn : (absRamificationIndex K : ℤ) < (p - 1 : ℤ) * n) : 1 ≤ n := by
@@ -177,7 +177,7 @@ theorem one_le_of_lt_sub_one_mul_nat {n : ℕ}
 
 omit [CharZero K] in
 /- English proof (translation)
-The claim follows from `(mem_unitFiltrationUnits_iff_valBall hn1).mp u.2`.
+A detailed English derivation is pending.
 -/
 theorem sub_one_mem_valBall_of_mem {n : ℕ} (hn1 : 1 ≤ n) (u : unitFiltrationUnits K n) :
     ((u : Kˣ) : K) - 1 ∈ valBall K n :=
@@ -206,9 +206,9 @@ theorem coe_logValBallHom (n : ℕ) (hn : (absRamificationIndex K : ℤ) < (p - 
       logSeries ((((Additive.toMul u : unitFiltrationUnits K n) : Kˣ) : K) - 1) := rfl
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `u hu`. Establish `h` using `congrArg Subtype.val hu`. Rewrite `h` using `[coe_logValBallHom]`. Establish `hx` using `eq_zero_of_logSeries_eq_zero p hn (sub_one_mem_valBall_of_mem (one_le_of_lt_sub_one_mul_nat p hn) (Additive.toMul u)) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `Additive.toMul.injective` to reduce the goal to its premises. Use `ext`. Simplify `hx` using `[sub_eq_zero]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem logValBallHom_injective (n : ℕ) (hn : (absRamificationIndex K : ℤ) < (p - 1 : ℤ) * n) :
     Function.Injective (logValBallHom p n hn) := by
@@ -224,7 +224,7 @@ theorem logValBallHom_injective (n : ℕ) (hn : (absRamificationIndex K : ℤ) <
 
 omit [CharZero K] in
 /- English proof (translation)
-Introduce `h`. Rewrite `hx` using `[h, zero_sub, mem_valBall, Valuation.map_neg, map_one, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem expSeries_ne_zero {n : ℕ} (hn1 : 1 ≤ n) {x : K} (hx : expSeries x - 1 ∈ valBall K n) :
     expSeries x ≠ 0 := by
@@ -241,20 +241,20 @@ noncomputable def expUnit (n : ℕ) (hn : (absRamificationIndex K : ℤ) < (p - 
       (expSeries_sub_one_mem p x.2 hn)⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (logSeries_expSeries_sub_one p x.2 hn)`.
+A detailed English derivation is pending.
 -/
 theorem logValBallHom_expUnit (n : ℕ) (hn : (absRamificationIndex K : ℤ) < (p - 1 : ℤ) * n)
     (x : valBall K n) : logValBallHom p n hn (Additive.ofMul (expUnit p n hn x)) = x :=
   Subtype.ext (logSeries_expSeries_sub_one p x.2 hn)
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x0`. Rewrite using `[ContinuousAt, ← tendsto_sub_nhds_zero_iff, tendsto_zero_iff_valBall]`. Introduce `N`. Use `set r : ℤ := max N n`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hr : (absRamificationIndex K : ℤ) < (p - 1 : ℤ) * r` using `sub_one_le_of_lt p hn (le_max_right _ _)`. Establish `hopen` using `(isOpen_valBall r).preimage (continuous_subtype_val.sub continuous_const : Continuous fun x : valBall K n ↦ (x : K) - x0)`. Use `filter_upwards [hopen.mem_nhds (by simp)] with x hx`. Establish `hx' : (x : K) - x0 ∈ valBall K r` using `hx`. Establish `hxn : (x : K) - x0 ∈ valBall K n` using `valBall_antitone (le_max_right _ _) hx'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `heq : expSeries (x : K) = expSeries (x0 : K) * expSeries ((x : K) - x0)`. Rewrite using `[← expSeries_add p x0.2 hxn hn, add_sub_cancel]`. Establish `h0 : expSeries (x0 : K) ∈ valBall K 0`. Establish `h1` using `valBall_antitone (by positivity : (0 : ℤ) ≤ n) (expSeries_sub_one_mem p x0.2 hn)`. Establish `h2 : (1 : K) ∈ valBall K 0` using `by simp [mem_valBall]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `using add_mem h1 h2`. Rewrite using `[heq, show expSeries (x0 : K) * expSeries ((x : K) - x0) - expSeries (x0 : K) = expSeries (x0 : K) * (expSeries ((x : K) - x0) - 1) by ring]`. Establish `hNr : N ≤ 0 + r` using `by rw [zero_add]; exact le_max_left _ _`. Use `valBall_antitone hNr (mul_mem_valBall h0 ?_)` and prove the remaining obligations. Conclude with `expSeries_sub_one_mem p hx' hr`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_expSeries_valBall (n : ℕ)
     (hn : (absRamificationIndex K : ℤ) < (p - 1 : ℤ) * n) :
@@ -308,7 +308,7 @@ noncomputable def unitFiltrationLogEquiv (n : ℕ)
   (logValBallEquiv p n hn).trans (valBallEquivMaximalIdealPow K n)
 
 /- English proof (translation)
-Use `congrArg (fun v ↦ (((Additive.toMul v : unitFiltrationUnits K n) : Kˣ) : K)) ((logValBallEquiv p n hn).symm_apply_apply (Additive.ofMul u))` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem expSeries_logSeries {n : ℕ} (hn : (absRamificationIndex K : ℤ) < (p - 1 : ℤ) * n)
     (u : unitFiltrationUnits K n) :

@@ -14,28 +14,28 @@ open scoped BigOperators
 variable {R : Ranks} (H : Host R)
 
 /- English proof (translation)
-The claim follows from `Formalism.HC.HostAx.conjE_apply _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem emb_conj (f : H.E →+* ℂ) (y : H.E) : f (H.conj y) = starRingEnd ℂ (f y) := Formalism.HC.HostAx.conjE_apply _ _ _
 
 /- English proof (translation)
-The claim follows from `bE_mem H`.
+A detailed English derivation is pending.
 -/
 theorem sqrt_mem : H.sqrtMinusD ∈ H.K := bE_mem H
 
 /- English proof (translation)
-The claim follows from `H.φ₀_mem`.
+A detailed English derivation is pending.
 -/
 theorem φ₀_sqrt : H.φ₀ H.sqrtMinusD = Complex.I * (Real.sqrt H.d : ℂ) := H.φ₀_mem
 
 /- English proof (translation)
-Apply the tactic sequence `apply _root_.GlobalTheory.CoordsOfMemAdjoin.exists_rat_coords <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_coords {x : H.E} (hx : x ∈ H.K) : ∃ a b : ℚ, x = (a : H.E) + (b : H.E) * H.sqrtMinusD :=
   by apply _root_.GlobalTheory.CoordsOfMemAdjoin.exists_rat_coords <;> assumption
 
 /- English proof (translation)
-Rewrite using `[map_add, map_mul, map_ratCast, map_ratCast, H.conj_sqrtMinusD]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conj_coords (a b : ℚ) :
     H.conj ((a : H.E) + (b : H.E) * H.sqrtMinusD) = (a : H.E) - (b : H.E) * H.sqrtMinusD := by
@@ -43,7 +43,7 @@ theorem conj_coords (a b : ℚ) :
   ring
 
 /- English proof (translation)
-Take `⟨a, b, rfl⟩` from `exists_coords H hx`. Rewrite using `[conj_coords]`. Conclude with `sub_mem (SubfieldClass.ratCast_mem _ a) (mul_mem (SubfieldClass.ratCast_mem _ b) (sqrt_mem H))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem {x : H.E} (hx : x ∈ H.K) : H.conj x ∈ H.K := by
   obtain ⟨a, b, rfl⟩ := exists_coords H hx
@@ -59,12 +59,12 @@ Both sides reduce to the same expression.
 theorem coe_conjK (x : H.K) : ((conjK H x : H.K) : H.E) = H.conj (x : H.E) := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (conj_conj H x)`.
+A detailed English derivation is pending.
 -/
 theorem conjK_conjK (x : H.K) : conjK H (conjK H x) = x := Subtype.ext (conj_conj H x)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Algebra.intNorm ℤ (𝓞 H.K) x, Subtype.ext (by have := norm_int H x simpa [coe_conjK] using this.symm)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_norm_int (x : 𝓞 H.K) : ∃ m : ℤ, (x : H.K) * conjK H x = m :=
   ⟨Algebra.intNorm ℤ (𝓞 H.K) x, Subtype.ext (by
@@ -72,21 +72,21 @@ theorem exists_norm_int (x : 𝓞 H.K) : ∃ m : ℤ, (x : H.K) * conjK H x = m 
     simpa [coe_conjK] using this.symm)⟩
 
 /- English proof (translation)
-Establish `: IsGalois ℚ H.E` using `H.hostE_isGalois`. Conclude with `IsGalois.tower_top_of_isGalois ℚ _ _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isGalois_over : IsGalois H.K H.E := by
   have : IsGalois ℚ H.E := H.hostE_isGalois
   exact IsGalois.tower_top_of_isGalois ℚ _ _
 
 /- English proof (translation)
-Use `isGalois_over H` as an intermediate fact. Conclude with `trace_eq_sum_automorphisms (K := H.K) y`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coe_trace (y : H.E) : ((Algebra.trace H.K H.E y : H.K) : H.E) = ∑ τ : H.E ≃ₐ[H.K] H.E, τ y := by
   have := isGalois_over H
   exact trace_eq_sum_automorphisms (K := H.K) y
 
 /- English proof (translation)
-The claim follows from `H.φ₀.injective (by rw [emb_conj H H.φ₀ (τ y)] exact (emb_conj H (H.φ₀.comp (τ : H.E →+* H.E)) y).symm)`.
+A detailed English derivation is pending.
 -/
 theorem conj_comm (τ : H.E ≃ₐ[H.K] H.E) (y : H.E) : H.conj (τ y) = τ (H.conj y) :=
   H.φ₀.injective (by
@@ -94,7 +94,7 @@ theorem conj_comm (τ : H.E ≃ₐ[H.K] H.E) (y : H.E) : H.conj (τ y) = τ (H.c
     exact (emb_conj H (H.φ₀.comp (τ : H.E →+* H.E)) y).symm)
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_conjK, coe_trace, coe_trace, map_sum]`. Conclude with `Finset.sum_congr rfl fun τ _ => (conj_comm H τ y).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_conj (y : H.E) : Algebra.trace H.K H.E (H.conj y) = conjK H (Algebra.trace H.K H.E y) := by
   apply Subtype.ext
@@ -102,13 +102,13 @@ theorem trace_conj (y : H.E) : Algebra.trace H.K H.E (H.conj y) = conjK H (Algeb
   exact Finset.sum_congr rfl fun τ _ => (conj_comm H τ y).symm
 
 /- English proof (translation)
-Take `⟨a, b, hab⟩` from `exists_coords H (Algebra.trace H.K H.E (y * H.conj y)).2`. Establish `hfix : H.conj ((Algebra.trace H.K H.E (y * H.conj y) : H.K) : H.E) = ((Algebra.trace H.K H.E (y * H.conj y) : H.K) : H.E)`. Rewrite using `[← coe_conjK, ← trace_conj, map_mul, conj_conj, mul_comm]`. Rewrite `hfix` using `[hab, conj_coords]`. Establish `hb : (b : H.E) * H.sqrtMinusD = 0` using `by linear_combination (-1 / 2 : H.E) * hfix`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hab` using `[hb, add_zero]`. Use `⟨a, ?_, Subtype.ext (by rw [hab]; simp)⟩` and prove the remaining obligations. Establish `h1` using `congrArg H.φ₀ hab`. Rewrite `h1` using `[coe_trace, map_sum, map_ratCast]`. Establish `h2 : ∀ τ : H.E ≃ₐ[H.K] H.E, H.φ₀ (τ (y * H.conj y)) = ((Complex.normSq (H.φ₀ (τ y)) : ℝ) : ℂ)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `τ`. Rewrite using `[map_mul, ← conj_comm, map_mul, emb_conj, Complex.mul_conj]`. Simplify using `only [h2] at h1`. Establish `h3 : ∑ τ : H.E ≃ₐ[H.K] H.E, Complex.normSq (H.φ₀ (τ y)) = (a : ℝ)`. Conclude with `h1` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (0 : ℝ) < a`. Rewrite using `[← h3]`. Use `Finset.sum_pos (fun τ _ => Complex.normSq_pos.2 ?_) Finset.univ_nonempty` and prove the remaining obligations. Simplify using `using hy`. Conclude with `h4` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem trace_pos (y : H.E) (hy : y ≠ 0) : ∃ a : ℚ, 0 < a ∧ Algebra.trace H.K H.E (y * H.conj y) = (a : H.K) := by
   obtain ⟨a, b, hab⟩ := exists_coords H (Algebra.trace H.K H.E (y * H.conj y)).2
@@ -134,7 +134,7 @@ theorem trace_pos (y : H.E) (hy : y ≠ 0) : ∃ a : ℚ, 0 < a ∧ Algebra.trac
   exact_mod_cast h4
 
 /- English proof (translation)
-Use `isGalois_over H` as an intermediate fact. Rewrite using `[← IsGalois.card_aut_eq_finrank, Nat.card_eq_fintype_card]`. Conclude with `Fintype.card_of_bijective (GlobalTheory.InducedType.galK_bijective H)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_tau : Fintype.card (Tau R) = Module.finrank H.K H.E := by
   have := isGalois_over H
@@ -142,23 +142,23 @@ theorem card_tau : Fintype.card (Tau R) = Module.finrank H.K H.E := by
   exact Fintype.card_of_bijective (GlobalTheory.InducedType.galK_bijective H)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `H.φ₀ (H.sigmaOf _ _) = _`. Rewrite using `[sigmaOf_fix_K H _ τ.2 _ a.2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem embT_K (τ : Tau R) (a : H.K) : embT H τ (a : H.E) = H.φ₀ (a : H.E) := by
   change H.φ₀ (H.sigmaOf _ _) = _
   rw [sigmaOf_fix_K H _ τ.2 _ a.2]
 
 /- English proof (translation)
-Rewrite using `[coe_trace, map_sum]`. Conclude with `Fintype.sum_bijective (GlobalTheory.InducedType.galK H) (GlobalTheory.InducedType.galK_bijective H) _ _ (fun τ => rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_embT (y : H.E) : ∑ τ, embT H τ y = H.φ₀ ((Algebra.trace H.K H.E y : H.K) : H.E) := by
   rw [coe_trace, map_sum]
   exact Fintype.sum_bijective (GlobalTheory.InducedType.galK H) (GlobalTheory.InducedType.galK_bijective H) _ _ (fun τ => rfl)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m : ℕ, H.d + 1 = 4 * m := by`. Use `H.hyp.2.2.2.1` as an intermediate fact. Conclude with `⟨(H.d + 1) / 4, by omega⟩`. Establish `hs : (⟨H.sqrtMinusD, sqrt_mem H⟩ : H.K) ^ 2 = -(H.d : H.K)` using `Subtype.ext (by simpa using H.sqrtMinusD_sq)`. Establish `hm' : (H.d : H.K) + 1 = 4 * m` using `by exact_mod_cast hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C (m : ℤ), by monicity!, ?_⟩` and prove the remaining obligations. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_X, Polynomial.eval₂_C]`. Simplify using `only [eq_intCast, Int.cast_natCast]`. Take the linear combination `(1 / 4 : H.K) * hs - (1 / 4 : H.K) * hm'`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem isIntegral_half : IsIntegral ℤ ((1 + (⟨H.sqrtMinusD, sqrt_mem H⟩ : H.K)) / 2) := by
   obtain ⟨m, hm⟩ : ∃ m : ℕ, H.d + 1 = 4 * m := by

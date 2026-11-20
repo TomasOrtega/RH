@@ -28,7 +28,7 @@ def UpAll : Prop :=
       IsIrr (r.comp (galEmb F E Ω)) → IsAutC ι (r.comp (galEmb F E Ω))
 
 /- English proof (translation)
-Introduce `hr K _ _ _ i _ _ hK hirr`. Use `haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) K⟩`. Conclude with `h ℚ K Ω l ι hK n hn r hr ha hirr`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpAll.autQ (h : UpAll) {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {n : ℕ}
     (hn : 1 ≤ n) {r : G ℚ Ω →* GL (Fin n) (Qbar l)} (ha : IsAutR ι r) : IsAutQ ι r := by
@@ -37,13 +37,13 @@ theorem UpAll.autQ (h : UpAll) {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosur
   exact h ℚ K Ω l ι hK n hn r hr ha hirr
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ ι ρ h1 h2 h3` and use `h.autQ (by norm_num) (ha Ω l ι ρ h1 h2 h3)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem adAutK_of (h : UpAll) (ha : Lit.AdAutQ) : AdAutK :=
   fun Ω _ _ _ l _ ι ρ h1 h2 h3 => h.autQ (by norm_num) (ha Ω l ι ρ h1 h2 h3)
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ ι ρ h1 h2 h3 h4` and use `h.autQ (by norm_num) (ha Ω l ι ρ h1 h2 h3 h4)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sym3AutK_of (h : UpAll) (ha : Lit.SymmetricCubeAutomorphyOverRationals) : Sym3AutK :=
   fun Ω _ _ _ l _ ι ρ h1 h2 h3 h4 => h.autQ (by norm_num) (ha Ω l ι ρ h1 h2 h3 h4)

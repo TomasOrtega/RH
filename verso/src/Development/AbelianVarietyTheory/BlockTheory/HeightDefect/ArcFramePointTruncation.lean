@@ -90,7 +90,7 @@ def fracMap (g : A →+* A') (hg : Function.Injective g) : FractionRing A →+* 
   IsFractionRing.lift (g := (algebraMap A' (FractionRing A')).comp g) ((IsFractionRing.injective A' _).comp hg)
 
 /- English proof (translation)
-The claim follows from `IsFractionRing.lift_algebraMap _ r`.
+A detailed English derivation is pending.
 -/
 theorem fracMap_algebraMap (hg : Function.Injective g) (r : A) :
     fracMap g hg (algebraMap A _ r) = algebraMap A' _ (g r) := IsFractionRing.lift_algebraMap _ r
@@ -213,14 +213,14 @@ def IsArcFrPtIn (W : Wit Y a χ) (ν : ∀ τ : E →+* ℂ, Fin (D.mult τ) →
 end Inputs
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨_, _, _, h₀, _, h⟩ => h ▸ h₀, fun h => ⟨Fin.elim0, fun _ => ω, fun i => i.elim0, h, fun i => i.elim0, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 example {A : Type} [CommRing A] [IsDomain A] {D₀ : Out.DegPre A} (ν : Fin 0 → EpsPt D₀) (r : Fin 0 → A) (ω : EpsPt D₀) :
     IsCombGt ν r ω ↔ ω.IsZero :=
   ⟨fun ⟨_, _, _, h₀, _, h⟩ => h ▸ h₀, fun h => ⟨Fin.elim0, fun _ => ω, fun i => i.elim0, h, fun i => i.elim0, rfl⟩⟩
 
 /- English proof (translation)
-Introduce `j` and use `by simp [constFn]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {A : Type} [CommRing A] [IsDomain A] {D₀ : Out.DegPre A} (th : D₀.P.L.Sec) : IsMulSec 1 th th := fun j => by
   simp [constFn]

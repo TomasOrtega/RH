@@ -11,11 +11,11 @@ open GlobalTheory.CompanionTheory.Ar.BT ReciprocityTheory.ChartRestriction.G.Sem
 namespace GlobalTheory.CompanionTheory.Ar.BT
 
 /- English proof (translation)
-Introduce `S G _ hG N hN`. Use `hG.comm` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Use `hG.separated` as an intermediate fact. Use `hG.quasiCompact` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : IsMonHom ((𝟙 G) ^ N)` using `GlobalTheory.AbLaw.MulN.isMonHom_mulA G N`. Establish `: LocallyOfFiniteType (((𝟙 G) ^ N).left ≫ G.hom)` using `by rw [Over.w]; infer_instance`. Establish `: LocallyOfFiniteType ((𝟙 G) ^ N).left` using `locallyOfFiniteType_of_comp _ G.hom`. Establish `: QuasiCompact (((𝟙 G) ^ N).left ≫ G.hom)` using `by rw [Over.w]; infer_instance`. Establish `: QuasiCompact ((𝟙 G) ^ N).left` using `QuasiCompact.of_comp _ G.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.locallyQuasiFinite_of_finite_geometric_ker S G G _ hm inferInstance inferInstance fun Ω _ _ t => ?_` and prove the remaining obligations. Simplify using `only [MonObj.comp_pow, Category.comp_id]`. Conclude with `GlobalTheory.HomExt.finite_torsion_points hG t hN`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem locallyQuasiFinite_pow_semiAbelian :
     ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G], IsSemiAbelian G → ∀ N : ℕ, 1 ≤ N →

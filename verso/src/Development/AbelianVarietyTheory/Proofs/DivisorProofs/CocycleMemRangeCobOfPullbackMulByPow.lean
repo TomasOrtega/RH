@@ -24,9 +24,9 @@ namespace PDivGroup
 variable {p : ℕ} {R : Type} [CommRing R] (G : PDivGroup p R)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Use `⟨BialgHom.id R _, Function.injective_id, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, mulBy, pow_one]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `succ n ih`. Take `⟨q, hq, hq'⟩` from `ih`. Use `⟨(G.mulP (n + 1)).comp q, (Test.mulP_injective G (n + 1)).comp hq, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ', ← mulBy_mulBy, ← mulP_res, map_mulBy, hq']`. Both sides reduce to the same expression.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_injective_mulBy_pow_eq_comp_resOne (n : ℕ) : ∃ q : G.A 1 →ₐc[R] G.A (n + 1),
     Function.Injective q ∧ ∀ a, mulBy R _ (p ^ n) a = q (G.resOne n a) := by
@@ -42,17 +42,17 @@ theorem exists_injective_mulBy_pow_eq_comp_resOne (n : ℕ) : ∃ q : G.A 1 →�
     rfl
 
 /- English proof (translation)
-Rewrite using `[pow_zero, mulBy, pow_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulBy_pow_zero_eq_id (n : ℕ) : mulBy R (G.A n) (p ^ 0) = BialgHom.id R _ := by
   rw [pow_zero, mulBy, pow_one]
 
 /- English proof (translation)
-Establish `hlev : ∀ n, cobOne R _ (B.1 (n + 1)) = pullbackTwo (G.mulP n) (c.1 n)`. Introduce `n`. Rewrite using `[hB, ← mulP_comp_res, pullTwo_comp, (c.2 n).2]`. Establish `hinv : ∀ n, G.transl n (B.1 (n + 1)) = B.1 (n + 1) ⊗ₜ 1` using `fun n => G.transl_eq_of_cobOne_eq_pullTwo n _ _ (hlev n) (by rw [resOne_funs, h1])`. Use `choose e he using fun n => G.exists_mulP_eq_of_transl_eq n (B.1 (n + 1)) (hinv n)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hres : ∀ n, G.res n (e (n + 1)) = e n`. Introduce `n`. Apply `Test.mulP_injective G n` to reduce the goal to its premises. Rewrite using `[mulP_res, he n, ← B.2 (n + 1), ← he (n + 1), res_mulP]`. Use `⟨⟨e, hres⟩, Subtype.ext (funext fun n => ?_), fun n => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `cobOne R _ (e n) = c.1 n`. Apply `G.pullbackTwo_mulP_injective n` to reduce the goal to its premises. Rewrite using `[pullTwo_cobOne, he n, hlev n]`. Express the relevant statement in the definitionally equal form `mulBy R _ p (e n) = B.1 n`. Rewrite using `[← res_mulP, he n, B.2 n]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cob_eq_mulBy_eq (c : G.cocycles) (B : G.funs)
     (hB : ∀ n, cobOne R _ (B.1 n) = pullbackTwo (mulBy R (G.A n) p) (c.1 n)) (h1 : B.1 1 = 0) :
@@ -75,15 +75,15 @@ theorem exists_cob_eq_mulBy_eq (c : G.cocycles) (B : G.funs)
     rw [← res_mulP, he n, B.2 n]
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Introduce `c B hB _`. Use `⟨B, Subtype.ext (funext fun n => ?_), fun n => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cobOne R _ (B.1 n) = c.1 n`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hB n, mulBy_pow_zero_eq_id, pullTwo_id]`. Rewrite using `[mulBy_pow_zero_eq_id]`. Both sides reduce to the same expression. Consider the case `succ N ih`. Introduce `c B hB hN`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `c' : G.cocycles` to `cocyclesMap ((p : ℤ_[p]) • 𝟙 G) c`. Establish `hc' : ∀ n, c'.1 n = pullbackTwo (mulBy R (G.A n) p) (c.1 n)` using `fun n => by`. Express the relevant statement in the definitionally equal form `pullbackTwo (Hom.app ((p : ℤ_[p]) • 𝟙 G) n) (c.1 n) = _`. Rewrite using `[natCast_smul_id_app]`. Establish `hB' : ∀ n, cobOne R _ (B.1 n) = pullbackTwo (mulBy R (G.A n) (p ^ N)) (c'.1 n)` using `fun n => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hB n, hc' n, ← pullTwo_comp, pow_succ, show (mulBy R (G.A n) (p ^ N)).comp (mulBy R _ p) = mulBy R _ (p ^ N * p) from BialgHom.ext fun a => mulBy_mulBy _ _ a]`. Take `⟨e', he', hm'⟩` from `ih c' B hB' ((B.2 N).symm.trans (by rw [hN, map_zero]))`. Establish `h1 : e'.1 1 = 0`. Take `⟨q, hq, hq'⟩` from `G.exists_injective_mulBy_pow_eq_comp_resOne N`. Apply `hq` to reduce the goal to its premises.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_zero, ← G.resOne_funs e' N, ← hq', hm', hN]`. Establish `hA : ∀ n, cobOne R _ (e'.1 n) = pullbackTwo (mulBy R (G.A n) p) (c.1 n)` using `fun n => (congrArg (fun d : G.cocycles => d.1 n) he').trans (hc' n)`. Take `⟨e, he, hm⟩` from `G.exists_cob_eq_mulBy_eq c e' hA h1`. Use `⟨e, he, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, ← mulBy_mulBy, hm, hm']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_cob_eq_mulBy_pow_eq [Fact p.Prime] (N : ℕ) : ∀ (c : G.cocycles) (B : G.funs),
     (∀ n, cobOne R _ (B.1 n) = pullbackTwo (mulBy R (G.A n) (p ^ N)) (c.1 n)) → B.1 N = 0 →
@@ -120,7 +120,7 @@ theorem exists_cob_eq_mulBy_pow_eq [Fact p.Prime] (N : ℕ) : ∀ (c : G.cocycle
 end PDivGroup
 
 /- English proof (translation)
-Introduce `p _ R _ G N c B hB hc hN`. Take `⟨e, he, -⟩` from `G.exists_cob_eq_mulBy_pow_eq N c ⟨B, hB⟩ hc hN`. Conclude with `⟨e, he⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cocycle_mem_range_cob_of_pullback_mulBy_pow :
     ∀ (p : ℕ) [Fact p.Prime]  (R : Type) [CommRing R] (G : PDivGroup p R) (N : ℕ) (c : G.cocycles)

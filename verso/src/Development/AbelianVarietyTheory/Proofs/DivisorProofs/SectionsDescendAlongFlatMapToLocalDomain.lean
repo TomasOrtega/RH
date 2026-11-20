@@ -17,15 +17,13 @@ namespace GlobalTheory
 namespace LocRegDesc
 
 /- English proof (translation)
-Use `letI := ρ.toAlgebra`. Use `haveI : Module.Flat A R := hρ`. Establish `hrel : ∑ i, (![s, -b] : Fin 2 → A) i • (![1, r] : Fin 2 → R) i = 0`. Simplify using `[Fin.sum_univ_two, Algebra.smul_def, RingHom.algebraMap_toAlgebra, hs]`. Establish `ht : Module.IsTrivialRelation (![s, -b] : Fin 2 → A) (![1, r] : Fin 2 → R)` using `Module.Flat.isTrivialRelation_of_sum_smul_eq_zero hrel`.
+Equip the data with the indicated structure. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, a, y, hx, hf⟩` from `ht`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, IsUnit (ρ (a 0 j)) := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `h1 : (1 : R) ∈ maximalIdeal R`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hx 0` as an intermediate fact. Simplify using `only [Matrix.cons_val_zero] at this`. Rewrite using `[this]`. Use `Ideal.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, RingHom.algebraMap_toAlgebra]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Ideal.mul_mem_right _ _ ((mem_maximalIdeal _).2 (hne j))`. Conclude with `(maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Use `⟨a 0 j, a 1 j, hj, ?_⟩` and prove the remaining obligations. Use `hf j` as an intermediate fact. Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one] at this`.
-
-Take the linear combination `this`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_unit_mul_eq_of_flat {A R : Type} [CommRing A] [CommRing R] [IsLocalRing R]
     (ρ : A →+* R) (hρ : ρ.Flat) (s b : A) (r : R) (hs : ρ s = ρ b * r) :
@@ -58,7 +56,7 @@ end LocRegDesc
 namespace LocRegDesc
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (x : Γ(X, U)) :
     (X.presheaf.map (homOfLE h2).op).hom ((X.presheaf.map (homOfLE h1).op).hom x) =
@@ -71,17 +69,15 @@ end LocRegDesc
 namespace LocRegDesc
 
 /- English proof (translation)
-Use `haveI hloc := U.2.isLocalization_basicOpen f`. Use `set δV := (X.presheaf.map (homOfLE hf).op).hom δ with hδV`. Use `set hV := (X.presheaf.map (homOfLE (X.basicOpen_le f)).op).hom h with hhV`. Establish `key : X.basicOpen hV = X.basicOpen f ⊓ X.basicOpen h` using `Scheme.basicOpen_res _ _ _`. Establish `hB : X.basicOpen hV ≤ X.basicOpen h` using `key ▸ inf_le_right`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hzero : (X.presheaf.map (homOfLE (X.basicOpen_le hV)).op).hom δV = 0`. Rewrite using `[hδV, res_res, ← res_res hh hB, hδ, map_zero]`. Take `⟨n, hn⟩` from `exists_pow_mul_eq_zero_of_res_basicOpen_eq_zero_of_isCompact X (U.2.basicOpen f).isCompact δV hV hzero`. Take `⟨⟨e, m⟩, hem⟩` from `IsLocalization.surj (Submonoid.powers f) δV`. Simplify using `only at hem`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h0 : algebraMap Γ(X, U.1) Γ(X, X.basicOpen f) (h ^ n * e) = 0`. Rewrite using `[map_mul, ← hem, map_pow]`. Express the relevant statement in the definitionally equal form `hV ^ n * (δV * _) = 0`. Rewrite using `[← _root_.mul_assoc, hn, zero_mul]`. Take `⟨⟨_, j, rfl⟩, hj⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers f) _ _).1 h0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only at hj`. Establish `hc : ρ (f ^ j * e) = 0`. Establish `: ρ h ^ n * ρ (f ^ j * e) = 0`. Rewrite using `[← map_pow, ← map_mul, show h ^ n * (f ^ j * e) = f ^ j * (h ^ n * e) by ring, hj, map_zero]`. Conclude with `(mul_eq_zero.1 this).resolve_left (pow_ne_zero _ hρh)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨g, a, hu, hg⟩` from `exists_unit_mul_eq_of_flat ρ hρ (f ^ j * e) 0 0 (by simp [hc])`. Use `⟨g, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, res_res]`. Express the relevant statement in the definitionally equal form `algebraMap Γ(X, U.1) Γ(X, X.basicOpen f) g * δV = 0`. Establish `u1 : IsUnit (algebraMap Γ(X, U.1) Γ(X, X.basicOpen f) (m : Γ(X, U.1)))` using `IsLocalization.map_units _ m`.
-
-Establish `u2 : IsUnit (algebraMap Γ(X, U.1) Γ(X, X.basicOpen f) (f ^ j))` using `IsLocalization.map_units _ (⟨f ^ j, j, rfl⟩ : Submonoid.powers f)`. Rewrite using `[← u1.mul_left_eq_zero, ← u2.mul_left_eq_zero, _root_.mul_assoc _ δV, hem, ← map_mul, ← map_mul, show g * e * f ^ j = g * (f ^ j * e) by ring, hg, zero_mul, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_kill_on_basicOpen (X : Scheme.{0}) (U : X.affineOpens) (W : X.Opens)
     (hWU : W ≤ U.1) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
@@ -127,15 +123,15 @@ end LocRegDesc
 namespace LocRegDesc
 
 /- English proof (translation)
-Set `p : Set X → Prop` to `fun t => ∃ g, IsUnit (ρ g) ∧ ∀ y (hy : y ∈ W), y ∈ t → (X.presheaf.germ W y hy).hom ((X.presheaf.map (homOfLE hWU).op).hom g * δ) = 0`. Establish `hp : p (W : Set X)`. Use `hW.induction_on ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `⟨1, by simp, fun y _ hy => hy.elim⟩`. Introduce and unpack `s t hst ⟨g, hg, H⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨g, hg, fun y hy hs => H y hy (hst hs)⟩`. Introduce and unpack `s t ⟨g₁, hg₁, H₁⟩ ⟨g₂, hg₂, H₂⟩`. Use `⟨g₁ * g₂, by rw [map_mul]; exact hg₁.mul hg₂, fun y hy hyst => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul (X.presheaf.map (homOfLE hWU).op).hom g₁ g₂]`. Break down `hyst with hs | ht` into its components or cases.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[mul_right_comm, map_mul (X.presheaf.germ W y hy).hom, H₁ y hy hs, zero_mul]`. Rewrite using `[_root_.mul_assoc, map_mul (X.presheaf.germ W y hy).hom, H₂ y hy ht, mul_zero]`. Introduce `x hx`. Take `⟨f, hf, hxf⟩` from `U.2.exists_basicOpen_le ⟨x, hx⟩ (hWU hx)`. Take `⟨g, hg, H⟩` from `exists_unit_kill_on_basicOpen X U W hWU R ρ hρ h hh hρh δ hδ f hf`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨X.basicOpen f, mem_nhdsWithin_of_mem_nhds ((X.basicOpen f).isOpen.mem_nhds hxf), g, hg, fun y hy hyf => ?_⟩` and prove the remaining obligations. Rewrite using `[← X.presheaf.germ_res_apply (homOfLE hf) y hyf, H, map_zero]`. Take `⟨g, hg, H⟩` from `hp`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Use `TopCat.Presheaf.section_ext X.sheaf W _ 0 fun y hy => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(H y hy hy).trans (map_zero (X.presheaf.germ W y hy).hom).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit_kill (X : Scheme.{0}) (U : X.affineOpens) (W : X.Opens)
     (hWU : W ≤ U.1) (hW : IsCompact (W : Set X)) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
@@ -171,13 +167,13 @@ end LocRegDesc
 namespace LocRegDesc
 
 /- English proof (translation)
-Use `haveI hloc := U.2.isLocalization_basicOpen h`. Take `⟨⟨s, ⟨_, N, rfl⟩⟩, hsm⟩` from `IsLocalization.surj (Submonoid.powers h) ((X.presheaf.map (homOfLE hh).op).hom θ)`. Simplify using `only at hsm`. Take `⟨r, hr⟩` from `H s N (by`. Express the relevant statement in the definitionally equal form `algebraMap Γ(X, U.1) Γ(X, X.basicOpen h) s = algebraMap Γ(X, U.1) Γ(X, X.basicOpen h) (h ^ N) * _`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hsm, mul_comm])`. Take `⟨g₁, a, hu₁, hga⟩` from `exists_unit_mul_eq_of_flat ρ hρ s (h ^ N) r (by rw [map_pow, hr])`. Use `set δ := (X.presheaf.map (homOfLE hWU).op).hom a - (X.presheaf.map (homOfLE hWU).op).hom g₁ * θ with hδdef`. Establish `hδ : (X.presheaf.map (homOfLE hh).op).hom δ = 0`. Establish `u : IsUnit (algebraMap Γ(X, U.1) Γ(X, X.basicOpen h) (h ^ N))` using `IsLocalization.map_units _ (⟨h ^ N, N, rfl⟩ : Submonoid.powers h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← u.mul_left_eq_zero, hδdef, map_sub, map_mul, res_res, res_res]`. Express the relevant statement in the definitionally equal form `(algebraMap Γ(X, U.1) Γ(X, X.basicOpen h) a - algebraMap Γ(X, U.1) Γ(X, X.basicOpen h) g₁ * (X.presheaf.map (homOfLE hh).op).hom θ) * algebraMap Γ(X, U.1) Γ(X, X.basicOpen h) (h ^ N) = 0`. Rewrite using `[sub_mul, _root_.mul_assoc, hsm, ← map_mul, ← map_mul, hga, mul_comm a, sub_self]`. Take `⟨g₂, hu₂, hk⟩` from `exists_unit_kill X U W hWU hW R ρ hρ h hh hρh δ hδ`. Use `⟨g₂ * g₁, by rw [map_mul]; exact hu₂.mul hu₁, g₂ * a, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_mul, map_mul]`. Rewrite `hk` using `[hδdef]`. Take the linear combination `hk`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_unit_one (X : Scheme.{0}) (U : X.affineOpens) (W : X.Opens)
     (hWU : W ≤ U.1) (hW : IsCompact (W : Set X)) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
@@ -215,9 +211,9 @@ theorem exists_unit_one (X : Scheme.{0}) (U : X.affineOpens) (W : X.Opens)
 end LocRegDesc
 
 /- English proof (translation)
-Introduce `X U W hWU hW R _ _ _ ρ hρ mm hmm h hh hρh J _ θ H`. Use `choose g hg s hs using fun i => LocRegDesc.exists_unit_one X U W hWU hW R ρ hρ h hh hρh (θ i) (H i)`. Use `haveI := Fintype.ofFinite J`. Use `⟨∏ i, g i, ?_, fun i => ⟨s i * ∏ j ∈ Finset.univ.erase i, g j, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hmm, Ideal.mem_comap, mem_maximalIdeal, mem_nonunits_iff, not_not, map_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `Finset.prod_induction _ IsUnit (fun _ _ => IsUnit.mul) isUnit_one (fun i _ => hg i)`. Rewrite using `[map_mul, hs i, ← Finset.mul_prod_erase Finset.univ g (Finset.mem_univ i), map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem LocRegDesc.descent : ∀ (X : Scheme.{0}) (U : X.affineOpens) (W : X.Opens) (hWU : W ≤ U.1), IsCompact (W : Set X) → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (ρ : Γ(X, U.1) →+* R), ρ.Flat → ∀ mm : Ideal Γ(X, U.1), (maximalIdeal R).comap ρ = mm → ∀ (h : Γ(X, U.1)) (hh : X.basicOpen h ≤ W), ρ h ≠ 0 → ∀ (J : Type) [Finite J] (θ : J → Γ(X, W)), (∀ i (s : Γ(X, U.1)) (N : ℕ), (X.presheaf.map (homOfLE (X.basicOpen_le h)).op).hom s = (X.presheaf.map (homOfLE (X.basicOpen_le h)).op).hom (h ^ N) * (X.presheaf.map (homOfLE hh).op).hom (θ i) → ρ h ^ N ∣ ρ s) → ∃ g ∉ mm, ∀ i, ∃ s : Γ(X, U.1), (X.presheaf.map (homOfLE hWU).op).hom s = (X.presheaf.map (homOfLE hWU).op).hom g * θ i := by
   intro X U W hWU hW R _ _ _ ρ hρ mm hmm h hh hρh J _ θ H

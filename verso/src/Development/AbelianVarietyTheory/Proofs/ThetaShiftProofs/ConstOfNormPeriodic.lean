@@ -22,13 +22,13 @@ def chartAt {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) (x : Sp ℂ ⟶ X) : L.ι 
   (ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart hL (x (default : PrimeSpectrum ℂ))).choose
 
 /- English proof (translation)
-The claim follows from `((valueRules X x).1 _).2 (ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart hL (x (default : PrimeSpectrum ℂ))).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem le_chartAt {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) (x : Sp ℂ ⟶ X) : ⊤ ≤ x ⁻¹ᵁ L.U (chartAt hL x) :=
   ((valueRules X x).1 _).2 (ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart hL (x (default : PrimeSpectrum ℂ))).choose_spec
 
 /- English proof (translation)
-Establish `hij` using `(le_preimage_inf x _ _).2 ⟨hi, hj⟩`. Take `⟨e, he⟩` from `(valueRules X x).2.1 _ hij`. Rewrite using `[← (valueRules X x).2.2.1 _ _ inf_le_left (s.f i) hij, ← (valueRules X x).2.2.1 _ _ inf_le_right (s.f j) hij, he, he, he, ← map_mul]`. Conclude with `congrArg e (s.compat i j)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_sec {X : Scheme.{0}} (x : Sp ℂ ⟶ X) {L : LB X} (s : L.Sec) (i j : L.ι)
     (hi : ⊤ ≤ x ⁻¹ᵁ L.U i) (hj : ⊤ ≤ x ⁻¹ᵁ L.U j) :
@@ -61,7 +61,7 @@ def genVal (hL : L.IsLB) (t : LB.Gen (LB.LinComb L φ ε)) (y : Sp ℂ ⟶ Y) (z
   genValIn u t y z (fun k => chartAt hL (y ≫ φ k))
 
 /- English proof (translation)
-The claim follows from `(le_preimage_wchart y L φ _).2 fun _ => le_chartAt hL _`.
+A detailed English derivation is pending.
 -/
 theorem le_wchart_chartAt (hL : L.IsLB) (φ : K → (Y ⟶ A.left)) (y : Sp ℂ ⟶ Y) :
     ⊤ ≤ y ⁻¹ᵁ L.wchart φ (fun k => chartAt hL (y ≫ φ k)) :=
@@ -70,7 +70,7 @@ theorem le_wchart_chartAt (hL : L.IsLB) (φ : K → (Y ⟶ A.left)) (y : Sp ℂ 
 variable {u}
 
 /- English proof (translation)
-Use `(le_preimage_wchart y L φ j).trans (forall_congr' fun k => ?_)` and prove the remaining obligations. Rewrite using `[hz k]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsLift.le_iff {y : Sp ℂ ⟶ Y} {z : K → Fin g → ℂ} (hz : IsLift u φ y z) (j : K → L.ι) :
     ⊤ ≤ y ⁻¹ᵁ L.wchart φ j ↔ ∀ k, ⊤ ≤ (u.ex (z k)).left ⁻¹ᵁ L.U (j k) := by
@@ -78,16 +78,16 @@ theorem IsLift.le_iff {y : Sp ℂ ⟶ Y} {z : K → Fin g → ℂ} (hz : IsLift 
   rw [hz k]
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (u.fr_ne _ _ ((hz.le_iff j).1 hj k))`.
+A detailed English derivation is pending.
 -/
 theorem frameProd_ne_zero {y : Sp ℂ ⟶ Y} {z : K → Fin g → ℂ} (hz : IsLift u φ y z) (ε : K → ℤ) {j : K → L.ι}
     (hj : ⊤ ≤ y ⁻¹ᵁ L.wchart φ j) : frameProd u ε z j ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (u.fr_ne _ _ ((hz.le_iff j).1 hj k))
 
 /- English proof (translation)
-Establish `e₁` using `val_sec y s j j' hj hj'`. Establish `e₂` using `val_linComb y valueRules L φ ε j j' hj hj'`. Establish `e₃ : frameProd u ε z j = valAt' y (L.wchart φ j ⊓ L.wchart φ j') ((L.LinComb φ ε).g j j').val * frameProd u ε z j'`. Rewrite using `[e₂, frameProd, frameProd, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[u.fr_compat (j k) (j' k) (z k) ((le_preimage_inf _ _ _).2 ⟨(hz.le_iff j).1 hj k, (hz.le_iff j').1 hj' k⟩), mul_zpow, hz k]`. Establish `n` using `val_unit_ne_zero y valueRules ((le_preimage_inf y _ _).2 ⟨hj, hj'⟩) ((L.LinComb φ ε).g j j')`. Rewrite using `[secValIn, secValIn, e₃]`. Conclude with `(congrArg (· / _) e₁).trans (mul_div_mul_left _ _ n)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secValIn_eq (s : LB.Sec (LB.LinComb L φ ε)) {y : Sp ℂ ⟶ Y} {z : K → Fin g → ℂ} (hz : IsLift u φ y z)
     {j j' : K → L.ι} (hj : ⊤ ≤ y ⁻¹ᵁ L.wchart φ j) (hj' : ⊤ ≤ y ⁻¹ᵁ L.wchart φ j') :
@@ -105,28 +105,28 @@ theorem secValIn_eq (s : LB.Sec (LB.LinComb L φ ε)) {y : Sp ℂ ⟶ Y} {z : K 
   exact (congrArg (· / _) e₁).trans (mul_div_mul_left _ _ n)
 
 /- English proof (translation)
-The claim follows from `secValIn_eq (genSec t ht) hz hj hj'`.
+A detailed English derivation is pending.
 -/
 theorem genValIn_eq {t : LB.Gen (LB.LinComb L φ ε)} (ht : t.IsGen) {y : Sp ℂ ⟶ Y} {z : K → Fin g → ℂ}
     (hz : IsLift u φ y z) {j j' : K → L.ι} (hj : ⊤ ≤ y ⁻¹ᵁ L.wchart φ j) (hj' : ⊤ ≤ y ⁻¹ᵁ L.wchart φ j') :
     genValIn u t y z j = genValIn u t y z j' := secValIn_eq (genSec t ht) hz hj hj'
 
 /- English proof (translation)
-The claim follows from `secValIn_eq s hz (le_wchart_chartAt hL φ y) hj`.
+A detailed English derivation is pending.
 -/
 theorem secVal_eq (hL : L.IsLB) (s : LB.Sec (LB.LinComb L φ ε)) {y : Sp ℂ ⟶ Y} {z : K → Fin g → ℂ}
     (hz : IsLift u φ y z) {j : K → L.ι} (hj : ⊤ ≤ y ⁻¹ᵁ L.wchart φ j) : secVal u hL s y z = secValIn u s y z j :=
   secValIn_eq s hz (le_wchart_chartAt hL φ y) hj
 
 /- English proof (translation)
-The claim follows from `genValIn_eq ht hz (le_wchart_chartAt hL φ y) hj`.
+A detailed English derivation is pending.
 -/
 theorem genVal_eq (hL : L.IsLB) {t : LB.Gen (LB.LinComb L φ ε)} (ht : t.IsGen) {y : Sp ℂ ⟶ Y} {z : K → Fin g → ℂ}
     (hz : IsLift u φ y z) {j : K → L.ι} (hj : ⊤ ≤ y ⁻¹ᵁ L.wchart φ j) : genVal u hL t y z = genValIn u t y z j :=
   genValIn_eq ht hz (le_wchart_chartAt hL φ y) hj
 
 /- English proof (translation)
-Rewrite using `[secVal_eq hL s hz hj, secValIn, div_mul_cancel₀ _ (frameProd_ne_zero hz ε hj)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valAt'_sec (hL : L.IsLB) (s : LB.Sec (LB.LinComb L φ ε)) {y : Sp ℂ ⟶ Y} {z : K → Fin g → ℂ}
     (hz : IsLift u φ y z) {j : K → L.ι} (hj : ⊤ ≤ y ⁻¹ᵁ L.wchart φ j) :
@@ -134,7 +134,7 @@ theorem valAt'_sec (hL : L.IsLB) (s : LB.Sec (LB.LinComb L φ ε)) {y : Sp ℂ �
   rw [secVal_eq hL s hz hj, secValIn, div_mul_cancel₀ _ (frameProd_ne_zero hz ε hj)]
 
 /- English proof (translation)
-The claim follows from `valAt'_sec hL (genSec t ht) hz hj`.
+A detailed English derivation is pending.
 -/
 theorem valAt'_gen (hL : L.IsLB) {t : LB.Gen (LB.LinComb L φ ε)} (ht : t.IsGen) {y : Sp ℂ ⟶ Y} {z : K → Fin g → ℂ}
     (hz : IsLift u φ y z) {j : K → L.ι} (hj : ⊤ ≤ y ⁻¹ᵁ L.wchart φ j) :
@@ -142,7 +142,7 @@ theorem valAt'_gen (hL : L.IsLB) {t : LB.Gen (LB.LinComb L φ ε)} (ht : t.IsGen
   valAt'_sec hL (genSec t ht) hz hj
 
 /- English proof (translation)
-The claim follows from `div_ne_zero (val_unit_ne_zero y valueRules (le_wchart_chartAt hL φ y) _) (frameProd_ne_zero hz ε (le_wchart_chartAt hL φ y))`.
+A detailed English derivation is pending.
 -/
 theorem genVal_ne_zero (hL : L.IsLB) (t : LB.Gen (LB.LinComb L φ ε)) {y : Sp ℂ ⟶ Y} {z : K → Fin g → ℂ}
     (hz : IsLift u φ y z) : genVal u hL t y z ≠ 0 :=
@@ -150,7 +150,7 @@ theorem genVal_ne_zero (hL : L.IsLB) (t : LB.Gen (LB.LinComb L φ ε)) {y : Sp �
     (frameProd_ne_zero hz ε (le_wchart_chartAt hL φ y))
 
 /- English proof (translation)
-Establish `h` using `le_wchart_chartAt hL (Sum.elim φ φ') y`. Simplify using `only [genVal, genValIn, frameProd]`. Rewrite using `[div_mul_div_comm, Fintype.prod_sum_type]`. Use `congrArg₂ (· / ·) ?_ rfl` and prove the remaining obligations. Conclude with `(val_unit_mul y valueRules h _ _).trans (congrArg₂ (· * ·) (val_res y valueRules _ h _) (val_res y valueRules _ h _))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem genVal_mul (hL : L.IsLB) (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb L φ' ε')) (y : Sp ℂ ⟶ Y)
     (z : K ⊕ K' → Fin g → ℂ) : genVal u hL (LB.mulGen L φ ε φ' ε' t t') y z =
@@ -163,7 +163,7 @@ theorem genVal_mul (hL : L.IsLB) (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen 
     (congrArg₂ (· * ·) (val_res y valueRules _ h _) (val_res y valueRules _ h _))
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `(valueRules Y y).2.1 _ (le_wchart_chartAt hL φ y)`. Simplify using `only [genVal, genValIn, frameProd, zpow_neg, Finset.prod_inv_distrib]`. Use `Eq.trans ?_ ((inv_div_inv _ _).trans (inv_div _ _).symm)` and prove the remaining obligations. Conclude with `congrArg₂ (· / ·) ((he _).trans ((map_units_inv e _).trans (congrArg (·⁻¹) (he _).symm))) rfl`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem genVal_inv (hL : L.IsLB) (t : LB.Gen (LB.LinComb L φ ε)) (y : Sp ℂ ⟶ Y) (z : K → Fin g → ℂ) :
     genVal u hL (LB.invGen L φ ε t) y z = (genVal u hL t y z)⁻¹ := by
@@ -173,7 +173,7 @@ theorem genVal_inv (hL : L.IsLB) (t : LB.Gen (LB.LinComb L φ ε)) (y : Sp ℂ �
   exact congrArg₂ (· / ·) ((he _).trans ((map_units_inv e _).trans (congrArg (·⁻¹) (he _).symm))) rfl
 
 /- English proof (translation)
-Establish `e : (fun k => chartAt hL ((y ≫ h) ≫ φ k)) = fun k => chartAt hL (y ≫ h ≫ φ k)`. Use function extensionality and compare the values at `fun k => by rw [Category.assoc]`. Rewrite using `[genVal, genVal, e]`. Use `congrArg₂ (· / ·) ?_ rfl` and prove the remaining obligations. Conclude with `(val_res y valueRules _ (le_wchart_chartAt hL (fun k => h ≫ φ k) y) _).trans (val_pullU y valueRules h _ _)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem genVal_pull (hL : L.IsLB) (t : LB.Gen (LB.LinComb L φ ε)) (h : Y' ⟶ Y) (y : Sp ℂ ⟶ Y') (z : K → Fin g → ℂ) :
     genVal u hL (LB.pullGen L φ ε t h) y z = genVal u hL t (y ≫ h) z := by
@@ -184,7 +184,7 @@ theorem genVal_pull (hL : L.IsLB) (t : LB.Gen (LB.LinComb L φ ε)) (h : Y' ⟶ 
   exact (val_res y valueRules _ (le_wchart_chartAt hL (fun k => h ≫ φ k) y) _).trans (val_pullU y valueRules h _ _)
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `(valueRules Y y).2.1 _ (le_wchart_chartAt hL (PEmpty.elim : PEmpty → (Y ⟶ A.left)) y)`. Simplify using `only [genVal, genValIn, frameProd, Fintype.prod_empty, div_one]`. Conclude with `(he _).trans (map_one e)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem genVal_one (hL : L.IsLB) (y : Sp ℂ ⟶ Y) (z : PEmpty → Fin g → ℂ) : genVal u hL (LB.oneGen L) y z = 1 := by
   obtain ⟨e, he⟩ := (valueRules Y y).2.1 _ (le_wchart_chartAt hL (PEmpty.elim : PEmpty → (Y ⟶ A.left)) y)
@@ -192,9 +192,9 @@ theorem genVal_one (hL : L.IsLB) (y : Sp ℂ ⟶ Y) (z : PEmpty → Fin g → �
   exact (he _).trans (map_one e)
 
 /- English proof (translation)
-Establish `h₁` using `le_wchart_chartAt hL φ y`. Establish `h₂` using `le_wchart_chartAt hL φ' y`. Establish `h₃` using `(le_preimage_inf y _ _).2 ⟨h₁, h₂⟩`. Use `congrArg₂ (· / ·) ?_ ?_` and prove the remaining obligations. Use `(val_res y valueRules inf_le_left h₃ _).symm.trans (Eq.trans ?_ (val_res y valueRules inf_le_right h₃ _))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (fun q : Γ(Y, _)ˣ => valAt' y _ q.val) (h _ _ (fun a b e => congrArg (fun q => chartAt hL (y ≫ q)) e) (fun a b e => congrArg (fun q => chartAt hL (y ≫ q)) e) (fun a b e => congrArg (fun q => chartAt hL (y ≫ q)) e))`. Use `congrArg (Units.coeHom ℂ) (hs fun w => Units.mk0 _ (u.fr_ne _ w (le_chartAt hL (u.ex w).left)))` as an intermediate fact. Simplify using `only [map_prod, map_zpow, Units.coeHom_apply, Units.val_mk0] at this`. Simplify using `only [frameProd, hz _, hz' _]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem genVal_corr (hL : L.IsLB) {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L φ' ε')}
     (h : LB.Gen.Corr L φ ε φ' ε' t t') {y : Sp ℂ ⟶ Y} {z : K → Fin g → ℂ} {z' : K' → Fin g → ℂ}
@@ -214,13 +214,11 @@ theorem genVal_corr (hL : L.IsLB) {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen
     exact this
 
 /- English proof (translation)
-Introduce `w₀`. Take `⟨j, hj⟩ : ∃ j, ⊤ ≤ ((u.ex (q w₀)).left ≫ p) ⁻¹ᵁ L.wchart φ j` from `⟨_, le_wchart_chartAt hL φ _⟩`. Take `⟨ho, hh⟩` from `u.hol (p ⁻¹ᵁ L.wchart φ j) ((p.app _).hom (s.f j))`. Establish `ho' : IsOpen {w | ⊤ ≤ ((u.ex (q w)).left ≫ p) ⁻¹ᵁ L.wchart φ j}` using `ho.preimage hq.continuous`. Establish `hn` using `ho'.mem_nhds hj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d₁ : DifferentiableAt ℂ (fun w => valAt' ((u.ex (q w)).left ≫ p) (L.wchart φ j) (s.f j)) w₀`. Use `(hh.differentiableAt (ho.mem_nhds hj)).comp w₀ (hq w₀)` as an intermediate fact. Use `this.congr_of_eventuallyEq (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Conclude with `((valueRules _ (u.ex (q w)).left).2.2.2.1 _ p _ _).symm`. Establish `d₂ : DifferentiableAt ℂ (fun w => frameProd u ε (z w) j) w₀`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a : ∀ k, DifferentiableAt ℂ (fun w => u.fr (j k) (z w k) ^ ε k) w₀` using `fun k => by`. Establish `hk` using `((hz w₀).le_iff j).1 hj k`. Use `DifferentiableAt.zpow ?_ (Or.inl (u.fr_ne _ _ hk))` and prove the remaining obligations. Conclude with `((u.fr_hol (j k)).differentiableAt ((u.hol _ 0).1.mem_nhds hk)).comp w₀ (hd k w₀)`. Conclude with `(HasFDerivAt.finsetProd (u := Finset.univ) fun k _ => (a k).hasFDerivAt).differentiableAt`.
-
-Use `(d₁.fun_mul (d₂.fun_inv (frameProd_ne_zero (hz w₀) ε hj))).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hn] with w hw`. Conclude with `(secVal_eq hL s (hz w) hw).trans (div_eq_mul_inv _ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem differentiable_secVal (hL : L.IsLB) (s : LB.Sec (LB.LinComb L φ ε)) {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℂ E] (p : A.left ⟶ Y) {q : E → Fin g → ℂ} (hq : Differentiable ℂ q) {z : E → K → Fin g → ℂ}
@@ -247,7 +245,7 @@ theorem differentiable_secVal (hL : L.IsLB) (s : LB.Sec (LB.LinComb L φ ε)) {E
   exact (secVal_eq hL s (hz w) hw).trans (div_eq_mul_inv _ _)
 
 /- English proof (translation)
-The claim follows from `differentiable_secVal hL (genSec t ht) p hq hd hz`.
+A detailed English derivation is pending.
 -/
 theorem differentiable_genVal (hL : L.IsLB) {t : LB.Gen (LB.LinComb L φ ε)} (ht : t.IsGen) {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℂ E] (p : A.left ⟶ Y) {q : E → Fin g → ℂ} (hq : Differentiable ℂ q)
@@ -262,18 +260,18 @@ def ahFactor (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ) (l : u.Λ) (z
 variable {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
 
 /- English proof (translation)
-Introduce `h0` and use `by simpa [h0] using h.2.2.1 l`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chi_ne_zero (h : u.IsAH Hm χ) (l : u.Λ) : χ l ≠ 0 := fun h0 => by simpa [h0] using h.2.2.1 l
 
 /- English proof (translation)
-The claim follows from `mul_ne_zero (chi_ne_zero h l) (Complex.exp_ne_zero _)`.
+A detailed English derivation is pending.
 -/
 theorem ahFactor_ne_zero (h : u.IsAH Hm χ) (l : u.Λ) (z : Fin g → ℂ) : ahFactor Hm χ l z ≠ 0 :=
   mul_ne_zero (chi_ne_zero h l) (Complex.exp_ne_zero _)
 
 /- English proof (translation)
-Rewrite using `[frameProd, frameProd, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[h.2.2.2 (l k) (j k) (z k) ((hz.le_iff j).1 hj k), mul_zpow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem frameProd_add_period (h : u.IsAH Hm χ) {y : Sp ℂ ⟶ Y} {z : K → Fin g → ℂ} (hz : IsLift u φ y z) (ε : K → ℤ)
     (l : K → u.Λ) {j : K → L.ι} (hj : ⊤ ≤ y ⁻¹ᵁ L.wchart φ j) :
@@ -284,7 +282,7 @@ theorem frameProd_add_period (h : u.IsAH Hm χ) {y : Sp ℂ ⟶ Y} {z : K → Fi
   rfl
 
 /- English proof (translation)
-Establish `n : (∏ k, ahFactor Hm χ (l k) (z k) ^ ε k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (ahFactor_ne_zero h _ _)`. Rewrite using `[secVal, secVal, secValIn, secValIn, frameProd_add_period h hz ε l (le_wchart_chartAt hL φ y), ← mul_div_assoc, mul_div_mul_left _ _ n]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem secVal_add_period (hL : L.IsLB) (h : u.IsAH Hm χ) (s : LB.Sec (LB.LinComb L φ ε)) {y : Sp ℂ ⟶ Y}
     {z : K → Fin g → ℂ} (hz : IsLift u φ y z) (l : K → u.Λ) :
@@ -295,7 +293,7 @@ theorem secVal_add_period (hL : L.IsLB) (h : u.IsAH Hm χ) (s : LB.Sec (LB.LinCo
     ← mul_div_assoc, mul_div_mul_left _ _ n]
 
 /- English proof (translation)
-Establish `n : (∏ k, ahFactor Hm χ (l k) (z k) ^ ε k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (ahFactor_ne_zero h _ _)`. Rewrite using `[genVal, genVal, genValIn, genValIn, frameProd_add_period h hz ε l (le_wchart_chartAt hL φ y), ← mul_div_assoc, mul_div_mul_left _ _ n]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem genVal_add_period (hL : L.IsLB) (h : u.IsAH Hm χ) (t : LB.Gen (LB.LinComb L φ ε)) {y : Sp ℂ ⟶ Y}
     {z : K → Fin g → ℂ} (hz : IsLift u φ y z) (l : K → u.Λ) :
@@ -306,9 +304,9 @@ theorem genVal_add_period (hL : L.IsLB) (h : u.IsAH Hm χ) (t : LB.Gen (LB.LinCo
     ← mul_div_assoc, mul_div_mul_left _ _ n]
 
 /- English proof (translation)
-Establish `h` using `le_wchart_chartAt hL (fun _ : PUnit => eSec A) (𝟙 (Sp ℂ))`. Establish `hz : IsLift u (fun _ : PUnit => eSec A) (𝟙 (Sp ℂ)) (fun _ => 0)` using `fun _ => by`. Rewrite using `[ex_zero, Hom.one_def]`. Simplify using `[eSec]`. Use `(div_eq_one_iff_eq (frameProd_ne_zero hz _ h)).2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[frameProd, Fintype.prod_unique, zpow_one]`. Conclude with `(hr _ h).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genVal_rig (hL : L.IsLB) {rig : LB.Gen (L.pull (eSec A))} (hr : u.IsRig rig) :
     genVal u hL rig (𝟙 (Sp ℂ)) (fun _ => 0) = 1 := by
@@ -327,9 +325,9 @@ variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} {u : HolUnif A
   {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
 
 /- English proof (translation)
-Use `haveI := u.discrete`. Use `haveI : IsZLattice ℝ u.Λ := ⟨u.full⟩`. Establish `hc` using `(IsZLattice.isCompact_range_of_periodic u.Λ (fun z => ‖F z‖) hF.continuous.norm (fun z l hl => hp ⟨l, hl⟩ z)).isBounded`. Take `⟨C, hC⟩` from `hc.exists_norm_le`. Use `hF.apply_eq_apply_of_bounded (isBounded_iff_forall_norm_le.2 ⟨C, ?_⟩) z w` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Simplify using `using hC _ ⟨x, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem const_of_norm_periodic (u : HolUnif A L g) {F : (Fin g → ℂ) → ℂ} (hF : Differentiable ℂ F)
     (hp : ∀ (l : u.Λ) z, ‖F (z + l)‖ = ‖F z‖) (z w : Fin g → ℂ) : F z = F w := by
@@ -343,30 +341,30 @@ theorem const_of_norm_periodic (u : HolUnif A L g) {F : (Fin g → ℂ) → ℂ}
   simpa using hC _ ⟨x, rfl⟩
 
 /- English proof (translation)
-Simplify using `[hermForm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_zero_left (w : Fin g → ℂ) : hermForm Hm 0 w = 0 := by simp [hermForm]
 
 /- English proof (translation)
-Simplify using `[hermForm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_zero_right (w : Fin g → ℂ) : hermForm Hm w 0 = 0 := by simp [hermForm]
 
 /- English proof (translation)
-Simplify using `[hermForm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_neg_left (z w : Fin g → ℂ) : hermForm Hm (-z) w = -hermForm Hm z w := by simp [hermForm]
 
 /- English proof (translation)
-Simplify using `[hermForm, Matrix.mulVec_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_neg_right (z w : Fin g → ℂ) : hermForm Hm z (-w) = -hermForm Hm z w := by
   simp [hermForm, Matrix.mulVec_neg]
 
 /- English proof (translation)
-Establish `hi` using `le_chartAt hL (u.ex z).left`. Use `set i := chartAt hL (u.ex z).left`. Establish `hi' : ⊤ ≤ (u.ex (z + l)).left ⁻¹ᵁ L.U i` using `by rw [ex_add_period u _ _ l.2]; exact hi`. Establish `hi'' : ⊤ ≤ (u.ex (z + (l + m : u.Λ))).left ⁻¹ᵁ L.U i` using `by rw [ex_add_period u _ _ (l + m).2]; exact hi`. Establish `e` using `(h.2.2.2 (l + m) i z hi).symm.trans (h.2.2.2 l i z hi)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[h.2.2.2 m i _ hi', add_assoc z, ← Submodule.coe_add, ← _root_.mul_assoc]`. Conclude with `mul_right_cancel₀ (u.fr_ne i _ hi'') e`.
+A detailed English derivation is pending.
 -/
 theorem ahFactor_add (hL : L.IsLB) (h : u.IsAH Hm χ) (l m : u.Λ) (z : Fin g → ℂ) :
     ahFactor Hm χ (l + m) z = ahFactor Hm χ l z * ahFactor Hm χ m (z + l) := by
@@ -379,9 +377,9 @@ theorem ahFactor_add (hL : L.IsLB) (h : u.IsAH Hm χ) (l m : u.Λ) (z : Fin g �
   exact mul_right_cancel₀ (u.fr_ne i _ hi'') e
 
 /- English proof (translation)
-Establish `e` using `ahFactor_add hL h l m 0`. Establish `e'` using `Complex.sub_conj (hermForm Hm l m)`. Rewrite `e'` using `[← hermForm_conj Hm h.1]`. Move the coercions through the operations in `at e'`. Simplify using `only [ahFactor, hermForm_zero_left, zero_add, mul_zero, Submodule.coe_add, hermForm_add_left, hermForm_add_right] at e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Use `mul_right_cancel₀ (Complex.exp_ne_zero _) (e.trans ?_)` and prove the remaining obligations. Rewrite using `[_root_.mul_mul_mul_comm, ← Complex.exp_add, _root_.mul_assoc (χ l * χ m), ← Complex.exp_add]`. Use `congr 2`. Take the linear combination `(Real.pi / 2 : ℂ) * e'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem chi_add (hL : L.IsLB) (h : u.IsAH Hm χ) (l m : u.Λ) :
     χ (l + m) = χ l * χ m * Complex.exp (Real.pi * Complex.I * (hermForm Hm l m).im) := by
@@ -397,7 +395,7 @@ theorem chi_add (hL : L.IsLB) (h : u.IsAH Hm χ) (l m : u.Λ) :
   linear_combination (Real.pi / 2 : ℂ) * e'
 
 /- English proof (translation)
-Establish `e` using `chi_add hL h 0 0`. Simplify using `only [add_zero, Submodule.coe_zero, hermForm_zero_left, Complex.zero_im, Complex.ofReal_zero, mul_zero, Complex.exp_zero, _root_.mul_one] at e`. Conclude with `mul_left_cancel₀ (chi_ne_zero h 0) (e.symm.trans (_root_.mul_one _).symm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chi_zero (hL : L.IsLB) (h : u.IsAH Hm χ) : χ 0 = 1 := by
   have e := chi_add hL h 0 0
@@ -406,15 +404,15 @@ theorem chi_zero (hL : L.IsLB) (h : u.IsAH Hm χ) : χ 0 = 1 := by
   exact mul_left_cancel₀ (chi_ne_zero h 0) (e.symm.trans (_root_.mul_one _).symm)
 
 /- English proof (translation)
-Simplify using `[ahFactor, chi_zero hL h, hermForm_zero_right]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ahFactor_zero (hL : L.IsLB) (h : u.IsAH Hm χ) (z : Fin g → ℂ) : ahFactor Hm χ 0 z = 1 := by
   simp [ahFactor, chi_zero hL h, hermForm_zero_right]
 
 /- English proof (translation)
-Establish `e` using `(chi_add hL h l m).symm.trans ((congrArg χ (add_comm l m)).trans (chi_add hL h m l))`. Rewrite `e` using `[mul_comm (χ m), hermForm_conj Hm h.1 l m, Complex.conj_im]`. Take `⟨n, hn⟩` from `Complex.exp_eq_exp_iff_exists_int.1 (mul_left_cancel₀ (mul_ne_zero (chi_ne_zero h l) (chi_ne_zero h m)) e)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `: ((n : ℝ) : ℂ) = ((hermForm Hm l m).im : ℂ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `mul_left_cancel₀ Complex.two_pi_I_ne_zero ?_` and prove the remaining obligations. Move the coercions through the operations in `at hn ⊢`. Take the linear combination `-hn`. Conclude with `this` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_int_im (hL : L.IsLB) (h : u.IsAH Hm χ) (l m : u.Λ) : ∃ n : ℤ, (n : ℝ) = (hermForm Hm l m).im := by
   have e := (chi_add hL h l m).symm.trans ((congrArg χ (add_comm l m)).trans (chi_add hL h m l))
@@ -429,9 +427,9 @@ theorem exists_int_im (hL : L.IsLB) (h : u.IsAH Hm χ) (l m : u.Λ) : ∃ n : �
   exact_mod_cast this
 
 /- English proof (translation)
-Use `(Fintype.prod_equiv (Equiv.ulift : thK ≃ Finset (Fin 3)) _ (fun I => f I ^ ((-1 : ℤ) ^ (3 - I.card))) (fun I => rfl)).trans ?_` and prove the remaining obligations. Rewrite using `[show (Finset.univ : Finset (Finset (Fin 3))) = {∅, {0}, {1}, {2}, {0, 1}, {0, 2}, {1, 2}, {0, 1, 2}} by decide, Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset. …`. Establish `q₀ : (-1 : ℤ) ^ (3 - (∅ : Finset (Fin 3)).card) = -1` using `by decide`. Establish `q₁ : ∀ i : Fin 3, (-1 : ℤ) ^ (3 - ({i} : Finset (Fin 3)).card) = 1` using `by decide`. Establish `q₄ : (-1 : ℤ) ^ (3 - ({0, 1} : Finset (Fin 3)).card) = -1` using `by decide`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q₅ : (-1 : ℤ) ^ (3 - ({0, 2} : Finset (Fin 3)).card) = -1` using `by decide`. Establish `q₆ : (-1 : ℤ) ^ (3 - ({1, 2} : Finset (Fin 3)).card) = -1` using `by decide`. Establish `q₇ : (-1 : ℤ) ^ (3 - ({0, 1, 2} : Finset (Fin 3)).card) = 1` using `by decide`. Rewrite using `[q₀, q₁, q₁, q₁, q₄, q₅, q₆, q₇]`. Simplify using `only [zpow_neg, zpow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 The two sides agree by associativity and commutativity.
 -/
@@ -455,7 +453,7 @@ theorem prod_thK {U : Type} [DivisionCommMonoid U] (f : Finset (Fin 3) → U) :
   ac_rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [Finset.sum_insert (by decide), Finset.sum_pair (by decide), add_assoc], Finset.sum_pair (by decide), Finset.sum_pair (by decide), Finset.sum_pair (by decide)⟩`.
+Supply the required witnesses or components.
 -/
 theorem sum_three {M : Type} [AddCommMonoid M] (x : Fin 3 → M) :
     ∑ a ∈ ({0, 1, 2} : Finset (Fin 3)), x a = x 0 + x 1 + x 2 ∧ ∑ a ∈ ({0, 1} : Finset (Fin 3)), x a = x 0 + x 1 ∧
@@ -466,25 +464,25 @@ theorem sum_three {M : Type} [AddCommMonoid M] (x : Fin 3 → M) :
 def cubeLift (x : Fin 3 → Fin g → ℂ) : thK → Fin g → ℂ := fun I => ∑ a ∈ I.down, x a
 
 /- English proof (translation)
-Introduce `I` and use `tripleProductPoint_comp_partialSum u x I.down`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isLift_cube (u : HolUnif A L g) (x : Fin 3 → Fin g → ℂ) :
     IsLift u (thφ A (x3 A)) (pt3 u x).left (cubeLift x) := fun I => tripleProductPoint_comp_partialSum u x I.down
 
 /- English proof (translation)
-Apply the tactic sequence `obtain ⟨a, b, c, rfl⟩ : ∃ a b c, x = ![a, b, c] := ⟨x 0, x 1, x 2, by ext i : 1; fin_cases i <;> rfl⟩`. Set `p : A ⟶ G3 A` to `lift (𝟙 A) (lift (toUnit A ≫ u.ex b) (toUnit A ≫ u.ex c))`. Establish `hp : ∀ w, (u.ex w).left ≫ p.left = (pt3 u ![w, b, c]).left` using `fun w => by`. Rewrite using `[← Over.comp_left]`. Use `congr 1`.
+Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[p, pt3, comp_lift, Subsingleton.elim (toUnit (𝟙_ (Over (Sp ℂ)))) (𝟙 _)]`. Establish `hd : Differentiable ℂ fun w => genVal u hL t (pt3 u ![w, b, c]).left (cubeLift ![w, b, c])`. Apply the tactic sequence `have := differentiable_genVal hL ht p.left (q := id) differentiable_id (z := fun w => cubeLift ![w, b, c]) (fun I => Differentiable.fun_sum fun k _ => by fin_cases k <;> simp <;> fun_prop) (fun w => by rw [id, hp]; exact isLift_cube u _)`. Simplify `this` using `only [id, hp]`. Establish `hper : ∀ w, ∀ l ∈ (u.Λ : Set (Fin g → ℂ)), genVal u hL t (pt3 u ![w + l, b, c]).left (cubeLift ![w + l, b, c]) = genVal u hL t (pt3 u ![w, b, c]).left (cubeLift ![w, b, c])` using `fun w l hl => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `e₁ : pt3 u ![w + l, b, c] = pt3 u ![w, b, c]` using `by simp [pt3, ex_add_period u w l hl]`. Establish `e₂ : cubeLift ![w + l, b, c] = fun I => cubeLift ![w, b, c] I + ((∑ a ∈ I.down, (![⟨l, hl⟩, 0, 0] : Fin 3 → u.Λ) a : u.Λ) : Fin g → ℂ)`. Use function extensionality and compare the values at `I`. Rewrite using `[cubeLift, cubeLift, Submodule.coe_sum, ← Finset.sum_add_distrib]`. Apply the tactic sequence `exact Finset.sum_congr rfl fun k _ => by fin_cases k <;> simp`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[e₁, e₂, genVal_add_period hL h t (isLift_cube u _)]`. Use `(congrArg (· * _) ?_).trans (_root_.one_mul _)` and prove the remaining obligations. Use `(prod_thK fun I => ahFactor Hm χ (∑ a ∈ I, (![⟨l, hl⟩, 0, 0] : Fin 3 → u.Λ) a) (∑ a ∈ I, ![w, b, c] a)).trans ?_` and prove the remaining obligations. Establish `n` using `chi_ne_zero h ⟨l, hl⟩`. Simplify using `only [sum_three, Finset.sum_singleton, Finset.sum_empty, Matrix.cons_val, add_zero, ahFactor_zero hL h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ahFactor, hermForm_add_left, mul_add, Complex.exp_add]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[entire_apply_eq_of_periodic_of_span_real hd u.full hper a 0]`. Establish `e : (pt3 u ![0, b, c]).left = (lift (u.ex b) (u.ex c)).left ≫ (faceMap A 0).left`. Rewrite using `[← Over.comp_left]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[faceMap, pt3, comp_lift, x2, pzero, ex_zero, Hom.one_def]`. Establish `hz` using `isLift_cube u ![0, b, c]`. Rewrite `hz`, the goal using `[e]`. Rewrite using `[← genVal_pull, ← genVal_one (u := u) hL (lift (u.ex b) (u.ex c)).left PEmpty.elim]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `genVal_corr hL hf (fun k => (Category.assoc _ _ _).symm.trans (hz k)) (fun k => k.elim) fun f => ?_` and prove the remaining obligations. Use `(prod_thK fun I => f (∑ a ∈ I, ![0, b, c] a)).trans ?_` and prove the remaining obligations. Simplify using `only [sum_three, Finset.sum_singleton, Finset.sum_empty, Matrix.cons_val, zero_add, Fintype.prod_empty]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -533,7 +531,7 @@ theorem genVal_cube_of_face (hL : L.IsLB) (h : u.IsAH Hm χ) (t : LB.Gen (LB.Lin
   abel
 
 /- English proof (translation)
-Introduce `k` and use `by fin_cases k exacts [ex_neg_left u z, Category.comp_id _]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isLift_sym (u : HolUnif A L g) (z : Fin g → ℂ) :
     IsLift u (K := Fin 2) ![(ι[A]).left, 𝟙 A.left] (u.ex z).left ![-z, z] := fun k => by
@@ -541,15 +539,15 @@ theorem isLift_sym (u : HolUnif A L g) (z : Fin g → ℂ) :
   exacts [ex_neg_left u z, Category.comp_id _]
 
 /- English proof (translation)
-Establish `hd : Differentiable ℂ fun w => genVal u hL s (u.ex w).left ![-w, w]`. Apply the tactic sequence `have := differentiable_genVal hL hs (𝟙 _) (q := id) differentiable_id (z := fun w => ![-w, w]) (fun k => by fin_cases k <;> simp <;> fun_prop) (fun w => by rw [id, Category.comp_id]; exact isLift_sym u w)`. Simplify `this` using `only [id, Category.comp_id]`. Establish `hper : ∀ (l : u.Λ) w, genVal u hL s (u.ex (w + l)).left ![-(w + l), w + l] = χ (-l) / χ l * genVal u hL s (u.ex w).left ![-w, w]` using `fun l w => by`. Establish `e₂ : ![-(w + l), w + l] = fun k => ![-w, w] k + ((![-l, l] : Fin 2 → u.Λ) k : Fin g → ℂ)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Apply the tactic sequence `fin_cases k <;> simp [add_comm]`. Rewrite using `[ex_add_period u w l l.2, e₂, genVal_add_period hL h s (isLift_sym u w)]`. Use `congr 1`. Establish `n` using `chi_ne_zero h l`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `[ahFactor, hermForm_neg_left, hermForm_neg_right]`. Clear the denominators using the available nonvanishing facts. Establish `hc` using `const_of_norm_periodic u hd (fun l w => by`. Rewrite using `[hper, norm_mul, norm_div, h.2.2.1, h.2.2.1, div_one, _root_.one_mul])`. Establish `e : (u.ex 0).left = 𝟙 (Sp ℂ) ≫ eSec A` using `by rw [ex_zero, Hom.one_def]; simp [eSec]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : genVal u hL s (u.ex 0).left ![-0, 0] = 1`. Establish `hz` using `isLift_sym u 0`. Rewrite `hz`, the goal using `[e]`. Rewrite using `[← genVal_pull, ← genVal_one (u := u) hL (𝟙 (Sp ℂ)) PEmpty.elim]`. Use `genVal_corr hL h₀ (fun k => (Category.assoc _ _ _).symm.trans (hz k)) (fun k => k.elim) fun f => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Use `⟨fun z => (hc z 0).trans h1, fun l => ?_⟩` and prove the remaining obligations. Use `hper l 0` as an intermediate fact. Rewrite `this` using `[hc _ 0, h1, _root_.mul_one]`. Conclude with `(div_eq_one_iff_eq (chi_ne_zero h l)).1 this.symm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genVal_sym (hL : L.IsLB) (h : u.IsAH Hm χ)
     (s : LB.Gen (LB.LinComb L (K := Fin 2) ![(ι[A]).left, 𝟙 A.left] ![1, -1])) (hs : s.IsGen)
@@ -588,7 +586,7 @@ variable [IsCommMonObj A] {f f' : A ⟶ A} {F G : (Fin g → ℂ) →ₗ[ℂ] (F
 omit [IsCommMonObj A] in
 
 /- English proof (translation)
-Rewrite using `[← u.ker, hF, (u.ker l).2 l.2, ← ex_zero u, ← hF, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_mem (hF : ∀ z, u.ex (F z) = u.ex z ≫ f) (l : u.Λ) : F l ∈ u.Λ := by
   rw [← u.ker, hF, (u.ker l).2 l.2, ← ex_zero u, ← hF, map_zero]
@@ -597,7 +595,7 @@ def rosatiLift (F G : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (x z : Fin g 
   ![F x + z, F x, z, x + G z, x, G z]
 
 /- English proof (translation)
-Introduce `k` and use `by have e : ∀ (q : A ⊗ A ⟶ A) w, lift (u.ex x) (u.ex z) ≫ q = u.ex w → (lift (u.ex x) (u.ex z)).left ≫ q.left = (u.ex w).left := fun q w hq => congrArg (fun m => m.left) hq fin_cases k · exact e _ (F x + z) ((MonObj.comp_mul _ _ _).trans (by simp [u.ex_add, hF])) · exact e _ (F x …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isLift_rosati (hF : ∀ z, u.ex (F z) = u.ex z ≫ f) (hG : ∀ z, u.ex (G z) = u.ex z ≫ f') (x z : Fin g → ℂ) :
     IsLift u (Out.rosatiφ A f f') (lift (u.ex x) (u.ex z)).left (rosatiLift F G x z) := fun k => by
@@ -612,47 +610,45 @@ theorem isLift_rosati (hF : ∀ z, u.ex (F z) = u.ex z ≫ f) (hG : ∀ z, u.ex 
   · exact e _ (G z) (by simp [hG])
 
 /- English proof (translation)
-Take `⟨V, hV⟩ : ∃ V : (Fin g → ℂ) → (Fin g → ℂ) → ℂ, ∀ x z, V x z = genVal u hL r (lift (u.ex x) (u.ex z)).left (rosatiLift F G x z)` from `⟨_, fun _ _ => rfl⟩`. Establish `dF : Differentiable ℂ F` using `(LinearMap.toContinuousLinearMap F).differentiable`. Establish `dG : Differentiable ℂ G` using `(LinearMap.toContinuousLinearMap G).differentiable`. Establish `d₁ : ∀ z, Differentiable ℂ fun x => V x z` using `fun z => by`. Establish `hp : ∀ w, (u.ex w).left ≫ (lift (𝟙 A) (toUnit A ≫ u.ex z)).left = (lift (u.ex w) (u.ex z)).left` using `fun w => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left]`. Use `congr 1`. Simplify using `[comp_lift, Subsingleton.elim (toUnit (𝟙_ (Over (Sp ℂ)))) (𝟙 _)]`. Apply the tactic sequence `have := differentiable_genVal hL hr _ (q := id) differentiable_id (z := fun w => rosatiLift F G w z) (fun k => by fin_cases k <;> simp [rosatiLift] <;> fun_prop) (fun w => by rw [id, hp]; exact isLift_rosati hF hG w z)`. Simplify `this` using `only [id, hp, hV]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `d₂ : ∀ x, Differentiable ℂ fun z => V x z` using `fun x => by`. Establish `hp : ∀ w, (u.ex w).left ≫ (lift (toUnit A ≫ u.ex x) (𝟙 A)).left = (lift (u.ex x) (u.ex w)).left` using `fun w => by`. Rewrite using `[← Over.comp_left]`. Use `congr 1`. Simplify using `[comp_lift, Subsingleton.elim (toUnit (𝟙_ (Over (Sp ℂ)))) (𝟙 _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `have := differentiable_genVal hL hr _ (q := id) differentiable_id (z := fun w => rosatiLift F G x w) (fun k => by fin_cases k <;> simp [rosatiLift] <;> fun_prop) (fun w => by rw [id, hp]; exact isLift_rosati hF hG x w)`. Simplify `this` using `only [id, hp, hV]`. Establish `p₁ : ∀ (l : u.Λ) x z, V (x + l) z = Complex.exp (Real.pi * (hermForm Hm z (F l) - hermForm Hm (G z) l)) * V x z` using `fun l x z => by`. Establish `e₂ : rosatiLift F G (x + l) z = fun k => rosatiLift F G x z k + ((![⟨F l, lift_mem hF l⟩, ⟨F l, lift_mem hF l⟩, 0, l, l, 0] : Fin 6 → u.Λ) k : Fin g → ℂ)`. Use function extensionality and compare the values at `k`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `fin_cases k <;> simp [rosatiLift] <;> abel`. Rewrite using `[hV, hV, ex_add_period u x l l.2, e₂, genVal_add_period hL h r (isLift_rosati hF hG x z)]`. Use `congr 1`. Establish `n` using `chi_ne_zero h l`. Establish `n'` using `chi_ne_zero h ⟨F l, lift_mem hF l⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Fin.prod_univ_six, rosatiLift, Out.rosatiε, Matrix.cons_val, ahFactor_zero hL h, zpow_neg, zpow_one]`. Simplify using `only [ahFactor, hermForm_add_left, mul_add, mul_sub, Complex.exp_add, Complex.exp_sub]`. Clear the denominators using the available nonvanishing facts. Establish `p₂ : ∀ (l : u.Λ) x z, V x (z + l) = Complex.exp (Real.pi * (hermForm Hm (F x) l - hermForm Hm x (G l))) * V x z` using `fun l x z => by`. Establish `e₂ : rosatiLift F G x (z + l) = fun k => rosatiLift F G x z k + ((![l, 0, l, ⟨G l, lift_mem hG l⟩, 0, ⟨G l, lift_mem hG l⟩] : Fin 6 → u.Λ) k : Fin g → ℂ)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Apply the tactic sequence `fin_cases k <;> simp [rosatiLift] <;> abel`. Rewrite using `[hV, hV, ex_add_period u z l l.2, e₂, genVal_add_period hL h r (isLift_rosati hF hG x z)]`. Use `congr 1`. Establish `n` using `chi_ne_zero h l`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `n'` using `chi_ne_zero h ⟨G l, lift_mem hG l⟩`. Simplify using `only [Fin.prod_univ_six, rosatiLift, Out.rosatiε, Matrix.cons_val, ahFactor_zero hL h, zpow_neg, zpow_one]`. Simplify using `only [ahFactor, hermForm_add_left, mul_add, mul_sub, Complex.exp_add, Complex.exp_sub]`. Clear the denominators using the available nonvanishing facts. Establish `ne : ∀ x z, V x z ≠ 0` using `fun x z => (hV x z).symm ▸ genVal_ne_zero hL r (isLift_rosati hF hG x z)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Take `⟨B, hB⟩ : ∃ B : (Fin g → ℂ) → (Fin g → ℂ) → ℂ, ∀ x z, B x z = hermForm Hm (F x) z - hermForm Hm x (G z)` from `⟨_, fun _ _ => rfl⟩`. Establish `Bc : ∀ x z, hermForm Hm z (F x) - hermForm Hm (G z) x = starRingEnd ℂ (B x z)` using `fun x z => by`. Rewrite using `[hB, map_sub, ← hermForm_conj Hm h.1, ← hermForm_conj Hm h.1]`. Establish `Ba : ∀ x y z, B (x + y) z = B x z + B y z` using `fun x y z => by`. Simplify using `only [hB, map_add, hermForm_add_left]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `Bs : ∀ (c : ℂ) x z, B (c • x) z = c * B x z` using `fun c x z => by`. Simplify using `only [hB, map_smul, hermForm_smul_left]`. Expand and normalize the polynomial expressions, which then agree. Establish `Bs' : ∀ (c : ℂ) x z, B x (c • z) = starRingEnd ℂ c * B x z` using `fun c x z => by`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [hB, map_smul, hermForm_smul_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `Bd : ∀ z, Differentiable ℂ fun x => B x z` using `fun z => by`. Simplify using `only [hB, hermForm, dotProduct]`. Use `fun_prop`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `k₁ : ∀ (l : u.Λ) z, Complex.exp (Real.pi * starRingEnd ℂ (B l z)) = Complex.exp (Real.pi * B l z)` using `fun l z => by`. Establish `hc` using `const_of_norm_periodic u (F := fun x => V x z * Complex.exp (-(Real.pi * B x z))) ((d₁ z).mul (((Bd z).const_mul _).neg.cexp)) (fun m x => by`. Simplify using `only [p₁, Bc, Ba, norm_mul, Complex.norm_exp]`. Rewrite using `[mul_comm (Real.exp _), _root_.mul_assoc, ← Real.exp_add]`. Use `congr 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use the proof step `ring) (0 + l) 0`. Establish `B0 : B 0 z = 0` using `by simpa using Bs 0 0 z`. Simplify using `only [p₁] at hc`. Simplify using `only [Bc, B0, zero_add, mul_zero, neg_zero, Complex.exp_zero, _root_.mul_one, Complex.exp_neg] at hc`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n` using `ne 0 z`. Establish `n'` using `Complex.exp_ne_zero (Real.pi * B l z)`. Clear denominators, using `at hc` for the nonvanishing conditions. Conclude with `hc`. Establish `k₂ : ∀ (l : u.Λ) z, (B l z).im = 0` using `fun l z => by`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Use `k₁ l ((((2 * (B l z).im)⁻¹ : ℝ) : ℂ) • z)` as an intermediate fact. Rewrite `this` using `[Bs', Complex.conj_ofReal]`. Take `⟨n, hn⟩` from `Complex.exp_eq_exp_iff_exists_int.1 this`. Establish `hi` using `congrArg Complex.im hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [Complex.mul_im, Complex.add_im, Complex.conj_im, Complex.ofReal_re, Complex.ofReal_im, Complex.mul_re, Complex.intCast_re, Complex.intCast_im, Complex.I_re, Complex.I_im, Complex.re_ofNat, Complex.im_ofNat, zero_mul, mul_zero, add_zero, sub_zero, _root_.mul_one] at hi`. Establish `hpi` using `Real.pi_ne_zero`. Clear denominators, using `at hi` for the nonvanishing conditions. Establish `: (2 * n + 1 : ℤ) = 0`. Establish `: (2 * n + 1 : ℝ) = 0` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Use linear arithmetic over natural numbers and integers. Establish `k₃ : ∀ (l : u.Λ) z, B l z = 0` using `fun l z => by`. Use `k₂ l (Complex.I • z)` as an intermediate fact. Rewrite `this` using `[Bs']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Conclude with `Complex.ext (by simpa using this) (k₂ l z)`. Establish `k₄ : ∀ x z, B x z = 0` using `fun x z => by`. Establish `hx : x ∈ Submodule.span ℝ (u.Λ : Set (Fin g → ℂ))` using `by rw [u.full]; trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact k₃ ⟨y, hy⟩ z`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `zero => simpa using Bs 0 0 z`. Consider the case `add a b _ _ ha hb => rw [Ba, ha, hb, add_zero]`. Consider the case `smul c a _ ha => rw [← Complex.coe_smul, Bs, ha, mul_zero]`. Establish `c₁ : ∀ x z, V x z = V 0 z` using `fun x z => entire_apply_eq_of_periodic_of_span_real (d₁ z) u.full (fun w l hl => by simpa [Bc, k₄] using p₁ ⟨l, hl⟩ w z) x 0`. Establish `c₂ : ∀ x z, V x z = V x 0` using `fun x z => entire_apply_eq_of_periodic_of_span_real (d₂ x) u.full (fun w l hl => by simpa [← hB, k₄] using p₂ ⟨l, hl⟩ x w) z 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨fun x z => sub_eq_zero.1 ((hB x z).symm.trans (k₄ x z)), fun x z => ?_⟩` and prove the remaining obligations. Rewrite using `[← hV, c₁, c₂, hV]`. Establish `e : (lift (u.ex 0) (u.ex 0)).left = 𝟙 (Sp ℂ) ≫ Out.zero2 A` using `by rw [ex_zero, Hom.one_def]; simp`. Establish `hz` using `isLift_rosati hF hG 0 0`. Rewrite `hz`, the goal using `[e]`.
-
-Rewrite using `[← genVal_pull, ← genVal_one (u := u) hL (𝟙 (Sp ℂ)) PEmpty.elim]`. Use `genVal_corr hL h₀ (fun k => (Category.assoc _ _ _).symm.trans (hz k)) (fun k => k.elim) fun f => ?_` and prove the remaining obligations. Simplify using `[Fin.prod_univ_six, rosatiLift, Out.rosatiε]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem genVal_rosati (hL : L.IsLB) (h : u.IsAH Hm χ) (hF : ∀ z, u.ex (F z) = u.ex z ≫ f)
     (hG : ∀ z, u.ex (G z) = u.ex z ≫ f') (r : LB.Gen (LB.LinComb L (Out.rosatiφ A f f') Out.rosatiε)) (hr : r.IsGen)

@@ -18,13 +18,11 @@ variable (F) in
 def e0 : AF F := ((0 : Ainf F), (1 : Af F))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `h` to reduce the goal to its premises. Use `show (NumberField.InfiniteAdeleRing.ringEquiv_mixedSpace F) (0 : Ainf F) = 0`. Conclude with `map_zero _`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h u hu`. Establish `hu1 : u.1 = 0`. Establish `hu' : (NumberField.InfiniteAdeleRing.ringEquiv_mixedSpace F) u.1 = 0` using `hu`. Conclude with `(NumberField.InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (hu'.trans (map_zero _).symm)`. Establish `hue : u = u * e0 F`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show u.1 = u.1 * (0 : Ainf F)`. Rewrite using `[hu1, zero_mul]`. Use `show u.2 = u.2 * (1 : Af F)`. Rewrite using `[mul_one]`.
-
-Rewrite using `[hue, mul_smul, h, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem at_iff {M : Type} [AddCommGroup M] [Module (AF F) M] (z : M) : At (evI F) z ↔ e0 F • z = 0 := by
   constructor
@@ -46,7 +44,7 @@ theorem at_iff {M : Type} [AddCommGroup M] [Module (AF F) M] (z : M) : At (evI F
 
 variable (F) in
 /- English proof (translation)
-Use `haveI : T2Space (IsDedekindDomain.FiniteAdeleRing (𝓞 F) F) := T2Space.of_injective_continuous DFunLike.coe_injective RestrictedProduct.continuous_coe`. Use `haveI : T2Space (NumberField.InfiniteAdeleRing F) := show T2Space ((v : InfinitePlace F) → v.Completion) from inferInstance`. Use `show T2Space (NumberField.InfiniteAdeleRing F × IsDedekindDomain.FiniteAdeleRing (𝓞 F) F)`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem t2Space_adeleRing_of_numberField : T2Space (AF F) := by
   haveI : T2Space (IsDedekindDomain.FiniteAdeleRing (𝓞 F) F) :=
@@ -58,7 +56,7 @@ theorem t2Space_adeleRing_of_numberField : T2Space (AF F) := by
 
 variable (F E) in
 /- English proof (translation)
-Use `haveI := t2Space_adeleRing_of_numberField F`. Set `b` to `Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)`. Conclude with `T2Space.of_injective_continuous (X := AE F E) b.equivFun.injective (IsModuleTopology.continuous_of_linearMap (A := AE F E) b.equivFun.toLinearMap)`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem t2Space_cm_host_adeles : T2Space (AE F E) := by
   haveI := t2Space_adeleRing_of_numberField F
@@ -68,20 +66,18 @@ theorem t2Space_cm_host_adeles : T2Space (AE F E) := by
 
 variable (F E) in
 /- English proof (translation)
-Conclude with `IsModuleTopology.isTopologicalRing (AF F) (AE F E)`.
+A detailed English derivation is pending.
 -/
 theorem ring_AE : IsTopologicalRing (AE F E) := by
   exact IsModuleTopology.isTopologicalRing (AF F) (AE F E)
 
 omit [NumberField E] in
 /- English proof (translation)
-Set `φ : AF F →+* ℂ` to `(NumberField.InfinitePlace.Completion.extensionEmbedding w).comp (GlobalTheory.AdelicU.evInf F w).toRingHom`. Establish `hφ : Continuous φ` using `(NumberField.InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp ((continuous_apply w).comp continuous_fst)`. Use `letI : Module (AF F) ℂ := Module.compHom ℂ φ`. Use `haveI : ContinuousSMul (AF F) ℂ := ⟨(hφ.comp continuous_fst).mul continuous_snd⟩`. Establish `hpt : ∀ (b : AF F) (e : E), piInf τ (b ⊗ₜ[F] e) = φ b * (τ.1 e)` using `fun b e => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Lm : AE F E →ₗ[AF F] ℂ` to `{ toFun := piInf τ map_add' := map_add _ map_smul' := by`. Introduce `a x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b e`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TensorProduct.smul_tmul', hpt, hpt, smul_eq_mul, map_mul]`. Use `show φ a * φ b * τ.1 e = φ a * (φ b * τ.1 e)`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add x y hx hy`. Rewrite using `[smul_add, map_add, hx, hy, map_add, smul_add] }`.
-
-Conclude with `IsModuleTopology.continuous_of_linearMap Lm`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_piInf {w : InfinitePlace F} (τ : EmbOver E w) : Continuous (piInf τ) := by
   let φ : AF F →+* ℂ := (NumberField.InfinitePlace.Completion.extensionEmbedding w).comp
@@ -110,18 +106,16 @@ theorem continuous_piInf {w : InfinitePlace F} (τ : EmbOver E w) : Continuous (
 variable {n d : ℕ}
 
 /- English proof (translation)
-Conclude with `continuous_finsetSum _ fun w _ => continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => ((continuous_piInf (τ w)).comp (continuous_id.matrix_elem i j)).norm`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sz (τ : ∀ w : InfinitePlace F, EmbOver E w) : Continuous (sz τ : Ten F E n d → ℝ) := by
   exact continuous_finsetSum _ fun w _ => continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ =>
     ((continuous_piInf (τ w)).comp (continuous_id.matrix_elem i j)).norm
 
 /- English proof (translation)
-Use `haveI := t2Space_cm_host_adeles F E`. Establish `hset : {z : Ten F E n d | ∃ c ∈ C, At (evI F) (z - c)} = (fun z : Ten F E n d => e0 F • z) ⁻¹' ((fun c : Ten F E n d => e0 F • c) '' C)`. Use extensionality with `z`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, Set.mem_image, at_iff, smul_sub, sub_eq_zero]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨c, hc, hzc⟩`. Conclude with `⟨c, hc, hzc.symm⟩`. Introduce and unpack `⟨c, hc, hzc⟩`. Conclude with `⟨c, hc, hzc.symm⟩`. Rewrite using `[hset]`.
-
-Conclude with `(hC.image (continuous_const_smul (e0 F))).isClosed.preimage (continuous_const_smul (e0 F))`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_supp {C : Set (Ten F E n d)} (hC : IsCompact C) :
     IsClosed {z : Ten F E n d | ∃ c ∈ C, At (evI F) (z - c)} := by
@@ -139,7 +133,7 @@ theorem isClosed_supp {C : Set (Ten F E n d)} (hC : IsCompact C) :
   exact (hC.image (continuous_const_smul (e0 F))).isClosed.preimage (continuous_const_smul (e0 F))
 
 /- English proof (translation)
-Establish `hcl` using `isClosed_supp (F := F) (E := E) (n := n) (d := d) hC`. Use `delta maj`. Use `Measurable.ite (hcl.preimage hf).measurableSet ?_ measurable_const` and prove the remaining obligations. Conclude with `((continuous_const.add ((continuous_sz τ).comp hf)).measurable.pow_const N).inv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurable_maj {G : Type} [TopologicalSpace G] [MeasurableSpace G] [BorelSpace G]
     (τ : ∀ w : InfinitePlace F, EmbOver E w) {C : Set (Ten F E n d)} (hC : IsCompact C) (N : ℕ)
@@ -151,7 +145,7 @@ theorem measurable_maj {G : Type} [TopologicalSpace G] [MeasurableSpace G] [Bore
 
 omit [NumberField E] in
 /- English proof (translation)
-Conclude with `Units.continuous_coe_inv.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mat_inv {J : Matrix (Fin n) (Fin n) E} : Continuous fun g : UA σ J => mat g⁻¹ := by
   exact Units.continuous_coe_inv.comp continuous_subtype_val
@@ -161,9 +155,7 @@ end LatticeQuotientMeasure
 open LatticeQuotientMeasure in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ τ n d J J' _ _ C N S hC h`. Use `haveI := ring_AE F E`. Use `haveI := t2Space_cm_host_adeles F E`. Use `haveI : Countable E := Countable.of_equiv _ (Module.finBasis ℚ E).equivFun.toEquiv.symm`. Use `haveI : Countable (Matrix (Fin n) (Fin d) E) := show Countable (Fin n → Fin d → E) from inferInstance`.
-
-Use `haveI : BorelSpace (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ J) := ⟨rfl⟩`. Use `delta latSum`. Use `Measurable.ennreal_tsum fun x => ENNReal.measurable_ofReal.comp ?_` and prove the remaining obligations. Conclude with `measurable_maj τ hC N ((continuous_mat_inv.matrix_mul continuous_const).matrix_mul continuous_const)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem latMeas : LatMeas := by
   intro F E _ _ _ _ _ σ _ τ n d J J' _ _ C N S hC h
@@ -177,7 +169,7 @@ theorem latMeas : LatMeas := by
   exact measurable_maj τ hC N ((continuous_mat_inv.matrix_mul continuous_const).matrix_mul continuous_const)
 
 /- English proof (translation)
-Conclude with `fun _ => latMeas`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem latMeas_of : GrpTop → LatMeas := by
   exact fun _ => latMeas

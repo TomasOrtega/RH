@@ -12,23 +12,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SquareOpen
 
 /- English proof (translation)
-Introduce `S _ A _ hA U c Y l hY hl x a`. Set `A'` to `(Over.pullback U.ι).obj A`. Establish `hA' : IsAbelianScheme A'` using `ReciprocityTheory.ChartRestriction.G.Out.TLinPf.isAb_pullback U.ι A hA`. Establish `h` using `isGrpPullback_pullback A U.ι`. Set `e` to `(isPullback_morphismRestrict A.hom U).flip.isoPullback`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `he : e.inv ≫ (A.hom ⁻¹ᵁ U).ι = pullback.fst A.hom U.ι`. Rewrite using `[Iso.inv_comp_eq, IsPullback.isoPullback_hom_fst]`. Establish `hrange : Set.range Y.hom.base ⊆ Set.range U.ι.base`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[U.range_ι]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hY y`. Set `Y' : Over U.toScheme` to `Over.mk (IsOpenImmersion.lift U.ι Y.hom hrange)`. Establish `hY' : Y'.hom ≫ U.ι = Y.hom` using `IsOpenImmersion.lift_fac _ _ _`. Set `τ : Over.mk (Y'.hom ≫ U.ι) ⟶ Y` to `Over.homMk (𝟙 Y.left) (by erw [Category.id_comp]; exact hY'.symm)`. Establish `lift : ∀ p : Y ⟶ A, ∃ p' : Y' ⟶ A', pushHom h Y' p' = τ ≫ p`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p`. Use `⟨Over.homMk (pullback.lift p.left Y'.hom (by rw [Over.w p, hY'])) (by` and prove the remaining obligations. Conclude with `pullback.lift_snd _ _ _), ?_⟩`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [pushHom, pushPt, τ, MonoidHom.mk'_apply, Over.homMk_left, Over.comp_left]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pullback.lift_fst]`. Conclude with `(Category.id_comp _).symm`. Establish `key : ∀ (p : Y ⟶ A) (p' : Y' ⟶ A'), pushHom h Y' p' = τ ≫ p → l p = p'.left ≫ e.inv`. Introduce `p p' hp`. Rewrite using `[← cancel_mono (A.hom ⁻¹ᵁ U).ι, hl, Category.assoc, he]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `congrArg (fun q => q.left) hp` as an intermediate fact. Simplify using `only [pushHom, pushPt, τ, MonoidHom.mk'_apply, Over.homMk_left, Over.comp_left] at this`. Conclude with `(Category.id_comp _).symm.trans this.symm`. Take `⟨x', hx⟩` from `lift x`. Take `⟨a', ha⟩` from `lift a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmul : pushHom h Y' (x' * a') = τ ≫ (x * a)`. Rewrite using `[map_mul, hx, ha, MonObj.comp_mul]`. Establish `hainv : pushHom h Y' a'⁻¹ = τ ≫ a⁻¹`. Rewrite using `[map_inv, ha, GrpObj.comp_inv]`. Establish `hinv : pushHom h Y' (x' * a'⁻¹) = τ ≫ (x * a⁻¹)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hainv, hx, MonObj.comp_mul]`. Establish `hone : pushHom h Y' 1 = τ ≫ 1`. Rewrite using `[map_one, MonObj.comp_one]`. Rewrite using `[key _ _ hmul, key _ _ hinv, key _ _ hx, key _ _ ha, key _ _ hainv, key _ _ hone]`. Simplify using `only [pull_comp]`.
-
-Conclude with `GlobalTheory.T.theorem_of_square_cechPicard_translates U.toScheme A' hA' (pull e.inv c) Y' x' a'`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pull_mul_add_pull_mul_inv_of_opens : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ (U : S.Opens) (c : Pic (A.hom ⁻¹ᵁ U).toScheme) (Y : Over S) (l : (Y ⟶ A) → (Y.left ⟶ (A.hom ⁻¹ᵁ U).toScheme)), (∀ y, Y.hom y ∈ U) → (∀ p, l p ≫ (A.hom ⁻¹ᵁ U).ι = p.left) → ∀ x a : Y ⟶ A, GlobalTheory.CechPic.pull (l (x * a)) c + GlobalTheory.CechPic.pull (l (x * a⁻¹)) c = 2 • GlobalTheory.CechPic.pull (l (x)) c + GlobalTheory.CechPic.pull (l (a)) c + GlobalTheory.CechPic.pull (l (a⁻¹)) c - 2 • GlobalTheory.CechPic.pull (l ((1 : Y ⟶ A))) c := by
   intro S _ A _ hA U c Y l hY hl x a

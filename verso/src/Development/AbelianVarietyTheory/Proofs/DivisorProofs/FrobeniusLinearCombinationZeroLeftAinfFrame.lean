@@ -11,7 +11,7 @@ namespace GlobalTheory.FrobComb
 variable {B Q : Type} [CommRing B] [CommRing Q] [Algebra B Q] {σ : Type}
 
 /- English proof (translation)
-Use `choose t ht using fun i => In.top_iff.1 (hg i)`. Use `In.top_iff.2 ⟨∑ i, c i • t i, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_C_mul, map_mul, map_C, ht i, smul_eq_C_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem in_top_sum {ι : Type} [Fintype ι] (c : ι → B) (g : ι → MvPowerSeries σ Q)
     (hg : ∀ i, In (⊤ : Ideal B) (g i)) :
@@ -23,7 +23,7 @@ theorem in_top_sum {ι : Type} [Fintype ι] (c : ι → B) (g : ι → MvPowerSe
   rw [smul_eq_C_mul, map_mul, map_C, ht i, smul_eq_C_mul]
 
 /- English proof (translation)
-Establish `hX : HasSubst (fun i : σ => (X i : MvPowerSeries σ Q) ^ p)` using `HasSubst.X_pow hp`. Simplify using `only [frob, ← coe_substAlgHom hX, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_C_mul, map_mul, map_C, ← smul_eq_C_mul, map_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem frob_sum (p : ℕ) (hp : p ≠ 0) (s : Q →+* Q) {ι : Type} [Fintype ι] (c : ι → Q)
     (f : ι → MvPowerSeries σ Q) :
@@ -38,15 +38,15 @@ end GlobalTheory.FrobComb
 open GlobalTheory.FrobComb
 
 /- English proof (translation)
-Introduce `p _ O _ _ _ ε F d k e U he b`. Use `set b' : Fin d ⊕ Fin k → F.B := Sum.elim (fun _ => 0) b with hb'`. Use `set c : Fin d ⊕ Fin k → F.B := fun j => F.σ (b' j) with hc`. Establish `hp : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Establish `key : ∀ l i, (U * blk d k (p : F.B) 1) l i * c i = U l i * c i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `l i`. Break down `i with i | i` into its components or cases. Simplify using `[hc, hb']`. Simplify using `[blk, Matrix.mul_diagonal]`. Establish `hf : frob p F.s (comb b' e) = ∑ i, algebraMap F.B F.Q (c i) • frob p F.s (e i)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[comb, frob_sum p hp]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[F.s_alg]`. Establish `hsplit : frob p F.s (comb b' e) - comb (U.mulVec c) e = ∑ i, algebraMap F.B F.Q (c i) • (frob p F.s (e i) - comb (fun l => (U * blk d k (p : F.B) 1) l i) e)`. Rewrite using `[hf]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [smul_sub, Finset.sum_sub_distrib]`. Use `congr 1`. Simplify using `only [comb, Matrix.mulVec, dotProduct, Finset.smul_sum, smul_smul, ← map_mul, map_sum, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm (c _), key]`. Rewrite using `[hsplit]`. Conclude with `in_top_sum c _ he`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.frob_comb_zero_left : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] (ε : PreTilt O p) (F : BFrame ε) (d k : ℕ) (e : Fin d ⊕ Fin k → MvPowerSeries (Fin d) F.Q) (U : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B), (∀ i, In (⊤ : Ideal F.B) (frob p F.s (e i) - comb (fun l => (U * blk d k (p : F.B) 1) l i) e)) → ∀ b : Fin k → F.B, In (⊤ : Ideal F.B) (frob p F.s (comb (Sum.elim (fun _ => 0) b) e) - comb (U.mulVec (fun j => F.σ ((Sum.elim (fun _ => 0) b : Fin d ⊕ Fin k → F.B) j))) e) := by
   intro p _ O _ _ _ ε F d k e U he b

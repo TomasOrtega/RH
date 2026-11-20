@@ -22,15 +22,15 @@ open GlobalTheory.KeyPow GlobalTheory.KeyKa
 namespace GlobalTheory.AmpleSubring
 
 /- English proof (translation)
-Introduce `S _ _ R₀ _ P A₀ _ φ L₀ hA₀ hproj hL₀ hφ e`. Use `hA₀.proper` as an intermediate fact. Use `hA₀.smooth` as an intermediate fact. Set `x : R₀ →+* IsLocalRing.ResidueField S` to `(IsLocalRing.residue S).comp R₀.subtype`. Set `p : Ideal R₀` to `RingHom.ker x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `: p.IsPrime` using `RingHom.ker_isPrime x`. Set `g` to `algebraMap R₀ p.ResidueField`. Set `i : p.ResidueField →+* IsLocalRing.ResidueField S` to `Ideal.ResidueField.lift p x le_rfl fun a ha => IsUnit.mk0 _ ha`. Establish `hi : i.comp g = x` using `RingHom.ext fun a => Ideal.ResidueField.lift_algebraMap p x le_rfl (fun a ha => IsUnit.mk0 _ ha) a`. Establish `hu : spMap (IsLocalRing.residue S) ≫ spMap R₀.subtype = spMap i ≫ spMap g`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hi]`. Establish `h₂` using `IsPullback.of_hasPullback A₀.hom (spMap i ≫ spMap g)`. Take `⟨r, hr, hA⟩` from `GlobalTheory.T.relAmple_near_fibre_flat_projective R₀ A₀ L₀ inferInstance ((ProjSpace.isProjBy_iff_isProjOver _).2 hproj) hL₀ _ g (FibreAmple.residueField_fraction p) (FibreAmple.relAmple_of_fieldExtension hL₀ i (IsPullback.of_hasPullback A₀.hom (spMap g)) h₂ (LB.isLB_pull hL₀ _) …`. Establish `hx : x r ≠ 0` using `fun h => hr (Ideal.algebraMap_residueField_eq_zero.2 h)`. Take `⟨v, hv⟩ : IsUnit (r : S)` from `(IsLocalRing.residue_ne_zero_iff_isUnit _).1 hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨{v⁻¹.val}, fun R₁ h hF A₁ _ π hπ => ?_⟩` and prove the remaining obligations. Establish `hu₁ : IsUnit (Subring.inclusion h r)` using `IsUnit.of_mul_eq_one (⟨v⁻¹.val, hF (by simp)⟩ : R₁) (Subtype.ext (by`. Express the relevant statement in the definitionally equal form `(r : S) * v⁻¹.val = 1`. Rewrite using `[← hv, Units.mul_inv]))`. Set `D : (Spec (CommRingCat.of R₀)).Opens` to `PrimeSpectrum.basicOpen r`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hrange : Set.range (spMap (Subring.inclusion h)) ⊆ Set.range D.ι`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `⟨⟨_, fun hm => z.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hm hu₁)⟩, rfl⟩`. Conclude with `FibreAmple.relAmple_of_factor hL₀ (IsPullback.of_hasPullback A₀.hom D.ι) hπ.1 (IsOpenImmersion.lift D.ι _ hrange) (IsOpenImmersion.lift_fac _ _ _) (LB.isLB_pull hL₀ _) (GlobalTheory.lbIso_refl (LB.isLB_pull hL₀ _)) hA`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem relAmple_subring : ∀ (S : Type) [CommRing S] [IsLocalRing S] (R₀ : Subring S) [IsNoetherianRing R₀] (P : Out.PolAV (Sp S)) (A₀ : Over (Sp R₀)) [GrpObj A₀] (φ : P.A.left ⟶ A₀.left) (L₀ : LB A₀.left), IsAbelianScheme A₀ → IsProjOver A₀.hom → L₀.IsLB → IsGrpPullback P.A A₀ (spMap R₀.subtype) φ → LBIso P.L (L₀.pull φ) → ∃ F : Finset S, ∀ (R₁ : Subring S) (h : R₀ ≤ R₁), (F : Set S) ⊆ R₁ → ∀ (A₁ : Over (Sp R₁)) [GrpObj A₁] (π : A₁.left ⟶ A₀.left), IsGrpPullback A₁ A₀ (spMap (Subring.inclusion h)) π → Out.RelAmple A₁ (L₀.pull π) := by
   intro S _ _ R₀ _ P A₀ _ φ L₀ hA₀ hproj hL₀ hφ e

@@ -9,7 +9,7 @@ open GlobalTheory.CompanionTheory.LFUDom
 namespace GlobalTheory.CompanionTheory.LFUDom
 
 /- English proof (translation)
-Introduce `F _ _ _ _ i j c`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, coe_rowRep, Matrix.det_fin_two_of]`. Establish `h : ((i : ℤ) + j) = ((i + j : ℕ) : ℤ)` using `by push_cast; rfl`. Rewrite using `[h, zpow_natCast, Units.val_pow_eq_pow_val, coe_uniformizerUnit, pow_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

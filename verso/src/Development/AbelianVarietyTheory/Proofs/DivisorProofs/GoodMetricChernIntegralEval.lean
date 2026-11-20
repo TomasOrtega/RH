@@ -20,11 +20,11 @@ noncomputable section
 namespace GlobalTheory.GoodMetric.PointChern
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `hc (x : ι × ℕ) : chernPoly (fun u => G u x.1) v x.2 = algebraMap ℝ (MvPolynomial (Fin 0 × Fin 0) ℂ) (if x.2 = 0 then 1 else 0)`. Establish `e : curvPoly (fun u => G u x.1) v = 0`. Use extensionality with `i j`. Simplify using `[curvPoly]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[chernPoly, e, neg_zero]`. Apply the tactic sequence `by_cases h : x.2 = 0 <;> simp [Matrix.charpolyRev, Polynomial.coeff_one, h]`. Establish `ha : (fun x : ι × ℕ => chernPoly (fun u => G u x.1) v x.2) = algebraMap ℝ (MvPolynomial (Fin 0 × Fin 0) ℂ) ∘ (fun x : ι × ℕ => if x.2 = 0 then (1 : ℝ) else 0)`. Use function extensionality and compare the values at `hc`. Rewrite using `[chernTop, ha, MvPolynomial.aeval_algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[topCoeff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chernTop_eq_eval {ι : Type} {m : ι → ℕ} {n : ℕ} (hn : n = 0) (R : MvPolynomial (ι × ℕ) ℝ)
     (G : V n → GlobalTheory.FlagBundle.Mat m ℂ) (v : V n) :
@@ -43,17 +43,17 @@ theorem chernTop_eq_eval {ι : Type} {m : ι → ℕ} {n : ℕ} (hn : n = 0) (R 
   simp [topCoeff]
 
 /- English proof (translation)
-Introduce `ι _ m X E hX`. Take `⟨H, hH⟩` from `SmoothMetric.exists_isMetricOn_top ℚ (Rat.castHom ℂ) X ι m E`. Use `⟨Rat.castHom ℂ, H, hH, fun y hy => absurd mem_ptsIn_top hy, fun R t ht => ?_⟩` and prove the remaining obligations. Take `⟨⟨y⟩, hsub⟩` from `GlobalTheory.Published.ArDegreeModel.unique_pt X (Rat.castHom ℂ) hX`. Use `X.smooth_str` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `CxPts.secondCountableTopology_of_isProjOver (Rat.castHom ℂ) X.isProjOver` as an intermediate fact. Take `⟨c, hc⟩` from `AlgChart.exists_mem_source (p := X.str) (σ := Rat.castHom ℂ) (D := X.dim) y`. Establish `hV : Subsingleton (V X.dim)` using `by rw [hX]; infer_instance`. Establish `hvol : (volume : Measure (V X.dim)) Set.univ = 1`. Use `(stdOrthonormalBasis ℝ (V X.dim)).volume_parallelepiped` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Set.eq_univ_of_forall (s := parallelepiped _) fun v => (mem_parallelepiped_iff _ _).2 ⟨0, ⟨le_rfl, zero_le_one⟩, Subsingleton.elim _ _⟩]`. Then use the resulting hypothesis. Establish `hdet (i j : AlgChart X.str (Rat.castHom ℂ) X.dim) (z : CxPts X.str (Rat.castHom ℂ)) : transDet i.e j.e z = 1`. Rewrite using `[transDet, ContinuousLinearMap.det]`. Conclude with `LinearMap.det_eq_one_of_finrank_eq_zero (Module.finrank_zero_of_subsingleton (R := ℂ) (M := V X.dim)) _`. Use `set r := MvPolynomial.eval (fun x : ι × ℕ => if x.2 = 0 then (1 : ℝ) else 0) R`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : MeasurableSet (ptsIn X.str (Rat.castHom ℂ) ⊤)` using `(isOpen_ptsIn _).measurableSet`. Establish `hAs : ptsIn X.str (Rat.castHom ℂ) ⊤ ⊆ c.e.source` using `fun z _ => Subsingleton.elim y z ▸ hc`. Establish `hm (ε : ℤˣ) : chernTopPart E H R ε (ptsIn X.str (Rat.castHom ℂ) ⊤) = ENNReal.ofReal ((ε : ℤ) * r)`. Rewrite using `[chernTopPart, glueMeas_apply _ _ (fun i j => i.holo_trans j) ?_ c hA hAs, chartMeas_apply_of_subset _ _ hA hAs]`. Simplify using `only [chernTop_eq_eval hX]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[show c.e '' ptsIn X.str (Rat.castHom ℂ) ⊤ = Set.univ from Set.eq_univ_of_forall fun v => ⟨y, mem_ptsIn_top, Subsingleton.elim _ _⟩]`. Simplify using `[hvol, r]`. Introduce `i j z _ _`. Simplify using `[hdet, chernTop_eq_eval hX]`. Take `⟨-, h2⟩` from `ht`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← h2, Measure.real, Measure.real, hm, hm, ENNReal.toReal_ofReal', ENNReal.toReal_ofReal']`. Use `push_cast`. Break down `le_total 0 r with h | h` into its components or cases. Rewrite using `[max_eq_left (by linarith), max_eq_right (by linarith)]; ring`. Rewrite using `[max_eq_right (by linarith), max_eq_left (by linarith)]; ring`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chernIntegral_point : ∀ (ι : Type) [Fintype ι] (m : ι → ℕ) (X : GlobalTheory.ProjVar.Var ℚ)
     (E : GlobalTheory.FlagBundle.Fr (GlobalTheory.FlagBundle.ratOf X) m 0), X.dim = 0 →

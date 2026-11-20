@@ -9,23 +9,21 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 namespace GlobalTheory.ArchRest
 
 /- English proof (translation)
-Introduce `F _ _ κ _`. Set `I : Set (FiniteAdeleRing (𝓞 F) F)` to `(GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set _)`. Establish `hIo : IsOpen I` using `GroundTheory.Global.isOpen_integralFiniteAdeles`. Establish `hIc : IsClosed I` using `AddSubgroup.isClosed_of_isOpen (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F).toAddSubgroup hIo`. Establish `hIk : IsCompact I` using `GroundTheory.Global.isCompact_integralFiniteAdeles F`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `S : Set (κ → FiniteAdeleRing (𝓞 F) F)` to `Set.univ.pi fun _ => I`. Establish `hSo : IsOpen S` using `isOpen_set_pi Set.finite_univ fun _ _ => hIo`. Establish `hSc : IsClosed S` using `isClosed_set_pi fun _ _ => hIc`. Establish `hSk : IsCompact S` using `isCompact_univ_pi fun _ => hIk`. Set `g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ` to `S.indicator 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)`. Use `⟨?_, HasCompactSupport.intro hSk fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Distinguish the cases in `hx : x ∈ S`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨S, hSo, hx, fun y hy => by simp only [g, Set.indicator_of_mem hy, Set.indicator_of_mem hx, Pi.one_apply]⟩`. Conclude with `⟨Sᶜ, hSc.isOpen_compl, hx, fun y hy => by simp only [g, Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]⟩`. Use `⟨fun x => g fun i => (x i).2, ?_, fun f => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `h0 : (fun i => ((0 : κ → AF F) i).2) ∈ S` using `fun i _ => (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F).zero_mem`. Simplify using `only [g, Set.indicator_of_mem h0, Pi.one_apply]`.
+Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `one_ne_zero`. Introduce `x z hz`. Establish `hz2 : ∀ i, (z i).2 = 0`. Set `u : AF F` to `((0 : InfiniteAdeleRing F), (1 : FiniteAdeleRing (𝓞 F) F))`. Establish `e` using `hz u (by show InfiniteAdeleRing.ringEquiv_mixedSpace F 0 = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `map_zero _)`. Introduce `i`. Establish `e'` using `congrFun e i`. Establish `h1 : (u • z) i = u * z i` using `rfl`. Rewrite `e'` using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (u * z i).2 = 1 * (z i).2` using `rfl`. Use `congrArg Prod.snd e'` as an intermediate fact. Rewrite `this` using `[h2, one_mul]`. Conclude with `this`. Use `show g (fun i => ((x + z) i).2) = g (fun i => (x i).2)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Use `show (x i).2 + (z i).2 = (x i).2`. Rewrite using `[hz2 i, add_zero]`. Establish `e : tens (evI F) (⇑f) (fun x => g fun i => (x i).2) = pureA F (⇑f) g` using `rfl`.
-
-Rewrite using `[e]`. Conclude with `Submodule.subset_span ⟨f, g, hg, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rest_arch : ∀ {F : Type} [Field F] [NumberField F] (κ : Type) [Fintype κ],
     ∃ R : (κ → AF F) → ℂ, R 0 ≠ 0 ∧ ∀ f : SInf F κ, Rest (evI F) (⇑f) R := by

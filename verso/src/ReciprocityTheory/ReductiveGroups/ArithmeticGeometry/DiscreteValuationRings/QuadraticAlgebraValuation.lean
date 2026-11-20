@@ -10,9 +10,9 @@ namespace ReciprocityTheory.ChartRestriction.G.DVR.QuadraticAlgebraValuation
 open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.DVR ReciprocityTheory.ChartRestriction.G.DVR.QForm
 
 /- English proof (translation)
-Unfold `QAlStatement`. Introduce `V _ _ _ ϖ hϖ D Q hQ O _ _ _ oa a N h1 _ χ`. Establish `hb : bOf D.toPre Q (star a • χ) (star a • χ) = bOf D.toPre Q χ ((N : O) • χ)`. Rewrite using `[bOf_balance hϖ D hLaws oa hQ (star a) χ (star a • χ), star_star, smul_smul, h1]`. Establish `hN : ((N : O) • χ) = N • χ` using `Nat.cast_smul_eq_nsmul O N χ`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlin : bOf D.toPre Q χ (N • χ) = N * bOf D.toPre Q χ χ`. Rewrite using `[← bHom_apply hϖ D hQ, ← bHom_apply hϖ D hQ, map_nsmul, nsmul_eq_mul]`. Establish `e1` using `two_Q_eq hϖ D hQ (star a • χ)`. Establish `e2` using `two_Q_eq hϖ D hQ χ`. Rewrite `e1` using `[hb, hN, hlin, ← e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

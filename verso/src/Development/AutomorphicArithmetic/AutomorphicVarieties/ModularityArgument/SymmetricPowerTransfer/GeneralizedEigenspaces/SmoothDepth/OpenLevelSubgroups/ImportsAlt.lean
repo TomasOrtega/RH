@@ -10,17 +10,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.V.Z.Sym.Al
 
 /- English proof (translation)
-Introduce `L _ _ _ n V _ _ _ R π hπ U hU S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact fun _ _ W φ h0 hc h => ⟨φ, h0, hc, h.left, h.inf, fun u hu => h.level u (by simpa [lev] using hu)⟩`. Consider the case `insert w S hw ih`. Introduce `hS hK W φ h0 hc h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hwm : w ∈ insert w S` using `Finset.mem_insert_self _ _`. Take `⟨φ', a0, a1, a2⟩` from `spanSph L n V π hπ w (hK w hwm).2 φ h0 hc`. Take `⟨k1, k2, -⟩` from `spanKeep L n V w φ φ' a1`. Establish `hA : IsAF R (lev U S W ⊓ away n w) φ'` using `k2 R _ inf_le_right ⟨h.left, h.inf, fun u hu => h.level u (by`. Take `⟨h1, h2⟩` from `Subgroup.mem_inf.1 hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [lev, away, Subgroup.mem_inf, Subgroup.mem_iInf] at h1 h2 ⊢`. Use `⟨h1.1, fun w' hw' => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hw' with rfl | hw'` into its components or cases. Rewrite using `[Subgroup.mem_comap, MonoidHom.mem_ker.1 (h2 w' rfl)]`. Conclude with `one_mem _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1.2 w' hw')⟩`. Use `ih ⟨fun u hu => hS.split u (Finset.mem_insert_of_mem hu), hS.inj.mono (by simp)⟩ (fun u hu => hK u (Finset.mem_insert_of_mem hu)) W φ' a0 (k1 π hπ hc) ⟨hA.left, hA.inf, fun u hu g => ?_⟩` and prove the remaining obligations. Take `⟨-, f2, -, -, -, f6⟩` from `factor L n w`. Take `⟨x, hx, y, hy, rfl⟩` from `f2 u`. Establish `hxK : x ∈ Kall L n` using `((f6 x hx y hy).1 (hU hu.1)).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hxl : x ∈ lev U S W`. Simplify using `only [lev, Subgroup.mem_inf, Subgroup.mem_iInf]`. Use `⟨(hK w hwm).1 ⟨hx, hxK⟩, fun w' hw' => ?_⟩` and prove the remaining obligations. Establish `hne : w.under (𝓞 (Lp L)) ≠ w'.under (𝓞 (Lp L))` using `fun e => hw (hS.inj (Finset.mem_coe.2 hwm) (Finset.mem_coe.2 (Finset.mem_insert_of_mem hw')) e ▸ hw')`. Use `(factor L n w').2.2.1 w hne hx` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [away, Subgroup.mem_iInf] at this`. Rewrite using `[Subgroup.mem_comap, MonoidHom.mem_ker.1 (this w' rfl)]`. Conclude with `one_mem _`. Establish `hyl : y ∈ lev U S W` using `(Subgroup.mul_mem_cancel_left _ hxl).1 hu`. Rewrite using `[← mul_assoc, hA.level y ⟨hyl, hy⟩, a2 x ⟨hx, hxK⟩]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Al.raise :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (R : Representation ℂ (InfinitePlace L → GL (Fin n) ℂ) V) (π : Submodule ℂ (UA L n → ℂ)), IsAutRepU π →

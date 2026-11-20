@@ -15,16 +15,16 @@ section Reps
 variable {H V : Type} [AddCommGroup H] [AddCommGroup V]
 
 /- English proof (translation)
-Rewrite using `[← AddSubgroup.relIndex_sup_left K B, ← AddSubgroup.relIndex_sup_left L B]`. Conclude with `Dvd.intro _ (AddSubgroup.relIndex_mul_relIndex B (B ⊔ K) (B ⊔ L) le_sup_left (sup_le_sup_left h B))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_dvd_of_le (B K L : AddSubgroup H) (h : K ≤ L) : B.relIndex K ∣ B.relIndex L := by
   rw [← AddSubgroup.relIndex_sup_left K B, ← AddSubgroup.relIndex_sup_left L B]
   exact Dvd.intro _ (AddSubgroup.relIndex_mul_relIndex B (B ⊔ K) (B ⊔ L) le_sup_left (sup_le_sup_left h B))
 
 /- English proof (translation)
-Establish `h0 : IsReps Λ (⊥ : AddSubgroup H) ({0} : Finset H)`. Use `⟨by simp, by simp, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Rewrite `hy` using `[AddSubgroup.mem_bot]`. Conclude with `⟨0, by simp, by simp [hy]⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Use `(GlobalTheory.RepsMod.reps_facts H).2.2.1 M Λ B B ⊥ R R' {0} F le_rfl bot_le (fun y hy => ⟨y, hy, 0, by simp, by simp⟩) (fun y₁ _ y₂ h₂ h => by rw [AddSubgroup.mem_bot] at h₂; simpa [h₂] using h) hR hR' h0 hF` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sum_reps_eq {M : Type} [AddCommMonoid M] {Λ B : AddSubgroup H} {R R' : Finset H} (F : H → M)
     (hR : IsReps Λ B R) (hR' : IsReps Λ B R') (hF : ∀ y ∈ B, ∀ l ∈ Λ, l ∈ B → F (y + l) = F y) :
@@ -40,11 +40,11 @@ theorem sum_reps_eq {M : Type} [AddCommMonoid M] {Λ B : AddSubgroup H} {R R' : 
   simpa using this
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hR`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `Finset.mem_map.1 hx`. Conclude with `⟨y, h1 y hy, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `x hx x' hx' h`. Take `⟨y, hy, rfl⟩` from `Finset.mem_map.1 hx`. Take `⟨y', hy', rfl⟩` from `Finset.mem_map.1 hx'`. Take `⟨l, hl, e⟩` from `h`. Establish `: l = y - y'` using `hf (by rw [map_sub]; exact e)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[h2 y hy y' hy' (this ▸ hl)]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨x, hx, h⟩` from `h3 y hy`. Conclude with `⟨f x, Finset.mem_map.2 ⟨x, hx, rfl⟩, y - x, h, map_sub f y x⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem reps_map (f : H →+ V) (hf : Function.Injective f) {Λ B : AddSubgroup H} {R : Finset H} (hR : IsReps Λ B R) :
     IsReps (Λ.map f) (B.map f) (R.map ⟨f, hf⟩) := by
@@ -64,11 +64,11 @@ theorem reps_map (f : H →+ V) (hf : Function.Injective f) {Λ B : AddSubgroup 
     exact ⟨f x, Finset.mem_map.2 ⟨x, hx, rfl⟩, y - x, h, map_sub f y x⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hR`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `Finset.mem_map.1 hx`. Conclude with `add_mem hb (h1 y hy)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx x' hx' h`. Take `⟨y, hy, rfl⟩` from `Finset.mem_map.1 hx`. Take `⟨y', hy', rfl⟩` from `Finset.mem_map.1 hx'`. Simplify using `only [addLeftEmbedding_apply, add_sub_add_left_eq_sub] at h`. Rewrite using `[h2 y hy y' hy' h]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Take `⟨x, hx, h⟩` from `h3 (y - b) (sub_mem hy hb)`. Use `⟨b + x, Finset.mem_map.2 ⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_sub]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem reps_shift {Λ B : AddSubgroup H} {R : Finset H} (hR : IsReps Λ B R) {b : H} (hb : b ∈ B) :
     IsReps Λ B (R.map (addLeftEmbedding b)) := by
@@ -88,17 +88,17 @@ theorem reps_shift {Λ B : AddSubgroup H} {R : Finset H} (hR : IsReps Λ B R) {b
     rwa [← sub_sub]
 
 /- English proof (translation)
-The claim follows from `Classical.epsilon_spec h`.
+A detailed English derivation is pending.
 -/
 theorem repsOf_spec {Λ B : AddSubgroup V} [Module ℂ V] (h : ∃ R, IsReps Λ B R) : IsReps Λ B (repsOf Λ B) :=
   Classical.epsilon_spec h
 
 /- English proof (translation)
-Take `⟨t₀, ht₀, h0⟩` from `hA.2.2 0 (zero_mem _)`. Establish `h0' : t₀ ∈ B` using `by simpa using h0`. Establish `: ∑ t ∈ SA, indL B t * (brk Hs y t)⁻¹ = 1`. Rewrite using `[Finset.sum_eq_single t₀]`. Simplify using `[indL, h0', hy t₀ h0']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `t ht hne`. Establish `: t ∉ B` using `fun h => hne (hA.2.1 t ht t₀ ht₀ (sub_mem h h0'))`. Simplify using `[indL, this]`. Introduce `h`. Conclude with `absurd ht₀ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hatS, this, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem hatS_ind [Module ℂ V] (Hs : Sesq V) (vol : ℝ) {B K : AddSubgroup V} {SA : Finset V} (hA : IsReps B K SA) (y : V)
     (hy : ∀ t ∈ B, brk Hs y t = 1) :
@@ -121,39 +121,39 @@ section Loc
 variable {E : Type} [Field E] [NumberField E] {W : Type} [AddCommGroup W] [Module E W] [Module (𝓞 E) W] [IsScalarTower (𝓞 E) E W]
 
 /- English proof (translation)
-Simplify using `[twist₂, Submodule.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_twO (M : Submodule (𝓞 E) W) (c : ℕ) (e : HeightOneSpectrum (𝓞 E) → ℤ) (x : W) :
     x ∈ twist₂ M c e ↔ ∀ Q : HeightOneSpectrum (𝓞 E), ((c : E) ^ e Q)⁻¹ • x ∈ localization₂ Q.asIdeal M := by
   simp [twist₂, Submodule.mem_iInf]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, Submonoid.one_mem _, by simpa using hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_loc_self (Q : HeightOneSpectrum (𝓞 E)) {M : Submodule (𝓞 E) W} {x : W} (hx : x ∈ M) : x ∈ localization₂ Q.asIdeal M :=
   ⟨1, Submonoid.one_mem _, by simpa using hx⟩
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hx n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nat_smul_mem {M : Submodule (𝓞 E) W} {x : W} (hx : x ∈ M) (n : ℕ) : (n : E) • x ∈ M := by
   rw [Nat.cast_smul_eq_nsmul]; exact nsmul_mem hx n
 
 /- English proof (translation)
-Use `nat_smul_mem hx n` as an intermediate fact. Rewrite `this` using `[smul_inv_smul₀ (Nat.cast_ne_zero.2 hn.ne')]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_of_inv_smul {M : Submodule (𝓞 E) W} {x : W} {n : ℕ} (hn : 0 < n) (hx : (n : E)⁻¹ • x ∈ M) : x ∈ M := by
   have := nat_smul_mem hx n
   rwa [smul_inv_smul₀ (Nat.cast_ne_zero.2 hn.ne')] at this
 
 /- English proof (translation)
-Introduce and unpack `x ⟨s, hs, hx⟩`. Use `haveI : Finite (𝓞 E ⧸ Ideal.span {r}) := Ideal.finiteQuotientOfFreeOfNeBot _ (by simpa using hr)`. Establish `key : ∃ i j : ℕ, r ∣ s ^ i - s ^ (i + (j + 1))`. Take `⟨i, j, hij, e⟩` from `Finite.exists_ne_map_eq_of_infinite fun i : ℕ => Ideal.Quotient.mk (Ideal.span {r}) (s ^ i)`. Use `wlog hlt : i < j generalizing i j`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `this j i hij.symm e.symm (by omega)`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_lt hlt`. Conclude with `⟨i, k, Ideal.mem_span_singleton.1 (Ideal.Quotient.eq.1 e)⟩`. Take `⟨i, j, u, hu⟩` from `key`. Establish `e : x = (x - s ^ (j + 1) • x) + s ^ (j + 1) • x` using `by abel`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `AddSubgroup.add_mem_sup ⟨s ^ (i + 1), pow_mem hs _, ?_⟩ ?_` and prove the remaining obligations. Establish `: s ^ (i + 1) • (x - s ^ (j + 1) • x) = r • (u • (s • x))`. Rewrite using `[smul_sub, smul_smul, smul_smul, smul_smul, ← sub_smul, ← hu]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `h _ (M.smul_mem u hx)`. Rewrite using `[pow_succ, mul_smul]`. Conclude with `M.smul_mem _ hx`.
+A detailed English derivation is pending.
 -/
 theorem loc_le_sup (P : HeightOneSpectrum (𝓞 E)) {M M₀ : Submodule (𝓞 E) W} {r : 𝓞 E} (hr : r ≠ 0)
     (h : ∀ m ∈ M, r • m ∈ M₀) :
@@ -179,11 +179,11 @@ theorem loc_le_sup (P : HeightOneSpectrum (𝓞 E)) {M M₀ : Submodule (𝓞 E)
     exact M.smul_mem _ hx
 
 /- English proof (translation)
-Take `⟨T, rfl⟩` from `hM`. Use `choose n hn hn' using h₀`. Use `⟨((∏ t ∈ T, n t : ℕ) : 𝓞 E), Nat.cast_ne_zero.2 (Finset.prod_pos fun t _ => hn t).ne', fun m hm => ?_⟩` and prove the remaining obligations. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem n (Finset.mem_coe.1 hx)`. Use `hn' x` as an intermediate fact. Rewrite `this`, the goal using `[Nat.cast_smul_eq_nsmul]`. Rewrite using `[hk, mul_comm, mul_smul]`. Conclude with `nsmul_mem this k`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `M₀.smul_mem a hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_smul_le {M M₀ : Submodule (𝓞 E) W} (hM : M.FG) (h₀ : ∀ x : W, ∃ n : ℕ, 0 < n ∧ (n : E) • x ∈ M₀) :
     ∃ r : 𝓞 E, r ≠ 0 ∧ ∀ m ∈ M, r • m ∈ M₀ := by
@@ -204,16 +204,16 @@ theorem exists_smul_le {M M₀ : Submodule (𝓞 E) W} (hM : M.FG) (h₀ : ∀ x
 variable [StarRing E]
 
 /- English proof (translation)
-Use extensionality with `r`. Rewrite using `[mem_conjP, mem_conjP, cO_cO]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjP_conjP' (P : HeightOneSpectrum (𝓞 E)) : conjPrime₂ (conjPrime₂ P) = P := by
   ext r
   rw [mem_conjP, mem_conjP, cO_cO]
 
 /- English proof (translation)
-Distinguish the cases in `h : Q ∈ S`. Use `left`. Simplify using `[expS, h, hS Q h, conjP_conjP']`. Distinguish the cases in `h' : conjPrime₂ Q ∈ S`. Use `right`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `left`. Simplify using `[expS, h, h']`. Use `right`. Use `right`. Simplify using `[expS, h, h', conjP_conjP']`.
+A detailed English derivation is pending.
 -/
 theorem expS_cases (S : Finset (HeightOneSpectrum (𝓞 E))) (hS : ∀ P ∈ S, conjPrime₂ P ∉ S) (Q : HeightOneSpectrum (𝓞 E)) :
     (Q ∈ S ∧ expS S Q = 1 ∧ expS S (conjPrime₂ Q) = -1) ∨ (conjPrime₂ Q ∈ S ∧ expS S Q = -1 ∧ expS S (conjPrime₂ Q) = 1) ∨
@@ -231,9 +231,9 @@ section Main
 variable {X : Fields} (A : Amb X) {a b : ℕ}
 
 /- English proof (translation)
-Take `⟨τ⟩` from `hT`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Apply `LinearMap.pi_ext'` to reduce the goal to its premises. Introduce `j`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `LinearMap.ext_ring` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `congrFun (congrFun (congrFun hx τ) i) j` as an intermediate fact. Simplify using `only [embH, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Pi.zero_apply, mul_eq_zero, hδ, false_or, map_eq_zero] at this`. Simplify using `using this`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem embH_injective (hδ : A.δ ≠ 0) (hT : Nonempty X.Tau) :
     Function.Injective (embH (a := a) (b := b) (X.embC A.σ₀) A.δ) := by
@@ -249,9 +249,9 @@ theorem embH_injective (hδ : A.δ ≠ 0) (hT : Nonempty X.Tau) :
   simpa using this
 
 /- English proof (translation)
-Take `⟨h1, -, h3, -⟩` from `GlobalTheory.T.per_relIndex_ne_zero_and_mem_locP_iff X A a b N N' hFG hAA hN hN'`. Take `⟨r, hr, h⟩` from `exists_smul_le h1 (GlobalTheory.T.per_relIndex_ne_zero_and_mem_locP_iff X A a b L L' hFG hAA hL hL').2.1`. Introduce `h0`. Establish `h4` using `AddSubgroup.relIndex_eq_zero_of_le_right (loc_le_sup P hr h) h0`. Rewrite `h4` using `[AddSubgroup.relIndex_sup_left]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h3 r hr (AddSubgroup.relIndex_eq_zero_of_le_left ?_ h4)` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Conclude with `mem_loc_self P (h m hm)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem loc_index_ne_zero (hFG : A.AA.FG) (hAA : A.AA ≠ ⊥) {N L : Submodule (𝓞 X.E) (Sp X.E a)}
     {N' L' : Submodule (𝓞 X.E) (Sp X.E b)} (hN : IsSdLat N) (hN' : IsSdLat N') (hL : IsSdLat L) (hL' : IsSdLat L')
@@ -267,7 +267,7 @@ theorem loc_index_ne_zero (hFG : A.AA.FG) (hAA : A.AA ≠ ⊥) {N L : Submodule 
   exact mem_loc_self P (h m hm)
 
 /- English proof (translation)
-Establish `s1 : IsSdLat (Formalism.L2.Col.stdLat X.E a)` using `⟨stdLat_lattice, stdLat_unimodular⟩`. Establish `s2 : IsSdLat (Formalism.L2.Col.stdLat X.E b)` using `⟨stdLat_lattice, stdLat_unimodular⟩`. Use `Finset.prod_pos fun P _ => div_pos ?_ ?_` and prove the remaining obligations. Conclude with `Nat.cast_pos.2 (Nat.pos_of_ne_zero (loc_index_ne_zero A hFG hAA hN hN' s1 s2 P))`. Conclude with `Nat.cast_pos.2 (Nat.pos_of_ne_zero (loc_index_ne_zero A hFG hAA s1 s2 hN hN' P))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem volC_pos (hFG : A.AA.FG) (hAA : A.AA ≠ ⊥) (S : Finset (HeightOneSpectrum (𝓞 X.E))) {N : Submodule (𝓞 X.E) (Sp X.E a)}
     {N' : Submodule (𝓞 X.E) (Sp X.E b)} (hN : IsSdLat N) (hN' : IsSdLat N') : 0 < volC A.AA S N N' := by
@@ -278,9 +278,9 @@ theorem volC_pos (hFG : A.AA.FG) (hAA : A.AA ≠ ⊥) (S : Finset (HeightOneSpec
   · exact Nat.cast_pos.2 (Nat.pos_of_ne_zero (loc_index_ne_zero A hFG hAA s1 s2 hN hN' P))
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `h`. Rewrite using `[(GlobalTheory.T.weylHeisenbergOperator_calculus_rational X A a b).1, hn]`. Use function extensionality and compare the values at `z`. Establish `: Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (((n : ℤ) : ℝ) : ℂ)) = 1`. Rewrite using `[← Complex.exp_int_mul_two_pi_mul_I (-n)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, one_mul]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem Wx_mul {x y : HomE X.E a b} (h : ∃ n : ℤ, coc A x y = n) (F : VCx X.Tau a b → ℂ) :
     Wx A x (Wx A y F) = Wx A (x + y) F := by
@@ -295,7 +295,7 @@ theorem Wx_mul {x y : HomE X.E a b} (h : ∃ n : ℤ, coc A x y = n) (F : VCx X.
   rw [this, one_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [Wx, opU, Finset.sum_mul, Finset.mul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem Wx_sum {κ : Type} (x : HomE X.E a b) (T : Finset κ) (F : κ → VCx X.Tau a b → ℂ) :
     Wx A x (fun z => ∑ i ∈ T, F i z) = fun z => ∑ i ∈ T, Wx A x (F i) z := by
@@ -303,9 +303,9 @@ theorem Wx_sum {κ : Type} (x : HomE X.E a b) (T : Finset κ) (F : κ → VCx X.
   simp only [Wx, opU, Finset.sum_mul, Finset.mul_sum]
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.T.weylHeisenbergOperator_calculus_rational X A a b).2.2.2.1`. Establish `h0 : coc A 0 (t - s) = 0`. Use `(h 0 0 (t - s)).1` as an intermediate fact. Rewrite `this` using `[add_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h1` using `(h (-t) t (t - s)).1`. Establish `h2` using `(h t (t - s) s).2.1`. Rewrite `h1` using `[neg_add_cancel, h0]`. Rewrite `h2` using `[sub_add_cancel]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem coc_neg_sub (t s : HomE X.E a b) : coc A (-t) (t - s) = coc A t s - coc A t t := by
   have h := (GlobalTheory.T.weylHeisenbergOperator_calculus_rational X A a b).2.2.2.1
@@ -322,7 +322,7 @@ theorem coc_neg_sub (t s : HomE X.E a b) : coc A (-t) (t - s) = coc A t s - coc 
 variable {S : Finset (HeightOneSpectrum (𝓞 X.E))} {N : Submodule (𝓞 X.E) (Sp X.E a)} {N' : Submodule (𝓞 X.E) (Sp X.E b)}
 
 /- English proof (translation)
-Use `(GlobalTheory.T.heisenbergCocycleForm_integral_selfDual X A a b N N' hX hδ hL).2.2 x y fun Q => ⟨(c : X.E) ^ e Q, zpow_ne_zero _ (Nat.cast_ne_zero.2 hc.ne'), (mem_twO _ _ _ _).1 hx Q, ?_⟩` and prove the remaining obligations. Use `(mem_twO _ _ _ _).1 hy (conjPrime₂ Q)` as an intermediate fact. Rewrite `this` using `[he, zpow_neg, inv_inv, ← star_natCast (R := X.E) c, ← star_zpow₀]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem coc_int_twO (hX : X.Ok) (hδ : A.δ ≠ 0) (hL : LaFacts (X.embC A.σ₀) A.δ A.d A.sc A.AA N N') {c : ℕ} (hc : 0 < c)
     {e : HeightOneSpectrum (𝓞 X.E) → ℤ} (he : ∀ Q, e (conjPrime₂ Q) = -e Q) {x y : HomE X.E a b}
@@ -333,27 +333,27 @@ theorem coc_int_twO (hX : X.Ok) (hδ : A.δ ≠ 0) (hL : LaFacts (X.embC A.σ₀
   rwa [he, zpow_neg, inv_inv, ← star_natCast (R := X.E) c, ← star_zpow₀] at this
 
 /- English proof (translation)
-Apply the tactic sequence `rcases expS_cases S hS Q with ⟨-, h1, h2⟩ | ⟨-, h1, h2⟩ | ⟨h1, h2⟩ <;> simp [h1, h2]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem expS_conj (hS : ∀ P ∈ S, conjPrime₂ P ∉ S) (Q : HeightOneSpectrum (𝓞 X.E)) : expS S (conjPrime₂ Q) = -expS S Q := by
   rcases expS_cases S hS Q with ⟨-, h1, h2⟩ | ⟨-, h1, h2⟩ | ⟨h1, h2⟩ <;> simp [h1, h2]
 
 /- English proof (translation)
-Establish `hs'` using `(mem_twO _ _ _ _).1 hs`. Establish `ht'` using `(mem_twO _ _ _ _).1 ht`. Prove the components needed by the constructor for the conclusion. Use `(mem_twO _ _ _ _).2 fun Q => ?_` and prove the remaining obligations. Establish `h1` using `hs' Q`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `ht' Q`. Break down `expS_cases S hS Q with ⟨hQ, e1, -⟩ | ⟨-, e1, -⟩ | ⟨e1, -⟩` into its components or cases. Rewrite using `[e1, zpow_one]`. Conclude with `h Q hQ`. Rewrite `h1`, `h2` using `[e1, neg_neg, zpow_one]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, zpow_neg, inv_inv, zpow_one]`. Conclude with `nat_smul_mem (sub_mem (mem_of_inv_smul hD h2) (mem_of_inv_smul hc' h1)) c`. Rewrite `h1`, `h2` using `[e1, neg_zero, zpow_zero]`. Rewrite using `[e1, zpow_zero, smul_sub]`. Conclude with `sub_mem h2 h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n₁, h₁⟩` from `coc_int_twO A hX hδ hL hD (fun Q => by rw [expS_conj hS]) ht ht`. Choose the witnesses or unpack the hypotheses as in `⟨n₂, h₂⟩ : ∃ n : ℤ, coc A t s = n := by`. Use `(GlobalTheory.T.heisenbergCocycleForm_integral_selfDual X A a b N N' hX hδ hL).2.2 t s fun Q => ?_` and prove the remaining obligations. Establish `h1` using `hs' Q`. Establish `h2` using `ht' Q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h3` using `hs' (conjPrime₂ Q)`. Establish `h4` using `ht' (conjPrime₂ Q)`. Break down `expS_cases S hS Q with ⟨hQ, e1, e2⟩ | ⟨hQ, e1, e2⟩ | ⟨e1, e2⟩` into its components or cases. Rewrite `h1` using `[e1, zpow_neg, inv_inv, zpow_one]`. Rewrite `h3` using `[e2, neg_neg, zpow_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨(c' : X.E)⁻¹, inv_ne_zero (Nat.cast_ne_zero.2 hc'.ne'), ?_, ?_⟩` and prove the remaining obligations. Use `add_mem h1 (nat_smul_mem (mem_of_inv_smul hc (h Q hQ)) c')` as an intermediate fact. Rewrite `this` using `[← smul_add, add_sub_cancel, ← inv_inv (c' : X.E)]`. Then use the resulting hypothesis. Rewrite using `[star_inv₀, star_natCast]` and apply the resulting hypothesis. Rewrite `h2` using `[e1, neg_neg, zpow_one]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h4` using `[e2, zpow_neg, inv_inv, zpow_one]`. Use `⟨(D : X.E), Nat.cast_ne_zero.2 hD.ne', h2, ?_⟩` and prove the remaining obligations. Use `sub_mem h4 (nat_smul_mem (mem_of_inv_smul hc (h _ hQ)) D)` as an intermediate fact. Rewrite `this` using `[← smul_sub, sub_sub_cancel, ← star_natCast (R := X.E) D]`. Then use the resulting hypothesis. Rewrite `h2` using `[e1, neg_zero, zpow_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Rewrite `h3` using `[e2, neg_zero, zpow_zero, inv_one]`. Conclude with `⟨1, one_ne_zero, h2, by rwa [star_one]⟩`. Conclude with `⟨n₂ - n₁, by rw [coc_neg_sub, h₁, h₂]; push_cast; ring⟩`.
+A detailed English derivation is pending.
 -/
 theorem two_lifts (hX : X.Ok) (hδ : A.δ ≠ 0) (hL : LaFacts (X.embC A.σ₀) A.δ A.d A.sc A.AA N N') (hS : ∀ P ∈ S, conjPrime₂ P ∉ S)
     {c c' D : ℕ} (hc : 0 < c) (hc' : 0 < c') (hD : 0 < D) {s t : HomE X.E a b}
@@ -399,41 +399,37 @@ theorem two_lifts (hX : X.Ok) (hδ : A.δ ≠ 0) (hL : LaFacts (X.embC A.σ₀) 
     exact ⟨n₂ - n₁, by rw [coc_neg_sub, h₁, h₂]; push_cast; ring⟩
 
 /- English proof (translation)
-Introduce `X A a b S N N' cA c hX ⟨hδ, hT, hS, hU, hFG, hLa⟩ hAA hN hN' hcA hc`. Take `⟨hfix, hL⟩` from `hLa N N' hN hN'`. Take `⟨-, -, hidx, hloc⟩` from `GlobalTheory.T.per_relIndex_ne_zero_and_mem_locP_iff X A a b N N' hFG hAA hN hN'`. Establish `hinj` using `embH_injective A (a := a) (b := b) hδ hT`. Establish `hc0 : (c : X.E) ≠ 0` using `Nat.cast_ne_zero.2 hc.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBB : ∀ x ∈ halfBO S (per A N N') c, ∀ y ∈ halfBO S (per A N N') c, ∃ n : ℤ, coc A x y = n` using `fun x hx y hy => coc_int_twO A hX hδ hL hc (expS_conj hS) hx hy`. Establish `hBM : (halfBO S (per A N N') c).toAddSubgroup.relIndex (per A N N').toAddSubgroup ≠ 0`. Introduce `h0`. Use `hidx (c : 𝓞 X.E) (Nat.cast_ne_zero.2 hc.ne') (AddSubgroup.relIndex_eq_zero_of_le_left ?_ h0)` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `(mem_twO _ _ _ _).2 fun Q => mem_loc_self Q ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ • (((c : 𝓞 X.E) : X.E) • m) ∈ _`. Rewrite using `[show ((c : 𝓞 X.E) : X.E) = (c : X.E) from map_natCast (algebraMap (𝓞 X.E) X.E) c]`. Break down `expS_cases S hS Q with ⟨-, e1, -⟩ | ⟨-, e1, -⟩ | ⟨e1, -⟩` into its components or cases. Rewrite using `[e1, zpow_one, inv_smul_smul₀ hc0]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm`. Rewrite using `[e1, zpow_neg, inv_inv, zpow_one]`. Conclude with `nat_smul_mem (nat_smul_mem hm c) c`. Rewrite using `[e1, zpow_zero, inv_one, one_smul]`. Conclude with `nat_smul_mem hm c`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdvd` using `relIndex_dvd_of_le (halfBO S (per A N N') c).toAddSubgroup ((per A N N').toAddSubgroup ⊓ (halfAO S (per A N N') c).toAddSubgroup) (per A N N').toAddSubgroup inf_le_left`. Use `set n := (halfBO S (per A N N') c).toAddSubgroup.relIndex ((per A N N').toAddSubgroup ⊓ (halfAO S (per A N N') c).toAddSubgroup) with hn`. Establish `hn0 : n ≠ 0` using `ne_zero_of_dvd_ne_zero hBM hdvd`. Use `⟨n, hn0, hdvd, fun x hx t ht htx R hR => ?_⟩` and prove the remaining obligations. Take `⟨RA, hRA⟩` from `(GlobalTheory.RepsMod.reps_facts _).1 _ _ hn0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRA'` using `reps_map _ hinj hRA`. Rewrite `hRA'` using `[AddSubgroup.map_inf _ _ _ hinj]`. Establish `hSA : IsReps (BC (X.embC A.σ₀) A.δ A.AA S N N' c) (LamC (X.embC A.σ₀) A.δ A.AA N N' ⊓ AC (X.embC A.σ₀) A.δ A.AA S N N' c) (repsOf _ _)` using `repsOf_spec ⟨_, hRA'⟩`. Establish `hcard : (repsOf (BC (X.embC A.σ₀) A.δ A.AA S N N' c) (LamC (X.embC A.σ₀) A.δ A.AA N N' ⊓ AC (X.embC A.σ₀) A.δ A.AA S N N' c)).card = n`. Rewrite using `[(GlobalTheory.RepsMod.reps_facts _).2.1 _ _ _ hSA, hn, ← AddSubgroup.relIndex_map_map_of_injective _ _ hinj, AddSubgroup.map_inf _ _ _ hinj]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hR' : IsReps (LamC (X.embC A.σ₀) A.δ A.AA N N') (BC (X.embC A.σ₀) A.δ A.AA S N N' c) _` using `reps_map _ hinj hR`. Establish `hSB : IsReps (LamC (X.embC A.σ₀) A.δ A.AA N N') (BC (X.embC A.σ₀) A.δ A.AA S N N' c) (repsOf _ _)` using `repsOf_spec ⟨_, hR'⟩`. Establish `hinv : ∀ y ∈ (halfBO S (per A N N') c).toAddSubgroup, ∀ l ∈ (per A N N').toAddSubgroup, l ∈ (halfBO S (per A N N') c).toAddSubgroup → Wx A (y + l) (A.e a b N N') = Wx A y (A.e a b N N')`. Introduce `y hy l hl hl'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[← Wx_mul A (hBB y hy l hl')]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Conclude with `hfix _ ⟨l, hl, rfl⟩ z`. Establish `hshift : ∀ u ∈ halfBO S (per A N N') c, Wx A u (fun z => ∑ y ∈ R, Wx A y (A.e a b N N') z) = fun z => ∑ y ∈ R, Wx A y (A.e a b N N') z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `u hu`. Rewrite using `[Wx_sum]`. Use function extensionality and compare the values at `z`. Rewrite using `[sum_reps_eq (fun y => Wx A y (A.e a b N N') z) hR (reps_shift hR hu) (fun y hy l hl hl' => by rw [hinv y hy l hl hl']), Finset.sum_map]`. Conclude with `Finset.sum_congr rfl fun y hy => by rw [Wx_mul A (hBB u hu y (hR.1 y hy))]; rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Establish `hxi : xiS (HV A.sc) (alV A.d A.sc) (volC A.AA S N N') (repsOf (BC (X.embC A.σ₀) A.δ A.AA S N N' c) (LamC (X.embC A.σ₀) A.δ A.AA N N' ⊓ AC (X.embC A.σ₀) A.δ A.AA S N N' c)) (repsOf (LamC (X.embC A.σ₀) A.δ A.AA N N') (BC (X.embC A.σ₀) A.δ A.AA S N N' c)) (indL (BC (X.embC A.σ₀) A.δ …`. Use function extensionality and compare the values at `z`. Establish `e1 : ∑ y ∈ R, Wx A y (A.e a b N N') z = ∑ v ∈ repsOf (LamC (X.embC A.σ₀) A.δ A.AA N N') (BC (X.embC A.σ₀) A.δ A.AA S N N' c), alV A.d A.sc v * opU (HV A.sc) v (A.e a b N N') z`. Rewrite using `[sum_reps_eq (fun v => alV A.d A.sc v * opU (HV A.sc) v (A.e a b N N') z) hSB hR' ?_, Finset.sum_map]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨y, hy, rfl⟩ _ ⟨l, hl, rfl⟩ ⟨l', hl', e⟩`. Take `rfl` from `hinj e`. Rewrite using `[← map_add]`. Conclude with `congrFun (hinv y hy l' hl hl') z`. Rewrite using `[e1, Finset.mul_sum, xiS, sumU]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun v hv => ?_` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `hSB.1 v hv`. Rewrite using `[hatS_ind _ _ hSA, hcard, mul_assoc]`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Take `⟨n₁, h₁⟩` from `hBB u hu y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n₂, h₂⟩` from `hBB y hy u hu`. Conclude with `((GlobalTheory.T.weylHeisenbergOperator_calculus_rational X A a b).2.2.2.2.2.1 y u).2 ⟨n₁ - n₂, by rw [(GlobalTheory.T.weylHeisenbergOperator_calculus_rational X A a b).2.2.1, h₁, h₂]; push_cast; ring⟩`. Establish `hlift : A.IsLift S N N' c x (A.liftW S N N' c x)` using `Classical.epsilon_spec (p := A.IsLift S N N' c x) ⟨t, ⟨cA * c, Nat.mul_pos hcA hc, ht⟩, htx⟩`. Take `⟨⟨c', hc', hs⟩, hsx⟩` from `hlift`. Use `set s := A.liftW S N N' c x with hs_def`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 
-Take `⟨hB, hcoc⟩` from `two_lifts A hX hδ hL hS hc hc' (Nat.mul_pos hcA hc) hs ht (by`. Introduce `P hP`. Take `⟨h, hh, e⟩` from `sub_mem htx hsx`. Establish `e' : t - s = (c : X.E) • h`. Rewrite using `[Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul (𝓞 X.E), ← sub_sub_sub_cancel_right t s x]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e.symm`. Rewrite using `[e', inv_smul_smul₀ hc0]`. Conclude with `(hloc P (hU P hP) h).2 (hh P hP))`. Establish `hW : Wx A (-t) (fun z => ∑ y ∈ R, Wx A y (A.e a b N N') z) = Wx A (-s) (fun z => ∑ y ∈ R, Wx A y (A.e a b N N') z)` using `by conv_lhs => rw [← hshift _ hB, Wx_mul A hcoc]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[hW]`. Use function extensionality and compare the values at `z`. Establish `hv` using `volC_pos A hFG hAA S hN hN'`. Establish `hsq : ((Real.sqrt (volC A.AA S N N') : ℝ) : ℂ) * ((Real.sqrt (volC A.AA S N N') : ℝ) : ℂ) = (volC A.AA S N N' : ℝ)`.
-
-Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt hv.le]`. Establish `hsq0 : ((Real.sqrt (volC A.AA S N N') : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (Real.sqrt_pos.2 hv).ne'`. Establish `hα : alV A.d A.sc (emb A (-s)) = alV A.d A.sc (embH (X.embC A.σ₀) A.δ s)`. Simplify using `[emb, alV, alphaQ, Formalism.L2.Th1.H.qOf]`. Establish `hem : emb A (-s) = -embH (X.embC A.σ₀) A.δ s` using `map_neg _ _`.
-
-Rewrite using `[Amb.thInd, xiInd, ← hs_def, hxi, Wx]`. Simplify using `only [hα]`. Rewrite using `[hem, opU, opU, ← hsq]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem thInd_shape : ∀ (X : Fields) (A : Amb X) (a b : ℕ) (S : Finset (HeightOneSpectrum (𝓞 X.E))) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) (cA c : ℕ), X.Ok → A.LaHyp a b S → A.AA ≠ ⊥ → IsSdLat N → IsSdLat N' → 0 < cA → 0 < c → ∃ n : ℕ, n ≠ 0 ∧ n ∣ (halfBO S (per A N N') c).toAddSubgroup.relIndex (per A N N').toAddSubgroup ∧ ∀ x ∈ divLat cA (homAt S N N'), ∀ t ∈ halfAO S (per A N N') (cA * c), t - x ∈ mulLat c (homAt S N N') → ∀ R : Finset (HomE X.E a b), IsReps (per A N N').toAddSubgroup (halfBO S (per A N N') c).toAddSubgroup R → A.thInd S N N' c x = fun z => (n : ℂ)⁻¹ * Wx A (-t) (fun z => ∑ y ∈ R, Wx A y (A.e a b N N') z) z := by
   intro X A a b S N N' cA c hX ⟨hδ, hT, hS, hU, hFG, hLa⟩ hAA hN hN' hcA hc

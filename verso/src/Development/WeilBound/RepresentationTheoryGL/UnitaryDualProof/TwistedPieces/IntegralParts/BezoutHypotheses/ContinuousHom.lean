@@ -15,20 +15,20 @@ section Lemmas
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Unfold `hom`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_hom (t : kˣ) : Continuous (hom (n := n) t) := by
   unfold hom
   fun_prop
 
 /- English proof (translation)
-Simplify using `[hom, smul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hom_hom_inv (t : kˣ) (p : Sp k n) : hom t (hom t⁻¹ p) = p := by
   simp [hom, smul_smul]
 
 /- English proof (translation)
-Simplify using `[hom, smul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hom_inv_hom (t : kˣ) (p : Sp k n) : hom t⁻¹ (hom t p) = p := by
   simp [hom, smul_smul]
@@ -42,7 +42,7 @@ def homH (t : kˣ) : Sp k n ≃ₜ Sp k n where
   continuous_invFun := continuous_hom t⁻¹
 
 /- English proof (translation)
-Take `⟨hlc, hcs⟩` from `hf`. Conclude with `⟨hlc.comp_continuous (continuous_hom t), hcs.comp_homeomorph (homH t)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem comp_hom_mem (t : kˣ) {f : Sp k n → ℂ} (hf : f ∈ locallyConstantCompactSupport (Sp k n) ℂ ℂ) :
     f ∘ hom t ∈ locallyConstantCompactSupport (Sp k n) ℂ ℂ := by
@@ -55,9 +55,9 @@ Both sides reduce to the same expression.
 theorem pullH_apply (t : kˣ) (ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ) (f : Sp k n → ℂ) : pullH t ξ f = ξ (f ∘ hom t) := rfl
 
 /- English proof (translation)
-Introduce `f hf h0`. Rewrite using `[pullH_apply]`. Use `h _ ⟨comp_hom_mem t hf.1, Set.subset_univ _⟩ ?_` and prove the remaining obligations. Introduce and unpack `⟨x, v⟩ ⟨hx, -⟩`. Use `show f (hom t (x, v)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h0` to reduce the goal to its premises. Use `⟨?_, Set.mem_univ _⟩` and prove the remaining obligations. Introduce `a ha`. Use `show a * ((t : k) • x) = ((t : k) • x) * a`. Rewrite using `[mul_smul_comm, smul_mul_assoc, hx a ha]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullH_supp {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (t : kˣ) (ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ)
     (h : Supp ξ (Bz Z ×ˢ Set.univ)) : Supp (pullH t ξ) (Bz Z ×ˢ Set.univ) := by
@@ -73,9 +73,9 @@ theorem pullH_supp {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (t : kˣ) (ξ :
   rw [mul_smul_comm, smul_mul_assoc, hx a ha]
 
 /- English proof (translation)
-Use `⟨LinearMap.ext fun ξ => LinearMap.ext fun f => ?_, LinearMap.ext fun ξ => LinearMap.ext fun f => ?_⟩` and prove the remaining obligations. Use `show ξ ((f ∘ hom t) ∘ hom t⁻¹) = ξ f`. Use `congr 1`. Use function extensionality and compare the values at `p`. Simplify using `[hom_hom_inv]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `show ξ ((f ∘ hom t⁻¹) ∘ hom t) = ξ f`. Use `congr 1`. Use function extensionality and compare the values at `p`. Simplify using `[hom_inv_hom]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pullH_inv (t : kˣ) :
     pullH (n := n) t ∘ₗ pullH t⁻¹ = LinearMap.id ∧ pullH (n := n) t⁻¹ ∘ₗ pullH t = LinearMap.id := by
@@ -86,7 +86,7 @@ theorem pullH_inv (t : kˣ) :
     congr 1; funext p; simp [hom_inv_hom]
 
 /- English proof (translation)
-Introduce `f hf`. Rewrite using `[pullH_apply]`. Use `h _ ⟨comp_hom_mem t hf.1, fun p hp => ?_⟩` and prove the remaining obligations. Use `hf.2 hp` as an intermediate fact. Simplify `this` using `[UU, hom]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pullH_kills (t : kˣ) (ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ) (h : Kills ξ UU) : Kills (pullH t ξ) UU := by
   intro f hf
@@ -104,7 +104,7 @@ def Ao (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (t : kˣ) (x : ℝ) : Modul
 def Agr (η η' : (Sp k n → ℂ) →ₗ[ℂ] ℂ) : Prop := ∀ f ∈ supportedIn (Set.univ : Set (Sp k n)), η f = η' f
 
 /- English proof (translation)
-Introduce `f hf`. Simplify using `only [Ao, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, pullH_apply]`. Rewrite using `[h f hf, h _ ⟨comp_hom_mem t⁻¹ hf.1, Set.subset_univ _⟩]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ao_agree (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (t : kˣ) (x : ℝ) {η η' : (Sp k n → ℂ) →ₗ[ℂ] ℂ}
     (h : Agr η η') : Agr (Ao Z t x η) (Ao Z t x η') := by
@@ -118,9 +118,9 @@ Both sides reduce to the same expression.
 theorem polyH_eq (t : kˣ) (a : List ℝ) : polyH (n := n) t a = (a.map (Bo t)).prod := rfl
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `nil => simpa using hξ`. Consider the case `cons x a ih`. Rewrite using `[List.map_cons, List.prod_cons, Module.End.mul_apply]`. Introduce `f hf h0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Bo, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[pullH_supp t _ ih f hf h0, ih f hf h0, smul_zero, sub_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem bo_supp {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (t : kˣ) (a : List ℝ) (ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ)
     (hξ : Supp ξ (Bz Z ×ˢ Set.univ)) : Supp ((a.map (Bo t)).prod ξ) (Bz Z ×ˢ Set.univ) := by
@@ -133,11 +133,11 @@ theorem bo_supp {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (t : kˣ) (a : Lis
     rw [pullH_supp t _ ih f hf h0, ih f hf h0, smul_zero, sub_zero]
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `nil`. Introduce `f hf`. Simplify using the standard rewrite rules. Consider the case `cons x a ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `hP` using `bo_supp t a ξ hξ`. Establish `h1` using `ao_agree Z t x ih`. Introduce `f hf`. Rewrite using `[List.map_cons, List.prod_cons, Module.End.mul_apply, List.map_cons, List.prod_cons, Module.End.mul_apply, ← h1 f hf]`. Simplify using `only [Bo, Ao, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, map_sub, map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hF5 t _ hP f hf]`. Simplify using `only [smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem four_prodH {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)}
     (𝓕 : ((Sp k n → ℂ) →ₗ[ℂ] ℂ) →ₗ[ℂ] ((Sp k n → ℂ) →ₗ[ℂ] ℂ))
@@ -161,9 +161,7 @@ theorem four_prodH {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)}
     simp only [smul_eq_mul]
 
 /- English proof (translation)
-Establish `hle : Subalgebra.toSubmodule Z ≤ Subalgebra.toSubmodule (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k)))`. Introduce `a ha`. Use `show a ∈ Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce `b hb`.
-
-Conclude with `hZ.1 b hb a ha`. Conclude with `Submodule.finrank_mono hle`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dZ_le (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) : Module.finrank k Z ≤ dB Z := by
   have hle : Subalgebra.toSubmodule Z ≤
@@ -176,7 +174,7 @@ theorem dZ_le (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) : Module
   exact Submodule.finrank_mono hle
 
 /- English proof (translation)
-Introduce `f hf h0`. Take `⟨⟨hlc, hcs⟩, hsu⟩` from `hf`. Establish `hopen : IsOpen (Function.support f)` using `(hlc.isClosed_fiber 0).isOpen_compl`. Conclude with `hH _ hopen (fun p hp => ⟨hsu hp, fun hmem => hp (h0 p ⟨hmem, Set.mem_univ _⟩)⟩) f ⟨⟨hlc, hcs⟩, subset_rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem suppU_of_H {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (η : (Sp k n → ℂ) →ₗ[ℂ] ℂ)
     (hH : ∀ U : Set (Sp k n), IsOpen U → (∀ p ∈ U, p.2 ≠ 0 ∧ p.1 ∉ ZN Z ∩ Bz Z) → Kills η U) :
@@ -192,27 +190,25 @@ end Lemmas
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `hF hO hFi hBa hT hU m Z hZ H ξ hξ hinv`. Break down `Nat.eq_zero_or_pos (dB0 Z) with h0 | hpos` into its components or cases. Conclude with `hBa m Z hZ h0 ξ hξ hinv`. Take `⟨t, -, ht⟩` from `PositivityTheory.RgUd.T.Nil.Asm.free_etale_sheaf_zmod_exists_hom_sending_generator k`. Take `⟨𝓕, hF1, hF2, hF3, -, hF5, hF6⟩` from `hF hT m Z hZ`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hOa⟩` from `hO hT hU m Z hZ hpos t ht`. Establish `hξB : Supp ξ (Bz Z ×ˢ Set.univ)` using `fun f hf h0 => hξ f hf (fun p hp => h0 p ⟨hp.1.1, hp.2⟩)`. Establish `hη1` using `hF1 ξ hξB`. Establish `hη2` using `hF2 ξ hξB hinv`. Establish `hη6` using `hF6 ξ hξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hηU` using `suppU_of_H (𝓕 ξ) (H (𝓕 ξ) hη1 hη2)`. Take `⟨η', hη'S, hη'I, hη'K⟩` from `hFi m Z hZ (𝓕 ξ) hη1 hη2 hη6 hηU`. Establish `hb` using `hη'K t ht a (hOa η' hη'S hη'I)`. Establish `hξU : SuppU ξ (NB Z ×ˢ Set.univ)` using `fun f hf h0 => hξ f ⟨hf.1, Set.subset_univ _⟩ h0`. Establish `hξI : InvU Z ξ` using `fun g hg f hf => hinv g hg f ⟨hf.1, Set.subset_univ _⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha2 : Kills (polyH t a ξ) UU` using `hOa ξ hξU hξI`. Rewrite `ha2` using `[polyH_eq]`. Establish `ha3 : Kills ((a.map (Ao Z t)).prod (𝓕 ξ)) UU`. Establish `hk` using `(hF3 _ (bo_supp t a ξ hξB)).mp ha2`. Establish `hag` using `four_prodH 𝓕 hF5 t a ξ hξB`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf`. Rewrite using `[← hag f ⟨hf.1, Set.subset_univ _⟩]`. Conclude with `hk f hf`. Establish `hpos' : 0 < nabs k t` using `GlobalTheory.SplitWeil.nabs_pos k t`. Establish `hc1 : 1 < (nabs k t)⁻¹` using `(one_lt_inv₀ hpos').mpr ht`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `K : Submodule ℂ ((Sp k m → ℂ) →ₗ[ℂ] ℂ)` to `{ carrier := {η | Kills η UU} add_mem' := by`. Introduce `x y hx hy f hf`. Establish `h1 : x f = 0` using `hx f hf`. Establish `h2 : y f = 0` using `hy f hf`. Simplify using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use the proof step `zero_mem' := by`. Introduce `f _`. Simplify using the standard rewrite rules. Use the proof step `smul_mem' := by`. Introduce `c x hx f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : x f = 0` using `hx f hf`. Simplify using `[h1] }`. Establish `hmain : 𝓕 ξ ∈ K`. Use `bez2 K (pullH t) (pullH t⁻¹) (pullH_inv t).1 (pullH_inv t).2 (fun η hη => pullH_kills t η hη) (nabs k t)⁻¹ hc1 (dB Z : ℝ) a (a.map (fun x => x + (Module.finrank k Z : ℝ))) ?_ (𝓕 ξ) hb ?_` and prove the remaining obligations. Introduce `x hx y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x', hx', rfl⟩` from `List.mem_map.mp hy`. Establish `h1` using `ha x hx`. Establish `h2` using `ha x' hx'`. Establish `hle` using `dZ_le Z hZ`. Establish `hd : (dB0 Z : ℝ) = (dB Z : ℝ) - (Module.finrank k Z : ℝ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[show dB0 Z = dB Z - Module.finrank k Z from rfl, Nat.cast_sub hle]`. Apply `ne_of_lt` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : ∀ x : ℝ, ((((nabs k t)⁻¹ ^ (dB Z : ℝ) : ℝ)) : ℂ) • pullH t⁻¹ - ((((nabs k t)⁻¹ ^ x : ℝ)) : ℂ) • LinearMap.id = Ao Z t x`. Introduce `x`.
-
-Simplify using `only [Ao, Real.rpow_natCast]`. Simplify using `only [e]`. Conclude with `ha3`. Conclude with `(hF3 ξ hξB).mpr hmain`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nilCore_of : FourQ k → OrbQ k → FibQ k → BaseQ k → TraceForm k →
     PositivityTheory.RgUd.T.Desc.SLF.Unimod (k := k) → NilCore k := by

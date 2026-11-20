@@ -18,49 +18,45 @@ set_option autoImplicit false
 namespace GlobalTheory.ConjRiemann
 
 /- English proof (translation)
-Introduce `hPC hADR hADC K _ _ d δ io hK2 hd hδ g t Λ₀ Λ₁ Ω₀ Ω₁ _hΩ hTT E _ _ _ _ I _ φ _hφ hφK c y hc 𝔠 T X' p hp u' hlat _hdiff htors u₀ Hm χ hex hAH`. Establish `W` using `GlobalTheory.T.galois_conjugate_cm_point hPC hADR hADC K t E I φ g c y hc 𝔠 T X' p hp u' hlat htors u₀ Hm χ hex hAH`. Establish `h2pi : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Establish `hexp : ∀ (r r' : ℝ) (k : ℕ), 0 < k → Complex.exp (-(2 * Real.pi * Complex.I) * (r : ℂ) / k) = Complex.exp (-(2 * Real.pi * Complex.I) * (r' : ℂ) / k) → ∃ n : ℤ, r' - r = k * n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `r r' k hk h`. Take `⟨n, hn⟩` from `Complex.exp_eq_exp_iff_exists_int.1 h`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hk' : (k : ℂ) ≠ 0` using `by exact_mod_cast hk.ne'`. Establish `e1 : (2 * (Real.pi : ℂ) * Complex.I) * (((r' - r : ℝ) : ℂ) - ((k * n : ℝ) : ℂ)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn'` using `congrArg (fun z => z * (k : ℂ)) hn`. Simplify using `only [add_mul, div_mul_cancel₀ _ hk'] at hn'`. Use `push_cast`. Take the linear combination `hn'`. Break down `mul_eq_zero.1 e1 with h0 | h0` into its components or cases.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h0 h2pi`. Conclude with `sub_eq_zero.1 h0` after adjusting the coercions. Establish `h0L : (0 : E) ∈ lattice c y` using `by show algebraMap E (Af E) 0 * _ ∈ hatO c`. Rewrite using `[map_zero, zero_mul]`. Conclude with `(hatO c).zero_mem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0L' : (0 : E) ∈ lattice c (y * (upIdele K E t)⁻¹)` using `by show algebraMap E (Af E) 0 * _ ∈ hatO c`. Rewrite using `[map_zero, zero_mul]`. Conclude with `(hatO c).zero_mem`. Establish `htrz : ∀ z ∈ lattice c (y * (upIdele K E t)⁻¹), ((upIdele K E t : Af E) * algebraMap E (Af E) (z / ((1 : ℕ) : E)) - algebraMap E (Af E) ((0 : E) / ((1 : ℕ) : E))) * ((y⁻¹ : (Af E)ˣ) : Af E) ∈ hatO c`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hz' : algebraMap E (Af E) z * (((y * (upIdele K E t)⁻¹)⁻¹ : (Af E)ˣ) : Af E) ∈ hatO c` using `hz`. Use `hz' using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Nat.cast_one, div_one, zero_div, map_zero, sub_zero, mul_inv_rev, inv_inv, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `htrw : ∀ w ∈ lattice c y, ((upIdele K E t : Af E) * algebraMap E (Af E) ((0 : E) / ((1 : ℕ) : E)) - algebraMap E (Af E) (w / ((1 : ℕ) : E))) * ((y⁻¹ : (Af E)ˣ) : Af E) ∈ hatO c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `w hw`. Establish `hw' : algebraMap E (Af E) w * ((y⁻¹ : (Af E)ˣ) : Af E) ∈ hatO c` using `hw`. Establish `e : ((upIdele K E t : Af E) * algebraMap E (Af E) ((0 : E) / ((1 : ℕ) : E)) - algebraMap E (Af E) (w / ((1 : ℕ) : E))) * ((y⁻¹ : (Af E)ˣ) : Af E) = -(algebraMap E (Af E) w * ((y⁻¹ : (Af E)ˣ) : Af E))`. Simplify using `only [Nat.cast_one, div_one, zero_div, map_zero, mul_zero, zero_sub, neg_mul]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hatO c).neg_mem hw'`. Establish `hEg : ∀ z ∈ lattice c (y * (upIdele K E t)⁻¹), ∀ z' ∈ lattice c (y * (upIdele K E t)⁻¹), ∃ n : ℤ, ((fun j ↦ g (φ (T.U.e j) z)) ⬝ᵥ Hm.mulVec (star fun j ↦ g (φ (T.U.e j) z'))).im = n`. Introduce `z hz z' hz'`. Establish `h` using `W 1 0 0 z z' one_pos h0L h0L hz hz' (htrz z hz) (htrz z' hz')`. Establish `hl : (∑ i, T.U.h i * (φ i 0 * starRingEnd ℂ (φ i 0)).im) = 0` using `by simp`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[hl]`. Take `⟨n, hn⟩` from `hexp 0 _ 1 one_pos (by rw [← h]; simp)`. Conclude with `⟨n, by simpa using hn⟩`. Establish `hEf : ∀ w ∈ lattice c y, ∀ w' ∈ lattice c y, ∃ n : ℤ, (∑ i, T.U.h i * (φ i w * starRingEnd ℂ (φ i w')).im) = n`. Introduce `w hw w' hw'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `W 1 w w' 0 0 one_pos hw hw' h0L' h0L' (htrw w hw) (htrw w' hw')`. Establish `hl : ((fun j ↦ g (φ (T.U.e j) 0)) ⬝ᵥ Hm.mulVec (star fun j ↦ g (φ (T.U.e j) 0))).im = 0`. Simplify using the standard rewrite rules. Rewrite `h` using `[hl]`. Establish `h1 : Complex.exp (-(2 * Real.pi * Complex.I) * (((∑ i, T.U.h i * (φ i w * starRingEnd ℂ (φ i w')).im : ℝ)) : ℂ) / ((1 : ℕ) : ℂ)) = Complex.exp (-(2 * Real.pi * Complex.I) * ((0 : ℝ) : ℂ) / ((1 : ℕ) : ℂ))` using `g.injective (by rw [h]; simp)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `hexp _ 0 1 one_pos h1`. Conclude with `⟨-n, by push_cast at hn ⊢; linarith⟩`. Establish `hsc : ∀ (m : K) (u u' : E), (∑ i, T.U.h i * (φ i (algebraMap K E m * u) * starRingEnd ℂ (φ i (algebraMap K E m * u'))).im) = Complex.normSq (io m) * ∑ i, T.U.h i * (φ i u * starRingEnd ℂ (φ i u')).im`. Introduce `m u u'`. Establish `hφm : ∀ i, φ i (algebraMap K E m) = io m` using `fun i => by rw [← hφK i]; rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hφm, map_mul]`. Establish `e : io m * φ i u * (starRingEnd ℂ (io m) * starRingEnd ℂ (φ i u')) = (Complex.normSq (io m) : ℂ) * (φ i u * starRingEnd ℂ (φ i u'))`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Complex.im_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hApos : 0 < modF t` using `finprod_induction (fun x : ℝ => 0 < x) one_pos (fun _ _ => mul_pos) fun v => zpow_pos (by`. Establish `: Ideal.absNorm v.asIdeal ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Use the proof step `positivity) _`. Establish `hcong : ∀ k : ℕ, 0 < k → ∃ (a : ℤ) (b : ℕ), 0 < b ∧ Nat.Coprime b k ∧ IsCoprime a (k : ℤ) ∧ ∀ s : {q : E × E // q.1 ∈ lattice c (y * (upIdele K E t)⁻¹) ∧ q.2 ∈ lattice c (y * (upIdele K E t)⁻¹)}, (∃ n : ℤ, (b : ℝ) / modF t * (∑ i, T.U.h i * (φ i s.1.1 * starRingEnd ℂ (φ i s.1.2)) …`. Introduce `k hk`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha, hga⟩` from `GlobalTheory.T.galois_action_roots_of_unity g k hk`. Take `⟨m, b, hb, hbk, hnorm, hm⟩` from `GlobalTheory.T.norm_coprime_lattice_multiplier K d δ io hK2 hd hδ E t c y hc k hk`. Use `⟨a, b, hb, hbk, ha, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨u, u'⟩, hu, hu'⟩`. Establish `hmu` using `(hm u hu).1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmu'` using `(hm u' hu').1`. Establish `hbA : (b : ℝ) / modF t * (∑ i, T.U.h i * (φ i u * starRingEnd ℂ (φ i u')).im) = ∑ i, T.U.h i * (φ i (algebraMap K E m * u) * starRingEnd ℂ (φ i (algebraMap K E m * u'))).im`. Rewrite using `[hsc, hnorm]`. Take `⟨n₀, hn₀⟩` from `hEf _ hmu _ hmu'`. Use `⟨⟨n₀, by rw [hbA, hn₀]⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `W k (algebraMap K E m * u) (algebraMap K E m * u') u u' hk hmu hmu' hu hu' (hm u hu).2 (hm u' hu').2`. Rewrite `h` using `[hn₀]`. Establish `e3 : Complex.exp (-(2 * Real.pi * Complex.I) * (((n₀ : ℝ)) : ℂ) / k) = Complex.exp (2 * Real.pi * Complex.I * ((-n₀ : ℤ) : ℂ) / k)`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e3, hga (-n₀)]`. Establish `e4 : Complex.exp (2 * Real.pi * Complex.I * ((a : ℂ) * ((-n₀ : ℤ) : ℂ)) / k) = Complex.exp (-(2 * Real.pi * Complex.I) * ((((a * n₀ : ℤ) : ℝ)) : ℂ) / k)`. Use `congr 1`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e4]`. Take `⟨n, hn⟩` from `hexp _ _ k hk h`. Use `⟨n, ?_⟩` and prove the remaining obligations. Use `show _ - _ * ((b : ℝ) / modF t * (∑ i, T.U.h i * (φ i u * starRingEnd ℂ (φ i u')).im)) = _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hbA, hn₀]`. Move the coercions through the operations in `at hn ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpos : ∃ s : {q : E × E // q.1 ∈ lattice c (y * (upIdele K E t)⁻¹) ∧ q.2 ∈ lattice c (y * (upIdele K E t)⁻¹)}, (∑ i, T.U.h i * (φ i s.1.1 * starRingEnd ℂ (φ i s.1.2)).im) ≠ 0 ∧ 0 < (∑ i, T.U.h i * (φ i s.1.1 * starRingEnd ℂ (φ i s.1.2)).im) * ((fun j ↦ g (φ (T.U.e j) s.1.1)) ⬝ᵥ H …`. Take `⟨χT, hT⟩` from `T.U.ah`.
-
-Take `⟨u, hu, u', hu', hne, hp⟩` from `GlobalTheory.T.cm_riemann_form_galois_conjugate K d δ io hK2 hd hδ g hTT.2.2.1 E I φ hφK c (y * (upIdele K E t)⁻¹) hc _ T.U.e T.U.h Hm Module.finrank_pos hT.2.1 hAH.1 hAH.2.1`. Conclude with `⟨⟨(u, u'), hu, hu'⟩, hne, hp⟩`. Introduce `x hx x' hx'`. Establish `key` using `GlobalTheory.T.rational_function_ratio_determined {q : E × E // q.1 ∈ lattice c (y * (upIdele K E t)⁻¹) ∧ q.2 ∈ lattice c (y * (upIdele K E t)⁻¹)} (fun s => ∑ i, T.U.h i * (φ i s.1.1 * starRingEnd ℂ (φ i s.1.2)).im) (fun s => ((fun j ↦ g (φ (T.U.e j) s.1.1)) ⬝ᵥ Hm.mulVec (star fu …`. Rewrite using `[inv_mul_eq_div]`.
-
-Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem im_conj_form_eq : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal → ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (io : K →+* ℂ), Module.finrank ℚ K = 2 → 0 < d → δ ^ 2 = -(d : K) →
     ∀ (g : ℂ ≃+* ℂ) (t : (Af K)ˣ) (Λ₀ Λ₁ : PeriodPair) (Ω₀ Ω₁ : ℂ), Ω₀ ^ 12 = latDisc Λ₀ → TorsTransport io g t Λ₀ Λ₁ Ω₀ Ω₁ →

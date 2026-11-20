@@ -15,25 +15,23 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Global
 namespace GlobalTheory.Diag.PG
 
 /- English proof (translation)
-Introduce `hSM hDs eps CD heps0 heps1 hCD C' Cl Cg C hCl40 hClCD`. Establish `hCl0 : (0 : ℝ) < Cl` using `by linarith`. Take `⟨x1, hx1⟩` from `GlobalTheory.T.dataConditions_of_global_and_real_rows eps CD heps0 heps1 hCD`. Take `⟨x2, hx2⟩` from `GlobalTheory.T.hypotheses_of_global_rows_and_nodes eps CD heps0 heps1 hCD C' Cl Cg hCl0 hClCD`. Take `⟨x3, hx3⟩` from `GlobalTheory.T.eventually_rankNums_imp_parameter_lower_bounds eps CD heps0 heps1 hCD (max C (3 * Real.exp 8))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max x1 (max x2 x3), ?_⟩` and prove the remaining obligations. Introduce `x hx D large₂ hL hC' hTies hAdm hG hN hW`. Establish `hx1' : x1 ≤ x` using `le_trans (le_max_left _ _) hx`. Establish `hx2' : x2 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`. Establish `hx3' : x3 ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, hAr⟩` from `GlobalTheory.T.two_le_rootDiscriminant_and_split_arithmetic_conditions D`. Establish `hData : StandingNumericalData D 3` using `hx1 x hx1' D Cg 3 hG hN hAr hW`. Take `⟨-, -, -, -, -, hm1, hk, hxe⟩` from `hx3 x hx3' _ _ _ _ _ hG.nums`. Establish `hxe0 : (0 : ℝ) ≤ x ^ eps` using `le_of_lt (lt_trans zero_lt_one hxe)`. Establish `h3 : (3 : ℝ) ≤ max C (3 * Real.exp 8)` using `le_trans (by have := Real.add_one_le_exp (8 : ℝ); linarith) (le_max_right _ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCm : C * large₂.sc.L ≤ (D.R.m : ℝ) - 1`. Rewrite using `[hL]`. Conclude with `le_trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hxe0) hm1`. Establish `h3m : 3 * large₂.sc.L ≤ (D.R.m : ℝ) - 1`. Rewrite using `[hL]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `le_trans (mul_le_mul_of_nonneg_right h3 hxe0) hm1`. Establish `h3k : 3 * Real.exp 8 ≤ (D.R.k : ℝ)` using `le_trans (le_max_right _ _) hk`. Establish `hCk : C ≤ (D.R.k : ℝ)` using `le_trans (le_max_left _ _) hk`. Establish `hLpos : 0 < large₂.sc.L` using `by rw [hL]; linarith`. Establish `hb1 : 1 < large₂.sc.b` using `by show 1 < Real.exp large₂.sc.L`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Real.exp_zero]`. Conclude with `Real.exp_lt_exp.mpr hLpos`. Establish `hb0 : 0 < large₂.sc.b` using `lt_trans zero_lt_one hb1`. Establish `hm0 : (0 : ℝ) < (D.R.m : ℝ)`. Use `D.R.two_le_m` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(show 0 < D.R.m by omega)` after adjusting the coercions. Establish `hT1 : ∀ u, (1 : ℝ) ≤ Tr D u` using `fun u => by show (1 : ℝ) ≤ ((D.mem u).A.T : ℝ)`. Conclude with `(D.mem u).A.T_prime.one_lt.le` after adjusting the coercions. Establish `hmb : (D.R.m : ℝ) * Real.log large₂.sc.b ≠ 0` using `(mul_pos hm0 (Real.log_pos hb1)).ne'`. Take `⟨CT0, hCT0⟩ : ∃ c : ℝ, c * ((D.R.m : ℝ) * Real.log large₂.sc.b) = ∑ v, Real.log (Tr D v)` from `⟨(∑ v, Real.log (Tr D v)) / ((D.R.m : ℝ) * Real.log large₂.sc.b), div_mul_cancel₀ _ hmb⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hwin0 : ∀ u, large₂.sc.b ^ ((0 : ℝ) * (D.R.m : ℝ)) ≤ Tr D u ∧ Tr D u ≤ large₂.sc.b ^ (CT0 * (D.R.m : ℝ))`. Introduce `u`. Use `⟨by rw [zero_mul, Real.rpow_zero]; exact hT1 u, ?_⟩` and prove the remaining obligations. Rewrite using `[Real.rpow_def_of_pos hb0, show Real.log large₂.sc.b * (CT0 * (D.R.m : ℝ)) = CT0 * ((D.R.m : ℝ) * Real.log large₂.sc.b) by ring, hCT0]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHyp0 : StandingHypotheses D large₂ C' Cl Cg (1 / 4) 3 0 CT0` using `hx2 x hx2' D large₂ 0 CT0 hL hC' hG hN hwin0`. Establish `hCnt : Cnt.Hyp0 D large₂ C' Cl Cg (1 / 4) 3 0 CT0 3` using `(⟨hHyp0, hData, by norm_num⟩ : StandingHypotheses D large₂ C' Cl Cg (1 / 4) 3 0 CT0 ∧ StandingNumericalData D 3 ∧ (1 : ℝ) ≤ 3)`. Establish `hFr` using `(GlobalTheory.pgFrame_at_record hSM hDs D large₂ C' Cl Cg (1 / 4) 3 0 CT0 3 hTies hCnt hCl40 h3m h3k hAdm).1`. Establish `hwin` using `GlobalTheory.T.levelPrimes_size_bounds_columnDimension hSM hDs D large₂ C' Cl Cg (1 / 4) 3 0 CT0 3 hTies hCnt hCl40 h3m h3k hAdm`. Establish `hHyp : StandingHypotheses D large₂ C' Cl Cg (1 / 4) 3 (1 / 2) (4 * Cg + 13)` using `hx2 x hx2' D large₂ (1 / 2) (4 * Cg + 13) hL hC' hG hN hwin`.
-
-Conclude with `⟨(⟨hData, hHyp, by norm_num⟩ : StandingNumericalData D 3 ∧ StandingHypotheses D large₂ C' Cl Cg (1 / 4) 3 (1 / 2) (4 * Cg + 13) ∧ (1 : ℝ) ≤ 3), hFr, hCm, hCk⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lemmaPG_record : Formalism.HermitianLatticesTheory.SiegelMassRatio → Formalism.L2.SG.Pf.SzHypFD.DsigHC → ∀ eps CD : ℝ, 0 < eps → eps < 1 / 52 → 3 ≤ CD → ∀ C' Cl Cg C : ℝ, 40 ≤ Cl → Cl ≤ CD → ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ (D : D7) (large₂ : SizeData₂ D), large₂.sc.L = x ^ eps → 8 * large₂.CGam ≤ C' → Ties D → LocalBesselAndTopKernel.FamilyMidVolume D → Glob0 D x eps CD Cg → Nodes D x eps → DuWin D 3 → AdmissibleBoundsFromSource.hyp D large₂ 3 C' Cl Cg (1 / 4) 3 (1 / 2) (4 * Cg + 13) ∧ Formalism.L2.SG.RowsConc.TFrameAt D ∧ C * large₂.sc.L ≤ (D.R.m : ℝ) - 1 ∧ C ≤ (D.R.k : ℝ) := by
   intro hSM hDs eps CD heps0 heps1 hCD C' Cl Cg C hCl40 hClCD

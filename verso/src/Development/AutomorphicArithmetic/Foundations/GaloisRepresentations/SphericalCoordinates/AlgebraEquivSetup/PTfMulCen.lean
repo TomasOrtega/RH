@@ -5,13 +5,13 @@ open Formalism.UG GlobalTheory.LKDef.HeckeTraceForms UpperTheory.Gal.W2.Seed
 open scoped Classical
 
 /- English proof (translation)
-Establish `hzc` using `hz.1`. Establish `hpr : T.L.pr (z⁻¹ * g) = T.L.pr g`. Rewrite using `[map_mul, map_inv, hz.2, inv_one, one_mul]`. Establish `key : ∀ a b : X, a * (h * z) * b = z * (a * h * b)`. Introduce `a b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hmem : g ∈ DoubleCoset.doubleCoset (h * z) (T.K : Set X) T.K ↔ z⁻¹ * g ∈ DoubleCoset.doubleCoset h (T.K : Set X) T.K`. Simplify using `only [DoubleCoset.mem_doubleCoset]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, ha, b, hb, by rw [key]; group⟩`. Introduce and unpack `⟨a, ha, b, hb, he⟩`. Use `⟨a, ha, b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[key, ← he]`. Use `group`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [TyLev.tf, dosetInd, hpr, Set.indicator_apply, hmem, Pi.one_apply]`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Gal.W2.Seed.tf_mul_cen_apply {X M : Type} [Group X] [Group M] (T : TyLev X M)
     (h z : X) (hz : T.Cen z) (g : X) : T.tf (h * z) g = T.tf h (z⁻¹ * g) := by
@@ -37,17 +37,17 @@ private theorem UpperTheory.Gal.W2.Seed.tf_mul_cen_apply {X M : Type} [Group X] 
   simp only [TyLev.tf, dosetInd, hpr, Set.indicator_apply, hmem, Pi.one_apply]
 
 /- English proof (translation)
-Introduce `hAdm hCen hIdem X M _ _ T h z hh hz`. Establish `hzc : ∀ y : X, z⁻¹ * y = y * z⁻¹` using `fun y => (Commute.inv_left (hz.1 y : Commute z y)).eq`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Establish `hty : T.IsTy (V` using `ℂ) (fun y : X => T.tf h (y⁻¹ * g)) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Introduce `k hk y`. Establish `e` using `((hAdm X M T h hh).2 k⁻¹ (T.K.inv_mem hk) (y⁻¹ * g)).1`. Simplify using `only [mul_inv_rev, mul_assoc]`. Rewrite using `[e]`. Simplify using `only [map_inv, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[← map_inv]`. Conclude with `congrArg (fun u => ((T.ψ u : ℂˣ) : ℂ)) (Subtype.ext (inv_inv _))`. Establish `e` using `hCen X M T z hz ℂ (fun y => T.tf h (y⁻¹ * g)) hty 1`. Simplify using `only [hAct, one_mul, smul_eq_mul] at e`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [conv]`. Rewrite using `[e, tf_mul_cen_apply T h z hz g]`. Use function extensionality and compare the values at `g`. Establish `e1 : conv T.K₀ (T.tf h) (T.tf z) g = conv T.K₀ (T.tf h) (T.tf 1) (z⁻¹ * g)`. Simplify using `only [conv]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_congr fun x => ?_` and prove the remaining obligations. Use `congr 1`. Establish `e` using `tf_mul_cen_apply T 1 z hz (x.out⁻¹ * g)`. Rewrite `e` using `[one_mul]`. Rewrite using `[e, ← mul_assoc, ← mul_assoc, hzc]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, (hIdem X M T h hh).2.1, tf_mul_cen_apply T h z hz g]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pTfMulCen :
     TfAdm → TfCen → TfIdem → TfMulCen := by

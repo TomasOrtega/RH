@@ -15,11 +15,11 @@ section Pieces
 variable {Ω : Type} [Field Ω] {q r : ℕ} (w : Fin q → Ω) (d : Fin r → ℕ) (t : Fin r → Ω)
 
 /- English proof (translation)
-Establish `hle : gradedSpan w d t k ≤ (gradedSpan w d t (k + 1)).comap (AddMonoidHom.mulRight (w j))`. Rewrite using `[gradedSpan, AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨l, μ, hμ, rfl⟩`. Use `AddSubgroup.subset_closure ⟨l, μ + Pi.single j 1, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[Finset.sum_add_distrib, ← hμ, add_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h1 : ∏ i, w i ^ (μ + Pi.single j 1 : Fin q → ℕ) i = (∏ i, w i ^ μ i) * ∏ i, w i ^ (Pi.single j 1 : Fin q → ℕ) i`. Rewrite using `[← Finset.prod_mul_distrib]`. Simplify using `[pow_add]`. Establish `h2 : ∏ i, w i ^ (Pi.single j 1 : Fin q → ℕ) i = w j`. Rewrite using `[Finset.prod_eq_single j (fun b _ hb => by simp [hb]) (by simp)]; simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2]`. Simplify using `[mul_assoc]`. Conclude with `hle hx`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_mem_succ (j : Fin q) {k : ℕ} {x : Ω} (hx : x ∈ gradedSpan w d t k) :
     x * w j ∈ gradedSpan w d t (k + 1) := by
@@ -39,9 +39,9 @@ theorem mul_mem_succ (j : Fin q) {k : ℕ} {x : Ω} (hx : x ∈ gradedSpan w d t
   exact hle hx
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simpa using hx`. Consider the case `succ e ih`. Establish `h` using `mul_mem_succ w d t j ih`. Rewrite using `[pow_succ, ← mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem mul_pow_mem (j : Fin q) {k : ℕ} {x : Ω} (hx : x ∈ gradedSpan w d t k) (e : ℕ) :
     x * w j ^ e ∈ gradedSpan w d t (k + e) := by
@@ -62,13 +62,13 @@ def act : MvPolynomial (Fin q) ℤ →+* (Polynomial Ω) :=
   MvPolynomial.eval₂Hom (Int.castRingHom (Polynomial Ω)) (fun j => C (w j) * X)
 
 /- English proof (translation)
-Simplify using `[act]`.
+Simplify using the standard rewrite rules.
 -/
 theorem act_X (j : Fin q) : act w (MvPolynomial.X j) = C (w j) * X := by
   simp [act]
 
 /- English proof (translation)
-Rewrite using `[act, MvPolynomial.eval₂Hom_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Simplify using `[mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem act_monomial (v : Fin q →₀ ℕ) (a : ℤ) :
     act w (MvPolynomial.monomial v a) = C ((a : Ω) * ∏ j, w j ^ v j) * X ^ (∑ j, v j) := by
@@ -76,7 +76,7 @@ theorem act_monomial (v : Fin q →₀ ℕ) (a : ℤ) :
   simp [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `[map_prod, act_X, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem act_prod_X_pow (μ : Fin q → ℕ) :
     act w (∏ j, MvPolynomial.X j ^ μ j) = C (∏ j, w j ^ μ j) * X ^ (∑ j, μ j) := by
@@ -97,20 +97,20 @@ def shifted (u : Fin q) : Submodule (MvPolynomial (Fin q) ℤ) (Polynomial Ω) :
   (gradedModule q d t).map (LinearMap.mulLeft _ (C (w u) * X))
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, hA]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_eq (hA : algebraMap (MvPolynomial (Fin q) ℤ) (Polynomial Ω) = act w) (c : MvPolynomial (Fin q) ℤ)
     (p : (Polynomial Ω)) : c • p = act w c * p := by
   rw [Algebra.smul_def, hA]
 
 /- English proof (translation)
-Proceed by induction on `c using MvPolynomial.induction_on generalizing p with`. Consider the case `C a`. Introduce `n`. Rewrite using `[smul_eq w hA, act, MvPolynomial.eval₂Hom_C, eq_intCast, ← C_eq_intCast, coeff_C_mul, ← zsmul_eq_mul]`. Conclude with `zsmul_mem (hp n) a`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add a b ha hb`. Introduce `n`. Rewrite using `[add_smul, coeff_add]`. Conclude with `add_mem (ha hp n) (hb hp n)`. Consider the case `mul_X a j ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[mul_smul]`. Apply `ha` to reduce the goal to its premises. Introduce `n`. Rewrite using `[smul_eq w hA, act_X]`. Consider the cases of `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp [mul_assoc]`. Consider the case `succ k`. Rewrite using `[mul_assoc, coeff_C_mul, coeff_X_mul, mul_comm]`. Conclude with `mul_mem_succ w d t j (hp k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_coeff_mem (hA : algebraMap (MvPolynomial (Fin q) ℤ) (Polynomial Ω) = act w)
     (c : MvPolynomial (Fin q) ℤ) {p : (Polynomial Ω)} (hp : ∀ n, p.coeff n ∈ gradedSpan w d t n) :
@@ -137,9 +137,9 @@ theorem smul_coeff_mem (hA : algebraMap (MvPolynomial (Fin q) ℤ) (Polynomial �
       exact mul_mem_succ w d t j (hp k)
 
 /- English proof (translation)
-Set `P : Submodule (MvPolynomial (Fin q) ℤ) (Polynomial Ω)` to `{ carrier := {p | ∀ n, p.coeff n ∈ gradedSpan w d t n} add_mem' := fun ha hb n => by rw [coeff_add]; exact add_mem (ha n) (hb n) zero_mem' := fun n => by simp smul_mem' := fun c _ hp => smul_coeff_mem w d t hA c hp }`. Establish `hle : gradedModule q d t ≤ P`. Rewrite using `[gradedModule, Submodule.span_le]`. Introduce and unpack `_ ⟨l, rfl⟩ n`. Rewrite using `[coeff_C_mul_X_pow]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `using gradedSpan_gen_mem w d t l 0`. Conclude with `zero_mem _`. Conclude with `hle hm n`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coeff_mem (hA : algebraMap (MvPolynomial (Fin q) ℤ) (Polynomial Ω) = act w) {m : (Polynomial Ω)}
     (hm : m ∈ gradedModule q d t) (n : ℕ) : m.coeff n ∈ gradedSpan w d t n := by
@@ -159,11 +159,11 @@ theorem coeff_mem (hA : algebraMap (MvPolynomial (Fin q) ℤ) (Polynomial Ω) = 
   exact hle hm n
 
 /- English proof (translation)
-Establish `hle : gradedSpan w d t n ≤ ((gradedModule q d t).toAddSubgroup).comap ((Polynomial.monomial n : Ω →ₗ[Ω] (Polynomial Ω)).toAddMonoidHom)`. Rewrite using `[gradedSpan, AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨l, μ, hμ, rfl⟩`. Express the relevant statement in the definitionally equal form `(Polynomial.monomial n) (t l * ∏ j, w j ^ μ j) ∈ gradedModule q d t`. Establish `heq : (∏ j, MvPolynomial.X j ^ μ j : MvPolynomial (Fin q) ℤ) • (C (t l) * X ^ d l) = Polynomial.monomial n (t l * ∏ j, w j ^ μ j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[smul_eq w hA, act_prod_X_pow, ← C_mul_X_pow_eq_monomial, ← hμ, C_mul, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← heq]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`. Use `hle hx` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[C_mul_X_pow_eq_monomial]`.
+A detailed English derivation is pending.
 -/
 theorem monomial_mem (hA : algebraMap (MvPolynomial (Fin q) ℤ) (Polynomial Ω) = act w) {n : ℕ} {x : Ω}
     (hx : x ∈ gradedSpan w d t n) : C x * X ^ n ∈ gradedModule q d t := by
@@ -182,7 +182,7 @@ theorem monomial_mem (hA : algebraMap (MvPolynomial (Fin q) ℤ) (Polynomial Ω)
   simpa [C_mul_X_pow_eq_monomial] using this
 
 /- English proof (translation)
-Take `⟨m, hm, rfl⟩` from `Submodule.mem_map.mp hy`. Use `⟨m.coeff k, coeff_mem w d t hA hm k, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mulLeft_apply, mul_assoc, coeff_C_mul, coeff_X_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_shifted (hA : algebraMap (MvPolynomial (Fin q) ℤ) (Polynomial Ω) = act w) (u : Fin q) {y : (Polynomial Ω)}
     (hy : y ∈ shifted w d t u) (k : ℕ) : ∃ z ∈ gradedSpan w d t k, y.coeff (k + 1) = w u * z := by
@@ -198,7 +198,7 @@ variable {Ω : Type} [Field Ω] {q r : ℕ} (w : Fin q → Ω) (d : Fin r → �
 variable [Algebra (MvPolynomial (Fin q) ℤ) (Polynomial Ω)]
 
 /- English proof (translation)
-Use `choose! f hf using h`. Conclude with `⟨s.sup f, fun i hi => hf i hi _ (Finset.le_sup hi)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_common {ι : Type*} (s : Finset ι) (P : ι → ℕ → Prop)
     (h : ∀ i ∈ s, ∃ D, ∀ D', D ≤ D' → P i D') : ∃ D, ∀ i ∈ s, P i D := by
@@ -207,33 +207,29 @@ theorem exists_common {ι : Type*} (s : Finset ι) (P : ι → ℕ → Prop)
   exact ⟨s.sup f, fun i hi => hf i hi _ (Finset.le_sup hi)⟩
 
 /- English proof (translation)
-Use `set N := shifted w d t u with hN`. Establish `hpow : ∀ (j : Fin q) (g : Polynomial Ω) (D : ℕ), (MvPolynomial.X j ^ D : MvPolynomial (Fin q) ℤ) • g ∈ N → ∀ D', D ≤ D' → (MvPolynomial.X j ^ D' : MvPolynomial (Fin q) ℤ) • g ∈ N`. Introduce `j g D h D' hD'`. Take `⟨e, rfl⟩` from `Nat.exists_eq_add_of_le hD'`. Rewrite using `[pow_add, mul_comm, mul_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `N.smul_mem _ h`. Set `Γ : Submodule (MvPolynomial (Fin q) ℤ) (Polynomial Ω)` to `{ carrier := {m | m ∈ gradedModule q d t ∧ ∀ j, w j ≠ 0 → ∃ D : ℕ, (MvPolynomial.X j ^ D : MvPolynomial (Fin q) ℤ) • m ∈ N} add_mem' := by`. Introduce and unpack `a b ⟨ha, ha'⟩ ⟨hb, hb'⟩`. Use `⟨add_mem ha hb, fun j hj => ?_⟩` and prove the remaining obligations. Take `⟨D₁, h₁⟩` from `ha' j hj`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨D₂, h₂⟩` from `hb' j hj`. Use `⟨D₁ + D₂, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Conclude with `add_mem (hpow j a D₁ h₁ _ (by omega)) (hpow j b D₂ h₂ _ (by omega))`. Use the proof step `zero_mem' := ⟨zero_mem _, fun j _ => ⟨0, by simp⟩⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `smul_mem' := by`. Introduce and unpack `c m ⟨hm, hm'⟩`. Use `⟨Submodule.smul_mem _ c hm, fun j hj => ?_⟩` and prove the remaining obligations. Take `⟨D, hD⟩` from `hm' j hj`. Use `⟨D, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← mul_smul, mul_comm, mul_smul]`. Conclude with `N.smul_mem c hD }`. Establish `hMfg : (gradedModule q d t).FG`. Use `⟨Finset.univ.image (fun l => C (t l) * X ^ d l), ?_⟩` and prove the remaining obligations. Rewrite using `[gradedModule, Finset.coe_image, Finset.coe_univ, Set.image_univ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Establish `hNoeth : IsNoetherian (MvPolynomial (Fin q) ℤ) (gradedModule q d t)` using `isNoetherian_of_fg_of_noetherian _ hMfg`. Take `⟨S, hS⟩ : Γ.FG` from `isNoetherian_submodule.mp hNoeth Γ (fun m hm => hm.1)`. Establish `hgen : ∀ g ∈ S, g ∈ Γ` using `fun g hg => by`. Rewrite using `[← hS]; exact Submodule.subset_span (by exact_mod_cast hg)`. Take `⟨Dm, hDm⟩` from `exists_common (S ×ˢ (Finset.univ : Finset (Fin q))) (fun p D => (MvPolynomial.X p.2 ^ D : MvPolynomial (Fin q) ℤ) • p.1 ∈ N) (by`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨g, j⟩ hgj`. Rewrite `hgj` using `[Finset.mem_product]`. Distinguish the cases in `hj : w j = 0`. Use `⟨1, fun D' hD' => hpow j g 1 ?_ D' hD'⟩` and prove the remaining obligations. Rewrite using `[pow_one, smul_eq w hA, act_X, hj, map_zero, zero_mul, zero_mul]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `zero_mem _`. Take `⟨D, hD⟩` from `(hgen g hgj.1).2 j hj`. Conclude with `⟨D, hpow j g D hD⟩)`. Use `⟨q * Dm + S.sup natDegree, fun m hm htors k hk => ?_⟩` and prove the remaining obligations. Establish `hmΓ : m ∈ Γ` using `⟨hm, htors⟩`.
+Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hmΓ` using `[← hS, Submodule.mem_span_finset]`. Take `⟨f, -, rfl⟩` from `hmΓ`. It suffices to establish `hT : (∑ g ∈ S, f g • g).coeff (k + 1) ∈ (gradedSpan w d t k).map (AddMonoidHom.mulLeft (w u)) by`. Take `⟨z, hz, hz'⟩` from `AddSubgroup.mem_map.mp hT`. Conclude with `⟨z, hz, hz'.symm⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsetSum_coeff]`. Use `AddSubgroup.sum_mem _ fun g hg => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.as_sum (f g), Finset.sum_smul, finsetSum_coeff]`. Use `AddSubgroup.sum_mem _ fun v _ => ?_` and prove the remaining obligations. Distinguish the cases in `hlow : ∀ j, v j < Dm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hdeg : (MvPolynomial.monomial v (MvPolynomial.coeff v (f g)) • g).natDegree < k + 1`. Rewrite using `[smul_eq w hA, act_monomial]`. Establish `h1` using `natDegree_mul_le (p := C (((MvPolynomial.coeff v (f g) : ℤ) : Ω) * ∏ j, w j ^ v j) * X ^ (∑ j, v j)) (q := g)`. Establish `h2` using `natDegree_C_mul_X_pow_le (((MvPolynomial.coeff v (f g) : ℤ) : Ω) * ∏ j, w j ^ v j) (∑ j, v j)`. Establish `h3 : ∑ j, v j ≤ q * Dm`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h4 : g.natDegree ≤ S.sup natDegree` using `Finset.le_sup (f := natDegree) hg`. Use linear arithmetic over natural numbers and integers. Rewrite using `[coeff_eq_zero_of_natDegree_lt hdeg]`. Conclude with `zero_mem _`.
-
-Simplify using `only [not_forall, not_lt] at hlow`. Take `⟨j, hj⟩` from `hlow`. Establish `hsplit : MvPolynomial.monomial v (MvPolynomial.coeff v (f g)) = MvPolynomial.monomial (v - Finsupp.single j Dm) (MvPolynomial.coeff v (f g)) * MvPolynomial.X j ^ Dm`. Rewrite using `[← MvPolynomial.monomial_add_single, tsub_add_cancel_of_le (Finsupp.single_le_iff.mpr hj)]`. Rewrite using `[hsplit, mul_smul]`.
-
-Take `⟨z, hz, hz'⟩` from `coeff_shifted w d t hA u (N.smul_mem _ (hDm (g, j) (Finset.mem_product.mpr ⟨hg, Finset.mem_univ j⟩))) k`. Rewrite using `[hz']`. Conclude with `AddSubgroup.mem_map.mpr ⟨z, hz, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsion_bound (hA : algebraMap (MvPolynomial (Fin q) ℤ) (Polynomial Ω) = act w) (u : Fin q) :
     ∃ E : ℕ, ∀ m ∈ gradedModule q d t,
@@ -327,17 +323,17 @@ theorem torsion_bound (hA : algebraMap (MvPolynomial (Fin q) ℤ) (Polynomial Ω
 end Torsion
 
 /- English proof (translation)
-Introduce `Ω _ q r w d t ⟨u, hu⟩`. Set `_ : Algebra (MvPolynomial (Fin q) ℤ) (Polynomial Ω)` to `(act w).toAlgebra`. Establish `hA : algebraMap (MvPolynomial (Fin q) ℤ) (Polynomial Ω) = act w` using `rfl`. Take `⟨E, hE⟩` from `torsion_bound w d t hA u`. Use `⟨E, fun n hn s hs => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `step : ∀ k, s * w u ^ (k + 1) ∈ gradedSpan w d t (n + k + 1) → s * w u ^ k ∈ gradedSpan w d t (n + k)`. Introduce `k hk`. Establish `hm` using `monomial_mem w d t hA hk`. Establish `htors : ∀ j, w j ≠ 0 → ∃ D : ℕ, (MvPolynomial.X j ^ D : MvPolynomial (Fin q) ℤ) • (C (s * w u ^ (k + 1)) * X ^ (n + k + 1)) ∈ shifted w d t u`. Introduce `j hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨D, hD⟩` from `hs j hj`. Use `⟨D, Submodule.mem_map.mpr ⟨C (s * w j ^ D * w u ^ k) * X ^ (n + D + k), monomial_mem w d t hA (mul_pow_mem w d t u hD k), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mulLeft_apply, smul_eq w hA, map_pow, act_X]`. Simplify using `only [C_mul, C_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨z, hz, hz'⟩` from `hE _ hm htors (n + k) (by omega)`. Rewrite `hz'` using `[coeff_C_mul_X_pow, if_pos rfl]`. Establish `hcancel : w u * (s * w u ^ k) = w u * z` using `by rw [← hz']; ring`. Rewrite using `[mul_left_cancel₀ hu hcancel]`. Conclude with `hz`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `desc : ∀ D, s * w u ^ D ∈ gradedSpan w d t (n + D) → s ∈ gradedSpan w d t n`. Introduce `D`. Proceed by induction on `D with`. Consider the case `zero => intro h`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `succ D ih => exact fun h => ih (step D h)`. Take `⟨D, hD⟩` from `hs u hu`. Conclude with `desc D hD`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem proof : SerreGraded.Statement := by
   intro Ω _ q r w d t ⟨u, hu⟩

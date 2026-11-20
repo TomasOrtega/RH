@@ -6,25 +6,25 @@ open BpJoin Formalism.FourierDecayAlt Formalism.MainNotions.S.ThB
 namespace GlobalTheory.BpStdNum
 
 /- English proof (translation)
-Establish `hk' : (1 : ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Take `⟨m, hm⟩ : ∃ m : ℝ, m = 2 * ((r : ℝ) + 1)` from `⟨_, rfl⟩`. Take `⟨n, hn⟩ : ∃ n : ℝ, n = 2 * (r : ℝ) + k + 1` from `⟨_, rfl⟩`. Establish `em : ((2 * r + 2 : ℕ) : ℝ) = m` using `by rw [hm]; push_cast; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `en : ((2 * r + k + 1 : ℕ) : ℝ) = n` using `by rw [hn]; push_cast; ring`. Establish `hm1 : 1 ≤ m` using `by linarith`. Establish `hmn : m ≤ n` using `by linarith`. Establish `hn1 : 1 ≤ n` using `by linarith`. Establish `hs1 : 1 ≤ Real.sqrt m` using `Real.one_le_sqrt.mpr hm1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e9 : m ^ ((9 : ℝ) / 2) = m ^ 4 * Real.sqrt m`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_add (by linarith)]`. Evaluate the numerical expressions. Rewrite `hh` using `[em, en, e9]`. Establish `hm2 : 1 ≤ m ^ 2` using `one_le_pow₀ hm1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hm4 : 1 ≤ m ^ 4` using `one_le_pow₀ hm1`. Establish `hn3 : 1 ≤ n ^ 3` using `one_le_pow₀ hn1`. Establish `ha : 1000 * (m ^ 4 * n ^ 3) ≤ ThreeDimData.aOf r (h / 4)`. Unfold `ThreeDimData.aOf`. Rewrite using `[← hm, le_div_iff₀ (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `: 0 ≤ m ^ 4 * Real.sqrt m * n ^ 3` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `hM : ThreeDimData.Mexp r ≤ m ^ 2` using `by unfold ThreeDimData.Mexp; rw [hm]; nlinarith`. Establish `hM0 : 0 ≤ ThreeDimData.Mexp r` using `by unfold ThreeDimData.Mexp; positivity`. Establish `hG : ThreeDimData.AG k r ≤ 4 * n ^ 2` using `by unfold ThreeDimData.AG; rw [hn]; nlinarith`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG0 : 0 ≤ ThreeDimData.AG k r` using `by unfold ThreeDimData.AG; positivity`. Establish `hd : ThreeDimData.dN k r ≤ n ^ 2` using `by unfold ThreeDimData.dN; rw [hn]; nlinarith`. Establish `hn23 : n ^ 2 ≤ n ^ 3` using `pow_le_pow_right₀ hn1 (by norm_num)`. Establish `hm24 : m ^ 2 ≤ m ^ 4` using `pow_le_pow_right₀ hm1 (by norm_num)`. Establish `hS : ThreeDimData.AS k r ≤ n ^ 3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `ThreeDimData.AS`. Establish `h1 : ((2 * r + k : ℕ) : ℝ) ≤ n` using `by rw [hn]; push_cast; linarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hX : n ^ 3 ≤ m ^ 4 * n ^ 3` using `le_mul_of_one_le_left (by positivity) hm4`. Use `⟨hk, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[en]`. Establish `: m ^ 4 * n ^ 3 ≤ m ^ 4 * Real.sqrt m * n ^ 3`. Use `mul_le_mul_of_nonneg_left hs1 (show 0 ≤ m ^ 4 * n ^ 3 by positivity)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h1 : ThreeDimData.Mexp r * (ThreeDimData.AS k r + ThreeDimData.AG k r) ≤ m ^ 4 * (5 * n ^ 3)`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[en]`. Establish `h1 : ((r : ℝ) + 1) * n ^ 2 ≤ n * n ^ 2` using `mul_le_mul_of_nonneg_right (by linarith) (by positivity)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : n * n ^ 2 = n ^ 3` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem gapOK_of (k r : ℕ) (hk : 1 ≤ k) (h : ℝ)
     (hh : 10 ^ 6 * (((2 * r + 2 : ℕ) : ℝ) ^ ((9 : ℝ) / 2) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 3) ≤ h) :
@@ -85,9 +85,7 @@ section
 variable {k r : ℕ} {lam : Fin (2 * r + k + 1) → ℝ} {u : ℕ → ℝ}
 
 /- English proof (translation)
-Distinguish the cases in `h : a.val + 1 < k`. Conclude with `(hI.1 a.val h).1`. Establish `h2` using `hI.2 (by omega)`. Establish `e : a = ⟨k - 1, by omega⟩` using `Fin.ext (by simp only; omega)`. Rewrite using `[e]`.
-
-Conclude with `h2`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lt_left (hk : 1 ≤ k)
     (hI : Formalism.MainNotions.S.InterlaceS (k := k) (by omega) (fun i => u (i.val + 1)) lam)
@@ -99,7 +97,7 @@ theorem lt_left (hk : 1 ≤ k)
     rw [e]; exact h2
 
 /- English proof (translation)
-The claim follows from `(hI.1 a.val ha).2`.
+A detailed English derivation is pending.
 -/
 theorem lt_right
     (hI : Formalism.MainNotions.S.InterlaceS (k := k) (by omega) (fun i => u (i.val + 1)) lam)
@@ -107,7 +105,7 @@ theorem lt_right
   (hI.1 a.val ha).2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨⟨a.val, by omega⟩, (hI.1 a.val ha).1⟩, ⟨⟨a.val + 1, ha⟩, (hI.1 a.val ha).2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem cloud_of
     (hI : Formalism.MainNotions.S.InterlaceS (k := k) (by omega) (fun i => u (i.val + 1)) lam)
@@ -116,17 +114,17 @@ theorem cloud_of
   ⟨⟨⟨a.val, by omega⟩, (hI.1 a.val ha).1⟩, ⟨⟨a.val + 1, ha⟩, (hI.1 a.val ha).2⟩⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨-, i, hi⟩`. Establish `hik` using `i.isLt`. Establish `key : ∀ j : ℕ, j < k → lam a < u (k - 1 - j + 1)`. Introduce `j`. Proceed by induction on `j with`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `_`. Establish `h1` using `lt_left hk hI ⟨k - 1, by omega⟩ (by simp only; omega)`. Establish `h2 : lam a ≤ lam ⟨k - 1, by omega⟩` using `hA.antitone (by`. Rewrite using `[Fin.le_def]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Use the proof step `omega)`. Simplify using `only [Nat.sub_zero] at h1 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `succ j ih`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hj`. Establish `h0` using `ih (by omega)`. Establish `h1` using `hI.1 (k - 1 - (j + 1)) (by omega)`. Simplify using `only at h1`. Establish `e : k - 1 - (j + 1) + 1 = k - 1 - j` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : u (k - 1 - (j + 1) + 1 + 1) < u (k - 1 - (j + 1) + 1)` using `lt_trans h1.2 h1.1`. Rewrite `h4`, the goal using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3` using `key (k - 1 - i.val) (by omega)`. Establish `e : k - 1 - (k - 1 - i.val) = i.val` using `by omega`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[e]`. Simplify using `only at hi`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem not_cloud_of (hk : 1 ≤ k) (hA : StrictAnti lam)
     (hI : Formalism.MainNotions.S.InterlaceS (k := k) (by omega) (fun i => u (i.val + 1)) lam)
@@ -160,7 +158,7 @@ theorem not_cloud_of (hk : 1 ≤ k) (hA : StrictAnti lam)
   linarith
 
 /- English proof (translation)
-Introduce `a i hi`. Take `⟨x, hx⟩` from `hH.2 a`. Take `⟨y, hy⟩` from `hu i hi`. Use `⟨x - y + r, ?_⟩` and prove the remaining obligations. Move the coercions through the operations in `at hx ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -175,7 +173,7 @@ theorem half_of (hH : Formalism.QuantumDeterminants.IsHCParam lam)
   linarith
 
 /- English proof (translation)
-Introduce `i hi`. Rewrite `hi` using `[Finset.mem_Icc]`. Use `hb ⟨i - 1, by omega⟩` as an intermediate fact. Simplify using `only at this`. Rewrite `this` using `[Nat.sub_add_cancel hi.1]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem bound_of {b : ℝ} (hb : ∀ i : Fin k, |u (i.val + 1)| ≤ b) : ∀ i ∈ Finset.Icc 1 k, |u i| ≤ b := by
   intro i hi
@@ -187,21 +185,19 @@ theorem bound_of {b : ℝ} (hb : ∀ i : Fin k, |u (i.val + 1)| ≤ b) : ∀ i �
 end
 
 /- English proof (translation)
-Introduce `Cq hCq`. Use `⟨10 ^ 6 + 200 * Cq, ?_⟩` and prove the remaining obligations. Introduce `Ch Cg hCg P lam T T' ka b d q0 hk hS hint hd hgd hq`. Take `⟨hH, hI, hI', -, -, -, -, -, -, -, hbl, hbu, hbu', hga, hgap, ⟨bv, hbv, hsh⟩, -⟩` from `hS`. Establish `hk1 : 1 ≤ P.k` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hCg6 : (10 : ℝ) ^ 6 ≤ Cg` using `by linarith`. Rewrite `hgap` using `[mul_assoc]`. Use `set h0 : ℝ := Cg * (((2 * P.r + 2 : ℕ) : ℝ) ^ ((9 : ℝ) / 2) * (((3 * (P.r + 1) : ℕ) : ℝ) * ((2 * P.r + P.k + 1 : ℕ) : ℝ) ^ 2 + ((2 * P.r + P.k + 1 : ℕ) : ℝ) ^ 3)) with hh0`. Use `set ga : ℝ := max (Cg * ((2 * P.r + 2 : ℕ) : ℝ) ^ 3) (200 * d) with hgadef`. Establish `hall : AllGaps lam ga` using `fun s s' hs => max_le (hga s s' hs) (hgd s s' hs)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm3 : (1 : ℝ) ≤ ((2 * P.r + 2 : ℕ) : ℝ) ^ 3` using `one_le_pow₀ (by exact_mod_cast (by omega : 1 ≤ 2 * P.r + 2))`. Establish `hq' : 100 * ((q0 : ℝ) + 1) ≤ ga`. Establish `h1 : Cg * ((2 * P.r + 2 : ℕ) : ℝ) ^ 3 ≤ ga` using `le_max_left _ _`. Establish `h2 : 200 * d ≤ ga` using `le_max_right _ _`. Establish `h3` using `mul_le_mul_of_nonneg_right hCg (le_trans zero_le_one hm3)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hgap' : Formalism.QuantumDeterminants.GapAtLeast (PI.BesselPeriodGGP.eps48 P.k P.r) lam (max h0 ga)`. Introduce `a c hac`. Conclude with `max_le (hgap a c hac) (hall a c (fun e => hac (by rw [e])))`. Establish `hok : ThreeDimData.GapOK P.k P.r (max h0 ga / 4)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `gapOK_of _ _ hk1` to reduce the goal to its premises. Use `le_trans ?_ (le_max_left _ _)` and prove the remaining obligations. Rewrite using `[hh0]`. Apply `mul_le_mul hCg6 _ (by positivity) (by linarith)` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `le_add_of_nonneg_left (by positivity)`. Establish `hcl : ∀ a c : Fin (2 * P.r + P.k + 1), a < c → c.val + 1 < P.k → ga ≤ lam a - lam c`. Introduce `a c hac _`. Use `hall a c hac.ne` as an intermediate fact. Rewrite `this` using `[abs_of_pos (sub_pos.mpr (hH.1 hac))]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbv' : 10 ^ 6 * ((2 * P.r + P.k + 1 : ℕ) : ℝ) ^ 7 ≤ bv` using `le_trans (mul_le_mul_of_nonneg_right hCg6 (by positivity)) hbv`. Establish `hs1 : ∀ a : Fin (2 * P.r + P.k + 1), a.val + 1 < P.k → 0 ≤ lam a ∧ lam a ≤ bv / 8` using `fun a ha => (hsh a).1 (cloud_of hI a ha)`. Establish `hs2 : ∀ a : Fin (2 * P.r + P.k + 1), P.k ≤ a.val + 1 → -2 * bv ≤ lam a ∧ lam a ≤ -bv` using `fun a ha => (hsh a).2 (not_cloud_of hk1 hH.1 hI a ha)`. Use `⟨bv, ga, max h0 ga, ?_, ?_, le_max_left _ _⟩` and prove the remaining obligations. Conclude with `⟨hk1, hH, half_of hH (fun i hi => (hint i hi).1), lt_left hk1 hI, lt_right hI, hs1, hs2, hbl, bound_of hbu, hcl, hgap', hok, hq', le_trans hq' (le_max_right _ _), hbv'⟩`.
-
-Conclude with `⟨hk1, hH, half_of hH (fun i hi => (hint i hi).2), lt_left hk1 hI', lt_right hI', hs1, hs2, hbl, bound_of hbu', hcl, hgap', hok, hq', le_trans hq' (le_max_right _ _), hbv'⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem num_of_stdHyp : ∀ Cq : ℝ, 0 ≤ Cq → ∃ Cg₀ : ℝ, ∀ (Ch Cg : ℝ), Cg₀ ≤ Cg → ∀ (P : M.Par) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (T T' ka b d : ℝ) (q0 : ℕ), 2 ≤ P.k → StdHyp Ch Cg P.k P.r (PI.BesselPeriodGGP.eps48 P.k P.r) lam (fun i => P.u (i.val + 1)) (fun i => P.u' (i.val + 1)) T T' ka b → (∀ i ∈ Finset.Icc 1 P.k, (∃ a : ℤ, P.u i = (a : ℝ) + ((P.k : ℝ) - 1) / 2) ∧ ∃ a : ℤ, P.u' i = (a : ℝ) + ((P.k : ℝ) - 1) / 2) → 0 ≤ d → AllGaps lam (200 * d) → (q0 : ℝ) ≤ d + Cq * ((2 * P.r + 2 : ℕ) : ℝ) ^ 3 → ∃ bv ga h : ℝ, BranchingSupport.Num P.k P.r lam P.u b bv ga h q0 ∧ BranchingSupport.Num P.k P.r lam P.u' b bv ga h q0 ∧ Cg * (((2 * P.r + 2 : ℕ) : ℝ) ^ ((9 : ℝ) / 2) * (((3 * (P.r + 1) : ℕ) : ℝ) * ((2 * P.r + P.k + 1 : ℕ) : ℝ) ^ 2 + ((2 * P.r + P.k + 1 : ℕ) : ℝ) ^ 3)) ≤ h := by
   intro Cq hCq

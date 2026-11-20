@@ -15,7 +15,7 @@ def mp {n : ℕ} (b : Pt V n d) : Pt K n d := fun i => FB.toK K (b i)
 
 omit [Algebra ℚ K] in
 /- English proof (translation)
-Introduce `i`. Use `show constantCoeff (MvPowerSeries.map (algebraMap V K) (b i)) = 0`. Rewrite using `[MvPowerSeries.constantCoeff_map, hb i, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constantCoeff_baseChange_eq_zero {n : ℕ} {b : Pt V n d} (hb : GP b) : GP (mp K b) := by
   intro i
@@ -24,7 +24,7 @@ theorem constantCoeff_baseChange_eq_zero {n : ℕ} {b : Pt V n d} (hb : GP b) : 
 
 omit [Algebra ℚ K] in
 /- English proof (translation)
-Simplify using `only [ev, FB.toK]`. Rewrite using `[MvPowerSeries.map_subst (gt_hasSubst b hb)]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toK_ev {m n : ℕ} (b : Fin m → Pt V n d) (hb : ∀ j, GP (b j)) (f : PS V m d) :
     FB.toK K (ev b f) = ev (fun j => mp K (b j)) (FB.toK K f) := by
@@ -34,7 +34,7 @@ theorem toK_ev {m n : ℕ} (b : Fin m → Pt V n d) (hb : ∀ j, GP (b j)) (f : 
 
 omit [Algebra ℚ K] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[mp, pt, FB.toK]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mp_pt {n : ℕ} (j : Fin n) : mp K (pt V d j) = pt K d j := by
   funext i
@@ -42,9 +42,9 @@ theorem mp_pt {n : ℕ} (j : Fin n) : mp K (pt V d j) = pt K d j := by
 
 omit [Algebra ℚ K] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show FB.toK K (ev ![a, b] (G.F i)) = ev ![mp K a, mp K b] (FB.toK K (G.F i))`. Rewrite using `[toK_ev K ![a, b] (pair_points_zero_constant ha hb)]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases j <;> rfl`.
+A detailed English derivation is pending.
 -/
 theorem mp_addOf {n : ℕ} (G : FGLaw V d) (a b : Pt V n d) (ha : GP a) (hb : GP b) :
     mp K (addOf G.F a b) = addOf (G.mapF (algebraMap V K)) (mp K a) (mp K b) := by
@@ -57,9 +57,9 @@ theorem mp_addOf {n : ℕ} (G : FGLaw V d) (a b : Pt V n d) (ha : GP a) (hb : GP
 
 omit [Algebra ℚ K] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show FB.toK K (ev ![a] (φ i)) = ev ![mp K a] (FB.toK K (φ i))`. Rewrite using `[toK_ev K ![a] (single_point_zero_constant ha)]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Use `fin_cases j`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem mp_comp1 {n : ℕ} (φ : Pt V 1 d) (a : Pt V n d) (ha : GP a) :
     mp K (comp1 φ a) = comp1 (mp K φ) (mp K a) := by
@@ -72,13 +72,13 @@ theorem mp_comp1 {n : ℕ} (φ : Pt V 1 d) (a : Pt V n d) (ha : GP a) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[FB.expS, PowerSeries.subst_zero_eq_C_constantCoeff, PowerSeries.constantCoeff_exp, map_one, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem expS_zero {n : ℕ} : FB.expS K (0 : PS K n d) = 1 := by
   rw [FB.expS, PowerSeries.subst_zero_eq_C_constantCoeff, PowerSeries.constantCoeff_exp, map_one, map_one]
 
 /- English proof (translation)
-Establish `ha : PowerSeries.HasSubst g` using `PowerSeries.HasSubst.of_constantCoeff_zero hg`. Establish `e : PowerSeries.exp K = 1 + (PowerSeries.exp K - 1)` using `by ring`. Establish `h1 : PowerSeries.constantCoeff (PowerSeries.exp K - 1) = 0`. Rewrite using `[map_sub, PowerSeries.constantCoeff_exp, map_one, sub_self]`. Rewrite using `[FB.expS, e, PowerSeries.subst_add ha, map_add, PowerSeries.constantCoeff_subst_eq_zero hg _ h1, add_zero, ← PowerSeries.coe_substAlgHom ha, map_one, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_expS {n : ℕ} (g : PS K n d) (hg : constantCoeff g = 0) : constantCoeff (FB.expS K g) = 1 := by
   have ha : PowerSeries.HasSubst g := PowerSeries.HasSubst.of_constantCoeff_zero hg
@@ -116,7 +116,7 @@ def intExp (hi : Function.Injective (algebraMap V K)) (n : ℕ) : AddSubgroup (P
       _ = _ := by rw [← mul_assoc, e2, one_mul]
 
 /- English proof (translation)
-Take `⟨hg0, u, hu⟩` from `hg`. Establish `hmb : ∀ j, GP (mp K (b j))` using `fun j => constantCoeff_baseChange_eq_zero K (hb j)`. Use `⟨gt_const_ev _ hmb g hg0, ev b u, ?_⟩` and prove the remaining obligations. Rewrite using `[toK_ev K b hb, hu, gt_ev_expS _ hmb g hg0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_mem (hi : Function.Injective (algebraMap V K)) {m n : ℕ} (b : Fin m → Pt V n d) (hb : ∀ j, GP (b j))
     {g : PS K m d} (hg : g ∈ intExp V d K hi m) : ev (fun j => mp K (b j)) g ∈ intExp V d K hi n := by
@@ -128,7 +128,7 @@ theorem ev_mem (hi : Function.Injective (algebraMap V K)) {m n : ℕ} (b : Fin m
 variable {O : Type} [CommRing O] [StarRing O] (B : FB V d O) {h : PS K 2 d}
 
 /- English proof (translation)
-Establish `h1` using `congrArg constantCoeff hh.ax0`. Rewrite `h1` using `[gt_const_ev_eq _ (pair_points_zero_constant gp_zero₂ (gp_pt 0)), map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cc_gauge (hh : B.IsCanonGauge K h) : constantCoeff h = 0 := by
   have h1 := congrArg constantCoeff hh.ax0
@@ -136,7 +136,7 @@ theorem cc_gauge (hh : B.IsCanonGauge K h) : constantCoeff h = 0 := by
 
 omit [Algebra ℚ K] in
 /- English proof (translation)
-Use `show constantCoeff (MvPowerSeries.map (algebraMap V K) (B.G.F i)) = 0`. Rewrite using `[MvPowerSeries.constantCoeff_map, B.G.const i, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_FK (i : Fin d) : constantCoeff (B.FK K i) = 0 := by
   show constantCoeff (MvPowerSeries.map (algebraMap V K) (B.G.F i)) = 0
@@ -147,13 +147,13 @@ def cls (hi : Function.Injective (algebraMap V K)) (h : PS K 2 d) {n : ℕ} (a b
   QuotientAddGroup.mk' (intExp V d K hi n) (ev ![mp K a, mp K b] h)
 
 /- English proof (translation)
-Establish `hc0 : constantCoeff h = 0` using `cc_gauge K B hh`. Establish `g0 : GP (pt K (n` using `3) d 0) := gp_pt 0`. Establish `g1 : GP (pt K (n` using `3) d 1) := gp_pt 1`. Establish `g2 : GP (pt K (n` using `3) d 2) := gp_pt 2`. Establish `g01 : GP (addOf (B.FK K) (pt K (n` using `3) d 0) (pt K d 1)) := gp_addOf _ (cc_FK K B) _ _ g0 g1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : (ev ![pt K d 0, pt K d 2] h + ev ![pt K d 1, pt K d 2] h - ev ![addOf (B.FK K) (pt K d 0) (pt K d 1), pt K d 2] h) ∈ intExp V d K hi 3`. Use `⟨?_, B.ph1, hh.ph1⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_add, gt_const_ev _ (pair_points_zero_constant g0 g2) h hc0, gt_const_ev _ (pair_points_zero_constant g1 g2) h hc0, gt_const_ev _ (pair_points_zero_constant g01 g2) h hc0, add_zero, sub_zero]`. Establish `hE` using `ev_mem K hi ![a, b, c] (triple_points_zero_constant ha hb hc) hm`. Establish `hW : (fun j => mp K (![a, b, c] j)) = ![mp K a, mp K b, mp K c]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> rfl`. Establish `hV` using `triple_points_zero_constant (constantCoeff_baseChange_eq_zero K ha) (constantCoeff_baseChange_eq_zero K hb) (constantCoeff_baseChange_eq_zero K hc)`. Rewrite `hE` using `[hW, gt_ev_sub _ hV, gt_ev_add _ hV, gt_ev_ev' _ _ hV (pair_points_zero_constant g0 g2), gt_ev_ev' _ _ hV (pair_points_zero_constant g1 g2), gt_ev_ev' _ _ hV (pair_points_zero_constant g01 g2), eval_pair_points, eval_pair_points, eval_pair_points, evP_addOf _ hV _ _ _ g0 g1]`. Simplify using `only [evP_pt _ hV, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons] at hE`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hE` using `[show addOf (B.FK K) (mp K a) (mp K b) = mp K (addOf B.G.F a b) from (mp_addOf K B.G a b ha hb).symm]`. Unfold `cls`. Rewrite using `[← sub_eq_zero, ← map_add, ← map_sub, QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff, ← neg_sub]`. Conclude with `neg_mem hE`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_add_left (hi : Function.Injective (algebraMap V K)) (hh : B.IsCanonGauge K h) {n : ℕ}
     (a b c : Pt V n d) (ha : GP a) (hb : GP b) (hc : GP c) :
@@ -183,13 +183,13 @@ theorem cls_add_left (hi : Function.Injective (algebraMap V K)) (hh : B.IsCanonG
   exact neg_mem hE
 
 /- English proof (translation)
-Establish `hc0 : constantCoeff h = 0` using `cc_gauge K B hh`. Establish `g0 : GP (pt K (n` using `3) d 0) := gp_pt 0`. Establish `g1 : GP (pt K (n` using `3) d 1) := gp_pt 1`. Establish `g2 : GP (pt K (n` using `3) d 2) := gp_pt 2`. Establish `g12 : GP (addOf (B.FK K) (pt K (n` using `3) d 1) (pt K d 2)) := gp_addOf _ (cc_FK K B) _ _ g1 g2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : (ev ![pt K d 0, pt K d 1] h + ev ![pt K d 0, pt K d 2] h - ev ![pt K d 0, addOf (B.FK K) (pt K d 1) (pt K d 2)] h) ∈ intExp V d K hi 3`. Use `⟨?_, B.ph2, hh.ph2⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_add, gt_const_ev _ (pair_points_zero_constant g0 g1) h hc0, gt_const_ev _ (pair_points_zero_constant g0 g2) h hc0, gt_const_ev _ (pair_points_zero_constant g0 g12) h hc0, add_zero, sub_zero]`. Establish `hE` using `ev_mem K hi ![a, b, c] (triple_points_zero_constant ha hb hc) hm`. Establish `hW : (fun j => mp K (![a, b, c] j)) = ![mp K a, mp K b, mp K c]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> rfl`. Establish `hV` using `triple_points_zero_constant (constantCoeff_baseChange_eq_zero K ha) (constantCoeff_baseChange_eq_zero K hb) (constantCoeff_baseChange_eq_zero K hc)`. Rewrite `hE` using `[hW, gt_ev_sub _ hV, gt_ev_add _ hV, gt_ev_ev' _ _ hV (pair_points_zero_constant g0 g1), gt_ev_ev' _ _ hV (pair_points_zero_constant g0 g2), gt_ev_ev' _ _ hV (pair_points_zero_constant g0 g12), eval_pair_points, eval_pair_points, eval_pair_points, evP_addOf _ hV _ _ _ g1 g2]`. Simplify using `only [evP_pt _ hV, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons] at hE`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hE` using `[show addOf (B.FK K) (mp K b) (mp K c) = mp K (addOf B.G.F b c) from (mp_addOf K B.G b c hb hc).symm]`. Unfold `cls`. Rewrite using `[← sub_eq_zero, ← map_add, ← map_sub, QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff, ← neg_sub]`. Conclude with `neg_mem hE`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_add_right (hi : Function.Injective (algebraMap V K)) (hh : B.IsCanonGauge K h) {n : ℕ}
     (a b c : Pt V n d) (ha : GP a) (hb : GP b) (hc : GP c) :
@@ -219,9 +219,9 @@ theorem cls_add_right (hi : Function.Injective (algebraMap V K)) (hh : B.IsCanon
   exact neg_mem hE
 
 /- English proof (translation)
-Establish `g0 : GP (pt V (n` using `2) d 0) := gp_pt 0`. Establish `g1 : GP (pt V (n` using `2) d 1) := gp_pt 1`. Establish `hV` using `pair_points_zero_constant ha hb`. Establish `hact : GP (B.A.act w)` using `B.A.const w`. Establish `key` using `congrArg (evP ![a, b]) (B.A.hom w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [FGLaw.add] at key`. Rewrite `key` using `[evP_comp1 _ hV _ _ (gp_addOf _ B.G.const _ _ g0 g1), evP_addOf _ hV _ _ _ g0 g1, evP_addOf _ hV _ _ _ (gp_comp1 _ _ hact g0) (gp_comp1 _ _ hact g1), evP_comp1 _ hV _ _ g0, evP_comp1 _ hV _ _ g1, evP_pt _ hV, evP_pt _ hV]`. Simplify using `using key`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem act_addOf (w : O) {n : ℕ} (a b : Pt V n d) (ha : GP a) (hb : GP b) :
     comp1 (B.A.act w) (addOf B.G.F a b) = addOf B.G.F (comp1 (B.A.act w) a) (comp1 (B.A.act w) b) := by
@@ -238,7 +238,7 @@ theorem act_addOf (w : O) {n : ℕ} (a b : Pt V n d) (ha : GP a) (hb : GP b) :
 
 omit [Algebra ℚ K] in
 /- English proof (translation)
-Establish `hA : GP (mp K a)` using `constantCoeff_baseChange_eq_zero K ha`. Establish `hK : GP (B.actK K w)` using `constantCoeff_baseChange_eq_zero K (B.A.const w)`. Establish `g0 : GP (pt K (n` using `1) d 0) := gp_pt 0`. Establish `e : mp K (comp1 (B.A.act w) a) = comp1 (B.actK K w) (mp K a)` using `mp_comp1 K (B.A.act w) a ha`. Rewrite using `[e, FB.hL, gt_ev_ev' _ _ (single_point_zero_constant hA) (pair_points_zero_constant g0 (gp_comp1 _ _ hK g0)), eval_pair_points, evP_comp1 _ (single_point_zero_constant hA) _ _ g0, evP_pt _ (single_point_zero_constant hA)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -253,17 +253,17 @@ theorem ev_hL (h : PS K 2 d) (w : O) {n : ℕ} (a : Pt V n d) (ha : GP a) :
   rfl
 
 /- English proof (translation)
-Establish `gpA : ∀ a : Pt V 3 d, GP a → GP (comp1 (B.A.act w) a)` using `fun a ha => gp_comp1 _ a (B.A.const w) ha`. Establish `gpS : ∀ a b : Pt V 3 d, GP a → GP b → GP (addOf B.G.F a b)` using `fun a b ha hb => gp_addOf _ B.G.const a b ha hb`. Establish `hLc : ∀ a : Pt V 3 d, GP a → QuotientAddGroup.mk' (intExp V d K hi 3) (ev ![mp K a] (B.hL K h w)) = cls K hi h a (comp1 (B.A.act w) a)`. Introduce `a ha`. Rewrite using `[ev_hL K B h w a ha]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `PL : ∀ a b c : Pt V 3 d, GP a → GP b → GP c → cls K hi h (addOf B.G.F a b) (comp1 (B.A.act w) c) = cls K hi h a (comp1 (B.A.act w) c) + cls K hi h b (comp1 (B.A.act w) c)` using `fun a b c ha hb hc => cls_add_left K B hi hh a b _ ha hb (gpA c hc)`. Establish `PR : ∀ a b c : Pt V 3 d, GP a → GP b → GP c → cls K hi h a (comp1 (B.A.act w) (addOf B.G.F b c)) = cls K hi h a (comp1 (B.A.act w) b) + cls K hi h a (comp1 (B.A.act w) c)`. Introduce `a b c ha hb hc`. Rewrite using `[act_addOf B w b c hb hc]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `cls_add_right K B hi hh a _ _ ha (gpA b hb) (gpA c hc)`. Establish `es : ∀ a b : Pt V 3 d, GP a → GP b → addOf (B.FK K) (mp K a) (mp K b) = mp K (addOf B.G.F a b)` using `fun a b ha hb => (mp_addOf K B.G a b ha hb).symm`. Establish `hx : GP (pt V (n` using `3) d 0) := gp_pt 0`. Establish `hy : GP (pt V (n` using `3) d 1) := gp_pt 1`. Establish `hz : GP (pt V (n` using `3) d 2) := gp_pt 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxy` using `gpS _ _ hx hy`. Establish `hxz` using `gpS _ _ hx hz`. Establish `hyz` using `gpS _ _ hy hz`. Establish `hxyz` using `gpS _ _ hxy hz`. Establish `hmem : ev ![mp K (addOf B.G.F (addOf B.G.F (pt V d 0) (pt V d 1)) (pt V d 2))] (B.hL K h w) - ev ![mp K (addOf B.G.F (pt V d 0) (pt V d 1))] (B.hL K h w) - ev ![mp K (addOf B.G.F (pt V d 0) (pt V d 2))] (B.hL K h w) - ev ![mp K (addOf B.G.F (pt V d 1) (pt V d 2))] (B.hL K h w) + …` using `3) d 2)] (B.hL K h w) ∈ intExp V d K hi 3 := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← QuotientAddGroup.eq_zero_iff, ← QuotientAddGroup.mk'_apply]`. Simplify using `only [map_add, map_sub]`. Rewrite using `[hLc _ hxyz, hLc _ hxy, hLc _ hxz, hLc _ hyz, hLc _ hx, hLc _ hy, hLc _ hz, PL _ _ _ hxy hz hxyz, PL _ _ _ hx hy hxyz, PR _ _ _ hx hxy hz, PR _ _ _ hy hxy hz, PR _ _ _ hz hxy hz, PR _ _ _ hx hx hy, PR _ _ _ hy hx hy, PR _ _ _ hz hx hy, PL _ _ _ hx hy hxy, PR _ _ _ hx hx hy, PR _ …`. Normalize the expressions using the abelian group laws. Take `⟨-, u, hu⟩` from `hmem`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨u, ?_⟩` and prove the remaining obligations. Unfold `IsTheta`. Simplify using `only`. Rewrite using `[← mp_pt (V := V) K (0 : Fin 3), ← mp_pt (V := V) K (1 : Fin 3), ← mp_pt (V := V) K (2 : Fin 3), es _ _ hx hy, es _ _ hxy hz, es _ _ hx hz, es _ _ hy hz]`. Conclude with `hu`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_theta (hi : Function.Injective (algebraMap V K)) (hh : B.IsCanonGauge K h) (w : O) :
     ∃ Θ : PS V 3 d, IsTheta B K h w Θ := by
@@ -318,7 +318,7 @@ theorem exists_theta (hi : Function.Injective (algebraMap V K)) (hh : B.IsCanonG
   exact hu
 
 /- English proof (translation)
-Use `show mp K (B.A.act (a * b)) = comp1 (mp K (B.A.act a)) (mp K (B.A.act b))`. Rewrite using `[B.A.mul_act]`. Conclude with `mp_comp1 K (B.A.act a) (B.A.act b) (B.A.const b)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem actK_mul_eq_comp1 (a b : O) : B.actK K (a * b) = comp1 (B.actK K a) (B.actK K b) := by
   show mp K (B.A.act (a * b)) = comp1 (mp K (B.A.act a)) (mp K (B.A.act b))
@@ -326,19 +326,19 @@ private theorem actK_mul_eq_comp1 (a b : O) : B.actK K (a * b) = comp1 (B.actK K
   exact mp_comp1 K (B.A.act a) (B.A.act b) (B.A.const b)
 
 /- English proof (translation)
-Establish `gpK : ∀ a : O, GP (B.actK K a)` using `fun a => constantCoeff_baseChange_eq_zero K (B.A.const a)`. Establish `g0 : GP (pt K (n` using `2) d 0) := gp_pt 0`. Establish `g1 : GP (pt K (n` using `2) d 1) := gp_pt 1`. Establish `hW1` using `pair_points_zero_constant (gp_comp1 _ _ (gpK (-1)) g0) g1`. Establish `hW2` using `pair_points_zero_constant g0 (gp_comp1 _ _ (gpK (star (-1))) g1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : ev ![comp1 (B.actK K (-1)) (pt K d 0), pt K d 1] h - ev ![pt K d 0, comp1 (B.actK K (star (-1))) (pt K d 1)] h ∈ intExp V d K hi 2`. Use `⟨?_, B.ad (-1), hh.ad (-1)⟩` and prove the remaining obligations. Rewrite using `[map_sub, gt_const_ev_eq _ hW1, gt_const_ev_eq _ hW2, sub_self]`. Establish `hb : ∀ j, GP (![(pt V d 0 : Pt V 1 d), B.A.act (w * -1)] j)` using `pair_points_zero_constant (gp_pt 0) (B.A.const _)`. Take `⟨-, u, hu⟩` from `(ev_mem K hi _ hb hD)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨u, ?_⟩` and prove the remaining obligations. Unfold `IsIota`. Rewrite using `[hu]`. Use `congr 1`. Establish `hW : (fun j => mp K (![(pt V d 0 : Pt V 1 d), B.A.act (w * -1)] j)) = ![pt K d 0, B.actK K (w * -1)]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Use `fin_cases j`. Conclude with `mp_pt K 0`. Both sides reduce to the same expression. Establish `p0 : GP (pt K (n` using `1) d 0) := gp_pt 0`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV` using `pair_points_zero_constant p0 (gpK (w * -1))`. Establish `hV1` using `single_point_zero_constant (gpK (-1))`. Establish `e1 : B.actK K (w * -1) = comp1 (B.actK K w) (B.actK K (-1))` using `actK_mul_eq_comp1 K B w (-1)`. Establish `e2 : comp1 (B.actK K (star (-1))) (B.actK K (w * -1)) = B.actK K w`. Rewrite using `[← actK_mul_eq_comp1 K B]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[star_neg, star_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hW, gt_ev_sub _ hV, gt_ev_ev' _ _ hV hW1, gt_ev_ev' _ _ hV hW2, eval_pair_points, eval_pair_points, evP_comp1 _ hV _ _ g0, evP_comp1 _ hV _ _ g1]`. Simplify using `only [evP_pt _ hV, Matrix.cons_val_zero, Matrix.cons_val_one]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2, gt_comp1_pt_right, FB.hL, gt_ev_ev' _ _ hV1 (pair_points_zero_constant p0 (gp_comp1 _ _ (gpK w) p0)), eval_pair_points, evP_comp1 _ hV1 _ _ p0]`. Simplify using `only [evP_pt _ hV1, Matrix.cons_val_zero, gt_comp1_pt_right, e1]`.
+A detailed English derivation is pending.
 -/
 theorem exists_iota (hi : Function.Injective (algebraMap V K)) (hh : B.IsCanonGauge K h) (w : O) :
     ∃ jo : PS V 1 d, IsIota B K h w jo := by
@@ -386,7 +386,7 @@ end GlobalTheory.PlaceInt.ThetaInt
 namespace GlobalTheory.PlaceInt
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ d O _ _ B K _ _ _ _ h w0 hh`. Conclude with `⟨ThetaInt.exists_theta K B (IsFractionRing.injective V K) hh w0, ThetaInt.exists_iota K B (IsFractionRing.injective V K) hh w0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_isTheta_and_isIota :
     ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] [CharZero V]

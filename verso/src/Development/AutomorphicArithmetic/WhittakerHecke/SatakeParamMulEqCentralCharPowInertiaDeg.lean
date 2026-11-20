@@ -10,16 +10,16 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.RankTwoDesce
 open scoped Classical ComplexOrder
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.scalar_commute (y : R) (fun _ => Commute.all _ _) g.val).eq`.
+A detailed English derivation is pending.
 -/
 private theorem sc_comm {R : Type} [CommRing R] (y : Rˣ) (g : GL (Fin 2) R) :
     Matrix.GeneralLinearGroup.scalar (Fin 2) y * g = g * Matrix.GeneralLinearGroup.scalar (Fin 2) y :=
   Units.ext (Matrix.scalar_commute (y : R) (fun _ => Commute.all _ _) g.val).eq
 
 /- English proof (translation)
-Establish `hf' : Ideal.absNorm w.asIdeal = Ideal.absNorm v.asIdeal ^ f` using `hf`. Establish `hy : Valued.v (y : v.adicCompletion K) ≠ 0` using `(Valuation.ne_zero_iff _).2 y.ne_zero`. Establish `hx : Valued.v (x : w.adicCompletion L) ≠ 0` using `(Valuation.ne_zero_iff _).2 x.ne_zero`. Rewrite `h` using `[FinitePlace.norm_def, FinitePlace.norm_def]`. Rewrite `h` using `[WithZeroMulInt.toNNReal_neg_apply _ hy, WithZeroMulInt.toNNReal_neg_apply _ hx, NNReal.coe_inj, hf', Nat.cast_pow, ← zpow_natCast, ← _root_.zpow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `HeightOneSpectrum.one_lt_absNorm_nnreal v`. Establish `h2` using `zpow_right_injective₀ (zero_lt_one.trans h1) h1.ne' h`. Rewrite using `[← WithZero.coe_unzero hy, ← WithZero.coe_unzero hx, ← WithZero.coe_pow]`. Use `congrArg _ (Multiplicative.toAdd.injective ?_)` and prove the remaining obligations. Rewrite using `[h2, toAdd_pow, nsmul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem val_of_norm {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L]
     (v : HeightOneSpectrum (𝓞 K)) (w : HeightOneSpectrum (𝓞 L)) (y : (v.adicCompletion K)ˣ) (x : (w.adicCompletion L)ˣ)
@@ -38,9 +38,9 @@ private theorem val_of_norm {K L : Type} [Field K] [NumberField K] [Field L] [Nu
   rw [h2, toAdd_pow, nsmul_eq_mul]
 
 /- English proof (translation)
-Establish `h` using `GroundTheory.Global.ideleNorm_finiteEmbedding (K := ℚ) w x`. Establish `hm` using `GroundTheory.Automorphic.EllipticTorus.ideleModule_ideleNorm (K := ℚ) (GroundTheory.Global.IdeleGroup.finiteEmbedding w x)`. Rewrite `hm` using `[h]`. Establish `hm'` using `congrArg Subtype.val hm`. Rewrite `hm'` using `[GroundTheory.Global.IdeleGroup.ideleModule_finiteEmbedding, GroundTheory.Global.IdeleGroup.ideleModule_finiteEmbedding]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨_, h, val_of_norm _ w _ x hm' _ hf⟩`.
+Supply the required witnesses or components.
 -/
 private theorem norm_loc {E : Type} [Field E] [NumberField E] (w : H.P E) (x : (H.Kv w)ˣ) (f : ℕ)
     (hf : normV w = normV (w.under (𝓞 ℚ)) ^ f) :
@@ -55,9 +55,9 @@ private theorem norm_loc {E : Type} [Field E] [NumberField E] (w : H.P E) (x : (
   exact ⟨_, h, val_of_norm _ w _ x hm' _ hf⟩
 
 /- English proof (translation)
-Establish `h1 : v.valuation K (((n : 𝓞 K)) : K) = 1`. Use `le_antisymm (v.valuation_le_one _) (not_lt.1 fun h => hb ?_)` and prove the remaining obligations. Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := K) v _).1 h`. Establish `h2 : Valued.v (algebraMap K (H.Kv v) (((n : 𝓞 K)) : K)) = v.valuation K (((n : 𝓞 K)) : K)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _`. Rewrite `h2` using `[h1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem val_nat {K : Type} [Field K] [NumberField K] (v : H.P K) (n : ℕ) (hb : ((n : 𝓞 K)) ∉ v.asIdeal) :
     Valued.v ((n : ℕ) : H.Kv v) = 1 := by
@@ -71,17 +71,15 @@ private theorem val_nat {K : Type} [Field K] [NumberField K] (v : H.P K) (n : �
   simp
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hL : Valued.v ((L : ℕ) : H.Kv v) = 1` using `val_nat v L hb`. Establish `hs : ∀ w : H.P ℚ, w ≠ v → (localIdele ℚ v x).val.2 w = 1` using `fun w h => Pi.mulSingle_eq_of_ne h _`. Establish `he : (localIdele ℚ v x).val.2 v = x` using `Pi.mulSingle_eq_same v _`. Establish `hU : (localIdele ℚ v x : (A ℚ)ˣ) ∈ UU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨rfl, fun w => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Conclude with `(congrArg Valued.v he).trans hx`. Conclude with `(congrArg Valued.v (hs w h)).trans (map_one _)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hD : ∀ w, Dv L w (((localIdele ℚ v x : (A ℚ)ˣ) : A ℚ) - 1)` using `fun w => by`. Unfold `Dv`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Establish `e : H.cp w (((localIdele ℚ w x : (A ℚ)ˣ) : A ℚ) - 1) = (x : H.Kv w) - 1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_one]`. Conclude with `congrArg (· - 1) he`. Rewrite using `[e, hL]`. Establish `h1` using `Valuation.map_sub (Valued.v (R := H.Kv w)) (x : H.Kv w) 1`. Establish `hx' : Valued.v (x : H.Kv w) = 1` using `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hx', map_one, max_self]`. Then use the resulting hypothesis. Establish `e : H.cp w (((localIdele ℚ v x : (A ℚ)ˣ) : A ℚ) - 1) = 0`. Rewrite using `[map_sub, map_one, sub_eq_zero]`. Conclude with `hs w h`. Rewrite using `[e, map_zero]`.
-
-Conclude with `zero_le'`. Establish `h : (ω.1 (localIdele ℚ v x))⁻¹ = 1` using `hc _ hU hD`. Conclude with `inv_eq_one.1 h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem unr_of_ok {ω : HChar ℚ} {L : ℕ} (hc : ChOk ω⁻¹ L) {v : H.P ℚ} (hb : ¬ Bad L v) : ω.UnrAt v := by
   intro x hx
@@ -114,19 +112,17 @@ private theorem unr_of_ok {ω : HChar ℚ} {L : ℕ} (hc : ChOk ω⁻¹ L) {v : 
   exact inv_eq_one.1 h
 
 /- English proof (translation)
-Introduce `E _ _ _ P ω L hC hO w α β f hb hf hS`. Establish `hU` using `unr_of_ok hO hb`. Take `⟨p, hp⟩` from `GlobalTheory.LFun.exists_isUnifV w`. Establish `hp0 : p ≠ 0` using `fun h0 => by simp [Formalism.UG.IsUnifV, h0] at hp`. Establish `hϖ : H.IsU (Units.mk0 p hp0)` using `hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `(CG.hasSat_mk P w _).1 hS`. Take `⟨x, hx⟩` from `GlobalTheory.LFun.HasSatGL.exists_vec hB`. Take `⟨g, hg⟩ : ∃ g, x.1.1 g ≠ 0` from `by by_contra! hn`. Conclude with `hx.1 (Subtype.ext (Subtype.ext (funext hn)))`. Establish `hfix : ∀ g, ∀ k ∈ GlobalTheory.LFun.KGL w 2, x.1.1 (g * finGL E 2 (locGL E 2 w k)) = x.1.1 g` using `fun g k hk => congrFun (congrArg (fun y : P.V => y.1.1) (GlobalTheory.LGrp.mem_fixed.1 hx.2.1 k hk)) g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEig : UpperTheory.V.Af.Smo.EigAt w {α, β} x.1.1` using `UpperTheory.V.Af.StrongMultiplicityOne.eigOfSat E 2 P w _ hB x.1 x.2 hfix`. Take `⟨R, -, -, hR⟩` from `H.heckeExpl E w _ hϖ`. Establish `hc` using `(hR α β _ (hEig g) 1).2`. Establish `hc' : x.1.1 (g * Matrix.GeneralLinearGroup.scalar (Fin 2) (H.idl w (Units.mk0 p hp0))) = (α : ℂ) * β * x.1.1 g`. Simplify using `only [one_mul, map_one, mul_one] at hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (H.lcLaws E w).2.2.2.2.1]`. Conclude with `hc`. Establish `h2` using `hC x.1 x.2 (H.idl w (Units.mk0 p hp0)) g`. Rewrite `h2` using `[sc_comm, hc']`. Establish `h3` using `mul_right_cancel₀ hg h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy, hv⟩` from `norm_loc w (Units.mk0 p hp0) f hf`. Establish `hu : IsUnitAt (w.under (𝓞 ℚ)) (y * (atFin (w.under (𝓞 ℚ)) (unif (w.under (𝓞 ℚ))) ^ f)⁻¹)`. Establish `hun` using `unif_spec (w.under (𝓞 ℚ))`. Establish `hp' : Valued.v ((Units.mk0 p hp0 : (H.Kv w)ˣ) : H.Kv w) = WithZero.exp (-1 : ℤ)` using `hp`. Unfold `IsUnitAt`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `IsUnifAt at hun`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val, map_mul, map_inv₀, map_pow, hv, hp', hun]`. Conclude with `mul_inv_cancel₀ (pow_ne_zero _ WithZero.exp_ne_zero)`. Establish `h4` using `hU _ hu`. Rewrite `h4` using `[map_mul, map_inv, map_pow, mul_inv_eq_one]`.
-
-Establish `h5 : ω.1 (ideleNorm ℚ E (H.idl w (Units.mk0 p hp0))) = ω.val (w.under (𝓞 ℚ)) ^ f` using `(congrArg ω.1 hy).trans h4`. Rewrite `h3` using `[h5]`. Conclude with `Units.ext (by simpa using h3)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.satake_param_mul_eq_central_char_pow_inertiaDeg :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (P : CuspSub E 2) (ω : HChar ℚ) (L : ℕ), CenN P ω → ChOk ω⁻¹ L →

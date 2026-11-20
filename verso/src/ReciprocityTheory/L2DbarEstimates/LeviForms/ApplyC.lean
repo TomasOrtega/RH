@@ -6,7 +6,7 @@ open MeasureTheory Metric Filter Topology
 open scoped ENNReal ContDiff
 
 /- English proof (translation)
-Establish `hη : 0 < η` using `by linarith`. Establish `h1 : 1 / D ≤ 1 / (2 * η)` using `one_div_le_one_div_of_le (by positivity) hD`. Establish `h2 : 4 / η ^ 2 ≤ 1 / η - 1 / (2 * η)`. Rewrite using `[show 1 / η - 1 / (2 * η) = 1 / (2 * η) by field_simp; ring]`. Rewrite using `[div_le_div_iff₀ (by positivity) (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -20,11 +20,11 @@ theorem ap_key (η D : ℝ) (h8 : 8 ≤ η) (hD : 2 * η ≤ D) : 4 / η ^ 2 ≤
   linarith
 
 /- English proof (translation)
-Establish `hη : 0 < η` using `by linarith`. Establish `hb : 0 ≤ 2 / η` using `by positivity`. Establish `ham : 2 * Real.sqrt a * (u * Real.sqrt (2 / η)) ≤ a + u ^ 2 * (2 / η)`. Use `two_mul_le_add_sq (Real.sqrt a) (u * Real.sqrt (2 / η))` as an intermediate fact. Rewrite `this` using `[mul_pow, Real.sq_sqrt ha, Real.sq_sqrt hb]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1 : (Real.sqrt a + u * Real.sqrt (2 / η)) ^ 2 ≤ 2 * a + 2 * (u ^ 2 * (2 / η))`. Establish `e : (Real.sqrt a + u * Real.sqrt (2 / η)) ^ 2 = Real.sqrt a ^ 2 + 2 * Real.sqrt a * (u * Real.sqrt (2 / η)) + u ^ 2 * Real.sqrt (2 / η) ^ 2` using `by ring`. Rewrite using `[e, Real.sq_sqrt ha, Real.sq_sqrt hb]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk` using `ap_key η D h8 hD`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem ap_pt_in (u E η D a I : ℝ) (hu : 0 ≤ u) (hE : 0 ≤ E) (h8 : 8 ≤ η) (hD : 2 * η ≤ D)
     (ha : 0 ≤ a) (hI : 2 * a * (E / η) ≤ I) :
@@ -50,7 +50,7 @@ theorem ap_pt_in (u E η D a I : ℝ) (hu : 0 ≤ u) (hE : 0 ≤ E) (h8 : 8 ≤ 
     _ = (u ^ 2 * (E / η) - u ^ 2 * (E / D)) + I := by ring
 
 /- English proof (translation)
-Establish `hD : 0 < (X + 1) ^ 2 + η` using `by positivity`. Rewrite using `[Real.sqrt_zero, zero_add, mul_pow, Real.sq_sqrt (by positivity)]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ap_pt_out (u E η X : ℝ) (hη : 0 < η) :
     (Real.sqrt 0 + u * Real.sqrt ((X + 1) ^ 2 / ((X + 1) ^ 2 + η))) ^ 2 * (E / η) =
@@ -61,11 +61,11 @@ theorem ap_pt_out (u E η X : ℝ) (hη : 0 < η) :
   ring
 
 /- English proof (translation)
-Establish `e1 : ‖((D * (1 / ε ^ 2) : ℝ) : ℂ) * G * B‖ ^ 2 = D ^ 2 * ‖G‖ ^ 2 * ‖B‖ ^ 2 / ε ^ 4`. Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs, mul_pow, mul_pow, abs_mul, mul_pow, sq_abs, abs_of_pos (by positivity : (0:ℝ) < 1 / ε ^ 2)]`. Clear the denominators using the available nonvanishing facts. Establish `hD2 : D ^ 2 ≤ 9`. Use `sq_le_sq' (abs_le.1 hD).1 (abs_le.1 hD).2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[e1]`. Establish `hε4 : 0 < ε ^ 4` using `by positivity`. Rewrite using `[div_le_iff₀ hε4]`. Establish `hG : 0 ≤ ‖G‖ ^ 2` using `by positivity`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem ap_bound (D ε η Θ : ℝ) (G B : ℂ) (hε : 0 < ε) (hD : |D| ≤ 3)
     (hB : ‖B‖ ^ 2 ≤ 4 * ε ^ 4 * η * Θ) (hη : 0 ≤ η) (hΘ : 0 ≤ Θ) :

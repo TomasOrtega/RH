@@ -3,41 +3,35 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p _ Ω _ _ hinj v hint hp R hfin hpid`. Establish `hle : ∀ x : R, v (x : Ω) ≤ 1` using `fun x => hint _ ((IsIntegral.of_finite ℤ_[p] x).map R.val)`. Choose the witnesses or unpack the hypotheses as in `⟨P, hP⟩ : ∃ P : Ideal R, ∀ x, x ∈ P ↔ v (x : Ω) < 1 := by`. Use `⟨{ carrier := {x | v (x : Ω) < 1}, add_mem' := ?_, zero_mem' := ?_, smul_mem' := ?_ }, fun x => Iff.rfl⟩` and prove the remaining obligations. Introduce `a b ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_setOf_eq, Subalgebra.coe_add] at *`. Conclude with `lt_of_le_of_lt (v.map_add _ _) (max_lt ha hb)`. Simplify using the standard rewrite rules. Introduce `c x hx`. Simplify using `only [Set.mem_setOf_eq, smul_eq_mul, Subalgebra.coe_mul, map_mul] at *`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hpR : ((p : R) : Ω) = (p : Ω)` using `by simp`. Establish `hpP : (p : R) ∈ P` using `by rw [hP, hpR]; exact hp`. Establish `hp0 : (p : Ω) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : algebraMap ℤ_[p] Ω (p : ℤ_[p]) = algebraMap ℤ_[p] Ω 0` using `by simp [h]`. Conclude with `(Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero) (hinj h1)`. Establish `hPprime : P.IsPrime`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (1 : R) ∈ P` using `h ▸ Submodule.mem_top`. Rewrite `h1` using `[hP]`. Simplify using `at h1`. Introduce `x y hxy`. Rewrite using `[hP, hP]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hxy` using `[hP]`. Simplify using `only [Subalgebra.coe_mul, map_mul] at hxy`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `hx1 : v x = 1` using `le_antisymm (hle x) hc.1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hy1 : v y = 1` using `le_antisymm (hle y) hc.2`. Rewrite `hxy` using `[hx1, hy1, one_mul]`. Conclude with `lt_irrefl _ hxy`. Establish `hPne : P ≠ ⊥`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `hpP` using `[h, Ideal.mem_bot]`. Apply `hp0` to reduce the goal to its premises. Rewrite using `[← hpR, hpP]`. Both sides reduce to the same expression. Use `haveI hPmax : P.IsMaximal := hPprime.isMaximal hPne`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `set g := Submodule.IsPrincipal.generator P with hgdef`. Establish `hgmem : g ∈ P` using `Submodule.IsPrincipal.generator_mem P`. Establish `hg0 : g ≠ 0`. Introduce `h`. Apply `hPne` to reduce the goal to its premises.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Submodule.IsPrincipal.eq_bot_iff_generator_eq_zero P).mpr h`. Establish `hdvd : ∀ x : R, x ∈ P → ∃ c : R, x = g * c` using `fun x hx => (Submodule.IsPrincipal.mem_iff_generator_dvd P).mp hx`. Use `letI : Field (R ⧸ P) := Ideal.Quotient.field P`. Establish `hpk : ((p : ℕ) : R ⧸ P) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk P), Ideal.Quotient.eq_zero_iff_mem]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hpP`. Establish `hchar : CharP (R ⧸ P) p`. Rewrite using `[← ringChar.eq_iff]`. Break down `(Nat.dvd_prime (Fact.out : p.Prime)).mp (ringChar.dvd hpk) with h | h` into its components or cases. Conclude with `absurd h CharP.ringChar_ne_one`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `hunder : P.under ℤ_[p] = IsLocalRing.maximalIdeal ℤ_[p]`. Apply `le_antisymm` to reduce the goal to its premises. Apply `IsLocalRing.le_maximalIdeal` to reduce the goal to its premises. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Apply `hPprime.ne_top` to reduce the goal to its premises. Rewrite `h`, the goal using `[Ideal.eq_top_iff_one]`. Simplify `h` using `[Ideal.mem_comap]`. Rewrite using `[PadicInt.maximalIdeal_eq_span_p, Ideal.span_le, Set.singleton_subset_iff] show (p : ℤ_[p]) ∈ P.comap (algebraMap ℤ_[p] R)`. Rewrite using `[Ideal.mem_comap, map_natCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hpP`. Use `haveI : Finite (ℤ_[p] ⧸ P.under ℤ_[p]) := by`. Rewrite using `[hunder]`. Conclude with `Finite.of_equiv (ZMod p) (PadicInt.residueField (p := p)).symm.toEquiv`. Use `haveI : Finite (R ⧸ P) := Module.finite_of_finite (ℤ_[p] ⧸ P.under ℤ_[p])`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI := Fintype.ofFinite (R ⧸ P)`. Take `⟨n, -, hcard⟩` from `FiniteField.card (R ⧸ P) p`. Use `⟨(g : Ω), g.2, ?_, ?_, ?_, (n : ℕ), n.pos, ?_⟩` and prove the remaining obligations. Conclude with `fun h => hg0 (Subtype.ext h)`. Conclude with `(hP g).mp hgmem`.
-
-Take `⟨c, hc⟩` from `hdvd _ hpP`. Establish `: (p : Ω) = (g : Ω) * (c : Ω)` using `by rw [← hpR, hc]; rfl`. Rewrite using `[this, mul_div_cancel_left₀ _ (fun h => hg0 (Subtype.ext h))]`. Conclude with `c.2`. Introduce `t ht`.
-
-Establish `hmk : Ideal.Quotient.mk P (⟨t, ht⟩ ^ p ^ (n : ℕ)) = Ideal.Quotient.mk P ⟨t, ht⟩`. Rewrite using `[map_pow, ← hcard, FiniteField.pow_card]`. Rewrite `hmk` using `[Ideal.Quotient.eq]`. Take `⟨c, hc⟩` from `hdvd _ hmk`. Establish `: t ^ p ^ (n : ℕ) - t = (g : Ω) * (c : Ω)`.
-
-Use `congrArg (fun x : R => (x : Ω)) hc` as an intermediate fact. Simplify using `using this`. Rewrite using `[this, mul_div_cancel_left₀ _ (fun h => hg0 (Subtype.ext h))]`. Conclude with `c.2`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_generator_valuation_prime_dvd_pow_sub_of_finite_padicInt :
   ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra ℤ_[p] Ω], Function.Injective (algebraMap ℤ_[p] Ω) →

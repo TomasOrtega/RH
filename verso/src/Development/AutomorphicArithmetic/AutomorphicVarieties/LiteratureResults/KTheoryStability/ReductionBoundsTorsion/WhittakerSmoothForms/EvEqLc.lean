@@ -5,7 +5,7 @@ noncomputable section
 namespace PositivityTheory.KB.WhittakerCocycle
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[Finsupp.linearCombination_apply]`. Simplify using `[smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ev_eq_lc {G : Type} [Group G] {m : ℕ} (F : (Fin (m + 1) → G) → ℝ) (z : Chn G m) :
     ev (MonoidHom.id G) F 1 z =
@@ -15,15 +15,15 @@ theorem ev_eq_lc {G : Type} [Group G] {m : ℕ} (F : (Fin (m + 1) → G) → ℝ
   simp [smul_eq_mul]
 
 /- English proof (translation)
-Proceed by induction on `l using Fin.induction with`. Consider the case `zero`. Rewrite using `[Fin.partialProd_zero, Fin.succAbove_of_castSucc_lt _ _ (by simp [Fin.lt_def])]`. Simplify using the standard rewrite rules. Consider the case `succ l ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[Fin.partialProd_succ, ih]`. Break down `lt_trichotomy (l : ℕ) j with h | h | h` into its components or cases. Establish `e1 : j.succ.succAbove l.castSucc = l.castSucc.castSucc` using `Fin.succAbove_of_castSucc_lt _ _ (by simp [Fin.lt_def]; omega)`. Establish `e2 : j.succ.succAbove l.succ = l.castSucc.succ`. Rewrite using `[Fin.succAbove_of_castSucc_lt _ _ (by simp [Fin.lt_def]; omega)]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2, Fin.partialProd_succ g l.castSucc, Fin.contractNth_apply_of_lt _ _ _ _ h]`. Establish `e1 : j.succ.succAbove l.castSucc = l.castSucc.castSucc` using `Fin.succAbove_of_castSucc_lt _ _ (by simp [Fin.lt_def]; omega)`. Establish `e2 : j.succ.succAbove l.succ = l.succ.succ` using `Fin.succAbove_of_le_castSucc _ _ (by simp [Fin.le_def]; omega)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : (l.succ.castSucc : Fin (k + 2)) = l.castSucc.succ`. Use `ext`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2, Fin.partialProd_succ g l.succ, e3, Fin.partialProd_succ g l.castSucc, Fin.contractNth_apply_of_eq _ _ _ _ h, mul_assoc]`. Establish `e1 : j.succ.succAbove l.castSucc = l.castSucc.succ` using `Fin.succAbove_of_le_castSucc _ _ (by simp [Fin.le_def]; omega)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : j.succ.succAbove l.succ = l.succ.succ` using `Fin.succAbove_of_le_castSucc _ _ (by simp [Fin.le_def]; omega)`. Establish `e3 : (l.succ.castSucc : Fin (k + 2)) = l.castSucc.succ`. Use `ext`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2, Fin.partialProd_succ g l.succ, e3, Fin.contractNth_apply_of_gt _ _ _ _ h]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem partialProd_contractNth_mul_eq_succAbove {G : Type} [Group G] {k : ℕ} (g : Fin (k + 1) → G) (j l : Fin (k + 1)) :
     Fin.partialProd (Fin.contractNth j (· * ·) g) l = Fin.partialProd g (j.succ.succAbove l) := by
@@ -60,17 +60,17 @@ private theorem partialProd_contractNth_mul_eq_succAbove {G : Type} [Group G] {k
       rw [e1, e2, Fin.partialProd_succ g l.succ, e3, Fin.contractNth_apply_of_gt _ _ _ _ h]
 
 /- English proof (translation)
-Unfold `Inv at hb`. Use `Finsupp.lhom_ext (fun g r => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply]`. Establish `hs : Finsupp.single g r = r • Finsupp.single g (1 : ℝ)`. Rewrite using `[Finsupp.smul_single, smul_eq_mul, mul_one]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, map_smul, map_smul, map_smul]`. Use `congr 1`. Rewrite using `[Finsupp.linearCombination_single, one_smul]`. Unfold `bd`. Rewrite using `[Finsupp.linearCombination_single, one_smul, map_add, map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smul, map_zsmul, Finsupp.linearCombination_single, one_smul, smul_eq_mul, zsmul_eq_mul, Int.cast_pow, Int.cast_neg, Int.cast_one]`. Unfold `dC`. Rewrite using `[Fin.sum_univ_succ]`. Use `congr 1`. Simplify using `only [Fin.val_zero, pow_zero, one_mul, Fin.succAbove_zero]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `h0` using `hb (g 0) (Fin.partialProd fun i => g i.succ)`. Simplify using `only [MonoidHom.id_apply, smul_eq_mul] at h0`. Rewrite using `[← h0]`. Use `congr 1`. Use function extensionality and compare the values at `l`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Fin.partialProd_succ' g l`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Fin.val_succ]`. Simplify using `only [one_mul]`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `l`. Conclude with `(partialProd_contractNth_mul_eq_succAbove g j l).symm`.
+A detailed English derivation is pending.
 -/
 theorem lc_dC {G : Type} [Group G] {k : ℕ} (b : (Fin (k + 1) → G) → ℝ)
     (hb : Inv (MonoidHom.id G) b) :
@@ -106,7 +106,7 @@ theorem lc_dC {G : Type} [Group G] {k : ℕ} (b : (Fin (k + 1) → G) → ℝ)
     exact (partialProd_contractNth_mul_eq_succAbove g j l).symm
 
 /- English proof (translation)
-Rewrite using `[ev_eq_lc, lc_dC b hb, LinearMap.comp_apply]`. Unfold `IsCyc at hz`. Rewrite using `[hz, map_zero]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pEv {G : Type} [Group G] {k : ℕ} (b : (Fin (k + 1) → G) → ℝ) (hb : Inv (MonoidHom.id G) b)
     (z : Chn G (k + 1)) (hz : IsCyc z) : ev (MonoidHom.id G) (dC b) 1 z = 0 := by

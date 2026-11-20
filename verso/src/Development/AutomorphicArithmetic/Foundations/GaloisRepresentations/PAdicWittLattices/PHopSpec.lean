@@ -4,9 +4,9 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
 /- English proof (translation)
-Establish `h1 : (l : Ω) ≠ 0`. Introduce `h`. Apply `hl` to reduce the goal to its premises. Apply `(algebraMap k Ω).injective` to reduce the goal to its premises. Rewrite using `[map_natCast, h, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : IsUnit (l : Ω)` using `isUnit_iff_ne_zero.mpr h1`. Establish `h3` using `h2.map (Scheme.ΓSpecIso (CommRingCat.of Ω)).commRingCatIsoToRingEquiv.symm`. Simplify using `using h3`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem l_unit (l : ℕ) {k : Type} [Field k] (hl : (l : k) ≠ 0) (Ω : Type) [Field Ω] [Algebra k Ω] :
     IsUnit (l : Γ(sp Ω, ⊤)) := by
@@ -20,17 +20,17 @@ private theorem l_unit (l : ℕ) {k : Type} [Field k] (hl : (l : k) ≠ 0) (Ω :
   simpa using h3
 
 /- English proof (translation)
-Introduce `hEt hBc hClos hEx hTr hOpEt hOpBc hSpl l _ k _ hl H Ω _ _ g d hd`. Take `⟨_, _, hcard⟩` from `hd`. Establish `gs : GalSplit (H.s g)` using `hClos (H.s g) d hcard`. Set `g₀ : sp Ω ⟶ sp k` to `Spec.map (CommRingCat.ofHom (algebraMap k Ω))`. Establish `hT : (et l (sp Ω)).Good` using `hEt l (sp Ω) (l_unit l hl Ω)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hT' : ((et l (sp Ω)).bc g₀).Good` using `hBc _ g₀ hT`. Establish `hs : H.sΩ Ω g = bcMap g₀ (H.s g) rfl` using `rfl`. Establish `ht : H.tΩ Ω g = bcMap g₀ (H.t g) (H.comm g)` using `rfl`. Establish `hfe` using `hSpl g₀ H.q (H.s g ≫ H.q) H.q (H.s g) rfl (𝟙 _) (Category.id_comp _) PEmpty (fun j => j.elim) (fun j => j.elim)`. Take `⟨_, _, -⟩` from `hfe`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hEq` using `hOpEt l (pullback.snd H.q g₀) (pullback.snd H.q g₀) (bcMap g₀ (H.s g) rfl) (bcMap g₀ (H.t g) (H.comm g)) ((bcMap_snd g₀ (H.t g) (H.comm g)).trans (bcMap_snd g₀ (H.s g) rfl).symm)`. Establish `toCorr : ∀ A, ((et l (sp Ω)).bc g₀).IsOp H.q H.q (H.s g) (H.t g) A → IsCorrOp l (H.sΩ Ω g) (H.tΩ Ω g) A`. Introduce `A hA`. Establish `h1` using `hOpBc (et l (sp Ω)) g₀ H.q (H.s g ≫ H.q) H.q (H.s g) (H.t g) rfl (H.comm g) A hA`. Conclude with `(hEq A).1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : ∃ A, IsCorrOp l (H.sΩ Ω g) (H.tΩ Ω g) A`. Take `⟨A, hA, -⟩` from `(hEx _ hT' H.q H.q (H.s g) (H.t g) (H.comm g)).1 gs`. Conclude with `⟨A, toCorr A hA⟩`. Establish `hspec : IsCorrOp l (H.sΩ Ω g) (H.tΩ Ω g) (hop l H Ω g)`. Unfold `hop`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`. Use `⟨hspec, fun tr htr => ?_⟩` and prove the remaining obligations. Establish `hA` using `((hTr _ hT' H.q (H.s g ≫ H.q) H.q (H.s g) (H.t g) rfl (H.comm g) tr htr) _).2 gs rfl`. Establish `hcorr` using `toCorr _ hA`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨tr', htr'⟩` from `hT.tr (pullback.snd H.q g₀) (pullback.snd (H.s g ≫ H.q) g₀) (bcMap g₀ (H.s g) rfl) (bcMap_snd _ _ _)`. Establish `key` using `fun A => hTr _ hT (pullback.snd H.q g₀) (pullback.snd (H.s g ≫ H.q) g₀) (pullback.snd H.q g₀) (bcMap g₀ (H.s g) rfl) (bcMap g₀ (H.t g) (H.comm g)) (bcMap_snd _ _ _) (bcMap_snd _ _ _) tr' htr' A`. Establish `e1` using `(key _).1 ((hEq _).2 hspec)`. Establish `e2` using `(key _).1 ((hEq _).2 hcorr)`. Conclude with `e1.trans e2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pHopSpec :
     EtGood → BcGood.{1} → GalClos → OpEx.{1} → OpTr.{1} → OpEt → OpBc.{1} → BcSplits → HopSpec := by

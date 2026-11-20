@@ -17,7 +17,7 @@ def toFld (K : Type) [Field K] : ((Sp K).presheaf.stalk (IsLocalRing.closedPoint
   Units.map (stalkClosedPointIso (CommRingCat.of K)).hom.hom.toMonoidHom
 
 /- English proof (translation)
-Establish `hU : ⊤ ≤ x ⁻¹ᵁ U` using `(GlobalTheory.Points.le_preimage_iff x U).2 h`. Establish `e` using `GlobalTheory.Points.germ_stalkClosedPointTo_eq_valMap x U hU`. Use `Eq.trans ?_ ((congrArg (fun φ => φ.hom a.val) e).trans (GlobalTheory.Points.valR_eq x U hU _).symm)` and prove the remaining obligations. Conclude with `congrArg (stalkClosedPointIso (CommRingCat.of K)).hom.hom ((gm_val x _ U h a).trans (Scheme.Hom.germ_stalkMap_apply x U (IsLocalRing.closedPoint K) h a.val).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem toFld_gm {K : Type} [Field K] {X : Scheme.{0}} (x : Sp K ⟶ X) (U : X.Opens)
     (h : x (IsLocalRing.closedPoint K) ∈ U) (a : Γ(X, U)ˣ) :
@@ -29,9 +29,7 @@ theorem toFld_gm {K : Type} [Field K] {X : Scheme.{0}} (x : Sp K ⟶ X) (U : X.O
     (Scheme.Hom.germ_stalkMap_apply x U (IsLocalRing.closedPoint K) h a.val).symm)
 
 /- English proof (translation)
-Establish `hU : ⊤ ≤ x ⁻¹ᵁ U` using `(GlobalTheory.Points.le_preimage_iff x U).2 h`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[toFld_gm (spMap σ ≫ x) U (hU (x := spMap σ (IsLocalRing.closedPoint K')) trivial)]`. Use `show _ = σ (toFld K (gm x _ U a)).val`. Rewrite using `[toFld_gm x U h]`.
-
-Conclude with `GlobalTheory.Points.valR_spMap_comp σ x U hU _`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toFld_gm_spMap {K K' : Type} [Field K] [Field K'] (σ : K →+* K') {X : Scheme.{0}} (x : Sp K ⟶ X)
     (U : X.Opens) (h : x (IsLocalRing.closedPoint K) ∈ U) (a : Γ(X, U)ˣ) :
@@ -46,13 +44,13 @@ theorem toFld_gm_spMap {K K' : Type} [Field K] [Field K'] (σ : K →+* K') {X :
 variable {k Ω : Type} [CommRing k] [Field Ω] [Algebra k Ω] {M : RatModel k Ω}
 
 /- English proof (translation)
-The claim follows from `M.top_le_preimage_pt hU (x := IsLocalRing.closedPoint Ω) trivial`.
+A detailed English derivation is pending.
 -/
 theorem pt_mem {U : M.Z.Opens} (hU : (U : Set M.Z).Nonempty) : M.pt (IsLocalRing.closedPoint Ω) ∈ U :=
   M.top_le_preimage_pt hU (x := IsLocalRing.closedPoint Ω) trivial
 
 /- English proof (translation)
-Distinguish the cases in `hU : (U : Set M.Z).Nonempty`. Establish `e` using `congrArg Units.val (h (pt_mem hU))`. Rewrite `e` using `[toFld_gm _ _ (pt_mem hU), toFld_gm _ _ (pt_mem hU)]`. Conclude with `Units.ext (M.valF_injective hU e)`. Conclude with `unit_ext fun x hx => absurd ⟨x, hx⟩ hU`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_ext_pt {U : M.Z.Opens} {a b : Γ(M.Z, U)ˣ}
     (h : M.pt (IsLocalRing.closedPoint Ω) ∈ U → toFld Ω (gm M.pt _ U a) = toFld Ω (gm M.pt _ U b)) : a = b := by
@@ -63,9 +61,9 @@ theorem unit_ext_pt {U : M.Z.Opens} {a b : Γ(M.Z, U)ˣ}
   · exact unit_ext fun x hx => absurd ⟨x, hx⟩ hU
 
 /- English proof (translation)
-Distinguish the cases in `hU : (U : Set M.Z).Nonempty`. Take `⟨f, hf⟩` from `(RatModel.mem_ringOn_iff_exists hU).1 (RatModel.mem_ringOn.2 fun z hz => (h z hz).1)`. Take `⟨g, hg⟩` from `(RatModel.mem_ringOn_iff_exists hU).1 (RatModel.mem_ringOn.2 fun z hz => (h z hz).2)`. Establish `e : f * g = 1` using `M.res_injective U hU (by`. Rewrite using `[map_mul, map_one, M.res_apply, M.res_apply, hf, hg, c.mul_inv])`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨f, g, e, (mul_comm _ _).trans e⟩, fun hp => Units.ext ((toFld_gm _ _ hp _).trans hf)⟩`. Conclude with `⟨1, fun hp => absurd ⟨_, hp⟩ hU⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_unit {U : M.Z.Opens} (c : Ωˣ) (h : ∀ z ∈ U, c.val ∈ M.O z ∧ (c⁻¹).val ∈ M.O z) :
     ∃ a : Γ(M.Z, U)ˣ, M.pt (IsLocalRing.closedPoint Ω) ∈ U → toFld Ω (gm M.pt _ U a) = c := by
@@ -81,17 +79,15 @@ variable {Ω' : Type} [Field Ω'] [Algebra Ω Ω'] [Algebra k Ω'] [IsScalarTowe
   {π : M'.Z ⟶ M.Z}
 
 /- English proof (translation)
-Establish `hH : M.IsHom M' (IsScalarTower.toAlgHom k Ω Ω') π` using `hπ`. Take `⟨V, hV, hzV, hle⟩` from `exists_isAffineOpen_mem_and_subset hz`. Establish `hle' : π ⁻¹ᵁ V ≤ W` using `fun y hy => hW (hle hy)`. Establish `hne : (V : Set M.Z).Nonempty` using `⟨z, hzV⟩`. Establish `hne' : ((π ⁻¹ᵁ V : M'.Z.Opens) : Set M'.Z).Nonempty`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨M'.pt (IsLocalRing.closedPoint Ω'), ?_⟩` and prove the remaining obligations. Use `show (M'.pt ≫ π) (IsLocalRing.closedPoint Ω') ∈ V`. Rewrite using `[hπ]`. Conclude with `M.top_le_preimage_pt hne (x := spMap (algebraMap Ω Ω') (IsLocalRing.closedPoint Ω')) trivial`. Establish `hfin : (π.app V).hom.Finite` using `IsFinite.finite_app π V hV`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hint` using `hfin.to_isIntegral (resG M'.Z hle' f)`. Set `ρ : Γ(M.Z, V) →+* M.O z` to `(M.res V hne).codRestrict (M.O z) fun a => by`. Rewrite using `[M.res_apply]`. Conclude with `RatModel.valF_mem_O hzV a`. Establish `hc : (algebraMap (M.O z) Ω').comp ρ = (M'.res _ hne').comp (π.app V).hom`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use extensionality with `a`. Use `show algebraMap Ω Ω' (M.res V hne a) = M'.res _ hne' (π.app V a)`. Rewrite using `[M.res_apply, M'.res_apply, hH.valF_app hne]`. Both sides reduce to the same expression. Establish `h1 : IsIntegral (M.O z) (valF M'.pt W f)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨P, hP, hP0⟩` from `hint`. Use `⟨P.map ρ, hP.map ρ, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map, hc, ← M'.valF_resG hle' hne', ← M'.res_apply _ hne', ← Polynomial.hom_eval₂, hP0, map_zero]`. Use `M.isIntegrallyClosed_O hN z` as an intermediate fact. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (Algebra.isIntegral_norm Ω h1)`.
-
-Conclude with `hy ▸ y.2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem norm_mem_O [FiniteDimensional Ω Ω'] (hN : Geo.Tor.IsNormalScheme M.Z) [IsFinite π]
     (hπ : M'.pt ≫ π = spMap (algebraMap Ω Ω') ≫ M.pt) {z : M.Z} {U : M.Z.Opens} (hz : z ∈ U) {W : M'.Z.Opens}
@@ -124,19 +120,17 @@ theorem norm_mem_O [FiniteDimensional Ω Ω'] (hN : Geo.Tor.IsNormalScheme M.Z) 
   exact hy ▸ y.2
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `H`. Use `set d := Module.finrank Ω Ω' * e with hd`. Set `N : Ω'ˣ →* Ωˣ` to `Units.map (Algebra.norm Ω)`. Establish `hNa : ∀ c : Ωˣ, N (Units.map (algebraMap Ω Ω').toMonoidHom c) = c ^ Module.finrank Ω Ω'` using `fun c => Units.ext (Algebra.norm_algebraMap c.val)`. Establish `hle : ∀ p : (PUnit → B.ι) × (PUnit → A.ι), π ⁻¹ᵁ ((LB.div (lbPow B d) (lbPow A d)).U p) ≤ (LB.div (B.pull π) (A.pull π)).U p` using `fun p y hy => ⟨mem_pull.2 (mem_powChart.1 hy.1), mem_pull.2 (mem_powChart.1 hy.2)⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : ∀ {U : M.Z.Opens}, M.pt (IsLocalRing.closedPoint Ω) ∈ U → π (M'.pt (IsLocalRing.closedPoint Ω')) ∈ U` using `fun {U} h => by show (M'.pt ≫ π) (IsLocalRing.closedPoint Ω') ∈ U`. Rewrite using `[hπ]`. Conclude with `M.top_le_preimage_pt ⟨_, h⟩ (x := spMap (algebraMap Ω Ω') (IsLocalRing.closedPoint Ω')) trivial`. Establish `hex : ∀ p : (PUnit → B.ι) × (PUnit → A.ι), ∃ a : Γ(M.Z, (LB.div (lbPow B d) (lbPow A d)).U p)ˣ, M.pt (IsLocalRing.closedPoint Ω) ∈ (LB.div (lbPow B d) (lbPow A d)).U p → toFld Ω (gm M.pt _ _ a) = N (toFld Ω' (gm M'.pt _ _ (w.s p))) ^ e` using `fun p => by`. Use `exists_unit _ fun z hz => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `hle p (hpt (pt_mem ⟨z, hz⟩))`. Establish `key : ∀ u : Γ(M'.Z, (LB.div (B.pull π) (A.pull π)).U p)ˣ, (N (toFld Ω' (gm M'.pt _ _ u)) ^ e).val ∈ M.O z` using `fun u => by`. Rewrite using `[Units.val_pow_eq_pow_val]`. Use `pow_mem ?_ e` and prove the remaining obligations. Use `show Algebra.norm Ω (toFld Ω' (gm M'.pt _ _ u)).val ∈ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[toFld_gm _ _ hp]`. Conclude with `norm_mem_O hN hπ hz (hle p) _`. Use `⟨key _, ?_⟩` and prove the remaining obligations. Rewrite using `[← inv_pow, ← map_inv, ← map_inv, ← map_inv]`. Conclude with `key _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `choose s hs using hex`. Use `⟨⟨s⟩, fun p q => unit_ext_pt fun hy => ?_⟩` and prove the remaining obligations. Establish `hy' : M'.pt (IsLocalRing.closedPoint Ω') ∈ (LB.div (B.pull π) (A.pull π)).U p ⊓ (LB.div (B.pull π) (A.pull π)).U q` using `⟨hle p (hpt hy.1), hle q (hpt hy.2)⟩`. Establish `e₁` using `congrArg (gm M'.pt (IsLocalRing.closedPoint Ω') _) (hw p q)`. Rewrite `e₁` using `[gm_res _ _ _ hy', map_mul, gm_res _ _ _ hy']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `replace e₁ := e₁.trans (congrArg (· * _) (gm_div (A.pull π) (B.pull π) _ _ p q hy'))`. Rewrite `e₁` using `[gm_pull_g B π _ _ _ _ hy'.1.1 hy'.2.1, gm_pull_g A π _ _ _ _ hy'.1.2 hy'.2.2, hπ]`. Establish `e₂` using `congrArg (fun u => N (toFld Ω' u) ^ e) e₁`. Simplify using `only [map_mul, map_inv] at e₂`. Establish `hB : M.pt (IsLocalRing.closedPoint Ω) ∈ B.U (p.1 PUnit.unit) ⊓ B.U (q.1 PUnit.unit)` using `⟨mem_powChart.1 hy.1.1, mem_powChart.1 hy.2.1⟩`.
-
-Establish `hA : M.pt (IsLocalRing.closedPoint Ω) ∈ A.U (p.2 PUnit.unit) ⊓ A.U (q.2 PUnit.unit)` using `⟨mem_powChart.1 hy.1.2, mem_powChart.1 hy.2.2⟩`. Rewrite `e₂` using `[toFld_gm_spMap (algebraMap Ω Ω') M.pt _ hB, toFld_gm_spMap (algebraMap Ω Ω') M.pt _ hA, hNa, hNa]`. Rewrite using `[gm_res _ _ _ hy, map_mul, gm_res _ _ _ hy]`. Use `Eq.trans ?_ (congrArg (fun u => toFld Ω (u * _)) (gm_div (lbPow A d) (lbPow B d) _ _ p q hy)).symm` and prove the remaining obligations. Rewrite using `[gm_lbPow_g d _ _ _ _ hy.1.1 hy.2.1, gm_lbPow_g d _ _ _ _ hy.1.2 hy.2.2, map_mul, map_mul, map_inv, map_pow, map_pow, hs p hy.1, hs q hy.2, e₂, mul_pow, mul_pow, inv_pow, ← pow_mul, ← pow_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lbIso_lbPow_finrank [FiniteDimensional Ω Ω'] (hN : Geo.Tor.IsNormalScheme M.Z) [IsFinite π]
     (hπ : M'.pt ≫ π = spMap (algebraMap Ω Ω') ≫ M.pt) (A B : LB M.Z) (e : ℕ)
@@ -191,7 +185,7 @@ theorem lbIso_lbPow_finrank [FiniteDimensional Ω Ω'] (hN : Geo.Tor.IsNormalSch
     map_pow, hs p hy.1, hs q hy.2, e₂, mul_pow, mul_pow, inv_pow, ← pow_mul, ← pow_mul]
 
 /- English proof (translation)
-Introduce `k Ω _ _ _ _ _ M Ω' _ _ _ _ _ M' π A B d hN _ hπ _ _ ⟨e, he⟩ H`. Substitute `he` using the available equality. Conclude with `lbIso_lbPow_finrank hN hπ A B e H`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem lbIso_lbPow_of_pull : ∀ (k Ω : Type) [CommRing k] [IsNoetherianRing k] [Field Ω] [CharZero Ω] [Algebra k Ω] (M : RatModel k Ω) (Ω' : Type) [Field Ω'] [Algebra Ω Ω'] [Algebra k Ω'] [IsScalarTower k Ω Ω'] [FiniteDimensional Ω Ω'] (M' : RatModel k Ω') (π : M'.Z ⟶ M.Z) (A B : LB M.Z) (d : ℕ), Geo.Tor.IsNormalScheme M.Z → IsFinite π → M'.pt ≫ π = spMap (algebraMap Ω Ω') ≫ M.pt → A.IsLB → B.IsLB → Module.finrank Ω Ω' ∣ d → LBIso (A.pull π) (B.pull π) → LBIso (lbPow A d) (lbPow B d) := by
   intro k Ω _ _ _ _ _ M Ω' _ _ _ _ _ M' π A B d hN _ hπ _ _ ⟨e, he⟩ H

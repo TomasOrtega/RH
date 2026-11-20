@@ -23,11 +23,9 @@ Both sides reduce to the same expression.
 private theorem cE_apply (c : O →+* O) (hc : ∀ x, c (c x) = x) (x : O) : cE c hc x = c x := rfl
 
 /- English proof (translation)
-Evaluate the numerical expressions using `pow := by`. Use extensionality with `x`. Rewrite using `[pow_two, AlgEquiv.mul_apply, cE_apply, cE_apply, hc, AlgEquiv.one_apply]`. Use `inj := Subtype.val_injective`. Use `fix := fun r hr => ⟨⟨r, hr⟩, rfl⟩`.
+Evaluate the numerical expressions. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `sep := by`. Use `⟨2, ![-(c ω) * u, u], ![1, ω], fun j hj => ?_⟩` and prove the remaining obligations. Use `interval_cases j`. Simplify using `only [Fin.sum_univ_two, pow_zero, AlgEquiv.one_apply, Matrix.cons_val_zero, Matrix.cons_val_one, if_true]`. Take the linear combination `hu`.
-
-Simplify using `only [Fin.sum_univ_two, pow_one, cE_apply, Matrix.cons_val_zero, Matrix.cons_val_one, map_one]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem isGal_cE (c : O →+* O) (hc : ∀ x, c (c x) = x) (ω u : O) (hu : (ω - c ω) * u = 1) :
     UpperTheory.ConvolutionTheory.D.IsGal (cE c hc) 2 where
@@ -47,9 +45,9 @@ private theorem isGal_cE (c : O →+* O) (hc : ∀ x, c (c x) = x) (ω u : O) (h
       ring
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `isUnit_iff_exists_inv.1 h`. Establish `ha : c (a : O) = a` using `a.2`. Establish `h1 : (a : O) * c b = 1`. Use `congrArg c hb` as an intermediate fact. Rewrite `this` using `[map_mul, ha, map_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hcb : c b = b`. Combine the equalities or inequalities in the displayed calculation. Conclude with `isUnit_iff_exists_inv.2 ⟨⟨b, hcb⟩, Subtype.ext hb⟩`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem isUnit_S (c : O →+* O) (a : S c) (h : IsUnit (a : O)) : IsUnit a := by
   obtain ⟨b, hb⟩ := isUnit_iff_exists_inv.1 h
@@ -64,7 +62,7 @@ private theorem isUnit_S (c : O →+* O) (a : S c) (h : IsUnit (a : O)) : IsUnit
   exact isUnit_iff_exists_inv.2 ⟨⟨b, hcb⟩, Subtype.ext hb⟩
 
 /- English proof (translation)
-Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => ?_` and prove the remaining obligations. Break down `h a with h | h` into its components or cases. Conclude with `Or.inl (isUnit_S c a h)`. Conclude with `Or.inr (isUnit_S c (1 - a) (by simpa using h))`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 private theorem isLocal_S [Nontrivial O] (c : O →+* O) (h : ∀ x : O, IsUnit x ∨ IsUnit (1 - x)) :
     IsLocalRing (S c) := by
@@ -80,16 +78,16 @@ section Val
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_inv₀, ← div_eq_mul_inv, div_le_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hb))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem le_iff_mul_inv {x b : L} (hb : b ≠ 0) :
     Valued.v (x * b⁻¹) ≤ 1 ↔ Valued.v x ≤ Valued.v b := by
   rw [map_mul, map_inv₀, ← div_eq_mul_inv, div_le_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hb))]
 
 /- English proof (translation)
-Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ n hmn ih`. Establish `e : g (n + 1) - g m = (g (n + 1) - g n) + (g n - g m)` using `by ring`. Rewrite using `[e]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Valuation.map_add _ _ _).trans (max_le ((hg n).trans (pow_le_pow_right_of_le_one' ha hmn)) ih)`.
+A detailed English derivation is pending.
 -/
 private theorem sub_le {g : ℕ → L} {a : L} (ha : Valued.v a ≤ 1)
     (hg : ∀ m, Valued.v (g (m + 1) - g m) ≤ Valued.v a ^ m) (m n : ℕ) (hmn : m ≤ n) :
@@ -102,15 +100,13 @@ private theorem sub_le {g : ℕ → L} {a : L} (ha : Valued.v a ≤ 1)
     exact (Valuation.map_add _ _ _).trans (max_le ((hg n).trans (pow_le_pow_right_of_le_one' ha hmn)) ih)
 
 /- English proof (translation)
-Establish `hc : CauchySeq g`. Rewrite using `[(Valued.hasBasis_uniformity L _).cauchySeq_iff]`. Introduce `γ _`. Establish `hne : MonoidWithZeroHom.ValueGroup₀.embedding γ.1 ≠ 0` using `by simp`. Take `⟨N, hN⟩` from `exists_pow_lt₀ ha (Units.mk0 _ hne)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ p r, N ≤ p → p ≤ r → Valued.v (g r - g p) < MonoidWithZeroHom.ValueGroup₀.embedding γ.1` using `fun p r hp hpr => lt_of_le_of_lt ((sub_le ha.le hg p r hpr).trans (pow_le_pow_right_of_le_one' ha.le hp)) hN`. Use `⟨N, fun m hm n hn => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq]`. Rewrite using `[Valuation.restrict_lt_iff_lt_embedding]`. Break down `le_total m n with h | h` into its components or cases.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `key m n hm h`. Rewrite using `[Valuation.map_sub_swap]`. Conclude with `key n m hn h`. Take `⟨l, hl⟩` from `cauchySeq_tendsto_of_complete hc`. Use `⟨l, fun m => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : a ^ m ≠ 0` using `pow_ne_zero _ ha0`. Establish `hcl : IsClosed {y : L | Valued.v ((g m - y) * (a ^ m)⁻¹) ≤ 1}` using `(Valued.isClosed_integer (R := L)).preimage (f := fun y : L => (g m - y) * (a ^ m)⁻¹) (by fun_prop)`. Establish `hmem : Valued.v ((g m - l) * (a ^ m)⁻¹) ≤ 1`. Use `hcl.mem_of_tendsto hl ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop m] with n hn`.
-
-Use `show Valued.v ((g m - g n) * (a ^ m)⁻¹) ≤ 1`. Rewrite using `[le_iff_mul_inv hb, Valuation.map_sub_swap, map_pow]`. Conclude with `sub_le ha.le hg m n hn`. Rewrite `hmem` using `[le_iff_mul_inv hb, map_pow]`. Conclude with `hmem`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_limit [CompleteSpace L] {a : L} (ha0 : a ≠ 0) (ha : Valued.v a < 1) {g : ℕ → L}
     (hg : ∀ m, Valued.v (g (m + 1) - g m) ≤ Valued.v a ^ m) :
@@ -146,13 +142,13 @@ private theorem exists_limit [CompleteSpace L] {a : L} (ha0 : a ≠ 0) (ha : Val
   exact hmem
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨b, hb⟩` from `isUnit_iff_exists_inv.1 h`. Establish `h1 : Valued.v (x : L) * Valued.v (b : L) = 1`. Rewrite using `[← map_mul, ← Subring.coe_mul, hb]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hx : Valued.v (x : L) ≤ 1` using `x.2`. Establish `hb' : Valued.v (b : L) ≤ 1` using `b.2`. Assume the negation of the conclusion as `hne`. Establish `hlt : Valued.v (x : L) < 1` using `lt_of_le_of_ne hx hne`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `absurd h1 (ne_of_lt (lt_of_le_of_lt (mul_le_of_le_one_right' hb') hlt))`. Introduce `h`. Establish `hne : (x : L) ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zero_ne_one h`. Use `isUnit_iff_exists_inv.2 ⟨⟨(x : L)⁻¹, ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show Valued.v (x : L)⁻¹ ≤ 1`. Rewrite using `[map_inv₀, h, inv_one]`. Simplify using `[hne]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isUnit_int_iff (x : intL L) : IsUnit x ↔ Valued.v (x : L) = 1 := by
   constructor
@@ -177,9 +173,9 @@ private theorem isUnit_int_iff (x : intL L) : IsUnit x ↔ Valued.v (x : L) = 1 
     · simp [hne]
 
 /- English proof (translation)
-Distinguish the cases in `h : Valued.v (x : L) = 1`. Conclude with `Or.inl ((isUnit_int_iff x).2 h)`. Establish `hlt : Valued.v (x : L) < 1` using `lt_of_le_of_ne x.2 h`. Use `Or.inr ((isUnit_int_iff _).2 ?_)` and prove the remaining obligations. Establish `: (((1 - x : intL L)) : L) = 1 - (x : L)` using `by simp`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Valuation.map_one_sub_of_lt _ hlt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isUnit_or (x : intL L) : IsUnit x ∨ IsUnit (1 - x) := by
   by_cases h : Valued.v (x : L) = 1
@@ -191,7 +187,7 @@ private theorem isUnit_or (x : intL L) : IsUnit x ∨ IsUnit (1 - x) := by
     exact Valuation.map_one_sub_of_lt _ hlt
 
 /- English proof (translation)
-Rewrite using `[← WithZero.coe_one, WithZero.coe_lt_coe, ← ofAdd_zero, Multiplicative.ofAdd_lt]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 private theorem t_lt_one :
     ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) < 1 := by
@@ -199,9 +195,9 @@ private theorem t_lt_one :
   norm_num
 
 /- English proof (translation)
-Break down `eq_or_ne a 0 with rfl | ha` into its components or cases. Conclude with `zero_le'`. Take `⟨b, rfl⟩` from `WithZero.ne_zero_iff_exists.1 ha`. Rewrite `h` using `[← WithZero.coe_one, WithZero.coe_lt_coe]`. Rewrite using `[WithZero.coe_le_coe]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h' : Multiplicative.toAdd b < 0` using `h`. Use `show Multiplicative.toAdd b ≤ -1`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem valuation_lt_one_le_uniformiser {a : WithZero (Multiplicative ℤ)} (h : a < 1) :
     a ≤ ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := by
@@ -221,15 +217,15 @@ section Main
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Establish `hp1 : Valued.v (p : L) < 1` using `by rw [hp, hv]; exact t_lt_one`. Establish `hp0 : (p : L) ≠ 0`. Introduce `h0`. Rewrite `h0` using `[hp]`. Rewrite `hv` using `[h0, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithZero.zero_ne_coe hv`. Use extensionality with `x`. Rewrite using `[Ideal.mem_span_singleton]`. Express the relevant statement in the definitionally equal form `_ ↔ x ∈ nonunits _`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨e, rfl⟩ hu`. Establish `hu' : IsUnit (p * e)` using `hu`. Use `(isUnit_int_iff _).1 (isUnit_of_mul_isUnit_left hu')` as an intermediate fact. Conclude with `absurd this (ne_of_lt hp1)`. Introduce `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : ¬ IsUnit x` using `hx`. Establish `hlt : Valued.v (x : L) < 1` using `lt_of_le_of_ne x.2 (fun h => hx' ((isUnit_int_iff x).2 h))`. Establish `hle : Valued.v (x : L) ≤ Valued.v (p : L)`. Rewrite using `[hp, hv]`. Conclude with `valuation_lt_one_le_uniformiser hlt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Use `⟨⟨(x : L) * (p : L)⁻¹, (le_iff_mul_inv hp0).2 hle⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [Subring.coe_mul]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 private theorem span_eq {ϖ : L} (hv : Valued.v ϖ =
       ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)))
@@ -262,27 +258,25 @@ private theorem span_eq {ϖ : L} (hv : Valued.v ϖ =
     field_simp
 
 /- English proof (translation)
-Take `⟨hinv, hval, hfix, hv, ⟨x0, hx0, hx1⟩, hq, hcard⟩` from `h`. Establish `hlt : Valued.v ϖ < 1` using `by rw [hv]; exact t_lt_one`. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h0`. Rewrite `hv` using `[h0, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithZero.zero_ne_coe hv`. Set `c0 : intL L →+* intL L` to `σ.restrict (intL L) (intL L) (fun x hx => by show Valued.v (σ x) ≤ 1`. Rewrite using `[hval]`. Conclude with `hx)`. Establish `hc0 : ∀ x : intL L, ((c0 x : intL L) : L) = σ x` using `fun _ => rfl`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hc : ∀ x, c0 (c0 x) = x` using `fun x => Subtype.ext (by rw [hc0, hc0, hinv])`. Set `p : intL L` to `⟨ϖ, hlt.le⟩`. Set `ω : intL L` to `⟨x0, hx0⟩`. Establish `hω : IsUnit (ω - c0 ω)`. Use `(isUnit_int_iff _).2 ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (((ω - c0 ω : intL L)) : L) = x0 - σ x0` using `rfl`. Rewrite using `[this, Valuation.map_sub_swap]`. Conclude with `hx1`. Take `⟨u, hu⟩` from `isUnit_iff_exists_inv.1 hω`. Establish `hp1 : ∀ (m : ℕ) (e : intL L), Valued.v (((p ^ m * e : intL L)) : L) ≤ Valued.v ϖ ^ m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `m e`. Establish `: (((p ^ m * e : intL L)) : L) = ϖ ^ m * (e : L)` using `rfl`. Rewrite using `[this, map_mul, map_pow]`. Conclude with `mul_le_of_le_one_right' e.2`. Use `⟨S c0, inferInstance, isLocal_S c0 isUnit_or, inferInstance, cE c0 hc, p, ω, isGal_cE c0 hc ω u hu, hc0, Subtype.ext hfix, fun h0 => hϖ0 (congrArg Subtype.val h0), ?_, ?_, ?_, hω⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `f hf`. Establish `hg : ∀ m, Valued.v ((f (m + 1) : L) - (f m : L)) ≤ Valued.v ϖ ^ m`. Introduce `m`. Take `⟨e, he⟩` from `hf m`. Use `hp1 m e` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← he]`. Then use the resulting hypothesis. Take `⟨l, hl'⟩` from `exists_limit (g := fun m => (f m : L)) hϖ0 hlt hg`. Establish `hl : ∀ m, Valued.v ((f m : L) - l) ≤ Valued.v ϖ ^ m` using `hl'`. Establish `hl1 : Valued.v l ≤ 1`. Establish `h0` using `hl 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h0` using `[pow_zero]`. Establish `e : l = (f 0 : L) - ((f 0 : L) - l)` using `by ring`. Rewrite using `[e]`. Conclude with `(Valuation.map_sub _ _ _).trans (max_le (f 0).2 h0)`. Use `⟨⟨l, hl1⟩, fun m => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hb : ϖ ^ m ≠ 0` using `pow_ne_zero _ hϖ0`. Use `⟨⟨((f m : L) - l) * (ϖ ^ m)⁻¹, (le_iff_mul_inv hb).2 (by rw [map_pow]; exact hl m)⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show (f m : L) - l = ϖ ^ m * (((f m : L) - l) * (ϖ ^ m)⁻¹)`. Clear the denominators using the available nonvanishing facts. Introduce `x hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Establish `hx0' : Valued.v (x : L) ≠ 0` using `(Valuation.ne_zero_iff _).2 (fun h0 => hne (Subtype.ext h0))`. Take `⟨N, hN⟩` from `exists_pow_lt₀ hlt (Units.mk0 _ hx0')`. Take `⟨e, he⟩` from `hx N`. Use `hp1 N e` as an intermediate fact.
-
-Rewrite `this` using `[← he]`. Conclude with `absurd (lt_of_le_of_lt this hN) (lt_irrefl _)`. Establish `hfin : Finite ((Valued.v : Valuation L (WithZero (Multiplicative ℤ))).integer ⧸ IsLocalRing.maximalIdeal (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring)` using `Nat.finite_of_card_ne_zero (by rw [hcard]; exact pow_ne_zero _ (by omega))`. Rewrite using `[span_eq hv p rfl]`. Conclude with `hfin`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_ring_data [CompleteSpace L] {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) :
     ∃ (k : Type) (_ : CommRing k) (_ : IsLocalRing k) (_ : Algebra k (intL L))
@@ -357,7 +351,7 @@ end Main
 end UpperTheory.G3.FixRing
 
 /- English proof (translation)
-Introduce `E _ _ _ hU w hw`. Take `⟨ϖ, q, hq, -⟩` from `((GlobalTheory.T.placeConjugation_properties_cmField E hU w).2.2.2.1 hw).2.1`. Conclude with `UpperTheory.G3.FixRing.fixed_ring_data hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_local_quadratic_galois_data_at_nonsplit_place :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ w : Pl E, ¬ IsSplitAt w →

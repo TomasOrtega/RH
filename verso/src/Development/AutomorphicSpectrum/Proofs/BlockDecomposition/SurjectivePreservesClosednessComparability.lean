@@ -5,9 +5,9 @@ open CategoryTheory AlgebraicGeometry CrystallineSemistableComparison Crystallin
 namespace GlobalTheory.CompanionTheory.SurjPass
 
 /- English proof (translation)
-Introduce `P hP hdeg`. Break down `subsingleton_or_nontrivial T with hT | hT` into its components or cases. Conclude with `⟨0, Subsingleton.elim _ _⟩`. Take `⟨Q, hQ, hQdeg, hQm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic ((Polynomial.lifts_iff_coeff_lifts P).mpr fun n => hφ (P.coeff n)) hP`. Take `⟨x, hx⟩` from `h Q hQm (hQdeg ▸ hdeg)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨φ x, ?_⟩` and prove the remaining obligations. Rewrite using `[← hQ, Polynomial.IsRoot, Polynomial.eval_map, Polynomial.eval₂_hom, hx.eq_zero, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem aic_of_surjective {S : Type} [CommRing S] {T : Type} [CommRing T] (φ : S →+* T)
     (hφ : Function.Surjective φ) (h : Aic S) : Aic T := by
@@ -21,11 +21,11 @@ theorem aic_of_surjective {S : Type} [CommRing S] {T : Type} [CommRing T] (φ : 
   rw [← hQ, Polynomial.IsRoot, Polynomial.eval_map, Polynomial.eval₂_hom, hx.eq_zero, map_zero]
 
 /- English proof (translation)
-Introduce `f g`. Take `⟨f', rfl⟩` from `hφ f`. Take `⟨g', rfl⟩` from `hφ g`. Take `⟨e, he, h1, h2⟩` from `h f' g'`. Use `⟨φ e, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `IsIdempotentElem`. Rewrite using `[← map_mul, he.eq]`. Rewrite `h1`, the goal using `[Ideal.mem_span_singleton]`. Rewrite using `[← map_mul]`. Conclude with `map_dvd φ h1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h2`, the goal using `[Ideal.mem_span_singleton]`. Rewrite using `[← map_one φ, ← map_sub, ← map_mul]`. Conclude with `map_dvd φ h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comparable_of_surjective {S : Type} [CommRing S] {T : Type} [CommRing T] (φ : S →+* T)
     (hφ : Function.Surjective φ) (h : Val0 S) : Val0 T := by
@@ -44,7 +44,7 @@ theorem comparable_of_surjective {S : Type} [CommRing S] {T : Type} [CommRing T]
     exact map_dvd φ h2
 
 /- English proof (translation)
-Introduce `S _ T _ φ hφ`. Conclude with `⟨aic_of_surjective φ hφ, comparable_of_surjective φ hφ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem absolutely_closed_comparable_surjective : ∀ {S : Type} [CommRing S] {T : Type} [CommRing T] (φ : S →+* T),
     Function.Surjective φ → (Aic S → Aic T) ∧ (Val0 S → Val0 T) := by

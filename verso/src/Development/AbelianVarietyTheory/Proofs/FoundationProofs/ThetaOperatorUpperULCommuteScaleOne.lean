@@ -18,7 +18,7 @@ open scoped MatrixGroups
 namespace GlobalTheory.ThHeckeU
 
 /- English proof (translation)
-Rewrite using `[AdicCompletion.eval_apply]`. Express the relevant statement in the definitionally equal form `(AdicCompletion.map _ _ x).val n = _`. Rewrite using `[AdicCompletion.map_val_apply, ← AdicCompletion.eval_apply, h]`. Rewrite using `[Tower.cls, Tower.cls, LinearMap.reduceModIdeal_apply, LinearMap.baseChange_tmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eval_kmap {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ)
     (σ : X.K ≃+* X.K) (x : X.Khat l) (f : X.Kˣ)
@@ -31,7 +31,7 @@ theorem eval_kmap {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X
   rfl
 
 /- English proof (translation)
-Simplify using `only [Tower.cls, ← Submodule.Quotient.mk_add, ← TensorProduct.tmul_add]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem cls_mul {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ)
     (f g : X.Kˣ) : X.cls l n (f * g) = X.cls l n f + X.cls l n g := by
@@ -39,9 +39,9 @@ theorem cls_mul {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty, map_zero, Finset.prod_empty]`. Simplify using `[Tower.cls]`. Consider the case `insert j s hj ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert hj, Finset.prod_insert hj, map_add, ih, cls_mul, eval_kmap X l n _ x f h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_sum_kmap {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ)
     (s : Finset ℕ) (σ : ℕ → (X.K ≃+* X.K)) (x : X.Khat l) (f : X.Kˣ)
@@ -57,11 +57,11 @@ theorem eval_sum_kmap {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ
     rw [Finset.sum_insert hj, Finset.prod_insert hj, map_add, ih, cls_mul, eval_kmap X l n _ x f h]
 
 /- English proof (translation)
-Establish `hprim : Prim A (X.exp 1)`. Rewrite using `[map_one]`. Use `⟨fun r => ?_, 0, by simp, by simp⟩` and prove the remaining obligations. Distinguish the cases in `h : r = 0`. Substitute `h` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[HahnSeries.coeff_one, h]`. Use `⟨1, fun γ _ => by simp, ?_, fun δ _ _ => ⟨1, fun γ _ => by simp, by simp⟩, hψ, 1, 1, 1, one_ne_zero, by simp, hprim, hprim, fun r => ⟨(ψ * X.exp 1 * X.exp 1).coeff r - (theta 1 (X.exp 1) * X.exp 1 - X.exp 1 * theta 1 (X.exp 1)).coeff r, ?_, by simp⟩⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (AdicCompletion.eval (idl l) (X.Kl l) 0 (b ![1, 0]))`. Rewrite using `[← hy, Tower.cls, Submodule.Quotient.eq]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `only [map_one, mul_one, one_mul, sub_self, HahnSeries.coeff_zero, sub_zero]`. Conclude with `hψ r`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isThB_zero {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (A : ValuationSubring Ω)
     (N l : ℕ) [Fact l.Prime] (b : X.Fn l) (ψ : HahnSeries ℚ Ω) (hψ : ∀ r, ψ.coeff r ∈ A) : IsThB X A N l 0 b ψ := by
@@ -81,19 +81,17 @@ theorem isThB_zero {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (
     exact hψ r
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X A N l _ n w d hd hl b hb φ hφ h`. Rewrite using `[GlobalTheory.T.diamond_commutes_hecke_U Ω ε X N l w d hd hl b hb]`. Take `⟨f, hinv, hcls, hδ, hdl⟩` from `h`. Establish `hint : ∀ r, (hq ε l φ).coeff r ∈ A`. Introduce `r`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[GlobalTheory.T.heckeSumAtCuspHahn_coeff_of_integral_exponents Ω ε l (Nat.Prime.pos Fact.out) φ hφ r]`. Use `split_ifs`. Conclude with `hdl.1 _`. Conclude with `A.zero_mem`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Substitute `hn` using the available equality. Conclude with `isThB_zero X A N l _ _ hint`. Use `set b' := X.act l (sgD N l d : Matrix (Fin 2) (Fin 2) ℤ) b`. Establish `hT : X.sl (ofSL ModularGroup.T) (f : X.K) = f` using `hinv _ (by`. Rewrite using `[CongruenceSubgroup.Gamma1_mem]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[ModularGroup.T])`. Establish `hcoe : ((∏ j ∈ Finset.range l, Units.map (X.sl (toGQ !![1, (j : ℤ); 0, (l : ℤ)])).toRingEquiv.toMonoidHom f : X.Kˣ) : X.K) = ∏ j ∈ Finset.range l, X.sl (toGQ !![1, (j : ℤ); 0, (l : ℤ)]) (f : X.K)`. Rewrite using `[Units.coe_prod]`. Both sides reduce to the same expression. Use `⟨∏ j ∈ Finset.range l, Units.map (X.sl (toGQ !![1, (j : ℤ); 0, (l : ℤ)])).toRingEquiv.toMonoidHom f, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hcoe]`. Conclude with `GlobalTheory.T.heckeNorm_gamma1PrimePow_invariant Ω ε X N l n hn _ hinv`. Establish `hv : X.heckeU l b' ![1, 0] = ∑ j ∈ Finset.range l, X.kmap l (X.sl (toGQ !![1, (j : ℤ); 0, (l : ℤ)])).toRingEquiv (b' ![1, 0])`. Simplify using `only [Tower.heckeU]`. Rewrite using `[LinearMap.sum_apply, Finset.sum_apply]`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show X.kmap l _ (b' _) = _`. Use `congr 2`. Apply the tactic sequence `ext i; fin_cases i <;> simp [mZl]`. Rewrite using `[hv]`.
-
-Conclude with `eval_sum_kmap X l n (Finset.range l) (fun j => (X.sl (toGQ !![1, (j : ℤ); 0, (l : ℤ)])).toRingEquiv) _ f hcls`. Rewrite using `[hcoe]`. Conclude with `GlobalTheory.T.heckeNorm_preserves_delta_powerCondition Ω ε X N l n hn hl _ hinv hδ`. Rewrite using `[hcoe]`. Conclude with `GlobalTheory.T.isLogDerivQExpansionModPrimePow_heckeNorm Ω ε X A l n _ φ hT hφ hdl`.
+A detailed English derivation is pending.
 -/
 theorem isThB_act_heckeU_same : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε)
     (A : ValuationSubring Ω) (N l : ℕ) [Fact l.Prime] (n w d : ℕ), d.Coprime N → ¬ l ∣ N → ∀ b : X.Fn l,
@@ -137,7 +135,7 @@ theorem isThB_act_heckeU_same : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsA
   · rw [hcoe]; exact GlobalTheory.T.isLogDerivQExpansionModPrimePow_heckeNorm Ω ε X A l n _ φ hT hφ hdl
 
 /- English proof (translation)
-Take `⟨f, h1, h2, h3, h4⟩` from `h`. Take `⟨φ₀, han, hdiff⟩` from `hj`. Conclude with `⟨f, h1, h2, h3, (GlobalTheory.T.isLogDerivQExpansionModPrimePow_calculus ε X ⟨φ₀, hdiff, han⟩ l A hlA n 1 (f : X.K) (f : X.K) ψ ψ₂).2.2.1 h4 hint hc⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isThB_congr {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε)
     (A : ValuationSubring Ω) (N l : ℕ) [Fact l.Prime] (n : ℕ)
@@ -149,15 +147,13 @@ theorem isThB_congr {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω
   exact ⟨f, h1, h2, h3, (GlobalTheory.T.isLogDerivQExpansionModPrimePow_calculus ε X ⟨φ₀, hdiff, han⟩ l A hlA n 1 (f : X.K) (f : X.K) ψ ψ₂).2.2.1 h4 hint hc⟩
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X A N l _ n w d hAlg hj hl2 hN1 hw hlA hd hl b hb φ _ h`. Use `haveI : IsAlgClosure ℚ Ω := ⟨inferInstance, hAlg⟩`. Establish `hl0 : 0 < l` using `Nat.Prime.pos Fact.out`. Establish `hNl : Nat.Coprime N l` using `((Nat.Prime.coprime_iff_not_dvd Fact.out).mpr hl).symm`. Take `⟨φ', h', hlat'⟩` from `GlobalTheory.ThEx.of_lift GlobalTheory.ThLift.exists_invariant_lift Ω ε X A N l hAlg hj hl2 hl hN1 hlA n w hw _ (GlobalTheory.CyclotomicQExpansion.ThnEx.diam_B X N l w d hN1 hNl hd b hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hU` using `isThB_act_heckeU_same Ω ε X A N l n w d hd hl b hb _ (fun r hr => by simpa using hlat' r hr) h'`. Rewrite `hU` using `[Api.hq_eq_uq_of_isAlgClosed hl0 hlat']`. Establish `hc` using `GlobalTheory.ThBCompat.isThB_succ_coeff_cong Ω ε X A N l hl2 hl hN1 hlA n _ φ _ h h'`. Establish `hφA : ∀ r, φ.coeff r ∈ A`. Take `⟨f, -, -, -, hdl⟩` from `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hdl.1`. Use `isThB_congr X A N l n hj hlA _ _ _ hU ?_ ?_` and prove the remaining obligations. Introduce `r`. Rewrite using `[Api.coeff_uq hl0]`. Use `split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hφA _`. Conclude with `A.zero_mem`. Introduce `r`. Rewrite using `[Api.coeff_uq hl0, Api.coeff_uq hl0]`. Use `split_ifs`.
-
-Take `⟨z, hz, e⟩` from `hc ((l : ℚ) * r)`. Conclude with `⟨-z, A.neg_mem _ hz, by linear_combination -e⟩`. Conclude with `⟨0, A.zero_mem, by simp⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isThB_act_heckeU : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε)
     (A : ValuationSubring Ω) (N l : ℕ) [Fact l.Prime] (n w d : ℕ), Algebra.IsAlgebraic ℚ Ω →

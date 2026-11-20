@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.CohomologicalPurity
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_mul_span', Set.mul_singleton, ← Set.range_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem span_range_mul_span_singleton {A : Type} [CommRing A] {r : ℕ} (x : Fin r → A) (f : A) :
     Ideal.span (Set.range x) * Ideal.span {f} = Ideal.span (Set.range (fun k => x k * f)) := by
@@ -14,7 +14,7 @@ theorem span_range_mul_span_singleton {A : Type} [CommRing A] {r : ℕ} (x : Fin
   rfl
 
 /- English proof (translation)
-Introduce `_ r hN q A B _ _ φ x f hq J _ _ D s t hc he n i`. Rewrite using `[span_range_mul_span_singleton]`. Conclude with `hN q φ (fun k => x k * f) hq J D s t hc he n i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem OffContLoc_of : OffContLoc := by
   intro _ r hN q A B _ _ φ x f hq J _ _ D s t hc he n i

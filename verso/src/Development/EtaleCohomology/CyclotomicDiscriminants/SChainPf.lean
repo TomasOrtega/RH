@@ -8,7 +8,7 @@ namespace LateralTheory.Q.SChainPf
 variable {A : Type} [CommRing A]
 
 /- English proof (translation)
-Simplify using `only [bd, Finsupp.linearCombination_single, smul_add, Finset.smul_sum, Finsupp.smul_single, smul_eq_mul, mul_one]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma bd_single {G : Type} [Group G] (m : ℕ) (g : Fin (m + 1) → G) (a : A) :
     bd A G m (Finsupp.single g a) = Finsupp.single (fun i => g i.succ) a +
@@ -20,7 +20,7 @@ lemma bd_single {G : Type} [Group G] (m : ℕ) (g : Fin (m + 1) → G) (a : A) :
   rw [mul_comm]
 
 /- English proof (translation)
-Use `Finsupp.lhom_ext fun g a => ?_` and prove the remaining obligations. Rewrite using `[bd_single, groupHomology.inhomogeneousChains.d_single]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma bd_eq {G : Type} [Group G] (m : ℕ) :
     bd A G m = (groupHomology.inhomogeneousChains.d (Rep.trivial A G A) m).hom := by
@@ -29,7 +29,7 @@ lemma bd_eq {G : Type} [Group G] (m : ℕ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[bd_eq, bd_eq]`. Establish `h` using `groupHomology.inhomogeneousChains.d_comp_d (Rep.trivial A G A) m`. Use `congrArg (fun φ => φ.hom z) h` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma bd_bd {G : Type} [Group G] (m : ℕ) (z : Ch A G (m + 2)) : bd A G m (bd A G (m + 1) z) = 0 := by
   rw [bd_eq, bd_eq]
@@ -38,14 +38,14 @@ lemma bd_bd {G : Type} [Group G] (m : ℕ) (z : Ch A G (m + 2)) : bd A G m (bd A
   simpa using this
 
 /- English proof (translation)
-Simplify using `[cm, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]`.
+Simplify using the standard rewrite rules.
 -/
 lemma cm_single {G H : Type} [Group G] [Group H] (f : G →* H) (m : ℕ) (g : Fin m → G) (a : A) :
     cm A f m (Finsupp.single g a) = Finsupp.single (fun i => f (g i)) a := by
   simp [cm, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Fin.contractNth]`. Apply the tactic sequence `split_ifs <;> simp [map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma contract_map {G H : Type} [Group G] [Group H] (f : G →* H) (m : ℕ) (j : Fin (m + 1))
     (g : Fin (m + 1) → G) :
@@ -55,7 +55,7 @@ lemma contract_map {G H : Type} [Group G] [Group H] (f : G →* H) (m : ℕ) (j 
   split_ifs <;> simp [map_mul]
 
 /- English proof (translation)
-Establish `: (bd A H m).comp (cm A f (m + 1)) = (cm A f m).comp (bd A G m)`. Use `Finsupp.lhom_ext fun g a => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, cm_single, bd_single, map_add, map_sum, map_smul]`. Simplify using `only [contract_map]`. Conclude with `LinearMap.congr_fun this z`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma bd_cm {G H : Type} [Group G] [Group H] (f : G →* H) (m : ℕ) (z : Ch A G (m + 1)) :
     bd A H m (cm A f (m + 1) z) = cm A f m (bd A G m z) := by
@@ -66,7 +66,7 @@ lemma bd_cm {G H : Type} [Group G] [Group H] (f : G →* H) (m : ℕ) (z : Ch A 
   exact LinearMap.congr_fun this z
 
 /- English proof (translation)
-Establish `: cm A (g.comp f) m = (cm A g m).comp (cm A f m)`. Use `Finsupp.lhom_ext fun x a => ?_` and prove the remaining obligations. Simplify using `[cm_single]`. Conclude with `LinearMap.congr_fun this z`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma cm_comp {G H K : Type} [Group G] [Group H] [Group K] (f : G →* H) (g : H →* K) (m : ℕ)
     (z : Ch A G m) : cm A (g.comp f) m z = cm A g m (cm A f m z) := by
@@ -76,7 +76,7 @@ lemma cm_comp {G H K : Type} [Group G] [Group H] [Group K] (f : G →* H) (g : H
   exact LinearMap.congr_fun this z
 
 /- English proof (translation)
-Simplify using `only [prism, Finsupp.linearCombination_single, Finset.smul_sum, Finsupp.smul_single, smul_eq_mul, mul_one]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma prism_single {G : Type} [Group G] (k : G) (m : ℕ) (g : Fin m → G) (a : A) :
     prism A k m (Finsupp.single g a) = ∑ i : Fin (m + 1), ((-1 : A) ^ (i : ℕ)) •
@@ -88,7 +88,7 @@ lemma prism_single {G : Type} [Group G] (k : G) (m : ℕ) (g : Fin m → G) (a :
   rw [mul_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `refine Fin.succAboveCases i ?_ (fun j => ?_) j <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma insert_map {G H : Type} [Group G] [Group H] (f : G →* H) (m : ℕ) (i : Fin (m + 1)) (k : G)
     (h : Fin m → G) :
@@ -98,7 +98,7 @@ lemma insert_map {G H : Type} [Group G] [Group H] (f : G →* H) (m : ℕ) (i : 
   refine Fin.succAboveCases i ?_ (fun j => ?_) j <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `split_ifs <;> simp [map_mul, map_inv]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma conj_map {G H : Type} [Group G] [Group H] (f : G →* H) (m : ℕ) (i : Fin (m + 1)) (k : G)
     (g : Fin m → G) :
@@ -108,7 +108,7 @@ lemma conj_map {G H : Type} [Group G] [Group H] (f : G →* H) (m : ℕ) (i : Fi
   split_ifs <;> simp [map_mul, map_inv]
 
 /- English proof (translation)
-Establish `: (cm A f (m + 1)).comp (prism A k m) = (prism A (f k) m).comp (cm A f m)`. Use `Finsupp.lhom_ext fun g a => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, cm_single, prism_single, map_sum, map_smul]`. Simplify using `only [insert_map, conj_map]`. Conclude with `LinearMap.congr_fun this z`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma cm_prism {G H : Type} [Group G] [Group H] (f : G →* H) (k : G) (m : ℕ) (z : Ch A G m) :
     cm A f (m + 1) (prism A k m z) = prism A (f k) m (cm A f m z) := by
@@ -121,9 +121,9 @@ lemma cm_prism {G H : Type} [Group G] [Group H] (f : G →* H) (k : G) (m : ℕ)
 def S (n : ℕ) : A := ∑ j : Fin n, (-1 : A) ^ ((j : ℕ) + 1)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [S]`. Consider the case `succ n ih`. Establish `h2 : (S (n + 2) : A) = S n`. Simplify using `only [S, Fin.sum_univ_castSucc, Fin.val_castSucc, Fin.val_last]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, add_comm]`. Conclude with `ih`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma S_pair (n : ℕ) : (S n : A) + S (n + 1) = -1 := by
   induction n with
@@ -135,7 +135,7 @@ lemma S_pair (n : ℕ) : (S n : A) + S (n + 1) = -1 := by
     rw [h2, add_comm]; exact ih
 
 /- English proof (translation)
-Rewrite using `[bd_single]`. Establish `e1 : (fun i => g i.succ) = h` using `Subsingleton.elim _ _`. Establish `e2 : ∀ j : Fin (m + 1), Fin.contractNth j (· * ·) g = h` using `fun _ => Subsingleton.elim _ _`. Simplify using `only [e1, e2, Finsupp.smul_single, smul_eq_mul, ← Finsupp.single_finsetSum, ← Finsupp.single_add, S, add_mul, Finset.sum_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 lemma bd_single_triv {G : Type} [Group G] [Subsingleton G] (m : ℕ) (g : Fin (m + 1) → G)
     (h : Fin m → G) (a : A) : bd A G m (Finsupp.single g a) = Finsupp.single h ((1 + S (m + 1)) * a) := by
@@ -146,13 +146,13 @@ lemma bd_single_triv {G : Type} [Group G] [Subsingleton G] (m : ℕ) (g : Fin (m
     S, add_mul, Finset.sum_mul, one_mul]
 
 /- English proof (translation)
-Set `g1 : Fin (m + 1) → G` to `fun _ => 1`. Set `g0 : Fin m → G` to `fun _ => 1`. Set `g2 : Fin (m + 2) → G` to `fun _ => 1`. Establish `hz1 : z = Finsupp.single g1 (z g1)`. Use extensionality with `x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Subsingleton.elim x g1]`. Simplify using the standard rewrite rules. Generalize the expression as in `z g1 = c at hz1`. Substitute `hz1` using the available equality. Establish `hc : (1 + S (m + 1)) * c = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Establish an intermediate fact.
 
-Use `hz` as an intermediate fact. Unfold `Cyc at this`. Rewrite `this` using `[bd_single_triv m g1 g0]`. Simplify using `using congrArg (fun w => w g0) this`. Use `⟨Finsupp.single g2 (c), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[bd_single_triv (m + 1) g2 g1]`. Use `congr 1`. Use `S_pair (A := A) (m + 1)` as an intermediate fact. Take the linear combination `(-1 : A) * hc + (c) * this`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma triv_bd {G : Type} [Group G] [Subsingleton G] (m : ℕ) (z : Ch A G (m + 1)) (hz : Cyc z) : Bd z := by
   let g1 : Fin (m + 1) → G := fun _ => 1
@@ -174,7 +174,7 @@ lemma triv_bd {G : Type} [Group G] [Subsingleton G] (m : ℕ) (z : Ch A G (m + 1
   linear_combination (-1 : A) * hc + (c) * this
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨fun _ _ m z => bd_bd m z, fun _ _ _ _ f m z => bd_cm f m z, fun _ _ _ _ _ _ f g m z => cm_comp f g m z, fun _ _ _ _ f k m z => cm_prism f k m z, fun _ _ _ m z hz => triv_bd m z hz⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem SChain_of : UpperTheory.V.ZK.SChain :=
   fun _ _ => ⟨fun _ _ m z => bd_bd m z, fun _ _ _ _ f m z => bd_cm f m z,

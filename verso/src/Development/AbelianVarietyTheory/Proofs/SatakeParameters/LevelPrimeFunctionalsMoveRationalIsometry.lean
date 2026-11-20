@@ -6,9 +6,9 @@ open NumberField IsDedekindDomain Matrix Formalism.BasicNotions Formalism.UG For
 namespace GlobalTheory.TwV
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPins hTie i hi β x x₁ γ hγ hx g hg p hp P v h hv`. Establish `H` using `funMoved_ratA_act t.seam _ P v h _ _ _ g.1 1 (hp.fnl P v h hv)`. Establish `e : ratA D.host.F (A.crd i hi) * x₁.1 = ratA D.host.F (seamGL t.seam g.1) * (ratA D.host.F (A.crd i hi) * x.1)`. Rewrite using `[hx, hg, map_mul, map_mul, map_inv]`. Use `group`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `H`.
+A detailed English derivation is pending.
 -/
 theorem funMoved_ptAd_rat : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =>
     ∀ i (hi : i ≤ D.R.m) (β : (St i hi).Ch) (x x₁ : UA D i hi) (γ : GL (Fin (D.R.N i)) D.host.E),

@@ -24,9 +24,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `(h.lev.Pg PP).1 hP`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `h1` using `R.C.P.pb_over k`. Rewrite `h1` using `[← hk]`. Establish `h2 : algebraMap (𝓞 D.host.K) (𝓞 D.host.E) (D.host.g k : ℕ) ∈ PP.asIdeal` using `h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem g_mem_six {F : Face D A} (h : GlobalTheory.Hk3.Core R F) {PP : Pl D.host.E} (hP : PP ∈ R.Pg) : ∃ k, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal := by
   obtain ⟨k, hk⟩ := (h.lev.Pg PP).1 hP
@@ -39,19 +39,17 @@ theorem g_mem_six {F : Face D A} (h : GlobalTheory.Hk3.Core R F) {PP : Pl D.host
 open Classical in
 
 /- English proof (translation)
-Use `⟨_, _, isGalConj_refl _ _, isGalConj_refl _ _, ⟨(h.thP.ωP i t).hecS, ?_⟩, h.lev.eta, ?_⟩` and prove the remaining obligations. Introduce `P e he k x hx`. Establish `a` using `(h.lev.mu0 i).2 P e he k x hx`. Establish `b` using `(h.lev.xi t).2 P e he k x hx`. Use `show (((R.mu0 ((i : ℕ) + 1) x * R.xi t x : Circle)) : ℂ) = (((R.C.mu0 i).locK P k * (R.xiH t).locK P k : ℂˣ) : ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Circle.coe_mul, a, b, Units.val_mul]`. Introduce `PP hPP a k u hk hu`. Establish `ha : a ∉ PP.asIdeal` using `fun ha => u.ne_zero (hu.trans (Ideal.Quotient.eq_zero_iff_mem.2 ha))`. Use `show _ = (R.C.mu0 i).locK PP k * (R.xiH t).locK PP k`. Distinguish the cases in `hg : PP ∈ R.Pg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨l, hl⟩` from `g_mem_six R h hg`. Establish `hun : (R.xiH t).UnrAt PP`. Assume the negation of the conclusion as `hn`. Break down `(h.lev.Q_ram t PP).1 hn with hq | ⟨PP', hq, hc⟩` into its components or cases. Take `⟨⟨q, hq1, hq2, -, hq4⟩, -⟩` from `h.lev.Q_pl t PP hq`.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `not_both (D.host.g_prime l) hq1 (hq4 l) hl (q_mem hq2)`. Take `⟨⟨q, hq1, hq2, -, hq4⟩, -⟩` from `h.lev.Q_pl t PP' hq`. Take `⟨c', hc1, hc2⟩` from `hc _ (q_mem hq2)`. Establish `: c' = (q : 𝓞 D.host.E)`. Apply `NumberField.RingOfIntegers.coe_injective` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_natCast]`. Establish `h3 : (c' : D.host.E) = (q : D.host.E)` using `by simpa using hc2`. Conclude with `h3`. Conclude with `not_both (D.host.g_prime l) hq1 (hq4 l) hl (this ▸ hc1)`. Simplify using `only [if_pos hg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[locK_eq_one hun a k hk ha, mul_one]`. Conclude with `h.lev.chi i PP hg a k u hk hu`. Establish `hq : PP ∈ R.Q t` using `hPP.resolve_left hg`. Take `⟨⟨q, hq1, hq2, -, hq4⟩, -⟩` from `h.lev.Q_pl t PP hq`. Establish `hun : (R.C.mu0 i).UnrAt PP` using `(R.C.isMu0 i).unr PP fun l hl => not_both (D.host.g_prime l) hq1 (hq4 l) hl (q_mem hq2)`.
-
-Simplify using `only [if_neg hg]`. Rewrite using `[locK_eq_one hun a k hk ha, one_mul]`. Conclude with `h.lev.xiR t PP hq a k u hk hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isConjChars_base_six {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (t : T) :
     IsConjChars R i t (RingEquiv.refl ℂ) (R.toLevCh.mu t ((i : ℕ) + 1)) R.eta
@@ -94,9 +92,9 @@ theorem isConjChars_base_six {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (i :
 open Classical in
 
 /- English proof (translation)
-Use `ext1 x`. Use `levFn_congr (R.βV i) D.R.r (r_le_V i) D.R.t 1 R.Pg (R.Q t) R.triv (fun _ PP => if PP ∈ R.Pg then (R.chi ((i : ℕ) + 1) PP)⁻¹ else R.xiR t PP) (fun _ PP => (R.chi ((i : ℕ) + 1) PP)⁻¹) (fun PP => if PP ∈ R.Pg then (R.chi ((i : ℕ) + 1) PP)⁻¹ else R.xiR t PP) (R.xiR t) ?_ ?_ _` and prove the remaining obligations. Introduce `c PP hP`. Simplify using `only [if_pos hP]`. Introduce `PP hP`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hn : PP ∉ R.Pg` using `fun hg => by`. Take `⟨l, hl⟩` from `g_mem_six R h hg`. Take `⟨⟨q, hq1, hq2, -, hq4⟩, -⟩` from `h.lev.Q_pl t PP hP`. Conclude with `not_both (D.host.g_prime l) hq1 (hq4 l) hl (q_mem hq2)`. Simplify using `only [if_neg hn]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chr_base_six {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (t : T) :
     chrOf (Vc D i) (R.βV i) (datV i R.Pg (R.Q t) R.triv
@@ -120,13 +118,13 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A}
 
 /- English proof (translation)
-The claim follows from `op_idem (R.gW i σ) (eC_idem_at h.grp.record σ) x`.
+A detailed English derivation is pending.
 -/
 theorem projH_idem_six (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (x : (R.HW i σ).H) :
     projH R i σ (projH R i σ x) = projH R i σ x := op_idem (R.gW i σ) (eC_idem_at h.grp.record σ) x
 
 /- English proof (translation)
-The claim follows from `adjoint_eq_self _ (projH_idem_six h i σ) fun _ hx y => GlobalTheory.LiftScalarCompare.adjoint_idem (R.gW i σ) (GlobalTheory.gW_norm_eq R h.models.HW h.models.gW h.models.νW i σ) (eC_idem_at h.grp.record σ) hx y`.
+A detailed English derivation is pending.
 -/
 theorem projH_adjoint_six (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) :
     LinearMap.adjoint (projH R i σ) = projH R i σ :=
@@ -134,9 +132,9 @@ theorem projH_adjoint_six (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (σ : 
     (GlobalTheory.gW_norm_eq R h.models.HW h.models.gW h.models.νW i σ) (eC_idem_at h.grp.record σ) hx y
 
 /- English proof (translation)
-Take `⟨μH, a1, a2⟩` from `GlobalTheory.T.principalLevel_eigenparts_and_conjugate_characters.2.2.1 R F (GlobalTheory.Core5.of_core h) i σ s hσ μ' hμ`. Take `⟨ηH, b1, b2⟩` from `GlobalTheory.T.principalLevel_eigenparts_and_conjugate_characters.2.2.2 R F (GlobalTheory.Core5.of_core h) σ s hσ η' hη`. Take `⟨μB, -, c1, -, -, -, c2⟩` from `isConjChars_base_six R h i A.μ0`. Use `⟨μH, ηH, a1, b1, a2, b2, fun PP hP a k u hk hu => Units.ext ?_⟩` and prove the remaining obligations. Establish `e1` using `a1 PP k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2` using `c1 PP k`. Rewrite `e1`, `e2` using `[twVal_zero, twVal_zero]`. Establish `e3` using `c2 PP hP a k u hk hu`. Rewrite using `[e1]`. Conclude with `congrArg s ((congrArg Units.val e3).trans e2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isConjChars_at_six (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) {σ : D.what₂.LL →+* ℂ} {s : ℂ ≃+* ℂ} (hσ : IsEmbOverK D σ s)
     {μ' η' : (AE D)ˣ →* Circle} (hμ : ChiAt R i σ μ') (hη : GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.IsEtaConj σ R.eta η') :
@@ -153,9 +151,9 @@ theorem isConjChars_at_six (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) {σ :
   exact congrArg s ((congrArg Units.val e3).trans e2)
 
 /- English proof (translation)
-Use `MonoidHom.ext fun k : levJ R i A.μ0 => Units.ext ?_` and prove the remaining obligations. Use `(hχ k).elim fun y hy => ?_` and prove the remaining obligations. Establish `h1` using `hy.1`. Establish `h2` using `hy.2`. Establish `e1` using `congrArg Units.val (DFunLike.congr_fun (chr_base_six R h i A.μ0) k)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `chrOf_conj (R := R) i s (blkChar R i) k`. Establish `e3 : ((χ' k : ℂˣ) : ℂ) = s (((levEnv (Vc D i) (R.βV i) (R.datVt i A.μ0)).χ k : ℂˣ) : ℂ)` using `h2.symm.trans ((hσ.1 y).trans (congrArg s h1))`. Conclude with `e2.trans ((congrArg s e1).trans e3.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chr_at_six (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) {σ : D.what₂.LL →+* ℂ} {s : ℂ ≃+* ℂ} (hσ : IsEmbOverK D σ s)
     (χ' : levJ R i A.μ0 →* ℂˣ)
@@ -172,9 +170,9 @@ theorem chr_at_six (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) {σ : D.what�
   exact e2.trans ((congrArg s e1).trans e3.symm)
 
 /- English proof (translation)
-Rewrite using `[Q_base h.lev]`. Unfold `Datum.IsThPVecOf at hf`. Unfold `IsLevelVec`. Establish `hQ : ∀ y : ∀ PP : Pl D.host.E, Matrix (Fin (Vc D i).rank) (Fin (Wc D i).rank) (kP PP), Datum.omegaQ ∅ (Wc D i).rank m (-1) y = Datum.omegaQ ∅ (Wc D i).rank (fun _ => 1) (-1) y`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `Datum.omegaQ`. Simplify using the standard rewrite rules. Simplify using `only [omegaG_triv, hQ]`. Conclude with `hf`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isLevelVec_at_six (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (m : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
     {f₀ f : Datum.WO (Vc D i) (Wc D i) → ℂ}
@@ -196,11 +194,11 @@ theorem isLevelVec_at_six (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (σ : 
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature in
 
 /- English proof (translation)
-Establish `hμ` using `hd.1`. Establish `hη` using `hd.2.1`. Establish `hF` using `hd.2.2.1`. Use `hd.2.2.2.elim fun ω a => a.elim fun f₀ a => a.elim fun f a => a.elim fun B a => a.elim fun io a => a.elim fun thP a => ?_` and prove the remaining obligations. Use `hF.model.elim fun χ' hχ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hH` using `hχ.2`. Rewrite `hH` using `[← chr_at_six h i hσ χ' hχ.1]`. Establish `key` using `hA h i b hb A.μ0 ht σ s hσ R.triv (isLocal_triv R) _ _ _ (isConjChars_at_six h i hσ hμ hη) ω a.1 B a.2.2.1 f₀ f (isLevelVec_at_six h i σ _ a.2.1) a.2.2.2.1 c hF.coef io a.2.2.2.2.1 (R.νV i A.μ0) (R.fdV i A.μ0) (h.models.νV i A.μ0) _ (R.B.L i A.μ0).pres.y (R.B.L i A.μ0).pres.reps …`. Use `key.1.elim fun T hT => ⟨T, fun x => eq_of_low_at h.models.HW hv fun w => ?_, key.2 T hT⟩` and prove the remaining obligations. Establish `e1 : (R.HW i σ).e (T x) (fun ρ => w ρ) = thP ((c.ext ∘ₗ H.e).rangeRestrict x) (PiTensorProduct.tprod ℂ w)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun g => (hT x w g).2.trans (GlobalTheory.BaseScalar.integrableOn_of_isThetaLift a.2.2.2.2.2.1 x (PiTensorProduct.tprod ℂ w) g).2.symm`. Establish `e2 : (R.HW i σ).e (projH R i σ (T x)) (fun ρ => w ρ) = R.eWf i σ ((R.HW i σ).e (T x) fun ρ => w ρ)` using `congrArg (fun U : MMap (R.MW i σ) => U fun ρ => w ρ) (e_projH h.models.gW i σ (T x))`. Conclude with `(a.2.2.2.2.2.2 x w).trans (e2.trans (congrArg (R.eWf i σ) e1)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_full_lift_six (hA : GlobalTheory.LowRow.AdelC R F) (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) {b : ℝ} (hb : Sizes D i b)
     (ht : PrimeToHost R A.μ0) {σ : D.what₂.LL →+* ℂ} {s : ℂ ≃+* ℂ} (hσ : IsEmbOverK D σ s) {v : (R.MW i σ).Vec}
@@ -229,9 +227,9 @@ theorem exists_full_lift_six (hA : GlobalTheory.LowRow.AdelC R F) (h : GlobalThe
   exact (a.2.2.2.2.2.2 x w).trans (e2.trans (congrArg (R.eWf i σ) e1)).symm
 
 /- English proof (translation)
-Introduce `ev hev`. Establish `e` using `LiftLower.typePart_base h.lev i σ ev`. Use `(hT ev (fun h0 => hev (e.symm.trans h0))).elim fun l a => ?_` and prove the remaining obligations. Use `⟨l, a.1, fun y hy => ?_, le_trans (sub_le_sub_right (hookPlus_le i σ hlog) _) a.2.2⟩` and prove the remaining obligations. Establish `e1` using `LinearMap.congr_fun (GlobalTheory.BaseScalar.adjLev_triv R T) y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2` using `a.2.1 y (e.ge hy)`. Conclude with `(congrArg T e1).symm.trans e2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem parts_scalar_six (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) {b : ℝ}
     (hlog : GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.logHookSum i (lab σ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.logHookSum i id)
@@ -252,9 +250,9 @@ theorem parts_scalar_six (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (σ : D
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature in
 
 /- English proof (translation)
-Use `(exists_full_lift_six hA h i hb ht hσ hv hd).elim fun T hT => ?_` and prove the remaining obligations. Establish `p1` using `projH_adjoint_six h i σ`. Establish `p2` using `projH_idem_six h i σ`. Establish `p3` using `GlobalTheory.T.principalLevel_eigenparts_and_conjugate_characters.1 R F (GlobalTheory.Core5.of_core h) i σ (schurMult_of_models R h.models.HW i σ)`. Establish `p4` using `parts_scalar_six h i σ (b := b) hlog T hT.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `lower_of_parts T th (projH R i σ) (partH R i σ) (IsNormSys R i) _ p1 p2 p3 p4 hT.1`.
+A detailed English derivation is pending.
 -/
 theorem conjLift_lower_six (hA : GlobalTheory.LowRow.AdelC R F) (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) {b : ℝ} (hb : Sizes D i b)
     (ht : PrimeToHost R A.μ0) {σ : D.what₂.LL →+* ℂ} {s : ℂ ≃+* ℂ} (hσ : IsEmbOverK D σ s) {v : (R.MW i σ).Vec}
@@ -269,13 +267,13 @@ theorem conjLift_lower_six (hA : GlobalTheory.LowRow.AdelC R F) (h : GlobalTheor
   exact lower_of_parts T th (projH R i σ) (partH R i σ) (IsNormSys R i) _ p1 p2 p3 p4 hT.1
 
 /- English proof (translation)
-Establish `: Countable D.what₂.LL` using `Countable.of_equiv _ (Module.finBasis ℚ D.what₂.LL).equivFun.toEquiv.symm`. Establish `: FiniteDimensional D.what₂.LL (A.fam.amb.FL i A.μ0)` using `Module.Finite.of_basis (A.MtCSD i A.μ0).basis`. Use `(GlobalTheory.GaloisDescent.exists_complex_ringEquiv_comp_eq D.what₂.embLL σ).elim fun s hs => ?_` and prove the remaining obligations. Establish `hs' : GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.IsEmbOverK D σ s` using `⟨fun a => (hs a).symm, hσ⟩`. Use `hC.2.1.elim fun μ' a => a.elim fun η' a => a.elim fun c a => a.elim fun c₁ a => a.elim fun H a => a.elim fun j a => a.elim fun th hd => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hC.2.2.elim fun u a => a.elim fun U a => a.elim fun z a => a.elim fun ζ a => ?_` and prove the remaining obligations. Use `(a.2.2.2 μ' η' c c₁ H j th hd).2.elim fun κ hκ => ?_` and prove the remaining obligations. Use `(exists_descent (sgAt_mk _ R.hv0) ((R.FW i).j (sg0 D A)) (R.jV i A.μ0) (R.thG i A.μ0) 1 hu).elim fun θ hθ => ?_` and prove the remaining obligations. Establish `m1` using `inner_conjForms_eq_csumAt R h.models.jV gramR c0R c0L hT i σ c c₁ H j hd.2.2.1`. Establish `m2` using `GlobalTheory.ConjSpan.span_conjForms R h.models.jV gramR c0R c0L hT i σ c c₁ H j hd.2.2.1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m3 : ∀ u, θ u = 0 → ⟪j x, j u⟫_ℂ = 0` using `fun u h0 => (m1 x u).trans (hx u ((one_smul ℂ _).symm.trans ((hθ u).symm.trans ((congrArg ((R.FW i).j (sg0 D A)) h0).trans (LinearMap.map_zero _)))))`. Establish `m4` using `mem_orth_ker θ j ((R.FW i).j σ) th U (R.gW i σ z) κ m2 (hU i σ).1 (fun x => hκ.2 x _ (hθ x)) m3`. Establish `m5` using `conjLift_lower_six hA h i hb ht hs' hv hC.1 hd _ m4`. Establish `m6` using `congrArg Complex.re (GlobalTheory.ConjLiftCounterexample.gram_of_conjAt hC hd hy hy)`. Establish `m7` using `(re_inner_self _).symm.trans (m6.trans (re_inner_self _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m8` using `(re_inner_self _).symm.trans (congrArg Complex.re (m1 x x))`. Conclude with `(congrArg (Real.exp (lowB D i b) * ·) m8).ge.trans (m5.trans m7.ge)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lower_overK_six (hA : GlobalTheory.LowRow.AdelC R F) (h : GlobalTheory.Hk3.Core R F) (hU : R.LUnif) (i : Fin D.R.m) {b : ℝ}
     (hb : GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.Sizes D i b) (ht : GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.PrimeToHost R A.μ0) {σ : D.what₂.LL →+* ℂ} (hσ : OverK σ)
@@ -308,11 +306,11 @@ theorem lower_overK_six (hA : GlobalTheory.LowRow.AdelC R F) (h : GlobalTheory.H
   exact (congrArg (Real.exp (lowB D i b) * ·) m8).ge.trans (m5.trans m7.ge)
 
 /- English proof (translation)
-Introduce `i v hv x`. Establish `hR : IsRatHerm (cmMax D.what₂.LL) ((A.fam.L i A.μ0).HZ (liftLvl F) (liftSub R F i A.μ0)) ((A.fam.L i A.μ0).XQ (liftLvl F) (liftSub R F i A.μ0))` using `hB.2.2 i`. Establish `hf` using `GlobalTheory.QuotRational.fE_mem_cmMax _ _ _ _ _ (blockHyp (F := F) hOk i A.μ0) hR`. Establish `hm` using `GlobalTheory.Proof.ConjugateTransposeMajorant.majAt_eq_csumAt _ _ _ hR hf`. Establish `h1` using `(GlobalTheory.BigOnBase.j_thetaMat_base hB i A.μ0 x).trans (one_smul ℂ _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hE i (sgAt D.what₂.embLL v) _ _ h1 fun σ' u hu => hm.2 u (fun x' => csum_eq_zero h.models.HV h.models.jV i A.μ0 (toF_mem i A.μ0 x') hu) σ' x`. Establish `e : sgAt D.what₂.embLL v = v.embedding` using `if_neg fun h0 => hv (h0.trans R.hv0.symm)`. Establish `h3` using `congrArg (fun σ => csumAt (A.MtCSD i A.μ0) σ ((A.fam.L i A.μ0).toF (liftLvl F) (liftSub R F i A.μ0) x) ((A.fam.L i A.μ0).toF (liftLvl F) (liftSub R F i A.μ0) x)) e`. Establish `h4` using `norm_wC (R := R) (F := F) i v ((thetaMat R F i A.μ0).mulVec x)`. Establish `h5` using `hm.1 v x x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (E n a : ℝ) (N : ℕ) (p q r : ℂ), 0 < n → n = N → E * p.re ≤ a → p = q → r = ((N : ℕ) : ℂ)⁻¹ * q → E * r.re ≤ n⁻¹ * a`. Introduce `E n a N p q r k0 k1 k2 k3 k4`. Rewrite using `[k4, ← k3, ← Complex.ofReal_natCast, ← k1, ← Complex.ofReal_inv, Complex.re_ofReal_mul, mul_left_comm]`. Conclude with `mul_le_mul_of_nonneg_left k2 (inv_pos.2 k0).le`. Conclude with `(key _ _ _ _ _ _ _ (RealDat.nP_pos (F := F) false) rfl h2 h3 h5).trans h4.ge`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowForm_of_emb_six {s : ℕ} (hOk : A.fam.Ok s) (h : GlobalTheory.Hk3.Core R F) (hB : BaseLinks R F) {b : ℝ}
     (hE : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (x : A.fam.amb.FL i A.μ0) (y : Fin (R.nW i) → D.what₂.LL),
@@ -341,11 +339,11 @@ theorem lowForm_of_emb_six {s : ℕ} (hOk : A.fam.Ok s) (h : GlobalTheory.Hk3.Co
 open Formalism.MainNotions.S Formalism.IndefR.Datum GlobalTheory.AdelicScalar GlobalTheory.LiftRows GlobalTheory.LowRow in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F s b hA hG h hOk hv hU hB ht hb`. Use `h.fam.tie.elim fun gramR a => a.elim fun c0R a => a.elim fun c0L hT => ?_` and prove the remaining obligations. Use `lowForm_of_emb_six hOk h hB fun i σ x y hy hx => ?_` and prove the remaining obligations. Establish `g` using `hG i`. Distinguish the cases in `hσ : OverK σ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Take `⟨v, hv1⟩` from `hv i σ`. Conclude with `lower_overK_six hA h hU i (hb i) ht hσ hv1 hT g.1 (g.2.1 gramR c0R c0L hT σ hσ) hy (hx σ)`. Establish `g2` using `g.2.2 σ hσ`. Take `⟨v, hv1⟩` from `hv i ((starRingEnd ℂ).comp σ)`. Establish `k1` using `lower_overK_six hA h hU i (hb i) ht g2.1 hv1 hT g.1 (g.2.1 gramR c0R c0L hT _ g2.1) hy (hx _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k2` using `congrArg Complex.re (g2.2 y y)`. Establish `k3` using `(re_inner_self _).symm.trans ((k2.trans (Complex.conj_re _)).trans (re_inner_self _))`. Establish `k4` using `(congrArg Complex.re (csumAt_conj (A.MtCSD i A.μ0) σ x x)).trans (Complex.conj_re _)`. Conclude with `(congrArg (Real.exp (lowB D i b) * ·) k4).ge.trans (k1.trans k3.ge)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lowForm_six : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), ∀ (s : ℕ) (b : ℝ), AdelC R F → (∀ i, GalOut R i 1) → GlobalTheory.Hk3.Core R F → A.fam.Ok s → (∀ i σ, ∃ v : (R.MW i σ).Vec, IsExtVec (R.MW i σ) v) → R.LUnif → GlobalTheory.BigOn.BaseLinks R F → PrimeToHost R A.μ0 → (∀ i, Sizes D i b) → GlobalTheory.BigOn.LowForm R F b := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F s b hA hG h hOk hv hU hB ht hb

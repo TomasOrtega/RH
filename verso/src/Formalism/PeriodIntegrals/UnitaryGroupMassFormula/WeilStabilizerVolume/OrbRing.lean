@@ -13,7 +13,7 @@ def r1 (c : S) (u v : Fin n → S) : Matrix (Fin n) (Fin n) S :=
   1 - c • vecMulVec v (vecMul (fun i => s (u i)) J)
 
 /- English proof (translation)
-Rewrite using `[r1, sub_mulVec, one_mulVec, smul_mulVec, vecMulVec_mulVec, ← dotProduct_mulVec, ← hform_eq_dot, op_smul_eq_smul, smul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem reflection_mulVec (c : S) (u v z : Fin n → S) :
     r1 s J c u v *ᵥ z = z - (c * hform s J u z) • v := by
@@ -21,9 +21,9 @@ theorem reflection_mulVec (c : S) (u v z : Fin n → S) :
     ← hform_eq_dot, op_smul_eq_smul, smul_smul]
 
 /- English proof (translation)
-Rewrite using `[hform_eq_dot, hform_eq_dot]`. Establish `e : (fun i => s ((T *ᵥ z) i)) = T.map s *ᵥ (fun i => s (z i))`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec s T z i`. Rewrite using `[e, ← vecMul_transpose, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem hform_mulVec (T : Matrix (Fin n) (Fin n) S) (z w : Fin n → S) :
     hform s J (T *ᵥ z) (T *ᵥ w) = hform s (cT s T * J * T) z w := by
@@ -34,7 +34,7 @@ theorem hform_mulVec (T : Matrix (Fin n) (Fin n) S) (z w : Fin n → S) :
   rfl
 
 /- English proof (translation)
-Establish `hg' : cT s (g : Matrix (Fin n) (Fin n) S) * J * (g : Matrix (Fin n) (Fin n) S) = J` using `hg`. Rewrite using `[hform_mulVec, hg']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_mem (g : GL (Fin n) S) (hg : g ∈ UJ s J) (z w : Fin n → S) :
     hform s J ((g : Matrix (Fin n) (Fin n) S) *ᵥ z) ((g : Matrix (Fin n) (Fin n) S) *ᵥ w) =
@@ -43,9 +43,9 @@ theorem hform_mem (g : GL (Fin n) S) (hg : g ∈ UJ s J) (z w : Fin n → S) :
   rw [hform_mulVec, hg']
 
 /- English proof (translation)
-Establish `hM : cT s T * J * T = J`. Use extensionality with `i j`. Rewrite using `[hform_entry, key, hform_single]`. Establish `hL : (J⁻¹ * cT s T * J) * T = 1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hR : T * (J⁻¹ * cT s T * J) = 1` using `mul_eq_one_comm.mp hL`. Conclude with `⟨⟨T, J⁻¹ * cT s T * J, hR, hL⟩, hM, rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem mem_UJ_of (hdet : IsUnit J.det) (T : Matrix (Fin n) (Fin n) S)
     (key : ∀ z w, hform s J (T *ᵥ z) (T *ᵥ w) = hform s J z w) :
@@ -60,21 +60,21 @@ theorem mem_UJ_of (hdet : IsUnit J.det) (T : Matrix (Fin n) (Fin n) S)
   exact ⟨⟨T, J⁻¹ * cT s T * J, hR, hL⟩, hM, rfl⟩
 
 /- English proof (translation)
-Establish `hconj` using `hform_conj s J hs hJ`. Take `⟨c, hc_def⟩ : ∃ c, hform s J a a - s lam * hform s J b a = c` from `⟨_, rfl⟩`. Rewrite `hc` using `[hc_def]`. Take `⟨ci, hci⟩ : ∃ ci, c * ci = 1` from `hc.exists_right_inv`. Establish `e2 : ci * c = 1` using `by rw [mul_comm]; exact hci`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e3 : s ci * s c = 1` using `by rw [← map_mul, e2, map_one]`. Take `⟨u, hu_def⟩ : ∃ u, a - lam • b = u` from `⟨_, rfl⟩`. Establish `hua : hform s J u a = c`. Rewrite using `[← hu_def, hform_sub_left, hform_smul_left, hc_def]`. Establish `huu : hform s J u u = c + s c`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hu_def, ← hc_def]`. Simplify using `only [hform_sub_left, hform_sub_right, hform_smul_left, hform_smul_right, map_sub, map_mul, hs, hconj]`. Take the linear combination `(s lam * lam) * hab + hform s J a a * hlam`. Establish `key1 : ∀ z w, hform s J (r1 s J ci u u *ᵥ z) (r1 s J ci u u *ᵥ w) = hform s J z w`. Introduce `z w`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[reflection_mulVec, reflection_mulVec]`. Simplify using `only [hform_sub_left, hform_sub_right, hform_smul_left, hform_smul_right, map_mul, hconj, huu]`. Take the linear combination `(hform s J z u * hform s J u w * s ci) * e2 + (hform s J z u * hform s J u w * ci) * e3`. Take `⟨g1, hg1U, hg1⟩` from `mem_UJ_of s J hdet _ key1`. Take `⟨βi, hβ⟩ : ∃ βi, hform s J a a * βi = 1` from `hu.exists_right_inv`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsβ : s (hform s J a a) = hform s J a a` using `hconj a a`. Establish `hsβi : s βi = βi`. Establish `h1 : hform s J a a * s βi = 1` using `by rw [← hsβ, ← map_mul, hβ, map_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `key2 : ∀ z w, hform s J (r1 s J ((1 - s lam) * βi) b b *ᵥ z) (r1 s J ((1 - s lam) * βi) b b *ᵥ w) = hform s J z w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Introduce `z w`. Rewrite using `[reflection_mulVec, reflection_mulVec]`. Simplify using `only [hform_sub_left, hform_sub_right, hform_smul_left, hform_smul_right, map_mul, hconj, hab, map_sub, map_one, hs, hsβi]`. Take the linear combination `(hform s J z b * hform s J b w * βi) * hlam + (hform s J z b * hform s J b w * (1 - lam) * (1 - s lam) * βi) * hβ`. Take `⟨g2, hg2U, hg2⟩` from `mem_UJ_of s J hdet _ key2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Use `⟨g2 * g1, mul_mem hg2U hg1U, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, ← mulVec_mulVec, hg1, hg2, reflection_mulVec s J ci u u, hua, e2, one_smul, ← hu_def, sub_sub_cancel, reflection_mulVec, hform_smul_right, hab, ← sub_smul] conv_rhs => rw [← one_smul S b]`. Use `congr 1`. Take the linear combination `hlam + (s lam * lam - lam) * hβ`. Introduce `z hz1 hz2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hzu : hform s J u z = 0`. Rewrite using `[← hu_def, hform_sub_left, hform_smul_left, hz1, hz2, mul_zero, sub_zero]`. Rewrite using `[Units.val_mul, ← mulVec_mulVec, hg1, hg2, reflection_mulVec s J ci u u, hzu, mul_zero, zero_smul, sub_zero, reflection_mulVec, hz2, mul_zero, zero_smul, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem step (hs : ∀ z, s (s z) = z) (hJ : IsHerm s J) (hdet : IsUnit J.det)
     (a b : Fin n → S) (hab : hform s J b b = hform s J a a) (hu : IsUnit (hform s J a a))
@@ -131,15 +131,15 @@ theorem step (hs : ∀ z, s (s z) = z) (hJ : IsHerm s J) (hdet : IsUnit J.det)
       reflection_mulVec, hz2, mul_zero, zero_smul, sub_zero]
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x y _ _ _ _`. Conclude with `⟨1, one_mem _, fun i => Fin.elim0 i⟩`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `x y ho hg hu hl`. Take `⟨g', hg'U, hg'⟩` from `ih (fun i => x i.succ) (fun i => y i.succ) (fun i j hij => ho _ _ (fun e => hij (Fin.succ_injective _ e))) (fun i j => hg _ _) (fun i => hu _) (fun i t => hl _ t)`. Take `⟨a, ha⟩ : ∃ a, (g' : Matrix (Fin n) (Fin n) S) *ᵥ x 0 = a` from `⟨_, rfl⟩`. Establish `haa : hform s J a a = hform s J (x 0) (x 0)` using `by rw [← ha]; exact hform_mem s J g' hg'U _ _`. Take `⟨lam, hlam, hc⟩` from `hl 0 (hform s J (y 0) a)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hc` using `[← haa]`. Take `⟨g1, hg1U, hg1a, hg1z⟩` from `step s J hs hJ hdet a (y 0) (by rw [haa]; exact hg 0 0) (haa ▸ hu 0) lam hlam hc`. Use `⟨g1 * g', mul_mem hg1U hg'U, fun i => ?_⟩` and prove the remaining obligations. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[Units.val_mul, ← mulVec_mulVec, ha]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hg1a`. Establish `hi` using `hg' i`. Rewrite using `[Units.val_mul, ← mulVec_mulVec, hi]`. Apply `hg1z` to reduce the goal to its premises. Rewrite using `[← hi, ← ha, hform_mem s J g' hg'U]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ho 0 i.succ (Fin.succ_ne_zero i).symm`. Rewrite using `[hg 0 i.succ]`. Conclude with `ho 0 i.succ (Fin.succ_ne_zero i).symm`.
+A detailed English derivation is pending.
 -/
 theorem orb_orth (hs : ∀ z, s (s z) = z) (hJ : IsHerm s J) (hdet : IsUnit J.det) :
     ∀ (k : ℕ) (x y : Fin k → Fin n → S), (∀ i j, i ≠ j → hform s J (x i) (x j) = 0) →
@@ -173,7 +173,7 @@ theorem orb_orth (hs : ∀ z, s (s z) = z) (hJ : IsHerm s J) (hdet : IsUnit J.de
 def tM {m : ℕ} (X : Fin m → Fin n → S) : Matrix (Fin n) (Fin m) S := Matrix.of fun r i => X i r
 
 /- English proof (translation)
-Simplify using `only [hform, cT, Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, tM, Matrix.of_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_tM {m : ℕ} (X : Fin m → Fin n → S) (i j : Fin m) :
     hform s J (X i) (X j) = (cT s (tM X) * J * tM X) i j := by
@@ -182,7 +182,7 @@ theorem gram_tM {m : ℕ} (X : Fin m → Fin n → S) (i j : Fin m) :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Rewrite using `[cT_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gram_mul {m k : ℕ} (N : Matrix (Fin n) (Fin m) S) (Q : Matrix (Fin m) (Fin k) S) :
     cT s (N * Q) * J * (N * Q) = cT s Q * (cT s N * J * N) * Q := by

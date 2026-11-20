@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.UPel.HT.LieType.DimSum
 
 /- English proof (translation)
-Set `L : Submodule ℤ (Fin g → ℂ)` to `AddSubgroup.toIntSubmodule Q.range`. Use `haveI : DiscreteTopology L := hdisc`. Use `haveI : IsZLattice ℝ L := ⟨by`. Establish `: (L : Set (Fin g → ℂ)) = Set.range Q` using `by ext x; simp [L]`. Rewrite using `[this]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hspan⟩`. Establish `h1` using `ZLattice.rank ℝ L`. Establish `e : La ≃ₗ[ℤ] L` using `LinearEquiv.ofInjective Q.toIntLinearMap hinj |>.trans (LinearEquiv.ofEq _ _ (by ext x; simp [L]))`. Rewrite using `[e.finrank_eq, h1, Module.finrank_pi_fintype]`. Simplify using `[Complex.finrank_real_complex, Finset.sum_const, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finrank_eq_two_mul_of_period {La : Type} [AddCommGroup La] [Module.Free ℤ La] [Module.Finite ℤ La] {g : ℕ}
     (Q : La →+ (Fin g → ℂ)) (hinj : Function.Injective Q) (hdisc : DiscreteTopology Q.range)
@@ -31,9 +31,9 @@ theorem finrank_eq_two_mul_of_period {La : Type} [AddCommGroup La] [Module.Free 
   simp [Complex.finrank_real_complex, Finset.sum_const, mul_comm]
 
 /- English proof (translation)
-Set `b` to `Pi.basisFun ℂ (Fin g)`. Rewrite using `[LinearMap.trace_eq_matrix_trace ℝ (Complex.basisOneI.smulTower b)]`. Establish `: M.trace = LinearMap.trace ℂ _ (Matrix.toLin' M)`. Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ b]`. Simplify using `[b]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, LinearMap.trace_eq_matrix_trace ℂ b]`. Simplify using `[Matrix.trace, LinearMap.toMatrix_apply, Fintype.sum_prod_type, Finset.mul_sum, two_mul, Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_real_restrict (g : ℕ) (M : Matrix (Fin g) (Fin g) ℂ) :
     LinearMap.trace ℝ (Fin g → ℂ) ((Matrix.toLin' M).restrictScalars ℝ) = 2 * M.trace.re := by
@@ -47,19 +47,19 @@ theorem trace_real_restrict (g : ℕ) (M : Matrix (Fin g) (Fin g) ℂ) :
     Finset.sum_add_distrib]
 
 /- English proof (translation)
-Set `L : Submodule ℤ (Fin g → ℂ)` to `AddSubgroup.toIntSubmodule Q.range`. Use `haveI : DiscreteTopology L := hdisc`. Use `haveI : IsZLattice ℝ L := ⟨by`. Establish `: (L : Set (Fin g → ℂ)) = Set.range Q` using `by ext x; simp [L]`. Rewrite using `[this]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hspan⟩`. Set `e : La ≃ₗ[ℤ] L` to `LinearEquiv.ofInjective Q.toIntLinearMap hinj |>.trans (LinearEquiv.ofEq _ _ (by ext x; simp [L]))`. Establish `he : ∀ x, ((e x : L) : Fin g → ℂ) = Q x` using `fun x => rfl`. Set `b` to `Module.Free.chooseBasis ℤ La`. Set `bL` to `b.map e`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `bR` to `bL.ofZLatticeBasis ℝ L`. Establish `hbR : ∀ i, bR i = Q (b i)`. Introduce `i`. Simplify using `[bR, bL, Module.Basis.ofZLatticeBasis_apply, he]`. Establish `hmat : LinearMap.toMatrix bR bR ((Matrix.toLin' M).restrictScalars ℝ) = (LinearMap.toMatrix b b A.toIntLinearMap).map (Int.cast : ℤ → ℝ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply, Matrix.map_apply, LinearMap.toMatrix_apply]`. Establish `h1 : (Matrix.toLin' M).restrictScalars ℝ (bR j) = Q (A (b j))`. Rewrite using `[hbR, hA]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1]`. Establish `h2 : Q (A (b j)) = ∑ k, (b.repr (A (b j)) k : ℝ) • bR k` using `by conv_lhs => rw [← b.sum_repr (A (b j))]`. Simplify using `only [map_sum, map_zsmul, hbR]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Int.cast_smul_eq_zsmul ℝ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[h2, bR.repr_sum_self]`. Both sides reduce to the same expression. Establish `htr : (LinearMap.trace ℝ _ ((Matrix.toLin' M).restrictScalars ℝ)) = ((LinearMap.trace ℤ La A.toIntLinearMap : ℤ) : ℝ)`. Rewrite using `[LinearMap.trace_eq_matrix_trace ℝ bR, hmat, LinearMap.trace_eq_matrix_trace ℤ b]`. Simplify using `[Matrix.trace]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `htr` using `[trace_real_restrict]`. Establish `: ((LinearMap.trace ℤ La A.toIntLinearMap : ℤ) : ℂ) = (((LinearMap.trace ℤ La A.toIntLinearMap : ℤ) : ℝ) : ℂ)` using `(Complex.ofReal_intCast _).symm`. Rewrite using `[this, ← htr, Complex.add_conj]`.
+A detailed English derivation is pending.
 -/
 theorem trace_int_eq_of_period {La : Type} [AddCommGroup La] [Module.Free ℤ La] [Module.Finite ℤ La] {g : ℕ}
     (Q : La →+ (Fin g → ℂ)) (M : Matrix (Fin g) (Fin g) ℂ) (A : La →+ La) (hinj : Function.Injective Q)
@@ -104,11 +104,9 @@ theorem trace_int_eq_of_period {La : Type} [AddCommGroup La] [Module.Free ℤ La
   rw [this, ← htr, Complex.add_conj]
 
 /- English proof (translation)
-Set `r : (F →+* ℂ) → (𝓞 F →* ℂ)` to `fun σ => (σ.comp (algebraMap (𝓞 F) F)).toMonoidHom`. Establish `hr : Function.Injective r`. Introduce `σ σ' hs`. Establish `: σ.comp (algebraMap (𝓞 F) F) = σ'.comp (algebraMap (𝓞 F) F)`. Use extensionality with `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `DFunLike.congr_fun hs x`. Conclude with `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 F)) this`. Establish `hli : LinearIndependent ℂ (fun σ : F →+* ℂ => ((r σ : 𝓞 F →* ℂ) : 𝓞 F → ℂ))` using `(linearIndependent_monoidHom (𝓞 F) ℂ).comp r hr`. Establish `hsum : ∑ σ, a σ • ((r σ : 𝓞 F →* ℂ) : 𝓞 F → ℂ) = 0`. Use function extensionality and compare the values at `c`.
-
-Simplify `h c` using `[r, Finset.sum_apply]`. Conclude with `(Fintype.linearIndependent_iff.mp hli) a hsum τ`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coeff_eq_zero_of_sum_embeddings {F : Type} [Field F] [NumberField F] (a : (F →+* ℂ) → ℂ)
     (h : ∀ c : 𝓞 F, ∑ τ : F →+* ℂ, a τ * τ (c : F) = 0) (τ : F →+* ℂ) : a τ = 0 := by
@@ -126,21 +124,19 @@ theorem coeff_eq_zero_of_sum_embeddings {F : Type} [Field F] [NumberField F] (a 
   exact (Fintype.linearIndependent_iff.mp hli) a hsum τ
 
 /- English proof (translation)
-Use `set φ := ρ.comp (algebraMap (𝓞 D.F) D.O) with hφ`. Set `d : (D.F →+* ℂ) → ℕ` to `fun σ => Module.finrank ℂ (eigSp φ σ)`. Take `⟨hlin, hinj, hdisc, hspan, -⟩` from `hQ`. Establish `hrank : Module.finrank ℤ D'.La = (D.m * D.n) * Module.finrank ℚ D.F`. Rewrite using `[finrank_eq_two_mul_of_period Q hinj hdisc hspan]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Module.finrank ℚ D.F = 2 * InfinitePlace.nrComplexPlaces D.F` using `IsTotallyComplex.finrank D.F`. Unfold `Datum.g`. Rewrite using `[h2]`. Rewrite using `[show D.m * D.n * (2 * InfinitePlace.nrComplexPlaces D.F) = 2 * (D.m * D.n * InfinitePlace.nrComplexPlaces D.F) by ring]`. Rewrite using `[Nat.mul_div_cancel_left _ (by norm_num)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `cj : (D.F →+* ℂ) ≃ (D.F →+* ℂ)` to `{ toFun := fun σ => (starRingEnd ℂ).comp σ invFun := fun σ => (starRingEnd ℂ).comp σ left_inv := fun σ => by ext x; simp right_inv := fun σ => by ext x; simp }`. Establish `key : ∀ c : 𝓞 D.F, ∑ σ : D.F →+* ℂ, (((d σ + d (cj σ) : ℕ) : ℂ) - ((D.m * D.n : ℕ) : ℂ)) * σ (c : D.F) = 0`. Introduce `c`. Set `A : D'.La →+ D'.La` to `DistribMulAction.toAddMonoidHom D'.La (algebraMap (𝓞 D.F) D.O c)`. Establish `hA : ∀ x, Q (A x) = φ c *ᵥ Q x` using `fun x => hlin _ x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `trace_int_eq_of_period Q (φ c) A hinj hdisc hspan hA`. Establish `h2` using `GlobalTheory.T.trace_ringOfIntegers_action_lattice_eq D.F D.O D'.La (D.m * D.n) hrank c`. Establish `h3` using `GlobalTheory.T.trace_ringOfIntegers_action_sum_embeddings_eigenspace D.F D.g φ c`. Establish `hconj : (starRingEnd ℂ) (φ c).trace = ∑ σ : D.F →+* ℂ, (d (cj σ) : ℂ) * σ (c : D.F)`. Rewrite using `[h3, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, Complex.conj_natCast]`. Conclude with `(Fintype.sum_equiv cj _ _ (fun σ => by show (d σ : ℂ) * (starRingEnd ℂ) (σ (c : D.F)) = (d (cj (cj σ)) : ℂ) * (cj σ) (c : D.F)`. Establish `: cj (cj σ) = σ` using `cj.left_inv σ`. Rewrite using `[this]`. Use the proof step `rfl))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ∑ σ : D.F →+* ℂ, ((d σ + d (cj σ) : ℕ) : ℂ) * σ (c : D.F) = ((D.m * D.n : ℕ) : ℂ) * ∑ σ : D.F →+* ℂ, σ (c : D.F)`. Rewrite using `[← h2, h1, hconj, h3, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[Finset.mul_sum]`. Simplify using `only [sub_mul, Finset.sum_sub_distrib, this]`. Simplify using the standard rewrite rules. Use `coeff_eq_zero_of_sum_embeddings _ key τ` as an intermediate fact. Establish `h' : ((d τ + d (cj τ) : ℕ) : ℂ) = ((D.m * D.n : ℕ) : ℂ)` using `sub_eq_zero.mp this`.
-
-Conclude with `h'` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UPel.HT.LieType.finrank_eigSp_add_conj_eq (p : ℕ) [Fact p.Prime] (D : Datum p) (D' : PLat D.O D.inv)
     (ρ : D.O →+* Matrix (Fin D.g) (Fin D.g) ℂ) (Q : D'.La →+ (Fin D.g → ℂ)) (hQ : IsPeriod D' ρ Q)

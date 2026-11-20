@@ -12,9 +12,9 @@ open scoped BigOperators Real
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X Y hX hY hfX hfY`. Establish `: GeometricallyReduced X.hom` using `ReducedSubgroup.geometricallyReduced_of_perfectField (k := ℂ) X.hom`. Establish `: Flat X.hom` using `inferInstance`. Establish `: IsLocallyNoetherian Y.left` using `LocallyOfFiniteType.isLocallyNoetherian Y.hom`. Express the relevant statement in the definitionally equal form `IsReduced (Limits.pullback X.hom Y.hom)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem isReduced_tensorObj_complex :
     (∀ (X Y : Over (Sp ℂ)), IsReduced X.left → IsReduced Y.left → LocallyOfFiniteType X.hom → LocallyOfFiniteType Y.hom → IsReduced (X ⊗ Y).left) := by

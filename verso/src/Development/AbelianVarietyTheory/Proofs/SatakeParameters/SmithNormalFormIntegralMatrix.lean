@@ -10,7 +10,7 @@ namespace GlobalTheory.Hk3.Smith
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Unfold `Formalism.UG.intL`. Conclude with `Valuation.mem_integer_iff _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mem_intL {a : L} : a ∈ Formalism.UG.intL L ↔ Valued.v a ≤ 1 := by
   unfold Formalism.UG.intL; exact Valuation.mem_integer_iff _ _
@@ -20,7 +20,7 @@ def IsUnimod {k : ℕ} (P : Matrix (Fin k) (Fin k) L) : Prop :=
     ∃ P' : Matrix (Fin k) (Fin k) L, (∀ i j, P' i j ∈ Formalism.UG.intL L) ∧ P * P' = 1
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply]; exact Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hA i k) (hB k j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_int {a b c : ℕ} {A : Matrix (Fin a) (Fin b) L} {B : Matrix (Fin b) (Fin c) L}
     (hA : ∀ i j, A i j ∈ Formalism.UG.intL L) (hB : ∀ i j, B i j ∈ Formalism.UG.intL L) :
@@ -28,7 +28,7 @@ theorem mul_int {a b c : ℕ} {A : Matrix (Fin a) (Fin b) L} {B : Matrix (Fin b)
   rw [Matrix.mul_apply]; exact Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hA i k) (hB k j)
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_int {k : ℕ} : ∀ i j, (1 : Matrix (Fin k) (Fin k) L) i j ∈ Formalism.UG.intL L := by
   intro i j; rw [Matrix.one_apply]; split_ifs
@@ -36,13 +36,13 @@ theorem one_int {k : ℕ} : ∀ i j, (1 : Matrix (Fin k) (Fin k) L) i j ∈ Form
   · exact Subring.zero_mem _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨one_int, 1, one_int, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUnimod_one {k : ℕ} : IsUnimod (1 : Matrix (Fin k) (Fin k) L) :=
   ⟨one_int, 1, one_int, by simp⟩
 
 /- English proof (translation)
-Take `⟨hP1, P', hP', hPP⟩` from `hP`. Take `⟨hQ1, Q', hQ', hQQ⟩` from `hQ`. Use `⟨mul_int hP1 hQ1, Q' * P', mul_int hQ' hP', ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc Q, hQQ, Matrix.one_mul, hPP]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsUnimod.mul {k : ℕ} {P Q : Matrix (Fin k) (Fin k) L} (hP : IsUnimod P) (hQ : IsUnimod Q) :
     IsUnimod (P * Q) := by
@@ -52,21 +52,21 @@ theorem IsUnimod.mul {k : ℕ} {P Q : Matrix (Fin k) (Fin k) L} (hP : IsUnimod P
   rw [Matrix.mul_assoc, ← Matrix.mul_assoc Q, hQQ, Matrix.one_mul, hPP]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem perm_mul_left {k n : ℕ} (σ : Equiv.Perm (Fin k)) (x : Matrix (Fin k) (Fin n) L) :
     (1 : Matrix (Fin k) (Fin k) L).submatrix σ id * x = x.submatrix σ id := by
   ext i j; simp [Matrix.mul_apply, Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem perm_mul_right {k n : ℕ} (σ : Equiv.Perm (Fin n)) (x : Matrix (Fin k) (Fin n) L) :
     x * (1 : Matrix (Fin n) (Fin n) L).submatrix id σ = x.submatrix id σ := by
   ext i j; simp [Matrix.mul_apply, Matrix.one_apply]
 
 /- English proof (translation)
-Use `⟨fun i j => one_int _ _, (1 : Matrix (Fin k) (Fin k) L).submatrix σ.symm id, fun i j => one_int _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[perm_mul_left]`. Use extensionality with `i j`. Conclude with `congrArg (fun t => (1 : Matrix (Fin k) (Fin k) L) t j) (σ.symm_apply_apply i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem isUnimod_permL {k : ℕ} (σ : Equiv.Perm (Fin k)) :
     IsUnimod ((1 : Matrix (Fin k) (Fin k) L).submatrix σ id) := by
@@ -75,7 +75,7 @@ theorem isUnimod_permL {k : ℕ} (σ : Equiv.Perm (Fin k)) :
   exact congrArg (fun t => (1 : Matrix (Fin k) (Fin k) L) t j) (σ.symm_apply_apply i)
 
 /- English proof (translation)
-Use `⟨fun i j => one_int _ _, (1 : Matrix (Fin k) (Fin k) L).submatrix id σ.symm, fun i j => one_int _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[perm_mul_right]`. Use extensionality with `i j`. Conclude with `congrArg (fun t => (1 : Matrix (Fin k) (Fin k) L) i t) (σ.apply_symm_apply j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem isUnimod_permR {k : ℕ} (σ : Equiv.Perm (Fin k)) :
     IsUnimod ((1 : Matrix (Fin k) (Fin k) L).submatrix id σ) := by
@@ -107,7 +107,7 @@ Both sides reduce to the same expression.
     blk a A i.succ j.succ = A i j := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j <;>`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem blk_mul {m n k : ℕ} (a b : L) (A : Matrix (Fin m) (Fin n) L) (B : Matrix (Fin n) (Fin k) L) :
     blk a A * blk b B = blk (a * b) (A * B) := by
@@ -116,7 +116,7 @@ theorem blk_mul {m n k : ℕ} (a b : L) (A : Matrix (Fin m) (Fin n) L) (B : Matr
     simp [Matrix.mul_apply, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j <;>`. Simplify using `[Matrix.one_apply, Fin.succ_ne_zero, (Fin.succ_ne_zero _).symm]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem blk_one {m : ℕ} : blk (1 : L) (1 : Matrix (Fin m) (Fin m) L) = 1 := by
   ext i j
@@ -124,9 +124,9 @@ theorem blk_one {m : ℕ} : blk (1 : L) (1 : Matrix (Fin m) (Fin m) L) = 1 := by
     simp [Matrix.one_apply, Fin.succ_ne_zero, (Fin.succ_ne_zero _).symm]
 
 /- English proof (translation)
-Take `⟨hP1, P', hP', hPP⟩` from `hP`. Establish `hint : ∀ {A : Matrix (Fin m) (Fin m) L}, (∀ i j, A i j ∈ Formalism.UG.intL L) → ∀ i j, blk (1 : L) A i j ∈ Formalism.UG.intL L`. Introduce `A hA i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j <;>`. Simplify using `[Subring.one_mem, Subring.zero_mem, hA]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Conclude with `⟨hint hP1, blk 1 P', hint hP', by rw [blk_mul, hPP, one_mul, blk_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUnimod_blk {m : ℕ} {P : Matrix (Fin m) (Fin m) L} (hP : IsUnimod P) : IsUnimod (blk (1 : L) P) := by
   obtain ⟨hP1, P', hP', hPP⟩ := hP
@@ -141,7 +141,7 @@ def IsDiagF {m n : ℕ} (z : Matrix (Fin m) (Fin n) L) : Prop :=
   ∀ (i : Fin m) (j : Fin n), (i : ℕ) ≠ (j : ℕ) → z i j = 0
 
 /- English proof (translation)
-Use `⟨fun i j => by rw [Matrix.sub_apply]; exact Subring.sub_mem _ (one_int i j) (hA i j), 1 + A, fun i j => by rw [Matrix.add_apply]; exact Subring.add_mem _ (one_int i j) (hA i j), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.sub_mul, Matrix.mul_add, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.one_mul, hAA]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem nilp_unimod {k : ℕ} (A : Matrix (Fin k) (Fin k) L) (hA : ∀ i j, A i j ∈ Formalism.UG.intL L)
     (hAA : A * A = 0) : IsUnimod (1 - A) := by
@@ -151,7 +151,7 @@ theorem nilp_unimod {k : ℕ} (A : Matrix (Fin k) (Fin k) L) (hA : ∀ i j, A i 
   abel
 
 /- English proof (translation)
-Rewrite using `[mem_intL, map_div₀]`. Establish `: 0 < Valued.v p` using `(Valuation.pos_iff _).2 hp`. Conclude with `(div_le_one₀ this).2 h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem div_int {a p : L} (hp : p ≠ 0) (h : Valued.v a ≤ Valued.v p) : a / p ∈ Formalism.UG.intL L := by
   rw [mem_intL, map_div₀]
@@ -159,27 +159,25 @@ theorem div_int {a p : L} (hp : p ≠ 0) (h : Valued.v a ≤ Valued.v p) : a / p
   exact (div_le_one₀ this).2 h
 
 /- English proof (translation)
-Use `set p := x 0 0 with hpdef`. Set `A : Matrix (Fin (m+1)) (Fin (m+1)) L` to `Matrix.of fun i j => if i ≠ 0 ∧ j = 0 then x i 0 / p else 0`. Set `B : Matrix (Fin (n+1)) (Fin (n+1)) L` to `Matrix.of fun i j => if i = 0 ∧ j ≠ 0 then x 0 j / p else 0`. Establish `hAi : ∀ i j, A i j ∈ Formalism.UG.intL L`. Introduce `i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [A, Matrix.of_apply]`. Use `split_ifs`. Conclude with `div_int hp (hmax _ _)`. Conclude with `Subring.zero_mem _`. Establish `hBi : ∀ i j, B i j ∈ Formalism.UG.intL L`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `i j`. Simplify using `only [B, Matrix.of_apply]`. Use `split_ifs`. Conclude with `div_int hp (hmax _ _)`. Conclude with `Subring.zero_mem _`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hAA : A * A = 0`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, A, Matrix.of_apply, Matrix.zero_apply]`. Apply the tactic sequence `apply Finset.sum_eq_zero; intro k _; by_cases hk : k = 0 <;> simp [hk]`. Establish `hBB : B * B = 0`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, B, Matrix.of_apply, Matrix.zero_apply]`. Apply the tactic sequence `apply Finset.sum_eq_zero; intro k _; by_cases hk : k = 0 <;> simp [hk]`. Establish `hy : ∀ i j, ((1 - A) * x : Matrix (Fin (m+1)) (Fin (n+1)) L) i j = x i j - (if i ≠ 0 then x i 0 / p * x 0 j else 0)`. Introduce `i j`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.sub_apply, Matrix.mul_apply]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single 0]`. Apply the tactic sequence `by_cases hi : i = 0 <;> simp [A, hi]`. Introduce `k _ hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[A, hk]`. Simplify using the standard rewrite rules. Use `set y : Matrix (Fin (m+1)) (Fin (n+1)) L := (1 - A) * x with hydef`. Establish `hz : ∀ i j, (y * (1 - B) : Matrix (Fin (m+1)) (Fin (n+1)) L) i j = y i j - (if j ≠ 0 then y i 0 * (x 0 j / p) else 0)`. Introduce `i j`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mul_sub, Matrix.mul_one, Matrix.sub_apply, Matrix.mul_apply]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single 0]`. Apply the tactic sequence `by_cases hj : j = 0 <;> simp [B, hj]`. Introduce `k _ hk`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[B, hk]`. Simplify using the standard rewrite rules. Use `⟨1 - A, 1 - B, nilp_unimod A hAi hAA, nilp_unimod B hBi hBB, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, hy]`. Simplify using `[p]`. Rewrite using `[hz, hy, hy]`. Simplify using `[Fin.succ_ne_zero, p]`. Rewrite using `[mul_div_cancel₀ _ (show x 0 0 ≠ 0 from hp), sub_self]`.
-
-Rewrite using `[hz, hy]`. Simplify using `[Fin.succ_ne_zero, p]`. Rewrite using `[div_mul_cancel₀ _ (show x 0 0 ≠ 0 from hp), sub_self]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem clear {m n : ℕ} (x : Matrix (Fin (m+1)) (Fin (n+1)) L) (hp : x 0 0 ≠ 0)
     (hmax : ∀ i j, Valued.v (x i j) ≤ Valued.v (x 0 0)) :
@@ -229,25 +227,21 @@ theorem clear {m n : ℕ} (x : Matrix (Fin (m+1)) (Fin (n+1)) L) (hp : x 0 0 ≠
   · simp
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro n x`. Conclude with `⟨1, 1, isUnimod_one, isUnimod_one, fun i => i.elim0⟩`. Consider the case `succ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `n x`. Consider the cases of `n with`. Consider the case `zero => exact ⟨1, 1, isUnimod_one, isUnimod_one, fun _ j => j.elim0⟩`. Consider the case `succ n`. Distinguish the cases in `hx : ∀ i j, x i j = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails.
 
-Use `⟨1, 1, isUnimod_one, isUnimod_one, fun i j _ => ?_⟩` and prove the remaining obligations. Simplify using `[hx i j]`. Use `push_neg at hx`. Take `⟨i0, j0, hx0⟩` from `hx`. Take `⟨⟨r, c⟩, -, hrc⟩` from `Finset.exists_max_image Finset.univ (fun q : Fin (m+1) × Fin (n+1) => Valued.v (x q.1 q.2)) ⟨(i0, j0), Finset.mem_univ _⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set x1 : Matrix (Fin (m+1)) (Fin (n+1)) L := x.submatrix (Equiv.swap 0 r) (Equiv.swap 0 c) with hx1`. Establish `h00 : x1 0 0 = x r c` using `by simp [x1, Equiv.swap_apply_left]`. Establish `hp : x1 0 0 ≠ 0`. Rewrite using `[h00]`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : Valued.v (x i0 j0) ≤ Valued.v (x r c)` using `hrc (i0, j0) (Finset.mem_univ _)`. Rewrite `h2` using `[h, map_zero, le_zero_iff, Valuation.zero_iff]`. Conclude with `hx0 h2`. Establish `hmax : ∀ i j, Valued.v (x1 i j) ≤ Valued.v (x1 0 0)`. Introduce `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h00]`. Conclude with `hrc (Equiv.swap 0 r i, Equiv.swap 0 c j) (Finset.mem_univ _)`. Take `⟨R, C, hR, hC, hz⟩` from `clear x1 hp hmax`. Use `set w : Matrix (Fin m) (Fin n) L := Matrix.of fun (i : Fin m) (j : Fin n) => (R * x1 * C) i.succ j.succ with hw`. Take `⟨P0, Q0, hP0, hQ0, hD⟩` from `ih n w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `⟨blk 1 P0 * R * (1 : Matrix (Fin (m+1)) (Fin (m+1)) L).submatrix (Equiv.swap 0 r) id, (1 : Matrix (Fin (n+1)) (Fin (n+1)) L).submatrix id (Equiv.swap 0 c) * C * blk 1 Q0, ((isUnimod_blk hP0).mul hR).mul (isUnimod_permL _), ((isUnimod_permR _).mul hC).mul (isUnimod_blk hQ0), ?_⟩` and prove the remaining obligations. Establish `hsw : (1 : Matrix (Fin (m+1)) (Fin (m+1)) L).submatrix (Equiv.swap 0 r) id * x * (1 : Matrix (Fin (n+1)) (Fin (n+1)) L).submatrix id (Equiv.swap 0 c) = x1`. Rewrite using `[perm_mul_left, perm_mul_right]`. Both sides reduce to the same expression. Establish `heq : blk 1 P0 * R * (1 : Matrix (Fin (m+1)) (Fin (m+1)) L).submatrix (Equiv.swap 0 r) id * x * ((1 : Matrix (Fin (n+1)) (Fin (n+1)) L).submatrix id (Equiv.swap 0 c) * C * blk 1 Q0) = blk (x1 0 0) (P0 * w * Q0)`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hsw, hz, blk_mul, blk_mul, one_mul, mul_one]`. Rewrite using `[heq]`. Introduce `i j`.
-
-Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j <;> intro hij`. Conclude with `absurd rfl hij`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using `only [blk_succ_succ]`.
-
-Conclude with `hD i j (by simpa [Fin.val_succ] using hij)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_diag : ∀ (m n : ℕ) (x : Matrix (Fin m) (Fin n) L),
     ∃ (P : Matrix (Fin m) (Fin m) L) (Q : Matrix (Fin n) (Fin n) L),
@@ -304,7 +298,7 @@ theorem exists_diag : ∀ (m n : ℕ) (x : Matrix (Fin m) (Fin n) L),
         exact hD i j (by simpa [Fin.val_succ] using hij)
 
 /- English proof (translation)
-Rewrite using `[map_pow, map_inv₀, hϖ, ← WithZero.coe_inv, ← WithZero.coe_pow, ← ofAdd_neg, neg_neg, ← ofAdd_nsmul, nsmul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem v_inv_pow {ϖ : L}
     (hϖ : Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))) (k : ℕ) :
@@ -313,7 +307,7 @@ theorem v_inv_pow {ϖ : L}
     nsmul_eq_mul, mul_one]
 
 /- English proof (translation)
-Establish `h : Valued.v y ≠ 0` using `(Valuation.ne_zero_iff _).2 hy`. Unfold `Formalism.UG.ordL`. Rewrite using `[dif_neg h, neg_neg, ofAdd_toAdd, WithZero.coe_unzero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem v_eq_ord {y : L} (hy : y ≠ 0) :
     Valued.v y = ((Multiplicative.ofAdd (-Formalism.UG.ordL y) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := by
@@ -326,35 +320,29 @@ end GlobalTheory.Hk3.Smith
 open GlobalTheory.Hk3.Smith in
 
 /- English proof (translation)
-Introduce `L _ _ ϖ hϖ n n' x`. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h`. Rewrite `hϖ` using `[h, map_zero]`. Conclude with `WithZero.zero_ne_coe hϖ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨P, Q, hP, hQ, hD⟩` from `exists_diag n' n x`. Use `set z := P * x * Q with hzdef`. Set `d : Fin n' → L` to `fun i => if h : (i : ℕ) < n then z i ⟨i, h⟩ else 0`. Set `a : Fin n' → ℕ` to `fun i => (-Formalism.UG.ordL (d i)).toNat`. Set `s : Fin n' → L` to `fun i => if 0 < a i then ϖ⁻¹ ^ a i / d i else 1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `t : Fin n' → L` to `fun i => if 0 < a i then d i / ϖ⁻¹ ^ a i else 1`. Establish `hdne : ∀ i, 0 < a i → d i ≠ 0`. Introduce `i h hd`. Simplify using `[a, hd, Formalism.UG.ordL] at h`. Establish `hva : ∀ i, 0 < a i → Valued.v (ϖ⁻¹ ^ a i) = Valued.v (d i)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i h`. Rewrite using `[v_inv_pow hϖ, v_eq_ord (hdne i h)]`. Establish `h'` using `Int.lt_toNat.mp h`. Simplify using `only [a]`. Rewrite using `[Int.toNat_of_nonneg (by omega)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpw : ∀ k : ℕ, ϖ⁻¹ ^ k ≠ 0` using `fun k => pow_ne_zero _ (inv_ne_zero hϖ0)`. Establish `hS : IsUnimod (Matrix.diagonal s)`. Use `⟨fun i j => ?_, Matrix.diagonal t, fun i j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.diagonal_apply]`. Use `split_ifs with hij`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [s]`. Use `split_ifs with ha`. Rewrite using `[mem_intL, map_div₀, hva i ha, div_self ((Valuation.ne_zero_iff _).2 (hdne i ha))]`. Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Matrix.diagonal_apply]`. Use `split_ifs with hij`. Simplify using `only [t]`. Use `split_ifs with ha`. Rewrite using `[mem_intL, map_div₀, hva i ha, div_self ((Valuation.ne_zero_iff _).2 (hdne i ha))]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [s, t, Pi.one_apply]`. Use `split_ifs with ha`. Rewrite using `[div_mul_div_comm, mul_comm (ϖ⁻¹ ^ a i), div_self (mul_ne_zero (hdne i ha) (hpw _))]`. Conclude with `one_mul 1`. Take `⟨hPi, P', hP'i, hPP'⟩` from `hS.mul hP`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hQi, Q', hQ'i, hQQ'⟩` from `hQ`. Use `⟨Matrix.diagonal s * P, P', Q, Q', a, hPi, hP'i, hPP', hQi, hQ'i, hQQ', ?_⟩` and prove the remaining obligations. Introduce `i j`. Establish `hmul : Matrix.diagonal s * P * x * Q = Matrix.diagonal s * z`. Rewrite using `[hzdef]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hmul, Matrix.sub_apply, Matrix.diagonal_mul, Matrix.of_apply]`. Distinguish the cases in `hij : (i : ℕ) = (j : ℕ)`. Establish `hi : (i : ℕ) < n` using `hij ▸ j.isLt`. Establish `hj : j = ⟨i, hi⟩` using `Fin.ext hij.symm`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hzd : z i j = d i` using `by simp only [d, dif_pos hi, hj]`. Rewrite using `[hzd]`. Distinguish the cases in `ha : 0 < a i`. Rewrite using `[if_pos ⟨hij, ha⟩]`. Simplify using `only [s, if_pos ha]`.
-
-Rewrite using `[div_mul_cancel₀ _ (hdne i ha), sub_self]`. Conclude with `Subring.zero_mem _`. Rewrite using `[if_neg (fun h => ha h.2), sub_zero]`. Simplify using `only [s, if_neg ha, one_mul]`. Distinguish the cases in `hd0 : d i = 0`.
-
-Rewrite using `[hd0]`. Conclude with `Subring.zero_mem _`. Rewrite using `[mem_intL, v_eq_ord hd0]`. Establish `h0 : (-Formalism.UG.ordL (d i)).toNat = 0` using `by simpa [a] using ha`. Rewrite `h0` using `[Int.toNat_eq_zero]`.
-
-Rewrite using `[← WithZero.coe_one, WithZero.coe_le_coe, ← ofAdd_zero, Multiplicative.ofAdd_le]`. Conclude with `h0`. Rewrite using `[hD i j hij, if_neg (fun h => hij h.1), mul_zero, sub_zero]`. Conclude with `Subring.zero_mem _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Hk3.smith_int_approx : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L),
     Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) →

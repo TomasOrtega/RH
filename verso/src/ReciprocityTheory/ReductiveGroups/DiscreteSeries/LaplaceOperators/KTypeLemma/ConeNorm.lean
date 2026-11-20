@@ -8,7 +8,7 @@ open Finset
 namespace ReciprocityTheory.ChartRestriction.DS.Lap.LemK
 
 /- English proof (translation)
-Unfold `root`. Simplify using `[Pi.single_apply, mul_sub, Finset.sum_sub_distrib]`. Apply the tactic sequence `try ring`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cone_norm_dot_root {n : ℕ} (l : Fin n → ℝ) (a b : Fin n) (c : ℝ) :
     ∑ i, l i * (c • root a b) i = c * (l a - l b) := by
@@ -17,11 +17,11 @@ theorem cone_norm_dot_root {n : ℕ} (l : Fin n → ℝ) (a b : Fin n) (c : ℝ)
   try ring
 
 /- English proof (translation)
-Unfold `dot`. Take `⟨m, rfl⟩` from `hβ`. Establish `hsw : ∑ i, l i * (∑ a, ∑ b, if a < b then (m a b : ℝ) • root a b else 0) i = ∑ a, ∑ b, ∑ i, l i * ((if a < b then (m a b : ℝ) • root a b else 0) i)`. Simplify using `only [Finset.sum_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Rewrite using `[hsw]`. Use `Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with hab`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cone_norm_dot_root]`. Conclude with `mul_nonneg (Nat.cast_nonneg _) (sub_nonneg.mpr (hl hab.le))`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cone_norm_dot_nonneg {n : ℕ} (l β : Fin n → ℝ) (hl : Antitone l) (hβ : InRootCone β) :
     0 ≤ dot l β := by
@@ -41,7 +41,7 @@ theorem cone_norm_dot_nonneg {n : ℕ} (l β : Fin n → ℝ) (hl : Antitone l) 
   · simp
 
 /- English proof (translation)
-Unfold `nsq dot at h`. Establish `hnn : ∀ i ∈ Finset.univ, 0 ≤ β i * β i` using `fun i _ => mul_self_nonneg _`. Establish `h0` using `(Finset.sum_eq_zero_iff_of_nonneg hnn).mp (le_antisymm h (Finset.sum_nonneg hnn))`. Use function extensionality and compare the values at `i`. Conclude with `mul_self_eq_zero.mp (h0 i (Finset.mem_univ _))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem cone_norm_eq_zero {n : ℕ} (β : Fin n → ℝ) (h : nsq β ≤ 0) : β = 0 := by
   unfold nsq dot at h
@@ -51,9 +51,9 @@ theorem cone_norm_eq_zero {n : ℕ} (β : Fin n → ℝ) (h : nsq β ≤ 0) : β
   exact mul_self_eq_zero.mp (h0 i (Finset.mem_univ _))
 
 /- English proof (translation)
-Introduce `lam β hl hβ h`. Apply `cone_norm_eq_zero` to reduce the goal to its premises. Establish `hd` using `cone_norm_dot_nonneg lam β hl hβ`. Establish `hexp : nsq (lam + β) = nsq lam + 2 * dot lam β + nsq β`. Unfold `nsq dot`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [Pi.add_apply]`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem cone_norm (n : ℕ) : ConeNormStatement n := by
   intro lam β hl hβ h

@@ -5,7 +5,7 @@ noncomputable section
 namespace Formalism.FG.WittVectorsCharZero
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h1` using `WittVector.map_injective _ (algebraMap (ZMod l) (AlgebraicClosure (ZMod l))).injective h`. Conclude with `(WittVector.equiv l).symm.injective h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem zlToW_injective (l : ℕ) [Fact l.Prime] : Function.Injective (zlToW l) := by
   intro a b h
@@ -13,7 +13,7 @@ theorem zlToW_injective (l : ℕ) [Fact l.Prime] : Function.Injective (zlToW l) 
   exact (WittVector.equiv l).symm.injective h1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `hl : 1 ≤ l ^ d` using `Nat.one_le_pow _ _ (Fact.out : l.Prime).pos`. Rewrite using `[Nat.cast_sub hl, Nat.cast_pow, ZMod.natCast_self, zero_pow (by omega), Nat.cast_one, zero_sub]`. Conclude with `neg_ne_zero.mpr one_ne_zero`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem neZero_cast (l : ℕ) [Fact l.Prime] (d : ℕ) (hd : 1 ≤ d) :
     NeZero (((l ^ d - 1 : ℕ) : ZMod l)) := by
@@ -29,7 +29,7 @@ namespace Formalism.FG
 open Formalism.FG.WittVectorsCharZero
 
 /- English proof (translation)
-Introduce `l _`. Use `⟨fun m n h => ?_⟩` and prove the remaining obligations. Establish `h1 : ((m : ℤ_[l])) = (n : ℤ_[l])` using `zlToW_injective l (by rw [map_natCast, map_natCast]; exact h)`. Conclude with `h1` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem witt_char_zero : Formalism.FG.WittCharZero := by
   intro l _
@@ -39,13 +39,13 @@ theorem witt_char_zero : Formalism.FG.WittCharZero := by
   exact_mod_cast h1
 
 /- English proof (translation)
-Introduce `l _ d hd`. Establish `hl2 : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `hNpos : 0 < l ^ d - 1`. Establish `: l ≤ l ^ d` using `Nat.le_self_pow (by omega) l`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `haveI : NeZero (((l ^ d - 1 : ℕ) : ZMod l)) := neZero_cast l d hd`. Use `haveI : NeZero (((l ^ d - 1 : ℕ) : AlgebraicClosure (ZMod l))) := by`. Establish `h` using `NeZero.of_injective (f := algebraMap (ZMod l) (AlgebraicClosure (ZMod l))) (a := (((l ^ d - 1 : ℕ) : ZMod l))) (algebraMap (ZMod l) (AlgebraicClosure (ZMod l))).injective`. Rewrite `h` using `[map_natCast]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hdeg : (Polynomial.cyclotomic (l ^ d - 1) (AlgebraicClosure (ZMod l))).degree ≠ 0`. Rewrite using `[Polynomial.degree_cyclotomic]`. Conclude with `(Nat.totient_pos.mpr hNpos).ne'` after adjusting the coercions. Take `⟨μ, hμ⟩` from `IsAlgClosed.exists_root _ hdeg`. Establish `hprim : IsPrimitiveRoot μ (l ^ d - 1)` using `Polynomial.isRoot_cyclotomic_iff.mp hμ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨WittVector.teichmuller l μ, hprim.map_of_injective ?_⟩` and prove the remaining obligations. Introduce `a b h`. Establish `h2` using `congrArg (fun w => WittVector.coeff w 0) h`. Simplify `h2` using `[WittVector.teichmuller_coeff_zero]`.
+A detailed English derivation is pending.
 -/
 theorem witt_teichmuller_root : Formalism.FG.WittTeichRoot := by
   intro l _ d hd

@@ -15,9 +15,9 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use `haveI : IsCMField D.host.E := D.host.der.cm`. Establish `hc : D.host.conj = (IsCMField.complexConj D.host.E).restrictScalars ℚ`. Establish `hg` using `(D.host.der.conj_iff D.host.φ₀ ((IsCMField.complexConj D.host.E).restrictScalars ℚ)).1 (fun y => IsCMField.complexEmbedding_complexConj _ D.host.φ₀ y)`. Use `show D.host.gal.symm _ = _`. Rewrite using `[← hg, MulEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hc]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem tie_star (D : D7) (x : D.host.E) : star x = D.host.conj x := by
   haveI : IsCMField D.host.E := D.host.der.cm
@@ -30,7 +30,7 @@ theorem tie_star (D : D7) (x : D.host.E) : star x = D.host.conj x := by
   rfl
 
 /- English proof (translation)
-Establish `h1 : (VS D).hT (D.sp.hypE i) (D.sp.hypF j) = if i = j then 1 else 0` using `D.sp.hyp_ef i j`. Rewrite using `[← (VS D).herm.eq (D.sp.hypE i) (D.sp.hypF j), h1]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tie_hypFE (D : D7) (i j : Fin D.R.rS) :
     (VS D).hT (D.sp.hypF j) (D.sp.hypE i) = if i = j then 1 else 0 := by
@@ -39,11 +39,11 @@ theorem tie_hypFE (D : D7) (i j : Fin D.R.rS) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Apply `LinearIndependent.of_comp (LinearMap.pi (fun j => (VS D).hT (D.sp.hypF j)))` to reduce the goal to its premises. Establish `hfun : ⇑(LinearMap.pi (fun j => (VS D).hT (D.sp.hypF j))) ∘ D.sp.hypE = ⇑(Pi.basisFun D.host.E (Fin D.R.rS))`. Use function extensionality and compare the values at `i j`. Simplify using `only [Function.comp_apply, LinearMap.pi_apply, Pi.basisFun_apply]`. Rewrite using `[tie_hypFE]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h, Pi.single_apply]`. Rewrite using `[hfun]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Pi.basisFun D.host.E (Fin D.R.rS)).linearIndependent`.
+A detailed English derivation is pending.
 -/
 theorem tie_hypE_indep (D : D7) : LinearIndependent D.host.E D.sp.hypE := by
   apply LinearIndependent.of_comp (LinearMap.pi (fun j => (VS D).hT (D.sp.hypF j)))
@@ -59,20 +59,18 @@ theorem tie_hypE_indep (D : D7) : LinearIndependent D.host.E D.sp.hypE := by
   exact (Pi.basisFun D.host.E (Fin D.R.rS)).linearIndependent
 
 /- English proof (translation)
-Establish `h1 : (VS D).hT D.sp.zm (D.sp.hypE a) = 0` using `(D.sp.hyp_orthz a).1`. Rewrite using `[← (VS D).herm.eq D.sp.zm (D.sp.hypE a), h1, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tie_hypE_zm (D : D7) (a : Fin D.R.rS) : (VS D).hT (D.sp.hypE a) D.sp.zm = 0 := by
   have h1 : (VS D).hT D.sp.zm (D.sp.hypE a) = 0 := (D.sp.hyp_orthz a).1
   rw [← (VS D).herm.eq D.sp.zm (D.sp.hypE a), h1, map_zero]
 
 /- English proof (translation)
-Establish `hc : D.cOf u ≠ 0` using `D.cOf_ne u`. Establish `hcc : D.host.conj (D.cOf u) ≠ 0`. Introduce `h`. Apply `hc` to reduce the goal to its premises. Rewrite `h` using `[← tie_star]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `star_eq_zero.1 h`. Establish `hq` using `D.cOf_eq u`. Establish `hsp : D.sp.T = (D.mem D.u₀).A.T` using `D.sp_T`. Establish `hz : (VS D).hT D.sp.zm D.sp.zm = -((D.mem D.u₀).A.T : D.host.E)`. Establish `h0 : (VS D).hT D.sp.zm D.sp.zm = -(D.sp.T : D.host.E)` using `D.sp.zm_norm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, hsp]`. Use `show (VS D).hT ((D.cOf u)⁻¹ • D.sp.zm) ((D.cOf u)⁻¹ • D.sp.zm) = _`. Rewrite using `[LinearMap.map_smulₛₗ₂, map_smul, hz, ← hq]`. Simplify using `only [Tu, smul_eq_mul, starRingEnd_apply, star_inv₀, tie_star]`. Clear the denominators using the available nonvanishing facts.
-
-Apply the tactic sequence `<;> ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem tie_zmOf_norm (D : D7) (u : D.what₂.Word) :
     (VS D).hT (D.zmOf u) (D.zmOf u) = -((Tu D u : ℕ) : D.host.E) := by
@@ -101,19 +99,19 @@ def tie_flag0 (D : D7) (u : D.what₂.Word) : FlagG (VS D) D.R.rS ((Tu D u : ℕ
   z_norm := tie_zmOf_norm D u
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨tie_flag0 D u, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem tie_flagG_nonempty (D : D7) (u : D.what₂.Word) :
     ∃ F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E), F0.e = D.sp.hypE ∧ F0.z = D.zmOf u := ⟨tie_flag0 D u, rfl, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨tie_flag0 D u, 0⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem tie_lflag_nonempty (D : D7) (u : D.what₂.Word) :
     Nonempty (LFlag (hS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) := ⟨⟨tie_flag0 D u, 0⟩⟩
 
 /- English proof (translation)
-Apply the tactic sequence `have hex : ∀ u, ∃ n : ℕ, (n : ℝ) = dimPi (hc := D.hcW) u := fun u => ⟨_, by first | exact Nat.cast_prod _ _ | (unfold dimPi; exact Nat.cast_prod _ _)⟩`. Use `choose nd hnd using hex`. Conclude with `⟨{ abelian₂ := fun t => ((h _ _).false t).elim fl := fun t => ((h _ _).false t).elim fl' := fun t => ((h _ _).false t).elim fixed := fun t => ((h _ _).false t).elim lift' := fun t => ((h _ _).false t).elim adm := fun t => ((h _ _).false t).elim conv' := fun t => ((h _ _).false t) …`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tie_termTie_of_noTerms (D : D7) (h : ∀ u u', IsEmpty (D.s.Term u u')) : Nonempty (TermTie D) := by
   have hex : ∀ u, ∃ n : ℕ, (n : ℝ) = dimPi (hc := D.hcW) u := fun u =>
@@ -153,7 +151,7 @@ theorem tie_termTie_of_noTerms (D : D7) (h : ∀ u u', IsEmpty (D.s.Term u u')) 
     pval_eq := fun p => ((h _ _).false (D.s.pfst p)).elim }⟩
 
 /- English proof (translation)
-The claim follows from `tie_termTie_of_noTerms _ (fun _ _ => ⟨fun t => Empty.elim t⟩)`.
+A detailed English derivation is pending.
 -/
 theorem tie_termTie_example (H : Host Formalism.BasicNotions.Examples₂.R0) (T : ℕ) [Fact T.Prime]
     (hg : ∀ k, (placesOver H.E (H.g k)).ncard = Module.finrank ℚ H.E) (ht : Formalism.BasicNotions.Examples₂.THyp H)
@@ -165,15 +163,15 @@ theorem tie_termTie_example (H : Host Formalism.BasicNotions.Examples₂.R0) (T 
   tie_termTie_of_noTerms _ (fun _ _ => ⟨fun t => Empty.elim t⟩)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun X => h2 (X.id_G t h1)⟩`.
+Supply the required witnesses or components.
 -/
 theorem tie_termTie_isEmpty_of_id (D : D7) {u u' : D.what₂.Word} (t : D.s.Term u u') (h1 : D.s.isId t)
     (h2 : D.s.Gterm t ≠ 0) : IsEmpty (TermTie D) := ⟨fun X => h2 (X.id_G t h1)⟩
 
 /- English proof (translation)
-Use `⟨fun X => h2 ((X.isId_iff t).2 ?_)⟩` and prove the remaining obligations. Take `⟨n, hn, hfr⟩` from `(X.FeqF_iff t).1 h1`. Use `⟨n, hn, fun a => ?_, ?_⟩` and prove the remaining obligations. Establish `ha` using `hfr a.castSucc`. Simplify using `only [frame, FlagG.fvec, Fin.snoc_castSucc] at ha`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `ha`. Establish `hz` using `hfr (Fin.last _)`. Simplify using `only [frame, FlagG.fvec, Fin.snoc_last] at hz`. Rewrite using `[hz, sub_self]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tie_termTie_isEmpty_of_FeqF (D : D7) {u u' : D.what₂.Word} (t : D.s.Term u u') (h1 : D.s.FeqF t)
     (h2 : ¬ D.s.isId t) : IsEmpty (TermTie D) := by
@@ -189,7 +187,7 @@ theorem tie_termTie_isEmpty_of_FeqF (D : D7) {u u' : D.what₂.Word} (t : D.s.Te
     exact zero_mem _
 
 /- English proof (translation)
-Use `⟨fun X => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[X.s0_eq p]`. Unfold `Lat.s0 at h`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem term_ties_empty_of_large_index (D : D7) {u u' : D.what₂.Word} (p : D.s.Pair u u') (h : D.R.k < D.s.s0 p) :
     IsEmpty (TermTie D) := by
@@ -203,9 +201,9 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicNotions.HSpace E} {r : ℕ}
 
 /- English proof (translation)
-Unfold `frameAct`. Rewrite using `[Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `a _ hab`. Simplify using `[Matrix.one_apply_ne hab]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ b) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tie_frameAct_one (f : Fin (r + 1) → S.V) (b : Fin (r + 1)) : frameAct f 1 b = f b := by
   unfold frameAct
@@ -217,9 +215,9 @@ theorem tie_frameAct_one (f : Fin (r + 1) → S.V) (b : Fin (r + 1)) : frameAct 
     exact absurd (Finset.mem_univ b) h
 
 /- English proof (translation)
-Unfold `IsAdmissible AdmWit`. Use `⟨1, fun a b hab => Matrix.one_apply_ne (ne_of_gt hab), fun a => Matrix.one_apply_eq a, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[tie_frameAct_one, sub_self]`. Unfold `ModG`. Introduce `P _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem admissible_flag_refl (Λ : Submodule (𝓞 E) S.V) (g : ℕ) {T : E} (F : LFlag S r T) : IsAdmissible Λ g F F := by
   unfold IsAdmissible AdmWit
@@ -230,9 +228,9 @@ theorem admissible_flag_refl (Λ : Submodule (𝓞 E) S.V) (g : ℕ) {T : E} (F 
   exact zero_mem _
 
 /- English proof (translation)
-Unfold `IsAutLam`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `exact (Formalism.HermitianLatticesTheory.isom S.hT).one_mem`. Consider the case `exact fun x y => rfl`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `[Formalism.HermitianLatticesTheory.gmap]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tie_autLam_refl (Λ : Submodule (𝓞 E) S.V) : IsAutLam S Λ (LinearEquiv.refl E S.V) := by
   unfold IsAutLam
@@ -244,7 +242,7 @@ theorem tie_autLam_refl (Λ : Submodule (𝓞 E) S.V) : IsAutLam S Λ (LinearEqu
     simp [Formalism.HermitianLatticesTheory.gmap]
 
 /- English proof (translation)
-Unfold `IsPair IotaCompat`. Use `⟨tie_autLam_refl Λ, fun j => ?_, rfl, fun x' _ l _ => Iff.rfl⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tie_pair_self (Λ : Submodule (𝓞 E) S.V) (g : ℕ) {T T' : E} (F : LFlag S r T) (F' : LFlag S r T') :
     IsPair Λ F F' F' (LinearEquiv.refl E S.V) g := by
@@ -253,7 +251,7 @@ theorem tie_pair_self (Λ : Submodule (𝓞 E) S.V) (g : ℕ) {T T' : E} (F : LF
   simp
 
 /- English proof (translation)
-Simplify using `only [NLam, Set.mem_setOf_eq]`. Apply the tactic sequence `refine ⟨tie_autLam_refl Λ, fun j x _ => ?_, fun x _ => ?_⟩ <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tie_refl_mem_NLam (Λ : Submodule (𝓞 E) S.V) {T : E} (F : LFlag S r T) :
     LinearEquiv.refl E S.V ∈ NLam Λ F := by
@@ -263,7 +261,7 @@ theorem tie_refl_mem_NLam (Λ : Submodule (𝓞 E) S.V) {T : E} (F : LFlag S r T
 end Gen
 
 /- English proof (translation)
-Unfold `FixedHyp at h`. Take `⟨-, -, h3, h4⟩` from `h`. Conclude with `⟨h3, admissible_flag_refl Λ (gS D) F, h4, tie_pair_self Λ (gS D) F F⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tie_idTerm_ok (D : D7) (Λ : Submodule (𝓞 D.host.E) (hS D).V) {T : D.host.E}
     (F : LFlag (hS D) D.R.rS T) (h : FixedHyp D Λ F) :
@@ -278,7 +276,7 @@ section Gen2
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicNotions.HSpace E} {r : ℕ}
 
 /- English proof (translation)
-Establish `hle : Submodule.span E (Set.range F.e) ≤ LinearMap.ker (S.hT (F.e a))` using `Submodule.span_le.mpr (by`. Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `LinearMap.mem_ker.mpr (F.e_iso a b))`. Conclude with `LinearMap.mem_ker.mp (hle hx)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem tie_e_X {T : E} (F : FlagG S r T) (a : Fin r) {x : S.V} (hx : x ∈ F.X) : S.hT (F.e a) x = 0 := by
   have hle : Submodule.span E (Set.range F.e) ≤ LinearMap.ker (S.hT (F.e a)) :=
@@ -288,11 +286,11 @@ theorem tie_e_X {T : E} (F : FlagG S r T) (a : Fin r) {x : S.V} (hx : x ∈ F.X)
   exact LinearMap.mem_ker.mp (hle hx)
 
 /- English proof (translation)
-Unfold `orth`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `x hx`. Establish `hx' : x ∈ Submodule.span E (Set.range F.e)` using `hx`. Use `clear hx`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `hx' using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨a, rfl⟩` from `hz`. Conclude with `hy a`. Consider the case `zero => simp`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add u w _ _ hu hw => simp [hu, hw]`. Consider the case `smul c u _ hu => simp [hu]`.
+A detailed English derivation is pending.
 -/
 theorem tie_mem_orth {T : E} (F : FlagG S r T) {y : S.V} (hy : ∀ a, S.hT (F.e a) y = 0) : y ∈ orth S F.X := by
   unfold orth
@@ -309,19 +307,19 @@ theorem tie_mem_orth {T : E} (F : FlagG S r T) {y : S.V} (hy : ∀ a, S.hT (F.e 
   | smul c u _ hu => simp [hu]
 
 /- English proof (translation)
-Take `⟨n, hn, he, hz⟩` from `h`. Simplify using `only [NLam, Set.mem_setOf_eq] at hn`. Take `⟨-, hflag, horth⟩` from `hn`. Establish `hX : ∀ v ∈ F.fl.X, S.hT (F.fl.e a) v = 0` using `fun v hv => tie_e_X F.fl a hv`. Establish `hXa : ∀ j, Xflag F j ≤ F.fl.X` using `fun j => by show Submodule.span E (F.fl.e '' {i | i.1 < j}) ≤ Submodule.span E (Set.range F.fl.e)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.span_mono (Set.image_subset_range _ _)`. Establish `hfa : F.fl.fvec a.castSucc = F.fl.e a` using `by simp only [FlagG.fvec, Fin.snoc_castSucc]`. Use `show S.hT (F.fl.fvec a.castSucc) (F'.fl.fvec b) = 0`. Rewrite using `[hfa]`. Consider the cases of `b using Fin.lastCases with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `last`. Establish `hfz : F'.fl.fvec (Fin.last r) = F'.fl.z` using `by simp only [FlagG.fvec, Fin.snoc_last]`. Rewrite using `[hfz]`. Establish `hzo : F.fl.z ∈ orth S (Xsp F)` using `tie_mem_orth F.fl F.fl.z_orth`. Establish `h1` using `horth _ hzo`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hX _ h1`. Establish `e2` using `hX _ hz`. Establish `e3` using `F.fl.z_orth a`. Establish `hsplit : S.hT (F.fl.e a) F'.fl.z = S.hT (F.fl.e a) F.fl.z + S.hT (F.fl.e a) (n F.fl.z - F.fl.z) - S.hT (F.fl.e a) (n F.fl.z - F'.fl.z)`. Rewrite using `[← map_add, ← map_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 
-Use `congr 1`. Normalize the expressions using the abelian group laws. Rewrite using `[hsplit, e1, e2, e3]`. Simplify using the standard rewrite rules. Consider the case `cast c`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfc : F'.fl.fvec c.castSucc = F'.fl.e c` using `by simp only [FlagG.fvec, Fin.snoc_castSucc]`. Rewrite using `[hfc, ← he c]`. Establish `hc : F.fl.e c ∈ Submodule.span E (F.fl.e '' {i | i.1 < c.val + 1})` using `Submodule.subset_span ⟨c, by simp, rfl⟩`. Establish `h1` using `hflag c.val _ hc`. Establish `e1` using `hX _ (hXa _ h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsplit : S.hT (F.fl.e a) (n (F.fl.e c)) = S.hT (F.fl.e a) (F.fl.e c) + S.hT (F.fl.e a) (n (F.fl.e c) - F.fl.e c)`. Rewrite using `[← map_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Rewrite using `[hsplit, e1, F.fl.e_iso a c, add_zero]`.
+Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tie_idCell_row (Λ : Submodule (𝓞 E) S.V) {T T' : E} (F : LFlag S r T) (F' : LFlag S r T')
     (h : ∃ n ∈ NLam Λ F, (∀ a, n (F.fl.e a) = F'.fl.e a) ∧ n F.fl.z - F'.fl.z ∈ Xsp F)
@@ -367,11 +365,11 @@ theorem tie_idCell_row (Λ : Submodule (𝓞 E) S.V) {T T' : E} (F : LFlag S r T
     rw [hsplit, e1, F.fl.e_iso a c, add_zero]
 
 /- English proof (translation)
-Establish `hrow : ∀ (a : Fin r) b, ZhatL F F' a.castSucc b = 0` using `fun a b => tie_idCell_row Λ F F' h a b`. Establish `hD : ∀ l, 1 ≤ l → Dl F.fl F'.fl l = 0`. Introduce `l hl`. Unfold `Dl leadMinorE`. Use `split_ifs with hle`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Matrix.det_eq_zero_of_row_eq_zero ⟨0, by omega⟩` to reduce the goal to its premises. Introduce `j`. Conclude with `hrow ⟨0, hr⟩ (Fin.castLE hle j)`. Both sides reduce to the same expression. Use `show Gflag F.fl F'.fl = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `Gflag`. Rewrite using `[hD (r + 1) (by omega), hD r hr]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem tie_idCell_G (hr : 0 < r) (Λ : Submodule (𝓞 E) S.V) {T T' : E} (F : LFlag S r T) (F' : LFlag S r T')
     (h : ∃ n ∈ NLam Λ F, (∀ a, n (F.fl.e a) = F'.fl.e a) ∧ n F.fl.z - F'.fl.z ∈ Xsp F) :
@@ -393,7 +391,7 @@ theorem tie_idCell_G (hr : 0 < r) (Λ : Submodule (𝓞 E) S.V) {T T' : E} (F : 
 end Gen2
 
 /- English proof (translation)
-Establish `hx` using `large₂.sc.one_lt_alt`. Establish `hpos : 0 < large₂.sc.x ^ large₂.sc.eps` using `Real.rpow_pos_of_pos (by linarith) _`. Use `show 1 < Real.exp (large₂.sc.x ^ large₂.sc.eps)`. Combine the linear relations using `[Real.add_one_lt_exp (ne_of_gt hpos)]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem tie_one_lt_b (D : D7) (large₂ : SizeData₂ D) : 1 < large₂.sc.b := by
   have hx := large₂.sc.one_lt_alt
@@ -402,7 +400,7 @@ theorem tie_one_lt_b (D : D7) (large₂ : SizeData₂ D) : 1 < large₂.sc.b := 
   linarith [Real.add_one_lt_exp (ne_of_gt hpos)]
 
 /- English proof (translation)
-Unfold `normWin`. Establish `hb` using `(tie_one_lt_b D large₂).le`. Establish `hc : 0 ≤ C1 * (D.R.m : ℝ) ^ 2` using `mul_nonneg h (sq_nonneg _)`. Conclude with `⟨Real.rpow_le_one_of_one_le_of_nonpos hb (by linarith), Real.one_le_rpow hb hc⟩`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem tie_normWin_one (D : D7) (large₂ : SizeData₂ D) {C1 : ℝ} (h : 0 ≤ C1) : normWin D large₂ C1 1 := by
   unfold normWin
@@ -411,9 +409,9 @@ theorem tie_normWin_one (D : D7) (large₂ : SizeData₂ D) {C1 : ℝ} (h : 0 �
   exact ⟨Real.rpow_le_one_of_one_le_of_nonpos hb (by linarith), Real.one_le_rpow hb hc⟩
 
 /- English proof (translation)
-Use `⟨fun Y => ?_⟩` and prove the remaining obligations. Establish `hw` using `Y.θ_win`. Unfold `normWin at hw`. Establish `hb` using `tie_one_lt_b D large₂`. Establish `hm' : (0 : ℝ) < (D.R.m : ℝ)` using `by exact_mod_cast hm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm2 : (0 : ℝ) < (D.R.m : ℝ) ^ 2` using `pow_pos hm' 2`. Establish `hneg : C1 * (D.R.m : ℝ) ^ 2 < -(C1 * (D.R.m : ℝ) ^ 2)`. Combine the linear relations using `[mul_neg_of_neg_of_pos h hm2]`. Establish `hlt` using `Real.rpow_lt_rpow_of_exponent_lt hb hneg`. Combine the linear relations using `[hw.1, hw.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem tie_loopTie_isEmpty_of_neg (D : D7) (large₂ : SizeData₂ D) (X : TermTie D) (u u' : D.what₂.Word) {C1 : ℝ}
     (h : C1 < 0) (hm : 0 < D.R.m) : IsEmpty (LoopTie D large₂ X u u' C1) := by
@@ -440,7 +438,7 @@ def tie_HAmp (D : D7) (large₂ : SizeData₂ D) (u u' : D.what₂.Word) (C1 : �
     ∃ A : ∀ τ, LocS (W τ), (∀ τ, GoodS D (lamD D τ) (A τ)) ∧ ∀ τ, (A τ).deg = D.dsig τ
 
 /- English proof (translation)
-Unfold `tie_HRows at hR`. Unfold `tie_HAmp at hA`. Take `⟨what₂, hrows⟩` from `hR`. Take `⟨θ, hθ, W, hW, A, hAS, hdeg⟩` from `hA`. Conclude with `⟨{ F0 := tie_flag0 D u flag_e_eq_hyperbolic := rfl formsAtZero := rfl what₂ := what₂ isRows := hrows fl_eq := fun t => (h.false t).elim Lam_mem := fun t => (h.false t).elim frame_ok := fun t => (h.false t).elim wRow_eq := fun p => (h.false (D.s.pfst p)).elim pair_inj := fun p => …`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tie_loopTie_of_noTerms (D : D7) (large₂ : SizeData₂ D) (X : TermTie D) (u u' : D.what₂.Word) (C1 : ℝ)
     (h : IsEmpty (D.s.Term u u')) (hR : tie_HRows D u) (hA : tie_HAmp D large₂ u u' C1) :
@@ -479,7 +477,7 @@ theorem tie_loopTie_of_noTerms (D : D7) (large₂ : SizeData₂ D) (X : TermTie 
     J_norm := fun t => (h.false t).elim }⟩
 
 /- English proof (translation)
-Unfold `tie_HAmp`. Conclude with `⟨Y.θ, Y.θ_win, Y.W, Y.goodW, Y.A, Y.goodS, Y.deg_eq⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem tie_HAmp_of_loopTie (D : D7) (large₂ : SizeData₂ D) (X : TermTie D) (u u' : D.what₂.Word) (C1 : ℝ)
     (Y : LoopTie D large₂ X u u' C1) : tie_HAmp D large₂ u u' C1 := by
@@ -487,9 +485,9 @@ theorem tie_HAmp_of_loopTie (D : D7) (large₂ : SizeData₂ D) (X : TermTie D) 
   exact ⟨Y.θ, Y.θ_win, Y.W, Y.goodW, Y.A, Y.goodS, Y.deg_eq⟩
 
 /- English proof (translation)
-Establish `h1` using `X.wRow_pos p`. Rewrite `h1` using `[Y.wRow_eq p]`. Unfold `Formalism.MainNotions.S.wRow at h1`. Use `Nat.pos_of_ne_zero (fun h0 => ?_)` and prove the remaining obligations. Rewrite `h1` using `[h0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at h1`.
+Simplify using the standard rewrite rules.
 -/
 theorem tie_loopTie_aut_finite (D : D7) (large₂ : SizeData₂ D) (X : TermTie D) (u u' : D.what₂.Word) (C1 : ℝ)
     (Y : LoopTie D large₂ X u u' C1) (p : D.s.Pair u u') :
@@ -502,7 +500,7 @@ theorem tie_loopTie_aut_finite (D : D7) (large₂ : SizeData₂ D) (X : TermTie 
   simp at h1
 
 /- English proof (translation)
-Take `⟨X⟩` from `tie_termTie_of_noTerms D h`. Conclude with `⟨⟨X, fun u u' => (tie_loopTie_of_noTerms D large₂ X u u' Cn (h u u') (hR u) (hA u u')).some⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem loop_ties_of_no_terms (D : D7) (large₂ : SizeData₂ D) (Cn : ℝ) (h : ∀ u u', IsEmpty (D.s.Term u u'))
     (hR : ∀ u, tie_HRows D u) (hA : ∀ u u', tie_HAmp D large₂ u u' Cn) : Nonempty (Formalism.MainNotions.UniformConstantsAndStatements.Ties D large₂ Cn) := by
@@ -510,7 +508,7 @@ theorem loop_ties_of_no_terms (D : D7) (large₂ : SizeData₂ D) (Cn : ℝ) (h 
   exact ⟨⟨X, fun u u' => (tie_loopTie_of_noTerms D large₂ X u u' Cn (h u u') (hR u) (hA u u')).some⟩⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨T⟩`. Conclude with `⟨T.X, fun u u' => ⟨T.Y u u'⟩⟩`. Introduce and unpack `⟨X, hY⟩`. Conclude with `⟨⟨X, fun u u' => (hY u u').some⟩⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem loop_ties_nonempty_iff (D : D7) (large₂ : SizeData₂ D) (Cn : ℝ) :
     Nonempty (Formalism.MainNotions.UniformConstantsAndStatements.Ties D large₂ Cn) ↔ ∃ X : TermTie D, ∀ u u', Nonempty (LoopTie D large₂ X u u' Cn) := by
@@ -525,15 +523,15 @@ section BC
 open Formalism.MainNotions.S.LocalSplitGroups
 
 /- English proof (translation)
-Introduce `hdet`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Establish `hcol : ∀ i, S.hT (S.frame i) (∑ j, v j • S.frame j) = 0`. Introduce `i`. Establish `hi` using `congrFun hv i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mulVec, dotProduct, HSpace.gram, Pi.zero_apply] at hi`. Rewrite using `[map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`. Rewrite using `[← hi]`. Conclude with `Finset.sum_congr rfl (fun j _ => mul_comm _ _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hall : ∀ x, S.hT x (∑ j, v j • S.frame j) = 0`. Introduce `x`. Establish `hx : x ∈ Submodule.span E (Set.range S.frame)`. Rewrite using `[S.frame.span_eq]`. Conclude with `Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨i, rfl⟩` from `hz`. Conclude with `hcol i`. Consider the case `zero => rw [map_zero, LinearMap.zero_apply]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add u w _ _ hu hw => rw [map_add, LinearMap.add_apply, hu, hw, add_zero]`. Consider the case `smul c u _ hu => rw [map_smulₛₗ, LinearMap.smul_apply, hu, smul_zero]`. Establish `hy0 : ∑ j, v j • S.frame j = 0` using `S.nondeg.2 _ hall`. Conclude with `hv0 (funext (Fintype.linearIndependent_iff.mp S.frame.linearIndependent v hy0))`.
+A detailed English derivation is pending.
 -/
 theorem tie_gram_det_ne {E : Type} [Field E] [NumberField E] [StarRing E] (S : Formalism.BasicNotions.HSpace E) :
     S.gram.det ≠ 0 := by
@@ -566,7 +564,7 @@ variable (D : D7) (p : PlF D)
 def tie_Gp : Matrix (Fin (hS D).rank) (Fin (hS D).rank) (D.s.atP p).Ep := (hS D).gram.map (D.s.atP p).ιE
 
 /- English proof (translation)
-Unfold `tie_Gp`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(isUnit_iff_ne_zero.mpr (tie_gram_det_ne (hS D))).map _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tie_Gp_unit : IsUnit (tie_Gp D p).det := by
   unfold tie_Gp
@@ -574,13 +572,13 @@ theorem tie_Gp_unit : IsUnit (tie_Gp D p).det := by
   exact (isUnit_iff_ne_zero.mpr (tie_gram_det_ne (hS D))).map _
 
 /- English proof (translation)
-Rewrite using `[(D.s.atP p).cj_ιE, D.conjF_eq, tie_star]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tie_cj_iota (x : D.host.E) : (D.s.atP p).cj ((D.s.atP p).ιE x) = (D.s.atP p).ιE (star x) := by
   rw [(D.s.atP p).cj_ιE, D.conjF_eq, tie_star]
 
 /- English proof (translation)
-Simplify using `only [tie_Gp, Matrix.map_apply]`. Rewrite using `[tie_cj_iota]`. Use `congr 1`. Simplify using `only [HSpace.gram]`. Conclude with `(hS D).herm.eq _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tie_Gp_cj (i j : Fin (hS D).rank) : (D.s.atP p).cj (tie_Gp D p j i) = tie_Gp D p i j := by
   simp only [tie_Gp, Matrix.map_apply]
@@ -629,11 +627,11 @@ def tie_bc : (hS D).V →+ (Fin (hS D).rank → (D.s.atP p).Ep) where
   map_add' x y := by funext i; simp
 
 /- English proof (translation)
-Establish `hbc : ∀ v, tie_bc D p v = fun i => (D.s.atP p).ιE ((hS D).frame.repr v i)` using `fun v => rfl`. Establish `key : (hS D).hT y x = ∑ j, ∑ i, star ((hS D).frame.repr y j) * ((hS D).gram j i * (hS D).frame.repr x i)` using `by conv_lhs => rw [← (hS D).frame.sum_repr y, ← (hS D).frame.sum_repr x]`. Simplify using `only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, map_smul, smul_eq_mul, starRingEnd_apply, HSpace.gram, Finset.mul_sum, RingHom.id_apply]`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hbc, hbc, show brS (hS D) x y = (hS D).hT y x from rfl, key]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [tie_hp, tie_Gp, Matrix.map_apply, tie_cj_iota, map_sum, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tie_bc_form (x y : (hS D).V) :
     tie_hp D p (tie_bc D p x) (tie_bc D p y) = (D.s.atP p).ιE (brS (hS D) x y) := by
@@ -653,28 +651,20 @@ theorem tie_bc_form (x y : (hS D).V) :
   simp only [tie_hp, tie_Gp, Matrix.map_apply, tie_cj_iota, map_sum, map_mul]
 
 /- English proof (translation)
-Establish `hr` using `(D.s.atP p).rank`. Conclude with `Module.nontrivial_of_finrank_pos (R := (D.s.atP p).Fp) (by rw [hr]; norm_num)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tie_Ep_nontrivial : Nontrivial (D.s.atP p).Ep := by
   have hr := (D.s.atP p).rank
   exact Module.nontrivial_of_finrank_pos (R := (D.s.atP p).Fp) (by rw [hr]; norm_num)
 
 /- English proof (translation)
-Take `⟨what₂, hrows, hpos⟩` from `hR`. Establish `hP : IsEmpty (D.s.Pair u u')` using `⟨fun q => h.elim (D.s.pfst q)⟩`. Conclude with `⟨{ V := fun p => Fin (hS D).rank → (D.s.atP p).Ep acg := fun _ => inferInstance mod := fun _ => inferInstance H := fun p => tie_Hp D p (M p) (hcj p) rank := fun p => by`. Use `tie_Ep_nontrivial D p` as an intermediate fact. Rewrite using `[Module.finrank_fin_fun]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `D.sp.Y_rank 0 (Nat.zero_le _)` as an intermediate fact. Simplify `this` using `[Ranks.rankY]`. Use `bc := fun p => tie_bc D p`. Use `bc_smul := fun p a x => by`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (D.s.atP p).ιE ((hS D).frame.repr (a • x) i) = (D.s.atP p).ιE a * (D.s.atP p).ιE ((hS D).frame.repr x i)`. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul]`. Use `bc_span := fun p => by`. Rewrite using `[eq_top_iff, ← (Pi.basisFun (D.s.atP p).Ep (Fin (hS D).rank)).span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Use `⟨(hS D).frame i, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Simplify using `[tie_bc, Finsupp.single_apply, Pi.single_apply, eq_comm]`. Use `bc_form := fun p x y => tie_bc_form D p x y`.
-
-Use `sgn := fun _ _ => 1`. Use the proof step `sgn' := fun _ _ => 1`. Use `sgn_sq := fun _ _ => by simp`. Use `loc := fun t => isEmptyElim t`. Use `loc_Lam := fun t => isEmptyElim t`.
-
-Use `loc_f := fun t => isEmptyElim t`. Use the proof step `loc_f' := fun t => isEmptyElim t`. Use `local_group_in_family_nontrivial := fun t => isEmptyElim t`. Use `G_pt := fun t => isEmptyElim t`. Use `generic_iff := fun t => isEmptyElim t`.
-
-Use `at_pt := fun t => isEmptyElim t`. Use `scalar_loc := fun q => isEmptyElim q`. Use `massT := fun t => isEmptyElim t`. Use `massT_nonneg := fun t => isEmptyElim t`. Use `massTot := ∑ Λ ∈ what₂, Formalism.MainNotions.S.wRow D (tie_flag0 D u) Λ`.
-
-Use `massTot_pos := hpos`. Use `mass_def := ⟨tie_flag0 D u, what₂, rfl, rfl, hrows, rfl, fun t => isEmptyElim t⟩`. Use `term_inj := fun t => isEmptyElim t`. Use `massPair_eq := fun q => isEmptyElim q }⟩`.
+A detailed English derivation is pending.
 -/
 theorem tie_termLoc_of_noTerms (Y : TermTie D) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (hcj : ∀ p, (M p).L.cj = (D.s.atP p).cj)
@@ -727,7 +717,7 @@ theorem tie_termLoc_of_noTerms (Y : TermTie D) (δ : ∀ p : PlF D, (D.s.atP p).
     massPair_eq := fun q => isEmptyElim q }⟩
 
 /- English proof (translation)
-Use `⟨fun δ M hA u u' => (tie_termLoc_of_noTerms D Y δ M (fun p => ?_) u u' (h u u') (hR u)).some⟩` and prove the remaining obligations. Establish `hp` using `hA p`. Unfold `Agree at hp`. Conclude with `hp.2.2.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem tie_termLocs_of_noTerms (Y : TermTie D) (h : ∀ u u', IsEmpty (D.s.Term u u')) (hR : ∀ u, tie_HRowsPos D u) :
     Nonempty (TermLocs D Y) := by
@@ -743,7 +733,7 @@ section Pt0
 open Formalism.MainNotions.S.LocalSplitGroups
 
 /- English proof (translation)
-Proceed by induction on `ds generalizing i j with`. Consider the case `nil => simp [ptEntry]`. Consider the case `cons d ds ih`. Apply the tactic sequence `rcases i with _ | i <;> rcases j with _ | j <;> simp [ptEntry, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tie_ptEntry_diag {K : Type*} [Zero K] (ds : List K) (i j : ℕ) :
     ptEntry (ds.map (fun t => (t, 1))) i j = if i = j then ds.getD i 0 else 0 := by
@@ -764,9 +754,9 @@ def tie_diagPt {K : Type*} [Zero K] {n : ℕ} (f : Fin n → K) (hf : ∀ a, f a
     rw [h]; simp⟩
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [ptMat, tie_diagPt]`. Rewrite using `[tie_ptEntry_diag]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[List.getD_eq_getElem, Matrix.diagonal_apply_eq]`. Simplify using `[h, Fin.val_inj, Matrix.diagonal_apply_ne _ h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem tie_diagPt_mat {K : Type*} [Zero K] {n : ℕ} (f : Fin n → K) (hf : ∀ a, f a ≠ 0) :
     ptMat (tie_diagPt f hf) = Matrix.diagonal f := by
@@ -779,19 +769,17 @@ theorem tie_diagPt_mat {K : Type*} [Zero K] {n : ℕ} (f : Fin n → K) (hf : �
   · simp [h, Fin.val_inj, Matrix.diagonal_apply_ne _ h]
 
 /- English proof (translation)
-Establish `hT0 : (((D.mem D.u₀).A.T : ℕ) : D.host.E) ≠ 0`. Conclude with `(D.mem D.u₀).A.T_prime.ne_zero` after adjusting the coercions. Establish `hc` using `D.cOf_ne u`. Establish `hc'` using `D.cOf_ne u'`. Establish `hcc : D.host.conj (D.cOf u) ≠ 0` using `fun h => hc ((map_eq_zero_iff _ D.host.conj.injective).1 h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc' : D.host.conj (D.cOf u') ≠ 0` using `fun h => hc' ((map_eq_zero_iff _ D.host.conj.injective).1 h)`. Set `x : D.host.E` to `(((D.mem D.u₀).A.T : ℕ) : D.host.E) / (D.cOf u * D.cOf u')`. Establish `hx0 : x ≠ 0` using `div_ne_zero hT0 (mul_ne_zero hc hc')`. Set `f : Fin (D.R.rS + 1) → D.host.E` to `fun a => if (a : ℕ) = D.R.rS then x else 1`. Establish `hf : ∀ a, f a ≠ 0` using `fun a => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [f]`. Use `split_ifs`. Conclude with `hx0`. Conclude with `one_ne_zero`. Establish `hA : ((Matrix.diagonal f).submatrix (Fin.castLE (le_refl (D.R.rS + 1))) (Fin.castLE (le_refl (D.R.rS + 1)))).det = x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal, Fin.prod_univ_castSucc]`. Establish `h1 : ∀ i : Fin D.R.rS, (f ∘ Fin.castLE (le_refl (D.R.rS + 1))) (Fin.castSucc i) = 1` using `fun i => by`. Simplify using `[f, i.isLt.ne]`. Rewrite using `[Finset.prod_congr rfl (fun i _ => h1 i), Finset.prod_const_one, one_mul]`. Simplify using `[f]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : ((Matrix.diagonal f).submatrix (Fin.castLE (Nat.le_succ D.R.rS)) (Fin.castLE (Nat.le_succ D.R.rS))).det = 1`. Rewrite using `[Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal]`. Conclude with `Finset.prod_eq_one (fun i _ => by simp [f, i.isLt.ne])`. Establish `hxx : x * D.host.conj x = (((D.mem u).A.T : ℕ) : D.host.E) * (((D.mem u').A.T : ℕ) : D.host.E)`. Establish `e1` using `D.cOf_eq u`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2` using `D.cOf_eq u'`. Simplify using `only [x, map_div₀, map_mul, map_natCast]`. Rewrite using `[div_mul_div_comm, div_eq_iff (mul_ne_zero (mul_ne_zero hc hc') (mul_ne_zero hcc hcc'))]`. Use `nth_rewrite 1 [← e1]`. Rewrite using `[← e2]`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `⟨tie_diagPt f hf, ?_⟩` and prove the remaining obligations. Unfold `Gpt Dmin`. Rewrite using `[dif_pos le_rfl, dif_pos (Nat.le_succ _), tie_diagPt_mat, hA, hB, D.conjF_eq, D.conjF_eq, map_one, hxx]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem zero_of_gram_point_exists (D : D7) (u u' : D.what₂.Word) :
     ∃ w : Point D.host.E (D.R.rS + 1), Gpt (D.mem u).A.T (D.mem u').A.T w = 0 := by
@@ -837,14 +825,14 @@ theorem zero_of_gram_point_exists (D : D7) (u u' : D.what₂.Word) :
 end Pt0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨D.s.ptOf t, X.pt_cell t hG hr⟩`.
+Supply the required witnesses or components.
 -/
 theorem tie_cells_top_of_tie (D : D7) (X : TermTie D) {u u' : D.what₂.Word} (t : D.s.Term u u')
     (hG : D.s.Gterm t ≠ 0) (hr : D.s.relevant t) :
     ∃ p : Point D.host.E (D.R.rS + 1), IsInCell (ZhatOM (ZhatL (X.fl t) (X.fl' t))) p := ⟨D.s.ptOf t, X.pt_cell t hG hr⟩
 
 /- English proof (translation)
-Rewrite using `[X.pval_eq p, Y.J_irr _ hG hr, ContinuousLinearMap.zero_comp]`. Unfold `hsInner`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem tie_pval_irr_of_tie (D : D7) (large₂ : SizeData₂ D) (X : TermTie D) (u u' : D.what₂.Word) (C1 : ℝ)
     (Y : LoopTie D large₂ X u u' C1) (p : D.s.Pair u u') (hG : D.s.Gterm (D.s.pfst p) ≠ 0)
@@ -854,7 +842,7 @@ theorem tie_pval_irr_of_tie (D : D7) (large₂ : SizeData₂ D) (X : TermTie D) 
   simp
 
 /- English proof (translation)
-Take `⟨X⟩` from `tie_termTie_of_noTerms D h`. Conclude with `⟨X, fun u u' => tie_loopTie_of_noTerms D large₂ X u u' Cw (h u u') (hR u) (hA u u'), tie_termLocs_of_noTerms D X h hRp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tie_all_of_noTerms (D : D7) (large₂ : SizeData₂ D) (Cw : ℝ) (h : ∀ u u', IsEmpty (D.s.Term u u'))
     (hR : ∀ u, tie_HRows D u) (hRp : ∀ u, tie_HRowsPos D u) (hA : ∀ u u', tie_HAmp D large₂ u u' Cw) :
@@ -867,7 +855,7 @@ def tie_HRowLat (D : D7) (u : D.what₂.Word) : Prop :=
   ∃ Λ : Submodule (𝓞 D.host.E) (VS D).V, IsRowLat D (tie_flag0 D u) Λ
 
 /- English proof (translation)
-Unfold `tie_HRowLat at h`. Unfold `IsRowReps`. Conclude with `⟨fun Λ hΛ => by simp at hΛ, fun Λ hΛ => (h ⟨Λ, hΛ⟩).elim⟩`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem tie_rows_empty_of_not_HRowLat (D : D7) (u : D.what₂.Word) (h : ¬ tie_HRowLat D u) :
     IsRowReps D (tie_flag0 D u) ∅ := by
@@ -876,7 +864,7 @@ theorem tie_rows_empty_of_not_HRowLat (D : D7) (u : D.what₂.Word) (h : ¬ tie_
   exact ⟨fun Λ hΛ => by simp at hΛ, fun Λ hΛ => (h ⟨Λ, hΛ⟩).elim⟩
 
 /- English proof (translation)
-Establish `hr` using `Y.isRows`. Unfold `IsRowReps at hr`. Conclude with `⟨X.abelian₂ t, hr.1 _ (Y.Lam_mem t)⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem tie_HRowLat_of_term (D : D7) (large₂ : SizeData₂ D) (X : TermTie D) (u u' : D.what₂.Word) (C1 : ℝ)
     (Y : LoopTie D large₂ X u u' C1) (t : D.s.Term u u') : ∃ Λ, IsRowLat D Y.F0 Λ := by

@@ -20,9 +20,9 @@ section SlopeTestRemainingChoices
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hd : 0 < Module.finrank F E` using `Module.finrank_pos`. Set `s : {r : ℝ // 0 < r}` to `⟨t.1 ^ (((Module.finrank F E : ℕ) : ℝ)⁻¹), Real.rpow_pos_of_pos t.2 _⟩`. Establish `hs : s ^ Module.finrank F E = t`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(t.1 ^ (((Module.finrank F E : ℕ) : ℝ)⁻¹)) ^ Module.finrank F E = t.1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `Real.rpow_inv_natCast_pow t.2.le hd.ne'`. Rewrite using `[← hs, ← UpperTheory.centralSection_baseChange F E n s]`. Conclude with `(UpperTheory.adele_galois_action_baseChange_compat F E σ n).2.2.2.2.1 _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gal_central (σ : E ≃ₐ[F] E) (n : ℕ) (t : {r : ℝ // 0 < r}) :
     mapGL n (galAd σ) (centralSection E n t) = centralSection E n t := by
@@ -36,9 +36,9 @@ private theorem gal_central (σ : E ≃ₐ[F] E) (n : ℕ) (t : {r : ℝ // 0 < 
   exact (UpperTheory.adele_galois_action_baseChange_compat F E σ n).2.2.2.2.1 _
 
 /- English proof (translation)
-Establish `h : ∀ x : E ⊗[F] A, Algebra.TensorProduct.map (σ : E →ₐ[F] E) (AlgHom.id F A) (Algebra.TensorProduct.map (τ : E →ₐ[F] E) (AlgHom.id F A) x) = Algebra.TensorProduct.map ((σ * τ : E ≃ₐ[F] E) : E →ₐ[F] E) (AlgHom.id F A) x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a c => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a c ha hc => simp only [map_add, ha, hc]`. Simplify using `[galOf, h]`.
+Treat this case separately. Simplify using the standard rewrite rules.
 -/
 private theorem galOf_mul' {A B : Type*} [CommRing A] [Algebra F A] [CommRing B] [Algebra E B] (e : E ⊗[F] A ≃ₐ[E] B)
     (σ τ : E ≃ₐ[F] E) (b : B) : galOf e σ (galOf e τ b) = galOf e (σ * τ) b := by
@@ -53,9 +53,9 @@ private theorem galOf_mul' {A B : Type*} [CommRing A] [Algebra F A] [CommRing B]
   simp [galOf, h]
 
 /- English proof (translation)
-Establish `h : ∀ x : E ⊗[F] A, Algebra.TensorProduct.map ((1 : E ≃ₐ[F] E) : E →ₐ[F] E) (AlgHom.id F A) x = x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a c => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a c ha hc => simp only [map_add, ha, hc]`. Simplify using `[galOf, h]`.
+Treat this case separately. Simplify using the standard rewrite rules.
 -/
 private theorem galOf_one' {A B : Type*} [CommRing A] [Algebra F A] [CommRing B] [Algebra E B] (e : E ⊗[F] A ≃ₐ[E] B)
     (b : B) : galOf e (1 : E ≃ₐ[F] E) b = b := by
@@ -68,9 +68,9 @@ private theorem galOf_one' {A B : Type*} [CommRing A] [Algebra F A] [CommRing B]
   simp [galOf, h]
 
 /- English proof (translation)
-Break down `hσ with rfl | hσ` into its components or cases. Establish `: mapGL n (galAd (1 : E ≃ₐ[F] E)) g = g` using `Units.ext (Matrix.ext fun a b => galOf_one' (adeleTensorEquiv F E) _)`. Rewrite using `[this]`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `: Subsingleton (AdelicGLn.AdelicGL E 0)` using `⟨fun x y => Units.ext (Subsingleton.elim _ _)⟩`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[Subsingleton.elim (mapGL 0 (galAd σ) g) g]`. Conclude with `(UpperTheory.ConvolutionTheory.G.character_column_kernels_of_block_chi_c_of_block_chi_one F E σ hσ n hn).2.2 g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gal_module [IsGalois F E] (σ : E ≃ₐ[F] E) (hσ : σ = 1 ∨ ∀ τ, τ ∈ Subgroup.zpowers σ) (n : ℕ)
     (g : AdelicGLn.AdelicGL E n) : detModule E n (mapGL n (galAd σ) g) = detModule E n g := by
@@ -85,7 +85,7 @@ private theorem gal_module [IsGalois F E] (σ : E ≃ₐ[F] E) (hσ : σ = 1 ∨
   · exact (UpperTheory.ConvolutionTheory.G.character_column_kernels_of_block_chi_c_of_block_chi_one F E σ hσ n hn).2.2 g
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hθ, hx, hy, map_mul, map_inv, gal_central, hg, ← hg, gal_module σ hσ]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem e_proj [IsGalois F E] {σ : E ≃ₐ[F] E} (hσ : σ = 1 ∨ ∀ τ, τ ∈ Subgroup.zpowers σ) {n : ℕ}
     {μ : Measure (normOneGL E n)} [μ.IsHaarMeasure] {θ : Twist μ} (hθ : IsGalTwist σ θ)
@@ -97,7 +97,7 @@ private theorem e_proj [IsGalois F E] {σ : E ≃ₐ[F] E} (hσ : σ = 1 ∨ ∀
   rw [hθ, hx, hy, map_mul, map_inv, gal_central, hg, ← hg, gal_module σ hσ]
 
 /- English proof (translation)
-The claim follows from `e_proj hσ hθ h rfl rfl`.
+A detailed English derivation is pending.
 -/
 private theorem e_finProj [IsGalois F E] {σ : E ≃ₐ[F] E} (hσ : σ = 1 ∨ ∀ τ, τ ∈ Subgroup.zpowers σ) {n : ℕ}
     {μ : Measure (normOneGL E n)} [μ.IsHaarMeasure] {θ : Twist μ} (hθ : IsGalTwist σ θ)
@@ -106,7 +106,7 @@ private theorem e_finProj [IsGalois F E] {σ : E ≃ₐ[F] E} (hσ : σ = 1 ∨ 
   e_proj hσ hθ h rfl rfl
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun a b => Prod.ext ?_ ?_)` and prove the remaining obligations. Conclude with `congrFun (congrFun (congrArg (fun x : GL (Fin n) (InfiniteAdeleRing E) => x.val) hi) a) b`. Use `FiniteAdeleRing.ext E fun w => ?_` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun (congrArg (fun x : GL (Fin n) (CompletionsOver E (w.under (𝓞 F))) => x.val) (hf (w.under (𝓞 F)))) a) b`. Conclude with `congrFun h1 ⟨w, inferInstance⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ad_ext {n : ℕ} {g h : AdelicGLn.AdelicGL E n}
     (hi : UpperTheory.ConvolutionTheory.T4.pI E n g = UpperTheory.ConvolutionTheory.T4.pI E n h)
@@ -119,27 +119,27 @@ private theorem ad_ext {n : ℕ} {g h : AdelicGLn.AdelicGL E n}
     exact congrFun h1 ⟨w, inferInstance⟩
 
 /- English proof (translation)
-The claim follows from `congrArg Prod.fst (prodEquiv_finEmb u)`.
+A detailed English derivation is pending.
 -/
 private theorem pI_finEmb {n : ℕ} (u : AdelicGLn.FiniteAdelicGL E n) : UpperTheory.ConvolutionTheory.T4.pI E n (finEmb E n u) = 1 :=
   congrArg Prod.fst (prodEquiv_finEmb u)
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.ext fun _ _ => rfl)`.
+A detailed English derivation is pending.
 -/
 private theorem cmp_pE {n : ℕ} (p : Pl F) (u : PlacesOver E p) (g : AdelicGLn.AdelicGL E n) :
     GM.cmp u (UpperTheory.ConvolutionTheory.T4.pE E n p g) = finAt u.1 g :=
   Units.ext (Matrix.ext fun _ _ => rfl)
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.ext fun a b => funext fun u => congrFun (congrFun (congrArg (fun z : GL (Fin n) (u.1.adicCompletion E) => z.val) (h u)) a) b)`.
+A detailed English derivation is pending.
 -/
 private theorem gl_ext {n : ℕ} {p : Pl F} {x y : GL (Fin n) (CompletionsOver E p)} (h : ∀ u, GM.cmp u x = GM.cmp u y) : x = y :=
   Units.ext (Matrix.ext fun a b => funext fun u =>
     congrFun (congrFun (congrArg (fun z : GL (Fin n) (u.1.adicCompletion E) => z.val) (h u)) a) b)
 
 /- English proof (translation)
-Establish `h1 : v.asIdeal = u.1.asIdeal.under (𝓞 F)` using `u.2.over`. Establish `h2 : p.asIdeal = u'.1.asIdeal.under (𝓞 F)` using `u'.2.over`. Conclude with `HeightOneSpectrum.ext (by rw [h1, h2, h])`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem over_unique {v p : Pl F} (u : PlacesOver E v) (u' : PlacesOver E p) (h : u.1 = u'.1) : v = p := by
   have h1 : v.asIdeal = u.1.asIdeal.under (𝓞 F) := u.2.over
@@ -147,21 +147,21 @@ private theorem over_unique {v p : Pl F} (u : PlacesOver E v) (u' : PlacesOver E
   exact HeightOneSpectrum.ext (by rw [h1, h2, h])
 
 /- English proof (translation)
-The claim follows from `(UpperTheory.ConvolutionTheory.Tf.locEmb E n w).2.1 x`.
+A detailed English derivation is pending.
 -/
 private theorem fin_local {n : ℕ} (w : Pl E) (x : GL (Fin n) (w.adicCompletion E)) :
     finAt w (finEmb E n (AdelicGLn.localEmbedding w x)) = x :=
   (UpperTheory.ConvolutionTheory.Tf.locEmb E n w).2.1 x
 
 /- English proof (translation)
-The claim follows from `(UpperTheory.ConvolutionTheory.Tf.locEmb E n w).2.2.1 u h x`.
+A detailed English derivation is pending.
 -/
 private theorem fin_local_ne {n : ℕ} {w u : Pl E} (h : u ≠ w) (x : GL (Fin n) (w.adicCompletion E)) :
     finAt u (finEmb E n (AdelicGLn.localEmbedding w x)) = 1 :=
   (UpperTheory.ConvolutionTheory.Tf.locEmb E n w).2.2.1 u h x
 
 /- English proof (translation)
-Use `gl_ext fun u => ?_` and prove the remaining obligations. Rewrite using `[cmp_pE, map_one, fin_local_ne (fun e => hv (over_unique u w e))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pE_local_ne {n : ℕ} {v p : Pl F} (hv : v ≠ p) (w : PlacesOver E p) (x : GL (Fin n) (w.1.adicCompletion E)) :
     UpperTheory.ConvolutionTheory.T4.pE E n v (finEmb E n (AdelicGLn.localEmbedding w.1 x)) = 1 := by
@@ -169,9 +169,9 @@ private theorem pE_local_ne {n : ℕ} {v p : Pl F} (hv : v ≠ p) (w : PlacesOve
   rw [cmp_pE, map_one, fin_local_ne (fun e => hv (over_unique u w e))]
 
 /- English proof (translation)
-Establish `hc` using `UpperTheory.adele_galois_action_baseChange_compat F E σ n`. Use `ad_ext (F := F) ?_ fun v' => ?_` and prove the remaining obligations. Rewrite using `[hc.1, pI_finEmb, pI_finEmb, map_one]`. Rewrite using `[hc.2.1 v']`. Distinguish the cases in `hv : v' = v`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hv` using the available equality. Use `gl_ext fun u => ?_` and prove the remaining obligations. Take `rfl` from `hw u`. Rewrite using `[hs, cmp_pE, cmp_pE, fin_local, fin_local]`. Rewrite using `[pE_local_ne hv, pE_local_ne hv, map_one]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem gal_local {σ : E ≃ₐ[F] E} {n : ℕ} {v : Pl F} {w : PlacesOver E v} (hw : ∀ u : PlacesOver E v, u = w)
     {s : Gw n w.1 →* Gw n w.1} (hs : IsLocGal σ w s) (y : Gw n w.1) :
@@ -189,7 +189,7 @@ private theorem gal_local {σ : E ≃ₐ[F] E} {n : ℕ} {v : Pl F} {w : PlacesO
     · rw [pE_local_ne hv, pE_local_ne hv, map_one]
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `(tensorEquiv' E v).surjective y`. Rewrite using `[← tensorEquiv'_tmul_mul]`. Express the relevant statement in the definitionally equal form `tensorEquiv' E v (Algebra.TensorProduct.map (σ : E →ₐ[F] E) (AlgHom.id F _) ((tensorEquiv' E v).symm (tensorEquiv' E v ((1 ⊗ₜ a) * t)))) = _ * tensorEquiv' E v (Algebra.TensorProduct.map (σ : E →ₐ[F] E) (AlgHom.id F _) ((tensorEquiv' E v).symm (tensorEquiv' E v t)))`. Rewrite using `[AlgEquiv.symm_apply_apply, AlgEquiv.symm_apply_apply, ← tensorEquiv'_tmul_mul, map_mul, Algebra.TensorProduct.map_tmul]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem galFin_mul' (σ : E ≃ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (a : v.adicCompletion F)
     (y : CompletionsOver E v) :
@@ -206,7 +206,7 @@ private theorem galFin_mul' (σ : E ≃ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)
   simp
 
 /- English proof (translation)
-Set `L : CompletionsOver E v →ₗ[v.adicCompletion F] CompletionsOver E v` to `{ toFun := galFin σ v map_add' := map_add _ map_smul' := fun a y => by`. Simplify using `only [Algebra.smul_def, RingHom.id_apply]`. Conclude with `galFin_mul' σ v a y }`. Conclude with `IsModuleTopology.continuous_of_linearMap L`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem galFin_cont' (σ : E ≃ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) :
     Continuous (galFin σ v) := by
@@ -230,13 +230,13 @@ private theorem eW_apply {v : Pl F} (w : PlacesOver E v) (hw : ∀ u : PlacesOve
     (y : CompletionsOver E v) : eW w hw y = y w := rfl
 
 /- English proof (translation)
-The claim follows from `continuous_apply w`.
+A detailed English derivation is pending.
 -/
 private theorem eW_cont {v : Pl F} (w : PlacesOver E v) (hw : ∀ u : PlacesOver E v, u = w) : Continuous (eW w hw) :=
   continuous_apply w
 
 /- English proof (translation)
-The claim follows from `letI : Unique (PlacesOver E v) := ⟨⟨w⟩, hw⟩ (Homeomorph.piUnique fun u : PlacesOver E v => u.1.adicCompletion E).symm.continuous`.
+A detailed English derivation is pending.
 -/
 private theorem eW_symm_cont {v : Pl F} (w : PlacesOver E v) (hw : ∀ u : PlacesOver E v, u = w) :
     Continuous (eW w hw).symm :=
@@ -255,14 +255,14 @@ private theorem rr_apply (σ : E ≃ₐ[F] E) {v : Pl F} (w : PlacesOver E v) (h
     (y : w.1.adicCompletion E) : rr σ w hw y = eW w hw (galFin σ v ((eW w hw).symm y)) := rfl
 
 /- English proof (translation)
-The claim follows from `(eW_cont w hw).comp ((galFin_cont' σ v).comp (eW_symm_cont w hw))`.
+A detailed English derivation is pending.
 -/
 private theorem rr_cont (σ : E ≃ₐ[F] E) {v : Pl F} (w : PlacesOver E v) (hw : ∀ u : PlacesOver E v, u = w) :
     Continuous (rr σ w hw) :=
   (eW_cont w hw).comp ((galFin_cont' σ v).comp (eW_symm_cont w hw))
 
 /- English proof (translation)
-Rewrite using `[rr_apply, rr_apply, RingEquiv.symm_apply_apply]`. Establish `h1 : galFin σ v (galFin τ v ((eW w hw).symm y)) = (eW w hw).symm y`. Express the relevant statement in the definitionally equal form `galOf (tensorEquiv' E v) σ (galOf (tensorEquiv' E v) τ _) = _`. Rewrite using `[galOf_mul', h, galOf_one']`. Rewrite using `[h1, RingEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem rr_inv (σ τ : E ≃ₐ[F] E) (h : σ * τ = 1) {v : Pl F} (w : PlacesOver E v)
     (hw : ∀ u : PlacesOver E v, u = w) (y : w.1.adicCompletion E) : rr σ w hw (rr τ w hw y) = y := by
@@ -273,7 +273,7 @@ private theorem rr_inv (σ τ : E ≃ₐ[F] E) (h : σ * τ = 1) {v : Pl F} (w :
   rw [h1, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.ext fun a b => rr_inv σ τ h w hw _)`.
+A detailed English derivation is pending.
 -/
 private theorem mapGL_rr_inv (σ τ : E ≃ₐ[F] E) (h : σ * τ = 1) {v : Pl F} (w : PlacesOver E v)
     (hw : ∀ u : PlacesOver E v, u = w) (n : ℕ) (g : Gw n w.1) :
@@ -291,9 +291,9 @@ private def sOf (σ : E ≃ₐ[F] E) {v : Pl F} (w : PlacesOver E v) (hw : ∀ u
   continuous_invFun := Continuous.units_map _ (continuous_id.matrix_map (rr_cont σ⁻¹ w hw))
 
 /- English proof (translation)
-Introduce `g`. Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(galFin σ v ((g : Matrix (Fin n) (Fin n) (CompletionsOver E v)) a b)) w = rr σ w hw (((g : Matrix (Fin n) (Fin n) (CompletionsOver E v)) a b) w)`. Rewrite using `[rr_apply, eW_apply]`. Establish `: (eW w hw).symm (((g : Matrix (Fin n) (Fin n) (CompletionsOver E v)) a b) w) = (g : Matrix (Fin n) (Fin n) (CompletionsOver E v)) a b`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[RingEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sOf_isLocGal (σ : E ≃ₐ[F] E) {v : Pl F} (w : PlacesOver E v) (hw : ∀ u : PlacesOver E v, u = w) (n : ℕ) :
     IsLocGal σ w ((sOf σ w hw n : Gw n w.1 ≃ₜ* Gw n w.1) : Gw n w.1 →* Gw n w.1) := by
@@ -320,23 +320,21 @@ private def twRep {G : Type} [Group G] [TopologicalSpace G] (τ : SmIrr G) (s : 
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hp n v w hns`. Establish `hw : ∀ u : PlacesOver E v, u = w` using `fun u => PositivityTheory.tft.PlacesPf.unique_of_not_split hp v hns w u`. Establish `hσ : σ = 1 ∨ ∀ τ, τ ∈ Subgroup.zpowers σ`. Distinguish the cases in `h1 : σ = 1`. Conclude with `Or.inl h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Use `right`. Introduce `τ`. Use `haveI : Fact (Module.finrank F E).Prime := ⟨hp⟩`. Conclude with `mem_zpowers_of_prime_card (IsGalois.card_aut_eq_finrank F E) h1`. Establish `hloc` using `sOf_isLocGal σ w hw n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨hw, sOf σ w hw n, hloc, fun μ _ θ hθ => ?_⟩` and prove the remaining obligations. Establish `hint : ∀ g x, θ.U (rhoL μ w.1 g x) = rhoL μ w.1 (sOf σ w hw n g) (θ.U x)` using `fun g x => by`. Express the relevant statement in the definitionally equal form `θ.U (rightRegularRep (rationalGLOne E n) μ (MultiplicityOne.finProj E n _) x) = rightRegularRep (rationalGLOne E n) μ (MultiplicityOne.finProj E n _) (θ.U x)`. Rewrite using `[(UpperTheory.ConvolutionTheory.Dp.twUnitary E n μ θ).2.2, e_finProj hσ hθ (gal_local hw hloc g)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨hint, fun V τ hV hVU hocc => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, -, -⟩` from `UpperTheory.ConvolutionTheory.C.twistUnitary E n μ θ`. Establish `hUa : ∀ x, θ.U x = U x` using `fun x => by rw [← hU]; rfl`. Use `set s := sOf σ w hw n with hs`. Set `τ' : SmIrr (Gw n w.1)` to `twRep τ s.symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hocc' : Occurs μ V w.1 τ'`. Take `⟨f, hf0, hfV, hf⟩` from `hocc`. Use `⟨(θ.U : LL μ →ₗ[ℂ] LL μ) ∘ₗ f, ?_, fun x => ?_, fun g (x : τ.V) => ?_⟩` and prove the remaining obligations. Introduce `h0`. Use `hf0 (LinearMap.ext fun x => U.injective ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h : θ.U (f x) = 0` using `LinearMap.congr_fun h0 x`. Rewrite `h` using `[hUa]`. Rewrite using `[h, LinearMap.zero_apply, map_zero]`. Rewrite using `[← hVU]`. Conclude with `⟨f x, hfV x, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Establish `e` using `hint (s.symm g) (f x)`. Rewrite `e` using `[s.apply_symm_apply, ← hf]`. Conclude with `e`. Use `letI : MeasurableSpace (Gw n w.1) := borel _`. Use `haveI : BorelSpace (Gw n w.1) := ⟨rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨-, h2, -⟩` from `UpperTheory.ConvolutionTheory.C.occursBasics E n μ V w.1 Measure.haar hV`. Take `⟨J⟩` from `h2 τ' τ hocc' hocc`. Use `⟨J.toLinearEquiv, fun g x => ?_⟩` and prove the remaining obligations. Establish `e` using `Representation.IntertwiningMap.isIntertwining _ _ J.toIntertwiningMap (s g) x`. Establish `e2 : τ'.ρ (s g) = τ.ρ g` using `congrArg τ.ρ (s.symm_apply_apply g)`.
-
-Rewrite `e` using `[e2]`. Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.C.locGalEx :
     UpperTheory.ConvolutionTheory.C.LocGalEx := by

@@ -10,7 +10,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 noncomputable section
 namespace GlobalTheory.LeftVertexPar
 /- English proof (translation)
-Introduce `_ D _ G₀ _ _ Pl0 T A Ks _ _ _ R G _ hG i hi τ`. Conclude with `GlobalTheory.NodePar.goodPar_of_sigOK (G.P i) (hG.spaces.P i hi.le).sigOK τ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem leftVertex_parabolic_isGood : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D → ∀ (G₀ : Type) [Group G₀] [Fintype G₀] (Pl0 T : Type) (A : FamIn D.what₂.LL G₀ Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (G : GlobalTheory.Grid.GridPre R), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.RowBase R → G.Is → ∀ i, i < D.R.m → ∀ τ, GoodPar (G.P i).V.rank ((G.P i).V.sig (tauE D τ)).1 ((G.P i).V.sig (tauE D τ)).2 ((G.P i).S τ) := by
   intro _ D _ G₀ _ _ Pl0 T A Ks _ _ _ R G _ hG i hi τ
@@ -25,7 +25,7 @@ open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheor
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.LeftVertexPar.leftVertex_parabolic_isGood | exact _root_.GlobalTheory.LeftVertexPar.leftVertex_parabolic_isGood | (intros; apply _root_.GlobalTheory.LeftVertexPar.leftVertex_parabolic_isGood <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.twist_leftVertex_parabolic_isGood : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D → ∀ (G₀ : Type) [Group G₀] [Fintype G₀] (Pl0 T : Type) (A : FamIn D.what₂.LL G₀ Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (G : GlobalTheory.Grid.GridPre R), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.RowBase R → G.Is → ∀ i, i < D.R.m → ∀ τ, GoodPar (G.P i).V.rank ((G.P i).V.sig (tauE D τ)).1 ((G.P i).V.sig (tauE D τ)).2 ((G.P i).S τ) := by
   first | exact @_root_.GlobalTheory.LeftVertexPar.leftVertex_parabolic_isGood | exact _root_.GlobalTheory.LeftVertexPar.leftVertex_parabolic_isGood | (intros; apply _root_.GlobalTheory.LeftVertexPar.leftVertex_parabolic_isGood <;> assumption)

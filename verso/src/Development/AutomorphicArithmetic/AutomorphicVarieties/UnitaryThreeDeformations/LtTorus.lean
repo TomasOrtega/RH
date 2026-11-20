@@ -8,7 +8,7 @@ namespace UpperTheory.V.UnitaryThreeInertia.LtTorus
 variable {R : Type} [CommRing R] {D : Type} [Group D]
 
 /- English proof (translation)
-Break down `Int.units_eq_one_or s with rfl | rfl` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[sgnAct_neg_one, theta_tor]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sgn_tor (s : ℤˣ) (t : Rˣ) : sgnAct 3 R s (tor R t) = tor R t := by
   rcases Int.units_eq_one_or s with rfl | rfl
@@ -16,9 +16,9 @@ private theorem sgn_tor (s : ℤˣ) (t : Rˣ) : sgnAct 3 R s (tor R t) = tor R t
   · rw [sgnAct_neg_one, theta_tor]
 
 /- English proof (translation)
-Use `ext1`. Simplify using `only [SemidirectProduct.mul_left, SemidirectProduct.left_inl, SemidirectProduct.right_inl, sgn_tor, map_one, MulAut.one_apply]`. Apply `Units.ext` to reduce the goal to its premises. Establish `h : (x.left : Matrix (Fin 3) (Fin 3) R) = diagonal (diag x.mat)` using `hx.diagonal_diag.symm`. Rewrite using `[Units.val_mul, Units.val_mul, h, tor_val, diagonal_mul_diagonal, diagonal_mul_diagonal]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `i`. Conclude with `mul_comm _ _`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem comm_tor (t : Rˣ) (x : GG 3 R) (hx : x.mat.IsDiag) :
     GG.ofGL (tor R t) * x = x * GG.ofGL (tor R t) := by
@@ -47,7 +47,7 @@ private theorem tw_apply (w : D →* GG 3 R) (hw : ∀ g, (w g).mat.IsDiag) (χ 
     tw w hw χ g = w g * GG.ofGL (tor R (χ g)) := rfl
 
 /- English proof (translation)
-Use `show ((x.left * sgnAct 3 R x.right (tor R t) : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) a b = _`. Rewrite using `[sgn_tor, Units.val_mul, tor_val, mul_diagonal]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem mat_mul_tor (x : GG 3 R) (t : Rˣ) (a b : Fin 3) :
     (x * GG.ofGL (tor R t)).mat a b = x.mat a b * ((t ^ wt1 b : Rˣ) : R) := by
@@ -68,12 +68,12 @@ private theorem dg_val (d : Fin 3 → Rˣ) :
     (dg d : Matrix (Fin 3) (Fin 3) R) = Matrix.diagonal fun i => (d i : R) := rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 private theorem dg_inv (d : Fin 3 → Rˣ) : (dg d)⁻¹ = dg d⁻¹ := Units.ext rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, dg_val, dg_val, dg_val, diagonal_mul_diagonal]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem dg_mul (d e : Fin 3 → Rˣ) : dg d * dg e = dg (d * e) := by
   apply Units.ext
@@ -81,7 +81,7 @@ private theorem dg_mul (d e : Fin 3 → Rˣ) : dg d * dg e = dg (d * e) := by
   rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[theta_val, dg_inv, dg_val, dg_val, diagonal_transpose]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Jmat, Matrix.mul_apply, Fin.sum_univ_three, diagonal, Fin.rev]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem theta_dg (d : Fin 3 → Rˣ) : theta (dg d) = dg fun a => (d a.rev)⁻¹ := by
   apply Units.ext
@@ -90,7 +90,7 @@ private theorem theta_dg (d : Fin 3 → Rˣ) : theta (dg d) = dg fun a => (d a.r
   fin_cases i <;> fin_cases j <;> simp [Jmat, Matrix.mul_apply, Fin.sum_univ_three, diagonal, Fin.rev]
 
 /- English proof (translation)
-Break down `Int.units_eq_one_or s with rfl | rfl` into its components or cases. Conclude with `⟨d, hd, by simp⟩`. Conclude with `⟨_, fun a => inv_mem (hd a.rev), by rw [sgnAct_neg_one, theta_dg]⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 private theorem sgn_dg (U : Subgroup Rˣ) (s : ℤˣ) (d : Fin 3 → Rˣ) (hd : ∀ a, d a ∈ U) :
     ∃ e : Fin 3 → Rˣ, (∀ a, e a ∈ U) ∧ sgnAct 3 R s (dg d) = dg e := by
@@ -112,9 +112,9 @@ private def dgSub (U : Subgroup Rˣ) : Subgroup (GG 3 R) where
     exact ⟨e, he, by rw [SemidirectProduct.inv_left, hx, dg_inv, h]⟩
 
 /- English proof (translation)
-Establish `h1 : (x.mat * ((x.left⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R)) a a = 1`. Unfold `GG.mat`. Rewrite using `[← Units.val_mul, mul_inv_cancel]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_single a]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨⟨_, _, h1, by rw [mul_comm]; exact h1⟩, rfl⟩`. Introduce `b _ hb`. Rewrite using `[hx (Ne.symm hb), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem diag_unit (x : GG 3 R) (hx : x.mat.IsDiag) (a : Fin 3) : IsUnit (x.mat a a) := by
   have h1 : (x.mat * ((x.left⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R)) a a = 1 := by
@@ -129,9 +129,9 @@ private theorem diag_unit (x : GG 3 R) (hx : x.mat.IsDiag) (a : Fin 3) : IsUnit 
     exact absurd (Finset.mem_univ a) h
 
 /- English proof (translation)
-Use `SemidirectProduct.ext ?_ ?_` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[GG.map, GG.ofGL, tor_val, diagonal_apply, apply_ite f]`. Use `split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_zpow]`. Both sides reduce to the same expression. Both sides reduce to the same expression. Simplify using `[GG.map, GG.ofGL]`.
+Both sides reduce to the same expression. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem map_tor {S : Type} [CommRing S] (f : R →+* S) (t : Rˣ) :
     GG.map f (GG.ofGL (tor R t)) = GG.ofGL (tor S (Units.map f.toMonoidHom t)) := by
@@ -149,61 +149,51 @@ end UpperTheory.V.UnitaryThreeInertia.LtTorus
 
 open UpperTheory.V.UnitaryThreeInertia.LtTorus in
 /- English proof (translation)
-Introduce `O R R' D _ _ _ _ _ _ _ _ _ _ _ _ A p hp η Ψ I φ hcl hcyc hη hηI hΨ u' hmult hloc hdiag hlift hI`. Use `haveI : IsLocalHom (p : R →+* R') := IsLocalHom.of_surjective _ hp`. Use `haveI : Finite (GG 3 R) := Finite.of_injective (fun x : GG 3 R => (x.left, x.right)) (fun x y h => SemidirectProduct.ext (congrArg Prod.fst h) (congrArg Prod.snd h))`. Establish `hinvA : ∀ v : Rˣ, (v : R) ∈ A → ((v⁻¹ : Rˣ) : R) ∈ A`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, hn, hvn⟩` from `(isOfFinOrder_of_finite v).exists_pow_eq_one`. Establish `hv' : v ^ (n - 1) = v⁻¹` using `eq_inv_of_mul_eq_one_left (by rw [← pow_succ, Nat.sub_add_cancel hn, hvn])`. Rewrite using `[← hv', Units.val_pow_eq_pow_val]`. Conclude with `Subalgebra.pow_mem A hv _`. Set `U : Subgroup Rˣ` to `{ carrier := {v | (v : R) ∈ A ∧ ((v⁻¹ : Rˣ) : R) ∈ A} one_mem' := ⟨by simpa using A.one_mem, by simpa using A.one_mem⟩ mul_mem' := fun {a b} ha hb => ⟨by simpa using A.mul_mem ha.1 hb.1, by rw [_root_.mul_inv_rev]; simpa using A.mul_mem hb.2 ha.2⟩ inv_mem' := fun {a} ha => ⟨ha.2, …`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hU : ∀ v : Rˣ, (v : R) ∈ A → v ∈ U` using `fun v hv => ⟨hv, hinvA v hv⟩`. Set `χ : D →* Rˣ` to `(Units.map (algebraMap O R).toMonoidHom).comp Ψ`. Set `χ' : D →* R'ˣ` to `(Units.map (algebraMap O R').toMonoidHom).comp Ψ`. Establish `hχ' : ∀ g, Units.map (p : R →+* R').toMonoidHom (χ g) = χ' g`. Introduce `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `[χ, χ']`. Establish `hχv : ∀ g a, ((χ g ^ wt1 a : Rˣ) : R) = algebraMap O R (psi Ψ a g)`. Introduce `g a`. Use `show ((Units.map (algebraMap O R).toMonoidHom (Ψ g) ^ wt1 a : Rˣ) : R) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[psi, ← map_zpow, Units.coe_map]`. Both sides reduce to the same expression. Establish `hχ'v : ∀ g a, ((χ' g ^ wt1 a : R'ˣ) : R') = algebraMap O R' (psi Ψ a g)`. Introduce `g a`. Use `show ((Units.map (algebraMap O R').toMonoidHom (Ψ g) ^ wt1 a : R'ˣ) : R') = _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[psi, ← map_zpow, Units.coe_map]`. Both sides reduce to the same expression. Establish `hw'v : ∀ g, tw u' hdiag χ'⁻¹ g = u' g * GG.ofGL (tor R' (χ' g)⁻¹)` using `fun g => tw_apply _ _ _ _`. Establish `hw'I : ∀ s ∈ I, tw u' hdiag χ'⁻¹ s = 1`. Introduce `s hs`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hu's : u' s = GG.ofGL (tor R' (χ' s))`. Use `SemidirectProduct.ext ?_ ?_` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Use `show (u' s).mat a b = ((tor R' (χ' s) : GL (Fin 3) R') : Matrix (Fin 3) (Fin 3) R') a b`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tor_val]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[hI s hs a, diagonal_apply_eq, hχ'v]`. Rewrite using `[hdiag s hab, diagonal_apply_ne _ hab]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hmult s, hηI s hs]`. Both sides reduce to the same expression. Rewrite using `[hw'v, hu's, ← map_mul, ← map_mul]`. Simplify using the standard rewrite rules. Establish `hu'loc : IsLocallyConstant u'`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `IsLocallyConstant.desc _ (fun x : GG 3 R' => (x.mat, x.right))` to reduce the goal to its premises. Establish `hc : (fun x : GG 3 R' => (x.mat, x.right)) ∘ u' = fun g => (mats u' g, η g)`. Use function extensionality and compare the values at `g`. Simplify using `[mats, hmult g]`. Rewrite using `[hc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hloc.prodMk hη`. Introduce `x y h`. Simplify using `only [Prod.mk.injEq] at h`. Conclude with `SemidirectProduct.ext (Units.ext h.1) h.2`. Establish `hχloc : IsLocallyConstant χ` using `IsLocallyConstant.desc _ (fun v : Rˣ => (v : R)) (by exact hΨ) Units.val_injective`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hχ'loc : IsLocallyConstant χ'`. Establish `hc : (χ' : D → R'ˣ) = (Units.map (p : R →+* R').toMonoidHom) ∘ χ`. Use function extensionality and compare the values at `g`. Conclude with `(hχ' g).symm`. Rewrite using `[hc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hχloc.comp _`. Establish `hw'loc : IsLocallyConstant (tw u' hdiag χ'⁻¹)`. Establish `hc : (tw u' hdiag χ'⁻¹ : D → GG 3 R') = fun g => u' g * GG.ofGL (tor R' (χ' g)⁻¹)`. Use function extensionality and compare the values at `g`. Conclude with `hw'v g`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Conclude with `hu'loc.comp₂ hχ'loc (fun a b => a * GG.ofGL (tor R' b⁻¹))`. Establish `hex : ∀ a, ∃ y ∈ A, ∃ hy : IsUnit y, p y = (u' φ).mat a a`. Introduce `a`. Take `⟨y, hyA, hyp⟩` from `hlift φ a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨y, hyA, (isUnit_map_iff (p : R →+* R') y).1 ?_, hyp⟩` and prove the remaining obligations. Use `diag_unit (u' φ) (hdiag φ) a` as an intermediate fact. Rewrite `this` using `[← hyp]`. Conclude with `this`. Use `choose y hyA hyU hyp using hex`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Set `d : Fin 3 → Rˣ` to `fun a => (hyU a).unit * χ φ⁻¹ ^ wt1 a`. Establish `hdA : ∀ a, ((d a : Rˣ) : R) ∈ A`. Introduce `a`. Use `show y a * ((χ φ⁻¹ ^ wt1 a : Rˣ) : R) ∈ A`. Rewrite using `[hχv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `A.mul_mem (hyA a) (A.algebraMap_mem _)`. Set `e : dgSub U` to `⟨⟨dg d, η φ⟩, d, fun a => hU _ (hdA a), rfl⟩`. Establish `he : ((GG.map (p : R →+* R')).comp (dgSub U).subtype) e = tw u' hdiag χ'⁻¹ φ` using `by show GG.map (p : R →+* R') ⟨dg d, η φ⟩ = tw u' hdiag χ'⁻¹ φ`. Rewrite using `[hw'v]`. Use `SemidirectProduct.ext ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Use `show ((GeneralLinearGroup.map (p : R →+* R') (dg d) : GL (Fin 3) R') : Matrix (Fin 3) (Fin 3) R') a b = (u' φ * GG.ofGL (tor R' (χ' φ)⁻¹)).mat a b`. Rewrite using `[mat_mul_tor]`. Simplify using `only [GeneralLinearGroup.map_apply, dg_val, RingHom.mapMatrix_apply, Matrix.map_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[diagonal_apply_eq]`. Use `show p (y a * ((χ φ⁻¹ ^ wt1 a : Rˣ) : R)) = _`. Rewrite using `[map_mul, hyp, hχv, AlgHom.commutes, ← hχ'v, map_inv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[diagonal_apply_ne _ hab, map_zero, hdiag φ hab, zero_mul]`. Rewrite using `[SemidirectProduct.mul_right, ← hmult φ]`. Simplify using `[GG.map]`. Take `⟨w, hwloc, hwI, hqw, -⟩` from `lt_zhat I φ hcl hcyc ((GG.map (p : R →+* R')).comp (dgSub U).subtype) (tw u' hdiag χ'⁻¹) e hw'loc hw'I he`. Set `W : D →* GG 3 R` to `(dgSub U).subtype.comp w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hWd : ∀ g, ∃ d : Fin 3 → Rˣ, (∀ a, d a ∈ U) ∧ (W g).left = dg d` using `fun g => (w g).2`. Establish `hwd : ∀ g, (W g).mat.IsDiag`. Introduce `g`. Take `⟨d, -, hd⟩` from `hWd g`. Use `show (((W g).left : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R).IsDiag`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hd, dg_val]`. Conclude with `isDiag_diagonal _`. Establish `hwA : ∀ g a, (W g).mat a a ∈ A`. Introduce `g a`. Take `⟨d, hdU, hd⟩` from `hWd g`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show (((W g).left : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) a a ∈ A`. Rewrite using `[hd, dg_val, diagonal_apply_eq]`. Conclude with `(hdU a).1`. Establish `hWloc : IsLocallyConstant W` using `hwloc.comp Subtype.val`. Use `⟨tw W hwd χ, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
-
-Apply `MonoidHom.ext` to reduce the goal to its premises. Introduce `g`. Establish `hq : GG.map (p : R →+* R') (W g) = tw u' hdiag χ'⁻¹ g` using `congrArg (fun f => f g) hqw`. Use `show GG.map (p : R →+* R') (tw W hwd χ g) = u' g`. Rewrite using `[tw_apply, map_mul, map_tor, hχ', hq, hw'v, mul_assoc, ← map_mul, ← map_mul]`.
-
-Simplify using the standard rewrite rules. Establish `hc : mats (tw W hwd χ) = fun g => (W g * GG.ofGL (tor R (χ g))).mat`. Use function extensionality and compare the values at `g`. Both sides reduce to the same expression. Rewrite using `[hc]`.
-
-Conclude with `hWloc.comp₂ hχloc (fun a b => (a * GG.ofGL (tor R b)).mat)`. Introduce `g a b hab`. Rewrite using `[tw_apply, mat_mul_tor, hwd g hab, zero_mul]`. Introduce `g a`. Rewrite using `[tw_apply, mat_mul_tor, hχv]`.
-
-Conclude with `A.mul_mem (hwA g a) (A.algebraMap_mem _)`. Introduce `s hs a`. Establish `hW1 : W s = 1` using `by show ((w s : dgSub U) : GG 3 R) = 1`. Rewrite using `[hwI s hs]`. Both sides reduce to the same expression.
-
-Rewrite using `[tw_apply, mat_mul_tor, hχv, hW1]`. Simplify using `[GG.mat]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.lt_torus :
     ∀ {O R R' D : Type} [CommRing O] [IsLocalRing O] [CommRing R] [IsLocalRing R] [Algebra O R] [Finite R] [CommRing R'] [IsLocalRing R'] [Algebra O R'] [Group D] [TopologicalSpace D] [IsTopologicalGroup D]

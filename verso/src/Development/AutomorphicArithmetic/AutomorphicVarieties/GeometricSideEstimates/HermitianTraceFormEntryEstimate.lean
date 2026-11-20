@@ -13,14 +13,14 @@ section
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af GlobalTheory.UnitaryBC UpperTheory.V.Lit.Dr UpperTheory.V.Lit.Bor
 
 /- English proof (translation)
-The claim follows from `(norm_le_pi_norm (toL M i j) w).trans ((norm_le_pi_norm (toL M i) j).trans (norm_le_pi_norm (toL M) i))`.
+A detailed English derivation is pending.
 -/
 private theorem entry_le {E : Type} [Field E] [NumberField E] {a : ℕ} (M : Matrix (Fin a) (Fin a) (Cinf E))
     (i j : Fin a) (w : InfinitePlace E) : ‖M i j w‖ ≤ ‖toL M‖ :=
   (norm_le_pi_norm (toL M i j) w).trans ((norm_le_pi_norm (toL M i) j).trans (norm_le_pi_norm (toL M) i))
 
 /- English proof (translation)
-The claim follows from `|trF M p| ≤ Fintype.card (InfinitePlace E) * (a * (a * (‖toL M‖ * ‖toL p‖))) := by unfold trF refine (Finset.abs_sum_le_sum_abs _ _).trans ?_ refine (Finset.sum_le_card_nsmul _ _ (a * (a * (‖toL M‖ * ‖toL p‖))) ?_).trans (by simp) intro w _ refine (Complex.abs_re_le_norm _).trans …`.
+A detailed English derivation is pending.
 -/
 private theorem abs_trF_le {E : Type} [Field E] [NumberField E] {a : ℕ} (M p : Matrix (Fin a) (Fin a) (Cinf E)) :
     |trF M p| ≤ Fintype.card (InfinitePlace E) * (a * (a * (‖toL M‖ * ‖toL p‖))) := by
@@ -42,7 +42,7 @@ private theorem abs_trF_le {E : Type} [Field E] [NumberField E] {a : ℕ} (M p :
   exact mul_le_mul (entry_le M i j w) (entry_le p j i w) (norm_nonneg _) (norm_nonneg _)
 
 /- English proof (translation)
-Unfold `trF`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_add, Matrix.mul_smul, Matrix.trace_add, Matrix.trace_smul]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem trF_add_smul {E : Type} [Field E] [NumberField E] {a : ℕ} (M p p' : Matrix (Fin a) (Fin a) (Cinf E))
     (c : ℝ) : trF M (p + c • p') = trF M p + c * trF M p' := by
@@ -53,37 +53,33 @@ private theorem trF_add_smul {E : Type} [Field E] [NumberField E] {a : ℕ} (M p
   simp
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha L hL`. Take `⟨N, hN⟩` from `UpperTheory.geometry_of_numbers_lattice_estimate E a ha L hL`. Take `⟨C₁, hC₁, hT⟩` from `UpperTheory.two_sided_bound_of_pointwise_bounds N`. Take `⟨C₂, ε₂, hC₂, hε₂, hS⟩` from `UpperTheory.second_order_taylor_remainder_bound E a`. Take `⟨-, ⟨B, hB, hBd⟩, -⟩` from `UpperTheory.hermitian_trace_form_estimate E a ha L hL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hq1, hqa, hqh, hqc, hqb, -⟩` from `UpperTheory.geometric_side_quadraticForm_identity E a`. Take `⟨-, -, -, hsc, -⟩` from `UpperTheory.deriv_similitudeChar_at_one_eq_trace E a`. Use `set K : ℝ := C₂ + (1 + C₂) * a with hK`. Establish `ha0 : (0 : ℝ) ≤ a` using `Nat.cast_nonneg a`. Establish `hK0 : 0 ≤ K` using `by positivity`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set D : ℝ := ‖toL (1 : Matrix (Fin a) (Fin a) (Cinf E))‖ + 1 with hD`. Establish `hD0 : 0 ≤ D` using `by positivity`. Use `set n : ℝ := (Fintype.card (InfinitePlace E) : ℝ) with hn`. Establish `hn0 : 0 ≤ n` using `Nat.cast_nonneg _`. Use `⟨C₁ * K ^ 2 + Real.pi * (C₂ * (n * (a * (a * (B * D))))), min ε₂ (min 1 (1 / (4 * (K + 1)))), by positivity, by positivity, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g Y h hl hY hh`. Use `set y := ‖toL Y‖ with hy`. Establish `hy0 : 0 ≤ y` using `norm_nonneg _`. Establish `hy2 : y ≤ ε₂` using `hY.trans (min_le_left _ _)`. Establish `hy1 : y ≤ 1` using `hY.trans ((min_le_right _ _).trans (min_le_left _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hy3 : y ≤ 1 / (4 * (K + 1))` using `hY.trans ((min_le_right _ _).trans (min_le_right _ _))`. Establish `hKy : K * y ≤ 1 / 4`. Rewrite `hy3` using `[le_div_iff₀ (by positivity)]`. Use polynomial arithmetic with `only [hy3, hy0]`. Establish `hs` using `hS Y hy2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hs` using `[hl, add_zero, ← hy]`. Use `set s := sc (1 + Y) with hsdef`. Establish `hs1 : |s - 1| ≤ C₂ * y` using `hs.trans (mul_le_mul_of_nonneg_left (by nlinarith only [hy0, hy1]) hC₂)`. Establish `hs2 : |s - 1| ≤ C₂` using `hs1.trans (by nlinarith only [hy1, hC₂])`. Establish `hs3 : |s| ≤ 1 + C₂`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `abs_le.1 hs2` as an intermediate fact. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith [this.1, this.2]`. Use `set p := Y + (s - 1) • (1 + Y) with hp`. Establish `hquad : ∀ x, quad p x = (s - 1) * qf x + s * quad Y x`. Introduce `x`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp, (hqa _ _ 0 x).1, (hqa _ 0 (s - 1) x).2, (hqa _ _ 0 x).1, hq1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hu : ∀ x, |quad p x| ≤ K * y * qf x`. Introduce `x`. Establish `hx` using `qf_nonneg x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hquad]`. Use `(abs_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[abs_mul, abs_mul, abs_of_nonneg hx]`. Establish `h1 : |s - 1| * qf x ≤ C₂ * y * qf x` using `mul_le_mul_of_nonneg_right hs1 hx`. Establish `h2 : |s| * |quad Y x| ≤ (1 + C₂) * (a * y * qf x)` using `mul_le_mul hs3 (hqb Y x) (abs_nonneg _) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Combine the equalities or inequalities in the displayed calculation. Use `haveI : Nonempty (lat L g) := ⟨0⟩`. Establish `key` using `hT (lat L g) (fun v => qf (pt (rt g) v.1)) (fun v => quad p (pt (rt g) v.1)) (K * y) (hN g) (by positivity) hKy (fun v => hu _)`. Establish `e1 : fn L (g * infGL E a h) = Real.log (∑' v : lat L g, Real.exp (-Real.pi * (qf (pt (rt g) v.1) + quad p (pt (rt g) v.1))))`. Unfold `fn Th`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[(UpperTheory.point_evaluation_multiplicative_tsum E a ha L ℝ gauss).2.1 g h]`. Use `congr 1`. Use `tsum_congr fun v => ?_` and prove the remaining obligations. Unfold `gauss`. Rewrite using `[hqc, hqh, ← hsc h, hh, ← hsdef, hquad, (hqa _ _ 0 _).1, hq1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `e2` using `UpperTheory.hermitian_space_moment_identity E a ha L hL g p`. Establish `key' : |fn L (g * infGL E a h) - fn L g + Real.pi * trF (mom L g).1 p| ≤ C₁ * (K * y) ^ 2`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `key`. Rewrite `key'` using `[hp, trF_add_smul]`. Establish `h1 : ‖toL (1 + Y)‖ ≤ D`. Establish `: toL (1 + Y) = toL 1 + toL Y` using `rfl`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(norm_add_le _ _).trans (by rw [hD]; linarith)`. Establish `h2 : |trF (mom L g).1 (1 + Y)| ≤ n * (a * (a * (B * D)))`. Use `(abs_trF_le _ _).trans ?_` and prove the remaining obligations. Use `mul_le_mul (hBd g).1 h1 (norm_nonneg _) hB.le` as an intermediate fact. Use `gcongr`.
-
-Establish `h3 : |Real.pi * ((s - 1) * trF (mom L g).1 (1 + Y))| ≤ Real.pi * (C₂ * y ^ 2 * (n * (a * (a * (B * D)))))`. Rewrite using `[abs_mul, abs_mul, abs_of_pos Real.pi_pos]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul hs h2 (abs_nonneg _) (by positivity)) Real.pi_pos.le`. Establish `h4` using `abs_le.1 key'`. Establish `h5` using `abs_le.1 h3`.
-
-Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith only [h4.1, h4.2, h5.1, h5.2]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.hermitian_trace_form_entry_estimate :
     FnTaylor := by

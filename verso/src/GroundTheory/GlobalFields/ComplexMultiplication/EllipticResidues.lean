@@ -15,14 +15,14 @@ namespace Elliptic
 variable {L : PeriodPair}
 
 /- English proof (translation)
-Rewrite using `[← residue_comp_add (hf (z + l)), hp.comp_add hl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma IsPeriodic.residue_add {f : ℂ → ℂ} (hp : IsPeriodic L f) (hf : Meromorphic f) {l : ℂ}
     (hl : l ∈ L.lattice) (z : ℂ) : residue f (z + l) = residue f z := by
   rw [← residue_comp_add (hf (z + l)), hp.comp_add hl]
 
 /- English proof (translation)
-Establish `hzw` using `(Torus.mk_eq_mk_iff L).1 h`. Use `hp.residue_add hf hzw w` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma IsPeriodic.residue_eq_of_mk_eq {f : ℂ → ℂ} (hp : IsPeriodic L f) (hf : Meromorphic f)
     {z w : ℂ} (h : Torus.mk L z = Torus.mk L w) : residue f z = residue f w := by
@@ -36,7 +36,7 @@ def torusResidue (f : ℂ → ℂ) (x : Torus L) : ℂ :=
   residue f x.out
 
 /- English proof (translation)
-The claim follows from `hf.2.residue_eq_of_mk_eq hf.1 (QuotientAddGroup.out_eq' (Torus.mk L z))`.
+A detailed English derivation is pending.
 -/
 lemma torusResidue_mk {f : ℂ → ℂ} (hf : IsEllipticFunction L f) (z : ℂ) :
     torusResidue L f (Torus.mk L z) = residue f z :=
@@ -44,7 +44,7 @@ lemma torusResidue_mk {f : ℂ → ℂ} (hf : IsEllipticFunction L f) (z : ℂ) 
 
 variable (L) in
 /- English proof (translation)
-Introduce `h`. Use `LinearIndependent.pair_iff.mp L.indep 1 0 (by simp [h])` as an intermediate fact. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 lemma ω₁_ne_zero : L.ω₁ ≠ 0 := by
   intro h
@@ -53,9 +53,9 @@ lemma ω₁_ne_zero : L.ω₁ ≠ 0 := by
 
 variable (L) in
 /- English proof (translation)
-Introduce `him`. Establish `hc` using `ω₁_ne_zero L`. Use `set τ := L.ω₂ / L.ω₁ with hτdef`. Establish `hτ : ((τ.re : ℝ) : ℂ) = τ` using `Complex.ext (by simp) (by simp [him])`. Establish `key` using `LinearIndependent.pair_iff.mp L.indep τ.re (-1) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.real_smul, Complex.real_smul, hτ, hτdef]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Use the proof step `ring)`. Evaluate the numerical expressions using `at key`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 lemma im_ω₂_div_ω₁_ne_zero : (L.ω₂ / L.ω₁).im ≠ 0 := by
   intro him
@@ -70,77 +70,65 @@ lemma im_ω₂_div_ω₁_ne_zero : (L.ω₂ / L.ω₁).im ≠ 0 := by
   norm_num at key
 
 /- English proof (translation)
-Take `⟨hmer, hper⟩` from `hf`. Establish `hω₁ : L.ω₁ ≠ 0` using `ω₁_ne_zero L`. Use `set c := L.ω₁ with hc_def`. Establish `hc : c ≠ 0` using `ω₁_ne_zero L`. Establish `hcL : c ∈ L.lattice` using `L.ω₁_mem_lattice`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨τ, s, hs, hω₂, hτ⟩ : ∃ τ : ℂ, ∃ s : ℤ, (s = 1 ∨ s = -1) ∧ L.ω₂ = (s : ℂ) * (c * τ) ∧ 0 < τ.im := by`. Break down `lt_or_gt_of_ne (im_ω₂_div_ω₁_ne_zero L) with h | h` into its components or cases. Use `⟨-(L.ω₂ / L.ω₁), -1, Or.inr rfl, ?_, by simpa using h⟩` and prove the remaining obligations. Rewrite using `[hc_def]`. Establish `h0` using `ω₁_ne_zero L`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨L.ω₂ / L.ω₁, 1, Or.inl rfl, ?_, h⟩` and prove the remaining obligations. Rewrite using `[hc_def]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `ω₁_ne_zero L`. Clear the denominators using the available nonvanishing facts. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hτL : c * τ ∈ L.lattice`.
+Clear the denominators using the available nonvanishing facts. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `L.ω₂_mem_lattice`. Break down `hs with rfl | rfl` into its components or cases. Simplify `h2` using `[hω₂]`. Simplify `L.lattice.neg_mem h2` using `[hω₂]`. Use `set h := τ.im with hh`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set g : ℂ → ℂ := fun w ↦ f (c * w) with hg_def`. Establish `hg1 : ∀ u, g (u + 1) = g u` using `fun u ↦ by`. Simplify using `only [hg_def, mul_add, mul_one]`. Conclude with `hper _ _ hcL`. Establish `hgτ : ∀ u, g (u + τ) = g u` using `fun u ↦ by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hg_def, mul_add]`. Conclude with `hper _ _ hτL`. Establish `hgmer : Meromorphic g` using `fun w ↦ (hmer (c * w)).comp_analyticAt (g := fun w ↦ c * w) (by fun_prop)`. Establish `hScount : (singularSet g).Countable`. Establish `e : singularSet g = ⋃ n : ℕ, Metric.closedBall (0 : ℂ) n ∩ singularSet g`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use extensionality with `z`. Simplify using `only [mem_iUnion, mem_inter_iff, Metric.mem_closedBall, dist_zero_right]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Take `⟨n, hn⟩` from `exists_nat_ge ‖z‖`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n, hn, hz⟩`. Introduce and unpack `⟨n, -, hz⟩`. Conclude with `hz`. Rewrite using `[e]`. Conclude with `countable_iUnion fun n ↦ (finite_inter_singularSet hgmer (isCompact_closedBall 0 (n : ℝ))).countable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x₀, hx₀⟩ : ∃ x₀ : ℝ, x₀ ∈ ((fun s : ℂ ↦ s.re) '' singularSet g ∪ (fun s : ℂ ↦ s.re - 1) '' singularSet g)ᶜ` from `(((hScount.image _).union (hScount.image _)).dense_compl ℝ).nonempty`. Take `⟨y₀, hy₀⟩ : ∃ y₀ : ℝ, y₀ ∈ ((fun s : ℂ ↦ s.im) '' singularSet g ∪ (fun s : ℂ ↦ s.im - h) '' singularSet g)ᶜ` from `(((hScount.image _).union (hScount.image _)).dense_compl ℝ).nonempty`. Use `set a : ℂ := x₀ + y₀ * I with ha`. Use `set b : ℂ := a + 1 + h * I with hb`. Establish `ha_re : a.re = x₀` using `by simp [ha]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha_im : a.im = y₀` using `by simp [ha]`. Establish `hb_re : b.re = x₀ + 1` using `by simp [hb, ha]`. Establish `hb_im : b.im = y₀ + h` using `by simp [hb, ha]`. Use `set K : Set ℂ := [[a.re, b.re]] ×ℂ [[a.im, b.im]] with hK_def`. Establish `hK : IsCompact K` using `isCompact_uIcc.reProdIm isCompact_uIcc`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hKmem : ∀ u : ℂ, u ∈ K ↔ u.re ∈ Icc x₀ (x₀ + 1) ∧ u.im ∈ Icc y₀ (y₀ + h)`. Introduce `u`. Rewrite using `[hK_def, mem_reProdIm, ha_re, hb_re, ha_im, hb_im, uIcc_of_le (by linarith), uIcc_of_le (by linarith)]`. Use `set T : Finset ℂ := (finite_inter_singularSet hgmer hK).toFinset with hT`. Establish `hTmem : ∀ p, p ∈ T ↔ p ∈ K ∧ p ∈ singularSet g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Introduce `p`. Simplify using `[hT]`. Establish `hTin : ∀ p ∈ T, x₀ < p.re ∧ p.re < x₀ + 1 ∧ y₀ < p.im ∧ p.im < y₀ + h`. Introduce `p hp`. Take `⟨hpK, hpS⟩` from `(hTmem p).1 hp`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨⟨r1, r2⟩, ⟨i1, i2⟩⟩` from `(hKmem p).1 hpK`. Establish `nr1 : p.re ≠ x₀` using `fun e ↦ hx₀ (Or.inl ⟨p, hpS, e⟩)`. Establish `nr2 : p.re ≠ x₀ + 1` using `fun e ↦ hx₀ (Or.inr ⟨p, hpS, by simp [e]⟩)`. Establish `ni1 : p.im ≠ y₀` using `fun e ↦ hy₀ (Or.inl ⟨p, hpS, e⟩)`. Establish `ni2 : p.im ≠ y₀ + h` using `fun e ↦ hy₀ (Or.inr ⟨p, hpS, by simp [e]⟩)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨lt_of_le_of_ne r1 (Ne.symm nr1), lt_of_le_of_ne r2 nr2, lt_of_le_of_ne i1 (Ne.symm ni1), lt_of_le_of_ne i2 ni2⟩`. Establish `hsum0 : ∑ p ∈ T, residue g p = 0`. Establish `hres` using `rectIntegral_eq_sum_residue (f := g) (z := a) (w := b) T (fun p hp ↦ by`. Take `⟨r1, r2, i1, i2⟩` from `hTin p hp`. Conclude with `⟨by rwa [ha_re], by rwa [hb_re], by rwa [ha_im], by rwa [hb_im]⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(fun p _ ↦ hgmer p)`. Use the proof step `(fun u hu huT ↦ by`. Assume the negation of the conclusion as `hna`. Conclude with `huT ((hTmem u).2 ⟨hu, hna⟩))`. Establish `hper0 : rectIntegral g a b = 0` using `rectIntegral_eq_zero_of_periodic hg1 hgτ a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hres` using `[hper0]`. Establish `h2pi : (2 * π * I : ℂ) ≠ 0` using `two_pi_I_ne_zero`. Conclude with `(mul_eq_zero.1 hres.symm).resolve_left h2pi`. Use `set φ : ℂ → Torus L := fun p ↦ Torus.mk L (c * p) with hφ`. Establish `hlat : ∀ m n : ℤ, (m : ℂ) * c + (n : ℂ) * (c * τ) ∈ L.lattice` using `fun m n ↦ L.lattice.add_mem (by simpa [zsmul_eq_mul] using L.lattice.smul_mem m hcL) (by simpa [zsmul_eq_mul] using L.lattice.smul_mem n hτL)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hsupp : Function.support (torusResidue L f) ⊆ ↑(T.image φ)`. Introduce `x hx`. Use `set z := x.out with hz`. Establish `hxz : Torus.mk L z = x` using `QuotientAddGroup.out_eq' x`. Establish `hnz : residue f z ≠ 0` using `hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Establish `hfz : ¬ AnalyticAt ℂ f z` using `fun ha ↦ hnz (residue_eq_zero_of_analyticAt ha)`. Use `set w := z / c with hw`. Use `set n : ℤ := ⌊(w.im - y₀) / h⌋ with hn`. Use `set p₁ : ℂ := w - n * τ with hp₁`. Use `set m : ℤ := ⌊p₁.re - x₀⌋ with hm`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `set p : ℂ := p₁ - m with hp`. Establish `hp_re : p.re = p₁.re - m` using `by simp [hp]`. Establish `hp_im : p.im = w.im - n * h` using `by simp [hp, hp₁, hh]`. Establish `hn1` using `Int.floor_le ((w.im - y₀) / h)`. Establish `hn2` using `Int.lt_floor_add_one ((w.im - y₀) / h)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hm1` using `Int.floor_le (p₁.re - x₀)`. Establish `hm2` using `Int.lt_floor_add_one (p₁.re - x₀)`. Rewrite `hn1`, `hn2` using `[← hn]`. Rewrite `hm1`, `hm2` using `[← hm]`. Rewrite `hn1` using `[le_div_iff₀ hτ]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hn2` using `[div_lt_iff₀ hτ]`. Establish `hpK : p ∈ K`. Rewrite using `[hKmem, hp_re, hp_im]`. Use `⟨⟨by linarith, by linarith⟩, ⟨by nlinarith, by nlinarith⟩⟩` and prove the remaining obligations. Establish `hcp : z = c * p + ((m : ℂ) * c + (n : ℂ) * (c * τ))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [hp, hp₁, hw]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hpS : p ∈ singularSet g`. Introduce `hga`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Apply `hfz` to reduce the goal to its premises. Establish `h1 : AnalyticAt ℂ (fun z' ↦ g (c⁻¹ * z')) (c * p)`. Establish `: AnalyticAt ℂ (fun z' ↦ c⁻¹ * z') (c * p)` using `by fun_prop`. Conclude with `hga.comp_of_eq this (by field_simp)`. Establish `h2 : (fun z' ↦ g (c⁻¹ * z')) = f`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z'`. Simplify using `only [hg_def]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hcp]`. Conclude with `(hper.analyticAt_add_iff (hlat m n) (c * p)).2 h1`. Use `Finset.mem_coe.2 (Finset.mem_image.2 ⟨p, (hTmem p).2 ⟨hpK, hpS⟩, ?_⟩)` and prove the remaining obligations. Rewrite using `[← hxz, hφ]`. Conclude with `((Torus.mk_eq_mk_iff L).2 (by rw [hcp]; simpa using hlat m n)).symm`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hinj : Set.InjOn φ ↑T`. Introduce `p hp q hq hpq`. Take `⟨pr1, pr2, pi1, pi2⟩` from `hTin p hp`. Take `⟨qr1, qr2, qi1, qi2⟩` from `hTin q hq`. Establish `hdiff` using `(Torus.mk_eq_mk_iff L).1 hpq`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨m, n, hmn⟩` from `PeriodPair.mem_lattice.1 hdiff`. Establish `hk : p - q = (m : ℂ) + ((n * s : ℤ) : ℂ) * τ`. Establish `e : c * (p - q) = c * ((m : ℂ) + ((n * s : ℤ) : ℂ) * τ)`. Rewrite using `[mul_sub, ← hmn, hω₂]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_left_cancel₀ hc e`. Use `set k : ℤ := n * s with hkdef`. Establish `him` using `congrArg Complex.im hk`. Establish `hre` using `congrArg Complex.re hk`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [sub_im, add_im, intCast_im, mul_im, intCast_re, zero_mul, add_zero, zero_add, sub_re, add_re, intCast_re, mul_re, intCast_im, zero_mul, sub_zero] at him hre`. Establish `hk0 : k = 0`. Establish `h1 : (k : ℝ) * h < h` using `by rw [hh]; linarith`. Establish `h2 : -h < (k : ℝ) * h` using `by rw [hh]; linarith`. Establish `h3 : (k : ℝ) < 1`.
-
-Assume the negation of the conclusion as `hc'`. Rewrite `hc'` using `[not_lt]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h4 : (-1 : ℝ) < k`. Assume the negation of the conclusion as `hc'`.
-
-Rewrite `hc'` using `[not_lt]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h5 : k < 1` using `by exact_mod_cast h3`. Establish `h6 : -1 < k` using `by exact_mod_cast h4`. Use linear arithmetic over natural numbers and integers.
-
-Rewrite `hre`, `him` using `[hk0]`. Simplify using `only [Int.cast_zero, zero_mul, add_zero, sub_eq_zero] at hre him`. Establish `hm0 : m = 0`. Establish `h3 : (m : ℝ) < 1` using `by linarith`. Establish `h4 : (-1 : ℝ) < m` using `by linarith`.
-
-Establish `h5 : m < 1` using `by exact_mod_cast h3`. Establish `h6 : -1 < m` using `by exact_mod_cast h4`. Use linear arithmetic over natural numbers and integers. Rewrite `hre` using `[hm0]`. Simplify using `only [Int.cast_zero, sub_eq_zero] at hre`.
-
-Conclude with `Complex.ext hre him`. Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp, Finset.sum_image hinj]`. Establish `hterm : ∀ p ∈ T, torusResidue L f (φ p) = c * residue g p`. Introduce `p _`. Rewrite using `[hφ, torusResidue_mk ⟨hmer, hper⟩, show residue g p = c⁻¹ * residue f (c * p) from residue_comp_mul hc (hmer _)]`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[Finset.sum_congr rfl hterm, ← Finset.mul_sum, hsum0, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_torusResidue_eq_zero {f : ℂ → ℂ} (hf : IsEllipticFunction L f) :
     ∑ᶠ x : Torus L, torusResidue L f x = 0 := by

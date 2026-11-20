@@ -6,33 +6,27 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `B _ _ p hp`. Distinguish the cases in `h : ∀ a : ℤ, algebraMap ℤ B a ∈ p → a = 0`. Conclude with `GlobalTheory.T.exists_genericallyRegular_quotient_dominating_prime ℤ B p h`. Use `push_neg at h`. Take `⟨a, ha, ha0⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP : (p.comap (algebraMap ℤ B)) ≠ ⊥`. Introduce `hb`. Apply `ha0` to reduce the goal to its premises. Establish `: a ∈ p.comap (algebraMap ℤ B)` using `ha`. Rewrite `this` using `[hb]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify using `using this`. Take `⟨x, hx, hxp⟩` from `Ideal.IsPrime.exists_mem_prime_of_ne_bot (Ideal.IsPrime.comap _) hP`. Use `set l := x.natAbs with hl`. Establish `hlp : l.Prime` using `Int.prime_iff_natAbs_prime.mp hxp`. Use `haveI : Fact l.Prime := ⟨hlp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hlmem : (l : B) ∈ p`. Establish `hx' : algebraMap ℤ B x ∈ p` using `hx`. Break down `Int.natAbs_eq x with h1 | h1` into its components or cases. Rewrite `hx'` using `[h1]`. Simplify `hx'` using `[hl]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `hx'` using `[h1]`. Simplify `hx'` using `[hl]`. Use `set I : Ideal B := Ideal.span {(l : B)} with hI`. Set `mk` to `Ideal.Quotient.mk I`. Establish `hmk : Function.Surjective mk` using `Ideal.Quotient.mk_surjective`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hker : RingHom.ker mk = I` using `Ideal.mk_ker`. Establish `hIp : I ≤ p`. Rewrite using `[hI, Ideal.span_le]`. Simplify using `using hlmem`. Establish `hl0 : ∀ a ∈ Ideal.span {((l : ℕ) : ℤ)}, (Int.castRingHom (B ⧸ I)) a = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `a ha`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton.mp ha`. Establish `: ((l : ℕ) : B ⧸ I) = 0`. Establish `h0 : (Ideal.Quotient.mk I) (l : B) = 0` using `(Ideal.Quotient.eq_zero_iff_mem).mpr (Ideal.subset_span rfl)`. Simplify using `using h0`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[this]`. Set `ψ : ZMod l →+* B ⧸ I` to `(Ideal.Quotient.lift (Ideal.span {((l : ℕ) : ℤ)}) (Int.castRingHom (B ⧸ I)) hl0).comp (Int.quotientSpanNatEquivZMod l).symm.toRingHom`. Use `letI : Algebra (ZMod l) (B ⧸ I) := ψ.toAlgebra`. Use `haveI : IsScalarTower ℤ (ZMod l) (B ⧸ I) := IsScalarTower.of_algebraMap_eq' (RingHom.ext_int _ _)`. Use `haveI : Algebra.FiniteType (ZMod l) (B ⧸ I) := Algebra.FiniteType.of_restrictScalars_finiteType ℤ (ZMod l) (B ⧸ I)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : PerfectField (FractionRing (ZMod l)) := by`. Establish `: Finite (FractionRing (ZMod l))` using `Finite.of_equiv _ (FractionRing.algEquiv (ZMod l) (ZMod l)).toEquiv.symm`. Use `infer_instance`. Establish `corr : ∀ (r : Ideal B), r.IsPrime → I ≤ r → (r.map mk).IsPrime ∧ (r.map mk).comap mk = r`. Introduce `r hr hIr`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Ideal.map_isPrime_of_surjective hmk (by rw [hker]; exact hIr), ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.comap_map_of_surjective' mk hmk, hker]`. Conclude with `sup_eq_left.mpr hIr`. Take `⟨p', hp', rfl⟩ : ∃ p' : Ideal (B ⧸ I), p'.IsPrime ∧ p'.comap mk = p` from `⟨p.map mk, corr p hp hIp⟩`. Establish `hdom : ∀ a : ZMod l, algebraMap (ZMod l) (B ⧸ I) a ∈ p' → a = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Assume the negation of the conclusion as `ha0`. Conclude with `hp'.ne_top (Ideal.eq_top_of_isUnit_mem _ ha ((IsUnit.mk0 a ha0).map _))`. Take `⟨g', hg'p, hg'⟩` from `GlobalTheory.T.exists_genericallyRegular_quotient_dominating_prime (ZMod l) (B ⧸ I) p' hdom`. Take `⟨g, rfl⟩` from `hmk g'`.
-
-Use `⟨g, fun hg => hg'p hg, ?_⟩` and prove the remaining obligations. Introduce `q hq hpq hgq`. Establish `hIq : I ≤ q` using `hIp.trans hpq`. Take `⟨q', hq', rfl⟩ : ∃ q' : Ideal (B ⧸ I), q'.IsPrime ∧ q'.comap mk = q` from `⟨q.map mk, corr q hq hIq⟩`. Establish `hpq' : p' ≤ q'`.
-
-Introduce `y hy`. Take `⟨y, rfl⟩` from `hmk y`. Conclude with `hpq hy`. Establish `hreg` using `hg' q' hpq' (fun h => hgq h)`. Take `⟨e⟩` from `GlobalTheory.localization_quotient_comap_equiv B (B ⧸ I) mk hmk p' q'`.
-
-Conclude with `IsRegularLocalRing.of_ringEquiv e.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem generically_regular_quotient_of_finiteType_int :
     ∀ (B : Type) [CommRing B] [Algebra.FiniteType ℤ B] (p : Ideal B) [p.IsPrime], ∃ g, g ∉ p ∧

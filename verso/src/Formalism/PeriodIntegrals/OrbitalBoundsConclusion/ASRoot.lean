@@ -3,9 +3,9 @@ import Formalism.PeriodIntegrals.ArtSch
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArtinSchreierRoots.ExistsRootOC
 
 /- English proof (translation)
-Introduce `l _ c b`. Take `⟨c', rfl⟩` from `Ideal.Quotient.mk_surjective c`. Take `⟨b', rfl⟩` from `Ideal.Quotient.mk_surjective b`. Take `⟨z, hz⟩` from `PI.ArtSch.RootWork.exists_root_OC l c' b'`. Use `⟨Ideal.Quotient.mk _ z, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_pow, ← map_mul, ← map_sub, ← map_sub, hz, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rootModP_holds : PI.ArtSch.RootModP := by
   intro l _ c b

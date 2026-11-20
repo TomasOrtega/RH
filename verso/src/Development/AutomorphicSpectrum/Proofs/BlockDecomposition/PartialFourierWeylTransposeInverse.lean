@@ -12,7 +12,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-The claim follows from `((Matrix.isUnit_iff_isUnit_det _).1 h.isUnit).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem det_ne (h : GL (Fin 2) F) : (h.val).det ≠ 0 :=
   ((Matrix.isUnit_iff_isUnit_det _).1 h.isUnit).ne_zero
@@ -21,7 +21,7 @@ def kr (a b : Matrix (Fin 2) (Fin 2) F) : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 
   Matrix.kroneckerMap (· * ·) a bᵀ
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [toM, kr, Matrix.of_apply, Matrix.mulVec, dotProduct, Matrix.mul_apply, Fintype.sum_prod_type, Fin.sum_univ_two, Matrix.kroneckerMap_apply, Matrix.transpose_apply]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem toM_kr (a b : Matrix (Fin 2) (Fin 2) F) (X : Fin 2 × Fin 2 → F) :
     toM (kr a b *ᵥ X) = a * toM X * b := by
@@ -31,28 +31,28 @@ theorem toM_kr (a b : Matrix (Fin 2) (Fin 2) F) (X : Fin 2 × Fin 2 → F) :
   ring
 
 /- English proof (translation)
-Use `Matrix.det_kronecker a bᵀ` as an intermediate fact. Simplify `this` using `[kr, Matrix.kronecker, Matrix.det_transpose]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem det_kr (a b : Matrix (Fin 2) (Fin 2) F) : (kr a b).det = a.det ^ 2 * b.det ^ 2 := by
   have := Matrix.det_kronecker a bᵀ
   simpa [kr, Matrix.kronecker, Matrix.det_transpose] using this
 
 /- English proof (translation)
-Simplify using `[Matrix.trace, Matrix.mul_apply, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pair_eq (N A : Matrix (Fin 2) (Fin 2) F) :
     ∑ i, ∑ j, N i j * A i j = Matrix.trace (N * Aᵀ) := by
   simp [Matrix.trace, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem c_val : (dg2 (-1) (-1) : GL (Fin 2) F).val = -1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dg2]
 
 /- English proof (translation)
-Apply `inv_eq_of_mul_eq_one_left` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, c_val]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem c_inv : (dg2 (-1) (-1) : GL (Fin 2) F)⁻¹ = dg2 (-1) (-1) := by
   apply inv_eq_of_mul_eq_one_left
@@ -61,7 +61,7 @@ theorem c_inv : (dg2 (-1) (-1) : GL (Fin 2) F)⁻¹ = dg2 (-1) (-1) := by
   simp
 
 /- English proof (translation)
-Establish `: (tinv (dg2 (-1) (-1) * z)⁻¹ : GL (Fin 2) F).val = -z.valᵀ` using `by show (((dg2 (-1) (-1) * z)⁻¹)⁻¹ : GL (Fin 2) F).valᵀ = _`. Rewrite using `[inv_inv, Units.val_mul, c_val]`. Simplify using the standard rewrite rules. Rewrite using `[Units.val_mul, Units.val_mul, this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem first_val (h z : GL (Fin 2) F) :
     (tinv (dg2 (-1) (-1) * z)⁻¹ * w2 * h).val = -(z.valᵀ * w2.val * h.val) := by
@@ -73,7 +73,7 @@ theorem first_val (h z : GL (Fin 2) F) :
   simp
 
 /- English proof (translation)
-Rewrite using `[_root_.mul_inv_rev, c_inv, Units.val_mul, c_val]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem second_val (z : GL (Fin 2) F) :
     ((dg2 (-1) (-1) * z)⁻¹ : GL (Fin 2) F).val = -(z⁻¹ : GL (Fin 2) F).val := by
@@ -81,7 +81,7 @@ theorem second_val (z : GL (Fin 2) F) :
   simp
 
 /- English proof (translation)
-Use `show (h⁻¹ : GL (Fin 2) F).valᵀ * h.valᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, ← Units.val_mul, mul_inv_cancel]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tinv_mul_transpose (h : GL (Fin 2) F) : (tinv h).val * h.valᵀ = 1 := by
   show (h⁻¹ : GL (Fin 2) F).valᵀ * h.valᵀ = 1
@@ -89,11 +89,11 @@ theorem tinv_mul_transpose (h : GL (Fin 2) F) : (tinv h).val * h.valᵀ = 1 := b
   simp
 
 /- English proof (translation)
-Establish `e : ((z⁻¹ : GL (Fin 2) F).val * M * (tinv h).val) * (-(z.valᵀ * w2.val * h.val))ᵀ = -((z⁻¹ : GL (Fin 2) F).val * (M * w2.val * z.val))`. Establish `: (z.valᵀ * w2.val * h.val)ᵀ = h.valᵀ * (w2.valᵀ * z.val)`. Simplify using `[Matrix.transpose_mul, Matrix.mul_assoc]`. Rewrite using `[Matrix.transpose_neg, this, Matrix.mul_neg]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `w2t : (w2 : GL (Fin 2) F).valᵀ = w2.val`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [w2]`. Rewrite using `[w2t]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [tinv_mul_transpose]; simp only [Matrix.mul_assoc, Matrix.mul_one]`. Rewrite using `[e, Matrix.trace_neg, Matrix.trace_mul_comm, Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel]`. Simplify using `[Matrix.trace, Matrix.mul_apply, Fin.sum_univ_two, w2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pair_sub (h z : GL (Fin 2) F) (M : Matrix (Fin 2) (Fin 2) F) :
     Matrix.trace (((z⁻¹ : GL (Fin 2) F).val * M * (tinv h).val) * (-(z.valᵀ * w2.val * h.val))ᵀ)
@@ -115,7 +115,7 @@ theorem pair_sub (h z : GL (Fin 2) F) (M : Matrix (Fin 2) (Fin 2) F) :
   simp [Matrix.trace, Matrix.mul_apply, Fin.sum_univ_two, w2]
 
 /- English proof (translation)
-Establish `h : ((z⁻¹ : GL (Fin 2) F).val).det = ((z.val).det)⁻¹`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← Matrix.det_mul, ← Units.val_mul, inv_mul_cancel]`. Simplify using the standard rewrite rules. Rewrite using `[h, modulus_inv]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem modulus_inv_det (z : GL (Fin 2) F) :
     modulus ((z⁻¹ : GL (Fin 2) F).val).det = (modulus (z.val).det)⁻¹ := by
@@ -126,7 +126,7 @@ theorem modulus_inv_det (z : GL (Fin 2) F) :
   rw [h, modulus_inv]
 
 /- English proof (translation)
-Use `show modulus ((h⁻¹ : GL (Fin 2) F).valᵀ).det = _`. Rewrite using `[Matrix.det_transpose, modulus_inv_det]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modulus_tinv_det (h : GL (Fin 2) F) :
     modulus ((tinv h).val).det = (modulus (h.val).det)⁻¹ := by
@@ -134,9 +134,9 @@ theorem modulus_tinv_det (h : GL (Fin 2) F) :
   rw [Matrix.det_transpose, modulus_inv_det]
 
 /- English proof (translation)
-Establish `: ((GeneralLinearGroup.det g : Fˣ) : F) = (g.val).det`. Simplify using `only [GeneralLinearGroup.val_det_apply]`. Unfold `mp`. Rewrite using `[this, Complex.cpow_neg, Complex.cpow_ofNat]`. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[inv_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mp_neg_two (g : GL (Fin 2) F) :
     mp (GeneralLinearGroup.det g) (-2) = ((((modulus (g.val).det)⁻¹ ^ 2 : ℝ≥0) : ℝ) : ℂ) := by
@@ -152,7 +152,7 @@ noncomputable def gI (ψ : AddChar F Circle) (Φ : Matrix (Fin 2) (Fin 3) F → 
   Φ (cat3 (toM N) y) * (ψ (∑ i, ∑ j, N (i, j) * Y i j) : ℂ)
 
 /- English proof (translation)
-Rewrite using `[first_val, second_val, Matrix.neg_mulVec]`. Unfold `dFT`. Simplify using `only [neg_neg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem dFT_eq (ψ : AddChar F Circle) (Φ : Matrix (Fin 2) (Fin 3) F → ℂ) (h z : GL (Fin 2) F) :
     dFT ψ Φ (tinv (dg2 (-1) (-1) * z)⁻¹ * w2 * h).val
@@ -165,9 +165,9 @@ theorem dFT_eq (ψ : AddChar F Circle) (Φ : Matrix (Fin 2) (Fin 3) F → ℂ) (
   rfl
 
 /- English proof (translation)
-Unfold `Rpart`. Use `integral_congr_ae (Filter.Eventually.of_forall fun X => ?_)` and prove the remaining obligations. Establish `hM` using `toM_kr (z⁻¹ : GL (Fin 2) F).val (tinv h).val X`. Establish `hp : ∑ i, ∑ j, (kr (z⁻¹ : GL (Fin 2) F).val (tinv h).val *ᵥ X) (i, j) * (-(z.valᵀ * w2.val * h.val) : Matrix (Fin 2) (Fin 2) F) i j = -(X (0, 1) + X (1, 0))`. Establish `h1 : ∑ i, ∑ j, toM (kr (z⁻¹ : GL (Fin 2) F).val (tinv h).val *ᵥ X) i j * (-(z.valᵀ * w2.val * h.val) : Matrix (Fin 2) (Fin 2) F) i j = -(X (0, 1) + X (1, 0))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pair_eq, hM, pair_sub]`. Both sides reduce to the same expression. Conclude with `h1`. Simplify using `only [gI, Pf, hM, hp]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Rpart_eq (ψ : AddChar F Circle) (Φ : Matrix (Fin 2) (Fin 3) F → ℂ) (h z : GL (Fin 2) F) :
     Rpart ψ (Pf Φ h z) =
@@ -187,11 +187,11 @@ theorem Rpart_eq (ψ : AddChar F Circle) (Φ : Matrix (Fin 2) (Fin 3) F → ℂ)
   simp only [gI, Pf, hM, hp]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ _ Φ h z`. Establish `hP : (kr (z⁻¹ : GL (Fin 2) F).val (tinv h).val).det ≠ 0`. Rewrite using `[det_kr]`. Conclude with `mul_ne_zero (pow_ne_zero _ (det_ne _)) (pow_ne_zero _ (det_ne _))`. Establish `key` using `GroundTheory.Heights₂.Theta.integral_comp_mulVec (ψ := ψ) hP (gI ψ Φ (-(z.valᵀ * w2.val * h.val)) ((z⁻¹ : GL (Fin 2) F).val *ᵥ e1))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : modulus (kr (z⁻¹ : GL (Fin 2) F).val (tinv h).val).det = (modulus (z.val).det)⁻¹ ^ 2 * (modulus (h.val).det)⁻¹ ^ 2`. Rewrite using `[det_kr, modulus_mul, pow_two, pow_two, modulus_mul, modulus_mul, modulus_inv_det, modulus_tinv_det, pow_two, pow_two]`. Rewrite using `[dFT_eq, Rpart_eq, key, mp_neg_two, mp_neg_two, ← mul_assoc]`. Establish `hc : (((((modulus (z.val).det)⁻¹ ^ 2 : ℝ≥0) : ℝ) : ℂ) * ((((modulus (h.val).det)⁻¹ ^ 2 : ℝ≥0) : ℝ) : ℂ)) * ((((modulus (kr (z⁻¹ : GL (Fin 2) F).val (tinv h).val).det)⁻¹ : ℝ≥0) : ℝ) : ℂ) = 1`. Establish `h0 : (modulus (z.val).det)⁻¹ ^ 2 * (modulus (h.val).det)⁻¹ ^ 2 ≠ 0` using `hm ▸ modulus_ne_zero hP`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `mul_inv_cancel₀ h0`. Rewrite using `[hm]`. Conclude with `h1` after adjusting the coercions. Rewrite using `[hc, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle),

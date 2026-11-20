@@ -16,17 +16,17 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Comple
   [NeZero e] [NeZero a] [TameDescentExponentData K l e a] {η H : ℕ}
 
 /- English proof (translation)
-Rewrite using `[E]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem X_pow_eq : (X : K⟦X⟧) ^ e = E K l e - l := by rw [E]; ring
 
 /- English proof (translation)
-The claim follows from `(isUnit_E (K := K) l e).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem E_ne_zero : E K l e ≠ 0 := (isUnit_E (K := K) l e).ne_zero
 
 /- English proof (translation)
-Rewrite using `[Derivation.leibniz, Derivation.leibniz_pow, N_E]`. Consider the cases of `j with`. Consider the case `zero => simp`. Consider the case `succ j => simp only [smul_eq_mul, nsmul_eq_mul, Nat.add_sub_cancel]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -39,7 +39,7 @@ theorem pow_mul_EN (j : ℕ) (f : K⟦X⟧) :
   | succ j => simp only [smul_eq_mul, nsmul_eq_mul, Nat.add_sub_cancel]; push_cast; ring
 
 /- English proof (translation)
-Rewrite using `[Derivation.leibniz, Derivation.leibniz_pow, N_E]`. Simplify using `only [smul_eq_mul, nsmul_eq_mul, Nat.add_sub_cancel]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem N_pow_mul (j : ℕ) (G : K⟦X⟧) :
     N K (E K l e ^ (j + 1) * G) =
@@ -48,7 +48,7 @@ theorem N_pow_mul (j : ℕ) (G : K⟦X⟧) :
   simp only [smul_eq_mul, nsmul_eq_mul, Nat.add_sub_cancel]; push_cast; ring
 
 /- English proof (translation)
-Rewrite using `[PhiMod.EN_apply, PhiMod.conn_xiExt]`. Conclude with `(D.xiExt_smul_tot (fun _ => E K l e) _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EN_xiExt (D : BKDat O K l e a ι η H) (w : Vec K a ι) :
     D.EN (D.xiExt w) = D.xiExt (fun τ i => E K l e * N K (w τ i)) := by
@@ -56,25 +56,25 @@ theorem EN_xiExt (D : BKDat O K l e a ι η H) (w : Vec K a ι) :
   exact (D.xiExt_smul_tot (fun _ => E K l e) _).symm
 
 /- English proof (translation)
-The claim follows from `N_mem (derivative_mem_R l hf)`.
+A detailed English derivation is pending.
 -/
 theorem N_mem_Rpi {f : K⟦X⟧} (hf : f ∈ Rpi O K l e) : N K f ∈ Rpi O K l e :=
   N_mem (derivative_mem_R l hf)
 
 /- English proof (translation)
-The claim follows from `HasK.C_mem c`.
+A detailed English derivation is pending.
 -/
 theorem C_mem_Rpi (c : K) : C c ∈ Rpi O K l e := HasK.C_mem c
 
 /- English proof (translation)
-The claim follows from `natCast_ne_zero' l (Nat.mul_ne_zero (Nat.mul_ne_zero (Nat.succ_ne_zero j) (NeZero.ne e)) (Fact.out : l.Prime).ne_zero)`.
+A detailed English derivation is pending.
 -/
 theorem cast_ne (j : ℕ) : (((j + 1) * e * l : ℕ) : K) ≠ 0 :=
   natCast_ne_zero' l (Nat.mul_ne_zero (Nat.mul_ne_zero (Nat.succ_ne_zero j) (NeZero.ne e))
     (Fact.out : l.Prime).ne_zero)
 
 /- English proof (translation)
-Establish `h : (((j + 1 : ℕ) : K⟦X⟧) * (e : K⟦X⟧) * (l : K⟦X⟧)) = C ((((j + 1) * e * l : ℕ) : K))`. Rewrite using `[map_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, ← map_mul, inv_mul_cancel₀ (cast_ne j), map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem C_inv_mul (j : ℕ) : C ((((j + 1) * e * l : ℕ) : K))⁻¹ * (((j + 1 : ℕ) : K⟦X⟧) * (e : K⟦X⟧) * (l : K⟦X⟧)) = 1 := by
   have h : (((j + 1 : ℕ) : K⟦X⟧) * (e : K⟦X⟧) * (l : K⟦X⟧)) = C ((((j + 1) * e * l : ℕ) : K)) := by
@@ -82,15 +82,13 @@ theorem C_inv_mul (j : ℕ) : C ((((j + 1) * e * l : ℕ) : K))⁻¹ * (((j + 1 
   rw [h, ← map_mul, inv_mul_cancel₀ (cast_ne j), map_one]
 
 /- English proof (translation)
-Use `set c : K := (((p + 1) * e * l : ℕ) : K) with hc`. Use `⟨v - c⁻¹ • D.EN v, ?_, ?_, fun τ i => ?_⟩` and prove the remaining obligations. Rewrite using `[sub_sub_cancel]`. Conclude with `D.Man.smul_mem _ hN`. Rewrite using `[map_sub, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `sub_mem hN (D.Man.smul_mem _ (D.EN_mem_Man hN))`. Take `⟨w, rfl⟩` from `D.xiExt.surjective v`. Establish `hco : D.xiExt.symm (D.xiExt w - c⁻¹ • D.EN (D.xiExt w)) τ i = w τ i - C c⁻¹ * (E K l e * N K (w τ i))`. Rewrite using `[EN_xiExt, ← map_smul, ← map_sub, LinearEquiv.symm_apply_apply]`. Simplify using `[smul_eq_C_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hco]`. Establish `hF` using `hv τ i`. Rewrite `hF` using `[LinearEquiv.symm_apply_apply]`. Establish `h2` using `pow_mul_EN (l := l) (e := e) (p + 1) (w τ i)`. Establish `h1` using `C_inv_mul (K := K) (l := l) (e := e) p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hX` using `X_pow_eq (K := K) (l := l) (e := e)`. Establish `key : E K l e * (E K l e ^ p * (w τ i - C c⁻¹ * (E K l e * N K (w τ i)))) = E K l e * (C c⁻¹ * (((p + 1 : ℕ) : K⟦X⟧) * (e : K⟦X⟧) * (E K l e ^ (p + 1) * w τ i) - N K (E K l e ^ (p + 1) * w τ i)))`. Rewrite using `[← mul_assoc, ← pow_succ']`. Take the linear combination `(-C c⁻¹) * h2 + (C c⁻¹ * ((p + 1 : ℕ) : K⟦X⟧) * (e : K⟦X⟧) * (E K l e ^ (p + 1) * w τ i)) * hX + (-(E K l e ^ (p + 1) * w τ i)) * h1`. Rewrite using `[mul_left_cancel₀ E_ne_zero key]`.
-
-Conclude with `mul_mem (C_mem_Rpi _) (sub_mem (mul_mem (mul_mem (natCast_mem _ _) (natCast_mem _ _)) hF) (N_mem_Rpi hF))`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem neg_step (D : BKDat O K l e a ι η H) (p : ℕ) (v : Vec K a ι)
     (hv : ∀ τ i, E K l e ^ (p + 1) * D.xiExt.symm v τ i ∈ Rpi O K l e) (hN : D.EN v ∈ D.Man) :
@@ -121,9 +119,9 @@ theorem neg_step (D : BKDat O K l e a ι η H) (p : ℕ) (v : Vec K a ι)
       (N_mem_Rpi hF))
 
 /- English proof (translation)
-Proceed by induction on `p with`. Consider the case `zero => exact fun v hv hN => ⟨v, by simp, hN, fun τ i => by simpa using hv τ i⟩`. Consider the case `succ p ih`. Introduce `v hv hN`. Take `⟨v₁, h1, h2, h3⟩` from `neg_step D p v hv hN`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨v₂, h4, h5, h6⟩` from `ih v₁ h3 h2`. Use `⟨v₂, ?_, h5, h6⟩` and prove the remaining obligations. Use `add_mem h1 h4` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem neg_all (D : BKDat O K l e a ι η H) (p : ℕ) : ∀ (v : Vec K a ι),
     (∀ τ i, E K l e ^ p * D.xiExt.symm v τ i ∈ Rpi O K l e) → D.EN v ∈ D.Man →
@@ -139,15 +137,13 @@ theorem neg_all (D : BKDat O K l e a ι η H) (p : ℕ) : ∀ (v : Vec K a ι),
     rwa [sub_add_sub_cancel] at this
 
 /- English proof (translation)
-Use `set c : K := (((j + 1) * e * l : ℕ) : K) with hc`. Take `⟨w, rfl⟩` from `D.xiExt.surjective v`. Simplify using `only [LinearEquiv.symm_apply_apply] at hv hG`. Establish `hco : ∀ τ i, D.xiExt.symm (D.xiExt w + c⁻¹ • D.EN (D.xiExt w)) τ i = w τ i + c⁻¹ • (E K l e * N K (w τ i))` using `fun τ i => by`. Rewrite using `[EN_xiExt, ← map_smul, ← map_add, LinearEquiv.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `⟨D.xiExt w + c⁻¹ • D.EN (D.xiExt w), ?_, ?_, fun τ i => ?_, fun τ i => ?_⟩` and prove the remaining obligations. Rewrite using `[sub_add_cancel_left]`. Conclude with `neg_mem (D.Man.smul_mem _ hN)`. Rewrite using `[map_add, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `add_mem hN (D.Man.smul_mem _ (D.EN_mem_Man hN))`. Rewrite using `[hco, smul_eq_C_mul]`. Conclude with `add_mem (hv τ i) (mul_mem (C_mem_Rpi _) (mul_mem (E_mem l e _) (N_mem_Rpi (hv τ i))))`. Take `⟨G, hGm, hGe⟩` from `hG τ i`. Rewrite using `[hco]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨C c⁻¹ * (((j + 1 : ℕ) : K⟦X⟧) * (e : K⟦X⟧) * G + N K G), mul_mem (C_mem_Rpi _) (add_mem (mul_mem (mul_mem (natCast_mem _ _) (natCast_mem _ _)) hGm) (N_mem_Rpi hGm)), ?_⟩` and prove the remaining obligations. Establish `h3` using `N_pow_mul (l := l) (e := e) j G`. Establish `h1` using `C_inv_mul (K := K) (l := l) (e := e) j`. Establish `hX` using `X_pow_eq (K := K) (l := l) (e := e)`. Rewrite using `[map_add, Derivation.map_smul, hGe, ← mul_assoc, ← pow_succ', h3, smul_eq_C_mul]`.
-
-Take the linear combination `(C c⁻¹ * ((j + 1 : ℕ) : K⟦X⟧) * (e : K⟦X⟧) * E K l e ^ j * G) * hX + (-(E K l e ^ j * G)) * h1`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem pos_step (D : BKDat O K l e a ι η H) (j : ℕ) (v : Vec K a ι)
     (hv : ∀ τ i, D.xiExt.symm v τ i ∈ Rpi O K l e)
@@ -179,9 +175,9 @@ theorem pos_step (D : BKDat O K l e a ι η H) (j : ℕ) (v : Vec K a ι)
       (-(E K l e ^ j * G)) * h1
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => exact fun v hv hN => ⟨v, by simp, hN, hv, fun τ i => ⟨_, N_mem_Rpi (hv τ i), by simp⟩⟩`. Consider the case `succ j ih`. Introduce `v hv hN`. Take `⟨v₁, h1, h2, h3, h4⟩` from `ih v hv hN`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨v₂, h5, h6, h7, h8⟩` from `pos_step D j v₁ h3 h4 h2`. Use `⟨v₂, ?_, h6, h7, h8⟩` and prove the remaining obligations. Use `add_mem h1 h5` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pos_all (D : BKDat O K l e a ι η H) (j : ℕ) : ∀ (v : Vec K a ι),
     (∀ τ i, D.xiExt.symm v τ i ∈ Rpi O K l e) → D.EN v ∈ D.Man →
@@ -198,7 +194,7 @@ theorem pos_all (D : BKDat O K l e a ι η H) (j : ℕ) : ∀ (v : Vec K a ι),
     rwa [sub_add_sub_cancel] at this
 
 /- English proof (translation)
-Establish `he : (0 : ℝ) < e` using `by exact_mod_cast NeZero.pos e`. Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Conclude with `one_div_lt_one_div_of_lt he (by nlinarith)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_div_lt : 1 / ((e : ℝ) * l) < 1 / e := by
   have he : (0 : ℝ) < e := by exact_mod_cast NeZero.pos e
@@ -206,9 +202,9 @@ theorem one_div_lt : 1 / ((e : ℝ) * l) < 1 / e := by
   exact one_div_lt_one_div_of_lt he (by nlinarith)
 
 /- English proof (translation)
-Establish `h1 : E K l e ^ (n + H) • v ∈ D.ext (Rpi O K l e)`. Rewrite using `[add_comm, pow_add, mul_smul]`. Conclude with `D.smul_mem_ext_of_basis (fun i => D.lower _ (D.bas_mem_M i)) (A_le_Rpi l e) (D.mem_Man.1 hv)`. Establish `h2` using `(GlobalTheory.T.breuilKisin_xiExt_mem_rigidTensor_iff O K l e a ι D.toPhiMod (1 / e) one_div_lt (E K l e ^ (n + H) • D.xiExt.symm v)).1 (by`. Use `D.xiExt_smul_tot (fun _ => E K l e ^ (n + H)) (D.xiExt.symm v)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Conclude with `this ▸ h1)`. Conclude with `fun τ i => mem_tot.1 h2 τ i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem init (D : BKDat O K l e a ι η H) (n : ℕ) (v : Vec K a ι) (hv : v ∈ divE l e n D.Man) :
     ∀ τ i, E K l e ^ (n + H) * D.xiExt.symm v τ i ∈ Rpi O K l e := by
@@ -223,7 +219,7 @@ theorem init (D : BKDat O K l e a ι η H) (n : ℕ) (v : Vec K a ι) (hv : v �
   exact fun τ i => mem_tot.1 h2 τ i
 
 /- English proof (translation)
-The claim follows from `D.mem_Man.2 (D.smul_mem_Mext (A_le_Rpi l e) ((GlobalTheory.T.breuilKisin_xiExt_mem_rigidTensor_iff O K l e a ι D.toPhiMod (1 / e) one_div_lt r).2 (mem_tot.2 fun τ i => hr τ i)))`.
+A detailed English derivation is pending.
 -/
 theorem fin (D : BKDat O K l e a ι η H) (r : Vec K a ι) (hr : ∀ τ i, r τ i ∈ Rpi O K l e) :
     E K l e ^ η • D.xiExt r ∈ D.Man :=
@@ -231,7 +227,7 @@ theorem fin (D : BKDat O K l e a ι η H) (r : Vec K a ι) (hr : ∀ τ i, r τ 
     ((GlobalTheory.T.breuilKisin_xiExt_mem_rigidTensor_iff O K l e a ι D.toPhiMod (1 / e) one_div_lt r).2 (mem_tot.2 fun τ i => hr τ i)))
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ (idE O K l e) B (toHat O K l e ⟨f, hf⟩))`. Take `⟨r, hr, h⟩` from `(evalₐ_toHat_eq_iff l e B ⟨f, hf⟩ g).1 hg.symm`. Conclude with `⟨g, g.2, r, hr, h⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem taylor (f : K⟦X⟧) (hf : f ∈ Rpi O K l e) (B : ℕ) :
     ∃ g ∈ invL l (A O K), ∃ r ∈ Rpi O K l e, f - g = E K l e ^ B * r := by
@@ -241,13 +237,13 @@ theorem taylor (f : K⟦X⟧) (hf : f ∈ Rpi O K l e) (B : ℕ) :
   exact ⟨g, g.2, r, hr, h⟩
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hB`. Establish `hX` using `X_pow_eq (K := K) (l := l) (e := e)`. Use `set h' := G - (E K l e ^ (d + 1) * N K r + ((m + d + 1 : ℕ) : K⟦X⟧) * E K l e ^ d * ((e : K⟦X⟧) * X ^ e) * r) with hh'`. Establish `hgf : g = f - E K l e ^ (m + d + 1) * r` using `by rw [show m + d + 1 = m + 1 + d by omega, ← hfg]; ring`. Establish `hN : N K g = E K l e ^ m * h'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgf, map_sub, hf, N_pow_mul, hh']`. Expand and normalize the polynomial expressions, which then agree. Establish `hh'R : h' ∈ Rpi O K l e` using `sub_mem hG (add_mem (mul_mem (pow_mem (E_mem l e _) _) (N_mem_Rpi hr)) (mul_mem (mul_mem (mul_mem (natCast_mem _ _) (pow_mem (E_mem l e _) _)) (mul_mem (natCast_mem _ _) (pow_mem HasU.X_mem _))) hr))`. Take `⟨k, hk⟩ : N K g ∈ invL l (A O K)` from `N_mem (derivative_mem_away _ (fun _ => derivative_mem_A) hg)`. Establish `hk' : (l : K⟦X⟧) ^ k * N K g ∈ A O K` using `by simpa using hk`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(l : K⟦X⟧) ^ k * h', mem_A_of_E_pow_mul_mem l e m (mul_mem (pow_mem (natCast_mem _ _) _) hh'R) ?_, k, ?_⟩` and prove the remaining obligations. Rewrite `hk'` using `[hN]`. Use `hk' using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hN]`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem eulerDerivation_eisensteinPow_final_bound {f g r G : K⟦X⟧} (m B : ℕ) (hB : m + 1 ≤ B) (hg : g ∈ invL l (A O K))
     (hr : r ∈ Rpi O K l e) (hG : G ∈ Rpi O K l e) (hf : N K f = E K l e ^ m * G)
@@ -272,13 +268,11 @@ theorem eulerDerivation_eisensteinPow_final_bound {f g r G : K⟦X⟧} (m B : �
   · rw [hN]; ring
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D n v hv hN m`. Take `⟨v₁, h1, h2, h3⟩` from `neg_all D (n + H) v (init D n v hv) hN`. Take `⟨v₂, h4, -, h6, h7⟩` from `pos_all D m v₁ h3 h2`. Use `choose G hGm hGe using h7`. Use `choose g hg r hr hfg using fun (τ : ZMod a) (i : ι) => taylor (D.xiExt.symm v₂ τ i) (h6 τ i) (m + 1 + η)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨g, mem_tot.2 fun τ i => hg τ i, ?_, fun τ i => eulerDerivation_eisensteinPow_final_bound m (m + 1 + η) (by omega) (hg τ i) (hr τ i) (hGm τ i) (hGe τ i) (hfg τ i)⟩` and prove the remaining obligations. Establish `e0 : D.xiExt.symm v₂ - g = (fun _ : ZMod a => E K l e ^ (m + 1 + η)) • r`. Use function extensionality and compare the values at `fun τ => funext fun i => by simpa using hfg τ i`. Establish `e1 : v₂ - D.xiExt g = E K l e ^ (m + 1) • (E K l e ^ η • D.xiExt r)`. Rewrite using `[smul_smul, ← pow_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `D.xiExt_smul_tot (fun _ : ZMod a => E K l e ^ (m + 1 + η)) r` as an intermediate fact. Rewrite `this` using `[← e0, map_sub, LinearEquiv.apply_symm_apply]`. Conclude with `this`. Establish `e2 : v - D.xiExt g = (v - v₁) + (v₁ - v₂) + (v₂ - D.xiExt g)` using `by abel`. Rewrite using `[e2, e1]`.
-
-Conclude with `add_mem (add_mem h1 h4) (D.smul_mem_Man (pow_mem (E_mem l e _) _) (fin D r hr))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] (η H : ℕ) (D : BKDat O K l e a ι η H), ∀ (n : ℕ) (v : Vec K a ι), v ∈ divE l e n D.Man → D.EN v ∈ D.Man → ∀ m : ℕ, ∃ w ∈ D.Mext (invL l (A O K)), v - D.xiExt w ∈ D.Man ∧ ∀ τ i, ∃ h ∈ A O K, ∃ k : ℕ, (l : K⟦X⟧) ^ k * N K (w τ i) = E K l e ^ m * h := by
   intro O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D n v hv hN m

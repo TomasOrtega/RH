@@ -7,7 +7,7 @@ namespace UpperTheory.RootOfUnityNormQuadraticSubfield
 open Polynomial
 
 /- English proof (translation)
-Use `symm`. Use `minpoly.eq_of_irreducible_of_monic (X_pow_sub_C_irreducible_of_prime Nat.prime_two hc) ?_ (monic_X_pow_sub_C c two_ne_zero)` and prove the remaining obligations. Simplify using `[ht]`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private lemma minpoly_eq {F E : Type} [Field F] [Field E] [Algebra F E] (t : E) (c : F)
     (ht : t ^ 2 = algebraMap F E c) (hc : ∀ b : F, b ^ 2 ≠ c) :
@@ -18,14 +18,14 @@ private lemma minpoly_eq {F E : Type} [Field F] [Field E] [Algebra F E] (t : E) 
   simp [ht]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X ^ 2 - C c, monic_X_pow_sub_C c two_ne_zero, by simp [ht]⟩`.
+Supply the required witnesses or components.
 -/
 private lemma isInt {F E : Type} [Field F] [Field E] [Algebra F E] (t : E) (c : F)
     (ht : t ^ 2 = algebraMap F E c) : IsIntegral F t :=
   ⟨X ^ 2 - C c, monic_X_pow_sub_C c two_ne_zero, by simp [ht]⟩
 
 /- English proof (translation)
-Rewrite using `[IntermediateField.adjoin.finrank (isInt t c ht), minpoly_eq t c ht hc, natDegree_X_pow_sub_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma finrank_eq {F E : Type} [Field F] [Field E] [Algebra F E] (t : E) (c : F)
     (ht : t ^ 2 = algebraMap F E c) (hc : ∀ b : F, b ^ 2 ≠ c) :
@@ -34,7 +34,7 @@ private lemma finrank_eq {F E : Type} [Field F] [Field E] [Algebra F E] (t : E) 
     natDegree_X_pow_sub_C]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.ReprMem.repr_mem t c ht x hx`.
+A detailed English derivation is pending.
 -/
 private lemma repr_mem {F E : Type} [Field F] [Field E] [Algebra F E] (t : E) (c : F)
     (ht : t ^ 2 = algebraMap F E c) (x : E) (hx : x ∈ F⟮t⟯) :
@@ -42,15 +42,15 @@ private lemma repr_mem {F E : Type} [Field F] [Field E] [Algebra F E] (t : E) (c
   _root_.UpperTheory.Reformulated.B.ReprMem.repr_mem t c ht x hx
 
 /- English proof (translation)
-Take `⟨a, b, rfl⟩` from `repr_mem t c ht x hx`. Establish `inj` using `(algebraMap F E).injective`. Distinguish the cases in `ha : a = 0`. Use `right`. Use `⟨b, inj ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← he, ha, map_mul, map_pow, ← ht, map_zero]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hb : b = 0`. Use `left`. Use `⟨a, inj ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← he, hb, map_pow, map_zero]`. Expand and normalize the polynomial expressions, which then agree. It suffices to derive a contradiction. Establish `h2 : (2 * a * b : F) ≠ 0` using `by simp [ha, hb]`. Apply `hc ((e - a ^ 2 - b ^ 2 * c) / (2 * a * b))` to reduce the goal to its premises.
+It suffices to derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `inj` to reduce the goal to its premises. Rewrite using `[← ht, map_pow]`. Use `congr 1`. Establish `h3 : algebraMap F E (2 * a * b) ≠ 0`. Rewrite using `[Ne, map_eq_zero]` and apply the resulting hypothesis.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_div₀, div_eq_iff h3]`. Simplify using `only [map_sub, map_mul, map_pow, ← he, ← ht, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma sq_cases {F E : Type} [Field F] [CharZero F] [Field E] [Algebra F E] (t : E) (c : F)
     (ht : t ^ 2 = algebraMap F E c) (hc : ∀ b : F, b ^ 2 ≠ c) (x : E) (hx : x ∈ F⟮t⟯) (e : F)
@@ -78,11 +78,11 @@ private lemma sq_cases {F E : Type} [Field F] [CharZero F] [Field E] [Algebra F 
   ring
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : IsSquare ((c * d : ℕ) : ℚ)` using `⟨d * b, by push_cast; rw [h]; ring⟩`. Rewrite `h1` using `[Rat.isSquare_natCast_iff]`. Take `⟨k, hk⟩` from `h1`. Establish `h2 : d ∣ k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: d ∣ k * k` using `⟨c, by rw [← hk]; ring⟩`. Conclude with `(hd.dvd_mul.mp this).elim id id`. Take `⟨l, rfl⟩` from `h2`. Establish `h3 : c = d * (l * l)`. Apply `Nat.eq_of_mul_eq_mul_right hd.pos` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `absurd (Nat.le_of_dvd hc ⟨_, h3⟩) (by omega)`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma rat_nsq (d c : ℕ) (hd : d.Prime) (hc : 0 < c) (hcd : c < d) (b : ℚ) :
     (c : ℚ) ≠ d * b ^ 2 := by
@@ -100,9 +100,9 @@ private lemma rat_nsq (d c : ℕ) (hd : d.Prime) (hc : 0 < c) (hcd : c < d) (b :
   exact absurd (Nat.le_of_dvd hc ⟨_, h3⟩) (by omega)
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero => intro y h h'`. Simplify using `at h`. Conclude with `absurd h h'`. Consider the case `succ a ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y h h'`. Distinguish the cases in `h2 : y ^ 2 = 1`. Conclude with `⟨1, by simpa [h'] using (sq_eq_one_iff.mp h2)⟩`. Take `⟨j, hj⟩` from `ih (y ^ 2) (by rw [← pow_mul, ← pow_succ', h]) h2`. Conclude with `⟨2 * j, by rw [pow_mul, hj]⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma exists_neg_one {R : Type} [Field R] (a : ℕ) :
     ∀ y : R, y ^ 2 ^ a = 1 → y ≠ 1 → ∃ j : ℕ, y ^ j = -1 := by
@@ -122,7 +122,7 @@ include hd h3 hs
 
 omit hd in
 /- English proof (translation)
-Introduce `b h`. Establish `: (3 : ℚ) < d` using `by exact_mod_cast h3`. Use polynomial arithmetic with `[sq_nonneg b]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private lemma d_nsq : ∀ b : ℚ, b ^ 2 ≠ -(d : ℚ) := by
   intro b h
@@ -131,14 +131,14 @@ private lemma d_nsq : ∀ b : ℚ, b ^ 2 ≠ -(d : ℚ) := by
 
 omit hd h3 in
 /- English proof (translation)
-Simplify using `[hs]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma hs' : s ^ 2 = algebraMap ℚ E (-(d : ℚ)) := by simp [hs]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (k : E) ^ 2 = algebraMap ℚ E (-(c : ℚ))`. Use `congrArg (fun x : ℚ⟮s⟯ => (x : E)) h` as an intermediate fact. Simplify using `using this`. Establish `hc' : (0 : ℚ) < c` using `by exact_mod_cast hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Break down `sq_cases s _ (hs' s d hs) (d_nsq s d h3 hs) k k.2 _ h1 with ⟨a, ha⟩ | ⟨b, hb⟩` into its components or cases. Use polynomial arithmetic with `[sq_nonneg a]`. Conclude with `rat_nsq d c hd hc (by omega) b (by linarith)`.
+Separate the alternatives or extract the components of the hypothesis. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private lemma neg_nsq (c : ℕ) (hc : 0 < c) (hc3 : c ≤ 3) (k : ℚ⟮s⟯) : k ^ 2 ≠ -(c : ℚ⟮s⟯) := by
   intro h
@@ -151,11 +151,11 @@ private lemma neg_nsq (c : ℕ) (hc : 0 < c) (hc3 : c ≤ 3) (k : ℚ⟮s⟯) : 
   · exact rat_nsq d c hd hc (by omega) b (by linarith)
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (k : E) ^ 2 = algebraMap ℚ E 2`. Use `congrArg (algebraMap ℚ⟮s⟯ E) h` as an intermediate fact. Rewrite `this` using `[map_pow, map_ofNat]`. Rewrite using `[map_ofNat]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `hd' : (3 : ℚ) < d` using `by exact_mod_cast h3`. Break down `sq_cases s _ (hs' s d hs) (d_nsq s d h3 hs) k k.2 _ h1 with ⟨a, ha⟩ | ⟨b, hb⟩` into its components or cases. Use `rat_nsq 2 1 Nat.prime_two one_pos one_lt_two (a / 2) ?_` and prove the remaining obligations. Use `push_cast`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Use polynomial arithmetic with `[sq_nonneg b]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private lemma two_nsq (k : ℚ⟮s⟯) : k ^ 2 ≠ 2 := by
   intro h
@@ -172,15 +172,15 @@ private lemma two_nsq (k : ℚ⟮s⟯) : k ^ 2 ≠ 2 := by
   · nlinarith [sq_nonneg b]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hdvd : orderOf w ∣ o` using `orderOf_dvd_of_pow_eq_one hw`. Establish `hn1 : orderOf w ≠ 1` using `fun h => hne (orderOf_eq_one_iff.mp h)`. Establish `hnodd : Odd (orderOf w)` using `ho.of_dvd_nat hdvd`. Take `⟨p, hp, q, hq⟩` from `Nat.exists_prime_and_dvd hn1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hu : IsPrimitiveRoot (w ^ q) p` using `(IsPrimitiveRoot.orderOf w).pow hnodd.pos (by rw [hq, mul_comm])`. Establish `hpodd : Odd p` using `hnodd.of_dvd_nat ⟨q, hq⟩`. Establish `hle : p - 1 ≤ 2`. Rewrite using `[← Nat.totient_prime hp, ← natDegree_cyclotomic p ℚ, cyclotomic_eq_minpoly_rat hu hp.pos, ← finrank_eq s _ (hs' s d hs) (d_nsq s d h3 hs)]`. Conclude with `minpoly.natDegree_le _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp3 : p = 3`. Use `hp.two_le` as an intermediate fact. Take `⟨r, hr⟩` from `hpodd`. Use linear arithmetic over natural numbers and integers. Substitute `hp3` using the available equality.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h1` using `hu.pow_eq_one`. Establish `h2` using `hu.ne_one (by norm_num)`. Use `set u := w ^ q`. Establish `h4 : u ^ 2 + u + 1 = 0`. Establish `: (u - 1) * (u ^ 2 + u + 1) = 0` using `by linear_combination h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Conclude with `(mul_eq_zero.mp this).resolve_left (sub_ne_zero.mpr h2)`. Apply `neg_nsq s d hd h3 hs 3 (by norm_num) le_rfl (2 * u + 1)` to reduce the goal to its premises. Use `push_cast`. Take the linear combination `4 * h4`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private lemma odd_root (w : ℚ⟮s⟯) (o : ℕ) (ho : Odd o) (hw : w ^ o = 1) : w = 1 := by
   by_contra hne
@@ -211,29 +211,27 @@ private lemma odd_root (w : ℚ⟮s⟯) (o : ℕ) (ho : Odd o) (hw : w ^ o = 1) 
   linear_combination 4 * h4
 
 /- English proof (translation)
-Distinguish the cases in `h2 : y ^ 2 = 1`. Establish `hev : Even (Module.finrank ℚ⟮s⟯ E)`. Rewrite `h4` using `[← Module.finrank_mul_finrank ℚ ℚ⟮s⟯ E, finrank_eq s _ (hs' s d hs) (d_nsq s d h3 hs)]`. Rewrite using `[even_iff_two_dvd]`. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Break down `(sq_eq_one_iff.mp h2) with rfl | rfl` into its components or cases. Simplify using the standard rewrite rules. Establish `: (-1 : E) = algebraMap ℚ⟮s⟯ E (-1)` using `by simp`. Rewrite using `[this, Algebra.norm_algebraMap, hev.neg_one_pow]`. Take `⟨j, hj⟩` from `exists_neg_one a (y ^ 2) (by rw [← pow_mul, mul_comm, pow_mul, hy, one_pow]) h2`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `set K := ℚ⟮s⟯ with hK`. Use `set i := y ^ j with hi`. Establish `hi2 : i ^ 2 = algebraMap K E (-1)`. Rewrite using `[hi, ← pow_mul, mul_comm, pow_mul, hj]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hn : ∀ b : K, b ^ 2 ≠ -1` using `fun b => by`. Simplify using `using neg_nsq s d hd h3 hs 1 one_pos (by norm_num) b`. Establish `hfr` using `finrank_eq i _ hi2 hn`. Rewrite using `[← Algebra.norm_norm (S := K⟮i⟯)]`. Establish `hv : (Algebra.norm K⟮i⟯ y) ^ 2 ^ a = 1` using `by rw [← map_pow, hy, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `set v := Algebra.norm K⟮i⟯ y`. Establish `hv4 : v ^ 4 = 1`. Assume the negation of the conclusion as `hne`. Take `⟨l, hl⟩` from `exists_neg_one a (v ^ 4) (by rw [← pow_mul, mul_comm, pow_mul, hv, one_pow]) hne`. Establish `hw : (v ^ l) ^ 4 = -1` using `by rw [← pow_mul, mul_comm, pow_mul, hl]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set w := v ^ l`. Establish `hx : (w - w ^ 3) ^ 2 = 2` using `by linear_combination (w ^ 2 - 2) * hw`. Establish `hx' : ((w - w ^ 3 : K⟮i⟯) : E) ^ 2 = algebraMap K E 2`. Use `congrArg (algebraMap K⟮i⟯ E) hx` as an intermediate fact. Rewrite `this` using `[map_pow, map_ofNat]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[map_ofNat]`. Conclude with `this`. Break down `sq_cases i _ hi2 hn _ (w - w ^ 3).2 _ hx' with ⟨b, hb⟩ | ⟨b, hb⟩` into its components or cases. Conclude with `two_nsq s d hd h3 hs b hb.symm`. Apply `neg_nsq s d hd h3 hs 2 two_pos (by norm_num) b` to reduce the goal to its premises.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Use `push_cast`. Take the linear combination `hb`. Establish `hm1 : Algebra.norm K (-1 : K⟮i⟯) = 1`. Establish `: (-1 : K⟮i⟯) = algebraMap K K⟮i⟯ (-1)` using `by simp`. Rewrite using `[this, Algebra.norm_algebraMap, hfr]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Evaluate the numerical expressions. Establish `hg : Algebra.norm K (AdjoinSimple.gen K i) = 1`. Use `Algebra.PowerBasis.norm_gen_eq_coeff_zero_minpoly (IntermediateField.adjoin.powerBasis (isInt i _ hi2))` as an intermediate fact. Rewrite `this` using `[IntermediateField.adjoin.powerBasis_gen, IntermediateField.adjoin.powerBasis_dim, IntermediateField.minpoly_gen, minpoly_eq i _ hi2 hn, natDegree_X_pow_sub_C]`. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using the standard rewrite rules. Establish `hg2 : (AdjoinSimple.gen K i) ^ 2 = -1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using hi2`. Use `set g := AdjoinSimple.gen K i`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: (v - 1) * (v + 1) * (v - g) * (v + g) = 0`. Take the linear combination `hv4 - (v ^ 2 - 1) * hg2`. Simplify using `only [mul_eq_zero, sub_eq_zero, add_eq_zero_iff_eq_neg] at this`. Break down `this with ((h | h) | h) | h` into its components or cases. Rewrite using `[h, map_one]`.
-
-Rewrite using `[h, hm1]`. Rewrite using `[h, hg]`. Rewrite using `[h, ← neg_one_mul, map_mul, hm1, hg, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma two_pow_norm (h4 : 4 ∣ Module.finrank ℚ E) (y : E) (a : ℕ) (hy : y ^ 2 ^ a = 1) :
     Algebra.norm ℚ⟮s⟯ y = 1 := by
@@ -301,7 +299,7 @@ end
 end UpperTheory.RootOfUnityNormQuadraticSubfield
 
 /- English proof (translation)
-Introduce `E _ _ s d hd h3 hs h4 z ⟨m, hm, hz⟩`. Take `⟨a, o, ho, rfl⟩` from `Nat.exists_eq_two_pow_mul_odd hm.ne'`. Apply `UpperTheory.RootOfUnityNormQuadraticSubfield.odd_root s d hd h3 hs _ o ho` to reduce the goal to its premises. Rewrite using `[← map_pow]`. Conclude with `UpperTheory.RootOfUnityNormQuadraticSubfield.two_pow_norm s d hd h3 hs h4 _ a (by rw [← pow_mul, mul_comm, hz])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.norm_root_of_unity_quadratic_subfield :
     ∀ (E : Type) [Field E] [NumberField E] (s : E) (d : ℕ), d.Prime → 3 < d → s ^ 2 = -(d : E) → 4 ∣ Module.finrank ℚ E →

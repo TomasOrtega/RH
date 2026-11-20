@@ -15,9 +15,9 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `letI : Algebra Γ(X, U) (X.presheaf.stalk x) := (X.presheaf.germ U x hx).hom.toAlgebra`. Use `haveI : IsLocalization.AtPrime (X.presheaf.stalk x) (hU.primeIdealOf ⟨x, hx⟩).asIdeal := hU.isLocalization_stalk ⟨x, hx⟩`. Establish `he : ∀ c, X.evaluation U x hx c = (X.residue x).hom (algebraMap Γ(X, U) (X.presheaf.stalk x) c)` using `fun c => rfl`. Take `⟨s, rfl⟩ : ∃ s, (X.residue x).hom s = z` from `IsLocalRing.residue_surjective z`. Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.surj (hU.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl s`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `s * algebraMap Γ(X, U) (X.presheaf.stalk x) (b : Γ(X, U)) = algebraMap Γ(X, U) (X.presheaf.stalk x) a at hab`. Establish `hb0 : IsUnit (algebraMap Γ(X, U) (X.presheaf.stalk x) (b : Γ(X, U)))` using `IsLocalization.map_units _ b`. Establish `hb` using `hb0.map (X.residue x).hom`. Use `⟨a, b, ?_⟩` and prove the remaining obligations. Rewrite using `[he, he, eq_div_iff hb.ne_zero, ← map_mul (X.residue x).hom, hab]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_evaluation_div {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (x : X) (hx : x ∈ U)
     (z : X.residueField x) : ∃ a b : Γ(X, U), z = X.evaluation U x hx a / X.evaluation U x hx b := by
@@ -38,17 +38,15 @@ theorem exists_eq_evaluation_div {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOp
   rw [he, he, eq_div_iff hb.ne_zero, ← map_mul (X.residue x).hom, hab]
 
 /- English proof (translation)
-Use `letI : Algebra (Γ(X, U) ⧸ q) (X.residueField x) := (Ideal.Quotient.lift q (X.evaluation U x hx).hom fun a ha ↦ (hq a).1 ha).toAlgebra`. Establish `hmk : ∀ a, algebraMap (Γ(X, U) ⧸ q) (X.residueField x) (Ideal.Quotient.mk q a) = X.evaluation U x hx a` using `fun a => Ideal.Quotient.lift_mk _ _ _`. Establish `hinj : Function.Injective (algebraMap (Γ(X, U) ⧸ q) (X.residueField x))`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Rewrite `hc` using `[hmk]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr ((hq a).2 hc)`. Use `haveI : NoZeroDivisors (Γ(X, U) ⧸ q) := hinj.noZeroDivisors _ (map_zero _) (map_mul _)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y`. Use `isUnit_iff_ne_zero.mpr fun h => ?_` and prove the remaining obligations. Use `haveI : Nontrivial (Γ(X, U) ⧸ q) := ⟨⟨0, 1, fun h => by simpa using congrArg (algebraMap (Γ(X, U) ⧸ q) (X.residueField x)) h⟩⟩`. Conclude with `nonZeroDivisors.ne_zero y.2 (hinj (h.trans (map_zero _).symm))`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, b, hz⟩` from `exists_eq_evaluation_div hU x hx z`. Distinguish the cases in `hb : X.evaluation U x hx b = 0`. Use `⟨(0, 1), ?_⟩ show z * algebraMap (Γ(X, U) ⧸ q) (X.residueField x) 1 = algebraMap (Γ(X, U) ⧸ q) (X.residueField x) 0` and prove the remaining obligations. Rewrite using `[hz, hb, div_zero, zero_mul, map_zero]`. Establish `hb' : Ideal.Quotient.mk q b ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Apply `hb` to reduce the goal to its premises. Rewrite using `[← hmk, h, map_zero]`. Use `⟨(Ideal.Quotient.mk q a, ⟨Ideal.Quotient.mk q b, mem_nonZeroDivisors_of_ne_zero hb'⟩), ?_⟩` and prove the remaining obligations. Use `show z * algebraMap (Γ(X, U) ⧸ q) (X.residueField x) (Ideal.Quotient.mk q b) = algebraMap (Γ(X, U) ⧸ q) (X.residueField x) (Ideal.Quotient.mk q a)`.
-
-Rewrite using `[hz, hmk, hmk, div_mul_cancel₀ _ hb]`. Introduce `c d h`. Conclude with `⟨1, by rw [hinj h]⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isFractionRing_residueField {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (x : X) (hx : x ∈ U)
     (q : Ideal Γ(X, U)) (hq : ∀ a, a ∈ q ↔ X.evaluation U x hx a = 0) :
@@ -91,25 +89,25 @@ theorem isFractionRing_residueField {X : Scheme.{0}} {U : X.Opens} (hU : IsAffin
     exact ⟨1, by rw [hinj h]⟩
 
 /- English proof (translation)
-Set `` to `(π.residueFieldMap x).hom.toAlgebra`. Take `⟨_, ⟨(W : X'.Opens), hW, rfl⟩, hx, -⟩` from `X'.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (π x)) isOpen_univ`. Establish `hx : π x ∈ W` using `hx`. Establish `hW : IsAffineOpen W` using `hW`. Establish `hU : IsAffineOpen (π ⁻¹ᵁ W)` using `hW.preimage π`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hst` using `preimage_le_of_invariant ρ π hπ W`. Set `` to `sectionsAction ρ _ hst`. Set `` to `(π.app W).hom.toAlgebra`. Establish `hfix (g : Γ) (a : Γ(X', W)) : g • algebraMap Γ(X', W) Γ(X, π ⁻¹ᵁ W) a = algebraMap _ _ a` using `(isInvariantSection_app ρ π hπ W a g⁻¹).2`. Establish `: SMulCommClass Γ Γ(X', W) Γ(X, π ⁻¹ᵁ W)` using `⟨fun g a s ↦ by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Algebra.smul_def, Algebra.smul_def, smul_mul', hfix]⟩`. Establish `: Algebra.IsInvariant Γ(X', W) Γ(X, π ⁻¹ᵁ W) Γ` using `⟨fun s hs ↦ hinv W hW s fun g ↦ ⟨hst g, by simpa only [inv_inv] using (show (ρ g⁻¹⁻¹).hom.appLE _ _ (hst _) s = s from hs g⁻¹)⟩⟩`. Set `ev` to `X.evaluation (π ⁻¹ᵁ W) x hx`. Set `q : Ideal Γ(X, π ⁻¹ᵁ W)` to `RingHom.ker ev.hom`. Establish `: q.IsPrime` using `RingHom.ker_isPrime _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hq : ∀ a, a ∈ q ↔ ev a = 0` using `fun a ↦ Iff.rfl`. Establish `hnat (a : Γ(X', W)) : π.residueFieldMap x (X'.evaluation W (π x) hx a) = ev (π.app W a)` using `Scheme.evaluation_naturality_apply π x hx a`. Establish `hp : ∀ a, a ∈ q.under Γ(X', W) ↔ X'.evaluation W (π x) hx a = 0` using `fun a ↦ by`. Rewrite using `[← map_eq_zero_iff _ (π.residueFieldMap x).hom.injective, hnat]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `` to `(Ideal.Quotient.lift q ev.hom fun a ha ↦ (hq a).1 ha).toAlgebra`. Set `` to `(Ideal.Quotient.lift _ (X'.evaluation W (π x) hx).hom fun a ha ↦ (hp a).1 ha).toAlgebra`. Use `isFractionRing_residueField hU x hx q hq` as an intermediate fact. Use `isFractionRing_residueField hW (π x) hx _ hp` as an intermediate fact. Use `TameResidue.residue_finite_separable Γ Γ(X', W) Γ(X, π ⁻¹ᵁ W) q _ _ hnat fun hc ↦ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `Ω` to `AlgebraicClosure (X.residueField x)`. Set `jΩ : X.residueField x ⟶ CommRingCat.of Ω` to `CommRingCat.ofHom (algebraMap (X.residueField x) Ω)`. Set `y : Sp Ω ⟶ X` to `Spec.map (ev ≫ jΩ) ≫ hU.fromSpec`. Establish `key (g : Γ) : g⁻¹ ∈ q.inertia Γ ↔ y ≫ (ρ g).hom = y`. Establish `e : y ≫ (ρ g).hom = Spec.map ((ρ g).hom.appLE _ _ (hst g) ≫ ev ≫ jΩ) ≫ hU.fromSpec`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Spec.map_comp, Category.assoc, Category.assoc, IsAffineOpen.SpecMap_appLE_fromSpec _ hU hU]`. Establish `: Mono jΩ` using `ConcreteCategory.mono_of_injective _ jΩ.hom.injective`. Rewrite using `[e, cancel_mono, Spec.map_inj, ← Category.assoc, cancel_mono]`. Establish `e₂ (s) : g⁻¹ • s = (ρ g).hom.appLE _ _ (hst g) s`. Express the relevant statement in the definitionally equal form `(ρ g⁻¹⁻¹).hom.appLE _ _ (hst _) s = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [inv_inv]`. Use `Iff.trans AddSubgroup.mem_inertia ⟨fun h ↦ ?_, fun h s ↦ ?_⟩` and prove the remaining obligations. Use extensionality with `s`. Use `(hq _).1 (h s)` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero, e₂]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Use `(hq _).2 ?_` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero, e₂]`. Conclude with `congr($h s)`. Establish `hcard : Nat.card {g // y ≫ (ρ g).hom = y} = Nat.card (q.inertia Γ)` using `Nat.card_congr (Equiv.subtypeEquivRight fun g ↦ (key g).symm.trans (inv_mem_iff (H := q.inertia Γ)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `ht Ω y` to reduce the goal to its premises. Rewrite using `[hcard]`. Use `congrArg jΩ.hom ((hq _).1 hc)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem residueFieldMap_finite_separable_of_tame {Γ : Type} [Group Γ] [Finite Γ] {X X' : Scheme.{0}}
     (ρ : Γ →* Aut X) (π : X ⟶ X') [IsAffineHom π] (hπ : ∀ g, (ρ g).hom ≫ π = π)
@@ -177,15 +175,15 @@ theorem residueFieldMap_finite_separable_of_tame {Γ : Type} [Group Γ] [Finite 
   simpa using this
 
 /- English proof (translation)
-Introduce `Γ _ _ X X' ρ π G _ G' _ φ hq ht hφ hS x'`. Take `⟨-, hsurj, -⟩` from `quotient_isIntegral_surjective_orbits Γ X X' ρ π hq`. Take `⟨_, hπ, hV⟩` from `hq`. Take `⟨x, rfl⟩` from `π.surjective x'`. Set `` to `(π.residueFieldMap x).hom.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨h₁, h₂⟩` from `residueFieldMap_finite_separable_of_tame ρ π hπ (fun W _ s hs ↦ (hV W).2 s fun g _ ↦ (hs g).2) ht x`. Take `⟨k, _, _, hfin, hsep, S, hGt⟩` from `hS x`. Set `: Algebra (X'.residueField (π x)) k` to `((algebraMap (X.residueField x) k).comp (π.residueFieldMap x).hom).toAlgebra`. Establish `: IsScalarTower (X'.residueField (π x)) (X.residueField x) k` using `IsScalarTower.of_algebraMap_eq fun _ ↦ rfl`. Use `⟨k, inferInstance, inferInstance, Module.Finite.trans (X.residueField x) k, Algebra.IsSeparable.trans _ (X.residueField x) k, S, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : (Spec.map (CommRingCat.ofHom (algebraMap (X.residueField x) k)) ≫ X.fromSpecResidueField x) ≫ π = Spec.map (CommRingCat.ofHom (algebraMap (X'.residueField (π x)) k)) ≫ X'.fromSpecResidueField (π x)`. Rewrite using `[Category.assoc, ← Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField, ← Spec.map_comp_assoc]`. Both sides reduce to the same expression. Rewrite using `[← key]`. Generalize the expression as in `Spec.map (CommRingCat.ofHom (algebraMap (X.residueField x) k)) ≫ X.fromSpecResidueField x = t at hGt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨e, he, -⟩` from `grpPullback_iso hφ (isGrpPullback_pullback G' π)`. Establish `: IsMonHom ((Over.pullback t).mapIso e).hom`. Rewrite using `[Functor.mapIso_hom]`. Use `infer_instance`. Establish `h₃` using `isGt_of_iso ((Over.pullback t).mapIso e) hGt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsMonHom (pullCompIso t π G').symm.hom` using `inferInstanceAs (IsMonHom (pullCompIso t π G').inv)`. Conclude with `isGt_of_iso (pullCompIso t π G').symm h₃`.
+A detailed English derivation is pending.
 -/
 theorem splitFibres_descend_of_tame_quotient : ∀ (Γ : Type) [Group Γ] [Finite Γ] (X X' : Scheme.{0}) (ρ : Γ →* Aut X) (π : X ⟶ X') (G : Over X) [GrpObj G] (G' : Over X') [GrpObj G'] (φ : G.left ⟶ G'.left), (IsAffineHom π ∧ (∀ g, (ρ g).hom ≫ π = π) ∧ ∀ V : X'.Opens, Function.Injective (π.app V).hom ∧ ∀ f : Γ(X, π ⁻¹ᵁ V), (∀ g (h : π ⁻¹ᵁ V ≤ (ρ g).hom ⁻¹ᵁ (π ⁻¹ᵁ V)), ((ρ g).hom.appLE _ _ h).hom f = f) → f ∈ Set.range (π.app V).hom) → (∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ X), (Nat.card {g // x ≫ (ρ g).hom = x} : k) ≠ 0) → IsGrpPullback G G' π φ → (∀ x : X, ∃ (k : Type) (_ : Field k) (_ : Algebra (X.residueField x) k), FiniteDimensional (X.residueField x) k ∧ Algebra.IsSeparable (X.residueField x) k ∧ ∃ S : SplitExt (Sp k), S.IsGt ((Over.pullback (Spec.map (CommRingCat.ofHom (algebraMap (X.residueField x) k)) ≫ X.fromSpecResidueField x)).obj G)) → (∀ x : X', ∃ (k : Type) (_ : Field k) (_ : Algebra (X'.residueField x) k), FiniteDimensional (X'.residueField x) k ∧ Algebra.IsSeparable (X'.residueField x) k ∧ ∃ S : SplitExt (Sp k), S.IsGt ((Over.pullback (Spec.map (CommRingCat.ofHom (algebraMap (X'.residueField x) k)) ≫ X'.fromSpecResidueField x)).obj G')) := by
   intro Γ _ _ X X' ρ π G _ G' _ φ hq ht hφ hS x'

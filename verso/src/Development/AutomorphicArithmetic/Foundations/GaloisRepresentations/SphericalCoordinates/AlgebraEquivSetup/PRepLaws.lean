@@ -5,11 +5,11 @@ open NumberField Matrix GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheo
 open scoped TensorProduct
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add]`. Consider the case `tmul q v`. Establish `h1 : ∀ w : Fin n → 𝓞 E, q ⊗ₜ[ℤ] w = q • ((1 : ℚ) ⊗ₜ[ℤ] w)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce `w`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `h2 : (DistribMulAction.toLinearMap ℤ (Fin n → 𝓞 E) b).baseChange ℚ (q ⊗ₜ[ℤ] v) = q ⊗ₜ[ℤ] (b • v)`. Rewrite using `[LinearMap.baseChange_tmul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h2, h1 (b • v), h1 v, map_smul, map_smul]`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, hβ]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, RingOfIntegers.coe_eq_algebraMap, Rat.smul_def, mul_left_comm, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma beta_baseChange {E : Type} [Field E] [NumberField E] {n : ℕ}
     (β : ℚ ⊗[ℤ] (Fin n → 𝓞 E) ≃ₗ[ℚ] (Fin n → E))
@@ -33,27 +33,27 @@ private lemma beta_baseChange {E : Type} [Field E] [NumberField E] {n : ℕ}
     simp only [Pi.smul_apply, smul_eq_mul, map_mul, RingOfIntegers.coe_eq_algebraMap, Rat.smul_def, mul_left_comm, Algebra.smul_def]
 
 /- English proof (translation)
-Introduce and unpack `E _ _ _ A n rep ⟨β, hβ, hr⟩`. Establish `hβ1 : ∀ v : Fin n → 𝓞 E, β (1 ⊗ₜ v) = fun i => (v i : E)` using `fun v => funext (hβ v)`. Establish `hsc : ∀ c : 𝓞 E, rep (algebraMap E (Matrix (Fin n) (Fin n) E) c) = (DistribMulAction.toLinearMap ℤ (Fin n → 𝓞 E) c).baseChange ℚ`. Introduce `c`. Use `LinearMap.ext fun z => β.injective ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hr, beta_baseChange β hβ c z, Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec, Matrix.one_mulVec]`. Use `⟨?_, ?_, hsc, ?_⟩` and prove the remaining obligations. Introduce `x y hxy`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, rfl⟩` from `β.surjective w`. Simplify using `only [Matrix.toLin'_apply]`. Rewrite using `[← hr, ← hr, hxy]`. Introduce `M`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, rfl⟩ b`. Rewrite using `[← hsc, ← map_mul, ← map_mul, Algebra.commutes]`. Introduce `hM`. Set `F0 : (Fin n → E) →ₗ[ℚ] (Fin n → E)` to `β.toLinearMap ∘ₗ M ∘ₗ β.symm.toLinearMap`. Establish `hF0 : ∀ (b : 𝓞 E) w, F0 ((b : E) • w) = (b : E) • F0 w`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `b w`. Take `⟨z, rfl⟩` from `β.surjective w`. Establish `h` using `congrArg (fun N => β (N z)) (hM b)`. Simplify using `only [Module.End.mul_apply] at h`. Rewrite `h` using `[beta_baseChange β hβ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [F0, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Rewrite using `[← beta_baseChange β hβ, LinearEquiv.symm_apply_apply, h]`. Establish `hF : ∀ (e : E) w, F0 (e • w) = e • F0 w`. Introduce `e w`. Take `⟨b, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) e`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hd0 : (algebraMap (𝓞 E) E d) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hd`. Apply `smul_right_injective (Fin n → E) hd0` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 E) E d • F0 _ = algebraMap (𝓞 E) E d • _`. Rewrite using `[smul_smul, mul_div_cancel₀ _ hd0]`. Establish `h2` using `hF0 d ((algebraMap (𝓞 E) E b / algebraMap (𝓞 E) E d) • w)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `hF0 b w`. Express the relevant statement in the definitionally equal form `F0 (algebraMap (𝓞 E) E d • _) = algebraMap (𝓞 E) E d • _ at h2`. Express the relevant statement in the definitionally equal form `F0 (algebraMap (𝓞 E) E b • _) = algebraMap (𝓞 E) E b • _ at h3`. Rewrite using `[← h2, smul_smul, mul_div_cancel₀ _ hd0, h3]`. Set `F : (Fin n → E) →ₗ[E] (Fin n → E)` to `{ toFun := F0, map_add' := F0.map_add, map_smul' := hF }`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `⟨Matrix.toLin'.symm F, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun z => β.injective ?_` and prove the remaining obligations. Rewrite using `[hr]`. Establish `hx : (Matrix.toLin'.symm F) *ᵥ β z = F (β z)`. Rewrite using `[← Matrix.toLin'_apply, LinearEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx]`. Simplify using `[F, F0]`. Introduce `x v`. Apply `β.injective` to reduce the goal to its premises. Rewrite using `[hr, hβ1, hβ1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (algebraMap (𝓞 E) E) x v i).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pRepLaws :
     RepLaws := by

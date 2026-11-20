@@ -27,7 +27,7 @@ private theorem w_coord_mAct (E : Fin n → Fin n → Module.End ℂ M) (k : ℕ
     coord k κ (mAct E k a b F) = E a b (F κ) := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(((if (κ i).1 = a then coord k (Function.update κ i (b, (κ i).2)) else 0) - (if (κ i).2 = b then coord k (Function.update κ i ((κ i).1, a)) else 0) : Big n k M →ₗ[ℂ] M)) F = _`. Apply the tactic sequence `split_ifs <;> rfl`.
+Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem w_coord_positionAd (k : ℕ) (i : Fin k) (a b : Fin n) (κ : Fin k → Fin n × Fin n)
     (F : Big n k M) :
@@ -40,7 +40,7 @@ private theorem w_coord_positionAd (k : ℕ) (i : Fin k) (a b : Fin n) (κ : Fin
   split_ifs <;> rfl
 
 /- English proof (translation)
-Simplify using `only [bAct, LinearMap.add_apply, LinearMap.sum_apply, map_add, map_sum, w_coord_mAct, w_coord_positionAd]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem w_coord_bAct (E : Fin n → Fin n → Module.End ℂ M) (k : ℕ) (a b : Fin n)
     (κ : Fin k → Fin n × Fin n) (F : Big n k M) :
@@ -51,11 +51,11 @@ private theorem w_coord_bAct (E : Fin n → Fin n → Module.End ℂ M) (k : ℕ
     w_coord_positionAd]
 
 /- English proof (translation)
-Establish `hfun : (fun j => φ (Function.update κ i p j)) = Function.update (fun j => φ (κ j)) i (φ p)`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Function.update_apply, h]`. Establish `h1 : ∑ j, φ (Function.update κ i p j) = φ p + ∑ j ∈ Finset.univ \ {i}, φ (κ j)`. Rewrite using `[show (∑ j, φ (Function.update κ i p j)) = ∑ j, Function.update (fun j => φ (κ j)) i (φ p) j from congrArg (fun f => ∑ j, f j) hfun, Finset.sum_update_of_mem (Finset.mem_univ i)]`. Establish `h2 : ∑ j, φ (κ j) = φ (κ i) + ∑ j ∈ Finset.univ \ {i}, φ (κ j)`. Use `by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sdiff_singleton_eq_erase, Finset.add_sum_erase _ (fun j => φ (κ j)) (Finset.mem_univ i)]`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem w_sum_update (φ : Fin n × Fin n → ℤ) {k : ℕ} (κ : Fin k → Fin n × Fin n) (i : Fin k)
     (p : Fin n × Fin n) :
@@ -83,33 +83,33 @@ variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin 
   {E : Fin n → Fin n → Module.End ℂ M} {V : Submodule ℂ M} {Λ : Fin n → ℝ}
 
 /- English proof (translation)
-Establish `hcoord : ∀ (a b : Fin n) (κ : Fin k → Fin n × Fin n), (bAct E k a b F) κ = E a b (F κ) + ∑ i, ((if (κ i).1 = a then F (Function.update κ i (b, (κ i).2)) else 0) - (if (κ i).2 = b then F (Function.update κ i ((κ i).1, a)) else 0))` using `fun a b κ => w_coord_bAct E k a b κ F`. Establish `hwt : ∀ (κ : Fin k → Fin n × Fin n) (a : Fin n), E a a (F κ) = (((ν - ∑ j, root (κ j).1 (κ j).2) a : ℝ) : ℂ) • F κ`. Introduce `κ a`. Establish `h0` using `congrArg (fun G : Big n k M => G κ) (hν.1 a)`. Simplify using `only at h0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h0` using `[hcoord, PiLp.smul_apply]`. Establish `hterm : ∀ i, ((if (κ i).1 = a then F (Function.update κ i (a, (κ i).2)) else 0) - (if (κ i).2 = a then F (Function.update κ i ((κ i).1, a)) else 0)) = ((root (κ i).1 (κ i).2 a : ℝ) : ℂ) • F κ`. Introduce `i`. Establish `e1 : (κ i).1 = a → Function.update κ i (a, (κ i).2) = κ` using `fun h => by`. Rewrite using `[← h, Prod.mk.eta, Function.update_eq_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (κ i).2 = a → Function.update κ i ((κ i).1, a) = κ` using `fun h => by`. Rewrite using `[← h, Prod.mk.eta, Function.update_eq_self]`. Simplify using `only [root, Pi.sub_apply, Pi.single_apply]`. Apply the tactic sequence `by_cases h1 : (κ i).1 = a <;> by_cases h2 : (κ i).2 = a`. Rewrite using `[if_pos h1, if_pos h2, e1 h1, e2 h2, if_pos h1.symm, if_pos h2.symm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_pos h1, if_neg h2, e1 h1, if_pos h1.symm, if_neg (Ne.symm h2)]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h1, if_pos h2, e2 h2, if_neg (Ne.symm h1), if_pos h2.symm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h1, if_neg h2, if_neg (Ne.symm h1), if_neg (Ne.symm h2)]`. Simplify using the standard rewrite rules. Rewrite `h0` using `[Finset.sum_congr rfl (fun i _ => hterm i), ← Finset.sum_smul]`. Rewrite using `[eq_sub_of_add_eq h0, ← sub_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[Finset.sum_apply]`. Use `set φ : Fin n × Fin n → ℤ := fun p => ((p.1 : ℕ) : ℤ) - ((p.2 : ℕ) : ℤ) with hφ`. Establish `hne : (Finset.univ.filter (fun κ : Fin k → Fin n × Fin n => F κ ≠ 0)).Nonempty`. Assume the negation of the conclusion as `h`. Apply `hF0` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Finset.not_nonempty_iff_eq_empty, Finset.filter_eq_empty_iff]`. Conclude with `PiLp.ext fun κ => by simpa using h (Finset.mem_univ κ)`. Take `⟨κ, hκmem, hκmax⟩` from `Finset.exists_max_image _ (fun κ => ∑ j, φ (κ j)) hne`. Establish `hκ0 : F κ ≠ 0` using `(Finset.mem_filter.mp hκmem).2`. Establish `hzero : ∀ κ' : Fin k → Fin n × Fin n, ∑ j, φ (κ j) < ∑ j, φ (κ' j) → F κ' = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `κ' h`. Assume the negation of the conclusion as `h'`. Conclude with `absurd (hκmax κ' (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h'⟩)) (not_le.mpr h)`. Establish `hK : IsKHWVec ε E (ν - ∑ j, root (κ j).1 (κ j).2) (F κ)`. Use `⟨fun a => hwt κ a, fun a b hab hεab => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hab' : ((a : ℕ) : ℤ) < ((b : ℕ) : ℤ)`. Establish `: (a : ℕ) < b` using `hab`. Use linear arithmetic over natural numbers and integers. Establish `h0` using `congrArg (fun G : Big n k M => G κ) (hν.2 a b hab hεab)`. Simplify using `only at h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h0` using `[hcoord]`. Establish `hterm : ∀ i, ((if (κ i).1 = a then F (Function.update κ i (b, (κ i).2)) else 0) - (if (κ i).2 = b then F (Function.update κ i ((κ i).1, a)) else 0)) = 0`. Introduce `i`. Establish `u1 : (κ i).1 = a → F (Function.update κ i (b, (κ i).2)) = 0` using `fun h => by`. Apply `hzero` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hs` using `w_sum_update φ κ i (b, (κ i).2)`. Establish `hp : φ (b, (κ i).2) - φ (κ i) = ((b : ℕ) : ℤ) - ((a : ℕ) : ℤ)`. Simplify using `only [hφ, h]`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `u2 : (κ i).2 = b → F (Function.update κ i ((κ i).1, a)) = 0` using `fun h => by`. Apply `hzero` to reduce the goal to its premises. Establish `hs` using `w_sum_update φ κ i ((κ i).1, a)`. Establish `hp : φ ((κ i).1, a) - φ (κ i) = ((b : ℕ) : ℤ) - ((a : ℕ) : ℤ)`. Simplify using `only [hφ, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 
-Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Apply the tactic sequence `by_cases h1 : (κ i).1 = a <;> by_cases h2 : (κ i).2 = b <;> simp [h1, h2, u1, u2]`. Rewrite `h0` using `[Finset.sum_congr rfl (fun i _ => hterm i), Finset.sum_const_zero, add_zero]`. Simplify using `using h0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hΛ` using `khw_weight_eq_of_irr hE hV (ncV_mem hF κ) hκ0 hK`. Use `⟨κ, fun i h => hκ0 (ncV_eq_zero hF i h), ?_⟩` and prove the remaining obligations. Rewrite using `[← hΛ, sub_sub_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem khw_big_weight (hE : IsGlRep E) (hV : IsKIrrHW ε E Λ V) {k : ℕ} {F : Big n k M}
     (hF : F ∈ ncV ε V k) (hF0 : F ≠ 0) {ν : Fin n → ℝ} (hν : IsKHWVec ε (bAct E k) ν F) :

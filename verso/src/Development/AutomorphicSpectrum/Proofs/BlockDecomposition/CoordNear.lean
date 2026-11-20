@@ -11,7 +11,7 @@ open GlobalTheory.CatH (face toLast)
 namespace GlobalTheory.CompanionTheory.ConeLocal
 
 /- English proof (translation)
-Introduce `K _ X q _ V' hV x hx`. Establish `h : RingHom.Locally RingHom.IsStandardSmooth (q.appLE ⊤ V' le_top).hom` using `RingHom.smooth_iff_locally_isStandardSmooth.1 (q.smooth_appLE (isAffineOpen_top _) hV le_top)`. Take `⟨f, hf, hst⟩` from `GlobalTheory.CompanionTheory.CovEx.exists_basicOpen RingHom.IsStandardSmooth RingHom.isStandardSmooth_respectsIso q hV h hx`. Take `⟨n, g, hg, he⟩` from `hst.exists_etale_mvPolynomial`. Conclude with `⟨f, n, (GlobalTheory.CompanionTheory.CovEx.coord_basicOpen q hV f g hg he).some, hf⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem coord_near : ∀ {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [Smooth q] {V' : X.Opens}, IsAffineOpen V' → ∀ x : X, x ∈ V' →
     ∃ (f : Γ(X, V')) (e : ℕ) (c : Coord q (X.basicOpen f) e), x ∈ X.basicOpen f := by

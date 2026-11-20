@@ -6,17 +6,15 @@ open scoped Formalism.Per
 namespace GlobalTheory.PMonE.OrthBasis
 
 /- English proof (translation)
-Use `haveI : ProperSpace W := FiniteDimensional.proper ℚ_[l] W`. Take `⟨w₀, hw₀K, hmin⟩` from `(isCompact_closedBall (0 : W) ‖x‖).exists_isMinOn ⟨0, Metric.mem_closedBall_self (norm_nonneg x)⟩ (Continuous.continuousOn (f := fun w : W => ‖x - (w : ℂ_[l])‖) (by fun_prop))`. Establish `h0 : ‖x - (w₀ : ℂ_[l])‖ ≤ ‖x‖`. Simplify using `using hmin (Metric.mem_closedBall_self (norm_nonneg x) : (0 : W) ∈ _)`. Establish `hglob : ∀ w : W, ‖x - (w₀ : ℂ_[l])‖ ≤ ‖x - (w : ℂ_[l])‖`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Distinguish the cases in `hw : w ∈ Metric.closedBall (0 : W) ‖x‖`. Conclude with `hmin hw`. Establish `hlt : ‖x‖ < ‖(w : ℂ_[l])‖` using `by simpa using hw`. Establish `h1 : ‖x - (w : ℂ_[l])‖ = ‖(w : ℂ_[l])‖`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_eq_add_neg, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [norm_neg]; exact hlt.ne), norm_neg, max_eq_right hlt.le]`. Rewrite using `[h1]`. Conclude with `h0.trans hlt.le`. Use `⟨x - w₀, by simpa using W.neg_mem w₀.2, ?_, fun w hw => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `hx (by rw [sub_eq_zero.1 h]; exact w₀.2)`. Use `hglob ⟨w₀ - w, W.sub_mem w₀.2 hw⟩` as an intermediate fact. Simplify `this` using `[sub_sub_eq_add_sub, sub_add_eq_add_sub, add_sub_assoc]`. Establish `h1` using `hglob ⟨w₀ - w, W.sub_mem w₀.2 hw⟩`. Establish `h2 : w = (x - w₀ + w) + -(x - w₀)` using `by abel`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_neg]`. Use `max_le le_rfl ?_` and prove the remaining obligations. Establish `: x - (↑(⟨w₀ - w, W.sub_mem w₀.2 hw⟩ : W) : ℂ_[l]) = x - w₀ + w` using `by simp; abel`. Rewrite using `[← this]`.
-
-Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_orthogonal_translate (l : ℕ) [Fact l.Prime] (W : Submodule ℚ_[l] ℂ_[l])
     [FiniteDimensional ℚ_[l] W] (x : ℂ_[l]) (hx : x ∉ W) :
@@ -52,29 +50,25 @@ private lemma exists_orthogonal_translate (l : ℕ) [Fact l.Prime] (W : Submodul
         rw [← this]; exact h1
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro μ _`. Conclude with `⟨Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun _ j => j.elim0⟩`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `μ hμ`. Rewrite `hμ` using `[← Fin.snoc_init_self μ, linearIndependent_fin_snoc]`. Take `⟨hμ₀, hx⟩` from `hμ`. Take `⟨u₀, hu₀S, hu₀, horth⟩` from `ih _ hμ₀`. Use `set W := Submodule.span ℚ_[l] (Set.range (Fin.init μ))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : FiniteDimensional ℚ_[l] W := FiniteDimensional.span_of_finite ℚ_[l] (Set.finite_range _)`. Take `⟨y, hyx, hy0, hy⟩` from `exists_orthogonal_translate l W _ hx`. Establish `hWS : W ≤ Submodule.span ℚ_[l] (Set.range μ)`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, rfl⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨i.castSucc, rfl⟩`. Establish `hxS : μ (Fin.last n) ∈ Submodule.span ℚ_[l] (Set.range μ)` using `Submodule.subset_span ⟨_, rfl⟩`. Use `⟨Fin.snoc (α := fun _ => ℂ_[l]) u₀ y, fun i => ?_, fun i => ?_, fun c j => ?_⟩` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun k => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.snoc_last]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: y = μ (Fin.last n) + (y - μ (Fin.last n))` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ hxS (hWS hyx)`. Simplify using `only [Fin.snoc_castSucc]`. Conclude with `hWS (hu₀S k)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `Fin.lastCases ?_ (fun k => ?_) i` and prove the remaining obligations. Simplify using `using hy0`. Simplify using `using hu₀ k`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `set w := ∑ i : Fin n, algebraMap ℚ_[l] ℂ_[l] (c i.castSucc) * u₀ i`. Establish `hw : w ∈ W` using `Submodule.sum_mem _ fun i _ => by`. Rewrite using `[← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (hu₀S i)`. Establish `key : ‖c (Fin.last n)‖ * ‖y‖ ≤ ‖w + algebraMap ℚ_[l] ℂ_[l] (c (Fin.last n)) * y‖ ∧ ‖w‖ ≤ ‖w + algebraMap ℚ_[l] ℂ_[l] (c (Fin.last n)) * y‖`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Distinguish the cases in `hc : c (Fin.last n) = 0`. Simplify using `[hc]`. Use `set a := algebraMap ℚ_[l] ℂ_[l] (c (Fin.last n))`. Establish `hna : ‖a‖ = ‖c (Fin.last n)‖` using `norm_algebraMap' ℂ_[l] _`. Establish `ha : a ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h`. Apply `hc` to reduce the goal to its premises. Rewrite using `[← norm_eq_zero, ← hna, h, norm_zero]`. Establish `hw' : a⁻¹ * w ∈ W`. Rewrite using `[show a⁻¹ = algebraMap ℚ_[l] ℂ_[l] (c (Fin.last n))⁻¹ by simp [a], ← Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ hw`. Take `⟨h1, h2⟩` from `hy _ hw'`. Establish `e : w + a * y = a * (y + a⁻¹ * w)` using `by field_simp; ring`. Rewrite using `[e, norm_mul, hna]`. Use `⟨mul_le_mul_of_nonneg_left h1 (norm_nonneg _), ?_⟩` and prove the remaining obligations.
-
-Establish `: ‖w‖ = ‖c (Fin.last n)‖ * ‖a⁻¹ * w‖`. Rewrite using `[norm_mul, norm_inv, hna, ← mul_assoc, mul_inv_cancel₀ (norm_ne_zero_iff.2 hc), one_mul]`. Rewrite using `[this]`. Conclude with `mul_le_mul_of_nonneg_left h2 (norm_nonneg _)`. Use `Fin.lastCases ?_ (fun k => ?_) j` and prove the remaining obligations.
-
-Simplify using `using key.1`. Simplify using `only [Fin.snoc_castSucc]`. Conclude with `(horth (fun i => c i.castSucc) k).trans key.2`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma exists_orthogonal_family_in_span (l : ℕ) [Fact l.Prime] :
     ∀ (n : ℕ) (μ : Fin n → ℂ_[l]), LinearIndependent ℚ_[l] μ →
@@ -139,9 +133,9 @@ private lemma exists_orthogonal_family_in_span (l : ℕ) [Fact l.Prime] :
         exact (horth (fun i => c i.castSucc) k).trans key.2
 
 /- English proof (translation)
-Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hlpos : (0 : ℝ) < l` using `zero_lt_one.trans hl`. Take `⟨n, h1, h2⟩` from `exists_mem_Ioc_zpow (norm_pos_iff.2 hx) hl`. Establish `hN : ‖algebraMap ℚ_[l] ℂ_[l] ((l : ℚ_[l]) ^ (n + 1)) * x‖ = ‖x‖ / (l : ℝ) ^ (n + 1)`. Rewrite using `[norm_mul, norm_algebraMap', norm_zpow, Padic.norm_p, inv_zpow, div_eq_inv_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(l : ℚ_[l]) ^ (n + 1), zpow_ne_zero _ (by exact_mod_cast (Fact.out : l.Prime).ne_zero), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hN, lt_div_iff₀ (zpow_pos hlpos _), zpow_add_one₀ hlpos.ne', mul_comm _ (l : ℝ), ← mul_assoc, inv_mul_cancel₀ hlpos.ne', one_mul]`. Conclude with `h1`. Rewrite using `[hN, div_le_one (zpow_pos hlpos _)]`. Conclude with `h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_rescale_norm_mem_Ioc (l : ℕ) [Fact l.Prime] (x : ℂ_[l]) (hx : x ≠ 0) :
     ∃ t : ℚ_[l], t ≠ 0 ∧ (l : ℝ)⁻¹ < ‖algebraMap ℚ_[l] ℂ_[l] t * x‖ ∧
@@ -160,15 +154,13 @@ private lemma exists_rescale_norm_mem_Ioc (l : ℕ) [Fact l.Prime] (x : ℂ_[l])
     exact h2
 
 /- English proof (translation)
-Take `⟨u, huS, hu0, horth⟩` from `exists_orthogonal_family_in_span l h μ hμ`. Use `choose t ht0 htlo hthi using fun i => exists_rescale_norm_mem_Ioc l (u i) (hu0 i)`. Use `set w : Fin h → ℂ_[l] := fun i => algebraMap ℚ_[l] ℂ_[l] (t i) * u i with hw_def`. Establish `hworth : ∀ (c : Fin h → ℚ_[l]) (j : Fin h), ‖c j‖ * ‖w j‖ ≤ ‖∑ i, algebraMap ℚ_[l] ℂ_[l] (c i) * w i‖`. Introduce `c j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `horth (fun i => c i * t i) j` as an intermediate fact. Simplify using `only [hw_def, map_mul, mul_assoc, norm_mul, norm_algebraMap'] at this ⊢`. Conclude with `this`. Use `set σ := Tuple.sort (fun i => -‖w i‖)`. Use `⟨fun i => w (σ i), fun i => ?_, fun i => ⟨?_, hthi _⟩, fun i => htlo _, ?_, fun c j => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hw_def]`. Rewrite using `[← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (huS _)`. Simplify using `only [hw_def]`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg norm h0` as an intermediate fact. Rewrite `this` using `[norm_zero]`. Conclude with `(lt_irrefl (0 : ℝ)) ((inv_pos.2 (by exact_mod_cast (Fact.out : l.Prime).pos)).trans (this ▸ htlo (σ i)))`. Introduce `a b hab`. Conclude with `neg_le_neg_iff.1 (Tuple.monotone_sort (fun i => -‖w i‖) hab)`.
-
-Use `hworth (fun k => c (σ.symm k)) (σ j)` as an intermediate fact. Rewrite `this` using `[← Equiv.sum_comp σ]`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma exists_sorted_orthogonal_family_in_span (l : ℕ) [Fact l.Prime] (h : ℕ) (μ : Fin h → ℂ_[l])
     (hμ : LinearIndependent ℚ_[l] μ) :
@@ -203,17 +195,17 @@ private lemma exists_sorted_orthogonal_family_in_span (l : ℕ) [Fact l.Prime] (
     simpa using this
 
 /- English proof (translation)
-Introduce `l _ h μ hind`. Establish `hμ : LinearIndependent ℚ_[l] μ`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Use `hind g (by simpa [Algebra.smul_def] using hg)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[this]`. Take `⟨v, hvS, hv1, hvlo, hanti, horth⟩` from `exists_sorted_orthogonal_family_in_span l h μ hμ`. Use `choose P hP using fun i => (Submodule.mem_span_range_iff_exists_fun ℚ_[l]).1 (hvS i)`. Establish `hlpos : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Use `⟨Matrix.of P, v, ?_, fun i => ?_, hv1, hanti, fun i j => ?_, horth⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hdet`. Take `⟨w, hw0, hwP⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 hdet`. Establish `hcol : ∀ j, ∑ i, w i * P i j = 0` using `fun j => by`. Simplify `congrFun hwP j` using `[Matrix.vecMul, dotProduct]`. Establish `hsum : ∑ i, algebraMap ℚ_[l] ℂ_[l] (w i) * v i = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[← Algebra.smul_def, ← hP, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul, hcol, zero_smul, Finset.sum_const_zero]`. Apply `hw0` to reduce the goal to its premises. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h1` using `horth w j`. Rewrite `h1` using `[hsum, norm_zero]`. Establish `h2 : 0 < ‖v j‖` using `norm_pos_iff.2 (hv1 j).1`. Establish `h3 : ‖w j‖ = 0` using `le_antisymm (by nlinarith [norm_nonneg (w j)]) (norm_nonneg _)`. Simplify using `using h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hP i]`. Simplify using `[Algebra.smul_def]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.PMonE.OrthBasis.exists_orthBasis : ∀ (l : ℕ) [Fact l.Prime] (h : ℕ) (μ : Fin h → ℂ_[l]), (∀ c : Fin h → ℚ_[l], ∑ j, algebraMap ℚ_[l] ℂ_[l] (c j) * μ j = 0 → c = 0) → ∃ (P : Matrix (Fin h) (Fin h) ℚ_[l]) (μ' : Fin h → ℂ_[l]), P.det ≠ 0 ∧ (∀ i, μ' i = ∑ j, algebraMap ℚ_[l] ℂ_[l] (P i j) * μ j) ∧ (∀ i, μ' i ≠ 0 ∧ ‖μ' i‖ ≤ 1) ∧ Antitone (fun i => ‖μ' i‖) ∧ (∀ i j, ‖μ' i‖ < l * ‖μ' j‖) ∧ ∀ (c : Fin h → ℚ_[l]) (j : Fin h), ‖c j‖ * ‖μ' j‖ ≤ ‖∑ i, algebraMap ℚ_[l] ℂ_[l] (c i) * μ' i‖ := by
   intro l _ h μ hind

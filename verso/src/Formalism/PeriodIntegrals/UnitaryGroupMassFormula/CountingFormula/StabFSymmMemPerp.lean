@@ -15,7 +15,7 @@ section Induced
 variable (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
 
 /- English proof (translation)
-Simplify using `only [Formalism.MainNotions.S.FlagG.Xa, Formalism.MainNotions.S.FlagG.X]`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem flag_Xa_top : F0.Xa D.R.rS = F0.X := by
   simp only [Formalism.MainNotions.S.FlagG.Xa, Formalism.MainNotions.S.FlagG.X]
@@ -26,13 +26,13 @@ theorem flag_Xa_top : F0.Xa D.R.rS = F0.X := by
 variable {D F0}
 
 /- English proof (translation)
-Introduce `x y` and use `hγ.1 x y`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem stabF_isom {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) :
     ∀ x y, (VS D).hT (γ x) (γ y) = (VS D).hT x y := fun x y => hγ.1 x y
 
 /- English proof (translation)
-Establish `h` using `hγ.2.1 D.R.rS`. Rewrite `h` using `[flag_Xa_top D F0]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem stabF_mapX {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) :
     F0.X.map (γ : (VS D).V →ₗ[D.host.E] (VS D).V) = F0.X := by
@@ -40,12 +40,12 @@ theorem stabF_mapX {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF
   rwa [flag_Xa_top D F0] at h
 
 /- English proof (translation)
-The claim follows from `hγ.2.2`.
+A detailed English derivation is pending.
 -/
 theorem apply_z_eq_z_of_mem_stabF {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) : γ F0.z = F0.z := hγ.2.2
 
 /- English proof (translation)
-Rewrite using `[← stabF_mapX hγ]`. Conclude with `Submodule.mem_map_of_mem hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stabF_mem_X {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) {x : (VS D).V}
     (hx : x ∈ F0.X) : γ x ∈ F0.X := by
@@ -53,7 +53,7 @@ theorem stabF_mem_X {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stab
   exact Submodule.mem_map_of_mem hx
 
 /- English proof (translation)
-Rewrite `hx` using `[← stabF_mapX hγ]`. Take `⟨y, hy, rfl⟩` from `hx`. Simplify using `using hy`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem stabF_symm_mem_X {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) {x : (VS D).V}
     (hx : x ∈ F0.X) : γ.symm x ∈ F0.X := by
@@ -62,9 +62,7 @@ theorem stabF_symm_mem_X {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈
   simpa using hy
 
 /- English proof (translation)
-Use `show ∀ x ∈ F0.X, (VS D).hT x (γ y) = 0`. Introduce `x hx`. Establish `h1` using `stabF_isom hγ (γ.symm x) y`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[h1]`.
-
-Conclude with `hy _ (stabF_symm_mem_X hγ hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stabF_mem_perp {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) {y : (VS D).V}
     (hy : y ∈ perpS (VS D) F0.X) : γ y ∈ perpS (VS D) F0.X := by
@@ -76,9 +74,7 @@ theorem stabF_mem_perp {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ s
   exact hy _ (stabF_symm_mem_X hγ hx)
 
 /- English proof (translation)
-Use `show ∀ x ∈ F0.X, (VS D).hT x (γ.symm y) = 0`. Introduce `x hx`. Establish `h1` using `stabF_isom hγ x (γ.symm y)`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[← h1]`.
-
-Conclude with `hy _ (stabF_mem_X hγ hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stabF_symm_mem_perp {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) {y : (VS D).V}
     (hy : y ∈ perpS (VS D) F0.X) : γ.symm y ∈ perpS (VS D) F0.X := by
@@ -90,7 +86,7 @@ theorem stabF_symm_mem_perp {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ 
   exact hy _ (stabF_mem_X hγ hx)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `stabF_mem_perp hγ hy`. Introduce `y hy`. Conclude with `Submodule.mem_map.2 ⟨γ.symm y, stabF_symm_mem_perp hγ hy, by simp⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stabF_map_perp {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) :
     (perpS (VS D) F0.X).map (γ : (VS D).V →ₗ[D.host.E] (VS D).V) = perpS (VS D) F0.X := by
@@ -111,9 +107,9 @@ theorem gPerp_apply {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stab
     ((gPerp hγ x : perpS (VS D) F0.X) : (VS D).V) = γ x.1 := rfl
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩ show ((gPerp hγ x : perpS (VS D) F0.X) : (VS D).V) ∈ F0.X`. Rewrite using `[gPerp_apply]`. Conclude with `stabF_mem_X hγ (x := x.1) hx`. Introduce `x hx`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mem_map.2 ⟨⟨γ.symm x.1, stabF_symm_mem_perp hγ x.2⟩, stabF_symm_mem_X hγ (x := x.1) hx, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((gPerp hγ ⟨γ.symm x.1, stabF_symm_mem_perp hγ x.2⟩ : perpS (VS D) F0.X) : (VS D).V) = x.1`. Rewrite using `[gPerp_apply]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gPerp_map_nX {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) :
     (nX D F0).map (gPerp hγ : perpS (VS D) F0.X →ₗ[D.host.E] perpS (VS D) F0.X) = nX D F0 := by
@@ -140,9 +136,9 @@ theorem gWb_mk {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F
     gWb hγ (Submodule.Quotient.mk x) = Submodule.Quotient.mk (gPerp hγ x) := rfl
 
 /- English proof (translation)
-Introduce `x y`. Proceed by induction on `x using Submodule.Quotient.induction_on with | H a => ?_`. Proceed by induction on `y using Submodule.Quotient.induction_on with | H b => ?_`. Rewrite using `[gWb_mk, gWb_mk]`. Rewrite using `[hWb_mk, hWb_mk, gPerp_apply, gPerp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Proceed by induction. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `stabF_isom hγ a.1 b.1`.
+A detailed English derivation is pending.
 -/
 theorem gWb_isom {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) :
     gWb hγ ∈ Formalism.HermitianLatticesTheory.isom (hWb D F0) := by
@@ -154,9 +150,9 @@ theorem gWb_isom {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D
   exact stabF_isom hγ a.1 b.1
 
 /- English proof (translation)
-Unfold `zbar`. Rewrite using `[gWb_mk]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[gPerp_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `apply_z_eq_z_of_mem_stabF hγ`.
+A detailed English derivation is pending.
 -/
 theorem gWb_zbar {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) :
     gWb hγ (zbar D F0) = zbar D F0 := by
@@ -168,23 +164,21 @@ theorem gWb_zbar {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D
   exact apply_z_eq_z_of_mem_stabF hγ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨gWb_isom hγ, gWb_zbar hγ⟩`.
+Supply the required witnesses or components.
 -/
 theorem gWb_mem_hz {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) :
     gWb hγ ∈ hz (hWb D F0) (zbar D F0) := ⟨gWb_isom hγ, gWb_zbar hγ⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Proceed by induction on `x using Submodule.Quotient.induction_on with | H a => ?_`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, hwx⟩`. Take `⟨c, hc, rfl⟩` from `hw`.
+By extensionality, compare the relevant components. Proceed by induction. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨gPerp hγ c, ?_, ?_⟩` and prove the remaining obligations. Use `show ((gPerp hγ c : perpS (VS D) F0.X) : (VS D).V) ∈ Formalism.HermitianLatticesTheory.gmap γ Λ`. Rewrite using `[gPerp_apply]`. Conclude with `Submodule.mem_map_of_mem hc`. Rewrite using `[← hwx]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Both sides reduce to the same expression. Introduce and unpack `⟨c, hc, hca⟩`. Take `⟨d, hd, hdc⟩` from `hc`. Establish `hdp : d ∈ perpS (VS D) F0.X`. Establish `e : d = γ.symm c.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `congrArg γ.symm hdc`. Simplify using `using h`. Rewrite using `[e]`. Conclude with `stabF_symm_mem_perp hγ c.2`. Use `⟨Submodule.Quotient.mk ⟨d, hdp⟩, ⟨⟨d, hdp⟩, hd, rfl⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hca]`. Use `show gWb hγ (Submodule.Quotient.mk ⟨d, hdp⟩) = Submodule.Quotient.mk c`. Rewrite using `[gWb_mk]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Rewrite using `[gPerp_apply]`. Use `first`. Consider the case `exact hdc`. Consider the case `simpa using hdc`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gWb_Mof {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0)
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) :
@@ -228,7 +222,7 @@ def RowClassBack : Prop :=
         ∃ γ ∈ stabF D F0, Formalism.HermitianLatticesTheory.gmap γ Λ = Λ'
 
 /- English proof (translation)
-Take `⟨γ, hγ, hΛ⟩` from `h`. Conclude with `⟨gWb hγ, gWb_mem_hz hγ, by rw [gWb_Mof, hΛ]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rowClass_fwd (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
     (Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V) (h : ∃ γ ∈ stabF D F0, Formalism.HermitianLatticesTheory.gmap γ Λ = Λ') :
@@ -237,7 +231,7 @@ theorem rowClass_fwd (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
   exact ⟨gWb hγ, gWb_mem_hz hγ, by rw [gWb_Mof, hΛ]⟩
 
 /- English proof (translation)
-Introduce `D u F0 Λ Λ' h1 h2`. Conclude with `⟨fun h => rowClass_fwd D F0 Λ Λ' h, fun ⟨σ, hσ, e⟩ => hB D u F0 Λ Λ' h1 h2 σ hσ e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem rowClass_of (hB : RowClassBack) : RowClass := by
   intro D u F0 Λ Λ' h1 h2

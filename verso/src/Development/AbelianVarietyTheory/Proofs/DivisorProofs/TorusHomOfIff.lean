@@ -25,7 +25,7 @@ instance nonempty_av {S : Type} [CommRing S] [IsDomain S] (P : PolAV (Sp S)) : N
 abbrev JN (D₁ D₂ : DegPre R) : LB (D₁.P.A.left ⨿ D₂.P.A.left) := join D₁.P.L D₂.P.L
 
 /- English proof (translation)
-The claim follows from `join_isLB D₁.P.isLB D₂.P.isLB`.
+A detailed English derivation is pending.
 -/
 theorem jn_isLB (D₁ D₂ : DegPre R) : (JN D₁ D₂).IsLB := join_isLB D₁.P.isLB D₂.P.isLB
 
@@ -76,7 +76,7 @@ def Key (U₁ : UnifPre I D₁ A₁ G₁) (U₂ : UnifPre I D₂ A₂ G₂) (c :
     ∀ g', Act D₁.toPre D₂.toPre b h p.g g' → ∃ p' : QkPt D₂.toPre F k, p'.g = g' ∧ QkToAkU U₂ F k p' (x ≫ c)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨E.homG, E.homB, E.q_lin, E.i_lin⟩, E.ext⟩`.
+Supply the required witnesses or components.
 -/
 theorem lin_of_endU {U : UnifPre I D₁ A₁ G₁} (E : EndU U) : Lin U U E.aG E.aB E.h ∧ Gen₀ U U E.aG E.aA :=
   ⟨⟨E.homG, E.homB, E.q_lin, E.i_lin⟩, E.ext⟩

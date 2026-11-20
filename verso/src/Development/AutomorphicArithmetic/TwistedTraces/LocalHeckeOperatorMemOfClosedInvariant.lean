@@ -4,9 +4,9 @@ open MeasureTheory NumberField IsDedekindDomain Filter GroundTheory.Automorphic 
 open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets GlobalTheory.PRep Formalism.BasicNotions GlobalTheory.CuspRep GlobalTheory.SmGL PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Geo UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.GM UpperTheory.ConvolutionTheory.C
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ w _ m φ T Z hZ hst hT v hv`. Use `haveI : CompleteSpace Z := hZ.completeSpace_coe`. Rewrite using `[← Submodule.orthogonal_orthogonal Z, Submodule.mem_orthogonal]`. Introduce `u hu`. Rewrite using `[hT u v]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : ∀ g : Gw n w, φ g * inner ℂ u (rhoL μ w g v) = 0` using `fun g => by`. Rewrite using `[(Submodule.mem_orthogonal' _ _).1 hu _ (hst g v hv), mul_zero]`. Simplify using `only [h0, integral_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.localHeckeOperator_mem_of_closed_invariant :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (w : Pl K) [MeasurableSpace (Gw n w)] (m : Measure (Gw n w))

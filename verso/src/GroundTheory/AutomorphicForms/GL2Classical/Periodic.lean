@@ -11,17 +11,15 @@ noncomputable section
 namespace GL2Classical
 
 /- English proof (translation)
-Establish `hsub : [[x₀, x₀ + T]] ×ℂ [[y₁, y₂]] ⊆ {w : ℂ | 0 < w.im}`. Introduce `w hw`. Rewrite `hw` using `[mem_reProdIm]`. Use `hw.2` as an intermediate fact. Rewrite `this` using `[Set.mem_uIcc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show 0 < w.im`. Break down `this with h | h` into its components or cases. Conclude with `lt_of_lt_of_le hy₁ h.1`. Conclude with `lt_of_lt_of_le hy₂ h.1`. Establish `H` using `integral_boundary_rect_eq_zero_of_differentiableOn G (x₀ + y₁ * I) ((x₀ + T : ℝ) + y₂ * I) (by`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hG.mono (Set.Subset.trans ?_ hsub)` and prove the remaining obligations. Use the proof step `simp)`. Simplify using `only [add_re, ofReal_re, mul_re, I_re, mul_zero, ofReal_im, I_im, mul_one, sub_self, add_zero, add_im, mul_im, zero_add] at H`. Establish `hv : ∫ y in y₁..y₂, G (((x₀ + T : ℝ) : ℂ) + y * I) = ∫ y in y₁..y₂, G ((x₀ : ℂ) + y * I)`. Use `intervalIntegral.integral_congr fun y hy => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hy0 : 0 < y`. Rewrite `hy` using `[Set.mem_uIcc]`. Break down `hy with h | h` into its components or cases. Conclude with `lt_of_lt_of_le hy₁ h.1`. Conclude with `lt_of_lt_of_le hy₂ h.1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hper ((x₀ : ℂ) + y * I) (by simpa using hy0)` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite `H` using `[hv, add_sub_cancel_right, sub_eq_zero]`. Conclude with `H`.
+A detailed English derivation is pending.
 -/
 theorem integral_periodic_eq_of_im {G : ℂ → ℂ} (hG : DifferentiableOn ℂ G {w | 0 < w.im}) {T : ℝ}
     (hper : ∀ w : ℂ, 0 < w.im → G (w + T) = G w) (x₀ : ℝ) {y₁ y₂ : ℝ} (hy₁ : 0 < y₁)
@@ -58,25 +56,23 @@ theorem integral_periodic_eq_of_im {G : ℂ → ℂ} (hG : DifferentiableOn ℂ 
   exact H
 
 /- English proof (translation)
-Use `set G : ℂ → ℂ := F ∘ ofComplex`. Establish `hG : DifferentiableOn ℂ G {w | 0 < w.im}` using `mdifferentiable_iff.1 hF`. Establish `hGw : ∀ w : ℂ, (hw : 0 < w.im) → G w = F ⟨w, hw⟩` using `fun w hw => by`. Simplify using `only [G, Function.comp_apply, ofComplex_apply_of_im_pos hw]`. Establish `hper' : ∀ w : ℂ, 0 < w.im → G (w + T) = G w` using `fun w hw => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw' : 0 < (w + T).im` using `by simpa using hw`. Rewrite using `[hGw _ hw', hGw _ hw, ← hper ⟨w, hw⟩]`. Use `congr 1`. Use `ext`. Simplify using `[coe_vadd, add_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hint : ∀ y : ℝ, 0 < y → ∫ t in (0 : ℝ)..T, G ((t + z.re : ℝ) + y * I) = ∫ x in z.re..z.re + T, G (x + y * I)`. Introduce `y _`. Use `intervalIntegral.integral_comp_add_right (fun x : ℝ => G (x + y * I)) z.re (a := 0) (b := T)` as an intermediate fact. Simplify using `only [zero_add] at this`. Rewrite using `[add_comm z.re T]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hzint : ∫ t in (0 : ℝ)..T, F (t +ᵥ z) = ∫ x in z.re..z.re + T, G (x + z.im * I)`. Rewrite using `[← hint z.im z.im_pos]`. Use `intervalIntegral.integral_congr fun t _ => ?_` and prove the remaining obligations. Establish `him : 0 < (((t + z.re : ℝ) : ℂ) + z.im * I).im` using `by simpa using z.im_pos`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hGw _ him]`. Use `congr 1`. Use `ext`. Simplify using `only [coe_vadd, ofReal_add]`. Rewrite using `[add_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg _ (Complex.re_add_im (z : ℂ)).symm`. Rewrite using `[hzint]`. Use `norm_le_zero_iff.1 (le_of_forall_pos_le_add fun ε hε => ?_)` and prove the remaining obligations. Rewrite using `[zero_add]`. Take `⟨A, hA⟩` from `(atImInfty_mem _).1 (hzero.eventually (Metric.closedBall_mem_nhds 0 (div_pos hε hT)))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set Y := max A 1 + z.im`. Establish `hY : 0 < Y` using `by positivity`. Rewrite using `[integral_periodic_eq_of_im hG hper' z.re z.im_pos hY]`. Establish `hbound : ∀ x ∈ Set.uIoc z.re (z.re + T), ‖G (x + Y * I)‖ ≤ ε / T`. Introduce `x _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `him : 0 < ((x : ℂ) + Y * I).im` using `by simpa using hY`. Rewrite using `[hGw _ him]`. Use `hA ⟨_, him⟩ (by show A ≤ ((x : ℂ) + Y * I).im` as an intermediate fact. Simplify using `only [add_im, ofReal_im, mul_im, ofReal_re, I_im, mul_one, I_re, mul_zero, zero_add]`. Use `z.im_pos` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `: A ≤ max A 1` using `le_max_left _ _`. Use the proof step `linarith)`. Simplify `this` using `[Metric.mem_closedBall, dist_zero_right]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_sub_cancel_left, abs_of_pos hT]`.
-
-Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem integral_vadd_eq_zero {F : ℍ → ℂ} (hF : MDiff F) {T : ℝ} (hT : 0 < T)
     (hper : ∀ z : ℍ, F (T +ᵥ z) = F z) (hzero : IsZeroAtImInfty F) (z : ℍ) :

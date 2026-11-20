@@ -25,7 +25,7 @@ variable {D : D7} {σ : ℕ}
 def zlQ (B : BesL D σ) : Matrix (Fin B.L.rank) (Fin (σ + 1)) D.host.E := vecMulVec B.ζ (GlobalTheory.Unf.FB.eLast D (σ + 1))
 
 /- English proof (translation)
-Rewrite using `[zEll, ← GlobalTheory.Unf.FB.ratV_eLast]`. Use function extensionality and compare the values at `i j`. Simplify using `[rat, zlQ, vecMulVec_apply, ratV]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rat_zlQ (B : BesL D σ) : (rat (zlQ B) : Mx D B.L.rank (σ + 1)) = zEll B.L (σ + 1) B.ζ := by
   rw [zEll, ← GlobalTheory.Unf.FB.ratV_eLast]
@@ -33,9 +33,9 @@ theorem rat_zlQ (B : BesL D σ) : (rat (zlQ B) : Mx D B.L.rank (σ + 1)) = zEll 
   simp [rat, zlQ, vecMulVec_apply, ratV]
 
 /- English proof (translation)
-Simplify using `only [gramQ, zlQ, Matrix.mulVec, dotProduct, Matrix.mul_apply, conjTranspose_apply, vecMulVec_apply, GlobalTheory.Unf.FB.eLast, Pi.star_apply, Fin.val_last]`. Simplify using `only [if_true, mul_one, star_one]`. Rewrite using `[Finset.sum_eq_single (Fin.last σ)]`. Simplify using `only [Fin.val_last, if_true, mul_one]`. Introduce `b _ hb`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb' : ¬ (b.1 + 1 = σ + 1)` using `fun h => hb (Fin.ext (by simp only [Fin.val_last]; omega))`. Simplify using `only [hb', if_false, mul_zero, Finset.sum_const_zero, zero_mul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem gramQ_zlQ_mulVec_last (B : BesL D σ) (a : Fin (σ + 1) → D.host.E) :
     (gramQ B.L (zlQ B) *ᵥ a) (Fin.last σ) = (star B.ζ ⬝ᵥ B.L.gram *ᵥ B.ζ) * a (Fin.last σ) := by
@@ -50,13 +50,13 @@ theorem gramQ_zlQ_mulVec_last (B : BesL D σ) (a : Fin (σ + 1) → D.host.E) :
   · simp
 
 /- English proof (translation)
-Introduce `D σ B`. Take `⟨x, ⟨hli, hg⟩, hx⟩` from `GlobalTheory.T.exists_rational_fullRank_besselBasePoint D σ B`. Rewrite `hg` using `[← rat_zlQ]`. Establish `hG : gramQ B.V x = gramQ B.L (zlQ B)` using `GlobalTheory.Unf.FB.gramQ_eq_of_gramSkew x (zlQ B) hg`. Establish `hA : adj (xLast B.d (vecB B.o B.ζ)) ⬝ (gA B.V ⬝ xLast B.d (vecB B.o B.ζ)) = adj (zEll B.L (σ + 1) B.ζ) ⬝ (gA B.L ⬝ zEll B.L (σ + 1) B.ζ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hx, ← rat_zlQ, ← GlobalTheory.Unf.FB.rat_gramQ, ← GlobalTheory.Unf.FB.rat_gramQ, hG]`. Use `⟨x, hx, ⟨hli, fun u hu => ?_⟩, ?_, fun a ha => ?_, fun S S₀ d c => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.Unf.FB.rat_gramQ, hx, hA]`. Establish `hz : zEll B.L (σ + 1) B.ζ ⬝ u.1 = zEll B.L (σ + 1) B.ζ` using `zEll_mul B.L B.ζ hu`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[adj_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = adj (zEll B.L (σ + 1) B.ζ) ⬝ (gA B.L ⬝ zEll B.L (σ + 1) B.ζ) := by rw [hz]`. Use extensionality with `g`. Rewrite using `[hx]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `((GlobalTheory.T.besselGroup_acts_basePoint_unitriangular D σ B).1 g).symm`. Establish `h1` using `congrFun ha (Fin.last σ)`. Rewrite `h1` using `[hG, gramQ_zlQ_mulVec_last, Pi.zero_apply]`. Conclude with `(mul_eq_zero.1 h1).resolve_left B.line.2`. Rewrite using `[HypDec.qS, HypDec.qS, HypDec.symplOH_extX_extY, HypDec.symplOH_extX_extY, GlobalTheory.Unf.FB.pairS_mul, GlobalTheory.Unf.FB.pairS_mul, hA]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basePoint_spec : ∀ (D : D7) (σ : ℕ) (B : BesL D σ), ∃ x₀ : Matrix (Fin B.V.rank) (Fin (σ + 1)) D.host.E, (rat x₀ : Mx D B.V.rank (σ + 1)) = xLast B.d (vecB B.o B.ζ) ∧ IsBase B.V x₀ ∧ Rgrp B.V (rat x₀ : Mx D B.V.rank (σ + 1)) = besGrp B.d B.o ∧ (∀ a : Fin (σ + 1) → D.host.E, gramQ B.V x₀ *ᵥ a = 0 → a (Fin.last σ) = 0) ∧ ∀ (S S₀ : HSp D) (d : HypDec S S₀ (σ + 1)) (c : skewA D (σ + 1)), d.qS B.V c (xLast B.d (vecB B.o B.ζ)) = d.qS B.L c (zEll B.L (σ + 1) B.ζ) := by
   intro D σ B

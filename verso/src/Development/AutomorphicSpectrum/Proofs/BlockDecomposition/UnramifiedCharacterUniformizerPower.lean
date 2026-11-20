@@ -12,17 +12,17 @@ open GlobalTheory.CompanionTheory.LFUDom
 namespace GlobalTheory.CompanionTheory.LFUDom
 
 /- English proof (translation)
-Use `set r : ℝ := (NNReal.sqrt (qF F : NNReal) : ℝ) with hr`. Establish `hq0 : (0 : ℝ) < residueCard F`. Conclude with `zero_lt_one.trans one_lt_residueCard` after adjusting the coercions. Establish `hrq : r ^ 2 = (residueCard F : ℝ)`. Rewrite using `[hr, ← NNReal.coe_pow, NNReal.sq_sqrt]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[qF, residueCard]`. Establish `hr0 : 0 < r`. Break down `(NNReal.coe_nonneg (NNReal.sqrt (qF F : NNReal))).lt_or_eq with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: r = 0` using `h.symm`. Rewrite `hrq` using `[this]`. Simplify using `at hrq`. Conclude with `hq0.ne' (by exact_mod_cast hrq.symm)`. Establish `hord : ord (((uniformizerUnit F ^ m : Fˣ)) : F) = m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[ord_units_zpow, coe_uniformizerUnit, ord_uniformizer (irreducible_uniformizer F), mul_one]`. Establish `hmod : ((modulus (((uniformizerUnit F ^ m : Fˣ)) : F) : NNReal) : ℝ) = r ^ (-(2 * m))`. Rewrite using `[modulus_of_ne_zero (Units.ne_zero _), hord, NNReal.coe_zpow, NNReal.coe_natCast, ← hrq, ← zpow_natCast, ← _root_.zpow_mul]`. Evaluate the numerical expressions. Establish `hpow : (r ^ (-(2 * m))) ^ ((t : ℝ) / 2) = r ^ (-(t * m))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← Real.rpow_intCast, ← Real.rpow_mul hr0.le, ← Real.rpow_intCast]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hcast : ((t : ℂ) / 2) = (((t : ℝ) / 2 : ℝ) : ℂ)` using `by push_cast; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hnn : 0 ≤ r ^ (-(2 * m))` using `(zpow_pos hr0 _).le`. Unfold `Ad3.mp`. Rewrite using `[hmod, hcast, ← Complex.ofReal_cpow hnn, hpow, Complex.ofReal_zpow]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem mp_uniformizerUnit_zpow_half (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (m t : ℤ) :

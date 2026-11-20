@@ -16,13 +16,13 @@ open GlobalTheory.ZV
 namespace GlobalTheory.PrimePowerTorsion
 
 /- English proof (translation)
-Use `P.isAb.comm` as an intermediate fact. Use `dense_iff_inter_open.2 fun U hU ⟨x, hx⟩ => ?_` and prove the remaining obligations. Take `⟨a, -, s, hs, hle, -⟩` from `(isAmpleLB_of_relAmple_of_isAffine P.A P.isLB P.ample).exists_affine_le (x := x) (U := ⟨U, hU⟩) hx`. Establish `gen : ∀ N : ℕ, 4 ≤ N → ∀ y : P.A.left, ∃ t : (lbPow P.L N).Sec, y ∈ Out.nonzeroLocus t` using `fun N hN y => by`. Take `⟨m, t, ht, -⟩` from `veryAmple_lbPow hA K P N hN`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (ht.ge (Set.mem_univ y))`. Conclude with `⟨t i, hi⟩`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm, ham⟩ : ∃ m : ℕ, 4 ≤ m ∧ a + m = l ^ (a + 4) := by`. Use `Nat.lt_pow_self (n := a + 4) (show 1 < l by omega)` as an intermediate fact. Conclude with `⟨l ^ (a + 4) - a, by omega, by omega⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Take `⟨t, ht⟩` from `gen m hm x`. Set `p : (Out.baseOver (Sp K)).left` to `IsLocalRing.closedPoint K`. Take `⟨t', ht'⟩` from `gen (a + m) (by omega) ((1 : Out.baseOver (Sp K) ⟶ P.A).left p)`. Establish `e` using `nonzeroLocus_secMul s t`. Take `⟨b, hb, q, hq⟩` from `TorsionDense.exists_mem_nonzeroLocus P hI hK (a + m) (by omega) (by rw [ham, Nat.cast_pow]; exact pow_ne_zero _ hlK) {x | ∃ j : ℕ, x ^ l ^ j = 1} (fun w hw b ⟨j, hb⟩ => ⟨a + 4 + j, by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mul_pow, pow_add, pow_mul w, ← ham, hw, one_pow, mul_comm _ (l ^ j), pow_mul, hb, one_pow, _root_.one_mul]⟩)`. Use the proof step `(secMul s t) t' x (e.ge ⟨hs, ht⟩) 1 ⟨0, one_pow _⟩ p ht'`. Conclude with `⟨b.left q, hle (e.le hq).1, Set.mem_iUnion₂.2 ⟨b, hb, q, rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dense_torsion (hA : Out.AmpleSt) (hK : Out.KerPowSt) (hI : Out.IrredSt) (K : Type) [Field K] [IsAlgClosed K]
     (P : Out.PolAV (Sp K)) (l : ℕ) (hl : 2 ≤ l) (hlK : (l : K) ≠ 0) :
@@ -51,11 +51,11 @@ theorem dense_torsion (hA : Out.AmpleSt) (hK : Out.KerPowSt) (hI : Out.IrredSt) 
   exact ⟨b.left q, hle (e.le hq).1, Set.mem_iUnion₂.2 ⟨b, hb, q, rfl⟩⟩
 
 /- English proof (translation)
-Introduce `h1 _ K _ _ P l hl hlK`. Establish `hD` using `dense_torsion h1.ample h1.kerPow h1.irred K P l hl.two_le hlK`. Use `⟨hD, fun f hf => Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Use `polAV_isIntegral_of_isAlgClosed K P` as an intermediate fact. Use `P.isAb.proper` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g : P.A ⟶ P.A` to `1`. It suffices to establish `IsDominant (equalizer.ι f.left g.left) from ext_of_isDominant_of_isSeparated P.A.hom ((Over.w f).trans (Over.w g).symm) (equalizer.ι f.left g.left) (equalizer.condition _ _)`. Use `⟨Dense.mono (fun y hy => ?_) hD⟩` and prove the remaining obligations. Take `⟨x, ⟨j, hx⟩, q, rfl⟩` from `Set.mem_iUnion₂.1 hy`. Establish `hxy : x.left ≫ f.left = x.left ≫ g.left` using `congrArg CommaMorphism.left ((hf j x hx).trans (MonObj.comp_one x).symm)`.
+Introduce a local definition for the expression. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨equalizer.lift x.left hxy q, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, equalizer.lift_ι]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dense_torsion_and_eq_one :
     Out.Laws → Out.Laws2 → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (l : ℕ), l.Prime → (l : K) ≠ 0 → Dense (⋃ x ∈ {x : 𝟙_ (Over (Sp K)) ⟶ P.A | ∃ j : ℕ, x ^ l ^ j = 1}, Set.range x.left) ∧ ∀ f : P.A ⟶ P.A, (∀ (j : ℕ) (x : 𝟙_ (Over (Sp K)) ⟶ P.A), x ^ l ^ j = 1 → x ≫ f = 1) → f = 1 := by

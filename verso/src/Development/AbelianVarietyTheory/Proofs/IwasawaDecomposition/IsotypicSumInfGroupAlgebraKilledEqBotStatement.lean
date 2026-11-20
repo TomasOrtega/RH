@@ -20,7 +20,7 @@ attribute [local instance] Formalism.IndefR.principalLevelFrame.instCMHostI
 open GlobalTheory.CuspMult
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.RepCount.iSup_range_homInto_inf_killed_eq_bot` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FIsotypicSumInfGroupAlgebraKilledEqBot.lean&line=24#L24)
 -/

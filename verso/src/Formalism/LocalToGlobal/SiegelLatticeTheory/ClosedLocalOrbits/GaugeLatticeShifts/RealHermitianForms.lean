@@ -15,49 +15,49 @@ section Form
 variable {n : ℕ} (ε : Fin n → Bool)
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[star_add, add_dotProduct]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_add_l (x x' y : Fin n → ℂ) : hJ ε (x + x') y = hJ ε x y + hJ ε x' y := by
   unfold hJ; rw [star_add, add_dotProduct]
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[mulVec_add, dotProduct_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_add_r (x y y' : Fin n → ℂ) : hJ ε x (y + y') = hJ ε x y + hJ ε x y' := by
   unfold hJ; rw [mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[star_sub, sub_dotProduct]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_sub_l (x x' y : Fin n → ℂ) : hJ ε (x - x') y = hJ ε x y - hJ ε x' y := by
   unfold hJ; rw [star_sub, sub_dotProduct]
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[mulVec_sub, dotProduct_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_sub_r (x y y' : Fin n → ℂ) : hJ ε x (y - y') = hJ ε x y - hJ ε x y' := by
   unfold hJ; rw [mulVec_sub, dotProduct_sub]
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[star_smul, smul_dotProduct, smul_eq_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hJ_smul_l (c : ℂ) (x y : Fin n → ℂ) : hJ ε (c • x) y = conj c * hJ ε x y := by
   unfold hJ; rw [star_smul, smul_dotProduct, smul_eq_mul]; rfl
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_smul_r (c : ℂ) (x y : Fin n → ℂ) : hJ ε x (c • y) = c * hJ ε x y := by
   unfold hJ; rw [mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `hJ`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hJ_zero_l (y : Fin n → ℂ) : hJ ε 0 y = 0 := by
   unfold hJ; simp
 
 /- English proof (translation)
-Unfold `hJ`. Simplify using `only [Formalism.REAL.Jm, mulVec_diagonal, dotProduct, Pi.star_apply, map_sum, map_mul, RCLike.star_def, Complex.conj_conj]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp <;> ring`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hJ_conj_sym (x y : Fin n → ℂ) : hJ ε x y = conj (hJ ε y x) := by
   unfold hJ
@@ -67,7 +67,7 @@ theorem hJ_conj_sym (x y : Fin n → ℂ) : hJ ε x y = conj (hJ ε y x) := by
   split_ifs <;> simp <;> ring
 
 /- English proof (translation)
-Unfold `hJ`. Simplify using `only [mulVec_sum, mulVec_smul, dotProduct_sum, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hJ_sum_r {ι : Type*} (s : Finset ι) (x : Fin n → ℂ) (c : ι → ℂ) (y : ι → Fin n → ℂ) :
     hJ ε x (∑ i ∈ s, c i • y i) = ∑ i ∈ s, c i * hJ ε x (y i) := by
@@ -75,7 +75,7 @@ theorem hJ_sum_r {ι : Type*} (s : Finset ι) (x : Fin n → ℂ) (c : ι → �
   simp only [mulVec_sum, mulVec_smul, dotProduct_sum, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[hJ_conj_sym, hJ_sum_r, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← hJ_conj_sym]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_sum_l {ι : Type*} (s : Finset ι) (x : Fin n → ℂ) (c : ι → ℂ) (y : ι → Fin n → ℂ) :
     hJ ε (∑ i ∈ s, c i • y i) x = ∑ i ∈ s, conj (c i) * hJ ε (y i) x := by
@@ -84,7 +84,7 @@ theorem hJ_sum_l {ι : Type*} (s : Finset ι) (x : Fin n → ℂ) (c : ι → �
   rw [map_mul, ← hJ_conj_sym]
 
 /- English proof (translation)
-Establish `hg : Formalism.REAL.inUJ ε (uMat g)` using `g.2`. Unfold `hJ`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Unfold `Formalism.REAL.inUJ at hg`. Rewrite using `[hg]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_uj (g : Formalism.REAL.UJ ε) (x y : Fin n → ℂ) : hJ ε (uMat g *ᵥ x) (uMat g *ᵥ y) = hJ ε x y := by
   have hg : Formalism.REAL.inUJ ε (uMat g) := g.2
@@ -94,7 +94,7 @@ theorem hJ_uj (g : Formalism.REAL.UJ ε) (x y : Fin n → ℂ) : hJ ε (uMat g *
   rw [hg]
 
 /- English proof (translation)
-Simplify using `[uMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem uMat_mul_inv (g : Formalism.REAL.UJ ε) : uMat g * uMat g⁻¹ = 1 := by
   simp [uMat]
@@ -105,20 +105,20 @@ Both sides reduce to the same expression.
 theorem uMat_mul (g h : Formalism.REAL.UJ ε) : uMat (g * h) = uMat g * uMat h := rfl
 
 /- English proof (translation)
-Rewrite using `[← hJ_uj ε g x (uMat g⁻¹ *ᵥ y), mulVec_mulVec, uMat_mul_inv, one_mulVec]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem hJ_inv_r (g : Formalism.REAL.UJ ε) (x y : Fin n → ℂ) :
     hJ ε x (uMat g⁻¹ *ᵥ y) = hJ ε (uMat g *ᵥ x) y := by
   rw [← hJ_uj ε g x (uMat g⁻¹ *ᵥ y), mulVec_mulVec, uMat_mul_inv, one_mulVec]
 
 /- English proof (translation)
-Establish `key : ∀ x y : Fin n → ℂ, star x ⬝ᵥ ((Eᴴ * Formalism.REAL.Jm ε * E) *ᵥ y) = star x ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ y)`. Introduce `x y`. Establish `h` using `hE x y`. Unfold `hJ at h`. Rewrite using `[← h, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Establish `h1 : Formalism.REAL.inUJ ε E`. Unfold `Formalism.REAL.inUJ`. Use extensionality with `i j`. Establish `h` using `key (Pi.single i 1) (Pi.single j 1)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify `h` using `[dotProduct, mulVec, Pi.single_apply]`. Establish `hL : (Formalism.REAL.Jm ε * Eᴴ * Formalism.REAL.Jm ε) * E = 1`. Establish `: (Formalism.REAL.Jm ε * Eᴴ * Formalism.REAL.Jm ε) * E = Formalism.REAL.Jm ε * (Eᴴ * Formalism.REAL.Jm ε * E)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this, h1, Formalism.REAL.Jm_mul_self]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨Matrix.nonsingInvUnit E (Matrix.isUnit_det_of_left_inverse hL), h1⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_of_hJ (E : Matrix (Fin n) (Fin n) ℂ) (hE : ∀ x y, hJ ε (E *ᵥ x) (E *ᵥ y) = hJ ε x y) :
     ∃ s : Formalism.REAL.UJ ε, uMat s = E := by
@@ -162,7 +162,7 @@ theorem eichL_apply (u w : Fin n → ℂ) (κ : ℂ) (x : Fin n → ℂ) :
     eichL ε u w κ x = x + hJ ε w x • u - hJ ε u x • w + (κ * hJ ε u x) • u := rfl
 
 /- English proof (translation)
-Establish `hwu : hJ ε w u = 0` using `by rw [hJ_conj_sym, huw, map_zero]`. Establish `hxu : hJ ε x u = conj (hJ ε u x)` using `hJ_conj_sym ε x u`. Establish `hxw : hJ ε x w = conj (hJ ε w x)` using `hJ_conj_sym ε x w`. Simplify using `only [eichL_apply, hJ_add_l, hJ_sub_l, hJ_smul_l, hJ_add_r, hJ_sub_r, hJ_smul_r, huu, huw, hwu, hxu, hxw, map_mul]`. Take the linear combination `(conj (hJ ε u x) * hJ ε u y) * hκ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eich_hJ (u w : Fin n → ℂ) (κ : ℂ) (huu : hJ ε u u = 0) (huw : hJ ε u w = 0)
     (hκ : κ + conj κ = -hJ ε w w) (x y : Fin n → ℂ) :
@@ -175,9 +175,9 @@ theorem eich_hJ (u w : Fin n → ℂ) (κ : ℂ) (huu : hJ ε u u = 0) (huw : hJ
   linear_combination (conj (hJ ε u x) * hJ ε u y) * hκ
 
 /- English proof (translation)
-Establish `hκ : -(hJ ε w w) / 2 + conj (-(hJ ε w w) / 2) = -hJ ε w w`. Establish `hr : conj (hJ ε w w) = hJ ε w w` using `(hJ_conj_sym ε w w).symm`. Rewrite using `[map_div₀, map_neg, hr, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨s, hs⟩` from `exists_of_hJ ε (LinearMap.toMatrix' (eichL ε u w (-(hJ ε w w) / 2))) (fun x y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Rewrite using `[LinearMap.toMatrix'_mulVec, LinearMap.toMatrix'_mulVec]`. Conclude with `eich_hJ ε u w _ huu huw hκ x y)`. Conclude with `⟨s, fun x => by rw [hs, LinearMap.toMatrix'_mulVec]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eich (u w : Fin n → ℂ) (huu : hJ ε u u = 0) (huw : hJ ε u w = 0) :
     ∃ s : Formalism.REAL.UJ ε, ∀ x, uMat s *ᵥ x = eichL ε u w (-(hJ ε w w) / 2) x := by
@@ -191,17 +191,17 @@ theorem exists_eich (u w : Fin n → ℂ) (huu : hJ ε u u = 0) (huw : hJ ε u w
   exact ⟨s, fun x => by rw [hs, LinearMap.toMatrix'_mulVec]⟩
 
 /- English proof (translation)
-Set `M : Matrix (Fin m) (Fin n) ℂ` to `Matrix.of fun b => Formalism.REAL.Jm ε *ᵥ f b`. Establish `hJinj : LinearMap.ker (Matrix.mulVecLin (Formalism.REAL.Jm ε)) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `h2 : Formalism.REAL.Jm ε *ᵥ (Formalism.REAL.Jm ε *ᵥ x) = x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[mulVec_mulVec, Formalism.REAL.Jm_mul_self, one_mulVec]`. Rewrite using `[← h2]`. Rewrite `hx` using `[Matrix.mulVecLin_apply]`. Rewrite using `[hx, mulVec_zero]`. Establish `hrows : LinearIndependent ℂ M.row`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrow : M.row = ⇑(Matrix.mulVecLin (Formalism.REAL.Jm ε)) ∘ f`. Use extensionality with `b i`. Both sides reduce to the same expression. Rewrite using `[hrow]`. Conclude with `hf.map' _ hJinj`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrank : Module.finrank ℂ (LinearMap.range M.mulVecLin) = m`. Establish `h` using `Matrix.rank_eq_finrank_span_row M`. Rewrite `h` using `[finrank_span_eq_card hrows, Fintype.card_fin]`. Conclude with `h`. Establish `htop : LinearMap.range M.mulVecLin = ⊤` using `Submodule.eq_top_of_finrank_eq (by rw [hrank, Module.finrank_fin_fun])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, M.mulVecLin v = y := by`. Rewrite using `[← LinearMap.mem_range, htop]`. Discharge the goal by the elementary cases of `trivial`. Use `⟨star v, fun b => ?_⟩` and prove the remaining obligations. Establish `hb` using `congrFun hv b`.
+Check the elementary cases of the proposition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `hb` using `[Matrix.mulVecLin_apply]`. Unfold `hJ`. Rewrite using `[star_star, dotProduct_comm]`. Conclude with `hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dual {m : ℕ} (f : Fin m → Fin n → ℂ) (hf : LinearIndependent ℂ f) (y : Fin m → ℂ) :
     ∃ w : Fin n → ℂ, ∀ b, hJ ε w (f b) = y b := by
@@ -242,19 +242,19 @@ section Frame
 variable {n r : ℕ} (ε : Fin n → Bool)
 
 /- English proof (translation)
-Unfold `fam`. Conclude with `Fin.snoc_last (α := fun _ => Fin n → ℂ) _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fam_last (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) : fam e z (Fin.last r) = z := by
   unfold fam; exact Fin.snoc_last (α := fun _ => Fin n → ℂ) _ _
 
 /- English proof (translation)
-Unfold `fam`. Conclude with `Fin.snoc_castSucc (α := fun _ => Fin n → ℂ) _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fam_cs (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (a : Fin r) : fam e z (Fin.castSucc a) = e a := by
   unfold fam; exact Fin.snoc_castSucc (α := fun _ => Fin n → ℂ) _ _ _
 
 /- English proof (translation)
-Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => rw [fam_last]`. Conclude with `hez c`. Consider the case `cast a => rw [fam_cs]`. Conclude with `hee c a`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hJ_e_fam (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (hee : ∀ a b, hJ ε (e a) (e b) = 0)
     (hez : ∀ a, hJ ε (e a) z = 0) (c : Fin r) (b : Fin (r + 1)) : hJ ε (e c) (fam e z b) = 0 := by
@@ -263,29 +263,27 @@ theorem hJ_e_fam (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (hee : ∀ a 
   | cast a => rw [fam_cs]; exact hee c a
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `_`. Use `⟨1, fun b => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[uMat]`. Consider the case `succ m ih`. Introduce `hm`. Take `⟨s, hs⟩` from `ih (by omega)`. Establish `hmr : m < r` using `by omega`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `c : Fin r` to `⟨m, hmr⟩`. Set `row : Fin (r + 1)` to `Fin.castSucc c`. Establish `hrowv : row.1 = m` using `rfl`. Take `⟨w, hw⟩` from `exists_dual ε (fam e z) hli (fun b => X row b)`. Establish `huu : hJ ε (e c) (e c) = 0` using `hee c c`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `huw : hJ ε (e c) w = 0`. Rewrite using `[hJ_conj_sym, ← fam_cs e z c, hw]`. Use `show conj (X row row) = 0`. Rewrite using `[hX row row le_rfl, map_zero]`. Take `⟨t, ht⟩` from `exists_eich ε (e c) w huu huw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t * s, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[uMat_mul, ← mulVec_mulVec, hs b, ht, eichL_apply]`. Establish `hv0 : hJ ε (e c) (fam e z b + ∑ a, (if a.1 < m then X a b else 0) • fam e z a) = 0`. Rewrite using `[hJ_add_r, hJ_sum_r, hJ_e_fam ε e z hee hez]`. Simplify using `[hJ_e_fam ε e z hee hez]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hv1 : hJ ε w (fam e z b + ∑ a, (if a.1 < m then X a b else 0) • fam e z a) = X row b`. Rewrite using `[hJ_add_r, hJ_sum_r, hw]`. Establish `: ∀ a : Fin (r + 1), (if a.1 < m then X a b else 0) * hJ ε w (fam e z a) = 0`. Introduce `a`. Use `split_ifs with ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : a ≤ row`. Rewrite using `[Fin.le_def, hrowv]`. Conclude with `ha.le`. Rewrite using `[hw, hX row a hle, mul_zero]`. Rewrite using `[zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [this, Finset.sum_const_zero, add_zero]`. Rewrite using `[hv0, hv1]`. Establish `hsplit : ∀ a : Fin (r + 1), (if a.1 < m + 1 then X a b else 0) = (if a.1 < m then X a b else 0) + (if a = row then X a b else 0)`. Introduce `a`. Distinguish the cases in `h1 : a.1 < m`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hne : a ≠ row`. Introduce `h`. Rewrite `h1` using `[h, hrowv]`. Conclude with `lt_irrefl _ h1`. Rewrite using `[if_pos (by omega), if_pos h1, if_neg hne, add_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `h2 : a.1 = m`. Establish `heq : a = row` using `Fin.ext (by rw [h2, hrowv])`. Rewrite using `[if_pos (by omega), if_neg h1, if_pos heq, zero_add]`. Establish `hne : a ≠ row`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[h, hrowv]`. Conclude with `h2 rfl`. Rewrite using `[if_neg (by omega), if_neg h1, if_neg hne, add_zero]`. Establish `hsum : ∑ a, (if a.1 < m + 1 then X a b else 0) • fam e z a = ∑ a, (if a.1 < m then X a b else 0) • fam e z a + X row b • e c`. Rewrite using `[Finset.sum_congr rfl (fun a _ => by rw [hsplit a, add_smul]), Finset.sum_add_distrib]`.
-
-Use `congr 1`. Rewrite using `[Finset.sum_eq_single row (fun a _ ha => by rw [if_neg ha, zero_smul]) (fun h => absurd (Finset.mem_univ _) h), if_pos rfl, fam_cs]`. Rewrite using `[hsum, mul_zero, zero_smul, zero_smul, sub_zero, add_zero]`. Normalize the expressions using the abelian group laws.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem realize_rows (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (hli : LinearIndependent ℂ (fam e z))
     (hee : ∀ a b, hJ ε (e a) (e b) = 0) (hez : ∀ a, hJ ε (e a) z = 0)
@@ -351,13 +349,13 @@ theorem realize_rows (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (hli : Li
     abel
 
 /- English proof (translation)
-Establish `hX : ∀ i j : Fin (r + 1), j ≤ i → (P - 1) i j = 0`. Introduce `i j hij`. Break down `lt_or_eq_of_le hij with h | h` into its components or cases. Rewrite using `[Matrix.sub_apply, hP1 i j h, Matrix.one_apply_ne (ne_of_gt h), sub_self]`. Rewrite using `[h, Matrix.sub_apply, hP2, Matrix.one_apply_eq, sub_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs⟩` from `realize_rows ε e z hli hee hez (P - 1) hX r le_rfl`. Use `⟨s, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[hs b]`. Establish `h1 : ∀ a : Fin (r + 1), (if a.1 < r then (P - 1) a b else 0) = P a b - (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) a b`. Introduce `a`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with ha`. Both sides reduce to the same expression. Establish `hal : a = Fin.last r` using `Fin.ext (by have := a.2; simp only [Fin.val_last]; omega)`. Rewrite using `[← Matrix.sub_apply, hX a b (hal ▸ Fin.le_last b)]`. Rewrite using `[Finset.sum_congr rfl (fun a _ => by rw [h1 a, sub_smul]), Finset.sum_sub_distrib]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∑ a, (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) a b • fam e z a = fam e z b`. Rewrite using `[Finset.sum_eq_single b (fun a _ ha => by rw [Matrix.one_apply_ne ha, zero_smul]) (fun h => absurd (Finset.mem_univ _) h), Matrix.one_apply_eq, one_smul]`. Rewrite using `[h2]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem realize (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (hli : LinearIndependent ℂ (fam e z))
     (hee : ∀ a b, hJ ε (e a) (e b) = 0) (hez : ∀ a, hJ ε (e a) z = 0)

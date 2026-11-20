@@ -25,15 +25,15 @@ def Refines (M : LB Y) (L : LB X) (φ : K → (Y ⟶ X)) (ε : K → ℤ) : Prop
       gm r z (M.U i ⊓ M.U j) (M.g i j) = trF φ ε r z (σ i) (σ j)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨id, fun _ => le_rfl, fun _ r z i j hi hj => gm_linComb L φ ε r z i j hi hj⟩`.
+Supply the required witnesses or components.
 -/
 theorem refines_self (φ : K → (Y ⟶ X)) (ε : K → ℤ) : Refines (LB.LinComb L φ ε) L φ ε :=
   ⟨id, fun _ => le_rfl, fun _ r z i j hi hj => gm_linComb L φ ε r z i j hi hj⟩
 
 /- English proof (translation)
-Take `⟨σ, le, hg⟩` from `h`. Take `⟨σ', le', hg'⟩` from `h'`. Use `⟨fun p => Sum.elim (σ p.1) (σ' p.2), fun p y hy => Set.mem_iInter.2 ?_, fun Z r z p q hp hq => ?_⟩` and prove the remaining obligations. Introduce and unpack `(k | k) exacts [Set.mem_iInter.1 (le _ hy.1) k, Set.mem_iInter.1 (le' _ hy.2) k]`. Use `(gm_div M' M r z p q ⟨hp, hq⟩).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hg Z r z _ _ hp.1 hq.1, hg' Z r z _ _ hp.2 hq.2, trF, trF, trF, Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem Refines.div {M M' : LB Y} {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
     (h : Refines M L φ ε) (h' : Refines M' L φ' ε') :
@@ -49,9 +49,9 @@ theorem Refines.div {M M' : LB Y} {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' :
     rfl
 
 /- English proof (translation)
-Take `⟨σ, le, hg⟩` from `h`. Use `⟨fun j p => σ (j p.1) p.2, fun j y hy => Set.mem_iInter.2 fun p => ?_, fun Z r z i j hi hj => ?_⟩` and prove the remaining obligations. Conclude with `Set.mem_iInter.1 (le _ (Set.mem_iInter.1 hy p.1)) p.2`. Use `(gm_linComb M ψ δ r z i j hi hj).trans ?_` and prove the remaining obligations. Rewrite using `[trF, Fintype.prod_prod_type]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hg Z (r ≫ ψ a) z _ _ (Set.mem_iInter.1 hi a) (Set.mem_iInter.1 hj a), trF, ← Finset.prod_zpow]`. Simplify using `only [zpow_mul, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Refines.linComb {M : LB Y} {φ : K → (Y ⟶ X)} {ε : K → ℤ} (h : Refines M L φ ε)
     (ψ : K' → (Y' ⟶ Y)) (δ : K' → ℤ) :
@@ -66,7 +66,7 @@ theorem Refines.linComb {M : LB Y} {φ : K → (Y ⟶ X)} {ε : K → ℤ} (h : 
     simp only [zpow_mul, Category.assoc]
 
 /- English proof (translation)
-Take `⟨u, hu, -⟩` from `Geo.Tor.exists_gen hL hF t ht`. Take `⟨σ, le, hg⟩` from `h`. Use `⟨⟨fun i => res (le i) (u.s (σ i))⟩, fun i j => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Use `((gm_res _ y _ hy _).trans ((gm_res _ y _ hy.1 _).trans (gen_trans hu (𝟙 Y) y (le i hy.1) (le j hy.2)))).trans (Eq.symm ?_)` and prove the remaining obligations. Conclude with `(map_mul _ _ _).trans (congrArg₂ (· * ·) (hg _ _ y i j hy.1 hy.2) ((gm_res _ y _ hy _).trans (gm_res _ y _ hy.2 _)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Refines.exists_gen (hL : L.IsLB) {M : LB Y} {φ : K → (Y ⟶ X)} {ε : K → ℤ} (h : Refines M L φ ε)
     {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} (hF : FormEq φ' ε' φ ε) (t : LB.Gen (LB.LinComb L φ' ε')) (ht : t.IsGen) :
@@ -80,13 +80,13 @@ theorem Refines.exists_gen (hL : L.IsLB) {M : LB Y} {φ : K → (Y ⟶ X)} {ε :
     ((gm_res _ y _ hy _).trans (gm_res _ y _ hy.2 _)))
 
 /- English proof (translation)
-Introduce `_ _` and use `(map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isGen_one : (LB.oneGen L (Y := Y)).IsGen :=
   fun _ _ => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use `((refines_self φ ε).div (refines_self φ ε)).exists_gen hL (fun U _ f => ?_) _ isGen_one` and prove the remaining obligations. Use `(Fintype.prod_empty _).trans (Eq.symm ((Fintype.prod_sum_type _).trans ?_))` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, mul_inv_cancel]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_iso (hL : L.IsLB) {φ φ' : K → (Y ⟶ X)} (h : φ = φ') (ε : K → ℤ) :
     ∃ w : LB.Iso (LB.LinComb L φ ε) (LB.LinComb L φ' ε), w.IsGen := by
@@ -96,7 +96,7 @@ theorem exists_iso (hL : L.IsLB) {φ φ' : K → (Y ⟶ X)} (h : φ = φ') (ε :
   simp only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, mul_inv_cancel]
 
 /- English proof (translation)
-Establish `e : Units.map (f.appLE U ⊤ h).hom.toMonoidHom a = res h (pullU f U a)` using `Units.ext rfl`. Rewrite using `[e, gm_res _ z h trivial, gm_pull _ f z U (h trivial), Category.id_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gm_appLE {Z : Scheme.{0}} (f : Z ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ f ⁻¹ᵁ U) (a : Γ(Y, U)ˣ) (z : Z) :
     gm (𝟙 Z) z ⊤ (Units.map (f.appLE U ⊤ h).hom.toMonoidHom a) = gm f z U a := by
@@ -110,13 +110,11 @@ section Present
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Use `(isAffineOpen_and_bijective_of_weight_units S X G B q i hq hi hf hs inferInstance hk V hV _ ?_).2` and prove the remaining obligations. Introduce `χ Z t g h₁ h₂`. Set `v : Multiplicative X →* Γ(G.left, q.left ⁻¹ᵁ V)ˣ` to `AddMonoidHom.toMultiplicativeLeft (b.constr ℤ (fun k => Additive.ofMul (u k))).toAddMonoidHom`. Establish `hv : ∀ k, v (Multiplicative.ofAdd (b k)) = u k` using `fun k => congrArg Additive.toMul (b.constr_basis ℤ (fun k => Additive.ofMul (u k)) k)`. Set `F₁ : Multiplicative X →* Γ(Z.left, ⊤)ˣ` to `(Units.map (((t ≫ i) * g).left.appLE _ ⊤ h₁).hom.toMonoidHom).comp v`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `F₂ : Multiplicative X →* Γ(Z.left, ⊤)ˣ` to `splitTorusPointsEquiv S X Z t * (Units.map (g.left.appLE _ ⊤ h₂).hom.toMonoidHom).comp v`. Establish `e : (MonoidHom.toAdditiveRight F₁).toIntLinearMap = (MonoidHom.toAdditiveRight F₂).toIntLinearMap`. Use `b.ext fun k => congrArg Additive.ofMul (unit_ext fun z _ => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `gm _ z ⊤ (Units.map _ (v (Multiplicative.ofAdd (b k)))) = gm _ z ⊤ (splitTorusPointsEquiv S X Z t (Multiplicative.ofAdd (b k)) * Units.map _ (v (Multiplicative.ofAdd (b k))))`. Establish `a : splitTorusPointsEquiv S X Z t (Multiplicative.ofAdd (b k)) = pullU t.left ⊤ (charUnit S X (b k))` using `Units.ext (splitTorusPointsEquiv_val _ _ _ t _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[map_mul, hv, gm_appLE, gm_appLE, hu k Z t g z (h₂ trivial), a]`. Use `congr 1`. Conclude with `((gm_pull (𝟙 _) t.left z ⊤ trivial _).trans (by rw [Category.id_comp])).symm`. Establish `e' : F₁ (Multiplicative.ofAdd χ) = F₂ (Multiplicative.ofAdd χ)` using `congrArg Additive.toMul (LinearMap.congr_fun e χ)`. Rewrite using `[← splitTorusPointsEquiv_val]`.
-
-Conclude with `congrArg Units.val e'`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_of_basis {X : Type} [AddCommGroup X] {κ : Type} (b : Module.Basis κ ℤ X) {G B : Over S}
     [GrpObj G] [GrpObj B] (q : G ⟶ B) (i : splitTorus S X ⟶ G) (hq : IsMonHom q) (hi : IsMonHom i)
@@ -153,9 +151,9 @@ theorem bijective_of_basis {X : Type} [AddCommGroup X] {κ : Type} (b : Module.B
   exact congrArg Units.val e'
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `le : ∀ J : PUnit → M.ι, (M.pull (eG ≫ q)).U J ≤ eG ⁻¹ᵁ (q ⁻¹ᵁ M.U (J PUnit.unit))` using `fun J y hy => mem_pull₂.1 hy`. Establish `v : ∀ (J : PUnit → M.ι) y, y ∈ (M.pull (eG ≫ q)).U J → gm (𝟙 T) y ((M.pull (eG ≫ q)).U J) (res (le J) (pullU eG _ (s (J PUnit.unit))))⁻¹ = (gm eG y _ (s (J PUnit.unit)))⁻¹` using `fun J y hy => (map_inv _ _).trans (congrArg (·⁻¹) ((gm_res _ y (le J) hy _).trans ((gm_pull _ eG y (q ⁻¹ᵁ M.U (J PUnit.unit)) (le J hy) _).trans (by rw [Category.id_comp]))))`. Use `⟨⟨fun J => (res (le J) (pullU eG _ (s (J PUnit.unit))))⁻¹⟩, fun J J' => unit_ext fun y hy => ?_, fun a y hy => ?_⟩` and prove the remaining obligations. Use `((gm_res _ y _ hy _).trans (v J y hy.1)).trans (Eq.symm ?_)` and prove the remaining obligations.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_pull_g M (eG ≫ q) (𝟙 _) y J J' hy.1 hy.2) ((gm_res _ y _ hy _).trans (v J' y hy.2)))).trans ?_` and prove the remaining obligations. Rewrite using `[hs _ eG y _ _ (le J hy.1) (le J' hy.2), Category.id_comp, mul_inv, mul_inv_cancel_left]`. Conclude with `(congrArg (_ * ·) (v (fun _ => a) y (mem_pull₂.2 hy))).trans (mul_inv_cancel _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rig {G B T : Scheme.{0}} (q : G ⟶ B) (eG : T ⟶ G) (eB : T ⟶ B) (e : eG ≫ q = eB) (M : LB B)
     (s : ∀ a : M.ι, Γ(G, q ⁻¹ᵁ M.U a)ˣ)
@@ -182,15 +180,13 @@ theorem exists_rig {G B T : Scheme.{0}} (q : G ⟶ B) (eG : T ⟶ G) (eB : T ⟶
 attribute [local instance] SplitExt.free SplitExt.finite in
 
 /- English proof (translation)
-Establish `hact : ∀ {Z : Over S} (t : Z ⟶ splitTorus S E.X) (g : Z ⟶ G) (z : Z.left), q.left (((t ≫ i) * g).left z) = q.left (g.left z)`. Introduce `Z t g z`. Establish `e : ((t ≫ i) * g) ≫ q = g ≫ q`. Rewrite using `[MonObj.mul_comp, Category.assoc, hk.w, ← Category.assoc, comp_toUnit, ← Hom.one_def, _root_.one_mul]`. Conclude with `congrArg (fun f => f.left z) e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `u : ∀ (j : E.ChartIdx) (_k : Module.Free.ChooseBasisIndex ℤ E.X), Γ(G.left, q.left ⁻¹ᵁ E.chart j)ˣ` to `fun j k => res (Scheme.Hom.preimage_mono q.left (E.chart_le j k)) (s _ (j k))`. Establish `hu : ∀ (j : E.ChartIdx) k {Z : Scheme.{0}} (r : Z ⟶ G.left) (z : Z), q.left (r z) ∈ E.chart j → gm r z (q.left ⁻¹ᵁ E.chart j) (u j k) = gm r z _ (s _ (j k))` using `fun j k Z r z hz => gm_res r z _ hz _`. Use `⟨{ q := q, i := i, q_hom := hq, i_hom := hi, q_flat := hf, q_surjective := hs, q_affine := ha, isKernel := hk u := u coord := fun j V hV h => ?_ trans := fun j j' k => unit_ext fun y hy => ?_ act_le := fun j y hy => (congrArg (· ∈ E.chart j) (hact (fst _ _) (snd _ _) y)).mpr hy e …` and prove the remaining obligations. Use `bijective_of_basis E.basis q i hq hi hf hs ha hk V hV _ fun k Z t g z hz => ?_` and prove the remaining obligations. Establish `hz' : q.left (((t ≫ i) * g).left z) ∈ V` using `by rw [hact]; exact hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gm_res _ z (V := q.left ⁻¹ᵁ V) _ hz', gm_res _ z (V := q.left ⁻¹ᵁ V) _ hz, hu j k _ z (h hz'), hu j k _ z (h hz)]`. Conclude with `h₂ _ _ Z t g z (E.chart_le j k (h hz))`. Use `((gm_res _ y _ hy _).trans ((hu j' k _ y hy.2).trans (h₁ _ _ (𝟙 _) y (j k) (j' k) (E.chart_le j k hy.1) (E.chart_le j' k hy.2)))).trans (Eq.symm ?_)` and prove the remaining obligations. Conclude with `(map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_pull (𝟙 _) q.left y (E.chart j ⊓ E.chart j') hy _).trans (gm_res _ y (V := E.chart j ⊓ E.chart j') _ hy _)) ((gm_res _ y _ hy _).trans (hu j k _ y hy.1)))`. Establish `hy' : q.left (((fst (splitTorus S E.X) G ≫ i) * snd (splitTorus S E.X) G).left y) ∈ E.chart j` using `(congrArg (· ∈ E.chart j) (hact (fst _ _) (snd _ _) y)).mpr hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `h₂ _ (j k) _ (fst _ _) (snd _ _) y (E.chart_le j k hy)`. Rewrite `e` using `[← hu j k _ y hy, ← hu j k _ y hy']`. Use `((gm_res _ y _ hy _).trans ((gm_pull (𝟙 _) ((fst (splitTorus S E.X) G ≫ i) * snd (splitTorus S E.X) G).left y (q.left ⁻¹ᵁ E.chart j) hy' _).trans ?_)).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_res (𝟙 _) y _ hy _).trans (gm_pull (𝟙 _) (fst (splitTorus S E.X) G).left y ⊤ …` and prove the remaining obligations. Rewrite using `[Category.id_comp, Category.id_comp, Category.id_comp]`. Conclude with `e`.
-
-Use `Eq.trans ?_ ((h₃ _ (j k) y (E.chart_le j k hy.1)).trans (map_one _).symm)` and prove the remaining obligations. Use `(map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_res _ y _ hy _).trans ((gm_pull (𝟙 _) (eSec G) y (q.left ⁻¹ᵁ E.chart j) hy.1 _).trans ?_)) (gm_res _ y _ hy _))` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Conclude with `hu j k _ y hy.1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGt_of_units (E : SplitExt S) {G : Over S} [GrpObj G] (q : G ⟶ E.B) (i : splitTorus S E.X ⟶ G)
     (hq : IsMonHom q) (hi : IsMonHom i) (hf : Flat q.left) (hs : Surjective q.left) (ha : IsAffineHom q.left)
@@ -250,11 +246,11 @@ theorem isGt_of_units (E : SplitExt S) {G : Over S} [GrpObj G] (q : G ⟶ E.B) (
 end Present
 
 /- English proof (translation)
-Use `(Fintype.prod_equiv Equiv.ulift _ (fun J => F (psum B x J) ^ ((-1 : ℤ) ^ (2 - J.card))) (fun _ => rfl)).trans ?_` and prove the remaining obligations. Rewrite using `[show (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}} by decide, Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_singleton]`. Establish `p₀ : psum B x ∅ = 1` using `rfl`. Establish `p₁ : psum B x {0} = x 0` using `_root_.mul_one (x 0)`. Establish `p₂ : psum B x {1} = x 1` using `_root_.mul_one (x 1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p₃ : psum B x {0, 1} = x 0 * x 1` using `congrArg (x 0 * ·) (_root_.mul_one (x 1))`. Establish `q₀ : (-1 : ℤ) ^ (2 - (∅ : Finset (Fin 2)).card) = 1` using `by decide`. Establish `q₁ : ∀ i : Fin 2, (-1 : ℤ) ^ (2 - ({i} : Finset (Fin 2)).card) = -1` using `by decide`. Establish `q₃ : (-1 : ℤ) ^ (2 - ({0, 1} : Finset (Fin 2)).card) = 1` using `by decide`. Rewrite using `[p₀, p₁, p₂, p₃, q₀, q₁, q₁, q₃]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [zpow_neg, zpow_one, _root_.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prod_square {S : Scheme.{0}} {B T : Over S} [GrpObj B] (x : Fin 2 → (T ⟶ B)) {U : Type} [CommGroup U]
     (F : (T ⟶ B) → U) :
@@ -279,7 +275,7 @@ section Data
 variable {R : Type} [CommRing R] [IsDomain R] (I : Ideal R) (D : DegPre R) (e : ℕ)
 
 /- English proof (translation)
-Rewrite using `[Fin.prod_univ_four, _root_.mul_comm (toUnit T ≫ D.c χ) p]`. Express the relevant statement in the definitionally equal form `h (p * (toUnit T ≫ D.c χ)).left ^ (1 : ℤ) * h (toUnit T ≫ D.c χ).left ^ (-1 : ℤ) * h p.left ^ (-1 : ℤ) * h (1 : T ⟶ D.P.A).left ^ (1 : ℤ) = _`. Simplify using `only [zpow_neg, zpow_one]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem prod_O {T : Over (Spec (CommRingCat.of R))} (p : T ⟶ D.P.A) (χ : D.X) {U : Type} [CommGroup U]
     (h : (T.left ⟶ D.P.A.left) → U) :
@@ -291,7 +287,7 @@ theorem prod_O {T : Over (Spec (CommRingCat.of R))} (p : T ⟶ D.P.A) (χ : D.X)
   simp only [zpow_neg, zpow_one]
 
 /- English proof (translation)
-Rewrite using `[D.c_add]`. Conclude with `MonObj.comp_mul _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c_add (T : Over (Spec (CommRingCat.of R))) (χ χ' : D.X) :
     toUnit T ≫ D.c (χ + χ') = (toUnit T ≫ D.c χ) * (toUnit T ≫ D.c χ') := by
@@ -299,7 +295,7 @@ theorem c_add (T : Over (Spec (CommRingCat.of R))) (χ χ' : D.X) :
   exact MonObj.comp_mul _ _ _
 
 /- English proof (translation)
-Establish `h` using `c_add D T 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_eq_left.1 h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c_zero (T : Over (Spec (CommRingCat.of R))) : toUnit T ≫ D.c 0 = 1 := by
   have h := c_add D T 0 0
@@ -310,9 +306,9 @@ abbrev bundle (χ : D.X) : LB (thickObj R I e D.P.A).left :=
   LB.LinComb D.P.L (Y := (thickObj R I e D.P.A).left) (D.Oφ (D.prBe I e) χ) Oε
 
 /- English proof (translation)
-Use `(((refines_self _ _).div (refines_self _ _)).div (refines_self _ _)).exists_gen D.P.isLB (fun U _ h => ?_) _ (DVR.pullGen_isGen _ _ _ _ D.cub.isGen (lift (toUnit _ ≫ D.c χ) (lift (toUnit _ ≫ D.c χ') (D.prBe I e))).left)` and prove the remaining obligations. Use `(prod_cub (toUnit _ ≫ D.c χ) (toUnit _ ≫ D.c χ') (D.prBe I e) h).trans (Eq.symm ?_)` and prove the remaining obligations. Rewrite using `[Fintype.prod_sum_type, Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]`. Use `(congrArg₂ (· * ·) (congrArg₂ (· * ·) (prod_O D (D.prBe I e) _ h) (congrArg (·⁻¹) (prod_O D (D.prBe I e) _ h))) (congrArg (·⁻¹) (prod_O D (D.prBe I e) _ h))).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[c_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem bundle_add (χ χ' : D.X) :
     ∃ t : LB.Iso (bundle I D e χ') (LB.div (bundle I D e (χ + χ')) (bundle I D e χ)), t.IsGen := by
@@ -329,7 +325,7 @@ theorem bundle_add (χ χ' : D.X) :
   abel
 
 /- English proof (translation)
-Use `(refines_self _ _).exists_gen D.P.isLB (fun U _ h => ?_) _ isGen_one` and prove the remaining obligations. Use `(Fintype.prod_empty _).trans (Eq.symm ((prod_O D (D.prBe I e) _ h).trans ?_))` and prove the remaining obligations. Rewrite using `[c_zero, _root_.one_mul]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -342,11 +338,11 @@ theorem bundle_zero : ∃ t : LB.Gen (bundle I D e 0), t.IsGen := by
   abel
 
 /- English proof (translation)
-Set `ρ` to `pushHom (isGrpPullback_pullback D.P.A (thick R I e)) (G2 (thickObj R I e D.P.A))`. Establish `hρ : ∀ (x : G2 (thickObj R I e D.P.A) ⟶ thickObj R I e D.P.A) k, x.left ≫ D.Oφ (D.prBe I e) χ k = D.Oφ (ρ x) χ k` using `fun x k => WeightPf.Oφ_comp (T' := Over.mk ((G2 (thickObj R I e D.P.A)).hom ≫ thick R I e)) ((Over.map (thick R I e)).map x) (D.prBe I e) χ k`. Use `((refines_self _ _).linComb _ _).exists_gen D.P.isLB (fun U _ h => ?_) _ (DVR.pullGen_isGen _ _ _ _ D.cub.isGen (lift (toUnit _ ≫ D.c χ) (lift (ρ (x2 _ 0)) (ρ (x2 _ 1)))).left)` and prove the remaining obligations. Use `(prod_cub (toUnit _ ≫ D.c χ) (ρ (x2 _ 0)) (ρ (x2 _ 1)) h).trans (Eq.symm ?_)` and prove the remaining obligations. Rewrite using `[Fintype.prod_prod_type]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [zpow_mul, Finset.prod_zpow, hρ]`. Use `(prod_square (x2 (thickObj R I e D.P.A)) (fun x => ∏ k, h (D.Oφ (ρ x) χ k) ^ Oε k)).trans ?_` and prove the remaining obligations. Use `(congrArg₂ (· * ·) (congrArg₂ (· * ·) (congrArg₂ (· * ·) (prod_O D (ρ _) _ h) (congrArg (·⁻¹) (prod_O D (ρ _) _ h))) (congrArg (·⁻¹) (prod_O D (ρ _) _ h))) (prod_O D (ρ _) _ h)).trans ?_` and prove the remaining obligations. Rewrite using `[map_one, map_mul, _root_.mul_one, ← _root_.mul_assoc (toUnit _ ≫ D.c χ)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem bundle_primitive (χ : D.X) : ∃ t : LB.Gen (abelian₂ (thickObj R I e D.P.A) (bundle I D e χ)), t.IsGen := by
   let ρ := pushHom (isGrpPullback_pullback D.P.A (thick R I e)) (G2 (thickObj R I e D.P.A))
@@ -368,7 +364,7 @@ theorem bundle_primitive (χ : D.X) : ∃ t : LB.Gen (abelian₂ (thickObj R I e
   abel
 
 /- English proof (translation)
-The claim follows from `{ comm := inferInstance smooth := by have := D.P.isAb.smooth; show Smooth (pullback.snd _ _); infer_instance proper := by have := D.P.isAb.proper; show IsProper (pullback.snd _ _); infer_instance geomConnected := by have := D.P.isAb.geomConnected; show GeometricallyConnected (pul …`.
+A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_thick : IsAbelianScheme (thickObj R I e D.P.A) :=
   { comm := inferInstance
@@ -380,13 +376,13 @@ theorem isAbelianScheme_thick : IsAbelianScheme (thickObj R I e D.P.A) :=
 variable {I D e} {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G)
 
 /- English proof (translation)
-The claim follows from `WeightPf.Oφ_comp ((Over.map (thick R I e)).map g.q) (D.prBe I e) χ k`.
+A detailed English derivation is pending.
 -/
 theorem q_Oφ (χ : D.X) (k : Fin 4) : g.q.left ≫ D.Oφ (D.prBe I e) χ k = D.Oφ g.pG χ k :=
   WeightPf.Oφ_comp ((Over.map (thick R I e)).map g.q) (D.prBe I e) χ k
 
 /- English proof (translation)
-The claim follows from `Set.mem_iInter.2 fun k => (congrArg (fun f => f y ∈ D.P.L.U (a k)) (q_Oφ g χ k)).mp (Set.mem_iInter.1 hy k)`.
+A detailed English derivation is pending.
 -/
 theorem mem_chart (χ : D.X) (a : Fin 4 → D.P.L.ι) (y : (thickObj R I e G).left)
     (hy : g.q.left y ∈ (bundle I D e χ).U a) : y ∈ LB.wchart D.P.L (D.Oφ g.pG χ) a :=
@@ -396,7 +392,7 @@ def coordUnit (χ : D.X) (a : (bundle I D e χ).ι) : Γ((thickObj R I e G).left
   res (fun y hy => mem_chart g χ a y hy) ((g.t χ).s a)
 
 /- English proof (translation)
-The claim follows from `gm_res r z (V := g.q.left ⁻¹ᵁ (bundle I D e χ).U a) _ h _`.
+A detailed English derivation is pending.
 -/
 theorem gm_coordUnit (χ : D.X) (a : (bundle I D e χ).ι) {Z : Scheme.{0}} (r : Z ⟶ (thickObj R I e G).left) (z : Z)
     (h : g.q.left (r z) ∈ (bundle I D e χ).U a) :
@@ -404,9 +400,9 @@ theorem gm_coordUnit (χ : D.X) (a : (bundle I D e χ).ι) {Z : Scheme.{0}} (r :
   gm_res r z (V := g.q.left ⁻¹ᵁ (bundle I D e χ).U a) _ h _
 
 /- English proof (translation)
-Establish `e₁` using `gen_trans (g.t_gen χ) r z (mem_chart g χ a _ h) (mem_chart g χ a' _ h')`. Establish `e₂` using `gm_linComb D.P.L (Y := (thickObj R I e D.P.A).left) (D.Oφ (D.prBe I e) χ) Oε (r ≫ g.q.left) z a a' h h'`. Establish `e₃ : (∏ k, gm ((r ≫ g.q.left) ≫ D.Oφ (D.prBe I e) χ k) z (D.P.L.U (a k) ⊓ D.P.L.U (a' k)) (D.P.L.g (a k) (a' k)) ^ Oε k) * trF (D.Oφ g.pG χ) Oinvε r z a a' = 1`. Use `Finset.prod_mul_distrib.symm.trans (Finset.prod_eq_one fun k _ => ?_)` and prove the remaining obligations. Establish `hk : Oinvε k = - Oε k` using `by revert k; decide`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hq : (r ≫ g.q.left) ≫ D.Oφ (D.prBe I e) χ k = r ≫ D.Oφ g.pG χ k` using `(Category.assoc _ _ _).trans (congrArg (r ≫ ·) (q_Oφ g χ k))`. Rewrite using `[hk, zpow_neg]`. Conclude with `(congrArg (fun f => gm f z (D.P.L.U (a k) ⊓ D.P.L.U (a' k)) (D.P.L.g (a k) (a' k)) ^ Oε k * _) hq).trans (mul_inv_cancel _)`. Use `(gm_coordUnit g χ a' r z h').trans (Eq.symm ((congrArg₂ (· * ·) e₂ ((gm_coordUnit g χ a r z h).trans e₁)).trans ?_))` and prove the remaining obligations. Conclude with `(_root_.mul_assoc _ _ _).symm.trans ((congrArg (· * _) e₃).trans (_root_.one_mul _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coordUnit_trans (χ : D.X) (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e G).left) (z : Z)
     (a a' : (bundle I D e χ).ι) (h : g.q.left (r z) ∈ (bundle I D e χ).U a)
@@ -427,13 +423,13 @@ theorem coordUnit_trans (χ : D.X) (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e G
   exact (_root_.mul_assoc _ _ _).symm.trans ((congrArg (· * _) e₃).trans (_root_.one_mul _))
 
 /- English proof (translation)
-Use `g.q_hom` as an intermediate fact. Establish `e₀ : ((t ≫ g.i) * y) ≫ g.q = y ≫ g.q`. Rewrite using `[MonObj.mul_comp, Category.assoc, g.isKernel.w, ← Category.assoc, comp_toUnit, ← Hom.one_def, _root_.one_mul]`. Establish `e₁ : ((t ≫ g.i) * y).left ≫ g.q.left = y.left ≫ g.q.left` using `congrArg (fun f => f.left) e₀`. Establish `h' : g.q.left (((t ≫ g.i) * y).left z) ∈ (bundle I D e χ).U a` using `(congrArg (fun f => f z ∈ (bundle I D e χ).U a) e₁).mpr h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : ∀ k, ((t ≫ g.i) * y).left ≫ D.Oφ g.pG χ k = y.left ≫ D.Oφ g.pG χ k` using `fun k => by`. Rewrite using `[← q_Oφ]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) e₁).trans (Category.assoc _ _ _))`. Take `⟨J, hJ⟩` from `TorusCoord.exists_good' D.P.isLB z`. Establish `v` using `TorusCoord.val_t_act g t y χ (𝟙 _) z J hJ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c : splitTorusPointsEquiv _ D.X Z t (Multiplicative.ofAdd χ) = pullU t.left ⊤ (charUnit _ D.X χ)` using `Units.ext (splitTorusPointsEquiv_val _ _ _ t χ)`. Establish `c'` using `gm_pull (𝟙 _) t.left z ⊤ trivial (charUnit _ D.X χ)`. Rewrite `c'` using `[Category.id_comp]`. Rewrite `v` using `[Category.id_comp, Category.id_comp, c]`. Establish `v'` using `v.trans (congrArg (· * _) c')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t₁` using `gen_trans (g.t_gen χ) _ z (mem_chart g χ a _ h') (hJ.mem _ ((t ≫ g.i) * y).left)`. Establish `t₂` using `gen_trans (g.t_gen χ) _ z (mem_chart g χ a _ h) (hJ.mem _ y.left)`. Establish `t₃ : trF (D.Oφ g.pG χ) Oinvε ((t ≫ g.i) * y).left z a (fun k => J (((t ≫ g.i) * y).left ≫ D.Oφ g.pG χ k)) = trF (D.Oφ g.pG χ) Oinvε y.left z a (fun k => J (y.left ≫ D.Oφ g.pG χ k))` using `Finset.prod_congr rfl fun k _ => congrArg (fun f => gm f z (D.P.L.U (a k) ⊓ D.P.L.U (J f)) (D.P.L.g (a k) (J f)) ^ Oinvε k) (e₂ k)`. Use `((gm_coordUnit g χ a _ z h').trans (t₁.trans (congrArg₂ (· * ·) t₃ v'))).trans (Eq.symm ?_)` and prove the remaining obligations. Conclude with `(congrArg (_ * ·) ((gm_coordUnit g χ a _ z h).trans t₂)).trans (mul_left_comm _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coordUnit_weight (χ : D.X) (a : (bundle I D e χ).ι) (Z : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))))
     (t : Z ⟶ splitTorus _ D.X) (y : Z ⟶ thickObj R I e G) (z : Z.left)
@@ -473,11 +469,9 @@ end CoordToExt
 open CoordToExt in
 
 /- English proof (translation)
-Introduce and unpack `R _ _ I D e G _ _ ⟨g⟩`. Use `g.q_hom` as an intermediate fact. Establish `he : eSec (thickObj R I e G) ≫ g.q.left = eSec (thickObj R I e D.P.A)` using `congrArg (fun f => f.left) (IsMonHom.one_hom g.q)`. Use `choose ρ hρ hρ' using fun χ => exists_rig g.q.left _ _ he (bundle I D e χ) (coordUnit g χ) (coordUnit_trans g χ)`. Set `E : SplitExt (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))` to `{ B := thickObj R I e D.P.A isAbelian := isAbelianScheme_thick I D e X := D.X O := fun χ => ⟨bundle I D e χ, ρ χ, DVR.linComb_isLB _ D.P.isLB _ _, hρ χ⟩ addIso := bundle_add I D e zeroTriv := bundle_zero I D e primitive := bundle_primitive I D e }`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨E, Iso.refl _, AddEquiv.refl _, inferInstanceAs (IsMonHom (𝟙 (thickObj R I e D.P.A))), fun χ => ?_, ?_⟩` and prove the remaining obligations. Use `exists_iso D.P.isLB (funext fun k => ?_) Oε` and prove the remaining obligations. Use `Eq.trans ?_ (WeightPf.Oφ_comp ((Over.map (thick R I e)).map (𝟙 (thickObj R I e D.P.A)) ≫ D.prBe I e) (𝟙 _) χ k).symm` and prove the remaining obligations. Rewrite using `[Category.comp_id]`. Conclude with `congrArg (D.Oφ · χ k) (((congrArg (· ≫ _) ((Over.map (thick R I e)).map_id _)).trans (Category.id_comp _)).symm)`.
-
-Conclude with `isGt_of_units E g.q g.i g.q_hom g.i_hom g.q_flat g.q_surj g.q_affine g.isKernel (coordUnit g) (coordUnit_trans g) (coordUnit_weight g) hρ'`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gtCoord_isGt : Geo.Tor.GtCoordToGtSt := by
   rintro R _ _ I D e G _ _ ⟨g⟩

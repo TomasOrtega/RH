@@ -8,21 +8,17 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.BZPhiPG.OntoO
 
 /- English proof (translation)
-Take `⟨K₆, hK₆o, -, hK₆s⟩` from `hbase ((K₀ : Set G) ∩ N) (Filter.inter_mem (hK₀o.mem_nhds K₀.one_mem) hN)`. Use `haveI : CompactSpace K₀ := isCompact_iff_compactSpace.mp hK₀c`. Use `set H : Subgroup K₀ := K₆.subgroupOf K₀ with hH`. Establish `hHo : IsOpen (H : Set K₀)` using `hK₆o.preimage continuous_subtype_val`. Use `haveI : Finite (K₀ ⧸ H) := H.quotient_finite_of_isOpen hHo`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : H.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Use `set M : Subgroup K₀ := H.normalCore with hM`. Establish `hMH : M ≤ H` using `Subgroup.normalCore_le H`. Establish `hHc : IsClosed (H : Set K₀)` using `OpenSubgroup.isClosed ⟨H, hHo⟩`. Establish `hMc : IsClosed (M : Set K₀)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities.
 
-Establish `: (M : Set K₀) = ⋂ b : K₀, (fun a : K₀ => b * a * b⁻¹) ⁻¹' (H : Set K₀)`. Use extensionality with `a`. Simplify using `only [Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`. Conclude with `Iff.rfl`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `isClosed_iInter fun b => hHc.preimage (by fun_prop)`. Use `haveI : M.FiniteIndex := Subgroup.finiteIndex_normalCore H`. Establish `hMo : IsOpen (M : Set K₀)` using `Subgroup.isOpen_of_isClosed_of_finiteIndex M hMc`. Use `set D : Subgroup K₀ := C.subgroupOf K₀ with hD`. Use `set L : Subgroup K₀ := M ⊔ D with hL`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hLo : IsOpen (L : Set K₀)` using `Subgroup.isOpen_mono (le_sup_left : M ≤ L) hMo`. Establish `hLc : IsClosed (L : Set K₀)` using `OpenSubgroup.isClosed ⟨L, hLo⟩`. Establish `himg : ((L.map K₀.subtype : Subgroup G) : Set G) = Subtype.val '' (L : Set K₀)`. Use extensionality with `x`. Simplify using `[Subgroup.mem_map]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨L.map K₀.subtype, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[himg]`. Conclude with `hK₀o.isOpenMap_subtype_val _ hLo`. Rewrite using `[himg]`. Conclude with `hLc.isCompact.image continuous_subtype_val`.
-
-Introduce `c hc`. Use `⟨⟨c, hC hc⟩, ?_, rfl⟩` and prove the remaining obligations. Conclude with `(le_sup_right : D ≤ L) (by simpa [hD, Subgroup.mem_subgroupOf] using hc)`. Conclude with `Subgroup.map_subtype_le L`. Introduce and unpack `x ⟨y, hy, rfl⟩`.
-
-Establish `hy' : y ∈ ((M ⊔ D : Subgroup K₀) : Set K₀)` using `hy`. Rewrite `hy'` using `[Subgroup.normal_mul]`. Take `⟨m, hm, d, hd, rfl⟩` from `Set.mem_mul.mp hy'`. Use `⟨(m : G), (hK₆s (hMH hm)).2, (d : G), hd, rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_compactOpen_between_mul_small
     {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]

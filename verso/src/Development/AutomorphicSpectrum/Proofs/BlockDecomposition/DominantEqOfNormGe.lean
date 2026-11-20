@@ -6,7 +6,7 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 namespace GlobalTheory.CompanionTheory.RealCount.LemmaH
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih`. Rewrite using `[← Nat.add_assoc, Finset.sum_Ico_succ_top (by omega), mul_add, ih]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -20,11 +20,11 @@ theorem two_sum_Ico (a d : ℕ) :
     ring
 
 /- English proof (translation)
-Proceed by induction on `A using Finset.induction_on_max with`. Consider the case `empty => intro t _`. Simplify using the standard rewrite rules. Consider the case `insert a A hA ih`. Introduce `t ht`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnot : a ∉ A` using `fun h => lt_irrefl _ (hA a h)`. Establish `h1` using `ih a hA`. Establish `h2 : (a : ℝ) + 1 ≤ t` using `by exact_mod_cast ht a (Finset.mem_insert_self _ _)`. Rewrite using `[Finset.sum_insert hnot, Finset.card_insert_of_notMem hnot]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hc : (0 : ℝ) ≤ A.card` using `Nat.cast_nonneg _`. Use polynomial arithmetic with `[mul_nonneg (add_nonneg hc zero_le_one) (sub_nonneg.2 h2)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sum_le_top (A : Finset ℕ) : ∀ t : ℕ, (∀ a ∈ A, a < t) →
     2 * ∑ i ∈ A, (i : ℝ) + (A.card : ℝ) * ((A.card : ℝ) + 1) ≤ 2 * (A.card : ℝ) * t := by
@@ -41,9 +41,9 @@ theorem sum_le_top (A : Finset ℕ) : ∀ t : ℕ, (∀ a ∈ A, a < t) →
     nlinarith [mul_nonneg (add_nonneg hc zero_le_one) (sub_nonneg.2 h2)]
 
 /- English proof (translation)
-Establish `hN : 0 < R + U` using `add_pos hR hU`. Establish `a1` using `mul_le_mul_of_nonneg_left h4 hU.le`. Establish `a2` using `mul_le_mul_of_nonneg_left h3 hR.le`. Establish `a3` using `mul_le_mul_of_nonneg_left h1 hU.le`. Establish `a4` using `mul_le_mul_of_nonneg_left h2 hR.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a5` using `mul_le_mul_of_nonneg_left hE hN.le`. Establish `a6` using `(mul_pos hR hU).le`. Establish `key : (R + U) * (Pa + SA + GA) ≤ (R + U) * (Ls + L1 + G1)`. Use polynomial arithmetic with `[a1, a2, a3, a4, a5, a6, hC]`. Conclude with `le_of_mul_le_mul_left key hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem alg_core (R U c0 Pa SA SB Ls L1 L2 G1 GA : ℝ) (hR : 0 < R) (hU : 0 < U)
     (h1 : SA ≤ R * c0) (h2 : U * (c0 - (R + U - 1)) ≤ SB) (h3 : Pa + SA + SB ≤ Ls + L1 + L2)
@@ -61,59 +61,55 @@ theorem alg_core (R U c0 Pa SA SB Ls L1 L2 G1 GA : ℝ) (hR : 0 < R) (hU : 0 < U
   exact le_of_mul_le_mul_left key hN
 
 /- English proof (translation)
-Establish `hkn : k ≤ n`. Establish `hsub : I ⊆ Finset.range n` using `fun i hi => Finset.mem_range.2 (hI i hi)`. Simplify `Finset.card_le_card hsub` using `[hk]`. Distinguish the cases in `hEq : I = Finset.range k`. Rewrite using `[hEq, Finset.sum_add_distrib, Finset.sum_add_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `hP k hkn` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb : ∃ b, b < k ∧ b ∉ I`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hEq` to reduce the goal to its premises. Use `symm`. Apply `Finset.eq_of_subset_of_card_le` to reduce the goal to its premises. Introduce `i hi`. Conclude with `hcon i (Finset.mem_range.1 hi)`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hk]`. Establish `ha : ∃ a ∈ I, k ≤ a`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hEq` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `Finset.eq_of_subset_of_card_le` to reduce the goal to its premises. Introduce `i hi`. Conclude with `Finset.mem_range.2 (hcon i hi)`. Simplify using `[hk]`. Take `⟨b, hbk, hbI⟩` from `hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, haI, hka⟩` from `ha`. Choose the witnesses or unpack the hypotheses as in `⟨s, hsI, hlt, hsb⟩ : ∃ s, s ∉ I ∧ (∀ i, i < s → i ∈ I) ∧ s ≤ b := by`. Establish `hex : ∃ b, b ∉ I` using `⟨b, hbI⟩`. Use `⟨Nat.find hex, Nat.find_spec hex, fun i hi => ?_, Nat.find_min' hex hbI⟩` and prove the remaining obligations. Use `Nat.find_min hex hi` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Take `⟨e, heI, hle⟩ : ∃ e, e ∈ I ∧ ∀ i ∈ I, i ≤ e` from `⟨I.max' ⟨a, haI⟩, Finset.max'_mem _ _, fun i hi => Finset.le_max' _ _ hi⟩`. Establish `hae : a ≤ e` using `hle a haI`. Establish `hen : e < n` using `hI e heI`. Take `⟨r, hr⟩ : ∃ r, k = s + r` from `⟨k - s, by omega⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨u, hu⟩ : ∃ u, e + 1 = s + r + u` from `⟨e + 1 - (s + r), by omega⟩`. Establish `hr1 : 1 ≤ r` using `by omega`. Establish `hu1 : 1 ≤ u` using `by omega`. Substitute `hr` using the available equality. Establish `hsplit : ∀ f : ℕ → ℝ, ∑ i ∈ I, f i = ∑ i ∈ Finset.range s, f i + ∑ i ∈ I.filter (fun i => s ≤ i), f i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `f`. Establish `hnot : I.filter (fun i => ¬ s ≤ i) = Finset.range s`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_range, not_le]`. Conclude with `⟨fun h => h.2, fun h => ⟨hlt i h, h⟩⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.sum_filter_add_sum_filter_not I (fun i => s ≤ i) f, hnot, add_comm]`. Use `set A := I.filter (fun i => s ≤ i) with hA`. Establish `hcardA : (A.card : ℝ) = r`. Establish `h` using `hsplit (fun _ => (1 : ℝ))`. Simplify using `only [Finset.sum_const, nsmul_eq_mul, mul_one, Finset.card_range, hk] at h`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hAsub : A ⊆ Finset.Ico s (s + r + u)`. Introduce `i hi`. Establish `hi'` using `Finset.mem_filter.1 hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hle i hi'.1` as an intermediate fact. Conclude with `Finset.mem_Ico.2 ⟨hi'.2, by omega⟩`. Use `set B := Finset.Ico s (s + r + u) \ A with hB`. Establish `hD : ∀ f : ℕ → ℝ, ∑ i ∈ B, f i + ∑ i ∈ A, f i = ∑ i ∈ Finset.Ico s (s + r + u), f i` using `fun f => Finset.sum_sdiff hAsub`. Establish `hcardB : (B.card : ℝ) = u`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h` using `hD (fun _ => (1 : ℝ))`. Simplify using `only [Finset.sum_const, nsmul_eq_mul, mul_one, Nat.card_Ico] at h`. Establish `h2 : ((s + r + u - s : ℕ) : ℝ) = r + u`. Establish `: s + r + u - s = r + u` using `by omega`. Rewrite using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[h2, hcardA]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hRpos : (0 : ℝ) < r` using `by exact_mod_cast hr1`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUpos : (0 : ℝ) < u` using `by exact_mod_cast hu1`. Establish `he : (e : ℝ) = s + r + u - 1`. Establish `: ((e + 1 : ℕ) : ℝ) = ((s + r + u : ℕ) : ℝ)` using `by rw [hu]`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∑ i ∈ A, ν i ≤ r * ν s`. Use `Finset.sum_le_card_nsmul A ν (ν s) (fun i hi => by` as an intermediate fact. Establish `hi'` using `Finset.mem_filter.1 hi`. Conclude with `hν s i hi'.2 (hI i hi'.1))`. Rewrite `this` using `[nsmul_eq_mul, hcardA]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hF` using `htop e heI s (by have := hle e heI; omega) hsI`. Establish `h2 : (u : ℝ) * (ν s - ((r : ℝ) + u - 1)) ≤ ∑ i ∈ B, ν i`. Establish `h` using `Finset.card_nsmul_le_sum B ν (ν e) (fun i hi => by`. Establish `hi'` using `Finset.mem_Ico.1 (Finset.mem_sdiff.1 hi).1`. Conclude with `hν i e (by omega) hen)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[nsmul_eq_mul, hcardB]`. Use `le_trans ?_ h` and prove the remaining obligations. Apply `mul_le_mul_of_nonneg_left _ hUpos.le` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsn : s ≤ n` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htn : s + r + u ≤ n` using `by omega`. Establish `hkn' : s + r ≤ n` using `by omega`. Establish `hIco` using `Finset.sum_Ico_eq_sub ν (show s ≤ s + r + u by omega)`. Establish `h3 : ∑ i ∈ Finset.range s, ν i + ∑ i ∈ A, ν i + ∑ i ∈ B, ν i ≤ ∑ i ∈ Finset.range (s + r + u), (c i - 4 * (i : ℝ))`. Use `hP _ htn` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h'` using `hD ν`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4` using `hP s hsn`. Use `set M : ℕ → ℝ := fun i => c i - 4 * (i : ℝ) with hM`. Establish `hL1` using `Finset.sum_Ico_eq_sub M (show s ≤ s + r by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hL2` using `Finset.sum_Ico_eq_sub M (show s + r ≤ s + r + u by omega)`. Establish `hG1` using `Finset.sum_Ico_eq_sub (fun i : ℕ => (i : ℝ)) (show s ≤ s + r by omega)`. Establish `t1` using `two_sum_Ico s r`. Establish `t2` using `two_sum_Ico (s + r) u`. Establish `t3` using `sum_le_top A (s + r + u) (fun i hi => Finset.mem_Ico.1 (hAsub hi) |>.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `t3` using `[hcardA]`. Move the coercions through the operations in `at t2 t3`. Establish `hE : ∑ i ∈ A, (i : ℝ) ≤ ∑ i ∈ Finset.Ico s (s + r), (i : ℝ) + r * u`. Use polynomial arithmetic with `[t1, t3]`. Establish `hckn : s + r < n` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hc1 : (r : ℝ) * c (s + r) ≤ ∑ i ∈ Finset.Ico s (s + r), c i`. Establish `h` using `Finset.card_nsmul_le_sum (Finset.Ico s (s + r)) c (c (s + r)) (fun i hi => by`. Establish `hi'` using `Finset.mem_Ico.1 hi`. Conclude with `hc i (s + r) (by omega) hckn)`. Simplify `h` using `[nsmul_eq_mul, Nat.card_Ico]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc2 : ∑ i ∈ Finset.Ico (s + r) (s + r + u), c i ≤ (u : ℝ) * c (s + r)`. Establish `h` using `Finset.sum_le_card_nsmul (Finset.Ico (s + r) (s + r + u)) c (c (s + r)) (fun i hi => by`. Establish `hi'` using `Finset.mem_Ico.1 hi`. Conclude with `hc (s + r) i hi'.1 (by omega))`. Simplify `h` using `[nsmul_eq_mul, Nat.card_Ico]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hM1 : ∑ i ∈ Finset.Ico s (s + r), M i = ∑ i ∈ Finset.Ico s (s + r), c i - 4 * ∑ i ∈ Finset.Ico s (s + r), (i : ℝ)`. Simplify using `only [hM, Finset.sum_sub_distrib, Finset.mul_sum]`. Establish `hM2 : ∑ i ∈ Finset.Ico (s + r) (s + r + u), M i = ∑ i ∈ Finset.Ico (s + r) (s + r + u), c i - 4 * ∑ i ∈ Finset.Ico (s + r) (s + r + u), (i : ℝ)`. Simplify using `only [hM, Finset.sum_sub_distrib, Finset.mul_sum]`. Establish `hC : (r : ℝ) * ∑ i ∈ Finset.Ico (s + r) (s + r + u), M i + 2 * r * u * (r + u) ≤ (u : ℝ) * ∑ i ∈ Finset.Ico s (s + r), M i`.
-
-Rewrite using `[hM1, hM2]`. Establish `b1` using `mul_le_mul_of_nonneg_left hc1 hUpos.le`. Establish `b2` using `mul_le_mul_of_nonneg_left hc2 hRpos.le`. Use polynomial arithmetic with `[b1, b2, t1, t2]`. Establish `fin` using `alg_core r u (ν s) (∑ i ∈ Finset.range s, ν i) (∑ i ∈ A, ν i) (∑ i ∈ B, ν i) (∑ i ∈ Finset.range s, M i) (∑ i ∈ Finset.Ico s (s + r), M i) (∑ i ∈ Finset.Ico (s + r) (s + r + u), M i) (∑ i ∈ Finset.Ico s (s + r), (i : ℝ)) (∑ i ∈ A, (i : ℝ)) hRpos hUpos h1 h2 (by rw [hL1, hL2]; lin …`.
-
-Rewrite using `[hsplit, Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_add_distrib]`. Rewrite `fin` using `[hL1]`. Rewrite `fin` using `[hG1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem core (n k : ℕ) (ν c : ℕ → ℝ)
     (hν : ∀ i j, i ≤ j → j < n → ν j ≤ ν i)
@@ -269,11 +265,11 @@ theorem core (n k : ℕ) (ν c : ℕ → ℝ)
   linarith
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro _`. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `hm`. Establish `ih'` using `ih (by omega)`. Establish `hzz` using `hz m (by omega)`. Establish `hD0` using `hD (m + 1) (by omega)`. Establish `e1 : ∑ i ∈ Finset.range (m + 1 + 1), d i = ∑ i ∈ Finset.range (m + 1), d i + d (m + 1)` using `Finset.sum_range_succ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ∑ j ∈ Finset.range (m + 1), ∑ i ∈ Finset.range (j + 1), d i = ∑ j ∈ Finset.range m, ∑ i ∈ Finset.range (j + 1), d i + ∑ i ∈ Finset.range (m + 1), d i` using `Finset.sum_range_succ _ _`. Establish `e3 : ∑ i ∈ Finset.range (m + 1 + 1), z i * d i = ∑ i ∈ Finset.range (m + 1), z i * d i + z (m + 1) * d (m + 1)` using `Finset.sum_range_succ _ _`. Rewrite using `[e1, e2, e3]`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hzz) hD0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem abel (z d : ℕ → ℝ) (N : ℕ) (hz : ∀ i, i < N → 1 ≤ z i - z (i + 1))
     (hD : ∀ j, j ≤ N + 1 → 0 ≤ ∑ i ∈ Finset.range j, d i) :
@@ -299,23 +295,21 @@ theorem abel (z d : ℕ → ℝ) (N : ℕ) (hz : ∀ i, i < N → 1 ≤ z i - z 
     nlinarith [mul_nonneg (sub_nonneg.2 hzz) hD0]
 
 /- English proof (translation)
-Use `set d : ℕ → ℝ := fun i => m i - y i with hd`. Establish `hDsum : ∀ j, ∑ i ∈ Finset.range j, d i = ∑ i ∈ Finset.range j, m i - ∑ i ∈ Finset.range j, y i`. Introduce `j`. Simplify using `only [hd, Finset.sum_sub_distrib]`. Establish `hD : ∀ j, j ≤ N + 1 → 0 ≤ ∑ i ∈ Finset.range j, d i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Rewrite using `[hDsum]`. Combine the linear relations using `[hdom j hj]`. Establish `hDN : ∑ i ∈ Finset.range (N + 1), d i = 0`. Rewrite using `[hDsum, htot]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hab` using `abel (fun i => m i + y i) d N hs hD N le_rfl`. Rewrite `hab` using `[hDN, mul_zero, zero_add]`. Establish `hzd : ∑ i ∈ Finset.range (N + 1), (m i + y i) * d i ≤ 0`. Establish `: ∑ i ∈ Finset.range (N + 1), (m i + y i) * d i = ∑ i ∈ Finset.range (N + 1), (m i) ^ 2 - ∑ i ∈ Finset.range (N + 1), (y i) ^ 2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by simp only [hd]; ring`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hz0 : ∑ j ∈ Finset.range N, ∑ i ∈ Finset.range (j + 1), d i = 0` using `le_antisymm (le_trans hab hzd) (Finset.sum_nonneg fun j hj => hD _ (by`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.mem_range.1 hj` as an intermediate fact. Use the proof step `omega))`. Establish `hall` using `(Finset.sum_eq_zero_iff_of_nonneg (fun j hj => hD _ (by`. Use `Finset.mem_range.1 hj` as an intermediate fact. Use the proof step `omega))).1 hz0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Establish `hzero : ∀ j, j ≤ N + 1 → ∑ i ∈ Finset.range j, d i = 0`. Introduce `j hj`. Break down `Nat.eq_zero_or_pos j with rfl | hpos` into its components or cases. Simplify using the standard rewrite rules. Break down `Nat.lt_or_ge j (N + 1) with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨j', rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`. Conclude with `hall j' (Finset.mem_range.2 (by omega))`. Establish `: j = N + 1` using `by omega`. Rewrite using `[this]`. Conclude with `hDN`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `i hi`. Establish `h1` using `hzero i (by omega)`. Establish `h2` using `hzero (i + 1) (by omega)`. Rewrite `h2` using `[Finset.sum_range_succ, h1, zero_add]`. Simplify using `only [hd] at h2`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem eq_of_dom (N : ℕ) (m y : ℕ → ℝ)
     (hs : ∀ i, i < N → 1 ≤ (m i + y i) - (m (i + 1) + y (i + 1)))
@@ -370,20 +364,20 @@ variable {n : ℕ}
 def ex (f : Fin n → ℝ) (i : ℕ) : ℝ := if h : i < n then f ⟨i, h⟩ else 0
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem ex_mk (f : Fin n → ℝ) {i : ℕ} (h : i < n) : ex f i = f ⟨i, h⟩ := dif_pos h
 
 /- English proof (translation)
-Rewrite using `[ex_mk f a.2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ex_val (f : Fin n → ℝ) (a : Fin n) : ex f (a : ℕ) = f a := by
   rw [ex_mk f a.2]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and, Fin.valEmbedding_apply, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `ha`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hi`. Conclude with `⟨⟨i, by omega⟩, hi, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_filter_lt {k : ℕ} (hk : k ≤ n) :
     (univ.filter (fun a : Fin n => (a : ℕ) < k)).map Fin.valEmbedding = Finset.range k := by
@@ -397,7 +391,7 @@ theorem map_filter_lt {k : ℕ} (hk : k ≤ n) :
     exact ⟨⟨i, by omega⟩, hi, rfl⟩
 
 /- English proof (translation)
-Use `congrArg Finset.card (map_filter_lt hk)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem card_filter_lt {k : ℕ} (hk : k ≤ n) :
     (univ.filter (fun a : Fin n => (a : ℕ) < k)).card = k := by
@@ -405,7 +399,7 @@ theorem card_filter_lt {k : ℕ} (hk : k ≤ n) :
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[← map_filter_lt hk, Finset.sum_map]`. Conclude with `Finset.sum_congr rfl fun a _ => hG a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_range_of (f : Fin n → ℝ) (G : ℕ → ℝ) {k : ℕ} (hk : k ≤ n)
     (hG : ∀ a : Fin n, G a = f a) :
@@ -414,9 +408,9 @@ theorem sum_range_of (f : Fin n → ℝ) (G : ℕ → ℝ) {k : ℕ} (hk : k ≤
   exact Finset.sum_congr rfl fun a _ => hG a
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro i h`. Simplify using the standard rewrite rules. Consider the case `succ d ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `i h`. Establish `h1` using `ih i (by omega)`. Establish `h2 : lam ⟨i + (d + 1), h⟩ < lam ⟨i + d, by omega⟩` using `hl (Fin.mk_lt_mk.2 (by omega))`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 -/
 theorem lam_add (lam : Fin n → ℤ) (hl : StrictAnti lam) :
     ∀ (d i : ℕ) (h : i + d < n), lam ⟨i + d, h⟩ + d ≤ lam ⟨i, by omega⟩ := by
@@ -432,9 +426,9 @@ theorem lam_add (lam : Fin n → ℤ) (hl : StrictAnti lam) :
     omega
 
 /- English proof (translation)
-Take `⟨d, hd⟩ : ∃ d, (b : ℕ) = a + d` from `⟨b - a, by have := Fin.le_def.1 hab; omega⟩`. Establish `h` using `lam_add lam hl d a (by have := b.2; omega)`. Establish `hb : (⟨(a : ℕ) + d, by have` using `b.2; omega⟩ : Fin n) = b := Fin.ext hd.symm`. Rewrite `h` using `[hb]`. Establish `ha : (⟨(a : ℕ), a.2⟩ : Fin n) = a` using `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[ha]`. Rewrite using `[hd]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 -/
 theorem lam_mono (lam : Fin n → ℤ) (hl : StrictAnti lam) {a b : Fin n} (hab : a ≤ b) :
     lam b + ((b : ℕ) : ℤ) ≤ lam a + ((a : ℕ) : ℤ) := by
@@ -449,31 +443,25 @@ theorem lam_mono (lam : Fin n → ℤ) (hl : StrictAnti lam) {a b : Fin n} (hab 
   omega
 
 /- English proof (translation)
-Use `set F := univ.filter (fun a : Fin n => (a : ℕ) < k) with hF`. Use `set c : Fin n → ℝ := fun a => m0 lam a + 4 * ((a : ℕ) : ℝ) with hcdef`. Use `set I : Finset ℕ := (F.map w.toEmbedding).map Fin.valEmbedding with hIdef`. Establish `hmem : ∀ b : Fin n, (b : ℕ) ∈ I ↔ ((w.symm b : Fin n) : ℕ) < k`. Introduce `b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `only [hIdef, hF, Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and, Equiv.coe_toEmbedding, Fin.valEmbedding_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, ⟨y, hy, rfl⟩, hx⟩`. Establish `: w y = b` using `Fin.ext hx`. Rewrite using `[← this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Simplify using `using hy`. Introduce `h`. Conclude with `⟨b, ⟨w.symm b, h, by simp⟩, rfl⟩`. Establish `hcore` using `core n k (ex (wtR ν)) (ex c) (by`. Introduce `i j hij hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[ex_mk _ hj, ex_mk _ (show i < n by omega)]`. Use `hν (show (⟨i, by omega⟩ : Fin n) ≤ ⟨j, hj⟩ from Fin.mk_le_mk.2 hij)` as an intermediate fact. Simplify using `only [wtR]`. Conclude with `this)` after adjusting the coercions. Use the proof step `(by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `i j hij hj`. Rewrite using `[ex_mk _ hj, ex_mk _ (show i < n by omega)]`. Use `lam_mono lam hl (show (⟨i, by omega⟩ : Fin n) ≤ ⟨j, hj⟩ from Fin.mk_le_mk.2 hij)` as an intermediate fact. Establish `h2 : ((lam ⟨j, hj⟩ : ℤ) : ℝ) + (j : ℝ) ≤ ((lam ⟨i, by omega⟩ : ℤ) : ℝ) + (i : ℝ)`. Conclude with `this` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hcdef, m0]`. Use the proof step `linarith)`. Use the proof step `(by`. Introduce `j hj`. Rewrite using `[sum_range_of (wtR ν) _ hj (fun a => ex_val _ a), sum_range_of (m0 lam) (fun i => ex c i - 4 * (i : ℝ)) hj (fun a => by simp only [ex_val, hcdef]; ring)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `hD.1 j)`. Use `I`. Use the proof step `(by`. Introduce `i hi`. Simplify using `only [hIdef, Finset.mem_map] at hi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, _, rfl⟩` from `hi`. Conclude with `x.2)`. Use the proof step `(by simp [hIdef, hF, card_filter_lt hk])`. Use the proof step `(by`. Introduce `a ha b hb hbI`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `ha' : ∃ x : Fin n, (x : ℕ) = a`. Simplify using `only [hIdef, Finset.mem_map] at ha`. Take `⟨x, _, hx⟩` from `ha`. Conclude with `⟨x, hx⟩`. Take `⟨x, rfl⟩` from `ha'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxk` using `(hmem x).1 ha`. Establish `hbk : ¬ ((w.symm ⟨b, hb⟩ : Fin n) : ℕ) < k` using `fun h => hbI ((hmem ⟨b, hb⟩).2 h)`. Establish `hle : w.symm x ≤ w.symm ⟨b, hb⟩` using `Fin.le_def.2 (by omega)`. Use `hw hle` as an intermediate fact. Simplify using `only [Equiv.apply_symm_apply, rhoV] at this`.
-
-Rewrite using `[ex_val, ex_mk _ hb]`. Use the proof step `linarith)`. Establish `hL : ∑ i ∈ I, (ex (wtR ν) i + (i : ℝ)) = ∑ a ∈ F, (wtR ν (w a) + ((w a : ℕ) : ℝ))`. Simplify using `only [hIdef, Finset.sum_map, Equiv.coe_toEmbedding, Fin.valEmbedding_apply, ex_val]`. Establish `hR : ∑ i ∈ Finset.range k, (ex c i - 4 * (i : ℝ) + (i : ℝ)) = ∑ a ∈ F, (m0 lam a + ((a : ℕ) : ℝ))` using `sum_range_of (fun a => m0 lam a + ((a : ℕ) : ℝ)) _ hk (fun a => by simp only [ex_val, hcdef]; ring)`.
-
-Rewrite `hcore` using `[hL, hR]`. Establish `e1 : ∑ a ∈ F, (wtR ν (w a) - rhoV n (w a)) = ∑ a ∈ F, (wtR ν (w a) + ((w a : ℕ) : ℝ)) - ∑ a ∈ F, (((n : ℝ) - 1) / 2)`. Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => by simp only [rhoV]; ring`. Establish `e2 : ∑ a ∈ F, (m0 lam a - rhoV n a) = ∑ a ∈ F, (m0 lam a + ((a : ℕ) : ℝ)) - ∑ a ∈ F, (((n : ℝ) - 1) / 2)`.
-
-Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => by simp only [rhoV]; ring`. Rewrite using `[e1, e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem step1 (lam : Fin n → ℤ) (hl : StrictAnti lam) (ν : Fin n → ℤ) (hν : Antitone ν)
     (hD : DomLE (wtR ν) (m0 lam)) (w : Equiv.Perm (Fin n))

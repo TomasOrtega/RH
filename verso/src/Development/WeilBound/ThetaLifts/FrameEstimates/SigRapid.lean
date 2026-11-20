@@ -19,19 +19,19 @@ variable {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model �
   {r s r' s' : ℕ}
 
 /- English proof (translation)
-Take `⟨Q, hQ⟩` from `Submodule.exists_isCompl (soCoeff (B := B) M φ)`. Set `P` to `Submodule.linearProjOfIsCompl _ _ hQ`. Set `ψ : Fin m → (Fin n × Fin d → Af F) → ℂ` to `fun j => ∑ i, (P (Pi.single j 1) : Fin m → ℂ) i • φ i`. Establish `hψ : ∀ j, ψ j ∈ soFin B M` using `fun j => ⟨Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hφ i), (P (Pi.single j 1)).2⟩`. Establish `key : ∀ w : Fin m → SInf F (Fin n × Fin d), ∑ j, pureA F (w j) (φ j) ∈ M.So B.ψ B.τ₁ → ∑ j, pureA F (w j) (φ j) = ∑ j, pureA F (w j) (ψ j)` using `fun w hw => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m', f', χ, hχ, e⟩` from `(hF F E σ B n d X W M χX χW om r s r' s' hp).1 _ hw`. Establish `hmem : ∀ x, (fun j => w j x) ∈ soCoeff (B` using `B) M φ := fun x f₀ => by`. Establish `e2 : ∑ j, w j x • φ j = ∑ i, f' i x • χ i`. Use function extensionality and compare the values at `y`. Take `⟨z, hz1, hz2⟩ : ∃ z : Fin n × Fin d → AdeleRing (𝓞 F) F, (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (z i).1) = x ∧ (fun i => (z i).2) = y` from `⟨fun i => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i), y i),`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `fun i => RingEquiv.apply_symm_apply _ _, rfl⟩`. Use `congrFun e z` as an intermediate fact. Simplify using `only [Finset.sum_apply, pureA, hz1, hz2] at this`. Simplify `this` using `[Finset.sum_apply]`. Establish `e3 : pureA F f₀ (∑ i, f' i x • χ i) = ∑ i, f' i x • pureA F f₀ (χ i)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z; simp [pureA, Finset.mul_sum, Finset.sum_apply]; exact Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[e2, e3]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ((hχ i).2 f₀)`. Use function extensionality and compare the values at `z`. Use `set x : Fin n × Fin d → mixedEmbedding.mixedSpace F := fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (z i).1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : (fun j => w j x) = ∑ j, w j x • (P (Pi.single j 1) : Fin m → ℂ)`. Establish `a1 : (P (fun j => w j x) : Fin m → ℂ) = fun j => w j x` using `congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left hQ ⟨_, hmem x⟩)`. Establish `a2 : (fun j => w j x) = ∑ j, w j x • (Pi.single j 1 : Fin m → ℂ)`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `conv_lhs => rw [← a1, a2]`. Simplify using the standard rewrite rules. Establish `e5 : ∀ i, w i x = ∑ j, w j x * (P (Pi.single j 1) : Fin m → ℂ) i` using `fun i => by`. Simplify `congrFun e4 i` using `[Finset.sum_apply]`. Simplify using `only [Finset.sum_apply, pureA, ψ, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show w i (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (z i).1) = _ from e5 i, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_assoc _ _ _`. Conclude with `⟨ψ, hψ, key⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_soFin (hF : SoFin) (hp : IsPair B M χX χW om r s r' s') {m : ℕ} (φ : Fin m → (Fin n × Fin d → Af F) → ℂ)
     (hφ : ∀ j, φ j ∈ SB _) : ∃ ψ : Fin m → (Fin n × Fin d → Af F) → ℂ, (∀ j, ψ j ∈ soFin B M) ∧
@@ -78,9 +78,9 @@ theorem exists_soFin (hF : SoFin) (hp : IsPair B M χX χW om r s r' s') {m : �
   exact ⟨ψ, hψ, key⟩
 
 /- English proof (translation)
-Take `⟨m, c, x, rfl⟩` from `Submodule.mem_span_set'.1 hΦ`. Use `choose f hf χ h1 h2 h3 using fun i => (x i).2`. Use `⟨m, fun i => c i • f i, fun i => FiniteAdelicSupportCompactness.pf (χ i), fun i => Submodule.smul_mem _ _ (hf i), fun i => FiniteAdelicSupportCompactness.pf_mem ⟨h1 i, ((h2 i).and hp.good.std).mono fun v hv => hv.1.trans hv.2⟩, Finset.sum_congr rfl fun i _ => ?_⟩` and prove the remaining obligations. Rewrite using `[h3 i, FiniteAdelicSupportCompactness.pure_eq]`. Use function extensionality and compare the values at `z`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[pureA, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem polData_sum (hp : IsPair B M χX χW om r s r' s') {Φ : Fn F n d} (hΦ : Φ ∈ PolData B M) :
     ∃ (m : ℕ) (f : Fin m → SInf F (Fin n × Fin d)) (φ : Fin m → (Fin n × Fin d → Af F) → ℂ),
@@ -99,7 +99,7 @@ variable (B W) in
 def Nice (f : UA σ W.J → ℂ) : Prop := LeftInv f ∧ UMG W f ∧ SmoothFin W B.emb f
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ => rfl, ⟨0, {0}, rfl, by rintro _ rfl exact ⟨continuous_const, ⟨0, fun h => by simp⟩, fun γ _ => ⟨0, rfl, fun h => hasDerivAt_const _ _⟩⟩⟩, Set.univ, univ_mem, fun _ _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem nice_zero : Nice B W (0 : UA σ W.J → ℂ) :=
   ⟨fun _ _ _ => rfl, ⟨0, {0}, rfl, by
@@ -108,9 +108,9 @@ theorem nice_zero : Nice B W (0 : UA σ W.J → ℂ) :=
     Set.univ, univ_mem, fun _ _ _ _ => rfl⟩
 
 /- English proof (translation)
-Use `⟨fun γ hγ x => ?_, hU F E σ hc B.emb d W hJ f f' h.2.1 h'.2.1 a b, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.smul_apply, h.1 γ hγ x, h'.1 γ hγ x]`. Take `⟨U, hU1, hu⟩` from `h.2.2`. Take `⟨U', hU1', hu'⟩` from `h'.2.2`. Use `⟨U ∩ U', inter_mem hU1 hU1', fun u hm h1 x => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, hu u hm.1 h1 x, hu' u hm.2 h1 x]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Nice.lin (hU : UMGLin) (hc : IsCMExt F E σ) (hJ : EpsHerm σ W.J) {f f' : UA σ W.J → ℂ} (h : Nice B W f)
     (h' : Nice B W f') (a b : ℂ) : Nice B W (a • f + b • f') := by
@@ -122,9 +122,9 @@ theorem Nice.lin (hU : UMGLin) (hc : IsCMExt F E σ) (hJ : EpsHerm σ W.J) {f f'
     simp only [Pi.add_apply, Pi.smul_apply, hu u hm.1 h1 x, hu' u hm.2 h1 x]
 
 /- English proof (translation)
-Take `⟨hJ, -, -⟩` from `hE F E σ B hp.base d W r' s' (Or.inr hp.skew)`. Establish `e : M.I om (∑ i, pureA F (f i) (φ i)) = ∑ i, M.I om (pureA F (f i) (φ i))`. Use function extensionality and compare the values at `fun h => ((dom_sum hB hp hD f φ hφ hsb).2.2 h).trans (Finset.sum_apply _ _ _).symm`. Rewrite using `[e]`. Use `Finset.sum_induction _ _ (fun a b ha hb => by simpa using ha.lin hU hp.base.cm hJ hb 1 1) nice_zero fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨(hI F E σ B n d X W M χX χW om r s r' s' hp _ (pureA_mem _ (hsb i))).1, hG F E σ B n d X W M χX χW om r s r' s' hp 𝓕 hD _ (hφ i) (hsb i) _ (hf i)⟩`.
+Supply the required witnesses or components.
 -/
 theorem nice_sum (hB : ThetaBasic) (hU : UMGLin) (hE : EpsOf) (hG : IUMG) (hI : IInv) (hp : IsPair B M χX χW om r s r' s')
     {𝓕} (hD : Dom M om 𝓕) {m : ℕ} (f : Fin m → SInf F (Fin n × Fin d)) (φ : Fin m → (Fin n × Fin d → Af F) → ℂ)
@@ -141,9 +141,9 @@ theorem nice_sum (hB : ThetaBasic) (hU : UMGLin) (hE : EpsOf) (hG : IUMG) (hI : 
 end
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hT F E σ B a a' G X om om' ht'`. Take `⟨Φ, hΦ, Φ', hΦ', rfl⟩` from `hf`. Take `⟨hJ, -, -⟩` from `hE F E σ B h1.base _ G.W _ _ (Or.inr h1.skew)`. Take `⟨m, f, φ, c1, c2, rfl⟩` from `polData_sum h1 hΦ`. Take `⟨m', f', φ', c1', c2', rfl⟩` from `polData_sum h2 hΦ'.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, hψ, hk⟩` from `exists_soFin hF h2 φ' c2'`. Rewrite using `[hk f' hΦ'.2]`. Establish `n1` using `nice_sum hB hU hE hG hI h1 (hW F E σ B _ _ _ _ _ _ _ om _ _ _ _ h1 (Or.inl h3)) f φ c1 c2 c2`. Establish `n2` using `nice_sum hB hU hE hG hI h2 (dom_of_domSoU hS h2) f' ψ c1' hψ fun i => (hψ i).1`. Simplify `n1.lin hU h1.base.cm hJ n2 1 (-1)` using `[sub_eq_add_neg]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sig_nice (hB : ThetaBasic) (hU : UMGLin) (hE : EpsOf) (hG : IUMG) (hI : IInv) (hT : TriplePair) (hW : DomWeil)
     (hS : DomSoU) (hF : SoFin) {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W}
@@ -161,9 +161,9 @@ theorem sig_nice (hB : ThetaBasic) (hU : UMGLin) (hE : EpsOf) (hG : IUMG) (hI : 
   simpa [sub_eq_add_neg] using n1.lin hU h1.base.cm hJ n2 1 (-1)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' ht' f hf hc`. Take `⟨n1, n2, n3⟩` from `sig_nice hB hU hE hG hI hT hW hS hF ht' hf`. Take `⟨h1, -, -⟩` from `hT F E σ B a a' G X om om' ht'`. Take `⟨hJ, -, -⟩` from `hE F E σ B h1.base _ G.W _ _ (Or.inr h1.skew)`. Use `⟨?_, n1, hC F E σ h1.base.cm B.emb _ G.W hJ f n1 n2 n3 hc⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, S, hS1, hS2⟩` from `n2`. Conclude with `(hS2 f hS1).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sigRapid_of (hB : ThetaBasic) (hU : UMGLin) (hE : EpsOf) (hG : IUMG) (hI : IInv) (hT : TriplePair) (hW : DomWeil)
     (hS : DomSoU) (hF : SoFin) (hC : CuspRapid) : PositivityTheory.ThKEnd.Orth.SigRapid := by

@@ -11,14 +11,14 @@ namespace GlobalTheory.LcImage
 open GlobalTheory.IndefiniteRowSideFullHecke.ImagePolynomialAction
 
 /- English proof (translation)
-Simplify using `[polyR, Polynomial.eval_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_zero_polyR (l e : ℕ) (U : Finset ℤ) (η : ℕ) :
     (polyR l e U η).eval 0 = ∏ n ∈ (shifts U η).erase 0, (-(n * e * l)) := by
   simp [polyR, Polynomial.eval_prod]
 
 /- English proof (translation)
-Take `⟨i, hi, k, ⟨hk1, hk2⟩, rfl⟩` from `mem_shifts.1 hn`. Use `Finset.mem_Icc.1 (hU hi)` as an intermediate fact. Apply the tactic sequence `rw [abs_lt]; constructor <;> omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem abs_lt_of_mem_shifts {l : ℕ} {U : Finset ℤ} {η H : ℕ} (hU : U ⊆ Finset.Icc (-(η : ℤ)) H)
     (hl : H + η < l) {n : ℤ} (hn : n ∈ shifts U η) : |n| < l := by
@@ -27,7 +27,7 @@ theorem abs_lt_of_mem_shifts {l : ℕ} {U : Finset ℤ} {η H : ℕ} (hU : U ⊆
   rw [abs_lt]; constructor <;> omega
 
 /- English proof (translation)
-Introduce `hd`. Establish `h1` using `Nat.le_of_dvd (Int.natAbs_pos.2 hn) (Int.ofNat_dvd_left.1 hd)`. Establish `h2 : (n.natAbs : ℤ) = |n|` using `Int.natCast_natAbs n`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem not_dvd_of_abs_lt {l : ℕ} {n : ℤ} (hn : n ≠ 0) (h : |n| < l) : ¬ (l : ℤ) ∣ n := by
   intro hd
@@ -36,9 +36,9 @@ theorem not_dvd_of_abs_lt {l : ℕ} {n : ℤ} (hn : n ≠ 0) (h : |n| < l) : ¬ 
   omega
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert x S hx ih`. Establish `ih'` using `ih fun n hn => hf n (Finset.mem_insert_of_mem hn)`. Establish `hx'` using `hf x (Finset.mem_insert_self x S)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_insert hx, Finset.card_insert_of_notMem hx]`. Use `⟨mul_ne_zero hx'.1 ih'.1, ?_⟩` and prove the remaining obligations. Rewrite using `[padicValInt.mul hx'.1 ih'.1, hx'.2, ih'.2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem padicValInt_prod {p : ℕ} [Fact p.Prime] (S : Finset ℤ) (f : ℤ → ℤ)
     (hf : ∀ n ∈ S, f n ≠ 0 ∧ padicValInt p (f n) = 1) :
@@ -53,15 +53,15 @@ theorem padicValInt_prod {p : ℕ} [Fact p.Prime] (S : Finset ℤ) (f : ℤ → 
     rw [padicValInt.mul hx'.1 ih'.1, hx'.2, ih'.2]; ring
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Establish `hle : ¬ (l : ℤ) ∣ (e : ℤ)`. Introduce `hd`. Establish `hd' : l ∣ e` using `Int.natCast_dvd_natCast.1 hd`. Establish `h1 : l ∣ l ^ a` using `dvd_pow_self l ha`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hsucc]`. Conclude with `hp.one_lt.ne' (Nat.dvd_one.1 ((Nat.dvd_add_right hd').1 h1))`. Establish `key : ∀ n ∈ (shifts U η).erase 0, (-(n * e * l) : ℤ) ≠ 0 ∧ padicValInt l (-(n * e * l)) = 1`. Introduce `n hn`. Take `⟨hn0, hnS⟩` from `Finset.mem_erase.1 hn`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hnl` using `not_dvd_of_abs_lt hn0 (abs_lt_of_mem_shifts hU hl hnS)`. Establish `he0 : (e : ℤ) ≠ 0` using `by exact_mod_cast he`. Establish `hl0 : (l : ℤ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Use `⟨neg_ne_zero.2 (mul_ne_zero (mul_ne_zero hn0 he0) hl0), ?_⟩` and prove the remaining obligations. Establish `hneg : padicValInt l (-(n * e * l)) = padicValInt l (n * e * l)` using `by simp [padicValInt]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hneg, padicValInt.mul (mul_ne_zero hn0 he0) hl0, padicValInt.mul hn0 he0, padicValInt.eq_zero_of_not_dvd hnl, padicValInt.eq_zero_of_not_dvd hle, padicValInt.self hp.one_lt]`. Take `⟨h1, h2⟩` from `padicValInt_prod _ _ key`. Use `⟨fun n hn => abs_lt_of_mem_shifts hU hl hn, ?_, ?_, ?_, Nat.mul_le_mul_right _ hN⟩` and prove the remaining obligations. Rewrite using `[eval_zero_polyR]`. Conclude with `h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[eval_zero_polyR]`. Conclude with `h2`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem valuation {l e a : ℕ} [Fact l.Prime] (hsucc : e + 1 = l ^ a) (ha : a ≠ 0) (he : e ≠ 0)
     (U : Finset ℤ) (η H N : ℕ) (hU : U ⊆ Finset.Icc (-(η : ℤ)) H) (hN : U.card ≤ N + 1)
@@ -105,14 +105,14 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Comple
   {η H : ℕ} (D : BKDat O K l e a ι η H)
 
 /- English proof (translation)
-Rewrite using `[← Polynomial.aeval_map_algebraMap K T q]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem aeval_map_intCast {V : Type} [AddCommGroup V] [Module K V] (T : Module.End K V) (q : Polynomial ℤ) :
     Polynomial.aeval T (q.map (Int.castRingHom K)) = Polynomial.aeval T q := by
   rw [← Polynomial.aeval_map_algebraMap K T q]; rfl
 
 /- English proof (translation)
-Rewrite using `[polyR, Polynomial.map_prod, Polynomial.eval_prod]`. Use `Finset.prod_eq_zero (Finset.mem_erase.2 ⟨hn0, hn⟩) ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem eval_polyRK_root {U : Finset ℤ} {n : ℤ} (hn : n ∈ shifts U η) (hn0 : n ≠ 0) :
     ((polyR l e U η).map (Int.castRingHom K)).eval (((n * e * l : ℤ) : K)) = 0 := by
@@ -121,11 +121,11 @@ theorem eval_polyRK_root {U : Finset ℤ} {n : ℤ} (hn : n ∈ shifts U η) (hn
   simp
 
 /- English proof (translation)
-Take `⟨-, -, htop⟩` from `GlobalTheory.T.tameDescent_connection_semisimple_eigenvalues O K l e a ι η H D U hS`. Establish `hle : ⨆ n ∈ shifts U η, D.LcZ.eigenspace ((n * e * l : ℤ) : K) ≤ LinearMap.ker (Polynomial.aeval D.LcZ ((polyR l e U η).map (Int.castRingHom K)) * D.LcZ)`. Use `iSup₂_le fun n hn x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[LinearMap.mem_ker, Module.End.mul_apply, hx, map_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hn0 : n = 0`. Simplify using `[hn0]`. Distinguish the cases in `hx0 : x = 0`. Simplify using `[hx0]`. Rewrite using `[Module.End.aeval_apply_of_hasEigenvector ⟨Module.End.mem_eigenspace_iff.2 hx, hx0⟩, eval_polyRK_root hn hn0, zero_smul, smul_zero]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Establish `: x ∈ LinearMap.ker (Polynomial.aeval D.LcZ ((polyR l e U η).map (Int.castRingHom K)) * D.LcZ)` using `hle (htop ▸ Submodule.mem_top)`. Simplify using `using this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem polyRK_mul_eq_zero (U : Finset ℤ) (hS : D.jumps ⊆ U) :
     Polynomial.aeval D.LcZ ((polyR l e U η).map (Int.castRingHom K)) * D.LcZ = 0 := by
@@ -154,9 +154,9 @@ namespace GlobalTheory.LcImage
 open GlobalTheory.IndefiniteRowSideFullHecke.ImagePolynomialAction
 
 /- English proof (translation)
-Rewrite using `[eval_zero_polyR, Finset.prod_ne_zero_iff]`. Introduce `n hn`. Establish `hn0` using `(Finset.mem_erase.1 hn).1`. Establish `he0 : (e : ℤ) ≠ 0` using `by exact_mod_cast he`. Establish `hl0 : (l : ℤ) ≠ 0` using `by exact_mod_cast hl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `neg_ne_zero.2 (mul_ne_zero (mul_ne_zero hn0 he0) hl0)`.
+A detailed English derivation is pending.
 -/
 theorem eval_zero_polyR_ne_zero {l e : ℕ} (hl : l ≠ 0) (he : e ≠ 0) (U : Finset ℤ) (η : ℕ) :
     (polyR l e U η).eval 0 ≠ 0 := by
@@ -175,7 +175,7 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Comple
   {η H : ℕ} (D : BKDat O K l e a ι η H)
 
 /- English proof (translation)
-Use `congrArg (fun q => Polynomial.aeval D.LcZ q w) (X_mul_polyR₁ l e U η)` as an intermediate fact. Simplify `this` using `[Module.End.mul_apply, Int.cast_smul_eq_zsmul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem LcZ_aeval_polyR₁ (U : Finset ℤ) (w : D.Zl) :
     D.LcZ (Polynomial.aeval D.LcZ (polyR₁ l e U η) w) =
@@ -184,7 +184,7 @@ theorem LcZ_aeval_polyR₁ (U : Finset ℤ) (w : D.Zl) :
   simpa [Module.End.mul_apply, Int.cast_smul_eq_zsmul] using this
 
 /- English proof (translation)
-Establish `hr` using `eval_zero_polyR_ne_zero (Fact.out : l.Prime).ne_zero (NeZero.ne e) U η`. Rewrite using `[← map_intCast (algebraMap ℚ_[l] K)]`. Conclude with `(map_ne_zero _).2 (Int.cast_ne_zero.2 hr)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem castK_ne_zero (U : Finset ℤ) : ((((polyR l e U η).eval 0 : ℤ)) : K) ≠ 0 := by
   have hr := eval_zero_polyR_ne_zero (Fact.out : l.Prime).ne_zero (NeZero.ne e) U η
@@ -192,13 +192,13 @@ theorem castK_ne_zero (U : Finset ℤ) : ((((polyR l e U η).eval 0 : ℤ)) : K)
   exact (map_ne_zero _).2 (Int.cast_ne_zero.2 hr)
 
 /- English proof (translation)
-Establish `h0` using `polyRK_mul_eq_zero D U hS`. Rewrite `h0` using `[aeval_map_intCast]`. Use `⟨fun w hw => ?_, fun W hW => ?_⟩` and prove the remaining obligations. Establish `hR : Polynomial.aeval D.LcZ (polyR l e U η) w = 0`. Take `⟨u, rfl⟩` from `hw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Module.End.mul_apply, h0, LinearMap.zero_apply]`. Use `⟨hR, ?_⟩` and prove the remaining obligations. Rewrite using `[LcZ_aeval_polyR₁, hR, zero_sub, neg_neg]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `w hw`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hwR, hwW⟩` from `Submodule.mem_inf.1 hw`. Establish `h` using `GlobalTheory.coeff_zero_smul_mem_map_of_aeval_mul_eq_zero D.LcZ ((polyR l e U η).map (Int.castRingHom K)) (polyRK_mul_eq_zero D U hS) W (fun z hz => hW hz) w hwW hwR`. Rewrite `h` using `[Polynomial.coeff_map, Polynomial.coeff_zero_eq_eval_zero]`. Establish `hne` using `castK_ne_zero (K := K) (l := l) (e := e) (η := η) U`. Establish `: w = ((((polyR l e U η).eval 0 : ℤ)) : K)⁻¹ • ((Int.castRingHom K) ((polyR l e U η).eval 0) • w)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[eq_intCast, smul_smul, inv_mul_cancel₀ hne, one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ h`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `Submodule.mem_inf.2 ⟨LinearMap.mem_range_self _ _, hW hx⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem image (U : Finset ℤ) (hS : D.jumps ⊆ U) : Image D U := by
   have h0 := polyRK_mul_eq_zero D U hS
@@ -224,13 +224,13 @@ theorem image (U : Finset ℤ) (hS : D.jumps ⊆ U) : Image D U := by
       exact Submodule.mem_inf.2 ⟨LinearMap.mem_range_self _ _, hW hx⟩
 
 /- English proof (translation)
-Establish `hpow : ∀ (n : ℕ) (y : D.Zl), (y : D.Pol) ∈ D.Z → (((D.LcZ ^ n) y : D.Zl) : D.Pol) ∈ D.Z`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro y hy`. Simplify using `using hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ n ih`. Introduce `y hy`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `hI _ (ih y hy)`. Proceed by induction on `q using Polynomial.induction_on' with`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `add p q hp hq`. Rewrite using `[map_add, LinearMap.add_apply, Submodule.coe_add]`. Conclude with `D.Z.add_mem hp hq`. Consider the case `monomial n c`. Rewrite using `[Polynomial.aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hpow n x hx` as an intermediate fact. Simplify using `using zsmul_mem this c`.
+A detailed English derivation is pending.
 -/
 theorem mem_Z_aeval (hI : Integral D) (q : Polynomial ℤ) (x : D.Zl) (hx : (x : D.Pol) ∈ D.Z) :
     ((Polynomial.aeval D.LcZ q x : D.Zl) : D.Pol) ∈ D.Z := by
@@ -251,9 +251,9 @@ theorem mem_Z_aeval (hI : Integral D) (q : Polynomial ℤ) (x : D.Zl) (hx : (x :
     simpa using zsmul_mem this c
 
 /- English proof (translation)
-Introduce `c w hw hcw`. Use `⟨-(Polynomial.aeval D.LcZ (polyR₁ l e U η) w), ?_, ?_⟩` and prove the remaining obligations. Use `mem_Z_aeval D hI (polyR₁ l e U η) ((l : K) ^ c • w) (by simpa using hcw)` as an intermediate fact. Rewrite `this` using `[map_smul]`. Rewrite using `[Submodule.coe_neg, smul_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `D.Z.neg_mem (by simpa using this)`. Rewrite using `[map_neg]`. Conclude with `((image D U hS).1 w hw).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integralImage (U : Finset ℤ) (hS : D.jumps ⊆ U) (hI : Integral D) : IntegralImage D U := by
   intro c w hw hcw
@@ -269,7 +269,7 @@ end Lin2
 end GlobalTheory.LcImage
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D U N hS hU hN hηH`. Use `⟨GlobalTheory.LcImage.image D U hS, fun hl => ?_, fun hl => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.LcImage.valuation (TameDescentExponentData.succ_eq (K := K)) (NeZero.ne a) (NeZero.ne e) U η H N hU hN hl`. Conclude with `GlobalTheory.LcImage.integralImage D U hS (GlobalTheory.T.breuilKisin_descent_operator_preserves_lattice O K l e a ι η H D hηH hl)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LcImage.image_valuation_integralImage : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] (η H : ℕ) (D : BKDat O K l e a ι η H), ∀ (U : Finset ℤ) (N : ℕ), D.jumps ⊆ U → U ⊆ Finset.Icc (-(η : ℤ)) H → U.card ≤ N + 1 → η < H → GlobalTheory.IndefiniteRowSideFullHecke.ImagePolynomialAction.Image D U ∧ (H + η < l → GlobalTheory.IndefiniteRowSideFullHecke.ImagePolynomialAction.Valuation l e U η N) ∧ (10 * H + 2 ≤ l → GlobalTheory.IndefiniteRowSideFullHecke.ImagePolynomialAction.IntegralImage D U) := by
   intro O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D U N hS hU hN hηH

@@ -31,7 +31,7 @@ instance coind_preservesMono : (coind φ).PreservesMonomorphisms := by
   infer_instance
 
 /- English proof (translation)
-Set `J` to `Injective.under ((restr φ).obj I)`. Set `i : I ⟶ (coind φ).obj J` to `(adj φ).unit.app I ≫ (coind φ).map (Injective.ι ((restr φ).obj I))`. Use `haveI : Mono i := mono_comp _ _`. Conclude with `⟨J, inferInstance, i, Injective.factorThru (𝟙 I) i, Injective.comp_factorThru _ _⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coind_retract (R S : Type) [CommRing R] [CommRing S] (φ : R →+* S) (I : Shv S) [Injective I] :
     ∃ (J : Shv R) (_ : Injective J) (i : I ⟶ (coind φ).obj J) (r : (coind φ).obj J ⟶ I), i ≫ r = 𝟙 I := by

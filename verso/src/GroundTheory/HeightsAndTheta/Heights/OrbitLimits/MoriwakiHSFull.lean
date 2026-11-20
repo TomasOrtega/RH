@@ -34,20 +34,20 @@ namespace GroundTheory.Heights₂.Heights.Targets
 open ReciprocityTheory.ChartRestriction.G.ArakelovGeometry GroundTheory.Heights₂.Heights.HilbertSamuel
 
 /- English proof (translation)
-The claim follows from `SecMRankBound.proof GenericFibreVar.proof`.
+A detailed English derivation is pending.
 -/
 theorem SecMRankBound.full : SecMRankBound.Statement :=
   SecMRankBound.proof GenericFibreVar.proof
 
 /- English proof (translation)
-The claim follows from `SublatticeDegree.proof SublatticeExtension.proof SpanningExtension.proof CovolumeLeGram.proof GramContraction.proof`.
+A detailed English derivation is pending.
 -/
 theorem SublatticeDegree.full : SublatticeDegree.Statement :=
   SublatticeDegree.proof SublatticeExtension.proof SpanningExtension.proof CovolumeLeGram.proof
     GramContraction.proof
 
 /- English proof (translation)
-The claim follows from `SmallPacking.proof (NmSectionsRankBound.proof (NmSectionsFinite.proof hC) SecMRankBound.full) (SmallSectionsSeparated.proof hG)`.
+A detailed English derivation is pending.
 -/
 theorem PackingStatement.of_leaves (hC : KH.CondStatement) (hG : GridSeparation.Statement) :
     ReciprocityTheory.ChartRestriction.G.Geo.PackingStatement :=
@@ -55,7 +55,7 @@ theorem PackingStatement.of_leaves (hC : KH.CondStatement) (hG : GridSeparation.
     (SmallSectionsSeparated.proof hG)
 
 /- English proof (translation)
-The claim follows from `SuccessiveMinimaSpan.proof (SectionRingFinite.proof (SectionLatticeFinite.proof hC) (SectionSpanStep.proof (SpanStepHomog.proof (SpanStepLocal.proof (RelLatticeFinite.proof hR))) SerreGraded.proof)) SectionBounded.proof SectionBoundedMul.proof`.
+A detailed English derivation is pending.
 -/
 theorem SuccessiveMinimaSpan.of_leaves (hC : KH.CondStatement) (hR : RelSectionsLarge.Statement) : SuccessiveMinimaSpan.Statement :=
   SuccessiveMinimaSpan.proof
@@ -65,7 +65,7 @@ theorem SuccessiveMinimaSpan.of_leaves (hC : KH.CondStatement) (hR : RelSections
     SectionBounded.proof SectionBoundedMul.proof
 
 /- English proof (translation)
-The claim follows from `G7.proof (SuccessiveMinimaSpan.of_leaves hC hR) (EuclideanSections.proof (EuclideanSectionsPower.proof hL2 hP) SmallSectionsNonzero.proof SublatticeDegree.full (SuccessiveMinimaSpan.of_leaves hC hR))`.
+A detailed English derivation is pending.
 -/
 theorem G7.of_leaves (hC : KH.CondStatement) (hR : RelSectionsLarge.Statement)
     (hL2 : SectionL2Lattice.Statement) (hP : TensorPowerL2Degree.Statement) : G7.Statement :=
@@ -74,7 +74,7 @@ theorem G7.of_leaves (hC : KH.CondStatement) (hR : RelSectionsLarge.Statement)
       SublatticeDegree.full (SuccessiveMinimaSpan.of_leaves hC hR))
 
 /- English proof (translation)
-The claim follows from `NefCountLower.proof hM hS (PackingStatement.of_leaves hC hG)`.
+A detailed English derivation is pending.
 -/
 theorem NefCountLower.of_leaves (hM : NefCountAlongMultiples.Statement)
     (hS : NefSmallSectionEventually.Statement) (hC : KH.CondStatement) (hG : GridSeparation.Statement) :
@@ -82,7 +82,7 @@ theorem NefCountLower.of_leaves (hM : NefCountAlongMultiples.Statement)
   NefCountLower.proof hM hS (PackingStatement.of_leaves hC hG)
 
 /- English proof (translation)
-The claim follows from `NefCountUpper.proof hApx hCurve (G7.of_leaves hC hR hL2 hP) (PackingStatement.of_leaves hC hG)`.
+A detailed English derivation is pending.
 -/
 theorem NefCountUpper.of_leaves (hApx : NefSmallApprox.Statement) (hCurve : NefCountUpperCurve.Statement)
     (hC : KH.CondStatement) (hG : GridSeparation.Statement) (hR : RelSectionsLarge.Statement)
@@ -90,7 +90,7 @@ theorem NefCountUpper.of_leaves (hApx : NefSmallApprox.Statement) (hCurve : NefC
   NefCountUpper.proof hApx hCurve (G7.of_leaves hC hR hL2 hP) (PackingStatement.of_leaves hC hG)
 
 /- English proof (translation)
-The claim follows from `MoriwakiHS.of_found (NefCountLower.of_leaves hM hS hC hG) (NefCountUpper.of_leaves hApx hCurve hC hG hR hL2 hP)`.
+A detailed English derivation is pending.
 -/
 theorem MoriwakiHS.of_leaves (hC : KH.CondStatement) (hG : GridSeparation.Statement)
     (hR : RelSectionsLarge.Statement) (hL2 : SectionL2Lattice.Statement) (hP : TensorPowerL2Degree.Statement)

@@ -9,7 +9,7 @@ namespace PI.UnitaryGroupMassFormula.ClassNumImQInt
 open NumberField Polynomial
 
 /- English proof (translation)
-Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic (Algebra.IsAlgebraic.isAlgebraic b), h]`. Conclude with `IntermediateField.top_toSubalgebra`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoin_top {K : Type} [Field K] [NumberField K] (b : K)
     (h : IntermediateField.adjoin ℚ {b} = ⊤) : Algebra.adjoin ℚ {b} = ⊤ := by
@@ -18,7 +18,7 @@ theorem adjoin_top {K : Type} [Field K] [NumberField K] (b : K)
   exact IntermediateField.top_toSubalgebra
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k : ℕ, d + 1 = 4 * k` from `⟨(d + 1) / 4, by omega⟩`. Establish `hk' : (d : K) + 1 = 4 * (k : K)` using `by exact_mod_cast hk`. Use `⟨X ^ 2 - X + C (k : ℤ), by monicity!, ?_⟩` and prove the remaining obligations. Simplify using `only [eval₂_add, eval₂_sub, eval₂_pow, eval₂_X, eval₂_natCast, map_natCast]`. Take the linear combination `(1 / 4 : K) * hb - (1 / 4 : K) * hk'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem half_integral {K : Type} [Field K] [NumberField K] (d : ℕ) (b : K) (hd : d % 4 = 3)
     (hb : b ^ 2 = -(d : K)) : IsIntegral ℤ ((1 + b) / 2) := by
@@ -29,11 +29,11 @@ theorem half_integral {K : Type} [Field K] [NumberField K] (d : ℕ) (b : K) (hd
   linear_combination (1 / 4 : K) * hb - (1 / 4 : K) * hk'
 
 /- English proof (translation)
-Introduce `d K _ _ b ⟨hp, hd, _, hb, htop⟩`. Establish `hsq : Squarefree d` using `hp.prime.squarefree`. Establish `htop'` using `adjoin_top b htop`. Use `⟨half_integral d b hd hb, ?_⟩` and prove the remaining obligations. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, y, hxy⟩` from `PI.QD.quadratic_difference_form K d b hb htop' (z : K)`. Establish `hint : IsIntegral ℤ ((x : K) + (y : K) * b)` using `by rw [← hxy]; exact z.isIntegral_coe`. Take `⟨h2x, hN⟩` from `PI.QD.quadratic_intCoeffs K d b x y hsq hd hb hint`. Take `⟨a, v, hx, hy⟩` from `PI.QD.quadraticDifferenceArith d x y hsq hd h2x hN`. Use `⟨a, v, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hxy, hx, hy]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem intBasis : PI.ClassNumImQ.IntBasis := by
   intro d K _ _ b ⟨hp, hd, _, hb, htop⟩

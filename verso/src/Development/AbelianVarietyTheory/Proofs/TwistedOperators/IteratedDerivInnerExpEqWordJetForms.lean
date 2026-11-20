@@ -10,7 +10,7 @@ namespace GlobalTheory.SphJet.Taylor
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `Rz`. Conclude with `(ContinuousLinearMap.id ℂ (Matrix (Fin n) (Fin n) ℂ →L[ℂ] B)).analyticAt_bilinear _ |>.comp₂ hf.fderiv (analyticAt_id.mul analyticAt_const)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem analyticAt_Rz {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] [CompleteSpace B]
     {f : Matrix (Fin n) (Fin n) ℂ → B} (hf : AnalyticAt ℂ f 1) (Z : Matrix (Fin n) (Fin n) ℂ) :
@@ -20,7 +20,7 @@ theorem analyticAt_Rz {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] [Com
     (analyticAt_id.mul analyticAt_const)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact hf`. Consider the case `cons p l ih => exact analyticAt_Rz ih _`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem analyticAt_Rw {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] [CompleteSpace B] (ε : Fin n → Bool)
     {f : Matrix (Fin n) (Fin n) ℂ → B} (hf : AnalyticAt ℂ f 1) (l : List (Fin n × Fin n)) :
@@ -30,21 +30,21 @@ theorem analyticAt_Rw {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] [Com
   | cons p l ih => exact analyticAt_Rz ih _
 
 /- English proof (translation)
-The claim follows from `hasDerivAt_exp_smul_const Z s`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_expC (Z : Matrix (Fin n) (Fin n) ℂ) (s : ℂ) :
     HasDerivAt (fun t : ℂ => NormedSpace.exp (t • Z)) (NormedSpace.exp (s • Z) * Z) s :=
   hasDerivAt_exp_smul_const Z s
 
 /- English proof (translation)
-The claim follows from `Differentiable.analyticAt (fun t => (hasDerivAt_expC Z t).differentiableAt) s`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_expC (Z : Matrix (Fin n) (Fin n) ℂ) (s : ℂ) :
     AnalyticAt ℂ (fun t : ℂ => NormedSpace.exp (t • Z)) s :=
   Differentiable.analyticAt (fun t => (hasDerivAt_expC Z t).differentiableAt) s
 
 /- English proof (translation)
-Establish `h1 : AnalyticAt ℂ (fun t : ℂ => L (g (NormedSpace.exp (t • Z)))) 0` using `(L.analyticAt _).comp (AnalyticAt.comp_of_eq hg (analyticAt_expC Z 0) (by simp))`. Establish `h2` using `AnalyticAt.comp_of_eq (h1.restrictScalars (𝕜 := ℝ)) (Complex.ofRealCLM.analyticAt 0) (by simp)`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem analyticAt_comp {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B]
     {g : Matrix (Fin n) (Fin n) ℂ → B} (hg : AnalyticAt ℂ g 1) (L : B →L[ℂ] ℂ) (Z : Matrix (Fin n) (Fin n) ℂ) :
@@ -55,9 +55,7 @@ theorem analyticAt_comp {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B]
   exact h2
 
 /- English proof (translation)
-Establish `hc : Tendsto (fun t : ℝ => NormedSpace.exp ((t : ℂ) • Z)) (𝓝 0) (𝓝 1)`. Establish `: ContinuousAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • Z)) 0` using `(hasDerivAt_expC Z ((0 : ℝ) : ℂ)).continuousAt.comp Complex.continuous_ofReal.continuousAt`. Simplify `this` using `[ContinuousAt]`. Use `filter_upwards [hc.eventually hg.eventually_analyticAt] with t ht`. Establish `h1 : HasDerivAt (fun s : ℂ => L (g (NormedSpace.exp (s • Z)))) (L (Rz Z g (NormedSpace.exp ((t : ℂ) • Z)))) (t : ℂ)` using `L.hasFDerivAt.comp_hasDerivAt _ (ht.differentiableAt.hasFDerivAt.comp_hasDerivAt _ (hasDerivAt_expC Z t))`.
-
-Conclude with `h1.comp_ofReal.deriv`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem deriv_comp_eventually {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] [CompleteSpace B]
     {g : Matrix (Fin n) (Fin n) ℂ → B} (hg : AnalyticAt ℂ g 1) (L : B →L[ℂ] ℂ) (Z : Matrix (Fin n) (Fin n) ℂ) :
@@ -74,7 +72,7 @@ theorem deriv_comp_eventually {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ
   exact h1.comp_ofReal.deriv
 
 /- English proof (translation)
-Simplify using `only [Rz, thM, Finset.mul_sum, map_sum, mul_smul_comm, map_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Rz_thM {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] (ε : Fin n → Bool)
     (X : Matrix (Fin n) (Fin n) ℂ) (g : Matrix (Fin n) (Fin n) ℂ → B) (z : Matrix (Fin n) (Fin n) ℂ) :
@@ -82,19 +80,19 @@ theorem Rz_thM {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] (ε : Fin n
   simp only [Rz, thM, Finset.mul_sum, map_sum, mul_smul_comm, map_smul]
 
 /- English proof (translation)
-Introduce `V W _ _ _ _ n ε E _ j f hf hJ X m y x`. Set `L : (W →L[ℂ] W) →L[ℂ] ℂ` to `(innerSL ℂ y).comp (ContinuousLinearMap.apply ℂ W x)`. Establish `hL : ∀ T : W →L[ℂ] W, L T = ⟪y, T x⟫_ℂ` using `fun T => rfl`. Establish `key : ∀ (m : ℕ) (l : List (Fin n × Fin n)), iteratedDeriv m (fun t : ℝ => L (Rw ε l f (NormedSpace.exp ((t : ℂ) • thM ε X)))) 0 = ⟪j y, (actM E X ^ m) (ew E l (j x))⟫_ℂ`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `l`. Use `congrArg (fun B => B y x) (hJ l)` as an intermediate fact. Simplify using `only [funJet_apply, modJet_apply] at this`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `this` using `[hL]`. Consider the case `succ m ih`. Introduce `l`. Rewrite using `[iteratedDeriv_succ', (deriv_comp_eventually (analyticAt_Rw ε hf l) L _).iteratedDeriv_eq]`. Establish `e : (fun t : ℝ => L (Rz (thM ε X) (Rw ε l f) (NormedSpace.exp ((t : ℂ) • thM ε X)))) = fun t : ℝ => ∑ p : Fin n × Fin n, X p.1 p.2 * L (Rw ε (p :: l) f (NormedSpace.exp ((t : ℂ) • thM ε X)))`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[Rz_thM, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`. Both sides reduce to the same expression. Rewrite using `[e, iteratedDeriv_fun_sum (fun p _ => contDiffAt_const.mul (analyticAt_comp (analyticAt_Rw ε hf (p :: l)) L _).contDiffAt)]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∀ p : Fin n × Fin n, iteratedDeriv m (fun t : ℝ => X p.1 p.2 * L (Rw ε (p :: l) f (NormedSpace.exp ((t : ℂ) • thM ε X)))) 0 = X p.1 p.2 * ⟪j y, (actM E X ^ m) (E p.1 p.2 (ew E l (j x)))⟫_ℂ`. Introduce `p`. Rewrite using `[iteratedDeriv_const_mul _ (analyticAt_comp (analyticAt_Rw ε hf (p :: l)) L _).contDiffAt, ih]`. Simplify using `[ew]`. Simplify using `only [e2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[pow_succ, Module.End.mul_apply]`. Establish `e3 : ∀ v : V, actM E X v = ∑ p : Fin n × Fin n, X p.1 p.2 • E p.1 p.2 v`. Introduce `v`. Simplify using `[actM, Fintype.sum_prod_type, LinearMap.sum_apply]`. Rewrite using `[e3, map_sum, inner_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smul, inner_smul_right]`. Simplify `key m []` using `[hL, Rw, ew]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem iteratedDeriv_inner_exp : ∀ (V W : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedAddCommGroup W] [InnerProductSpace ℂ W] (n : ℕ) (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V) [CompleteSpace W] (j : W →ₗᵢ[ℂ] V) (f : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)), AnalyticAt ℂ f 1 → (∀ l, funJet ε f l = modJet E j l) → ∀ (X : Matrix (Fin n) (Fin n) ℂ) (m : ℕ) (y x : W), iteratedDeriv m (fun t : ℝ => ⟪y, f (NormedSpace.exp ((t : ℂ) • thM ε X)) x⟫_ℂ) 0 = ⟪j y, (actM E X ^ m) (j x)⟫_ℂ := by
   intro V W _ _ _ _ n ε E _ j f hf hJ X m y x

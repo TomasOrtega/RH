@@ -21,7 +21,7 @@ section Places
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Establish `h` using `intValuation_eq_exp' v (N : 𝓞 K) (by exact_mod_cast hN)`. Rewrite using `[Formalism.L2.Pj.Crude.crv_vLa_natCast_eq v N, h, WithZero.log_exp, neg_neg]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vw_natCast_eq (v : HeightOneSpectrum (𝓞 K)) (N : ℕ) (hN : N ≠ 0) :
     vw v (N : K) = Formalism.L2.Pj.vLa v (N : K) := by
@@ -30,7 +30,7 @@ theorem vw_natCast_eq (v : HeightOneSpectrum (𝓞 K)) (N : ℕ) (hN : N ≠ 0) 
   simp
 
 /- English proof (translation)
-Establish `hp` using `plc_prime v`. Unfold `ramw`. Rewrite using `[vw_natCast_eq v _ hp.ne_zero]`. Conclude with `Formalism.L2.Pj.Crude.crv_vLa_char v`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ramw_eq_ramOverZ (v : HeightOneSpectrum (𝓞 K)) : ramw v = (Formalism.L2.Pj.ramOverZ v : ℤ) := by
   have hp := plc_prime v
@@ -41,7 +41,7 @@ theorem ramw_eq_ramOverZ (v : HeightOneSpectrum (𝓞 K)) : ramw v = (Formalism.
 variable {F : Type} [Field F] [NumberField F] [Algebra (𝓞 F) (𝓞 K)] [Algebra.IsIntegral (𝓞 F) (𝓞 K)]
 
 /- English proof (translation)
-Establish `hle : (Formalism.L2.Pj.placeBelow (K` using `F) v).asIdeal ≤ v.asIdeal.comap (algebraMap (𝓞 F) (𝓞 K)) := le_rfl`. Establish `hinj : Function.Injective (Ideal.quotientMap v.asIdeal (algebraMap (𝓞 F) (𝓞 K)) hle)` using `Ideal.quotientMap_injective' le_rfl`. Establish `: CharP (𝓞 K ⧸ v.asIdeal) (ringChar (𝓞 F ⧸ (Formalism.L2.Pj.placeBelow (K` using `F) v).asIdeal)) := charP_of_injective_ringHom hinj _`. Unfold `plc Formalism.L2.Pj.resCharOf`. Conclude with `(ringChar.eq (𝓞 K ⧸ v.asIdeal) _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem resChar_below (v : HeightOneSpectrum (𝓞 K)) :
     Formalism.L2.Pj.resCharOf (Formalism.L2.Pj.placeBelow (K := F) v) = plc v := by
@@ -54,13 +54,13 @@ theorem resChar_below (v : HeightOneSpectrum (𝓞 K)) :
   exact (ringChar.eq (𝓞 K ⧸ v.asIdeal) _).symm
 
 /- English proof (translation)
-Rewrite using `[ramw_eq_ramOverZ]`. Establish `hl` using `resChar_below (F := F) v`. Establish `hv : Formalism.L2.Pj.resCharOf v = plc v` using `rfl`. Establish `hp` using `plc_prime v`. Use `set la := Formalism.L2.Pj.placeBelow (K := F) v with hla`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg0 : Ideal.map (algebraMap (𝓞 F) (𝓞 K)) la.asIdeal ≠ ⊥`. Introduce `h`. Establish `hx` using `Ideal.mem_map_of_mem (algebraMap (𝓞 F) (𝓞 K)) (Formalism.L2.Pj.Crude.crv_char_mem la)`. Rewrite `hx` using `[h, Ideal.mem_bot, map_natCast]`. Conclude with `(Formalism.L2.Pj.Crude.resCharOf_prime la).ne_zero (by exact_mod_cast hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfg : Ideal.map (algebraMap ℤ (𝓞 K)) (Ideal.span {((plc v : ℕ) : ℤ)}) ≠ ⊥`. Rewrite using `[Ideal.map_span, Set.image_singleton, map_natCast, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hp.ne_zero` after adjusting the coercions. Establish `hg : Ideal.map (algebraMap (𝓞 F) (𝓞 K)) la.asIdeal ≤ v.asIdeal` using `Ideal.map_le_iff_le_comap.2 le_rfl`. Establish `ht` using `Ideal.ramificationIdx'_algebra_tower (R := ℤ) (S := 𝓞 F) (T := 𝓞 K) (p := Ideal.span {((plc v : ℕ) : ℤ)}) (P := la.asIdeal) (Q := v.asIdeal) hg0 hfg hg`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Unfold `Formalism.L2.Pj.ramOverZ Formalism.L2.Pj.ramOver`. Rewrite using `[hv, hl, ht]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ramw_eq_below (v : HeightOneSpectrum (𝓞 K)) :
     ramw v = (Formalism.L2.Pj.ramOver (K := F) v : ℤ) *
@@ -87,9 +87,9 @@ theorem ramw_eq_below (v : HeightOneSpectrum (𝓞 K)) :
   ring
 
 /- English proof (translation)
-Establish `h` using `one_le_ramw v`. Rewrite `h` using `[ramw_eq_below (F := F) v]`. Prove the components needed by the constructor for the conclusion. Use `Nat.pos_of_ne_zero fun h0 => ?_` and prove the remaining obligations. Rewrite `h` using `[h0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at h`. Use `Nat.pos_of_ne_zero fun h0 => ?_` and prove the remaining obligations. Rewrite `h` using `[h0]`. Simplify using `at h`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem one_le_ramOver_below (v : HeightOneSpectrum (𝓞 K)) :
     1 ≤ Formalism.L2.Pj.ramOver (K := F) v ∧ 1 ≤ Formalism.L2.Pj.ramOverZ (Formalism.L2.Pj.placeBelow (K := F) v) := by
@@ -132,9 +132,9 @@ def s1T (v : HeightOneSpectrum (𝓞 K)) (j : Bs.J) : ℝ :=
   (vw v (O.σ v j) : ℝ) / (ramw v : ℝ) - O.T * sWT Xo c Dd ι v j
 
 /- English proof (translation)
-Establish `hp` using `plc_prime v`. Establish `h2 : (2 : ℝ) ≤ (plc v : ℝ)` using `by exact_mod_cast hp.two_le`. Unfold `nuT nuStarAt DepPage.nuN`. Rewrite using `[resChar_below (F := c.F) v]`. Establish `hW : 0 ≤ (nuWAt (Xo` using `Xo (ι j)) (c := c) Dd (placeBelow (K := c.F) v) (ι j)).toReal := EReal.toReal_nonneg (le_max_left _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `split_ifs with h1 h2'`. Rewrite using `[← h1]; exact div_nonneg (Nat.cast_nonneg _) (by linarith)`. Rewrite using `[← h2']; exact div_nonneg (Nat.cast_nonneg _) (by linarith)`. Conclude with `add_nonneg (div_nonneg hW (Nat.cast_nonneg _)) (Nat.cast_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nuStar_nonneg (v : HeightOneSpectrum (𝓞 K)) (j : Bs.J) : 0 ≤ nuT Xo c Dd ι v j := by
   have hp := plc_prime v
@@ -149,7 +149,7 @@ theorem nuStar_nonneg (v : HeightOneSpectrum (𝓞 K)) (j : Bs.J) : 0 ≤ nuT Xo
   · exact add_nonneg (div_nonneg hW (Nat.cast_nonneg _)) (Nat.cast_nonneg _)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `hpr`. Rewrite using `[resChar_below (F := c.F) v]`. Simplify using `only [Formalism.L2.Pj.DepPage.IsBad, Formalism.L2.Pj.DepPage.IsRam, Formalism.L2.Indef.Tree.OnObj.Bad, Finset.mem_insert, h1, h2, h3, h4, h5]`. Apply the tactic sequence `try tauto`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bad_iff (hpr : O.g1 = Dd.Q.g1 ∧ O.g2 = Dd.Q.g2 ∧ O.q1 = Dd.Q.q1 ∧ O.dd = Dd.Q.dd ∧ O.sm = Dd.Q.sm)
     (v : HeightOneSpectrum (𝓞 K)) :
@@ -161,20 +161,20 @@ theorem bad_iff (hpr : O.g1 = Dd.Q.g1 ∧ O.g2 = Dd.Q.g2 ∧ O.q1 = Dd.Q.q1 ∧ 
   try tauto
 
 /- English proof (translation)
-The claim follows from `hT`.
+A detailed English derivation is pending.
 -/
 theorem tieT (hT : O.T = ((Dd.Q.T : ℕ) : ℝ)) : TieT O (Dd.Q.T : ℕ) := hT
 
 /- English proof (translation)
-Establish `key : ∀ v : HeightOneSpectrum (𝓞 K), 1 ≤ e1 c v ∧ 1 ≤ e2 c v ∧ ramw v = (e1 c v : ℤ) * (e2 c v : ℤ) ∧ ∀ j, (O.E v j : ℤ) ≤ (e1 c v : ℤ) * ⌈(e2 c v : ℝ) * O.T * (nuT Xo c Dd ι v j + if plc v ∈ O.Bad then 1 else 0)⌉`. Introduce `v`. Take `⟨h1, h2⟩` from `one_le_ramOver_below (F := c.F) v`. Use `⟨h1, h2, ramw_eq_below (F := c.F) v, fun j => ?_⟩` and prove the remaining obligations. Establish `hb : (if Dd.Q.IsBad (resCharOf (placeBelow (K` using `c.F) v)) then (1 : ℝ) else 0) = (if plc v ∈ O.Bad then 1 else 0) := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Distinguish the cases in `h : plc v ∈ O.Bad`. Rewrite using `[if_pos h, if_pos ((bad_iff c Dd O hpr v).2 h)]`. Rewrite using `[if_neg h, if_neg (fun h' => h ((bad_iff c Dd O hpr v).1 h'))]`. Establish `hnn` using `nuStar_nonneg Xo c Dd ι v j`. Apply the tactic sequence `have hbn : (0 : ℝ) ≤ (if plc v ∈ O.Bad then 1 else 0) := by split_ifs <;> norm_num`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hc : (0 : ℤ) ≤ ⌈(e2 c v : ℝ) * O.T * (nuT Xo c Dd ι v j + if plc v ∈ O.Bad then 1 else 0)⌉`. Apply `Int.ceil_nonneg` to reduce the goal to its premises. Establish `hT0 : (0 : ℝ) ≤ O.T` using `by rw [hT]; positivity`. Conclude with `mul_nonneg (mul_nonneg (Nat.cast_nonneg _) hT0) (add_nonneg hnn hbn)`. Rewrite using `[hE v j]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `EAt expE DepPage.eLam`. Rewrite using `[hb]`. Rewrite using `[Nat.cast_mul, Int.natCast_toNat_eq_self.2 (by rw [← hT]; exact hc)]`. Rewrite using `[← hT]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w _`. Conclude with `⟨key w, key (conjPl w)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tieE (hE : ∀ v j, O.E v j = EAt (Xo := Xo (ι j)) (c := c) (LL := K) Dd v (ι j))
     (hT : O.T = ((Dd.Q.T : ℕ) : ℝ)) (hpr : O.g1 = Dd.Q.g1 ∧ O.g2 = Dd.Q.g2 ∧ O.q1 = Dd.Q.q1 ∧ O.dd = Dd.Q.dd ∧ O.sm = Dd.Q.sm) :
@@ -207,15 +207,13 @@ theorem tieE (hE : ∀ v j, O.E v j = EAt (Xo := Xo (ι j)) (c := c) (LL := K) D
   exact ⟨key w, key (conjPl w)⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, -, -, -⟩` from `hpr`. Establish `key : ∀ v : HeightOneSpectrum (𝓞 K), (plc v = O.g1 ∨ plc v = O.g2) → ∀ j, nuT Xo c Dd ι v j = (DF (Dw (ι j)) (Dd.aL (ι j)) : ℝ) / ((plc v : ℝ) - 1)`. Introduce `v hv j`. Simplify using `only [nuT, nuStarAt]`. Rewrite using `[resChar_below (F := c.F) v]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Break down `hv with hv | hv` into its components or cases. Rewrite using `[hv, h1]`. Simplify using `[Formalism.L2.Pj.DepPage.nuN]`. Rewrite using `[hv, h2]`. Simplify using `only [Formalism.L2.Pj.DepPage.nuN]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs with hh <;> simp_all`. Unfold `NuLevel`. Introduce `w _ hw j`. Use `⟨(key w hw j).le, le_of_eq ?_⟩` and prove the remaining obligations. Rewrite using `[key _ ?_ j]`.
+Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `first`. Consider the case `rw [Formalism.EigenvalueLevelCeiling.plc_conjPl]`. Consider the case `rw [Formalism.L2.DIV.plc_conjPl]`. Use `first`. Consider the case `(rw [Formalism.EigenvalueLevelCeiling.plc_conjPl]; exact hw)`.
-
-Consider the case `(rw [Formalism.L2.DIV.plc_conjPl]; exact hw)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nuLevel (hpr : O.g1 = Dd.Q.g1 ∧ O.g2 = Dd.Q.g2 ∧ O.q1 = Dd.Q.q1 ∧ O.dd = Dd.Q.dd ∧ O.sm = Dd.Q.sm) :
     NuLevel O (nuT Xo c Dd ι) (fun j => (DF (Dw (ι j)) (Dd.aL (ι j)) : ℝ)) := by
@@ -243,7 +241,7 @@ theorem nuLevel (hpr : O.g1 = Dd.Q.g1 ∧ O.g2 = Dd.Q.g2 ∧ O.q1 = Dd.Q.q1 ∧ 
       | (rw [Formalism.L2.DIV.plc_conjPl]; exact hw)
 
 /- English proof (translation)
-Unfold `TieScale AtPair`. Introduce `w _`. Conclude with `⟨fun j => by simp only [sWT]; ring, fun j => by simp only [sWT]; ring⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem tieScale : TieScale S (nuT Xo c Dd ι) (nuWT Xo c Dd ι) (sWT Xo c Dd ι) := by
   unfold TieScale AtPair
@@ -251,7 +249,7 @@ theorem tieScale : TieScale S (nuT Xo c Dd ι) (nuWT Xo c Dd ι) (sWT Xo c Dd ι
   exact ⟨fun j => by simp only [sWT]; ring, fun j => by simp only [sWT]; ring⟩
 
 /- English proof (translation)
-Unfold `TieSigma AtPair`. Introduce `w _`. Conclude with `⟨fun j => by simp only [s1T]; ring, fun j => by simp only [s1T]; ring⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem tieSigma : TieSigma O (sWT Xo c Dd ι) (s1T Xo c Dd O ι) := by
   unfold TieSigma AtPair
@@ -273,9 +271,9 @@ variable {Bs : DefBase K} {Df : DefSide Bs} {S : IndefData Df} {P : Type} [Group
 
 omit [StarRing (𝓞 E)] in
 /- English proof (translation)
-Apply `NumberField.RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[H.bar_eq, H.bar_eq]`. Use `first`. Consider the case `exact IsCMField.complexConj_apply_apply (a : E)`. Consider the case `exact IsCMField.complexConj_apply_apply E (a : E)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp`.
+A detailed English derivation is pending.
 -/
 theorem bar_bar (a : 𝓞 E) : H.bar (H.bar a) = a := by
   apply NumberField.RingOfIntegers.ext
@@ -289,13 +287,11 @@ def Nsig (Q : DepPage) (DFL DFF : ℕ) : ℕ := Q.q ^ (Q.f * Q.r * Q.n') * Q.Z1 
 
 omit [StarRing K] in
 /- English proof (translation)
-Distinguish the cases in `h0 : x = 0`. Substitute `h0` using the available equality. Simplify using `only [vw, FractionalIdeal.spanSingleton_zero]`. Use `first`. Consider the case `simp [FractionalIdeal.count_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [FractionalIdeal.count]`. Set `r : 𝓞 K` to `⟨x, hx⟩`. Establish `hr : algebraMap (𝓞 K) K r = x` using `rfl`. Establish `hr0 : r ≠ 0`. Introduce `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h0` to reduce the goal to its premises. Rewrite using `[← hr, h, map_zero]`. Unfold `vw`. Rewrite using `[← hr, ← FractionalIdeal.coeIdeal_span_singleton]`. Apply `FractionalIdeal.count_coe_nonneg` to reduce the goal to its premises.
-
-Apply the tactic sequence `try simpa using hr0`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem vw_nonneg_of_isIntegral [StarRing K] (v : HeightOneSpectrum (𝓞 K)) (x : K) (hx : IsIntegral ℤ x) :
     0 ≤ vw v x := by
@@ -318,7 +314,7 @@ theorem vw_nonneg_of_isIntegral [StarRing K] (v : HeightOneSpectrum (𝓞 K)) (x
 
 omit [StarRing K] [StarRing (𝓞 E)] in
 /- English proof (translation)
-Use `first`. Consider the case `exact IsIntegral.algebraMap (Algebra.IsIntegral.isIntegral a)`. Consider the case `exact IsIntegral.algebraMap (NumberField.RingOfIntegers.isIntegral a)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isIntegral_alg (a : 𝓞 E) : IsIntegral ℤ (algebraMap (𝓞 E) K a) := by
   first
@@ -327,7 +323,7 @@ theorem isIntegral_alg (a : 𝓞 E) : IsIntegral ℤ (algebraMap (𝓞 E) K a) :
 
 omit [StarRing K] [StarRing (𝓞 E)] in
 /- English proof (translation)
-Simplify using `only [sigAt, nnKAt, sigOf, Nsig, Nat.cast_mul, Nat.cast_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigAt_eq (Dw' : Datum H) (j : ℕ) :
     sigAt (Dw := Dw') (H := H) (LL := K) Dd j =
@@ -336,7 +332,7 @@ theorem sigAt_eq (Dw' : Datum H) (j : ℕ) :
 
 omit [StarRing K] [StarRing (𝓞 E)] in
 /- English proof (translation)
-Establish `h : nnKAt (H` using `H) (LL := K) Dd j = algebraMap (𝓞 E) K (∏ i : Fin 2, H.bar (Dd.pi i) ^ Dd.Dp j * Dd.pi i ^ Dd.Dm j) := by`. Simplify using `only [nnKAt, nnOf, map_prod, map_mul, map_pow]`. Rewrite using `[h]`. Conclude with `isIntegral_alg _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nnK_isIntegral (j : ℕ) : IsIntegral ℤ (nnKAt (H := H) (LL := K) Dd j) := by
   have h : nnKAt (H := H) (LL := K) Dd j =
@@ -347,9 +343,9 @@ theorem nnK_isIntegral (j : ℕ) : IsIntegral ℤ (nnKAt (H := H) (LL := K) Dd j
 
 omit [StarRing K] [StarRing (𝓞 E)] in
 /- English proof (translation)
-Take `⟨h0, h1⟩` from `hsp`. Establish `e0 : algebraMap (𝓞 E) K (Dd.pi 0) * algebraMap (𝓞 E) K (H.bar (Dd.pi 0)) = (Dd.Q.g1 : K)`. Rewrite using `[← map_mul, h0, map_natCast]`. Establish `e1 : algebraMap (𝓞 E) K (Dd.pi 1) * algebraMap (𝓞 E) K (H.bar (Dd.pi 1)) = (Dd.Q.g2 : K)`. Rewrite using `[← map_mul, h1, map_natCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `n0 : (Dd.Q.g1 : K) ≠ 0` using `Nat.cast_ne_zero.mpr hprime.1.ne_zero`. Establish `n1 : (Dd.Q.g2 : K) ≠ 0` using `Nat.cast_ne_zero.mpr hprime.2.ne_zero`. Rewrite `n0` using `[← e0]`. Rewrite `n1` using `[← e1]`. Conclude with `⟨e0, e1, left_ne_zero_of_mul n0, right_ne_zero_of_mul n0, left_ne_zero_of_mul n1, right_ne_zero_of_mul n1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem alg_pi_ne_zero (hsp : PiSplit (H := H) Dd) (hprime : Dd.Q.g1.Prime ∧ Dd.Q.g2.Prime) :
     (algebraMap (𝓞 E) K (Dd.pi 0) * algebraMap (𝓞 E) K (H.bar (Dd.pi 0)) = (Dd.Q.g1 : K)) ∧
@@ -370,7 +366,7 @@ theorem alg_pi_ne_zero (hsp : PiSplit (H := H) Dd) (hprime : Dd.Q.g1.Prime ∧ D
 
 omit [StarRing K] [StarRing (𝓞 E)] in
 /- English proof (translation)
-Take `⟨-, -, a0, b0, a1, b1⟩` from `alg_pi_ne_zero (H := H) (K := K) Dd hsp hprime`. Simplify using `only [nnKAt, nnOf, Fin.prod_univ_two]`. Conclude with `mul_ne_zero (mul_ne_zero (pow_ne_zero _ b0) (pow_ne_zero _ a0)) (mul_ne_zero (pow_ne_zero _ b1) (pow_ne_zero _ a1))`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nnK_ne_zero (hsp : PiSplit (H := H) Dd) (hprime : Dd.Q.g1.Prime ∧ Dd.Q.g2.Prime) (j : ℕ) :
     nnKAt (H := H) (LL := K) Dd j ≠ 0 := by
@@ -380,9 +376,7 @@ theorem nnK_ne_zero (hsp : PiSplit (H := H) Dd) (hprime : Dd.Q.g1.Prime ∧ Dd.Q
     (mul_ne_zero (pow_ne_zero _ b1) (pow_ne_zero _ a1))
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Unfold `Nsig Formalism.L2.Pj.DepPage.Z1 Formalism.L2.Pj.DepPage.q`. Apply `mul_ne_zero` to reduce the goal to its premises. Conclude with `pow_ne_zero _ (mul_ne_zero h1.ne_zero h2.ne_zero)`. Use `mul_ne_zero (mul_ne_zero ?_ (pow_ne_zero _ h3.ne_zero)) (pow_ne_zero _ h4.ne_zero)` and prove the remaining obligations.
-
-Conclude with `Finset.prod_ne_zero_iff.mpr (fun p hp => pow_ne_zero _ (Finset.mem_filter.mp hp).2.ne_zero)`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Nsig_ne_zero (Q : DepPage) (h : Q.g1.Prime ∧ Q.g2.Prime ∧ Q.q1.Prime ∧ Q.dd.Prime) (DFL DFF : ℕ) :
     Nsig Q DFL DFF ≠ 0 := by
@@ -395,7 +389,7 @@ theorem Nsig_ne_zero (Q : DepPage) (h : Q.g1.Prime ∧ Q.g2.Prime ∧ Q.q1.Prime
 
 omit [StarRing (𝓞 E)] in
 /- English proof (translation)
-Rewrite using `[vw_natCast_eq v N hN, Formalism.L2.Pj.Crude.crv_vLa_natCast v hN, ramw_eq_ramOverZ]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem vw_N (v : HeightOneSpectrum (𝓞 K)) (N : ℕ) (hN : N ≠ 0) :
     vw v (N : K) = (padicValNat (plc v) N : ℤ) * ramw v := by
@@ -404,9 +398,9 @@ theorem vw_N (v : HeightOneSpectrum (𝓞 K)) (N : ℕ) (hN : N ≠ 0) :
   rfl
 
 /- English proof (translation)
-Unfold `vw`. Rewrite using `[← FractionalIdeal.spanSingleton_mul_spanSingleton]`. Establish `h1 : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) a ≠ 0` using `FractionalIdeal.spanSingleton_eq_zero_iff.not.mpr ha`. Establish `h2 : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) b ≠ 0` using `FractionalIdeal.spanSingleton_eq_zero_iff.not.mpr hb`. Use `first`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact FractionalIdeal.count_mul K v h1 h2`. Consider the case `exact FractionalIdeal.count_mul h1 h2`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem vw_mul_lemma (v : HeightOneSpectrum (𝓞 K)) (a b : K) (ha : a ≠ 0) (hb : b ≠ 0) :
     vw v (a * b) = vw v a + vw v b := by
@@ -421,7 +415,7 @@ private theorem vw_mul_lemma (v : HeightOneSpectrum (𝓞 K)) (a b : K) (ha : a 
     | exact FractionalIdeal.count_mul h1 h2
 
 /- English proof (translation)
-Establish `hn : nnKAt (H` using `H) (LL := K) Dd j ≠ 0 := nnK_ne_zero Dd hsp ⟨hprime.1, hprime.2.1⟩ j`. Establish `hN : Nsig Dd.Q (DF Dw' (Dd.aL j)) (DF Dw' (Dd.aF j)) ≠ 0` using `Nsig_ne_zero _ hprime _ _`. Rewrite using `[sigAt_eq, vw_mul_lemma v _ _ hn (Nat.cast_ne_zero.mpr hN), vw_N v _ hN]`. Rewrite using `[Int.cast_add, Int.cast_mul, Int.cast_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem vw_sig (hsp : PiSplit (H := H) Dd) (hprime : Dd.Q.g1.Prime ∧ Dd.Q.g2.Prime ∧ Dd.Q.q1.Prime ∧ Dd.Q.dd.Prime)
     (v : HeightOneSpectrum (𝓞 K)) (Dw' : Datum H) (j : ℕ) :
@@ -433,11 +427,11 @@ theorem vw_sig (hsp : PiSplit (H := H) Dd) (hprime : Dd.Q.g1.Prime ∧ Dd.Q.g2.P
   rw [Int.cast_add, Int.cast_mul, Int.cast_natCast]
 
 /- English proof (translation)
-Unfold `SigmaLevel`. Introduce `w _ _ j`. Establish `key : ∀ v : HeightOneSpectrum (𝓞 K), ∃ s : ℝ, 0 ≤ s ∧ (vw v (O.σ v j) : ℝ) / (ramw v : ℝ) = O.nn v j + s`. Introduce `v`. Use `⟨(padicValNat (plc v) (Nsig Dd.Q (DF (Dw (ι j)) (Dd.aL (ι j))) (DF (Dw (ι j)) (Dd.aF (ι j)))) : ℝ) * (ramw v : ℝ) / (ramw v : ℝ), ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_div_assoc]`. Use `mul_nonneg (Nat.cast_nonneg _) ?_` and prove the remaining obligations. Break down `eq_or_ne (ramw v : ℝ) 0 with h | h` into its components or cases. Rewrite using `[h, div_zero]`. Rewrite using `[div_self h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_le_one`. Rewrite using `[hσ v j, vw_sig Dd hsp hprime v (Dw (ι j)) (ι j), Formalism.L2.Indef.Tree.OnObj.nn, hnn j, add_div]`. Conclude with `⟨key _, key _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sigmaLevel (hσ : ∀ v j, O.σ v j = sigAt (Dw := Dw (ι j)) (H := H) (LL := K) Dd (ι j))
     (hnn : ∀ j, O.nnK j = nnKAt (H := H) (LL := K) Dd (ι j)) (hsp : PiSplit (H := H) Dd)
@@ -472,19 +466,19 @@ variable {Bs : DefBase K} {Df : DefSide Bs} {S : IndefData Df} {P : Type} [Group
   (O : OnObj S P oc) (ι : Bs.J → ℕ)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `hpr`. Establish `key : ∀ v j, (plc v = O.q1 ∨ plc v = O.dd) → 0 ≤ s1T Xo c Dd O ι v j`. Introduce `v j hv`. Establish `hn1 : plc v ≠ Dd.Q.g1`. Apply the tactic sequence `rw [← h1]; rcases hv with h | h <;> rw [h]; exacts [hqg.1, hqg.2.2.1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hn2 : plc v ≠ Dd.Q.g2`. Apply the tactic sequence `rw [← h2]; rcases hv with h | h <;> rw [h]; exacts [hqg.2.1, hqg.2.2.2]`. Establish `hs : sWT Xo c Dd ι v j = (Dd.Q.cP (DF (Dw (ι j)) (Dd.aL (ι j))) (plc v) : ℝ)`. Unfold `sWT nuT nuWT nuStarAt DepPage.nuN e2`. Rewrite using `[resChar_below (F := c.F) v, if_neg hn1, if_neg hn2]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `set N := Nsig Dd.Q (DF (Dw (ι j)) (Dd.aL (ι j))) (DF (Dw (ι j)) (Dd.aF (ι j))) with hNdef`. Establish `hN : N ≠ 0` using `Nsig_ne_zero Dd.Q hprime _ _`. Establish `: Fact (plc v).Prime` using `⟨plc_prime v⟩`. Establish `hdvd : (plc v) ^ ((Dd.Q.T : ℕ) * Dd.Q.cP (DF (Dw (ι j)) (Dd.aL (ι j))) (plc v)) ∣ N`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hNdef]`. Unfold `Nsig DepPage.Z1`. Use `Dvd.dvd.mul_left ?_ _` and prove the remaining obligations. Break down `hv with h | h` into its components or cases. Rewrite using `[h, h3]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Dvd.dvd.mul_right (Dvd.dvd.mul_left (pow_dvd_pow _ (Nat.le_add_right _ _)) _) _`. Rewrite using `[h, h4]`. Conclude with `Dvd.dvd.mul_left (pow_dvd_pow _ (Nat.le_add_right _ _)) _`. Establish `hle : ((Dd.Q.T : ℕ) : ℝ) * (Dd.Q.cP (DF (Dw (ι j)) (Dd.aL (ι j))) (plc v) : ℝ) ≤ (padicValNat (plc v) N : ℝ)`. Conclude with `(padicValNat_dvd_iff_le hN).1 hdvd` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hnn0 : (0 : ℝ) ≤ (vw v (nnKAt (H` using `H) (LL := K) Dd (ι j)) : ℝ) := by exact_mod_cast vw_nonneg_of_isIntegral v _ (nnK_isIntegral Dd (ι j))`. Establish `he` using `ramw_pos v`. Unfold `s1T`. Rewrite using `[hs, hσ v j, vw_sig Dd hsp hprime v, add_div, mul_div_cancel_right₀ _ he.ne', hT]`. Establish `: 0 ≤ (vw v (nnKAt (H` using `H) (LL := K) Dd (ι j)) : ℝ) / (ramw v : ℝ) := div_nonneg hnn0 he.le`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `w _ hw j`. Use `⟨key w j hw, key (conjPl w) j ?_⟩` and prove the remaining obligations. Rewrite using `[plc_conjPl]`. Conclude with `hw`.
+A detailed English derivation is pending.
 -/
 theorem sprimeRam (hT : O.T = ((Dd.Q.T : ℕ) : ℝ))
     (hpr : O.g1 = Dd.Q.g1 ∧ O.g2 = Dd.Q.g2 ∧ O.q1 = Dd.Q.q1 ∧ O.dd = Dd.Q.dd ∧ O.sm = Dd.Q.sm)
@@ -529,15 +523,15 @@ theorem sprimeRam (hT : O.T = ((Dd.Q.T : ℕ) : ℝ))
   rw [plc_conjPl]; exact hw
 
 /- English proof (translation)
-Introduce `w _ hg j`. Take `⟨e0, e1, -⟩` from `alg_pi_ne_zero (K := K) Dd hsp hprime`. Establish `hnn0` using `nnK_ne_zero (K := K) Dd hsp hprime (ι j)`. Establish `hprod : nnKAt (H` using `H) (LL := K) Dd (ι j) * star (nnKAt (H := H) (LL := K) Dd (ι j)) = (((Dd.Q.g1 ^ (Dd.Dp (ι j) + Dd.Dm (ι j)) * Dd.Q.g2 ^ (Dd.Dp (ι j) + Dd.Dm (ι j)) : ℕ)) : K) := by`. Unfold `nnKAt nnOf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [Fin.prod_univ_two, star_mul', star_pow, hconj, bar_bar]`. Use `push_cast`. Rewrite using `[← e0, ← e1]`. Expand and normalize the polynomial expressions, which then agree. Establish `he` using `ramw_pos w`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hlev` using `vw_level w hprime.1 hprime.2 hg12 (Dd.Dp (ι j) + Dd.Dm (ι j))`. Establish `hw : plc w = Dd.Q.g1 ∨ plc w = Dd.Q.g2`. Break down `hg with h | h` into its components or cases. Use `left`. Rewrite using `[h, hpr.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `right`. Rewrite using `[h, hpr.2.1]`. Rewrite `hlev` using `[if_pos hw]`. Unfold `OnObj.nn`. Rewrite using `[ramw_conjPl w, ← ValuationRepresentative.vw_star w, hnn j, ← add_div, ← Int.cast_add, ← ValuationRepresentative.vw_mul w _ _ hnn0 (star_ne_zero.2 hnn0), hprod, hlev, mul_div_cancel_left₀ _ he.ne', (hD j).1, (hD j).2]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem nnLevel (hnn : ∀ j, O.nnK j = nnKAt (H := H) (LL := K) Dd (ι j)) (hsp : PiSplit (H := H) Dd)
     (hprime : Dd.Q.g1.Prime ∧ Dd.Q.g2.Prime) (hg12 : Dd.Q.g1 ≠ Dd.Q.g2)
@@ -569,17 +563,15 @@ theorem nnLevel (hnn : ∀ j, O.nnK j = nnKAt (H := H) (LL := K) Dd (ι j)) (hsp
   ring
 
 /- English proof (translation)
-Establish `key : ∀ v j, nuWT Xo c Dd ι v j ≤ (DF (Dw (ι j)) (Dd.aL (ι j)) : ℝ) / ((plc v : ℝ) - 1)`. Introduce `v j`. Establish `hb` using `nuW_le_crude (hEx j) (hSat j) (placeBelow (K := c.F) v) l.M (Dd.aL (ι j)) (Dd.nW (ι j)) (hDom j) (hcard j)`. Establish `hl` using `resChar_below (F := c.F) v`. Establish `hp` using `plc_prime v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp2 : (2 : ℝ) ≤ (plc v : ℝ)` using `by exact_mod_cast hp.two_le`. Establish `he : (0 : ℝ) < (e2 c v : ℝ)` using `by exact_mod_cast (one_le_ramOver_below (F := c.F) v).2`. Establish `hcb : (0 : ℝ) ≤ crudeBd (placeBelow (K` using `c.F) v) (DF (Dw (ι j)) (Dd.aL (ι j))) := by`. Unfold `crudeBd`. Rewrite using `[hl]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `div_nonneg (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)) (by linarith)`. Establish `hcb' : (0 : EReal) ≤ (crudeBd (placeBelow (K` using `c.F) v) (DF (Dw (ι j)) (Dd.aL (ι j))) : EReal) := by`. Conclude with `hcb` after adjusting the coercions. Rewrite `hb` using `[max_eq_right hcb']`. Establish `ht` using `EReal.toReal_le_toReal hb (ne_bot_of_le_ne_bot EReal.zero_ne_bot (le_max_left _ _)) (EReal.coe_ne_top _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `ht` using `[EReal.toReal_coe]`. Unfold `crudeBd at ht`. Rewrite `ht` using `[hl]`. Unfold `nuWT nuWAt`. Rewrite using `[div_le_iff₀ he]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Unfold `e2`. Combine the equalities or inequalities in the displayed calculation. Introduce `w _ _ j`. Use `⟨key w j, ?_⟩` and prove the remaining obligations. Use `key (conjPl w) j` as an intermediate fact.
-
-Rewrite `this` using `[plc_conjPl]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem crudeRam (_hstar : ∀ a : 𝓞 E, star a = H.bar a) (hEx : ∀ j, IntChartEx (Xo (ι j)) c)
     (hSat : ∀ j, ChartSaturated (Xo (ι j)) c) (hDom : ∀ j, DomW (Dw (ι j)) (Dd.aL (ι j)))
@@ -627,7 +619,7 @@ variable {Bs : DefBase K} {Df : DefSide Bs} {S : IndefData Df} {P : Type} [Group
   (O : OnObj S P oc) (ι : Bs.J → ℕ)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, -⟩` from `hpr`. Take `⟨-, -, -, -, -, -, -, -, -, -, p1, p2, p3, p4, n12, -, nq1, nq2, nd1, nd2, -⟩` from `hPg`. Rewrite using `[← h1, ← h2, ← h3, ← h4]`. Conclude with `⟨⟨p1, p2, p3, p4⟩, n12, nq1, nq2, nd1, nd2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem page_facts (hPg : LeafPage O) (hpr : O.g1 = Dd.Q.g1 ∧ O.g2 = Dd.Q.g2 ∧ O.q1 = Dd.Q.q1 ∧ O.dd = Dd.Q.dd ∧ O.sm = Dd.Q.sm) :
     (Dd.Q.g1.Prime ∧ Dd.Q.g2.Prime ∧ Dd.Q.q1.Prime ∧ Dd.Q.dd.Prime) ∧ Dd.Q.g1 ≠ Dd.Q.g2 ∧
@@ -638,7 +630,7 @@ theorem page_facts (hPg : LeafPage O) (hpr : O.g1 = Dd.Q.g1 ∧ O.g2 = Dd.Q.g2 �
   exact ⟨⟨p1, p2, p3, p4⟩, n12, nq1, nq2, nd1, nd2⟩
 
 /- English proof (translation)
-Take `⟨⟨p1, p2, p3, p4⟩, h12, -⟩` from `page_facts Dd O hPg hpr`. Conclude with `leafDepthLevel_of N O Nd ι (Dd.Q.T : ℕ) (e1 c) (e2 c) (nuT Xo c Dd ι) (fun j => (DF (Dw (ι j)) (Dd.aL (ι j)) : ℝ)) Dk rounding_condition_holds nu_level_condition_holds level_condition_holds content_prime_condition_holds hPg (tieT Dd O hT) hTpos (tieE Xo c Dd O ι hE hT hpr) tF tP …`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem leafDepthLevel_depth (N : IndefNum Bs) (Nd : NumDatum)
     (hE : ∀ v j, O.E v j = EAt (Xo := Xo (ι j)) (c := c) (LL := K) Dd v (ι j))
@@ -657,7 +649,7 @@ theorem leafDepthLevel_depth (N : IndefNum Bs) (Nd : NumDatum)
     (sigmaLevel Dd O ι hσ hnn hsp ⟨p1, p2, p3, p4⟩) (nnLevel Dd O ι hnn hsp ⟨p1, p2⟩ h12 hpr hconj Nd hD)
 
 /- English proof (translation)
-Take `⟨⟨p1, p2, p3, p4⟩, -, hqg⟩` from `page_facts Dd O hPg hpr`. Conclude with `leafDepthRam_of N O Nd ι (e1 c) (e2 c) (nuT Xo c Dd ι) (nuWT Xo c Dd ι) (sWT Xo c Dd ι) (s1T Xo c Dd O ι) (fun j => (DF (Dw (ι j)) (Dd.aL (ι j)) : ℝ)) Dk C₀ rounding_condition_holds ramification_condition_holds content_prime_condition_holds ramified_discriminant_condition_holds h …`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem leafDepthRam_depth (N : IndefNum Bs) (Nd : NumDatum)
     (hE : ∀ v j, O.E v j = EAt (Xo := Xo (ι j)) (c := c) (LL := K) Dd v (ι j))
@@ -690,11 +682,11 @@ variable {Bs : DefBase K} {Df : DefSide Bs} {S : IndefData Df} {P : Type} [Group
 
 omit [StarRing (𝓞 D.host.E)] in
 /- English proof (translation)
-Establish `hfr : Module.finrank ℚ D.host.E = 2 * D.R.f`. Rewrite using `[D.host.finrank_cmField]`. Unfold `Ranks.f Ranks.n`. Expand and normalize the polynomial expressions, which then agree. Establish `hr : (T.Q.Dw j).p + (T.Q.Dw j).q = D.R.r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[(hp.2.2.2 j hj).1, (hp.2.2.2 j hj).2.1]`. Use `hj.1` as an intermediate fact. Use `hj.2` as an intermediate fact. Simplify using `only [Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `card_Lt1_le_finrank_mul.trans ?_` and prove the remaining obligations. Rewrite using `[hfr, hr]`. Conclude with `(hL.wts j hj).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_of_laws [StarRing (𝓞 D.host.E)] (hL : LawsPi T Dd) (hp : T.Q.Pins) (j : ℕ) (hj : InR D j) :
     Fintype.card (Lt1 (T.Q.Dw j)) ≤ Dd.nW j := by
@@ -710,7 +702,7 @@ theorem card_of_laws [StarRing (𝓞 D.host.E)] (hL : LawsPi T Dd) (hp : T.Q.Pin
   rw [hfr, hr]; exact (hL.wts j hj).2
 
 /- English proof (translation)
-The claim follows from `leafDepthLevel_depth T.Q.Xo T.Q.c Dd O ι N Nd hE hσ hnn hT hpr hL.piSplit hconj hD hPg hL.tPos tF tP Dk iD iP iR`.
+A detailed English derivation is pending.
 -/
 theorem leafDepthLevel_core (N : IndefNum Bs) (Nd : NumDatum) (hL : LawsPi T Dd)
     (hE : ∀ v j, O.E v j = EAt (Xo := T.Q.Xo (ι j)) (c := T.Q.c) (LL := K) Dd v (ι j))
@@ -725,7 +717,7 @@ theorem leafDepthLevel_core (N : IndefNum Bs) (Nd : NumDatum) (hL : LawsPi T Dd)
     hL.tPos tF tP Dk iD iP iR
 
 /- English proof (translation)
-The claim follows from `leafDepthRam_depth T.Q.Xo T.Q.c Dd O ι N Nd hE hσ hT hpr hL.piSplit hstar hEx hSat (fun j σ i k hik => (hL.wts _ (hι j)).1 σ hik) (fun j => card_of_laws T Dd hL hp (ι j) (hι j)) hPg hSz tF tP tK Dk C₀ iD iW iP iB`.
+A detailed English derivation is pending.
 -/
 theorem leafDepthRam_core (N : IndefNum Bs) (Nd : NumDatum) (hL : LawsPi T Dd) (hp : T.Q.Pins)
     (hι : ∀ j, InR D (ι j))

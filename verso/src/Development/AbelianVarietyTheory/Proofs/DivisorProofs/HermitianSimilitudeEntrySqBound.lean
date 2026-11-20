@@ -4,29 +4,25 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `n P _hP hpos`. Consider the cases of `n with`. Consider the case `zero => exact ⟨0, fun _ _ _ _ i => i.elim0⟩`. Consider the case `succ k`. Use `set q : (Fin (k+1) → ℂ) → ℝ := fun x => (star x ⬝ᵥ P *ᵥ x).re with hq`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hcont : Continuous q`. Simplify using `only [hq, dotProduct, mulVec, Pi.star_apply]`. Use `fun_prop`. Establish `hsmul : ∀ (t : ℝ) (x : Fin (k+1) → ℂ), q ((t : ℂ) • x) = t ^ 2 * q x`. Introduce `t x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hq, star_smul, Complex.star_def, Complex.conj_ofReal, mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul]`. Rewrite using `[← mul_assoc, ← Complex.ofReal_mul, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨x0, hx0S, hmin⟩` from `(isCompact_sphere (0 : Fin (k+1) → ℂ) 1).exists_isMinOn (NormedSpace.sphere_nonempty.mpr zero_le_one) hcont.continuousOn`. Use `set m := q x0 with hm_def`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx0 : x0 ≠ 0`. Introduce `h`. Rewrite `hx0S` using `[h]`. Simplify using `at hx0S`. Establish `hm : 0 < m` using `hpos x0 hx0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hlow : ∀ x, m * ‖x‖ ^ 2 ≤ q x`. Introduce `x`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using `[hq]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : 0 < ‖x‖` using `norm_pos_iff.mpr hx`. Use `set u : Fin (k+1) → ℂ := ((‖x‖⁻¹ : ℝ) : ℂ) • x with hu`. Establish `huS : u ∈ Metric.sphere (0 : Fin (k+1) → ℂ) 1`. Rewrite using `[mem_sphere_zero_iff_norm, hu, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr hn), inv_mul_cancel₀ hn.ne']`. Establish `hxu : x = ((‖x‖ : ℝ) : ℂ) • u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ hn.ne', Complex.ofReal_one, one_smul]`. Establish `h1 : m ≤ q u` using `hmin huS`. Establish `hqx : q x = ‖x‖ ^ 2 * q u` using `by conv_lhs => rw [hxu]`. Conclude with `hsmul _ _`. Rewrite using `[hqx]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[sq_nonneg ‖x‖]`. Establish `hY : ∀ (Y : Matrix (Fin (k+1)) (Fin (k+1)) ℂ) (s : ℝ), Yᴴ * P * Y = (s : ℂ) • P → ∀ x, q (Y *ᵥ x) = s * q x`. Introduce `Y s h x`. Simplify using `only [hq]`. Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, h, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, Complex.re_ofReal_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `set C : ℝ := ∑ j, ‖P j j‖ with hC`. Use `⟨C / m, fun Y s hs h i j => ?_⟩` and prove the remaining obligations. Use `set e : Fin (k+1) → ℂ := Pi.single j 1 with he`. Establish `hYe : Y *ᵥ e = fun i => Y i j`. Rewrite using `[he, mulVec_single_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hqe : q e = (P j j).re`. Simplify using `[hq, he, mulVec_single_one]`. Establish `hle : ‖Y i j‖ ≤ ‖Y *ᵥ e‖`. Rewrite using `[hYe]`.
-
-Conclude with `norm_le_pi_norm (fun i => Y i j) i`. Establish `hPjj : (P j j).re ≤ C` using `(Complex.re_le_norm _).trans (Finset.single_le_sum (f := fun j => ‖P j j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j))`. Establish `key : m * ‖Y *ᵥ e‖ ^ 2 ≤ s * (P j j).re`. Rewrite using `[← hqe, ← hY Y s h e]`. Conclude with `hlow _`.
-
-Establish `h2 : ‖Y i j‖ ^ 2 ≤ ‖Y *ᵥ e‖ ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) hle 2`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hm]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hPjj hs.le]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem herm_scale_entry_bound : ∀ {n : ℕ} (P : Matrix (Fin n) (Fin n) ℂ), P.IsHermitian → (∀ x : Fin n → ℂ, x ≠ 0 → 0 < (star x ⬝ᵥ P *ᵥ x).re) → ∃ K : ℝ, ∀ (Y : Matrix (Fin n) (Fin n) ℂ) (s : ℝ), 0 < s → Yᴴ * P * Y = (s : ℂ) • P → ∀ i j, ‖Y i j‖ ^ 2 ≤ K * s := by
   intro n P _hP hpos

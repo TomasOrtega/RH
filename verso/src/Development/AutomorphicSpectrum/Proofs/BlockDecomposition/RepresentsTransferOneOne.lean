@@ -13,13 +13,13 @@ namespace GlobalTheory.CompanionTheory.Unfolding
 variable {L : ℕ}
 
 /- English proof (translation)
-Establish `dg : g 0 0 * g 1 1 - g 0 1 * g 1 0 = 1`. Use `g.det_coe` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Then use the resulting hypothesis. Establish `dh : h 0 0 * h 1 1 - h 0 1 * h 1 0 = 1`. Use `h.det_coe` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.det_fin_two]`. Then use the resulting hypothesis. Use `⟨g 0 1 * h 0 0 - g 0 0 * h 0 1, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Matrix.SpecialLinearGroup.coe_mul, coe_T_zpow]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `dg` using `[h10]`. Rewrite `dg` using `[h11]`. Take the linear combination `(h 0 0) * dg - (g 0 0) * dh`. Rewrite `dg` using `[h10]`. Rewrite `dg` using `[h11]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `(h 0 1) * dg - (g 0 1) * dh`. Conclude with `h10`. Conclude with `h11`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma exists_T_zpow (g h : SL(2, ℤ)) (h10 : g 1 0 = h 1 0) (h11 : g 1 1 = h 1 1) :
     ∃ n : ℤ, g = T ^ n * h := by
@@ -40,21 +40,21 @@ def rep (γ : Idx L → SL(2, ℤ)) (x : Bool × Idx L × ℤ) : SL(2, ℤ) :=
   (if x.1 then -1 else 1) * (T ^ x.2.2 * γ x.2.1)
 
 /- English proof (translation)
-The claim follows from `congrFun (T_pow_mul_apply_one n g) 0`.
+A detailed English derivation is pending.
 -/
 lemma Tz10 (n : ℤ) (g : SL(2, ℤ)) : (T ^ n * g) 1 0 = g 1 0 :=
   congrFun (T_pow_mul_apply_one n g) 0
 
 /- English proof (translation)
-The claim follows from `congrFun (T_pow_mul_apply_one n g) 1`.
+A detailed English derivation is pending.
 -/
 lemma Tz11 (n : ℤ) (g : SL(2, ℤ)) : (T ^ n * g) 1 1 = g 1 1 :=
   congrFun (T_pow_mul_apply_one n g) 1
 
 /- English proof (translation)
-Take `⟨b, p, n⟩` from `x`. Consider the cases of `b`. Simplify using `only [rep, Bool.false_eq_true, if_false, one_mul]`. Rewrite using `[Tz10]`. Establish `e : rep γ (true, p, n) = -(T ^ n * γ p)` using `by simp [rep]`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, Matrix.SpecialLinearGroup.coe_neg, Matrix.neg_apply, Tz10]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma represents_transfer_one_zero (γ : Idx L → SL(2, ℤ)) (x : Bool × Idx L × ℤ) :
     rep γ x 1 0 = (if x.1 then -1 else 1) * γ x.2.1 1 0 := by
@@ -65,9 +65,9 @@ lemma represents_transfer_one_zero (γ : Idx L → SL(2, ℤ)) (x : Bool × Idx 
     rw [e, Matrix.SpecialLinearGroup.coe_neg, Matrix.neg_apply, Tz10]; simp
 
 /- English proof (translation)
-Take `⟨b, p, n⟩` from `x`. Consider the cases of `b`. Simplify using `only [rep, Bool.false_eq_true, if_false, one_mul]`. Rewrite using `[Tz11]`. Establish `e : rep γ (true, p, n) = -(T ^ n * γ p)` using `by simp [rep]`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, Matrix.SpecialLinearGroup.coe_neg, Matrix.neg_apply, Tz11]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma represents_transfer_one_one (γ : Idx L → SL(2, ℤ)) (x : Bool × Idx L × ℤ) :
     rep γ x 1 1 = (if x.1 then -1 else 1) * γ x.2.1 1 1 := by
@@ -78,9 +78,9 @@ lemma represents_transfer_one_one (γ : Idx L → SL(2, ℤ)) (x : Bool × Idx L
     rw [e, Matrix.SpecialLinearGroup.coe_neg, Matrix.neg_apply, Tz11]; simp
 
 /- English proof (translation)
-Rewrite using `[Gamma0_mem]`. Use `represents_transfer_one_zero γ x` as an intermediate fact. Establish `h2 : rep γ x 1 0 = (L : ℤ) * ((if x.1 then -1 else 1) * x.2.1.1.2)`. Rewrite using `[this, (hγ _).1]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Express the relevant statement in the definitionally equal form `((rep γ x 1 0 : ℤ) : ZMod L) = 0`. Rewrite using `[h2]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma rep_mem {γ : Idx L → SL(2, ℤ)} (hγ : ∀ p, γ p 1 0 = L * p.1.2 ∧ γ p 1 1 = p.1.1)
     (x : Bool × Idx L × ℤ) : rep γ x ∈ Gamma0 L := by
@@ -92,11 +92,11 @@ lemma rep_mem {γ : Idx L → SL(2, ℤ)} (hγ : ∀ p, γ p 1 0 = L * p.1.2 ∧
   rw [h2]; simp
 
 /- English proof (translation)
-Establish `dg : g 0 0 * g 1 1 - g 0 1 * g 1 0 = 1`. Use `g.det_coe` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Then use the resulting hypothesis. Establish `e : (((g 1 1).toNat : ℕ) : ℤ) = g 1 1` using `Int.toNat_of_nonneg h11.le`. Establish `hcop : IsCoprime ((L : ℤ) * c) (((g 1 1).toNat : ℕ) : ℤ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, ← h10]; exact ⟨-(g 0 1), g 0 0, by linarith⟩`. Set `p : Idx L` to `⟨((g 1 1).toNat, c), by`. Use `⟨?_, hcop⟩` and prove the remaining obligations. Use `show 0 < (g 1 1).toNat`. Use the proof step `omega⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨n, hn⟩` from `exists_T_zpow g (γ p) (by rw [h10, (hγ p).1]) (by rw [(hγ p).2]; exact e.symm)`. Conclude with `⟨p, n, hn⟩`.
+A detailed English derivation is pending.
 -/
 lemma exists_idx {γ : Idx L → SL(2, ℤ)} (hγ : ∀ p, γ p 1 0 = L * p.1.2 ∧ γ p 1 1 = p.1.1)
     (g : SL(2, ℤ)) (c : ℤ) (h10 : g 1 0 = L * c) (h11 : 0 < g 1 1) :
@@ -114,29 +114,29 @@ lemma exists_idx {γ : Idx L → SL(2, ℤ)} (hγ : ∀ p, γ p 1 0 = L * p.1.2 
   exact ⟨p, n, hn⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, p, n⟩ ⟨b', p', n'⟩ h`. Establish `h' : rep γ (b, p, n) = rep γ (b', p', n')` using `congrArg Subtype.val h`. Establish `r0` using `represents_transfer_one_zero γ (b, p, n)`. Establish `r0'` using `represents_transfer_one_zero γ (b', p', n')`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r1` using `represents_transfer_one_one γ (b, p, n)`. Establish `r1'` using `represents_transfer_one_one γ (b', p', n')`. Rewrite `r0` using `[h', r0']`. Rewrite `r1` using `[h', r1']`. Simplify using `only at r0 r1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `r0` using `[(hγ p).1, (hγ p').1]`. Rewrite `r1` using `[(hγ p).2, (hγ p').2]`. Establish `hd : (0 : ℤ) < p.1.1` using `by exact_mod_cast p.2.1`. Establish `hd' : (0 : ℤ) < p'.1.1` using `by exact_mod_cast p'.2.1`. Establish `hL0 : (L : ℤ) ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (2 : ℤ) ≤ L` using `by exact_mod_cast hL`. Use linear arithmetic over natural numbers and integers. Establish `hb : b = b'`. Apply the tactic sequence `cases b <;> cases b' <;> simp at r1 ⊢ <;> omega`. Substitute `hb` using the available equality.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality.
 
-Apply the tactic sequence `have hs : ((if b then -1 else 1 : ℤ)) ≠ 0 := by cases b <;> simp`. Establish `e1 : p'.1.1 = p.1.1`. Use `mul_left_cancel₀ hs r1` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `e2 : p'.1.2 = p.1.2`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_left_cancel₀ hs r0` as an intermediate fact. Conclude with `mul_left_cancel₀ hL0 this`. Establish `hp : p' = p` using `Subtype.ext (Prod.ext e1 e2)`. Substitute `hp` using the available equality. Establish `h3 : T ^ n * γ p' = T ^ n' * γ p'`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit ((if b then -1 else 1 : SL(2, ℤ)))`. Conclude with `Group.isUnit _`. Conclude with `mul_left_cancel (a := (if b then -1 else 1 : SL(2, ℤ))) h'`. Establish `h4 : T ^ n = T ^ n'` using `mul_right_cancel h3`. Establish `h5` using `congrArg (fun m : SL(2, ℤ) => m.1 0 1) h4`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `only [coe_T_zpow] at h5`. Establish `h6 : n = n'` using `by simpa using h5`. Rewrite using `[h6]`. Introduce and unpack `⟨g, hg⟩`. Establish `hLc : (L : ℤ) ∣ g 1 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 (Gamma0_mem.1 hg)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨c, hc⟩` from `hLc`. Establish `dg : g 0 0 * g 1 1 - g 0 1 * g 1 0 = 1`. Use `g.det_coe` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Then use the resulting hypothesis. Establish `hd : g 1 1 ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `dg` using `[h0, hc]`. Establish `h1 : (L : ℤ) ∣ 1` using `⟨-(g 0 1 * c), by linarith⟩`. Use `Int.le_of_dvd one_pos h1` as an intermediate fact. Establish `: (2 : ℤ) ≤ L` using `by exact_mod_cast hL`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use linear arithmetic over natural numbers and integers. Break down `lt_or_gt_of_ne hd with hneg | hpos` into its components or cases. Take `⟨p, n, h⟩` from `exists_idx hγ (-g) (-c) (by simp [hc]) (by simpa using hneg)`. Use `⟨(true, p, n), Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [rep, if_true]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h]`. Simplify using the standard rewrite rules. Take `⟨p, n, h⟩` from `exists_idx hγ g c hc hpos`. Use `⟨(false, p, n), Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[rep, ← h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rep_bijective (hL : 2 ≤ L) {γ : Idx L → SL(2, ℤ)}
     (hγ : ∀ p, γ p 1 0 = L * p.1.2 ∧ γ p 1 1 = p.1.1) :
@@ -202,13 +202,13 @@ theorem rep_bijective (hL : 2 ≤ L) {γ : Idx L → SL(2, ℤ)}
       simp [rep, ← h]
 
 /- English proof (translation)
-Conclude with `measurePreserving_smul (g : GL (Fin 2) ℝ) volume`.
+A detailed English derivation is pending.
 -/
 lemma mp_smul (g : SL(2, ℤ)) : MeasurePreserving (fun z : ℍ => g • z) volume volume := by
   exact measurePreserving_smul (g : GL (Fin 2) ℝ) volume
 
 /- English proof (translation)
-Use `MeasurableEquiv.measurableEmbedding (⟨⟨fun z : ℍ => g • z, fun z : ℍ => g⁻¹ • z, fun z => by simp [-sl_moeb], fun z => by simp [-sl_moeb]⟩, (mp_smul g).measurable, (mp_smul g⁻¹).measurable⟩ : ℍ ≃ᵐ ℍ)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 lemma me_smul (g : SL(2, ℤ)) : MeasurableEmbedding (fun z : ℍ => g • z) := by
   refine MeasurableEquiv.measurableEmbedding
@@ -223,14 +223,14 @@ instance : Countable SL(2, ℤ) := by
   exact Function.Injective.countable (f := fun g : SL(2, ℤ) => g.1) Subtype.val_injective
 
 /- English proof (translation)
-The claim follows from `(Equiv.inv (Gamma0 L)).hasSum_iff.2 (hβ.2.2 z)`.
+A detailed English derivation is pending.
 -/
 lemma hasSum_weight {β : ℍ → ℝ} (hβ : IsWt L β) (z : ℍ) :
     HasSum (fun γ : Gamma0 L => β (((γ⁻¹ : Gamma0 L) : SL(2, ℤ)) • z)) 2 :=
   (Equiv.inv (Gamma0 L)).hasSum_iff.2 (hβ.2.2 z)
 
 /- English proof (translation)
-Establish `h` using `hasSum_weight hβ z`. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun γ => (hβ.2.1 _).1) h.summable, h.tsum_eq]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma tsum_weight {β : ℍ → ℝ} (hβ : IsWt L β) (z : ℍ) :
     ∑' γ : Gamma0 L, ENNReal.ofReal (β (((γ⁻¹ : Gamma0 L) : SL(2, ℤ)) • z)) = 2 := by
@@ -239,9 +239,9 @@ lemma tsum_weight {β : ℍ → ℝ} (hβ : IsWt L β) (z : ℍ) :
   simp
 
 /- English proof (translation)
-Establish `hm : ∀ γ : Gamma0 L, Measurable fun z : ℍ => ENNReal.ofReal (β (((γ⁻¹ : Gamma0 L) : SL(2, ℤ)) • z)) * g z` using `fun γ => (ENNReal.measurable_ofReal.comp (hβ.1.comp (mp_smul _).measurable)).mul hg`. Establish `h1 : ∀ γ : Gamma0 L, ∫⁻ w, ENNReal.ofReal (β w) * g ((γ : SL(2, ℤ)) • w) = ∫⁻ z, ENNReal.ofReal (β (((γ⁻¹ : Gamma0 L) : SL(2, ℤ)) • z)) * g z`. Introduce `γ`. Rewrite using `[← (mp_smul (γ : SL(2, ℤ))).lintegral_comp (hm γ)]`. Use `lintegral_congr fun w => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[-sl_moeb]`. Repeatedly rewrite using `[h1]`. Rewrite using `[← lintegral_tsum fun γ => (hm γ).aemeasurable]`. Repeatedly rewrite using `[ENNReal.tsum_mul_right, tsum_weight hβ]`. Rewrite using `[lintegral_const_mul _ hg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma lintegral_weight {β : ℍ → ℝ} (hβ : IsWt L β) {g : ℍ → ℝ≥0∞} (hg : Measurable g) :
     ∑' γ : Gamma0 L, ∫⁻ w, ENNReal.ofReal (β w) * g ((γ : SL(2, ℤ)) • w) = 2 * ∫⁻ z, g z := by
@@ -260,18 +260,18 @@ lemma lintegral_weight {β : ℍ → ℝ} (hβ : IsWt L β) {g : ℍ → ℝ≥0
   rw [lintegral_const_mul _ hg]
 
 /- English proof (translation)
-Rewrite using `[enorm_mul, ← ofReal_norm_eq_enorm (β w : ℂ), Complex.norm_real, Real.norm_of_nonneg (hβ.2.1 w).1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma enorm_wt {β : ℍ → ℝ} (hβ : IsWt L β) (w : ℍ) (x : ℂ) :
     ‖(β w : ℂ) * x‖ₑ = ENNReal.ofReal (β w) * ‖x‖ₑ := by
   rw [enorm_mul, ← ofReal_norm_eq_enorm (β w : ℂ), Complex.norm_real, Real.norm_of_nonneg (hβ.2.1 w).1]
 
 /- English proof (translation)
-Establish `hg : Measurable fun z => ‖h z‖ₑ` using `hm.enorm`. Establish `hA` using `lintegral_weight hβ hg`. Establish `hmeas : ∀ γ : Gamma0 L, AEMeasurable fun w : ℍ => ENNReal.ofReal (β w) * ‖h ((γ : SL(2, ℤ)) • w)‖ₑ` using `fun γ => ((ENNReal.measurable_ofReal.comp hβ.1).mul (hg.comp (mp_smul _).measurable)).aemeasurable`. Rewrite `hA` using `[← lintegral_tsum hmeas]`. Establish `hfin : ∫⁻ w, ∑' γ : Gamma0 L, ENNReal.ofReal (β w) * ‖h ((γ : SL(2, ℤ)) • w)‖ₑ ≠ ∞`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hA]`. Conclude with `ENNReal.mul_ne_top (by simp) hi.2.ne`. Establish `hae` using `ae_lt_top' (AEMeasurable.ennreal_tsum hmeas) hfin`. Use `filter_upwards [hae] with w hw`. Use `ENNReal.summable_toReal hw.ne` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `this.congr fun γ => ?_` and prove the remaining obligations. Rewrite using `[← enorm_wt hβ, toReal_enorm]`.
+A detailed English derivation is pending.
 -/
 lemma ae_summable {β : ℍ → ℝ} (hβ : IsWt L β) {h : ℍ → ℂ} (hm : Measurable h) (hi : Integrable h) :
     ∀ᵐ w, Summable fun γ : Gamma0 L => ‖(β w : ℂ) * h ((γ : SL(2, ℤ)) • w)‖ := by
@@ -291,21 +291,19 @@ lemma ae_summable {β : ℍ → ℝ} (hβ : IsWt L β) {h : ℍ → ℂ} (hm : M
   rw [← enorm_wt hβ, toReal_enorm]
 
 /- English proof (translation)
-Use `set f : Gamma0 L → ℍ → ℂ := fun γ w => (β w : ℂ) * h ((γ : SL(2, ℤ)) • w) with hf`. Use `set g : Gamma0 L → ℍ → ℂ := fun γ z => (β (((γ⁻¹ : Gamma0 L) : SL(2, ℤ)) • z) : ℂ) * h z with hgdef`. Establish `hβc : Measurable fun w => (β w : ℂ)` using `Complex.measurable_ofReal.comp hβ.1`. Establish `hfm : ∀ γ, Measurable (f γ)` using `fun γ => hβc.mul (hm.comp (mp_smul _).measurable)`. Establish `hgm : ∀ γ, Measurable (g γ)` using `fun γ => (hβc.comp (mp_smul _).measurable).mul hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : ∀ w (x : ℂ), ‖(β w : ℂ) * x‖ ≤ ‖x‖` using `fun w x => by`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (hβ.2.1 w).1]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (hβ.2.1 w).2`. Establish `hfi : ∀ γ, Integrable (f γ)` using `fun γ => ((mp_smul (γ : SL(2, ℤ))).integrable_comp_of_integrable hi).mono (hfm γ).aestronglyMeasurable (ae_of_all _ fun w => hle _ _)`. Establish `hgi : ∀ γ, Integrable (g γ)` using `fun γ => hi.mono (hgm γ).aestronglyMeasurable (ae_of_all _ fun w => hle _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfg : ∀ γ, ∫ w, f γ w = ∫ z, g γ z` using `fun γ => by`. Rewrite using `[← (mp_smul (γ : SL(2, ℤ))).integral_comp (me_smul _) (g γ)]`. Use `integral_congr_ae (ae_of_all _ fun w => ?_)` and prove the remaining obligations. Simplify using `[hf, hgdef, -sl_moeb]`. Establish `hfgn : ∀ γ, ∫ w, ‖f γ w‖ = ∫ z, ‖g γ z‖` using `fun γ => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← (mp_smul (γ : SL(2, ℤ))).integral_comp (me_smul _) (fun z => ‖g γ z‖)]`. Use `integral_congr_ae (ae_of_all _ fun w => ?_)` and prove the remaining obligations. Simplify using `[hf, hgdef, -sl_moeb]`. Establish `hsum : Summable fun γ => ∫ w, ‖f γ w‖`. Establish `hA` using `lintegral_weight hβ (hm.enorm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin : ∑' γ : Gamma0 L, ∫⁻ w, ‖f γ w‖ₑ ≠ ∞`. Simplify using `only [hf, enorm_wt hβ]`. Rewrite using `[hA]`. Conclude with `ENNReal.mul_ne_top (by simp) hi.2.ne`. Use `(ENNReal.summable_toReal hfin).congr fun γ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[integral_norm_eq_lintegral_enorm (hfi γ).1]`. Establish `S1` using `hasSum_integral_of_summable_integral_norm hfi hsum`. Establish `S2` using `hasSum_integral_of_summable_integral_norm hgi (by simpa only [hfgn] using hsum)`. Simplify using `only [← hfg] at S2`. Rewrite using `[S1.unique S2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : ∀ z, ∑' γ, g γ z = 2 * h z` using `fun z => by`. Use `(Complex.hasSum_ofReal.2 (hasSum_weight hβ z)).mul_right (h z)` as an intermediate fact. Establish `e` using `this.tsum_eq`. Rewrite `e` using `[Complex.ofReal_ofNat]`. Conclude with `e`.
-
-Repeatedly rewrite using `[h2]`. Conclude with `integral_const_mul _ _`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 lemma integral_weight {β : ℍ → ℝ} (hβ : IsWt L β) {h : ℍ → ℂ} (hm : Measurable h) (hi : Integrable h) :
     ∫ w, ∑' γ : Gamma0 L, (β w : ℂ) * h ((γ : SL(2, ℤ)) • w) = 2 * ∫ z, h z := by
@@ -351,17 +349,17 @@ lemma integral_weight {β : ℍ → ℝ} (hβ : IsWt L β) {h : ℍ → ℂ} (hm
   exact integral_const_mul _ _
 
 /- English proof (translation)
-Establish `hT : ∀ z : ℍ, F (T • z) = F z` using `fun z => by rw [modular_T_smul, hF]`. Establish `per : ∀ (n : ℤ) (z : ℍ), F ((T ^ n : SL(2, ℤ)) • z) = F z`. Introduce `n`. Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => simp [-sl_moeb]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ i ih`. Introduce `z`. Rewrite using `[add_comm, zpow_one_add, mul_smul, hT, ih]`. Consider the case `pred i ih`. Introduce `z`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : T • ((T ^ (-(i : ℤ) - 1) : SL(2, ℤ)) • z) = (T ^ (-(i : ℤ)) : SL(2, ℤ)) • z`. Rewrite using `[← mul_smul, ← zpow_one_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hT, e, ih]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hre : ∀ n : ℤ, (((T ^ n : SL(2, ℤ)) • u : ℍ)).re = u.re + n` using `fun n => re_T_zpow_smul u n`. Rewrite using `[tsum_eq_single (-⌊u.re⌋)]`. Rewrite using `[Set.indicator_of_mem, per] show 0 ≤ _ ∧ _ < _`. Rewrite using `[hre]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Prove the components needed by the constructor for the conclusion. Combine the linear relations using `[Int.floor_le u.re]`. Combine the linear relations using `[Int.lt_floor_add_one u.re]`. Introduce `n hn`. Apply `Set.indicator_of_notMem` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨h0, h1⟩`. Rewrite `h0`, `h1` using `[hre]`. Apply `hn` to reduce the goal to its premises. Establish `: ⌊u.re⌋ = -n`. Apply the tactic sequence `rw [Int.floor_eq_iff]; push_cast; constructor <;> linarith`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -399,7 +397,7 @@ lemma T_zpow_smul_strip {F : ℍ → ℂ} (hF : ∀ z, F ((1 : ℝ) +ᵥ z) = F 
     omega
 
 /- English proof (translation)
-Take `⟨b, p, n⟩` from `x`. Consider the cases of `b`. Simplify using `[rep, mul_smul, -sl_moeb]`. Establish `e : rep γ (true, p, n) = -(T ^ n * γ p)` using `by simp [rep]`. Rewrite using `[e, SL_neg_smul, mul_smul]`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma rep_smul (γ : Idx L → SL(2, ℤ)) (x : Bool × Idx L × ℤ) (w : ℍ) :
     rep γ x • w = (T ^ x.2.2 : SL(2, ℤ)) • (γ x.2.1 • w) := by
@@ -410,15 +408,15 @@ lemma rep_smul (γ : Idx L → SL(2, ℤ)) (x : Bool × Idx L × ℤ) (w : ℍ) 
     rw [e, SL_neg_smul, mul_smul]
 
 /- English proof (translation)
-Set `e : Bool × Idx L × ℤ ≃ Gamma0 L` to `Equiv.ofBijective _ (rep_bijective hL hγ)`. Establish `he : ∀ x, ((e x : Gamma0 L) : SL(2, ℤ)) = rep γ x` using `fun x => rfl`. Use `set f : Bool × Idx L × ℤ → ℂ := fun x => strip.indicator F (rep γ x • w) with hf`. Establish `hs' : Summable f`. Use `(e.summable_iff).2 hs` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `this.congr fun x => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, he, hf]`. Establish `hrw : ∑' g : Gamma0 L, strip.indicator F ((g : SL(2, ℤ)) • w) = ∑' x, f x`. Rewrite using `[← e.tsum_eq]`. Simplify using `only [he, hf]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hfb : ∀ (b : Bool) (q : Idx L × ℤ), f (b, q) = strip.indicator F ((T ^ q.2 : SL(2, ℤ)) • (γ q.1 • w))` using `fun b q => by`. Simplify using `only [hf, rep_smul]`. Establish `hq : Summable fun q : Idx L × ℤ => strip.indicator F ((T ^ q.2 : SL(2, ℤ)) • (γ q.1 • w))`. Use `hs'.comp_injective (i := fun q : Idx L × ℤ => (false, q)) (fun a b h => by simpa using h)` as an intermediate fact. Use `this.congr fun q => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp, hfb]`. Rewrite using `[hrw, hs'.tsum_prod, tsum_bool]`. Simplify using `only [hfb]`. Rewrite using `[hq.tsum_prod]`. Simplify using `only [T_zpow_smul_strip hF]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 lemma tsum_cosets (hL : 2 ≤ L) {γ : Idx L → SL(2, ℤ)}
     (hγ : ∀ p, γ p 1 0 = L * p.1.2 ∧ γ p 1 1 = p.1.1) {F : ℍ → ℂ}
@@ -449,13 +447,13 @@ lemma tsum_cosets (hL : 2 ≤ L) {γ : Idx L → SL(2, ℤ)}
   ring
 
 /- English proof (translation)
-Introduce `L hL β hβ γ hγ F hFm hF hFi`. Establish `hstrip : MeasurableSet strip`. Establish `: Measurable fun z : ℍ => z.re` using `UpperHalfPlane.continuous_re.measurable`. Conclude with `(measurableSet_le measurable_const this).inter (measurableSet_lt this measurable_const)`. Use `set H : ℍ → ℂ := strip.indicator F with hH`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHm : Measurable H` using `hFm.indicator hstrip`. Establish `hHi : Integrable H` using `hFi.integrable_indicator hstrip`. Establish `hmain` using `integral_weight hβ hHm hHi`. Establish `hae : (fun w => ∑' g : Gamma0 L, (β w : ℂ) * H ((g : SL(2, ℤ)) • w)) =ᵐ[volume] fun w => 2 * ((β w : ℂ) * ∑' p, F (γ p • w))` using `by filter_upwards [ae_summable hβ hHm hHi] with w hw`. Rewrite using `[tsum_mul_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h0 : (β w : ℂ) = 0`. Simplify using `[h0]`. Establish `hs : Summable fun g : Gamma0 L => H ((g : SL(2, ℤ)) • w)`. Use `hw.of_norm` as an intermediate fact. Simplify `(summable_mul_left_iff h0).1 this` using `[h0, -sl_moeb]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[tsum_cosets hL hγ hF w hs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hmain` using `[integral_congr_ae hae, integral_const_mul, integral_indicator hstrip]`. Conclude with `(mul_left_cancel₀ two_ne_zero hmain).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unfolding_strip : U1 := by
   intro L hL β hβ γ hγ F hFm hF hFi

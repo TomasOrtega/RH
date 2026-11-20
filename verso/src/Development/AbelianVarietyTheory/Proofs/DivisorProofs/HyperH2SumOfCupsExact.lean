@@ -12,29 +12,27 @@ noncomputable section
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Introduce `R _ C _ F hfr h0 hc hs c ⟨f, hf⟩`. Take `⟨m, ⟨fr⟩⟩` from `hfr`. Establish `hcl : ∀ (w : Glob1 F) (T : C), dOne R _ (w.1 T) = 0` using `fun w T ↦ (show w ∈ Closed1 F by rw [hc]; trivial) T`. Establish `hclAll : ∀ w : Glob1 F, clAll F hc w = Hyp1.mk F ⟨(0, w.1), mem_cechDeRhamTotalCocyclesOne_iff.2 ⟨zero_mem _, fun T T' φ ↦ by simpa using w.2 φ, fun T ↦ hcl w T⟩⟩` using `fun w ↦ rfl`. Use `set c' : cechDeRhamTotalCocyclesTwo F := c - ⟨dTot1 F (f, 0), dTot1_mem F _⟩ with hc'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmk : Hyp2.mk F c = Hyp2.mk F c'`. Rewrite using `[hc', map_sub, (Hyp2.mk_eq_zero (c := ⟨dTot1 F (f, 0), dTot1_mem F _⟩)).2 ⟨(f, 0), rfl⟩, sub_zero]`. Establish `hz : ∀ (T T' T'' : C) (φ : T ⟶ T') (ψ : T' ⟶ T''), c'.1.1 T T' T'' φ ψ = 0`. Introduce `T T' T'' φ ψ`. Express the relevant statement in the definitionally equal form `c.1.1 T T' T'' φ ψ - d1 F f T T' T'' φ ψ = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf, sub_self]`. Use `set a : A1 F := c'.1.2.1 with ha`. Establish `hacoc : ∀ ⦃T T' T'' : C⦄ (φ : T ⟶ T') (ψ : T' ⟶ T''), a T T'' (φ ≫ ψ) = p1 F ψ (a T T' φ) + a T' T'' ψ`. Introduce `T T' T'' φ ψ`. Rewrite using `[ha, cechDeRhamTotalCocyclesTwo.one c' φ ψ, hz, map_zero, add_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Set `g : Fin m → Z1 F` to `fun i ↦ ⟨fun T T' φ ↦ fr.δ i T' (a T T' φ), fun T T' T'' φ ψ ↦ by`. Simplify using `only [hacoc φ ψ, map_add, fr.nat]⟩`. Establish `hE : ∀ i, ∃ e : cechDeRhamTotalCocyclesOne F, e.1.1 = (g i).1`. Introduce `i`. Take `⟨x, hx⟩` from `hs (H1.mk F (g i))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨e0, rfl⟩` from `Hyp1.mk_surjective F x`. Rewrite `hx` using `[toO_mk, H1.mk_eq_mk]`. Take `⟨h, hh⟩` from `hx`. Use `⟨e0 - ⟨dTot0 F h, dTot0_mem F h⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e0.1.1 - d0 F h = (g i).1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hh]`. Express the relevant statement in the definitionally equal form `e0.1.1 - (e0.1.1 - (g i).1) = (g i).1`. Normalize the expressions using the abelian group laws. Use `choose e he using hE`. Set `η' : W0 F 2` to `fun T ↦ c'.1.2.2 T - ∑ i, wedge R _ ((e i).1.2 T) ((fr.w i).1 T)`.
+Normalize the expressions using the abelian group laws. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hη' : ∀ ⦃T T' : C⦄ (φ : T ⟶ T'), η' T' = pOm F 2 φ (η' T)`. Introduce `T T' φ`. Establish `hd : dOne R _ (a T T' φ) = ∑ i, wedge R _ (D R _ (fr.δ i T' (a T T' φ))) ((fr.w i).1 T')` using `by conv_lhs => rw [fr.sum T' (a T T' φ)]`. Simplify using `[map_sum, dOne_smul, hcl]`. Establish `hw : ∀ i, (fr.w i).1 T' = p1 F φ ((fr.w i).1 T)` using `fun i ↦ (fr.w i).2 φ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `he' : ∀ i, (e i).1.2 T' = p1 F φ ((e i).1.2 T) + D R _ (fr.δ i T' (a T T' φ))`. Introduce `i`. Rewrite using `[cechDeRhamTotalCocyclesOne.conn (e i) φ, he]`. Simplify using `only [η', map_sub, map_sum, pOm_wedge]`. Rewrite using `[cechDeRhamTotalCocyclesTwo.two c' φ, ← ha, hd]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result.
 
-Simplify using `only [he', map_add, LinearMap.add_apply, Finset.sum_add_distrib, ← hw]`. Normalize the expressions using the abelian group laws. Take `⟨n, u, v, huv⟩` from `GlobalTheory.T.globalTwoForm_eq_sumWedgeGlobalOneForms R C F ⟨m, ⟨fr⟩⟩ h0 η' hη'`. Use `⟨m + n, Fin.append (fun i ↦ Hyp1.mk F (e i)) (fun k ↦ clAll F hc (u k)), Fin.append fr.w v, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Fin.append_left, Fin.append_right, hclAll, cupHyp_mk, ← map_sum, ← map_add, hmk]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `Tot2.ext (fun T T' T'' φ ψ ↦ ?_) (fun T T' φ ↦ ?_) (fun T ↦ ?_)` and prove the remaining obligations. Simplify using `only [Submodule.coe_add, Submodule.coe_sum, Prod.fst_add, Prod.fst_sum, Pi.add_apply, Finset.sum_apply, coe_cupZZ, cupTot_apply, hz, Pi.zero_apply, mul_zero, Finset.sum_const_zero, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.coe_add, Submodule.coe_sum, Prod.snd_add, Prod.snd_sum, Prod.fst_add, Prod.fst_sum, Pi.add_apply, Finset.sum_apply, coe_cupZZ, cupTot_a, Pi.zero_apply, zero_smul, sub_zero, Finset.sum_const_zero, add_zero, he]`. Conclude with `fr.sum T' (a T T' φ)`. Use `congrFun huv T` as an intermediate fact. Simplify using `only [η', wsum] at this`. Simplify using `only [Submodule.coe_add, Submodule.coe_sum, Prod.snd_add, Prod.snd_sum, Pi.add_apply, Finset.sum_apply, coe_cupZZ, cupTot_η]`.
-
-Rewrite using `[← this]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem hyp2_eq_sum_cup_of_fn_exact : ∀ (R : Type) [CommRing R] (C : Type) [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R), HasFrame F → CohomZeroIsConstants F → ∀ hc : Closed1 F = ⊤, Function.Surjective (toO F) → ∀ c : cechDeRhamTotalCocyclesTwo F, (∃ f, d1 F f = c.1.1) → ∃ (n : ℕ) (a : Fin n → Hyp1 F) (w : Fin n → Glob1 F), Hyp2.mk F c = ∑ k, cupHyp F (a k) (clAll F hc (w k)) := by
   intro R _ C _ F hfr h0 hc hs c ⟨f, hf⟩

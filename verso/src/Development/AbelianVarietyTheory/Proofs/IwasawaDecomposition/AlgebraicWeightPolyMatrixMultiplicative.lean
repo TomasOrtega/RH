@@ -18,9 +18,9 @@ def substR (B : (L →+* ℂ) → Matrix (Fin n) (Fin n) ℂ) (v : (L →+* ℂ)
   ∑ m : Fin n, MvPolynomial.X (v.1, v.2.1, m) * MvPolynomial.C (B v.1 m v.2.2)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Express the relevant statement in the definitionally equal form `MvPolynomial.eval (fun v => MvPolynomial.eval (upt Y) (substL A v)) Q = _`. Establish `hf : (fun v => MvPolynomial.eval (upt Y) (substL A v)) = upt (fun σ => A σ * Y σ)`. Use function extensionality and compare the values at `v`. Simplify using `[substL, upt, Matrix.mul_apply]`.
+Chain the equalities or inequalities of the calculation. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_bind_substL (A Y : (L →+* ℂ) → Matrix (Fin n) (Fin n) ℂ)
     (Q : MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ) :
@@ -37,9 +37,9 @@ theorem eval_bind_substL (A Y : (L →+* ℂ) → Matrix (Fin n) (Fin n) ℂ)
       rw [hf]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Express the relevant statement in the definitionally equal form `MvPolynomial.eval (fun v => MvPolynomial.eval (upt X) (substR B v)) Q = _`. Establish `hf : (fun v => MvPolynomial.eval (upt X) (substR B v)) = upt (fun σ => X σ * B σ)`. Use function extensionality and compare the values at `v`. Simplify using `[substR, upt, Matrix.mul_apply]`.
+Chain the equalities or inequalities of the calculation. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_bind_substR (B X : (L →+* ℂ) → Matrix (Fin n) (Fin n) ℂ)
     (Q : MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ) :
@@ -56,7 +56,7 @@ theorem eval_bind_substR (B X : (L →+* ℂ) → Matrix (Fin n) (Fin n) ℂ)
       rw [hf]
 
 /- English proof (translation)
-Rewrite using `[map_sub, eval_bind_substL]`. Simplify using `[evM, Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem defectL_eval {ι : Type} [Fintype ι] (P : ι → ι → MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ)
     (A Y : (L →+* ℂ) → Matrix (Fin n) (Fin n) ℂ) (i j : ι) :
@@ -67,7 +67,7 @@ theorem defectL_eval {ι : Type} [Fintype ι] (P : ι → ι → MvPolynomial ((
   simp [evM, Matrix.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[map_sub, eval_bind_substR]`. Simplify using `[evM, Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem defectR_eval {ι : Type} [Fintype ι] (P : ι → ι → MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ)
     (B X : (L →+* ℂ) → Matrix (Fin n) (Fin n) ℂ) (i j : ι) :
@@ -78,7 +78,7 @@ theorem defectR_eval {ι : Type} [Fintype ι] (P : ι → ι → MvPolynomial ((
   simp [evM, Matrix.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[hA γ γ₀ h]`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem evM_ratPt (a : AlgWt L n) {ι : Type} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι ℂ a.W)
     (P : ι → ι → MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ) (hA : Agrees a b P)
@@ -91,7 +91,7 @@ theorem evM_ratPt (a : AlgWt L n) {ι : Type} [Fintype ι] [DecidableEq ι] (b :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `σ`. Simplify using `[ratPt]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ratPt_one :
     ratPt ((1 : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = fun _ => (1 : Matrix (Fin n) (Fin n) ℂ) := by
@@ -99,7 +99,7 @@ theorem ratPt_one :
   simp [ratPt]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `σ`. Simplify using `[ratPt, Matrix.map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ratPt_mul (γ₀ γ₁ : GL (Fin n) L) :
     ratPt ((γ₀ * γ₁ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) =
@@ -108,15 +108,15 @@ theorem ratPt_mul (γ₀ γ₁ : GL (Fin n) L) :
   simp [ratPt, Matrix.map_mul]
 
 /- English proof (translation)
-Introduce `L _ _ _ n a ι _ _ b P hA`. Establish `h1 : evM P (upt (fun _ => (1 : Matrix (Fin n) (Fin n) ℂ))) = 1`. Establish `hm : ((((1 : GQ L n) : GAf L n) : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = ((1 : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).map (Algebra.TensorProduct.includeLeftRingHom)`. Simplify using `only [OneMemClass.coe_one, Units.val_one]`. Conclude with `(Matrix.map_one _ (map_zero _) (map_one _)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ratPt_one, evM_ratPt a b P hA 1 1 hm, map_one, LinearMap.toMatrix_one]`. Establish `hrat : ∀ γ₀ : GL (Fin n) L, γ₀ ∈ GQ0 L n → ∀ γ₁ : GL (Fin n) L, γ₁ ∈ GQ0 L n → evM P (upt (fun σ => ratPt (γ₀ : Matrix (Fin n) (Fin n) L) σ * ratPt (γ₁ : Matrix (Fin n) (Fin n) L) σ)) = evM P (upt (ratPt (γ₀ : Matrix (Fin n) (Fin n) L))) * evM P (upt (ratPt (γ₁ : Matrix (Fin n) ( …`. Introduce `γ₀ h₀ γ₁ h₁`. Take `⟨γ, hγ⟩` from `exists_gq γ₀ h₀`. Take `⟨γ', hγ'⟩` from `exists_gq γ₁ h₁`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm : ((((γ * γ' : GQ L n) : GAf L n) : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = ((γ₀ * γ₁ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).map (Algebra.TensorProduct.includeLeftRingHom)`. Simplify using `only [Subgroup.coe_mul, Units.val_mul, hγ, hγ', Matrix.map_mul]`. Rewrite using `[← ratPt_mul, evM_ratPt a b P hA _ _ hm, evM_ratPt a b P hA _ _ hγ, evM_ratPt a b P hA _ _ hγ', map_mul, LinearMap.toMatrix_mul]`. Establish `hL : ∀ γ₀ : GL (Fin n) L, γ₀ ∈ GQ0 L n → ∀ Y : (L →+* ℂ) → Matrix (Fin n) (Fin n) ℂ, IsUPt Y → evM P (upt (fun σ => ratPt (γ₀ : Matrix (Fin n) (Fin n) L) σ * Y σ)) = evM P (upt (ratPt (γ₀ : Matrix (Fin n) (Fin n) L))) * evM P (upt Y)`. Introduce `γ₀ h₀ Y hY`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Establish `e` using `GlobalTheory.T.eval_unitaryCoordinate_zero_of_rational_points L n (MvPolynomial.bind₁ (substL (ratPt (γ₀ : Matrix (Fin n) (Fin n) L))) (P i j) - ∑ m, MvPolynomial.C (evM P (upt (ratPt (γ₀ : Matrix (Fin n) (Fin n) L))) i m) * P m j) (fun γ₁ h₁ => by rw [defectL_eval, hrat γ₀ h₀ γ₁ …`. Rewrite `e` using `[defectL_eval, sub_eq_zero]`. Conclude with `e`. Use `⟨h1, fun X Y hX hY => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `i j`. Establish `e` using `GlobalTheory.T.eval_unitaryCoordinate_zero_of_rational_points L n (MvPolynomial.bind₁ (substR Y) (P i j) - ∑ m, P i m * MvPolynomial.C (evM P (upt Y) m j)) (fun γ₀ h₀ => by rw [defectR_eval, hL γ₀ h₀ Y hY, sub_self]) X hX`. Rewrite `e` using `[defectR_eval, sub_eq_zero]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evM_mul : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : AlgWt L n) (ι : Type) [Fintype ι]
     [DecidableEq ι] (b : Module.Basis ι ℂ a.W) (P : ι → ι → MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ),

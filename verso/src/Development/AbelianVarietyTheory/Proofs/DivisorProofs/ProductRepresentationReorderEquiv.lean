@@ -11,7 +11,7 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Loc
 namespace GlobalTheory.PlacingProd
 
 /- English proof (translation)
-Introduce `k _ _ _ _ h n d e e' X _ _ π`. Conclude with `(GlobalTheory.SmGL.Placing.parInd_jac_placing k (Fin h) (Fin n) (fun a => Fin (d a)) e e' _).1 _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem multiProd_placing_equiv : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (h n : ℕ) (d : Fin h → ℕ) (e e' : (Σ a, Fin (d a)) ≃ Fin n) (X : Fin h → Type) [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (π : ∀ a, Representation ℂ (GL (Fin (d a)) k) (X a)), Nonempty ((multiProd e π).Equiv (multiProd e' π)) := by
   intro k _ _ _ _ h n d e e' X _ _ π

@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllSixAbelia
 namespace GlobalTheory.Ex
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.TestFibre.laws_all GlobalTheory.allSixLaws.1 GlobalTheory.allSixLaws.2.1`.
+A detailed English derivation is pending.
 -/
 theorem hv_holds : GlobalTheory.Ex.HV :=
   GlobalTheory.TestFibre.laws_all GlobalTheory.allSixLaws.1 GlobalTheory.allSixLaws.2.1

@@ -17,48 +17,48 @@ open CategoryTheory GlobalTheory.EtC
 namespace CrystallineSemistableComparison.E
 
 /- English proof (translation)
-Introduce `q _ i` and use `let t := GlobalTheory.EtC.twist_sections q i; ⟨t.2.1, t.2.2.1, t.2.2.2.2.1⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inGen : InGen := fun q _ i =>
   let t := GlobalTheory.EtC.twist_sections q i; ⟨t.2.1, t.2.2.1, t.2.2.2.2.1⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.EtC.sch_cls_cocycle_sec`.
+A detailed English derivation is pending.
 -/
 theorem inSch : InSch := GlobalTheory.EtC.sch_cls_cocycle_sec
 
 /- English proof (translation)
-Introduce `q _ i j` and use `(GlobalTheory.EtC.TwPairUniq.main q i j).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inTw : InTw := fun q _ i j => (GlobalTheory.EtC.TwPairUniq.main q i j).1
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.EtC.RedExists.red_exists`.
+A detailed English derivation is pending.
 -/
 theorem inRed : InRed := GlobalTheory.EtC.RedExists.red_exists
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.EtC.KummerSplit.isKum_kumT`.
+A detailed English derivation is pending.
 -/
 theorem inKum : InKum := GlobalTheory.EtC.KummerSplit.isKum_kumT
 
 /- English proof (translation)
-Introduce `q _ E L h` and use `(GlobalTheory.EtC.firstChernClassTateTwist_cocycle_naturality_additivity q).1 L h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem firstChern_cocycle_naturality : InC1 := fun q _ E L h => (GlobalTheory.EtC.firstChernClassTateTwist_cocycle_naturality_additivity q).1 L h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.EtC.smooth_surjective_cech_descent_cohomology`.
+A detailed English derivation is pending.
 -/
 theorem etale_a2_facts : A2 := GlobalTheory.EtC.smooth_surjective_cech_descent_cohomology
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.EtC.RedCoef.a11`.
+A detailed English derivation is pending.
 -/
 theorem reduced_coefficient_facts : A11 := GlobalTheory.EtC.RedCoef.a11
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨etale_a2_facts, reduced_coefficient_facts, inGen, inSch, inTw, inRed, inOp, inKum, firstChern_cocycle_naturality⟩`.
+Supply the required witnesses or components.
 -/
 theorem etIn : EtIn := ⟨etale_a2_facts, reduced_coefficient_facts, inGen, inSch, inTw, inRed, inOp, inKum, firstChern_cocycle_naturality⟩
 

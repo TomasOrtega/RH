@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.CoefDuty.OPinModel
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2 Formalism.L2.Host GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.HeightCounting GlobalTheory.Mem.Col2
 /- English proof (translation)
-Establish `e : ∀ D', D' = withLoc a.nt.L → (LabFixed D' ↔ LabFixed a.nt.D)`. Introduce and unpack `_ rfl`. Conclude with `labFixed_withLoc _`. Conclude with `e D a.nt.eq`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem labFixed_iff_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTied D cf nch}
     (a : _root_.GlobalTheory.Mem.Top.Bl.NAtData hL D cf nch tp) : LabFixed D ↔ LabFixed a.nt.D := by
@@ -22,7 +22,7 @@ theorem labFixed_iff_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} 
   exact e D a.nt.eq
 variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B}
 /- English proof (translation)
-Rewrite using `[← h.gen k]`. Conclude with `a.nt.A.grp.tg_tame k v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem labDat_gen_tame_at_plGw {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTied D cf nch}
     {a : _root_.GlobalTheory.Mem.Top.Bl.NAtData hL D cf nch tp} (h : _root_.GlobalTheory.CoefDuty.OPinAlt a) (k : Fin 2) (v : a.nt.D.nd.PlG k) :

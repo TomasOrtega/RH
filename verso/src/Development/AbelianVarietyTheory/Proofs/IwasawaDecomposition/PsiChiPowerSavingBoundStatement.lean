@@ -12,7 +12,7 @@ open Finset ArithmeticFunction NumberField IsDedekindDomain Filter Topology Glob
 open scoped nonZeroDivisors
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Mem.An.GoodBound.psiChi_bound_of_goodFor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FPsiChiPowerSavingBound.lean&line=99#L99)
 -/

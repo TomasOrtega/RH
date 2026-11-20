@@ -19,14 +19,14 @@ variable {S : Type} [CommRing S] {K : Type} [Fintype K] {ι : K → Type} [∀ k
 section Homog
 
 /- English proof (translation)
-Introduce `m hm`. Simplify using `at hm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_zero (a : K → ℕ) : IsMultiHomog (0 : MRingOver S ι) a := by
   intro m hm
   simp at hm
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[C_apply]`. Rewrite using `[Finset.mem_singleton.mp (support_monomial_subset hm)]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_C (r : S) : IsMultiHomog (C r : MRingOver S ι) 0 := by
   intro m hm k
@@ -35,7 +35,7 @@ theorem isMultiHomog_C (r : S) : IsMultiHomog (C r : MRingOver S ι) 0 := by
   simp
 
 /- English proof (translation)
-Introduce `m hm k`. Break down `Finset.mem_union.mp (support_add hm) with h | h` into its components or cases. Conclude with `hp m h k`. Conclude with `hq m h k`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_add {p q : MRingOver S ι} {a : K → ℕ} (hp : IsMultiHomog p a)
     (hq : IsMultiHomog q a) : IsMultiHomog (p + q) a := by
@@ -46,14 +46,14 @@ theorem isMultiHomog_add {p q : MRingOver S ι} {a : K → ℕ} (hp : IsMultiHom
   · exact hq m h k
 
 /- English proof (translation)
-Introduce `m hm k` and use `hp m (support_smul hm) k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_smul {p : MRingOver S ι} {a : K → ℕ} (s : S) (hp : IsMultiHomog p a) :
     IsMultiHomog (s • p) a :=
   fun m hm k => hp m (support_smul hm) k
 
 /- English proof (translation)
-Introduce `m hm k`. Take `⟨m₁, h₁, m₂, h₂, rfl⟩` from `Finset.mem_add.mp (support_mul p q hm)`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, hp m₁ h₁ k, hq m₂ h₂ k]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_mul {p q : MRingOver S ι} {a b : K → ℕ} (hp : IsMultiHomog p a)
     (hq : IsMultiHomog q b) : IsMultiHomog (p * q) (a + b) := by
@@ -69,11 +69,9 @@ section Eval
 variable {Ω : Type} [Field Ω] [Algebra S Ω] (y : (Σ k, ι k) → Ω)
 
 /- English proof (translation)
-Use `conv_lhs => rw [g.as_sum]`. Use `conv_rhs => rw [g.as_sum]`. Simplify using `only [map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Establish `hX : ∏ p : Σ k, ι k, (X p.1 : MvPolynomial K Ω) ^ μ p = ∏ k, (X k : MvPolynomial K Ω) ^ d k`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ∏ i, (X k : MvPolynomial K Ω) ^ μ ⟨k, i⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hg μ hμ k]`. Rewrite using `[mConeMapOver, aeval_monomial, aeval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`.
-
-Simplify using `only [mul_pow, Finset.prod_mul_distrib, MvPolynomial.algebraMap_apply, map_mul, map_prod, map_pow, hX]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mConeMapOver_homog {g : MRingOver S ι} {d : K → ℕ} (hg : IsMultiHomog g d) :
     mConeMapOver S y g = C (aeval y g) * ∏ k, (X k : MvPolynomial K Ω) ^ d k := by
@@ -93,9 +91,9 @@ theorem mConeMapOver_homog {g : MRingOver S ι} {d : K → ℕ} (hg : IsMultiHom
   ring
 
 /- English proof (translation)
-Establish `h : (MvPolynomial.eval (fun _ : K => (1 : Ω))).comp (mConeMapOver S y).toRingHom = (aeval y : MRingOver S ι →ₐ[S] Ω).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[mConeMapOver, MvPolynomial.algebraMap_apply]`. Introduce `p`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[mConeMapOver]`. Establish `h2` using `RingHom.congr_fun h f`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at h2`. Rewrite using `[← h2, show mConeMapOver S y f = 0 from (RingHom.mem_ker).mp hf, map_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_eq_zero_of_mem {f : MRingOver S ι} (hf : f ∈ mIdealOver S y) : aeval y f = 0 := by
   have h : (MvPolynomial.eval (fun _ : K => (1 : Ω))).comp (mConeMapOver S y).toRingHom =
@@ -110,7 +108,7 @@ theorem aeval_eq_zero_of_mem {f : MRingOver S ι} (hf : f ∈ mIdealOver S y) : 
   rw [← h2, show mConeMapOver S y f = 0 from (RingHom.mem_ker).mp hf, map_zero]
 
 /- English proof (translation)
-Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Use `show g ∈ RingHom.ker (mConeMapOver S y)`. Rewrite using `[RingHom.mem_ker, mConeMapOver_homog y hg, h0, map_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_eq_zero_of_aeval {g : MRingOver S ι} {d : K → ℕ} (hg : IsMultiHomog g d) (h0 : aeval y g = 0) :
     Ideal.Quotient.mk (mIdealOver S y) g = 0 := by
@@ -127,7 +125,7 @@ Both sides reduce to the same expression.
 theorem evalAtPoint_mk (p : MRingOver S ι) : ev0 y (Ideal.Quotient.mk (mIdealOver S y) p) = aeval y p := rfl
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `Ideal.Quotient.mk_surjective m`. Use `show ev0 y (Ideal.Quotient.mk _ (r * m)) = _`. Rewrite using `[evalAtPoint_mk, evalAtPoint_mk, map_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalAtPoint_smul (r : MRingOver S ι) (m : MRingOver S ι ⧸ mIdealOver S y) :
     ev0 y (r • m) = aeval y r * ev0 y m := by
@@ -138,9 +136,9 @@ theorem evalAtPoint_smul (r : MRingOver S ι) (m : MRingOver S ι ⧸ mIdealOver
 variable {y}
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.cellMon at ht`. Proceed by induction on `ht using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨k, i, hi, rfl⟩` from `hx`. Rewrite using `[aeval_X]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hI k i hi`. Consider the case `one => simp`. Consider the case `mul x z _ _ hx hz => rw [map_mul]`. Conclude with `mul_ne_zero hx hz`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem aeval_ne_zero_of_mem {I : ∀ k, Finset (ι k)} (hI : CellMeets y I) {t : MRingOver S ι}
     (ht : t ∈ cellMon S I) : aeval y t ≠ 0 := by
@@ -171,7 +169,7 @@ def ev (I : ∀ k, Finset (ι k)) (hI : CellMeets y I)
     linear_combination h')
 
 /- English proof (translation)
-The claim follows from `LocalizedModule.liftOn_mk _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem ev_mk (I : ∀ k, Finset (ι k)) (hI : CellMeets y I) (m : MRingOver S ι ⧸ mIdealOver S y)
     (s : cellMon S I) : ev y I hI (LocalizedModule.mk m s) = ev0 y m / aeval y (s : MRingOver S ι) :=
@@ -202,7 +200,7 @@ def evMap (I : ∀ k, Finset (ι k)) :
   if h : CellMeets y I then evLin y I h else 0
 
 /- English proof (translation)
-Unfold `evMap`. Rewrite using `[dif_pos hI]`. Conclude with `ev_mk y I hI _ t`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evMap_mk' {I : ∀ k, Finset (ι k)} (hI : CellMeets y I) (m : MRingOver S ι ⧸ mIdealOver S y)
     (t : cellMon S I) :
@@ -212,7 +210,7 @@ theorem evMap_mk' {I : ∀ k, Finset (ι k)} (hI : CellMeets y I) (m : MRingOver
   exact ev_mk y I hI _ t
 
 /- English proof (translation)
-The claim follows from `evMap_mk' y hI _ t`.
+A detailed English derivation is pending.
 -/
 theorem evMap_mk {I : ∀ k, Finset (ι k)} (hI : CellMeets y I) (g : MRingOver S ι) (t : cellMon S I) :
     evMap y I (LocalizedModule.mk (Ideal.Quotient.mk (mIdealOver S y) g) t) =
@@ -220,7 +218,7 @@ theorem evMap_mk {I : ∀ k, Finset (ι k)} (hI : CellMeets y I) (g : MRingOver 
   evMap_mk' y hI _ t
 
 /- English proof (translation)
-Unfold `evMap`. Rewrite using `[dif_neg hI]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evMap_of_not {I : ∀ k, Finset (ι k)} (hI : ¬ CellMeets y I)
     (x : LocalizedModule (cellMon S I) (MRingOver S ι ⧸ mIdealOver S y)) : evMap y I x = 0 := by
@@ -235,15 +233,15 @@ section Rep
 variable {V : Ideal (MRingOver S ι)}
 
 /- English proof (translation)
-Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨p, ⟨hnn, hp⟩, rfl⟩` from `hx`. Conclude with `⟨p, hp, Or.inl hnn, rfl⟩`. Consider the case `zero => exact ⟨0, isMultiHomog_zero _, Or.inr rfl, map_zero _⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add x x' _ _ h h'`. Take `⟨g, hg, hd, rfl⟩` from `h`. Take `⟨g', hg', hd', rfl⟩` from `h'`. Use `⟨g + g', isMultiHomog_add hg hg', ?_, map_add _ _ _⟩` and prove the remaining obligations. Break down `hd with hd | rfl` into its components or cases.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inl hd`. Break down `hd' with hd' | rfl` into its components or cases. Conclude with `Or.inl hd'`. Conclude with `Or.inr (add_zero 0)`. Consider the case `smul s x _ h`.
+Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Treat this case separately.
 
-Take `⟨g, hg, hd, rfl⟩` from `h`. Use `⟨s • g, isMultiHomog_smul s hg, ?_, ?_⟩` and prove the remaining obligations. Break down `hd with hd | rfl` into its components or cases. Conclude with `Or.inl hd`. Conclude with `Or.inr (smul_zero s)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Rewrite using `[← Ideal.Quotient.mkₐ_eq_mk S, map_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_homog_of_mem_quotPart {d : K → ℤ} {m : MRingOver S ι ⧸ V} (hm : m ∈ quotPart S V d) :
     ∃ g : MRingOver S ι, IsMultiHomog g (fun k => (d k).toNat) ∧ ((∀ k, 0 ≤ d k) ∨ g = 0) ∧
@@ -271,25 +269,23 @@ theorem exists_homog_of_mem_quotPart {d : K → ℤ} {m : MRingOver S ι ⧸ V} 
     · rw [← Ideal.Quotient.mkₐ_eq_mk S, map_smul]
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m, t, a, ht, hm, rfl⟩` from `hx`. Take `⟨g, hg, hd, rfl⟩` from `exists_homog_of_mem_quotPart hm`. Conclude with `⟨g, t, a, ht, hg, hd, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `zero`. Use `⟨0, 1, 0, ?_, isMultiHomog_zero _, Or.inr rfl, ?_⟩` and prove the remaining obligations. Simplify using `using isMultiHomog_C (S := S) (ι := ι) 1`. Rewrite using `[map_zero, LocalizedModule.zero_mk]`. Consider the case `add x x' _ _ h h'`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨g, t, a, ht, hg, hd, rfl⟩` from `h`. Take `⟨g', t', a', ht', hg', hd', rfl⟩` from `h'`. Break down `hd with hd | rfl` into its components or cases. Use `swap`. Conclude with `⟨g', t', a', ht', hg', hd', by rw [map_zero, LocalizedModule.zero_mk, zero_add]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hd' with hd' | rfl` into its components or cases. Use `swap`. Conclude with `⟨g, t, a, ht, hg, Or.inl hd, by rw [map_zero, LocalizedModule.zero_mk, add_zero]⟩`. Use `⟨(t' : MRingOver S ι) * g + (t : MRingOver S ι) * g', t * t', a + a', ?_, ?_, Or.inl ?_, ?_⟩` and prove the remaining obligations. Simplify using `using isMultiHomog_mul ht ht'`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e1 : (fun k => (γ k + ((a + a') k : ℕ)).toNat) = a' + (fun k => (γ k + a k).toNat)`. Use function extensionality and compare the values at `k`. Use `hd k` as an intermediate fact. Simplify using `only [Pi.add_apply, Nat.cast_add]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e2 : (fun k => (γ k + ((a + a') k : ℕ)).toNat) = a + (fun k => (γ k + a' k).toNat)`. Use function extensionality and compare the values at `k`. Use `hd' k` as an intermediate fact. Simplify using `only [Pi.add_apply, Nat.cast_add]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `isMultiHomog_add ?_ ?_` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `isMultiHomog_mul ht' hg`. Rewrite using `[e2]`. Conclude with `isMultiHomog_mul ht hg'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `k`. Use `hd k` as an intermediate fact. Simplify using `only [Pi.add_apply, Nat.cast_add]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[LocalizedModule.mk_add_mk]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Consider the case `smul s x _ h`. Take `⟨g, t, a, ht, hg, hd, rfl⟩` from `h`. Use `⟨s • g, t, a, ht, isMultiHomog_smul s hg, ?_, ?_⟩` and prove the remaining obligations. Break down `hd with hd | rfl` into its components or cases.
-
-Conclude with `Or.inl hd`. Conclude with `Or.inr (smul_zero s)`. Rewrite using `[LocalizedModule.smul'_mk, ← Ideal.Quotient.mkₐ_eq_mk S, map_smul]`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rep {T : Submonoid (MRingOver S ι)} {γ : K → ℤ}
     {x : LocalizedModule T (MRingOver S ι ⧸ V)} (hx : x ∈ locPart ι (quotPart S V) T γ) :
@@ -350,9 +346,9 @@ section Parts
 variable {Ω : Type} [Field Ω] [Algebra S Ω] (y : (Σ k, ι k) → Ω)
 
 /- English proof (translation)
-Introduce `x hx x' hx' hxx'`. Rewrite using `[← sub_eq_zero]`. Establish `hs : x - x' ∈ locPart ι (quotPart S (mIdealOver S y)) (cellMon S I) γ` using `sub_mem hx hx'`. Establish `h0 : evMap y I (x - x') = 0` using `by rw [map_sub, hxx', sub_self]`. Take `⟨g, t, a, -, hg, -, he⟩` from `exists_rep hs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `h0`, the goal using `[he]`. Rewrite `h0` using `[evMap_mk y hI, div_eq_zero_iff]`. Break down `h0 with h0 | h0` into its components or cases. Rewrite using `[mk_eq_zero_of_aeval y hg h0, LocalizedModule.zero_mk]`. Conclude with `absurd h0 (aeval_ne_zero_of_mem hI t.2)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evMap_injOn {I : ∀ k, Finset (ι k)} (hI : CellMeets y I) (γ : K → ℤ) :
     Set.InjOn (evMap (S := S) y I) (locPart ι (quotPart S (mIdealOver S y)) (cellMon S I) γ) := by
@@ -368,11 +364,11 @@ theorem evMap_injOn {I : ∀ k, Finset (ι k)} (hI : CellMeets y I) (γ : K → 
   · exact absurd h0 (aeval_ne_zero_of_mem hI t.2)
 
 /- English proof (translation)
-Unfold `cellSec`. Rewrite using `[if_pos hI]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `x hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g, t, a, ht, hg, hd, rfl⟩` from `exists_rep hx`. Rewrite using `[Submodule.mem_comap, evMap_mk y hI]`. Break down `hd with hd | rfl` into its components or cases. Conclude with `Submodule.subset_span ⟨g, t, a, t.2, ht, hd, hg, rfl⟩`. Rewrite using `[map_zero, zero_div]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `z ⟨g, t, a, ht, ht', hnn, hg, rfl⟩`. Use `⟨LocalizedModule.mk (Ideal.Quotient.mk _ g) ⟨t, ht⟩, Submodule.subset_span ⟨Ideal.Quotient.mk _ g, ⟨t, ht⟩, a, ht', ?_, rfl⟩, evMap_mk y hI g ⟨t, ht⟩⟩` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨g, ⟨hnn, hg⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem map_evMap_locPart {I : ∀ k, Finset (ι k)} (hI : CellMeets y I) (γ : K → ℤ) :
     (locPart ι (quotPart S (mIdealOver S y)) (cellMon S I) γ).map (evMap y I) = cellSec S y γ I := by
@@ -394,13 +390,13 @@ theorem map_evMap_locPart {I : ∀ k, Finset (ι k)} (hI : CellMeets y I) (γ : 
     exact Submodule.subset_span ⟨g, ⟨hnn, hg⟩, rfl⟩
 
 /- English proof (translation)
-Unfold `CellMeets at hI`. Use `push Not at hI`. Take `⟨k, i, hi, hy⟩` from `hI`. Establish `hX : (X ⟨k, i⟩ : MRingOver S ι) ∈ cellMon S I` using `Submonoid.subset_closure ⟨k, i, hi, rfl⟩`. Establish `hmem : (X ⟨k, i⟩ : MRingOver S ι) ∈ mIdealOver S y`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[mIdealOver, mConeMapOver, RingHom.mem_ker, hy]`. Establish `hz : ∀ w : MRingOver S ι ⧸ mIdealOver S y, (X ⟨k, i⟩ : MRingOver S ι) • w = 0`. Introduce `w`. Take `⟨g, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Ideal.mul_mem_right _ _ hmem`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Proceed by induction on `a using LocalizedModule.induction_on with`. Consider the case `h m t`. Proceed by induction on `b using LocalizedModule.induction_on with`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `h m' t'`. Rewrite using `[LocalizedModule.mk_eq]`. Use `⟨⟨_, hX⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Submonoid.smul_def]`. Rewrite using `[hz, hz]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subsingleton_of_not {I : ∀ k, Finset (ι k)} (hI : ¬ CellMeets y I) :
     Subsingleton (LocalizedModule (cellMon S I) (MRingOver S ι ⧸ mIdealOver S y)) := by
@@ -430,7 +426,7 @@ end Parts
 section Res
 
 /- English proof (translation)
-Apply `Submonoid.closure_mono` to reduce the goal to its premises. Introduce and unpack `f ⟨k, i, hi, rfl⟩`. Conclude with `⟨k, i, h k hi, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem cellMon_mono {J I : ∀ k, Finset (ι k)} (h : ∀ k, J k ⊆ I k) : cellMon S J ≤ cellMon S I := by
   apply Submonoid.closure_mono
@@ -438,7 +434,7 @@ theorem cellMon_mono {J I : ∀ k, Finset (ι k)} (h : ∀ k, J k ⊆ I k) : cel
   exact ⟨k, i, h k hi, rfl⟩
 
 /- English proof (translation)
-Unfold `cellRes`. Rewrite using `[dif_pos h, IsLocalizedModule.mk_eq_mk', IsLocalizedModule.liftOfLE_mk', ← IsLocalizedModule.mk_eq_mk']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cellRes_mk {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M] {J I : ∀ k, Finset (ι k)}
     (h : cellMon S J ≤ cellMon S I) (m : M) (t : cellMon S J) :
@@ -449,7 +445,7 @@ theorem cellRes_mk {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M] {J I 
 variable {Ω : Type} [Field Ω] [Algebra S Ω] {y : (Σ k, ι k) → Ω}
 
 /- English proof (translation)
-Distinguish the cases in `h : cellMon S J ≤ cellMon S I`. Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h m t => rw [LocalizedModule.smul'_mk, cellRes_mk h, cellRes_mk h, LocalizedModule.smul'_mk]`. Unfold `cellRes`. Rewrite using `[dif_neg h]`.
+Consider separately whether the proposition holds or fails. Proceed by induction. Treat this case separately. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -465,11 +461,9 @@ theorem cellRes_smul {J I : ∀ k, Finset (ι k)} (s : S)
     simp
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m, t, a, ht, hm, rfl⟩` from `hx`. Rewrite using `[cellRes_mk h]`. Conclude with `Submodule.subset_span ⟨m, ⟨t.1, h t.2⟩, a, ht, hm, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x₁ x₂ _ _ h₁ h₂ => rw [map_add]`. Conclude with `add_mem h₁ h₂`. Consider the case `smul s x _ h' => rw [cellRes_smul]`.
-
-Conclude with `Submodule.smul_mem _ s h'`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cellRes_mem_locPart {J I : ∀ k, Finset (ι k)} (h : cellMon S J ≤ cellMon S I) (γ : K → ℤ)
     {x : LocalizedModule (cellMon S J) (MRingOver S ι ⧸ mIdealOver S y)}
@@ -485,7 +479,7 @@ theorem cellRes_mem_locPart {J I : ∀ k, Finset (ι k)} (h : cellMon S J ≤ ce
   | smul s x _ h' => rw [cellRes_smul]; exact Submodule.smul_mem _ s h'
 
 /- English proof (translation)
-Establish `hJ : CellMeets y J` using `fun k i hi => hI k i (hJI k hi)`. Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h m t`. Rewrite using `[cellRes_mk (cellMon_mono hJI), evMap_mk' y hI, evMap_mk' y hJ]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem evMap_cellRes {J I : ∀ k, Finset (ι k)} (hJI : ∀ k, J k ⊆ I k) (hI : CellMeets y I)
     (x : LocalizedModule (cellMon S J) (MRingOver S ι ⧸ mIdealOver S y)) :

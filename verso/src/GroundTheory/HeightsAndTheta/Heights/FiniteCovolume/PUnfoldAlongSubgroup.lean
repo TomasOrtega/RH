@@ -7,31 +7,27 @@ open MeasureTheory
 open scoped ENNReal Pointwise
 
 /- English proof (translation)
-Introduce `μ H _ ν _ _ ρ _ s hm hμ Γ _ hΓH FD FD₀ hFD hFD₀ f hf hfH`. Establish `hms : ∀ y, Measurable (fun x : H => (x : G) * s y)` using `fun y => hm.comp measurable_prodMk_right`. Establish `hnull : ∀ Z : Set G, μ Z = 0 → ∀ᵐ y ∂ρ, ν ((fun x : H => (x : G) * s y) ⁻¹' Z) = 0`. Introduce `Z hZ`. Establish `hZm : MeasurableSet (toMeasurable μ Z)` using `measurableSet_toMeasurable μ Z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hin : ∀ y, ∫⁻ x, (toMeasurable μ Z).indicator 1 ((x : G) * s y) ∂ν = ν ((fun x : H => (x : G) * s y) ⁻¹' toMeasurable μ Z)` using `fun y => by`. Rewrite using `[← lintegral_indicator_one (hZm.preimage (hms y))]`. Both sides reduce to the same expression. Establish `h0` using `hμ ((toMeasurable μ Z).indicator 1) (measurable_one.indicator hZm)`. Rewrite `h0` using `[lintegral_indicator_one hZm, measure_toMeasurable, hZ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hin] at h0`. Establish `hmeas : Measurable fun y => ν ((fun x : H => (x : G) * s y) ⁻¹' toMeasurable μ Z)`. Simplify using `only [← hin]`. Conclude with `((measurable_one.indicator hZm).comp hm).lintegral_prod_left'`. Use `filter_upwards [(lintegral_eq_zero_iff hmeas).1 h0.symm] with y hy`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `measure_mono_null (Set.preimage_mono (subset_toMeasurable μ Z)) hy`. Set `toΓ : Γ.subgroupOf H → Γ` to `fun γ => ⟨((γ : H) : G), Subgroup.mem_subgroupOf.1 γ.2⟩`. Establish `htoΓ : Function.Injective toΓ` using `fun a b h => by`. Simplify using `only [toΓ, Subtype.mk.injEq] at h`. Conclude with `Subtype.ext (Subtype.ext h)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `: Countable (Γ.subgroupOf H)` using `htoΓ.countable`. Establish `hslice : ∀ y (γ : Γ.subgroupOf H) (A : Set G), (fun x : H => (x : G) * s y) ⁻¹' ((toΓ γ) • A) = γ • ((fun x : H => (x : G) * s y) ⁻¹' A)`. Introduce `y γ A`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_smul_set_iff_inv_smul_mem, Subgroup.smul_def, smul_eq_mul, toΓ, InvMemClass.coe_inv, Subgroup.coe_mul, mul_assoc]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, htFD, htm, htae⟩` from `hFD.nullMeasurableSet.exists_measurable_subset_ae_eq`. Establish `hZ1 : μ {g | ¬ ∃ γ : Γ, γ • g ∈ FD} = 0` using `ae_iff.1 hFD.ae_covers`. Establish `hZ2 : μ (FD \ t) = 0` using `(ae_eq_set.1 htae).2`. Establish `hZ3 : ∀ γ δ : Γ, ∀ᵐ y ∂ρ, γ ≠ δ → ν ((fun x : H => (x : G) * s y) ⁻¹' (γ • FD ∩ δ • FD)) = 0`. Introduce `γ δ`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : γ = δ`. Conclude with `ae_of_all _ fun _ h' => absurd h h'`. Use `filter_upwards [hnull _ (hFD.aedisjoint h)] with y hy _ using hy`. Establish `hgood : ∀ᵐ y ∂ρ, ν ((fun x : H => (x : G) * s y) ⁻¹' t) = ν FD₀` using `by filter_upwards [hnull _ hZ1, hnull _ hZ2, ae_all_iff.2 fun γ => ae_all_iff.2 (hZ3 γ)] with y h1 h2 h3`. Establish `hae : (fun x : H => (x : G) * s y) ⁻¹' t =ᵐ[ν] (fun x : H => (x : G) * s y) ⁻¹' FD`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `ae_eq_set.2 ⟨?_, h2⟩` and prove the remaining obligations. Rewrite using `[Set.sdiff_eq_empty.2 (Set.preimage_mono htFD), measure_empty]`. Establish `hFDy : IsFundamentalDomain (Γ.subgroupOf H) ((fun x : H => (x : G) * s y) ⁻¹' FD) ν` using `{ nullMeasurableSet := (htm.preimage (hms y)).nullMeasurableSet.congr hae ae_covers := by filter_upwards [measure_eq_zero_iff_ae_notMem.1 h1] with x hx`. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq, not_not] at hx`. Take `⟨γ, hγ⟩` from `hx`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨⟨γ, hΓH γ.2⟩, Subgroup.mem_subgroupOf.2 γ.2⟩, ?_⟩` and prove the remaining obligations. Simplify `hγ` using `only [Set.mem_preimage, Subgroup.smul_def, smul_eq_mul, Subgroup.coe_mul, mul_assoc]`. Use `aedisjoint := by`. Introduce `γ δ hγδ`. Express the relevant statement in the definitionally equal form `ν (γ • _ ∩ δ • _) = 0`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← hslice, ← hslice, ← Set.preimage_inter]`. Conclude with `h3 _ _ (htoΓ.ne hγδ) }`. Rewrite using `[measure_congr hae, hFDy.measure_eq hFD₀]`. Establish `hsm : Measurable s`. Use `hm.comp ((measurable_const : Measurable fun _ : Y => (1 : H)).prodMk measurable_id) using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use extensionality with `y`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Establish `he : (fun x : H => t.indicator f ((x : G) * s y)) = ((fun x : H => (x : G) * s y) ⁻¹' t).indicator fun _ => f (s y)`.
-
-Use extensionality with `x`. Distinguish the cases in `hx : (x : G) * s y ∈ t`. Simplify using `[hx, hfH]`. Simplify using `[hx]`. Rewrite using `[he, lintegral_indicator_const (htm.preimage (hms y))]`.
-
-Use `_ = ∫⁻ y, ν FD₀ * f (s y) ∂ρ := lintegral_congr_ae (by filter_upwards [hgood] with y hy`. Rewrite using `[hy, mul_comm])`. Use `_ = ν FD₀ * ∫⁻ y, f (s y) ∂ρ := lintegral_const_mul _ (hf.comp hsm)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UnfoldAlongSubgroup.proof (G Y : Type*) [Group G] [MeasurableSpace G] [MeasurableSpace Y] :
     UnfoldAlongSubgroup.Statement G Y := by

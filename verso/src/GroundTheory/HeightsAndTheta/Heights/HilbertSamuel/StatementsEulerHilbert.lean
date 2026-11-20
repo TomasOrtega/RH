@@ -20,7 +20,7 @@ def EulerHilbert.Statement : Prop :=
       (Module.finrank F (KH.cechHc ι (KH.quotPart F Q) b 0) : ℚ) = MvPolynomial.eval (fun k => (b k : ℚ)) p
 
 /- English proof (translation)
-Rewrite using `[ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _), MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ringKrullDim_point :
     ringKrullDim (MRingOver ℚ pointIdx ⧸ (⊥ : Ideal (MRingOver ℚ pointIdx))) =
@@ -30,9 +30,9 @@ theorem ringKrullDim_point :
   simp
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, i = n + 1` from `⟨i - 1, by omega⟩`. Use `cell_succ_isEmpty (K := Unit) (ι := pointIdx) n` as an intermediate fact. Establish `: Subsingleton (KH.CechC ℚ pointIdx M (n + 1))` using `⟨fun f g => funext fun I => (IsEmpty.false I).elim⟩`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite using `[Subsingleton.elim x y]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cechHc_point_subsingleton {M : Type} [AddCommGroup M] [Module (MRingOver ℚ pointIdx) M] [Module ℚ M]
     [IsScalarTower ℚ (MRingOver ℚ pointIdx) M] (𝓜 : (Unit → ℤ) → Submodule ℚ M) (b : Unit → ℤ) (i : ℕ)
@@ -47,7 +47,7 @@ theorem cechHc_point_subsingleton {M : Type} [AddCommGroup M] [Module (MRingOver
   rw [Subsingleton.elim x y]
 
 /- English proof (translation)
-Take `⟨p, a₀, -, hp⟩` from `MultigradedHilbertPolynomial.proof EventualPolynomial.proof ℚ Unit pointIdx ⊥ 0 NumbersDVR.isMultiProjPrime_bot ringKrullDim_point`. Conclude with `⟨p, a₀, NumbersDVR.isMultiProjPrime_bot, hp, fun i hi => cechHc_point_subsingleton _ _ i hi⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem EulerHilbert.hyps_inhabited :
     ∃ (p : MvPolynomial Unit ℚ) (a₀ : ℕ), NumbersDVR.IsMultiProjPrime (⊥ : Ideal (MRingOver ℚ pointIdx)) ∧

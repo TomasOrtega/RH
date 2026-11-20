@@ -15,7 +15,7 @@ section LR
 variable {X : Fields} {Pr : Primes X} {R : Ranks}
 
 /- English proof (translation)
-Unfold `Ranks.N Ranks.r`. Rewrite using `[hm]`. Establish `e : (m2 + 1 + 1) * (R.t + 1) = (m2 + 2) * R.t + (m2 + 2)` using `by ring`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem xt_N_top {m2 : ℕ} (hm : R.m = m2 + 2) : R.N (m2 + 1 + 1) - 1 = R.r + R.m * R.t := by
   unfold Ranks.N Ranks.r
@@ -24,15 +24,15 @@ theorem xt_N_top {m2 : ℕ} (hm : R.m = m2 + 2) : R.N (m2 + 1 + 1) - 1 = R.r + R
   omega
 
 /- English proof (translation)
-Introduce `w h' hh' l`. Rewrite `hh'` using `[colLevSym_top_H Ch (by omega) w]`. Establish `hN` using `xt_N_top (R := R) hm`. Establish `hbt` using `HPar_le _ _ _ hh'.1`. Distinguish the cases in `hl : l.1 = R.N (m2 + 1 + 1) - 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hl, hh'.2 _ l (by rw [hl, hN])]`. Establish `: (⟨R.N (m2 + 1 + 1) - 1, xt_last_lt R _⟩ : Fin (R.N (m2 + 1 + 1))) = l` using `Fin.ext hl.symm`. Rewrite using `[this, Matrix.one_apply_eq]`. Rewrite using `[if_neg hl]`. Use `mem_btG.1 hbt _ l ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl2 : l.1 < R.r + R.m * R.t` using `by have := l.2; omega`. Use `show coarse R.r (List.replicate R.m R.t) l.1 < coarse R.r (List.replicate R.m R.t) (R.N (m2 + 1 + 1) - 1)`. Rewrite using `[hN]`. Establish `e1 : coarse R.r (List.replicate R.m R.t) (R.r + R.m * R.t) = R.m + 1`. Unfold `coarse blkIdx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (by omega), Nat.add_sub_cancel_left, blkIdx_replicate_of_le _ _ _ le_rfl]`. Rewrite using `[e1]`. Unfold `coarse blkIdx`. Use `split_ifs with h0`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `blkIdx_replicate_lt R.t R.m (l.1 - R.r) (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem lastRow_colLevSym (Ch : Chars X Pr R.m) {m2 : ℕ} (hm : R.m = m2 + 2) : LastRow (colLevSym Ch (m2 + 1 + 1)) := by
   intro w h' hh' l

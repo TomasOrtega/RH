@@ -42,7 +42,7 @@ theorem ptAt_apply (z : w.adicCompletion E) :
     ptAt hw h z = GlobalTheory.AdelicU.Supp.singleTens E v ((InertChart.complEquiv hw h).symm z) := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `toCompl h (compFin F E v (GlobalTheory.AdelicU.Supp.singleTens E v ((InertChart.complEquiv hw h).symm z))) = z`. Rewrite using `[GlobalTheory.AdelicU.Supp.compFin_singleTens_self]`. Conclude with `(InertChart.complEquiv hw h).apply_symm_apply z`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locW_ptAt (z : w.adicCompletion E) : locW h (ptAt hw h z) = z := by
   change toCompl h (compFin F E v (GlobalTheory.AdelicU.Supp.singleTens E v ((InertChart.complEquiv hw h).symm z))) = z
@@ -50,16 +50,16 @@ theorem locW_ptAt (z : w.adicCompletion E) : locW h (ptAt hw h z) = z := by
   exact (InertChart.complEquiv hw h).apply_symm_apply z
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ThK.at_evFin_iff.2 ⟨fun u => GlobalTheory.AdelicU.Supp.compInf_singleTens u v _, fun u hu => GlobalTheory.AdelicU.Supp.compFin_singleTens_ne hu _⟩`.
+A detailed English derivation is pending.
 -/
 theorem at_ptAt (z : w.adicCompletion E) : At (evFin F v) (ptAt hw h z) :=
   GlobalTheory.ThK.at_evFin_iff.2 ⟨fun u => GlobalTheory.AdelicU.Supp.compInf_singleTens u v _,
     fun u hu => GlobalTheory.AdelicU.Supp.compFin_singleTens_ne hu _⟩
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.ThK.at_evFin_iff.1 hz`. Use `GlobalTheory.AdelicU.Supp.adTens_ext (fun u => ?_) fun u => ?_` and prove the remaining obligations. Rewrite using `[ptAt_apply, GlobalTheory.AdelicU.Supp.compInf_singleTens, h1 u]`. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[ptAt_apply, GlobalTheory.AdelicU.Supp.compFin_singleTens_self]`. Conclude with `(InertChart.complEquiv hw h).symm_apply_apply _`. Rewrite using `[ptAt_apply, GlobalTheory.AdelicU.Supp.compFin_singleTens_ne e, h2 u e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptAt_locW {z : AE F E} (hz : At (evFin F v) z) : ptAt hw h (locW h z) = z := by
   obtain ⟨h1, h2⟩ := GlobalTheory.ThK.at_evFin_iff.1 hz
@@ -79,11 +79,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (hw : Formalism.UG.IsInertAt F E v w) (h : w.under (𝓞 F) = v)
 
 /- English proof (translation)
-Establish `e1 : ∀ y : AE F E, cA σ y = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ y` using `fun y => by`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[e1, ptAt_apply, GlobalTheory.AdelicU.Supp.sigR_singleTens, ptAt_apply]`. Use `congr 1`. Apply `(InertChart.complEquiv hw h).injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply]`. Use `hc ((InertChart.complEquiv hw h).symm z)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `c (InertChart.complEquiv hw h ((InertChart.complEquiv hw h).symm z)) = _ at this`. Rewrite `this` using `[RingEquiv.apply_symm_apply]`. Conclude with `this.symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cA_ptAt (σ : E →ₐ[F] E) {c : w.adicCompletion E →+* w.adicCompletion E} (hc : IsConjAt σ h c) (z : w.adicCompletion E) :
     cA σ (ptAt hw h z) = ptAt hw h (c z) := by
@@ -102,9 +102,9 @@ theorem cA_ptAt (σ : E →ₐ[F] E) {c : w.adicCompletion E →+* w.adicComplet
   exact this.symm
 
 /- English proof (translation)
-Rewrite using `[mul_comm, ptAt_apply, GlobalTheory.AdelicU.Supp.singleTens_mul, ptAt_apply]`. Use `congr 1`. Apply `(InertChart.complEquiv hw h).injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, map_mul, RingEquiv.apply_symm_apply, mul_comm]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Express the relevant statement in the definitionally equal form `toCompl h (compFin F E v ((1 : AF F) ⊗ₜ[F] x)) = _`. Rewrite using `[GlobalTheory.AdelicU.Supp.compFin_one_tmul, toCompl_tmul, map_one, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem inclR_mul_ptAt (x : E) (z : w.adicCompletion E) :
     inclR (F := F) (AF F) x * ptAt hw h z = ptAt hw h (algebraMap E (w.adicCompletion E) x * z) := by

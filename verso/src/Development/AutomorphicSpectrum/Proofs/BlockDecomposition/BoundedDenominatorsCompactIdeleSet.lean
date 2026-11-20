@@ -13,18 +13,18 @@ namespace GlobalTheory.CompanionTheory.BasePsi.Den
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v t`.
+A detailed English derivation is pending.
 -/
 theorem valued_algebraMap (v : HeightOneSpectrum (𝓞 F)) (t : F) :
     Valued.v (algebraMap F (Fv F v) t) = v.valuation F t :=
   HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v t
 
 /- English proof (translation)
-Establish `hO : IsOpen (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isOpen_valuationSubring _`. Take `⟨s, -, hs⟩` from `hC.elim_nhds_subcover (fun x => {y : Fv F v | y - x ∈ v.adicCompletionIntegers F}) (fun x _ => by`. Establish `hopen : IsOpen {y : Fv F v | y - x ∈ v.adicCompletionIntegers F}` using `hO.preimage (continuous_id.sub continuous_const)`. Conclude with `hopen.mem_nhds (by simp))`. Take `⟨M, hM⟩` from `(s.image fun x => Valued.v x).exists_le`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨max M 1, (lt_of_lt_of_le zero_lt_one (le_max_right _ _)).ne', fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hxy⟩` from `Set.mem_iUnion₂.mp (hs hy)`. Establish `h1 : Valued.v (y - x) ≤ 1` using `hxy`. Establish `h2 : Valued.v x ≤ M` using `hM _ (Finset.mem_image_of_mem _ hx)`. Establish `h3 : y = (y - x) + x` using `by ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le (h1.trans (le_max_right _ _)) (h2.trans (le_max_left _ _)))`.
+A detailed English derivation is pending.
 -/
 theorem exists_valued_bound (v : HeightOneSpectrum (𝓞 F)) {C : Set (Fv F v)} (hC : IsCompact C) :
     ∃ γ : WithZero (Multiplicative ℤ), γ ≠ 0 ∧ ∀ x ∈ C, Valued.v x ≤ γ := by
@@ -46,11 +46,11 @@ theorem exists_valued_bound (v : HeightOneSpectrum (𝓞 F)) {C : Set (Fv F v)} 
     (max_le (h1.trans (le_max_right _ _)) (h2.trans (le_max_left _ _)))
 
 /- English proof (translation)
-Take `⟨s, -, hs⟩` from `hD.elim_nhds_subcover (fun a : (AF F)ˣ => {u : (AF F)ˣ | a⁻¹ * u ∈ IdeleGroup.standardOpenSubgroup F}) (fun a _ => by`. Establish `hopen : IsOpen {u : (AF F)ˣ | a⁻¹ * u ∈ IdeleGroup.standardOpenSubgroup F}` using `(IdeleGroup.isOpen_standardOpenSubgroup F).preimage (continuous_const.mul continuous_id)`. Conclude with `hopen.mem_nhds (by simp [one_mem]))`. Establish `hfin : ∀ a : (AF F)ˣ, {v : HeightOneSpectrum (𝓞 F) | ((a⁻¹ : (AF F)ˣ) : AF F).2 v ∉ v.adicCompletionIntegers F}.Finite` using `fun a => Filter.eventually_cofinite.mp ((a⁻¹ : (AF F)ˣ) : AF F).2.2`. Use `⟨s.biUnion fun a => (hfin a).toFinset, fun u hu v hv => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hau⟩` from `Set.mem_iUnion₂.mp (hs hu)`. Establish `hav : ((a⁻¹ : (AF F)ˣ) : AF F).2 v ∈ v.adicCompletionIntegers F`. Assume the negation of the conclusion as `hcon`. Conclude with `hv (Finset.mem_biUnion.mpr ⟨a, ha, (hfin a).mem_toFinset.mpr hcon⟩)`. Establish `hh` using `((IdeleGroup.mem_standardOpenSubgroup F).mp hau v).2`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : u⁻¹ = (a⁻¹ * u)⁻¹ * a⁻¹` using `by group`. Establish `hmul : ((u⁻¹ : (AF F)ˣ) : AF F).2 v = (((a⁻¹ * u)⁻¹ : (AF F)ˣ) : AF F).2 v * ((a⁻¹ : (AF F)ˣ) : AF F).2 v` using `by conv_lhs => rw [hu']`. Both sides reduce to the same expression. Rewrite using `[hmul]`. Conclude with `mul_mem hh hav`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_inv_integral {D : Set (AF F)ˣ} (hD : IsCompact D) :
     ∃ T : Finset (HeightOneSpectrum (𝓞 F)), ∀ u ∈ D, ∀ v, v ∉ T →
@@ -78,7 +78,7 @@ theorem exists_finset_inv_integral {D : Set (AF F)ˣ} (hD : IsCompact D) :
   exact mul_mem hh hav
 
 /- English proof (translation)
-Establish `hc : Continuous fun u : (AF F)ˣ => ((u⁻¹ : (AF F)ˣ) : AF F).2 v` using `Units.continuous_val.comp ((IdeleGroup.continuous_finiteProj (K := F) v).comp continuous_inv)`. Take `⟨γ, h0, hγ⟩` from `exists_valued_bound v (hD.image hc)`. Conclude with `⟨γ, h0, fun u hu => hγ _ (Set.mem_image_of_mem _ hu)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_inv_bound {D : Set (AF F)ˣ} (hD : IsCompact D) (v : HeightOneSpectrum (𝓞 F)) :
     ∃ γ : WithZero (Multiplicative ℤ), γ ≠ 0 ∧ ∀ u ∈ D, Valued.v (((u⁻¹ : (AF F)ˣ) : AF F).2 v) ≤ γ := by
@@ -88,17 +88,15 @@ theorem exists_inv_bound {D : Set (AF F)ˣ} (hD : IsCompact D) (v : HeightOneSpe
   exact ⟨γ, h0, fun u hu => hγ _ (Set.mem_image_of_mem _ hu)⟩
 
 /- English proof (translation)
-Take `⟨T₀, hT₀⟩` from `exists_finset_inv_integral hD`. Use `choose B _ hB using fun v => exists_inv_bound hD v`. Establish `hG : ∀ v : HeightOneSpectrum (𝓞 F), ∃ γ : WithZero (Multiplicative ℤ), v ∈ S → ∀ x ∈ C v, Valued.v x ≤ γ` using `fun v => by`. Distinguish the cases in `hv : v ∈ S`. Take `⟨γ, -, h⟩` from `exists_valued_bound v (hC v hv)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨γ, fun _ => h⟩`. Conclude with `⟨1, fun h => absurd h hv⟩`. Use `choose G hG using hG`. Use `⟨T₀ ∪ S, fun v => max (G v) 1 * B v, fun u hu t h1 h2 v => ?_⟩` and prove the remaining obligations. Establish `hinv : (u : AF F).2 v * ((u⁻¹ : (AF F)ˣ) : AF F).2 v = 1` using `congrArg (fun a : AF F => a.2 v) (Units.mul_inv u)`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : algebraMap F (Fv F v) t = (algebraMap F (Fv F v) t * (u : AF F).2 v) * ((u⁻¹ : (AF F)ˣ) : AF F).2 v`. Rewrite using `[mul_assoc, hinv, mul_one]`. Establish `hval : v.valuation F t = Valued.v (algebraMap F (Fv F v) t * (u : AF F).2 v) * Valued.v (((u⁻¹ : (AF F)ˣ) : AF F).2 v)`. Rewrite using `[← valued_algebraMap, ← map_mul, ← hx]`. Establish `hfirst : Valued.v (algebraMap F (Fv F v) t * (u : AF F).2 v) ≤ max (G v) 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hv : v ∈ S`. Conclude with `(hG v hv _ (h1 v hv)).trans (le_max_left _ _)`. Establish `a : Valued.v (algebraMap F (Fv F v) t * (u : AF F).2 v) ≤ 1` using `h2 v hv`. Conclude with `a.trans (le_max_right _ _)`. Distinguish the cases in `hvT : v ∈ T₀ ∪ S`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_pos hvT, hval]`. Conclude with `mul_le_mul' hfirst (hB v u hu)`. Rewrite using `[if_neg hvT, hval]`. Establish `hvS : v ∉ S` using `fun h => hvT (Finset.mem_union_right _ h)`. Establish `hvT₀ : v ∉ T₀` using `fun h => hvT (Finset.mem_union_left _ h)`.
-
-Establish `a1 : Valued.v (algebraMap F (Fv F v) t * (u : AF F).2 v) ≤ 1` using `h2 v hvS`. Establish `a2 : Valued.v (((u⁻¹ : (AF F)ˣ) : AF F).2 v) ≤ 1` using `hT₀ u hu v hvT₀`. Simplify using `using mul_le_mul' a1 a2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_bound {D : Set (AF F)ˣ} (hD : IsCompact D) (S : Finset (HeightOneSpectrum (𝓞 F)))
     (C : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)) (hC : ∀ v ∈ S, IsCompact (C v)) :
@@ -140,7 +138,7 @@ theorem exists_bound {D : Set (AF F)ˣ} (hD : IsCompact D) (S : Finset (HeightOn
     simpa using mul_le_mul' a1 a2
 
 /- English proof (translation)
-Use `HeightOneSpectrum.valuation_le_one (K := F) v (n : 𝓞 F)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem valuation_natCast_le_one (v : HeightOneSpectrum (𝓞 F)) (n : ℕ) :
     v.valuation F (n : F) ≤ 1 := by
@@ -148,11 +146,11 @@ theorem valuation_natCast_le_one (v : HeightOneSpectrum (𝓞 F)) (n : ℕ) :
   simpa using this
 
 /- English proof (translation)
-Distinguish the cases in `hA : A = 0`. Conclude with `⟨1, one_pos, by simp [hA]⟩`. Establish `hlt : v.valuation F ((Ideal.absNorm v.asIdeal : ℕ) : F) < 1`. Establish `h` using `(v.valuation_lt_one_iff_mem (K := F) ((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 F)).2 (Ideal.absNorm_mem _)`. Simplify using `using h`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨k, hk⟩` from `exists_pow_lt₀ hlt (Units.mk0 _ (inv_ne_zero hA))`. Establish `hpos : 0 < Ideal.absNorm v.asIdeal`. Use `Nat.pos_of_ne_zero fun h => v.ne_bot ?_` and prove the remaining obligations. Conclude with `Ideal.absNorm_eq_zero_iff.mp h`. Use `⟨Ideal.absNorm v.asIdeal ^ k, pow_pos hpos k, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3 : v.valuation F (((Ideal.absNorm v.asIdeal ^ k : ℕ)) : F) < A⁻¹`. Use `push_cast`. Rewrite using `[map_pow]`. Conclude with `hk`. Combine the equalities or inequalities in the displayed calculation.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_le_one (v : HeightOneSpectrum (𝓞 F)) (A : WithZero (Multiplicative ℤ)) :
     ∃ n : ℕ, 0 < n ∧ v.valuation F (n : F) * A ≤ 1 := by
@@ -176,13 +174,13 @@ theorem exists_nat_mul_le_one (v : HeightOneSpectrum (𝓞 F)) (A : WithZero (Mu
     _ = 1 := inv_mul_cancel₀ hA
 
 /- English proof (translation)
-Take `⟨T, A, hA⟩` from `exists_bound hD S C hC`. Use `choose n hn0 hn using fun v => exists_nat_mul_le_one (F := F) v (A v)`. Use `⟨∏ v ∈ T, n v, Finset.prod_pos fun v _ => hn0 v, fun u hu t h1 h2 => ?_⟩` and prove the remaining obligations. Use `exists_eq_of_forall_mem_adicCompletionIntegers F _ fun v => ?_` and prove the remaining obligations. Rewrite using `[coe_mem_adicCompletionIntegers_iff, map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ht` using `hA u hu t h1 h2 v`. Distinguish the cases in `hv : v ∈ T`. Rewrite `ht` using `[if_pos hv]`. Take `⟨m, hm⟩` from `Finset.dvd_prod_of_mem n hv`. Establish `hN : v.valuation F (((∏ v ∈ T, n v : ℕ)) : F) ≤ v.valuation F (n v : F)`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Use `push_cast`. Rewrite using `[map_mul]`. Simplify using `using mul_le_mul' (le_refl (v.valuation F (n v : F))) (valuation_natCast_le_one v m)`. Conclude with `(mul_le_mul' hN ht).trans (hn v)`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `ht` using `[if_neg hv]`. Simplify using `using mul_le_mul' (valuation_natCast_le_one v (∏ v ∈ T, n v)) ht`.
+A detailed English derivation is pending.
 -/
 theorem common_denominator (F : Type) [Field F] [NumberField F] (D : Set (AF F)ˣ) (hD : IsCompact D)
     (S : Finset (HeightOneSpectrum (𝓞 F))) (C : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v))

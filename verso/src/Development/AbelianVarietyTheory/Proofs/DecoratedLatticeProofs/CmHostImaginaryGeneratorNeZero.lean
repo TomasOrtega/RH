@@ -24,35 +24,35 @@ namespace GlobalTheory.Unf.Inhab
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `let ⟨μ, 𝓕, h1, h2⟩ := GlobalTheory.RawLift.exists_haar_fundDomain V ⟨⟨μ, 𝓕, h1, h2⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_vol (V : HSp D) : Nonempty (Vol V) :=
   let ⟨μ, 𝓕, h1, h2⟩ := GlobalTheory.RawLift.exists_haar_fundDomain V
   ⟨⟨μ, 𝓕, h1, h2⟩⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨ν, 𝓝, h⟩ := GlobalTheory.Per.UnitN.exists_isUnitN D S ρ d.e (isIsoSub_e d) ⟨⟨ν, 𝓝, h⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_volN {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) : Nonempty (VolN d) :=
   let ⟨ν, 𝓝, h⟩ := GlobalTheory.Per.UnitN.exists_isUnitN D S ρ d.e (isIsoSub_e d)
   ⟨⟨ν, 𝓝, h⟩⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨μ, 𝓕, h⟩ := exists_isCovolOne D m n ⟨⟨μ, 𝓕, h⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_volM (D : D7) (m n : ℕ) : Nonempty (VolM D m n) :=
   let ⟨μ, 𝓕, h⟩ := exists_isCovolOne D m n
   ⟨⟨μ, 𝓕, h⟩⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨ν, h⟩ := (GlobalTheory.UnitU.isUnitU_exists_unique_rightInvariant D ρ).1 ⟨⟨ν, h⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_volU (D : D7) (ρ : ℕ) : Nonempty (VolU D ρ) :=
   let ⟨ν, h⟩ := (GlobalTheory.UnitU.isUnitU_exists_unique_rightInvariant D ρ).1
   ⟨⟨ν, h⟩⟩
 
 /- English proof (translation)
-Take `⟨K, hK, h⟩` from `h`. Use `⟨K, hK, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, k, hk, rfl⟩` from `h g`. Conclude with `⟨γ⁻¹, inv_mem hγ, by rwa [inv_mul_cancel_left]⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem coCpt_of_mul {V : HSp D} (h : ∃ K : Set (GA D V), IsCompact K ∧ ∀ g, ∃ γ ∈ GQ V, ∃ k ∈ K, g = γ * k) : CoCpt V := by
   obtain ⟨K, hK, h⟩ := h
@@ -61,19 +61,19 @@ theorem coCpt_of_mul {V : HSp D} (h : ∃ K : Set (GA D V), IsCompact K ∧ ∀ 
   exact ⟨γ⁻¹, inv_mem hγ, by rwa [inv_mul_cancel_left]⟩
 
 /- English proof (translation)
-The claim follows from `coCpt_of_mul (GlobalTheory.Mem.AnisoQuotient.exists_compact D V h)`.
+A detailed English derivation is pending.
 -/
 theorem coCpt_of_isAniso {V : HSp D} (h : IsAniso V) : CoCpt V :=
   coCpt_of_mul (GlobalTheory.Mem.AnisoQuotient.exists_compact D V h)
 
 /- English proof (translation)
-The claim follows from `coCpt_of_mul (GlobalTheory.definite_unitary_cocompact V h)`.
+A detailed English derivation is pending.
 -/
 theorem coCpt_of_posDef {V : HSp D} (h : ∀ τ, (gramAt D V τ).PosDef) : CoCpt V :=
   coCpt_of_mul (GlobalTheory.definite_unitary_cocompact V h)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.WeilExist.exists_isWeilDatumO D ψ hψ S T χS χT (GlobalTheory.WeilParts.exists_isEtaTilde_unramified D) h1 h2 h3 h4`.
+A detailed English derivation is pending.
 -/
 theorem exists_weil {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (S T : HSp D) {χS χT : (AE D)ˣ →* Circle}
     (h1 : IsHeckeChar D χS) (h2 : IsHeckeChar D χT) (h3 : ResEta D χS S.rank) (h4 : ResEta D χT T.rank) :
@@ -81,7 +81,7 @@ theorem exists_weil {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
   GlobalTheory.WeilExist.exists_isWeilDatumO D ψ hψ S T χS χT (GlobalTheory.WeilParts.exists_isEtaTilde_unramified D) h1 h2 h3 h4
 
 /- English proof (translation)
-The claim follows from `let ⟨χS, a1, a2⟩ := GlobalTheory.RawLift.exists_hecke_resEta D S.rank let ⟨χT, b1, b2⟩ := GlobalTheory.RawLift.exists_hecke_resEta D T.rank ⟨χS, χT, exists_weil hψ S T a1 b1 a2 b2⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_weil_pair {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (S T : HSp D) :
     ∃ χS χT om, IsWeilDatumO ψ S T χS χT om :=
@@ -90,9 +90,9 @@ theorem exists_weil_pair {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ 
   ⟨χS, χT, exists_weil hψ S T a1 b1 a2 b2⟩
 
 /- English proof (translation)
-Take `⟨χV, a1, a2⟩` from `GlobalTheory.RawLift.exists_hecke_resEta D V.rank`. Take `⟨χW, b1, b2⟩` from `GlobalTheory.RawLift.exists_hecke_resEta D W.rank`. Take `⟨om, h⟩` from `exists_weil hψ V W a1 b1 a2 b2`. Take `⟨om₀, h₀⟩` from `exists_weil hψ V₀ W₀ a1 b1 (resEta_parity a2 hV) (resEta_parity b2 hW)`. Take `⟨vW⟩` from `nonempty_vol W`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨vS⟩` from `nonempty_volM D W.rank ρ`. Take `⟨vT⟩` from `nonempty_volM D σ V₀.rank`. Take `⟨vU⟩` from `nonempty_volU D ρ`. Conclude with `⟨⟨χV, χW, om, om₀, h, h₀, vW, vS, vT, vU⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_step {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (V V₀ W W₀ : HSp D) (ρ σ : ℕ)
     (hV : V.rank % 2 = V₀.rank % 2) (hW : W.rank % 2 = W₀.rank % 2) : Nonempty (Step ψ V V₀ W W₀ ρ σ) := by
@@ -107,28 +107,28 @@ theorem nonempty_step {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1
   exact ⟨⟨χV, χW, om, om₀, h, h₀, vW, vS, vT, vU⟩⟩
 
 /- English proof (translation)
-Use `d.rank_add` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem even_im_hermitian_sub {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) : S.rank % 2 = S₀.rank % 2 := by
   have := d.rank_add
   omega
 
 /- English proof (translation)
-The claim follows from `nonempty_step hψ _ _ _ _ _ _ (even_im_hermitian_sub B.d) (even_im_hermitian_sub J.d)`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_stepBF {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {ρ : ℕ} (B : BesLev D ρ) (J : JacLev D ρ) :
     Nonempty (StepBF ψ B J) :=
   nonempty_step hψ _ _ _ _ _ _ (even_im_hermitian_sub B.d) (even_im_hermitian_sub J.d)
 
 /- English proof (translation)
-The claim follows from `nonempty_step hψ _ _ _ _ _ _ (even_im_hermitian_sub J.d) (even_im_hermitian_sub B.d)`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_stepFB {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {σ : ℕ} (J : JacLev D (σ + 1))
     (B : BesLev D σ) : Nonempty (StepFB ψ J B) :=
   nonempty_step hψ _ _ _ _ _ _ (even_im_hermitian_sub J.d) (even_im_hermitian_sub B.d)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D`.
+A detailed English derivation is pending.
 -/
 theorem cmHost_imaginaryGenerator_ne_zero (D : D7) : D.host.xi0 ≠ 0 := GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D
 
@@ -161,9 +161,9 @@ abbrev negLine (D : D7) : HSp D := diagSp D 1 ![true] 0 1
 abbrev plane (D : D7) : HSp D := diagSp D 2 ![false, true] 1 1
 
 /- English proof (translation)
-Establish `h : gramAt D (posLine D) τ = 1`. Rewrite using `[gramAt, diagSp_gram]`. Use extensionality with `i j`. Rewrite using `[Subsingleton.elim (α := Fin 1) i j, Subsingleton.elim (α := Fin 1) j (0 : Fin 1)]`. Conclude with `(congrArg (tauE D τ) (Matrix.diagonal_apply_eq _ _)).trans ((map_one (tauE D τ)).trans (Matrix.one_apply_eq _).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `Matrix.PosDef.one`.
+A detailed English derivation is pending.
 -/
 theorem posDef_posLine (D : D7) (τ : D.what₂.Tau) : (gramAt D (posLine D) τ).PosDef := by
   have h : gramAt D (posLine D) τ = 1 := by
@@ -175,12 +175,12 @@ theorem posDef_posLine (D : D7) (τ : D.what₂.Tau) : (gramAt D (posLine D) τ)
   exact Matrix.PosDef.one
 
 /- English proof (translation)
-The claim follows from `coCpt_of_posDef (posDef_posLine D)`.
+A detailed English derivation is pending.
 -/
 theorem coCpt_posLine (D : D7) : CoCpt (posLine D) := coCpt_of_posDef (posDef_posLine D)
 
 /- English proof (translation)
-Use `⟨rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[diagSp_gram]`. Express the relevant statement in the definitionally equal form `∑ i : Fin 1, star c * ∑ j : Fin 1, Matrix.diagonal (fun i => Examples₂.sgn (![true] i)) i j * c ≠ 0`. Simplify using `[Examples₂.sgn, hc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem isLineVec_negLine {c : D.host.E} (hc : c ≠ 0) : IsLineVec (negLine D) (fun _ => c) := by
   refine ⟨rfl, ?_⟩
@@ -210,7 +210,7 @@ def jacLine {W : HSp D} {ρ : ℕ} (d : HypDec W (posLine D) ρ) : JacLev D ρ w
   vN := (nonempty_volN d).some
 
 /- English proof (translation)
-Take `⟨s⟩` from `nonempty_stepBF hψ B J`. Take `⟨χS, χT, om, h⟩` from `exists_weil_pair hψ J.W T`. Take `⟨vT⟩` from `nonempty_vol T`. Conclude with `⟨⟨J, s, hJ, hT, χS, χT, om, h, vT⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_last {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (B : BesLev D 0) (J : JacLev D 0)
     (hJ : CoCpt J.W) {T : HSp D} (hT : CoCpt T) : ∃ t : Last ψ T B, t.J = J := by
@@ -229,9 +229,9 @@ noncomputable def CoresPos {ψ : AddChar (AF D.host.F) ℂ} {T : HSp D} : {ρ : 
   | _, _B, .step J B' _ _ _ _ c => 0 < J.W₀.rank ∧ 0 < B'.A.rank ∧ CoresPos c
 
 /- English proof (translation)
-Proceed by induction on `c with`. Consider the case `@last B t`. Take `⟨f, hf, f0⟩` from `GlobalTheory.Mem.ThetaNonzero.exists_thetaO_ne_zero hψ B.V t.J.W`. Take `⟨g, hg, g0⟩` from `GlobalTheory.Mem.ThetaNonzero.exists_thetaO_ne_zero hψ t.J.W T`. Conclude with `⟨(f, g), ⟨hf, hg⟩, f0, g0⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `@step σ B J B' s₁ s₂ l vL c ih`. Take `⟨f, hf, f0⟩` from `GlobalTheory.Mem.ThetaNonzero.exists_thetaO_ne_zero hψ B.V J.W`. Take `⟨g, hg, g0⟩` from `GlobalTheory.Mem.ThetaNonzero.exists_thetaO_ne_zero hψ J.W B'.V`. Take `⟨Φ, h, h0⟩` from `ih`. Conclude with `⟨(f, g, Φ), ⟨hf, hg, h⟩, f0, g0, h0⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_data {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {T : HSp D} {ρ : ℕ} {B : BesLev D ρ}
     (c : Chain ψ T ρ B) : ∃ Φ : c.Data, c.IsTheta Φ ∧ AllNonzero c Φ := by
@@ -247,11 +247,11 @@ theorem exists_data {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     exact ⟨(f, g, Φ), ⟨hf, hg, h⟩, f0, g0, h0⟩
 
 /- English proof (translation)
-Set `B : BesLev D 1` to `besPlane (GlobalTheory.RegSW.Model.hypFour D) (cmHost_imaginaryGenerator_ne_zero D)`. Set `J : JacLev D 1` to `jacLine (hypDecThree D)`. Set `B' : BesLev D 0` to `besPlane (hypRefl (plane D)) one_ne_zero`. Take `⟨t, ht⟩` from `exists_last hψ B' (jacLine (hypRefl (posLine D))) (coCpt_posLine D) (coCpt_posLine D)`. Take `⟨s₁⟩` from `nonempty_stepBF hψ B J`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s₂⟩` from `nonempty_stepFB (σ := 0) hψ J B'`. Establish `e : D.host.xi0⁻¹ • B.ζ = B'.ζ` using `funext fun _ => inv_mul_cancel₀ (cmHost_imaginaryGenerator_ne_zero D)`. Establish `l : Link B B.L B'.ζ` using `e ▸ selfLink B`. Take `⟨vL⟩` from `nonempty_volM D B'.L.rank J.W₀.rank`. Use `⟨posLine D, B, .step J B' s₁ s₂ l vL (.last t), Nat.one_pos, Nat.one_pos, ⟨Nat.one_pos, Nat.one_pos, ?_⟩, exists_data hψ _⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show 0 < t.J.W₀.rank`. Rewrite using `[ht]`. Conclude with `Nat.one_pos`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chain_of_isStdChar {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) :
     ∃ (T : HSp D) (B : BesLev D 1) (c : Chain ψ T 1 B), 0 < B.A.rank ∧ 0 < T.rank ∧ CoresPos c ∧
@@ -272,7 +272,7 @@ theorem exists_chain_of_isStdChar {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdC
   exact Nat.one_pos
 
 /- English proof (translation)
-The claim follows from `hom.om_pres _ _ hΦ cont := (GlobalTheory.ThetaJointCont.continuous_om_oriented hom hΦ).comp ((continuous_fst.prodMk continuous_const).prodMk continuous_snd) left γ hγ h w := by have h1 : ∀ V : HSp D, Formalism.L2.Theta.mt V 1 = 1 := fun V => by simp [Formalism.L2.Theta.mt] have e …`.
+A detailed English derivation is pending.
 -/
 theorem isThetaFam_om {ψ : AddChar (AF D.host.F) ℂ} {S L : HSp D} {χS χL : (AE D)ˣ →* Circle} {om : Om S L}
     (hom : IsWeilDatumO ψ S L χS χL om) {Φ₀ : WO S L → ℂ} (hΦ : IsThetaFunO ψ S L Φ₀) :
@@ -289,9 +289,9 @@ theorem isThetaFam_om {ψ : AddChar (AF D.host.F) ℂ} {S L : HSp D} {χS χL : 
       ← GlobalTheory.WeilRat.om_rat_actO D ψ hom.std S L χS χL om hom γ hγ 1 (one_mem _) _ (hom.om_pres _ _ hΦ) (w ⬝ Formalism.L2.Theta.mt S γ), e]
 
 /- English proof (translation)
-Take `⟨χS, χL, om, hom⟩` from `exists_weil_pair hψ S L`. Take `⟨f, hf, f0⟩` from `GlobalTheory.Mem.ThetaNonzero.exists_thetaO_ne_zero hψ S L`. Use `⟨_, isThetaFam_om hom hf, fun h h0 => f0 ?_⟩` and prove the remaining obligations. Establish `: om (h, 1)⁻¹ (om (h, 1) f) = f`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this, show om (h, 1) f = 0 from h0, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isThetaFam {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (S L : HSp D) :
     ∃ Y, IsThetaFam ψ S L Y ∧ ∀ h, Y h ≠ 0 := by
@@ -303,7 +303,7 @@ theorem exists_isThetaFam {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ
   rw [← this, show om (h, 1) f = 0 from h0, map_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(GlobalTheory.Ker.exists_infFam_and_stdChar D).2, fun _ hψ => ⟨exists_chain_of_isStdChar hψ, exists_isThetaFam hψ⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_chain (D : D7) : (∃ ψ : AddChar (AF D.host.F) ℂ, IsStdChar D ψ (-1)) ∧
     ∀ ψ : AddChar (AF D.host.F) ℂ, IsStdChar D ψ (-1) →

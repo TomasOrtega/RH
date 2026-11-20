@@ -4,13 +4,11 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.HopfFrob
 
 /- English proof (translation)
-Use `haveI : IsArtinianRing A := isArtinian_of_tower k inferInstance`. Rewrite `hf` using `[← mem_nilradical, nilradical_eq_sInf, Ideal.mem_sInf]`. Use `push_neg at hf`. Take `⟨P, hP, hfP⟩` from `hf`. Use `haveI : P.IsPrime := hP`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : P.IsMaximal := IsArtinianRing.isMaximal_of_isPrime P`. Use `letI : Field (A ⧸ P) := Ideal.Quotient.field P`. Establish `hbij : Function.Bijective (algebraMap k (A ⧸ P))` using `IsAlgClosed.algebraMap_bijective_of_isIntegral`. Set `e : k ≃ₐ[k] (A ⧸ P)` to `AlgEquiv.ofBijective (Algebra.ofId k (A ⧸ P)) hbij`. Use `⟨(e.symm : (A ⧸ P) →ₐ[k] k).comp (Ideal.Quotient.mkₐ k P), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Apply `hfP` to reduce the goal to its premises. Establish `h' : e.symm (Ideal.Quotient.mk P f) = 0` using `h`. Establish `h2 : Ideal.Quotient.mk P f = 0`. Simplify using `using h'`.
-
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp h2`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_algHom_ne_zero_of_not_isNilpotent
     {k : Type} [Field k] [IsAlgClosed k] {A : Type} [CommRing A] [Algebra k A]
@@ -35,13 +33,13 @@ theorem exists_algHom_ne_zero_of_not_isNilpotent
   exact Ideal.Quotient.eq_zero_iff_mem.mp h2
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `hf`. Establish `hex : ∃ m : ℕ, f ^ (p ^ m) = 0` using `⟨n, pow_eq_zero_of_le (Nat.lt_pow_self (by omega)).le hn⟩`. Establish `hspec` using `Nat.find_spec hex`. Establish `hpos : Nat.find hex ≠ 0`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hspec` using `[h0]`. Simplify using `at hspec`. Conclude with `hf0 hspec`. Take `⟨m, hm⟩` from `Nat.exists_eq_succ_of_ne_zero hpos`. Establish `hmem : ∀ j : ℕ, f ^ (p ^ j) ∈ S`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simpa using hfS`. Consider the case `succ j ih`. Use `hS _ ih` as an intermediate fact.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[← pow_mul, ← pow_succ]`. Then use the resulting hypothesis. Use `⟨f ^ (p ^ m), hmem m, Nat.find_min hex (m := m) (by omega), ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, ← pow_succ]`. Rewrite `hspec` using `[hm]`. Conclude with `hspec`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_zero_of_isNilpotent
     {A : Type} [CommRing A] {p : ℕ} (hp : 2 ≤ p) {S : Set A}
@@ -71,25 +69,23 @@ theorem exists_pow_eq_zero_of_isNilpotent
   exact hspec
 
 /- English proof (translation)
-Introduce `k _ _ p _ _ A _ _ _ V hV hVp`. Establish `hp : 2 ≤ p` using `(Fact.out : p.Prime).two_le`. Take `⟨f₀, hf₀V, hf₀⟩` from `(Submodule.ne_bot_iff V).mp hV`. Establish `key : ∀ n : ℕ, ∀ f ∈ V, f ≠ 0 → Module.finrank k (LinearMap.range (LinearMap.mulLeft k f)) = n → ∃ f ∈ V, f ≠ 0 ∧ (f ^ p = 0 ∨ f ^ p = f)`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `f hfV hf0 hn`. Distinguish the cases in `hnil : IsNilpotent f`. Take `⟨g, hg, hg0, hgp⟩` from `exists_pow_eq_zero_of_isNilpotent (S := (V : Set A)) hp (fun a ha => hVp a ha) hfV hf0 hnil`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨g, hg, hg0, Or.inl hgp⟩`. Take `⟨x, hx⟩` from `exists_algHom_ne_zero_of_not_isNilpotent (k := k) hnil`. Use `set c : k := (x f)⁻¹ with hc`. Use `set f' : A := c • f with hf'`. Establish `hf'V : f' ∈ V` using `V.smul_mem c hfV`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hxf' : x f' = 1`. Simplify using `[hf', hc, hx]`. Establish `hf'0 : f' ≠ 0`. Introduce `h`. Rewrite `hxf'` using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `at hxf'`. Use `set g : A := f' ^ p - f' with hg`. Establish `hgV : g ∈ V` using `V.sub_mem (hVp _ hf'V) hf'V`. Distinguish the cases in `hg0 : g = 0`. Conclude with `⟨f', hf'V, hf'0, Or.inr (sub_eq_zero.mp hg0)⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hxg : x g = 0`. Simplify using `[hg, hxf']`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : ∃ q : A, g = f * q := by`. Take `⟨r, hr⟩ : ∃ r, p = r + 1` from `⟨p - 1, by omega⟩`. Use `⟨c • (f' ^ r - 1), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hlt : LinearMap.range (LinearMap.mulLeft k g) < LinearMap.range (LinearMap.mulLeft k f)`. Use `lt_of_le_of_ne ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨q * a, by simp [hq, mul_assoc]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `heq`. Establish `hmem : f ∈ LinearMap.range (LinearMap.mulLeft k g)`. Rewrite using `[heq]`. Conclude with `⟨1, by simp⟩`. Take `⟨a, ha⟩` from `hmem`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hx` to reduce the goal to its premises. Establish `: g * a = f` using `by simpa using ha`. Rewrite using `[← this, map_mul, hxg, zero_mul]`. Establish `hrank` using `Submodule.finrank_lt_finrank_of_lt hlt`. Conclude with `ih _ (hn ▸ hrank) g hgV hg0 rfl`.
-
-Conclude with `key _ f₀ hf₀V hf₀ rfl`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_frobenius_fixed_or_killed :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (p : ℕ) [Fact p.Prime] [CharP k p]

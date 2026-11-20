@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `X _ _ f`. Set `F : CategoryTheory.Functor ℕᵒᵖ Type` to `CategoryTheory.Functor.ofOpSequence (X := X) (fun n => TypeCat.ofHom (f n))`. Use `haveI : ∀ j : ℕᵒᵖ, Finite (F.obj j) := fun j => inferInstanceAs (Finite (X j.unop))`. Use `haveI : ∀ j : ℕᵒᵖ, Nonempty (F.obj j) := fun j => inferInstanceAs (Nonempty (X j.unop))`. Take `⟨s, hs⟩` from `nonempty_sections_of_finite_inverse_system F`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun n => s (Opposite.op n), fun n => ?_⟩` and prove the remaining obligations. Establish `h` using `hs (CategoryTheory.homOfLE (Nat.le_add_right n 1)).op`. Rewrite `h` using `[CategoryTheory.Functor.ofOpSequence_map_homOfLE_succ]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.DYdc6.main :
     ∀ {X : ℕ → Type} [∀ (n : ℕ), Finite (X n)] [∀ (n : ℕ), Nonempty (X n)] (f : (n : ℕ) → X (n + (1 : ℕ)) → X n),

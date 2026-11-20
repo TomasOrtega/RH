@@ -15,14 +15,14 @@ variable (hσ : ∀ x, σ (σ x) = x) (hJ : Jᵀ = J.map σ) {e f : ι → K} (h
 include hσ hJ he hff hef
 
 /- English proof (translation)
-Establish `hfe` using `hf_fe hσ hJ he hff hef`. Simplify using `[hf_add_left, hf_smul_left, he, hff, hef, hfe]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem hf_ef_left (x y : K) : hf σ J (x • e + y • f) e = y ∧ hf σ J (x • e + y • f) f = x := by
   have hfe := hf_fe hσ hJ he hff hef
   simp [hf_add_left, hf_smul_left, he, hff, hef, hfe]
 
 /- English proof (translation)
-Establish `hfe` using `hf_fe hσ hJ he hff hef`. Simplify using `[hf_sub_left, hf_smul_left, he, hff, hef, hfe]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem decomp (b : ι → K) :
     hf σ J (b - hf σ J b f • e - hf σ J b e • f) e = 0 ∧
@@ -31,7 +31,7 @@ theorem decomp (b : ι → K) :
   simp [hf_sub_left, hf_smul_left, he, hff, hef, hfe]
 
 /- English proof (translation)
-Establish `hfe` using `hf_fe hσ hJ he hff hef`. Establish `hew : hf σ J e w = 0` using `by rw [← hf_symm hσ hJ, hwe, map_zero]`. Establish `hfw : hf σ J f w = 0` using `by rw [← hf_symm hσ hJ, hwf, map_zero]`. Simplify using `only [hf_add_left, hf_add_right, hf_smul_left, hf_smul_right, he, hff, hef, hfe, hwe, hwf, hew, hfw]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hf_decomp_self (x y : K) {w : ι → K} (hwe : hf σ J w e = 0) (hwf : hf σ J w f = 0) :
     hf σ J (x • e + y • f + w) (x • e + y • f + w) = x * σ y + σ x * y + hf σ J w w := by
@@ -53,9 +53,9 @@ variable (hσ : ∀ x, σ (σ x) = x) (hJ : Jᵀ = J.map σ) {e f : ι → K} (h
 include hσ hJ he hff hef hae haf hfix h2i hδ hσδ
 
 /- English proof (translation)
-Establish `hfe` using `hf_fe hσ hJ he hff hef`. Establish `h2 : IsUnit (2 : K)` using `⟨⟨2, i2, h2i, by rw [mul_comm]; exact h2i⟩, rfl⟩`. Break down `gp hσ hfix h2 hδ hσδ hcop.symm with h | h | h` into its components or cases. Conclude with `⟨b, reach_refl hσ hJ he hff hef b, h⟩`. Use `⟨_, reachableFixing_add_smul_second hσ hJ he hff hef hae haf hσδ b, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `h` using `[hf_add_left, hf_smul_left, hfe]`. Use `⟨_, reachableFixing_add_smul_second hσ hJ he hff hef hae haf (c := -1 * δ) (by rw [map_mul, hσδ]; simp) b, ?_⟩` and prove the remaining obligations. Simplify `h` using `[hf_add_left, hf_smul_left, hf_neg_left, neg_smul, hfe, mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem stage2 {b : ι → K} (hcop : IsCoprime (hf σ J b f) (hf σ J b e)) :
     ∃ b', Reach σ J e f a b b' ∧ IsUnit (hf σ J b' e) := by
@@ -69,13 +69,11 @@ theorem stage2 {b : ι → K} (hcop : IsCoprime (hf σ J b f) (hf σ J b e)) :
     simpa [hf_add_left, hf_smul_left, hf_neg_left, neg_smul, hfe, mul_assoc] using h
 
 /- English proof (translation)
-Establish `h2 : IsUnit (2 : K)` using `⟨⟨2, i2, h2i, by rw [mul_comm]; exact h2i⟩, rfl⟩`. Use `set α := hf σ J b f`. Use `set β := hf σ J b e`. Establish `hval` using `fun x y => hf_ef_left hσ hJ he hff hef (e := e) (f := f) x y`. Break down `gp hσ hfix h2 hδ hσδ hcop with h | h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨b, reach_refl hσ hJ he hff hef b, hform, h⟩`. Establish `hb' : b + (δ * β) • e = (α + δ * β) • e + β • f` using `by rw [hform]; module`. Use `⟨_, reachableFixing_add_smul_first hσ hJ he hff hef hae haf hσδ b, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hb', (hval _ _).1, (hval _ _).2]`. Rewrite using `[hb', (hval _ _).2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h`. Establish `hb' : b + (-1 * δ * β) • e = (α + -1 * δ * β) • e + β • f` using `by rw [hform]; module`. Use `⟨_, reachableFixing_add_smul_first hσ hJ he hff hef hae haf (c := -1 * δ) (by rw [map_mul, hσδ]; simp) b, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hb'`, the goal using `[mul_assoc, ← mul_assoc (-1) δ]`. Rewrite using `[hb', (hval _ _).1, (hval _ _).2]`.
-
-Rewrite `hb'`, the goal using `[mul_assoc, ← mul_assoc (-1) δ]`. Rewrite using `[hb', (hval _ _).2]`. Conclude with `h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stage4 {b : ι → K} (hform : b = hf σ J b f • e + hf σ J b e • f)
     (hcop : IsCoprime (hf σ J b f) (hf σ J b e)) :
@@ -98,7 +96,7 @@ theorem stage4 {b : ι → K} (hform : b = hf σ J b f • e + hf σ J b e • f
       rw [hb', (hval _ _).2]; exact h
 
 /- English proof (translation)
-Establish `h1 : 2 * σ i2 = 1`. Use `congrArg σ h2i` as an intermediate fact. Rewrite `this` using `[map_mul, map_ofNat, map_one]`. Then use the resulting hypothesis. Take the linear combination `i2 * h1 - σ i2 * h2i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem apply_half : σ i2 = i2 := by
   have h1 : 2 * σ i2 = 1 := by
@@ -107,21 +105,19 @@ theorem apply_half : σ i2 = i2 := by
   linear_combination i2 * h1 - σ i2 * h2i
 
 /- English proof (translation)
-Establish `hfe` using `hf_fe hσ hJ he hff hef`. Establish `hi2` using `apply_half hσ hJ he hff hef hae haf hfix h2i hδ hσδ`. Use `set α := hf σ J b f`. Use `set β := hf σ J b e`. Use `set ν := hf σ J b b with hνdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hν : ν = α * σ β + σ α * β`. Rewrite using `[hνdef]`. Use `conv_lhs => rw [hform]`. Simplify using `only [hf_add_left, hf_add_right, hf_smul_left, hf_smul_right, he, hff, hef, hfe]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσν : σ ν = ν` using `hf_symm hσ hJ b b`. Take `⟨αi, hαi⟩` from `hα.exists_right_inv`. Establish `hml : σ α * σ αi = 1` using `by rw [← map_mul, hαi, map_one]`. Establish `r1 : Reach σ J e f a b (e + (σ α * β) • f)`. Use `reach_tor hσ hJ he hff hef hae haf hml b` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Establish `htor : tor σ J e f αi (σ α) *ᵥ b = e + (σ α * β) • f`. Rewrite using `[tor_mulVec]`. Use `conv_lhs => rw [hform]`. Simplify using `only [hf_add_left, hf_smul_left, hef, hff, he, hfe, mul_one, mul_zero, add_zero, zero_add]`. Use extensionality with `i`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `e i * hαi`. Rewrite `this` using `[htor]`. Then use the resulting hypothesis. Establish `hc : σ (ν * i2 - σ α * β) = -(ν * i2 - σ α * β)`. Rewrite using `[map_sub, map_mul, map_mul, hσν, hi2, hσ]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `ν * h2i + hν`. Establish `r2` using `reachableFixing_add_smul_second hσ hJ he hff hef hae haf hc (e + (σ α * β) • f)`. Establish `hb1f : hf σ J (e + (σ α * β) • f) f = 1`. Simplify using `[hf_add_left, hf_smul_left, hef, hff]`. Rewrite `r2` using `[hb1f]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `heq : e + (σ α * β) • f + ((ν * i2 - σ α * β) * 1) • f = e + (ν * i2) • f`. Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `r2` using `[heq]`.
-
-Conclude with `reach_trans hσ hJ he hff hef r1 r2`.
+A detailed English derivation is pending.
 -/
 theorem stage5 {b : ι → K} (hform : b = hf σ J b f • e + hf σ J b e • f) (hα : IsUnit (hf σ J b f)) :
     Reach σ J e f a b (e + (hf σ J b b * i2) • f) := by
@@ -161,17 +157,15 @@ theorem stage5 {b : ι → K} (hform : b = hf σ J b f • e + hf σ J b e • f
   exact reach_trans hσ hJ he hff hef r1 r2
 
 /- English proof (translation)
-Establish `hi2` using `apply_half hσ hJ he hff hef hae haf hfix h2i hδ hσδ`. Take `⟨hwe, hwf⟩` from `decomp hσ hJ he hff hef b`. Use `set α := hf σ J b f`. Use `set β := hf σ J b e`. Use `set w := b - α • e - β • f with hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hea : ∀ j, hf σ J e (a j) = 0` using `fun j => by rw [← hf_symm hσ hJ, hae, map_zero]`. Establish `hfa : ∀ j, hf σ J f (a j) = 0` using `fun j => by rw [← hf_symm hσ hJ, haf, map_zero]`. Establish `hwa : ∀ j, hf σ J w (a j) = 0` using `fun j => by`. Rewrite using `[hw, hf_sub_left, hf_sub_left, hf_smul_left, hf_smul_left, hb, hea, hfa]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨βi, hβi⟩` from `hβ.exists_right_inv`. Use `set u := (-βi) • w`. Use `set c := -(hf σ J u u * i2)`. Establish `hc : c + σ c + hf σ J u u = 0`. Establish `: σ (hf σ J u u) = hf σ J u u` using `hf_symm hσ hJ u u`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [c, map_neg, map_mul, this, hi2]`. Take the linear combination `(-hf σ J u u) * h2i`. Establish `r` using `reach_eich_e hσ hJ he hff hef hae haf (u := u) (c := c) (by simp [u, hf_smul_left, hf_neg_left, hwe]) (by simp [u, hf_smul_left, hf_neg_left, hwf]) hc (fun j => by simp [u, hf_smul_left, hf_neg_left, hwa]) b`. Establish `hb' : eich σ J e u c *ᵥ b = (α - hf σ J b u + c * β) • e + β • f`. Rewrite using `[eich_mulVec]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i`. Simplify using `only [u, hw, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `(-(b i - α * e i - β * f i)) * hβi`. Rewrite `r` using `[hb']`. Establish `hval` using `hf_ef_left hσ hJ he hff hef (e := e) (f := f) (α - hf σ J b u + c * β) β`.
-
-Conclude with `⟨_, r, by rw [hval.1, hval.2], by rw [hval.1]; exact hβ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stage3 {b : ι → K} (hb : ∀ j, hf σ J b (a j) = 0) (hβ : IsUnit (hf σ J b e)) :
     ∃ b', Reach σ J e f a b b' ∧ b' = hf σ J b' f • e + hf σ J b' e • f ∧ IsUnit (hf σ J b' e) := by
@@ -204,25 +198,23 @@ theorem stage3 {b : ι → K} (hb : ∀ j, hf σ J b (a j) = 0) (hβ : IsUnit (h
   exact ⟨_, r, by rw [hval.1, hval.2], by rw [hval.1]; exact hβ⟩
 
 /- English proof (translation)
-Establish `h2 : IsUnit (2 : K)` using `⟨⟨2, i2, h2i, by rw [mul_comm]; exact h2i⟩, rfl⟩`. Establish `hi2` using `apply_half hσ hJ he hff hef hae haf hfix h2i hδ hσδ`. Establish `hfe` using `hf_fe hσ hJ he hff hef`. Distinguish the cases in `hcop : IsCoprime (hf σ J b f) (hf σ J b e)`. Conclude with `⟨b, reach_refl hσ hJ he hff hef b, hcop⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Take `⟨hwe, hwf⟩` from `decomp hσ hJ he hff hef b`. Use `set α := hf σ J b f`. Use `set β := hf σ J b e`. Use `set w := b - α • e - β • f with hw`. Establish `hew : hf σ J e w = 0` using `by rw [← hf_symm hσ hJ, hwe, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfw : hf σ J f w = 0` using `by rw [← hf_symm hσ hJ, hwf, map_zero]`. Establish `hea : ∀ j, hf σ J e (a j) = 0` using `fun j => by rw [← hf_symm hσ hJ, hae, map_zero]`. Establish `hfa : ∀ j, hf σ J f (a j) = 0` using `fun j => by rw [← hf_symm hσ hJ, haf, map_zero]`. Establish `hwa : ∀ j, hf σ J w (a j) = 0` using `fun j => by`. Rewrite using `[hw, hf_sub_left, hf_sub_left, hf_smul_left, hf_smul_left, hb, hea, hfa]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hbw : b = α • e + β • f + w` using `by rw [hw]; abel`. Take `⟨ω, hω⟩ : ∃ ω, ω = hf σ J w w` from `⟨_, rfl⟩`. Establish `hdef : hf σ J b b = α * σ β + σ α * β + ω`. Rewrite using `[hω]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [hbw]`. Conclude with `hf_decomp_self hσ hJ he hff hef α β hwe hwf`. Establish `hbwv : hf σ J b w = ω`. Establish `h1 : hf σ J b w = α * hf σ J e w + β * hf σ J f w + hf σ J w w` using `by conv_lhs => rw [hbw]`. Simplify using `only [hf_add_left, hf_smul_left]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h1, hew, hfw, hω]`. Expand and normalize the polynomial expressions, which then agree. Use `set c := -(ω * i2)`. Establish `hσω : σ ω = ω` using `by rw [hω]; exact hf_symm hσ hJ w w`. Establish `smove : ∀ sg : K, σ sg = sg → sg * sg = 1 → Reach σ J e f a b (eich σ J e (sg • w) c *ᵥ b) ∧ hf σ J (eich σ J e (sg • w) c *ᵥ b) f = α - sg * ω + c * β ∧ hf σ J (eich σ J e (sg • w) c *ᵥ b) e = β`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `sg hs1 hs2`. Use `⟨reach_eich_e hσ hJ he hff hef hae haf (by simp [hf_smul_left, hwe]) (by simp [hf_smul_left, hwf]) ?_ (fun j => by simp [hf_smul_left, hwa]) b, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [c, hf_smul_left, hf_smul_right, hs1, map_neg, map_mul, hσω, hi2, ← hω]`. Take the linear combination `(-ω) * h2i + ω * hs2`. Rewrite using `[eich_mulVec]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [hf_add_left, hf_sub_left, hf_smul_left, hf_smul_right, hwf, hef, hbwv, hs1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eich_mulVec]`. Simplify using `only [hf_add_left, hf_sub_left, hf_smul_left, hf_smul_right, hwe, he]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Break down `stepA hmax h2 hν hdef hcop (c := c) with h | h` into its components or cases. Take `⟨r, h1, h3⟩` from `smove 1 (map_one σ) (one_mul 1)`. Use `⟨_, r, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, h3, one_mul]`. Conclude with `h`.
-
-Take `⟨r, h1, h3⟩` from `smove (-1) (by rw [map_neg, map_one]) (by ring)`. Use `⟨_, r, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, h3, show α - -1 * ω + c * β = α + ω + c * β by ring]; exact h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stage1 (hmax : ∀ m₀ m₁ m₂ : Ideal K, m₀.IsMaximal → m₁.IsMaximal → m₂.IsMaximal →
       m₀ = m₁ ∨ m₀ = m₂ ∨ m₁ = m₂)

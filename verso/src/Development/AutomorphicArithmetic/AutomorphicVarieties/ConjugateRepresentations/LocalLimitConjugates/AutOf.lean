@@ -6,19 +6,19 @@ open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
 /- English proof (translation)
-Introduce `E _ _ _ a U hU Ξ m q ω hω X i hc hg`. Establish `hl` using `(UpperTheory.V.Cj.H.levLin E a U Ξ q).2.2.1 ω hω X i`. Take `⟨W, _, _, _, ρ, -, hρ⟩` from `UpperTheory.V.Cj.H.kType E a Ξ q`. Take `⟨T, w, hT, hw⟩` from `hρ ω hω.equiv X i`. Generalize the expression as in `cmp i (ω X) = φ at hc hg hl hw ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable.
 
-Use `⟨hl.1, ?_, ?_, ?_, hg⟩` and prove the remaining obligations. Conclude with `Subgroup.isOpen_mono (H₁ := U) (H₂ := { carrier := {k | finRep E a k φ = φ} one_mem' := by simp mul_mem' := fun {x y} hx hy => by`. Rewrite `hx`, `hy`, the goal using `[Set.mem_setOf_eq]`. Rewrite using `[map_mul, Module.End.mul_apply, hy, hx]`. Use the proof step `inv_mem' := fun {x} hx => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[Set.mem_setOf_eq]`. Use `conv_lhs => rw [← hx]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] })`. Use the proof step `(fun u hu => hl.2.1 u hu) hU`. Use `Submodule.finiteDimensional_of_le (S₂ := LinearMap.range T) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨ρ k w, by rw [hT, hw]⟩`. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ {φ}) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Establish `key : ∃ c : ℂ, z φ = c • φ`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Proceed by induction on `hz using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨t, u, rfl⟩` from `hx`. Conclude with `⟨_, hc t u⟩`. Consider the case `algebraMap c => exact ⟨c, rfl⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨c, hx⟩` from `hx`. Take `⟨d, hy⟩` from `hy`. Conclude with `⟨c + d, by rw [LinearMap.add_apply, hx, hy, add_smul]⟩`. Consider the case `mul x y _ _ hx hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hx⟩` from `hx`. Take `⟨d, hy⟩` from `hy`. Conclude with `⟨d * c, by rw [Module.End.mul_apply, hy, map_smul, hx, mul_smul]⟩`. Take `⟨c, h⟩` from `key`. Conclude with `Submodule.mem_span_singleton.2 ⟨c, h.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.autOf :
     UpperTheory.V.Cj.H.AutOf := by

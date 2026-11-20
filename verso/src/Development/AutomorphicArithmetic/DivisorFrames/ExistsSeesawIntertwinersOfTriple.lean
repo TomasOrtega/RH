@@ -19,17 +19,15 @@ open GlobalTheory.StageGeo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Take `⟨r, s, hV⟩` from `hP.herm`. Take `⟨r', s', hW⟩` from `hP.skew`. Establish `hG : IsUnit (show Matrix (Fin S.rank) (Fin S.rank) D.host.E from (sgn ε S).gram).det` using `GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit (sgn ε S)`. Establish `hg : (show Matrix (Fin S.rank) (Fin S.rank) D.host.E from (sgn ε S).gram) = (if ε then -1 else 1 : D.host.E) • S.gram`. Consider the cases of `ε`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Simplify using `only [Bool.false_eq_true, if_false, one_smul]`. Both sides reduce to the same expression. Simplify using `only [if_true, neg_smul, one_smul]`. Conclude with `neg_gram S`. Take `⟨cS, hcS, hcS'⟩ : ∃ cS : Matrix (Fin S.rank) (Fin d) (AE D) ≃+ WO S X, (∀ u, cS u = (HMul.hMul (uᵀ.submatrix e.symm id) (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM ((if ε then -1 else 1 : D.host.E) • S.gram)) : Matrix (Fin X.rank) (Fin S.rank) (AE D))) ∧ ∀ x, …` from `⟨GlobalTheory.FockThetaOnto.crd (D := D) (show Matrix (Fin S.rank) (Fin S.rank) D.host.E from (sgn ε S).gram) hG e, fun u => by rw [← hg]; rfl, fun _ => rfl⟩`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `GlobalTheory.T.algebraicVectors_correspond_schrodinger_thetaMap D ψ θ hθ ε S X A B e.symm Bs hP.base hP.psi Vs Ws _ _ _ _ hP.JV hP.JW hV hW hc M hP.good cS hcS`. Take `⟨om₁, hom₁, hw⟩` from `GlobalTheory.T.exists_weilRep_orientedPair_rationalSchrodinger D ψ θ hθ ε S X A B e.symm Bs hP.base hP.psi Vs Ws _ _ _ _ hP.JV hP.JW hV hW hc M hP.good cS hcS χ χ' ω hω`. Establish `dV : Vs.J.det ≠ 0`. Take `⟨w⟩ : Nonempty (InfinitePlace D.host.F)` from `inferInstance`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `GlobalTheory.det_ne_zero_of_hasSig (hV.sig w)` to reduce the goal to its premises. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`. Establish `dW : Ws.J.det ≠ 0`. Take `⟨w⟩ : Nonempty (InfinitePlace D.host.F)` from `inferInstance`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `GlobalTheory.det_ne_zero_of_hasSig (hW.sig w)` to reduce the goal to its premises. Rewrite using `[Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero, mul_zero]`. Use `⟨cS, fun Φ f hD g h => ?_, h1, h2, fun Φ hΦ => ⟨hΦ, fun u => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.adelicWeilRep_schrodingerModel_unique _ _ _ hP.base.cm _ _ Vs Ws M Bs.ψ χ χ' hP.base.std hV.herm dV hW.skew dW om om₁ hom hom₁ _ Φ hD.1]`. Conclude with `hw Φ f hD g h`.
-
-Establish `k : ptO (sgn ε S).gram e (cS u) = u` using `(hcS' _).symm.trans (cS.symm_apply_apply u)`. Conclude with `congrArg (fun y => GlobalTheory.WeilM.thetaSum D.host.F (M.co.rho ψ y Φ)) k.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem pair_over {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : IsInfFam θ) {ε : Bool} {S X : HSp D}
     {d : ℕ} {e : Fin d ≃ Fin X.rank} {Bs : Base D.host.F D.host.E} {Vs : Spc D.host.F D.host.E S.rank}
@@ -77,7 +75,7 @@ private theorem pair_over {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam
     exact congrArg (fun y => GlobalTheory.WeilM.thetaSum D.host.F (M.co.rho ψ y Φ)) k.symm
 
 /- English proof (translation)
-Introduce `D ψ θ hθ T A A' WW X FA FA' FW hr Bs Γ hS Xc om om' hT ωA ωB hωA hωB`. Take `⟨-, -, -, homA, homB⟩` from `hT`. Take `⟨cA, a1, a2, a3, a4⟩` from `pair_over hθ hS.pairA hS.cartA homA hωA`. Take `⟨cB, b1, b2, b3, b4⟩` from `pair_over hθ hS.pairB hS.cartB homB hωB`. Conclude with `⟨cA, cB, { psi := hS.pairA.psi alpha := rfl beta := rfl JW := hS.JA JW₁ := hS.JB JX := hS.pairA.JW measW := hS.measA domW := hS.domA measW₁ := hS.measB domW₁ := hS.domB weilA := a1 weilB := b1 algA := a2 algA' := a3 algB := b2 algB' := b3 }, a4, b4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.exists_seesaw_intertwiners_of_triple :
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ → ∀ (T : Type) (A A' WW : HSp D) (X : Tri T A A' WW)

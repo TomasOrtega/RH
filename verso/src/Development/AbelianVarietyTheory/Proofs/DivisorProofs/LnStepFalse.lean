@@ -85,7 +85,7 @@ def stepNorm {X : Scheme.{0}} (t : SAB H X) {C : Type} [NontriviallyNormedField 
       grNorm t x (latDR t x) (fun i => u ((letters Dw).get i).1 ((letters Dw).get i).2) ⟨k, h⟩ else 1
 
 /- English proof (translation)
-Apply the tactic sequence `rcases st with ⟨τ, k⟩ | k <;> simp only [lnStep, stepNorm, lat] <;> split_ifs <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lnStep_false {X : Scheme.{0}} (t : SAB H X) {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
     (x : Sp C ⟶ X) (u : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Sp (DualNumber C) ⟶ t.G.left)) (p : ℕ)

@@ -7,21 +7,19 @@ namespace PI.WGL
 open Formalism.BasicNotions Formalism.GradedWeylDivisibility MvPolynomial
 
 /- English proof (translation)
-Establish `hne : a ≠ b` using `ne_of_lt hab`. Establish `key : ∀ m : ℕ, (rowGen ℂ a.castSucc b.castSucc f - Polynomial.C f).eval (C (m : ℂ)) ∈ (⊥ : Submodule ℂ (MvPolynomial (Fin (n + 1) × Fin (n + 1)) ℂ))`. Introduce `m`. Rewrite using `[Submodule.mem_bot, Polynomial.eval_sub, Polynomial.eval_C, PI.WHw.eval_rowGen, sub_eq_zero]`. Establish `hdet : (1 + Matrix.single a b (m : ℂ)).det ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[det_one_add_single, if_neg hne]`. Conclude with `one_ne_zero`. Set `g` to `Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet`. Establish `hgv : (g : Matrix (Fin n) (Fin n) ℂ) = 1 + Matrix.single a b (m : ℂ)` using `rfl`. Establish `hup : ∀ i j, j < i → g i j = 0`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hji`. Establish `hij : i ≠ j` using `ne_of_gt hji`. Use `show (1 + Matrix.single a b (m : ℂ)) i j = 0`. Simplify using `only [Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, if_neg hij, zero_add]`. Rewrite using `[if_neg]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `absurd (lt_trans hab hji) (lt_irrefl _)`. Establish `hdiag : ∀ i, g i i = 1`. Introduce `i`. Use `show (1 + Matrix.single a b (m : ℂ)) i i = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `only [Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, if_true]`. Rewrite using `[if_neg]`. Use the proof step `· simp`. Introduce and unpack `⟨rfl, h⟩`. Conclude with `hne h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hU g hup hdiag`. Establish `hT` using `embGL_transvec g a b (m : ℂ) hgv`. Establish `hdet1 : detPow ℂ (n + 1) (embGL ℂ n (n + 1) rfl g) lam.detShift = 1`. Unfold `detPow`. Establish `hd : Matrix.GeneralLinearGroup.det (embGL ℂ n (n + 1) rfl g) = 1` using `Units.ext (by`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, ← Matrix.det_transpose, hT, det_one_add_single, if_neg (fun h => hne (Fin.castSucc_injective _ h).symm)]`. Use the proof step `rfl)`. Rewrite using `[hd, one_zpow, Units.val_one]`. Unfold `sqAct at h1`. Rewrite `h1` using `[hdet1, one_smul, hT]`.
-
-Conclude with `h1`. Use `PI.WHw.coeff_mem_of_eval ⊥ _ key 1` as an intermediate fact. Rewrite `this` using `[Submodule.mem_bot, Polynomial.coeff_sub, Polynomial.coeff_C, if_neg (by omega), sub_zero]`. Rewrite using `[pol_eq_rowDiv]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem io_fixed_up {n : ℕ} (lam : DomWeight (n + 1)) (f : MvPolynomial (Fin (n + 1) × Fin (n + 1)) ℂ)
     (hU : ∀ g : GL (Fin n) ℂ, (∀ i j, j < i → g i j = 0) → (∀ i, g i i = 1) →
@@ -68,19 +66,19 @@ theorem io_fixed_up {n : ℕ} (lam : DomWeight (n + 1)) (f : MvPolynomial (Fin (
   exact this
 
 /- English proof (translation)
-Use `set d : ℕ := (sg.w a - lam.detShift).toNat with hd'`. Establish `hdz : ((d : ℕ) : ℤ) = sg.w a - lam.detShift` using `Int.toNat_of_nonneg (by omega)`. Establish `key : ∀ m : ℕ, (rowGen ℂ a.castSucc a.castSucc f - Polynomial.C f * (1 + Polynomial.X) ^ d).eval (C (m : ℂ)) ∈ (⊥ : Submodule ℂ (MvPolynomial (Fin (n + 1) × Fin (n + 1)) ℂ))`. Introduce `m`. Establish `hm0 : (m : ℂ) + 1 ≠ 0` using `by norm_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `t : Fin n → ℂˣ` to `fun j => if j = a then Units.mk0 ((m : ℂ) + 1) hm0 else 1`. Establish `h1` using `hT t`. Establish `hgv : ((diagGL ℂ n t : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) = 1 + Matrix.single a a (m : ℂ)`. Use extensionality with `i j`. Simplify using `only [diagGL, Matrix.diagonal_apply, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, t]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases hij : i = j <;> by_cases hia : i = a <;> simp_all [add_comm] <;> intro h <;> exact absurd h.symm hia`. Establish `hTr` using `embGL_transvec (diagGL ℂ n t) a a (m : ℂ) hgv`. Establish `hdet : detPow ℂ (n + 1) (embGL ℂ n (n + 1) rfl (diagGL ℂ n t)) lam.detShift = ((m : ℂ) + 1) ^ lam.detShift`. Unfold `detPow`. Rewrite using `[Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply, ← Matrix.det_transpose, hTr, det_one_add_single, if_pos rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hprod : ((∏ j, t j ^ sg.w j : ℂˣ) : ℂ) = ((m : ℂ) + 1) ^ sg.w a`. Rewrite using `[Finset.prod_eq_single a (fun j _ hj => by simp [t, hj]) (by simp), Units.val_zpow_eq_zpow_val]`. Simplify using `[t]`. Unfold `sqAct at h1`. Rewrite `h1` using `[hdet, hTr, hprod]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : ((m : ℂ) + 1) ^ sg.w a = ((m : ℂ) + 1) ^ lam.detShift * ((m : ℂ) + 1) ^ d`. Rewrite using `[← zpow_natCast, hdz, ← zpow_add₀ hm0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[hz, ← smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `smul_right_injective _ (zpow_ne_zero _ hm0) h1`. Rewrite using `[Submodule.mem_bot, Polynomial.eval_sub, PI.WHw.eval_rowGen, sub_eq_zero, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_add, Polynomial.eval_one, Polynomial.eval_X]`. Rewrite using `[show (1 + C (m : ℂ) : MvPolynomial (Fin (n + 1) × Fin (n + 1)) ℂ) ^ d = C (((m : ℂ) + 1) ^ d) by`. Rewrite using `[map_pow, map_add, map_one, add_comm (C (m : ℂ)) 1], mul_comm, ← smul_eq_C_mul]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `PI.WHw.coeff_mem_of_eval ⊥ _ key 1` as an intermediate fact. Rewrite `this` using `[Submodule.mem_bot, Polynomial.coeff_sub, Polynomial.coeff_C_mul, Polynomial.coeff_one_add_X_pow, Nat.choose_one_right, sub_eq_zero]`. Rewrite using `[pol_eq_rowDiv]`. Unfold `rowDiv`. Rewrite using `[this, ← hdz, Int.cast_natCast, smul_eq_C_mul, mul_comm, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem io_torus_diag {n : ℕ} (lam : DomWeight (n + 1)) (sg : DomWeight n)
     (f : MvPolynomial (Fin (n + 1) × Fin (n + 1)) ℂ)
@@ -130,15 +128,15 @@ theorem io_torus_diag {n : ℕ} (lam : DomWeight (n + 1)) (sg : DomWeight n)
   rw [this, ← hdz, Int.cast_natCast, smul_eq_C_mul, mul_comm, map_natCast]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `⟨-, -, hU, hT, -, -⟩` from `hx n (n + 1) rfl lam sg hI`. Establish `hHW : Formalism.REAL.IsHW (capE rfl lam) (fun k => ((sg.w k : ℤ) : ℂ)) (xi ℂ rfl lam sg)`. Use `⟨fun a' => ?_, fun a' b' hab => ?_⟩` and prove the remaining obligations. Establish `hd : lam.detShift ≤ sg.w a'`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `ha` using `a'.isLt`. Establish `h1` using `(hI a').2`. Establish `h2 : lam.w ⟨n, by omega⟩ ≤ lam.w ⟨a'.1 + 1, by omega⟩` using `lam.anti (by`. Rewrite using `[Fin.le_iff_val_le_val]`. Use `show a'.1 + 1 ≤ n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `omega)`. Establish `h3 : lam.detShift = lam.w ⟨n, by omega⟩`. Unfold `DomWeight.detShift`. Apply the tactic sequence `rw [dif_pos (by omega)] <;> congr 1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : pol ℂ (Fin.castLE (by omega : n ≤ n + 1) a') (Fin.castLE (by omega : n ≤ n + 1) a') (xi ℂ rfl lam sg) = ((sg.w a' - lam.detShift : ℤ) : ℂ) • xi ℂ rfl lam sg` using `io_torus_diag lam sg (xi ℂ rfl lam sg) hT a' hd`. Rewrite using `[capE_apply, if_pos rfl, e, ← add_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : pol ℂ (Fin.castLE (by omega : n ≤ n + 1) a') (Fin.castLE (by omega : n ≤ n + 1) b') (xi ℂ rfl lam sg) = 0` using `io_fixed_up lam (xi ℂ rfl lam sg) hU a' b' hab`. Rewrite using `[capE_apply, if_neg (ne_of_lt hab), e, add_zero]`. Rewrite using `[Formalism.REAL.quantumDetHighestWeight_holds _ n (capE rfl lam) _ _ (capE_glRel rfl lam) hHW u]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem capXi (hx : XiFacts) {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight n)
     (hI : Interlace h lam sg) (u : ℂ) :
@@ -173,9 +171,7 @@ theorem capXi (hx : XiFacts) {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg
   rfl
 
 /- English proof (translation)
-Introduce `n N h lam sg hI`. Use `⟨fun u => Formalism.REAL.qdet (capE h lam) u, ?_, ?_⟩` and prove the remaining obligations. Introduce `mu _ φ hφ s hs u`. Conclude with `capScalar h3 h lam mu φ hφ s hs u`. Introduce `u`.
-
-Conclude with `capXi hx h lam sg hI u`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem capFacts_of (h3 : PI.HwIrred) (hx : XiFacts) : CapFacts := by
   intro n N h lam sg hI
@@ -186,7 +182,7 @@ theorem capFacts_of (h3 : PI.HwIrred) (hx : XiFacts) : CapFacts := by
     exact capXi hx h lam sg hI u
 
 /- English proof (translation)
-The claim follows from `ioExists_of_cap h3 h4 hx (capFacts_of h3 hx)`.
+A detailed English derivation is pending.
 -/
 theorem ioExists_of' (h3 : PI.HwIrred) (h4 : PI.GTBranch) (hx : XiFacts) : IoExists :=
   ioExists_of_cap h3 h4 hx (capFacts_of h3 hx)

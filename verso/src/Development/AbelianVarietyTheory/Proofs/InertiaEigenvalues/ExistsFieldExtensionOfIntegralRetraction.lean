@@ -9,7 +9,7 @@ namespace GlobalTheory.UseLoc.ExtRet
 variable {l : ℕ} [Fact l.Prime] {LL LL' : FinExt l}
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] LL.1]`. Introduce `h0`. Apply `hd` to reduce the goal to its premises. Establish `h1 : algebraMap ℤ_[l] ℚ_[l] d = 0` using `(map_eq_zero_iff _ (algebraMap ℚ_[l] LL.1).injective).1 h0`. Conclude with `(map_eq_zero_iff _ (IsFractionRing.injective ℤ_[l] ℚ_[l])).1 h1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem algebraMap_ne_zero (LL : FinExt l) {d : ℤ_[l]} (hd : d ≠ 0) : algebraMap ℤ_[l] LL.1 d ≠ 0 := by
   rw [IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] LL.1]
@@ -19,7 +19,7 @@ theorem algebraMap_ne_zero (LL : FinExt l) {d : ℤ_[l]} (hd : d ≠ 0) : algebr
   exact (map_eq_zero_iff _ (IsFractionRing.injective ℤ_[l] ℚ_[l])).1 h1
 
 /- English proof (translation)
-Use `haveI := LL.2`. Use `haveI : Algebra.IsAlgebraic ℤ_[l] LL.1 := (IsFractionRing.comap_isAlgebraic_iff (A := ℤ_[l]) (K := ℚ_[l]) (C := LL.1)).2 inferInstance`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic x).exists_integral_multiple`.
+A detailed English derivation is pending.
 -/
 theorem exists_mul (LL : FinExt l) (x : LL.1) : ∃ d : ℤ_[l], d ≠ 0 ∧ IsIntegral ℤ_[l] (d • x) := by
   haveI := LL.2
@@ -28,7 +28,7 @@ theorem exists_mul (LL : FinExt l) (x : LL.1) : ∃ d : ℤ_[l], d ≠ 0 ∧ IsI
   exact (Algebra.IsAlgebraic.isAlgebraic x).exists_integral_multiple
 
 /- English proof (translation)
-Establish `e : c • z = incO h (algebraMap ℤ_[l] (OL LL) c) * z`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[incO, Algebra.smul_def]`. Rewrite using `[e, hr]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem r_smul (h : LL.1 ≤ LL'.1) (r : ↥(OL LL') →+ ↥(OL LL))
     (hr : ∀ (a : ↥(OL LL)) (x : ↥(OL LL')), r (incO h a * x) = a * r x) (c : ℤ_[l]) (z : ↥(OL LL')) :
@@ -44,11 +44,9 @@ def ext (r : ↥(OL LL') →+ ↥(OL LL)) (x : LL'.1) : LL.1 :=
     algebraMap ℤ_[l] LL.1 (exists_mul LL' x).choose
 
 /- English proof (translation)
-Unfold `ext`. Use `set d0 := (exists_mul LL' x).choose with hd0def`. Establish `hd0 : d0 ≠ 0` using `(exists_mul LL' x).choose_spec.1`. Use `set y0 : ↥(OL LL') := ⟨d0 • x, (exists_mul LL' x).choose_spec.2⟩ with hy0`. Establish `key : d • y0 = d0 • y`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [SetLike.val_smul, hy0, hy, smul_smul, mul_comm]`. Establish `k2` using `congrArg (fun z => ((r z : ↥(OL LL)) : LL.1)) key`. Simplify using `only [r_smul h r hr] at k2`. Rewrite using `[div_eq_div_iff (algebraMap_ne_zero LL hd0) (algebraMap_ne_zero LL hd)]`.
-
-Take the linear combination `k2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ext_eq (h : LL.1 ≤ LL'.1) (r : ↥(OL LL') →+ ↥(OL LL))
     (hr : ∀ (a : ↥(OL LL)) (x : ↥(OL LL')), r (incO h a * x) = a * r x)
@@ -67,9 +65,9 @@ theorem ext_eq (h : LL.1 ≤ LL'.1) (r : ↥(OL LL') →+ ↥(OL LL))
   linear_combination k2
 
 /- English proof (translation)
-Take `⟨d₁, hd₁, hi₁⟩` from `exists_mul LL' x₁`. Take `⟨d₂, hd₂, hi₂⟩` from `exists_mul LL' x₂`. Set `y₁ : ↥(OL LL')` to `⟨d₁ • x₁, hi₁⟩`. Set `y₂ : ↥(OL LL')` to `⟨d₂ • x₂, hi₂⟩`. Establish `hy : ((d₂ • y₁ + d₁ • y₂ : ↥(OL LL')) : LL'.1) = (d₁ * d₂) • (x₁ + x₂)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [y₁, y₂, Subalgebra.coe_add, SetLike.val_smul, smul_smul, smul_add]`. Rewrite using `[mul_comm d₂ d₁]`. Rewrite using `[ext_eq h r hr _ (d₁ * d₂) (mul_ne_zero hd₁ hd₂) _ hy, ext_eq h r hr x₁ d₁ hd₁ y₁ rfl, ext_eq h r hr x₂ d₂ hd₂ y₂ rfl, map_add, Subalgebra.coe_add, r_smul h r hr, r_smul h r hr, map_mul]`. Establish `n₁` using `algebraMap_ne_zero LL hd₁`. Establish `n₂` using `algebraMap_ne_zero LL hd₂`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -90,13 +88,13 @@ theorem ext_add (h : LL.1 ≤ LL'.1) (r : ↥(OL LL') →+ ↥(OL LL))
   field_simp
 
 /- English proof (translation)
-Take `⟨d, hd, hi⟩` from `exists_mul LL' x`. Take `⟨e, he, hie⟩` from `exists_mul LL a`. Set `y : ↥(OL LL')` to `⟨d • x, hi⟩`. Set `a'' : ↥(OL LL)` to `⟨e • a, hie⟩`. Establish `hy : ((incO h a'' * y : ↥(OL LL')) : LL'.1) = (e * d) • (IntermediateField.inclusion h a * x)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [incO, y, a'', RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, Subalgebra.coe_mul, SetLike.val_smul, map_smul]`. Simplify using `only [Algebra.smul_def, map_mul]`. Establish `hc : IntermediateField.inclusion h (algebraMap ℤ_[l] LL.1 e) = algebraMap ℤ_[l] LL'.1 e` using `by simp`. Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[ext_eq h r hr _ (e * d) (mul_ne_zero he hd) _ hy, ext_eq h r hr x d hd y rfl, hr, Subalgebra.coe_mul, map_mul]`. Establish `n₁` using `algebraMap_ne_zero LL hd`. Establish `n₂` using `algebraMap_ne_zero LL he`. Establish `ha : ((a'' : ↥(OL LL)) : LL.1) = algebraMap ℤ_[l] LL.1 e * a`. Simplify using `[a'', Algebra.smul_def]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[ha]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem ext_mul (h : LL.1 ≤ LL'.1) (r : ↥(OL LL') →+ ↥(OL LL))
     (hr : ∀ (a : ↥(OL LL)) (x : ↥(OL LL')), r (incO h a * x) = a * r x) (a : LL.1) (x : LL'.1) :
@@ -122,7 +120,7 @@ theorem ext_mul (h : LL.1 ≤ LL'.1) (r : ↥(OL LL') →+ ↥(OL LL))
   field_simp
 
 /- English proof (translation)
-Rewrite using `[ext_eq h r hr _ 1 one_ne_zero x (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ext_int (h : LL.1 ≤ LL'.1) (r : ↥(OL LL') →+ ↥(OL LL))
     (hr : ∀ (a : ↥(OL LL)) (x : ↥(OL LL')), r (incO h a * x) = a * r x) (x : ↥(OL LL')) :
@@ -135,9 +133,9 @@ end GlobalTheory.UseLoc.ExtRet
 namespace GlobalTheory.UseLoc
 
 /- English proof (translation)
-Introduce `l _ LL LL' h r hr _`. Use `⟨{ toFun := ExtRet.ext r map_add' := ExtRet.ext_add h r hr map_smul' := fun q x => ?_ }, ExtRet.ext_mul h r hr, ExtRet.ext_int h r hr⟩` and prove the remaining obligations. Establish `e : q • x = IntermediateField.inclusion h (algebraMap ℚ_[l] LL.1 q) * x`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [RingHom.id_apply]`. Rewrite using `[e, ExtRet.ext_mul h r hr, Algebra.smul_def]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem extRet_exists : ∀ {l : ℕ} [Fact l.Prime] {LL LL' : FinExt l} (h : LL.1 ≤ LL'.1) (r : ↥(OL LL') →+ ↥(OL LL)), (∀ (a : ↥(OL LL)) (x : ↥(OL LL')), r (incO h a * x) = a * r x) → r 1 = 1 → ∃ p : ↥LL'.1 →ₗ[ℚ_[l]] ↥LL.1, (∀ (a : ↥LL.1) (x : ↥LL'.1), p (IntermediateField.inclusion h a * x) = a * p x) ∧ ∀ x : ↥(OL LL'), p (x : ↥LL'.1) = ((r x : ↥(OL LL)) : ↥LL.1) := by
   intro l _ LL LL' h r hr _

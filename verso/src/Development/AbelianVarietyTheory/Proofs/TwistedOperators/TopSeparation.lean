@@ -24,7 +24,7 @@ section
 open Classical
 
 /- English proof (translation)
-Unfold `atTau`. Use `split_ifs with h`. Use `exacts [h.choose_spec.1, one_mem _]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem atTau_mem_GinfC' {D : D7} (θ : InfFam D) (V : HSp D) (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     atTau θ V τ g ∈ GinfC V := by
@@ -32,9 +32,9 @@ theorem atTau_mem_GinfC' {D : D7} (θ : InfFam D) (V : HSp D) (τ : D.what₂.Ta
   exacts [h.choose_spec.1, one_mem _]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Establish `e : (finHom V).rangeRestrict (h * a) = (finHom V).rangeRestrict h`. Rewrite using `[map_mul]`. Establish `: (finHom V).rangeRestrict a = 1` using `Subtype.ext (MonoidHom.mem_ker.1 ha)`. Rewrite using `[this, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [rTr, pairVec_apply, e, mul_inv_rev, map_mul, LinearMap.comp_apply, Module.End.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairVec_comp_rho {D : D7} {V : HSp D} (c : CoefA V) (ξ : Module.Dual ℂ c.W) (Ψ : Bridge.Gf V → c.W) {a : GA D V}
     (ha : a ∈ GinfC V) : pairVec c (ξ ∘ₗ c.ρ a⁻¹) Ψ = rTr V a (pairVec c ξ Ψ) := by
@@ -46,9 +46,9 @@ theorem pairVec_comp_rho {D : D7} {V : HSp D} (c : CoefA V) (ξ : Module.Dual �
   simp only [rTr, pairVec_apply, e, mul_inv_rev, map_mul, LinearMap.comp_apply, Module.End.mul_apply]
 
 /- English proof (translation)
-Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem T hT => exact hT.equiv τ g hg v w hw`. Consider the case `zero => rfl`. Consider the case `add T₁ T₂ _ _ h₁ h₂`. Simplify using `only [MultilinearMap.add_apply, h₁, h₂]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Consider the case `smul c T _ h`. Simplify using `only [MultilinearMap.smul_apply, h]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mult_equiv {D : D7} (θ : InfFam D) {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (J : Set (GA D V))
     (χ : GA D V → ℂ) {T : MMap M} (hT : T ∈ Mult θ M J χ) (τ : D.what₂.Tau) {g : Matrix (Fin V.rank) (Fin V.rank) ℂ}
@@ -65,7 +65,7 @@ theorem mult_equiv {D : D7} (θ : InfFam D) {V : HSp D} {S : D.what₂.Tau → S
 end
 
 /- English proof (translation)
-Establish `e : ∀ h n, besInt W (a • φ) F h n = a * besInt W φ F h n` using `fun h n => by`. Simplify using `only [besInt, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Bplus, e, integral_const_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem Bplus_smul_left {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (M : Vol G) (a : ℂ)
     (φ : GA D (G.V (.top 0)) → ℂ) (F : GA D (G.V (.grid D.R.m 0)) → ℂ) : Bplus W M (a • φ) F = a * Bplus W M φ F := by
@@ -74,7 +74,7 @@ theorem Bplus_smul_left {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : G
   simp only [Bplus, e, integral_const_mul]
 
 /- English proof (translation)
-Establish `e : ∀ h n, besInt W φ (a • F) h n = a * besInt W φ F h n` using `fun h n => by`. Simplify using `only [besInt, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Bplus, e, integral_const_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem Bplus_smul_right {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (M : Vol G) (a : ℂ)
     (φ : GA D (G.V (.top 0)) → ℂ) (F : GA D (G.V (.grid D.R.m 0)) → ℂ) : Bplus W M φ (a • F) = a * Bplus W M φ F := by
@@ -86,41 +86,37 @@ set_option maxHeartbeats 1000000 in
 open Classical in
 
 /- English proof (translation)
-Introduce `_`. Unfold `TopSep All`. Introduce `D _ T L μ0 _ sc G W M hM S MB F' hF' Ψ hΨ`. Establish `hθ : IsInfFam W.θ` using `W.θ_is`. Use `set T' : MMap MB := PiTensorProduct.lift.symm F' with hT'`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT'm : T' ∈ Mult W.θ MB ∅ 1` using `(mem_multT W.θ MB ∅ 1 F').1 hF'`. Take `⟨Ω, hΩc, hΩ⟩` from `GlobalTheory.T.exists_compact_meets_besselTopRationalOrbits W M hM`. Establish `hφ : ∀ ξ, pairVec (coefPlus G W.θ) ξ Ψ ∈ contLeft (G.V (.top 0))` using `fun ξ => ⟨GlobalTheory.RowBplus.pairVec_cont G W.θ hθ ξ hΨ, fun γ hγ g => GlobalTheory.RowBplus.pairVec_left G W.θ ξ hΨ hγ g⟩`. Establish `H` using `fun ξ => GlobalTheory.T.besselPeriodCorankOne_additive_bounded_compact W M hM Ω hΩc hΩ _ (hφ ξ)`. Use `choose C hC using H`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadd` using `fun ξ => (hC ξ).1`. Establish `hadd'` using `fun ξ => (hC ξ).2.1`. Establish `hbd` using `fun ξ => (hC ξ).2.2`. Establish `hTt : ∀ u : MB.Vec, F' (PiTensorProduct.tprod ℂ u) = T' u`. Introduce `u`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: F' = PiTensorProduct.lift T'` using `by rw [hT']; exact (PiTensorProduct.lift.apply_symm_apply F').symm`. Rewrite using `[this, PiTensorProduct.lift.tprod]`. Establish `hmem : ∀ x : SmT MB, F' x ∈ contLeft (G.V (.grid D.R.m 0))`. Introduce `x`. Proceed by induction on `x using PiTensorProduct.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul_tprod r u`. Rewrite using `[map_smul, hTt]`. Conclude with `(contLeft _).smul_mem r (GlobalTheory.Core.Mi.SepPer.mult_mem_contLeft W.θ MB ∅ 1 hT'm u)`. Consider the case `add x y hx hy`. Rewrite using `[map_add]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(contLeft _).add_mem hx hy`. Establish `pv_add : ∀ ξ ξ', pairVec (coefPlus G W.θ) (ξ + ξ') Ψ = pairVec (coefPlus G W.θ) ξ Ψ + pairVec (coefPlus G W.θ) ξ' Ψ`. Introduce `ξ ξ'`. Use function extensionality and compare the values at `h`. Simplify using `[pairVec_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `pv_smul : ∀ (a : ℂ) ξ, pairVec (coefPlus G W.θ) (a • ξ) Ψ = a • pairVec (coefPlus G W.θ) ξ Ψ`. Introduce `a ξ`. Use function extensionality and compare the values at `h`. Simplify using `[pairVec_apply]`. Establish `hBadd : ∀ ξ ξ' F, F ∈ contLeft (G.V (.grid D.R.m 0)) → Bplus W M (pairVec (coefPlus G W.θ) (ξ + ξ') Ψ) F = Bplus W M (pairVec (coefPlus G W.θ) ξ Ψ) F + Bplus W M (pairVec (coefPlus G W.θ) ξ' Ψ) F`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ξ ξ' F hF`. Rewrite using `[pv_add]`. Conclude with `hadd' ξ _ (hφ ξ') F hF`. Establish `hBsmul : ∀ (a : ℂ) ξ F, Bplus W M (pairVec (coefPlus G W.θ) (a • ξ) Ψ) F = a * Bplus W M (pairVec (coefPlus G W.θ) ξ Ψ) F`. Introduce `a ξ F`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pv_smul]`. Conclude with `Bplus_smul_left W M a _ F`. Establish `hBsmulR : ∀ (a : ℂ) φ F, Bplus W M φ (a • F) = a * Bplus W M φ F`. Introduce `a φ F`. Conclude with `Bplus_smul_right W M a φ F`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨LinearMap.mk₂ ℂ (fun ξ v => Bplus W M (pairVec (coefPlus G W.θ) ξ Ψ) (F' v)) (fun ξ ξ' v => hBadd ξ ξ' _ (hmem v)) (fun a ξ v => hBsmul a ξ _) (fun ξ v v' => (congrArg (Bplus W M (pairVec (coefPlus G W.θ) ξ Ψ)) (F'.map_add v v')).trans (hadd ξ _ (hmem v) _ (hmem v'))) (fun a ξ …` and prove the remaining obligations. Introduce `Wt _ _ π e he τ x v`. Establish `hE : ∀ (y y' : Wt τ), e (PiTensorProduct.tprod ℂ (Function.update x τ (y + y'))) = e (PiTensorProduct.tprod ℂ (Function.update x τ y)) + e (PiTensorProduct.tprod ℂ (Function.update x τ y'))`. Introduce `y y'`. Rewrite using `[MultilinearMap.map_update_add, map_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hEs : ∀ (a : ℂ) (y : Wt τ), e (PiTensorProduct.tprod ℂ (Function.update x τ (a • y))) = a • e (PiTensorProduct.tprod ℂ (Function.update x τ y))`. Introduce `a y`. Rewrite using `[MultilinearMap.map_update_smul, map_smul]`. Establish `hV : ∀ (u u' : MB.sm τ), F' (PiTensorProduct.tprod ℂ (Function.update v τ (u + u'))) = F' (PiTensorProduct.tprod ℂ (Function.update v τ u)) + F' (PiTensorProduct.tprod ℂ (Function.update v τ u'))`. Introduce `u u'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MultilinearMap.map_update_add, map_add]`. Establish `hVs : ∀ (a : ℂ) (u : MB.sm τ), F' (PiTensorProduct.tprod ℂ (Function.update v τ (a • u))) = a • F' (PiTensorProduct.tprod ℂ (Function.update v τ u))`. Introduce `a u`. Rewrite using `[MultilinearMap.map_update_smul, map_smul]`. Establish `hF1 : ∀ (g : Matrix (Fin (G.V (.grid D.R.m 0)).rank) (Fin (G.V (.grid D.R.m 0)).rank) ℂ), g ∈ Formalism.QuantumDeterminants.UH (gramAt D (G.V (.grid D.R.m 0)) τ) → ∀ (x₁ y₁ : MB.sm τ), (y₁ : MB.H τ) = MB.rep τ g x₁ → F' (PiTensorProduct.tprod ℂ (Function.update v τ y₁)) = rTr _ ( …`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg x₁ y₁ hy`. Rewrite using `[hTt, hTt]`. Use `mult_equiv W.θ MB ∅ 1 hT'm τ hg (Function.update v τ x₁) y₁ (by simpa using hy)` as an intermediate fact. Simplify using `using this`. Take `⟨Lw, Cu, hL, hb⟩` from `GlobalTheory.Core.Mi.SepPer.mult_bound (θ := W.θ) hθ MB (∅ : Set (GA D (G.V (.grid D.R.m 0)))) 1 hT'm Ω hΩc τ v`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨LinearMap.mk₂ ℂ (fun y u => Bplus W M (pairVec (coefPlus G W.θ) (e (PiTensorProduct.tprod ℂ (Function.update x τ y))) Ψ) (F' (PiTensorProduct.tprod ℂ (Function.update v τ u)))) (fun y y' u => (congrArg (fun ξ => Bplus W M (pairVec (coefPlus G W.θ) ξ Ψ) _) (hE y y')).trans (hBadd …` and prove the remaining obligations. Introduce `y`. Establish `hℓ0` using `fun (u u' : MB.sm τ) => (congrArg (Bplus W M (pairVec (coefPlus G W.θ) (e (PiTensorProduct.tprod ℂ (Function.update x τ y))) Ψ)) (hV u u')).trans (hadd _ _ (hmem _) _ (hmem _))`. Establish `hℓ1` using `fun (a : ℂ) (u : MB.sm τ) => (congrArg (Bplus W M (pairVec (coefPlus G W.θ) (e (PiTensorProduct.tprod ℂ (Function.update x τ y))) Ψ)) (hVs a u)).trans (hBsmulR a _ _)`. Set `ℓ₀ : MB.sm τ →ₗ[ℂ] ℂ` to `{ toFun := fun u => Bplus W M (pairVec (coefPlus G W.θ) (e (PiTensorProduct.tprod ℂ (Function.update x τ y))) Ψ) (F' (PiTensorProduct.tprod ℂ (Function.update v τ u))) map_add' := hℓ0 map_smul' := hℓ1 }`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨ℓ, hℓ⟩` from `LinearMap.exists_extend ℓ₀`. Establish `hℓw : ∀ u : MB.sm τ, ℓ u = Bplus W M (pairVec (coefPlus G W.θ) (e (PiTensorProduct.tprod ℂ (Function.update x τ y))) Ψ) (F' (PiTensorProduct.tprod ℂ (Function.update v τ u)))` using `fun u => congrArg (fun m => m u) hℓ`. Use `⟨ℓ, ⟨Lw, C (e (PiTensorProduct.tprod ℂ (Function.update x τ y))) * Cu, hL, fun w hw => ?_⟩, fun u => hℓw u⟩` and prove the remaining obligations. Establish `hw' : w ∈ MB.sm τ` using `Submodule.subset_span hw`. Establish `e1 : ℓ w = ℓ ((⟨w, hw'⟩ : MB.sm τ) : MB.H τ)` using `rfl`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, hℓw]`. Use `hbd (e (PiTensorProduct.tprod ℂ (Function.update x τ y))) _ (hmem _) _ (fun z hz => by rw [hTt]; exact hb ⟨w, hw'⟩ z hz)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Introduce `h hh g hg hEm w x₁ y₁ hy`. Establish `he1` using `he τ h hh (Function.update x τ w) (Function.update x τ (π τ h w)) (by simp) (fun τ' hτ' => by simp [hτ'])`.
-
-Establish `hp` using `pairVec_comp_rho (coefPlus G W.θ) (e (PiTensorProduct.tprod ℂ (Function.update x τ w))) Ψ (atTau_mem_GinfC' W.θ _ τ h)`. Establish `hemb : atTau W.θ (G.V (.grid D.R.m 0)) τ g = embTop G (atTau W.θ (G.V (.top 0)) τ h)` using `(embRel_iff _ _ _).1 (GlobalTheory.T.embRel_atRealPlace_of_unitaryEmbedding D W.θ hθ _ _ _ τ h g hh hg hEm)`. Use `show Bplus W M (pairVec (coefPlus G W.θ) (e (PiTensorProduct.tprod ℂ (Function.update x τ (π τ h w)))) Ψ) (F' (PiTensorProduct.tprod ℂ (Function.update v τ y₁))) = Bplus W M (pairVec (coefPlus G W.θ) (e (PiTensorProduct.tprod ℂ (Function.update x τ w))) Ψ) (F' (PiTensorProduct.tp …`. Rewrite using `[he1, hp, hF1 g hg x₁ y₁ hy, hemb]`. Conclude with `GlobalTheory.T.besselPeriodCorankOne_simultaneous_rightTranslate W M hM _ (hφ _) _ (hmem _) _`.
-
-Introduce `u hu w x₁ y₁ hy show Bplus W M _ (F' (PiTensorProduct.tprod ℂ (Function.update v τ y₁))) = _ * Bplus W M _ (F' (PiTensorProduct.tprod ℂ (Function.update v τ x₁)))`. Rewrite using `[hF1 u hu.1 x₁ y₁ hy]`. Conclude with `GlobalTheory.T.besselPeriodCorankOne_rightTranslate_unipotent W M hM _ _ (hmem _) _ (GlobalTheory.T.atRealPlace_mem_unipotentFlag_adelic D W.θ hθ _ G.besTop.e τ u hu)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topSep_of_classicalTheorems : GlobalTheory.FunPr.Hypotheses₂ → TopSep := by
   intro _

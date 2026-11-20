@@ -49,7 +49,7 @@ def sgnAt (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Module.Basis ι K V) (X : Infi
   (((X v).conjTranspose * gramAt h b v * X v) i i).re
 
 /- English proof (translation)
-Unfold `fcoord`. Rewrite using `[← Matrix.mulVec_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[vecAt, map_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem fcoord_add (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (v : InfinitePlace K) (x y : V) : fcoord b X v (x + y) = fcoord b X v x + fcoord b X v y := by
@@ -60,7 +60,7 @@ theorem fcoord_add (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι 
   simp [vecAt, map_add]
 
 /- English proof (translation)
-Establish `h0 : vecAt b v 0 = 0`. Use function extensionality and compare the values at `i`. Simplify using `[vecAt]`. Simplify using `only [fcoord, h0, Matrix.mulVec_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fcoord_zero (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (v : InfinitePlace K) : fcoord b X v 0 = 0 := by

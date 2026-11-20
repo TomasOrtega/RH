@@ -18,7 +18,7 @@ def deA (l b₀ y : ℕ) : ℕ :=
   (b₀ / l + 1) - min (b₀ / l + 1) (y - 1) + padicValNat l ((b₀ / l + 1).choose (min (b₀ / l + 1) (y - 1)))
 
 /- English proof (translation)
-Establish `hw : w * Q ^ l = P + (-(C (l : O) * ε))` using `by rw [hP]; ring`. Rewrite using `[hw, add_pow, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem expand (l a : ℕ) {P Q w ε : O⟦X⟧} (hP : P = C (l : O) * ε + w * Q ^ l) (x : O) :
     C x * (w * Q ^ l) ^ a =
@@ -30,29 +30,27 @@ theorem expand (l a : ℕ) {P Q w ε : O⟦X⟧} (hP : P = C (l : O) * ε + w * 
   ring
 
 /- English proof (translation)
-Distinguish the cases in `hx0 : x = 0`. Conclude with `⟨0, by rw [hx0, mul_zero]⟩`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨v, hv⟩` from `ContPA.l_unit_mul hϖ hl0`. Use `set E := (IsDiscreteValuationRing.addVal O (l : O)).toNat with hE`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set a := b₀ / l + 1 with ha`. Use `set i₀ := min a (y - 1) with hi₀`. Establish `hla : b₀ ≤ l * a`. Establish `h1` using `Nat.div_add_mod b₀ l`. Establish `h2` using `Nat.mod_lt b₀ hlp.out.pos`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[ha, mul_add, mul_one]`. Use linear arithmetic over natural numbers and integers. Establish `hmem : C x * (w * Q ^ l) ^ a ∈ Ideal.span {P ^ y, C ϖ ^ (E * κ)}`. Establish `h1 : Q ^ b₀ * C x ∈ Ideal.span {P ^ y, C ϖ ^ (E * κ)}`. Establish `e : Q ^ b₀ * C x = C ((v : O) ^ κ) * C ϖ ^ (E * κ) * U₀ - P ^ y * U₁`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← heq, hv]`. Simplify using `only [map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `Ideal.sub_mem _ (Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ (Ideal.subset_span (Set.mem_insert_of_mem _ rfl)))) (Ideal.mul_mem_right _ _ (Ideal.subset_span (Set.mem_insert _ _)))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : C x * (w * Q ^ l) ^ a = w ^ a * Q ^ (l * a - b₀) * (Q ^ b₀ * C x)`. Establish `hsplit : Q ^ (l * a) = Q ^ (l * a - b₀) * Q ^ b₀` using `by rw [← pow_add, Nat.sub_add_cancel hla]`. Rewrite using `[mul_pow, ← pow_mul, hsplit]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ideal.mul_mem_left _ _ h1`. Rewrite `hmem` using `[expand l a hP x]`. Establish `hu : ∀ i ∈ Finset.range (a + 1), IsUnit ((-ε) ^ (a - i))` using `fun i _ => hε.neg.pow _`. Establish `hc : ∀ i ∈ Finset.range (a + 1), x * ((a.choose i : O) * (l : O) ^ (a - i)) ≠ 0`. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero hx0 (ContPA.coef_ne_zero hl hl0 (Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)))`. Establish `key` using `(Mprime hϖ hPd hPw (Finset.range (a + 1)) (fun i => (-ε) ^ (a - i)) hu (fun i => x * ((a.choose i : O) * (l : O) ^ (a - i))) hc y (E * κ)).mp hmem i₀ (Finset.mem_range.mpr (by omega)) (by omega)`. Rewrite `key` using `[IsDiscreteValuationRing.addVal_mul, ContPA.addVal_coef hl hl0 (by omega : i₀ ≤ a)]`. Establish `hde : deA l b₀ y = a - i₀ + padicValNat l (a.choose i₀)` using `rfl`. Establish `hdiv : ϖ ^ (E * (κ - deA l b₀ y)) ∣ x`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Rewrite using `[← IsDiscreteValuationRing.addVal_le_iff_dvd, IsDiscreteValuationRing.addVal_pow, IsDiscreteValuationRing.addVal_uniformizer hϖ, nsmul_one, hde]`. Generalize the expression as in `IsDiscreteValuationRing.addVal O x = t at key ⊢`. Generalize the expression as in `a - i₀ + padicValNat l (a.choose i₀) = D at key ⊢`. Proceed by induction on `t using ENat.recTopCoe with`. Consider the case `top => exact le_top`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Consider the case `coe m`. Establish `k1 : E * κ ≤ m + E * D` using `by exact_mod_cast key`. Establish `k2 : E * (κ - D) ≤ m`. Distinguish the cases in `hκ : κ ≤ D`. Rewrite using `[Nat.sub_eq_zero_of_le hκ, mul_zero]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `Nat.zero_le _`. Establish `h3 : E * (κ - D) + E * D = E * κ` using `by rw [← mul_add, Nat.sub_add_cancel (by omega)]`. Generalize the expression as in `E * (κ - D) = X₁ at h3 ⊢`. Generalize the expression as in `E * D = X₂ at h3 k1`. Generalize the expression as in `E * κ = X₃ at h3 k1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `k2` after adjusting the coercions. Take `⟨x', hx'⟩` from `hdiv`. Use `⟨((v⁻¹ : Oˣ) : O) ^ (κ - deA l b₀ y) * x', ?_⟩` and prove the remaining obligations. Establish `hvv : (v : O) ^ (κ - deA l b₀ y) * ((v⁻¹ : Oˣ) : O) ^ (κ - deA l b₀ y) = 1`.
-
-Rewrite using `[← mul_pow, Units.mul_inv, one_pow]`. Rewrite using `[hx', hv]`. Take the linear combination `(-(ϖ ^ (E * (κ - deA l b₀ y)) * x')) * hvv`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem content_div {l : ℕ} [hlp : Fact l.Prime] (hl : (l : O) ∈ IsLocalRing.maximalIdeal O)
     (hl0 : (l : O) ≠ 0) {P Q w ε U₀ U₁ : O⟦X⟧} (hε : IsUnit ε)
@@ -120,17 +118,15 @@ theorem content_div {l : ℕ} [hlp : Fact l.Prime] (hl : (l : O) ∈ IsLocalRing
 
 omit [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] in
 /- English proof (translation)
-Establish `hl2 : 2 ≤ l` using `hlp.out.two_le`. Establish `hfl : ((b₀ / l : ℕ) : ℝ) ≤ (b₀ : ℝ) / l` using `Nat.cast_div_le`. Establish `hlog0 : 0 ≤ Real.logb l b₀` using `Real.logb_nonneg (by exact_mod_cast (show 1 < l by omega)) (by exact_mod_cast hb)`. Establish `hm` using `le_max_right (0 : ℝ) ((b₀ : ℝ) / l - y + 2 + Real.logb l b₀)`. Establish `hm0` using `le_max_left (0 : ℝ) ((b₀ : ℝ) / l - y + 2 + Real.logb l b₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `deA`. Use `set a := b₀ / l + 1 with ha`. Establish `hab : a ≤ b₀` using `Nat.div_lt_self (by omega) (by omega)`. Break down `le_or_gt a (y - 1) with h | h` into its components or cases. Simplify using `only [min_eq_left h, Nat.sub_self, Nat.choose_self, padicValNat.one, add_zero, Nat.cast_zero]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[min_eq_right h.le]`. Establish `hV : padicValNat l (a.choose (y - 1)) ≤ Nat.log l a`. Rewrite using `[← Nat.factorization_def _ hlp.out]`. Conclude with `Nat.factorization_choose_le_log`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (show 1 < l by omega)`. Establish `hb0 : (0 : ℝ) < b₀` using `by exact_mod_cast (show 0 < b₀ by omega)`. Establish `hlogV : ((Nat.log l a : ℕ) : ℝ) ≤ Real.logb l b₀`. Rewrite using `[Real.le_logb_iff_rpow_le hl1 hb0, Real.rpow_natCast]`. Conclude with `(Nat.pow_log_le_self l (Nat.succ_ne_zero _)).trans hab` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hsub : ((a - (y - 1) : ℕ) : ℝ) ≤ (b₀ : ℝ) / l - y + 2`. Rewrite using `[Nat.cast_sub h.le, Nat.cast_sub (by omega : 1 ≤ y), ha]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hVr : (padicValNat l (a.choose (y - 1)) : ℝ) ≤ Nat.log l a` using `by exact_mod_cast hV`.
-
-Rewrite using `[Nat.cast_add]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem deA_le {l : ℕ} [hlp : Fact l.Prime] (b₀ y : ℕ) (hy : 1 ≤ y) (hb : 1 ≤ b₀) :
     (deA l b₀ y : ℝ) ≤ max 0 ((b₀ : ℝ) / l - y + 2 + Real.logb l b₀) + 1 := by
@@ -179,11 +175,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR}
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce and unpack `⟨u, hu⟩`. Establish `h1 : algebraMap O LL (↑u⁻¹ * ((PD.p : ℕ) : O)) = 1`. Rewrite using `[← hu, Units.inv_mul, map_one]`. Establish `h2` using `congrArg v h1`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_mul, AddValuation.map_mul, map_natCast, W.v_l, AddValuation.map_one]`. Establish `h3` using `hO ↑u⁻¹`. Generalize the expression as in `v (algebraMap O LL ↑u⁻¹) = x at h2 h3`. Proceed by induction on `x using WithTop.recTopCoe with`. Consider the case `top => simp at h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Consider the case `coe q`. Establish `h2' : q + 1 = 0` using `by exact_mod_cast h2`. Establish `h3' : (0 : ℚ) ≤ q` using `by exact_mod_cast h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem l_mem_max (W : LocWach PD LL O v n) [IsLocalRing O] (hO : ∀ x : O, 0 ≤ v (algebraMap O LL x)) :
     ((PD.p : ℕ) : O) ∈ IsLocalRing.maximalIdeal O := by
@@ -206,7 +202,7 @@ variable [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.m
   [FiniteDimensional Qp LL]
 
 /- English proof (translation)
-Unfold `letE`. Use `first`. Consider the case `(rw [← Pi.single_mul, mul_one])`. Consider the case `(ext i; by_cases h : i = c <;> simp [Pi.single_apply, h])`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem letE_idem (c : ZMod n) : (letE (O := O) c : LetA O n) * letE c = letE c := by
   unfold letE
@@ -215,37 +211,35 @@ theorem letE_idem (c : ZMod n) : (letE (O := O) c : LetA O n) * letE c = letE c 
   | (ext i; by_cases h : i = c <;> simp [Pi.single_apply, h])
 
 /- English proof (translation)
-Use `haveI : Fact PD.p.Prime := Fact.mk PD.hp`. Establish `hR` using `GS.ringData_of_caseA_of_p9 W hcase hP9`. Establish `hp0` using `GS.p_ne_zero W`. Establish `hlm` using `l_mem_max W hO`. Take `⟨u₀, hu₀, e1⟩` from `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u₁, hu₁, e2⟩` from `h2`. Establish `hlE : ∀ k : ℕ, algebraMap (LetA O n) W.EE (lA W ^ k) = lE W k`. Introduce `k`. Simplify using `[lA, lE]`. Establish `hxE : ∀ z : O, algebraMap (LetA O n) W.EE (algebraMap O (LetA O n) z) = algebraMap O W.EE z` using `fun z => (IsScalarTower.algebraMap_apply O (LetA O n) W.EE z).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlA : ∀ z : O, ∀ k : ℕ, algebraMap O (LetA O n) (((PD.p : ℕ) : O) ^ k * z) = lA W ^ k * algebraMap O (LetA O n) z`. Introduce `z k`. Simplify using `[lA, map_mul, map_pow, map_natCast]`. Establish `hG : letE c * (lA W ^ κ * u₀ - qA W ^ b₀ * algebraMap O (LetA O n) x) = letE c * ps W 1 ^ y * u₁`. Apply `W.EE_inj` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_sub, map_one, mul_one, hlE, hxE] at e1 e2 ⊢`. Take the linear combination `e2 - lE W κ * e1`. Establish `hGc` using `congrFun hG c`. Establish `hLc : (letE (O` using `O) c : LetA O n) c = 1 := by simp [letE]`. Establish `hlAc : (lA W) c = C ((PD.p : ℕ) : O)` using `by simp [lA]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxc : (algebraMap O (LetA O n) x) c = C x` using `rfl`. Simplify using `only [Pi.mul_apply, Pi.sub_apply, Pi.pow_apply, hLc, one_mul, hlAc, hxc] at hGc`. Take `⟨-, ⟨w, hw⟩, -, -⟩` from `hR`. Establish `hq : qA W c = W.π₀ c + C ((PD.p : ℕ) : O)` using `by simp [qA, lA]`. Establish `hPc : ps W 1 c = (w : LetA O n) c * W.π₀ c * qA W c ^ (PD.p - 1) + C ((PD.p : ℕ) : O)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GS.ps_letter 1 c, pow_one, hw]`. Both sides reduce to the same expression. Establish `hp1 : 1 ≤ PD.p` using `PD.hp.one_lt.le`. Establish `hQp : qA W c ^ PD.p = qA W c ^ (PD.p - 1) * qA W c`. Rewrite using `[← pow_succ, Nat.sub_add_cancel hp1]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP : ps W 1 c = C ((PD.p : ℕ) : O) * (1 - (w : LetA O n) c * qA W c ^ (PD.p - 1)) + (w : LetA O n) c * qA W c ^ PD.p`. Rewrite using `[hPc, hQp]`. Establish `hπ : W.π₀ c = qA W c - C ((PD.p : ℕ) : O)` using `by rw [hq]; ring`. Rewrite using `[hπ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hcc0 : constantCoeff (W.π₀ c) = 0` using `GS.π₀₁_cc (GS.ringData_of_caseA_of_p9 W hcase hP9)`. Establish `hccq : constantCoeff (qA W c) = ((PD.p : ℕ) : O)`. Rewrite using `[hq, map_add, hcc0, constantCoeff_C, zero_add]`. Establish `hε : IsUnit (1 - (w : LetA O n) c * qA W c ^ (PD.p - 1))`. Rewrite using `[PowerSeries.isUnit_iff_constantCoeff, map_sub, map_one, map_mul, map_pow, hccq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits` to reduce the goal to its premises. Rewrite using `[← IsLocalRing.mem_maximalIdeal]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.pow_mem_of_mem _ hlm _ (by have := PD.hp.two_le; omega))`. Establish `hPd : IsDist (ps W 1 c)` using `GS.dist_ps (GS.ringData_of_caseA_of_p9 W hcase hP9) 1 (GS.dist_φpow (GS.ringData_of_caseA_of_p9 W hcase hP9) 1) c`. Establish `hPw : 1 ≤ wdeg (ps W 1 c)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `wdeg`. Establish `hne : ((ps W 1 c).map (IsLocalRing.residue O)).order ≠ ⊤`. Rewrite using `[Ne, order_eq_top]`. Conclude with `hPd`. Establish `hcc : constantCoeff ((ps W 1 c).map (IsLocalRing.residue O)) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, GS.ps_letter 1 c, map_add, GS.cc_φpow (GS.ringData_of_caseA_of_p9 W hcase hP9) 1 c, constantCoeff_C, zero_add]`. Conclude with `(IsLocalRing.residue_eq_zero_iff _).2 hlm`. Establish `h1 : 1 ≤ ((ps W 1 c).map (IsLocalRing.residue O)).order` using `one_le_order_iff_constCoeff_eq_zero.2 hcc`. Rewrite `h1` using `[← ENat.natCast_toNat hne]`. Conclude with `h1` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x', hx'⟩` from `content_div hlm hp0 hε hP hPd hPw b₀ y κ hy x hGc`. Distinguish the cases in `hκ : κ ≤ deA PD.p b₀ y`. Use `⟨((PD.p : ℕ) : O) ^ (deA PD.p b₀ y - κ) * x, lA W ^ (deA PD.p b₀ y - κ) * u₁, Subalgebra.mul_mem _ (Subalgebra.pow_mem _ (Subalgebra.natCast_mem _ _) _) hu₁, ?_⟩` and prove the remaining obligations. Establish `hsplit : lE W (deA PD.p b₀ y) = lE W (deA PD.p b₀ y - κ) * lE W κ`. Rewrite using `[lE, lE, lE, ← pow_add, Nat.sub_add_cancel hκ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hxE, hlA, hsplit]`. Simplify using `only [map_mul, map_sub, map_one, mul_one, hlE, hxE] at e2 ⊢`. Take the linear combination `lE W (deA PD.p b₀ y - κ) * e2`. Establish `hκ' : κ = (κ - deA PD.p b₀ y) + deA PD.p b₀ y` using `by omega`. Establish `hLmem : (letE (O` using `O) c : LetA O n) ∈ W.AΔ := fun δ _ => GS.γA_letE W δ c`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hsat : lA W ^ (κ - deA PD.p b₀ y) * (letE c * (lA W ^ deA PD.p b₀ y * u₀ - qA W ^ b₀ * algebraMap O (LetA O n) x')) = ps W 1 ^ y * (letE c * u₁)`. Establish `hx'' : algebraMap O (LetA O n) x = lA W ^ (κ - deA PD.p b₀ y) * algebraMap O (LetA O n) x'` using `by rw [hx', hlA]`. Rewrite `hG` using `[hx'', hκ', pow_add]`. Rewrite `hG` using `[Nat.add_sub_cancel]`. Take the linear combination `hG`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpi : ps W 1 ^ y ∈ PiPs W` using `Submonoid.pow_mem _ (Submonoid.subset_closure (Set.mem_insert_of_mem _ (Set.mem_range_self 1))) y`. Take `⟨y', hy', hz⟩` from `GS.sat_A_core (GS.ringData_of_caseA_of_p9 W hcase hP9) hp0 hpi (Subalgebra.mul_mem _ hLmem hu₁) _ hsat`. Use `⟨x', y', hy', ?_⟩` and prove the remaining obligations. Establish `hid` using `congrArg (algebraMap (LetA O n) W.EE) (letE_idem (O := O) c)`. Establish `hzE` using `congrArg (algebraMap (LetA O n) W.EE) hz`.
-
-Simplify using `only [map_mul, map_sub, map_one, map_pow, mul_one, hlE, hxE] at e1 hid hzE ⊢`. Take the linear combination `lE W (deA PD.p b₀ y) * e1 + algebraMap (LetA O n) W.EE (letE c) * hzE - (lE W (deA PD.p b₀ y) * algebraMap (LetA O n) W.EE u₀ - algebraMap (LetA O n) W.EE (qA W) ^ b₀ * algebraMap O W.EE x') * hid`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem content_step (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W)
     (hO : ∀ x : O, 0 ≤ v (algebraMap O LL x)) (c : ZMod n) (b₀ y κ : ℕ) (hy : 1 ≤ y) (f : W.EE) (x : O)

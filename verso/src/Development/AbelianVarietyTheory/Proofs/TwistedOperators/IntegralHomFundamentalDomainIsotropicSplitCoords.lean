@@ -10,7 +10,7 @@ namespace GlobalTheory.TwistHaar
 open scoped Pointwise
 
 /- English proof (translation)
-The claim follows from `hs.nullMeasurableSet.prod ht.nullMeasurableSet ae_covers := by have h1 := (Measure.quasiMeasurePreserving_fst (μ := μ) (ν := ν)).ae hs.ae_covers have h2 := (Measure.quasiMeasurePreserving_snd (μ := μ) (ν := ν)).ae ht.ae_covers filter_upwards [h1, h2] with p hp hq obtain ⟨g, hg⟩ : …`.
+A detailed English derivation is pending.
 -/
 theorem isAddFundamentalDomain_prod {A B : Type*} [AddGroup A] [AddGroup B] [MeasurableSpace A]
     [MeasurableSpace B] {Γ : AddSubgroup A} {Δ : AddSubgroup B} {μ : Measure A} {ν : Measure B} [SFinite μ]
@@ -59,33 +59,29 @@ open scoped Pointwise
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D V V' W r C B hs C' h1 h2 h3 μ 𝓨 hY μV 𝓕V hμV hFV μ' 𝓕' hμ' hF'`. Take `⟨e, he, hrat⟩` from `GlobalTheory.T.exists_homSpace_dual_isotropic_middle_decomposition D V V' W r C B hs C' h1 h2 h3`. Take `⟨a1, a2, a3, a4, a5, -⟩` from `GlobalTheory.MixModel.lattice_Mx D W.rank r`. Take `⟨b1, b2, b3, b4, b5, -⟩` from `GlobalTheory.MixModel.lattice_Mx D W.rank V'.rank`. Take `⟨c1, c2, c3, c4, c5, -⟩` from `GlobalTheory.MixModel.lattice_Mx D W.rank V.rank`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: BorelSpace (Mx D W.rank r)` using `⟨rfl⟩`. Establish `: BorelSpace (WO V' W)` using `⟨rfl⟩`. Establish `: BorelSpace (WO V W)` using `⟨rfl⟩`. Establish `: DiscreteTopology (ratMx D W.rank r)` using `a5`. Establish `: DiscreteTopology (ratL W V')` using `b5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: DiscreteTopology (ratL W V)` using `c5`. Establish `cA : Countable (ratMx D W.rank r)` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `cB : Countable (ratL W V')` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `: μ.IsAddHaarMeasure` using `hY.1`. Use `set Γ' : AddSubgroup (Mx D W.rank r × Mx D W.rank r × WO V' W) := (ratMx D W.rank r).prod ((ratMx D W.rank r).prod (ratL W V')) with hΓ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ p, e p ∈ ratL W V ↔ p ∈ Γ'`. Introduce and unpack `⟨t, y, x⟩`. Rewrite using `[hrat]`. Simplify using `[Γ', AddSubgroup.mem_prod]`. Establish `: Countable Γ'` using `Function.Injective.countable (f := fun g : Γ' => ((⟨(g : Mx D W.rank r × Mx D W.rank r × WO V' W).1, (AddSubgroup.mem_prod.1 g.2).1⟩ : ratMx D W.rank r), (⟨(g : Mx D W.rank r × Mx D W.rank r × WO V' W).2.1, (AddSubgroup.mem_prod.1 (AddSubgroup.mem_prod.1 g.2).2).1⟩ : ratMx D W.ra …`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Prod.mk.injEq, Subtype.mk.injEq] at hgh`. Conclude with `Subtype.ext (Prod.ext hgh.1 (Prod.ext hgh.2.1 hgh.2.2))`. Use `set P : Measure (Mx D W.rank r × Mx D W.rank r × WO V' W) := μ.prod (μ.prod μ') with hP`. Establish `hT : IsAddFundamentalDomain Γ' (𝓨 ×ˢ (𝓨 ×ˢ 𝓕')) P` using `isAddFundamentalDomain_prod hY.2.1 (isAddFundamentalDomain_prod hY.2.1 hF')`. Use `set m : Measure (WO V W) := P.map e with hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (μ.prod μ').IsAddHaarMeasure` using `inferInstance`. Establish `: P.IsAddHaarMeasure` using `inferInstance`. Establish `: m.IsAddHaarMeasure` using `e.isAddHaarMeasure_map P`. Establish `: VAddInvariantMeasure Γ' (Mx D W.rank r × Mx D W.rank r × WO V' W) P` using `⟨fun g s _ => measure_preimage_add P (g : Mx D W.rank r × Mx D W.rank r × WO V' W) s⟩`. Use `set c : NNReal := μV.addHaarScalarFactor m with hcdef`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : μV = c • m` using `Measure.isAddLeftInvariant_eq_smul μV m`. Establish `hc0 : c ≠ 0`. Introduce `h0`. Rewrite `hc` using `[h0, zero_smul]`. Conclude with `(NeZero.ne μV) hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hac : m ≪ μV` using `fun s hs0 => by`. Rewrite `hs0` using `[hc, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 hs0).resolve_left (by simpa using hc0)`. Establish `hFm : IsAddFundamentalDomain (ratL W V) 𝓕V m` using `hFV.mono hac`. Establish `hemeas : Measurable e` using `e.continuous.measurable`.
+Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpre : IsAddFundamentalDomain Γ' (e ⁻¹' 𝓕V) P`. Use `hFm.preimage_of_equiv (f := e) (MeasurePreserving.quasiMeasurePreserving ⟨hemeas, rfl⟩) (e := fun g => ⟨e.symm g, (hmem _).1 (by simpa using g.2)⟩) ⟨fun g h hgh => ?_, fun g => ?_⟩ fun g x => ?_` and prove the remaining obligations. Conclude with `Subtype.ext (e.symm.injective (congrArg Subtype.val hgh))`. Conclude with `⟨⟨e g, (hmem g).2 g.2⟩, Subtype.ext (by simp)⟩`. Express the relevant statement in the definitionally equal form `e (e.symm g + x) = (g : WO V W) + e x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_add, ContinuousAddEquiv.apply_symm_apply]`. Establish `hfin : μ' 𝓕' ≠ ⊤` using `(GlobalTheory.Size.measure_dom hμ' hF').2`. Establish `: IsFiniteMeasure (μ.restrict 𝓨)` using `⟨by rw [Measure.restrict_apply_univ, hY.2.2]; exact ENNReal.one_lt_top⟩`. Establish `: IsFiniteMeasure (μ'.restrict 𝓕')` using `⟨by rw [Measure.restrict_apply_univ]; exact hfin.lt_top⟩`. Use `⟨(c : ℝ), NNReal.coe_pos.2 (pos_iff_ne_zero.2 hc0), fun H hH hb hper => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨b, hb⟩` from `hb`. Establish `hmeasH : Measurable (fun p => H (e p))` using `(hH.comp e.continuous).measurable`. Establish `step1 : ∫ w in 𝓕V, H w ∂μV = (c : ℝ) • ∫ w in 𝓕V, H w ∂m`. Establish `: μV = (c : ENNReal) • m` using `by rw [hc]; rfl`. Rewrite using `[this, Measure.restrict_smul, integral_smul_measure, ENNReal.coe_toReal]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `step2 : ∫ w in 𝓕V, H w ∂m = ∫ p in e ⁻¹' 𝓕V, H (e p) ∂P` using `(e.toHomeomorph.toMeasurableEquiv.measurableEmbedding).setIntegral_map H 𝓕V`. Establish `step3 : ∫ p in e ⁻¹' 𝓕V, H (e p) ∂P = ∫ p in 𝓨 ×ˢ (𝓨 ×ˢ 𝓕'), H (e p) ∂P` using `hpre.setIntegral_eq hT (f := fun p => H (e p)) fun g p => by`. Express the relevant statement in the definitionally equal form `H (e ((g : Mx D W.rank r × Mx D W.rank r × WO V' W) + p)) = H (e p)`. Rewrite using `[map_add]`. Conclude with `hper _ ((hmem g).2 g.2) _`.
-
-Establish `r1 : (μ.prod (μ.prod μ')).restrict (𝓨 ×ˢ (𝓨 ×ˢ 𝓕')) = (μ.restrict 𝓨).prod ((μ.restrict 𝓨).prod (μ'.restrict 𝓕'))` using `((congrArg (Measure.prod (μ.restrict 𝓨)) (Measure.prod_restrict 𝓨 𝓕')).trans (Measure.prod_restrict 𝓨 (𝓨 ×ˢ 𝓕'))).symm`. Establish `step4 : ∫ p in 𝓨 ×ˢ (𝓨 ×ˢ 𝓕'), H (e p) ∂P = ∫ t in 𝓨, ∫ y in 𝓨, ∫ x in 𝓕', H (isoPart V W C' t + isoPart V W C y + midPart V V' W B x) ∂μ' ∂μ ∂μ`. Use `(congrArg (fun ν => ∫ p, H (e p) ∂ν) r1).trans ?_` and prove the remaining obligations. Use `(integral_prod _ (Integrable.of_bound hmeasH.aestronglyMeasurable b (Filter.Eventually.of_forall fun p => hb _))).trans ?_` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
-
-Use `(integral_prod (fun q => H (e (t, q))) (Integrable.of_bound (hmeasH.comp measurable_prodMk_left).aestronglyMeasurable b (Filter.Eventually.of_forall fun p => hb _))).trans ?_` and prove the remaining obligations. Simplify using `only [he]`. Conclude with `step1.trans (congrArg (fun z : ℂ => (c : ℝ) • z) ((step2.trans step3).trans step4))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_fundamentalDomain_eq_iterated : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), IsIsoSplit V V' C B → ∀ C' : Matrix (Fin V.rank) (Fin r) D.host.E, adj D C * V.gram * C' = 1 → adj D C' * V.gram * C' = 0 → adj D C' * V.gram * B = 0 → ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (ratMx D W.rank r) μ 𝓨 → ∀ (μV : Measure (WO V W)) (𝓕V : Set (WO V W)), μV.IsAddHaarMeasure → IsAddFundamentalDomain (ratL W V) 𝓕V μV → ∀ (μ' : Measure (WO V' W)) (𝓕' : Set (WO V' W)), μ'.IsAddHaarMeasure → IsAddFundamentalDomain (ratL W V') 𝓕' μ' → ∃ κ : ℝ, 0 < κ ∧ (∀ H : WO V W → ℂ, Continuous H → (∃ b : ℝ, ∀ w, ‖H w‖ ≤ b) → (∀ γ ∈ ratL W V, ∀ w, H (γ + w) = H w) → ∫ w in 𝓕V, H w ∂μV = κ • ∫ t in 𝓨, ∫ y in 𝓨, ∫ x in 𝓕', H (isoPart V W C' t + isoPart V W C y + midPart V V' W B x) ∂μ' ∂μ ∂μ) := by
   intro D V V' W r C B hs C' h1 h2 h3 μ 𝓨 hY μV 𝓕V hμV hFV μ' 𝓕' hμ' hF'

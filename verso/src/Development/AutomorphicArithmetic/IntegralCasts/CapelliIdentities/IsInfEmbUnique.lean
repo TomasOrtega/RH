@@ -5,28 +5,28 @@ import Mathlib
     fun (F : Type) [Field F] ↦ NumberField.InfiniteAdeleRing F
 
 /- English proof (translation)
-Use `intros`. Use `infer_instance`.
+Fix the arbitrary inputs and assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qh26.aux2 :
     ∀ {F : Type} [inst : Field F], SMulCommClass F (UpperTheory.Reformulated.B.Qh26.Ainf F) (UpperTheory.Reformulated.B.Qh26.Ainf F) := by
   intros; infer_instance
 
 /- English proof (translation)
-Use `intros`. Use `infer_instance`.
+Fix the arbitrary inputs and assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qh26.aux3 :
     ∀ {F : Type} [inst : Field F], IsScalarTower F (UpperTheory.Reformulated.B.Qh26.Ainf F) (UpperTheory.Reformulated.B.Qh26.Ainf F) := by
   intros; infer_instance
 
 /- English proof (translation)
-Use `intros`. Use `infer_instance`.
+Fix the arbitrary inputs and assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qh26.aux4 :
     ∀ {F E : Type} [inst : Field F] [inst_1 : Field E] [inst_2 : Algebra F E], SMulCommClass F E E := by
   intros; infer_instance
 
 /- English proof (translation)
-Use `intros`. Use `infer_instance`.
+Fix the arbitrary inputs and assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qh26.aux5 :
     ∀ {F E : Type} [inst : Field F] [inst_1 : Field E] [inst_2 : Algebra F E], IsScalarTower F E E := by
@@ -44,13 +44,13 @@ noncomputable def UpperTheory.Reformulated.B.Qh26.IsInfEmb :
           (θ : TensorProduct F (UpperTheory.Reformulated.B.Qh26.Ainf F) E → ℂ) (a ⊗ₜ[F] (1 : E))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ τ θ θ' h h'`. Establish `hd : DenseRange (algebraMap F (UpperTheory.Reformulated.B.Qh26.Ainf F))` using `NumberField.InfiniteAdeleRing.denseRange_algebraMap F`. Establish `key : ∀ x : F, (algebraMap F (UpperTheory.Reformulated.B.Qh26.Ainf F) x) ⊗ₜ[F] (1 : E) = (1 : UpperTheory.Reformulated.B.Qh26.Ainf F) ⊗ₜ[F] (algebraMap F E x)`. Introduce `x`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (fun a : UpperTheory.Reformulated.B.Qh26.Ainf F ↦ θ (a ⊗ₜ[F] (1 : E))) = fun a : UpperTheory.Reformulated.B.Qh26.Ainf F ↦ θ' (a ⊗ₜ[F] (1 : E))`. Use `hd.equalizer h.2 h'.2 ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply]`. Rewrite using `[key, h.1, h'.1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `RingHom.ext fun z ↦ ?_` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `tmul a e`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hs : a ⊗ₜ[F] e = (a ⊗ₜ[F] (1 : E)) * ((1 : UpperTheory.Reformulated.B.Qh26.Ainf F) ⊗ₜ[F] e)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[hs, map_mul, map_mul, h.1, h'.1, congrFun h1 a]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.Qh26.isInfEmb_unique :
     ∀ {F E : Type} [inst : Field F] [NumberField F] [inst_2 : Field E] [NumberField E] [inst_4 : Algebra F E] (τ : E →+* ℂ)

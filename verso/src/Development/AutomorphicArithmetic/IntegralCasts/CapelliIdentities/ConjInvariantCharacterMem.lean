@@ -23,7 +23,7 @@ noncomputable def UpperTheory.Reformulated.B.Yzd4.cT :
             σ))
 
 /- English proof (translation)
-Simplify using `only [UpperTheory.Reformulated.B.Yzd4.cT]`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cT_mul {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
     (σ : A →+* A) (a b : Matrix n n A) :
@@ -32,7 +32,7 @@ private theorem cT_mul {A : Type} [CommRing A] {n : Type} [Fintype n] [Decidable
   rw [Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Simplify using `only [UpperTheory.Reformulated.B.Yzd4.cT]`. Rewrite using `[Matrix.map_one _ (map_zero σ) (map_one σ), Matrix.transpose_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cT_one {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
     (σ : A →+* A) : UpperTheory.Reformulated.B.Yzd4.cT σ (1 : Matrix n n A) = 1 := by
@@ -40,9 +40,9 @@ private theorem cT_one {A : Type} [CommRing A] {n : Type} [Fintype n] [Decidable
   rw [Matrix.map_one _ (map_zero σ) (map_one σ), Matrix.transpose_one]
 
 /- English proof (translation)
-Introduce `A _ n _ _ σ J a b ha hb`. Establish `ha' : UpperTheory.Reformulated.B.Yzd4.cT σ (a : Matrix n n A) * J * (a : Matrix n n A) = J` using `ha`. Establish `hb' : UpperTheory.Reformulated.B.Yzd4.cT σ (b : Matrix n n A) * J * (b : Matrix n n A) = J` using `hb`. Express the relevant statement in the definitionally equal form `UpperTheory.Reformulated.B.Yzd4.cT σ ((a * b : Matrix.GeneralLinearGroup n A) : Matrix n n A) * J * ((a * b : Matrix.GeneralLinearGroup n A) : Matrix n n A) = J`. Rewrite using `[Units.val_mul, cT_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J := by rw [ha', hb']`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yzd4.aux2 :
     ∀ {A : Type} [inst : CommRing A] {n : Type} [inst_1 : Fintype n] [inst_2 : DecidableEq n]
@@ -196,7 +196,7 @@ theorem UpperTheory.Reformulated.B.Yzd4.aux2 :
     _ = J := by rw [ha', hb']
 
 /- English proof (translation)
-Introduce `A _ n _ _ σ J`. Rewrite using `[Units.val_one, cT_one, Matrix.one_mul, Matrix.mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.Yzd4.aux3 :
     ∀ {A : Type} [inst : CommRing A] {n : Type} [inst_1 : Fintype n] [inst_2 : DecidableEq n]
@@ -277,9 +277,9 @@ theorem UpperTheory.Reformulated.B.Yzd4.aux3 :
   rw [Units.val_one, cT_one, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `A _ n _ _ σ J g hg`. Establish `hg' : UpperTheory.Reformulated.B.Yzd4.cT σ (g : Matrix n n A) * J * (g : Matrix n n A) = J` using `hg`. Express the relevant statement in the definitionally equal form `UpperTheory.Reformulated.B.Yzd4.cT σ ((g⁻¹ : Matrix.GeneralLinearGroup n A) : Matrix n n A) * J * ((g⁻¹ : Matrix.GeneralLinearGroup n A) : Matrix n n A) = J`. Establish `h1 : (g : Matrix n n A) * ((g⁻¹ : Matrix.GeneralLinearGroup n A) : Matrix n n A) = 1` using `Units.mul_inv g`. Establish `h2 : UpperTheory.Reformulated.B.Yzd4.cT σ ((g⁻¹ : Matrix.GeneralLinearGroup n A) : Matrix n n A) * UpperTheory.Reformulated.B.Yzd4.cT σ (g : Matrix n n A) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← cT_mul, h1, cT_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yzd4.aux4 :
     ∀ {A : Type} [inst : CommRing A] {n : Type} [inst_1 : Fintype n] [inst_2 : DecidableEq n]
@@ -485,7 +485,7 @@ noncomputable def UpperTheory.Reformulated.B.Yzd4.UJ :
         (@UpperTheory.Reformulated.B.Yzd4.aux4 A inst n inst_1 inst_2 σ J)
 
 /- English proof (translation)
-Introduce `F _ R _ _`. Conclude with `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yzd4.aux6 :
     ∀ {F : Type} [inst : Field F] (R : Type) [inst_1 : CommRing R]
@@ -535,7 +535,7 @@ theorem UpperTheory.Reformulated.B.Yzd4.aux6 :
   exact inferInstance
 
 /- English proof (translation)
-Introduce `F _ R _ _`. Conclude with `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yzd4.aux7 :
     ∀ {F : Type} [inst : Field F] (R : Type) [inst_1 : CommRing R]
@@ -720,7 +720,7 @@ noncomputable def UpperTheory.Reformulated.B.Yzd4.sigR :
           σ)
 
 /- English proof (translation)
-Introduce `F _ R _ _`. Conclude with `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yzd4.aux9 :
     ∀ {F : Type} [inst : Field F] (R : Type) [inst_1 : CommRing R]
@@ -736,7 +736,7 @@ theorem UpperTheory.Reformulated.B.Yzd4.aux9 :
   exact inferInstance
 
 /- English proof (translation)
-Introduce `F _ R _ _`. Conclude with `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yzd4.laurent_T_neg_one_mul_T_one :
     ∀ {F : Type} [inst : Field F] (R : Type) [inst_1 : CommRing R]
@@ -754,7 +754,7 @@ theorem UpperTheory.Reformulated.B.Yzd4.laurent_T_neg_one_mul_T_one :
   exact inferInstance
 
 /- English proof (translation)
-Introduce `F E _ _ _`. Conclude with `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yzd4.aux11 :
     ∀ {F E : Type} [inst : Field F] [inst_1 : Field E]
@@ -772,7 +772,7 @@ theorem UpperTheory.Reformulated.B.Yzd4.aux11 :
   exact inferInstance
 
 /- English proof (translation)
-Introduce `F E _ _ _`. Conclude with `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yzd4.aux12 :
     ∀ {F E : Type} [inst : Field F] [inst_1 : Field E]
@@ -1553,7 +1553,7 @@ noncomputable def UpperTheory.Reformulated.B.Yzd4.d18 :
             s)
 
 /- English proof (translation)
-Introduce `F E _ _ _ R _ _ σ M J _`. Use `letI : TopologicalSpace (TensorProduct F R E) := UpperTheory.Reformulated.B.Yzd4.topTens R`. Conclude with `⟨Set.univ, isOpen_univ, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.Yzd4.blockM_one_partner_eq_one :
     ∀ {F E : Type} [inst : Field F] [inst_1 : Field E]
@@ -1576,7 +1576,7 @@ theorem UpperTheory.Reformulated.B.Yzd4.blockM_one_partner_eq_one :
   exact ⟨Set.univ, isOpen_univ, rfl⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ R _ _ σ M J _ s t hs ht`. Use `letI : TopologicalSpace (TensorProduct F R E) := UpperTheory.Reformulated.B.Yzd4.topTens R`. Take `⟨a, ha, rfl⟩` from `hs`. Take `⟨b, hb, rfl⟩` from `ht`. Conclude with `⟨a ∩ b, ha.inter hb, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.Yzd4.blockM_mul_alt :
     ∀ {F E : Type} [inst : Field F] [inst_1 : Field E]
@@ -1605,11 +1605,11 @@ theorem UpperTheory.Reformulated.B.Yzd4.blockM_mul_alt :
   exact ⟨a ∩ b, ha.inter hb, rfl⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ R _ _ σ M J _ s hs`. Use `letI : TopologicalSpace (TensorProduct F R E) := UpperTheory.Reformulated.B.Yzd4.topTens R`. Use `⟨⋃₀ {u : Set (Matrix.GeneralLinearGroup (Fin M) (TensorProduct F R E)) | IsOpen u ∧ Subtype.val ⁻¹' u ∈ s}, isOpen_sUnion (fun u hu => hu.1), ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_sUnion]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, ⟨_, hu⟩, hx⟩`. Conclude with `⟨_, hu, hx⟩`. Introduce and unpack `⟨t, ht, hx⟩`. Take `⟨u, hu, rfl⟩` from `hs t ht`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨u, ⟨hu, ht⟩, hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.Yzd4.conj_invariant_character_mem :
     ∀ {F E : Type} [inst : Field F] [inst_1 : Field E]
@@ -1688,7 +1688,7 @@ theorem UpperTheory.Reformulated.B.Yzd4.conj_invariant_character_mem :
 attribute [local instance] UpperTheory.Reformulated.B.Yzd4.instTopologicalSpaceHA
 
 /- English proof (translation)
-Establish `hv : Continuous (fun g : Matrix.GeneralLinearGroup n A => (g : Matrix n n A))` using `Units.continuous_val`. Establish `hc : Continuous (fun g : Matrix.GeneralLinearGroup n A => UpperTheory.Reformulated.B.Yzd4.cT σ (g : Matrix n n A) * J * (g : Matrix n n A))`. Simplify using `only [UpperTheory.Reformulated.B.Yzd4.cT]`. Conclude with `((hv.matrix_map hσ).matrix_transpose.matrix_mul continuous_const).matrix_mul hv`. Conclude with `isClosed_eq hc continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem closed_UJ {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A]
     [T2Space A] {n : Type} [Fintype n] [DecidableEq n] (σ : A →+* A) (hσ : Continuous σ)
@@ -1704,7 +1704,7 @@ private theorem closed_UJ {A : Type} [CommRing A] [TopologicalSpace A] [IsTopolo
   exact isClosed_eq hc continuous_const
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace (Matrix n n A) := inferInstanceAs (LocallyCompactSpace (n → n → A))`. Use `haveI : SecondCountableTopology (Matrix n n A) := inferInstanceAs (SecondCountableTopology (n → n → A))`. Use `haveI : SecondCountableTopology (Matrix n n A)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Establish `he : Topology.IsClosedEmbedding (Units.embedProduct (Matrix n n A))` using `Units.isClosedEmbedding_embedProduct`. Conclude with `⟨he.locallyCompactSpace, he.isEmbedding.secondCountableTopology, he.isEmbedding.t2Space⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem lcsc_GL {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A]
     [T2Space A] [LocallyCompactSpace A] [SecondCountableTopology A] {n : Type} [Fintype n]
@@ -1722,7 +1722,7 @@ private theorem lcsc_GL {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologi
   exact ⟨he.locallyCompactSpace, he.isEmbedding.secondCountableTopology, he.isEmbedding.t2Space⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hH.isClosedEmbedding_subtypeVal.locallyCompactSpace, Topology.IsEmbedding.subtypeVal.secondCountableTopology, inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 private theorem lcsc_sub {G : Type} [Group G] [TopologicalSpace G] (H : Subgroup G)
     (hH : IsClosed (H : Set G)) [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] :
@@ -1731,9 +1731,9 @@ private theorem lcsc_sub {G : Type} [Group G] [TopologicalSpace G] (H : Subgroup
     Topology.IsEmbedding.subtypeVal.secondCountableTopology, inferInstance⟩
 
 /- English proof (translation)
-Establish `hr` using `IsModuleTopology.isTopologicalRing R D`. Use `haveI := IsModuleTopology.toContinuousAdd R D`. Set `e` to `B.equivFun`. Establish `c1 : Continuous e` using `IsModuleTopology.continuous_of_linearMap e.toLinearMap`. Establish `c2 : Continuous e.symm` using `IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `h : D ≃ₜ (ι → R)` to `{ toEquiv := e.toEquiv, continuous_toFun := c1, continuous_invFun := c2 }`. Conclude with `⟨hr, h.isClosedEmbedding.locallyCompactSpace, h.isEmbedding.secondCountableTopology, h.isEmbedding.t2Space⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem props_of_free {R D : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
     [LocallyCompactSpace R] [SecondCountableTopology R] [T2Space R] [Ring D] [Algebra R D]
@@ -1750,7 +1750,7 @@ private theorem props_of_free {R D : Type} [CommRing R] [TopologicalSpace R] [Is
     h.isEmbedding.t2Space⟩
 
 /- English proof (translation)
-The claim follows from `props_of_free (Algebra.TensorProduct.basis R (Module.finBasis F E))`.
+A detailed English derivation is pending.
 -/
 private theorem tens_props (F E : Type) [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R]
@@ -1761,9 +1761,9 @@ private theorem tens_props (F E : Type) [Field F] [Field E] [Algebra F E] [Finit
   props_of_free (Algebra.TensorProduct.basis R (Module.finBasis F E))
 
 /- English proof (translation)
-Use `haveI := IsModuleTopology.toContinuousAdd R (TensorProduct F R E)`. Establish `h : (⇑(UpperTheory.Reformulated.B.Yzd4.sigR R σ) : TensorProduct F R E → TensorProduct F R E) = ⇑(LinearMap.baseChange R σ.toLinearMap)`. Use function extensionality and compare the values at `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a b => simp [UpperTheory.Reformulated.B.Yzd4.sigR]`. Consider the case `add a b ha hb => simp [map_add, ha, hb]`. Rewrite using `[h]`. Conclude with `IsModuleTopology.continuous_of_linearMap _`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sigR_continuous {F E : Type} [Field F] [Field E] [Algebra F E]
     [FiniteDimensional F E] (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R]
@@ -1782,11 +1782,9 @@ private theorem sigR_continuous {F E : Type} [Field F] [Field E] [Algebra F E]
   exact IsModuleTopology.continuous_of_linearMap _
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ R _ _ _ _ _ _ _ σ M J`. Use `letI τ : TopologicalSpace (TensorProduct F R E) := UpperTheory.Reformulated.B.Yzd4.topTens R`. Use `haveI hm : IsModuleTopology R (TensorProduct F R E) := ⟨rfl⟩`. Take `⟨h1, h2, h3, h4⟩` from `tens_props F E R`. Use `haveI := h1`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := h2`. Use `haveI := h3`. Use `haveI := h4`. Take `⟨g1, g2, g3⟩` from `lcsc_GL (A := TensorProduct F R E) (n := Fin M)`. Use `haveI := g1`.
-
-Use `haveI := g2`. Use `haveI := g3`. Establish `hc` using `closed_UJ (UpperTheory.Reformulated.B.Yzd4.sigR R σ) (sigR_continuous R σ) (UpperTheory.Reformulated.B.Yzd4.JR R J)`. Conclude with `lcsc_sub _ hc`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yzd4.lcsc_HA :
     ∀ {F E : Type} [inst : Field F] [inst_1 : Field E]

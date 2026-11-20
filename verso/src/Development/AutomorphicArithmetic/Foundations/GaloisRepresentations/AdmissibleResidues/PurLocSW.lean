@@ -12,9 +12,9 @@ open UpperTheory.GalN.V
 open private ex_elt algPow_const flag_cont cyc_cont from Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.PurityTempered.AlgPowConst
 
 /- English proof (translation)
-Set `D : Γ →* Multiplicative R` to `MonoidHom.mk' (fun x => Multiplicative.ofAdd (f x)) (by`. Introduce `a b`. Rewrite using `[hf]`. Use the proof step `rfl)`. Establish `h` using `congrArg Multiplicative.toAdd (map_zpow D g m)`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [toAdd_zpow] at h`. Rewrite `h` using `[zsmul_eq_mul]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_zpow_eq_intCast_mul_of_map_mul_eq_add {Γ R : Type} [Group Γ] [Ring R] (f : Γ → R) (hf : ∀ a b, f (a * b) = f a + f b)
     (g : Γ) (m : ℤ) : f (g ^ m) = (m : R) * f g := by
@@ -28,23 +28,21 @@ private theorem map_zpow_eq_intCast_mul_of_map_mul_eq_add {Γ R : Type} [Group �
   exact h
 
 /- English proof (translation)
-Establish `hD` using `map_zpow_eq_intCast_mul_of_map_mul_eq_add d hd`. Establish `hLz` using `map_zpow_eq_intCast_mul_of_map_mul_eq_add L hL`. Establish `key : ∀ m : ℤ, |(m : ℝ) * (d s : ℝ) * (k * c - L φ) + L φ| < c`. Introduce `m`. Establish `h1 : d (s ^ m * φ ^ (1 - m * d s)) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hd, hD, hD, hφ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `hw _ h1`. Rewrite `h2` using `[hL, hLz, hLz, hk]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h2 using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hδ : k * c - L φ = 0`. Assume the negation of the conclusion as `hne`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hpos : 0 < |k * c - L φ|` using `abs_pos.mpr hne`. Take `⟨n, hn⟩` from `exists_nat_gt (2 * c / |k * c - L φ|)`. Establish `h1` using `key n`. Establish `h0` using `key 0`. Simplify using `only [Int.cast_zero, zero_mul, zero_add] at h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hds : (1 : ℝ) ≤ |(d s : ℝ)|`. Establish `: (1 : ℤ) ≤ |d s|` using `Int.one_le_abs hs`. Conclude with `this` after adjusting the coercions. Establish `h3 : |(n : ℝ) * (d s : ℝ) * (k * c - L φ)| < 2 * c`. Use `abs_sub (((n : ℤ) : ℝ) * (d s : ℝ) * (k * c - L φ) + L φ) (L φ)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [add_sub_cancel_right, Int.cast_natCast] at this`. Simplify using `only [Int.cast_natCast] at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h3` using `[abs_mul, abs_mul, Nat.abs_cast]`. Rewrite `hn` using `[div_lt_iff₀ hpos]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hds (mul_nonneg hn0 hpos.le)]`. Establish `hLφ : L φ = k * c` using `by linarith`. Establish `h` using `hw φ hφ`. Rewrite `h` using `[hLφ, abs_mul, abs_of_pos hc]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hk1 : |(k : ℝ)| < 1`. Assume the negation of the conclusion as `hh`. Use `push_neg at hh`. Use the polynomial consequences of the given equalities and inequalities. Establish `: |k| < 1` using `by exact_mod_cast hk1`.
-
-Conclude with `Int.abs_lt_one_iff.mp this`.
+Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem int_zero {Γ : Type} [Group Γ] (d : Γ → ℤ) (L : Γ → ℝ) (hd : ∀ a b, d (a * b) = d a + d b)
     (hL : ∀ a b, L (a * b) = L a + L b) (φ : Γ) (hφ : d φ = 1) {c : ℝ} (hc : 0 < c) (hw : ∀ g, d g = 1 → |L g| < c)
@@ -97,25 +95,23 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAl
   {w : HeightOneSpectrum (𝓞 F)} {A : ValuationSubring Ω} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Take `⟨na, a, rfl⟩` from `x.exists_rep`. Rewrite using `[WD.monodromyZero_ofWeilDeligneRepClass_iff]`. Set `b` to `WDRep.ofChars h μ hμ`. Establish `hc : ∀ σ, (a.ρ σ).charpoly = (b.ρ σ).charpoly`. Introduce `σ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← WD.charPol_mk, hx, WDRep.ofChars_ρ, charpoly_diagEnd]`. Take `⟨e, he⟩` from `GlobalTheory.T.weilRep_equiv_of_charpoly_eq F Ω A w h na n a b hc`. Establish `hes : ∀ σ z, e.symm (b.ρ σ z) = a.ρ σ (e.symm z)`. Introduce `σ z`. Apply `e.injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[he, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Set `N' : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)` to `e.toLinearMap ∘ₗ a.N ∘ₗ e.symm.toLinearMap`. Establish `hN' : ∀ σ z, b.ρ σ (N' z) = ((normV w : ℕ) : ℂ) ^ deg σ • N' (b.ρ σ z)`. Introduce `σ z`. Simplify using `only [N', LinearMap.comp_apply, LinearEquiv.coe_coe]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← he, WDRep.comm_apply, hes, LinearEquiv.map_smul]`. Establish `hsingle : ∀ σ j, b.ρ σ (Pi.single j 1) = (μ j σ : ℂ) • Pi.single j 1`. Introduce `σ j`. Use function extensionality and compare the values at `i`. Rewrite using `[WDRep.ofChars_ρ, diagEnd_apply, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hij]`. Establish `hM : ∀ i j, N' (Pi.single j 1) i = 0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i j`. Take `⟨σ, hσ⟩` from `hne i j`. Establish `h1` using `congrFun (hN' σ (Pi.single j 1)) i`. Rewrite `h1` using `[hsingle, LinearMap.map_smul, WDRep.ofChars_ρ, diagEnd_apply, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul]`. Establish `h2 : ((μ i σ : ℂ) - ((normV w : ℕ) : ℂ) ^ deg σ * μ j σ) * N' (Pi.single j 1) i = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sub_mul, h1]`. Expand and normalize the polynomial expressions, which then agree. Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases. Conclude with `absurd (sub_eq_zero.mp h3) hσ`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hN0 : N' = 0`. Apply `LinearMap.pi_ext'` to reduce the goal to its premises. Introduce `j`. Apply `LinearMap.ext_ring` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.coe_single, LinearMap.zero_comp, LinearMap.zero_apply, Pi.zero_apply]`. Conclude with `hM i j`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Establish `h4` using `LinearMap.congr_fun hN0 (e v)`.
-
-Simplify using `only [N', LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, LinearMap.zero_apply] at h4`. Rewrite using `[LinearMap.zero_apply]`. Conclude with `(LinearEquiv.map_eq_zero_iff e).mp h4`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mono0_of_charPol_eq_prod_of_ne_normV_pow_mul {n : ℕ} (x : WD h) (μ : Fin n → Weil h →* ℂˣ) (hμ : ∀ i, GlobalTheory.WeilDeligne.IsSmooth (μ i))
     (hx : ∀ s, x.charPol s = ∏ i, (X - C (μ i s : ℂ)))
@@ -171,19 +167,17 @@ private theorem mono0_of_charPol_eq_prod_of_ne_normV_pow_mul {n : ℕ} (x : WD h
   exact (LinearEquiv.map_eq_zero_iff e).mp h4
 
 /- English proof (translation)
-Establish `hm : x.mono0`. Break down `hor with h1 | h1` into its components or cases. Conclude with `mono0_of_charPol_eq_prod_of_ne_normV_pow_mul x μ hμ hx h1`. Conclude with `h1`. Establish `hR` using `ht hm`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq1 : (1 : ℝ) < ((normV w : ℕ) : ℝ)` using `by exact_mod_cast one_lt_normV w`. Establish `hq0 : (0 : ℝ) < ((normV w : ℕ) : ℝ)` using `by linarith`. Establish `hpos : ∀ l g, 0 < ‖(μ l g : ℂ)‖` using `fun l g => norm_pos_iff.mpr (Units.ne_zero _)`. Establish `hmem : ∀ g l, (μ l g : ℂ) ∈ x.eig g`. Introduce `g l`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (μ l g : ℂ) ∈ (x.charPol g).roots`. Rewrite using `[hx]`. Establish `hmon : (∏ k, (X - C (μ k g : ℂ))).Monic` using `monic_prod_of_monic _ _ (fun k _ => monic_X_sub_C _)`. Rewrite using `[mem_roots hmon.ne_zero, IsRoot, eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ l) (by simp)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `int_zero (Γ := Weil h) deg (fun g => Real.log ‖(μ i g : ℂ)‖ - Real.log ‖(μ j g : ℂ)‖) deg_mul ?_ (frob h) deg_frob (Real.log_pos hq1) ?_ s hs k ?_` and prove the remaining obligations. Introduce `a b`. Simplify using `only [map_mul, Units.val_mul, norm_mul]`. Rewrite using `[Real.log_mul (hpos i a).ne' (hpos i b).ne', Real.log_mul (hpos j a).ne' (hpos j b).ne']`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g hg`. Establish `h1` using `hR g hg _ (hmem g i) _ (hmem g j)`. Establish `h2` using `hR g hg _ (hmem g j) _ (hmem g i)`. Establish `l1` using `Real.log_lt_log (hpos i g) h1`. Establish `l2` using `Real.log_lt_log (hpos j g) h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `l1` using `[Real.log_mul hq0.ne' (hpos j g).ne']`. Rewrite `l2` using `[Real.log_mul hq0.ne' (hpos i g).ne']`. Rewrite using `[abs_lt]`. Apply the tactic sequence `constructor <;> linarith`. Use `beta_reduce`.
-
-Rewrite using `[hk, Real.log_mul (zpow_pos hq0 _).ne' (hpos j s).ne', Real.log_zpow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem ratio_lt {n : ℕ} (x : WD h) (μ : Fin n → Weil h →* ℂˣ) (hμ : ∀ i, GlobalTheory.WeilDeligne.IsSmooth (μ i))
     (hx : ∀ s, x.charPol s = ∏ i, (X - C (μ i s : ℂ))) (ht : x.mono0 → RatioW x)

@@ -18,7 +18,7 @@ namespace GlobalTheory.LineCompLat
 variable {D : D7}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [Matrix.mulVec, dotProduct, rat, Matrix.map_apply, one_mul, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((1 : AF D.host.F) ⊗ₜ[D.host.F] M k l) * (t ⊗ₜ[D.host.F] x l) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem rat_mulVec_tmul {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (t : AF D.host.F) (x : Fin n → D.host.E) :
     rat M *ᵥ (fun l => t ⊗ₜ[D.host.F] (1 * x l)) = fun k => t ⊗ₜ[D.host.F] (1 * (M *ᵥ x) k) := by
@@ -29,11 +29,9 @@ theorem rat_mulVec_tmul {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (t : A
   rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨α, hαi, hα, a, ha, x, hx, rfl⟩` from `hz`. Rewrite `ha` using `[Set.mem_singleton_iff]`. Substitute `ha` using the available equality.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[rat_mulVec_tmul]`. Conclude with `AddSubgroup.subset_closure ⟨α, hαi, hα, 1, rfl, M *ᵥ x, hM x hx, rfl⟩`. Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add z z' _ _ hz hz' => rw [Matrix.mulVec_add]`.
-
-Conclude with `add_mem hz hz'`. Consider the case `neg z _ hz => rw [Matrix.mulVec_neg]`. Conclude with `neg_mem hz`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rat_mulVec_latV {S S' : HSp D} {L : Lat S} {L' : Lat S'} {P : GlobalTheory.FinPl.Pl D → Prop}
     (M : Matrix (Fin S'.rank) (Fin S.rank) D.host.E) (hM : ∀ x ∈ L, M *ᵥ x ∈ L')
@@ -50,7 +48,7 @@ theorem rat_mulVec_latV {S S' : HSp D} {L : Lat S} {L' : Lat S'} {P : GlobalTheo
   | neg z _ hz => rw [Matrix.mulVec_neg]; exact neg_mem hz
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply] exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (hA l j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mxAt_mul_left {P : GlobalTheory.FinPl.Pl D → Prop} {k m n : ℕ} (B : Mx D k m) {A : Mx D m n} (hA : MxAt P A) :
     MxAt P (B * A) := fun i j => by
@@ -58,7 +56,7 @@ theorem mxAt_mul_left {P : GlobalTheory.FinPl.Pl D → Prop} {k m n : ℕ} (B : 
   exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (hA l j)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply] exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (hA i l)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mxAt_mul_right {P : GlobalTheory.FinPl.Pl D → Prop} {k m n : ℕ} {A : Mx D k m} (hA : MxAt P A) (C : Mx D m n) :
     MxAt P (A * C) := fun i j => by
@@ -70,19 +68,17 @@ end GlobalTheory.LineCompLat
 open GlobalTheory.LineCompLat
 
 /- English proof (translation)
-Introduce `D hD T L μ0 hL sc G W Mv hM F hF ρ h u hu`. Take `⟨hsd0, hloc, hsdM, horth⟩` from `(GlobalTheory.T.grid_lattices_compact_selfDual_splitting D hD T L μ0 hL sc G W Mv hM F hF).2.1 ρ h`. Establish `sdV : IsSelfDualC (negSp (G.V (.grid (2 * ρ + 1 + 1) 0))) (G.Λ (.grid (2 * ρ + 1 + 1) 0))` using `isSelfDualC_neg (G.sp.V_is (2 * ρ + 1 + 1) 0 (by omega) h (by omega)).sd`. Establish `sdW : IsSelfDualC (G.V (.grid (2 * ρ + 1) 0)) (G.Λ (.grid (2 * ρ + 1) 0))` using `(G.sp.V_is (2 * ρ + 1) 0 (by omega) (by omega) (by omega)).sd`. Establish `sdC : IsSelfDualC (G.V (.core (2 * ρ + 1))) (G.Λ (.core (2 * ρ + 1)))` using `(G.sp.P_is (2 * ρ + 1) (by omega)).sd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU1 : (F.dJ ρ h).j0 * u * (F.dB ρ h).p0 ∈ latRow G (2 * ρ + 1)` using `hu`. Establish `hU` using `hU1.1`. Simplify using `only [GridData.pS, GridData.pT, GridData.latS, GridData.latT] at hU`. Use `clear hU1 hu`. Establish `hu' : u = (F.dJ ρ h).p0 * ((F.dJ ρ h).j0 * u * (F.dB ρ h).p0) * (F.dB ρ h).j0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Matrix.mul_assoc, HypDec.p0_j0, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc u, HypDec.p0_j0, Matrix.mul_one]`. Rewrite using `[OrthDec.resS_apply]`. Use `(GlobalTheory.FinPl.LatMem.mem_latO_iff D _ _ _ _ hsdM sdC _ _).2 ⟨?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[hu']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mxAt_mul_right (mxAt_mul_right (mxAt_mul_left _ (GlobalTheory.FinPl.LatMem.latO_mxAt hU)) _) _`. Establish `h1 : (F.oB ρ h).jB *ᵥ z ∈ latV (F.V₀ ρ) (lat0 F ρ h) fun _ => True`. Use `GlobalTheory.FinPl.FlatVacuum.mulVec_latV_of_local hsdM.1 hsd0.1 (F.oB ρ h).jB (fun v _ y hy => ?_) hz` and prove the remaining obligations. Use `((horth v) _).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, OrthDec.pA_jB, Matrix.zero_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Rewrite using `[Matrix.mulVec_mulVec, OrthDec.pB_jB, Matrix.one_mulVec]`. Conclude with `hy`. Establish `h2 : (F.dB ρ h).j0 *ᵥ ((F.oB ρ h).jB *ᵥ z) ∈ latV (negSp (G.V (.grid (2 * ρ + 1 + 1) 0))) (G.Λ (.grid (2 * ρ + 1 + 1) 0)) fun _ => True` using `rat_mulVec_latV (F.dB ρ h).i₀ (fun x hx => hx) h1`. Establish `h3` using `GlobalTheory.FinPl.LatMem.latO_maps sdV hU h2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h4 : (F.dJ ρ h).p0 *ᵥ (((F.dJ ρ h).j0 * u * (F.dB ρ h).p0) *ᵥ ((F.dB ρ h).j0 *ᵥ ((F.oB ρ h).jB *ᵥ z))) ∈ latA _ (G.Λ (.core (2 * ρ + 1))) fun _ => True`. Use `GlobalTheory.FinPl.FlatVacuum.mulVec_latA (F.dJ ρ h).p0 (fun y hy => ?_) h3` and prove the remaining obligations. Use `GlobalTheory.FinPl.FlatVacuum.mulVec_latV_of_local sdW.1 sdC.1 (F.dJ ρ h).p0 (fun v _ y' hy' => ?_) hy` and prove the remaining obligations. Conclude with `(((hloc v).2 y').1 hy').2.2`. Establish `e : (F.dJ ρ h).p0 *ᵥ (((F.dJ ρ h).j0 * u * (F.dB ρ h).p0) *ᵥ ((F.dB ρ h).j0 *ᵥ ((F.oB ρ h).jB *ᵥ z))) = (u * (F.oB ρ h).jB) *ᵥ z`.
-
-Simplify using `only [Matrix.mulVec_mulVec, ← Matrix.mul_assoc, HypDec.p0_j0, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc u, HypDec.p0_j0, Matrix.mul_one]`. Rewrite using `[← e]`. Conclude with `h4`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AscFin.BoxBF.lineComp_mem_latO : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ u ∈ (pcBF W F ρ h).Γ₀, ((F.oB ρ h).resS (G.V (.core (2 * ρ + 1))) u).2 ∈ latO (negSp F.Lz) (G.V (.core (2 * ρ + 1))) (idLat (G.pl.stA sc ^ (ρ + 1) * (G.pl.stAbar sc ^ (ρ + 1))⁻¹) (Submodule.span (𝓞 D.host.E) {F.ζ 0}) : Set _) (G.Λ (.core (2 * ρ + 1)) : Set _) fun _ => True := by
   intro D hD T L μ0 hL sc G W Mv hM F hF ρ h u hu

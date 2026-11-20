@@ -10,11 +10,9 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Introduce `l _ K bk ρ h0 h1 R hR y hy`. Take `⟨q, k, r, hr, e⟩` from `GlobalTheory.T.weierstrass_division_closedDisc_breuilKisin l K bk ρ h0 h1 y`. Establish `e'` using `congrArg R e`. Rewrite `e'` using `[map_mul, map_add, map_mul, hR.ext, hR.ext, RingHom.id_apply, RingHom.id_apply]`. Establish `hd : toDisc l (X : bk.S) bk.ρ₀ bk.E ∣ toDisc l (X : bk.S) bk.ρ₀ (r : bk.S)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hy.mul_left (R (((l : ℕ) : bk.DS ρ) ^ k))`. Rewrite `h2` using `[e']`. Conclude with `(dvd_add_right (dvd_mul_right _ _)).1 h2`. Establish `hr0` using `GlobalTheory.T.breuilKisin_poly_eq_zero_of_disc_dvd l K bk r hr hd`. Rewrite `e` using `[hr0, Polynomial.coe_zero, map_zero, add_zero]`.
-
-Conclude with `((isUnit_l_disc l (X : bk.S) ρ).pow k).dvd_mul_left.1 ⟨q, e⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_dvd_restrict_discS : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (ρ : ℝ≥0), bk.ρ₀ ≤ ρ → ρ < 1 → ∀ R : bk.DS ρ →+* bk.DS bk.ρ₀, IsDiscMap (RingHom.id bk.S) R → ∀ y, toDisc l (X : bk.S) bk.ρ₀ bk.E ∣ R y → toDisc l (X : bk.S) ρ bk.E ∣ y := by
   intro l _ K bk ρ h0 h1 R hR y hy

@@ -8,7 +8,7 @@ open Polynomial Classical GlobalTheory.BadShare
 namespace GlobalTheory.BadShare
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `Multiset.exists_cons_of_mem hp`. Establish `hq' : q ∈ t` using `(Multiset.mem_cons.mp hq).resolve_left (Ne.symm h)`. Take `⟨u, rfl⟩` from `Multiset.exists_cons_of_mem hq'`. Rewrite using `[Multiset.sum_cons, Multiset.sum_cons, ← add_assoc]`. Conclude with `Nat.le_add_right _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem add_le_sum_of_mem_of_ne {s : Multiset ℕ} {p q : ℕ} (hp : p ∈ s) (hq : q ∈ s) (h : p ≠ q) : p + q ≤ s.sum := by
   obtain ⟨t, rfl⟩ := Multiset.exists_cons_of_mem hp
@@ -18,13 +18,13 @@ theorem add_le_sum_of_mem_of_ne {s : Multiset ℕ} {p q : ℕ} (hp : p ∈ s) (h
   exact Nat.le_add_right _ _
 
 /- English proof (translation)
-Establish `hsum : ∀ σ : Equiv.Perm (Fin N), σ.partition.parts.sum = N` using `fun σ => by`. Simplify using `using σ.partition.parts_sum`. Establish `hdisj : (S : Set ℕ).PairwiseDisjoint fun p => Finset.univ.filter fun σ : Equiv.Perm (Fin N) => p ∈ σ.partition.parts`. Introduce `p hp q hq hpq`. Rewrite using `[Function.onFun, Finset.disjoint_filter]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `σ _ hpσ hqσ`. Establish `h1` using `add_le_sum_of_mem_of_ne hpσ hqσ hpq`. Rewrite `h1` using `[hsum σ]`. Establish `h2` using `hS p hp`. Establish `h3` using `hS q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[← Finset.card_biUnion hdisj]`. Establish `hc : (Finset.univ.filter fun σ : Equiv.Perm (Fin N) => ∀ p ∈ S, p ∉ σ.partition.parts) = (S.biUnion fun p => Finset.univ.filter fun σ : Equiv.Perm (Fin N) => p ∈ σ.partition.parts)ᶜ`. Use extensionality with `σ`. Simplify using the standard rewrite rules.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc, Finset.card_compl_add_card, Fintype.card_perm, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_perm_no_long_cycle (N : ℕ) (S : Finset ℕ) (hS : ∀ p ∈ S, N < 2 * p) :
     (Finset.univ.filter fun σ : Equiv.Perm (Fin N) => ∀ p ∈ S, p ∉ σ.partition.parts).card +
@@ -49,21 +49,21 @@ theorem card_perm_no_long_cycle (N : ℕ) (S : Finset ℕ) (hS : ∀ p ∈ S, N 
   rw [hc, Finset.card_compl_add_card, Fintype.card_perm, Fintype.card_fin]
 
 /- English proof (translation)
-Introduce `g _ N hN`. Use `set S := (Finset.range (N + 1)).filter (fun p => p.Prime ∧ N < 2 * p ∧ p + 3 ≤ N) with hSdef`. Establish `hS : ∀ p ∈ S, N < 2 * p` using `fun p hp => (Finset.mem_filter.mp hp).2.2.1`. Establish `hSN : ∀ p ∈ S, p ≤ N` using `fun p hp => Nat.lt_succ_iff.mp (Finset.mem_range.mp (Finset.mem_filter.mp hp).1)`. Establish `hmono : (mass g N fun f => ¬ HasPrimeFactor g N f) ≤ mass g N fun f => ∀ p ∈ S, p ∉ degType g f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : (sqSet g N).filter (fun f => ¬ HasPrimeFactor g N f) ⊆ (sqSet g N).filter (fun f => ∀ p ∈ S, p ∉ degType g f)`. Introduce `f hf`. Rewrite `hf`, the goal using `[Finset.mem_filter]`. Use `⟨hf.1, ?_⟩` and prove the remaining obligations. Introduce `p hp hpf`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hf.2` to reduce the goal to its premises. Unfold `degType at hpf`. Unfold `HasPrimeFactor`. Take `⟨h, hh, rfl⟩` from `Multiset.mem_map.mp hpf`. Take `⟨-, hpr, h2, h3⟩` from `Finset.mem_filter.mp hp`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨h, UniqueFactorizationMonoid.irreducible_of_normalized_factor h hh, UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors hh, hpr, h2, h3⟩`. Unfold `mass`. Use `Finset.sum_le_sum_of_subset_of_nonneg (f := fun f => ((torusCard g f : ℝ))⁻¹) hsub (fun f _ _ => by positivity)` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Establish `hT` using `GlobalTheory.T.mass_degType_le_card_cycleType_div g N (fun m : Multiset ℕ => ∀ p ∈ S, p ∉ m)`.
+Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcount` using `card_perm_no_long_cycle N S hS`. Establish `hlong : ∀ p ∈ S, ((Finset.univ.filter fun σ : Equiv.Perm (Fin N) => p ∈ σ.partition.parts).card : ℝ) = N.factorial / p`. Introduce `p hp`. Establish `hp0 : 0 < p` using `by have := hS p hp; omega`. Establish `hp0' : (p : ℝ) ≠ 0` using `by exact_mod_cast hp0.ne'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_div_iff hp0']`. Conclude with `card_perm_long_cycle N p (hS p hp) (hSN p hp)` after adjusting the coercions. Establish `hfac : (N.factorial : ℝ) ≠ 0` using `by positivity`. Establish `hratio : ((Finset.univ.filter fun σ : Equiv.Perm (Fin N) => ∀ p ∈ S, p ∉ σ.partition.parts).card : ℝ) / N.factorial = 1 - ∑ p ∈ S, (1 : ℝ) / p`. Establish `hc : ((Finset.univ.filter fun σ : Equiv.Perm (Fin N) => ∀ p ∈ S, p ∉ σ.partition.parts).card : ℝ) = N.factorial - ∑ p ∈ S, (N.factorial : ℝ) / p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_congr rfl hlong]`. Use `congrArg (fun n : ℕ => (n : ℝ)) hcount` as an intermediate fact. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hc, sub_div, div_self hfac, Finset.sum_div]`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[div_right_comm, div_self hfac]`. Establish `hprimes` using `inv_log_le_sum_inv_primes_between N hN`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mass_not_hasPrimeFactor_le : ∀ (g : ℕ) [Fact g.Prime], ∀ N : ℕ, 100000 ≤ N →
     (mass g N fun f => ¬ HasPrimeFactor g N f) ≤ 1 - 1 / (10 * Real.log N) := by

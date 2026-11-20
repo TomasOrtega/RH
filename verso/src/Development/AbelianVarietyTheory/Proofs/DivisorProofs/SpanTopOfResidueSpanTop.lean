@@ -6,21 +6,19 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 namespace GlobalTheory.DetInv
 
 /- English proof (translation)
-Introduce `A k ι _ _ _ _ h c g hc hspan`. Establish `hker : RingHom.ker c = IsLocalRing.maximalIdeal A` using `IsLocalRing.eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective c hc)`. Use `set N : Submodule A (Fin h → A) := Submodule.span A (Set.range g) with hN`. Establish `hlift : ∀ w : Fin h → k, w ∈ Submodule.span k (Set.range fun i => fun j => c (g i j)) → ∃ v ∈ N, ∀ j, c (v j) = w j`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `⟨g i, Submodule.subset_span ⟨i, rfl⟩, fun _ => rfl⟩`. Consider the case `zero => exact ⟨0, N.zero_mem, fun j => by simp⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, ha'⟩` from `hx`. Take `⟨b, hb, hb'⟩` from `hy`. Conclude with `⟨a + b, N.add_mem ha hb, fun j => by simp [ha', hb']⟩`. Consider the case `smul t x _ hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, ha'⟩` from `hx`. Take `⟨s, rfl⟩` from `hc t`. Conclude with `⟨s • a, N.smul_mem s ha, fun j => by simp [ha']⟩`. Establish `hm : ∀ x : Fin h → A, (∀ j, x j ∈ IsLocalRing.maximalIdeal A) → x ∈ (IsLocalRing.maximalIdeal A) • (⊤ : Submodule A (Fin h → A))`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx' : x = ∑ j, x j • (Pi.single j 1 : Fin h → A)`. Use extensionality with `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hx']`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem_smul (hx j) Submodule.mem_top`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : (⊤ : Submodule A (Fin h → A)) ≤ N ⊔ (IsLocalRing.maximalIdeal A) • (⊤ : Submodule A (Fin h → A))`. Introduce `v _`. Take `⟨n, hn, hn'⟩` from `hlift (fun j => c (v j)) (by rw [hspan]; trivial)`. Establish `hd : v - n ∈ (IsLocalRing.maximalIdeal A) • (⊤ : Submodule A (Fin h → A))`. Apply `hm` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Rewrite using `[← hker, RingHom.mem_ker]`. Simplify using `[hn']`. Establish `: v = n + (v - n)` using `by abel`. Rewrite using `[this]`.
-
-Conclude with `Submodule.add_mem_sup hn hd`. Establish `hjac : IsLocalRing.maximalIdeal A ≤ (⊥ : Ideal A).jacobson` using `(IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge`. Conclude with `top_le_iff.mp (Submodule.le_of_le_smul_of_le_jacobson_bot Module.Finite.fg_top hjac hle)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem span_top_of_residue_span_top :
     ∀ (A k ι : Type) [CommRing A] [IsLocalRing A] [Field k] [Fintype ι] (h : ℕ) (c : A →+* k)

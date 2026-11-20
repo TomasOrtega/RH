@@ -14,7 +14,7 @@ open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix in
 set_option autoImplicit false in
 /- English proof (translation)
-Use `ContinuousAt.mul (Complex.continuous_ofReal.continuousAt.comp (f := ρ) hρ) ?_` and prove the remaining obligations. Use `_root_.GlobalTheory.GoodTop.continuousAt_mixTop (K := fun x _ => _root_.GlobalTheory.GoodTop.curvAt G x) fun i a b p q => ?_` and prove the remaining obligations. Apply the tactic sequence `have h := hG.curv (j := 0) hdet (by rw [zero_add]; first | exact le_top | exact_mod_cast (le_top : ((2 : ℕ∞) ≤ ⊤)) | exact WithTop.coe_le_coe.2 le_top) (_root_.GlobalTheory.GoodMetric.coordVec a) (_root_.GlobalTheory.GoodMetric.coordVec b) p q`. Conclude with `h.continuousAt`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma continuousAt_cutoff_mul_chern_form_coeff {n : ℕ} {r : Type} [Fintype r]
     [DecidableEq r] {G : _root_.ReciprocityTheory.L2DbarEstimates.V n → Matrix r r ℂ} {ρ : _root_.ReciprocityTheory.L2DbarEstimates.V n → ℝ} {v : _root_.ReciprocityTheory.L2DbarEstimates.V n}
@@ -34,7 +34,7 @@ open scoped ContDiff Matrix in
 set_option autoImplicit false in
 
 /- English proof (translation)
-Introduce `n r _ _ U K G₀ ρ hU hK hKU hG₀ hρ hρK`. Establish `hcont : ContinuousOn (fun v => (ρ v : ℂ) * _root_.GlobalTheory.GoodTop.mixTop fun _ => _root_.GlobalTheory.GoodTop.curvAt G₀ v) K` using `fun v hv => (continuousAt_cutoff_mul_chern_form_coeff (hG₀ v (hKU hv)).1 (hG₀ v (hKU hv)).2 (hρ.contDiffAt (hU.mem_nhds (hKU hv))).continuousAt).continuousWithinAt`. Use `(hcont.integrableOn_compact hK).of_forall_diff_eq_zero hU.measurableSet fun v hv => ?_` and prove the remaining obligations. Rewrite using `[hρK v hv.1 hv.2, Complex.ofReal_zero, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.GoodTop.integrableOn_cut_mixTop_smooth :
     ∀ {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (U K : Set (_root_.ReciprocityTheory.L2DbarEstimates.V n)) (G₀ : _root_.ReciprocityTheory.L2DbarEstimates.V n → Matrix r r ℂ) (ρ : _root_.ReciprocityTheory.L2DbarEstimates.V n → ℝ),

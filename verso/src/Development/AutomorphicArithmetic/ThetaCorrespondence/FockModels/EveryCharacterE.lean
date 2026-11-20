@@ -39,11 +39,11 @@ namespace UpperTheory.Lit
 open UpperTheory.Top
 
 /- English proof (translation)
-Introduce `P F hA hM hX hL hN`. Establish `C` using `P.litN`. Establish `hS : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.FunctionalsSeparate` using `functionalsSeparate_free F GlobalTheory.Hk3.howeUnram_holds P.siegelWeilUnitaryConvergent`. Establish `hRat : S0.RowRat` using `GlobalTheory.Mem.LiteralAutomorphy.rowRatW_of_rowTest (GlobalTheory.T.rationality_of_theta_hypotheses F.siegelSetUnitary F.howeDualityReal P.greenCuspidal F C.join C.fe hA hM hS)`. Establish `hFit : GlobalTheory.BigTop.Fun.Fun0Fit @GlobalTheory.BigTop.Fun.Fld` using `GlobalTheory.BigTop.Fun.Close.fun0Fit_of_join F C.join C.fe hA hM hS (GlobalTheory.Fc.S0.ontoX_and_lamLow_of_classicalTheoremsUE P).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨CF1, hCF1⟩` from `GlobalTheory.Mem.LiteralAutomorphy.evLgG_gridA_of_join F.howeDualityReal hM F C.join C.fe hA (GlobalTheory.WeilConv.weilConvergence F.siegelSetUnitary F) (GlobalTheory.T.local_matching_of_howe_duality F.howeDualityReal F hA hM) (GlobalTheory.T.theta_integrals_of_minguez F.minguez …`. Take `⟨CF0, hCF0⟩` from `GlobalTheory.Fc.StageOne.rowFun_at_gridA P.discreteSeriesCover P.harishChandraModules P.cuspRapidDecay P.casselmanWallach P.rayClassFieldSt hFit`. Establish `hEv : EvLgG (GridA (max CF0 CF1))` using `hCF1 _ (le_max_right _ _)`. Establish `hOpen1 : S0.Open0 (prm1 hL (max CF0 CF1))` using `GlobalTheory.T.open_first_parameters_of_hypothesesUE P hL (max CF0 CF1)`. Establish `hMono` using `GlobalTheory.Glob.open_and_linked_of_stronger_extension hL (GlobalTheory.HeightCounting.Up.NEl hL (max CF0 CF1)) (NEa hL (GlobalTheory.HeightCounting.Up.NEo hL (max CF0 CF1)) (GridA (max CF0 CF1))) SExt.none (geoCl anyGeometry) (fun _ _ _ _ _ _ _ _ _ _ _ _ _ x => ⟨x.1.1⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hOpenA` using `hMono.2 hOpen1`. Establish `hFun` using `hCF0 (max CF0 CF1) (le_max_left _ _) hL (GlobalTheory.HeightCounting.Up.NEo hL (max CF0 CF1)) SExt.none (geoCl anyGeometry) (fun _ _ _ _ _ _ _ _ _ _ _ _ _ x => ⟨x.1⟩) hOpenA`. Establish `hL3` using `GlobalTheory.Glob.CovolRow.linked_bundles_l3_of_open P.discreteSeriesCover P.harishChandraModules P.cuspRapidDecay P.casselmanWallach P.rayClassFieldSt hX hL (NEa hL (GlobalTheory.HeightCounting.Up.NEo hL (max CF0 CF1)) (GridA (max CF0 CF1))) SExt.none (geoCl anyGeometry) (fun _ …`. Conclude with `GlobalTheory.Fc.S0.StageU.nonempty_hyps_of_classicalTheoremsUE P hRat hL (max CF0 CF1) (GridA (max CF0 CF1)) hEv (hN (max CF0 CF1)) hFun hL3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hypsE₂ : S0.HypothesesUE → GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.CovTop.CovolX → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL), (∀ cDep : ℝ, RL.At (prm1 hL cDep) (fun Q L => R1.PredicateAtBundlePoints Q L fun 𝒞 => Formalism.MainNotions.Closed 𝒞 fun Fm _ => GlobalTheory.NLink.BoundAtTwoAndThreeForFamily Fm)) → Nonempty (Hyps S0.NL DRS) := by
   intro P F hA hM hX hL hN
@@ -72,7 +72,7 @@ theorem hypsE₂ : S0.HypothesesUE → GlobalTheory.FunPr.Hypotheses₂ → Glob
   exact GlobalTheory.Fc.S0.StageU.nonempty_hyps_of_classicalTheoremsUE P hRat hL (max CF0 CF1) (GridA (max CF0 CF1)) hEv (hN (max CF0 CF1)) hFun hL3
 
 /- English proof (translation)
-The claim follows from `plugAll (GlobalTheory.GreenBridge.green_of_regular P.greenRegularCharacters) hV (hypsE₂ P F hA hM hX hL fun cDep => UpperTheory.N.boundAtTwoThree_at_prm_of_prints P.nLink (prm1 hL cDep))`.
+A detailed English derivation is pending.
 -/
 theorem everyE₂ (P : S0.HypothesesUE) (F : GlobalTheory.FunPr.Hypotheses₂) (hA : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree)
     (hM : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching) (hX : GlobalTheory.CovTop.CovolX) (hL : GlobalTheory.Published.LocalLanglandsGL) (hV : VWin) :

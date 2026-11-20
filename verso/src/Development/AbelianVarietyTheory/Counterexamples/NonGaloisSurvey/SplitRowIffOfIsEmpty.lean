@@ -17,22 +17,22 @@ section Host
 variable {R : Ranks} (H : Host R)
 
 /- English proof (translation)
-The claim follows from `H.toHostAx.conjE_apply φ x`.
+A detailed English derivation is pending.
 -/
 theorem conj_sqrt (φ : H.E →+* ℂ) (x : H.E) : φ (H.conj x) = starRingEnd ℂ (φ x) :=
   H.toHostAx.conjE_apply φ x
 
 /- English proof (translation)
-Establish `h : (H.sqd) ^ 2 = -(H.d : H.E)` using `H.sqd_sq`. Rewrite using `[← map_pow, h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sqrt_sq (φ : H.E →+* ℂ) : φ (H.sqd) ^ 2 = -(H.d : ℂ) := by
   have h : (H.sqd) ^ 2 = -(H.d : H.E) := H.sqd_sq
   rw [← map_pow, h]; simp
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `φ (H.conj (H.sqd)) = _ ↔ _`. Rewrite using `[conj_sqrt]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg (starRingEnd ℂ) h` as an intermediate fact.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Introduce `h`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_halfType_false (φ : H.E →+* ℂ) :
     φ ∈ halfType H false ↔ φ (H.sqd) = -(Complex.I * (Real.sqrt H.d : ℂ)) := by
@@ -46,11 +46,11 @@ theorem mem_halfType_false (φ : H.E →+* ℂ) :
     rw [h]; simp
 
 /- English proof (translation)
-Rewrite using `[mem_halfType_false]`. Express the relevant statement in the definitionally equal form `Xor' (φ (H.sqd) = Complex.I * (Real.sqrt H.d : ℂ)) _`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.hyp.2.1.pos`. Establish `hs : (Complex.I * (Real.sqrt H.d : ℂ)) ^ 2 = -(H.d : ℂ)`. Rewrite using `[mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt hd.le]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hne : Complex.I * (Real.sqrt H.d : ℂ) ≠ 0` using `mul_ne_zero Complex.I_ne_zero (by exact_mod_cast (Real.sqrt_pos.2 hd).ne')`. Establish `hne' : Complex.I * (Real.sqrt H.d : ℂ) ≠ -(Complex.I * (Real.sqrt H.d : ℂ))` using `fun e => hne (by linear_combination e / 2)`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 ((sqrt_sq H φ).trans hs.symm) with h | h` into its components or cases. Conclude with `Or.inl ⟨h, fun h' => hne' (h.symm.trans h')⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr ⟨h, fun h' => hne' (h'.symm.trans h)⟩`.
+Prove the second alternative.
 -/
 theorem halfType_xor (φ : H.E →+* ℂ) : Xor' (φ ∈ halfType H true) (φ ∈ halfType H false) := by
   rw [mem_halfType_false]
@@ -73,20 +73,18 @@ variable (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
   (hw : w ∈ placesOver D.host.E (D.nd.l i))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨((D.nbr i w hw).Kw.1.val).codRestrict (D.nbr i w hw).LL.1.toSubalgebra ((D.nbr i w hw).LL_split _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_emb : Nonempty (Br.Kw D.nbr i w hw →ₐ[ℚ_[D.nd.l i]] Br.LL D.nbr i w hw) :=
   ⟨((D.nbr i w hw).Kw.1.val).codRestrict (D.nbr i w hw).LL.1.toSubalgebra
     ((D.nbr i w hw).LL_split _)⟩
 
 /- English proof (translation)
-Take `⟨g, key, -⟩` from `GlobalTheory.HTW.exists_letter_of_local_embedding D i w hw τ`. Establish `hemb : ∀ x, D.what₂.embLL (D.embE (D.host.sigmaOf g x)) = D.host.emb g x` using `fun x => DFunLike.congr_fun D.embE_φ₀ (D.host.sigmaOf g x)`. Establish `main : ∀ s, EmbIn (N` using `D.nd) D.nbr i s w hw τ ↔ D.host.emb g ∈ halfType D.host s := by`. Introduce `s`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨-, φ, hφ, h⟩`. Establish `: D.host.emb g = φ` using `RingHom.ext fun x => by`. Rewrite using `[← hemb x]`. Conclude with `h x _ (key x).symm`. Conclude with `this ▸ hφ`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hg`. Use `⟨fun x => ⟨_, (key x).symm⟩, D.host.emb g, hg, fun x y hy => ?_⟩` and prove the remaining obligations. Establish `hy' : y = D.embE (D.host.sigmaOf g x)` using `(D.nd.embK i).injective ((Br.toLLK (D.nbr i w hw)).injective (hy.trans (key x)))`. Rewrite using `[hy', hemb]`. Rewrite using `[main, main]`.
-
-Conclude with `halfType_xor D.host _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embIn_xor (τ : Br.Kw D.nbr i w hw →ₐ[ℚ_[D.nd.l i]] Br.LL D.nbr i w hw) :
     Xor' (EmbIn (N := D.nd) D.nbr i true w hw τ) (EmbIn (N := D.nd) D.nbr i false w hw τ) := by
@@ -110,7 +108,7 @@ theorem embIn_xor (τ : Br.Kw D.nbr i w hw →ₐ[ℚ_[D.nd.l i]] Br.LL D.nbr i 
   exact halfType_xor D.host _
 
 /- English proof (translation)
-Introduce and unpack `⟨⟨⟨τ⟩, h1⟩, -, h2⟩`. Break down `embIn_xor D i w hw τ with h | h` into its components or cases. Conclude with `h.2 (h2 τ)`. Conclude with `h.2 (h1 τ)`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem not_both_columns : ¬ (PlIn (N := D.nd) D.nbr i true w hw ∧ PlIn (N := D.nd) D.nbr i false w hw) := by
   rintro ⟨⟨⟨τ⟩, h1⟩, -, h2⟩
@@ -119,9 +117,9 @@ theorem not_both_columns : ¬ (PlIn (N := D.nd) D.nbr i true w hw ∧ PlIn (N :=
   · exact h.2 (h1 τ)
 
 /- English proof (translation)
-Rewrite using `[← D.nd.plOm.2 w x]`. Use `set y := algebraMap D.host.E D.nd.Om (x : D.host.E)`. Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`. Establish `hj : 0 < ‖(D.nbr i w hw).j y‖` using `norm_pos_iff.2 ((map_ne_zero _).2 hy)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `D.nbr_ind i w hw y⁻¹`. Rewrite `h` using `[← ValuationSubring.valuation_le_one_iff, map_inv₀, map_inv₀, norm_inv, inv_le_one₀ hj, inv_le_one₀ (zero_lt_iff.2 ((map_ne_zero _).2 hy))]`. Rewrite using `[← not_le, ← not_le, h]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bridge_place (x : 𝓞 D.host.E) :
     x ∈ w.asIdeal ↔ ‖(D.nbr i w hw).j (algebraMap D.host.E D.nd.Om (x : D.host.E))‖ < 1 := by

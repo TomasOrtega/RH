@@ -7,9 +7,9 @@ noncomputable section
 namespace GlobalTheory.BCT.TrKer
 
 /- English proof (translation)
-Establish `hg : Function.support g = Function.support h`. Use extensionality with `i`. Simplify using `only [Function.mem_support, ne_eq, hs]`. Distinguish the cases in `hfin : (Function.support h).Finite`. Rewrite using `[finsum_eq_sum_of_support_subset g (s := hfin.toFinset) (by rw [hg]; simp), finsum_eq_sum_of_support_subset h (s := hfin.toFinset) (by simp)]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, LinearMap.sum_apply, LinearMap.sum_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => LinearMap.congr_fun (hc i) x`. Rewrite using `[finsum_of_infinite_support hfin, finsum_of_infinite_support (by rwa [hg])]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finsum_comp_eq_comp_finsum {ι V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (T : V →ₗ[ℂ] W) (g : ι → W →ₗ[ℂ] W) (h : ι → V →ₗ[ℂ] V) (hc : ∀ i, g i ∘ₗ T = T ∘ₗ h i)
@@ -33,7 +33,7 @@ Both sides reduce to the same expression.
 theorem RF_apply' (x : finU E n) (φ : UA E n → ℂ) (g : UA E n) : RF E n x φ g = φ (g * x.1) := rfl
 
 /- English proof (translation)
-Introduce `h`. Use `congrFun (LinearMap.congr_fun h (fun _ => (1 : ℂ))) 1` as an intermediate fact. Simplify using `at this`. Conclude with `one_ne_zero this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem RF_ne_zero (x : finU E n) : RF E n x ≠ 0 := by
   intro h
@@ -42,9 +42,9 @@ theorem RF_ne_zero (x : finU E n) : RF E n x ≠ 0 := by
   exact one_ne_zero this
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_ne (0 : Wsp lam)`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual ℂ (Wsp lam), φ v ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hv ((Module.forall_dual_apply_eq_zero_iff ℂ v).1 hc)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Use `congrFun (LinearMap.congr_fun h (fun _ => φ)) 1` as an intermediate fact. Establish `h2 : φ = 0` using `by simpa [rightReg, LinearMap.funLeft] using this`. Conclude with `hφ (by rw [h2]; rfl)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rightReg_dual_ne_zero (lam : InfinitePlace E → DomWeight n) [Nontrivial (Wsp lam)] (x : finU E n) :
     rightReg ℂ (finU E n) (Module.Dual ℂ (Wsp lam)) x ≠ 0 := by
@@ -59,11 +59,11 @@ theorem rightReg_dual_ne_zero (lam : InfinitePlace E → DomWeight n) [Nontrivia
   exact hφ (by rw [h2]; rfl)
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial (Wsp lam) with hW | hW` into its components or cases. Rewrite using `[Subsingleton.elim w 0]`. Simplify using the standard rewrite rules. Use `set T : (finU E n → Module.Dual ℂ (Wsp lam)) →ₗ[ℂ] (UA E n → ℂ) := (phiFun lam).flip w with hT`. Establish `key : (∑ᶠ q : finU E n ⧸ globLev S K', globFn S f q.out • (RF E n q.out ∘ₗ LinearMap.id)) ∘ₗ T = T ∘ₗ ∑ᶠ q : finU E n ⧸ globLev S K', globFn S f q.out • (rightReg ℂ (finU E n) (Module.Dual ℂ (Wsp lam)) q.out ∘ₗ LinearMap.id)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_comp_eq_comp_finsum T _ _ (fun q => ?_) (fun q => ?_)` and prove the remaining obligations. Use extensionality with `G g`. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.id_apply, hT, LinearMap.flip_apply, LinearMap.map_smul, Pi.smul_apply]`. Rewrite using `[RF_apply', phiFun_mul_fin]`. Rewrite using `[smul_eq_zero, smul_eq_zero, LinearMap.comp_id, LinearMap.comp_id]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [RF_ne_zero, rightReg_dual_ne_zero, or_false]`. Use `LinearMap.congr_fun key F` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, hT, LinearMap.flip_apply] at this`. Simplify using `only [hop, hopM, levOp, LinearMap.smul_apply, this, LinearMap.map_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hop_phiFun (S : Set (Pl E)) (lam : InfinitePlace E → DomWeight n) (K' : ∀ w : Pl E, Subgroup (UL n w))
     (f : ∀ w : Pl E, UL n w → ℂ) (F : finU E n → Module.Dual ℂ (Wsp lam)) (w : Wsp lam) :
@@ -86,7 +86,7 @@ theorem hop_phiFun (S : Set (Pl E)) (lam : InfinitePlace E → DomWeight n) (K' 
   simp only [hop, hopM, levOp, LinearMap.smul_apply, this, LinearMap.map_smul]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ S lam K' f F w` and use `hop_phiFun S lam K' f F w`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hop_phiFun_comm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (S : Set (Pl E)) (lam : InfinitePlace E → DomWeight n) (K' : ∀ w : Pl E, Subgroup (UL n w)) (f : ∀ w : Pl E, UL n w → ℂ) (F : finU E n → Module.Dual ℂ (Wsp lam)) (w : Wsp lam), hop S K' f (phiFun lam F w) = phiFun lam (hopM S lam K' f F) w :=
   fun _ _ _ _ _ S lam K' f F w => hop_phiFun S lam K' f F w

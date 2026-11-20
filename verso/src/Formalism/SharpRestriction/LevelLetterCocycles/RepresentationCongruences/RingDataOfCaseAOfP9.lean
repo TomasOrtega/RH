@@ -17,13 +17,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR}
 
 /- English proof (translation)
-Take `⟨hK, hs, hp⟩` from `hcase`. Establish `hK1 : Module.finrank K₀ K = 1`. Rewrite using `[← (AlgEquiv.ofBijective (Algebra.ofId K₀ K) hK).toLinearEquiv.finrank_eq, Module.finrank_self]`. Take `⟨-, -, h3⟩` from `hP9 W.one (Formalism.MainNotions.LiftingTheory.gen_one_crys W) hs hp`. Take `⟨⟨-, huniq, hw1, -, -, hφ, hγ, -⟩, -⟩` from `h3 hK1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hE : Formalism.MainNotions.DeltaInvariantLattices.Eat (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O)) W.π₀ = qA W`. Use function extensionality and compare the values at `i`. Simplify using `[Formalism.MainNotions.DeltaInvariantLattices.Eat, qA, lA]`. Use `⟨hw1, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `hφ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w, by rw [hw, hE]⟩`. Take `⟨w, hw⟩` from `hγ`. Conclude with `⟨w, by rw [hw, hE]⟩`. Introduce `a ha`. Take `⟨f, hf, -⟩` from `huniq a ha`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨f, hf⟩`.
+Supply the required witnesses or components.
 -/
 theorem ringData_of_caseA_of_p9 [FiniteDimensional Qp LL] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) : RD W := by
@@ -45,9 +45,9 @@ theorem ringData_of_caseA_of_p9 [FiniteDimensional Qp LL] (W : LocWach PD LL O v
     exact ⟨f, hf⟩
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `W.v_l`. Establish `h2 : ((PD.p : ℕ) : LL) = 0`. Rewrite using `[← map_natCast (algebraMap O LL) PD.p, h, map_zero]`. Rewrite `h1` using `[h2, AddValuation.map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at h1`.
+Simplify using the standard rewrite rules.
 -/
 theorem p_ne_zero (W : LocWach PD LL O v n) : ((PD.p : ℕ) : O) ≠ 0 := by
   intro h
@@ -62,7 +62,7 @@ section Dvr
 variable {W : LocWach PD LL O v n} [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Establish `h0 : IsLocalRing.residue O ϖ = 0`. Rewrite using `[IsLocalRing.residue_eq_zero_iff]`. Conclude with `(IsLocalRing.mem_maximalIdeal ϖ).2 hϖ.not_isUnit`. Rewrite using `[PowerSeries.map_C, h0, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_C_ϖ {ϖ : O} (hϖ : Irreducible ϖ) : (C ϖ : PowerSeries O).map (IsLocalRing.residue O) = 0 := by
   have h0 : IsLocalRing.residue O ϖ = 0 := by
@@ -71,11 +71,11 @@ theorem res_C_ϖ {ϖ : O} (hϖ : Irreducible ϖ) : (C ϖ : PowerSeries O).map (I
   rw [PowerSeries.map_C, h0, map_zero]
 
 /- English proof (translation)
-Establish `hmax : IsLocalRing.maximalIdeal O = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Establish `hc : ∀ k, ϖ ∣ PowerSeries.coeff k h`. Introduce `k`. Establish `hk : IsLocalRing.residue O (PowerSeries.coeff k h) = 0`. Use `congrArg (PowerSeries.coeff k) h0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[PowerSeries.coeff_map]`. Rewrite `hk` using `[IsLocalRing.residue_eq_zero_iff, hmax, Ideal.mem_span_singleton]`. Conclude with `hk`. Use `choose c hc using hc`. Use `⟨PowerSeries.mk c, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `k`. Simplify using `[PowerSeries.coeff_C_mul, hc k]`.
+A detailed English derivation is pending.
 -/
 theorem dvd_of_res {ϖ : O} (hϖ : Irreducible ϖ) {h : PowerSeries O}
     (h0 : h.map (IsLocalRing.residue O) = 0) : C ϖ ∣ h := by
@@ -94,7 +94,7 @@ theorem dvd_of_res {ϖ : O} (hϖ : Irreducible ϖ) {h : PowerSeries O}
   simp [PowerSeries.coeff_C_mul, hc k]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hd`. Establish `h1 : (g * h).map (IsLocalRing.residue O) = 0`. Rewrite using `[hk, map_mul, res_C_ϖ hϖ, zero_mul]`. Rewrite `h1` using `[map_mul]`. Conclude with `dvd_of_res hϖ ((mul_eq_zero.1 h1).resolve_left hg)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_right {ϖ : O} (hϖ : Irreducible ϖ) {g h : PowerSeries O}
     (hg : g.map (IsLocalRing.residue O) ≠ 0) (hd : C ϖ ∣ g * h) : C ϖ ∣ h := by
@@ -105,13 +105,13 @@ theorem dvd_right {ϖ : O} (hϖ : Irreducible ϖ) {g h : PowerSeries O}
   exact dvd_of_res hϖ ((mul_eq_zero.1 h1).resolve_left hg)
 
 /- English proof (translation)
-Establish `hne : (C ϖ : PowerSeries O) ≠ 0`. Introduce `h0`. Apply `hϖ.ne_zero` to reduce the goal to its premises. Simplify using `using congrArg PowerSeries.constantCoeff h0`. Proceed by induction on `N with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Proceed by induction.
 
-Consider the case `zero`. Introduce `z y h`. Conclude with `⟨y, by simpa using h⟩`. Consider the case `succ N ih`. Introduce `z y h`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd : C ϖ ∣ g * y` using `⟨C ϖ ^ N * z, by rw [← h]; ring⟩`. Take `⟨y₁, hy₁⟩` from `dvd_right hϖ hg hd`. Apply `ih z y₁` to reduce the goal to its premises. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Rewrite `h` using `[hy₁]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `h`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem peel {ϖ : O} (hϖ : Irreducible ϖ) {g : PowerSeries O} (hg : g.map (IsLocalRing.residue O) ≠ 0)
     (N : ℕ) : ∀ z y : PowerSeries O, C ϖ ^ N * z = g * y → ∃ y', z = g * y' := by
@@ -133,17 +133,17 @@ theorem peel {ϖ : O} (hϖ : Irreducible ϖ) {g : PowerSeries O} (hg : g.map (Is
     linear_combination h
 
 /- English proof (translation)
-The claim follows from `(hg.map (PowerSeries.map (IsLocalRing.residue O))).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem res_ne_of_isUnit {g : PowerSeries O} (hg : IsUnit g) : g.map (IsLocalRing.residue O) ≠ 0 := (hg.map (PowerSeries.map (IsLocalRing.residue O))).ne_zero
 
 /- English proof (translation)
-The claim follows from `ha.map (Pi.evalMonoidHom (fun _ : ZMod n => PowerSeries O) i)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_letter {a : LetA O n} (ha : IsUnit a) (i : ZMod n) : IsUnit (a i) := ha.map (Pi.evalMonoidHom (fun _ : ZMod n => PowerSeries O) i)
 
 /- English proof (translation)
-Take `⟨⟨w, hw⟩, -, -, -⟩` from `hR`. Rewrite using `[hw, Pi.mul_apply, map_mul]`. Use `mul_ne_zero (res_ne_of_isUnit (isUnit_letter w.isUnit i)) ?_` and prove the remaining obligations. Rewrite using `[Pi.pow_apply, map_pow]`. Conclude with `pow_ne_zero _ (by simp [letπ])`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dist_π₀ (hR : RD W) (i : ZMod n) : (W.π₀ i).map (IsLocalRing.residue O) ≠ 0 := by
   obtain ⟨⟨w, hw⟩, -, -, -⟩ := hR
@@ -153,11 +153,11 @@ theorem dist_π₀ (hR : RD W) (i : ZMod n) : (W.π₀ i).map (IsLocalRing.resid
   exact pow_ne_zero _ (by simp [letπ])
 
 /- English proof (translation)
-Establish `hp1 : PD.p - 1 ≠ 0`. Introduce `h`. Establish `h1` using `W.v_l`. Establish `: PD.p = 0 ∨ PD.p = 1` using `by omega`. Apply the tactic sequence `rcases this with h0 | h0 <;> rw [h0] at h1 <;> simp at h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨⟨w, hw⟩, ⟨w', hw'⟩, -, -⟩` from `id hR`. Proceed by induction on `m generalizing i with`. Consider the case `zero`. Rewrite using `[pow_zero, AlgHom.one_apply, hw]`. Simplify using `[letπ, zero_pow hp1]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Rewrite using `[pow_succ, AlgHom.mul_apply, hw']`. Simplify using `only [map_mul, map_pow, Pi.mul_apply, Pi.pow_apply, ih i, mul_zero, zero_mul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cc_φpow (hR : RD W) (m : ℕ) (i : ZMod n) : constantCoeff ((W.φA ^ m) W.π₀ i) = 0 := by
   have hp1 : PD.p - 1 ≠ 0 := by
@@ -175,7 +175,7 @@ theorem cc_φpow (hR : RD W) (m : ℕ) (i : ZMod n) : constantCoeff ((W.φA ^ m)
     simp only [map_mul, map_pow, Pi.mul_apply, Pi.pow_apply, ih i, mul_zero, zero_mul]
 
 /- English proof (translation)
-Use `show ((W.φA ^ m) (W.π₀ + ((PD.p : ℕ) : LetA O n))) i = _`. Simplify using `only [map_add, map_natCast, Pi.add_apply, Pi.natCast_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ps_letter (m : ℕ) (i : ZMod n) :
     ps W m i = (W.φA ^ m) W.π₀ i + C ((PD.p : ℕ) : O) := by
@@ -183,11 +183,9 @@ theorem ps_letter (m : ℕ) (i : ZMod n) :
   simp only [map_add, map_natCast, Pi.add_apply, Pi.natCast_apply]
 
 /- English proof (translation)
-Rewrite using `[ps_letter, map_add, PowerSeries.map_C]`. Introduce `h0`. Establish `hcc : ∀ f : PowerSeries O, PowerSeries.constantCoeff (PowerSeries.map (IsLocalRing.residue O) f) = IsLocalRing.residue O (PowerSeries.constantCoeff f)`. Introduce `f`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : IsLocalRing.residue O ((PD.p : ℕ) : O) = 0`. Use `congrArg PowerSeries.constantCoeff h0` as an intermediate fact. Rewrite `this` using `[map_add, PowerSeries.constantCoeff_C, hcc, cc_φpow hR m i, map_zero, zero_add, map_zero]`. Conclude with `this`. Rewrite `h0` using `[hc, map_zero, add_zero]`.
-
-Conclude with `hD i h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dist_ps (hR : RD W) (m : ℕ) (hD : ∀ i, ((W.φA ^ m) W.π₀ i).map (IsLocalRing.residue O) ≠ 0)
     (i : ZMod n) : (ps W m i).map (IsLocalRing.residue O) ≠ 0 := by
@@ -206,11 +204,11 @@ theorem dist_ps (hR : RD W) (m : ℕ) (hD : ∀ i, ((W.φA ^ m) W.π₀ i).map (
   exact hD i h0
 
 /- English proof (translation)
-Take `⟨-, ⟨w', hw'⟩, -, -⟩` from `id hR`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `i`. Rewrite using `[pow_zero, AlgHom.one_apply]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dist_π₀ hR i`. Consider the case `succ k ih`. Introduce `i`. Rewrite using `[pow_succ, AlgHom.mul_apply, hw']`. Simplify using `only [map_mul, map_pow, Pi.mul_apply, Pi.pow_apply]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_ne_zero (mul_ne_zero ?_ (ih i)) (pow_ne_zero _ ?_)` and prove the remaining obligations. Conclude with `res_ne_of_isUnit (isUnit_letter (w'.isUnit.map (W.φA ^ k)) i)`. Conclude with `dist_ps hR k ih i`.
+A detailed English derivation is pending.
 -/
 theorem dist_φpow (hR : RD W) (m : ℕ) :
     ∀ i, ((W.φA ^ m) W.π₀ i).map (IsLocalRing.residue O) ≠ 0 := by
@@ -229,9 +227,9 @@ theorem dist_φpow (hR : RD W) (m : ℕ) :
     · exact dist_ps hR k ih i
 
 /- English proof (translation)
-Unfold `PiPs at hf`. Proceed by induction on `hf using Submonoid.closure_induction with`. Consider the case `mem x hx`. Break down `hx with rfl | ⟨m, rfl⟩` into its components or cases. Conclude with `dist_π₀ hR i`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Treat this case separately.
 
-Conclude with `dist_ps hR m (dist_φpow hR m) i`. Consider the case `one => simp`. Consider the case `mul x y _ _ hx hy`. Rewrite using `[Pi.mul_apply, map_mul]`. Conclude with `mul_ne_zero hx hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dist_piPs (hR : RD W) {f : LetA O n} (hf : f ∈ PiPs W) (i : ZMod n) :
     (f i).map (IsLocalRing.residue O) ≠ 0 := by
@@ -247,9 +245,9 @@ theorem dist_piPs (hR : RD W) {f : LetA O n} (hf : f ∈ PiPs W) (i : ZMod n) :
     exact mul_ne_zero hx hy
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `h'` using `congrFun h i`. Simplify using `only [lA, Pi.mul_apply, Pi.pow_apply, Pi.natCast_apply] at h'`. Use `mul_left_cancel₀ (pow_ne_zero _ ?_) h'` and prove the remaining obligations. Introduce `h0`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hp0` to reduce the goal to its premises. Simplify using `using congrArg PowerSeries.constantCoeff h0`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cancel_l (hp0 : ((PD.p : ℕ) : O) ≠ 0) (k : ℕ) {a b : LetA O n}
     (h : lA W ^ k * a = lA W ^ k * b) : a = b := by
@@ -262,43 +260,37 @@ theorem cancel_l (hp0 : ((PD.p : ℕ) : O) ≠ 0) (k : ℕ) {a b : LetA O n}
   simpa using congrArg PowerSeries.constantCoeff h0
 
 /- English proof (translation)
-Establish `memΔ : ∀ a : LetA O n, a ∈ W.AΔ ↔ ∀ δ ∈ W.DelF, W.γA δ a = a` using `fun _ => Iff.rfl`. Establish `hγ : ∀ (g : W.Gam) (a : LetA O n) (i : ZMod n), W.γA g a i = W.γ₀ g (a i)` using `fun _ _ _ => rfl`. Establish `hcomm : ∀ (g : W.Gam) (a : LetA O n), W.γA g (W.φA a) = W.φA (W.γA g a)` using `fun g a => funext fun i => (W.γ₀_comm g (a (i - 1))).symm`. Establish `hcommP : ∀ (m : ℕ) (g : W.Gam) (a : LetA O n), W.γA g ((W.φA ^ m) a) = (W.φA ^ m) (W.γA g a)`. Introduce `m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `m with`. Consider the case `zero => intro g a`. Both sides reduce to the same expression. Consider the case `succ m ih`. Introduce `g a`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ, AlgHom.mul_apply, AlgHom.mul_apply, ih, hcomm]`. Establish `hS : ∀ δ' ∈ W.DelF, ∀ x : PowerSeries O, W.γ₀ δ' (∑ δ ∈ W.DelF, W.γ₀ δ x) = ∑ δ ∈ W.DelF, W.γ₀ δ x`. Introduce `δ' hδ' x`. Rewrite using `[map_sum]`. Use `Finset.sum_nbij' (fun δ => δ' * δ) (fun δ => δ'⁻¹ * δ) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `intro a ha try simp only [Finset.mem_coe] at ha ⊢ show δ' * a ∈ W.DelF`. Rewrite `hδ'`, `ha`, the goal using `[W.DelF_def]`. Take `⟨k₁, hk₁, h₁⟩` from `hδ'`. Take `⟨k₂, hk₂, h₂⟩` from `ha`. Conclude with `⟨k₁ * k₂, Nat.mul_pos hk₁ hk₂, by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[mul_pow, pow_mul, h₁, one_pow, one_mul, mul_comm k₁ k₂, pow_mul, h₂, one_pow]⟩`. Apply the tactic sequence `intro a ha try simp only [Finset.mem_coe] at ha ⊢ show δ'⁻¹ * a ∈ W.DelF`. Rewrite `hδ'`, `ha`, the goal using `[W.DelF_def]`. Take `⟨k₁, hk₁, h₁⟩` from `hδ'`. Take `⟨k₂, hk₂, h₂⟩` from `ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨k₁ * k₂, Nat.mul_pos hk₁ hk₂, by`. Rewrite using `[mul_pow, inv_pow, pow_mul, h₁, one_pow, inv_one, one_mul, mul_comm k₁ k₂, pow_mul, h₂, one_pow]⟩`. Introduce `a _`. Conclude with `inv_mul_cancel_left δ' a`. Introduce `a _`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_inv_cancel_left δ' a`. Introduce `a _`. Simplify using `only [map_mul, AlgHom.mul_apply]`. Establish `hπ₀ : W.π₀ ∈ W.AΔ`. Rewrite using `[memΔ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `δ hδ`. Use function extensionality and compare the values at `i`. Rewrite using `[hγ]`. Use `show W.γ₀ δ W.π₀₁ = W.π₀₁`. Unfold `Formalism.BasicNotions.LocWach.π₀₁`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_add, map_sub, map_one, map_natCast, hS δ hδ]`. Establish `hps : ∀ m, ps W m ∈ W.AΔ`. Introduce `m`. Rewrite using `[memΔ]`. Introduce `δ hδ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `show W.γA δ ((W.φA ^ m) (qA W)) = (W.φA ^ m) (qA W)`. Rewrite using `[hcommP, qA, lA, map_add, map_natCast, (memΔ _).1 hπ₀ δ hδ]`. Establish `hPi : PiPs W ≤ W.AΔ.toSubmonoid`. Unfold `PiPs`. Rewrite using `[Submonoid.closure_le]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `x (rfl | ⟨m, rfl⟩)`. Conclude with `hπ₀`. Conclude with `hps m`. Establish `hfΔ : f ∈ W.AΔ` using `hPi hf`. Establish `hzΔ : ∀ δ ∈ W.DelF, W.γA δ z = z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `δ hδ`. Use `cancel_l (W := W) hp0 k ?_` and prove the remaining obligations. Establish `h1 : W.γA δ (lA W ^ k * z) = lA W ^ k * z`. Rewrite using `[hky]`. Conclude with `(memΔ _).1 (W.AΔ.mul_mem hfΔ hy) δ hδ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_mul, map_pow]`. Rewrite `h1`, the goal using `[lA]`. Rewrite `h1` using `[map_natCast]`. Conclude with `h1`. Establish `hfne : ∀ i, f i ≠ 0` using `fun i h0 => dist_piPs hR hf i (by rw [h0, map_zero])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨e, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hp0 hϖ`. Establish `hpC : ((PD.p : ℕ) : PowerSeries O) = C (u : O) * C ϖ ^ e`. Rewrite using `[← map_pow, ← map_mul, ← hu, map_natCast]`. Establish `hcomp : ∀ i, ∃ t : PowerSeries O, z i = f i * t`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Establish `hi` using `congrFun hky i`. Simplify using `only [Pi.mul_apply, Pi.pow_apply, lA, Pi.natCast_apply] at hi`. Take `⟨t, ht⟩` from `peel hϖ (dist_piPs hR hf i) (e * k) (C (u : O) ^ k * z i) (y i) (by`. Rewrite using `[← hi, hpC]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use the proof step `ring)`. Use `⟨C ((u⁻¹ : Oˣ) : O) ^ k * t, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← mul_pow, ← map_mul, Units.inv_mul, map_one, one_pow, one_mul]`. Use `_ = f i * (C ((u⁻¹ : Oˣ) : O) ^ k * t) := by rw [ht]; ring`.
-
-Use `choose t ht using hcomp`. Establish `hzt : z = f * t` using `funext fun i => ht i`. Use `⟨t, ?_, hzt⟩` and prove the remaining obligations. Rewrite using `[memΔ]`. Introduce `δ hδ`.
-
-Establish `hfy : f * W.γA δ t = f * t`. Establish `h2` using `hzΔ δ hδ`. Rewrite `h2` using `[hzt, map_mul, (memΔ _).1 hfΔ δ hδ]`. Conclude with `h2`. Use function extensionality and compare the values at `i`.
-
-Conclude with `mul_left_cancel₀ (hfne i) (congrFun hfy i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem sat_A_core (hR : RD W) (hp0 : ((PD.p : ℕ) : O) ≠ 0) {f z y : LetA O n} (hf : f ∈ PiPs W)
     (hy : y ∈ W.AΔ) (k : ℕ) (hky : lA W ^ k * z = f * y) : ∃ y' ∈ W.AΔ, z = f * y' := by

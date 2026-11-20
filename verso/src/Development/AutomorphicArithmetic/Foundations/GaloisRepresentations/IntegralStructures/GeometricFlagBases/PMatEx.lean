@@ -8,19 +8,17 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N
 open UpperTheory.Gal UpperTheory.Gal.Int.Geo
 
 /- English proof (translation)
-Introduce `Γ L _ _ M _ _ a h1 hmul U hU d b`. Set `f : Γ → (U →ₗ[L] U)` to `fun g => (a g).restrict (fun x hx => hU g x hx)`. Establish `hfv : ∀ g (x : U), ((f g x : U) : M) = a g (x : M)` using `fun g x => rfl`. Establish `hf1 : f 1 = LinearMap.id`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[hfv, h1]`. Establish `hfm : ∀ g h, f (g * h) = f g ∘ₗ f h`. Introduce `g h`. Use extensionality with `x`. Simplify using `[hfv, hmul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Set `φ : Γ →* Matrix (Fin d) (Fin d) L` to `{ toFun := fun g => LinearMap.toMatrix b b (f g) map_one' := by`. Simplify using `only [hf1, LinearMap.toMatrix_id]`. Use the proof step `map_mul' := by`. Introduce `g h`. Simplify using `only [hfm]`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Conclude with `LinearMap.toMatrix_comp b b b (f g) (f h) }`. Set `ρ : Γ →* GL (Fin d) L` to `φ.toHomUnits`. Establish `hρ : ∀ g, ((ρ g : GL (Fin d) L) : Matrix (Fin d) (Fin d) L) = LinearMap.toMatrix b b (f g)` using `fun g => MonoidHom.coe_toHomUnits φ g`. Use `⟨ρ, ?_, ?_⟩` and prove the remaining obligations. Introduce `g j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hρ, LinearMap.toMatrix_apply]`. Rewrite using `[← hfv]`. Establish `e` using `congrArg Subtype.val (b.sum_repr (f g (b j)))`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at e`. Conclude with `e.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i j`. Take `⟨μ, hμ⟩` from `LinearMap.exists_extend (b.coord i)`. Use `⟨μ, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hρ, LinearMap.toMatrix_apply, ← hfv]`. Establish `hc : μ (U.subtype (f g (b j))) = b.coord i (f g (b j))`.
-
-Rewrite using `[← LinearMap.comp_apply, hμ]`. Rewrite `hc` using `[Module.Basis.coord_apply]`. Conclude with `hc.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.matEx_of :
     MatEx := by

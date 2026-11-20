@@ -7,7 +7,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SW.Core.OrthMeas
 
 /- English proof (translation)
-Establish `h : (g *ᵥ x) ⬝ᵥ (B *ᵥ (g *ᵥ y)) = x ⬝ᵥ (B *ᵥ y)` using `by conv_rhs => rw [← hg]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec x gᵀ, Matrix.vecMul_transpose]`. Simplify using `only [chiB, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chiB_mulVec_mulVec {R : Type} [CommRing R] {ι : Type} [Fintype ι]
     (ψ : AddChar R ℂ) (B g : Matrix ι ι R) (hg : gᵀ * B * g = B) (x y : ι → R) :
@@ -27,9 +27,9 @@ def mulVecEquiv {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι
   map_add' := Matrix.mulVec_add g
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `⟨e.symm y, fun x hx => ?_, e.apply_symm_apply y⟩` and prove the remaining obligations. Use `hy (e x) ⟨x, hx, rfl⟩` as an intermediate fact.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[← e.apply_symm_apply y, hχ]`. Then use the resulting hypothesis. Introduce and unpack `⟨z, hz, rfl⟩ x ⟨w, hw, rfl⟩`. Rewrite using `[hχ]`. Conclude with `hz w hw`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perp_image {V : Type} (χ : V → V → ℂ) (e : V ≃ V)
     (hχ : ∀ x y, χ (e x) (e y) = χ x y) (L : Set V) :
@@ -45,21 +45,17 @@ theorem perp_image {V : Type} (χ : V → V → ℂ) (e : V ≃ V)
     exact hz w hw
 
 /- English proof (translation)
-Take `⟨hTG, hT2, hLC, hSC, hBS, hHaar, -, hEx, -, -, -, -, hPerp⟩` from `hD`. Use `haveI := hTG`. Use `haveI := hT2`. Use `haveI := hLC`. Use `haveI := hSC`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := hBS`. Use `haveI := hHaar`. Use `haveI : (μ.map e).IsAddHaarMeasure := e.isAddHaarMeasure_map μ he hes`. Take `⟨c, hc⟩ : ∃ c : ℝ≥0, μ.map e = c • μ` from `⟨_, Measure.isAddLeftInvariant_eq_smul (μ.map e) μ⟩`. Set `t : V ≃ₜ V` to `{ toEquiv := e.toEquiv, continuous_toFun := he, continuous_invFun := hes }`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ A : Set V, IsOpen A → μ A = c * μ (e '' A)`. Introduce `A hA`. Establish `hm : MeasurableSet (e '' A)` using `(t.isOpenMap A hA).measurableSet`. Establish `h1 : (μ.map e) (e '' A) = (c • μ) (e '' A)` using `by rw [hc]`. Rewrite `h1` using `[Measure.map_apply he.measurable hm, Set.preimage_image_eq _ e.injective, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1`. Take `⟨L, hLc, hLo, -⟩` from `hEx 0`. Establish `hset : ((L.map e.toAddMonoidHom : AddSubgroup V) : Set V) = e '' (L : Set V)`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hL'c : IsCompact ((L.map e.toAddMonoidHom : AddSubgroup V) : Set V)`. Rewrite using `[hset]`. Conclude with `hLc.image he`. Establish `hL'o : IsOpen ((L.map e.toAddMonoidHom : AddSubgroup V) : Set V)`. Rewrite using `[hset]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `t.isOpenMap _ hLo`. Take `⟨-, hPo, -, hP⟩` from `hPerp L hLc hLo`. Take `⟨-, -, -, hP'⟩` from `hPerp _ hL'c hL'o`. Rewrite `hP'` using `[hset, show perp χ (e '' (L : Set V)) = e '' perp χ (L : Set V) from perp_image χ e.toEquiv hχ _]`. Establish `hcc : ((c : ℝ≥0∞)) * c = 1`.
-
-Rewrite `hP` using `[key _ hLo, key _ hPo]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hP', mul_one]`. Use `_ = 1 := by rw [← hP]; ring`. Establish `hc1 : c = 1`.
-
-Establish `h2 : c * c = 1` using `by exact_mod_cast hcc`. Establish `h3 : c ^ 2 = 1` using `by rw [sq]; exact h2`. Conclude with `(pow_eq_one_iff.1 h3).resolve_right two_ne_zero`. Rewrite using `[hc, hc1, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eq_self {V : Type} [AddCommGroup V] [TopologicalSpace V] [MeasurableSpace V]
     (χ : V → V → ℂ) (μ : Measure V) (hD : NADual V χ μ) (e : V ≃+ V) (he : Continuous e)
@@ -106,13 +102,13 @@ theorem map_eq_self {V : Type} [AddCommGroup V] [TopologicalSpace V] [Measurable
   rw [hc, hc1, one_smul]
 
 /- English proof (translation)
-Introduce `R _ _ _ ι _ _ ψ h B μ hQ g hdet hg`. Take `⟨hTR, -, -, -, -, hD⟩` from `hQ`. Use `haveI := hTR`. Establish `hBS : BorelSpace (ι → R)` using `hD.2.2.2.2.1`. Establish `he : Continuous (mulVecEquiv g hdet)` using `Continuous.matrix_mulVec continuous_const continuous_id`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hes : Continuous (mulVecEquiv g hdet).symm` using `Continuous.matrix_mulVec continuous_const continuous_id`. Establish `hχ : ∀ x y, chiB ψ B (mulVecEquiv g hdet x) (mulVecEquiv g hdet y) = chiB ψ B x y` using `chiB_mulVec_mulVec ψ B g hg`. Establish `hmap : Measure.map (fun x => g *ᵥ x) μ = μ` using `map_eq_self (chiB ψ B) μ hD (mulVecEquiv g hdet) he hes hχ`. Set `t : (ι → R) ≃ₜ (ι → R)` to `{ toEquiv := (mulVecEquiv g hdet).toEquiv, continuous_toFun := he, continuous_invFun := hes }`. Use `⟨hmap, fun φ hφ => ⟨⟨hφ.1.comp_continuous he, hφ.2.comp_homeomorph t⟩, fun y => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hI` using `t.measurableEmbedding.integral_map (μ := μ) (fun x => φ x * chiB ψ B x (g *ᵥ y))`. Establish `ht : (⇑t : (ι → R) → (ι → R)) = fun x => g *ᵥ x` using `rfl`. Rewrite `hI` using `[ht, hmap]`. Simplify using `only [fou]`. Rewrite using `[hI]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[chiB_mulVec_mulVec ψ B g hg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orth_meas : ∀ (R : Type) [CommRing R] [TopologicalSpace R] [MeasurableSpace R] (ι : Type)
     [Fintype ι] [DecidableEq ι] (ψ : AddChar R ℂ) (h : R) (B : Matrix ι ι R) (μ : Measure (ι → R)),

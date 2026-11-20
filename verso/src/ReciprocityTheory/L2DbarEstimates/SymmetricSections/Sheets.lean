@@ -7,29 +7,27 @@ open Filter Topology Asymptotics
 universe u
 
 /- English proof (translation)
-Introduce `n M _ z U u hcov w hw hfin`. Take `⟨_, W, hwW, hW, _, H, hH⟩` from `hcov w hw`. Establish `: Finite (z ⁻¹' {w})` using `hfin.to_subtype`. Set `e : Fin (Nat.card (z ⁻¹' {w})) ≃ (z ⁻¹' {w})` to `(Finite.equivFin _).symm`. Set `s : Fin (Nat.card (z ⁻¹' {w})) → V n → M` to `fun i v => if hv : v ∈ W then (H.symm (⟨v, hv⟩, e i)).1 else (e i).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hs : ∀ i v (hv : v ∈ W), s i v = (H.symm (⟨v, hv⟩, e i)).1` using `fun i v hv => dif_pos hv`. Establish `hzs : ∀ i, ∀ v ∈ W, z (s i v) = v`. Introduce `i v hv`. Rewrite using `[hs i v hv]`. Use `hH (H.symm (⟨v, hv⟩, e i))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Homeomorph.apply_symm_apply]`. Conclude with `this.symm`. Establish `hinj : ∀ v (hv : v ∈ W) i j, s i v = s j v → i = j`. Introduce `v hv i j hij`. Rewrite `hij` using `[hs i v hv, hs j v hv]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun y => (H y).2) (Subtype.ext hij : H.symm (⟨v, hv⟩, e i) = H.symm (⟨v, hv⟩, e j))`. Simplify using `only [Homeomorph.apply_symm_apply] at h2`. Conclude with `e.injective h2`. Establish `hsurj : ∀ v (hv : v ∈ W) (y : M), z y = v → ∃ i, s i v = y`. Introduce `v hv y hy`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hyW : y ∈ z ⁻¹' W` using `by show z y ∈ W`. Rewrite using `[hy]`. Conclude with `hv`. Use `⟨e.symm (H ⟨y, hyW⟩).2, ?_⟩` and prove the remaining obligations. Rewrite using `[hs _ v hv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Equiv.apply_symm_apply]`. Establish `h1 : (H ⟨y, hyW⟩).1 = ⟨v, hv⟩` using `Subtype.ext (by rw [hH]; exact hy)`. Establish `h3 : H.symm (⟨v, hv⟩, (H ⟨y, hyW⟩).2) = ⟨y, hyW⟩`. Rewrite using `[← h1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h3]`. Use `⟨W, Nat.card (z ⁻¹' {w}), s, hW, hwW, ?_, hzs, ?_⟩` and prove the remaining obligations. Introduce `i`. Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Establish `: W.domRestrict (s i) = fun v : W => (H.symm (v, e i)).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `v`. Conclude with `hs i v.1 v.2`. Rewrite using `[this]`. Conclude with `continuous_subtype_val.comp (H.symm.continuous.comp (continuous_id.prodMk continuous_const))`. Introduce `v hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hfv : (z ⁻¹' {v}).Finite`. Use `(Set.finite_range fun i => s i v).subset ?_` and prove the remaining obligations. Introduce `y hy`. Take `⟨i, hi⟩` from `hsurj v hv y hy`. Conclude with `⟨i, hi⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Unfold `fiberVals`. Rewrite using `[dif_pos hfv]`. Establish `hF : hfv.toFinset = Finset.univ.map ⟨fun i => s i v, fun i j h => hinj v hv i j h⟩`. Use extensionality with `y`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_preimage, Set.mem_singleton_iff, Finset.mem_map, Finset.mem_univ, true_and]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `hsurj v hv y hy`. Introduce and unpack `⟨i, rfl⟩`. Conclude with `hzs i v hv`.
-
-Rewrite using `[hF, Finset.map_val, Multiset.map_map]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem sheets : sheetsStatement.{u} := by
   intro n M _ z U u hcov w hw hfin

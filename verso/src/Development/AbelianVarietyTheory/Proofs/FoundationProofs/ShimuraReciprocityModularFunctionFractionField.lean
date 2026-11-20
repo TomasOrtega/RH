@@ -16,19 +16,17 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.FNRecip
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε T M f hM hf ζ hζ s d hsd γ γ' hc`. Take `⟨N₀, hN₀, hrec⟩` from `GlobalTheory.T.exists_level_gal_sl_commute Ω ε T f`. Use `set N := N₀ * M with hNdef`. Establish `hN : 0 < N` using `Nat.mul_pos hN₀ hM`. Take `⟨⟨d', hd'⟩, hu⟩` from `GlobalTheory.T.galois_exponent_rootOfUnity_expTwoPiI Ω ε s N hN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu1, -⟩` from `hu d' hd'`. Establish `hunit : IsUnit ((d' : ℤ) : ZMod N)` using `hu1 ▸ u.isUnit`. Use `set ω := eOm ε (1 / (N : ℚ)) with hω`. Establish `hωp : IsPrimitiveRoot ω N` using `(GlobalTheory.T.expTwoPiIRatInField_roots_of_unity_properties Ω ε).2.2.2.2.1 N hN`. Establish `hωM : IsPrimitiveRoot (ω ^ N₀) M` using `hωp.pow hN rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : NeZero M := ⟨hM.ne'⟩`. Take `⟨i, -, hi⟩` from `hωM.eq_pow_of_pow_eq_one hζ.pow_eq_one`. Establish `hsζ : s ζ = ζ ^ d'`. Rewrite using `[← hi, map_pow, map_pow, hd', ← zpow_natCast, ← zpow_natCast, ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, ← zpow_mul, ← zpow_mul]`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hζ0 : ζ ≠ 0` using `hζ.ne_zero hM.ne'`. Establish `hdd : (d : ZMod M) = d'`. Rewrite using `[ZMod.intCast_eq_intCast_iff_dvd_sub]`. Use `(hζ.zpow_eq_one_iff_dvd (d' - d)).1 (by` as an intermediate fact. Rewrite using `[zpow_sub₀ hζ0, ← hsd, ← hsζ, div_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(map_ne_zero s).2 hζ0)`. Conclude with `this`. Take `⟨hl1, hl2⟩` from `GlobalTheory.T.slTwoDiagConjCongruence_lift_level M N d d' hN (Dvd.intro_left N₀ rfl) hdd hunit`. Take `⟨γ'', hc'', hκ⟩` from `hl1 γ γ' hc`. Establish `hact` using `GlobalTheory.T.modularFunctionFractionField_sl_rightAction Ω ε T`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hinv : ∀ δ' ∈ CongruenceSubgroup.Gamma M, T.sl (ofSL δ') (T.gal s f) = T.gal s f`. Introduce `δ' hδ'`. Take `⟨δ, hδ, hcδ⟩` from `hl2 δ' hδ'`. Use `hrec N hN (Dvd.intro M rfl) s d' hd' δ δ' hcδ` as an intermediate fact. Rewrite `this` using `[hf δ hδ]`.
-
-Conclude with `this.symm`. Rewrite using `[hrec N hN (Dvd.intro M rfl) s d' hd' γ γ'' hc'']`. Establish `hγ' : γ' = (γ' * γ''⁻¹) * γ''` using `by group`. Rewrite using `[hγ', map_mul, hact.2, hinv _ hκ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (T : Frac Ω ε) (M : ℕ) (f : T.K), 0 < M → (∀ γ ∈ CongruenceSubgroup.Gamma M, T.sl (ofSL γ) f = f) → ∀ ζ : Ω, IsPrimitiveRoot ζ M → ∀ (s : Ω ≃ₐ[ℚ] Ω) (d : ℤ), s ζ = ζ ^ d → ∀ γ γ' : SL(2, ℤ), Cong M d γ γ' → T.gal s (T.sl (ofSL γ) f) = T.sl (ofSL γ') (T.gal s f) := by
   intro Ω _ _ _ ε T M f hM hf ζ hζ s d hsd γ γ' hc

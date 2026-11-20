@@ -5,11 +5,11 @@ namespace Formalism.MainNotions.N.FrobeniusPowerSeries.NumericInequalities
 variable {x : ℝ}
 
 /- English proof (translation)
-Establish `h0 : 0 < x` using `by linarith`. Establish `h1 : 0 < x - 1` using `by linarith`. Establish `h2 : 0 < x - 2` using `by linarith`. Establish `h : 0 ≤ x - 11` using `by linarith`. Establish `n0 : x ≠ 0` using `h0.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n1 : x - 1 ≠ 0` using `h1.ne'`. Establish `n2 : x - 2 ≠ 0` using `h2.ne'`. Establish `e : 1 / 11 - x⁻¹ = (x - 11) / (11 * x)`. Apply the tactic sequence `field_simp <;> ring`. Establish `hd : 0 ≤ 1 / 11 - x⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `div_nonneg (by linarith) (mul_nonneg (by norm_num) h0.le)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma u_le (hx : 11 ≤ x) : x⁻¹ ≤ 1 / 11 := by
   have h0 : 0 < x := by linarith
@@ -27,11 +27,11 @@ lemma u_le (hx : 11 ≤ x) : x⁻¹ ≤ 1 / 11 := by
   linarith
 
 /- English proof (translation)
-Establish `h0 : 0 < x` using `by linarith`. Establish `h1 : 0 < x - 1` using `by linarith`. Establish `h2 : 0 < x - 2` using `by linarith`. Establish `h : 0 ≤ x - 11` using `by linarith`. Establish `n0 : x ≠ 0` using `h0.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n1 : x - 1 ≠ 0` using `h1.ne'`. Establish `n2 : x - 2 ≠ 0` using `h2.ne'`. Establish `e : 1 / 10 - (x - 1)⁻¹ = (x - 11) / (10 * (x - 1))`. Apply the tactic sequence `field_simp <;> ring`. Establish `hd : 0 ≤ 1 / 10 - (x - 1)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `div_nonneg (by linarith) (mul_nonneg (by norm_num) h1.le)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma p_le (hx : 11 ≤ x) : (x - 1)⁻¹ ≤ 1 / 10 := by
   have h0 : 0 < x := by linarith
@@ -49,11 +49,11 @@ lemma p_le (hx : 11 ≤ x) : (x - 1)⁻¹ ≤ 1 / 10 := by
   linarith
 
 /- English proof (translation)
-Establish `h0 : 0 < x` using `by linarith`. Establish `h1 : 0 < x - 1` using `by linarith`. Establish `h2 : 0 < x - 2` using `by linarith`. Establish `h : 0 ≤ x - 11` using `by linarith`. Establish `n0 : x ≠ 0` using `h0.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n1 : x - 1 ≠ 0` using `h1.ne'`. Establish `n2 : x - 2 ≠ 0` using `h2.ne'`. Establish `e : 1 / 9 - (x - 2)⁻¹ = (x - 11) / (9 * (x - 2))`. Apply the tactic sequence `field_simp <;> ring`. Establish `hd : 0 ≤ 1 / 9 - (x - 2)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `div_nonneg (by linarith) (mul_nonneg (by norm_num) h2.le)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma e_le (hx : 11 ≤ x) : (x - 2)⁻¹ ≤ 1 / 9 := by
   have h0 : 0 < x := by linarith
@@ -71,11 +71,11 @@ lemma e_le (hx : 11 ≤ x) : (x - 2)⁻¹ ≤ 1 / 9 := by
   linarith
 
 /- English proof (translation)
-Establish `h0 : 0 < x` using `by linarith`. Establish `h1 : 0 < x - 1` using `by linarith`. Establish `h2 : 0 < x - 2` using `by linarith`. Establish `h : 0 ≤ x - 11` using `by linarith`. Establish `n0 : x ≠ 0` using `h0.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n1 : x - 1 ≠ 0` using `h1.ne'`. Establish `n2 : x - 2 ≠ 0` using `h2.ne'`. Establish `e : (x - 1)⁻¹ - x⁻¹ = 1 / (x * (x - 1))`. Apply the tactic sequence `field_simp <;> ring`. Establish `hd : 0 ≤ (x - 1)⁻¹ - x⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `div_nonneg (zero_le_one) (mul_nonneg h0.le h1.le)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma u_le_p (hx : 11 ≤ x) : x⁻¹ ≤ (x - 1)⁻¹ := by
   have h0 : 0 < x := by linarith
@@ -93,11 +93,11 @@ lemma u_le_p (hx : 11 ≤ x) : x⁻¹ ≤ (x - 1)⁻¹ := by
   linarith
 
 /- English proof (translation)
-Establish `h0 : 0 < x` using `by linarith`. Establish `h1 : 0 < x - 1` using `by linarith`. Establish `h2 : 0 < x - 2` using `by linarith`. Establish `h : 0 ≤ x - 11` using `by linarith`. Establish `n0 : x ≠ 0` using `h0.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n1 : x - 1 ≠ 0` using `h1.ne'`. Establish `n2 : x - 2 ≠ 0` using `h2.ne'`. Establish `e : 121 / 100 * x⁻¹ - x / (x - 1) ^ 2 = (21 * x ^ 2 - 242 * x + 121) / (100 * x * (x - 1) ^ 2)`. Apply the tactic sequence `field_simp <;> ring`. Establish `hd : 0 ≤ 121 / 100 * x⁻¹ - x / (x - 1) ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `div_nonneg (by nlinarith [h, mul_nonneg h h]) (mul_nonneg (mul_nonneg (by norm_num) h0.le) (sq_nonneg _))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma q_le (hx : 11 ≤ x) : x / (x - 1) ^ 2 ≤ 121 / 100 * x⁻¹ := by
   have h0 : 0 < x := by linarith
@@ -115,11 +115,11 @@ lemma q_le (hx : 11 ≤ x) : x / (x - 1) ^ 2 ≤ 121 / 100 * x⁻¹ := by
   linarith
 
 /- English proof (translation)
-Establish `h0 : 0 < x` using `by linarith`. Establish `h1 : 0 < x - 1` using `by linarith`. Establish `h2 : 0 < x - 2` using `by linarith`. Establish `h : 0 ≤ x - 11` using `by linarith`. Establish `n0 : x ≠ 0` using `h0.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n1 : x - 1 ≠ 0` using `h1.ne'`. Establish `n2 : x - 2 ≠ 0` using `h2.ne'`. Establish `e : 11 / 9 * x⁻¹ - (x - 2)⁻¹ = (2 * x - 22) / (9 * x * (x - 2))`. Apply the tactic sequence `field_simp <;> ring`. Establish `hd : 0 ≤ 11 / 9 * x⁻¹ - (x - 2)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `div_nonneg (by linarith) (mul_nonneg (mul_nonneg (by norm_num) h0.le) h2.le)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma e_le_u (hx : 11 ≤ x) : (x - 2)⁻¹ ≤ 11 / 9 * x⁻¹ := by
   have h0 : 0 < x := by linarith
@@ -137,11 +137,11 @@ lemma e_le_u (hx : 11 ≤ x) : (x - 2)⁻¹ ≤ 11 / 9 * x⁻¹ := by
   linarith
 
 /- English proof (translation)
-Establish `h0 : 0 < x` using `by linarith`. Establish `h1 : 0 < x - 1` using `by linarith`. Establish `h2 : 0 < x - 2` using `by linarith`. Establish `h : 0 ≤ x - 11` using `by linarith`. Establish `n0 : x ≠ 0` using `h0.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n1 : x - 1 ≠ 0` using `h1.ne'`. Establish `n2 : x - 2 ≠ 0` using `h2.ne'`. Establish `e : 11 / 10 * x⁻¹ - (x - 1)⁻¹ = (x - 11) / (10 * x * (x - 1))`. Apply the tactic sequence `field_simp <;> ring`. Establish `hd : 0 ≤ 11 / 10 * x⁻¹ - (x - 1)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `div_nonneg (by linarith) (mul_nonneg (mul_nonneg (by norm_num) h0.le) h1.le)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma p_le_u (hx : 11 ≤ x) : (x - 1)⁻¹ ≤ 11 / 10 * x⁻¹ := by
   have h0 : 0 < x := by linarith
@@ -159,11 +159,11 @@ lemma p_le_u (hx : 11 ≤ x) : (x - 1)⁻¹ ≤ 11 / 10 * x⁻¹ := by
   linarith
 
 /- English proof (translation)
-Establish `h0 : 0 < x` using `by linarith`. Establish `h1 : 0 < x - 1` using `by linarith`. Establish `h2 : 0 < x - 2` using `by linarith`. Establish `h : 0 ≤ x - 11` using `by linarith`. Establish `n0 : x ≠ 0` using `h0.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n1 : x - 1 ≠ 0` using `h1.ne'`. Establish `n2 : x - 2 ≠ 0` using `h2.ne'`. Establish `e : x⁻¹ - (x - 1)⁻¹ ^ 2 = (x ^ 2 - 3 * x + 1) / (x * (x - 1) ^ 2)`. Apply the tactic sequence `field_simp <;> ring`. Establish `hd : 0 ≤ x⁻¹ - (x - 1)⁻¹ ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `div_nonneg (by nlinarith [h, mul_nonneg h h]) (mul_nonneg h0.le (sq_nonneg _))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma inv_sub_one_sq_le_inv (hx : 11 ≤ x) : (x - 1)⁻¹ ^ 2 ≤ x⁻¹ := by
   have h0 : 0 < x := by linarith
@@ -181,11 +181,11 @@ lemma inv_sub_one_sq_le_inv (hx : 11 ≤ x) : (x - 1)⁻¹ ^ 2 ≤ x⁻¹ := by
   linarith
 
 /- English proof (translation)
-Establish `h0 : 0 < x` using `by linarith`. Establish `h1 : 0 < x - 1` using `by linarith`. Establish `h2 : 0 < x - 2` using `by linarith`. Establish `h : 0 ≤ x - 11` using `by linarith`. Establish `n0 : x ≠ 0` using `h0.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n1 : x - 1 ≠ 0` using `h1.ne'`. Establish `n2 : x - 2 ≠ 0` using `h2.ne'`. Establish `e : 5 / 4 * x⁻¹ ^ 2 - ((x - 1)⁻¹ - x⁻¹ + (x - 1)⁻¹ ^ 2 * (x - 2)⁻¹) = (x ^ 3 - 12 * x ^ 2 + 17 * x - 10) / (4 * x ^ 2 * (x - 1) ^ 2 * (x - 2))`. Apply the tactic sequence `field_simp <;> ring`. Establish `hd : 0 ≤ 5 / 4 * x⁻¹ ^ 2 - ((x - 1)⁻¹ - x⁻¹ + (x - 1)⁻¹ ^ 2 * (x - 2)⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `div_nonneg (by nlinarith [h, mul_nonneg h h, mul_nonneg (mul_nonneg h h) h]) (mul_nonneg (mul_nonneg (by positivity) (sq_nonneg _)) h2.le)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma k_cut (hx : 11 ≤ x) :
     (x - 1)⁻¹ - x⁻¹ + (x - 1)⁻¹ ^ 2 * (x - 2)⁻¹ ≤ 5 / 4 * x⁻¹ ^ 2 := by
@@ -204,11 +204,11 @@ lemma k_cut (hx : 11 ≤ x) :
   linarith
 
 /- English proof (translation)
-Establish `h0 : 0 < x` using `by linarith`. Establish `h1 : 0 < x - 1` using `by linarith`. Establish `h2 : 0 < x - 2` using `by linarith`. Establish `h : 0 ≤ x - 11` using `by linarith`. Establish `n0 : x ≠ 0` using `h0.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n1 : x - 1 ≠ 0` using `h1.ne'`. Establish `n2 : x - 2 ≠ 0` using `h2.ne'`. Establish `e : 22 / 9 * x⁻¹ ^ 2 - ((x - 1)⁻¹ - x⁻¹ + (x - 1)⁻¹ * (x - 2)⁻¹) = (4 * x ^ 2 - 48 * x + 44) / (9 * x ^ 2 * (x - 1) * (x - 2))`. Apply the tactic sequence `field_simp <;> ring`. Establish `hd : 0 ≤ 22 / 9 * x⁻¹ ^ 2 - ((x - 1)⁻¹ - x⁻¹ + (x - 1)⁻¹ * (x - 2)⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `div_nonneg (by nlinarith [h, mul_nonneg h h]) (mul_nonneg (mul_nonneg (by positivity) h1.le) h2.le)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma k_le (hx : 11 ≤ x) :
     (x - 1)⁻¹ - x⁻¹ + (x - 1)⁻¹ * (x - 2)⁻¹ ≤ 22 / 9 * x⁻¹ ^ 2 := by
@@ -227,11 +227,11 @@ lemma k_le (hx : 11 ≤ x) :
   linarith
 
 /- English proof (translation)
-Establish `h0 : 0 < x` using `by linarith`. Establish `h1 : 0 < x - 1` using `by linarith`. Establish `h2 : 0 < x - 2` using `by linarith`. Establish `h : 0 ≤ x - 11` using `by linarith`. Establish `n0 : x ≠ 0` using `h0.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n1 : x - 1 ≠ 0` using `h1.ne'`. Establish `n2 : x - 2 ≠ 0` using `h2.ne'`. Establish `e : 21 / 100 - (2 * x - 1) / (x - 1) ^ 2 = (21 * x ^ 2 - 242 * x + 121) / (100 * (x - 1) ^ 2)`. Apply the tactic sequence `field_simp <;> ring`. Establish `hd : 0 ≤ 21 / 100 - (2 * x - 1) / (x - 1) ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `div_nonneg (by nlinarith [h, mul_nonneg h h]) (mul_nonneg (by norm_num) (sq_nonneg _))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma r21 (hx : 11 ≤ x) : (2 * x - 1) / (x - 1) ^ 2 ≤ 21 / 100 := by
   have h0 : 0 < x := by linarith

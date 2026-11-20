@@ -42,9 +42,9 @@ def BesselFun : Prop :=
         ℓ (∫ g, eFun μG σ w (Matrix.of g) • σ (x * Matrix.of g) w ∂μG)
 
 /- English proof (translation)
-Establish `ha' : aᴴ * Formalism.QuantumDeterminants.Hpk k r * a = Formalism.QuantumDeterminants.Hpk k r` using `ha`. Establish `hb' : bᴴ * Formalism.QuantumDeterminants.Hpk k r * b = Formalism.QuantumDeterminants.Hpk k r` using `hb`. Use `show (a * b)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (a * b) = Formalism.QuantumDeterminants.Hpk k r`. Establish `e : (a * b)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (a * b) = bᴴ * (aᴴ * Formalism.QuantumDeterminants.Hpk k r * a) * b`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ha', hb']`.
+A detailed English derivation is pending.
 -/
 theorem uh_mul {k r : ℕ} {a b : Mat k r} (ha : a ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r))
     (hb : b ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) : a * b ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) := by
@@ -56,17 +56,15 @@ theorem uh_mul {k r : ℕ} {a b : Mat k r} (ha : a ∈ Formalism.QuantumDetermin
   rw [e, ha', hb']
 
 /- English proof (translation)
-Take `⟨P, ⟨⟨hPu, hPJ⟩, _⟩, hDS⟩` from `hσ`. Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hPu`. Establish `hinv1 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hdet`. Establish `hinv2 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hdet`. Establish `conjmem : ∀ g : Mat k r, g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) → P * g * P⁻¹ ∈ UJset ε`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g hg`. Establish `hg0 : gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r` using `hg`. Establish `hPJ' : Pᴴ * Jm ε * P = Formalism.QuantumDeterminants.Hpk k r` using `hPJ`. Establish `hg' : gᴴ * (Pᴴ * Jm ε * P) * g = Pᴴ * Jm ε * P` using `by rw [hPJ']; exact hg0`. Use `show (P * g * P⁻¹)ᴴ * Jm ε * (P * g * P⁻¹) = Jm ε`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (P⁻¹)ᴴ * (Pᴴ * Jm ε * P) * P⁻¹ := by rw [hg']`. Use `_ = (P * P⁻¹)ᴴ * Jm ε * (P * P⁻¹) := by`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `_ = Jm ε := by rw [hinv2]; simp`. Establish `e1 : ∀ g : Mat k r, P⁻¹ * (P * g * P⁻¹) * P = g`. Introduce `g`. Establish `: P⁻¹ * (P * g * P⁻¹) * P = (P⁻¹ * P) * g * (P⁻¹ * P)` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[this, hinv1, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2 : P * a * P⁻¹ * (P * b * P⁻¹) = P * (a * b) * P⁻¹`. Establish `: P * a * P⁻¹ * (P * b * P⁻¹) = P * a * (P⁻¹ * P) * b * P⁻¹` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[this, hinv1, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hmul` using `hDS.2.2.1.1.2`.
-
-Establish `h : σ (P⁻¹ * (P * a * P⁻¹ * (P * b * P⁻¹)) * P) = (σ (P⁻¹ * (P * a * P⁻¹) * P)).comp (σ (P⁻¹ * (P * b * P⁻¹) * P))` using `hmul _ (conjmem a ha) _ (conjmem b hb)`. Rewrite `h` using `[e2, e1, e1, e1]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigma_mul {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]

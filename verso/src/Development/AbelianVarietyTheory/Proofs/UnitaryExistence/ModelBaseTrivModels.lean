@@ -11,15 +11,13 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (relab c σ)`. Introduce `τ₁ τ₂ h`. Use extensionality with `a`. Use `congrArg (fun f : E →+* ℂ => f a) h` as an intermediate fact. Conclude with `congrArg Subtype.val (σ.injective this)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ0 : σ ⟨H.rt0, c.le (baseKA l).ρ.2⟩ = H.rt0` using `hσ`. Establish `hrel : ∀ τ : E →+* ℂ, relab c σ τ (H.rt : E) = H.rt0 ↔ τ (H.rt : E) = H.rt0` using `fun τ => by`. Establish `hval : relab c σ τ (H.rt : E) = σ ⟨τ (H.rt : E), c.conj τ _⟩` using `rfl`. Rewrite using `[hval]`. Use `⟨fun h => congrArg Subtype.val (σ.injective (h.trans hσ0.symm)), fun h => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(congrArg σ (Subtype.ext h)).trans hσ0`. Introduce `τ`. Take `⟨τ₀, rfl⟩` from `Finite.injective_iff_surjective.1 hinj τ`. Establish `hcard : Nat.card {i // relab c σ (e i).1 = relab c σ τ₀} = Dw.mult τ₀`. Establish `e1 : {i // relab c σ (e i).1 = relab c σ τ₀} ≃ {i // (e i).1 = τ₀}` using `Equiv.subtypeEquivRight (fun i => hinj.eq_iff)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : {i // (e i).1 = τ₀} ≃ {s : Σ τ : E →+* ℂ, Fin (Dw.mult τ) // s.1 = τ₀}` using `e.subtypeEquiv (fun _ => Iff.rfl)`. Rewrite using `[Nat.card_congr (e1.trans (e2.trans (Equiv.sigmaSubtype τ₀))), Nat.card_eq_fintype_card, Fintype.card_fin]`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[hcard]`. Conclude with `if_pos ((hrel τ₀).1 h)`.
-
-Rewrite using `[hcard]`. Conclude with `if_neg (fun h' => h ((hrel τ₀).2 h'))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTypeFn_letters (c : Coeff l) (σ : c.F →+* ℂ) (hσ : GoodEmb c σ) {g : ℕ}
     (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) : IsTypeFn H Dw.p Dw.q (fun j => relab c σ (e j).1) := by

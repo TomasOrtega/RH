@@ -20,9 +20,7 @@ namespace GlobalTheory.PsiCmp
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g, F g ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hF (funext h)`. Establish `: c • F g = d • F g` using `by rw [← h1 g, ← h2 g]`.
-
-Conclude with `smul_left_injective ℂ hg this`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eig_unique {F : GAf L n → V} (hF : F ≠ 0) {κ : GAf L n} {c d : ℂ} (h1 : Eig F κ c) (h2 : Eig F κ d) : c = d := by
   obtain ⟨g, hg⟩ : ∃ g, F g ≠ 0 := by
@@ -33,14 +31,14 @@ theorem eig_unique {F : GAf L n → V} (hF : F ≠ 0) {κ : GAf L n} {c d : ℂ}
   exact smul_left_injective ℂ hg this
 
 /- English proof (translation)
-Introduce `g`. Rewrite using `[← mul_assoc, h2, h1, smul_smul, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem eig_mul {F : GAf L n → V} {a b : GAf L n} {c d : ℂ} (h1 : Eig F a c) (h2 : Eig F b d) : Eig F (a * b) (c * d) := by
   intro g
   rw [← mul_assoc, h2, h1, smul_smul, mul_comm]
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Apply `hF` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `h (g * a⁻¹)` as an intermediate fact. Simplify using `using this`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eig_ne_zero {F : GAf L n → V} (hF : F ≠ 0) {a : GAf L n} {c : ℂ} (h : Eig F a c) : c ≠ 0 := by
   rintro rfl
@@ -50,7 +48,7 @@ theorem eig_ne_zero {F : GAf L n → V} (hF : F ≠ 0) {a : GAf L n} {c : ℂ} (
   simpa using this
 
 /- English proof (translation)
-Introduce `g`. Use `h (g * a⁻¹)` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right]`. Rewrite using `[this, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eig_inv {F : GAf L n → V} {a : GAf L n} {c : ℂ} (h : Eig F a c) (hc : c ≠ 0) : Eig F a⁻¹ c⁻¹ := by
   intro g
@@ -59,7 +57,7 @@ theorem eig_inv {F : GAf L n → V} {a : GAf L n} {c : ℂ} (h : Eig F a c) (hc 
   rw [this, smul_smul, inv_mul_cancel₀ hc, one_smul]
 
 /- English proof (translation)
-Introduce `g`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem eig_one (F : GAf L n → V) : Eig F 1 1 := by
   intro g
@@ -78,7 +76,7 @@ def eigChar (F : GAf L n → V) (hF : F ≠ 0) : eigSub F hF →* ℂˣ where
     (eig_mul (Classical.choose_spec a.2) (Classical.choose_spec b.2)))
 
 /- English proof (translation)
-The claim follows from `eig_unique hF (Classical.choose_spec h) hc`.
+A detailed English derivation is pending.
 -/
 theorem eigChar_spec {F : GAf L n → V} (hF : F ≠ 0) {κ : GAf L n} (h : κ ∈ eigSub F hF) {c : ℂ} (hc : Eig F κ c) :
     ((eigChar F hF ⟨κ, h⟩ : ℂˣ) : ℂ) = c :=
@@ -90,9 +88,9 @@ noncomputable section
 namespace GlobalTheory.PsiCmp
 
 /- English proof (translation)
-Distinguish the cases in `h : a = i ∧ b = j`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `[Matrix.transvection, Matrix.one_apply]`. Establish `h' : ¬(i = a ∧ j = b)`. Introduce and unpack `⟨rfl, rfl⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `h ⟨rfl, rfl⟩`. Simplify using `[Matrix.transvection, Matrix.one_apply, Matrix.single_apply, h', h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tv_apply {n : ℕ} {R : Type} [CommRing R] (i j : Fin n) (c : R) (a b : Fin n) :
     Matrix.transvection i j c a b = (if a = b then 1 else 0) + (if a = i ∧ b = j then c else 0) := by
@@ -140,15 +138,13 @@ def trivSub {L : Type} [Field L] [NumberField L] [IsCMField L] (n : ℕ) (v : He
   inv_mem' := fun hx => GlobalTheory.HeckeScalarSph.triv_inv hx
 
 /- English proof (translation)
-Take `⟨-, -, hlift⟩` from `GlobalTheory.T.unitaryFiniteAdeles_splitPlace_decomposition L n s`. Use `set H := (J ⊓ trivSub n s.v).map (s.loc n) with hH`. Establish `hmemH : ∀ g, g ∈ H ↔ NG.UniRT s r g`. Introduce `g`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨κ, ⟨hκJ, hκT⟩, rfl⟩`. Conclude with `(hJ κ hκT).1 hκJ`. Introduce `hg`. Take `⟨κ, ⟨hκT, hκ⟩, -⟩` from `hlift g`. Substitute `hκ` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨κ, ⟨(hJ κ hκT).2 hg, hκT⟩, rfl⟩`. Establish `hJH : ∀ κ, TrivOutside {s.v} κ → (κ ∈ J ↔ s.loc n κ ∈ H)`. Introduce `κ hκT`. Prove the components needed by the constructor for the conclusion. Introduce `hκJ`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨κ, ⟨hκJ, hκT⟩, rfl⟩`. Introduce and unpack `⟨κ', ⟨hκ'J, hκ'T⟩, he⟩`. Establish `: κ' = κ` using `(hlift (s.loc n κ)).unique ⟨hκ'T, he⟩ ⟨hκT, rfl⟩`. Conclude with `this ▸ hκ'J`. Rewrite using `[GlobalTheory.T.relIndex_stabilizer_eq_local_relIndex L n s J H hJH]`.
-
-Conclude with `GlobalTheory.T.relIndex_levelUnipotent_coprime_prime L n s r p H hp hsp hrn hmemH`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idx {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} (s : SplitPlace L) (r p : ℕ) (J : Subgroup (GAf L n))
     (hp : p.Prime) (hsp : s.Above p) (hrn : r ≤ n)
@@ -182,7 +178,7 @@ noncomputable section
 namespace GlobalTheory.PsiCmp
 
 /- English proof (translation)
-Apply `Valuation.map_add_le` to reduce the goal to its premises. Apply the tactic sequence `split_ifs <;> simp`. Apply the tactic sequence `split_ifs <;> simp [hc]`.
+Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vle {K Γ : Type} [Field K] [LinearOrderedCommGroupWithZero Γ] [Valued K Γ] {α : Type} [DecidableEq α] (P : Prop) [Decidable P] (a b : α)
     {c : K} (hc : Valued.v c ≤ 1) : Valued.v ((if a = b then (1 : K) else 0) + (if P then c else 0)) ≤ 1 := by
@@ -191,65 +187,57 @@ theorem vle {K Γ : Type} [Field K] [LinearOrderedCommGroupWithZero Γ] [Valued 
   · split_ifs <;> simp [hc]
 
 /- English proof (translation)
-Introduce `L _ _ _ n r s p m θ V V' _ _ _ _ F F' J J' χ χ' ψ₀ ψ₀' ξ ξ' hp hsp hm h2r hrn hθ hF hF' hψ hψ' hJ hJ' hχ hχ' hH y hy`. Use `set K := GlobalTheory.HeckeScalarSph.locK (L := L) n s.v with hKdef`. Establish `memK : ∀ κ, κ ∈ K ↔ κ ∈ Umax L n ∧ TrivOutside {s.v} κ` using `fun κ => Iff.rfl`. Establish `hθK : ∀ κ, θ κ ∈ K ↔ κ ∈ K` using `fun κ => by rw [memK, memK, hθ.1 κ, hθ.2 s.v κ]`. Establish `hUK : ∀ κ, TrivOutside {s.v} κ → NG.UniRT s r (s.loc n κ) → κ ∈ K` using `fun κ hT hU => ⟨(GlobalTheory.HeckeScalarSph.loc_mem_GLint_iff s hT).1 hU.1.1, hT⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Hs : Subgroup (GAf L n) := eigSub F hF ⊓ eigSub F' hF' ⊓ K with hHs`. Establish `le1 : Hs ≤ eigSub F hF` using `le_trans inf_le_left inf_le_left`. Establish `le2 : Hs ≤ eigSub F' hF'` using `le_trans inf_le_left inf_le_right`. Set `η : Hs →* ℂˣ` to `(powMonoidHom m).comp ((eigChar F hF).comp (Subgroup.inclusion le1) / (eigChar F' hF').comp (Subgroup.inclusion le2))`. Establish `hη : ∀ (κ : GAf L n) (h : κ ∈ Hs) (c c' : ℂ), Eig F κ c → Eig F' κ c' → ((η ⟨κ, h⟩ : ℂˣ) : ℂ) = (c / c') ^ m`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `κ h c c' hc hc'`. Establish `e1 : ((eigChar F hF (Subgroup.inclusion le1 ⟨κ, h⟩) : ℂˣ) : ℂ) = c` using `eigChar_spec hF (le1 h) hc`. Establish `e2 : ((eigChar F' hF' (Subgroup.inclusion le2 ⟨κ, h⟩) : ℂˣ) : ℂ) = c'` using `eigChar_spec hF' (le2 h) hc'`. Simplify using `only [η, MonoidHom.comp_apply, powMonoidHom_apply, MonoidHom.div_apply, Units.val_pow_eq_pow_val, Units.val_div_eq_div_val]`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hUH : (J ⊓ K).map θ.toMonoidHom ≤ Hs`. Introduce and unpack `_ ⟨κ, ⟨hκJ, hκK⟩, rfl⟩`. Take `⟨c, c', hc, hc', -⟩` from `hH κ hκK.2 ((hJ.mem κ hκK.2).1 hκJ)`. Conclude with `⟨⟨⟨c, hc⟩, ⟨c', hc'⟩⟩, (hθK κ).2 hκK⟩`. Establish `hker : ((J ⊓ K).map θ.toMonoidHom).subgroupOf Hs ≤ η.ker`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨h, hmem⟩ hh`. Rewrite `hh` using `[Subgroup.mem_subgroupOf]`. Take `⟨κ, ⟨hκJ, hκK⟩, hκ⟩` from `hh`. Rewrite using `[MonoidHom.mem_ker]`. Take `⟨c, c', hc, hc', hcm⟩` from `hH κ hκK.2 ((hJ.mem κ hκK.2).1 hκJ)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Substitute using the available equality.
 
-Apply `Units.ext` to reduce the goal to its premises. Substitute `hκ` using the available equality. Rewrite using `[hη _ hmem c c' hc hc', div_pow, hcm, div_self (pow_ne_zero _ (eig_ne_zero hF' hc')), Units.val_one]`. Establish `hidx : Nat.Coprime η.ker.index p`. Establish `h1 : η.ker.index ∣ ((J ⊓ K).map θ.toMonoidHom).relIndex Hs` using `Subgroup.index_dvd_of_le hker`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((J ⊓ K).map θ.toMonoidHom).relIndex Hs ∣ ((J ⊓ K).map θ.toMonoidHom).relIndex K` using `Dvd.intro _ (Subgroup.relIndex_mul_relIndex _ _ _ hUH inf_le_right)`. Establish `hKθ : K.map θ.toMonoidHom = K`. Use extensionality with `κ`. Rewrite using `[Subgroup.mem_map_equiv, ← hθK, MulEquiv.apply_symm_apply]`. Establish `h3 : ((J ⊓ K).map θ.toMonoidHom).relIndex K = J.relIndex K`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `Subgroup.relIndex_map_map_of_injective (f := θ.toMonoidHom) (J ⊓ K) K θ.injective`. Rewrite `e` using `[hKθ, Subgroup.inf_relIndex_right]`. Conclude with `e`. Conclude with `Nat.Coprime.coprime_dvd_left (h3 ▸ (h1.trans h2)) (idx s r p J hp hsp hrn hJ.mem)`. Establish `hn : 2 ≤ n` using `le_trans h2r hrn`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `i0 : Fin n` to `⟨0, by omega⟩`. Set `i1 : Fin n` to `⟨1, by omega⟩`. Establish `hne : i0 ≠ i1` using `by simp [i0, i1, Fin.ext_iff]`. Take `⟨x, ⟨hxT, hxA⟩, -⟩` from `(GlobalTheory.T.unitaryFiniteAdeles_splitPlace_decomposition L n s).2.2 (tvGL hne y)`. Establish `hent : ∀ a b, ((s.loc n x : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) : Matrix (Fin n) (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) a b = (if a = b then 1 else 0) + (if a = i0 ∧ b = i1 then y else 0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Rewrite using `[hxA, tvGL_val, tv_apply]`. Establish `hentI : ∀ a b, (((s.loc n x)⁻¹ : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) : Matrix (Fin n) (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) a b = (if a = b then 1 else 0) + (if a = i0 ∧ b = i1 then -y else 0)`. Introduce `a b`. Rewrite using `[hxA, tvGL_inv, tv_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hGL : s.loc n x ∈ Formalism.UG.GLint (Fin n) (s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring`. Rewrite using `[GlobalTheory.HeckeScalarSph.mem_GLint_iff]`. Use `⟨fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations. Use `show _ ∈ s.v.adicCompletionIntegers (maximalRealSubfield L)`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, hent]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `vle _ a b hy`. Use `show _ ∈ s.v.adicCompletionIntegers (maximalRealSubfield L)`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, hentI]`. Conclude with `vle _ a b (by rw [Valuation.map_neg]; exact hy)`. Establish `hUni : NG.UniRT s r (s.loc n x)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `⟨⟨hGL, fun a b ha hb => ?_⟩, fun a b ha hb => ⟨fun hba => ?_, fun hab => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : a ≠ b`. Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers. Establish `h2 : ¬(a = i0 ∧ b = i1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce and unpack `⟨rfl, -⟩`. Simplify using `[i0] at ha`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hent, if_neg h1, if_neg h2, add_zero, map_zero]`. Conclude with `zero_lt_one`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h1 : a ≠ b`. Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers. Establish `h2 : ¬(a = i0 ∧ b = i1)`. Introduce and unpack `⟨rfl, -⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Simplify using `[i0] at hba`. Rewrite using `[hent, if_neg h1, if_neg h2, add_zero, map_zero]`. Conclude with `zero_lt_one`. Substitute `hab` using the available equality. Establish `h2 : ¬(a = i0 ∧ a = i1)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨h3, h4⟩`. Conclude with `hne (h3.symm.trans h4)`. Rewrite using `[hent, if_pos rfl, if_neg h2, add_zero, sub_self, map_zero]`. Conclude with `zero_lt_one`. Establish `hdet : NG.detDD s r (s.loc n x) = 1`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `NG.detDD`. Establish `: (Matrix.of fun a b : {z : Fin n // r ≤ z.val} => ((s.loc n x : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) : Matrix (Fin n) (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) a.1 b.1) = 1`. Use extensionality with `a b`. Establish `h2 : ¬(a.1 = i0 ∧ b.1 = i1)`. Introduce and unpack `⟨h3, -⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `a.2` as an intermediate fact. Rewrite `this` using `[h3]`. Simplify using `[i0] at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Matrix.of_apply, hent, if_neg h2, add_zero, Matrix.one_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Subtype.ext_iff]`. Rewrite using `[this, Matrix.det_one]`. Establish `hsup : NG.supDiag s r (s.loc n x) = y`. Unfold `NG.supDiag`. Rewrite using `[Finset.sum_eq_single i0, Finset.sum_eq_single i1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[if_pos ⟨rfl, by simp [i1]; omega⟩, hent, if_neg hne, if_pos ⟨rfl, rfl⟩, zero_add]`. Introduce `b _ hb split_ifs with h`. Rewrite using `[hent, if_neg (fun h' => by simp [i0, Fin.ext_iff] at h'; omega), if_neg (fun h' => hb h'.2), add_zero]`. Both sides reduce to the same expression. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (Finset.mem_univ _) h`. Introduce `a _ ha`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`. Use `split_ifs with h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hent, if_neg (fun h' => by simp [Fin.ext_iff] at h'; omega), if_neg (fun h' => ha h'.1), add_zero]`. Both sides reduce to the same expression. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `hxJ : x ∈ J` using `(hJ.mem x hxT).2 hUni`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxJ' : x ∈ J'` using `(hJ'.mem x hxT).2 hUni`. Establish `hχx : ((χ ⟨x, hxJ⟩ : ℂˣ) : ℂ) = ψ₀ y`. Rewrite using `[hJ.chr x hxJ hxT 1 (by rw [hdet, Units.val_one]), hsup, map_one, Units.val_one, mul_one]`. Establish `hχx' : ((χ' ⟨x, hxJ'⟩ : ℂˣ) : ℂ) = ψ₀' y`. Rewrite using `[hJ'.chr x hxJ' hxT 1 (by rw [hdet, Units.val_one]), hsup, map_one, Units.val_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hxH : x ∈ Hs` using `⟨⟨⟨_, hχ ⟨x, hxJ⟩⟩, ⟨_, hχ' ⟨x, hxJ'⟩⟩⟩, hUK x hxT hUni⟩`. Establish `hηx` using `hη x hxH _ _ (hχ ⟨x, hxJ⟩) (hχ' ⟨x, hxJ'⟩)`. Rewrite `hηx` using `[hχx, hχx']`. Establish `hpow : ((η ⟨x, hxH⟩ : ℂˣ) : ℂ) ^ η.ker.index = 1`. Use `Subgroup.pow_index_mem η.ker ⟨x, hxH⟩` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[MonoidHom.mem_ker, map_pow]`. Rewrite using `[← Units.val_pow_eq_pow_val, this, Units.val_one]`. Establish `hz1 : (ψ₀ y / ψ₀' y) ^ (m * η.ker.index) = 1` using `by rw [pow_mul, ← hηx, hpow]`. Establish `hvp : Valued.v ((p : s.v.adicCompletion (maximalRealSubfield L))) < 1`. Establish `e1 : ((p : s.v.adicCompletion (maximalRealSubfield L))) = algebraMap (𝓞 (maximalRealSubfield L)) (s.v.adicCompletion (maximalRealSubfield L)) (p : 𝓞 (maximalRealSubfield L))` using `(map_natCast _ p).symm`.
-
-Rewrite using `[e1]`. Conclude with `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := maximalRealSubfield L) s.v (p : 𝓞 (maximalRealSubfield L))).trans_lt ((HeightOneSpectrum.valuation_lt_one_iff_mem _ _).2 hsp)`. Establish `hpy : Valued.v (p • y) < 1`. Rewrite using `[nsmul_eq_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hψp : ψ₀ y ^ p = 1` using `by rw [← AddChar.map_nsmul_eq_pow, hψ.1 _ hpy]`. Establish `hψp' : ψ₀' y ^ p = 1` using `by rw [← AddChar.map_nsmul_eq_pow, hψ'.1 _ hpy]`. Establish `hne0 : ψ₀' y ≠ 0`. Introduce `h0`. Rewrite `hψp'` using `[h0, zero_pow hp.ne_zero]`.
-
-Conclude with `zero_ne_one hψp'`. Establish `hzp : (ψ₀ y / ψ₀' y) ^ p = 1` using `by rw [div_pow, hψp, hψp', div_one]`. Establish `hz : ψ₀ y / ψ₀' y = 1`. Establish `: (ψ₀ y / ψ₀' y) ^ (Nat.gcd (m * η.ker.index) p) = 1` using `pow_gcd_eq_one.2 ⟨hz1, hzp⟩`. Rewrite `this` using `[Nat.Coprime.gcd_eq_one (Nat.Coprime.mul hm hidx), pow_one]`. Then use the resulting hypothesis.
-
-Conclude with `(div_eq_one_iff_eq hne0).1 hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem fractionFieldToGenericStalk_algebraMap_eq : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (r : ℕ) (s : SplitPlace L) (p m : ℕ) (θ : GAf L n ≃* GAf L n) (V V' : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] (F : GAf L n → V) (F' : GAf L n → V') (J J' : Subgroup (GAf L n)) (χ : J →* ℂˣ) (χ' : J' →* ℂˣ) (ψ₀ ψ₀' : AddChar (s.v.adicCompletion (maximalRealSubfield L)) ℂ) (ξ ξ' : (s.v.adicCompletion (maximalRealSubfield L))ˣ →* ℂˣ), p.Prime → s.Above p → m.Coprime p → 2 ≤ r → r ≤ n → FrameAut θ → F ≠ 0 → F' ≠ 0 → NG.IsPsi0 s ψ₀ → NG.IsPsi0 s ψ₀' → NG.LevelUni J χ s r ψ₀ ξ → NG.LevelUni J' χ' s r ψ₀' ξ' → (∀ κ : J, Eig F κ (χ κ : ℂˣ)) → (∀ κ : J', Eig F' κ (χ' κ : ℂˣ)) → (∀ κ, TrivOutside {s.v} κ → NG.UniRT s r (s.loc n κ) → ∃ c c' : ℂ, Eig F (θ κ) c ∧ Eig F' (θ κ) c' ∧ c ^ m = c' ^ m) → ∀ y, Valued.v y ≤ 1 → ψ₀ y = ψ₀' y := by
   intro L _ _ _ n r s p m θ V V' _ _ _ _ F F' J J' χ χ' ψ₀ ψ₀' ξ ξ' hp hsp hm h2r hrn hθ hF hF' hψ hψ' hJ hJ' hχ hχ' hH y hy

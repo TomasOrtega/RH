@@ -16,7 +16,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A}
 end CompanionTheory.Member.ThetaDownProjection
 /- English proof (translation)
-Introduce `hP`. Use `⟨0, fun ε CF _ => ⟨0, ?_⟩⟩` and prove the remaining obligations. Introduce `D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ t x hx`. Rewrite using `[← ch.cv.thDn_w s.core.chain]`. Conclude with `CompanionTheory.Member.ThetaDownProjection.proj_thDn hP.cuspRapidDecay s.core t x hx _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CompanionTheory.Member.twisted_period_identity_local : _root_.GlobalTheory.FunPr.ThetaLocalInputs → StepProj := by
   intro hP
@@ -29,7 +29,7 @@ end ThetaProjectionIdempotent
 section
 open GlobalTheory.RowClaim
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.ThetaProjectionIdempotent.CompanionTheory.Member.twisted_period_identity_local | exact _root_.ThetaProjectionIdempotent.CompanionTheory.Member.twisted_period_identity_local | (intros; apply _root_.ThetaProjectionIdempotent.CompanionTheory.Member.twisted_peri …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.Adopt.twisted_period_identity : _root_.GlobalTheory.FunPr.ThetaLocalInputs → StepProj := by
   first | exact @_root_.ThetaProjectionIdempotent.CompanionTheory.Member.twisted_period_identity_local | exact _root_.ThetaProjectionIdempotent.CompanionTheory.Member.twisted_period_identity_local | (intros; apply _root_.ThetaProjectionIdempotent.CompanionTheory.Member.twisted_period_identity_local <;> assumption)
@@ -40,7 +40,7 @@ section
 open GlobalTheory.RowClaim
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.Adopt.twisted_period_identity | exact _root_.GlobalTheory.Adopt.twisted_period_identity | (intros; apply _root_.GlobalTheory.Adopt.twisted_period_identity <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.twisted_period_identity : _root_.GlobalTheory.FunPr.ThetaLocalInputs → StepProj := by
   first | exact @_root_.GlobalTheory.Adopt.twisted_period_identity | exact _root_.GlobalTheory.Adopt.twisted_period_identity | (intros; apply _root_.GlobalTheory.Adopt.twisted_period_identity <;> assumption)

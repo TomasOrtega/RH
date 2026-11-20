@@ -10,9 +10,9 @@ variable {O A : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Com
 omit [IsDomain O] [IsDiscreteValuationRing O] in
 
 /- English proof (translation)
-Set `v : Valuation A (Multiplicative (WithTop ℤ)ᵒᵈ)` to `u`. Set `f : O →+* v.integer` to `(algebraMap O A).codRestrict v.integer (fun r => hu r)`. Establish `h1 : IsIntegral v.integer x`. Take `⟨p, hp, hz⟩` from `hx`. Use `⟨p.map f, hp.map f, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.eval₂_map]`. Conclude with `hz`. Conclude with `(Valuation.integer.integers v).mem_of_integral h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonneg_of_isIntegral (u : AddValuation A (WithTop ℤ))
     (hu : ∀ r : O, 0 ≤ u (algebraMap O A r)) {x : A} (hx : IsIntegral O x) : 0 ≤ u x := by
@@ -38,11 +38,11 @@ def centre (u : AddValuation A (WithTop ℤ)) (hu : ∀ a : ↥(As O A), 0 ≤ u
     exact lt_of_lt_of_le ha (le_add_of_nonneg_left (hu c))
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun {a b} h => ?_⟩` and prove the remaining obligations. Establish `: (1 : ↥(As O A)) ∈ centre u hu` using `h ▸ Submodule.mem_top`. Express the relevant statement in the definitionally equal form `0 < u (1 : A) at this`. Simplify using `at this`. Express the relevant statement in the definitionally equal form `0 < u ((a : A) * b) at h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_or]`. Establish `ha : u (a : A) = 0` using `le_antisymm (not_lt.1 hn.1) (hu a)`. Establish `hb : u (b : A) = 0` using `le_antisymm (not_lt.1 hn.2) (hu b)`. Rewrite `h` using `[u.map_mul, ha, hb]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at h`.
+Simplify using the standard rewrite rules.
 -/
 theorem centre_isPrime (u : AddValuation A (WithTop ℤ)) (hu : ∀ a : ↥(As O A), 0 ≤ u (a : A)) :
     (centre u hu).IsPrime := by
@@ -59,9 +59,9 @@ theorem centre_isPrime (u : AddValuation A (WithTop ℤ)) (hu : ∀ a : ↥(As O
     simp at h
 
 /- English proof (translation)
-Use `haveI := centre_isPrime u hu`. Use `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := O) _ ?_` and prove the remaining obligations. Establish `hle : IsLocalRing.maximalIdeal O ≤ (centre u hu).comap (algebraMap O ↥(As O A))`. Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_le_iff_mem]`. Conclude with `hpos`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(IsLocalRing.maximalIdeal.isMaximal O).eq_of_le (Ideal.IsPrime.ne_top inferInstance) hle` as an intermediate fact. Rewrite using `[← this]`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem centre_isMaximal (u : AddValuation A (WithTop ℤ)) (hu : ∀ a : ↥(As O A), 0 ≤ u (a : A))
     {ϖ : O} (hϖ : Irreducible ϖ) (hpos : 0 < u (algebraMap O A ϖ)) :
@@ -76,11 +76,11 @@ theorem centre_isMaximal (u : AddValuation A (WithTop ℤ)) (hu : ∀ a : ↥(As
   infer_instance
 
 /- English proof (translation)
-Rewrite `hab` using `[vL_eq_addVal, vL_eq_addVal, IsDiscreteValuationRing.addVal_le_iff_dvd]`. Take `⟨z, hz⟩` from `hab`. Take `⟨⟨x, s⟩, hs⟩` from `IsLocalization.surj ζ.asIdeal.primeCompl z`. Establish `h1 : algebraMap _ (Loc ζ) (b * s) = algebraMap _ (Loc ζ) (a * x)`. Simplify using `only at hs`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, map_mul, hz, mul_assoc, hs]`. Take `⟨c, hc⟩` from `(IsLocalization.eq_iff_exists ζ.asIdeal.primeCompl (Loc ζ)).1 h1`. Establish `h2 : ((c : ↥(As O A)) : A) * ((b : A) * ((s : ↥(As O A)) : A)) = ((c : ↥(As O A)) : A) * ((a : A) * (x : A))` using `congrArg Subtype.val hc`. Establish `h3` using `congrArg u h2`. Rewrite `h3` using `[u.map_mul, u.map_mul, u.map_mul, u.map_mul, hζ _ c.2, hζ _ s.2, zero_add, zero_add, add_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h3]`. Conclude with `le_add_of_nonneg_right (hu x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_of_vL_le (u : AddValuation A (WithTop ℤ)) (hu : ∀ a : ↥(As O A), 0 ≤ u (a : A))
     (ζ : Pts O A) [IsDVRAt ζ] (hζ : ∀ a : ↥(As O A), a ∉ ζ.asIdeal → u (a : A) = 0)
@@ -101,9 +101,9 @@ theorem le_of_vL_le (u : AddValuation A (WithTop ℤ)) (hu : ∀ a : ↥(As O A)
   exact le_add_of_nonneg_right (hu x)
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible (Loc ζ)`. Take `⟨⟨x, s⟩, hs⟩` from `IsLocalization.surj ζ.asIdeal.primeCompl π`. Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `h0` using `(vL_eq_zero_iff ζ s).2 s.2`. Rewrite `h0` using `[vL_eq_addVal]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only at hs`. Rewrite using `[vL_eq_addVal, ← hs, IsDiscreteValuationRing.addVal_mul, h0, IsDiscreteValuationRing.addVal_uniformizer hπ, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_vL_eq_one (ζ : Pts O A) [IsDVRAt ζ] : ∃ a : ↥(As O A), vL ζ a = 1 := by
   obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible (Loc ζ)
@@ -116,33 +116,31 @@ theorem exists_vL_eq_one (ζ : Pts O A) [IsDVRAt ζ] : ∃ a : ↥(As O A), vL �
     IsDiscreteValuationRing.addVal_uniformizer hπ, add_zero]
 
 /- English proof (translation)
-Establish `hu : ∀ a : ↥(As O A), 0 ≤ u (a : A)` using `fun a => nonneg_of_isIntegral u hO a.2`. Set `ζ : Pts O A` to `⟨centre u hu, centre_isMaximal u hu h.irreducible hpos⟩`. Establish `hζ : ∀ a : ↥(As O A), a ∉ ζ.asIdeal → u (a : A) = 0` using `fun a ha => le_antisymm (not_lt.1 ha) (hu a)`. Take `⟨a₀, ha₀⟩` from `exists_vL_eq_one ζ`. Establish `hfin : ∀ (b : ↥(As O A)) (m : ℕ), vL ζ b = m → u (b : A) = m • u (a₀ : A)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `b m hb`. Establish `e : vL ζ (a₀ ^ m) = vL ζ b` using `by rw [vL_pow, ha₀, hb]; simp`. Use `le_antisymm (le_of_vL_le u hu ζ hζ e.ge) (le_of_vL_le u hu ζ hζ e.le)` as an intermediate fact. Rewrite using `[this, SubmonoidClass.coe_pow, u.map_pow]`. Establish `htop : ∀ b : ↥(As O A), vL ζ b = ⊤ → u (b : A) = ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `b hb`. Use `le_of_vL_le u hu ζ hζ (a := 0) (b := b) (by rw [hb]; exact le_top)` as an intermediate fact. Simplify using `using this`. Establish `hϖ : u (algebraMap O A ϖ) = ep ϖ ζ • u (a₀ : A)` using `hfin (algebraMap O ↥(As O A) ϖ) _ (coe_ep ζ h).symm`. Establish `hϖfin : u (algebraMap O A ϖ) ≠ ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `h.isUnit.exists_right_inv`. Introduce `ht`. Use `congrArg u hy` as an intermediate fact. Rewrite `this` using `[u.map_mul, ht, u.map_one]`. Simplify using `at this`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `ha₀fin : u (a₀ : A) ≠ ⊤`. Introduce `ht`. Take `⟨k, hk⟩` from `Nat.exists_eq_succ_of_ne_zero (ep_pos ζ h).ne'`. Rewrite `hϖfin` using `[hϖ, ht, hk, succ_nsmul]`. Simplify using `at hϖfin`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨q, hq⟩` from `WithTop.ne_top_iff_exists.1 ha₀fin`. Establish `hq0 : 0 ≤ q`. Use `hu a₀` as an intermediate fact. Rewrite `this` using `[← hq]`. Conclude with `this` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ x : A, (Formalism.MainNotions.Gaps.EtaleWeightGaps.ord ϖ ζ x = ⊤ ∧ u x = ⊤) ∨ ∃ k : ℤ, Formalism.MainNotions.Gaps.EtaleWeightGaps.ord ϖ ζ x = (k : WithTop ℤ) ∧ u x = ((k * q : ℤ) : WithTop ℤ)`. Introduce `x`. Take `⟨n, hn⟩` from `h.denom x`. Establish `e1 : u (ϖ ^ n • x) = ((n * (ep ϖ ζ * q) : ℤ) : WithTop ℤ) + u x`. Rewrite using `[Algebra.smul_def, map_pow, u.map_mul, u.map_pow, hϖ, ← hq, ← WithTop.coe_nsmul, ← WithTop.coe_nsmul, nsmul_eq_mul, nsmul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ord_eq ζ h hn, ordAt]`. Consider the cases of `hv : vL ζ ⟨ϖ ^ n • x, hn⟩ with`. Consider the case `top => left`. Use `⟨by simp, ?_⟩` and prove the remaining obligations. Use `htop _ hv` as an intermediate fact.
+Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `u (ϖ ^ n • x) = ⊤ at this`. Rewrite `this` using `[e1, WithTop.add_eq_top]`. Conclude with `this.resolve_left WithTop.coe_ne_top`. Consider the case `coe m => right`. Use `⟨m + -(n * ep ϖ ζ), by rw [ENat.map_natCast, ← WithTop.coe_add], ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `hfin _ m hv` as an intermediate fact. Express the relevant statement in the definitionally equal form `u (ϖ ^ n • x) = _ at this`. Rewrite `this` using `[e1, ← hq, ← WithTop.coe_nsmul, nsmul_eq_mul]`. Establish `hx : u x ≠ ⊤`. Introduce `ht`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[ht, add_top]`. Conclude with `WithTop.top_ne_coe this`. Take `⟨t, ht⟩` from `WithTop.ne_top_iff_exists.1 hx`. Rewrite `this` using `[← ht, ← WithTop.coe_add, WithTop.coe_inj]`. Rewrite using `[← ht, WithTop.coe_inj]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hq1 : q = 1`. Take `⟨a, ha⟩` from `hone`. Break down `key a with ⟨_, h2⟩ | ⟨k, _, h2⟩` into its components or cases. Rewrite `h2` using `[ha]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h2 WithTop.one_ne_top`. Rewrite `h2` using `[ha, ← WithTop.coe_one, WithTop.coe_inj]`. Conclude with `Int.eq_one_of_mul_eq_one_left hq0 h2.symm`. Use `⟨ζ, fun a => ?_⟩` and prove the remaining obligations. Break down `key a with ⟨h1, h2⟩ | ⟨k, h1, h2⟩` into its components or cases.
-
-Rewrite using `[h1, h2]`. Rewrite using `[h1, h2, hq1, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ord_eq [∀ ζ : Pts O A, IsDVRAt ζ] {ϖ : O} (h : IsUnif A ϖ)
     (u : AddValuation A (WithTop ℤ)) (hO : ∀ r : O, 0 ≤ u (algebraMap O A r))
@@ -223,11 +221,11 @@ theorem exists_ord_eq [∀ ζ : Pts O A, IsDVRAt ζ] {ϖ : O} (h : IsUnif A ϖ)
   · rw [h1, h2, hq1, mul_one]
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `h.denom a`. Establish `key : (⟨ϖ ^ n • a, hn⟩ : ↥(As O A)) ∈ (⊥ : Ideal ↥(As O A))`. Establish `h0 : ∀ ζ : Pts O A, algebraMap ↥(As O A) (Loc ζ) ⟨ϖ ^ n • a, hn⟩ ∈ Ideal.map (algebraMap ↥(As O A) (Loc ζ)) ⊥`. Introduce `ζ`. Establish `h1` using `ha ζ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[ord_eq ζ h hn, ordAt, WithTop.add_eq_top]`. Establish `h2 : vL ζ ⟨ϖ ^ n • a, hn⟩ = ⊤`. Simplify using `using h1.resolve_right WithTop.coe_ne_top`. Rewrite using `[(vL_eq_top_iff ζ _).1 h2]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.mem_of_localization_maximal (fun P hP => h0 ⟨P, hP⟩)`. Establish `h2 : ϖ ^ n • a = 0` using `congrArg Subtype.val (Ideal.mem_bot.1 key)`. Rewrite `h2` using `[Algebra.smul_def, map_pow]`. Conclude with `((h.isUnit.pow n).mul_right_eq_zero).1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_ord_eq_top [∀ ζ : Pts O A, IsDVRAt ζ] {ϖ : O} (h : IsUnif A ϖ) (a : A)
     (ha : ∀ ζ : Pts O A, Formalism.MainNotions.Gaps.EtaleWeightGaps.ord ϖ ζ a = ⊤) : a = 0 := by
@@ -248,7 +246,7 @@ theorem eq_zero_of_ord_eq_top [∀ ζ : Pts O A, IsDVRAt ζ] {ϖ : O} (h : IsUni
   exact ((h.isUnit.pow n).mul_right_eq_zero).1 h2
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ h` and use `⟨exists_ord_eq h, eq_zero_of_ord_eq_top h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem valuation_eq_ord_and_eq_zero :
     ∀ (O A : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CommRing A] [Algebra O A] [∀ ζ : Pts O A, IsDVRAt ζ] (ϖ : O), IsUnif A ϖ → (∀ u : AddValuation A (WithTop ℤ), (∀ r : O, 0 ≤ u (algebraMap O A r)) → 0 < u (algebraMap O A ϖ) → (∃ a, u a = 1) → ∃ ζ : Pts O A, ∀ a : A, Formalism.MainNotions.Gaps.EtaleWeightGaps.ord ϖ ζ a = u a) ∧ ∀ a : A, (∀ ζ : Pts O A, Formalism.MainNotions.Gaps.EtaleWeightGaps.ord ϖ ζ a = ⊤) → a = 0 :=

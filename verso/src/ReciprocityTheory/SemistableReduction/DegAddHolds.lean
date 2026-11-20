@@ -6,11 +6,11 @@ namespace ReciprocityTheory.MultiplicativeHeights
 open NumberField
 
 /- English proof (translation)
-Introduce `K _ _ r k m H L b c hH hL hb hc hlin hspan`. Take `⟨hbi, -, hdis⟩` from `DegAdd.indep_parts hlin`. Establish `hidx` using `DegAdd.index_split L b c hb hc hdis`. Establish `hne` using `DegAdd.relIndex_ne_zero_of_fg L hL (Fin.append b c) hspan`. Rewrite `hne` using `[hidx]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `left_ne_zero_of_mul hne`. Establish `h2` using `right_ne_zero_of_mul hne`. Establish `hs : ∑ σ : K →+* ℂ, Real.log (gramC (H σ) σ (Fin.append b c)).det.re = ∑ σ : K →+* ℂ, Real.log (gramC (H σ) σ b).det.re + ∑ σ : K →+* ℂ, Real.log (quotGramC (H σ) σ b c).det.re`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun σ _ => DegAdd.log_det_gram_append (H σ) σ b c (hH σ) hbi hlin`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `latDeg quotDeg`. Rewrite using `[hidx, Nat.cast_mul, Real.log_mul (Nat.cast_ne_zero.mpr h1) (Nat.cast_ne_zero.mpr h2), hs]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem degAdd_holds : DegAddStatement := by
   intro K _ _ r k m H L b c hH hL hb hc hlin hspan

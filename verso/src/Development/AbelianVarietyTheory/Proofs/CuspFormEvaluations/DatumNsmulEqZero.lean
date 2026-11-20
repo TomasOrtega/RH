@@ -17,9 +17,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AnVal
 
 /- English proof (translation)
-Apply `D.unimod.1` to reduce the goal to its premises. Use extensionality with `y`. Establish `h1 : D.EF (k • x) y = 0` using `by rw [h, map_zero]; rfl`. Rewrite `h1` using `[map_nsmul, LinearMap.smul_apply, nsmul_eq_mul]`. Rewrite using `[map_zero, LinearMap.zero_apply]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 h1).resolve_left (by exact_mod_cast hk)`.
+A detailed English derivation is pending.
 -/
 theorem datum_nsmul_eq_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H)
     {k : ℕ} (hk : k ≠ 0) {x : D.La} (h : k • x = 0) : x = 0 := by
@@ -31,11 +31,11 @@ theorem datum_nsmul_eq_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {
   exact (mul_eq_zero.1 h1).resolve_left (by exact_mod_cast hk)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo _ σ' g ty F i`. Take `⟨k, hk⟩ : l.M ∣ l.M'` from `Nat.dvd_lcm_left _ _`. Establish `hM : l.M ≠ 0` using `by have := l.three_le; omega`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `Nat.lcm_ne_zero hM l.A_pos.ne' (by simpa [Geo.Tor.Level.M'] using hk)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `a ⟨b, hb⟩`. Take `⟨c, hc⟩` from `(F.t_inj i (k • a)).1 ⟨b, by rw [map_nsmul, hb, hk, mul_comm, mul_smul]⟩`. Use `⟨c, sub_eq_zero.1 (datum_nsmul_eq_zero Dw hk0 ?_)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_sub, hc, hk, mul_comm, mul_smul, sub_self]`. Introduce `b`. Take `⟨a, e, h⟩` from `F.t_surj i b`. Conclude with `⟨a, k • e, by rw [h, hk, mul_smul]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem marking_iso_mod : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ' : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo σ' ty) (i : Fin F.n), (∀ a, (∃ b, F.t i a = l.M • b) → ∃ b, a = l.M • b) ∧ ∀ b, ∃ a e, b = F.t i a + l.M • e := by
   intro E _ _ _ H Dw l Xo _ σ' g ty F i

@@ -10,7 +10,7 @@ namespace PositivityTheory.Rg.Sw.Glob.GaussH
 variable {n : ℕ}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hv`. Establish `hpos` using `Matrix.PosDef.dotProduct_mulVec_pos hZ hv`. Rewrite `hpos` using `[smul_mulVec, dotProduct_smul, h, smul_zero]`. Conclude with `lt_irrefl _ hpos`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_siegel {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : IsSiegel Z) {v : Fin n → ℂ}
     (h : star v ⬝ᵥ ((Z - Zᴴ) *ᵥ v) = 0) : v = 0 := by
@@ -20,9 +20,9 @@ theorem eq_zero_of_siegel {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : IsSiegel Z) {v 
   exact lt_irrefl _ hpos
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_ne_zero]`. Introduce `hdet`. Take `⟨v, hv, hMv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Establish `hid` using `identG hg Zᴴ Zᴴ`. Rewrite `hid` using `[conjTranspose_conjTranspose]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : star v ⬝ᵥ ((Z - Zᴴ) *ᵥ v) = 0`. Rewrite using `[← hid, sub_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, hMv, mulVec_zero, dotProduct_sub, dotProduct_zero, dotProduct_mulVec, ← star_mulVec, hMv]`. Simplify using the standard rewrite rules. Conclude with `hv (eq_zero_of_siegel hZ h0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_CZhD {g : M2 n} (hg : InG g) {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : IsSiegel Z) :
     IsUnit (g.toBlocks₂₁ * Zᴴ + g.toBlocks₂₂).det := by
@@ -38,9 +38,9 @@ theorem det_CZhD {g : M2 n} (hg : InG g) {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : 
   exact hv (eq_zero_of_siegel hZ h0)
 
 /- English proof (translation)
-Unfold `IsSiegel`. Establish `hs : -(Complex.I / 2) * (Complex.I - star Complex.I) = 1`. Rewrite using `[Complex.star_def, Complex.conj_I]`. Take the linear combination `(-1 : ℂ) * Complex.I_sq`. Rewrite using `[conjTranspose_smul, conjTranspose_one, ← sub_smul, smul_smul, hs, one_smul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.PosDef.one`.
+A detailed English derivation is pending.
 -/
 theorem isSiegel_I : IsSiegel (Complex.I • (1 : Matrix (Fin n) (Fin n) ℂ)) := by
   unfold IsSiegel
@@ -51,7 +51,7 @@ theorem isSiegel_I : IsSiegel (Complex.I • (1 : Matrix (Fin n) (Fin n) ℂ)) :
   exact Matrix.PosDef.one
 
 /- English proof (translation)
-Use `congrArg toBlocks₁₁ (fromBlocks_multiply M.toBlocks₁₁ M.toBlocks₁₂ M.toBlocks₂₁ M.toBlocks₂₂ N.toBlocks₁₁ N.toBlocks₁₂ N.toBlocks₂₁ N.toBlocks₂₂)` as an intermediate fact. Simplify `this` using `only [fromBlocks_toBlocks, toBlocks_fromBlocks₁₁]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toBlocks₁₁_mul (M N : M2 n) : (M * N).toBlocks₁₁ = M.toBlocks₁₁ * N.toBlocks₁₁ + M.toBlocks₁₂ * N.toBlocks₂₁ := by
   have := congrArg toBlocks₁₁ (fromBlocks_multiply M.toBlocks₁₁ M.toBlocks₁₂ M.toBlocks₂₁
@@ -59,7 +59,7 @@ theorem toBlocks₁₁_mul (M N : M2 n) : (M * N).toBlocks₁₁ = M.toBlocks₁
   simpa only [fromBlocks_toBlocks, toBlocks_fromBlocks₁₁] using this
 
 /- English proof (translation)
-Use `congrArg toBlocks₁₂ (fromBlocks_multiply M.toBlocks₁₁ M.toBlocks₁₂ M.toBlocks₂₁ M.toBlocks₂₂ N.toBlocks₁₁ N.toBlocks₁₂ N.toBlocks₂₁ N.toBlocks₂₂)` as an intermediate fact. Simplify `this` using `only [fromBlocks_toBlocks, toBlocks_fromBlocks₁₂]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toBlocks₁₂_mul (M N : M2 n) : (M * N).toBlocks₁₂ = M.toBlocks₁₁ * N.toBlocks₁₂ + M.toBlocks₁₂ * N.toBlocks₂₂ := by
   have := congrArg toBlocks₁₂ (fromBlocks_multiply M.toBlocks₁₁ M.toBlocks₁₂ M.toBlocks₂₁
@@ -67,7 +67,7 @@ theorem toBlocks₁₂_mul (M N : M2 n) : (M * N).toBlocks₁₂ = M.toBlocks₁
   simpa only [fromBlocks_toBlocks, toBlocks_fromBlocks₁₂] using this
 
 /- English proof (translation)
-Use `congrArg toBlocks₂₁ (fromBlocks_multiply M.toBlocks₁₁ M.toBlocks₁₂ M.toBlocks₂₁ M.toBlocks₂₂ N.toBlocks₁₁ N.toBlocks₁₂ N.toBlocks₂₁ N.toBlocks₂₂)` as an intermediate fact. Simplify `this` using `only [fromBlocks_toBlocks, toBlocks_fromBlocks₂₁]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toBlocks₂₁_mul (M N : M2 n) : (M * N).toBlocks₂₁ = M.toBlocks₂₁ * N.toBlocks₁₁ + M.toBlocks₂₂ * N.toBlocks₂₁ := by
   have := congrArg toBlocks₂₁ (fromBlocks_multiply M.toBlocks₁₁ M.toBlocks₁₂ M.toBlocks₂₁
@@ -75,7 +75,7 @@ theorem toBlocks₂₁_mul (M N : M2 n) : (M * N).toBlocks₂₁ = M.toBlocks₂
   simpa only [fromBlocks_toBlocks, toBlocks_fromBlocks₂₁] using this
 
 /- English proof (translation)
-Use `congrArg toBlocks₂₂ (fromBlocks_multiply M.toBlocks₁₁ M.toBlocks₁₂ M.toBlocks₂₁ M.toBlocks₂₂ N.toBlocks₁₁ N.toBlocks₁₂ N.toBlocks₂₁ N.toBlocks₂₂)` as an intermediate fact. Simplify `this` using `only [fromBlocks_toBlocks, toBlocks_fromBlocks₂₂]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toBlocks₂₂_mul (M N : M2 n) : (M * N).toBlocks₂₂ = M.toBlocks₂₁ * N.toBlocks₁₂ + M.toBlocks₂₂ * N.toBlocks₂₂ := by
   have := congrArg toBlocks₂₂ (fromBlocks_multiply M.toBlocks₁₁ M.toBlocks₁₂ M.toBlocks₂₁
@@ -88,14 +88,14 @@ Both sides reduce to the same expression.
 theorem mR_mul (y y' : GR n) : mR (y * y') = mR y * mR y' := rfl
 
 /- English proof (translation)
-The claim follows from `y.2`.
+A detailed English derivation is pending.
 -/
 theorem inG_mR (y : GR n) : InG (mR y) := y.2
 
 /- English proof (translation)
-Rewrite using `[toBlocks₁₁_mul, toBlocks₁₂_mul, toBlocks₂₁_mul, toBlocks₂₂_mul]`. Prove the components needed by the constructor for the conclusion. Establish `e : (M.toBlocks₁₁ * W + M.toBlocks₁₂) * (N.toBlocks₂₁ * Z + N.toBlocks₂₂) = M.toBlocks₁₁ * (W * (N.toBlocks₂₁ * Z + N.toBlocks₂₂)) + M.toBlocks₁₂ * (N.toBlocks₂₁ * Z + N.toBlocks₂₂)` using `by noncomm_ring`. Rewrite using `[e, hW]`. Use `noncomm_ring`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (M.toBlocks₂₁ * W + M.toBlocks₂₂) * (N.toBlocks₂₁ * Z + N.toBlocks₂₂) = M.toBlocks₂₁ * (W * (N.toBlocks₂₁ * Z + N.toBlocks₂₂)) + M.toBlocks₂₂ * (N.toBlocks₂₁ * Z + N.toBlocks₂₂)` using `by noncomm_ring`. Rewrite using `[e, hW]`. Use `noncomm_ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem num_den_mul (M N : M2 n) (Z W : Matrix (Fin n) (Fin n) ℂ)
     (hW : W * (N.toBlocks₂₁ * Z + N.toBlocks₂₂) = N.toBlocks₁₁ * Z + N.toBlocks₁₂) :

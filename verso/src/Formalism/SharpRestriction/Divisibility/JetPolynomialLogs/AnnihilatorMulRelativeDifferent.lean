@@ -9,7 +9,7 @@ open scoped Pointwise
 namespace Formalism.MainNotions.DIV.Bridge.LogAbsNormDifferent
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `D.host.𝔟_spec.1`. Rewrite `h1` using `[h, Ideal.bot_mul]`. Conclude with `differentIdeal_ne_bot h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bb_ne_bot (D : D7) : D.host.𝔟 ≠ ⊥ := by
   intro h
@@ -18,7 +18,7 @@ theorem bb_ne_bot (D : D7) : D.host.𝔟 ≠ ⊥ := by
   exact differentIdeal_ne_bot h1
 
 /- English proof (translation)
-Establish `h0 : ((D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.mpr (bb_ne_bot D)`. Unfold `Host.AA0 ddEK`. Establish `h1 : differentIdeal (𝓞 D.host.K) (𝓞 D.host.E) = D.host.𝔟 * (D.host.conj • D.host.𝔟)` using `D.host.𝔟_spec.1`. Rewrite using `[h1, FractionalIdeal.coeIdeal_mul, ← mul_assoc, inv_mul_cancel₀ h0, one_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem annihilator_mul_relative_different (D : D7) : D.host.AA0 * ddEK D =
     ((D.host.conj • D.host.𝔟 : Ideal (𝓞 D.host.E)) :
@@ -31,9 +31,9 @@ theorem annihilator_mul_relative_different (D : D7) : D.host.AA0 * ddEK D =
   rw [h1, FractionalIdeal.coeIdeal_mul, ← mul_assoc, inv_mul_cancel₀ h0, one_mul]
 
 /- English proof (translation)
-Unfold `idOf`. Rewrite using `[Ideal.map, IsLocalization.coeSubmodule_span]`. Use `congr 1`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨x', hx', rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).mp hx`. Conclude with `⟨_, ⟨x', hx', rfl⟩, rfl⟩`. Introduce and unpack `⟨_, ⟨x', hx', rfl⟩, rfl⟩`. Conclude with `⟨algebraMap _ _ x', (FractionalIdeal.mem_coeIdeal _).mpr ⟨x', hx', rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem idOf_coe (D : D7) (τ : D.what₂.Tau) (I : Ideal (𝓞 D.host.E)) :
     idOf D τ (I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) =
@@ -50,7 +50,7 @@ theorem idOf_coe (D : D7) (τ : D.what₂.Tau) (I : Ideal (𝓞 D.host.E)) :
     exact ⟨algebraMap _ _ x', (FractionalIdeal.mem_coeIdeal _).mpr ⟨x', hx', rfl⟩, rfl⟩
 
 /- English proof (translation)
-Establish `e : (𝓞 K ⧸ I) ≃+* (𝓞 K ⧸ (σ • I))` using `Ideal.quotientEquiv I (σ • I) (MulSemiringAction.toRingEquiv (K ≃ₐ[ℚ] K) (𝓞 K) σ) rfl`. Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `(Nat.card_congr e.toEquiv).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_smul {K : Type} [Field K] [NumberField K] (σ : K ≃ₐ[ℚ] K) (I : Ideal (𝓞 K)) :
     Ideal.absNorm (σ • I) = Ideal.absNorm I := by
@@ -60,11 +60,11 @@ theorem absNorm_smul {K : Type} [Field K] [NumberField K] (σ : K ≃ₐ[ℚ] K)
   exact (Nat.card_congr e.toEquiv).symm
 
 /- English proof (translation)
-Set `_ : Algebra K L` to `f.toAlgebra`. Establish `h : Ideal.absNorm (I.map (algebraMap (𝓞 K) (𝓞 L))) = Ideal.absNorm I ^ Module.finrank (𝓞 K) (𝓞 L)` using `by rw [Ideal.absNorm_algebraMap]`. Establish `hf : Module.finrank K L = Module.finrank (𝓞 K) (𝓞 L)` using `IsFractionRing.finrank_eq (𝓞 K) K (𝓞 L) L`. Establish `ht : Module.finrank ℚ K * Module.finrank K L = Module.finrank ℚ L` using `Module.finrank_mul_finrank ℚ K L`. Establish `hm : (RingOfIntegers.mapRingHom f) = algebraMap (𝓞 K) (𝓞 L)` using `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : (0 : ℝ) < (Module.finrank ℚ K : ℝ)` using `by exact_mod_cast Module.finrank_pos`. Establish `hL : (0 : ℝ) < (Module.finrank ℚ L : ℝ)` using `by exact_mod_cast Module.finrank_pos`. Rewrite using `[hm, h, ← hf, ← ht]`. Use `push_cast`. Rewrite using `[Real.log_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `hKL : (0 : ℝ) < (Module.finrank K L : ℝ)`. Rewrite `hL` using `[← ht]`. Move the coercions through the operations in `at hL`. Conclude with `(pos_iff_pos_of_mul_pos hL).mp hK`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem log_absNorm_map_gen {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] (f : K →+* L)
     (I : Ideal (𝓞 K)) :
@@ -87,7 +87,7 @@ theorem log_absNorm_map_gen {K L : Type} [Field K] [NumberField K] [Field L] [Nu
   field_simp
 
 /- English proof (translation)
-The claim follows from `log_absNorm_map_gen _ I`.
+A detailed English derivation is pending.
 -/
 theorem log_absNorm_map (D : D7) (τ : D.what₂.Tau) (I : Ideal (𝓞 D.host.E)) :
     Real.log (Ideal.absNorm (I.map (RingOfIntegers.mapRingHom (embTau D τ)))) / (Module.finrank ℚ D.what₂.LL : ℝ) =
@@ -95,9 +95,9 @@ theorem log_absNorm_map (D : D7) (τ : D.what₂.Tau) (I : Ideal (𝓞 D.host.E)
   log_absNorm_map_gen _ I
 
 /- English proof (translation)
-Establish `hb : D.host.sqd ^ 2 = -(D.host.d : D.host.E)` using `D.host.sqd_sq`. Set `x : D.host.K` to `⟨D.host.sqd, IntermediateField.mem_adjoin_simple_self ℚ _⟩`. Establish `hx : x ^ 2 = ((-(D.host.d : ℤ) : ℤ) : D.host.K)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `hb` using `[x]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `htop : IntermediateField.adjoin ℚ {x} = ⊤`. Apply `Formalism.HF.P.adjoin_top_of_lift` to reduce the goal to its premises. Rewrite using `[Set.image_singleton]`. Both sides reduce to the same expression. Conclude with `Formalism.HF.Final.quadDiscr D.host.K _ x hx htop (Formalism.HF.P.sqf_neg _ D.host.hyp.2.1) (by have := D.host.hyp.2.2.2.1; omega)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem discr_K (D : D7) : discr D.host.K = -(D.host.d : ℤ) := by
   have hb : D.host.sqd ^ 2 = -(D.host.d : D.host.E) := D.host.sqd_sq
@@ -113,24 +113,24 @@ theorem discr_K (D : D7) : discr D.host.K = -(D.host.d : ℤ) := by
     (by have := D.host.hyp.2.2.2.1; omega)
 
 /- English proof (translation)
-The claim follows from `SplitK.finrank_K (L := D.host.E) (b := D.host.sqd) (d := D.host.d) D.host.hyp.2.1.pos (D.host.sqd_sq)`.
+A detailed English derivation is pending.
 -/
 theorem finrank_K (D : D7) : Module.finrank ℚ D.host.K = 2 :=
   SplitK.finrank_K (L := D.host.E) (b := D.host.sqd) (d := D.host.d) D.host.hyp.2.1.pos
     (D.host.sqd_sq)
 
 /- English proof (translation)
-Establish `h1 : differentIdeal (𝓞 D.host.K) (𝓞 D.host.E) = D.host.𝔟 * (D.host.conj • D.host.𝔟)` using `D.host.𝔟_spec.1`. Establish `h2` using `natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow D.host.K (𝓞 D.host.K) D.host.E (𝓞 D.host.E)`. Rewrite `h2` using `[h1, map_mul, absNorm_smul, discr_K]`. Establish `ht : Module.finrank ℚ D.host.K * Module.finrank D.host.K D.host.E = Module.finrank ℚ D.host.E` using `Module.finrank_mul_finrank ℚ D.host.K D.host.E`. Rewrite `ht` using `[finrank_K]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hE : (0 : ℝ) < (Module.finrank ℚ D.host.E : ℝ)` using `by exact_mod_cast Module.finrank_pos`. Establish `hN : (0 : ℝ) < (Ideal.absNorm D.host.𝔟 : ℝ)`. Establish `: Ideal.absNorm D.host.𝔟 ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `bb_ne_bot D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions. Establish `hd : (0 : ℝ) < (D.host.d : ℝ)` using `by exact_mod_cast D.host.hyp.2.1.pos`. Establish `h3 : |(discr D.host.E : ℝ)| = (Ideal.absNorm D.host.𝔟 : ℝ) * (Ideal.absNorm D.host.𝔟 : ℝ) * (D.host.d : ℝ) ^ Module.finrank D.host.K D.host.E`. Establish `: ((discr D.host.E).natAbs : ℝ) = |(discr D.host.E : ℝ)|`. Rewrite using `[Nat.cast_natAbs]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[← this, h2]`. Simplify using the standard rewrite rules. Rewrite using `[absNorm_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Host.rdE`. Rewrite using `[Real.log_rpow (by rw [h3]; positivity), h3, Real.log_mul (by positivity) (by positivity), Real.log_mul hN.ne' hN.ne', Real.log_pow, ← ht]`. Use `push_cast`. Establish `hKE : (0 : ℝ) < (Module.finrank D.host.K D.host.E : ℝ)`. Rewrite `hE` using `[← ht]`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Move the coercions through the operations in `at hE`. Combine the linear equalities and inequalities to obtain the conclusion. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem log_absNorm_bbar (D : D7) :
     Real.log (Ideal.absNorm (D.host.conj • D.host.𝔟)) / (Module.finrank ℚ D.host.E : ℝ) =
@@ -167,18 +167,18 @@ noncomputable def JJ (D : D7) (τ : D.what₂.Tau) : Ideal (𝓞 D.what₂.LL) :
   (D.host.conj • D.host.𝔟).map (RingOfIntegers.mapRingHom (embTau D τ))
 
 /- English proof (translation)
-Rewrite using `[annihilator_mul_relative_different, idOf_coe]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem idealOf_annihilator_mul_relativeDifferent (D : D7) (τ : D.what₂.Tau) :
     idOf D τ (D.host.AA0 * ddEK D) = IsLocalization.coeSubmodule D.what₂.LL (JJ D τ) := by
   rw [annihilator_mul_relative_different, idOf_coe]; rfl
 
 /- English proof (translation)
-Unfold `JJ`. Establish `hinj : Function.Injective (RingOfIntegers.mapRingHom (embTau D τ))`. Introduce `x y h`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Apply `(embTau D τ).injective` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congrArg (fun z : 𝓞 D.what₂.LL => (z : D.what₂.LL)) h` as an intermediate fact. Simplify `this` using `[RingOfIntegers.mapRingHom_apply]`. Rewrite using `[Ne, Ideal.map_eq_bot_iff_of_injective hinj]`. Introduce `h`. Establish `h1 : Ideal.absNorm (D.host.conj • D.host.𝔟) = 0` using `by rw [h]; simp`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[absNorm_smul, Ideal.absNorm_eq_zero_iff]`. Conclude with `bb_ne_bot D h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem JJ_ne_bot (D : D7) (τ : D.what₂.Tau) : JJ D τ ≠ ⊥ := by
   unfold JJ
@@ -195,7 +195,7 @@ theorem JJ_ne_bot (D : D7) (τ : D.what₂.Tau) : JJ D τ ≠ ⊥ := by
   exact bb_ne_bot D h1
 
 /- English proof (translation)
-Establish `h` using `log_absNorm_map D τ (D.host.conj • D.host.𝔟)`. Rewrite `h` using `[log_absNorm_bbar]`. Unfold `JJ`. Establish `e : 2 / (Module.finrank ℚ D.what₂.LL : ℝ) * Real.log (Ideal.absNorm ((D.host.conj • D.host.𝔟).map (RingOfIntegers.mapRingHom (embTau D τ)))) = 2 * (Real.log (Ideal.absNorm ((D.host.conj • D.host.𝔟).map (RingOfIntegers.mapRingHom (embTau D τ)))) / (Module.finrank ℚ D.what₂.LL : ℝ) …` using `by ring`. Rewrite using `[e, h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

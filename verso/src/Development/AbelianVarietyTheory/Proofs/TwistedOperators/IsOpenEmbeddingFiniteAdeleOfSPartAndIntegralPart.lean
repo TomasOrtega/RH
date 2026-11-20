@@ -14,7 +14,7 @@ open scoped RestrictedProduct
 variable (F : Type) [Field F] [NumberField F] (S : Finset (HeightOneSpectrum (𝓞 F)))
 
 /- English proof (translation)
-Rewrite using `[le_principal_iff]`. Conclude with `S.finite_toSet.compl_mem_cofinite`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cofinite_le_principal_compl :
     cofinite ≤ 𝓟 ((S : Set (HeightOneSpectrum (𝓞 F)))ᶜ) := by
@@ -36,11 +36,11 @@ def jSPinv : Πʳ v : HeightOneSpectrum (𝓞 F), [v.adicCompletion F, (v.adicCo
   fun x => (fun v => x v.1, fun v => ⟨x v.1, x.2 v.2⟩)
 
 /- English proof (translation)
-Rewrite using `[RestrictedProduct.isEmbedding_coe_of_principal.continuous_iff]`. Use `continuous_pi fun v => ?_` and prove the remaining obligations. Distinguish the cases in `h : v ∈ S`. Establish `: (fun p : SPart F S × OPart F S => ((jSP F S p : _) : ∀ w : HeightOneSpectrum (𝓞 F), w.adicCompletion F) v) = fun p => p.1 ⟨v, h⟩`. Use function extensionality and compare the values at `p`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[jSP, h]`. Use `show Continuous (fun p : SPart F S × OPart F S => ((jSP F S p : _) : ∀ w : HeightOneSpectrum (𝓞 F), w.adicCompletion F) v)`. Rewrite using `[this]`. Conclude with `(continuous_apply _).comp continuous_fst`. Establish `: (fun p : SPart F S × OPart F S => ((jSP F S p : _) : ∀ w : HeightOneSpectrum (𝓞 F), w.adicCompletion F) v) = fun p => ((p.2 ⟨v, h⟩ : v.adicCompletionIntegers F) : v.adicCompletion F)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `p`. Simplify using `[jSP, h]`. Use `show Continuous (fun p : SPart F S × OPart F S => ((jSP F S p : _) : ∀ w : HeightOneSpectrum (𝓞 F), w.adicCompletion F) v)`. Rewrite using `[this]`. Conclude with `continuous_subtype_val.comp ((continuous_apply _).comp continuous_snd)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_jSP : Continuous (jSP F S) := by
   rw [RestrictedProduct.isEmbedding_coe_of_principal.continuous_iff]
@@ -58,7 +58,7 @@ theorem continuous_jSP : Continuous (jSP F S) := by
     rw [this]; exact continuous_subtype_val.comp ((continuous_apply _).comp continuous_snd)
 
 /- English proof (translation)
-Establish `hc : Continuous (fun x : Πʳ v : HeightOneSpectrum (𝓞 F), [v.adicCompletion F, (v.adicCompletionIntegers F : Set (v.adicCompletion F))]_[𝓟 ((S : Set (HeightOneSpectrum (𝓞 F)))ᶜ)] => (x : ∀ w : HeightOneSpectrum (𝓞 F), w.adicCompletion F))` using `RestrictedProduct.isEmbedding_coe_of_principal.continuous`. Use `Continuous.prodMk (continuous_pi fun v => (continuous_apply v.1).comp hc) (continuous_pi fun v => ((continuous_apply v.1).comp hc).subtype_mk _)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem continuous_jSPinv : Continuous (jSPinv F S) := by
   have hc : Continuous (fun x : Πʳ v : HeightOneSpectrum (𝓞 F), [v.adicCompletion F, (v.adicCompletionIntegers F : Set (v.adicCompletion F))]_[𝓟 ((S : Set (HeightOneSpectrum (𝓞 F)))ᶜ)] =>
@@ -82,14 +82,14 @@ def jSPHomeo : SPart F S × OPart F S ≃ₜ
   continuous_invFun := continuous_jSPinv F S
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem jS_eq_comp : (jS F S : SPart F S × OPart F S → Af F) =
     RestrictedProduct.inclusion _ _ (cofinite_le_principal_compl F S) ∘ jSP F S := by
   funext p; rfl
 
 /- English proof (translation)
-Rewrite using `[jS_eq_comp]`. Conclude with `(RestrictedProduct.isOpenEmbedding_inclusion_principal (fun v => Valued.isOpen_valuationSubring (v.adicCompletion F)) (cofinite_le_principal_compl F S)).comp (jSPHomeo F S).isOpenEmbedding`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpenEmbedding_jS : IsOpenEmbedding (jS F S) := by
   rw [jS_eq_comp]

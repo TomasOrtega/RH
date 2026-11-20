@@ -17,7 +17,7 @@ variable {V H : Type} [MeasurableSpace V] [MeasurableSpace H]
   {μ : Measure V} {ν : Measure H} {q : V → H}
 
 /- English proof (translation)
-Introduce `Y hY`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 -/
 theorem denLE_mono {S T : Set V} {C D : ℝ≥0∞} (hST : S ⊆ T) (hCD : C ≤ D)
     (h : DenLE μ ν q T C) : DenLE μ ν q S D := by
@@ -27,9 +27,7 @@ theorem denLE_mono {S T : Set V} {C D : ℝ≥0∞} (hST : S ⊆ T) (hCD : C ≤
     _ ≤ D * ν Y := by gcongr
 
 /- English proof (translation)
-Introduce `Y hY`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Set.iUnion₂_inter]`. Use `_ ≤ ∑ i ∈ I, μ (S i ∩ q ⁻¹' Y) := measure_biUnion_finset_le I _`. Use `_ ≤ ∑ i ∈ I, C i * ν Y := Finset.sum_le_sum fun i hi => h i hi Y hY`.
-
-Use `_ = (∑ i ∈ I, C i) * ν Y := (Finset.sum_mul _ _ _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem denLE_biUnion {ι : Type} (I : Finset ι) (S : ι → Set V) (C : ι → ℝ≥0∞)
     (h : ∀ i ∈ I, DenLE μ ν q (S i) (C i)) :
@@ -51,7 +49,7 @@ def grid (L : ℕ) : Finset ℂ :=
     (fun p : ℤ × ℤ => ((p.1 : ℂ) + (p.2 : ℂ) * Complex.I) / L)
 
 /- English proof (translation)
-Unfold `grid`. Use `Finset.card_image_le.trans ?_` and prove the remaining obligations. Rewrite using `[Finset.card_product, Int.card_Icc]`. Establish `: ((L : ℤ) + 1 - (-(L : ℤ))).toNat = 2 * L + 1` using `by omega`. Rewrite using `[this, sq]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_grid_le (L : ℕ) : (grid L).card ≤ (2 * L + 1) ^ 2 := by
   classical
@@ -62,11 +60,11 @@ theorem card_grid_le (L : ℕ) : (grid L).card ≤ (2 * L + 1) ^ 2 := by
   rw [this, sq]
 
 /- English proof (translation)
-Establish `h` using `abs_sub_round ((L : ℝ) * u)`. Establish `hL : (0 : ℝ) ≤ L` using `Nat.cast_nonneg L`. Establish `h1` using `abs_le.1 hu`. Establish `h2` using `abs_le.1 h`. Establish `hb1 : (L : ℝ) * u ≤ L` using `by nlinarith [h1.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb2 : -(L : ℝ) ≤ (L : ℝ) * u` using `by nlinarith [h1.1]`. Use `⟨Finset.mem_Icc.2 ⟨?_, ?_⟩, h.trans (by norm_num)⟩` and prove the remaining obligations. Establish `: (-(L : ℝ) - 1) < (round ((L : ℝ) * u) : ℝ)` using `by linarith [h2.1, h2.2]`. Establish `h3 : (-(L : ℤ) - 1) < round ((L : ℝ) * u)` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `: (round ((L : ℝ) * u) : ℝ) < (L : ℝ) + 1` using `by linarith [h2.1, h2.2]`. Establish `h3 : round ((L : ℝ) * u) < (L : ℤ) + 1` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem round_bound (L : ℕ) (u : ℝ) (hu : |u| ≤ 1) :
     round ((L : ℝ) * u) ∈ Finset.Icc (-(L : ℤ)) L ∧ |(L : ℝ) * u - round ((L : ℝ) * u)| ≤ 1 := by
@@ -85,13 +83,11 @@ theorem round_bound (L : ℕ) (u : ℝ) (hu : |u| ≤ 1) :
     omega
 
 /- English proof (translation)
-Establish `hL' : (0 : ℝ) < L` using `by exact_mod_cast hL`. Take `⟨hx, hx'⟩` from `round_bound L z.re ((Complex.abs_re_le_norm z).trans hz)`. Take `⟨hy, hy'⟩` from `round_bound L z.im ((Complex.abs_im_le_norm z).trans hz)`. Use `set x := round ((L : ℝ) * z.re)`. Use `set y := round ((L : ℝ) * z.im)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `⟨((x : ℂ) + (y : ℂ) * Complex.I) / L, ?_, ?_⟩` and prove the remaining obligations. Unfold `grid`. Conclude with `Finset.mem_image.2 ⟨(x, y), Finset.mem_product.2 ⟨hx, hy⟩, rfl⟩`. Establish `hLc : (L : ℂ) ≠ 0` using `by exact_mod_cast hL.ne'`. Establish `e : z - ((x : ℂ) + (y : ℂ) * Complex.I) / L = (((((L : ℝ) * z.re - x : ℝ) : ℂ)) + (((L : ℝ) * z.im - y : ℝ) : ℂ) * Complex.I) / L`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`. Rewrite using `[e, norm_div, Complex.norm_natCast]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[norm_mul, Complex.norm_I, mul_one, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_grid {L : ℕ} (hL : 0 < L) (z : ℂ) (hz : ‖z‖ ≤ 1) :
     ∃ g ∈ grid L, ‖z - g‖ ≤ 2 / L := by
@@ -126,25 +122,25 @@ section Shear
 variable {K W : Type} [CommRing K] {n M : ℕ}
 
 /- English proof (translation)
-Simplify using `[shearK]`.
+Simplify using the standard rewrite rules.
 -/
 theorem shearK_self (a : Fin n) (s : Fin n → K) (X : Fin n → Fin M → K) (i : Fin M) :
     shearK a s X a i = X a i + ∑ b, s b * X b i := by
   simp [shearK]
 
 /- English proof (translation)
-Simplify using `[shearK, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem shearK_ne {a b : Fin n} (h : b ≠ a) (s : Fin n → K) (X : Fin n → Fin M → K) :
     shearK a s X b = X b := by
   simp [shearK, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b i`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Rewrite using `[shearK_self, shearK_self]`. Establish `: ∑ c, (-s) c * shearK b s X c i = -∑ c, s c * X c i`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : c = b`. Substitute `hc` using the available equality. Simplify using `[hs]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[shearK_ne hc]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[shearK_ne hb, shearK_ne hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem shearK_neg_shearK (a : Fin n) (s : Fin n → K) (hs : s a = 0) (X : Fin n → Fin M → K) :
     shearK a (-s) (shearK a s X) = X := by
@@ -174,15 +170,15 @@ def rad (R ε : ℝ) (a : Fin n) (w : W) : Fin n → W → ℝ :=
   fun b v => if b = a ∧ v = w then 2 * ε else R
 
 /- English proof (translation)
-Simplify using `[sig]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sig_self (κ : K ≃+* (W → ℂ)) (w : W) (a : Fin n) (t : Fin n → ℂ) : sig κ w a t a = 0 := by
   simp [sig]
 
 /- English proof (translation)
-Distinguish the cases in `hb : b = a`. Simplify using `[sig, hb]`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality. Simplify using `[sig, hb]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[sig, hb, hv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem κ_sig (κ : K ≃+* (W → ℂ)) (w v : W) (a b : Fin n) (t : Fin n → ℂ) :
     κ (sig κ w a t b) v = if b = a then 0 else if v = w then t b else 0 := by
@@ -193,7 +189,7 @@ theorem κ_sig (κ : K ≃+* (W → ℂ)) (w v : W) (a b : Fin n) (t : Fin n →
     · simp [sig, hb, hv]
 
 /- English proof (translation)
-Rewrite using `[shearK_self, map_add, map_sum, Pi.add_apply, Finset.sum_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Pi.mul_apply, κ_sig]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem κ_shear (κ : K ≃+* (W → ℂ)) (w v : W) (a : Fin n) (t : Fin n → ℂ)
     (X : Fin n → Fin M → K) (i : Fin M) :
@@ -205,23 +201,21 @@ theorem κ_shear (κ : K ≃+* (W → ℂ)) (w v : W) (a : Fin n) (t : Fin n →
   rw [map_mul, Pi.mul_apply, κ_sig]
 
 /- English proof (translation)
-Introduce `b i v`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hr : rad R ε b v b v = 2 * ε` using `by simp [rad]`. Rewrite using `[hr, κ_shear]`. Establish `e : κ (X b i) v + ∑ c, (if c = b then 0 else if v = v then t c else 0) * κ (X c i) v = ∑ c, s c * κ (X c i) v + ∑ c, (if c = b then 0 else t c - s c) * κ (X c i) v`. Establish `h1 : κ (X b i) v = ∑ c, (if c = b then 1 else 0) * κ (X c i) v` using `by simp`. Rewrite using `[h1, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : c = b`. Substitute `hc` using the available equality. Simplify using `[hsa]`. Simplify using `[hc]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `h2 : ‖∑ c, (if c = b then 0 else t c - s c) * κ (X c i) v‖ ≤ ε`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun c _ => ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul]`. Establish `h3 : ‖(if c = b then 0 else t c - s c : ℂ)‖ ≤ 2 / L`. Distinguish the cases in `hc : c = b`. Simplify using `only [hc, if_true, norm_zero]`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 
-Simplify using `only [hc, if_false]`. Rewrite using `[norm_sub_rev]`. Conclude with `hst c`. Conclude with `mul_le_mul h3 (hX c i v) (norm_nonneg _) (by positivity)`. Use `_ = n * (2 / L * R) := by simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ ≤ ε := by`. Establish `: (n : ℝ) * (2 / L * R) = (2 * n * R) / L` using `by ring`. Rewrite using `[this, div_le_iff₀ hL]`. Establish `: 0 ≤ (n : ℝ) * R` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `hN i`. Combine the equalities or inequalities in the displayed calculation. Establish `hr : rad R ε b w b v = R` using `by simp [rad, hv]`. Rewrite using `[hr, κ_shear]`. Simplify `hX b i v` using `[hv]`.
-
-Establish `hr : rad R ε a w b v = R` using `by simp [rad, hb]`. Rewrite using `[hr, shearK_ne hb]`. Conclude with `hX b i v`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shear_mem (κ : K ≃+* (W → ℂ)) (w : W) (a : Fin n) (s t : Fin n → ℂ) {R ε L : ℝ}
     (hε : 0 < ε) (hL : 0 < L) (hR : 0 ≤ R) (hLε : 4 * n * R ≤ L * ε) (hsa : s a = 1)
@@ -273,7 +267,7 @@ theorem shear_mem (κ : K ≃+* (W → ℂ)) (w : W) (a : Fin n) (s t : Fin n �
     exact hX b i v
 
 /- English proof (translation)
-Unfold `rad`. Apply the tactic sequence `split_ifs <;> positivity`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rad_pos {R ε : ℝ} (hR : 0 < R) (hε : 0 < ε) (a : Fin n) (w : W) (b : Fin n) (v : W) :
     0 < rad R ε a w b v := by
@@ -281,11 +275,11 @@ theorem rad_pos {R ε : ℝ} (hR : 0 < R) (hε : 0 < ε) (a : Fin n) (w : W) (b 
   split_ifs <;> positivity
 
 /- English proof (translation)
-Establish `hA : 1 ≤ ENNReal.ofReal R ^ m` using `one_le_pow₀ (by simpa using ENNReal.one_le_ofReal.2 hR)`. Establish `e : ∏ b, ∏ v, ENNReal.ofReal (rad R ε a w b v) ^ m = ∏ p : Fin n × W, Function.update (fun _ => ENNReal.ofReal R ^ m) (a, w) (ENNReal.ofReal (2 * ε) ^ m) p`. Rewrite using `[← Fintype.prod_prod_type']`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Take `⟨b, v⟩` from `p`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : b = a ∧ v = w`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `[rad]`. Establish `h' : (b, v) ≠ (a, w)` using `fun hh => h (by simpa using hh)`. Rewrite using `[Function.update_of_ne h']`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[rad, h]`. Rewrite using `[e, Finset.prod_update_of_mem (Finset.mem_univ _), Finset.prod_const]`. Use `gcongr`. Use `(Finset.card_le_univ _).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prod_rad_le {R ε : ℝ} (hR : 1 ≤ R) (a : Fin n) (w : W) (m : ℕ) :
     ∏ b, ∏ v, ENNReal.ofReal (rad R ε a w b v) ^ m
@@ -317,19 +311,17 @@ variable {K W : Type} [CommRing K] [Fintype W] {n M : ℕ} {H : Type} [Measurabl
   [MeasurableSpace (Fin n → Fin M → K)]
 
 /- English proof (translation)
-Establish `hL' : (0 : ℝ) < L` using `by exact_mod_cast hL`. Use `set P : ℝ≥0∞ := C₀ * (ENNReal.ofReal (2 * ε) ^ (2 * (M - n)) * (ENNReal.ofReal R ^ (2 * (M - n))) ^ (n * Fintype.card W)) with hP`. Set `I : Finset (W × Fin n × (Fin n → ℂ))` to `Finset.univ ×ˢ (Finset.univ ×ˢ Fintype.piFinset (fun _ : Fin n => grid L))`. Set `S : W × Fin n × (Fin n → ℂ) → Set (Fin n → Fin M → K)` to `fun p => shearK p.2.1 (-(sig κ p.1 p.2.1 p.2.2)) '' boxK κ (rad R ε p.2.1 p.1)`. Establish `hS : ∀ p ∈ I, DenLE μ ν q (S p) P`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨w, a, t⟩ -`. Use `hshear _ _ a _ (by simp [sig_self]) ?_` and prove the remaining obligations. Use `denLE_mono subset_rfl ?_ (hbox (rad R ε a w) (rad_pos (by linarith) hε a w))` and prove the remaining obligations. Rewrite using `[hP]`. Establish `h` using `prod_rad_le (ε := ε) hR a w (2 * (M - n))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `gcongr`. Establish `hcover : boxK κ (fun _ _ => R) \ goodK κ R ε ⊆ ⋃ p ∈ I, S p`. Introduce and unpack `X ⟨hX, hg⟩`. Establish `hU : X ∈ ⋃ w : W, ⋃ a : Fin n, ⋃ s ∈ {s : Fin n → ℂ | s a = 1 ∧ ∀ b, ‖s b‖ ≤ 1}, nearK κ w s ε`. Assume the negation of the conclusion as `hc`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `hg ⟨hX, hc⟩`. Simplify using `only [Set.mem_iUnion] at hU`. Take `⟨w, a, s, ⟨hsa, hsb⟩, hN⟩` from `hU`. Use `choose t ht hst using fun b => exists_grid hL (s b) (hsb b)`. Use `Set.mem_biUnion (x := (w, a, t)) ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [I, Finset.coe_product, Set.mem_prod, Finset.mem_coe, Finset.mem_univ, Fintype.mem_piFinset, true_and, Finset.coe_univ, Set.mem_univ]`. Conclude with `ht`. Use `⟨_, shear_mem κ w a s t hε hL' (by linarith) hLε hsa hst hX hN, ?_⟩` and prove the remaining obligations. Conclude with `shearK_neg_shearK a _ (sig_self κ w a t) X`. Use `denLE_mono hcover ?_ (denLE_biUnion I S (fun _ => P) hS)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : I.card ≤ Fintype.card W * n * (2 * L + 1) ^ (2 * n)`. Simplify using `only [I, Finset.card_product, Finset.card_univ, Fintype.card_fin, Fintype.card_piFinset, Finset.prod_const]`. Rewrite using `[mul_assoc]`. Use `Nat.mul_le_mul_left _ (Nat.mul_le_mul_left _ ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Use `gcongr`.
+A detailed English derivation is pending.
 -/
 theorem bad_le (κ : K ≃+* (W → ℂ)) (μ : Measure (Fin n → Fin M → K)) (ν : Measure H)
     (q : (Fin n → Fin M → K) → H) (C₀ : ℝ≥0∞)
@@ -385,13 +377,13 @@ theorem bad_le (κ : K ≃+* (W → ℂ)) (μ : Measure (Fin n → Fin M → K))
   gcongr
 
 /- English proof (translation)
-Establish `hT' : (0 : ℝ) < T` using `by exact_mod_cast Nat.pos_of_ne_zero hT`. Establish `e : ENNReal.ofReal (2 * (1 / (T : ℝ))) = 2 * (T : ℝ≥0∞)⁻¹`. Rewrite using `[ENNReal.ofReal_mul (by norm_num), one_div, ENNReal.ofReal_inv_of_pos hT', ENNReal.ofReal_natCast]`. Simplify using the standard rewrite rules. Take `⟨d, rfl⟩ : ∃ d, m = k + (d + 1)` from `⟨m - k - 1, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (T : ℝ≥0∞) ^ k * (T : ℝ≥0∞)⁻¹ ^ k = 1`. Rewrite using `[← mul_pow, ENNReal.mul_inv_cancel (by exact_mod_cast hT) (ENNReal.natCast_ne_top T), one_pow]`. Establish `h2 : (T : ℝ≥0∞)⁻¹ ^ d ≤ 1`. Use `pow_le_one₀ (by simp) ?_` and prove the remaining obligations. Rewrite using `[ENNReal.inv_le_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.one_le_iff_ne_zero.2 hT` after adjusting the coercions. Rewrite using `[e, mul_pow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_add _ k, pow_succ _ d]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ 2 ^ (k + (d + 1)) * (1 * (1 * (T : ℝ≥0∞)⁻¹)) := by`. Rewrite using `[h1]`. Use `gcongr`. Use `_ = _ := by simp`.
+A detailed English derivation is pending.
 -/
 theorem pow_inv_le (T : ℕ) (hT : T ≠ 0) (k m : ℕ) (hm : k < m) :
     (T : ℝ≥0∞) ^ k * ENNReal.ofReal (2 * (1 / (T : ℝ))) ^ m ≤ 2 ^ m * (T : ℝ≥0∞)⁻¹ := by
@@ -420,23 +412,19 @@ theorem pow_inv_le (T : ℕ) (hT : T ≠ 0) (k m : ℕ) (hm : k < m) :
 end Main
 
 /- English proof (translation)
-Introduce `K W _ _ κ n M hn hM H _ _ μ ν q C₀ hC₀ hbox hshear R hR δ hδ`. Use `set m := 2 * (M - n) with hm`. Establish `hkm : 2 * n < m` using `by omega`. Use `set Rn : ℕ := ⌈R⌉₊ with hRn`. Establish `hRle : R ≤ Rn` using `Nat.le_ceil R`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRn1 : 0 < Rn` using `Nat.ceil_pos.2 (by linarith)`. Use `set c : ℕ := 8 * n * Rn + 1 with hc`. Use `set D : ℝ≥0∞ := C₀ * (ENNReal.ofReal R ^ m) ^ (n * Fintype.card W) with hD`. Use `set E : ℝ≥0∞ := ((Fintype.card W * n * c ^ (2 * n) : ℕ) : ℝ≥0∞) * (D * 2 ^ m) with hE`. Establish `hDtop : D ≠ ⊤` using `ENNReal.mul_ne_top hC₀ (by simp [ENNReal.pow_eq_top_iff])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `hEtop : E ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.natCast_ne_top _) (ENNReal.mul_ne_top hDtop (by simp [ENNReal.pow_eq_top_iff]))`. Take `⟨T, hT⟩` from `ENNReal.exists_inv_nat_lt (ENNReal.div_ne_zero.2 ⟨hδ, hEtop⟩)`. Establish `hT0 : T ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hTpos : 0 < T` using `Nat.pos_of_ne_zero hT0`. Establish `hT' : (0 : ℝ) < T` using `by exact_mod_cast hTpos`. Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn`. Use `⟨1 / (T : ℝ), by positivity, ?_⟩` and prove the remaining obligations. Establish `hLpos : 0 < 4 * n * Rn * T` using `by positivity`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `bad_le κ μ ν q C₀ hbox hshear (ε := 1 / (T : ℝ)) hR (by positivity) (L := 4 * n * Rn * T) hLpos (by`. Use `push_cast`. Establish `: 4 * (n : ℝ) * (Rn : ℝ) * (T : ℝ) * (1 / (T : ℝ)) = 4 * n * Rn`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use the proof step `gcongr)`. Use `denLE_mono subset_rfl ?_ key` and prove the remaining obligations. Establish `hcount : (2 * (4 * n * Rn * T) + 1) ^ (2 * n) ≤ c ^ (2 * n) * T ^ (2 * n)`. Rewrite using `[← mul_pow]`. Use `Nat.pow_le_pow_left ?_ _` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `: 8 * n * Rn * T + 1 ≤ 8 * n * Rn * T + T` using `by omega`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hD]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ((Fintype.card W * n * c ^ (2 * n) : ℕ) : ℝ≥0∞) * (D * (2 ^ m * (T : ℝ≥0∞)⁻¹)) := by`. Establish `h` using `pow_inv_le T hT0 (2 * n) m hkm`. Use `gcongr`. Use `_ = E * (T : ℝ≥0∞)⁻¹ := by rw [hE]; ring`.
-
-Use `_ ≤ E * (δ / E) := by gcongr`. Use `_ ≤ δ := ENNReal.mul_div_le`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bad_density : ∀ (K W : Type) [CommRing K] [Fintype W] (κ : K ≃+* (W → ℂ)) (n M : ℕ), 0 < n → 2 * n < M → ∀ (H : Type) [MeasurableSpace H] [MeasurableSpace (Fin n → Fin M → K)] (μ : Measure (Fin n → Fin M → K)) (ν : Measure H) (q : (Fin n → Fin M → K) → H) (C₀ : ℝ≥0∞), C₀ ≠ ⊤ → (∀ r : Fin n → W → ℝ, (∀ a w, 0 < r a w) → GlobalTheory.CompanionTheory.WhitFree.AvgInf.DenLE μ ν q (GlobalTheory.CompanionTheory.WhitFree.AvgInf.boxK κ r) (C₀ * ∏ a, ∏ w, ENNReal.ofReal (r a w) ^ (2 * (M - n)))) → (∀ (S : Set (Fin n → Fin M → K)) (C : ℝ≥0∞) (a : Fin n) (s : Fin n → K), s a = 0 → GlobalTheory.CompanionTheory.WhitFree.AvgInf.DenLE μ ν q S C → GlobalTheory.CompanionTheory.WhitFree.AvgInf.DenLE μ ν q (GlobalTheory.CompanionTheory.WhitFree.AvgInf.shearK a s '' S) C) → ∀ R : ℝ, 1 ≤ R → ∀ δ : ℝ≥0∞, δ ≠ 0 → ∃ ε : ℝ, 0 < ε ∧ GlobalTheory.CompanionTheory.WhitFree.AvgInf.DenLE μ ν q (GlobalTheory.CompanionTheory.WhitFree.AvgInf.boxK κ (fun _ _ => R) \ GlobalTheory.CompanionTheory.WhitFree.AvgInf.goodK κ R ε) δ := by
   intro K W _ _ κ n M hn hM H _ _ μ ν q C₀ hC₀ hbox hshear R hR δ hδ

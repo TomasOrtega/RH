@@ -39,22 +39,22 @@ structure Facts (D : D7) (C : NChoice D) : Prop extends Core D where
   good : GoodFTAll D
 
 /- English proof (translation)
-The claim follows from `h.adm.1.1`.
+A detailed English derivation is pending.
 -/
 theorem Core.admA {D : D7} (h : Core D) : SumRepresentations.AdmA D := h.adm.1.1
 
 /- English proof (translation)
-The claim follows from `h.what₂.rank L`.
+A detailed English derivation is pending.
 -/
 theorem Core.a3 {D : D7} (h : Core D) (L : SizeData₂ D) : TwistedPlaces.adm3 L := h.what₂.rank L
 
 /- English proof (translation)
-The claim follows from `h.adm.2.2`.
+A detailed English derivation is pending.
 -/
 theorem Core.isot {D : D7} (h : Core D) : Rows.IsotInternal D.what₂ := h.adm.2.2
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem residualIrreducibility_forms_equivalent (D : D7) : SumRepresentations.adm6 D ↔ ResidualIrreducibleRankR D := Iff.rfl
 

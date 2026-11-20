@@ -13,7 +13,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.TypeRec
 
 /- English proof (translation)
-Establish `h1 : σ.cl = τ.cl`. Use `(Sigma.mk.inj_iff.1 h).2` as an intermediate fact. Conclude with `eq_of_heq this`. Take `⟨φ⟩` from `GlobalTheory.SmGL.IrrRep.cl_eq_iff.1 h1`. Conclude with `⟨Rep.mkIso (Representation.Equiv.mk φ.toLinearEquiv fun g => φ.toIntertwiningMap.isIntertwining' (Matrix.GeneralLinearGroup.map (I.i k v).toRingHom g))⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pull_iso_of_cls_eq {D : D7} (I : Ident D) (k : Fin 2) (v : D.nd.PlG k) {n : ℕ}
     (σ τ : GlobalTheory.SmGL.IrrRep (GL (Fin n) ((D.naut.plGw k v).adicCompletion D.host.E)))
@@ -26,13 +26,13 @@ theorem pull_iso_of_cls_eq {D : D7} (I : Ident D) (k : Fin 2) (v : D.nd.PlG k) {
     φ.toIntertwiningMap.isIntertwining' (Matrix.GeneralLinearGroup.map (I.i k v).toRingHom g))⟩
 
 /- English proof (translation)
-Introduce `hL D T I`. Take `⟨rc, hrc⟩` from `GlobalTheory.TypeRec.Model.exists_isRc hL T I`. Use `⟨rc, hrc, fun k v n π hπ => ?_⟩` and prove the remaining obligations. Take `⟨_, _, _, -, H⟩` from `GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 (D.naut.plGw k v))`. Take `⟨σ, e⟩` from `GlobalTheory.TypeRec.Model.exists_pull I k v π hπ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, fun π' hπ' => ?_⟩` and prove the remaining obligations. Rewrite using `[← T.dim, hrc k v n σ π e]`. Conclude with `H.dim _`. Take `⟨σ', e'⟩` from `GlobalTheory.TypeRec.Model.exists_pull I k v π' hπ'`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hr`. Establish `h2` using `congrArg (T.e _) hr`. Rewrite `h2` using `[hrc k v n σ π e, hrc k v n σ' π' e']`. Take `⟨f⟩` from `pull_iso_of_cls_eq I k v σ σ' (H.bij.1 h2)`. Conclude with `⟨e.some ≪≫ f ≪≫ e'.some.symm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨f⟩`. Apply `(T.e _).injective` to reduce the goal to its premises. Rewrite using `[hrc k v n σ π e, hrc k v n σ π' ⟨f.symm ≪≫ e.some⟩]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isRc_isClassMap : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut)
     (I : Ident D), ∃ rc : GlobalTheory.SerSys.Corr D, IsRc hL T I rc ∧ ∀ k v, IsClassMap D.naut.lpDim (rc k v) := by

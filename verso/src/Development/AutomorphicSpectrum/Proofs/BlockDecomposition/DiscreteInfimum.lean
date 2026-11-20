@@ -11,9 +11,9 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.UnitaryBC
 namespace GlobalTheory.CompanionTheory.EGlue
 
 /- English proof (translation)
-Introduce `E _ _ _ M V hV τ`. Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 hV.ne_bot`. Take `⟨f, hf⟩` from `Module.Projective.exists_dual_eq_one ℂ h0`. Take `⟨m, hm, h⟩` from `exists_multiset_qdet (Eop (a := M) τ) (((M : ℂ) - 1) / 2) φ f hf`. Use `⟨m, hm, fun u ψ hψ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, h1⟩` from `GlobalTheory.DiscLocEx.exists_scalarD hV (z := cap τ u) (Algebra.subset_adjoin ⟨τ, u, rfl⟩) (GlobalTheory.SpehInfChar.cap_commute_act τ u)`. Establish `h2 : f (cap τ u φ) = _` using `h u`. Rewrite `h2` using `[h1 φ hφ, map_smul, hf, smul_eq_mul, mul_one]`. Rewrite using `[h1 ψ hψ, h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem discInf : DiscInf := by
   intro E _ _ _ M V hV τ

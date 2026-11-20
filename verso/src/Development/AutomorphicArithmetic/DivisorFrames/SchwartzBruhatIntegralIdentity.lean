@@ -13,19 +13,19 @@ open scoped GlobalTheory.VacAny
 open scoped Pointwise in
 
 /- English proof (translation)
-Establish `h1 : ∀ x, (∫ y, T (j y) * χ y ∂μ) * (g x * (χ x)⁻¹) = ∫ y, χ y * (g x * T (j x * j y)) ∂μ`. Introduce `x`. Rewrite using `[← integral_mul_left_eq_self (fun y => T (j y) * χ y) x, ← integral_mul_const]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hjm, hχm]`. Use `hχ0 x` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Take `⟨M, hM⟩` from `hT.bounded_above_of_compact_support hTc`. Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hK : IsCompact ((j '' C⁻¹) * tsupport T)` using `(hC.inv.image hj).mul hTc`. Establish `hgi : Integrable g μ` using `hg.integrable_of_hasCompactSupport (HasCompactSupport.intro hC fun x hx => by`. Assume the negation of the conclusion as `h`. Conclude with `hx (hgC x h))`. Establish `hI : Integrable (Function.uncurry fun x y => χ y * (g x * T (j x * j y))) (μ.prod μ)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hgi.norm.mul_prod ((hint _ hK).const_mul M)).mono' ?_ (Eventually.of_forall ?_)` and prove the remaining obligations. Use `Continuous.aestronglyMeasurable ?_` and prove the remaining obligations. Conclude with `(hχ.comp continuous_snd).mul ((hg.comp continuous_fst).mul (hT.comp ((hj.comp continuous_fst).mul (hj.comp continuous_snd))))`. Introduce and unpack `⟨x, y⟩`. Simplify using `only [Function.uncurry_apply_pair, norm_mul]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hx : g x = 0`. Simplify using `[hx]`. Distinguish the cases in `hy : T (j x * j y) = 0`. Rewrite using `[hy, norm_zero, mul_zero, mul_zero]`. Conclude with `mul_nonneg (norm_nonneg _) (mul_nonneg hM0 (Set.indicator_nonneg (fun _ _ => norm_nonneg _) _))`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : j y ∈ (j '' C⁻¹) * tsupport T`. Use `⟨j x⁻¹, ⟨x⁻¹, by simpa using hgC x hx, rfl⟩, j x * j y, subset_tsupport _ hy, ?_⟩` and prove the remaining obligations. Use `show j x⁻¹ * (j x * j y) = j y`. Rewrite using `[← hjm, ← hjm, inv_mul_cancel_left]`. Rewrite using `[Set.indicator_of_mem hmem]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← integral_const_mul]`. Repeatedly rewrite using `[h1]`. Rewrite using `[integral_integral_swap hI]`. Repeatedly rewrite using `[integral_const_mul]`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.haar_integral_character_twist {G A : Type} [CommGroup G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
@@ -76,23 +76,17 @@ private theorem UpperTheory.haar_integral_character_twist {G A : Type} [CommGrou
   simp_rw [integral_const_mul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v ψ hψc hψ _ _ m _ μ hμ ν hν z hz T₁ hT₁ T₂ hT₂ C₁ C₂ hC₁ hC₂ h₁ h₂`. Use `haveI := GlobalTheory.LocTateInt.isTopologicalRing_Ev (E := E) v`. Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evFin F v)`. Use `haveI := hμ.1`. Take `⟨c, -, hc⟩` from `UpperTheory.local_units_haar_comparison F E v m μ hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set φ := idelesAtEquiv E v with hφ`. Establish `hj : Continuous fun l : idelesAt E (evFin F v) => compFin F E v (l.1 : AE F E)` using `Units.continuous_val.comp φ.continuous`. Establish `hinj : Function.Injective fun l : idelesAt E (evFin F v) => compFin F E v (l.1 : AE F E)` using `Units.val_injective.comp φ.injective`. Establish `ha : Continuous fun l : idelesAt E (evFin F v) => ((absE F E l.1 : ℝ) : ℂ)` using `Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp ((GlobalTheory.Doubling.continuous_absE (F := F) (E := E)).comp continuous_subtype_val))`. Establish `ha0 : ∀ l : idelesAt E (evFin F v), ((absE F E l.1 : ℝ) : ℂ) ≠ 0` using `fun l => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: absE F E l.1 ≠ 0` using `((Group.isUnit l.1).map (absE F E)).ne_zero`. Conclude with `this` after adjusting the coercions. Establish `key : ∀ T ∈ SB (Fv F v ⊗[F] E), ∀ T' ∈ SB (Fv F v ⊗[F] E), ∀ C : Set (idelesAt E (evFin F v)), IsCompact C → (∀ t, four v ψ m T' t ≠ 0 → ∃ l ∈ C, compFin F E v (l.1 : AE F E) = t) → (∫ l : idelesAt E (evFin F v), T (compFin F E v (l.1 : AE F E)) * (ν l.1 : ℂ) * ((absE F E l.1 : ℝ …`. Introduce `T hT T' hT' C hC h`. Establish `hf` using `UpperTheory.fourier_schwartz_bruhat_preserved F E v ψ hψc hψ m T' hT'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e` using `UpperTheory.haar_integral_character_twist μ (fun l : idelesAt E (evFin F v) => compFin F E v (l.1 : AE F E)) hj (fun x y => by simp only [Subgroup.coe_mul, Units.val_mul, map_mul]) (fun l => (ν l.1 : ℂ) * ((absE F E l.1 : ℝ) : ℂ) ^ z) ((continuous_subtype_val.comp (hν.comp contin …`. Simplify using `only [Subgroup.coe_mul, map_mul, Circle.coe_mul, NNReal.coe_mul, Complex.ofReal_mul]`. Use the proof step `ring)`. Use the proof step `(fun x => mul_ne_zero (Circle.coe_ne_zero _) (pow_ne_zero _ (ha0 x)))`. Use the proof step `(fun K hK => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `GlobalTheory.LocTateInt.integrable_indicator_absE_pow v μ hμ K hK z hz` as an intermediate fact. Simplify `this)` using `only [norm_mul, Circle.norm_coe, one_mul, norm_pow, Complex.norm_real, NNReal.norm_eq]`. Use `T hT.1.continuous hT.2`. Use the proof step `(fun l => four v ψ m T' (compFin F E v (l.1 : AE F E)) * ((absE F E l.1 : ℝ) : ℂ))`. Use the proof step `((hf.1.continuous.comp hj).mul ha) C hC`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use the proof step `(fun x hx => by`. Take `⟨l, hl, hlx⟩` from `h _ (left_ne_zero_of_mul hx)`. Rewrite using `[← hinj hlx])` and apply the resulting hypothesis. Simplify using `only [← mul_assoc] at e ⊢`. Rewrite using `[e]`.
-
-Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[mul_assoc _ (c : ℂ), ← hc (fun x => four v ψ m T' x * T (x * ((φ y : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E))) (fun t ht => by`. Take `⟨l, -, rfl⟩` from `h _ (left_ne_zero_of_mul ht)`. Conclude with `(φ l).isUnit)]`.
-
-Use `congr 2`. Use function extensionality and compare the values at `x`. Conclude with `mul_right_comm _ _ _`. Rewrite using `[key T₁ hT₁ T₂ hT₂ C₂ hC₂ h₂, key T₂ hT₂ T₁ hT₁ C₁ hC₁ h₁]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `y`. Rewrite using `[UpperTheory.fourier_transform_pairing_translate F E v ψ hψc hψ m T₁ hT₁ T₂ hT₂]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.schwartz_bruhat_integral_identity :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F) (ψ : AddChar (Fv F v) ℂ), Continuous ψ → ψ ≠ 1 →

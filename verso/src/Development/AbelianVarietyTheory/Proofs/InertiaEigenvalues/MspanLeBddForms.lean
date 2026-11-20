@@ -16,9 +16,7 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-Establish `hM : Continuous fun x : Fin a → Cinf E => Matrix.of (fun i j : Fin a => if (j : ℕ) = r ∧ (i : ℕ) < r then x i else 0)` using `continuous_matrix fun i j => by`. Simplify using `only [Matrix.of_apply]`. Use `split_ifs`. Conclude with `continuous_apply i`. Conclude with `continuous_const`.
-
-Conclude with `Units.continuous_iff.2 ⟨continuous_const.add hM, continuous_const.sub hM⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_colU (r : ℕ) : Continuous (GlobalTheory.JSW.colU (E := E) (a := a) r) := by
   have hM : Continuous fun x : Fin a → Cinf E =>
@@ -31,11 +29,11 @@ theorem continuous_colU (r : ℕ) : Continuous (GlobalTheory.JSW.colU (E := E) (
   exact Units.continuous_iff.2 ⟨continuous_const.add hM, continuous_const.sub hM⟩
 
 /- English proof (translation)
-Use `haveI : (volume : Measure (Fin a → Cinf E)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Take `⟨C, hC⟩` from `h.2.2.2`. Establish `hfi : Integrable (fun x => f x) (volume : Measure (Fin a → Cinf E))` using `f.integrable`. Establish `hu : Continuous fun x : Fin a → Cinf E => infGL E a (GlobalTheory.JSW.colU r x)` using `GlobalTheory.CuspQuot.continuous_infGL.comp (continuous_colU r)`. Establish `hj : Continuous fun p : GA E a × (Fin a → Cinf E) => f p.2 * F (p.1 * infGL E a (GlobalTheory.JSW.colU r p.2))` using `(f.continuous.comp continuous_snd).mul (h.1.comp (continuous_fst.mul (hu.comp continuous_snd)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun γ g => ?_, fun z g => ?_, ∫ x, ‖f x‖ * C, fun g => ?_⟩` and prove the remaining obligations. Conclude with `continuous_of_dominated (bound := fun x => ‖f x‖ * C) (fun g => (hj.comp (Continuous.prodMk_right g)).aestronglyMeasurable) (fun g => .of_forall fun x => (norm_mul _ _).trans_le (mul_le_mul_of_nonneg_left (hC _) (norm_nonneg _))) (hfi.norm.mul_const C) (.of_forall fun x => hj.com …`. Simplify using `only [GlobalTheory.JSW.colConv, mul_assoc, h.2.1]`. Simplify using `only [GlobalTheory.JSW.colConv, mul_assoc, h.2.2.1]`. Rewrite using `[← integral_const_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree. Conclude with `norm_integral_le_of_norm_le (hfi.norm.mul_const C) (.of_forall fun x => (norm_mul _ _).trans_le (mul_le_mul_of_nonneg_left (hC _) (norm_nonneg _)))`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem colConv_mem_bddForms {ω : HChar E} {F : GA E a → ℂ} (h : F ∈ bddForms E a ω) (r : ℕ)
     (f : SchwartzMap (Fin a → Cinf E) ℂ) : GlobalTheory.JSW.colConv r f F ∈ bddForms E a ω := by
@@ -61,7 +59,7 @@ theorem colConv_mem_bddForms {ω : HChar E} {F : GA E a → ℂ} (h : F ∈ bddF
       (.of_forall fun x => (norm_mul _ _).trans_le (mul_le_mul_of_nonneg_left (hC _) (norm_nonneg _)))
 
 /- English proof (translation)
-Use `sInf_le ⟨fun φ hφ => mem_bddForms_of_cuspSub GlobalTheory.CuspOrth.cuspFormsBounded hω h hφ, fun F hF k => mul_right_mem_bddForms hF k, fun F hF f hf => ?_, fun F hF r f => colConv_mem_bddForms hF r f⟩` and prove the remaining obligations. Conclude with `smoothing_mem_bddForms volume (isTest_of_isTestInf hf) hF`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mspan_le_bddForms {π : CuspSub E a} {ω : HChar E} (hω : ω.IsUnitary) (h : π.HasCentChar ω) :
     GlobalTheory.JSW.mspan π ≤ bddForms E a ω := by

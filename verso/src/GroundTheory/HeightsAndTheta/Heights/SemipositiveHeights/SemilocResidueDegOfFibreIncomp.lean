@@ -31,7 +31,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction
 open GroundTheory.Heights₂.Heights.Inter
 
 /- English proof (translation)
-Introduce `F _ K _ ι _ K' _ ι' _`. Conclude with `GroundTheory.Heights₂.Heights.Targets.ProjDeg.of_found (GroundTheory.Heights₂.Heights.FieldNumbers.ProjectionFormulaDegree.of_divPushForward (GroundTheory.Heights₂.Heights.FieldNumbers.DivPushForward.proof GroundTheory.Heights₂.Heights.FieldNumbers.ContractRelDimLe.proof GroundTh …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem projDeg_all :
     ∀ (F : Type) [Field F] (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]
@@ -46,13 +46,13 @@ theorem projDeg_all :
     GroundTheory.Heights₂.Heights.Targets.FnDegRelDeg.proof F ι ι'
 
 /- English proof (translation)
-The claim follows from `SemilocMaxIdeals.proof (FibreOverFinite.proof hFI) hFI SemilocIntegral.full LocRingDimOne.full`.
+A detailed English derivation is pending.
 -/
 theorem semilocMaxIdeals_of_fibreIncomp (hFI : FibreIncomp.Statement) : SemilocMaxIdeals.Statement :=
   SemilocMaxIdeals.proof (FibreOverFinite.proof hFI) hFI SemilocIntegral.full LocRingDimOne.full
 
 /- English proof (translation)
-The claim follows from `SemilocResidueDeg.proof (SemilocResidueFibreDim.proof (FibreDivSupp.proof hFI) hFD FibreDimensionZero.full) (SemilocResidueAdjoin.proof (SemilocResidueFrac.proof SemilocFinite.full (semilocMaxIdeals_of_fibreIncomp hFI)) ChartScalingIndep.full)`.
+A detailed English derivation is pending.
 -/
 theorem semilocResidueDeg_of_fibreIncomp (hFI : FibreIncomp.Statement) (hFD : FibreDimStatement) :
     SemilocResidueDeg.Statement :=

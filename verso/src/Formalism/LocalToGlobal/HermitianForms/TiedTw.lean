@@ -14,11 +14,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `h : ((Tw.fm u μ).lam j τ).w = ((D.fm u).lam j τ).w`. Use function extensionality and compare the values at `i`. Establish `h1` using `(Tw.fm u μ).lam_eq j hj τ i`. Establish `h2` using `(D.fm u).lam_eq j hj τ i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.trans h2.symm` after adjusting the coercions. Consider the cases of `h1 : (Tw.fm u μ).lam j τ`. Consider the cases of `h2 : (D.fm u).lam j τ`. Simplify using `only [h1, h2] at h`. Substitute `h` using the available equality.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem lam_tw (Tw : TwForms D) (u : D.what₂.Word) (μ : D.what₂.Tup) (j : ℕ) (hj : j ≤ D.R.m) :
     (Tw.fm u μ).lam j = (D.fm u).lam j := by
@@ -66,7 +66,7 @@ def twY (T : Formalism.L2.Herm.TwChTied D inQ) (F : ∀ u, FormsTied D u) (u : D
   (T.eY u μ i hi).symm.trans ((F u).val i hi).eY
 
 /- English proof (translation)
-Take `⟨C, h1, h2, h3⟩` from `((F u).val i hi).de`. Use `⟨C, h1, h2, fun τ z => ?_⟩` and prove the remaining obligations. Use `T.de_eq u μ i hi ((T.eY u μ i hi).symm z) τ` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Rewrite using `[this, h3]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -122,7 +122,7 @@ structure TwFormsTied (D : D7) (Tw : TwForms D) {inQ : D.what₂.Tup → HeightO
   twisted_e0_at_mu0_eq_eMu0 : ∀ u x, Tw.e0 u D.what₂.mu0 x = Tw.eMu0 u 0 (Nat.zero_le _) x
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.Herm.heq_apply (D.memberColumns_twistedChain_base u) j _ _ (Tw.eMu0_emb u j hj x) c y`.
+A detailed English derivation is pending.
 -/
 theorem eMu0_emb_apply (Tw : TwForms D) (u : D.what₂.Word) (j : ℕ) (hj : j ≤ D.R.m) (x : ((D.fm u).lat j).V)
     (c : (D.mem u).C.cls j) (y : (D.mem u).C.Y j) :

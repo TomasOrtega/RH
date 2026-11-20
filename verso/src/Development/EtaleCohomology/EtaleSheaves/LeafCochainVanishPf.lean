@@ -9,9 +9,9 @@ namespace LateralTheory.E.LeafCochainVanishPf
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `h0 : (0 : (free R).obj P ⟶ G).hom = 0` using `rfl`. Use `Sheaf.hom_ext ?_` and prove the remaining obligations. Rewrite using `[h0]`. Use `sheafify_hom_ext _ _ _ G.property ?_` and prove the remaining obligations. Use extensionality with `U : 2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `ModuleCat.free_hom_ext (fun x => ?_)` and prove the remaining obligations. Conclude with `(h U.unop x.down).trans (by erw [Limits.comp_zero]; rfl)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem free_ext_zero (P : PSh) (G : Shv R) (φ : (free R).obj P ⟶ G)
     (h : ∀ (U : Scheme.{0}) (x : P.obj (op U)), (φ.hom.app (op U)).hom (freeGen R P U x) = 0) : φ = 0 := by
@@ -24,7 +24,7 @@ theorem free_ext_zero (P : PSh) (G : Shv R) (φ : (free R).obj P ⟶ G)
   exact (h U.unop x.down).trans (by erw [Limits.comp_zero]; rfl)
 
 /- English proof (translation)
-Use `HomologicalComplex.isZero_extend_X _ _ _ (fun i hi => ?_)` and prove the remaining obligations. Establish `: ComplexShape.embeddingDownNat.f i = -(i : ℤ)` using `rfl`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem chains_isZero (E : Spc) (p : ℤ) (hp : 0 < p) : Limits.IsZero (((chains R).obj E).X p) := by
   refine HomologicalComplex.isZero_extend_X _ _ _ (fun i hi => ?_)
@@ -32,15 +32,13 @@ theorem chains_isZero (E : Spc) (p : ℤ) (hp : 0 < p) : Limits.IsZero (((chains
   omega
 
 /- English proof (translation)
-Use `Cochain.ext _ _ (fun p q hpq => ?_)` and prove the remaining obligations. Rewrite using `[Cochain.zero_v]`. Distinguish the cases in `hp : 0 < p`. Conclude with `(chains_isZero (R := R) E p hp).eq_of_src _ _`. Take `⟨N, rfl⟩ : ∃ N : ℕ, p = -(N : ℤ)` from `⟨(-p).toNat, by omega⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hφ : (chainsXIso R E N).inv ≫ γ.v (-(N : ℤ)) q hpq = 0`. Use `hc.2.2 (op (SimplexCategory.mk N))` as an intermediate fact. Rewrite using `[← cancel_epi (biprod.desc ((free R).map (f.app (op (SimplexCategory.mk N)))) ((free R).map (g.app (op (SimplexCategory.mk N))))), Limits.comp_zero]`. Apply `biprod.hom_ext'` to reduce the goal to its premises. Rewrite using `[biprod.inl_desc_assoc, Limits.comp_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `free_ext_zero _ _ _ (fun Y y => ?_)` and prove the remaining obligations. Establish `e` using `hU N q hpq Y y`. Unfold `ev at e`. Rewrite `e` using `[← LateralTheory.E.FirstChernNaturality.freeGen_nat (R := R)]`. Conclude with `e`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[biprod.inr_desc_assoc, Limits.comp_zero]`. Use `free_ext_zero _ _ _ (fun Y y => ?_)` and prove the remaining obligations. Establish `e` using `hV N q hpq Y y`. Unfold `ev at e`. Rewrite `e` using `[← LateralTheory.E.FirstChernNaturality.freeGen_nat (R := R)]`.
-
-Conclude with `e`. Rewrite using `[← Iso.hom_inv_id_assoc (chainsXIso R E N) (γ.v _ _ hpq), hφ, Limits.comp_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cochain_zero_of (E : Spc) {U V : Spc} (f : U ⟶ E) (g : V ⟶ E) (hc : Cover2 R f g) (K : Cx R) (k : ℤ)
     (γ : Cochain ((chains R).obj E) K k)
@@ -74,7 +72,7 @@ theorem cochain_zero_of (E : Spc) {U V : Spc} (f : U ⟶ E) (g : V ⟶ E) (hc : 
 end LateralTheory.E.LeafCochainVanishPf
 
 /- English proof (translation)
-Introduce `R _ U V E f g hc K k γ hU hV`. Conclude with `LateralTheory.E.LeafCochainVanishPf.cochain_zero_of E f g hc K k γ hU hV`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LateralTheory.E.LeafA6suppPf.LeafCochainVanish_of : LateralTheory.E.LeafA6suppPf.LeafCochainVanish := by
   intro R _ U V E f g hc K k γ hU hV

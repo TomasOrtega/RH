@@ -4,11 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩ i j`. Use `⟨⟨(h : Matrix (Fin 2) (Fin 2) R) i j, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `⟨((h⁻¹ : GL (Fin 2) R) : Matrix (Fin 2) (Fin 2) R) i j, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `h choose A hA using fun i j => (h i j).1 choose B hB using fun i j => (h i j).2`. Establish `eA : (Matrix.of A).map f = (g : Matrix (Fin 2) (Fin 2) S)` using `by ext i j; exact hA i j`. Establish `eB : (Matrix.of B).map f = ((g⁻¹ : GL (Fin 2) S) : Matrix (Fin 2) (Fin 2) S)` using `by ext i j; exact hB i j`. Establish `inj : Function.Injective (fun M : Matrix (Fin 2) (Fin 2) R => M.map f)` using `Matrix.map_injective hf`. Use `⟨⟨Matrix.of A, Matrix.of B, inj ?_, inj ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.map_mul, eA, eB, Matrix.map_one _ (map_zero f) (map_one f), Units.mul_inv]`. Simplify using `only [Matrix.map_mul, eA, eB, Matrix.map_one _ (map_zero f) (map_one f), Units.inv_mul]`. Conclude with `Units.ext eA`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma mem_range_iff {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (hf : Function.Injective f)
     (g : GL (Fin 2) S) : g ∈ (Matrix.GeneralLinearGroup.map f).range ↔
@@ -30,7 +30,7 @@ private lemma mem_range_iff {R S : Type} [CommRing R] [CommRing S] (f : R →+* 
     · exact Units.ext eA
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map (starRingEnd (Lsq K Δ)) g = (wJ Δ)⁻¹ * g * (wJ Δ)⁻¹⁻¹ ↔ _`. Rewrite using `[inv_inv, mul_assoc, eq_inv_mul_iff_mul_eq, Units.ext_iff]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma mem_DX {K : Type} [Field K] {Δ : K} (g : GL (Fin 2) (Lsq K Δ)) :
     g ∈ DX Δ ↔ !![0, 1; -1, 0] * (g : Matrix (Fin 2) (Fin 2) (Lsq K Δ)).map star = (g : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) * !![0, 1; -1, 0] := by
@@ -39,9 +39,9 @@ private lemma mem_DX {K : Type} [Field K] {Δ : K} (g : GL (Fin 2) (Lsq K Δ)) :
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg QuadraticAlgebra.im h` as an intermediate fact. Simplify using `only [QuadraticAlgebra.im_star] at this`. Establish `h0 : x.im = 0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: 2 * x.im = 0` using `by linear_combination -this`. Conclude with `(mul_eq_zero.1 this).resolve_left h2`. Apply the tactic sequence `exact ⟨x.re, by ext <;> simp [h0]⟩`. Introduce and unpack `⟨y, rfl⟩`. Apply the tactic sequence `ext <;> simp`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private lemma star_fix {K : Type} [Field K] {Δ : K} (h2 : (2 : K) ≠ 0) (x : Lsq K Δ) :
     star x = x ↔ x ∈ (algebraMap K (Lsq K Δ)).range := by
@@ -57,19 +57,17 @@ private lemma star_fix {K : Type} [Field K] {Δ : K} (h2 : (2 : K) ≠ 0) (x : L
     ext <;> simp
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap K (Lsq K Δ))` using `(algebraMap K (Lsq K Δ)).injective`. Establish `key : ∀ g : GL (Fin 2) (Lsq K Δ), g ∈ DX Δ ↔ ∀ i j, ((P * g * P⁻¹ : GL (Fin 2) (Lsq K Δ)) : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) i j ∈ (algebraMap K (Lsq K Δ)).range`. Introduce `g`. Rewrite using `[mem_DX, hP, ← Matrix.ext_iff]`. Simplify using `only [← star_fix h2, Units.val_mul, Matrix.map_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `ψ : GL (Fin 2) K →* GL (Fin 2) (Lsq K Δ)` to `(MulAut.conj P⁻¹).toMonoidHom.comp (Matrix.GeneralLinearGroup.map (algebraMap K (Lsq K Δ)))`. Establish `hψ : ∀ h, P * ψ h * P⁻¹ = Matrix.GeneralLinearGroup.map (algebraMap K (Lsq K Δ)) h`. Introduce `h`. Express the relevant statement in the definitionally equal form `P * (P⁻¹ * _ * P⁻¹⁻¹) * P⁻¹ = _`. Use `group`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hmem : ∀ h, ψ h ∈ DX Δ`. Introduce `h`. Rewrite using `[key, hψ]`. Conclude with `fun i j => ⟨(h : Matrix (Fin 2) (Fin 2) K) i j, rfl⟩`. Establish `hbij : Function.Bijective (ψ.codRestrict (DX Δ) hmem)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Establish `e : ψ a = ψ b` using `congrArg Subtype.val hab`. Establish `e'` using `hψ a`. Rewrite `e'` using `[e, hψ, Units.ext_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Units.ext (Matrix.map_injective hinj e')).symm`. Introduce `g`. Take `⟨h, hh⟩` from `(mem_range_iff _ hinj (P * (g : GL (Fin 2) (Lsq K Δ)) * P⁻¹)).2 fun i j => ⟨(key _).1 g.2 i j, by`. Establish `e : (P * (g : GL (Fin 2) (Lsq K Δ)) * P⁻¹)⁻¹ = P * (g : GL (Fin 2) (Lsq K Δ))⁻¹ * P⁻¹` using `by group`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(key _).1 (inv_mem g.2) i j⟩`. Use `⟨h, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `e` using `hψ h`. Rewrite `e` using `[hh]`. Conclude with `mul_left_cancel (mul_right_cancel e)`.
-
-Use `⟨(MulEquiv.ofBijective _ hbij).symm, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← hψ]`. Use `congrArg Subtype.val ((MulEquiv.ofBijective _ hbij).apply_symm_apply g)` as an intermediate fact. Conclude with `congrArg (fun x => P * x * P⁻¹) this`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma exists_phi {K : Type} [Field K] {Δ : K} (h2 : (2 : K) ≠ 0) (P : GL (Fin 2) (Lsq K Δ))
     (hP : ∀ X : Matrix (Fin 2) (Fin 2) (Lsq K Δ), !![0, 1; -1, 0] * X.map star = X * !![0, 1; -1, 0] ↔
@@ -113,29 +111,29 @@ private lemma exists_phi {K : Type} [Field K] {Δ : K} (h2 : (2 : K) ≠ 0) (P :
   exact congrArg (fun x => P * x * P⁻¹) this
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ Δ hl`. Use `haveI := hl.frac`. Establish `h2 : (2 : K) ≠ 0`. Use `(hl.two.map (algebraMap O K)).ne_zero` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hPi, hP⟩` from `UpperTheory.V.Z.Sym.Loc.splitJ O K Δ hl`. Take `⟨φ, hφ⟩` from `exists_phi h2 P hP`. Establish `hinj : Function.Injective (algebraMap K (Lsq K Δ))` using `(algebraMap K (Lsq K Δ)).injective`. Establish `minj : Function.Injective (fun M : Matrix (Fin 2) (Fin 2) K => M.map (algebraMap K (Lsq K Δ)))` using `Matrix.map_injective hinj`. Establish `hm : ∀ g, (φ g : Matrix (Fin 2) (Fin 2) K).map (algebraMap K (Lsq K Δ)) = (P : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) * mt g * (P⁻¹ : GL (Fin 2) (Lsq K Δ))` using `fun g => congrArg Units.val (hφ g)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : ∀ g, algebraMap K (Lsq K Δ) (φ g : Matrix (Fin 2) (Fin 2) K).det = (mt g).det`. Introduce `g`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hm, Matrix.det_units_conj]`. Establish `htr : ∀ g, algebraMap K (Lsq K Δ) (φ g : Matrix (Fin 2) (Fin 2) K).trace = (mt g).trace`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.trace_units_conj P, ← hm]`. Simplify using `[Matrix.trace_fin_two]`. Use `⟨φ, fun g => ?_, fun z g => ?_, hdet, fun τ γ j hγ hj => ?_⟩` and prove the remaining obligations. Set `H` to `(Matrix.GeneralLinearGroup.map (n := Fin 2) ((integralClosure O (Lsq K Δ)).val : integralClosure O (Lsq K Δ) →+* Lsq K Δ)).range`. Establish `hr : ∀ x : Lsq K Δ, x ∈ ((integralClosure O (Lsq K Δ)).val : integralClosure O (Lsq K Δ) →+* Lsq K Δ).range ↔ IsIntegral O x` using `fun x => ⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun hx => ⟨⟨x, hx⟩, rfl⟩⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : ∀ x : GL (Fin 2) (Lsq K Δ), x ∈ H ↔ ∀ i j, IsIntegral O ((x : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) i j) ∧ IsIntegral O (((x⁻¹ : GL (Fin 2) (Lsq K Δ)) : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) i j)`. Introduce `x`. Rewrite using `[mem_range_iff _ Subtype.val_injective]`. Simplify using `only [hr]`. Establish `hPH : P ∈ H` using `(hH P).2 hPi`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr' : ∀ x : K, IsIntegral O (algebraMap K (Lsq K Δ) x) ↔ x ∈ (algebraMap O K).range`. Introduce `x`. Rewrite using `[isIntegral_algebraMap_iff hinj, IsIntegrallyClosed.isIntegral_iff]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `φ g ∈ (Matrix.GeneralLinearGroup.map (algebraMap O K)).range ↔ (g : GL (Fin 2) (Lsq K Δ)) ∈ H`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← H.mul_mem_cancel_left hPH, ← H.mul_mem_cancel_right (inv_mem hPH), ← hφ, hH, mem_range_iff _ (IsFractionRing.injective O K), ← map_inv (Matrix.GeneralLinearGroup.map (algebraMap K (Lsq K Δ)))]`. Simplify using `only [← hr']`. Both sides reduce to the same expression. Rewrite using `[Units.ext_iff, ← minj.eq_iff] beta_reduce`. Rewrite using `[hm, Units.mul_inv_eq_iff_eq_mul]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ((Matrix.GeneralLinearGroup.scalar (Fin 2) z : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K).map (algebraMap K (Lsq K Δ)) = Matrix.scalar (Fin 2) (algebraMap K (Lsq K Δ) z)`. Use extensionality with `i j : 1`. Apply the tactic sequence `by_cases h : i = j <;> simp [h]`. Rewrite using `[e, (Matrix.scalar_commute _ (fun _ => Commute.all _ _) _).eq, Units.mul_right_inj]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hd : (φ γ : Matrix (Fin 2) (Fin 2) K).det = 1` using `hinj (by rw [hdet, hγ.1, map_one])`. Establish `ht : (φ γ : Matrix (Fin 2) (Fin 2) K).trace = τ` using `hinj (by rw [htr, hγ.2])`. Establish `hu : (φ γ : Matrix (Fin 2) (Fin 2) K) * (φ γ : Matrix (Fin 2) (Fin 2) K) = (-1 : K) • (1 : Matrix (Fin 2) (Fin 2) K) + τ • (φ γ : Matrix (Fin 2) (Fin 2) K)`. Rewrite `hd` using `[Matrix.det_fin_two]`. Rewrite `ht` using `[Matrix.trace_fin_two]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ht]`. Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> first | ring1 | linear_combination -hd`. Establish `hω : QuadraticAlgebra.lift ⟨_, hu⟩ (ω : Etau K τ) = (φ γ : Matrix (Fin 2) (Fin 2) K)`. Express the relevant statement in the definitionally equal form `(ω : Etau K τ).re • (1 : Matrix (Fin 2) (Fin 2) K) + (ω : Etau K τ).im • _ = _`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `⟨QuadraticAlgebra.lift ⟨_, hu⟩, hω, by rw [hω, ht], fun z => Units.ext (minj ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ((z : Etau K τ).re • (1 : Matrix (Fin 2) (Fin 2) K) + (z : Etau K τ).im • (φ γ : Matrix (Fin 2) (Fin 2) K)).map _`. Use `beta_reduce`. Rewrite using `[hm, hj, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mul, ← hm, mul_one, Units.mul_inv]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `a b : 1`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, Matrix.one_apply]`. Apply the tactic sequence `by_cases h : a = b <;> simp [h, Algebra.smul_def]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Loc.dIso :
     UpperTheory.V.Z.Sym.Loc.DIso := by

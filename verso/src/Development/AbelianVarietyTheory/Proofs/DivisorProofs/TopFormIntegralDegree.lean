@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.ThetaTop
 
 /- English proof (translation)
-Use `GlobalTheory.ChernScale.glueMeas_restrict_eq e ha MeasurableSet.univ (fun i y hy _ => h i y hy)` as an intermediate fact. Simplify `congrArg (fun μ : Measure X => μ univ) this` using `only [Measure.restrict_univ, Measure.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem glueMeas_univ_eq {X : Type} [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X] {n : ℕ} {ι : Type*}
     (e : ι → OpenPartialHomeomorph X (ReciprocityTheory.L2DbarEstimates.V n)) {ρ ρ' : ι → X → ℝ≥0∞} {a : ℝ≥0∞} (ha : a ≠ ⊤)
@@ -31,15 +31,15 @@ theorem glueMeas_univ_eq {X : Type} [TopologicalSpace X] [MeasurableSpace X] [Bo
     congrArg (fun μ : Measure X => μ univ) this
 
 /- English proof (translation)
-Introduce `k _ S p hp N ρ I l hI hρ`. Establish `hall : ∀ σ (c : AlgChart p σ 1) y, y ∈ c.e.source → ρ σ c y = l * c.chernDens (N.φ σ) y`. Introduce `σ c y hy`. Take `⟨c', hy', hc'⟩` from `hρ σ y`. Rewrite using `[(hI.1 σ c).2 c' y hy hy', hc', c.chernDens_trans c' (N.cInf σ) hy hy']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hI.2.2, gdeg_eq, mul_finsum]`. Use `finsum_congr fun σ => ?_` and prove the remaining obligations. Rewrite using `[UnitsInt.univ, Finset.sum_pair (by decide), Finset.sum_pair (by decide)]`. Break down `le_or_gt 0 l with hl | hl` into its components or cases.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `key : ∀ ε : ℤˣ, ChartGlue.glueMeas (fun c : AlgChart p σ 1 => c.e) (fun c y => ENNReal.ofReal ((ε : ℤ) * ρ σ c y)) univ = ENNReal.ofReal l * ChartGlue.glueMeas (fun c : AlgChart p σ 1 => c.e) (fun c y => ENNReal.ofReal ((ε : ℤ) * c.chernDens (N.φ σ) y)) univ` using `fun ε => glueMeas_univ_eq _ ENNReal.ofReal_ne_top fun c y hy => by`. Rewrite using `[hall σ c y hy, ← ENNReal.ofReal_mul hl]`. Put the polynomial expressions in normal form. Rewrite using `[key, key, ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_ofReal hl]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `key : ∀ ε : ℤˣ, ChartGlue.glueMeas (fun c : AlgChart p σ 1 => c.e) (fun c y => ENNReal.ofReal ((ε : ℤ) * ρ σ c y)) univ = ENNReal.ofReal (-l) * ChartGlue.glueMeas (fun c : AlgChart p σ 1 => c.e) (fun c y => ENNReal.ofReal (((-ε : ℤˣ) : ℤ) * c.chernDens (N.φ σ) y)) univ` using `fun ε => glueMeas_univ_eq _ ENNReal.ofReal_ne_top fun c y hy => by`. Rewrite using `[hall σ c y hy, ← ENNReal.ofReal_mul (by linarith)]`. Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[key, key, ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_ofReal (by linarith), neg_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem topForm_eq_mul_gdeg : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k), IsRegSurf p → ∀ (N : HermLB p) (ρ : ∀ σ : k →+* ℂ, AlgChart p σ 1 → CxPts p σ → ℝ) (I l : ℝ), IsTopForm ρ I → (∀ (σ : k →+* ℂ) (y : CxPts p σ), ∃ c : AlgChart p σ 1, y ∈ c.e.source ∧ ρ σ c y = l * c.chernDens (N.φ σ) y) → I = l * gdeg N 1 := by
   intro k _ S p hp N ρ I l hI hρ

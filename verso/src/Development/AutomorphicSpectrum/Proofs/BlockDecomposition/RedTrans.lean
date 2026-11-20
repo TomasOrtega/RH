@@ -17,11 +17,11 @@ variable {O A R₁ R₂ : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRin
   {κ₁ : O →+* R₁ ⧸ J₁} {κ₂ : O →+* R₂ ⧸ J₂} {l n s : ℕ} {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)}
 
 /- English proof (translation)
-Establish `key : ∀ y : T.B, lnMap (RingHom.id T.B) l n.le_succ (Ideal.Quotient.mk (lnT T l (n + 1)) y) = Ideal.Quotient.mk (lnT T l n) y` using `fun y => by`. Simplify using `only [lnMap, lnT, Ideal.quotientMap_mk, RingHom.id_apply]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 hx`. Rewrite using `[Ideal.mem_comap, key]`. Conclude with `Ideal.mem_map_of_mem _ hy`. Introduce `k x hx`. Take `⟨y, hy, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 hx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Simplify using `only [redδ]`. Rewrite using `[DividedPowers.Quotient.dpow_apply _ _ hy, DividedPowers.Quotient.dpow_apply _ _ hy, key]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tr_dp (T : Thick (nlFun γ 0 X q (κA O I))) (h : TF l s T) (n : ℕ) :
     IsDPMorphism (redδ T h (n + 1)) (redδ T h n) (lnMap (RingHom.id T.B) l n.le_succ) := by
@@ -44,7 +44,7 @@ variable (d₁ : RedIn δ₁ κ₁ γ l (n + 1)) (d₂ : RedIn δ₂ κ₂ γ l 
   (m : Mor (nlFun δ₁ l X q κ₁) (nlFun δ₂ l X q κ₂) σ')
 
 /- English proof (translation)
-Rewrite using `[hρ]`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (d₁.ρ r)`. Rewrite using `[← ha]`. Simplify using `only [iBar, lnMap, lnT, Ideal.quotientMap_mk, RingHom.id_apply]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tr_comm (hρ : ∀ x, d₂.ρ (σ' x) = lnMap (RingHom.id A) l n.le_succ (d₁.ρ x))
     (T : Thick (nlFun γ 0 X q (κA O I))) (r : R₁) :
@@ -72,11 +72,11 @@ def eta (hpt : ∀ (B : CommRingCat.{0}) (y : PtOver X q κ₂ B), (show PtOver 
 end
 
 /- English proof (translation)
-Introduce `O A R₁ R₂ Λ _ _ _ _ _ _ I γ J₁ J₂ δ₁ δ₂ κ₁ κ₂ l n d₁ d₂ X q s 𝒱 σ' m c₁ c₂ lam hc₁ hc₂ h₀ hpt hρ r j x`. Rewrite using `[CrystallineSemistableComparison.pull_pull lam, trM, CrystallineSemistableComparison.pull_pull lam]`. Use `symm`. Use `CrystallineSemistableComparison.cr_pull_eq (F := CrystallineSemistableComparison.B.schFn q) (b := nlBase R₁ J₁ δ₁ l) (ht := rfl) (κ := κ₁) _ _ ?η ?nat ?cmp j x` and prove the remaining obligations. Use `case η => exact fun T => eta d₁ d₂ m hpt hρ T.obj T.property.1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Use `case nat =>`. Introduce `T T' f y`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective (I := lnT T.obj l (n + 1)) y`. Both sides reduce to the same expression. Use `case cmp =>`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Treat this case separately.
 
-Introduce `T y`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective (I := lnT T.obj l (n + 1)) y`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem red_trans : ∀ {O A R₁ R₂ Λ : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRing R₁] [CommRing R₂] [CommRing Λ]
     {I : Ideal A} {γ : DividedPowers I} {J₁ : Ideal R₁} {J₂ : Ideal R₂} {δ₁ : DividedPowers J₁} {δ₂ : DividedPowers J₂}

@@ -11,7 +11,7 @@ private theorem map_ofGL {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) 
     GG.map f (GG.ofGL h) = GG.ofGL (Matrix.GeneralLinearGroup.map f h) := rfl
 
 /- English proof (translation)
-Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Simplify using `only [conjBy, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, map_mul, map_inv, map_ofGL]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem map_conjBy {G R S : Type} [Group G] [CommRing R] [CommRing S] (f : R →+* S) (h : GL (Fin 3) R)
     (r : G →* GG 3 R) :
@@ -21,15 +21,15 @@ private theorem map_conjBy {G R S : Type} [Group G] [CommRing R] [CommRing S] (f
     map_ofGL]
 
 /- English proof (translation)
-Establish `hX : ∀ a b, ∃ x : R, (0 ≤ wt a b → x = 0) ∧ f x = ((n' : Matrix (Fin 3) (Fin 3) S) - 1) a b`. Introduce `a b`. Distinguish the cases in `h : 0 ≤ wt a b`. Conclude with `⟨0, fun _ => rfl, by rw [map_zero, hn a b h]⟩`. Take `⟨x, hx⟩` from `hf (((n' : Matrix (Fin 3) (Fin 3) S) - 1) a b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, fun h' => absurd h' h, hx⟩`. Use `choose X h0 hX using hX`. Establish `hd : (Matrix.of X + 1).det = 1`. Establish `h00` using `h0 0 0 (by decide)`. Establish `h01` using `h0 0 1 (by decide)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h02` using `h0 0 2 (by decide)`. Establish `h11` using `h0 1 1 (by decide)`. Establish `h12` using `h0 1 2 (by decide)`. Establish `h22` using `h0 2 2 (by decide)`. Simplify using `[Matrix.det_fin_three, h00, h01, h02, h11, h12, h22]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Matrix.GeneralLinearGroup.mk'' (Matrix.of X + 1) (by rw [hd]; exact isUnit_one), fun a b h => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Matrix.of X + 1 - 1) a b = 0`. Rewrite using `[add_sub_cancel_right]`. Conclude with `h0 a b h`. Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `f ((Matrix.of X + 1) a b) = _`. Rewrite using `[Matrix.add_apply, map_add, Matrix.of_apply, hX, Matrix.sub_apply, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem lift_lower {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (hf : Function.Surjective f)
     (n' : GL (Fin 3) S) (hn : ∀ a b, 0 ≤ wt a b → ((n' : Matrix (Fin 3) (Fin 3) S) - 1) a b = 0) :
@@ -60,11 +60,11 @@ private theorem lift_lower {R S : Type} [CommRing R] [CommRing S] (f : R →+* S
     split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `hP l _ O _ _ _ _ _ _ _ D E _ _ _ _ _ _ _ _ B _ _ _ _ _ _ _ _ _ _ π hπ B' _ _ _ _ _ _ _ _ _ _ π' hπ' p hp hc r' hr'`. Take `⟨u', n', hu', hn1, hn2, rfl⟩` from `(ordEq hP D E B' π' hπ' r').1 hr'`. Take `⟨u, hu, rfl⟩` from `triLift hP D E B π hπ B' π' hπ' p hp hc u' hu'`. Take `⟨n, hn, rfl⟩` from `lift_lower (p : B →+* B') hp n' hn2`. Use `⟨conjBy n u, (ordEq hP D E B π hπ _).2 ⟨u, n, hu, fun a b => ?_, hn, rfl⟩, map_conjBy _ n u⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `hn1 a b`. Rewrite `h`, the goal using `[RingHom.mem_ker]`. Rewrite using `[← h, ← hc, Matrix.sub_apply, Matrix.sub_apply, Matrix.one_apply, Matrix.one_apply]`. Express the relevant statement in the definitionally equal form `π' (p _) = π' (p _ - _)`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem UpperTheory.V.Loc.crLift :
     LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O) (E : Type) [Field E] [Algebra ℚ_[l] E] [Module.Finite ℚ_[l] E] [Algebra O E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] O E] [IsScalarTower ℤ_[l] ℚ_[l] E] [IsFractionRing O E] (B : Type) [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [Algebra O B] [Algebra ℤ_[l] B] [IsScalarTower ℤ_[l] O B] [IsScalarTower ℤ_[l] ℚ_[l] B] [Algebra E B] [IsScalarTower O E B] [IsScalarTower ℚ_[l] E B] (π : B →ₐ[E] E) (hπ : ∀ a, π a = 0 → IsNilpotent a) (B' : Type) [CommRing B'] [Algebra ℚ_[l] B'] [Module.Finite ℚ_[l] B'] [Algebra O B'] [Algebra ℤ_[l] B'] [IsScalarTower ℤ_[l] O B'] [IsScalarTower ℤ_[l] ℚ_[l] B'] [Algebra E B'] [IsScalarTower O E B'] [IsScalarTower ℚ_[l] E B'] (π' : B' →ₐ[E] E) (hπ' : ∀ a, π' a = 0 → IsNilpotent a) (p : B →ₐ[E] B'), Function.Surjective p → π'.comp p = π → ∀ r' : GQ l →* GG 3 B', D.InDcr (π' : B' →+* E) r' → ∃ r : GQ l →* GG 3 B, D.InDcr (π : B →+* E) r ∧ (GG.map (p : B →+* B')).comp r = r' := by

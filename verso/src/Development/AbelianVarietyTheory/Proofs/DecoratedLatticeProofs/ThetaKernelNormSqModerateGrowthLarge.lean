@@ -29,43 +29,41 @@ open GlobalTheory.Core.Rk.IP
 namespace GlobalTheory.Core.Rk.IP
 
 /- English proof (translation)
-Introduce `hSWF hSEC D ψ θ A B χA χB sA sB t cA a om ν 𝓕 hP hwitt hat mH hmH Φ hΦ`. Establish `hW` using `GlobalTheory.weilRepresentationUnitaryPair`. Take `⟨ha, ht, hb, -⟩` from `hP.setting`. Take `⟨omh, homh⟩` from `GlobalTheory.Core.Rk.exists_doubled_weilDatum hW D ψ A B χA χB om hP.weil`. Establish `hTC` using `GlobalTheory.DoublingTheta.thetaClause D ψ A B χA χB om omh hP.weil homh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hφ, hid⟩` from `hTC Φ Φ hΦ.1 hΦ.1`. Establish `hK` using `GlobalTheory.Core.Rk.IP.delta_isKFinVec D ψ θ A B χA χB sA sB t cA a om ν 𝓕 hP omh homh Φ Φ hΦ hΦ`. Establish `h2ab : 2 * A.rank < B.rank` using `by omega`. Establish `hw : wittIndex B = 0 ∨ A.rank + wittIndex B < B.rank`. Break down `hwitt with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inl h`. Conclude with `Or.inr (by omega)`. Take `⟨hint, hEV⟩` from `GlobalTheory.T.thetaIntegral_eq_siegelEisenstein_of_weilRange hSWF D ψ A B (by omega) h2ab hw χB omh homh ν 𝓕 hP.covol mH hmH (delta A B Φ Φ) hφ`. Establish `key : ∀ g h, thetaKO om g h Φ * conj (thetaKO om g h Φ) = ((χB (detA A g) : Circle) : ℂ) * thetaKO omh (io A (g, g)) h (delta A B Φ Φ)`. Introduce `g h`.
+Prove the first alternative. Prove the second alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(hid g g h).2]`. Establish `e : ((χB (detA A g) : Circle) : ℂ) * (((χB (detA A g))⁻¹ : Circle) : ℂ) = 1`. Rewrite using `[← Circle.coe_mul, mul_inv_cancel, Circle.coe_one]`. Take the linear combination `(-(thetaKO om g h Φ * conj (thetaKO om g h Φ))) * e`. Establish `knorm : ∀ g h, ‖thetaKO om g h Φ‖ ^ 2 = ‖thetaKO omh (io A (g, g)) h (delta A B Φ Φ)‖`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `g h`. Use `congrArg norm (key g h)` as an intermediate fact. Rewrite `this` using `[norm_mul, norm_mul, Circle.norm_coe, one_mul, Complex.norm_conj, ← sq]`. Rewrite using `[this]`. Establish `hleft : ∀ g, LeftInv (GQ B) fun h => thetaKO om g h Φ` using `fun g γ hγ h => by show thetaKO om g (γ * h) Φ = thetaKO om g h Φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ((g, γ * h) : GA D A × GA D B) = (1, γ) * (g, h)` using `by simp`. Unfold `thetaKO`. Rewrite using `[e, map_mul]`. Conclude with `hP.weil.om_aut 1 (one_mem _) _ hγ _ (hP.weil.om_pres _ _ hΦ.1)`. Establish `hcont : ∀ g, Continuous fun h => thetaKO om g h Φ` using `fun g => (hP.weil.om_cont Φ hΦ.1 0).comp (Continuous.prodMk_right g)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL2 : ∀ g, MemL2Quotient (GQ B) mH fun h => thetaKO om g h Φ`. Introduce `g`. Use `⟨hleft g, ?_⟩` and prove the remaining obligations. Establish `hm : AEStronglyMeasurable (descend (GQ B) fun h => thetaKO om g h Φ) (GlobalTheory.AutomorphicL2Unitary.quotMeasure (GQ B) mH)`. Rewrite using `[aestronglyMeasurable_quotMeasure_iff_lift, (hleft g).lift_descend]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hcont g).aestronglyMeasurable`. Use `(memLp_two_iff_integrable_sq_norm hm).2 ?_` and prove the remaining obligations. Use `(hint (io A (g, g))).norm.congr (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Simplify using `only [GlobalTheory.AutomorphicL2Unitary.descend]`. Conclude with `(knorm g _).symm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hL2, ?_⟩` and prove the remaining obligations. Establish `hI : HasIwasawa D.sp.cm.sig (dblSp A).gram (Khat A a)` using `GlobalTheory.Core.Rk.IP.hasIwasawa_KAd_selfDual D A (frameLat A) a (GlobalTheory.WeilAtPlace.isSelfDualC_frameLat A) hP.maj`. Establish `hmem` using `GlobalTheory.T.doublingSiegelWeilSection_mem_degeneratePrincipalSeries hW D ψ A B χB omh homh ν 𝓕 hP.covol (delta A B Φ Φ) hφ a hK`. Establish `hHk : IsHeckeChar D χB⁻¹`. Establish `h` using `homh.hecT`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Establish `: (χB⁻¹ : (AE D)ˣ →* Circle) = fun x => (χB x)⁻¹` using `rfl`. Rewrite using `[this]`. Conclude with `h.1.inv`. Rewrite using `[MonoidHom.inv_apply, h.2 x, inv_one]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hCt, hReg⟩` from `hSEC D A (by omega) a hP.maj hI χB⁻¹ B.rank hHk (resEta_inv homh.resT) (sZero A B) (swSec A B omh ν 𝓕 (delta A B Φ Φ)) hmem`. Take `⟨k, hk⟩` from `hReg (sZero A B)`. Establish `hre : (A.rank : ℝ) / 2 < (sZero A B).re`. Establish `e : (sZero A B).re = ((B.rank : ℝ) - A.rank) / 2`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.sZero, Complex.div_re]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[e]`. Establish `: (2 * A.rank : ℝ) < B.rank` using `by exact_mod_cast h2ab`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hF` using `hCt.1`. Establish `hv0` using `hF.eisValueAt hF.analyticOnNhd_flat hre`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `hv : GlobalTheory.Eis.EisValueAt A (flat A a (swSec A B omh ν 𝓕 (delta A B Φ Φ)) (sZero A B)) (sZero A B) (ThetaMean.thetaMean omh mH (delta A B Φ Φ))`. Rewrite using `[hEV]`. Simplify `hv0` using `only [flatH_self]`. Take `⟨r, hr, -, -, C₁, N, hC₁⟩` from `GlobalTheory.Eis.EisRegularAt.of_eisValueAt hk hv`. Establish `hE : ∀ x, ‖ThetaMean.thetaMean omh mH (delta A B Φ Φ) x‖ ≤ C₁ * GlobalTheory.Grow.height (dblSp A) x ^ N`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x`. Establish `e` using `hv.eisCont_eq`. Use `hC₁ (sZero A B) (Metric.mem_ball_self hr) x` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC₁0 : 0 ≤ C₁`. Establish `h1` using `(norm_nonneg _).trans (hE 1)`. Conclude with `nonneg_of_mul_nonneg_left h1 (pow_pos (GlobalTheory.Grow.height_pos _ _) _)`. Take `⟨C₂, c, hC₂⟩` from `GlobalTheory.Grow.IoHeight.main D A`. Establish `hvol` using `GlobalTheory.RallisIP.Model.vol_pos (B := B) mH`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hpet : ∀ g, ‖petersson B mH (fun h => thetaKO om g h Φ) (fun h => thetaKO om g h Φ)‖ = (autMeasure B mH).real Set.univ * ‖ThetaMean.thetaMean omh mH (delta A B Φ Φ) (io A (g, g))‖`. Introduce `g`. Establish `e1 : petersson B mH (fun h => thetaKO om g h Φ) (fun h => thetaKO om g h Φ) = ((χB (detA A g) : Circle) : ℂ) * ∫ q, GlobalTheory.AutomorphicL2Unitary.descend (GQ B) (fun h => thetaKO omh (io A (g, g)) h (delta A B Φ Φ)) q ∂autMeasure B mH`. Rewrite using `[← integral_const_mul]`. Simplify using `only [petersson, pet, GlobalTheory.AutomorphicL2Unitary.descend]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `q`. Conclude with `key g _`. Rewrite using `[e1, norm_mul, Circle.norm_coe, one_mul, ← measure_smul_average, norm_smul, ThetaMean.thetaMean, Real.norm_of_nonneg measureReal_nonneg]`. Use `⟨(autMeasure B mH).real Set.univ * C₁ * C₂ ^ N, 2 * c * N, fun g => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpet g]`. Establish `h2 : GlobalTheory.Grow.height (dblSp A) (io A (g, g)) ^ N ≤ (C₂ * GlobalTheory.Grow.height A g ^ (2 * c)) ^ N`. Use `pow_le_pow_left₀ (GlobalTheory.Grow.height_pos _ _).le ?_ N` and prove the remaining obligations. Use `hC₂ g g` as an intermediate fact. Rewrite `this` using `[← sq, ← pow_mul]`. Then use the resulting hypothesis.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem normSq_theta_modGrowth_big : GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelEisensteinContinuation →
     ∀ D : D7, ∀ (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A B : HSp D) (χA χB : (AE D)ˣ →* Circle) (sA : RealMat A)

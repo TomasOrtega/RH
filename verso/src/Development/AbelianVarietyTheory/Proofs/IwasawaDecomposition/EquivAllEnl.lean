@@ -42,7 +42,7 @@ section Gen
 variable {D : D7} (T : CoreJ D) (i : Fin D.R.m) (κi : WeightFamilies.Wt D ((i : ℕ) + 1))
 
 /- English proof (translation)
-Establish `key : ∀ (σ : T.Q.c.F →+* ℂ) (W : HSp D) (hV : T.V ((i : ℕ) + 1) σ = W) (c : (T.U ((i : ℕ) + 1) σ).Comp → ℂ), adel W (castDict hV (T.dict ((i : ℕ) + 1) σ)) (muPin W (castDict hV (T.dict ((i : ℕ) + 1) σ)) (castDict hV (T.mu ((i : ℕ) + 1) σ)) c) (rdU (T.U ((i : ℕ) + 1) σ) f) = castD …`. Introduce `σ W hV c`. Substitute `hV` using the available equality. Both sides reduce to the same expression. Conclude with `key O.s0 _ O.hV cc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem phi_eq_phiAt {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F} {Tp : Type} {tup : Tp → T0} (O : OMDat T.toCore R i Tp tup)
@@ -61,9 +61,9 @@ variable {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.L
     [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h g k hk f hf`. Take `⟨h1, y, hy, h2⟩` from `h g k hk f hf`. Conclude with `⟨h1, y, (halg y).symm.trans (hy.trans (hχ i g).symm), h2⟩`. Introduce `h g k hk f hf`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, y, hy, h2⟩` from `h g k hk f hf`. Conclude with `⟨h1, y, (halg y).trans (hy.trans (hχ i g)), h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem eqAt_iff (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) {Tp : Type} {tup : Tp → T0} (O : OMDat T.toCore R i Tp tup)
     (σ : T.Q.c.F →+* ℂ) (hV : T.V ((i : ℕ) + 1) σ = Wc D i) (c : (T.U ((i : ℕ) + 1) σ).Comp → ℂ)
@@ -79,11 +79,11 @@ theorem eqAt_iff (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) {
     exact ⟨h1, y, (halg y).trans (hy.trans (hχ i g)), h2⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h g k hk f hf`. Take `⟨h1, h2⟩` from `h g k hk f hf`. Use `⟨h1, fun x => ?_⟩` and prove the remaining obligations. Use `h2 x` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[phi_eq_phiAt, phi_eq_phiAt]`. Rewrite using `[this, ← hχ i g]`. Introduce `h g k hk f hf`. Take `⟨h1, h2⟩` from `h g k hk f hf`. Use `⟨h1, fun x => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[phi_eq_phiAt, phi_eq_phiAt, h2 x, ← hχ i g]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem equivAt_iff {Tp : Type} {tup : Tp → T0} (O : OMDat T.toCore R i Tp tup) (cc : (T.U ((i : ℕ) + 1) O.s0).Comp → ℂ)
     (hχ : R.grp_chiW) :
@@ -108,9 +108,9 @@ section Congr
 variable {D : D7} (T : CoreJ D) (i : Fin D.R.m)
 
 /- English proof (translation)
-Substitute `ha hn hσ hG hβ hP` using the available equality. Consider the cases of `hi`. Consider the cases of `hc`. Consider the cases of `hl`. Consider the cases of `he`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hX`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem eqAtP_congr {a a' : (D.host.E →+* ℂ) × ℕ → ℕ} (ha : a' = a) {n n' : ℕ} (hn : n' = n) {σ σ' : T.Q.c.F →+* ℂ} (hσ : σ' = σ)
     (hV : T.V ((i : ℕ) + 1) σ = Wc D i) (hV' : T.V ((i : ℕ) + 1) σ' = Wc D i)
@@ -126,9 +126,9 @@ theorem eqAtP_congr {a a' : (D.host.E →+* ℂ) × ℕ → ℕ} (ha : a' = a) {
   rfl
 
 /- English proof (translation)
-Substitute `ha hn hσ hG hβ hP` using the available equality. Consider the cases of `hi`. Consider the cases of `hc`. Consider the cases of `hl`. Consider the cases of `he`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hX`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem equivP_congr {a a' : (D.host.E →+* ℂ) × ℕ → ℕ} (ha : a' = a) {n n' : ℕ} (hn : n' = n) {σ σ' : T.Q.c.F →+* ℂ} (hσ : σ' = σ)
     (hV : T.V ((i : ℕ) + 1) σ = Wc D i) (hV' : T.V ((i : ℕ) + 1) σ' = Wc D i)
@@ -146,7 +146,7 @@ theorem equivP_congr {a a' : (D.host.E →+* ℂ) × ℕ → ℕ} (ha : a' = a) 
 end Congr
 
 /- English proof (translation)
-Substitute `hG` using the available equality. Conclude with `heq_of_eq (funext fun g => h g g HEq.rfl)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem heq_fun_of {G G' : Type} {Y : Type} (hG : G' = G) (X : G → Y) (X' : G' → Y)
     (h : ∀ g' g, HEq g' g → X' g' = X g) : HEq X' X := by
@@ -154,7 +154,7 @@ theorem heq_fun_of {G G' : Type} {Y : Type} (hG : G' = G) (X : G → Y) (X' : G'
   exact heq_of_eq (funext fun g => h g g HEq.rfl)
 
 /- English proof (translation)
-Substitute `hG hP` using the available equality. Consider the cases of `hi`. Consider the cases of `h`. Both sides reduce to the same expression.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem heq_coe_eG {E : Type} [Field E] [NumberField E] {G G' : Type} [iG : Group G] [iG' : Group G'] (hG : G' = G)
     (hi : HEq iG' iG) {Pg Pg' : Finset (Pl E)} {r : ℕ} (hP : Pg' = Pg) (e : G ≃* G0 Pg r) (e' : G' ≃* G0 Pg' r)
@@ -165,31 +165,31 @@ theorem heq_coe_eG {E : Type} [Field E] [NumberField E] {G G' : Type} [iG : Grou
   rfl
 
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Wt' z hE hpx core' alg' halg' hcore Xg tr R' cG' hP hRS κ' hκ O' hO`. Take `⟨h1, -, -, hR⟩` from `hE`. Establish `hι` using `enlEmb_spec hR`. Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition.
 
-Substitute `h1` using the available equality. Establish `hpx' : w'.px = w.px` using `eq_of_heq hpx`. Establish `hG : Gc _ w'.px = Gc B w.px` using `by rw [hpx']; rfl`. Establish `hi : HEq (inferInstance : Group (Gc _ w'.px)) (inferInstance : Group (Gc B w.px))` using `by rw [hpx']; exact HEq.rfl`. Establish `hχ' : R'.toRealDat.grp_chiW` using `hP.char.base.grp.chiW`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχ : z.R.toRealDat.grp_chiW` using `z.pins.char.base.grp.chiW`. Take `⟨-, -, hβW, -, -, -, -, -, -, hPg, heG, -, hI, -⟩` from `hRS.1`. Break down `core' with ⟨⟨⟨H', l', c', Dw', Xo', eO'⟩, U', V', dict', mu', Kf', pb'⟩, cE', chiW', x₀', iota'⟩` into its components or cases. Take `⟨hH, hl, hc, hDw, hXo, hU, hV, hdict, hmu, -, hcE, -, -, -⟩` from `hcore`. Take `rfl : H' = z.core.Q.H` from `eq_of_heq hH`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : l' = z.core.Q.l` from `eq_of_heq hl`. Take `rfl : c' = z.core.Q.c` from `eq_of_heq hc`. Take `rfl : Dw' = z.core.Q.Dw` from `eq_of_heq hDw`. Take `rfl : Xo' = z.core.Q.Xo` from `eq_of_heq hXo`. Take `rfl : U' = z.core.U` from `eq_of_heq hU`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : V' = z.core.V` from `eq_of_heq hV`. Take `rfl : dict' = z.core.dict` from `eq_of_heq hdict`. Take `rfl : mu' = z.core.mu` from `eq_of_heq hmu`. Take `rfl : cE' = z.core.cE` from `eq_of_heq hcE`. Use `⟨fun i σ hg hV' hex => ?_, fun i i' hii hE => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c₁, hcu, hq⟩` from `hex`. Establish `hA'` using `(eqAt_iff _ i R'.toRealDat κ' (O' i) σ hV' c₁ halg' hχ').1 hq`. Take `⟨a1, a2, a3⟩` from `hκ i i rfl`. Establish `ha : wtA (κ' i) = wtA (z.geo.κ i)`. Establish `e1` using `eq_of_heq a1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `eq_of_heq a2`. Unfold `wtA`. Rewrite using `[e1, e2]`. Both sides reduce to the same expression. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hιc⟩` from `hI i i rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, hchi, -⟩` from `hιc (enlEmb hR) hι`. Establish `hX : HEq (fun g => (w'.st Z').toD7.what₂.embLL (((R'.FW i).chi g : (w'.st Z').toD7.what₂.LLˣ) : (w'.st Z').toD7.what₂.LL)) (fun g => (w.st Z).toD7.what₂.embLL (((z.R.FW i).chi g : (w.st Z).toD7.what₂.LLˣ) : (w.st Z).toD7.what₂.LL))` using `heq_fun_of hG _ _ fun g' g hgg => by rw [hchi g' g hgg]; exact hι _`. Establish `he` using `heq_coe_eG hG hi (eq_of_heq hPg) z.R.eG R'.eG heG`. Establish `hβ : R'.βW i = z.R.βW i` using `congrFun (eq_of_heq hβW) i`. Establish `key` using `eqAtP_congr z.core i ha a3 (σ := σ) (σ' := σ) rfl hV' hV' (c := c₁) (c' := c₁) HEq.rfl hG hi (hO i i rfl) hβ (eq_of_heq hPg) he hX`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `key.1 ((hA'))`. Establish `hz` using `z.geo.equivAll i σ hg hV' ⟨c₁, hcu, (eqAt_iff z.core i z.R.toRealDat z.geo.κ (z.geo.O i) σ hV' c₁ z.alg_eq hχ).2 hA⟩`. Establish `hB` using `(eqAt_iff z.core i z.R.toRealDat z.geo.κ (z.geo.O i) σ hV' _ z.alg_eq hχ).1 hz`. Establish `key2` using `eqAtP_congr z.core i ha a3 (σ := σ) (σ' := σ) rfl hV' hV' (c := z.core.cE ((i : ℕ) + 1) σ) (c' := z.core.cE ((i : ℕ) + 1) σ) HEq.rfl hG hi (hO i i rfl) hβ (eq_of_heq hPg) he hX`. Conclude with `(eqAt_iff _ i R'.toRealDat κ' (O' i) σ hV' _ halg' hχ').2 ((key2.mpr hB))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `rfl : i = i'` from `Fin.ext hii`. Take `⟨a1, a2, a3⟩` from `hκ i i rfl`. Establish `ha : wtA (κ' i) = wtA (z.geo.κ i)`. Establish `e1` using `eq_of_heq a1`. Establish `e2` using `eq_of_heq a2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `wtA`. Rewrite using `[e1, e2]`. Both sides reduce to the same expression. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hιc⟩` from `hI i i rfl`. Take `⟨-, -, hchi, -⟩` from `hιc (enlEmb hR) hι`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hX : HEq (fun g => (w'.st Z').toD7.what₂.embLL (((R'.FW i).chi g : (w'.st Z').toD7.what₂.LLˣ) : (w'.st Z').toD7.what₂.LL)) (fun g => (w.st Z).toD7.what₂.embLL (((z.R.FW i).chi g : (w.st Z).toD7.what₂.LLˣ) : (w.st Z).toD7.what₂.LL))` using `heq_fun_of hG _ _ fun g' g hgg => by rw [hchi g' g hgg]; exact hι _`. Establish `he` using `heq_coe_eG hG hi (eq_of_heq hPg) z.R.eG R'.eG heG`. Establish `hβ : R'.βW i = z.R.βW i` using `congrFun (eq_of_heq hβW) i`. Establish `hB` using `(equivAt_iff z.core i (z.geo.κ i) z.R.toRealDat (z.geo.O i) _ hχ).1 hE`. Establish `hσ : (O' i).s0 = (z.geo.O i).s0` using `(sOv_eq _ _ _).trans (sOv_eq _ _ _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `equivP_congr z.core i ha a3 hσ (z.geo.O i).hV (O' i).hV (c := z.core.cE ((i : ℕ) + 1) (z.geo.O i).s0) (c' := z.core.cE ((i : ℕ) + 1) (O' i).s0) (by rw [hσ]) hG hi (hO i i rfl) hβ (eq_of_heq hPg) he hX`. Conclude with `(equivAt_iff (D := (w'.st Z').toD7) _ i (κ' i) R'.toRealDat (O' i) _ hχ').2 ((key.mpr hB))`.
+A detailed English derivation is pending.
 -/
 theorem equivAll_enl : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} (w : ColW B f T) (w' : ColW B' f' T')
     (Z : w.Lt) (Z' : w'.Lt) (hX : B.fields.Ok) (hX' : B'.fields.Ok) (Wt : Set B.places.Pl) (Wt' : Set B'.places.Pl)

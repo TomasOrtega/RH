@@ -10,7 +10,7 @@ open ReciprocityTheory.ChartRestriction.L1 (DD jT IsMF)
 open ModularForm (E₄ E₆)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.disc_pow_mul_slash` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FModularDiscriminantPowMulSlashTwelveMul.lean&line=15#L15)
 -/

@@ -13,13 +13,13 @@ noncomputable section
 namespace GlobalTheory.DiagAmpleBC
 
 /- English proof (translation)
-Establish `h1 : (lift (𝟙 B) (𝟙 B)).left ≫ (fst B B).left = 𝟙 _`. Rewrite using `[← Over.comp_left, lift_fst]`. Both sides reduce to the same expression. Establish `h2 : (lift (𝟙 A) (𝟙 A)).left ≫ (fst A A).left = 𝟙 _`. Rewrite using `[← Over.comp_left, lift_fst]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h3 : (lift (𝟙 B) (𝟙 B)).left ≫ (snd B B).left = 𝟙 _`. Rewrite using `[← Over.comp_left, lift_snd]`. Both sides reduce to the same expression. Establish `h4 : (lift (𝟙 A) (𝟙 A)).left ≫ (snd A A).left = 𝟙 _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, lift_snd]`. Both sides reduce to the same expression. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show _ ≫ (fst A A).left = _ ≫ (fst A A).left`. Rewrite using `[Category.assoc, hs.1, ← Category.assoc, h1, Category.assoc, h2, Category.id_comp, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ ≫ (snd A A).left = _ ≫ (snd A A).left`. Rewrite using `[Category.assoc, hs.2, ← Category.assoc, h3, Category.assoc, h4, Category.id_comp, Category.comp_id]`.
+A detailed English derivation is pending.
 -/
 theorem diag_comp {S T : Scheme.{0}} (A : Over S) (B : Over T) (β : B.left ⟶ A.left)
     (β₂ : (G2 B).left ⟶ (G2 A).left) (hs : IsSquare β β₂) :
@@ -39,9 +39,9 @@ theorem diag_comp {S T : Scheme.{0}} (A : Over S) (B : Over T) (β : B.left ⟶ 
     rw [Category.assoc, hs.2, ← Category.assoc, h3, Category.assoc, h4, Category.id_comp, Category.comp_id]
 
 /- English proof (translation)
-Introduce `S T A _ hA P hP hD t B β β₂ hpb hs`. Use `haveI := hA.proper`. Establish `e₁ : LBIso ((P.pull β₂).pull (lift (𝟙 B) (𝟙 B)).left) (P.pull ((lift (𝟙 B) (𝟙 B)).left ≫ β₂))` using `GlobalTheory.ZM.SiegPull.lbIso_pull_comp (GlobalTheory.lbIso_refl (pull_isLB hP β₂)) _`. Establish `e₂ : LBIso ((P.pull (lift (𝟙 A) (𝟙 A)).left).pull β) (P.pull (β ≫ (lift (𝟙 A) (𝟙 A)).left))` using `GlobalTheory.ZM.SiegPull.lbIso_pull_comp (GlobalTheory.lbIso_refl (pull_isLB hP _)) _`. Rewrite `e₁` using `[diag_comp A B β β₂ hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `LBIso.trans (pull_isLB (pull_isLB hP _) _) (pull_isLB hP _) (pull_isLB (pull_isLB hP _) _) e₁ e₂.symm`. Conclude with `GlobalTheory.ModelAbLocus.relAmple_of_lbIso_pull hpb (pull_isLB hP _) (pull_isLB (pull_isLB hP _) _) e hD`.
+A detailed English derivation is pending.
 -/
 theorem relAmple_diag_pull : ∀ (S T : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ (P : LB (G2 A).left), P.IsLB → RelAmple A (P.pull (lift (𝟙 A) (𝟙 A)).left) → ∀ (t : T ⟶ S) (B : Over T) (β : B.left ⟶ A.left) (β₂ : (G2 B).left ⟶ (G2 A).left), IsPullback β B.hom A.hom t → IsSquare β β₂ → RelAmple B ((P.pull β₂).pull (lift (𝟙 B) (𝟙 B)).left) := by
   intro S T A _ hA P hP hD t B β β₂ hpb hs

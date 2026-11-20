@@ -42,7 +42,7 @@ def SmallField.toCF {p : ℕ} (F : SmallField p) : CF p :=
 def OC {p : ℕ} (F : CF p) : ValuationSubring F.C := (NormedField.valuation (K := F.C)).valuationSubring
 
 /- English proof (translation)
-Rewrite using `[OC, Valuation.mem_valuationSubring_iff, NormedField.valuation_apply, ← NNReal.coe_le_coe]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_OC {p : ℕ} (F : CF p) (x : F.C) : x ∈ OC F ↔ ‖x‖ ≤ 1 := by
   rw [OC, Valuation.mem_valuationSubring_iff, NormedField.valuation_apply, ← NNReal.coe_le_coe]
@@ -56,15 +56,13 @@ def OC.map {p : ℕ} {F F' : CF p} (φ : F.C →+* F'.C) (hφ : ∀ x, ‖φ x�
     exact (hφ x).trans_le ((mem_OC F x).1 x.2)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨ι⟩ : Nonempty (F.C ↪ ℝ) := by`. Rewrite using `[← Cardinal.le_def, Cardinal.mk_real]`. Conclude with `h`. Set `ι' : F.C → Code` to `fun x => ⟨ι x⟩`. Establish `hι : Function.Injective ι'` using `fun x y hxy => ι.injective (congrArg Code.val hxy)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `S : Set Code` to `Set.range ι'`. Set `e₀ : S ≃ F.C` to `(Equiv.ofInjective ι' hι).symm`. Use `letI : Field S := e₀.field`. Set `e : S ≃+* F.C` to `e₀.ringEquiv`. Use `letI nf : NormedField S := NormedField.induced S F.C (e : S →+* F.C) e.injective`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hn : ∀ x : S, ‖x‖ = ‖e x‖` using `fun _ => rfl`. Use `letI nt : NontriviallyNormedField S := { nf with non_trivial := by`. Take `⟨x, hx⟩` from `NontriviallyNormedField.non_trivial (α := F.C)`. Conclude with `⟨e.symm x, by rw [hn, e.apply_symm_apply]; exact hx⟩ }`. Apply the tactic sequence `have hiso : Isometry e := AddMonoidHomClass.isometry_of_norm e fun x => (hn x).symm`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsUltrametricDist S := IsUltrametricDist.isUltrametricDist_of_forall_norm_add_le_max_norm fun x y => by`. Rewrite using `[hn, hn, hn, map_add]`. Conclude with `IsUltrametricDist.norm_add_le_max _ _`. Use `haveI : IsAlgClosed S := IsAlgClosed.of_ringEquiv F.C S e.symm`. Use `haveI : CompleteSpace S := (IsometryEquiv.mk e.toEquiv hiso).completeSpace`.
-
-Use `haveI : CharZero S := (e : S →+* F.C).charZero`. Conclude with `⟨{ S := S, norm_p := by rw [hn, map_natCast, F.norm_p] }, e, fun x => (hn x).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_smallField {p : ℕ} (F : CF p) (h : #F.C ≤ 𝔠) :
     ∃ (F' : SmallField p) (e : F'.toCF.C ≃+* F.C), ∀ x, ‖e x‖ = ‖x‖ := by
@@ -93,9 +91,9 @@ theorem exists_smallField {p : ℕ} (F : CF p) (h : #F.C ≤ 𝔠) :
   exact ⟨{ S := S, norm_p := by rw [hn, map_natCast, F.norm_p] }, e, fun x => (hn x).symm⟩
 
 /- English proof (translation)
-Establish `h : ∀ x : X, ∃ s : ℕ → A, Filter.Tendsto (fun n => f (s n)) Filter.atTop (nhds x)` using `fun x => by`. Take `⟨u, hu, hx⟩` from `mem_closure_iff_seq_limit.1 (hf x)`. Use `choose s hs using hu`. Conclude with `⟨s, by simpa only [hs] using hx⟩`. Use `choose s hs using h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinj : Function.Injective s` using `fun x y hxy => tendsto_nhds_unique (hs x) (by rw [hxy]; exact hs y)`. Use `(Cardinal.mk_le_of_injective hinj).trans ?_` and prove the remaining obligations. Rewrite using `[← Cardinal.power_def, Cardinal.mk_nat]`. Conclude with `(Cardinal.power_le_power_right hA).trans_eq Cardinal.continuum_power_aleph0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_le_continuum_of_denseRange {A X : Type} [MetricSpace X] (f : A → X) (hf : DenseRange f) (hA : #A ≤ 𝔠) :
     #X ≤ 𝔠 := by
@@ -111,7 +109,7 @@ theorem mk_le_continuum_of_denseRange {A X : Type} [MetricSpace X] (f : A → X)
   exact (Cardinal.power_le_power_right hA).trans_eq Cardinal.continuum_power_aleph0
 
 /- English proof (translation)
-Establish `h1 : #ℚ_[p] ≤ 𝔠` using `mk_le_continuum_of_denseRange _ (Padic.denseRange_ratCast p) (Cardinal.mk_le_aleph0.trans Cardinal.aleph0_le_continuum)`. Establish `h2 : #(PadicAlgCl p) ≤ 𝔠` using `(Algebra.IsAlgebraic.cardinalMk_le_max ℚ_[p] (PadicAlgCl p)).trans (max_le h1 Cardinal.aleph0_le_continuum)`. Conclude with `mk_le_continuum_of_denseRange (X := PadicComplex p) _ (UniformSpace.Completion.denseRange_coe (α := PadicAlgCl p)) h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mk_padicComplex_le (p : ℕ) [Fact p.Prime] : #(PadicComplex p) ≤ 𝔠 := by
   have h1 : #ℚ_[p] ≤ 𝔠 := mk_le_continuum_of_denseRange _ (Padic.denseRange_ratCast p)
@@ -122,7 +120,7 @@ theorem mk_padicComplex_le (p : ℕ) [Fact p.Prime] : #(PadicComplex p) ≤ 𝔠
     (UniformSpace.Completion.denseRange_coe (α := PadicAlgCl p)) h2
 
 /- English proof (translation)
-The claim follows from `(exists_smallField (Formalism.MainNotions.DIV.Inh.cfPadic p) (mk_padicComplex_le p)).nonempty`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_smallField (p : ℕ) [Fact p.Prime] : Nonempty (SmallField p) :=
   (exists_smallField (Formalism.MainNotions.DIV.Inh.cfPadic p) (mk_padicComplex_le p)).nonempty
@@ -225,9 +223,9 @@ section Eval
 open scoped PowerSeries.WithPiTopology
 
 /- English proof (translation)
-Use `letI : WithIdeal V := ⟨IsLocalRing.maximalIdeal V⟩`. Establish `hI : IsAdic (IsLocalRing.maximalIdeal V)` using `rfl`. Take `⟨h1, h2⟩` from `hI.isAdicComplete_iff.mp inferInstance`. Establish `ha : PowerSeries.HasEval π` using `WithIdeal.isTopologicallyNilpotent_of_mem hπ`. Use `⟨PowerSeries.eval₂Hom (φ := RingHom.id V) continuous_id ha, fun a => ?_, ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[PowerSeries.coe_eval₂Hom, PowerSeries.eval₂_C]`. Both sides reduce to the same expression. Rewrite using `[PowerSeries.coe_eval₂Hom, PowerSeries.eval₂_X]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_evalU (V : Type) [CommRing V] [IsLocalRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V]
     (π : V) (hπ : π ∈ IsLocalRing.maximalIdeal V) :
@@ -241,11 +239,11 @@ theorem exists_evalU (V : Type) [CommRing V] [IsLocalRing V] [IsAdicComplete (Is
   · rw [PowerSeries.coe_eval₂Hom, PowerSeries.eval₂_X]
 
 /- English proof (translation)
-Establish `key : ∀ (n : ℕ) (f : V⟦X⟧), φ f - ψ f ∈ IsLocalRing.maximalIdeal V ^ n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro f`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Introduce `f`. Rewrite using `[PowerSeries.eq_X_mul_shift_add_const f]`. Simplify using `only [map_add, map_mul, hφ, hψ, hφ', hψ', add_sub_add_right_eq_sub, ← mul_sub]`. Rewrite using `[pow_succ']`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_mul hπ (ih _)`. Use `RingHom.ext fun f => sub_eq_zero.1 ?_` and prove the remaining obligations. Use `IsHausdorff.haus (I := IsLocalRing.maximalIdeal V) inferInstance _ fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Conclude with `key n f`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalU_unique (V : Type) [CommRing V] [IsLocalRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V]
     (π : V) (hπ : π ∈ IsLocalRing.maximalIdeal V) (φ ψ : V⟦X⟧ →+* V)
@@ -271,7 +269,7 @@ def evalU (V : Type) [CommRing V] [IsLocalRing V] [IsAdicComplete (IsLocalRing.m
   (exists_evalU V π hπ).choose
 
 /- English proof (translation)
-The claim follows from `(exists_evalU V π hπ).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem evalU_spec (V : Type) [CommRing V] [IsLocalRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V]
     (π : V) (hπ : π ∈ IsLocalRing.maximalIdeal V) :
@@ -283,7 +281,7 @@ end Eval
 def DVRing.Unif {B : OLam p} (V : DVRing B) : Type := {π : V.V // Irreducible π}
 
 /- English proof (translation)
-The claim follows from `π.2.not_isUnit`.
+A detailed English derivation is pending.
 -/
 theorem DVRing.Unif.mem {B : OLam p} {V : DVRing B} (π : V.Unif) : π.1 ∈ IsLocalRing.maximalIdeal V.V :=
   π.2.not_isUnit
@@ -357,7 +355,7 @@ def AbelianAtGen : Prop := ∀ η : M.toModelG.Gen, M.toModelG.abAt η
 end Model
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.isAbelianScheme_powObj_of_isAbelianScheme _ (GlobalTheory.Diag.isAbelianScheme_unit S) 0`.
+A detailed English derivation is pending.
 -/
 theorem isAbSch_trivial (S : Scheme.{0}) : ReciprocityTheory.ChartRestriction.G.Semi.IsAbelianScheme (Grp.trivial (Over S)).X :=
   GlobalTheory.isAbelianScheme_powObj_of_isAbelianScheme _ (GlobalTheory.Diag.isAbelianScheme_unit S) 0
@@ -390,7 +388,7 @@ def Model.base (B : OLam p) : Model B where
     exact ⟨h.comm, h.proper, h.smooth, h.geomConnected⟩
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap ℤ_[p] B.O)]`. Conclude with `(map_ne_zero_iff _ B.inj).2 (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem OLam.p_ne_zero (B : OLam p) : (p : B.O) ≠ 0 := by
   rw [← map_natCast (algebraMap ℤ_[p] B.O)]
@@ -408,7 +406,7 @@ def Model.baseChart {B : OLam p} (V : DVRing B) : (Model.base B).Chart V where
   comm := Category.comp_id _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `specMap _ ≫ specMap _ = specMap _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `RingHom.ext fun a => (evalU_spec V.V π.1 π.mem).1 _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 example {B : OLam p} (V : DVRing B) (π : V.Unif) : (Model.baseChart V).At π (Model.basePt V) := by
   change specMap _ ≫ specMap _ = specMap _
@@ -417,11 +415,11 @@ example {B : OLam p} (V : DVRing B) (π : V.Unif) : (Model.baseChart V).At π (M
   exact RingHom.ext fun a => (evalU_spec V.V π.1 π.mem).1 _
 
 /- English proof (translation)
-Take `⟨F, e, he⟩` from `exists_smallField (Formalism.MainNotions.DIV.Inh.cfPadic p) (mk_padicComplex_le p)`. Set `a : ℤ_[p] →+* PadicComplex p` to `(algebraMap ℚ_[p] (PadicComplex p)).comp PadicInt.Coe.ringHom`. Establish `ha : ∀ x, ‖a x‖ ≤ 1` using `fun x => by`. Establish `: ‖a x‖ = ‖(x : ℚ_[p])‖` using `norm_algebraMap' (PadicComplex p) (x : ℚ_[p])`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `x.2`. Set `b : ℤ_[p] →+* F.toCF.C` to `(e.symm : (Formalism.MainNotions.DIV.Inh.cfPadic p).C →+* F.toCF.C).comp a`. Establish `hb : ∀ x, b x ∈ OC F.toCF` using `fun x => by`. Rewrite using `[mem_OC, ← he]`. Conclude with `(congrArg norm (e.apply_symm_apply (a x))).trans_le (ha x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨⟨F, specMap (b.codRestrict (OC F.toCF) hb), fun h => ?_⟩⟩` and prove the remaining obligations. Establish `h' : (b.codRestrict (OC F.toCF) hb) (p : ℤ_[p]) ∈ (⊥ : Ideal (OC F.toCF))` using `h`. Rewrite `h'` using `[map_natCast, Ideal.mem_bot]`. Conclude with `(Fact.out : p.Prime).ne_zero (Nat.cast_eq_zero.1 h')`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_pt (p : ℕ) [Fact p.Prime] : Nonempty (Model.base (OLam.padic p)).Pt := by
   obtain ⟨F, e, he⟩ := exists_smallField (Formalism.MainNotions.DIV.Inh.cfPadic p) (mk_padicComplex_le p)

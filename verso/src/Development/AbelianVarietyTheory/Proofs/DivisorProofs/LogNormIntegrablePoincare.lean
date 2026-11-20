@@ -12,15 +12,15 @@ open MeasureTheory ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalThe
 open scoped ENNReal
 
 /- English proof (translation)
-Introduce `d X _ _ _ A hproj m α Λ σ c hset Z n hZ hreg hZbd L s hL hs hs1 hsZ hcomp`. Establish `ht : ∀ i, IsPotential A ((Fin.cons L Λ : Fin (m + 1) → LocPot X) i) ∧ IsSection A ((Fin.cons L Λ : Fin (m + 1) → LocPot X) i) ((Fin.cons s σ : Fin (m + 1) → X → X → ℂ) i) ∧ ∃ y ∈ Z, (Fin.cons s σ : Fin (m + 1) → X → X → ℂ) i y y ≠ 0`. Introduce `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Conclude with `⟨hL, hs, hsZ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Take `⟨y, hyZ, hybd⟩` from `Set.not_subset.1 hZbd`. Conclude with `⟨(hset.2.2.1 i).1, (hset.2.2.1 i).2.1, y, hyZ, fun h => hybd ⟨i, h⟩⟩`. Take `⟨Y, tY, cY, t2Y, B, μ, hμ, S, r, W, e, J, hBproj, hrange, hS, -, hdense, hinj, himm, hSW, hsnc⟩` from `hR d X A hproj Z n hZ hreg (m + 1) _ _ ht`. Establish `hhyp : ∀ y, ∃ χ : OpenPartialHomeomorph Y (Fin n → ℂ), IsCompatChart B χ ∧ y ∈ χ.source ∧ ∃ J' : Finset (Fin n), μ ⁻¹' S ∩ χ.source = {w ∈ χ.source | ∃ a ∈ J', χ w a = 0}`. Introduce `y`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨χ, hχ, hy, κ, -, hW, -⟩` from `hsnc y`. Use `⟨χ, hχ, hy, Finset.univ.filter (fun a => ∃ k ∈ J, κ k = some a), ?_⟩` and prove the remaining obligations. Use extensionality with `w`. Simplify using `only [hSW, Set.mem_inter_iff, Set.mem_iUnion, Set.mem_setOf_eq, Finset.mem_filter, Finset.mem_univ, true_and, exists_prop]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨⟨k, hk, hwk⟩, hw⟩`. Use `(hW k).le ⟨hwk, hw⟩` as an intermediate fact. Take `⟨a, ha, hwa⟩` from `this.2`. Conclude with `⟨hw, a, ⟨k, hk, ha⟩, hwa⟩`. Introduce and unpack `⟨hw, a, ⟨k, hk, ha⟩, hwa⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `: w ∈ W k ∩ χ.source` using `(hW k).ge ⟨hw, a, ha, hwa⟩`. Conclude with `⟨⟨k, hk, this.1⟩, hw⟩`. Establish `h1` using `GlobalTheory.RegToResolution.regIntegral_le_chartSumInt d X A Z n Y B μ hμ S (boundary σ) hrange hS hdense hinj himm hhyp (poincarePot α Λ σ c) (GlobalTheory.PoincSmooth.smoothOn_nhd_off_boundary d X A m α Λ σ c hset.1 (fun i => ⟨(hset.2.2.1 i).1, (hset.2.2.1 i).2.1⟩) (fun i => ( …`. Establish `h2` using `GlobalTheory.T.boundary_potential_section_bound d X A m α Λ σ c hset L s hL hs hs1 n Y B hBproj μ hμ r W e hsnc (GlobalTheory.LogResInt.rankDrop_of_analyticSetDimension hD d X A m Λ σ (fun i => ⟨(hset.2.2.1 i).1, (hset.2.2.1 i).2.1⟩) Z n hZ hreg hZbd L s hL hs hsZ hcomp Y B μ hμ …`. Conclude with `lt_of_le_of_lt h1 h2`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem logNormIntegrablePoincare (hR : GlobalTheory.Published.AnalyticLogResolution)
     (hD : GlobalTheory.Published.AnalyticSetDimension) : LogNormIntegrablePoincare := by

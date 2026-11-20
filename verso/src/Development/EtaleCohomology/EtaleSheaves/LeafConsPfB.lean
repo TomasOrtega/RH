@@ -8,7 +8,7 @@ namespace LateralTheory.E.LeafConsPfB
 open LateralTheory.E.E4 LateralTheory.E.LeafGhostCut LateralTheory.E.EtaleTopologySheaves LateralTheory.E.LeafConsPfA
 
 /- English proof (translation)
-Substitute `hu he` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem rpl_congr (q : ℕ) (i : ℤ) {U E U' E' : Scheme.{0}} (f : U ⟶ E) (f' : U' ⟶ E') {u u2 : U' ⟶ U} {e e2 : E' ⟶ E}
     (hu : u = u2) (he : e = e2) (c : f' ≫ e = u ≫ f) (c2 : f' ≫ e2 = u2 ≫ f) (n : ℤ) (y) :
@@ -22,7 +22,7 @@ abbrev uT {Y B W : Scheme.{0}} (p : Y ⟶ B) (ι : W ⟶ B) :
   pullback.map _ ι p ι (pullback.fst p (top B).hom) (𝟙 W) (𝟙 B) (by rw [Category.comp_id, pullback.condition]) (by simp)
 
 /- English proof (translation)
-The claim follows from `(pullback.lift_fst _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem uT_comm {Y B W : Scheme.{0}} (p : Y ⟶ B) (ι : W ⟶ B) :
     prU p ι (top B) ≫ pullback.fst p (top B).hom = uT p ι ≫ pullback.fst p ι := (pullback.lift_fst _ _ _).symm
@@ -31,7 +31,7 @@ instance {Y B : Scheme.{0}} (p : Y ⟶ B) : IsIso (pullback.fst p (top B).hom) :
 instance {Y B W : Scheme.{0}} (p : Y ⟶ B) (ι : W ⟶ B) : IsIso (uT p ι) := by infer_instance
 
 /- English proof (translation)
-The claim follows from `(rpl_comp q i f f' f'' u e u' e' c c' _ n y).symm`.
+A detailed English derivation is pending.
 -/
 theorem rpl_comp' (q : ℕ) (i : ℤ) {U E U' E' U'' E'' : Scheme.{0}} (f : U ⟶ E) (f' : U' ⟶ E') (f'' : U'' ⟶ E'')
     (u : U' ⟶ U) (e : E' ⟶ E) (u' : U'' ⟶ U') (e' : E'' ⟶ E') (c : f' ≫ e = u ≫ f) (c' : f'' ≫ e' = u' ≫ f')
@@ -48,7 +48,7 @@ abbrev TL (q : ℕ) (i : ℤ) {B W : Scheme.{0}} (ι : W ⟶ B) (n : ℤ) :=
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Simplify using `only [mY, pullback.map]`. Use `erw [pullback.lift_fst, pullback.lift_fst_assoc]`. Simplify using `only [Category.assoc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem L1 {B Y0 Y1 Y2 : Scheme.{0}} (p : Y0 ⟶ B) (g1 : Y1 ⟶ Y0) (g2 : Y2 ⟶ Y1) :
     pullback.fst (g2 ≫ g1 ≫ p) (top B).hom ≫ g2 ≫ g1 =
@@ -59,7 +59,7 @@ theorem L1 {B Y0 Y1 Y2 : Scheme.{0}} (p : Y0 ⟶ B) (g1 : Y1 ⟶ Y0) (g2 : Y2 �
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Simplify using `only [uT, toBW, pullback.map]`. Use `erw [pullback.lift_snd, pullback.lift_snd]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem L3 {B W Y : Scheme.{0}} (p : Y ⟶ B) (ι : W ⟶ B) :
     uT p ι ≫ pullback.snd p ι = toBW p ι (top B) ≫ pullback.snd (top B).hom ι := by
@@ -68,7 +68,7 @@ theorem L3 {B W Y : Scheme.{0}} (p : Y ⟶ B) (ι : W ⟶ B) :
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Use `L1 p g1 g2` as an intermediate fact. Simplify using `only [mY] at this`. Simplify using `only [uT, mW, mY, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc, pullback.map]`. Simplify using `only [uT, mW, mY, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc, pullback.map]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -83,17 +83,15 @@ theorem L2 {B W Y0 Y1 Y2 : Scheme.{0}} (ι : W ⟶ B) (p : Y0 ⟶ B) (g1 : Y1 �
     simp
 
 /- English proof (translation)
-Introduce `q _ i B W Y0 Y1 Y2 ι _ p g1 g2 K0 K1 K2 L f g ℓ l0 l1 l2 lL r0 r1 r2 rL mf mg mℓ`. Use `⟨fun n y => l0 (top B) n (TT q i p ι n y), fun n y => l2 (top B) n (TT q i (g2 ≫ g1 ≫ p) ι n y), fun n c => lL (top B) n (TL q i ι n c), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `n`. Conclude with `(r2.1 _ n).1.comp (rpl_bij _ _ _ _ _ _ _ _).1`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(rL.1 _ n).2.comp (rpl_bij _ _ _ _ _ _ _ _).2`. Introduce `n y`. Establish `h1` using `mf (top B) n (TT q i p ι n y)`. Establish `h2` using `mg (top B) n (rpl q i (prU p ι (top B)) (prU (g1 ≫ p) ι (top B)) (mW p g1 ι (top B)) (mY p g1 (top B)) (pullback.lift_fst _ _ _).symm n (TT q i p ι n y))`. Use `show l2 (top B) n _ = l0 (top B) n (TT q i p ι n y) ≫ (shiftFunctor _ n).map (f ≫ g)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Functor.map_comp]`. Use `Eq.trans ?_ (Category.assoc _ _ _)` and prove the remaining obligations. Rewrite using `[← h1, ← h2]`. Use `congrArg (l2 (top B) n) ?_` and prove the remaining obligations. Rewrite using `[rpl_comp', rpl_comp', rpl_comp']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `rpl_congr` to reduce the goal to its premises. Simplify `L2 ι p g1 g2` using `only [Category.assoc]`. Simplify `L1 p g1 g2` using `only [Category.assoc]`. Introduce `n c`. Establish `h` using `mℓ (top B) n (TL q i ι n c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ h` and prove the remaining obligations. Use `congrArg (l2 (top B) n) ?_` and prove the remaining obligations. Rewrite using `[rpl_comp', rpl_comp']`. Apply `rpl_congr` to reduce the goal to its premises. Simplify `L3 (g2 ≫ g1 ≫ p) ι` using `only [Category.assoc]`.
-
-Simplify using `only [toBY]`. Conclude with `pullback.condition`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem LeafGlob_pf : LateralTheory.E.LeafConsPf.LeafGlob := by
   intro q _ i B W Y0 Y1 Y2 ι _ p g1 g2 K0 K1 K2 L f g ℓ l0 l1 l2 lL r0 r1 r2 rL mf mg mℓ

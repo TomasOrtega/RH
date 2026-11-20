@@ -19,7 +19,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FrameEquiv
 
 /- English proof (translation)
-Use `⟨rfl, fun τ i => ⟨(1 : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S) i, Matrix.one_apply_eq i, fun j hij => Matrix.one_apply_ne hij.ne, (GlobalTheory.Frames.frChg_refl_and_comp E H Dw l Xo c S y y y).1.2.1 τ i⟩, 𝟙 _, Category.id_comp _, Category.id_comp _, fun i hi => ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (h i).symm` and prove the remaining obligations. Conclude with `congrArg (fun m => CommRingCat.Hom.hom m (scal y.x (a : S) i * y.s.f i)) ((Gx y.x).presheaf.map_id (Opposite.op ((PPx y.x).U i)))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem frBor_genDiag {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {S : Type} [CommRing S] [Algebra c.F S]
@@ -36,23 +36,23 @@ theorem frBor_genDiag {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Ge
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ r g X bas idx e x L y y' A A' _ _ _ hex hfr θ t hR hR' a n f hf`. Establish `hx : y'.x = y.x` using `(Over.w (A'.ex 0)).symm.trans ((congrArg (· ≫ Xo.univ.t.G.hom) (hex 0)).trans (Over.w (A.ex 0)))`. Establish `hu : y'.u = y.u` using `funext fun τ => funext fun i => GlobalTheory.PointUnif.deriv_unique (by simpa only [hex] using A'.der ⟨τ, i⟩) (A.der ⟨τ, i⟩)`. Take `⟨x', ho', u', tan', eig', bas', s', gen'⟩` from `y'`. Simplify using `only at hx hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Substitute `hx hu` using the available equality. Establish `hT : Out.SecTwistSt` using `GlobalTheory.lawsFieldsSeparately.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hS : Out.SecBaseChangeSt` using `GlobalTheory.lawsFieldsSeparately.2.1`. Establish `V` using `GlobalTheory.sec_values_complex_fibre hT E H Dw l Xo y.x`. Establish `key : ∀ i (pt : Sp ℂ ⟶ Gx y.x), pt ≫ Formalism.L2.PjFree.gxSnd y.x = 𝟙 _ → valAt' pt ((PPx y.x).U i) (s'.f i) = t * valAt' pt ((PPx y.x).U i) (y.s.f i)`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i pt hp`. Distinguish the cases in `hi : ⊤ ≤ pt ⁻¹ᵁ (PPx y.x).U i`. Establish `hw : (pt ≫ Formalism.L2.PjFree.gxFst y.x) ≫ Xo.univ.t.G.hom = y.x`. Establish `h1` using `Over.w (CartesianMonoidalCategory.snd (Over.mk y.x) Xo.univ.t.G)`. Establish `h2` using `Over.w (CartesianMonoidalCategory.fst (Over.mk y.x) Xo.univ.t.G)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Category.assoc _ _ _).trans ((congrArg (pt ≫ ·) (h1.trans h2.symm)).trans ?_)` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ y.x) hp).trans (Category.id_comp _))`. Take `⟨z, hz⟩` from `A.ex_onto (Over.homMk (pt ≫ Formalism.L2.PjFree.gxFst y.x) hw)`. Establish `hz' : pt ≫ Formalism.L2.PjFree.gxFst y.x = (A.ex z).left` using `(congrArg (·.left) hz).symm`. Take `⟨j, rfl⟩ : ∃ j, i = fun _ => j` from `⟨i 0, funext fun q => congrArg i (Fin.fin_one_eq_zero q)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hj : ⊤ ≤ (A.ex z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j`. Rewrite using `[← hz']`. Conclude with `fun q hq => Set.mem_iInter.1 (hi hq) 0`. Establish `e1` using `hR j z pt hz' hp hj`. Establish `e2` using `hR' j z pt (hz'.trans (hex z).symm) hp (by rw [hex]; exact hj)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[hfr j z hj, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `e2.trans (congrArg (t * ·) e1.symm)`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.TB.ValAt.valAt'_of_not _ _ hi, ReciprocityTheory.ChartRestriction.G.TB.ValAt.valAt'_of_not _ _ hi, mul_zero]`. Establish `ht : t ≠ 0`. Take `⟨i, pt, hp, hv⟩` from `(V s').2.1.1 gen'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result.
 
-Conclude with `fun h0 => hv (by rw [key i pt hp, h0, zero_mul])`. Take `⟨b, hb, -⟩` from `y.gen s'`. Establish `hbt : b = t`. Take `⟨i, pt, hp, hv⟩` from `(V y.s).2.1.1 y.gen`. Use `mul_right_cancel₀ hv ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[← key i pt hp, hb i, (V y.s).1 b i pt hp]`. Substitute `hbt` using the available equality. Establish `hA : AllTest Xo c` using `GlobalTheory.Frames.allTest_of_secBaseChange hS E H Dw l Xo c`. Establish `hw` using `(GlobalTheory.borDesc_and_wtField E H Dw l Xo c).2 a n f hf ℂ _ y _ (hA ℂ y) (hA ℂ _) (frBor_genDiag y s' gen' (Units.mk0 b ht) hb)`. Use `hw.trans (congrArg (· * evR Xo c f y) ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `wchar`. Rewrite using `[Fintype.prod_option]`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.GeneralDiagonalMatrix.genDiag, ex]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evR_eq_of_reads_smul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) [Algebra c.F ℂ] (r g : ℕ) (X : Data E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (e : Fin g ≃ Lt1 Dw) (x : Frame X.Ψ r) (L : Lt E r) (y y' : FrPt Xo c ℂ) (A : AnFib X bas idx e x L y) (A' : AnFib X bas idx e x L y'), IsSympl X bas → x ∈ X.dom → SelfD X L → (∀ z, (A'.ex z).left = (A.ex z).left) → (∀ j z, ⊤ ≤ (A.ex z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j → A'.fr j z = A.fr j z) → ∀ (θ : (Fin g → ℂ) → ℂ) (t : ℂ), A.Reads 1 y.s θ → A'.Reads 1 y'.s (t • θ) → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), ∀ f ∈ sec Xo c a n, evR Xo c f y' = t ^ n * evR Xo c f y := by
   intro E _ _ _ H Dw l Xo c _ r g X bas idx e x L y y' A A' _ _ _ hex hfr θ t hR hR' a n f hf

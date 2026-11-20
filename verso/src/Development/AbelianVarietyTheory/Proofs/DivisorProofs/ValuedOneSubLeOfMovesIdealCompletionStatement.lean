@@ -22,7 +22,7 @@ open GlobalTheory.CosetOrth
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CosetOrth.valued_one_sub_le_of_moves_integral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FValuedOneSubLeOfMovesIdealCompletion.lean&line=60#L60)
 -/

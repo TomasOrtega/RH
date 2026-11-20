@@ -12,11 +12,11 @@ noncomputable section
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Rewrite using `[← nrRealPlaces_eq_zero_iff]`. Establish `h2 : finrank ℚ K = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two ℚ K`. Establish `hr` using `card_add_two_mul_card_eq_rank (K := K)`. Establish `hs` using `sign_discr (K := K)`. Rewrite `hs` using `[S.discr_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd : (0 : ℤ) < S.d` using `by exact_mod_cast S.prime.pos`. Rewrite `hs` using `[Int.sign_eq_neg_one_of_neg (by omega)]`. Break down `Nat.even_or_odd (nrComplexPlaces K) with he | ho` into its components or cases. Rewrite `hs` using `[he.neg_one_pow]`. Evaluate the numerical expressions using `at hs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Take `⟨m, hm⟩` from `ho`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers.
 -/
 theorem isTotallyComplex_of_primeDiscriminant [Algebra.IsQuadraticExtension ℚ K]
     (S : PrimeDiscriminant K) : IsTotallyComplex K := by
@@ -36,9 +36,9 @@ theorem isTotallyComplex_of_primeDiscriminant [Algebra.IsQuadraticExtension ℚ 
 variable (σ : K →+* ℂ)
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `only [Set.mem_image, SetLike.mem_coe, mem_idealLattice, mem_singleton_mul, mem_coeIdeal]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨_, ⟨_, ⟨x, hx, rfl⟩, rfl⟩, rfl⟩, rfl⟩`. Conclude with `⟨x, hx, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨_, ⟨_, ⟨_, ⟨x, hx, rfl⟩, rfl⟩, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem image_idealLattice_spanSingleton_mul (c : ℂ) (b : K) (M : Ideal (𝓞 K)) :
     (c * ·) '' (idealLattice σ (spanSingleton (𝓞 K)⁰ b * (M : FractionalIdeal (𝓞 K)⁰ K)) : Set ℂ) =
@@ -55,21 +55,19 @@ variable (hK : finrank ℚ K = 2) [IsTotallyComplex K]
 include hK
 
 /- English proof (translation)
-Take `⟨I, c, hc, hI⟩` from `exists_idealLattice_of_latticeEnd_eq σ hK L hL`. Establish `h'` using `idealLattice_mul_homothetic σ (I : FractionalIdeal (𝓞 K)⁰ K) (↑(FractionalIdeal.mk0 K 𝔭)⁻¹) hI`. Rewrite `h'` using `[← hL']`. Take `⟨a, J₀, ha, hJ⟩` from `exists_eq_spanSingleton_mul ((↑(FractionalIdeal.mk0 K 𝔭)⁻¹ : FractionalIdeal (𝓞 K)⁰ K) * (I : FractionalIdeal (𝓞 K)⁰ K))`. Establish `hIJ : (I : FractionalIdeal (𝓞 K)⁰ K) = spanSingleton (𝓞 K)⁰ (algebraMap (𝓞 K) K a)⁻¹ * ↑((𝔭 : Ideal (𝓞 K)) * J₀)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[coeIdeal_mul, mul_left_comm, ← hJ, ← FractionalIdeal.coe_mk0 (K := K) 𝔭, Units.mul_inv_cancel_left]`. Establish `ha' : (algebraMap (𝓞 K) K a)⁻¹ ≠ 0` using `inv_ne_zero ((map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 K) K)).2 ha)`. Set `f : 𝓞 K →+ ℂ` to `{ toFun := fun x ↦ c * σ ((algebraMap (𝓞 K) K a)⁻¹ * algebraMap (𝓞 K) K x) map_zero' := by simp map_add' := fun x y ↦ by simp only [map_add, mul_add] }`. Establish `hf : Function.Injective f`. Introduce `x y hxy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxy' : c * σ ((algebraMap (𝓞 K) K a)⁻¹ * algebraMap (𝓞 K) K x) = c * σ ((algebraMap (𝓞 K) K a)⁻¹ * algebraMap (𝓞 K) K y)` using `hxy`. Conclude with `FaithfulSMul.algebraMap_injective (𝓞 K) K (mul_left_cancel₀ ha' (σ.injective (mul_left_cancel₀ hc hxy')))`. Establish `hLset : L.lattice.toAddSubgroup = ((𝔭 : Ideal (𝓞 K)) * J₀).toAddSubgroup.map f`. Apply `SetLike.coe_injective` to reduce the goal to its premises. Rewrite using `[AddSubgroup.coe_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (L.lattice : Set ℂ) = _`. Rewrite using `[hI, hIJ, image_idealLattice_spanSingleton_mul]`. Both sides reduce to the same expression. Establish `hL'set : L'.lattice.toAddSubgroup = J₀.toAddSubgroup.map f`. Apply `SetLike.coe_injective` to reduce the goal to its premises.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddSubgroup.coe_map]`. Use `show (L'.lattice : Set ℂ) = _`. Rewrite using `[h', hJ, image_idealLattice_spanSingleton_mul]`. Both sides reduce to the same expression. Establish `hle : ((𝔭 : Ideal (𝓞 K)) * J₀).toAddSubgroup ≤ J₀.toAddSubgroup` using `(Submodule.toAddSubgroup_le _ _).2 (Ideal.mul_le.2 fun a _ b hb ↦ J₀.mul_mem_left a hb)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.toAddSubgroup_le, hLset, hL'set]`. Conclude with `AddSubgroup.map_mono hle`. Rewrite using `[hLset, hL'set, AddSubgroup.relIndex_map_map_of_injective _ _ hf]`. Establish `hJ0 : J₀ ≠ ⊥`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Use `((FractionalIdeal.mk0 K 𝔭)⁻¹ * I).ne_zero ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, hJ, coeIdeal_bot, mul_zero]`. Establish `key` using `AddSubgroup.relIndex_mul_index hle`. Rewrite `key` using `[← Ideal.absNorm_eq_index, ← Ideal.absNorm_eq_index, map_mul]`.
-
-Establish `hn : Ideal.absNorm J₀ ≠ 0` using `by rwa [Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `mul_right_cancel₀ hn key`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem le_and_relIndex (L : PeriodPair) (hL : latticeEnd L = cmRing σ) (𝔭 : (Ideal (𝓞 K))⁰)
     (L' : PeriodPair)
@@ -127,15 +125,15 @@ theorem le_and_relIndex (L : PeriodPair) (hL : latticeEnd L = cmRing σ) (𝔭 :
     exact mul_right_cancel₀ hn key
 
 /- English proof (translation)
-Take `⟨L'', hL'', -⟩` from `exists_lattice_mul σ hK L hL U`. Take `⟨I, c, hc, hI⟩` from `exists_idealLattice_of_latticeEnd_eq σ hK L hL`. Establish `h'` using `idealLattice_mul_homothetic σ (I : FractionalIdeal (𝓞 K)⁰ K) (↑U⁻¹) hI`. Rewrite `h'` using `[← hL'']`. Establish `hσπ : σ π ≠ 0` using `(map_ne_zero σ).2 hπ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hscale : (L''.lattice : Set ℂ) = ((σ π)⁻¹ * ·) '' L.lattice`. Rewrite using `[h', hI, Units.val_inv_eq_inv_val, hU, spanSingleton_inv, Set.image_image]`. Use extensionality with `z`. Simplify using `only [Set.mem_image, SetLike.mem_coe, mem_idealLattice, mem_singleton_mul]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨_, ⟨_, ⟨y, hy, rfl⟩, rfl⟩, rfl⟩`. Conclude with `⟨σ y, ⟨y, hy, rfl⟩, by rw [map_mul, map_inv₀]; ring⟩`. Introduce and unpack `⟨_, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨_, ⟨y, hy, rfl⟩, rfl⟩, by rw [map_mul, map_inv₀]; ring⟩`. Establish `hG : ∀ n, L''.G n = σ π ^ n * L.G n` using `fun n ↦ by`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[G_eq_of_lattice_eq_smul (inv_ne_zero hσπ) hscale n, inv_pow, inv_inv]`. Establish `h₂ : L''.g₂ = σ π ^ 4 * L.g₂`. Rewrite using `[PeriodPair.g₂, PeriodPair.g₂, hG]`. Expand and normalize the polynomial expressions, which then agree. Establish `h₃ : L''.g₃ = σ π ^ 6 * L.g₃`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[PeriodPair.g₃, PeriodPair.g₃, hG]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[discrRatio, ← hL'', latticeDiscr_lattice, latticeDiscr_lattice, discr_of_g₂_g₃ h₂ h₃, mul_div_assoc, div_self (discr_ne_zero L), mul_one]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem discrRatio_spanSingleton (L : PeriodPair) (hL : latticeEnd L = cmRing σ) (π : K)
     (hπ : π ≠ 0) (U : (FractionalIdeal (𝓞 K)⁰ K)ˣ)
@@ -165,9 +163,9 @@ theorem discrRatio_spanSingleton (L : PeriodPair) (hL : latticeEnd L = cmRing σ
     mul_div_assoc, div_self (discr_ne_zero L), mul_one]
 
 /- English proof (translation)
-Take `⟨L', hL', -⟩` from `exists_lattice_mul σ hK L hL (FractionalIdeal.mk0 K 𝔭)`. Take `⟨hle, hidx⟩` from `le_and_relIndex σ hK L hL 𝔭 L' hL'`. Establish `h` using `hΔ L L' _ hp hle hidx`. Establish `: Algebra.IsIntegral ℤ (Algebra.adjoin ℤ {(weierstrassCurve L).j})` using `Algebra.IsIntegral.adjoin (by rintro x rfl; exact hj L hL)`. Rewrite using `[discrRatio, ← hL']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isIntegral_trans _ h`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_discrRatio (hΔ : DeltaRatioIntegral.Statement)
     (hj : ∀ L : PeriodPair, latticeEnd L = cmRing σ → IsIntegral ℤ (weierstrassCurve L).j)
@@ -185,9 +183,9 @@ theorem isIntegral_discrRatio (hΔ : DeltaRatioIntegral.Statement)
 variable [Algebra.IsQuadraticExtension ℚ K] (S : PrimeDiscriminant K)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨1, isIntegral_one, by rw [zero_add, pow_one, mul_one]⟩`. Consider the case `succ n ih`. Take `⟨c, hc, e⟩` from `ih`. Take `⟨L', hL', hL'e⟩` from `exists_lattice_mul σ hK L hL (FractionalIdeal.mk0 K 𝔭 ^ (n + 1))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hw` using `isIntegral_discrRatio σ hK hΔ (hj σ) L' hL'e 𝔭 hp`. Use `⟨c * discrRatio σ L'.lattice (FractionalIdeal.mk0 K 𝔭), hc.mul hw, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, hW σ L hL, e, ← hL', mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_discrRatio_pow (hW : WCocycle.Statement S) (hΔ : DeltaRatioIntegral.Statement)
     (hj : JIntegral.Statement S) (L : PeriodPair) (hL : latticeEnd L = cmRing σ)
@@ -206,29 +204,25 @@ theorem exists_discrRatio_pow (hW : WCocycle.Statement S) (hΔ : DeltaRatioInteg
 omit hK [IsTotallyComplex K] in
 
 /- English proof (translation)
-Introduce `σ L hL 𝔭 h𝔭 hp`. Use `isTotallyComplex_of_primeDiscriminant S` as an intermediate fact. Establish `hK : finrank ℚ K = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two ℚ K`. Choose the witnesses or unpack the hypotheses as in `⟨n, π, hπ0, hπ⟩ : ∃ (n : ℕ) (π : 𝓞 K), π ≠ 0 ∧ (𝔭 : Ideal (𝓞 K)) ^ (n + 1) = Ideal.span {π} := by`. Take `⟨n, hn⟩` from `Nat.exists_eq_succ_of_ne_zero (orderOf_pos (ClassGroup.mk0 𝔭)).ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ClassGroup.mk0 (𝔭 ^ (n + 1)) = 1`. Rewrite using `[map_pow, show n + 1 = orderOf (ClassGroup.mk0 𝔭) from hn.symm, pow_orderOf_eq_one]`. Establish `hpr` using `(ClassGroup.mk0_eq_one_iff (𝔭 ^ (n + 1)).2).1 h1`. Rewrite `hpr` using `[SubmonoidClass.coe_pow]`. Use `⟨n, Submodule.IsPrincipal.generator _, ?_, (Ideal.span_singleton_generator _).symm⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h0`. Establish `hb : (𝔭 : Ideal (𝓞 K)) ^ (n + 1) = ⊥`. Rewrite using `[← Ideal.span_singleton_generator ((𝔭 : Ideal (𝓞 K)) ^ (n + 1)), h0, Ideal.span_singleton_eq_bot]`. Conclude with `nonZeroDivisors.coe_ne_zero (𝔭 ^ (n + 1)) (by rw [SubmonoidClass.coe_pow, hb]; rfl)`. Establish `hπK : algebraMap (𝓞 K) K π ≠ 0` using `(map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 K) K)).2 hπ0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : ((FractionalIdeal.mk0 K 𝔭 ^ (n + 1) : (FractionalIdeal (𝓞 K)⁰ K)ˣ) : FractionalIdeal (𝓞 K)⁰ K) = spanSingleton (𝓞 K)⁰ (algebraMap (𝓞 K) K π)`. Rewrite using `[Units.val_pow_eq_pow_val, FractionalIdeal.coe_mk0, ← coeIdeal_pow, hπ, coeIdeal_span_singleton]`. Take `⟨c, hc, e⟩` from `exists_discrRatio_pow σ hK S hW hΔ hj L hL 𝔭 hp n`. Rewrite `e` using `[discrRatio_spanSingleton σ hK L hL _ hπK _ hU]`. Establish `hwint` using `isIntegral_discrRatio σ hK hΔ (hj σ) L hL 𝔭 hp`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(hwint.tower_top (A := ℚ)).isAlgebraic, ?_⟩` and prove the remaining obligations. Introduce and unpack `F _ _ ι τ hτ ⟨x, hx⟩`. Establish `hcomp : ∀ z : K, τ (ι z) = σ z` using `fun z ↦ by rw [← hτ]; rfl`. Establish `hσπ : σ (algebraMap (𝓞 K) K π) ≠ 0` using `(map_ne_zero σ).2 hπK`. Establish `hw0 : discrRatio σ L.lattice (FractionalIdeal.mk0 K 𝔭) ≠ 0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Rewrite `e` using `[h0, zero_mul]`. Conclude with `pow_ne_zero 12 hσπ e`. Establish `hxint : IsIntegral ℤ x`. Rewrite using `[← isIntegral_algHom_iff τ.toIntAlgHom τ.injective]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `IsIntegral ℤ (τ x)`. Rewrite using `[hx]`. Conclude with `hwint`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hw0 (by rw [← hx, map_zero])`. Use `set y : F := ι (algebraMap (𝓞 K) K π) ^ 12 / x with hy_def`. Establish `hy : τ y = c`. Rewrite using `[hy_def, map_div₀, map_pow, hcomp, hx, e, mul_div_cancel_left₀ _ hw0]`. Establish `hyint : IsIntegral ℤ y`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← isIntegral_algHom_iff τ.toIntAlgHom τ.injective]`. Express the relevant statement in the definitionally equal form `IsIntegral ℤ (τ y)`. Rewrite using `[hy]`. Conclude with `hc`. Use `⟨⟨x, hxint⟩, hx, fun Q hQ hnot hxQ ↦ hnot ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hxy : (⟨x, hxint⟩ : 𝓞 F) * ⟨y, hyint⟩ = RingOfIntegers.mapRingHom ι π ^ 12`. Use `ext`. Express the relevant statement in the definitionally equal form `x * y = algebraMap (𝓞 F) F (RingOfIntegers.mapRingHom ι π ^ 12)`. Rewrite using `[hy_def, mul_div_cancel₀ _ hx0, map_pow]`. Both sides reduce to the same expression.
-
-Establish `hπQ : RingOfIntegers.mapRingHom ι π ∈ Q` using `hQ.isPrime.mem_of_pow_mem 12 (hxy ▸ Q.mul_mem_right _ hxQ)`. Establish `hle : Ideal.map (RingOfIntegers.mapRingHom ι) ((𝔭 : Ideal (𝓞 K)) ^ (n + 1)) ≤ Q`. Rewrite using `[hπ, Ideal.map_span, Set.image_singleton, Ideal.span_singleton_le_iff_mem]`. Conclude with `hπQ`. Rewrite `hle` using `[Ideal.map_pow]`.
-
-Use `hQ.isPrime` as an intermediate fact. Conclude with `Ideal.IsPrime.le_of_pow_le hle`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem WUnitOffPrime.proof (hW : WCocycle.Statement S) (hΔ : DeltaRatioIntegral.Statement)
     (hj : JIntegral.Statement S) : WUnitOffPrime.Statement S := by

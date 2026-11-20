@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `F _ k A B hA hB i`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun j _ hj => ?_) (fun h => absurd (Finset.mem_univ i) h)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hj with h | h` into its components or cases. Rewrite using `[hA (show id j < id i from h), zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB (show id i < id j from h), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.Qh23.uniA_mul_diag :
     ∀ {F : Type} [inst : Field F] {k : ℕ} (A B : Matrix (Fin k) (Fin k) F),

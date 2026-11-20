@@ -15,7 +15,7 @@ namespace GlobalTheory.HeckeLiftN
 variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Establish `: Valued.v (0 : s.v.adicCompletion (maximalRealSubfield L)) = WithZero.exp (-1 : ℤ)` using `hϖ`. Rewrite `this` using `[map_zero]`. Conclude with `WithZero.exp_ne_zero this.symm`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unif_ne_zero {s : SplitPlace L} {ϖ : s.v.adicCompletion (maximalRealSubfield L)}
     (hϖ : IsUnif L s.v ϖ) : ϖ ≠ 0 := by
@@ -25,27 +25,23 @@ theorem unif_ne_zero {s : SplitPlace L} {ϖ : s.v.adicCompletion (maximalRealSub
   exact WithZero.exp_ne_zero this.symm
 
 /- English proof (translation)
-Introduce and unpack `x ⟨hx, a, ha, b, hb, e⟩`. Establish `h0` using `unif_ne_zero hϖ'`. Establish `h0'` using `unif_ne_zero hϖ`. Use `set u := ϖ / ϖ' with hu`. Establish `hu0 : u ≠ 0` using `div_ne_zero h0' h0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : Valued.v u = 1`. Rewrite using `[hu, map_div₀]`. Establish `e1 : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hϖ`. Establish `e2 : Valued.v ϖ' = WithZero.exp (-1 : ℤ)` using `hϖ'`. Rewrite using `[e1, e2, div_self WithZero.exp_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hvi : Valued.v u⁻¹ = 1` using `by rw [map_inv₀, hv, inv_one]`. Set `c : Fin n → s.v.adicCompletion (maximalRealSubfield L)` to `fun i => if (i : ℕ) < k then u else 1`. Set `c' : Fin n → s.v.adicCompletion (maximalRealSubfield L)` to `fun i => if (i : ℕ) < k then u⁻¹ else 1`. Establish `hcc : (fun i => c i * c' i) = fun _ => 1`. Apply the tactic sequence `funext i; simp only [c, c']; split_ifs <;> simp [hu0]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hcc' : (fun i => c' i * c i) = fun _ => 1`. Apply the tactic sequence `funext i; simp only [c, c']; split_ifs <;> simp [hu0]`. Set `dm : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L))` to `⟨Matrix.diagonal c, Matrix.diagonal c', by rw [Matrix.diagonal_mul_diagonal, hcc, Matrix.diagonal_one], by rw [Matrix.diagonal_mul_diagonal, hcc', Matrix.diagonal_one]⟩`. Establish `hI : ∀ z : s.v.adicCompletion (maximalRealSubfield L), Valued.v z ≤ 1 → z ∈ (s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring` using `fun z hz => (HeightOneSpectrum.mem_adicCompletionIntegers _ _ s.v).2 hz`. Establish `hdm : dm ∈ Formalism.UG.GLint (Fin n) (s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring`.
+Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.HeckeStdFacts.mem_GLint_iff]`. Use `⟨fun i j => hI _ ?_, fun i j => hI _ ?_⟩` and prove the remaining obligations. Use `show Valued.v (Matrix.diagonal c i j) ≤ 1`. Rewrite using `[Matrix.diagonal_apply]`. Use `split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [c]`. Use `split_ifs`. Rewrite using `[hv]`. Rewrite using `[map_one]`. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_le'`. Use `show Valued.v (Matrix.diagonal c' i j) ≤ 1`. Rewrite using `[Matrix.diagonal_apply]`. Use `split_ifs`. Simplify using `only [c']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `split_ifs`. Rewrite using `[hvi]`. Rewrite using `[map_one]`. Rewrite using `[map_zero]`. Conclude with `zero_le'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdiag : Formalism.UG.diagJ n ϖ k = Formalism.UG.diagJ n ϖ' k * (dm : Matrix (Fin n) (Fin n) _)` using `by show _ = _ * Matrix.diagonal c`. Rewrite using `[Formalism.UG.diagJ, Formalism.UG.diagJ, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [c]`.
-
-Use `split_ifs`. Rewrite using `[hu]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[one_mul]`. Use `⟨hx, a, ha, dm * b, mul_mem hdm hb, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[e, Units.val_mul, hdiag]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tSet_subset_of_unif (n : ℕ) (s : SplitPlace L) (ϖ ϖ' : s.v.adicCompletion (maximalRealSubfield L)) (k : ℕ)
     (hϖ : IsUnif L s.v ϖ) (hϖ' : IsUnif L s.v ϖ') : tSet L n s ϖ k ⊆ tSet L n s ϖ' k := by
@@ -103,14 +99,14 @@ theorem tSet_subset_of_unif (n : ℕ) (s : SplitPlace L) (ϖ ϖ' : s.v.adicCompl
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-The claim follows from `Set.Subset.antisymm (tSet_subset_of_unif n s ϖ ϖ' k hϖ hϖ') (tSet_subset_of_unif n s ϖ' ϖ k hϖ' hϖ)`.
+A detailed English derivation is pending.
 -/
 theorem tSet_eq_of_unif (n : ℕ) (s : SplitPlace L) (ϖ ϖ' : s.v.adicCompletion (maximalRealSubfield L)) (k : ℕ)
     (hϖ : IsUnif L s.v ϖ) (hϖ' : IsUnif L s.v ϖ') : tSet L n s ϖ k = tSet L n s ϖ' k :=
   Set.Subset.antisymm (tSet_subset_of_unif n s ϖ ϖ' k hϖ hϖ') (tSet_subset_of_unif n s ϖ' ϖ k hϖ' hϖ)
 
 /- English proof (translation)
-Establish `hw : s.w = s'.w` using `GlobalTheory.TwSys.ResidualCompare.isConjPl_unique hc hc'`. Take `rfl` from `GlobalTheory.SplitUniq.splitPlace_eq_of_w_eq _ s s' hw`. Unfold `NG.tN`. Rewrite using `[tSet_eq_of_unif n s ϖ ϖ' k hu hu']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tN_eq_of_conj (D : D7) {n : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] (J : Subgroup (GAf D.host.E n))
     (v : PlE D.host) (s s' : SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E))
@@ -127,23 +123,21 @@ end GlobalTheory.HeckeLiftN
 namespace GlobalTheory.HeckeLiftN
 
 /- English proof (translation)
-Introduce `hP hG hI j w v k h1 h2 hg`. Distinguish the cases in `hex : ∃ (s : SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), IsConjPl D.host v s.w ∧ IsUnif D.host.E s.v ϖ`. Use `swap`. Conclude with `⟨0, fun s ϖ hc hu _ => absurd ⟨s, ϖ, hc, hu⟩ hex⟩`. Take `⟨s0, ϖ0, hc0, hu0⟩` from `hex`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB, hBs⟩` from `hG w j h1 h2`. Take `⟨j', rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`. Establish `hj' : j' < D.R.m` using `by omega`. Use `set Mw := M (D.what₂.muTw w) (j' + 1) h1 h2 with hMw`. Establish `hrat : ∀ x, ∃ x', Mw.real (D.what₂.jMt (D.what₂.muTw w) (j' + 1) x') = NG.tN Mw.J s0 ϖ0 k (Mw.real (D.what₂.jMt (D.what₂.muTw w) (j' + 1) x))` using `fun x => hI.rat w ⟨j', hj'⟩ v k s0 ϖ0 hg hc0 hu0 x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, Plin, -, -⟩` from `hP D.host.E D.R.nV Mw.wt Mw.J Mw.χ B Mw.J_open hB s0 ϖ0 k (hBs v k s0 hg hc0) hu0 hg.2.2.2.2.1 hg.2.2.2.2.2`. Establish `hTS : ∀ y, Mw.real y ∈ NG.TypeSp Mw.wt.ρ Mw.J Mw.χ` using `fun y => by`. Rewrite using `[← Mw.real_range]`. Conclude with `LinearMap.mem_range_self _ y`. Establish `hRJ : Function.Injective fun x => Mw.real (D.what₂.jMt (D.what₂.muTw w) (j' + 1) x)` using `Mw.real_inj.comp (Formalism.L2.jMt_injective _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `htN0 : NG.tN Mw.J s0 ϖ0 k (0 : GAf D.host.E D.R.nV → Mw.wt.W) = 0`. Use `Plin (0 : GAf D.host.E D.R.nV → Mw.wt.W) (Submodule.zero_mem _) 0 (Submodule.zero_mem _) 1` as an intermediate fact. Rewrite `this` using `[one_smul, add_zero, one_smul]`. Simplify using `using this`. Set `T0 : D.what₂.MtL (D.what₂.muTw w) (j' + 1) → D.what₂.MtL (D.what₂.muTw w) (j' + 1)` to `fun x => (hrat x).choose`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT0 : ∀ x, Mw.real (D.what₂.jMt (D.what₂.muTw w) (j' + 1) (T0 x)) = NG.tN Mw.J s0 ϖ0 k (Mw.real (D.what₂.jMt (D.what₂.muTw w) (j' + 1) x))` using `fun x => (hrat x).choose_spec`. Establish `hadd : ∀ x y, T0 (x + y) = T0 x + T0 y`. Introduce `x y`. Apply `hRJ` to reduce the goal to its premises. Use `show Mw.real (D.what₂.jMt (D.what₂.muTw w) (j' + 1) (T0 (x + y))) = Mw.real (D.what₂.jMt (D.what₂.muTw w) (j' + 1) (T0 x + T0 y))`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Plin _ (hTS (D.what₂.jMt (D.what₂.muTw w) (j' + 1) x)) _ (hTS (D.what₂.jMt (D.what₂.muTw w) (j' + 1) y)) 1` as an intermediate fact. Rewrite `this` using `[one_smul, one_smul]`. Rewrite using `[hT0, map_add, map_add, map_add, map_add, hT0, hT0, this]`. Establish `hsmul : ∀ (a : D.what₂.LL) x, T0 (a • x) = a • T0 x`. Introduce `a x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `hRJ` to reduce the goal to its premises. Use `show Mw.real (D.what₂.jMt (D.what₂.muTw w) (j' + 1) (T0 (a • x))) = Mw.real (D.what₂.jMt (D.what₂.muTw w) (j' + 1) (a • T0 x))`. Use `Plin _ (hTS (D.what₂.jMt (D.what₂.muTw w) (j' + 1) x)) 0 (Submodule.zero_mem _) (D.what₂.embLL a)` as an intermediate fact. Rewrite `this` using `[add_zero, htN0, add_zero]`. Rewrite using `[hT0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.map_smulₛₗ, RingHom.id_apply]`. Rewrite using `[hT0, this]`. Set `T : Module.End D.what₂.LL (D.what₂.MtL (D.what₂.muTw w) (j' + 1))` to `{ toFun := T0 map_add' := hadd map_smul' := hsmul }`. Use `⟨T, fun s ϖ hc hu x => ?_⟩` and prove the remaining obligations. Use `show Mw.real (D.what₂.jMt (D.what₂.muTw w) (j' + 1) (T0 x)) = NG.tN Mw.J s ϖ k (Mw.real (D.what₂.jMt (D.what₂.muTw w) (j' + 1) x))`.
-
-Rewrite using `[hT0]`. Conclude with `tN_eq_of_conj D Mw.J v s0 s ϖ0 ϖ k hc0 hc hu0 hu _`.
+A detailed English derivation is pending.
 -/
 theorem heckeLift (D : D7) (M : MtFam D) (C : NChoice D) (tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E) :
     HeckeStdPlain → GenHyp M C.Q → MtInput D M tup C.Q → HeckeLift0 (mt0 M) C.Q := by

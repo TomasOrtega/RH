@@ -8,11 +8,11 @@ namespace GlobalTheory.FlagSecProbe
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Use `choose P hP hG using X.signature`. Use `⟨fun τ => P τ, fun τ => ⟨hP τ, fun i => ?_⟩⟩` and prove the remaining obligations. Establish `h : dmin X.Gm (fun τ => P τ) τ i = ((psgn X.p0 i : ℝ) : ℂ)`. Establish `hm : mat (Ψ` using `X.Ψ) (fun τ => P τ) τ = P τ := rfl`. Unfold `dmin lminor`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, hG τ, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal]`. Unfold `psgn`. Rewrite using `[Complex.ofReal_prod, ← Fin.prod_univ_eq_prod_range (fun a => ((sgn X.p0 a : ℝ) : ℂ))]`. Both sides reduce to the same expression. Rewrite using `[h, Complex.ofReal_re]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_self_pos.2 ?_` and prove the remaining obligations. Unfold `psgn`. Use `Finset.prod_ne_zero_iff.2 fun a _ => ?_` and prove the remaining obligations. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem dom_nonempty (X : Data E r) : X.dom.Nonempty := by
   classical
@@ -33,7 +33,7 @@ theorem dom_nonempty (X : Data E r) : X.dom.Nonempty := by
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Introduce `h`. Use `(hx τ).2 i` as an intermediate fact. Simplify using `[h] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem dmin_ne_zero (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ)
     (i : Fin (r + 1)) : dmin X.Gm x τ i ≠ 0 := by
@@ -42,7 +42,7 @@ theorem dmin_ne_zero (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : 
   simp [h] at this
 
 /- English proof (translation)
-Unfold `Data.pnorm`. Establish `: (∏ τ, ∏ i : Fin r, ‖dmin X.Gm x τ i.succ / dmin X.Gm x τ i.castSucc‖ ^ (-(la τ i : ℝ) / 2)) ≠ 0`. Use `Finset.prod_ne_zero_iff.2 fun τ _ => Finset.prod_ne_zero_iff.2 fun i _ => ?_` and prove the remaining obligations. Conclude with `(Real.rpow_pos_of_pos (norm_pos_iff.2 (div_ne_zero (dmin_ne_zero X hx τ _) (dmin_ne_zero X hx τ _))) _).ne'`. Rewrite using `[mul_eq_zero, or_iff_left this, norm_eq_zero]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pnorm_eq_zero_iff (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ)
     {x : Frame X.Ψ r} (hx : x ∈ X.dom) : X.pnorm la P x = 0 ↔ P x = 0 := by
@@ -55,9 +55,9 @@ theorem pnorm_eq_zero_iff (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → 
   rw [mul_eq_zero, or_iff_left this, norm_eq_zero]
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `X.χ_fin 0`. Establish `h0 : X.χ 0 γ ≠ 0` using `fun h0 => by`. Use `h γ hγ` as an intermediate fact. Rewrite `this` using `[h0, zero_pow hn.ne']`. Conclude with `zero_ne_one this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `X.χ_add 0 0 γ hγ`. Rewrite `h1` using `[add_zero]`. Conclude with `(mul_right_eq_self₀.1 h1.symm).resolve_right h0`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_zero (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) : X.χ 0 γ = 1 := by
   obtain ⟨n, hn, h⟩ := X.χ_fin 0
@@ -70,7 +70,7 @@ theorem chi_zero (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) : X.χ 0
   exact (mul_right_eq_self₀.1 h1.symm).resolve_right h0
 
 /- English proof (translation)
-Use `⟨⟨differentiableOn_const _, fun x _ b _ => ?_, fun γ hγ x _ => ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Simplify using `[bchar]`. Simplify using `[chi_zero X hγ]`. Simplify using `[Data.pnorm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem one_isSec (X : Data E r) :
     X.IsSec 0 (fun _ => 1) ∧ ∀ x, X.pnorm 0 (fun _ => 1) x = 1 := by
@@ -80,15 +80,15 @@ theorem one_isSec (X : Data E r) :
   · simp [Data.pnorm]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `dom_nonempty X`. Use function extensionality and compare the values at `τ i`. Set `b : Frame X.Ψ r` to `fun σ => Matrix.diagonal fun a => if σ = τ ∧ a = i then (2 : ℂ) else 1`. Establish `hb : b ∈ Bor X.Ψ r` using `fun σ => ⟨by`. Establish `: mat b σ = Matrix.diagonal fun a => if σ = τ ∧ a = i then (2 : ℂ) else 1` using `rfl`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, Matrix.det_diagonal]`. Use `Finset.prod_ne_zero_iff.2 fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> norm_num,`. Use `fun a c hca => Matrix.diagonal_apply_ne _ hca.ne'⟩`. Establish `h1` using `h.2.1 x hx b hb`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : bchar la b = (2 : ℂ) ^ la τ i`. Unfold `bchar`. Rewrite using `[Finset.prod_eq_single τ, Finset.prod_eq_single i]`. Simplify using `[b]`. Introduce `a _ ha`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[b, ha]`. Simplify using the standard rewrite rules. Introduce `σ _ hσ`. Simplify using `[b, hσ]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2, mul_one]`. Establish `h3 : ((2 : ℝ)) ^ la τ i = 1`. Use `congrArg norm h1` as an intermediate fact. Simplify `this.symm` using `[norm_zpow]`. Conclude with `(zpow_eq_one_iff_right₀ (by norm_num) (by norm_num)).1 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem weight_eq_zero_of_one_isSec (X : Data E r) (la : Wt X.Ψ r)
     (h : X.IsSec la (fun _ => 1)) : la = 0 := by
@@ -118,7 +118,7 @@ theorem weight_eq_zero_of_one_isSec (X : Data E r) (la : Wt X.Ψ r)
   exact (zpow_eq_one_iff_right₀ (by norm_num) (by norm_num)).1 h3
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hP.1.congr hQ, fun x hx b hb => by rw [hQ _ (hB x hx b hb), hQ x hx, hP.2.1 x hx b hb], fun γ hγ x hx => by rw [hQ _ (hΓ γ hγ x hx), hQ x hx, hP.2.2 γ hγ x hx]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSec_congr_on_dom (X : Data E (r + 1)) (la : Wt X.Ψ (r + 1))
     (P : Frame X.Ψ (r + 1) → ℂ) (hP : X.IsSec la P) (Q : Frame X.Ψ (r + 1) → ℂ)

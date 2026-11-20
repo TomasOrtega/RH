@@ -10,19 +10,19 @@ open Formalism.MainNotions Formalism.BasicNotions Formalism.MainNotions.G Classi
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `eps Fm`. Take `⟨x1, h1⟩` from `GlobalTheory.nuRow_nonneg_le_ten_mul eps Fm`. Take `⟨x2, h2⟩` from `GlobalTheory.ShNums.size_rel Fm`. Use `⟨max x1 x2, fun x hx hx1 i u j hj z => ?_⟩` and prove the remaining obligations. Establish `hr` using `h1 x (le_trans (le_max_left _ _) hx) hx1 i u (j + 1) (Finset.mem_Icc.2 ⟨by omega, by omega⟩) (tauPl (Fm.D x i) z)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Nat.add_sub_cancel] at hr`. Take `⟨hkN, -, -, -, -, h4, -, -, -, hS⟩` from `h2 x (le_trans (le_max_right _ _) hx) hx1 i`. Establish `hsx` using `Fm.L_x x i hx1`. Rewrite using `[GlobalTheory.nuD_card_eq_sum_nuRow _ (nuRowOK _) u j hj z]`. Establish `hsum` using `Finset.sum_le_card_nsmul (Finset.range ((Fm.D x i).R.N j)) (fun r => DV.nuRow (Fm.D x i) u (j + 1) (tauPl (Fm.D x i) z) r) (10 * x * (Fm.L x i).sc.b) (fun r hr' => (hr r (Finset.mem_range.1 hr')).2)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hsum` using `[Finset.card_range, nsmul_eq_mul]`. Establish `hNle : ((Fm.D x i).R.N j : ℝ) ≤ (Fm.D x i).R.N (Fm.D x i).R.m`. Establish `: (Fm.D x i).R.N j ≤ (Fm.D x i).R.N (Fm.D x i).R.m`. Unfold `Ranks.N`. Use `Nat.mul_le_mul_right ((Fm.D x i).R.t + 1) hj.le` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions. Establish `hk : (1 : ℝ) ≤ (Fm.D x i).R.k`. Use `(Fm.D x i).R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 1 ≤ (Fm.D x i).R.k)` after adjusting the coercions.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN0 : (0 : ℝ) ≤ (Fm.D x i).R.N (Fm.D x i).R.m` using `Nat.cast_nonneg _`. Establish `hNk` using `le_mul_of_one_le_left hN0 hk`. Establish `heta` using `(Fm.L x i).etaSz_pos`. Establish `hb : 0 < (Fm.L x i).sc.b` using `Real.exp_pos _`. Establish `hN : ((Fm.D x i).R.N j : ℝ) ≤ (Fm.L x i).sc.b / 10` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h4` using `[hsx]`. Establish `hxb : 0 ≤ 10 * x * (Fm.L x i).sc.b` using `by positivity`. Establish `h5` using `mul_le_mul_of_nonneg_right hN hxb`. Establish `ha : (Fm.L x i).sc.a = x * (Fm.L x i).sc.b`. Unfold `Scale.a`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsx]`. Rewrite using `[ha]`. Establish `h6 : x * (Fm.L x i).sc.b ^ 2 ≤ x * (x * (Fm.L x i).sc.b ^ 2)` using `le_mul_of_one_le_left (by positivity) (by linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem nuD_card_le_a_sq : ∀ {eps : ℝ} (Fm : FamP eps), ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ i : Fm.Ix x, ∀ (u : (Fm.D x i).what₂.Word), ∀ j < (Fm.D x i).R.m, ∀ (z : Bool × HH (Fm.D x i)), (((nuD (Fm.D x i) u j z).card : ℕ) : ℝ) ≤ (Fm.L x i).sc.a ^ 2 := by
   intro eps Fm

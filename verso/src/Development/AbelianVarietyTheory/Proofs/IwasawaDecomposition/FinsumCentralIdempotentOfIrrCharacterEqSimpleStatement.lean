@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonListLen
 open CategoryTheory Polynomial
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SerCmp.finsum_zOf_eq_finsum_zIdem` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FFinsumCentralIdempotentOfIrrCharacterEqSimple.lean&line=52#L52)
 -/

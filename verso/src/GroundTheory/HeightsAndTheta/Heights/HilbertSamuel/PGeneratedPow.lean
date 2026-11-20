@@ -8,11 +8,11 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry
 
 /- English proof (translation)
-Introduce `S _ K _ _ ι _ _ V n t hn`. Proceed by induction on `t with`. Consider the case `zero`. Establish `h0` using `GenTwistGenerated.generated_diag (S := S) (ι := ι) (V := V) 0`. Establish `e : (fun _ : K => ((0 : ℕ) : ℤ)) = (0 • n : K → ℤ)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Rewrite using `[← e]`. Conclude with `h0`. Consider the case `succ t ih`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[succ_nsmul']`. Conclude with `GenTwistGenerated.generated_add hn ih`.
+A detailed English derivation is pending.
 -/
 theorem GeneratedPow.proof : GeneratedPow.Statement := by
   intro S _ K _ _ ι _ _ V n t hn

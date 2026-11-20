@@ -25,7 +25,7 @@ noncomputable def scd : ℕ∞ :=
 variable {p G}
 
 /- English proof (translation)
-Use `⟨fun h A _ hA q hq => ?_, fun h => sInf_le h⟩` and prove the remaining obligations. Take `⟨m, hm, hmq⟩` from `sInf_lt_iff.1 (h.trans_lt hq)`. Conclude with `hm A hA q hmq`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cdp_le_iff {n : ℕ∞} :
     cdp p G ≤ n ↔ ∀ (A : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep A], IsAddTorsion A →
@@ -35,7 +35,7 @@ theorem cdp_le_iff {n : ℕ∞} :
   exact hm A hA q hmq
 
 /- English proof (translation)
-Use `⟨fun h A _ q hq => ?_, fun h => sInf_le h⟩` and prove the remaining obligations. Take `⟨m, hm, hmq⟩` from `sInf_lt_iff.1 (h.trans_lt hq)`. Conclude with `hm A q hmq`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem scdp_le_iff {n : ℕ∞} :
     scdp p G ≤ n ↔ ∀ (A : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep A],
@@ -45,7 +45,7 @@ theorem scdp_le_iff {n : ℕ∞} :
   exact hm A q hmq
 
 /- English proof (translation)
-The claim follows from `cdp_le_iff.1 le_rfl A hA q hq`.
+A detailed English derivation is pending.
 -/
 theorem primaryComponent_cohomology_eq_bot_of_cdp_lt (A : Rep.{u} (ULift.{u} ℤ) G)
     [IsDiscreteRep A] (hA : IsAddTorsion A) {q : ℕ} (hq : cdp p G < q) :
@@ -53,7 +53,7 @@ theorem primaryComponent_cohomology_eq_bot_of_cdp_lt (A : Rep.{u} (ULift.{u} ℤ
   cdp_le_iff.1 le_rfl A hA q hq
 
 /- English proof (translation)
-Rewrite using `[scd, iSup_le_iff]`. Conclude with `⟨fun h p hp => h ⟨p, hp⟩, fun h p => h p p.prop⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem scd_le_iff {n : ℕ∞} : scd G ≤ n ↔ ∀ p : ℕ, p.Prime → scdp p G ≤ n := by
   rw [scd, iSup_le_iff]

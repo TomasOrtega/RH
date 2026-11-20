@@ -21,14 +21,14 @@ def completedLFunction (s : ℂ) : ℂ :=
     tateZeta χ.testFunction χ s
 
 /- English proof (translation)
-Rewrite using `[Ne, cpow_eq_zero_iff, not_and_or]`. Conclude with `Or.inl (ofReal_ne_zero.2 χ.discrNormConductor_pos.ne')`.
+Rewrite the conclusion using the stated equalities. Prove the first alternative.
 -/
 theorem discrNormConductor_cpow_ne_zero (s : ℂ) : (χ.discrNormConductor : ℂ) ^ s ≠ 0 := by
   rw [Ne, cpow_eq_zero_iff, not_and_or]
   exact Or.inl (ofReal_ne_zero.2 χ.discrNormConductor_pos.ne')
 
 /- English proof (translation)
-Rewrite using `[completedLFunction, tateZeta_eq_globalZeta χ.testFunction_mem χ hs, χ.globalZeta_testFunction hs]`. Establish `hπ` using `pi_pow_nrComplexPlaces_ne_zero (K := K)`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem completedLFunction_eq {s : ℂ} (hs : 1 < s.re) :
     χ.completedLFunction s =
@@ -39,7 +39,7 @@ theorem completedLFunction_eq {s : ℂ} (hs : 1 < s.re) :
   field_simp
 
 /- English proof (translation)
-The claim follows from `((differentiableAt_const _).mul ((differentiableAt_id.div_const 2).const_cpow (Or.inl (ofReal_ne_zero.2 χ.discrNormConductor_pos.ne')))).mul hf`.
+A detailed English derivation is pending.
 -/
 theorem differentiable_const_mul_cpow_half {f : ℂ → ℂ} {s : ℂ} (hf : DifferentiableAt ℂ f s) :
     DifferentiableAt ℂ (fun s ↦ ((π : ℂ) ^ nrComplexPlaces K)⁻¹ *
@@ -51,7 +51,7 @@ def conductorDifferentIdele : (FiniteAdeleRing (𝓞 K) K)ˣ :=
   χ.exists_ofFinite_toFractionalIdeal_eq.choose
 
 /- English proof (translation)
-The claim follows from `χ.exists_ofFinite_toFractionalIdeal_eq.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem toFractionalIdeal_conductorDifferentIdele :
     toFractionalIdeal (ofFinite χ.conductorDifferentIdele) =
@@ -63,9 +63,9 @@ def rootNumber : ℂ :=
     (χ.discrNormConductor : ℂ) ^ (1 / 2 : ℂ)
 
 /- English proof (translation)
-Establish `hA : (χ.discrNormConductor : ℂ) ≠ 0` using `ofReal_ne_zero.2 χ.discrNormConductor_pos.ne'`. Rewrite using `[completedLFunction, tateZeta_eq_tateZeta_one_sub χ.testFunction_mem, h, rootNumber, completedLFunction, discrNormConductor_inv]`. Establish `hc : (χ.discrNormConductor : ℂ) ^ (s / 2) * (χ.discrNormConductor : ℂ) ^ (1 - s) = (χ.discrNormConductor : ℂ) ^ (1 / 2 : ℂ) * (χ.discrNormConductor : ℂ) ^ ((1 - s) / 2)`. Rewrite using `[← cpow_add _ _ hA, ← cpow_add _ _ hA]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(((π : ℂ) ^ nrComplexPlaces K)⁻¹ * χ.fourierConst χ.conductorDifferentIdele * (χ.toIdele (ofFinite χ.conductorDifferentIdele) : ℂ) * tateZeta (χ⁻¹).testFunction χ⁻¹ (1 - s)) * hc`.
+Expand and normalize the polynomial expressions, which then agree. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem completedLFunction_eq_rootNumber_mul_of_eq {s : ℂ}
     (h : tateZeta (adelicFourier K χ.testFunction) χ⁻¹ (1 - s) =
@@ -85,9 +85,9 @@ theorem completedLFunction_eq_rootNumber_mul_of_eq {s : ℂ}
     (χ.toIdele (ofFinite χ.conductorDifferentIdele) : ℂ) * tateZeta (χ⁻¹).testFunction χ⁻¹ (1 - s)) * hc
 
 /- English proof (translation)
-Use `χ.completedLFunction_eq_rootNumber_mul_of_eq ?_` and prove the remaining obligations. Distinguish the cases in `hχ : ∃ v : normOneSubgroup K, χ.toIdele (v : IdeleGroup K) ≠ 1`. Conclude with `χ.tateZeta_adelicFourier_testFunction χ.toFractionalIdeal_conductorDifferentIdele hχ _`. Use `push Not at hχ`. Take `⟨τ, hτ⟩` from `(forall_normOne_eq_one_iff χ).1 hχ`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h0, h1⟩` from `hs τ hτ`. Use `χ.tateZeta_adelicFourier_testFunction_of_forall χ.toFractionalIdeal_conductorDifferentIdele hτ (fun h ↦ h1 ?_) (fun h ↦ h0 ?_)` and prove the remaining obligations. Take the linear combination `-h`. Take the linear combination `-h`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem completedLFunction_eq_rootNumber_mul {s : ℂ}
     (hs : ∀ τ : ℝ, (∀ x : IdeleGroup K,
@@ -106,7 +106,7 @@ theorem completedLFunction_eq_rootNumber_mul {s : ℂ}
     · linear_combination -h
 
 /- English proof (translation)
-The claim follows from `χ.completedLFunction_eq_rootNumber_mul fun τ hτ ↦ absurd ⟨τ, hτ⟩ hχ`.
+A detailed English derivation is pending.
 -/
 theorem completedLFunction_eq_rootNumber_mul_of_not
     (hχ : ¬ ∃ τ : ℝ, ∀ x : IdeleGroup K,
@@ -115,20 +115,20 @@ theorem completedLFunction_eq_rootNumber_mul_of_not
   χ.completedLFunction_eq_rootNumber_mul fun τ hτ ↦ absurd ⟨τ, hτ⟩ hχ
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> intro h <;> have := congrArg re h <;> simp at this`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem two_ne_pole (τ : ℝ) : (2 : ℂ) ≠ -((τ : ℂ) * I) ∧ (2 : ℂ) ≠ 1 - (τ : ℂ) * I := by
   constructor <;> intro h <;> have := congrArg re h <;> simp at this
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> intro h <;> have := congrArg re h <;> simp at this <;> norm_num at this`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem neg_one_ne_pole (τ : ℝ) :
     (-1 : ℂ) ≠ -((τ : ℂ) * I) ∧ (-1 : ℂ) ≠ 1 - (τ : ℂ) * I := by
   constructor <;> intro h <;> have := congrArg re h <;> simp at this <;> norm_num at this
 
 /- English proof (translation)
-Rewrite using `[χ.completedLFunction_eq (by norm_num)]`. Conclude with `mul_ne_zero (mul_ne_zero (χ.discrNormConductor_cpow_ne_zero _) (χ.gammaFactor_ne_zero (by norm_num))) (χ.LFunction_ne_zero (by norm_num))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem completedLFunction_two_ne_zero : χ.completedLFunction 2 ≠ 0 := by
   rw [χ.completedLFunction_eq (by norm_num)]
@@ -136,7 +136,7 @@ theorem completedLFunction_two_ne_zero : χ.completedLFunction 2 ≠ 0 := by
     (χ.gammaFactor_ne_zero (by norm_num))) (χ.LFunction_ne_zero (by norm_num))
 
 /- English proof (translation)
-Establish `h1` using `χ.completedLFunction_eq_rootNumber_mul (s := 2) fun τ _ ↦ two_ne_pole τ`. Establish `h2` using `χ⁻¹.completedLFunction_eq_rootNumber_mul (s := -1) fun τ _ ↦ neg_one_ne_pole τ`. Rewrite `h2` using `[inv_inv, show (1 : ℂ) - -1 = 2 by norm_num]`. Rewrite `h1` using `[show (1 : ℂ) - 2 = -1 by norm_num, h2, ← mul_assoc]`. Conclude with `mul_right_cancel₀ χ.completedLFunction_two_ne_zero (h1.symm.trans (one_mul _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootNumber_mul_rootNumber_inv : χ.rootNumber * χ⁻¹.rootNumber = 1 := by
   have h1 := χ.completedLFunction_eq_rootNumber_mul (s := 2) fun τ _ ↦ two_ne_pole τ

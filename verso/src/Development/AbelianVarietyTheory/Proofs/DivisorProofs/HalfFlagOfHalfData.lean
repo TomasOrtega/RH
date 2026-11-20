@@ -31,9 +31,9 @@ noncomputable section
 namespace GlobalTheory.WholeFlag.GlueProof
 
 /- English proof (translation)
-Take `⟨V, W, ι, U, H, J, d, T, L, m, hJ, hW, hm, hcov, hLcov, hT, hgd, hN, hreg, htest⟩` from `hD`. Break down `Nat.eq_zero_or_pos g with rfl | hg` into its components or cases. Use `⟨V, W, ι, U, fun _ => 0, J, fun _ i => i.elim0, hJ, hW, hcov, fun a x _ _ => ⟨fun i => i.elim0, ?_⟩, fun a i => i.elim0, fun v _ e y _ z yt _ _ a _ => ⟨fun i => i.elim0, fun i => i.elim0, fun b _ k => k.elim0⟩⟩ haveI : IsEmpty (Fin (0 + 0)) := ⟨fun i => i.elim0⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_isEmpty]`. Conclude with `unitAt_one x`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose r hr1 hr2 hr3 using hN`. Establish `hyp : Hyp A p V W U H J d T L m r` using `⟨hp, hg, hJ, hW, hm, hcov, hLcov, hT, hgd, hr2, fun i v hv e y z yt c h1 h2 h3 => hr3 i v hv e y trivial z yt c h1 h2 h3, hreg, htest⟩`. Use `⟨V, W, Idx ι L, chartOpen V U H L m r, chartM V H J, J, chartC V H, hJ, hW, GlobalTheory.T.hodge_chart_minor_valuation A p V W U H J d T L m r hyp, GlobalTheory.T.hodge_chart_height_bound A p V W U H J d T L m r hyp, GlobalTheory.T.hodge_chart_norm_comparison A p V W U H J d T L …` and prove the remaining obligations. Introduce `v hv e y hy z yt hz hyt q hq`. Conclude with `⟨(GlobalTheory.T.hodge_chart_section_divisor A p V W U H J d T L m r hyp v hv e y hy z yt hz hyt q hq).1, (GlobalTheory.T.hodge_chart_section_divisor A p V W U H J d T L m r hyp v hv e y hy z yt hz hyt q hq).2, fun b hb k i => GlobalTheory.T.hodge_chart_degree_formula A p V W U H …`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem halfFlag_of_halfDataC {F : Type} [Field F] [NumberField F] {Y : Var F} {C : CxSt F} {g : ℕ}
     (A : Fin g → Adl C Y) (p : ℕ) (hp : p.Prime) (hD : HalfDataC A p) : HalfFlag A p := by

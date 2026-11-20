@@ -12,13 +12,13 @@ open PositivityTheory.Rg.Sw
 variable {m n : ℕ}
 
 /- English proof (translation)
-Simplify using `[fockMono]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fockMono_zero (c : ℝ) : fockMono c (0 : Fin m × Fin n × Bool →₀ ℕ) = (1 : PX m n) := by
   simp [fockMono]
 
 /- English proof (translation)
-Distinguish the cases in `hr : r = 0`. Substitute `hr` using the available equality. Simplify using `[fock]`. Rewrite using `[fock, ← monomial_zero', support_monomial, if_neg hr, Finset.sum_singleton, coeff_monomial, if_pos rfl, fockMono_zero, smul_eq_C_mul, mul_one, monomial_zero']`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_C (c : ℝ) (r : ℂ) : fock c (C r : PX m n) = C r := by
   classical
@@ -28,7 +28,7 @@ theorem fock_C (c : ℝ) (r : ℂ) : fock c (C r : PX m n) = C r := by
       fockMono_zero, smul_eq_C_mul, mul_one, monomial_zero']
 
 /- English proof (translation)
-Use `lt_of_le_of_lt (Finset.sum_le_sum fun x _ => ht x) ?_` and prove the remaining obligations. Use `Finset.sum_lt_sum (fun x _ => by simp) ⟨k, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Simplify using `only [Finsupp.coe_tsub, Pi.sub_apply, Finsupp.single_eq_same]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem deg_lt (s : Fin m × Fin n × Bool →₀ ℕ) (k : Fin m × Fin n × Bool) (hk : s k ≠ 0)
     (t : Fin m × Fin n × Bool →₀ ℕ) (ht : ∀ x, t x ≤ (s - Finsupp.single k 1 : Fin m × Fin n × Bool →₀ ℕ) x) : ∑ x, t x < ∑ x, s x := by
@@ -41,11 +41,11 @@ variable (hB : FockBasic)
 
 include hB in
 /- English proof (translation)
-Take `⟨hL, -, hX⟩` from `hB m n c hc`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C r => rw [fock_C, pderiv_C, pderiv_C, hL.map_zero, smul_zero]`. Consider the case `add p q hp hq => rw [hL.map_add, map_add, hp, hq, map_add, hL.map_add, smul_add]`. Consider the case `mul_X p j hp`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[mul_comm, hX, pderiv_cr, hp, map_smul, pderiv_mul, pderiv_X, hL.map_add, hX, Pi.single_apply]`. Distinguish the cases in `h : k = flip j`. Establish `h' : j = flip k` using `by rw [h, flip_flip]`. Rewrite using `[if_pos h, if_pos h', one_mul, smul_add, add_comm]`. Establish `h' : ¬ j = flip k` using `fun e => h (by rw [e, flip_flip])`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg h, if_neg h', zero_mul, hL.map_zero, zero_smul, add_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_fock (c : ℝ) (hc : 0 < c) (k : Fin m × Fin n × Bool) (p : PX m n) :
     pderiv k (fock c p) = (2 * c : ℂ) • fock c (pderiv (flip k) p) := by
@@ -66,7 +66,7 @@ variable (hM : OneMom)
 
 include hB hM in
 /- English proof (translation)
-Take `⟨hL, -, hX⟩` from `hB m n c hc`. Establish `e1` using `mom_pderiv hM c hc k (fock c p)`. Establish `e2 : mom c (pderiv k (fock c p)) = (2 * c : ℂ) * mom c (fock c (pderiv (flip k) p))`. Rewrite using `[pderiv_fock hB c hc, mom_smul]`. Rewrite using `[hX, cr_apply, mom_add hM c hc, ← neg_one_smul ℂ (pderiv k (fock c p)), mom_smul, mom_smul, ← e2, e1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -81,27 +81,25 @@ theorem mom_fock_X (c : ℝ) (hc : 0 < c) (k : Fin m × Fin n × Bool) (p : PX m
 
 include hB hM in
 /- English proof (translation)
-Introduce `m n c hc`. Take `⟨hL, -, -⟩` from `hB m n c hc`. Establish `h1 : mom c (1 : PX m n) ≠ 0`. Rewrite using `[← C_1, ← monomial_zero', mom_monomial hM c hc, one_mul, phi]`. Use `Finset.prod_ne_zero_iff.2 fun a _ => Finset.prod_ne_zero_iff.2 fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finsupp.coe_zero, Pi.zero_apply, g1, Nat.factorial_zero, Nat.cast_one, mul_one, zero_add, pow_one, if_true]`. Conclude with `(div_pos Real.pi_pos hc).ne'` after adjusting the coercions. Use `⟨h1, ?_⟩` and prove the remaining obligations. Set `D : PX m n → ℂ` to `fun p => mom c (fock c p) - mom c (1 : PX m n) * contr c p`. Establish `hDadd : ∀ p q, D (p + q) = D p + D q`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p q`. Simplify using `only [D]`. Rewrite using `[hL.map_add, mom_add hM c hc, contr_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hDC : ∀ r, D (C r) = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Simplify using `only [D]`. Rewrite using `[fock_C, contr_C, C_eq_smul_one, mom_smul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hDX : ∀ k p, D (X k * p) = (2 * c : ℂ) * D (pderiv (flip k) p)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k p`. Simplify using `only [D]`. Rewrite using `[mom_fock_X hB hM c hc, contr_X_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmono : ∀ N, ∀ s : Fin m × Fin n × Bool →₀ ℕ, ∑ x, s x = N → ∀ r, D (monomial s r) = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `N`. Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `s hs r`. Distinguish the cases in `h0 : s = 0`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h0` using the available equality. Rewrite using `[monomial_zero']`. Conclude with `hDC r`. Take `⟨k, hk⟩` from `Finsupp.ne_iff.1 h0`. Establish `hk' : s k ≠ 0` using `by simpa using hk`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hs' : Finsupp.single k 1 + (s - Finsupp.single k 1) = s`. Use extensionality with `x`. Simplify using `only [Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply, Finsupp.single_apply]`. Use `split_ifs with hx`. Substitute `hx` using the available equality.
+Simplify using the standard rewrite rules. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish `hXm : monomial s r = (X k : PX m n) * monomial (s - Finsupp.single k 1) r`. Rewrite using `[X, monomial_mul, one_mul, hs']`. Rewrite using `[hXm, hDX, pderiv_monomial]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlt : ∑ x, ((s - Finsupp.single k 1 - Finsupp.single (flip k) 1 : Fin m × Fin n × Bool →₀ ℕ) x) < N` using `hs ▸ deg_lt s k hk' _ (fun x => by simp only [Finsupp.coe_tsub, Pi.sub_apply]; exact tsub_le_self)`. Rewrite using `[ih _ hlt _ rfl, mul_zero]`. Introduce `p`. Establish `hD0 : D p = 0`. Proceed by induction on `p using MvPolynomial.induction_on' with`.
-
-Consider the case `monomial s r => exact hmono _ s rfl r`. Consider the case `add p q hp hq => rw [hDadd, hp, hq, add_zero]`. Conclude with `sub_eq_zero.1 hD0`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fockMom_of : FockMom := by
   intro m n c hc
@@ -150,7 +148,7 @@ theorem fockMom_of : FockMom := by
   exact sub_eq_zero.1 hD0
 
 /- English proof (translation)
-The claim follows from `fockMom_of hB oneMom`.
+A detailed English derivation is pending.
 -/
 theorem fockMom_of_basic (hB : FockBasic) : FockMom := fockMom_of hB oneMom
 

@@ -9,21 +9,19 @@ noncomputable section
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `hu hc hτ`. Establish `hlift : ∀ (U : Scheme.{0}) (w : ℤ) (x : Tens I J U w), ν.lift U w x = Sec.map (u.f w) (τ.lift U w x)`. Introduce `U w x`. Establish `h : ν.lift U w = ((u.f w).hom.app (op U)).hom ∘ₗ τ.lift U w`. Apply `DirectSum.linearMap_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `p`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `only [Pair.lift, LinearMap.comp_apply, DirectSum.toModule_lof, TensorProduct.lift.tmul]`. Conclude with `(hc U p.1.1 p.1.2 w p.2 a b).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `LinearMap.congr_fun h x`. Establish `hinv : ∀ (w : ℤ) (U : Scheme.{0}) (y : Sec (K'.X w) U), Sec.map (u.f w) (Sec.map ((inv u).f w) y) = y`. Introduce `w U y`. Express the relevant statement in the definitionally equal form `Sec.map ((inv u).f w ≫ u.f w) y = y`. Rewrite using `[← HomologicalComplex.comp_f, IsIso.inv_hom_id, HomologicalComplex.id_f]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hinv' : ∀ (w : ℤ) (U : Scheme.{0}) (y : Sec (K.X w) U), Sec.map ((inv u).f w) (Sec.map (u.f w) y) = y`. Introduce `w U y`. Express the relevant statement in the definitionally equal form `Sec.map (u.f w ≫ (inv u).f w) y = y`. Rewrite using `[← HomologicalComplex.comp_f, IsIso.hom_inv_id, HomologicalComplex.id_f]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hnat : ∀ {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (z : Sec F U), Sec.map φ (Sec.res g z) = Sec.res g (Sec.map φ z)`. Introduce `F G φ V U g z`. Conclude with `congrArg (fun f => f.hom z) (φ.hom.naturality g.op)`. Use `⟨fun U w y => ?_, fun U w x hx => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS, hP⟩` from `hτ.1 U w (Sec.map ((inv u).f w) y)`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hP V g hg`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[hlift, hx, hnat, hinv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `hτ.2 U w x` to reduce the goal to its premises. Rewrite `hx` using `[hlift]`. Establish `h2` using `congrArg (Sec.map ((inv u).f w)) hx`. Rewrite `h2` using `[hinv']`. Rewrite using `[h2]`.
-
-Conclude with `map_zero _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pair.isTensor_of_compat_isIso (R : Type) [CommRing R] {I J K K' : Cx R} (τ : Pair I J K) (ν : Pair I J K')
     (u : K ⟶ K') : IsIso u → τ.Compat ν (𝟙 I) (𝟙 J) u → τ.IsTensor → ν.IsTensor := by

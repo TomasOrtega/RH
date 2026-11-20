@@ -52,7 +52,7 @@ section Lemmas
 variable {σ : E →ₐ[F] E} {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E} {xi0 : E} {ψ : AddChar (AF F) ℂ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [heisOF, Pi.add_apply, mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem heisOF_add (w : WOF F E nS nT) (f g : WOF F E nS nT → ℂ) :
     heisOF σ JS JT xi0 ψ w (f + g) = heisOF σ JS JT xi0 ψ w f + heisOF σ JS JT xi0 ψ w g := by
@@ -60,7 +60,7 @@ theorem heisOF_add (w : WOF F E nS nT) (f g : WOF F E nS nT → ℂ) :
   simp only [heisOF, Pi.add_apply, mul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [heisOF, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heisOF_smul (c : ℂ) (w : WOF F E nS nT) (f : WOF F E nS nT → ℂ) :
     heisOF σ JS JT xi0 ψ w (c • f) = c • heisOF σ JS JT xi0 ψ w f := by
@@ -69,9 +69,9 @@ theorem heisOF_smul (c : ℂ) (w : WOF F E nS nT) (f : WOF F E nS nT → ℂ) :
   ring
 
 /- English proof (translation)
-Simplify using `only [Pi.add_apply]`. Rewrite using `[hf.quasi, hg.quasi, mul_add]`. Use `level := by`. Take `⟨U, hU, hU'⟩` from `hf.level`. Take `⟨V, hV, hV'⟩` from `hg.level`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨U ⊓ V, hU.inter hV, fun u hu h0 => by rw [heisOF_add, hU' u hu.1 h0, hV' u hu.2 h0]⟩`. Use `cont := hf.cont.add hg.cont`. Use `smooth k L hL h0 w := (hf.smooth k L hL h0 w).add (hg.smooth k L hL h0 w)`.
+A detailed English derivation is pending.
 -/
 theorem theta_add {f g : WOF F E nS nT → ℂ} (hf : IsThetaFunOF σ JS JT xi0 ψ f) (hg : IsThetaFunOF σ JS JT xi0 ψ g) :
     IsThetaFunOF σ JS JT xi0 ψ (f + g) where
@@ -86,7 +86,7 @@ theorem theta_add {f g : WOF F E nS nT → ℂ} (hf : IsThetaFunOF σ JS JT xi0 
   smooth k L hL h0 w := (hf.smooth k L hL h0 w).add (hg.smooth k L hL h0 w)
 
 /- English proof (translation)
-Simplify using `level := ⟨⊤, by rw [AddSubgroup.coe_top]; exact isOpen_univ, fun u _ _ => by funext x; simp [heisOF]⟩ cont := continuous_const smooth k L hL h0 w := contDiff_const`.
+Simplify using the standard rewrite rules.
 -/
 theorem theta_zero : IsThetaFunOF σ JS JT xi0 ψ (0 : WOF F E nS nT → ℂ) where
   quasi γ w := by simp
@@ -95,9 +95,9 @@ theorem theta_zero : IsThetaFunOF σ JS JT xi0 ψ (0 : WOF F E nS nT → ℂ) wh
   smooth k L hL h0 w := contDiff_const
 
 /- English proof (translation)
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hf.quasi]`. Expand and normalize the polynomial expressions, which then agree. Use `level := by`. Take `⟨U, hU, hU'⟩` from `hf.level`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨U, hU, fun u hu h0 => by rw [heisOF_smul, hU' u hu h0]⟩`. Use `cont := hf.cont.const_smul c`. Use `smooth k L hL h0 w := (hf.smooth k L hL h0 w).const_smul c`.
+A detailed English derivation is pending.
 -/
 theorem theta_smul (c : ℂ) {f : WOF F E nS nT → ℂ} (hf : IsThetaFunOF σ JS JT xi0 ψ f) :
     IsThetaFunOF σ JS JT xi0 ψ (c • f) where
@@ -120,7 +120,7 @@ def thetaSubF : Submodule ℂ (WOF F E nS nT → ℂ) where
   smul_mem' := fun a _ hf => theta_smul a hf
 
 /- English proof (translation)
-Unfold `mtF`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mtF_mul {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g g' : GAF σ J) : mtF σ J (g * g') = mtF σ J g * mtF σ J g' := by
   unfold mtF
@@ -128,7 +128,7 @@ theorem mtF_mul {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g g' : GAF σ J) : mtF
   rfl
 
 /- English proof (translation)
-Unfold `actOF`. Rewrite using `[_root_.mul_inv_rev, mtF_mul, mtF_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem actOF_mul (g g' : GAF σ JS) (h h' : GAF σ JT) (u : WOF F E nS nT) :
     actOF σ JS JT (g * g') (h * h') u = actOF σ JS JT g h (actOF σ JS JT g' h' u) := by
@@ -137,9 +137,9 @@ theorem actOF_mul (g g' : GAF σ JS) (h h' : GAF σ JT) (u : WOF F E nS nT) :
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[GfCF, MonoidHom.mem_ker, MonoidHom.comp_apply]`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `h : infPartF F E ((mtF σ J g - 1) i j) = 0` using `by rw [← hg i j, map_mul, ha, zero_mul]`. Rewrite `h` using `[Matrix.sub_apply, map_sub, sub_eq_zero]`. Use `show infPartF F E (mtF σ J g i j) = ((1 : GL (Fin n) (Ainf F ⊗[F] E)) : Matrix _ _ _) i j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, Units.val_one, Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`. Rewrite using `[map_one]`. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_GfCF_of_supp {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {a : AEF F E} (ha : infPartF F E a = 0) {g : GAF σ J}
     (hg : ∀ i j, a * (mtF σ J g - 1) i j = (mtF σ J g - 1) i j) : g ∈ GfCF σ J := by
@@ -154,7 +154,7 @@ theorem mem_GfCF_of_supp {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {a : AEF F E} 
   · rw [map_zero]
 
 /- English proof (translation)
-Take `⟨α, rfl, -⟩` from `h`. Use `show Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) (pairA F 0 α ⊗ₜ 1) = 0`. Rewrite using `[Algebra.TensorProduct.map_tmul, show fstA F (pairA F 0 α) = 0 from rfl, TensorProduct.zero_tmul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infPartF_placeIdem {v : HeightOneSpectrum (𝓞 F)} {ε : AF F} (h : IsPlaceIdemF F v ε) :
     infPartF F E (algebraMap (AF F) (AEF F E) ε) = 0 := by
@@ -163,7 +163,7 @@ theorem infPartF_placeIdem {v : HeightOneSpectrum (𝓞 F)} {ε : AF F} (h : IsP
   rw [Algebra.TensorProduct.map_tmul, show fstA F (pairA F 0 α) = 0 from rfl, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Take `⟨-, -, v, ε, h1, h2⟩` from `he`. Conclude with `mem_GfCF_of_supp (h2 ▸ infPartF_placeIdem h1) hg`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_GfCF_of_suppAt {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {e : AEF F E} (he : IsSplitIdemF σ e) {g : GAF σ J}
     (hg : SuppAtF σ e J g) : g ∈ GfCF σ J := by
@@ -171,21 +171,21 @@ theorem mem_GfCF_of_suppAt {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {e : AEF F E
   exact mem_GfCF_of_supp (h2 ▸ infPartF_placeIdem h1) hg
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.pow n, fun x => by rw [MonoidHom.pow_apply, h.2 x, one_pow]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHeckeCharF_pow {η : (AEF F E)ˣ →* Circle} (h : IsHeckeCharF η) (n : ℕ) : IsHeckeCharF (η ^ n) :=
   ⟨h.1.pow n, fun x => by rw [MonoidHom.pow_apply, h.2 x, one_pow]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun e he a => by rw [MonoidHom.pow_apply, h.2 e he a, pow_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem resEtaF_pow {η : (AEF F E)ˣ →* Circle} (h : ResEtaF η 1) (n : ℕ) : ResEtaF (η ^ n) n :=
   ⟨h.1, fun e he a => by rw [MonoidHom.pow_apply, h.2 e he a, pow_one]⟩
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `M.exists_isCompl`. Set `e` to `M.prodEquivOfIsCompl C hC`. Use `⟨{ toFun := fun p => e.conj ((Om p).prodMap LinearMap.id), map_one' := ?_, map_mul' := fun p q => ?_ }, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one]`. Conclude with `(congrArg e.conj LinearMap.prodMap_id).trans e.conj_id`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, Module.End.mul_eq_comp, Module.End.mul_eq_comp, ← e.conj_comp, LinearMap.prodMap_comp, LinearMap.id_comp]`. Introduce `p m show e (((Om p).prodMap LinearMap.id) (e.symm m)) = _`. Rewrite using `[Submodule.prodEquivOfIsCompl_symm_apply_left]`. Simplify using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_extend {Γ V : Type} [Monoid Γ] [AddCommGroup V] [Module ℂ V] (M : Submodule ℂ V)
     (Om : Γ →* Module.End ℂ M) : ∃ om : Γ →* Module.End ℂ V, ∀ p (m : M), om p m = Om p m := by

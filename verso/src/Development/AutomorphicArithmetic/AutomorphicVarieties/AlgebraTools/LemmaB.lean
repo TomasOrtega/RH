@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.LenFg
 open Polynomial Matrix IsLocalRing TensorProduct
 
 /- English proof (translation)
-Use `Module.length_le_of_surjective (N.liftQ φ.rangeRestrict (by rwa [LinearMap.ker_rangeRestrict])) ?_` and prove the remaining obligations. Introduce `y`. Take `⟨x, rfl⟩` from `φ.surjective_rangeRestrict y`. Conclude with `⟨N.mkQ x, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem UpperTheory.V.AlgebraTools.lemma_B_range {A H Q : Type} [CommRing A] [AddCommGroup H] [Module A H]
     [AddCommGroup Q] [Module A Q] (N : Submodule A H) (φ : H →ₗ[A] Q) (h : N ≤ LinearMap.ker φ) :
@@ -16,7 +16,7 @@ private theorem UpperTheory.V.AlgebraTools.lemma_B_range {A H Q : Type} [CommRin
   exact ⟨N.mkQ x, rfl⟩
 
 /- English proof (translation)
-Establish `hsurj : Function.Surjective ((Submodule.inclusion (le_sup_left : U ≤ U ⊔ V)).coprod (Submodule.inclusion (le_sup_right : V ≤ U ⊔ V)))`. Introduce and unpack `⟨y, hy⟩`. Take `⟨u, hu, v, hv, rfl⟩` from `Submodule.mem_sup.mp hy`. Conclude with `⟨(⟨u, hu⟩, ⟨v, hv⟩), rfl⟩`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Chain the equalities or inequalities of the calculation.
 -/
 private theorem UpperTheory.V.AlgebraTools.lemma_B_sup {A Q : Type} [CommRing A] [AddCommGroup Q] [Module A Q]
     (P U V : Submodule A Q) (h : P ≤ U ⊔ V) :
@@ -32,21 +32,19 @@ private theorem UpperTheory.V.AlgebraTools.lemma_B_sup {A Q : Type} [CommRing A]
     _ = Module.length A U + Module.length A V := Module.length_prod _ _ _
 
 /- English proof (translation)
-Take `⟨_, ⟨T, rfl⟩, hT⟩` from `set_has_maximal_iff_noetherian.mpr (inferInstance : IsNoetherian A (M →ₗ[A] M')) (Set.range fun T : Finset S => Submodule.span A (f '' (T : Set S))) ⟨_, ⟨∅, rfl⟩⟩`. Establish `hspan : ∀ s, f s ∈ Submodule.span A (f '' (T : Set S))`. Introduce `s`. Assume the negation of the conclusion as `hs`. Use `hT _ ⟨insert s T, rfl⟩ (lt_of_le_of_ne (Submodule.span_mono ?_) ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Set.image_mono` to reduce the goal to its premises. Rewrite using `[Finset.coe_insert]`. Conclude with `Set.subset_insert _ _`. Introduce `heq`. Apply `hs` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only at heq`. Rewrite using `[heq]`. Conclude with `Submodule.subset_span ⟨s, by simp, rfl⟩`. Establish `hker : ⨅ t : T, LinearMap.ker (f t) ≤ ⨅ s, LinearMap.ker (f s)`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker] at hx ⊢`. Introduce `s`. Establish `hle : Submodule.span A (f '' (T : Set S)) ≤ LinearMap.ker (LinearMap.applyₗ (R` using `A) (M₂ := M') x) := by`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨t, ht, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hx ⟨t, ht⟩`. Simplify using `using hle (hspan s)`. Set `F : M →ₗ[A] (T → M')` to `LinearMap.pi fun t => f t`. Take `⟨c, hc⟩` from `UpperTheory.V.AlgebraTools.comap_pow_le I F`. Use `⟨c, fun m x hx => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hFx : F x ∈ I ^ (m + c) • (⊤ : Submodule A (T → M'))`. Rewrite using `[← Finset.univ_sum_single (F x)]`. Use `Submodule.sum_mem _ fun t _ => ?_` and prove the remaining obligations. Establish `h1 : f t x ∈ I ^ (m + c) • (⊤ : Submodule A M')`. Simplify using `using (Submodule.mem_iInf _).mp hx t`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `Submodule.smul_top_le_comap_smul_top (I ^ (m + c)) (LinearMap.single A (fun _ : T => M') t) h1` using `[F]`. Establish `hm` using `hc m hFx`. Establish `hle : LinearMap.ker F ≤ ⨅ s, LinearMap.ker (f s)`. Simplify using `only [F, LinearMap.ker_pi]`. Conclude with `hker`.
-
-Conclude with `(sup_le_sup_right hle _) hm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.AlgebraTools.lemma_B_le {A M M' S : Type} [CommRing A] [IsNoetherianRing A]
     [AddCommGroup M] [Module A M] [Module.Finite A M] [AddCommGroup M'] [Module A M']
@@ -96,29 +94,25 @@ private theorem UpperTheory.V.AlgebraTools.lemma_B_le {A M M' S : Type} [CommRin
   exact (sup_le_sup_right hle _) hm
 
 /- English proof (translation)
-Introduce `A _ _ _ M M' S _ _ _ _ _ _ f`. Use `set K : Submodule A M := ⨅ s, LinearMap.ker (f s) with hKdef`. Take `⟨c, hc⟩` from `UpperTheory.V.AlgebraTools.lemma_B_le (maximalIdeal A) f`. Take `⟨cK, -, hK⟩` from `UpperTheory.V.AlgebraTools.len_fg_quot (A := A) K`. Take `⟨cM, -, hM⟩` from `UpperTheory.V.AlgebraTools.len_fg_quot (A := A) M`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨cK + Module.finrank A M * c + cM, fun j => ?_⟩` and prove the remaining obligations. Use `set P := ⨅ s, (maximalIdeal A ^ j • (⊤ : Submodule A M')).comap (f s) with hPdef`. Use `set N := maximalIdeal A ^ j • (⊤ : Submodule A M) with hNdef`. Establish `hQ : Module.length A (P.map N.mkQ) ≤ Module.length A (M ⧸ N)` using `Module.length_le_of_injective (Submodule.subtype _) (Submodule.injective_subtype _)`. Distinguish the cases in `hj : j < c`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_trans hQ (le_trans (hM j).2 ?_)` and prove the remaining obligations. Establish `h1` using `Nat.mul_le_mul_left (Module.finrank A M) hj.le`. Establish `h2` using `Nat.zero_le (Module.finrank A K * j)`. Conclude with `(show Module.finrank A M * j + cM ≤ Module.finrank A K * j + (cK + Module.finrank A M * c + cM) by omega)` after adjusting the coercions. Use `push_neg at hj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨m, rfl⟩ : ∃ m, j = m + c` from `⟨j - c, by omega⟩`. Establish `hP : P ≤ K ⊔ maximalIdeal A ^ m • ⊤` using `hc m`. Establish `hU : Module.length A (K.map N.mkQ) ≤ ((Module.finrank A K * (m + c) + cK : ℕ) : ℕ∞)`. Use `le_trans ?_ (hK (m + c)).2` and prove the remaining obligations. Use `UpperTheory.V.AlgebraTools.lemma_B_range (maximalIdeal A ^ (m + c) • (⊤ : Submodule A K)) (N.mkQ ∘ₗ K.subtype) ?_` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[LinearMap.range_comp, Submodule.range_subtype]`. Then use the resulting hypothesis. Introduce `x hx`. Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.smul_top_le_comap_smul_top _ K.subtype hx`. Set `g : (M ⧸ N) →ₗ[A] (M ⧸ (maximalIdeal A ^ m • (⊤ : Submodule A M)))` to `N.liftQ (Submodule.mkQ _) (by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[Submodule.ker_mkQ]`. Conclude with `Submodule.smul_mono_left (Ideal.pow_le_pow_right (Nat.le_add_right m c)))`. Establish `hg : Function.Surjective g`. Introduce `y`. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨N.mkQ x, rfl⟩`. Establish `hV : (maximalIdeal A ^ m • (⊤ : Submodule A M)).map N.mkQ = LinearMap.ker g`. Rewrite using `[Submodule.ker_liftQ, Submodule.ker_mkQ]`. Establish `hlen` using `Module.length_eq_add_of_exact (LinearMap.ker g).subtype g (Submodule.injective_subtype _) hg (LinearMap.exact_subtype_ker_map g)`. Establish `hVb : Module.length A (LinearMap.ker g) ≤ ((Module.finrank A M * c + cM : ℕ) : ℕ∞)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `(hM (m + c)).2`. Establish `h2` using `(hM m).1`. Rewrite `h1` using `[hlen]`. Establish `h3 : Module.length A (LinearMap.ker g) + ((Module.finrank A M * m : ℕ) : ℕ∞) ≤ ((Module.finrank A M * (m + c) + cM : ℕ) : ℕ∞)` using `le_trans (add_le_add le_rfl h2) h1`. Establish `hfin : Module.length A (LinearMap.ker g) ≠ ⊤`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Introduce `htop`. Rewrite `h3` using `[htop, top_add, top_le_iff]`. Conclude with `ENat.coe_ne_top _ h3`. Take `⟨a, ha⟩` from `ENat.ne_top_iff_exists.mp hfin`. Rewrite `h3`, the goal using `[← ha]`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Normalize the coercions in `at h3 ⊢`. Rewrite `h3` using `[Nat.mul_add]`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Apply `UpperTheory.V.AlgebraTools.lemma_B_sup` to reduce the goal to its premises.
-
-Rewrite using `[← Submodule.map_sup]`. Conclude with `Submodule.map_mono hP`. Use `_ ≤ ((Module.finrank A K * (m + c) + cK : ℕ) : ℕ∞) + ((Module.finrank A M * c + cM : ℕ) : ℕ∞) := by`. Rewrite using `[hV]`. Conclude with `add_le_add hU hVb`.
-
-Use `_ = _ := by`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.lemma_B :
     ∀ {A : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] {M M' S : Type} [AddCommGroup M] [Module A M] [Module.Finite A M] [AddCommGroup M'] [Module A M'] [Module.Finite A M'] (f : S → M →ₗ[A] M'), ∃ e : ℕ, ∀ j : ℕ, Module.length A ((⨅ s, (maximalIdeal A ^ j • (⊤ : Submodule A M')).comap (f s)).map (maximalIdeal A ^ j • (⊤ : Submodule A M)).mkQ) ≤ ((Module.finrank A (⨅ s, LinearMap.ker (f s) : Submodule A M) * j + e : ℕ) : ℕ∞) := by

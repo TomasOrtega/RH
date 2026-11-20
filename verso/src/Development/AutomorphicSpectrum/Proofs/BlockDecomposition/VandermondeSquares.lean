@@ -8,7 +8,7 @@ open Finset
 namespace GlobalTheory.CompanionTheory.CoefId
 
 /- English proof (translation)
-Apply `Finset.prod_finset_product` to reduce the goal to its premises. Introduce `p`. Simplify using `[prs]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 lemma prod_prs_eq_iter {n : ℕ} (f : Fin n × Fin n → ℂ) :
     ∏ p ∈ prs n, f p = ∏ i : Fin n, ∏ j ∈ Ioi i, f (i, j) := by
@@ -17,7 +17,7 @@ lemma prod_prs_eq_iter {n : ℕ} (f : Fin n × Fin n → ℂ) :
   simp [prs]
 
 /- English proof (translation)
-Establish `h : (Matrix.of fun i j : Fin n => v i ^ (n - 1 - (j : ℕ))) = (Matrix.vandermonde v).submatrix id (Fin.revPerm : Equiv.Perm (Fin n))`. Use extensionality with `i j`. Establish `: n - 1 - (j : ℕ) = n - (j + 1)` using `by omega`. Simplify using `[Matrix.vandermonde_apply, Fin.val_rev, this]`. Rewrite using `[h, Matrix.det_permute', Matrix.det_vandermonde, prod_prs_eq_iter]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma det_rev_vandermonde {n : ℕ} (v : Fin n → ℂ) :
     (Matrix.of fun i j : Fin n => v i ^ (n - 1 - (j : ℕ))).det =
@@ -31,7 +31,7 @@ lemma det_rev_vandermonde {n : ℕ} (v : Fin n → ℂ) :
   rw [h, Matrix.det_permute', Matrix.det_vandermonde, prod_prs_eq_iter]
 
 /- English proof (translation)
-Rewrite using `[det_rev_vandermonde (fun i => z i ^ 2), det_rev_vandermonde z, mul_assoc, ← Finset.prod_mul_distrib]`. Use `congr 1`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `p _`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_vandermonde_sq {n : ℕ} (z : Fin n → ℂ) :
     (Matrix.of fun i j : Fin n => (z i ^ 2) ^ (n - 1 - (j : ℕ))).det =

@@ -7,9 +7,9 @@ open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual Rec
 namespace GlobalTheory.CompanionTheory.DecGal
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ A v h`. Take `⟨ι, hι⟩` from `GlobalTheory.LocDict.exists_isLocEmb F Ω A v h`. Take `⟨θ, hθ, hθ', hl⟩` from `GlobalTheory.LocDec.decomposition_mulEquiv_galLoc F Ω A v h ι hι`. Use `⟨ι, θ.symm, hθ', hθ, fun σ x => ?_⟩` and prove the remaining obligations. Use `hl (θ.symm σ) x` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[MulEquiv.apply_symm_apply]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_algHom_mulEquiv_dec : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)), IsPlaceOver A v → ∃ (ι : Ω →ₐ[F] AlgebraicClosure (v.adicCompletion F)) (e : (AlgebraicClosure (v.adicCompletion F) ≃ₐ[v.adicCompletion F] AlgebraicClosure (v.adicCompletion F)) ≃* Dec (F := F) A), Continuous e ∧ Continuous e.symm ∧ ∀ σ x, ι (((e σ : Dec (F := F) A) : G F Ω) x) = σ (ι x) := by
   intro F Ω _ _ _ _ _ A v h

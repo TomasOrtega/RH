@@ -9,7 +9,7 @@ namespace GlobalTheory.GLm.DerFormula
 variable {g : ℕ} [Fact g.Prime]
 
 /- English proof (translation)
-Establish `htri : M.BlockTriangular id` using `fun i j hij => (hM i j).1 hij`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_of_isUpperTriangular htri]`. Simplify using `[(hM _ _).2 rfl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isUnit_of_isUniUp {N : ℕ} {M : Mt g N} (hM : IsUniUp M) : IsUnit M := by
   have htri : M.BlockTriangular id := fun i j hij => (hM i j).1 hij
@@ -17,9 +17,9 @@ theorem isUnit_of_isUniUp {N : ℕ} {M : Mt g N} (hM : IsUniUp M) : IsUnit M := 
   simp [(hM _ _).2 rfl]
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_subtype, Finset.card_filter, Fintype.sum_prod_type, Finset.sum_comm]`. Establish `hb : ∀ b : Fin N, (∑ a : Fin N, if a < b then 1 else 0) = (b : ℕ)`. Introduce `b`. Rewrite using `[← Finset.card_filter, ← Fin.card_Iio b]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `a`. Simplify using the standard rewrite rules. Simplify using `only [hb]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => i) N, Finset.sum_range_id]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_lt_pairs (N : ℕ) : Fintype.card {p : Fin N × Fin N // p.1 < p.2} = N * (N - 1) / 2 := by
   rw [Fintype.card_subtype, Finset.card_filter, Fintype.sum_prod_type, Finset.sum_comm]
@@ -36,7 +36,7 @@ def ofUpper {N : ℕ} (f : {p : Fin N × Fin N // p.1 < p.2} → ZMod g) : Mt g 
   fun a b => if h : a < b then f ⟨(a, b), h⟩ else if a = b then 1 else 0
 
 /- English proof (translation)
-Introduce `a b`. Use `⟨fun hba => ?_, fun hab => ?_⟩` and prove the remaining obligations. Simplify using `only [ofUpper, dif_neg (not_lt.mpr hba.le), if_neg hba.ne']`. Substitute `hab` using the available equality. Simplify using `[ofUpper]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem isUniUp_ofUpper {N : ℕ} (f : {p : Fin N × Fin N // p.1 < p.2} → ZMod g) : IsUniUp (ofUpper f) := by
   intro a b
@@ -46,15 +46,13 @@ theorem isUniUp_ofUpper {N : ℕ} (f : {p : Fin N × Fin N // p.1 < p.2} → ZMo
     simp [ofUpper]
 
 /- English proof (translation)
-Rewrite using `[← Fintype.card_subtype]`. Establish `e : {u : Gn g N // IsUniUp (u : Mt g N)} ≃ ({p : Fin N × Fin N // p.1 < p.2} → ZMod g)` using `{ toFun := fun u p => (u.1 : Mt g N) p.1.1 p.1.2 invFun := fun f => ⟨(isUnit_of_isUniUp (isUniUp_ofUpper f)).unit, isUniUp_ofUpper f⟩ left_inv := by`. Introduce and unpack `⟨u, hu⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only`. Rewrite using `[IsUnit.unit_spec]`. Use function extensionality and compare the values at `a b`. Use `show ofUpper _ a b = (u : Mt g N) a b`. Break down `lt_trichotomy a b with hab | rfl | hab` into its components or cases.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `only [ofUpper, dif_pos hab]`. Simplify using `only [ofUpper, dif_neg (lt_irrefl a)]`. Conclude with `((hu a a).2 rfl).symm`. Simplify using `only [ofUpper, dif_neg (not_lt.mpr hab.le), if_neg hab.ne']`. Conclude with `((hu a b).1 hab).symm`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify by unfolding definitions.
 
-Use `right_inv := by`. Introduce `f`. Use function extensionality and compare the values at `p`. Simplify using `only`. Rewrite using `[IsUnit.unit_spec]`.
-
-Use `show ofUpper f p.1.1 p.1.2 = f p`. Simplify using `only [ofUpper, dif_pos p.2] }`. Rewrite using `[Fintype.card_congr e, Fintype.card_fun, ZMod.card, card_lt_pairs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_uniUp (N : ℕ) :
     (Finset.univ.filter fun u : Gn g N => IsUniUp (u : Mt g N)).card = g ^ (N * (N - 1) / 2) := by
@@ -86,7 +84,7 @@ theorem card_uniUp (N : ℕ) :
   rw [Fintype.card_congr e, Fintype.card_fun, ZMod.card, card_lt_pairs]
 
 /- English proof (translation)
-Unfold `eU eDat`. Rewrite using `[MonoidAlgebra.coeff_smul_apply, MonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply]`. Simplify using `only [MonoidAlgebra.coeff_single, Finsupp.single_apply, Finset.sum_ite_eq', Finset.mem_filter, Finset.mem_univ, true_and, card_uniUp, Nat.cast_pow, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eU_coeff (ψ : AddChar (ZMod g) ℂ) (N : ℕ) (u : Gn g N) :
     (eU g N ψ).coeff u = if IsUniUp (u : Mt g N) then
@@ -98,9 +96,9 @@ theorem eU_coeff (ψ : AddChar (ZMod g) ℂ) (N : ℕ) (u : Gn g N) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `supFrom`. Rewrite using `[Finset.sum_Ico_eq_sum_range, show n - 1 - i = n - i - 1 by omega]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite `hj` using `[Finset.mem_range]`. Establish `h1 : j < n - i` using `by omega`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : j + 1 < n - i` using `by omega`. Establish `hbr : entN (br i (n - i) M) j (j + 1) = entN M (i + j) (i + (j + 1))` using `by conv_lhs => unfold entN`. Rewrite using `[dif_pos ⟨h1, h2⟩]`. Both sides reduce to the same expression. Rewrite using `[hbr, add_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_br (i n : ℕ) (M : Mt g n) :
     ∑ j ∈ Finset.range (n - i - 1), entN (br i (n - i) M) j (j + 1) = supFrom i M := by
@@ -123,19 +121,17 @@ namespace GlobalTheory.GLm
 open DerFormula
 
 /- English proof (translation)
-Introduce `g _ ψ i n F h _`. Establish `key : ∀ x : Gn g n, (∑ v : Gn g (n - i), (if IsUniUp (v : Mt g (n - i)) then (ψ (∑ j ∈ Finset.range (n - i - 1), entN (v : Mt g (n - i)) j (j + 1)))⁻¹ else 0) * (if InPar i (x : Mt g n) ∧ tl i (x : Mt g n) = (h : Mt g i) ∧ br i (n - i) (x : Mt g n) = (v : Mt g (n - i)) then F x e …`. Introduce `x`. Unfold `InR`. Distinguish the cases in `hx : (InPar i (x : Mt g n) ∧ IsUniUp (br i (n - i) (x : Mt g n))) ∧ tl i (x : Mt g n) = (h : Mt g i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Take `⟨⟨hP, hU⟩, ht⟩` from `hx`. Establish `hv0 : ((isUnit_of_isUniUp hU).unit : Mt g (n - i)) = br i (n - i) (x : Mt g n)` using `IsUnit.unit_spec _`. Rewrite using `[Finset.sum_eq_single (isUnit_of_isUniUp hU).unit]`. Rewrite using `[if_pos (by rw [hv0]; exact hU), if_pos ⟨hP, ht, hv0.symm⟩, if_pos ⟨⟨hP, hU⟩, ht⟩, hv0, sum_br, mul_comm]`. Introduce `v _ hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `mul_eq_zero_of_right _ (if_neg ?_)` and prove the remaining obligations. Introduce and unpack `⟨-, -, hb⟩`. Conclude with `hv (Units.ext (hb.symm.trans hv0.symm))`. Introduce `hv`. Conclude with `absurd (Finset.mem_univ _) hv`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_neg hx]`. Use `Finset.sum_eq_zero fun v _ => ?_` and prove the remaining obligations. Distinguish the cases in `hv : IsUniUp (v : Mt g (n - i))`. Use `mul_eq_zero_of_right _ (if_neg ?_)` and prove the remaining obligations. Introduce and unpack `⟨hP, ht, hb⟩`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hx ⟨⟨hP, by rw [hb]; exact hv⟩, ht⟩`. Rewrite using `[if_neg hv, zero_mul]`. Simplify using `only [der, wh, tr, res, eU_coeff]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.mul_sum]`. Apply the tactic sequence `split_ifs <;> ring`. Use `_ = _ := by`. Rewrite using `[← Finset.mul_sum, Finset.sum_comm]`. Simplify using `only [key]`.
-
-Rewrite using `[pow_add, mul_inv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem der_eq_sum : ∀ (g : ℕ) [Fact g.Prime] (ψ : AddChar (ZMod g) ℂ) (i n : ℕ) (F : Gn g n → ℂ) (h : Gn g i), i ≤ n → der ψ i F h = ((g : ℂ) ^ (i * (n - i) + (n - i) * (n - i - 1) / 2))⁻¹ * ∑ x : Gn g n, if InR i (x : Mt g n) ∧ tl i (x : Mt g n) = (h : Mt g i) then F x * (ψ (supFrom i (x : Mt g n)))⁻¹ else 0 := by
   intro g _ ψ i n F h _

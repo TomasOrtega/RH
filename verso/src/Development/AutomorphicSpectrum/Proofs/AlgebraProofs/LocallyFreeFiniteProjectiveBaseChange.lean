@@ -9,9 +9,7 @@ variable {o Ω : Type*} [CommRing o] [Field Ω] [Algebra o Ω] {R : Subalgebra o
   {E : Type*} [AddCommGroup E] [Module Ω E]
 
 /- English proof (translation)
-Establish `h1 : Ideal.span (Set.range f) = ⊤`. Rewrite using `[Ideal.eq_top_iff_one, ← h]`. Conclude with `Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨l, rfl⟩)`. Establish `h2` using `Ideal.span_pow_eq_top _ h1 n`. Rewrite `h2` using `[← Set.range_comp, Ideal.eq_top_iff_one, Ideal.mem_span_range_iff_exists_fun]`.
-
-Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_cover {k : ℕ} (f c : Fin k → R) (h : ∑ l, c l * f l = 1) (n : ℕ) :
     ∃ d : Fin k → R, ∑ l, d l * f l ^ n = 1 := by
@@ -23,15 +21,15 @@ theorem exists_pow_cover {k : ℕ} (f c : Fin k → R) (h : ∑ l, c l * f l = 1
   exact h2
 
 /- English proof (translation)
-Take `⟨-, k, f, c, hf, hc, hs, hb⟩` from `h`. Use `choose b hli hsp hiff using hb`. Use `⟨k, fun l => ⟨f l, hf l⟩, fun l => ⟨c l, hc l⟩, fun l => Module.Basis.mk (hli l) (hsp l).ge, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using hs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l q`. Rewrite using `[Module.Basis.mk_apply]`. Use `(hiff l (b l q)).2 ⟨Pi.single q 1, fun q' => ⟨0, ?_⟩, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hq : q' = q`. Substitute `hq` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[hq]`. Simplify using `[Pi.single_apply]`. Introduce `l q e he`. Take `⟨a, ha, rfl⟩` from `(hiff l e).1 ⟨0, by simpa using he⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `ha q`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `: (Module.Basis.mk (hli l) (hsp l).ge).repr (∑ q, a q • b l q) q = a q`. Establish `h2 : (∑ q, a q • b l q) = ∑ q, a q • (Module.Basis.mk (hli l) (hsp l).ge) q`. Simplify using `[Module.Basis.mk_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, Module.Basis.repr_sum_self]`. Rewrite using `[this]`. Conclude with `hn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_charts {r : ℕ} {L : Submodule R E} (h : LocFree R r L.toAddSubgroup) :
     ∃ (k : ℕ) (f c : Fin k → R) (B : Fin k → Module.Basis (Fin r) Ω E), ∑ l, c l * f l = 1 ∧
@@ -63,7 +61,7 @@ theorem exists_charts {r : ℕ} {L : Submodule R E} (h : LocFree R r L.toAddSubg
     exact hn
 
 /- English proof (translation)
-Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le' hnm`. Use `L.smul_mem (f ^ j) h` as an intermediate fact. Rewrite using `[pow_add, mul_smul]`. Simplify `this` using `[Subalgebra.smul_def]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pow_smul_mem {L : Submodule R E} (f : R) {n m : ℕ} (hnm : n ≤ m) {e : E}
     (h : (f : Ω) ^ n • e ∈ L) : (f : Ω) ^ m • e ∈ L := by
@@ -73,7 +71,7 @@ theorem pow_smul_mem {L : Submodule R E} (f : R) {n m : ℕ} (hnm : n ≤ m) {e 
   simpa [Subalgebra.smul_def] using this
 
 /- English proof (translation)
-Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le' hnm`. Rewrite using `[pow_add, mul_assoc]`. Conclude with `R.mul_mem (R.pow_mem f.2 j) h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mul_mem (f : R) {n m : ℕ} (hnm : n ≤ m) {a : Ω}
     (h : (f : Ω) ^ n * a ∈ R) : (f : Ω) ^ m * a ∈ R := by
@@ -82,9 +80,9 @@ theorem pow_mul_mem (f : R) {n m : ℕ} (hnm : n ≤ m) {a : Ω}
   exact R.mul_mem (R.pow_mem f.2 j) h
 
 /- English proof (translation)
-Establish `hd' : ∑ l, (d l : Ω) * (f l : Ω) ^ (M + N) = 1`. Simplify using `using congrArg Subtype.val hd`. Rewrite using `[Fintype.sum_prod_type]`. Use `conv_rhs => rw [← one_smul Ω e, ← hd', Finset.sum_smul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_rhs => rw [← (B l).sum_repr e, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem expand {k r : ℕ} (f d : Fin k → R) (B : Fin k → Module.Basis (Fin r) Ω E) (M N : ℕ)
     (hd : ∑ l, d l * f l ^ (M + N) = 1) (e : E) :
@@ -102,19 +100,17 @@ theorem expand {k r : ℕ} (f d : Fin k → R) (B : Fin k → Module.Basis (Fin 
   ring
 
 /- English proof (translation)
-Take `⟨k, f, c, B, hs, h1, h2⟩` from `exists_charts h`. Use `choose n hn using h1`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : ∃ N, ∀ l q, n l q ≤ N := by`. Take `⟨N, hN⟩` from `(Set.finite_range fun i : Fin k × Fin r => n i.1 i.2).bddAbove`. Conclude with `⟨N, fun l q => hN ⟨(l, q), rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `v : Fin k × Fin r → L` to `fun i => ⟨(f i.1 : Ω) ^ N • B i.1 i.2, pow_smul_mem _ (hN _ _) (hn _ _)⟩`. Establish `hspan : ∀ e ∈ L, e ∈ Submodule.span R (Set.range fun i => (v i : E))`. Introduce `e he`. Use `choose m hm using fun l q => h2 l q e he`. Take `⟨M, hM⟩` from `(Set.finite_range fun i : Fin k × Fin r => m i.1 i.2).bddAbove`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨d, hd⟩` from `exists_pow_cover f c hs (M + N)`. Rewrite using `[← expand f d B M N hd e]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `hR : (d i.1 : Ω) * ((f i.1 : Ω) ^ M * (B i.1).repr e i.2) ∈ R` using `R.mul_mem (d i.1).2 (pow_mul_mem _ (hM ⟨i, rfl⟩) (hm _ _))`. Conclude with `Submodule.smul_mem _ (⟨_, hR⟩ : R) (Submodule.subset_span ⟨i, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose m hm using fun (i j : Fin k × Fin r) => h2 i.1 i.2 (v j) (v j).2`. Take `⟨M, hM⟩` from `(Set.finite_range fun i : (Fin k × Fin r) × (Fin k × Fin r) => m i.1 i.2).bddAbove`. Take `⟨d, hd⟩` from `exists_pow_cover f c hs (M + N)`. Use `⟨k, fun i => ((d i.1 : Ω) * (f i.1 : Ω) ^ M) • (B i.1).coord i.2, v, ?_, ?_⟩` and prove the remaining obligations. Introduce `i e he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `he'` using `hspan e he`. Use `clear he`. Proceed by induction on `he' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `R.mul_mem (d i.1).2 (pow_mul_mem _ (hM ⟨(i, j), rfl⟩) (hm i j))` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `R.add_mem hx hy`.
-
-Consider the case `smul a x _ hx`. Rewrite using `[Subalgebra.smul_def, map_smul]`. Conclude with `R.mul_mem a.2 hx`. Introduce `e`. Simplify `expand f d B M N hd e` using `[mul_assoc, v]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_dualBasis {r : ℕ} {L : Submodule R E} (h : LocFree R r L.toAddSubgroup) :
     ∃ (k : ℕ) (φ : Fin k × Fin r → Module.Dual Ω E) (v : Fin k × Fin r → L),
@@ -167,14 +163,14 @@ variable {ι : Type*} [Fintype ι] {L : Submodule R E} (φ : ι → Module.Dual 
 include hφ hv
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify `hv x` using `[Subalgebra.smul_def]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sum_eq (x : L) : ∑ i, (⟨φ i x, hφ i x x.2⟩ : R) • v i = x := by
   apply Subtype.ext
   simpa [Subalgebra.smul_def] using hv x
 
 /- English proof (translation)
-Set `s : L →ₗ[R] (ι → R)` to `{ toFun := fun x i => ⟨φ i x, hφ i x x.2⟩ map_add' := fun x y => by ext i; simp map_smul' := fun a x => by ext i; simp [Subalgebra.smul_def] }`. Set `p : (ι → R) →ₗ[R] L` to `Fintype.linearCombination R v`. Establish `hps : p ∘ₗ s = LinearMap.id` using `by ext1 x`. Conclude with `sum_eq φ v hφ hv x`. Conclude with `⟨Module.Finite.of_surjective p fun x => ⟨s x, LinearMap.congr_fun hps x⟩, Module.Projective.of_split s p hps⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_projective : Module.Finite R L ∧ Module.Projective R L := by
   classical
@@ -190,13 +186,13 @@ theorem finite_projective : Module.Finite R L ∧ Module.Projective R L := by
     Module.Projective.of_split s p hps⟩
 
 /- English proof (translation)
-Set `g : E →ₗ[Ω] Ω ⊗[R] L` to `∑ i, (φ i).smulRight ((1 : Ω) ⊗ₜ[R] v i)`. Establish `hg : ∀ e, g e = ∑ i, φ i e • ((1 : Ω) ⊗ₜ[R] v i)`. Introduce `e`. Simplify using `[g]`. Use `IsBaseChange.of_equiv (LinearEquiv.ofLinear (L.subtype.liftBaseChange Ω) g ?_ ?_) ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext1 e`. Simplify using `[hg, hv]`. Use extensionality with `x`. Establish `: g x = (1 : Ω) ⊗ₜ[R] x`. Rewrite using `[hg]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_rhs => rw [← sum_eq φ v hφ hv x, tmul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[tmul_smul]`. Both sides reduce to the same expression. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem isBaseChange : IsBaseChange Ω L.subtype := by
   let g : E →ₗ[Ω] Ω ⊗[R] L := ∑ i, (φ i).smulRight ((1 : Ω) ⊗ₜ[R] v i)
@@ -220,9 +216,9 @@ theorem isBaseChange : IsBaseChange Ω L.subtype := by
 end DualBasis
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ R E _ _ r L h`. Take `⟨k, φ, v, hφ, hv⟩` from `exists_dualBasis h`. Use `⟨(finite_projective φ v hφ hv).1, (finite_projective φ v hφ hv).2, ?_, isBaseChange φ v hφ hv⟩` and prove the remaining obligations. Take `⟨k, f, c, B, hs, -⟩` from `exists_charts h`. Break down `k with _ | k` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `at hs`. Simplify using `using Module.finrank_eq_card_basis (B 0)`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem main : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (R : Subalgebra o Ω) {E : Type}
     [AddCommGroup E] [Module Ω E] (r : ℕ) (L : Submodule R E), LocFree R r L.toAddSubgroup →

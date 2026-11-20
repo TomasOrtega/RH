@@ -20,9 +20,9 @@ section Lemmas
 open scoped ComplexConjugate
 
 /- English proof (translation)
-Unfold `hsNormSq hsInner`. Rewrite using `[Complex.re_sum]`. Apply `Finset.sum_nonneg` to reduce the goal to its premises. Introduce `i _`. Use `first`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `exact inner_self_nonneg (𝕜 := ℂ) (x := A (stdOrthonormalBasis ℂ Wq i))`. Consider the case `(rw [inner_self_eq_norm_sq_to_K]; norm_cast; positivity)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hsNormSq_nonneg {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (A : Wq →L[ℂ] Wp) : 0 ≤ hsNormSq A := by
@@ -35,9 +35,9 @@ theorem hsNormSq_nonneg {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpa
   | (rw [inner_self_eq_norm_sq_to_K]; norm_cast; positivity)
 
 /- English proof (translation)
-Unfold `hsNormSq hsInner`. Simplify using `only [ContinuousLinearMap.smul_apply, inner_smul_left, inner_smul_right, ← mul_assoc]`. Rewrite using `[← Finset.mul_sum]`. Use `first`. Consider the case `rw [Complex.mul_conj]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `rw [← Complex.normSq_eq_conj_mul_self]`. Rewrite using `[Complex.re_ofReal_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hsNormSq_smul {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (c : ℂ) (A : Wq →L[ℂ] Wp) :
@@ -51,7 +51,7 @@ theorem hsNormSq_smul {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpace
   rw [Complex.re_ofReal_mul]
 
 /- English proof (translation)
-Introduce `f hf`. Rewrite using `[h f hf]`. Simplify using `only [MeasureTheory.lintegral_smul_measure, smul_eq_mul]`. Rewrite using `[MeasureTheory.lintegral_const_mul' c _ hT, ← mul_assoc, ENNReal.inv_mul_cancel h0 hT, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isQuotMeas_smul {k r : ℕ} {μG μS ν : Measure (Formalism.QuantumDeterminants.Mt k r)} (h : IsQuotMeas μG μS ν) {c : ENNReal}
     (h0 : c ≠ 0) (hT : c ≠ ⊤) : IsQuotMeas μG (c • μS) (c⁻¹ • ν) := by
@@ -61,7 +61,7 @@ theorem isQuotMeas_smul {k r : ℕ} {μG μS ν : Measure (Formalism.QuantumDete
   rw [MeasureTheory.lintegral_const_mul' c _ hT, ← mul_assoc, ENNReal.inv_mul_cancel h0 hT, one_mul]
 
 /- English proof (translation)
-Simplify using `only [Formalism.MainNotions.S.LocS.J, Formalism.MainNotions.S.ampJ, MeasureTheory.integral_smul_measure]`. Rewrite using `[Complex.coe_smul]`. Conclude with `smul_comm _ _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locJ_smul {k r : ℕ} {W : LocW k r} (A : LocS W) (ν : Measure (Formalism.QuantumDeterminants.Mt k r)) (c : ENNReal)
     (γ : MatKR k r) : A.J (c • ν) γ = ((c.toReal : ℝ) : ℂ) • A.J ν γ := by
@@ -76,14 +76,14 @@ section Tr
 variable {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Choice X θ)
 
 /- English proof (translation)
-Rewrite using `[Matrix.dotProduct_mulVec, Matrix.star_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem star_dot_conjT {n m : Type*} [Fintype n] [Fintype m] (Q : Matrix n m ℂ) (x : m → ℂ) (y : n → ℂ) :
     star x ⬝ᵥ (Qᴴ *ᵥ y) = star (Q *ᵥ x) ⬝ᵥ y := by
   rw [Matrix.dotProduct_mulVec, Matrix.star_mulVec]
 
 /- English proof (translation)
-Simplify using `only [hJ]`. Simplify using `[Matrix.mulVec_smul, smul_eq_mul]`. Apply the tactic sequence `try push_cast`. Apply the tactic sequence `try ring`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hJ_smul_real {n : ℕ} (ε : Fin n → Bool) (r s : ℝ) (x y : Fin n → ℂ) :
     hJ ε ((r : ℂ) • x) ((s : ℂ) • y) = ((r * s : ℝ) : ℂ) * hJ ε x y := by
@@ -93,13 +93,11 @@ theorem hJ_smul_real {n : ℕ} (ε : Fin n → Bool) (r s : ℝ) (x y : Fin n �
   try ring
 
 /- English proof (translation)
-Establish `hk : D.host.ka / (2 * Real.pi) = D.host.rdE⁻¹`. Unfold `Formalism.BasicNotions.Host.ka Formalism.BasicNotions.Host.v`. Establish `hpi` using `Real.pi_pos.ne'`. Break down `eq_or_ne D.host.rdE 0 with h0 | h0` into its components or cases. Rewrite using `[h0]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Apply the tactic sequence `field_simp try ring`. Establish `hnn : 0 ≤ D.host.rdE`. Unfold `Formalism.BasicNotions.Host.rdE`. Conclude with `Real.rpow_nonneg (abs_nonneg _) _`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hc : ((D.R.rS - a.val : ℕ) : ℝ) = (D.R.rS : ℝ) - (a.val : ℝ)`. Rewrite using `[Nat.cast_sub h.le]`. Unfold `frS rhoF`. Rewrite using `[hk, ← hc, Real.rpow_neg hnn, Real.rpow_natCast, ← inv_pow]`. Use `push_cast`.
-
-Apply the tactic sequence `try ring`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem frS_pow (D : D7) (a : Fin (D.R.rS + 1)) (h : a.val < D.R.rS) :
     frS D ^ (D.R.rS - a.val) = ((rhoF D a : ℝ) : ℂ) := by
@@ -122,19 +120,19 @@ theorem frS_pow (D : D7) (a : Fin (D.R.rS + 1)) (h : a.val < D.R.rS) :
   try ring
 
 /- English proof (translation)
-Simplify using `[rhoF, Fin.val_last]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rhoF_last (D : D7) : rhoF D (Fin.last D.R.rS) = 1 := by
   simp [rhoF, Fin.val_last]
 
 /- English proof (translation)
-Take `⟨_, hQQi, _, hEv⟩` from `C.isT τ`. Distinguish the cases in `h : a.val < D.R.rS`. Establish `h1` using `(hEv ⟨a.val, h⟩ ⟨a.val, h⟩ rfl).1`. Establish `ha : a = Fin.castSucc ⟨a.val, h⟩` using `Fin.ext rfl`. Establish `h2 : (X.Fu u).fvec (Fin.castSucc ⟨a.val, h⟩) = X.eX ⟨a.val, h⟩`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc]`. Conclude with `congrFun (X.Fu_e u) _`. Rewrite `h2` using `[← ha]`. Rewrite using `[h2, ← frS_pow D a h, Formalism.QuantumDeterminants.fvec, dif_pos h, Formalism.QuantumDeterminants.bvec, h1]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `ha : a = Fin.last D.R.rS` using `Fin.ext (by have := a.isLt; simp; omega)`. Substitute `ha` using the available equality. Establish `h3 : (X.Fu u).fvec (Fin.last D.R.rS) = X.zu u`. Simplify using `only [Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_last]`. Conclude with `X.flagZVector u`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h3, rhoF_last, Formalism.QuantumDeterminants.fvec, dif_neg h]`. Simplify using `only [zB, Complex.ofReal_one, one_smul]`. Rewrite using `[Matrix.mulVec_mulVec, hQQi, Matrix.one_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Q_fvec (u : D.what₂.Word) (τ : D.what₂.Tau) (a : Fin (D.R.rS + 1)) :
     C.Q τ *ᵥ Formalism.QuantumDeterminants.fvec D.R.k D.R.rS (zB X (C.Qi τ) u τ) a =
@@ -160,19 +158,19 @@ theorem Q_fvec (u : D.what₂.Word) (τ : D.what₂.Tau) (a : Fin (D.R.rS + 1)) 
     rfl
 
 /- English proof (translation)
-Conclude with `D.eTau.nonempty`.
+A detailed English derivation is pending.
 -/
 theorem tau_nonempty (D : D7) : Nonempty D.what₂.Tau := by
   exact D.eTau.nonempty
 
 /- English proof (translation)
-Establish `hU : (uMat g)ᴴ * Formalism.REAL.Jm ε * uMat g = Formalism.REAL.Jm ε` using `by first`. Consider the case `exact g.2`. Consider the case `(unfold uMat; exact g.2)`. Consider the case `simpa [uMat] using g.2`. Establish `h1 : ∀ X : Matrix (Fin n) (Fin m) ℂ, Qiᴴ * (Qᴴ * X) = X`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce `X`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, hQQi, Matrix.conjTranspose_one, Matrix.one_mul]`. Establish `h2 : ∀ X : Matrix (Fin n) (Fin m) ℂ, Q * (Qi * X) = X`. Introduce `X`. Rewrite using `[← Matrix.mul_assoc, hQQi, Matrix.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ∀ X : Matrix (Fin n) (Fin m) ℂ, (uMat g)ᴴ * (Formalism.REAL.Jm ε * (uMat g * X)) = Formalism.REAL.Jm ε * X`. Introduce `X`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hU]`. Use `show (Qi * uMat g * Q)ᴴ * H * (Qi * uMat g * Q) = H`. Rewrite using `[← hH]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc, h1, h2, h3]`.
+A detailed English derivation is pending.
 -/
 theorem trG_mem {n m : ℕ} {ε : Fin n → Bool} (Q : Matrix (Fin n) (Fin m) ℂ) (Qi : Matrix (Fin m) (Fin n) ℂ)
     (H : Matrix (Fin m) (Fin m) ℂ) (hQQi : Q * Qi = 1) (hH : Qᴴ * Formalism.REAL.Jm ε * Q = H) (g : Formalism.REAL.UJ ε) :
@@ -197,11 +195,11 @@ theorem trG_mem {n m : ℕ} {ε : Fin n → Bool} (Q : Matrix (Fin n) (Fin m) �
   simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc, h1, h2, h3]
 
 /- English proof (translation)
-Take `⟨_, hQQi, hH, _⟩` from `C.isT τ`. Establish `hT' : (VS D).hT (Formalism.L2.SG.Pf.Level.toV X (X.zR u)) (Formalism.L2.SG.Pf.Level.toV X (X.zR u)) = -(((D.mem u).A.T : ℕ) : D.host.E)`. Rewrite using `[show X.zR u = X.crd (X.zu u) from rfl, Formalism.L2.SG.Pf.Level.toV_crd, X.zu_norm]`. Establish `hι` using `Formalism.L2.SG.Pf.Level.iota_hE (X := X) (X.zR u) (X.zR u)`. Rewrite `hι` using `[hT']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hJv` using `Formalism.L2.SG.Pf.Level.hJ_rv (X := X) (vOf X τ) (X.zR u) (X.zR u)`. Rewrite `hJv` using `[X.φ_eq, hι]`. Simplify using `only [hJ, map_neg, map_natCast] at hJv`. Unfold `Formalism.QuantumDeterminants.Tz zB Formalism.QuantumDeterminants.herm`. Rewrite using `[← hH, Matrix.mulVec_mulVec, Matrix.mul_assoc ((C.Q τ)ᴴ * Formalism.REAL.Jm (X.B.I.ε (vOf X τ))) (C.Q τ) (C.Qi τ), hQQi, Matrix.mul_one, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec, Matrix.mulVec_mulVec, hQQi, Matrix.one_mulVec, hJv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `[Tu]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tz_zB (u : D.what₂.Word) (τ : D.what₂.Tau) :
     Formalism.QuantumDeterminants.Tz D.R.k D.R.rS (zB X (C.Qi τ) u τ) = ((Tu D u : ℕ) : ℝ) := by

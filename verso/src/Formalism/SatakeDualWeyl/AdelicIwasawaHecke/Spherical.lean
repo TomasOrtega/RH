@@ -9,11 +9,11 @@ namespace Formalism.UG.P
 variable (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Set `A' : Matrix (Fin n) (Fin n) (Ov F v)` to `Matrix.of fun i j => ⟨A i j, hA i j⟩`. Set `B' : Matrix (Fin n) (Fin n) (Ov F v)` to `Matrix.of fun i j => ⟨B i j, hB i j⟩`. Establish `hinj : ∀ M N : Matrix (Fin n) (Fin n) (Ov F v), RingHom.mapMatrix (Ov F v).subtype M = RingHom.mapMatrix (Ov F v).subtype N → M = N`. Introduce `M N h`. Conclude with `Matrix.ext fun i j => Subtype.ext (congrFun (congrFun h i) j)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmA : RingHom.mapMatrix (Ov F v).subtype A' = A` using `Matrix.ext fun i j => rfl`. Establish `hmB : RingHom.mapMatrix (Ov F v).subtype B' = B` using `Matrix.ext fun i j => rfl`. Establish `hAB' : A' * B' = 1` using `hinj _ _ (by rw [map_mul, map_one, hmA, hmB, hAB])`. Establish `hBA' : B' * A' = 1` using `hinj _ _ (by rw [map_mul, map_one, hmA, hmB, hBA])`. Set `u : GL (Fin n) (Ov F v)` to `⟨A', B', hAB', hBA'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Conclude with `⟨bc (Ov F v).subtype u, ⟨u, rfl⟩, Matrix.ext fun i j => rfl⟩`.
+A detailed English derivation is pending.
 -/
 private lemma exists_GLint_of_integral_inverse {n : ℕ} (A B : Matrix (Fin n) (Fin n) (v.adicCompletion F))
     (hA : ∀ i j, A i j ∈ Ov F v) (hB : ∀ i j, B i j ∈ Ov F v) (hAB : A * B = 1) (hBA : B * A = 1) :
@@ -32,7 +32,7 @@ private lemma exists_GLint_of_integral_inverse {n : ℕ} (A B : Matrix (Fin n) (
   exact ⟨bc (Ov F v).subtype u, ⟨u, rfl⟩, Matrix.ext fun i j => rfl⟩
 
 /- English proof (translation)
-Distinguish the cases in `hb : b = r`. Substitute `hb` using the available equality. Simplify using `[Matrix.mul_apply]`. Simplify using `[Matrix.mul_apply, hb, mul_add, Finset.sum_add_distrib]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma mul_column_operation_apply {R : Type*} [CommRing R] {n : ℕ} (M : Matrix (Fin n) (Fin n) R) (r : Fin n)
     (c : Fin n → R) (x b : Fin n) :
@@ -44,9 +44,9 @@ private lemma mul_column_operation_apply {R : Type*} [CommRing R] {n : ℕ} (M :
   · simp [Matrix.mul_apply, hb, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[mul_column_operation_apply _ r (fun b => -c b)]`. Distinguish the cases in `hbr : b = r`. Substitute `hbr` using the available equality. Simplify using `[Matrix.one_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `har : a = r`. Substitute `har` using the available equality. Establish `hne : a ≠ b` using `fun h => hbr h.symm`. Simplify using `[Matrix.one_apply, hbr, hne]`. Simplify using `[Matrix.one_apply, hbr, har]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma column_operation_mul_neg_eq_one {R : Type*} [CommRing R] {n : ℕ} (r : Fin n) (c : Fin n → R) :
     (Matrix.of fun a b => (if a = b then (1 : R) else 0) + (if a = r ∧ b ≠ r then c b else 0)) *
@@ -63,15 +63,9 @@ private lemma column_operation_mul_neg_eq_one {R : Type*} [CommRing R] {n : ℕ}
     · simp [Matrix.one_apply, hbr, har]
 
 /- English proof (translation)
-Use `exists_GLint_of_integral_inverse F v _ (Matrix.of fun a b => (if a = b then (1 : v.adicCompletion F) else 0) + (if a = r ∧ b ≠ r then -c b else 0)) ?_ ?_ (column_operation_mul_neg_eq_one r c) ?_` and prove the remaining obligations. Introduce `i j`. Simplify using `only [Matrix.of_apply]`. Use `Subring.add_mem _ ?_ ?_` and prove the remaining obligations. Use `split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`. Use `split_ifs`. Conclude with `hc j`. Conclude with `Subring.zero_mem _`.
-
-Introduce `i j`. Simplify using `only [Matrix.of_apply]`. Use `Subring.add_mem _ ?_ ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `Subring.one_mem _`.
-
-Conclude with `Subring.zero_mem _`. Use `split_ifs`. Conclude with `Subring.neg_mem _ (hc j)`. Conclude with `Subring.zero_mem _`. Establish `h` using `column_operation_mul_neg_eq_one r (fun b => -c b)`.
-
-Simplify using `using h`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma exists_GLint_eq_column_operation {n : ℕ} (r : Fin n) (c : Fin n → v.adicCompletion F)
     (hc : ∀ b, c b ∈ Ov F v) :
@@ -103,38 +97,34 @@ private lemma exists_GLint_eq_column_operation {n : ℕ} (r : Fin n) (c : Fin n 
     simpa using h
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `x ∈ v.adicCompletionIntegers F`. Conclude with `(IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).mpr h`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 private lemma mem_Ov_of_valuation_le_one (x : v.adicCompletion F) (h : Valued.v x ≤ 1) : x ∈ Ov F v := by
   change x ∈ v.adicCompletionIntegers F
   exact (IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).mpr h
 
 /- English proof (translation)
-Distinguish the cases in `hz : ∀ j, j < i0 → M i0 j = 0`. Use `⟨1, Subgroup.one_mem _, fun i j hi hj => ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_one, Matrix.mul_one]`. Break down `hi.lt_or_eq with h | h` into its components or cases. Conclude with `hM i j h hj`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Substitute `h` using the available equality. Conclude with `hz j hj`. Use `push_neg at hz`. Take `⟨j1, hj1, hj1ne⟩` from `hz`. Take `⟨p, hpS, hpmax⟩` from `Finset.exists_max_image (Finset.univ.filter (fun j => j ≤ i0)) (fun j => Valued.v (M i0 j)) ⟨i0, by simp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : p ≤ i0` using `(Finset.mem_filter.mp hpS).2`. Establish `hmax : ∀ j, j ≤ i0 → Valued.v (M i0 j) ≤ Valued.v (M i0 p)` using `fun j hj => hpmax j (by simp [hj])`. Establish `hppos : 0 < Valued.v (M i0 p)` using `lt_of_lt_of_le ((Valuation.pos_iff _).mpr hj1ne) (hmax j1 hj1.le)`. Choose the witnesses or unpack the hypotheses as in `⟨k1, hk1, hrows1, hpiv1, hne1⟩ : ∃ k1 ∈ GLint (Fin n) (Ov F v), (∀ i j : Fin n, i0 < i → j < i → (M * (k1 : Matrix (Fin n) (Fin n) (v.adicCompletion F))) i j = 0) ∧ (∀ j, j ≤ i0 → Valued.v ((M * (k1 : Matrix (Fin n) (Fin n) (v.adicCompletion F))) i0 j) ≤ Valued.v ((M * (k1 : Matr …`. Distinguish the cases in `heq : Valued.v (M i0 i0) = Valued.v (M i0 p)`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨1, Subgroup.one_mem _, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using hM`. Introduce `j hj`. Simplify `hmax j hj` using `[heq]`. Simplify using `only [Units.val_one, Matrix.mul_one]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `heq` using `[h0, map_zero]`. Conclude with `(ne_of_lt hppos) heq`. Establish `hlt : Valued.v (M i0 i0) < Valued.v (M i0 p)` using `lt_of_le_of_ne (hmax i0 le_rfl) heq`. Establish `hpi0 : p ≠ i0` using `fun h => heq (by rw [h])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨k1, hk1, hk1eq⟩` from `exists_GLint_eq_column_operation F v p (fun b => if b = i0 then 1 else 0) (fun b => by split_ifs`. Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _)`. Establish `hdiag : (M * (k1 : Matrix (Fin n) (Fin n) (v.adicCompletion F))) i0 i0 = M i0 i0 + M i0 p`. Rewrite using `[hk1eq, mul_column_operation_apply]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Ne.symm hpi0]`. Use `⟨k1, hk1, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hi hj`. Rewrite using `[hk1eq, mul_column_operation_apply, hM i j hi hj, hM i p hi (lt_of_le_of_lt hp hi)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `j hj`. Rewrite using `[hdiag, Valuation.map_add_eq_of_lt_right _ hlt]`. Distinguish the cases in `hji : j = i0`. Substitute `hji` using the available equality. Rewrite using `[hdiag, Valuation.map_add_eq_of_lt_right _ hlt]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hk1eq, mul_column_operation_apply]`. Simplify using `only [hji, if_false, mul_zero, ite_self, add_zero]`. Conclude with `hmax j hj`. Rewrite using `[hdiag]`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `Valuation.map_add_eq_of_lt_right Valued.v hlt`. Rewrite `h1` using `[h0, map_zero]`. Conclude with `(ne_of_lt hppos) h1`. Use `set M1 := M * (k1 : Matrix (Fin n) (Fin n) (v.adicCompletion F)) with hM1`. Take `⟨k2, hk2, hk2eq⟩` from `exists_GLint_eq_column_operation F v i0 (fun b => if b < i0 then -(M1 i0 b / M1 i0 i0) else 0) (fun b => by split_ifs with hb`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact.
 
-Apply `mem_Ov_of_valuation_le_one` to reduce the goal to its premises. Rewrite using `[Valuation.map_neg, map_div₀]`. Conclude with `div_le_one_of_le₀ (hpiv1 b hb.le) zero_le'`. Conclude with `Subring.zero_mem _)`. Use `⟨k1 * k2, Subgroup.mul_mem _ hk1 hk2, fun i j hi hj => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Units.val_mul, ← Matrix.mul_assoc, ← hM1, hk2eq, mul_column_operation_apply]`. Break down `hi.lt_or_eq with h | h` into its components or cases. Rewrite using `[hrows1 i j h hj, hrows1 i i0 h h]`. Simplify using the standard rewrite rules. Substitute `h` using the available equality.
-
-Establish `hji : j ≠ i0` using `ne_of_lt hj`. Simplify using `only [hji, ne_eq, not_false_eq_true, if_true, hj]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma exists_GLint_mul_clears_below_diag_from {n : ℕ} (M : Matrix (Fin n) (Fin n) (v.adicCompletion F)) (i0 : Fin n)
     (hM : ∀ i j : Fin n, i0 < i → j < i → M i j = 0) :
@@ -217,15 +207,13 @@ private lemma exists_GLint_mul_clears_below_diag_from {n : ℕ} (M : Matrix (Fin
     ring
 
 /- English proof (translation)
-Establish `key : ∀ r, r ≤ n → ∃ k ∈ GLint (Fin n) (Ov F v), ∀ i j : Fin n, n - r ≤ i.val → j < i → ((g : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * (k : Matrix (Fin n) (Fin n) (v.adicCompletion F))) i j = 0`. Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `_`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨1, Subgroup.one_mem _, fun i j hi _ => ?_⟩` and prove the remaining obligations. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Consider the case `succ r ih`. Introduce `hr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, hk, hup⟩` from `ih (by omega)`. Take `⟨k2, hk2, h2⟩` from `exists_GLint_mul_clears_below_diag_from F v ((g : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * (k : Matrix (Fin n) (Fin n) (v.adicCompletion F))) ⟨n - r - 1, by omega⟩ (fun i j hi hj => hup i j (by rw [Fin.lt_def] at hi; simp at hi; omega) hj)`. Use `⟨k * k2, Subgroup.mul_mem _ hk hk2, fun i j hi hj => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, ← Matrix.mul_assoc]`. Conclude with `h2 i j (by rw [Fin.le_def]; simp; omega) hj`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, hup⟩` from `key n le_rfl`. Use `⟨g * k, k⁻¹, ?_, Subgroup.inv_mem _ hk, by group⟩` and prove the remaining obligations. Rewrite using `[← spherical_upper_iff]`. Introduce `i j hji`. Rewrite using `[Units.val_mul]`.
-
-Conclude with `hup i j (by omega) hji`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spherical_iwasawa {n : ℕ} (g : GL (Fin n) (v.adicCompletion F)) :
     ∃ b k : GL (Fin n) (v.adicCompletion F),
@@ -259,9 +247,9 @@ theorem spherical_iwasawa {n : ℕ} (g : GL (Fin n) (v.adicCompletion F)) :
   exact hup i j (by omega) hji
 
 /- English proof (translation)
-Establish `hq : b'⁻¹ * b = k' * k⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `hup : ((b'⁻¹ * b : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)).BlockTriangular id` using `spherical_upper_mul _ _ (spherical_upper_inv _ hb') hb`. Establish `hint : b'⁻¹ * b ∈ GLint (Fin n) (Ov F v)`. Rewrite using `[hq]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.mul_mem _ hk' (Subgroup.inv_mem _ hk)`. Establish `hb_eq : b = b' * (b'⁻¹ * b)` using `by group`. Rewrite using `[hb_eq, spherical_chiDelta_mul F v α hα b' _ hb' hup, spherical_chiDelta_int F v α _ hup hint, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spherical_wd {n : ℕ} (α : Fin n → ℂ) (hα : ∀ i, α i ≠ 0) (b b' k k' : GL (Fin n) (v.adicCompletion F))
     (hb : (b : Matrix (Fin n) (Fin n) (v.adicCompletion F)).BlockTriangular id)
@@ -281,15 +269,13 @@ theorem spherical_wd {n : ℕ} (α : Fin n → ℂ) (hα : ∀ i, α i ≠ 0) (b
   rw [hb_eq, spherical_chiDelta_mul F v α hα b' _ hb' hup, spherical_chiDelta_int F v α _ hup hint, mul_one]
 
 /- English proof (translation)
-Introduce `F _ _ v n α hα`. Establish `dec` using `fun g : GL (Fin n) (v.adicCompletion F) => spherical_iwasawa F v g`. Set `φ : GL (Fin n) (v.adicCompletion F) → ℂ` to `fun g => chiDelta F v α (Classical.choose (dec g))`. Establish `hφ : ∀ g b k : GL (Fin n) (v.adicCompletion F), (b : Matrix (Fin n) (Fin n) (v.adicCompletion F)).BlockTriangular id → k ∈ GLint (Fin n) (Ov F v) → g = b * k → φ g = chiDelta F v α b`. Introduce `g b k hb hk hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k0, hb0, hk0, hg0⟩` from `Classical.choose_spec (dec g)`. Conclude with `spherical_wd F v α hα _ _ _ _ hb0 hb hk0 hk (hg0.symm.trans hg)`. Establish `hone : ((1 : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)).BlockTriangular id` using `(spherical_upper_iff 1).mp (fun i j h => by simp [Matrix.one_apply_ne (ne_of_gt h)])`. Use `⟨φ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `b g k hb hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hb'` using `(spherical_upper_iff b).mp hb`. Take `⟨b0, k0, hb0, hk0, hg0⟩` from `dec g`. Rewrite using `[hφ g b0 k0 hb0 hk0 hg0, hφ (b * g * k) (b * b0) (k0 * k) (spherical_upper_mul b b0 hb' hb0) (Subgroup.mul_mem _ hk0 hk) (by rw [hg0]; group), spherical_chiDelta_mul F v α hα b b0 hb' hb0]`. Rewrite using `[hφ 1 1 1 hone (Subgroup.one_mem _) (by simp)]`. Conclude with `spherical_chiDelta_int F v α 1 hone (Subgroup.one_mem _)`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `ψ hψ`. Use function extensionality and compare the values at `g`. Take `⟨b0, k0, hb0, hk0, hg0⟩` from `dec g`. Establish `h1` using `hψ b0 1 k0 ((spherical_upper_iff b0).mpr hb0) hk0`. Rewrite `h1` using `[mul_one]`.
-
-Rewrite using `[hg0, hφ (b0 * k0) b0 k0 hb0 hk0 rfl, h1, mul_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_spherical_function : Formalism.UG.SphericalExists := by
   intro F _ _ v n α hα

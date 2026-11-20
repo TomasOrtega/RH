@@ -11,17 +11,15 @@ open NumberField GlobalTheory.CuspRep MeasureTheory PositivityTheory.Affgl Globa
 namespace GlobalTheory.CompanionTheory.CTFin.MonicCofin
 
 /- English proof (translation)
-Set `π : C →ₐ[ℂ] C ⧸ I` to `Ideal.Quotient.mkₐ ℂ I`. Establish `hπ : Function.Surjective π` using `Ideal.Quotient.mkₐ_surjective ℂ I`. Establish `hint : ∀ y ∈ π '' s, IsIntegral ℂ y`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨q, hm, hqI⟩` from `hq x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨q, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[← aeval_def, aeval_algHom_apply]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hqI`. Establish `htop : Algebra.adjoin ℂ (π '' s) = ⊤`. Rewrite using `[← AlgHom.map_adjoin, hgen, Algebra.map_top, AlgHom.range_eq_top]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hπ`. Establish `hfg` using `fg_adjoin_of_finite (hs.image π) hint`. Rewrite `hfg` using `[htop, Algebra.top_toSubmodule]`. Take `⟨t, ht⟩` from `hfg`. Use `⟨Submodule.span ℂ (Function.surjInv hπ '' (t : Set (C ⧸ I))), FiniteDimensional.span_of_finite ℂ (t.finite_toSet.image _), fun z => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmap : (Submodule.span ℂ (Function.surjInv hπ '' (t : Set (C ⧸ I)))).map π.toLinearMap = ⊤`. Rewrite using `[Submodule.map_span, ← Set.image_comp, ← ht]`. Use `congr 1`. Use `Set.image_id _` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`.
+Reduce the equality to equality of the corresponding arguments. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Function.surjInv_eq hπ y`. Establish `hz : π z ∈ (Submodule.span ℂ (Function.surjInv hπ '' (t : Set (C ⧸ I)))).map π.toLinearMap`. Rewrite using `[hmap]`. Conclude with `Submodule.mem_top`. Take `⟨v, hv, hvz⟩` from `hz`.
-
-Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq]`. Conclude with `hvz.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finiteDimensional_sub_mem {C : Type*} [CommRing C] [Algebra ℂ C] (I : Ideal C) {s : Set C}
     (hs : s.Finite) (hgen : Algebra.adjoin ℂ s = ⊤) (hq : ∀ x ∈ s, ∃ q : ℂ[X], q.Monic ∧ aeval x q ∈ I) :
@@ -58,7 +56,7 @@ theorem exists_finiteDimensional_sub_mem {C : Type*} [CommRing C] [Algebra ℂ C
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[cap, ← GroundTheory.BlockD.FourierDecayAlt.GaugeExists.evU_qdetPoly, GroundTheory.BlockD.FourierDecayAlt.GaugeExists.evU_apply, eval₂_eq_sum, Polynomial.sum]`. Use `Submodule.sum_mem _ fun k hk => ?_` and prove the remaining obligations. Rewrite using `[RingHom.id_apply, ← map_pow, ← Algebra.commutes, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (coeff_mem_coeffs (by simpa using hk)))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cap_mem_span_coeffs (τ : E →+* ℂ) (u : ℂ) :
     cap (a := n) τ u ∈ Submodule.span ℂ
@@ -70,11 +68,9 @@ theorem cap_mem_span_coeffs (τ : E →+* ℂ) (u : ℂ) :
   exact Submodule.smul_mem _ _ (Submodule.subset_span (coeff_mem_coeffs (by simpa using hk)))
 
 /- English proof (translation)
-Take `⟨b, hb, hspan, hli⟩` from `exists_linearIndependent ℂ {z | ∃ (τ : E →+* ℂ) (u : ℂ), z = cap (a := n) τ u}`. Establish `hF : (⋃ τ : E →+* ℂ, ((GroundTheory.BlockD.FourierDecayAlt.GaugeExists.qdetPoly (Eop (a` using `n) τ)).coeffs : Set (Module.End ℂ (Sm E n)))).Finite := Set.finite_iUnion fun τ => Finset.finite_toSet _`. Use `haveI := FiniteDimensional.span_of_finite ℂ hF`. Establish `hle : Submodule.span ℂ {z | ∃ (τ : E →+* ℂ) (u : ℂ), z = cap (a` using `n) τ u} ≤ Submodule.span ℂ (⋃ τ : E →+* ℂ, ((GroundTheory.BlockD.FourierDecayAlt.GaugeExists.qdetPoly (Eop (a := n) τ)).coeffs : Set (Module.End ℂ (Sm E n)))) := by`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨τ, u, rfl⟩`. Conclude with `Submodule.span_mono (Set.subset_iUnion (fun τ : E →+* ℂ => ((GroundTheory.BlockD.FourierDecayAlt.GaugeExists.qdetPoly (Eop (a := n) τ)).coeffs : Set (Module.End ℂ (Sm E n)))) τ) (cap_mem_span_coeffs τ u)`. Use `haveI := Submodule.finiteDimensional_of_le hle`. Establish `hfin : b.Finite`. Establish `hli' : LinearIndependent ℂ (fun x : b => (⟨x.1, hspan ▸ Submodule.subset_span x.2⟩ : Submodule.span ℂ {z | ∃ (τ : E →+* ℂ) (u : ℂ), z = cap (a` using `n) τ u})) := LinearIndependent.of_comp (Submodule.subtype _) hli`.
-
-Use `hli'.finite` as an intermediate fact. Conclude with `Set.toFinite b`. Conclude with `⟨b, hfin, hb, hspan⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finite_subset_span_cap :
     ∃ b : Set (Module.End ℂ (Sm E n)), b.Finite ∧ b ⊆ {z | ∃ τ u, z = cap (a := n) τ u} ∧
@@ -101,23 +97,21 @@ theorem exists_finite_subset_span_cap :
   exact ⟨b, hfin, hb, hspan⟩
 
 /- English proof (translation)
-Establish `hZ : ∀ c : C, ι c ∈ Zalg E n` using `fun c => hr ▸ AlgHom.mem_range_self ι c`. Establish `hZ' : ∀ z ∈ Zalg E n, ∃ c : C, ι c = z` using `fun z hz => by`. Rewrite `hz` using `[← hr]`. Conclude with `hz`. Take `⟨b, hbfin, hbT, hspan⟩` from `exists_finite_subset_span_cap (E := E) (n := n)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbZ : b ⊆ Zalg E n` using `fun x hx => Algebra.subset_adjoin (hbT hx)`. Set `s : Set C` to `ι ⁻¹' b`. Establish `hs : s.Finite` using `hbfin.preimage hι.injOn`. Establish `himg : ι '' s = b` using `Set.image_preimage_eq_of_subset fun x hx => hZ' x (hbZ hx)`. Establish `hgen : Algebra.adjoin ℂ s = ⊤`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subalgebra.map_injective hι ?_` and prove the remaining obligations. Rewrite using `[AlgHom.map_adjoin, himg, Algebra.map_top, hr]`. Use `le_antisymm (Algebra.adjoin_le hbZ) (Algebra.adjoin_le ?_)` and prove the remaining obligations. Introduce `x hx`. Establish `h1 : x ∈ Submodule.span ℂ b` using `hspan ▸ Submodule.subset_span hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `(Submodule.span_le.2 Algebra.subset_adjoin : Submodule.span ℂ b ≤ Subalgebra.toSubmodule (Algebra.adjoin ℂ b)) h1`. Set `I : Ideal C` to `Ideal.span (ι ⁻¹' J)`. Establish `hI : ∀ w ∈ I, ι w ∈ Submodule.span ℂ {y | ∃ x ∈ Zalg E n, ∃ j ∈ J, y = x * j}`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mem w hw => exact Submodule.subset_span ⟨1, Subalgebra.one_mem _, ι w, hw, (one_mul _).symm⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `smul a x _ hx`. Rewrite using `[smul_eq_mul, map_mul]`. Conclude with `GlobalTheory.CompanionTheory.HCFin.mul_mem_span_zalg_mul (hZ a) hx`. Establish `hrel : ∀ x ∈ s, ∃ q : ℂ[X], q.Monic ∧ aeval x q ∈ I`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨τ, u, hτ⟩` from `hbT hx`. Take `⟨q, hm, hqJ⟩` from `hq τ u`. Use `⟨q, hm, Ideal.subset_span ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ι (aeval x q) ∈ J`. Rewrite using `[← aeval_algHom_apply, hτ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hqJ`. Take `⟨V, hV, hz⟩` from `exists_finiteDimensional_sub_mem I hs hgen hrel`. Use `⟨hJ, V.map ι.toLinearMap, inferInstance, fun z hzZ => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `hZ' z hzZ`. Take `⟨v, hv, hvI⟩` from `hz c`.
-
-Use `Submodule.mem_sup.2 ⟨ι v, Submodule.mem_map_of_mem hv, ι (c - v), hI _ hvI, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem cofin_of_algHom {C : Type} [CommRing C] [Algebra ℂ C] (ι : C →ₐ[ℂ] Module.End ℂ (Sm E n))
     (hι : Function.Injective ι) (hr : ι.range = Zalg E n) (J : Set (Module.End ℂ (Sm E n))) (hJ : J ⊆ Zalg E n)
@@ -167,7 +161,7 @@ theorem cofin_of_algHom {C : Type} [CommRing C] [Algebra ℂ C] (ι : C →ₐ[�
   abel
 
 /- English proof (translation)
-Establish `hcomm : ∀ x ∈ {z : Module.End ℂ (Sm E n) | ∃ (τ : E →+* ℂ) (u : ℂ), z = cap (a` using `n) τ u}, ∀ y ∈ {z : Module.End ℂ (Sm E n) | ∃ (τ : E →+* ℂ) (u : ℂ), z = cap (a := n) τ u}, x * y = y * x := fun x hx y hy => (GlobalTheory.AutGrowth.KilledFin.Zalg_commute (Algebra.subset_adjoin hx) (Algebra.subset_adjoin hy)).eq`. Conclude with `@cofin_of_algHom E _ _ _ n (Zalg E n) (Algebra.adjoinCommRingOfComm ℂ hcomm) (Subalgebra.algebra _) (Zalg E n).val Subtype.val_injective (Subalgebra.range_val _) J hJ hq`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cofin_of_monic (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (n : ℕ)
     (J : Set (Module.End ℂ (Sm E n))) (hJ : J ⊆ Zalg E n)

@@ -13,11 +13,11 @@ namespace GlobalTheory.NestQVal
 attribute [local instance] GlobalTheory.TorusExt.gtGroup
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Take `⟨z, hz, -⟩` from `h1 0`. Establish `e : z = z * z` using `(h2 0 0 0 z z z hz hz hz).1 ((GlobalTheory.TorusExt.isAdd_iff_eq _ _ _).2 (add_zero _).symm)`. Establish `e' : z = 1` using `left_eq_mul.1 e`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[zero_nsmul, pow_zero, ← e']`. Conclude with `hz`. Consider the case `succ m ih`. Take `⟨z, hz, -⟩` from `h1 ((m + 1) • g)`. Establish `e : z = c ^ m * c` using `(h2 _ _ _ _ _ _ ih hc hz).1 ((GlobalTheory.TorusExt.isAdd_iff_eq _ _ _).2 (succ_nsmul g m))`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, ← e]`. Conclude with `hz`.
+A detailed English derivation is pending.
 -/
 theorem pt_nsmul {R : Type} [CommRing R] [IsDomain R] {D₀ : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
     {N : NumD F} (ν : NumOf D₀ F N) (h1 : ∀ g, ∃! c, ν.Pt g c)
@@ -43,19 +43,19 @@ attribute [local instance] Over.cartesianMonoidalCategory in
 attribute [local instance] _root_.GlobalTheory.TorusExt.gtGroup in
 
 /- English proof (translation)
-Introduce `E _ _ _ H D R _ _ D₀ _ oa _ _ F _ _ _ I N ν q hPt hAdd hQ hev`. Establish `hzero : ν.Pt 0 1`. Take `⟨c, hc, -⟩` from `hPt 0`. Establish `h` using `(hAdd 0 0 0 c c c hc hc hc).1 ((_root_.GlobalTheory.TorusExt.isAdd_iff_eq _ _ _).2 (add_zero 0).symm)`. Establish `: c = 1` using `by simpa using (mul_eq_left.1 h.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `hc` using `[this]`. Establish `hsmul : ∀ (m : ℕ) g c, ν.Pt g c → ν.Pt (m • g) (c ^ m)`. Introduce `m g c hc`. Proceed by induction on `m with`. Consider the case `zero => simpa using hzero`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih`. Take `⟨c', hc', -⟩` from `hPt ((k + 1) • g)`. Establish `h` using `(hAdd _ _ _ _ _ _ ih hc hc').1 ((_root_.GlobalTheory.TorusExt.isAdd_iff_eq _ _ _).2 (succ_nsmul g k))`. Simplify `hc'` using `[h, pow_succ]`. Use `⟨fun n hn a b => ?_, fun n m hn hm a p hp1 hp2 => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hry, hrg, hr⟩` from `I.add n hn a b`. Take `⟨hya, hga⟩` from `hev n a`. Take `⟨hyb, hgb⟩` from `hev n b`. Take `⟨c'', hc'', -⟩` from `hPt r.g`. Establish `hc` using `(hAdd _ _ _ _ _ _ hga hgb hc'').1 hrg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrs : ν.QPt r (q n a * q n b)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `[hry, ← hya, ← hyb]`. Simplify `hc''` using `[hc]`. Conclude with `((hQ n).2 _ _ _ _ hrs (hev n (a + b))).1 hr`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, hQy, hQg, hQe⟩` from `I.tower n m hn hm a`. Take `⟨hy, hg⟩` from `hev (n * m) a`. Establish `hQp : ν.QPt Q p`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hQy, ← hy, hp1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(_root_.GlobalTheory.TorusExt.isNsmul_iff_eq _ _ _).1 hQg, hp2]`. Conclude with `hsmul m _ _ hg`. Conclude with `((hQ n).2 _ _ _ _ hQp (hev n a)).1 hQe`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NestQVal.qval_add_tower : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H), ∀ (R : Type) [CommRing R] [IsDomain R] (D₀ : _root_.ReciprocityTheory.ChartRestriction.G.Out.DegPre R) [Module (𝓞 E) D₀.X] (oa : letI := H.starRing; D₀.OAct (𝓞 E)), D₀.PsiEven → D₀.TauBimult → ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (I : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.TateIsoQ D D₀ oa F) (N : _root_.GlobalTheory.Ex.NumD F) (ν : _root_.GlobalTheory.Ex.NumOf D₀ F N) (q : ∀ n : ℕ, D.La → N.QT n), (∀ g, ∃! c, ν.Pt g c) → (∀ g g' g'' c c' c'', ν.Pt g c → ν.Pt g' c' → ν.Pt g'' c'' → (_root_.ReciprocityTheory.ChartRestriction.G.Out.GtPtF.IsAdd g g' g'' ↔ c'' = c * c')) → (∀ k, (∀ p : _root_.ReciprocityTheory.ChartRestriction.G.Out.QkPt D₀ F k, ∃! q, ν.QPt p q) ∧ ∀ (p p' : _root_.ReciprocityTheory.ChartRestriction.G.Out.QkPt D₀ F k) q q', ν.QPt p q → ν.QPt p' q' → (_root_.ReciprocityTheory.ChartRestriction.G.Out.QkPt.Equiv D₀ F p p' ↔ N.QEq q q')) → (∀ n a, ν.QPt (I.ev n a) (q n a)) → (∀ n, 0 < n → ∀ a b, N.QEq (q n a * q n b) (q n (a + b))) ∧ ∀ n m, 0 < n → 0 < m → ∀ a (p : N.QT n), p.1.1 = (q (n * m) a).1.1 → p.1.2 = (q (n * m) a).1.2 ^ m → N.QEq p (q n a) := by
   intro E _ _ _ H D R _ _ D₀ _ oa _ _ F _ _ _ I N ν q hPt hAdd hQ hev

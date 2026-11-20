@@ -13,19 +13,19 @@ open Formalism.L2.SG.HidaSetting
 variable {n : ℕ} (ε : Fin n → Bool)
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[star_sub, sub_dotProduct]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_sub_left (x y w : Fin n → ℂ) : hJ ε (x - y) w = hJ ε x w - hJ ε y w := by
   unfold hJ; rw [star_sub, sub_dotProduct]
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[Matrix.mulVec_sub, dotProduct_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_sub_right (x y w : Fin n → ℂ) : hJ ε w (x - y) = hJ ε w x - hJ ε w y := by
   unfold hJ; rw [Matrix.mulVec_sub, dotProduct_sub]
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[Matrix.mulVec_sum, dotProduct_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_sum_right {m : ℕ} (c : Fin m → ℂ) (v : Fin m → Fin n → ℂ) (w : Fin n → ℂ) :
     hJ ε w (∑ i, c i • v i) = ∑ i, c i * hJ ε w (v i) := by
@@ -35,7 +35,7 @@ theorem hJ_sum_right {m : ℕ} (c : Fin m → ℂ) (v : Fin m → Fin n → ℂ)
   rw [Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `hJ Formalism.REAL.Jm`. Simplify using `only [Matrix.mulVec_diagonal, dotProduct, star_sum, star_mul']`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp <;> ring`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hJ_conj (x y : Fin n → ℂ) : hJ ε y x = star (hJ ε x y) := by
   unfold hJ Formalism.REAL.Jm
@@ -44,7 +44,7 @@ theorem hJ_conj (x y : Fin n → ℂ) : hJ ε y x = star (hJ ε x y) := by
   split_ifs <;> simp <;> ring
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Unfold `Formalism.REAL.inUJ at hg`. Rewrite using `[hg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_map {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g) (x y : Fin n → ℂ) :
     hJ ε (g *ᵥ x) (g *ᵥ y) = hJ ε x y := by
@@ -56,9 +56,9 @@ theorem hJ_map {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g) 
 variable {r : ℕ}
 
 /- English proof (translation)
-Unfold `spanLt`. Use `congr 1`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨b.1, hb⟩, rfl⟩`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨Fin.castLE ha c, c.2, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem spanLt_eq (e : Fin r → Fin n → ℂ) {a : ℕ} (ha : a ≤ r) :
     spanLt e a = Submodule.span ℂ (Set.range fun c : Fin a => e (Fin.castLE ha c)) := by
@@ -75,11 +75,11 @@ def blk (e e' : Fin r → Fin n → ℂ) {a : ℕ} (ha : a ≤ r) : Matrix (Fin 
   Matrix.of fun b c => hJ ε (e (Fin.castLE ha b)) (e' (Fin.castLE ha c))
 
 /- English proof (translation)
-Rewrite `hx` using `[spanLt_eq e' ha, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨c, rfl⟩` from `hx`. Break down `hD with h0 | hdet` into its components or cases. Substitute `h0` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hM : blk ε e e' ha *ᵥ c = 0`. Use function extensionality and compare the values at `b`. Use `hp b` as an intermediate fact. Rewrite `this` using `[hJ_sum_right]`. Simplify `this` using `[blk, Matrix.mulVec, dotProduct, mul_comm]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Matrix.eq_zero_of_mulVec_eq_zero hdet hM` as an intermediate fact. Simplify using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem zero_of_perp_right (e e' : Fin r → Fin n → ℂ) {a : ℕ} (ha : a ≤ r)
     (hD : a = 0 ∨ (blk ε e e' ha).det ≠ 0)
@@ -99,9 +99,9 @@ theorem zero_of_perp_right (e e' : Fin r → Fin n → ℂ) {a : ℕ} (ha : a �
     simp [this]
 
 /- English proof (translation)
-Use `zero_of_perp_right ε e' e ha ?_ hx fun b => by rw [hJ_conj, hp b, star_zero]` and prove the remaining obligations. Break down `hD with h0 | hdet` into its components or cases. Conclude with `Or.inl h0`. Use `right`. Establish `e1 : blk ε e' e ha = (blk ε e e' ha)ᴴ`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `b c`. Simplify using `only [blk, Matrix.conjTranspose_apply, Matrix.of_apply]`. Rewrite using `[← hJ_conj]`. Rewrite using `[e1, Matrix.det_conjTranspose]`. Conclude with `fun h => hdet (star_eq_zero.1 h)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem zero_of_perp_left (e e' : Fin r → Fin n → ℂ) {a : ℕ} (ha : a ≤ r)
     (hD : a = 0 ∨ (blk ε e e' ha).det ≠ 0)
@@ -118,35 +118,33 @@ theorem zero_of_perp_left (e e' : Fin r → Fin n → ℂ) {a : ℕ} (ha : a ≤
     exact fun h => hdet (star_eq_zero.1 h)
 
 /- English proof (translation)
-Establish `hD' : ∀ l (hl : l ≤ r), l = 0 ∨ (blk ε e e' hl).det ≠ 0` using `fun l hl => by`. Break down `Nat.eq_zero_or_pos l with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (hD l hl h)`. Establish `hsub : ∀ v : Fin n → ℂ, (s - 1) *ᵥ v = s *ᵥ v - v` using `fun v => by`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact.
 
-Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Establish `step : ∀ a : ℕ, a ≤ r → ∀ c : Fin r, c.1 < a → s *ᵥ e c = e c ∧ s *ᵥ e' c = e' c`. Introduce `a`. Proceed by induction on `a with`. Consider the case `zero => intro _ c hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `absurd hc (Nat.not_lt_zero _)`. Consider the case `succ a ih`. Introduce `ha c hc`. Establish `ha' : a ≤ r` using `Nat.le_of_succ_le ha`. Establish `IH` using `ih ha'`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.lt_succ_iff_lt_or_eq.1 hc with hlt | heq` into its components or cases. Conclude with `IH c hlt`. Establish `hca : c.1 = a` using `heq`. Prove the components needed by the constructor for the conclusion. Establish `hx` using `h1 c`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hx` using `[hca]`. Use `zero_of_perp_left ε e e' ha' (hD' a ha') hx fun b => by` as an intermediate fact. Establish `hb` using `(IH (Fin.castLE ha' b) b.2).2`. Rewrite using `[hsub, hJ_sub_left, ← hb, hU, hb, sub_self]`. Rewrite `this` using `[hsub, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hx` using `h1' c`. Rewrite `hx` using `[hca]`. Use `zero_of_perp_right ε e e' ha' (hD' a ha') hx fun b => by` as an intermediate fact. Establish `hb` using `(IH (Fin.castLE ha' b) b.2).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsub, hJ_sub_right, ← hb, hU, hb, sub_self]`. Rewrite `this` using `[hsub, sub_eq_zero]`. Conclude with `this`. Establish `hfix : ∀ c : Fin r, s *ᵥ e c = e c ∧ s *ᵥ e' c = e' c` using `fun c => step r le_rfl c c.2`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Reduce the argument to an intermediate assertion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-It suffices to establish `hall : ∀ y : Fin n → ℂ, s *ᵥ y = y by`. Use `congrFun (hall (Pi.single j 1)) i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single, Matrix.one_apply, Pi.single_apply]`. Introduce `y`. Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Substitute `hr` using the available equality. Establish `hy` using `h2 y (fun a => a.elim0)`. Establish `h0 : spanLt e 0 = ⊥`. Unfold `spanLt`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite `hy` using `[h0, Submodule.mem_bot, hsub, sub_eq_zero]`. Conclude with `hy`. Set `M : Matrix (Fin r) (Fin r) ℂ` to `fun b c => hJ ε (e b) (e' c)`. Establish `hMdet : M.det ≠ 0` using `hD r le_rfl hr`. Set `lam : Fin r → ℂ` to `M⁻¹ *ᵥ fun b => hJ ε (e b) y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `x' : Fin n → ℂ` to `∑ c, lam c • e' c`. Establish `hMl : M *ᵥ lam = fun b => hJ ε (e b) y`. Simplify using `only [lam, Matrix.mulVec_mulVec]`. Rewrite using `[Matrix.mul_nonsing_inv _ (Ne.isUnit hMdet), Matrix.one_mulVec]`. Establish `hperp : ∀ b, hJ ε (e b) (y - x') = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `b`. Rewrite using `[hJ_sub_right, hJ_sum_right]`. Use `congrFun hMl b` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, M] at this`. Rewrite using `[← this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [mul_comm, sub_self]`. Establish `hx'fix : s *ᵥ x' = x'`. Simplify using `only [x', Matrix.mulVec_sum, Matrix.mulVec_smul, (hfix _).2]`. Establish `hw : (s - 1) *ᵥ y ∈ spanLt e r`. Use `h2 (y - x') hperp` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Matrix.mulVec_sub, hsub x', hx'fix, sub_self, sub_zero]`. Then use the resulting hypothesis. Establish `hw0` using `zero_of_perp_left ε e e' le_rfl (hD' r le_rfl) hw fun b => by`. Establish `hb` using `(hfix (Fin.castLE le_rfl b)).2`. Rewrite using `[hsub, hJ_sub_left, ← hb, hU, hb, sub_self]`. Rewrite `hw0` using `[hsub, sub_eq_zero]`.
-
-Conclude with `hw0`.
+A detailed English derivation is pending.
 -/
 theorem st_triv (e e' : Fin r → Fin n → ℂ) (s : Matrix (Fin n) (Fin n) ℂ)
     (hU : ∀ x y, hJ ε (s *ᵥ x) (s *ᵥ y) = hJ ε x y)

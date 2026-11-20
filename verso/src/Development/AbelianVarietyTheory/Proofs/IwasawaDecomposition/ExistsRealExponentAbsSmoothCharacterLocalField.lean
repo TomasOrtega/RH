@@ -15,9 +15,9 @@ namespace GlobalTheory.SmoothCharNorm
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hS` using `GlobalTheory.SmGL.UnramFixed.isCompact_unitsO k`. Take `⟨t, ht⟩` from `hS.elim_finite_subcover (fun z : kˣ => (fun y => z⁻¹ * y) ⁻¹' (χ.ker : Set kˣ)) (fun z => (continuous_const.mul continuous_id).isOpen_preimage _ hχ) (fun y _ => Set.mem_iUnion.2 ⟨y, by simp⟩)`. Use `(t.finite_toSet.image χ).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨i, hi, hyi⟩` from `Set.mem_iUnion₂.1 (ht hy)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨i, hi, ?_⟩` and prove the remaining obligations. Establish `: χ (i⁻¹ * y) = 1` using `hyi`. Rewrite `this` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_image_units (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     (χ '' {x : kˣ | valuation k (x : k) = 1}).Finite := by
@@ -35,9 +35,9 @@ theorem finite_image_units (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
   exact this
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖(χ u : ℂ)‖` using `norm_pos_iff.2 (χ u).ne_zero`. Establish `hinj` using `pow_right_injective₀ hpos hne`. Establish `hinf` using `Set.infinite_range_of_injective hinj`. Apply `hinf` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `((finite_image_units χ hχ).image (fun w : ℂˣ => ‖(w : ℂ)‖)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, rfl⟩`. Use `⟨χ (u ^ n), ⟨u ^ n, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `[Units.val_pow_eq_pow_val, map_pow, hu]`. Simplify using `[map_pow, Units.val_pow_eq_pow_val, norm_pow]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem norm_eq_one_of_valuation_eq_one (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) (u : kˣ)
     (hu : valuation k (u : k) = 1) : ‖(χ u : ℂ)‖ = 1 := by
@@ -61,7 +61,7 @@ noncomputable def ordHom (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace
   map_mul' x y := by simp [ord_mul, ofAdd_add]
 
 /- English proof (translation)
-Use `congrArg Multiplicative.toAdd (map_zpow (ordHom k) x n)` as an intermediate fact. Simplify `this` using `[ordHom, toAdd_zpow, smul_eq_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ord_zpow (x : kˣ) (n : ℤ) : ord k (x ^ n) = n * ord k x := by
   have := congrArg Multiplicative.toAdd (map_zpow (ordHom k) x n)
@@ -70,13 +70,13 @@ theorem ord_zpow (x : kˣ) (n : ℤ) : ord k (x ^ n) = n * ord k x := by
 end GlobalTheory.SmoothCharNorm
 
 /- English proof (translation)
-Introduce `k _ _ _ _ χ hχ`. Take `⟨ϖ, hϖ⟩` from `exists_uniformizer k`. Establish `hord : ord k ϖ = 1` using `ord_eq_one hϖ`. Establish `ha : 0 < ‖(χ ϖ : ℂ)‖` using `norm_pos_iff.2 (χ ϖ).ne_zero`. Establish `hq : (1 : ℝ) < (resCard k : ℝ)` using `by exact_mod_cast GlobalTheory.SplitWeil.one_lt_resCard k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlq : Real.log (resCard k : ℝ) ≠ 0` using `(Real.log_pos hq).ne'`. Use `⟨-Real.log ‖(χ ϖ : ℂ)‖ / Real.log (resCard k : ℝ), fun z => ?_⟩` and prove the remaining obligations. Establish `hz : ‖(χ z : ℂ)‖ = ‖(χ ϖ : ℂ)‖ ^ ord k z`. Establish `hw : valuation k ((ϖ ^ (-ord k z) * z : kˣ) : k) = 1`. Rewrite using `[← ord_eq_zero_iff, ord_mul, GlobalTheory.SmoothCharNorm.ord_zpow, hord]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hdec : z = ϖ ^ (ord k z) * (ϖ ^ (-ord k z) * z)` using `by group`. Use `conv_lhs => rw [hdec]`. Rewrite using `[map_mul, Units.val_mul, norm_mul, GlobalTheory.SmoothCharNorm.norm_eq_one_of_valuation_eq_one χ hχ _ hw, mul_one, map_zpow, Units.val_zpow_eq_zpow_val, norm_zpow]`. Rewrite using `[hz, GlobalTheory.LGrp.nabs_eq_zpow, ← Real.rpow_intCast, ← Real.rpow_intCast, ← Real.rpow_mul (by positivity), Real.rpow_def_of_pos ha, Real.rpow_def_of_pos (by positivity)]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SmoothCharNorm.norm_eq_nabs_rpow : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (χ : kˣ →* ℂˣ), IsSmoothChar χ → ∃ s : ℝ, ∀ z : kˣ, ‖(χ z : ℂ)‖ = nabs k z ^ s := by
   intro k _ _ _ _ χ hχ

@@ -32,12 +32,12 @@ section Alg
 variable {k r : ℕ} {κ τ : ℝ}
 
 /- English proof (translation)
-The claim follows from `mul_pos hτ (pow_pos hκ _)`.
+A detailed English derivation is pending.
 -/
 theorem tF_pos (hκ : 0 < κ) (hτ : 0 < τ) (a : ℕ) : 0 < tF r κ τ a := mul_pos hτ (pow_pos hκ _)
 
 /- English proof (translation)
-Unfold `tV`. Use `split_ifs`. Conclude with `tF_pos hκ hτ _`. Conclude with `one_pos`. Conclude with `inv_pos.mpr (tF_pos hκ hτ _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem tV_pos (hκ : 0 < κ) (hτ : 0 < τ) (i : Fin (2 * r + k + 1)) : 0 < tV k r κ τ i := by
   unfold tV; split_ifs
@@ -46,7 +46,7 @@ theorem tV_pos (hκ : 0 < κ) (hτ : 0 < τ) (i : Fin (2 * r + k + 1)) : 0 < tV 
   · exact inv_pos.mpr (tF_pos hκ hτ _)
 
 /- English proof (translation)
-Rewrite using `[dMi, dM, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← Complex.ofReal_mul, inv_mul_cancel₀ (tV_pos hκ hτ i).ne', Complex.ofReal_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem dMi_mul_dM (hκ : 0 < κ) (hτ : 0 < τ) : dMi k r κ τ * dM k r κ τ = 1 := by
   rw [dMi, dM, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -54,7 +54,7 @@ theorem dMi_mul_dM (hκ : 0 < κ) (hτ : 0 < τ) : dMi k r κ τ * dM k r κ τ 
   rw [← Complex.ofReal_mul, inv_mul_cancel₀ (tV_pos hκ hτ i).ne', Complex.ofReal_one]
 
 /- English proof (translation)
-Rewrite using `[dMi, dM, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← Complex.ofReal_mul, mul_inv_cancel₀ (tV_pos hκ hτ i).ne', Complex.ofReal_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem dM_mul_dMi (hκ : 0 < κ) (hτ : 0 < τ) : dM k r κ τ * dMi k r κ τ = 1 := by
   rw [dMi, dM, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -62,7 +62,7 @@ theorem dM_mul_dMi (hκ : 0 < κ) (hτ : 0 < τ) : dM k r κ τ * dMi k r κ τ 
   rw [← Complex.ofReal_mul, mul_inv_cancel₀ (tV_pos hκ hτ i).ne', Complex.ofReal_one]
 
 /- English proof (translation)
-Simplify using `only [cj, dMi, dM, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cj_apply (x : Mx k r) (i j : Fin (2 * r + k + 1)) :
     cj k r κ τ x i j = ((((tV k r κ τ i)⁻¹ * tV k r κ τ j : ℝ)) : ℂ) * x i j := by
@@ -70,7 +70,7 @@ theorem cj_apply (x : Mx k r) (i j : Fin (2 * r + k + 1)) :
   push_cast; ring
 
 /- English proof (translation)
-Simplify using `only [cjI, dMi, dM, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cjI_apply (x : Mx k r) (i j : Fin (2 * r + k + 1)) :
     cjI k r κ τ x i j = (((tV k r κ τ i * (tV k r κ τ j)⁻¹ : ℝ)) : ℂ) * x i j := by
@@ -78,21 +78,21 @@ theorem cjI_apply (x : Mx k r) (i j : Fin (2 * r + k + 1)) :
   push_cast; ring
 
 /- English proof (translation)
-Simplify using `only [cj, cjI, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (dMi k r κ τ) (dM k r κ τ), dMi_mul_dM hκ hτ, Matrix.one_mul, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_cjI (hκ : 0 < κ) (hτ : 0 < τ) (x : Mx k r) : cj k r κ τ (cjI k r κ τ x) = x := by
   simp only [cj, cjI, Matrix.mul_assoc]
   rw [← Matrix.mul_assoc (dMi k r κ τ) (dM k r κ τ), dMi_mul_dM hκ hτ, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Simplify using `only [cj, cjI, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (dM k r κ τ) (dMi k r κ τ), dM_mul_dMi hκ hτ, Matrix.one_mul, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cjI_cj (hκ : 0 < κ) (hτ : 0 < τ) (x : Mx k r) : cjI k r κ τ (cj k r κ τ x) = x := by
   simp only [cj, cjI, Matrix.mul_assoc]
   rw [← Matrix.mul_assoc (dM k r κ τ) (dMi k r κ τ), dM_mul_dMi hκ hτ, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Simplify using `only [cj, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (dM k r κ τ) (dMi k r κ τ), dM_mul_dMi hκ hτ, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_mul (hκ : 0 < κ) (hτ : 0 < τ) (x y : Mx k r) :
     cj k r κ τ (x * y) = cj k r κ τ x * cj k r κ τ y := by
@@ -100,55 +100,55 @@ theorem cj_mul (hκ : 0 < κ) (hτ : 0 < τ) (x y : Mx k r) :
   rw [← Matrix.mul_assoc (dM k r κ τ) (dMi k r κ τ), dM_mul_dMi hκ hτ, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[cj, Matrix.mul_one, dMi_mul_dM hκ hτ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_one (hκ : 0 < κ) (hτ : 0 < τ) : cj k r κ τ 1 = 1 := by
   rw [cj, Matrix.mul_one, dMi_mul_dM hκ hτ]
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv (dMi_mul_dM hκ hτ)`.
+A detailed English derivation is pending.
 -/
 theorem dM_inv (hκ : 0 < κ) (hτ : 0 < τ) : (dM k r κ τ)⁻¹ = dMi k r κ τ :=
   Matrix.inv_eq_left_inv (dMi_mul_dM hκ hτ)
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv (dM_mul_dMi hκ hτ)`.
+A detailed English derivation is pending.
 -/
 theorem dMi_inv (hκ : 0 < κ) (hτ : 0 < τ) : (dMi k r κ τ)⁻¹ = dM k r κ τ :=
   Matrix.inv_eq_left_inv (dM_mul_dMi hκ hτ)
 
 /- English proof (translation)
-Rewrite using `[cj, cj, Matrix.mul_inv_rev, Matrix.mul_inv_rev, dM_inv hκ hτ, dMi_inv hκ hτ, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_inv (hκ : 0 < κ) (hτ : 0 < τ) (x : Mx k r) : cj k r κ τ x⁻¹ = (cj k r κ τ x)⁻¹ := by
   rw [cj, cj, Matrix.mul_inv_rev, Matrix.mul_inv_rev, dM_inv hκ hτ, dMi_inv hκ hτ, Matrix.mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem of_cjT (x : Mt k r) : Matrix.of (cjT k r κ τ x) = cj k r κ τ (Matrix.of x) := by
   ext i j; rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem of_cjIT (x : Mt k r) : Matrix.of (cjIT k r κ τ x) = cjI k r κ τ (Matrix.of x) := by
   ext i j; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Simplify using `only [cjT, of_cjIT, cj_cjI hκ hτ]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem cjT_cjIT (hκ : 0 < κ) (hτ : 0 < τ) (x : Mt k r) : cjT k r κ τ (cjIT k r κ τ x) = x := by
   funext i j; simp only [cjT, of_cjIT, cj_cjI hκ hτ]; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Simplify using `only [cjIT, of_cjT, cjI_cj hκ hτ]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem cjIT_cjT (hκ : 0 < κ) (hτ : 0 < τ) (x : Mt k r) : cjIT k r κ τ (cjT k r κ τ x) = x := by
   funext i j; simp only [cjIT, of_cjT, cjI_cj hκ hτ]; rfl
 
 /- English proof (translation)
-Establish `: cjT k r κ τ = fun x i j => ((((tV k r κ τ i)⁻¹ * tV k r κ τ j : ℝ)) : ℂ) * x i j`. Use function extensionality and compare the values at `x i j`. Conclude with `cj_apply (Matrix.of x) i j`. Rewrite using `[this]`. Use `fun_prop`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_cjT : Continuous (cjT k r κ τ) := by
   have : cjT k r κ τ = fun x i j => ((((tV k r κ τ i)⁻¹ * tV k r κ τ j : ℝ)) : ℂ) * x i j := by
@@ -156,7 +156,7 @@ theorem continuous_cjT : Continuous (cjT k r κ τ) := by
   rw [this]; fun_prop
 
 /- English proof (translation)
-Establish `: cjIT k r κ τ = fun x i j => (((tV k r κ τ i * (tV k r κ τ j)⁻¹ : ℝ)) : ℂ) * x i j`. Use function extensionality and compare the values at `x i j`. Conclude with `cjI_apply (Matrix.of x) i j`. Rewrite using `[this]`. Use `fun_prop`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_cjIT : Continuous (cjIT k r κ τ) := by
   have : cjIT k r κ τ = fun x i j => (((tV k r κ τ i * (tV k r κ τ j)⁻¹ : ℝ)) : ℂ) * x i j := by
@@ -172,11 +172,11 @@ def cjE (hκ : 0 < κ) (hτ : 0 < τ) : Mt k r ≃ᵐ Mt k r where
   measurable_invFun := continuous_cjIT.measurable
 
 /- English proof (translation)
-Establish `hti` using `tF_pos (r := r) hκ hτ i.val`. Establish `htj` using `tF_pos (r := r) hκ hτ j.val`. Unfold `tV`. Distinguish the cases in `h1 : i.val < r ∧ i.val + j.val = 2 * r + k`. Establish `e : 2 * r + k - j.val = i.val` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[if_pos h1.1, if_neg (by omega), if_neg (by omega), e, mul_inv_cancel₀ hti.ne']`. Distinguish the cases in `h2 : j.val < r ∧ i.val + j.val = 2 * r + k`. Establish `e : 2 * r + k - i.val = j.val` using `by omega`. Rewrite using `[if_neg (by omega), if_neg (by omega), if_pos h2.1, e, inv_mul_cancel₀ htj.ne']`. Distinguish the cases in `h3 : r ≤ i.val ∧ i.val ≤ r + k ∧ i = j`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h3.2.2]; rw [if_neg (by omega), if_pos (by omega), mul_one]`. It suffices to derive a contradiction. Apply `h` to reduce the goal to its premises. Unfold `Hpk`. Rewrite using `[if_neg h1, if_neg h2, if_neg h3]`.
+Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tV_mul_of_Hpk (hκ : 0 < κ) (hτ : 0 < τ) (i j : Fin (2 * r + k + 1)) (h : Hpk k r i j ≠ 0) :
     tV k r κ τ i * tV k r κ τ j = 1 := by
@@ -194,9 +194,9 @@ theorem tV_mul_of_Hpk (hκ : 0 < κ) (hτ : 0 < τ) (i j : Fin (2 * r + k + 1)) 
   · exfalso; apply h; unfold Hpk; rw [if_neg h1, if_neg h2, if_neg h3]
 
 /- English proof (translation)
-Use `show (Matrix.diagonal fun i => ((s i : ℝ) : ℂ))ᴴ * Hpk k r * Matrix.diagonal (fun i => ((s i : ℝ) : ℂ)) = Hpk k r`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Distinguish the cases in `h : Hpk k r i j = 0`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Simplify using the standard rewrite rules. Use `hs i j h` as an intermediate fact. Simplify using `only [Pi.star_apply, Complex.star_def, Complex.conj_ofReal]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem diag_mem_UH (s : Fin (2 * r + k + 1) → ℝ)
     (hs : ∀ i j, Hpk k r i j ≠ 0 → s i * s j = 1) :
@@ -213,20 +213,20 @@ theorem diag_mem_UH (s : Fin (2 * r + k + 1) → ℝ)
       _ = Hpk k r i j := by rw [this]; simp
 
 /- English proof (translation)
-The claim follows from `diag_mem_UH _ (tV_mul_of_Hpk hκ hτ)`.
+A detailed English derivation is pending.
 -/
 theorem dM_mem_UH (hκ : 0 < κ) (hτ : 0 < τ) : dM k r κ τ ∈ UH (Hpk k r) :=
   diag_mem_UH _ (tV_mul_of_Hpk hκ hτ)
 
 /- English proof (translation)
-Use `diag_mem_UH _ fun i j h => ?_` and prove the remaining obligations. Rewrite using `[← mul_inv, tV_mul_of_Hpk hκ hτ i j h, inv_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dMi_mem_UH (hκ : 0 < κ) (hτ : 0 < τ) : dMi k r κ τ ∈ UH (Hpk k r) := by
   refine diag_mem_UH _ fun i j h => ?_
   rw [← mul_inv, tV_mul_of_Hpk hκ hτ i j h, inv_one]
 
 /- English proof (translation)
-Use `show (a * b)ᴴ * Hpk k r * (a * b) = Hpk k r`. Establish `ha' : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Establish `hb' : bᴴ * Hpk k r * b = Hpk k r` using `hb`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UH_mul {a b : Mx k r} (ha : a ∈ UH (Hpk k r)) (hb : b ∈ UH (Hpk k r)) : a * b ∈ UH (Hpk k r) := by
   show (a * b)ᴴ * Hpk k r * (a * b) = Hpk k r
@@ -237,9 +237,9 @@ theorem UH_mul {a b : Mx k r} (ha : a ∈ UH (Hpk k r)) (hb : b ∈ UH (Hpk k r)
     _ = Hpk k r := by rw [ha', hb']
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `UH_mul (UH_mul (dM_mem_UH hκ hτ) h) (dMi_mem_UH hκ hτ)` as an intermediate fact. Rewrite `this` using `[← cjI, cjI_cj hκ hτ]`. Then use the resulting hypothesis. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `UH_mul (UH_mul (dMi_mem_UH hκ hτ) h) (dM_mem_UH hκ hτ)`.
+A detailed English derivation is pending.
 -/
 theorem cj_mem_UH_iff (hκ : 0 < κ) (hτ : 0 < τ) (g : Mx k r) :
     cj k r κ τ g ∈ UH (Hpk k r) ↔ g ∈ UH (Hpk k r) := by

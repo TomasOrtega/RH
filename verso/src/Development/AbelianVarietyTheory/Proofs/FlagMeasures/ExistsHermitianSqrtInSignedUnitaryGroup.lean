@@ -8,17 +8,17 @@ namespace GlobalTheory.LeviIso
 open scoped MatrixOrder ComplexOrder in
 
 /- English proof (translation)
-Use `set H := Cᴴ * C with hHdef`. Establish `hH : 0 ≤ H` using `(Matrix.posSemidef_conjTranspose_mul_self C).nonneg`. Use `set s := CFC.sqrt H with hsdef`. Establish `hs0 : 0 ≤ s` using `CFC.sqrt_nonneg H`. Establish `hss : s * s = H` using `CFC.sqrt_mul_sqrt_self H hH`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsh : sᴴ = s`. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `(IsSelfAdjoint.of_nonneg hs0).star_eq`. Establish `hdetH : H.det ≠ 0`. Rewrite using `[hHdef, Matrix.det_mul, Matrix.det_conjTranspose]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (star_ne_zero.mpr hC) hC`. Establish `hdet : IsUnit s.det`. Use `isUnit_iff_ne_zero.mpr fun h0 => hdetH ?_` and prove the remaining obligations. Rewrite using `[← hss, Matrix.det_mul, h0, zero_mul]`. Use `⟨s, hdet, hsh, hss, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hJHJ : H⁻¹ = J * H * J`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `ht0 : 0 ≤ J * s * J`. Use `star_left_conjugate_nonneg hs0 J` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Matrix.star_eq_conjTranspose, hJh]`. Then use the resulting hypothesis. Establish `hi0 : 0 ≤ s⁻¹` using `hs0.posSemidef.inv.nonneg`. Establish `htt : J * s * J * (J * s * J) = s⁻¹ * s⁻¹`. Rewrite using `[← Matrix.mul_inv_rev, hss, hJHJ, ← hss]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `heq : J * s * J = s⁻¹` using `(CFC.mul_self_eq_mul_self_iff _ _ ht0 hi0).mp htt`. Establish `h1 : s * (J * s * J) = 1`. Rewrite using `[heq]`. Conclude with `Matrix.mul_nonsing_inv s hdet`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem exists_hermitian_sqrt_mul_mul_eq {n : ℕ} (J C : Matrix (Fin n) (Fin n) ℂ)
     (hJ : J * J = 1) (hJh : Jᴴ = J) (hC : C.det ≠ 0)
@@ -61,9 +61,9 @@ theorem exists_hermitian_sqrt_mul_mul_eq {n : ℕ} (J C : Matrix (Fin n) (Fin n)
     _ = J := by rw [h1, Matrix.one_mul]
 
 /- English proof (translation)
-Take `⟨s, hdet, hsh, hss, hsJs⟩` from `exists_hermitian_sqrt_mul_mul_eq (Formalism.REAL.Jm ε) C (Formalism.REAL.Jm_mul_self ε) (Formalism.REAL.Jm_conjTranspose ε) hC h`. Establish `hu : IsUnit s` using `(Matrix.isUnit_iff_isUnit_det s).mpr hdet`. Establish `hmem : hu.unit ∈ Formalism.REAL.UJ ε` using `by show (hu.unit : Matrix (Fin n) (Fin n) ℂ)ᴴ * Formalism.REAL.Jm ε * hu.unit = Formalism.REAL.Jm ε`. Rewrite using `[IsUnit.unit_spec, hsh]`. Conclude with `hsJs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨hu.unit, hmem⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show (hu.unit : Matrix (Fin n) (Fin n) ℂ)ᴴ = hu.unit`. Rewrite using `[IsUnit.unit_spec, hsh]`. Use `show (hu.unit : Matrix (Fin n) (Fin n) ℂ) * hu.unit = Cᴴ * C`. Rewrite using `[IsUnit.unit_spec, hss]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hermitian_sqrt_mem_UJ (n : ℕ) (ε : Fin n → Bool) (C : Matrix (Fin n) (Fin n) ℂ)
     (hC : C.det ≠ 0) (h : (Cᴴ * C) * Formalism.REAL.Jm ε * (Cᴴ * C) = Formalism.REAL.Jm ε) :

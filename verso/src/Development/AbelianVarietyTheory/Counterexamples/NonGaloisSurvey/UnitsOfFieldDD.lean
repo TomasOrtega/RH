@@ -42,7 +42,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [Algebra O RW] {inclR : RA →ₐ[O] RW} {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : RA} in
 variable {T T' T'' : _root_.Formalism.BasicNotions.LocLat G Qp LL O} (i : _root_.Formalism.WeaklyAdmissibleFiltrations.LatHom T.L T''.L) (i' : _root_.Formalism.WeaklyAdmissibleFiltrations.LatHom T'.L T''.L) in
 /- English proof (translation)
-Apply `(_root_.GlobalTheory.Survey.UnitsOfFieldRootsOfUnity.sumEquiv i i' h).injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, _root_.GlobalTheory.Survey.UnitsOfFieldRootsOfUnity.sumEquiv_apply, i.equiv, i'.equiv, ← map_add, ← _root_.GlobalTheory.Survey.UnitsOfFieldRootsOfUnity.sumEquiv_apply i i' h, Prod.mk.eta, LinearEquiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.Survey.UnitsOfFieldRootsOfUnity.symm_act (h : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitDualParts.IsSumLat i i') (g : G) (z : T''.V) :
     (_root_.GlobalTheory.Survey.UnitsOfFieldRootsOfUnity.sumEquiv i i' h).symm (T''.ρ g z) =
@@ -77,7 +77,7 @@ def pr₂ (h : IsSumLat i i') : LatHom T''.L T'.L where
 end Sum
 
 /- English proof (translation)
-Consider the cases of `f`. Consider the cases of `g`. Use `congr 1`. Conclude with `LinearMap.ext h`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem latHom_ext {T T' : LocLat G Qp LL O} {f g : LatHom T.L T'.L} (h : ∀ x, f.f x = g.f x) :
     f = g := by
@@ -86,7 +86,7 @@ theorem latHom_ext {T T' : LocLat G Qp LL O} {f g : LatHom T.L T'.L} (h : ∀ x,
   exact LinearMap.ext h
 
 /- English proof (translation)
-Establish `: f = latComp (latSmul T' (0 : O)) f` using `latHom_ext fun y => by`. Simplify using `[latComp, latSmul, h]`. Rewrite using `[this, W.map_comp, W.map_latSmul, zero_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_of_zero {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) (h : ∀ x, f.f x = 0)
     (x : W.DD T) : W.map f x = 0 := by
@@ -95,17 +95,17 @@ theorem map_of_zero {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) (h : ∀ x, 
   rw [this, W.map_comp, W.map_latSmul, zero_smul]
 
 /- English proof (translation)
-Establish `e1 : ∀ a, (pr₁ i i' h).f (i.f a) = a` using `fun a => by`. Use `(sumEquiv i i' h).symm_apply_apply (a, 0)` as an intermediate fact. Rewrite `this` using `[sumEquiv_apply, map_zero, add_zero]`. Simplify using `[pr₁, this]`. Establish `e2 : ∀ a, (pr₁ i i' h).f (i'.f a) = 0` using `fun a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(sumEquiv i i' h).symm_apply_apply (0, a)` as an intermediate fact. Rewrite `this` using `[sumEquiv_apply, map_zero, zero_add]`. Simplify using `[pr₁, this]`. Establish `e3 : ∀ a, (pr₂ i i' h).f (i.f a) = 0` using `fun a => by`. Use `(sumEquiv i i' h).symm_apply_apply (a, 0)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[sumEquiv_apply, map_zero, add_zero]`. Simplify using `[pr₂, this]`. Establish `e4 : ∀ a, (pr₂ i i' h).f (i'.f a) = a` using `fun a => by`. Use `(sumEquiv i i' h).symm_apply_apply (0, a)` as an intermediate fact. Rewrite `this` using `[sumEquiv_apply, map_zero, zero_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[pr₂, this]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Establish `h1` using `W.map_N (pr₁ i i' h) hT'' hT _ hz`. Establish `h2` using `W.map_N (pr₂ i i' h) hT'' hT' _ hz`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1`, `h2` using `[map_add, ← W.map_comp, ← W.map_comp]`. Rewrite `h1` using `[show latComp (pr₁ i i' h) i = latId T from latHom_ext e1, W.map_id, map_of_zero (latComp (pr₁ i i' h) i') e2, add_zero]`. Rewrite `h2` using `[show latComp (pr₂ i i' h) i' = latId T' from latHom_ext e4, W.map_id, map_of_zero (latComp (pr₂ i i' h) i) e3, zero_add]`. Conclude with `⟨h1, h2⟩`. Introduce and unpack `⟨hx, hy⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `(W.N T'').add_mem (W.map_N i hT hT'' x hx) (W.map_N i' hT' hT'' y hy)`.
+A detailed English derivation is pending.
 -/
 theorem sum_N {T T' T'' : LocLat G Qp LL O} (hT : IsCrys PD T.ρ)
     (hT' : IsCrys PD T'.ρ) (hT'' : IsCrys PD T''.ρ)
@@ -141,21 +141,19 @@ theorem sum_N {T T' T'' : LocLat G Qp LL O} (hT : IsCrys PD T.ρ)
     exact (W.N T'').add_mem (W.map_N i hT hT'' x hx) (W.map_N i' hT' hT'' y hy)
 
 /- English proof (translation)
-Introduce `T T' T'' hT hT' i i' h`. Establish `key : ∀ a b, (pr₁ i i' h).f (i.f a + i'.f b) = a ∧ (pr₂ i i' h).f (i.f a + i'.f b) = b` using `fun a b => by`. Use `(sumEquiv i i' h).symm_apply_apply (a, b)` as an intermediate fact. Rewrite `this` using `[sumEquiv_apply]`. Simplify using `only [pr₁, pr₂, LinearMap.comp_apply, LinearEquiv.coe_coe, this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hbij : Function.Bijective ((W.map i).coprod (W.map i'))`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨x, y⟩ hxy`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `only [LinearMap.coprod_apply] at hxy`. Establish `h1` using `congrArg (W.map (pr₁ i i' h)) hxy`. Establish `h2` using `congrArg (W.map (pr₂ i i' h)) hxy`. Rewrite `h1`, `h2` using `[map_add, ← W.map_comp, ← W.map_comp, map_zero]`. Rewrite using `[show latComp (pr₁ i i' h) i = latId T from latHom_ext fun a => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify `(key a 0).1, W.map_id,` using `[latComp, latId]`. Use `map_of_zero (latComp (pr₁ i i' h) i') (fun a => by simpa [latComp] using (key 0 a).1),`. Use the proof step `add_zero] at h1`. Rewrite using `[show latComp (pr₂ i i' h) i' = latId T' from latHom_ext fun a => by`. Simplify `(key 0 a).2, W.map_id,` using `[latComp, latId]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `map_of_zero (latComp (pr₂ i i' h) i) (fun a => by simpa [latComp] using (key a 0).2),`. Use the proof step `zero_add] at h2`. Simplify using `[h1, h2]`. Introduce `z`. Use `⟨(W.map (pr₁ i i' h) z, W.map (pr₂ i i' h) z), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.coprod_apply]`. Rewrite using `[← W.map_comp, ← W.map_comp, ← W.map_latAdd, show latAdd (latComp i (pr₁ i i' h)) (latComp i' (pr₂ i i' h)) = latId T'' from latHom_ext fun a => by`. Take `⟨⟨x, y⟩, rfl⟩` from `(sumEquiv i i' h).surjective a`. Rewrite using `[sumEquiv_apply]`. Express the relevant statement in the definitionally equal form `i.f ((pr₁ i i' h).f _) + i'.f ((pr₂ i i' h).f _) = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(key x y).1, (key x y).2]`. Use the proof step `rfl, W.map_id]`. Use `⟨LinearEquiv.ofBijective _ hbij, fun x y => rfl, fun x y => ?_, fun g x y => ?_, fun x y => sum_N hT hT' (hc T T' T'' i i' h hT hT') i i' h x y⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `W.φD T'' (W.map i x + W.map i' y) = W.map i _ + W.map i' _`. Rewrite using `[map_add, ← W.map_φ, ← W.map_φ]`.
-
-Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `W.γD T'' g (W.map i x + W.map i' y) = W.map i _ + W.map i' _`. Rewrite using `[map_add, ← W.map_γ, ← W.map_γ]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sumFor_of_crys
     (hc : ∀ (T T' T'' : LocLat G Qp LL O) (i : LatHom T.L T''.L) (i' : LatHom T'.L T''.L),

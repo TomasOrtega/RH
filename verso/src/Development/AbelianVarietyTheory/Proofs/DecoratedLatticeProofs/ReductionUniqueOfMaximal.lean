@@ -21,9 +21,9 @@ variable {D : D7} {u : D.what₂.Word} {d : GlobalTheory.SeeSaw.Dat D u} {τ : �
   {PP : Formalism.L2.DIV.Pl D.host.E}
 
 /- English proof (translation)
-Distinguish the cases in `h0 : z = 0`. Substitute `h0` using the available equality. Conclude with `PP.asIdeal.zero_mem`. Establish `h0' : rho G z ≠ 0` using `(map_ne_zero (G.q.pr.comp (incA D))).2 (RingOfIntegers.coe_ne_zero_iff.2 h0)`. Use `(G.idem.2 z h0).2 ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← G.q.sec_pr, ← G.q.int_iff]`. Express the relevant statement in the definitionally equal form `(G.q.pr.comp (incA D)) _ ∉ _`. Rewrite using `[map_inv₀, Valuation.mem_integer_iff, map_inv₀, not_le]`. Conclude with `(one_lt_inv₀ (zero_lt_iff.2 ((map_ne_zero _).2 h0'))).2 hz`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_rho_lt (G : GAt d τ PP) {z : 𝓞 D.host.E} (hz : valuation G.k (rho G z) < 1) : z ∈ PP.asIdeal := by
   by_cases h0 : z = 0
@@ -38,11 +38,11 @@ theorem mem_of_rho_lt (G : GAt d τ PP) {z : 𝓞 D.host.E} (hz : valuation G.k 
 end GlobalTheory.LevelComb
 
 /- English proof (translation)
-Introduce `D u d τ PP G x x' g g' hx hx' hm`. Rewrite `hx`, `hx'` using `[GlobalTheory.LevelComb.red_iff]`. Use extensionality with `a' b'`. Take `⟨a, rfl⟩` from `(GlobalTheory.LevelComb.pos G).surjective a'`. Take `⟨b, rfl⟩` from `(GlobalTheory.LevelComb.pos G).surjective b'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h` using `(valuation G.k).map_sub_lt ((valuation G.k).map_add_lt (hx a b) (hm a b)) (hx' a b)`. Establish `e : ((x : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val - GlobalTheory.LevelComb.lift G g.val) a b + (((x' : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val - (x : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val) a b) - ((x' : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val - GlobalTheory.LevelComb.lift G g'. …`. Simplify using `only [Matrix.sub_apply, GlobalTheory.LevelComb.lift, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm'` using `GlobalTheory.LevelComb.mem_of_rho_lt G h`. Rewrite using `[← GlobalTheory.LevelComb.mk_out (g'.val _ _), ← GlobalTheory.LevelComb.mk_out (g.val _ _)]`. Conclude with `(Ideal.Quotient.eq.2 hm')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LevelComb.red_uniq : ∀ (D : D7) (u : D.what₂.Word) (d : GlobalTheory.SeeSaw.Dat D u) (τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E) (PP : Formalism.L2.DIV.Pl D.host.E) (G : GlobalTheory.LocMod.GAt d τ PP) (x x' : G.S.P.J) (g g' : GL (Fin D.R.r) (Formalism.L2.DIV.kP PP)), G.Red x g → G.Red x' g' → GlobalTheory.StepData.MaxM ((x' : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val - (x : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val) → g' = g := by
   intro D u d τ PP G x x' g g' hx hx' hm

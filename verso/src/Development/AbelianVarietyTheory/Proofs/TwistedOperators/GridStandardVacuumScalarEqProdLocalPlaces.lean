@@ -22,9 +22,9 @@ namespace GlobalTheory.RowVacScalar
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
 /- English proof (translation)
-Establish `h : ∃ e : AE D, Formalism.L2.NTheta.IsIdemAt e w`. Break down `Good.locPl_cases hw with ⟨a, b⟩ | ⟨-, -, b⟩` into its components or cases. Conclude with `b ▸ G.pl.w_split _ a`. Use `first`. Consider the case `exact GlobalTheory.ParahoricLift.exists_isIdemAt fun h => (hL.Q_pl t w b).2 w b h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact GlobalTheory.ParahoricLift.exists_isIdemAt fun h => (hL.Q_pl t w b).2 w b ((GlobalTheory.IdemSupport.isConjPl_iff _ _).2 h)`. Consider the case `exact GlobalTheory.ParahoricLift.exists_isIdemAt fun h => (hL.Q_pl t w b).2 w b ((GlobalTheory.IdemSupport.isConjPl_iff _ _).1 h)`. Conclude with `Classical.epsilon_spec h`.
+A detailed English derivation is pending.
 -/
 theorem isIdemAt_idemAt {μ₀ : T} (hL : L.Is μ₀) (G : GridData L sc) (t : T) {w : Pl D.host.E} (hw : w ∈ locPl G t) :
     Formalism.L2.NTheta.IsIdemAt (idemAt w) w := by
@@ -38,7 +38,7 @@ theorem isIdemAt_idemAt {μ₀ : T} (hL : L.Is μ₀) (G : GridData L sc) (t : T
   exact Classical.epsilon_spec h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SeeSaw.LevelTest.charUnramAt_of fun w hw => (GlobalTheory.LFun.unrAt_iff_of_chrEq (G.ch.chi_eq k h1 h2) w).2 (G.ch.unr k h1 h2 w (by rwa [hw]))`.
+A detailed English derivation is pending.
 -/
 theorem chi_charUnramAt (G : GridData L sc) {k : ℕ} (h1 : 1 ≤ k) (h2 : k ≤ D.R.m) {v : HeightOneSpectrum (𝓞 D.host.F)}
     (hv : v ∉ G.pl.S0) : GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D (G.ch.chi k) v :=
@@ -46,14 +46,14 @@ theorem chi_charUnramAt (G : GridData L sc) {k : ℕ} (h1 : 1 ≤ k) (h2 : k ≤
     (GlobalTheory.LFun.unrAt_iff_of_chrEq (G.ch.chi_eq k h1 h2) w).2 (G.ch.unr k h1 h2 w (by rwa [hw]))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SeeSaw.LevelTest.charUnramAt_of fun w _ => (GlobalTheory.LFun.unrAt_iff_of_chrEq hL.eta w).2 (L.C.isEta.unr w)`.
+A detailed English derivation is pending.
 -/
 theorem eta_charUnramAt {μ₀ : T} (hL : L.Is μ₀) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D L.eta v :=
   GlobalTheory.SeeSaw.LevelTest.charUnramAt_of fun w _ => (GlobalTheory.LFun.unrAt_iff_of_chrEq hL.eta w).2 (L.C.isEta.unr w)
 
 /- English proof (translation)
-Unfold `Formalism.IndefR.Lift.attChr`. Use `split_ifs`. Conclude with `GlobalTheory.SeeSaw.WeilLines.charUnram_mul hχ (GlobalTheory.SeeSaw.WeilLines.charUnram_inv hη)`. Conclude with `hχ`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem attChr_charUnramAt {χ η : (AE D)ˣ →* Circle} {v : HeightOneSpectrum (𝓞 D.host.F)}
     (hχ : GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D χ v) (hη : GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D η v) (n : ℕ) :
@@ -64,7 +64,7 @@ theorem attChr_charUnramAt {χ η : (AE D)ˣ →* Circle} {v : HeightOneSpectrum
   · exact hχ
 
 /- English proof (translation)
-Introduce `h`. Establish `hw : G.pl.w v ∈ locPl G t`. Unfold `locPl`. Conclude with `Finset.mem_union_left _ (by unfold Places.W0; exact Finset.mem_image_of_mem _ h)`. Conclude with `hv _ hw (G.pl.under_w h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem notMem_S0_of_no_place_above (G : GridData L sc) (t : T) {v : HeightOneSpectrum (𝓞 D.host.F)}
     (hv : ∀ w ∈ locPl G t, w.under (𝓞 D.host.F) ≠ v) : v ∉ G.pl.S0 := by
@@ -78,11 +78,11 @@ theorem notMem_S0_of_no_place_above (G : GridData L sc) (t : T) {v : HeightOneSp
 end GlobalTheory.RowVacScalar
 
 /- English proof (translation)
-Introduce `D T L sc G W U S μ₀ hL t i hi q hq1 hq2 hS hT c hc`. Establish `hp : (Pair.chi i D.R.m : Pair T).InRange D.R.m`. Simplify using `only [Pair.InRange, Pair.big, Node.InRange]`. Use linear arithmetic over natural numbers and integers. Establish `hW` using `W.om_is (.chi i D.R.m) hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `sd` using `GlobalTheory.RowVertexInv.FactorTheta.selfDual S hi`. Establish `hv` using `(S.Z.vac_is (.chi i D.R.m) ⟨hi, rfl⟩).2`. Establish `key` using `GlobalTheory.T.weilLatticeVacuum_eq_prod_splitPlace_factors hW sd.1 sd.2 (locPl G t) (fun w hw => isIdemAt_idemAt hL G t hw) (Good.under_injOn hL G t) (fun v hv' => by`. Establish `hχ` using `chi_charUnramAt G (k := D.R.m - i) (by omega) (by omega) (notMem_S0_of_no_place_above G t hv')`. Conclude with `⟨attChr_charUnramAt hχ (eta_charUnramAt hL v) _, attChr_charUnramAt hχ (eta_charUnramAt hL v) _⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use the proof step `q.1 hq1 q.2 hq2 hS hT _ hv.theta hv.lat`. Establish `hne` using `GlobalTheory.RowVertexInv.FactorTheta.vac_ne_zero S hi`. Establish `e1 : c • S.Z.vac (.chi i D.R.m) = (∏ w ∈ locPl G t, splitScal G (.chi i D.R.m) w q.1 q.2) • S.Z.vac (.chi i D.R.m)` using `hc.symm.trans key`. Rewrite using `[Finset.prod_coe_sort (locPl G t) (fun w => splitScal G (.chi i D.R.m) w q.1 q.2)]`. Conclude with `smul_left_injective ℂ hne e1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RowVacScalar.vacScalar_eq_prod : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
     (S : GridChoice W U) {μ₀ : T}, L.Is μ₀ → ∀ (t : T) (i : ℕ), i + 1 ≤ D.R.m →

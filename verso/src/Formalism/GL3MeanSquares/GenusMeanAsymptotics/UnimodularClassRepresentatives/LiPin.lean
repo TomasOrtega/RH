@@ -18,31 +18,29 @@ variable {K F V V' : Type} [Field K] [NumberField K] [StarRing K] [Field F] [Num
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K}
 
 /- English proof (translation)
-Establish `hnF : (n : F) ≠ 0` using `by exact_mod_cast hn`. Establish `hc : algebraMap F K (n : F) ≠ 0` using `(map_ne_zero (algebraMap F K)).2 hnF`. Use `set S₁ := unscale hc S with hS₁`. Establish `hx1 : h S₁.x₀ S₁.x₀ = 1`. Establish `e` using `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[smul_form_apply]`. Conclude with `mul_left_cancel₀ hc (e.trans (mul_one _).symm)`. Establish `hs : h.IsSymm` using `isSymm_of_smul hF hc hs'`. Establish `hd : IsTotPosDef h` using `isTotPosDef_of_smul hK hF hs hd' hx1`. Establish `h1𝔭 : (1 : 𝓞 F) ∉ 𝔭` using `fun h1 => h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx1' : h S₁.x₀ S₁.x₀ = algebraMap F K ((1 : 𝓞 F) : F)`. Rewrite using `[hx1]`. Simplify using the standard rewrite rules. Take `⟨L₀, hL, hLi, hxL, hvd⟩` from `exists_lattice_vd_le_one hK hF hs hd h𝔭 hx1' h1𝔭`. Establish `hs₁' : h'.IsSymm` using `S₁.isSymm hs`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd₁' : IsTotPosDef h'` using `S₁.isTotPosDef hd`. Establish `hsc'` using `S.isSymm hs'`. Establish `hdc'` using `S.isTotPosDef hd'`. Establish `hadj : S₁.adjoin (S₁.cut L₀) = L₀` using `S₁.adjoin_cut hx1 hLi hxL`. Establish `hC : Submodule.IsLattice K (S₁.cut L₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← S₁.isLattice_adjoin_iff, hadj]`. Conclude with `hL`. Establish `hCi : Formalism.HermitianLatticesTheory.IsIntegralLat h' (S₁.cut L₀)` using `Formalism.HermitianLattices.Ext.L3.UnimodularLocalization.isIntegralLat_cut S₁ hLi`. Establish `hvdC : vd h' (S₁.cut L₀) 𝔭 = vd h L₀ 𝔭` using `PinC.vd_cut hK hF hs hd S₁ hx1 hL hLi hxL h𝔭`. Establish `hm` using `S₁.finrank_add_one`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLic` using `PinA.isIntegralLat_smul hLi n`. Establish `hCic` using `PinA.isIntegralLat_smul hCi n`. Establish `hN : (Ideal.absNorm 𝔭 : ℝ) ≠ 0`. Establish `hb : 𝔭 ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField h𝔭 (NumberField.RingOfIntegers.not_isField F)`. Conclude with `(Ideal.absNorm_eq_zero_iff.not.mpr hb)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsplit : alphaL h L₀ 𝔭 = alphaN h L₀ 𝔭 1 * alphaL h' (S₁.cut L₀) 𝔭` using `alphaL_split hK hF hs hd S₁ hx1 hL hLi hxL h𝔭 hvd`. Establish `hαpos : 0 < alphaL h L₀ 𝔭` using `alphaL_pos hK hF hs hd hL hLi h𝔭`. Establish `hαC : 0 < alphaL h' (S₁.cut L₀) 𝔭` using `alphaL_pos hK hF hs₁' hd₁' hC hCi h𝔭`. Establish `hαN : alphaN h L₀ 𝔭 1 ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hαpos` using `[hsplit, h0, zero_mul]`. Conclude with `lt_irrefl _ hαpos`. Establish `hNsm : alphaN (algebraMap F K (n : F) • h) L₀ 𝔭 n = (Ideal.absNorm 𝔭 : ℝ) ^ vF 𝔭 n * alphaN h L₀ 𝔭 1`. Establish `e` using `alphaN_smul hK hF hs hd hL hLi h𝔭 hn hs' hd' (by omega) one_ne_zero`. Rewrite `e` using `[mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hLsm` using `alphaL_smul hK hF hs hd hL hLi h𝔭 hn hs' hd'`. Establish `hvsm` using `PinA.vd_smul hK hF hs hd hL hLi h𝔭 hn`. Establish `hvT : vd (algebraMap F K (n : F) • h') (locF 𝔭 (S₁.cut L₀)) 𝔭 = vd h' (S₁.cut L₀) 𝔭 + finrank K V' * vF 𝔭 n`. Rewrite using `[vd_locF hK hF hsc' hdc' hC hCic h𝔭]`. Conclude with `PinA.vd_smul hK hF hs₁' hd₁' hC hCi h𝔭 hn`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hαT : alphaL (algebraMap F K (n : F) • h') (locF 𝔭 (S₁.cut L₀)) 𝔭 = (Ideal.absNorm 𝔭 : ℝ) ^ (vF 𝔭 n * finrank K V' ^ 2) * alphaL h' (S₁.cut L₀) 𝔭`. Rewrite using `[← alphaL_smul hK hF hs₁' hd₁' hC hCi h𝔭 hn hsc' hdc']`. Unfold `alphaL`. Simplify using `only [akCount_locF hF _ (S₁.cut L₀) 𝔭 h𝔭]`. Establish `hrep : IsLocReps S₁ L₀ 𝔭 {locF 𝔭 (S₁.cut L₀)}` using `PinC.isLocReps_cut hK hF hs hd S₁ hx1 hL hLi hxL h𝔭 hvd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Establish `hrep' : IsLocReps S L₀ 𝔭 {locF 𝔭 (S₁.cut L₀)}` using `isLocReps_scale hF hc S hL hLi h𝔭 hrep`. Establish `hpsi : psiP S L₀ 𝔭 = lamP (algebraMap F K (n : F) • h') (locF 𝔭 (S₁.cut L₀)) 𝔭`. Rewrite using `[psiP_eq_sum hK hF hs' hd' S hL hLic h𝔭 hrep', Finset.sum_singleton, fibLoc_unscale hc, PinC.fibLoc_cut hK hF hs hd S₁ hx1 hL hLi hxL h𝔭 hvd]`. Simplify using the standard rewrite rules. Use `⟨L₀, hL, hLic, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `repRatio`. Rewrite using `[hNsm, hLsm]`. Conclude with `div_ne_zero (mul_ne_zero (pow_ne_zero _ hN) (mul_ne_zero (pow_ne_zero _ hN) hαN)) (mul_ne_zero (pow_ne_zero _ hN) hαpos.ne')`. Rewrite using `[hpsi]`. Unfold `lamP repRatio`.
-
-Rewrite using `[hvT, hαT, hNsm, hLsm, hvsm, hsplit, hvdC, ← hm, Nat.add_sub_cancel]`. Establish `hA` using `hαC.ne'`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem core (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (n : 𝓞 F) (hn : n ≠ 0)
     (S : VecSplit (algebraMap F K (n : F) • h) (algebraMap F K (n : F) • h'))
@@ -129,9 +127,9 @@ theorem core (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K
 end PinD
 
 /- English proof (translation)
-Unfold `LIPin`. Introduce `K F _ _ _ _ _ _ hK hF V V' _ _ _ _ _ _ _ _ _ _ h h' S 𝔭 n hs hd h𝔭 hn hx`. Establish `hnF : (n : F) ≠ 0` using `by exact_mod_cast hn`. Establish `hc : algebraMap F K (n : F) ≠ 0` using `(map_ne_zero _).2 hnF`. Take `⟨h₀, rfl⟩ : ∃ h₀ : V →ₗ⋆[K] V →ₗ[K] K, algebraMap F K (n : F) • h₀ = h` from `⟨(algebraMap F K (n : F))⁻¹ • h, by rw [smul_smul, mul_inv_cancel₀ hc, one_smul]⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h₀', rfl⟩ : ∃ h₀' : V' →ₗ⋆[K] V' →ₗ[K] K, algebraMap F K (n : F) • h₀' = h'` from `⟨(algebraMap F K (n : F))⁻¹ • h', by rw [smul_smul, mul_inv_cancel₀ hc, one_smul]⟩`. Conclude with `PinD.core hK hF n hn S hs hd h𝔭 hx`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem liPin : LIPin := by
   unfold LIPin

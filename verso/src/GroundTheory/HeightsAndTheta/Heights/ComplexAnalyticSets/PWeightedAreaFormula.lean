@@ -11,49 +11,41 @@ open scoped ENNReal NNReal
 noncomputable section
 
 /- English proof (translation)
-Introduce `E _ _ _ _ _ μ _ A f H hA hf hfin hint`. Establish `hder : ∀ x ∈ A, HasFDerivAt f (fderiv ℝ f x) x` using `fun x hx => ((hf x hx).differentiableAt (hA.mem_nhds hx)).hasFDerivAt`. Use `set B : Set E := {x ∈ A | (fderiv ℝ f x).det ≠ 0} with hBdef`. Establish `hBA : B ⊆ A` using `sep_subset _ _`. Establish `hBm : MeasurableSet B`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : Measurable fun x => (fderiv ℝ f x).det` using `ContinuousLinearMap.continuous_det.measurable.comp (measurable_fderiv ℝ f)`. Conclude with `hA.measurableSet.inter (hm (measurableSet_singleton 0).compl)`. Establish `hZ : μ (f '' {x ∈ A | (fderiv ℝ f x).det = 0}) = 0` using `addHaar_image_eq_zero_of_det_fderivWithin_eq_zero μ (fun x hx => (hder x hx.1).hasFDerivWithinAt) (fun x hx => hx.2)`. Set `r : (E →L[ℝ] E) → ℝ≥0` to `fun L => (‖L.inverse‖₊ + 1)⁻¹`. Take `⟨t, L, htd, htm, hcov, happ, hL⟩` from `exists_partition_approximatesLinearOn_of_hasFDerivWithinAt f B (fderiv ℝ f) (fun x hx => (hder x hx.1).hasFDerivWithinAt) r (fun _ => inv_ne_zero (by positivity))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set P : ℕ → Set E := fun n => B ∩ t n with hPdef`. Establish `hPm : ∀ n, MeasurableSet (P n)` using `fun n => hBm.inter (htm n)`. Establish `hPd : Pairwise (Disjoint on P)` using `fun m n hmn => (htd hmn).mono inter_subset_right inter_subset_right`. Establish `hPA : ∀ n, P n ⊆ A` using `fun n => inter_subset_left.trans hBA`. Establish `hderP : ∀ n, ∀ x ∈ P n, HasFDerivWithinAt f (fderiv ℝ f x) (P n) x` using `fun n x hx => (hder x (hPA n hx)).hasFDerivWithinAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hinj : ∀ n, InjOn f (P n)`. Introduce `n`. Break down `(P n).eq_empty_or_nonempty with h | ⟨x, hx⟩` into its components or cases. Rewrite using `[h]`. Conclude with `injOn_empty f`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨y, hy, hLy⟩` from `hL ⟨x, hx.1⟩ n`. Use `set e := (fderiv ℝ f y).toContinuousLinearEquivOfDetNeZero hy.2`. Establish `he : (e : E →L[ℝ] E) = L n`. Rewrite using `[hLy]`. Conclude with `ContinuousLinearMap.coe_toContinuousLinearEquivOfDetNeZero _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Establish an intermediate fact.
 
-Establish `ha` using `happ n`. Rewrite `ha` using `[← he]`. Use `ha.injOn ?_` and prove the remaining obligations. Break down `subsingleton_or_nontrivial E with hE | hE` into its components or cases. Conclude with `Or.inl hE`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `right`. Establish `hr : r (e : E →L[ℝ] E) = (‖(e.symm : E →L[ℝ] E)‖₊ + 1)⁻¹`. Simplify using `only [r, ContinuousLinearMap.inverse_equiv]`. Rewrite using `[hr]`. Establish `hpos : 0 < ‖(e.symm : E →L[ℝ] E)‖₊`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pos_iff_ne_zero, ne_eq, nnnorm_eq_zero]`. Introduce `h0`. Take `⟨z, hz⟩` from `exists_ne (0 : E)`. Apply `hz` to reduce the goal to its premises. Simplify using `using congrArg (fun T : E →L[ℝ] E => T (e z)) h0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(inv_lt_inv₀ (by positivity) hpos).2 (lt_add_one _)`. Establish `hBU : B = ⋃ n, P n`. Rewrite using `[← inter_iUnion]`. Conclude with `(inter_eq_left.2 hcov).symm`. Establish `himg : ∀ n, MeasurableSet (f '' P n)` using `fun n => measurable_image_of_fderivWithin (hPm n) (hderP n) (hinj n)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Set `g : ℕ → E → ℝ` to `fun n y => H (invFunOn f (P n) y)`. Establish `hgP : ∀ n, ∀ x ∈ P n, g n (f x) = H x` using `fun n x hx => congrArg H (hinj n (invFunOn_mem ⟨x, hx, rfl⟩) hx (invFunOn_eq ⟨x, hx, rfl⟩))`. Set `F : ℕ → E → ℝ` to `fun n => (f '' P n).indicator (g n)`. Establish `hFint : ∀ n, Integrable (F n) μ` using `fun n => (integrable_indicator_iff (himg n)).2 ((integrableOn_image_iff_integrableOn_abs_det_fderiv_smul μ (hPm n) (hderP n) (hinj n) (g n)).2 ((hint.mono_set (hPA n)).congr_fun (fun x hx => by simp only [smul_eq_mul, hgP n x hx]) (hPm n)))`. Establish `hFint_eq : ∀ n, ∫ y, F n y ∂μ = ∫ x in P n, |(fderiv ℝ f x).det| * H x ∂μ` using `fun n => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hFlint : ∀ n, ∫⁻ y, ‖F n y‖ₑ ∂μ = ∫⁻ x in P n, ‖|(fderiv ℝ f x).det| * H x‖ₑ ∂μ` using `fun n => by`. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_congr_fun (hPm n) fun x hx => ?_` and prove the remaining obligations. Simplify using `only [hgP n x hx, enorm_mul, Real.enorm_eq_ofReal_abs, abs_abs]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hsumlint : ∑' n, ∫⁻ y, ‖F n y‖ₑ ∂μ ≠ ∞`. Repeatedly rewrite using `[hFlint]`. Rewrite using `[← lintegral_iUnion hPm hPd, ← hBU]`. Conclude with `(lt_of_le_of_lt (lintegral_mono_set hBA) (hasFiniteIntegral_iff_enorm.1 hint.2)).ne`. Establish `hinjT : ∀ y, InjOn (fun n => invFunOn f (P n) y) {n | y ∈ f '' P n}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `y m hm n hn hmn`. Assume the negation of the conclusion as `hne`. Use `Set.disjoint_left.1 (hPd hne) (invFunOn_mem hm) ?_` and prove the remaining obligations. Simplify using `only at hmn`. Rewrite using `[hmn]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `invFunOn_mem hn`. Establish `hT : ∀ y, {n | y ∈ f '' P n}.Finite`. Introduce `y`. Use `Set.Finite.of_finite_image ((hfin y).subset ?_) (hinjT y)` and prove the remaining obligations. Introduce and unpack `_ ⟨n, hn, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨hPA n (invFunOn_mem hn), invFunOn_eq hn⟩`. Establish `hsum : ∀ y, HasSum (fun n => F n y) (∑ n ∈ (hT y).toFinset, F n y)` using `fun y => hasSum_sum_of_ne_finset_zero fun n hn => show (f '' P n).indicator (g n) y = 0 from indicator_of_notMem (s := f '' P n) (fun h => hn ((hT y).mem_toFinset.2 h)) (g n)`. Establish `hae : ∀ᵐ y ∂μ, ∑' n, F n y = ∑ᶠ x ∈ {x | x ∈ A ∧ f x = y}, H x` using `by filter_upwards [measure_eq_zero_iff_ae_notMem.1 hZ] with y hy`. Establish `hbij : BijOn (fun n => invFunOn f (P n) y) {n | y ∈ f '' P n} {x | x ∈ A ∧ f x = y}`. Use `⟨fun n hn => ⟨hPA n (invFunOn_mem hn), invFunOn_eq hn⟩, hinjT y, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `x ⟨hxA, hxy⟩`. Establish `hxB : x ∈ B` using `⟨hxA, fun hd => hy ⟨x, ⟨hxA, hd⟩, hxy⟩⟩`. Take `⟨n, hn⟩` from `mem_iUnion.1 (hcov hxB)`. Establish `hxP : x ∈ P n` using `⟨hxB, hn⟩`. Establish `hyn : y ∈ f '' P n` using `⟨x, hxP, hxy⟩`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨n, hyn, hinj n (invFunOn_mem hyn) hxP ((invFunOn_eq hyn).trans hxy.symm)⟩`. Rewrite using `[(hsum y).tsum_eq]`. Express the relevant statement in the definitionally equal form `_ = ∑ᶠ (x : E) (_ : x ∈ {x | x ∈ A ∧ f x = y}), H x`. Rewrite using `[← finsum_mem_eq_of_bijOn _ hbij (f := fun n => H (invFunOn f (P n) y)) (fun n _ => rfl), finsum_mem_eq_finite_toFinset_sum _ (hT y)]`. Conclude with `Finset.sum_congr rfl fun n hn => indicator_of_mem (s := f '' P n) ((hT y).mem_toFinset.1 hn) (g n)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hGm : AEStronglyMeasurable (fun y => ∑' n, F n y) μ` using `aestronglyMeasurable_of_tendsto_ae atTop (fun N => (integrable_finsetSum (Finset.range N) fun n _ => hFint n).1) (ae_of_all _ fun y => (hsum y).summable.hasSum.tendsto_sum_nat)`. Establish `hGfin : HasFiniteIntegral (fun y => ∑' n, F n y) μ`. Rewrite using `[hasFiniteIntegral_iff_enorm]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun y => ?_` and prove the remaining obligations.
-
-Rewrite using `[(hsum y).tsum_eq]`. Conclude with `(enorm_sum_le _ _).trans (ENNReal.sum_le_tsum _)`. Use `_ = ∑' n, ∫⁻ y, ‖F n y‖ₑ ∂μ := lintegral_tsum fun n => (hFint n).1.enorm`. Use `_ < ∞ := hsumlint.lt_top`. Establish `hIA : ∫ x in A, |(fderiv ℝ f x).det| * H x ∂μ = ∫ x in B, |(fderiv ℝ f x).det| * H x ∂μ` using `setIntegral_eq_of_subset_of_forall_sdiff_eq_zero hA.measurableSet hBA fun x hx => by`.
-
-Establish `h0 : (fderiv ℝ f x).det = 0`. Assume the negation of the conclusion as `h`. Conclude with `hx.2 ⟨hx.1, h⟩`. Simplify using `[h0]`. Establish `hBint : IntegrableOn (fun x => |(fderiv ℝ f x).det| * H x) (⋃ n, P n) μ`.
-
-Rewrite using `[← hBU]`. Conclude with `hint.mono_set hBA`. Use `⟨Integrable.congr (⟨hGm, hGfin⟩ : Integrable (fun y => ∑' n, F n y) μ) hae, ?_⟩` and prove the remaining obligations. Rewrite using `[← integral_congr_ae hae, integral_tsum (fun n => (hFint n).1) hsumlint, hIA, hBU]`. Repeatedly rewrite using `[hFint_eq]`.
-
-Conclude with `(hasSum_integral_iUnion hPm hPd hBint).tsum_eq`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem WeightedAreaFormula.proof : WeightedAreaFormula.Statement := by
   intro E _ _ _ _ _ μ _ A f H hA hf hfin hint

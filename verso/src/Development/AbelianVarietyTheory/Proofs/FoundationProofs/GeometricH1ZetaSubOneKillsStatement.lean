@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IntegralLocallyC
 open GlobalTheory.K5
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.K5.TateGeo.h1_killed_by_zeta_sub_one_geo` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FGeometricH1ZetaSubOneKills.lean&line=124#L124)
 -/

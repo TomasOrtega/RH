@@ -19,7 +19,7 @@ def EpDef {D : D7} {L : SizeData₂ D} (X : Inst D L) (Ce : ℝ) : Prop :=
   ∀ p, X.ep p = ⌈Ce * (D.R.f : ℝ) * (D.R.k : ℝ) ^ 2 * Real.logb p L.sc.a⌉₊
 
 /- English proof (translation)
-Rewrite using `[h]`. Conclude with `Nat.ceil_lt_add_one h0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EpDef.lt {D : D7} {L : SizeData₂ D} {X : Inst D L} {Ce : ℝ} (h : EpDef X Ce) (p : ℕ)
     (h0 : 0 ≤ Ce * (D.R.f : ℝ) * (D.R.k : ℝ) ^ 2 * Real.logb p L.sc.a) :
@@ -27,7 +27,7 @@ theorem EpDef.lt {D : D7} {L : SizeData₂ D} {X : Inst D L} {Ce : ℝ} (h : EpD
   rw [h]; exact Nat.ceil_lt_add_one h0
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ Ce * (D.R.f : ℝ) * (D.R.k : ℝ) ^ 2 * Real.logb p L.sc.a`. Use `mul_nonneg hCe (le_trans zero_le_one h1)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `h.lt p h0`. Use polynomial arithmetic with `[h2, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem EpDef.le {D : D7} {L : SizeData₂ D} {X : Inst D L} {Ce : ℝ} (h : EpDef X Ce) (p : ℕ) (hCe : 0 ≤ Ce)
     (h1 : 1 ≤ (D.R.f : ℝ) * (D.R.k : ℝ) ^ 2 * Real.logb p L.sc.a) :
@@ -51,7 +51,7 @@ def kapISet {D : D7} (L : SizeData₂ D) (K : Consts) (p n' : ℕ) (TT : Finset 
         LPprime (W := W) p n' ι σ w 1 lam0 ⌈tIf K L p n' TT a b⌉₊ (DIf K L p n') κ (8 * (DIf K L p n' + 1))}
 
 /- English proof (translation)
-Use `⟨zero_le_one, ?_⟩` and prove the remaining obligations. Introduce `W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w _ lam0 _ _`. Use `⟨by omega, fun Λ _ => ⟨0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, 0, by simp, ⟨0, 0, fun _ i => i.elim0⟩⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem one_mem_kapISet {D : D7} (L : SizeData₂ D) (K : Consts) (p n' : ℕ) (TT : Finset (Fin n')) (a b : Fin n' → ℤ) :
     (1 : ℝ) ∈ kapISet L K p n' TT a b := by
@@ -64,7 +64,7 @@ def KapIDef {D : D7} {L : SizeData₂ D} (X : Inst D L) (K : Consts) : Prop :=
   ∀ (p n' : ℕ) (TT : Finset (Fin n')) (a b : Fin n' → ℤ), X.kapI p n' TT a b = sInf (kapISet L K p n' TT a b)
 
 /- English proof (translation)
-Rewrite using `[h]`. Conclude with `csInf_le ⟨0, fun x hx => hx.1⟩ hκ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KapIDef.le {D : D7} {L : SizeData₂ D} {X : Inst D L} {K : Consts} (h : KapIDef X K) {p n' : ℕ}
     {TT : Finset (Fin n')} {a b : Fin n' → ℤ} {κ : ℝ} (hκ : κ ∈ kapISet L K p n' TT a b) :
@@ -73,7 +73,7 @@ theorem KapIDef.le {D : D7} {L : SizeData₂ D} {X : Inst D L} {K : Consts} (h :
   exact csInf_le ⟨0, fun x hx => hx.1⟩ hκ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [h]; exact le_csInf ⟨1, one_mem_kapISet L K p n' TT a b⟩ (fun x hx => hx.1), h.le (one_mem_kapISet L K p n' TT a b)⟩`.
+Supply the required witnesses or components.
 -/
 theorem KapIDef.mem_Icc {D : D7} {L : SizeData₂ D} {X : Inst D L} {K : Consts} (h : KapIDef X K) (p n' : ℕ)
     (TT : Finset (Fin n')) (a b : Fin n' → ℤ) : 0 ≤ X.kapI p n' TT a b ∧ X.kapI p n' TT a b ≤ 1 :=
@@ -81,23 +81,21 @@ theorem KapIDef.mem_Icc {D : D7} {L : SizeData₂ D} {X : Inst D L} {K : Consts}
    h.le (one_mem_kapISet L K p n' TT a b)⟩
 
 /- English proof (translation)
-Use `set S := kapISet L K p n' TT a b with hS`. Establish `hne : S.Nonempty` using `⟨1, one_mem_kapISet L K p n' TT a b⟩`. Establish `hbd : BddBelow S` using `⟨0, fun x hx => hx.1⟩`. Use `⟨le_csInf hne (fun x hx => hx.1), ?_⟩` and prove the remaining obligations. Introduce `W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w hset lam0 hb hd`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨by omega, fun Λ hΛ => ?_⟩` and prove the remaining obligations. Use `set d : ℝ := (dimV Kf lam0 : ℝ) with hdd`. Establish `hd0 : 0 ≤ d` using `Nat.cast_nonneg _`. Use `set c : ℝ := (1 - sInf S) * d with hc`. Establish `hgap : (0 < c ∧ (⌈c⌉₊ : ℝ) - 1 < c) ∨ c ≤ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the second alternative. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : c ≤ 0`. Conclude with `Or.inr h0`. Use `left`. Use `Nat.ceil_lt_add_one (le_of_lt (not_le.1 h0))` as an intermediate fact. Conclude with `⟨not_le.1 h0, by linarith⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Choose the witnesses or unpack the hypotheses as in `⟨κ, hκS, hκ⟩ : ∃ κ ∈ S, c ≤ 0 ∨ (⌈c⌉₊ : ℝ) - 1 < (1 - κ) * d := by`. Break down `hgap with ⟨hcpos, hg⟩ | hg` into its components or cases. Establish `hdpos : 0 < d`. Break down `hd0.lt_or_eq with h | h` into its components or cases. Conclude with `h`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-It suffices to derive a contradiction. Establish `hc0 : c = 0` using `by rw [hc, ← h]; ring`. Rewrite `hcpos` using `[hc0]`. Conclude with `lt_irrefl _ hcpos`. Establish `hε : 0 < (c - ((⌈c⌉₊ : ℝ) - 1)) / d` using `div_pos (by linarith) hdpos`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨κ, hκS, hκlt⟩` from `exists_lt_of_csInf_lt hne (lt_add_of_pos_right (sInf S) hε)`. Use `⟨κ, hκS, Or.inr ?_⟩` and prove the remaining obligations. Establish `h1 : (κ - sInf S) * d < c - ((⌈c⌉₊ : ℝ) - 1)`. Establish `: κ - sInf S < (c - ((⌈c⌉₊ : ℝ) - 1)) / d` using `by linarith`. Conclude with `(lt_div_iff₀ hdpos).1 this`.
+Combine the linear equalities and inequalities to obtain the conclusion. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h2 : (1 - κ) * d = c - (κ - sInf S) * d` using `by rw [hc]; ring`. Rewrite using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `⟨1, one_mem_kapISet L K p n' TT a b, Or.inl hg⟩`. Take `⟨M, e, F, h1, h2, h3, n, hn, hG⟩` from `(hκS.2 W Qq O Kf ι σ j w hset lam0 hb hd).2 Λ hΛ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `⟨M, e, F, h1, h2, h3, n, ?_, hG⟩` and prove the remaining obligations. Break down `hκ with h0 | hlt` into its components or cases. Conclude with `le_trans h0 (Nat.cast_nonneg n)`. Establish `h4 : (⌈c⌉₊ : ℝ) - 1 < (n : ℝ)` using `lt_of_lt_of_le hlt hn`. Establish `h5 : ⌈c⌉₊ ≤ n`.
-
-Establish `: (⌈c⌉₊ : ℝ) < (n : ℝ) + 1` using `by linarith`. Establish `: ⌈c⌉₊ < n + 1` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers. Conclude with `le_trans (Nat.le_ceil c) (by exact_mod_cast h5)`.
+A detailed English derivation is pending.
 -/
 theorem sInf_mem_kapISet {D : D7} (L : SizeData₂ D) (K : Consts) (p n' : ℕ) (TT : Finset (Fin n')) (a b : Fin n' → ℤ) :
     sInf (kapISet L K p n' TT a b) ∈ kapISet L K p n' TT a b := by
@@ -148,14 +146,14 @@ theorem sInf_mem_kapISet {D : D7} (L : SizeData₂ D) (K : Consts) (p n' : ℕ) 
     exact le_trans (Nat.le_ceil c) (by exact_mod_cast h5)
 
 /- English proof (translation)
-Rewrite using `[h]`. Conclude with `sInf_mem_kapISet L K p n' TT a b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KapIDef.mem {D : D7} {L : SizeData₂ D} {X : Inst D L} {K : Consts} (h : KapIDef X K) (p n' : ℕ)
     (TT : Finset (Fin n')) (a b : Fin n' → ℤ) : X.kapI p n' TT a b ∈ kapISet L K p n' TT a b := by
   rw [h]; exact sInf_mem_kapISet L K p n' TT a b
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ X with kapI := fun p n' TT a b => sInf (kapISet L K p n' TT a b), ep := fun p => ⌈Ce * (D.R.f : ℝ) * (D.R.k : ℝ) ^ 2 * Real.logb p L.sc.a⌉₊ }, rfl, rfl, fun _ => rfl, fun _ _ _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_inst_defs {D : D7} {L : SizeData₂ D} (X : Inst D L) (K : Consts) (Ce : ℝ) :
     ∃ X' : Inst D L, X'.bs = X.bs ∧ X'.off = X.off ∧ EpDef X' Ce ∧ KapIDef X' K :=

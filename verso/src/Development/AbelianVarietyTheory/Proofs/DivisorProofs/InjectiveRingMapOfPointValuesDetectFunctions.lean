@@ -17,11 +17,11 @@ noncomputable section
 namespace GlobalTheory.ValInj
 
 /- English proof (translation)
-Establish `ht : ⊤ ≤ x' ⁻¹ᵁ (⊤ : G.left.Opens)` using `fun _ _ => trivial`. Unfold `valR`. Rewrite using `[dif_pos ht]`. Establish `h1 : (x'.appLE ⊤ ⊤ ht).hom (G.hom.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) = (spMap φ).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)`. Rewrite using `[← hx]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Establish `h2` using `congrArg (fun g => g.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ))`. Simplify using `only [CommRingCat.comp_apply] at h2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[CommRingCat.comp_apply, CommRingCat.comp_apply, Iso.inv_hom_id_apply]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valR_top_comp (R : Type) [CommRing R] (G : Over (Sp R)) (Ω : Type) [CommRing Ω] (φ : R →+* Ω)
     (x' : Sp Ω ⟶ G.left) (hx : x' ≫ G.hom = spMap φ) (r : R) :
@@ -42,11 +42,11 @@ theorem valR_top_comp (R : Type) [CommRing R] (G : Over (Sp R)) (Ω : Type) [Com
   exact h2
 
 /- English proof (translation)
-Introduce `hx hv`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Establish `hf` using `hv ⊤ _ (fun _ _ => trivial) ((valR_top_comp R G Ω φ x' hx r).trans hr)`. Establish `he : (η[G]).left ≫ G.hom = 𝟙 _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Over.w (η[G])]`. Both sides reduce to the same expression. Establish `h3 : (η[G]).left.appTop.hom (G.hom.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) = (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r`. Rewrite using `[← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, he]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h3` using `[hf, map_zero]`. Establish `h4` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom h3`. Simplify using `using h4.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem injective_of_val (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] (Ω : Type) [CommRing Ω] (φ : R →+* Ω)
     (x' : Sp Ω ⟶ G.left) : x' ≫ G.hom = spMap φ →

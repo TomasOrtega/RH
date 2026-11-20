@@ -18,7 +18,7 @@ variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.
   {c : Coeff l} {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r}
 
 /- English proof (translation)
-Use `⟨GlobalTheory.CompRestr.idem_mul_mem_cuspW hU Z F.2, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `mul_mem_suppOn _ (idem_mem_suppOn Z)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_mul_mem_cuspOn (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) (Z : Comp Xo c) {G : WTZ D.host.E}
     (F : cuspW Xo c U G) : idem Z * (F : Rul Xo c) ∈ cuspOn U Z G := by
@@ -27,14 +27,14 @@ theorem idem_mul_mem_cuspOn (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) (Z : Co
   exact mul_mem_suppOn _ (idem_mem_suppOn Z)
 
 /- English proof (translation)
-The claim follows from `(mem_suppOn_iff_idem_mul (cuspW_le_secZ G hf.1) Z).1 hf.2`.
+A detailed English derivation is pending.
 -/
 theorem idem_mul_of_mem_cuspOn {Z : Comp Xo c} {G : WTZ D.host.E} {f : Rul Xo c} (hf : f ∈ cuspOn U Z G) :
     idem Z * f = f :=
   (mem_suppOn_iff_idem_mul (cuspW_le_secZ G hf.1) Z).1 hf.2
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem idem_mul_eq_zero {Z Z' : Comp Xo c} (h : Z ≠ Z') {G : WTZ D.host.E} {f : Rul Xo c}
     (hf : f ∈ cuspOn U Z' G) : idem Z * f = 0 := by
@@ -42,7 +42,7 @@ theorem idem_mul_eq_zero {Z Z' : Comp Xo c} (h : Z ≠ Z') {G : WTZ D.host.E} {f
     _ = 0 := by rw [← mul_assoc, idem_mul_idem_of_ne h, zero_mul]
 
 /- English proof (translation)
-Use `haveI := CompFin.finite_comp Xo c`. Use `haveI := Fintype.ofFinite (Comp Xo c)`. Rewrite using `[finsum_eq_sum_of_fintype, sum_idem_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_parts (f : Rul Xo c) : ∑ᶠ Z : Comp Xo c, idem Z * f = f := by
   haveI := CompFin.finite_comp Xo c
@@ -50,7 +50,7 @@ theorem finsum_parts (f : Rul Xo c) : ∑ᶠ Z : Comp Xo c, idem Z * f = f := by
   rw [finsum_eq_sum_of_fintype, sum_idem_mul]
 
 /- English proof (translation)
-Rewrite using `[latOn, mem_supLat_iff (idem_mul_mem_cuspOn hU Z F).2]`. Introduce `la v hv`. Use `show 0 ≤ v (idem Z * (F : Rul Xo c))`. Rewrite using `[(isVal_valOn hv).mul, val_idem hv, zero_add]`. Conclude with `(mem_supLat.1 hF) la v (valOn_subset Z la hv)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_latOn_part (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) {G : WTZ D.host.E} (F : cuspW Xo c U G)
     (hF : F ∈ latW U G) (Z : Comp Xo c) :
@@ -62,9 +62,9 @@ theorem mem_latOn_part (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) {G : WTZ D.h
   exact (mem_supLat.1 hF) la v (valOn_subset Z la hv)
 
 /- English proof (translation)
-Use `haveI := CompFin.finite_comp Xo c`. Use `haveI := Fintype.ofFinite (Comp Xo c)`. Use `mem_supLat.2 ?_` and prove the remaining obligations. Introduce `la v hv`. Establish `hval` using `isVal_valSet la v hv`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← sum_idem_mul (F : Rul Xo c)]`. Use `Finset.sum_induction _ (fun x => 0 ≤ v x) (fun a b ha hb => (le_min ha hb).trans (hval.add a b)) (by rw [hval.zero]; exact le_top) fun Z _ => ?_` and prove the remaining obligations. Conclude with `(mem_supLat.1 ((mem_latOn U).1 (h Z))) la v hv`.
+A detailed English derivation is pending.
 -/
 theorem mem_latW_of_parts (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) {G : WTZ D.host.E} (F : cuspW Xo c U G)
     (h : ∀ Z, (⟨_, idem_mul_mem_cuspOn hU Z F⟩ : cuspOn U Z G) ∈ latOn U Z G) : F ∈ latW U G := by
@@ -79,7 +79,7 @@ theorem mem_latW_of_parts (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) {G : WTZ 
   exact (mem_supLat.1 ((mem_latOn U).1 (h Z))) la v hv
 
 /- English proof (translation)
-Introduce `Z` and use `by rw [Submodule.disjoint_def] intro x hx hx' have hle : (⨆ (j) (_ : j ≠ Z), cuspOn U j G) ≤ LinearMap.ker (LinearMap.mulLeft c.F (idem Z)) := iSup₂_le fun j hj y hy => by rw [LinearMap.mem_ker, LinearMap.mulLeft_apply] exact idem_mul_eq_zero (Ne.symm hj) hy have h0 : idem Z * x …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cuspOn_indep (G : WTZ D.host.E) : iSupIndep (fun Z : Comp Xo c => cuspOn U Z G) := fun Z => by
   rw [Submodule.disjoint_def]
@@ -95,7 +95,7 @@ theorem cuspOn_indep (G : WTZ D.host.E) : iSupIndep (fun Z : Comp Xo c => cuspOn
     _ = 0 := h0
 
 /- English proof (translation)
-Use `le_antisymm (iSup_le fun Z => cuspOn_le U Z G) fun F hF => ?_` and prove the remaining obligations. Use `haveI := CompFin.finite_comp Xo c`. Use `haveI := Fintype.ofFinite (Comp Xo c)`. Rewrite using `[← sum_idem_mul F]`. Conclude with `Submodule.sum_mem _ fun Z _ => Submodule.mem_iSup_of_mem Z (idem_mul_mem_cuspOn hU Z ⟨F, hF⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iSup_cuspOn (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) (G : WTZ D.host.E) :
     ⨆ Z : Comp Xo c, cuspOn U Z G = cuspW Xo c U G := by
@@ -106,7 +106,7 @@ theorem iSup_cuspOn (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) (G : WTZ D.host
   exact Submodule.sum_mem _ fun Z _ => Submodule.mem_iSup_of_mem Z (idem_mul_mem_cuspOn hU Z ⟨F, hF⟩)
 
 /- English proof (translation)
-Take `⟨f, -, rfl⟩` from `hg`. Conclude with `f.2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem coe_mem_of_mem_partLat {Z : Comp Xo c} {G : WTZ D.host.E} {g : cuspW Xo c U G}
     (hg : g ∈ partLat U Z G) : (g : Rul Xo c) ∈ cuspOn U Z G := by
@@ -114,7 +114,7 @@ theorem coe_mem_of_mem_partLat {Z : Comp Xo c} {G : WTZ D.host.E} {g : cuspW Xo 
   exact f.2
 
 /- English proof (translation)
-Introduce `Z` and use `by rw [Submodule.disjoint_def] intro x hx hx' have hle : (⨆ (j) (_ : j ≠ Z), partLat U j G) ≤ (LinearMap.ker ((LinearMap.mulLeft c.F (idem Z)).comp (cuspW Xo c U G).subtype)).restrictScalars (𝓞 c.F) := iSup₂_le fun j hj y hy => by rw [Submodule.restrictScalars_mem, LinearMap.mem_ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem partLat_indep (G : WTZ D.host.E) : iSupIndep (fun Z : Comp Xo c => partLat U Z G) := fun Z => by
   rw [Submodule.disjoint_def]
@@ -134,9 +134,9 @@ theorem partLat_indep (G : WTZ D.host.E) : iSupIndep (fun Z : Comp Xo c => partL
     _ = 0 := h0
 
 /- English proof (translation)
-Use `le_antisymm (iSup_le fun Z => partLat_le U Z G) fun F hF => ?_` and prove the remaining obligations. Use `haveI := CompFin.finite_comp Xo c`. Use `haveI := Fintype.ofFinite (Comp Xo c)`. Establish `hF' : F = ∑ Z : Comp Xo c, (⟨idem Z * (F : Rul Xo c), GlobalTheory.CompRestr.idem_mul_mem_cuspW hU Z F.2⟩ : cuspW Xo c U G)`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.coe_sum]`. Conclude with `(sum_idem_mul _).symm`. Rewrite using `[hF']`. Use `Submodule.sum_mem _ fun Z _ => Submodule.mem_iSup_of_mem Z ?_` and prove the remaining obligations. Conclude with `⟨⟨_, idem_mul_mem_cuspOn hU Z F⟩, mem_latOn_part hU F hF Z, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem iSup_partLat (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) (G : WTZ D.host.E) :
     ⨆ Z : Comp Xo c, partLat U Z G = latW U G := by
@@ -153,7 +153,7 @@ theorem iSup_partLat (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) (G : WTZ D.hos
   exact ⟨⟨_, idem_mul_mem_cuspOn hU Z F⟩, mem_latOn_part hU F hF Z, rfl⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ hU G` and use `⟨fun F => ⟨(finsum_parts _).symm, fun Z => idem_mul_mem_cuspOn hU Z F, ⟨fun hF Z => mem_latOn_part hU F hF Z, mem_latW_of_parts hU F⟩⟩, ⟨cuspOn_indep G, iSup_cuspOn hU G⟩, partLat_indep G, iSup_partLat hU G⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem splits : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (V : (c.F →+* ℂ) → HSp D)

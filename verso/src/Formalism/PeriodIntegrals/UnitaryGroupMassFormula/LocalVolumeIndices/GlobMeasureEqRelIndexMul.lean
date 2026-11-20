@@ -20,19 +20,19 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Meas
   [BorelSpace G]
 
 /- English proof (translation)
-Establish `hK : IsOpen (K : Set G)` using `Subgroup.isOpen_mono hle ho`. Use `haveI : (H.subgroupOf K).FiniteIndex := ⟨hi⟩`. Use `haveI : Fintype (K ⧸ H.subgroupOf K) := Fintype.ofFinite _`. Establish `hc : H.relIndex K = Fintype.card (K ⧸ H.subgroupOf K)`. Rewrite using `[Subgroup.relIndex, Subgroup.index_eq_card, Nat.card_eq_fintype_card]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hU : (K : Set G) = ⋃ q : K ⧸ H.subgroupOf K, (fun y => (q.out : G)⁻¹ * y) ⁻¹' (H : Set G)`. Use extensionality with `x`. Simplify using `only [Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨QuotientGroup.mk ⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (H.subgroupOf K) (⟨x, hx⟩ : K)`. Rewrite using `[hh]`. Establish `h2 : ((h : K) : G) ∈ H` using `Subgroup.mem_subgroupOf.mp h.2`. Simplify `H.inv_mem h2` using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨q, hq⟩`. Establish `h1 : (q.out : G) ∈ K` using `q.out.2`. Establish `h2 : (q.out : G)⁻¹ * x ∈ K` using `hle hq`. Simplify using `using K.mul_mem h1 h2`. Establish `hD : Pairwise (Function.onFun Disjoint fun q : K ⧸ H.subgroupOf K => (fun y => (q.out : G)⁻¹ * y) ⁻¹' (H : Set G))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q q' hne`. Use `Set.disjoint_left.mpr ?_` and prove the remaining obligations. Introduce `x hx hx'`. Establish `h1 : (q.out : G)⁻¹ * x ∈ H` using `hx`. Establish `h2 : (q'.out : G)⁻¹ * x ∈ H` using `hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hne` to reduce the goal to its premises. Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q', QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Establish `h3` using `H.mul_mem h1 (H.inv_mem h2)`. Simplify `h3` using `[mul_assoc]`. Establish `hM : ∀ q : K ⧸ H.subgroupOf K, MeasurableSet ((fun y => (q.out : G)⁻¹ * y) ⁻¹' (H : Set G))` using `fun q => (ho.preimage (continuous_const.mul continuous_id)).measurableSet`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc, hU, MeasureTheory.measure_iUnion hD hM, tsum_fintype]`. Simplify using `only [MeasureTheory.measure_preimage_mul, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem Glob_measure_eq_relIndex_mul (μ : Measure G) [μ.IsMulLeftInvariant] (K H : Subgroup G)
     (hle : H ≤ K) (ho : IsOpen (H : Set G)) (hi : H.relIndex K ≠ 0) :
@@ -83,7 +83,7 @@ section Top
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [FiniteDimensional F E]
 
 /- English proof (translation)
-Use `first`. Consider the case `infer_instance`. Consider the case `exact IsModuleTopology.isTopologicalRing (Af F) (Af F ⊗[F] E)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Glob_topRing : IsTopologicalRing (Af F ⊗[F] E) := by
   first
@@ -91,7 +91,7 @@ theorem Glob_topRing : IsTopologicalRing (Af F ⊗[F] E) := by
     | exact IsModuleTopology.isTopologicalRing (Af F) (Af F ⊗[F] E)
 
 /- English proof (translation)
-Use `haveI : IsTopologicalRing (Af F ⊗[F] E) := Glob_topRing`. Use `first`. Consider the case `exact inferInstanceAs (IsTopologicalGroup (HR (Af F) σ J))`. Consider the case `(unfold HA; infer_instance)`. Consider the case `(show IsTopologicalGroup (HR (Af F) σ J); infer_instance)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Glob_topGroup (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     IsTopologicalGroup (HA (Af F) σ J) := by
@@ -109,7 +109,7 @@ def Glob_basis : Module.Basis (Fin 2) (Af I.F) (Af I.F ⊗[I.F] I.E) :=
   Algebra.TensorProduct.basis (Af I.F) (PI.InvTopW.basisE I)
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp [swapE]`. Consider the case `(rw [LinearEquiv.symm_apply_eq]; rfl)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Glob_swap_symm_tmul (a : Af I.F) (x : I.E) : (swapE I).symm (a ⊗ₜ[I.F] x) = x ⊗ₜ[I.F] a := by
   first
@@ -118,13 +118,13 @@ theorem Glob_swap_symm_tmul (a : Af I.F) (x : I.E) : (swapE I).symm (a ⊗ₜ[I.
     | (rw [LinearEquiv.symm_apply_eq]; rfl)
 
 /- English proof (translation)
-Establish `: IsModuleTopology (Af I.F) (Af I.F ⊗[I.F] I.E)` using `⟨rfl⟩`. Establish `hA` using `PI.InvTopW.finite_neighbourhood_first I.F N hN`. Establish `hev : ∀ k : Fin 2, ∀ᶠ t in 𝓝 (0 : Af I.F ⊗[I.F] I.E), (Glob_basis I).coord k t ∈ {a : FiniteAdeleRing (𝓞 I.F) I.F | ∃ z ∈ Formalism.UG.intAd I.F, a = (N : FiniteAdeleRing (𝓞 I.F) I.F) * z}`. Introduce `k`. Establish `hc : Continuous ((Glob_basis I).coord k)` using `IsModuleTopology.continuous_of_linearMap _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hc.continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `hA`. Use `filter_upwards [Filter.eventually_all.2 hev] with t ht`. Use `choose z hz hzt using ht`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ k, PI.InvTopW.basisE I k ⊗ₜ[I.F] z k, Subring.sum_mem _ fun k _ => PI.InvTopW.tmul_mem_IntAf I (PI.InvTopW.basisE_mem I k) (hz k), ?_⟩` and prove the remaining obligations. Establish `ht : t = ∑ k, ((Glob_basis I).coord k t) ⊗ₜ[I.F] PI.InvTopW.basisE I k` using `by conv_lhs => rw [← (Glob_basis I).sum_repr t]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Glob_basis, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Glob_swap_symm_tmul, hzt k]`. Conclude with `PI.InvTopW.tmul_natCast_mul I N _ _`.
+A detailed English derivation is pending.
 -/
 theorem Glob_nhd_zero (N : ℕ) (hN : 1 ≤ N) :
     ∀ᶠ t in 𝓝 (0 : Af I.F ⊗[I.F] I.E), PI.InvTopW.InNInt I N ((swapE I).symm t) := by
@@ -161,7 +161,7 @@ Both sides reduce to the same expression.
 theorem Glob_m_one : Glob_m I 1 = 1 := rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `fun_prop`. Consider the case `exact Units.continuous_val.comp continuous_subtype_val`. Consider the case `exact Units.continuous_val.comp ((HA.mat (Af I.F) I.cm.sig I.J).continuous)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Glob_continuous_m : Continuous (Glob_m I) := by
   first
@@ -170,23 +170,21 @@ theorem Glob_continuous_m : Continuous (Glob_m I) := by
     | exact Units.continuous_val.comp ((HA.mat (Af I.F) I.cm.sig I.J).continuous)
 
 /- English proof (translation)
-Establish `: FiniteDimensional I.F I.E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Use `Glob_topRing (F := I.F) (E := I.E)` as an intermediate fact. Use `Glob_topGroup (F := I.F) (E := I.E) I.cm.sig I.J` as an intermediate fact. Take `⟨N, hN, hE⟩` from `PI.InvTopW.entries_integral_of_lattice I g hg`. Establish `hm` using `Glob_continuous_m I`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hev : ∀ i j, ∀ᶠ h in 𝓝 (1 : HA (Af I.F) I.cm.sig I.J), PI.InvTopW.InNInt I N ((swapE I).symm ((Glob_m I h - 1) i j)) ∧ PI.InvTopW.InNInt I N ((swapE I).symm ((Glob_m I h⁻¹ - 1) i j))`. Introduce `i j`. Use `Filter.Eventually.and ?_ ?_` and prove the remaining obligations. Establish `hc : Continuous fun h => (Glob_m I h - 1) i j` using `(hm.sub continuous_const).matrix_elem i j`. Establish `h0 : (Glob_m I 1 - 1) i j = 0` using `by rw [Glob_m_one, sub_self]; rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht` using `hc.tendsto 1`. Rewrite `ht` using `[h0]`. Conclude with `ht.eventually (Glob_nhd_zero I N hN)`. Establish `hc : Continuous fun h => (Glob_m I h⁻¹ - 1) i j` using `((hm.comp continuous_inv).sub continuous_const).matrix_elem i j`. Establish `h0 : (Glob_m I (1 : HA (Af I.F) I.cm.sig I.J)⁻¹ - 1) i j = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_one, Glob_m_one, sub_self]`. Both sides reduce to the same expression. Establish `ht` using `hc.tendsto 1`. Rewrite `ht` using `[h0]`. Conclude with `ht.eventually (Glob_nhd_zero I N hN)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hall : ∀ᶠ h in 𝓝 (1 : HA (Af I.F) I.cm.sig I.J), ∀ i j, PI.InvTopW.InNInt I N ((swapE I).symm ((Glob_m I h - 1) i j)) ∧ PI.InvTopW.InNInt I N ((swapE I).symm ((Glob_m I h⁻¹ - 1) i j))`. Simplify using `only [Filter.eventually_all]`. Conclude with `hev`. Use `filter_upwards [hall] with h hh`. Take `⟨x, rfl⟩` from `Bridge_tf_surjective I hb h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨x, ?_, rfl⟩` and prove the remaining obligations. Establish `hmx : ∀ y : I.Gf, I.fmat y = (Glob_m I (tf I hb y)).map (swapE I).symm`. Introduce `y`. Use `Bridge_mat I hb y` as an intermediate fact. Rewrite using `[Glob_m, this]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hent : ∀ y : I.Gf, ∀ i j, (I.fmat y - 1) i j = (swapE I).symm ((Glob_m I (tf I hb y) - 1) i j)`. Introduce `y i j`. Rewrite using `[hmx y, Matrix.sub_apply, Matrix.sub_apply, Matrix.map_apply, map_sub, Matrix.one_apply, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hinv : tf I hb x⁻¹ = (tf I hb x)⁻¹` using `map_inv (tfHom I hb) x`. Establish `hMM : I.fmat x * I.fmat x⁻¹ = 1`. Rewrite using `[← LocB_fmat_mul I, mul_inv_cancel, LocB_fmat_one I]`. Establish `hK` using `hE (I.fmat x) (I.fmat x⁻¹) hMM (fun i j => by rw [hent x i j]; exact (hh i j).1) (fun i j => by rw [hent x⁻¹ i j, hinv]; exact (hh i j).2)`.
-
-Conclude with `⟨hK.1, hK.2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Glob_nhd_one (hb : AdBridgeIso I) (g : ℕ) (hg : 1 ≤ g) :
     tf I hb '' I.Kg g ∈ 𝓝 (1 : HA (Af I.F) I.cm.sig I.J) := by
@@ -254,7 +252,7 @@ def Glob_KppH (hK : X.LevelSubgroupCharacter) : Subgroup (HA (Af X.B.I.F) X.B.I.
   (Glob_K2Sub X hK).map (tfHom X.B.I hb)
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `(ext h; simp [Glob_KppH, Glob_K2Sub, levelUnitary])`. Consider the case `(unfold levelUnitary; ext h; simp [Glob_KppH, Glob_K2Sub])`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Glob_coe_KppH (hK : X.LevelSubgroupCharacter) : (Glob_KppH X hb hK : Set _) = levelUnitary X hb := by
   first
@@ -263,23 +261,23 @@ theorem Glob_coe_KppH (hK : X.LevelSubgroupCharacter) : (Glob_KppH X hb hK : Set
     | (unfold levelUnitary; ext h; simp [Glob_KppH, Glob_K2Sub])
 
 /- English proof (translation)
-Unfold `KppS`. Rewrite using `[← Glob_coe_KppH X hb hK, Subgroup.closure_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Glob_KppS_eq (hK : X.LevelSubgroupCharacter) : KppS X hb = Glob_KppH X hb hK := by
   unfold KppS
   rw [← Glob_coe_KppH X hb hK, Subgroup.closure_eq]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `(Bridge_mem_Kf_iff X.B.I hb x).2 (hL.2.1 x hx)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem Glob_KppH_le (hK : X.LevelSubgroupCharacter) (hL : X.LevelSubgroupNormalized) : Glob_KppH X hb hK ≤ KfS X := by
   rintro _ ⟨x, hx, rfl⟩
   exact (Bridge_mem_Kf_iff X.B.I hb x).2 (hL.2.1 x hx)
 
 /- English proof (translation)
-Use `haveI := Glob_topGroup X.B.I.cm.sig X.B.I.J`. Establish `hg : 1 ≤ X.B.g`. Rewrite using `[X.g_eq]`. Conclude with `Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset (Glob_nhd_one X.B.I hb X.B.g hg) ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Glob_coe_KppH X hb hK]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨x, (hL.1 x hx).1, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Glob_isOpen_KppH (hK : X.LevelSubgroupCharacter) (hL : X.LevelSubgroupNormalized) :
     IsOpen (Glob_KppH X hb hK : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)) := by
@@ -293,11 +291,11 @@ theorem Glob_isOpen_KppH (hK : X.LevelSubgroupCharacter) (hL : X.LevelSubgroupNo
   exact ⟨x, (hL.1 x hx).1, rfl⟩
 
 /- English proof (translation)
-Introduce `hi`. Establish `: FiniteDimensional X.B.I.F X.B.I.E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Use `Glob_topGroup (F := X.B.I.F) (E := X.B.I.E) X.B.I.cm.sig X.B.I.J` as an intermediate fact. Establish `: BorelSpace (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)` using `⟨rfl⟩`. Establish `: X.measG.μGf.IsHaarMeasure` using `X.measG_norm.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK2 : levelUnitary X hb = (KppS X hb : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J))`. Rewrite using `[Glob_KppS_eq X hb hK, Glob_coe_KppH]`. Rewrite using `[hK2]`. Establish `hle : KppS X hb ≤ KfS X` using `by rw [Glob_KppS_eq X hb hK]; exact Glob_KppH_le X hb hK hL`. Establish `ho : IsOpen (KppS X hb : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Glob_KppS_eq X hb hK]`. Conclude with `Glob_isOpen_KppH X hb hK hL`. Conclude with `Glob_measure_eq_relIndex_mul X.measG.μGf (KfS X) (KppS X hb) hle ho hi`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Glob_globIdx (hK : X.LevelSubgroupCharacter) (hL : X.LevelSubgroupNormalized) : GlobIdx X hb := by
   intro hi
@@ -316,7 +314,7 @@ theorem Glob_globIdx (hK : X.LevelSubgroupCharacter) (hL : X.LevelSubgroupNormal
 end HidaSetting
 
 /- English proof (translation)
-Introduce `D X hb hK _ hL`. Conclude with `Glob_globIdx X hb hK hL`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem global_index_every_setting : GlobIdxAll := by
   intro D X hb hK _ hL

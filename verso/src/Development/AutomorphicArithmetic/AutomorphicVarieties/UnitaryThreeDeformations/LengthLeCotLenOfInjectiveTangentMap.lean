@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeDeform
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia.Abs
 
 /- English proof (translation)
-Rewrite using `[coeff_mul, Finsupp.antidiagonal_single]`. Simplify using `[Finset.Nat.antidiagonal_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem coeff_single_mul' {O σ : Type} [CommRing O] (i : σ) (f g : MvPowerSeries σ O) :
     coeff (Finsupp.single i 1) (f * g) =
@@ -32,9 +32,9 @@ private theorem lin_apply {O : Type} [CommRing O] {σ : Type} [Fintype σ] (wt :
     lin wt Q v f = ∑ i, coeff (Finsupp.single i 1) (ser f) • v i := rfl
 
 /- English proof (translation)
-Rewrite using `[lin_apply]`. Establish `: ser ((WPres.free O wt).zA i) = (X i : MvPowerSeries σ O)` using `rfl`. Rewrite using `[this, Finset.sum_eq_single i]`. Simplify using `[coeff_X]`. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[coeff_X, if_neg, zero_smul]`. Introduce `h`. Conclude with `hb (Finsupp.single_left_injective one_ne_zero h)`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem lin_zA {O : Type} [CommRing O] {σ : Type} [Fintype σ] (wt : σ → ℤ)
     (Q : Type) [AddCommGroup Q] [Module O Q] (v : σ → Q) (i : σ) :
@@ -51,25 +51,23 @@ private theorem lin_zA {O : Type} [CommRing O] {σ : Type} [Fintype σ] (wt : σ
   · simp
 
 /- English proof (translation)
-Introduce `hM O _ _ _ _ σ _ wt j hj κ F hF c hc M _ _ d hd hwt hker`. Set `D : M →+ (FA O wt →ₗ[O] O ⧸ Ideal.span {c})` to `(lin wt (O ⧸ Ideal.span {c})).comp d`. Establish `hD : ∀ μ f, D μ f = ∑ i, coeff (Finsupp.single i 1) (ser f) • d μ i` using `fun μ f => lin_apply wt _ (d μ) f`. Establish `hwsingle : ∀ i : σ, (Finsupp.weight wt) (Finsupp.single i 1) = wt i`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Finsupp.weight_apply]`. Use `hM O (FA O wt) ℤ (Fgr O wt) (x0 O wt) j ?_ κ F hF c hc M D ?_ ?_ ?_` and prove the remaining obligations. Introduce `f hf`. Rewrite using `[weightedSeriesOrigin_apply, ← coeff_zero_eq_constantCoeff_apply]`. Conclude with `(mem_Fgr.mp hf) 0 (by simpa using hj.symm)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `μ ν h`. Apply `hd` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Establish `h2` using `congrArg (fun L : FA O wt →ₗ[O] O ⧸ Ideal.span {c} => L ((WPres.free O wt).zA i)) (congrArg (fun T => T) h)`. Simplify `h2` using `[D, lin_zA]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `μ k`. Rewrite using `[hD]`. Conclude with `hker μ k`. Introduce `μ choose e he using fun i => Ideal.Quotient.mk_surjective (d μ i)`. Set `e' : σ → O` to `fun i => if wt i = j then e i else 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `he' : ∀ i, Ideal.Quotient.mk (Ideal.span {c}) (e' i) = d μ i`. Introduce `i`. Distinguish the cases in `h : wt i = j`. Simplify using `[e', h, he]`. Simplify using `[e', h, hwt μ i h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨lin wt O e', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `f g`. Establish `hs : ser (f * g) = ser f * ser g` using `rfl`. Rewrite using `[lin_apply, lin_apply, lin_apply, weightedSeriesOrigin_apply, weightedSeriesOrigin_apply, hs]`. Simplify using `only [coeff_single_mul', smul_eq_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Introduce `i' hi' f hf`. Rewrite using `[lin_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : wt i = j`. Establish `h0 : coeff (Finsupp.single i 1) (ser f) = 0`. Use `(mem_Fgr.mp hf) _ ?_` and prove the remaining obligations. Rewrite using `[hwsingle, h]`. Conclude with `fun e => hi' e.symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h0, zero_smul]`. Simplify using `[e', h]`. Introduce `f`. Rewrite using `[hD, lin_apply, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← he' i, smul_eq_mul, map_mul, Algebra.smul_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.length_le_cotLen_of_injective_tangent_map :
     LemmaM' → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Finite (ResidueField O)] (σ : Type) [Fintype σ] (wt : σ → ℤ) (j : ℤ), j ≠ 0 →

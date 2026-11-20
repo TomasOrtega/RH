@@ -26,11 +26,11 @@ def offCM (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (τ : E →+
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ix`. Break down `ix with _ | ⟨τ, i⟩` into its components or cases. Both sides reduce to the same expression. Simplify using `only [GlobalTheory.AllWt.exOf, exZ, GlobalTheory.AllWt.wtOf, Option.elim, offCM, hodgeWt, CompHt.barWt]`. Distinguish the cases in `h : τ (H.rt : E) = H.rt0`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Apply the tactic sequence `simp only [dif_pos h, if_pos h] split_ifs <;> omega`. Establish `hm : Dw.mult τ = Dw.q` using `by simp [Datum.mult, h]`. Establish `hi : (i : ℕ) < Dw.q` using `lt_of_lt_of_eq i.2 hm`. Simplify using `only [dif_neg h, if_neg h]`. Distinguish the cases in `h' : conjEmb τ (H.rt : E) = H.rt0`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Apply the tactic sequence `simp only [dif_pos h', if_pos h', dif_pos hi] split_ifs <;> omega`. Simplify using `only [dif_neg h', if_neg h']`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem exOf_hodgeWt (Dw : Datum H) :
     GlobalTheory.AllWt.exOf Dw (hodgeWt Dw) 0 = fun ix => ix.elim 0 fun x => offCM H x.1 := by

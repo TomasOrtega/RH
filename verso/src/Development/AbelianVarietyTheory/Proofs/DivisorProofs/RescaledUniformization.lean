@@ -35,7 +35,7 @@ def latPull (u : HolUnif A Lb g) (lam : Fin g → ℂ) (h : ∀ j, lam j ≠ 0) 
   ZLattice.comap ℝ u.Λ ((scaleLin lam h).restrictScalars ℝ).toLinearMap
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_latPull (u : HolUnif A Lb g) (lam : Fin g → ℂ) (h : ∀ j, lam j ≠ 0) (z : Fin g → ℂ) :
     z ∈ latPull u lam h ↔ scale lam h z ∈ u.Λ := Iff.rfl
@@ -74,7 +74,7 @@ namespace GlobalTheory.HolUnifScale
 variable {g : ℕ} {A : Over (Sp ℂ)} [GrpObj A] {Lb : LB A.left}
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Matrix.mulVec_diagonal, scale_apply, Pi.star_apply, star_mul']`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← Complex.mul_conj', Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma diag_form (lam : Fin g → ℂ) (h : ∀ j, lam j ≠ 0) (d : Fin g → ℝ) (z l : Fin g → ℂ) :
     z ⬝ᵥ (Matrix.diagonal fun j ↦ ((d j * ‖lam j‖ ^ 2 : ℝ) : ℂ)).mulVec (star l) =
@@ -86,7 +86,7 @@ lemma diag_form (lam : Fin g → ℂ) (h : ∀ j, lam j ≠ 0) (d : Fin g → �
   ring
 
 /- English proof (translation)
-Rewrite using `[Matrix.IsHermitian, Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[Complex.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma diag_herm (d : Fin g → ℝ) : (Matrix.diagonal fun j ↦ (d j : ℂ)).IsHermitian := by
   rw [Matrix.IsHermitian, Matrix.diagonal_conjTranspose]
@@ -97,13 +97,13 @@ end GlobalTheory.HolUnifScale
 open GlobalTheory.HolUnifScale in
 
 /- English proof (translation)
-Introduce `A _ Lb g u lam h`. Use `⟨rescale u lam h, fun w ↦ rfl, ?_, ?_⟩` and prove the remaining obligations. Introduce `d χ ⟨_, hpos, hχ, hfr⟩`. Use `⟨fun l ↦ χ ⟨scale lam h l, l.2⟩, ?_, ?_, fun l ↦ hχ _, ?_⟩` and prove the remaining obligations. Use `diag_herm (fun j ↦ d j * ‖lam j‖ ^ 2)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using this`. Introduce `z hz`. Rewrite using `[diag_form lam h d z z]`. Conclude with `hpos _ ((map_ne_zero_iff _ (scale lam h).injective).mpr hz)`. Introduce `l i z hz`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `hfr ⟨scale lam h l, l.2⟩ i (scale lam h z) hz`. Use `show u.fr i (scale lam h z) = _ * _ * u.fr i (scale lam h (z + l))`. Rewrite using `[diag_form lam h d z l, diag_form lam h d l l, map_add]`. Conclude with `e`. Introduce `W v`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Unfold `HolUnif.IsDiff`. Establish `hf : ∀ (U : A.left.Opens) (f : Γ(A.left, U)), (fun z ↦ valAt' ((rescale u lam h).ex z).left U f) = (fun z ↦ valAt' (u.ex z).left U f) ∘ scale lam h` using `fun _ _ ↦ rfl`. Simplify using `only [hf, ContinuousLinearEquiv.comp_right_fderiv, map_zero]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.holUnif_rescale : ∀ (A : Over (Sp ℂ)) [GrpObj A] (Lb : LB A.left) (g : ℕ) (u : HolUnif A Lb g) (lam : Fin g → ℂ),
     (∀ j, lam j ≠ 0) → ∃ u' : HolUnif A Lb g, (∀ w, u'.ex w = u.ex (fun j ↦ lam j * w j)) ∧

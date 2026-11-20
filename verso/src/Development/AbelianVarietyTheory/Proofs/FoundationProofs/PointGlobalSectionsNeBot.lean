@@ -28,14 +28,14 @@ def AdelicLine.of (a : InfinitePlace F → ℝ) (b : HeightOneSpectrum (𝓞 F) 
   if h : (Function.mulSupport b).Finite then ⟨a, b, h⟩ else ⟨a, 1, by simp⟩
 
 /- English proof (translation)
-Apply the tactic sequence `unfold AdelicLine.of; split_ifs <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 @[simp] theorem AdelicLine.of_inf (a : InfinitePlace F → ℝ) (b : HeightOneSpectrum (𝓞 F) → ℝ) :
     (AdelicLine.of a b).inf = a := by
   unfold AdelicLine.of; split_ifs <;> rfl
 
 /- English proof (translation)
-Unfold `AdelicLine.of`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem AdelicLine.of_fin (a : InfinitePlace F → ℝ) {b : HeightOneSpectrum (𝓞 F) → ℝ}
     (h : (Function.mulSupport b).Finite) : (AdelicLine.of a b).fin = b := by
@@ -50,7 +50,7 @@ def AdelicLine.twist (L : AdelicLine F) (ci : InfinitePlace F → ℝ)
   AdelicLine.of (fun v => Real.exp (-ci v) * L.inf v) (fun w => Real.exp (-cf w) * L.fin w)
 
 /- English proof (translation)
-Use `AdelicLine.of_fin _ ((h.union L.fin_finite).subset fun w hw => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_union, Function.mem_support, Function.mem_mulSupport, not_or, not_not] at hn`. Conclude with `hw (by simp [hn.1, hn.2])`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem AdelicLine.twist_fin (L : AdelicLine F) (ci : InfinitePlace F → ℝ)
     {cf : HeightOneSpectrum (𝓞 F) → ℝ} (h : (Function.support cf).Finite) :
@@ -147,13 +147,13 @@ def pointGeo : DV.Geo F where
   regOn _ _ _ _ _ := True
 
 /- English proof (translation)
-The claim follows from `(top_ne_bot : (⊤ : Submodule F F) ≠ ⊥)`.
+A detailed English derivation is pending.
 -/
 theorem point_global_sections_ne_bot (Y : (pointGeo F).Var) : (pointGeo F).H0 Y 0 ≠ ⊥ :=
   (top_ne_bot : (⊤ : Submodule F F) ≠ ⊥)
 
 /- English proof (translation)
-Introduce `F _ _ _` and use `⟨pointGeo F, (), point_global_sections_ne_bot F _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_geo : ∀ (F : Type) [Field F] [NumberField F] [StarRing F],
     ∃ G : DV.Geo F, ∃ Y : G.Var, G.H0 Y 0 ≠ ⊥ :=

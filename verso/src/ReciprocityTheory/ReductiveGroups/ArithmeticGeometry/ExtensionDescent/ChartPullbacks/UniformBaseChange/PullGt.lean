@@ -22,9 +22,9 @@ variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {I 
 
 include hφ in
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[Ideal.mem_comap]`. Establish `h1 : φ x ∈ (I ^ (e + 1)).map φ` using `Ideal.mem_map_of_mem φ hx`. Rewrite `h1` using `[Ideal.map_pow]`. Use `first`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Consider the case `exact Ideal.pow_right_mono hφ (e + 1) h1`. Consider the case `exact pow_le_pow_left' hφ (e + 1) h1`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma pow_le : I ^ (e + 1) ≤ (I' ^ (e + 1)).comap φ := by
   intro x hx
@@ -41,7 +41,7 @@ def sE : Spec (CommRingCat.of (R' ⧸ I' ^ (e + 1))) ⟶ Spec (CommRingCat.of (R
   Spec.map (CommRingCat.ofHom (φe φ hφ e))
 
 /- English proof (translation)
-Simplify using `only [sE, thick, specOf, ← Spec.map_comp]`. Use `congr 1`. Apply the tactic sequence `all_goals first | rfl | (ext x; simp [φe])`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma sE_thick : sE φ hφ e ≫ thick R I e = thick R' I' e ≫ specOf φ := by
   simp only [sE, thick, specOf, ← Spec.map_comp]
@@ -60,7 +60,7 @@ def hMap (Y : Over (Spec (CommRingCat.of R))) (Y' : Over (Spec (CommRingCat.of R
         pullback.condition, Category.assoc, Category.assoc, sE_thick])
 
 /- English proof (translation)
-Use `first`. Consider the case `exact pullback.lift_fst _ _ _`. Consider the case `simp [hMap]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma hMap_fst (Y : Over (Spec (CommRingCat.of R))) (Y' : Over (Spec (CommRingCat.of R')))
     (b : Y' ⟶ (Over.pullback (specOf φ)).obj Y) :
@@ -71,7 +71,7 @@ lemma hMap_fst (Y : Over (Spec (CommRingCat.of R))) (Y' : Over (Spec (CommRingCa
   | simp [hMap]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact pullback.lift_snd _ _ _`. Consider the case `simp [hMap]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma hMap_snd (Y : Over (Spec (CommRingCat.of R))) (Y' : Over (Spec (CommRingCat.of R')))
     (b : Y' ⟶ (Over.pullback (specOf φ)).obj Y) :
@@ -82,7 +82,7 @@ lemma hMap_snd (Y : Over (Spec (CommRingCat.of R))) (Y' : Over (Spec (CommRingCa
   | simp [hMap]
 
 /- English proof (translation)
-Simplify using `only [sE, thickTrans, ← Spec.map_comp]`. Use `congr 1`. Apply the tactic sequence `all_goals first | rfl | (ext x; simp [φe])`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma sE_trans : thickTrans R' I' e ≫ sE φ hφ (e + 1) = sE φ hφ e ≫ thickTrans R I e := by
   simp only [sE, thickTrans, ← Spec.map_comp]
@@ -90,11 +90,11 @@ lemma sE_trans : thickTrans R' I' e ≫ sE φ hφ (e + 1) = sE φ hφ e ≫ thic
   all_goals first | rfl | (ext x; simp [φe])
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, hMap_fst]`. Simplify using `only [thickMap, pullback.map]`. Use `erw [pullback.lift_fst_assoc, pullback.lift_fst]`. Simplify using `only [Category.comp_id, Category.id_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hMap_fst]`. Rewrite using `[Category.assoc, Category.assoc, hMap_snd]`. Simplify using `only [thickMap, pullback.map]`. Use `erw [pullback.lift_snd_assoc, pullback.lift_snd]`. Simplify using `only [Category.assoc, sE_trans]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← Category.assoc]`. Rewrite using `[hMap_snd]`.
+A detailed English derivation is pending.
 -/
 lemma hMap_thick (Y : Over (Spec (CommRingCat.of R))) (Y' : Over (Spec (CommRingCat.of R')))
     (b : Y' ⟶ (Over.pullback (specOf φ)).obj Y) :
@@ -114,7 +114,7 @@ lemma hMap_thick (Y : Over (Spec (CommRingCat.of R))) (Y' : Over (Spec (CommRing
     rw [hMap_snd]
 
 /- English proof (translation)
-Establish `A` using `isGrpPullback_pullback Y' (thick R' I' e)`. Establish `B` using `((isGrpPullback_of_iso b).comp (isGrpPullback_pullback Y (specOf φ))).congr (Category.id_comp _) rfl`. Establish `C` using `A.comp B`. Establish `D` using `isGrpPullback_pullback Y (thick R I e)`. Conclude with `D.cancel (C.congr (sE_thick φ hφ e).symm (by rw [hMap_fst])) (hMap_snd Y Y' b.hom)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma isGrpPullback_hMap (Y : Over (Spec (CommRingCat.of R))) [GrpObj Y]
     (Y' : Over (Spec (CommRingCat.of R'))) [GrpObj Y']
@@ -132,15 +132,15 @@ section MonHom
 variable {S S' : Scheme.{0}} {f : S' ⟶ S}
 
 /- English proof (translation)
-Establish `mul : ∀ (T : Over S') (x y : T ⟶ G'), (x * y) ≫ q' = (x ≫ q') * (y ≫ q')`. Introduce `T x y`. Establish `hx : (pushPt hG.1.w x ≫ q).left = (x ≫ q').left ≫ φB`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hy : (pushPt hG.1.w y ≫ q).left = (y ≫ q').left ≫ φB`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hq]`. Both sides reduce to the same expression. Establish `e2` using `hB.2 T (x ≫ q') (y ≫ q') (pushPt hG.1.w x ≫ q) (pushPt hG.1.w y ≫ q) hx hy`. Establish `e1` using `hG.2 T x y (pushPt hG.1.w x) (pushPt hG.1.w y) rfl rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hB.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Category.assoc, hq, ← Category.assoc, ← e1, ← Over.comp_left, MonObj.mul_comp, e2]`. Rewrite using `[Over.w, Over.w]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `mul (𝟙_ _) 1 1`. Rewrite `h` using `[_root_.mul_one]`. Establish `h' : (1 : 𝟙_ (Over S') ⟶ G') ≫ q' = 1` using `mul_eq_left.1 h.symm`. Simplify `h'` using `[Hom.one_def]`. Establish `h` using `mul (G' ⊗ G') (fst _ _) (snd _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h` using `[Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp]`. Rewrite using `[h]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 lemma isMonHom_of_grpPullback {G B : Over S} [GrpObj G] [GrpObj B] {G' B' : Over S'} [GrpObj G']
     [GrpObj B'] {φG : G'.left ⟶ G.left} {φB : B'.left ⟶ B.left} (hG : IsGrpPullback G' G f φG)
@@ -186,13 +186,13 @@ abbrev hBm : (thickObj R' I' e D'.P.A).left ⟶ (thickObj R I e D.P.A).left :=
 
 omit [IsCommMonObj G] [IsCommMonObj G'] in
 /- English proof (translation)
-The claim follows from `isGrpPullback_hMap (hφ := hφ) (e := e) G G' bc`.
+A detailed English derivation is pending.
 -/
 lemma grpG : IsGrpPullback (thickObj R' I' e G') (thickObj R I e G) (sE φ hφ e) (hGm hφ e bc) :=
   isGrpPullback_hMap (hφ := hφ) (e := e) G G' bc
 
 /- English proof (translation)
-The claim follows from `isGrpPullback_hMap (hφ := hφ) (e := e) D.P.A D'.P.A eB`.
+A detailed English derivation is pending.
 -/
 lemma grpB : IsGrpPullback (thickObj R' I' e D'.P.A) (thickObj R I e D.P.A) (sE φ hφ e) (hBm hφ e eB) :=
   isGrpPullback_hMap (hφ := hφ) (e := e) D.P.A D'.P.A eB
@@ -207,13 +207,13 @@ def qP : thickObj R' I' e G' ⟶ thickObj R' I' e D'.P.A :=
   Over.homMk (qL hφ eB bc g) ((grpB hφ e eB).1.lift_snd _ _ _)
 
 /- English proof (translation)
-The claim follows from `(grpB hφ e eB).1.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma qP_h : (qP hφ eB bc g).left ≫ hBm hφ e eB = hGm hφ e bc ≫ g.q.left :=
   (grpB hφ e eB).1.lift_fst _ _ _
 
 /- English proof (translation)
-Use `IsPullback.of_bot ?_ (qP_h hφ eB bc g).symm (grpB hφ e eB).1` and prove the remaining obligations. Rewrite using `[Over.w (qP hφ eB bc g), Over.w g.q]`. Conclude with `(grpG hφ e bc).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma qP_sq : IsPullback (hGm hφ e bc) (qP hφ eB bc g).left g.q.left (hBm hφ e eB) := by
   refine IsPullback.of_bot ?_ (qP_h hφ eB bc g).symm (grpB hφ e eB).1
@@ -221,14 +221,14 @@ lemma qP_sq : IsPullback (hGm hφ e bc) (qP hφ eB bc g).left g.q.left (hBm hφ 
   exact (grpG hφ e bc).1
 
 /- English proof (translation)
-Use `haveI := g.q_hom`. Conclude with `isMonHom_of_grpPullback (grpG hφ e bc) (grpB hφ e eB) g.q (qP hφ eB bc g) (qP_h hφ eB bc g)`.
+A detailed English derivation is pending.
 -/
 lemma qP_hom : IsMonHom (qP hφ eB bc g) := by
   haveI := g.q_hom
   exact isMonHom_of_grpPullback (grpG hφ e bc) (grpB hφ e eB) g.q (qP hφ eB bc g) (qP_h hφ eB bc g)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact MorphismProperty.of_isPullback (P := @Flat) (qP_sq hφ eB bc g) g.q_flat`. Consider the case `exact MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @Flat) (qP_sq hφ eB bc g) g.q_flat`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma qP_flat : Flat (qP hφ eB bc g).left := by
   first
@@ -236,7 +236,7 @@ lemma qP_flat : Flat (qP hφ eB bc g).left := by
   | exact MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @Flat) (qP_sq hφ eB bc g) g.q_flat
 
 /- English proof (translation)
-Use `first`. Consider the case `exact MorphismProperty.of_isPullback (P := @Surjective) (qP_sq hφ eB bc g) g.q_surj`. Consider the case `exact MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @Surjective) (qP_sq hφ eB bc g) g.q_surj`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma qP_surj : Surjective (qP hφ eB bc g).left := by
   first
@@ -244,7 +244,7 @@ lemma qP_surj : Surjective (qP hφ eB bc g).left := by
   | exact MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @Surjective) (qP_sq hφ eB bc g) g.q_surj
 
 /- English proof (translation)
-Use `first`. Consider the case `exact MorphismProperty.of_isPullback (P := @IsAffineHom) (qP_sq hφ eB bc g) g.q_affine`. Consider the case `exact MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsAffineHom) (qP_sq hφ eB bc g) g.q_affine`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma qP_affine : IsAffineHom (qP hφ eB bc g).left := by
   first
@@ -274,7 +274,7 @@ def hT : (splitTorus (Spec (CommRingCat.of (R' ⧸ I' ^ (e + 1)))) X').left ⟶
     (specULiftZIsTerminal.hom_ext _ _)
 
 /- English proof (translation)
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a c ha hc => rw [map_add, map_add, ha, hc]`. Consider the case `single a r => simp [ψB, AddMonoidAlgebra.mapDomainBialgHom, AddMonoidAlgebra.mapDomainAlgHom_apply]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 lemma ψB_left_inv : (ψR xe).comp (ψR xe.symm) = RingHom.id _ := by
   refine RingHom.ext fun x => ?_
@@ -284,7 +284,7 @@ lemma ψB_left_inv : (ψR xe).comp (ψR xe.symm) = RingHom.id _ := by
   | single a r => simp [ψB, AddMonoidAlgebra.mapDomainBialgHom, AddMonoidAlgebra.mapDomainAlgHom_apply]
 
 /- English proof (translation)
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a c ha hc => rw [map_add, map_add, ha, hc]`. Consider the case `single a r => simp [ψB, AddMonoidAlgebra.mapDomainBialgHom, AddMonoidAlgebra.mapDomainAlgHom_apply]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 lemma ψB_right_inv : (ψR xe.symm).comp (ψR xe) = RingHom.id _ := by
   refine RingHom.ext fun x => ?_
@@ -310,7 +310,7 @@ def eψ : splitTorusAff ZU X' ≅ splitTorusAff ZU X :=
   Over.isoMk (asIso (specψ xe).left) (Over.w (specψ xe))
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `(ext1; rfl)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma eψ_hom : (eψ xe).hom = specψ xe := by
   first
@@ -320,7 +320,7 @@ lemma eψ_hom : (eψ xe).hom = specψ xe := by
 instance : IsMonHom (eψ xe).hom := by rw [eψ_hom]; infer_instance
 
 /- English proof (translation)
-Establish `A` using `isGrpPullback_pullback (splitTorusAff ZU X') (toZ (Spec (CommRingCat.of (R' ⧸ I' ^ (e + 1)))))`. Establish `B` using `isGrpPullback_of_iso (eψ xe)`. Establish `C` using `A.comp B`. Establish `D` using `isGrpPullback_pullback (splitTorusAff ZU X) (toZ (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))))`. Conclude with `D.cancel (C.congr (specULiftZIsTerminal.hom_ext _ _) ((pullback.lift_fst _ _ _).trans (congrArg (pullback.fst _ _ ≫ ·) (specψ_left xe).symm)).symm) (pullback.lift_snd _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma grpT : IsGrpPullback (splitTorus (Spec (CommRingCat.of (R' ⧸ I' ^ (e + 1)))) X')
     (splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) X) (sE φ hφ e) (hT hφ e xe) := by
@@ -332,7 +332,7 @@ lemma grpT : IsGrpPullback (splitTorus (Spec (CommRingCat.of (R' ⧸ I' ^ (e + 1
     (congrArg (pullback.fst _ _ ≫ ·) (specψ_left xe).symm)).symm) (pullback.lift_snd _ _ _)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (Scheme.ΓSpecIso_inv_naturality f).symm`. Consider the case `(rw [Iso.inv_comp_eq, ← Category.assoc, Iso.eq_comp_inv]; exact Scheme.ΓSpecIso_naturality f)`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma specMap_inv {A B : CommRingCat.{0}} (f : A ⟶ B) :
     (Scheme.ΓSpecIso A).inv ≫ (Spec.map f).appTop = f ≫ (Scheme.ΓSpecIso B).inv := by
@@ -342,7 +342,7 @@ lemma specMap_inv {A B : CommRingCat.{0}} (f : A ⟶ B) :
   | simp
 
 /- English proof (translation)
-Use `first`. Consider the case `exact f.app_eq_appLE`. Consider the case `(rw [Scheme.Hom.appLE]; simp)`. Consider the case `simp [Scheme.Hom.appLE]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma appTop_eq_appLE {A B : Scheme.{0}} (f : A ⟶ B) : f.appTop = f.appLE ⊤ ⊤ (TorusInj.tle f) := by
   first
@@ -351,11 +351,11 @@ lemma appTop_eq_appLE {A B : Scheme.{0}} (f : A ⟶ B) : f.appTop = f.appLE ⊤ 
   | simp [Scheme.Hom.appLE]
 
 /- English proof (translation)
-Establish `hfst : hT hφ e xe ≫ TorusInj.tFst (S` using `Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) X = TorusInj.tFst (S := Spec (CommRingCat.of (R' ⧸ I' ^ (e + 1)))) X' ≫ Spec.map (CommRingCat.ofHom (ψR xe)) := pullback.lift_fst _ _ _`. Establish `m : (TorusInj.tFst (S` using `Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) X).appLE ⊤ ⊤ (TorusInj.tle _) ≫ (hT hφ e xe).appTop = (Spec.map (CommRingCat.ofHom (ψR xe))).appTop ≫ (TorusInj.tFst (S := Spec (CommRingCat.of (R' ⧸ I' ^ (e + 1)))) X').appLE ⊤ ⊤ (TorusInj.tle _) := by`. Rewrite using `[appTop_eq_appLE, Scheme.Hom.appLE_comp_appLE]`. Conclude with `(TorusInj.appLE_of_eq hfst _).trans ((Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).symm.trans (congrArg (· ≫ _) (appTop_eq_appLE _).symm))`. Establish `n` using `specMap_inv (CommRingCat.ofHom (ψR xe))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ψR xe (AddMonoidAlgebra.single (xe χ) 1) = AddMonoidAlgebra.single χ 1` using `by show AddMonoidAlgebra.mapDomainBialgHom ZU.{0} xe.symm.toAddMonoidHom _ = _`. Rewrite using `[AddMonoidAlgebra.mapDomainBialgHom_single]`. Simplify using the standard rewrite rules. Use `(congrArg _ (TorusInj.charUnit_val (S := Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) (X := X) (xe χ))).trans ?_` and prove the remaining obligations. Use `(congrArg (fun f => f.hom ((Scheme.ΓSpecIso (torusRing ZU X)).inv.hom (AddMonoidAlgebra.single (xe χ) 1))) m).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg (fun x => ((TorusInj.tFst (S := Spec (CommRingCat.of (R' ⧸ I' ^ (e + 1)))) X').appLE ⊤ ⊤ (TorusInj.tle _)).hom x) (congrArg (fun f => f.hom (AddMonoidAlgebra.single (xe χ) 1)) n)).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (TorusInj.charUnit_val (S := Spec (CommRingCat.of (R' ⧸ I' ^ (e + 1)))) (X := X') χ).symm` and prove the remaining obligations. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom]`. Rewrite using `[hs]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma charUnit_hT (χ : X') :
     (hT hφ e xe).appTop.hom (charUnit (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) X (xe χ)).val =
@@ -392,7 +392,7 @@ end Torus
 section Unit
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `(have h := Over.w (toUnit Z); simpa using h)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma toUnit_left' {S : Scheme.{0}} (Z : Over S) : (toUnit Z).left = Z.hom := by
   first
@@ -400,9 +400,9 @@ lemma toUnit_left' {S : Scheme.{0}} (Z : Over S) : (toUnit Z).left = Z.hom := by
   | (have h := Over.w (toUnit Z); simpa using h)
 
 /- English proof (translation)
-Establish `h` using `hG.2 (𝟙_ _) 1 1 (pushPt hG.1.w 1) (pushPt hG.1.w 1) rfl rfl`. Rewrite `h` using `[_root_.mul_one]`. Establish `h3 : pushPt hG.1.w (1 : 𝟙_ (Over S') ⟶ G') * pushPt hG.1.w 1 = pushPt hG.1.w 1` using `Over.OverMorphism.ext h`. Establish `h2` using `congrArg Over.Hom.left (mul_eq_left.1 h3)`. Simplify using `only [pushPt, Over.homMk_left, Hom.one_def, Over.comp_left, toUnit_left'] at h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma IsGrpPullback.one_left {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G] {G' : Over S'}
     [GrpObj G'] {φ : G'.left ⟶ G.left} (hG : IsGrpPullback G' G f φ) :
@@ -433,26 +433,26 @@ def iP : splitTorus (Spec (CommRingCat.of (R' ⧸ I' ^ (e + 1)))) D'.X ⟶ thick
   Over.homMk (iL hφ xe bc g) ((grpG hφ e bc).1.lift_snd _ _ _)
 
 /- English proof (translation)
-The claim follows from `(grpG hφ e bc).1.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma iP_h : (iP hφ xe bc g).left ≫ hGm hφ e bc = hT hφ e xe ≫ g.i.left :=
   (grpG hφ e bc).1.lift_fst _ _ _
 
 /- English proof (translation)
-Use `haveI := g.i_hom`. Conclude with `isMonHom_of_grpPullback (grpT hφ e xe) (grpG hφ e bc) g.i (iP hφ xe bc g) (iP_h hφ xe bc g)`.
+A detailed English derivation is pending.
 -/
 lemma iP_hom : IsMonHom (iP hφ xe bc g) := by
   haveI := g.i_hom
   exact isMonHom_of_grpPullback (grpT hφ e xe) (grpG hφ e bc) g.i (iP hφ xe bc g) (iP_h hφ xe bc g)
 
 /- English proof (translation)
-Establish `s2 : IsPullback g.i.left (splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D.X).hom g.q.left (η[thickObj R I e D.P.A]).left`. Use `g.isKernel.map (Over.forget _)` as an intermediate fact. Simplify `this` using `[toUnit_left']`. Establish `big` using `(grpT hφ e xe).1.paste_horiz s2`. Establish `hη` using `IsGrpPullback.one_left (grpB hφ e eB)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `big` using `[← iP_h hφ xe bc g, ← hη]`. Establish `p : (iP hφ xe bc g).left ≫ (qP hφ eB bc g).left = (splitTorus (Spec (CommRingCat.of (R' ⧸ I' ^ (e + 1)))) D'.X).hom ≫ (η[thickObj R' I' e D'.P.A]).left`. Apply `(grpB hφ e eB).1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, qP_h, ← Category.assoc, iP_h, Category.assoc, s2.w, Category.assoc, hη, ← Category.assoc, ← Category.assoc]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `pullback.lift_snd _ _ _`. Rewrite using `[Category.assoc, Over.w (qP hφ eB bc g), Over.w (iP hφ xe bc g), Category.assoc, Over.w (η[thickObj R' I' e D'.P.A])]`. Simplify using the standard rewrite rules. Establish `H` using `IsPullback.of_right big p (qP_sq hφ eB bc g)`. Use `IsPullback.of_map (Over.forget _) (Over.OverMorphism.ext ?_) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `p` using `[toUnit_left']`. Simplify `H` using `[toUnit_left']`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma iP_isKernel : IsPullback (iP hφ xe bc g) (toUnit _) (qP hφ eB bc g)
     (η[thickObj R' I' e D'.P.A]) := by

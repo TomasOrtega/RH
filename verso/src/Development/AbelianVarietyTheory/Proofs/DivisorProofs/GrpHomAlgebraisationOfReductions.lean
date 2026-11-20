@@ -9,11 +9,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hm : ∀ (T : Over S) (x y : T ⟶ A), (x * y) ≫ g = (x ≫ g) * (y ≫ g)` using `fun T x y => by`. Use `congrArg (lift x y ≫ ·) h` as an intermediate fact. Simplify `this` using `only [← Category.assoc, MonObj.comp_mul, lift_fst, lift_snd]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hm (𝟙_ _) 1 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[_root_.mul_one]`. Establish `h2 : (1 : 𝟙_ (Over S) ⟶ A) ≫ g = 1` using `left_eq_mul.1 h1`. Simplify `h2` using `[Hom.one_def]`. Establish `e : (fst A A * snd A A) = μ[A]` using `by simp [Hom.mul_def]`. Rewrite `h` using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h, Hom.mul_def]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem isMonHom_of_fst_mul_snd {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] (g : A ⟶ B)
     (h : (fst A A * snd A A) ≫ g = (fst A A ≫ g) * (snd A A ≫ g)) : IsMonHom g := by
@@ -31,9 +31,9 @@ theorem isMonHom_of_fst_mul_snd {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpO
     congr 1
 
 /- English proof (translation)
-Set `x' : T ⟶ Y` to `Over.homMk (ha.1.lift x.left T.hom (Over.w x)) (ha.1.lift_snd _ _ _)`. Set `y' : T ⟶ Y` to `Over.homMk (ha.1.lift y.left T.hom (Over.w y)) (ha.1.lift_snd _ _ _)`. Establish `hx : x.left = x'.left ≫ a` using `(ha.1.lift_fst _ _ _).symm`. Establish `hy : y.left = y'.left ≫ a` using `(ha.1.lift_fst _ _ _).symm`. Establish `h1` using `ha.2 T x' y' x y hx hy`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hb.2 T (x' ≫ f) (y' ≫ f) (x ≫ g) (y ≫ g) (by rw [Over.comp_left, Over.comp_left, hx, Category.assoc, Category.assoc, hg]) (by rw [Over.comp_left, Over.comp_left, hy, Category.assoc, Category.assoc, hg])`. Use `ext`. Rewrite using `[h2, Over.comp_left, h1, ← MonObj.mul_comp, Over.comp_left, Category.assoc, Category.assoc, hg]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_comp_of_isGrpPullback {S S' : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B]
     {Y Z : Over S'} [GrpObj Y] [GrpObj Z] {t : S' ⟶ S} {a : Y.left ⟶ A.left} {b : Z.left ⟶ B.left}
@@ -52,11 +52,11 @@ theorem mul_comp_of_isGrpPullback {S S' : Scheme.{0}} {A B : Over S} [GrpObj A] 
   rw [h2, Over.comp_left, h1, ← MonObj.mul_comp, Over.comp_left, Category.assoc, Category.assoc, hg]
 
 /- English proof (translation)
-Introduce `H R _ _ I hI A B _ _ hA hB Y Z _ _ β δ a b ha hβ hb hδ f hf hc`. Take `⟨g, hg, hu⟩` from `H R I hI A B hA inferInstance inferInstance inferInstance Y β a (fun e => (ha e).1) hβ (fun e => (f e).left ≫ b e) (fun e => by rw [Category.assoc, (hb e).1.w, ← Category.assoc, Over.w]) (fun e => by rw [← Category.assoc, hc, Category.assoc, hδ])`. Use `⟨g, isMonHom_of_fst_mul_snd g ?_, hg, hu⟩` and prove the remaining obligations. Use `haveI : IsProper (A ⊗ A).hom := by`. Express the relevant statement in the definitionally equal form `IsProper (pullback.fst A.hom A.hom ≫ A.hom)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `infer_instance`. Use `H.hom_ext hI fun e => ?_` and prove the remaining obligations. Use `haveI := hf e`. Set `T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))` to `Over.mk (pullback.snd (A ⊗ A).hom (thick R I e))`. Set `P : Over.mk (T.hom ≫ thick R I e) ⟶ A ⊗ A` to `Over.homMk (pullback.fst (A ⊗ A).hom (thick R I e)) pullback.condition`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `mul_comp_of_isGrpPullback (ha e) (hb e) (f e) g (hg e) T (P ≫ fst A A) (P ≫ snd A A)`. Establish `key' : P ≫ (fst A A * snd A A) ≫ g = P ≫ ((fst A A ≫ g) * (snd A A ≫ g))`. Rewrite using `[← Category.assoc, MonObj.comp_mul, key, MonObj.comp_mul, Category.assoc, Category.assoc]`. Conclude with `congrArg (·.left) key'`.
+A detailed English derivation is pending.
 -/
 theorem grpHom_algebraise : GlobalTheory.Published.FormalAlgebraisation.Morphisms → ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R), IsAdicComplete I R → ∀ (A B : Over (Spec (CommRingCat.of R))) [GrpObj A] [GrpObj B], IsProper A.hom → IsProper B.hom → ∀ (Y Z : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) [∀ e, GrpObj (Y e)] [∀ e, GrpObj (Z e)] (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left) (δ : ∀ e, (Z e).left ⟶ (Z (e + 1)).left) (a : ∀ e, (Y e).left ⟶ A.left) (b : ∀ e, (Z e).left ⟶ B.left), (∀ e, IsGrpPullback (Y e) A (thick R I e) (a e)) → (∀ e, β e ≫ a (e + 1) = a e) → (∀ e, IsGrpPullback (Z e) B (thick R I e) (b e)) → (∀ e, δ e ≫ b (e + 1) = b e) → ∀ f : ∀ e, Y e ⟶ Z e, (∀ e, IsMonHom (f e)) → (∀ e, β e ≫ (f (e + 1)).left = (f e).left ≫ δ e) → ∃ g : A ⟶ B, IsMonHom g ∧ (∀ e, a e ≫ g.left = (f e).left ≫ b e) ∧ ∀ g' : A ⟶ B, (∀ e, a e ≫ g'.left = (f e).left ≫ b e) → g' = g := by
   intro H R _ _ I hI A B _ _ hA hB Y Z _ _ β δ a b ha hβ hb hδ f hf hc

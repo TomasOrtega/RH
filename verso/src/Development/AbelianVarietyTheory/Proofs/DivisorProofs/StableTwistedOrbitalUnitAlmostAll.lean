@@ -25,9 +25,9 @@ variable {O : Type} [CommRing O] {n : ℕ}
 open GlobalTheory.ClassParam in
 
 /- English proof (translation)
-Use `haveI : Subsingleton (MaximalSpectrum O) := ⟨fun a b => MaximalSpectrum.ext ((IsLocalRing.eq_maximalIdeal a.isMaximal).trans (IsLocalRing.eq_maximalIdeal b.isMaximal).symm)⟩`. Take `⟨w, hw⟩` from `GlobalTheory.RegSS.Semilocal.cyclicSemilocal_of_cyclicField GlobalTheory.RegSS.cyclicField _ (Fin n) M hs`. Set `σ : Equiv.Perm (Fin n)` to `(Fintype.equivFin (Fin n)).trans (finCongr (Fintype.card_fin n))`. Establish `hk : GlobalTheory.RegSS.krylov M w = (krylov M w).submatrix id σ`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[GlobalTheory.RegSS.krylov, krylov, σ]`. Rewrite `hw` using `[hk, Matrix.det_permute']`. Conclude with `⟨w, (Matrix.isUnit_iff_isUnit_det _).2 (isUnit_of_mul_isUnit_right hw)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cyclic [IsLocalRing O] (M : Matrix (Fin n) (Fin n) O) (hs : M.charpoly.Separable) :
     ∃ v, IsUnit (krylov M v) := by
@@ -43,11 +43,11 @@ theorem exists_cyclic [IsLocalRing O] (M : Matrix (Fin n) (Fin n) O) (hs : M.cha
   exact ⟨w, (Matrix.isUnit_iff_isUnit_det _).2 (isUnit_of_mul_isUnit_right hw)⟩
 
 /- English proof (translation)
-Take `⟨v, ka, hka⟩` from `exists_cyclic a.val hs`. Take `⟨u, kb, hkb⟩` from `exists_cyclic b.val (h ▸ hs)`. Establish `h1` using `GlobalTheory.Orb.mul_krylov_eq a.val v`. Establish `h2` using `GlobalTheory.Orb.mul_krylov_eq b.val u`. Rewrite `h1` using `[← hka]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← hkb, h]`. Establish `h3 : ka⁻¹ * a * ka = kb⁻¹ * b * kb`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, mul_assoc, h1, h2, Units.inv_mul_cancel_left]`. Use `⟨ka * kb⁻¹, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem conj_of_charpoly [IsLocalRing O] (a b : GL (Fin n) O) (hs : a.val.charpoly.Separable)
     (h : b.val.charpoly = a.val.charpoly) : ∃ g, b = g⁻¹ * a * g := by
@@ -67,13 +67,13 @@ theorem conj_of_charpoly [IsLocalRing O] (a b : GL (Fin n) O) (hs : a.val.charpo
 open GlobalTheory.ClassParam in
 
 /- English proof (translation)
-Take `⟨v, k, hk⟩` from `exists_cyclic M hs`. Establish `key : ∀ r : Matrix (Fin n) (Fin n) O, Commute M r → r * krylov M v = krylov M (r *ᵥ v)`. Introduce `r hr`. Use extensionality with `i j`. Establish `: (r * krylov M v) i j = (r *ᵥ ((M ^ (j : ℕ)) *ᵥ v)) i` using `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[this, mulVec_mulVec, ← (hr.pow_left j).eq, ← mulVec_mulVec]`. Both sides reduce to the same expression. Set `x` to `(k⁻¹).val *ᵥ (s *ᵥ v)`. Set `p : Matrix (Fin n) (Fin n) O` to `∑ j : Fin n, x j • M ^ (j : ℕ)`. Establish `hp : ∀ r, Commute M r → Commute p r` using `fun r hr => Commute.sum_left _ _ _ fun j _ => (hr.pow_left j).smul_left _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hpv : p *ᵥ v = s *ᵥ v`. Establish `e1 : p *ᵥ v = krylov M v *ᵥ x`. Use extensionality with `i`. Simplify using `only [p, Matrix.sum_mulVec, Matrix.smul_mulVec, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Express the relevant statement in the definitionally equal form `_ = ∑ j : Fin n, _`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Rewrite using `[e1, ← hk, mulVec_mulVec, Units.mul_inv, one_mulVec]`. Establish `: s * k.val = p * k.val` using `by rw [hk, key s h1, key p (hp M (Commute.refl M)).symm, hpv]`. Rewrite using `[(Units.mul_left_inj k).1 this]`. Conclude with `hp t h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_of_commute [IsLocalRing O] (M s t : Matrix (Fin n) (Fin n) O) (hs : M.charpoly.Separable)
     (h1 : Commute M s) (h2 : Commute M t) : Commute s t := by
@@ -103,7 +103,7 @@ def adjt (c : O →+* O) (b : Matrix (Fin n) (Fin n) O) : Matrix (Fin n) (Fin n)
   GlobalTheory.Tw.Phi n O * (b.map c)ᵀ * (GlobalTheory.Tw.Phi n O)ᵀ
 
 /- English proof (translation)
-Establish `h : (GlobalTheory.Tw.Phi n O)ᵀ * GlobalTheory.Tw.Phi n O = 1` using `mul_eq_one_comm.1 (Phi_mul_transpose n O)`. Simplify using `only [adjt, Matrix.map_mul, transpose_mul, mul_assoc]`. Rewrite using `[← mul_assoc (GlobalTheory.Tw.Phi n O)ᵀ, h, one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem adjt_mul (c : O →+* O) (a b : Matrix (Fin n) (Fin n) O) : adjt c (a * b) = adjt c b * adjt c a := by
   have h : (GlobalTheory.Tw.Phi n O)ᵀ * GlobalTheory.Tw.Phi n O = 1 := mul_eq_one_comm.1 (Phi_mul_transpose n O)
@@ -111,13 +111,13 @@ theorem adjt_mul (c : O →+* O) (a b : Matrix (Fin n) (Fin n) O) : adjt c (a * 
   rw [← mul_assoc (GlobalTheory.Tw.Phi n O)ᵀ, h, one_mul]
 
 /- English proof (translation)
-Simplify using `only [adjt, Matrix.map_add _ (map_add c), transpose_add, mul_add, add_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adjt_add (c : O →+* O) (a b : Matrix (Fin n) (Fin n) O) : adjt c (a + b) = adjt c a + adjt c b := by
   simp only [adjt, Matrix.map_add _ (map_add c), transpose_add, mul_add, add_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [adjt, GlobalTheory.ThetaPull.phi_mul_apply, transpose_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem adjt_smul (c : O →+* O) (r : O) (b : Matrix (Fin n) (Fin n) O) : adjt c (r • b) = c r • adjt c b := by
   ext i j
@@ -125,13 +125,13 @@ theorem adjt_smul (c : O →+* O) (r : O) (b : Matrix (Fin n) (Fin n) O) : adjt 
   ring
 
 /- English proof (translation)
-Rewrite using `[adjt, Matrix.map_one _ (map_zero c) (map_one c), transpose_one, mul_one, Phi_mul_transpose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adjt_one (c : O →+* O) : adjt c (1 : Matrix (Fin n) (Fin n) O) = 1 := by
   rw [adjt, Matrix.map_one _ (map_zero c) (map_one c), transpose_one, mul_one, Phi_mul_transpose]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [adjt, GlobalTheory.ThetaPull.phi_mul_apply, transpose_apply, map_apply, map_mul, map_pow, map_neg, map_one, hc, Fin.rev_rev]`. Rewrite using `[← mul_assoc, GlobalTheory.ThetaPull.sign_rev, one_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem adjt_adjt (c : O →+* O) (hc : ∀ x, c (c x) = x) (b : Matrix (Fin n) (Fin n) O) : adjt c (adjt c b) = b := by
   ext i j
@@ -145,31 +145,27 @@ Both sides reduce to the same expression.
 theorem adjt_val (c : O →+* O) (g : GL (Fin n) O) : adjt c g.val = (thetaGL n c g⁻¹).val := rfl
 
 /- English proof (translation)
-Establish `hθ` using `GlobalTheory.ThetaPull.thetaGL_thetaGL (a := n) c hc`. Use `set θ := thetaGL n c with hθdef`. Establish `h' : θ z * z = θ y * y` using `by simpa only [map_mul, hθ] using congrArg θ h`. Use `set N := y * θ y with hN`. Set `S` to `Subalgebra.centralizer O {N.val}`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hS : ∀ b, b ∈ S ↔ Commute N.val b` using `fun b => by`. Simplify using `[S, Subalgebra.mem_centralizer_iff, Commute, SemiconjBy]`. Use `letI : CommRing S := { (inferInstance : Ring S) with mul_comm := fun s t => Subtype.ext (commute_of_commute N.val s.1 t.1 hs ((hS _).1 s.2) ((hS _).1 t.2)).eq }`. Set `st : Matrix (Fin n) (Fin n) O → Matrix (Fin n) (Fin n) O` to `fun b => y.val * adjt c b * (y⁻¹).val`. Establish `st_mul : ∀ a b, st (a * b) = st b * st a` using `fun a b => by`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [st, adjt_mul, mul_assoc, Units.inv_mul_cancel_left]`. Establish `st_val : ∀ g : GL (Fin n) O, st g.val = (y * θ g⁻¹ * y⁻¹).val` using `fun g => rfl`. Establish `st_N : st N.val = (N⁻¹).val`. Rewrite using `[st_val]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hN, map_inv, map_mul, hθ]`. Use `group`. Establish `st_mem : ∀ b ∈ S, st b ∈ S` using `fun b hb => by`. Rewrite `hb`, the goal using `[hS]`. Use `congrArg st hb.eq` as an intermediate fact.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[st_mul, st_mul, st_N]`. Conclude with `Commute.units_inv_left_iff.1 this.symm`. Establish `st_st : ∀ b ∈ S, st (st b) = b` using `fun b hb => by`. Rewrite `hb` using `[hS]`. Establish `e : st (st b) = N.val * b * (N⁻¹).val`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [st, adjt_mul, adjt_adjt c hc, adjt_val, ← hθdef, hN, inv_inv, _root_.mul_inv_rev, map_inv, Units.val_mul, mul_assoc]`. Rewrite using `[e, hb.eq, Units.mul_inv_cancel_right]`. Set `σ : S →+* S` to `{ toFun := fun b => ⟨st b.1, st_mem _ b.2⟩ map_one' := Subtype.ext (by simp [st, adjt_one]) map_mul' := fun a b => by rw [mul_comm a b]; exact Subtype.ext (st_mul _ _) map_zero' := Subtype.ext (by simp [st, adjt]) map_add' := fun a b => Subtype.ext (by simp [st, adjt_add, mul_add …`. Establish `hσ : ∀ r : O, σ (algebraMap O S r) = algebraMap O S (c r)` using `fun r => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `st (algebraMap O _ r) = algebraMap O _ (c r)`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Simplify using `[st, Algebra.algebraMap_eq_smul_one, adjt_smul, adjt_one])`. Use `haveI : Module.Finite O S := Module.Finite.of_injective S.val.toLinearMap Subtype.val_injective`. Use `haveI := GlobalTheory.InertNorm.isAdicComplete_map_of_finite (IsLocalRing.maximalIdeal O) S`. Use `haveI := GlobalTheory.InertNorm.finite_quotient_map_of_finite (IsLocalRing.maximalIdeal O) S`. Establish `ha : Commute N (z * y⁻¹)` using `by show N * (z * y⁻¹) = z * y⁻¹ * N`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `ha1 : (z * y⁻¹).val ∈ S` using `(hS _).2 (Commute.units_val ha)`. Establish `ha2 : (z * y⁻¹)⁻¹.val ∈ S` using `(hS _).2 (Commute.units_val ha.inv_right)`. Take `⟨ω, hω⟩` from `hω`. Take `⟨x, hx⟩` from `GlobalTheory.HenselianNorm.exists_norm_eq S ((IsLocalRing.maximalIdeal O).map (algebraMap O S)) σ (fun b => Subtype.ext (st_st _ b.2)) (fun x hx => by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `: (IsLocalRing.maximalIdeal O).map (algebraMap O S) ≤ ((IsLocalRing.maximalIdeal O).map (algebraMap O S)).comap σ`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, hσ]`. Conclude with `Ideal.mem_map_of_mem _ (hm a ha)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this hx)`. Use the proof step `⟨algebraMap O _ ω, by rw [hσ, ← map_sub]; exact hω.map _⟩ ⟨_, ha1⟩`. Use the proof step `(Subtype.ext (by`. Express the relevant statement in the definitionally equal form `st (z * y⁻¹).val = (z * y⁻¹).val`. Rewrite using `[st_val]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Use the proof step `⟨⟨⟨_, ha1⟩, ⟨_, ha2⟩, Subtype.ext (Units.mul_inv (z * y⁻¹)), Subtype.ext (Units.inv_mul (z * y⁻¹))⟩, rfl⟩`. Establish `hx' : x.1 * st x.1 = (z * y⁻¹).val` using `congrArg Subtype.val hx`. Establish `hu : IsUnit x.1`.
-
-Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Use `(Matrix.isUnit_iff_isUnit_det _).1 (hx' ▸ (z * y⁻¹).isUnit)` as an intermediate fact. Rewrite `this` using `[det_mul]`. Conclude with `isUnit_of_mul_isUnit_left this`. Take `⟨g, hg⟩` from `hu`.
-
-Rewrite `hx'` using `[← hg, st_val, ← Units.val_mul, Units.val_inj]`. Use `⟨g⁻¹, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem twConj_of_norm_eq [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
     [Finite (O ⧸ IsLocalRing.maximalIdeal O)] (c : O →+* O) (hc : ∀ x, c (c x) = x)
@@ -261,7 +257,7 @@ section Group
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Establish `he : Equivalence fun x y : G => ∃ g, y = g⁻¹ * x * θ g` using `⟨fun x => ⟨1, by simp⟩, fun ⟨g, h⟩ => ⟨g⁻¹, by rw [h, map_inv]; group⟩, fun ⟨g, h⟩ ⟨k, h'⟩ => ⟨g * k, by rw [h', h, map_mul]; group⟩⟩`. Conclude with `he.eqvGen_iff.1 (Quot.eqvGen_exact (Quot.out_eq (Quot.mk _ y)).symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_rep (θ : G →* G) (y : G) : ∃ g, TwCl.rep (θ := θ) (Quot.mk _ y) = g⁻¹ * y * θ g := by
   have he : Equivalence fun x y : G => ∃ g, y = g⁻¹ * x * θ g :=
@@ -270,13 +266,13 @@ theorem exists_rep (θ : G →* G) (y : G) : ∃ g, TwCl.rep (θ := θ) (Quot.mk
   exact he.eqvGen_iff.1 (Quot.eqvGen_exact (Quot.out_eq (Quot.mk _ y)).symm)
 
 /- English proof (translation)
-Take `⟨y, hyS, hyK⟩` from `hex`. Take `⟨g, hg⟩` from `exists_rep θ y`. Rewrite using `[clSum, finsum_eq_single (α := TwCl θ) _ (Quot.mk _ y)]`. Establish `h1` using `hS g y hyS`. Rewrite using `[hg, if_pos h1, hf _ h1, if_pos ⟨g⁻¹, by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: g⁻¹⁻¹ * (g⁻¹ * y * θ g) * θ g⁻¹ = y` using `by rw [map_inv]; group`. Rewrite using `[this]⟩]` and apply the resulting hypothesis. Simplify using the standard rewrite rules. Introduce `c hc split_ifs with h1`. Rewrite using `[hf _ h1, if_neg, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨k, hk⟩`. Take `⟨l, hl⟩` from `hun _ (hS k _ h1) y hyS hk hyK`. Apply `hc` to reduce the goal to its premises. Rewrite using `[← Quot.out_eq c]`. Conclude with `Quot.sound ⟨k * l, by rw [hl, map_mul]; simp only [TwCl.rep]; group⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem clSum_eq_one [TopologicalSpace G] (θ : G →* G) (K : Subgroup G) (S : Set G) (f : G → ℂ)
     (hS : ∀ g, ∀ y ∈ S, g⁻¹ * y * θ g ∈ S)
@@ -306,16 +302,16 @@ end Group
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-The claim follows from `(algebraMap E (FiniteAdeleRing (𝓞 E) E) x).2`.
+A detailed English derivation is pending.
 -/
 theorem eventually_int (x : E) :
     ∀ᶠ w : Pl E in cofinite, algebraMap E (w.adicCompletion E) x ∈ w.adicCompletionIntegers E :=
   (algebraMap E (FiniteAdeleRing (𝓞 E) E) x).2
 
 /- English proof (translation)
-Establish `h : ∀ᶠ w : Pl E in cofinite, ∀ i ∈ p.support, algebraMap E (w.adicCompletion E) (p.coeff i) ∈ w.adicCompletionIntegers E`. Rewrite using `[eventually_all_finset]`. Conclude with `fun i _ => eventually_int _`. Use `filter_upwards [h] with w hw`. Use `(Polynomial.mem_lifts _).1 ((Polynomial.lifts_iff_coeff_lifts _).2 fun i => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_map]`. Distinguish the cases in `hi : i ∈ p.support`. Conclude with `⟨⟨_, hw i hi⟩, rfl⟩`. Rewrite using `[notMem_support_iff.1 hi, map_zero]`. Conclude with `⟨0, map_zero _⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eventually_lift (p : E[X]) : ∀ᶠ w : Pl E in cofinite, ∃ q : (w.adicCompletionIntegers E)[X],
     q.map (algebraMap _ (w.adicCompletion E)) = atPl w p := by
@@ -332,7 +328,7 @@ theorem eventually_lift (p : E[X]) : ∀ᶠ w : Pl E in cofinite, ∃ q : (w.adi
     exact ⟨0, map_zero _⟩
 
 /- English proof (translation)
-Take `⟨u, v, huv⟩` from `hP`. Use `filter_upwards [eventually_lift u, eventually_lift v] with w ⟨u', hu⟩ ⟨v', hv⟩ q hq`. Use `⟨u', v', Polynomial.map_injective (algebraMap _ (w.adicCompletion E)) Subtype.val_injective ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.map_add, Polynomial.map_mul, Polynomial.map_mul, ← Polynomial.derivative_map, hq, hu, hv, Polynomial.derivative_map, ← Polynomial.map_mul, ← Polynomial.map_mul, ← Polynomial.map_add, huv, Polynomial.map_one, Polynomial.map_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_separable (P : E[X]) (hP : P.Separable) : ∀ᶠ w : Pl E in cofinite,
     ∀ q : (w.adicCompletionIntegers E)[X], q.map (algebraMap _ (w.adicCompletion E)) = atPl w P → q.Separable := by
@@ -344,9 +340,7 @@ theorem eventually_separable (P : E[X]) (hP : P.Separable) : ∀ᶠ w : Pl E in 
     Polynomial.map_one, Polynomial.map_one]
 
 /- English proof (translation)
-Establish `hi : Function.Injective fun A : Matrix (Fin n) (Fin n) O => A.map O.subtype` using `Matrix.map_injective Subtype.val_injective`. Use `⟨⟨Matrix.of fun i j => ⟨_, h1 i j⟩, Matrix.of fun i j => ⟨_, h2 i j⟩, hi ?_, hi ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `g.mul_inv`. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
-
-Conclude with `g.inv_mul`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_int {L : Type} [Field L] {n : ℕ} (O : Subring L) (g : GL (Fin n) L)
     (h1 : ∀ i j, g.1 i j ∈ O) (h2 : ∀ i j, g⁻¹.1 i j ∈ O) : g ∈ Formalism.UG.GLint (Fin n) O := by
@@ -359,7 +353,7 @@ theorem mem_int {L : Type} [Field L] {n : ℕ} (O : Subring L) (g : GL (Fin n) L
     exact g.inv_mul
 
 /- English proof (translation)
-Establish `h : ∀ g : GL (Fin n) E, ∀ᶠ w : Pl E in cofinite, ∀ i j, algebraMap E (w.adicCompletion E) (g.val i j) ∈ w.adicCompletionIntegers E` using `fun g => by`. Simplify using `only [Filter.eventually_all]`. Conclude with `fun i j => eventually_int _`. Use `filter_upwards [h g, h g⁻¹] with w a b`. Conclude with `mem_int _ _ a (by rw [← map_inv]; exact b)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem eventually_mem_KGL {n : ℕ} (g : GL (Fin n) E) : ∀ᶠ w : Pl E in cofinite,
     GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) g ∈ GlobalTheory.LFun.KGL w n := by
@@ -372,7 +366,7 @@ theorem eventually_mem_KGL {n : ℕ} (g : GL (Fin n) E) : ∀ᶠ w : Pl E in cof
 variable [IsCMField E]
 
 /- English proof (translation)
-Set `f : Pl E → HeightOneSpectrum (𝓞 (maximalRealSubfield E))` to `fun w => w.under _`. Set `s : Setoid (Pl E)` to `Setoid.ker f`. Use `⟨Set.range fun q : Quotient s => q.out, fun w => ⟨(Quotient.mk s w).out, ⟨⟨_, rfl⟩, Quotient.mk_out (s := s) w⟩, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨u, rfl⟩, hu⟩`. Rewrite using `[← Quotient.sound (s := s) hu, Quotient.out_eq]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isSection : ∃ S : Set (Pl E), IsSection S := by
   let f : Pl E → HeightOneSpectrum (𝓞 (maximalRealSubfield E)) := fun w => w.under _
@@ -382,19 +376,17 @@ theorem exists_isSection : ∃ S : Set (Pl E), IsSection S := by
   rw [← Quotient.sound (s := s) hu, Quotient.out_eq]
 
 /- English proof (translation)
-Set `ι` to `algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E)`. Establish `hι : Function.Injective ι` using `Subtype.val_injective`. Take `⟨y', rfl⟩ : ∃ y' : GL (Fin n) (w.adicCompletionIntegers E), GeneralLinearGroup.map ι y' = y` from `hyK`. Take `⟨z', rfl⟩ : ∃ z' : GL (Fin n) (w.adicCompletionIntegers E), GeneralLinearGroup.map ι z' = z` from `hzK`. Establish `hch : ∀ a : GL (Fin n) (w.adicCompletionIntegers E), a.val.charpoly.map ι = (GeneralLinearGroup.map ι a).val.charpoly` using `fun a => (Matrix.charpoly_map _ _).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hconj : ∀ a b : GL (Fin n) (w.adicCompletionIntegers E), (GeneralLinearGroup.map ι a).val.charpoly = Q → (GeneralLinearGroup.map ι b).val.charpoly = Q → ∃ g, b = g⁻¹ * a * g` using `fun a b ha hb => conj_of_charpoly a b (hQ _ ((hch a).trans ha)) (Polynomial.map_injective ι hι (by rw [hch, hch, ha, hb]))`. Distinguish the cases in `hw : IsSplitAt w`. Simplify using `only [nrmL, if_pos hw] at hy hz`. Take `⟨g, rfl⟩` from `hconj _ _ hy hz`. Conclude with `⟨GeneralLinearGroup.map ι g, by rw [thL, if_pos hw, map_mul, map_mul, map_inv]; rfl⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨-, hcc, hv, h4, -⟩` from `GlobalTheory.ConjAtPlace.main E hU w`. Take `⟨ϖ, q, ⟨-, -, -, -, ⟨x₀, hx₀, hx₁⟩, hq2, hcard⟩, -⟩` from `(h4 hw).2.1`. Establish `hcard' : Nat.card (w.adicCompletionIntegers E ⧸ IsLocalRing.maximalIdeal (w.adicCompletionIntegers E)) = q ^ 2` using `hcard`. Use `haveI := GlobalTheory.HenselSquare.isAdicComplete_integers E w`. Use `haveI : Finite (w.adicCompletionIntegers E ⧸ IsLocalRing.maximalIdeal (w.adicCompletionIntegers E)) := Nat.finite_of_card_ne_zero (by rw [hcard']; positivity)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `c : w.adicCompletionIntegers E →+* w.adicCompletionIntegers E` to `(cj w).restrict _ _ (ThBasic.cj_mem_integers hU w)`. Establish `hc : ∀ x, c (c x) = x` using `fun x => Subtype.ext (hcc _)`. Establish `hmap : ∀ a, GeneralLinearGroup.map ι (thetaGL n c a) = thetaGL n (cj w) (GeneralLinearGroup.map ι a)` using `GlobalTheory.ThetaPull.map_thetaGL ι c (cj w) (fun _ => rfl)`. Simplify using `only [nrmL, if_neg hw, ← hmap, ← map_mul] at hy hz`. Take `⟨g, hg⟩` from `hconj _ _ hy hz`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨k, hk⟩` from `twConj_of_norm_eq c hc (fun x hx => by`. Rewrite `hx`, the goal using `[GlobalTheory.InertUQ.mem_max_iff]`. Conclude with `(hv _).trans_lt hx)`. Use the proof step `⟨⟨x₀, hx₀⟩, by`. Rewrite using `[← IsLocalRing.notMem_maximalIdeal, GlobalTheory.InertUQ.mem_max_iff]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Express the relevant statement in the definitionally equal form `¬ Valued.v (x₀ - cj w x₀) < 1`. Rewrite using `[Valuation.map_sub_swap, hx₁]`. Conclude with `lt_irrefl _⟩`. Use the proof step `y' (g * z' * thetaGL n c g⁻¹) (hQ _ ((hch _).trans hy)) (by`. Simplify using `only [map_mul, map_inv, GlobalTheory.ThetaPull.thetaGL_thetaGL c hc]`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `hz' : z' = (k * g)⁻¹ * y' * thetaGL n c (k * g)`. Combine the equalities or inequalities in the displayed calculation. Use `⟨GeneralLinearGroup.map ι (k * g), ?_⟩` and prove the remaining obligations. Rewrite using `[thL, if_neg hw, ← hmap, ← map_inv, ← map_mul, ← map_mul, ← hz']`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twConj_of_mem (hU : Unr E) (n : ℕ) (w : Pl E) (Q : (w.adicCompletion E)[X])
     (hQ : ∀ q : (w.adicCompletionIntegers E)[X], q.map (algebraMap _ (w.adicCompletion E)) = Q → q.Separable)
@@ -448,11 +440,9 @@ theorem twConj_of_mem (hU : Unr E) (n : ℕ) (w : Pl E) (Q : (w.adicCompletion E
     rw [thL, if_neg hw, ← hmap, ← map_inv, ← map_mul, ← map_mul, ← hz']
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n P hP`. Take `⟨S, hS⟩` from `exists_isSection (E := E)`. Take `⟨-, ⟨δ, hδ⟩, -⟩` from `GlobalTheory.T.kappaConstant_mul_of_coprime_ellipticPolynomials E hU n 0 P 1 hP ⟨monic_one, natDegree_one, separable_one, fun τ z hz => by simp at hz⟩ isCoprime_one_right`. Use `filter_upwards [GlobalTheory.T.twisted_orbital_integral_spherical_unit E hU n S hS P hP, eventually_separable P hP.2.2.1, eventually_mem_KGL δ, eventually_mem_KGL (δ * thE E n δ)] with w h1 h2 h3 h4`. Use `clSum_eq_one _ _ _ _ (fun g y hy => ?_) h1 ⟨locEl n w δ, ?_, ?_⟩ fun y hy z hz => twConj_of_mem hU n w _ h2 y z hy hz` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = _`. Rewrite using `[ThBasic.nrmL_twist hU, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj']`. Conclude with `hy`. Express the relevant statement in the definitionally equal form `_ = _`. Rewrite using `[ThBasic.charpoly_nrmL hU, hδ]`.
-
-Unfold `locEl split_ifs`. Conclude with `h4`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem stTw_unit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (P : E[X]), P ∈ Ell E n →
     ∀ᶠ w in (cofinite : Filter (Pl E)),

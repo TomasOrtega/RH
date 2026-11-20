@@ -12,17 +12,13 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum.QuotEq
 
 /- English proof (translation)
-Introduce `A κ _ _ π hπ hnil G B _ _ hB q₁ q₂ h₁ h₂ hfl hsu hqc hker hκ`. Use `haveI := h₁`. Use `haveI := h₂`. Use `haveI := hfl`. Use `haveI := hsu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI := hqc`. Take `⟨d, hd⟩` from `GlobalTheory.ExtensionRigidity.exists_factor q₁ q₂ (fun W a b h => by`. Establish `e : (a * b⁻¹) ≫ q₁ = 1`. Rewrite using `[MonObj.mul_comp, GrpObj.inv_comp, h, mul_inv_cancel]`. Establish `e₂` using `hker W (a * b⁻¹) e`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `e₂` using `[MonObj.mul_comp, GrpObj.inv_comp]`. Conclude with `mul_inv_eq_one.1 e₂)`. Establish `hη : η[B] ≫ d = η[B]`. Combine the equalities or inequalities in the displayed calculation. Use `haveI hdm : IsMonHom d := GlobalTheory.rigidity_holds (Sp A) B B hB hB d hη`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `qκ : pullback G.hom (spMap π) ⟶ pullback B.hom (spMap π)` to `pullback.lift (pullback.fst G.hom (spMap π) ≫ q₁.left) (pullback.snd G.hom (spMap π)) (by rw [Category.assoc, Over.w, pullback.condition])`. Establish `hq₁ : qκ ≫ pullback.fst B.hom (spMap π) = pullback.fst G.hom (spMap π) ≫ q₁.left` using `pullback.lift_fst _ _ _`. Establish `hsq : IsPullback (pullback.fst G.hom (spMap π)) qκ q₁.left (pullback.fst B.hom (spMap π))`. Use `IsPullback.of_bot ?_ hq₁.symm (IsPullback.of_hasPullback B.hom (spMap π))` and prove the remaining obligations. Rewrite using `[pullback.lift_snd, Over.w]`.
-
-Conclude with `IsPullback.of_hasPullback G.hom (spMap π)`. Use `haveI : Flat qκ := MorphismProperty.of_isPullback hsq hfl`. Use `haveI : Surjective qκ := MorphismProperty.of_isPullback hsq hsu`. Use `haveI : QuasiCompact qκ := MorphismProperty.of_isPullback hsq hqc`. Establish `hfib : pullback.fst B.hom (spMap π) ≫ d.left = pullback.fst B.hom (spMap π)`.
-
-Rewrite using `[← cancel_epi qκ, reassoc_of% hq₁, ← Over.comp_left, hd, ← hκ, hq₁]`. Establish `hP` using `isGrpPullback_pullback B (spMap π)`. Establish `hu` using `GlobalTheory.HomLift.existsUnique_isMonHom_lift A κ π hπ hnil _ _ B B _ _ hP hP hB hB (𝟙 ((Over.pullback (spMap π)).obj B)) (𝟙 B) (by simp)`. Establish `hd1 : d = 𝟙 B` using `hu.unique ⟨hdm, by simpa using hfib⟩ ⟨inferInstance, by simp⟩`. Rewrite using `[← hd, hd1, Category.comp_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_ker_le_of_reduction : ∀ (A κ : Type) [CommRing A] [CommRing κ] (π : A →+* κ), Function.Surjective π → IsNilpotent (RingHom.ker π) → ∀ (G B : Over (Sp A)) [GrpObj G] [GrpObj B], IsAbelianScheme B → ∀ (q₁ q₂ : G ⟶ B), IsMonHom q₁ → IsMonHom q₂ → Flat q₁.left → Surjective q₁.left → QuasiCompact q₁.left → (∀ (T : Over (Sp A)) (x : T ⟶ G), x ≫ q₁ = 1 → x ≫ q₂ = 1) → pullback.fst G.hom (spMap π) ≫ q₁.left = pullback.fst G.hom (spMap π) ≫ q₂.left → q₁ = q₂ := by
   intro A κ _ _ π hπ hnil G B _ _ hB q₁ q₂ h₁ h₂ hfl hsu hqc hker hκ

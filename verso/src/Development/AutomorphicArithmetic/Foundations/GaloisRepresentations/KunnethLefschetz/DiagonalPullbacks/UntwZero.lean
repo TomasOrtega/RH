@@ -25,9 +25,9 @@ structure Steps : Prop where
   pbe : G.PBE
 
 /- English proof (translation)
-Establish `h : Subsingleton (Hl l (sch.obj X) n 0)` using `⟨fun a b => Subtype.ext (funext fun j => ((hI.a9 (ZMod (l ^ j)) (tw (l ^ j) 0)).1 (sch.obj X) n hn).elim _ _)⟩`. Use `subsingleton_of_forall_eq 0 fun z => ?_` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rfl`. Consider the case `add a b ha hb => rw [ha, hb, add_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a x => rw [Subsingleton.elim x 0, TensorProduct.tmul_zero]`.
+Treat this case separately.
 -/
 theorem neg_sub (hI : In) (l : ℕ) [Fact l.Prime] (X : Scheme.{0}) (n : ℤ) (hn : n < 0) : Subsingleton (V l X n) := by
   have h : Subsingleton (Hl l (sch.obj X) n 0) :=
@@ -39,7 +39,7 @@ theorem neg_sub (hI : In) (l : ℕ) [Fact l.Prime] (X : Scheme.{0}) (n : ℤ) (h
   | tmul a x => rw [Subsingleton.elim x 0, TensorProduct.tmul_zero]
 
 /- English proof (translation)
-Establish `key : ∀ (n i : ℤ) (hn : 2 + 0 = n) (hi : 1 + -1 = i), pull _ (sch.map j) (tw q i) n ((cup q x ρ).cast hn hi) = (cup q (pull _ (sch.map j) _ 2 x) (pull _ (sch.map j) _ 0 ρ)).cast hn hi`. Introduce and unpack `_ _ rfl rfl`. Conclude with `(hI.a6nat q).1 (sch.map j) x ρ`. Conclude with `key _ _ _ _`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem pull_untw (hI : In) (q : ℕ) [NeZero q] {E X : Scheme.{0}} (j : E ⟶ X) (x : Ht q (sch.obj X) 2 1)
     (ρ : Ht q (sch.obj X) 0 (-1)) :
@@ -51,7 +51,7 @@ theorem pull_untw (hI : In) (q : ℕ) [NeZero q] {E X : Scheme.{0}} (j : E ⟶ X
   exact key _ _ _ _
 
 /- English proof (translation)
-Establish `key : ∀ (n i : ℤ) (hn : 2 + 0 = n) (hi : 1 + -1 = i), (cup q (0 : Ht q (sch.obj X) 2 1) ρ).cast hn hi = 0`. Introduce and unpack `_ _ rfl rfl`. Rewrite using `[map_zero]`. Both sides reduce to the same expression. Conclude with `key _ _ _ _`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem untw_zero (q : ℕ) {X : Scheme.{0}} (ρ : Ht q (sch.obj X) 0 (-1)) : untw q 0 ρ = 0 := by
   have key : ∀ (n i : ℤ) (hn : 2 + 0 = n) (hi : 1 + -1 = i),
@@ -62,19 +62,19 @@ theorem untw_zero (q : ℕ) {X : Scheme.{0}} (ρ : Ht q (sch.obj X) 0 (-1)) : un
   exact key _ _ _ _
 
 /- English proof (translation)
-Establish `hR` using `H.ring hI l`. Establish `hlX : IsUnit (l : Γ(X, ⊤))` using `LPdCut.unit_of p (isUnit_iff_ne_zero.2 hl)`. Establish `hs` using `hp.2`. Establish `hs1 : SmoothOfRelativeDimension (d + 1) p₁` using `haveI := smoothOfRelativeDimension_isStableUnderBaseChange.{0} (d + 1) MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension (d + 1)) hP.flip hs`. Establish `hpb` using `IsPullback.of_hasPullback π Δ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hi, hr⟩` from `H.blowE k (p₁ ≫ p) Δ π D d (d + 1) hB inferInstance hπ _ _ hpb`. Establish `hcl` using `hi.cl`. Set `U : W.Opens` to `⟨(Set.range (pullback.fst π Δ))ᶜ, (pullback.fst π Δ).isClosedEmbedding.isClosed_range.isOpen_compl⟩`. Establish `hU : Off (pullback.fst π Δ) U` using `rfl`. Establish `hE : ∀ n, PBT (l ^ n) (d + 1) (pullback.snd π Δ) (pull _ (sch.map (pullback.fst π Δ)) _ 2 (x n)) ∧ pull _ (sch.map U.ι) _ 2 (x n) = 0` using `fun n => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: NeZero (l ^ n)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Take `⟨L, hL, hxL⟩` from `hx n`. Establish `h` using `H.pbe hI (l ^ n) k (by rw [Nat.cast_pow]; exact (IsUnit.mk0 _ hl).pow _) (p₁ ≫ p) Δ π D (d + 1) hB _ _ hpb L hL (x n) hxL`. Conclude with `⟨h.1, h.2 U hU⟩`. Establish `hcomp : pullback.fst π Δ ≫ π ≫ p₁ ≫ p = pullback.snd π Δ ≫ p`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[pullback.condition_assoc, reassoc_of% h₁]`. Establish `h0 : pb l U.ι 2 (toV v) = 0`. Establish `: pullHl l (sch.map U.ι) 2 0 v = 0` using `Subtype.ext (funext fun n => by`. Establish `: NeZero (l ^ n)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Express the relevant statement in the definitionally equal form `pull _ (sch.map U.ι) _ 2 (v.1 n) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hv n, pull_untw hI, (hE n).2, untw_zero])`. Rewrite using `[LRingPf.pb_tmul, this, TensorProduct.tmul_zero]`. Establish `hPB : PBQ l (pullback.snd π Δ) (pb l (pullback.fst π Δ) 2 (toV v))`. Rewrite using `[LRingPf.pb_tmul]`. Use `H.pbq l hR (neg_sub hI l) (d + 1) (by omega) _ hlX _ (H.lim hI l hR (d + 1) _ hlX _ fun n => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: NeZero (l ^ n)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `h` using `H.untw hI H.rootNat H.powRoot (l ^ n) (d + 1) _ ((ζ n).map p.appTop.hom) _ (hE n).1`. Establish `e : ((ζ n).map p.appTop.hom).map (pullback.snd π Δ).appTop.hom = ((ζ n).map (π ≫ p₁ ≫ p).appTop.hom).map (pullback.fst π Δ).appTop.hom` using `Subtype.ext (by`. Express the relevant statement in the definitionally equal form `(p.appTop ≫ (pullback.snd π Δ).appTop).hom (ζ n).1 = ((π ≫ p₁ ≫ p).appTop ≫ (pullback.fst π Δ).appTop).hom (ζ n).1`. Rewrite using `[← Scheme.Hom.comp_appTop, ← Scheme.Hom.comp_appTop, hcomp])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[e, ← H.rootNat, ← pull_untw hI, ← hv n]`. Conclude with `h`. Conclude with `H.clear hI l hR d p₁ p₂ π hlX v (H.sq hQ l k hl hR d p p₁ p₂ Δ hP h₁ h₂ hp hpr π _ _ _ hpb hi hr U hU _ h0 hPB)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Steps.core (H : Steps) (hI : In) (hQ : QDiag) (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [IsAlgClosed k]
     (hl : (l : k) ≠ 0) (d : ℕ) (hd : 1 ≤ d) {X P W : Scheme.{0}} (p : X ⟶ S k) (p₁ p₂ : P ⟶ X) (Δ : X ⟶ P)
@@ -126,17 +126,15 @@ theorem Steps.core (H : Steps) (hI : In) (hQ : QDiag) (l : ℕ) [Fact l.Prime] (
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `l _ K _ M d hd hM hs T r v hv`. Take `⟨D', τ, L, x, hBC, hL, hx, hvx⟩` from `hv`. Establish `hl : (l : PadicAlgCl l) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Take `⟨g1, g2⟩` from `H.geoPB K (PadicAlgCl l)`. Take `⟨m1, m2, m3⟩` from `H.geoM l K`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hp, hpr⟩` from `m1 M (d + 1) hM hs`. Establish `hP` using `g2 M.q T.P.q _ _ (Model.genMap_q T.p₁ T.h₁) (Model.genMap_q T.p₂ T.h₂) (m3 M T.P T.p₁ T.p₂ T.h₁ T.h₂ T.prod)`. Establish `hΔ` using `g1 M.q T.P.q _ (Model.genMap_q T.Δ T.hΔ)`. Establish `hπ` using `g1 T.Y.q T.P.q _ (Model.genMap_q T.π T.hπ)`. Establish `hB` using `H.blowBC K (PadicAlgCl l) (algebraMap K _) _ _ _ _ _ _ _ _ _ _ _ (IsPullback.of_hasPullback T.P.q _) hΔ hπ T.blow`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : GlobalTheory.Et.geomMap (PadicAlgCl l) T.P.q _ (Model.genMap_q T.p₁ T.h₁) ≫ pullback.snd M.q _ = pullback.snd T.P.q _` using `pullback.lift_snd _ _ _`. Establish `e2 : GlobalTheory.Et.geomMap (PadicAlgCl l) T.Y.q _ (Model.genMap_q T.π T.hπ) ≫ pullback.snd T.P.q _ = pullback.snd T.Y.q _` using `pullback.lift_snd _ _ _`. Establish `hsec : ∀ (u : T.P.X ⟶ M.X) (hu : u ≫ M.p = T.P.p), T.Δ ≫ u = 𝟙 _ → GlobalTheory.Et.geomMap (PadicAlgCl l) M.q _ (Model.genMap_q T.Δ T.hΔ) ≫ GlobalTheory.Et.geomMap (PadicAlgCl l) T.P.q _ (Model.genMap_q u hu) = 𝟙 _` using `fun u hu h => by`. Establish `h' : Model.genMap T.Δ T.hΔ ≫ Model.genMap u hu = 𝟙 _`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Model.genMap, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc, h, Category.comp_id, Category.id_comp]`. Simplify using `only [Model.genMap, Category.assoc, pullback.lift_snd, Category.id_comp]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [GlobalTheory.Et.geomMap, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc, h', Category.comp_id, Category.id_comp]`. Simplify using `only [GlobalTheory.Et.geomMap, Category.assoc, pullback.lift_snd, Category.id_comp]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hpro : IsProper (GlobalTheory.Et.geomMap (PadicAlgCl l) T.Y.q _ (Model.genMap_q T.π T.hπ))` using `MorphismProperty.of_isPullback (P := @IsProper) hπ (m2 T.Y T.P T.π T.hπ T.smY T.smP)`. Rewrite `hB` using `[← e1]`. Conclude with `H.core hI hQ l (PadicAlgCl l) hl d hd _ _ _ _ hP (hsec _ _ T.Δ₁) (hsec _ _ T.Δ₂) hp hpr _ hpro _ hB (fun n => (r.ρ n).map (CrystallineSemistableComparison.E.toΓ _)) x (fun n => by`. Establish `: NeZero (l ^ n)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Conclude with `H.c1BC hI (l ^ n) T.D _ _ D' τ hBC (LPdCut.unit_of (pullback.snd T.Y.q _) (by rw [Nat.cast_pow]; exact (IsUnit.mk0 _ hl).pow _)) (x n) ⟨L, hL, hx n⟩)`.
-
-Use `v (fun n => by rw [e1, e2]; exact hvx n)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Steps.diagEt2 (H : Steps) (hI : In) (hQ : QDiag) : DiagEt2 := by
   intro l _ K _ M d hd hM hs T r v hv

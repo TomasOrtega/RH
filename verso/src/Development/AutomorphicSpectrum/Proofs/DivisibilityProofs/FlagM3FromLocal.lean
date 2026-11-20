@@ -17,7 +17,7 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Use `(Ideal.finite_minimalPrimes_of_isNoetherianRing _ (P ⊔ Ideal.span {f})).subset ?_` and prove the remaining obligations. Introduce `W hW`. Assume the negation of the conclusion as `h`. Apply `hW` to reduce the goal to its premises. Simplify using `[divCycle, h]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem divCycle_support_finite (P : Ideal (MRing ι O)) (f : MRing ι O) :
     (Function.support (divCycle P f)).Finite := by
@@ -28,7 +28,7 @@ theorem divCycle_support_finite (P : Ideal (MRing ι O)) (f : MRing ι O) :
   simp [divCycle, h]
 
 /- English proof (translation)
-Introduce `h`. Establish `h' : a ∈ P.comap (C : O →+* MRing ι O)` using `h`. Rewrite `h'` using `[hP.noTorsion]`. Conclude with `ha (by simpa using h')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem C_not_mem {P : Ideal (MRing ι O)} {d : ℕ} (hP : IsModelOver P d) {a : O} (ha : a ≠ 0) :
     (C a : MRing ι O) ∉ P := by
@@ -38,9 +38,9 @@ theorem C_not_mem {P : Ideal (MRing ι O)} {d : ℕ} (hP : IsModelOver P d) {a :
   exact ha (by simpa using h')
 
 /- English proof (translation)
-Establish `h` using `(cycNum_int_and_comb O K ι (Fin r) x Q).1 (divCycle P (C a)) (divCycle_support_finite P (C a)) (psum (Fin r) ℤ (k - 1))`. Establish `e : MvPolynomial.map (Int.castRingHom ℝ) (psum (Fin r) ℤ (k - 1)) = ∑ i : Fin r, (X i : MvPolynomial (Fin r) ℝ) ^ (k - 1)`. Simplify using `[psum, map_sum]`. Rewrite `h` using `[e]`. Rewrite using `[h, laNum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem laNum_eq (P : Ideal (MRing ι O)) (a : O) {r : ℕ} (x : Fin r → K → ℤ) (k : ℕ)
     (Q : List (K → ℤ)) :
@@ -59,7 +59,7 @@ theorem laNum_eq (P : Ideal (MRing ι O)) (a : O) {r : ℕ} (x : Fin r → K →
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ]
 
 /- English proof (translation)
-Simplify using `only [liePs, map_sum, map_pow, rename_X, Finset.sum_filter, Fin.sum_univ_add]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem liePs_inl (j j' m : ℕ) (τ : Ψ) :
     (liePs (N := j + j') j m (Sum.inl τ) : MvPolynomial (Ψ × Fin (j + j')) ℝ) =
@@ -69,7 +69,7 @@ theorem liePs_inl (j j' m : ℕ) (τ : Ψ) :
   simp
 
 /- English proof (translation)
-Simplify using `only [liePs, map_sum, map_pow, map_neg, rename_X, Finset.sum_filter, Fin.sum_univ_add]`. Establish `h0 : ∀ x : Fin j, ¬ j ≤ (x : ℕ)` using `fun x => not_le.2 x.2`. Simplify using `[h0]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem liePs_inr (j j' m : ℕ) (τ : Ψ) :
     (liePs (N := j + j') j m (Sum.inr τ) : MvPolynomial (Ψ × Fin (j + j')) ℝ) =
@@ -80,11 +80,11 @@ theorem liePs_inr (j j' m : ℕ) (τ : Ψ) :
   simp [h0]
 
 /- English proof (translation)
-Establish `hC : IsMultiHomog (C a : MRing ι O) (0 : K → ℕ)` using `isWeightedHomogeneous_C _ a`. Establish `hH : (∑ i : Fin r, (X i : MvPolynomial (Fin r) ℝ) ^ m).IsHomogeneous m` using `IsHomogeneous.sum _ _ _ fun i _ => by`. Simplify using `using (isHomogeneous_X ℝ i).pow m`. Establish `h` using `(GlobalTheory.T.divisor_cycle_substitution O ϖ hϖ K ι P d hP 0 0 (C a) (C a) hC hC (C_not_mem hP ha) (C_not_mem hP ha) (Fin r) (Fin r) cls (fun t i => if t = i then -1 else 0) _ m hH Q hQ).2`. Establish `e1 : (fun t : Fin r => ∑ i, (if t = i then (-1 : ℤ) else 0) • cls i) = fun i => -cls i`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules. Establish `e2 : aeval (fun t : Fin r => ∑ i, (C (((if t = i then (-1 : ℤ) else 0 : ℤ)) : ℝ) * X i : MvPolynomial (Fin r) ℝ)) (∑ i : Fin r, (X i : MvPolynomial (Fin r) ℝ) ^ m) = ∑ i : Fin r, (-(X i : MvPolynomial (Fin r) ℝ)) ^ m`. Simplify using `[map_sum, apply_ite]`. Rewrite `h` using `[e1, e2]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem cycNum_neg {ϖ : O} (hϖ : Irreducible ϖ) {P : Ideal (MRing ι O)} {d : ℕ} (hP : IsModelOver P d)
     {a : O} (ha : a ≠ 0) {r : ℕ} (cls : Fin r → K → ℤ) (m : ℕ) (Q : List (K → ℤ))
@@ -116,17 +116,17 @@ namespace GlobalTheory.CompanionTheory.Ar.Num
 open GlobalTheory.CompanionTheory.Ar.Num.FlagLocalM3 in
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hP p hp Ψ _ _ j j' φ T lie om hl ho hr hM τ k hk Q hQ`. Use `set Z := divCycle P (C (p : O)) with hZ`. Establish `hm : k - 1 + Q.length = d` using `by omega`. Establish `hlab : ∀ τ' : Ψ ⊕ Ψ, ((laNum P (p : O) (lie τ').x k Q : ℤ) : ℝ) = (k : ℝ) * cycNum Z T.x (liePs j (k - 1) τ') Q`. Introduce and unpack `(t | t)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e : (lie (Sum.inl t)).x = fun i : Fin j => T.x (t, Fin.castAdd j' i)`. Rewrite using `[hl t]`. Both sides reduce to the same expression. Establish `e' : ((laNum P (p : O) (lie (Sum.inl t)).x k Q : ℤ) : ℝ) = ((laNum P (p : O) (fun i : Fin j => T.x (t, Fin.castAdd j' i)) k Q : ℤ) : ℝ)` using `congrArg (fun y : Fin j → K → ℤ => ((laNum P (p : O) y k Q : ℤ) : ℝ)) e`. Rewrite using `[e', laNum_eq, liePs_inl, (GlobalTheory.T.cycle_number_rename).1 O K ι _ _ _ Z T.x]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hr t k Q hQ, laNum_eq, cycNum_neg hϖ hP hp _ _ Q hm, liePs_inr, (GlobalTheory.T.cycle_number_rename).1 O K ι _ _ _ Z T.x]`. Both sides reduce to the same expression. Establish `hL` using `hM k hk Q hQ (Sum.inl τ)`. Establish `e1 : (lie (Sum.inl τ)).ck P k Q = (T.comp fun i : Fin j => (τ, Fin.castAdd j' i)).ck P k Q` using `congrArg (fun L : LocPair ι O (Fin j) => L.ck P k Q) (hl τ)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (om (Sum.inl τ)).ck P k Q = (T.comp fun i : Fin j' => (τ, Fin.natAdd j i)).ck P k Q` using `congrArg (fun L : LocPair ι O (Fin j') => L.ck P k Q) (ho τ)`. Establish `hadd` using `GlobalTheory.T.local_pair_split_sum O K ι j j' (T.comp fun i : Fin (j + j') => (τ, i)) P k Q`. Establish `hlin` using `GlobalTheory.T.cycle_number_linear O K ι (Ψ × Fin (j + j')) Z T.x Q`. Rewrite `hL` using `[e1, e2]`. Establish `hleft : (((T.comp fun i : Fin (j + j') => (τ, i)).ck P k Q : ℤ) : ℝ) = (((T.comp fun i : Fin j => (τ, Fin.castAdd j' i)).ck P k Q : ℤ) : ℝ) + (((T.comp fun i : Fin j' => (τ, Fin.natAdd j i)).ck P k Q : ℤ) : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hadd]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[hleft, hL, bracket]`. Rewrite using `[hlin.2.1, hlin.2.2.1, Finset.mul_sum]`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun τ' _ => ?_` and prove the remaining obligations. Rewrite using `[hlin.2.1, hlab τ']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem flag_m3_of_local_m3 : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O), Irreducible ϖ → ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι O)) (d : ℕ), IsModelOver P d → ∀ (p : ℕ), (p : O) ≠ 0 → ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (j j' : ℕ) (φ : Equiv.Perm (Ψ ⊕ Ψ)) (T : LocPair ι O (Ψ × Fin (j + j'))) (lie : ∀ σ, LocPair ι O (Fin ((Sum.elim (fun _ : Ψ => j) (fun _ : Ψ => j')) σ))) (om : ∀ σ, LocPair ι O (Fin ((Sum.elim (fun _ : Ψ => j') (fun _ : Ψ => j)) σ))), (∀ τ, lie (Sum.inl τ) = T.comp fun i : Fin j => (τ, Fin.castAdd j' i)) → (∀ τ, om (Sum.inl τ) = T.comp fun i : Fin j' => (τ, Fin.natAdd j i)) → (∀ τ k Q, Q.length + k = d + 1 → laNum P (p : O) (lie (Sum.inr τ)).x k Q = laNum P (p : O) (fun i : Fin j' => -T.x (τ, Fin.natAdd j i)) k Q) → LabelChernComparison P d p φ lie om → FlagChernComparison P d p j φ T := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ P d hP p hp Ψ _ _ j j' φ T lie om hl ho hr hM τ k hk Q hQ

@@ -30,15 +30,13 @@ def lineGram (E : Fr (ratOf X) m m) (H : Mat m X.Fn → CxPts X.str σ → Mat m
 variable [Finite ι] {E : Fr (ratOf X) m m} {H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ}
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.T.gramLowerTriangularFactor_posDef_properties _ _ (h.posDef y _ (E.nonempty (under y)).choose_spec x.1)).2.1 x.2).1`.
+A detailed English derivation is pending.
 -/
 theorem grD_pos (h : IsMetricFr E H) (x : Root m) (y : CxPts X.str σ) : 0 < grD (gramAt E H x.1 y y) x.2 :=
   ((GlobalTheory.T.gramLowerTriangularFactor_posDef_properties _ _ (h.posDef y _ (E.nonempty (under y)).choose_spec x.1)).2.1 x.2).1
 
 /- English proof (translation)
-Use `⟨?_, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_fin_one]`. Conclude with `isUnit_iff_ne_zero.2 (Complex.ofReal_ne_zero.2 (grD_pos h x y).ne')`. Use `filter_upwards [(GlobalTheory.T.flaggedBundleMetric_smoothUnit_etaleChart F σ X ι m m E H h y _ (E.nonempty (under y)).choose_spec x.1).2 c hc] with v hv`. Introduce `a b`.
-
-Conclude with `Complex.ofRealCLM.contDiff.contDiffAt.comp v ((GlobalTheory.T.gramLowerTriangularFactor_gradedLength_smooth _ _ _ v hv.1 hv.2).2 x.2)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lineGram_smooth (h : IsMetricFr E H) (x : Root m) (y : CxPts X.str σ) :
     SmoothUnitAt (atlas X σ) (lineGram E H x y) y := by
@@ -50,19 +48,17 @@ theorem lineGram_smooth (h : IsMetricFr E H) (x : Root m) (y : CxPts X.str σ) :
     exact Complex.ofRealCLM.contDiff.contDiffAt.comp v ((GlobalTheory.T.gramLowerTriangularFactor_gradedLength_smooth _ _ _ v hv.1 hv.2).2 x.2)
 
 /- English proof (translation)
-Use `⟨fun y => ⟨lineGram_smooth h x y, lineGram_smooth h x y⟩, fun y => ?_⟩` and prove the remaining obligations. Establish `hy` using `(E.nonempty (under y)).choose_spec`. Use `filter_upwards [GlobalTheory.T.adaptedFrame_eventually_frame_near_complex_point F σ X ι m m E y _ hy] with z hyz`. Establish `hz` using `(E.nonempty (under z)).choose_spec`. Use `set A := (E.nonempty (under y)).choose with hA`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B := (E.nonempty (under z)).choose with hB`. Establish `hP` using `(Fr.mem_iff hyz).1 hz`. Establish `hhol` using `GlobalTheory.T.isHolomorphicUnitMatrixAt_rational_matrix_values F σ X _ ((B * A⁻¹) x.1) z (fun i j => mem_O_ratOf.1 ((hP x.1).1 i j)) (hP x.1).2.1 (mem_O_ratOf.1 (hP x.1).2.2.1)`. Establish `hval : ∀ w : CxPts X.str σ, A ∈ E.S (under w) → B ∈ E.S (under w) → Par m ⊤ ((B * A⁻¹).map (ratVal · w))` using `fun w h1 h2 => by`. Take `⟨ψ, hψ⟩` from `exists_ratVal_hom w`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((Fr.mem_iff h1).1 h2).map_of _ ψ hψ`. Set `T : CxPts X.str σ → Matrix (Fin 1) (Fin 1) ℂ` to `fun w _ _ => ratVal ((B * A⁻¹) x.1 x.2 x.2) w`. Establish `hT : HolUnitAt (atlas X σ) T z`. Use `⟨?_, fun c hc _ _ => hhol.2 c hc x.2 x.2⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_fin_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp` using `hval z hyz hz x.1`. Establish `hd` using `hp.2.1`. Rewrite `hd` using `[Matrix.det_of_lowerTriangular _ (fun i j hij => hp.2.2.2 i j i.2 hij)]`. Conclude with `isUnit_iff_ne_zero.2 (Finset.prod_ne_zero_iff.1 hd x.2 (Finset.mem_univ _))`. Use `⟨T, T, T, hT, hT, hT, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Use `filter_upwards [GlobalTheory.T.adaptedFrame_eventually_frame_near_complex_point F σ X ι m m E z _ hyz, GlobalTheory.T.adaptedFrame_eventually_frame_near_complex_point F σ X ι m m E z _ hz] with w h1 h2`. Rewrite using `[and_self]`. Establish `hp` using `hval w h1 h2 x.1`. Establish `e` using `(GlobalTheory.T.gramLowerTriangularFactor_lowerTriangular_conj _ _ _ (h.posDef w A h1 x.1) (fun i j hij => hp.2.2.2 i j i.2 hij) (isUnit_iff_ne_zero.2 hp.2.1)).2 x.2`. Rewrite `e` using `[← h.trans w A h1 B h2 x.1]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Use extensionality with `a b`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_one, Matrix.conjTranspose_apply]`. Express the relevant statement in the definitionally equal form `((grD (H B w x.1) x.2 : ℝ) : ℂ) = ((B * A⁻¹).map (ratVal · w) x.1 x.2 x.2) * ((grD (H A w x.1) x.2 : ℝ) : ℂ) * star ((B * A⁻¹).map (ratVal · w) x.1 x.2 x.2)`. Rewrite using `[e, mul_right_comm, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem isGramPair_lineGram (h : IsMetricFr E H) (x : Root m) :
     IsGramPair (atlas X σ) (lineGram E H x) (lineGram E H x) := by
@@ -103,9 +99,9 @@ theorem isGramPair_lineGram (h : IsMetricFr E H) (x : Root m) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Establish `hs` using `((lineGram_smooth h x p.pt).2 p.1.1 p.2).self_of_nhds`. Establish `e` using `GlobalTheory.T.chernForm_triangular_eq_esymm_firstChernForms _ 1 (fun v => lineGram E H x p.pt (p.ch.symm v)) (fun _ v => grD (gramAt E H x.1 p.pt (p.ch.symm v)) x.2) p.crd hs (fun _ => by`. Establish `: p.ch.symm p.crd = p.pt` using `p.ch.left_inv p.2`. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `grD_pos h x _)`. Use the proof step `(Eventually.of_forall fun v => ⟨fun i j hij => absurd (Subsingleton.elim i j) hij.ne, fun _ => rfl⟩) 1`. Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[esymm_one, Fin.sum_univ_one, aeval_X]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chernFld_lineGram (h : IsMetricFr E H) (x : Root m) :
     chernFld (atlas X σ) (lineGram E H x) 1 = grF E H x := by
@@ -122,7 +118,7 @@ theorem chernFld_lineGram (h : IsMetricFr E H) (x : Root m) :
   rfl
 
 /- English proof (translation)
-Introduce `F _ σ X ι _ m E H h x`. Rewrite using `[← chernFld_lineGram h x]`. Conclude with `GlobalTheory.T.chernFormField_dbarCohomologous_two_connections _ _ _ _ _ _ (isGramPair_lineGram h x) 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dbarCoh_grF : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) (ι : Type) [Finite ι] (m : ι → ℕ)
     (E : Fr (ratOf X) m m) (H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ), IsMetricFr E H →

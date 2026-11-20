@@ -20,21 +20,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LowDat
 
 /- English proof (translation)
-Establish `hLL` using `GlobalTheory.firstFiveLaws`. Establish `hL : Laws` using `hLL.1`. Establish `hL₂ : Laws2` using `hLL.2.1`. Use `haveI : CharZero R := hR.2`. Use `haveI : IsNoetherianRing R := hR.1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : CharZero (FractionRing R) := charZero_of_injective_ringHom (IsFractionRing.injective R (FractionRing R))`. Use `haveI : CharZero (AlgebraicClosure (FractionRing R)) := charZero_of_injective_ringHom (algebraMap (FractionRing R) (AlgebraicClosure (FractionRing R))).injective`. Establish `hB` using `C.P.D.tau_bimult`. Establish `he` using `C.P.D.psi_even`. Set `s : AlgebraicClosure (FractionRing R) →ₐ[FractionRing R] F` to `IsAlgClosed.lift`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hs : s.toRingHom.comp (algebraMap (FractionRing R) _) = algebraMap (FractionRing R) F` using `s.comp_algebraMap`. Establish `hj : spMap s.toRingHom ≫ jFK (R` using `R) (AlgebraicClosure (FractionRing R)) = jFK (R := R) F := by`. Rewrite using `[jFK, jFK, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hs]`. Set `I` to `GlobalTheory.ArcExt.tateExt s.toRingHom hs hB hL I₀ (GlobalTheory.ArcOfModel.weilQkIs_qkExt hL hL₂ he hB s.toRingHom hs)`. Establish `hext : ∀ n a, QkExt s.toRingHom (I₀.ev n a) (I.ev n a)` using `fun n a => (GlobalTheory.TorusExt.qkExt_iff hB _ hs _ _).2 rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨I, ⟨?_, ?_⟩, fun n a => (hext n a).1⟩` and prove the remaining obligations. Use `show ((Units.map s.toRingHom.toMonoidHom (I₀.ζ l.M') : Fˣ) : F) = _`. Rewrite using `[Units.coe_map]`. Use `show s.toRingHom ((I₀.ζ l.M' : AlgebraicClosure (FractionRing R))) = _`. Rewrite using `[hI₀.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [toF, RingHom.comp_apply]`. Conclude with `s.commutes _`. Introduce `k a σ hk x hx`. Establish `hk1 : 1 ≤ k`. Break down `hk with ⟨rfl, -⟩ | ⟨rfl, -⟩` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `l.A_pos`. Use `l.three_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hT` using `GlobalTheory.FlatTors.torsionIso_holds E H R (maximalIdeal R) hR.1 C.t C.P`. Take `⟨f₀, f₀₁, -⟩` from `hT (AlgebraicClosure (FractionRing R)) k hk1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨fF, fF₁, -⟩` from `hT F k hk1`. Take `⟨g₀, hg₁, hg₂⟩` from `hI₀.2 k a σ hk (f₀ (I₀.ev k a)) ((f₀₁ _ _).2 rfl)`. Set `x' : TFK (R` to `R) F ⟶ C.P.A.A := (Over.homMk (spMap s.toRingHom) hj : TFK (R := R) F ⟶ TFK (R := R) (AlgebraicClosure (FractionRing R))) ≫ f₀ (I₀.ev k a)`. Establish `hx' : C.P.ToA F k (I.ev k a) x'` using `(GlobalTheory.TorsionExt.qkToAkU_iff_of_qkExt hLL R (maximalIdeal R) hR.1 C.P.D C.P.A C.t.G C.t.semi C.P.U _ F s k hk1 (I₀.ev k a) (I.ev k a) _ x' (hext k a) rfl).1 ((f₀₁ _ _).2 rfl)`. Establish `hxx : x = x'` using `((fF₁ _ _).1 hx).trans ((fF₁ _ _).1 hx').symm`.
-
-Use `⟨spMap s.toRingHom ≫ g₀, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hg₁, hxx]`. Simplify using `only [x', Over.comp_left, Over.homMk_left, Category.assoc]`. Rewrite using `[Category.assoc, hg₂, ← hj]`. Simplify using `only [Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_xfLevel_ext {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     (Xo : Moduli Dw l) (c : Coeff l) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (hR : GlobalTheory.Mum.Base R)

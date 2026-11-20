@@ -16,11 +16,11 @@ variable {S : Type v} [CommRing S] [Fact ¬IsUnit (p : S)] [IsAdicComplete (span
 variable {U : Type w} [CommRing U] [Fact ¬IsUnit (p : U)] [IsAdicComplete (span {(p : U)}) U]
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Take `⟨v, m, hm, h⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (Nat.factorial_ne_zero n) p hp.ne_one`. Establish `hv : v ≤ n`. Establish `h1 : v ≤ padicValNat p n !` using `(padicValNat_dvd_iff_le (Nat.factorial_ne_zero n)).1 ⟨m, h⟩`. Conclude with `h1.trans (padicValNat_factorial_le p n)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (m : ℤ_[p])`. Rewrite using `[PadicInt.isUnit_iff, PadicInt.norm_natCast_eq_one_iff]`. Conclude with `hp.coprime_iff_not_dvd.2 hm`. Take `⟨w, hw⟩` from `hu.exists_right_inv`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hv`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨w * p ^ d, ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Use `push_cast`. Take the linear combination `(p : ℤ_[p]) ^ (v + d) * hw`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_factorial_mul_eq_pow (n : ℕ) : ∃ a : ℤ_[p], (n ! : ℤ_[p]) * a = p ^ n := by
   have hp : p.Prime := Fact.out
@@ -58,13 +58,13 @@ Both sides reduce to the same expression.
     (tateModule.map p f η).1 = Tilt.map p f η.1 := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Tilt.map_id _)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem tateModule.map_id (η : tateModule p R) : tateModule.map p (RingHom.id R) η = η :=
   Subtype.ext (Tilt.map_id _)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Tilt.map_map _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem tateModule.map_map (f : R →+* S) (g : S →+* U) (η : tateModule p R) :
     tateModule.map p g (tateModule.map p f η) = tateModule.map p (g.comp f) η :=
@@ -77,27 +77,27 @@ Both sides reduce to the same expression.
     (PFlat.map p f ϖ).1 = Tilt.map p f ϖ.1 := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Tilt.map_id _)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem PFlat.map_id (ϖ : PFlat p R) : PFlat.map p (RingHom.id R) ϖ = ϖ :=
   Subtype.ext (Tilt.map_id _)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Tilt.map_map _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem PFlat.map_map (f : R →+* S) (g : S →+* U) (ϖ : PFlat p R) :
     PFlat.map p g (PFlat.map p f ϖ) = PFlat.map p (g.comp f) ϖ :=
   Subtype.ext (Tilt.map_map _ _ _)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (map_mul (Tilt.map p f) _ _)`.
+A detailed English derivation is pending.
 -/
 theorem PFlat.map_twist (f : R →+* S) (η : tateModule p R) (ϖ : PFlat p R) :
     PFlat.map p f (ϖ.twist η) = (PFlat.map p f ϖ).twist (tateModule.map p f η) :=
   Subtype.ext (map_mul (Tilt.map p f) _ _)
 
 /- English proof (translation)
-Unfold `IsPrimitive at h ⊢`. Rewrite using `[tateModule.coe_map, ← RingHom.map_frobeniusEquiv_symm, Tilt.untilt_map]`. Conclude with `fun h' => h (hf (by rw [h', map_one]))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsPrimitive.map {ε : tateModule p R} (h : IsPrimitive ε) (f : R →+* S)
     (hf : Function.Injective f) : IsPrimitive (tateModule.map p f ε) := by
@@ -107,7 +107,7 @@ theorem IsPrimitive.map {ε : tateModule p R} (h : IsPrimitive ε) (f : R →+* 
 
 omit [IsAdicComplete (span {(p : R)}) R] [IsAdicComplete (span {(p : S)}) S] in
 /- English proof (translation)
-Simplify using `[AinfInv.gamma, map_rat_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem AinfInv.map_gamma (f : AinfInv p R →+* AinfInv p S) (n : ℕ) (x : AinfInv p R) :
     f (AinfInv.gamma n x) = AinfInv.gamma n (f x) := by
@@ -115,7 +115,7 @@ theorem AinfInv.map_gamma (f : AinfInv p R →+* AinfInv p S) (n : ℕ) (x : Ain
 
 omit [IsAdicComplete (span {(p : R)}) R] in
 /- English proof (translation)
-Rewrite using `[AinfInv.gamma, Algebra.smul_def, ← map_natCast (algebraMap ℚ (AinfInv p R)), ← mul_assoc, ← map_mul, mul_inv_cancel₀ (by exact_mod_cast Nat.factorial_ne_zero _), map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem AinfInv.factorial_mul_gamma (n : ℕ) (x : AinfInv p R) :
     (n ! : AinfInv p R) * AinfInv.gamma n x = x ^ n := by
@@ -124,7 +124,7 @@ theorem AinfInv.factorial_mul_gamma (n : ℕ) (x : AinfInv p R) :
 
 omit [IsAdicComplete (span {(p : R)}) R] in
 /- English proof (translation)
-Establish `hu : IsUnit (n ! : AinfInv p R)`. Rewrite using `[← map_natCast (algebraMap ℚ (AinfInv p R))]`. Conclude with `(IsUnit.mk0 _ (by exact_mod_cast Nat.factorial_ne_zero _)).map _`. Conclude with `hu.mul_left_cancel (by rw [AinfInv.factorial_mul_gamma, h])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AinfInv.eq_gamma {n : ℕ} {x y : AinfInv p R} (h : (n ! : AinfInv p R) * y = x ^ n) :
     AinfInv.gamma n x = y := by
@@ -136,11 +136,9 @@ theorem AinfInv.eq_gamma {n : ℕ} {x y : AinfInv p R} (h : (n ! : AinfInv p R) 
 namespace AcrisZero
 
 /- English proof (translation)
-Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨n, x, hx, rfl⟩` from `hy`. Rewrite using `[AinfInv.map_gamma, AinfInv.extend_algebraMap]`. Conclude with `h n x hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `algebraMap r => rw [AinfInv.extend_algebraMap]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`.
-
-Conclude with `mul_mem hx hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem extend_mem (ψ : Ainf p R →+* Ainf p S)
     (h : ∀ n x, Ainf.theta p R x = 0 → AinfInv.gamma n (algebraMap _ _ (ψ x)) ∈ acrisZero p S)
@@ -164,14 +162,14 @@ def extend (ψ : Ainf p R →+* Ainf p S)
   map_add' _ _ := Subtype.ext (map_add _ _ _)
 
 /- English proof (translation)
-The claim follows from `(gamma n (Ainf.map p f x) (by rw [Ainf.theta_map, hx, map_zero])).2`.
+A detailed English derivation is pending.
 -/
 theorem gamma_map_mem (f : R →+* S) (n : ℕ) (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
     AinfInv.gamma n (algebraMap _ _ (Ainf.map p f x)) ∈ acrisZero p S :=
   (gamma n (Ainf.map p f x) (by rw [Ainf.theta_map, hx, map_zero])).2
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `Ainf.p_dvd_frob_sub_pow x`. Rewrite using `[eq_add_of_sub_eq hy, map_add, map_mul, map_natCast, map_pow, ← factorial_mul_gamma p x hx]`. Use `dvd_add (dvd_mul_right _ _) (Dvd.dvd.mul_right ?_ _)` and prove the remaining obligations. Conclude with `Nat.cast_dvd_cast (Nat.dvd_factorial (Fact.out : p.Prime).pos le_rfl)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem p_dvd_frob (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
     (p : AcrisZero p R) ∣ algebraMap (Ainf p R) (AcrisZero p R) (Ainf.frob p R x) := by
@@ -181,7 +179,7 @@ theorem p_dvd_frob (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
   exact Nat.cast_dvd_cast (Nat.dvd_factorial (Fact.out : p.Prime).pos le_rfl)
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_factorial_mul_eq_pow p n`. Establish `ha'` using `congrArg ((algebraMap (Ainf p R) (AinfInv p R)).comp (algebraMap ℤ_[p] _)) ha`. Rewrite `ha'` using `[map_mul, map_pow, map_natCast, map_natCast, RingHom.comp_apply]`. Rewrite using `[AinfInv.eq_gamma (y := algebraMap (Ainf p R) _ (algebraMap ℤ_[p] _ a) * z.1 ^ n) (by rw [← mul_assoc, ha', mul_pow])]`. Conclude with `mul_mem (Subalgebra.algebraMap_mem _ _) (pow_mem z.2 _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gamma_p_mul_mem (n : ℕ) (z : AcrisZero p R) :
     AinfInv.gamma n ((p : AinfInv p R) * z.1) ∈ acrisZero p R := by
@@ -193,7 +191,7 @@ theorem gamma_p_mul_mem (n : ℕ) (z : AcrisZero p R) :
   exact mul_mem (Subalgebra.algebraMap_mem _ _) (pow_mem z.2 _)
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `p_dvd_frob x hx`. Establish `hz'` using `congrArg Subtype.val hz`. Simplify using `only [MulMemClass.coe_mul, SubringClass.coe_natCast, Subalgebra.coe_algebraMap] at hz'`. Rewrite using `[hz']`. Conclude with `gamma_p_mul_mem n z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gamma_frob_mem (n : ℕ) (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
     AinfInv.gamma n (algebraMap _ _ (Ainf.frob p R x)) ∈ acrisZero p R := by
@@ -223,34 +221,34 @@ Both sides reduce to the same expression.
 @[simp] theorem coe_frob (x : AcrisZero p R) : (frob p R x : AinfInv p R) = AinfInv.frob p R x := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (AinfInv.map_algebraMap f x)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem map_algebraMap (f : R →+* S) (x : Ainf p R) :
     map p f (algebraMap _ _ x) = algebraMap _ _ (Ainf.map p f x) :=
   Subtype.ext (AinfInv.map_algebraMap f x)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (AinfInv.frob_algebraMap x)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem frob_algebraMap (x : Ainf p R) :
     frob p R (algebraMap _ _ x) = algebraMap _ _ (Ainf.frob p R x) :=
   Subtype.ext (AinfInv.frob_algebraMap x)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (AinfInv.map_id _)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem map_id (x : AcrisZero p R) : map p (RingHom.id R) x = x :=
   Subtype.ext (AinfInv.map_id _)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (AinfInv.map_map f g _)`.
+A detailed English derivation is pending.
 -/
 theorem map_map (f : R →+* S) (g : S →+* U) (x : AcrisZero p R) :
     map p g (map p f x) = map p (g.comp f) x :=
   Subtype.ext (AinfInv.map_map f g _)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (AinfInv.map_frob f _)`.
+A detailed English derivation is pending.
 -/
 theorem map_frob (f : R →+* S) (x : AcrisZero p R) :
     map p f (frob p R x) = frob p S (map p f x) :=
@@ -264,14 +262,14 @@ def extend (g : AcrisZero p R →+* AcrisZero p S) : Acris p R →+* Acris p S :
   adicMap _ _ g (span_natCast_le_comap p g)
 
 /- English proof (translation)
-The claim follows from `adicMap_algebraMap _ _ g _ a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem extend_algebraMap (g : AcrisZero p R →+* AcrisZero p S) (a : AcrisZero p R) :
     extend g (algebraMap _ _ a) = algebraMap _ _ (g a) :=
   adicMap_algebraMap _ _ g _ a
 
 /- English proof (translation)
-The claim follows from `evalₐ_adicMap _ _ g _ n x`.
+A detailed English derivation is pending.
 -/
 theorem eval_extend (g : AcrisZero p R →+* AcrisZero p S) (n : ℕ) (x : Acris p R) :
     eval p S n (extend g x) =
@@ -279,7 +277,7 @@ theorem eval_extend (g : AcrisZero p R →+* AcrisZero p S) (n : ℕ) (x : Acris
   evalₐ_adicMap _ _ g _ n x
 
 /- English proof (translation)
-Use `ext_eval fun n => ?_` and prove the remaining obligations. Take `⟨l, hl, hl'⟩` from `exists_quot u hu n`. Rewrite using `[eval_extend, hl', Ideal.quotientMap_mk, eval_log_of_mul_eq v hv n (g l)]`. Rewrite using `[← h, ← map_natCast g, ← map_pow, ← map_mul, hl, map_sub, map_pow, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem extend_log (g : AcrisZero p R →+* AcrisZero p S) (u : Ainf p R) (v : Ainf p S)
     (hu : Ainf.theta p R u = 1) (hv : Ainf.theta p S v = 1)
@@ -298,19 +296,19 @@ variable (p R) in
 def frob : Acris p R →+* Acris p R := extend (AcrisZero.frob p R)
 
 /- English proof (translation)
-The claim follows from `extend_algebraMap _ x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem map_algebraMap_zero (f : R →+* S) (x : AcrisZero p R) :
     map p f (algebraMap _ _ x) = algebraMap _ _ (AcrisZero.map p f x) := extend_algebraMap _ x
 
 /- English proof (translation)
-The claim follows from `extend_algebraMap _ x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem frob_algebraMap_zero (x : AcrisZero p R) :
     frob p R (algebraMap _ _ x) = algebraMap _ _ (AcrisZero.frob p R x) := extend_algebraMap _ x
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply (Ainf p R) (AcrisZero p R) (Acris p R), map_algebraMap_zero, AcrisZero.map_algebraMap, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem map_algebraMap (f : R →+* S) (x : Ainf p R) :
     map p f (algebraMap _ _ x) = algebraMap _ _ (Ainf.map p f x) := by
@@ -318,7 +316,7 @@ Rewrite using `[IsScalarTower.algebraMap_apply (Ainf p R) (AcrisZero p R) (Acris
     AcrisZero.map_algebraMap, ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply (Ainf p R) (AcrisZero p R) (Acris p R), frob_algebraMap_zero, AcrisZero.frob_algebraMap, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem frob_algebraMap (x : Ainf p R) :
     frob p R (algebraMap _ _ x) = algebraMap _ _ (Ainf.frob p R x) := by
@@ -326,7 +324,7 @@ Rewrite using `[IsScalarTower.algebraMap_apply (Ainf p R) (AcrisZero p R) (Acris
     AcrisZero.frob_algebraMap, ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[p] (Ainf p R) (Acris p R), map_algebraMap, Ainf.map_algebraMap, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem map_algebraMap_padicInt (f : R →+* S) (a : ℤ_[p]) :
     map p f (algebraMap _ _ a) = algebraMap _ _ a := by
@@ -334,7 +332,7 @@ Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[p] (Ainf p R) (Acris p R), m
     Ainf.map_algebraMap, ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[p] (Ainf p R) (Acris p R), frob_algebraMap, Ainf.frob_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem frob_algebraMap_padicInt (a : ℤ_[p]) :
     frob p R (algebraMap _ _ a) = algebraMap _ _ a := by
@@ -342,13 +340,13 @@ Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[p] (Ainf p R) (Acris p R), f
     Ainf.frob_algebraMap]
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (hom_ext (f := map p (RingHom.id R)) (g := RingHom.id _) (by simp)) x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem map_id (x : Acris p R) : map p (RingHom.id R) x = x :=
   RingHom.congr_fun (hom_ext (f := map p (RingHom.id R)) (g := RingHom.id _) (by simp)) x
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (hom_ext (f := (map p g).comp (map p f)) (g := map p (g.comp f)) (by simp [AcrisZero.map_map])) x`.
+A detailed English derivation is pending.
 -/
 theorem map_map (f : R →+* S) (g : S →+* U) (x : Acris p R) :
     map p g (map p f x) = map p (g.comp f) x :=
@@ -356,35 +354,35 @@ theorem map_map (f : R →+* S) (g : S →+* U) (x : Acris p R) :
     (by simp [AcrisZero.map_map])) x
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (hom_ext (f := (map p f).comp (frob p R)) (g := (frob p S).comp (map p f)) (by simp [AcrisZero.map_frob])) x`.
+A detailed English derivation is pending.
 -/
 theorem map_frob (f : R →+* S) (x : Acris p R) : map p f (frob p R x) = frob p S (map p f x) :=
   RingHom.congr_fun (hom_ext (f := (map p f).comp (frob p R)) (g := (frob p S).comp (map p f))
     (by simp [AcrisZero.map_frob])) x
 
 /- English proof (translation)
-The claim follows from `extend_log _ _ _ _ _ (AcrisZero.map_algebraMap f u)`.
+A detailed English derivation is pending.
 -/
 theorem map_log (f : R →+* S) (u : Ainf p R) (hu : Ainf.theta p R u = 1)
     (hv : Ainf.theta p S (Ainf.map p f u) = 1) : map p f (log u hu) = log (Ainf.map p f u) hv :=
   extend_log _ _ _ _ _ (AcrisZero.map_algebraMap f u)
 
 /- English proof (translation)
-The claim follows from `extend_log _ _ _ _ _ (AcrisZero.frob_algebraMap u)`.
+A detailed English derivation is pending.
 -/
 theorem frob_log (u : Ainf p R) (hu : Ainf.theta p R u = 1)
     (hv : Ainf.theta p R (Ainf.frob p R u) = 1) : frob p R (log u hu) = log (Ainf.frob p R u) hv :=
   extend_log _ _ _ _ _ (AcrisZero.frob_algebraMap u)
 
 /- English proof (translation)
-The claim follows from `extend_log _ _ _ _ _ (by rw [AcrisZero.map_algebraMap, Ainf.map_teich]; rfl)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem map_logTeich (f : R →+* S) (η : tateModule p R) :
     map p f (logTeich η) = logTeich (tateModule.map p f η) :=
   extend_log _ _ _ _ _ (by rw [AcrisZero.map_algebraMap, Ainf.map_teich]; rfl)
 
 /- English proof (translation)
-Rewrite using `[← logTeich_pow]`. Conclude with `extend_log _ _ _ _ _ (by rw [AcrisZero.frob_algebraMap, Ainf.frob_teich, ← map_pow]; rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 @[simp] theorem frob_logTeich (η : tateModule p R) : frob p R (logTeich η) = p * logTeich η := by
   rw [← logTeich_pow]
@@ -399,21 +397,21 @@ def lift {B : Type*} [CommRing B] (g : Acris p R →+* B) (h : IsUnit (p : B)) :
   IsLocalization.Away.lift (p : Acris p R) (g := g) (by simpa using h)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.lift_eq _ _ x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem lift_algebraMap {B : Type*} [CommRing B] (g : Acris p R →+* B)
     (h : IsUnit (p : B)) (x : Acris p R) : lift g h (algebraMap _ _ x) = g x :=
   IsLocalization.Away.lift_eq _ _ x
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (Submonoid.powers (p : Acris p R)) (RingHom.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext {B : Type*} [CommRing B] {f g : BcrisPlus p R →+* B}
     (h : ∀ x : Acris p R, f (algebraMap _ _ x) = g (algebraMap _ _ x)) : f = g :=
   IsLocalization.ringHom_ext (Submonoid.powers (p : Acris p R)) (RingHom.ext h)
 
 /- English proof (translation)
-The claim follows from `padicLift_algebraMap p _ _ a`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_padicInt (a : ℤ_[p]) :
     algebraMap ℚ_[p] (BcrisPlus p R) (algebraMap ℤ_[p] ℚ_[p] a) =
@@ -431,19 +429,19 @@ def frob : BcrisPlus p R →+* BcrisPlus p R :=
   lift ((algebraMap (Acris p R) _).comp (Acris.frob p R)) (isUnit_p p R)
 
 /- English proof (translation)
-The claim follows from `lift_algebraMap _ _ x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem map_algebraMap (f : R →+* S) (x : Acris p R) :
     map p f (algebraMap _ _ x) = algebraMap _ _ (Acris.map p f x) := lift_algebraMap _ _ x
 
 /- English proof (translation)
-The claim follows from `lift_algebraMap _ _ x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem frob_algebraMap (x : Acris p R) :
     frob p R (algebraMap _ _ x) = algebraMap _ _ (Acris.frob p R x) := lift_algebraMap _ _ x
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (padic_hom_ext (f := (map p f).comp (algebraMap ℚ_[p] _)) (g := algebraMap ℚ_[p] _) (fun a => by rw [RingHom.comp_apply, algebraMap_padicInt, algebraMap_padicInt, map_algebraMap, Acris.map_algebraMap_padicInt])) a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem map_algebraMap_padic (f : R →+* S) (a : ℚ_[p]) :
     map p f (algebraMap _ _ a) = algebraMap _ _ a :=
@@ -453,7 +451,7 @@ The claim follows from `RingHom.congr_fun (padic_hom_ext (f := (map p f).comp (a
         Acris.map_algebraMap_padicInt])) a
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (padic_hom_ext (f := (frob p R).comp (algebraMap ℚ_[p] _)) (g := algebraMap ℚ_[p] _) (fun a => by rw [RingHom.comp_apply, algebraMap_padicInt, frob_algebraMap, Acris.frob_algebraMap_padicInt])) a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem frob_algebraMap_padic (a : ℚ_[p]) :
     frob p R (algebraMap _ _ a) = algebraMap _ _ a :=
@@ -463,13 +461,13 @@ The claim follows from `RingHom.congr_fun (padic_hom_ext (f := (frob p R).comp (
         Acris.frob_algebraMap_padicInt])) a
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (hom_ext (f := map p (RingHom.id R)) (g := RingHom.id _) (by simp)) x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem map_id (x : BcrisPlus p R) : map p (RingHom.id R) x = x :=
   RingHom.congr_fun (hom_ext (f := map p (RingHom.id R)) (g := RingHom.id _) (by simp)) x
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (hom_ext (f := (map p g).comp (map p f)) (g := map p (g.comp f)) (by simp [Acris.map_map])) x`.
+A detailed English derivation is pending.
 -/
 theorem map_map (f : R →+* S) (g : S →+* U) (x : BcrisPlus p R) :
     map p g (map p f x) = map p (g.comp f) x :=
@@ -477,7 +475,7 @@ theorem map_map (f : R →+* S) (g : S →+* U) (x : BcrisPlus p R) :
     (by simp [Acris.map_map])) x
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (hom_ext (f := (map p f).comp (frob p R)) (g := (frob p S).comp (map p f)) (by simp [Acris.map_frob])) x`.
+A detailed English derivation is pending.
 -/
 theorem map_frob (f : R →+* S) (x : BcrisPlus p R) :
     map p f (frob p R x) = frob p S (map p f x) :=
@@ -499,7 +497,7 @@ def lift {B : Type*} [CommRing B] (g : BcrisPlus p R →+* B)
     | mul x y _ _ hx hy => simpa using hx.mul hy)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem lift_algebraMap {B : Type*} [CommRing B] (g : BcrisPlus p R →+* B)
     (h : ∀ ε : tateModule p R, IsPrimitive ε →
@@ -508,7 +506,7 @@ The claim follows from `IsLocalization.lift_eq _ x`.
   IsLocalization.lift_eq _ x
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (BcrisPlus.periods p R) (RingHom.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext {B : Type*} [CommRing B] {f g : Bcris p R →+* B}
     (h : ∀ x : BcrisPlus p R, f (algebraMap _ _ x) = g (algebraMap _ _ x)) : f = g :=
@@ -530,19 +528,19 @@ def frob : Bcris p R →+* Bcris p R :=
     exact isUnit_p.mul (isUnit_logTeich hε))
 
 /- English proof (translation)
-The claim follows from `lift_algebraMap _ _ x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem map_algebraMap (f : R →+* S) (hf : Function.Injective f) (x : BcrisPlus p R) :
     map p f hf (algebraMap _ _ x) = algebraMap _ _ (BcrisPlus.map p f x) := lift_algebraMap _ _ x
 
 /- English proof (translation)
-The claim follows from `lift_algebraMap _ _ x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem frob_algebraMap (x : BcrisPlus p R) :
     frob p R (algebraMap _ _ x) = algebraMap _ _ (BcrisPlus.frob p R x) := lift_algebraMap _ _ x
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply (Acris p R) (BcrisPlus p R) (Bcris p R), map_algebraMap, BcrisPlus.map_algebraMap, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem map_algebraMap_acris (f : R →+* S) (hf : Function.Injective f) (x : Acris p R) :
     map p f hf (algebraMap _ _ x) = algebraMap _ _ (Acris.map p f x) := by
@@ -550,7 +548,7 @@ Rewrite using `[IsScalarTower.algebraMap_apply (Acris p R) (BcrisPlus p R) (Bcri
     BcrisPlus.map_algebraMap, ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply (Acris p R) (BcrisPlus p R) (Bcris p R), frob_algebraMap, BcrisPlus.frob_algebraMap, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem frob_algebraMap_acris (x : Acris p R) :
     frob p R (algebraMap _ _ x) = algebraMap _ _ (Acris.frob p R x) := by
@@ -558,7 +556,7 @@ Rewrite using `[IsScalarTower.algebraMap_apply (Acris p R) (BcrisPlus p R) (Bcri
     BcrisPlus.frob_algebraMap, ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply ℚ_[p] (BcrisPlus p R) (Bcris p R), map_algebraMap, BcrisPlus.map_algebraMap_padic, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem map_algebraMap_padic (f : R →+* S) (hf : Function.Injective f) (a : ℚ_[p]) :
     map p f hf (algebraMap _ _ a) = algebraMap _ _ a := by
@@ -566,7 +564,7 @@ Rewrite using `[IsScalarTower.algebraMap_apply ℚ_[p] (BcrisPlus p R) (Bcris p 
     BcrisPlus.map_algebraMap_padic, ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply ℚ_[p] (BcrisPlus p R) (Bcris p R), frob_algebraMap, BcrisPlus.frob_algebraMap_padic]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem frob_algebraMap_padic (a : ℚ_[p]) :
     frob p R (algebraMap _ _ a) = algebraMap _ _ a := by
@@ -574,14 +572,14 @@ Rewrite using `[IsScalarTower.algebraMap_apply ℚ_[p] (BcrisPlus p R) (Bcris p 
     BcrisPlus.frob_algebraMap_padic]
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (hom_ext (f := map p (RingHom.id R) h) (g := RingHom.id _) (by simp)) x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem map_id (h : Function.Injective (RingHom.id R)) (x : Bcris p R) :
     map p (RingHom.id R) h x = x :=
   RingHom.congr_fun (hom_ext (f := map p (RingHom.id R) h) (g := RingHom.id _) (by simp)) x
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (hom_ext (f := (map p g hg).comp (map p f hf)) (g := map p (g.comp f) hgf) (by simp [BcrisPlus.map_map])) x`.
+A detailed English derivation is pending.
 -/
 theorem map_map (f : R →+* S) (hf : Function.Injective f) (g : S →+* U)
     (hg : Function.Injective g) (hgf : Function.Injective (g.comp f)) (x : Bcris p R) :
@@ -590,13 +588,13 @@ theorem map_map (f : R →+* S) (hf : Function.Injective f) (g : S →+* U)
     (by simp [BcrisPlus.map_map])) x
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem map_congr {f g : R →+* S} (hf : Function.Injective f) (hg : Function.Injective g)
     (h : f = g) : map p f hf = map p g hg := by subst h; rfl
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (hom_ext (f := (map p f hf).comp (frob p R)) (g := (frob p S).comp (map p f hf)) (by simp [BcrisPlus.map_frob])) x`.
+A detailed English derivation is pending.
 -/
 theorem map_frob (f : R →+* S) (hf : Function.Injective f) (x : Bcris p R) :
     map p f hf (frob p R x) = frob p S (map p f hf x) :=
@@ -604,14 +602,14 @@ theorem map_frob (f : R →+* S) (hf : Function.Injective f) (x : Bcris p R) :
     (g := (frob p S).comp (map p f hf)) (by simp [BcrisPlus.map_frob])) x
 
 /- English proof (translation)
-Simplify using `[logTeich]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem map_logTeich (f : R →+* S) (hf : Function.Injective f) (η : tateModule p R) :
     map p f hf (logTeich η) = logTeich (tateModule.map p f η) := by
   simp [logTeich]
 
 /- English proof (translation)
-Simplify using `[logTeich]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem frob_logTeich (η : tateModule p R) : frob p R (logTeich η) = p * logTeich η := by
   simp [logTeich]
@@ -634,31 +632,31 @@ def frob : Bst p R →+* Bst p R :=
       rw [logFlat_twist, RingHom.comp_apply, Bcris.frob_logTeich, map_mul, map_natCast, mul_add])
 
 /- English proof (translation)
-The claim follows from `lift_algebraMap _ _ _ x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem map_algebraMap (f : R →+* S) (hf : Function.Injective f) (x : Bcris p R) :
     map p f hf (algebraMap _ _ x) = algebraMap _ _ (Bcris.map p f hf x) := lift_algebraMap _ _ _ x
 
 /- English proof (translation)
-The claim follows from `lift_algebraMap _ _ _ x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem frob_algebraMap (x : Bcris p R) :
     frob p R (algebraMap _ _ x) = algebraMap _ _ (Bcris.frob p R x) := lift_algebraMap _ _ _ x
 
 /- English proof (translation)
-The claim follows from `lift_logFlat _ _ _ ϖ`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem map_logFlat (f : R →+* S) (hf : Function.Injective f) (ϖ : PFlat p R) :
     map p f hf (logFlat ϖ) = logFlat (PFlat.map p f ϖ) := lift_logFlat _ _ _ ϖ
 
 /- English proof (translation)
-The claim follows from `lift_logFlat _ _ _ ϖ`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem frob_logFlat (ϖ : PFlat p R) : frob p R (logFlat ϖ) = p * logFlat ϖ :=
   lift_logFlat _ _ _ ϖ
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply ℚ_[p] (Bcris p R) (Bst p R), map_algebraMap, Bcris.map_algebraMap_padic, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem map_algebraMap_padic (f : R →+* S) (hf : Function.Injective f) (a : ℚ_[p]) :
     map p f hf (algebraMap _ _ a) = algebraMap _ _ a := by
@@ -666,7 +664,7 @@ Rewrite using `[IsScalarTower.algebraMap_apply ℚ_[p] (Bcris p R) (Bst p R), ma
     Bcris.map_algebraMap_padic, ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply ℚ_[p] (Bcris p R) (Bst p R), frob_algebraMap, Bcris.frob_algebraMap_padic]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem frob_algebraMap_padic (a : ℚ_[p]) :
     frob p R (algebraMap _ _ a) = algebraMap _ _ a := by
@@ -674,7 +672,7 @@ Rewrite using `[IsScalarTower.algebraMap_apply ℚ_[p] (Bcris p R) (Bst p R), fr
     Bcris.frob_algebraMap_padic]
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (hom_ext (f := map p (RingHom.id R) h) (g := RingHom.id _) (by simp) (by simp)) x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem map_id (h : Function.Injective (RingHom.id R)) (x : Bst p R) :
     map p (RingHom.id R) h x = x :=
@@ -682,7 +680,7 @@ The claim follows from `RingHom.congr_fun (hom_ext (f := map p (RingHom.id R) h)
     (by simp)) x
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (hom_ext (f := (map p g hg).comp (map p f hf)) (g := map p (g.comp f) hgf) (fun x => by simp [Bcris.map_map f hf g hg hgf]) (by simp [PFlat.map_map])) x`.
+A detailed English derivation is pending.
 -/
 theorem map_map (f : R →+* S) (hf : Function.Injective f) (g : S →+* U)
     (hg : Function.Injective g) (hgf : Function.Injective (g.comp f)) (x : Bst p R) :
@@ -691,13 +689,13 @@ theorem map_map (f : R →+* S) (hf : Function.Injective f) (g : S →+* U)
     (fun x => by simp [Bcris.map_map f hf g hg hgf]) (by simp [PFlat.map_map])) x
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem map_congr {f g : R →+* S} (hf : Function.Injective f) (hg : Function.Injective g)
     (h : f = g) : map p f hf = map p g hg := by subst h; rfl
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (hom_ext (f := (map p f hf).comp (frob p R)) (g := (frob p S).comp (map p f hf)) (by simp [Bcris.map_frob]) (by simp)) x`.
+A detailed English derivation is pending.
 -/
 theorem map_frob (f : R →+* S) (hf : Function.Injective f) (x : Bst p R) :
     map p f hf (frob p R x) = frob p S (map p f hf x) :=
@@ -705,9 +703,9 @@ theorem map_frob (f : R →+* S) (hf : Function.Injective f) (x : Bst p R) :
     (g := (frob p S).comp (map p f hf)) (by simp [Bcris.map_frob]) (by simp)) x
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `mk_surjective p R x`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => have := h₁ a`. Rewrite `this` using `[← (mk p R).commutes]`. Then use the resulting hypothesis. Consider the case `add f g hf hg => rw [map_add]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately.
 
-Conclude with `h₂ _ _ hf hg`. Consider the case `mul_X f ϖ hf => rw [map_mul]`. Conclude with `h₃ _ ϖ hf`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem induction_on {P : Bst p R → Prop} (x : Bst p R)
     (h₁ : ∀ a : Bcris p R, P (algebraMap _ _ a)) (h₂ : ∀ x y, P x → P y → P (x + y))
@@ -719,13 +717,13 @@ theorem induction_on {P : Bst p R → Prop} (x : Bst p R)
   | mul_X f ϖ hf => rw [map_mul]; exact h₃ _ ϖ hf
 
 /- English proof (translation)
-The claim follows from `Derivation.map_algebraMap _ a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem monodromy_algebraMap (a : Bcris p R) : monodromy p R (algebraMap _ _ a) = 0 :=
   Derivation.map_algebraMap _ a
 
 /- English proof (translation)
-Proceed by induction on `x using induction_on with`. Consider the case `h₁ a => simp`. Consider the case `h₂ x y hx hy => simp only [map_add, hx, hy, mul_add]`. Consider the case `h₃ x ϖ hx`. Simplify using `only [map_mul, map_add, Derivation.leibniz, smul_eq_mul, frob_logFlat, monodromy_logFlat, hx, Derivation.map_natCast, map_neg, map_one]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -740,7 +738,7 @@ theorem monodromy_frob (x : Bst p R) :
     ring
 
 /- English proof (translation)
-Proceed by induction on `x using induction_on with`. Consider the case `h₁ a => simp`. Consider the case `h₂ x y hx hy => simp only [map_add, hx, hy]`. Consider the case `h₃ x ϖ hx`. Simplify using `only [map_mul, map_add, Derivation.leibniz, smul_eq_mul, map_logFlat, monodromy_logFlat, hx, map_neg, map_one]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem monodromy_map (f : R →+* S) (hf : Function.Injective f) (x : Bst p R) :
     monodromy p S (map p f hf x) = map p f hf (monodromy p R x) := by

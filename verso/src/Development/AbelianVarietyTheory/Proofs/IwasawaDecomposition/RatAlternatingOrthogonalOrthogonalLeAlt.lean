@@ -4,15 +4,15 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `r Mq V hT hdet x hx`. Establish `hB : ∀ u v : Fin r → ℚ, Matrix.toBilin' Mq u v = u ⬝ᵥ Mq *ᵥ v` using `fun u v => Matrix.toBilin'_apply' Mq u v`. Establish `hanti : ∀ u v : Fin r → ℚ, u ⬝ᵥ Mq *ᵥ v = -(v ⬝ᵥ Mq *ᵥ u)`. Introduce `u v`. Establish `h1 : v ⬝ᵥ Mqᵀ *ᵥ u = u ⬝ᵥ Mq *ᵥ v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_transpose, dotProduct_comm, ← Matrix.dotProduct_mulVec]`. Rewrite using `[← h1, hT, Matrix.neg_mulVec, dotProduct_neg]`. Establish `hrefl : (Matrix.toBilin' Mq).IsRefl`. Introduce `u v h`. Rewrite `h`, the goal using `[hB]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hanti, h, neg_zero]`. Establish `hnd : (Matrix.toBilin' Mq).Nondegenerate` using `LinearMap.BilinForm.nondegenerate_toBilin'_iff_det_ne_zero.mpr hdet`. Rewrite using `[← LinearMap.BilinForm.orthogonal_orthogonal hnd hrefl V, LinearMap.BilinForm.mem_orthogonal_iff]`. Introduce `y hy`. Rewrite `hy` using `[LinearMap.BilinForm.mem_orthogonal_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show Matrix.toBilin' Mq y x = 0`. Rewrite using `[hB, hanti, hx y ?_, neg_zero]`. Introduce `w hw`. Establish `h` using `hy w hw`. Express the relevant statement in the definitionally equal form `Matrix.toBilin' Mq w y = 0 at h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hB, hanti]`. Conclude with `neg_eq_zero.mp h`.
+A detailed English derivation is pending.
 -/
 theorem rat_alternating_orthogonal_orthogonal_le :
     ∀ (r : ℕ) (Mq : Matrix (Fin r) (Fin r) ℚ) (V : Submodule ℚ (Fin r → ℚ)), Mqᵀ = -Mq →

@@ -3,15 +3,15 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨x₀, hx₀⟩` from `hH`. Use `haveI : Fintype (G ⧸ H) := Fintype.ofFinite _`. Use `set f' : G → X := fun g => f g - (ρ g x₀ - x₀) with hf'`. Establish `hc : ∀ g h, f' (g * h) = f' g + ρ g (f' h)`. Introduce `g h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [hf', hf, map_mul, Module.End.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws. Establish `hz : ∀ h ∈ H, f' h = 0`. Introduce `h hh`. Simplify using `only [hf', hx₀ h hh, sub_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq : ∀ (g : G) (q : G ⧸ H), f' (g • q).out = f' g + ρ g (f' q.out)`. Introduce `g q`. Establish `h1 : ((g * q.out : G) : G ⧸ H) = ((g • q).out : G ⧸ H)`. Rewrite using `[QuotientGroup.out_eq', ← smul_eq_mul, MulAction.Quotient.mk_smul_out]`. Establish `h2` using `QuotientGroup.eq.mp h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (g • q).out = (g * q.out) * ((g * q.out)⁻¹ * (g • q).out)` using `by group`. Rewrite using `[h3, hc, hz _ h2, map_zero, add_zero, hc]`. Use `⟨H.index • x₀ - ∑ q : G ⧸ H, f' q.out, fun g => ?_⟩` and prove the remaining obligations. Establish `hs : ∑ q : G ⧸ H, f' (g • q).out = ∑ q : G ⧸ H, f' q.out` using `Equiv.sum_comp (MulAction.toPerm g) (fun q : G ⧸ H => f' q.out)`. Simplify using `only [hq, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ] at hs`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hs` using `[← map_sum, ← Nat.card_eq_fintype_card, ← Subgroup.index_eq_card]`. Establish `hfg : f g = f' g + (ρ g x₀ - x₀)` using `by simp [hf']`. Establish `hs' : H.index • f' g = ∑ q : G ⧸ H, f' q.out - ρ g (∑ q : G ⧸ H, f' q.out)` using `eq_sub_of_add_eq hs`. Rewrite using `[hfg, smul_add, hs', map_sub, map_nsmul, smul_sub]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem index_smul_cocycle_eq_coboundary (R G X : Type) [CommRing R] [Group G] [AddCommGroup X]
     [Module R X] (ρ : Representation R G X) (H : Subgroup G) [H.FiniteIndex] (f : G → X)

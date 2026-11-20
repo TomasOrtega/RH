@@ -6,7 +6,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.Targets
 
 /- English proof (translation)
-The claim follows from `LiftGraphFactor.proof GroundTheory.Heights₂.Heights.HilbertSamuel.SectionNormSqExtension.closed`.
+A detailed English derivation is pending.
 -/
 theorem LiftGraphFactor.closed : LiftGraphFactor.Statement :=
   LiftGraphFactor.proof GroundTheory.Heights₂.Heights.HilbertSamuel.SectionNormSqExtension.closed

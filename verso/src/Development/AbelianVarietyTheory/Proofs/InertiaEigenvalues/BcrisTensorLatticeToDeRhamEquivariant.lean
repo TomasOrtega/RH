@@ -9,9 +9,9 @@ set_option synthInstance.maxHeartbeats 400000
 namespace GlobalTheory.BKGal.JumpDR
 
 /- English proof (translation)
-Establish `h1 : Td.eB.symm (Per.σB (sQ l g) b) = Pl.actQ (sQ l g) (Td.eB.symm b)`. Apply `Td.eB.injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, Td.actB, RingEquiv.apply_symm_apply]`. Establish `h2` using `(Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)).ι_comm g (Td.eB.symm b)`. Rewrite `h2` using `[Pl.PD_ι, Pl.PD_ι, Pl.PD_actB, Pl.PD_actdR]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Pl.ιB (Td.eB.symm (Per.σB (sQ l g) b)) = Pl.actQdR (sQ l g) (Pl.ιB (Td.eB.symm b))`. Rewrite using `[h1]`. Conclude with `h2`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cB_gal {l : ℕ} [Fact l.Prime] {Pl : LocPrime l} {AI : LocAinf l Pl} (Td : LocTied l Pl AI)
     (g : Gl l) (b : Per.Bcris l) :
@@ -25,11 +25,11 @@ theorem cB_gal {l : ℕ} [Fact l.Prime] {Pl : LocPrime l} {AI : LocAinf l Pl} (T
   rw [h1]; exact h2
 
 /- English proof (translation)
-Proceed by induction on `b using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`. Consider the case `tmul u x`. Proceed by induction on `u using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp only [TensorProduct.zero_tmul, map_zero]`. Consider the case `add u v hu hv => simp only [TensorProduct.add_tmul, map_add, hu, hv]`. Consider the case `tmul o b`. Establish `e1 : actB (sQ l) T g ((o ⊗ₜ[ℤ_[l]] b) ⊗ₜ[↥(OL LL)] x) = (o ⊗ₜ[ℤ_[l]] Per.σB (sQ l g) b) ⊗ₜ[↥(OL LL)] T.actT g x` using `rfl`. Rewrite using `[e1, hX, hX]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ((T.actT g x : ↥T.L.T) : T.V) = T.ρ g (x : T.V)` using `rfl`. Rewrite using `[e2, cB_gal]`. Use `show _ = (T.ρ g ((o : ↥LL.1) • (x : T.V))) ⊗ₜ[ℚ_[l]] ((Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)).actdR g (cB Td b))`. Rewrite using `[map_smul, Pl.PD_actdR]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem X_equivariant (l : ℕ) [Fact l.Prime] (Pl : LocPrime l) (AI : LocAinf l Pl) (Td : LocTied l Pl AI)
     (LL : FinExt l) (T : QLat LL) (X : TW (OB l ↥(OL LL)) T →+ T.V ⊗[ℚ_[l]] Pl.R.BdR)

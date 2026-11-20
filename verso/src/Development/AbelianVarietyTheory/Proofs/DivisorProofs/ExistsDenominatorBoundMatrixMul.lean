@@ -9,17 +9,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E κ ι _ _ _ _ T`. Take `⟨y, hy, hint⟩` from `exists_integral_multiples ℤ ℚ (L := E) (Finset.univ.image (fun p : κ × ι => T p.1 p.2))`. Use `⟨y.natAbs ^ 2, by positivity, ?_⟩` and prove the remaining obligations. Introduce `L x hx k`. Establish `hT : ∀ i, IsIntegral ℤ (((y.natAbs ^ 2 : ℕ) : E) * T k i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Establish `h1` using `hint (T k i) (Finset.mem_image.mpr ⟨(k, i), Finset.mem_univ _, rfl⟩)`. Establish `hy' : IsIntegral ℤ ((y : E))`. Use `(isIntegral_algebraMap : IsIntegral ℤ (algebraMap ℤ E y))` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: ((y.natAbs ^ 2 : ℕ) : E) * T k i = (y : E) * (y • T k i)`. Rewrite using `[zsmul_eq_mul]`. Establish `: ((y.natAbs ^ 2 : ℕ) : E) = ((y ^ 2 : ℤ) : E)`. Establish `hz : ((y.natAbs ^ 2 : ℕ) : ℤ) = y ^ 2` using `by push_cast; exact sq_abs y`. Rewrite using `[← hz, Int.cast_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `hy'.mul h1`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `heq : (((y.natAbs ^ 2 * L : ℕ) : E) * ∑ i, T k i * x i) = ∑ i, (((y.natAbs ^ 2 : ℕ) : E) * T k i) * ((L : E) * x i)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq]`. Use `Subalgebra.sum_mem (integralClosure ℤ E) (t := Finset.univ) (f := fun i => (((y.natAbs ^ 2 : ℕ) : E) * T k i) * ((L : E) * x i)) (fun i _ => Subalgebra.mul_mem _ (hT i) (hx i))` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem denom_bound_mul : ∀ (E κ ι : Type) [Field E] [NumberField E] [Fintype κ] [Fintype ι] (T : Matrix κ ι E), ∃ M : ℕ, 0 < M ∧ ∀ (L : ℕ) (x : ι → E), (∀ i, IsIntegral ℤ ((L : E) * x i)) → ∀ k, IsIntegral ℤ (((M * L : ℕ) : E) * ∑ i, T k i * x i) := by
   intro E κ ι _ _ _ _ T

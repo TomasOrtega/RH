@@ -61,7 +61,7 @@ structure ModelO (O : Type) [CommRing O] where
   U_dense : Dense (U : Set Z)
 
 /- English proof (translation)
-Introduce `x hx` and use `((M.U_iff x).1 hx).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ModelO.ab_open {O : Type} [CommRing O] (M : ModelO O) : ∀ x ∈ M.U, AbelianAt M.G x :=
   fun x hx => ((M.U_iff x).1 hx).2

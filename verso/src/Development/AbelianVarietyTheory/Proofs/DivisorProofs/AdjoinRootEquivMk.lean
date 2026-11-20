@@ -12,7 +12,7 @@ variable {F : Type} [Field F] {B : Type} [Ring B] [Algebra F B]
 def gen (γ : B) : Algebra.adjoin F ({γ} : Set B) := ⟨γ, Algebra.self_mem_adjoin_singleton F γ⟩
 
 /- English proof (translation)
-The claim follows from `Polynomial.aeval_subalgebra_coe p _ _`.
+A detailed English derivation is pending.
 -/
 theorem aeval_gen (γ : B) (p : Polynomial F) :
     ((Polynomial.aeval (gen (F := F) γ) p : Algebra.adjoin F ({γ} : Set B)) : B) = Polynomial.aeval γ p :=

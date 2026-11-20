@@ -12,7 +12,7 @@ open GlobalTheory.UPel.HT
 namespace GlobalTheory.ExpFrame
 
 /- English proof (translation)
-Introduce `A _ _ g hA hg e he M hM`. Take `⟨Λ, hd, hf, hk⟩` from `GlobalTheory.ExpKernel.kernel_isFullLattice (Sp ℂ) A g hA hg (𝟙 (Sp ℂ)) e he`. Take `⟨L₀, u₀, hu₀⟩` from `GlobalTheory.exists_holUnif_of_isExp A g e Λ he hd hf hk`. Take `⟨u, Hm, χ, hu, hAH⟩` from `GlobalTheory.exists_isFactorAH_frame_of_unif A hA L₀ g u₀ M hM`. Conclude with `⟨u, Hm, χ, fun z => by rw [hu, hu₀], hAH⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isFactorAH_frame_of_isExp : ∀ (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (e : (Fin g → ℂ) → (Over.mk (𝟙 (Sp ℂ)) ⟶ A)), IsExp (𝟙 (Sp ℂ)) e → ∀ (M : LB A.left), M.IsLB → ∃ (u : HolUnif A M g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ), (∀ z, u.ex z = e z) ∧ GlobalTheory.TorusRM.IsFactorAH u Hm χ := by
   intro A _ _ g hA hg e he M hM

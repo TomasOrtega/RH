@@ -7,19 +7,19 @@ noncomputable section
 namespace Formalism.FourierDecayAlt.P5
 
 /- English proof (translation)
-The claim follows from `thmPActualOfE Formalism.FourierDecayAlt.P.actual_zeta_smooth_alt hE`.
+A detailed English derivation is pending.
 -/
 theorem thmPActualOfAnalytic (hE : HerAnalyticEAll) : ThmPActual :=
   thmPActualOfE Formalism.FourierDecayAlt.P.actual_zeta_smooth_alt hE
 
 /- English proof (translation)
-The claim follows from `thmPActualOfZ Formalism.FourierDecayAlt.P.actual_zeta_smooth_alt hAn`.
+A detailed English derivation is pending.
 -/
 theorem thmPActualOfHerC (hAn : HerAnalyticCAll) : ThmPActual :=
   thmPActualOfZ Formalism.FourierDecayAlt.P.actual_zeta_smooth_alt hAn
 
 /- English proof (translation)
-The claim follows from `thmPActualOfCoreMZ Formalism.FourierDecayAlt.P.actual_zeta_smooth_alt topDensMeasAll hF`.
+A detailed English derivation is pending.
 -/
 theorem thmPActualOfCore (hF : HerAnalyticFAll) : ThmPActual :=
   thmPActualOfCoreMZ Formalism.FourierDecayAlt.P.actual_zeta_smooth_alt topDensMeasAll hF

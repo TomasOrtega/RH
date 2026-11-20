@@ -27,7 +27,7 @@ private def eta {I K : Type} [Group I] [Field K] (g n : ℕ) (R : I →* Kˣ) (�
   (θ ^ g ^ (j % (n : ℤ)).toNat).comp R
 
 /- English proof (translation)
-Simplify using `[eta, MonoidHom.pow_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem eta_apply {I K : Type} [Group I] [Field K] (g n : ℕ) (R : I →* Kˣ) (θ : Kˣ →* ℂˣ) (j : ℤ) (t : I) :
     eta g n R θ j t = θ (R t) ^ g ^ (j % (n : ℤ)).toNat := by
@@ -40,67 +40,63 @@ section Scalars
 end Scalars
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h a ha g _ i hi y hy hdz`. Use `haveI : CharZero (HeightOneSpectrum.adicCompletion E w) := (RingHom.charZero_iff (ϕ := i.toRingHom) i.injective).1 inferInstance`. Take `⟨n, c⟩` from `y`. Establish `hcls : GlobalTheory.LocLanglands.cls c.rep = (⟨n, c⟩ : IrrGL _)`. Simplify using `[GlobalTheory.LocLanglands.cls, IrrCl.cl_rep]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨ω, -, hω, hωu⟩, -, -, hpos, -⟩` from `clBasic _ (⟨n, c⟩ : IrrGL _)`. Establish `hn : 0 < n` using `hpos hy`. Take `⟨φ, hφ⟩` from `deg_surjective (h := h) 1`. Rewrite `hy`, `hdz` using `[← hcls]`. Take `⟨hτc, hτu⟩` from `typeEx E Ω A w h g i hi n hn c.rep`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, hτ, hτi⟩` from `hτc hy hdz`. Take `⟨D⟩` from `extEx E Ω A w h g i hi n hn`. Take `⟨⟨R, hR⟩, hRs⟩` from `resEx E Ω A w h g i hi n hn D`. Establish `hT` using `hRs R hR`. Establish `hrank` using `hT.rank`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `haveI : Module.Finite (ZMod g) D.K := Module.finite_of_finrank_pos (by omega)`. Use `haveI : Finite D.K := Module.finite_of_finite (ZMod g)`. Use `letI : Fintype D.K := Fintype.ofFinite _`. Establish `hcard : Fintype.card D.K = g ^ n`. Rewrite using `[Module.card_eq_pow_finrank (K := ZMod g), ZMod.card, hrank]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfix : ∀ x : D.Kˣ, x ^ g ^ n = x` using `fun x => Units.ext (by`. Rewrite using `[Units.val_pow_eq_pow_val, ← hcard, FiniteField.pow_card])`. Establish `hper : ∀ (x : D.Kˣ) (q r : ℕ), x ^ g ^ (n * q + r) = x ^ g ^ r`. Introduce `x q r`. Proceed by induction on `q with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `succ q ih => rw [show n * (q + 1) + r = n + (n * q + r) by ring, pow_add, pow_mul, hfix, ih]`. Establish `hmod : ∀ (x : D.Kˣ) (m : ℕ), x ^ g ^ m = x ^ g ^ (m % n)`. Introduce `x m`. Use `conv_lhs => rw [← Nat.div_add_mod m n]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hper x _ _`. Establish `hcong : ∀ (x : D.Kˣ) (p q : ℕ), (p : ℤ) ≡ q [ZMOD n] → x ^ g ^ p = x ^ g ^ q`. Introduce `x p q hpq`. Establish `h1 : ((p % n : ℕ) : ℤ) = ((q % n : ℕ) : ℤ)` using `by push_cast; exact hpq`. Rewrite using `[hmod x p, hmod x q, (by exact_mod_cast h1 : p % n = q % n)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hNex, hNuniq, -, hNtr⟩` from `nameLaws g n hn D.K hrank`. Take `⟨θ, hθr, hθN⟩` from `hNex τ hτ`. Establish `hnz : (0 : ℤ) < n` using `by exact_mod_cast hn`. Establish `hex : ∀ j : ℤ, (((j % (n : ℤ)).toNat : ℕ) : ℤ) = j % n` using `fun j => Int.toNat_of_nonneg (Int.emod_nonneg _ hnz.ne')`. Establish `hexlt : ∀ j : ℤ, (j % (n : ℤ)).toNat < n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `j`. Establish `h1` using `hex j`. Establish `h2` using `Int.emod_lt_of_pos j hnz`. Use linear arithmetic over natural numbers and integers. Establish `heta : ∀ (j : ℤ) (t : ↥(Ine A)), eta g n R θ j t = θ (R t ^ g ^ (j % (n : ℤ)).toNat)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j t`. Rewrite using `[eta_apply, map_pow]`. Establish `hopen : IsOpen (SetLike.coe (eta g n R θ 0).ker)`. Use `Subgroup.isOpen_mono ?_ hT.isOpen` and prove the remaining obligations. Introduce `t ht`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `ht`, the goal using `[MonoidHom.mem_ker]`. Rewrite using `[heta, ht, one_pow, map_one]`. Establish `hshift : ∀ (j : ℤ) (t t' : ↥(Ine A)), (ineIncl h) t' = φ * (ineIncl h) t * φ⁻¹ → eta g n R θ j t' = eta g n R θ (j + 1) t`. Introduce `j t t' ht`. Rewrite using `[heta, heta, hT.frob φ t t' hφ ht, ← pow_mul, ← pow_succ']`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Apply `hcong` to reduce the goal to its premises. Move the coercions through the operations in `[hex]`. Conclude with `((Int.mod_modEq j n).add_right 1).trans (Int.mod_modEq (j + 1) n).symm`. Establish `hinj : ∀ j j' : ℤ, eta g n R θ j = eta g n R θ j' ↔ (n : ℤ) ∣ j - j'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce `j j'`. Prove the components needed by the constructor for the conclusion. Introduce `he`. Establish `h1 : θ ^ g ^ (j % (n : ℤ)).toNat = θ ^ g ^ (j' % (n : ℤ)).toNat`. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨t, rfl⟩` from `hT.surj x`. Use `congrArg (fun f => f t) he` as an intermediate fact. Simplify `this` using `[eta_apply, MonoidHom.pow_apply]`. Establish `h2` using `hθr _ _ (hexlt j) (hexlt j') h1`. Establish `h3 : j % (n : ℤ) = j' % n` using `by rw [← hex j, ← hex j', h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Int.ModEq.dvd (show j' ≡ j [ZMOD n] from h3.symm)`. Introduce `hd`. Establish `h3 : j % (n : ℤ) = j' % n` using `(Int.modEq_iff_dvd.mpr hd).symm`. Simplify using `only [eta, h3]`. Take `⟨V, hVirr, hVdim, hVφ, hVine, hVtame⟩` from `indEx E Ω A w h φ hφ n hn (eta g n R θ) hopen hshift hinj (ω (a φ) : ℂ) (Units.ne_zero _)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hInFor : InFor g n R θ V`. Introduce `t`. Rewrite using `[hVine t]`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `j hj`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hj` using `[Finset.mem_range]`. Establish `h1 : ((j : ℤ) % (n : ℤ)) = j` using `Int.emod_eq_of_lt (by omega) (by omega)`. Rewrite using `[heta, h1, Int.toNat_natCast]`. Take `⟨⟨δ, hδ⟩, hδu, -, hirr, -, -, -, hm, -⟩` from `wDBasic E Ω A w h V`. Use `⟨V, hVirr, hVdim, hVtame ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `j t ht`. Rewrite using `[heta, hT.wild t ht, one_pow, map_one]`. Introduce `ω' hω' σ'`. Rewrite using `[hωu ω' hω']`. Establish `hNC` using `nameCentral g n hn D.K hrank τ θ hτ hθr hθN`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ψ, hψ0, hψ⟩` from `hτi`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, ψ v ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hψ0 (LinearMap.ext hcon)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hcent : ∀ t : ↥(Ine A), θ (∏ j ∈ Finset.range n, R t ^ g ^ j) = ω (a (ineIncl h t))`. Introduce `t`. Take `⟨u, hu1, hu2⟩` from `resBase E Ω A w h a ha g i hi n hn D R hR t`. Establish `key` using `hψ (GeneralLinearGroup.scalar (Fin n) u) v`. Establish `hred : GlobalTheory.GLp.red g n (GeneralLinearGroup.scalar (Fin n) u) = GeneralLinearGroup.scalar (Fin n) (Units.map (PadicInt.toZMod : ℤ_[g] →+* ZMod g).toMonoidHom u)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `p q`. Apply the tactic sequence `by_cases hpq : p = q <;> simp [GlobalTheory.GLp.red, GeneralLinearGroup.scalar, Matrix.diagonal_apply, hpq]`. Use `set z : (HeightOneSpectrum.adicCompletion E w)ˣ := Units.map (i.toRingHom.comp PadicInt.Coe.ringHom).toMonoidHom u with hz`. Establish `hinc : GeneralLinearGroup.map i.toRingHom (GlobalTheory.GLp.inc g n (GeneralLinearGroup.scalar (Fin n) u)) = GeneralLinearGroup.scalar (Fin n) z`. Use extensionality with `p q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply the tactic sequence `by_cases hpq : p = q <;> simp [GlobalTheory.GLp.inc, GeneralLinearGroup.scalar, Matrix.diagonal_apply, hpq, z] <;> rfl`. Rewrite `key` using `[hred, MonoidHom.comp_apply, hinc, hNC, map_smul]`. Rewrite `key` using `[hω z (ψ v)]`. Establish `heq` using `smul_left_injective ℂ hv key`. Apply the tactic sequence `have hzeq : a (ineIncl h t) = z := Units.ext (by rw [hu1]; simp [z] <;> rfl)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hpeq : ∏ j ∈ Finset.range n, R t ^ g ^ j = Units.map (algebraMap (ZMod g) D.K : ZMod g →* D.K) (Units.map (PadicInt.toZMod : ℤ_[g] →+* ZMod g).toMonoidHom u)` using `Units.ext (by simp [hu2])`. Rewrite using `[hzeq, hpeq]`. Conclude with `Units.ext heq`. Establish `hδeq : δ = ω.comp a`. Apply `hδu φ δ (ω.comp a) hφ` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← hδ, hVφ]`. Both sides reduce to the same expression. Introduce `t`. Apply `Units.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Rewrite using `[← hδ, MonoidHom.comp_apply, ← hcent, map_prod]`. Establish `hpol : V.inePol ↑t = (Multiset.map (fun z => X - C z) (do let b ← Multiset.map (fun j => θ (R t ^ g ^ j)) (Multiset.range n); pure (b : ℂ))).prod`. Rewrite using `[hInFor t]`. Simplify using `[Finset.prod_eq_multiset_prod, Multiset.map_map]`. Rewrite using `[(hm t _ hpol).1]`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Simplify using `[Finset.prod_eq_multiset_prod]`. Rewrite using `[hδ σ', hδeq]`. Both sides reduce to the same expression. Introduce `g' _ i' hi' n' hn' D' R' hR' θ' hθ'r τ' hτ' hN' σ' hσ' hinfl'`. Take `⟨hgg, hii⟩` from `isoUniq _ g g' i i' hi hi'`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Substitute `g'` using the available equality. Establish `hi2 : i' = i` using `hii i' hi'`. Substitute `i'` using the available equality. Establish `hnn : n' = n` using `congrArg Sigma.fst hσ'`. Substitute `n'` using the available equality.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hchar` using `hτu σ' τ τ' (hσ'.trans hcls.symm) hτ hτ' hτi hinfl'`. Establish `hNτ : Names g n θ' τ`. Simplify `hN'` using `only [Names, hchar]`. Take `⟨e, he⟩` from `resIndep E Ω A w h g i hi n hn D D' R R' hR hR'`. Take `⟨hN2, hr2⟩` from `hNtr D'.K e τ θ'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨j, -, hj⟩` from `hNuniq τ θ _ hθr (hr2 hθ'r) hθN (hN2 hNτ)`. Establish `hI` using `(tameUniq E Ω A w h g n D.K R hT θ hθr V hInFor).1 j`. Rewrite `hI` using `[← hj]`. Use `⟨(hirr hVirr).1, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[hI t]`.
-
-Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `k _`. Use `congr 3`. Simplify using `only [MonoidHom.comp_apply]`. Use `congr 1`.
-
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `[he t]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem parEx : ParEx := by
   intro E Ω _ _ _ _ _ A w h a ha g _ i hi y hy hdz

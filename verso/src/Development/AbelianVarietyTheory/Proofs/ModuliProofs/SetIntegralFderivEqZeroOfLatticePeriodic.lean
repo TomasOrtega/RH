@@ -15,9 +15,9 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimension
 omit [NormedSpace ℝ E] [FiniteDimensional ℝ E] in
 
 /- English proof (translation)
-Establish `: VAddInvariantMeasure L E μ` using `⟨fun g s _ => measure_preimage_add μ (g : E) s⟩`. Establish `hpres` using `measurePreserving_add_right μ c`. Establish `hD' : IsAddFundamentalDomain L ((fun x => x + c) '' D) μ` using `hD.image_of_equiv (Equiv.addRight c) (measurePreserving_add_right μ (-c)).quasiMeasurePreserving (Equiv.refl _) (fun g x => add_assoc _ _ _)`. Rewrite using `[← hpres.setIntegral_image_emb (MeasurableEquiv.addRight c).measurableEmbedding]`. Use `(hD'.setIntegral_eq hD fun g x => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show F ((g : E) + x) = F x`. Rewrite using `[add_comm]`. Conclude with `hF g x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_comp_add_of_lattice_periodic [SecondCountableTopology E]
     (L : Submodule ℤ E) [Countable L] {D : Set E}
@@ -36,21 +36,19 @@ theorem setIntegral_comp_add_of_lattice_periodic [SecondCountableTopology E]
   exact hF g x
 
 /- English proof (translation)
-Establish `hcont : Continuous (fderiv ℝ F)` using `hF1.continuous_fderiv one_ne_zero`. Take `⟨R, hR⟩` from `hb.subset_closedBall 0`. Establish `hK : IsCompact (Metric.closedBall (0 : E) (R + ‖v‖))` using `isCompact_closedBall _ _`. Take `⟨M, hM⟩` from `hK.exists_bound_of_continuousOn hcont.continuousOn`. Establish `hfin : μ D < ⊤` using `hb.measure_lt_top`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: IsFiniteMeasure (μ.restrict D)` using `isFiniteMeasure_restrict.2 hfin.ne`. Establish `hint : ∀ G : E → ℂ, Continuous G → Integrable G (μ.restrict D)` using `fun G hG => (hG.continuousOn.integrableOn_compact (isCompact_closedBall (0 : E) R)).mono_set hR`. Establish `hmem : ∀ z ∈ D, ∀ t ∈ Metric.ball (0 : ℝ) 1, z + t • v ∈ Metric.closedBall (0 : E) (R + ‖v‖)`. Introduce `z hz t ht`. Rewrite using `[mem_closedBall_zero_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ‖z‖ ≤ R` using `mem_closedBall_zero_iff.1 (hR hz)`. Establish `ht' : ‖t‖ < 1` using `by simpa using ht`. Establish `h2 : ‖t • v‖ ≤ ‖v‖`. Rewrite using `[norm_smul]`. Use polynomial arithmetic with `[norm_nonneg v, norm_nonneg t]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hderiv : ∀ (z : E) (t : ℝ), HasDerivAt (fun s : ℝ => F (z + s • v)) (fderiv ℝ F (z + t • v) v) t`. Introduce `z t`. Establish `hd : HasFDerivAt F (fderiv ℝ F (z + t • v)) (z + t • v)` using `(hF1.differentiable one_ne_zero _).hasFDerivAt`. Establish `hl : HasDerivAt (fun s : ℝ => z + s • v) v t`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using ((hasDerivAt_id t).smul_const v).const_add z`. Conclude with `hd.comp_hasDerivAt t hl`. Establish `hmeas : ∀ᶠ s in nhds (0 : ℝ), AEStronglyMeasurable (fun z => F (z + s • v)) (μ.restrict D)` using `Filter.Eventually.of_forall fun s => (hF1.continuous.comp (continuous_id.add continuous_const)).aestronglyMeasurable`. Establish `hint0 : Integrable (fun z => F (z + (0 : ℝ) • v)) (μ.restrict D)` using `hint _ (hF1.continuous.comp (continuous_id.add continuous_const))`. Establish `hmeas' : AEStronglyMeasurable (fun z => fderiv ℝ F (z + (0 : ℝ) • v) v) (μ.restrict D)` using `((hcont.comp (continuous_id.add continuous_const)).clm_apply continuous_const).aestronglyMeasurable`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbound : ∀ᵐ z ∂(μ.restrict D), ∀ s ∈ Metric.ball (0 : ℝ) 1, ‖fderiv ℝ F (z + s • v) v‖ ≤ M * ‖v‖`. Use `(ae_restrict_iff' hm).2 (Filter.Eventually.of_forall fun z hz s hs => ?_)` and prove the remaining obligations. Conclude with `(ContinuousLinearMap.le_opNorm _ _).trans (mul_le_mul_of_nonneg_right (hM _ (hmem z hz s hs)) (norm_nonneg _))`. Establish `hdiff : ∀ᵐ z ∂(μ.restrict D), ∀ s ∈ Metric.ball (0 : ℝ) 1, HasDerivAt (fun t : ℝ => F (z + t • v)) (fderiv ℝ F (z + s • v) v) s` using `Filter.Eventually.of_forall fun z s _ => hderiv z s`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (𝕜 := ℝ) (μ := μ.restrict D) (F := fun (s : ℝ) (z : E) => F (z + s • v)) (x₀ := 0) (bound := fun _ => M * ‖v‖) (F' := fun (s : ℝ) (z : E) => fderiv ℝ F (z + s • v) v) (Metric.ball_mem_nhds (0 : ℝ) one_pos) hmeas hint0 hmeas' hbound …`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hconst : (fun s : ℝ => ∫ z in D, F (z + s • v) ∂μ) = fun _ => ∫ z in D, F z ∂μ`. Use function extensionality and compare the values at `fun s => setIntegral_comp_add_of_lattice_periodic μ L hD hF (s • v)`. Establish `h3 : HasDerivAt (fun _ : ℝ => ∫ z in D, F z ∂μ) (∫ z in D, fderiv ℝ F (z + (0 : ℝ) • v) v ∂μ) 0`. Rewrite using `[← hconst]`. Conclude with `key.2`.
-
-Simplify using `using h3.unique (hasDerivAt_const _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem setIntegral_fderiv_eq_zero_of_lattice_periodic
     (L : Submodule ℤ E) [Countable L] {D : Set E}
@@ -112,15 +110,13 @@ theorem setIntegral_fderiv_eq_zero_of_lattice_periodic
   simpa using h3.unique (hasDerivAt_const _ _)
 
 /- English proof (translation)
-Set `μ : Measure E` to `Measure.addHaar`. Set `b` to `Module.Free.chooseBasis ℤ L`. Establish `hD : IsAddFundamentalDomain L (ZSpan.fundamentalDomain (b.ofZLatticeBasis ℝ)) μ` using `ZLattice.isAddFundamentalDomain b μ`. Establish `hm : MeasurableSet (ZSpan.fundamentalDomain (b.ofZLatticeBasis ℝ))` using `ZSpan.fundamentalDomain_measurableSet _`. Establish `hb : Bornology.IsBounded (ZSpan.fundamentalDomain (b.ofZLatticeBasis ℝ))` using `ZSpan.fundamentalDomain_isBounded _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set D := ZSpan.fundamentalDomain (b.ofZLatticeBasis ℝ) with hDdef`. Establish `hzero : ∀ k, ∫ z in D, fderiv ℝ (F k) z (v k) ∂μ = 0` using `fun k => setIntegral_fderiv_eq_zero_of_lattice_periodic μ L hD hm hb (hF k).1 (hF k).2 (v k)`. Take `⟨R, hR⟩` from `hb.subset_closedBall 0`. Establish `hint : ∀ k, IntegrableOn (fun z => a k * fderiv ℝ (F k) z (v k)) D μ` using `fun k => ((continuous_const.mul (((hF k).1.continuous_fderiv one_ne_zero).clm_apply continuous_const)).continuousOn.integrableOn_compact (isCompact_closedBall (0 : E) R)).mono_set hR`. Establish `hsum : ∫ z in D, (∑ k, a k * fderiv ℝ (F k) z (v k)) ∂μ = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_finsetSum _ (fun k _ => hint k)]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, hzero k, mul_zero]`. Rewrite `hsum` using `[hC]`. Rewrite `hsum` using `[setIntegral_const]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: VAddInvariantMeasure L E μ` using `⟨fun g s _ => measure_preimage_add μ (g : E) s⟩`. Establish `hne : μ D ≠ 0` using `hD.measure_ne_zero (NeZero.ne μ)`. Establish `hfin : μ D ≠ ⊤` using `hb.measure_lt_top.ne`. Break down `smul_eq_zero.1 hsum with h | h` into its components or cases. Conclude with `absurd h (ENNReal.toReal_ne_zero.2 ⟨hne, hfin⟩)`.
-
-Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem const_eq_zero_of_sum_fderiv_lattice_periodic
     (L : Submodule ℤ E) [DiscreteTopology L] [IsZLattice ℝ L] {ι : Type*} [Fintype ι]
@@ -160,7 +156,7 @@ theorem const_eq_zero_of_sum_fderiv_lattice_periodic
 end General
 
 /- English proof (translation)
-Introduce `g Λ hdisc hspan n F a v C hF hC`. Establish `: IsZLattice ℝ Λ` using `⟨hspan⟩`. Conclude with `const_eq_zero_of_sum_fderiv_lattice_periodic Λ hF hC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem const_eq_zero_of_sum_fderiv_periodic :
     ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)), DiscreteTopology Λ →

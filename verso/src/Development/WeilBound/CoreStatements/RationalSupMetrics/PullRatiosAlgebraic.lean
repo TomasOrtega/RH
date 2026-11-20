@@ -43,18 +43,18 @@ open GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.HilbertSamu
 namespace MultiProjectiveCoordinates
 
 /- English proof (translation)
-The claim follows from `PullRatiosAlgebraic.proof PullConeNull.proof PullConeDegree.proof PullGradedAlgebraic.proof`.
+A detailed English derivation is pending.
 -/
 theorem pull_ratios_algebraic : PullRatiosAlgebraic.Statement :=
   PullRatiosAlgebraic.proof PullConeNull.proof PullConeDegree.proof PullGradedAlgebraic.proof
 
 /- English proof (translation)
-The claim follows from `PullFormsGeneric.proof pull_ratios_algebraic`.
+A detailed English derivation is pending.
 -/
 theorem pull_forms_generic : PullFormsGeneric.Statement := PullFormsGeneric.proof pull_ratios_algebraic
 
 /- English proof (translation)
-The claim follows from `FibreNormPullback.proof_dehom pull_forms_generic (FibreNormDehomCharpoly.proof pull_forms_generic pull_ratios_algebraic PullSectionIntegral.proof DehomCharpolyForms.proof) (FibreNormDehomIntegral.proof FibreNormBadPrimesFinite.proof (FibreNormGoodPrimeIntegral.proof GlobalTheory. …`.
+A detailed English derivation is pending.
 -/
 theorem fibre_pull_integral : FibreNormPullback.Statement :=
   FibreNormPullback.proof_dehom pull_forms_generic
@@ -67,7 +67,7 @@ theorem fibre_pull_integral : FibreNormPullback.Statement :=
     FibreNormDehomRoots.full
 
 /- English proof (translation)
-The claim follows from `GridSeparation.proof NormalLocusRep.proof (FibreNormBound.proof (ProjAvoidingForm.proof SegreArith.proof) (FibreRepresentatives.proof AvoidFormFinite.proof) (FibreNormMax.proof fibre_pull_integral) MetricMaxComparison.proof) RootGridLower.proof`.
+A detailed English derivation is pending.
 -/
 theorem grid_separation : GridSeparation.Statement :=
   GridSeparation.proof NormalLocusRep.proof
@@ -80,7 +80,7 @@ end MultiProjectiveCoordinates
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo GlobalTheory.CompanionTheory.Ar.Small Filter Topology in
 /- English proof (translation)
-The claim follows from `SmallPacking.proof (NmSectionsRankBound.proof (NmSectionsFinite.proof (Conductor.proof SecEq.proof)) SecMRankBound.full) (SmallSectionsSeparated.proof MultiProjectiveCoordinates.grid_separation)`.
+A detailed English derivation is pending.
 -/
 theorem MultiProjectiveCoordinates.packing_statement : PackingStatement :=
   SmallPacking.proof

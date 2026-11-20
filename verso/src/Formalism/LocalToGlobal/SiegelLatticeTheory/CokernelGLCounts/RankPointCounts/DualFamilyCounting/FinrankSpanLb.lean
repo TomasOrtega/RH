@@ -20,7 +20,7 @@ def Wb : Submodule D.host.E (VS D).V :=
   ⨅ c, LinearMap.ker ((VS D).hT (X.eX c)) ⊓ LinearMap.ker ((VS D).hT (X.fY c))
 
 /- English proof (translation)
-Simplify using `[Wb, Submodule.mem_iInf, LinearMap.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Wb {y : (VS D).V} : y ∈ Wb X ↔ ∀ c, (VS D).hT (X.eX c) y = 0 ∧ (VS D).hT (X.fY c) y = 0 := by
   simp [Wb, Submodule.mem_iInf, LinearMap.mem_ker]
@@ -35,9 +35,9 @@ theorem phi_apply (y : (VS D).V) :
     phi X y = (fun c => (VS D).hT (X.eX c) y, fun c => (VS D).hT (X.fY c) y) := rfl
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[LinearMap.mem_ker, mem_Wb, phi_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h c`. Conclude with `⟨congrFun (congrArg Prod.fst h) c, congrFun (congrArg Prod.snd h) c⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `h`. Use `Prod.ext (funext fun c => (h c).1) (funext fun c => (h c).2)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem ker_phi : LinearMap.ker (phi X) = Wb X := by
   ext y
@@ -49,9 +49,9 @@ theorem ker_phi : LinearMap.ker (phi X) = Wb X := by
     refine Prod.ext (funext fun c => (h c).1) (funext fun c => (h c).2)
 
 /- English proof (translation)
-Rewrite using `[LinearMap.range_eq_top]`. Introduce and unpack `⟨p, q⟩`. Use `⟨∑ a, p a • X.fY a + ∑ a, q a • X.eX a, ?_⟩` and prove the remaining obligations. Rewrite using `[phi_apply]`. Use `Prod.ext (funext fun c => ?_) (funext fun c => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[map_sum, map_smul, X.ef, X.ee, Finset.sum_ite_eq]`. Simplify using `[map_sum, map_smul, X.ff, Ex.h_fe, Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem range_phi : LinearMap.range (phi X) = ⊤ := by
   rw [LinearMap.range_eq_top]
@@ -63,13 +63,13 @@ theorem range_phi : LinearMap.range (phi X) = ⊤ := by
   · simp [map_sum, map_smul, X.ff, Ex.h_fe, Finset.sum_ite_eq]
 
 /- English proof (translation)
-Rewrite using `[Module.finrank_eq_card_basis X.bas, Fintype.card_fin, nX X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_V (X : HidaSetting D) : Module.finrank D.host.E (VS D).V = 2 * D.R.rS + D.R.k + 1 := by
   rw [Module.finrank_eq_card_basis X.bas, Fintype.card_fin, nX X]
 
 /- English proof (translation)
-Establish `h` using `LinearMap.finrank_range_add_finrank_ker (phi X)`. Rewrite `h` using `[range_phi, ker_phi, finrank_top, Module.finrank_prod, Module.finrank_fin_fun, finrank_V X]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_Wb : Module.finrank D.host.E (Wb X) = D.R.k + 1 := by
   have h := LinearMap.finrank_range_add_finrank_ker (phi X)
@@ -77,7 +77,7 @@ theorem finrank_Wb : Module.finrank D.host.E (Wb X) = D.R.k + 1 := by
   omega
 
 /- English proof (translation)
-Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Conclude with `(mem_Wb X).2 fun c => X.Lb_perp x hx c`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem span_Lb_le : Submodule.span D.host.E (X.Lb : Set (VS D).V) ≤ Wb X := by
   rw [Submodule.span_le]
@@ -85,21 +85,19 @@ theorem span_Lb_le : Submodule.span D.host.E (X.Lb : Set (VS D).V) ≤ Wb X := b
   exact (mem_Wb X).2 fun c => X.Lb_perp x hx c
 
 /- English proof (translation)
-Use `le_antisymm (span_Lb_le X) fun y hy => ?_` and prove the remaining obligations. Establish `hy'` using `(mem_Wb X).1 hy`. Establish `htop : Submodule.span D.host.E ((VS D).L0 : Set (VS D).V) = ⊤` using `(VS D).standardTuple_isLattice.span_eq_top`. Establish `hyL : y ∈ Submodule.span D.host.E ((VS D).L0 : Set (VS D).V)` using `by rw [htop]; trivial`. Establish `hle : Submodule.span D.host.E ((VS D).L0 : Set (VS D).V) ≤ Submodule.span D.host.E (Set.range X.eX) ⊔ Submodule.span D.host.E (X.Lb : Set (VS D).V) ⊔ Submodule.span D.host.E (Set.range X.fY)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Submodule.span_le]`. Introduce `z hz`. Use `set T := Submodule.span D.host.E (Set.range X.eX) ⊔ Submodule.span D.host.E (X.Lb : Set (VS D).V) ⊔ Submodule.span D.host.E (Set.range X.fY) with hT`. Establish `hL : (VS D).L0 ≤ T.restrictScalars (𝓞 D.host.E)`. Rewrite using `[X.Lam_split]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations. Unfold `latSpanS`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, x, -, rfl⟩`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.smul_mem _ x (Submodule.subset_span ⟨a, rfl⟩)))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `l hl`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_right (Submodule.subset_span hl))`. Unfold `latSpanS`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, x, -, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.mem_sup_right (Submodule.smul_mem _ x (Submodule.subset_span ⟨a, rfl⟩))`. Conclude with `hL hz`. Take `⟨y12, hy12, y3, hy3, rfl⟩` from `Submodule.mem_sup.1 (hle hyL)`. Take `⟨y1, hy1, l, hl, rfl⟩` from `Submodule.mem_sup.1 hy12`. Take `⟨α, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun D.host.E).1 hy1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨β, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun D.host.E).1 hy3`. Establish `hlW : ∀ c, (VS D).hT (X.eX c) l = 0 ∧ (VS D).hT (X.fY c) l = 0` using `(mem_Wb X).1 (span_Lb_le X hl)`. Establish `hα : ∀ c, α c = 0`. Introduce `c`. Use `(hy' c).2` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[map_add, map_sum, map_smul, Ex.h_fe, X.ff, (hlW c).2, Finset.sum_ite_eq] at this`. Conclude with `this`. Establish `hβ : ∀ c, β c = 0`. Introduce `c`. Use `(hy' c).1` as an intermediate fact.
-
-Simplify using `[map_add, map_sum, map_smul, X.ef, X.ee, (hlW c).1, Finset.sum_ite_eq] at this`. Conclude with `this`. Simplify using `only [hα, hβ, zero_smul, Finset.sum_const_zero, zero_add, add_zero]`. Conclude with `hl`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem span_Lb : Submodule.span D.host.E (X.Lb : Set (VS D).V) = Wb X := by
   refine le_antisymm (span_Lb_le X) fun y hy => ?_
@@ -147,7 +145,7 @@ theorem span_Lb : Submodule.span D.host.E (X.Lb : Set (VS D).V) = Wb X := by
   exact hl
 
 /- English proof (translation)
-Rewrite using `[span_Lb, finrank_Wb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_span_Lb : Module.finrank D.host.E (Submodule.span D.host.E (X.Lb : Set (VS D).V)) = D.R.k + 1 := by
   rw [span_Lb, finrank_Wb]

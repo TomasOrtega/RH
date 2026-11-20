@@ -7,15 +7,15 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Preserv
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 /- English proof (translation)
-Establish `hI : MvPolynomial.idealOfVars σ R ≤ m.comap (F.comp MvPolynomial.coeToMvPowerSeries.ringHom)`. Rewrite using `[MvPolynomial.idealOfVars, Ideal.span_le]`. Introduce and unpack `_ ⟨s, rfl⟩`. Simplify using `using hF s`. Establish `hIn : MvPolynomial.idealOfVars σ R ^ n ≤ (m ^ n).comap (F.comp MvPolynomial.coeToMvPowerSeries.ringHom)` using `(Ideal.pow_right_mono hI n).trans (Ideal.le_comap_pow _ n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Set `e` to `toAdicCompletionAlgEquiv σ R`. Establish `key : ∀ y ∈ (MvPolynomial.idealOfVars σ R ^ n • ⊤ : Submodule (MvPolynomial σ R) (AdicCompletion (MvPolynomial.idealOfVars σ R) (MvPolynomial σ R))), F (e.symm y) ∈ m ^ n`. Introduce `y hy`. Use `Submodule.smul_induction_on hy (fun p hp z _ => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.smul_def, map_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ (hIn hp)`. Rewrite using `[map_add, map_add]`. Conclude with `add_mem ha hb`. Establish `h` using `key (e (g - (truncTotal n g : MvPolynomial σ R))) (by`. Rewrite using `[AdicCompletion.pow_smul_top_eq_ker_eval (MvPolynomial.idealOfVars_fg σ R), LinearMap.mem_ker, AdicCompletion.eval_apply, toAdicCompletionAlgEquiv_apply, toAdicCompletion_apply_eq_mk_truncTotal]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `: truncTotal n (g - ((truncTotal n g : MvPolynomial σ R) : MvPowerSeries σ R)) = 0`. Use extensionality with `x`. Rewrite using `[coeff_truncTotal_eq_ite]`. Use `split_ifs with hx`. Rewrite using `[map_sub, MvPolynomial.coeff_coe, coeff_truncTotal _ hx]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite using `[this]`. Use the proof step `rfl)`. Rewrite `h` using `[AlgEquiv.symm_apply_apply, map_sub]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem pres_new_low {R S σ : Type} [CommRing R] [CommRing S] [Finite σ] (m : Ideal S)
     (F : MvPowerSeries σ R →+* S) (hF : ∀ s, F (X s) ∈ m) (n : ℕ) (g : MvPowerSeries σ R) :
@@ -49,7 +49,7 @@ private theorem pres_new_low {R S σ : Type} [CommRing R] [CommRing S] [Finite �
   rwa [AlgEquiv.symm_apply_apply, map_sub] at h
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.PreservedCoefficient.pres_new_coeff N`.
+A detailed English derivation is pending.
 -/
 private theorem pres_new_coeff {O σ : Type} [CommRing O] [IsLocalRing O] (N : ℕ) :
     ∀ h ∈ maximalIdeal (MvPowerSeries σ O) ^ N, ∀ a : σ →₀ ℕ,
@@ -57,11 +57,9 @@ private theorem pres_new_coeff {O σ : Type} [CommRing O] [IsLocalRing O] (N : �
   _root_.UpperTheory.Reformulated.B.PreservedCoefficient.pres_new_coeff N
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[coeff_wcomp]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[if_pos rfl]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h1`. Both sides reduce to the same expression. Conclude with `(hh a h1).symm`. Rewrite using `[if_neg hij] split_ifs with h1`. Rewrite using `[map_zero]`.
-
-Conclude with `hh a (h1 ▸ Ne.symm hij)`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem pres_new_wcomp {O σ X : Type} [CommRing O] [AddCommGroup X] [DecidableEq X] (wt : σ → X)
     {i : X} (j : X) {h : MvPowerSeries σ O} (hh : h ∈ wtPart O wt i) :
@@ -81,9 +79,9 @@ private theorem pres_new_wcomp {O σ X : Type} [CommRing O] [AddCommGroup X] [De
     · simp
 
 /- English proof (translation)
-Proceed by induction on `u using Finsupp.induction_linear with`. Consider the case `zero => simpa using one_mem_wtPart O w`. Consider the case `add u v hu hv`. Establish `: (monomial (u + v) 1 : MvPowerSeries τ O) = monomial u 1 * monomial v 1`. Rewrite using `[monomial_mul_monomial, one_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_mul, map_add]`. Conclude with `mul_mem_wtPart O w hu hv`. Consider the case `single s n`. Rewrite using `[← X_pow_eq, map_pow, Finsupp.weight_single]`. Conclude with `SetLike.pow_mem_graded n (hΦ s)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pres_new_mono {O σ τ Y : Type} [CommRing O] [AddCommGroup Y] (wt : τ → Y) (w : σ → Y)
     (Φ : MvPowerSeries τ O →ₐ[O] MvPowerSeries σ O) (hΦ : ∀ s, Φ (X s) ∈ wtPart O w (wt s))
@@ -100,9 +98,9 @@ private theorem pres_new_mono {O σ τ Y : Type} [CommRing O] [AddCommGroup Y] (
     exact SetLike.pow_mem_graded n (hΦ s)
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on' with`. Consider the case `monomial u c`. Establish `: ((MvPolynomial.monomial u c : MvPolynomial τ O) : MvPowerSeries τ O) = c • monomial u 1`. Rewrite using `[MvPolynomial.coe_monomial, ← map_smul, smul_eq_mul, mul_one]`. Rewrite using `[this, map_smul, map_smul, map_smul, map_smul, pres_new_wcomp w j (pres_new_mono wt w Φ hΦ u), pres_new_wcomp wt j (h := monomial u 1) (pres_new_mono wt wt (AlgHom.id O _) (X_mem_wtPart O wt) u)]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Consider the case `add p q hp hq => simp only [MvPolynomial.coe_add, map_add, hp, hq]`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 -/
 private theorem pres_new_poly {O σ τ Y : Type} [CommRing O] [AddCommGroup Y] [DecidableEq Y] (wt : τ → Y) (w : σ → Y)
     (Φ : MvPowerSeries τ O →ₐ[O] MvPowerSeries σ O) (hΦ : ∀ s, Φ (X s) ∈ wtPart O w (wt s)) (j : Y)
@@ -117,13 +115,13 @@ private theorem pres_new_poly {O σ τ Y : Type} [CommRing O] [AddCommGroup Y] [
   | add p q hp hq => simp only [MvPolynomial.coe_add, map_add, hp, hq]
 
 /- English proof (translation)
-Establish `hl` using `pres_new_low (maximalIdeal (MvPowerSeries σ O)) (Φ : MvPowerSeries τ O →+* MvPowerSeries σ O) hm`. Use extensionality with `a`. Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus (I := maximalIdeal O) inferInstance _ fun k => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `pres_new_coeff _ _ (hl (k + a.degree) g) a`. Establish `h2` using `pres_new_coeff _ _ (hl (k + a.degree) (wcomp O wt j g)) a`. Establish `h3 : ((truncTotal (k + a.degree) (wcomp O wt j g) : MvPolynomial τ O) : MvPowerSeries τ O) = wcomp O wt j (truncTotal (k + a.degree) g : MvPolynomial τ O)`. Use extensionality with `b`. Simplify using `only [coeff_wcomp, MvPolynomial.coeff_coe, coeff_truncTotal_eq_ite]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> rfl`. Rewrite `h2` using `[h3]`. Simplify using `only [RingHom.coe_coe, Nat.add_sub_cancel, map_sub] at h1 h2`. Rewrite `h2` using `[pres_new_poly wt w Φ hΦ]`. Rewrite `h2`, the goal using `[coeff_wcomp]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `split_ifs at h2 ⊢`. Simplify using `using sub_mem h2 h1`. Conclude with `h2`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem pres_new_comm {O σ τ Y : Type} [CommRing O] [IsLocalRing O] [IsHausdorff (maximalIdeal O) O]
     [Finite τ] [AddCommGroup Y] [DecidableEq Y] (wt : τ → Y) (w : σ → Y)
@@ -151,15 +149,13 @@ private theorem pres_new_comm {O σ τ Y : Type} [CommRing O] [IsLocalRing O] [I
   · exact h2
 
 /- English proof (translation)
-Introduce `O _ _ _ _ Y _ _ _ _ R _ _ _ W _ τ _ wt z hz hgen`. Use `haveI : IsCO O (MvPowerSeries W.σ O) := co_mvps O O W.σ`. Use `haveI : IsCO O (MvPowerSeries τ O) := co_mvps O O τ`. Use `choose f hf hfz using fun s => (hz s).2`. Establish `hfz' : ∀ s, W.π (f s) = z s` using `hfz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfm : ∀ s, f s ∈ maximalIdeal (MvPowerSeries W.σ O)` using `fun s hu => (hz s).1 (hfz' s ▸ hu.map W.π)`. Take `⟨Φ, ⟨-, hΦ⟩, -⟩` from `co_ev O O (MvPowerSeries W.σ O) τ (Algebra.ofId _ _) f hfm`. Establish `hF : ∀ s, (W.π.comp Φ) (X s) = z s` using `fun s => by rw [AlgHom.comp_apply, hΦ, hfz']`. Use `⟨⟨τ, wt, W.π.comp Φ, ?_, ?_⟩, Equiv.refl _, fun s => ⟨hF s, rfl⟩⟩` and prove the remaining obligations. Use `co_surj O _ R _ (hgen.trans (sup_le_sup_right (sup_le ?_ ?_) _))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨s, rfl⟩`. Rewrite using `[← hF s]`. Use `Ideal.mem_map_of_mem _ fun hu => ?_` and prove the remaining obligations. Simplify using `using isUnit_constantCoeff _ hu`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `c hc`. Rewrite using `[Ideal.mem_comap, ← (W.π.comp Φ).commutes]`. Use `Ideal.mem_map_of_mem _ fun hu => hc ?_` and prove the remaining obligations. Simplify `isUnit_constantCoeff _ hu` using `[MvPowerSeries.algebraMap_apply]`.
-
-Introduce `g hg j show W.π (Φ _) = 0`. Rewrite using `[pres_new_comm wt W.wt Φ (fun s => hΦ s ▸ hf s) (fun s => hΦ s ▸ hfm s)]`. Conclude with `W.homog _ hg j`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.pres_new :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] [DecidableEq X] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (W : WPres O X R), (∀ s, W.z s ∈ maximalIdeal R) → ∀ (τ : Type) [Fintype τ] (wt : τ → X) (z : τ → R), (∀ s, z s ∈ maximalIdeal R ∧ z s ∈ W.part (wt s)) →

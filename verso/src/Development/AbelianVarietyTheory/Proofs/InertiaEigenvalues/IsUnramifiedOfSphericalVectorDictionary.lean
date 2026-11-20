@@ -22,7 +22,7 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 local notation3 "L⁺" => maximalRealSubfield L
 
 /- English proof (translation)
-Rewrite using `[Model.kappa_eq F (Model.finIso L n)]`. Conclude with `(Model.kappa_tmul L x a).trans (mul_comm _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kappa_tmul (F : FinIso L n) (x : L) (a : AFplus L) :
     F.κ.toRingHom (x ⊗ₜ[L⁺] a) = algebraMap L _ x * GlobalTheory.AdeleBaseChange.adMap L⁺ L a := by
@@ -30,7 +30,7 @@ theorem kappa_tmul (F : FinIso L n) (x : L) (a : AFplus L) :
   exact (Model.kappa_tmul L x a).trans (mul_comm _ _)
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.AdeleBaseChange.mem_int_of_map (ι := F.κ.toRingHom) (kappa_tmul F) (y := z) hz`. Use `(Subring.closure_le.2 ?_ : _ ≤ ALint L) h` and prove the remaining obligations. Introduce and unpack `x (⟨⟨e, a, rfl⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩)`. Conclude with `Subring.subset_closure (Or.inl ⟨a, rfl⟩)`. Conclude with `Subring.subset_closure (Or.inr ⟨y, hy, rfl⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_ALint (F : FinIso L n) (z : AL L) (hz : ∀ u, F.κ z u ∈ u.adicCompletionIntegers L) : z ∈ ALint L := by
   have h := GlobalTheory.AdeleBaseChange.mem_int_of_map (ι := F.κ.toRingHom) (kappa_tmul F) (y := z) hz
@@ -40,7 +40,7 @@ theorem mem_ALint (F : FinIso L n) (z : AL L) (hz : ∀ u, F.κ z u ∈ u.adicCo
   · exact Subring.subset_closure (Or.inr ⟨y, hy, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.AdeleBaseChange.prV_eq_zero_iff (ι := F.κ.toRingHom) (kappa_tmul F) v z).2 hz`.
+A detailed English derivation is pending.
 -/
 theorem compAt_eq_zero (F : FinIso L n) (v : HeightOneSpectrum (𝓞 L⁺)) (z : AL L)
     (hz : ∀ u : HeightOneSpectrum (𝓞 L), u.under (𝓞 L⁺) = v → F.κ z u = 0) : compAt L v z = 0 :=
@@ -49,7 +49,7 @@ theorem compAt_eq_zero (F : FinIso L n) (v : HeightOneSpectrum (𝓞 L⁺)) (z :
 omit [IsCMField L] in
 
 /- English proof (translation)
-Take `⟨Q, rfl⟩` from `hg`. Conclude with `(Q.val i j).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem entry_mem {w : HeightOneSpectrum (𝓞 L)} {g : GL (Fin n) (w.adicCompletion L)} (hg : g ∈ GlobalTheory.LFun.KGL w n)
     (i j : Fin n) : g.val i j ∈ w.adicCompletionIntegers L := by
@@ -57,13 +57,11 @@ theorem entry_mem {w : HeightOneSpectrum (𝓞 L)} {g : GL (Fin n) (w.adicComple
   exact (Q.val i j).2
 
 /- English proof (translation)
-Distinguish the cases in `hu : u.under (𝓞 L⁺) = w.under (𝓞 L⁺)`. Break down `(GlobalTheory.Mem.Chr.under_eq_iff_conjPl (IsCMField.complexConj L) (Algebra.IsQuadraticExtension.finrank_eq_two _ _) (IsCMField.complexConj_ne_one L) w u).1 hu with rfl | h` into its components or cases. Conclude with `entry_mem hK i j`. Choose the witnesses or unpack the hypotheses as in `rfl : u = conjSrc (GlobalTheory.SplitPts.conjE L) w := by`. Rewrite using `[eq_conjSrc h, GlobalTheory.SplitPts.conjSrc_conjSrc_cm]`.
+Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `Units.inv_eq_of_mul_eq_one_left (GlobalTheory.SplitPts.comp_eq x w)`. Establish `h2` using `entry_mem (inv_mem hK) j i`. Rewrite `h2` using `[h1]`. Rewrite `h2`, the goal using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Rewrite using `[← (conjLoc_spec (GlobalTheory.SplitPts.conjE L) w).2.2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h2`. Establish `h` using `MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hx).2 u) hu)`. Rewrite using `[h, Units.val_one, Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`.
-
-Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cLoc_entry_mem {w : HeightOneSpectrum (𝓞 L)} {x : UA L n} (hx : x ∈ locU n w) (hK : cLoc w x ∈ GlobalTheory.LFun.KGL w n)
     (u : HeightOneSpectrum (𝓞 L)) (i j : Fin n) : (cLoc u x).val i j ∈ u.adicCompletionIntegers L := by
@@ -86,11 +84,11 @@ theorem cLoc_entry_mem {w : HeightOneSpectrum (𝓞 L)} {x : UA L n} (hx : x ∈
     · exact zero_mem _
 
 /- English proof (translation)
-Introduce `v hv`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `h0` using `compAt_eq_zero F v (y.1.val i j - (1 : Matrix (Fin n) (Fin n) (AL L)) i j) fun u hu => by`. Establish `h` using `MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hy).2 u) (fun e => hv (hu.symm.trans e)))`. Establish `h1` using `F.loc y u i j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h]`. Rewrite using `[map_sub]`. Express the relevant statement in the definitionally equal form `F.κ _ u - F.κ _ u = 0`. Rewrite using `[← h1]`. Simplify using `only [Units.val_one, Matrix.one_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Rewrite using `[Matrix.map_apply, h0]`. Simplify using `only [Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem trivOutside (F : FinIso L n) {w : HeightOneSpectrum (𝓞 L)} {y : GAf L n} (hy : F.j y ∈ locU n w) :
     TrivOutside {w.under (𝓞 L⁺)} y := by
@@ -112,17 +110,15 @@ theorem trivOutside (F : FinIso L n) {w : HeightOneSpectrum (𝓞 L)} {y : GAf L
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `L _ _ _ n F π U hD v w hw hs`. Take `rfl : w.under (𝓞 (maximalRealSubfield L)) = v` from `HeightOneSpectrum.ext hw`. Take `⟨f, hfS, hf0, hfix⟩` from `hs`. Take `⟨g0, hg0⟩ : ∃ g0, f g0 ≠ 0` from `Function.ne_iff.1 hf0`. Choose the witnesses or unpack the hypotheses as in `⟨lam, hlam⟩ : ∃ lam : Module.Dual ℂ π.W, lam (f g0) ≠ 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hg0 ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 hc)`. Establish `hmem : (fun x => lam (f x)) ∈ U.map (LinearMap.funLeft ℂ ℂ F.j)`. Rewrite using `[hD.2]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Submodule.subset_span ⟨f, hfS, lam, rfl⟩`. Take `⟨φ, hφU, hφ⟩` from `hmem`. Establish `hφ' : ∀ g, φ (F.j g) = lam (f g)` using `fun g => congrFun hφ g`. Use `⟨φ, hφU, fun h => hlam ?_, fun x hx hK => ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ', h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Take `⟨y, rfl⟩` from `F.onto x (Subgroup.mem_inf.1 hx).1`. Establish `hyU : y ∈ Umax L n` using `fun i j => mem_ALint F _ fun u => by`. Rewrite using `[← F.loc]`. Conclude with `cLoc_entry_mem hx hK u i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hy` using `hfix y hyU (trivOutside F hx)`. Rewrite using `[← sub_eq_zero]`. Use `GlobalTheory.DefiniteDense.eq_zero_of_finU L n _ (hD.1.aut _ (U.sub_mem (hD.1.stable _ _ hφU) hφU)) fun z hz => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `F.onto z hz`. Express the relevant statement in the definitionally equal form `φ (F.j g * F.j y) - φ (F.j g) = 0`.
-
-Rewrite using `[← map_mul, hφ', hφ', sub_eq_zero]`. Conclude with `congrArg lam (congrFun hy g)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnramU_of_sphAt : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (F : FinIso L n) (π : NG.AutRep L n) (U : Submodule ℂ (UA L n → ℂ)), Dict F π U → ∀ (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)), NG.OverPl w v → π.SphAt v → IsUnramU U w := by
   intro L _ _ _ n F π U hD v w hw hs

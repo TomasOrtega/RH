@@ -9,11 +9,11 @@ namespace KStar.IdealValuations
 variable {K : Type*} [Field K] [NumberField K] [IsCMField K]
 
 /- English proof (translation)
-Use `set c := (ringOfIntegersComplexConj K).toRingEquiv with hc`. Break down `eq_or_ne J 0 with rfl | hJ` into its components or cases. Simplify using `[FractionalIdeal.count_zero]`. Establish `hJ' : J.map c ≠ 0`. Introduce `h`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hJ ((Ideal.map_eq_bot_iff_of_injective c.injective).mp h)`. Rewrite using `[FractionalIdeal.count_coe K v hJ', FractionalIdeal.count_coe K _ hJ]`. Use `congr 1`. Use `eq_of_forall_le_iff fun n => ?_` and prove the remaining obligations. Rewrite using `[← Associates.prime_pow_dvd_iff_le (Associates.mk_ne_zero.mpr hJ') v.associates_irreducible, ← Associates.prime_pow_dvd_iff_le (Associates.mk_ne_zero.mpr hJ) (conjPrime v).associates_irreducible, ← Associates.mk_pow, ← Associates.mk_pow, Associates.mk_le_mk_iff_dvd, Associates.mk …`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (conjPrime v).asIdeal = v.asIdeal.comap c` using `rfl`. Rewrite using `[h1, ← Ideal.map_symm, ← Ideal.map_symm, Ideal.map_pow]`.
+A detailed English derivation is pending.
 -/
 private theorem count_coe_map_conj (v : HeightOneSpectrum (𝓞 K)) (J : Ideal (𝓞 K)) :
     FractionalIdeal.count K v
@@ -39,7 +39,7 @@ private theorem count_coe_map_conj (v : HeightOneSpectrum (𝓞 K)) (J : Ideal (
   rw [h1, ← Ideal.map_symm, ← Ideal.map_symm, Ideal.map_pow]
 
 /- English proof (translation)
-Establish `h` using `count_coe_map_conj v (Ideal.span {a})`. Rewrite `h` using `[Ideal.map_span, Set.image_singleton, FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.coeIdeal_span_singleton]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem count_spanSingleton_conj_int (v : HeightOneSpectrum (𝓞 K)) (a : 𝓞 K) :
     FractionalIdeal.count K v (FractionalIdeal.spanSingleton (𝓞 K)⁰ (complexConj K (a : K))) =
@@ -50,11 +50,11 @@ private theorem count_spanSingleton_conj_int (v : HeightOneSpectrum (𝓞 K)) (a
   exact h
 
 /- English proof (translation)
-Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using `[FractionalIdeal.count_zero]`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) x`. Establish `ha0 : algebraMap (𝓞 K) K a ≠ 0` using `fun h => hx (by simp [h])`. Establish `hb0 : algebraMap (𝓞 K) K b ≠ 0` using `fun h => hx (by simp [h])`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (w : HeightOneSpectrum (𝓞 K)) (y z : K), y ≠ 0 → z ≠ 0 → FractionalIdeal.count K w (FractionalIdeal.spanSingleton (𝓞 K)⁰ (y / z)) = FractionalIdeal.count K w (FractionalIdeal.spanSingleton (𝓞 K)⁰ y) - FractionalIdeal.count K w (FractionalIdeal.spanSingleton (𝓞 K)⁰ z)`. Introduce `w y z hy hz`. Rewrite using `[div_eq_mul_inv, ← FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.count_mul K w (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hy) (FractionalIdeal.spanSingleton_ne_zero_iff.mpr (inv_ne_zero hz)), ← FractionalIdeal.spanSingleton_inv, FractionalIdeal.count_inv, s …`. Rewrite using `[map_div₀, key _ _ _ (by simpa using ha0) (by simpa using hb0), key _ _ _ ha0 hb0]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `count_spanSingleton_conj_int v a`. Conclude with `count_spanSingleton_conj_int v b`.
+A detailed English derivation is pending.
 -/
 theorem count_spanSingleton_conj (v : HeightOneSpectrum (𝓞 K)) (x : K) :
     FractionalIdeal.count K v (FractionalIdeal.spanSingleton (𝓞 K)⁰ (complexConj K x)) =
@@ -79,13 +79,13 @@ theorem count_spanSingleton_conj (v : HeightOneSpectrum (𝓞 K)) (x : K) :
   · exact count_spanSingleton_conj_int v b
 
 /- English proof (translation)
-Take `⟨I, hI⟩` from `hb`. Take `⟨d, J, hd, hIJ⟩` from `FractionalIdeal.exists_eq_spanSingleton_mul (I : FractionalIdeal (𝓞 (maximalRealSubfield K))⁰ (maximalRealSubfield K))`. Establish `hbI : (b : FractionalIdeal (𝓞 K)⁰ K) = FractionalIdeal.extendedHom K (𝓞 K) (I : FractionalIdeal (𝓞 (maximalRealSubfield K))⁰ (maximalRealSubfield K))`. Rewrite using `[← hI]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hd1 : (FractionalIdeal.spanSingleton (𝓞 (maximalRealSubfield K))⁰ (algebraMap _ (maximalRealSubfield K) d)⁻¹) = ((Ideal.span {d} : Ideal (𝓞 (maximalRealSubfield K))) : FractionalIdeal (𝓞 (maximalRealSubfield K))⁰ (maximalRealSubfield K))⁻¹`. Rewrite using `[FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.spanSingleton_inv]`. Establish `key : ∀ A : Ideal (𝓞 (maximalRealSubfield K)), FractionalIdeal.count K v ((A.map (algebraMap _ (𝓞 K)) : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K) = FractionalIdeal.count K (conjPrime v) ((A.map (algebraMap _ (𝓞 K)) : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K)`. Introduce `A`. Rewrite using `[← count_coe_map_conj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Establish `: ((ringOfIntegersComplexConj K).toRingEquiv : 𝓞 K →+* 𝓞 K).comp (algebraMap (𝓞 (maximalRealSubfield K)) (𝓞 K)) = algebraMap _ _` using `by ext1 x`. Conclude with `(ringOfIntegersComplexConj K).commutes x`. Use `conv_lhs => rw [← this, ← Ideal.map_map]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hbI` using `[hIJ, hd1, map_mul, map_inv₀, FractionalIdeal.extendedHom_coeIdeal_eq_map, FractionalIdeal.extendedHom_coeIdeal_eq_map]`. Establish `hb0` using `b.ne_zero`. Rewrite `hb0`, the goal using `[hbI]`. Rewrite using `[FractionalIdeal.count_mul K _ (left_ne_zero_of_mul hb0) (right_ne_zero_of_mul hb0), FractionalIdeal.count_mul K _ (left_ne_zero_of_mul hb0) (right_ne_zero_of_mul hb0), FractionalIdeal.count_inv, FractionalIdeal.count_inv, key, key]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem count_fromBase (v : HeightOneSpectrum (𝓞 K)) {b : IdealGroup K} (hb : b ∈ fromBase K) :
     FractionalIdeal.count K v (b : FractionalIdeal (𝓞 K)⁰ K) =

@@ -16,18 +16,18 @@ def LZIdemSumApprox : Prop := LZIdemSumNoeth → ∀ (A : Type) [CommRing A] [Is
 variable {A K : Type} [CommRing A] [IsLocalRing A] [Field K] [Algebra A K]
 
 /- English proof (translation)
-Unfold `mS`. Conclude with `Submodule.smul_le_right`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mS_le (S : Subalgebra A K) : mS S ≤ Subalgebra.toSubmodule S := by
   unfold mS
   exact Submodule.smul_le_right
 
 /- English proof (translation)
-Take `⟨β, hβ, γ, hγ, hsum⟩` from `Submodule.mem_sup.mp h`. Establish `hβB : β ∈ B` using `mS_le B hβ`. Establish `hγC : γ ∈ C` using `mS_le C hγ`. Use `⟨e - β, B.sub_mem he hβB, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: e - β = f + γ` using `by linear_combination -hsum`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `C.add_mem hf hγC`. Establish `: e - β - e = -β` using `by ring`. Rewrite using `[this]`. Conclude with `(mS B).neg_mem hβ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: e - β - f = γ` using `by linear_combination -hsum`. Rewrite using `[this]`. Conclude with `hγ`.
+A detailed English derivation is pending.
 -/
 theorem lift_of_sum (B C : Subalgebra A K) (e f : K) (he : e ∈ B) (hf : f ∈ C) (h : e - f ∈ mS B ⊔ mS C) :
     ∃ g ∈ B, g ∈ C ∧ g - e ∈ mS B ∧ g - f ∈ mS C := by
@@ -43,7 +43,7 @@ theorem lift_of_sum (B C : Subalgebra A K) (e f : K) (he : e ∈ B) (hf : f ∈ 
     rw [this]; exact hγ
 
 /- English proof (translation)
-Introduce `A _ _ _ K _ _ B C t hc e f hp`. Conclude with `lift_of_sum B C e f hp.1 hp.2.1 (hA hN A K B C t hc e f hp)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem IdemLift_of (hN : LZIdemSumNoeth) (hA : LZIdemSumApprox) : LateralTheory.E.StandardEtaleChartsIdempotentGluing.IdemLift := by
   intro A _ _ _ K _ _ B C t hc e f hp

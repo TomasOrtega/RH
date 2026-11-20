@@ -9,19 +9,17 @@ noncomputable section
 namespace GlobalTheory.LKCx
 
 /- English proof (translation)
-Introduce `p _ G v β _ hR`. Take `⟨z, hz⟩` from `hR`. Establish `hc : ∃ Z : GL (Fin G.n) ℂ, herm G v β = (Z : Matrix (Fin G.n) (Fin G.n) ℂ)ᴴ * G.gram v * (Z : Matrix (Fin G.n) (Fin G.n) ℂ)`. Use `⟨Units.map (G.psiR v).toMonoidHom z, ?_⟩` and prove the remaining obligations. Use `set Zm : Matrix (Fin G.n) (Fin G.n) ℂ := G.psiR v (z : ℝ ⊗[ℚ] G.C) with hZm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `G.gram v * G.psi v ((β⁻¹ : G.Cˣ) : G.C) = Zmᴴ * G.gram v * Zm`. Establish `hb : G.psiR v (inC G ℝ (β : G.C)) = G.psi v (β : G.C)`. Express the relevant statement in the definitionally equal form `G.psiR v ((1 : ℝ) ⊗ₜ (β : G.C)) = _`. Rewrite using `[psiR_tmul, one_smul]`. Establish `h1` using `congrArg (G.psiR v) hz`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[map_mul, map_mul, psiR_starT, hb]`. Simplify using `only [Units.val_one, map_one] at h1`. Rewrite `h1` using `[← hZm]`. Establish `hg : IsUnit (G.gram v).det` using `isUnit_iff_ne_zero.2 (G.gram_det v)`. Use `set M := G.psi v ((β⁻¹ : G.Cˣ) : G.C)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hMb : M * G.psi v (β : G.C) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Establish `h2 : G.psi v (β : G.C) * ((G.gram v)⁻¹ * Zmᴴ * G.gram v * Zm) = 1`. Use `mul_eq_one_comm.1 (by simpa [Matrix.mul_assoc] using h1 : Zm * (G.psi v (β : G.C) * ((G.gram v)⁻¹ * Zmᴴ * G.gram v)) = 1)` as an intermediate fact. Simplify `this` using `[Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h3 : M = (G.gram v)⁻¹ * Zmᴴ * G.gram v * Zm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h3]`. Simplify using `only [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hg, Matrix.one_mul]`. Take `⟨Z, hZ⟩` from `hc`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, Z, hZ⟩` and prove the remaining obligations. Rewrite using `[hZ]`. Conclude with `isHermitian_conjTranspose_mul_mul _ (G.gram_herm v)`. Rewrite using `[hZ, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `hZd : (Z : Matrix (Fin G.n) (Fin G.n) ℂ).det ≠ 0` using `(Matrix.isUnit_det_of_left_inverse (show ((Z⁻¹ : GL (Fin G.n) ℂ) : Matrix (Fin G.n) (Fin G.n) ℂ) * Z = 1 by`.
-
-Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one])).ne_zero`. Conclude with `mul_ne_zero (mul_ne_zero (star_ne_zero.2 hZd) (G.gram_det v)) hZd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_laws : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (v : InfinitePlace G.F) (β : G.Cˣ), sh G β = β →
     (∃ z : (ℝ ⊗[ℚ] G.C)ˣ, Triv G ℝ β z 1) → (herm G v β).IsHermitian ∧ (herm G v β).det ≠ 0 ∧

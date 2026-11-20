@@ -17,11 +17,11 @@ def sliceGroup (Φ : G ≃ₜ* G₁ × G₂) (Γ : Subgroup G) (K : Subgroup G�
       Φ.toMulEquiv.toMonoidHom).map ((MonoidHom.fst G₁ G₂).comp Φ.toMulEquiv.toMonoidHom)
 
 /- English proof (translation)
-Simplify using `only [sliceGroup, Subgroup.mem_map, Subgroup.mem_inf, Subgroup.mem_comap, Subgroup.mem_prod, Subgroup.mem_top, true_and, MonoidHom.coe_comp, Function.comp_apply, MonoidHom.coe_fst]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, ⟨hγ, k, hk, hks⟩, rfl⟩`. Use `⟨γ, hγ, ?_, rfl⟩` and prove the remaining obligations. Establish `: (Φ γ).2 = s * k * s⁻¹`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hks.symm` as an intermediate fact. Simplify using `only [MulEquiv.toMonoidHom_eq_coe, MonoidHom.coe_coe, MulAut.conj_apply] at this`. Conclude with `this`. Rewrite using `[this]`. Simplify `hk` using `[mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨γ, hγ, hk, rfl⟩`. Use `⟨γ, ⟨hγ, s⁻¹ * (Φ γ).2 * s, hk, ?_⟩, rfl⟩` and prove the remaining obligations. Simplify using `only [MulEquiv.toMonoidHom_eq_coe, MonoidHom.coe_coe, MulAut.conj_apply, mul_assoc, mul_inv_cancel, mul_one, mul_inv_cancel_left]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_sliceGroup {Φ : G ≃ₜ* G₁ × G₂} {Γ : Subgroup G} {K : Subgroup G₂} {s : G₂} {x : G₁} :
     x ∈ sliceGroup Φ Γ K s ↔ ∃ γ ∈ Γ, s⁻¹ * (Φ γ).2 * s ∈ K ∧ (Φ γ).1 = x := by
@@ -69,15 +69,15 @@ instance : BorelSpace C3 := ⟨rfl⟩
 def isHyperbolicPair_isotropic_dual : Subgroup (C3 × C3) := (MonoidHom.prod (MonoidHom.id C3) (MonoidHom.id C3)).range
 
 /- English proof (translation)
-Use `⟨ContinuousMulEquiv.refl _, isHyperbolicPair_isotropic_dual, inferInstance, ⊥, {1}, ?_, (Set.finite_singleton 1).isCompact, isOpen_discrete _, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `: ((Multiplicative.ofAdd (1 : ZMod 3), Multiplicative.ofAdd (1 : ZMod 3)) : C3 × C3) ∈ isHyperbolicPair_isotropic_dual` using `⟨Multiplicative.ofAdd 1, rfl⟩`. Rewrite `this` using `[h, Subgroup.mem_bot]`. Conclude with `absurd (congrArg Prod.fst this) (by decide)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `γ ⟨a, rfl⟩ h1`. Simplify using `only [ContinuousMulEquiv.refl_apply, MonoidHom.prod_apply, MonoidHom.id_apply] at h1 ⊢`. Simplify using `[h1]`. Introduce `y`. Conclude with `⟨(y, y), ⟨y, rfl⟩, 1, Finset.mem_singleton_self 1, 1, Subgroup.one_mem _, by simp⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs μ₁ _`. Rewrite `hs` using `[Finset.mem_singleton]`. Substitute `hs` using the available equality. Establish `hbot : sliceGroup (ContinuousMulEquiv.refl (C3 × C3)) isHyperbolicPair_isotropic_dual ⊥ 1 = ⊥`. Use extensionality with `x`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_sliceGroup, Subgroup.mem_bot]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, ⟨a, rfl⟩, hk, rfl⟩`. Simplify using `only [ContinuousMulEquiv.refl_apply, MonoidHom.prod_apply, MonoidHom.id_apply, inv_one, one_mul, mul_one, Subgroup.mem_bot] at hk ⊢`. Conclude with `hk`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `rfl`. Conclude with `⟨1, Subgroup.one_mem _, by simp, by simp⟩`. Use `⟨Set.univ, ?_, isCompact_univ.measure_lt_top⟩` and prove the remaining obligations. Rewrite using `[hbot]`. Conclude with `IsFundamentalDomain.mk' MeasurableSet.univ.nullMeasurableSet fun x => ⟨1, Set.mem_univ _, fun γ _ => Subsingleton.elim _ _⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DoubleCosetCovolume.hypotheses_met :
     ∃ (Φ : C3 × C3 ≃ₜ* C3 × C3) (Γ : Subgroup (C3 × C3)) (_ : Countable Γ) (K : Subgroup C3)

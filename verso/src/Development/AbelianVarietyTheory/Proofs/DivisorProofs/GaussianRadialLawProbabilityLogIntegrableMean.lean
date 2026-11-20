@@ -8,23 +8,23 @@ open MeasureTheory Set MvPolynomial ReciprocityTheory.MultiplicativeHeights Glob
 namespace GlobalTheory.SphereMeanDrop
 
 /- English proof (translation)
-Introduce `n hn`. Use `set μ0 := Measure.volumeIoiPow (2 * n - 1) with hμ0`. Use `set f : Ioi (0:ℝ) → NNReal := fun r => Real.toNNReal (Real.exp (-(r : ℝ) ^ 2)) with hf`. Establish `hfm : Measurable f`. Rewrite using `[hf]; exact (by fun_prop : Measurable fun r : Ioi (0:ℝ) => Real.exp (-(r : ℝ) ^ 2)).real_toNNReal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hν : (μ0.withDensity fun r => ENNReal.ofReal (Real.exp (-(r : ℝ) ^ 2))) = μ0.withDensity fun r => (f r : ENNReal)` using `rfl`. Establish `hJi : Integrable (fun r : Ioi (0 : ℝ) ↦ Real.exp (-(r : ℝ) ^ 2)) μ0` using `integrable_volumeIoiPow (k := 2 * n - 1) (g := fun r ↦ Real.exp (-r ^ 2)) (integrableOn_radJ _)`. Establish `hKo : IntegrableOn (fun r : ℝ ↦ r ^ (2 * n - 1) * (Real.log r * Real.exp (-r ^ 2))) (Ioi 0)`. Use `(integrableOn_radK (k := 2 * n - 1) (by omega)).congr_fun (fun r _ ↦ ?_) measurableSet_Ioi` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKi : Integrable (fun r : Ioi (0 : ℝ) ↦ Real.log r * Real.exp (-(r : ℝ) ^ 2)) μ0` using `integrable_volumeIoiPow (k := 2 * n - 1) (g := fun r ↦ Real.log r * Real.exp (-r ^ 2)) hKo`. Establish `hJv : ∫ r : Ioi (0 : ℝ), Real.exp (-(r : ℝ) ^ 2) ∂μ0 = radJ (2 * n - 1)`. Rewrite using `[hμ0, integral_volumeIoiPow (2 * n - 1) (fun r ↦ Real.exp (-r ^ 2))]`. Both sides reduce to the same expression. Establish `hKv : ∫ r : Ioi (0 : ℝ), Real.log r * Real.exp (-(r : ℝ) ^ 2) ∂μ0 = radK (2 * n - 1)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hμ0, integral_volumeIoiPow (2 * n - 1) (fun r ↦ Real.log r * Real.exp (-r ^ 2)), radK]`. Use `setIntegral_congr_fun measurableSet_Ioi fun r _ ↦ ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hmass : (μ0.withDensity fun r => ENNReal.ofReal (Real.exp (-(r : ℝ) ^ 2))) univ = ENNReal.ofReal (radJ (2 * n - 1))`. Rewrite using `[withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ, ← hJv, ofReal_integral_eq_lintegral_ofReal hJi (Filter.Eventually.of_forall fun r => (Real.exp_pos _).le)]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJpos` using `radJ_pos (2 * n - 1)`. Establish `hm0 : (μ0.withDensity fun r => ENNReal.ofReal (Real.exp (-(r : ℝ) ^ 2))) univ ≠ 0`. Rewrite using `[hmass]`. Conclude with `ENNReal.ofReal_pos.2 hJpos |>.ne'`. Establish `hmt : (μ0.withDensity fun r => ENNReal.ofReal (Real.exp (-(r : ℝ) ^ 2))) univ ≠ ⊤`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmass]`. Conclude with `ENNReal.ofReal_ne_top`. Establish `hcond : radProb n = ((μ0.withDensity fun r => ENNReal.ofReal (Real.exp (-(r : ℝ) ^ 2))) univ)⁻¹ • (μ0.withDensity fun r => ENNReal.ofReal (Real.exp (-(r : ℝ) ^ 2)))`. Rewrite using `[radProb, ProbabilityTheory.cond, Measure.restrict_univ]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[radProb]`. Conclude with `ProbabilityTheory.cond_isProbabilityMeasure_of_finite hm0 hmt`. Rewrite using `[hcond]`. Use `Integrable.smul_measure ?_ (ENNReal.inv_ne_top.2 hm0)` and prove the remaining obligations. Rewrite using `[hν, integrable_withDensity_iff_integrable_smul hfm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hKi.congr (Filter.Eventually.of_forall fun r => ?_)` and prove the remaining obligations. Simplify using `only [hf, NNReal.smul_def, smul_eq_mul, Real.coe_toNNReal _ (Real.exp_pos _).le]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hcond, integral_smul_measure, hmass, hν, integral_withDensity_eq_integral_smul hfm]`. Establish `: ∫ r : Ioi (0:ℝ), f r • Real.log (r : ℝ) ∂μ0 = radK (2 * n - 1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hKv]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun r => ?_)` and prove the remaining obligations. Simplify using `only [hf, NNReal.smul_def, smul_eq_mul, Real.coe_toNNReal _ (Real.exp_pos _).le]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, ENNReal.toReal_inv, ENNReal.toReal_ofReal hJpos.le, smul_eq_mul, div_eq_inv_mul]`.
+A detailed English derivation is pending.
 -/
 theorem radProb_log_mean : ∀ (n : ℕ), 0 < n → IsProbabilityMeasure (radProb n) ∧
     Integrable (fun r : Ioi (0:ℝ) => Real.log r) (radProb n) ∧

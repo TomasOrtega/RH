@@ -20,9 +20,9 @@ namespace GlobalTheory.HSCore.RankOne
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Take `⟨i₀, hi₀⟩` from `Function.ne_iff.1 hx`. Establish `hi : (x i₀ : K) ≠ 0` using `by exact_mod_cast hi₀`. Establish `hz : (fun i => (x i : K)) ≠ 0` using `Function.ne_iff.2 ⟨i₀, hi⟩`. Establish `hpos : ∀ v : FinitePlace K, 0 < ⨆ i, v (x i)` using `fun v => lt_of_lt_of_le (FinitePlace.pos_iff.2 hi) (le_ciSup (f := fun i => v (x i)) (Set.finite_range _).bddAbove i₀)`. Establish `h` using `NumberField.absNorm_mul_finprod_finitePlace_eq_one hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.log_finprod hpos, eq_inv_of_mul_eq_one_right h, Real.log_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finsum_log_iSup_int {ι : Type} [Finite ι] {x : ι → 𝓞 K} (hx : x ≠ 0) :
     ∑ᶠ v : FinitePlace K, Real.log (⨆ i, v (x i)) = -Real.log (Ideal.absNorm (Ideal.span (Set.range x))) := by
@@ -35,15 +35,15 @@ theorem finsum_log_iSup_int {ι : Type} [Finite ι] {x : ι → 𝓞 K} (hx : x 
   rw [← Real.log_finprod hpos, eq_inv_of_mul_eq_one_right h, Real.log_inv]
 
 /- English proof (translation)
-Take `⟨i₀, hi₀⟩` from `Function.ne_iff.1 hb`. Establish `hi : (b i₀ : K) ≠ 0` using `by exact_mod_cast hi₀`. Establish `hd' : (d : K) ≠ 0` using `by exact_mod_cast hd`. Establish `hz : (fun i => (b i : K)) ≠ 0` using `Function.ne_iff.2 ⟨i₀, hi⟩`. Establish `hdz : (fun _ : Unit => d) ≠ 0` using `Function.ne_iff.2 ⟨(), hd⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdz' : (fun _ : Unit => (d : K)) ≠ 0` using `Function.ne_iff.2 ⟨(), hd'⟩`. Establish `h1` using `finsum_log_iSup_int hb`. Establish `h2` using `finsum_log_iSup_int hdz`. Establish `f1` using `GlobalTheory.Adelic.HeightExt.finite_support_log_iSup hz`. Establish `f2` using `GlobalTheory.Adelic.HeightExt.finite_support_log_iSup hdz'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[Set.range_const]`. Establish `e : ∀ v : FinitePlace K, Real.log (⨆ k, v ((b k : K) / d)) = Real.log (⨆ k, v (b k : K)) - Real.log (⨆ _ : Unit, v (d : K))` using `fun v => by`. Establish `hpos : 0 < ⨆ i, v (b i : K)` using `lt_of_lt_of_le (FinitePlace.pos_iff.2 hi) (le_ciSup (f := fun i => v (b i : K)) (Set.finite_range _).bddAbove i₀)`. Establish `hv : 0 < v (d : K)` using `FinitePlace.pos_iff.2 hd'`. Rewrite using `[ciSup_const, ← Real.log_div hpos.ne' hv.ne']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [div_eq_mul_inv, map_mul, map_inv₀]`. Conclude with `(Real.iSup_mul_of_nonneg (inv_nonneg.2 hv.le) _).symm`. Simplify using `only [e]`. Rewrite using `[finsum_sub_distrib f1 f2, h1, h2]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem finsum_log_iSup_div {n : ℕ} {b : Fin n → 𝓞 K} (hb : b ≠ 0) {d : 𝓞 K} (hd : d ≠ 0) :
     ∑ᶠ v : FinitePlace K, Real.log (⨆ k, v ((b k : K) / d)) =

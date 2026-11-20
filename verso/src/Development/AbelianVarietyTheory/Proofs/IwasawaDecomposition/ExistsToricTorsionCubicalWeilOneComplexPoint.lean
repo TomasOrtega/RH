@@ -15,7 +15,7 @@ namespace GlobalTheory.FibTors
 open GlobalTheory.Models GlobalTheory.UU
 
 /- English proof (translation)
-Establish `hG' : IsSemiAbelian ((Over.pullback y).obj G)` using `IsSemiAbelian.pullback y G hG`. Use `hG'.smooth` as an intermediate fact. Use `hG'.geomConnected` as an intermediate fact. Establish `: ConnectedSpace ((Over.pullback y).obj G).left` using `GeometricallyConnected.connectedSpace_of_subsingleton ((Over.pullback y).obj G).hom`. Conclude with `exists_dim_of_preconnected _ (((1 : 𝟙_ (Over (Sp ℂ)) ⟶ (Over.pullback y).obj G).left) (default : PrimeSpectrum ℂ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_relDim_fibre (X : Scheme.{0}) (G : Over X) [GrpObj G] (hG : IsSemiAbelian G) (y : Sp ℂ ⟶ X) :
     ∃ n, SmoothOfRelativeDimension n ((Over.pullback y).obj G).hom := by
@@ -27,53 +27,47 @@ theorem exists_relDim_fibre (X : Scheme.{0}) (G : Over X) [GrpObj G] (hG : IsSem
   exact exists_dim_of_preconnected _ (((1 : 𝟙_ (Over (Sp ℂ)) ⟶ (Over.pullback y).obj G).left) (default : PrimeSpectrum ℂ))
 
 /- English proof (translation)
-Set `G'` to `(Over.pullback y).obj G`. Establish `h0 : e 0 = 1`. Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `ρ : epsPt y ⟶ Over.mk ((epsR ℂ).hom ≫ y)` to `Over.homMk (𝟙 _) rfl`. Set `T : (epsR ℂ ⟶ G') →* (epsPt y ⟶ G)` to `(ReciprocityTheory.ChartRestriction.G.Geo.Tor.preHom ρ).comp (toBaseHom (toBase_mul_pullback G y) (epsR ℂ))`. Establish `hT : ∀ a, (T a).left = a.left ≫ pullback.fst G.hom y` using `fun a => Category.id_comp _`. Set `U : Over (Sp ℂ)` to `𝟙_ (Over (Sp ℂ))`. Set `ρ0 : Over.mk y ⟶ Over.mk (U.hom ≫ y)` to `Over.homMk (𝟙 _) rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `φ : (U ⟶ G') →* (Over.mk y ⟶ G)` to `(ReciprocityTheory.ChartRestriction.G.Geo.Tor.preHom ρ0).comp (toBaseHom (toBase_mul_pullback G y) U)`. Establish `hη : η[G'].left ≫ pullback.fst G.hom y = (1 : Over.mk y ⟶ G).left`. Establish `h' : (φ 1).left = (1 : U ⟶ G').left ≫ pullback.fst G.hom y` using `Category.id_comp _`. Rewrite `h'` using `[map_one]`. Rewrite using `[h']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Establish `hTb : Function.Bijective T`. Use `⟨fun a b h => Over.OverMorphism.ext (pullback.hom_ext ?_ ?_), fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[← hT, ← hT, h]`. Conclude with `(Over.w a).trans (Over.w b).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨Over.homMk (pullback.lift p.left (epsR ℂ).hom (Over.w p)) (pullback.lift_snd _ _ _), Over.OverMorphism.ext ((hT _).trans (pullback.lift_fst _ _ _))⟩` and prove the remaining obligations. Establish `htan : ∀ a : epsR ℂ ⟶ G', IsTangent a ↔ spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ (T a).left = (e 0).left`. Introduce `a`. Rewrite using `[h0, hT, ← hη]`. Use `⟨fun h => by rw [← Category.assoc, h], fun h => pullback.hom_ext ?_ ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc]`. Conclude with `h`. Establish `e1 : a.left ≫ pullback.snd G.hom y = (epsR ℂ).hom` using `Over.w a`. Establish `e2 : η[G'].left ≫ pullback.snd G.hom y = 𝟙 _` using `Over.w η[G']`. Rewrite using `[Category.assoc, e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show spMap _ ≫ spMap _ = _`. Rewrite using `[GlobalTheory.TanMod.spMap_comp']`. Establish `: (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom.comp (algebraMap ℂ (DualNumber ℂ)) = RingHom.id ℂ` using `RingHom.ext fun _ => rfl`. Rewrite using `[this]`. Conclude with `Spec.map_id _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Te` to `MulEquiv.ofBijective T hTb`. Establish `hTe : ∀ a, Te a = T a` using `fun _ => rfl`. Use `choose D hD _ using h1`. Establish `hDmul : ∀ w w', D (w + w') = D w * D w'` using `fun w w' => Over.OverMorphism.ext (GlobalTheory.VerticalDeriv.isDerivAt0_unique (hD (w + w')) (GlobalTheory.UnifCompare.isDerivAt0_mul (congrArg (·.left) h0) (hD w) (hD w')))`. Establish `hDtan : ∀ w, spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ (D w).left = (e 0).left` using `fun w => (hD w).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Set `Dl : (Fin g → ℂ) → (epsR ℂ ⟶ G')` to `fun w => Te.symm (D w)`. Establish `hTDl : ∀ w, T (Dl w) = D w` using `fun w => Te.apply_symm_apply (D w)`. Establish `hDl_tan : ∀ w, IsTangent (Dl w)` using `fun w => (htan _).2 (by rw [hTDl]; exact hDtan w)`. Establish `hDl_add : ∀ w w', Dl (w + w') = Dl w * Dl w'` using `fun w w' => by`. Apply `Te.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, hTe, hTe, hTe, hTDl, hTDl, hTDl, hDmul]`. Establish `hDl_zero : Dl 0 = 1`. Use `hDl_add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `hDl_smul : ∀ (c : ℂ) w, (Dl (c • w)).left = spMap (epsScaleR c) ≫ (Dl w).left`. Introduce `c w`. Establish `hov : (spMap (epsScaleR c) ≫ (Dl w).left) ≫ G'.hom = (epsR ℂ).hom`. Rewrite using `[Category.assoc, Over.w (Dl w)]`. Use `show spMap _ ≫ spMap _ = spMap _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.TanMod.spMap_comp']`. Apply the tactic sequence `have hc : (epsScaleR c).comp (algebraMap ℂ (DualNumber ℂ)) = algebraMap ℂ (DualNumber ℂ) := RingHom.ext fun a => by ext <;> simp [epsScaleR]`. Rewrite using `[hc]`. Set `a : epsR ℂ ⟶ G'` to `Over.homMk (spMap (epsScaleR c) ≫ (Dl w).left) hov`. Establish `ha : T a = D (c • w)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `Over.OverMorphism.ext (GlobalTheory.VerticalDeriv.isDerivAt0_unique ?_ (hD (c • w)))` and prove the remaining obligations. Rewrite using `[hT]`. Use `GlobalTheory.UnifCompare.isDerivAt0_smul (hD w) c` as an intermediate fact. Rewrite `this` using `[← hTDl w, hT]`. Use `show IsDerivAt0 _ _ ((spMap (epsScaleR c) ≫ (Dl w).left) ≫ pullback.fst G.hom y)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc]`. Conclude with `this`. Establish `: a = Dl (c • w)`. Apply `Te.injective` to reduce the goal to its premises. Rewrite using `[hTe, hTe, ha, hTDl]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]`. Both sides reduce to the same expression. Establish `hDl_inj : ∀ w w', Dl w = Dl w' → w = w'`. Introduce `w w' h`. Establish `h' : D w = D w'` using `by rw [← hTDl, ← hTDl, h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `(h2 (D w) (hDtan w)).unique (hD w) (h' ▸ hD w')`. Establish `hDl_onto : ∀ a, IsTangent a → ∃ w, Dl w = a`. Introduce `a ha`. Take `⟨w, hw, -⟩` from `h2 (T a) ((htan a).1 ha)`. Use `⟨w, Te.injective ?_⟩` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Te.apply_symm_apply, hTe]`. Conclude with `Over.OverMorphism.ext (GlobalTheory.VerticalDeriv.isDerivAt0_unique (hD w) hw)`. Establish `hsum : ∀ (k : ℕ) (f : Fin k → Fin g → ℂ), Dl (∑ i, f i) = (List.ofFn fun i => Dl (f i)).prod`. Introduce `k`. Proceed by induction on `k with`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Consider the case `zero => intro f`. Simplify using `[hDl_zero]`. Consider the case `succ k ih`. Introduce `f`. Rewrite using `[Fin.sum_univ_succ, List.ofFn_succ, List.prod_cons, hDl_add, ih]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose ws hws using fun i => hDl_onto (v i) (hv.1 i)`. Establish `hcomb : ∀ c : Fin n → ℂ, IsLieComb c v (Dl (∑ i, c i • ws i))`. Introduce `c`. Use `⟨fun i => Dl (c i • ws i), fun i => ?_, hsum n _⟩` and prove the remaining obligations. Rewrite using `[hDl_smul, hws]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hdet : ∀ (c : Fin n → ℂ) (a a' : epsR ℂ ⟶ G'), IsLieComb c v a → IsLieComb c v a' → a = a'`. Introduce and unpack `c a a' ⟨u, hu, rfl⟩ ⟨u', hu', rfl⟩`. Establish `: u = u'` using `funext fun i => Over.OverMorphism.ext ((hu i).trans (hu' i).symm)`. Rewrite using `[this]`. Establish `hli : LinearIndependent ℂ ws`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Establish `e1` using `hcomb c`. Rewrite `e1` using `[hc]`. Establish `e2` using `hcomb 0`.
-
-Simplify using `only [Pi.zero_apply, zero_smul, Finset.sum_const_zero] at e2`. Use `(hv.2 (Dl 0) (hDl_tan 0)).unique e1 e2` as an intermediate fact. Conclude with `fun i => congrFun this i`. Establish `hsp : ⊤ ≤ Submodule.span ℂ (Set.range ws)`. Introduce `w _`.
-
-Take `⟨c, hc, -⟩` from `hv.2 (Dl w) (hDl_tan w)`. Use `hDl_inj _ _ (hdet c _ _ hc (hcomb c))` as an intermediate fact. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hb` using `Module.finrank_eq_card_basis (Module.Basis.mk hli hsp)`.
-
-Simplify using `using hb.symm`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem lieBasis_card (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] (y : Sp ℂ ⟶ X) (g n : ℕ)
     (e : (Fin g → ℂ) → (Over.mk y ⟶ G)) (hadd : ∀ z w, e (z + w) = e z * e w)
@@ -210,33 +204,29 @@ end GlobalTheory.FibTors
 open GlobalTheory.FibTors GlobalTheory.Models GlobalTheory.UU in
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t y g N e hN hexp _ _`. Take `⟨hadd, hd1, hd2⟩` from `hexp`. Establish `h0 : e 0 = 1`. Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_eq_left.1 this.symm`. Establish `h1 : ∀ w, ∃! v : epsPt y ⟶ t.G, IsDerivAt0 (fun z => (e z).left) w v.left`. Introduce `w`. Take `⟨v, ⟨hv1, hv2⟩, hu⟩` from `hd1 w`. Use `⟨Over.homMk v hv1.1, hv2, fun v' hv' => Over.OverMorphism.ext (hu v'.left ⟨⟨Over.w v', ?_⟩, hv'⟩)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `hv'.1.trans ?_` and prove the remaining obligations. Use `show (e 0).left = _`. Rewrite using `[h0]`. Establish `h2 : ∀ v : epsPt y ⟶ t.G, spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v.left = (e 0).left → ∃! w, IsDerivAt0 (fun z => (e z).left) w v.left`. Introduce `v hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hd2 v.left ⟨Over.w v, by rw [hv, h0]⟩`. Take `⟨n, hn⟩` from `exists_relDim_fibre X t.G t.semi y`. Take `⟨v, hv⟩` from `GlobalTheory.KeyPow.exists_isLieBasis _ hn`. Establish `hng` using `lieBasis_card X t.G y g n e hadd h1 h2 v hv`. Substitute `hng` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hN' : (N : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Set `G : Over X` to `t.G`. Set `x` to `y`. Set `k` to `ℂ`. Establish `h3` using `GlobalTheory.laws3`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `G' : Over (Sp k)` to `(Over.pullback x).obj G`. Establish `hp : IsGrpPullback G' G x (pullback.fst G.hom x)` using `isGrpPullback_pullback G x`. Establish `hG' : IsSemiAbelian G'` using `IsSemiAbelian.pullback x G t.semi`. Use `hG'.comm` as an intermediate fact. Use `hG'.smooth` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hG'.geomConnected` as an intermediate fact. Establish `dG' : SmoothOfRelativeDimension n G'.hom` using `hn`. Take `⟨E⟩` from `t.semi.fibres k x`. Set `` to `E.addCommGroup`. Set `` to `E.grpB`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `E.free` as an intermediate fact. Use `E.finite` as an intermediate fact. Use `E.i_hom` as an intermediate fact. Take `⟨hL, hr, ⟨c', hc'⟩, -⟩` from `h3.cubePull _ _ G G' (cubeMapOf hp) t.PP t.cub`. Take `⟨σ⟩` from `GlobalTheory.BiextTriv.main k E.X G' _ c' E.i E.i_hom`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hw : pullback.fst G.hom x ≫ G.hom = G'.hom ≫ x` using `pullback.condition`. Set `U : Over (Sp k)` to `𝟙_ (Over (Sp k))`. Set `ρ : Over.mk x ⟶ Over.mk (U.hom ≫ x)` to `Over.homMk (𝟙 _) rfl`. Set `φ : (U ⟶ G') →* (Over.mk x ⟶ G)` to `(ReciprocityTheory.ChartRestriction.G.Geo.Tor.preHom ρ).comp (toBaseHom (toBase_mul_pullback G x) U)`. Establish `hφ : ∀ a : U ⟶ G', (φ a).left = a.left ≫ pullback.fst G.hom x` using `fun a => Category.id_comp _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : Function.Bijective φ`. Use `⟨fun a b h => Over.OverMorphism.ext (pullback.hom_ext ?_ ?_), fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ, ← hφ, h]`. Conclude with `(Over.w a).trans (Over.w b).symm`. Use `⟨Over.homMk (pullback.lift p.left (𝟙 _) ((Over.w p).trans (Category.id_comp _).symm)) (pullback.lift_snd _ _ _), Over.OverMorphism.ext ((hφ _).trans (pullback.lift_fst _ _ _))⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `e'` to `MulEquiv.ofBijective φ hb`. Establish `he : ∀ a : U ⟶ G', e' a ^ N = 1 ↔ a ^ N = 1` using `fun a => by rw [← map_pow, e'.map_eq_one_iff]`. Establish `hcount` using `GlobalTheory.card_torsion_mul_card_toric_torsion k G' E n N hG' dG' hN'`. Use `⟨e' '' {y | y ^ N = 1 ∧ ∃ t, y = t ≫ E.i}, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ⟨ha, -⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(he a).2 ha`. Introduce and unpack `_ ⟨_, ⟨ha, s0, rfl⟩, rfl⟩ y hy`. Take `⟨b, rfl⟩` from `e'.surjective y`. Establish `ht : s0 ^ N = 1` using `E.isKernel.hom_ext (by rw [MonObj.pow_comp, ha, MonObj.one_comp]) (toUnit_unique _ _)`. Establish `h1` using `σ.cubWeil ht ((he b).1 hy)`.
-
-Establish `h2` using `(GlobalTheory.UU.cubWeil_of_isPullCubical _ _ x G G' (cubeMapOf hp) hw (toBase_mul_pullback G x) t.PP _ t.cub c' hc' N U _ _ _ h1).comp ρ`. Rewrite `h2` using `[map_one]`. Conclude with `h2`. Rewrite using `[← hcount]`. Use `congr 1`.
-
-Conclude with `(Nat.card_congr (e'.toEquiv.subtypeEquiv fun a => (he a).symm)).symm`. Conclude with `Nat.card_image_of_injective e'.injective _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.exists_toric_torsion_cubWeil_one_of_exp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (y : Sp ℂ ⟶ X) (g N : ℕ) (e : (Fin g → ℂ) → (Over.mk y ⟶ t.G)), 0 < N → IsExpAt t y e → Function.Surjective e → IsHolTo Set.univ (fun w => (e w).left) → ∃ T : Set (Over.mk y ⟶ t.G), (∀ τ ∈ T, τ ^ N = 1) ∧ (∀ τ ∈ T, ∀ x : Over.mk y ⟶ t.G, x ^ N = 1 → GlobalTheory.UU.CubWeil t.cub N τ x 1) ∧ Nat.card {p : Over.mk y ⟶ t.G // p ^ N = 1} * Nat.card T = N ^ (2 * g) := by
   intro E _ _ _ H X t y g N e hN hexp _ _

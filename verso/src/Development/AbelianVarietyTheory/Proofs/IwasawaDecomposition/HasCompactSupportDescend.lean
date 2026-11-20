@@ -23,7 +23,7 @@ def descend : (G → ℂ) →ₗ[ℂ] (G ⧸ H → ℂ) where
 variable {H}
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul H g`. Use `show f ((g : G ⧸ H).out)⁻¹ = _`. Rewrite using `[hh, mul_inv_rev]`. Conclude with `hf _ (H.inv_mem h.2) _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descend_mk {f : G → ℂ} (hf : ∀ u ∈ H, ∀ g, f (u * g) = f g) (g : G) :
     descend H f (g : G ⧸ H) = f g⁻¹ := by
@@ -33,7 +33,7 @@ theorem descend_mk {f : G → ℂ} (hf : ∀ u ∈ H, ∀ g, f (u * g) = f g) (g
   exact hf _ (H.inv_mem h.2) _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective q`. Rewrite using `[descend_mk (fun u hu g => by rw [mul_assoc, hf u hu]), MulAction.Quotient.smul_mk, descend_mk hf]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem descend_mul_right {f : G → ℂ} (hf : ∀ u ∈ H, ∀ g, f (u * g) = f g) (x : G) :
     descend H (fun g => f (g * x)) = fun q => descend H f (x⁻¹ • q) := by
@@ -43,9 +43,9 @@ theorem descend_mul_right {f : G → ℂ} (hf : ∀ u ∈ H, ∀ g, f (u * g) = 
   simp
 
 /- English proof (translation)
-Introduce `u hu g`. Simplify using `only [Set.indicator_apply]`. Use `if_congr ⟨?_, ?_⟩ rfl rfl` and prove the remaining obligations. Introduce and unpack `⟨v, hv, c, hc, e⟩`. Conclude with `⟨u⁻¹ * v, H.mul_mem (H.inv_mem hu) hv, c, hc, by simp only at e; simp [mul_assoc, e]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨v, hv, c, hc, rfl⟩`. Conclude with `⟨u * v, H.mul_mem hu hv, c, hc, mul_assoc _ _ _⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem indicator_mul_left {K : Set G} : ∀ u ∈ H, ∀ g, ((H : Set G) * K).indicator (fun _ => (1 : ℂ)) (u * g) =
     ((H : Set G) * K).indicator (fun _ => (1 : ℂ)) g := by
@@ -61,7 +61,7 @@ theorem indicator_mul_left {K : Set G} : ∀ u ∈ H, ∀ g, ((H : Set G) * K).i
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Use `(QuotientGroup.isQuotientMap_mk H).continuous_iff.mpr ?_` and prove the remaining obligations. Establish `: descend H f ∘ QuotientGroup.mk = fun g => f g⁻¹` using `funext (descend_mk hf)`. Rewrite using `[this]`. Conclude with `hc.comp continuous_inv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_descend {f : G → ℂ} (hf : ∀ u ∈ H, ∀ g, f (u * g) = f g) (hc : Continuous f) :
     Continuous (descend H f) := by
@@ -71,9 +71,9 @@ theorem continuous_descend {f : G → ℂ} (hf : ∀ u ∈ H, ∀ g, f (u * g) =
   exact hc.comp continuous_inv
 
 /- English proof (translation)
-Use `HasCompactSupport.intro (hC.inv.image QuotientGroup.continuous_mk) fun q hq => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective q`. Rewrite using `[descend_mk hf]`. Assume the negation of the conclusion as `h`. Take `⟨u, hu, c, hc, e⟩` from `hs _ h`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `hq ⟨c⁻¹, by simpa using hc, QuotientGroup.eq.2 ?_⟩` and prove the remaining obligations. Establish `: g = c⁻¹ * u⁻¹` using `by rw [← mul_inv_rev, ← e, inv_inv]`. Rewrite using `[this]`. Simplify using `using hu`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasCompactSupport_descend [T2Space (G ⧸ H)] {f : G → ℂ} (hf : ∀ u ∈ H, ∀ g, f (u * g) = f g)
     {C : Set G} (hC : IsCompact C) (hs : ∀ g, f g ≠ 0 → ∃ u ∈ H, ∃ c ∈ C, g = u * c) :
@@ -89,21 +89,19 @@ theorem hasCompactSupport_descend [T2Space (G ⧸ H)] {f : G → ℂ} (hf : ∀ 
   simpa using hu
 
 /- English proof (translation)
-Use `borelize (G ⧸ H)`. Take `⟨⟨μ, hμ⟩, -⟩` from `GlobalTheory.Proof.quotientInvariantMeasure_exists_unique_unimodular.invariantMeasureClause G H hH uG uH`. Use `hμ.finiteOnCompacts` as an intermediate fact. Use `hμ.invariant` as an intermediate fact. Use `hμ.regular` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `S : Submodule ℂ (G → ℂ)` to `{ carrier := {f | Integrable (descend H f) μ} zero_mem' := by simp add_mem' := fun {f g} hf hg => by`. Simplify using `only [Set.mem_ofPred_eq, map_add] at *`. Conclude with `hf.add hg`. Use the proof step `smul_mem' := fun c f hf => by`. Simplify using `only [Set.mem_ofPred_eq, map_smul] at *`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hf.smul c }`. Set `J : S →ₗ[ℂ] ℂ` to `{ toFun := fun f => ∫ q, descend H f q ∂μ map_add' := fun f g => integral_add f.2 g.2 map_smul' := fun c f => integral_smul c (descend H f) }`. Take `⟨I, hI⟩` from `J.exists_extend`. Establish `hIJ : ∀ f, Integrable (descend H f) μ → I f = ∫ q, descend H f q ∂μ` using `fun f hf => LinearMap.congr_fun hI ⟨f, hf⟩`. Use `⟨I, fun f hf hc ⟨C, hC, hs⟩ x => ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Integrable (descend H f) μ` using `(continuous_descend hf hc).integrable_of_hasCompactSupport (hasCompactSupport_descend hf hC hs)`. Establish `h2 : Integrable (descend H fun g => f (g * x)) μ`. Rewrite using `[descend_mul_right hf]`. Conclude with `(measurePreserving_smul x⁻¹ μ).integrable_comp_of_integrable h1`. Rewrite using `[hIJ _ h1, hIJ _ h2, descend_mul_right hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Conclude with `integral_smul_eq_self (descend H f)`. Use `set U : Set (G ⧸ H) := QuotientGroup.mk '' (K : Set G)`. Establish `hUo : IsOpen U` using `QuotientGroup.isOpenMap_coe _ hKo`. Establish `hUc : IsCompact U` using `hKc.image QuotientGroup.continuous_mk`. Establish `e : descend H (((H : Set G) * (K : Set G)).indicator fun _ => 1) = U.indicator fun _ => 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `q`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective q`. Rewrite using `[descend_mk indicator_mul_left]`. Simplify using `only [Set.indicator_apply]`. Use `if_congr ⟨?_, ?_⟩ rfl rfl` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨u, hu, c, hc, e⟩`. Use `⟨c⁻¹, K.inv_mem hc, QuotientGroup.eq.2 ?_⟩` and prove the remaining obligations. Establish `: g = c⁻¹ * u⁻¹` using `by rw [← mul_inv_rev, show u * c = g⁻¹ from e, inv_inv]`. Rewrite using `[this]`. Simplify using `using hu`.
-
-Introduce and unpack `⟨c, hc, e⟩`. Conclude with `⟨_, H.inv_mem (QuotientGroup.eq.1 e), _, K.inv_mem hc, by simp⟩`. Establish `hpos : 0 < μ U` using `measure_isOpen_pos_of_smulInvariant_of_ne_zero G hμ.ne_zero hUo ⟨_, 1, K.one_mem, rfl⟩`. Rewrite using `[hIJ _ (e ▸ (integrable_indicator_iff hUo.measurableSet).2 (integrableOn_const hUc.measure_lt_top.ne)), e, integral_indicator_const _ hUo.measurableSet]`. Simplify `⟨hpos.ne', hUc.measure_lt_top.ne⟩` using `[Measure.real, ENNReal.toReal_eq_zero_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_invariant_form [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G]
     [MeasurableSpace G] [BorelSpace G] (hH : IsClosed (H : Set G))
@@ -173,9 +171,9 @@ open GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.SplitFlip
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {m : ℕ}
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Establish `hc : ∀ i j, Continuous fun g : GL (Fin m) k => g.val i j` using `fun i j => Units.continuous_val.matrix_elem i j`. Establish `: (unipB k (Fin m) : Set (GL (Fin m) k)) = (⋂ i, ⋂ j, ⋂ _ : j < i, {g : GL (Fin m) k | g.val i j = 0}) ∩ ⋂ i, {g : GL (Fin m) k | g.val i i = 1}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, mem_unipB, Set.mem_inter_iff, Set.mem_iInter, Set.mem_ofPred_eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `(isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_eq (hc _ _) continuous_const).inter (isClosed_iInter fun _ => isClosed_eq (hc _ _) continuous_const)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_unipB : IsClosed (unipB k (Fin m) : Set (GL (Fin m) k)) := by
   obtain ⟨_, _⟩ := GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)
@@ -190,7 +188,7 @@ theorem isClosed_unipB : IsClosed (unipB k (Fin m) : Set (GL (Fin m) k)) := by
     isClosed_eq (hc _ _) continuous_const).inter (isClosed_iInter fun _ => isClosed_eq (hc _ _) continuous_const)
 
 /- English proof (translation)
-Use `⟨indicator_mul_left, ?_, _, isCompact_KO, fun g hg => ?_⟩` and prove the remaining obligations. Conclude with `(LocallyConstant.indicator (LocallyConstant.const _ (1 : ℂ)) ⟨isClosed_unipB.mul_right_of_isCompact isCompact_KO, isOpen_KO.mul_left⟩).isLocallyConstant`. Take `⟨u, hu, c, hc, e⟩` from `Set.mem_of_indicator_ne_zero hg`. Conclude with `⟨u, hu, c, hc, e.symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isTestFun_indicator :
     IsTestFun (((unipB k (Fin m) : Set (GL (Fin m) k)) * (KO k (Fin m) : Set (GL (Fin m) k))).indicator
@@ -202,7 +200,7 @@ theorem isTestFun_indicator :
     exact ⟨u, hu, c, hc, e.symm⟩
 
 /- English proof (translation)
-Use `borelize k`. Take `⟨I, h1, h2⟩` from `exists_invariant_form (H := unipB k (Fin m)) isClosed_unipB (fun μ _ => inferInstance) (fun μ hμ => @UnipHaar.haar_isMulRightInvariant k _ _ _ _ (Fin m) (Fin m) (fun _ => Unit) _ _ _ _ _ _ (points (Fin m)) (inferInstance : MeasurableSpace (unipB k (Fin m))) (inferInstance : Borel …`. Conclude with `⟨I, _, fun f hf => h1 f hf.1 hf.2.1.continuous hf.2.2, isTestFun_indicator, h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isInvIntegral (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (m : ℕ) :

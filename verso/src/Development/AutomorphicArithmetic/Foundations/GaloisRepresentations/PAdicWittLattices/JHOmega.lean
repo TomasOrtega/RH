@@ -5,9 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AlgebraMapSecEq
 open CategoryTheory Limits AlgebraicGeometry Opposite ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.HodgeCoh GlobalTheory.CechDR PositivityTheory.AutomorphicGaloisHodgeTate.G8.HBC UpperTheory.Gal.G3.HN
 
 /- English proof (translation)
-Introduce `hE hF hS hA k k' _ _ _ J e X X' s s' g h a V hV`. Use `letI := algΓ s`. Use `letI := algΓ s'`. Use `haveI : IsAffineHom g := hA k k' (algebraMap k k') X X' s s' g h`. Establish `hV' : IsAffineOpen (g ⁻¹ᵁ V)` using `hV.preimage g`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hForms : IsBC e (formPullS h.w V a)` using `hF k k' J e _ _ _ (semiHom_appSecS h.w V) (hS k k' J e X X' s s' g h V hV) a`. Use `hE k k' J e _ _ _ _ (formPullS h.w V a) (omSecEquiv s a ⟨V, hV⟩).symm (omSecEquiv s' a ⟨g ⁻¹ᵁ V, hV'⟩) _ (fun x ↦ ?_) hForms` and prove the remaining obligations. Take `⟨y, rfl⟩` from `(omSecEquiv s a ⟨V, hV⟩).surjective x`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Conclude with `omegaPullS_toOmega h.w a V y`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.jHOmega :
     PositivityTheory.AutomorphicGaloisHodgeTate.G8.HBC.P_equiv → PositivityTheory.AutomorphicGaloisHodgeTate.G8.HBC.P_forms → PositivityTheory.AutomorphicGaloisHodgeTate.G8.HBC.P_sections → PositivityTheory.AutomorphicGaloisHodgeTate.G8.HBC.P_affine → PositivityTheory.AutomorphicGaloisHodgeTate.G8.HBC.P_omega := by

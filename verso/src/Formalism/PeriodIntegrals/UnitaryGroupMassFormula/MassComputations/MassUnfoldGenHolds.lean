@@ -10,7 +10,7 @@ open Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVo
 namespace MassDataMassesW
 
 /- English proof (translation)
-Introduce `D X u hM _ U _ hUo hfin 𝓕 h𝓕`. Conclude with `massUnfold_gen (hCM := isCMExt_of_cmData X.B.I.cm) (hJ := isHermND_of_setting X) (M := X.measW u) (hM := hM) (U := U) (hU := hUo.measurableSet) (hfin := hfin) (𝓕 := 𝓕) (h𝓕 := h𝓕)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem massUnfoldGen_holds : PIW.MassDataColumns.MassUnfoldGen := by
   intro D X u hM _ U _ hUo hfin 𝓕 h𝓕

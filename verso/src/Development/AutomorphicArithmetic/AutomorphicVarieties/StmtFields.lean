@@ -71,11 +71,11 @@ def minusBound (C : ℝ) (o n N t : ℕ) : ℝ :=
     C * ∑ l ∈ o.primeFactors.erase 2, (l : ℝ) * (n : ℝ) ^ 2 * (t : ℝ) ^ 2 * Real.log ((t : ℝ) * l * N) ^ 2
 
 /- English proof (translation)
-Use `show (∃ u ∈ ψ.χ.toUnitHom.ker, ((u : (ZMod ψ.N)ˣ) : ZMod ψ.N) = (a : ZMod ψ.N)) ↔ ψ.χ (a : ZMod ψ.N) = 1`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hua⟩`. Rewrite using `[← hua]`. Use `congrArg (fun v : ℂˣ => (v : ℂ)) (MonoidHom.mem_ker.mp hu)` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[MulChar.coe_toUnitHom]`. Introduce `h`. Establish `hu : IsUnit (a : ZMod ψ.N)`. Assume the negation of the conclusion as `hn`. Rewrite `h` using `[MulChar.map_nonunit ψ.χ hn]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zero_ne_one h`. Use `⟨hu.unit, ?_, hu.unit_spec⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker]`. Use `ext`. Simplify `h` using `[MulChar.coe_toUnitHom]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem AbF.ker_ofChar (ψ : PChar) (a : ℕ) : (AbF.ofChar ψ).ker a ↔ ψ.val a = 1 := by
   show (∃ u ∈ ψ.χ.toUnitHom.ker, ((u : (ZMod ψ.N)ˣ) : ZMod ψ.N) = (a : ZMod ψ.N)) ↔
@@ -96,7 +96,7 @@ theorem AbF.ker_ofChar (ψ : PChar) (a : ℕ) : (AbF.ofChar ψ).ker a ↔ ψ.val
     simpa [MulChar.coe_toUnitHom] using h
 
 /- English proof (translation)
-Simplify using `only [IsCompField, IsChiField, AbF.ker_ofChar]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem isCompField_ofChar (ψ : PChar) (e q d : ℕ) (E : Type) [Field E] [NumberField E] :
     IsCompField (AbF.ofChar ψ) e q d E ↔ IsChiField ψ e q d E := by
@@ -104,11 +104,9 @@ theorem isCompField_ofChar (ψ : PChar) (e q d : ℕ) (E : Type) [Field E] [Numb
   rfl
 
 /- English proof (translation)
-Establish `hm : max (l * q) 1 = l * q` using `max_eq_left (Nat.one_le_iff_ne_zero.mpr (Nat.mul_pos hl hq).ne')`. Use `show (l ∣ max (l * q) 1) ∧ ∀ a : ℕ, (∃ u ∈ (⊥ : Subgroup (ZMod (max (l * q) 1))ˣ), ((u : (ZMod (max (l * q) 1))ˣ) : ZMod (max (l * q) 1)) = (a : ZMod (max (l * q) 1))) → a ≡ 1 [MOD l]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`. Conclude with `dvd_mul_right l q`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `a ⟨u, hu, hua⟩`. Rewrite `hu` using `[Subgroup.mem_bot]`. Substitute `hu` using the available equality. Establish `h1 : ((a : ℕ) : ZMod (max (l * q) 1)) = ((1 : ℕ) : ZMod (max (l * q) 1))`. Simplify using `using hua.symm`.
-
-Rewrite `h1` using `[ZMod.natCast_eq_natCast_iff, hm]`. Conclude with `Nat.ModEq.of_mul_right q h1`.
+Substitute using the available equality. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AbF.hasMu_cyc {l q : ℕ} (hl : 0 < l) (hq : 0 < q) : (AbF.cyc (l * q)).HasMu l := by
   have hm : max (l * q) 1 = l * q :=
@@ -129,7 +127,7 @@ theorem AbF.hasMu_cyc {l q : ℕ} (hl : 0 < l) (hq : 0 < q) : (AbF.cyc (l * q)).
     exact Nat.ModEq.of_mul_right q h1
 
 /- English proof (translation)
-Unfold `Bchi at h`. Break down `Finset.mem_insert.mp h with rfl | h` into its components or cases. Conclude with `⟨Nat.prime_three, by decide⟩`. Take `⟨hne, hmem⟩` from `Finset.mem_erase.mp h`. Conclude with `⟨Nat.prime_of_mem_primeFactors hmem, hne⟩`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem prime_of_mem_Bchi {ψ : PChar} {l : ℕ} (h : l ∈ Bchi ψ) : l.Prime ∧ l ≠ 2 := by
   unfold Bchi at h

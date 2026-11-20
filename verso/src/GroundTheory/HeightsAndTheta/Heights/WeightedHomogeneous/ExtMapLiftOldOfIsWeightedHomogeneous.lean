@@ -15,7 +15,7 @@ namespace AddBlockData
 variable {P : ArithVariety n} (D : AddBlockData P)
 
 /- English proof (translation)
-Use `MvPolynomial.ringHom_ext (fun r ↦ by simp) (fun v ↦ ?_)` and prove the remaining obligations. Simplify using `[extMap, liftOld, oldCoord, extVal]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem extMap_comp_liftOld :
     D.extMap.comp D.liftOld.toRingHom =
@@ -24,7 +24,7 @@ theorem extMap_comp_liftOld :
   simp [extMap, liftOld, oldCoord, extVal]
 
 /- English proof (translation)
-Rewrite using `[coe_eval₂Hom, eval₂_monomial, monomial_eq, Finsupp.prod_fintype _ _ (by simp), Finsupp.prod_fintype _ _ (by simp)]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, map_mul, map_prod, map_pow, weight_coordDeg_apply, Fintype.prod_sigma, Finset.prod_pow_eq_pow_sum]`. Simplify using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eval₂Hom_monomial_blockVal (d : Coord n →₀ ℕ) (r : ℤ) :
     eval₂Hom (Int.castRingHom (MvPolynomial (Option ι) P.FunField))
@@ -37,9 +37,9 @@ theorem eval₂Hom_monomial_blockVal (d : Coord n →₀ ℕ) (r : ℤ) :
   simp [mul_assoc]
 
 /- English proof (translation)
-Establish `h : D.extMap (D.liftOld f) = eval₂Hom (Int.castRingHom (MvPolynomial (Option ι) P.FunField)) (fun v : Coord n ↦ C (P.mkF (X v)) * X (some v.1)) f`. Rewrite using `[← D.extMap_comp_liftOld]`. Both sides reduce to the same expression. Rewrite using `[h]`. Use `conv_lhs => rw [f.as_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [f.as_sum]`. Rewrite using `[map_sum, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun d hd ↦ ?_` and prove the remaining obligations. Rewrite using `[eval₂Hom_monomial_blockVal, hf (mem_support_iff.mp hd)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extMap_liftOld_of_isWeightedHomogeneous {f : MvPolynomial (Coord n) ℤ} {δ : ι → ℕ}
     (hf : IsWeightedHomogeneous (coordDeg n) f δ) :
@@ -56,7 +56,7 @@ theorem extMap_liftOld_of_isWeightedHomogeneous {f : MvPolynomial (Coord n) ℤ}
   rw [eval₂Hom_monomial_blockVal, hf (mem_support_iff.mp hd)]
 
 /- English proof (translation)
-Simplify using `only [evalCone, liftOld]`. Rewrite using `[eval₂_rename]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evalCone_liftOld {F : Type*} [CommRing F] (w : Cone D.extSizes F) (f : MvPolynomial (Coord n) ℤ) :
     evalCone w (D.liftOld f) = evalCone (D.basePart₂ w) f := by
@@ -65,7 +65,7 @@ theorem evalCone_liftOld {F : Type*} [CommRing F] (w : Cone D.extSizes F) (f : M
   rfl
 
 /- English proof (translation)
-Rewrite using `[extIdeal, RingHom.mem_ker]`. Use `conv_lhs => rw [← sum_weightedHomogeneousComponent (coordDeg n) f, finsum_eq_sum _ (weightedHomogeneousComponent_finsupp f)]`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_eq_zero fun m _ ↦ ?_` and prove the remaining obligations. Rewrite using `[D.extMap_liftOld_of_isWeightedHomogeneous (weightedHomogeneousComponent_isWeightedHomogeneous m f), (P.mkF_eq_zero_iff _).mpr (P.homogeneous f hf m), map_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftOld_mem_extIdeal {f : MvPolynomial (Coord n) ℤ} (hf : f ∈ P.ideal) :
     D.liftOld f ∈ D.extIdeal := by
@@ -78,7 +78,7 @@ theorem liftOld_mem_extIdeal {f : MvPolynomial (Coord n) ℤ} (hf : f ∈ P.idea
     (P.mkF_eq_zero_iff _).mpr (P.homogeneous f hf m), map_zero, zero_mul]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, (X ⟨k, c k⟩ : MvPolynomial (Coord n) ℤ) ∈ P.ideal := by`. Simplify `hc` using `[ArithVariety.IsLive]`. Conclude with `P.ideal.mem_of_dvd (Finset.dvd_prod_of_mem _ (Finset.mem_univ k)) (P.ideal.pow_mem_of_mem hk (d k) (hd k))`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem chartMonomial_mem_of_not_isLive {c : (k : ι) → Fin (n k + 1)} (hc : ¬ P.IsLive c)
     {d : ι → ℕ} (hd : ∀ k, 1 ≤ d k) : chartMonomial c d ∈ P.ideal := by
@@ -88,9 +88,9 @@ theorem chartMonomial_mem_of_not_isLive {c : (k : ι) → Fin (n k + 1)} (hc : �
     (P.ideal.pow_mem_of_mem hk (d k) (hd k))
 
 /- English proof (translation)
-Distinguish the cases in `hc : P.IsLive c`. Distinguish the cases in `hc' : P.IsLive c'`. Rewrite using `[← P.mkF_eq_zero_iff, map_sub, map_mul, map_mul, hg.value c hc j, hg.value c' hc' j]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hg.dead c' hc' j, mul_zero, sub_zero]`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.ideal.mul_mem_right _ (chartMonomial_mem_of_not_isLive hc' hg.pos)`. Rewrite using `[hg.dead c hc j, mul_zero, zero_sub]`. Conclude with `P.ideal.neg_mem_iff.mpr (P.ideal.mul_mem_right _ (chartMonomial_mem_of_not_isLive hc hg.pos))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsFormSystem.cross_mem {d : ι → ℕ}
     {g : ((k : ι) → Fin (n k + 1)) → Fin (D.size + 1) → MvPolynomial (Coord n) ℤ}
@@ -110,29 +110,25 @@ end AddBlockData
 open AddBlockData in
 
 /- English proof (translation)
-Introduce `ι _ _ n P D d g hg`. Establish `hom : ∀ c j, IsWeightedHomogeneous (coordDeg n) (g c j) (fun k ↦ (d k + D.deg k).toNat)`. Introduce `c j`. Take `⟨δ, hδ, hδk⟩` from `hg.homog c j`. Use `hδ using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[← hδk k, Int.toNat_natCast]`. Establish `hX : ∀ i, D.extMap (X (D.newCoord i)) = C (D.elt i) * X none` using `fun i ↦ by`. Simplify using `[extMap, newCoord, extVal]`. Establish `part1 : ∀ (c : (k : ι) → Fin (n k + 1)) (i j : Fin (D.size + 1)), D.liftOld (g c j) * X (D.newCoord i) - D.liftOld (g c i) * X (D.newCoord j) ∈ D.extIdeal`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `c i j`. Rewrite using `[extIdeal, RingHom.mem_ker, map_sub, map_mul, map_mul, hX, hX, D.extMap_liftOld_of_isWeightedHomogeneous (hom c j), D.extMap_liftOld_of_isWeightedHomogeneous (hom c i)]`. Distinguish the cases in `hc : P.IsLive c`. Rewrite using `[hg.value c hc j, hg.value c hc i]`. Simplify using `only [map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hg.dead c hc j, hg.dead c hc i]`. Simplify using the standard rewrite rules. Use `⟨part1, fun w hw ↦ ?_⟩` and prove the remaining obligations. Use `set z := D.basePart₂ w with hz`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set z' := D.newPart w with hz'`. Establish `hzP : z ∈ P.points ℂ` using `⟨fun k ↦ hw.1 (some k), fun f hf ↦ by`. Rewrite using `[← D.evalCone_liftOld]`. Conclude with `hw.2 _ (D.liftOld_mem_extIdeal hf)⟩`. Establish `rel : ∀ c i j, evalCone z (g c j) * z' i = evalCone z (g c i) * z' j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Introduce `c i j`. Establish `h` using `hw.2 _ (part1 c i j)`. Unfold `evalCone at h`. Rewrite `h` using `[eval₂_sub, eval₂_mul, eval₂_mul, eval₂_X, eval₂_X]`. Express the relevant statement in the definitionally equal form `evalCone w (D.liftOld (g c j)) * _ - evalCone w (D.liftOld (g c i)) * _ = 0 at h`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[evalCone_liftOld, evalCone_liftOld]`. Rewrite using `[← sub_eq_zero]`. Conclude with `h`. Establish `cross : ∀ c c' j, evalCone z (chartMonomial c' d) * evalCone z (g c j) = evalCone z (chartMonomial c d) * evalCone z (g c' j)`. Introduce `c c' j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h` using `hzP.2 _ (hg.cross_mem D c c' j)`. Rewrite using `[← sub_eq_zero]`. Simplify `h` using `[evalCone]`. Establish `hne : ∀ k, ∃ i, z k i ≠ 0` using `fun k ↦ Function.ne_iff.mp (hzP.1 k)`. Use `choose c₀ hc₀ using hne`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Establish `hm₀ : evalCone z (chartMonomial c₀ d) ≠ 0`. Simplify using `only [evalCone, chartMonomial, eval₂_prod, eval₂_pow, eval₂_X]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hc₀ k)`. Choose the witnesses or unpack the hypotheses as in `⟨j₀, hj₀⟩ : ∃ j, evalCone z (g c₀ j) ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [not_exists, not_not] at h`. Conclude with `hm₀ ((hV ι n P D d g hg z hzP c₀).mp h)`. Establish `hz'₀ : z' j₀ ≠ 0`. Introduce `h0`. Apply `hw.1 none` to reduce the goal to its premises.
-
-Use function extensionality and compare the values at `i`. Use `rel c₀ i j₀` as an intermediate fact. Rewrite `this` using `[h0, mul_zero]`. Conclude with `(mul_eq_zero.mp this).resolve_left hj₀`. Use `⟨hzP, z' j₀ * evalCone z (chartMonomial c₀ d) / evalCone z (g c₀ j₀), div_ne_zero (mul_ne_zero hz'₀ hm₀) hj₀, fun c hc j ↦ ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[eq_div_iff hc, div_mul_eq_mul_div, eq_div_iff hj₀]`. Take the linear combination `evalCone z (chartMonomial c d) * rel c₀ j j₀ - z' j₀ * cross c c₀ j`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ConePoints.proof (hV : ChartVanishing.Statement) : ConePoints.Statement := by
   intro ι _ _ n P D d g hg

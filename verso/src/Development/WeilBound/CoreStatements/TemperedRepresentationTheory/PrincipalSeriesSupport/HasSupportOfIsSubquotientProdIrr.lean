@@ -12,14 +12,14 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Take `⟨c, y, hd, hc, φ, hφ⟩` from `hS k x.1 _ x.rep x.2.rep.smooth x.2.rep.irr`. Conclude with `⟨_, hasSupport_of_isSubquotient x.2.rep.irr hc (.of_injective φ hφ)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_hasSupport (hS : SubEmbedding) (x : IrrGL k) : ∃ s, HasSupport x.rep s := by
   obtain ⟨c, y, hd, hc, φ, hφ⟩ := hS k x.1 _ x.rep x.2.rep.smooth x.2.rep.irr
   exact ⟨_, hasSupport_of_isSubquotient x.2.rep.irr hc (.of_injective φ hφ)⟩
 
 /- English proof (translation)
-The claim follows from `hP k c N y hd t ht V π hi h`.
+A detailed English derivation is pending.
 -/
 theorem hasSupport_of_isSubquotient_prodIrr (hP : ProdSupport) {c N : ℕ} {y : Fin c → IrrGL k}
     {hd : ∑ a, (y a).1 = N} {t : Fin c → Multiset (IrrGL k)} (ht : ∀ a, HasSupport (y a).rep (t a))

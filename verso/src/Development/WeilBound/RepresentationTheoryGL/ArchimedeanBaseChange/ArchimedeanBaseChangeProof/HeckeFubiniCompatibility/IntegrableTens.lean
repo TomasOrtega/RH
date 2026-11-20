@@ -36,13 +36,13 @@ def Wsp (M : Mods E n) : Submodule ℂ (Kinf E n → ℂ) :=
   Submodule.span ℂ (Set.range fun p : IxA M × IxA M => coef M p.1 p.2)
 
 /- English proof (translation)
-The claim follows from `FiniteDimensional.span_of_finite ℂ (Set.finite_range _)`.
+A detailed English derivation is pending.
 -/
 theorem fd_Wsp (M : Mods E n) : FiniteDimensional ℂ (Wsp M) :=
   FiniteDimensional.span_of_finite ℂ (Set.finite_range _)
 
 /- English proof (translation)
-Rewrite using `[← map_inv (infGL E n), ← map_inv (Unitary.toUnits (R := Matrix (Fin n) (Fin n) (Cinf E))) k]`. Use extensionality with `i j`. Conclude with `gInf_infGL n v _ i j`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem gInf_inv_val (v : InfinitePlace E) (k : Kinf E n) :
     (gInf v ((infGL E n (Unitary.toUnits k))⁻¹)).val = (uAt v k⁻¹).1 := by
@@ -51,11 +51,11 @@ theorem gInf_inv_val (v : InfinitePlace E) (k : Kinf E n) :
   exact gInf_infGL n v _ i j
 
 /- English proof (translation)
-Establish `h1 : ∀ v, ent (M v) (k v (gInf v ((infGL E n (Unitary.toUnits K))⁻¹ * y)).val) (I v) (J v) = ∑ l, ent (M v) ((M v).ρ (uAt v K⁻¹)) (I v) l * ent (M v) (k v (gInf v y).val) l (J v)`. Introduce `v`. Establish `h2` using `mult_equivariant_val (hk v) (gInf v y) (uAt v K⁻¹) 1`. Simplify using `only [OneMemClass.coe_one, map_one, mul_one] at h2`. Establish `e : (gInf v ((infGL E n (Unitary.toUnits K))⁻¹ * y)).val = (uAt v K⁻¹).1 * (gInf v y).val`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_mul, Units.val_mul, gInf_inv_val]`. Rewrite using `[e, h2, PMul.ent_mul]`. Simplify using `only [entA, coef]`. Rewrite using `[Finset.prod_congr rfl fun v _ => h1 v, Finset.prod_univ_sum, Fintype.piFinset_univ]`. Use `Finset.sum_congr rfl fun L _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem entA_inf [MeasurableSpace (G n)] {μ : Measure (G n)} {M : Mods E n} {k : Kers M}
     {val : InfinitePlace E → Inf n → ℂ} {T : ℝ} (hk : IsMults μ k val T) (K : Kinf E n) (I J : IxA M) (y : GA E n) :
@@ -74,21 +74,21 @@ theorem entA_inf [MeasurableSpace (G n)] {μ : Measure (G n)} {M : Mods E n} {k 
   rw [Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_inv, gInf_finGL, inv_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gInf_fin_mul (v : InfinitePlace E) (u : GL (Fin n) (Af E)) (z : GA E n) :
     gInf v ((finGL E n u)⁻¹ * z) = gInf v z := by
   rw [map_mul, map_inv, gInf_finGL, inv_one, one_mul]
 
 /- English proof (translation)
-Simplify using `only [entA, gInf_fin_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem entA_fin {M : Mods E n} (k : Kers M) (I J : IxA M) (u : GL (Fin n) (Af E)) (z : GA E n) :
     entA k I J ((finGL E n u)⁻¹ * z) = entA k I J z := by
   simp only [entA, gInf_fin_mul]
 
 /- English proof (translation)
-Use `show (gFin ((finGL E a u₁)⁻¹ * y.1), gFin ((finGL E b u₂)⁻¹ * y.2)) = (u₁⁻¹ * gFin y.1, u₂⁻¹ * gFin y.2)`. Rewrite using `[map_mul, map_mul, map_inv, map_inv, gFin_finGL, gFin_finGL]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hFin_fin (u₁ : GL (Fin a) (Af E)) (u₂ : GL (Fin b) (Af E)) (y : H E a b) :
     hFin ((finGL E a u₁, finGL E b u₂)⁻¹ * y) = (u₁⁻¹, u₂⁻¹) * hFin y := by
@@ -96,7 +96,7 @@ theorem hFin_fin (u₁ : GL (Fin a) (Af E)) (u₂ : GL (Fin b) (Af E)) (y : H E 
   rw [map_mul, map_mul, map_inv, map_inv, gFin_finGL, gFin_finGL]
 
 /- English proof (translation)
-Use `show (gFin ((infGL E a A)⁻¹ * y.1), gFin ((infGL E b B)⁻¹ * y.2)) = (gFin y.1, gFin y.2)`. Establish `h1 : gFin (infGL E a A) = 1` using `pFin_infGL A`. Establish `h2 : gFin (infGL E b B) = 1` using `pFin_infGL B`. Rewrite using `[map_mul, map_mul, map_inv, map_inv, h1, h2, inv_one, inv_one, one_mul, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hFin_inf (A : GL (Fin a) (Cinf E)) (B : GL (Fin b) (Cinf E)) (y : H E a b) :
     hFin ((infGL E a A, infGL E b B)⁻¹ * y) = hFin y := by
@@ -106,9 +106,9 @@ theorem hFin_inf (A : GL (Fin a) (Cinf E)) (B : GL (Fin b) (Cinf E)) (y : H E a 
   rw [map_mul, map_mul, map_inv, map_inv, h1, h2, inv_one, inv_one, one_mul, one_mul]
 
 /- English proof (translation)
-Establish `: BorelSpace (H E a b)` using `⟨rfl⟩`. Establish `: D.μ.IsMulLeftInvariant` using `D.haar.1`. Establish `h1` using `congrFun (congrFun h i) (x * g)`. Simplify using `only [PositivityTheory.Rg.BcB.E.conv, Pi.smul_apply, smul_eq_mul] at h1`. Rewrite using `[← h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h2` using `integral_mul_left_eq_self (μ := D.μ) (fun y => Φ i j (g⁻¹ * y) * f j (x * y)) g`. Simplify using `only [← mul_assoc, inv_mul_cancel, one_mul] at h2`. Conclude with `h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem f_mul (D : Dom E a b) {ι : Type} [Fintype ι] (Φ : Matrix ι ι (H E a b → ℂ)) (f : ι → H E a b → ℂ) {c : ℂ}
     (h : PositivityTheory.Rg.BcB.E.conv D.μ Φ f = c • f) (i : ι) (x g : H E a b) :
@@ -124,7 +124,7 @@ theorem f_mul (D : Dom E a b) {ι : Type} [Fintype ι] (Φ : Matrix ι ι (H E a
   exact h2
 
 /- English proof (translation)
-Use `HasCompactSupport.intro (isCompact_univ_pi fun v => (hg v).isCompact) fun y hy => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_pi, Set.mem_univ, true_implies, not_forall] at hy`. Take `⟨v, hv⟩` from `hy`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ v) (image_eq_zero_of_notMem_tsupport hv)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cs_pi {ι X : Type} [Fintype ι] [TopologicalSpace X] [T2Space X] {g : ι → X → ℂ}
     (hg : ∀ v, HasCompactSupport (g v)) : HasCompactSupport fun y : ι → X => ∏ v, g v (y v) := by
@@ -134,9 +134,9 @@ theorem cs_pi {ι X : Type} [Fintype ι] [TopologicalSpace X] [T2Space X] {g : �
   exact Finset.prod_eq_zero (Finset.mem_univ v) (image_eq_zero_of_notMem_tsupport hv)
 
 /- English proof (translation)
-Use `HasCompactSupport.intro (hf.isCompact.prod (hg.isCompact.prod hh.isCompact)) fun z hz => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_prod, not_and_or] at hz`. Break down `hz with h1 | h1 | h1` into its components or cases. Rewrite using `[image_eq_zero_of_notMem_tsupport h1, zero_mul, zero_mul]`. Rewrite using `[image_eq_zero_of_notMem_tsupport h1, mul_zero, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[image_eq_zero_of_notMem_tsupport h1, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cs_prod3 {X Y Z : Type} [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z] [T2Space X]
     [T2Space Y] [T2Space Z] {f : X → ℂ} {g : Y → ℂ} {h : Z → ℂ} (hf : HasCompactSupport f) (hg : HasCompactSupport g)
@@ -149,7 +149,7 @@ theorem cs_prod3 {X Y Z : Type} [TopologicalSpace X] [TopologicalSpace Y] [Topol
   · rw [image_eq_zero_of_notMem_tsupport h1, mul_zero]
 
 /- English proof (translation)
-Establish `e : entA k I J = fun g => ∏ v, ent (M v) (k v (gInf v g).val) (I v) (J v)` using `rfl`. Rewrite using `[e]`. Conclude with `continuous_finsetProd _ fun v _ => (mult_ent (hk v) (I v) (J v)).1.comp (continuous_gInf n v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_entA [MeasurableSpace (G n)] {μ : Measure (G n)} {M : Mods E n} {k : Kers M}
     {val : InfinitePlace E → Inf n → ℂ} {T : ℝ} (hk : IsMults μ k val T) (I J : IxA M) : Continuous (entA k I J) := by
@@ -158,11 +158,11 @@ theorem continuous_entA [MeasurableSpace (G n)] {μ : Measure (G n)} {M : Mods E
   exact continuous_finsetProd _ fun v _ => (mult_ent (hk v) (I v) (J v)).1.comp (continuous_gInf n v)
 
 /- English proof (translation)
-Establish `hh : Continuous (hFin : H E a b → Hf E a b)` using `((continuous_gFin a).comp continuous_fst).prodMk ((continuous_gFin b).comp continuous_snd)`. Establish `hcont : Continuous (tens ka kb ψ i j)` using `(((continuous_entA ha _ _).comp continuous_fst).mul ((continuous_entA hb _ _).comp continuous_snd)).mul ((hψ i.2 j.2).1.comp hh)`. Establish `hQ` using `cs_prod3 (cs_pi fun v => (mult_ent (ha v) (i.1.1 v) (j.1.1 v)).2) (cs_pi fun v => (mult_ent (hb v) (i.1.2 v) (j.1.2 v)).2) (hψ i.2 j.2).2`. Establish `hpt : ∀ z, tens ka kb ψ i j (splitH a b z) = (∏ v, ent (Ma v) (ka v (z.1 v).val) (i.1.1 v) (j.1.1 v)) * (∏ v, ent (Mb v) (kb v (z.2.1 v).val) (i.1.2 v) (j.1.2 v)) * ψ i.2 j.2 z.2.2` using `fun z => by`. Simplify using `only [tens, entA, gInf_splitH₁, gInf_splitH₂, hFin_splitH]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : tens ka kb ψ i j = (fun z : (InfinitePlace E → G a) × ((InfinitePlace E → G b) × Hf E a b) => (∏ v, ent (Ma v) (ka v (z.1 v).val) (i.1.1 v) (j.1.1 v)) * (∏ v, ent (Mb v) (kb v (z.2.1 v).val) (i.1.2 v) (j.1.2 v)) * ψ i.2 j.2 z.2.2) ∘ (splitH a b).toHomeomorph.symm`. Use function extensionality and compare the values at `g`. Take `⟨z, rfl⟩` from `(splitH a b).surjective g`. Rewrite using `[Function.comp_apply, show (splitH a b).toHomeomorph.symm (splitH a b z) = z from (splitH a b).toHomeomorph.symm_apply_apply z]`. Conclude with `hpt z`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hcont, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `hQ.comp_homeomorph _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_cs [MeasurableSpace (G a)] [MeasurableSpace (G b)] {μa : Measure (G a)} {μb : Measure (G b)}
     {Ma : Mods E a} {Mb : Mods E b} {κ : Type} {ka : Kers Ma} {kb : Kers Mb} {va : InfinitePlace E → Inf a → ℂ}
@@ -194,7 +194,7 @@ theorem tens_cs [MeasurableSpace (G a)] [MeasurableSpace (G b)] {μa : Measure (
   exact hQ.comp_homeomorph _
 
 /- English proof (translation)
-Establish `: BorelSpace (H E a b)` using `⟨rfl⟩`. Establish `: IsLocallyFiniteMeasure D.μ` using `D.haar.2.2.2`. Establish `: IsFiniteMeasureOnCompacts D.μ` using `⟨fun K hK => hK.measure_lt_top_of_nhdsWithin fun x _ => (D.μ.finiteAt_nhds x).filter_mono nhdsWithin_le_nhds⟩`. Take `⟨h1, h2⟩` from `tens_cs ha hb hψ i j`. Conclude with `(h1.mul (hF.comp (continuous_const.mul continuous_id))).integrable_of_hasCompactSupport (h2.mul_right (f' := fun y => F (x * y)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem integrable_tens (D : Dom E a b) [MeasurableSpace (G a)] [MeasurableSpace (G b)] {μa : Measure (G a)}
     {μb : Measure (G b)} {Ma : Mods E a} {Mb : Mods E b} {κ : Type} {ka : Kers Ma} {kb : Kers Mb}
@@ -214,29 +214,25 @@ end prime_not_mem_section_base_place
 open prime_not_mem_section_base_place in
 
 /- English proof (translation)
-Introduce `E _ _ _ a b Ma Mb`. Use `⟨Wsp Ma, Wsp Mb, fd_Wsp Ma, fd_Wsp Mb, ?_⟩` and prove the remaining obligations. Introduce `D _ _ μa μb κ _ ka kb va vb T ψ K₁ K₂ f hka hkb hψ hlev hrep i`. Take `⟨hfc, c, hc, hconv⟩` from `hrep`. Establish `hint : ∀ i j x, Integrable (fun y => tens ka kb ψ i j y * f j (x * y)) D.μ` using `fun i j x => integrable_tens D hka hkb hψ (hfc j) i j x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hR : ∀ (L : Io Ma Mb κ) x, c * f L x = ∑ j, ∫ y, tens ka kb ψ L j y * f j (x * y) ∂D.μ` using `fun L x => by`. Establish `h0` using `f_mul D _ f hconv L x 1`. Simplify `h0` using `only [mul_one, inv_one, one_mul]`. Use `⟨fun u₁ hu₁ u₂ hu₂ x => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `h1` using `f_mul D _ f hconv i x (finGL E a u₁, finGL E b u₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hΦ : ∀ j y, tens ka kb ψ i j ((finGL E a u₁, finGL E b u₂)⁻¹ * y) = tens ka kb ψ i j y`. Introduce `j y`. Use `show entA ka i.1.1 j.1.1 ((finGL E a u₁)⁻¹ * y.1) * entA kb i.1.2 j.1.2 ((finGL E b u₂)⁻¹ * y.2) * ψ i.2 j.2 (hFin ((finGL E a u₁, finGL E b u₂)⁻¹ * y)) = entA ka i.1.1 j.1.1 y.1 * entA kb i.1.2 j.1.2 y.2 * ψ i.2 j.2 (hFin y)`. Rewrite using `[entA_fin, entA_fin, hFin_fin, hlev _ _ _ (K₁.inv_mem hu₁) _ (K₂.inv_mem hu₂)]`. Simplify using `only [hΦ] at h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `mul_left_cancel₀ hc (h1.trans (hR i x).symm)`. Establish `hexp : ∀ k : Kinf E a × Kinf E b, f i (x * (infGL E a (Unitary.toUnits k.1), infGL E b (Unitary.toUnits k.2))) = ∑ L₁ : IxA Ma, ∑ L₂ : IxA Mb, f ((L₁, L₂), i.2) x * (coef Ma i.1.1 L₁ k.1 * coef Mb i.1.2 L₂ k.2)`. Introduce `k`. Apply `mul_left_cancel₀ hc` to reduce the goal to its premises. Establish `hΦ : ∀ j y, tens ka kb ψ i j ((infGL E a (Unitary.toUnits k.1), infGL E b (Unitary.toUnits k.2))⁻¹ * y) = ∑ L₁ : IxA Ma, ∑ L₂ : IxA Mb, (coef Ma i.1.1 L₁ k.1 * coef Mb i.1.2 L₂ k.2) * tens ka kb ψ ((L₁, L₂), i.2) j y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j y`. Use `show entA ka i.1.1 j.1.1 ((infGL E a (Unitary.toUnits k.1))⁻¹ * y.1) * entA kb i.1.2 j.1.2 ((infGL E b (Unitary.toUnits k.2))⁻¹ * y.2) * ψ i.2 j.2 (hFin ((infGL E a (Unitary.toUnits k.1), infGL E b (Unitary.toUnits k.2))⁻¹ * y)) = _`. Rewrite using `[entA_inf hka, entA_inf hkb, hFin_inf, Finset.sum_mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun L₁ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun L₂ _ => ?_` and prove the remaining obligations. Simplify using `only [tens]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[f_mul D _ f hconv i x]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [hΦ, Finset.sum_mul, mul_assoc]`. Use `_ = ∑ j, ∑ L₁ : IxA Ma, ∑ L₂ : IxA Mb, (coef Ma i.1.1 L₁ k.1 * coef Mb i.1.2 L₂ k.2) * ∫ y, tens ka kb ψ ((L₁, L₂), i.2) j y * f j (x * y) ∂D.μ := by`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finsetSum _ fun L₁ _ => integrable_finsetSum _ fun L₂ _ => (hint _ j x).const_mul _]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun L₁ _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finsetSum _ fun L₂ _ => (hint _ j x).const_mul _]`. Conclude with `Finset.sum_congr rfl fun L₂ _ => integral_const_mul _ _`. Use `_ = ∑ L₁ : IxA Ma, ∑ L₂ : IxA Mb, (coef Ma i.1.1 L₁ k.1 * coef Mb i.1.2 L₂ k.2) * (c * f ((L₁, L₂), i.2) x) := by`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun L₁ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun L₂ _ => ?_` and prove the remaining obligations. Rewrite using `[hR, Finset.mul_sum]`. Use `_ = c * ∑ L₁ : IxA Ma, ∑ L₂ : IxA Mb, f ((L₁, L₂), i.2) x * (coef Ma i.1.1 L₁ k.1 * coef Mb i.1.2 L₂ k.2) := by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun L₁ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun L₂ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `e : (fun k : Kinf E a × Kinf E b => f i (x * (infGL E a (Unitary.toUnits k.1), infGL E b (Unitary.toUnits k.2)))) = ∑ L₁ : IxA Ma, ∑ L₂ : IxA Mb, f ((L₁, L₂), i.2) x • fun k : Kinf E a × Kinf E b => coef Ma i.1.1 L₁ k.1 * coef Mb i.1.2 L₂ k.2`. Use function extensionality and compare the values at `k`. Rewrite using `[hexp k]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[e]`.
-
-Conclude with `Submodule.sum_mem _ fun L₁ _ => Submodule.sum_mem _ fun L₂ _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, Submodule.subset_span ⟨(i.1.1, L₁), rfl⟩, _, Submodule.subset_span ⟨(i.1.2, L₂), rfl⟩, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typeOf : TypeOf := by
   intro E _ _ _ a b Ma Mb

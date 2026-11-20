@@ -8,7 +8,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TypeAsm.PairsSum
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `ENNReal.ofReal_add_le.trans (add_le_add le_rfl ih)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofReal_sum_le {ι : Type*} (s : Finset ι) (f : ι → ℝ) :
     ENNReal.ofReal (∑ i ∈ s, f i) ≤ ∑ i ∈ s, ENNReal.ofReal (f i) := by
@@ -19,7 +19,7 @@ theorem ofReal_sum_le {ι : Type*} (s : Finset ι) (f : ι → ℝ) :
     exact ENNReal.ofReal_add_le.trans (add_le_add le_rfl ih)
 
 /- English proof (translation)
-Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm (s := s)]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm (s := s)]`. Use `Finset.sum_congr rfl fun x' _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -35,17 +35,15 @@ private theorem matrix_mul_comm_of_mul_eq_smul_one_of_ne_zero {α β γ : Type*}
   ring
 
 /- English proof (translation)
-Introduce `D large₂ X Y u hStd hCompat hPerRow hMean W HW hEmb hInv B hB hOrb j' j'' δ' δ'' S hS`. Establish `hw : ∀ Λ, 0 ≤ wRow D (X.Fu u) Λ` using `fun Λ => inv_nonneg.2 (Nat.cast_nonneg _)`. Establish `hterm : ∀ p ∈ S, (Formalism.L2.SG.TermOp.wt p.1 * Formalism.L2.SG.TermOp.wt p.2) * (omT p.1 * omT p.2) = wRow D (X.Fu u) p.1.lam * (wRow D (X.Fu u) p.1.lam' * (omT p.1 * omT p.2))`. Introduce `p hp`. Establish `hall : p ∈ (Y.tO u u).allPairs Set.univ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `(hS p hp).1`. Simplify using `only [Formalism.FourierDecayAlt.PB.Terms.allPairs, Set.mem_ofPred_eq] at h1 ⊢`. Conclude with `⟨Set.mem_univ _, Set.mem_univ _, h1.2.2⟩`. Take `⟨hl, hl', -⟩` from `hCompat D X Y u p hall`. Unfold `Formalism.L2.SG.TermOp.wt`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hl, ← hl', Real.mul_self_sqrt, mul_assoc]`. Use `exacts [rfl, mul_nonneg (hw _) (hw _)]`. Rewrite using `[Finset.sum_congr rfl hterm, ← Finset.sum_fiberwise_of_maps_to (g := fun p => p.1.lam) (t := Y.what₂ u) (fun p _ => p.1.mem)]`. Use `(ofReal_sum_le _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum fun Λ _ => ?_).trans ((le_of_eq (matrix_mul_comm_of_mul_eq_smul_one_of_ne_zero (Y.what₂ u) (Finset.Icc 1 ⌊k2Del D j' δ'⌋₊) (Finset.Icc 1 ⌊k2Del D j'' δ''⌋₊) (fun Λ => ENNReal.ofReal (wRow D (X.Fu u) Λ)) (fun Λ x x' => (((GlobalTheory.DegCnt.Trip HW (gS D) (Glob …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `beta_reduce`. Establish `hrw : ∑ p ∈ S with p.1.lam = Λ, wRow D (X.Fu u) p.1.lam * (wRow D (X.Fu u) p.1.lam' * (omT p.1 * omT p.2)) = wRow D (X.Fu u) Λ * ∑ p ∈ S with p.1.lam = Λ, wRow D (X.Fu u) p.1.lam' * (omT p.1 * omT p.2)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 hp).2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hrw, ENNReal.ofReal_mul (hw Λ)]`. Use `mul_le_mul' le_rfl (hPerRow D large₂ X Y u hStd W HW hEmb Λ j' j'' δ' δ'' _ fun p hp => ?_)` and prove the remaining obligations. Take `⟨hpS, hpΛ⟩` from `Finset.mem_filter.1 hp`. Take `⟨h1, h2, h3, h4, h5⟩` from `hS p hpS`. Conclude with `⟨h1, hpΛ, h2, h3, h4, h5⟩`.
-
-Use `Finset.sum_le_sum fun x hx => Finset.sum_le_sum fun x' hx' => mul_le_mul' le_rfl ?_` and prove the remaining obligations. Conclude with `hMean D large₂ X Y u hStd W HW hEmb (fun M => (((GlobalTheory.DegCnt.Trip HW (gS D) M D.R.rS x x').encard : ℕ∞) : ℝ≥0∞)) (B x x') (hB x x') (fun s M => by simp only [hInv s M x x']) (fun Λ hΛ => hOrb Λ hΛ x x' (Finset.mem_Icc.1 hx).1 (Finset.mem_Icc.1 hx').1)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pairs_sum_le : ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word), Std D large₂ → CompatC → PerRowC →
     RowsMeanC → ∀ (W : Submodule D.host.E (VS D).V) (HW : Formalism.HermitianLatticeCounting.S6.HermSpace D.host.E W),

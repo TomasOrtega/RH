@@ -27,7 +27,7 @@ def ofVec (σ : E →ₐ[F] E) {d : ℕ} (b : Module.Basis (Fin d) F E) (n : ℕ
   else algebraMap F E (k (Sum.inl a))
 
 /- English proof (translation)
-Break down `lt_trichotomy a c with h | h | h` into its components or cases. Simplify using `only [ofVec, dif_pos h, dif_neg (not_lt_of_gt h), hinv]`. Substitute `h` using the available equality. Simplify using `only [ofVec, lt_irrefl, dite_false, AlgHom.commutes]`. Simplify using `only [ofVec, dif_pos h, dif_neg (not_lt_of_gt h)]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ofVec_herm {σ : E →ₐ[F] E} (hinv : ∀ x, σ (σ x) = x) {d : ℕ} (b : Module.Basis (Fin d) F E)
     (n : ℕ) (k : Idx n d → F) (a c : Fin n) : σ (ofVec σ b n k c a) = ofVec σ b n k a c := by
@@ -38,9 +38,9 @@ theorem ofVec_herm {σ : E →ₐ[F] E} (hinv : ∀ x, σ (σ x) = x) {d : ℕ} 
   · simp only [ofVec, dif_pos h, dif_neg (not_lt_of_gt h)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Consider the cases of `i with`. Consider the case `inl a`. Simplify using `only [ratVec, Sum.elim_inl, ofVec, lt_irrefl, dite_false, Algebra.trace_algebraMap, h2]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Consider the case `inr q`. Take `⟨p, l⟩` from `q`. Simplify using `only [ratVec, Sum.elim_inr, ofVec, dif_pos p.2]`. Rewrite using `[b.repr_sum_self]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ratVec_ofVec [FiniteDimensional F E] [CharZero F] (h2 : Module.finrank F E = 2)
     (σ : E →ₐ[F] E) {d : ℕ} (b : Module.Basis (Fin d) F E) (n : ℕ) (k : Idx n d → F) :
@@ -58,7 +58,7 @@ theorem ratVec_ofVec [FiniteDimensional F E] [CharZero F] (h2 : Module.finrank F
 variable (R : Type) [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.basis R b).repr ((1 : R) ⊗ₜ[F] x) k = _`. Rewrite using `[Algebra.TensorProduct.basis_repr_tmul]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem repr_inclR {d : ℕ} (b : Module.Basis (Fin d) F E) (x : E) (k : Fin d) :
     (Algebra.TensorProduct.basis R b).repr (inclR R x) k = algebraMap F R (b.repr x k) := by
@@ -69,9 +69,9 @@ theorem repr_inclR {d : ℕ} (b : Module.Basis (Fin d) F E) (x : E) (k : Fin d) 
 variable [TopologicalSpace R]
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `inl a`. Simplify using `only [hermVec, toVec, HaarCoord.hermCoord, Sum.elim_inl, ratVec, hS, Matrix.map_apply]`. Express the relevant statement in the definitionally equal form `_ * Algebra.trace R (R ⊗[F] E) ((1 : R) ⊗ₜ[F] A a a) = _`. Rewrite using `[trace_tmul, one_mul, map_mul]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Consider the case `inr q`. Simplify using `only [hermVec, toVec, HaarCoord.hermCoord, Sum.elim_inr, ratVec, hS, Matrix.map_apply]`. Conclude with `repr_inclR R b _ _`.
+Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermVec_map [FiniteDimensional F E] (σ : E →ₐ[F] E) {d : ℕ} (b : Module.Basis (Fin d) F E)
     (n : ℕ) (A : Matrix (Fin n) (Fin n) E) (S : HermR R σ n)
@@ -96,13 +96,13 @@ attribute [local instance 100000] GroundTheory.Global.measurableSpace_adeleRing
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨A, hA⟩`. Conclude with `⟨ratVec b n A, hermVec_map (AF F) σ b n A S hA.symm⟩`. Introduce and unpack `⟨k, hk⟩`. Establish `hmem : (ofVec σ b n k).map (inclR (AF F)) ∈ HermR (AF F) σ n`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce `a c`. Simplify using `only [Matrix.map_apply]`. Rewrite using `[← ofVec_herm hinv b n k a c]`. Express the relevant statement in the definitionally equal form `sigR (AF F) σ ((1 : AF F) ⊗ₜ[F] _) = (1 : AF F) ⊗ₜ[F] _`. Rewrite using `[HaarCoord.sigR_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hT : (⟨_, hmem⟩ : HermR (AF F) σ n) = S`. Apply `hinj` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[hermVec_map (AF F) σ b n (ofVec σ b n k) _ rfl i, ratVec_ofVec h2, hk]`. Use `⟨ofVec σ b n k, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hT]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_ratHerm_iff {σ : E →ₐ[F] E} (hinv : ∀ x, σ (σ x) = x) (h2 : Module.finrank F E = 2)
     [FiniteDimensional F E] {d : ℕ} (b : Module.Basis (Fin d) F E) (n : ℕ)
@@ -127,7 +127,7 @@ theorem mem_ratHerm_iff {σ : E →ₐ[F] E} (hinv : ∀ x, σ (σ x) = x) (h2 :
     rfl
 
 /- English proof (translation)
-Use `choose k hk huniq using fun i => existsUnique_sub_mem_fundamentalSet F (x i)`. Use `⟨k, fun i _ => hk i, fun k' hk' => funext fun i => huniq i _ (hk' i (Set.mem_univ i))⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem existsUnique_sub_mem_pi {ι : Type} (x : ι → AF F) :
     ∃! k : ι → F, (fun i => x i - algebraMap F (AF F) (k i)) ∈
@@ -136,29 +136,27 @@ theorem existsUnique_sub_mem_pi {ι : Type} (x : ι → AF F) :
   refine ⟨k, fun i _ => hk i, fun k' hk' => funext fun i => huniq i _ (hk' i (Set.mem_univ i))⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM ψ hψ n ν hν`. Take `⟨hinv, δ, hδ, hσδ⟩` from `HaarCoord.conj_facts hCM`. Establish `h2` using `hCM.2.2.1`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [h2]; omega)`. Take `⟨⟨hlc, hsc, ht2⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `b : Module.Basis (Fin 2) F E` to `Module.finBasisOfFinrankEq F E h2`. Set `e` to `(hermVec_isHomeomorph hCM (AF F) b n).homeomorph _`. Establish `he : ∀ S, e S = hermVec (AF F) σ b n S` using `fun _ => rfl`. Take `⟨ξ, hξ⟩` from `GlobalTheory.CompanionTheory.AdeleDual.exists_eq_adelicChar_mul ψ hψ.1 hψ.2.2.1`. Establish `hξ0 : ξ ≠ 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Take `⟨x, hx⟩` from `hψ.2.2.2`. Apply `hx` to reduce the goal to its premises. Rewrite using `[hξ x, map_zero, zero_mul, AddChar.map_zero_eq_one]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs : (ξ • formB σ b n).IsSymm` using `(formB_isSymm hinv b n).smul ξ`. Establish `hdet : (ξ • formB σ b n).det ≠ 0`. Rewrite using `[Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ hξ0) (formB_det hinv b n)`. Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsTopologicalAddGroup (HermR (AF F) σ n) := inferInstance`. Use `haveI : BorelSpace (HermR (AF F) σ n) := ⟨rfl⟩`. Establish `hsd : ν.map e = adeleMeasurePi F`. Use `GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Fth.selfDual_eq _ hs hdet _ (GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Fth.selfDual_transport e ?_ _ _ ?_ ν hν)` and prove the remaining obligations. Introduce `x y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `hermVec_add (AF F) b n x y`. Introduce `S T`. Establish `h3 : (ξ • formB σ b n).map (algebraMap F (AF F)) = algebraMap F (AF F) ξ • (formB σ b n).map (algebraMap F (AF F))`. Use extensionality with `p q`. Conclude with `map_mul (algebraMap F (AF F)) ξ (formB σ b n p q)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hξ, pair_eq (AF F) hinv h2 hδ hσδ b n S T, chiG, h3, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]`. Both sides reduce to the same expression. Use `set D : Set (Idx n 2 → AF F) := Set.univ.pi fun _ => fundamentalSet F with hD`. Establish `hDm : MeasurableSet D` using `MeasurableSet.univ_pi fun _ => measurableSet_fundamentalSet F`. Establish `hinj : Function.Injective (hermVec (AF F) σ b n)` using `e.injective`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨e ⁻¹' D, IsAddFundamentalDomain.mk' (hDm.preimage e.measurable).nullMeasurableSet ?_, ?_⟩` and prove the remaining obligations. Introduce `S`. Take `⟨k, hk, huniq⟩` from `existsUnique_sub_mem_pi (e S)`. Establish `hg : e.symm (fun i => algebraMap F (AF F) (-k i)) ∈ ratHerm F E σ n` using `(mem_ratHerm_iff hinv h2 b n hinj _).2 ⟨fun i => -k i, fun i => by`. Rewrite using `[← he, e.apply_symm_apply]⟩`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨⟨_, hg⟩, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e (e.symm _ + S) ∈ D`. Rewrite using `[he, hermVec_add, ← he, ← he, e.apply_symm_apply]`. Use `hk using 2 with i` and compare the differences between its conclusion and the goal. Simplify using `[sub_eq_add_neg, add_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨g, hgm⟩ hg'`. Take `⟨k', hk'⟩` from `(mem_ratHerm_iff hinv h2 b n hinj _).1 hgm`. Express the relevant statement in the definitionally equal form `e (g + S) ∈ D at hg'`. Rewrite `hg'` using `[he, hermVec_add, ← he]`. Establish `hkk : (fun i => -k' i) = k` using `huniq _ (by`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `hg' using 2 with i` and compare the differences between its conclusion and the goal. Simplify using `[he, hk', sub_eq_add_neg, add_comm])`. Use `Subtype.ext (e.injective ?_)` and prove the remaining obligations. Rewrite using `[e.apply_symm_apply]`. Use function extensionality and compare the values at `i`.
-
-Rewrite using `[he, hk', ← hkk]`. Simplify using the standard rewrite rules. Rewrite using `[← Measure.map_apply e.measurable hDm, hsd, adeleMeasurePi, hD, Measure.pi_pi]`. Simplify using `[adeleMeasure_fundamentalSet]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermCovol : HermCovol := by
   intro F E _ _ _ _ _ σ hCM ψ hψ n ν hν

@@ -16,31 +16,27 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GroupBplus.Aff
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ _ _ G _ _ hG N hN A _ _ _ _ _ θ hθ F hF`. Use `haveI : Algebra.IsIntegral R A := Algebra.IsIntegral.of_finite R A`. Use `choose s hs using fun x : A →ₐ[R] K => exists_algHom_comp_eq (A := R) x`. Establish `hinj : ∀ u v : A →ₐ[R] R, (Algebra.ofId R K).comp u = (Algebra.ofId R K).comp v → u = v`. Introduce `u v h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Introduce a local definition for the expression.
 
-Use extensionality with `a`. Conclude with `IsFractionRing.injective R K (DFunLike.congr_fun h a)`. Set `E : (A →ₐ[R] R) → (A →ₐ[R] K) → K` to `fun u y => Algebra.TensorProduct.lift (AlgHom.id K K) y (fun _ _ => .all _ _) (F ((1 : K) ⊗ₜ[R] (toConv u.toLinearMap : CartierDual R A)))`. Establish `hmul : ∀ (u v : WithConv (A →ₐ[R] R)) y, E (u * v).ofConv y = E u.ofConv y * E v.ofConv y`. Introduce `u v y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [E]`. Rewrite using `[AlgHom.toLinearMap_convMul, ← map_mul, ← map_mul, Algebra.TensorProduct.tmul_mul_tmul, _root_.one_mul]`. Establish `hone : ∀ y, E (1 : WithConv (A →ₐ[R] R)).ofConv y = 1`. Introduce `y`. Simplify using `only [E]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[AlgHom.toLinearMap_convOne, ← Algebra.TensorProduct.one_def, map_one, map_one]`. Establish `hgl : ∀ u : A →ₐ[R] R, IsGroupLikeElem K (F ((1 : K) ⊗ₜ[R] (toConv u.toLinearMap : CartierDual R A)))`. Introduce `u`. Establish `h1 : IsGroupLikeElem R (toConv u.toLinearMap : CartierDual R A)` using `(CartierDual.isGroupLikeElem_dual_iff _).2 ⟨map_one u, map_mul u⟩`. Establish `h2 : IsGroupLikeElem K ((1 : K) ⊗ₜ[R] (toConv u.toLinearMap : CartierDual R A))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[isGroupLikeElem_tensor_iff]`. Simplify using `[h1.counit_eq_one, h1.comul_eq_tmul_self, Algebra.TensorProduct.one_def]`. Conclude with `h2.map F`. Establish `hlift : ∀ (y : A →ₐ[R] K) (t : K ⊗[R] A), Algebra.TensorProduct.lift (AlgHom.id K K) y (fun _ _ => .all _ _) t = Algebra.TensorProduct.productMap (AlgHom.id R K) y t`. Introduce `y t`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul a b => simp`. Take `⟨T, hT⟩` from `GlobalTheory.T.weil_pairing_level_structure_finite_flat R K G hG N hN A θ hθ (fun x y => E (s x) y) (by`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x y z w hz`. Prove the components needed by the constructor for the conclusion. Establish `: s z = (toConv (s x) * toConv (s y)).ofConv`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[AlgHom.comp_convMul_distrib, ofConv_toConv, ofConv_toConv, hs, hs, hs, ← hz]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show E (s z) w = _`. Rewrite using `[this, hmul]`. Establish `hz' : z = (toConv x * toConv y).ofConv` using `by rw [← hz]`. Simplify using `only [E, hlift]`. Rewrite using `[hz', productMap_convMul_of_isGroupLikeElem (hgl _)]) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x y h0`. Establish `h` using `hmul (toConv (s x))⁻¹ (toConv (s x)) y`. Rewrite `h` using `[inv_mul_cancel, hone, ofConv_toConv]`. Establish `h0' : E (s x) y = 0` using `h0`. Rewrite `h` using `[h0', mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `one_ne_zero h) (by`. Introduce `B _ _ z z'`. Take `⟨c, hc⟩` from `hF B z z'`. Use `⟨c, fun ψ => ?_⟩` and prove the remaining obligations. Use `hc ψ (s _) (s _) (hs _).symm (hs _).symm` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Rewrite `this` using `[hs]`. Conclude with `this)`. Use `GlobalTheory.T.exists_map_one_tmul_cartierDual_eq_one_tmul R K A F.toLinearMap T fun u v => ?_` and prove the remaining obligations. Establish `h` using `hT ((Algebra.ofId R K).comp u) ((Algebra.ofId R K).comp v)`. Rewrite `h` using `[hinj _ _ (hs _)]`.
-
-Use `Eq.trans ?_ h` and prove the remaining obligations. Use `clear h hT`. Proceed by induction on `T with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
-
-Consider the case `tmul a b => simp [Algebra.ofId_apply]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem bialgHom_dual_integral_of_pairs : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (N : ℕ), N ≠ 0 → ∀ (A : Type) [CommRing A] [HopfAlgebra R A] [IsCocomm R A] [Module.Finite R A] [Module.Projective R A] (θ : TorsPt G N A), IsLevel K θ → ∀ F : K ⊗[R] CartierDual R A →ₐc[K] K ⊗[R] A, (∀ (B : Type) [CommRing B] [Algebra R B] (z z' : Tors G N B), ∃ c : B, ∀ (ψ : B →ₐ[R] K) (s s' : A →ₐ[R] R), θ.pt K (torsMap ψ z) = (Algebra.ofId R K).comp s → θ.pt K (torsMap ψ z') = (Algebra.ofId R K).comp s' → ψ c = Algebra.TensorProduct.lift (AlgHom.id K K) ((Algebra.ofId R K).comp s') (fun _ _ => .all _ _) (F ((1 : K) ⊗ₜ[R] (toConv s.toLinearMap : CartierDual R A)))) → ∀ l : CartierDual R A, ∃ a : A, F ((1 : K) ⊗ₜ[R] l) = (1 : K) ⊗ₜ[R] a := by
   intro R K _ _ _ _ _ _ _ _ G _ _ hG N hN A _ _ _ _ _ θ hθ F hF

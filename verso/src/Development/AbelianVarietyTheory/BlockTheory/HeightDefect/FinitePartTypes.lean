@@ -45,7 +45,7 @@ def IsCompatibleThetaType {X : ThetaX D} (T : ThetaTied D X) : Prop :=
     F ∈ X.typ V S ↔ ∀ τ, HasTypeAt θ V τ (S τ) (T.ev V F)
 
 /- English proof (translation)
-Introduce `_ _ δ hδ` and use `⟨φ, h, fun x _ => by simpa using hδ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem HasTypeAt.of_mem {S : SPar} {φ : GA D V → ℂ} (h : φ ∈ finPartOfType θ V τ S) : HasTypeAt θ V τ S φ :=
   fun _ _ δ hδ => ⟨φ, h, fun x _ => by simpa using hδ⟩
@@ -75,9 +75,9 @@ def typeSub (S : SPar) : Submodule ℂ (GA D V → ℂ) where
     nlinarith [norm_nonneg c, norm_nonneg (a x - ψ x)]
 
 /- English proof (translation)
-Establish `hb : finPartOfType θ V τ S = ⊥`. Rewrite using `[finPartOfType, sSup_eq_bot]`. Introduce and unpack `W ⟨H, _, _, σ, lam, ε, P, T, h1, h2, -⟩`. Conclude with `(hS _ _ ⟨lam, ε, h1, h2, rfl, rfl⟩).elim`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hx`. Take `⟨ψ, hψ, h1⟩` from `h {x} isCompact_singleton ‖φ x‖ (norm_pos_iff.2 hx)`. Rewrite `hψ` using `[hb, Submodule.mem_bot]`. Use `h1 x rfl` as an intermediate fact. Simplify using `[hψ] at this`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem HasTypeAt.eq_zero_of_not_good {S : SPar} (hS : ∀ p q, ¬ GoodPar V.rank p q S) {φ : GA D V → ℂ}
     (h : HasTypeAt θ V τ S φ) : φ = 0 := by

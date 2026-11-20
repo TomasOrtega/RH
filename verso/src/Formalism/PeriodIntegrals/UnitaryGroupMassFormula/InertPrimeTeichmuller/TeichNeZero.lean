@@ -10,13 +10,13 @@ namespace PI.OkpW
 variable {K : Type} [Field K] [NumberField K] {p : ℕ} [hp : Fact p.Prime]
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `exists_inv_mod hP ha`. Establish `h1` using `norm_tau_dvd τ (a := a * b - 1) (k := 1) (by rw [pow_one]; exact hb)`. Rewrite `h1` using `[pow_one]`. Establish `hab : τ ((a * b - 1 : 𝓞 K) : K) = τ (a : K) * τ (b : K) - 1`. Rewrite using `[tau_sub]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `h1` using `[hab]`. Establish `hlt : (p : ℝ)⁻¹ < 1` using `pinv_lt_one`. Use `le_antisymm (norm_tau_le τ a) ?_` and prove the remaining obligations. Use `not_lt.1 fun hlt' => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hprod : ‖τ (a : K) * τ (b : K)‖ < 1`. Rewrite using `[norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) hlt' (norm_tau_le τ b)`. Establish `hmax : ‖(1 : ℂ_[p])‖ ≤ max ‖τ (a : K) * τ (b : K)‖ ‖τ (a : K) * τ (b : K) - 1‖`. Use `IsUltrametricDist.norm_add_le_max (τ (a : K) * τ (b : K)) (-(τ (a : K) * τ (b : K) - 1))` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[norm_neg, ← sub_eq_add_neg, sub_sub_cancel]`. Then use the resulting hypothesis. Rewrite `hmax` using `[norm_one]`. Conclude with `absurd hmax (not_le.2 (max_lt hprod (h1.trans_lt hlt)))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_tau_unit (τ : K →+* ℂ_[p]) (hP : (Ideal.span {(p : 𝓞 K)}).IsPrime) {a : 𝓞 K}
     (ha : ¬ (p : 𝓞 K) ∣ a) : ‖τ (a : K)‖ = 1 := by
@@ -40,7 +40,7 @@ theorem norm_tau_unit (τ : K →+* ℂ_[p]) (hP : (Ideal.span {(p : 𝓞 K)}).I
   exact absurd hmax (not_le.2 (max_lt hprod (h1.trans_lt hlt)))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Establish `h1` using `norm_tau_unit τ hP hn`. Rewrite `h1` using `[tau_sub]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem dvd_of_close (τ : K →+* ℂ_[p]) (hP : (Ideal.span {(p : 𝓞 K)}).IsPrime) {a b : 𝓞 K}
     (h : ‖τ (a : K) - τ (b : K)‖ < 1) : (p : 𝓞 K) ∣ a - b := by
@@ -53,7 +53,7 @@ variable (hq : ∀ b : 𝓞 K, (p : 𝓞 K) ∣ b ^ (p ^ 2) - b)
 include hq
 
 /- English proof (translation)
-Introduce `h0`. Establish `hc` using `teich_close τ hq a`. Rewrite `hc` using `[h0, zero_sub, norm_neg, norm_tau_unit τ hP ha]`. Combine the linear relations using `[pinv_lt_one (p := p)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem teich_ne_zero (τ : K →+* ℂ_[p]) (hP : (Ideal.span {(p : 𝓞 K)}).IsPrime) {a : 𝓞 K}
     (ha : ¬ (p : 𝓞 K) ∣ a) : teich τ a ≠ 0 := by
@@ -63,9 +63,9 @@ theorem teich_ne_zero (τ : K →+* ℂ_[p]) (hP : (Ideal.span {(p : 𝓞 K)}).I
   linarith [pinv_lt_one (p := p)]
 
 /- English proof (translation)
-Establish `hpow` using `teich_pow τ hq a`. Establish `hne` using `teich_ne_zero hq τ hP ha`. Establish `h1 : 1 ≤ p ^ 2` using `Nat.one_le_pow _ _ hp.out.pos`. Establish `he : teich τ a ^ (p ^ 2 - 1) * teich τ a = 1 * teich τ a`. Rewrite using `[← pow_succ, Nat.sub_add_cancel h1, hpow, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_right_cancel₀ hne he`.
+A detailed English derivation is pending.
 -/
 theorem teich_root (τ : K →+* ℂ_[p]) (hP : (Ideal.span {(p : 𝓞 K)}).IsPrime) {a : 𝓞 K}
     (ha : ¬ (p : 𝓞 K) ∣ a) : teich τ a ^ (p ^ 2 - 1) = 1 := by
@@ -77,11 +77,9 @@ theorem teich_root (τ : K →+* ℂ_[p]) (hP : (Ideal.span {(p : 𝓞 K)}).IsPr
   exact mul_right_cancel₀ hne he
 
 /- English proof (translation)
-Apply `dvd_of_close τ hP` to reduce the goal to its premises. Establish `ha` using `teich_close τ hq a`. Establish `hb` using `teich_close τ hq b`. Establish `e : τ (a : K) - τ (b : K) = (teich τ b - τ (b : K)) - (teich τ a - τ (a : K))`. Rewrite using `[h]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sub_eq_add_neg _ (teich τ a - τ (a : K)), ← norm_neg (teich τ a - τ (a : K))]`. Conclude with `IsUltrametricDist.norm_add_le_max _ _`.
-
-Use `_ ≤ (p : ℝ)⁻¹ := max_le hb ha`. Use `_ < 1 := pinv_lt_one`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem teich_inj (τ : K →+* ℂ_[p]) (hP : (Ideal.span {(p : 𝓞 K)}).IsPrime) {a b : 𝓞 K}
     (h : teich τ a = teich τ b) : (p : 𝓞 K) ∣ a - b := by
@@ -98,19 +96,17 @@ theorem teich_inj (τ : K →+* ℂ_[p]) (hP : (Ideal.span {(p : 𝓞 K)}).IsPri
     _ < 1 := pinv_lt_one
 
 /- English proof (translation)
-Establish `: (Ideal.span {(p : 𝓞 K)}).IsMaximal` using `isMaximal_span_p hP`. Use `letI : Field (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)}) := Ideal.Quotient.field _`. Establish `: Finite (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)})` using `finite_quot hK`. Use `letI : Fintype (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)}) := Fintype.ofFinite _`. Use `set g : 𝓞 K ⧸ Ideal.span {(p : 𝓞 K)} → 𝓞 K := Function.surjInv (Ideal.Quotient.mk_surjective (I := Ideal.span {(p : 𝓞 K)})) with hgdef`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hg : ∀ x, Ideal.Quotient.mk _ (g x) = x` using `Function.surjInv_eq _`. Establish `hn : 0 < p ^ 2 - 1` using `Nat.sub_pos_of_lt (Nat.one_lt_pow two_ne_zero hp.out.one_lt)`. Establish `hnd : ∀ u : (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)})ˣ, ¬ (p : 𝓞 K) ∣ g u` using `fun u hd => u.ne_zero (by rw [← hg u]; exact Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton.2 hd))`. Set `f : (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)})ˣ → ℂ_[p]` to `fun u => teich τ (g u)`. Establish `hf : Function.Injective f` using `fun u v huv => Units.ext (by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hg u, ← hg v]`. Conclude with `Ideal.Quotient.eq.2 (Ideal.mem_span_singleton.2 (teich_inj hq τ hP huv)))`. Use `set T := (Polynomial.nthRoots (p ^ 2 - 1) (1 : ℂ_[p])).toFinset with hT`. Establish `hsub : Finset.univ.image f ⊆ T`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨u, -, rfl⟩` from `Finset.mem_image.1 hx`. Rewrite using `[hT, Multiset.mem_toFinset, Polynomial.mem_nthRoots hn]`. Conclude with `teich_root hq τ hP (hnd u)`. Establish `hcardQ : Fintype.card (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)}) = p ^ 2`. Rewrite using `[← Nat.card_eq_fintype_card]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `natCard_quot hK`. Establish `hcardU : Fintype.card (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)})ˣ = p ^ 2 - 1`. Rewrite using `[Fintype.card_units, hcardQ]`. Establish `hcardT : T.card ≤ p ^ 2 - 1` using `(Multiset.toFinset_card_le _).trans (Polynomial.card_nthRoots _ _)`. Establish `heq : Finset.univ.image f = T` using `Finset.eq_of_subset_of_card_le hsub (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.card_image_of_injective _ hf, Finset.card_univ, hcardU]`. Conclude with `hcardT)`. Establish `hζT : ζ ∈ T`. Rewrite using `[hT, Multiset.mem_toFinset, Polynomial.mem_nthRoots hn]`. Conclude with `hζ`.
-
-Rewrite `hζT` using `[← heq]`. Take `⟨u, -, hu⟩` from `Finset.mem_image.1 hζT`. Conclude with `⟨g u, hu⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem teich_surj (hK : Module.finrank ℚ K = 2) (τ : K →+* ℂ_[p])
     (hP : (Ideal.span {(p : 𝓞 K)}).IsPrime) {ζ : ℂ_[p]} (hζ : ζ ^ (p ^ 2 - 1) = 1) :

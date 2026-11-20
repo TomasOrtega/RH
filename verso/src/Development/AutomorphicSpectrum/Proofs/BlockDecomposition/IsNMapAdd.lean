@@ -13,7 +13,7 @@ namespace GlobalTheory.CompanionTheory.MuC
 open GlobalTheory.StdUnn.Model GlobalTheory.StdUnn.LeftInvSect
 
 /- English proof (translation)
-Introduce `D p nb hnb x y`. Apply `mat_inj` to reduce the goal to its premises. Rewrite using `[mat_mul, hnb, hnb, hnb, submatrix_fromBlocks_mul]`. Simplify using `[add_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isNMap_add : ∀ {D : D7} {p : ℕ} {nb : hermA D p → G D p} (hnb : IsNMap nb) (x y : hermA D p), nb (x + y) = nb x * nb y := by
   intro D p nb hnb x y

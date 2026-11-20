@@ -26,7 +26,7 @@ def DualTopSimpleStacked.Statement : Prop :=
 open DualTopSimpleSubExample in
 
 /- English proof (translation)
-Take `⟨T', hT', hdT', ⟨b'⟩⟩` from `DualLatticeBasisExists.proof ℚ 1 HermLattice.twiceStandardExample`. Establish `hcard : Fintype.card Unit = Fintype.card T'`. Rewrite using `[DualTopStackedExistence.card_eq_of_bijective dualBasisStandard dualEmbMatrix_standard_bijective, DualTopStackedExistence.card_eq_of_bijective b' (DualEmbBijective.proof ℚ 1 _ T' b')]`. Take `⟨b₁, b₁', a, hab⟩` from `DualTopStackedExistence.exists_stacked twiceStandardExample_le dualBasisStandard b' hcard`. Conclude with `⟨T', hT', hdT', b₁, b₁', a, DualEmbBijective.proof ℚ 1 _ T' b₁, DualEmbBijective.proof ℚ 1 _ T' b₁', twice_lt, twice_cover, hab, le_rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example : ∃ (T : Type) (_ : Fintype T) (_ : DecidableEq T)
     (b : Module.Basis T ℤ (dualLattice (HermLattice.standard ℚ 1)))

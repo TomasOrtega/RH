@@ -14,13 +14,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Cmp.CoordK
 
 /- English proof (translation)
-Establish `hbc : IsBlockMap (κ ∘ κᵢ) (v ∘ vᵢ)`. Take `⟨h1, h2, h3, h4⟩` from `hb`. Take `⟨g1, g2, g3, g4⟩` from `hbᵢ`. Use `⟨h1.comp g1, h2.comp g2, fun p => by simp [Function.comp, h3, g3], ?_⟩` and prove the remaining obligations. Introduce and unpack `q ⟨k, hk⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨p, rfl⟩` from `h4 q ⟨κᵢ k, hk⟩`. Establish `hp : p.fst = κᵢ k` using `h1 (by rw [← h3]; exact hk.symm)`. Take `⟨r, rfl⟩` from `g4 p ⟨k, hp.symm⟩`. Conclude with `⟨r, rfl⟩`. Establish `hy : y' ∘ (v ∘ vᵢ) = y ∘ vᵢ` using `by rw [← Function.comp_assoc, hyv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `himg : imageZ (v ∘ vᵢ) (mCoordIdeal y') = mCoordIdeal (y ∘ vᵢ)`. Rewrite using `[JoinBlock.imageZ_coord (κ ∘ κᵢ) (v ∘ vᵢ) y' hbc.1 hbc.2.2.1, hy]`. Establish `key` using `hPF Kᵢ ιᵢ K' ι' (κ ∘ κᵢ) (v ∘ vᵢ) Ω y' (D + 1) (fun j => Reᵢ.line (w j) t) (fun j => Re.line (e (w j)) t) hbc Re.arith (by rw [himg]; exact Reᵢ.arith) (fun j => Reᵢ.line_smooth (w j) t ht ht') (fun j => hpull (w j) t)`. Rewrite `key` using `[himg, hy, hfn]`. Simplify using `only [Realis.num, hdeg, Nat.cast_one, div_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `key.symm`.
+A detailed English derivation is pending.
 -/
 theorem side_eq (II : IntersectionSystem) (hPF : HasPFCoord II)
     {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]

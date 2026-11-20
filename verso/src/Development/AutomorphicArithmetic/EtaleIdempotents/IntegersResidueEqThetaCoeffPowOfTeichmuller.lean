@@ -5,14 +5,14 @@ set_option backward.isDefEq.respectTransparency false
 open CategoryTheory Limits AlgebraicGeometry GroundTheory.PAdicHodge CrystallineSemistableComparison TensorProduct GlobalTheory.LogCris DividedPowers UpperTheory.Ru.crystallineComparison
 
 /- English proof (translation)
-The claim follows from `WittVector.map_coeff A.s y 0`.
+A detailed English derivation is pending.
 -/
 private theorem cc_sW {l : ℕ} [Fact l.Prime] (A : PAlg l) (y : Ainf l) :
     WittVector.constantCoeff (A.sW y) = A.s (WittVector.constantCoeff y) :=
   WittVector.map_coeff A.s y 0
 
 /- English proof (translation)
-Establish `h : WittVector.constantCoeff (xi0 l) = - pFlat l`. Rewrite using `[xi0, map_sub, map_natCast, CharP.cast_eq_zero, zero_sub]`. Use `congr 1`. Rewrite using `[PAlg.xi, cc_sW, h, map_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cc_xi {l : ℕ} [Fact l.Prime] (A : PAlg l) :
     WittVector.constantCoeff A.xi = - A.s (pFlat l) := by
@@ -22,13 +22,11 @@ private theorem cc_xi {l : ℕ} [Fact l.Prime] (A : PAlg l) :
   rw [PAlg.xi, cc_sW, h, map_neg]
 
 /- English proof (translation)
-Establish `hl : (l : A.Acr 1) = 0` using `by simpa using A.pow_l_acr 1`. Establish `h1 : A.toAcr 1 z ∈ A.Fil 1 1`. Rewrite `hz` using `[PAlg.PFil, hl, Ideal.span_singleton_eq_bot.2 rfl, bot_sup_eq]`. Conclude with `hz`. Rewrite `h1` using `[← A.ker_thetaN, RingHom.mem_ker, A.thetaN_toAcr, Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 h1`. Take `⟨c', rfl⟩ : ∃ c', A.th c' = c` from `Ideal.Quotient.mk_surjective c`. Establish `h2 : z - c' * (l : A.W) ∈ Ideal.span {A.xi}`. Apply `Ideal.Quotient.eq_zero_iff_mem.1` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `A.th _ = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_mul, map_natCast, ← hc, pow_one, sub_self]`. Take `⟨d, hd⟩` from `Ideal.mem_span_singleton'.1 h2`. Establish `h3` using `congrArg (WittVector.constantCoeff (p := l) (R := A.A)) hd`. Rewrite `h3` using `[map_mul, map_sub, map_mul, map_natCast, A.natCast_l, mul_zero, sub_zero, cc_xi]`. Rewrite using `[← h3]`.
-
-Conclude with `Ideal.mul_mem_left _ _ (neg_mem (Ideal.mem_span_singleton_self _))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cc_of_thetaN {l : ℕ} [Fact l.Prime] (A : PAlg l) (z : A.W) (hz : A.toAcr 1 z ∈ A.PFil 1) :
     WittVector.constantCoeff z ∈ Ideal.span {A.s (pFlat l)} := by
@@ -50,15 +48,15 @@ private theorem cc_of_thetaN {l : ℕ} [Fact l.Prime] (A : PAlg l) (z : A.W) (hz
   exact Ideal.mul_mem_left _ _ (neg_mem (Ideal.mem_span_singleton_self _))
 
 /- English proof (translation)
-Introduce `l _ K r N hT x w hw`. Take `⟨w', hw'⟩` from `WittVector.constantCoeff_surjective (p := l) (R := r.k) (r.ρ x)`. Establish `T` using `hT 1 x`. Rewrite `T` using `[Pb.Mid.phiQ_pow]`. Establish `e1 : B.κb (okToOC l K) true 1 x = Ideal.Quotient.mk _ ((PAlg.base l).toAcr 1 ((PAlg.base l).sW w))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `B.uJ true (PAlg.base l) 1 ((PAlg.base l).oC (okToOC l K x)) = _`. Rewrite using `[← hw, PAlg.oC_theta0, B.uJ_th]`. Establish `e2 : Pb.Mid.κm r 1 x = Ideal.Quotient.mk _ ((PAlg.base l).toAcr 1 ((PAlg.base l).sW (WittVector.map r.s w')))`. Express the relevant statement in the definitionally equal form `Ideal.quotientMap _ (Pb.Mid.wn r 1) (Pb.Mid.im_le r 1) (Wc.res l r.k 1 (r.ρ x)) = _`. Rewrite using `[← hw', Wc.res_coeff, Ideal.quotientMap_mk, Pb.Mid.wn_mk]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ ((PAlg.base l).cris 1 (algebraMap (Ainf l) (Acris l) (WittVector.map r.s w'))) = _`. Rewrite using `[PAlg.cris_algebraMap]`. Rewrite `T` using `[e1, e2, ← map_pow]`. Establish `hz : (PAlg.base l).toAcr 1 ((PAlg.base l).sW w ^ l ^ N - (PAlg.base l).sW (WittVector.map r.s w')) ∈ (PAlg.base l).PFil 1`. Rewrite using `[map_sub, map_pow]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.Quotient.eq.1 T`. Establish `hc` using `cc_of_thetaN (PAlg.base l) _ hz`. Rewrite `hc` using `[map_sub, map_pow, cc_sW, cc_sW]`. Establish `e3 : WittVector.constantCoeff (WittVector.map r.s w') = r.s (r.ρ x)`. Rewrite using `[← hw']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WittVector.map_coeff r.s w' 0`. Rewrite `hc` using `[e3]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (r.s (r.ρ x)) = _`. Rewrite using `[← map_pow, eq_comm, Ideal.Quotient.eq]`. Conclude with `hc`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.integersResidue_eq_theta_coeff_pow_of_teichmuller :
     ∀ {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (r : Res l K) (N : ℕ), Pb.Mid.TeichmullerCongruence r N → ∀ (x : OK l K) (w : Ainf l),

@@ -5,9 +5,9 @@ namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 open Formalism.GaloisIrreducibility (IsSubSum IsOrbit)
 
 /- English proof (translation)
-Introduce `l g d j Y hl hd hg hY h1 h2 h3`. Establish `hj : j ≤ padicValNat l (g ^ d - 1)`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `h5` using `h3 _ hlt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : g ≤ g ^ d` using `Nat.le_self_pow (by omega) g`. Establish `h6 : (l : ℝ) ^ (4 * padicValNat l (g ^ d - 1)) ≤ (g : ℝ)` using `h5.trans hY`. Establish `h7 : l ^ (4 * padicValNat l (g ^ d - 1)) ≤ g` using `by exact_mod_cast h6`. Use linear arithmetic over natural numbers and integers. Conclude with `(pow_dvd_pow l hj).trans pow_padicValNat_dvd`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem bad_primes_divides : BBDivides := by
   intro l g d j Y hl hd hg hY h1 h2 h3

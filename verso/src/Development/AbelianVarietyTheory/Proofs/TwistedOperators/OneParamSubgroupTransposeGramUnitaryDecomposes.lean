@@ -33,11 +33,11 @@ namespace GlobalTheory.KapXLineDec
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h0 : (u.1.1)ᵀ * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM J * (u.1.1).map (cA D) = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM J` using `u.2`. Use `show ((reindex e.symm e.symm u.1.1).map (cA D))ᵀ * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM X.gram * reindex e.symm e.symm u.1.1 = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM X.gram`. Generalize the expression as in `u.1.1 = M at h0 ⊢`. Use `clear u`. Substitute `hJ` using the available equality.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h0` using `[GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM_smul, Matrix.mul_smul, Matrix.smul_mul]`. Establish `h1` using `congrArg (fun A => incA D D.host.xi0⁻¹ • A) h0`. Simplify using `only [smul_smul, ← map_mul, inv_mul_cancel₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D), map_one, one_smul] at h1`. Establish `h2` using `congrArg (fun A => Aᵀ.submatrix e e) h1`. Establish `e1 : (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM (reindex e e X.gramᵀ))ᵀ = (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM X.gram).submatrix e.symm e.symm` using `rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [transpose_mul, transpose_transpose, e1] at h2`. Establish `e2 : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM X.gram = ((GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM X.gram).submatrix e.symm e.symm).submatrix e e` using `by simp`. Establish `e3 : ((reindex e.symm e.symm M).map (cA D))ᵀ = ((M.map (cA D))ᵀ).submatrix e e` using `rfl`. Rewrite using `[e2, e3, reindex_apply, Equiv.symm_symm, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, Matrix.mul_assoc]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pre_mem (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E}
     (hJ : J = D.host.xi0 • reindex e e X.gramᵀ) (u : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.UB J) :
@@ -65,7 +65,7 @@ def pre (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (Fin d) (Fi
   ⟨Units.map (Matrix.reindexAlgEquiv (AE D) (AE D) e.symm).toMonoidHom u.1, pre_mem X e hJ u⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show reindex e e (reindex e.symm e.symm u.1.1) = u.1.1`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kapX_pre (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E}
     (hJ : J = D.host.xi0 • reindex e e X.gramᵀ) (u : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.UB J) : kapX X e hJ (pre X e hJ u) = u := by
@@ -75,7 +75,7 @@ theorem kapX_pre (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (F
   simp
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show Units.map (Matrix.reindexAlgEquiv (AE D) (AE D) e.symm).toMonoidHom (u.1 * v.1) = Units.map (Matrix.reindexAlgEquiv (AE D) (AE D) e.symm).toMonoidHom u.1 * Units.map (Matrix.reindexAlgEquiv (AE D) (AE D) e.symm).toMonoidHom v.1`. Conclude with `map_mul _ _ _`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem pre_mul (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E}
     (hJ : J = D.host.xi0 • reindex e e X.gramᵀ) (u v : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.UB J) :
@@ -87,7 +87,7 @@ theorem pre_mul (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (Fi
   exact map_mul _ _ _
 
 /- English proof (translation)
-Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `(Units.continuous_val.comp continuous_subtype_val).matrix_reindex e.symm e.symm`. Conclude with `(Units.continuous_coe_inv.comp continuous_subtype_val).matrix_reindex e.symm e.symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_pre (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E}
     (hJ : J = D.host.xi0 • reindex e e X.gramᵀ) : Continuous (pre X e hJ) := by
@@ -96,11 +96,11 @@ theorem continuous_pre (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Mat
   · exact (Units.continuous_coe_inv.comp continuous_subtype_val).matrix_reindex e.symm e.symm
 
 /- English proof (translation)
-Use `MonoidHom.mem_ker.2 (Units.ext ?_)` and prove the remaining obligations. Use `show (Formalism.L2.Theta.mt X (pre X e hJ u)).map (finPart D) = 1`. Use extensionality with `i j`. Establish `h1 : At (evI D.host.F) (mat u (e i) (e j) - (1 : Matrix (Fin d) (Fin d) (AE D)) (e i) (e j))` using `fun w hw => congrFun (congrFun (hu w hw) (e i)) (e j)`. Establish `h2` using `GlobalTheory.ConjInfExp.finPart_eq_one (mat u (e i) (e j) - (1 : Matrix (Fin d) (Fin d) (AE D)) (e i) (e j) + 1) (by rwa [add_sub_cancel_right])`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[RingHom.map_add, RingHom.map_one, add_eq_right, RingHom.map_sub, sub_eq_zero]`. Use `show finPart D (mat u (e i) (e j)) = (1 : Matrix (Fin X.rank) (Fin X.rank) _) i j`. Rewrite using `[h2]`. Distinguish the cases in `c : i = j`. Substitute `c` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `c' : e i ≠ e j` using `fun k => c (e.injective k)`. Simplify using `[Matrix.one_apply_ne c, Matrix.one_apply_ne c']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pre_mem_GinfC (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) (Wd : Spc D.host.F D.host.E d)
     (hJ : Wd.J = D.host.xi0 • reindex e e X.gramᵀ) {u : UA D.sp.cm.sig Wd.J}
@@ -121,11 +121,11 @@ theorem pre_mem_GinfC (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) (Wd : Spc
     simp [Matrix.one_apply_ne c, Matrix.one_apply_ne c']
 
 /- English proof (translation)
-Use `letI : NormedRing (Matrix n n ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Matrix n n ℂ) := Matrix.linftyOpNormedAlgebra`. Establish `e1 : ∀ t : ℝ, (NormedSpace.exp (t • Y))ᴴ = NormedSpace.exp (t • Yᴴ)` using `fun t => by`. Rewrite using `[← Matrix.exp_conjTranspose, Matrix.conjTranspose_smul, star_trivial]`. Establish `h1` using `((hasDerivAt_exp_smul_const (Yᴴ) (0:ℝ)).mul_const G).mul (hasDerivAt_exp_smul_const Y (0:ℝ))`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [zero_smul, NormedSpace.exp_zero, one_mul] at h1`. Establish `hc : ((fun y : ℝ => NormedSpace.exp (y • Yᴴ) * G) * fun u : ℝ => NormedSpace.exp (u • Y)) = fun _ => G`. Use function extensionality and compare the values at `fun t => by show NormedSpace.exp (t • Yᴴ) * G * NormedSpace.exp (t • Y) = G`. Rewrite using `[← e1]`. Conclude with `h t`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : HasDerivAt (fun _ : ℝ => G) (Yᴴ * G * 1 + G * Y) 0` using `h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => (congrFun hc t).symm)`. Establish `h3` using `h2.unique (hasDerivAt_const (0:ℝ) G)`. Simplify `h3` using `only [mul_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem lie_of {n : Type} [Fintype n] [DecidableEq n] (G Y : Matrix n n ℂ)
     (h : ∀ t : ℝ, (NormedSpace.exp (t • Y))ᴴ * G * NormedSpace.exp (t • Y) = G) : Yᴴ * G + G * Y = 0 := by
@@ -149,25 +149,21 @@ end GlobalTheory.KapXLineDec
 open GlobalTheory.KapXLineDec in
 
 /- English proof (translation)
-Introduce `D θ X d e Wd hJ hθ γ hγ`. Set `h : ℝ → GA D X` to `fun t => pre X e hJ (γ (Multiplicative.ofAdd t))`. Establish `hc : Continuous h` using `(continuous_pre X e hJ).comp (hγ.1.comp continuous_ofAdd)`. Establish `hadd : ∀ s t, h (s + t) = h s * h t` using `fun s t => by show pre X e hJ (γ (Multiplicative.ofAdd (s + t))) = _`. Rewrite using `[ofAdd_add, map_mul, pre_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : h 0 = 1`. Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`. Establish `hfin : ∀ t, h t ∈ GinfC X` using `fun t => pre_mem_GinfC X e Wd hJ (hγ.2 _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `N : D.what₂.Tau → ℝ → Matrix (Fin X.rank) (Fin X.rank) ℂ` to `fun τ t => infMat D.sp.cm.sig X.gram (θ τ) (h t)`. Establish `hNc : ∀ τ, Continuous (N τ)` using `fun τ => (GlobalTheory.Mem.VolExists.continuous_infMat X.gram (hθ τ)).comp hc`. Establish `hN0 : ∀ τ, N τ 0 = 1` using `fun τ => by show infMat D.sp.cm.sig X.gram (θ τ) (h 0) = 1`. Rewrite using `[h0]`. Conclude with `GlobalTheory.PointAtPlaceHom.infMat_one X _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hNm : ∀ τ s t, N τ (s + t) = N τ s * N τ t` using `fun τ s t => by show infMat D.sp.cm.sig X.gram (θ τ) (h (s + t)) = _`. Rewrite using `[hadd]`. Conclude with `GlobalTheory.PointAtPlaceHom.infMat_mul X _ _ _`. Use `choose Y hY using fun τ => GlobalTheory.T.matrix_oneParameterGroup_eq_exp_of_continuous (N τ) (hNc τ) (hN0 τ) (hNm τ)`. Establish `hYl : ∀ τ, Y τ ∈ lieAt X τ` using `fun τ => lie_of _ _ fun t => (hY τ t) ▸ GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ X (h t) τ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `L : List D.what₂.Tau` to `(Finset.univ : Finset D.what₂.Tau).toList`. Use `⟨L.map fun τ => (τ, Y τ), ?_, fun t => ?_⟩` and prove the remaining obligations. Introduce `q hq`. Take `⟨τ, -, rfl⟩` from `List.mem_map.1 hq`. Conclude with `hYl τ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hP : ((L.map fun τ => (τ, Y τ)).map fun q => oneP θ X q.1 q.2 t).prod = h t`. Use `GlobalTheory.RowReal.IsRealAll.unique hθ (M := fun τ => N τ t) ⟨?_, fun σ => ?_⟩ ⟨hfin t, fun σ => rfl⟩` and prove the remaining obligations. Use `Subgroup.list_prod_mem (GinfC X) fun x hx => ?_` and prove the remaining obligations. Take `⟨q, hq, rfl⟩` from `List.mem_map.1 hx`. Take `⟨τ, -, rfl⟩` from `List.mem_map.1 hq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.Mem.Lift.isAtTau_oneP hθ (hYl τ) t).1`. Establish `e1 : GlobalTheory.RowReal.infMatHom X (θ σ) ((L.map fun τ => (τ, Y τ)).map fun q => oneP θ X q.1 q.2 t).prod = (L.map fun ρ => if ρ = σ then N σ t else 1).prod`. Rewrite using `[map_list_prod, List.map_map, List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun ρ _ => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show infMat D.sp.cm.sig X.gram (θ σ) (oneP θ X ρ (Y ρ) t) = _`. Establish `hs` using `GlobalTheory.Mem.Lift.isAtTau_oneP hθ (hYl ρ) t`. Distinguish the cases in `hρ : ρ = σ`. Substitute `hρ` using the available equality. Rewrite using `[if_pos rfl]`.
-
-Conclude with `hs.2.1.trans (hY ρ t).symm`. Rewrite using `[if_neg hρ]`. Conclude with `hs.2.2 σ (Ne.symm hρ)`. Conclude with `e1.trans (GlobalTheory.RowReal.list_prod_map_ite _ _ L (Finset.nodup_toList _) (Finset.mem_toList.2 (Finset.mem_univ _)))`. Rewrite using `[hP]`.
-
-Conclude with `(kapX_pre X e hJ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.KapXLineDec.line_dec : ∀ (D : D7) (θ : InfFam D) (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d)
     (Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E d) (hJ : Wd.J = D.host.xi0 • reindex e e X.gramᵀ), IsInfFam θ →

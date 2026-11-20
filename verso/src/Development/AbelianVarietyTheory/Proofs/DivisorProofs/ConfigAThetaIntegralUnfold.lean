@@ -21,11 +21,11 @@ section SlopeTestRemainingChoices
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Establish `hp : ∀ y, Continuous fun x => archOp (w x) (f x) y` using `fun y => by`. Establish `e : ∀ x, archOp (w x) (f x) y = eChar ((-trL (w x).2) y + -(Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (qA (⅟(2 : AF F)) * ((w x).1 ⬝ᵥ (w x).2)))) * f x (y + (w x).1)` using `fun x => archS_apply (f x) (w x).2 (w x).1 _ y`. Simplify using `only [e, eChar_apply, ContinuousLinearMap.neg_apply, trL_apply]`. Establish `ht` using `(Algebra.trace ℝ (mixedEmbedding.mixedSpace F)).continuous_of_finiteDimensional`. Establish `h` using `(SchwartzMap.toBoundedContinuousFunctionCLM ℂ (κ → mixedEmbedding.mixedSpace F) ℂ).continuous.comp hf`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : Continuous fun x => f x (y + (w x).1)` using `h.eval (continuous_const.add hw.fst)`. Use `Continuous.mul (Complex.continuous_exp.comp ((continuous_const.mul (Complex.continuous_ofReal.comp ?_)).mul continuous_const)) he` and prove the remaining obligations. Conclude with `(ht.comp (continuous_const.dotProduct hw.snd)).neg.add (ht.comp (continuous_const.mul (hw.fst.dotProduct hw.snd))).neg`. Use `continuous_iff_continuousAt.2 fun x₀ => GlobalTheory.schwartz_continuousAt_of_pointwise_of_bounded _ x₀ (fun y => (hp y).continuousAt) fun a n => ?_` and prove the remaining obligations. Take `⟨q, M, hq, hb⟩` from `(tame_archOp (F := F) (κ := κ)).growth (SchwartzMap.seminorm ℂ a n) ((schwartz_withSeminorms ℂ _ ℂ).continuous_seminorm (a, n))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : Continuous fun x => (1 + ‖w x‖) ^ M * q (f x)` using `((continuous_const.add hw.norm).pow M).mul (hq.comp hf)`. Use `⟨(1 + ‖w x₀‖) ^ M * q (f x₀) + 1, (hc.continuousAt.eventually (gt_mem_nhds (lt_add_one _))).mono fun x hx v => ?_⟩` and prove the remaining obligations. Conclude with `((SchwartzMap.le_seminorm ℂ a n _ v).trans (hb _ _)).trans hx.le`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_archOp {X : Type} [TopologicalSpace X] {f : X → SInf F κ} (hf : Continuous f)
     {w : X → (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)} (hw : Continuous w) :
@@ -51,7 +51,7 @@ theorem continuous_archOp {X : Type} [TopologicalSpace X] {f : X → SInf F κ} 
   exact ((SchwartzMap.le_seminorm ℂ a n _ v).trans (hb _ _)).trans hx.le
 
 /- English proof (translation)
-Establish `h : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Use `Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply v.1)`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply v.1)`. Conclude with `h.comp continuous_fst`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_qA : Continuous (qA (F := F)) := by
   have h : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F) := by
@@ -63,9 +63,9 @@ theorem continuous_qA : Continuous (qA (F := F)) := by
 variable {E : Type} [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `h1 : M.co.rho ψ (partInf F u) (pure f M.vac) = pure (locOpInf (M.co.rho ψ (partInf F u)) f) M.vac` using `(locOpInf_rho M.co hψ u f).1 _ ⟨fun x z hz => finPart_add _ x z hz, GlobalTheory.TensUniq.pure_mem_schA f _ (fun v => (hM.vac v).1) hM.std⟩`. Use `eq_of_pure_eq _ (fun v => (hM.vac v).2.1) hM.std _ _ ?_` and prove the remaining obligations. Rewrite using `[← h1]`. Establish `h2` using `schr_pureA ψ hψ (M.co.e (partInf F u)) f fun y => ∏ᶠ v, M.vac v fun i => evalV F v (y i)`. Establish `h3 : M.co.e (partInf F u) = mk (realAd F 1).1 0 • M.co.e u` using `map_smul M.co.e _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[show finOp ψ _ (M.co.e (partInf F u)) = _ from h3 ▸ finOp_arch ψ _ _ _]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locOpInf_rho_eq {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ)
     (hM : M.IsGood ψ) (u : Matrix (Fin n) (Fin d) (AE F E)) (f : SInf F (Fin n × Fin d)) :
@@ -83,11 +83,11 @@ theorem locOpInf_rho_eq {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model �
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' X om om' om₁ om₁' _ hT _ e _ ei ev _ _ _ K _ μK μ _ _ l _ _ f`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) (AE F E)`. Establish `hM` using `hT.geo.hM`. Establish `hψ` using `hT.base.std`. Establish `hΦ : Continuous fun k : KAt K (evI F) => locOpInf (om (k.1, 1)) f` using `(GlobalTheory.ArchWeilCont.continuousOn_locOpInf hKP.base G.M hT.base.cm hψ hT.weil f).comp_continuous continuous_subtype_val fun k => (mem_KAt.1 k.2).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(b + 2 - a') / 2 = z`. Establish `hl : Continuous fun q : KAt K (evI F) × idelesAt E (evI F) => q.2.1` using `continuous_subtype_val.comp continuous_snd`. Establish `hν : Continuous X.ν` using `hT.chars.heckeα.1.div' hT.chars.heckeβ.1`. Simplify using `only [coneInfInt, locOpInf_rho_eq hψ hM]`. Use `(((continuous_subtype_val.comp hν).comp hl).mul ((Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp (GlobalTheory.Doubling.continuous_absE.comp hl))).pow z)).smul (ei.continuous.comp (continuous_archOp (hΦ.comp continuous_fst) ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `L` to `G.M.co.e.toLinearMap ∘ₗ (realAd F 1 • ((LinearMap.toSpanSingleton (AE F E) _ (Matrix.vecMulVec (incV F H.x) (incV F H'.y))).restrictScalars (AF F)))`. Establish `hL : Continuous fun q : KAt K (evI F) × idelesAt E (evI F) => G.M.co.e (partInf F (shiftA H H' q.2.1))` using `(IsModuleTopology.continuous_of_linearMap L).comp (Units.continuous_val.comp hl)`. Conclude with `(continuous_pi fun i => continuous_qA.comp ((continuous_apply i).comp hL.fst)).prodMk (continuous_pi fun i => continuous_qA.comp ((continuous_apply i).comp hL.snd))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_coneInfInt : ∀ (hKP : GlobalTheory.ThK.KP) (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a'))

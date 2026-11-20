@@ -9,21 +9,21 @@ namespace GlobalTheory.LinSchur
 open Classical in
 
 /- English proof (translation)
-Establish `hK : IsCompact (tsupport f)` using `hf.2`. Take `⟨F0, -, hcov⟩` from `hK.elim_nhds_subcover (fun x => {Y | Y - x ∈ L}) (fun x _ => (hL.preimage (continuous_id.sub continuous_const)).mem_nhds (by simp))`. Use `⟨(F0.image (QuotientAddGroup.mk (s := L))).image Quotient.out, ?_⟩` and prove the remaining obligations. Establish `hmk : ∀ y ∈ (F0.image (QuotientAddGroup.mk (s` using `L))).image Quotient.out, ∀ Y : X, Y - y ∈ L ↔ (QuotientAddGroup.mk Y : X ⧸ L) = QuotientAddGroup.mk y := by`. Introduce `y _ Y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[QuotientAddGroup.eq, ← neg_mem_iff]`. Simplify using `[sub_eq_add_neg, add_comm]`. Use function extensionality and compare the values at `Y`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, GlobalTheory.LinSchur.cind]`. Distinguish the cases in `hex : ∃ y ∈ (F0.image (QuotientAddGroup.mk (s := L))).image Quotient.out, Y - y ∈ L`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Take `⟨y, hy, hYy⟩` from `hex`. Rewrite using `[Finset.sum_eq_single y]`. Rewrite using `[if_pos hYy, mul_one]`. Use `hper y (Y - y) hYy` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Introduce `y' hy' hne`. Rewrite using `[if_neg, mul_zero]`. Introduce `hY'`. Apply `hne` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Take `⟨q', -, rfl⟩` from `Finset.mem_image.mp hy'`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.mp hy`. Establish `e1` using `(hmk _ hy' Y).mp hY'`. Establish `e2` using `(hmk _ hy Y).mp hYy`. Simplify using `only [QuotientAddGroup.out_eq'] at e1 e2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e1, ← e2]`. Introduce `h`. Conclude with `absurd hy h`. Use `push_neg at hex`. Rewrite using `[Finset.sum_eq_zero (fun y hy => by rw [if_neg (hex y hy), mul_zero])]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `image_eq_zero_of_notMem_tsupport` to reduce the goal to its premises. Introduce `hY`. Use `hcov hY` as an intermediate fact. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, exists_prop] at this`. Take `⟨y0, hy0, hYy0⟩` from `this`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : (QuotientAddGroup.mk y0 : X ⧸ L).out ∈ (F0.image (QuotientAddGroup.mk (s` using `L))).image Quotient.out := Finset.mem_image.mpr ⟨_, Finset.mem_image.mpr ⟨y0, hy0, rfl⟩, rfl⟩`. Apply `hex _ hmem` to reduce the goal to its premises. Rewrite using `[hmk _ hmem, QuotientAddGroup.out_eq']`. Rewrite using `[← QuotientAddGroup.eq_iff_sub_mem.mpr hYy0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_eq_sum_cind {X : Type} [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X]
     (L : AddSubgroup X) (hL : IsOpen (L : Set X)) (f : X → ℂ) (hf : f ∈ GlobalTheory.WeilM.SB X)
@@ -75,7 +75,7 @@ theorem exists_finset_eq_sum_cind {X : Type} [AddCommGroup X] [TopologicalSpace 
 end GlobalTheory.LinSchur
 
 /- English proof (translation)
-Introduce `L hL f hf hp` and use `GlobalTheory.LinSchur.exists_finset_eq_sum_cind L hL f hf hp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ∀ {X : Type} [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X] (L : AddSubgroup X), IsOpen (L : Set X) → ∀ f ∈ GlobalTheory.WeilM.SB X, (∀ Y, ∀ C ∈ L, f (Y + C) = f Y) → ∃ F : Finset X, f = ∑ y ∈ F, f y • GlobalTheory.LinSchur.cind L y :=
   fun L hL f hf hp => GlobalTheory.LinSchur.exists_finset_eq_sum_cind L hL f hf hp

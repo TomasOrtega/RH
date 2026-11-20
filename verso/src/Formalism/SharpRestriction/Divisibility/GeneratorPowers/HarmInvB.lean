@@ -21,17 +21,15 @@ section Log
 open MvPowerSeries ReciprocityTheory.ChartRestriction.G.TB.LogPf
 
 /- English proof (translation)
-Use `⟨fun i => ReciprocityTheory.ChartRestriction.G.TB.LogPf.constantCoeff_prim _, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `hc` using `congrFun (congrFun (ReciprocityTheory.ChartRestriction.G.TB.LogPf.cc_om (G := G)) i) j`. Simplify using `only [Matrix.map_apply] at hc`. Use `show coeff (Finsupp.single ((0 : Fin 1), j) 1) (logOf G i) = (1 : Matrix (Fin d) (Fin d) S) i j`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `logOf`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.TB.LogPf.coeff_prim, Finset.sum_eq_single ((0 : Fin 1), j)]`. Simplify using `[Finsupp.degree_single, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hc]`. Introduce `w _ hw`. Establish `h0 : (Finsupp.single ((0 : Fin 1), j) 1 : Fin 1 × Fin d →₀ ℕ) w = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.single_apply, if_neg (Ne.symm hw)]`. Rewrite using `[if_pos h0]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Use function extensionality and compare the values at `i show ev ![G.add (pt S (n := 2) d 0) (pt S (n := 2) d 1)] (logOf G i) = ev ![pt S (n := 2) d 0] (logOf G i) + ev ![pt S (n := 2) d 1] (logOf G i)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hF : G.add (pt S (n` using `2) d 0) (pt S (n := 2) d 1) = G.F := by`. Use function extensionality and compare the values at `l`. Use `show MvPowerSeries.subst (fun p : Fin 2 × Fin d => (![pt S (n := 2) d 0, pt S (n := 2) d 1] : Fin 2 → Pt S 2 d) p.1 p.2) (G.F l) = G.F l`. Establish `hX : (fun p : Fin 2 × Fin d => (![pt S (n` using `2) d 0, pt S (n := 2) d 1] : Fin 2 → Pt S 2 d) p.1 p.2) = MvPowerSeries.X := by`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Break down `p with ⟨a, c⟩` into its components or cases. Apply the tactic sequence `fin_cases a <;> rfl`. Rewrite using `[hX]`. Use `first`. Consider the case `exact congrFun MvPowerSeries.subst_self _`.
-
-Consider the case `(rw [MvPowerSeries.subst_self]; rfl)`. Consider the case `(rw [← MvPowerSeries.map_algebraMap_eq_subst_X]; simp)`. Rewrite using `[hF]`. Conclude with `ReciprocityTheory.ChartRestriction.G.TB.LogPf.logOf_add G i`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logOf_props (G : FGLaw S d) :
     (∀ i, constantCoeff ((fun i => logOf G i) i) = 0) ∧ dLin (fun i => logOf G i) = 1 ∧
@@ -76,9 +74,9 @@ end Log
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero ha`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' ha`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by rw [ha s]; exact IsNilpotent.zero)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [ha s]; exact IsNilpotent.zero)`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst0 {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ S}
     (ha : ∀ i, MvPowerSeries.constantCoeff (a i) = 0) : MvPowerSeries.HasSubst a := by
@@ -90,17 +88,17 @@ theorem hasSubst0 {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ S}
   | exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [ha s]; exact IsNilpotent.zero)
 
 /- English proof (translation)
-Take `⟨hε0, -, -, hcomp⟩` from `hinv`. Establish `h1` using `congrFun hcomp i`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.comp1, ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.ev, ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt] at h1`. Establish `hε : (fun p : Fin 1 × Fin d => (![ε] p.1 p.2 : MvPowerSeries (Fin 1 × Fin d) S)) = fun p => ε p.2`. Use function extensionality and compare the values at `p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Break down `p with ⟨a, c⟩` into its components or cases. Rewrite using `[Subsingleton.elim a 0]`. Both sides reduce to the same expression. Rewrite `h1` using `[hε]`. Establish `h0 : ∀ p : Fin 1 × Fin d, MvPowerSeries.constantCoeff (ε p.2) = 0` using `fun p => hε0 p.2`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hA : MvPowerSeries.HasSubst (fun p : Fin 1 × Fin d => ε p.2)` using `by first`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero h0`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero h0`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' h0`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by rw [h0 s]; exact IsNilpotent.zero)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [h0 s]; exact IsNilpotent.zero)`. Establish `hL0 : ∀ p : Fin 1 × Fin d, MvPowerSeries.constantCoeff (linPt uvec (0 : Fin 1) p.2) = 0`. Introduce `p`. Simplify using `[Formalism.MainNotions.ModuliIntegralCharts.H1.ExpOf.linPt]`. Establish `hL : MvPowerSeries.HasSubst (fun p : Fin 1 × Fin d => linPt uvec (0 : Fin 1) p.2)` using `by first`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero hL0`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero hL0`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' hL0`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by rw [hL0 s]; exact IsNilpotent.zero)`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [hL0 s]; exact IsNilpotent.zero)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Express the relevant statement in the definitionally equal form `MvPowerSeries.subst (fun p : Fin 1 × Fin d => MvPowerSeries.subst (fun q : Fin 1 × Fin d => linPt uvec (0 : Fin 1) q.2) (ε p.2)) (logOf G i) = _`. Rewrite using `[← MvPowerSeries.subst_comp_subst_apply hA hL, h1, MvPowerSeries.subst_X hL]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem log_expPhi (G : FGLaw S d) (uvec : Lt1 Dw → Fin d → S) (ε : Pt S 1 d)
     (hinv : IsInvPair ε (fun i => logOf G i)) (i : Fin d) :
@@ -136,13 +134,13 @@ theorem log_expPhi (G : FGLaw S d) (uvec : Lt1 Dw → Fin d → S) (ε : Pt S 1 
   rw [← MvPowerSeries.subst_comp_subst_apply hA hL, h1, MvPowerSeries.subst_X hL]
 
 /- English proof (translation)
-Establish `hε0 : ∀ i, MvPowerSeries.constantCoeff (ε i) = 0`. Take `⟨h, -⟩` from `hinv`. Conclude with `h`. Establish `hE0 : ∀ p : Fin 1 × Fin d, MvPowerSeries.constantCoeff (expPhi uvec ε p.2) = 0` using `fun p => Formalism.MainNotions.ModuliIntegralCharts.H1.ExpOf.expPhi_const uvec ε hε0 p.2`. Establish `hE : MvPowerSeries.HasSubst (fun p : Fin 1 × Fin d => expPhi uvec ε p.2)` using `by first`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero hE0`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero hE0`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' hE0`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by rw [hE0 s]; exact IsNilpotent.zero)`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [hE0 s]; exact IsNilpotent.zero)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `ha' : MvPowerSeries.HasSubst a` using `by first`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero ha`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' ha`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by rw [ha s]; exact IsNilpotent.zero)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [ha s]; exact IsNilpotent.zero)`. Rewrite using `[← MvPowerSeries.subst_comp_subst_apply hE ha', log_expPhi G uvec ε hinv i]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_expPhi_act (G : FGLaw S d) (uvec : Lt1 Dw → Fin d → S) (ε : Pt S 1 d)
     (hinv : IsInvPair ε (fun i => logOf G i)) (a : Fin 1 × Fin (dL Dw) → MvPowerSeries (Fin 1 × Fin (dL Dw)) S)
@@ -171,11 +169,11 @@ theorem log_expPhi_act (G : FGLaw S d) (uvec : Lt1 Dw → Fin d → S) (ε : Pt 
   rw [← MvPowerSeries.subst_comp_subst_apply hE ha', log_expPhi G uvec ε hinv i]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `MvPowerSeries.subst (fun p : Fin 1 × Fin d => (![pt S (n := 1) d 0] p.1 p.2 : MvPowerSeries (Fin 1 × Fin d) S)) (φ i) = φ i`. Establish `hX : (fun p : Fin 1 × Fin d => (![pt S (n` using `1) d 0] p.1 p.2 : MvPowerSeries (Fin 1 × Fin d) S)) = MvPowerSeries.X := by`. Use function extensionality and compare the values at `p`. Break down `p with ⟨a, c⟩` into its components or cases.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Subsingleton.elim a 0]`. Both sides reduce to the same expression. Rewrite using `[hX]`. Use `first`. Consider the case `exact congrFun MvPowerSeries.subst_self _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [MvPowerSeries.subst_self]; rfl)`. Consider the case `(rw [← MvPowerSeries.map_algebraMap_eq_subst_X]; simp)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem germCompOne_identityPoint_left (φ : Pt S 1 d) : comp1 φ (pt S (n := 1) d 0) = φ := by
   funext i
@@ -192,15 +190,15 @@ theorem germCompOne_identityPoint_left (φ : Pt S 1 d) : comp1 φ (pt S (n := 1)
   | (rw [← MvPowerSeries.map_algebraMap_eq_subst_X]; simp)
 
 /- English proof (translation)
-Establish `h0 : ∀ p : Fin 1 × Fin d, MvPowerSeries.constantCoeff (![pt S (n` using `2) d j] p.1 p.2 : MvPowerSeries (Fin 2 × Fin d) S) = 0 := by`. Introduce `p`. Break down `p with ⟨a, c⟩` into its components or cases. Rewrite using `[Subsingleton.elim a 0]`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hA : MvPowerSeries.HasSubst (fun p : Fin 1 × Fin d => (![pt S (n` using `2) d j] p.1 p.2 : MvPowerSeries (Fin 2 × Fin d) S)) := by first`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero h0`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero h0`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' h0`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by rw [h0 s]; exact IsNilpotent.zero)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [h0 s]; exact IsNilpotent.zero)`. Establish `hBs : MvPowerSeries.HasSubst Bφ` using `by first`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero hB`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero hB`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' hB`.
+Treat this case separately. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by rw [hB s]; exact IsNilpotent.zero)`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [hB s]; exact IsNilpotent.zero)`. Express the relevant statement in the definitionally equal form `MvPowerSeries.subst Bφ (MvPowerSeries.subst (fun p : Fin 1 × Fin d => (![pt S (n := 2) d j] p.1 p.2 : MvPowerSeries (Fin 2 × Fin d) S)) (logOf G i)) = _`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply hA hBs]`. Use `congr 1`.
+Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `p`. Break down `p with ⟨a, c⟩` into its components or cases. Rewrite using `[Subsingleton.elim a 0]`. Simplify using `only [Matrix.cons_val_zero, ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt, MvPowerSeries.subst_X hBs]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem subst_lg (G : FGLaw S d) {τ : Type} (Bφ : Fin 2 × Fin d → MvPowerSeries τ S)
     (hB : ∀ p, MvPowerSeries.constantCoeff (Bφ p) = 0) (j : Fin 2) (i : Fin d) :
@@ -233,25 +231,25 @@ theorem subst_lg (G : FGLaw S d) {τ : Type} (Bφ : Fin 2 × Fin d → MvPowerSe
   simp only [Matrix.cons_val_zero, ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt, MvPowerSeries.subst_X hBs]
 
 /- English proof (translation)
-Establish `hε0 : ∀ i, MvPowerSeries.constantCoeff (ε i) = 0`. Take `⟨h, -⟩` from `hinv`. Conclude with `h`. Establish `hE0 : ∀ p : Fin 1 × Fin d, MvPowerSeries.constantCoeff (expPhi uvec ε p.2) = 0` using `fun p => Formalism.MainNotions.ModuliIntegralCharts.H1.ExpOf.expPhi_const uvec ε hε0 p.2`. Establish `hE : MvPowerSeries.HasSubst (fun p : Fin 1 × Fin d => expPhi uvec ε p.2)` using `by first`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero hE0`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero hE0`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' hE0`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by rw [hE0 s]; exact IsNilpotent.zero)`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [hE0 s]; exact IsNilpotent.zero)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hV0 : ∀ p : Fin 2 × Fin d, MvPowerSeries.constantCoeff ((fun p : Fin 2 × Fin d => (![pt S d 0, comp1 (B.A.act w0) (pt S d 0)] : Fin 2 → Pt S 1 d) p.1 p.2) p) = 0`. Introduce `p`. Break down `p with ⟨j, c⟩` into its components or cases. Use `fin_cases j`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[germCompOne_identityPoint_left, B.A.const]`. Establish `hV : MvPowerSeries.HasSubst (fun p : Fin 2 × Fin d => (![pt S d 0, comp1 (B.A.act w0) (pt S d 0)] : Fin 2 → Pt S 1 d) p.1 p.2)` using `by first`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero hV0`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero hV0`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' hV0`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by rw [hV0 s]; exact IsNilpotent.zero)`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [hV0 s]; exact IsNilpotent.zero)`. Express the relevant statement in the definitionally equal form `MvPowerSeries.subst (fun p : Fin 1 × Fin d => expPhi uvec ε p.2) (MvPowerSeries.subst (fun p : Fin 2 × Fin d => (![pt S d 0, comp1 (B.A.act w0) (pt S d 0)] : Fin 2 → Pt S 1 d) p.1 p.2) (bilL B.G cc)) = _`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hV, ← MvPowerSeries.coe_substAlgHom hE]`. Simplify using `only [Formalism.MainNotions.ModuliIntegralCharts.H1.CIndFrFix.bilL, map_sum, map_smul, map_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [MvPowerSeries.coe_substAlgHom]`. Use `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun l _ => ?_))` and prove the remaining obligations. Rewrite using `[subst_lg B.G (fun p : Fin 2 × Fin d => (![pt S d 0, comp1 (B.A.act w0) (pt S d 0)] : Fin 2 → Pt S 1 d) p.1 p.2) hV0 0 i, subst_lg B.G (fun p : Fin 2 × Fin d => (![pt S d 0, comp1 (B.A.act w0) (pt S d 0)] : Fin 2 → Pt S 1 d) p.1 p.2) hV0 1 l]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, germCompOne_identityPoint_left]`. Establish `hP0 : ∀ p : Fin 1 × Fin d, MvPowerSeries.constantCoeff (pt S (n` using `1) d 0 p.2) = 0 := by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `p`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt]`. Establish `hP : MvPowerSeries.HasSubst (fun p : Fin 1 × Fin d => pt S (n` using `1) d 0 p.2) := by first`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero hP0`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero hP0`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' hP0`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by rw [hP0 s]; exact IsNilpotent.zero)`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [hP0 s]; exact IsNilpotent.zero)`. Establish `hQ0 : ∀ p : Fin 1 × Fin d, MvPowerSeries.constantCoeff (B.A.act w0 p.2) = 0` using `fun p => B.A.const w0 p.2`. Establish `hQ : MvPowerSeries.HasSubst (fun p : Fin 1 × Fin d => B.A.act w0 p.2)` using `by first`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero hQ0`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero hQ0`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' hQ0`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by rw [hQ0 s]; exact IsNilpotent.zero)`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [hQ0 s]; exact IsNilpotent.zero)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[MvPowerSeries.subst_comp_subst_apply hP hE, MvPowerSeries.subst_comp_subst_apply hQ hE]`. Simplify using `only [hact]`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt, MvPowerSeries.subst_X hE]`. Rewrite using `[log_expPhi B.G uvec ε hinv i, log_expPhi_act B.G uvec ε hinv a ha l]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compL_diagL {O : Type} [CommRing O] [StarRing O] (B : FB S d O) (w0 : O) (cc : Fin d → Fin d → S)
     (uvec : Lt1 Dw → Fin d → S) (ε : Pt S 1 d) (hinv : IsInvPair ε (fun i => logOf B.G i))
@@ -325,21 +323,21 @@ def qβ (cc : Fin d → Fin d → S) (u : Lt1 Dw → Fin d → S) (t : Fin 1 × 
   fun p p' => ∑ i, ∑ l, cc i l * u ((ltIdx Dw).symm p) i * u ((ltIdx Dw).symm p') l * t (0, p')
 
 /- English proof (translation)
-Establish `hC : ∀ (c : S) (f : MvPowerSeries (Fin 1 × Fin (dL Dw)) S), MvPowerSeries.C c * f = c • f` using `fun c f => by rw [MvPowerSeries.smul_eq_C_mul]`. Establish `hT0 : ∀ q : Fin 1 × Fin (dL Dw), MvPowerSeries.constantCoeff (t q • (MvPowerSeries.X q : MvPowerSeries (Fin 1 × Fin (dL Dw)) S)) = 0`. Introduce `q`. Simplify using `[MvPowerSeries.smul_eq_C_mul]`. Establish `hT : MvPowerSeries.HasSubst (fun q => t q • (MvPowerSeries.X q : MvPowerSeries (Fin 1 × Fin (dL Dw)) S))` using `by first`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero hT0`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero hT0`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' hT0`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by rw [hT0 s]; exact IsNilpotent.zero)`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [hT0 s]; exact IsNilpotent.zero)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hsub : ∀ l, MvPowerSeries.subst (fun q => t q • (MvPowerSeries.X q : MvPowerSeries (Fin 1 × Fin (dL Dw)) S)) (linPt u (0 : Fin 1) l) = ∑ ℓ, (u ℓ l * t (0, ltIdx Dw ℓ)) • (MvPowerSeries.X ((0 : Fin 1), ltIdx Dw ℓ) : MvPowerSeries (Fin 1 × Fin (dL Dw)) S)`. Introduce `l`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hT]`. Simplify using `only [Formalism.MainNotions.ModuliIntegralCharts.H1.ExpOf.linPt, hC, map_sum, map_smul]`. Simplify using `only [MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_X hT, smul_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hlin : ∀ i, linPt u (0 : Fin 1) i = ∑ ℓ, u ℓ i • (MvPowerSeries.X ((0 : Fin 1), ltIdx Dw ℓ) : MvPowerSeries (Fin 1 × Fin (dL Dw)) S)`. Introduce `i`. Simplify using `only [Formalism.MainNotions.ModuliIntegralCharts.H1.ExpOf.linPt, hC]`. Establish `key : ∀ {M : Type} [AddCommMonoid M] (F : Fin d → Fin d → Lt1 Dw → Lt1 Dw → M), ∑ ℓ, ∑ ℓ', ∑ i, ∑ l, F i l ℓ ℓ' = ∑ i, ∑ l, ∑ ℓ, ∑ ℓ', F i l ℓ ℓ'`. Introduce `M _ F`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hR : quadCol (n` using `1) (qβ cc u t) = ∑ i, ∑ l, ∑ ℓ, ∑ ℓ', (cc i l * u ℓ i * u ℓ' l * t (0, ltIdx Dw ℓ')) • ((MvPowerSeries.X ((0 : Fin 1), ltIdx Dw ℓ) : MvPowerSeries (Fin 1 × Fin (dL Dw)) S) * (MvPowerSeries.X ((0 : Fin 1), ltIdx Dw ℓ') : MvPowerSeries (Fin 1 × Fin (dL Dw)) S)) := by`. Rewrite using `[← key]`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.TB.quadCol, Fin.sum_univ_one, mul_assoc, hC]`. Rewrite using `[← (ltIdx Dw).sum_comp]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun ℓ _ => ?_)` and prove the remaining obligations. Rewrite using `[← (ltIdx Dw).sum_comp]`. Use `Finset.sum_congr rfl (fun ℓ' _ => ?_)` and prove the remaining obligations. Simplify using `only [qβ, Equiv.symm_apply_apply, Finset.sum_smul, mul_assoc, Finset.sum_mul, smul_mul_assoc]`. Rewrite using `[hR]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hsub]`. Simplify using `only [hlin]`. Simplify using `only [Finset.sum_mul]`. Simplify using `only [Finset.mul_sum]`. Use `first`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `simp only [smul_mul_smul_comm, Finset.smul_sum, smul_smul]`. Consider the case `simp only [smul_mul_smul, Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun l _ => Finset.sum_congr rfl (fun ℓ _ => Finset.sum_congr rfl (fun ℓ' _ => ?_))))` and prove the remaining obligations. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem quad_form (cc : Fin d → Fin d → S) (u : Lt1 Dw → Fin d → S) (t : Fin 1 × Fin (dL Dw) → S) :
     ∑ i, ∑ l, cc i l • (linPt u (0 : Fin 1) i * MvPowerSeries.subst

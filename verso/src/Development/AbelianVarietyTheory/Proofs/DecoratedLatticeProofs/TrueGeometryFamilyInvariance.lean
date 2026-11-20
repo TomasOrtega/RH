@@ -36,9 +36,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 attribute [local instance] GlobalTheory.Fam.GeoAll.fld GlobalTheory.Fam.GeoAll.val GlobalTheory.Fam.GeoAll.top GlobalTheory.Fam.GeoAll.loc
 
 /- English proof (translation)
-Introduce `h h' h''`. Take `⟨c1, hs1, he1⟩` from `(GlobalTheory.HeisComb.main D ψ S T).1 c' c''`. Take `⟨d, hs, he⟩` from `(GlobalTheory.HeisComb.main D ψ S T).1 c c1`. Establish `key : ∀ x y : WO S T, Matrix.map x (infPart D) = 0 → Matrix.map y (infPart D) = 0 → Matrix.map (x + y) (infPart D) = 0`. Introduce `x y hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.map_add _ (fun a b => (infPart D).map_add a b), hx, hy, add_zero]`. Use `⟨d, fun w hw => ?_, fun f => by rw [he, he1]⟩` and prove the remaining obligations. Take `⟨x, hx, y, hy, rfl⟩` from `hs w hw`. Take `⟨y1, hy1, y2, hy2, rfl⟩` from `hs1 y hy`. Conclude with `key _ _ (h x hx) (key _ _ (h' y1 hy1) (h'' y2 hy2))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Fam.finComb3 (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (c c' c'' : WO S T →₀ ℂ) :
     GlobalTheory.SeeSaw.IsFinComb c → GlobalTheory.SeeSaw.IsFinComb c' → GlobalTheory.SeeSaw.IsFinComb c'' → ∃ d, GlobalTheory.SeeSaw.IsFinComb d ∧
@@ -56,65 +56,47 @@ theorem GlobalTheory.Fam.finComb3 (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T
   exact key _ _ (h x hx) (key _ _ (h' y1 hy1) (h'' y2 hy2))
 
 /- English proof (translation)
-Introduce `hDS hHC B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha haT hiA k row hrow hsame`. Establish `hm : (I.rec7 l Z).R.m = B.R.m` using `rfl`. Establish `hRow : ∀ col, (a.fam row col).RowOK` using `fun col => ⟨ha.meas, ha.last, ha.x, hrow, hsame⟩`. Establish `hc : (commOf (pk W) u a.g).Is` using `(GlobalTheory.T.family_rows_columns_valid hDS hHC W u hW.pk (a.fam row colNone) (hRow _)).1`. Use `choose J hJ using GlobalTheory.T.true_geometry_commutation_datum W hW u a ha haT hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC0, hC⟩` from `GlobalTheory.T.exists_nonzero_coeffs_dat_of_allTrue W hW u a ha haT hiA`. Use `choose s ζ ρ hD using fun t => hC t (J t) (hJ t)`. Take `⟨V, VT, hV0, hVT0, hV⟩` from `GlobalTheory.T.true_geometry_exists_volume_data W hW u a ha haT`. Take `⟨kom, hkom⟩` from `GlobalTheory.T.true_geometry_exists_kernel W hW u a ha haT`. Establish `hdd0 : ∀ t j α γ, ∃ d, j < B.R.m → GlobalTheory.SeeSaw.IsFinComb d ∧ ∀ f, comb (pk W).ψ _ _ d f = comb (pk W).ψ _ _ ((J t).dQ (s t) j α γ) (comb (pk W).ψ _ _ (a.v.dG j) (comb (pk W).ψ _ _ (a.v.dT j) f))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `t j α γ`. Distinguish the cases in `hj : j < B.R.m`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.true_geometry_twist_local_value W hW u a ha haT t (J t) (hJ t) (s t) j α γ hj`. Take `⟨d, hd⟩` from `GlobalTheory.Fam.finComb3 _ (pk W).ψ _ _ _ _ _ h1 h2 h3`. Conclude with `⟨d, fun _ => hd⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨0, fun h => absurd h hj⟩`. Use `choose dd hdd using hdd0`. Take `⟨S', hS'⟩` from `GlobalTheory.T.true_geometry_joint_twist_relation W hW u a ha haT J hJ k`. Establish `hone : ∀ t, ∃ β₀ : (J t).Ch B.R.m, ∀ β, β = β₀` using `fun t => by`. Establish `hc1 : Fintype.card ((J t).Ch B.R.m) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Fintype.card_pi]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Establish `h1` using `((J t).E i).one`. Establish `h2 : ((J t).G i).s + 1 + 1 = B.R.m` using `((J t).G i).hs`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `h1`. Conclude with `Fintype.card_eq_one_iff.1 hc1`. Use `choose β₀ hβ₀ using hone`. Set `cQf : W.P.T → ℕ → ℂ` to `fun t j => ∏ i, ((((J t).E i).idx (j + 1) : ℂ) * (((J t).E i).idx (j + 1 + 1) : ℂ))⁻¹`. Set `cTf : W.P.T → ℕ → ℂ` to `fun t j => @TDat.mono _ _ _ a.fld a.val a.top a.loc _ a.o (k.r j) (k.e j) ((pk W).toLevCh.mu t (j + 1))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `cK : W.P.T → ℕ → ℂ` to `fun t j => V j * C j * a.c₀ j * ρ t j`. Set `cP : W.P.T → ℂ` to `fun t => VT * ∑ β, s t B.R.m β`. Set `cV : W.P.T → ℕ → ℂ` to `fun t j => if h : ∃ σ, j + 2 * (σ + 1) + 2 = B.R.m then k.v.kap j h.choose h.choose_spec * (k.sc t j * k.sc t (j + 1)) * cQf t j * k.v.cG j * cTf t j else (k.sc t j * k.sc t (j + 1)) * cQf t j * k.v.cG j * cTf t j`. Set `col` to `colOf a J kom dd (fun t j => S' t j (k.ε j)) s cV cK cP`. Set `F` to `famOf a J row col (fun _ => rfl)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `w₀` to `fun t => (F t).pinTup (k.sc t) (cTf t)`. Set `w` to `fun t => GlobalTheory.QTw.resc (w₀ t) (s t)`. Establish `hPinCh : ∀ t, ∃ w, PinChL (pk W) a.g (col t) a.c₀ (J t).A (J t).ι w` using `fun t => by`. Use `⟨fun j α γ => C j * (J t).wt j α * ζ t j α γ, ?_⟩` and prove the remaining obligations. Use `{ is := (hJ t).is live := (hJ t).live om := fun j hj => by rw [(hJ t).chr j hj]; exact hkom t j hj dat := fun j hj α γ => ⟨(hdd t j α γ (by omega)).1, by show IsRatDatum _ _ _ _ _ _ (comb (pk W).ψ _ _ (dd t j α γ) (a.g.vac j))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(hdd t j α γ (by omega)).2]`. Conclude with `((hD t).2.2.2 j hj α γ).1⟩`. Use `cst := fun j hj α γ _ => by`. Establish `h1` using `((hV t (J t) (hJ t)).1 j (by omega) α)`. Establish `h2` using `((hD t).2.2.2 j hj α γ).2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show V j * C j * a.c₀ j * ρ t j = _`. Rewrite using `[← h1, ← h2]`. Expand and normalize the polynomial expressions, which then agree. Use `ram := fun j _ φ => Iff.rfl`. Use `rdq := fun j hj β φ y => dif_pos hj }`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨col, w₀, w, F, ⟨a.c₀, haT.pinX, fun t => ⟨⟨(J t).Ch₀, (J t).A, (J t).ι, hPinCh t⟩, ?_⟩⟩, ?_⟩` and prove the remaining obligations. Take `⟨UT, hUT1, hUT2⟩` from `(hV t (J t) (hJ t)).2`. Use `⟨UT, s t B.R.m (β₀ t) * (J t).wt B.R.m (β₀ t), { emb := haT.emb lev := hUT1 eT := fun n h β => ?_ cP := ?_ }⟩` and prove the remaining obligations. Substitute `h` using the available equality. Rewrite using `[hβ₀ t β]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `show (s t B.R.m (β₀ t) • Finsupp.single (1 : GA (I.rec7 l Z) (I.rec7 l Z).sp.X') ((J t).wt B.R.m (β₀ t))).mapDomain (· * a.g.bT) = _`. Rewrite using `[Finsupp.smul_single, Finsupp.mapDomain_single, one_mul, smul_eq_mul]`. Use `show VT * ∑ β, s t B.R.m β = _`. Rewrite using `[Fintype.sum_eq_single (β₀ t) (fun b hb => absurd (hβ₀ t b) hb), ← hUT2 (β₀ t)]`. Expand and normalize the polynomial expressions, which then agree.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hdQ : ∀ t j α γ, j < B.R.m → (w t).dQ j α γ = (J t).dQ (s t) j α γ` using `fun t j α γ hj => by show _ • (if j < B.R.m then _ else 0) = _`. Rewrite using `[if_pos hj]`. Both sides reduce to the same expression. Establish `hpl` using `fun t => GlobalTheory.T.true_geometry_twist_local_data W hW u a ha haT t (J t) (hJ t)`. Establish `hQ : ∀ t p, p ∈ (w₀ t).Q ↔ ∃ PP ∈ (pk W).Q t, p = PP.under (𝓞 (I.rec7 l Z).host.F)` using `fun t p => by show p ∈ Finset.univ.image (fun i => ((J t).G i).q.v) ↔ _`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, -, rfl⟩`. Conclude with `⟨(J t).pl i, (J t).mem i, (hpl t).2 i⟩`. Introduce and unpack `⟨PP, hPP, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i, hi⟩` from `(hJ t).surj PP hPP`. Conclude with `⟨i, Finset.mem_univ _, by rw [(hpl t).2 i, hi]⟩`. Establish `hPins : ∀ t, (F t).Pins (w₀ t)` using `fun t => { inj := (hpl t).1 places := fun p => by show p ∈ Finset.univ.image (fun i => ((J t).G i).q.v) ↔ _`. Rewrite using `[Finset.mem_image]`. Conclude with `⟨fun ⟨i, _, h⟩ => ⟨i, h⟩, fun ⟨i, h⟩ => ⟨i, Finset.mem_univ _, h⟩⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `kom := fun j hj => hkom t j hj`. Use `mid := fun j σ h => ⟨(pk W).eta⁻¹, ((hrow t).sBF j (σ + 1) h).2.2.1, ((hrow t).sBF j (σ + 1) h).2.2.2, ((hrow t).sFB j σ h).2.2.1, ((hrow t).sFB j σ h).2.2.2⟩`. Use `lastc := fun j h => ((hrow t).sBF j 0 h).2.2.2`. Use `eQ := fun j hj => if_pos hj`. Use `eQT := fun j h => rfl`.
+Establish an intermediate fact. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `dQ := fun j hj α γ => if_pos hj`. Use `ε := fun j ρ' h α => if_pos (Or.inl ⟨ρ', h⟩)`. Use `εT := fun n h β => rfl`. Use `FY := fun j _ f hf => hf`. Use `cQ := fun j _ => rfl }`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hbT : a.g.bT ∈ GfC (I.rec7 l Z).sp.X'`. Establish `h1` using `ha.vis.bT`. Rewrite `h1` using `[((ha.tie row col).1.bT).1]`. Conclude with `h1`. Establish `hOK : (a.fam row col).ColOK` using `{ kom := fun t j hj => hkom t j hj ker := fun t j hj α γ => by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hx` using `haT.pinX.xs j (by omega)`. Establish `hx'` using `haT.pinX.xs (j + 1) (by omega)`. Establish `hL : ((a.g.x j).L : Set _) = GlobalTheory.AdForm.intVec _ _` using `Set.ext fun z => SetLike.mem_coe.trans (hx.2.2 z)`. Establish `hL' : ((a.g.x (j + 1)).L : Set _) = GlobalTheory.AdForm.intVec _ _` using `Set.ext fun z => SetLike.mem_coe.trans (hx'.2.2 z)`. Establish `hv : IsVacO (pk W).ψ (pk W).θ _ _ (a.g.x j).s (a.g.x (j + 1)).s ((a.g.x j).L : Set _) ((a.g.x (j + 1)).L : Set _) (a.g.vac j)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx.1, hx'.1, hL, hL']`. Conclude with `haT.pinX.vc j hj`. Conclude with `⟨⟨_, _, hkom t j hj⟩, hv, (hdd t j α γ hj).1⟩`. Use `e := fun t j α g hg => by`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.1 (Finsupp.mapDomain_support hg)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.T.true_geometry_joint_twist_data W hW u a ha haT J hJ row col (fun _ => rfl) (k.sc t) (cTf t) t j α x (Finsupp.support_smul hx)).2`. Use `eT := fun t n h β g hg => by`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.1 (Finsupp.mapDomain_support hg)`. Establish `: x = 1`. Conclude with `Finset.mem_singleton.1 (Finsupp.support_single_subset (Finsupp.support_smul hx))`.
-
-Substitute `this` using the available equality. Simplify using `using hbT`. Use `stabK := fun t j hj ψ hψ => GlobalTheory.T.chainKernel_preserves_ramifiedForms_liveCharts I hW.tr.ok hW.tr.pins.some l Z u (W.P.I.tup t) (J t).Ch₀ (J t).Ch (J t).A (J t).ι (hJ t).is (hJ t).live j hj ψ hψ`. Use `stabS := fun t j hj ψ hψ => (hS' t).1 j hj (k.ε j) ψ hψ }`. Establish `hcv : ∀ t, CVEq k.v (w t)` using `fun t => by`.
-
-Use `⟨fun j σ h => ?_, fun j h => ?_⟩` and prove the remaining obligations. Establish `hex : ∃ σ, j + 2 * (σ + 1) + 2 = B.R.m` using `⟨σ, h⟩`. Establish `hk : ∀ σ' (h' : j + 2 * (σ' + 1) + 2 = B.R.m), k.v.kap j σ' h' = k.v.kap j σ h` using `fun σ' h' => by`. Take `rfl : σ' = σ` from `by omega`. Both sides reduce to the same expression.
-
-Use `show (if h' : ∃ σ, j + 2 * (σ + 1) + 2 = B.R.m then _ else _) = _`. Rewrite using `[dif_pos hex, hk]`. Both sides reduce to the same expression. Establish `hex : ¬ ∃ σ, j + 2 * (σ + 1) + 2 = B.R.m` using `fun ⟨σ, h'⟩ => by omega show (if h' : ∃ σ, j + 2 * (σ + 1) + 2 = B.R.m then _ else _) = _`. Rewrite using `[dif_neg hex]`.
-
-Both sides reduce to the same expression. Establish `hroot : ∀ (Sp : ℕ → Prop) (x : ℂ), (∃ n : ℕ, 0 < n ∧ x ^ n = 1) → ∀ y : ℂ, (∃ n : ℕ, 0 < n ∧ y ^ n = 1) → ∀ c : ℂ, c ≠ 0 → GlobalTheory.Fam.UnitRatio Sp (c * x) (c * y)` using `fun Sp x ⟨n1, hn1, hx⟩ y ⟨n2, hn2, hy⟩ c hc => by`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Rewrite `hy` using `[zero_pow (by omega)]`.
-
-Conclude with `zero_ne_one hy`. Use `(GlobalTheory.Fam.unitRatio_laws Sp).2.2.1 _ _ (n1 * n2) (mul_ne_zero hc hy0) (Nat.mul_pos hn1 hn2) ?_` and prove the remaining obligations. Rewrite using `[mul_pow, mul_pow, pow_mul x, hx, pow_mul' y, hy, one_pow, one_pow]`. Establish `hsum : ∀ t, ∑ β, s t B.R.m β = s t B.R.m (β₀ t)` using `fun t => Fintype.sum_eq_single (β₀ t) (fun b hb => absurd (hβ₀ t b) hb)`. Use `{ ok := hOK pins := hPins same := fun t => ⟨rfl, rfl, rfl, rfl, rfl, rfl⟩ laws := fun t => GlobalTheory.T.true_geometry_family_final hDS hHC W hW u a ha haT row col (hRow col) hOK t (F t) (w₀ t) (s t) (hD t).1 (hPins t) (hQ t) lev := fun t => GlobalTheory.T.true_geometry_quadrati …` and prove the remaining obligations.
-
-Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.true_geometry_joint_twist_value W hW u a ha haT J hJ row col (fun _ => rfl) (k.sc t) (cTf t) t j`. Use `⟨h1, h2, fun α γ x hx => h3 α γ x (Finsupp.support_smul hx)⟩` and prove the remaining obligations. Use `e := fun t j α => ⟨rfl, fun g hg => (GlobalTheory.T.true_geometry_joint_twist_data W hW u a ha haT J hJ row col (fun _ => rfl) (k.sc t) (cTf t) t j α g (Finsupp.support_smul hg)).1⟩`. Use `eT := fun t n h β => ⟨rfl, fun g hg => by`. Establish `hg'` using `Finsupp.support_single_subset (Finsupp.support_smul hg)`.
-
-Rewrite using `[Finset.mem_singleton.1 hg']`. Conclude with `Subgroup.one_mem _⟩`. Use `dd := fun t j hj α γ f _ => by`. Rewrite using `[hdQ t j α γ hj]`. Conclude with `(hdd t j α γ hj).2 f`.
-
-Use `read := fun t => ⟨S' t 0, (hS' t).2 row kom dd s cV cK cP⟩`. Use `sc := fun t => rfl`. Use `cT := fun t j ρ' h => (congrArg (@TDat.mono _ _ _ a.fld a.val a.top a.loc _ a.o (k.r j) (k.e j)) ((hrow t).sBF j ρ' h).2.2.2).symm`. Use `cv := hcv`. Use `cK := fun t j hj => hroot _ _ ((hD t).2.2.1 j) _ ((hD _).2.2.1 j) _ (mul_ne_zero (mul_ne_zero (hV0 j hj) (hC0 j hj)) (haT.pinX.mv j (by omega)).1)`.
-
-Use `cP := fun t => by show GlobalTheory.Fam.UnitRatio _ (VT * ∑ β, s t B.R.m β) (VT * ∑ β, s _ B.R.m β)`. Rewrite using `[hsum, hsum]`. Conclude with `hroot _ _ ((hD t).1 _ _) _ ((hD _).1 _ _) _ hVT0`. Use `zero := GlobalTheory.T.true_geometry_joint_twist_bound W hW u a ha haT J hJ row kom dd _ s cV cK cP (fun t α => (hD t).2.1 α) hPinCh }`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Fam.colSide : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → (∀ r s, (a.g.oT B.R.m rfl).iA r s = if r.val = s.val then 1 else 0) → ∀ (k : Cst a) row, (∀ t, (row t).Is) → (∀ t t', (row t).Same (row t')) → ∃ col w₀ w F, FamCol (a.fam row col) ∧ ColOut (a := a) k (row := row) (col := col) w₀ w F := by
   intro hDS hHC B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha haT hiA k row hrow hsame

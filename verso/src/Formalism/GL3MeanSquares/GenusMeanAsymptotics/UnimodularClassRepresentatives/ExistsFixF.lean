@@ -27,9 +27,9 @@ def starFixed (K : Type) [Field K] [CharZero K] [StarRing K] : IntermediateField
     rw [star_inv₀, ha]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℚ (starFixed K) := IntermediateField.finiteDimensional_left (starFixed K)`. Use `haveI : NumberField (starFixed K) := ⟨⟩`. Use `⟨starFixed K, inferInstance, inferInstance, inferInstance, fun a => ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `ha`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨a, ha⟩, rfl⟩`. Introduce and unpack `⟨b, rfl⟩`. Conclude with `b.2`.
+A detailed English derivation is pending.
 -/
 theorem exists_fixF (K : Type) [Field K] [NumberField K] [StarRing K] (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) :
     ∃ (F : Type) (_ : Field F) (_ : NumberField F) (_ : Algebra F K), IsFixF K F := by

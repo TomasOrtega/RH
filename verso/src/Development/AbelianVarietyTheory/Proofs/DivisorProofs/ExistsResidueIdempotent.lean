@@ -7,19 +7,15 @@ open scoped TensorProduct
 namespace GlobalTheory.AzumayaResidue
 
 /- English proof (translation)
-Use `IsSimpleRing.of_eq_bot_or_eq_top fun I => ?_` and prove the remaining obligations. Distinguish the cases in `h : I = ⊥`. Conclude with `Or.inl h`. Use `right`. Choose the witnesses or unpack the hypotheses as in `⟨z, hzI, hz0⟩ : ∃ z ∈ I, z ≠ 0 := by`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[TwoSidedIdeal.mem_bot]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨hc x, fun hx => hx ▸ I.zero_mem⟩`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual k B, φ z ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hz0 ((Module.forall_dual_apply_eq_zero_iff k z).1 hc)`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Set `f : B →ₗ[k] B` to `(φ z)⁻¹ • φ.smulRight (1 : B)`. Establish `hf : f z = 1`. Simplify using `[f, hφ]`. Take `⟨t, ht⟩` from `(IsAzumaya.bij (R := k) (A := B)).2 f`. Establish `key : ∀ t : B ⊗[k] Bᵐᵒᵖ, AlgHom.mulLeftRight k B t z ∈ I`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp [I.zero_mem]`. Consider the case `tmul a b`. Rewrite using `[AlgHom.mulLeftRight_apply]`.
-
-Conclude with `I.mul_mem_right _ _ (I.mul_mem_left _ _ hzI)`. Consider the case `add x y hx hy`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `I.add_mem hx hy`. Rewrite using `[← TwoSidedIdeal.one_mem_iff, ← hf, ← ht]`.
-
-Conclude with `key t`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSimpleRing_of_isAzumaya (k B : Type) [Field k] [Ring B] [Algebra k B]
     [IsAzumaya k B] [Nontrivial B] : IsSimpleRing B := by
@@ -56,19 +52,19 @@ theorem isSimpleRing_of_isAzumaya (k B : Type) [Field k] [Ring B] [Algebra k B]
   exact key t
 
 /- English proof (translation)
-Use `haveI : IsSimpleRing B := isSimpleRing_of_isAzumaya k B`. Use `haveI : IsArtinianRing B := IsArtinianRing.of_finite k B`. Take `⟨n, hn, D, _, _, _, ⟨e⟩⟩` from `IsSimpleRing.exists_algEquiv_matrix_divisionRing_finite k B`. Use `haveI : Finite D := Module.finite_of_finite k`. Establish `hcomm : ∀ a b : D, a * b = b * a` using `(littleWedderburn D).mul_comm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hD : ∀ d : D, ∃ c : k, algebraMap k D c = d`. Introduce `d`. Establish `hcen : e.symm (Matrix.scalar (Fin n) d) ∈ Subalgebra.center k B`. Rewrite using `[Subalgebra.mem_center_iff]`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, AlgEquiv.apply_symm_apply]`. Use extensionality with `i j`. Simplify using `[Matrix.scalar_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, hcomm]`. Take `⟨c, hc⟩` from `Algebra.mem_bot.1 (Algebra.IsCentral.out hcen)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg e hc`. Rewrite `h2` using `[AlgEquiv.apply_symm_apply, AlgEquiv.commutes]`. Establish `h3` using `congrFun (congrFun h2 ⟨0, Nat.pos_of_ne_zero hn.out⟩) ⟨0, Nat.pos_of_ne_zero hn.out⟩`. Simplify `h3` using `[Matrix.algebraMap_eq_diagonal]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `i₀ : Fin n` to `⟨0, Nat.pos_of_ne_zero hn.out⟩`. Set `E : Matrix (Fin n) (Fin n) D` to `Matrix.single i₀ i₀ 1`. Use `⟨e.symm E, ?_, ?_, n, fun i => e.symm (Matrix.single i i₀ 1), fun i => e.symm (Matrix.single i₀ i 1), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul]`. Simplify using `[E, Matrix.single_mul_single_same]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y`. Take `⟨c, hc⟩` from `hD (e y i₀ i₀)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, AlgEquiv.apply_symm_apply, map_smul, AlgEquiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [E, Matrix.single_mul_mul_single, one_mul, mul_one, Matrix.smul_single, ← hc]`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Apply `e.injective` to reduce the goal to its premises. Simplify using `[E, map_sum, Matrix.single_mul_single_same, Matrix.sum_single_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_rankOne_idempotent (k B : Type) [Field k] [Finite k] [Ring B] [Algebra k B]
     [IsAzumaya k B] [Nontrivial B] :
@@ -117,7 +113,7 @@ end GlobalTheory.AzumayaResidue
 namespace GlobalTheory.AzumayaResidue
 
 /- English proof (translation)
-Use `TensorProduct.quotTensorEquivQuotSMul_mk_one_tmul (M := Λ) (maximalIdeal A) y` as an intermediate fact. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← this]`. Conclude with `(congrArg (TensorProduct.quotTensorEquivQuotSMul Λ (maximalIdeal A)) h).trans (map_zero _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_smul_top_of_one_tmul_eq_zero (A : Type) [CommRing A] [IsLocalRing A] (Λ : Type)
     [Ring Λ] [Algebra A Λ] (y : Λ) (h : (1 : ResidueField A) ⊗ₜ[A] y = 0) :
@@ -127,9 +123,9 @@ theorem mem_smul_top_of_one_tmul_eq_zero (A : Type) [CommRing A] [IsLocalRing A]
   exact (congrArg (TensorProduct.quotTensorEquivQuotSMul Λ (maximalIdeal A)) h).trans (map_zero _)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.OneTensorExistence.exists_one_tmul_eq`. Consider the case `exact _root_.GlobalTheory.OneTensorExistence.exists_one_tmul_eq`. Consider the case `(apply _root_.GlobalTheory.OneTensorExistence.exists_one_tmul_eq <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.OneTensorExistence.exists_one_tmul_eq <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.OneTensorExistence.exists_one_tmul_eq <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.OneTensorExistence.exists_one_tmul_eq ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem one_tmul_surjective (A : Type) [CommRing A] [IsLocalRing A] (Λ : Type)
     [Ring Λ] [Algebra A Λ] (z : ResidueField A ⊗[A] Λ) : ∃ y : Λ, (1 : ResidueField A) ⊗ₜ[A] y = z := by
@@ -142,15 +138,13 @@ theorem one_tmul_surjective (A : Type) [CommRing A] [IsLocalRing A] (Λ : Type)
   | (intros; exact _root_.GlobalTheory.OneTensorExistence.exists_one_tmul_eq ..)
 
 /- English proof (translation)
-Introduce `A _ _ _ Λ _ _ _ _ _`. Set `k` to `ResidueField A`. Use `haveI : IsAzumaya k (k ⊗[A] Λ) := GlobalTheory.isAzumaya_baseChange A k Λ`. Use `haveI : Nontrivial (k ⊗[A] Λ) := by`. Assume the negation of the conclusion as `hB`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hB` using `[not_nontrivial_iff_subsingleton]`. Establish `: (0 : k) = 1` using `FaithfulSMul.eq_of_smul_eq_smul (α := k ⊗[A] Λ) fun _ => Subsingleton.elim _ _`. Conclude with `zero_ne_one this`. Set `π : Λ →ₐ[A] k ⊗[A] Λ` to `Algebra.TensorProduct.includeRight`. Establish `hπ : ∀ y, π y = (1 : k) ⊗ₜ[A] y` using `fun y => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hker : ∀ y, π y = 0 → y ∈ (maximalIdeal A) • (⊤ : Submodule A Λ)` using `fun y h => mem_smul_top_of_one_tmul_eq_zero A Λ y ((hπ y).symm.trans h)`. Establish `hsurj : ∀ z, ∃ y, π y = z` using `one_tmul_surjective A Λ`. Take `⟨xb, hxx, hxy, N, ab, bb, hsum⟩` from `exists_rankOne_idempotent k (k ⊗[A] Λ)`. Take `⟨x, rfl⟩` from `hsurj xb`. Use `choose a ha using fun i => hsurj (ab i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose b hb using fun i => hsurj (bb i)`. Use `⟨x, hker _ ?_, fun y => ?_, N, a, b, hker _ ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, hxx, sub_self]`. Take `⟨cb, hc⟩` from `hxy (π y)`. Take `⟨c, rfl⟩` from `IsLocalRing.residue_surjective cb`.
-
-Use `⟨c, hker _ ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, map_mul, hc, map_smul, ← ResidueField.algebraMap_eq, algebraMap_smul, sub_self]`. Simplify using `only [map_sub, map_sum, map_mul, map_one, ha, hb, hsum, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_residue_idempotent : ∀ (A : Type) [CommRing A] [IsLocalRing A] [Finite (IsLocalRing.ResidueField A)] (Λ : Type) [Ring Λ] [Algebra A Λ] [IsAzumaya A Λ] [Module.Free A Λ] [Nontrivial Λ], ∃ x : Λ, x * x - x ∈ (IsLocalRing.maximalIdeal A) • (⊤ : Submodule A Λ) ∧ (∀ y : Λ, ∃ c : A, x * y * x - c • x ∈ (IsLocalRing.maximalIdeal A) • (⊤ : Submodule A Λ)) ∧ ∃ (N : ℕ) (a b : Fin N → Λ), ∑ i, a i * x * b i - 1 ∈ (IsLocalRing.maximalIdeal A) • (⊤ : Submodule A Λ) := by
   intro A _ _ _ Λ _ _ _ _ _

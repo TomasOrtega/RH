@@ -6,9 +6,7 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 namespace GlobalTheory.PsiLocNontriv
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ v`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `GlobalTheory.PsiNontriv.psiAt_ne_one ψ hψ v (AddChar.ext _ _ fun t => ?_)` and prove the remaining obligations. Rewrite using `[AddChar.one_apply]`.
-
-Conclude with `h t`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_psiLoc_ne_one : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ →
     ∀ v : HeightOneSpectrum (𝓞 F), ∃ t : Fv F v, psiLoc ψ v t ≠ 1 := by

@@ -5,7 +5,7 @@ open IsLocalRing Polynomial
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.etale_integralClosure_tensor_of_etale_of_isIntegral) | (exact GlobalTheory.etale_integralClosure_tensor_of_etale_of_isIntegral) | (intros; apply GlobalTheory.etale_integralClosure_tensor_of_etale_of_isIntegral <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.etale_integralClosure_tensor : ∀ (S₁ K₁ T : Type) [CommRing S₁] [IsDomain S₁] [IsIntegrallyClosed S₁] [Field K₁]
     [Algebra S₁ K₁] [IsFractionRing S₁ K₁] [CommRing T] [Algebra S₁ T],

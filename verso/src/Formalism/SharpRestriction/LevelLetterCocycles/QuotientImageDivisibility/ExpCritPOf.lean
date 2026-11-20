@@ -24,49 +24,43 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {E : EtTie W (O ⊗[Zl] Ai) RW inclR φR gR πA} {ιdR : Ai →+* BdR} {p1 : Ai} {tS zS : BdR}
 
 /- English proof (translation)
-Introduce `T hT i ζ hζ x d hDL hd ⟨k, hk⟩`. Establish `hs : W.s = 1` using `hA.2.1`. Establish `hfin : Module.finrank K₀ K = 1`. Rewrite using `[← (AlgEquiv.ofBijective (Algebra.ofId K₀ K) hA.1).toLinearEquiv.finrank_eq, Module.finrank_self]`. Establish `h9T` using `((h9 T hT) hs hA.2.2).2.2 hfin`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hring : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W` using `h9T.1`. Establish `hmod` using `h9T.2`. Take `⟨hN, hAg⟩` from `gam_of_tie W hs C`. Take `⟨-, hval, hAdd, -, -, -, -⟩` from `expRules_of W h4 hN hAg hA T hT i ζ hζ`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Take `⟨d', hd', hn'⟩` from `pullJ_exp W hA h4 C h4W T hT i hζ x hx`. Rewrite using `[isExp_unique W T i ζ hd hd']`. Conclude with `hn'`. Introduce `hneg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨e, he⟩, hB2⟩` from `hB hA T hT (i - 1)`. Establish `hi1 : i - 1 + ((1 : ℕ) : ZMod n) = i` using `by push_cast; ring`. Establish `hqΔ : ∀ δ ∈ W.DelF, W.γA δ (Formalism.MainNotions.LiftingTheory.qp W) = Formalism.MainNotions.LiftingTheory.qp W`. Introduce `δ hδ`. Simplify using `only [Formalism.MainNotions.LiftingTheory.qp, map_add, map_natCast, hring.1 δ hδ]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hDLy : Formalism.MainNotions.CrystallineLiftingInputs.DL W T (i - 1 + ((1 : ℕ) : ZMod n)) (Formalism.MainNotions.LiftingTheory.qp W ^ k • x)`. Rewrite using `[hi1]`. Use `⟨by rw [smul_comm, hDL.1], fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[RL.γD_smulA, map_pow, hqΔ δ hδ, hDL.2 δ hδ]`. Take `⟨a, ha, -⟩` from `(hB2 _ e he 1).1 _ hk hDLy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hE : ∀ m, ∃ Em : ℤ → T.V ⊗[Qp] BdR, Formalism.MainNotions.RamifiedCoefficientChains.Sh.IsExp W T i ζ (((W.φD T) ^ 1) (e m)) Em ∧ (∀ j : ℤ, j < 0 → Em j = 0) ∧ Em 0 = ιV PD (LL` using `LL) (V := T.V) (φVB PD (LL := LL) (V := T.V) (W.cmp T ⟨e m, (he.1 m).1⟩)) := by`. Introduce `m`. Rewrite using `[pow_one]`. Conclude with `phi_exp W hs C h4W T hT i hζ (e m) (he.1 m).1 (he.1 m).2.1`. Use `choose Em hEx hEn hE0 using hE`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hsumExp : ∀ s : Finset (Fin (Module.finrank LL T.V)), Formalism.MainNotions.RamifiedCoefficientChains.Sh.IsExp W T i ζ (∑ m ∈ s, Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W (a m) • ((W.φD T) ^ 1) (e m)) (∑ m ∈ s, smulS (W.lev i ζ (Formalism.MainNotions.RamifiedCoeffi …`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isExp_zero W T i ζ`. Consider the case `insert m s hm ih`. Rewrite using `[Finset.sum_insert hm, Finset.sum_insert hm]`. Conclude with `hAdd _ _ _ _ (isExp_smulA W T i ζ (hEx m) _) ih`. Establish `hy` using `hsumExp Finset.univ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite `hy` using `[← ha]`. Establish `heq` using `isExp_unique W T i ζ (isExp_smulA W T i ζ hd (Formalism.MainNotions.LiftingTheory.qp W ^ k)) hy`. Take `⟨u, hu, hlq⟩` from `(expRing_of W hring hA i ζ hζ).1`. Establish `hdLB : LB 0 d` using `fun j hj => hneg j hj`. Set `Fil : ℤ → Submodule LL (T.V ⊗[Qp] BdR)` to `fun a => if a ≤ 0 then ⊤ else ⊥`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hFa : Antitone Fil`. Introduce `a b hab`. Distinguish the cases in `hb : b ≤ 0`. Rewrite using `[show Fil a = ⊤ from if_pos (le_trans hab hb), show Fil b = ⊤ from if_pos hb]`. Rewrite using `[show Fil b = ⊥ from if_neg hb]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `bot_le`. Use `haveI := fd_ιDi W hA hD T hT i`. Establish `hDLφ : ∀ m, Formalism.MainNotions.CrystallineLiftingInputs.DL W T i (((W.φD T) ^ 1) (e m))`. Introduce `m`. Rewrite using `[pow_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Formalism.MainNotions.N.Pv.LocalLengthBound.letter_phi W T i (he.1 m).2.1, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[← W.φγ_comm, (he.1 m).2.2 δ hδ]`. Establish `hEmem : ∀ m j, Em m j ∈ Formalism.MainNotions.DeltaInvariantLattices.ιDi W T i ⊓ Fil (-j)`. Introduce `m j`. Use `Submodule.mem_inf.2 ⟨hval _ _ (hDLφ m) (hEx m) j, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hj : j < 0`. Rewrite using `[hEn m j hj]`. Conclude with `Submodule.zero_mem _`. Rewrite using `[show Fil (-j) = ⊤ from if_pos (by omega)]; exact Submodule.mem_top`. Establish `h₁ : Formalism.MainNotions.DeltaInvariantLattices.ιDi W T i ⊓ Fil 1 = ⊥`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show Fil 1 = ⊥ from if_neg (by norm_num), inf_bot_eq]`. Establish `hind : ∀ c : Fin (Module.finrank LL T.V) → LL, (∀ j, ∑ m, c m • Em m j ∈ Fil (-j + 1)) → c = 0`. Introduce `c hc`. Establish `h0` using `hc 0`. Rewrite `h0` using `[show Fil (-(0 : ℤ) + 1) = ⊥ from if_neg (by norm_num), Submodule.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Apply `indep_phi_cmp W inferInstance hFr hring T (h3 T hT) hmod (i - 1) e he c` to reduce the goal to its premises. Rewrite using `[← h0]`. Conclude with `Finset.sum_congr rfl fun m _ => by rw [hE0 m]`. Establish `hdg : ∀ j : ℤ, ∑ m, smulS (W.lev i ζ (Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W (a m))) (Em m) j ∈ Fil ((k : ℤ) - j)`. Introduce `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `congrFun heq j`. Rewrite `e1` using `[Finset.sum_apply]`. Rewrite using `[← e1]`. Distinguish the cases in `hj : j < k`. Establish `h0 : smulS (W.lev i ζ (Formalism.MainNotions.LiftingTheory.qp W ^ k)) d j = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_pow, hlq, mul_pow, mul_comm, smulS_mul hdLB, smulS_X_pow (LB_smulS hdLB _)]`. Conclude with `LB_smulS hdLB _ _ (by omega)`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Rewrite using `[show Fil ((k : ℤ) - j) = ⊤ from if_pos (by omega)]; exact Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hdvd` using `MC.dvd_of_dg hFa (Formalism.MainNotions.DeltaInvariantLattices.ιDi W T i) 1 h₁ hEmem hind k _ hdg`. Set `ψ : PowerSeries O →+* PowerSeries LL` to `(W.lev i ζ).toRingHom.comp (at0Hom W hring)`. Establish `hψa : ∀ f, ψ f = W.lev i ζ (Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W f)` using `fun f => by show W.lev i ζ (at0Hom W hring f) = _`. Rewrite using `[at0Hom_apply]`. Establish `hψC : ∀ o : O, ψ (PowerSeries.C o) = PowerSeries.C (algebraMap O LL o)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `o`. Rewrite using `[hψa, evalZero_C, AlgHom.commutes, PowerSeries.algebraMap_apply]`. Establish `hqpe : W.π₀ + algebraMap O (LetA O n) ((PD.p : ℕ) : O) = Formalism.MainNotions.LiftingTheory.qp W`. Rewrite using `[map_natCast]`. Both sides reduce to the same expression.
-
-Establish `hψ : ψ (PowerSeries.X + PowerSeries.C ((PD.p : ℕ) : O)) = PowerSeries.X * u`. Rewrite using `[hψa, ← at0Hom_apply W hring, map_add, at0Hom_apply, at0Hom_apply, evalZero_X_eq_pi0 W hring, evalZero_C, hqpe, hlq, mul_comm]`. Establish `hdiv : ∀ m, (PowerSeries.X + PowerSeries.C ((PD.p : ℕ) : O)) ^ k ∣ a m` using `fun m => Wd.dvd_of_dvd_image hinj ((PD.p : ℕ) : O) ψ hψC u hu hψ hlm k (a m) (by rw [hψa]; exact hdvd m)`. Use `choose g hg using hdiv`. Establish `hat0 : ∀ m, Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W (a m) = Formalism.MainNotions.LiftingTheory.qp W ^ k * Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W (g m)`.
-
-Introduce `m`. Rewrite using `[hg m, evalZero_mul W hring, ← at0Hom_apply W hring ((PowerSeries.X + PowerSeries.C ((PD.p : ℕ) : O)) ^ k), map_pow, map_add, at0Hom_apply, at0Hom_apply, evalZero_X_eq_pi0 W hring, evalZero_C, hqpe]`. Establish `hx' : Formalism.MainNotions.LiftingTheory.qp W ^ k • x = Formalism.MainNotions.LiftingTheory.qp W ^ k • ∑ m, Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W (g m) • ((W.φD T) ^ 1) (e m)`. Rewrite using `[ha, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => by rw [hat0 m, mul_smul]`.
-
-Rewrite using `[qp_pow_cancel W hring T k hx']`. Conclude with `Submodule.sum_mem _ fun m _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨e m, ⟨(he.1 m).1, (he.1 m).2⟩, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expCritP_of [NeZero n] (hA : Formalism.MainNotions.LiftingTheory.CaseA W) [IsDomain O] [IsLocalRing O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (hinj : Function.Injective (algebraMap O LL))
@@ -204,9 +198,9 @@ theorem expCritP_of [NeZero n] (hA : Formalism.MainNotions.LiftingTheory.CaseA W
       (Submodule.subset_span ⟨e m, ⟨(he.1 m).1, (he.1 m).2⟩, rfl⟩)
 
 /- English proof (translation)
-Introduce `hA T hT i ζ hζ x d hDL hd`. Establish `hs : W.s = 1` using `hA.2.1`. Establish `hfin : Module.finrank K₀ K = 1`. Rewrite using `[← (AlgEquiv.ofBijective (Algebra.ofId K₀ K) hA.1).toLinearEquiv.finrank_eq, Module.finrank_self]`. Establish `hring : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W` using `(((h9 T hT) hs hA.2.2).2.2 hfin).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨expCritN_of W hA inferInstance hFr h1 h3 h4 h5 hD hring (gamΔ_of_tie W C) hΔ T hT i ζ hζ x d hDL hd, expCritP_of W hA hinj hlm hFr h3 h4 h9 hD hB C h4W T hT i ζ hζ x d hDL hd⟩`.
+Supply the required witnesses or components.
 -/
 theorem expCrit_of [NeZero n] [IsDomain O] [IsLocalRing O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (hinj : Function.Injective (algebraMap O LL))

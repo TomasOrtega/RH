@@ -20,7 +20,7 @@ noncomputable def unitEquiv (γ : Matrix (Fin n) (Fin n) E) (h : γ * γ.conjTra
     (by rw [← Matrix.mulVecLin_mul, h, Matrix.mulVecLin_one])
 
 /- English proof (translation)
-Introduce `x y`. Express the relevant statement in the definitionally equal form `star (γ.conjTranspose.mulVec x) ⬝ᵥ (γ.conjTranspose.mulVec y) = star x ⬝ᵥ y`. Rewrite using `[Matrix.star_mulVec, Matrix.conjTranspose_conjTranspose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, h, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitEquiv_mem (γ : Matrix (Fin n) (Fin n) E) (h : γ * γ.conjTranspose = 1) :
     unitEquiv γ h ∈ UF E n := by
@@ -30,9 +30,9 @@ theorem unitEquiv_mem (γ : Matrix (Fin n) (Fin n) E) (h : γ * γ.conjTranspose
     Matrix.mulVec_mulVec, h, Matrix.one_mulVec]
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, rfl⟩`. Conclude with `r.isIntegral_coe`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨⟨a, h⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_one_iff [NumberField E] (a : E) :
     a ∈ (1 : Submodule (𝓞 E) E) ↔ IsIntegral ℤ a := by
@@ -48,13 +48,13 @@ end DecoLatticeClasses
 open DecoLatticeClasses in
 
 /- English proof (translation)
-Introduce `E _ _ _ _ hs n`. Take `⟨R, hR, H⟩` from `GlobalTheory.exists_finset_selfDual_classes_rootDiscr E n`. Use `⟨R, hR, fun ST SG d => ?_⟩` and prove the remaining obligations. Establish `hu : Formalism.HermitianLatticesTheory.dual (hStd E n) d.1.N = d.1.N` using `d.2.uni`. Take `⟨L₀, hL₀, γ, hγ, hm⟩` from `H d.1.N d.2.lat.fg d.2.lat.span_eq_top (fun y => by conv_lhs => rw [← hu, mem_dual]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [mem_one_iff, hStd_apply, hs])`. Establish `hγ' : γ * γ.conjTranspose = 1`. Rewrite using `[← hγ]`. Use `congr 1`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.conjTranspose_apply, hs]`. Use `⟨⟨unitEquiv γ hγ', unitEquiv_mem γ hγ'⟩, ?_⟩` and prove the remaining obligations. Establish `e : Formalism.HermitianLatticesTheory.gmap (unitEquiv γ hγ') d.1.N = L₀`. Use extensionality with `x`. Rewrite using `[mem_gmap, hm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `hL₀` using `[← e]`. Conclude with `hL₀`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_decoSet_lattice_reps :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [StarRing E],

@@ -8,12 +8,12 @@ noncomputable section
 namespace Formalism.HermitianLattices.ZeroDensityInBoxes
 
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLattices.Ext.BoxTail.box_tail_bound`.
+A detailed English derivation is pending.
 -/
 theorem box_tail_bound_all : BoxTailAll := Formalism.HermitianLattices.Ext.BoxTail.box_tail_bound
 
 /- English proof (translation)
-Introduce `h` and use `Formalism.HermitianLattices.Ext.PrimitiveCharacterCasts.boxCountHyp_of_zeroDensityBox h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem box_count_of_zero_density : BoxCountOfZD := fun h =>
   Formalism.HermitianLattices.Ext.PrimitiveCharacterCasts.boxCountHyp_of_zeroDensityBox h

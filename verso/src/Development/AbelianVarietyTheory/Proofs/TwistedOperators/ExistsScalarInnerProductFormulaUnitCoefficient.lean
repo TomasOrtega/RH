@@ -20,19 +20,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F _hirr _hS hI hFo hZ hδ i σ s m μ' η' ω B f₀ f c io H hd hν _hy _hH v hv ev`. Establish `hC` using `hd.1`. Take `⟨⟨μ, 𝓧⟩, hμ⟩` from `hd.2.2.2.2.2.2.2.1.1.2.norm.1`. Take `⟨⟨Fr, hFr⟩, hFr2⟩` from `(hC.models.νW i).1.2.2 R.θ hC.models.inf`. Take `⟨mR, hmR⟩` from `(hFr2 Fr hFr).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose δ _hδpos hδ' using hδ i σ`. Establish `hδv : ∀ ρ, ∫ b, ‖⟪((v ρ : (R.MW i σ).sm ρ) : (R.MW i σ).H ρ), (R.MW i σ).rep ρ (realMat (Wc D i) Fr ρ b) ((v ρ : (R.MW i σ).sm ρ) : (R.MW i σ).H ρ)⟫_ℂ‖ ^ 2 ∂(mR ρ) = δ ρ` using `fun ρ => (hδ' ρ Fr hFr (mR ρ) (hmR ρ) (v ρ) (hv ρ)).2`. Establish `hW` using `GlobalTheory.LiftScalarL.inner_HW R hC.models.HW i σ`. Use `set N : ℝ := ∏ ρ, ((dimK _ _ (kapAt (Wc D i) σ ρ) : ℚ) : ℝ) with hN`. Establish `hN0 : (N : ℂ) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 < N` using `Finset.prod_pos fun ρ _ => by`. Use `one_le_dimK i σ ρ` as an intermediate fact. Check the signs of the components of the expression. Conclude with `this.ne'` after adjusting the coercions. Distinguish the cases in `h0 : typePart R i σ A.μ0 R.triv ev = ⊥`.
+Check the signs of the components of the expression. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨0, fun y₁ hy₁ y₂ w _ => ?_⟩` and prove the remaining obligations. Establish `e1 : y₁ = 0`. Rewrite `hy₁` using `[← GlobalTheory.LiftLower.typePart_base hC.lev, h0]`. Conclude with `(Submodule.mem_bot ℂ).1 hy₁`. Substitute `e1` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[l2, Lift.pet, upLift, petW]`. Take `⟨Bf, -, -, -, hK⟩` from `hZ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hd μ 𝓧 hμ ev h0`. Use `⟨(((R.νV i A.μ0) (R.fdV i A.μ0)).toReal : ℂ) * (Formalism.E.fock (deltaAtEmb D i σ) (deltaAtEmb D i σ) * (∏ ρ, (δ ρ : ℂ)) * ((Nat.card R.triv.H : ℂ) * (Datum.nrm2 μ 𝓧 f : ℂ) * (GlobalTheory.LFun.LSD D (finS R A.μ0) Bf μ' ((1 + (D.R.t : ℂ)) / 2) / (dOff D (finS R A.μ0) : ℂ)))) / N …` and prove the remaining obligations. Establish `hm : ∀ x, (R.HW i σ).e x ∈ R.Wall i σ` using `HMod_mem (hC.models.HW i σ)`. Establish `hw' : ⟪w, w⟫_ℂ = 1` using `by rw [inner_self_eq_norm_sq_to_K, hw]; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy' : y₁ ∈ typePart R i σ A.μ0 R.triv ev`. Rewrite using `[GlobalTheory.LiftLower.typePart_base hC.lev]`. Conclude with `hy₁`. Establish `hK1` using `hK _ (Submodule.mem_comap.1 hy') _ (hm y₂)`. Establish `hIP` using `isMultiplicityInner_of_model (R.HW i σ) hW y₁ y₂`.
-
-Establish `key` using `GlobalTheory.LiftScalarL.l2_upwardLift R hI hFo hd hν hμ hFr hmR (hm y₁) (hm y₂) hIP _ hK1 v δ hδv w hw'`. Use `key.trans ?_` and prove the remaining obligations. Rewrite using `[hW y₁ y₂]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_scalar : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), (∀ χ ∈ A.X, IsAbsIrrChar χ) → GlobalTheory.LiftRows.SourceLevelLawC R F → GlobalTheory.LiftRows.InnerProductFormulaC R F → GlobalTheory.LiftRows.FockCoefficientC R F → GlobalTheory.LiftRows.FiniteZetaL R F → GlobalTheory.LiftRows.RealLowestKTypeCoeffSquareIntegrable R →
   ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (s : ℂ ≃+* ℂ) (m : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (μ' η' : (AE D)ˣ →* Circle)

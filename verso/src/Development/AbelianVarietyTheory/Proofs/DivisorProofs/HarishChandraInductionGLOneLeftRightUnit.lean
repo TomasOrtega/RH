@@ -11,7 +11,7 @@ open scoped Classical
 variable {F : Type} [Field F]
 
 /- English proof (translation)
-Unfold `toG`. Rewrite using `[dif_pos x.isUnit]`. Conclude with `Units.ext (IsUnit.unit_spec _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toG_val {n : ℕ} (x : GL (Fin n) F) : toG (x : Matrix (Fin n) (Fin n) F) = x := by
   unfold toG
@@ -19,7 +19,7 @@ theorem toG_val {n : ℕ} (x : GL (Fin n) F) : toG (x : Matrix (Fin n) (Fin n) F
   exact Units.ext (IsUnit.unit_spec _)
 
 /- English proof (translation)
-Establish `h : br 0 a (x : Matrix (Fin a) (Fin a) F) = x`. Use extensionality with `i j`. Simplify using `[br, ent]`. Unfold `brG`. Rewrite using `[h, toG_val]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem brG_zero {a : ℕ} (x : GL (Fin a) F) : brG 0 a x = x := by
   have h : br 0 a (x : Matrix (Fin a) (Fin a) F) = x := by
@@ -29,7 +29,7 @@ theorem brG_zero {a : ℕ} (x : GL (Fin a) F) : brG 0 a x = x := by
   rw [h, toG_val]
 
 /- English proof (translation)
-Establish `h : tl a (x : Matrix (Fin a) (Fin a) F) = x`. Use extensionality with `i j`. Simplify using `[tl, ent]`. Unfold `tlG`. Rewrite using `[h, toG_val]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tlG_self {a : ℕ} (x : GL (Fin a) F) : tlG a x = x := by
   have h : tl a (x : Matrix (Fin a) (Fin a) F) = x := by
@@ -39,26 +39,26 @@ theorem tlG_self {a : ℕ} (x : GL (Fin a) F) : tlG a x = x := by
   rw [h, toG_val]
 
 /- English proof (translation)
-Introduce `_ _ hj _` and use `absurd hj (Nat.not_lt_zero _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inPar_zero {n : ℕ} (x : GL (Fin n) F) : InPar 0 x :=
   fun _ _ hj _ => absurd hj (Nat.not_lt_zero _)
 
 /- English proof (translation)
-Introduce `i _ _ hi` and use `absurd i.isLt (not_lt.mpr hi)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inPar_self {a : ℕ} (x : GL (Fin a) F) : InPar a x :=
   fun i _ _ hi => absurd i.isLt (not_lt.mpr hi)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[gal]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gal_id {n : ℕ} (y : GL (Fin n) F) : gal (RingHom.id F) n y = y := by
   ext i j
   simp [gal]
 
 /- English proof (translation)
-Establish `hc : (Nat.card G : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Establish `h' : ∀ y : G, χ (y⁻¹ * x * y) = χ x` using `fun y => h x y`. Use `Fintype.ofFinite G` as an intermediate fact. Rewrite using `[finsum_congr h', finsum_eq_sum_of_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Nat.card_eq_fintype_card, ← mul_assoc, inv_mul_cancel₀ hc, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mean_class {G : Type} [Group G] [Finite G] {χ : G → ℂ} (h : IsCl χ) (x : G) :
     (Nat.card G : ℂ)⁻¹ * ∑ᶠ y : G, χ (y⁻¹ * x * y) = χ x := by
@@ -69,16 +69,16 @@ theorem mean_class {G : Type} [Group G] [Finite G] {χ : G → ℂ} (h : IsCl χ
     ← Nat.card_eq_fintype_card, ← mul_assoc, inv_mul_cancel₀ hc, one_mul]
 
 /- English proof (translation)
-The claim follows from `Nat.card_congr (Equiv.subtypeUnivEquiv h)`.
+A detailed English derivation is pending.
 -/
 private theorem card_infinitePlace_eq_f {G : Type} {p : G → Prop} (h : ∀ x, p x) :
     Nat.card {x // p x} = Nat.card G :=
   Nat.card_congr (Equiv.subtypeUnivEquiv h)
 
 /- English proof (translation)
-Introduce `F _ _ a α hα`. Use `⟨funext fun x => ?_, funext fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [hc, hcTw]`. Rewrite using `[card_infinitePlace_eq_f inPar_zero]`. Simplify using `only [gal_id, inPar_zero, ↓reduceIte, brG_zero, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `mean_class hα x`. Simplify using `only [hc, hcTw]`. Rewrite using `[card_infinitePlace_eq_f inPar_self]`. Simplify using `only [gal_id, inPar_self, ↓reduceIte, tlG_self, mul_one]`. Conclude with `mean_class hα x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] [Finite F], ∀ (a : ℕ) (α : GL (Fin a) F → ℂ), IsCl α →
     hc 0 a (fun _ => 1) α a = α ∧ hc a 0 α (fun _ => 1) a = α := by

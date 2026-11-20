@@ -9,11 +9,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwV.DelA
 
 /- English proof (translation)
-Unfold `GlobalTheory.TwV.AllSites`. Introduce `D _ hT _ _ _ _ _ ex u μ w hg Lv I H X _ std t J S hD j hj La hLa γ hγ κ hκ`. Take `⟨d0⟩` from `GlobalTheory.T.exists_adelic_latticeTuple_decomposition S hD`. Establish `key : ∀ k (hk : k ≤ D.R.m) (Lb : (sysS H X std).Lt k), ∃ (g : GL (Fin (D.R.N k)) D.host.E) (c : ((J.St k hk).K (J.chart std k hk Lb)).lev.U), g ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D k hk) ∧ (((sysS H X std).Pj k).IsLatTup Lb.2 → (J.pt std k hk Lb).1 = GlobalTheory.TwU.ra …`. Introduce `k hk Lb`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : k = j + 1 ∧ HEq Lb La`. Take `⟨rfl, h2⟩` from `h`. Take `rfl` from `eq_of_heq h2`. Conclude with `⟨γ, κ, hγ, fun _ => hκ, fun _ _ => ⟨HEq.rfl, HEq.rfl⟩⟩`. Conclude with `⟨d0.gam k hk Lb, d0.kap k hk Lb, d0.mem k hk Lb, d0.eq k hk Lb, fun e hL => absurd ⟨e, hL⟩ h⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose g c hm he hh using key`. Conclude with `⟨⟨g, c, hm, he⟩, eq_of_heq (hh (j + 1) hj La rfl HEq.rfl).1, eq_of_heq (hh (j + 1) hj La rfl HEq.rfl).2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dec_update : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => J.Dict std → ∀ j (hj : j + 1 ≤ D.R.m) (La : (sysS H X std).Lt (j + 1)), ((sysS H X std).Pj (j + 1)).IsLatTup La.2 → ∀ (γ : GL (Fin (D.R.N (j + 1))) D.host.E), γ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D (j + 1) hj) → ∀ κ : ((J.St (j + 1) hj).K (J.chart std (j + 1) hj La)).lev.U, (J.pt std (j + 1) hj La).1 = GlobalTheory.TwU.ratA D.host.F γ * ((J.St (j + 1) hj).y (clsAt X H (j + 1) La.1 La.2)).1 * κ.1 → ∃ d : Dec J std, d.gam (j + 1) hj La = γ ∧ d.kap (j + 1) hj La = κ) := by
   unfold GlobalTheory.TwV.AllSites

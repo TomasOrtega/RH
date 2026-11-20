@@ -17,30 +17,30 @@ Both sides reduce to the same expression.
 theorem pr_eq_diagonal (t : Fˣ) : pr t = diagonal F t := rfl
 
 /- English proof (translation)
-The claim follows from `(ideleModule F a).2`.
+A detailed English derivation is pending.
 -/
 theorem md_pos (a : IdeleGroup F) : 0 < md a := (ideleModule F a).2
 
 /- English proof (translation)
-Simplify using `[md, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem md_mul (a b : IdeleGroup F) : md (a * b) = md a * md b := by
   simp [md, map_mul]
 
 /- English proof (translation)
-Simplify using `[md, pr_eq_diagonal, ideleModule_diagonal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem md_pr (t : Fˣ) : md (pr t) = 1 := by
   simp [md, pr_eq_diagonal, ideleModule_diagonal]
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.comp continuous_ideleModule`.
+A detailed English derivation is pending.
 -/
 theorem continuous_md : Continuous (md : IdeleGroup F → ℝ) :=
   continuous_subtype_val.comp continuous_ideleModule
 
 /- English proof (translation)
-Unfold `th`. Rewrite using `[← (Equiv.mulRight ξ).tsum_eq (fun t => f (pr t * a))]`. Use `tsum_congr fun t => ?_` and prove the remaining obligations. Simplify using `[pr, mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem th_pr_mul (f : IdeleGroup F → ℝ≥0∞) (ξ : Fˣ) (a : IdeleGroup F) :
     th f (pr ξ * a) = th f a := by
@@ -50,18 +50,18 @@ theorem th_pr_mul (f : IdeleGroup F → ℝ≥0∞) (ξ : Fˣ) (a : IdeleGroup F
   simp [pr, mul_assoc]
 
 /- English proof (translation)
-Unfold `th`. Conclude with `Measurable.ennreal_tsum fun t => hf.comp (measurable_const_mul _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_th {f : IdeleGroup F → ℝ≥0∞} (hf : Measurable f) : Measurable (th f) := by
   unfold th
   exact Measurable.ennreal_tsum fun t => hf.comp (measurable_const_mul _)
 
 /- English proof (translation)
-Establish `hD` using `isFundamentalDomain_normOneFundamentalDomain F (normOneMeasure F)`. Establish `hD'` using `hD.smul_of_comm b`. Establish `hinv : ∀ (γ : (diagonalNormOne F).op) (x : normOneSubgroup F), g (γ • x) = g x`. Introduce and unpack `⟨γ, hγ⟩ x`. Take `⟨k, hk⟩` from `Subgroup.mem_op.1 hγ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `e : γ.unop = diagonalToNormOne F k` using `Subtype.ext hk.symm`. Express the relevant statement in the definitionally equal form `g (x * γ.unop) = g x`. Rewrite using `[e, mul_comm]`. Conclude with `hg k x`. Rewrite using `[hD.setLIntegral_eq hD' g hinv]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(measurePreserving_mul_left (normOneMeasure F) b).setLIntegral_comp_emb (MeasurableEquiv.mulLeft b).measurableEmbedding g (normOneFundamentalDomain F)` as an intermediate fact. Repeatedly rewrite using `[mul_comm _ b]`. Conclude with `this`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setLIntegral_mul_right (g : normOneSubgroup F → ℝ≥0∞)
     (hg : ∀ (ξ : Fˣ) u, g (diagonalToNormOne F ξ * u) = g u) (b : normOneSubgroup F) :
@@ -88,15 +88,15 @@ namespace GlobalTheory.CompanionTheory.TateRes
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `hn : ∀ w : InfinitePlace F, ‖θ δ w‖ = δ`. Introduce `w`. Establish `hw : w.IsReal` using `hF.isReal w`. Set `e` to `InfinitePlace.Completion.ringEquivRealOfIsReal hw`. Set `ρ : ℝ →+* ℝ` to `(e : w.Completion →+* ℝ).comp ((Pi.evalRingHom _ w).comp θ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hρ : ρ δ = δ`. Establish `: ρ = RingHom.id ℝ` using `Subsingleton.elim _ _`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hnorm : ‖θ δ w‖ = ‖e (θ δ w)‖`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[InfinitePlace.Completion.ringEquivRealOfIsReal_apply]`. Conclude with `((InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero (map_zero _) _).symm`. Rewrite using `[hnorm]`. Express the relevant statement in the definitionally equal form `‖ρ δ‖ = δ`. Rewrite using `[hρ, Real.norm_of_nonneg hδ.le]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `hr δ hδ`. Establish `: md (r δ) = (∏ w : InfinitePlace F, ‖(r δ : 𝔸[F]).1 w‖ ^ w.mult) * ∏ᶠ v : HeightOneSpectrum (𝓞 F), ‖(r δ : 𝔸[F]).2 v‖` using `ideleModule_eq _`. Rewrite using `[this]`. Establish `hfin : ∏ᶠ v : HeightOneSpectrum (𝓞 F), ‖(r δ : 𝔸[F]).2 v‖ = 1`. Use `finprod_eq_one_of_forall_eq_one fun v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `norm_one`. Rewrite using `[hfin, mul_one, h1]`. Simplify using `only [hn]`. Rewrite using `[Finset.prod_pow_eq_pow_sum, InfinitePlace.sum_mult_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem md_ray (hF : IsTotallyReal F) {θ : ℝ →+* HeckeCharacterZeroLocus.SiegelWeilU.Ainf F} (hθ : Continuous θ) {r : ℝ → IdeleGroup F}
     (hr : IsRay θ r) {δ : ℝ} (hδ : 0 < δ) : md (r δ) = δ ^ Module.finrank ℚ F := by
@@ -128,7 +128,7 @@ theorem md_ray (hF : IsTotallyReal F) {θ : ℝ →+* HeckeCharacterZeroLocus.Si
   rw [Finset.prod_pow_eq_pow_sum, InfinitePlace.sum_mult_eq]
 
 /- English proof (translation)
-Rewrite using `[← ofReal_integral_eq_lintegral_ofReal (integrableOn_exp_Iic M) (Eventually.of_forall fun z => (Real.exp_pos z).le), integral_exp_Iic]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lintegral_exp_Iic (M : ℝ) :
     ∫⁻ z in Set.Iic M, ENNReal.ofReal (Real.exp z) = ENNReal.ofReal (Real.exp M) := by
@@ -136,9 +136,9 @@ theorem lintegral_exp_Iic (M : ℝ) :
     (Eventually.of_forall fun z => (Real.exp_pos z).le), integral_exp_Iic]
 
 /- English proof (translation)
-Establish `hK : Measurable fun z : ℝ => ENNReal.ofReal (Real.exp z) * J (z / ε)` using `(ENNReal.measurable_ofReal.comp Real.measurable_exp).mul (hJ.comp (measurable_id.div_const ε))`. Establish `h` using `lintegral_map (μ := volume) hK (measurable_const_mul ε)`. Rewrite `h` using `[Real.map_volume_mul_left hε.ne', lintegral_smul_measure]`. Establish `e : ∀ y : ℝ, ε * y / ε = y` using `fun y => by field_simp`. Simplify using `only [e] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h, abs_of_pos (inv_pos.2 hε), smul_eq_mul, ← mul_assoc, ← ENNReal.ofReal_mul hε.le, mul_inv_cancel₀ hε.ne', ENNReal.ofReal_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem scale_lintegral {ε : ℝ} (hε : 0 < ε) (J : ℝ → ℝ≥0∞) (hJ : Measurable J) :
     ENNReal.ofReal ε * ∫⁻ y, ENNReal.ofReal (Real.exp (ε * y)) * J y =
@@ -153,29 +153,25 @@ theorem scale_lintegral {ε : ℝ} (hε : 0 < ε) (J : ℝ → ℝ≥0∞) (hJ :
     ← ENNReal.ofReal_mul hε.le, mul_inv_cancel₀ hε.ne', ENNReal.ofReal_one, one_mul]
 
 /- English proof (translation)
-Establish `hbound : ∀ M : ℝ, ∫⁻ z, (Set.Iic M).indicator (fun z => ENNReal.ofReal (Real.exp z) * B) z ≠ ⊤`. Introduce `M`. Rewrite using `[lintegral_indicator measurableSet_Iic, lintegral_mul_const' B (fun z => ENNReal.ofReal (Real.exp z)) hB, lintegral_exp_Iic]`. Conclude with `ENNReal.mul_ne_top ENNReal.ofReal_ne_top hB`. Establish `hK : ∀ {ε : ℝ} {M : ℝ}, 0 < ε → ε * y₀ ≤ M → ∀ z : ℝ, ENNReal.ofReal (Real.exp z) * J (z / ε) ≤ (Set.Iic M).indicator (fun z => ENNReal.ofReal (Real.exp z) * B) z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ε M hε hM z`. Distinguish the cases in `hz : z ≤ M`. Rewrite using `[Set.indicator_of_mem (Set.mem_Iic.2 hz)] gcongr`. Conclude with `hle _`. Establish `hz' : M < z` using `not_le.1 hz`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: y₀ < z / ε`. Rewrite using `[lt_div_iff₀' hε]`. Conclude with `lt_of_le_of_lt hM hz'`. Rewrite using `[h0 _ this, mul_zero]`. Conclude with `zero_le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hKm : ∀ ε : ℝ, Measurable fun z : ℝ => ENNReal.ofReal (Real.exp z) * J (z / ε)` using `fun ε => (ENNReal.measurable_ofReal.comp Real.measurable_exp).mul (hJ.comp (measurable_id.div_const ε))`. Prove the components needed by the constructor for the conclusion. Introduce `s hs htop`. Establish `hε : 0 < s - 1` using `sub_pos.2 hs`. Establish `h1` using `scale_lintegral hε J hJ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[htop, ENNReal.mul_top (by simpa using hε)]`. Establish `h2` using `lintegral_mono (μ := volume) (hK hε le_rfl)`. Rewrite `h2` using `[← h1]`. Conclude with `hbound _ (top_le_iff.1 h2)`. Establish `hcongr : ∀ᶠ s in 𝓝[>] (1 : ℝ), ∫⁻ z, ENNReal.ofReal (Real.exp z) * J (z / (s - 1)) = ENNReal.ofReal (s - 1) * ∫⁻ y, ENNReal.ofReal (Real.exp ((s - 1) * y)) * J y` using `by filter_upwards [self_mem_nhdsWithin] with s hs`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(scale_lintegral (sub_pos.2 hs) J hJ).symm`. Use `Tendsto.congr' hcongr ?_` and prove the remaining obligations. Establish `hval : ∫⁻ z, (Set.Iic (0 : ℝ)).indicator (fun z => ENNReal.ofReal (Real.exp z) * L) z = L`. Establish `hLt : L ≠ ⊤` using `ne_top_of_le_ne_top hB (le_of_tendsto' hL hle)`. Rewrite using `[lintegral_indicator measurableSet_Iic, lintegral_mul_const' L (fun z => ENNReal.ofReal (Real.exp z)) hLt, lintegral_exp_Iic, Real.exp_zero, ENNReal.ofReal_one, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : Tendsto (fun s : ℝ => s - 1) (𝓝[>] 1) (𝓝[>] 0)`. Use `tendsto_nhdsWithin_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `: Tendsto (fun s : ℝ => s - 1) (𝓝 1) (𝓝 (1 - 1))` using `(continuous_id.sub continuous_const).tendsto 1`. Rewrite `this` using `[sub_self]`. Conclude with `this.mono_left nhdsWithin_le_nhds`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [self_mem_nhdsWithin] with s hs`. Conclude with `Set.mem_Ioi.2 (sub_pos.2 (Set.mem_Ioi.1 hs))`. Establish `hs : Tendsto (fun s : ℝ => (s - 1)⁻¹) (𝓝[>] 1) atTop` using `tendsto_inv_nhdsGT_zero.comp hsub`. Establish `hne : ∀ᵐ z : ℝ, z ≠ 0` using `compl_mem_ae_iff.2 (measure_singleton 0)`. Establish `key` using `tendsto_lintegral_filter_of_dominated_convergence (μ := volume) (l := 𝓝[>] (1 : ℝ)) (F := fun s z => ENNReal.ofReal (Real.exp z) * J (z / (s - 1))) (f := (Set.Iic (0 : ℝ)).indicator (fun z => ENNReal.ofReal (Real.exp z) * L)) ((Set.Iic (max y₀ 0)).indicator (fun z => ENNReal.ofRe …`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key` using `[hval]`. Then use the resulting hypothesis. Use `filter_upwards [Ioo_mem_nhdsGT (show (1 : ℝ) < 2 by norm_num)] with s hs'`. Use `Eventually.of_forall fun z => hK (sub_pos.2 hs'.1) ?_ z` and prove the remaining obligations. Break down `le_total 0 y₀ with h | h` into its components or cases. Rewrite using `[max_eq_left h]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use polynomial arithmetic with `[hs'.1, hs'.2]`. Rewrite using `[max_eq_right h]`. Use polynomial arithmetic with `[hs'.1, hs'.2]`. Use `filter_upwards [hne] with z hz`. Break down `lt_or_gt_of_ne hz with hz | hz` into its components or cases.
-
-Rewrite using `[Set.indicator_of_mem (Set.mem_Iic.2 hz.le)]`. Establish `h : Tendsto (fun s : ℝ => z / (s - 1)) (𝓝[>] 1) atBot`. Simplify `hs.const_mul_atTop_of_neg hz` using `[div_eq_mul_inv]`. Conclude with `ENNReal.Tendsto.const_mul (hL.comp h) (Or.inr ENNReal.ofReal_ne_top)`. Rewrite using `[Set.indicator_of_notMem (by simpa using hz)]`.
-
-Establish `h : Tendsto (fun s : ℝ => z / (s - 1)) (𝓝[>] 1) atTop`. Simplify `hs.const_mul_atTop hz` using `[div_eq_mul_inv]`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [h.eventually (eventually_gt_atTop y₀)] with s hs'`. Simplify using `[h0 _ hs']`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem abel {J : ℝ → ℝ≥0∞} (hJ : Measurable J) {B L : ℝ≥0∞} (hB : B ≠ ⊤) (hle : ∀ y, J y ≤ B) {y₀ : ℝ}
     (h0 : ∀ y, y₀ < y → J y = 0) (hL : Tendsto J atBot (𝓝 L)) :
@@ -255,7 +251,7 @@ theorem abel {J : ℝ → ℝ≥0∞} (hJ : Measurable J) {B L : ℝ≥0∞} (hB
         simp [h0 _ hs']
 
 /- English proof (translation)
-Use `Measurable.lintegral_prod_left (f := fun (u : normOneSubgroup F) (y : ℝ) => th f ((u : IdeleGroup F) * moduleSection w (expPos y))) ?_` and prove the remaining obligations. Use `(measurable_th hf).comp (Continuous.measurable ?_)` and prove the remaining obligations. Conclude with `(continuous_subtype_val.comp continuous_fst).mul (((continuous_moduleSection w).comp expPosHomeomorph.continuous).comp continuous_snd)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurable_fiber (w : InfinitePlace F) {f : IdeleGroup F → ℝ≥0∞} (hf : Measurable f) :
     Measurable fun y : ℝ => ∫⁻ u in normOneFundamentalDomain F,
@@ -267,11 +263,9 @@ theorem measurable_fiber (w : InfinitePlace F) {f : IdeleGroup F → ℝ≥0∞}
     (((continuous_moduleSection w).comp expPosHomeomorph.continuous).comp continuous_snd)
 
 /- English proof (translation)
-Establish `hD` using `isFundamentalDomain_normOneFundamentalDomain F (normOneMeasure F)`. Set `e : Fˣ ≃ (diagonalNormOne F).op` to `(diagonalNormOneEquiv F).trans (diagonalNormOne F).equivOp`. Use `set h : normOneSubgroup F → ℝ≥0∞ := fun u => f ((u : IdeleGroup F) * a) with hh`. Establish `hm : Measurable h` using `hf.comp (continuous_subtype_val.measurable.mul_const a)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_congr fun u => ?_` and prove the remaining obligations. Conclude with `(e.tsum_eq (fun γ => h (γ • u))).symm`. Use `_ = _ := by`. Use `lintegral_congr fun u => tsum_congr fun ξ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (((u * diagonalToNormOne F ξ : normOneSubgroup F) : IdeleGroup F) * a) = f (pr ξ * ((u : IdeleGroup F) * a))`.
-
-Use `congr 1`. Rewrite using `[Subgroup.coe_mul, coe_diagonalToNormOne, pr_eq_diagonal, mul_comm (u : IdeleGroup F), mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_normOne_mul (a : IdeleGroup F) {f : IdeleGroup F → ℝ≥0∞} (hf : Measurable f) :
     ∫⁻ u, f ((u : IdeleGroup F) * a) ∂normOneMeasure F =
@@ -295,13 +289,13 @@ theorem lintegral_normOne_mul (a : IdeleGroup F) {f : IdeleGroup F → ℝ≥0�
         rw [Subgroup.coe_mul, coe_diagonalToNormOne, pr_eq_diagonal, mul_comm (u : IdeleGroup F), mul_assoc]
 
 /- English proof (translation)
-Establish `hmp` using `measurePreserving_normOneSplitting (K := F) w`. Use `set g : normOneSubgroup F × {r : ℝ // 0 < r} → ℝ≥0∞ := fun p => f ((p.1 : IdeleGroup F) * moduleSection w p.2) * ENNReal.ofReal ((p.2 : ℝ) ^ s) with hg`. Establish `hgm : Measurable g`. Use `(hf.comp (Continuous.measurable ?_)).mul (ENNReal.measurable_ofReal.comp ?_)` and prove the remaining obligations. Conclude with `(continuous_subtype_val.comp continuous_fst).mul ((continuous_moduleSection w).comp continuous_snd)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(measurable_subtype_coe.comp measurable_snd).pow_const s`. Establish `h1 : zi f s = ∫⁻ p, g p ∂(normOneMeasure F).prod posRealMeasure`. Rewrite using `[← hmp.lintegral_comp hgm]`. Use `lintegral_congr fun a => ?_` and prove the remaining obligations. Establish `e` using `(normOneSplitting w).symm_apply_apply a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[normOneSplitting_symm_apply]`. Simplify using `only [hg]`. Rewrite using `[e, normOneSplitting_apply_snd]`. Both sides reduce to the same expression. Rewrite using `[h1, lintegral_prod_symm _ hgm.aemeasurable, posRealMeasure_eq_map_expPos, lintegral_map (hgm.lintegral_prod_left') measurable_expPos]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Simplify using `only [hg]`. Rewrite using `[lintegral_mul_const' _ _ ENNReal.ofReal_ne_top, lintegral_normOne_mul _ hf, mul_comm, ← mul_assoc, ← ENNReal.ofReal_mul (Real.exp_pos _).le, ← Real.exp_add, coe_expPos, ← Real.exp_mul]`. Use `congr 3`. Put the polynomial expressions in normal form.
+Reduce the equality to equality of the corresponding arguments. Put the polynomial expressions in normal form. A detailed English derivation is pending.
 -/
 theorem zi_eq (w : InfinitePlace F) {f : IdeleGroup F → ℝ≥0∞} (hf : Measurable f) (s : ℝ) :
     zi f s = ∫⁻ y, ENNReal.ofReal (Real.exp ((s - 1) * y)) * (ENNReal.ofReal (Real.exp y) *
@@ -332,33 +326,29 @@ theorem zi_eq (w : InfinitePlace F) {f : IdeleGroup F → ℝ≥0∞} (hf : Meas
   ring_nf
 
 /- English proof (translation)
-Use `haveI : H.FiniteIndex := ⟨hHi⟩`. Use `haveI : Fintype (IdeleGroup F ⧸ H) := Subgroup.fintypeQuotientOfFiniteIndex`. Use `set m := (normOneMeasure F).restrict (normOneFundamentalDomain F) with hm`. Set `A : IdeleGroup F ⧸ H → Set (normOneSubgroup F)` to `fun q => {u | ((u : IdeleGroup F) : IdeleGroup F ⧸ H) = q}`. Use `set A₀ : Set (normOneSubgroup F) := {u | (u : IdeleGroup F) ∈ H} with hA₀`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hmemA : ∀ (b : normOneSubgroup F) (u : normOneSubgroup F), u ∈ A ((b : IdeleGroup F) : IdeleGroup F ⧸ H) ↔ u * b⁻¹ ∈ A₀`. Introduce `b u`. Express the relevant statement in the definitionally equal form `((u : IdeleGroup F) : IdeleGroup F ⧸ H) = ((b : IdeleGroup F) : IdeleGroup F ⧸ H) ↔ ((u * b⁻¹ : normOneSubgroup F) : IdeleGroup F) ∈ H`. Rewrite using `[QuotientGroup.eq, Subgroup.coe_mul, Subgroup.coe_inv, mul_comm]`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `H.inv_mem h` as an intermediate fact. Simplify `this` using `[mul_comm]`. Introduce `h`. Use `H.inv_mem h` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify `this` using `[mul_comm]`. Establish `hrep : ∀ q : IdeleGroup F ⧸ H, ∃ b : normOneSubgroup F, ((b : IdeleGroup F) : IdeleGroup F ⧸ H) = q`. Introduce `q`. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective q`. Take `⟨h, hh, hb⟩` from `hcov a`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `⟨⟨_, hb⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[QuotientGroup.eq]`. Simplify using `using hh`. Establish `hA₀m : MeasurableSet A₀` using `(hHo.preimage continuous_subtype_val).measurableSet`. Establish `hAm : ∀ q, MeasurableSet (A q)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `q`. Take `⟨b, rfl⟩` from `hrep q`. Establish `: A ((b : IdeleGroup F) : IdeleGroup F ⧸ H) = (fun u => u * b⁻¹) ⁻¹' A₀`. Use extensionality with `u`. Conclude with `hmemA b u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[this]`. Conclude with `(measurable_mul_const _) hA₀m`. Establish `hinv : ∀ (ξ : Fˣ) (u : normOneSubgroup F), A₀.indicator (fun _ => (1 : ℝ≥0∞)) (diagonalToNormOne F ξ * u) = A₀.indicator (fun _ => (1 : ℝ≥0∞)) u`. Introduce `ξ u`. Establish `: diagonalToNormOne F ξ * u ∈ A₀ ↔ u ∈ A₀`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `((diagonal F ξ) * (u : IdeleGroup F)) ∈ H ↔ (u : IdeleGroup F) ∈ H`. Conclude with `H.mul_mem_cancel_left (hpr ξ)`. Distinguish the cases in `hu : u ∈ A₀`. Rewrite using `[Set.indicator_of_mem hu, Set.indicator_of_mem (this.2 hu)]`. Rewrite using `[Set.indicator_of_notMem hu, Set.indicator_of_notMem (fun h => hu (this.1 h))]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Establish `hq : ∀ q, m (A q) = m A₀`. Introduce `q`. Take `⟨b, rfl⟩` from `hrep q`. Establish `h` using `setLIntegral_mul_right (F := F) (A₀.indicator fun _ => (1 : ℝ≥0∞)) hinv b⁻¹`. Establish `e : (fun u => A₀.indicator (fun _ => (1 : ℝ≥0∞)) (u * b⁻¹)) = (A ((b : IdeleGroup F) : IdeleGroup F ⧸ H)).indicator fun _ => (1 : ℝ≥0∞)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use function extensionality and compare the values at `u`. Distinguish the cases in `hu : u * b⁻¹ ∈ A₀`. Rewrite using `[Set.indicator_of_mem hu, Set.indicator_of_mem ((hmemA b u).2 hu)]`. Rewrite using `[Set.indicator_of_notMem hu, Set.indicator_of_notMem (fun h => hu ((hmemA b u).1 h))]`. Rewrite `h` using `[← hm, e, lintegral_indicator_const (hAm _), lintegral_indicator_const hA₀m, one_mul, one_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hunion : (Set.univ : Set (normOneSubgroup F)) = ⋃ q, A q`. Use extensionality with `u`. Simplify using `[A]`. Establish `hdisj : Pairwise (Function.onFun Disjoint A)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `q q' hne`. Use `Set.disjoint_left.2 fun u h h' => hne ?_` and prove the remaining obligations. Conclude with `h.symm.trans h'`. Establish `htot : m Set.univ = (H.index : ℝ≥0∞) * m A₀`. Rewrite using `[hunion, measure_iUnion hdisj hAm, tsum_fintype]`.
-
-Simplify using `only [hq]`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Subgroup.index_eq_card, Nat.card_eq_fintype_card]`. Establish `hV : m Set.univ = normOneMeasure F (normOneFundamentalDomain F)` using `Measure.restrict_apply_univ _`. Establish `hA' : m A₀ = normOneMeasure F (normOneFundamentalDomain F ∩ A₀)`. Rewrite using `[hm, Measure.restrict_apply hA₀m, Set.inter_comm]`.
-
-Rewrite using `[← hA', ← hV, htot, ENNReal.eq_div_iff (by exact_mod_cast hHi) (ENNReal.natCast_ne_top _)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vol_inter (H : Subgroup (IdeleGroup F)) (hHo : IsOpen (H : Set (IdeleGroup F))) (hHi : H.index ≠ 0)
     (hpr : ∀ t : Fˣ, pr t ∈ H) (hcov : ∀ a : IdeleGroup F, ∃ h ∈ H, a * h⁻¹ ∈ normOneSubgroup F) :
@@ -438,19 +428,19 @@ theorem vol_inter (H : Subgroup (IdeleGroup F)) (hHo : IsOpen (H : Set (IdeleGro
 def Phi (f : IdeleGroup F → ℝ≥0∞) (a : IdeleGroup F) : ℝ≥0∞ := ENNReal.ofReal (md a) * th f a
 
 /- English proof (translation)
-Simplify using `only [Phi, th_pr_mul, md_mul, md_pr, one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Phi_pr_mul (f : IdeleGroup F → ℝ≥0∞) (ξ : Fˣ) (a : IdeleGroup F) : Phi f (pr ξ * a) = Phi f a := by
   simp only [Phi, th_pr_mul, md_mul, md_pr, one_mul]
 
 /- English proof (translation)
-The claim follows from `(ENNReal.measurable_ofReal.comp continuous_md.measurable).mul (measurable_th hf)`.
+A detailed English derivation is pending.
 -/
 theorem measurable_Phi {f : IdeleGroup F → ℝ≥0∞} (hf : Measurable f) : Measurable (Phi f) :=
   (ENNReal.measurable_ofReal.comp continuous_md.measurable).mul (measurable_th hf)
 
 /- English proof (translation)
-Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations. Establish `hu : md (u : IdeleGroup F) = 1` using `mem_normOneSubgroup.1 u.2`. Establish `hs : md (moduleSection w ⟨t, ht⟩) = t` using `by simp [md]`. Simplify using `only [Phi, md_mul, hu, hs, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem fiber_eq (w : InfinitePlace F) (f : IdeleGroup F → ℝ≥0∞) {t : ℝ} (ht : 0 < t)  :
     ENNReal.ofReal t * ∫⁻ u in normOneFundamentalDomain F,
@@ -463,9 +453,9 @@ theorem fiber_eq (w : InfinitePlace F) (f : IdeleGroup F → ℝ≥0∞) {t : �
   simp only [Phi, md_mul, hu, hs, one_mul]
 
 /- English proof (translation)
-Establish `hm : a * b⁻¹ ∈ normOneSubgroup F`. Rewrite using `[normOneSubgroup, MonoidHom.mem_ker, map_mul, map_inv, show ideleModule F a = ideleModule F b from Subtype.ext hab, mul_inv_cancel]`. Use `setLIntegral_mul_right (F := F) (fun u => Phi f ((u : IdeleGroup F) * b)) (fun ξ u => ?_) ⟨a * b⁻¹, hm⟩` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Simplify using `only [Subgroup.coe_mul, coe_diagonalToNormOne, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Conclude with `Phi_pr_mul f ξ _`.
+A detailed English derivation is pending.
 -/
 theorem fiber_translate {f : IdeleGroup F → ℝ≥0∞} (a b : IdeleGroup F) (hab : md a = md b) :
     ∫⁻ u in normOneFundamentalDomain F, Phi f ((u : IdeleGroup F) * a) ∂normOneMeasure F =
@@ -479,23 +469,19 @@ theorem fiber_translate {f : IdeleGroup F → ℝ≥0∞} (a b : IdeleGroup F) (
     exact Phi_pr_mul f ξ _
 
 /- English proof (translation)
-Take `⟨⟨C, hC⟩, -, hoff, hlim⟩` from `hA`. Use `set d := Module.finrank ℚ F with hd`. Establish `hdpos : 0 < d` using `Module.finrank_pos`. Establish `hd0 : (d : ℝ) ≠ 0` using `by exact_mod_cast hdpos.ne'`. Establish `hcov : ∀ a : IdeleGroup F, ∃ h ∈ H, a * h⁻¹ ∈ normOneSubgroup F`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Establish `hx : 0 < md a ^ (1 / (d : ℝ))` using `Real.rpow_pos_of_pos (md_pos a) _`. Use `⟨r _, hrH _ hx, ?_⟩` and prove the remaining obligations. Establish `hm : md (r (md a ^ (1 / (d : ℝ)))) = md a`. Rewrite using `[md_ray hF hθ hr hx, ← Real.rpow_natCast, ← Real.rpow_mul (md_pos a).le, one_div_mul_cancel hd0, Real.rpow_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[normOneSubgroup, MonoidHom.mem_ker, map_mul, map_inv, show ideleModule F (r (md a ^ (1 / (d : ℝ)))) = ideleModule F a from Subtype.ext hm, mul_inv_cancel]`. Establish `hvol` using `vol_inter H hHo hHi hpr hcov`. Use `set A : Set (normOneSubgroup F) := {u | (u : IdeleGroup F) ∈ H} with hAdef`. Establish `hAm : MeasurableSet A` using `(hHo.preimage continuous_subtype_val).measurableSet`. Establish `hray : Tendsto (fun x : ℝ => ∫⁻ u in normOneFundamentalDomain F, Phi f ((u : IdeleGroup F) * r x) ∂normOneMeasure F) (𝓝[>] 0) (𝓝 (∫⁻ u in normOneFundamentalDomain F, A.indicator (fun _ => c) u ∂normOneMeasure F))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `tendsto_lintegral_filter_of_dominated_convergence (fun _ => (C : ℝ≥0∞)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `Eventually.of_forall fun x => ?_` and prove the remaining obligations. Conclude with `(measurable_Phi hf).comp (continuous_subtype_val.measurable.mul_const _)`. Conclude with `Eventually.of_forall fun x => Eventually.of_forall fun u => hC _`. Rewrite using `[lintegral_const, Measure.restrict_apply_univ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.mul_ne_top ENNReal.coe_ne_top (normOneMeasure_normOneFundamentalDomain_lt_top F).ne`. Use `Eventually.of_forall fun u => ?_` and prove the remaining obligations. Distinguish the cases in `hu : (u : IdeleGroup F) ∈ H`. Rewrite using `[Set.indicator_of_mem (show u ∈ A from hu)]`. Conclude with `hlim _ hu`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_notMem (show u ∉ A from hu)]`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with x hx`. Establish `: (u : IdeleGroup F) * r x ∉ H` using `fun h => hu (by`. Simplify using `using H.mul_mem h (H.inv_mem (hrH x hx)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Phi, hoff _ this]`. Establish `hval : ∫⁻ u in normOneFundamentalDomain F, A.indicator (fun _ => c) u ∂normOneMeasure F = c * (normOneMeasure F (normOneFundamentalDomain F) / (H.index : ℝ≥0∞))`. Rewrite using `[lintegral_indicator_const hAm, Measure.restrict_apply hAm, Set.inter_comm, hvol]`. Rewrite `hray` using `[hval]`. Establish `hx : Tendsto (fun y : ℝ => Real.exp (y / d)) atBot (𝓝[>] 0)`.
-
-Use `tendsto_nhdsWithin_iff.2 ⟨Real.tendsto_exp_atBot.comp ?_, Eventually.of_forall fun y => Real.exp_pos _⟩` and prove the remaining obligations. Conclude with `tendsto_id.atBot_div_const (by positivity)`. Use `(hray.comp hx).congr fun y => ?_` and prove the remaining obligations. Establish `hm : md (moduleSection w (expPos y)) = md (r (Real.exp (y / d)))`. Rewrite using `[md_ray hF hθ hr (Real.exp_pos _), ← Real.exp_nat_mul, mul_div_cancel₀ _ hd0]`.
-
-Simplify using `[md]`. Rewrite using `[show expPos y = ⟨Real.exp y, Real.exp_pos y⟩ from rfl, fiber_eq w f (Real.exp_pos y)]`. Conclude with `(fiber_translate _ _ hm).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_fiber (hF : IsTotallyReal F) {θ : ℝ →+* HeckeCharacterZeroLocus.SiegelWeilU.Ainf F} (hθ : Continuous θ) {r : ℝ → IdeleGroup F}
     (hr : IsRay θ r) (w : InfinitePlace F) (H : Subgroup (IdeleGroup F)) (hHo : IsOpen (H : Set (IdeleGroup F)))
@@ -556,21 +542,19 @@ theorem tendsto_fiber (hF : IsTotallyReal F) {θ : ℝ →+* HeckeCharacterZeroL
   exact (fiber_translate _ _ hm).symm
 
 /- English proof (translation)
-Introduce `F _ _ hF θ hθ r hr`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Use `⟨normOneMeasure F (normOneFundamentalDomain F), (isFundamentalDomain_normOneFundamentalDomain F (normOneMeasure F)).measure_ne_zero (NeZero.ne _), (normOneMeasure_normOneFundamentalDomain_lt_top F).ne, ?_⟩` and prove the remaining obligations. Introduce `H hHo hHi hpr hrH f c hf hA`. Establish `hf' : Measurable (f : IdeleGroup F → ℝ≥0∞)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : (HeckeCharacterZeroLocus.SiegelWeilU.measAF : MeasurableSpace (HeckeCharacterZeroLocus.SiegelWeilU.AF F)) = measurableSpace_adeleRing F` using `(borelSpace_adeleRing F).measurable_eq.symm`. Rewrite `hf` using `[e]`. Conclude with `hf`. Establish `hL` using `tendsto_fiber hF hθ hr w H hHo hHi hpr hrH hf' hA`. Take `⟨⟨C, hC⟩, ⟨R, hR⟩, -, -⟩` from `hA`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set J : ℝ → ℝ≥0∞ := fun y => ENNReal.ofReal (Real.exp y) * ∫⁻ u in normOneFundamentalDomain F, th f ((u : IdeleGroup F) * moduleSection w (expPos y)) ∂normOneMeasure F with hJdef`. Establish `hJm : Measurable J` using `(ENNReal.measurable_ofReal.comp Real.measurable_exp).mul (measurable_fiber w hf')`. Establish `hle : ∀ y, J y ≤ C * normOneMeasure F (normOneFundamentalDomain F)`. Introduce `y`. Simplify using `only [hJdef]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[show expPos y = ⟨Real.exp y, Real.exp_pos y⟩ from rfl, fiber_eq w f (Real.exp_pos y)]`. Combine the equalities or inequalities in the displayed calculation. Establish `h0 : ∀ y, Real.log (max R 1) < y → J y = 0`. Introduce `y hy`. Establish `hlt : R < Real.exp y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(Real.log_lt_iff_lt_exp (lt_of_lt_of_le one_pos (le_max_right R 1))).1 hy` as an intermediate fact. Conclude with `lt_of_le_of_lt (le_max_left R 1) this`. Simplify using `only [hJdef]`. Establish `: ∀ u : normOneSubgroup F, th f ((u : IdeleGroup F) * moduleSection w (expPos y)) = 0`. Introduce `u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hR _ ?_` and prove the remaining obligations. Establish `hu : md (u : IdeleGroup F) = 1` using `mem_normOneSubgroup.1 u.2`. Establish `hs : md (moduleSection w (expPos y)) = Real.exp y` using `by simp [md]`. Rewrite using `[md_mul, hu, hs, one_mul]`. Conclude with `hlt`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[this]`. Establish `hB : (C : ℝ≥0∞) * normOneMeasure F (normOneFundamentalDomain F) ≠ ⊤` using `ENNReal.mul_ne_top ENNReal.coe_ne_top (normOneMeasure_normOneFundamentalDomain_lt_top F).ne`. Take `⟨h1, h2⟩` from `abel hJm hB hle h0 hL`. Use `⟨fun s hs => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[zi_eq w hf' s]`.
-
-Conclude with `h1 s hs`. Rewrite using `[mul_div_assoc]`. Use `h2.congr fun s => ?_` and prove the remaining obligations. Rewrite using `[zi_eq w hf' s]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tate : Tate := by
   intro F _ _ hF θ hθ r hr

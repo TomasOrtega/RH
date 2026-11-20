@@ -6,7 +6,7 @@ namespace GlobalTheory.UPel.HT.Hecke.ProdGalois
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[transl, transl, mul_comp, comp_mul, Category.id_comp, Category.comp_id, Category.assoc, lift_fst, ← Category.assoc, toUnit_unique (fst A A ≫ toUnit A) (toUnit _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transl_lift_fst {A : Over S} [GrpObj A] [IsCommMonObj A] (h₁ h₂ : 𝟙_ (Over S) ⟶ A) :
     transl (lift h₁ h₂ : 𝟙_ (Over S) ⟶ G2 A) ≫ fst A A = fst A A ≫ transl h₁ := by
@@ -14,7 +14,7 @@ theorem transl_lift_fst {A : Over S} [GrpObj A] [IsCommMonObj A] (h₁ h₂ : �
     ← Category.assoc, toUnit_unique (fst A A ≫ toUnit A) (toUnit _)]
 
 /- English proof (translation)
-Rewrite using `[transl, transl, mul_comp, comp_mul, Category.id_comp, Category.comp_id, Category.assoc, lift_snd, ← Category.assoc, toUnit_unique (snd A A ≫ toUnit A) (toUnit _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transl_lift_snd {A : Over S} [GrpObj A] [IsCommMonObj A] (h₁ h₂ : 𝟙_ (Over S) ⟶ A) :
     transl (lift h₁ h₂ : 𝟙_ (Over S) ⟶ G2 A) ≫ snd A A = snd A A ≫ transl h₂ := by
@@ -22,42 +22,42 @@ theorem transl_lift_snd {A : Over S} [GrpObj A] [IsCommMonObj A] (h₁ h₂ : �
     ← Category.assoc, toUnit_unique (snd A A ≫ toUnit A) (toUnit _)]
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, transl_lift_fst, Over.comp_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transl_lift_fst_left {A : Over S} [GrpObj A] [IsCommMonObj A] (h₁ h₂ : 𝟙_ (Over S) ⟶ A) :
     (transl (lift h₁ h₂ : 𝟙_ (Over S) ⟶ G2 A)).left ≫ (fst A A).left = (fst A A).left ≫ (transl h₁).left := by
   rw [← Over.comp_left, transl_lift_fst, Over.comp_left]
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, transl_lift_snd, Over.comp_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transl_lift_snd_left {A : Over S} [GrpObj A] [IsCommMonObj A] (h₁ h₂ : 𝟙_ (Over S) ⟶ A) :
     (transl (lift h₁ h₂ : 𝟙_ (Over S) ⟶ G2 A)).left ≫ (snd A A).left = (snd A A).left ≫ (transl h₂).left := by
   rw [← Over.comp_left, transl_lift_snd, Over.comp_left]
 
 /- English proof (translation)
-The claim follows from `pullback.hom_ext h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem grpScheme_square_hom_ext_fst_snd {A : Over S} {X : Scheme.{0}} {a b : X ⟶ (G2 A).left}
     (h₁ : a ≫ (fst A A).left = b ≫ (fst A A).left) (h₂ : a ≫ (snd A A).left = b ≫ (snd A A).left) : a = b :=
   pullback.hom_ext h₁ h₂
 
 /- English proof (translation)
-Rewrite using `[sq2, ← Over.comp_left, lift_fst, Over.comp_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem grpSchemeSquareProductMap_comp_fst {A A' : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj A'] [IsCommMonObj A'] (ψ : A ⟶ A') :
     sq2 ψ ≫ (fst A' A').left = (fst A A).left ≫ ψ.left := by
   rw [sq2, ← Over.comp_left, lift_fst, Over.comp_left]
 
 /- English proof (translation)
-Rewrite using `[sq2, ← Over.comp_left, lift_snd, Over.comp_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem grpSchemeSquareProductMap_comp_snd {A A' : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj A'] [IsCommMonObj A'] (ψ : A ⟶ A') :
     sq2 ψ ≫ (snd A' A').left = (snd A A).left ≫ ψ.left := by
   rw [sq2, ← Over.comp_left, lift_snd, Over.comp_left]
 
 /- English proof (translation)
-Apply `grpScheme_square_hom_ext_fst_snd` to reduce the goal to its premises. Rewrite using `[grpSchemeSquareProductMap_comp_fst]`. Conclude with `(pullback.lift_fst _ _ _).symm`. Rewrite using `[grpSchemeSquareProductMap_comp_snd]`. Conclude with `(pullback.lift_snd _ _ _).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem grpSchemeSquareProductMap_eq_pullback_map {A A' : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj A'] [IsCommMonObj A'] (ψ : A ⟶ A') :
     sq2 ψ = pullback.map A.hom A.hom A'.hom A'.hom ψ.left ψ.left (𝟙 S) (by simp) (by simp) := by
@@ -70,27 +70,23 @@ end GlobalTheory.UPel.HT.Hecke.ProdGalois
 open GlobalTheory.UPel.HT.Hecke.ProdGalois in
 
 /- English proof (translation)
-Introduce `S A A' _ _ _ _ G ψ _ hψ`. Use `hψ.finite` as an intermediate fact. Establish `hfin` using `hψ.fin`. Establish `het` using `hψ.etale`. Establish `hon` using `hψ.onto`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `{ finite := inferInstance one := ?_ mul := ?_ inv := ?_ fin := ?_ etale := ?_ onto := ?_ fibre := ?_ }` and prove the remaining obligations. Apply `grpScheme_square_hom_ext_fst_snd` to reduce the goal to its premises. Rewrite using `[transl_lift_fst_left, Category.id_comp]`. Establish `e` using `hψ.one`. Rewrite using `[show ((1 : G × G).1 : 𝟙_ (Over S) ⟶ A) = ((1 : G) : 𝟙_ (Over S) ⟶ A) from rfl, e, Category.comp_id]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[transl_lift_snd_left, Category.id_comp]`. Establish `e` using `hψ.one`. Rewrite using `[show ((1 : G × G).2 : 𝟙_ (Over S) ⟶ A) = ((1 : G) : 𝟙_ (Over S) ⟶ A) from rfl, e, Category.comp_id]`. Introduce `a c`. Apply `grpScheme_square_hom_ext_fst_snd` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[transl_lift_fst_left, Category.assoc, transl_lift_fst_left, reassoc_of% transl_lift_fst_left]`. Establish `e` using `hψ.mul a.1 c.1`. Rewrite using `[show ((a * c).1 : 𝟙_ (Over S) ⟶ A) = ((a.1 * c.1 : G) : 𝟙_ (Over S) ⟶ A) from rfl, e]`. Rewrite using `[transl_lift_snd_left, Category.assoc, transl_lift_snd_left, reassoc_of% transl_lift_snd_left]`. Establish `e` using `hψ.mul a.2 c.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show ((a * c).2 : 𝟙_ (Over S) ⟶ A) = ((a.2 * c.2 : G) : 𝟙_ (Over S) ⟶ A) from rfl, e]`. Introduce `a`. Apply `grpScheme_square_hom_ext_fst_snd` to reduce the goal to its premises. Rewrite using `[Category.assoc, grpSchemeSquareProductMap_comp_fst, reassoc_of% transl_lift_fst_left, hψ.inv a.1]`. Rewrite using `[Category.assoc, grpSchemeSquareProductMap_comp_snd, reassoc_of% transl_lift_snd_left, hψ.inv a.2]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[grpSchemeSquareProductMap_eq_pullback_map]`. Conclude with `MorphismProperty.pullback_map (P := @IsFinite) hfin hfin (Over.w ψ).symm (Over.w ψ).symm`. Rewrite using `[grpSchemeSquareProductMap_eq_pullback_map] haveI : MorphismProperty.IsStableUnderComposition @Etale.{0} := ⟨fun _ _ _ _ ↦ inferInstance⟩`. Conclude with `MorphismProperty.pullback_map (P := @Etale) het het (Over.w ψ).symm (Over.w ψ).symm`. Rewrite using `[grpSchemeSquareProductMap_eq_pullback_map] haveI : MorphismProperty.IsStableUnderComposition @Surjective.{0} := ⟨fun _ _ _ _ ↦ inferInstance⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `MorphismProperty.pullback_map (P := @Surjective) hon hon (Over.w ψ).symm (Over.w ψ).symm`. Introduce `K _ _ y y' e`. Establish `e₁ : (y ≫ (fst A A).left) ≫ ψ.left = (y' ≫ (fst A A).left) ≫ ψ.left`. Rewrite using `[Category.assoc, Category.assoc, ← grpSchemeSquareProductMap_comp_fst, reassoc_of% e]`. Establish `e₂ : (y ≫ (snd A A).left) ≫ ψ.left = (y' ≫ (snd A A).left) ≫ ψ.left`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Category.assoc, Category.assoc, ← grpSchemeSquareProductMap_comp_snd, reassoc_of% e]`. Take `⟨a₁, ha₁, hu₁⟩` from `hψ.fibre K _ _ e₁`. Take `⟨a₂, ha₂, hu₂⟩` from `hψ.fibre K _ _ e₂`. Use `⟨(a₁, a₂), ?_, ?_⟩` and prove the remaining obligations. Apply `grpScheme_square_hom_ext_fst_snd` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Category.assoc, transl_lift_fst_left, ← Category.assoc]`. Conclude with `ha₁`. Rewrite using `[Category.assoc, transl_lift_snd_left, ← Category.assoc]`. Conclude with `ha₂`. Introduce `b hb`.
-
-Use `Prod.ext (hu₁ b.1 ?_) (hu₂ b.2 ?_)` and prove the remaining obligations. Use `show (y ≫ (fst A A).left) ≫ (transl (b.1 : 𝟙_ (Over S) ⟶ A)).left = y' ≫ (fst A A).left`. Rewrite using `[Category.assoc, ← transl_lift_fst_left _ (b.2 : 𝟙_ (Over S) ⟶ A), ← Category.assoc]`. Conclude with `congrArg (· ≫ (fst A A).left) hb`. Use `show (y ≫ (snd A A).left) ≫ (transl (b.2 : 𝟙_ (Over S) ⟶ A)).left = y' ≫ (snd A A).left`.
-
-Rewrite using `[Category.assoc, ← transl_lift_snd_left (b.1 : 𝟙_ (Over S) ⟶ A), ← Category.assoc]`. Conclude with `congrArg (· ≫ (snd A A).left) hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UPel.HT.Hecke.isGaloisCover_grpSchemeSquareProductMap : ∀ (S : Scheme.{0}) (A A' : Over S) [GrpObj A] [IsCommMonObj A] [GrpObj A'] [IsCommMonObj A'] (G : Subgroup (𝟙_ (Over S) ⟶ A)) (ψ : A ⟶ A'), IsMonHom ψ → GlobalTheory.ZM.IsGaloisCover G (fun h => (GlobalTheory.UPel.HT.Hecke.transl h.1).left) ψ.left → GlobalTheory.ZM.IsGaloisCover (G × G) (fun h => (GlobalTheory.UPel.HT.Hecke.transl (lift h.1.1 h.2.1 : 𝟙_ (Over S) ⟶ G2 A)).left) (GlobalTheory.UPel.HT.Hecke.sq2 ψ) := by
   intro S A A' _ _ _ _ G ψ _ hψ

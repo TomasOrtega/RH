@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosureFiniteEtale
 open IsLocalRing Polynomial
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.GoodEtale.closure_finiteEtale) | (exact GlobalTheory.GoodEtale.closure_finiteEtale) | (intros; apply GlobalTheory.GoodEtale.closure_finiteEtale <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.integralClosure_finiteEtale_originKeyLemma_essFiniteType : ∀ (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A] [IsIntegrallyClosed A]
       [Algebra.EssFiniteType ℤ A]

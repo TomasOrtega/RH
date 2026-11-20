@@ -5,29 +5,27 @@ open ReciprocityTheory.Gal UpperTheory.V.Base
 
 set_option maxHeartbeats 200000 in
 /- English proof (translation)
-Introduce `O W Q N _ _ _ _ _ _ _ _ _ π p hp hker h2 c s hc hs T hT`. Establish `hcomm : ∀ (g : W) (x : N), π g (π c x) = π c (π g x)`. Introduce `g x`. Establish `hk : p ((c * g)⁻¹ * (g * c)) = 1`. Rewrite using `[map_mul, map_inv, map_mul, map_mul, mul_comm (p g) (p c), inv_mul_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : g * c = (c * g) * ((c * g)⁻¹ * (g * c))` using `by group`. Establish `a1 : π g (π c x) = π (g * c) x` using `by rw [map_mul]; rfl`. Establish `a2 : π c (π g x) = π (c * g) x` using `by rw [map_mul]; rfl`. Rewrite using `[a1, a2, e1, map_mul, Module.End.mul_apply, hker _ hk]`. Establish `hE : ∀ g, Module.End.eigenspace (π c) (s : O) ≤ (Module.End.eigenspace (π c) (s : O)).comap (π g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g x hx`. Rewrite `*` using `[Submodule.mem_comap, Module.End.mem_eigenspace_iff]`. Rewrite using `[← hcomm, hx, map_smul]`. Set `πE` to `π.subrepresentation _ hE`. Establish `hkerE : ∀ g, p g = 1 → ∀ x, πE g x = x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `g hg x`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hker g hg x`. Take `⟨hlen, -⟩` from `lenEigVia O W Q _ πE p hp hkerE`. Use `hlen.trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hzero : ∀ ψ : Q →* Oˣ, ψ ∉ T → Module.length O (eig πE (ψ.comp p)) = 0`. Introduce `ψ hψ`. Establish `hne : ψ (p c) ≠ s` using `fun h => hψ (hT ψ h)`. Establish `hu : IsUnit ((s : O) - (ψ (p c) : O))`. Establish `a : (s : O) * s = 1` using `by rw [← Units.val_mul, hs, Units.val_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b : (ψ (p c) : O) * ψ (p c) = 1`. Rewrite using `[← Units.val_mul, ← map_mul, hc, map_one, Units.val_one]`. Establish `hsq : ((s : O) - ψ (p c)) * ((s : O) + ψ (p c)) = 0`. Take the linear combination `a - b`. Break down `mul_eq_zero.mp hsq with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `absurd (Units.ext (sub_eq_zero.mp h)).symm hne`. Establish `e : (s : O) - ψ (p c) = 2 * s` using `by linear_combination (-1 : O) * h`. Rewrite using `[e]`. Conclude with `h2.mul s.isUnit`. Establish `key : ∀ y : eig πE (ψ.comp p), y = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Establish `h1 : π c y.1.1 = (ψ (p c) : O) • y.1.1` using `congrArg Subtype.val ((mem_eig.mp y.2) c)`. Establish `h2' : π c y.1.1 = (s : O) • y.1.1` using `Module.End.mem_eigenspace_iff.mp y.1.2`. Establish `h3 : ((s : O) - ψ (p c)) • y.1.1 = 0`. Rewrite using `[sub_smul, ← h1, ← h2', sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h4 : y.1.1 = 0` using `hu.smul_eq_zero.mp h3`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `h4`. Rewrite using `[Module.length_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨fun a b => (key a).trans (key b).symm⟩`. Establish `hmono : ∀ ψ : Q →* Oˣ, Module.length O (eig πE (ψ.comp p)) ≤ Module.length O (eig π (ψ.comp p))`. Introduce `ψ`. Use `Module.length_le_of_injective (LinearMap.codRestrict (eig π (ψ.comp p)) ((Module.End.eigenspace (π c) (s : O)).subtype ∘ₗ (eig πE (ψ.comp p)).subtype) ?_) ?_` and prove the remaining obligations. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[mem_eig]`. Introduce `g`. Conclude with `congrArg Subtype.val ((mem_eig.mp y.2) g)`. Introduce `a b hab`. Establish `h` using `congrArg Subtype.val hab`.
-
-Conclude with `Subtype.ext (Subtype.ext h)`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ T) (fun ψ _ hψ => hzero ψ hψ)]`. Conclude with `Finset.sum_le_sum fun ψ _ => hmono ψ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Base.lenEigSign :
     ∀ (O W Q N : Type) [CommRing O] [IsDomain O] [Group W] [CommGroup Q] [Finite Q] [HasEnoughRootsOfUnity O (Monoid.exponent Q)]

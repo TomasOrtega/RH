@@ -12,9 +12,9 @@ section
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L →+* L} {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[mat_mul, Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[hu i i le_rfl, Matrix.one_apply_eq, one_mul]`. Introduce `l _ hl`. Break down `le_or_gt (β l) (β i) with h1 | h1` into its components or cases. Rewrite using `[hu i l h1, Matrix.one_apply_ne hl.symm, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp l j (by omega), mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rad_mul_levi_apply {β : Fin n → ℕ} {u p : GU σ n} (hu : u ∈ radU σ β) (hp : p ∈ leviU σ β) {i j : Fin n}
     (hij : β j ≤ β i) : mat (u * p) i j = mat p i j := by
@@ -27,9 +27,9 @@ theorem rad_mul_levi_apply {β : Fin n → ℕ} {u p : GU σ n} (hu : u ∈ radU
   · simp
 
 /- English proof (translation)
-Rewrite using `[mat_mul, Matrix.mul_apply, Finset.sum_eq_single j]`. Rewrite using `[hu' j j le_rfl, Matrix.one_apply_eq, mul_one]`. Conclude with `rad_mul_levi_apply hu hp hij`. Introduce `l _ hl`. Break down `le_or_gt (β j) (β l) with h1 | h1` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu' l j h1, Matrix.one_apply_ne hl, mul_zero]`. Rewrite using `[rad_mul_levi_apply hu hp (by omega), hp i l (by omega), zero_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rad_levi_rad_apply {β : Fin n → ℕ} {u p u' : GU σ n} (hu : u ∈ radU σ β) (hp : p ∈ leviU σ β)
     (hu' : u' ∈ radU σ β) {i j : Fin n} (hij : β j ≤ β i) : mat (u * p * u') i j = mat p i j := by
@@ -45,7 +45,7 @@ theorem rad_levi_rad_apply {β : Fin n → ℕ} {u p u' : GU σ n} (hu : u ∈ r
 variable {N : ℕ}
 
 /- English proof (translation)
-Rewrite using `[mat_mul, Matrix.mul_apply, sum_idx, Finset.sum_eq_zero, hx 0 (Fin.last (N + 1)) (by simp), zero_mul, add_zero, add_zero]`. Introduce `j _`. Rewrite using `[hx 0 (mid j) (by simp), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem levi_mul_zero {x y : GU σ (N + 2)} (hx : x ∈ leviU σ (blk N)) : mat (x * y) 0 0 = mat x 0 0 * mat y 0 0 := by
   rw [mat_mul, Matrix.mul_apply, sum_idx, Finset.sum_eq_zero, hx 0 (Fin.last (N + 1)) (by simp), zero_mul, add_zero,
@@ -54,7 +54,7 @@ theorem levi_mul_zero {x y : GU σ (N + 2)} (hx : x ∈ leviU σ (blk N)) : mat 
   rw [hx 0 (mid j) (by simp), zero_mul]
 
 /- English proof (translation)
-Rewrite using `[mat_mul, Matrix.mul_apply, sum_idx, Finset.sum_eq_zero, hx (Fin.last (N + 1)) 0 (by simp), zero_mul, zero_add, zero_add]`. Introduce `j _`. Rewrite using `[hx (Fin.last (N + 1)) (mid j) (by simp), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem levi_mul_last {x y : GU σ (N + 2)} (hx : x ∈ leviU σ (blk N)) :
     mat (x * y) (Fin.last (N + 1)) (Fin.last (N + 1)) =
@@ -65,7 +65,7 @@ theorem levi_mul_last {x y : GU σ (N + 2)} (hx : x ∈ leviU σ (blk N)) :
   rw [hx (Fin.last (N + 1)) (mid j) (by simp), zero_mul]
 
 /- English proof (translation)
-Rewrite using `[mat_mul, Matrix.mul_apply, sum_idx, hx (mid i) 0 (by simp), hx (mid i) (Fin.last (N + 1)) (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem levi_mul_mid {x y : GU σ (N + 2)} (hx : x ∈ leviU σ (blk N)) (i j : Fin N) :
     mat (x * y) (mid i) (mid j) = ∑ k, mat x (mid i) (mid k) * mat y (mid k) (mid j) := by
@@ -75,23 +75,21 @@ theorem levi_mul_mid {x y : GU σ (N + 2)} (hx : x ∈ leviU σ (blk N)) (i j : 
 end
 
 /- English proof (translation)
-Introduce `L _ _ ϖ σ q N hU a a' g₀ g₀' m m' hm hm' u hu u' hu' hk`. Take `⟨-, hσ, hσϖ, hϖ, -, -, -⟩` from `hU`. Take `⟨hl, h0, h1, h2⟩` from `hm`. Take `⟨hl', h0', h1', h2'⟩` from `hm'`. Establish `hli : m⁻¹ ∈ leviU σ (blk N)` using `inv_mem hl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp : m⁻¹ * m' ∈ leviU σ (blk N)` using `mul_mem hli hl'`. Establish `e : (m * u)⁻¹ * (m' * u') = u⁻¹ * (m⁻¹ * m') * u'` using `by group`. Rewrite `hk` using `[e]`. Establish `hint : ∀ i j, blk N j ≤ blk N i → mat (m⁻¹ * m') i j ∈ intL L` using `fun i j hij => by`. Rewrite using `[← rad_levi_rad_apply (inv_mem hu) hp hu' hij]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mem_KU_iff hσ _).1 hk i j`. Establish `e0 : mat (m⁻¹ * m') 0 0 = ϖ ^ (a' - a)`. Establish `hϖ0 : ϖ ≠ 0` using `fun h => by`. Rewrite `hϖ` using `[h, map_zero]`. Conclude with `WithZero.coe_ne_zero hϖ.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[levi_mul_zero hli, mat_inv_apply, Fin.rev_zero, h1, h0', map_zpow₀, hσϖ, ← zpow_add₀ hϖ0]`. Apply the tactic sequence `congr 1 <;> ring`. Establish `e1 : mat (m⁻¹ * m') (Fin.last (N + 1)) (Fin.last (N + 1)) = ϖ ^ (a - a')`. Establish `hϖ0 : ϖ ≠ 0` using `fun h => by`. Rewrite `hϖ` using `[h, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `WithZero.coe_ne_zero hϖ.symm`. Rewrite using `[levi_mul_last hli, mat_inv_apply, Fin.rev_last, h0, h1', map_zpow₀, hσϖ, ← zpow_add₀ hϖ0]`. Apply the tactic sequence `congr 1 <;> ring`. Establish `hv0 : 0 < Valued.v ϖ` using `by rw [hϖ]; exact WithZero.zero_lt_coe _`. Establish `hv1 : Valued.v ϖ < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hϖ]`. Conclude with `WithZero.coe_lt_one.2 (by decide)`. Establish `i0 : Valued.v ϖ ^ (a' - a) ≤ 1`. Establish `: Valued.v (mat (m⁻¹ * m') 0 0) ≤ 1` using `hint 0 0 le_rfl`. Rewrite `this` using `[e0, map_zpow₀]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `i1 : Valued.v ϖ ^ (a - a') ≤ 1`. Establish `: Valued.v (mat (m⁻¹ * m') (Fin.last (N + 1)) (Fin.last (N + 1))) ≤ 1` using `hint _ _ (le_refl (blk N (Fin.last (N + 1))))`. Rewrite `this` using `[e1, map_zpow₀]`. Then use the resulting hypothesis. Rewrite `i0`, `i1` using `[zpow_le_one_iff_right_of_lt_one₀ hv0 hv1]`. Use `⟨by omega, (mem_KU_iff hσ _).2 fun i j => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hint (mid i) (mid j) (by simp)` as an intermediate fact. Establish `e2 : ∀ i j, mat m⁻¹ (mid i) (mid j) = mat g₀⁻¹ i j` using `fun i j => by`. Rewrite using `[mat_inv_apply, mat_inv_apply, ← mid_rev, ← mid_rev, h2]`. Rewrite `this` using `[levi_mul_mid hli]`. Simplify using `only [e2, h2'] at this`.
-
-Rewrite using `[mat_mul, Matrix.mul_apply]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cosetInj : CosetInj := by
   intro L _ _ ϖ σ q N hU a a' g₀ g₀' m m' hm hm' u hu u' hu' hk

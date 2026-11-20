@@ -18,7 +18,7 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 namespace GlobalTheory.ConsNumber
 
 /- English proof (translation)
-Rewrite using `[NModel.capDeg_vp_eq_sum]`. Use `Finset.sum_congr rfl fun C _ => ?_` and prove the remaining obligations. Rewrite using `[NModel.vResQ_toQ, NModel.divP, NModel.vRes_div]`. Conclude with `GlobalTheory.T.capDeg_divP_eq_fibreDeg' O p (Z.comp C) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem capDeg_divP_eq_sum {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime]
     [CharZero O] [CharP (ResidueField O) p] (Z : NModel O) (d : ℕ) (Q : PicSym Z.X) :
@@ -31,17 +31,15 @@ theorem capDeg_divP_eq_sum {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValua
   exact GlobalTheory.T.capDeg_divP_eq_fibreDeg' O p (Z.comp C) _
 
 /- English proof (translation)
-Introduce `D O hC p _ hp2 hU hlev W hW jc hPin z G hG`. Establish `hcomm : Comm (mdlOf z jc)` using `GlobalTheory.T.admissible_model_commutes D O.A O.N O.j O.S O.κ p Fact.out W hW z jc`. Establish `hI : ∀ y ∈ Ideal.span (Set.range (mdlOf z jc).Z.cD), (mdlOf z jc).Z.capDeg (mdlOf z jc).Z.divP y = 0`. Introduce `y hy`. It suffices to establish `h : ∀ a, (mdlOf z jc).Z.capDeg (mdlOf z jc).Z.divP (a * y) = 0 by simpa using h 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨V, rfl⟩` from `hx`. Introduce `a`. Rewrite using `[mul_comm, hcomm, (mdlOf z jc).Z.cD_divP, zero_mul, map_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => intro a`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro a`. Rewrite using `[mul_add, map_add, hx, hy, add_zero]`. Consider the case `smul b x _ hx => intro a`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[smul_eq_mul, ← mul_assoc]`. Conclude with `hx _`. Establish `e1 : (mdlOf z jc).Z.capDeg (mdlOf z jc).Z.divP (evC (mdlOf z jc) (rootOf z jc) G) = (mdlOf z jc).Z.capDeg (mdlOf z jc).Z.divP (aeval (fun x => (mdlOf z jc).Z.c1 (rootOf z jc (false, x))) (collapseQ D O.N G))`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `hI _ (GlobalTheory.T.chern_evaluation_collapse_vertical D O.A O.N O.j O.S O.κ p Fact.out W hW z jc G)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := isDiscreteValuationRing_V z.Z.i.c (Fact.out : p.Prime) hW`. Use `haveI := charP_residueField_of_mem_nonunits z.Z.i.c (Fact.out : p.Prime) hW`. Establish `e2 : ∀ Q : (mdlOf z jc).Z.Ch, (mdlOf z jc).Z.capDeg (mdlOf z jc).Z.divP Q = ∑ C ∈ Finset.univ.filter (fun C : (nmodel z.Z).Comp => ((nmodel z.Z).comp C).relDim = dimFl D.what₂.Tau O.N), ((nmodel z.Z).comp C).toBase.fibreDeg (picSymPull ((nmodel z.Z).compι C) Q)`. Introduce `Q`. Conclude with `capDeg_divP_eq_sum p (nmodel z.Z) _ Q`.
-
-Establish `hcov : (0 : ℝ) < ((mdlOf z jc).cov : ℝ)` using `Nat.cast_pos.2 (mdlOf z jc).cov_pos`. Rewrite using `[e1, e2, GlobalTheory.T.homogeneous_polynomial_degree_pinned h2 hH D O hC p hp2 hU hlev W hW jc hPin z _ (isHomogeneous_collapseQ D O.N hG), mul_div_cancel_left₀ _ hcov.ne']`. Conclude with `congrArg (⇑O.Y.chern) (toR_collapseQ D O.N G)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem consSt (h2 : GlobalTheory.CovTop.Hypotheses2) (hH : GlobalTheory.CovHt.HypothesesH) : ConsSt := by
   intro D O hC p _ hp2 hU hlev W hW jc hPin z G hG
@@ -75,7 +73,7 @@ theorem consSt (h2 : GlobalTheory.CovTop.Hypotheses2) (hH : GlobalTheory.CovHt.H
   exact congrArg (⇑O.Y.chern) (toR_collapseQ D O.N G)
 
 /- English proof (translation)
-The claim follows from `consSt`.
+A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → ConsSt := consSt
 

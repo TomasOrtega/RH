@@ -79,9 +79,9 @@ variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Introduce `b s hb hs hbs h hh w hw hN hBdd`. Establish `hcont` using `hC b s hb hs hbs h hh w hw hN`. Establish `hdata : ∃ (H : Type) (_ : NormedAddCommGroup H) (_ : InnerProductSpace ℂ H) (_ : CompleteSpace H) (ut : ℂ → ℂ → H) (bt : ℂ → H) (β ε' η : ℂ) (SS κ₁ κ₂ : ℝ), 0 ≤ κ₂ ∧ κ₂ ≤ Real.pi * κ₁ ∧ (η = 1 ∨ η = -1) ∧ PBK.GermD s β ε' ({()} : Finset Unit) (fun _ => ut) (fun _ => bt) SS ∧ (∀ σ …`. Break down `Nat.lt_or_ge (b + s - 1) (P.r + 1) with hlt | hge` into its components or cases. Conclude with `hL b s hb hs hbs (by omega) h hh w hw hN hBdd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `hT b s hb hs hbs (by omega) h hh w hw hN hBdd`. Take `⟨H, _, _, _, ut, bt, β, ε', η, SS, κ₁, κ₂, hκ₂, hκ, hη, hGD, hpsi, hNk, hE⟩` from `hdata`. Take `⟨hint, hlat⟩` from `hM H s β ε' η ut bt SS κ₁ κ₂ (fun z => TBB.Ew p nn F (b + s - 1) w (h ++ [(s, z)])) (fun t t' => TBB.NP p nn F (b + s - 2) w (h ++ [(s - 1, t)]) (h ++ [(s - 1, t')])) hs hκ₂ hκ hη hGD hpsi hNk hE`. Conclude with `⟨hcont, hint, hlat⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem germAtPD_of_parts (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ)
     (K N : ℕ) (hC : GermContAt p nn F Y K N) (hL : GermDataAt (fun i => i ≤ P.r) p nn F Y K N)
@@ -110,7 +110,7 @@ theorem germAtPD_of_parts (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k 
 end place
 
 /- English proof (translation)
-Introduce `ε _`. Establish `hGc : KB.CptCoef p.T.base (D.cutF p.T.base χ F ε)` using `cptCoef_cutF p.T.base hχ hF ε`. Conclude with `germAtPD_of_parts p nn _ Y K N (hC Wp Wq P p nn _ Y K N Cb hCb hGc hnn) (hL hA Wp Wq P p nn _ Y K N Cb hCb hGc hnn) (hT hA Wp Wq P p nn _ Y K N Cb hCb hGc hnn) hM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem germCutPD_of_parts (hA : P5.ThmPActual) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {P : M.Par}
@@ -132,7 +132,7 @@ namespace Formalism.FourierDecayAlt.P.CutBP
 open Formalism.FourierDecayAlt
 
 /- English proof (translation)
-The claim follows from `block_growth_bound_of_positive_germ p nn G Y K N (posAt_of_cpt hA p nn G Y N (fun y => (hnn y).le) hG) (germAtPD_of_parts p nn G Y K N (hC Wp Wq P p nn G Y K N Cb hCb hG hnn) (hL hA Wp Wq P p nn G Y K N Cb hCb hG hnn) (hT hA Wp Wq P p nn G Y K N Cb hCb hG hnn) hM)`.
+A detailed English derivation is pending.
 -/
 theorem block_growth_bound_of_germ_data (hA : P5.ThmPActual) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {P : M.Par}

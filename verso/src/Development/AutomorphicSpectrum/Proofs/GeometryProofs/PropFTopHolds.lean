@@ -15,7 +15,7 @@ def propFTopE {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} (T : RootTower
   if hp : 2 ≤ p then Classical.choose (GlobalTheory.T.delta_term_log_degree_bound Ψ N T.j p τ (frob p τ) T.j_lt.le hp) else 0
 
 /- English proof (translation)
-The claim follows from `|propFTopE T frob p τ| ≤ N / ((p : ℝ) - 1) ∧ ∀ Q : RP Ψ N, deltaTerm T.j p τ (frob p τ) 1 Q = propFTopE T frob p τ * Real.log p * degFl Q := by have h := Classical.choose_spec (GlobalTheory.T.delta_term_log_degree_bound Ψ N T.j p τ (frob p τ) T.j_lt.le hp) simp only [propFTopE, d …`.
+A detailed English derivation is pending.
 -/
 theorem propFTopE_spec {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} (T : RootTower Ψ N)
     (frob : ℕ → Ψ → ℕ → Ψ ⊕ Ψ) (p : ℕ) (τ : Ψ) (hp : 2 ≤ p) :
@@ -26,31 +26,29 @@ theorem propFTopE_spec {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} (T : 
   exact ⟨h.1, h.2.2.2⟩
 
 /- English proof (translation)
-Introduce `hPI hML hDS Ψ _ _ N T II frob rd Lval hII hConv hProp hP6 hrd hbad hNear`. Use `choose R hR using hNear`. Set `good : ℕ → Finset ℕ` to `fun B => (Finset.Ioc 2 B).filter (fun p => p.Prime ∧ p ∉ T.bad)`. Use `⟨fun B c τ => (R c τ).ht - ∑ p ∈ good B, propFTopE T frob p τ * Real.log p, ?_, ?_⟩` and prove the remaining obligations. Introduce `B hB c τ Q hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hN : 1 ≤ N` using `by have := T.j_pos; have := T.j_lt; omega`. Establish `hQ' : Q.IsHomogeneous (dimFl Ψ N + 1 - 1)` using `by rwa [Nat.add_sub_cancel]`. Establish `h6` using `hP6 2 B le_rfl hB c τ 1 le_rfl hN Q hQ'`. Establish `hroot` using `GlobalTheory.T.root_flat_pushforward_geoFun hPI hML hDS Ψ N (T.M 2 c) II τ (R c τ) Q hII (hConv 2 c) hQ`. Establish `hgeo` using `hProp.2.1 2 c Q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ∀ p ∈ good B, deltaTerm T.j p τ (frob p τ) 1 Q = propFTopE T frob p τ * Real.log p * degFl Q` using `fun p hp => (propFTopE_spec T frob p τ (Finset.mem_filter.mp hp).2.1.two_le).2 Q`. Establish `h2 : T.PPc II 2 c (pk τ 1 * Q) = (R c τ).ht * (T.vol c * degFl Q)`. Simplify using `only [RootTower.PPc]`. Rewrite using `[hroot, hgeo]`. Rewrite `h6` using `[Finset.sum_congr rfl hd]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_mul, Finset.sum_mul]`. Rewrite `h6` using `[h2]`. Rewrite `h6`, the goal using `[← Finset.sum_mul]`. Express the relevant statement in the definitionally equal form `_ = _ + T.vol c * ((∑ p ∈ good B, propFTopE T frob p τ * Real.log p) * degFl Q) at h6`. Combine the linear relations using `[h6]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `B hB hcard c τ`. Take `⟨hrec, d, v, hrec_le, hEq, hdv, hvsum⟩` from `hR c τ`. Establish `hdisj : Disjoint T.bad (good B)` using `Finset.disjoint_left.mpr fun p hp hg => (Finset.mem_filter.mp hg).2.2 hp`. Set `d' : ℕ → ℝ` to `fun p => if p ∈ T.bad then d p else -(propFTopE T frob p τ * Real.log p)`. Set `v' : ℕ → ℝ` to `fun p => if p ∈ T.bad then v p else 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsb : ∑ p ∈ T.bad, d' p = ∑ p ∈ T.bad, d p` using `Finset.sum_congr rfl fun p hp => by simp [d', hp]`. Establish `hsg : ∑ p ∈ good B, d' p = -∑ p ∈ good B, propFTopE T frob p τ * Real.log p`. Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun p hp => by`. Simplify using `[d', Finset.disjoint_right.mp hdisj hp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvb : ∑ p ∈ T.bad ∪ good B, v' p * Real.log p = ∑ p ∈ T.bad, v p * Real.log p`. Rewrite using `[Finset.sum_union hdisj]`. Establish `h1 : ∑ p ∈ T.bad, v' p * Real.log p = ∑ p ∈ T.bad, v p * Real.log p` using `Finset.sum_congr rfl fun p hp => by simp [v', hp]`. Establish `h2 : ∑ p ∈ good B, v' p * Real.log p = 0` using `Finset.sum_eq_zero fun p hp => by simp [v', Finset.disjoint_right.mp hdisj hp]`. Rewrite using `[h1, h2, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hS : ∀ p ∈ T.bad ∪ good B, p.Prime ∧ (p ≤ B ∨ p ∈ T.bad)`. Introduce `p hp`. Break down `Finset.mem_union.mp hp with hp | hp` into its components or cases. Conclude with `⟨hbad p hp, Or.inr hp⟩`. Use `Finset.mem_filter.mp hp` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨this.2.1, Or.inl (Finset.mem_Ioc.mp this.1).2⟩`. Establish `hB3 : 3 ≤ B` using `by omega`. Establish `hlrd : 0 ≤ Real.log rd` using `Real.log_nonneg hrd`. Establish `hmain` using `hB_bound N T.j B (T.bad ∪ good B) d' v' (Real.log rd) Lval hrec ((R c τ).ht - ∑ p ∈ good B, propFTopE T frob p τ * Real.log p) T.j_lt.le hB3 hlrd hrec_le (by rw [Finset.sum_union hdisj, hsb, hsg, hEq]; ring) (fun p hp => (hS p hp).1) (fun p hp => by`. Distinguish the cases in `hb : p ∈ T.bad`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [v', hb, if_true]`. Conclude with `(hdv p hb).1`. Simplify using `[v', hb])`. Use the proof step `(fun p hp => by`. Establish `hlog : 0 ≤ Real.log p` using `Real.log_natCast_nonneg p`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Distinguish the cases in `hb : p ∈ T.bad`. Simplify using `only [d', v', hb, if_true]`. Use `(hdv p hb).2.trans (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [d', v', hb, if_false, mul_zero, add_zero, abs_neg, abs_mul, abs_of_nonneg hlog]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_right (propFTopE_spec T frob p τ (hS p hp).1.two_le).1 hlog)`. Use the proof step `(by rw [hvb]; exact hvsum)`. Use the proof step `(GlobalTheory.T.sum_log_prime_div_pred_bound B T.bad (T.bad ∪ good B) hB hcard hS)`. Establish `hBpos : (0 : ℝ) < B` using `by exact_mod_cast (show 0 < B by omega)`. Establish `hrdpos : (0 : ℝ) < rd` using `by linarith`.
-
-Simplify using `only [bigLam]`. Rewrite using `[Real.log_mul hBpos.ne' hrdpos.ne']`. Simplify `hmain` using `[add_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem propFTop : PropFTop := by
   intro hPI hML hDS Ψ _ _ N T II frob rd Lval hII hConv hProp hP6 hrd hbad hNear

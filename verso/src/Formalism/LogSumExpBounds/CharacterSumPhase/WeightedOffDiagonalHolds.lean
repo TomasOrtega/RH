@@ -5,29 +5,29 @@ namespace Formalism.NuclearRankWeightBounds.P
 open Finset Formalism.NuclearRankWeightBounds.D
 
 /- English proof (translation)
-Introduce `N s ep h Y hY hz hh`. Take `⟨T, hT⟩ : ∃ T : Fin N → Fin N → ℝ, T = fun a b => ∑ i ∈ Ico 1 N, if a.val < i ∧ i ≤ b.val then s i else 0` from `⟨_, rfl⟩`. Establish `hsym : ∀ a b, ‖Y b a‖ = ‖Y a b‖`. Introduce `a b`. Rewrite using `[← hY.apply b a, norm_star]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hTlt : ∀ a b : Fin N, a < b → T a b = ∑ i ∈ Ico (a.val + 1) (b.val + 1), s i`. Introduce `a b hab`. Establish `hab' : a.val < b.val` using `hab`. Establish `hb` using `b.isLt`. Rewrite using `[hT]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[← Finset.sum_filter]`. Use `congr 1`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_Ico]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `hTgt : ∀ a b : Fin N, a < b → T b a = 0`. Introduce `a b hab`. Establish `hab' : a.val < b.val` using `hab`. Rewrite using `[hT]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Use linear arithmetic over natural numbers and integers. Establish `hpt : ∀ a b, h * ‖Y a b‖ ^ 2 ≤ ‖Y a b‖ ^ 2 * T a b + ‖Y b a‖ ^ 2 * T b a`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `a b`. Distinguish the cases in `he : ep a = ep b`. Simplify using `[hz a b he, hz b a he.symm]`. Rewrite using `[hsym a b]`. Break down `lt_trichotomy a b with hab | hab | hab` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h3` using `hh b a hab (fun e => he e.symm)`. Rewrite using `[hTgt a b hab, mul_zero, add_zero, mul_comm, hTlt a b hab]`. Conclude with `mul_le_mul_of_nonneg_left h3 (sq_nonneg _)`. Conclude with `absurd (congrArg ep hab) he`. Establish `h3` using `hh a b hab he`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hTgt b a hab, mul_zero, zero_add, mul_comm, hTlt b a hab]`. Conclude with `mul_le_mul_of_nonneg_left h3 (sq_nonneg _)`. Establish `hi : ∀ i : ℕ, (∑ a ∈ univ.filter (fun a : Fin N => a.val < i), ∑ b ∈ univ.filter (fun b : Fin N => i ≤ b.val), ‖Y a b‖ ^ 2) = ∑ a, ∑ b, if a.val < i ∧ i ≤ b.val then ‖Y a b‖ ^ 2 else 0`. Introduce `i`. Rewrite using `[Finset.sum_filter]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_filter]`. Apply the tactic sequence `by_cases ha : a.val < i <;> simp [ha]`. Establish `hrhs : (∑ i ∈ Ico 1 N, s i * ∑ a ∈ univ.filter (fun a : Fin N => a.val < i), ∑ b ∈ univ.filter (fun b : Fin N => i ≤ b.val), ‖Y a b‖ ^ 2) = ∑ a, ∑ b, ‖Y a b‖ ^ 2 * T a b`. Repeatedly rewrite using `[hi, hT, Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Finset.sum_comm).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `(Finset.sum_comm).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> ring`. Establish `hhs : hs Y ^ 2 = ∑ a, ∑ b, ‖Y a b‖ ^ 2` using `Real.sq_sqrt (Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ => by positivity)`. Establish `hswap : (∑ a, ∑ b, ‖Y b a‖ ^ 2 * T b a) = ∑ a, ∑ b, ‖Y a b‖ ^ 2 * T a b` using `Finset.sum_comm`. Establish `hsum` using `Finset.sum_le_sum (fun a (_ : a ∈ (univ : Finset (Fin N))) => Finset.sum_le_sum (fun b (_ : b ∈ (univ : Finset (Fin N))) => hpt a b))`. Simplify using `only [Finset.sum_add_distrib, ← Finset.mul_sum] at hsum`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `hsum` using `[hswap]`. Rewrite using `[hrhs, hhs]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem weighted_off_diagonal_holds : Formalism.NuclearRankWeightBounds.D.WeightedOff := by
   intro N s ep h Y hY hz hh

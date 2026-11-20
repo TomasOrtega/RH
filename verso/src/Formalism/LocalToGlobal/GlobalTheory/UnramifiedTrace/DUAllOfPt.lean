@@ -41,17 +41,15 @@ def DUPt0F (T : Forms0 D u) : Prop :=
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `v c`. Take `⟨γ, η, κ, Mu, hmv, hMu, ι, τ, hι, hu, hval⟩` from `h v c`. Establish `hK : Fintype.card ((D.mem u).A.Fv v) = (D.mem u).A.T` using `(D.mem u).A.card_Fv v`. Establish `hr : Module.finrank ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c) = D.R.N 0` using `(D.fm u).lk_rank 0 v c`. Establish `hte` using `(D.fm u).te_ne 0 v c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨γ, η, κ, Mu, hmv, hMu, fun p => ι p.1.1 p.2, fun q => ι q.1.1 q.2, τ, fun y => ?_, fun y => ?_, hval⟩` and prove the remaining obligations. Use `(card_sig_fib (A := {g : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c) // g ≠ 0}) (fun g x => ι g.1 x) (fun g y => g.1 y = 1) (fun g x => hι g.1 g.2 x) (fun g y hy => hu g.1 g.2 y hy) y).trans ?_` and prove the remaining obligations. Rewrite using `[card_filter_subtype (fun g : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c) => g ≠ 0) (fun g => g y = 1)]`. Use `split_ifs with hy`. Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `g - ⟨-, h1⟩`. Rewrite `h1` using `[hy, map_zero]`. Conclude with `zero_ne_one h1`. Rewrite using `[Finset.filter_congr (q := fun g : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c) => g y = 1) (fun g _ => ⟨fun h => h.2, fun h => ⟨fun h0 => by rw [h0, LinearMap.zero_apply] at h; exact zero_ne_one h, h⟩⟩), card_dual_one y hy, hK, hr]`. Use `(card_sig_fib (A := {g : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c) // g ((D.fm u).te 0 v c) = 1}) (fun g x => ι g.1 x) (fun g y => g.1 y = 1) (fun g x => hι g.1 (fun h0 => ?_) x) (fun g y hy => hu g.1 (fun h0 => ?_) y hy) y).trans ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `g.2` as an intermediate fact. Rewrite `this` using `[h0, LinearMap.zero_apply]`. Conclude with `zero_ne_one this`. Use `g.2` as an intermediate fact. Rewrite `this` using `[h0, LinearMap.zero_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_ne_one this`. Rewrite using `[card_filter_subtype (fun g : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c) => g ((D.fm u).te 0 v c) = 1) (fun g => g y = 1)]`. Use `split_ifs with h1 h2`. Rewrite using `[h1, Finset.filter_congr (q := fun g : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c) => g ((D.fm u).te 0 v c) = 1) (fun g _ => and_self_iff), card_dual_one _ hte, hK, hr]`. Conclude with `card_dual_line _ y h2 h1`.
-
-Rewrite using `[card_dual_two _ y hte h2, hK, hr]`.
+A detailed English derivation is pending.
 -/
 theorem duFib_of_pt (T : Forms0 D u) (h : DUPt0F T) : DUFib0F T := by
   intro v c
@@ -85,7 +83,7 @@ theorem duFib_of_pt (T : Forms0 D u) (h : DUPt0F T) : DUFib0F T := by
     · rw [card_dual_two _ y hte h2, hK, hr]
 
 /- English proof (translation)
-Introduce `D u T` and use `du_formula_of_fibre_count T (duFib_of_pt T (h D u T))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dUAll_of_pt (h : ∀ (D : D7) (u : D.what₂.Word) (T : Forms0 D u), DUPt0F T) : Formalism.L2.GlobalTheoryTheory.UnramifiedDiagonal.DUAll := fun D u T => du_formula_of_fibre_count T (duFib_of_pt T (h D u T))
 

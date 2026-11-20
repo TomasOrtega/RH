@@ -27,15 +27,13 @@ Both sides reduce to the same expression.
 theorem muV_coe (x : Vs) : ((muV μ Vs Vs' hV x : Vs') : X') = μ x.1 := rfl
 
 /- English proof (translation)
-Unfold `BC`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `v' hv'`. Establish `hv2 : (v' : X') ∈ A'` using `hv'`. Establish `hmap : (Submodule.span R' (muV μ Vs Vs' hV '' ((A.comap (Vs.subtype.restrictScalars R) : Submodule R Vs) : Set Vs))).map (Vs'.subtype.restrictScalars R') = A'`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h, Submodule.map_span, ← Set.image_comp]`. Use `congr 1`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨x.1, hx, rfl⟩`. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨⟨z, hA z hz⟩, hz, rfl⟩`. Rewrite `hv2` using `[← hmap]`. Take `⟨y, hy, hye⟩` from `hv2`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `: y = v'` using `Subtype.ext hye`. Rewrite using `[← this]`. Conclude with `hy`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
-
-Conclude with `h.mem hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem bc_comap (A : Submodule R X) (A' : Submodule R' X') (hA : ∀ z ∈ A, z ∈ Vs) (h : BC μ A A') :
     BC (muV μ Vs Vs' hV) (A.comap (Vs.subtype.restrictScalars R)) (A'.comap (Vs'.subtype.restrictScalars R')) := by
@@ -63,13 +61,11 @@ theorem bc_comap (A : Submodule R X) (A' : Submodule R' X') (hA : ∀ z ∈ A, z
     exact h.mem hx
 
 /- English proof (translation)
-Introduce `v' _`. Establish `hv : (v' : X') ∈ Submodule.span K' (μ '' (Vs : Set X))`. Establish `h2 : Vs' ≤ Submodule.span K' (μ '' (Vs : Set X))` using `le_of_eq h`. Conclude with `h2 v'.2`. Establish `hle : Submodule.span K' (μ '' (Vs : Set X)) ≤ (Submodule.span K' (Set.range fun i => muV μ Vs Vs' hV (x i))).map Vs'.subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Use `⟨muV μ Vs Vs' hV ⟨z, hz⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `h1 : (⟨z, hz⟩ : Vs) ∈ Submodule.span K (Set.range x)` using `by rw [x.span_eq]; trivial`. Establish `h2` using `(bc_span (muV μ Vs Vs' hV) (Set.range x)).mem h1`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← Set.range_comp]`. Conclude with `h2`. Take `⟨y, hy, hye⟩` from `hle hv`. Establish `: y = v'` using `Subtype.ext hye`. Rewrite using `[← this]`.
-
-Conclude with `hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_muV_top (h : BC μ Vs Vs') {I : Type} (x : Module.Basis I K Vs) :
     ⊤ ≤ Submodule.span K' (Set.range fun i => muV μ Vs Vs' hV (x i)) := by
@@ -119,11 +115,9 @@ def deltaS : Module.Dual K V →ₛₗ[φK] Module.Dual K' V' where
 
 include hx in
 /- English proof (translation)
-Establish `h1 : ν F = ∑ i, φK (x.repr F i) • x' i` using `by conv_lhs => rw [← x.sum_repr F]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smulₛₗ, hx]`. Establish `h2 : G F = ∑ i, x.repr F i * G (x i)` using `by conv_lhs => rw [← x.sum_repr F]`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul, smul_eq_mul]`. Rewrite using `[h1, h2, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, map_mul]`. Use `congr 1`.
-
-Conclude with `Module.Basis.constr_basis x' K' _ i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem deltaS_apply (G : Module.Dual K V) (F : V) : deltaS φK x x' G (ν F) = φK (G F) := by
   have h1 : ν F = ∑ i, φK (x.repr F i) • x' i := by
@@ -142,11 +136,11 @@ theorem deltaS_apply (G : Module.Dual K V) (F : V) : deltaS φK x x' G (ν F) = 
 
 include hφ hx in
 /- English proof (translation)
-Introduce `v' hv'`. Rewrite `hv'` using `[h]`. Proceed by induction on `hv' using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨z, hz, rfl⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hG z hz`. Conclude with `⟨φ a, by rw [deltaS_apply φK ν x x' hx, ← ha, hφ]⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨a, ha⟩` from `hy`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hz`. Conclude with `⟨a + b, by rw [map_add, map_add, ha, hb]⟩`. Consider the case `smul c y _ hy`. Take `⟨a, ha⟩` from `hy`. Conclude with `⟨c * a, by rw [LinearMap.map_smul_of_tower, map_mul, ha, Algebra.smul_def]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dual_mem (A : Submodule R V) (A' : Submodule R' V') (h : BC ν A A') (G : Module.Dual K V)
     (hG : G ∈ dualLat R K A) : deltaS φK x x' G ∈ dualLat R' K' A' := by
@@ -167,7 +161,7 @@ theorem dual_mem (A : Submodule R V) (A' : Submodule R' V') (h : BC ν A A') (G 
     exact ⟨c * a, by rw [LinearMap.map_smul_of_tower, map_mul, ha, Algebra.smul_def]⟩
 
 /- English proof (translation)
-Take `⟨z, hz, rfl⟩` from `hy`. Conclude with `⟨ν z, h z hz, (map_smulₛₗ ν c z).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem scale_mem {A : Submodule R V} {A' : Submodule R' V'} (h : ∀ y ∈ A, ν y ∈ A') (c : K) {y : V}
     (hy : y ∈ scale c A) : ν y ∈ scale (φK c) A' := by
@@ -184,7 +178,7 @@ variable {W Qq O Kf O' Kf' : Type} [CommRing W] [Field Qq] [Algebra W Qq] [CommR
   (hφ : ∀ x : O, φK (algebraMap O Kf x) = algebraMap O' Kf' (φ x))
 
 /- English proof (translation)
-Establish `h0` using `bc_span (vecS φ φK hφ k) (twistVec ι σ s '' (L : Set (Fin k → Qq)))`. Rewrite `h0` using `[Set.image_image]`. Conclude with `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bc_extO (s : ℕ) {k : ℕ} (L : Submodule W (Fin k → Qq)) :
     BC (vecS φ φK hφ k) (extO O ι σ s L) (extO O' (φK.comp ι) σ s L) := by
@@ -193,9 +187,9 @@ theorem bc_extO (s : ℕ) {k : ℕ} (L : Submodule W (Fin k → Qq)) :
   exact h0
 
 /- English proof (translation)
-Establish `h0` using `bc_span (vecS φ φK hφ k) (twistVec ι σ s '' (e.src : Set (Fin k → Qq)) ∪ (fun v => (algebraMap O Kf w)⁻¹ • twistVec ι σ s ((p : W) • v)) '' (e.tgt : Set (Fin k → Qq)))`. Rewrite `h0` using `[Set.image_union, Set.image_image, Set.image_image, Submodule.span_union, Submodule.span_union]`. Establish `h1 : ∀ v : Fin k → Qq, vecS φ φK hφ k ((algebraMap O Kf w)⁻¹ • twistVec ι σ s ((p : W) • v)) = (algebraMap O' Kf' (φ w))⁻¹ • twistVec (φK.comp ι) σ s ((p : W) • v)`. Introduce `v`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show φK ((algebraMap O Kf w)⁻¹ * twistVec ι σ s ((p : W) • v) i) = _`. Rewrite using `[map_mul, map_inv₀, hφ]`. Both sides reduce to the same expression. Simplify using `only [h1] at h0`. Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bc_LeAt (p : ℕ) (w : O) (s : ℕ) {k : ℕ} (e : Edge W Qq k) :
     BC (vecS φ φK hφ k) (LeAt p ι σ w s e) (LeAt p (φK.comp ι) σ (φ w) s e) := by
@@ -213,7 +207,7 @@ theorem bc_LeAt (p : ℕ) (w : O) (s : ℕ) {k : ℕ} (e : Edge W Qq k) :
   exact h0
 
 /- English proof (translation)
-The claim follows from `bc_tensorLat φ φK hφ _ _ fun s => base_change_H0 φ φK hφ hinj hinj' m _ (kp_lamAt_antitone lam0 hd s) _ _ (hΛ s) (hb s)`.
+A detailed English derivation is pending.
 -/
 theorem bc_Hten (hinj : Function.Injective (algebraMap O Kf)) (hinj' : Function.Injective (algebraMap O' Kf'))
     {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (hd : IsDominant lam0)
@@ -224,11 +218,11 @@ theorem bc_Hten (hinj : Function.Injective (algebraMap O Kf)) (hinj' : Function.
     base_change_H0 φ φK hφ hinj hinj' m _ (kp_lamAt_antitone lam0 hd s) _ _ (hΛ s) (hb s)
 
 /- English proof (translation)
-Establish `hle : Hten O lam0 Λ ≤ (Vsp Kf lam0).restrictScalars O`. Unfold `Hten tensorLat`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨F, fun s => ?_, rfl⟩` and prove the remaining obligations. Establish `hanti` using `kp_lamAt_antitone lam0 hd s`. Use `beta_reduce`. Rewrite using `[if_pos hanti]`. Establish `h1` using `hF s`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `beta_reduce at h1`. Take `⟨g, hg, hge⟩` from `hΛ s`. Rewrite `h1` using `[hge]`. Conclude with `la_nablaLTw_le _ _ _ hg _ (H0_le_twisted_nabla _ _ hanti _ hg h1)`. Conclude with `fun z hz => hle hz`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem Hten_le_V {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (hd : IsDominant lam0)
     (Λ : Fin n' → Submodule O (Fin (m + 1) → Kf)) (hΛ : ∀ s, IsLattice O (Λ s)) :
@@ -250,9 +244,7 @@ theorem Hten_le_V {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (hd : IsD
   exact fun z hz => hle hz
 
 /- English proof (translation)
-Unfold `Vsp`. Use `bc_tensorLat φK φK (fun _ => rfl) _ _ fun s => ?_` and prove the remaining obligations. Establish `hanti` using `kp_lamAt_antitone lam0 hd s`. Use `beta_reduce`. Rewrite using `[if_pos hanti, if_pos hanti]`.
-
-Conclude with `bc_dualWeyl φK _ _ _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bc_Vsp {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (hd : IsDominant lam0) :
     BC (MvPolynomial.map φK) (Vsp Kf lam0) (Vsp Kf' lam0) := by
@@ -266,15 +258,13 @@ theorem bc_Vsp {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (hd : IsDomi
 end Lat
 
 /- English proof (translation)
-Unfold `IsDominant at hd`. Use `push Not at hd`. Take `⟨s, hs⟩` from `hd`. Establish `hs' : ¬ Antitone (lamAt lam0 s)`. Unfold `lamAt`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with he`. Conclude with `hs`. Introduce `ha`. Apply `hs` to reduce the goal to its premises. Introduce `a b hab`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Establish `h1` using `ha (Fin.rev_le_rev.2 hab)`. Simplify using `only [Fin.rev_rev] at h1`. Conclude with `neg_le_neg_iff.1 h1`. Unfold `Vsp tensorLat`. Rewrite using `[Submodule.span_eq_bot]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `_ ⟨F, hF, rfl⟩`. Establish `h2` using `hF s`. Use `beta_reduce at h2`. Rewrite `h2` using `[if_neg hs']`. Apply `Finset.prod_eq_zero (Finset.mem_univ s)` to reduce the goal to its premises.
-
-Rewrite using `[(Submodule.mem_bot _).1 h2, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Vsp_bot (K : Type) [Field K] {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (hd : ¬ IsDominant lam0) :
     Vsp K lam0 = ⊥ := by
@@ -301,7 +291,7 @@ theorem Vsp_bot (K : Type) [Field K] {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1)
   rw [(Submodule.mem_bot _).1 h2, map_zero]
 
 /- English proof (translation)
-Unfold `be`. Rewrite using `[LinearMap.sum_apply]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [LinearMap.smul_apply, Algebra.smul_def]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem be_sum {Kf O : Type} [Field Kf] [CommRing O] [Algebra O Kf] {n' m : ℕ} (p r : ℕ)
     (lam0 : Fin n' → Fin (m + 1) → ℤ) (F : Vsp Kf lam0) {n : ℕ} (c : Fin n → O)
@@ -319,9 +309,9 @@ variable {p n' : ℕ} {W Qq O Kf O' Kf' : Type} [CommRing W] [IsDomain W] [IsDis
   {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {j : W →+* O} {w : O} {φ : O →+* O'} {φK : Kf →+* Kf'}
 
 /- English proof (translation)
-Use `⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, 0, ?_, 0, 0, fun _ j => j.elim0⟩` and prove the remaining obligations. Establish `h0 : dimV Kf lam0 = 0`. Unfold `dimV`. Rewrite using `[Vsp_bot Kf lam0 hd]`. Conclude with `finrank_bot _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lpAt_nondom (m r : ℕ) (lam0 : Fin n' → Fin (m + 1) → ℤ) (hd : ¬ IsDominant lam0) (t D : ℕ) (κ : ℝ)
     (cStar : ℕ) (L : Submodule W (Fin (m + 1) → Qq)) :
@@ -336,45 +326,35 @@ theorem lpAt_nondom (m r : ℕ) (lam0 : Fin n' → Fin (m + 1) → ℤ) (hd : ¬
   simp
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap O Kf)` using `haveI := hS.frac_O`. Use the proof step `IsFractionRing.injective O Kf`. Establish `hinj' : Function.Injective (algebraMap O' Kf')` using `haveI := hS'.frac_O`. Use the proof step `IsFractionRing.injective O' Kf'`. Establish `bV` using `bc_Vsp φK lam0 hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set μ : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf →ₛₗ[φK] MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf' := muS φK φK (fun _ => rfl) _ with hμ`. Establish `hV : ∀ z ∈ Vsp Kf lam0, μ z ∈ Vsp Kf' lam0` using `fun z hz => bV.mem hz`. Use `set ν := muV μ (Vsp Kf lam0) (Vsp Kf' lam0) hV with hν`. Establish `hlatE : ∀ (s : ℕ) (A : Submodule W (Fin (m + 1) → Qq)), IsLattice W A → IsLattice O (extO O ι σ s A)` using `fun s A hA => je_extO_lat (mkG hS m r lam0 hd) (0 : Fin 1) s A hA`. Establish `hlatL : ∀ (s : ℕ) (e : Edge W Qq (m + 1)), IsEdge p n' r e → IsLattice O (LeAt p ι σ w s e)` using `fun s e he => je_LeAt_lat (mkG hS m r lam0 hd) (0 : Fin 1) s e he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hHL : ∀ A : Submodule W (Fin (m + 1) → Qq), IsLattice W A → BC ν (HL (O` using `O) ι σ lam0 A) (HL (O := O') (φK.comp ι) σ lam0 A) := fun A hA => bc_comap μ _ _ hV _ _ (Hten_le_V lam0 hd _ fun s => hlatE s.val A hA) (bc_Hten φ φK hφ hinj hinj' lam0 hd _ _ (fun s => hlatE s.val A hA) fun s => bc_extO ι σ φ φK hφ s.val A)`. Establish `hHLe : ∀ e : Edge W Qq (m + 1), IsEdge p n' r e → BC ν (HLe (O` using `O) p ι σ w lam0 e) (HLe (O := O') p (φK.comp ι) σ (φ w) lam0 e) := fun e he => bc_comap μ _ _ hV _ _ (Hten_le_V lam0 hd _ fun s => hlatL s.val e he) (bc_Hten φ φK hφ hinj hinj' lam0 hd _ _ (fun s => hlatL s.val e he) fun s => bc_LeAt ι σ φ φK hφ p w s.val e)`. Take `⟨I0, hI0, b0, -⟩` from `jm_HL_basis (mkG hS m r lam0 hd) (0 : Fin 1) L hL`. Establish `: Module.Finite Kf (Vsp Kf lam0)` using `Module.Finite.of_basis b0`. Establish `hdim : dimV Kf' lam0 = dimV Kf lam0` using `(jr_dim (mkG hS' m r lam0 hd) (0 : Fin 1)).symm.trans (jr_dim (mkG hS m r lam0 hd) (0 : Fin 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : Fintype.card (Fin (Module.finrank Kf (Vsp Kf lam0))) = Module.finrank Kf' (Vsp Kf' lam0)`. Rewrite using `[Fintype.card_fin]`. Conclude with `hdim.symm`. Use `set x := Module.finBasis Kf (Vsp Kf lam0) with hxdef`. Use `set x' := basisOfTopLeSpanOfCardEqFinrank (fun i => ν (x i)) (span_muV_top μ _ _ hV bV x) hcard with hx'def`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx : ∀ i, x' i = ν (x i)` using `fun i => congrFun (coe_basisOfTopLeSpanOfCardEqFinrank (fun i => ν (x i)) (span_muV_top μ _ _ hV bV x) hcard) i`. Use `set δ := deltaS φK x x' with hδ`. Establish `hwz : ∀ z : ℤ, φK (algebraMap O Kf w ^ z) = algebraMap O' Kf' (φ w) ^ z` using `fun z => by`. Rewrite using `[map_zpow₀, hφ]`. Establish `hRe : ∀ e : Edge W Qq (m + 1), IsEdge p n' r e → ∀ y ∈ Re (O` using `O) p ι σ w r lam0 e, ν y ∈ Re (O := O') p (φK.comp ι) σ (φ w) r lam0 e := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `e he y hy`. Establish `h1` using `scale_mem φK ν (fun y hy => (hHLe e he).mem hy) _ hy`. Rewrite `h1` using `[hwz]`. Conclude with `h1`. Establish `hRe' : ∀ e : Edge W Qq (m + 1), IsEdge p n' r e → ∀ G ∈ Re' (O` using `O) p ι σ w r lam0 e, δ G ∈ Re' (O := O') p (φK.comp ι) σ (φ w) r lam0 e := by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `e he G hG`. Establish `h1` using `scale_mem φK δ (fun G hG => dual_mem φ φK hφ ν x x' hx _ _ (hHLe e he) G hG) _ hG`. Rewrite `h1` using `[hwz]`. Conclude with `h1`. Establish `hN : ∀ A : Submodule W (Fin (m + 1) → Qq), IsLattice W A → ∀ y ∈ Nsrc (O` using `O) p n' ι σ w r lam0 t A, ν y ∈ Nsrc (O := O') p n' (φK.comp ι) σ (φ w) r lam0 t A := by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `A hA y hy`. Use `Submodule.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `scale_mem φK ν (fun y hy => (hHL A hA).mem hy) _ (Submodule.mem_inf.1 hy).1`. Rewrite `h1` using `[hwz]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.mem_iInf]`. Introduce `e`. Rewrite using `[Submodule.mem_iInf]`. Introduce `he`. Conclude with `hRe e he.1 y ((Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 (Submodule.mem_inf.1 hy).2 e) he)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hN' : ∀ A : Submodule W (Fin (m + 1) → Qq), IsLattice W A → ∀ G ∈ Ntgt (O` using `O) p n' ι σ w r lam0 t A, δ G ∈ Ntgt (O := O') p n' (φK.comp ι) σ (φ w) r lam0 t A := by`. Introduce `A hA G hG`. Use `Submodule.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `scale_mem φK δ (fun G hG => dual_mem φ φK hφ ν x x' hx _ _ (hHL A hA) G hG) _ (Submodule.mem_inf.1 hG).1`. Rewrite `h1` using `[hwz]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1`. Rewrite using `[Submodule.mem_iInf]`. Introduce `e`. Rewrite using `[Submodule.mem_iInf]`. Introduce `he`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hRe' e he.1 G ((Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 (Submodule.mem_inf.1 hG).2 e) he)`. Take `⟨M, e, F, h1, h2, h3, n, hn, u, Mat, hu⟩` from `h`. Use `⟨M, e, fun i => ν (F i), h1, fun i => hN _ (h1 i).1.1 _ (h2 i), ?_, n, ?_, ?_⟩` and prove the remaining obligations. Introduce `i e' he' hs hne`. Establish `h4` using `scale_mem φK ν (hRe e' he') _ (h3 i e' he' hs hne)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h4` using `[hwz]`. Conclude with `h4`. Rewrite using `[hdim]`. Conclude with `hn`. Establish `hbe : ∀ (i : Fin M) (Gd : Module.Dual Kf (Vsp Kf lam0)), be p r lam0 (ν (F i)) (δ Gd) = φK (be p r lam0 (F i) Gd)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `i Gd`. Unfold `be`. Establish `h5 : ((p : Kf') ^ Ar r lam0) • ν (F i) = ν (((p : Kf) ^ Ar r lam0) • F i)`. Rewrite using `[map_smulₛₗ, map_zpow₀, map_natCast]`. Rewrite using `[h5]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `deltaS_apply φK ν x x' hx Gd _`. Use `⟨Fintype.linearCombination O' (fun l : Fin n => (⟨δ (u (Pi.single l 1)).1, hN' L hL _ (u (Pi.single l 1)).2⟩ : ↥(Ntgt (O := O') p n' (φK.comp ι) σ (φ w) r lam0 t L))), Mat.map φ, ?_⟩` and prove the remaining obligations. Introduce `y jj`. Establish `e1 : ∀ i : Fin M, be p r lam0 (ν (F i)) ((Fintype.linearCombination O' (fun l : Fin n => (⟨δ (u (Pi.single l 1)).1, hN' L hL _ (u (Pi.single l 1)).2⟩ : ↥(Ntgt (O` using `O') p n' (φK.comp ι) σ (φ w) r lam0 t L))) y : ↥(Ntgt (O := O') p n' (φK.comp ι) σ (φ w) r lam0 t L)) : Module.Dual Kf' (Vsp Kf' lam0)) = ∑ l, algebraMap O' Kf' (y l) * φK (be p r lam0 (F i) (u (Pi.single l 1)).1) := by`. Introduce `i`.
-
-Rewrite using `[Fintype.linearCombination_apply, Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul]`. Rewrite using `[be_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [hbe]`. Establish `e2 : ∀ l : Fin n, ∑ i, algebraMap O' Kf' (φ (Mat jj i)) * φK (be p r lam0 (F i) (u (Pi.single l 1)).1) = algebraMap O' Kf' (φ ((p : O) ^ D * (Pi.single l (1 : O) : Fin n → O) jj))`.
-
-Introduce `l`. Rewrite using `[← hφ, ← hu (Pi.single l 1) jj, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_mul, hφ]`. Simplify using `only [e1, Matrix.map_apply]`. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => by ring`. Use `_ = ∑ l, algebraMap O' Kf' (y l) * algebraMap O' Kf' (φ ((p : O) ^ D * (Pi.single l (1 : O) : Fin n → O) jj)) := by`. Simplify using `only [e2]`.
-
-Use `_ = algebraMap O' Kf' ((p : O') ^ D * y jj) := by`. Rewrite using `[Finset.sum_eq_single jj]`. Rewrite using `[Pi.single_eq_same, mul_one, map_pow, map_natCast, ← map_mul, mul_comm]`. Introduce `l _ hl`. Rewrite using `[Pi.single_eq_of_ne hl.symm, mul_zero, map_zero, map_zero, mul_zero]`.
-
-Introduce `hjj`. Conclude with `absurd (Finset.mem_univ jj) hjj`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lpAt_dom (hφ : ∀ x : O, φK (algebraMap O Kf x) = algebraMap O' Kf' (φ x))
     (hS : HidaSetting p n' W Qq O Kf ι σ j w) (hS' : HidaSetting p n' W Qq O' Kf' (φK.comp ι) σ (φ.comp j) (φ w))
@@ -509,7 +489,7 @@ theorem lpAt_dom (hφ : ∀ x : O, φK (algebraMap O Kf x) = algebraMap O' Kf' (
 end Main
 
 /- English proof (translation)
-Introduce `p n' W Qq O Kf O' Kf' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ι σ j w φ φK hφ _ hS hS' m r lam0 t D κ cStar h`. Use `⟨h.1, fun L hL => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hd : IsDominant lam0`. Conclude with `lpAt_dom hφ hS hS' m r lam0 hd t D κ cStar L hL (h.2 L hL)`. Conclude with `lpAt_nondom m r lam0 hd t D κ cStar L`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem lpBaseChange : Formalism.MainNotions.G.LPBaseChange := by
   intro p n' W Qq O Kf O' Kf' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ι σ j w φ φK hφ _ hS hS' m r lam0 t D κ cStar h

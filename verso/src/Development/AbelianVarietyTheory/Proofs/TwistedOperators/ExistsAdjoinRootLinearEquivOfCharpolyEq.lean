@@ -11,17 +11,15 @@ noncomputable section
 namespace GlobalTheory.TrEll
 
 /- English proof (translation)
-Set `ψ : Fld P →ₐ[E] Matrix (Fin n) (Fin n) E` to `Ideal.Quotient.liftₐ (Ideal.span {P.1}) (Polynomial.aeval A) (fun a ha => by`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Rewrite using `[map_mul, ← hA, Matrix.aeval_self_charpoly, mul_zero])`. Establish `hψα : ψ (alpha P) = A`. Express the relevant statement in the definitionally equal form `Polynomial.aeval A Polynomial.X = A`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `Polynomial.aeval_X A`. Establish `hdim : Module.finrank E (Fld P) = n`. Establish `h1` using `(AdjoinRoot.powerBasis P.2.2.1.ne_zero).finrank`. Rewrite `h1` using `[AdjoinRoot.powerBasis_dim]`. Conclude with `h1.trans P.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpos : 0 < n` using `hdim ▸ Module.finrank_pos`. Use `haveI : Nonempty (Fin n) := ⟨⟨0, hpos⟩⟩`. Take `⟨v, hv⟩` from `exists_ne (0 : Fin n → E)`. Set `f : Fld P →ₗ[E] (Fin n → E)` to `{ toFun := fun y => ψ y *ᵥ v map_add' := fun y z => by simp [Matrix.add_mulVec] map_smul' := fun c y => by simp [Matrix.smul_mulVec] }`. Establish `hinj : Function.Injective f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Assume the negation of the conclusion as `hne`. Apply `hv` to reduce the goal to its premises. Establish `h1 : ψ y⁻¹ * ψ y = 1` using `by rw [← map_mul, inv_mul_cancel₀ hne, map_one]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : ψ y *ᵥ v = 0` using `hy`. Combine the equalities or inequalities in the displayed calculation. Use `⟨LinearMap.linearEquivOfInjective f hinj (by rw [hdim, Module.finrank_fin_fun]), fun y => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.linearEquivOfInjective_apply]`. Express the relevant statement in the definitionally equal form `A *ᵥ (ψ y *ᵥ v) = ψ (alpha P * y) *ᵥ v`.
-
-Rewrite using `[map_mul, hψα, Matrix.mulVec_mulVec]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_linearEquiv_mulVec_of_charpoly (F E : Type) [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (P : PPol σ n) (A : Matrix (Fin n) (Fin n) E) (hA : A.charpoly = P.1) :

@@ -11,14 +11,14 @@ section Val
 variable {E : Type} [Field E] [NumberField E] {K : Type} [Field K] [ValuativeRel K]
 
 /- English proof (translation)
-The claim follows from `(Valuation.integer.integers (valuation K)).mem_of_integral ((map_isIntegral_int σ (RingOfIntegers.isIntegral_coe o)).tower_top)`.
+A detailed English derivation is pending.
 -/
 theorem sig_int (σ : E →+* K) (o : 𝓞 E) : σ (o : E) ∈ 𝒪[K] :=
   (Valuation.integer.integers (valuation K)).mem_of_integral
     ((map_isIntegral_int σ (RingOfIntegers.isIntegral_coe o)).tower_top)
 
 /- English proof (translation)
-The claim follows from `(Valuation.mem_integer_iff _ _).1 (sig_int σ o)`.
+A detailed English derivation is pending.
 -/
 theorem sig_le_one (σ : E →+* K) (o : 𝓞 E) : valuation K (σ (o : E)) ≤ 1 :=
   (Valuation.mem_integer_iff _ _).1 (sig_int σ o)
@@ -38,16 +38,16 @@ def vIdeal (σ : E →+* K) : Ideal (𝓞 E) where
     exact mul_lt_of_le_one_of_lt (sig_le_one σ c) hx
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_vIdeal (σ : E →+* K) (o : 𝓞 E) : o ∈ vIdeal σ ↔ valuation K (σ (o : E)) < 1 := Iff.rfl
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one, mem_vIdeal]`. Simplify using the standard rewrite rules. Introduce `x y hxy`. Rewrite using `[mem_vIdeal, mem_vIdeal]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hxy` using `[mem_vIdeal]`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `hx : valuation K (σ (x : E)) = 1` using `le_antisymm (sig_le_one σ x) hc.1`. Establish `hy : valuation K (σ (y : E)) = 1` using `le_antisymm (sig_le_one σ y) hc.2`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [MulMemClass.coe_mul, map_mul, Valuation.map_mul, hx, hy, mul_one] at hxy`. Conclude with `lt_irrefl _ hxy`.
+A detailed English derivation is pending.
 -/
 theorem vIdeal_prime (σ : E →+* K) : (vIdeal σ).IsPrime := by
   refine ⟨?_, ?_⟩
@@ -75,20 +75,18 @@ def vPrime (σ : E →+* K) (l : ℕ) (hl0 : l ≠ 0) (hl : valuation K (l : K) 
     exact hl0 (by exact_mod_cast hm)
 
 /- English proof (translation)
-The claim follows from `le_antisymm (sig_le_one σ s) (not_lt.1 hs)`.
+A detailed English derivation is pending.
 -/
 theorem val_one_of_not_mem (σ : E →+* K) (l : ℕ) (hl0 : l ≠ 0) (hl : valuation K (l : K) < 1) (s : 𝓞 E)
     (hs : s ∉ (vPrime σ l hl0 hl).asIdeal) : valuation K (σ (s : E)) = 1 :=
   le_antisymm (sig_le_one σ s) (not_lt.1 hs)
 
 /- English proof (translation)
-Establish `hc0 : σ c ≠ 0`. Introduce `h0`. Rewrite `hc` using `[h0, Valuation.map_zero]`. Conclude with `zero_ne_one hc`. Establish `hσ : σ c * σ x = (n : K) * σ (o : E)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg σ h` as an intermediate fact. Simplify `this` using `[map_mul, map_natCast]`. Establish `hm : valuation K (m : K) ≤ 1` using `(Valuation.mem_integer_iff _ _).1 m.2`. Establish `ho : valuation K (σ (o : E)) ≤ 1` using `sig_le_one σ o`. Use `⟨⟨(m : K) * σ (o : E) * (σ c)⁻¹, ?_⟩, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Valuation.mem_integer_iff, Valuation.map_mul, Valuation.map_mul, Valuation.map_inv, hc, inv_one, mul_one]`. Conclude with `mul_le_one' hm ho`. Simplify using `only`. Rewrite `hσ` using `[hn]`. Clear the denominators using the available nonvanishing facts.
-
-Take the linear combination `hσ`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem div_q (σ : E →+* K) (q m : 𝒪[K]) (j n : ℕ) (c x : E) (o : 𝓞 E)
     (hc : valuation K (σ c) = 1) (hn : (n : K) = (q : K) ^ j * m) (h : c * x = (n : E) * o) :

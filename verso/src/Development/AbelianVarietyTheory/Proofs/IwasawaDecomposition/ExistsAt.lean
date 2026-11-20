@@ -9,13 +9,13 @@ open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.Chart
 namespace GlobalTheory.LocM
 
 /- English proof (translation)
-Establish `h1 : 1 ≤ S.Dw.p + S.Dw.q`. Establish `h₁` using `S.rank_eq`. Establish `h₂` using `S.two_le`. Use linear arithmetic over natural numbers and integers. Take `⟨B⟩` from `GlobalTheory.T.local_system_bases_nonempty _ A.H S.Dw S.Xo p W hp hW (S.sys.Y p W hp hW) ⟨κ.l, κ.c, κ.good p hp⟩ h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Establish `hYY : ∃ Z', IsDRFlag (B.X none) Z'`. Establish `h` using `GlobalTheory.T.exists_de_rham_flag _ A.H S.Dw S.Xo p W hp hW (S.sys.Y p W hp hW) ⟨κ.l, κ.c, κ.good p hp⟩`. Establish `hty : ∀ σ, (B.X none).ty σ = ∅` using `B.ty none`. Establish `hiso : IsIso (B.X none).π` using `B.iso none`. Use `first`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact h (B.X none)`. Consider the case `exact h (B.X none) hty`. Consider the case `exact h (B.X none) hiso hty`. Consider the case `exact h (B.X none) hty hiso`. Consider the case `exact h (B.X none) (fun σ => by rw [hty σ]; exact Finset.empty_subset _)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact h (B.X none) (fun σ k hk => by rw [hty σ] at hk; exact absurd hk (Finset.notMem_empty k))`. Consider the case `exact h B`. Take `⟨YY, hYY⟩` from `hYY`. Establish `hcl` using `(S.sys.clauses p W hp hW).2`. Conclude with `⟨⟨hp, W, hW, B, YY, hYY, fun Z y => GlobalTheory.T.point_data_nonempty _ A.H S.Dw S.Xo p W hp hW (S.sys.Y p W hp hW) ⟨κ.l, κ.c, κ.good p hp⟩ (fun i => ⟨(hcl i).1, (hcl i).2.1⟩) Z.i y.C y.P⟩, rfl⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_at (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (p : ℕ) (hp : p.Prime)
     (W : ValuationSubring ℂ) (hW : (p : ℂ) ∈ W.nonunits) : ∃ ct : At S κ p, ct.W = W := by

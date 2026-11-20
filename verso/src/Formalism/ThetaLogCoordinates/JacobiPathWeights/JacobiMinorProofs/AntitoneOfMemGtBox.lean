@@ -11,7 +11,7 @@ namespace Formalism.InvariantFactorPaths.GelfandTsetlinBases
 namespace Pieri
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `Finset.single_le_sum (f := fun m => ν m - μ m) (fun m _ => sub_nonneg.mpr (h m)) (Finset.mem_univ i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sub_le_sum_sub {n : ℕ} (ν μ : Fin n → ℤ) (h : ∀ m, μ m ≤ ν m) (i : Fin n) :
     ν i - μ i ≤ ∑ m, ν m - ∑ m, μ m := by
@@ -20,9 +20,9 @@ lemma sub_le_sum_sub {n : ℕ} (ν μ : Fin n → ℤ) (h : ∀ m, μ m ≤ ν m
     (Finset.mem_univ i)
 
 /- English proof (translation)
-Unfold `stripsUp`. Rewrite using `[Finset.mem_filter, Fintype.mem_piFinset]`. Unfold `HStrip`. Simplify using `only [Finset.mem_Icc]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `fun h => h.2`. Introduce `h`. Conclude with `⟨fun i => ⟨h.1 i, by linarith [sub_le_sum_sub ν μ h.1 i, h.2.2]⟩, h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 lemma mem_stripsUp {n : ℕ} (μ ν : Fin n → ℤ) (b : ℕ) : ν ∈ stripsUp μ b ↔ HStrip ν μ b := by
   classical
@@ -36,9 +36,9 @@ lemma mem_stripsUp {n : ℕ} (μ ν : Fin n → ℤ) (b : ℕ) : ν ∈ stripsUp
     exact ⟨fun i => ⟨h.1 i, by linarith [sub_le_sum_sub ν μ h.1 i, h.2.2]⟩, h⟩
 
 /- English proof (translation)
-Unfold `stripsDown`. Rewrite using `[Finset.mem_filter, Fintype.mem_piFinset]`. Unfold `HStrip`. Simplify using `only [Finset.mem_Icc]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `fun h => h.2`. Introduce `h`. Conclude with `⟨fun i => ⟨by linarith [sub_le_sum_sub μ ν h.1 i, h.2.2, h.1 i], by linarith [sub_le_sum_sub μ ν h.1 i, h.2.2, h.1 i]⟩, h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 lemma mem_stripsDown {n : ℕ} (μ ν : Fin n → ℤ) (b : ℕ) : ν ∈ stripsDown μ b ↔ HStrip μ ν b := by
   classical
@@ -53,7 +53,7 @@ lemma mem_stripsDown {n : ℕ} (μ ν : Fin n → ℤ) (b : ℕ) : ν ∈ strips
       by linarith [sub_le_sum_sub μ ν h.1 i, h.2.2, h.1 i]⟩, h⟩
 
 /- English proof (translation)
-Unfold `gtBox`. Simplify using `only [Fintype.mem_piFinset, Finset.mem_Icc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 lemma mem_gtBox {n : ℕ} (μ : Fin (n + 1) → ℤ) (κ : Fin n → ℤ) :
     κ ∈ gtBox μ ↔ ∀ i, μ i.succ ≤ κ i ∧ κ i ≤ μ i.castSucc := by
@@ -66,7 +66,7 @@ Both sides reduce to the same expression.
 lemma dGT_succ {n : ℕ} (μ : Fin (n + 1) → ℤ) : dGT (n + 1) μ = ∑ κ ∈ gtBox μ, dGT n κ := rfl
 
 /- English proof (translation)
-Rewrite `hκ` using `[mem_gtBox]`. Introduce `i j hij`. Break down `eq_or_lt_of_le hij with h | h` into its components or cases. Rewrite using `[h]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma antitone_of_mem_gtBox {n : ℕ} {μ : Fin (n + 1) → ℤ} {κ : Fin n → ℤ} (hμ : Antitone μ)
     (hκ : κ ∈ gtBox μ) : Antitone κ := by
@@ -86,9 +86,9 @@ def sLe {n : ℕ} (κ : Fin n → ℤ) (b : ℕ) : Finset (Fin n → ℤ) :=
       ∑ m, l m - ∑ m, κ m ≤ (b : ℤ)
 
 /- English proof (translation)
-Unfold `sLe`. Rewrite using `[Finset.mem_filter, Fintype.mem_piFinset]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.2`. Introduce `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun i => Finset.mem_Icc.mpr ⟨h.1 i, ?_⟩, h⟩` and prove the remaining obligations. Use `sub_le_sum_sub l κ h.1 i` as an intermediate fact. Combine the linear relations using `[h.2.2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma mem_sLe {n : ℕ} (κ l : Fin n → ℤ) (b : ℕ) :
     l ∈ sLe κ b ↔ (∀ m, κ m ≤ l m) ∧ (∀ m m' : Fin n, m.val + 1 = m'.val → l m' ≤ κ m) ∧
@@ -103,15 +103,13 @@ lemma mem_sLe {n : ℕ} (κ l : Fin n → ℤ) (b : ℕ) :
     linarith [h.2.2]
 
 /- English proof (translation)
-Establish `hnn : ∀ l : Fin n → ℤ, (∀ m, κ m ≤ l m) → 0 ≤ ∑ m, l m - ∑ m, κ m`. Introduce `l hl`. Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_nonneg (fun m _ => sub_nonneg.mpr (hl m))`. Use `symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_fiberwise_of_maps_to (s := sLe κ b) (t := Finset.range (b + 1)) (g := fun l => (∑ m, l m - ∑ m, κ m).toNat) (by`. Introduce `l hl`. Rewrite `hl` using `[mem_sLe]`. Use `hnn l hl.1` as an intermediate fact. Rewrite using `[Finset.mem_range]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `omega)]`. Use `Finset.sum_congr rfl (fun c hc => Finset.sum_congr ?_ (fun _ _ => rfl))` and prove the remaining obligations. Rewrite `hc` using `[Finset.mem_range]`. Use extensionality with `l`. Simplify using `only [Finset.mem_filter, mem_sLe, mem_stripsUp, HStrip]`.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨⟨h1, h2, by omega⟩, by omega⟩`. Introduce and unpack `⟨⟨h1, h2, h3⟩, h4⟩`. Use `hnn l h1` as an intermediate fact.
-
-Conclude with `⟨h1, h2, by omega⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma sum_sLe {n : ℕ} (κ : Fin n → ℤ) (b : ℕ) (f : (Fin n → ℤ) → ℕ) :
     ∑ l ∈ sLe κ b, f l = ∑ c ∈ Finset.range (b + 1), ∑ l ∈ stripsUp κ c, f l := by
@@ -145,21 +143,21 @@ def Hi {n : ℕ} (μ : Fin (n + 1) → ℤ) (l : Fin n → ℤ) : Fin n → ℤ 
   fun i => min (μ i.castSucc) (l i)
 
 /- English proof (translation)
-Simplify using `[Lo]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Lo_castSucc {n : ℕ} (μ : Fin (n + 1) → ℤ) (l : Fin n → ℤ) (i : Fin n) :
     Lo μ l i.castSucc = max (μ i.castSucc) (l i) := by
   simp [Lo]
 
 /- English proof (translation)
-Simplify using `[Lo]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Lo_last {n : ℕ} (μ : Fin (n + 1) → ℤ) (l : Fin n → ℤ) :
     Lo μ l (Fin.last n) = μ (Fin.last n) := by
   simp [Lo]
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_castSucc (Lo μ l), Fin.sum_univ_castSucc μ]`. Simplify using `only [Lo_castSucc, Lo_last, Hi]`. Establish `h : ∑ i : Fin n, (max (μ i.castSucc) (l i) + min (μ i.castSucc) (l i)) = ∑ i : Fin n, (μ i.castSucc + l i)` using `Finset.sum_congr rfl (fun i _ => by rw [add_comm]; exact min_add_max _ _)`. Rewrite `h` using `[Finset.sum_add_distrib, Finset.sum_add_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma sum_Lo_Hi {n : ℕ} (μ : Fin (n + 1) → ℤ) (l : Fin n → ℤ) :
     ∑ j, Lo μ l j + ∑ i, Hi μ l i = ∑ j, μ j + ∑ i, l i := by
@@ -172,11 +170,9 @@ lemma sum_Lo_Hi {n : ℕ} (μ : Fin (n + 1) → ℤ) (l : Fin n → ℤ) :
   linarith
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun j => le_trans (le_max_left _ _) (h j), fun i => ?_⟩` and prove the remaining obligations. Use `h i.castSucc` as an intermediate fact. Rewrite `this` using `[Lo_castSucc]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `le_trans (le_max_right _ _) this`. Introduce and unpack `⟨h1, h2⟩ j`. Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations. Rewrite using `[Lo_last]`. Conclude with `h1 _`.
-
-Rewrite using `[Lo_castSucc]`. Conclude with `max_le (h1 _) (h2 i)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Lo_le_iff {n : ℕ} (μ ν : Fin (n + 1) → ℤ) (l : Fin n → ℤ) :
     (∀ j, Lo μ l j ≤ ν j) ↔ (∀ j, μ j ≤ ν j) ∧ (∀ i : Fin n, l i ≤ ν i.castSucc) := by
@@ -192,13 +188,13 @@ lemma Lo_le_iff {n : ℕ} (μ ν : Fin (n + 1) → ℤ) (l : Fin n → ℤ) :
     · rw [Lo_castSucc]; exact max_le (h1 _) (h2 i)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun i => le_trans (le_max_left _ _) (h i), fun m m' hm => ?_⟩` and prove the remaining obligations. Establish `e : m.succ = m'.castSucc` using `Fin.ext (by simp only [Fin.val_succ, Fin.coe_castSucc]; exact hm)`. Use `h m` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Lo at this`. Rewrite `this` using `[e, Fin.snoc_castSucc]`. Conclude with `le_trans (le_max_right _ _) this`. Introduce and unpack `⟨h1, h2⟩ i`. Unfold `Lo`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `max_le (h1 i) ?_` and prove the remaining obligations. Establish `hi0` using `i.isLt`. Distinguish the cases in `hi : i.val + 1 < n`. Establish `e : i.succ = (⟨i.val + 1, hi⟩ : Fin n).castSucc` using `Fin.ext (by simp only [Fin.val_succ, Fin.coe_castSucc])`. Rewrite using `[e, Fin.snoc_castSucc]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h2 i _ rfl`. Establish `e : i.succ = Fin.last n` using `Fin.ext (by simp only [Fin.val_succ, Fin.val_last]; omega)`. Rewrite using `[e, Fin.snoc_last, ← e]`. Conclude with `h1 i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Lo_succ_le_iff {n : ℕ} (μ : Fin (n + 1) → ℤ) (κ l : Fin n → ℤ) :
     (∀ i : Fin n, Lo μ l i.succ ≤ κ i) ↔
@@ -225,9 +221,9 @@ lemma Lo_succ_le_iff {n : ℕ} (μ : Fin (n + 1) → ℤ) (κ l : Fin n → ℤ)
       exact h1 i
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i`. Conclude with `h i.castSucc i.succ (by simp only [Fin.val_succ, Fin.coe_castSucc])`. Introduce `h m m' hm`. Establish `hlt : m.val < n` using `by have := m'.isLt; omega`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i, rfl⟩ : ∃ i : Fin n, m = i.castSucc` from `⟨⟨m.val, hlt⟩, Fin.ext rfl⟩`. Simplify using `only [Fin.coe_castSucc] at hm`. Establish `e2 : m' = i.succ` using `Fin.ext (by simp only [Fin.val_succ]; omega)`. Substitute `e2` using the available equality. Conclude with `h i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 lemma strip2_iff {n : ℕ} (μ ν : Fin (n + 1) → ℤ) :
     (∀ m m' : Fin (n + 1), m.val + 1 = m'.val → ν m' ≤ μ m) ↔ ∀ i : Fin n, ν i.succ ≤ μ i.castSucc := by
@@ -243,9 +239,9 @@ lemma strip2_iff {n : ℕ} (μ ν : Fin (n + 1) → ℤ) :
     exact h i
 
 /- English proof (translation)
-Unfold `HStrip`. Rewrite using `[mem_gtBox, Lo_le_iff, strip2_iff]`. Simplify using `only [Hi, le_min_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, h2, h3⟩, h4⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨h1, fun i => (h4 i).2⟩, fun i => ⟨h2 i, (h4 i).1⟩, h3⟩`. Introduce and unpack `⟨⟨h1, h2⟩, h3, h4⟩`. Conclude with `⟨⟨h1, fun i => (h3 i).1, h4⟩, fun i => ⟨(h3 i).2, h2 i⟩⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 lemma cond_up {n : ℕ} (μ ν : Fin (n + 1) → ℤ) (l : Fin n → ℤ) (b : ℕ) :
     (HStrip ν μ b ∧ l ∈ gtBox ν) ↔
@@ -260,9 +256,9 @@ lemma cond_up {n : ℕ} (μ ν : Fin (n + 1) → ℤ) (l : Fin n → ℤ) (b : �
     exact ⟨⟨h1, fun i => (h3 i).1, h4⟩, fun i => ⟨(h3 i).2, h2 i⟩⟩
 
 /- English proof (translation)
-Rewrite using `[mem_gtBox, mem_sLe, Lo_succ_le_iff]`. Simplify using `only [Hi, le_min_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, h4⟩`. Conclude with `⟨⟨fun i => (h1 i).1, h3⟩, fun i => ⟨(h1 i).2, h2 i⟩, h4⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨h1, h2⟩, h3, h4⟩`. Conclude with `⟨fun i => ⟨h1 i, (h3 i).1⟩, fun i => (h3 i).2, h2, h4⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 lemma cond_low {n : ℕ} (μ : Fin (n + 1) → ℤ) (κ l : Fin n → ℤ) (b : ℕ) :
     (κ ∈ gtBox μ ∧ l ∈ sLe κ b) ↔
@@ -282,7 +278,7 @@ def bw {n : ℕ} (μ : Fin (n + 1) → ℤ) (l : Fin n → ℤ) (b : ℕ) (κ : 
   Fin.cons (Lo μ l 0 + b - (∑ i, l i - ∑ i, κ i)) (fun i => Lo μ l i.succ + Hi μ l i - κ i)
 
 /- English proof (translation)
-Establish `h1` using `sum_Lo_Hi μ l`. Establish `h2` using `Fin.sum_univ_succ (Lo μ l)`. Establish `h3` using `Fin.sum_univ_succ ν`. Simplify using `only [fw, Finset.sum_sub_distrib, Finset.sum_add_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma sum_fw {n : ℕ} (μ ν : Fin (n + 1) → ℤ) (l : Fin n → ℤ) :
     ∑ i, fw μ l ν i = ∑ j, μ j + ∑ i, l i - Lo μ l 0 - ∑ j, ν j + ν 0 := by
@@ -293,7 +289,7 @@ lemma sum_fw {n : ℕ} (μ ν : Fin (n + 1) → ℤ) (l : Fin n → ℤ) :
   linarith
 
 /- English proof (translation)
-Establish `h1` using `sum_Lo_Hi μ l`. Establish `h2` using `Fin.sum_univ_succ (Lo μ l)`. Rewrite using `[Fin.sum_univ_succ (bw μ l b κ)]`. Simplify using `only [bw, Fin.cons_zero, Fin.cons_succ, Finset.sum_sub_distrib, Finset.sum_add_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma sum_bw {n : ℕ} (μ : Fin (n + 1) → ℤ) (κ l : Fin n → ℤ) (b : ℕ) :
     ∑ j, bw μ l b κ j = ∑ j, μ j + b := by
@@ -304,27 +300,27 @@ lemma sum_bw {n : ℕ} (μ : Fin (n + 1) → ℤ) (κ l : Fin n → ℤ) (b : �
   linarith
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_sigma', Finset.sum_sigma']`. Use `Finset.sum_nbij' (fun x : (Σ _ : Fin (n + 1) → ℤ, Fin n → ℤ) => (⟨fw μ x.2 x.1, x.2⟩ : Σ _ : Fin n → ℤ, Fin n → ℤ)) (fun y : (Σ _ : Fin n → ℤ, Fin n → ℤ) => (⟨bw μ y.2 b y.1, y.2⟩ : Σ _ : Fin (n + 1) → ℤ, Fin n → ℤ)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨ν, l⟩ h`. Simplify using `only [Finset.mem_sigma, mem_stripsUp] at h`. Rewrite `h` using `[cond_up]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Finset.mem_sigma]`. Rewrite using `[cond_low]`. Take `⟨h1, h2, h3⟩` from `h`. Establish `hs` using `sum_fw μ ν l`. Use `⟨fun i => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [fw]`. Combine the linear relations using `[h2 i]`. Simplify using `only [fw]`. Combine the linear relations using `[h1 i.succ]`. Use `h1 0` as an intermediate fact.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce and unpack `⟨κ, l⟩ h`. Simplify using `only [Finset.mem_sigma] at h`. Rewrite `h` using `[cond_low]`. Simplify using `only [Finset.mem_sigma]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mem_stripsUp, cond_up]`. Take `⟨h1, h2, h3⟩` from `h`. Establish `hs` using `sum_bw μ κ l b`. Use `⟨fun j => ?_, fun i => ?_, by linarith⟩` and prove the remaining obligations. Use `Fin.cases ?_ (fun i => ?_) j` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [bw, Fin.cons_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [bw, Fin.cons_succ]`. Combine the linear relations using `[h2 i]`. Simplify using `only [bw, Fin.cons_succ]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Combine the linear relations using `[h1 i]`. Introduce and unpack `⟨ν, l⟩ h`. Simplify using `only [Finset.mem_sigma, mem_stripsUp] at h`. Establish `h3 : ∑ m, ν m - ∑ m, μ m = (b : ℤ)`. Establish `h'` using `h.1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `HStrip at h'`. Conclude with `h'.2.2`. Establish `hs` using `sum_fw μ ν l`. Use `show (⟨bw μ l b (fw μ l ν), l⟩ : Σ _ : Fin (n + 1) → ℤ, Fin n → ℤ) = ⟨ν, l⟩`. Use `congr 1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using `only [bw, Fin.cons_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [bw, Fin.cons_succ, fw]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨κ, l⟩ _ show (⟨fw μ l (bw μ l b κ), l⟩ : Σ _ : Fin n → ℤ, Fin n → ℤ) = ⟨κ, l⟩`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [fw, bw, Fin.cons_succ]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `x _`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma toggle_sum {n : ℕ} (μ : Fin (n + 1) → ℤ) (b : ℕ) (f : (Fin n → ℤ) → ℕ) :
     ∑ ν ∈ stripsUp μ b, ∑ l ∈ gtBox ν, f l = ∑ κ ∈ gtBox μ, ∑ l ∈ sLe κ b, f l := by
@@ -379,7 +375,7 @@ lemma toggle_sum {n : ℕ} (μ : Fin (n + 1) → ℤ) (b : ℕ) (f : (Fin n → 
     rfl
 
 /- English proof (translation)
-Proceed by induction on `b with`. Consider the case `zero => simp`. Consider the case `succ b ih`. Rewrite using `[Finset.sum_range_succ, ih, show n + (b + 1) - 1 = n + b by omega, show n + (b + 1) = n + b + 1 by omega, Nat.choose_succ_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 lemma hockey (n b : ℕ) : ∑ c ∈ Finset.range (b + 1), (n + c - 1).choose c = (n + b).choose b := by
   induction b with
@@ -389,19 +385,17 @@ lemma hockey (n b : ℕ) : ∑ c ∈ Finset.range (b + 1), (n + c - 1).choose c 
       show n + (b + 1) = n + b + 1 by omega, Nat.choose_succ_succ]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `μ b _`. Break down `Nat.eq_zero_or_pos b with rfl | hb` into its components or cases. Establish `e : stripsUp μ 0 = {μ}`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use extensionality with `ν`. Rewrite using `[mem_stripsUp, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `_`. Conclude with `Subsingleton.elim _ _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Unfold `HStrip`. Simplify using the standard rewrite rules. Rewrite using `[e, Finset.sum_singleton]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : stripsUp μ b = ∅`. Use extensionality with `ν`. Rewrite using `[mem_stripsUp]`. Simplify using `[HStrip]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Finset.sum_empty, Nat.choose_eq_zero_of_lt (by omega), mul_zero]`. Consider the case `succ n ih`. Introduce `μ b hμ`. Simplify using `only [dGT_succ]`. Rewrite using `[toggle_sum μ b (dGT n)]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ∀ κ ∈ gtBox μ, ∑ l ∈ sLe κ b, dGT n l = dGT n κ * (n + b).choose b`. Introduce `κ hκ`. Rewrite using `[sum_sLe, ← hockey n b, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Conclude with `ih κ c (antitone_of_mem_gtBox hμ hκ)`.
-
-Rewrite using `[Finset.sum_congr rfl e, ← Finset.sum_mul, show n + 1 + b - 1 = n + b by omega]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem up (n : ℕ) : ∀ (μ : Fin n → ℤ) (b : ℕ), Antitone μ →
     ∑ ν ∈ stripsUp μ b, dGT n ν = dGT n μ * (n + b - 1).choose b := by
@@ -440,14 +434,14 @@ theorem up (n : ℕ) : ∀ (μ : Fin n → ℤ) (b : ℕ), Antitone μ →
 def star {n : ℕ} (μ : Fin n → ℤ) : Fin n → ℤ := fun i => -μ (Fin.rev i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[star]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma star_star {n : ℕ} (μ : Fin n → ℤ) : star (star μ) = μ := by
   funext i
   simp [star]
 
 /- English proof (translation)
-Introduce `i j hij`. Simplify using `only [star, neg_le_neg_iff]`. Conclude with `hμ (Fin.rev_le_rev.mpr hij)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma antitone_star {n : ℕ} {μ : Fin n → ℤ} (hμ : Antitone μ) : Antitone (star μ) := by
   intro i j hij
@@ -455,7 +449,7 @@ lemma antitone_star {n : ℕ} {μ : Fin n → ℤ} (hμ : Antitone μ) : Antiton
   exact hμ (Fin.rev_le_rev.mpr hij)
 
 /- English proof (translation)
-Simplify using `only [star, Finset.sum_neg_distrib]`. Use `congr 1`. Conclude with `Fintype.sum_equiv Fin.revPerm _ _ (fun _ => rfl)`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma sum_star {n : ℕ} (μ : Fin n → ℤ) : ∑ i, star μ i = -∑ i, μ i := by
   simp only [star, Finset.sum_neg_distrib]
@@ -463,9 +457,9 @@ lemma sum_star {n : ℕ} (μ : Fin n → ℤ) : ∑ i, star μ i = -∑ i, μ i 
   exact Fintype.sum_equiv Fin.revPerm _ _ (fun _ => rfl)
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[mem_gtBox]`. Introduce `i`. Simplify using `only [star]`. Establish `h1` using `h i.rev`. Rewrite using `[Fin.rev_succ, Fin.rev_castSucc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨neg_le_neg h1.2, neg_le_neg h1.1⟩`.
+Supply the required witnesses or components.
 -/
 lemma star_mem_gtBox {n : ℕ} {μ : Fin (n + 1) → ℤ} {κ : Fin n → ℤ} (h : κ ∈ gtBox μ) :
     star κ ∈ gtBox (star μ) := by
@@ -477,9 +471,9 @@ lemma star_mem_gtBox {n : ℕ} {μ : Fin (n + 1) → ℤ} {κ : Fin n → ℤ} (
   exact ⟨neg_le_neg h1.2, neg_le_neg h1.1⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `μ`. Rewrite using `[Subsingleton.elim (star μ) μ]`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce `μ`. Rewrite using `[dGT_succ, dGT_succ]`. Use `Finset.sum_nbij' star star (fun κ hκ => ?_) (fun κ hκ => star_mem_gtBox hκ) (fun κ _ => star_star κ) (fun κ _ => star_star κ) (fun κ _ => (ih κ).symm)` and prove the remaining obligations. Simplify `star_mem_gtBox hκ` using `[star_star]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma dGT_star (n : ℕ) : ∀ μ : Fin n → ℤ, dGT n (star μ) = dGT n μ := by
   induction n with
@@ -494,11 +488,11 @@ lemma dGT_star (n : ℕ) : ∀ μ : Fin n → ℤ, dGT n (star μ) = dGT n μ :=
     simpa [star_star] using star_mem_gtBox hκ
 
 /- English proof (translation)
-Unfold `HStrip at h ⊢`. Take `⟨h1, h2, h3⟩` from `h`. Use `⟨fun m => ?_, fun m m' hm => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [star]`. Conclude with `neg_le_neg (h1 _)`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [star]`. Apply `neg_le_neg` to reduce the goal to its premises. Apply `h2` to reduce the goal to its premises. Use `m'.isLt` as an intermediate fact. Simplify using `only [Fin.val_rev]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[sum_star, sum_star]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma HStrip_star {n : ℕ} {μ ν : Fin n → ℤ} {b : ℕ} (h : HStrip μ ν b) : HStrip (star ν) (star μ) b := by
   unfold HStrip at h ⊢
@@ -516,9 +510,9 @@ lemma HStrip_star {n : ℕ} {μ ν : Fin n → ℤ} {b : ℕ} (h : HStrip μ ν 
     linarith
 
 /- English proof (translation)
-Rewrite using `[← dGT_star n μ, ← up n (star μ) b (antitone_star hμ)]`. Use `Finset.sum_nbij' star star (fun ν hν => ?_) (fun ν hν => ?_) (fun ν _ => star_star ν) (fun ν _ => star_star ν) (fun ν _ => (dGT_star n ν).symm)` and prove the remaining obligations. Rewrite `hν` using `[mem_stripsDown]`. Rewrite using `[mem_stripsUp]`. Conclude with `HStrip_star hν`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hν` using `[mem_stripsUp]`. Rewrite using `[mem_stripsDown]`. Simplify `HStrip_star hν` using `only [star_star]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem down (n : ℕ) (μ : Fin n → ℤ) (b : ℕ) (hμ : Antitone μ) :
     ∑ ν ∈ stripsDown μ b, dGT n ν = dGT n μ * (n + b - 1).choose b := by
@@ -535,7 +529,7 @@ theorem down (n : ℕ) (μ : Fin n → ℤ) (b : ℕ) (hμ : Antitone μ) :
 end Pieri
 
 /- English proof (translation)
-Unfold `StripsMem`. Use `first`. Consider the case `exact fun n μ ν b => ⟨Pieri.mem_stripsUp μ ν b, Pieri.mem_stripsDown μ ν b⟩`. Consider the case `exact ⟨fun n μ ν b => Pieri.mem_stripsUp μ ν b, fun n μ ν b => Pieri.mem_stripsDown μ ν b⟩`. Consider the case `done`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem strips_mem : StripsMem := by
   unfold StripsMem
@@ -545,7 +539,7 @@ theorem strips_mem : StripsMem := by
   | done
 
 /- English proof (translation)
-Unfold `GTPieri`. Use `first`. Consider the case `exact fun n μ b hμ => ⟨Pieri.up n μ b hμ, Pieri.down n μ b hμ⟩`. Consider the case `exact ⟨fun n μ b hμ => Pieri.up n μ b hμ, fun n μ b hμ => Pieri.down n μ b hμ⟩`. Consider the case `done`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gelfand_tsetlin_pieri : GTPieri := by
   unfold GTPieri

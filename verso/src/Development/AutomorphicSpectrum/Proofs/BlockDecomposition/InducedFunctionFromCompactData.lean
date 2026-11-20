@@ -6,29 +6,27 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.BZRes.TwoOrbit
 
 /- English proof (translation)
-Introduce `G _ W₁ _ _ Q P x σ φ C K h1 h2`. Set `Ω : G → Prop` to `fun g => ∃ (q : Q) (c : P), c ∈ C ∧ ∃ κ ∈ K, g = (q : G) * x * (c : G) * κ`. Establish `wd : ∀ (q q' : Q) (c c' : P), c ∈ C → c' ∈ C → ∀ κ ∈ K, ∀ κ' ∈ K, (q : G) * x * (c : G) * κ = (q' : G) * x * (c' : G) * κ' → σ q (φ c) = σ q' (φ c')`. Introduce `q q' c c' hc hc' κ hκ κ' hκ' e`. Establish `e' : ((q'⁻¹ * q : Q) : G) * x * (c : G) * (κ * κ'⁻¹) = x * (c' : G)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e2 : (q : G) * x * (c : G) * κ * κ'⁻¹ = (q' : G) * x * (c' : G)`. Rewrite using `[e]`. Use `group`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `e3` using `h1 c hc (κ * κ'⁻¹) (K.mul_mem hκ (K.inv_mem hκ')) (q'⁻¹ * q) c' e'`. Rewrite using `[e3, ← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Set `f : G → W₁` to `fun g => if h : Ω g then σ h.choose (φ h.choose_spec.choose) else 0`. Establish `hf : ∀ (q : Q) (c : P), c ∈ C → ∀ κ ∈ K, f ((q : G) * x * (c : G) * κ) = σ q (φ c)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q c hc κ hκ`. Establish `h : Ω ((q : G) * x * (c : G) * κ)` using `⟨q, c, hc, κ, hκ, rfl⟩`. Simplify using `only [f]`. Rewrite using `[dif_pos h]`. Take `⟨hc', κ', hκ', e⟩` from `h.choose_spec.choose_spec`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `wd _ _ _ _ hc' hc κ' hκ' κ hκ e.symm`. Establish `h0 : ∀ g, ¬ Ω g → f g = 0` using `fun g h => dif_neg h`. Use `⟨f, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q g`. Distinguish the cases in `h : Ω g`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨q₁, c, hc, κ, hκ, rfl⟩` from `h`. Establish `e : (q : G) * ((q₁ : G) * x * (c : G) * κ) = ((q * q₁ : Q) : G) * x * (c : G) * κ`. Simplify using `only [Subgroup.coe_mul]`. Use `group`. Rewrite using `[e, hf _ _ hc _ hκ, hf _ _ hc _ hκ, map_mul, Module.End.mul_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h' : ¬ Ω ((q : G) * g)`. Introduce and unpack `⟨q₁, c, hc, κ, hκ, e⟩`. Use `h ⟨q⁻¹ * q₁, c, hc, κ, hκ, ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h0 _ h, h0 _ h', map_zero]`. Introduce `g κ hκ`. Distinguish the cases in `h : Ω g`. Take `⟨q₁, c, hc, κ₁, hκ₁, rfl⟩` from `h`. Establish `e : (q₁ : G) * x * (c : G) * κ₁ * κ = (q₁ : G) * x * (c : G) * (κ₁ * κ)` using `by group`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[e, hf _ _ hc _ (K.mul_mem hκ₁ hκ), hf _ _ hc _ hκ₁]`. Establish `h' : ¬ Ω (g * κ)`. Introduce and unpack `⟨q₁, c, hc, κ₁, hκ₁, e⟩`. Use `h ⟨q₁, c, hc, κ₁ * κ⁻¹, K.mul_mem hκ₁ (K.inv_mem hκ), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h0 _ h, h0 _ h']`. Introduce `p`. Distinguish the cases in `h : Ω (x * (p : G))`. Take `⟨q, c, hc, κ, hκ, e⟩` from `h`. Rewrite using `[e, hf _ _ hc _ hκ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `(h1 c hc κ hκ q p e.symm).symm`. Rewrite using `[h0 _ h]`. Assume the negation of the conclusion as `hne`. Take `⟨c, hc, q, e⟩` from `h2 p (fun hz => hne hz.symm)`. Conclude with `h ⟨q, c, hc, 1, K.one_mem, by rw [e, mul_one]⟩`.
-
-Introduce `g hg`. Assume the negation of the conclusion as `hcon`. Use `hg (h0 g ?_)` and prove the remaining obligations. Introduce and unpack `⟨q, c, hc, κ, hκ, e⟩`. Conclude with `hcon ⟨q, c, hc, κ, hκ, e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_equivariant_extension :
     ∀ {G : Type} [Group G] {W₁ : Type} [AddCommGroup W₁] [Module ℂ W₁] {Q P : Subgroup G} {x : G} (σ : Representation ℂ Q W₁) (φ : P → W₁) (C : Set P) (K : Subgroup G), (∀ c ∈ C, ∀ κ ∈ K, ∀ (q : Q) (p' : P), (q : G) * x * (c : G) * κ = x * (p' : G) → φ p' = σ q (φ c)) → (∀ p : P, φ p ≠ 0 → ∃ c ∈ C, ∃ q : Q, x * (p : G) = (q : G) * x * (c : G)) → ∃ f : G → W₁, (∀ (q : Q) (g : G), f ((q : G) * g) = σ q (f g)) ∧ (∀ (g : G), ∀ κ ∈ K, f (g * κ) = f g) ∧ (∀ p : P, f (x * (p : G)) = φ p) ∧ ∀ g : G, f g ≠ 0 → ∃ q : Q, ∃ c ∈ C, ∃ κ ∈ K, g = (q : G) * x * (c : G) * κ := by

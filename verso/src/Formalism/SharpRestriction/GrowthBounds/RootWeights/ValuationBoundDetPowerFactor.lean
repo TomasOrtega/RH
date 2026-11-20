@@ -9,11 +9,11 @@ namespace Formalism.MainNotions.G.GLWeightTheory
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `only [sDegs, Finset.mem_biUnion, Finsupp.mem_support_iff, MvPolynomial.mem_support_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, -, hk⟩ h0`. Apply `hk` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← mul_Phi_coeff, h0, MvPolynomial.coeff_zero]`. Introduce `hk`. Take `⟨m, hm⟩` from `MvPolynomial.ne_zero_iff.mp hk`. Rewrite `hm` using `[mul_Phi_coeff]`. Use `⟨m, fun h => hm ?_, hm⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem sDegs_eq_support_mul_Phi_twistSub {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters ι) (S : Set ι)
     (j : Fin n) (H : MvPolynomial (ι × Fin n) R) :
@@ -32,7 +32,7 @@ private theorem sDegs_eq_support_mul_Phi_twistSub {R : Type*} [CommRing R] {ι :
     rfl
 
 /- English proof (translation)
-Rewrite using `[valS, sDegs_eq_support_mul_Phi_twistSub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_valS_eq {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (H : MvPolynomial (ι × Fin n) R) : valS LL S H =
@@ -40,7 +40,7 @@ theorem mul_valS_eq {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] (
   rw [valS, sDegs_eq_support_mul_Phi_twistSub]
 
 /- English proof (translation)
-Rewrite using `[lam1S, sDegs_eq_support_mul_Phi_twistSub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_lam1S_eq {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (H : MvPolynomial (ι × Fin n) R) : lam1S LL S H =
@@ -48,7 +48,7 @@ theorem mul_lam1S_eq {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] 
   rw [lam1S, sDegs_eq_support_mul_Phi_twistSub]
 
 /- English proof (translation)
-Rewrite using `[mul_valS_eq LL S F, mul_valS_eq LL S G, mul_valS_eq LL S (F + G), map_add, map_add]`. Use `le_trans ?_ (Finset.inf_mono Finsupp.support_add)` and prove the remaining obligations. Rewrite using `[Finset.inf_union]`. Conclude with `le_rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_valS_add {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (F G : MvPolynomial (ι × Fin n) R) : min (valS LL S F) (valS LL S G) ≤ valS LL S (F + G) := by
@@ -58,7 +58,7 @@ theorem mul_valS_add {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] 
   exact le_rfl
 
 /- English proof (translation)
-Rewrite using `[mul_lam1S_eq LL S F, mul_lam1S_eq LL S G, mul_lam1S_eq LL S (F + G), map_add, map_add]`. Use `le_trans (Finset.sup_mono Finsupp.support_add) ?_` and prove the remaining obligations. Rewrite using `[Finset.sup_union]`. Conclude with `le_rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_lam1S_add {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (F G : MvPolynomial (ι × Fin n) R) : lam1S LL S (F + G) ≤ max (lam1S LL S F) (lam1S LL S G) := by
@@ -68,11 +68,11 @@ theorem mul_lam1S_add {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n]
   exact le_rfl
 
 /- English proof (translation)
-Establish `hd` using `mul_valS_detA_le (R := R) LL A hA hv S'`. Establish `hpow : ∀ k : ℕ, valS LL S' ((detA (R` using `R) A) ^ (k + 1)) ≤ (((k + 1 : ℕ) : ℤ) : WithTop ℤ) := by`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using hd`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih`. Rewrite using `[pow_succ, mul_valS_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← WithTop.coe_add]`. Use `congr 1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Substitute `hG` using the available equality. Break down `m with _ | k` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[mul_valS_mul, add_comm (valS LL S' _) (valS LL S' H)]`. Conclude with `add_le_add (le_refl _) (hpow k)`.
+Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_bound_det_power_factor (R : Type) [Field R] (ι : Type) (LL : Letters ι) (r : ℕ) [NeZero r]
     (A : Fin r → ι) (hA : Function.Injective A) (hv : ∀ l, LL.vec (A l) = true)
@@ -104,7 +104,7 @@ def GlOperatorsFormRepresentation : Prop :=
         (detA (R := R) A) ^ (th - degOther LL S A d).toNat ∣ G)
 
 /- English proof (translation)
-Introduce `R _ ι _ LL r _ S A hA hAS`. Conclude with `⟨h R ι LL r S A hA hAS, fun G H m hG S' => valuation_bound_det_power_factor R ι LL r A hA (fun l => (hAS l).2) G H m hG S'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem prvE_of_gl_operators_form_representation (D : Formalism.BasicNotions.D7) (h : GlOperatorsFormRepresentation) : ConclusionE D := by
   intro R _ ι _ LL r _ S A hA hAS
@@ -119,7 +119,7 @@ def GeneratedModuleWeightDescription : Prop :=
       ∀ mu ∈ polWts LL S (polGenSub R LL S G), mu 0 ≤ M))
 
 /- English proof (translation)
-Introduce `R _ ι _ LL n _ S`. Conclude with `⟨mul_valS_mul LL S, mul_valS_add LL S, mul_lam1S_mul LL S, mul_lam1S_add LL S, (h R ι LL n S).1, (h R ι LL n S).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem valuations_additive_of_generated_weight_description (D : Formalism.BasicNotions.D7) (h : GeneratedModuleWeightDescription) : ValuationsAdditive D := by
   intro R _ ι _ LL n _ S

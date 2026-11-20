@@ -10,7 +10,7 @@ open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNoti
 open Formalism.MainNotions.G.WittFrameLocaliserOrders Formalism.MainNotions.G.symbolGeneratorData
 
 /- English proof (translation)
-Unfold `IsNormal`. Apply the tactic sequence `by_cases h : Even s.val <;> simp [h, a.isLt]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isNormal_pl {n' r K : ℕ} (s : Fin n') (a : Fin r) :
     IsNormal r ((s, Fin.castAdd K a) : TV n' (r + K)) ↔ ¬ Even s.val := by
@@ -18,7 +18,7 @@ theorem isNormal_pl {n' r K : ℕ} (s : Fin n') (a : Fin r) :
   by_cases h : Even s.val <;> simp [h, a.isLt]
 
 /- English proof (translation)
-Unfold `IsNormal`. Apply the tactic sequence `by_cases h : Even s.val <;> simp [h]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isNormal_no {n' r K : ℕ} (s : Fin n') (b : Fin K) :
     IsNormal r ((s, Fin.natAdd r b) : TV n' (r + K)) ↔ Even s.val := by
@@ -36,23 +36,21 @@ def oOf (rho : TL J nL r × Fin (r + K) → ℕ) (dPl dNo : TL J nL r → ℕ) :
     else ∑ a : Fin r, rho (x, Fin.castAdd K a) + lowP Fr p x * dPl x
 
 /- English proof (translation)
-Establish `hpl : ∀ (x : TL J nL r) (a : Fin r), mm (posOf n' (posTL Fr x), Fin.castAdd K a) = rho (x, Fin.castAdd K a) + lowP Fr p x * bp (x, a)`. Introduce `x a`. Rewrite using `[hmm]`. Conclude with `bigM_pl hinj rho bp bn x a`. Establish `hno : ∀ (x : TL J nL r) (b : Fin K), mm (posOf n' (posTL Fr x), Fin.natAdd r b) = rho (x, Fin.natAdd r b) + lowP Fr p x * bn (x, b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x b`. Rewrite using `[hmm]`. Conclude with `bigM_no hinj rho bp bn x b`. Establish `hoff : ∀ s : Fin n', s ∉ Set.range (fun x : TL J nL r => posOf n' (posTL Fr x)) → ∀ c : Fin (r + K), mm (s, c) = 0`. Introduce `s hs c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hmm]`. Conclude with `bigM_off Fr p hk nL htop rho bp bn s hs _`. Establish `h0 : normDeg r mm = ∑ v : TV n' (r + K), (if IsNormal r v then mm v else 0)`. Unfold `normDeg`. Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `v _ hv`. Establish `hz : mm v = 0` using `by simpa [Finsupp.mem_support_iff] using hv`. Simplify using `[hz]`. Establish `hprod : ∑ v : TV n' (r + K), (if IsNormal r v then mm v else 0) = ∑ s : Fin n', ∑ c : Fin (r + K), (if IsNormal r ((s, c) : TV n' (r + K)) then mm (s, c) else 0)` using `Fintype.sum_prod_type _`. Establish `hsub : ∑ s ∈ Finset.univ.image (fun x : TL J nL r => posOf n' (posTL Fr x)), ∑ c : Fin (r + K), (if IsNormal r ((s, c) : TV n' (r + K)) then mm (s, c) else 0) = ∑ s : Fin n', ∑ c : Fin (r + K), (if IsNormal r ((s, c) : TV n' (r + K)) then mm (s, c) else 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `s _ hs`. Establish `hs' : s ∉ Set.range (fun x : TL J nL r => posOf n' (posTL Fr x))`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `hs (Finset.mem_image_of_mem _ (Finset.mem_univ x))`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`. Simplify using `[hoff s hs' c]`. Establish `himg` using `Finset.sum_image (s := Finset.univ) (g := fun x : TL J nL r => posOf n' (posTL Fr x)) (f := fun s : Fin n' => ∑ c : Fin (r + K), (if IsNormal r ((s, c) : TV n' (r + K)) then mm (s, c) else 0)) (fun x _ y _ h => hinj h)`. Rewrite using `[h0, hprod, ← hsub, himg]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Unfold `oOf`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `x _`. Rewrite using `[Fin.sum_univ_add]`. Distinguish the cases in `he : Even (posOf n' (posTL Fr x)).val`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [isNormal_pl, isNormal_no, he, not_true_eq_false, if_false, if_true, Finset.sum_const_zero, zero_add, hno, Finset.sum_add_distrib, ← Finset.mul_sum]`. Rewrite using `[← h2 x]`. Both sides reduce to the same expression. Simplify using `only [isNormal_pl, isNormal_no, he, not_false_eq_true, if_false, if_true, Finset.sum_const_zero, add_zero, hpl, Finset.sum_add_distrib, ← Finset.mul_sum]`. Rewrite using `[← h1 x]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem normDeg_bigM (hinj : Function.Injective fun x : TL J nL r => posOf n' (posTL Fr x))
     (htop : ∀ x : TL J nL r, posOf n' (posTL Fr x) ∈ Fr.TT)
@@ -117,7 +115,7 @@ theorem normDeg_bigM (hinj : Function.Injective fun x : TL J nL r => posOf n' (p
 end ND
 
 /- English proof (translation)
-Introduce `v w h`. Simplify using `only [castVK, Prod.mk.injEq] at h`. Conclude with `Prod.ext h.1 (Fin.ext (by simpa using congrArg Fin.val h.2))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem castVK_inj {n' k r K : ℕ} (hk : k = r + K) : Function.Injective (castVK (n' := n') hk) := by
   intro v w h
@@ -125,9 +123,9 @@ theorem castVK_inj {n' k r K : ℕ} (hk : k = r + K) : Function.Injective (castV
   exact Prod.ext h.1 (Fin.ext (by simpa using congrArg Fin.val h.2))
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[MvPolynomial.mem_support_iff]`. Unfold `toKK`. Rewrite using `[MvPolynomial.coeff_map, MvPolynomial.coeff_rename_mapDomain _ (castVK_inj hk)]`. Introduce `h0`. Apply `h` to reduce the goal to its premises.
+Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(IsFractionRing.injective O (KK O)) (by simpa using h0)`.
+A detailed English derivation is pending.
 -/
 theorem toKK_support {O : Type} [CommRing O] [IsDomain O] {n' m r K : ℕ} (hk : m + 1 = r + K) (P : RRing O n' (r + K))
     (mm : Fin n' × Fin (r + K) →₀ ℕ) (h : mm ∈ P.support) :
@@ -140,19 +138,19 @@ theorem toKK_support {O : Type} [CommRing O] [IsDomain O] {n' m r K : ℕ} (hk :
   exact (IsFractionRing.injective O (KK O)) (by simpa using h0)
 
 /- English proof (translation)
-Introduce `p _ n' r K m _ _ _ O _ _ _ _ hk Fr TT L₁ L₂ N₁ G' deg d Y cP hM J _ Dt dPl dNo ka rho No Go hMH δ _`. Establish `hV : Fr.Valid L₁ N₁` using `hM.frames.2.1`. Establish `hr : 1 ≤ r` using `le_trans (by norm_num) hM.two_le_r`. Establish `hJ : J = Fr.J` using `hMH.1.1.1`. Establish `hnL : ∀ j, Dt.nL j = (Fr.LLset (segZ j)).card` using `hMH.1.1.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj` using `posTL_inj Fr hV hr hJ hnL`. Establish `hsurj` using `posTL_surj Fr hV hr hJ hnL`. Establish `htop : ∀ x : TL J Dt.nL r, posOf n' (posTL Fr x) ∈ Fr.TT` using `fun x => (posTL_seg Fr hV hr hnL x).2.2`. Take `⟨Go', hsub, hren⟩` from `homComp_rename (fun v : ML J Dt.nL r × Fin r => (mlPos Fr Dt.nL v.1, v.2)) δ Go`. Establish `e : homComp δ (xiPl Fr O Dt.nL Go) = xiPl Fr O Dt.nL Go'` using `hren.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e]`. Establish `hid : toKK hk (monomial (labO Fr K Dt.nL rho) 1 * (PhiPl Fr p O K J (xiPl Fr O Dt.nL Go') * PhiNo Fr p O K J (xiNo Fr O K Dt.nL No))) = asm Fr p O hk Dt.nL rho (Dt.ph (MvPolynomial.map (algebraMap O (KK O)) Go')) (MvPolynomial.map (algebraMap O (KK O)) No)` using `alg_identity p O hk Fr Dt hV hr hJ hMH.1.1.2.2.2.2.1 rho No Go'`. Establish `hA : Dt.ph (MvPolynomial.map (algebraMap O (KK O)) Go') ∈ Pol (KK O) r dPl`. Rewrite using `[← hMH.1.1.2.2.2.1]`. Use `ph_mem_pol Dt _ fun mo hmo => hMH.2.2.2.2 mo (hsub ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hmo` using `[support_of_map]`. Then use the resulting hypothesis. Establish `hN : MvPolynomial.map (algebraMap O (KK O)) No ∈ Pol (KK O) K dNo` using `hMH.2.2.1.2.1`. Establish `hAd` using `(mem_restrictSupport_iff (KK O)).1 hA`. Establish `hNd` using `(mem_restrictSupport_iff (KK O)).1 hN`. Use `⟨?_, oOf Fr p Dt.nL rho dPl dNo, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hid]`. Unfold `HasMultideg Pol`. Rewrite using `[mem_restrictSupport_iff]`. Introduce `mm hmm`. Take `⟨bp, hbp, bn, hbn, rfl⟩` from `asm_support Fr p O hk Dt.nL rho _ _ mm hmm`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `multideg_bigM Fr p hk Dt.nL hinj hsurj htop d hM.d_off rho dPl dNo hMH.2.1 bp bn (hAd hbp) (hNd hbn)`. Introduce `mm hmm`. Establish `h1` using `toKK_support hk _ mm hmm`. Rewrite `h1` using `[hid]`. Take `⟨bp, hbp, bn, hbn, h2⟩` from `asm_support Fr p O hk Dt.nL rho _ _ _ h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `normDeg_bigM Fr p hk Dt.nL hinj htop rho dPl dNo bp bn (hAd hbp) (hNd hbn) mm fun v => ?_` and prove the remaining obligations. Rewrite using `[← h2, Finsupp.mapDomain_apply (castVK_inj hk)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restDegG : RestDegG := by
   intro p _ n' r K m _ _ _ O _ _ _ _ hk Fr TT L₁ L₂ N₁ G' deg d Y cP hM J _ Dt dPl dNo ka rho No Go hMH δ _

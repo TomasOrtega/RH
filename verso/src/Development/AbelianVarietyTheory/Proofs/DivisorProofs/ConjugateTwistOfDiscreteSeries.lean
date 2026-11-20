@@ -33,11 +33,11 @@ namespace GlobalTheory.BigOn.Exp.TwConj
 open GlobalTheory.ConjTwist
 
 /- English proof (translation)
-Take `⟨gR, cR0, cL0, hT, u, hu, hF⟩` from `h`. Take `⟨gR', cR0', cL0', hT', u', hu', hF'⟩` from `h'`. Take `rfl : u' = u` from `funext fun τ => Subtype.ext ((hu' τ).trans (hu τ).symm)`. Take `⟨a, ⟨k, hk, hak⟩, ha⟩` from `GlobalTheory.T.definiteSideRealisations_coefMap_differ_rootOfUnity _ _ _ _ _ _ _ _ _ _ _ _ _ hT hT' j`. Take `⟨F, x, hx⟩` from `GlobalTheory.T.exists_coefficientPolynomial_GLFunction_ne_zero (FWT.lamV D j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e1` using `hF' F`. Rewrite `e1` using `[ha]`. Use `erw [LinearMap.map_smul, LinearMap.map_smul, hF F] at e1`. Establish `e2` using `congrFun e1 x`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at e2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc : c' = D.what₂.embLL a * c` using `(mul_right_cancel₀ hx ((mul_assoc _ _ _).trans e2)).symm`. Conclude with `⟨k, hk, by rw [hc, mul_pow, ← map_pow, hak, map_one, one_mul]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem scale_pow_eq {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (Rl : RealDat3 D A3 Ks)
@@ -57,7 +57,7 @@ theorem scale_pow_eq {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Ty
   exact ⟨k, hk, by rw [hc, mul_pow, ← map_pow, hak, map_one, one_mul]⟩
 
 /- English proof (translation)
-The claim follows from `AtTw.of_forall fun _ _ _ _ p _ _ _ _ _ B ν ν' ⟨_, c, hc, n, hn, hνn⟩ ⟨_, c', hc', m, hm, hνm⟩ => by obtain ⟨k, hk, hkk⟩ := scale_pow_eq p.R p.v₀ B hc hc' refine ⟨n * m * k, Nat.mul_ne_zero (Nat.mul_ne_zero hn hm) hk, ?_⟩ have e1 : ν' ^ (n * m * k) = (ν' ^ m) ^ (n * k) := by rw [← …`.
+A detailed English derivation is pending.
 -/
 theorem normAt : NormAt := AtTw.of_forall fun _ _ _ _ p _ _ _ _ _ B ν ν' ⟨_, c, hc, n, hn, hνn⟩ ⟨_, c', hc', m, hm, hνm⟩ => by
   obtain ⟨k, hk, hkk⟩ := scale_pow_eq p.R p.v₀ B hc hc'
@@ -70,7 +70,7 @@ theorem normAt : NormAt := AtTw.of_forall fun _ _ _ _ p _ _ _ _ _ B ν ν' ⟨_,
     show m * (n * k) = n * m * k by ring, show n * (m * k) = n * m * k by ring, e3]
 
 /- English proof (translation)
-Take `⟨n, hn, ha⟩` from `ha`. Take `⟨m, hm, hb⟩` from `hb`. Conclude with `⟨n * m, Nat.mul_pos hn hm, by rw [mul_pow, pow_mul, ha, one_pow, mul_comm n, pow_mul, hb, one_pow, one_mul]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem root_mul {a b : ℂ} (ha : IsRoot1 a) (hb : IsRoot1 b) : IsRoot1 (a * b) := by
   obtain ⟨n, hn, ha⟩ := ha
@@ -78,21 +78,21 @@ theorem root_mul {a b : ℂ} (ha : IsRoot1 a) (hb : IsRoot1 b) : IsRoot1 (a * b)
   exact ⟨n * m, Nat.mul_pos hn hm, by rw [mul_pow, pow_mul, ha, one_pow, mul_comm n, pow_mul, hb, one_pow, one_mul]⟩
 
 /- English proof (translation)
-Take `⟨n, hn, ha⟩` from `ha`. Conclude with `⟨n, hn, by rw [inv_pow, ha, inv_one]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem root_inv {a : ℂ} (ha : IsRoot1 a) : IsRoot1 a⁻¹ := by
   obtain ⟨n, hn, ha⟩ := ha
   exact ⟨n, hn, by rw [inv_pow, ha, inv_one]⟩
 
 /- English proof (translation)
-Take `⟨n, hn, ha⟩` from `ha`. Conclude with `⟨n, hn, by rw [← map_pow, ha, map_one]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem root_map (τ : ℂ ≃+* ℂ) {a : ℂ} (ha : IsRoot1 a) : IsRoot1 (τ a) := by
   obtain ⟨n, hn, ha⟩ := ha
   exact ⟨n, hn, by rw [← map_pow, ha, map_one]⟩
 
 /- English proof (translation)
-Take `⟨n, hn, ha⟩` from `ha`. Introduce and unpack `rfl`. Rewrite `ha` using `[zero_pow hn.ne']`. Conclude with `zero_ne_one ha`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem root_ne {a : ℂ} (ha : IsRoot1 a) : a ≠ 0 := by
   obtain ⟨n, hn, ha⟩ := ha
@@ -101,9 +101,9 @@ theorem root_ne {a : ℂ} (ha : IsRoot1 a) : a ≠ 0 := by
   exact zero_ne_one ha
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `a.exists_sym x`. Establish `hfin : Finite (Formalism.ConjugateSelfDual.G D.host.E D.nd.Om ⧸ ψ.ker)` using `Subgroup.quotient_finite_of_isOpen _ h`. Establish `hn : ψ.ker.index ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Establish `h1 : ψ σ ^ ψ.ker.index = 1` using `by rw [← map_pow]; exact ψ.ker.pow_index_mem σ`. Use `⟨_, Nat.pos_of_ne_zero hn, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[charOf_eq a f h hσ hn h1, ← map_pow, ← Units.val_pow_eq_pow_val, h1, Units.val_one, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem root_charOf {D : D7} (a : Recip D D.nd.Om) {R : Type} [CommRing R] (f : R →+* ℂ) {ψ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* Rˣ}
     (h : IsOpen (ψ.ker : Set (Formalism.ConjugateSelfDual.G D.host.E D.nd.Om))) (x : (AE D)ˣ) :
@@ -116,9 +116,9 @@ theorem root_charOf {D : D7} (a : Recip D D.nd.Om) {R : Type} [CommRing R] (f : 
   rw [charOf_eq a f h hσ hn h1, ← map_pow, ← Units.val_pow_eq_pow_val, h1, Units.val_one, map_one]
 
 /- English proof (translation)
-Rewrite using `[hρ.delta]`. Use `root_charOf _ _ ?_ x` and prove the remaining obligations. Establish `: (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)).ker = (D.ntw.delta i).ker`. Use extensionality with `σ`. Apply the tactic sequence `cases b <;> simp [Formalism.MainNotions.BlochKatoReduction.Gen.psiAt, MonoidHom.mem_ker]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this]`. Conclude with `D.ntw.delta_open i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem root_delta {D : D7} {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (x : (AE D)ˣ) :
     IsRoot1 (((ρ.B i j b).de.chi x : Circle) : ℂ) := by
@@ -131,9 +131,9 @@ theorem root_delta {D : D7} {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j
   exact D.ntw.delta_open i
 
 /- English proof (translation)
-Take `⟨T0', A', R', F', v₀', O', k1, k2, k3, k4, k5, k6, k7, k8, k9, k10, k11, t, t', ht, ht'⟩` from `H`. Take `⟨c', u', hc', hu', hio⟩` from `k11 c u hc hu`. Take `⟨ζ0, hζ0, K⟩` from `GlobalTheory.ConjGen.conj_gen GlobalTheory.chartIndependence_unconditional D G Pl0 T0' A' T R' F' κ v₀' O' ph hn k1 k2 k3 k4 k5 j k6 k7 c' hc' u' hu' B hB k8 ω hω τ (k9 τ h1) h2`. Take `⟨s, hs, -⟩` from `K ψ ψ' t t' hψ hψ' hQ hQ' ht ht' h3`. Establish `hξ : IsRoot1 ((R'.xi t' s : Circle) : ℂ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[ht'.1, MonoidHom.mul_apply, Circle.coe_mul]`. Conclude with `root_mul (hδ s) (hr s)`. Use `⟨_, root_mul hζ0 hξ, k10 _ _ _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[← hio, ← hio]`. Conclude with `hs h hh x x' hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjFun_gen {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F} {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)}
@@ -160,16 +160,16 @@ theorem conjFun_gen {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A
   exact hs h hh x x' hx
 
 /- English proof (translation)
-Rewrite using `[← map_smul, h, map_smul, mul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_apply_of {M N : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N] (L : M →ₗ[ℂ] N) {ν a b : ℂ} {P Q : M}
     (h : ν • P = (a * b) • Q) : ν • L P = a • b • L Q := by
   rw [← map_smul, h, map_smul, mul_smul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[h, e1, Finset.smul_sum]`. Simplify using `only [smul_smul]`. Establish `e3 : ∑ l, τ (ξ * b l) • f l = τ ξ • ∑ l, τ (b l) • f l`. Simplify using `only [map_mul, Finset.smul_sum, smul_smul]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e3, e2, h', smul_smul, inv_mul_cancel_right₀ hξ, mul_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rescale {X : Type} (τ : ℂ ≃+* ℂ) {ξ ζ : ℂ} (hξ : ξ ≠ 0) {Φ Φ' Ψ Ψ' : X → ℂ} (h : Ψ = ξ • Φ) (h' : Ψ' = ξ • Φ') {n : ℕ}
     {b : Fin n → ℂ} {f : Fin n → X → ℂ} (e1 : Φ = ∑ l, b l • f l) (e2 : ∑ l, τ (b l) • f l = fun x => ζ⁻¹ * Φ' x) :
@@ -183,11 +183,11 @@ theorem rescale {X : Type} (τ : ℂ ≃+* ℂ) {ξ ζ : ℂ} (hξ : ξ ≠ 0) {
     rfl
 
 /- English proof (translation)
-Use `AtTw.imp (AtTw.and (AtTw.and hA hT) (AtTw.and hF (AtTw.and hC hE))) fun Fm x hx i p hr hm w _ j H => ?_` and prove the remaining obligations. Take `⟨⟨a1, a2⟩, a3, a4, a5⟩` from `H`. Introduce `ρ ρ' ν hρ hρ' hp hS hL hAd hN h₀ P hP h hh τ hτ hcc`. Take `⟨c, u, ξ, hc, hu, hξ, K⟩` from `a4 ρ ν hρ hp hN`. Take `⟨y, hy, hyy⟩` from `K h₀ P hP`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f1, f2⟩` from `a3 ρ hρ hp hL τ hτ`. Take `⟨g1, g2, -⟩` from `GlobalTheory.TwistGood.tw_good _ _ _ ρ hρ _ j ((Fm.ex x hx i).nch.sd w) _ _ _ a1.1`. Take `⟨g3, -, -⟩` from `GlobalTheory.TwistGood.tw_good _ _ _ ρ' hρ' _ j ((Fm.ex x hx i).nch.sd w) _ _ _ a1.1`. Take `⟨ζ, hζ, hcf⟩` from `conjFun_gen (Fm.parT x hx i).nV_ge (a2 ρ ρ' hρ hρ' hp hS hAd) (hρ.base _ _ _) (hρ.weil_base _ _ _) g1 g3 g2 (hcc.1.symm ▸ g2) (root_delta hρ _ _ _) (root_charOf _ _ a1.1.2.2.1) hc hu f1 f2 hcc hh (hyy τ hτ)`. Establish `hcf1` using `(GlobalTheory.ConjClassSum.conjFun_iff _ _ _ _ _ _).2 (GlobalTheory.ConjGen.cf_one_of (root_ne hζ) ((GlobalTheory.ConjClassSum.conjFun_iff _ _ _ _ _ _).1 hcf))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, b, g, e1, e2⟩` from `a5 τ hτ _ _ hcf1`. Establish `hsm : ∀ ψ, ν • genW (Fm.ex x hx i) w j ρ ψ h P = ξ • phs p j • genW (Fm.ex x hx i) w j ρ ψ h (p.R.ioP j (PiTensorProduct.tprod ℂ u) (c y))` using `fun ψ => smul_apply_of _ hy`. Conclude with `⟨_, root_mul (root_mul (root_map τ hξ) (root_inv hζ)) (root_inv hξ), n, fun l => ξ * b l, g, rescale τ (root_ne hξ) (hsm _) (hsm _) e1 e2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem twOne_of_steps (hA : TwAdm) (hT : TupAt) (hF : FixAt) (hC : CoefAt)
     (hE : AtTw fun Fm x _ i p _ j => ∀ τ : ℂ ≃+* ℂ,
@@ -215,7 +215,7 @@ theorem twOne_of_steps (hA : TwAdm) (hT : TupAt) (hF : FixAt) (hC : CoefAt)
     rescale τ (root_ne hξ) (hsm _) (hsm _) e1 e2⟩
 
 /- English proof (translation)
-Introduce `h1 h2 h3 hD hW h4 hA hC` and use `conjTw_of_one hA GlobalTheory.T.LatticeSmallGeneration normAt (twOne_of_steps hA (GlobalTheory.T.twisted_conj_tuple_at h1 h2 h3 hD hW hA hC) (GlobalTheory.T.twisted_conj_fix_at h3 hA) (GlobalTheory.T.twisted_conj_coef_at hA) (GlobalTheory.T.conjugate_twist_function_decomposition …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conjTw_of : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt →
     GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.CasselmanWallach → GlobalTheory.SerStd.SeriesRatS →

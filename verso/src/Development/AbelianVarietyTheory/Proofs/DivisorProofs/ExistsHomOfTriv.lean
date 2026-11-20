@@ -16,13 +16,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.BirigidHom
 
 /- English proof (translation)
-Introduce `k _ A B _ _ _ hA hB P₀ hd P hP h₁ h₂`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim k A hA`. Set `AV : GlobalTheory.AV.AbVar k` to `{ X := A, ab := hA, dim := g, smooth := hg }`. Take `⟨c, L, hL, hamp, -⟩` from `GlobalTheory.AV.exists_isAmpleCls k AV`. Take `⟨H, hH, aH⟩` from `GlobalTheory.BirigidLift.exists_relAmple_prod (A := A) (B := A) hA hA hL hamp hL hamp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a₁, -⟩` from `GlobalTheory.BirigidLift.additive_of_triv hA hA hH aH hP h₁ h₂`. Take `⟨x, hx, -⟩` from `hd.univ A P hP a₁`. Establish `hE : (ev P₀ (fst A A) (snd A A ≫ x)).IsLB` using `pull_isLB hd.isLB _`. Establish `e : cls P hP = evc hd.isLB (fst A A) (snd A A ≫ x)` using `(cls_eq_iff hP hE).2 hx`. Use `⟨x, GlobalTheory.rigidity_holds (Sp k) A B hA hB x ?_, hx⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hd.eq_one` to reduce the goal to its premises. Rewrite using `[triv_ev_iff hd.isLB, ← Category.assoc, ← GlobalTheory.BirigidLift.evc_of_cls hd.isLB hP e]`. Establish `u1 : snd A (𝟙_ (Over (Sp k))) ≫ (η : 𝟙_ (Over (Sp k)) ⟶ A) = 1` using `by show _ = toUnit _ ≫ η`. Rewrite using `[toUnit_unique (snd A (𝟙_ (Over (Sp k)))) (toUnit _)]`. Rewrite using `[u1]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `evc_one_right hP h₂ _`.
+A detailed English derivation is pending.
 -/
 theorem exists_hom_of_triv : ∀ (k : Type) [Field k] (A B : Over (Sp k)) [GrpObj A] [IsCommMonObj A] [GrpObj B],
     IsAbelianScheme A → IsAbelianScheme B → ∀ (P₀ : LB (A ⊗ B).left), GlobalTheory.AbDual.IsDual A B P₀ →

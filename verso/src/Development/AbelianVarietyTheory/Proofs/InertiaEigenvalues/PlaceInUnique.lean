@@ -7,49 +7,41 @@ open Classical
 namespace GlobalTheory.TowerPlace
 
 /- English proof (translation)
-Introduce `Λ _ l hl hlu`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible Λ`. Establish `hl0 : ((l : ℕ) : Λ) ≠ 0`. Introduce `h`. Establish `h' : ((((l : ℕ) : Λ)) : ℂ) = 0` using `by rw [h]; rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h'`. Conclude with `hl.ne_zero (by exact_mod_cast h')`. Take `⟨e, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hl0 hϖ`. Use `⟨e, fun L _ _ ι hval => ?_⟩` and prove the remaining obligations. Set `B : ValuationSubring L` to `{ toSubring := Λ.comap ι mem_or_inv_mem' := fun x => by`.
+Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hval x with h | h` into its components or cases. Conclude with `Or.inl h`. Use `right show ι x⁻¹ ∈ Λ`. Rewrite using `[map_inv₀]`. Conclude with `h }`.
+Prove the first alternative. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hint : ∀ x : 𝓞 L, (ι.comp (algebraMap (𝓞 L) L)) x ∈ Λ` using `fun x => by`. Establish `: IsIntegral B (algebraMap (𝓞 L) L x)` using `(x.isIntegral_coe).tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 this`. Use `show ι (algebraMap (𝓞 L) L x) ∈ Λ`. Rewrite using `[← hy]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `y.2`. Set `g : 𝓞 L →+* Λ` to `(ι.comp (algebraMap (𝓞 L) L)).codRestrict Λ hint`. Establish `hg : ∀ x : 𝓞 L, ((g x : Λ) : ℂ) = ι (algebraMap (𝓞 L) L x)` using `fun x => rfl`. Set `P : Ideal (𝓞 L)` to `(IsLocalRing.maximalIdeal Λ).comap g`. Establish `hlP : ((l : ℕ) : 𝓞 L) ∈ P` using `by show g l ∈ IsLocalRing.maximalIdeal Λ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[map_natCast, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hlu`. Establish `hPne : P ≠ ⊥`. Introduce `h`. Rewrite `hlP` using `[h, Ideal.mem_bot]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hl.ne_zero (by exact_mod_cast hlP)`. Set `la : HeightOneSpectrum (𝓞 L)` to `⟨P, Ideal.comap_isPrime _ _, hPne⟩`. Establish `hunit : ∀ s : 𝓞 L, s ∉ la.asIdeal → IsUnit (g s)` using `fun s hs => by`. Assume the negation of the conclusion as `h`. Conclude with `hs ((IsLocalRing.mem_maximalIdeal _).2 h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsup : ∀ x : L, la.valuation L x ≤ 1 → ι x ∈ Λ`. Introduce `x hx`. Take `⟨a, s, h⟩` from `la.exists_primeCompl_mul_eq_of_integer (K := L) x hx`. Take `⟨w, hw⟩` from `hunit s s.2`. Establish `h3 : (((w⁻¹ : Λˣ) : Λ) : ℂ) * ι (algebraMap (𝓞 L) L s) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hg, ← hw]`. Use `congrArg Subtype.val w.inv_mul` as an intermediate fact. Conclude with `this`. Establish `hs0 : ι (algebraMap (𝓞 L) L s) ≠ 0`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `h3` using `[h0, mul_zero]`. Conclude with `zero_ne_one h3`. Establish `hw' : (ι (algebraMap (𝓞 L) L s))⁻¹ ∈ Λ`. Rewrite using `[← eq_inv_of_mul_eq_one_left h3]`. Conclude with `((w⁻¹ : Λˣ) : Λ).2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : ι x = ι (algebraMap (𝓞 L) L a) * (ι (algebraMap (𝓞 L) L s))⁻¹`. Rewrite using `[eq_mul_inv_iff_mul_eq₀ hs0, ← map_mul, h]`. Rewrite using `[hx']`. Conclude with `Λ.mul_mem (hint a) hw'`. Establish `hsub : ∀ x : L, ι x ∈ Λ → la.valuation L x ≤ 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Assume the negation of the conclusion as `hv`. Use `push_neg at hv`. Establish `hx0 : x ≠ 0` using `by rintro rfl; simp at hv`. Establish `hy : la.valuation L x⁻¹ < 1` using `by rw [map_inv₀]; exact inv_lt_one_of_one_lt₀ hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Take `⟨a, s, h⟩` from `la.exists_primeCompl_mul_eq_of_integer (K := L) x⁻¹ hy.le`. Establish `hs1 : la.valuation L (algebraMap (𝓞 L) L s) = 1` using `(HeightOneSpectrum.valuation_eq_one_iff_notMem (K := L) (v := la)).2 s.2`. Establish `ha : a ∈ la.asIdeal`. Use `(la.valuation_lt_one_iff_mem (K := L) a).1 ?_` and prove the remaining obligations. Use `show la.valuation L (algebraMap (𝓞 L) L a) < 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[← h, map_mul, hs1, mul_one]`. Conclude with `hy`. Establish `h4 : (⟨ι x, hx⟩ : Λ) * g a = g s` using `Subtype.ext (show ι x * ι (algebraMap (𝓞 L) L a) = ι (algebraMap (𝓞 L) L s) by`. Rewrite using `[← map_mul, ← h, ← mul_assoc, mul_inv_cancel₀ hx0, one_mul])`. Establish `hga : g a ∈ IsLocalRing.maximalIdeal Λ` using `ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hunit s s.2` as an intermediate fact. Rewrite `this` using `[← h4]`. Conclude with `((IsLocalRing.mem_maximalIdeal _).1 (Ideal.mul_mem_left _ _ hga)) this`. Use `⟨la, ?_, fun x => ⟨hsub x, hsup x⟩, hlP, ?_⟩` and prove the remaining obligations. Use extensionality with `la'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h'`. Rewrite using `[Set.mem_singleton_iff]`. Establish `hle : la.asIdeal ≤ la'.asIdeal`. Introduce `r hr`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hr'`. Establish `h1 : la'.valuation L (algebraMap (𝓞 L) L r) = 1` using `(HeightOneSpectrum.valuation_eq_one_iff_notMem (K := L) (v := la')).2 hr'`. Establish `h2 : la'.valuation L (algebraMap (𝓞 L) L r)⁻¹ ≤ 1` using `by rw [map_inv₀, h1, inv_one]`. Establish `h3` using `hsub _ (h' _ h2)`. Establish `h5 : la.valuation L (algebraMap (𝓞 L) L r) < 1` using `(la.valuation_lt_one_iff_mem (K := L) r).2 hr`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr0' : r ≠ 0` using `by rintro rfl; exact hr' la'.asIdeal.zero_mem`. Establish `hr0 : la.valuation L (algebraMap (𝓞 L) L r) ≠ 0` using `(Valuation.ne_zero_iff _).2 ((map_ne_zero_iff _ (IsFractionRing.injective (𝓞 L) L)).2 hr0')`. Rewrite `h3` using `[map_inv₀]`. Use `one_lt_inv_iff₀.2 ⟨zero_lt_iff.2 hr0, h5⟩` as an intermediate fact. Conclude with `absurd h3 (not_le.2 this)`.
-
-Establish `hEq : la.asIdeal = la'.asIdeal` using `la.isMaximal.eq_of_le la'.isPrime.ne_top hle`. Conclude with `HeightOneSpectrum.ext hEq.symm`. Introduce `h`. Rewrite `h` using `[Set.mem_singleton_iff]`. Substitute `h` using the available equality.
-
-Conclude with `hsup`. Introduce `hmem`. Establish `hmap : Ideal.map g (la.asIdeal ^ (e + 1)) ≤ (IsLocalRing.maximalIdeal Λ) ^ (e + 1)`. Rewrite using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono Ideal.map_comap_le (e + 1)`.
-
-Establish `h5` using `hmap (Ideal.mem_map_of_mem g hmem)`. Rewrite `h5` using `[map_natCast, (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ, Ideal.span_singleton_pow, Ideal.mem_span_singleton, hu]`. Take `⟨c, hc⟩` from `h5`. Establish `hpe : ϖ ^ e ≠ 0` using `pow_ne_zero _ hϖ.ne_zero`. Establish `hu' : (u : Λ) = ϖ * c`.
-
-Apply `mul_right_cancel₀ hpe` to reduce the goal to its premises. Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `hϖ.not_isUnit (isUnit_of_mul_isUnit_left (hu' ▸ u.isUnit))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem placeIn_unique : ∀ (Λ : Subring ℂ) [IsDiscreteValuationRing Λ] (l : ℕ), l.Prime → ¬ IsUnit ((l : ℕ) : Λ) → ∃ e : ℕ, ∀ (L : Type) [Field L] [NumberField L] (ι : L →+* ℂ), (∀ x, ι x ∈ Λ ∨ (ι x)⁻¹ ∈ Λ) → ∃ la : HeightOneSpectrum (𝓞 L), placesIn ι Λ = {la} ∧ (∀ x, ι x ∈ Λ ↔ la.valuation L x ≤ 1) ∧ ((l : ℕ) : 𝓞 L) ∈ la.asIdeal ∧ ((l : ℕ) : 𝓞 L) ∉ la.asIdeal ^ (e + 1) := by
   intro Λ _ l hl hlu

@@ -22,7 +22,7 @@ open IsDedekindDomain
 namespace GlobalTheory.PowGerm
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `GlobalTheory.firstFiveLaws`. Establish `ht` using `GlobalTheory.twistBaseChange_and_valuation_statements.1`. Conclude with `⟨GlobalTheory.SmallTranslate.main h1 h2 h3 h4 h5 ht, GlobalTheory.GeneratorsAtPoint.main h1 h2 h3 h4 h5 ht, GlobalTheory.PowJets.jets_on_copies h1 h2 h4 ht, GlobalTheory.PowGerm.germOfFam_holds h1 h2 h4 ht, GlobalTheory.PowThetaFrame.main h1 h2 h4 ht, GlobalTheory.PowGerm.powPEL_ …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem pointStatements_on_copies :
     RPointT ∧ GenPointT ∧ JetsOnCopiesCompatibleFrames ∧ GermOfFamT ∧ ThetaFrameF ∧ PowPELF := by

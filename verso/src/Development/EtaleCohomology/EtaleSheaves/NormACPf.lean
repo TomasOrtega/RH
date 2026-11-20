@@ -6,11 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.E.t_
 namespace LateralTheory.E.NormACPf
 
 /- English proof (translation)
-Introduce `p hp hd`. Take `⟨a, ha⟩` from `hK (p.map (integralClosure A K).val.toRingHom) (hp.map _) (by rwa [Polynomial.natDegree_map_eq_of_injective Subtype.val_injective])`. Establish `hint : IsIntegral (integralClosure A K) a` using `⟨p, hp, by`. Rewrite `ha` using `[Polynomial.eval_map]`. Conclude with `ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `haA : a ∈ integralClosure A K` using `isIntegral_trans (R := A) a hint`. Use `⟨⟨a, haA⟩, Subtype.val_injective ?_⟩` and prove the remaining obligations. Establish `h4 : (integralClosure A K).val.toRingHom (Polynomial.eval (⟨a, haA⟩ : integralClosure A K) p) = 0`. Rewrite using `[← Polynomial.eval₂_at_apply]`. Rewrite `ha` using `[Polynomial.eval_map]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `ha`. Simplify using `using h4`.
+A detailed English derivation is pending.
 -/
 theorem aic_integralClosure (A K : Type) [CommRing A] [CommRing K] [Algebra A K] (hK : AIC K) :
     AIC (integralClosure A K) := by
@@ -26,15 +26,15 @@ theorem aic_integralClosure (A K : Type) [CommRing A] [CommRing K] [Algebra A K]
   simpa using h4
 
 /- English proof (translation)
-Introduce `_ _ _` and use `⟨0, Subsingleton.elim _ _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem aic_of_subsingleton (R : Type) [CommRing R] [Subsingleton R] : AIC R :=
   fun _ _ _ => ⟨0, Subsingleton.elim _ _⟩
 
 /- English proof (translation)
-Introduce `p hp hd`. Take `⟨a, ha⟩` from `h (p.map e.symm.toRingHom) (hp.map _) (by rwa [Polynomial.natDegree_map_eq_of_injective e.symm.injective])`. Use `⟨e a, ?_⟩` and prove the remaining obligations. Establish `h4 : e.symm.toRingHom (Polynomial.eval (e a) p) = 0`. Rewrite using `[← Polynomial.eval₂_at_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `ha` using `[Polynomial.eval_map]`. Simplify using `using ha`. Simplify using `using h4`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem aic_of_ringEquiv {R S : Type} [CommRing R] [CommRing S] (e : R ≃+* S) (h : AIC R) : AIC S := by
   intro p hp hd
@@ -46,11 +46,11 @@ theorem aic_of_ringEquiv {R S : Type} [CommRing R] [CommRing S] (e : R ≃+* S) 
   simpa using h4
 
 /- English proof (translation)
-Distinguish the cases in `h : (default : Spec (CommRingCat.of K)) ∈ W`. Establish `: W = ⊤`. Use extensionality with `x`. Simplify using `only [TopologicalSpace.Opens.coe_top, Set.mem_univ, iff_true]`. Rewrite using `[Subsingleton.elim x default]` and apply the resulting hypothesis.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Substitute `this` using the available equality. Conclude with `aic_of_ringEquiv (Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.symm hA`. Establish `: W = ⊥`. Use extensionality with `x`. Simplify using `only [TopologicalSpace.Opens.coe_bot, Set.mem_empty_iff_false, iff_false]`.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Subsingleton.elim x default]` and apply the resulting hypothesis. Substitute `this` using the available equality. Conclude with `aic_of_subsingleton _`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem aic_spec_field (K : Type) [Field K] (hA : AIC K) (W : (Spec (CommRingCat.of K)).Opens) :
     AIC Γ(Spec (CommRingCat.of K), W) := by
@@ -70,9 +70,9 @@ def Loc : Prop := ∀ (Z : Scheme.{0}), IsIntegral Z → (∀ z : Z, ∃ U : Z.O
   ∀ U : Z.Opens, IsAffineOpen U → (U : Set Z).Nonempty → AIC Γ(Z, U)
 
 /- English proof (translation)
-Introduce `P _ _ K _ hF hA v`. Set `` to `hF.toField`. Establish `hI : IsIntegral v.normalization` using `inferInstance`. Use `⟨hI, hL _ hI ?_⟩` and prove the remaining obligations. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨V, hV, hz, -⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp P.isBasis_affineOpens (show v.fromNormalization z ∈ (⊤ : P.Opens) from trivial)`. Use `⟨v.fromNormalization ⁻¹ᵁ V, hV.preimage _, hz, ?_⟩` and prove the remaining obligations. Use `letI := (v.app V).hom.toAlgebra`. Conclude with `aic_of_ringEquiv (v.normalizationObjIso hV).commRingCatIsoToRingEquiv.symm (aic_integralClosure _ _ (aic_spec_field K hA _))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem NormAC_of (hL : Loc) : NormAC := by
   intro P _ _ K _ hF hA v

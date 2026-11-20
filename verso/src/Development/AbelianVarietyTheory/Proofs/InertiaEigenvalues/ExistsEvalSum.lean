@@ -9,9 +9,9 @@ noncomputable section
 namespace GlobalTheory.KFinExp
 
 /- English proof (translation)
-Set `ev : GA E N → Module.Dual ℂ W` to `fun x => (LinearMap.proj x : (GA E N → ℂ) →ₗ[ℂ] ℂ) ∘ₗ (Sm E N).subtype ∘ₗ W.subtype`. Establish `hs : Submodule.span ℂ (Set.range ev) = ⊤` using `Submodule.span_eq_top_of_ne_zero fun z hz => by`. Assume the negation of the conclusion as `h`. Use `hz (Subtype.ext (Subtype.ext (funext fun x => ?_)))` and prove the remaining obligations. Assume the negation of the conclusion as `hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `h ⟨ev x, ⟨x, rfl⟩, hx⟩`. Take `⟨a, ha⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 (hs ▸ Submodule.mem_top : l ∈ _)`. Use `⟨a, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, Finsupp.sum, LinearMap.sum_apply]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_eval_sum {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ}
     (W : Submodule ℂ (Sm E N)) [FiniteDimensional ℂ W] (l : Module.Dual ℂ W) :
@@ -29,11 +29,11 @@ theorem exists_eval_sum {E : Type} [Field E] [NumberField E] [IsTotallyComplex E
   rfl
 
 /- English proof (translation)
-Use `set W := Submodule.span ℂ (Set.range fun k => cptRep E N k φ)`. Establish `hf : FiniteDimensional ℂ W` using `hφ`. Set `b` to `Module.finBasis ℂ W`. Use `choose a ha using fun j => exists_eval_sum W (b.coord j)`. Use `⟨_, fun j => (b j).1, fun j y => ∑ x ∈ (a j).support, a j x * chart φ.1 x y, fun j => (b j).2, fun j => ContDiffAt.sum fun x _ => contDiffAt_const.mul (contDiffAt_chart φ.2 x isUnit_one), fun k => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `w : W` to `⟨cptRep E N k φ, Submodule.subset_span ⟨k, rfl⟩⟩`. Establish `h` using `congrArg Subtype.val (b.sum_repr w)`. Rewrite `h` using `[Submodule.coe_sum]`. Use `h.symm.trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `(ha j w).trans (Finset.sum_congr rfl fun x _ => ?_)` and prove the remaining obligations. Use `congr 1`. Conclude with `(chart_val φ.1 x (Unitary.toUnits k)).symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_expansion (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ) (φ : Sm E N)
     (hφ : φ ∈ finVec (cptRep E N)) :

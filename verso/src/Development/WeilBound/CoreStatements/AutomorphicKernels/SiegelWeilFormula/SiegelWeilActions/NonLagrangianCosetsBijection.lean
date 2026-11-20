@@ -20,7 +20,7 @@ variable {nb : nA σ d.Y d.b → d.G} {uM : (Fin L.n → AE F E) → d.G} {nb' :
 abbrev Crat (L : LD d) : Type := {c : (Fin L.n → AE F E) × AF F // c.1 ∈ L.ratV ∧ c.2 ∈ (algebraMap F (AF F)).range}
 
 /- English proof (translation)
-Conclude with `C6.non_lagrangian_cosets_bijection_rank ⟨h.nb, h.uM, h.nb', h.wr, h.wf, h.cf, h.δ0⟩`.
+A detailed English derivation is pending.
 -/
 theorem non_lagrangian_cosets_bijection (h : Hyp L nb uM nb' w₁ cM δ) :
     ∃ e : (Σ _ : Cs L.sd, Crat L) ≃ {q : Cs d // ¬ LagrangianCondition L (rep q)}, ∀ x, ∃ p ∈ par2 σ d.Y, p ∈ rat2 σ d.Y ∧

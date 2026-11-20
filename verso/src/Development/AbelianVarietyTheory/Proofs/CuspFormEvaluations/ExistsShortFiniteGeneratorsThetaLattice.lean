@@ -23,13 +23,13 @@ namespace GlobalTheory.ThetaFamily
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.MainNotions.DIV.Cons Formalism.MainNotions.Gaps Formalism.L2.Pj GlobalTheory.RunIn ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Unfold `spanIn`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.subset_span (hg i)`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `hx' : (x : R j) ∈ Submodule.span (𝓞 K) s` using `hx`. Set `F : cutR C j w →ₗ[𝓞 K] R j` to `(cutR C j w).subtype.restrictScalars (𝓞 K)`. Establish `hsub : Submodule.span (𝓞 K) s ≤ (Submodule.span (𝓞 K) (Set.range g)).map F`. Rewrite using `[Submodule.span_le]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf`. Establish `hcl : AddSubgroup.closure (Set.range fun i => (g i : R j)) ≤ ((Submodule.span (𝓞 K) (Set.range g)).map F).toAddSubgroup`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨g i, Submodule.subset_span ⟨i, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `hcl (hs f hf)`. Take `⟨y, hy, hyx⟩` from `hsub hx'`. Establish `hyx' : y = x` using `Subtype.ext hyx`. Rewrite using `[← hyx']` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem span_eq_spanIn {D : D7} {K : Type} [Field K] [NumberField K] {R : ℕ → Type} [∀ j, CommRing (R j)]
     [∀ j, Algebra K (R j)] [∀ j, Algebra (𝓞 K) (R j)] [∀ j, IsScalarTower (𝓞 K) K (R j)]
@@ -59,17 +59,13 @@ theorem span_eq_spanIn {D : D7} {K : Type} [Field K] [NumberField K] {R : ℕ �
     rwa [← hyx']
 
 /- English proof (translation)
-Establish `hex : ∀ p : (Fin n → LevQ Dw l) × Fin R, ∃ f : Rul Xo c, IsThRule Xo c nab (fun k => levRep (p.1 k)) (b p.2) f` using `fun p => (existsUnique_thRule Xo c nab ht (fun k => levRep (p.1 k)) (hb p.2)).exists`. Use `choose g hg using hex`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Introduce and unpack `f ⟨x, P, hP, hf⟩`. Take `⟨hlin, hmod⟩` from `GlobalTheory.T.theta_rules_linear_and_level_congruence hci E H Dw l Xo c nab hn a n`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set q : Fin n → LevQ Dw l := fun k => Submodule.Quotient.mk (x k) with hq`. Establish `hrep : ∀ k, x k - levRep (q k) ∈ (l.Mb • ⊤ : Submodule (𝓞 E) Dw.La)`. Introduce `k`. Establish `h1 : Submodule.Quotient.mk (levRep (q k)) = q k`. Unfold `levRep`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Classical.choose_spec (Submodule.Quotient.mk_surjective _ (q k))`. Rewrite using `[← Submodule.Quotient.eq, h1]`. Establish `hf' : IsThRule Xo c nab (fun k => levRep (q k)) P f` using `hmod x _ P f hrep hf`. Take `⟨z, hz⟩` from `hgen P hP`. Establish `hsum : f = ∑ i, ((z i : ℤ) : c.F) • g (q, i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hlin (fun k => levRep (q k)) R (fun i => ((z i : ℤ) : c.F)) b f (fun i => g (q, i)) hb ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← hz]`. Conclude with `hP`. Rewrite using `[← hz]`. Conclude with `hf'`.
-
-Introduce `i`. Conclude with `hg (q, i)`. Rewrite using `[hsum]`. Use `AddSubgroup.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Int.cast_smul_eq_zsmul]`.
-
-Conclude with `AddSubgroup.zsmul_mem _ (AddSubgroup.subset_closure (Set.mem_range_self (q, i))) _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_family (hci : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2) {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)]
@@ -106,9 +102,9 @@ theorem exists_family (hci : Formalism.MainNotions.ModuliIntegralCharts.H1.Chart
   exact AddSubgroup.zsmul_mem _ (AddSubgroup.subset_closure (Set.mem_range_self (q, i))) _
 
 /- English proof (translation)
-Establish `hf : (Module.finrank ℚ D.host.E : ℝ) = 2 * D.R.f` using `by first`. Consider the case `exact_mod_cast Formalism.MainNotions.Gaps.LevGap.finrank_hostE_eq D.host`. Consider the case `exact_mod_cast Formalism.MainNotions.StandardLattice.finrank_host D`. Establish `hd : (NumberField.discr D.host.E : ℝ) ≠ 0` using `by exact_mod_cast NumberField.discr_ne_zero D.host.E`. Unfold `lrd ReciprocityTheory.ChartRestriction.G.FD.rdE ReciprocityTheory.ChartRestriction.G.FD.dE`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Real.log_rpow (abs_pos.mpr hd), hf]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem log_rdE (D : D7) : Real.log (ReciprocityTheory.ChartRestriction.G.FD.rdE D.host.E) = lrd D := by
   have hf : (Module.finrank ℚ D.host.E : ℝ) = 2 * D.R.f := by
@@ -121,7 +117,7 @@ theorem log_rdE (D : D7) : Real.log (ReciprocityTheory.ChartRestriction.G.FD.rdE
   ring
 
 /- English proof (translation)
-Unfold `absA WeightAlgebra.DF WeightAlgebra.degP`. Use `push_cast`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem absA_eq {D : D7} {j : ℕ} (w : WeightFamilies.Wt D j) : absA w = (WeightAlgebra.DF w : ℝ) := by
   unfold absA WeightAlgebra.DF WeightAlgebra.degP
@@ -131,39 +127,37 @@ theorem absA_eq {D : D7} {j : ℕ} (w : WeightFamilies.Wt D j) : absA w = (Weigh
 set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `hci D T h hG large₂ j hj w hpg hL hr hlast`. Use `beta_reduce`. Establish `hfin : Module.finrank ℚ D.host.E = 2 * D.R.f` using `by first`. Consider the case `exact Formalism.MainNotions.Gaps.LevGap.finrank_hostE_eq D.host`. Consider the case `exact Formalism.MainNotions.StandardLattice.finrank_host D`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hfd : ReciprocityTheory.ChartRestriction.G.FD.fdeg D.host.E = D.R.f`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.fdeg`. Use linear arithmetic over natural numbers and integers. Establish `hM : T.Q.l.M = D.host.g 0 * D.host.g 1` using `h.toLawsCore.toLawsM.pins.2.1.1`. Establish `hk` using `D.R.m_add_three_le_k`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hj1, hj2⟩` from `id hj`. Establish `hpq : (T.Q.Dw j).p + (T.Q.Dw j).q = D.R.r`. Establish `h4` using `h.toLawsCore.toLawsM.pins.2.2.2 j hj`. Unfold `IsDatW at h4`. Rewrite using `[h4.1, h4.2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.BasicNotions.Ranks.sigW, Formalism.BasicNotions.Ranks.r]`. Use linear arithmetic over natural numbers and integers. Establish `hr1 : 1 ≤ D.R.r`. Simplify using `only [Formalism.BasicNotions.Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hnpos : 0 < w.n` using `by omega`. Establish `hDF : Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w) ≤ WeightAlgebra.DF w` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.DF_wtA_le T j w`. Establish `hLP : Formalism.L2.Pj.LastPos (T.Q.Dw j) (wtA w)` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.lastPos_wtA h hj w hlast`. Take `⟨-, -, -, -, -, -, -, -, -, -, hnabex, -, htot, hcusp, -, -⟩` from `id h`. Take `⟨inst, hn⟩` from `hnabex j hj`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hlrd, -, -, hlf, -, -, hlDF, hln⟩` from `id hpg`. Establish `hrd : Real.log (ReciprocityTheory.ChartRestriction.G.FD.rdE D.host.E) ≤ 2 * large₂.sc.L`. Rewrite using `[log_rdE]`. Conclude with `hlrd`. Establish `hfd' : Real.log (ReciprocityTheory.ChartRestriction.G.FD.fdeg D.host.E) ≤ 2 * large₂.sc.L`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hfd]`. Conclude with `hlf`. Establish `hDFr : (Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w) : ℝ) ≤ WeightAlgebra.DF w` using `by exact_mod_cast hDF`. Establish `hDF' : Real.log (1 + Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w)) ≤ 2 * large₂.sc.L`. Use `le_trans (Real.log_le_log (by positivity) ?_) hlDF` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨R, b, hb, hgen, hR, hl1⟩` from `GlobalTheory.T.exists_reduced_integral_basis_harmonicPolynomials D.host.E T.Q.H (T.Q.Dw j) T.Q.l T.Q.c w.n (by rw [hpq]; exact hr) (wtA w) large₂.sc.L hL hrd hfd' hDF' hln`. Take `⟨g, hgr, hgcl⟩` from `exists_family hci (T.Q.Xo j) T.Q.c (T.nab j) hn (htot j hj) (wtA w) w.n b hb hgen`. Establish `hmem : ∀ f, f ∈ T.th j w ↔ ∃ (x : Fin w.n → (T.Q.Dw j).La) (P : MvPolynomial (LtN (T.Q.Dw j) w.n) T.Q.c.F), P ∈ harmA T.Q.c (wtA w) w.n ∧ IsThRule (T.Q.Xo j) T.Q.c (T.nab j) x P f` using `fun f => Iff.rfl`. Establish `hth : ∀ p, g p ∈ T.th j w` using `fun p => (hmem _).2 ⟨fun k => levRep (p.1 k), b p.2, hb p.2, hgr p⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Establish `hcut : ∀ p, g p ∈ cutR T.C j w`. Introduce `p`. Unfold `cutR`. Rewrite using `[Submodule.mem_inf, Submodule.mem_iInf]`. Conclude with `⟨hcusp j hj (wtA w) w.n (dom_wtA w) hLP (g p) (hth p), fun hn' => absurd hj hn'⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `: Finite (LevQ (T.Q.Dw j) T.Q.l)` using `(GlobalTheory.T.card_lattice_quotient_half_level D.host.E T.Q.H (T.Q.Dw j) T.Q.l).1`. Set `e` to `Finite.equivFin ((Fin w.n → LevQ (T.Q.Dw j) T.Q.l) × Fin R)`. Set `w0 : Fin (Nat.card ((Fin w.n → LevQ (T.Q.Dw j) T.Q.l) × Fin R)) → ↥(cutR T.C j w)` to `fun k => ⟨g (e.symm k), hcut (e.symm k)⟩`. Use `⟨_, (w0 : Fin _ → (recB h.toLawsCore).Cusp j w), ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h2 : Set.range (fun k => ((w0 k : cutR T.C j w) : T.R j)) = Set.range g` using `e.symm.surjective.range_comp g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsp` using `span_eq_spanIn T.C j w (T.th j w) w0 (fun k => hth (e.symm k)) (fun f hf => by rw [h2]; exact hgcl f ((hmem f).1 hf))`. Conclude with `hsp`. Rewrite using `[Nat.card_prod, Nat.card_fun, Nat.card_fin, Nat.card_fin, (GlobalTheory.T.card_lattice_quotient_half_level D.host.E T.Q.H (T.Q.Dw j) T.Q.l).2, hM, hfd, hpq, ← pow_mul]`. Rewrite `hR` using `[hfd, hpq]`. Use `Nat.mul_le_mul le_rfl (le_trans hR (Nat.mul_le_mul le_rfl (Nat.pow_le_pow_left (by omega) _)))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify by unfolding definitions. Replace the relevant objects with their definitions.
 
-Introduce `k σ`. Establish `hs : (recB h.toLawsCore).supN j w σ (w0 k) = T.Ns j w σ (g (e.symm k))` using `by dsimp only [recB, mkB]`. Unfold `cutN`. Rewrite using `[if_pos hj]`. Rewrite using `[hs]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hexp` using `hl1 (e.symm k).2 σ`. Simplify using `only [hfd, hpq] at hexp`. Establish `hlg : 0 ≤ Real.log (Module.finrank ℚ T.Q.c.F)` using `Real.log_natCast_nonneg _`. Establish `hld : 0 ≤ Real.log |((NumberField.discr T.Q.c.F : ℤ) : ℝ)| / Module.finrank ℚ T.Q.c.F`. Apply `div_nonneg _ (Nat.cast_nonneg _)` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Real.log_nonneg` to reduce the goal to its premises. Establish `: (1 : ℤ) ≤ |NumberField.discr T.Q.c.F|` using `Int.one_le_abs (NumberField.discr_ne_zero _)`. Conclude with `this` after adjusting the coercions. Establish `hL0 : (0 : ℝ) ≤ large₂.sc.L` using `by linarith`. Establish `hA : (Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w) : ℝ) ≤ absA w` using `by rw [absA_eq]; exact hDFr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrL : (0 : ℝ) ≤ 140 * (D.R.r : ℝ) * large₂.sc.L` using `by positivity`. Establish `hAm` using `mul_le_mul_of_nonneg_left hA hrL`. Establish `hfrnL : (0 : ℝ) ≤ (D.R.f : ℝ) * D.R.r * w.n * large₂.sc.L` using `by positivity`. Establish `hDF0 : (0 : ℝ) ≤ (Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w) : ℝ)` using `Nat.cast_nonneg _`. Establish `hℓ : (0 : ℝ) ≤ 140 * ((D.R.r : ℕ) : ℝ) * large₂.sc.L * (Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w) : ℝ) + 2 * (D.R.f : ℝ) * ((D.R.r : ℕ) : ℝ) * (w.n : ℝ) * large₂.sc.L + 4 * Real.log (Module.finrank ℚ T.Q.c.F) + Real.log |((NumberField.discr T.Q.c.F : ℤ) : ℝ)| / Module.finrank ℚ T.Q.c …`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) ≤ 140 * ((D.R.r : ℕ) : ℝ) * large₂.sc.L * (Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w) : ℝ)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `GlobalTheory.T.log_supNorm_thetaGenerator_le hci D T h hG large₂ j hj w hpg hL hr hLP (fun i => levRep ((e.symm k).1 i)) (b (e.symm k).2) (hb _) (g (e.symm k)) (hgr _) σ _ hℓ hexp`. Establish `h30` using `(GlobalTheory.T.supBounds_le_generatorConstant_mul_size D (recB h.toLawsCore) large₂ j w 0 hL hnpos).1`. Use `show Real.log (T.Ns j w σ (g (e.symm k))) ≤ 400 * Zb D large₂ * w.size + 3 * (D.R.f : ℝ) * D.R.r * w.n * large₂.sc.L + 5 * Real.log (Module.finrank ℚ T.Q.c.F) + Real.log |((NumberField.discr T.Q.c.F : ℤ) : ℝ)| / Module.finrank ℚ T.Q.c.F + 2`.
-
-Use polynomial arithmetic with `[key, h30, hAm, hfrnL, hlg, hld]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem theta_family : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (T : Top D) (h : LawsP T), GamAt T.toCore → ∀ (large₂ : SizeData₂ D) (j : ℕ) (hj : InR D j) (w : WeightFamilies.Wt D j), ReciprocityTheory.ChartRestriction.G.PullbackSections.SupBoundPageRows D large₂ w → 2 ≤ large₂.sc.L → D.R.r ≤ w.n → w.LastPos → (fun (B : WeightFamilies.Prov D) (X : PJ D B T.G.P j) => ∃ (N : ℕ) (w0 : Fin N → B.Cusp j w), Submodule.span (𝓞 B.KO) (Set.range w0) = X.thAll w ∧ N ≤ (D.host.g 0 * D.host.g 1) ^ (D.R.f * D.R.r * w.n) * (Module.finrank ℚ B.KO * (1 + WeightAlgebra.DF w) ^ (D.R.f * D.R.r * w.n)) ∧ ∀ k σ, Real.log (B.supN j w σ (w0 k)) ≤ 400 * Zb D large₂ * w.size + 3 * D.R.f * D.R.r * w.n * large₂.sc.L + 5 * Real.log (Module.finrank ℚ B.KO) + Real.log |((NumberField.discr B.KO : ℤ) : ℝ)| / Module.finrank ℚ B.KO + 2) (recB h.toLawsCore) (recPJ h j hj) := by
   intro hci D T h hG large₂ j hj w hpg hL hr hlast

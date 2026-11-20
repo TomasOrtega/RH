@@ -12,9 +12,9 @@ variable {R : Type} [CommRing R]
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 variable {R : Type} [CommRing R] in
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `CohomologyClass.mk_surjective x`. Unfold `_root_.GlobalTheory.EtC.cpull`. Simplify using `only [_root_.GlobalTheory.EtC.cpre_mk]`. Use `congr 1`. Apply `Cocycle.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[_root_.GlobalTheory.EtC.zcomp, Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.EtC.BiprodCls.cpull_cpull {K L M : _root_.GlobalTheory.EtC.Cx R} (f : K ⟶ L)
     (g : L ⟶ M) (I : _root_.GlobalTheory.EtC.Cx R) (n : ℤ) (x : CohomologyClass M I n) :
@@ -30,9 +30,9 @@ theorem _root_.GlobalTheory.EtC.BiprodCls.cpull_cpull {K L M : _root_.GlobalTheo
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 variable {R : Type} [CommRing R] in
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `CohomologyClass.mk_surjective x`. Unfold `_root_.GlobalTheory.EtC.cpull`. Simplify using `only [_root_.GlobalTheory.EtC.cpre_mk, ← CohomologyClass.mk_add]`. Use `congr 1`. Apply `Cocycle.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[_root_.GlobalTheory.EtC.zcomp, Cochain.add_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.EtC.BiprodCls.cpull_add {K L : _root_.GlobalTheory.EtC.Cx R} (f g : K ⟶ L)
     (I : _root_.GlobalTheory.EtC.Cx R) (n : ℤ) (x : CohomologyClass L I n) :
@@ -48,9 +48,9 @@ theorem _root_.GlobalTheory.EtC.BiprodCls.cpull_add {K L : _root_.GlobalTheory.E
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 variable {R : Type} [CommRing R] in
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `CohomologyClass.mk_surjective x`. Unfold `_root_.GlobalTheory.EtC.cpull`. Simplify using `only [_root_.GlobalTheory.EtC.cpre_mk, ← CohomologyClass.mk_zero]`. Use `congr 1`. Apply `Cocycle.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[_root_.GlobalTheory.EtC.zcomp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.EtC.BiprodCls.cpull_zero {K L : _root_.GlobalTheory.EtC.Cx R}
     (I : _root_.GlobalTheory.EtC.Cx R) (n : ℤ) (x : CohomologyClass L I n) :
@@ -65,9 +65,9 @@ theorem _root_.GlobalTheory.EtC.BiprodCls.cpull_zero {K L : _root_.GlobalTheory.
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 variable {R : Type} [CommRing R] in
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `CohomologyClass.mk_surjective x`. Unfold `_root_.GlobalTheory.EtC.cpull`. Simplify using `only [_root_.GlobalTheory.EtC.cpre_mk]`. Use `congr 1`. Apply `Cocycle.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[_root_.GlobalTheory.EtC.zcomp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.EtC.BiprodCls.cpull_id {K : _root_.GlobalTheory.EtC.Cx R}
     (I : _root_.GlobalTheory.EtC.Cx R) (n : ℤ) (x : CohomologyClass K I n) :
@@ -86,9 +86,9 @@ open BiprodCls
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 /- English proof (translation)
-Introduce `R _ K L I n`. Rewrite using `[Function.bijective_iff_has_inverse]`. Use `⟨fun y => _root_.GlobalTheory.EtC.cpull (biprod.fst : K ⊞ L ⟶ K) I n y.1 + _root_.GlobalTheory.EtC.cpull (biprod.snd : K ⊞ L ⟶ L) I n y.2, fun x => ?_, fun y => ?_⟩` and prove the remaining obligations. Simplify using `only [_root_.GlobalTheory.EtC.BiprodCls.cpull_cpull, ← _root_.GlobalTheory.EtC.BiprodCls.cpull_add, biprod.total, _root_.GlobalTheory.EtC.BiprodCls.cpull_id]`. Take `⟨a, b⟩` from `y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [map_add, _root_.GlobalTheory.EtC.BiprodCls.cpull_cpull, biprod.inl_fst, biprod.inl_snd, biprod.inr_fst, biprod.inr_snd, _root_.GlobalTheory.EtC.BiprodCls.cpull_id, _root_.GlobalTheory.EtC.BiprodCls.cpull_zero, add_zero, zero_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.EtC.cpull_biprod_bijective : ∀ (R : Type) [CommRing R]
     (K L I : _root_.GlobalTheory.EtC.Cx R) (n : ℤ),

@@ -16,7 +16,7 @@ def TwFBij : Prop := ∀ (q : ℕ) [NeZero q] (i : ℤ) {A B : CommRingCat.{0}} 
   Function.Bijective ((twF q i).map (Spec.map f).appTop).hom
 
 /- English proof (translation)
-Establish `h` using `(toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ M)).naturality j.op`. Establish `h2` using `congrArg (fun φ => φ.hom m) h`. Conclude with `h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sec_res {R : Type} [CommRing R] (M : CommRingCat.{0} ⥤ ModuleCat.{1} (ULift.{1} R)) {V U : Scheme.{0}} (j : V ⟶ U)
     (m : M.obj Γ(U, ⊤)) : Sec.res j (ofRings.sec M U m) = ofRings.sec M V ((M.map j.appTop).hom m) := by
@@ -25,9 +25,9 @@ theorem sec_res {R : Type} [CommRing R] (M : CommRingCat.{0} ⥤ ModuleCat.{1} (
   exact h2.symm
 
 /- English proof (translation)
-Introduce `hSec q _ i A B f hq hA hB`. Establish `key : (fun s : Sec (tw q i) (Spec A) => Sec.res (Spec.map f) s) = ofRings.sec (twF q i) (Spec B) ∘ ((twF q i).map (Spec.map f).appTop).hom ∘ (Equiv.ofBijective _ (hP hSec q i A hA)).symm`. Use function extensionality and compare the values at `s`. Take `⟨m, rfl⟩` from `(hP hSec q i A hA).2 s`. Simplify using `only [Function.comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[Equiv.ofBijective_symm_apply_apply]`. Conclude with `sec_res _ _ _`. Rewrite using `[key]`. Conclude with `(hP hSec q i B hB).comp ((hT q i f hq hA hB).comp (Equiv.bijective (Equiv.ofBijective _ (hP hSec q i A hA)).symm))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SecBij_of (hP : SecPre) (hT : TwFBij) : SecBij := by
   intro hSec q _ i A B f hq hA hB
@@ -43,20 +43,18 @@ theorem SecBij_of (hP : SecPre) (hT : TwFBij) : SecBij := by
   exact (hP hSec q i B hB).comp ((hT q i f hq hA hB).comp (Equiv.bijective (Equiv.ofBijective _ (hP hSec q i A hA)).symm))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ => Subsingleton.elim _ _, fun _ => ⟨0, Subsingleton.elim _ _⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem bij_of_subsingleton {M N : Type*} [AddCommGroup M] [AddCommGroup N] [Subsingleton M] [Subsingleton N]
     (g : M →+ N) : Function.Bijective g :=
   ⟨fun _ _ _ => Subsingleton.elim _ _, fun _ => ⟨0, Subsingleton.elim _ _⟩⟩
 
 /- English proof (translation)
-Introduce `hyp q _ i A B f hq hA hBs n`. Take `⟨_, _, _, _, _, hA9, _, hB2, _⟩` from `hyp`. Take `⟨hneg, e, he, -⟩` from `hA9 (ZMod q) (tw q i)`. Break down `lt_trichotomy n 0 with h | h | h` into its components or cases. Use `haveI := hneg (sch.obj (Spec A)) n h haveI := hneg (sch.obj (Spec B)) n h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Conclude with `bij_of_subsingleton _`. Substitute `h` using the available equality. Establish `key : ⇑(pull (ZMod q) (sch.map (Spec.map f)) (tw q i) 0) = (e (Spec B)) ∘ (fun s : Sec (tw q i) (Spec A) => Sec.res (Spec.map f) s) ∘ (e (Spec A)).symm`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← he]`. Simplify using the standard rewrite rules. Use `show Function.Bijective (pull (ZMod q) (sch.map (Spec.map f)) (tw q i) 0)`. Rewrite using `[key]`. Conclude with `(e _).bijective.comp ((hB hSec q i f hq hA hBs).comp (e _).symm.bijective)`.
-
-Use `haveI := hB2 (ZMod q) A hA (tw q i) n h haveI := hB2 (ZMod q) B hBs (tw q i) n h`. Conclude with `bij_of_subsingleton _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SHEqv_of_secBij (hSec : SHSection) (hB : SecBij) : SHEqv := by
   intro hyp q _ i A B f hq hA hBs n

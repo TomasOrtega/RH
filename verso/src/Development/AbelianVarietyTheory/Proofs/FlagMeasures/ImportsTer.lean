@@ -5,15 +5,15 @@ namespace GlobalTheory.FiniteSumFlagMeasures
 open NumberField
 
 /- English proof (translation)
-Establish `hv : v ∈ Submodule.span K (↑B : Set (Fin b → K))` using `by rw [hB]; trivial`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨d₁, hd₁, h₁⟩` from `hx`. Take `⟨d₂, hd₂, h₂⟩` from `hy`. Use `⟨d₁ * d₂, mul_ne_zero hd₁ hd₂, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `B.add_mem ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm, mul_smul]`. Conclude with `B.smul_mem _ h₁`. Rewrite using `[mul_smul]`. Conclude with `B.smul_mem _ h₂`. Consider the case `smul c x _ hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, h⟩` from `hx`. Take `⟨⟨n, m⟩, hnm⟩` from `IsLocalization.surj (nonZeroDivisors (𝓞 K)) c`. Simplify using `only at hnm`. Use `⟨(m : 𝓞 K) * d, mul_ne_zero (nonZeroDivisors.coe_ne_zero m) hd, ?_⟩` and prove the remaining obligations. Establish `key : ((m : 𝓞 K) * d) • (c • x) = n • (d • x)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Rewrite using `[← algebraMap_smul K ((m : 𝓞 K) * d), ← algebraMap_smul K n, ← algebraMap_smul K d, smul_smul, smul_smul, map_mul, ← hnm]`. Put the polynomial expressions in normal form. Rewrite using `[key]`. Conclude with `B.smul_mem _ h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main {K : Type} [Field K] [NumberField K] {b : ℕ}
     (B : Submodule (NumberField.RingOfIntegers K) (Fin b → K))

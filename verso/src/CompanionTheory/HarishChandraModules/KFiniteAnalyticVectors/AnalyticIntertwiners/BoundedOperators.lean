@@ -12,20 +12,20 @@ open Formalism.BasicNotions.TH (GrpData URep GKMod Mat upq KFin)
 variable {p q : ℕ} {T : GrpData p q}
 
 /- English proof (translation)
-The claim follows from `(LinearIsometry.mk (πU.π g : πU.H →ₗ[ℂ] πU.H) (πU.isom g)).inner_map_map a b`.
+A detailed English derivation is pending.
 -/
 theorem inner_piC (πU : URep T) (g : T.G) (a b : πU.H) : ⟪πU.π g a, πU.π g b⟫_ℂ = ⟪a, b⟫_ℂ :=
   (LinearIsometry.mk (πU.π g : πU.H →ₗ[ℂ] πU.H) (πU.isom g)).inner_map_map a b
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pi_mulC (πU : URep T) (g h : T.G) (v : πU.H) : πU.π (g * h) v = πU.π g (πU.π h v) := by rw [map_mul]; rfl
 
 /- English proof (translation)
-Establish `hσ' : ∀ x, σ (rx (covC T x)) = πU.π x` using `fun x => by rw [hσ, pow_zero, one_smul]`. Use `⟨⟨?_, fun a ha b hb => ?_⟩, fun g hg v => ?_, fun v => sigC_contC πU hσ v⟩` and prove the remaining obligations. Simplify `hσ' 1` using `[covC, rx_oneC]`. Take `⟨x, rfl⟩` from `exists_lift'C T ha`. Take `⟨y, rfl⟩` from `exists_lift'C T hb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← rx_mulC, show covC T x * covC T y = covC T (x * y) by simp [covC], hσ', hσ', hσ', map_mul]`. Both sides reduce to the same expression. Take `⟨x, rfl⟩` from `exists_lift'C T hg`. Rewrite using `[hσ', πU.isom]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sig_repC (πU : URep T) {σ : Matrix (Fin (p + q)) (Fin (p + q)) ℂ → (πU.H →L[ℂ] πU.H)}
     (hσ : ∀ x, σ (rx (covC T x)) = ((((T.sq x : ℂˣ) : ℂ))⁻¹ ^ 0) • πU.π x) :
@@ -41,9 +41,9 @@ theorem sig_repC (πU : URep T) {σ : Matrix (Fin (p + q)) (Fin (p + q)) ℂ →
     rw [hσ', πU.isom]
 
 /- English proof (translation)
-Establish `hU : (rx (covC T k))ᴴ * Formalism.REAL.Jm (epq p q) * rx (covC T k) = Formalism.REAL.Jm (epq p q)` using `mem_UJC T k`. Establish `hc : rx (covC T k) * Formalism.REAL.Jm (epq p q) = Formalism.REAL.Jm (epq p q) * rx (covC T k)`. Rewrite using `[← rx_JC, ← rx_mulC, ← rx_mulC, (comm_iff_KC _).2 hk]`. Use `⟨?_, hc⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, Jm_sqC, Matrix.mul_one]`. Use `_ = 1 := by rw [hc, ← Matrix.mul_assoc, hU, Jm_sqC]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kset_ofC {k : T.G} (hk : k ∈ T.Kset) : rx (covC T k) ∈ Formalism.REAL.Kset (epq p q) := by
   have hU : (rx (covC T k))ᴴ * Formalism.REAL.Jm (epq p q) * rx (covC T k) = Formalism.REAL.Jm (epq p q) := mem_UJC T k
@@ -57,25 +57,23 @@ theorem kset_ofC {k : T.G} (hk : k ∈ T.Kset) : rx (covC T k) ∈ Formalism.REA
     _ = 1 := by rw [hc, ← Matrix.mul_assoc, hU, Jm_sqC]
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `exists_zC T`. Establish `hzz : z * z = 1` using `eq_of_covC T (by rw [map_mul, hz.1, one_mul, map_one]) (by rw [map_mul, hz.2, map_one]; simp)`. Establish `hzc : ∀ x, z * x = x * z` using `fun x => eq_of_covC T (by rw [map_mul, map_mul, hz.1, one_mul, mul_one]) (by rw [map_mul, map_mul, mul_comm])`. Take `⟨Z, hZ⟩ : ∃ Z, Z = πU.π z` from `⟨_, rfl⟩`. Establish `hZZ : Z * Z = 1` using `by rw [hZ, ← map_mul, hzz, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hZc : ∀ x, πU.π x * Z = Z * πU.π x` using `fun x => by rw [hZ, ← map_mul, ← map_mul, hzc]`. Set `D : ℂ → (πU.H →L[ℂ] πU.H)` to `fun c => ((1 + c) / 2) • 1 + ((1 - c) / 2) • Z`. Establish `hDD : ∀ c d, D c * D d = D (c * d)` using `fun c d => by`. Simplify using `only [D, mul_add, add_mul, smul_mul_assoc, mul_smul_comm, mul_one, one_mul, hZZ]`. Use `module`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hD1 : D 1 = 1` using `by simp [D]`. Establish `hDc : ∀ c x, πU.π x * D c = D c * πU.π x` using `fun c x => by`. Simplify using `only [D, mul_add, add_mul, smul_mul_assoc, mul_smul_comm, mul_one, one_mul, hZc]`. Establish `hZi : ∀ a b, ⟪Z a, Z b⟫_ℂ = ⟪a, b⟫_ℂ` using `fun a b => hZ ▸ inner_piC πU z a b`. Establish `hZa : ∀ a b, ⟪Z a, b⟫_ℂ = ⟪a, Z b⟫_ℂ` using `fun a b => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hZi a (Z b), ← ContinuousLinearMap.mul_apply Z Z, hZZ]`. Both sides reduce to the same expression. Establish `hDi : ∀ c : ℂ, ‖c‖ = 1 → ∀ v, ‖D c v‖ = ‖v‖` using `fun c hc v => by`. Establish `h1 : (starRingEnd ℂ) c * c = 1` using `by rw [Complex.conj_mul', hc]; simp`. Establish `h2 : ⟪D c v, D c v⟫_ℂ = ⟪v, v⟫_ℂ`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [D, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right, hZi, hZa v v, map_div₀, map_add, map_sub, map_one, map_ofNat]`. Take the linear combination `((⟪v, v⟫_ℂ - ⟪v, Z v⟫_ℂ) / 2) * h1`. Rewrite `h2` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 (by exact_mod_cast h2)`. Set `s : T.G → ℂ` to `fun x => ((T.sq x : ℂˣ) : ℂ)`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hs0 : ∀ x, s x ≠ 0` using `fun x => Units.ne_zero _`. Set `π' : URep T` to `{ H := πU.H π := { toFun := fun x => D (s x)⁻¹ * πU.π x map_one' := by simp [s, hD1] map_mul' := fun x y => by`. Rewrite using `[show s (x * y) = s x * s y by simp [s], mul_inv, ← hDD, map_mul, mul_assoc, mul_assoc, ← mul_assoc (D (s y)⁻¹), ← hDc, mul_assoc] }`. Use `isom := fun g v => by show ‖D (s g)⁻¹ (πU.π g v)‖ = _`. Rewrite using `[hDi _ (by rw [norm_inv, norm_sqC, inv_one]), πU.isom]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `cont := fun v => by`. Establish `h1 : Continuous fun g => (s g)⁻¹` using `(sq_contC T).inv₀ hs0`. Establish `h2` using `πU.cont v`. Use `show Continuous fun g => ((1 + (s g)⁻¹) / 2) • πU.π g v + ((1 - (s g)⁻¹) / 2) • Z (πU.π g v)`. Use `fun_prop }`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hP : π'.π z = ((-1 : ℂ) ^ 0) • 1` using `by show D (s z)⁻¹ * πU.π z = _`. Rewrite using `[← hZ, show s z = -1 by simp [s, hz.2]]`. Simplify using `[D, hZZ]`. Establish `hσ` using `sigC_eq π' hz hP`. Use `(hD _ _ _ _ (sig_repC π' hσ)).mono ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `v ⟨S, hSf, hv, hSK⟩`. Use `Submodule.finiteDimensional_of_le (S₂ := S ⊔ S.map (Z : πU.H →ₗ[ℂ] πU.H)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨k, hk⟩, rfl⟩`. Establish `h1` using `hSK _ (kset_ofC hk) v hv`. Rewrite `h1` using `[hσ, pow_zero, one_smul]`.
-
-Establish `h2 : πU.π k v = D (s k) (π'.π k v)` using `by show _ = (D (s k) * (D (s k)⁻¹ * πU.π k)) v`. Rewrite using `[← mul_assoc, hDD, mul_inv_cancel₀ (hs0 k), hD1, one_mul]`. Use `show πU.π k v ∈ _`. Rewrite using `[h2]`. Conclude with `Submodule.add_mem_sup (S.smul_mem _ h1) (Submodule.smul_mem _ _ ⟨_, h1, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kfinDense_coverC
     (hD : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -145,19 +143,19 @@ theorem kfinDense_coverC
   exact Submodule.add_mem_sup (S.smul_mem _ h1) (Submodule.smul_mem _ _ ⟨_, h1, rfl⟩)
 
 /- English proof (translation)
-Introduce and unpack `p q _ T πU M io ⟨hinj, hran, hd⟩ - ⟨hnt, hirr⟩`. Use `⟨hinj.nontrivial, fun S hS hinv => ?_⟩` and prove the remaining obligations. Establish `: CompleteSpace S` using `hS.completeSpace_coe`. Establish `hP : ∀ g v, S.starProjection (πU.π g v) = πU.π g (S.starProjection v)` using `fun g v => by`. Use `Submodule.eq_starProjection_of_mem_orthogonal (hinv g _ (S.starProjection_apply_mem v)) fun w hw => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_sub, ← inner_piC πU g⁻¹, ← pi_mulC, inv_mul_cancel, map_one]`. Conclude with `S.sub_starProjection_mem_orthogonal v _ (hinv _ w hw)`. Establish `hK : ∀ v : M.V, ∃ u, io u = S.starProjection (io v)` using `fun v => by`. Use `(hran _).2 ?_` and prove the remaining obligations. Establish `: FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k : T.Kset => πU.π k (io v)))` using `(hran _).1 ⟨v, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun k : T.Kset => πU.π k (io v))).map (S.starProjection : πU.H →ₗ[ℂ] πU.H)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨_, Submodule.subset_span ⟨k, rfl⟩, hP _ _⟩`. Establish `hN : ∀ Z, ∀ y ∈ S.comap io, M.act Z y ∈ S.comap io` using `fun Z y hy => by`. Establish `key : ∀ Y ∈ upq p q, M.act Y y ∈ S.comap io` using `fun Y hY => deriv_memC hS (hd Y hY y) fun t => hinv _ _ hy`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Y₁, h₁, Y₂, h₂, e, -⟩` from `upq_decC Z`. Rewrite using `[e, map_add, map_smul]`. Conclude with `add_mem (key Y₁ h₁) (Submodule.smul_mem _ _ (key Y₂ h₂))`. Break down `hirr _ hN with h | h` into its components or cases. Use `Or.inl (eq_bot_iff.2 fun v hv => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : ∀ x, S.starProjection x = 0` using `fun x => by`. Use `(isClosed_eq S.starProjection.continuous continuous_const).closure_subset_iff.2 ?_ (hD p q T πU x)` and prove the remaining obligations. Introduce `y hy`. Take `⟨w, rfl⟩` from `(hran y).2 hy`. Take `⟨u, hu⟩` from `hK w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: u ∈ S.comap io` using `show io u ∈ S from hu ▸ S.starProjection_apply_mem _`. Rewrite `this` using `[h]`. Use `show S.starProjection (io w) = 0`. Rewrite using `[← hu, (Submodule.mem_bot ℂ).1 this, map_zero]`. Rewrite using `[← Submodule.starProjection_eq_self_iff.2 hv, h0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.zero_mem _`. Use `Or.inr (eq_top_iff.2 fun x _ => hS.closure_subset_iff.2 ?_ (hD p q T πU x))` and prove the remaining obligations. Introduce `y hy`. Take `⟨w, rfl⟩` from `(hran y).2 hy`. Conclude with `show w ∈ S.comap io from h ▸ Submodule.mem_top`.
+A detailed English derivation is pending.
 -/
 theorem harish_chandra_third_clause (hD : ∀ (p q : ℕ) (T : GrpData p q) (πU : URep T), Dense {x | KFin T πU.π x}) : Clause3 := by
   rintro p q _ T πU M io ⟨hinj, hran, hd⟩ - ⟨hnt, hirr⟩

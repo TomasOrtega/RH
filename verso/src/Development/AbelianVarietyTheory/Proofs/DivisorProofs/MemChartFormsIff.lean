@@ -15,7 +15,7 @@ def wt {n : ℕ} (x : Fin n → Kˣ) (J : Finset (Fin n)) (i : Fin n) : K :=
   if i ∈ J then 1 else (x i : K)
 
 /- English proof (translation)
-Unfold `frame wt`. Use `split_ifs with h`. Simplify using the standard rewrite rules. Simplify using `[dlog, smul_smul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame_eq {n : ℕ} (x : Fin n → Kˣ) (J : Finset (Fin n)) (i : Fin n) :
     frame x J i = wt x J i • dlog (x i) := by
@@ -25,7 +25,7 @@ theorem frame_eq {n : ℕ} (x : Fin n → Kˣ) (J : Finset (Fin n)) (i : Fin n) 
   · simp [dlog, smul_smul]
 
 /- English proof (translation)
-Simplify using `only [wt]`. Rewrite using `[Finset.prod_ite, Finset.prod_const_one, one_mul, Finset.sdiff_eq_filter]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_wt {n : ℕ} (x : Fin n → Kˣ) (J I : Finset (Fin n)) :
     ∏ i ∈ I, wt x J i = ∏ i ∈ I \ J, (x i : K) := by
@@ -33,21 +33,21 @@ theorem prod_wt {n : ℕ} (x : Fin n → Kˣ) (J I : Finset (Fin n)) :
   rw [Finset.prod_ite, Finset.prod_const_one, one_mul, Finset.sdiff_eq_filter]
 
 /- English proof (translation)
-Rewrite using `[← prod_wt, ← prod_wt, Finset.prod_insert hi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wt_mul_prod {n : ℕ} (x : Fin n → Kˣ) (J I : Finset (Fin n)) (i : Fin n) (hi : i ∉ I) :
     wt x J i * ∏ j ∈ I \ J, (x j : K) = ∏ j ∈ insert i I \ J, (x j : K) := by
   rw [← prod_wt, ← prod_wt, Finset.prod_insert hi]
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.mpr fun j _ => Units.ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem prod_sdiff_ne_zero {n : ℕ} (x : Fin n → Kˣ) (J I : Finset (Fin n)) :
     ∏ j ∈ I \ J, (x j : K) ≠ 0 :=
   Finset.prod_ne_zero_iff.mpr fun j _ => Units.ne_zero _
 
 /- English proof (translation)
-The claim follows from `| 0, v, _ => ⟨∅, 1, fun _ => rfl, by simp [logWedge]⟩ | a + 1, v, hv => by obtain ⟨I, m, hc, he⟩ := ιMulti_frame x J a (Matrix.vecTail v) (fun i => hv _) obtain ⟨i0, hi0⟩ := hv 0 rw [ExteriorAlgebra.ιMulti_succ_apply, he, ← hi0, frame_eq, map_smul, smul_mul_smul_comm] by_cases hi …`.
+A detailed English derivation is pending.
 -/
 theorem ιMulti_frame {n : ℕ} (x : Fin n → Kˣ) (J : Finset (Fin n)) :
     ∀ (a : ℕ) (v : Fin a → Ω[K⁄ℤ]), (∀ i, v i ∈ Set.range (frame x J)) →
@@ -70,7 +70,7 @@ theorem ιMulti_frame {n : ℕ} (x : Fin n → Kˣ) (J : Finset (Fin n)) :
         ring_nf
 
 /- English proof (translation)
-The claim follows from `| [] => by simp | i :: l => by simp only [List.map_cons, List.prod_cons] rw [list_frame x J l, frame_eq, map_smul, smul_mul_smul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem list_frame {n : ℕ} (x : Fin n → Kˣ) (J : Finset (Fin n)) : ∀ l : List (Fin n),
     (l.map fun i => ExteriorAlgebra.ι K (frame x J i)).prod =
@@ -81,7 +81,7 @@ theorem list_frame {n : ℕ} (x : Fin n → Kˣ) (J : Finset (Fin n)) : ∀ l : 
     rw [list_frame x J l, frame_eq, map_smul, smul_mul_smul_comm]
 
 /- English proof (translation)
-Apply `List.ext_getElem` to reduce the goal to its premises. Simplify using `[h]`. Introduce `k h1 h2`. Simplify using `[Finset.orderEmbOfFin_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem ofFn_orderEmbOfFin {n a : ℕ} (I : Finset (Fin n)) (h : I.card = a) {β : Type} (f : Fin n → β) :
     List.ofFn (fun i => f (I.orderEmbOfFin h i)) = (I.sort (· ≤ ·)).map f := by
@@ -91,7 +91,7 @@ theorem ofFn_orderEmbOfFin {n a : ℕ} (I : Finset (Fin n)) (h : I.card = a) {β
     simp [Finset.orderEmbOfFin_apply]
 
 /- English proof (translation)
-Rewrite using `[ExteriorAlgebra.ιMulti_apply, show (List.ofFn fun i => ExteriorAlgebra.ι K (frame x J (I.orderEmbOfFin h i))) = _ from ofFn_orderEmbOfFin I h (fun j => ExteriorAlgebra.ι K (frame x J j)), list_frame, logWedge, ← prod_wt]`. Use `congr 1`. Rewrite using `[← Multiset.prod_coe, ← Multiset.map_coe, Finset.sort_eq, Finset.prod_eq_multiset_prod]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem ιMulti_orderEmbOfFin {n a : ℕ} (x : Fin n → Kˣ) (J I : Finset (Fin n)) (h : I.card = a) :
     ExteriorAlgebra.ιMulti K a (fun i => frame x J (I.orderEmbOfFin h i)) =
@@ -125,21 +125,21 @@ namespace GlobalTheory.LogDR
 open ChartMem in
 
 /- English proof (translation)
-Introduce `K _ A n x J t a η`. Prove the components needed by the constructor for the conclusion. Introduce `hη`. Establish `hle : chartForms A x J t a ≤ coeffForms A x J t a`. Unfold `chartForms spanForms`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨c, hc, v, hv, rfl⟩`. Take `⟨I, m, hm, he⟩` from `ιMulti_frame x J a v hv`. Use `⟨fun I' => if I' = I then c * ((m : K) * ∏ j ∈ I \ J, (x j : K)) else 0, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `I' h' dsimp only split_ifs with e`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `e` using the available equality. Distinguish the cases in `h0 : m = 0`. Simplify using `[h0]`. Conclude with `absurd (hm h0) h'`. Both sides reduce to the same expression.
+Simplify by unfolding definitions. Substitute using the available equality. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Introduce `I' dsimp only split_ifs with e`. Substitute `e` using the available equality. Establish `hp` using `prod_sdiff_ne_zero x J I'`. Establish `hq : c * ((m : K) * ∏ j ∈ I' \ J, (x j : K)) * t / ∏ j ∈ I' \ J, (x j : K) = (m : K) * (c * t)`. Clear the denominators using the available nonvanishing facts.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hq]`. Conclude with `A.mul_mem (intCast_mem A m) hc`. Simplify using the standard rewrite rules. Rewrite using `[he, smul_smul]`. Simplify using `[ite_smul]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hle hη`. Introduce and unpack `⟨c, h1, h2, rfl⟩`. Use `AddSubgroup.sum_mem _ fun I _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : I.card = a`. Establish `hp` using `prod_sdiff_ne_zero x J I`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : c I • logWedge x I = (c I / ∏ j ∈ I \ J, (x j : K)) • ExteriorAlgebra.ιMulti K a (fun i => frame x J (I.orderEmbOfFin h i))`. Rewrite using `[ιMulti_orderEmbOfFin, smul_smul, div_mul_cancel₀ _ hp]`. Rewrite using `[e]`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨_, ?_, _, fun i => ⟨_, rfl⟩, rfl⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show c I / _ * (t : K) ∈ A`. Rewrite using `[div_mul_eq_mul_div]`. Conclude with `h2 I`. Rewrite using `[h1 I h, zero_smul]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_chartForms_iff : ∀ (K : Type) [Field K] (A : Subring K) (n : ℕ) (x : Fin n → Kˣ) (J : Finset (Fin n)) (t : Kˣ) (a : ℕ) (η : abelian₂ K), η ∈ chartForms A x J t a ↔ ∃ c : Finset (Fin n) → K, (∀ I, I.card ≠ a → c I = 0) ∧ (∀ I, c I * t / ∏ j ∈ I \ J, (x j : K) ∈ A) ∧ η = ∑ I, c I • logWedge x I := by
   intro K _ A n x J t a η

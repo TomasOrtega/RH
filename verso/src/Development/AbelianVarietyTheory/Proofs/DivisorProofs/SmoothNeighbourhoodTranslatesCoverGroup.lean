@@ -8,7 +8,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Use `ext1`. Simplify using `using Over.w f`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem chartCover_toTerm {S : Scheme.{0}} {A : Over S} (f : A ⟶ Over.mk (𝟙 S)) :
     f = Over.homMk A.hom (by simp) := by
@@ -16,7 +16,7 @@ theorem chartCover_toTerm {S : Scheme.{0}} {A : Over S} (f : A ⟶ Over.mk (𝟙
   simpa using Over.w f
 
 /- English proof (translation)
-Unfold `transl`. Rewrite using `[comp_mul, Category.comp_id, ← Category.assoc]`. Use `congr 2`. Conclude with `chartCover_toTerm _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem comp_transl {S : Scheme.{0}} {G A : Over S} [GrpObj G] (y : Over.mk (𝟙 S) ⟶ G) (h : A ⟶ G) :
     h ≫ transl y = h * (Over.homMk A.hom (by simp) ≫ y) := by
@@ -26,13 +26,13 @@ theorem comp_transl {S : Scheme.{0}} {G A : Over S} [GrpObj G] (y : Over.mk (�
   exact chartCover_toTerm _
 
 /- English proof (translation)
-Introduce `R _ _ S π G' _ N n x H p`. Set `t : Sp (G'.left.residueField p) ⟶ G'.left` to `G'.left.fromSpecResidueField p`. Set `s : Sp (G'.left.residueField p) ⟶ S` to `t ≫ G'.hom`. Set `g : Over.mk s ⟶ G'` to `Over.homMk t rfl`. Establish `hp : g.left (IsLocalRing.closedPoint _) = p` using `Scheme.fromSpecResidueField_apply p _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Break down `H (G'.left.residueField p) s g with h1 | ⟨i, h2⟩` into its components or cases. Conclude with `⟨none, by simpa using h1 ⟨_, hp⟩⟩`. Set `c : Over.mk s ⟶ G'` to `(Over.homMk s (by simp) : Over.mk s ⟶ Over.mk (𝟙 S)) ≫ x i`. Take `⟨b, hb⟩` from `h2 ⟨IsLocalRing.closedPoint _, rfl⟩`. Establish `key : (g * c) ≫ transl (x i)⁻¹ = g`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[comp_transl]`. Establish `e : (Over.homMk (Over.mk s).hom (by simp) : Over.mk s ⟶ Over.mk (𝟙 S)) ≫ (x i)⁻¹ = c⁻¹`. Rewrite using `[GrpObj.comp_inv]`. Both sides reduce to the same expression. Rewrite using `[e, mul_inv_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `⟨some i, b, ?_⟩` and prove the remaining obligations. Rewrite using `[Near.chart_some, Scheme.Hom.comp_apply, hb]`. Establish `e2 : ((g * c) ≫ transl (x i)⁻¹).left (IsLocalRing.closedPoint _) = p` using `by rw [key]; exact hp`. Rewrite `e2` using `[Over.comp_left]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).symm.trans e2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_cover : ∀ {R : Type} [CommRing R] [IsLocalRing R] (S : Scheme.{0}) (π : S ⟶ Sp R) (G' : Over S) [GrpObj G']
     (N : Near π G') (n : ℕ) (x : Fin n → (Over.mk (𝟙 S) ⟶ G')),

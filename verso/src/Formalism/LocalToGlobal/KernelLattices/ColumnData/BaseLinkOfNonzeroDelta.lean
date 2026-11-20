@@ -15,9 +15,9 @@ open Formalism.L2.Ker.Cd.TaylorLogMetric
 open Formalism.MainNotions.TaylorLogMetric hiding admitted AdmittedStatements AllSplit CoefIn DataIn DualB EqAt EqAway FamE Hf IdE InProd Iop IsChi IsComb IsCurveIdeal IsDiscriminantTwelfthRootOfIdealLattice IsFrobC IsIdem JetsInt La LocBasis LocBasisW Mono N1 NNBasis OrthoBasisW Orthonormal Pos Qd QdB Stmt TVar TVarB Th ThSp Tor TorsPrime U VC Wop XiF YYl adm1 al atLog chK chg chgB coordV der detId logDerivativeAtOne ellT embT embV eq22 fF fnConj hYY hh homL int22 jet kap lamOf letterOf liftY logOmVal meanLogNormSq meanLogOm mmM mom22 LargerSupportMomentCondition mono normSq pSer pairN per22 posEmb posG aux₃ pull qH sE sgm str22 tauEmb tauSg taylor th22 tor0 torConj vec22 vecN wPh zB
 
 /- English proof (translation)
-Introduce `cc hcc`. Take `⟨L, hL0⟩` from `Formalism.L2.Ker.Cd.periodExists D cc 1 hcc one_ne_zero`. Establish `hL : ∀ w : ℂ, w ∈ lamOf D cc 1 ↔ w ∈ L.lattice` using `fun w => by rw [← hL0]; rfl`. Establish `h4` using `Formalism.L2.PairingIndexBounds.Rec.eisG_eq_G _ L hL 2 (by norm_num)`. Establish `h6` using `Formalism.L2.PairingIndexBounds.Rec.eisG_eq_G _ L hL 3 (by norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Formalism.L2.Th1.F.discNeZero L` as an intermediate fact. Unfold `Formalism.MainNotions.TaylorLogMetric.discr Formalism.MainNotions.TaylorLogMetric.g2 Formalism.MainNotions.TaylorLogMetric.g3`. Rewrite using `[h4, h6]`. Simplify `this` using `[PeriodPair.g₂, PeriodPair.g₃]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem discrNe (D : Car) : DiscrNe D := by
   intro cc hcc
@@ -79,7 +79,7 @@ def RestAll (D : Car) (C : ℝ) : Prop :=
     ∀ B : Base D cc δ, ∀ χ, IsChi D χ → EigenvectorPacketProperties B C χ
 
 /- English proof (translation)
-Introduce `D cc hcc δ hδ e`. Apply `discrNe D cc hcc.1` to reduce the goal to its premises. Rewrite using `[← (show δ ^ 12 = discr (lamOf D cc 1) from hδ), e]`. Evaluate the numerical expressions.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem delta_nonzero_link : LinkDeltaNe := by
   intro D cc hcc δ hδ e
@@ -88,21 +88,21 @@ theorem delta_nonzero_link : LinkDeltaNe := by
   norm_num
 
 /- English proof (translation)
-Introduce `D cc hcc δ hδ` and use `base_linkage_exists D cc hcc δ (delta_nonzero_link D cc hcc δ hδ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem base_link_of_nonzero_delta : LinkBaseRec :=
   fun D cc hcc δ hδ => base_linkage_exists D cc hcc δ (delta_nonzero_link D cc hcc δ hδ)
 
 /- English proof (translation)
-Introduce `D cc hcc δ hδ B N N' L L' hA x hx`. Take `⟨a, b, hab, e⟩` from `hermitian_form_integral_values D cc hcc δ hδ (delta_nonzero_link D cc hcc δ hδ) N N' L L' hA x hx x hx`. Establish `hs` using `IO.sqrt_d_pos D`. Establish `hreal : (Hf D (tor0 D cc δ) x x).im = 0`. Establish `h1` using `IO.Hf_herm (tor0 D cc δ) x x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg Complex.im h1`. Rewrite `h2` using `[Complex.conj_im]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb : b = 0`. Rewrite `hreal` using `[e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at hreal`. Conclude with `hreal`. Substitute `hb` using the available equality. Take `⟨j, hj⟩` from `hab`. Use `⟨j, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show Real.sqrt D.host.d / 2 * (Hf D (tor0 D cc δ) x x).re = (j : ℝ)`. Rewrite using `[e]`. Establish `ha : (a : ℝ) = 2 * j`. Establish `: a = 2 * j` using `by linarith`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [Int.cast_zero, zero_mul, add_zero, Complex.ofReal_re]`. Rewrite using `[ha]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem rational_integrality_link : LinkQInt := by
   intro D cc hcc δ hδ B N N' L L' hA x hx
@@ -130,7 +130,7 @@ theorem rational_integrality_link : LinkQInt := by
   field_simp
 
 /- English proof (translation)
-Introduce `D cc hcc δ hδ B χ hχ N N' L L' hA`. Establish `hS` using `SO.stdOK B hcc hδ`. Establish `hL` using `B.latAll hcc hδ (delta_nonzero_link D cc hcc δ hδ)`. Conclude with `⟨B.eq_change_right hS hL χ hχ hA, B.eq_change_left hS hL χ hχ hA, B.eNat_zero hS hL χ hχ hA.1 hA.2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem equation_base_link : LinkEqBase := by
   intro D cc hcc δ hδ B χ hχ N N' L L' hA
@@ -139,7 +139,7 @@ theorem equation_base_link : LinkEqBase := by
   exact ⟨B.eq_change_right hS hL χ hχ hA, B.eq_change_left hS hL χ hχ hA, B.eNat_zero hS hL χ hχ hA.1 hA.2.1⟩
 
 /- English proof (translation)
-Introduce `D hA cc hcc δ hδ`. Take `⟨B⟩` from `base_link_of_nonzero_delta D cc hcc δ hδ`. Use `⟨character_linkage_holds D hA, fun χ hχ => ⟨B.eNat χ, vector_bound_link D cc hcc δ hδ B χ hχ, ?_⟩⟩` and prove the remaining obligations. Conclude with `theta_bound_link D cc hcc δ hδ B χ hχ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem partition_link : LinkPart := by
   intro D hA cc hcc δ hδ
@@ -148,13 +148,13 @@ theorem partition_link : LinkPart := by
   exact theta_bound_link D cc hcc δ hδ B χ hχ
 
 /- English proof (translation)
-Introduce `D C hA hper h` and use `eigen_linkage_all_primes D C hA hper (discrNe D) h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem provision_link_holds : LinkThetaFamily :=
   fun D C hA hper h => eigen_linkage_all_primes D C hA hper (discrNe D) h
 
 /- English proof (translation)
-Introduce `hP D C hA h1 h2 h3 h4 h` and use `provision_link_holds D C hA (hP D h1 h2 h3 h4) h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem provision_link_of_periods : LinkThetaFamily' :=
   fun hP D C hA h1 h2 h3 h4 h => provision_link_holds D C hA (hP D h1 h2 h3 h4) h

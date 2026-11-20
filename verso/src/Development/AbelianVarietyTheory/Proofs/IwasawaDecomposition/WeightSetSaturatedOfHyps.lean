@@ -22,7 +22,7 @@ noncomputable section
 namespace GlobalTheory.HeightCounting.Up
 
 /- English proof (translation)
-Introduce `hA hH` and use `GlobalTheory.T.start_state_untwisted_empty_local hA hH (GlobalTheory.T.adelicData_extend_largerFields_of_hypotheses hH.cover hA.a5 hA.a6 hA.a7 hA.a8 hA.a9 hA.a10)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem w1Sat_of_hyps : HypA → HypH → ExistsUnlocalizedSaturatedState := fun hA hH =>
   GlobalTheory.T.start_state_untwisted_empty_local hA hH (GlobalTheory.T.adelicData_extend_largerFields_of_hypotheses hH.cover hA.a5 hA.a6 hA.a7 hA.a8 hA.a9 hA.a10)

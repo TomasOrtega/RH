@@ -64,13 +64,13 @@ def IsAttached (w : ℤ) (χ : HeckeCharacter E) : Prop :=
   ∀ σ : E →+* ℂ, HasAngularType χ σ (ch.infType σ - ch.infType (ComplexEmbedding.conjugate σ))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨dvd_rfl, ch.map_principal⟩`.
+Supply the required witnesses or components.
 -/
 theorem isDefinedModulo_modulus : ch.IsDefinedModulo ch.modulus :=
   ⟨dvd_rfl, ch.map_principal⟩
 
 /- English proof (translation)
-The claim follows from `le_sSup ch.isDefinedModulo_modulus`.
+A detailed English derivation is pending.
 -/
 theorem modulus_le_conductor : ch.modulus ≤ ch.conductor :=
   le_sSup ch.isDefinedModulo_modulus
@@ -84,7 +84,7 @@ section Norm
 variable {E : Type*} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `h` using `Algebra.norm_eq_prod_embeddings ℚ ℂ x`. Rewrite `h` using `[eq_ratCast]`. Rewrite using `[h]`. Conclude with `(Fintype.prod_equiv (RingHom.equivRatAlgHom E ℂ) (fun σ ↦ σ x) (fun σ ↦ σ x) fun _ ↦ rfl)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_embeddings_eq_norm (x : E) :
     ∏ σ : E →+* ℂ, σ x = ((Algebra.norm ℚ x : ℚ) : ℂ) := by
@@ -97,24 +97,22 @@ theorem prod_embeddings_eq_norm (x : E) :
 omit [NumberField E] in
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x ↦ by simp`.
+A detailed English derivation is pending.
 -/
 theorem conjugate_conjugate_embedding (φ : E →+* ℂ) :
     ComplexEmbedding.conjugate (ComplexEmbedding.conjugate φ) = φ :=
   RingHom.ext fun x ↦ by simp
 
 /- English proof (translation)
-Establish `hfib : ∀ w : InfinitePlace E, ∏ σ ∈ Finset.univ.filter (fun σ : E →+* ℂ ↦ InfinitePlace.mk σ = w), σ x = ((Complex.normSq (w.embedding x) : ℝ) : ℂ)`. Introduce `w`. Establish `hne : w.embedding ≠ ComplexEmbedding.conjugate w.embedding` using `fun h ↦ IsTotallyComplex.complexEmbedding_not_isReal w.embedding h.symm`. Establish `hset : Finset.univ.filter (fun σ : E →+* ℂ ↦ InfinitePlace.mk σ = w) = {w.embedding, ComplexEmbedding.conjugate w.embedding}`. Use extensionality with `σ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`. Use `conv_lhs => rw [← mk_embedding w]`. Rewrite using `[mk_eq_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | h)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Prove the first alternative.
 
-Conclude with `Or.inl h`. Use `right`. Rewrite using `[← h, conjugate_conjugate_embedding]`. Introduce and unpack `(h | h)`. Conclude with `Or.inl h`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Prove the first alternative. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `right`. Rewrite using `[h, conjugate_conjugate_embedding]`. Rewrite using `[hset, Finset.prod_pair hne, ComplexEmbedding.conjugate_coe_eq, Complex.mul_conj]`. Establish `key : ∏ σ : E →+* ℂ, σ x = ((∏ w : InfinitePlace E, Complex.normSq (w.embedding x) : ℝ) : ℂ)`. Rewrite using `[← Finset.prod_fiberwise Finset.univ (fun σ : E →+* ℂ ↦ InfinitePlace.mk σ) (fun σ ↦ σ x), Complex.ofReal_prod]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.prod_congr rfl fun w _ ↦ hfib w`. Rewrite `key` using `[prod_embeddings_eq_norm, ← Complex.ofReal_ratCast]`. Establish `hre : ((Algebra.norm ℚ x : ℚ) : ℝ) = ∏ w : InfinitePlace E, Complex.normSq (w.embedding x)` using `Complex.ofReal_injective key`. Establish `hpos : 0 < ∏ w : InfinitePlace E, Complex.normSq (w.embedding x)` using `Finset.prod_pos fun w _ ↦ Complex.normSq_pos.2 ((map_ne_zero w.embedding).2 hx)`. Rewrite `hpos` using `[← hre]`.
-
-Conclude with `hpos` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraNorm_pos [IsTotallyComplex E] {x : E} (hx : x ≠ 0) :
     0 < Algebra.norm ℚ x := by
@@ -190,7 +188,7 @@ def normCharacter : AlgHeckeCharacter E LL ι where
 variable {E LL ι}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `algebraMap ℚ LL ((absNormUnits E (I : (FractionalIdeal (𝓞 E)⁰ E)ˣ) : ℚˣ) : ℚ) = _`. Rewrite using `[absNormUnits_apply, eq_ratCast]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem normCharacter_apply (I : idealsPrimeTo ((normCharacter E LL ι).modulus)) :
     (((normCharacter E LL ι).toHom I : LLˣ) : LL) =
@@ -200,24 +198,24 @@ theorem normCharacter_apply (I : idealsPrimeTo ((normCharacter E LL ι).modulus)
   rw [absNormUnits_apply, eq_ratCast]
 
 /- English proof (translation)
-Introduce `σ`. Simplify using `[normCharacter]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem normCharacter_hasWeight : (normCharacter E LL ι).HasWeight 2 := by
   intro σ
   simp [normCharacter]
 
 /- English proof (translation)
-The claim follows from `top_le_iff.1 (normCharacter E LL ι).modulus_le_conductor`.
+A detailed English derivation is pending.
 -/
 theorem normCharacter_conductor : (normCharacter E LL ι).conductor = ⊤ :=
   top_le_iff.1 (normCharacter E LL ι).modulus_le_conductor
 
 /- English proof (translation)
-Use `⟨fun x hx ↦ ?_, fun σ ↦ ?_⟩` and prove the remaining obligations. Establish `hne : (FractionalIdeal.absNorm ((IdeleGroup.toFractionalIdeal x : (FractionalIdeal (𝓞 E)⁰ E)ˣ) : FractionalIdeal (𝓞 E)⁰ E) : ℚ) ≠ 0` using `FractionalIdeal.absNorm_eq_zero_iff.not.2 (Units.ne_zero _)`. Establish `hne' : ((FractionalIdeal.absNorm ((IdeleGroup.toFractionalIdeal x : (FractionalIdeal (𝓞 E)⁰ E)ˣ) : FractionalIdeal (𝓞 E)⁰ E) : ℚ) : ℝ) ≠ 0`. Conclude with `hne` after adjusting the coercions. Rewrite using `[normCharacter_apply, map_ratCast]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((1 : Circle) : ℂ) = _`. Rewrite using `[Circle.coe_one]`. Evaluate the numerical expressions. Rewrite using `[Real.rpow_neg_one, Complex.ofReal_inv]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Simplify `one_hasAngularType_zero σ` using `[normCharacter]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem normCharacter_isAttached : (normCharacter E LL ι).IsAttached 2 1 := by
   refine ⟨fun x hx ↦ ?_, fun σ ↦ ?_⟩

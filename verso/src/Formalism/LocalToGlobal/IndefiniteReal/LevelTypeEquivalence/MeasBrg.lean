@@ -15,11 +15,11 @@ variable {D : D7} {V : HSp D} (fr : UI.Frames D V)
 def uM (x : (UI.instV fr).GA) (v : InfinitePlace D.host.F) : Matrix (Fin V.rank) (Fin V.rank) ℂ := uMat (x.1 v)
 
 /- English proof (translation)
-Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact (map_zero _).trans (map_zero _).symm`. Consider the case `tmul a x`. Establish `h1` using `Formalism.L2.SG.AdBridge.thetaV_tmul (UI.instV fr) (Formalism.L2.Host.tauPl D ρ) a x`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h2 : ∀ (a : AF D.host.F) (x : D.host.E), psiT D ρ (a ⊗ₜ[D.host.F] x) = gW D (plW D ρ) (fstA D.host.F a) * tauE D ρ x` using `fun a x => by show thetaC D ρ ((fstA D.host.F a) ⊗ₜ[D.host.F] x) = _`. Rewrite using `[thetaC_tmul]`. Use `h1.trans (Eq.trans ?_ (h2 a x).symm)` and prove the remaining obligations. Establish `h3 : tauE D ((Formalism.L2.Host.tauPl D).symm (Formalism.L2.Host.tauPl D ρ)) x = tauE D ρ x`. Rewrite using `[Equiv.symm_apply_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg₂ (· * ·) rfl h3`. Consider the case `add x y hx hy => exact (map_add _ x y).trans ((congrArg₂ (· + ·) hx hy).trans (map_add _ x y).symm)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem thetaV_eq_psiT (ρ : D.what₂.Tau) :
     Formalism.L2.SG.AdBridge.thetaV (UI.instV fr) (Formalism.L2.Host.tauPl D ρ) = psiT D ρ := by
@@ -39,15 +39,15 @@ theorem thetaV_eq_psiT (ρ : D.what₂.Tau) :
   | add x y hx hy => exact (map_add _ x y).trans ((congrArg₂ (· + ·) hx hy).trans (map_add _ x y).symm)
 
 /- English proof (translation)
-The claim follows from `(Matrix.isUnit_iff_isUnit_det _).mp (fr.unit v)`.
+A detailed English derivation is pending.
 -/
 theorem P_isUnit_det (v : InfinitePlace D.host.F) : IsUnit (fr.P v).det :=
   (Matrix.isUnit_iff_isUnit_det _).mp (fr.unit v)
 
 /- English proof (translation)
-Establish `hb : uM fr x (Formalism.L2.Host.tauPl D ρ) = (fr.P (Formalism.L2.Host.tauPl D ρ))⁻¹ * (matA D V (UI.brg fr x)).map (psiT D ρ) * fr.P (Formalism.L2.Host.tauPl D ρ)`. Establish `h` using `((UI.brg_isBridge fr) x).1 (Formalism.L2.Host.tauPl D ρ)`. Establish `h2` using `thetaV_eq_psiT fr ρ`. Unfold `Formalism.L2.SG.AdBridge.ofHAInf at h`. Rewrite `h` using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Rewrite using `[hb, infMat_thetaC]`. Establish `hu` using `P_isUnit_det fr (Formalism.L2.Host.tauPl D ρ)`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infMat_brg (x : (UI.instV fr).GA) (ρ : D.what₂.Tau) :
     infMat D.sp.cm.sig V.gram (thetaC D ρ) (UI.brg fr x) =
@@ -65,9 +65,9 @@ theorem infMat_brg (x : (UI.instV fr).GA) (ρ : D.what₂.Tau) :
     Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hz : M i j - (1 : Matrix (Fin V.rank) (Fin V.rank) (Ainf D.host.F ⊗[D.host.F] D.host.E)) i j = 0`. Apply `thetaC_inj` to reduce the goal to its premises. Introduce `ρ`. Use `congrFun (congrFun (h ρ) i) j` as an intermediate fact.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.map_apply]`. Rewrite using `[map_sub, this, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Conclude with `sub_eq_zero.mp hz`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem mat_eq_one_of_thetaC {M : Matrix (Fin V.rank) (Fin V.rank) (Ainf D.host.F ⊗[D.host.F] D.host.E)}
     (h : ∀ ρ, M.map (thetaC D ρ) = 1) : M = 1 := by
@@ -82,9 +82,9 @@ theorem mat_eq_one_of_thetaC {M : Matrix (Fin V.rank) (Fin V.rank) (Ainf D.host.
   exact sub_eq_zero.mp hz
 
 /- English proof (translation)
-Unfold `uM uMat`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h v`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `h`. Use function extensionality and compare the values at `v`. Conclude with `Subtype.ext (Units.ext (h v))`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem uM_one_iff (x : (UI.instV fr).GA) : x.1 = 1 ↔ ∀ v, uM fr x v = 1 := by
   unfold uM uMat
@@ -97,15 +97,15 @@ theorem uM_one_iff (x : (UI.instV fr).GA) : x.1 = 1 ↔ ∀ v, uM fr x v = 1 := 
     exact Subtype.ext (Units.ext (h v))
 
 /- English proof (translation)
-Establish `key : UI.brg fr x ∈ GfC V ↔ (matA D V (UI.brg fr x)).map (infPart D) = 1`. Prove the components needed by the constructor for the conclusion. Introduce `hh`. Conclude with `congrArg (fun u : GL (Fin V.rank) (Ainf D.host.F ⊗[D.host.F] D.host.E) => u.1) (MonoidHom.mem_ker.mp hh)`. Introduce `hh`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `MonoidHom.mem_ker.mpr (Units.ext hh)`. Rewrite using `[key, uM_one_iff]`. Establish `hc : ∀ ρ, ((matA D V (UI.brg fr x)).map (infPart D)).map (thetaC D ρ) = fr.P (Formalism.L2.Host.tauPl D ρ) * uM fr x (Formalism.L2.Host.tauPl D ρ) * (fr.P (Formalism.L2.Host.tauPl D ρ))⁻¹`. Introduce `ρ`. Rewrite using `[← infMat_brg, infMat_thetaC, Matrix.map_map]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
 
-Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `h1 v`. Take `⟨ρ, rfl⟩` from `(Formalism.L2.Host.tauPl D).surjective v`. Establish `hu` using `P_isUnit_det fr (Formalism.L2.Host.tauPl D ρ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e' : fr.P (Formalism.L2.Host.tauPl D ρ) * uM fr x (Formalism.L2.Host.tauPl D ρ) * (fr.P (Formalism.L2.Host.tauPl D ρ))⁻¹ = 1`. Rewrite using `[← hc ρ, h1, Matrix.map_one _ (map_zero _) (map_one _)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.one_mul, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]`. Use `_ = 1 := by rw [e', Matrix.mul_one, Matrix.nonsing_inv_mul _ hu]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h1`. Apply `mat_eq_one_of_thetaC` to reduce the goal to its premises. Introduce `ρ`. Rewrite using `[hc ρ, h1, Matrix.mul_one, Matrix.mul_nonsing_inv _ (P_isUnit_det fr _)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem brg_mem_GfC (x : (UI.instV fr).GA) : UI.brg fr x ∈ GfC V ↔ x.1 = 1 := by
   have key : UI.brg fr x ∈ GfC V ↔ (matA D V (UI.brg fr x)).map (infPart D) = 1 := by
@@ -138,7 +138,7 @@ theorem brg_mem_GfC (x : (UI.instV fr).GA) : UI.brg fr x ∈ GfC V ↔ x.1 = 1 :
     rw [hc ρ, h1, Matrix.mul_one, Matrix.mul_nonsing_inv _ (P_isUnit_det fr _)]
 
 /- English proof (translation)
-Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact (map_zero _).trans (map_zero _).symm`. Consider the case `tmul a x => exact (Formalism.L2.SG.AdBridge.tauF_tmul (UI.instV fr) a x).trans rfl`. Consider the case `add x y hx hy => exact (map_add _ x y).trans ((congrArg₂ (· + ·) hx hy).trans (map_add _ x y).symm)`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tauF_eq : Formalism.L2.SG.AdBridge.tauF (UI.instV fr) =
     (Lev.swapAE D).comp (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom := by
@@ -149,7 +149,7 @@ theorem tauF_eq : Formalism.L2.SG.AdBridge.tauF (UI.instV fr) =
   | add x y hx hy => exact (map_add _ x y).trans ((congrArg₂ (· + ·) hx hy).trans (map_add _ x y).symm)
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Establish `hb` using `((UI.brg_isBridge fr) x).2`. Unfold `Formalism.L2.SG.AdBridge.ofHAFin at hb`. Rewrite `hb` using `[tauF_eq]`. Conclude with `hb.symm`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finE_brg (x : (UI.instV fr).GA) : Lev.finE V (UI.brg fr x) = (x.2.1 : GL (Fin V.rank) (Lev.EAf D)) := by
   apply Units.ext

@@ -14,19 +14,19 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.ResProd
 
 /- English proof (translation)
-Establish `hιx : ι x ≠ 0` using `(map_ne_zero ι).mpr hx`. Take `⟨k, u, hku⟩` from `GlobalTheory.UnramVal.exists_eq_zpow_mul_unit hϖ hιx`. Rewrite using `[hku, GlobalTheory.UnramVal.vE_zpow_mul_unit L hϖ k u]`. Take `⟨g, hg⟩` from `p.valuation_exists_uniformizer F`. Take `⟨q, hq, hqg⟩` from `GlobalTheory.LocSplit.exists_irreducible p ι hd hv g hg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `IsDiscreteValuationRing.associated_of_irreducible 𝒪[K] hϖ hq`. Establish `h0 : p.valuation F x ≠ 0` using `(Valuation.ne_zero_iff _).mpr hx`. Use `set n := WithZero.log (p.valuation F x) with hn`. Establish `hvx : p.valuation F x = WithZero.exp n` using `(WithZero.exp_log h0).symm`. Establish `hone : p.valuation F (x * g ^ n) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_zpow₀, hvx, hg, ← WithZero.exp_zsmul, ← WithZero.exp_add]`. Simplify using the standard rewrite rules. Establish `hunit : ∀ v : (𝒪[K])ˣ, valuation K ((v : 𝒪[K]) : K) = 1` using `fun v => (Valuation.integer.integers (valuation K)).isUnit_iff_valuation_eq_one.mp v.isUnit`. Establish `hϖ0 : valuation K (ϖ : K) ≠ 0`. Rewrite using `[Valuation.ne_zero_iff]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hϖ.ne_zero` after adjusting the coercions. Establish `hvq : valuation K (ι g) = valuation K (ϖ : K)`. Rewrite using `[← hqg, ← hw]`. Use `push_cast`. Rewrite using `[map_mul, hunit, mul_one]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hvz : valuation K (ι (x * g ^ n)) = 1`. Apply `le_antisymm` to reduce the goal to its premises. Simplify using `using (hv (x * g ^ n) 1).mpr (by rw [hone, map_one])`. Simplify using `using (hv 1 (x * g ^ n)).mpr (by rw [hone, map_one])`. Simplify using `only [map_mul, map_zpow₀, hku, hunit, mul_one, hvq] at hvz`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hvz` using `[← zpow_add₀ hϖ0]`. Establish `hle` using `(GlobalTheory.UnramVal.zpow_mul_unit_mem_iff hϖ (k + n) 1).mp (by`. Rewrite using `[Valuation.mem_integer_iff]`. Simplify using `only [Units.val_one, OneMemClass.coe_one, mul_one, map_zpow₀, hvz, le_refl])`. Establish `hge` using `(GlobalTheory.UnramVal.zpow_mul_unit_mem_iff hϖ (-(k + n)) 1).mp (by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Valuation.mem_integer_iff]`. Simplify using `only [Units.val_one, OneMemClass.coe_one, mul_one, map_zpow₀, zpow_neg, map_inv₀, hvz, inv_one, le_refl])`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem vE_eq_neg_log {F : Type} [Field F] [NumberField F] (p : HeightOneSpectrum (𝓞 F))
     {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
@@ -76,7 +76,7 @@ theorem vE_eq_neg_log {F : Type} [Field F] [NumberField F] (p : HeightOneSpectru
   omega
 
 /- English proof (translation)
-Establish `h0 : p.valuation F x ≠ 0` using `(Valuation.ne_zero_iff _).mpr hx`. Rewrite using `[NumberField.FinitePlace.equivHeightOneSpectrum_symm_apply, NumberField.FinitePlace.norm_embedding', WithZeroMulInt.toNNReal_neg_apply _ h0, NNReal.coe_zpow, NNReal.coe_natCast]`. Use `congr 1`. Use `conv_rhs => rw [← WithZero.coe_unzero h0]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem place_eq_zpow {F : Type} [Field F] [NumberField F] (p : HeightOneSpectrum (𝓞 F))
     {x : F} (hx : x ≠ 0) :
@@ -91,15 +91,13 @@ theorem place_eq_zpow {F : Type} [Field F] [NumberField F] (p : HeightOneSpectru
   rfl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ sig A ϖ hϖ x hx`. Establish `key : ∀ p, vE (A.L p) (ϖ p) (algebraMap (A.loc p).Fp (A.loc p).Ep ((A.loc p).ιF x)) = -WithZero.log (p.valuation F x)` using `fun p => by haveI := (A.loc p).lf`. Conclude with `vE_eq_neg_log p (A.L p) (A.loc p).ιF (A.loc p).dense (GlobalTheory.HL.PlacesInt.val_le_iff (A.loc p)) (hϖ p) hx`. Establish `hterm : ∀ p, (resQ (ϖ p) : ℝ) ^ vE (A.L p) (ϖ p) (algebraMap (A.loc p).Fp (A.loc p).Ep ((A.loc p).ιF x)) = (NumberField.FinitePlace.equivHeightOneSpectrum.symm p x)⁻¹` using `fun p => by`. Rewrite using `[key, GlobalTheory.HL.PlacesInt.resQ_eq_absNorm (A.loc p) (ϖ p) (hϖ p), place_eq_zpow p hx, zpow_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfin : (Function.mulSupport fun w : NumberField.FinitePlace F => w x).Finite` using `NumberField.FinitePlace.hasFiniteMulSupport hx`. Prove the components needed by the constructor for the conclusion. Use `(hfin.image NumberField.FinitePlace.equivHeightOneSpectrum).subset ?_` and prove the remaining obligations. Introduce `p hp`. Use `⟨NumberField.FinitePlace.equivHeightOneSpectrum.symm p, ?_, by simp⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, key] at hp`. Rewrite using `[Function.mem_mulSupport, place_eq_zpow p hx]`. Introduce `h1`. Establish `hgt : (1 : ℝ) < Ideal.absNorm p.asIdeal`. Conclude with `NumberField.HeightOneSpectrum.one_lt_absNorm p` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite `h1` using `[zpow_eq_one_iff_right₀ (by positivity) hgt.ne']`. Conclude with `hp (by rw [h1, neg_zero])`. Repeatedly rewrite using `[hterm]`. Rewrite using `[finprod_inv_distrib, finprod_comp_equiv NumberField.FinitePlace.equivHeightOneSpectrum.symm (f := fun w => w x), NumberField.FinitePlace.prod_eq_inv_abs_norm hx]`. Use `push_cast`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prod_resQ_zpow : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E} (A : Places F E sig), ∀ ϖ : ∀ p, 𝒪[(A.loc p).Fp], (∀ p, Irreducible (ϖ p)) → ∀ x : F, x ≠ 0 → {p | vE (A.L p) (ϖ p) (algebraMap (A.loc p).Fp (A.loc p).Ep ((A.loc p).ιF x)) ≠ 0}.Finite ∧ ∏ᶠ p, (resQ (ϖ p) : ℝ) ^ vE (A.L p) (ϖ p) (algebraMap (A.loc p).Fp (A.loc p).Ep ((A.loc p).ιF x)) = |((Algebra.norm ℚ x : ℚ) : ℝ)| := by
   intro F E _ _ _ _ _ sig A ϖ hϖ x hx

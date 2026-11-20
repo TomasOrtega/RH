@@ -9,9 +9,9 @@ namespace GlobalTheory.HeightCounting.NchAt
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨⟨D, cf, jE, A, cg, au, rep, row, low, Pq, S, hL', eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, eq⟩, pack⟩` from `b`. Substitute `eq` using the available equality. Consider the cases of `pack`. Use `⟨⟨Sp.twOf_eq, Sp.twSide_eq, fun a => ?_, ?_, ch.nct.embedding_baseField_condition⟩, ch.psi⟩` and prove the remaining obligations. Conclude with `(Sp.Q_eq _ _ a (((L.X.nd.locs_mem _ _ a).2 ⟨rfl, rfl⟩))).trans (Sp.Qc_eq _ _)`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ0, hc, hw, -⟩` from `ch.nct.psi_eq`. Conclude with `⟨ψ0, hc, hw, fun a g => Sp.psi_eq a g _ (hw _ g)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tie_of_true {hL : GlobalTheory.Published.LocalLanglandsGL} {D' : D7} {cf' : CharFrame D'} {C' : NChoice D'} {tp' : TupTied D' cf' C'}
     (b : NTrue hL D' cf' C' tp') : NChTie D' C' ∧ PsiChoiceCompatible D' cf' C' tp' := by

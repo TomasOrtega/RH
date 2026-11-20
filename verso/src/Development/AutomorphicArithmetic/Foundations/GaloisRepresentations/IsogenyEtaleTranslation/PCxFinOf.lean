@@ -22,7 +22,7 @@ private abbrev SameB (v : InfinitePlace G.F) (B : GlobalTheory.LKCx.Form G) (Kf 
 private def shf {β : G.Cˣ} (a : GlobalTheory.LKCx.Dat G v β) (k : G.GAf) : GlobalTheory.LKCx.Dat G v β := ((a.1.1 * k, a.1.2), a.2)
 
 /- English proof (translation)
-Rewrite using `[map_mul, Units.val_mul, Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem toV_mul' {β : G.Cˣ} (y y' : GlobalTheory.LKCx.grp G β) (z : Fin G.n → ℂ) :
     ((GlobalTheory.LKCx.toV G v β (y * y') : GL (Fin G.n) ℂ) : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ z =
@@ -31,7 +31,7 @@ private theorem toV_mul' {β : G.Cˣ} (y y' : GlobalTheory.LKCx.grp G β) (z : F
   rw [map_mul, Units.val_mul, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Rewrite using `[← toV_mul', inv_mul_cancel, map_one, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem toV_inv' {β : G.Cˣ} (y : GlobalTheory.LKCx.grp G β) (z : Fin G.n → ℂ) :
     (GlobalTheory.LKCx.toV G v β y⁻¹ : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ
@@ -39,9 +39,9 @@ private theorem toV_inv' {β : G.Cˣ} (y : GlobalTheory.LKCx.grp G β) (z : Fin 
   rw [← toV_mul', inv_mul_cancel, map_one, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Take `⟨y, k, c, hk1, hk2, hc, h1, h2⟩` from `h`. Use `⟨y⁻¹, k⁻¹, c⁻¹, Kf.inv_mem hk1, (KHT p G.m G.n 1 G.Fw).inv_mem hk2, inv_ne_zero hc, ?_, ?_⟩` and prove the remaining obligations. Establish `e : ((B.toAf y⁻¹, GlobalTheory.LKCx.toP1 G B.β y⁻¹) : G.GAf × Gr G 1) = (B.toAf y, GlobalTheory.LKCx.toP1 G B.β y)⁻¹`. Simplify using `[map_inv]`. Establish `h1 : b.1 = (B.toAf y, GlobalTheory.LKCx.toP1 G B.β y) * a.1 * k` using `h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `show a.1 = (B.toAf y⁻¹, GlobalTheory.LKCx.toP1 G B.β y⁻¹) * b.1 * k⁻¹`. Rewrite using `[e, h1]`. Use `show _ = (B.toAf y, GlobalTheory.LKCx.toP1 G B.β y)⁻¹ * ((B.toAf y, GlobalTheory.LKCx.toP1 G B.β y) * a.1 * k) * k⁻¹`. Use `group`. Rewrite using `[h2, Matrix.mulVec_smul, toV_inv', smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem same_symm' {B : GlobalTheory.LKCx.Form G} {Kf : Subgroup G.GAf} {a b : GlobalTheory.LKCx.Dat G v B.β}
     (h : SameB v B Kf a b) : SameB v B Kf b a := by
@@ -57,11 +57,11 @@ private theorem same_symm' {B : GlobalTheory.LKCx.Form G} {Kf : Subgroup G.GAf} 
   · rw [h2, Matrix.mulVec_smul, toV_inv', smul_smul, inv_mul_cancel₀ hc, one_smul]
 
 /- English proof (translation)
-Take `⟨y, k, c, hk1, hk2, hc, h1, h2⟩` from `h`. Take `⟨y', k', c', hk1', hk2', hc', h1', h2'⟩` from `h'`. Use `⟨y' * y, k * k', c' * c, Kf.mul_mem hk1 hk1', (KHT p G.m G.n 1 G.Fw).mul_mem hk2 hk2', mul_ne_zero hc' hc, ?_, ?_⟩` and prove the remaining obligations. Establish `e : ((B.toAf (y' * y), GlobalTheory.LKCx.toP1 G B.β (y' * y)) : G.GAf × Gr G 1) = (B.toAf y', GlobalTheory.LKCx.toP1 G B.β y') * (B.toAf y, GlobalTheory.LKCx.toP1 G B.β y)`. Simplify using `[map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show d.1 = (B.toAf (y' * y), GlobalTheory.LKCx.toP1 G B.β (y' * y)) * a.1 * (k * k')`. Establish `h1a : b.1 = (B.toAf y, GlobalTheory.LKCx.toP1 G B.β y) * a.1 * k` using `h1`. Establish `h1b : d.1 = (B.toAf y', GlobalTheory.LKCx.toP1 G B.β y') * b.1 * k'` using `h1'`. Rewrite using `[h1b, h1a, e]`. Simplify using `only [_root_.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2', h2, Matrix.mulVec_smul, smul_smul, toV_mul']`.
+A detailed English derivation is pending.
 -/
 private theorem same_trans' {B : GlobalTheory.LKCx.Form G} {Kf : Subgroup G.GAf} {a b d : GlobalTheory.LKCx.Dat G v B.β}
     (h : SameB v B Kf a b) (h' : SameB v B Kf b d) : SameB v B Kf a d := by
@@ -80,16 +80,16 @@ private theorem same_trans' {B : GlobalTheory.LKCx.Form G} {Kf : Subgroup G.GAf}
   · rw [h2', h2, Matrix.mulVec_smul, smul_smul, toV_mul']
 
 /- English proof (translation)
-The claim follows from `(Equivalence.eqvGen_iff ⟨GlobalTheory.LKCx.same_refl G v B.β _ _ _ _ _, same_symm', same_trans'⟩).1 (Quot.eqvGen_exact h)`.
+A detailed English derivation is pending.
 -/
 private theorem same_of_eq {B : GlobalTheory.LKCx.Form G} {Kf : Subgroup G.GAf} {a b : GlobalTheory.LKCx.Dat G v B.β}
     (h : Quot.mk (SameB v B Kf) a = Quot.mk (SameB v B Kf) b) : SameB v B Kf a b :=
   (Equivalence.eqvGen_iff ⟨GlobalTheory.LKCx.same_refl G v B.β _ _ _ _ _, same_symm', same_trans'⟩).1 (Quot.eqvGen_exact h)
 
 /- English proof (translation)
-Take `⟨y, κ, c, h1, h2, hc, e, e2⟩` from `hs`. Establish `e1 : a'.1.1 * k' = B.toAf y * (a.1.1 * k) * κ.1` using `congrArg Prod.fst e`. Establish `e3 : a'.1.2 = GlobalTheory.LKCx.toP1 G B.β y * a.1.2 * κ.2` using `congrArg Prod.snd e`. Use `⟨y, (k * κ.1 * k'⁻¹, κ.2), c, K.mul_mem (K.mul_mem hk (hle h1)) (K.inv_mem hk'), h2, hc, ?_, e2⟩` and prove the remaining obligations. Use `Prod.ext ?_ e3` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `show a'.1.1 = B.toAf y * a.1.1 * (k * κ.1 * k'⁻¹)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem step1 {B : GlobalTheory.LKCx.Form G} {K K' : Subgroup G.GAf} (hle : K' ≤ K) {a a' : GlobalTheory.LKCx.Dat G v B.β}
     {k k' : G.GAf} (hk : k ∈ K) (hk' : k' ∈ K) (hs : SameB v B K' (shf a k) (shf a' k')) : SameB v B K a a' := by
@@ -103,15 +103,13 @@ private theorem step1 {B : GlobalTheory.LKCx.Form G} {K K' : Subgroup G.GAf} (hl
     _ = _ := by rw [e1]; group
 
 /- English proof (translation)
-Take `⟨y, κ, c, h1, h2, hc, e, e2⟩` from `hs`. Establish `e1 : a.1.1 * k' = B.toAf y * (a.1.1 * k) * κ.1` using `congrArg Prod.fst e`. Establish `e3 : a.1.2 = GlobalTheory.LKCx.toP1 G B.β y * a.1.2 * κ.2` using `congrArg Prod.snd e`. Establish `e4 : a.2.1 = c • ((GlobalTheory.LKCx.toV G v B.β y : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ a.2.1)` using `e2`. Establish `hy : y = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hK a y ⟨⟨c⁻¹, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Use `_ = c⁻¹ • a.2.1 := by rw [← e4]`. Establish `e5 : B.toAf y * a.1.1 = a.1.1 * k' * κ.1⁻¹ * k⁻¹` using `by rw [e1]; group`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e6 : a.1.1⁻¹ * B.toAf y * a.1.1 = k' * κ.1⁻¹ * k⁻¹`. Rewrite using `[_root_.mul_assoc, e5]`. Use `group`. Use `show a.1.1⁻¹ * B.toAf y * a.1.1 ∈ K`. Rewrite using `[e6]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `K.mul_mem (K.mul_mem hk' (K.inv_mem (hle h1))) (K.inv_mem hk)`. Establish `e5 : GlobalTheory.LKCx.toP1 G B.β y * a.1.2 = a.1.2 * κ.2⁻¹` using `by conv_rhs => rw [e3] group`. Establish `e6 : a.1.2⁻¹ * GlobalTheory.LKCx.toP1 G B.β y * a.1.2 = κ.2⁻¹`. Rewrite using `[_root_.mul_assoc, e5]`. Use `group`.
-
-Rewrite using `[e6]`. Conclude with `(KHT p G.m G.n 1 G.Fw).inv_mem h2`. Substitute `hy` using the available equality. Rewrite `e1` using `[map_one, _root_.one_mul, _root_.mul_assoc]`. Conclude with `⟨κ.1, h1, mul_left_cancel e1⟩`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem step2 {B : GlobalTheory.LKCx.Form G} {K K' : Subgroup G.GAf} (hle : K' ≤ K)
     (hK : ∀ (a : GlobalTheory.LKCx.Dat G v B.β) y, W2.Sees B (K : Set G.GAf) a y → y = 1) {a : GlobalTheory.LKCx.Dat G v B.β}
@@ -145,21 +143,19 @@ private theorem step2 {B : GlobalTheory.LKCx.Form G} {K K' : Subgroup G.GAf} (hl
   exact ⟨κ.1, h1, mul_left_cancel e1⟩
 
 /- English proof (translation)
-Take `⟨⟨e, he⟩, h1, h2⟩` from `hs`. Take `⟨⟨e', he'⟩, h1', h2'⟩` from `hs'`. Establish `he0 : (GlobalTheory.LKCx.toV G v B.β y : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ a.2.1 = e • a.2.1` using `he`. Establish `he1 : (GlobalTheory.LKCx.toV G v B.β y' : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ a.2.1 = e' • a.2.1` using `he'`. Establish `g1 : h * ((a.1.1 * k)⁻¹ * B.toAf y * (a.1.1 * k)) ∈ K` using `h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g2 : h * ((a.1.1 * (k * κ))⁻¹ * B.toAf y' * (a.1.1 * (k * κ))) ∈ K` using `h1'`. Establish `g3 : a.1.2⁻¹ * GlobalTheory.LKCx.toP1 G B.β y * a.1.2 ∈ KHT p G.m G.n 1 G.Fw` using `h2`. Establish `g4 : a.1.2⁻¹ * GlobalTheory.LKCx.toP1 G B.β y' * a.1.2 ∈ KHT p G.m G.n 1 G.Fw` using `h2'`. Establish `g5 : h * ((a.1.1 * k)⁻¹ * B.toAf y' * (a.1.1 * k)) ∈ K`. Use `K.mul_mem (K.mul_mem (hconj κ hκ) g2) (K.inv_mem (hle hκ))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`. Establish `hz : a.2.1 ≠ 0`. Introduce `h0`. Use `a.2.2` as an intermediate fact.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h0]`. Simplify using `at this`. Establish `hinv : e • ((GlobalTheory.LKCx.toV G v B.β y⁻¹ : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ a.2.1) = a.2.1`. Rewrite using `[← Matrix.mulVec_smul, ← he0, toV_inv']`. Establish `he2 : e ≠ 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Rewrite `hinv` using `[zero_smul]`. Conclude with `hz hinv.symm`. Establish `hinv' : (GlobalTheory.LKCx.toV G v B.β y⁻¹ : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ a.2.1 = e⁻¹ • a.2.1` using `by conv_rhs => rw [← hinv]`. Rewrite using `[smul_smul, inv_mul_cancel₀ he2, one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hone` using `hK a (y⁻¹ * y') ⟨⟨e' * e⁻¹, ?_⟩, ?_, ?_⟩`. Conclude with `inv_mul_eq_one.1 hone`. Rewrite using `[toV_mul', he1, Matrix.mulVec_smul, hinv', smul_smul]`. Use `show a.1.1⁻¹ * B.toAf (y⁻¹ * y') * a.1.1 ∈ K`. Use `K.mul_mem (K.mul_mem hk (K.mul_mem (K.inv_mem g1) g5)) (K.inv_mem hk)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_inv]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`. Use `(KHT p G.m G.n 1 G.Fw).mul_mem ((KHT p G.m G.n 1 G.Fw).inv_mem g3) g4` as an intermediate fact. Rewrite using `[map_mul, map_inv]`.
-
-Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 private theorem step3 {B : GlobalTheory.LKCx.Form G} {K K' : Subgroup G.GAf} {h : G.GAf} (hle : K' ≤ K)
     (hconj : ∀ u ∈ K', h * u * h⁻¹ ∈ K)
@@ -209,25 +205,23 @@ end UpperTheory.Gal.FixZ.ComplexFinitenessOfFixed
 
 open UpperTheory.Gal.FixZ.ComplexFinitenessOfFixed in
 /- English proof (translation)
-Introduce `p _ G v K K' h hle hconj hfin hK`. Establish `hS : ∀ u ∈ K', ∀ g, u⁻¹ * g * u ∈ ({g | h * g ∈ K} : Set G.GAf) ↔ g ∈ ({g | h * g ∈ K} : Set G.GAf)`. Introduce `u hu g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg' : h * (u⁻¹ * g * u) ∈ K` using `hg`. Use `K.mul_mem (K.mul_mem (hconj u hu) hg') (K.inv_mem (hle hu))` as an intermediate fact. Use `show h * g ∈ K`. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hg`. Establish `hg' : h * g ∈ K` using `hg`. Use `K.mul_mem (K.mul_mem (K.inv_mem (hconj u hu)) hg') (hle hu)` as an intermediate fact. Use `show h * (u⁻¹ * g * u) ∈ K`. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `group`. Establish `hch : ∀ z : (Σ q : GlobalTheory.LKCx.FCls G, UpperTheory.Gal.LocalSmoothExtension.PtsOf G v K q × GlobalTheory.LKCx.grp G (Quot.out q).β), UpperTheory.Gal.LocalSmoothExtension.Seen G v K (UpperTheory.Gal.G3.ind ℂ K h⁻¹) z.1 z.2.1 z.2.2 → ∃ k, k ∈ K ∧ UpperTheory.Gal.W2.Sees (Quot …`. Introduce and unpack `⟨q, a, y⟩ ⟨hf, hi, ho⟩`. Establish `hm` using `Set.mem_of_indicator_ne_zero hi`. Take `⟨k₁, hk₁, k₂, hk₂, e⟩` from `DoubleCoset.mem_doubleCoset.1 hm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨k₁, hk₁, hf, ?_, Set.mem_of_indicator_ne_zero ho⟩` and prove the remaining obligations. Establish `e' : (Quot.out a).1.1⁻¹ * (Quot.out q).toAf y * (Quot.out a).1.1 = k₁ * h⁻¹ * k₂` using `e`. Use `show h * (((Quot.out a).1.1 * k₁)⁻¹ * (Quot.out q).toAf y * ((Quot.out a).1.1 * k₁)) ∈ K`. Establish `e2 : h * (((Quot.out a).1.1 * k₁)⁻¹ * (Quot.out q).toAf y * ((Quot.out a).1.1 * k₁)) = h * (k₁⁻¹ * ((Quot.out a).1.1⁻¹ * (Quot.out q).toAf y * (Quot.out a).1.1) * k₁)` using `by group`. Rewrite using `[e2, e']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e3 : h * (k₁⁻¹ * (k₁ * h⁻¹ * k₂) * k₁) = k₂ * k₁` using `by group`. Rewrite using `[e3]`. Conclude with `K.mul_mem hk₂ hk₁`. Use `choose! κ hκK hκS using hch`. Use `Set.Finite.of_injOn (f := fun z => (⟨z.1, Quot.mk _ (shf (Quot.out z.2.1) (κ z))⟩ : GlobalTheory.LKCx.AllPts G v K' (UpperTheory.Gal.LocalSmoothExtension.Kp G))) ?_ ?_ hfin` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z hz`. Take `⟨E, -, hE⟩` from `UpperTheory.Gal.W2.eigSame_of p G v (fun _ _ => 0) (Quot.out z.1) K' {g | h * g ∈ K} hS (shf (Quot.out z.2.1) (κ z)) _ (Quot.out_eq _).symm`. Conclude with `⟨E z.2.2, ((hE z.2.2).1).1 (hκS z hz)⟩`. Introduce and unpack `⟨q, a, y⟩ hz ⟨q', a', y'⟩ hz' heq`. Take `⟨rfl, hh⟩` from `Sigma.mk.inj_iff.1 heq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hh'` using `eq_of_heq hh`. Establish `hsame` using `same_of_eq (v := v) (B := Quot.out q) (Kf := K') hh'`. Establish `hk` using `hκK _ hz`. Establish `hk'` using `hκK _ hz'`. Establish `hsame0` using `step1 hle hk hk' hsame`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `haa : a = a'` using `(Quot.out_eq (r := SameB v (Quot.out q) K) a).symm.trans ((Quot.sound hsame0).trans (Quot.out_eq (r := SameB v (Quot.out q) K) a'))`. Substitute `haa` using the available equality. Take `⟨u, hu, e⟩` from `step2 hle (hK _) hk hk' hsame`. Establish `hs` using `hκS _ hz`. Establish `hs'` using `hκS _ hz'`.
-
-Simplify using `only [e] at hs'`. Establish `: y = y'` using `step3 hle hconj (hK _) hk hu hs hs'`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.FixZ.cxFinOf_of : UpperTheory.Gal.FixZ.CxFinOf := by
   intro p _ G v K K' h hle hconj hfin hK

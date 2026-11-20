@@ -14,9 +14,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace PositivityTheory.RSHS.LocalComponentTwist
 
 /- English proof (translation)
-Establish `e : modExp (fun _ : Fin d => Fin a) i = (∑ _b ∈ Finset.Ioi i, (a : ℤ)) - ∑ _b ∈ Finset.Iio i, (a : ℤ)`. Unfold `modExp`. Use `congr 1`. Conclude with `Finset.sum_congr (by ext; simp) fun _ _ => by simp`. Conclude with `Finset.sum_congr (by ext; simp) fun _ _ => by simp`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi` using `i.2`. Establish `hc : ((d - 1 - (i : ℕ) : ℕ) : ℤ) = (d : ℤ) - 1 - ((i : ℕ) : ℤ)` using `by omega`. Rewrite using `[e, Finset.sum_const, Finset.sum_const, Fin.card_Ioi, Fin.card_Iio, nsmul_eq_mul, nsmul_eq_mul, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem modExp_const {a d : ℕ} (i : Fin d) :
     modExp (fun _ : Fin d => Fin a) i = (a : ℤ) * ((d : ℤ) - 1 - 2 * ((i : ℕ) : ℤ)) := by
@@ -39,7 +39,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Rewrite using `[piTensor_tprod, Units.coe_prod]`. Conclude with `(PiTensorProduct.tprod ℂ).map_smul_univ (fun i => ((χ i (g i) : ℂˣ) : ℂ)) fun i => ρ (g i) (x i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piTensor_twist_tprod (ρ : Representation ℂ (GL (Fin a) k) V) (χ : Fin d → GL (Fin a) k →* ℂˣ)
     (g : Fin d → GL (Fin a) k) (x : Fin d → V) :
@@ -49,9 +49,9 @@ theorem piTensor_twist_tprod (ρ : Representation ℂ (GL (Fin a) k) V) (χ : Fi
   exact (PiTensorProduct.tprod ℂ).map_smul_univ (fun i => ((χ i (g i) : ℂˣ) : ℂ)) fun i => ρ (g i) (x i)
 
 /- English proof (translation)
-Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Establish `key : (deltaHalf k fun _ : Fin d => Fin a)⁻¹ g * ∏ i, detChar (Fin a) (absPow k (t i)) (g i) = ∏ i, detChar (Fin a) (absPow k (s i)) (g i)`. Rewrite using `[MonoidHom.inv_apply, deltaHalf_apply, inv_mul_eq_iff_eq_mul, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[detChar_apply, detChar_apply, hst i, absPow_add, MonoidHom.mul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `PiTensorProduct.ext (MultilinearMap.ext fun x => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.compMultilinearMap_apply, LinearMap.compMultilinearMap_apply, GlobalTheory.SmGL.twist_apply, piTensor_twist_tprod, piTensor_twist_tprod, smul_smul, ← Units.val_mul, key]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem levi_eq (ρ : Representation ℂ (GL (Fin a) k) V) (s t : Fin d → ℂ)
     (hst : ∀ i, t i = ((modExp (fun _ : Fin d => Fin a) i : ℤ) : ℂ) / 2 + s i) :
@@ -69,7 +69,7 @@ theorem levi_eq (ρ : Representation ℂ (GL (Fin a) k) V) (s t : Fin d → ℂ)
     piTensor_twist_tprod, piTensor_twist_tprod, smul_smul, ← Units.val_mul, key]
 
 /- English proof (translation)
-Take `rfl : ψ = fun i => detChar (Fin a) (absPow k (t i))` from `funext hψ`. Conclude with `⟨.mk (.refl ℂ _) fun g => by`. Rewrite using `[levi_eq ρ s t hst]`. Use the proof step `rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_equiv (ρ : Representation ℂ (GL (Fin a) k) V) (s t : Fin d → ℂ)
     (hst : ∀ i, t i = ((modExp (fun _ : Fin d => Fin a) i : ℤ) : ℂ) / 2 + s i)
@@ -88,11 +88,11 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ}
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[CG.loc_eq_zpow (hν.1 w), Units.val_zpow_eq_zpow_val, hν.2.1 w, GlobalTheory.SmGL.val_absPow, GlobalTheory.LGrp.nabs_eq_zpow, GlobalTheory.LocLanglands.resCard_eq_normV, GlobalTheory.SmGL.SphCompletion.ord_completion]`. Establish `h0 : Valued.v (x : w.adicCompletion E) ≠ 0` using `by simp`. Establish `e : Formalism.UG.ordV E w x = -WithZero.log (Valued.v (x : w.adicCompletion E))`. Rewrite using `[Formalism.UG.ordV, dif_neg h0]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← WithZero.coe_unzero h0]`. Both sides reduce to the same expression. Rewrite using `[e, ← Complex.ofReal_cpow (by positivity), ← Real.rpow_intCast, ← Real.rpow_mul (by positivity), ← Complex.ofReal_neg, ← Complex.ofReal_natCast, ← Complex.ofReal_cpow (by positivity), ← Complex.ofReal_zpow, ← Real.rpow_intCast, ← Real.rpow_mul (by positivity)]`. Use `congr 2`. Use `push_cast`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem loc_eq_absPow {ν : HChar E} {s : ℝ} (hν : ν.IsAbsPow s) (w : HeightOneSpectrum (𝓞 E)) :
     ν.loc w = GlobalTheory.SmGL.absPow (w.adicCompletion E) s := by

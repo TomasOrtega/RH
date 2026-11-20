@@ -18,11 +18,11 @@ namespace GlobalTheory.UMin.ThPull
 open GlobalTheory.ThetaPtMove
 
 /- English proof (translation)
-Establish `hp : IsGrpPullback G G (𝟙 _) (𝟙 G.left)` using `@isGrpPullback_of_iso _ _ _ _ _ (Iso.refl G) (inferInstanceAs (IsMonHom (𝟙 G)))`. Take `⟨w, hw⟩ : LBIso L (L.pull (𝟙 _))` from `(GlobalTheory.PolBaseChange.lbIso_refl hL).chartPull (chartPullId _) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull _ _ _ rfl)`. Take `⟨ρ', -, hr⟩` from `exists_rigidificationPullbackCompatibleIso hp hw hL hL hρ`. Establish `hτ : β.left ≫ T.hom = B.hom ≫ 𝟙 S` using `by rw [Over.w, Category.comp_id]`. Establish `hσ : 𝟙 B.left ≫ B.hom = B.hom ≫ 𝟙 S` using `by simp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `exists_secRel hp β.left hτ hw hL hL θ`. Establish `hu : (β ≫ y) ^ (m ^ 2) = 1` using `by rw [← MonObj.comp_pow, H.1, MonObj.comp_one]`. Establish `hrel` using `secRel_smul hp β.left hτ (𝟙 B.left) hσ β (Category.id_comp _) ht (th' := VVRank.pullS G _ β θ) (c := 1) (one_smul _ _).symm`. Establish `q` using `ThG.smul (th' := SecM.toSec G ((𝟙 B.left : B.left ⟶ B.left).appTop.hom 1 • SecM.ofSec G t)) hL rfl (ThG.move hp β.left hτ hw hL hL hr (x := β ≫ y) (by simp) hu ht H)`. Establish `q'` using `ThG.up hp (𝟙 B.left) hσ hw hL hL hr (x₀ := β ≫ y) (by simp) hu hrel q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using q'`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem thG_pull {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {L : LB G.left}
     {ρ : LB.Gen (L.pull (eSec G))} (hL : L.IsLB) (hρ : ρ.IsGen) {m : ℕ}
@@ -45,11 +45,11 @@ theorem thG_pull {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {L : 
   simpa using q'
 
 /- English proof (translation)
-Introduce `S G _ _ L ρ hL hρ m N K K' _ _ i x θ pt c H`. Set `β : Over.mk (spMap i ≫ x) ⟶ Over.mk x` to `Over.homMk (spMap i) rfl`. Establish `hβ : β.left = spMap i` using `Over.homMk_left _ _`. Use `⟨fun a => β ≫ pt a, fun a => by simp only [Over.comp_left, hβ], fun a b h => H.1 (TorsionFieldExt.comp_injective β _ h), fun a => ?_, fun F _ _ k => ?_⟩` and prove the remaining obligations. Establish `q` using `thG_pull hL hρ β (H.2.1 a)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : β.left.appTop.hom (GlobalTheory.ZH.fn (c a)) = GlobalTheory.ZH.fn (i (c a))` using `(congrArg (fun q => q.hom (c a)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom i))).symm`. Rewrite `q` using `[e]`. Conclude with `q`. Establish `e : spMap k ≫ spMap i ≫ x = spMap (k.comp i) ≫ x`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, Category.assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Introduce `p hp`. Take `⟨a, ha⟩` from `H.2.2 F (k.comp i) p hp`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[ha, ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, Category.assoc, Over.comp_left, hβ, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thList_pull : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : LB G.left) (ρ : LB.Gen (L.pull (eSec G))), L.IsLB → ρ.IsGen → ∀ (m N : ℕ) (K K' : Type) [Field K] [Field K'] (i : K →+* K') (x : Sp K ⟶ S) (θ : SecAt G L x) (pt : Fin N → (Over.mk x ⟶ G)) (c : Fin N → K), ThList G L ρ m x θ pt c → ∃ pt' : Fin N → (Over.mk (spMap i ≫ x) ⟶ G), (∀ a, (pt' a).left = spMap i ≫ (pt a).left) ∧ ThList G L ρ m (spMap i ≫ x) (SecAt.pull G L θ i) pt' (fun a => i (c a)) := by
   intro S G _ _ L ρ hL hρ m N K K' _ _ i x θ pt c H

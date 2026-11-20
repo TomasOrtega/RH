@@ -12,23 +12,23 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
   {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] {J : V ≃ₗᵢ[ℝ] V} {ρ : V → B →L[ℂ] B}
 
 /- English proof (translation)
-The claim follows from `((contDiff_gau_inv (V := V)).smul hf).differentiable (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem differentiable_norm (f : B) (hf : Sm ρ f) : Differentiable ℝ fun u => (gau u)⁻¹ • ρ u f :=
   ((contDiff_gau_inv (V := V)).smul hf).differentiable (by simp)
 
 /- English proof (translation)
-Establish `hl : HasDerivAt (fun s : ℝ => u + s • z) z 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const z).const_add u`. Establish `hl0 : HasDerivAt (fun s : ℝ => s • z) z 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const z)`. Establish `h1 : HasDerivAt (fun s : ℝ => (gau (u + s • z))⁻¹ • ρ (u + s • z) f) (fderiv ℝ (fun u => (gau u)⁻¹ • ρ u f) u z) 0` using `(differentiable_norm f hf u).hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hl (by simp)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2 : HasDerivAt (fun s : ℝ => ρ (s • z) f) (fderiv ℝ (fun v => ρ v f) 0 z) 0` using `((ContDiff.differentiable hf (by simp)) 0).hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hl0 (by simp)`. Establish `h3 : HasDerivAt (fun s : ℝ => ρ u (ρ (s • z) f)) (ρ u (fderiv ℝ (fun v => ρ v f) 0 z)) 0` using `((ρ u).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h2`. Use `set c : ℂ := π * (⟪u, z⟫ : ℝ) - π * I * (⟪u, J z⟫ : ℝ) with hc`. Establish `h4 : HasDerivAt (fun s : ℂ => (gau u)⁻¹ * cexp (c * s + (π / 2 * ‖z‖ ^ 2) * s ^ 2)) ((gau u)⁻¹ * c) 0`. Use `((((hasDerivAt_id (0 : ℂ)).const_mul c).add (((hasDerivAt_id (0 : ℂ)).pow 2).const_mul (π / 2 * ‖z‖ ^ 2 : ℂ))).cexp).const_mul (gau u)⁻¹` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `h5 : HasDerivAt (fun s : ℝ => (gau u)⁻¹ * cexp (c * s + (π / 2 * ‖z‖ ^ 2) * s ^ 2)) ((gau u)⁻¹ * c) 0` using `HasDerivAt.comp_ofReal (z := 0) (by rw [ofReal_zero]; exact h4)`. Establish `h6` using `h5.smul h3`. Establish `e : (fun s : ℝ => (gau (u + s • z))⁻¹ • ρ (u + s • z) f) = (fun s : ℝ => (gau u)⁻¹ * cexp (c * s + (π / 2 * ‖z‖ ^ 2) * s ^ 2)) • fun s : ℝ => ρ u (ρ (s • z) f)`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply', h.2.1, smul_smul]`. Use `congr 1`. Establish `n : ((‖u + s • z‖ : ℝ) : ℂ) ^ 2 = (‖u‖ : ℂ) ^ 2 + 2 * s * (⟪u, z⟫ : ℝ) + s ^ 2 * ‖z‖ ^ 2`. Establish `: ‖u + s • z‖ ^ 2 = ‖u‖ ^ 2 + 2 * s * ⟪u, z⟫ + s ^ 2 * ‖z‖ ^ 2`. Rewrite using `[norm_add_sq_real, inner_smul_right, norm_smul, mul_pow, Real.norm_eq_abs, sq_abs]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions. Establish `o : omJ J u (s • z) = s * ⟪u, J z⟫` using `by simp [omJ, inner_smul_right]`. Rewrite using `[gau, gau, n, o, ← Complex.exp_neg, ← Complex.exp_neg, ← Complex.exp_add, ← Complex.exp_add, hc]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h6` using `[← e]`. Rewrite using `[h1.unique h6]`. Simplify using `[h.1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fderiv_norm (h : IsHeis (omJ J) ρ) (f : B) (hf : Sm ρ f) (u z : V) :
     fderiv ℝ (fun u => (gau u)⁻¹ • ρ u f) u z =
@@ -72,9 +72,9 @@ theorem fderiv_norm (h : IsHeis (omJ J) ρ) (f : B) (hf : Sm ρ f) (u z : V) :
   simp [h.1]
 
 /- English proof (translation)
-Establish `e : fderiv ℝ (fun v => ρ v f) 0 (J z) = I • fderiv ℝ (fun v => ρ v f) 0 z`. Rewrite using `[eq_neg_of_add_eq_zero_left (ha z), smul_neg, smul_smul, I_mul_I]`. Simplify using the standard rewrite rules. Rewrite using `[fderiv_norm h f hf, fderiv_norm h f hf, e, map_smul, smul_add, smul_comm I, smul_smul I, hJ, inner_neg_right]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Take the linear combination `(gau u)⁻¹ * π * (⟪u, J z⟫ : ℝ) * I_mul_I`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem fderiv_norm_J (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (f : B) (hf : Sm ρ f)
     (ha : ∀ z, fderiv ℝ (fun v => ρ v f) 0 z + I • fderiv ℝ (fun v => ρ v f) 0 (J z) = 0) (u z : V) :
@@ -94,18 +94,18 @@ open scoped RealInnerProductSpace ContDiff Real ComplexOrder in
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
   {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] {J : V ≃ₗᵢ[ℝ] V} {ρ : V → B →L[ℂ] B} in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.RealWeil.Vacuum.line]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.RealWeil.Vacuum.line_apply (u : V) (ζ : ℂ) :
     _root_.GlobalTheory.RealWeil.Vacuum.line J u ζ = ζ.re • u + ζ.im • J u := by
   simp [_root_.GlobalTheory.RealWeil.Vacuum.line]
 
 /- English proof (translation)
-Establish `hd : Differentiable ℂ fun ζ => (gau (line J u ζ))⁻¹ • ρ (line J u ζ) f`. Introduce `ζ`. Establish `h1 : HasFDerivAt (fun ζ => (gau (line J u ζ))⁻¹ • ρ (line J u ζ) f) ((fderiv ℝ (fun u => (gau u)⁻¹ • ρ u f) (line J u ζ)).comp (line J u)) ζ` using `(differentiable_norm f hf _).hasFDerivAt.comp ζ (line J u).hasFDerivAt`. Use `differentiableAt_complex_iff_differentiableAt_real.2 ⟨h1.differentiableAt, ?_⟩` and prove the remaining obligations. Rewrite using `[h1.fderiv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify `fderiv_norm_J hJ h f hf ha (line J u ζ) u` using `[line_apply]`. Use `DiffContOnCl.circleAverage (c := 0) (R := 1) hd.diffContOnCl` as an intermediate fact. Rewrite `this` using `[Real.circleAverage_def]`. Simplify using `only [map_zero, gau_zero, h.1, inv_one, one_smul] at this`. Use `conv_rhs => rw [← this]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_inv_smul₀ Real.two_pi_pos.ne']`.
+A detailed English derivation is pending.
 -/
 theorem mean_value [CompleteSpace B] (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (f : B) (hf : Sm ρ f)
     (ha : ∀ z, fderiv ℝ (fun v => ρ v f) 0 z + I • fderiv ℝ (fun v => ρ v f) 0 (J z) = 0) (u : V) :
@@ -130,7 +130,7 @@ open scoped RealInnerProductSpace ContDiff Real ComplexOrder in
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
   {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] {J : V ≃ₗᵢ[ℝ] V} {ρ : V → B →L[ℂ] B} in
 /- English proof (translation)
-Establish `e` using `J.inner_map_map u (J u)`. Rewrite `e` using `[hJ, inner_neg_right, real_inner_comm u (J u)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem inner_self_complexStructure_eq_zero (hJ : ∀ x, J (J x) = -x) (u : V) :
     ⟪u, J u⟫ = 0 := by
@@ -143,7 +143,7 @@ open scoped RealInnerProductSpace ContDiff Real ComplexOrder in
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
   {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] {J : V ≃ₗᵢ[ℝ] V} {ρ : V → B →L[ℂ] B} in
 /- English proof (translation)
-Establish `h0` using `inner_self_complexStructure_eq_zero hJ u`. Rewrite using `[_root_.GlobalTheory.RealWeil.Vacuum.line_apply, circleMap_zero, ofReal_one, one_mul, exp_ofReal_mul_I_re, exp_ofReal_mul_I_im, ← sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _), ← real_inner_self_eq_norm_sq, ← real_inner_self_eq_norm_sq]`. Simplify using `only [inner_add_left, inner_add_right, real_inner_smul_left, real_inner_smul_right, real_inner_comm u (J u), h0, LinearIsometryEquiv.inner_map_map, mul_zero, add_zero, zero_add]`. Take the linear combination `⟪u, u⟫ * Real.cos_sq_add_sin_sq θ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem _root_.GlobalTheory.RealWeil.Vacuum.norm_line (hJ : ∀ x, J (J x) = -x) (u : V) (θ : ℝ) :
     ‖_root_.GlobalTheory.RealWeil.Vacuum.line J u (circleMap 0 1 θ)‖ = ‖u‖ := by
@@ -174,7 +174,7 @@ open scoped RealInnerProductSpace ContDiff Real ComplexOrder in
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
   {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] in
 /- English proof (translation)
-Substitute `hs` using the available equality. Apply the tactic sequence `apply Complex.ext <;>`. Apply the tactic sequence `simp [Complex.sq_norm, Complex.normSq_apply, Complex.mul_re, Complex.mul_im] <;> ring`.
+Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem gaussian_exponent_add_eq (a s : ℝ) (ζ η : ℂ)
     (hs : s = a * (ζ.im * η.re - ζ.re * η.im)) :
@@ -190,7 +190,7 @@ open scoped RealInnerProductSpace ContDiff Real ComplexOrder in
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
   {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] in
 /- English proof (translation)
-Establish `h0` using `inner_self_complexStructure_eq_zero hJ u`. Unfold `_root_.GlobalTheory.RealWeil.omJ`. Simplify using `only [_root_.GlobalTheory.RealWeil.Vacuum.line_apply, map_add, map_smul, hJ, inner_add_left, inner_add_right, real_inner_smul_left, real_inner_smul_right, inner_neg_right, real_inner_comm u (J u), h0, LinearIsometryEquiv.inner_map_map, real_inner_self_eq_norm_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem omJ_line_line_eq {J : V ≃ₗᵢ[ℝ] V} (hJ : ∀ x, J (J x) = -x)
     (u : V) (ζ η : ℂ) :
@@ -208,23 +208,21 @@ open scoped RealInnerProductSpace ContDiff Real ComplexOrder in
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
   {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] in
 /- English proof (translation)
-Take `⟨-, hmul, -, -⟩` from `h`. Use `set ψ : ℂ → B := fun ζ => cexp ((Real.pi / 2 * ‖u‖ ^ 2 * ‖ζ‖ ^ 2 : ℝ) : ℂ) • ρ (_root_.GlobalTheory.RealWeil.Vacuum.line J u ζ) f with hψ`. Use `set D := fderiv ℝ (fun v => ρ v f) 0`. Establish `hD : HasFDerivAt (fun v => ρ v f) D 0` using `((hf.differentiable (by simp)) 0).hasFDerivAt`. Establish `hDJ : ∀ z, D (J z) = I • D z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z`. Establish `e : I • D (J z) = -D z` using `eq_neg_of_add_eq_zero_right (ha z)`. Combine the equalities or inequalities in the displayed calculation. Establish `key : ∀ η : ℂ, D (_root_.GlobalTheory.RealWeil.Vacuum.line J u η) = η • D u`. Introduce `η`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[_root_.GlobalTheory.RealWeil.Vacuum.line_apply, map_add, map_smul, map_smul, hDJ, ← Complex.coe_smul η.re, ← Complex.coe_smul η.im, smul_smul (η.im : ℂ) I, ← add_smul, Complex.re_add_im]`. Establish `hψ0 : HasDerivAt ψ (D u) 0`. Establish `hn : HasFDerivAt (fun ζ : ℂ => ((Real.pi / 2 * ‖u‖ ^ 2 * ‖ζ‖ ^ 2 : ℝ) : ℂ)) (0 : ℂ →L[ℝ] ℂ) 0`. Establish `h1` using `((hasStrictFDerivAt_norm_sq (0 : ℂ)).hasFDerivAt.const_mul (Real.pi / 2 * ‖u‖ ^ 2))`. Establish `h2` using `ofRealCLM.hasFDerivAt.comp (0 : ℂ) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h2` using `[Function.comp_def]`. Establish `hg : HasFDerivAt (fun ζ => ρ (_root_.GlobalTheory.RealWeil.Vacuum.line J u ζ) f) (D.comp (_root_.GlobalTheory.RealWeil.Vacuum.line J u)) 0`. Establish `hD0 : HasFDerivAt (fun v => ρ v f) D (_root_.GlobalTheory.RealWeil.Vacuum.line J u 0)`. Simplify using `using hD`. Establish `h3` using `hD0.comp (0 : ℂ) (_root_.GlobalTheory.RealWeil.Vacuum.line J u).hasFDerivAt`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h3` using `[Function.comp_def]`. Establish `hP` using `hn.cexp.smul hg`. Use `(hasFDerivAt_of_restrictScalars ℝ hP (f' := (1 : ℂ →L[ℂ] ℂ).smulRight (D u)) ?_).hasDerivAt.congr_deriv (by simp)` and prove the remaining obligations. Use extensionality with `η`. Simplify using `[key]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hshift : ∀ ζ η : ℂ, ψ (ζ + η) = cexp ((Real.pi / 2 * ‖u‖ ^ 2 * ‖ζ‖ ^ 2 : ℝ) : ℂ) • (cexp (Real.pi * ‖u‖ ^ 2 * ((starRingEnd ℂ) ζ * η)) • ρ (_root_.GlobalTheory.RealWeil.Vacuum.line J u ζ) (ψ η))`. Introduce `ζ η`. Simplify using `only [hψ, map_add, map_smul]`. Rewrite using `[hmul, smul_smul, smul_smul, smul_smul, ← exp_add, ← exp_add, ← exp_add]`. Use `congr 2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `e` using `gaussian_exponent_add_eq (‖u‖ ^ 2) _ ζ η (omJ_line_line_eq hJ u ζ η)`. Move the coercions through the operations in `at e ⊢`. Take the linear combination `e`. Introduce `ζ`. Establish `hd : DifferentiableAt ℂ (fun η => ψ (ζ + η)) (ζ - ζ)`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[sub_self]`. Repeatedly rewrite using `[hshift ζ]`. Establish `hψd : DifferentiableAt ℂ ψ 0` using `hψ0.differentiableAt`. Use `fun_prop`. Establish `h4` using `hd.comp (f := fun y => y - ζ) ζ (differentiableAt_id.sub_const ζ)`.
-
-Simplify `h4` using `[Function.comp_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem differentiable_gaussian_mul_orbit_line {J : V ≃ₗᵢ[ℝ] V} {ρ : V → B →L[ℂ] B}
     (hJ : ∀ x, J (J x) = -x)
@@ -295,11 +293,11 @@ open scoped RealInnerProductSpace ContDiff Real ComplexOrder in
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
   {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] in
 /- English proof (translation)
-Establish `hψ` using `differentiable_gaussian_mul_orbit_line hJ h f hf ha u`. Establish `hmean` using `(hψ.diffContOnCl (s := Metric.ball (0 : ℂ) |1|)).circleAverage`. Establish `hρ0 : ρ 0 f = f` using `h.1 f`. Establish `hs : Set.EqOn (fun ζ : ℂ => cexp ((Real.pi / 2 * ‖u‖ ^ 2 * ‖ζ‖ ^ 2 : ℝ) : ℂ) • ρ (_root_.GlobalTheory.RealWeil.Vacuum.line J u ζ) f) (fun ζ : ℂ => cexp ((Real.pi / 2 * ‖u‖ ^ 2 : ℝ) : ℂ) • ρ (_root_.GlobalTheory.RealWeil.Vacuum.line J u ζ) f) (Metric.sphere 0 |1|)`. Introduce `ζ hζ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [abs_one, mem_sphere_zero_iff_norm] at hζ`. Simplify using `[hζ]`. Rewrite `hmean` using `[Real.circleAverage_congr_sphere hs, Real.circleAverage_fun_smul]`. Simplify using `only [norm_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, mul_zero, ofReal_zero, exp_zero, map_zero, hρ0, one_smul] at hmean`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← exp_add]`. Use `push_cast`. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Use `_ = cexp (-(Real.pi / 2) * ‖u‖ ^ 2) • f := by rw [mul_smul, hmean]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem circleAverage_orbit_line_eq_gaussian_smul {J : V ≃ₗᵢ[ℝ] V} {ρ : V → B →L[ℂ] B}
     [CompleteSpace B] (hJ : ∀ x, J (J x) = -x)
@@ -333,21 +331,19 @@ open MeasureTheory Complex Matrix in
 open scoped RealInnerProductSpace ContDiff Real ComplexOrder in
 
 /- English proof (translation)
-Establish `hg : ∀ u : V, _root_.GlobalTheory.RealWeil.gau u = cexp (-(Real.pi / 2) * ‖u‖ ^ 2)` using `fun u => rfl`. Establish `hiso : ∀ (x : V) (y : B), ‖ρ x y‖ = ‖y‖` using `h.2.2.1`. Rewrite using `[_root_.GlobalTheory.RealWeil.proj_apply]`. Use `set G : ℝ → V → B := fun θ u => _root_.GlobalTheory.RealWeil.gau u • ρ (_root_.GlobalTheory.RealWeil.Vacuum.line J u (circleMap 0 1 θ)) f with hG`. Establish `hrot : ∀ θ, ∫ u, _root_.GlobalTheory.RealWeil.gau u • ρ u f = ∫ u, G θ u`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `θ`. Use `set R := _root_.GlobalTheory.RealWeil.Vacuum.rot hJ θ`. Establish `e` using `(LinearIsometryEquiv.measurePreserving R).integral_comp R.toHomeomorph.measurableEmbedding (fun u => _root_.GlobalTheory.RealWeil.gau u • ρ u f)`. Rewrite using `[← e]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [hG, hg, LinearIsometryEquiv.norm_map]`. Both sides reduce to the same expression. Establish `hcont : Continuous (Function.uncurry G)`. Establish `ha' : Continuous fun p : ℝ × V => _root_.GlobalTheory.RealWeil.Vacuum.line J p.2 (circleMap 0 1 p.1)`. Simplify using `only [_root_.GlobalTheory.RealWeil.Vacuum.line_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `continuous_circleMap (0 : ℂ) 1` as an intermediate fact. Use `fun_prop`. Conclude with `(_root_.GlobalTheory.RealWeil.continuous_gau.comp continuous_snd).smul (h.continuous ha' continuous_const)`. Use `haveI : IsFiniteMeasure (volume.restrict (Set.uIoc (0 : ℝ) (2 * Real.pi))) := by`. Rewrite using `[isFiniteMeasure_restrict]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `((measure_mono Set.uIoc_subset_uIcc).trans_lt isCompact_uIcc.measure_lt_top).ne`. Establish `hint : Integrable (Function.uncurry G) ((volume.restrict (Set.uIoc 0 (2 * Real.pi))).prod volume)`. Use `Integrable.mono' ((integrable_const (1 : ℝ)).mul_prod (_root_.GlobalTheory.RealWeil.integrable_gau.norm.mul_const ‖f‖)) hcont.aestronglyMeasurable (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `[Function.uncurry, hG, norm_smul, hiso]`. Establish `hpos : (2 * Real.pi) ≠ 0` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[intervalIntegral.integral_congr (g := fun _ => ∫ u, _root_.GlobalTheory.RealWeil.gau u • ρ u f) (fun θ _ => (hrot θ).symm), intervalIntegral.integral_const, smul_smul, sub_zero, inv_mul_cancel₀ hpos, one_smul]`. Use `_ = ∫ u, _root_.GlobalTheory.RealWeil.gau u • Real.circleAverage (fun ζ => ρ (_root_.GlobalTheory.RealWeil.Vacuum.line J u ζ) f) 0 1 := by`. Rewrite using `[intervalIntegral_integral_swap hint, ← integral_smul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hG, Real.circleAverage_def, intervalIntegral.integral_smul]`. Rewrite using `[smul_comm]`. Use `_ = ∫ u, cexp (-(Real.pi : ℂ) * ‖u‖ ^ 2) • f := by`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only`.
-
-Rewrite using `[circleAverage_orbit_line_eq_gaussian_smul hJ h f hf ha u, smul_smul, hg, ← exp_add]`. Put the polynomial expressions in normal form. Use `_ = f := by`. Rewrite using `[integral_smul_const, GaussianFourier.integral_cexp_neg_mul_sq_norm (by simp [Real.pi_pos])]`. Simplify using `[div_self (ofReal_ne_zero.2 Real.pi_ne_zero)]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.RealWeil.proj_eq_self_of_annihilated (V : Type) [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [FiniteDimensional ℝ V]

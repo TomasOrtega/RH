@@ -12,11 +12,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo (HermLine IsSmoothHerm IsArithVar 
 namespace GlobalTheory.CompanionTheory.Ar.Num.GeoNumFp
 
 /- English proof (translation)
-Establish `hv : ¬ IsHorizontal W`. Introduce `h`. Establish `hm : (p : ℤ) ∈ W.comap (C : ℤ →+* MRing ι ℤ)` using `Ideal.mem_comap.mpr hpW`. Rewrite `hm` using `[show W.comap (C : ℤ →+* MRing ι ℤ) = ⊥ from h, Ideal.mem_bot]`. Conclude with `hp.ne_zero (by exact_mod_cast hm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hv, ?_⟩` and prove the remaining obligations. Establish `hq : (charOf W).Prime` using `ReciprocityTheory.ChartRestriction.G.Geo.charOf_prime hW hv`. Establish `hm : (p : ℤ) ∈ W.comap (C : ℤ →+* MRing ι ℤ)` using `Ideal.mem_comap.mpr hpW`. Establish `hd : Submodule.IsPrincipal.generator (W.comap (C : ℤ →+* MRing ι ℤ)) ∣ (p : ℤ)` using `(Submodule.IsPrincipal.mem_iff_generator_dvd _).mp hm`. Establish `hd' : charOf W ∣ p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Int.natAbs_dvd_natAbs.mpr hd` as an intermediate fact. Simplify `this` using `[charOf]`. Conclude with `(Nat.prime_dvd_prime_iff_eq hq hp).mp hd'`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem charOf_eq_of_mem {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {W : Ideal (MRing ι ℤ)} (hW : W.IsPrime) {p : ℕ} (hp : p.Prime)
@@ -37,11 +37,11 @@ theorem charOf_eq_of_mem {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintyp
   exact (Nat.prime_dvd_prime_iff_eq hq hp).mp hd'
 
 /- English proof (translation)
-Introduce `K _ _ ι _ P D hP a f hf hfP W hW p _ hpW`. Establish `hmem : W ∈ (P ⊔ Ideal.span {f}).minimalPrimes ∧ IsRelevant W`. Assume the negation of the conclusion as `h`. Conclude with `hW (by simp only [divCycle]; exact dif_neg h)`. Take `⟨hWmin, hWrel⟩` from `hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, ⟨hPp, hPh, -⟩, -, hPdim⟩` from `hP`. Establish `hWp : W.IsPrime` using `hWmin.1.1`. Establish `hfa : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog f a` using `(VocabMultiHomog.proof ℤ K ι f a).2 hf`. Establish `hWmh : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomogIdeal W` using `ReciprocityTheory.ChartRestriction.G.Geo.isMultiHomogIdeal_of_mem_minimalPrimes hPh hfa hWmin`. Use `hPp` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `ReciprocityTheory.ChartRestriction.G.Geo.dim_quot_minimal_add_one P W f hfP hWmin`. Rewrite `h1` using `[hPdim]`. Establish `hdim : ringKrullDim (MRing ι ℤ ⧸ W) = ((D + Fintype.card K : ℕ) : WithBot ℕ∞)` using `ReciprocityTheory.ChartRestriction.G.Geo.withBot_eq_of_add_one (by rw [h1, show D + 1 + Fintype.card K = D + Fintype.card K + 1 by omega])`. Take `⟨hv, hc⟩` from `charOf_eq_of_mem hWp (Fact.out : p.Prime) hpW`. Conclude with `⟨hc, hv, fun L => (GroundTheory.Heights₂.Heights.Bridge.intNum_map_eq_geoNum p D W ⟨hWp, hWmh, hWrel⟩ hpW hdim L).symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem geoNum_eq_intNum : ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι ℤ)) (D : ℕ), IsArithVar P (D + 1) → ∀ (a : K → ℕ) (f : MRing ι ℤ), IsMultiHomog f a → f ∉ P → ∀ W, divCycle P f W ≠ 0 → ∀ (p : ℕ) [Fact p.Prime], (C (p : ℤ) : MRing ι ℤ) ∈ W → charOf W = p ∧ ¬ IsHorizontal W ∧ ∀ L : Fin D → K → ℤ, geoNum D W L = intNum (ZMod p) (extTo (ZMod p) W) L := by
   intro K _ _ ι _ P D hP a f hf hfP W hW p _ hpW

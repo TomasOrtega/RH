@@ -26,11 +26,11 @@ set_option autoImplicit false
 namespace GlobalTheory.RegEst
 
 /- English proof (translation)
-Introduce `h2 hH hD`. Establish `hK` using `GlobalTheory.T.kernel_statement`. Establish `hC` using `GlobalTheory.T.kernel_bound_gives_constant_bound h2 hH hD hK`. Establish `hS` using `GlobalTheory.T.size_statement h2 hH`. Establish `hG` using `GlobalTheory.T.gradient_statement h2 hH`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `GlobalTheory.T.low_statement_of_constants h2 hH hK hS hC`. Establish `hHs` using `GlobalTheory.T.hessian_statement hC hL`. Establish `hCl` using `GlobalTheory.T.closeness_statement h2 hH hK hG`. Establish `hCe` using `GlobalTheory.T.centre_statement h2 hH`. Introduce `D O hO hN A T H h c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `inS_of_parts _ (GlobalTheory.T.curvature_part_of_hessian_center hHs hCe D O hO hN A T H h c) (GlobalTheory.T.boundary_part_of_low_center hL hCe D O hO hN A T H h c) (GlobalTheory.T.close_part_of_size_low_close hS hL hCl D O hO hN A T H h c)`.
+A detailed English derivation is pending.
 -/
 theorem regSt : Hypotheses2 → HypothesesH → GlobalTheory.Published.DemaillyRegularisation → RegSt := by
   intro h2 hH hD

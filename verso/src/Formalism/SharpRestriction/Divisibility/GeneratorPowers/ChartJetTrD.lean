@@ -13,7 +13,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Establish `e1 : a.left ≫ φ = b.left ≫ φ` using `congrArg (fun z => z.left) e`. Establish `e2 : a.left ≫ G'.hom = b.left ≫ G'.hom`. Rewrite using `[Over.w a, Over.w b]`. Conclude with `Over.OverMorphism.ext (h.1.hom_ext e1 e2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem push_inj {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) {T : Over S'} {a b : T ⟶ G'}
@@ -24,7 +24,7 @@ theorem push_inj {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [Grp
   exact Over.OverMorphism.ext (h.1.hom_ext e1 e2)
 
 /- English proof (translation)
-Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r show Ideal.Quotient.mk (orig K (Fin n × Fin d) ^ (m + 1)) (MvPolynomial.map f (MvPolynomial.bind₁ (fun p : Fin 1 × Fin d => MvPolynomial.X (i, p.2)) (MvPolynomial.C r))) = Ideal.Quotient.mk (orig K (Fin n × Fin d) ^ (m + 1)) (MvPolynomial.bind₁ (fun p : Fin 1 × Fin d => MvPolyn …`. Simplify using the standard rewrite rules. Introduce `q show Ideal.Quotient.mk (orig K (Fin n × Fin d) ^ (m + 1)) (MvPolynomial.map f (MvPolynomial.bind₁ (fun p : Fin 1 × Fin d => MvPolynomial.X (i, p.2)) (MvPolynomial.X q))) = Ideal.Quotient.mk (orig K (Fin n × Fin d) ^ (m + 1)) (MvPolynomial.bind₁ (fun p : Fin 1 × Fin d => MvPolyn …`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
 Simplify using the standard rewrite rules.
 -/
@@ -65,7 +65,7 @@ def U2 (m : ℕ) : Over.mk ((jOG (𝟙 (Sp T.Fr)) d m 2).hom ≫ spMap (algebraM
     rw [Category.comp_id, Category.comp_id, spMap_comp', spMap_comp', jetCoef_alg])
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show (spMap _ ≫ xL I xT m) ≫ I.m2.φ = spMap (jc (d := d) 2 m) ≫ spMap _ ≫ (xT m).left`. Rewrite using `[Category.assoc, xL_fst, ← Category.assoc, ← Category.assoc, spMap_comp', spMap_comp', jetCoef_copy]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem push_jpt (m : ℕ) (i : Fin 2) :
     pushHom I.m2.cart _ (jptG I.t' (𝟙 (Sp T.Fr)) d (xP I xT) m i) = U2 (d := d) m ≫ jptG I.G (𝟙 (Sp T.V)) d xT m i := by
@@ -74,7 +74,7 @@ theorem push_jpt (m : ℕ) (i : Fin 2) :
   rw [Category.assoc, xL_fst, ← Category.assoc, ← Category.assoc, spMap_comp', spMap_comp', jetCoef_copy]
 
 /- English proof (translation)
-Apply `push_inj I.m2.cart` to reduce the goal to its premises. Rewrite using `[map_mul, push_jpt, push_jpt, ← MonObj.comp_mul, ← hl]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show (spMap _ ≫ xL I xT m) ≫ I.m2.φ = spMap (jc (d := d) 2 m) ≫ spMap _ ≫ (xT m).left`. Rewrite using `[Category.assoc, xL_fst, ← Category.assoc, ← Category.assoc, spMap_comp', spMap_comp', jetCoef_substP]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xP_law (FT : Fin d → MvPowerSeries (Fin 2 × Fin d) T.V) (m : ℕ)
     (hl : Formalism.L2.Pj.homAt (𝟙 (Sp T.V)) (jetSubstP m fun p : Fin 1 × Fin d => psTrunc m (FT p.2)) ≫ xT m =

@@ -12,7 +12,7 @@ noncomputable def F (M : Matrix ι ι (WittVector p R)) (v : ι → WittVector p
   v - M.mulVec (fun k => WittVector.frobenius (v k))
 
 /- English proof (translation)
-Establish `: (fun k => WittVector.frobenius ((v + w) k)) = (fun k => WittVector.frobenius (v k)) + (fun k => WittVector.frobenius (w k))`. Use function extensionality and compare the values at `k`. Simplify using `[map_add]`. Simplify using `only [F, this, Matrix.mulVec_add]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 lemma F_add (M : Matrix ι ι (WittVector p R)) (v w : ι → WittVector p R) :
     F M (v + w) = F M v + F M w := by
@@ -22,14 +22,14 @@ lemma F_add (M : Matrix ι ι (WittVector p R)) (v w : ι → WittVector p R) :
   simp only [F, this, Matrix.mulVec_add]; abel
 
 /- English proof (translation)
-Simplify using `only [F, Pi.zero_apply, map_zero, sub_eq_zero]`. Conclude with `(Matrix.mulVec_zero M).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma F_zero (M : Matrix ι ι (WittVector p R)) : F M 0 = 0 := by
   simp only [F, Pi.zero_apply, map_zero, sub_eq_zero]
   exact (Matrix.mulVec_zero M).symm
 
 /- English proof (translation)
-Use `F_add M (v - w) w` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[this]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 lemma F_sub (M : Matrix ι ι (WittVector p R)) (v w : ι → WittVector p R) :
     F M (v - w) = F M v - F M w := by
@@ -38,7 +38,7 @@ lemma F_sub (M : Matrix ι ι (WittVector p R)) (v w : ι → WittVector p R) :
   rw [this]; abel
 
 /- English proof (translation)
-Establish `: (fun k => WittVector.frobenius ((((p : WittVector p R) ^ n) • v) k)) = ((p : WittVector p R) ^ n) • (fun k => WittVector.frobenius (v k))`. Use function extensionality and compare the values at `k`. Simplify using `[map_mul, map_pow, map_natCast]`. Simplify using `only [F, this, Matrix.mulVec_smul, smul_sub]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma F_smul (M : Matrix ι ι (WittVector p R)) (n : ℕ) (v : ι → WittVector p R) :
     F M (((p : WittVector p R) ^ n) • v) = ((p : WittVector p R) ^ n) • F M v := by
@@ -48,7 +48,7 @@ lemma F_smul (M : Matrix ι ι (WittVector p R)) (n : ℕ) (v : ι → WittVecto
   simp only [F, this, Matrix.mulVec_smul, smul_sub]
 
 /- English proof (translation)
-Simplify using `only [F, Pi.sub_apply, map_sub, RingHom.map_mulVec]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Simplify using `[Function.comp_def, WittVector.constantCoeff_apply, WittVector.coeff_frobenius_charP, frobenius_def]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma constantCoeff_F (M : Matrix ι ι (WittVector p R)) (v : ι → WittVector p R) (k : ι) :
     WittVector.constantCoeff (F M v k) =
@@ -61,7 +61,7 @@ lemma constantCoeff_F (M : Matrix ι ι (WittVector p R)) (v : ι → WittVector
     frobenius_def]
 
 /- English proof (translation)
-Rewrite using `[← Ideal.mem_span_singleton, WittVector.mem_span_p_iff_coeff_zero_eq_zero, WittVector.constantCoeff_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma p_dvd_iff (x : WittVector p R) :
     (p : WittVector p R) ∣ x ↔ WittVector.constantCoeff x = 0 := by
@@ -69,7 +69,7 @@ lemma p_dvd_iff (x : WittVector p R) :
     WittVector.constantCoeff_apply]
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma smod_iff (x y : WittVector p R) (n : ℕ) :
     x ≡ y [SMOD (Ideal.span {(p : WittVector p R)}) ^ n •
@@ -80,15 +80,13 @@ lemma smod_iff (x y : WittVector p R) (n : ℕ) :
 variable {M : Matrix ι ι (WittVector p R)}
 
 /- English proof (translation)
-Establish `hx : (fun j => WittVector.constantCoeff (v j)) - (M.map WittVector.constantCoeff).mulVec (fun j => frobenius R p (WittVector.constantCoeff (v j))) = 0`. Use function extensionality and compare the values at `k`. Rewrite using `[← constantCoeff_F, hv]`. Simplify using the standard rewrite rules. Establish `h0 : (0 : ι → R) - (M.map WittVector.constantCoeff).mulVec (fun j => frobenius R p ((0 : ι → R) j)) = 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Pi.zero_apply, map_zero, zero_sub, neg_eq_zero]`. Conclude with `Matrix.mulVec_zero _`. Establish `hx0` using `(hU 0).unique hx h0`. Establish `hd : ∀ k, ∃ w, v k = (p : WittVector p R) * w`. Introduce `k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(p_dvd_iff (v k)).2 (congrFun hx0 k)`. Use `choose w hw using hd`. Use `⟨w, funext fun k => by simp [hw k], ?_⟩` and prove the remaining obligations. Establish `h1 : F M ((p : WittVector p R) ^ 1 • w) = 0`. Rewrite using `[pow_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `hv` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using `[hw k]`. Rewrite `h1` using `[F_smul, pow_one]`. Use function extensionality and compare the values at `k`.
-
-Use `congrFun h1 k` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this`. Conclude with `WittVector.eq_zero_of_p_mul_eq_zero _ (by rw [mul_comm]; exact this)`.
+Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma inj_step
     (hU : ∀ c : ι → R, ∃! x : ι → R, x - (M.map WittVector.constantCoeff).mulVec
@@ -118,11 +116,11 @@ lemma inj_step
   exact WittVector.eq_zero_of_p_mul_eq_zero _ (by rw [mul_comm]; exact this)
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, ∀ v : ι → WittVector p R, F M v = 0 → ∀ k, (p : WittVector p R) ^ n ∣ v k`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro v _ k`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Introduce `v hv k`. Take `⟨w, rfl, hw⟩` from `inj_step hU v hv`. Simplify using `only [Pi.smul_apply, smul_eq_mul, pow_succ']`. Conclude with `mul_dvd_mul_left _ (ih w hw k)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Use `IsHausdorff.haus (I := Ideal.span {(p : WittVector p R)}) inferInstance (v k) fun n => ?_` and prove the remaining obligations. Rewrite using `[smod_iff, sub_zero]`. Conclude with `key n v hv k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma inj
     (hU : ∀ c : ι → R, ∃! x : ι → R, x - (M.map WittVector.constantCoeff).mulVec
@@ -143,11 +141,11 @@ lemma inj
   exact key n v hv k
 
 /- English proof (translation)
-Take `⟨x, hx, -⟩` from `hU (fun k => WittVector.constantCoeff (d k))`. Use `set u : ι → WittVector p R := fun k => WittVector.teichmuller p (x k) with hu`. Establish `hc : (fun j => WittVector.constantCoeff (u j)) = x`. Use function extensionality and compare the values at `j`. Simplify using `[hu, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hd : ∀ k, ∃ e, d k - F M u k = (p : WittVector p R) * e`. Introduce `k`. Apply `(p_dvd_iff _).2` to reduce the goal to its premises. Establish `hc' : ∀ j, WittVector.constantCoeff (u j) = x j` using `fun j => congrFun hc j`. Rewrite using `[map_sub, constantCoeff_F]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hc']`. Rewrite using `[hx, sub_self]`. Use `choose e he using hd`. Use `⟨u, e, funext fun k => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, ← he k, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma modp
     (hU : ∀ c : ι → R, ∃! x : ι → R, x - (M.map WittVector.constantCoeff).mulVec
@@ -170,27 +168,25 @@ lemma modp
   simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, ← he k, add_sub_cancel]
 
 /- English proof (translation)
-Use `choose U E hUE using modp hU`. Take `⟨seq, seq_zero, seq_succ⟩ : ∃ seq : ℕ → (ι → WittVector p R) × (ι → WittVector p R), seq 0 = (0, c) ∧ ∀ n, seq (n + 1) = ((seq n).1 + ((p : WittVector p R) ^ n) • U (seq n).2, E (seq n).2)` from `⟨fun n => Nat.rec ((0 : ι → WittVector p R), c) (fun n q => (q.1 + ((p : WittVector p R) ^ n) • U q.2, E q.2)) n, rfl, fun _ => rfl⟩`. Establish `inv : ∀ n, c = F M (seq n).1 + ((p : WittVector p R) ^ n) • (seq n).2`. Introduce `n`. Proceed by induction on `n with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => rw [seq_zero, F_zero, pow_zero, one_smul, zero_add]`. Consider the case `succ n ih`. Establish `h2` using `hUE (seq n).2`. Rewrite using `[seq_succ, F_add, F_smul]`. Use function extensionality and compare the values at `k`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `a` using `congrFun ih k`. Establish `b` using `congrFun h2 k`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul] at a b ⊢`. Take the linear combination `a + (p : WittVector p R) ^ n * b`. Establish `compat : ∀ m n, m ≤ n → ∀ k, (p : WittVector p R) ^ m ∣ (seq n).1 k - (seq m).1 k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m n hmn`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => intro k`. Simplify using the standard rewrite rules. Consider the case `succ n hmn ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Rewrite using `[seq_succ]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Establish `: (seq n).1 k + (p : WittVector p R) ^ n * U (seq n).2 k - (seq m).1 k = ((seq n).1 k - (seq m).1 k) + (p : WittVector p R) ^ n * U (seq n).2 k` using `by ring`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `dvd_add (ih k) (dvd_mul_of_dvd_left (pow_dvd_pow _ hmn) _)`. Establish `hlim : ∀ k, ∃ L : WittVector p R, ∀ n, (seq n).1 k ≡ L [SMOD (Ideal.span {(p : WittVector p R)}) ^ n • (⊤ : Submodule (WittVector p R) (WittVector p R))]`. Introduce `k`. Use `IsPrecomplete.prec inferInstance ?_` and prove the remaining obligations. Introduce `m n hmn`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smod_iff]`. Conclude with `dvd_sub_comm.1 (compat m n hmn k)`. Use `choose L hL using hlim`. Use `⟨L, ?_⟩` and prove the remaining obligations. Establish `hdiff : ∀ n, ∃ w : ι → WittVector p R, L - (seq n).1 = ((p : WittVector p R) ^ n) • w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `n`. Establish `: ∀ k, ∃ w, L k - (seq n).1 k = (p : WittVector p R) ^ n * w` using `fun k => dvd_sub_comm.1 ((smod_iff _ _ n).1 (hL k n))`. Use `choose w hw using this`. Conclude with `⟨w, funext fun k => by simp [hw k]⟩`. Establish `hzero : F M L - c = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Use `show (F M L - c) k = 0`. Use `IsHausdorff.haus (I := Ideal.span {(p : WittVector p R)}) inferInstance _ fun n => ?_` and prove the remaining obligations. Rewrite using `[smod_iff, sub_zero]`. Take `⟨w, hw⟩` from `hdiff n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : F M L = F M (seq n).1 + ((p : WittVector p R) ^ n) • F M w`. Rewrite using `[← F_smul, ← hw, ← F_add, add_sub_cancel]`. Establish `e2` using `inv n`. Use `⟨F M w k - (seq n).2 k, ?_⟩` and prove the remaining obligations. Establish `a` using `congrFun e1 k`.
-
-Establish `b` using `congrFun e2 k`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul] at a b`. Simplify using `only [Pi.sub_apply]`. Take the linear combination `a - b`. Conclude with `sub_eq_zero.1 hzero`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma exists_sol
     (hU : ∀ c : ι → R, ∃! x : ι → R, x - (M.map WittVector.constantCoeff).mulVec
@@ -263,9 +259,9 @@ end GlobalTheory.WittSolve
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p _ R _ _ _ ι _ M hU c`. Take `⟨v, hv⟩` from `WittSolve.exists_sol hU c`. Use `⟨v, hv, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h : WittSolve.F M (y - v) = 0`. Rewrite using `[WittSolve.F_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_eq_zero.2 (hy.trans hv.symm)`. Conclude with `sub_eq_zero.1 (WittSolve.inj hU _ h)`.
+A detailed English derivation is pending.
 -/
 theorem wittSolve_unique : ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] [CharP R p]
     [PerfectRing R p] (ι : Type) [Fintype ι] (M : Matrix ι ι (WittVector p R)),

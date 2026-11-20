@@ -16,18 +16,18 @@ namespace GlobalTheory.ChartCobd
 open GlobalTheory.CatCoh GlobalTheory.AnPer.Charts
 
 /- English proof (translation)
-Apply the tactic sequence `ext : 1 <;> simp [hx, hy]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tsze_mul_of_fst {A : Type} [CommRing A] {n : ℕ} (x y : TrivSqZeroExt A (Fin n → A)) (hx : x.fst = 0)
     (hy : y.fst = 0) : x * y = 0 := by
   ext : 1 <;> simp [hx, hy]
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `hJ`. Use `⟨N * 2, ?_⟩` and prove the remaining obligations. Establish `h1 : (J.comap (TrivSqZeroExt.fstHom ℤ A (Fin n → A)).toRingHom) ^ N ≤ RingHom.ker (TrivSqZeroExt.fstHom ℤ A (Fin n → A)).toRingHom`. Use `(Ideal.le_comap_pow _ N).trans ?_` and prove the remaining obligations. Rewrite using `[hN, Ideal.zero_eq_bot]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_of_eq rfl`. Rewrite using `[pow_mul, Ideal.zero_eq_bot, eq_bot_iff]`. Use `(Ideal.pow_right_mono h1 2).trans ?_` and prove the remaining obligations. Rewrite using `[pow_two, Ideal.mul_le]`. Introduce `a ha b hb`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_bot]`. Conclude with `tsze_mul_of_fst a b ha hb`.
+A detailed English derivation is pending.
 -/
 theorem comap_fst_nil {A : Type} [CommRing A] {n : ℕ} (J : Ideal A) (hJ : IsNilpotent J) :
     IsNilpotent (J.comap (TrivSqZeroExt.fstHom ℤ A (Fin n → A)).toRingHom) := by
@@ -50,14 +50,14 @@ section Gen
 variable {R : Type} [CommRing R] [Algebra ℂ R] {O O' : Type} [CommRing O] [Algebra ℂ O] [CommRing O'] [Algebra ℂ O']
 
 /- English proof (translation)
-Simplify using `[Algebra.TensorProduct.algebraMap_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_alg (φ : O →ₐ[ℂ] O') (r : R) :
     Algebra.TensorProduct.map (AlgHom.id ℂ R) φ (algebraMap R (R ⊗[ℂ] O) r) = algebraMap R (R ⊗[ℂ] O') r := by
   simp [Algebra.TensorProduct.algebraMap_apply]
 
 /- English proof (translation)
-Establish `e : (Algebra.TensorProduct.map (AlgHom.id ℂ R) φ).toRingHom.comp (algebraMap R (R ⊗[ℂ] O)) = algebraMap R (R ⊗[ℂ] O')` using `RingHom.ext (map_alg φ)`. Use `Ideal.mem_map_of_mem (Algebra.TensorProduct.map (AlgHom.id ℂ R) φ).toRingHom hc` as an intermediate fact. Rewrite `this` using `[Ideal.map_map, e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem map_mem (φ : O →ₐ[ℂ] O') (M : Ideal R) (c : R ⊗[ℂ] O) (hc : c ∈ M.map (algebraMap R (R ⊗[ℂ] O))) :
     Algebra.TensorProduct.map (AlgHom.id ℂ R) φ c ∈ M.map (algebraMap R (R ⊗[ℂ] O')) := by
@@ -75,14 +75,14 @@ theorem map_right (φ : O →ₐ[ℂ] O') (x : O) :
   simp
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `h`. Conclude with `⟨N, by rw [← Ideal.map_pow, hN, Ideal.zero_eq_bot, Ideal.map_bot, Ideal.zero_eq_bot]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem map_nil {A : Type} [CommRing A] (f : R →+* A) (M : Ideal R) (h : IsNilpotent M) : IsNilpotent (M.map f) := by
   obtain ⟨N, hN⟩ := h
   exact ⟨N, by rw [← Ideal.map_pow, hN, Ideal.zero_eq_bot, Ideal.map_bot, Ideal.zero_eq_bot]⟩
 
 /- English proof (translation)
-Simplify using `[Algebra.TensorProduct.algebraMap_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lTensor_alg (D : Derivation ℂ O O) (r : R) :
     LinearMap.lTensor R D.toLinearMap (algebraMap R (R ⊗[ℂ] O) r) = 0 := by
@@ -97,14 +97,14 @@ theorem lTensor_right (D : Derivation ℂ O O) (x : O) :
   simp
 
 /- English proof (translation)
-Rewrite using `[AlgHom.commutes, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem right_alg (c : ℂ) : Algebra.TensorProduct.includeRight (R := ℂ) (A := R) (algebraMap ℂ O c) =
     algebraMap R (R ⊗[ℂ] O) (algebraMap ℂ R c) := by
   rw [AlgHom.commutes, ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-The claim follows from `Subsingleton.elim _ _`.
+A detailed English derivation is pending.
 -/
 theorem tensor_subsingleton [Subsingleton O] (x y : R ⊗[ℂ] O) : x = y := Subsingleton.elim _ _
 
@@ -120,14 +120,14 @@ theorem fst_inl_inr {A : Type} [CommRing A] {n : ℕ} (x : A) (v : Fin n → A) 
     (TrivSqZeroExt.inl x + TrivSqZeroExt.inr v : TrivSqZeroExt A (Fin n → A)).fst = x := by simp
 
 /- English proof (translation)
-Simplify using `using congrArg TrivSqZeroExt.snd h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_inl_inr {A : Type} [CommRing A] {n : ℕ} (x : A) (v : Fin n → A)
     (h : (TrivSqZeroExt.inl x + TrivSqZeroExt.inr v : TrivSqZeroExt A (Fin n → A)) = TrivSqZeroExt.inl x) : v = 0 := by
   simpa using congrArg TrivSqZeroExt.snd h
 
 /- English proof (translation)
-Rewrite using `[show v = 0 from funext h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inl_add_zero {A : Type} [CommRing A] {n : ℕ} (x : A) (v : Fin n → A) (h : ∀ a, v a = 0) :
     (TrivSqZeroExt.inl x + TrivSqZeroExt.inr v : TrivSqZeroExt A (Fin n → A)) = TrivSqZeroExt.inl x := by
@@ -139,9 +139,9 @@ variable {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F₀ : Fam Empty g Λ} (K₀ :
   {et : Hol F₀.V →+* R} {M : Ideal R}
 
 /- English proof (translation)
-Distinguish the cases in `hW : ∃ p, p ∈ K₀.W k`. Take `⟨p, hp⟩` from `hW`. Establish `e : K₀.cst k f = algebraMap ℂ (Hol (K₀.W k)) (f.fn p.1)` using `Hol.ext_fn fun p' hp' ↦ by`. Rewrite using `[K₀.fn_cst k f hp', Hol.fn_algebraMap _ hp', Subsingleton.elim p'.1 p.1]`. Rewrite using `[e, hev f p.1 (K₀.base k p hp)]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `right_alg _`. Use `haveI : Subsingleton (Hol (K₀.W k)) := ⟨fun a b ↦ Hol.ext_fn fun p hp ↦ (hW ⟨p, hp⟩).elim⟩`. Conclude with `tensor_subsingleton _ _`.
+A detailed English derivation is pending.
 -/
 theorem right_cst (hev : ∀ (f : Hol F₀.V), ∀ z ∈ F₀.V, et f = algebraMap ℂ R (f.fn z)) (k : K₀.K) (f : Hol F₀.V) :
     Algebra.TensorProduct.includeRight (R := ℂ) (A := R) (K₀.cst k f) = algebraMap R (R ⊗[ℂ] Hol (K₀.W k)) (et f) := by
@@ -211,9 +211,7 @@ def jetHom (S : K₀.DObj et M) (ψ : S.T.C →+* TrivSqZeroExt S.T.C (Fin g →
    fun d ↦ (hψ _).trans (inl_add_zero _ _ (hR d))⟩
 
 /- English proof (translation)
-Establish `e0` using `key (jetHom S (TrivSqZeroExt.inlHom _ _) (fun _ ↦ 0) (fun x ↦ (inl_add_zero x _ fun _ ↦ rfl).symm) (fun _ _ ↦ rfl) Relation.ReflTransGen.refl)`. Establish `e1` using `key (jetHom S ψ D hψ hR (Relation.ReflTransGen.single ⟨fun a ↦ TrivSqZeroExt.inr (Pi.single a 1), fun _ ↦ S.T.J.zero_mem, fun a b ↦ TrivSqZeroExt.inr_mul_inr _ _ _, fun h ↦ (hψ _).trans (by`. Rewrite using `[show D (S.T.ρ h) = fun a ↦ S.T.ρ (dw a h) from funext (hD h)]`. Conclude with `tsze_expand _ _)⟩))`. Establish `e2 : ψ (s S) = TrivSqZeroExt.inl (s S)` using `sub_right_injective (e1.trans e0.symm)`.
-
-Conclude with `eq_zero_of_inl_inr _ _ ((hψ _).symm.trans e2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem killed {q : Λ →+ R} (s : ∀ S : K₀.DObj et M, S.T.C)
     (key : ∀ {S S' : K₀.DObj et M} (f : S ⟶ S'), s S' - f.1.φ (s S) = algebraMap R S'.T.C (q f.1.deg))
@@ -231,9 +229,9 @@ theorem killed {q : Λ →+ R} (s : ∀ S : K₀.DObj et M, S.T.C)
   exact eq_zero_of_inl_inr _ _ ((hψ _).symm.trans e2)
 
 /- English proof (translation)
-Introduce `g Λ _ F₀ K₀ R _ _ et M hM hev q hq`. Take `⟨s, hs⟩` from `CatCoh.H1.mk_eq_zero.1 hq`. Establish `key : ∀ {S S' : K₀.DObj et M} (f : S ⟶ S'), @HSub.hSub S'.T.C S'.T.C S'.T.C _ (s S') (f.1.φ (s S)) = algebraMap R S'.T.C (q f.1.deg)` using `fun f ↦ congrFun (congrFun (congrFun hs _) _) f`. Use `⟨fun k ↦ s (objS K₀ hM hev k), fun k a ↦ ?_, fun l k k' h ↦ key (homS K₀ hM hev h)⟩` and prove the remaining obligations. Take `⟨ψ, hψ⟩` from `GlobalTheory.SqZeroMove.sqZeroMove (TrivSqZeroExt.inlHom (R ⊗[ℂ] Hol (K₀.W k)) (Fin g → R ⊗[ℂ] Hol (K₀.W k))) (fun a ↦ TrivSqZeroExt.inr (Pi.single a 1)) (fun a b ↦ TrivSqZeroExt.inr_mul_inr _ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `congrFun (killed s key (objS K₀ hM hev k) ψ (fun x a ↦ LinearMap.lTensor R (dw a).toLinearMap x) (fun x ↦ (hψ x).trans (tsze_expand _ _).symm) (fun r a ↦ lTensor_alg _ r) (fun h a ↦ lTensor_right _ h)) a`.
+A detailed English derivation is pending.
 -/
 theorem coboundary_on_charts : ∀ {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F₀ : Fam Empty g Λ} (K₀ : Charts F₀) {R : Type} [CommRing R] [Algebra ℂ R] (et : Hol F₀.V →+* R) (M : Ideal R), IsNilpotent M → (∀ (f : Hol F₀.V), ∀ z ∈ F₀.V, et f = algebraMap ℂ R (f.fn z)) → ∀ (q : Λ →+ R), K₀.perClD et M q = 0 → ∃ G : ∀ k, R ⊗[ℂ] Hol (K₀.W k), (∀ k a, LinearMap.lTensor R (dw a).toLinearMap (G k) = 0) ∧ ∀ l k k' (h : K₀.le l k' k), G k' - Algebra.TensorProduct.map (AlgHom.id ℂ R) (Charts.shA h) (G k) = q l ⊗ₜ[ℂ] 1 := by
   intro g Λ _ F₀ K₀ R _ _ et M hM hev q hq

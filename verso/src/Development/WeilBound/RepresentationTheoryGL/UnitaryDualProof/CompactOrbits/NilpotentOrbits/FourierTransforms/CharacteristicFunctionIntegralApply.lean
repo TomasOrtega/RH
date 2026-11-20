@@ -19,7 +19,7 @@ def phi0 (f : Sp k n → ℂ) : Sp k n → ℂ :=
   fun p => GlobalTheory.SplitDict.pf ψ (Measure.pi fun _ : Fin (d Z) => ν) (fun q => f (F1 hZ h q)) (Hb hZ h p)
 
 /- English proof (translation)
-Establish `key : ∀ x : Fin (d Z) → k, ((G Z)⁻¹ * G Z) *ᵥ x = x` using `fun x => by`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `(Gm hZ h).symm_apply_apply x`. Simplify using `[phi0, GlobalTheory.SplitDict.pf, F1, Hb, Gm, key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem characteristic_function_integral_apply (f : Sp k n → ℂ) (p : Sp k n) :
     phi0 ψ ν hZ h f p = ∫ u, f (p.1 - Pr Z p.1 + E Z u, p.2) * (ψ (u ⬝ᵥ D Z p.1) : ℂ) ∂(Measure.pi fun _ => ν) := by
@@ -29,7 +29,7 @@ theorem characteristic_function_integral_apply (f : Sp k n → ℂ) (p : Sp k n)
   simp [phi0, GlobalTheory.SplitDict.pf, F1, Hb, Gm, key]
 
 /- English proof (translation)
-Establish `hg : (fun q => f (F1 hZ h q)) ∈ SB (TT Z × (Fin (d Z) → k))` using `⟨hf.1.1.comp_continuous (F1 hZ h).continuous, hf.1.2.comp_homeomorph (F1 hZ h)⟩`. Establish `hpf` using `GlobalTheory.SplitDict.pf_mem_SB (Measure.pi fun _ : Fin (d Z) => ν) hc hg`. Use `⟨⟨?_, ?_⟩, Set.subset_univ _⟩` and prove the remaining obligations. Conclude with `hpf.1.comp_continuous (Hb hZ h).continuous`. Conclude with `hpf.2.comp_homeomorph (Hb hZ h)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem test_vector_mem_schwartz_bruhat {c : kˣ} (hc : HasConductor ψ c) {f : Sp k n → ℂ} (hf : f ∈ supportedIn (Set.univ : Set (Sp k n))) :
     phi0 ψ ν hZ h f ∈ supportedIn (Set.univ : Set (Sp k n)) := by
@@ -41,13 +41,13 @@ theorem test_vector_mem_schwartz_bruhat {c : kˣ} (hc : HasConductor ψ c) {f : 
   · exact hpf.2.comp_homeomorph (Hb hZ h)
 
 /- English proof (translation)
-Establish `key : ∀ x : Fin (d Z) → k, ((G Z)⁻¹ * G Z) *ᵥ x = x` using `fun x => by`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `(Gm hZ h).symm_apply_apply x`. Establish `hslice : (fun x => f (p.1 - Pr Z p.1 + E Z x, p.2)) = fun x => (f ∘ F1 hZ h) ((Hb hZ h p).1, x)`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[F1, Hb, Gm, key]`. Establish `hg : HasCompactSupport (f ∘ F1 hZ h)` using `hf.1.2.comp_homeomorph _`. Establish `hfc : Continuous f` using `hf.1.1.continuous`. Establish `hcs : HasCompactSupport (fun x => f (p.1 - Pr Z p.1 + E Z x, p.2))`. Use `HasCompactSupport.intro (hg.isCompact.image continuous_snd) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite using `[congrFun hslice x]`. Assume the negation of the conclusion as `hne`. Conclude with `hx ⟨((Hb hZ h p).1, x), subset_tsupport _ hne, rfl⟩`. Use `Continuous.integrable_of_hasCompactSupport ?_ (hcs.mul_right (f' := fun u => (ψ (u ⬝ᵥ D Z p.1) : ℂ)))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Continuous (fun x => f (p.1 - Pr Z p.1 + E Z x, p.2))`. Rewrite using `[hslice]`. Conclude with `(hfc.comp (F1 hZ h).continuous).comp (Continuous.prodMk_right _)`. Establish `h2 : Continuous (fun u : Fin (d Z) → k => (ψ (u ⬝ᵥ D Z p.1) : ℂ))` using `by fun_prop`. Conclude with `h1.mul h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_slice (hψ : Continuous ψ) {f : Sp k n → ℂ} (hf : f ∈ supportedIn (Set.univ : Set (Sp k n)))
     (p : Sp k n) :

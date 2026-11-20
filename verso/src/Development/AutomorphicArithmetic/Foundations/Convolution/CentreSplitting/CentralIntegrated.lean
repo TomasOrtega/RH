@@ -17,19 +17,19 @@ variable {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpac
   {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E] (π : BanachRep G E)
 
 /- English proof (translation)
-Take `⟨t, rfl⟩ : ∃ t, UniversalEnvelopingAlgebra.mkAlgHom ℝ h.lieSubalgebra t = u` from `RingCon.mkₐ_surjective (α := ℝ) (UniversalEnvelopingAlgebra.ringCon ℝ h.lieSubalgebra) u`. Proceed by induction on `t using TensorAlgebra.induction generalizing f with`. Consider the case `algebraMap r`. Establish `e : (fun g => (h.rightUAction (UniversalEnvelopingAlgebra.mkAlgHom ℝ h.lieSubalgebra (algebraMap ℝ _ r)) f).1 g⁻¹) = fun g => (r : ℂ) * f.1 g⁻¹`. Rewrite using `[AlgHom.commutes, AlgHom.commutes, Module.algebraMap_end_apply]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Use `⟨hf.const_mul _, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[AlgHom.commutes, AlgHom.commutes, Module.algebraMap_end_apply, IsExpLieAlgebra.integrated_const_mul_kernel]`. Conclude with `(Complex.coe_smul r _).symm`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `ι x`. Establish `e : (fun g => (h.rightUAction (UniversalEnvelopingAlgebra.mkAlgHom ℝ h.lieSubalgebra (TensorAlgebra.ι ℝ x)) f).1 g⁻¹) = h.convDeriv (h.ofLie x) fun g => f.1 g⁻¹` using `by show (fun g => (h.rightUAction (UniversalEnvelopingAlgebra.ι ℝ x) f).1 g⁻¹) = _`. Rewrite using `[IsExpLieAlgebra.rightUAction_ι, IsExpLieAlgebra.coe_rightDerivEnd]`. Use function extensionality and compare the values at `g`. Simplify using `only [IsExpLieAlgebra.convDeriv, inv_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `⟨hf.convDeriv _, fun w => ?_⟩` and prove the remaining obligations. Use `show (h.uAction π (UniversalEnvelopingAlgebra.ι ℝ x) ⟨_, h.isSmoothVector_integrated π μ hf w⟩ : E) = _`. Rewrite using `[IsExpLieAlgebra.uAction_ι, IsExpLieAlgebra.coe_derivEnd, h.derivOp_integrated_convDeriv μ π hf]`. Consider the case `mul a b ha hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `hb f hf`. Take `⟨h3, h4⟩` from `ha _ h1`. Rewrite using `[map_mul, map_mul, map_mul, Module.End.mul_apply]`. Use `⟨h3, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, ← h4 w]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately.
 
-Use `congr 2`. Conclude with `Subtype.ext (h2 w)`. Consider the case `add a b ha hb`. Take `⟨h1, h2⟩` from `hb f hf`. Take `⟨h3, h4⟩` from `ha f hf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_add, map_add, LinearMap.add_apply]`. Use `⟨h3.add h1, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, Submodule.coe_add, h2, h4]`. Conclude with `(h.integrated_add_kernel μ π h3 h1 w).symm`.
+A detailed English derivation is pending.
 -/
 theorem kernel_uAction (u : UniversalEnvelopingAlgebra ℝ h.lieSubalgebra) (f : h.smoothFuns (F := ℂ))
     (hf : h.IsTestFunction fun g => f.1 g⁻¹) :
@@ -76,11 +76,11 @@ theorem kernel_uAction (u : UniversalEnvelopingAlgebra ℝ h.lieSubalgebra) (f :
     exact (h.integrated_add_kernel μ π h3 h1 w).symm
 
 /- English proof (translation)
-Proceed by induction on `hg using Subgroup.closure_induction'' with`. Consider the case `one => intro v hv`. Simplify using `only [BanachRep.map_one_apply]`. Consider the case `mem x hx => obtain ⟨X, rfl⟩ := hx`. Conclude with `fun hv => h.uAction_map_expG π hπ hz hv X`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Consider the case `inv_mem x hx => obtain ⟨X, rfl⟩ := hx`. Rewrite using `[← h.expG_neg]`. Conclude with `fun hv => h.uAction_map_expG π hπ hz hv _`. Consider the case `mul x y _ _ hx hy`. Introduce `v hv`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [BanachRep.map_mul_apply]`. Rewrite using `[hx (h.isSmoothVector_map π hv y), hy hv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem central_map (hπ : ∀ g, ‖π g‖ ≤ 1) {z : UniversalEnvelopingAlgebra ℝ h.lieSubalgebra} (hz : z ∈ h.centerU) {g : G}
     (hg : g ∈ Subgroup.closure (Set.range h.expG)) : ∀ {v : E} (hv : h.IsSmoothVector π v),
@@ -95,7 +95,7 @@ theorem central_map (hπ : ∀ g, ‖π g‖ ≤ 1) {z : UniversalEnvelopingAlge
     rw [hx (h.isSmoothVector_map π hv y), hy hv]
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `h.exists_wordSum π z`. Use `(hL ⟨_, h.isSmoothVector_integrated π μ hf w⟩).trans ((h.wordSum_integrated π μ hπ hw hf L).trans ?_)` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Conclude with `congrArg (f g • ·) ((hL ⟨π g w, h.isSmoothVector_map π hw _⟩).symm.trans (central_map h π hπ hz (hG ▸ Subgroup.mem_top g) hw))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem central_integrated (hπ : ∀ g, ‖π g‖ ≤ 1) (hG : Subgroup.closure (Set.range h.expG) = ⊤)
     {z : UniversalEnvelopingAlgebra ℝ h.lieSubalgebra} (hz : z ∈ h.centerU) {f : G → ℂ} (hf : h.IsTestFunction f) {w : E}

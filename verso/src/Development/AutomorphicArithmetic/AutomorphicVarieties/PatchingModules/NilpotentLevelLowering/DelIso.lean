@@ -10,13 +10,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.V.Pa.Lev
 
 /- English proof (translation)
-Establish `hl'` using `hl.out`. Establish `hQ : IsPGroup l (G ⧸ ellC l G)`. Introduce `y`. Proceed by induction on `y using QuotientGroup.induction_on with`. Consider the case `H x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨b, c, hc, hbc⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (orderOf_pos x).ne' l hl'.ne_one`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff]`. Use `show (orderOf (x ^ l ^ b)).Coprime l`. Rewrite using `[orderOf_pow_of_dvd (pow_ne_zero _ hl'.ne_zero) ⟨c, hbc⟩, hbc, Nat.mul_div_cancel_left _ (pow_pos hl'.pos _)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hl').2 hc)`. Establish `hC : ¬ l ∣ Nat.card (ellC l G)`. Introduce `hd`. Take `⟨y, hy⟩` from `exists_prime_orderOf_dvd_card' l hd`. Establish `h1 : (orderOf (y : G)).Coprime l` using `y.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[Subgroup.orderOf_coe, hy]`. Conclude with `hl'.one_lt.ne' ((Nat.coprime_self l).1 h1)`. Take `⟨k, hk⟩` from `hQ.exists_card_eq`. Establish `hpos : Nat.card (ellC l G) ≠ 0` using `Nat.card_pos.ne'`. Rewrite using `[hk, Subgroup.card_eq_card_quotient_mul_card_subgroup (ellC l G), hk, padicValNat.mul (pow_ne_zero _ hl'.ne_zero) hpos, padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd hC, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem di_card (l : ℕ) [hl : Fact l.Prime] (G : Type) [CommGroup G] [Finite G] :
     Nat.card (G ⧸ ellC l G) = l ^ padicValNat l (Nat.card G) := by
@@ -46,17 +46,17 @@ private theorem di_card (l : ℕ) [hl : Fact l.Prime] (G : Type) [CommGroup G] [
     padicValNat.eq_zero_of_not_dvd hC, add_zero]
 
 /- English proof (translation)
-Establish `hl'` using `(Fact.out : l.Prime)`. Use `haveI : NeZero (l ^ a) := ⟨pow_ne_zero _ hl'.ne_zero⟩`. Establish `hcard : Nat.card (G ⧸ ellC l G) = l ^ a` using `by rw [ha]; exact di_card l G`. Set `ψ : ZMod (l ^ a) →+ Additive (G ⧸ ellC l G)` to `ZMod.lift (l ^ a) ⟨zmultiplesHom _ (Additive.ofMul (x : G ⧸ ellC l G)), by`. Rewrite using `[zmultiplesHom_apply, natCast_zsmul, ← ofMul_pow, ← hcard, pow_card_eq_one', ofMul_one]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `Φ : Multiplicative (ZMod (l ^ a)) →* G ⧸ ellC l G` to `AddMonoidHom.toMultiplicativeLeft ψ`. Establish `hΦ : ∀ m : ℤ, Φ (Multiplicative.ofAdd (m : ZMod (l ^ a))) = (x : G ⧸ ellC l G) ^ m`. Introduce `m`. Use `show Additive.toMul (ψ (m : ZMod (l ^ a))) = _`. Rewrite using `[ZMod.lift_coe]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show Additive.toMul (zmultiplesHom _ (Additive.ofMul (x : G ⧸ ellC l G)) m) = _`. Rewrite using `[zmultiplesHom_apply, toMul_zsmul, toMul_ofMul]`. Establish `hsurj : Function.Surjective Φ`. Introduce `z`. Proceed by induction on `z using QuotientGroup.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Consider the case `H g`. Establish `hg : g ∈ Subgroup.zpowers x ⊔ ellC l G` using `hx ▸ Subgroup.mem_top g`. Take `⟨u, hu, v, hv, rfl⟩` from `Subgroup.mem_sup.1 hg`. Take `⟨m, rfl⟩` from `Subgroup.mem_zpowers_iff.1 hu`. Use `⟨Multiplicative.ofAdd (m : ZMod (l ^ a)), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hΦ, QuotientGroup.mk_mul, (QuotientGroup.eq_one_iff v).2 hv, mul_one, QuotientGroup.mk_zpow]`. Establish `hbij : Function.Bijective Φ`. Use `hsurj.bijective_of_nat_card_le ?_` and prove the remaining obligations. Rewrite using `[hcard]`. Use `show Nat.card (ZMod (l ^ a)) ≤ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Nat.card_zmod]`. Use `⟨MulEquiv.ofBijective Φ hbij, ?_⟩` and prove the remaining obligations. Establish `h1` using `hΦ 1`. Rewrite `h1` using `[Int.cast_one, zpow_one]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 private theorem di_cyc (l : ℕ) [Fact l.Prime] (G : Type) [CommGroup G] [Finite G] (x : G)
     (hx : Subgroup.zpowers x ⊔ ellC l G = ⊤) (a : ℕ) (ha : a = padicValNat l (Nat.card G)) :
@@ -95,27 +95,25 @@ private theorem di_cyc (l : ℕ) [Fact l.Prime] (G : Type) [CommGroup G] [Finite
   exact h1
 
 /- English proof (translation)
-Set `Φ : Subgroup.pi Set.univ H →* (∀ p : Fin q × Fin n, Z p.1)` to `Pi.monoidHom fun p => (Pi.evalMonoidHom _ p.2).comp ((f p.1).comp (((Pi.evalMonoidHom G p.1).comp (Subgroup.pi Set.univ H).subtype).codRestrict (H p.1) fun g => (Subgroup.mem_pi _).1 g.2 p.1 (Set.mem_univ _)))`. Establish `hΦ : ∀ (g : Subgroup.pi Set.univ H) (p : Fin q × Fin n), Φ g p = f p.1 ⟨(g : ∀ j, G j) p.1, (Subgroup.mem_pi _).1 g.2 p.1 (Set.mem_univ _)⟩ p.2` using `fun g p => rfl`. Establish `hsurj : Function.Surjective Φ`. Introduce `z`. Use `choose t ht using fun j => hs j (fun i => z (j, i))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨fun j => (t j : G j), (Subgroup.mem_pi _).2 fun j _ => (t j).2⟩, funext fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ]`. Conclude with `congrFun (ht p.1) p.2`. Establish `hker : Φ.ker = (Subgroup.pi Set.univ K).subgroupOf (Subgroup.pi Set.univ H)`. Use extensionality with `g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[MonoidHom.mem_ker, Subgroup.mem_subgroupOf, Subgroup.mem_pi]`. Prove the components needed by the constructor for the conclusion. Introduce `h j _`. Use `(hk j ⟨_, (Subgroup.mem_pi _).1 g.2 j (Set.mem_univ _)⟩).1 (funext fun i => ?_)` and prove the remaining obligations. Use `congrFun h (j, i)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[hΦ]`. Conclude with `this`. Introduce `h`. Use function extensionality and compare the values at `p`. Rewrite using `[hΦ]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `congrFun ((hk p.1 ⟨_, (Subgroup.mem_pi _).1 g.2 p.1 (Set.mem_univ _)⟩).2 (h p.1 (Set.mem_univ _))) p.2`. Use `⟨(QuotientGroup.quotientKerEquivOfSurjective Φ hsurj).symm.trans (QuotientGroup.quotientMulEquivOfEq hker), ?_⟩` and prove the remaining obligations. Introduce `j i z t ht`. Establish `hmemg : Pi.mulSingle j (t : G j) ∈ Subgroup.pi Set.univ H`. Use `(Subgroup.mem_pi _).2 fun j' _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : j' = j`. Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]`. Conclude with `t.2`. Rewrite using `[Pi.mulSingle_eq_of_ne h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `one_mem _`. Establish `hΦg : Φ ⟨_, hmemg⟩ = Pi.mulSingle (j, i) z`. Use function extensionality and compare the values at `p`. Take `⟨j', i'⟩` from `p`. Rewrite using `[hΦ]`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : j' = j`. Substitute `h` using the available equality. Establish `key : f j' ⟨Pi.mulSingle j' (t : G j') j', (Subgroup.mem_pi _).1 hmemg j' (Set.mem_univ _)⟩ = f j' t`. Use `congr 1`. Conclude with `Subtype.ext (Pi.mulSingle_eq_same _ _)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, ht]`. Distinguish the cases in `hi : i' = i`. Substitute `hi` using the available equality. Rewrite using `[Pi.mulSingle_eq_same, Pi.mulSingle_eq_same]`. Rewrite using `[Pi.mulSingle_eq_of_ne hi, Pi.mulSingle_eq_of_ne (fun hp => hi (congrArg Prod.snd hp))]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : f j' ⟨Pi.mulSingle j (t : G j) j', (Subgroup.mem_pi _).1 hmemg j' (Set.mem_univ _)⟩ = 1`. Rewrite using `[show (⟨Pi.mulSingle j (t : G j) j', (Subgroup.mem_pi _).1 hmemg j' (Set.mem_univ _)⟩ : H j') = 1 from Subtype.ext (Pi.mulSingle_eq_of_ne h _), map_one]`. Rewrite using `[key, Pi.mulSingle_eq_of_ne (fun hp => h (congrArg Prod.fst hp))]`. Both sides reduce to the same expression. Use `⟨⟨_, hmemg⟩, rfl, ?_⟩` and prove the remaining obligations.
-
-Establish `hs1 : (QuotientGroup.quotientKerEquivOfSurjective Φ hsurj).symm (Φ ⟨_, hmemg⟩) = ((⟨_, hmemg⟩ : Subgroup.pi Set.univ H) : Subgroup.pi Set.univ H ⧸ Φ.ker)`. Rewrite using `[MulEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Rewrite using `[MulEquiv.trans_apply, ← hΦg, hs1, QuotientGroup.quotientMulEquivOfEq_mk]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem di_pi {q n : ℕ} (G : Fin q → Type) [∀ j, Group (G j)] (H K : ∀ j, Subgroup (G j))
     (Z : Fin q → Type) [∀ j, Group (Z j)] (f : ∀ j, H j →* (Fin n → Z j)) (hs : ∀ j, Function.Surjective (f j))
@@ -188,25 +186,21 @@ private theorem di_pi {q n : ℕ} (G : Fin q → Type) [∀ j, Group (G j)] (H K
   rw [MulEquiv.trans_apply, ← hΦg, hs1, QuotientGroup.quotientMulEquivOfEq_mk]
 
 /- English proof (translation)
-Take `⟨d, hdδ, hgen⟩` from `hδ`. Take `⟨f0, hs0, hk0, hv0⟩` from `iwQuot k n (ellC l 𝓀[k]ˣ)`. Take `⟨e, he⟩` from `di_cyc l _ _ hgen (padicValNat l (resCard k - 1)) (by rw [Nat.card_units]; rfl)`. Use `⟨(MonoidHom.compLeft e.symm.toMonoidHom (Fin n)).comp f0, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g, hg⟩` from `hs0 (fun i => e (y i))`. Use `⟨g, funext fun i => ?_⟩` and prove the remaining obligations. Use `show e.symm (f0 g i) = y i`. Rewrite using `[hg]`. Conclude with `e.symm_apply_apply (y i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Rewrite using `[← hk0 g]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `i`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(MulEquiv.map_eq_one_iff e.symm).1 (congrFun h i)`. Introduce `h`. Use function extensionality and compare the values at `i`. Use `show e.symm (f0 g i) = 1`. Rewrite using `[congrFun h i]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `map_one e.symm`. Introduce `i`. Set `u : Fin n → 𝒪[k]ˣ` to `Pi.mulSingle i d`. Establish `hmem : ∀ w : Fin n → 𝒪[k]ˣ, diagT k (Fin n) (fun i => Units.map (algebraMap 𝒪[k] k : 𝒪[k] →* k) (w i)) ∈ iwC k n ⊤`. Introduce `w`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `iwC`. Use `Subgroup.mem_sup_right (Subgroup.mem_map_of_mem _ ?_)` and prove the remaining obligations. Unfold `torC unitsC`. Conclude with `(Subgroup.mem_pi _).2 fun i' _ => Subgroup.mem_map_of_mem _ (Subgroup.mem_comap.2 (Subgroup.mem_top _))`. Use `⟨⟨_, hmem u⟩, ?_, ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `show diagT k (Fin n) _ = _`. Use `congr 1`. Use function extensionality and compare the values at `i'`. Distinguish the cases in `h : i' = i`. Rewrite using `[h]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [u, Pi.mulSingle_eq_same]`. Conclude with `hdδ`. Simplify using `only [u, Pi.mulSingle_eq_of_ne h, map_one]`. Use function extensionality and compare the values at `i'`. Use `(congrArg e.symm (hv0 u (hmem u) i')).trans ?_` and prove the remaining obligations.
-
-Distinguish the cases in `h : i' = i`. Rewrite using `[h]`. Simplify using `only [u, Pi.mulSingle_eq_same]`. Rewrite using `[MulEquiv.symm_apply_eq]`. Conclude with `he.symm`.
-
-Simplify using `only [u, Pi.mulSingle_eq_of_ne h, map_one, QuotientGroup.mk_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem di_loc (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n l : ℕ)
     [Fact l.Prime] (δ : kˣ) (hδ : IsGenMod k (ellC l _) δ) :
@@ -266,11 +260,9 @@ private theorem di_loc (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k
 end UpperTheory.V.Pa.Lev
 
 /- English proof (translation)
-Introduce `L _ _ n q w l _ δ _ hδ`. Use `choose f hs hk ht using fun j => di_loc ((w j).adicCompletion L) n l (δ j) (hδ j)`. Use `haveI hN : ((Subgroup.pi Set.univ (fun j => iwC ((w j).adicCompletion L) n (ellC l _))).subgroupOf (Subgroup.pi Set.univ (fun j => iwC ((w j).adicCompletion L) n ⊤))).Normal := (inferInstance : ((UIw1 l n w).subgroupOf (UIw n w)).Normal)`. Take `⟨e, he⟩` from `di_pi (fun j => GLw n (w j)) (fun j => iwC ((w j).adicCompletion L) n ⊤) (fun j => iwC ((w j).adicCompletion L) n (ellC l _)) (fun j => Multiplicative (ZMod (l ^ padicValNat l (qj w j - 1)))) f hs hk`. Use `⟨e, fun j i => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, htd, htf⟩` from `ht j i`. Take `⟨g, hg, heg⟩` from `he j i _ t htf`. Use `⟨g, ?_, heg⟩` and prove the remaining obligations. Use `show (g : ∀ j, GLw n (w j)) = _`. Rewrite using `[hg, htd]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Lev.delIso :
     ∀ (L : Type) [Field L] [NumberField L] (n q : ℕ) (w : Fin q → Plc L) (l : ℕ) [Fact l.Prime] (δ : ∀ j, ((w j).adicCompletion L)ˣ) [((UIw1 l n w).subgroupOf (UIw n w)).Normal], (∀ j, IsGenMod _ (ellC l _) (δ j)) → ∃ e : Del l n (fun j => padicValNat l (qj w j - 1)) ≃* (UIw n w ⧸ (UIw1 l n w).subgroupOf (UIw n w)), ∀ j i, ∃ g : UIw n w, (g : GV n w) = atJ n w j (diagT _ (Fin n) (Pi.mulSingle i (δ j))) ∧ e (Pi.mulSingle (j, i) (Multiplicative.ofAdd 1)) = (g : UIw n w ⧸ (UIw1 l n w).subgroupOf (UIw n w)) := by

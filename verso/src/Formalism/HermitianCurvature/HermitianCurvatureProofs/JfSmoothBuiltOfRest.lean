@@ -14,17 +14,17 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJfSSymbolLevi
 namespace Formalism.FourierDecayAlt.P.CutMP.SmoothTransferRegularity
 
 /- English proof (translation)
-The claim follows from `gChart_of lie_basis_holds cayley_algebraic_holds group_vector_space cayley_smoothness_holds`.
+A detailed English derivation is pending.
 -/
 theorem group_chart_holds : GChart := gChart_of lie_basis_holds cayley_algebraic_holds group_vector_space cayley_smoothness_holds
 
 /- English proof (translation)
-The claim follows from `uCap_of positive_domain_is_domain right_type_action_holds left_type_action_holds`.
+A detailed English derivation is pending.
 -/
 theorem unitary_capelli_holds : UCap := uCap_of positive_domain_is_domain right_type_action_holds left_type_action_holds
 
 /- English proof (translation)
-The claim follows from `jfSmoothBuilt_of_leaves hN unitary_capelli_holds hP hC group_chart_holds hE classical_to_weak_solution hR JfS.symbol_nilpotent_holds lie_stabilizer_splitting`.
+A detailed English derivation is pending.
 -/
 theorem jfSmoothBuilt_of_rest (hN : NDiff) (hP : GEqsPost) (hC : SmoothOfCoeffs) (hE : ChartEqs) (hR : EllRegW) :
     JfSmoothBuilt :=

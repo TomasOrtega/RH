@@ -17,15 +17,13 @@ variable {F : Type} [Field F] (c : ℕ → F)
 def ev : F[X] →ₗ[F] F := Polynomial.lsum fun i => c i • LinearMap.id
 
 /- English proof (translation)
-Simplify using `[ev, Polynomial.lsum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ev_monomial (n : ℕ) (a : F) : ev c (monomial n a) = c n * a := by
   simp [ev, Polynomial.lsum_apply]
 
 /- English proof (translation)
-Use `conv_lhs => rw [p.as_sum_range' n hp]`. Rewrite using `[Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← C_mul_X_pow_eq_monomial, show q * (C (p.coeff j) * X ^ j) = p.coeff j • (q * X ^ j) by`. Rewrite using `[smul_eq_C_mul]`.
-
-Use the proof step `ring, map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_expand (q p : F[X]) (n : ℕ) (hp : p.natDegree < n) :
     ev c (q * p) = ∑ j ∈ Finset.range n, p.coeff j * ev c (q * X ^ j) := by
@@ -36,7 +34,7 @@ theorem ev_expand (q p : F[X]) (n : ℕ) (hp : p.natDegree < n) :
     rw [smul_eq_C_mul]; ring, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[ev_expand c q p s hp]`. Conclude with `Finset.sum_eq_zero fun j hj => by rw [h j (Finset.mem_range.1 hj), mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_zero_of_lt (q p : F[X]) (s : ℕ) (h : ∀ j < s, ev c (q * X ^ j) = 0)
     (hp : p.natDegree < s) : ev c (q * p) = 0 := by
@@ -44,7 +42,7 @@ theorem ev_zero_of_lt (q p : F[X]) (s : ℕ) (h : ∀ j < s, ev c (q * X ^ j) = 
   exact Finset.sum_eq_zero fun j hj => by rw [h j (Finset.mem_range.1 hj), mul_zero]
 
 /- English proof (translation)
-Rewrite using `[ev_expand c q p (s + 1) (Nat.lt_succ_of_le hp), Finset.sum_range_succ, Finset.sum_eq_zero fun j hj => by rw [h j (Finset.mem_range.1 hj), mul_zero], zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_top (q p : F[X]) (s : ℕ) (h : ∀ j < s, ev c (q * X ^ j) = 0)
     (hp : p.natDegree ≤ s) : ev c (q * p) = p.coeff s * ev c (q * X ^ s) := by
@@ -52,7 +50,7 @@ theorem ev_top (q p : F[X]) (s : ℕ) (h : ∀ j < s, ev c (q * X ^ j) = 0)
     Finset.sum_eq_zero fun j hj => by rw [h j (Finset.mem_range.1 hj), mul_zero], zero_add]
 
 /- English proof (translation)
-Rewrite using `[mul_comm, ev_expand c _ q _ (Nat.lt_succ_self _)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_add, ← monomial_one_right_eq_X_pow, ev_monomial, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_X_pow_mul (m : ℕ) (q : F[X]) :
     ev c (q * X ^ m) = ∑ j ∈ Finset.range (q.natDegree + 1), q.coeff j * c (m + j) := by
@@ -61,11 +59,11 @@ theorem ev_X_pow_mul (m : ℕ) (q : F[X]) :
   rw [← pow_add, ← monomial_one_right_eq_X_pow, ev_monomial, mul_one]
 
 /- English proof (translation)
-Unfold `hankel at h`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Use `⟨∑ k : Fin (n + 1), monomial (k : ℕ) (v k), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hv0` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `k`. Use `congrArg (fun p => Polynomial.coeff p k) h0` as an intermediate fact. Simplify `this` using `[Polynomial.finset_sum_coeff, Polynomial.coeff_monomial, Fin.val_inj]`. Conclude with `natDegree_sum_le_of_forall_le _ _ fun k _ => (natDegree_monomial_le _).trans (Nat.lt_succ_iff.1 k.2)`. Introduce `j hj`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrFun hv ⟨j, Nat.lt_succ_of_le hj⟩` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.zero_apply] at this`. Rewrite using `[Finset.sum_mul, map_sum, ← this]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[monomial_mul_X_pow, ev_monomial, add_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_kill (n : ℕ) (h : hankel c n = 0) :
     ∃ r : F[X], r ≠ 0 ∧ r.natDegree ≤ n ∧ ∀ j ≤ n, ev c (r * X ^ j) = 0 := by
@@ -88,35 +86,31 @@ theorem exists_kill (n : ℕ) (h : hankel c n = 0) :
     rw [monomial_mul_X_pow, ev_monomial, add_comm]
 
 /- English proof (translation)
-Establish `hex : ∃ d, ∃ q : F[X], q ≠ 0 ∧ q.natDegree = d ∧ d ≤ N ∧ ∀ j ≤ N, ev c (q * X ^ j) = 0`. Take `⟨r, hr0, hrd, hr⟩` from `exists_kill c N (hN N le_rfl)`. Conclude with `⟨_, r, hr0, rfl, hrd, hr⟩`. Take `⟨q0, hq00, hq0d, hdN, hq0⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ r : F[X], r ≠ 0 → r.natDegree < Nat.find hex → ¬ ∀ j ≤ N, ev c (r * X ^ j) = 0` using `fun r hr0 hrd hr => Nat.find_min hex hrd ⟨r, hr0, rfl, by omega, hr⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlc : (q0.leadingCoeff)⁻¹ ≠ 0` using `inv_ne_zero (leadingCoeff_ne_zero.2 hq00)`. Choose the witnesses or unpack the hypotheses as in `⟨q, hqm, hqd, hqe⟩ : ∃ q : F[X], q.Monic ∧ q.natDegree = Nat.find hex ∧ ∀ j, ev c (q * X ^ j) = (q0.leadingCoeff)⁻¹ * ev c (q0 * X ^ j) := by`. Use `⟨q0 * C (q0.leadingCoeff)⁻¹, monic_mul_leadingCoeff_inv hq00, ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[natDegree_mul_C hlc, hq0d]`. Rewrite using `[show q0 * C (q0.leadingCoeff)⁻¹ * X ^ j = (q0.leadingCoeff)⁻¹ • (q0 * X ^ j) by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[smul_eq_C_mul]`. Use the proof step `ring, map_smul, smul_eq_mul]`. Use `⟨q, hqm.ne_zero, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ev c (q * X ^ Nat.find hne) ≠ 0` using `Nat.find_spec hne`. Establish `hlt : ∀ j < Nat.find hne, ev c (q * X ^ j) = 0` using `fun j hj => by`. Assume the negation of the conclusion as `h`. Conclude with `Nat.find_min hne hj h`. Generalize the expression as in `Nat.find hne = s at hs hlt`.
+Assume the negation of the conclusion and derive a contradiction. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Generalize the expression as in `Nat.find hex = d at hmin hqd hdN`. Establish `hNs : N < s`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hs` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hqe, hq0 s h, mul_zero]`. Take `⟨r, hr0, hrd, hr⟩` from `exists_kill c s (hN s hNs.le)`. Establish `hrk : ∀ p : F[X], p.natDegree ≤ s → ev c (r * p) = 0` using `fun p hp => by`. Rewrite using `[ev_top c r p s (fun j hj => hr j hj.le) hp, hr s le_rfl, mul_zero]`. Take `⟨r0, r1, hdiv, hr0deg⟩ : ∃ r0 r1 : F[X], r0 + q * r1 = r ∧ r0.degree < q.degree` from `⟨_, _, modByMonic_add_div r q, degree_modByMonic_lt r hqm⟩`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Substitute `hdiv` using the available equality. Establish `hr0s : r0.natDegree < s`. Distinguish the cases in `hz : r0 = 0`. Rewrite using `[hz, natDegree_zero]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `natDegree_lt_natDegree hz hr0deg` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `h1 : r1 = 0`. Substitute `h1` using the available equality. Rewrite `hr0`, `hrd`, `hr` using `[mul_zero, add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hmin r0 hr0 (hqd ▸ natDegree_lt_natDegree hr0 hr0deg)` to reduce the goal to its premises. Introduce `j hj`. Conclude with `hr j (by omega)`. Establish `hdeg : d + r1.natDegree ≤ s`. Rewrite using `[← hqd, ← natDegree_mul hqm.ne_zero h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: q * r1 = r0 + q * r1 - r0` using `by ring`. Rewrite using `[this]`. Conclude with `(natDegree_sub_le _ _).trans (max_le hrd hr0s.le)`. Establish `key` using `hrk (q * X ^ (s - d - r1.natDegree)) (by rw [natDegree_mul_X_pow _ hqm.ne_zero, hqd]; omega)`. Rewrite `key` using `[add_mul, map_add]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `h0 : ev c (r0 * (q * X ^ (s - d - r1.natDegree))) = 0`. Rewrite using `[show r0 * (q * X ^ (s - d - r1.natDegree)) = q * (r0 * X ^ (s - d - r1.natDegree)) by ring]`. Apply `ev_zero_of_lt c q _ s hlt` to reduce the goal to its premises. Distinguish the cases in `hz : r0 = 0`. Rewrite using `[hz, zero_mul, natDegree_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[natDegree_mul_X_pow _ hz]`. Use `natDegree_lt_natDegree hz hr0deg` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hne1 : r1 * q ≠ 0` using `mul_ne_zero h1 hqm.ne_zero`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs' : s = (r1 * q).natDegree + (s - d - r1.natDegree)`. Rewrite using `[natDegree_mul h1 hqm.ne_zero, hqd]`. Use linear arithmetic over natural numbers and integers. Establish `hcoef : (r1 * q * X ^ (s - d - r1.natDegree)).coeff s = r1.leadingCoeff`. Use `coeff_mul_X_pow (r1 * q) (s - d - r1.natDegree) (r1 * q).natDegree` as an intermediate fact.
-
-Rewrite `this` using `[← hs']`. Rewrite using `[this, coeff_natDegree, leadingCoeff_mul, hqm.leadingCoeff, mul_one]`. Establish `h2 : ev c (q * r1 * (q * X ^ (s - d - r1.natDegree))) = r1.leadingCoeff * ev c (q * X ^ s)`. Rewrite using `[show q * r1 * (q * X ^ (s - d - r1.natDegree)) = q * (r1 * q * X ^ (s - d - r1.natDegree)) by ring, ev_top c q _ s hlt (by rw [natDegree_mul_X_pow _ hne1]; omega), hcoef]`. Rewrite `key` using `[h0, h2, zero_add]`.
-
-Conclude with `hs ((mul_eq_zero.1 key).resolve_left (leadingCoeff_ne_zero.2 h1))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_annihilator (N : ℕ) (hN : ∀ n, N ≤ n → hankel c n = 0) :
     ∃ q : F[X], q ≠ 0 ∧ ∀ j, ev c (q * X ^ j) = 0 := by
@@ -193,17 +187,15 @@ theorem exists_annihilator (N : ℕ) (hN : ∀ n, N ≤ n → hankel c n = 0) :
     exact hs ((mul_eq_zero.1 key).resolve_left (leadingCoeff_ne_zero.2 h1))
 
 /- English proof (translation)
-Set `R : F[X]` to `∑ k ∈ Finset.range (q.natDegree + 1), C (q.coeff k) * X ^ (q.natDegree - k)`. Use `⟨PowerSeries.trunc q.natDegree ((R : PowerSeries F) * φ), R, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Use `congrArg (fun p => Polynomial.coeff p 0) h0` as an intermediate fact. Simplify using `only [R, Polynomial.finset_sum_coeff, coeff_C_mul_X_pow, coeff_zero] at this`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[Finset.sum_eq_single q.natDegree]`. Simplify using `only [Nat.sub_self, if_true] at this`. Conclude with `hq (leadingCoeff_eq_zero.1 this)`. Introduce `k hk hkd`. Use `Finset.mem_range.1 hk` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (by omega)]`. Introduce `hk`. Conclude with `absurd (Finset.self_mem_range_succ _) hk`. Use extensionality with `n`. Rewrite using `[Polynomial.coeff_coe, PowerSeries.coeff_trunc]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Use `split_ifs with hn`. Both sides reduce to the same expression. Take `⟨m, rfl⟩ : ∃ m, n = m + q.natDegree` from `⟨n - q.natDegree, by omega⟩`. Establish `hR : (R : PowerSeries F) = ∑ k ∈ Finset.range (q.natDegree + 1), PowerSeries.C (q.coeff k) * PowerSeries.X ^ (q.natDegree - k)` using `by show Polynomial.coeToPowerSeries.ringHom R = _`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Polynomial.coeToPowerSeries.ringHom_apply]`. Rewrite using `[hR, Finset.sum_mul, map_sum, ← h m, ev_X_pow_mul]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hk'` using `Finset.mem_range.1 hk`. Rewrite using `[mul_assoc, PowerSeries.coeff_C_mul, PowerSeries.coeff_X_pow_mul', if_pos (by omega)]`.
-
-Rewrite using `[show m + q.natDegree - (q.natDegree - k) = m + k by omega]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRat_of_ann (φ : PowerSeries F) (q : F[X]) (hq : q ≠ 0)
     (h : ∀ j, ev (fun i => PowerSeries.coeff i φ) (q * X ^ j) = 0) : IsRat φ := by
@@ -241,7 +233,7 @@ end GlobalTheory.Nef.Kron
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Introduce `F _ φ N hN`. Take `⟨q, hq, h⟩` from `Kron.exists_annihilator _ N hN`. Conclude with `Kron.isRat_of_ann φ q hq h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isRat_of_hankel_eventually_zero : ∀ (F : Type) [Field F] (φ : PowerSeries F) (N : ℕ),
     (∀ n, N ≤ n → hankel (fun i => PowerSeries.coeff i φ) n = 0) → IsRat φ := by

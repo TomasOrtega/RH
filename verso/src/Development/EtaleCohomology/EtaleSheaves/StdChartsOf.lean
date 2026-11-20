@@ -7,13 +7,13 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.E.t_
 namespace LateralTheory.E.StdChartsProof₂
 
 /- English proof (translation)
-Introduce `A _ _ Z p hp`. Take `⟨L, u, l, hu, ⟨hl, f, hf⟩, hul⟩` from `hp`. Establish `hf' : IsAffineHom f` using `MorphismProperty.of_isPullback hf.flip inferInstance`. Set `g : Z ⟶ P1` to `u ≫ f`. Establish `hU : ∀ i, IsAffineOpen (g ⁻¹ᵁ LateralTheory.E.ChartsPf.D i)` using `fun i => (LateralTheory.E.ChartsPf.D_affine i).preimage g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨g ⁻¹ᵁ LateralTheory.E.ChartsPf.D 0, g ⁻¹ᵁ LateralTheory.E.ChartsPf.D 1, (g ⁻¹ᵁ LateralTheory.E.ChartsPf.D 0).ι, (g ⁻¹ᵁ LateralTheory.E.ChartsPf.D 1).ι, inferInstance, inferInstance, hU 0, hU 1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Opens.range_ι, Scheme.Opens.range_ι]`. Use extensionality with `x`. Simplify using `only [Set.mem_union, Set.mem_univ, iff_true]`. Establish `hx : g x ∈ (⨆ i, LateralTheory.E.ChartsPf.D i : P1.Opens)` using `by rw [LateralTheory.E.ChartsPf.D_cover]; trivial`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.mp hx`. Use `fin_cases i`. Conclude with `Or.inl hi`. Conclude with `Or.inr hi`. Use `⟨L, u, l, f, hu, hl, hf, hul, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Prove the first alternative. Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Both sides reduce to the same expression. Rewrite using `[Scheme.Opens.range_ι]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem StdCharts_of : LateralTheory.E.StandardEtaleChartsMultivariableHensel.StdCharts := by
   intro A _ _ Z p hp

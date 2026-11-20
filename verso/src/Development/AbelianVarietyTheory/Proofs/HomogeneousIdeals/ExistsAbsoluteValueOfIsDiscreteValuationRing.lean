@@ -12,7 +12,7 @@ noncomputable abbrev normIntegers (C : Type*) [NormedField C] [IsUltrametricDist
   (NormedField.valuation (K := C)).valuationSubring
 
 /- English proof (translation)
-Rewrite using `[Valuation.mem_valuationSubring_iff, NormedField.valuation_apply, ← NNReal.coe_le_coe]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_normIntegers_iff {C : Type*} [NormedField C] [IsUltrametricDist C] {x : C} :
     x ∈ normIntegers C ↔ ‖x‖ ≤ 1 := by
@@ -20,7 +20,7 @@ theorem mem_normIntegers_iff {C : Type*} [NormedField C] [IsUltrametricDist C] {
   simp
 
 /- English proof (translation)
-The claim follows from `Valuation.valuationSubring.integers _`.
+A detailed English derivation is pending.
 -/
 theorem normIntegers_integers (C : Type*) [NormedField C] [IsUltrametricDist C] :
     (NormedField.valuation (K := C)).Integers (normIntegers C) :=
@@ -31,11 +31,11 @@ section Extend
 variable {A B : Type*} [CommRing A] [CommRing B]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[← sub_eq_zero]`. Apply `IsHausdorff.haus' (I := I.map f)` to reduce the goal to its premises. Introduce `n`. Take `⟨a, ha⟩` from `Submodule.Quotient.mk_surjective _ (x.1 n)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hx : x - algebraMap A (AdicCompletion I A) a ∈ (I ^ n).map (algebraMap A (AdicCompletion I A))`. Rewrite using `[← Submodule.restrictScalars_mem A, ← Ideal.smul_top_eq_map, AdicCompletion.pow_smul_top_eq_ker_eval hI, AdicCompletion.algebraMap_apply]`. Simplify `ha.symm` using `[AdicCompletion.eval, sub_eq_zero]`. Establish `key : ∀ g : AdicCompletion I A →+* B, g.comp (algebraMap A _) = f → g x - f a ∈ (I.map f) ^ n`. Introduce `g hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Ideal.mem_map_of_mem g hx` as an intermediate fact. Rewrite `this` using `[Ideal.map_map, hg, Ideal.map_pow, map_sub]`. Rewrite using `[← hg, RingHom.comp_apply, hg]` and apply the resulting hypothesis. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Simplify using `using Ideal.sub_mem _ (key g₁ h₁) (key g₂ h₂)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem adicCompletion_ringHom_ext_of_fg (I : Ideal A) (hI : I.FG) (f : A →+* B)
     [IsHausdorff (I.map f) B] {g₁ g₂ : AdicCompletion I A →+* B}
@@ -60,9 +60,9 @@ theorem adicCompletion_ringHom_ext_of_fg (I : Ideal A) (hI : I.FG) (f : A →+* 
   simpa using Ideal.sub_mem _ (key g₁ h₁) (key g₂ h₂)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.PowerExtensionEvaluation.exists_extension`. Consider the case `exact _root_.GlobalTheory.PowerExtensionEvaluation.exists_extension`. Consider the case `(apply _root_.GlobalTheory.PowerExtensionEvaluation.exists_extension <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.PowerExtensionEvaluation.exists_extension <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.PowerExtensionEvaluation.exists_extension <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.PowerExtensionEvaluation.exists_extension ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_adicCompletion_ringHom_extend (I : Ideal A) (f : A →+* B)
     [IsAdicComplete (I.map f) B] :
@@ -76,7 +76,7 @@ theorem exists_adicCompletion_ringHom_extend (I : Ideal A) (f : A →+* B)
   | (intros; exact _root_.GlobalTheory.PowerExtensionEvaluation.exists_extension ..)
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_adicCompletion_ringHom_extend I f`. Conclude with `⟨g, hg, fun g' hg' => adicCompletion_ringHom_ext_of_fg I hI f hg' hg⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem existsUnique_adicCompletion_ringHom_extend (I : Ideal A) (hI : I.FG) (f : A →+* B)
     [IsAdicComplete (I.map f) B] :
@@ -95,44 +95,44 @@ variable {C : Type*} [NormedField C] [IsUltrametricDist C] {O : Type*} [CommRing
 include hO
 
 /- English proof (translation)
-Simplify `hO.map_le_one x` using `[← NNReal.coe_le_coe]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_le_one (x : O) : ‖algebraMap O C x‖ ≤ 1 := by
   simpa [← NNReal.coe_le_coe] using hO.map_le_one x
 
 /- English proof (translation)
-The claim follows from `hO.exists_of_le_one (by simpa [← NNReal.coe_le_coe] using hx)`.
+A detailed English derivation is pending.
 -/
 theorem exists_of_norm_le_one {x : C} (hx : ‖x‖ ≤ 1) : ∃ y : O, algebraMap O C y = x :=
   hO.exists_of_le_one (by simpa [← NNReal.coe_le_coe] using hx)
 
 /- English proof (translation)
-Rewrite using `[hO.dvd_iff_le]`. Simplify using `[← NNReal.coe_le_coe]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dvd_iff_norm_le {x y : O} : x ∣ y ↔ ‖algebraMap O C y‖ ≤ ‖algebraMap O C x‖ := by
   rw [hO.dvd_iff_le]; simp [← NNReal.coe_le_coe]
 
 /- English proof (translation)
-Rewrite using `[hO.isUnit_iff_valuation_eq_one]`. Simplify using `[← NNReal.coe_inj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isUnit_iff_norm_eq_one {x : O} : IsUnit x ↔ ‖algebraMap O C x‖ = 1 := by
   rw [hO.isUnit_iff_valuation_eq_one]; simp [← NNReal.coe_inj]
 
 /- English proof (translation)
-Simplify using `[map_eq_zero_iff _ hO.hom_inj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem norm_pos_iff {x : O} : 0 < ‖algebraMap O C x‖ ↔ x ≠ 0 := by
   simp [map_eq_zero_iff _ hO.hom_inj]
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton, dvd_iff_norm_le hO, map_pow, norm_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_span_singleton_pow_iff {w x : O} {n : ℕ} :
     x ∈ Ideal.span {w} ^ n ↔ ‖algebraMap O C x‖ ≤ ‖algebraMap O C w‖ ^ n := by
   rw [Ideal.span_singleton_pow, Ideal.mem_span_singleton, dvd_iff_norm_le hO, map_pow, norm_pow]
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_iff_norm_eq_one hO]`. Conclude with `(norm_le_one hO x).lt_iff_ne.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_maximalIdeal_iff [IsLocalRing O] {x : O} :
     x ∈ IsLocalRing.maximalIdeal O ↔ ‖algebraMap O C x‖ < 1 := by
@@ -140,12 +140,12 @@ theorem mem_maximalIdeal_iff [IsLocalRing O] {x : O} :
   exact (norm_le_one hO x).lt_iff_ne.symm
 
 /- English proof (translation)
-The claim follows from `hO.hom_inj.isDomain`.
+A detailed English derivation is pending.
 -/
 theorem isDomain : IsDomain O := hO.hom_inj.isDomain
 
 /- English proof (translation)
-The claim follows from `haveI := isDomain hO haveI := ValuationRing.of_integers _ hO inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isLocalRing : IsLocalRing O :=
   haveI := isDomain hO
@@ -153,7 +153,7 @@ theorem isLocalRing : IsLocalRing O :=
   inferInstance
 
 /- English proof (translation)
-The claim follows from `haveI := isDomain hO haveI := ValuationRing.of_integers _ hO IsBezout.isPrincipal_of_FG J hJ`.
+A detailed English derivation is pending.
 -/
 theorem isPrincipal_of_fg {J : Ideal O} (hJ : J.FG) : J.IsPrincipal :=
   haveI := isDomain hO
@@ -161,9 +161,9 @@ theorem isPrincipal_of_fg {J : Ideal O} (hJ : J.FG) : J.IsPrincipal :=
   IsBezout.isPrincipal_of_FG J hJ
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `isPrincipal_of_fg hO hJ`. Rewrite `hw` using `[Ideal.submodule_span_eq]`. Distinguish the cases in `h0 : w = 0`. Use `left`. Simplify using `[hw, h0]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `right`. Use `⟨w, (norm_pos_iff hO).2 h0, (norm_le_one hO w).lt_of_ne fun h => hJ' ?_, hw⟩` and prove the remaining obligations. Rewrite using `[hw, Ideal.span_singleton_eq_top, isUnit_iff_norm_eq_one hO, h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_bot_or_eq_span_of_fg_of_ne_top {J : Ideal O} (hJ : J.FG) (hJ' : J ≠ ⊤) :
     J = ⊥ ∨ ∃ w : O, 0 < ‖algebraMap O C w‖ ∧ ‖algebraMap O C w‖ < 1 ∧ J = Ideal.span {w} := by
@@ -176,7 +176,7 @@ theorem eq_bot_or_eq_span_of_fg_of_ne_top {J : Ideal O} (hJ : J.FG) (hJ' : J ≠
     rw [hw, Ideal.span_singleton_eq_top, isUnit_iff_norm_eq_one hO, h]
 
 /- English proof (translation)
-Simplify using `only [SModEq.zero, smul_eq_mul, Ideal.mul_top, mem_span_singleton_pow_iff hO] at hx`. Use `ge_of_tendsto' (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hw) hx` as an intermediate fact. Assume the negation of the conclusion as `h`. Conclude with `absurd this (not_le.2 ((norm_pos_iff hO).2 h))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem isHausdorff_span_singleton {w : O} (hw : ‖algebraMap O C w‖ < 1) :
     IsHausdorff (Ideal.span {w}) O where
@@ -187,7 +187,7 @@ theorem isHausdorff_span_singleton {w : O} (hw : ‖algebraMap O C w‖ < 1) :
     exact absurd this (not_le.2 ((norm_pos_iff hO).2 h))
 
 /- English proof (translation)
-The claim follows from `isHausdorff_span_singleton hO hw prec' f hf := by simp only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, mem_span_singleton_pow_iff hO, map_sub] at hf ⊢ have hc : CauchySeq fun n => algebraMap O C (f n) := by refine cauchySeq_of_le_geometric ‖algebraMap O C w‖ 1 hw fun n => ?_ rw …`.
+A detailed English derivation is pending.
 -/
 theorem isAdicComplete_span_singleton [CompleteSpace C] {w : O} (hw : ‖algebraMap O C w‖ < 1) :
     IsAdicComplete (Ideal.span {w}) O where
@@ -207,7 +207,7 @@ theorem isAdicComplete_span_singleton [CompleteSpace C] {w : O} (hw : ‖algebra
     filter_upwards [Filter.eventually_ge_atTop n] with m hm using hf hm
 
 /- English proof (translation)
-Break down `eq_bot_or_eq_span_of_fg_of_ne_top hO hJ hJ' with rfl | ⟨w, -, hw, rfl⟩` into its components or cases. Use `infer_instance`. Conclude with `isAdicComplete_span_singleton hO hw`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isAdicComplete_of_fg [CompleteSpace C] {J : Ideal O} (hJ : J.FG) (hJ' : J ≠ ⊤) :
     IsAdicComplete J O := by
@@ -216,7 +216,7 @@ theorem isAdicComplete_of_fg [CompleteSpace C] {J : Ideal O} (hJ : J.FG) (hJ' : 
   · exact isAdicComplete_span_singleton hO hw
 
 /- English proof (translation)
-The claim follows from `{ toIsLocalRing := isLocalRing hO is_henselian := fun f hf a₀ h₁ h₂ => by haveI := isLocalRing hO haveI := isAdicComplete_span_singleton hO ((mem_maximalIdeal_iff hO).1 h₁) obtain ⟨a, ha, ha'⟩ := HenselianRing.is_henselian (I := Ideal.span {f.eval a₀}) f hf a₀ (Ideal.mem_span_sin …`.
+A detailed English derivation is pending.
 -/
 theorem henselianLocalRing [CompleteSpace C] : HenselianLocalRing O :=
   { toIsLocalRing := isLocalRing hO
@@ -228,7 +228,7 @@ theorem henselianLocalRing [CompleteSpace C] : HenselianLocalRing O :=
       exact ⟨a, ha, (Ideal.span_singleton_le_iff_mem _).2 h₁ ha'⟩ }
 
 /- English proof (translation)
-Use `haveI := isLocalRing hO`. Use `haveI : IsAdicComplete ((IsLocalRing.maximalIdeal A).map f) O := isAdicComplete_of_fg hO (hA.map f) (IsLocalRing.map_maximalIdeal_lt_top f).ne`. Conclude with `existsUnique_adicCompletion_ringHom_extend _ hA f`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_extend_of_fg [CompleteSpace C] {A : Type*} [CommRing A] [IsLocalRing A]
     (hA : (IsLocalRing.maximalIdeal A).FG) (f : A →+* O) [IsLocalHom f] :
@@ -240,11 +240,11 @@ theorem existsUnique_extend_of_fg [CompleteSpace C] {A : Type*} [CommRing A] [Is
   exact existsUnique_adicCompletion_ringHom_extend _ hA f
 
 /- English proof (translation)
-Use `IsAlgClosed.of_exists_root _ fun p hp hirr => ?_` and prove the remaining obligations. Take `⟨q, hq, hdeg, hmon⟩` from `Polynomial.lifts_and_degree_eq_and_monic (f := IsLocalRing.residue O) (Polynomial.mem_lifts_of_surjective IsLocalRing.residue_surjective p) hp`. Establish `hd : (q.map (algebraMap O C)).degree ≠ 0`. Rewrite using `[hmon.degree_map, hdeg]`. Conclude with `(Polynomial.degree_pos_of_irreducible hirr).ne'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `IsAlgClosed.exists_root _ hd`. Establish `hint : IsIntegral O x` using `⟨q, hmon, by rwa [IsRoot, eval_map] at hx⟩`. Take `⟨y, rfl⟩` from `hO.exists_of_le_one (hO.mem_of_integral hint)`. Establish `hy : q.eval y = 0`. Apply `hO.hom_inj` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[IsRoot, eval_map, eval₂_at_apply]`. Rewrite using `[hx, map_zero]`. Use `⟨IsLocalRing.residue O y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hq, eval_map, eval₂_at_apply, hy, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAlgClosed_residueField [IsAlgClosed C] [IsLocalRing O] :
     IsAlgClosed (IsLocalRing.ResidueField O) := by
@@ -268,13 +268,11 @@ theorem isAlgClosed_residueField [IsAlgClosed C] [IsLocalRing O] :
 end Basic
 
 /- English proof (translation)
-Use `haveI := isDomain hO`. Use `haveI := isLocalRing hO`. Rewrite using `[ringKrullDim_eq_one_iff_of_isLocalRing_isDomain]`. Prove the components needed by the constructor for the conclusion. Take `⟨x, hx0, hx1⟩` from `NormedField.exists_norm_lt_one C`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, rfl⟩` from `exists_of_norm_le_one hO hx1.le`. Rewrite using `[IsLocalRing.isField_iff_maximalIdeal_eq]`. Introduce `h`. Establish `: y ∈ IsLocalRing.maximalIdeal O` using `(mem_maximalIdeal_iff hO).2 hx1`. Rewrite `this` using `[h, Ideal.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(norm_pos_iff hO).1 hx0 this`. Introduce `x hx y hy`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one ((norm_pos_iff hO).2 hx) ((mem_maximalIdeal_iff hO).1 hy)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_span_singleton, dvd_iff_norm_le hO, map_pow, norm_pow]`.
-
-Conclude with `hn.le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_eq_one {C : Type*} [NontriviallyNormedField C] [IsUltrametricDist C]
     {O : Type*} [CommRing O] [Algebra O C] (hO : (NormedField.valuation (K := C)).Integers O) :
@@ -300,7 +298,7 @@ theorem ringKrullDim_eq_one {C : Type*} [NontriviallyNormedField C] [IsUltrametr
 end NormIntegers
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `IsAlgClosed.exists_pow_nat_eq x hn`. Conclude with `⟨y, (norm_pow y n).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_norm_pow_eq_of_isAlgClosed {C : Type*} [NormedField C] [IsAlgClosed C] (x : C)
     {n : ℕ} (hn : 0 < n) : ∃ y : C, ‖y‖ ^ n = ‖x‖ := by
@@ -308,7 +306,7 @@ theorem exists_norm_pow_eq_of_isAlgClosed {C : Type*} [NormedField C] [IsAlgClos
   exact ⟨y, (norm_pow y n).symm⟩
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `O.valuation_surjective γ`. Take `⟨y, rfl⟩` from `IsAlgClosed.exists_pow_nat_eq x hn`. Conclude with `⟨O.valuation y, (map_pow _ y n).symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem valueGroup_divisible_of_isAlgClosed {C : Type*} [Field C] [IsAlgClosed C]
     (O : ValuationSubring C) (γ : O.ValueGroup) {n : ℕ} (hn : 0 < n) :
@@ -318,7 +316,7 @@ theorem valueGroup_divisible_of_isAlgClosed {C : Type*} [Field C] [IsAlgClosed C
   exact ⟨O.valuation y, (map_pow _ y n).symm⟩
 
 /- English proof (translation)
-Use `((IsLocalRing.local_hom_TFAE g).out 0 2).2 ?_` and prove the remaining obligations. Rewrite using `[AdicCompletion.maximalIdeal_eq_map, Ideal.map_map, hg]`. Conclude with `((IsLocalRing.local_hom_TFAE f).out 0 2).1 ‹_›`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalHom_of_comp_algebraMap_adicCompletion {A B : Type*} [CommRing A] [IsLocalRing A]
     [IsNoetherianRing A] [CommRing B] [IsLocalRing B] (f : A →+* B) [IsLocalHom f]
@@ -329,19 +327,17 @@ theorem isLocalHom_of_comp_algebraMap_adicCompletion {A B : Type*} [CommRing A] 
   exact ((IsLocalRing.local_hom_TFAE f).out 0 2).1 ‹_›
 
 /- English proof (translation)
-Apply `IsAlgClosed.of_exists_root` to reduce the goal to its premises. Introduce `f fmon firr`. Establish `fnatdeg0 : f.natDegree ≠ 0` using `(Irreducible.natDegree_pos firr).ne'`. Set `F` to `f.SplittingField`. Use `letI : NormedField F := spectralNorm.normedField L F`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `letI : NormedAlgebra L F := spectralNorm.normedAlgebra L F`. Set `a` to `rootOfSplits (SplittingField.splits f) (by simpa using degree_ne_of_natDegree_ne fnatdeg0)`. Establish `fa0 : f.aeval a = 0`. Rewrite using `[← eval_map_algebraMap]`. Conclude with `eval_rootOfSplits (Polynomial.SplittingField.splits f) (by simpa using degree_ne_of_natDegree_ne fnatdeg0)`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `have hcl : IsClosed (Set.range (algebraMap L F)) := (algebraMap_isometry L F).isClosedEmbedding.isClosed_range`. Establish `ha : a ∈ Set.range (algebraMap L F)`. Rewrite using `[← hcl.closure_eq, Metric.mem_closure_iff]`. Introduce `δ δpos`. Establish `hε : (δ / (max ‖a‖ 1)) ^ f.natDegree / (f.natDegree + 1) > 0` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g, gmon, gdeg, gcoeff⟩` from `exists_monic_and_natDegree_eq_and_norm_map_algebraMap_coeff_sub_lt hi fmon hε`. Take `⟨b, hb, hab⟩` from `exists_aroots_norm_sub_lt_of_norm_coeff_sub_lt hε fa0 fmon (gmon.map _) (gdeg ▸ (g.natDegree_map _)) gcoeff (by simpa [Polynomial.map_map] using (IsAlgClosed.splits g).map ((algebraMap L F).comp _))`. Establish `hab : ‖a - b‖ < δ`. Rewrite `hab` using `[← Real.rpow_natCast, ← mul_comm_div, div_self, one_mul, ← Real.rpow_mul (div_pos δpos (by positivity)).le, mul_inv_cancel₀]`. Simplify `hab` using `[mul_assoc, div_mul_cancel₀ _ (by positivity : (max ‖a‖ 1) > 0).ne']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `[fnatdeg0]`. Check the signs of the components of the expression. Use `⟨b, ?_, by rwa [dist_eq_norm]⟩` and prove the remaining obligations. Rewrite `hb` using `[Polynomial.aroots_def, Splits.roots_map ((IsAlgClosed.splits g).map _), Multiset.mem_map]`. Take `⟨c, _, hc⟩` from `hb`.
+Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨c, hc⟩`. Take `⟨c, hc⟩` from `ha`. Use `⟨c, ?_⟩` and prove the remaining obligations. Use `apply_fun algebraMap L F`. Rewrite using `[← Polynomial.aeval_algebraMap_apply_eq_algebraMap_eval, hc, map_zero]` and apply the resulting hypothesis.
-
-Conclude with `RingHom.injective _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isAlgClosed_of_denseRange {K L : Type*} [Field K] [NontriviallyNormedField L]
     [CompleteSpace L] [IsUltrametricDist L] [Algebra K L]
@@ -394,13 +390,11 @@ theorem isAlgClosed_of_denseRange {K L : Type*} [Field K] [NontriviallyNormedFie
     exact ⟨x, by simpa using hx⟩
 
 /- English proof (translation)
-Set `K₁` to `UniformSpace.Completion K`. Use `letI : NontriviallyNormedField K₁ := completionNontriviallyNormedField K`. Use `haveI : IsUltrametricDist K₁ := IsUltrametricDist.of_normedAlgebra K`. Set `K₂` to `AlgebraicClosure K₁`. Use `letI : NontriviallyNormedField K₂ := spectralNorm.nontriviallyNormedField K₁ K₂`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : NormedAlgebra K₁ K₂ := spectralNorm.normedAlgebra K₁ K₂`. Use `haveI : IsUltrametricDist K₂ := IsUltrametricDist.of_normedAlgebra K₁`. Set `C` to `UniformSpace.Completion K₂`. Use `letI : NontriviallyNormedField C := completionNontriviallyNormedField K₂`. Use `haveI : IsUltrametricDist C := IsUltrametricDist.of_normedAlgebra K₂`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsAlgClosed C := isAlgClosed_of_denseRange (K := K₂) UniformSpace.Completion.denseRange_coe`. Use `⟨C, inferInstance, inferInstance, inferInstance, inferInstance, (algebraMap K₂ C).comp ((algebraMap K₁ K₂).comp (algebraMap K K₁)), fun x => ?_⟩` and prove the remaining obligations. Establish `h₁ : ∀ y : K₂, ‖algebraMap K₂ C y‖ = ‖y‖` using `fun y => UniformSpace.Completion.norm_coe y`. Establish `h₂ : ∀ y : K₁, ‖algebraMap K₁ K₂ y‖ = ‖y‖` using `fun y => spectralNorm_extends y`. Establish `h₃ : ∀ y : K, ‖algebraMap K K₁ y‖ = ‖y‖` using `fun y => UniformSpace.Completion.norm_coe y`.
-
-Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, h₁, h₂, h₃]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_complete_isAlgClosed_isometry (K : Type u) [NontriviallyNormedField K]
     [IsUltrametricDist K] :
@@ -428,15 +422,13 @@ theorem exists_complete_isAlgClosed_isometry (K : Type u) [NontriviallyNormedFie
 open IsDedekindDomain in
 
 /- English proof (translation)
-Set `v` to `IsDiscreteValuationRing.maximalIdeal V`. Establish `h0 : v.valuation K (algebraMap V K a) ≠ 0`. Simplify using `using ha0`. Establish `h1 : v.valuation K (algebraMap V K a) < 1` using `(v.valuation_lt_one_iff_mem a).2 ha`. Use `set m : ℤ := Multiplicative.toAdd (WithZero.unzero h0) with hm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm0 : m < 0`. Rewrite `h1` using `[← WithZero.coe_unzero h0, ← WithZero.coe_one, WithZero.coe_lt_coe]`. Conclude with `h1`. Set `b : NNReal` to `⟨r ^ ((m : ℝ)⁻¹), by positivity⟩`. Establish `hb : 1 < b`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← NNReal.coe_lt_coe]`. Conclude with `Real.one_lt_rpow_of_pos_of_lt_one_of_neg hr0 hr1 (inv_lt_zero.2 (by exact_mod_cast hm0))`. Use `⟨v.adicAbv hb, v.isNonarchimedean_adicAbv hb, fun x => ?_, ?_⟩` and prove the remaining obligations. Establish `: v.adicAbv hb x ≤ 1 ↔ v.valuation K x ≤ 1`. Rewrite using `[← WithZeroMulInt.toNNReal_le_one_iff hb, ← NNReal.coe_le_coe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `⟨IsDiscreteValuationRing.exists_lift_of_le_one, fun ⟨y, hy⟩ => hy ▸ v.valuation_le_one y⟩`. Express the relevant statement in the definitionally equal form `((WithZeroMulInt.toNNReal (ne_zero_of_lt hb) (v.valuation K (algebraMap V K a)) : NNReal) : ℝ) = r`. Rewrite using `[WithZeroMulInt.toNNReal_neg_apply _ h0, ← hm, NNReal.coe_zpow]`.
-
-Express the relevant statement in the definitionally equal form `(r ^ ((m : ℝ)⁻¹)) ^ m = r`. Rewrite using `[← Real.rpow_intCast, ← Real.rpow_mul hr0.le, inv_mul_cancel₀ (by exact_mod_cast hm0.ne), Real.rpow_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_absoluteValue_of_isDiscreteValuationRing (V K : Type*) [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K]
@@ -470,11 +462,9 @@ theorem exists_absoluteValue_of_isDiscreteValuationRing (V K : Type*) [CommRing 
       Real.rpow_one]
 
 /- English proof (translation)
-Take `⟨w, hw, hw1, hwa⟩` from `exists_absoluteValue_of_isDiscreteValuationRing V K ha0 ha hr0 hr1`. Use `letI : NontriviallyNormedField (WithAbs w) := { (inferInstance : NormedField (WithAbs w)) with non_trivial := ⟨(WithAbs.toAbs w (algebraMap V K a))⁻¹, by`. Rewrite using `[norm_inv]`. Express the relevant statement in the definitionally equal form `1 < (w (algebraMap V K a))⁻¹`. Rewrite using `[hwa]`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(one_lt_inv₀ hr0).2 hr1⟩ }`. Use `haveI : IsUltrametricDist (WithAbs w) := IsUltrametricDist.isUltrametricDist_of_forall_norm_add_le_max_norm fun x y => hw x.ofAbs y.ofAbs`. Apply the tactic sequence `obtain ⟨C, _, _, _, _, i, hi⟩ := exists_complete_isAlgClosed_isometry (WithAbs w)`. Use `letI : Algebra K C := (i.comp (WithAbs.equiv w).symm.toRingHom).toAlgebra`. Establish `hn : ∀ x : K, ‖algebraMap K C x‖ = w x` using `fun x => hi _`.
-
-Conclude with `⟨C, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, fun x => by rw [hn, hw1], by rw [hn, hwa]⟩`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_complete_isAlgClosed_of_isDiscreteValuationRing (V : Type*) (K : Type u)
     [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K]
@@ -501,17 +491,15 @@ theorem exists_complete_isAlgClosed_of_isDiscreteValuationRing (V : Type*) (K : 
     fun x => by rw [hn, hw1], by rw [hn, hwa]⟩
 
 /- English proof (translation)
-Establish `hlt : ‖(p : C)‖ < 1`. Rewrite using `[h]; exact inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.out.one_lt)`. Establish `hcop : ∀ m : ℕ, ¬ p ∣ m → ‖(m : C)‖ = 1`. Introduce `m hm`. Use `le_antisymm (IsUltrametricDist.norm_natCast_le_one C m) (not_lt.1 fun hm1 => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : IsCoprime (p : ℤ) (m : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.Prime.coprime_iff_not_dvd hp.out).2 hm)`. Take `⟨s, t, hst⟩` from `hc`. Establish `h1 : (s : C) * p + t * m = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → C) hst`. Use `IsUltrametricDist.norm_add_le_max ((s : C) * p) (t * m)` as an intermediate fact. Rewrite `this` using `[h1, norm_one, norm_mul, norm_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `absurd this (not_le.2 (max_lt ?_ ?_))` and prove the remaining obligations. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (IsUltrametricDist.norm_intCast_le_one C s) (norm_nonneg _) hlt`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (IsUltrametricDist.norm_intCast_le_one C t) (norm_nonneg _) hm1`. Establish `hnat : ∀ n : ℕ, ‖(n : C)‖ = ‖(n : ℚ_[p])‖`. Introduce `n`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Take `⟨k, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn p hp.out.ne_one`. Establish `hm' : ‖(m : ℚ_[p])‖ = 1`. Rewrite using `[Padic.norm_natCast_eq_one_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(Nat.Prime.coprime_iff_not_dvd hp.out).2 hm`. Simplify using `only [Nat.cast_mul, Nat.cast_pow, norm_mul, norm_pow, h, hcop m hm, hm', Padic.norm_p]`. Establish `hint : ∀ n : ℤ, ‖(n : C)‖ = ‖(n : ℚ_[p])‖`. Introduce `n`. Apply the tactic sequence `obtain ⟨m, rfl | rfl⟩ := n.eq_nat_or_neg <;> simp [hnat]`.
-
-Rewrite using `[Rat.cast_def, Rat.cast_def, norm_div, norm_div, hnat, hint]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_ratCast_eq_padicNorm {C : Type*} [NormedField C] [IsUltrametricDist C] [CharZero C]
     (p : ℕ) [hp : Fact p.Prime] (h : ‖(p : C)‖ = (p : ℝ)⁻¹) (q : ℚ) :
@@ -547,13 +535,13 @@ theorem norm_ratCast_eq_padicNorm {C : Type*} [NormedField C] [IsUltrametricDist
   rw [Rat.cast_def, Rat.cast_def, norm_div, norm_div, hnat, hint]
 
 /- English proof (translation)
-Set `w : AbsoluteValue ℚ ℝ` to `Rat.AbsoluteValue.padic p`. Set `i : WithAbs w →+* ℚ_[p]` to `(Rat.castHom ℚ_[p]).comp (WithAbs.equiv w).toRingHom`. Set `f : WithAbs w →+* C` to `(Rat.castHom C).comp (WithAbs.equiv w).toRingHom`. Establish `hi : ∀ x, ‖i x‖ = ‖x‖` using `fun x => Padic.eq_padicNorm _`. Establish `hf : ∀ x, ‖f x‖ = ‖x‖` using `fun x => (norm_ratCast_eq_padicNorm p h _).trans (hi x)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `have hi' : Isometry i := AddMonoidHomClass.isometry_of_norm i hi`. Apply the tactic sequence `have hf' : Isometry f := AddMonoidHomClass.isometry_of_norm f hf`. Establish `hd : DenseRange i` using `(Padic.denseRange_ratCast p).mono (by`. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `⟨WithAbs.toAbs w q, rfl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Set `j : ℚ_[p] →+* C` to `IsDenseInducing.extendRingHom hi'.isUniformInducing hd hf'.uniformContinuous`. Establish `hjc : Continuous j` using `(uniformContinuous_uniformly_extend hi'.isUniformInducing hd hf'.uniformContinuous).continuous`. Use `⟨j, fun x => ?_⟩` and prove the remaining obligations. Use `hd.induction_on x (isClosed_eq hjc.norm continuous_norm) fun q => ?_` and prove the remaining obligations. Establish `: j (i q) = f q` using `IsDenseInducing.extend_eq (hi'.isUniformInducing.isDenseInducing hd) hf'.continuous q`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, hf, hi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_padic_isometry {C : Type*} [NormedField C] [IsUltrametricDist C] [CharZero C]
     [CompleteSpace C] (p : ℕ) [Fact p.Prime] (h : ‖(p : C)‖ = (p : ℝ)⁻¹) :
@@ -580,11 +568,11 @@ theorem exists_padic_isometry {C : Type*} [NormedField C] [IsUltrametricDist C] 
   rw [this, hf, hi]
 
 /- English proof (translation)
-Establish `hu : ∀ y : ℚ_[p], ‖y‖ = 1 → ‖j y‖ = 1`. Introduce `y hy`. Establish `hy0 : y ≠ 0` using `by rintro rfl; simp at hy`. Establish `h1 : ‖j y‖ ≤ 1` using `hj ⟨y, hy.le⟩`. Establish `h2 : ‖j y⁻¹‖ ≤ 1` using `hj ⟨y⁻¹, by simp [hy]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_inv₀, norm_inv, inv_le_one₀ (by simpa using hy0)]`. Conclude with `le_antisymm h1 h2`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Establish `hp0 : (p : ℝ) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hu (x * (p : ℚ_[p]) ^ (-x.valuation)) (by` as an intermediate fact. Rewrite using `[norm_mul, norm_zpow, Padic.norm_p, Padic.norm_eq_zpow_neg_valuation hx, inv_zpow, mul_inv_cancel₀ (zpow_ne_zero _ hp0)])`. Rewrite `this` using `[map_mul, map_zpow₀, map_natCast, norm_mul, norm_zpow, h, inv_zpow, mul_inv_eq_one₀ (zpow_ne_zero _ hp0)]`. Rewrite using `[this, Padic.norm_eq_zpow_neg_valuation hx]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_padic_ringHom_eq {C : Type*} [NormedField C] (p : ℕ) [hp : Fact p.Prime]
     (h : ‖(p : C)‖ = (p : ℝ)⁻¹) (j : ℚ_[p] →+* C) (hj : ∀ x : ℤ_[p], ‖j x‖ ≤ 1) (x : ℚ_[p]) :
@@ -607,7 +595,7 @@ theorem norm_padic_ringHom_eq {C : Type*} [NormedField C] (p : ℕ) [hp : Fact p
   rw [this, Padic.norm_eq_zpow_neg_valuation hx]
 
 /- English proof (translation)
-Use `RingHom.ext fun x => congrFun ((Padic.denseRange_ratCast p).equalizer h₁ h₂ ?_) x` and prove the remaining obligations. Use extensionality with `q`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem padic_ringHom_ext_of_continuous {C : Type*} [NormedField C] (p : ℕ) [Fact p.Prime]
     {j₁ j₂ : ℚ_[p] →+* C} (h₁ : Continuous j₁) (h₂ : Continuous j₂) : j₁ = j₂ := by
@@ -616,11 +604,11 @@ theorem padic_ringHom_ext_of_continuous {C : Type*} [NormedField C] (p : ℕ) [F
   simp
 
 /- English proof (translation)
-Establish `hp0 : (p : V) ≠ 0` using `fun h => by`. Use `congrArg (algebraMap V K) h` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`. Conclude with `hp.out.ne_zero (by exact_mod_cast this)`. Establish `h1 : (1 : ℝ) < p` using `by exact_mod_cast hp.out.one_lt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C, _, _, _, _, _, hC, hCp⟩` from `exists_complete_isAlgClosed_of_isDiscreteValuationRing V K hp0 hV (inv_pos.2 (zero_lt_one.trans h1)) (inv_lt_one_of_one_lt₀ h1)`. Rewrite `hCp` using `[map_natCast, map_natCast]`. Use `haveI : CharZero C := charZero_of_injective_ringHom (algebraMap K C).injective`. Apply the tactic sequence `obtain ⟨j, hj⟩ := exists_padic_isometry p hCp`. Use `letI : Algebra ℚ_[p] C := j.toAlgebra`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Use `letI : NormedAlgebra ℚ_[p] C := { (inferInstance : Algebra ℚ_[p] C) with norm_smul_le := fun r x => by`. Rewrite using `[Algebra.smul_def, norm_mul]`. Conclude with `le_of_eq (congrArg (· * ‖x‖) (hj r)) }`. Conclude with `⟨C, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, hC⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_complete_isAlgClosed_padic_of_isDiscreteValuationRing (V : Type*) (K : Type u)
     [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K]
@@ -650,9 +638,9 @@ theorem exists_complete_isAlgClosed_padic_of_isDiscreteValuationRing (V : Type*)
     inferInstance, hC⟩
 
 /- English proof (translation)
-Set `φ : V →+* normIntegers C` to `((algebraMap K C).comp (algebraMap V K)).codRestrict (normIntegers C) fun a => mem_normIntegers_iff.2 ((h _).2 ⟨a, rfl⟩)`. Use `⟨φ, ⟨fun a ha => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Establish `h1 : ‖algebraMap K C (algebraMap V K a)‖ = 1` using `(NormIntegers.isUnit_iff_norm_eq_one (normIntegers_integers C)).1 ha`. Establish `h0 : algebraMap V K a ≠ 0` using `fun h0 => by simp [h0] at h1`. Take `⟨b, hb⟩` from `(h (algebraMap V K a)⁻¹).1 (by rw [map_inv₀, norm_inv, h1, inv_one])`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `IsUnit.of_mul_eq_one b (IsFractionRing.injective V K ?_)` and prove the remaining obligations. Rewrite using `[map_mul, hb, mul_inv_cancel₀ h0, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isLocalHom_normIntegers {V K C : Type*} [CommRing V] [Field K] [Algebra V K]
     [IsFractionRing V K] [NormedField C] [IsUltrametricDist C] [Algebra K C]
@@ -680,7 +668,7 @@ instance {C : Type*} [NormedField C] [IsUltrametricDist C] [IsAlgClosed C] :
   NormIntegers.isAlgClosed_residueField (normIntegers_integers C)
 
 /- English proof (translation)
-Establish `hO` using `normIntegers_integers C`. Use `⟨fun w hw => NormIntegers.isAdicComplete_span_singleton hO hw, fun J hJ => NormIntegers.isPrincipal_of_fg hO hJ, fun J hJ hle => NormIntegers.eq_bot_or_eq_span_of_fg_of_ne_top hO hJ (ne_top_of_le_ne_top (IsLocalRing.maximalIdeal.isMaximal _).ne_top hle), inferInstance, NormIntege …` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem normIntegers_properties_of_completeSpace (C : Type*) [NontriviallyNormedField C]
     [IsUltrametricDist C] [CompleteSpace C] :
@@ -713,7 +701,7 @@ theorem normIntegers_properties_of_completeSpace (C : Type*) [NontriviallyNormed
       fun g hg => isLocalHom_of_comp_algebraMap_adicCompletion f g hg⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun C _ _ _ => normIntegers_properties_of_completeSpace C, fun V K _ _ _ _ _ _ => ⟨fun _ ha0 ha _ hr0 hr1 => exists_complete_isAlgClosed_of_isDiscreteValuationRing V K ha0 ha hr0 hr1, fun p _ hp => exists_complete_isAlgClosed_padic_of_isDiscreteValuationRing V K p hp⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem valuationRing_of_complete_field :
     (∀ (C : Type u) [NontriviallyNormedField C] [IsUltrametricDist C] [CompleteSpace C],

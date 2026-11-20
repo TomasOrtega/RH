@@ -20,7 +20,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Hk3.Back
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hCW hEx hSch s hOk hGG hLU hParts j c h0`. Take `⟨w, hw, hw0, hws⟩` from `GlobalTheory.T.exists_baseLevel_vector_in_goodAlgebraicForms_span R F hCW hEx hSch s hOk hGG hLU j c h0`. Conclude with `⟨w, hw, hw0, GlobalTheory.T.mem_iSup_type_parts_of_good_base_forms R F hParts j w hws⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_level_vec_in_parts : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), R.WeakCharacterisation F → R.toRealDat.ExAt → SchurAll R.toRealDat → ∀ s, A3.fam3.Ok3 s → GoodGeneric A3.A.X F.P0 F.ψ0⁻¹ → R.toRealDat.LUnif → (R.toCx3 F).PartsW false → ∀ j c, R.Wc' j c ≠ ⊥ → ∃ w ∈ R.Wc' j c, w ≠ 0 ∧ w ∈ ⨆ p, R.Wp3 j p := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hCW hEx hSch s hOk hGG hLU hParts j c h0
@@ -28,9 +28,9 @@ theorem exists_level_vec_in_parts : ∀ {D : D7} {G : Type} [Group G] [Fintype G
   exact ⟨w, hw, hw0, GlobalTheory.T.mem_iSup_type_parts_of_good_base_forms R F hParts j w hws⟩
 
 /- English proof (translation)
-Unfold `BlockDat.blockProd`. Rewrite using `[ne_eq, List.prod_eq_zero_iff]`. Simplify using `only [List.mem_map, not_exists, not_and]`. Introduce `ν _ h`. Unfold `Formalism.L2.Col.blockPoly at h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite `h` using `[Finset.prod_eq_zero_iff]`. Take `⟨c, _, hc⟩` from `h`. Use `congrArg (fun q => Polynomial.coeff q 0) hc` as an intermediate fact. Simplify using `at this`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem blockProd_ne_zero {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 : Type}
     (B : BlockDat K G Pl0) (P : B.Pl) : B.blockProd P ≠ 0 := by
@@ -45,11 +45,11 @@ theorem blockProd_ne_zero {K : Type} [Field K] [NumberField K] [StarRing K] {G :
   simp at this
 
 /- English proof (translation)
-Set `op : {P // ok P} × J → Module.End ℂ H` to `fun i => h i.1.1 i.2`. Establish `hpc : Formalism.L2.Col.PairComm op` using `fun i i' => hc _ _ i.1.2 i'.1.2 _ _`. Set `χ : K → {P // ok P} × J → ℂ` to `fun k i => ev k i.1.1 i.2`. Establish `hV : ∀ k, V k ≤ Formalism.L2.Col.eigAt op (χ k)` using `fun k x hx => Formalism.L2.Col.mem_eigAt_of_forall_apply fun i => hev k i.1.1 i.1.2 i.2 x hx`. Assume the negation of the conclusion as `hne`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hne`. Establish `h1 : (⨆ (k : K) (_ : S k), V k) ≤ Formalism.L2.Col.eigSum op (fun x => x ≠ χ k0)`. Use `iSup₂_le fun k hk => (hV k).trans (Formalism.L2.Col.eigAt_le_eigSum ?_)` and prove the remaining obligations. Introduce `he`. Take `⟨P, hP, cc, hcc⟩` from `hne k hk`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hcc (congrFun he (⟨P, hP⟩, cc))`. Establish `h2 : V k0 ≤ Formalism.L2.Col.eigSum op (fun x => x = χ k0)` using `(hV k0).trans (Formalism.L2.Col.eigAt_le_eigSum rfl)`. Establish `hd` using `Formalism.L2.Col.disjoint_eigSum (op := op) hpc (C := fun x => x = χ k0) (C' := fun x => x ≠ χ k0) (fun x h h' => h' h)`. Conclude with `hw0 ((Submodule.disjoint_def.1 hd) w (h2 hw) (h1 hwS))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eig_in_sum {H : Type} [AddCommGroup H] [Module ℂ H] [FiniteDimensional ℂ H] {Q J K : Type} (ok : Q → Prop)
     (h : Q → J → Module.End ℂ H) (ev : K → Q → J → ℂ) (V : K → Submodule ℂ H) (S : K → Prop) (k0 : K)
@@ -77,11 +77,11 @@ theorem eig_in_sum {H : Type} [AddCommGroup H] [Module ℂ H] [FiniteDimensional
   exact hw0 ((Submodule.disjoint_def.1 hd) w (h2 hw) (h1 hwS))
 
 /- English proof (translation)
-Take `⟨x, hx, rfl⟩` from `hp`. Take `⟨x', hx', hxx⟩` from `hp'`. Establish `hxe : x = x'` using `funext fun i => D.what₂.embLL.injective (congrFun hxx i)`. Substitute `hxe` using the available equality. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hne' : p.1 ≠ p'.1` using `fun h => hne (Subtype.ext h)`. Break down `hSep p.1 p.2 p'.1 p'.2 hne' j with ⟨P, hP⟩ | ⟨k, hk⟩` into its components or cases. Apply `hP` to reduce the goal to its premises. Establish `h1` using `hx.1 P`. Establish `h2` using `hx'.1 P`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[h1]`. Conclude with `mul_right_cancel₀ (blockProd_ne_zero _ P) h2`. Conclude with `hk ((hx.2 k).symm.trans (hx'.2 k))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem types_eq {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
     {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} (hSep : A3.fam3.TypesSep3) (j : Fin D.R.m)
@@ -103,21 +103,19 @@ theorem types_eq {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
   · exact hk ((hx.2 k).symm.trans (hx'.2 k))
 
 /- English proof (translation)
-Introduce `hHowe D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hLI hCW hEx hSch hJunk s hOk hGG hLU hPGU hPGE hPLW hA hPos hB hTr hParts hSep j pl cV cW hLD p c hsys`. Take `⟨hcoreF, hSF, -, -, -, hWeq, -⟩` from `GlobalTheory.T.heckeCharacterisation_places_of_weakCharacterisation R F hCW`. Establish `hcore` using `hcoreF hEx`. Take `⟨h, -, hNorm, -, hsum, -, hev, hchar⟩` from `GlobalTheory.T.sphericalOperators_forms_on_rank_space_normal R.toRealDat F.lv2 hcore hSch hOk.ok2.irr R.SF hSF j`. Establish `hidem` using `(eH_laws R.toRealDat F.lv2 hcore hOk.ok2.irr j).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : R.Wc' j c = ⊥`. Rewrite using `[h0]`. Conclude with `bot_le`. Take `⟨w, hwc, hw0, hwp⟩` from `exists_level_vec_in_parts R F hCW hEx hSch s hOk hGG hLU hParts j c h0`. Establish `hwp' : w ∈ ⨆ (c' : Pl D.host.E → List ℤ → ℂ) (_ : ∃ p', R.Carries p' c'), Wcc R.toRealDat R.SF j c'`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : (⨆ p, R.Wp3 j p) ≤ ⨆ (c' : Pl D.host.E → List ℤ → ℂ) (_ : ∃ p', R.Carries p' c'), Wcc R.toRealDat R.SF j c'`. Use `iSup_le fun p' => iSup₂_le fun c' hc' => ?_` and prove the remaining obligations. Rewrite using `[hWeq]`. Conclude with `le_iSup₂_of_le (f := fun c' (_ : ∃ p', R.Carries p' c') => Wcc R.toRealDat R.SF j c') c' ⟨p', hc'⟩ le_rfl`. Conclude with `hle hwp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hwc` using `[hWeq]`. Take `⟨c', ⟨p', hcar⟩, hag⟩` from `eig_in_sum (Good R.toRealDat A3.A.μ0) h (fun c P cc => evC (Wc D j) P (c P) cc) (Wcc R.toRealDat R.SF j) (fun c' => ∃ p', R.Carries p' c') c hNorm.1 (fun k P hP cc x hx => hev k P hP cc x hx) w hwc hw0 hwp'`. Establish `hsub : Wcc R.toRealDat R.SF j c ≤ Wcc R.toRealDat R.SF j c'`. Introduce `x hx`. Use `hchar c' x ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : x ∈ LinearMap.range (eH R.toRealDat j)` using `hsum ▸ (le_iSup (Wcc R.toRealDat R.SF j) c hx)`. Take `⟨y, rfl⟩` from `hr`. Rewrite using `[← Module.End.mul_apply, hidem]`. Introduce `P d hP hd`. Rewrite using `[hev c P hP _ x hx, ← hag P hP]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[evC, hd]`. Establish `hne : R.Wc' j c' ≠ ⊥`. Rewrite using `[hWeq]`. Introduce `hb`. Conclude with `hw0 ((Submodule.eq_bot_iff _).1 hb w (hsub hwc))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hfwd` using `GlobalTheory.T.carriedPart_eigensystem_passage_of_type hHowe R F hLI hCW hEx hSch hJunk s hOk hGG hLU hPGU hPGE hPLW hA hPos hB hTr j pl cV cW hLD p' c' hcar hne`. Establish `hlab : labW j pl cW c' = labW j pl cW c` using `funext fun i => hag (pl i) (hLD.good i) (cW i)`. Rewrite `hfwd` using `[hlab]`. Establish `hpp : p' = p` using `types_eq hSep j p' p _ hfwd hsys`. Substitute `hpp` using the available equality.
-
-Rewrite using `[hWeq]`. Use `hsub.trans ?_` and prove the remaining obligations. Rewrite using `[← hWeq]`. Conclude with `le_iSup₂_of_le (f := fun c (_ : R.Carries p' c) => R.Wc' j c) c' hcar le_rfl`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wc_le_wp_of_passage : HoweUnram → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), GlobalTheory.Chain.LiftInteg D → R.WeakCharacterisation F → R.toRealDat.ExAt → SchurAll R.toRealDat → InertJunk A3 → ∀ s, A3.fam3.Ok3 s → GoodGeneric A3.A.X F.P0 F.ψ0⁻¹ → R.toRealDat.LUnif → R.PGUnit F → R.PGEquiv F → R.PLevW F → R.PThmA → (0 < R.kap ∧ ∀ i t p, 0 < R.lam3 i t p A3.A.v0) → R.PThmB → R.TrISem F A3.trI → (R.toCx3 F).PartsW false → A3.fam3.TypesSep3 → ∀ j pl cV cW, LiftDict R j A3.A.μ0 pl cV cW → ∀ (p : A3.fam3.base3.Ix) c, cxSys D.what₂.embLL ((A3.liftI j A3.A.μ0).HasRes3 (A3.fam3.tr3 j p.1)) (labW j pl cW c) → R.Wc' j c ≤ R.Wp3 j p := by
   intro hHowe D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hLI hCW hEx hSch hJunk s hOk hGG hLU hPGU hPGE hPLW hA hPos hB hTr hParts hSep j pl cV cW hLD p c hsys

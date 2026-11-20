@@ -15,21 +15,21 @@ open scoped TensorProduct
 namespace GlobalTheory.St.G.Match
 
 /- English proof (translation)
-Introduce `F _ _ v n d`. Establish `hs` using `IsLocalRing.residue_surjective (R := v.adicCompletionIntegers F)`. Use `choose u hu using fun i => hs ((d i : (kv F v)ˣ) : kv F v)`. Establish `hunit : ∀ i, IsUnit (u i)` using `fun i => isUnit_of_map_unit (IsLocalRing.residue (v.adicCompletionIntegers F)) (u i) (by rw [hu i]; exact (d i).isUnit)`. Set `w : Fin n → (v.adicCompletionIntegers F)ˣ` to `fun i => (hunit i).unit`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e : Fin n → (v.adicCompletion F)ˣ` to `fun i => Units.map (algebraMap (v.adicCompletionIntegers F) (v.adicCompletion F)).toMonoidHom (w i)`. Establish `he : ∀ i, ((e i : (v.adicCompletion F)ˣ) : v.adicCompletion F) ∈ v.adicCompletionIntegers F` using `fun i => (w i : v.adicCompletionIntegers F).2`. Establish `he' : ∀ i, (((e i)⁻¹ : (v.adicCompletion F)ˣ) : v.adicCompletion F) ∈ v.adicCompletionIntegers F` using `fun i => (((w i)⁻¹ : (v.adicCompletionIntegers F)ˣ) : v.adicCompletionIntegers F).2`. Establish `hw : ∀ i, IsLocalRing.residue (v.adicCompletionIntegers F) ((w i : (v.adicCompletionIntegers F)ˣ) : v.adicCompletionIntegers F) = ((d i : (kv F v)ˣ) : kv F v)` using `fun i => hu i`. Establish `hw' : ∀ i, IsLocalRing.residue (v.adicCompletionIntegers F) (((w i)⁻¹ : (v.adicCompletionIntegers F)ˣ) : v.adicCompletionIntegers F) = (((d i)⁻¹ : (kv F v)ˣ) : kv F v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `h1` using `congrArg Units.val (map_inv (Units.map (IsLocalRing.residue (v.adicCompletionIntegers F)).toMonoidHom) (w i))`. Establish `h2 : Units.map (IsLocalRing.residue (v.adicCompletionIntegers F)).toMonoidHom (w i) = d i` using `Units.ext (hw i)`. Rewrite `h1` using `[h2]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `D : GL (Fin n) (v.adicCompletion F)` to `⟨diagonal (fun i => ((e i : (v.adicCompletion F)ˣ) : v.adicCompletion F)), diagonal (fun i => (((e i)⁻¹ : (v.adicCompletion F)ˣ) : v.adicCompletion F)), by rw [diagonal_mul_diagonal]; simp, by rw [diagonal_mul_diagonal]; simp⟩`. Use `⟨D, fun x => ?_, fun M => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ↔ ∀ b, (diagonal (fun i => ((e i : (v.adicCompletion F)ˣ) : v.adicCompletion F)) *ᵥ x) b ∈ _`. Simplify using `only [mulVec_diagonal]`. Use `⟨fun h b => mul_mem (he b) (h b), fun h b => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `mul_mem (he' b) (h b)` as an intermediate fact. Rewrite `this` using `[← mul_assoc, Units.inv_mul, one_mul]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `redM F v (diagonal (fun i => (((e i)⁻¹ : (v.adicCompletion F)ˣ) : v.adicCompletion F)) * M * diagonal (fun i => ((e i : (v.adicCompletion F)ˣ) : v.adicCompletion F))) = _`. Use extensionality with `a b`. Establish `key : (diagonal (fun i => (((e i)⁻¹ : (v.adicCompletion F)ˣ) : v.adicCompletion F)) * M * diagonal (fun i => ((e i : (v.adicCompletion F)ˣ) : v.adicCompletion F))) a b = ((((e a)⁻¹ : (v.adicCompletion F)ˣ) : v.adicCompletion F) * M a b) * ((e b : (v.adicCompletion F)ˣ) : v.adicCo …`.
+Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [diagonal_mul, mul_diagonal]`. Simplify using `only [diagonal_mul, mul_diagonal, redM]`. Distinguish the cases in `hM : M a b ∈ v.adicCompletionIntegers F`. Establish `hP : ((((e a)⁻¹ : (v.adicCompletion F)ˣ) : v.adicCompletion F) * M a b) * ((e b : (v.adicCompletion F)ˣ) : v.adicCompletion F) ∈ v.adicCompletionIntegers F` using `mul_mem (mul_mem (he' a) hM) (he b)`. Rewrite using `[dif_pos (key ▸ hP), dif_pos hM, ← hw' a, ← hw b, ← map_mul, ← map_mul]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Establish `hP : ((((e a)⁻¹ : (v.adicCompletion F)ˣ) : v.adicCompletion F) * M a b) * ((e b : (v.adicCompletion F)ˣ) : v.adicCompletion F) ∉ v.adicCompletionIntegers F`. Introduce `hP`. Apply `hM` to reduce the goal to its premises. Use `mul_mem (mul_mem (he a) hP) (he' b)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : ((e a : (v.adicCompletion F)ˣ) : v.adicCompletion F) * ((((e a)⁻¹ : (v.adicCompletion F)ˣ) : v.adicCompletion F) * M a b * ((e b : (v.adicCompletion F)ˣ) : v.adicCompletion F)) * (((e b)⁻¹ : (v.adicCompletion F)ˣ) : v.adicCompletion F) = M a b`. Simplify using `[mul_assoc]`. Rewrite `this` using `[e1]`. Then use the resulting hypothesis. Rewrite using `[dif_neg (key ▸ hP), dif_neg hM]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diag_lift : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (n : ℕ) (d : Fin n → (kv F v)ˣ), ∃ D : GL (Fin n) (v.adicCompletion F), (∀ x : Fin n → v.adicCompletion F, (∀ b, x b ∈ v.adicCompletionIntegers F) ↔ ∀ b, ((D : Matrix (Fin n) (Fin n) (v.adicCompletion F)) *ᵥ x) b ∈ v.adicCompletionIntegers F) ∧ ∀ M : Matrix (Fin n) (Fin n) (v.adicCompletion F), redM F v (((D⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * M * (D : Matrix (Fin n) (Fin n) (v.adicCompletion F))) = diagonal (fun i => ((d i)⁻¹ : (kv F v)ˣ).1) * redM F v M * diagonal (fun i => ((d i : (kv F v)ˣ) : kv F v)) := by
   intro F _ _ v n d
@@ -85,11 +85,9 @@ end GlobalTheory.St.G.Match
 namespace GlobalTheory.St.G.Match
 
 /- English proof (translation)
-Introduce `hqv`. Establish `hc : Nat.Coprime p q` using `(Nat.coprime_primes hp hq).2 hne`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 hc`. Apply `v.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (a : 𝓞 F) * (p : 𝓞 F) + (b : 𝓞 F) * (q : 𝓞 F) = 1`. Use `congrArg (Int.cast : ℤ → 𝓞 F) hab` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite using `[← h1]`.
-
-Conclude with `v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ hpv) (v.asIdeal.mul_mem_left _ hqv)`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nat_prime_not_mem {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (p q : ℕ)
     (hp : p.Prime) (hq : q.Prime) (hne : p ≠ q) (hpv : (p : 𝓞 F) ∈ v.asIdeal) : (q : 𝓞 F) ∉ v.asIdeal := by
@@ -109,19 +107,19 @@ end GlobalTheory.St.G.Match
 namespace GlobalTheory.St.G
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ cm n J hJ hdet T f t k a sk fc gp S G Gl hk ha hsk hfc hT hgp hne hTg hspl Fr i v hv`. Substitute `a sk fc` using the available equality. Establish `hTv : (T : 𝓞 F) ∉ v.asIdeal` using `fun h => GlobalTheory.St.G.Match.nat_prime_not_mem v (gp i) T (hgp i) hT (fun e => hTg i e.symm) hv h`. Establish `hTL` using `GlobalTheory.St.G.stepLevel_tLat F E n cm.sig J T f _ S`. Establish `hSD` using `GlobalTheory.T.isLocallySelfDual_of_hermitianLatticeOfLevel F E cm n J hJ hdet T f S.Lb hTL v hTv`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLat : IsLat S.Lb` using `⟨S.Lb_fin, S.Lb_span⟩`. Take `⟨fr', ψ', hψ', hfr', hK⟩` from `GlobalTheory.T.adelicLatticeFrame_local_basis_unitriangular F E cm n J hJ hdet k t gp G S.Lb Fr hk hgp hne hspl hLat i v hv hSD`. Establish `hcard` using `((GlobalTheory.T.cmField_splitCompletely_place_structure F E cm (gp i) (hgp i) (hspl i)).2 v hv).1`. Use `haveI : Finite (kv F v) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact (hgp i).ne_zero)`. Take `⟨d, hd⟩` from `GlobalTheory.T.diagonal_torus_transitive_generic_characters (kv F v) n t (G.psi0 i v hv) ψ' (G.chiB i v hv) (fun _ => 1) (G.psi_zero_nontrivial_character i v hv) hψ'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨D, hDint, hDred⟩` from `GlobalTheory.St.G.Match.diag_lift F v n d`. Take `⟨κ, hκ, -⟩` from `(GlobalTheory.T.split_place_lattice_components F E cm n J hJ hdet v (G.sp i v hv) (G.sp_sig i v hv) (G.sp_alg i v hv)).2.1 (fr' * D * (Gl.fr i v hv)⁻¹)`. Establish `hphi : bc (G.phi i v hv) κ.1 = fr' * D * (Gl.fr i v hv)⁻¹` using `hκ`. Establish `hlev : κ.1 ∈ levelVL cm.sig J v S.Lb`. Use `GlobalTheory.T.mem_level_of_preserves_first_components_split F E cm n J v (G.sp i v hv) (G.sp_sig i v hv) (G.sp_alg i v hv) S.Lb hSD κ.1 κ.2 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Use `(Gl.fr_lat i v hv x).trans ?_` and prove the remaining obligations. Use `Iff.trans ?_ (hfr' _).symm` and prove the remaining obligations. Rewrite using `[hDint]`. Rewrite using `[hκ]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_mul, mulVec_mulVec, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Use `⟨κ.1, hlev, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hyκ : κ.1⁻¹ * y * κ.1 ∈ levelVL cm.sig J v S.Lb` using `mul_mem (mul_mem (inv_mem hlev) hy) hlev`. Establish `hg : (Gl.fr i v hv)⁻¹ * bc (G.phi i v hv) (κ.1⁻¹ * y * κ.1) * Gl.fr i v hv = D⁻¹ * (fr'⁻¹ * bc (G.phi i v hv) y * fr') * D`. Rewrite using `[map_mul, map_mul, map_inv, hphi]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `group`. Establish `hred : redM F v (G.mat i v hv (Gl.fr i v hv) (κ.1⁻¹ * y * κ.1)) = diagonal (fun j => ((d j)⁻¹ : (kv F v)ˣ).1) * redM F v (G.mat i v hv fr' y) * diagonal (fun j => ((d j : (kv F v)ˣ) : kv F v))`. Rewrite using `[← hDred]`. Unfold `GLoc.mat`. Rewrite using `[hg, Units.val_mul, Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hK1, hK2⟩` from `hK y hy`. Use `⟨?_, fun hy' => ?_⟩` and prove the remaining obligations. Rewrite using `[hK1, (hd _).1, ← hred, Gl.mem i v hv _ hyκ]`. Rewrite using `[hK2 hy', (hd _).2, hred]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gmatch_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (cm : CMData F E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHerm (cm.sig : E →+* E) J → J.det ≠ 0 → ∀ (T f t k a sk fc : ℕ) (gp : Fin 2 → ℕ) (S : StepLevel F E cm.sig J T f {v : HeightOneSpectrum (𝓞 F) | (gp 0 : 𝓞 F) ∈ v.asIdeal ∨ (gp 1 : 𝓞 F) ∈ v.asIdeal}) (G : GLoc F E cm.sig gp) (Gl : GLev S G a t 0 sk fc false), k = n → a = n → sk = n → fc = n → T.Prime → (∀ i, (gp i).Prime) → gp 0 ≠ gp 1 → (∀ i, T ≠ gp i) → (∀ i, SplitsIn E (gp i)) → ∀ (Fr : AdFrame cm.sig J (hat F S.Lb) (gp 0 * gp 1) k) (i : Fin 2) (v : HeightOneSpectrum (𝓞 F)) (hv : (gp i : 𝓞 F) ∈ v.asIdeal), ∃ κ ∈ levelVL cm.sig J v S.Lb, ∀ y ∈ levelVL cm.sig J v S.Lb, (Fr.LocK S.Lb v y ↔ κ⁻¹ * y * κ ∈ S.Uloc v) ∧ (Fr.LocK S.Lb v y → Fr.locChi v y = (lamJ (G.psi0 i v hv) (G.chiB i v hv) a t 0 sk (redM F v (G.mat i v hv (Gl.fr i v hv) (κ⁻¹ * y * κ))))⁻¹) := by
   intro F E _ _ _ _ _ _ cm n J hJ hdet T f t k a sk fc gp S G Gl hk ha hsk hfc hT hgp hne hTg hspl Fr i v hv

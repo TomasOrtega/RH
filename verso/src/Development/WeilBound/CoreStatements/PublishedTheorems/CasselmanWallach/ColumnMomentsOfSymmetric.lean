@@ -22,7 +22,7 @@ lemma act_apply (A : Matrix (Fin n) (Fin n) (Module.End ℂ V)) (u : PiLp 2 fun 
     act A u a = ∑ b, A a b (u b) := rfl
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [act_apply, Matrix.mul_apply, LinearMap.sum_apply, Module.End.mul_apply, map_sum]`. Conclude with `Finset.sum_comm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma act_mul (A B : Matrix (Fin n) (Fin n) (Module.End ℂ V)) (u : PiLp 2 fun _ : Fin n => V) :
     act (A * B) u = act A (act B u) := by
@@ -31,9 +31,9 @@ lemma act_mul (A B : Matrix (Fin n) (Fin n) (Module.End ℂ V)) (u : PiLp 2 fun 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Proceed by induction on `m generalizing u with`. Consider the case `zero`. Use extensionality with `a`. Simplify using `[act_apply, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single a (fun b _ hb => by simp [Ne.symm hb]) (by simp)]`.
+Proceed by induction. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `succ m ih => rw [pow_succ, act_mul, ih, pow_succ, Module.End.mul_apply]`.
+Simplify using the standard rewrite rules. Treat this case separately.
 -/
 lemma act_pow (A : Matrix (Fin n) (Fin n) (Module.End ℂ V)) (m : ℕ) (u : PiLp 2 fun _ : Fin n => V) :
     act (A ^ m) u = (act A ^ m) u := by
@@ -46,13 +46,13 @@ lemma act_pow (A : Matrix (Fin n) (Fin n) (Module.End ℂ V)) (m : ℕ) (u : PiL
   | succ m ih => rw [pow_succ, act_mul, ih, pow_succ, Module.End.mul_apply]
 
 /- English proof (translation)
-Simplify using `[adjSign, eq_comm]`.
+Simplify using the standard rewrite rules.
 -/
 lemma adjSign_symm (ε : Fin n → Bool) (a b : Fin n) : adjSign ε a b = adjSign ε b a := by
   simp [adjSign, eq_comm]
 
 /- English proof (translation)
-Simplify using `only [PiLp.inner_apply, act_apply, Mm, Md, Matrix.of_apply, sum_inner, inner_sum, LinearMap.smul_apply, inner_smul_right]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[adjSign_symm]`. Conclude with `hu a b _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma adj (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V) (hu : IsInfUnitary ε E)
     (u w : PiLp 2 fun _ : Fin n => V) :
@@ -65,7 +65,7 @@ lemma adj (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V) (hu :
   exact hu a b _ _
 
 /- English proof (translation)
-Rewrite using `[← inner_conj_symm, ← adj ε E hu, inner_conj_symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma adj' (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V) (hu : IsInfUnitary ε E)
     (u w : PiLp 2 fun _ : Fin n => V) :
@@ -73,9 +73,9 @@ lemma adj' (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V) (hu 
   rw [← inner_conj_symm, ← adj ε E hu, inner_conj_symm]
 
 /- English proof (translation)
-Rewrite using `[act_apply, Finset.sum_eq_single e]`. Simplify using `[PiLp.single_apply]`. Introduce `b _ hb`. Simplify using `[PiLp.single_apply, hb]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ e) h`.
+A detailed English derivation is pending.
 -/
 lemma act_single (A : Matrix (Fin n) (Fin n) (Module.End ℂ V)) (e a : Fin n) (v : V) :
     act A (PiLp.single 2 e v) a = A a e v := by
@@ -87,7 +87,7 @@ lemma act_single (A : Matrix (Fin n) (Fin n) (Module.End ℂ V)) (e a : Fin n) (
     exact absurd (Finset.mem_univ e) h
 
 /- English proof (translation)
-Rewrite using `[PiLp.inner_apply, Finset.sum_eq_single e (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma inner_single (e : Fin n) (v : V) (w : PiLp 2 fun _ : Fin n => V) :
     inner ℂ (PiLp.single 2 e v) w = inner ℂ v (w e) := by
@@ -98,15 +98,15 @@ end MatrixActionSingle
 
 open MatrixActionSingle in
 /- English proof (translation)
-Introduce `h7`. Unfold `ColumnOperatorMoments ForMod`. Introduce `n ε V _ _ E hM v hv e j`. Establish `hu` using `hM.uni`. Establish `hsa : ∀ y z : PiLp 2 (fun _ : Fin n => V), inner ℂ (act (Md ε E * Mm E) y) z = inner ℂ y (act (Md ε E * Mm E) z)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y z`. Rewrite using `[act_mul, act_mul, adj' ε E hu, adj ε E hu]`. Establish `hxn : ‖(PiLp.single 2 e v : PiLp 2 (fun _ : Fin n => V))‖ = 1`. Rewrite using `[PiLp.norm_single, hv]`. Establish `hn : ‖act (Mm E) (PiLp.single 2 e v : PiLp 2 (fun _ : Fin n => V))‖ ^ 2 = ∑ a, ‖E a e v‖ ^ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[PiLp.norm_sq_eq_of_L2]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `act_single (Mm E) e a v` as an intermediate fact. Simplify using `only [Mm, Matrix.of_apply] at this`. Rewrite using `[← this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hq : inner ℂ (PiLp.single 2 e v : PiLp 2 (fun _ : Fin n => V)) (act (Md ε E * Mm E) (PiLp.single 2 e v)) = ((∑ a, ‖E a e v‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[act_mul, ← adj ε E hu, inner_self_eq_norm_sq_to_K, ← hn]`. Use `norm_cast`. Establish `hre : (inner ℂ (PiLp.single 2 e v : PiLp 2 (fun _ : Fin n => V)) (act (Md ε E * Mm E) (PiLp.single 2 e v))).re = ∑ a, ‖E a e v‖ ^ 2`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Establish an intermediate fact.
 
-Rewrite using `[hq, Complex.ofReal_re]`. Establish `key` using `h7 (PiLp 2 (fun _ : Fin n => V)) (act (Md ε E * Mm E)) hsa (PiLp.single 2 e v) hxn (by rw [hre]; positivity) j`. Rewrite `key` using `[hre, ← act_pow, inner_single, act_single]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem column_moments_of_symmetric : A7 → ColumnOperatorMoments := by
   intro h7

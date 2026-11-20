@@ -16,23 +16,21 @@ noncomputable section
 namespace GlobalTheory.DualPol
 
 /- English proof (translation)
-Introduce `R _ _ A _ g hA hg L hL ha`. Take `⟨B, P, q, hP, hgood, hfa, hfin, hfl, hsu, hF, hK⟩` from `GlobalTheory.T.exists_quotient_kernel_polarisation_descended_bundle R A g hA hg L hL ha`. Establish `hinj : Inj A P` using `GlobalTheory.T.dualPoint_eq_of_quotient_family_iso R A g hA hg L hL ha B P q hP hfin hfl hsu hF hK`. Establish `hex : ∀ (T : Over (Sp R)) (N : LB (A ⊗ T).left), Fam A N → ∃ x : T ⟶ B, LBIso N (ev P (fst A T) (snd A T ≫ x))`. Introduce `T N hN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨H, h, x, hhf, hhs, hhq, hx⟩` from `GlobalTheory.T.exists_flatCover_additiveFamily_eq_lambda R A g hA hg L hL ha T N hN`. Establish `key : ∀ (Y : Over (Sp R)) (a : Y ⟶ A) (y : Y ⟶ H), evc hP.isLB a (y ≫ x ≫ q) = evc hN.isLB a (y ≫ h)`. Introduce `Y a y`. Rewrite using `[hx, ← Category.assoc, hF]`. Establish `hc : ∀ {Z : Scheme} (g₁ g₂ : Z ⟶ H.left), g₁ ≫ h.left = g₂ ≫ h.left → g₁ ≫ (x ≫ q).left = g₂ ≫ (x ≫ q).left`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `Z g₁ g₂ e`. Set `Z' : Over (Sp R)` to `Over.mk (g₁ ≫ H.hom)`. Establish `e2 : g₂ ≫ H.hom = g₁ ≫ H.hom`. Rewrite using `[← Over.w h, ← Category.assoc, ← e, Category.assoc]`. Set `k₁ : Z' ⟶ H` to `Over.homMk g₁ rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `k₂ : Z' ⟶ H` to `Over.homMk g₂ e2`. Establish `hkh : k₁ ≫ h = k₂ ≫ h` using `Over.OverMorphism.ext e`. Establish `hs : Same A P P (k₁ ≫ x ≫ q) (k₂ ≫ x ≫ q)`. Rewrite using `[same_iff hP.isLB hP.isLB]`. Establish `e₁` using `key (A ⊗ Z') (fst A Z') (snd A Z' ≫ k₁)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e₂` using `key (A ⊗ Z') (fst A Z') (snd A Z' ≫ k₂)`. Simplify using `only [Category.assoc] at e₁ e₂`. Rewrite using `[e₁, e₂, hkh]`. Use `congrArg (fun t => t.left) (hinj Z' _ _ hs)` as an intermediate fact. Simplify `this` using `[k₁, k₂]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `haveI : Flat h.left := hhf`. Use `haveI : Surjective h.left := hhs`. Use `haveI : QuasiCompact h.left := hhq`. Set `d : T.left ⟶ B.left` to `EffectiveEpi.desc h.left (x ≫ q).left hc`. Establish `hd : h.left ≫ d = (x ≫ q).left` using `EffectiveEpi.fac h.left (x ≫ q).left hc`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hdB : d ≫ B.hom = T.hom`. Rewrite using `[← cancel_epi h.left, ← Category.assoc, hd, Over.w (x ≫ q), Over.w h]`. Set `xT : T ⟶ B` to `Over.homMk d hdB`. Establish `hxT : h ≫ xT = x ≫ q` using `Over.OverMorphism.ext hd`. Use `⟨xT, (same_id_iff hN.isLB hP.isLB xT).1 ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.sameLineBundleFamily_descends_flat_surjective_quasiCompact (Sp R) A hA T B T H N P hN hP (𝟙 T) xT h hhf hhs hhq ?_` and prove the remaining obligations. Rewrite using `[same_iff hN.isLB hP.isLB, Category.comp_id, hxT, key]`. Use `⟨B, toUnit B, P, ⟨hP, fun T t N hN ↦ ?_⟩, hgood, hfa⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hex T N hN`. Use `⟨x, ⟨toUnit_unique _ _, hx⟩, fun y hy ↦ hinj T y x ?_⟩` and prove the remaining obligations.
-
-Establish `h1` using `(cls_eq_iff hN.isLB (pull_isLB hP.isLB _)).2 hy.2`. Establish `h2` using `(cls_eq_iff hN.isLB (pull_isLB hP.isLB _)).2 hx`. Conclude with `(cls_eq_iff (pull_isLB hP.isLB _) (pull_isLB hP.isLB _)).1 (h1.symm.trans h2)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasRepAF_of_relAmple : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ L : LB A.left, L.IsLB → Out.RelAmple A L → HasRepAF A g (𝟙_ _) := by
   intro R _ _ A _ g hA hg L hL ha

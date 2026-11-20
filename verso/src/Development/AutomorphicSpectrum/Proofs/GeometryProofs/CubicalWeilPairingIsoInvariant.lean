@@ -29,7 +29,7 @@ def isoGerm (w : LB.Iso A B) (f : Y ⟶ X) (y : Y) (j : B.ι) (k : A.ι) : (Y.pr
   gm f y (B.U j ⊓ A.U k) (w.s (j, k))
 
 /- English proof (translation)
-Establish `hm : f y ∈ B.U j ⊓ A.U k ⊓ (B.U j' ⊓ A.U k')` using `⟨⟨hj, hk⟩, hj', hk'⟩`. Establish `h` using `congrArg (gm f y (B.U j ⊓ A.U k ⊓ (B.U j' ⊓ A.U k'))) (hw (j, k) (j', k'))`. Establish `e : gm f y (B.U j ⊓ A.U k ⊓ (B.U j' ⊓ A.U k')) ((LB.div B A).g (j, k) (j', k')) = gm f y _ (B.g j j') * (gm f y _ (A.g k k'))⁻¹` using `by show gm f y _ (res _ (B.g j j') * (res _ (A.g k k'))⁻¹) = _`. Rewrite using `[map_mul, map_inv, gm_res f y _ hm, gm_res f y _ hm]`. Conclude with `(gm_res f y _ hm _).symm.trans (h.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) e (gm_res f y _ hm _))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoGerm_trans {w : LB.Iso A B} (hw : w.IsGen) (f : Y ⟶ X) (y : Y) {j j' : B.ι} {k k' : A.ι}
     (hj : f y ∈ B.U j) (hj' : f y ∈ B.U j') (hk : f y ∈ A.U k) (hk' : f y ∈ A.U k') :
@@ -45,7 +45,7 @@ theorem isoGerm_trans {w : LB.Iso A B} (hw : w.IsGen) (f : Y ⟶ X) (y : Y) {j j
 variable {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
 
 /- English proof (translation)
-Rewrite using `[trF, trF, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[isoGerm_trans hw (r ≫ φ k) z (Set.mem_iInter.1 hp k) (Set.mem_iInter.1 hp' k) (Set.mem_iInter.1 hq k) (Set.mem_iInter.1 hq' k), mul_zpow, mul_zpow, _root_.inv_zpow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_isoGerm_trans {w : LB.Iso A B} (hw : w.IsGen) (r : Z ⟶ Y) (z : Z) {p p' : K → B.ι} {q q' : K → A.ι}
     (hp : r z ∈ LB.wchart B φ p) (hp' : r z ∈ LB.wchart B φ p') (hq : r z ∈ LB.wchart A φ q)
@@ -58,15 +58,13 @@ theorem prod_isoGerm_trans {w : LB.Iso A B} (hw : w.IsGen) (r : Z ⟶ Y) (z : Z)
     (Set.mem_iInter.1 hq' k), mul_zpow, mul_zpow, _root_.inv_zpow]
 
 /- English proof (translation)
-Set `Wc : (K → B.ι) × (K → A.ι) → Y.Opens` to `fun P => LB.wchart B φ P.1 ⊓ LB.wchart A φ P.2`. Establish `le : ∀ P k, Wc P ≤ φ k ⁻¹ᵁ (B.U (P.1 k) ⊓ A.U (P.2 k))` using `fun P k => le_inf (inf_le_left.trans (LB.wchart_le B φ P.1 k)) (inf_le_right.trans (LB.wchart_le A φ P.2 k))`. Set `I : ∀ P, Γ(Y, Wc P)ˣ` to `fun P => res (inf_le_left : Wc P ≤ LB.wchart B φ P.1) (b.s P.1) * (res (inf_le_right : Wc P ≤ LB.wchart A φ P.2) (a.s P.2))⁻¹ * (∏ k, res (le P k) (pullU (φ k) _ (w.s (P.1 k, P.2 k))) ^ ε k)⁻¹`. Establish `hI : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) P, r z ∈ Wc P → gm r z (Wc P) (I P) = gm r z (LB.wchart B φ P.1) (b.s P.1) * (gm r z (LB.wchart A φ P.2) (a.s P.2))⁻¹ * (∏ k, isoGerm w (r ≫ φ k) z (P.1 k) (P.2 k) ^ ε k)⁻¹`. Introduce `Z r z P hz`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z _ hz _) ((map_inv _ _ ).trans (congrArg _ (gm_res r z _ hz _))))) ((map_inv _ _).trans (congrArg _ ?_)))` and prove the remaining obligations. Use `(map_prod _ _ _).trans (Finset.prod_congr rfl fun k _ => (map_zpow _ _ _).trans (congrArg (· ^ ε k) ?_))` and prove the remaining obligations. Conclude with `(gm_res r z (le P k) hz _).trans (gm_pull r (φ k) z _ (le P k hz) _)`. Take `⟨v, hv⟩` from `glue_unit ⊤ Wc (fun _ => le_top) (fun x _ => by choose p hp using fun k => exists_chart hB (φ k x) choose q hq using fun k => exists_chart hA (φ k x)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨(p, q), Set.mem_iInter.2 hp, Set.mem_iInter.2 hq⟩) I (fun P Q x hx => by`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hI _ _ x P hx.1, hI _ _ x Q hx.2, gen_trans hb (𝟙 Y) x hx.1.1 hx.2.1, gen_trans ha (𝟙 Y) x hx.1.2 hx.2.2, prod_isoGerm_trans hw (𝟙 Y) x hx.1.1 hx.2.1 hx.1.2 hx.2.2]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel)`. Use `⟨v, fun Z r z p q hp hq => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : r z ∈ Wc (p, q)` using `⟨hp, hq⟩`. Establish `e` using `(gm_res r z (le_top : Wc (p, q) ≤ ⊤) hz v).symm.trans ((congrArg (gm r z (Wc (p, q))) (hv (p, q))).trans (hI Z r z (p, q) hz))`. Rewrite using `[e]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
-
-Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_ratio (hA : A.IsLB) (hB : B.IsLB) {w : LB.Iso A B} (hw : w.IsGen) {a : LB.Gen (LB.LinComb A φ ε)}
     {b : LB.Gen (LB.LinComb B φ ε)} (ha : a.IsGen) (hb : b.IsGen) :
@@ -107,7 +105,7 @@ theorem exists_ratio (hA : A.IsLB) (hB : B.IsLB) {w : LB.Iso A B} (hw : w.IsGen)
   abel
 
 /- English proof (translation)
-Establish `e : Units.map r.appTop.hom.toMonoidHom v = 1` using `unit_ext fun z _ => by rw [← gm_top r z v, h z, map_one]`. Conclude with `congrArg Units.val e`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem appTop_eq_one (r : Z ⟶ Y) (v : Γ(Y, ⊤)ˣ) (h : ∀ z, gm r z ⊤ v = 1) : r.appTop.hom v.val = 1 := by
   have e : Units.map r.appTop.hom.toMonoidHom v = 1 :=
@@ -120,9 +118,9 @@ section Cube
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {L₁ L₂ : RigLB G}
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_ratio (φ := thφ G (x3 G)) (ε := thε) (a := c₁.t) (b := c₂.t) L₁.isLB L₂.isLB hw c₁.isGen c₂.isGen`. Use `⟨v, fun T z J₁ J₂ h₁ h₂ W hW a b d => ?_⟩` and prove the remaining obligations. Establish `e` using `hv T.left (lift a (lift b d)).left z (fun I => J₂ ((lift a (lift b d)).left ≫ thφ G (x3 G) I)) (fun I => J₁ ((lift a (lift b d)).left ≫ thφ G (x3 G) I)) (h₂.mem _ _) (h₁.mem _ _)`. Establish `f` using `prod_cub a b d (fun q => isoGerm w q z (J₂ q) (J₁ q))`. Establish `e' : cubV c₂ z J₂ a b d = gm (lift a (lift b d)).left z ⊤ v * (∏ I : thK.{0}, isoGerm w ((lift a (lift b d)).left ≫ thφ G (x3 G) I) z (J₂ ((lift a (lift b d)).left ≫ thφ G (x3 G) I)) (J₁ ((lift a (lift b d)).left ≫ thφ G (x3 G) I)) ^ thε I) * cubV c₁ z J₁ a b d` using `e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e', f, hW, hW, hW, hW, hW, hW, hW, hW]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem exists_cube_ratio {w : LB.Iso L₁.L L₂.L} (hw : w.IsGen) (c₁ : CubicalStr G L₁) (c₂ : CubicalStr G L₂) :
     ∃ v : Γ((G ⊗ G ⊗ G).left, ⊤)ˣ, ∀ (T : Over S) (z : T.left) (J₁ : (T.left ⟶ G.left) → L₁.L.ι)
@@ -146,15 +144,15 @@ theorem exists_cube_ratio {w : LB.Iso L₁.L L₂.L} (hw : w.IsGen) (c₁ : Cubi
   abel
 
 /- English proof (translation)
-Use `⟨appTop_eq_one _ v fun z => ?_, appTop_eq_one _ v fun z => ?_, appTop_eq_one _ v fun z => ?_⟩` and prove the remaining obligations. Use `all_goals`. Take `⟨J₁, h₁⟩` from `exists_good_pt L₁.isLB z`. Take `⟨J₂, h₂⟩` from `exists_good_pt L₂.isLB z`. Establish `e` using `hv T z J₁ J₂ h₁ h₂ _ (fun _ => rfl) 1 x y`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[(isCub_cubV c₁ h₁).face, (isCub_cubV c₂ h₂).face]`. Simplify using `only [_root_.one_mul, _root_.mul_one] at e`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e'` using `congrArg Additive.ofMul e`. Simplify using `only [ofMul_mul, ofMul_one] at e' ⊢`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(norm := abel) -e'`. Establish `e` using `hv T z J₁ J₂ h₁ h₂ _ (fun _ => rfl) x 1 y`. Rewrite `e` using `[(isCub_cubV c₁ h₁).face₂, (isCub_cubV c₂ h₂).face₂]`. Simplify using `only [_root_.one_mul, _root_.mul_one] at e`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e'` using `congrArg Additive.ofMul e`. Simplify using `only [ofMul_mul, ofMul_one] at e' ⊢`. Take the linear combination `(norm := abel) -e'`. Establish `e` using `hv T z J₁ J₂ h₁ h₂ _ (fun _ => rfl) x y 1`. Rewrite `e` using `[(isCub_cubV c₁ h₁).face₃, (isCub_cubV c₂ h₂).face₃]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [_root_.one_mul, _root_.mul_one] at e`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e'` using `congrArg Additive.ofMul e`. Simplify using `only [ofMul_mul, ofMul_one] at e' ⊢`. Take the linear combination `(norm := abel) -e'`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cube_ratio_faces {w : LB.Iso L₁.L L₂.L} (c₁ : CubicalStr G L₁) (c₂ : CubicalStr G L₂)
     {v : Γ((G ⊗ G ⊗ G).left, ⊤)ˣ}
@@ -196,11 +194,11 @@ theorem cube_ratio_faces {w : LB.Iso L₁.L L₂.L} (c₁ : CubicalStr G L₁) (
 end Cube
 
 /- English proof (translation)
-Introduce `G _ _ hs te L₁ L₂ c₁ c₂ hiso N x y ζ h`. Take `⟨w, hw⟩` from `hiso`. Take `⟨v, hv⟩` from `exists_cube_ratio hw c₁ c₂`. Establish `hone` using `GlobalTheory.T.cubical_triple_trivial ℂ G hs te v (cube_ratio_faces c₁ c₂ hv)`. Use `⟨h.1, h.2.1, fun z J₂ h₂ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨J₁, h₁⟩` from `exists_good_pt L₁.isLB z`. Set `W : (𝟙_ (Over (Sp ℂ)) ⟶ G) → _` to `fun a => isoGerm w a.left z (J₂ a.left) (J₁ a.left)`. Use `cubN_ratio_twist (MonoidHom.id _) W (fun a b d => ?_) h.1 h.2.1 (h.2.2 z J₁ h₁)` and prove the remaining obligations. Establish `e` using `hv _ z J₁ J₂ h₁ h₂ W (fun _ => rfl) a b d`. Establish `g : gm (lift a (lift b d)).left z ⊤ v = 1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[gm_top]`. Establish `: Units.map (lift a (lift b d)).left.appTop.hom.toMonoidHom v = 1` using `Units.ext (hone a b d)`. Rewrite using `[this, map_one]`. Rewrite `e` using `[g, _root_.one_mul]`. Conclude with `e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cubWeil_of_lbIso : ∀ (G : Over (Sp ℂ)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → TorusExtension G → ∀ (L₁ L₂ : RigLB G) (c₁ : CubicalStr G L₁) (c₂ : CubicalStr G L₂), LBIso L₁.L L₂.L → ∀ (N : ℕ) (x y : 𝟙_ (Over (Sp ℂ)) ⟶ G) (ζ : Γ(Sp ℂ, ⊤)ˣ), CubWeil c₁ N x y ζ → CubWeil c₂ N x y ζ := by
   intro G _ _ hs te L₁ L₂ c₁ c₂ hiso N x y ζ h

@@ -25,9 +25,9 @@ open scoped ComplexOrder ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Introduce `r X H _`. Use `⟨((_root_.GlobalTheory.FiniteCovolume.uStabSubgroup X.Gm X.Λ).map (_root_.GlobalTheory.FiniteCovolume.embGL X.Ψ)).comap H.subtype, fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.mem_comap, Subgroup.mem_map, Subgroup.coe_subtype]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ, hg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨γ, hγ, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hg, _root_.GlobalTheory.FiniteCovolume.embGL_val]`. Introduce and unpack `⟨γ, hγ, hg⟩`. Use `⟨γ, hγ, funext fun τ => Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.FiniteCovolume.embGL_val, hg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.FiniteCovolume.exists_stabiliser_image_subgroup :
     (∀ (r : ℕ) (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (H : Subgroup (X.Ψ → GL (Fin r) ℂ)), (∀ g, g ∈ H ↔ X.IsUnitaryC fun τ => (g τ : Matrix (Fin r) (Fin r) ℂ)) → ∃ Γ : Subgroup H, ∀ g : H, g ∈ Γ ↔ (∃ γ : GL (Fin r) E, _root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab X.Gm X.Λ γ ∧ ∀ τ : X.Ψ, ((((g : H) : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) = (γ : Matrix (Fin r) (Fin r) E).map τ.1)) := by

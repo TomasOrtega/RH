@@ -8,9 +8,9 @@ namespace Formalism.EigenvalueLevelCeiling
 open Formalism.DivisionValues
 
 /- English proof (translation)
-Introduce `K _ _ _ Z _ _ _ _ _ w M Th ThK hM hTh hThK _hThM σ hσ hsc E r hE`. Take `⟨hlat, heq⟩` from `hSc K Z w ⊤ M ThK hM hThK σ hσ`. Establish `hmono : lix w M (sc σ ThK) ≤ lix w M Th` using `hMono K Z w ⊤ M Th (sc σ ThK) hM hTh hlat hsc`. Establish `hm : (lix w M (sc σ ThK) : ℝ) ≤ (lix w M Th : ℝ)` using `by exact_mod_cast hmono`. Establish `hv : (lix w M (sc σ ThK) : ℝ) = (lix w M ThK : ℝ) + (finrank K Z : ℝ) * (vw w σ : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[heq]`. Use `push_cast`. Rewrite using `[finrank_top]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem idxFull_of (hMono : IdxMono) (hSc : IdxScaleIn) : IdxFull := by
   intro K _ _ _ Z _ _ _ _ _ w M Th ThK hM hTh hThK _hThM σ hσ hsc E r hE

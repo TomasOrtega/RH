@@ -33,9 +33,9 @@ theorem toOC_tmul (LL : FinExt l) (o : ↥(OL LL)) (x : Ainf l) :
     toOC LL (o ⊗ₜ x) = intToOC LL o * Per.θ l x := rfl
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `(splitHom_bijective (thetaW a LL)).2 c`. Rewrite using `[constA_splitHom]`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul o w`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Algebra.TensorProduct.map_tmul, AlgHom.id_apply, toOC_tmul, splitHom_tmul, emb_zero, map_mul, intToOC_thetaW]`. Consider the case `add y y' h h' => simp only [map_add, Pi.add_apply, h, h']`.
+Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem toOC_constA (a : ℕ) [NeZero a] (LL : FinExt l) [HasUnr a LL] (c : ZMod a → ↥(OL LL)) :
     toOC LL (constA (thetaW a LL) c) = intToOC LL (c 0) := by
@@ -49,7 +49,7 @@ theorem toOC_constA (a : ℕ) [NeZero a] (LL : FinExt l) [HasUnr a LL] (c : ZMod
   | add y y' h h' => simp only [map_add, Pi.add_apply, h, h']
 
 /- English proof (translation)
-Rewrite using `[PiSys.iTot, glue_apply, eq_sum_idem]`. Simplify using `only [AlgHom.commutes]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem iTot_const {O K : Type} [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O]
     [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] {a e : ℕ} [NeZero a]
@@ -63,29 +63,25 @@ end GlobalTheory.BKGal.CoversConv
 open GlobalTheory.BKGal.CoversConv GlobalTheory.BKReal in
 
 /- English proof (translation)
-Introduce `l _ a e _ _ ϖ LL _ _ k γ hc`. Use `set t := thetaW a LL with ht`. Establish `hW : ∀ w : Wq l a, Per.σO k (Per.θ l (wA l a w)) = Per.θ l (wA l a ((sigma l a ^ γ.shift.val) w))`. Introduce `w`. Establish `h1` using `hc (fun τ => algebraMap _ (A ↥(OL LL) ↥LL.1) (emb t τ w)) (fun τ => algebraMap _ (A ↥(OL LL) ↥LL.1) (emb t (τ - γ.shift) w)) (fun τ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = rescale (γ.root τ) _`. Use `beta_reduce`. Establish `hC : ∀ (c : ↥(OL LL)) (m : ℕ), coeff m ((algebraMap _ (A ↥(OL LL) ↥LL.1) c : A _ _) : (↥LL.1)⟦X⟧) = if m = 0 then algebraMap _ ↥LL.1 c else 0` using `fun c m => (congrArg (coeff m) (GlobalTheory.BK.algebraMap_eq_C (K := ↥LL.1) c)).trans (coeff_C ..)`. Use `ext1 n`. Rewrite using `[coeff_rescale, hC]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `split_ifs with h`. Rewrite using `[h, pow_zero, one_mul]`. Rewrite using `[mul_zero])`. Rewrite `h1` using `[iTot_const, iTot_const, constA_emb, galOA_tmul]`. Establish `h2` using `congrArg (toOC LL) h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[toOC_tmul, toOC_constA, map_one, one_mul, GlobalTheory.RingBasics.θ_σA]`. Rewrite using `[h2, ← intToOC_thetaW a LL]`. Use `congr 1`. Use `show t ((sigma l a ^ (-(0 - γ.shift)).val) w) = _`. Rewrite using `[zero_sub, neg_neg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨z, ω, hω, hz, -⟩` from `exists_gen l a`. Establish `hpow : ∀ j : ℕ, ((Per.θ l (wA l a (WittVector.teichmuller l (z ^ j))) : OC l) : ℂ_[l]) = ((ω ^ j : Om l) : ℂ_[l])`. Introduce `j`. Rewrite using `[wA_teich, WittVector.fontaineTheta_teichmuller, map_pow, map_pow, SubmonoidClass.coe_pow, GlobalTheory.MemLoc.IsTiltOf.untilt_eq hz]`. Use `first`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Consider the case `exact (map_pow (algebraMap (Om l) ℂ_[l]) ω j).symm`. Consider the case `norm_cast`. Consider the case `exact (UniformSpace.Completion.coe_pow ..).symm`. Use `⟨fun x hx => ?_, ?_⟩` and prove the remaining obligations. Break down `eq_or_ne x 0 with rfl | hx0` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_zero, zero_pow (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)]`. Establish `h1` using `one_lt_pow_l l a`. Establish `: NeZero (l ^ a - 1)` using `⟨by omega⟩`. Establish `hx1 : x ^ (l ^ a - 1) = 1` using `mul_right_cancel₀ hx0 (by`. Rewrite using `[← pow_succ, Nat.sub_add_cancel h1.le, hx, one_mul])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨j, -, rfl⟩` from `hω.eq_pow_of_pow_eq_one hx1`. Establish `h2` using `congrArg (fun y : OC l => (y : ℂ_[l])) (hW (WittVector.teichmuller l (z ^ j)))`. Rewrite `h2` using `[sigma_pow_teich, map_pow (wA l a), map_pow (Per.θ l), SubmonoidClass.coe_pow, hpow]`. Use `replace h2 := (GlobalTheory.RingIface.sigO_coe l k _).symm.trans h2`. Rewrite `h2` using `[hpow, GlobalTheory.RingBasics.σC_coe]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(algebraMap (Om l) ℂ_[l]).injective (h2.trans (map_pow (algebraMap (Om l) ℂ_[l]) _ _).symm)`. Establish `hr : ∀ τ, IsIntegral ℤ_[l] (γ.root τ)` using `fun τ => IsIntegral.of_pow (NeZero.pos e) (by rw [γ.root_pow]; exact isIntegral_one)`. Set `r : ZMod a → ↥(OL LL)` to `fun τ => ⟨γ.root τ, hr τ⟩`. Establish `h1` using `hc (fun _ => uIn (A ↥(OL LL) ↥LL.1)) ((fun τ => algebraMap _ (A ↥(OL LL) ↥LL.1) (r τ)) * fun _ => uIn (A ↥(OL LL) ↥LL.1)) (fun τ => by`. Express the relevant statement in the definitionally equal form `((algebraMap _ (A ↥(OL LL) ↥LL.1) (r τ) : A _ _) : (↥LL.1)⟦X⟧) * ((uIn (A ↥(OL LL) ↥LL.1) : A _ _) : (↥LL.1)⟦X⟧) = rescale (γ.root τ) ((uIn (A ↥(OL LL) ↥LL.1) : A _ _) : (↥LL.1)⟦X⟧)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[coe_uIn, rescale_X]`. Conclude with `congrArg (· * X) (GlobalTheory.BK.algebraMap_eq_C (K := ↥LL.1) (r τ)))`. Rewrite `h1` using `[map_mul (ϖ.iTot t ↥LL.1), iTot_const, PiSys.iTot_u, galOA_tmul]`. Establish `h2` using `congrArg (toOC LL) h1`. Rewrite `h2` using `[map_mul (toOC LL), toOC_tmul, toOC_constA, toOC_tmul, map_one, one_mul, one_mul, GlobalTheory.RingBasics.θ_σA, PiSys.theta_teich]`.
-
-Establish `h3` using `(GlobalTheory.RingIface.sigO_coe l k (ϖ.seqO 0)).symm.trans (congrArg (fun y : OC l => (y : ℂ_[l])) h2)`. Establish `h4` using `(GlobalTheory.RingBasics.σC_coe k (ϖ.seq 0)).symm.trans h3`. Establish `hr0 : ((r 0 : ↥LL.1) : Om l) = (((γ.left : (↥LL.1)ˣ) : ↥LL.1) : Om l)`. Simplify using `[r, TameGal.root]`. Apply `(algebraMap (Om l) ℂ_[l]).injective` to reduce the goal to its premises.
-
-Rewrite using `[map_mul (algebraMap (Om l) ℂ_[l]), ← hr0]`. Conclude with `h4`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BKGal.covers_action : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a] (k : GQ l) (γ : TameGal ↥LL.1 l e a), Covers ↥LL.1 (thetaW a LL) ϖ k γ → (∀ x : Om l, x ^ l ^ a = x → k x = x ^ l ^ γ.shift.val) ∧ k (ϖ.seq 0) = (((γ.left : (↥LL.1)ˣ) : ↥LL.1) : Om l) * ϖ.seq 0 := by
   intro l _ a e _ _ ϖ LL _ _ k γ hc

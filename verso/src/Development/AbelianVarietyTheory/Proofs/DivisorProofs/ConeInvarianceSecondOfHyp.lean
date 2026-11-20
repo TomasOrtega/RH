@@ -18,13 +18,13 @@ open GlobalTheory.Doubling (absE)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `h1 : (1 : UA σ W.J) ∈ UAt σ W (evFin F v)` using `(UAtSub σ W (evFin F v)).one_mem`. Establish `hkg : k * g ∈ UAt σ X (evFin F v)` using `(UAtSub σ X (evFin F v)).mul_mem hk hg`. Establish `hψ₁ : locOp v (om (g, 1)) φ ∈ SB _` using `locOp_mem v _ φ`. Establish `a1` using `acts_locOp_om hA hP hg h1 hφ`. Establish `a2` using `acts_locOp_om hA hP hk h1 hψ₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3` using `acts_locOp_om hA hP hkg h1 hφ`. Take `⟨r, h0, hr⟩` from `GlobalTheory.RestWitness.exists_rest (Fin n × Fin d) v`. Establish `key : tens (evFin F v) (locOp v (om (k, 1)) (locOp v (om (g, 1)) φ)) r = tens (evFin F v) (locOp v (om (k * g, 1)) φ) r`. Rewrite using `[← a2 r (hr _ hψ₁), ← a1 r (hr _ hφ), ← a3 r (hr _ hφ)]`. Rewrite using `[show ((k * g, (1 : UA σ W.J)) : UA σ X.J × UA σ W.J) = (k, 1) * (g, 1) by simp, map_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use function extensionality and compare the values at `t`. Establish `hz : At (evFin F v) (fun i => GlobalTheory.LatVac.liftV v (t i))` using `fun u hu => funext fun i => GlobalTheory.LatVac.at_liftV v _ u hu`. Establish `hrz : r (fun i => GlobalTheory.LatVac.liftV v (t i)) = r 0` using `by simpa using (hr φ hφ).1 0 _ hz`. Establish `e` using `congrFun key fun i => GlobalTheory.LatVac.liftV v (t i)`.
+Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [tens, GlobalTheory.LatVac.evFin_liftV, hrz] at e`. Conclude with `mul_right_cancel₀ h0 e`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem locOp_comp (hA : ActsEx) {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base F E} {M : Model σ X W}
     {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s') {v : Pl F} {g k : UA σ X.J}
@@ -51,7 +51,7 @@ theorem locOp_comp (hA : ActsEx) {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {B 
   exact mul_right_cancel₀ h0 e
 
 /- English proof (translation)
-Unfold `coneLin`. Rewrite using `[locOp_comp hA hP hg hk hφ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem coneLin_locOp (hA : ActsEx) {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base F E} {M : Model σ X W}
     {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s') {v : Pl F}
@@ -65,9 +65,9 @@ theorem coneLin_locOp (hA : ActsEx) {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : S
   rw [locOp_comp hA hP hg hk hφ]
 
 /- English proof (translation)
-Take `⟨U, hU, hfix⟩` from `(hA F E σ B n d X W M χX χW om r s r' s' hP v).2.2 φ hφ`. Establish `h1 : (1 : UA σ W.J) ∈ UAt σ W (evFin F v)` using `(UAtSub σ W (evFin F v)).one_mem`. Establish `hc : Continuous fun g : UA σ X.J => ((g, (1 : UA σ W.J)) : UA σ X.J × UA σ W.J)` using `continuous_id.prodMk continuous_const`. Use `⟨(fun g : UA σ X.J => ((g, (1 : UA σ W.J)) : UA σ X.J × UA σ W.J)) ⁻¹' U, hc.continuousAt.preimage_mem_nhds (show U ∈ 𝓝 ((1 : UA σ X.J), (1 : UA σ W.J)) from hU), fun g hg x hx hxv => ?_⟩` and prove the remaining obligations. Establish `hfx : locOp v (om (x, 1)) φ = φ` using `locOp_eq hφ hφ (hfix (x, 1) hx hxv h1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `coneLin`. Rewrite using `[← locOp_comp hA hP hxv hg hφ, hfx]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem coneLin_smooth (hA : ActsEx) {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base F E} {M : Model σ X W}
     {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s') {v : Pl F}
@@ -88,9 +88,9 @@ theorem coneLin_smooth (hA : ActsEx) {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : 
   rw [← locOp_comp hA hP hxv hg hφ, hfx]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he' ei' ev' hl K hK X om om' om₁ om₁' hT hT₁ v μK μ hμK hμ l hlinv g hg φ hφ`. Establish `hA` using `GlobalTheory.T.theta_action_exists hPr`. Establish `hP'` using `GlobalTheory.ThK.Inhab.pairV' hT`. Rewrite using `[GlobalTheory.T.stabilizer_local_part_case_b hPr F E σ B a b G G₁ H H' hC e' he' ei' ev' hl K hK X om om' om₁ om₁' hT hT₁ v μK μ hμK hμ l _ (locOp_mem _ _ _), GlobalTheory.T.stabilizer_local_part_case_b hPr F E σ B a b G G₁ H H' hC e' he' ei' ev' hl K hK X om om' om₁ om₁' hT hT₁ …`. Establish `e : ∀ k : KAt K (evFin F v), coneLin B G.M' om' v (ev' v) μ (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) l (locOp v (om' (g, 1)) φ) k.1 = coneLin B G.M' om' v (ev' v) μ (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) l φ (k.1 * g)` using `fun k => coneLin_locOp hA hP' _ _ _ _ _ l hg (mem_KAt.1 k.2).2 hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Repeatedly rewrite using `[e]`. Conclude with `GlobalTheory.T.stabilizer_haar_local_factor_case_b hPr F E σ B a b G G₁ H H' hC K hK X om om' om₁ om₁' hT hT₁ v μK hμK _ (coneLin_smooth hA hP' _ _ _ _ _ l hφ) (GlobalTheory.T.theta_triple_local_part_case_b_third hPr F E σ B a b G G₁ H H' hC e' he' ei' ev' hl X om om' om₁ om₁' hT …`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coneInvB (hPr : GlobalTheory.FunPr.Hypotheses₂) : ConeInvB := by
   intro F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he' ei' ev' hl K hK X om om' om₁ om₁' hT hT₁ v μK μ hμK hμ l hlinv g hg φ hφ

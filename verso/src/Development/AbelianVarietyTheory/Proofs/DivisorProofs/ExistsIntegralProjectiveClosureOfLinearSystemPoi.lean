@@ -23,15 +23,13 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.TrueGeo
 
 /- English proof (translation)
-Establish `hI : IsIntegral (Sp Ω)` using `inferInstanceAs (IsIntegral (Spec (CommRingCat.of Ω)))`. Establish `hS : Subsingleton (Sp Ω)` using `inferInstanceAs (Subsingleton (PrimeSpectrum Ω))`. Set `η` to `genericPoint (Sp Ω)`. Establish `hb : Function.Bijective (Cartier.fnOf (X` using `Sp Ω) ⊤ trivial) := by`. Use `⟨fnOf_injective _ _, fun a => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨U, hU, s, hs⟩` from `(Sp Ω).presheaf.germ_exist (x := η) a`. Take `rfl : U = ⊤` from `top_unique fun x _ => (Subsingleton.elim η x) ▸ hU`. Conclude with `⟨s, hs⟩`. Set `e₁` to `RingEquiv.ofBijective _ hb`. Set `e₂` to `RingEquiv.ofBijective _ (ProjSpace.fnOn_top_bijective (A := Ω))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨(e₂.symm.toRingHom.comp e₁.symm.toRingHom).comp (functionFieldMap g), fun U hU x _ => ?_, fun U hU => gen_mem (x := g η) (hU trivial), fun U h e s => ?_⟩` and prove the remaining obligations. Take `⟨_, hz, z, rfl⟩` from `g.denseRange.inter_open_nonempty U U.isOpen ⟨_, hU⟩`. Conclude with `(Subsingleton.elim z x) ▸ hz`. Express the relevant statement in the definitionally equal form `e₂ (e₂.symm (e₁.symm (functionFieldMap g _))) = _`. Rewrite using `[RingEquiv.apply_symm_apply, RingEquiv.symm_apply_eq]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : η ∈ g ⁻¹ᵁ U` using `e trivial`. Express the relevant statement in the definitionally equal form `_ = Cartier.fnOf ⊤ trivial (resG _ e (g.app U s))`. Use `Eq.trans ?_ (fnOf_resG e _ _).symm` and prove the remaining obligations. Rewrite using `[← Cartier.algebraMap_germ (show g η ∈ U from hx), functionFieldMap_algebraMap, ← Cartier.algebraMap_germ hx]`. Use `congr 1`.
-
-Conclude with `Scheme.Hom.germ_stalkMap_apply g U η hx s`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem exists_toField {Ω : Type} [Field Ω] {Y : Scheme.{0}} [IsIntegral Y] (g : Sp Ω ⟶ Y) [IsDominant g] :
     ∃ φ : Y.functionField →+* Ω, (∀ U : Y.Opens, genericPoint Y ∈ U → ⊤ ≤ g ⁻¹ᵁ U) ∧
@@ -63,9 +61,9 @@ private theorem exists_toField {Ω : Type} [Field Ω] {Y : Scheme.{0}} [IsIntegr
     exact Scheme.Hom.germ_stalkMap_apply g U η hx s
 
 /- English proof (translation)
-Use `letI := (Spec.preimage (Y.fromSpecStalk (genericPoint Y) ≫ q)).hom.toAlgebra`. Establish `hc : Spec.preimage (Y.fromSpecStalk (genericPoint Y) ≫ q) = CommRingCat.ofHom (toFunctionField q)` using `Spec.map_injective ((Spec.map_preimage _).trans (genericFieldPoint_over q))`. Set `e' : Y.functionField ≃ₐ[K] Ω` to `{ e with commutes' := fun a => (congrArg (fun f => e (CommRingCat.Hom.hom f a)) hc).trans (he a) }`. Establish `ht : Algebra.trdeg K Y.functionField = D` using `(le_antisymm (trdeg_le_of_injective e'.toAlgHom e'.injective) (trdeg_le_of_injective e'.symm.toAlgHom e'.symm.injective)).trans hD`. Establish `h1` using `GlobalTheory.topologicalKrullDim_preimage_genericPoint_eq q ht`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (q ⁻¹' {genericPoint (Spec (CommRingCat.of K))} : Set Y) = Set.univ` using `Set.eq_univ_of_forall fun x => Subsingleton.elim _ _`. Rewrite `h1` using `[h2, IsHomeomorph.topologicalKrullDim_eq _ (Homeomorph.Set.univ Y).isHomeomorph]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem dim_of_trdeg {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {Y : Scheme.{0}} [IsIntegral Y]
     (q : Y ⟶ Sp K) [LocallyOfFiniteType q] (e : Y.functionField ≃+* Ω)
@@ -85,13 +83,11 @@ private theorem dim_of_trdeg {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {
   rwa [h2, IsHomeomorph.topologicalKrullDim_eq _ (Homeomorph.Set.univ Y).isHomeomorph] at h1
 
 /- English proof (translation)
-Take `⟨l, hl⟩ : ∃ l, ev (u l) ≠ 0` from `by by_contra! h0`. Conclude with `hg.1 (LinearMap.ext_on_range hu fun k => by simpa using h0 k)`. Establish `key : ∀ v, ev v / ev (u l) ∈ L` using `fun v => by`. Establish `hv : v ∈ Submodule.span K (Set.range u)` using `hu ▸ Submodule.mem_top`. Proceed by induction on `hv using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx => obtain ⟨k, rfl⟩ := hx`. Conclude with `hr k l hl`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, add_div]`. Conclude with `add_mem hx hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `smul a x _ hx => rw [map_smul, Algebra.smul_def, mul_div_assoc]`. Conclude with `mul_mem (hc a) hx`. Establish `h : GlobalTheory.DegVal.ratioField ev ≤ L.toIntermediateField hc`. Use `IntermediateField.adjoin_le_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, w, rfl⟩`.
-
-Rewrite using `[← div_div_div_cancel_right₀ hl]`. Conclude with `div_mem (key v) (key w)`. Rewrite `h` using `[hg.2]`. Conclude with `top_unique fun x _ => h (IntermediateField.mem_top (x := x))`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_top_of_span {K V Ω ι : Type} [Field K] [AddCommGroup V] [Module K V] [Field Ω] [Algebra K Ω]
     (ev : V →ₗ[K] Ω) (u : ι → V) (hu : Submodule.span K (Set.range u) = ⊤) (hg : GlobalTheory.DegVal.GenRatios ev)
@@ -118,15 +114,15 @@ private theorem eq_top_of_span {K V Ω ι : Type} [Field K] [AddCommGroup V] [Mo
 open MvPolynomial in
 
 /- English proof (translation)
-Take `⟨N, b, F, hF⟩` from `(imageDeg_pos_iff ev D).1 hD`. Use `set y : Fin N → Ω := fun j => ev (b j) with hy`. Establish `hy0 : y ≠ 0` using `fun h0 => hg.1 (b.ext fun k => by simpa using congrFun h0 k)`. Establish `hr : Subfield.closure (Set.range (algebraMap K Ω) ∪ {r | ∃ i j, r = y i / y j}) = ⊤` using `eq_top_of_span ev b b.span_eq hg _ (fun a => Subfield.subset_closure (Or.inl ⟨a, rfl⟩)) fun k l _ => Subfield.subset_closure (Or.inr ⟨k, l, rfl⟩)`. Use `isPrime_coneIdeal (K := K) y` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : ringKrullDim (MvPolynomial (Fin N) K ⧸ coneIdeal K y) = (D + 1 : ℕ)` using `GlobalTheory.ChowExists.ringKrullDim_of_isChowFormInt (P := coneIdeal K y) (fun g hg n => (mem_coneIdeal_of_isHomogeneous y (homogeneousComponent_isHomogeneous n g)).2 ((mem_coneIdeal_iff y g).1 hg n)) hF`. Take `⟨d, hd, hd'⟩` from `exists_ringKrullDim_eq_and_trdeg_eq K (MvPolynomial (Fin N) K ⧸ coneIdeal K y)`. Take `rfl : d = D + 1` from `by exact_mod_cast hd.symm.trans hk`. Set `f` to `Ideal.kerLiftAlg (coneMap K y)`. Establish `hf : Function.Injective f` using `Ideal.kerLiftAlg_injective _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `A` to `f.range`. Set `e` to `AlgEquiv.ofInjective f hf`. Establish `hQA : Algebra.trdeg K (MvPolynomial (Fin N) K ⧸ coneIdeal K y) = Algebra.trdeg K A` using `le_antisymm (trdeg_le_of_injective e.toAlgHom e.injective) (trdeg_le_of_injective e.symm.toAlgHom e.symm.injective)`. Establish `hXy : ∀ i, Polynomial.X * Polynomial.C (y i) ∈ A` using `fun i => by`. Use `AlgHom.mem_range_self f (Ideal.Quotient.mk _ (X i))` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Ideal.kerLiftAlg_mk]`. Simplify using `only [coneMap, aeval_X] at this`. Conclude with `this`. Use `GlobalTheory.Adelic.ConeDim.isAlgebraic_of_closure_eq_top y hy0 hr A hXy` as an intermediate fact. Establish `: FaithfulSMul K A` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (RingHom.injective _)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: FaithfulSMul A (Polynomial Ω)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 Subtype.val_injective`. Rewrite `hd'` using `[hQA, ← GlobalTheory.trdeg_eq_of_isAlgebraic_top K A (Polynomial Ω), ← trdeg_add_eq K Ω (A := Polynomial Ω), Polynomial.trdeg_of_isDomain]`. Conclude with `Cardinal.add_one_inj.1 (by exact_mod_cast hd')`.
+A detailed English derivation is pending.
 -/
 private theorem trdeg_eq {K V Ω : Type} [Field K] [AddCommGroup V] [Module K V] [Field Ω] [Algebra K Ω]
     (ev : V →ₗ[K] Ω) (D : ℕ) (hg : GlobalTheory.DegVal.GenRatios ev) (hD : 0 < imageDeg ev D) :
@@ -165,31 +161,29 @@ private theorem trdeg_eq {K V Ω : Type} [Field K] [AddCommGroup V] [Module K V]
   exact Cardinal.add_one_inj.1 (by exact_mod_cast hd')
 
 /- English proof (translation)
-Introduce `K V Ω _ _ _ _ _ ev D m u hu hg hD`. Use `set y : Fin (m + 1) → Ω := fun k => ev (u k) with hy_def`. Establish `hy : Ideal.span (Set.range y) = ⊤`. Take `⟨l, hl⟩ : ∃ l, ev (u l) ≠ 0` from `by by_contra! h0`. Conclude with `hg.1 (LinearMap.ext_on_range hu fun k => by simpa using h0 k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨l, rfl⟩) (Ne.isUnit hl)`. Set `p` to `ProjSpace.pt (algebraMap K Ω) y hy`. Establish `hI : IsIntegral (Sp Ω)` using `inferInstanceAs (IsIntegral (Spec (CommRingCat.of Ω)))`. Establish `hS : Subsingleton (Sp Ω)` using `inferInstanceAs (Subsingleton (PrimeSpectrum Ω))`. Establish `hqc : QuasiCompact p` using `⟨fun U _ _ => (Set.toFinite _).isCompact⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨Y, hY, g, j, hdom, hj, hgj⟩ : ∃ (Y : Scheme.{0}) (_ : IsIntegral Y) (g : Sp Ω ⟶ Y) (j : Y ⟶ PSpace K m), IsDominant g ∧ IsClosedImmersion j ∧ g ≫ j = p` from `⟨p.image, isIntegral_image p, p.toImage, p.imageι, inferInstance, inferInstance, p.toImage_imageι⟩`. Take `⟨φ, hm₁, hm₂, hφ⟩` from `exists_toField g`. Set `B` to `(ProjSpace.O1 K m).pull j`. Set `t : Fin (m + 1) → B.Sec` to `fun k => Cartier.secPull (ProjSpace.coord K m k) j`. Establish `hU : ∀ i : PUnit → Fin (m + 1), g ⁻¹ᵁ B.U i = ProjSpace.spOpen (y (i ⟨⟩))` using `fun i => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← ProjSpace.pt_preimage_chart (algebraMap K Ω) y hy]`. Use `(congrArg (g ⁻¹ᵁ ·) (pull_U (ProjSpace.O1 K m) j i)).trans ?_` and prove the remaining obligations. Conclude with `(Scheme.Hom.comp_preimage g j _).symm.trans (congrArg (· ⁻¹ᵁ _) hgj)`. Establish `hmem : ∀ i : PUnit → Fin (m + 1), genericPoint Y ∈ B.U i ↔ y (i ⟨⟩) ≠ 0` using `fun i => by`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h h0`. Use `(hm₁ _ h).trans (hU i).le (show genericPoint (Sp Ω) ∈ (⊤ : (Sp Ω).Opens) from trivial)` as an intermediate fact. Rewrite `this` using `[ProjSpace.mem_spOpen, h0]`. Conclude with `this (zero_mem _)`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hm₂ _ (le_of_le_of_eq (fun x _ => ?_) (hU i).symm)` and prove the remaining obligations. Conclude with `fun hx => x.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hx (Ne.isUnit h))`. Establish `hrat : ∀ (i : PUnit → Fin (m + 1)) (h : genericPoint Y ∈ B.U i) (l : Fin (m + 1)), φ (Cartier.fnOf _ h ((t l).f i)) * y (i ⟨⟩) = y l` using `fun i h l => by`. Use `ProjSpace.fnOn_top_bijective.1 ?_` and prove the remaining obligations. Establish `e₁` using `(resG_self _ _).symm.trans (ProjSpace.resG_secPull_coord j l i le_rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : ⊤ ≤ p ⁻¹ᵁ ProjSpace.chart K m (i ⟨⟩)` using `(hm₁ _ h).trans ((hU i).trans (ProjSpace.pt_preimage_chart (algebraMap K Ω) y hy _).symm).le`. Rewrite using `[map_mul, hφ _ h (hm₁ _ h), ← ProjSpace.pullRatio_pt_mul (algebraMap K Ω) y hy (i ⟨⟩) l h']`. Use `congr 1`. Use `(congrArg _ e₁).trans ?_` and prove the remaining obligations. Rewrite using `[ProjSpace.appLE_pullRatio]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ProjSpace.pullRatio_of_eq hgj _ _`. Establish `hconst : ∀ a, φ (toFunctionField (j ≫ PSpace.str K m) a) = algebraMap K Ω a` using `fun a => by`. Use `ProjSpace.fnOn_top_bijective.1 ?_` and prove the remaining obligations. Use `(hφ ⊤ trivial le_top (((Scheme.ΓSpecIso (.of K)).inv ≫ (j ≫ PSpace.str K m).appTop).hom a)).trans ?_` and prove the remaining obligations. Establish `e : g ≫ j ≫ PSpace.str K m = spMap (algebraMap K Ω)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[reassoc_of% hgj, ProjSpace.pt_str]`. Establish `e' : (j ≫ PSpace.str K m).appTop ≫ g.appTop = (spMap (algebraMap K Ω)).appTop`. Rewrite using `[← Scheme.Hom.comp_appTop, e]`. Establish `e''` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap K Ω))`. Rewrite `e''` using `[← e']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `congrArg (resG (Sp Ω) le_top) (congrArg (fun f => f.hom a) e'').symm`. Establish `hsurj : Function.Surjective φ`. Rewrite using `[← RingHom.fieldRange_eq_top_iff]`. Use `eq_top_of_span ev u hu hg _ (fun a => ⟨_, hconst a⟩) fun k l hl => ?_` and prove the remaining obligations. Conclude with `⟨_, eq_div_of_mul_eq hl (hrat (fun _ => l) ((hmem (fun _ => l)).2 hl) k)⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `e : Y.functionField ≃+* Ω` to `RingEquiv.ofBijective φ ⟨RingHom.injective _, hsurj⟩`. Establish `hft : LocallyOfFiniteType (j ≫ PSpace.str K m)` using `inferInstance`. Use `⟨Y, hY, j ≫ PSpace.str K m, B, LB.isLB_pull (ProjSpace.O1_isLB K m) _, t, e.symm.toRingHom, ⟨m, j, hj, rfl⟩, dim_of_trdeg _ e hconst (trdeg_eq ev D hg hD), ProjSpace.iSup_nonzeroLocus_secPull (ProjSpace.iSup_nonzeroLocus_coord K m) _, e.symm.bijective, fun a => ?_, fun k l i h => …` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `e (e.symm _) = φ _`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[RingEquiv.apply_symm_apply, ← hconst]`. Simplify using `[toFunctionField, Cartier.fnOf, algX, Scheme.Hom.appLE]`. Apply `e.injective` to reduce the goal to its premises. Establish `hi` using `(hmem i).1 h`. Express the relevant statement in the definitionally equal form `e (e.symm (y k) * _) = e (e.symm (y l) * _)`.
-
-Rewrite using `[map_mul, map_mul, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `y k * φ _ = y l * φ _`. Rewrite using `[eq_div_of_mul_eq hi (hrat i h l), eq_div_of_mul_eq hi (hrat i h k)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.exists_integral_projective_closure_of_linearSystem_point : ∀ (K V Ω : Type) [Field K] [AddCommGroup V] [Module K V] [Field Ω] [Algebra K Ω] (ev : V →ₗ[K] Ω) (D m : ℕ) (u : Fin (m + 1) → V),
     Submodule.span K (Set.range u) = ⊤ → GlobalTheory.DegVal.GenRatios ev → 0 < imageDeg ev D →

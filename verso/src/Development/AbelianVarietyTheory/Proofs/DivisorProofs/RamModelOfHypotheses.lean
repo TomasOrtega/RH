@@ -29,11 +29,11 @@ section General
 def sgnSub (ι : Type) : MvPolynomial (ι ⊕ ι) ℝ →ₐ[ℝ] MvPolynomial ι ℝ := aeval (Sum.elim X fun i => -X i)
 
 /- English proof (translation)
-Set `n : ι ⊕ ι → ι → ℤ` to `Sum.elim (fun j i => if i = j then 1 else 0) fun j i => if i = j then -1 else 0`. Establish `iso : ∀ j, (comb L (n j)).Isometric (Sum.elim L (fun i => (L i).dual) j)` using `fun j => by`. Use `HermLB.icls_eq_iff.1 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.ArInt.icls_comb]`. Break down `j with j | j` into its components or cases.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[n, ite_smul]`. Simplify using `[n, ite_smul, HermLB.icls_dual]`. Establish `h` using `((hI k Z p D hX).2 ι L Φ hΦ).2.2 (ι ⊕ ι) _ n iso`. Establish `e : (aeval fun j => lin fun i => (n j i : ℝ) : MvPolynomial (ι ⊕ ι) ℝ →ₐ[ℝ] MvPolynomial ι ℝ) = sgnSub ι`. Use `MvPolynomial.algHom_ext fun j => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `rcases j with j | j <;> simp [lin, n, sgnSub, apply_ite]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isArFun_dual (hI : ArIso) {k : Type} [CommRing k] {Z : Scheme.{0}} [IsIntegral Z] {p : Z ⟶ Sp k}
     {D : ℕ} (hX : IsArithVar p D) {ι : Type} [Fintype ι] (L : ι → HermLB p) {Φ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ}
@@ -56,7 +56,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e)
 
 /- English proof (translation)
-Establish `key (n n' : Pad.Letter Dw → ℤ) (h : n = n') (r r' : Option ℝ) (h' : r = r') (lg) : (⟨divOf Y n, 1, fun σ => hm r σ n, 0, lg⟩ : GlobalTheory.TrueGeo.Adl C Y.Y) = ⟨divOf Y n', 1, fun σ => hm r' σ n', 0, lg⟩`. Rewrite using `[h, h']`. Conclude with `key _ _ h _ _ h' _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adlOf_eq {C : GlobalTheory.TrueGeo.CxSt F} (hm : Mets Y C) {w w' : Sym E →₀ ℤ} (h : expo Dw w' = expo Dw w)
     (h' : parOf w' = parOf w) : adlOf Y hm w' = { adlOf Y hm w with lg := (adlOf Y hm w').lg } := by
@@ -66,7 +66,7 @@ theorem adlOf_eq {C : GlobalTheory.TrueGeo.CxSt F} (hm : Mets Y C) {w w' : Sym E
   exact key _ _ h _ _ h' _
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CombInd.DualComb.lgOf_neg, GlobalTheory.CombInd.DualComb.lgOf_neg, hl, GlobalTheory.CombInd.DualComb.expo_neg, GlobalTheory.CombInd.DualComb.expo_neg, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lgOf_neg_congr {w w' : Sym E →₀ ℤ} (h : expo Dw w = expo Dw w') (v : HeightOneSpectrum (𝓞 F))
     (ε : GlobalTheory.TrueGeo.Ext v) (y : GlobalTheory.TrueGeo.AlgPt Y.Y) (hl : lgOf Y w v ε y = lgOf Y w' v ε y) :
@@ -77,7 +77,7 @@ theorem lgOf_neg_congr {w w' : Sym E →₀ ℤ} (h : expo Dw w = expo Dw w') (v
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Establish `h : (Finsupp.single a n).support.Nonempty` using `by simp [Finsupp.support_single_ne_zero _ hn]`. Rewrite using `[parOf, dif_pos h, Finset.mem_singleton.1 (Finsupp.support_single_subset h.choose_spec)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem parOf_single' (a : Sym E) {n : ℤ} (hn : n ≠ 0) : parOf (Finsupp.single a n) = a.2.1 := by
   have h : (Finsupp.single a n).support.Nonempty := by simp [Finsupp.support_single_ne_zero _ hn]
@@ -88,7 +88,7 @@ end General
 variable {D : D7} (O : Setup D)
 
 /- English proof (translation)
-Establish `h : (letters O.S.Dw)[(k : ℕ)]? = some (rootLetter O.S (rootEquiv O.S k))` using `letterOf_rootEquiv O.S k`. Unfold `eigAt`. Rewrite using `[h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eigAt_eq (a : ℕ → Bool) (R : Option ℝ) (s : ℤ) (k : Fin (D.R.f * O.N)) :
     eigAt O.S.Dw a R s k = Finsupp.single (a, R, .inl ((rootLetter O.S (rootEquiv O.S k)).1,
@@ -98,9 +98,9 @@ theorem eigAt_eq (a : ℕ → Bool) (R : Option ℝ) (s : ℤ) (k : Fin (D.R.f *
   rw [h]
 
 /- English proof (translation)
-Establish `hp` using `O.S.p_eq`. Establish `hq` using `O.S.rank_eq`. Unfold `rootSym rootLetter`. Distinguish the cases in `hi : (r.2 : ℕ) < O.j`. Rewrite using `[if_pos (by omega), dif_pos hi, if_pos hi]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (by omega), dif_neg hi, if_neg hi]`. Establish `: O.S.Dw.p + O.S.Dw.q = O.N` using `by omega`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rootSym_eq (a : ℕ → Bool) (R : Option ℝ) (r : DV.Rt D.what₂.Tau O.N) :
     rootSym O.S.Dw a R (DV.tauEmb D r.1) r.2 = Finsupp.single (a, R, .inl ((rootLetter O.S r).1,
@@ -123,9 +123,9 @@ def eigVar (i : Fin (D.R.f * O.N) ⊕ Fin (D.R.f * O.N)) : Var O ⊕ Var O :=
 def famD (T : Finset ℕ) (R : ℝ) : Var O ⊕ Var O → Sym D.host.E →₀ ℤ := Sum.elim (fam O T R) fun i => -fam O T R i
 
 /- English proof (translation)
-Unfold `eigVar`. Break down `i with k | k` into its components or cases. Rewrite using `[eigSym_inl, eigAt_eq]`. Apply the tactic sequence `by_cases h : ((rootEquiv O.S k).2 : ℕ) < O.j <;> simp [rootAt, h, famD, fam, rootSym_eq]`. Rewrite using `[eigSym_inr, eigAt_eq]`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases h : ((rootEquiv O.S k.rev).2 : ℕ) < O.j <;> simp [rootAt, h, famD, fam, rootSym_eq]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem famD_eigVar (T : Finset ℕ) (R : ℝ) (i : Fin (D.R.f * O.N) ⊕ Fin (D.R.f * O.N)) :
     famD O T R (eigVar O i) = eigSym O.S.Dw (ArIn.ind T) (some R) i := by
@@ -137,9 +137,9 @@ theorem famD_eigVar (T : Finset ℕ) (R : ℝ) (i : Fin (D.R.f * O.N) ⊕ Fin (D
     by_cases h : ((rootEquiv O.S k.rev).2 : ℕ) < O.j <;> simp [rootAt, h, famD, fam, rootSym_eq]
 
 /- English proof (translation)
-Establish `h (i) : sgnSub (Var O) (X (eigVar O i) ^ 2) = X (Sum.inl (rootAt O i)) ^ 2`. Unfold `eigVar`. Apply the tactic sequence `split_ifs <;> simp [sgnSub]`. Rewrite using `[map_sum, Finset.sum_congr rfl fun i _ => h i, Fintype.sum_sum_type, two_mul]`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Equiv.sum_comp (rootEquiv O.S) fun x => (X (Sum.inl x) ^ 2 : MvPolynomial (Var O) ℝ)`. Conclude with `Equiv.sum_comp (Fin.revPerm.trans (rootEquiv O.S)) fun x => (X (Sum.inl x) ^ 2 : MvPolynomial (Var O) ℝ)`.
+A detailed English derivation is pending.
 -/
 theorem sum_sq_eigVar : sgnSub (Var O) (∑ i, X (eigVar O i) ^ 2) = 2 * ∑ x, X (Sum.inl x) ^ 2 := by
   have h (i) : sgnSub (Var O) (X (eigVar O i) ^ 2) = X (Sum.inl (rootAt O i)) ^ 2 := by
@@ -151,7 +151,7 @@ theorem sum_sq_eigVar : sgnSub (Var O) (∑ i, X (eigVar O i) ^ 2) = 2 * ∑ x, 
   · exact Equiv.sum_comp (Fin.revPerm.trans (rootEquiv O.S)) fun x => (X (Sum.inl x) ^ 2 : MvPolynomial (Var O) ℝ)
 
 /- English proof (translation)
-Break down `i with k | k` into its components or cases. Rewrite using `[eigSym_inl, eigAt_eq, wholeSym, parOf_single' _ one_ne_zero, parOf_single' _ one_ne_zero]`. Rewrite using `[eigSym_inr, eigAt_eq, wholeSym, parOf_single' _ (by simp), parOf_single' _ (by simp)]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem parOf_eigSym (a : ℕ → Bool) (R : Option ℝ) (i : Fin (D.R.f * O.N) ⊕ Fin (D.R.f * O.N)) :
     parOf (eigSym O.S.Dw a R i) = parOf (wholeSym (E := D.host.E) a R i) := by
@@ -160,9 +160,9 @@ theorem parOf_eigSym (a : ℕ → Bool) (R : Option ℝ) (i : Fin (D.R.f * O.N) 
   · rw [eigSym_inr, eigAt_eq, wholeSym, parOf_single' _ (by simp), parOf_single' _ (by simp)]
 
 /- English proof (translation)
-Establish `key (k : Fin (D.R.f * O.N)) : lgOf (O.Φ.C c) (wholeSym (ArIn.ind T) (some R) (.inl k : _ ⊕ Fin _)) v ε y = lgOf (O.Φ.C c) (eigSym O.S.Dw (ArIn.ind T) (some R) (.inl k : _ ⊕ Fin _)) v ε y`. Rewrite using `[eigSym_inl, eigAt_eq]`. Conclude with `hA k _ (letterOf_rootEquiv O.S k) v ε y hv`. Break down `i with k | k` into its components or cases. Conclude with `key k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `lgOf_neg_congr (O.Φ.C c) (expo_eigSym O.S.Dw _ _ _).symm v ε y (key k.rev)`. Rewrite `h` using `[eigSym_inl, eigAt_eq, wholeSym, ← Finsupp.single_neg, ← Finsupp.single_neg]`. Rewrite using `[eigSym_inr, eigAt_eq]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lgOf_eigSym {T : Finset ℕ} {R : ℝ} {c : O.s.Comp} (hA : AwayAgree O T R c)
     (i : Fin (D.R.f * O.N) ⊕ Fin (D.R.f * O.N)) (v : HeightOneSpectrum (𝓞 D.what₂.LL)) (ε : GlobalTheory.TrueGeo.Ext v)
@@ -181,9 +181,9 @@ theorem lgOf_eigSym {T : Finset ℕ} {R : ℝ} {c : O.s.Comp} (hA : AwayAgree O 
     exact h
 
 /- English proof (translation)
-Introduce `a ha`. Break down `i with x | k | k` into its components or cases. Rewrite `ha` using `[fam, rootSym_eq]`. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset ha)]`. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset ha)]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset ha)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fam_par (T : Finset ℕ) (R : ℝ) (i : Var O) : ∀ a ∈ (fam O T R i).support, a.2.1 = some R := by
   intro a ha
@@ -196,11 +196,11 @@ theorem fam_par (T : Finset ℕ) (R : ℝ) (i : Var O) : ∀ a ∈ (fam O T R i)
 def wholeVar (i : Fin (D.R.f * O.N) ⊕ Fin (D.R.f * O.N)) : Var O ⊕ Var O := .inl (.inr i)
 
 /- English proof (translation)
-Establish `e₁ (Q : MvPolynomial (Var O) ℝ) : sgnSub (Var O) (rename Sum.inl Q) = Q`. Rewrite using `[sgnSub, aeval_rename, Sum.elim_comp_inl, aeval_X_left_apply]`. Establish `e₂` using `Equiv.sum_comp (finSumFinEquiv (m := D.R.f * O.N) (n := D.R.f * O.N)).symm fun i => (X (eigVar O i) ^ 2 : MvPolynomial (Var O ⊕ Var O) ℝ)`. Establish `e₃` using `Equiv.sum_comp (finSumFinEquiv (m := D.R.f * O.N) (n := D.R.f * O.N)).symm fun i => (X (wholeVar O i) ^ 2 : MvPolynomial (Var O ⊕ Var O) ℝ)`. Establish `e₄ : sgnSub (Var O) (∑ i, X (wholeVar O i) ^ 2) = ∑ i, X (Sum.inr i) ^ 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_sum, map_pow, sgnSub, wholeVar, aeval_X, Sum.elim_inl]`. Establish `e₅ : (C (1 / 2 : ℝ) : MvPolynomial (Var O) ℝ) * 2 = 1`. Rewrite using `[show (2 : MvPolynomial (Var O) ℝ) = C 2 from rfl, ← C_mul]`. Evaluate the numerical expressions. Rewrite using `[e₂, e₃, map_mul, e₁, map_sub, sum_sq_eigVar, e₄, diffPol]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-(∑ x, X (Sum.inl x) ^ 2) * rename Sum.inl (curveCl D.what₂.Tau O.N O.j)) * e₅`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem sgnSub_diff : sgnSub (Var O)
     ((∑ a : Fin (D.R.f * O.N + D.R.f * O.N), X (wholeVar O (finSumFinEquiv.symm a)) ^ 2 -
@@ -221,7 +221,7 @@ theorem sgnSub_diff : sgnSub (Var O)
   linear_combination (-(∑ x, X (Sum.inl x) ^ 2) * rename Sum.inl (curveCl D.what₂.Tau O.N O.j)) * e₅
 
 /- English proof (translation)
-Establish `hd : (NumberField.discr D.host.E).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (NumberField.discr_ne_zero _)`. Establish `hM : O.κ.l.M' ≠ 0` using `(Nat.lcm_pos (lt_of_lt_of_le (by norm_num) O.κ.l.three_le) O.κ.l.A_pos).ne'`. Conclude with `Finset.mem_union_right _ (Nat.mem_primeFactors.2 ⟨Nat.prime_of_mem_primeFactors hp, ((Nat.dvd_of_mem_primeFactors hp).mul_left 2).mul_right _, mul_ne_zero (mul_ne_zero two_ne_zero hd) hM⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_setB (B : ℝ) {p : ℕ} (hp : p ∈ (NumberField.discr D.host.E).natAbs.primeFactors) : p ∈ Pad.setB O.κ B := by
   have hd : (NumberField.discr D.host.E).natAbs ≠ 0 := Int.natAbs_ne_zero.2 (NumberField.discr_ne_zero _)
@@ -233,7 +233,7 @@ def adlD (T : Finset ℕ) (R : ℝ) (c : O.s.Comp) (i : Var O ⊕ Var O) :
     GlobalTheory.TrueGeo.Adl (GlobalTheory.TrueGeo.cxSt D.what₂.LL) (O.var c) := adlOf (O.Φ.C c) (O.met.hm c) (famD O T R i)
 
 /- English proof (translation)
-Rewrite using `[adlD, famD_eigVar]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adlD_eigVar (T : Finset ℕ) (R : ℝ) (c : O.s.Comp) (i : Fin (D.R.f * O.N) ⊕ Fin (D.R.f * O.N)) :
     adlD O T R c (eigVar O i) = adlOf (O.Φ.C c) (O.met.hm c) (eigSym O.S.Dw (ArIn.ind T) (some R) i) := by
@@ -246,9 +246,9 @@ theorem adlD_wholeVar (T : Finset ℕ) (R : ℝ) (c : O.s.Comp) (i : Fin (D.R.f 
     adlD O T R c (wholeVar O i) = adlOf (O.Φ.C c) (O.met.hm c) (wholeSym (ArIn.ind T) (some R) i) := rfl
 
 /- English proof (translation)
-Take `⟨x, P, hW⟩` from `hO`. Break down `i with i | i` into its components or cases. Conclude with `hI i`. Establish `h` using `hI i`. Unfold `adlD`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h`, the goal using `[hW.hm_eq]`. Conclude with `GlobalTheory.CombInd.DualComb.induced_neg D O.A O.N O.j O.S O.κ O.s x O.Φ c M m R _ _ (fam_par O T R i) h`.
+A detailed English derivation is pending.
 -/
 theorem induced_adlD (hO : O.Core) (T : Finset ℕ) (R : ℝ) (c : O.s.Comp) (M : GlobalTheory.TrueGeo.Model (O.var c))
     (L : Var O → HermLB M.p) (m : ℕ+) (hI : ∀ i, (adlOf (O.Φ.C c) (O.met.hm c) (fam O T R i)).Induced M (L i) m 0) (i) :
@@ -262,7 +262,7 @@ theorem induced_adlD (hO : O.Core) (T : Finset ℕ) (R : ℝ) (c : O.s.Comp) (M 
     exact GlobalTheory.CombInd.DualComb.induced_neg D O.A O.N O.j O.S O.κ O.s x O.Φ c M m R _ _ (fam_par O T R i) h
 
 /- English proof (translation)
-Rewrite using `[adlD_eigVar, adlD_wholeVar]`. Conclude with `adlOf_eq _ _ (expo_eigSym _ _ _ _) (parOf_eigSym O _ _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adlD_eigVar_eq (T : Finset ℕ) (R : ℝ) (c : O.s.Comp) (i : Fin (D.R.f * O.N) ⊕ Fin (D.R.f * O.N)) :
     adlD O T R c (eigVar O i) = { adlD O T R c (wholeVar O i) with lg := (adlD O T R c (eigVar O i)).lg } := by
@@ -276,9 +276,9 @@ namespace GlobalTheory.EigWhole
 open Assemble
 
 /- English proof (translation)
-Introduce `h2 hH hR hS hP D O hO B hB R hR2 c hA M L m Ψ hI hΨ`. Use `haveI := M.ar.isIntegral`. Establish `hd : (NumberField.discr D.host.E).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (NumberField.discr_ne_zero _)`. Rewrite using `[← sgnSub_diff]`. Use `GlobalTheory.T.induced_metric_arithmetic_function_shift h2 hR _ (O.var c) M _ (adlD O (Pad.setB O.κ B) R c) _ m (Ψ ∘ₗ (sgnSub (Var O)).toLinearMap) (induced_adlD O hO _ R c M L m hI) (isArFun_dual h2.p4.arIso M.ar L hΨ) _ (fun a => wholeVar O (finSumFinEquiv.symm a)) (fun a => ei …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hp'` using `Nat.prime_of_mem_primeFactors hp`. Simplify using `only [adlD_eigVar, adlD_wholeVar]`. Conclude with `⟨hp', GlobalTheory.T.relative_flag_whole_symbol_multiple h2 hH hR hS hP D O hO _ R hR2 p hp' (mem_setB O B hp) c⟩`. Rewrite using `[adlD_eigVar, adlD_wholeVar]`. Conclude with `lgOf_eigSym O hA _ v ε y fun h => hv (Nat.mem_primeFactors.2 ⟨LineTest.residueCharacteristic_prime v, h, hd⟩)`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ramModel_of_hypotheses : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB → PrismaticDieudonnePerfd →
     RamModel := by

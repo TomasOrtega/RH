@@ -17,22 +17,22 @@ section Col
 variable {dd : ℕ}
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_col (col : Fin 2) :
     HasSubst (fun x : Fin dd => (X (col, x) : MvPowerSeries (Fin 2 × Fin dd) C)) :=
   hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _
 
 /- English proof (translation)
-Introduce `_ _ h` and use `(Prod.ext_iff.1 h).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem col_inj (col : Fin 2) : Function.Injective (fun x : Fin dd => (col, x)) :=
   fun _ _ h => (Prod.ext_iff.1 h).2
 
 /- English proof (translation)
-Establish `hS` using `hasSubst_of_constantCoeff_zero ha`. Unfold `inCol`. Rewrite using `[subst_comp_subst_apply (hasSubst_col col) hS]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[subst_X hS]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_inCol {τ : Type} {a : Fin 2 × Fin dd → MvPowerSeries τ C} (ha : ∀ x, constantCoeff (a x) = 0)
     (col : Fin 2) (f : MvPowerSeries (Fin dd) C) :
@@ -45,14 +45,14 @@ theorem subst_inCol {τ : Type} {a : Fin 2 × Fin dd → MvPowerSeries τ C} (ha
   rw [subst_X hS]
 
 /- English proof (translation)
-Unfold `inCol`. Rewrite using `[subst_X (hasSubst_col col)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem inCol_X (col : Fin 2) (i : Fin dd) : inCol col (X i : MvPowerSeries (Fin dd) C) = X (col, i) := by
   unfold inCol
   rw [subst_X (hasSubst_col col)]
 
 /- English proof (translation)
-Rewrite using `[coeff_subst (hasSubst_of_constantCoeff_zero fun s => constantCoeff_X _)]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `e'`. Rewrite using `[prod_X_rename, coeff_monomial, if_neg (fun h => he e' h.symm), smul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_subst_rename_out {σ τ : Type} [Finite σ] (φ : σ → τ) (F : MvPowerSeries σ C) (e : τ →₀ ℕ)
     (he : ∀ e' : σ →₀ ℕ, e'.mapDomain φ ≠ e) :
@@ -63,9 +63,9 @@ theorem coeff_subst_rename_out {σ τ : Type} [Finite σ] (φ : σ → τ) (F : 
   rw [prod_X_rename, coeff_monomial, if_neg (fun h => he e' h.symm), smul_zero]
 
 /- English proof (translation)
-Unfold `inCol`. Distinguish the cases in `hr : ∃ μ' : Fin dd →₀ ℕ, μ'.mapDomain (fun x => (col, x)) = μ`. Take `⟨μ', rfl⟩` from `hr`. Rewrite using `[coeff_subst_rename_inj _ (col_inj col), coeff_subst_rename_inj _ (col_inj col)]`. Conclude with `h μ' (by rw [Finsupp.degree_mapDomain] at hμ; exact hμ)`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at hr`. Rewrite using `[coeff_subst_rename_out _ _ _ hr, coeff_subst_rename_out _ _ _ hr]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_inCol_lin (col : Fin 2) (f f' : MvPowerSeries (Fin dd) C)
     (h : ∀ μ : Fin dd →₀ ℕ, μ.degree ≤ 1 → coeff μ f = coeff μ f') (μ : Fin 2 × Fin dd →₀ ℕ) (hμ : μ.degree ≤ 1) :
@@ -84,7 +84,7 @@ variable [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ}
   {I0 : Type} [Fintype I0] (p : SelfData Y d I0)
 
 /- English proof (translation)
-Use `show constantCoeff (inCol x.1 (un1 (Y.lg x.2))) = 0`. Apply `constantCoeff_inCol` to reduce the goal to its premises. Rewrite using `[constantCoeff_uncurry]`. Conclude with `Y.lg_const x.2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FBChart.self_chart_log_constantCoeff (x : Fin 2 × Fin dd) : constantCoeff ((Y.rawSelf p).lg x) = 0 := by
   show constantCoeff (inCol x.1 (un1 (Y.lg x.2))) = 0
@@ -93,7 +93,7 @@ theorem FBChart.self_chart_log_constantCoeff (x : Fin 2 × Fin dd) : constantCoe
   exact Y.lg_const x.2
 
 /- English proof (translation)
-Use `show constantCoeff (inCol x.1 (un1 (Y.ex x.2))) = 0`. Apply `constantCoeff_inCol` to reduce the goal to its premises. Rewrite using `[constantCoeff_uncurry]`. Conclude with `Y.ex_const x.2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FBChart.self_chart_exp_constantCoeff (x : Fin 2 × Fin dd) : constantCoeff ((Y.rawSelf p).ex x) = 0 := by
   show constantCoeff (inCol x.1 (un1 (Y.ex x.2))) = 0
@@ -102,7 +102,7 @@ theorem FBChart.self_chart_exp_constantCoeff (x : Fin 2 × Fin dd) : constantCoe
   exact Y.ex_const x.2
 
 /- English proof (translation)
-Use `show coeff e (∑ col, hCol col Y.h) = 0`. Conclude with `van_sum Finset.univ _ (fun col _ => van_hCol col 0 Y.h (gauge_axes Y 0)) e he`.
+A detailed English derivation is pending.
 -/
 theorem FBChart.rawSelf_axis0 (e : Fin 2 × (Fin 2 × Fin dd) →₀ ℕ) (he : ∀ s ∈ e.support, s.1 ≠ 0) :
     coeff e (Y.rawSelf p).h = 0 := by
@@ -110,9 +110,9 @@ theorem FBChart.rawSelf_axis0 (e : Fin 2 × (Fin 2 × Fin dd) →₀ ℕ) (he : 
   exact van_sum Finset.univ _ (fun col _ => van_hCol col 0 Y.h (gauge_axes Y 0)) e he
 
 /- English proof (translation)
-Take `⟨col, i⟩` from `x`. Use `show subst (Y.rawSelf p).lg (inCol col (un1 (Y.ex i))) = _`. Rewrite using `[subst_inCol (Y.self_chart_log_constantCoeff p)]`. Use `show subst (fun j => inCol col (un1 (Y.lg j))) (un1 (Y.ex i)) = _`. Establish `hL : HasSubst (fun j => un1 (Y.lg j))` using `hasSubst_of_constantCoeff_zero fun j => by rw [constantCoeff_uncurry, Y.lg_const]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hx : un1 (comp1 Y.ex Y.lg i) = (X i : MvPowerSeries (Fin dd) C)` using `by rw [Y.ex_lg]; exact uncurry_X i`. Unfold `inCol`. Rewrite using `[← subst_comp_subst_apply hL (hasSubst_col col), uncurry_comp Y.lg_const, hx, subst_X (hasSubst_col col)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FBChart.rawSelf_exlg (x : Fin 2 × Fin dd) :
     subst (Y.rawSelf p).lg ((Y.rawSelf p).ex x) = (X x : MvPowerSeries (Fin 2 × Fin dd) C) := by
@@ -127,9 +127,9 @@ theorem FBChart.rawSelf_exlg (x : Fin 2 × Fin dd) :
   rw [← subst_comp_subst_apply hL (hasSubst_col col), uncurry_comp Y.lg_const, hx, subst_X (hasSubst_col col)]
 
 /- English proof (translation)
-Take `⟨col, i⟩` from `x`. Use `show subst (Y.rawSelf p).ex (inCol col (un1 (Y.lg i))) = _`. Rewrite using `[subst_inCol (Y.self_chart_exp_constantCoeff p)]`. Use `show subst (fun j => inCol col (un1 (Y.ex j))) (un1 (Y.lg i)) = _`. Establish `hL : HasSubst (fun j => un1 (Y.ex j))` using `hasSubst_of_constantCoeff_zero fun j => by rw [constantCoeff_uncurry, Y.ex_const]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hx : un1 (comp1 Y.lg Y.ex i) = (X i : MvPowerSeries (Fin dd) C)` using `by rw [Y.lg_ex]; exact uncurry_X i`. Unfold `inCol`. Rewrite using `[← subst_comp_subst_apply hL (hasSubst_col col), uncurry_comp Y.ex_const, hx, subst_X (hasSubst_col col)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FBChart.rawSelf_lgex (x : Fin 2 × Fin dd) :
     subst (Y.rawSelf p).ex ((Y.rawSelf p).lg x) = (X x : MvPowerSeries (Fin 2 × Fin dd) C) := by
@@ -144,9 +144,9 @@ theorem FBChart.rawSelf_lgex (x : Fin 2 × Fin dd) :
   rw [← subst_comp_subst_apply hL (hasSubst_col col), uncurry_comp Y.ex_const, hx, subst_X (hasSubst_col col)]
 
 /- English proof (translation)
-Take `⟨col, i⟩` from `x`. Use `show coeff μ (inCol col (un1 (Y.lg i))) = _`. Rewrite using `[← inCol_X col i]`. Use `coeff_inCol_lin col _ _ (fun ν hν => ?_) μ hμ` and prove the remaining obligations. Use `show coeff (ν.mapDomain fun x : Fin dd => ((0 : Fin 1), x)) (Y.lg i) = _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Y.lg_lin i _ (by rw [Finsupp.degree_mapDomain]; exact hν), ← uncurry_X i]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem FBChart.rawSelf_lin (x : Fin 2 × Fin dd) (μ : Fin 2 × Fin dd →₀ ℕ) (hμ : μ.degree ≤ 1) :
     coeff μ ((Y.rawSelf p).lg x) = coeff μ (X x : MvPowerSeries (Fin 2 × Fin dd) C) := by
@@ -159,9 +159,9 @@ theorem FBChart.rawSelf_lin (x : Fin 2 × Fin dd) (μ : Fin 2 × Fin dd →₀ �
   rfl
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `p.gm_lim 0`. Establish `h` using `hM a r s`. Rewrite `h` using `[Nat.cast_zero]`. Establish `e : p.gm a r s = (p.gm a r s - p.em a (M r s)) + p.em a (M r s)` using `by ring`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.add (p.em_int a _)`.
+A detailed English derivation is pending.
 -/
 theorem SelfData.gm_int (a : ZMod d) (r s : Fin 2) : V.Ge 0 (p.gm a r s) := by
   obtain ⟨M, hM⟩ := p.gm_lim 0
@@ -172,13 +172,13 @@ theorem SelfData.gm_int (a : ZMod d) (r s : Fin 2) : V.Ge 0 (p.gm a r s) := by
   exact h.add (p.em_int a _)
 
 /- English proof (translation)
-The claim follows from `VF.Ge.mul_int (SelfData.gm_int Y p _ _ _) (p.e_int c x.2)`.
+A detailed English derivation is pending.
 -/
 theorem FBChart.rawSelf_u_integral (g : Fin 2) (c : I0) (x : Fin 2 × Fin dd) : V.Ge 0 ((Y.rawSelf p).u g c x) :=
   VF.Ge.mul_int (SelfData.gm_int Y p _ _ _) (p.e_int c x.2)
 
 /- English proof (translation)
-Establish `h` using `p.gm_hyp (a + p.hd) g (1 - g)`. Apply the tactic sequence `rw [add_assoc, p.hd_two, add_zero, if_neg (by fin_cases g <;> decide)] at h`. Conclude with `h`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem SelfData.gm_pair (a : ZMod d) (g : Fin 2) :
     ∑ col, p.gm a col g * p.gm (a + p.hd) col (1 - g) = 1 := by
@@ -187,11 +187,11 @@ theorem SelfData.gm_pair (a : ZMod d) (g : Fin 2) :
   exact h
 
 /- English proof (translation)
-Take `⟨w0, hw0, huw⟩` from `p.e_sat`. Use `⟨fun x c' => p.gm (p.ty0 c' + p.hd) x.1 (1 - g) * w0 x.2 c', fun x c' => VF.Ge.mul_int (SelfData.gm_int Y p _ _ _) (hw0 _ _), fun c c' => ?_⟩` and prove the remaining obligations. Use `show ∑ x : Fin 2 × Fin dd, (p.gm (p.ty0 c) x.1 g * p.e c x.2) * (p.gm (p.ty0 c' + p.hd) x.1 (1 - g) * w0 x.2 c') = _`. Establish `e1 : ∀ x : Fin 2 × Fin dd, (p.gm (p.ty0 c) x.1 g * p.e c x.2) * (p.gm (p.ty0 c' + p.hd) x.1 (1 - g) * w0 x.2 c') = (p.gm (p.ty0 c) x.1 g * p.gm (p.ty0 c' + p.hd) x.1 (1 - g)) * (p.e c x.2 * w0 x.2 c')` using `fun x => by ring`. Repeatedly rewrite using `[e1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.sum_prod_type]`. Repeatedly rewrite using `[← Finset.mul_sum, huw c c']`. Distinguish the cases in `hc : c = c'`. Substitute `hc` using the available equality. Rewrite using `[if_pos rfl]`.
+Rewrite the conclusion repeatedly using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_one]`. Conclude with `SelfData.gm_pair Y p _ g`. Simplify using `[hc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem FBChart.exists_integral_right_inverse (g : Fin 2) :
     ∃ w : Fin 2 × Fin dd → I0 → C, (∀ x c, V.Ge 0 (w x c)) ∧
@@ -224,9 +224,9 @@ def HStabSelfSt : Prop :=
     V.Ge 0 (X.sg1 (X.u g c) (X.u (1 - g) q))
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y d _ I0 _ p g`. Use `Y.algClosed` as an intermediate fact. Establish `: NeZero (V.l : C)` using `⟨VF.l_ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot C V.l`. Establish `h0` using `(Y.rawSelf p).zero_mem (Y.self_chart_log_constantCoeff p) (Y.rawSelf_axis0 p) V g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hadd` using `(Y.rawSelf p).add_mem V g (hAdd C V O dd Y d I0 p) (fun g c x => Y.rawSelf_u_integral p g c x)`. Conclude with `{ zero := h0 add := hadd neg := (Y.rawSelf p).neg_mem V g Y.l_odd teich := (Y.rawSelf p).teich_mem V g Vm := (Y.rawSelf p).V_mem V g Fm := (Y.rawSelf p).F_mem V g (Y.self_chart_log_constantCoeff p) (Y.rawSelf_exlg p) hζ h0 hadd sumV := (Y.rawSelf p).sumV_mem V g (Y.self_chart_log …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cartSelf_of (hPT : PTSelfSt) (hAdd : AddCvSelfSt) (hStab : HStabSelfSt) : CartSelfSt := by
   intro C _ _ V O _ _ dd Y d _ I0 _ p g

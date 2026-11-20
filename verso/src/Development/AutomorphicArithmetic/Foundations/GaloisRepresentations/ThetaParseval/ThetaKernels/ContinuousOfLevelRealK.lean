@@ -22,23 +22,19 @@ open scoped Topology
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 attribute [local instance] finiteFE modTop topRing
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B _ nS nT JS JT _ _ ξ₀ _ _ hstd g hU hsm`. Use `haveI := finiteFE (F := F) (E := E)`. Use `haveI := modTop (F := F) (E := E)`. Use `haveI := topRing (F := F) (E := E)`. Use `haveI : IsTopologicalAddGroup (AEF F E) := IsTopologicalRing.to_topologicalAddGroup`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨U, hUo, hUf⟩` from `hU`. Set `φ` to `(Module.finBasis ℝ (Fin nT × Fin nS × Fin (Module.finrank F E) → mixedEmbedding.mixedSpace F)).equivFunL`. Set `L : (Fin _ → ℝ) →+ WOF F E nS nT` to `(realCh F E nS nT).comp φ.symm.toLinearEquiv.toAddMonoidHom`. Establish `hLc : Continuous L` using `(continuous_realCh nS nT).comp φ.symm.continuous`. Establish `hL0 : ∀ t, (L t).map (finPartF F E) = 0` using `fun t => by`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i j`. Conclude with `realCh_fin nS nT _ i j`. Establish `hLφ : ∀ v, L (φ v) = realCh F E nS nT v` using `fun v => by show realCh F E nS nT (φ.symm (φ v)) = _`. Rewrite using `[φ.symm_apply_apply]`. Use `continuous_iff_continuousAt.2 fun w => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `a : WOF F E nS nT → WOF F E nS nT` to `fun w' => w + eInf F • (w' - w)`. Set `u : WOF F E nS nT → WOF F E nS nT` to `fun w' => w' - a w'`. Establish `hsmc : Continuous fun y : WOF F E nS nT => eInf F • y` using `continuous_const_smul _`. Establish `ha : Continuous a` using `continuous_const.add (hsmc.comp (continuous_sub_right w))`. Establish `hu : Continuous u` using `continuous_id.sub ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `huw : u w = 0` using `by show w - (w + eInf F • (w - w)) = 0`. Rewrite using `[sub_self, smul_zero, add_zero, sub_self]`. Establish `hinf : ∀ w', (u w').map (infPartF F E) = 0`. Introduce `w'`. Establish `e : u w' = (w' - w) - eInf F • (w' - w)` using `sub_add_eq_sub_sub _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i j`. Use `show infPartF F E (u w' i j) = 0`. Rewrite using `[e]`. Conclude with `infPartF_sub_eInf_smul _`. Establish `hga : Continuous fun w' => g (a w')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `(hsm _ L hLc hL0 w).continuous.comp (φ.continuous.comp ((continuous_realCo nS nT).comp (hsmc.comp (continuous_sub_right w))))`. Use `h1.congr fun w' => ?_` and prove the remaining obligations. Use `show g (w + L (φ (realCo F E nS nT (eInf F • (w' - w))))) = g (w + eInf F • (w' - w))`. Rewrite using `[hLφ, realCh_realCo]`. Establish `hg : Continuous fun w' => B.ψ (-symplOHF σ JS JT ξ₀ (a w') (u w')) * g (a w')` using `(hstd.1.1.comp (continuous_symplOHF σ JS JT ξ₀ ha hu).neg).mul hga`.
-
-Establish `hev : ∀ᶠ w' in 𝓝 w, u w' ∈ U` using `hu.continuousAt.preimage_mem_nhds (hUo.mem_nhds (by rw [huw]; exact U.zero_mem))`. Use `hg.continuousAt.congr (hev.mono fun w' hw' => ?_)` and prove the remaining obligations. Establish `e` using `congrFun (hUf _ hw' (hinf w')) (a w')`. Establish `e2 : a w' + u w' = w'` using `add_sub_cancel _ _`. Use `show B.ψ (-symplOHF σ JS JT ξ₀ (a w') (u w')) * g (a w') = g w'`.
-
-Rewrite using `[← e]`. Use `show _ * (B.ψ (symplOHF σ JS JT ξ₀ (a w') (u w')) * g (a w' + u w')) = _`. Rewrite using `[e2, ← mul_assoc, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_of_level_real_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

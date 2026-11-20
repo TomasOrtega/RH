@@ -30,7 +30,7 @@ def parameterOfRecord (D : D7) (hF : OFull D) (hz : OZeta D)
   eO := eOf D hF
 
 /- English proof (translation)
-Use `⟨⟨rfl, rfl, rfl, tauEmb_sqrt D⟩, levelG_M D _, eOf_spec D hF, fun j hj => ?_⟩` and prove the remaining obligations. Use `show IsDatW D j (datumAtLift D (unramBridge D.host.E (cmUnram_conj D)) hDat j)`. Unfold `datumAtLift`. Rewrite using `[dif_pos hj]`. Conclude with `isDatW_datumOf D _ j _ _`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parameter_record_conditions (D : D7) (hF : OFull D) (hz : OZeta D)
     (hDat : ∀ j, InR D j → ∃ hI : DatInt D j, DatLaws D j hI) (hN : N1ab) : (parameterOfRecord D hF hz hDat hN).Pins := by
@@ -41,7 +41,7 @@ theorem parameter_record_conditions (D : D7) (hF : OFull D) (hz : OZeta D)
   exact isDatW_datumOf D _ j _ _
 
 /- English proof (translation)
-The claim follows from `datumAtLift_pq_pos D _ hDat j`.
+A detailed English derivation is pending.
 -/
 theorem parameter_record_pq_pos (D : D7) (hF : OFull D) (hz : OZeta D)
     (hDat : ∀ j, InR D j → ∃ hI : DatInt D j, DatLaws D j hI) (hN : N1ab) (j : ℕ) :
@@ -58,7 +58,7 @@ def kfW (V : HSp D) (N : ℕ) : Subgroup (GA D V) := Subgroup.closure (levSet V 
 def LevGrp (V : HSp D) (N : ℕ) : Prop := ∀ k ∈ kfW V N, k ∈ levSet V N
 
 /- English proof (translation)
-Introduce `k` and use `⟨fun hk => h k hk, fun hk => Subgroup.subset_closure hk⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isLevelK_kfW {V : HSp D} {N : ℕ} (h : LevGrp V N) : IsLevelK V N (kfW V N) :=
   fun k => ⟨fun hk => h k hk, fun hk => Subgroup.subset_closure hk⟩
@@ -157,9 +157,9 @@ section Build
 variable {Q : Par D}
 
 /- English proof (translation)
-Distinguish the cases in `hj : InR D j`. Distinguish the cases in `hσ : GoodEmb Q.c σ`. Take `⟨U, dict, mu, h⟩` from `hRs.pkg j hj σ hσ (hfam j hj σ hσ)`. Conclude with `⟨⟨U, dict, mu⟩, fun _ _ => h⟩`. Conclude with `⟨Classical.choice (hRs.dataAll j σ), fun _ h => absurd h hσ⟩`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨Classical.choice (hRs.dataAll j σ), fun h => absurd h hj⟩`.
+Supply the required witnesses or components.
 -/
 theorem pkgEx (hRs : LawsRest Q) (hfam : ∀ j, InR D j → ∀ σ, GoodEmb Q.c σ → FamOK Q j σ) (j : ℕ)
     (σ : Q.c.F →+* ℂ) : ∃ p : PkgT Q j σ, InR D j → GoodEmb Q.c σ → PkgOK Q j σ p.1 p.2.1 p.2.2 := by
@@ -185,7 +185,7 @@ def coreOf (hRs : LawsRest Q) (hfam : ∀ j, InR D j → ∀ σ, GoodEmb Q.c σ 
 end Build
 
 /- English proof (translation)
-Introduce `j hj` and use `⟨datInt_holds D j, { unimod := efW_unimod_holds D j _, rank := latW_rank D j hj, dom := datDom_holds D j hj _ }⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem datHolds (D : D7) : ∀ j, InR D j → ∃ hI : DatInt D j, DatLaws D j hI :=
   fun j hj => ⟨datInt_holds D j,

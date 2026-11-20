@@ -24,9 +24,9 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 namespace GlobalTheory.LamT.LocSec
 
 /- English proof (translation)
-Take `⟨w, g1, r1, -⟩` from `m.lin`. Take `⟨s1, hs1⟩` from `thf_secUp ((isGen_iff w).1 g1) Xo.univ.t.PP.isLB t.PP.isLB σ`. Set `A` to `Xo.univ.t.G`. Establish `cond : (snd (Over.mk x) A).left ≫ A.hom = (fst (Over.mk x) A).left ≫ x` using `(Over.w (snd (Over.mk x) A)).trans (Over.w (fst (Over.mk x) A)).symm`. Set `h : Gx x ⟶ t.G.left` to `m.cart.1.lift _ _ cond`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hφ : h ≫ m.φ = (snd (Over.mk x) A).left` using `m.cart.1.lift_fst _ _ cond`. Establish `hh : h ≫ t.G.hom = (fst (Over.mk x) A).left` using `m.cart.1.lift_snd _ _ cond`. Establish `uniq : ∀ g : t.G.left ⟶ Gx x, g ≫ (snd (Over.mk x) A).left = m.φ → g ≫ (fst (Over.mk x) A).left = t.G.hom → g ≫ h = 𝟙 _` using `fun g e₁ e₂ => m.cart.1.hom_ext (by rw [Category.assoc, hφ, e₁, Category.id_comp]) (by rw [Category.assoc, hh, e₂, Category.id_comp])`. Use `⟨thfPull1 Xo.univ.t.PP.L h hφ s1, w, s1, ⟨g1, r1⟩, (TieCalc.isoMaps_iff w σ s1).2 fun Z r z j k hj hk => hs1 Z r z (fun _ => j) k (mem_pull.2 hj) hk, fun g e₁ e₂ (j : PUnit → Xo.univ.t.PP.L.ι) hj => fn_ext fun y hy => ?_⟩` and prove the remaining obligations. Conclude with `Eq.symm ((gs_appLE g _ _ hj (𝟙 _) y hy _).trans ((gs_appLE h _ _ (chart_le_pullback_open _ h hφ _) (𝟙 _ ≫ g) y (hj hy) _).trans (congrArg (fun q => gs q y _ (s1.f j)) (by rw [Category.id_comp, uniq g e₁ e₂]))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_secTie {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {t : SAB H (Sp S)} (m : SABMap t Xo.univ.t x)
@@ -50,15 +50,15 @@ theorem exists_secTie {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Ho
         (congrArg (fun q => gs q y _ (s1.f j)) (by rw [Category.id_comp, uniq g e₁ e₂]))))
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c T io G t' x m1 m2`. Set `_` to `io.toAlgebra`. Introduce `y hy`. Substitute `hy` using the available equality. Establish `hS : Out.SecBaseChangeSt` using `GlobalTheory.lawsFieldsSeparately.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact.
 
-Take `⟨θ, hne, -⟩` from `KeyOnPol.exists_generator hS G.pol`. Take `⟨w2, g2, r2, -⟩` from `m2.lin`. Take `⟨hθ, σ, hσ, -, hgen⟩` from `SectionBaseChange.generates_and_baseChange hS T.V T.Fr (algebraMap T.V T.Fr) G.pol t'.G m2.φ t'.PP.L w2 θ m2.cart.1 t'.PP.isLB g2 hne`. Take `⟨s, hs⟩` from `exists_secTie m1 σ`. Take `⟨a, ha, -⟩` from `y.gen s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `a0 : a ≠ 0`. Introduce and unpack `rfl`. Establish `z0 : ∀ i, s.f i = scal y.x 0 i * s.f i` using `fun i => by`. Rewrite using `[ha i]`. Simplify using `only [scal, ReciprocityTheory.ChartRestriction.G.Out.liftFun, toΓ, map_zero, zero_mul]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e0` using `(TieCalc.secTie_scale m1 hs 0 z0).1 hs`. Establish `e1` using `(TieCalc.secTie_scale m1 hs 1 (fun i => by rw [SecCalc.scal_one', _root_.one_mul])).1 hs`. Take `⟨b, -, hb⟩` from `hgen σ`. Conclude with `zero_ne_one ((hb 0 e0).trans (hb 1 e1).symm)`. Use `⟨Units.mk0 a a0, fun g y' hc => ⟨θ, hθ, w2, σ, thfPull G.t.PP.L m2.φ θ, ⟨g2, r2⟩, fun (j : PUnit → G.t.PP.L.ι) k => Eq.trans (fn_ext fun p hp => (gs_res _ p _ hp _).trans ((gs_appLE m2.φ _ _ _ (𝟙 _) p hp.1 _).trans (gs_appLE m2.φ _ _ _ (𝟙 _) p hp _).symm)) (hσ j k (inf_le_left.tr …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hx, -, pm, p₁, p₂, hp⟩` from `hc`. Use `((TieCalc.secTie_calc E H Dw l Xo T.Fr y.x t' m1 σ s hs).1 1 y'.x y'.s σ hx ⟨pm, p₁, p₂, fun i h => ?_⟩).2 ((TieCalc.secTie_scale m1 hs 1 (fun i => by rw [SecCalc.scal_one', _root_.one_mul])).1 hs)` and prove the remaining obligations. Establish `e : scal y.x 1 i * s.f i = scal y.x a i * y.s.f i` using `((congrArg (· * s.f i) (SecCalc.scal_one' y.x i)).trans (_root_.one_mul _)).trans (ha i)`. Conclude with `(congrArg _ e).trans (hp i h)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_unit_secInt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (T : CDVR) (io : c.F →+* T.Fr) (G : PAT H (Sp T.V)) (t' : SAB H (Sp T.Fr)) (x : Sp T.Fr ⟶ Xo.X) (m1 : SABMap t' Xo.univ.t x) (m2 : SABMap t' G.t (spMap (algebraMap T.V T.Fr))), letI := io.toAlgebra; ∀ y : FrPt Xo c T.Fr, y.x = x → ∃ a : T.Frˣ, ∀ (g : (∀ b : E →+* ℂ, Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) T.Fr)) (y' : FrPt Xo c T.Fr), FrChg g (a : T.Fr) y y' → SecInt T m1 m2 y'.s := by
   intro E _ _ _ H Dw l Xo c T io G t' x m1 m2

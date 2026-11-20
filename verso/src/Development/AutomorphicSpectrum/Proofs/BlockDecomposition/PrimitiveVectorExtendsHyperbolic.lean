@@ -12,15 +12,15 @@ namespace GlobalTheory.CompanionTheory.WeilSiegel.HypStep.PrimTrans
 open GlobalTheory.CompanionTheory.SW.QuasiRefl Matrix
 
 /- English proof (translation)
-Take `⟨ci, hci⟩` from `hu.exists_right_inv`. Use `set p := hform σ J y' y with hp`. Establish `hyy' : hform σ J y y' = σ p` using `by rw [hp, hform_conj_symm hσ hJ]`. Establish `hsc : σ p * σ ci = 1` using `by rw [← map_mul, hci, map_one]`. Use `set d : n → A := y - (1 : A) • y' with hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdy : hform σ J d y = -p`. Rewrite using `[hd, hform_sub_left, hy, map_one, one_mul, ← hp]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdy' : hform σ J d y' = σ p`. Rewrite using `[hd, hform_sub_left, hyy', hy']`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hdd : hform σ J d d = -p - σ p` using `by conv_lhs => rw [hd, hform_sub_right]`. Rewrite using `[← hd, hdy, hdy']`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : (-ci) + σ (-ci) = (-ci) * σ (-ci) * hform σ J d d`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[map_neg, hdd]`. Take the linear combination `(σ ci) * hci + ci * hsc`. Use `⟨((qr hσ hJ d (-ci) hc : UJ σ J) : GL n A), SetLike.coe_mem _, ?_⟩` and prove the remaining obligations. Use `show qrMat σ J d (-ci) *ᵥ y = y'`. Rewrite using `[qrMat_mulVec, hdy]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [hd, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, one_mul]`. Take the linear combination `(-(y i - y' i)) * hci`.
+A detailed English derivation is pending.
 -/
 theorem carry {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] {σ : A →+* A}
     {J : Matrix n n A} (hσ : ∀ a, σ (σ a) = a) (hJ : ∀ i j, σ (J j i) = J i j) (y y' : n → A)
@@ -52,7 +52,7 @@ theorem carry {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] {σ
   linear_combination (-(y i - y' i)) * hci
 
 /- English proof (translation)
-Simplify using `only [hform, Fin.sum_univ_succ, Fin.succ_zero_eq_one, hypOne_zero_zero, hypOne_zero_one, hypOne_one_zero, hypOne_one_one, hypOne_zero_rest, hypOne_one_rest, hypOne_rest_zero, hypOne_rest_one, hypOne_rest_rest]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hform_hyp {A : Type} [CommRing A] (σ : A →+* A) {M : ℕ} (J : Matrix (Fin M) (Fin M) A)
     (x y : Fin (M + 2) → A) :
@@ -65,19 +65,17 @@ theorem hform_hyp {A : Type} [CommRing A] (σ : A →+* A) {M : ℕ} (J : Matrix
   ring
 
 /- English proof (translation)
-Distinguish the cases in `h1 : x 1 ∈ P`. Use `swap`. Conclude with `⟨0, Or.inl h1⟩`. Distinguish the cases in `h0 : x 0 ∈ P`. Use `swap`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨0, Or.inr (by simpa [hform] using h0)⟩`. Take `⟨i, hi⟩` from `hprim`. Choose the witnesses or unpack the hypotheses as in `⟨j, rfl⟩ : ∃ j : Fin M, i = j.succ.succ := by`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => exact absurd h0 hi`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `succ i`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => exact absurd h1 hi`. Consider the case `succ j => exact ⟨j, rfl⟩`. Use `set w : Fin M → A := fun i => x i.succ.succ with hw`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hex : ∃ k, (J *ᵥ w) k ∉ P`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `e : w = Ji *ᵥ (J *ᵥ w)`. Rewrite using `[Matrix.mulVec_mulVec, mul_eq_one_comm.1 hJi, one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Apply `hi` to reduce the goal to its premises. Use `show w j ∈ P`. Rewrite using `[e]`. Simplify using `only [mulVec, dotProduct]`. Conclude with `P.sum_mem fun k _ => P.mul_mem_left _ (hc k)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨k, hk⟩` from `hex`. Use `⟨Pi.single k 1, Or.inr fun hmem => hk ?_⟩` and prove the remaining obligations. Establish `e : hform σ J (Pi.single k 1) w = (J *ᵥ w) k`. Establish `: σ ∘ (Pi.single k 1 : Fin M → A) = Pi.single k 1`. Use function extensionality and compare the values at `l`.
-
-Apply the tactic sequence `by_cases h : l = k <;> simp [h]`. Rewrite using `[hform_eq_dot, this]`. Simplify using the standard rewrite rules. Rewrite `hmem` using `[e]`. Conclude with `(Ideal.add_mem_iff_right P h0).1 hmem`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_u_local {A : Type} [CommRing A] (σ : A →+* A) {M : ℕ}
     (J Ji : Matrix (Fin M) (Fin M) A) (hJi : J * Ji = 1) (x : Fin (M + 2) → A) (P : Ideal A)
@@ -120,7 +118,7 @@ theorem exists_u_local {A : Type} [CommRing A] (σ : A →+* A) {M : ℕ}
   exact (Ideal.add_mem_iff_right P h0).1 hmem
 
 /- English proof (translation)
-Simplify using `[hform, Finset.mul_sum, add_mul, Finset.sum_add_distrib, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_comb {A : Type} [CommRing A] (σ : A →+* A) {M : ℕ} (J : Matrix (Fin M) (Fin M) A)
     (c c' : A) (u v w : Fin M → A) :
@@ -128,23 +126,21 @@ theorem hform_comb {A : Type} [CommRing A] (σ : A →+* A) {M : ℕ} (J : Matri
   simp [hform, Finset.mul_sum, add_mul, Finset.sum_add_distrib, mul_assoc]
 
 /- English proof (translation)
-Distinguish the cases in `hdist : ∃ P Q : Ideal A, P.IsMaximal ∧ Q.IsMaximal ∧ P ≠ Q`. Take `⟨P, Q, hP, hQ, hne⟩` from `hdist`. Establish `hall : ∀ R : Ideal A, R.IsMaximal → R = P ∨ R = Q`. Introduce `R hR`. Apply the tactic sequence `rcases hmax R hR with h | h <;> rcases hmax P hP with h' | h' <;>`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases hmax Q hQ with h'' | h'' <;> simp_all`. Establish `h1 : (1 : A) ∈ P ⊔ Q`. Rewrite using `[Ideal.IsMaximal.coprime_of_ne hP hQ hne]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨p, hp, q, hq, hpq⟩` from `Submodule.mem_sup.1 h1`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result.
 
-Take `⟨uP, huP⟩` from `hloc P hP`. Take `⟨uQ, huQ⟩` from `hloc Q hQ`. Establish `hval : a + hform σ J (σ q • uP + σ p • uQ) w = q * (a + hform σ J uP w) + p * (a + hform σ J uQ w)`. Rewrite using `[hform_comb, hσ, hσ]`. Take the linear combination `(-a) * hpq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨σ q • uP + σ p • uQ, fun R hR => ?_⟩` and prove the remaining obligations. Establish `hq1 : q ∉ P` using `fun h => hP.ne_top ((Ideal.eq_top_iff_one _).2 (hpq ▸ P.add_mem hp h))`. Establish `hp1 : p ∉ Q` using `fun h => hQ.ne_top ((Ideal.eq_top_iff_one _).2 (hpq ▸ Q.add_mem h hq))`. Break down `hall R hR with rfl | rfl` into its components or cases. Break down `huP with h | h` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inl h`. Use `Or.inr fun hm => ?_` and prove the remaining obligations. Rewrite `hm` using `[hval]`. Establish `h3` using `(Ideal.add_mem_iff_left R (R.mul_mem_right _ hp)).1 hm`. Break down `hP.isPrime.mem_or_mem h3 with h4 | h4` into its components or cases.
+Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hq1 h4`. Conclude with `h h4`. Break down `huQ with h | h` into its components or cases. Conclude with `Or.inl h`. Use `Or.inr fun hm => ?_` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hm` using `[hval]`. Establish `h3` using `(Ideal.add_mem_iff_right R (R.mul_mem_right _ hq)).1 hm`. Break down `hQ.isPrime.mem_or_mem h3 with h4 | h4` into its components or cases. Conclude with `hp1 h4`. Conclude with `h h4`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `push_neg at hdist`. Distinguish the cases in `hex : ∃ P : Ideal A, P.IsMaximal`. Take `⟨P, hP⟩` from `hex`. Take `⟨u, hu⟩` from `hloc P hP`. Conclude with `⟨u, fun R hR => by rw [hdist R P hR hP]; exact hu⟩`.
-
-Conclude with `⟨0, fun P hP => absurd ⟨P, hP⟩ hex⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_u {A : Type} [CommRing A] (σ : A →+* A) (hσ : ∀ a, σ (σ a) = a) (P₁ P₂ : Ideal A)
     (hmax : ∀ P : Ideal A, P.IsMaximal → P = P₁ ∨ P = P₂) {M : ℕ}
@@ -195,21 +191,17 @@ theorem exists_u {A : Type} [CommRing A] (σ : A →+* A) (hσ : ∀ a, σ (σ a
     · exact ⟨0, fun P hP => absurd ⟨P, hP⟩ hex⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `pair : ∀ P : Ideal A, P.IsMaximal → ∀ m n : ℤ, IsUnit ((n : A) - m) → a - (m : A) * b ∈ P → a - (n : A) * b ∈ P → False`. Introduce `P hP m n hu h1 h3`. Take `⟨v, hv⟩` from `hu.exists_left_inv`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : b ∈ P`. Establish `e : b = v * ((a - (m : A) * b) - (a - (n : A) * b))`. Take the linear combination `(-b) * hv`. Rewrite using `[e]`. Conclude with `P.mul_mem_left _ (P.sub_mem h1 h3)`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : a ∈ P`. Establish `e : a = (a - (m : A) * b) + (m : A) * b` using `by ring`. Rewrite using `[e]`. Conclude with `P.add_mem h1 (P.mul_mem_left _ hb)`. Break down `hab P hP with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `h hb`. Conclude with `h ha`. Take `⟨Pa, ha, ha'⟩` from `exists_max_ideal_of_mem_nonunits (show a - ((0 : ℤ) : A) * b ∈ nonunits A from hc 0)`. Take `⟨Pb, hb, hb'⟩` from `exists_max_ideal_of_mem_nonunits (show a - ((1 : ℤ) : A) * b ∈ nonunits A from hc 1)`. Take `⟨Pc, hc₁, hc'⟩` from `exists_max_ideal_of_mem_nonunits (show a - ((-1 : ℤ) : A) * b ∈ nonunits A from hc (-1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `u01 : IsUnit (((1 : ℤ) : A) - ((0 : ℤ) : A))` using `by simp`. Establish `u0m : IsUnit (((-1 : ℤ) : A) - ((0 : ℤ) : A))` using `by simp`. Establish `u1m : IsUnit (((1 : ℤ) : A) - ((-1 : ℤ) : A))`. Establish `: ((1 : ℤ) : A) - ((-1 : ℤ) : A) = 2` using `by push_cast; ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Conclude with `h2`. Establish `hpig : Pa = Pb ∨ Pa = Pc ∨ Pb = Pc`. Apply the tactic sequence `rcases hmax Pa ha with h | h <;> rcases hmax Pb hb with h' | h' <;>`. Apply the tactic sequence `rcases hmax Pc hc₁ with h'' | h'' <;> simp_all`. Break down `hpig with h | h | h` into its components or cases.
-
-Substitute `h` using the available equality. Conclude with `pair Pa ha 0 1 u01 ha' hb'`. Substitute `h` using the available equality. Conclude with `pair Pa ha 0 (-1) u0m ha' hc'`. Substitute `h` using the available equality.
-
-Conclude with `pair Pb hb (-1) 1 u1m hc' hb'`.
+Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_mu {A : Type} [CommRing A] (P₁ P₂ : Ideal A)
     (hmax : ∀ P : Ideal A, P.IsMaximal → P = P₁ ∨ P = P₂) (h2 : IsUnit (2 : A)) (a b : A)
@@ -253,41 +245,37 @@ theorem exists_mu {A : Type} [CommRing A] (P₁ P₂ : Ideal A)
     exact pair Pb hb (-1) 1 u1m hc' hb'
 
 /- English proof (translation)
-Establish `hH : ∀ i j, σ (hypOne J j i) = hypOne J i j`. Introduce `i j`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Proceed by induction on `j using Fin.cases with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp [hypOne_zero_zero]`. Consider the case `succ j`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => exact (map_one σ).trans rfl`. Consider the case `succ j => exact (map_zero σ).trans rfl`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ i`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => exact (map_one σ).trans rfl`.
+Treat this case separately. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `succ j`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => exact (map_zero σ).trans rfl`. Consider the case `succ j => exact (map_zero σ).trans rfl`. Consider the case `succ i`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `j using Fin.cases with`. Consider the case `zero => exact (map_zero σ).trans rfl`. Consider the case `succ j`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => exact (map_zero σ).trans rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `succ j => exact hJ i j`. Use `set w : Fin M → A := fun i => x i.succ.succ with hw`. Take `⟨u, hu⟩` from `exists_u σ hσ P₁ P₂ hmax J w (x 1) (x 0) (fun P hP => exists_u_local σ J Ji hJi x P (hprim P hP))`. Take `⟨i2, hi2⟩` from `h2.exists_right_inv`. Establish `hsi2 : σ i2 = i2`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : 2 * σ i2 = 1`. Use `congrArg σ hi2` as an intermediate fact. Rewrite `this` using `[map_mul, map_one, map_ofNat]`. Then use the resulting hypothesis. Take the linear combination `i2 * h - σ i2 * hi2`. Use `set q := hform σ J u u with hq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsq : σ q = q` using `hform_conj_symm hσ hJ u u`. Use `set a := x 0 + hform σ J u w - q * i2 * x 1 with ha`. Take `⟨di, hdi⟩` from `hδ.exists_left_inv`. Establish `hab : ∀ P : Ideal A, P.IsMaximal → δ * x 1 ∉ P ∨ a ∉ P`. Introduce `P hP`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Distinguish the cases in `h1 : x 1 ∈ P`. Use `right`. Introduce `hm`. Break down `hu P hP with h | h` into its components or cases. Conclude with `h h1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h` to reduce the goal to its premises. Establish `e : x 0 + hform σ J u w = a + q * i2 * x 1` using `by rw [ha]; ring`. Rewrite using `[e]`. Conclude with `P.add_mem hm (P.mul_mem_left _ h1)`. Use `left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `hm`. Apply `h1` to reduce the goal to its premises. Establish `e : x 1 = di * (δ * x 1)` using `by linear_combination (-x 1) * hdi`. Rewrite using `[e]`. Conclude with `P.mul_mem_left _ hm`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨μ, hμ⟩` from `exists_mu P₁ P₂ hmax h2 a (δ * x 1) hab`. Use `set t : A := -(q * i2) + (μ : A) * δ with ht`. Establish `hst : σ t = -(q * i2) - (μ : A) * δ`. Rewrite using `[ht, map_add, map_neg, map_mul, map_mul, hsq, hsi2, hδs, map_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `z : Fin (M + 2) → A` to `Fin.cons t (Fin.cons 1 u)`. Set `e : Fin (M + 2) → A` to `Fin.cons 1 fun _ => 0`. Establish `z0 : z 0 = t` using `rfl`. Establish `z1 : z 1 = 1` using `rfl`. Establish `zt : (fun i : Fin M => z i.succ.succ) = u` using `rfl`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e0' : e 0 = 1` using `rfl`. Establish `e1' : e 1 = 0` using `rfl`. Establish `et : (fun i : Fin M => e i.succ.succ) = 0` using `rfl`. Establish `hzz : hform σ (hypOne J) z z = 0`. Rewrite using `[hform_hyp, z0, z1, zt, hst, map_one, ← hq, ht]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-q) * hi2`. Establish `hee : hform σ (hypOne J) e e = 0`. Rewrite using `[hform_hyp, e0', e1', et]`. Simplify using `[hform]`. Establish `hze : hform σ (hypOne J) z e = 1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hform_hyp, z1, e0', e1', zt, et]`. Simplify using `[hform]`. Establish `hzx : hform σ (hypOne J) z x = a - (μ : A) * (δ * x 1)`. Rewrite using `[hform_hyp, z0, z1, zt, hst, map_one, ← hw, ha]`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `hxz : IsUnit (hform σ (hypOne J) x z)`. Rewrite using `[← hform_conj_symm hσ hH z x, hzx]`. Conclude with `hμ.map σ`. Take `⟨g₁, hg₁, h₁⟩` from `carry hσ hH e z hee hzz (by rw [hze]; exact isUnit_one)`. Take `⟨g₂, hg₂, h₂⟩` from `carry hσ hH z x hzz hiso hxz`.
-
-Use `⟨g₂ * g₁, mul_mem hg₂ hg₁, ?_⟩` and prove the remaining obligations. Use `show ((g₂ * g₁ : GL (Fin (M + 2)) A) : Matrix (Fin (M + 2)) (Fin (M + 2)) A) *ᵥ e = x`. Rewrite using `[Units.val_mul, ← mulVec_mulVec, h₁, h₂]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbit_ring {A : Type} [CommRing A] (σ : A →+* A) (hσ : ∀ a, σ (σ a) = a)
     (h2 : IsUnit (2 : A)) (δ : A) (hδ : IsUnit δ) (hδs : σ δ = -δ) (P₁ P₂ : Ideal A)
@@ -388,33 +376,31 @@ theorem orbit_ring {A : Type} [CommRing A] (σ : A →+* A) (hσ : ∀ a, σ (σ
   rw [Units.val_mul, ← mulVec_mulVec, h₁, h₂]
 
 /- English proof (translation)
-Introduce `T _ O s hs hss h2 ⟨δ, hδ, hδs⟩ π₁ π₂ hmax M J Ji hJO hJiO hJJ hJ x hprim hiso`. Set `τ : O →+* O` to `s.restrict O O hs`. Establish `hτ : ∀ a : O, ((τ a : O) : T) = s a` using `fun a => rfl`. Set `JO : Matrix (Fin M) (Fin M) O` to `fun i j => ⟨J i j, hJO i j⟩`. Set `JiO : Matrix (Fin M) (Fin M) O` to `fun i j => ⟨Ji i j, hJiO i j⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hmapJ : (hypOne JO).map O.subtype = hypOne J`. Use extensionality with `i j`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Proceed by induction on `j using Fin.cases with`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => rfl`. Consider the case `succ j`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => rfl`. Consider the case `succ j => rfl`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ i`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => rfl`.
+Treat this case separately. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `succ j`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => rfl`. Consider the case `succ j => rfl`. Consider the case `succ i`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `j using Fin.cases with`. Consider the case `zero => rfl`. Consider the case `succ j`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `succ j => rfl`. Establish `hmul : JO * JiO = 1`. Apply `Matrix.map_injective (f := O.subtype) Subtype.val_injective` to reduce the goal to its premises. Use `show (JO * JiO).map O.subtype = (1 : Matrix (Fin M) (Fin M) O).map O.subtype`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hJJ`. Establish `hiso0 : hform τ (hypOne JO) x x = 0`. Establish `h3 : ((hform τ (hypOne JO) x x : O) : T) = hform s (hypOne J) (fun i => (x i : T)) (fun i => (x i : T))`. Rewrite using `[← hmapJ]`. Simplify using `[hform, hτ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (h3.trans hiso)`. Take `⟨g0, hg0, hgx⟩` from `orbit_ring τ (fun a => Subtype.ext (hss a)) h2 δ hδ (Subtype.ext hδs) (Ideal.span {π₁}) (Ideal.span {π₂}) hmax JO JiO hmul (fun i j => Subtype.ext (hJ i j)) x hprim hiso0`. Establish `hval : ∀ g : GL (Fin (M + 2)) O, ((Matrix.GeneralLinearGroup.map O.subtype g : GL (Fin (M + 2)) T) : Matrix (Fin (M + 2)) (Fin (M + 2)) T) = (g : Matrix (Fin (M + 2)) (Fin (M + 2)) O).map O.subtype` using `fun g => rfl`. Use `⟨Matrix.GeneralLinearGroup.map O.subtype g0, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : cT τ (g0 : Matrix (Fin (M + 2)) (Fin (M + 2)) O) * hypOne JO * (g0 : Matrix (Fin (M + 2)) (Fin (M + 2)) O) = hypOne JO` using `hg0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (RingHom.mapMatrix O.subtype) h0`. Rewrite `h1` using `[map_mul, map_mul]`. Use `show cT s ((Matrix.GeneralLinearGroup.map O.subtype g0 : GL (Fin (M + 2)) T) : Matrix (Fin (M + 2)) (Fin (M + 2)) T) * hypOne J * ((Matrix.GeneralLinearGroup.map O.subtype g0 : GL (Fin (M + 2)) T) : Matrix (Fin (M + 2)) (Fin (M + 2)) T) = hypOne J`. Establish `e1 : RingHom.mapMatrix O.subtype (cT τ (g0 : Matrix (Fin (M + 2)) (Fin (M + 2)) O)) = cT s ((Matrix.GeneralLinearGroup.map O.subtype g0 : GL (Fin (M + 2)) T) : Matrix (Fin (M + 2)) (Fin (M + 2)) T)`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Both sides reduce to the same expression. Establish `e2 : RingHom.mapMatrix O.subtype (hypOne JO) = hypOne J` using `hmapJ`. Establish `e3 : RingHom.mapMatrix O.subtype (g0 : Matrix (Fin (M + 2)) (Fin (M + 2)) O) = ((Matrix.GeneralLinearGroup.map O.subtype g0 : GL (Fin (M + 2)) T) : Matrix (Fin (M + 2)) (Fin (M + 2)) T)` using `rfl`. Rewrite `h1` using `[e1, e2, e3]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `congrArg Subtype.val (congrFun hgx i)`. Rewrite using `[← h3, hval]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, AddSubmonoidClass.coe_finset_sum, Subring.coe_mul, Subring.coe_subtype]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `j using Fin.cases with`. Consider the case `zero => rfl`. Consider the case `succ j => rfl`. Introduce `i j`. Rewrite using `[hval]`.
-
-Conclude with `((g0 : Matrix (Fin (M + 2)) (Fin (M + 2)) O) i j).2`. Introduce `i j`. Rewrite using `[← map_inv, hval]`. Conclude with `(((g0⁻¹ : GL (Fin (M + 2)) O) : Matrix (Fin (M + 2)) (Fin (M + 2)) O) i j).2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trans_orbit : ∀ (T : Type) [CommRing T] (O : Subring T) (s : T →+* T), (∀ y ∈ O, s y ∈ O) → (∀ y, s (s y) = y) → IsUnit (2 : O) → (∃ δ : O, IsUnit δ ∧ s δ = -δ) → ∀ π₁ π₂ : O, (∀ P : Ideal O, P.IsMaximal → P = Ideal.span {π₁} ∨ P = Ideal.span {π₂}) → ∀ (M : ℕ) (J Ji : Matrix (Fin M) (Fin M) T), (∀ i j, J i j ∈ O) → (∀ i j, Ji i j ∈ O) → J * Ji = 1 → (∀ i j, s (J j i) = J i j) → ∀ x : Fin (M + 2) → O, (∀ P : Ideal O, P.IsMaximal → ∃ i, x i ∉ P) → hform s (hypOne J) (fun i => (x i : T)) (fun i => (x i : T)) = 0 → ∃ g ∈ UJ s (hypOne J), (g : Matrix (Fin (M + 2)) (Fin (M + 2)) T) *ᵥ (e0 T M 0) = (fun i => (x i : T)) ∧ (∀ i j, (g : Matrix (Fin (M + 2)) (Fin (M + 2)) T) i j ∈ O) ∧ ∀ i j, ((g⁻¹ : GL (Fin (M + 2)) T) : Matrix (Fin (M + 2)) (Fin (M + 2)) T) i j ∈ O := by
   intro T _ O s hs hss h2 ⟨δ, hδ, hδs⟩ π₁ π₂ hmax M J Ji hJO hJiO hJJ hJ x hprim hiso

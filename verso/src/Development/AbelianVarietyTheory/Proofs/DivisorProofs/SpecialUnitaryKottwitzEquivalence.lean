@@ -8,7 +8,7 @@ namespace GlobalTheory.SEquivOfRat
 open Matrix GlobalTheory.AdLat GlobalTheory.UCls GlobalTheory.SUVol IsDedekindDomain
 
 /- English proof (translation)
-Establish `h : ratM (maximalRealSubfield E) γ = (Algebra.TensorProduct.includeRight : E →ₐ[maximalRealSubfield E] RA (maximalRealSubfield E) E).toRingHom.mapMatrix γ` using `rfl`. Rewrite using `[h, ← RingHom.map_det]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ratM_det {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (γ : Matrix (Fin r) (Fin r) E) :
     (ratM (maximalRealSubfield E) γ).det = (1 : FiniteAdeleRing (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E)) ⊗ₜ γ.det := by
@@ -17,15 +17,15 @@ theorem ratM_det {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (�
   rw [h, ← RingHom.map_det]; rfl
 
 /- English proof (translation)
-Establish `hγu : IsUnit γ.det` using `by rw [hγ]; exact isUnit_one`. Establish `hinv : γ * γ⁻¹ = 1` using `Matrix.mul_nonsing_inv γ hγu`. Establish `hinv' : γ⁻¹ * γ = 1` using `Matrix.nonsing_inv_mul γ hγu`. Establish `hdγ : (ratM (maximalRealSubfield E) γ).det = 1` using `by rw [ratM_det, hγ]; rfl`. Establish `hdγi : (ratM (maximalRealSubfield E) γ⁻¹).det = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg Matrix.det (ratM_mul (E := E) γ γ⁻¹)` as an intermediate fact. Rewrite `this` using `[hinv, ratM_one, det_one, det_mul, hdγ, one_mul]`. Conclude with `this.symm`. Establish `hsu : IsUnit s.det` using `by rw [hs.2]; exact isUnit_one`. Establish `hss : s * s⁻¹ = 1` using `Matrix.mul_nonsing_inv s hsu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpres : ∀ x y, hermA (IsCMField.complexConj E) G (ratM (maximalRealSubfield E) γ *ᵥ x) (ratM (maximalRealSubfield E) γ *ᵥ y) = hermA (IsCMField.complexConj E) G x y`. Introduce `x y`. Establish `ex : ∀ z, ratM (maximalRealSubfield E) γ *ᵥ z = s' *ᵥ (M *ᵥ (s⁻¹ *ᵥ z))`. Introduce `z`. Rewrite using `[mulVec_mulVec, mulVec_mulVec, h, Matrix.mul_assoc, hss, Matrix.mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ex, ex, hs'.1.2, hM.1.2, ← hs.1.2]`. Simplify using `only [mulVec_mulVec, hss, one_mulVec]`. Use `⟨γ⁻¹, ⟨⟨by rw [hdγi]; exact isUnit_one, fun x y => ?_⟩, hdγi⟩, M, hM, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hpres, mulVec_mulVec, mulVec_mulVec, ← ratM_mul, hinv, ratM_one, one_mulVec, one_mulVec]`. Use `congrArg Matrix.det h` as an intermediate fact.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[det_mul, det_mul, hs'.2, hs.2, hdγ, one_mul, mul_one]`. Conclude with `this`. Rewrite using `[Matrix.mul_assoc, h, ← Matrix.mul_assoc, ← ratM_mul, hinv', ratM_one, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sequiv_of_rat {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (G : Matrix (Fin r) (Fin r) E)
     (L : Set (Fin r → E)) (s s' M : Matrix (Fin r) (Fin r) (GlobalTheory.AdLat.RA (maximalRealSubfield E) E))

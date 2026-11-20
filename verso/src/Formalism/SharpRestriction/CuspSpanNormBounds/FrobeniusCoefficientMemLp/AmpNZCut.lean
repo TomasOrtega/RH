@@ -21,9 +21,9 @@ def AmpNZCoef : Prop :=
         OrbEq D hW hA hT hT' f ∧ jNorm2 (toBessel D τ w w' θ W (lamD D τ) A hW hA hT hT') f μsec ≠ 0
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT C0`. Take `⟨A1, B1, h'⟩` from `h Cg cb Cu cT CT C0`. Use `⟨A1, B1, fun C' Cl hC' hCl D large₂ hH τ w w' hTT θ W hW A hA hT hT' μsec hsec => ?_⟩` and prove the remaining obligations. Take `⟨f, hOrb, hne⟩` from `h' C' Cl hC' hCl D large₂ hH τ w w' hTT θ W hW A hA hT hT' μsec hsec`. Rewrite using `[← big_cell_eq D τ w w' θ W hW (lamD D τ) A hA hT hT' f hOrb μsec hsec]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hne`.
+A detailed English derivation is pending.
 -/
 theorem ampNZ_of (h : AmpNZCoef) : AmpNZ := by
   intro Cg cb Cu cT CT C0

@@ -24,19 +24,19 @@ def embM (c : R →ₐ[S] R) (J : Matrix d d R) (X Y : Matrix d k R) (g g' : Mat
 variable {c : R →ₐ[S] R} {J : Matrix d d R} {X Y : Matrix d k R}
 
 /- English proof (translation)
-Conclude with `Matrix.map_mul (f := c.toRingHom)`.
+A detailed English derivation is pending.
 -/
 theorem mapc_mul {a b e : Type} [Fintype b] (A : Matrix a b R) (B : Matrix b e R) : (A * B).map c = A.map c * B.map c := by
   exact Matrix.map_mul (f := c.toRingHom)
 
 /- English proof (translation)
-Conclude with `Matrix.map_one _ (map_zero c) (map_one c)`.
+A detailed English derivation is pending.
 -/
 theorem mapc_one {a : Type} [DecidableEq a] : (1 : Matrix a a R).map c = 1 := by
   exact Matrix.map_one _ (map_zero c) (map_one c)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`. Conclude with `h.cc _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Dual.mcc (h : Dual c J X Y) {a b : Type} (A : Matrix a b R) : (A.map c).map c = A := by
   ext i j
@@ -44,28 +44,28 @@ theorem Dual.mcc (h : Dual c J X Y) {a b : Type} (A : Matrix a b R) : (A.map c).
   exact h.cc _
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 private theorem mapc_transpose {a b : Type} (A : Matrix a b R) : (Aᵀ.map c) = (A.map c)ᵀ := by
   ext i j
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem mapc_add' {a b : Type} (A B : Matrix a b R) : (A + B).map c = A.map c + B.map c := by
   ext i j
   simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem mapc_sub' {a b : Type} (A B : Matrix a b R) : (A - B).map c = A.map c - B.map c := by
   ext i j
   simp
 
 /- English proof (translation)
-Establish `e : ((Xᵀ * J * Y.map c).map c)ᵀ = (1 : Matrix k k R)`. Rewrite using `[h.xy, mapc_one, transpose_one]`. Rewrite `e` using `[mapc_mul, mapc_mul, h.mcc, transpose_mul, transpose_mul, h.skew, mapc_transpose, transpose_transpose, Matrix.neg_mul, Matrix.mul_neg, ← Matrix.mul_assoc]`. Conclude with `neg_eq_iff_eq_neg.mp e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dual.yx (h : Dual c J X Y) : Yᵀ * J * X.map c = -1 := by
   have e : ((Xᵀ * J * Y.map c).map c)ᵀ = (1 : Matrix k k R) := by
@@ -75,20 +75,20 @@ theorem Dual.yx (h : Dual c J X Y) : Yᵀ * J * X.map c = -1 := by
   exact neg_eq_iff_eq_neg.mp e
 
 /- English proof (translation)
-Simplify using `only [transpose_mul, transpose_transpose, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tr_mul {e : Type} (Z : Matrix d k R) (T : Matrix d e R) : (J * Z.map c)ᵀ * T = (Tᵀ * J * Z.map c)ᵀ := by
   simp only [transpose_mul, transpose_transpose, Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [embM, Matrix.sub_mul, Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, tr_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem embM_mul {e : Type} (g g' : Matrix k k R) (T : Matrix d e R) :
     embM c J X Y g g' * T = T + X * (g - 1) * (Tᵀ * J * Y.map c)ᵀ - Y * (g' - 1) * (Tᵀ * J * X.map c)ᵀ := by
   simp only [embM, Matrix.sub_mul, Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, tr_mul]
 
 /- English proof (translation)
-Rewrite using `[embM_mul, h.xy, h.xx]`. Simplify using `only [transpose_one, transpose_zero, Matrix.mul_one, Matrix.mul_zero, sub_zero, Matrix.mul_sub]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem Dual.embX (h : Dual c J X Y) (g g' : Matrix k k R) : embM c J X Y g g' * X = X * g := by
   rw [embM_mul, h.xy, h.xx]
@@ -96,7 +96,7 @@ theorem Dual.embX (h : Dual c J X Y) (g g' : Matrix k k R) : embM c J X Y g g' *
   abel
 
 /- English proof (translation)
-Rewrite using `[embM_mul, h.yy, h.yx]`. Simplify using `only [transpose_zero, transpose_neg, transpose_one, Matrix.mul_zero, Matrix.mul_neg, Matrix.mul_one, add_zero, sub_neg_eq_add, Matrix.mul_sub]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem Dual.embY (h : Dual c J X Y) (g g' : Matrix k k R) : embM c J X Y g g' * Y = Y * g' := by
   rw [embM_mul, h.yy, h.yx]
@@ -105,13 +105,13 @@ theorem Dual.embY (h : Dual c J X Y) (g g' : Matrix k k R) : embM c J X Y g g' *
   abel
 
 /- English proof (translation)
-Establish `hAX : ∀ {e : Type} (M : Matrix k e R), (J * Y.map c)ᵀ * (X * M) = M`. Introduce `e M`. Rewrite using `[← Matrix.mul_assoc, tr_mul, h.xy, transpose_one, Matrix.one_mul]`. Establish `hAY : ∀ {e : Type} (M : Matrix k e R), (J * Y.map c)ᵀ * (Y * M) = 0`. Introduce `e M`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Matrix.mul_assoc, tr_mul, h.yy, transpose_zero, Matrix.zero_mul]`. Establish `hBX : ∀ {e : Type} (M : Matrix k e R), (J * X.map c)ᵀ * (X * M) = 0`. Introduce `e M`. Rewrite using `[← Matrix.mul_assoc, tr_mul, h.xx, transpose_zero, Matrix.zero_mul]`. Establish `hBY : ∀ {e : Type} (M : Matrix k e R), (J * X.map c)ᵀ * (Y * M) = -M`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `e M`. Rewrite using `[← Matrix.mul_assoc, tr_mul, h.yx, transpose_neg, transpose_one, Matrix.neg_mul, Matrix.one_mul]`. Establish `hAX1 : (J * Y.map c)ᵀ * X = 1` using `by rw [tr_mul, h.xy, transpose_one]`. Establish `hAY1 : (J * Y.map c)ᵀ * Y = 0` using `by rw [tr_mul, h.yy, transpose_zero]`. Establish `hBX1 : (J * X.map c)ᵀ * X = 0` using `by rw [tr_mul, h.xx, transpose_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBY1 : (J * X.map c)ᵀ * Y = -1` using `by rw [tr_mul, h.yx, transpose_neg, transpose_one]`. Simplify using `only [embM, Matrix.add_mul, Matrix.mul_add, Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc, hAX, hAY, hBX, hBY, hAX1, hAY1, hBX1, hBY1, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_neg, Matrix.neg_mul, sub_zero, zero_sub, add_zero, zero_add, sub_ …`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem Dual.emb_mul (h : Dual c J X Y) (g g' f f' : Matrix k k R) :
     embM c J X Y g g' * embM c J X Y f f' = embM c J X Y (g * f) (g' * f') := by
@@ -137,7 +137,7 @@ theorem Dual.emb_mul (h : Dual c J X Y) (g g' f f' : Matrix k k R) :
   abel
 
 /- English proof (translation)
-Simplify using `only [embM, transpose_add, transpose_sub, transpose_one, transpose_mul, transpose_transpose, mapc_add', mapc_sub', mapc_mul, mapc_one, mapc_transpose, h.mcc, h.skew, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_neg, Ma …`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem Dual.emb_tr (h : Dual c J X Y) (g f : Matrix k k R) :
     (embM c J X Y g (f.map c)ᵀ)ᵀ * J = J * (embM c J X Y f (g.map c)ᵀ).map c := by
@@ -147,13 +147,13 @@ theorem Dual.emb_tr (h : Dual c J X Y) (g f : Matrix k k R) :
   abel
 
 /- English proof (translation)
-Rewrite using `[_root_.mul_inv_rev, Units.val_mul, mapc_mul, transpose_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem star_mul (g f : GL k R) : ((((g * f)⁻¹).1).map c)ᵀ = ((g⁻¹).1.map c)ᵀ * ((f⁻¹).1.map c)ᵀ := by
   rw [_root_.mul_inv_rev, Units.val_mul, mapc_mul, transpose_mul]
 
 /- English proof (translation)
-Rewrite using `[h.emb_mul, ← star_mul]`. Simplify using `[embM, mapc_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Dual.emb_inv (h : Dual c J X Y) (g : GL k R) :
     embM c J X Y g.1 ((g⁻¹).1.map c)ᵀ * embM c J X Y (g⁻¹).1 ((g⁻¹⁻¹).1.map c)ᵀ = 1 := by
@@ -178,11 +178,9 @@ Both sides reduce to the same expression.
 theorem Dual.emb_val (h : Dual c J X Y) (g : GL k R) : (h.emb g).1.1 = embM c J X Y g.1 ((g⁻¹).1.map c)ᵀ := rfl
 
 /- English proof (translation)
-Establish `hE : ∀ {a b : GL k R → Matrix k k R}, Continuous a → Continuous b → Continuous fun g => embM c J X Y (a g) (b g)`. Introduce `a b ha hb`. Simplify using `only [embM]`. Use `fun_prop`. Establish `hv : Continuous fun g : GL k R => (g : Matrix k k R)` using `Units.continuous_val`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : Continuous fun g : GL k R => ((g⁻¹ : GL k R) : Matrix k k R)` using `Units.continuous_coe_inv`. Establish `hii : Continuous fun g : GL k R => ((g⁻¹⁻¹ : GL k R) : Matrix k k R)`. Simplify `hv` using `only [inv_inv]`. Rewrite using `[continuous_induced_rng]`. Use `Units.continuous_iff.mpr ⟨?_, ?_⟩` and prove the remaining obligations.
-
-Conclude with `(hE hv ((hi.matrix_map hc).matrix_transpose)).congr fun g => (h.emb_val g).symm`. Conclude with `(hE hi ((hii.matrix_map hc).matrix_transpose)).congr fun g => rfl`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Dual.emb_cont [TopologicalSpace R] [IsTopologicalRing R] (h : Dual c J X Y) (hc : Continuous c) : Continuous h.emb := by
   have hE : ∀ {a b : GL k R → Matrix k k R}, Continuous a → Continuous b →
@@ -200,7 +198,7 @@ theorem Dual.emb_cont [TopologicalSpace R] [IsTopologicalRing R] (h : Dual c J X
   · exact (hE hi ((hii.matrix_map hc).matrix_transpose)).congr fun g => rfl
 
 /- English proof (translation)
-Establish `hfc : (f : R → R') ∘ c = c' ∘ f` using `funext hf`. Simplify using `only [embM, Matrix.map_sub f (map_sub f), Matrix.map_add f (map_add f), Matrix.map_mul, Matrix.map_one f (map_zero f) (map_one f), Matrix.transpose_map, Matrix.map_map, hfc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem embM_map {S' R' : Type} [CommRing S'] [CommRing R'] [Algebra S' R'] {c' : R' →ₐ[S'] R'} (f : R →+* R')
     (hf : ∀ a, f (c a) = c' (f a)) (g g' : Matrix k k R) :
@@ -210,11 +208,11 @@ theorem embM_map {S' R' : Type} [CommRing S'] [CommRing R'] [Algebra S' R'] {c' 
     Matrix.map_one f (map_zero f) (map_one f), Matrix.transpose_map, Matrix.map_map, hfc]
 
 /- English proof (translation)
-Establish `hfc : (f : R → R') ∘ c = c' ∘ f` using `funext hf`. Use `⟨hc, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun M => Matrix.map M f) h.skew`. Simplify using `only [Matrix.transpose_map, Matrix.map_map, hfc, Matrix.map_neg f (map_neg f)] at e`. Simplify `e` using `only [Matrix.transpose_map, Matrix.map_map]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e` using `congrArg (fun M => Matrix.map M f) h.xx`. Simplify using `only [Matrix.map_mul, Matrix.transpose_map, Matrix.map_map, hfc, Matrix.map_zero f (map_zero f)] at e`. Simplify `e` using `only [Matrix.transpose_map, Matrix.map_map]`. Establish `e` using `congrArg (fun M => Matrix.map M f) h.yy`. Simplify using `only [Matrix.map_mul, Matrix.transpose_map, Matrix.map_map, hfc, Matrix.map_zero f (map_zero f)] at e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `e` using `only [Matrix.transpose_map, Matrix.map_map]`. Establish `e` using `congrArg (fun M => Matrix.map M f) h.xy`. Simplify using `only [Matrix.map_mul, Matrix.transpose_map, Matrix.map_map, hfc, Matrix.map_one f (map_zero f) (map_one f)] at e`. Simplify `e` using `only [Matrix.transpose_map, Matrix.map_map]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Dual.map (h : Dual c J X Y) {S' R' : Type} [CommRing S'] [CommRing R'] [Algebra S' R'] {c' : R' →ₐ[S'] R'} (f : R →+* R')
     (hf : ∀ a, f (c a) = c' (f a)) (hc : ∀ a, c' (c' a) = a) : Dual c' (J.map f) (X.map f) (Y.map f) := by

@@ -13,11 +13,9 @@ noncomputable section
 namespace GlobalTheory.IdemIntegral
 
 /- English proof (translation)
-Use `show (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E) (finPart D w) ∈ _`. Generalize the expression as in `finPart D w = z at hw`. Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, rfl⟩` from `hy`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.comm_tmul]`. Conclude with `GlobalTheory.PlaceDatum.tmul_mem_int ⟨x, rfl⟩ ha`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
-
-Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem toEAf_mem_of_finPart_mem {D : D7} {w : AE D} (hw : finPart D w ∈ intAE D) :
     toEAf D w ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
@@ -33,7 +31,7 @@ theorem toEAf_mem_of_finPart_mem {D : D7} {w : AE D} (hw : finPart D w ∈ intAE
   | neg x _ hx => rw [map_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Establish `: finPart D (incA D (r : D.host.E)) = (1 : Af D.host.F) ⊗ₜ[D.host.F] (r : D.host.E)` using `rfl`. Rewrite using `[this]`. Conclude with `AddSubgroup.subset_closure ⟨1, fun v => by simpa using (one_mem (v.adicCompletionIntegers D.host.F)), r, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPart_incA_mem {D : D7} (r : 𝓞 D.host.E) : finPart D (incA D (r : D.host.E)) ∈ intAE D := by
   have : finPart D (incA D (r : D.host.E)) = (1 : Af D.host.F) ⊗ₜ[D.host.F] (r : D.host.E) := rfl
@@ -41,11 +39,9 @@ theorem finPart_incA_mem {D : D7} (r : 𝓞 D.host.E) : finPart D (incA D (r : D
   exact AddSubgroup.subset_closure ⟨1, fun v => by simpa using (one_mem (v.adicCompletionIntegers D.host.F)), r, rfl⟩
 
 /- English proof (translation)
-Take `⟨r, s, hs, hsa⟩` from `ha`. Establish `hs0 : s ≠ 0` using `fun h => hs (h ▸ zero_mem _)`. Establish `hsE : (s : D.host.E) ≠ 0` using `by exact_mod_cast hs0`. Establish `ha : a = ((s : D.host.E))⁻¹ * (r : D.host.E)`. Express the relevant statement in the definitionally equal form `(s : D.host.E) * a = (r : D.host.E) at hsa`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← hsa, ← mul_assoc, inv_mul_cancel₀ hsE, one_mul]`. Establish `h1 : finPart D (e * incA D ((s : D.host.E))⁻¹) ∈ intAE D`. Assume the negation of the conclusion as `h`. Conclude with `hs ((he.2 s hs0).2 h)`. Rewrite using `[ha, (incA D).map_mul, ← mul_assoc, (toEAf D).map_mul]`.
-
-Conclude with `mul_mem (toEAf_mem_of_finPart_mem h1) (toEAf_mem_of_finPart_mem (finPart_incA_mem r))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_idemAt {D : D7} {e : AE D} {PP : Formalism.L2.DIV.Pl D.host.E} (he : Formalism.L2.NTheta.IsIdemAt e PP)
     {a : D.host.E} (ha : Formalism.L2.Col.IntAt PP a) :

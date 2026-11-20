@@ -45,7 +45,7 @@ def lev (k : ℕ) : Submodule ℂ (Tens F P Q R S) :=
     (fun _ N => N ⊔ ⨆ i, N.map (ladder i)) k
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact FiniteDimensional.span_of_finite ℂ (Set.finite_singleton _)`. Consider the case `succ k ih => show FiniteDimensional ℂ ↥(lev F P Q R S k ⊔ ⨆ i, (lev F P Q R S k).map (ladder i)) infer_instance`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem lev_fd (k : ℕ) : FiniteDimensional ℂ (lev F P Q R S k) := by
   induction k with
@@ -55,14 +55,14 @@ theorem lev_fd (k : ℕ) : FiniteDimensional ℂ (lev F P Q R S k) := by
     infer_instance
 
 /- English proof (translation)
-The claim follows from `le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem lev_le_succ (k : ℕ) : lev F P Q R S k ≤ lev F P Q R S (k + 1) := le_sup_left
 
 /- English proof (translation)
-Establish `h : heisOp c ∈ Submodule.span ℂ (Set.range fun j : Formalism.BasicNotions.TH.Ln P Q R S × Bool => if j.2 then Formalism.BasicNotions.TH.raiB j.1 else Formalism.BasicNotions.TH.lowB j.1)`. Unfold `heisOp`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun l _ => Submodule.sub_mem _ ?_ ?_)` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨(l, true), rfl⟩)`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨(l, false), rfl⟩)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `Submodule.mem_map_of_mem (f := atPlL w) h`. Rewrite `h2` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨j, rfl⟩, rfl⟩`. Conclude with `⟨(w, j), rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem atPl_heisOp_mem (w : InfinitePlace F) (c : Matrix (Formalism.BasicNotions.TH.Ix P Q) (Formalism.BasicNotions.TH.Ix R S) ℂ) :
     atPlL w (heisOp c) ∈ Submodule.span ℂ (Set.range (ladder (F := F) (P := P) (Q := Q) (R := R) (S := S))) := by
@@ -79,9 +79,9 @@ theorem atPl_heisOp_mem (w : InfinitePlace F) (c : Matrix (Formalism.BasicNotion
   exact ⟨(w, j), rfl⟩
 
 /- English proof (translation)
-Establish `hspan : Submodule.span ℂ (Set.range (ladder (F` using `F) (P := P) (Q := Q) (R := R) (S := S))) ≤ (lev F P Q R S (k + 1)).comap (LinearMap.applyₗ (R := ℂ) T) := by`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `show ladder i T ∈ lev F P Q R S (k + 1)`. Conclude with `Submodule.mem_sup_right (Submodule.mem_iSup_of_mem i (Submodule.mem_map_of_mem hT))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : sumPl (V` using `fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol P Q R S) (fun w => heisOp (c w)) ∈ Submodule.span ℂ (Set.range (ladder (F := F) (P := P) (Q := Q) (R := R) (S := S))) := Submodule.sum_mem _ fun w _ => atPl_heisOp_mem w (c w)`. Use `hspan hsum` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sumPl_heisOp_mem (c : InfinitePlace F → Matrix (Formalism.BasicNotions.TH.Ix P Q) (Formalism.BasicNotions.TH.Ix R S) ℂ) (k : ℕ)
     (T : Tens F P Q R S) (hT : T ∈ lev F P Q R S k) :
@@ -101,7 +101,7 @@ theorem sumPl_heisOp_mem (c : InfinitePlace F → Matrix (Formalism.BasicNotions
 end Ladder
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM, piInf, compInf, inclR, infEmb_tmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incM_map_piInf {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n m : Type}
     (J : Matrix n m E) {w : InfinitePlace F} (τ : EmbOver E w) :
@@ -110,33 +110,29 @@ theorem incM_map_piInf {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
   simp [incM, piInf, compInf, inclR, infEmb_tmul]
 
 /- English proof (translation)
-Simplify using `[Formalism.BasicNotions.TH.Jm, Formalism.UG.Jpq, Matrix.fromBlocks_transpose]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Jm_transpose (p q : ℕ) : (Formalism.BasicNotions.TH.Jm p q)ᵀ = Formalism.BasicNotions.TH.Jm p q := by
   simp [Formalism.BasicNotions.TH.Jm, Formalism.UG.Jpq, Matrix.fromBlocks_transpose]
 
 /- English proof (translation)
-Take `⟨hb, hgeo, -, -, -⟩` from `h`. Use `choose A hA hAθ using fun w => GlobalTheory.RealLift.frameEx_holds _ _ _ _ _ (hgeo.hV.sig w) (hgeo.hV.cartan w)`. Use `choose C hC hCθ using fun w => GlobalTheory.RealLift.frameEx_holds _ _ _ _ _ (hgeo.hW.sig w) (hgeo.hW.cartan w)`. Establish `hA1 : ∀ w, IsFrame ((1 : ℂ) • (incM F Γ.V.J).map (piInf (B.emb w))) (A w)` using `fun w => by`. Rewrite using `[incM_map_piInf, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hA w`. Establish `hC1 : ∀ w, IsFrame (Complex.I • (incM F Γ.W.J).map (piInf (B.emb w))) (C w)` using `fun w => by`. Rewrite using `[incM_map_piInf]`. Conclude with `hC w`. Establish `fr : Framed B.emb (incM F Γ.V.J) (incM F Γ.W.J) 1 Complex.I A C` using `⟨one_mul _, hA1, hC1⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.fockToSchrodingerMapExists_of_archHeisenbergDerivatives GlobalTheory.T.archHeisenbergDerivatives_exist F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ Γ.M.co 1 Complex.I A C hb.cm hb.std fr`. Establish `hz0 : ∀ (u : Matrix (Fin a) (Fin (a + a')) (AE F E)) (t : ℝ), Γ.M.co.rho B.ψ (realAd F t • u) 0 = 0`. Introduce `u t`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `toD : ∀ u (f f₁ : SInf F (Fin a × Fin (a + a'))), SD (fun t => Γ.M.co.rho B.ψ (realAd F t • u)) f f₁ → ActsD (evI F) (Γ.M.heisLine B.ψ u) f f₁` using `fun u f f₁ h => (GlobalTheory.RealLift.actsLaws F (Fin a × Fin (a + a')) f f₁ f₁).1 _ (hz0 u) h`. Establish `tw : ∀ w (c : Matrix (Formalism.BasicNotions.TH.Ix (a - Γ.p) Γ.p) (Formalism.BasicNotions.TH.Ix (a + a' - (Γ.p + Γ.q)) (Γ.p + Γ.q)) ℂ) (e : ℂ), A w * (e • (Formalism.BasicNotions.TH.Jm (a - Γ.p) Γ.p * c * Formalism.BasicNotions.TH.Jm (a + a' - (Γ.p + Γ.q)) (Γ.p + Γ.q))) * (C w)ᵀ …`. Introduce `w c e`. Establish `h2 : (C w)ᵀ * (Γ.W.θ w)ᵀ = Formalism.BasicNotions.TH.Jm (a + a' - (Γ.p + Γ.q)) (Γ.p + Γ.q) * (C w)ᵀ`. Rewrite using `[← Matrix.transpose_mul, hCθ w, Matrix.transpose_mul, Jm_transpose]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [← hAθ w, ← h2]; simp only [Matrix.mul_assoc]`. Establish `line : ∀ f, Γ.M.IsGauss B.ψ B.emb f → ∃ z : ℂ, f = z • Φ (PiTensorProduct.tprod ℂ fun _ => 1)`. Introduce and unpack `f ⟨ε, hε⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.T.schwartzFockVacuumLineUnique_of_heisenberg_derivatives GlobalTheory.T.archHeisenbergDerivatives_exist F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ Γ.M.co 1 Complex.I A C Φ hb.cm hb.std fr hΦ f ε (fun u u' hu hu' c hc hc' f1 f1' hf hf' => hε u u' hu hu' (fun w => by rw [hc' w, …`. Use `choose A' hA' using fun w => (hA w).2`. Use `choose C' hC' using fun w => (hC w).2`. Establish `key : ∀ k, fockDeg Γ.M B.ψ B.emb k ≤ (lev F (a - Γ.p) Γ.p (a + a' - (Γ.p + Γ.q)) (Γ.p + Γ.q) k).map Φ`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[fockDeg_zero, Submodule.span_le]`. Introduce `f hf`. Take `⟨z, rfl⟩` from `line f hf`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨z • PiTensorProduct.tprod ℂ (fun _ => 1), Submodule.smul_mem _ _ (Submodule.subset_span rfl), map_smul Φ _ _⟩`. Consider the case `succ k ih`. Rewrite using `[fockDeg_succ]`. Use `sup_le (ih.trans (Submodule.map_mono (lev_le_succ k))) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `f₁ ⟨u, hu, f, hf, hd⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨T, hT, rfl⟩` from `ih hf`. Establish `hc : ∀ w, u.map (piInf (B.emb w)) = A w * (A' w * u.map (piInf (B.emb w)) * (C' w)ᵀ) * (C w)ᵀ`. Introduce `w`. Rewrite using `[show A w * (A' w * u.map (piInf (B.emb w)) * (C' w)ᵀ) * (C w)ᵀ = (A w * A' w) * u.map (piInf (B.emb w)) * (C w * C' w)ᵀ by`. Simplify using `only [Matrix.transpose_mul, Matrix.mul_assoc], hA' w, hC' w]`.
-
-Simplify using the standard rewrite rules. Establish `hsd` using `hΦ.2 u hu _ hc T`. Establish `heq` using `(GlobalTheory.RealLift.actsLaws F _ (Φ T) f₁ _).2.2.1 _ hd (toD u _ _ hsd)`. Rewrite using `[heq]`. Conclude with `⟨_, sumPl_heisOp_mem _ k T hT, rfl⟩`.
-
-Use `haveI := lev_fd (F := F) (P := a - Γ.p) (Q := Γ.p) (R := a + a' - (Γ.p + Γ.q)) (S := Γ.p + Γ.q) k`. Conclude with `Submodule.finiteDimensional_of_le (key k)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fockDeg_finiteDimensional {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {a a' : ℕ} (B : Base F E) (Γ : Geo σ a a') (X : Chars F E) (om : Rep σ Γ.V Γ.W)
@@ -205,7 +201,7 @@ theorem fockDeg_finiteDimensional {F E : Type} [Field F] [NumberField F] [Field 
   exact Submodule.finiteDimensional_of_le (key k)
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B b a' G G₁ H H' _ X om om' R Rf om₁ om₁' R₁ Rf₁ hM _`. Use `haveI := fockDeg_finiteDimensional B G X om om' hM.triple (lowDegInf B G.M R.p)`. Unfold `lowPartInf`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lowPartInf_finiteDimensional : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)

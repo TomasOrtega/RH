@@ -33,15 +33,13 @@ open GlobalTheory.CechPic
 variable {F : Type} [Field F] [NumberField F] {𝔠 : FracId F}
 
 /- English proof (translation)
-Use `letI : GrpObj ((Over.pullback b).obj X.A) := Functor.grpObjObj`. Use `haveI : IsCommMonObj ((Over.pullback b).obj X.A) := Functor.isCommMonObj_obj`. Establish `hg : IsGrpPullback ((Over.pullback b).obj X.A) X.A b (pullback.fst X.A.hom b)` using `isGrpPullback_pullback X.A b`. Take `⟨rm', hrm'⟩` from `GlobalTheory.OActPull.exists_oAct_of_isGrpPullback X.rm hg`. Set `A'` to `(Over.pullback b).obj X.A`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `φ₂ : (G2 A').left ⟶ (G2 X.A).left` to `(lift (pushPt hg.1.w (fst A' A')) (pushPt hg.1.w (snd A' A'))).left`. Establish `hsq : IsSquare (pullback.fst X.A.hom b) φ₂`. Prove the components needed by the constructor for the conclusion. Express the relevant statement in the definitionally equal form `(lift (pushPt hg.1.w (fst A' A')) (pushPt hg.1.w (snd A' A')) ≫ fst X.A X.A).left = _`. Rewrite using `[lift_fst]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(lift (pushPt hg.1.w (fst A' A')) (pushPt hg.1.w (snd A' A')) ≫ snd X.A X.A).left = _`. Rewrite using `[lift_snd]`. Both sides reduce to the same expression. Use `⟨{ A := A' ab := GlobalTheory.isAbelianScheme_pullback_obj b X.A X.ab dim := (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hg.1 X.dim rm := rm' P := fun c ↦ (X.P c).pull φ₂ isLB := fun c ↦ pull_isLB (X.isLB c) _ rig₁ := fun c ↦ (GlobalTheory.T.pullback_squar …` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation.
 
-Use symmetry as in `:= fun c ↦ (GlobalTheory.T.pullback_square_action_bundle_iso X b A' _ hg rm' hrm' φ₂ hsq c c 1).1`. Use `add := fun c c' ↦ (GlobalTheory.T.pullback_square_action_bundle_iso X b A' _ hg rm' hrm' φ₂ hsq c c' 1).2.1`. Use `smul := fun a c ↦ (GlobalTheory.T.pullback_square_action_bundle_iso X b A' _ hg rm' hrm' φ₂ hsq c c a).2.2`. Use `pos := GlobalTheory.T.pullback_square_diagonal_rel_ample X b A' _ hg φ₂ hsq`. Use `ker := GlobalTheory.T.pullback_square_action_sections_generated X b A' _ hg rm' hrm' φ₂ hsq }, pullback.fst X.A.hom b, ⟨hg, hrm', φ₂, hsq, fun c ↦ ?_⟩⟩`.
-
-Conclude with `(cls_eq_iff (pull_isLB (X.isLB c) φ₂) (pull_isLB (X.isLB c) φ₂)).1 rfl`.
+A detailed English derivation is pending.
 -/
 theorem exists_isPullBy {S S' : Scheme.{0}} (X : Obj F 𝔠 S) (b : S' ⟶ S) :
     ∃ (X' : Obj F 𝔠 S') (φ : X'.A.left ⟶ X.A.left), X'.IsPullBy X b φ := by
@@ -73,7 +71,7 @@ theorem exists_isPullBy {S S' : Scheme.{0}} (X : Obj F 𝔠 S) (b : S' ⟶ S) :
   exact (cls_eq_iff (pull_isLB (X.isLB c) φ₂) (pull_isLB (X.isLB c) φ₂)).1 rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isPullBy_comp' h' h`.
+A detailed English derivation is pending.
 -/
 theorem IsPullBy.comp {S S' S'' : Scheme.{0}} {X : Obj F 𝔠 S} {X' : Obj F 𝔠 S'} {X'' : Obj F 𝔠 S''}
     {b : S' ⟶ S} {b' : S'' ⟶ S'} {φ : X'.A.left ⟶ X.A.left} {ψ : X''.A.left ⟶ X'.A.left}
@@ -81,7 +79,7 @@ theorem IsPullBy.comp {S S' S'' : Scheme.{0}} {X : Obj F 𝔠 S} {X' : Obj F �
   GlobalTheory.T.isPullBy_comp' h' h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isPullBy_factor_through h h'`.
+A detailed English derivation is pending.
 -/
 theorem IsPullBy.cancel {S S' S'' : Scheme.{0}} {X : Obj F 𝔠 S} {X' : Obj F 𝔠 S'} {X'' : Obj F 𝔠 S''}
     {b : S' ⟶ S} {b' : S'' ⟶ S'} {φ : X'.A.left ⟶ X.A.left} {χ : X''.A.left ⟶ X.A.left}
@@ -90,7 +88,7 @@ theorem IsPullBy.cancel {S S' S'' : Scheme.{0}} {X : Obj F 𝔠 S} {X' : Obj F �
   GlobalTheory.T.isPullBy_factor_through h h'
 
 /- English proof (translation)
-Take `⟨α', hα'⟩` from `GlobalTheory.T.level_structure_pullback_exists h α`. Conclude with `⟨α', φ, h, hα'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsPullBy.exists_level {S S' : Scheme.{0}} {X : Obj F 𝔠 S} {X' : Obj F 𝔠 S'} {b : S' ⟶ S}
     {φ : X'.A.left ⟶ X.A.left} (h : X'.IsPullBy X b φ) {N : ℕ} (α : X.Level N) :
@@ -99,7 +97,7 @@ theorem IsPullBy.exists_level {S S' : Scheme.{0}} {X : Obj F 𝔠 S} {X' : Obj F
   exact ⟨α', φ, h, hα'⟩
 
 /- English proof (translation)
-Take `⟨X', φ, h⟩` from `exists_isPullBy X b`. Take `⟨α', hα'⟩` from `h.exists_level α`. Conclude with `⟨X', α', hα'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isLevelPull {S S' : Scheme.{0}} {X : Obj F 𝔠 S} {N : ℕ} (α : X.Level N) (b : S' ⟶ S) :
     ∃ (X' : Obj F 𝔠 S') (α' : X'.Level N), IsLevelPull α' α b := by
@@ -110,7 +108,7 @@ theorem exists_isLevelPull {S S' : Scheme.{0}} {X : Obj F 𝔠 S} {N : ℕ} (α 
 variable {R R' : Type} [CommRing R] [CommRing R']
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(v'.hom ≫ X'.rm.act a).left ≫ φ = spMap (Chart.dualMapR σ) ≫ (v.hom ≫ X.rm.act a).left`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, h.act a, ← Category.assoc, hv, Category.assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem lieCorr_smul {σ : R →+* R'} {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 (Sp R')}
     {φ : X'.A.left ⟶ X.A.left} (h : X'.IsPullBy X (spMap σ) φ) {v : X.Lie} {v' : X'.Lie} (hv : LieCorr σ φ v v')
@@ -119,7 +117,7 @@ theorem lieCorr_smul {σ : R →+* R'} {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 
   rw [Over.comp_left, Over.comp_left, Category.assoc, h.act a, ← Category.assoc, hv, Category.assoc]
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `GlobalTheory.T.lie_algebra_base_change_iso (R := R) (R' := R') h`. Use `⟨e, he, fun a v ↦ ?_⟩` and prove the remaining obligations. Conclude with `((he _ _).1 (lieCorr_smul h ((he v _).2 rfl) a)).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_lieEquiv [Algebra R R'] {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 (Sp R')}
     {φ : X'.A.left ⟶ X.A.left} (h : X'.IsPullBy X (spMap (algebraMap R R')) φ) :
@@ -130,9 +128,9 @@ theorem exists_lieEquiv [Algebra R R'] {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 
   exact ((he _ _).1 (lieCorr_smul h ((he v _).2 rfl) a)).symm
 
 /- English proof (translation)
-Use `letI := σ.toAlgebra`. Take `⟨e, he, -⟩` from `exists_lieEquiv (R' := R') h`. Take `⟨hfin, hproj, -⟩` from `GlobalTheory.T.lie_algebra_finite_projective_rank X`. Establish `key : ∀ δ' : X'.DetOmega, DetCorr σ φ δ.1 δ' ↔ ∀ v : Fin (Module.finrank ℚ F) → X.Lie, δ' (fun i ↦ e (1 ⊗ₜ v i)) = algebraMap R R' (δ.1 v)` using `fun δ' ↦ by`. Use `⟨fun H v ↦ H v _ fun i ↦ (he _ _).2 rfl, fun H v v' hv ↦ ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl : v' = fun i ↦ e (1 ⊗ₜ v i)` from `funext fun i ↦ (he _ _).1 (hv i)`. Conclude with `H v`. Take `⟨δ', ⟨hs, hv⟩, hu⟩` from `GlobalTheory.T.exists_unique_base_change_volume_form R R' X.Lie X'.Lie e _ δ.1 δ.2`. Use `⟨⟨δ', hs⟩, (key δ').2 hv, fun δ'' hδ'' ↦ Subtype.ext (hu δ''.1 ⟨δ''.2, (key δ''.1).1 hδ''⟩)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsPullBy.existsUnique_detGen (σ : R →+* R') {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 (Sp R')}
     {φ : X'.A.left ⟶ X.A.left} (h : X'.IsPullBy X (spMap σ) φ) (δ : X.DetGen) :
@@ -149,14 +147,14 @@ theorem IsPullBy.existsUnique_detGen (σ : R →+* R') {X : Obj F 𝔠 (Sp R)} {
   refine ⟨⟨δ', hs⟩, (key δ').2 hv, fun δ'' hδ'' ↦ Subtype.ext (hu δ''.1 ⟨δ''.2, (key δ''.1).1 hδ''⟩)⟩
 
 /- English proof (translation)
-Take `⟨hfin, hproj, hrk⟩` from `GlobalTheory.T.lie_algebra_finite_projective_rank X`. Conclude with `GlobalTheory.T.top_exterior_dual_invertible R X.Lie _ hrk`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem invertible_detOmega (X : Obj F 𝔠 (Sp R)) : Module.Invertible R X.DetOmega := by
   obtain ⟨hfin, hproj, hrk⟩ := GlobalTheory.T.lie_algebra_finite_projective_rank X
   exact GlobalTheory.T.top_exterior_dual_invertible R X.Lie _ hrk
 
 /- English proof (translation)
-Use `letI := σ.toAlgebra`. Take `⟨e, -, he⟩` from `exists_lieEquiv (R' := R') h`. Conclude with `GlobalTheory.T.base_change_module_tensor_action R R' (𝓞 F) X.Lie X'.Lie e he hX`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsPullBy.isRapoport (σ : R →+* R') {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 (Sp R')}
     {φ : X'.A.left ⟶ X.A.left} (h : X'.IsPullBy X (spMap σ) φ) (hX : X.IsRapoport) : X'.IsRapoport := by
@@ -165,11 +163,11 @@ theorem IsPullBy.isRapoport (σ : R →+* R') {X : Obj F 𝔠 (Sp R)} {X' : Obj 
   exact GlobalTheory.T.base_change_module_tensor_action R R' (𝓞 F) X.Lie X'.Lie e he hX
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hX`. Use `Set.eq_univ_of_forall fun s K _ t _ Y φ hY ↦ ?_` and prove the remaining obligations. Take `⟨σ, rfl⟩ : ∃ σ : R →+* K, spMap σ = t` from `⟨(Spec.preimage t).hom, Spec.map_preimage t⟩`. Conclude with `hY.isRapoport σ hX`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hX`. Take `⟨hfin, hproj, -⟩` from `GlobalTheory.T.lie_algebra_finite_projective_rank X`. Use `GlobalTheory.T.module_action_of_field_fibres R (𝓞 F) X.Lie fun K _ _ ↦ ?_` and prove the remaining obligations. Take `⟨Y, φ, hY⟩` from `exists_isPullBy X (spMap (algebraMap R K))`. Take `⟨x⟩ : Nonempty (Sp K)` from `inferInstance`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hYr : Y.IsRapoport` using `(hX ▸ Set.mem_univ (spMap (algebraMap R K) x) : _ ∈ X.rapLocus) K _ ⟨x, rfl⟩ Y φ hY`. Take `⟨e, -, he⟩` from `exists_lieEquiv (R' := K) hY`. Conclude with `⟨Y.Lie, _, _, _, _, e, he, hYr⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isRapoport_iff (X : Obj F 𝔠 (Sp R)) : X.IsRapoport ↔ X.rapLocus = Set.univ := by
   constructor
@@ -187,7 +185,7 @@ theorem isRapoport_iff (X : Obj F 𝔠 (Sp R)) : X.IsRapoport ↔ X.rapLocus = S
     exact ⟨Y.Lie, _, _, _, _, e, he, hYr⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨exists_isPullBy, fun h' h ↦ h'.comp h, fun h h' ↦ h.cancel h', fun h _ α ↦ h.exists_level α, fun σ _ _ _ h ↦ ⟨h.existsUnique_detGen σ, invertible_detOmega _, h.isRapoport σ⟩, isRapoport_iff⟩`.
+Supply the required witnesses or components.
 -/
 theorem pullback_facts :
     (∀ {S S' : Scheme.{0}} (X : Obj F 𝔠 S) (b : S' ⟶ S), ∃ (X' : Obj F 𝔠 S') (φ : X'.A.left ⟶ X.A.left),

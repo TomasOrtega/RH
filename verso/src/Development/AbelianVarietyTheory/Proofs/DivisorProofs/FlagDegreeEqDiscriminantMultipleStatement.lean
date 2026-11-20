@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.CurveCl
 open MvPolynomial Formalism.DegreeFormula GlobalTheory.FlagPoly
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FlagPoly.flagDeg_eq_pos_mul_delPol` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagDegreeEqDiscriminantMultiple.lean&line=22#L22)
 -/

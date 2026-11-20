@@ -6,7 +6,7 @@ open scoped InnerProductSpace ContDiff
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.HCA
 
 /- English proof (translation)
-Set `_ : NormedRing (Matrix (Fin n) (Fin n) ℂ)` to `Matrix.linftyOpNormedRing`. Set `_ : NormedAlgebra ℝ (Matrix (Fin n) (Fin n) ℂ)` to `Matrix.linftyOpNormedAlgebra`. Establish `hc : HasDerivAt (fun t : ℝ => NormedSpace.exp (t • X)) _ s` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X s`. Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] (Fin n → Fin n → ℂ)` to `LinearMap.toContinuousLinearMap (Matrix.ofLinearEquiv ℝ).symm.toLinearMap`. Conclude with `(L.hasFDerivAt.comp_hasDerivAt s hc).differentiableAt`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem differentiableAt_entries_exp_smul {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (s : ℝ) :
     DifferentiableAt ℝ
@@ -20,17 +20,17 @@ theorem differentiableAt_entries_exp_smul {n : ℕ} (X : Matrix (Fin n) (Fin n) 
   exact (L.hasFDerivAt.comp_hasDerivAt s hc).differentiableAt
 
 /- English proof (translation)
-Introduce `n G H _ _ π hG hrep v hv X hX g hg`. Take `⟨F, hF, hFv⟩` from `hv`. Establish `hu : IsUnit g` using `hG.isUnit g hg`. Establish `hgi : g⁻¹ ∈ G` using `hG.inv_mem g hg`. Establish `hinv : g⁻¹ * g = 1` using `Matrix.nonsing_inv_mul g ((Matrix.isUnit_iff_isUnit_det g).1 hu)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : DifferentiableAt ℝ (fun t : ℝ => π (NormedSpace.exp (t • X)) v) 0`. Establish `he : (fun t : ℝ => π (NormedSpace.exp (t • X)) v) = F ∘ fun t : ℝ => (Matrix.of.symm (NormedSpace.exp (t • X)) : Fin n → Fin n → ℂ)`. Use function extensionality and compare the values at `t`. Conclude with `hFv _ (hX t)`. Rewrite using `[he]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hF.differentiable (by simp)).differentiableAt.comp 0 (differentiableAt_entries_exp_smul X 0)`. Establish `key : ∀ t : ℝ, π (NormedSpace.exp (t • (g * X * g⁻¹))) (π g v) = π g (π (NormedSpace.exp (t • X)) v)`. Introduce `t`. Establish `hconj : NormedSpace.exp (t • (g * X * g⁻¹)) = g * NormedSpace.exp (t • X) * g⁻¹`. Establish `: t • (g * X * g⁻¹) = g * (t • X) * g⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.mul_assoc, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[this, Matrix.exp_conj _ _ hu]`. Establish `hge : g * NormedSpace.exp (t • X) ∈ G` using `hG.mul_mem _ hg _ (hX t)`. Establish `h1 : π (g * NormedSpace.exp (t • X) * g⁻¹ * g) = (π (g * NormedSpace.exp (t • X) * g⁻¹)).comp (π g)` using `hrep.2 _ (hG.mul_mem _ hge _ hgi) _ hg`. Establish `h2 : g * NormedSpace.exp (t • X) * g⁻¹ * g = g * NormedSpace.exp (t • X)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc _ g⁻¹ g, hinv, Matrix.mul_one]`. Establish `h3` using `hrep.2 _ hg _ (hX t)`. Rewrite using `[hconj]`. Rewrite `h1` using `[h2, h3]`. Conclude with `(DFunLike.congr_fun h1 v).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `((π g).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd.hasDerivAt`. Establish `h3 : deriv (fun t : ℝ => π (NormedSpace.exp (t • (g * X * g⁻¹))) (π g v)) 0 = π g (deriv (fun t : ℝ => π (NormedSpace.exp (t • X)) v) 0)`. Rewrite using `[funext key]`. Conclude with `h2.deriv`. Conclude with `h3.symm`.
+A detailed English derivation is pending.
 -/
 theorem dRep_equivariant : ∀ {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepOn G π) {v : H} (hv : IsSmoothVec G π v) {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ HCSS.lieOf G) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ G), π g (dRep π X v) = dRep π (g * X * g⁻¹) (π g v) := by
   intro n G H _ _ π hG hrep v hv X hX g hg

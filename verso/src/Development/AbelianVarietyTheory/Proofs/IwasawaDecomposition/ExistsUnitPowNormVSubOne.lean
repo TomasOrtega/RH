@@ -11,25 +11,21 @@ namespace GlobalTheory.OneUnitRoot
 open IsDedekindDomain.HeightOneSpectrum IsLocalRing Polynomial
 
 /- English proof (translation)
-Establish `hc` using `GlobalTheory.SelfDualGenus.isAdicComplete_adicCompletionIntegers v`. Use `set n := normV v - 1 with hn`. Establish `hcard : Nat.card (ResidueField (v.adicCompletionIntegers E)) = normV v` using `Formalism.UG.P.tjcosets_card_residue v`. Use `haveI : Finite (ResidueField (v.adicCompletionIntegers E)) := GlobalTheory.SelfDualGenus.finite_residueField_adicCompletionIntegers v`. Use `haveI := Fintype.ofFinite (ResidueField (v.adicCompletionIntegers E))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq0 : ((normV v : ℕ) : ResidueField (v.adicCompletionIntegers E)) = 0`. Rewrite using `[← hcard, Nat.card_eq_fintype_card]`. Conclude with `FiniteField.cast_card_eq_zero _`. Establish `hq1 : 2 ≤ normV v`. Rewrite using `[← hcard]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finite.one_lt_card`. Establish `hnres : ((n : ℕ) : ResidueField (v.adicCompletionIntegers E)) = -1`. Rewrite using `[hn, Nat.cast_sub (by omega), hq0]; simp`. Establish `hnpos : 0 < n` using `by omega`. Establish `hy1 : Valued.v (y : v.adicCompletion E) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (y : v.adicCompletion E) = ((y : v.adicCompletion E) - 1) + 1` using `by ring`. Rewrite using `[e, Valuation.map_add_eq_of_lt_right]`. Conclude with `map_one _`. Rewrite using `[map_one]` and apply the resulting hypothesis. Use `set y' : v.adicCompletionIntegers E := ⟨y, by show Valued.v (y : v.adicCompletion E) ≤ 1; exact hy1.le⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : (X ^ n - C y' : (v.adicCompletionIntegers E)[X]).Monic` using `monic_X_pow_sub_C y' hnpos.ne'`. Establish `hev : eval 1 (X ^ n - C y' : (v.adicCompletionIntegers E)[X]) ∈ maximalIdeal (v.adicCompletionIntegers E)`. Simplify using `only [eval_sub, eval_pow, eval_X, one_pow, eval_C]`. Rewrite using `[← neg_sub, Ideal.neg_mem_iff, mem_maximalIdeal, mem_nonunits_iff, adicCompletionIntegers.isUnit_iff_valued_eq_one]`. Conclude with `ne_of_lt hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hder : IsUnit (eval 1 (derivative (X ^ n - C y' : (v.adicCompletionIntegers E)[X])))`. Simplify using `only [derivative_sub, derivative_X_pow, derivative_C, sub_zero, eval_mul, eval_C, eval_pow, eval_X, one_pow, mul_one]`. Rewrite using `[← isUnit_map_iff (residue (v.adicCompletionIntegers E)), map_natCast, hnres]`. Conclude with `isUnit_one.neg`. Take `⟨r, hr, hr1⟩` from `HenselianRing.is_henselian (I := maximalIdeal (v.adicCompletionIntegers E)) _ hm 1 hev (hder.map _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrn : r ^ n = y'`. Use `hr` as an intermediate fact. Simplify using `only [IsRoot, eval_sub, eval_pow, eval_X, eval_C] at this`. Conclude with `sub_eq_zero.1 this`. Establish `hrv : Valued.v (r : v.adicCompletion E) = 1`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : Valued.v ((r : v.adicCompletion E) - 1) < 1`. Use `hr1` as an intermediate fact. Rewrite `this` using `[mem_maximalIdeal, mem_nonunits_iff, adicCompletionIntegers.isUnit_iff_valued_eq_one]`. Conclude with `lt_of_le_of_ne (r - 1).2 this`. Establish `e : (r : v.adicCompletion E) = ((r : v.adicCompletion E) - 1) + 1` using `by ring`.
-
-Rewrite using `[e, Valuation.map_add_eq_of_lt_right]`. Conclude with `map_one _`. Rewrite using `[map_one]` and apply the resulting hypothesis. Establish `hr0 : (r : v.adicCompletion E) ≠ 0`. Introduce `h`.
-
-Rewrite `hrv` using `[h, map_zero]`. Conclude with `zero_ne_one hrv`. Use `⟨Units.mk0 _ hr0, hrv, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, Units.val_mk0]`. Conclude with `congrArg Subtype.val hrn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_pow_normV_sub_one (E : Type) [Field E] [NumberField E] (v : HeightOneSpectrum (𝓞 E))
     (y : (v.adicCompletion E)ˣ) (hy : Valued.v ((y : v.adicCompletion E) - 1) < 1) :

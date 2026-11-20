@@ -15,11 +15,11 @@ def HeckeWeak {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNona
       ‖μ‖ ≤ (Nat.card 𝓀[k] : ℝ) ^ (-(((j * (N - j) : ℕ) : ℝ) / 2))
 
 /- English proof (translation)
-Establish `hq0 : 0 < q` using `by linarith`. Establish `ha' : (0 : ℝ) < a` using `by exact_mod_cast ha`. Establish `hs : (0 : ℝ) < (2 + p) / 2` using `by linarith`. Use `⟨q ^ (-((a : ℝ) / ((2 + p) / 2))), (Real.rpow_pos_of_pos hq0 _).le, ?_, ?_⟩` and prove the remaining obligations. Use `Real.rpow_lt_rpow_of_exponent_lt hq (neg_lt_neg ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `div_lt_div_of_pos_left ha' (by norm_num) (by linarith)`. Rewrite using `[← Real.rpow_mul hq0.le, ← Real.rpow_natCast, ← Real.rpow_add hq0]`. Use `Real.rpow_lt_one_of_one_lt_of_neg hq ?_` and prove the remaining obligations. Establish `: (a : ℝ) < (a : ℝ) / ((2 + p) / 2) * p`. Rewrite using `[div_mul_eq_mul_div, lt_div_iff₀ hs]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `mul_lt_mul_of_pos_left (by linarith) ha'`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem exists_radius_rpow {q p : ℝ} (hq : 1 < q) (hp : 2 < p) (a : ℕ) (ha : 0 < a) :
     ∃ ρ : ℝ, 0 ≤ ρ ∧ q ^ (-((a : ℝ) / 2)) < ρ ∧ q ^ a * ρ ^ p < 1 := by
@@ -37,9 +37,9 @@ theorem exists_radius_rpow {q p : ℝ} (hq : 1 < q) (hp : 2 < p) (a : ℕ) (ha :
     linarith
 
 /- English proof (translation)
-Establish `hq' : (0 : ℝ) < q` using `by exact_mod_cast hq`. Establish `hre : (((e : ℂ) / 2)).re = (e : ℝ) / 2`. Establish `: ((e : ℂ) / 2) = (((e : ℝ) / 2 : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[this, Complex.ofReal_re]`. Rewrite `h` using `[norm_mul, Complex.norm_natCast_cpow_of_pos hq, hre]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hp : 0 < (q : ℝ) ^ ((e : ℝ) / 2)` using `Real.rpow_pos_of_pos hq' _`. Rewrite using `[Real.rpow_neg hq'.le, ← one_div, le_div_iff₀ hp]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_of_norm_mul_cpow_le (q e : ℕ) (hq : 0 < q) (μ : ℂ)
     (h : ‖μ * (q : ℂ) ^ ((e : ℂ) / 2)‖ ≤ 1) : ‖μ‖ ≤ (q : ℝ) ^ (-((e : ℝ) / 2)) := by
@@ -53,23 +53,21 @@ theorem norm_le_of_norm_mul_cpow_le (q e : ℕ) (hq : 0 < q) (μ : ℂ)
   exact h
 
 /- English proof (translation)
-Introduce `m hm j hj hjN T hT μ hμ`. Establish `hq : 0 < Nat.card 𝓀[k]` using `Nat.card_pos`. Distinguish the cases in `hμ0 : μ = 0`. Substitute `hμ0` using the available equality. Simplify using `using (Real.rpow_pos_of_pos (by exact_mod_cast hq : (0 : ℝ) < (Nat.card 𝓀[k] : ℝ)) _).le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨w, hw⟩` from `hμ.exists_hasEigenvector`. Set `d : Fin 2 → ℕ` to `![j, N - j]`. Establish `hd : ∑ a, d a = N`. Simplify using `only [d, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `d0 : d 0 = j` using `rfl`. Establish `d1 : d 1 = N - j` using `rfl`. Establish `hd0 : 0 < d 0` using `hj`. Establish `hd1 : 0 < d 1` using `by rw [d1]; omega`. Establish `hT' : Zls.IsHeckeOp π m (Zls.diagPow k N (Zls.omegaVec N (d 0))) T` using `hT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTw : T w = μ • w` using `hw.apply_eq_smul`. Establish `hmk : (Submodule.Quotient.mk (w : V) : Jacquet π (unipRad k (stdBlocks d hd))) ≠ 0`. Introduce `h0`. Take `⟨r, hr⟩` from `GlobalTheory.T.hecke_operator_jacquet_eigen_left k N V π hs m hm d hd hd0 hd1 T hT' w h0`. Rewrite `hr` using `[hw.pow_apply r]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(smul_ne_zero (pow_ne_zero r hμ0) hw.2) hr`. Establish `hjac` using `GlobalTheory.T.hecke_operator_jacquet_eigen_right k N V π hs m hm d hd hd0 hd1 T hT' w`. Establish `heig : (Submodule.Quotient.mk (π (Zls.diagPow k N (Zls.omegaVec N (d 0))) (w : V)) : Jacquet π (unipRad k (stdBlocks d hd))) = μ • (Submodule.Quotient.mk (w : V) : Jacquet π (unipRad k (stdBlocks d hd)))`. Rewrite using `[← hjac, hTw]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hxd, hjm, hs0, c1, hs1⟩` from `GlobalTheory.T.jacquet_quotient_eigenvector k N V π hs hi hA hF d hd hd0 hd1 μ w hmk heig`. Establish `hpos : ∀ a, 0 < (x a).1`. Introduce `a`. Rewrite using `[hxd a]`. Use `fin_cases a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hd0`. Conclude with `hd1`. Establish `hE` using `hM x hx hpos hjm`. Establish `hc` using `(hE (Zls.unifU k) (GlobalTheory.T.uniformizer_pow_tendsto_zero k) ![μ * (Nat.card 𝓀[k] : ℂ) ^ (((d 0 * d 1 : ℕ) : ℂ) / 2), c1] (by`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `fin_cases i`. Conclude with `hs0`. Conclude with `hs1)).1 0 (by simp)`. Establish `hfil : Finset.univ.filter (· ≤ (0 : Fin 2)) = {0}` using `by decide`. Rewrite `hc` using `[hfil, Finset.prod_singleton]`.
-
-Use `norm_le_of_norm_mul_cpow_le (Nat.card 𝓀[k]) (d 0 * d 1) hq μ hc` as an intermediate fact. Simplify `this` using `[d0, d1]`.
+A detailed English derivation is pending.
 -/
 theorem heckeWeak_of_maxExpWeak (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
@@ -125,27 +123,23 @@ theorem heckeWeak_of_maxExpWeak (k : Type) [Field k] [ValuativeRel k] [Topologic
   simpa [d0, d1] using this
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N V _ _ π hsm hadm hsp m hm v hv l hl`. Establish `hfd : FiniteDimensional ℂ (fixed π (Zls.Km k N m))` using `hadm.2 _ (GlobalTheory.CompanionTheory.KmTop.isOpen_Km N m) (GlobalTheory.CompanionTheory.KmTop.isCompact_Km N m)`. Establish `hq : (0 : ℝ) < (Nat.card 𝓀[k] : ℝ)`. Conclude with `Nat.card_pos` after adjusting the coercions. Take `⟨d, e, φ, hφ, hev⟩` from `exists_coordinates (fixed π (Zls.Km k N m))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose T hT using fun j : Fin (N - 1) => GlobalTheory.CompanionTheory.HeckeKm.exists_isHeckeOp k N V π hsm m (Zls.diagPow k N (Zls.omegaVec N ((j : ℕ) + 1)))`. Establish `hq1 : (1 : ℝ) < (Nat.card 𝓀[k] : ℝ)`. Conclude with `(Finite.one_lt_card : 1 < Nat.card 𝓀[k])` after adjusting the coercions. Establish `hrad` using `fun j : Fin (N - 1) => exists_radius_rpow hq1 hp (((j : ℕ) + 1) * (N - ((j : ℕ) + 1))) (Nat.mul_pos (by omega) (by omega))`. Use `choose ρ hρ0 hρb hρp using hrad`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hρe : ∀ (j : Fin (N - 1)) (μ : ℂ), (T j).HasEigenvalue μ → ‖μ‖ < ρ j` using `fun j μ hμ => (hsp m hm ((j : ℕ) + 1) (by omega) (by omega) (T j) (hT j) μ hμ).trans_lt (hρb j)`. Establish `hC` using `fun j : Fin (N - 1) => GlobalTheory.CompanionTheory.SpecBound.norm_pow_le_of_eigenvalues_lt (Fin d → ℂ) (φ (T j)) (ρ j) (fun μ hμ => hρe j μ (hev _ _ hμ))`. Use `choose C hC using hC`. Establish `hprod : ∀ (g : Fin (N - 1) → ℕ) (s : Finset (Fin (N - 1))), ∃ S : Module.End ℂ (fixed π (Zls.Km k N m)), Zls.IsHeckeOp π m (Zls.diagPow k N (Zls.lamOf fun j => if j ∈ s then g j else 0)) S ∧ ‖φ S‖ ≤ ∏ j ∈ s, C j * ρ j ^ g j` using `by classical`. Introduce `g s`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨1, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : (fun j : Fin (N - 1) => if j ∈ (∅ : Finset (Fin (N - 1))) then g j else 0) = 0`. Use function extensionality and compare the values at `j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h0, lamOf_zero, diagPow_zero]`. Introduce `v l _`. Simplify using the standard rewrite rules. Rewrite using `[map_one, Finset.prod_empty]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `ContinuousLinearMap.norm_id_le`. Consider the case `insert a s ha ih`. Take `⟨S, hS, hn⟩` from `ih`. Use `⟨T a ^ g a * S, ?_, ?_⟩` and prove the remaining obligations. Establish `hsplit : (fun j : Fin (N - 1) => if j ∈ insert a s then g j else 0) = (Pi.single a (g a) : Fin (N - 1) → ℕ) + fun j => if j ∈ s then g j else 0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = a`. Substitute `hj` using the available equality. Simplify using `[ha]`. Simplify using `[hj]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hsplit, (GlobalTheory.CompanionTheory.LamOf.lamOf_add_and_single N).1]`. Conclude with `GlobalTheory.CompanionTheory.HeckeOpMul.isHeckeOp_mul k N V π hsm m hm _ _ ((GlobalTheory.CompanionTheory.LamGap.lamOf_antitone_gap_sum N _).1) ((GlobalTheory.CompanionTheory.LamGap.lamOf_antitone_gap_sum N _).1) _ _ (hecke_pow π hsm hm a (T a) (hT a) (g a)) hS`. Rewrite using `[map_mul, map_pow, Finset.prod_insert ha]`. Conclude with `(norm_mul_le _ _).trans (mul_le_mul (hC a (g a)) hn (norm_nonneg _) ((norm_nonneg _).trans (hC a (g a))))`. Set `L : (Fin d → ℂ) →L[ℂ] ℂ` to `LinearMap.toContinuousLinearMap (l ∘ₗ (fixed π (Zls.Km k N m)).subtype ∘ₗ (e.symm : (Fin d → ℂ) →ₗ[ℂ] _))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Set `w : Fin d → ℂ` to `e ⟨v, hv⟩`. Use `⟨‖L‖ * ‖w‖ * ∏ j, C j, ρ, hρ0, fun j => ?_, fun g => ?_⟩` and prove the remaining obligations. Conclude with `hρp j`. Take `⟨S, hS, hn⟩` from `hprod g Finset.univ`. Establish `hg : (fun j : Fin (N - 1) => if j ∈ (Finset.univ : Finset (Fin (N - 1))) then g j else 0) = g`.
-
-Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Rewrite `hS` using `[hg]`. Establish `h1 : l (π (Zls.diagPow k N (Zls.lamOf g)) v) = L (φ S w)`. Rewrite using `[show π (Zls.diagPow k N (Zls.lamOf g)) v = π (Zls.diagPow k N (Zls.lamOf g)) ((⟨v, hv⟩ : fixed π (Zls.Km k N m)) : V) from rfl, hS ⟨v, hv⟩ l hl, hφ]`.
-
-Simplify using `[L]`. Rewrite `*` using `[h1, Finset.prod_mul_distrib]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem coeff_bound_rpow (p : ℝ) (hp : 2 < p) : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), IsSmooth π → IsAdmissible π → HeckeWeak π → ∀ m : ℕ, 1 ≤ m → ∀ v ∈ fixed π (Zls.Km k N m), ∀ l : Module.Dual ℂ V, (∀ x ∈ Zls.Km k N m, l ∘ₗ π x = l) → ∃ (C : ℝ) (ρ : Fin (N - 1) → ℝ), (∀ j, 0 ≤ ρ j) ∧ (∀ j : Fin (N - 1), (Nat.card 𝓀[k] : ℝ) ^ (((j : ℕ) + 1) * (N - ((j : ℕ) + 1))) * ρ j ^ p < 1) ∧ ∀ g : Fin (N - 1) → ℕ, ‖l (π (Zls.diagPow k N (Zls.lamOf g)) v)‖ ≤ C * ∏ j, ρ j ^ g j := by
   intro k _ _ _ _ N V _ _ π hsm hadm hsp m hm v hv l hl
@@ -218,15 +212,15 @@ theorem coeff_bound_rpow (p : ℝ) (hp : 2 < p) : ∀ (k : Type) [Field k] [Valu
       _ = ‖L‖ * ‖w‖ * (∏ j, C j) * ∏ j, ρ j ^ g j := by ring
 
 /- English proof (translation)
-Use `Fintype.ofFinite ι` as an intermediate fact. Establish `hu : (⋃ r : ι × κ, A r.1 r.2) = Set.univ`. Use extensionality with `x`. Simplify using `only [Set.mem_iUnion, Set.mem_univ, iff_true]`. Take `⟨i, j, h⟩` from `hcov x`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(i, j), h⟩`. Establish `h1 : ∫⁻ x, ‖F x‖ₑ ^ p ∂μ ≤ ∑' r : ι × κ, ∫⁻ x in A r.1 r.2, ‖F x‖ₑ ^ p ∂μ` using `by conv_lhs => rw [← setLIntegral_univ, ← hu]`. Conclude with `lintegral_iUnion_le _ _`. Establish `h2 : ∀ r : ι × κ, ∫⁻ x in A r.1 r.2, ‖F x‖ₑ ^ p ∂μ ≤ ENNReal.ofReal (b r.1 r.2 ^ p * w r.1 r.2) * E`. Introduce and unpack `⟨i, j⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h3 : ∫⁻ x in A i j, ‖F x‖ₑ ^ p ∂μ ≤ ∫⁻ x in A i j, ENNReal.ofReal (b i j ^ p) ∂μ`. Use `setLIntegral_mono measurable_const fun x hx => ?_` and prove the remaining obligations. Rewrite using `[← ofReal_norm_eq_enorm, ENNReal.ofReal_rpow_of_nonneg (norm_nonneg _) hp]`. Conclude with `ENNReal.ofReal_le_ofReal (Real.rpow_le_rpow (norm_nonneg _) (hF i j x hx) hp)`. Use `h3.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[setLIntegral_const, ENNReal.ofReal_mul (Real.rpow_nonneg (hb i j) _), mul_assoc]`. Use `gcongr`. Conclude with `hμ i j`. Use `(h1.trans (ENNReal.tsum_le_tsum h2)).trans_lt ?_` and prove the remaining obligations. Rewrite using `[ENNReal.tsum_mul_right, ENNReal.tsum_prod (f := fun i j => ENNReal.ofReal (b i j ^ p * w i j))]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `ENNReal.mul_lt_top ?_ hE` and prove the remaining obligations. Rewrite using `[tsum_fintype]`. Use `ENNReal.sum_lt_top.2 fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun j => mul_nonneg (Real.rpow_nonneg (hb i j) _) (hw i j)) (hsum i)]`. Conclude with `ENNReal.ofReal_lt_top`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_rpow_lt_top_of_cover {p : ℝ} (hp : 0 ≤ p) {X ι κ : Type*} [MeasurableSpace X] (μ : Measure X) (F : X → ℝ) [Finite ι]
     [Countable κ] (A : ι → κ → Set X) (hcov : ∀ x, ∃ i j, x ∈ A i j) (b w : ι → κ → ℝ) (hw : ∀ i j, 0 ≤ w i j) (hb : ∀ i j, 0 ≤ b i j)
@@ -264,9 +258,9 @@ theorem lintegral_rpow_lt_top_of_cover {p : ℝ} (hp : 0 ≤ p) {X ι κ : Type*
   exact ENNReal.ofReal_lt_top
 
 /- English proof (translation)
-Establish `h1 : ∏ j, (q ^ e j) ^ g j = q ^ (∑ j, g j * e j)`. Rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Conclude with `Finset.prod_congr rfl fun j _ => by rw [← pow_mul, mul_comm]`. Establish `h2 : ∏ j, (ρ j ^ p) ^ g j = (∏ j, ρ j ^ g j) ^ p`. Rewrite using `[← Real.finset_prod_rpow _ _ (fun j _ => pow_nonneg (hρ j) _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun j _ => by`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (hρ j), mul_comm, Real.rpow_mul (hρ j), Real.rpow_natCast]`. Simplify using `only [mul_pow _ _ (g _)]`. Rewrite using `[Finset.prod_mul_distrib, h1, h2, Real.mul_rpow hC (Finset.prod_nonneg fun j _ => pow_nonneg (hρ j) _), mul_assoc, mul_comm (q ^ _)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rpow_mul_pow_eq {r : ℕ} (q p : ℝ) (e g : Fin r → ℕ) (ρ : Fin r → ℝ) (hρ : ∀ j, 0 ≤ ρ j) (C : ℝ) (hC : 0 ≤ C) :
     (C * ∏ j, ρ j ^ g j) ^ p * q ^ (∑ j, g j * e j) = C ^ p * ∏ j, (q ^ e j * ρ j ^ p) ^ g j := by
@@ -282,31 +276,29 @@ theorem rpow_mul_pow_eq {r : ℕ} (q p : ℝ) (e g : Fin r → ℕ) (ρ : Fin r 
     mul_comm (q ^ _)]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N V _ _ π hs hi ha hu hH`. Establish `hp0 : 0 ≤ p` using `by linarith`. Unfold `CoeffLp`. Introduce `_ _ μ hμ v l hl`. Establish `hcen : ∀ z ∈ Subgroup.center (GL (Fin N) k), ∀ w, ‖l (π z w)‖ = ‖l w‖`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z hz w`. Rewrite `hz` using `[Matrix.GeneralLinearGroup.center_eq_range_scalar]`. Take `⟨t, rfl⟩` from `hz`. Take `⟨c, hc⟩` from `GlobalTheory.T.admissible_irreducible_central_scalar k N V π hs hi ha t`. Rewrite using `[hc, map_smul, norm_smul, hu t c hc, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hF : ∀ g : GL (Fin N) k, ‖l (π (QuotientGroup.mk g : AdGL k N).out v)‖ = ‖l (π g v)‖`. Introduce `g`. Take `⟨z, hz⟩` from `QuotientGroup.mk_out_eq_mul (Subgroup.center (GL (Fin N) k)) g`. Rewrite using `[hz, Subgroup.mem_center_iff.1 z.2 g, map_mul, Module.End.mul_apply, hcen _ z.2]`. Use `⟨fun q => ‖l (π q.out v)‖, hF, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Continuous.aestronglyMeasurable ((QuotientGroup.isQuotientMap_mk _).continuous_iff.2 ?_)` and prove the remaining obligations. Rewrite using `[show (fun q : AdGL k N => ‖l (π q.out v)‖) ∘ QuotientGroup.mk = fun g => ‖l (π g v)‖ from funext hF]`. Conclude with `((SqIntBridge.isLocallyConstant_orbit hs v).comp fun w => ‖l w‖).continuous`. Rewrite using `[eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top (by simpa using (by linarith : 0 < p)) ENNReal.ofReal_ne_top, ENNReal.toReal_ofReal hp0]`. Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `: Subsingleton (GL (Fin 0) k)` using `inferInstance`. Establish `h1 : Subsingleton (AdGL k 0)` using `inferInstance`. Establish `h2 : μ Set.univ < ⊤` using `isCompact_univ.measure_lt_top`. Use `lintegral_rpow_lt_top_of_cover hp0 μ _ (fun _ _ : Unit => Set.univ) (fun _ => ⟨(), (), trivial⟩) (fun _ _ => ‖l (π (1 : AdGL k 0).out v)‖) (fun _ _ => 1) (fun _ _ => zero_le_one) (fun _ _ => norm_nonneg _) _ h2 ?_ (by simp) (fun _ => (hasSum_fintype _).summable)` and prove the remaining obligations. Introduce `_ _ x _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subsingleton.elim x 1, norm_norm]`. Take `⟨m1, hm1, hK1⟩` from `GlobalTheory.T.congruence_subgroup_basis_nhds k N _ (hs v) (by simp)`. Take `⟨m2, hm2, hK2⟩` from `GlobalTheory.T.congruence_subgroup_basis_nhds k N _ hl (by simp [Module.End.one_eq_id])`. Establish `hm : 1 ≤ max m1 m2` using `hm1.trans (le_max_left _ _)`. Take `⟨m, hmm⟩ : ∃ m, m = max m1 m2` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[← hmm]`. Establish `hv : v ∈ fixed π (Zls.Km k N m)`. Introduce and unpack `⟨x, hx⟩`. Establish `: π x v = v` using `hK1 (GlobalTheory.T.congruence_subgroup_antitone k N m1 m (hmm ▸ le_max_left _ _) hx)`. Simplify using `using this`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hlK : ∀ x ∈ Zls.Km k N m, l ∘ₗ π x = l` using `fun x hx => hK2 (GlobalTheory.T.congruence_subgroup_antitone k N m2 m (hmm ▸ le_max_right _ _) hx)`. Take `⟨s, hsK, hcov⟩` from `GlobalTheory.T.cartan_decomposition_congruence k N m hm hN`. Establish `key : ∀ u : s, ∃ (C : ℝ) (ρ : Fin (N - 1) → ℝ), 0 ≤ C ∧ (∀ j, 0 ≤ ρ j) ∧ (∀ j : Fin (N - 1), (Nat.card 𝓀[k] : ℝ) ^ (((j : ℕ) + 1) * (N - ((j : ℕ) + 1))) * ρ j ^ p < 1) ∧ ∀ g : Fin (N - 1) → ℕ, ∀ x ∈ Zls.Km k N m, ∀ y ∈ Zls.Km k N m, ‖l (π (u.1.1 * x * Zls.diagPow k N (Zls.lamOf g …`. Introduce and unpack `⟨u, hu'⟩`. Take `⟨h1, h2⟩` from `hsK u hu'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hf, hli, heq⟩` from `GlobalTheory.T.matrix_coefficient_cartan_translate k N V π m v hv l hlK u.1 u.2 h1 h2`. Take `⟨C, ρ, hρ0, hρ1, hb⟩` from `coeff_bound_rpow p hp k N V π hs ha hH m hm (π u.2 v) hf (l ∘ₗ π u.1) hli`. Establish `hC : 0 ≤ C` using `by simpa using (norm_nonneg _).trans (hb 0)`. Use `⟨C, ρ, hC, hρ0, hρ1, fun g x hx y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[heq _ x hx y hy]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hb g`. Use `choose C ρ hC0 hρ0 hρ1 hbound using key`. Use `lintegral_rpow_lt_top_of_cover hp0 μ _ (fun (u : s) (g : Fin (N - 1) → ℕ) => (QuotientGroup.mk : GL (Fin N) k → AdGL k N) '' {h | ∃ x ∈ Zls.Km k N m, ∃ y ∈ Zls.Km k N m, h = u.1.1 * x * Zls.diagPow k N (Zls.lamOf g) * y * u.1.2}) ?_ (fun u g => C u * ∏ j, ρ u j ^ g j) (fun _ g => …` and prove the remaining obligations. Introduce `x`. Take `⟨h, rfl⟩` from `QuotientGroup.mk_surjective x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨u, hu', g, a, ha', b, hb, z, hz, rfl⟩` from `hcov h`. Conclude with `⟨⟨u, hu'⟩, g, _, ⟨a, ha', b, hb, rfl⟩, (QuotientGroup.mk_mul_of_mem _ hz).symm⟩`. Introduce and unpack `u g _ ⟨h, ⟨a, ha', b, hb, rfl⟩, rfl⟩ show ‖‖l (π (QuotientGroup.mk _ : AdGL k N).out v)‖‖ ≤ _`. Rewrite using `[norm_norm, hF]`. Conclude with `hbound u g a ha' b hb`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `u g`. Take `⟨h1, h2⟩` from `hsK u.1 u.2`. Use `(GlobalTheory.T.double_coset_volume_le k N μ hμ m hm u.1.1 u.1.2 h1 h2 g).trans_eq ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_pow (Nat.cast_nonneg _), ENNReal.ofReal_natCast]`. Introduce `u`.
-
-Establish `h` using `GlobalTheory.CompanionTheory.Summability.summable_prod_pow_multiIndex (N - 1) (fun j => (Nat.card 𝓀[k] : ℝ) ^ (((j : ℕ) + 1) * (N - ((j : ℕ) + 1))) * ρ u j ^ p) (fun j => mul_nonneg (by positivity) (Real.rpow_nonneg (hρ0 u j) _)) (hρ1 u)`. Conclude with `(h.mul_left (C u ^ p)).congr fun g => (rpow_mul_pow_eq _ p _ g _ (hρ0 u) _ (hC0 u)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coeffLp_of_heckeWeak (p : ℝ) (hp : 2 < p) : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
@@ -394,7 +386,7 @@ theorem coeffLp_of_heckeWeak (p : ℝ) (hp : 2 < p) : ∀ (k : Type) [Field k] [
     exact (h.mul_left (C u ^ p)).congr fun g => (rpow_mul_pow_eq _ p _ g _ (hρ0 u) _ (hC0 u)).symm
 
 /- English proof (translation)
-Introduce `N V _ _ π _ hs hi hu he ε hε`. Conclude with `@coeffLp_of_heckeWeak (2 + ε) (by linarith) k _ _ _ _ N V _ _ π hs hi (hA k N V π hs hi) hu (heckeWeak_of_maxExpWeak k N V π hs hi hA hF he)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem casselmanSuffTemp (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hF : GlobalTheory.Published.StandardFunctorsFiniteLength)
     (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] : CasselmanSuffTemp k := by

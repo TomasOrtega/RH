@@ -14,15 +14,15 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 open GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B hB n n₁ Y Y₁ P hsk hP c hc hcs χa χb za zb f hf fa fb hsplit K hK`. Establish `hcm` using `hB.cm`. Use `set C : Matrix (Fin n) (Fin 1) E := Matrix.of fun i (_ : Fin 1) => P.x i with hCdef`. Establish `hd : Y.J.det ≠ 0` using `GlobalTheory.IsoPlaneProj.det_ne_zero_of_cartan B Y hP.2.2.2.2.2.2.1`. Establish `hd₁ : Y₁.J.det ≠ 0` using `GlobalTheory.IsoPlaneProj.det_ne_zero_of_cartan B Y₁ hP.2.2.2.2.2.2.2.cartan`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : IsHermND σ (c • Y.J.map σ)` using `GlobalTheory.ThKOrthVInt.isHermND_smul_of_skew hσ hsk hd hc hcs`. Establish `hC` using `GlobalTheory.UnipCocptForm.isIsoCols_smul_map_of_isotropic_pair σ Y.J P.x P.y hP.2.1 hP.2.2.2.1 hσ c`. Establish `hA` using `hf K hK`. Take `⟨cc, hcc, -⟩` from `existsUnique_isConstTerm hcm hJ hC (isAut_iff_isAutOn.1 hA).left`. Establish `haut` using `(GlobalTheory.UAut.ConstAut.isAutOn_constTerm F E σ hcm _ _ hJ 1 _ (fun _ => 0) hC _ K _ cc inf_le_left (isAut_iff_isAutOn.1 hA) (isConstTerm_iff_unipFlag.1 hcc)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨μ, 𝓕, hμ, h𝓕, h1⟩` from `GlobalTheory.T.unipotent_quotient_unit_volume F E σ B hB n n₁ Y Y₁ P hsk hP`. Establish `heq : cc = fun x => (fa + fb) ((toGAd hσ Y.J hc).symm x)`. Use function extensionality and compare the values at `x`. Establish `h2` using `GlobalTheory.TorFinIso.setIntegral_unip_eq_constTerm_iso σ B Y Y₁ P hsk hP hσ c hc f μ 𝓕 h𝓕 h1 cc hcc ((toGAd hσ Y.J hc).symm x)`. Rewrite `h2` using `[MulEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2, hsplit.1 μ 𝓕 hμ h𝓕 h1]`. Establish `hmem : ∀ g : UA σ Y.J, g ∈ unip σ Y P ↔ toGAd hσ Y.J hc g ∈ unipRad σ (c • Y.J.map σ) C` using `fun g => GlobalTheory.UnipCocptForm.mem_unip_iff σ hσ Y Y₁.J P hsk hP.1 hP.2.1 hP.2.2.1 hP.2.2.2.1 hP.2.2.2.2.1 hP.2.2.2.2.2.1 hd₁ c hc g`. Rewrite `haut` using `[heq]`. Use `haut.mono ?_ le_rfl` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subgroup.mem_sup_left ?_` and prove the remaining obligations. Rewrite using `[unipFlag_const]`. Conclude with `(hmem g).1 hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.isotropic_plane_constant_term_formula : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E), B.IsGood σ →

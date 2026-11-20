@@ -28,13 +28,13 @@ def typeSpan (ρ : ι → M →ₗ[ℂ] M) (Y₀ G : Submodule ℂ M) : Submodul
   ⨆ (T : M →ₗ[ℂ] M) (_ : Y₀.map T ≤ G ∧ ∀ i, ∀ w ∈ Y₀, T (ρ i w) = ρ i (T w)), Y₀.map T
 
 /- English proof (translation)
-The claim follows from `iSup₂_le fun _ h => h.1`.
+A detailed English derivation is pending.
 -/
 theorem typeSpan_le (ρ : ι → M →ₗ[ℂ] M) (Y₀ G : Submodule ℂ M) : typeSpan ρ Y₀ G ≤ G :=
   iSup₂_le fun _ h => h.1
 
 /- English proof (translation)
-Establish `h1 : Y₀.map LinearMap.id ≤ typeSpan ρ Y₀ G` using `le_iSup₂_of_le (f := fun (T : M →ₗ[ℂ] M) (_ : Y₀.map T ≤ G ∧ ∀ i, ∀ w ∈ Y₀, T (ρ i w) = ρ i (T w)) => Y₀.map T) LinearMap.id ⟨by rwa [Submodule.map_id], fun _ _ _ => rfl⟩ le_rfl`. Rewrite `h1` using `[Submodule.map_id]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem le_typeSpan (ρ : ι → M →ₗ[ℂ] M) {Y₀ G : Submodule ℂ M} (h : Y₀ ≤ G) : Y₀ ≤ typeSpan ρ Y₀ G := by
   have h1 : Y₀.map LinearMap.id ≤ typeSpan ρ Y₀ G :=
@@ -43,7 +43,7 @@ theorem le_typeSpan (ρ : ι → M →ₗ[ℂ] M) {Y₀ G : Submodule ℂ M} (h 
   rwa [Submodule.map_id] at h1
 
 /- English proof (translation)
-The claim follows from `le_iSup₂_of_le (f := fun (T : M →ₗ[ℂ] M) (_ : Y₀.map T ≤ G ∧ ∀ i, ∀ w ∈ Y₀, T (ρ i w) = ρ i (T w)) => Y₀.map T) T ⟨hT, hc⟩ le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem map_le_typeSpan (ρ : ι → M →ₗ[ℂ] M) {Y₀ G : Submodule ℂ M} (T : M →ₗ[ℂ] M) (hT : Y₀.map T ≤ G)
     (hc : ∀ i, ∀ w ∈ Y₀, T (ρ i w) = ρ i (T w)) : Y₀.map T ≤ typeSpan ρ Y₀ G :=
@@ -73,26 +73,26 @@ def KStable (Y : Submodule ℂ (GA D V → ℂ)) : Prop :=
   ∀ τ g, GlobalTheory.CuspGK.InK M τ g → ∀ f ∈ Y, rTr V (atTau θ V τ g) f ∈ Y
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h i y hy => h i.1.1 i.1.2 i.2 y hy, fun h τ g hg y hy => h ⟨(τ, g), hg⟩ y hy⟩`.
+Supply the required witnesses or components.
 -/
 theorem kStable_iff (Y : Submodule ℂ (GA D V → ℂ)) : KStable θ M Y ↔ ∀ i, ∀ y ∈ Y, rhoK θ M i y ∈ Y :=
   ⟨fun h i y hy => h i.1.1 i.1.2 i.2 y hy, fun h τ g hg y hy => h ⟨(τ, g), hg⟩ y hy⟩
 
 /- English proof (translation)
-Introduce `τ g hg f hf` and use `⟨h τ g hg f hf.1, h' τ g hg f hf.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem kStable_inf {Y Y' : Submodule ℂ (GA D V → ℂ)} (h : KStable θ M Y) (h' : KStable θ M Y') :
     KStable θ M (Y ⊓ Y') :=
   fun τ g hg f hf => ⟨h τ g hg f hf.1, h' τ g hg f hf.2⟩
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.CuspGK.isGKSub_gkGen θ M ψ).k`.
+A detailed English derivation is pending.
 -/
 theorem kStable_gkGen (ψ : GA D V → ℂ) : KStable θ M (GlobalTheory.CuspGK.gkGen θ M ψ) :=
   (GlobalTheory.CuspGK.isGKSub_gkGen θ M ψ).k
 
 /- English proof (translation)
-The claim follows from `h.k`.
+A detailed English derivation is pending.
 -/
 theorem kStable_of_isGKSub {A : Submodule ℂ (GA D V → ℂ)} (h : GlobalTheory.CuspGK.IsGKSub θ M A) : KStable θ M A := h.k
 

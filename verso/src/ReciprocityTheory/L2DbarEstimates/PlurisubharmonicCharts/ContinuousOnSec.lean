@@ -16,14 +16,14 @@ def eFl {n : ℕ} (De : MvPolynomial (Fin n) ℂ) (v : V n) : ℝ :=
     Real.log (‖MvPolynomial.eval (fun k => v k) De‖ ^ 2)
 
 /- English proof (translation)
-The claim follows from `(EuclideanSpace.proj k : V n →L[ℂ] ℂ).contDiff`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_coordV {n : ℕ} {m : WithTop ℕ∞} (k : Fin n) :
     ContDiff ℂ m (fun v : V n => v k) :=
   (EuclideanSpace.proj k : V n →L[ℂ] ℂ).contDiff
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simpa using contDiff_const`. Consider the case `add p q hp hq => simpa using hp.add hq`. Consider the case `mul_X p k hp => simpa using hp.mul (contDiff_coordV k)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem contDiff_evalV {n : ℕ} {m : WithTop ℕ∞} (p : MvPolynomial (Fin n) ℂ) :
     ContDiff ℂ m (fun v : V n => MvPolynomial.eval (fun k => v k) p) := by
@@ -33,11 +33,9 @@ theorem contDiff_evalV {n : ℕ} {m : WithTop ℕ∞} (p : MvPolynomial (Fin n) 
   | mul_X p k hp => simpa using hp.mul (contDiff_coordV k)
 
 /- English proof (translation)
-Use `⟨∑ m ∈ p.support, ‖MvPolynomial.coeff m p‖, Finset.sum_nonneg fun _ _ => norm_nonneg _, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval_eq, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun m hm => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_prod]`. Establish `h1 : 1 ≤ 1 + ‖v‖` using `by linarith [norm_nonneg v]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) ((PiLp.norm_apply_le v i).trans (by linarith)) _`.
-
-Use `_ = (1 + ‖v‖) ^ ∑ i ∈ m.support, m i := Finset.prod_pow_eq_pow_sum _ _ _`. Use `_ ≤ (1 + ‖v‖) ^ p.totalDegree := pow_le_pow_right₀ h1 (MvPolynomial.le_totalDegree hm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_evalV_le {n : ℕ} (p : MvPolynomial (Fin n) ℂ) : ∃ C : ℝ, 0 ≤ C ∧ ∀ v : V n,
     ‖MvPolynomial.eval (fun k => v k) p‖ ≤ C * (1 + ‖v‖) ^ p.totalDegree := by
@@ -58,7 +56,7 @@ theorem norm_evalV_le {n : ℕ} (p : MvPolynomial (Fin n) ℂ) : ∃ C : ℝ, 0 
     _ ≤ (1 + ‖v‖) ^ p.totalDegree := pow_le_pow_right₀ h1 (MvPolynomial.le_totalDegree hm)
 
 /- English proof (translation)
-Take `⟨C, hC, h⟩` from `norm_evalV_le p`. Use `⟨C ^ 2 * 2 ^ p.totalDegree, fun v => ?_⟩` and prove the remaining obligations. Establish `h2 : (1 + ‖v‖) ^ 2 ≤ 2 * (1 + ‖v‖ ^ 2)` using `by nlinarith [sq_nonneg (‖v‖ - 1)]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem sq_evalV_le {n : ℕ} (p : MvPolynomial (Fin n) ℂ) : ∃ C : ℝ, ∀ v : V n,
     ‖MvPolynomial.eval (fun k => v k) p‖ ^ 2 ≤ C * (1 + ‖v‖ ^ 2) ^ p.totalDegree := by
@@ -72,11 +70,11 @@ theorem sq_evalV_le {n : ℕ} (p : MvPolynomial (Fin n) ℂ) : ∃ C : ℝ, ∀ 
     _ = C ^ 2 * 2 ^ p.totalDegree * (1 + ‖v‖ ^ 2) ^ p.totalDegree := by rw [mul_pow]; ring
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `sq_evalV_le De`. Establish `hP : Continuous fun v : V n => MvPolynomial.eval (fun k => v k) De` using `(contDiff_evalV (m := 0) De).continuous`. Use `Metric.isCompact_of_isClosed_isBounded (isClosed_le ((continuous_const.add (continuous_norm.pow 2)).pow _) (continuous_const.mul (hP.norm.pow 2))) ?_` and prove the remaining obligations. Use `(Metric.isBounded_closedBall (x := (0 : V n)) (r := Real.exp a * C)).subset fun v hv => ?_` and prove the remaining obligations. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hv' : (1 + ‖v‖ ^ 2) ^ (De.totalDegree + 1) ≤ Real.exp a * ‖MvPolynomial.eval (fun k => v k) De‖ ^ 2` using `hv`. Establish `hr : 0 < (1 + ‖v‖ ^ 2) ^ De.totalDegree` using `by positivity`. Establish `h3 : (1 + ‖v‖ ^ 2) ^ De.totalDegree * (1 + ‖v‖ ^ 2) ≤ (1 + ‖v‖ ^ 2) ^ De.totalDegree * (Real.exp a * C)`. Combine the equalities or inequalities in the displayed calculation. Establish `h4` using `le_of_mul_le_mul_left h3 hr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[norm_nonneg v, sq_nonneg (‖v‖ - 1)]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem isCompact_flatK {n : ℕ} (De : MvPolynomial (Fin n) ℂ) (a : ℝ) :
     IsCompact {v : V n | (1 + ‖v‖ ^ 2) ^ (De.totalDegree + 1) ≤
@@ -105,9 +103,9 @@ theorem isCompact_flatK {n : ℕ} (De : MvPolynomial (Fin n) ℂ) (a : ℝ) :
   nlinarith [norm_nonneg v, sq_nonneg (‖v‖ - 1)]
 
 /- English proof (translation)
-Establish `h1 : 0 < 1 + ‖v‖ ^ 2` using `by positivity`. Establish `h2 : 0 < ‖MvPolynomial.eval (fun k => v k) De‖ ^ 2`. Use `norm_pos_iff.mpr hv` as an intermediate fact. Check the signs of the components of the expression. Rewrite using `[← Real.log_le_log_iff (pow_pos h1 _) (mul_pos (Real.exp_pos a) h2), Real.log_pow, Real.log_mul (Real.exp_pos a).ne' h2.ne', Real.log_exp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities.
 
-Unfold `eFl`. Use `push_cast`. Apply the tactic sequence `constructor <;> intro h <;> linarith`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eFl_le_iff {n : ℕ} (De : MvPolynomial (Fin n) ℂ) (a : ℝ) {v : V n}
     (hv : MvPolynomial.eval (fun k => v k) De ≠ 0) :
@@ -124,7 +122,7 @@ theorem eFl_le_iff {n : ℕ} (De : MvPolynomial (Fin n) ℂ) (a : ℝ) {v : V n}
   constructor <;> intro h <;> linarith
 
 /- English proof (translation)
-Establish `hP : ContDiff ℝ m (fun v : V n => MvPolynomial.eval (fun k => v k) De)` using `(contDiff_evalV De).restrict_scalars ℝ`. Establish `h1 : ContDiffAt ℝ m (fun v : V n => Real.log (1 + ‖v‖ ^ 2)) v` using `(contDiffAt_const.add (contDiff_norm_sq ℂ).contDiffAt).log (by positivity)`. Establish `h2 : ContDiffAt ℝ m (fun v : V n => Real.log (‖MvPolynomial.eval (fun k => v k) De‖ ^ 2)) v` using `(((contDiff_norm_sq ℂ).comp hP).contDiffAt).log (pow_ne_zero 2 (norm_ne_zero_iff.mpr hv))`. Conclude with `(contDiffAt_const.mul h1).sub h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffAt_eFl {n : ℕ} {m : WithTop ℕ∞} (De : MvPolynomial (Fin n) ℂ) {v : V n}
     (hv : MvPolynomial.eval (fun k => v k) De ≠ 0) : ContDiffAt ℝ m (eFl De) v := by
@@ -140,7 +138,7 @@ theorem contDiffAt_eFl {n : ℕ} {m : WithTop ℕ∞} (De : MvPolynomial (Fin n)
 def gFS {n : ℕ} : Fin (n + 1) → V n → ℂ := fun j => Fin.cases (fun _ => 1) (fun k x => x k) j
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_succ, EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => by positivity)]`. Simplify using `[gFS, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_normSq_gFS {n : ℕ} (x : V n) : ∑ j, Complex.normSq (gFS j x) = 1 + ‖x‖ ^ 2 := by
   rw [Fin.sum_univ_succ, EuclideanSpace.norm_eq,
@@ -152,7 +150,7 @@ def uFl {n : ℕ} (De : MvPolynomial (Fin n) ℂ) : Fin (De.totalDegree + 2) →
     (fun _ x => Real.log (1 + ‖x‖ ^ 2)) j
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_succ]`. Simplify using `only [uFl, Fin.cases_zero, Fin.cases_succ, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, map_inv₀, Real.log_inv, Complex.normSq_eq_norm_sq, eFl]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eFl_eq_sum {n : ℕ} (De : MvPolynomial (Fin n) ℂ) (x : V n) :
     eFl De x = ∑ j, uFl De j x := by
@@ -163,17 +161,17 @@ theorem eFl_eq_sum {n : ℕ} (De : MvPolynomial (Fin n) ℂ) (x : V n) :
   ring
 
 /- English proof (translation)
-Establish `hPc : ContDiff ℂ 2 (fun x : V n => MvPolynomial.eval (fun k => x k) De)` using `contDiff_evalV De`. Establish `hg : ∀ j, ContDiffAt ℂ 2 (gFS j) v`. Introduce `j`. Use `Fin.cases ?_ (fun k => ?_) j` and prove the remaining obligations. Conclude with `contDiffAt_const`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(contDiff_coordV k).contDiffAt`. Establish `hinv : ContDiffAt ℂ 2 (fun x : V n => (MvPolynomial.eval (fun k => x k) De)⁻¹) v` using `hPc.contDiffAt.inv hv`. Establish `hpos0` using `Complex.normSq_pos.2 (inv_ne_zero hv)`. Establish `hU1c : ContDiffAt ℝ 2 (fun x : V n => Real.log (1 + ‖x‖ ^ 2)) v` using `(contDiffAt_const.add (contDiff_norm_sq ℂ).contDiffAt).log (by positivity)`. Establish `hU0c : ContDiffAt ℝ 2 (fun x : V n => Real.log (Complex.normSq ((MvPolynomial.eval (fun k => x k) De)⁻¹))) v` using `(contDiffAt_normSq_comp hinv).log hpos0.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU1 : 0 ≤ (leviV n (fun x => ((Real.log (1 + ‖x‖ ^ 2) : ℝ) : ℂ)) v ξ).re`. Establish `h` using `leviV_log_sum_nonneg (u := fun j x => Complex.normSq (gFS j x)) (x := v) (fun j => contDiffAt_normSq_comp (hg j)) (fun j => logPshAt_normSq (hg j)) (by rw [sum_normSq_gFS]; positivity) ξ`. Simplify `h` using `only [sum_normSq_gFS]`. Establish `hU0 : 0 ≤ (leviV n (fun x => ((Real.log (Complex.normSq ((MvPolynomial.eval (fun k => x k) De)⁻¹)) : ℝ) : ℂ)) v ξ).re`. Establish `h` using `leviV_log_sum_nonneg (u := fun (_ : Fin 1) x => Complex.normSq ((MvPolynomial.eval (fun k => x k) De)⁻¹)) (x := v) (fun _ => contDiffAt_normSq_comp hinv) (fun _ => logPshAt_normSq hinv) (by rw [Fin.sum_univ_one]; exact hpos0) ξ`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h` using `only [Fin.sum_univ_one]`. Establish `hsum : (fun x => ((eFl De x : ℝ) : ℂ)) = fun x => ((∑ j, uFl De j x : ℝ) : ℂ)`. Use function extensionality and compare the values at `x`. Rewrite using `[eFl_eq_sum]`. Establish `hc : ∀ j, ContDiffAt ℝ 2 (uFl De j) v`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j`. Use `Fin.cases ?_ (fun k => ?_) j` and prove the remaining obligations. Simplify `hU0c` using `[uFl]`. Simplify `hU1c` using `[uFl]`. Rewrite using `[hsum, leviV_ofReal_sum hc, Complex.re_sum]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_nonneg fun j _ => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun k => ?_) j` and prove the remaining obligations. Simplify `hU0` using `[uFl]`. Simplify `hU1` using `[uFl]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem leviV_eFl_nonneg {n : ℕ} (De : MvPolynomial (Fin n) ℂ) {v : V n}
     (hv : MvPolynomial.eval (fun k => v k) De ≠ 0) (ξ : Fin n → ℂ) :
@@ -220,7 +218,7 @@ theorem leviV_eFl_nonneg {n : ℕ} (De : MvPolynomial (Fin n) ℂ) {v : V n}
   · simpa [uFl] using hU1
 
 /- English proof (translation)
-Establish `h1 : ContinuousOn (f i ∘ (A.chart i).symm) (A.chart i).target`. Use `(hf.1 i).continuousOn` as an intermediate fact. Simplify `this` using `only [Set.preimage_univ, Set.inter_univ]`. Use `(h1.comp (A.chart i).continuousOn fun y hy => (A.chart i).map_source hy).congr fun y hy => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, (A.chart i).left_inv hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem continuousOn_sec {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y]
     [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*}
@@ -234,9 +232,9 @@ theorem continuousOn_sec {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y]
   simp only [Function.comp_apply, (A.chart i).left_inv hy]
 
 /- English proof (translation)
-Establish `hg` using `A.g_ne L (A.pick y) i y (A.mem_pick y) hy`. Establish `hw : w0 (A.pick y) y = A.g L (A.pick y) i y * w0 i y` using `hD.isSection_denom.2 _ _ y trivial (A.mem_pick y) hy`. Establish `hs : ∀ k, s k (A.pick y) y = A.g L (A.pick y) i y * s k i y` using `fun k => (hD.sec_s k).2 _ _ y trivial (A.mem_pick y) hy`. Establish `hz : (fun k => A.zmap w0 s y k) = fun k => s k i y / w0 i y`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show s k (A.pick y) y / w0 (A.pick y) y = _`. Rewrite using `[hs k, hw, mul_div_mul_left _ _ hg]`. Use `show (w0 (A.pick y) y ≠ 0 ∧ MvPolynomial.eval (fun k => A.zmap w0 s y k) De ≠ 0) ↔ _`. Rewrite using `[hz, hw]`. Simplify using `[hg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_Mset_iff {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y]
     [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*}
@@ -259,9 +257,9 @@ theorem mem_Mset_iff {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y]
   simp [hg]
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `y0 hy0`. Establish `hU : (A.chart (A.pick y0)).source ∈ 𝓝 y0` using `(A.chart (A.pick y0)).open_source.mem_nhds (A.mem_pick y0)`. Establish `hw : ContinuousAt (w0 (A.pick y0)) y0` using `(continuousOn_sec hD.isSection_denom _).continuousAt hU`. Establish `hs : ∀ k, ContinuousAt (s k (A.pick y0)) y0` using `fun k => (continuousOn_sec (hD.sec_s k) _).continuousAt hU`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy0'` using `(mem_Mset_iff De hD (A.mem_pick y0)).1 hy0`. Establish `hq : ContinuousAt (fun y => MvPolynomial.eval (fun k => s k (A.pick y0) y / w0 (A.pick y0) y) De) y0` using `(MvPolynomial.continuous_eval De).continuousAt.comp (continuousAt_pi.2 fun k => (hs k).div hw hy0'.1)`. Use `filter_upwards [hU, hw.eventually_ne hy0'.1, hq.eventually_ne hy0'.2] with y hyU hyw hyq`. Conclude with `(mem_Mset_iff De hD hyU).2 ⟨hyw, hyq⟩`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_Mset {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s) : IsOpen (A.Mset w0 s De) := by
   rw [isOpen_iff_mem_nhds]
@@ -280,11 +278,11 @@ theorem isOpen_Mset {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [Sec
   exact (mem_Mset_iff De hD hyU).2 ⟨hyw, hyq⟩
 
 /- English proof (translation)
-Introduce `e he`. Establish `hc : ContDiffOn ℝ ∞ (fun v => ((eFl De v : ℝ) : ℂ)) {v : V n | MvPolynomial.eval (fun k => v k) De ≠ 0}` using `fun v hv => (Complex.ofRealCLM.contDiff.contDiffAt.comp v (contDiffAt_eFl De hv)).contDiffWithinAt`. Use `(hc.mono fun v hv => ?_).congr fun v hv => ?_` and prove the remaining obligations. Establish `h1` using `chart_z_symm n _ e he v hv`. Establish `h2 : _ ∧ _` using `(e.symm v).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `h2.2`. Rewrite `h3` using `[h1]`. Conclude with `h3`. Establish `h1` using `chart_z_symm n _ e he v hv`. Simplify using `only [Function.comp_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show A.flatE w0 s De (e.symm v) = eFl De (A.zmap w0 s (e.symm v)) from rfl, h1]`.
+A detailed English derivation is pending.
 -/
 theorem flatE_smooth {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) :
     SmoothR n (fun y : A.Mset w0 s De => A.zmap w0 s y) (fun y => A.flatE w0 s De y) := by
@@ -303,11 +301,11 @@ theorem flatE_smooth {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [Se
     rw [show A.flatE w0 s De (e.symm v) = eFl De (A.zmap w0 s (e.symm v)) from rfl, h1]
 
 /- English proof (translation)
-Introduce `x ξ`. Take `⟨e, he, hx⟩` from `exists_chart n _ hF.localHomeo x`. Rewrite using `[levi_eq_leviV n _ e he _ x hx ξ]`. Establish `hmem : A.zmap w0 s x ∈ e.target`. Establish `h0 : A.zmap w0 s x = e x` using `he hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h0]`. Conclude with `e.map_source hx`. Establish `hev : (fun v => ((A.flatE w0 s De (e.symm v) : ℝ) : ℂ)) =ᶠ[𝓝 (A.zmap w0 s x)] fun v => ((eFl De v : ℝ) : ℂ)` using `by filter_upwards [e.open_target.mem_nhds hmem] with v hv`. Establish `h1` using `chart_z_symm n _ e he v hv`. Rewrite using `[show A.flatE w0 s De (e.symm v) = eFl De (A.zmap w0 s (e.symm v)) from rfl, h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[leviV_congr hev]`. Establish `h2 : _ ∧ _` using `x.2`. Conclude with `leviV_eFl_nonneg De h2.2 ξ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem flatE_levi {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) :
     LeviNonneg n (fun y : A.Mset w0 s De => A.zmap w0 s y) (fun y => A.flatE w0 s De y) := by
@@ -328,13 +326,13 @@ theorem flatE_levi {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [Seco
   exact leviV_eFl_nonneg De h2.2 ξ
 
 /- English proof (translation)
-Rewrite using `[Subtype.isCompact_iff]`. Establish `hne : ∀ v ∈ {v : V n | (1 + ‖v‖ ^ 2) ^ (De.totalDegree + 1) ≤ Real.exp a * ‖MvPolynomial.eval (fun k => v k) De‖ ^ 2}, MvPolynomial.eval (fun k => v k) De ≠ 0`. Introduce `v hv h0`. Establish `hv' : (1 + ‖v‖ ^ 2) ^ (De.totalDegree + 1) ≤ Real.exp a * ‖MvPolynomial.eval (fun k => v k) De‖ ^ 2` using `hv`. Rewrite `hv'` using `[h0, norm_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: 0 < (1 + ‖v‖ ^ 2) ^ (De.totalDegree + 1)` using `by positivity`. Simplify using `at hv'`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hK` using `hF.proper _ (isCompact_flatK De a) hne`. Use `hK using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_image, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Establish `h2 : _ ∧ _` using `y.2`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `⟨y.2, (eFl_le_iff De a h2.2).1 hy⟩`. Introduce and unpack `⟨hx, hk⟩`. Establish `h2 : _ ∧ _` using `hx`. Conclude with `⟨⟨x, hx⟩, (eFl_le_iff De a h2.2).2 hk, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem flatE_isCompact {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) (a : ℝ) :
     IsCompact {y : A.Mset w0 s De | A.flatE w0 s De y ≤ a} := by

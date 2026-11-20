@@ -18,7 +18,7 @@ variable {N : ℕ}
 def Hc (N : ℕ) (t : ℂ) (T : Matrix (Fin N) (Fin N) ℂ) : ℂ := (1 + T).det ^ t
 
 /- English proof (translation)
-Unfold `Hc`. Establish `h1 : AnalyticAt ℂ (fun T : Matrix (Fin N) (Fin N) ℂ => (1 + T).det) T0` using `(CK.analyticAt_det (1 + T0)).comp (analyticAt_const.add analyticAt_id)`. Conclude with `h1.cpow analyticAt_const h`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem analyticAt_Hc (N : ℕ) (t : ℂ) (T0 : Matrix (Fin N) (Fin N) ℂ) (h : (1 + T0).det ∈ Complex.slitPlane) :
     AnalyticAt ℂ (Hc N t) T0 := by
@@ -28,28 +28,28 @@ theorem analyticAt_Hc (N : ℕ) (t : ℂ) (T0 : Matrix (Fin N) (Fin N) ℂ) (h :
   exact h1.cpow analyticAt_const h
 
 /- English proof (translation)
-Simplify using `using Complex.one_mem_slitPlane`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem one_det_slit : (1 + (0 : Matrix (Fin N) (Fin N) ℂ)).det ∈ Complex.slitPlane := by
   simpa using Complex.one_mem_slitPlane
 
 /- English proof (translation)
-The claim follows from `analyticAt_Hc N t 0 one_det_slit`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_determinant_power_zero (N : ℕ) (t : ℂ) : AnalyticAt ℂ (Hc N t) 0 := analyticAt_Hc N t 0 one_det_slit
 
 /- English proof (translation)
-Rewrite using `[det_phiF]`. Conclude with `hX`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_phiF_slit (X : Matrix (Fin N) (Fin (N + 1)) ℂ) (hX : (1 + piF X).det ∈ Complex.slitPlane) :
     (1 + phiF X).det ∈ Complex.slitPlane := by rw [det_phiF]; exact hX
 
 /- English proof (translation)
-Establish `hD` using `det_phiF_slit X hX`. Establish `h1` using `fderiv_line (Hc (N + 1) t) (phiF X) (Matrix.single 0 0 1) (analyticAt_Hc _ t _ hD).differentiableAt`. Establish `hD0 : (1 + piF X).det ≠ 0` using `Complex.slitPlane_ne_zero hX`. Establish `hfun : (fun s : ℂ => Hc (N + 1) t (phiF X + s • Matrix.single 0 0 1)) = fun s : ℂ => ((1 + s) * (1 + piF X).det) ^ t`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Hc]`. Rewrite using `[← add_assoc, det_corner_perturbation]`. Rewrite `h1` using `[hfun]`. Establish `hf : HasDerivAt (fun s : ℂ => (1 + s) * (1 + piF X).det) (1 * (1 + piF X).det) 0` using `((hasDerivAt_id' (0 : ℂ)).const_add 1).mul_const _`. Establish `h2` using `hf.cpow_const (c := t) (by simpa using hX)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(h1.unique h2).trans ?_` and prove the remaining obligations. Simplify using `only [Hc, add_zero, one_mul]`. Rewrite using `[Complex.cpow_sub _ _ hD0, Complex.cpow_one]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem fderiv_determinant_power_corner (t : ℂ) (X : Matrix (Fin N) (Fin (N + 1)) ℂ) (hX : (1 + piF X).det ∈ Complex.slitPlane) :
     fderiv ℂ (Hc (N + 1) t) (phiF X) (Matrix.single 0 0 1) = t * Hc N t (piF X) := by
@@ -71,9 +71,9 @@ theorem fderiv_determinant_power_corner (t : ℂ) (X : Matrix (Fin N) (Fin (N + 
   field_simp
 
 /- English proof (translation)
-Establish `hA : AnalyticAt ℂ (Hc (N + 1) t) (phiF X)` using `analyticAt_Hc _ t _ (det_phiF_slit X hX)`. Establish `h1` using `fderiv_line (Hc (N + 1) t) (phiF X) (Matrix.single 0 c.succ 1) hA.differentiableAt`. Establish `e : (fun s : ℂ => Hc (N + 1) t (phiF X + s • Matrix.single 0 c.succ 1)) = fun s : ℂ => Hc N t (piF X + s • (-colQ X c))`. Use function extensionality and compare the values at `s`. Simplify using `only [Hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← add_assoc, det_column_perturbation, smul_neg, ← sub_eq_add_neg, add_sub_assoc]`. Rewrite `h1` using `[e]`. Establish `hB : AnalyticAt ℂ (Hc N t) (piF X)` using `analyticAt_Hc _ t _ hX`. Establish `h2` using `fderiv_line (Hc N t) (piF X) (-colQ X c) hB.differentiableAt`. Conclude with `(h1.unique h2).trans (map_neg _ _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fderiv_determinant_power_column_neg (t : ℂ) (X : Matrix (Fin N) (Fin (N + 1)) ℂ) (hX : (1 + piF X).det ∈ Complex.slitPlane)
     (c : Fin N) :
@@ -91,7 +91,7 @@ theorem fderiv_determinant_power_column_neg (t : ℂ) (X : Matrix (Fin N) (Fin (
   exact (h1.unique h2).trans (map_neg _ _)
 
 /- English proof (translation)
-Establish `hc : ContinuousAt (fun X : Matrix (Fin N) (Fin (N + 1)) ℂ => (1 + piF X).det) 0` using `((analyticAt_det _).comp (analyticAt_const.add (analyticAt_piF 0))).continuousAt`. Establish `h0 : (1 + piF (0 : Matrix (Fin N) (Fin (N + 1)) ℂ)).det ∈ Complex.slitPlane`. Rewrite using `[piF_zero, add_zero, Matrix.det_one]`. Conclude with `Complex.one_mem_slitPlane`. Conclude with `hc.eventually_mem (Complex.isOpen_slitPlane.mem_nhds h0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_piFc (N : ℕ) :
     ∀ᶠ X in 𝓝 (0 : Matrix (Fin N) (Fin (N + 1)) ℂ), (1 + piF X).det ∈ Complex.slitPlane := by
@@ -103,11 +103,11 @@ theorem ev_piFc (N : ℕ) :
   exact hc.eventually_mem (Complex.isOpen_slitPlane.mem_nhds h0)
 
 /- English proof (translation)
-Use `set G : Matrix (Fin (N + 1)) (Fin (N + 1)) ℂ → ℂ := fun y => fderiv ℂ (Hc (N + 1) t) y (Matrix.single 0 0 1) with hG`. Establish `hGa : AnalyticAt ℂ G 0` using `analyticAt_fderiv_apply (Hc (N + 1) t) 0 _ (analyticAt_determinant_power_zero (N + 1) t)`. Establish `e1` using `icompL G phiF phiF_add phiF_smul 0 0 phiF_zero hGa N (fun k => Matrix.single k (e k).succ 1) (fun k => Matrix.single k.succ (e k).succ 1) (fun i => phiF_single _ _)`. Rewrite using `[← e1]`. Establish `hev : (G ∘ phiF) =ᶠ[𝓝 0] (fun X : Matrix (Fin N) (Fin (N + 1)) ℂ => t * Hc N t (piF X))` using `by filter_upwards [ev_piFc N] with X hX`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fderiv_determinant_power_corner t X hX`. Rewrite using `[(hev.iteratedFDeriv ℂ N).eq_of_nhds]`. Establish `hHa : AnalyticAt ℂ (fun X : Matrix (Fin N) (Fin (N + 1)) ℂ => Hc N t (piF X)) 0`. Establish `h0 : AnalyticAt ℂ (Hc N t) (piF (0 : Matrix (Fin N) (Fin (N + 1)) ℂ))`. Rewrite using `[piF_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `analyticAt_determinant_power_zero N t`. Conclude with `h0.comp (analyticAt_piF 0)`. Rewrite using `[iconst_mul _ 0 t hHa N]`. Use `congr 1`. Conclude with `icompL (Hc N t) piF piF_add piF_smul 0 0 piF_zero (analyticAt_determinant_power_zero N t) N (fun k => Matrix.single k (e k).succ 1) (fun k => Matrix.single k (e k) 1) (fun i => piF_single_succ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem iterated_derivative_corner_case (t : ℂ) (e : Equiv.Perm (Fin N)) :
     iteratedFDeriv ℂ N (fun y => fderiv ℂ (Hc (N + 1) t) y (Matrix.single 0 0 1)) 0
@@ -139,7 +139,7 @@ def fsumc (t : ℂ) (c : Fin N) (X : Matrix (Fin N) (Fin (N + 1)) ℂ) : ℂ :=
   -∑ k, X k 0 * fderiv ℂ (Hc N t) (piF X) (Matrix.single k c 1)
 
 /- English proof (translation)
-Rewrite using `[fderiv_determinant_power_column_neg t X hX c, colQ_expand, map_sum]`. Simplify using `only [map_smul, smul_eq_mul, fsumc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fderiv_determinant_power_column (t : ℂ) (X : Matrix (Fin N) (Fin (N + 1)) ℂ) (hX : (1 + piF X).det ∈ Complex.slitPlane)
     (c : Fin N) : fderiv ℂ (Hc (N + 1) t) (phiF X) (Matrix.single 0 c.succ 1) = fsumc t c X := by
@@ -147,7 +147,7 @@ theorem fderiv_determinant_power_column (t : ℂ) (X : Matrix (Fin N) (Fin (N + 
   simp only [map_smul, smul_eq_mul, fsumc]
 
 /- English proof (translation)
-Apply the tactic sequence `have hs := Finset.analyticAt_sum (f := fun k (X : Matrix (Fin N) (Fin (N + 1)) ℂ) => X k 0 * fderiv ℂ (Hc N t) (piF X) (Matrix.single k c 1)) Finset.univ (fun k _ => (analyticAt_entry k 0 X0).mul ((analyticAt_fderiv_apply (Hc N t) (piF X0) _ (analyticAt_Hc N t _ h)).comp (analyti …`. Rewrite `hs` using `[Finset.sum_fn]`. Conclude with `hs.neg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem analyticAt_fsumc (t : ℂ) (c : Fin N) (X0 : Matrix (Fin N) (Fin (N + 1)) ℂ)
     (h : (1 + piF X0).det ∈ Complex.slitPlane) : AnalyticAt ℂ (fsumc t c) X0 := by
@@ -159,7 +159,7 @@ theorem analyticAt_fsumc (t : ℂ) (c : Fin N) (X0 : Matrix (Fin N) (Fin (N + 1)
   exact hs.neg
 
 /- English proof (translation)
-Simplify using `only [fsumc]`. Rewrite using `[piF_add, piF_smul, piF_single_zero, smul_zero, add_zero]`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.single_apply, and_true, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, add_mul, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fsum_linec (t : ℂ) (c k0 : Fin N) (y : Matrix (Fin N) (Fin (N + 1)) ℂ) (s : ℂ) :
     fsumc t c (y + s • Matrix.single k0 0 1) =
@@ -171,9 +171,9 @@ theorem fsum_linec (t : ℂ) (c k0 : Fin N) (y : Matrix (Fin N) (Fin (N + 1)) �
   ring
 
 /- English proof (translation)
-Establish `h1` using `fderiv_line (fsumc t c) y (Matrix.single k0 0 1) (analyticAt_fsumc t c y hy).differentiableAt`. Establish `hfun : (fun s : ℂ => fsumc t c (y + s • Matrix.single k0 0 1)) = fun s : ℂ => fsumc t c y - s * fderiv ℂ (Hc N t) (piF y) (Matrix.single k0 c 1)`. Use function extensionality and compare the values at `s`. Conclude with `fsum_linec t c k0 y s`. Rewrite `h1` using `[hfun]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : HasDerivAt (fun s : ℂ => fsumc t c y - s * fderiv ℂ (Hc N t) (piF y) (Matrix.single k0 c 1)) (0 - 1 * fderiv ℂ (Hc N t) (piF y) (Matrix.single k0 c 1)) 0` using `(hasDerivAt_const _ _).sub ((hasDerivAt_id' (0 : ℂ)).mul_const _)`. Use `(h1.unique h2).trans ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fderiv_fsumc (t : ℂ) (c k0 : Fin N) (y : Matrix (Fin N) (Fin (N + 1)) ℂ)
     (hy : (1 + piF y).det ∈ Complex.slitPlane) :

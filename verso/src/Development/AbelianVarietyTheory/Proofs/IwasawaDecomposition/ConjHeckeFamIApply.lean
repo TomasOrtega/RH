@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.Mem.R3.RowAd.Inert
 
 /- English proof (translation)
-Rewrite using `[LinearEquiv.conj_apply]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Rewrite using `[Formalism.L2.Col.heckeFamI_formPts_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conj_heckeFamI_apply {X : Formalism.L2.Col.Fields} {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))}
     (C : Formalism.L2.Col.CoefPk X n (Formalism.L2.Col.DecoSet X.E n ST SG)) (Λ : Formalism.L2.Col.LevFam X.E X.K n SG)
@@ -31,7 +31,7 @@ theorem conj_heckeFamI_apply {X : Formalism.L2.Col.Fields} {n : ℕ} {ST SG : Fi
   rfl
 
 /- English proof (translation)
-The claim follows from `conj_heckeFamI_apply _ _ (Formalism.L2.Col.mtildeKOk W Ch sel τ.1 hX) S0 (offSubI.lev q.1, q.2) f d`.
+A detailed English derivation is pending.
 -/
 theorem colIn3_heckeRI_apply {X : Formalism.L2.Col.Fields} {Pr : Formalism.L2.Col.Primes X} {R : Ranks} (W : Formalism.L2.Col.Wts X Pr.Word R)
     (Ch : Formalism.L2.Col.Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (hX : X.Ok)
@@ -48,9 +48,9 @@ theorem colIn3_heckeRI_apply {X : Formalism.L2.Col.Fields} {Pr : Formalism.L2.Co
   conj_heckeFamI_apply _ _ (Formalism.L2.Col.mtildeKOk W Ch sel τ.1 hX) S0 (offSubI.lev q.1, q.2) f d
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `hP`. Use function extensionality and compare the values at `g`. Establish `e1` using `hm ((famR X I hX U Xg tr).heckeRI t q f) g`. Establish `e2` using `colIn3_heckeRI_apply (X := X.B.fields) (Pr := X.B.primes px) X.B.wts I.Ch I.sel hX (InfinitePlace.mk X.B.embLL) (tuOf I U) Xg ∅ (xiValOf I) tr t q f (decoAd X I t g)`. Establish `e3` using `hN _ (fun e => m ((((Formalism.L2.Col.mtildeKGSD X.B.wts I.Ch I.sel t.1).res (Formalism.L2.Col.mtildeKOk _ _ _ _ hX)).symm f).1 e)) g`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `e1.trans ?_` and prove the remaining obligations. Use `(congrArg m e2).trans ?_` and prove the remaining obligations. Use `(map_sum m _ _).trans ?_` and prove the remaining obligations. Use `e3.symm.trans ?_` and prove the remaining obligations. Conclude with `(Finset.sum_congr rfl (fun a _ => hm f (g * a))).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem opEq (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι)
     (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (t : TupU I U) (cX : CoefA X.toD7.sp.X') {J : Subgroup (Bridge.Gf X.toD7.sp.X')} {χ : J →* ℂˣ}
@@ -77,15 +77,13 @@ theorem opEq (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hX : X.
   exact (Finset.sum_congr rfl (fun a _ => hm f (g * a))).symm
 
 /- English proof (translation)
-Establish `e : (levEnv V β L).χ j = Formalism.L2.DIV.levFn β (flag1L L) (Formalism.UG.bc (swapAE D) (j : Bridge.Gf V).1)` using `rfl`. Establish `hm : Formalism.UG.bc (swapAE D) (j : Bridge.Gf V).1 ∈ Formalism.L2.DIV.lev D.sp.cm V.gram β (flag1L L)` using `j.2`. Establish `hSt` using `Formalism.L2.DIV.parLev_St (Formalism.L2.DIV.lev_le_parLev hm)`. Establish `hloc` using `LiftInertChi.locAt_of_isLocElt V _ _ hj`. Establish `hconj : Formalism.DivisionValues.conjPl Q = Q` using `GlobalTheory.InertNbr.conjPl_eq_of_conjP hQc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hred : ∀ PP, PP ∈ L.Pg ∨ PP ∈ L.Q → Formalism.L2.DIV.redFn β PP (Formalism.UG.bc (swapAE D) (j : Bridge.Gf V).1) = 1` using `fun PP hPP => LiftInertChi.redFn_eq_one_of_locAt _ _ hSt _ hloc PP (fun hu => by`. Break down `GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq hu with h | h` into its components or cases. Conclude with `hoff PP hPP h`. Conclude with `hoff PP hPP (h.trans hconj))`. Establish `hr1 : Formalism.L2.DIV.rTup β (flag1L L) (Formalism.UG.bc (swapAE D) (j : Bridge.Gf V).1) = 1`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `PP`. Use `show Formalism.L2.DIV.upperLeftBlock _ (Formalism.L2.DIV.redFn _ PP.1 _) = 1`. Rewrite using `[hred PP.1 (Or.inl PP.2)]`. Conclude with `Formalism.L2.DIV.blockDiagonalExtendByOnePrimeField_one _ _`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.L2.DIV.levFn`. Rewrite using `[hr1, Formalism.L2.DIV.blockDiagonalExtendByOnePrimeField_one, one_mul, Finset.prod_eq_one, Finset.prod_eq_one, one_mul]`. Introduce `PP hPP`. Rewrite using `[hred PP (Or.inr hPP), Formalism.L2.DIV.dBlk, Formalism.L2.DIV.blockDiagonalExtendByOnePrimeField_one, map_one]`. Introduce `PP hPP`.
-
-Use `Finset.prod_eq_one fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hred PP (Or.inl hPP), Formalism.L2.DIV.dBlk, Formalism.L2.DIV.blockDiagonalExtendByOnePrimeField_one, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_eq_one {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) (Q : Pl D.host.E)
     (hQc : Formalism.L2.Col.conjPrime₂ Q = Q) (hoff : ∀ PP, PP ∈ L.Pg ∨ PP ∈ L.Q → PP ≠ Q) (j : (levEnv V β L).J)
@@ -116,7 +114,7 @@ theorem chi_eq_one {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.
     rw [hred PP (Or.inl hPP), Formalism.L2.DIV.dBlk, Formalism.L2.DIV.blockDiagonalExtendByOnePrimeField_one, map_one]
 
 /- English proof (translation)
-Take `⟨hs, -, h2, -⟩` from `hI.spaces`. Express the relevant statement in the definitionally equal form `X.B.sp.X'.gram = 1`. Rewrite using `[h2]`. Use `Matrix.ext fun i i' => (Formalism.BasicNotions.Examples₂.stdSpace_gram_apply hs _ _ _ _ i i').trans ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply, Formalism.BasicNotions.Examples₂.sgn]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem gram_eq_one (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) (hI : I.Ok) : X.toD7.sp.X'.gram = 1 := by
   obtain ⟨hs, -, h2, -⟩ := hI.spaces
@@ -126,9 +124,7 @@ theorem gram_eq_one (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) (hI : 
   simp [Matrix.one_apply, Formalism.BasicNotions.Examples₂.sgn]
 
 /- English proof (translation)
-Introduce and unpack `PP (h | h) rfl`. Establish `h' : Q.1 ∈ L.Pg` using `h`. Rewrite `h'` using `[hL.Pg]`. Conclude with `Q.2.2.2 (Or.inr h')`. Use `(hL.is.Q_pl t _ h).2 _ h ?_` and prove the remaining obligations.
-
-Conclude with `GlobalTheory.InertNbr.isConjPl_self (D := X.toD7) Q.2.1`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem off_level (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) {U : Set I.ι}
     {L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)} (hL : LevOf X I U L) (t : TupU I U) (Q : PlI X.B px) :
@@ -141,11 +137,9 @@ theorem off_level (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) {U : Set
     exact GlobalTheory.InertNbr.isConjPl_self (D := X.toD7) Q.2.1
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `hL.is.βX`. Rewrite `hm` using `[one_pow]`. Establish `hβ` using `hL.beta.2`. Rewrite `hm` using `[hβ]`. Establish `key` using `GlobalTheory.InertNbr.exists_hecke X.toD7.sp.X' (n := X.B.R.N X.B.R.m - 1) (rank_X' X).symm L.ΛX (L.datXt t) hm Q.1 Q.2.1 (off_level X I hL t Q) hQ 1 1 (one_mem _) (fun x => by`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[gram_eq_one X I hI, one_mul, inv_one, mul_one]`. Conclude with `(LiftBrg.castGL_mem_UA_one X.toD7.sp.cm (rank_X' X).symm x).symm)`. Use the proof step `(one_mem _) (one_mem _) s hs`. Simplify using `only [inv_one, one_mul, mul_one] at key`. Rewrite using `[hβ]`.
-
-Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inert_neighbours (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) {U : Set I.ι}
     {L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)} (hI : I.Ok) (hL : LevOf X I U L) (t : TupU I U) (Q : PlI X.B px)
@@ -170,11 +164,9 @@ theorem inert_neighbours (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) {
   exact key
 
 /- English proof (translation)
-Introduce `X px I hX U Xg tr L eG hI _ hL _ cX gramR c0R _ _ _ _ t P hP`. Establish `hN` using `fun (q : ↑((famR X I hX U Xg tr).okI t) × List ℕ) (hq : Formalism.L2.Col.InertTypeOk X.toD7.sp.X'.rank q.2) => inert_neighbours X I hI hL t (q.1.1 : PlI X.B px) (fun h => q.1.2 (Or.inr h)) q.2 hq`. Conclude with `⟨{ hx := fun q => if hq : Formalism.L2.Col.InertTypeOk X.toD7.sp.X'.rank q.2 then (hN q hq).choose else 1 hA := fun q => if hq : Formalism.L2.Col.InertTypeOk X.toD7.sp.X'.rank q.2 then (hN q hq).choose_spec.choose else ∅ hx_ok := fun q hq => by`. Simplify using `only [dif_pos hq]`. Conclude with `(hN q hq).choose_spec.choose_spec.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `hA_loc := fun q hq => by`. Simplify using `only [dif_pos hq]`. Conclude with `(hN q hq).choose_spec.choose_spec.2.1`. Use `chi_loc := fun q _ j hj => chi_eq_one X.toD7.sp.X' L.βX (L.datXt t) (q.1.1 : PlI X.B px).1 (q.1.1 : PlI X.B px).2.1 (off_level X I hL t (q.1.1 : PlI X.B px)) j hj`. Use `hDC := fun q hq => by`.
-
-Simplify using `only [dif_pos hq]`. Conclude with `(hN q hq).choose_spec.choose_spec.2.2.1`. Use `op_eq := fun q hq f => by`. Simplify using `only [dif_pos hq]`. Conclude with `opEq X I hX U Xg tr t cX P hP q _ (hN q hq).choose_spec.choose_spec.2.2.2 f }⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_inertTie : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι) (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r), I.Ok → ValsIn I → LevOf X I U L → IsPlacewiseIdentity X (px := px) eG → ∀ (cX : CoefA X.toD7.sp.X') (gramR : Matrix (Fin X.toD7.sp.X'.rank) (Fin X.toD7.sp.X'.rank) X.toD7.host.E)
     (c0R : VV X.toD7.what₂.LL (fun τ => Bridge.lamRdef (Ptw X.toD7) τ) →ₛₗ[X.toD7.what₂.embLL] cX.W),

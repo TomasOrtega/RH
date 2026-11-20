@@ -76,9 +76,9 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicN
   {r : ℕ} {T : E} {F : LFlag S r T}
 
 /- English proof (translation)
-Take `⟨-, hf, -⟩` from `hβ`. Establish `h` using `hf (Fin.castSucc i)`. Unfold `frame at h`. Establish `hh : F.fl.fvec i.castSucc = F.fl.e i`. Unfold `FlagG.fvec`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using the standard rewrite rules. Conclude with `hh ▸ h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fix_e {β : S.V ≃ₗ[E] S.V} (hβ : β ∈ Saturated.AutF Λ F) (i : Fin r) : β (F.fl.e i) = F.fl.e i := by
   obtain ⟨-, hf, -⟩ := hβ
@@ -90,9 +90,9 @@ theorem fix_e {β : S.V ≃ₗ[E] S.V} (hβ : β ∈ Saturated.AutF Λ F) (i : F
   exact hh ▸ h
 
 /- English proof (translation)
-Introduce `x hx`. Unfold `Xflag FlagG.Xa at hx`. Establish `hle : Submodule.span E (F.fl.e '' {i | ↑i < j}) ≤ LinearMap.eqLocus (β : S.V →ₗ[E] S.V) LinearMap.id`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, -, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify `fix_e hβ i` using `[LinearMap.mem_eqLocus]`. Establish `h2` using `hle hx`. Simplify `h2` using `[LinearMap.mem_eqLocus]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fix_xflag {β : S.V ≃ₗ[E] S.V} (hβ : β ∈ Saturated.AutF Λ F) (j : ℕ) : ∀ x ∈ Xflag F j, β x = x := by
   intro x hx
@@ -106,9 +106,9 @@ theorem fix_xflag {β : S.V ≃ₗ[E] S.V} (hβ : β ∈ Saturated.AutF Λ F) (j
   simpa [LinearMap.mem_eqLocus] using h2
 
 /- English proof (translation)
-Introduce `x hx`. Unfold `Xsp FlagG.X at hx`. Establish `hle : Submodule.span E (Set.range F.fl.e) ≤ LinearMap.eqLocus (β : S.V →ₗ[E] S.V) LinearMap.id`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify `fix_e hβ i` using `[LinearMap.mem_eqLocus]`. Establish `h2` using `hle hx`. Simplify `h2` using `[LinearMap.mem_eqLocus]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fix_xsp {β : S.V ≃ₗ[E] S.V} (hβ : β ∈ Saturated.AutF Λ F) : ∀ x ∈ Xsp F, β x = x := by
   intro x hx
@@ -122,36 +122,34 @@ theorem fix_xsp {β : S.V ≃ₗ[E] S.V} (hβ : β ∈ Saturated.AutF Λ F) : �
   simpa [LinearMap.mem_eqLocus] using h2
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem inv_fix {β : S.V ≃ₗ[E] S.V} {x : S.V} (h : β x = x) : β⁻¹ x = x := by
   calc β⁻¹ x = β⁻¹ (β x) := by rw [h]
     _ = x := by rw [← LinearEquiv.mul_apply, inv_mul_cancel]; rfl
 
 /- English proof (translation)
-Unfold `NLam at hn ⊢`. Take `⟨hA, hF, hX⟩` from `hn`. Establish `hB` using `hβ`. Unfold `Saturated.AutF at hB`. Take `⟨hBA, -, -⟩` from `hB`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Unfold `IsAutLam at hA hBA`. Take `⟨hAi, hAg⟩` from `hA`. Take `⟨hBi, hBg⟩` from `hBA`. Establish `hmap : ∀ (a b : S.V ≃ₗ[E] S.V) (L : Submodule (𝓞 E) S.V), HermitianLatticesTheory.gmap (a * b) L = HermitianLatticesTheory.gmap a (HermitianLatticesTheory.gmap b L)`. Introduce `a b L`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `HermitianLatticesTheory.gmap`. Rewrite using `[← Submodule.map_comp]`. Both sides reduce to the same expression. Establish `hone : ∀ L : Submodule (𝓞 E) S.V, HermitianLatticesTheory.gmap (1 : S.V ≃ₗ[E] S.V) L = L`. Introduce `L`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `HermitianLatticesTheory.gmap`. Establish `h1 : ((1 : S.V ≃ₗ[E] S.V) : S.V →ₗ[E] S.V).restrictScalars (𝓞 E) = LinearMap.id` using `LinearMap.ext fun _ => rfl`. Rewrite using `[h1, Submodule.map_id]`. Establish `hBinv : HermitianLatticesTheory.gmap β⁻¹ Λ = Λ`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `mul_mem (mul_mem hBi hAi) (inv_mem hBi)`. Rewrite using `[hmap, hmap, hBinv, hAg, hBg]`. Introduce `j x hx`. Establish `hx1 : β x = x` using `fix_xflag hβ (j + 1) x hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxi : β⁻¹ x = x` using `inv_fix hx1`. Establish `hd` using `hF j x hx`. Establish `hfix : β (n x - x) = n x - x` using `fix_xflag hβ j _ hd`. Establish `hc : (β * n * β⁻¹) x - x = β (n x - x)`. Rewrite using `[LinearEquiv.mul_apply, LinearEquiv.mul_apply, hxi, map_sub, hx1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, hfix]`. Conclude with `hd`. Introduce `x hx`. Establish `hiso : ∀ a b, S.hT (β a) (β b) = S.hT a b` using `hBi`. Establish `hxo : ∀ v ∈ Xsp F, S.hT v x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `v hv`. Unfold `orth at hx`. Establish `h1` using `(Submodule.mem_iInf _).1 hx v`. Establish `h2` using `(Submodule.mem_iInf _).1 h1 hv`. Conclude with `LinearMap.mem_ker.1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hβy : β (β⁻¹ x) = x`. Rewrite using `[← LinearEquiv.mul_apply, mul_inv_cancel]`. Both sides reduce to the same expression. Establish `hy : β⁻¹ x ∈ orth S (Xsp F)`. Unfold `orth`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_iInf]`. Introduce `v`. Rewrite using `[Submodule.mem_iInf]`. Introduce `hv`. Rewrite using `[LinearMap.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv' : β v = v` using `fix_xsp hβ v hv`. Rewrite using `[← hiso v (β⁻¹ x), hv', hβy]`. Conclude with `hxo v hv`. Establish `hd` using `hX (β⁻¹ x) hy`. Establish `hfix : β (n (β⁻¹ x) - β⁻¹ x) = n (β⁻¹ x) - β⁻¹ x` using `fix_xsp hβ _ hd`.
-
-Establish `hc : (β * n * β⁻¹) x - x = β (n (β⁻¹ x) - β⁻¹ x)`. Rewrite using `[LinearEquiv.mul_apply, LinearEquiv.mul_apply, map_sub, hβy]`. Rewrite using `[hc, hfix]`. Conclude with `hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nlam_conj {β n : S.V ≃ₗ[E] S.V} (hβ : β ∈ Saturated.AutF Λ F) (hn : n ∈ NLam Λ F) :
     β * n * β⁻¹ ∈ NLam Λ F := by

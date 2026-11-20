@@ -22,17 +22,15 @@ def genClasses (X : Scheme.{0}) : AddSubmonoid (Pic X) where
     exact ⟨tens A B, isLB_tens hA hB, AmpleModelPos.isGenerated_tens gA gB, cls_tens hA hB _⟩
 
 /- English proof (translation)
-Introduce `X L M hM hL N a₀ r a β hN ha₀ H`. Take `⟨k, hk, gk⟩` from `hM.exists_isGenerated_pow`. Establish `hMk` using `isLB_lbPow hM.isLB k`. Use `set c : Pic X := ∑ i, a i • pull (β i) (cls _ hMk) with hc`. Establish `hcmem : c ∈ genClasses X`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `AddSubmonoid.sum_mem _ fun i _ => AddSubmonoid.nsmul_mem _ ?_ _` and prove the remaining obligations. Conclude with `⟨_, pull_isLB hMk (β i), gk.pull (β i), cls_pull hMk (β i) _⟩`. Take `⟨A, hA, gA, hAc⟩` from `hcmem`. Establish `hLN` using `isLB_lbPow hL (N * k)`. Establish `hMa` using `isLB_lbPow hM.isLB (a₀ * k)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAmp : IsAmpleLB (lbPow M (a₀ * k))` using `(isAmpleLB_pow_iff hM.isLB (Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega)))).2 hM`. Establish `h₁` using `LB.isLB_div hLN hMa`. Establish `h₂` using `LB.isLB_div h₁ hA`. Establish `hLpow : IsAmpleLB (lbPow L (N * k))` using `hAmp.tensor_isGenerated gA hLN ((cls_eq_zero_iff h₂).1 ?_)`. Conclude with `(isAmpleLB_pow_iff hL (Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega)))).1 hLpow`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hE` using `(cls_eq_iff (isLB_lbPow hL N) (LB.isLB_linComb hM.isLB _ _)).2 H`. Rewrite `hE` using `[cls_lbPow hL, cls_linComb hM.isLB, Fintype.sum_option]`. Rewrite using `[cls_div h₁ hA, cls_div hLN hMa, hAc, hc, cls_lbPow hL, cls_lbPow hM.isLB, cls_lbPow hM.isLB]`. Simplify using `only [Option.elim, pull_id] at hE`. Simplify using `only [map_nsmul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (N * k) • cls L hL = k • (N • cls L hL)` using `by rw [smul_smul, mul_comm]`. Rewrite using `[e1, hE]`. Simplify using `only [natCast_zsmul, smul_add, Finset.smul_sum, smul_smul]`. Rewrite using `[sub_sub, sub_eq_zero, mul_comm a₀ k]`. Use `congr 1`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isAmpleLB_of_lbPow_lbIso_linComb : ∀ (X : Scheme.{0}) (L M : LB X), IsAmpleLB M → L.IsLB →
     ∀ (N a₀ r : ℕ) (a : Fin r → ℕ) (β : Fin r → (X ⟶ X)), 1 ≤ N → 1 ≤ a₀ →

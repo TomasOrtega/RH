@@ -3,9 +3,9 @@ import Mathlib
 namespace Bl.NearbyExistence
 
 /- English proof (translation)
-Establish `hn : {z : v.adicCompletion F | Valued.v (x - z) < 1} ∈ nhds x`. Rewrite using `[Valued.mem_nhds]`. Use `⟨1, fun z hz => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, Units.val_one, Valuation.restrict_lt_one_iff] at hz ⊢`. Rewrite using `[Valuation.map_sub_swap]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Take `⟨z, hz, y, rfl⟩` from `mem_closure_iff_nhds.mp (IsDedekindDomain.HeightOneSpectrum.denseRange_algebraMap (K := F) v x) _ hn`. Conclude with `⟨y, hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma exists_near (F : Type) [Field F] [NumberField F]
     (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F))
@@ -21,15 +21,15 @@ private lemma exists_near (F : Type) [Field F] [NumberField F]
   exact ⟨y, hz⟩
 
 /- English proof (translation)
-Introduce `F _ _ v x`. Take `⟨y, hy⟩` from `exists_near F v x.1`. Establish `hx : Valued.v x.1 ≤ 1` using `x.2`. Establish `hyc : Valued.v (algebraMap F (v.adicCompletion F) y) ≤ 1`. Establish `e : algebraMap F (v.adicCompletion F) y = x.1 - (x.1 - algebraMap F (v.adicCompletion F) y)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(Valuation.map_sub _ _ _).trans (max_le hx hy.le)`. Establish `hyv : v.valuation F y ≤ 1`. Establish `e2 : Valued.v (algebraMap F (v.adicCompletion F) y) = v.valuation F y` using `IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v y`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hyc` using `[e2]`. Then use the resulting hypothesis. Take `⟨a, ha⟩` from `IsDedekindDomain.HeightOneSpectrum.exists_valuation_sub_lt_of_integer v hyv 1`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `e1 : x.1 - algebraMap (NumberField.RingOfIntegers F) (v.adicCompletion F) a = (x.1 - algebraMap F (v.adicCompletion F) y) + algebraMap F (v.adicCompletion F) (y - algebraMap (NumberField.RingOfIntegers F) F a)`. Rewrite using `[IsScalarTower.algebraMap_apply (NumberField.RingOfIntegers F) F (v.adicCompletion F), map_sub]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Use `Valuation.map_add_lt _ hy ?_` and prove the remaining obligations. Establish `e3 : Valued.v (algebraMap F (v.adicCompletion F) (y - algebraMap (NumberField.RingOfIntegers F) F a)) = v.valuation F (y - algebraMap (NumberField.RingOfIntegers F) F a)` using `IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _`. Rewrite using `[e3, Valuation.map_sub_swap]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using ha`.
+A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {F : Type} [inst : Field.{0} F] [inst_1 : NumberField.{0} F]

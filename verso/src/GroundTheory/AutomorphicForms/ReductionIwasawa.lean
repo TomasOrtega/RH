@@ -18,9 +18,9 @@ section Unitary
 variable {𝕜 : Type*} [RCLike 𝕜] {n : ℕ}
 
 /- English proof (translation)
-Establish `key : ∀ y : Fin n → 𝕜, ((∑ i, ‖y i‖ ^ 2 : ℝ) : 𝕜) = y ⬝ᵥ star y`. Introduce `y`. Simplify using `only [dotProduct, Pi.star_apply, RCLike.star_def, RCLike.mul_conj]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Apply `(RCLike.ofReal_injective (K := 𝕜))` to reduce the goal to its premises. Rewrite using `[key, key, star_vecMul, dotProduct_mulVec, vecMul_vecMul]`. Rewrite `hU` using `[mem_unitaryGroup_iff]`. Rewrite using `[show U * Uᴴ = 1 from hU, vecMul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem sum_norm_sq_vecMul_unitary {U : Matrix (Fin n) (Fin n) 𝕜} (hU : U ∈ unitaryGroup (Fin n) 𝕜)
     (z : Fin n → 𝕜) : ∑ j, ‖(z ᵥ* U) j‖ ^ 2 = ∑ i, ‖z i‖ ^ 2 := by
@@ -35,7 +35,7 @@ theorem sum_norm_sq_vecMul_unitary {U : Matrix (Fin n) (Fin n) 𝕜} (hU : U ∈
   rw [show U * Uᴴ = 1 from hU, vecMul_one]
 
 /- English proof (translation)
-Rewrite using `[euclidNorm, euclidNorm, sum_norm_sq_vecMul_unitary hU]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem euclidNorm_vecMul_unitary {U : Matrix (Fin n) (Fin n) 𝕜} (hU : U ∈ unitaryGroup (Fin n) 𝕜)
     (z : Fin n → 𝕜) : euclidNorm (z ᵥ* U) = euclidNorm z := by
@@ -48,28 +48,26 @@ section Transport
 variable {E 𝕜 : Type*} [NormedField E] [RCLike 𝕜] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `[euclidNorm, hφ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem euclidNorm_map {F : Type*} [NormedField F] (φ : E →+* F) (hφ : ∀ x, ‖φ x‖ = ‖x‖)
     (y : Fin n → E) : euclidNorm (fun i => φ (y i)) = euclidNorm y := by
   simp [euclidNorm, hφ]
 
 /- English proof (translation)
-Establish `hφ' : ∀ x, ‖φ.symm x‖ = ‖x‖` using `fun x => by rw [← hφ, RingEquiv.apply_symm_apply]`. Use `set h' := Matrix.GeneralLinearGroup.map φ.toRingHom h with hh'`. Take `⟨k, a, ha, u, hu, hu1, hg⟩` from `exists_KAN (h'⁻¹)`. Use `set kU : GL (Fin n) 𝕜 := Unitary.toUnits k with hkU`. Establish `hkU_val : (kU : Matrix (Fin n) (Fin n) 𝕜) = (k : Matrix (Fin n) (Fin n) 𝕜)` using `rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set b'' : GL (Fin n) 𝕜 := h' * kU with hb''`. Use `set Du : Matrix (Fin n) (Fin n) 𝕜 := (Matrix.diagonal fun i => ((a i : ℝ) : 𝕜)) * u with hDu`. Establish `hleft : (b'' : Matrix (Fin n) (Fin n) 𝕜) * Du = 1`. Establish `h1 : (h' : Matrix (Fin n) (Fin n) 𝕜) * ((h'⁻¹ : GL (Fin n) 𝕜) : Matrix (Fin n) (Fin n) 𝕜) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h1` using `[hg]`. Rewrite using `[hb'', Units.val_mul, hkU_val, hDu]`. Simplify `h1` using `only [Matrix.mul_assoc]`. Establish `hDu_upper : Du.IsUpperTriangular` using `(Matrix.blockTriangular_diagonal _).mul hu`. Establish `hinv : (b'' : Matrix (Fin n) (Fin n) 𝕜) = Du⁻¹` using `(Matrix.inv_eq_left_inv hleft).symm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `_ : Invertible Du` to `⟨(b'' : Matrix (Fin n) (Fin n) 𝕜), hleft, mul_eq_one_comm.1 hleft⟩`. Establish `hb''_upper : (b'' : Matrix (Fin n) (Fin n) 𝕜).IsUpperTriangular`. Rewrite using `[hinv]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hDu_upper`. Use `⟨Matrix.GeneralLinearGroup.map φ.symm.toRingHom b'', ?_, Matrix.GeneralLinearGroup.map φ.symm.toRingHom kU⁻¹, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i j hij`. Express the relevant statement in the definitionally equal form `φ.symm ((b'' : Matrix (Fin n) (Fin n) 𝕜) i j) = 0`. Rewrite using `[hb''_upper hij, map_zero]`. Introduce `y`. Establish `hk' : ((kU⁻¹ : GL (Fin n) 𝕜) : Matrix (Fin n) (Fin n) 𝕜) ∈ unitaryGroup (Fin n) 𝕜`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((kU⁻¹ : GL (Fin n) 𝕜) : Matrix (Fin n) (Fin n) 𝕜) = ((k⁻¹ : unitaryGroup (Fin n) 𝕜) : Matrix (Fin n) (Fin n) 𝕜)`. Rewrite using `[hkU, ← map_inv]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `(k⁻¹).2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← euclidNorm_map φ.toRingHom hφ, ← euclidNorm_map φ.toRingHom hφ y]`. Establish `: (fun i => φ.toRingHom ((y ᵥ* ((Matrix.GeneralLinearGroup.map φ.symm.toRingHom kU⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)) i)) = (fun i => φ.toRingHom (y i)) ᵥ* ((kU⁻¹ : GL (Fin n) 𝕜) : Matrix (Fin n) (Fin n) 𝕜)`. Use extensionality with `j`. Simplify using `[vecMul, dotProduct, map_sum, map_mul, Matrix.GeneralLinearGroup.map]`. Rewrite using `[this, euclidNorm_vecMul_unitary hk']`.
-
-Rewrite using `[← map_mul, hb'', mul_assoc, mul_inv_cancel, mul_one, hh']`. Use extensionality with `i j`. Simplify using `[Matrix.GeneralLinearGroup.map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_upper_mul_of_ringEquiv (φ : E ≃+* 𝕜) (hφ : ∀ x, ‖φ x‖ = ‖x‖) (h : GL (Fin n) E) :
     ∃ b : GL (Fin n) E, (b : Matrix (Fin n) (Fin n) E).IsUpperTriangular ∧
@@ -139,7 +137,7 @@ def archCompact (w : InfinitePlace K) : Subgroup (GL (Fin n) w.Completion) where
     exact this.symm
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_archCompact {w : InfinitePlace K} {k : GL (Fin n) w.Completion} :
     k ∈ archCompact w ↔ ∀ y : Fin n → w.Completion,
@@ -147,9 +145,9 @@ theorem mem_archCompact {w : InfinitePlace K} {k : GL (Fin n) w.Completion} :
   Iff.rfl
 
 /- English proof (translation)
-Establish `h` using `hk (Pi.single i 1)`. Rewrite `h` using `[single_one_vecMul]`. Establish `h1 : euclidNorm (Pi.single i (1 : w.Completion)) = 1`. Rewrite using `[euclidNorm, Finset.sum_eq_single i (fun j _ hj => by simp [Pi.single_eq_of_ne hj]) (by simp)]`. Simplify using `only [Pi.single_eq_same, norm_one, one_pow, Real.sqrt_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_apply_le_one_of_mem_archCompact {w : InfinitePlace K} {k : GL (Fin n) w.Completion}
     (hk : k ∈ archCompact w) (i j : Fin n) : ‖k i j‖ ≤ 1 := by
@@ -165,11 +163,11 @@ theorem norm_apply_le_one_of_mem_archCompact {w : InfinitePlace K} {k : GL (Fin 
     _ = 1 := by rw [← h1, ← h]
 
 /- English proof (translation)
-Use `set T : Set (Matrix (Fin n) (Fin n) w.Completion) := Set.pi univ fun _ => Set.pi univ fun _ => Metric.closedBall (0 : w.Completion) 1 with hT`. Establish `hTc : IsCompact T` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Establish `hbig : IsCompact (Units.embedProduct (Matrix (Fin n) (Fin n) w.Completion) ⁻¹' (T ×ˢ (MulOpposite.opHomeomorph.symm ⁻¹' T)))` using `Units.isClosedEmbedding_embedProduct.isCompact_preimage (hTc.prod (MulOpposite.opHomeomorph.symm.isCompact_preimage.2 hTc))`. Use `hbig.of_isClosed_subset ?_ ?_` and prove the remaining obligations. Establish `: (archCompact (n` using `n) w : Set (GL (Fin n) w.Completion)) = ⋂ y : Fin n → w.Completion, {k : GL (Fin n) w.Completion | euclidNorm (y ᵥ* (k : Matrix (Fin n) (Fin n) w.Completion)) = euclidNorm y} := by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `k`. Simplify using `[mem_archCompact]`. Rewrite using `[this]`. Conclude with `isClosed_iInter fun y => isClosed_eq (continuous_euclidNorm.comp ((continuous_const.matrix_vecMul Units.continuous_val))) continuous_const`. Introduce `k hk`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨fun i _ j _ => ?_, fun i _ j _ => ?_⟩` and prove the remaining obligations. Simplify using `using norm_apply_le_one_of_mem_archCompact hk i j`. Simplify using `using norm_apply_le_one_of_mem_archCompact ((archCompact w).inv_mem hk) i j`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isCompact_archCompact (w : InfinitePlace K) :
     IsCompact (archCompact (n := n) w : Set (GL (Fin n) w.Completion)) := by
@@ -197,7 +195,7 @@ theorem isCompact_archCompact (w : InfinitePlace K) :
     · simpa using norm_apply_le_one_of_mem_archCompact ((archCompact w).inv_mem hk) i j
 
 /- English proof (translation)
-Distinguish the cases in `hw : w.IsReal`. Conclude with `exists_upper_mul_of_ringEquiv (InfinitePlace.Completion.ringEquivRealOfIsReal hw) (fun x => (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero (map_zero _) x) h`. Establish `hc` using `InfinitePlace.not_isReal_iff_isComplex.1 hw`. Conclude with `exists_upper_mul_of_ringEquiv (InfinitePlace.Completion.ringEquivComplexOfIsComplex hc) (fun x => (InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) x) h`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_upper_mul_archCompact (w : InfinitePlace K) (h : GL (Fin n) w.Completion) :
     ∃ b : GL (Fin n) w.Completion, (b : Matrix (Fin n) (Fin n) w.Completion).IsUpperTriangular ∧
@@ -215,7 +213,7 @@ variable [NumberField K]
 
 omit [NumberField K] in
 /- English proof (translation)
-Take `⟨b, hb, k, hk, rfl⟩` from `exists_upper_mul_archCompact w h`. Conclude with `⟨(b, k), hb, hk, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_upper_mul_archCompact' (w : InfinitePlace K) (h : GL (Fin n) w.Completion) :
     ∃ p : GL (Fin n) w.Completion × GL (Fin n) w.Completion,
@@ -225,27 +223,27 @@ theorem exists_upper_mul_archCompact' (w : InfinitePlace K) (h : GL (Fin n) w.Co
   exact ⟨(b, k), hb, hk, rfl⟩
 
 /- English proof (translation)
-Simplify using `[infAt]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem infAt_one (w : InfinitePlace K) : infAt w (1 : AdelicGLn.AdelicGL K n) = 1 := by
   simp [infAt]
 
 /- English proof (translation)
-Simplify using `[finAt]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem finAt_one (v : HeightOneSpectrum (𝓞 K)) :
     finAt v (1 : AdelicGLn.AdelicGL K n) = 1 := by
   simp [finAt]
 
 /- English proof (translation)
-Simplify using `[infAt, map_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem infAt_inv (w : InfinitePlace K) (g : AdelicGLn.AdelicGL K n) :
     infAt w g⁻¹ = (infAt w g)⁻¹ := by
   simp [infAt, map_inv]
 
 /- English proof (translation)
-Simplify using `[finAt, map_inv, RestrictedProduct.inv_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finAt_inv (v : HeightOneSpectrum (𝓞 K)) (g : AdelicGLn.AdelicGL K n) :
     finAt v g⁻¹ = (finAt v g)⁻¹ := by
@@ -262,7 +260,7 @@ def maxCompact : Subgroup (AdelicGLn.AdelicGL K n) where
     fun v => by rw [finAt_inv]; exact inv_mem (hk.2 v)⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_maxCompact {k : AdelicGLn.AdelicGL K n} :
     k ∈ maxCompact ↔ (∀ w, infAt w k ∈ archCompact w) ∧
@@ -270,9 +268,9 @@ theorem mem_maxCompact {k : AdelicGLn.AdelicGL K n} :
   Iff.rfl
 
 /- English proof (translation)
-Establish `h : (maxCompact (K` using `K) (n := n) : Set (AdelicGLn.AdelicGL K n)) = (AdelicGLn.prodEquiv K n) ⁻¹' (((AdelicGLn.infiniteEquiv K n) ⁻¹' (Set.univ.pi fun w : InfinitePlace K => (archCompact (n := n) w : Set (GL (Fin n) w.Completion)))) ×ˢ (AdelicGLn.integralFiniteGL K n : Set (AdelicGLn.FiniteAdelicGL K …`. Use extensionality with `k`. Simplify using `only [SetLike.mem_coe, mem_maxCompact, Set.mem_preimage, Set.mem_prod, Set.mem_pi, Set.mem_univ, true_implies, AdelicGLn.mem_integralFiniteGL_iff_forall]`. Both sides reduce to the same expression. Rewrite using `[h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(AdelicGLn.prodEquiv K n).toHomeomorph.isCompact_preimage.2 (((AdelicGLn.infiniteEquiv K n).toHomeomorph.isCompact_preimage.2 (isCompact_univ_pi fun w => isCompact_archCompact w)).prod (AdelicGLn.isCompact_integralFiniteGL K n))`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_maxCompact :
     IsCompact (maxCompact (K := K) (n := n) : Set (AdelicGLn.AdelicGL K n)) := by
@@ -303,14 +301,14 @@ def adelicBorel : Subgroup (AdelicGLn.AdelicGL K n) where
     exact Matrix.blockTriangular_inv_of_blockTriangular hb
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_adelicBorel {b : AdelicGLn.AdelicGL K n} :
     b ∈ adelicBorel ↔ (b : Matrix (Fin n) (Fin n) 𝔸[K]).IsUpperTriangular :=
   Iff.rfl
 
 /- English proof (translation)
-Establish `hdet : IsUnit (b : Matrix (Fin n) (Fin n) 𝔸[K]).det` using `(Matrix.isUnit_iff_isUnit_det _).1 b.isUnit`. Rewrite `hdet` using `[Matrix.det_of_isUpperTriangular hb]`. Conclude with `isUnit_of_dvd_unit (Finset.dvd_prod_of_mem (fun j => (b : Matrix (Fin n) (Fin n) 𝔸[K]) j j) (Finset.mem_univ i)) hdet`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_apply_self_of_mem_adelicBorel {b : AdelicGLn.AdelicGL K n} (hb : b ∈ adelicBorel)
     (i : Fin n) : IsUnit ((b : Matrix (Fin n) (Fin n) 𝔸[K]) i i) := by
@@ -321,14 +319,14 @@ theorem isUnit_apply_self_of_mem_adelicBorel {b : AdelicGLn.AdelicGL K n} (hb : 
     (Finset.dvd_prod_of_mem (fun j => (b : Matrix (Fin n) (Fin n) 𝔸[K]) j j) (Finset.mem_univ i)) hdet
 
 /- English proof (translation)
-The claim follows from `Prod.ext (funext h1) (RestrictedProduct.ext _ _ h2)`.
+A detailed English derivation is pending.
 -/
 theorem adele_ext {a b : 𝔸[K]} (h1 : ∀ w : InfinitePlace K, a.1 w = b.1 w)
     (h2 : ∀ v : HeightOneSpectrum (𝓞 K), a.2 v = b.2 v) : a = b :=
   Prod.ext (funext h1) (RestrictedProduct.ext _ _ h2)
 
 /- English proof (translation)
-Use `(AdelicGLn.restrictedProductEquiv K n).injective (Prod.ext (funext h1) ?_)` and prove the remaining obligations. Conclude with `RestrictedProduct.ext _ _ h2`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem adelicGL_ext {g h : AdelicGLn.AdelicGL K n} (h1 : ∀ w, infAt w g = infAt w h)
     (h2 : ∀ v, finAt v g = finAt v h) : g = h := by
@@ -336,21 +334,17 @@ theorem adelicGL_ext {g h : AdelicGLn.AdelicGL K n} (h1 : ∀ w, infAt w g = inf
   exact RestrictedProduct.ext _ _ h2
 
 /- English proof (translation)
-Use `choose pw hpw using fun w : InfinitePlace K => exists_upper_mul_archCompact' w (infAt w g)`. Establish `hloc : ∀ v : HeightOneSpectrum (𝓞 K), ∃ p : GL (Fin n) (v.adicCompletion K) × GL (Fin n) (v.adicCompletion K), p.1 ∈ Iwasawa.borel (v.adicCompletion K) n ∧ p.2 ∈ GLnLocal.integralGL (v.adicCompletion K) n ∧ finAt v g = p.1 * p.2 ∧ (finAt v g ∈ GLnLocal.integralGL (v.adicCompletio …`. Introduce `v`. Distinguish the cases in `hv : finAt v g ∈ GLnLocal.integralGL (v.adicCompletion K) n`. Conclude with `⟨(1, finAt v g), one_mem _, hv, (one_mul _).symm, fun _ => rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, k, hk, he⟩` from `Iwasawa.exists_borel_mul_integralGL _ n (finAt v g)`. Conclude with `⟨(b, k), hb, hk, he, fun h => absurd h hv⟩`. Use `choose pv hpv using hloc`. Set `bX : (Π w : InfinitePlace K, GL (Fin n) w.Completion) × Πʳ v : HeightOneSpectrum (𝓞 K), [GL (Fin n) (v.adicCompletion K), GLnLocal.integralGL (v.adicCompletion K) n]` to `(fun w => (pw w).1, ⟨fun v => (pv v).1, by filter_upwards [AdelicGLn.eventually_mem_integralGL K n g] with v hv`. Rewrite using `[(hpv v).2.2.2 hv]`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `one_mem _⟩)`. Set `kX : (Π w : InfinitePlace K, GL (Fin n) w.Completion) × Πʳ v : HeightOneSpectrum (𝓞 K), [GL (Fin n) (v.adicCompletion K), GLnLocal.integralGL (v.adicCompletion K) n]` to `(fun w => (pw w).2, ⟨fun v => (pv v).2, Filter.Eventually.of_forall fun v => (hpv v).2.1⟩)`. Use `set b := (AdelicGLn.restrictedProductEquiv K n).symm bX with hb`. Use `set k := (AdelicGLn.restrictedProductEquiv K n).symm kX with hk`. Establish `hbw : ∀ w, infAt w b = (pw w).1` using `fun w => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `[infAt, hb, bX]`. Establish `hbv : ∀ v, finAt v b = (pv v).1` using `fun v => by`. Simplify using `only [finAt, hb, ContinuousMulEquiv.apply_symm_apply, bX]`. Both sides reduce to the same expression. Establish `hkw : ∀ w, infAt w k = (pw w).2` using `fun w => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[infAt, hk, kX]`. Establish `hkv : ∀ v, finAt v k = (pv v).2` using `fun v => by`. Simplify using `only [finAt, hk, ContinuousMulEquiv.apply_symm_apply, kX]`. Both sides reduce to the same expression. Use `⟨b, ?_, k, ⟨fun w => hkw w ▸ (hpw w).2.1, fun v => hkv v ▸ (hpv v).2.1⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `i j hij`. Use `adele_ext (fun w => ?_) (fun v => ?_)` and prove the remaining obligations. Establish `h` using `(hpw w).1 hij`. Rewrite `h` using `[← hbw w]`. Conclude with `h`.
-
-Establish `h` using `(Iwasawa.mem_borel _ n).1 (hpv v).1 hij`. Rewrite `h` using `[← hbv v]`. Conclude with `h`. Use `adelicGL_ext (fun w => ?_) (fun v => ?_)` and prove the remaining obligations. Rewrite using `[infAt_mul, hbw, hkw]`.
-
-Conclude with `(hpw w).2.2`. Rewrite using `[finAt_mul, hbv, hkv]`. Conclude with `(hpv v).2.2.1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adelicBorel_mul_maxCompact (g : AdelicGLn.AdelicGL K n) :
     ∃ b ∈ adelicBorel, ∃ k ∈ maxCompact, g = b * k := by
@@ -407,9 +401,9 @@ theorem exists_adelicBorel_mul_maxCompact (g : AdelicGLn.AdelicGL K n) :
       exact (hpv v).2.2.1
 
 /- English proof (translation)
-Rewrite using `[adelicNorm, adelicNorm]`. Use `congr 1`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[infComp_vecMul_GL, hk.1 w]`. Use `finprod_congr fun v => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[finComp_vecMul_GL, norm_vecMul_integralGL v (hk.2 v)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adelicNorm_vecMul_maxCompact (y : Fin n → 𝔸[K]) {k : AdelicGLn.AdelicGL K n}
     (hk : k ∈ maxCompact) :
@@ -422,7 +416,7 @@ theorem adelicNorm_vecMul_maxCompact (y : Fin n → 𝔸[K]) {k : AdelicGLn.Adel
     rw [finComp_vecMul_GL, norm_vecMul_integralGL v (hk.2 v)]
 
 /- English proof (translation)
-Rewrite using `[height, height, Units.val_mul, ← vecMul_vecMul, adelicNorm_vecMul_maxCompact _ hk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem height_mul_maxCompact (g : AdelicGLn.AdelicGL K n) {k : AdelicGLn.AdelicGL K n}
     (hk : k ∈ maxCompact) (x : Fin n → K) : height (g * k) x = height g x := by

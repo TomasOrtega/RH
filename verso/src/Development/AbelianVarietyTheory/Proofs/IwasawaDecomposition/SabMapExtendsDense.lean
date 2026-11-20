@@ -23,11 +23,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {c : Coeff l}
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Establish `hy : Y.jQ y ∈ Set.range Y.jQ` using `⟨y, rfl⟩`. Rewrite `hy` using `[← Y.ab_gen]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨hy, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, ← Set.mem_preimage, ← Scheme.Pullback.range_fst]`. Conclude with `⟨Y.jQ y, rfl⟩`. Introduce and unpack `⟨h1, h2⟩`. Rewrite `h2` using `[Set.mem_preimage, ← Set.mem_preimage, ← Scheme.Pullback.range_fst]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨p, rfl⟩` from `h2`. Establish `hp : p ∈ pullback.fst Y.s (spMap β) ⁻¹' abLocus Y.t.G` using `h1`. Rewrite `hp` using `[Y.ab_gen]`. Take `⟨y, rfl⟩` from `hp`. Conclude with `⟨y, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem range_j {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c β) :
     Set.range Y.j = abLocus Y.t.G ∩ Y.s ⁻¹' Set.range (spMap β) := by
@@ -48,9 +48,9 @@ theorem range_j {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c β) :
     exact ⟨y, rfl⟩
 
 /- English proof (translation)
-Use `haveI := Y.jQ_open`. Set `p : T ⟶ pullback Y.s (spMap β)` to `pullback.lift f h hh.symm`. Establish `hp : Set.range p ⊆ Set.range Y.jQ`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[← Y.ab_gen]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (p ≫ pullback.fst _ _) x ∈ abLocus _`. Rewrite using `[pullback.lift_fst]`. Conclude with `((range_j Y).le (hf ⟨x, rfl⟩)).1`. Use `⟨IsOpenImmersion.lift Y.jQ p hp, ?_⟩` and prove the remaining obligations. Rewrite using `[Model.j, ← Category.assoc, IsOpenImmersion.lift_fac, pullback.lift_fst]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factor_j {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c β) {T : Scheme.{0}} (f : T ⟶ Y.X)
     (hf : Set.range f ⊆ Set.range Y.j) (h : T ⟶ Sp c.F) (hh : h ≫ spMap β = f ≫ Y.s) :
@@ -71,23 +71,19 @@ end GlobalTheory.TorRef.TriplePull
 namespace GlobalTheory.TorRef.TriplePull
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c X Z π hπ R' _ _ _ ξ' t' hR hd m`. Take `⟨hN, hIC, -, -⟩` from `hR`. Use `haveI : FiniteDimensional ℚ c.F := c.fin`. Use `haveI : NumberField c.F := ⟨⟩`. Take `⟨t'', ⟨n''⟩⟩` from `exists_sabPull ξ' Z.t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : IsOpen (ξ' ⁻¹' Set.range Z.j)`. Establish `e : ξ' ⁻¹' Set.range Z.j = abLocus t''.G ∩ (ξ' ≫ Z.s) ⁻¹' Set.range (spMap (algebraMap (𝓞 c.F) c.F))`. Rewrite using `[range_j, Set.preimage_inter]`. Use `congr 1`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `abLocus_pullback abLocusOne Z.t.semi n''.cart.1 x`. Rewrite using `[e]`. Conclude with `(GlobalTheory.AbLocusOpen.isOpen_abLocus_local t''.G t''.semi).inter (GlobalTheory.T.preimage_generic_fiber_isOpen _ _ _ _)`. Set `U : (Sp R').Opens` to `⟨_, hU⟩`. Establish `hUr : Set.range (U.ι ≫ ξ') ⊆ Set.range Z.j`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hx : U.ι x ∈ (U : Set (Sp R'))` using `by rw [← Scheme.Opens.range_ι]; exact ⟨x, rfl⟩`. Conclude with `hx`. Take `⟨h, hh⟩` from `GlobalTheory.T.factor_through_generic_fiber (𝓞 c.F) c.F U.toScheme ((U.ι ≫ ξ') ≫ Z.s) (by`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `((range_j Z).le (hUr ⟨x, rfl⟩)).2)`. Take `⟨u, hu⟩` from `factor_j Z (U.ι ≫ ξ') hUr h hh`. Take `⟨t₀, ⟨n₀⟩⟩` from `exists_sabPull u Z.oF.t`. Establish `hp0 : IsProper t₀.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) n₀.cart.1 Z.oF.proper`. Take `⟨a1, -⟩` from `ObjMaps.exists_sab_comp Z.m n₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, -⟩` from `ObjMaps.exists_sab_cancel n'' (hu ▸ a1 : SABMap t₀ Z.t (U.ι ≫ ξ'))`. Take `⟨zx, -⟩` from `ObjMaps.exists_sab_cancel X.m0.toSABMap (by rw [Category.id_comp]; exact Z.m0.toSABMap : SABMap Z.oF.t Xo.univ.t (𝟙 _ ≫ pullback.fst _ _))`. Take `⟨c1, -⟩` from `ObjMaps.exists_sab_comp zx n₀`. Take `⟨c2, -⟩` from `ObjMaps.exists_sab_comp X.m c1`. Establish `hux : (u ≫ 𝟙 _) ≫ X.jQ ≫ pullback.fst _ _ = U.ι ≫ ξ' ≫ π`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.comp_id]`. Express the relevant statement in the definitionally equal form `u ≫ X.j = _`. Rewrite using `[← hπ, ← Category.assoc, hu, Category.assoc]`. Take `⟨a', -⟩` from `ObjMaps.exists_sab_cancel m (hux ▸ c2 : SABMap t₀ X.t (U.ι ≫ ξ' ≫ π))`. Use `haveI : IsNoetherianRing R' := hN`.
-
-Use `haveI : IsIntegrallyClosed R' := hIC`. Establish `hNorm : Geo.Tor.IsNormalScheme (Sp R')` using `GlobalTheory.IsNormalScheme.pred _`. Establish `hDom : IsDominant U.ι` using `⟨by`. Rewrite using `[DenseRange, Scheme.Opens.range_ι]`. Conclude with `hd⟩`.
-
-Take `⟨b, -⟩` from `sabExtNormalSt_of_homExtNormalSt GlobalTheory.homExtNormal E H (Sp R') U.toScheme U.ι hNorm inferInstance hDom t₀ t' t'' a' a hp0`. Take `⟨n, -⟩` from `ObjMaps.exists_sab_comp n'' b`. Conclude with `⟨(Category.id_comp ξ') ▸ n⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sab_of_chart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (X Z : GMod Xo c) (π : Z.X ⟶ X.X), Z.j ≫ π = X.j → ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ξ' : Sp R' ⟶ Z.X) (t' : SAB H (Sp R')), IsCN R' → Dense (ξ' ⁻¹' Set.range Z.j) → SABMap t' X.t (ξ' ≫ π) → Nonempty (SABMap t' Z.t ξ') := by
   intro E _ _ _ H D l Xo c X Z π hπ R' _ _ _ ξ' t' hR hd m

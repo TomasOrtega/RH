@@ -6,9 +6,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.WeilDeligne.PrimDecomp
 
 /- English proof (translation)
-Rewrite using `[WD.lpSum_mk]`. Use `symm`. Apply `WD.sound` to reduce the goal to its premises. Use `⟨Submodule.prodEquivOfIsCompl S T hST, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `σ ⟨x, y⟩`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only [WDRep.sum_ρ, LinearMap.prodMap_apply, Submodule.coe_prodEquivOfIsCompl', map_add, restrict_ρ_apply]`. Introduce and unpack `⟨x, y⟩`. Simplify using `only [WDRep.sum_N, LinearMap.prodMap_apply, Submodule.coe_prodEquivOfIsCompl', map_add, restrict_N_apply]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem wd_mk_eq_lpSum_restrict_of_isCompl {E Ω : Type} [Field E] [NumberField E] [Field Ω]
     [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E))
@@ -28,7 +28,7 @@ theorem wd_mk_eq_lpSum_restrict_of_isCompl {E Ω : Type} [Field E] [NumberField 
       map_add, restrict_N_apply]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ A w h V _ _ _ a S T hS hT hST` and use `wd_mk_eq_lpSum_restrict_of_isCompl A w h V a S T hS hT hST`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sumiso : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (a : WDRep h V) (S T : Submodule ℂ V) (hS : IsSubWD a S) (hT : IsSubWD a T), IsCompl S T → WD.mk a = (WD.mk (restrict a S hS)).lpSum (WD.mk (restrict a T hT)) :=
   fun _ _ _ _ _ _ _ A w h V _ _ _ a S T hS hT hST =>

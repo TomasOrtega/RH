@@ -31,11 +31,11 @@ def adjoinRoot {G : Type} [CommGroup G] (Q : Subgroup G) (d : G) (hd : d * d ∈
       rwa [e] at h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, -, rfl⟩`. Conclude with `⟨(y : F), by simp [sq]⟩`. Introduce and unpack `⟨r, hr⟩`. Establish `hr0 : r ≠ 0`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `x.ne_zero (by simpa using hr)`. Use `⟨Units.mk0 r hr0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, mem_sUnits]`. Introduce `v hv`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `(mem_sUnits F S x).1 hx v hv`. Rewrite `h` using `[hr, map_mul, ← sq]`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le two_ne_zero).1 h`. Use `ext`. Simplify using `[hr, sq]`.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_sqs_sUnits_iff_isSquare (F : Type) [Field F] [NumberField F]
     (S : Finset (HeightOneSpectrum (𝓞 F))) (x : Fˣ) (hx : x ∈ sUnits F S) :
@@ -59,11 +59,11 @@ theorem mem_sqs_sUnits_iff_isSquare (F : Type) [Field F] [NumberField F]
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 /- English proof (translation)
-Distinguish the cases in `hdQ : d ∈ Q`. Rewrite using `[Subgroup.relIndex_eq_one.2]`. Evaluate the numerical expressions. Introduce and unpack `x (hx | hx)`. Conclude with `hx`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using Q.mul_mem hx (Q.inv_mem hdQ)`. Establish `h2 : Q.relIndex (_root_.GlobalTheory.QNorm.adjoinRoot Q d hd) = 2`. Use `Subgroup.index_eq_two_iff.2 ⟨⟨d, Or.inr hd⟩, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[xor_iff_iff_not, Subgroup.mem_subgroupOf, Subgroup.mem_subgroupOf, Subgroup.coe_mul]`. Establish `hsub : ∀ x : G, x ∈ Q → x * d ∈ Q → False` using `fun x hx hxd => hdQ (by simpa using Q.mul_mem (Q.inv_mem hx) hxd)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `b.2 with hb | hb` into its components or cases. Conclude with `⟨fun h h' => hsub _ h' h, fun h => absurd hb h⟩`. Conclude with `⟨fun _ h' => hsub _ h' hb, fun _ => hb⟩`. Use linear arithmetic over natural numbers and integers.
+Supply the required witnesses or components. Supply the required witnesses or components. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem relIndex_adjoinRoot_ne_zero_and_le_two {G : Type} [CommGroup G] (Q : Subgroup G) (d : G)
     (hd : d * d ∈ Q) :
@@ -88,7 +88,7 @@ private theorem relIndex_adjoinRoot_ne_zero_and_le_two {G : Type} [CommGroup G] 
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 /- English proof (translation)
-Rewrite using `[← (_root_.GlobalTheory.QNorm.mem_sUnits F S x).1 hx v hv]`. Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (x : F)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem valued_algebraMap_eq_one_of_mem_sUnits {F : Type} [Field F] [NumberField F]
     {S : Finset (HeightOneSpectrum (𝓞 F))} {v : HeightOneSpectrum (𝓞 F)} (hv : v ∉ S) {x : Fˣ}
@@ -100,15 +100,13 @@ private theorem valued_algebraMap_eq_one_of_mem_sUnits {F : Type} [Field F] [Num
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 /- English proof (translation)
-Establish `h2 : Valued.v (2 : v.adicCompletion F) = 1`. Establish `h` using `(hS v hv).1`. Rewrite using `[← h, ← map_ofNat (algebraMap F (v.adicCompletion F)) 2]`. Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (2 : F)`. Establish `hx0 : algebraMap F (v.adicCompletion F) (x : F) ≠ 0` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy0 : algebraMap F (v.adicCompletion F) (y : F) ≠ 0` using `by simp`. Rewrite using `[Units.val_mul, map_mul]`. Use `set a := algebraMap F (v.adicCompletion F) (x : F)`. Use `set b := algebraMap F (v.adicCompletion F) (y : F)`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hab`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Establish `: b = a * b / a` using `by field_simp`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hab.div ha`. Introduce `hb`. Establish `: a = a * b / b` using `by field_simp`. Rewrite using `[this]`. Conclude with `hab.div hb`.
-
-Introduce `h`. Distinguish the cases in `ha : IsSquare a`. Conclude with `ha.mul (h.1 ha)`. Establish `hb : ¬ IsSquare b` using `fun hb => ha (h.2 hb)`. Conclude with `_root_.GlobalTheory.QNorm.isSquare_mul_of_nonsquare_units F v h2 a b (valued_algebraMap_eq_one_of_mem_sUnits hv hx) (valued_algebraMap_eq_one_of_mem_sUnits hv hy) ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isSquare_mul_iff_of_mem_sUnits {F : Type} [Field F] [NumberField F]
     {S : Finset (HeightOneSpectrum (𝓞 F))} (hS : _root_.GlobalTheory.QNorm.admitted F S)
@@ -145,9 +143,9 @@ private theorem isSquare_mul_iff_of_mem_sUnits {F : Type} [Field F] [NumberField
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 /- English proof (translation)
-Distinguish the cases in `h : _root_.GlobalTheory.QNorm.sUnits F S ≤ _root_.GlobalTheory.QNorm.sqSub (algebraMap F (v.adicCompletion F))`. Rewrite using `[Subgroup.relIndex_eq_one.2 h]`. Evaluate the numerical expressions. Take `⟨a, haG, haK⟩` from `SetLike.not_le_iff_exists.1 h`. Use `(Subgroup.index_eq_two_iff.2 ⟨⟨a, haG⟩, fun b => ?_⟩).le` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[xor_iff_iff_not, Subgroup.mem_subgroupOf, Subgroup.mem_subgroupOf, Subgroup.coe_mul, _root_.GlobalTheory.QNorm.mem_sqSub, _root_.GlobalTheory.QNorm.mem_sqSub, isSquare_mul_iff_of_mem_sUnits hS hv b.2 haG]`. Rewrite `haK` using `[_root_.GlobalTheory.QNorm.mem_sqSub]`. The claim follows by propositional logic.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. The claim follows by propositional logic.
 -/
 private theorem relIndex_sqSub_le_two_of_not_mem {F : Type} [Field F] [NumberField F]
     {S : Finset (HeightOneSpectrum (𝓞 F))} (hS : _root_.GlobalTheory.QNorm.admitted F S)
@@ -167,7 +165,7 @@ private theorem relIndex_sqSub_le_two_of_not_mem {F : Type} [Field F] [NumberFie
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert v T hvT ih`. Rewrite using `[Finset.iInf_insert, Finset.card_insert_of_notMem hvT, pow_succ']`. Conclude with `Subgroup.relIndex_inf_le.trans (Nat.mul_le_mul (relIndex_sqSub_le_two_of_not_mem hS (hT v (Finset.mem_insert_self v T))) (ih fun w hw => hT w (Finset.mem_insert_of_mem hw)))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem relIndex_iInf_sqSub_le_two_pow_card {F : Type} [Field F] [NumberField F]
     {S : Finset (HeightOneSpectrum (𝓞 F))} (hS : _root_.GlobalTheory.QNorm.admitted F S)
@@ -187,45 +185,41 @@ open NumberField IsDedekindDomain in
 open scoped WithZero in
 
 /- English proof (translation)
-Introduce `F _ _ δ S hS hδ hsq`. Establish `hQ` using `_root_.GlobalTheory.QNorm.relIndex_sqs_sUnits F S`. Use `set G := _root_.GlobalTheory.QNorm.sUnits F S with hGdef`. Use `set n := S.card + Fintype.card (InfinitePlace F) with hndef`. Use `set Q := _root_.GlobalTheory.QNorm.sqs G with hQdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hQmap : ∀ u : Fˣ, u ∈ Q ↔ ∃ a ∈ G, a ^ 2 = u` using `fun u => by`. Rewrite using `[hQdef]`. Unfold `_root_.GlobalTheory.QNorm.sqs`. Rewrite using `[Subgroup.mem_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hQG : Q ≤ G` using `fun x hx => by`. Take `⟨a, ha, rfl⟩` from `(hQmap x).1 hx`. Conclude with `G.pow_mem ha 2`. Establish `hQmem : ∀ u : Fˣ, u ∈ G → IsSquare (u : F) → u ∈ Q`. Introduce and unpack `u hu ⟨r, hr⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Conclude with `u.ne_zero (by simpa using hr)`. Use `(hQmap u).2 ⟨Units.mk0 r hr0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hGdef, _root_.GlobalTheory.QNorm.mem_sUnits]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components.
 
-Introduce `v hv`. Establish `h` using `(_root_.GlobalTheory.QNorm.mem_sUnits F S u).1 hu v hv`. Rewrite `h` using `[hr, map_mul, ← sq]`. Simplify using `using (pow_eq_one_iff.1 h).resolve_right two_ne_zero`. Use `ext`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[hr, sq]`. Establish `hn : 1 ≤ n`. Assume the negation of the conclusion as `h`. Establish `h0 : n = 0` using `by omega`. Rewrite `hQ` using `[h0, pow_zero, Subgroup.relIndex_eq_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, -, ha⟩` from `(hQmap δ).1 (hQ hδ)`. Conclude with `hsq ⟨a, by rw [← ha]; simp [sq]⟩`. Establish `hdd : δ * δ ∈ Q` using `(hQmap _).2 ⟨δ, hδ, sq δ⟩`. Take `⟨hQA0, hQA⟩` from `relIndex_adjoinRoot_ne_zero_and_le_two Q δ hdd`. Establish `key : ∀ k, k + 1 ≤ n → ∃ T : Finset (HeightOneSpectrum (𝓞 F)), Disjoint S T ∧ T.card = k ∧ (∀ v ∈ T, IsSquare (algebraMap F (v.adicCompletion F) δ)) ∧ ∀ A : Finset (HeightOneSpectrum (𝓞 F)), ∃ u ∈ G, ∀ v ∈ T, (IsSquare (algebraMap F (v.adicCompletion F) u) ↔ v ∉ A)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `_`. Conclude with `⟨∅, Finset.disjoint_empty_right S, rfl, by simp, fun _ => ⟨1, G.one_mem, by simp⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `succ k ih`. Introduce `hk`. Take `⟨T, hST, hTk, hTδ, hTpat⟩` from `ih (by omega)`. Establish `hTS : ∀ v ∈ T, v ∉ S` using `fun v hv hvS => Finset.disjoint_left.1 hST hvS hv`. Use `set KT := ⨅ v ∈ T, _root_.GlobalTheory.QNorm.sqSub (algebraMap F (v.adicCompletion F)) with hKTdef`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hKT : KT.relIndex G ≤ 2 ^ k` using `hTk ▸ relIndex_iInf_sqSub_le_two_pow_card hS T hTS`. Establish `hex : ∃ u ∈ KT ⊓ G, u ∉ _root_.GlobalTheory.QNorm.adjoinRoot Q δ hdd`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hQK : Q ≤ KT ⊓ G`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `le_inf (fun x hx => ?_) hQG` and prove the remaining obligations. Take `⟨a, -, rfl⟩` from `(hQmap x).1 hx`. Rewrite using `[hKTdef, Subgroup.mem_iInf]`. Introduce `v`. Rewrite using `[Subgroup.mem_iInf]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `_`. Rewrite using `[_root_.GlobalTheory.QNorm.mem_sqSub]`. Conclude with `⟨algebraMap F (v.adicCompletion F) (a : F), by simp [sq]⟩`. Establish `h1` using `Subgroup.relIndex_mul_relIndex Q (KT ⊓ G) G hQK inf_le_right`. Rewrite `h1` using `[Subgroup.inf_relIndex_right, hQ]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : Q.relIndex (KT ⊓ G) ≤ 2` using `(Subgroup.relIndex_le_of_le_right (fun u hu => hcon u hu) hQA0).trans hQA`. Establish `h3 : 2 ^ n ≤ 2 * 2 ^ k` using `h1 ▸ Nat.mul_le_mul h2 hKT`. Establish `h4 : 2 * 2 ^ k < 2 ^ n`. Rewrite using `[← pow_succ']; exact Nat.pow_lt_pow_right (by norm_num) (by omega)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨u, ⟨huK, huG⟩, huA⟩` from `hex`. Establish `huK' : ∀ v ∈ T, IsSquare (algebraMap F (v.adicCompletion F) u)`. Introduce `v hv`. Establish `huK2 : u ∈ KT` using `huK`. Rewrite `huK2` using `[hKTdef, Subgroup.mem_iInf]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `huK2 v`. Rewrite `h` using `[Subgroup.mem_iInf]`. Conclude with `(_root_.GlobalTheory.QNorm.mem_sqSub _ u).1 (h hv)`. Establish `hnu : ¬ IsSquare (u : F)` using `fun h => huA (Or.inl (hQmem u huG h))`. Establish `hnuδ : ¬ IsSquare ((u : F) * δ)` using `fun h => huA (Or.inr (hQmem (u * δ) (G.mul_mem huG hδ) (by simpa using h)))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hvST, hvδ, hvu⟩` from `_root_.GlobalTheory.QNorm.exists_place_isSquare_and_not_isSquare F δ u (S ∪ T) δ.ne_zero u.ne_zero hsq hnu hnuδ`. Establish `hvS : v ∉ S` using `fun h => hvST (Finset.mem_union_left _ h)`. Establish `hvT : v ∉ T` using `fun h => hvST (Finset.mem_union_right _ h)`. Use `⟨insert v T, Finset.disjoint_insert_right.2 ⟨hvS, hST⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.card_insert_of_notMem hvT, hTk]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `w hw`. Break down `Finset.mem_insert.1 hw with rfl | hw` into its components or cases. Conclude with `hvδ`. Conclude with `hTδ w hw`. Introduce `A`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨w, hwG, hw⟩` from `hTpat A`. Distinguish the cases in `hwv : (IsSquare (algebraMap F (v.adicCompletion F) w) ↔ v ∉ A)`. Use `⟨w, hwG, fun x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Conclude with `hwv`.
-
-Conclude with `hw x hx`. Use `⟨w * u, G.mul_mem hwG huG, fun x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Rewrite using `[isSquare_mul_iff_of_mem_sUnits hS hvS hwG huG, iff_false_intro hvu, iff_false]`. Conclude with `not_iff.1 hwv`.
-
-Rewrite using `[isSquare_mul_iff_of_mem_sUnits hS (hTS x hx) hwG huG]`. Rewrite using `[iff_true_intro (huK' x hx), iff_true]`. Conclude with `hw x hx`. Take `⟨T, h1, h2, h3, h4⟩` from `key (n - 1) (by omega)`. Conclude with `⟨T, h1, by omega, h3, h4⟩`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.QNorm.exists_auxiliary_places : ∀ (F : Type) [Field F] [NumberField F] (δ : Fˣ) (S : Finset (HeightOneSpectrum (𝓞 F))), _root_.GlobalTheory.QNorm.admitted F S → δ ∈ _root_.GlobalTheory.QNorm.sUnits F S → ¬ IsSquare (δ : F) → ∃ T : Finset (HeightOneSpectrum (𝓞 F)), Disjoint S T ∧ T.card + 1 = S.card + Fintype.card (InfinitePlace F) ∧ (∀ v ∈ T, IsSquare (algebraMap F (v.adicCompletion F) δ)) ∧ ∀ A : Finset (HeightOneSpectrum (𝓞 F)), ∃ u ∈ _root_.GlobalTheory.QNorm.sUnits F S, ∀ v ∈ T, (IsSquare (algebraMap F (v.adicCompletion F) u) ↔ v ∉ A) := by
   intro F _ _ δ S hS hδ hsq

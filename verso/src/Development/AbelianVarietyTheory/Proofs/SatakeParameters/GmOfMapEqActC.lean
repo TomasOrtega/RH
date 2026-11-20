@@ -9,35 +9,31 @@ namespace GlobalTheory.TwV.DelA
 attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNotions.G.GAtP.domO Formalism.MainNotions.G.GAtP.dvrO Formalism.MainNotions.G.GAtP.fieldK Formalism.MainNotions.G.GAtP.algOK
 
 /- English proof (translation)
-Establish `hblk` using `GlobalTheory.T.unitaryBlockMatrices_read_in_placeField X D pos Kc ι ρ hT M hU`. Consider the cases of `j with`. Consider the case `zero`. Use function extensionality and compare the values at `(v : X.Pl) (s : Fin (X.G.P.n' v))`. Establish `hA : (SecondKernelHermitian.glInv X 0 (SecondKernelHermitian.BOf fd 0 La) v)⁻¹ = SecondKernelHermitian.frGL fd 0 La v` using `inv_inv _`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hdet : IsUnit (fd.frM 0 La v).det`. Rewrite using `[hF v, Matrix.det_submatrix_equiv_self]`. Establish `hu` using `((Matrix.isUnit_iff_isUnit_det _).1 M.isUnit).map (ρ v)`. Rewrite `hu` using `[RingHom.map_det]`. Conclude with `hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hv : (SecondKernelHermitian.frGL fd 0 La v : Matrix _ _ _) = fd.frM 0 La v`. Unfold `SecondKernelHermitian.frGL`. Rewrite using `[dif_pos hdet]`. Both sides reduce to the same expression. Apply `Units.ext` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Establish `e1` using `congrFun (congrFun (hblk v s).1 (finCongr h a)) (finCongr h b)`. Simplify using `only [Matrix.map_apply] at e1`. Rewrite using `[Matrix.GeneralLinearGroup.map_apply, Matrix.GeneralLinearGroup.map_apply, hA]`. Use `show algebraMap X.G.Kf Kc (X.G.P.ι v ((X.G.P.σ v ^ s.val) ((SecondKernelHermitian.frGL fd 0 La v : Matrix _ _ _) a b))) = _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hv, hF v]`. Distinguish the cases in `hs : Even s.val`. Establish `ho : ¬ IsOddPos s`. Unfold `IsOddPos`. Rewrite using `[← Nat.odd_iff, ← Nat.not_even_iff_odd]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `not_not.2 hs`. Rewrite `e1` using `[if_neg ho]`. Simplify using `only [hAt, hs, if_true]`. Rewrite using `[one_mul, inv_one, mul_one]`. Conclude with `e1.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ho : IsOddPos s`. Unfold `IsOddPos`. Rewrite using `[← Nat.odd_iff, ← Nat.not_even_iff_odd]`. Conclude with `hs`. Rewrite `e1` using `[if_pos ho]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [hAt, hs, if_false, invT]`. Rewrite using `[one_mul, inv_one, mul_one, ← map_inv]`. Conclude with `e1.symm`. Consider the case `succ j`. Use function extensionality and compare the values at `(v : X.Pl) (s : Fin (X.G.P.n' v))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hA : (SecondKernelHermitian.glInv X (j + 1) (SecondKernelHermitian.BOf fd (j + 1) La) v)⁻¹ = SecondKernelHermitian.frGL fd (j + 1) La v` using `inv_inv _`. Establish `hdet : IsUnit (fd.frM (j + 1) La v).det`. Rewrite using `[hF v, Matrix.det_submatrix_equiv_self]`. Establish `hu` using `((Matrix.isUnit_iff_isUnit_det _).1 M.isUnit).map (ρ v)`. Rewrite `hu` using `[RingHom.map_det]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Conclude with `hu`. Establish `hv : (SecondKernelHermitian.frGL fd (j + 1) La v : Matrix _ _ _) = fd.frM (j + 1) La v`. Unfold `SecondKernelHermitian.frGL`. Rewrite using `[dif_pos hdet]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Establish `e1` using `congrFun (congrFun (hblk v s).1 (finCongr h a)) (finCongr h b)`. Simplify using `only [Matrix.map_apply] at e1`. Rewrite using `[Matrix.GeneralLinearGroup.map_apply, Matrix.GeneralLinearGroup.map_apply, hA]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show algebraMap X.G.Kf Kc (X.G.P.ι v ((X.G.P.σ v ^ s.val) ((SecondKernelHermitian.frGL fd (j + 1) La v : Matrix _ _ _) a b))) = _`. Rewrite using `[hv, hF v]`. Distinguish the cases in `hs : Even s.val`. Establish `ho : ¬ IsOddPos s`. Unfold `IsOddPos`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Nat.odd_iff, ← Nat.not_even_iff_odd]`. Conclude with `not_not.2 hs`. Rewrite `e1` using `[if_neg ho]`. Simplify using `only [hAt, hs, if_true]`. Rewrite using `[one_mul, inv_one, mul_one]`.
-
-Conclude with `e1.symm`. Establish `ho : IsOddPos s`. Unfold `IsOddPos`. Rewrite using `[← Nat.odd_iff, ← Nat.not_even_iff_odd]`. Conclude with `hs`.
-
-Rewrite `e1` using `[if_pos ho]`. Simplify using `only [hAt, hs, if_false, invT]`. Rewrite using `[one_mul, inv_one, mul_one, ← map_inv]`. Conclude with `e1.symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blk_frame_eq {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau)
     (Kc : Type) [Field Kc] [Algebra X.G.Kf Kc] (ι : ℂ →+* Kc) (ρ : ∀ v : X.Pl, D.host.E →+* X.G.P.Qq v)
@@ -120,7 +116,7 @@ namespace GlobalTheory.TwV.DelA
 attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNotions.G.GAtP.domO Formalism.MainNotions.G.GAtP.dvrO Formalism.MainNotions.G.GAtP.fieldK Formalism.MainNotions.G.GAtP.algOK
 
 /- English proof (translation)
-Introduce `p _ X D pos Kc _ _ ι ρ hT fd j La n h M hU hF G V hGV`. Unfold `gmOf actC`. Rewrite using `[natAct_eq, map_natActR, map_natActR, ← hGV, blk_frame_eq X D pos Kc ι ρ hT fd j La h M hU hF]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gmOf_map_eq_actC : ∀ {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (Kc : Type) [Field Kc] [Algebra X.G.Kf Kc] (ι : ℂ →+* Kc) (ρ : ∀ v : X.Pl, D.host.E →+* X.G.P.Qq v), PosTie X D pos Kc ι ρ → ∀ (fd : FData X D) (j : ℕ) (La : X.Lt j) {n : ℕ} (h : (X.Pj j).m + 1 = n) (M : GL (Fin n) D.host.E), StdU D M → FrIs fd ρ j La h M → ∀ (G : (X.Pj j).Xsp) (V : XR (X.Pj j) ℂ), MvPolynomial.map (algebraMap X.G.Kf Kc) G = MvPolynomial.map ι V → MvPolynomial.map (algebraMap X.G.Kf Kc) (gmOf fd j La G) = MvPolynomial.map ι (actC X D pos j h M V) := by
   intro p _ X D pos Kc _ _ ι ρ hT fd j La n h M hU hF G V hGV

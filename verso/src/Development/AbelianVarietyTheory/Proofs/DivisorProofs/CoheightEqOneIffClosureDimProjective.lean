@@ -15,17 +15,15 @@ open GlobalTheory
 namespace GlobalTheory.FieldDimCoheight
 
 /- English proof (translation)
-Use `le_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[add_comm] haveI : QuasiSober (closure ({z} : Set X)) := isClosed_closure.isClosedEmbedding_subtypeVal.quasiSober`. Conclude with `DimCodim.dim_add_le_of_le_coheight continuous_subtype_val Subtype.val_injective _ fun w => Order.coheight_anti (specializes_iff_mem_closure.2 w.2)`. Take `⟨_, ⟨U, hU, rfl⟩, hzU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ z) isOpen_univ`. Establish `hU : IsAffineOpen U` using `hU`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : Nonempty U` using `⟨⟨z, hzU⟩⟩`. Choose the witnesses or unpack the hypotheses as in `⟨P, hP⟩ : ∃ P : PrimeSpectrum Γ(X, U), hU.fromSpec P = z := by`. Establish `: z ∈ Set.range hU.fromSpec` using `by rw [hU.range_fromSpec]; exact hzU`. Conclude with `this`. Set `φ` to `Spec.preimage (hU.fromSpec ≫ p)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hφ : Spec.map φ = hU.fromSpec ≫ p` using `Spec.map_preimage _`. Set `_ : Algebra F Γ(X, U)` to `φ.hom.toAlgebra`. Establish `hft : Algebra.FiniteType F Γ(X, U)` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType) (φ := φ)).mp (hφ ▸ inferInstance)`. Establish `: Nonempty (Spec Γ(X, U))` using `⟨P⟩`. Establish `hA : ringKrullDim Γ(X, U) = topologicalKrullDim X`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← OpenImmDim.topologicalKrullDim_eq_of_isOpenImmersion F X _ p hU.fromSpec]`. Conclude with `(PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim _).symm`. Establish `h2` using `GroundTheory.Arith.Abelian.Jacobian.height_add_ringKrullDim_quotient F P.asIdeal`. Set `x : Spec Γ(X, U)` to `P`. Establish `eS` using `(asIso (hU.fromSpec.stalkMap x) ≪≫ Spec.stalkIso Γ(X, U) x).commRingCatIsoToRingEquiv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hPh : (P.asIdeal.height : WithBot ℕ∞) = Order.coheight z`. Rewrite using `[← IsLocalization.AtPrime.ringKrullDim_eq_height P.asIdeal (Localization.AtPrime P.asIdeal), ← ringKrullDim_eq_of_ringEquiv eS, ← ringKrullDim_stalk_eq_coheight]`. Rewrite using `[← hP]`. Establish `h3 : ringKrullDim (Γ(X, U) ⧸ P.asIdeal) ≤ topologicalKrullDim (closure ({z} : Set X))`. Rewrite using `[← topologicalKrullDim_range_inter_closure_eq (B := Γ(X, U)) hU.fromSpec P, hP]`.
-
-Conclude with `(Topology.IsEmbedding.inclusion Set.inter_subset_right).isInducing.topologicalKrullDim_le`. Rewrite using `[← hA, ← h2, hPh]`. Conclude with `add_le_add le_rfl h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coheight_add_dim_closure_eq (F : Type) [Field F] (X : Scheme.{0}) [IsIntegral X]
     (p : X ⟶ Sp F) [LocallyOfFiniteType p] (z : X) :
@@ -67,13 +65,11 @@ theorem coheight_add_dim_closure_eq (F : Type) [Field F] (X : Scheme.{0}) [IsInt
   exact add_le_add le_rfl h3
 
 /- English proof (translation)
-Proceed by induction on `t using WithBot.recBotCoe with`. Consider the case `bot => rw [WithBot.add_bot] at h`. Conclude with `absurd h.symm (WithBot.natCast_ne_bot _)`. Consider the case `coe t`. Establish `h' : c + t = ((e + 1 : ℕ) : ℕ∞)` using `by exact_mod_cast h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : c ≠ ⊤` using `by rintro rfl; rw [top_add] at h'; exact ENat.natCast_ne_top _ h'.symm`. Establish `ht : t ≠ ⊤` using `by rintro rfl; rw [add_top] at h'; exact ENat.natCast_ne_top _ h'.symm`. Use `lift c to ℕ using hc`. Use `lift t to ℕ using ht`. Establish `h'' : c + t = e + 1` using `by exact_mod_cast h'`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h1`. Establish `: c = 1` using `by exact_mod_cast h1`. Establish `: t = e` using `by omega`. Conclude with `this` after adjusting the coercions.
-
-Introduce `h1`. Establish `: t = e` using `by exact_mod_cast h1`. Establish `: c = 1` using `by omega`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_one_iff_of_add_eq {c : ℕ∞} {t : WithBot ℕ∞} {e : ℕ}
     (h : (c : WithBot ℕ∞) + t = (e + 1 : ℕ)) : c = 1 ↔ t = e := by
@@ -97,9 +93,7 @@ theorem eq_one_iff_of_add_eq {c : ℕ∞} {t : WithBot ℕ∞} {e : ℕ}
       exact_mod_cast this
 
 /- English proof (translation)
-Introduce `F _ X _ p e hp hd z`. Establish `: IsProper p`. Take `⟨N, c, hc, rfl⟩` from `hp`. Use `isProper_str F N` as an intermediate fact. Use `infer_instance`.
-
-Conclude with `eq_one_iff_of_add_eq ((coheight_add_dim_closure_eq F X p z).trans hd)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coheight_eq_one_iff : ∀ (F : Type) [Field F] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp F)
     (e : ℕ), IsProjOver p → topologicalKrullDim X = (e + 1 : ℕ) → ∀ z : X,

@@ -14,17 +14,17 @@ noncomputable section
 namespace GlobalTheory.DoublingCont
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d J J₂ i hi`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hb : Continuous fun p : Matrix (Fin d) (Fin d) (AE F E) × Matrix (Fin d) (Fin d) (AE F E) => blkMat finSumFinEquiv p.1 p.2` using `(continuous_fst.matrix_fromBlocks continuous_const continuous_const continuous_snd).matrix_submatrix _ _`. Establish `hv : Continuous fun g : UA σ J => ((g.1 : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E))` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hw : Continuous fun g : UA σ J => (((g.1 : GL (Fin d) (AE F E))⁻¹ : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E))` using `Units.continuous_coe_inv.comp continuous_subtype_val`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Establish `: (fun x : UA σ J × UA σ J => (((i x).1 : GL (Fin (d + d)) (AE F E)) : Matrix (Fin (d + d)) (Fin (d + d)) (AE F E))) = fun x => blkMat finSumFinEquiv ((x.1.1 : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E)) ((x.2.1 : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E) …`. Use function extensionality and compare the values at `x`. Conclude with `hi x.1 x.2`. Establish `key` using `hb.comp ((hv.comp continuous_fst).prodMk (hv.comp continuous_snd))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(continuous_congr fun x => (congrFun this x).symm).1 key`. Establish `: (fun x : UA σ J × UA σ J => ((((i x).1 : GL (Fin (d + d)) (AE F E))⁻¹ : GL (Fin (d + d)) (AE F E)) : Matrix (Fin (d + d)) (Fin (d + d)) (AE F E))) = fun x => blkMat finSumFinEquiv (((x.1.1 : GL (Fin d) (AE F E))⁻¹ : GL _ (AE F E)) : Matrix (Fin d) (Fin d) (AE F E)) (((x.2.1 : G …`. Use function extensionality and compare the values at `x`. Establish `h1` using `hi x⁻¹.1 x⁻¹.2`. Rewrite `h1` using `[Prod.mk.eta, map_inv]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1`. Establish `key` using `hb.comp ((hw.comp continuous_fst).prodMk (hw.comp continuous_snd))`. Conclude with `(continuous_congr fun x => (congrFun this x).symm).1 key`. Introduce `δ hδ`. Take `⟨g, hg⟩` from `MonoidHom.mem_range.1 (Subgroup.mem_subgroupOf.1 hδ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `Subgroup.mem_subgroupOf.2 (MonoidHom.mem_range.2 ⟨blkGL finSumFinEquiv ((1 : GL (Fin d) E), g), ?_⟩)` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((blkGL finSumFinEquiv ((1 : GL (Fin d) E), g) : GL _ E) : Matrix _ _ E).map (inclR (AF F)) = mat (i (1, δ))`. Rewrite using `[val_blkGL, blkMat_map _ _ (map_zero _), hi]`. Establish `h1 : mat δ = (g : Matrix _ _ E).map (inclR (AF F))` using `by show δ.1.val = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hg]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Rewrite using `[Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem continuous_and_rat : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d : ℕ)
     (J : Matrix (Fin d) (Fin d) E) (J₂ : Matrix (Fin (d + d)) (Fin (d + d)) E),

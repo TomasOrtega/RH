@@ -13,21 +13,21 @@ section PhiFacts
 variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {P : HeightOneSpectrum (𝓞 E)}
 
 /- English proof (translation)
-Unfold `fPos`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fPos_lt' {k₀ c n l : ℕ} (_hk : k₀ ≤ n) (hl : l < n + c) : fPos k₀ c n l < n + c := by
   unfold fPos
   split_ifs <;> omega
 
 /- English proof (translation)
-Unfold `fIdx fPos`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fIdx_fPos' {k₀ c n l : ℕ} (hk : k₀ ≤ n) (hl : l < n + c) : fIdx k₀ c n (fPos k₀ c n l) = l := by
   unfold fIdx fPos
   split_ifs <;> omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Establish `hl` using `l.isLt`. Simplify using `only [eN, Pi.zero_apply]`. Rewrite using `[if_neg (by omega)]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eN_out {N s : ℕ} (hs : ¬ s < N) : eN E N s = 0 := by
   funext l
@@ -36,7 +36,7 @@ theorem eN_out {N s : ℕ} (hs : ¬ s < N) : eN E N s = 0 := by
   rw [if_neg (by omega)]
 
 /- English proof (translation)
-Unfold `entB atN`. Apply the tactic sequence `split_ifs <;> simp [add_mul]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem entB_add' {N' N : ℕ} (q k₀ c' n' c n : ℕ) (x y : HomE E N' N) (p p' : ℕ) :
     entB q k₀ c' n' c n 0 0 (x + y) p p' = entB q k₀ c' n' c n 0 0 x p p' + entB q k₀ c' n' c n 0 0 y p p' := by
@@ -44,7 +44,7 @@ theorem entB_add' {N' N : ℕ} (q k₀ c' n' c n : ℕ) (x y : HomE E N' N) (p p
   split_ifs <;> simp [add_mul]
 
 /- English proof (translation)
-Unfold `unitV`. Distinguish the cases in `ha : IsUnit (redP P a)`. Establish `hb : IsUnit (redP P b)` using `h ▸ ha`. Rewrite using `[dif_pos ha, dif_pos hb, show ha.unit = hb.unit from Units.ext h]`. Rewrite using `[dif_neg ha, dif_neg (h ▸ ha)]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitV_congr' (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {a b : E} (h : redP P a = redP P b) :
     unitV ξ a = unitV ξ b := by
@@ -55,17 +55,17 @@ theorem unitV_congr' (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {a b : E} (h : red
   · rw [dif_neg ha, dif_neg (h ▸ ha)]
 
 /- English proof (translation)
-Establish `hq : ∀ a b : ℕ, entB q k₀ c' n' c n 0 0 x a b = atN (x (eN E (n' + c') (fIdx k₀ c' n' b))) (fIdx k₀ c n a)`. Introduce `a b`. Simplify using `[entB, scE]`. Break down `hr with hr | hr` into its components or cases. Distinguish the cases in `hz : ∃ s : Fin r, n + c ≤ fIdx k₀ c n s.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails.
 
-Take `⟨s, hs⟩` from `hz`. Apply `Matrix.det_eq_zero_of_row_eq_zero s` to reduce the goal to its premises. Introduce `t`. Simplify using `only [AYm, Matrix.of_apply, hq, atN]`. Rewrite using `[dif_neg (by omega)]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at hz`. Take `⟨s, s', hne, heq⟩` from `Fintype.exists_ne_map_eq_of_card_lt (fun s : Fin r => (⟨fIdx k₀ c n s.1, hz s⟩ : Fin (n + c))) (by simp; omega)`. Apply `Matrix.det_zero_of_row_eq hne` to reduce the goal to its premises. Use function extensionality and compare the values at `t`. Establish `he : fIdx k₀ c n s.1 = fIdx k₀ c n s'.1` using `congrArg Fin.val heq`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [AYm, Matrix.of_apply, hq, he]`. Distinguish the cases in `hz : ∃ t : Fin r, n' + c' ≤ fIdx k₀ c' n' t.1`. Take `⟨t, ht⟩` from `hz`. Apply `Matrix.det_eq_zero_of_column_eq_zero t` to reduce the goal to its premises. Introduce `s`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [AYm, Matrix.of_apply, hq, eN_out (E := E) (show ¬ fIdx k₀ c' n' t.1 < n' + c' by omega), map_zero]`. Simplify using `[atN]`. Use `push_neg at hz`. Take `⟨t, t', hne, heq⟩` from `Fintype.exists_ne_map_eq_of_card_lt (fun t : Fin r => (⟨fIdx k₀ c' n' t.1, hz t⟩ : Fin (n' + c'))) (by simp; omega)`. Apply `Matrix.det_zero_of_column_eq hne` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s`. Establish `he : fIdx k₀ c' n' t.1 = fIdx k₀ c' n' t'.1` using `congrArg Fin.val heq`. Simplify using `only [AYm, Matrix.of_apply, hq, he]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aym_det_zero (q k₀ r c' n' c n : ℕ) (x : HomE E (n' + c') (n + c)) (hr : n + c < r ∨ n' + c' < r) :
     (AYm q k₀ r c' n' c n x).det = 0 := by
@@ -105,11 +105,11 @@ theorem aym_det_zero (q k₀ r c' n' c n : ℕ) (x : HomE E (n' + c') (n + c)) (
 end PhiFacts
 
 /- English proof (translation)
-Introduce `E K _ _ _ _ P q ξ k₀ r c' n' c n hk hk' y hy s l`. Establish `hc : ∀ p p', p < n + c → p' < n' + c' → IntAt P (entB q k₀ c' n' c n 0 0 y p p')`. Assume the negation of the conclusion as `hc`. Apply `hy` to reduce the goal to its premises. Unfold `PhiQ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg (fun h => hc h.1)]`. Distinguish the cases in `hs : s < n' + c'`. Establish `h1` using `hc _ _ (fPos_lt' hk l.2) (fPos_lt' hk' hs)`. Simplify `h1` using `[entB, scE, fIdx_fPos' hk l.2, fIdx_fPos' hk' hs, atN, l.2]`. Rewrite using `[eN_out (E := E) hs, map_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨0, 1, fun h1 => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1), by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem test_function_support : PhiSuppP := by
   intro E K _ _ _ _ P q ξ k₀ r c' n' c n hk hk' y hy s l
@@ -125,7 +125,7 @@ theorem test_function_support : PhiSuppP := by
     exact ⟨0, 1, fun h1 => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1), by simp⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `exact IsFractionRing.injective (𝓞 E) E`. Consider the case `exact FaithfulSMul.algebraMap_injective (𝓞 E) E`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem algebraMap_integers_injective {E : Type} [Field E] [NumberField E] :
     Function.Injective (algebraMap (𝓞 E) E) := by
@@ -134,20 +134,20 @@ private theorem algebraMap_integers_injective {E : Type} [Field E] [NumberField 
     | exact FaithfulSMul.algebraMap_injective (𝓞 E) E
 
 /- English proof (translation)
-Introduce `h` and use `(P.isPrime.mem_or_mem h).elim hs ht`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem mul_not_mem_of_not_mem {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {s t : 𝓞 E}
     (hs : s ∉ P.asIdeal) (ht : t ∉ P.asIdeal) : s * t ∉ P.asIdeal :=
   fun h => (P.isPrime.mem_or_mem h).elim hs ht
 
 /- English proof (translation)
-Introduce `h` and use `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem one_not_mem_asIdeal {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} : (1 : 𝓞 E) ∉ P.asIdeal :=
   fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h)
 
 /- English proof (translation)
-Take `⟨r1, s1, hs1, h1⟩` from `ha`. Take `⟨r2, s2, hs2, h2⟩` from `hb`. Use `⟨s2 * r1 + s1 * r2, s1 * s2, mul_not_mem_of_not_mem hs1 hs2, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul]`. Rewrite using `[← h1, ← h2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -161,7 +161,7 @@ private theorem intAt_add_of_starRing {E : Type} [Field E] [NumberField E] [Star
   ring
 
 /- English proof (translation)
-Take `⟨r1, s1, hs1, h1⟩` from `ha`. Take `⟨r2, s2, hs2, h2⟩` from `hb`. Use `⟨r1 * r2, s1 * s2, mul_not_mem_of_not_mem hs1 hs2, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul]`. Rewrite using `[← h1, ← h2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -175,26 +175,26 @@ private theorem intAt_mul_twisted_eisenstein_coset {E : Type} [Field E] [NumberF
   ring
 
 /- English proof (translation)
-Take `⟨r, s, hs, h⟩` from `ha`. Conclude with `⟨-r, s, hs, by rw [mul_neg, h, map_neg]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem intAt_neg_of_starRing {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {a : E} (ha : IntAt P a) : IntAt P (-a) := by
   obtain ⟨r, s, hs, h⟩ := ha
   exact ⟨-r, s, hs, by rw [mul_neg, h, map_neg]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨m, 1, one_not_mem_asIdeal, by simp⟩`.
+Supply the required witnesses or components.
 -/
 private theorem intAt_natCast_twisted_eisenstein_coset {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} (m : ℕ) : IntAt P (m : E) :=
   ⟨m, 1, one_not_mem_asIdeal, by simp⟩
 
 /- English proof (translation)
-Use `haveI : P.asIdeal.IsMaximal := by first`. Consider the case `exact P.isMaximal`. Consider the case `exact P.isPrime.isMaximal P.ne_bot`. Establish `hs0 : Ideal.Quotient.mk P.asIdeal s ≠ 0`. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `Ideal.Quotient.exists_inv hs0`. Establish `hex : ∃ c : 𝓞 E ⧸ P.asIdeal, ∃ r s : 𝓞 E, s ∉ P.asIdeal ∧ algebraMap (𝓞 E) E s * a = algebraMap (𝓞 E) E r ∧ Ideal.Quotient.mk P.asIdeal s * c = Ideal.Quotient.mk P.asIdeal r` using `⟨b * Ideal.Quotient.mk P.asIdeal r, r, s, hs, h, by rw [← mul_assoc, hb, one_mul]⟩`. Unfold `redP`. Rewrite using `[dif_pos hex]`. Take `⟨r', s', hs', h', hc⟩` from `hex.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs0' : Ideal.Quotient.mk P.asIdeal s' ≠ 0`. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis. Establish `key : s * r' = s' * r` using `algebraMap_integers_injective (by simp only [map_mul]; rw [← h, ← h']; ring)`. Apply `mul_left_cancel₀ hs0'` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, ← map_mul, key]`.
+A detailed English derivation is pending.
 -/
 private theorem mk_mul_redP_eq_of_mul_eq {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {a : E} (r s : 𝓞 E) (hs : s ∉ P.asIdeal)
     (h : algebraMap (𝓞 E) E s * a = algebraMap (𝓞 E) E r) :
@@ -224,13 +224,13 @@ private theorem mk_mul_redP_eq_of_mul_eq {E : Type} [Field E] [NumberField E] [S
       rw [← map_mul, ← map_mul, key]
 
 /- English proof (translation)
-Take `⟨r1, s1, hs1, h1⟩` from `ha`. Take `⟨r2, s2, hs2, h2⟩` from `hb`. Establish `hs` using `mul_not_mem_of_not_mem hs1 hs2`. Establish `e3` using `mk_mul_redP_eq_of_mul_eq (a := a + b) (s2 * r1 + s1 * r2) (s1 * s2) hs (by`. Simplify using `only [map_add, map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h1, ← h2]`. Use the proof step `ring)`. Establish `e1` using `mk_mul_redP_eq_of_mul_eq r1 s1 hs1 h1`. Establish `e2` using `mk_mul_redP_eq_of_mul_eq r2 s2 hs2 h2`. Establish `hs0 : Ideal.Quotient.mk P.asIdeal (s1 * s2) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis. Apply `mul_left_cancel₀ hs0` to reduce the goal to its premises. Rewrite using `[e3]`. Simplify using `only [map_add, map_mul]`. Rewrite using `[← e1, ← e2]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem redP_add_twisted_eisenstein_coset {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : IntAt P a) (hb : IntAt P b) :
     redP P (a + b) = redP P a + redP P b := by
@@ -252,13 +252,13 @@ private theorem redP_add_twisted_eisenstein_coset {E : Type} [Field E] [NumberFi
   ring
 
 /- English proof (translation)
-Take `⟨r1, s1, hs1, h1⟩` from `ha`. Take `⟨r2, s2, hs2, h2⟩` from `hb`. Establish `hs` using `mul_not_mem_of_not_mem hs1 hs2`. Establish `e3` using `mk_mul_redP_eq_of_mul_eq (a := a * b) (r1 * r2) (s1 * s2) hs (by`. Simplify using `only [map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h1, ← h2]`. Use the proof step `ring)`. Establish `e1` using `mk_mul_redP_eq_of_mul_eq r1 s1 hs1 h1`. Establish `e2` using `mk_mul_redP_eq_of_mul_eq r2 s2 hs2 h2`. Establish `hs0 : Ideal.Quotient.mk P.asIdeal (s1 * s2) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis. Apply `mul_left_cancel₀ hs0` to reduce the goal to its premises. Rewrite using `[e3]`. Simplify using `only [map_mul]`. Rewrite using `[← e1, ← e2]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem redP_mul_twisted_eisenstein_coset {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : IntAt P a) (hb : IntAt P b) :
     redP P (a * b) = redP P a * redP P b := by
@@ -280,7 +280,7 @@ private theorem redP_mul_twisted_eisenstein_coset {E : Type} [Field E] [NumberFi
   ring
 
 /- English proof (translation)
-Establish `e` using `mk_mul_redP_eq_of_mul_eq (P := P) (a := (m : E)) (m : 𝓞 E) 1 one_not_mem_asIdeal (by simp)`. Rewrite `e` using `[map_one, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem redP_natCast {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} (m : ℕ) :
     redP P (m : E) = Ideal.Quotient.mk P.asIdeal (m : 𝓞 E) := by
@@ -288,11 +288,11 @@ private theorem redP_natCast {E : Type} [Field E] [NumberField E] [StarRing E] {
   rwa [map_one, one_mul] at e
 
 /- English proof (translation)
-Set `S : Subring E` to `{ carrier := {a | IntAt P a} mul_mem' := fun ha hb => intAt_mul_twisted_eisenstein_coset ha hb one_mem' := by simpa using intAt_natCast_twisted_eisenstein_coset (P := P) 1 add_mem' := fun ha hb => intAt_add_of_starRing ha hb zero_mem' := by simpa using intAt_natCast_twisted_eisen …`. Set `φ : S →+* 𝓞 E ⧸ P.asIdeal` to `{ toFun := fun a => redP P (a : E) map_one' := by simpa using redP_natCast (P := P) 1 map_mul' := fun a b => redP_mul_twisted_eisenstein_coset a.2 b.2 map_zero' := by simpa using redP_natCast (P := P) 0 map_add' := fun a b => redP_add_twisted_eisenstein_coset a.2 b.2 }`. Set `MS : Matrix (Fin r) (Fin r) S` to `Matrix.of fun i j => ⟨M i j, hM i j⟩`. Establish `h1 : ((MS.det : S) : E) = M.det`. Express the relevant statement in the definitionally equal form `S.subtype MS.det = M.det`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Establish `h2 : φ MS.det = (Matrix.of fun i j => redP P (M i j)).det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← h1, ← h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem redP_det_twisted_eisenstein_coset {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {r : ℕ} (M : Matrix (Fin r) (Fin r) E)
     (hM : ∀ i j, IntAt P (M i j)) :
@@ -322,29 +322,27 @@ private theorem redP_det_twisted_eisenstein_coset {E : Type} [Field E] [NumberFi
   rfl
 
 /- English proof (translation)
-Introduce `E K _ _ _ _ P _ _ ξ k₀ r c' n' c n y ε hε`. Establish `hq : ∀ (x : HomE E (n' + c') (n + c)) (a b : ℕ), entB (qOf P) k₀ c' n' c n 0 0 x a b = atN (x (eN E (n' + c') (fIdx k₀ c' n' b))) (fIdx k₀ c n a)`. Introduce `x a b`. Simplify using `[entB, scE]`. Establish `hq0 : (qOf P : E) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : Ideal.absNorm P.asIdeal ≠ 0` using `fun h => P.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)`. Simplify using `only [qOf]`. Conclude with `h0` after adjusting the coercions. Establish `hredq : redP P (qOf P : E) = 0`. Rewrite using `[redP_natCast, Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.absNorm_mem _`. Establish `hεd : ∀ p p', IntAt P (entB (qOf P) k₀ c' n' c n 0 0 ε p p' / (qOf P : E))`. Introduce `p p'`. Rewrite using `[hq]`. Unfold `atN`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `split_ifs with hi`. Conclude with `hε _ _`. Rewrite using `[zero_div]`. Simplify using `using intAt_natCast_twisted_eisenstein_coset (P := P) 0`. Establish `hε1 : ∀ p p', IntAt P (entB (qOf P) k₀ c' n' c n 0 0 ε p p')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `p p'`. Establish `h` using `intAt_mul_twisted_eisenstein_coset (intAt_natCast_twisted_eisenstein_coset (P := P) (qOf P)) (hεd p p')`. Rewrite `h` using `[mul_div_cancel₀ _ hq0]`. Then use the resulting hypothesis. Establish `hεr : ∀ p p', redP P (entB (qOf P) k₀ c' n' c n 0 0 ε p p') = 0`. Introduce `p p'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_div_cancel₀ (entB (qOf P) k₀ c' n' c n 0 0 ε p p') hq0, redP_mul_twisted_eisenstein_coset (intAt_natCast_twisted_eisenstein_coset (qOf P)) (hεd p p'), hredq, zero_mul]`. Establish `e : ∀ p p', entB (qOf P) k₀ c' n' c n 0 0 (y + ε) p p' = entB (qOf P) k₀ c' n' c n 0 0 y p p' + entB (qOf P) k₀ c' n' c n 0 0 ε p p'` using `fun p p' => entB_add' _ _ _ _ _ _ y ε p p'`. Simplify using `only [PhiQ]`. Simplify using `only [e]`. Use `split_ifs with h1 h2 h2`.
+Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `unitV_congr'` to reduce the goal to its premises. Distinguish the cases in `hr : n + c < r ∨ n' + c' < r`. Establish `d1` using `aym_det_zero (qOf P) k₀ r c' n' c n (y + ε) hr`. Establish `d2` using `aym_det_zero (qOf P) k₀ r c' n' c n y hr`. Simplify using `only [AYm, e] at d1 d2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[d1, d2]`. Use `push_neg at hr`. Establish `hi : ∀ i : Fin r, i.1 < n + c` using `fun i => by have := i.2; omega`. Establish `hj : ∀ j : Fin r, j.1 < n' + c'` using `fun j => by have := j.2; omega`. Rewrite using `[redP_det_twisted_eisenstein_coset (Matrix.of fun s t : Fin r => entB (qOf P) k₀ c' n' c n 0 0 y s.1 t.1 + entB (qOf P) k₀ c' n' c n 0 0 ε s.1 t.1) (fun i j => by rw [Matrix.of_apply, ← e]; exact h1.1 _ _ (hi i) (hj j)), redP_det_twisted_eisenstein_coset (Matrix.of fun s t : Fin …`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congr 1`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[redP_add_twisted_eisenstein_coset (h2.1 _ _ (hi i) (hj j)) (hε1 _ _), hεr, add_zero]`. It suffices to derive a contradiction.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Apply `h2` to reduce the goal to its premises. Use `⟨fun p p' hp hp' => ?_, fun p p' hp hp' hp'' => ?_⟩` and prove the remaining obligations. Establish `h` using `intAt_add_of_starRing (h1.1 p p' hp hp') (intAt_neg_of_starRing (hε1 p p'))`. Rewrite `h` using `[e, add_neg_cancel_right]`. Then use the resulting hypothesis. Establish `h` using `intAt_add_of_starRing (h1.2 p p' hp hp' hp'') (intAt_neg_of_starRing (hεd p p'))`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h` using `[e, add_div, add_neg_cancel_right]`. Then use the resulting hypothesis. It suffices to derive a contradiction. Apply `h1` to reduce the goal to its premises. Use `⟨fun p p' hp hp' => by rw [e]; exact intAt_add_of_starRing (h2.1 p p' hp hp') (hε1 p p'), fun p p' hp hp' hp'' => ?_⟩` and prove the remaining obligations. Rewrite using `[e, add_div]`.
-
-Conclude with `intAt_add_of_starRing (h2.2 p p' hp hp' hp'') (hεd p p')`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem test_function_periodicity : PhiPerP := by
   intro E K _ _ _ _ P _ _ ξ k₀ r c' n' c n y ε hε
@@ -415,13 +413,13 @@ theorem test_function_periodicity : PhiPerP := by
   · rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ P R j h hb`. Establish `hmem : ∀ x : Sp E (R.N j + cOf R j), x ∈ LocE.lamY P (qOf P) (R.N j) (cOf R j) 0 ↔ ∀ l, IntAt P (x l)`. Introduce `x`. Simplify using `[LocE.lamY, LocE.sclLat, mem_stdAt', LocE.scE]`. Establish `he : ∀ s, eN E (R.N j + cOf R j) s ∈ LocE.lamY P (qOf P) (R.N j) (cOf R j) 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `s`. Rewrite using `[hmem]`. Introduce `l`. Simplify using `only [eN]`. Use `split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using intAt_natCast_twisted_eisenstein_coset (P := P) 1`. Simplify using `using intAt_natCast_twisted_eisenstein_coset (P := P) 0`. Use `⟨fun s l => ?_, fun s l => ?_⟩` and prove the remaining obligations. Establish `h1` using `(hmem _).mp (hb _ (he s)).2 l first`. Consider the case `exact h1`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `simpa using h1`. Establish `h1` using `(hmem _).mp (hb _ (he s)).1 l first`. Consider the case `exact h1`. Consider the case `simpa using h1`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem bounded_matrix_entries : BddEntP := by
   intro E _ _ _ P R j h hb

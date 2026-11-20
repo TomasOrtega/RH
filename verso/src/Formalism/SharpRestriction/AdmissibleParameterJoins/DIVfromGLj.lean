@@ -31,9 +31,9 @@ def PeriodBoundAtLevelPrime (D : D7) (L : SizeData₂ D) : Prop :=
         (y = 0 ∨ ur D w (L.sg u w) ≤ (vAdd (D.plEq w) y : ℝ))
 
 /- English proof (translation)
-Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[D.val_eq w y hy, WithTop.coe_le_coe]`. Simplify using `only [hy, false_or]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Int.cast_le.symm`.
+A detailed English derivation is pending.
 -/
 theorem valGe_iff (D : D7) (w : D.what₂.places.Pl) (y : D.what₂.LL) (k : ℤ) :
     ((k : ℤ) : WithTop ℤ) ≤ D.what₂.places.val w y ↔ (y = 0 ∨ (k : ℝ) ≤ (vAdd (D.plEq w) y : ℝ)) := by
@@ -45,13 +45,13 @@ theorem valGe_iff (D : D7) (w : D.what₂.places.Pl) (y : D.what₂.LL) (k : ℤ
     exact Int.cast_le.symm
 
 /- English proof (translation)
-Introduce `z hz`. Unfold `locW at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => exact ⟨0, by rw [map_zero, h0], by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, hav⟩` from `hx`. Take `⟨b, hb, hbv⟩` from `hy`. Use `⟨a + b, by rw [map_add, ha, hb, hadd], ?_⟩` and prove the remaining obligations. Conclude with `le_trans (le_min hav hbv) (AddValuation.map_add _ _ _)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Consider the case `smul c x _ hx`. Take `⟨a, ha, hav⟩` from `hx`. Use `⟨(c : D.what₂.LL) * a, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ha]`. Conclude with `(hsm (c : D.what₂.LL) x).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[AddValuation.map_mul]`. Establish `hc : (0 : WithTop ℤ) ≤ D.what₂.places.val w (c : D.what₂.LL)` using `c.2`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem pair_loc (D : D7) (w : D.what₂.places.Pl) (k : ℤ) {V : Type} [AddCommGroup V] [Module D.what₂.LL V]
     [Module (NumberField.RingOfIntegers D.what₂.LL) V] (Λ : Submodule (NumberField.RingOfIntegers D.what₂.LL) V) (l : V → ℂ)
@@ -79,7 +79,7 @@ theorem pair_loc (D : D7) (w : D.what₂.places.Pl) (k : ℤ) {V : Type} [AddCom
         _ ≤ _ := add_le_add hc hav
 
 /- English proof (translation)
-Simplify using `only [DV.ur, vDG, Int.cast_neg, Int.cast_mul, Int.cast_natCast, Nat.cast_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem neg_ur_vDG (D : D7) (u : D.what₂.Word) (w : D.what₂.places.Pl) :
     -ur D w (vDG D u w) =
@@ -87,11 +87,11 @@ theorem neg_ur_vDG (D : D7) (u : D.what₂.Word) (w : D.what₂.places.Pl) :
   simp only [DV.ur, vDG, Int.cast_neg, Int.cast_mul, Int.cast_natCast, Nat.cast_mul]
 
 /- English proof (translation)
-Introduce `z hz F hF hF0`. Take `⟨hPR, hInt, -⟩` from `(h6 u).2.2.2.1`. Take `⟨y, hy1, hy2⟩` from `pair_loc D w (-((D.what₂.places.ramIdx w * padicValNat (D.what₂.places.resChar w) (D.mem u).C.DGam : ℕ) : ℤ)) ((D.fm u).lat D.R.m).L (fun x => (D.mem u).P.Ptil ((D.fm u).emb D.R.m x) ((D.eMt u).symm F)) (by simp [PeriodMap.Ptil]) (fun a b => by simp [PeriodMap.Ptil]) (fun a b => …`. Take `⟨y, hy1, hy2⟩` from `hp hD u _ (hInt x hx) F hF hF0`. Use `⟨y, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hy1, (D.fm u).PtL_spec hPR x]`. Both sides reduce to the same expression. Establish `h` using `hy2 w`. Rewrite `h` using `[neg_ur_vDG]`. Conclude with `(valGe_iff D w y _).2 h)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `z hz`. Use `⟨y, hy1, ?_⟩` and prove the remaining obligations. Rewrite using `[neg_ur_vDG]`. Conclude with `(valGe_iff D w y _).1 hy2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairing_lift_valuation_bound (hD : DGamDef D) (h6 : ∀ u, Formalism.MainNotions.product_first_zeroth_parts.Conclusion6 D u) (hp : Per0 D) (u : D.what₂.Word)
     (w : D.what₂.places.Pl) : ∀ z ∈ locW D.what₂.places w ((D.fm u).lat D.R.m).L,
@@ -121,11 +121,11 @@ theorem pairing_lift_valuation_bound (hD : DGamDef D) (h6 : ∀ u, Formalism.Mai
   exact (valGe_iff D w y _).1 hy2
 
 /- English proof (translation)
-Introduce `z hz F hF hF0`. Take `⟨hPR, hInt⟩` from `h6 u μ hμ`. Take `⟨y, hy1, hy2⟩` from `pair_loc D w (-((D.what₂.places.ramIdx w * padicValNat (D.what₂.places.resChar w) (D.mem u).C.DGam : ℕ) : ℤ)) ((T.fm u μ).lat D.R.m).L (fun x => (D.PTw u μ).Ptil ((T.fm u μ).emb D.R.m x) ((D.eMtTw u μ).symm F)) (by simp [PeriodMap.Ptil]) (fun a b => by simp [PeriodMap.Ptil]) (fun …`. Take `⟨y, hy1, hy2⟩` from `hp hD u μ hμ _ (hInt x hx) F hF hF0`. Use `⟨y, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hy1, (T.fm u μ).PtL_spec hPR x]`. Both sides reduce to the same expression. Establish `h` using `hy2 w hQ`. Rewrite `h` using `[neg_ur_vDG]`. Conclude with `(valGe_iff D w y _).2 h)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `z hz`. Use `⟨y, hy1, ?_⟩` and prove the remaining obligations. Rewrite using `[neg_ur_vDG]`. Conclude with `(valGe_iff D w y _).1 hy2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairTw_of {Dx : DivX D} {T : TwForms D} (hD : DGamDef D) (h6 : PtTw D T) (hp : PerTw D Dx T) (u : D.what₂.Word)
     (μ : D.what₂.Tup) (hμ : μ ≠ D.what₂.mu0) (w : D.what₂.places.Pl) (hQ : D.what₂.places.resChar w ∉ Dx.Qp μ) :

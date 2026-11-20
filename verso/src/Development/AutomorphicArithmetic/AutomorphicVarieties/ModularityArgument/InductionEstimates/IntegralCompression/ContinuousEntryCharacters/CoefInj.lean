@@ -10,13 +10,13 @@ open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.Invariant
 open scoped ComplexConjugate Classical InnerProductSpace
 
 /- English proof (translation)
-Establish `key : (fun k => conj (f k)) = 0`. Use `PW.eq_zero_of_forall_integral_coeff (Complex.continuous_conj.comp hf) fun n q l₁ l₂ => ?_` and prove the remaining obligations. Establish `h1` using `h n q l₁⁻¹ l₂⁻¹`. Rewrite `h1` using `[← integral_mul_left_K _ l₁, ← integral_mul_right_K _ l₂]`. Establish `h2` using `congrArg conj h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[← integral_conj, map_zero]`. Establish `hne : ((l₁ : Matrix (Fin 2) (Fin 2) ℂ).det ^ q * (l₂ : Matrix (Fin 2) (Fin 2) ℂ).det ^ q) ≠ 0` using `mul_ne_zero (zpow_ne_zero _ (det_ne_zero_of_U2 _)) (zpow_ne_zero _ (det_ne_zero_of_U2 _))`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[mul_zero, ← integral_const_mul, ← h2]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `k`. Establish `e : l₁⁻¹ * (l₁ * (k * l₂)) * l₂⁻¹ = k` using `by group`. Rewrite using `[e, map_mul, starRingEnd_self_apply, ← mul_assoc l₁, KT.psi_mul_mul]`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `k`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `using congrFun key k`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem pw2 {f : U2 → ℂ} (hf : Continuous f)
     (h : ∀ (n : ℕ) (q : ℤ) (l r : U2), ∫ m, conj (KT.psi n q n m) * f (l * m * r) ∂μK = 0) : f = 0 := by
@@ -38,24 +38,24 @@ private theorem pw2 {f : U2 → ℂ} (hf : Continuous f)
   simpa using congrFun key k
 
 /- English proof (translation)
-The claim follows from `hf.integrable_of_hasCompactSupport (isCompact_univ.of_isClosed_subset (isClosed_tsupport _) (Set.subset_univ _))`.
+A detailed English derivation is pending.
 -/
 private theorem int2 {f : U2 × U2 → ℂ} (hf : Continuous f) : Integrable f (μK.prod μK) :=
   hf.integrable_of_hasCompactSupport
     (isCompact_univ.of_isClosed_subset (isClosed_tsupport _) (Set.subset_univ _))
 
 /- English proof (translation)
-Take `⟨-, hmul, -, -, -, -, -, -, hdg, -, hchi, -⟩` from `UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.u4`. Assume the negation of the conclusion as `hI`. Use `hν (hchi _ _ fun θ => ?_)` and prove the remaining obligations. Apply `mul_right_cancel₀ hI` to reduce the goal to its premises. Use `conv_rhs => rw [← integral_mul_left_eq_self _ ((tC (θ 0) (θ 1), tC (θ 2) (θ 3)) : U2 × U2)]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_const_mul, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Establish `hθ : θ = ![θ 0, θ 1, θ 2, θ 3]`. Apply the tactic sequence `funext i; fin_cases i <;> rfl`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `e : bd (tC (θ 0) (θ 1) * p.1) (tC (θ 2) (θ 3) * p.2) * g = dg θ * (bd p.1 p.2 * g)`. Rewrite using `[← hmul, ← hdg, ← hθ, mul_assoc]`. Simplify using `only [Prod.fst_mul, Prod.snd_mul]`. Rewrite using `[e, hb, KT.psi_tC_mul n₁ q₁ le_rfl, KT.psi_tC_mul n₂ q₂ le_rfl, map_mul, map_mul]`. Establish `hc : chi (wt n₁ q₁ n₂ q₂) θ * (conj (Complex.exp (Complex.I * ((((n₁ : ℝ) + q₁) * θ 0 + ((n₁ : ℝ) - n₁ + q₁) * θ 1 : ℝ) : ℂ))) * conj (Complex.exp (Complex.I * ((((n₂ : ℝ) + q₂) * θ 2 + ((n₂ : ℝ) - n₂ + q₂) * θ 3 : ℝ) : ℂ)))) = 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chi, ← Complex.exp_conj, ← Complex.exp_conj, ← Complex.exp_add, ← Complex.exp_add, ← Complex.exp_zero]`. Use `congr 1`. Establish `hs : ∑ i, ((wt n₁ q₁ n₂ q₂ i : ℤ) : ℂ) * (θ i : ℂ) = ((n₁ : ℂ) + q₁) * θ 0 + q₁ * θ 1 + ((n₂ : ℂ) + q₂) * θ 2 + q₂ * θ 3`. Use `Fin.sum_univ_four (fun i : Fin 4 => ((wt n₁ q₁ n₂ q₂ i : ℤ) : ℂ) * (θ i : ℂ))` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[wt]`. Rewrite using `[hs]`. Simplify using `only [map_mul, Complex.conj_I, Complex.conj_ofReal]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-(chi ν θ * conj (KT.psi n₁ q₁ n₁ p.1) * conj (KT.psi n₂ q₂ n₂ p.2) * b (bd p.1 p.2 * g))) * hc`.
+A detailed English derivation is pending.
 -/
 private theorem tor2 (n₁ : ℕ) (q₁ : ℤ) (n₂ : ℕ) (q₂ : ℤ) (ν : Fin (2 + 2) → ℤ) (b : U4 → ℂ)
     (hb : ∀ θ h, b (dg θ * h) = chi ν θ * b h) (hν : ν ≠ wt n₁ q₁ n₂ q₂) (g : U4) :
@@ -89,15 +89,15 @@ private theorem tor2 (n₁ : ℕ) (q₁ : ℤ) (n₂ : ℕ) (q₂ : ℤ) (ν : F
   linear_combination (-(chi ν θ * conj (KT.psi n₁ q₁ n₁ p.1) * conj (KT.psi n₂ q₂ n₂ p.2) * b (bd p.1 p.2 * g))) * hc
 
 /- English proof (translation)
-Establish `hs : ∀ (a : ℕ) (b : ℤ) (c : ℕ) (d : ℤ), ∑ i, wt a b c d i ^ 2 = (a + b) ^ 2 + b ^ 2 + (c + d) ^ 2 + d ^ 2`. Introduce `a b c d`. Use `(Fin.sum_univ_four (fun i : Fin 4 => wt a b c d i ^ 2)).trans ?_` and prove the remaining obligations. Simplify using `[wt]`. Rewrite `h` using `[hs, hs]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a1, a2⟩` from `h₁`. Take `⟨b1, b2⟩` from `h₂`. Establish `a1' : (n : ℤ) ≤ n₁` using `by exact_mod_cast a1`. Establish `b1' : (n' : ℤ) ≤ n₂` using `by exact_mod_cast b1`. Establish `hn : (0 : ℤ) ≤ n` using `by positivity`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn' : (0 : ℤ) ≤ n'` using `by positivity`. Establish `e : ∀ a b : ℤ, 2 * ((a + b) ^ 2 + b ^ 2) = (a + 2 * b) ^ 2 + a ^ 2` using `by intros; ring`. Establish `e1` using `e n₁ q₁`. Establish `e2` using `e n₂ q₂`. Establish `e3` using `e n q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4` using `e n' q'`. Rewrite `e1` using `[a2]`. Rewrite `e2` using `[b2]`. Establish `s1 : (n : ℤ) ^ 2 ≤ (n₁ : ℤ) ^ 2` using `by gcongr`. Establish `s2 : (n' : ℤ) ^ 2 ≤ (n₂ : ℤ) ^ 2` using `by gcongr`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t1 : (n₁ : ℤ) = n` using `(pow_left_inj₀ (by omega) hn two_ne_zero).1 (by linarith)`. Establish `t2 : (n₂ : ℤ) = n'` using `(pow_left_inj₀ (by omega) hn' two_ne_zero).1 (by linarith)`. Establish `u1 : q₁ = q` using `by omega`. Establish `u2 : q₂ = q'` using `by omega`. Simplify using `only [wt, t1, t2, u1, u2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem wt_eq {n : ℕ} {q : ℤ} {n' : ℕ} {q' : ℤ} {n₁ : ℕ} {q₁ : ℤ} {n₂ : ℕ} {q₂ : ℤ} (h₁ : Above n q n₁ q₁)
     (h₂ : Above n' q' n₂ q₂) (h : ∑ i, wt n₁ q₁ n₂ q₂ i ^ 2 ≤ ∑ i, wt n q n' q' i ^ 2) : wt n₁ q₁ n₂ q₂ = wt n q n' q' := by
@@ -128,37 +128,35 @@ private theorem wt_eq {n : ℕ} {q : ℤ} {n' : ℕ} {q' : ℤ} {n₁ : ℕ} {q�
   simp only [wt, t1, t2, u1, u2]
 
 /- English proof (translation)
-Introduce `μ ψ n q n' q' hμ _ hψ Φ hΦ hfix hL hR h0`. Take `⟨-, hmul, hone, -, hcont, -, -, -, -, -, -, hcpt, -⟩` from `UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.u4`. Take `⟨J, _, j₀, a, b, ν, hc, hexp, ha0, hb0, hν0, htor, hgood, hgood'⟩` from `hψ.exp`. Use `haveI := hμ.prob`. Use `haveI : μ.IsMulLeftInvariant := ⟨fun k => (hμ.left k).map_eq⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `int4 : ∀ f : U4 → ℂ, Continuous f → Integrable f μ` using `fun f hf => hf.integrable_of_hasCompactSupport (isCompact_univ.of_isClosed_subset (isClosed_tsupport _) (Set.subset_univ _))`. Use `set c : ℂ := ((∫ h, ‖ψ h‖ ^ 2 ∂μ : ℝ) : ℂ)⁻¹ with hcdef`. Establish `hrep : ∀ g, Φ g = ∫ k, c * ψ (k⁻¹ * g) * Φ k ∂μ`. Introduce `g`. Rewrite using `[← integral_mul_left_eq_self _ g, ← hfix g]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Establish `e : (g * k)⁻¹ * g = k⁻¹` using `by group`. Rewrite using `[e, hψ.star, eOf]`. Establish `hsum : ∀ h x, Φ (h * x) = ∑ j, (∫ k, c * a j (k⁻¹ * h) * Φ k ∂μ) * b j x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Introduce `h x`. Rewrite using `[hrep]`. Repeatedly rewrite using `[← integral_mul_const]`. Rewrite using `[← integral_finset_sum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[← mul_assoc, hexp, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Introduce `j _`. Use `(hc j).1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `int4 _ (by fun_prop)`. Establish `hp` using `fun m r => KT.continuous_conj_psi m r m`. Establish `hbd : ∀ l l' : U2, Continuous fun p : U2 × U2 => bd (l * p.1) (l' * p.2)` using `fun l l' => hcont.comp (f := fun p : U2 × U2 => (l * p.1, l' * p.2)) (by fun_prop)`. Establish `hint : ∀ n₁ q₁ n₂ q₂ l l' g, Integrable (fun p : U2 × U2 => conj (KT.psi n₁ q₁ n₁ p.1) * conj (KT.psi n₂ q₂ n₂ p.2) * Φ (bd (l * p.1) (l' * p.2) * g)) (μK.prod μK)` using `fun n₁ q₁ n₂ q₂ l l' g => int2 ((((hp _ _).comp continuous_fst).mul ((hp _ _).comp continuous_snd)).mul (hΦ.comp ((hbd l l').mul continuous_const)))`. Establish `main : ∀ n₁ q₁ n₂ q₂ l l' g, ∫ p : U2 × U2, conj (KT.psi n₁ q₁ n₁ p.1) * conj (KT.psi n₂ q₂ n₂ p.2) * Φ (bd (l * p.1) (l' * p.2) * g) ∂(μK.prod μK) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `n₁ q₁ n₂ q₂ l l' g`. Distinguish the cases in `h₁ : Above n q n₁ q₁`. Distinguish the cases in `h₂ : Above n' q' n₂ q₂`. Repeatedly rewrite using `[← hmul l l', mul_assoc (bd l l'), hsum (bd l l'), Finset.mul_sum]`. Rewrite using `[integral_finset_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[mul_left_comm _ (∫ k, c * a j (k⁻¹ * bd l l') * Φ k ∂μ)]`. Rewrite using `[integral_const_mul]`. Distinguish the cases in `hj : j = j₀`. Rewrite using `[hj, ha0, ← hrep, h0, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[tor2 n₁ q₁ n₂ q₂ (ν j) (b j) (fun θ h => (htor j θ h).2.2), mul_zero]`. Introduce `hν`. Establish `h3` using `hgood j`. Simplify using `only [hν] at h3`. Conclude with `hgood' j hj (hν.trans (wt_eq h₁ h₂ h3))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `j _`. Conclude with `int2 ((((hp _ _).comp continuous_fst).mul ((hp _ _).comp continuous_snd)).mul (continuous_const.mul ((hc j).2.comp (hcont.mul continuous_const))))`. Rewrite using `[integral_prod _ (hint n₁ q₁ n₂ q₂ l l' g)]`. Use `(integral_congr_ae (Eventually.of_forall fun x => ?_)).trans (integral_zero _ _)` and prove the remaining obligations. Establish `h3` using `hR n₂ q₂ h₂ l' (bd (l * x) 1 * g)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [← mul_assoc, hmul, one_mul, mul_one] at h3`. Simplify using `only [mul_assoc (conj (KT.psi n₁ q₁ n₁ x))]`. Rewrite using `[integral_const_mul, h3, mul_zero]`. Rewrite using `[integral_prod_symm _ (hint n₁ q₁ n₂ q₂ l l' g)]`. Use `(integral_congr_ae (Eventually.of_forall fun x => ?_)).trans (integral_zero _ _)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `hL n₁ q₁ h₁ l (bd 1 (l' * x) * g)`. Simplify using `only [← mul_assoc, hmul, one_mul, mul_one] at h3`. Simplify using `only [mul_comm _ (conj (KT.psi n₂ q₂ n₂ x)), mul_assoc (conj (KT.psi n₂ q₂ n₂ x))]`. Rewrite using `[integral_const_mul, h3, mul_zero]`. Establish `step : ∀ n₂ q₂ l' g, (fun x => ∫ y, conj (KT.psi n₂ q₂ n₂ y) * Φ (bd x (l' * y) * g) ∂μK) = 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `n₂ q₂ l' g`. Use `pw2 ?_ fun n₁ q₁ l r => ?_` and prove the remaining obligations. Establish `h3` using `continuous_parametric_integral_of_continuous (μ := μK) (f := fun x y : U2 => conj (KT.psi n₂ q₂ n₂ y) * Φ (bd x (l' * y) * g)) (((hp _ _).comp continuous_snd).mul (hΦ.comp ((by simpa using hbd 1 l' : Continuous fun p : U2 × U2 => bd p.1 (l' * p.2)).mul continuous_const))) isCompa …`. Simplify `h3` using `only [Measure.restrict_univ]`. Establish `h3` using `main n₁ q₁ n₂ q₂ l l' (bd r 1 * g)`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `h3` using `[integral_prod _ (hint n₁ q₁ n₂ q₂ l l' _)]`. Rewrite using `[← h3]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[← integral_const_mul]`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `only [← mul_assoc, hmul, mul_one]`. Use function extensionality and compare the values at `g`. Establish `fin : (fun y => Φ (bd 1 y * g)) = 0`.
-
-Use `pw2 (hΦ.comp ((hcont.comp (f := fun y : U2 => ((1 : U2), y)) (by fun_prop)).mul continuous_const)) fun n₂ q₂ l r => ?_` and prove the remaining obligations. Establish `h3` using `congrFun (step n₂ q₂ l (bd 1 r * g)) 1`. Simplify `h3` using `only [← mul_assoc, hmul, mul_one, Pi.zero_apply]`. Simplify `congrFun fin 1` using `[hone]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.coefInj :
     ∀ (μ : Measure U4) ψ n q n' q', Haar4 μ → μ.IsOpenPosMeasure → Coef ψ n q n' q' → ∀ Φ : U4 → ℂ, Continuous Φ → RFix μ (eOf μ ψ) Φ →

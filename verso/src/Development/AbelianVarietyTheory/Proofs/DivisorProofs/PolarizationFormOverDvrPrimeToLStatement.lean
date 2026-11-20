@@ -15,7 +15,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 open TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolPrimeTo.perfect_of_primeTo | exact GlobalTheory.PolPrimeTo.perfect_of_primeTo | (intros; apply GlobalTheory.PolPrimeTo.perfect_of_primeTo <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.polarization_form_over_dvr_prime_to_l : GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal → ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F)
     (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R],

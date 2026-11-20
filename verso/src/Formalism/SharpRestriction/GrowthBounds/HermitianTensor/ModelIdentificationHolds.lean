@@ -13,28 +13,28 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree
 
 /- English proof (translation)
-The claim follows from `qPh_of hTau hSm bilinP detFactsP numP detDivP`.
+A detailed English derivation is pending.
 -/
 theorem qPh_of_rest (hTau : TauP) (hSm : SmithP) : QPh :=
   qPh_of hTau hSm bilinP detFactsP numP detDivP
 
 /- English proof (translation)
-The claim follows from `contraction_of_pairing_lemmas hPh subCoeffP subMapP subRowP lamCoeffP lamEquivP lamMulP lamEvalP lamMemP (subMuP_of explicit_map_onto_two_letter_space two_letter_lattice_gauss_inverse hCO) (topLineP_of explicit_map_onto_two_letter_space two_letter_lattice_gauss_inverse hCO) liftP …`.
+A detailed English derivation is pending.
 -/
 theorem contraction_of_pairing_GL (hPh : QPh) (hCO : CartanOnto) : ContractionStandardLattice :=
   contraction_of_pairing_lemmas hPh subCoeffP subMapP subRowP lamCoeffP lamEquivP lamMulP lamEvalP lamMemP
     (subMuP_of explicit_map_onto_two_letter_space two_letter_lattice_gauss_inverse hCO) (topLineP_of explicit_map_onto_two_letter_space two_letter_lattice_gauss_inverse hCO) liftP detDivP intCapP hwMulP
 
 /- English proof (translation)
-The claim follows from `theorem_I_of_two_letter_clauses_contraction D explicit_map_injective explicit_map_onto_two_letter_space two_letter_lattice_gauss_inverse hQ`.
+A detailed English derivation is pending.
 -/
 theorem theorem_I_of_contraction (D : Formalism.BasicNotions.D7) (hQ : ContractionStandardLattice) : SecondPartClosed D :=
   theorem_I_of_two_letter_clauses_contraction D explicit_map_injective explicit_map_onto_two_letter_space two_letter_lattice_gauss_inverse hQ
 
 /- English proof (translation)
-Introduce `hA`. Take `⟨T0, -, h0⟩` from `hA 0 le_rfl`. Take `⟨T1, -, h1⟩` from `h0 T0 le_rfl`. Take `⟨T2, -, h2⟩` from `h1 T1 T1 T1 le_rfl le_rfl le_rfl`. Take `⟨CA, Ckap, Ct, Cs, -, -, -, -, hB⟩` from `h2 T2 le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hT : AdmT D` using `hB.2.2.2.2`. Establish `h11 : GradedLatticeStable D` using `hT.2.2.2.2.2.2.1`. Conclude with `theorem_I_of_contraction D (contraction_of_pairing_GL hPh h11.2) hA`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem theorem_I_of_pairing_GL (D : Formalism.BasicNotions.D7) (hPh : QPh) : SecondPartClosed D := by
   intro hA

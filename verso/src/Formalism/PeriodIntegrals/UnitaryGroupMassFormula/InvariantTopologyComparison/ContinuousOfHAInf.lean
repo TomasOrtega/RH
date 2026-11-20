@@ -20,7 +20,7 @@ instance hAd_isTopGroup : IsTopologicalGroup (HAd I) :=
   inferInstanceAs (IsTopologicalGroup (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig I.J))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Continuous (fun h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig I.J => (((h : GL (Fin I.n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E))) : Matrix (Fin I. …`. Conclude with `Units.continuous_val.comp continuous_subtype_val`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem continuous_hmat : Continuous (fun h : HAd I => hmat I h) := by
   change Continuous (fun h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig I.J =>

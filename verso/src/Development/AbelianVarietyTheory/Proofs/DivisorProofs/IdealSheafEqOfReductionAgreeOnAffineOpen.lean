@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.FormalAlg
 
 /- English proof (translation)
-Rewrite using `[← IsAffineOpen.SpecMap_appLE_fromSpec f (isAffineOpen_top _) V.2 le_top, IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem affineFromSpec_comp_eq_specMap_cst {R : Type} [CommRing R] {W : Scheme.{0}}
     (f : W ⟶ Spec (CommRingCat.of R)) (V : W.affineOpens) :
@@ -29,9 +29,9 @@ theorem affineFromSpec_comp_eq_specMap_cst {R : Type} [CommRing R] {W : Scheme.{
   congr 1
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[pow_zero, pow_zero]`. Conclude with `Scheme.IdealSheafData.comap_top g`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, pow_succ, GlobalTheory.Principalise.comap_mul_idealSheaf, ih]`.
+A detailed English derivation is pending.
 -/
 theorem comap_idealSheaf_pow_eq {X Y : Scheme.{0}} (g : Y ⟶ X) (K : X.IdealSheafData) (k : ℕ) :
     (K ^ k).comap g = (K.comap g) ^ k := by
@@ -43,11 +43,9 @@ theorem comap_idealSheaf_pow_eq {X Y : Scheme.{0}} (g : Y ⟶ X) (K : X.IdealShe
     rw [pow_succ, pow_succ, GlobalTheory.Principalise.comap_mul_idealSheaf, ih]
 
 /- English proof (translation)
-Establish `hEq : pullback.fst π g ⁻¹ᵁ π ⁻¹ᵁ U = pullback.snd π g ⁻¹ᵁ g ⁻¹ᵁ U` using `by show (pullback.fst π g ≫ π) ⁻¹ᵁ U = (pullback.snd π g ≫ g) ⁻¹ᵁ U`. Rewrite using `[pullback.condition]`. Establish `L : IsPullback ((pullback.fst π g).resLE (π ⁻¹ᵁ U) (pullback.snd π g ⁻¹ᵁ g ⁻¹ᵁ U) hEq.ge) (pullback.snd π g ⁻¹ᵁ g ⁻¹ᵁ U).ι (π ⁻¹ᵁ U).ι (pullback.fst π g)` using `IsOpenImmersion.isPullback _ _ _ _ (Scheme.Hom.resLE_comp_ι _ _).symm (by simpa only [Scheme.Opens.opensRange_ι] using hEq)`. Establish `s` using `L.paste_vert (IsPullback.of_hasPullback π g)`. Establish `key : IsPullback ((pullback.fst π g).resLE (π ⁻¹ᵁ U) (pullback.snd π g ⁻¹ᵁ g ⁻¹ᵁ U) hEq.ge) (pullback.snd π g ∣_ (g ⁻¹ᵁ U)) (π ∣_ U) (g ∣_ U)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsPullback.of_bot ?_ ?_ (isPullback_morphismRestrict g U)` and prove the remaining obligations. Rewrite using `[morphismRestrict_ι, morphismRestrict_ι]`. Conclude with `s`. Rewrite using `[← cancel_mono U.ι]`. Simplify using `only [Category.assoc, morphismRestrict_ι, morphismRestrict_ι_assoc, Scheme.Hom.resLE_comp_ι_assoc, pullback.condition]`.
-
-Conclude with `key.isIso_snd_of_isIso h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isIso_pullbackSnd_restrict_preimage {X Y S : Scheme.{0}} (π : X ⟶ S) (g : Y ⟶ S) (U : S.Opens)
     (h : IsIso (π ∣_ U)) : IsIso (pullback.snd π g ∣_ (g ⁻¹ᵁ U)) := by
@@ -70,31 +68,27 @@ theorem isIso_pullbackSnd_restrict_preimage {X Y S : Scheme.{0}} (π : X ⟶ S) 
   exact key.isIso_snd_of_isIso h
 
 /- English proof (translation)
-Introduce `R _ I W W' _ f π U hπ hU K hK t ht V`. Take `⟨hbc, hbs, -⟩` from `GlobalTheory.T.baseIdealSheafOfIdeal_comap_specMap_support`. Take `⟨hbC, hloc⟩` from `GlobalTheory.T.baseIdealSheafOfIdeal_spec_bijective_calculus`. Use `haveI : IsNoetherianRing Γ(W, V.1) := IsLocallyNoetherian.component_noetherian V`. Take `⟨C, _, φ, hCn, hφ, hC, hfaith⟩` from `GlobalTheory.T.exists_adicCompletion_noetherian_flat_complete Γ(W, V.1) (I.map (cst f V.1))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hCn`. Use `haveI := hπ`. Establish `hJjac : (I.map (cst f V.1)).map φ ≤ Ideal.jacobson ⊥` using `by haveI := hC`. Conclude with `IsAdicComplete.le_jacobson_bot _`. Use `haveI hφF : Flat (Spec.map (CommRingCat.ofHom φ)) := AlgebraicGeometry.Flat.SpecMap_iff.mpr hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hOF : Flat V.2.fromSpec` using `@HasRingHomProperty.of_isOpenImmersion @Flat RingHom.Flat _ _ _ _ RingHom.Flat.containsIdentities V.2.isOpenImmersion_fromSpec`. Establish `hgF : Flat (Spec.map (CommRingCat.ofHom φ) ≫ V.2.fromSpec)` using `MorphismProperty.comp_mem @Flat _ _ hφF hOF`. Establish `F1 : ∀ X : W.IdealSheafData, X.comap (Spec.map (CommRingCat.ofHom φ) ≫ V.2.fromSpec) = baseIdeal (𝟙 (Spec (CommRingCat.of C))) ((X.ideal V).map φ)` using `fun X => hloc W V C φ X`. Establish `F2 : ∀ e : ℕ, (baseIdeal f (I ^ (e + 1))).ideal V = (I.map (cst f V.1)) ^ (e + 1)`. Introduce `e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[baseIdeal_ideal, Ideal.map_pow]`. Establish `F4 : ∀ e : ℕ, (baseIdeal f (I ^ (e + 1))).comap (Spec.map (CommRingCat.ofHom φ) ≫ V.2.fromSpec) = baseIdeal (𝟙 (Spec (CommRingCat.of C))) (((I.map (cst f V.1)).map φ) ^ (e + 1))`. Introduce `e`. Rewrite using `[F1, F2, Ideal.map_pow]`. Establish `F5 : ∀ e : ℕ, ((t e).ideal V).map φ = ((t (e + 1)).ideal V).map φ ⊔ ((I.map (cst f V.1)).map φ) ^ (e + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `e`. Use `conv_lhs => rw [ht e]`. Rewrite using `[← Ideal.map_pow, ← F2 e, ← Ideal.map_sup]`. Both sides reduce to the same expression. Establish `F6` using `GlobalTheory.T.iInf_sup_pow_eq_of_adic_compatible_ideals C ((I.map (cst f V.1)).map φ) hC (fun e => ((t e).ideal V).map φ) F5`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `F7 : ∀ e : ℕ, (t e).comap (Spec.map (CommRingCat.ofHom φ) ≫ V.2.fromSpec) = baseIdeal (𝟙 (Spec (CommRingCat.of C))) (⨅ l, ((t l).ideal V).map φ) ⊔ baseIdeal (𝟙 (Spec (CommRingCat.of C))) (((I.map (cst f V.1)).map φ) ^ (e + 1))`. Introduce `e`. Rewrite using `[F1, ← (hbC C).2, F6 e]`. Establish `F8 : ∀ e : ℕ, (baseIdeal (π ≫ f) (I ^ (e + 1))).comap (pullback.fst π (Spec.map (CommRingCat.ofHom φ) ≫ V.2.fromSpec)) = baseIdeal (pullback.snd π (Spec.map (CommRingCat.ofHom φ) ≫ V.2.fromSpec)) (((I.map (cst f V.1)).map φ) ^ (e + 1))`. Introduce `e`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgf : (Spec.map (CommRingCat.ofHom φ) ≫ V.2.fromSpec) ≫ f = Spec.map (CommRingCat.ofHom (φ.comp (cst f V.1)))`. Rewrite using `[Category.assoc, affineFromSpec_comp_eq_specMap_cst, ← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[hbc, ← Category.assoc, pullback.condition, Category.assoc, hgf, hbs, ← Ideal.map_map, Ideal.map_pow, Ideal.map_pow]`. Establish `hKC : ∀ x, x ∉ (K.comap (Spec.map (CommRingCat.ofHom φ) ≫ V.2.fromSpec)).support → x ∈ (Spec.map (CommRingCat.ofHom φ) ≫ V.2.fromSpec) ⁻¹ᵁ U`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Use `hK _ (fun h => hx ?_)` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.support_comap]`. Conclude with `h`. Establish `hπC : IsProper (pullback.snd π (Spec.map (CommRingCat.ofHom φ) ≫ V.2.fromSpec))` using `inferInstance`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨k₀, hk₀⟩` from `GlobalTheory.T.map_inf_eq_of_reductions_jacobson_induction C ((I.map (cst f V.1)).map φ) hJjac _ (pullback.snd π (Spec.map (CommRingCat.ofHom φ) ≫ V.2.fromSpec)) _ hπC (isIso_pullbackSnd_restrict_preimage π _ U hU) _ (baseIdeal (𝟙 (Spec (CommRingCat.of C))) (⨅ l, ((t l).ideal V). …`. Use `⟨k₀, fun k hk T' T'' hT' hT'' e => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ e : ℕ, T'.comap (pullback.fst π (Spec.map (CommRingCat.ofHom φ) ≫ V.2.fromSpec)) ⊔ baseIdeal (pullback.snd π (Spec.map (CommRingCat.ofHom φ) ≫ V.2.fromSpec)) (((I.map (cst f V.1)).map φ) ^ (e + 1)) = (baseIdeal (𝟙 (Spec (CommRingCat.of C))) (⨅ l, ((t l).ideal V).map φ) ⊔ b …`. Introduce `e`. Establish `hT'e : T' ⊔ baseIdeal (π ≫ f) (I ^ (e + 1)) = (t e).comap π` using `hT' e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← F8 e, ← Scheme.IdealSheafData.comap_sup, hT'e, ← F7 e, ← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, pullback.condition]`. Establish `h2 : ∀ e : ℕ, T''.comap (Spec.map (CommRingCat.ofHom φ) ≫ V.2.fromSpec) ⊔ baseIdeal (𝟙 (Spec (CommRingCat.of C))) (((I.map (cst f V.1)).map φ) ^ (e + 1)) = baseIdeal (𝟙 (Spec (CommRingCat.of C))) (⨅ l, ((t l).ideal V).map φ) ⊔ baseIdeal (𝟙 (Spec (CommRingCat.of C))) (((I.map (cst …`. Introduce `e`. Establish `hT''e : T'' ⊔ baseIdeal f (I ^ (e + 1)) = t e ⊔ K ^ k` using `hT'' e`. Rewrite using `[← F4 e, ← Scheme.IdealSheafData.comap_sup, hT''e, Scheme.IdealSheafData.comap_sup, F7 e, comap_idealSheaf_pow_eq, F4 e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmain` using `hk₀ k hk _ _ h1 h2`. Establish `hX : ((T'.map π ⊓ T'') ⊔ baseIdeal f (I ^ (e + 1))).comap (Spec.map (CommRingCat.ofHom φ) ≫ V.2.fromSpec) = (t e).comap (Spec.map (CommRingCat.ofHom φ) ≫ V.2.fromSpec)`. Rewrite using `[Scheme.IdealSheafData.comap_sup, GlobalTheory.T.idealSheafData_comap_inf_of_flat _ _ _ hgF, GlobalTheory.T.map_comap_eq_comap_map_of_flat W W' _ _ π _ (pullback.fst π _) (pullback.snd π _) (IsPullback.of_hasPullback π _) hgF inferInstance, hmain, F4 e, F7 e]`. Rewrite `hX` using `[F1, F1]`. Establish `hX'` using `(hbC C).1.1 hX`.
-
-Establish `hle1 : (I.map (cst f V.1)) ^ (e + 1) ≤ ((T'.map π ⊓ T'') ⊔ baseIdeal f (I ^ (e + 1))).ideal V`. Rewrite using `[← F2 e]`. Conclude with `Scheme.IdealSheafData.le_def.mp le_sup_right V`. Establish `hle2 : (I.map (cst f V.1)) ^ (e + 1) ≤ (t e).ideal V`. Rewrite using `[← F2 e]`.
-
-Conclude with `Scheme.IdealSheafData.le_def.mp (ht.baseIdeal_le e) V`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ideal_eq_of_reduces_affine : ∀ (R : Type) [CommRing R] (I : Ideal R) (W W' : Scheme.{0}) [IsLocallyNoetherian W]
     (f : W ⟶ Spec (CommRingCat.of R)) (π : W' ⟶ W) (U : W.Opens), IsProper π → IsIso (π ∣_ U) →

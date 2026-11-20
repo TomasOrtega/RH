@@ -33,9 +33,9 @@ open Polynomial GlobalTheory.Hk3.SplitChain
 open Formalism.L2.Col (heckePolyOf blockPoly)
 
 /- English proof (translation)
-Introduce `h`. Establish `h0 : Polynomial.eval 0 (blockPoly ν q t) = 1`. Unfold `blockPoly`. Rewrite using `[Polynomial.eval_prod]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `c _`. Simplify using the standard rewrite rules. Rewrite `h0` using `[h, eval_zero]`. Conclude with `zero_ne_one h0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockPoly_ne_zero (ν : ℂ) (q t : ℕ) : blockPoly ν q t ≠ 0 := by
   intro h
@@ -51,27 +51,25 @@ theorem blockPoly_ne_zero (ν : ℂ) (q t : ℕ) : blockPoly ν q t ≠ 0 := by
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨q, hq⟩ : ∃ q, q = Ideal.absNorm P.asIdeal` from `⟨_, rfl⟩`. Rewrite using `[← hq]`. Establish `hq0 : q ≠ 0`. Rewrite using `[hq]`. Conclude with `fun h => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Take `⟨-, g2, -, -⟩` from `GlobalTheory.T.theta_lift_levels_good_primes_properties R F hC.lev`. Establish `hG'` using `(g2 t _ hG).2.1`. Take `⟨u1, u2⟩` from `GlobalTheory.T.splittingCharacters_unramified_offLevels R F hC.lev t _ hG`. Take `⟨v1, v2⟩` from `GlobalTheory.T.splittingCharacters_unramified_offLevels R F hC.lev t _ hG'`. Establish `hm` using `D.R.two_le_m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hP' : conjPl (conjPl P) ≠ conjPl P` using `by rw [Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl]; exact hP.symm`. Take `⟨e, he⟩` from `GlobalTheory.MovedIdem.exists_isIdemAt (conjPl P) (by`. Rewrite using `[Formalism.DivisionValues.GluingInclusion.conjIdeal_eq]`. Conclude with `fun h => hP' (HeightOneSpectrum.ext h))`. Take `⟨ϖ, h1, h2⟩ : ∃ ϖ ∈ (conjPl P).asIdeal, ϖ ∉ (conjPl P).asIdeal ^ 2` from `SetLike.exists_of_lt (Ideal.pow_lt_self _ (conjPl P).ne_bot (conjPl P).isPrime.ne_top 2 le_rfl)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result.
 
-Establish `h0 : (ϖ : D.host.E) ≠ 0` using `RingOfIntegers.coe_ne_zero_iff.2 fun h => h2 (h ▸ zero_mem _)`. Take `⟨x, hx⟩ : ∃ x : (AE D)ˣ, (x : AE D) = e * incA D (ϖ : D.host.E) + (1 - e)` from `⟨Formalism.L2.JoinChr.locU he.1.1 (Units.mk0 _ h0), by`. Rewrite using `[Formalism.L2.JoinChr.locU_val, Formalism.L2.JoinChr.locE, Units.val_mk0]`. Use the proof step `ring⟩`. Establish `hY : ∀ j, j ≤ D.R.m → (Yc D j).rank = D.R.r + j * D.R.t` using `fun j hj => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[D.sp.Y_rank _ (min_le_right _ _), min_eq_left hj]`. Both sides reduce to the same expression. Establish `hX : D.sp.X'.rank = D.R.r + D.R.m * D.R.t` using `D.sp.X'_rank`. Establish `hn : ∀ j, D.R.r + (j + 1) * D.R.t = D.R.r + j * D.R.t + D.R.t` using `fun j => by ring`. Set `μ` to `R.toLevCh.mu t`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ν : ℕ → ℂ` to `fun i => (((Lift.chrStep μ R.eta (i + 1)).1 x : ℂ) * (Real.sqrt q : ℂ) ^ (D.R.r + i * D.R.t))⁻¹`. Set `s : ℕ → ℂ` to `fun i => ν i * (((Lift.chrStep μ R.eta (i + 1)).2 x : ℂ) * (Real.sqrt q : ℂ) ^ (D.R.r + (i + 1) * D.R.t))`. Take `⟨W, w0, w1⟩` from `exists_chain D.R.m (fun j => D.R.r + j * D.R.t) fun j => stepMat q (D.R.r + j * D.R.t) D.R.t (ν j) (s j)`. Establish `hmm : D.R.m - 1 + 1 = D.R.m` using `by omega`. Establish `hfix : FixAll R t P`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun k hk => ?_, ?_, fun i => ?_⟩` and prove the remaining obligations. Use `unrPl_step (u2 (k + 1) (by omega) hk.le) u1` as an intermediate fact. Conclude with `(GlobalTheory.T.thetaVacuum_heckeIdentity_splitPlace _ _ _ _ _ _ _ (hC.chain.ωY t k hk) hP this.1 this.2).1`. Use `unrPl_step (u2 D.R.m (by omega) le_rfl) u1` as an intermediate fact. Conclude with `(GlobalTheory.T.thetaVacuum_heckeIdentity_splitPlace _ _ _ _ _ _ _ (hC.chain.ωX t) hP this.1 this.2).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `u2 ((i : ℕ) + 1) (by omega) i.2` as an intermediate fact. Conclude with `(GlobalTheory.T.thetaVacuum_heckeIdentity_splitPlace _ _ _ _ _ _ _ (hC.thP.ωP i t) hP this (unrPl_mul_inv this u1)).1`. Establish `hσ : ((Real.sqrt q : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (Real.sqrt_ne_zero'.2 (Nat.cast_pos.2 (Nat.pos_of_ne_zero hq0)))`. Establish `hs0 : ∀ i, s i ≠ 0` using `fun i => mul_ne_zero (inv_ne_zero (mul_ne_zero (Circle.coe_ne_zero _) (pow_ne_zero _ hσ))) (mul_ne_zero (Circle.coe_ne_zero _) (pow_ne_zero _ hσ))`. Use `⟨W 0, ∏ i ∈ Finset.Ico 0 D.R.m, s i, ∏ i ∈ Finset.Ico 0 D.R.m, blockPoly (ν i * (q : ℂ) ^ (D.R.r + i * D.R.t) * ∏ l ∈ Finset.Ico (i + 1) D.R.m, s l) q D.R.t, Finset.prod_ne_zero_iff.2 fun i _ => hs0 i, Finset.prod_ne_zero_iff.2 fun i _ => blockPoly_ne_zero _ _ _, fun k hk => ?_, …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hY 0 (Nat.zero_le _)]`. Use `GlobalTheory.T.matchE_of_chainStep_matches R F hL hC hS t _ hG hfix _ (fun j => splitC (D.R.r + j * D.R.t) (W j k)) ?_ fun j hj => ?_` and prove the remaining obligations. Establish `hW` using `hC.chain.ωX t`. Establish `h3` using `step_match (ν := ν (D.R.m - 1)) (s := s (D.R.m - 1)) hW hP (unrPl_step (u2 D.R.m (by omega) le_rfl) u1) (unrPl_step (v2 D.R.m (by omega) le_rfl) v1) he h1 h2 hx (hY _ (Nat.sub_le _ _)) hX (by rw [← hn, hmm]) hq (by simp only [ν, hmm, μ]) (by simp only [s, hmm, μ]) (W D.R.m k)`. Rewrite `h3` using `[funext (w0 k), ← hX, splitC_delta hk]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h4` using `funext (w1 (D.R.m - 1) (by omega) k)`. Simplify using `only [hmm] at h4`. Rewrite `h4` using `[funext (w0 k), ← hX]`. Simplify using `only [h4]`. Conclude with `h3`.
-
-Establish `h3` using `step_match (ν := ν j) (s := s j) (hC.chain.ωY t j hj) hP (unrPl_step (u2 (j + 1) (by omega) hj.le) u1) (unrPl_step (v2 (j + 1) (by omega) hj.le) v1) he h1 h2 hx (hY _ (by omega)) (hY _ hj.le) (hn j) hq rfl rfl (W (j + 1) k)`. Simplify using `only [funext (w1 j (by omega) k)]`. Conclude with `h3`. Establish `h3` using `chain_poly q D.R.t D.R.m (fun j => D.R.r + j * D.R.t) hn ν s W w0 w1 D.R.m 0 (zero_add _) a`. Rewrite using `[hX, hY 0 (Nat.zero_le _), h3]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transfer_good {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type}
     {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
@@ -154,25 +152,23 @@ end Transfer
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hCR hHU D G _ _ Pl0 T A Ks _ _ _ R F hC hFix t c x hx`. Establish `hS : SchurAll R` using `GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hCR R`. Establish `hLI` using `GlobalTheory.Chain.LiftConv.liftInteg_of_cuspRapidDecay hCR D`. Establish `H1` using `GlobalTheory.Hk3.OpsRowsTuple.exists_ops_tuple R F hC hS t`. Consider the cases of `H1 with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the case `intro h H2`. Establish `hh` using `H2.1`. Establish `hn` using `H2.2.1`. Establish `he` using `H2.2.2.1`. Establish `hin` using `H2.2.2.2`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hx0 : x = 0`. Rewrite using `[hx0, map_zero, map_zero]`. Conclude with `Submodule.zero_mem _`. Establish `hxe : ∀ P, Good R t P → ∀ cc, h P cc x = evC (Yc D 0) P (fun d => c P (dualLab d)) cc • x` using `fun P hP cc => he c P hP cc x hx`. Establish `hmatch : ∀ P, Good R t P → ∀ cX c0, MatchE R t P cX c0 → h P c0 (R.Th t (LinearMap.adjoint (R.Th t) x)) = evC (Yc D 0) P (fun d => c P (dualLab d)) c0 • R.Th t (LinearMap.adjoint (R.Th t) x)` using `fun P hP cX c0 hM => GlobalTheory.T.thetaLiftAdjoint_preserves_heckeEigenvectors_matchedPair R F hC t h hh hn P hP cX c0 hM x _ (hxe P hP c0)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `evS : ∀ P d, IsLab (Yc D 0) P d → evC (Yc D 0) P (fun d => c P (dualLab d)) (Finsupp.single d 1) = c P (dualLab d)`. Introduce `P d hd`. Unfold `evC`. Rewrite using `[Finsupp.sum_single_index (by simp), if_pos hd, one_mul]`. Establish `gp` using `GlobalTheory.GoodPrimes.good_primes R F hC.lev`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsplit : ∀ P, Good R t P → Formalism.DivisionValues.conjPl P ≠ P → ∀ k ≤ (Yc D 0).rank, h P (Finsupp.single (splitLab (Yc D 0).rank k) 1) (R.Th t (LinearMap.adjoint (R.Th t) x)) = evC (Yc D 0) P (fun d => c P (dualLab d)) (Finsupp.single (splitLab (Yc D 0).rank k) 1) • R.Th t (Li …`. Introduce `P hP hs k hk`. Establish `HZ` using `transfer_good R F hLI hC hS t P hP hs`. Consider the cases of `HZ with`. Consider the case `intro z Hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `Hz with`. Consider the case `intro c0 Hz`. Consider the cases of `Hz with`. Consider the case `intro B Hz`. Establish `hz` using `Hz.2.2.1`.
+Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : Ideal.absNorm P.asIdeal ≠ 0` using `fun e => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 e)`. Establish `hspan` using `GlobalTheory.SpanPoly.single_splitLab_mem_span _ _ _ hq c0 Hz.1 B Hz.2.1 z Hz.2.2.2 k hk`. Use `GlobalTheory.EigSpan.eig_span R F hC t h hh _ hP _ _ _ ?_ _ hspan` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Conclude with `hmatch _ hP _ _ (hz j hj)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `hin c (R.Th t (LinearMap.adjoint (R.Th t) x)) fun P d hP hd => ?_` and prove the remaining obligations. Distinguish the cases in `hs : Formalism.DivisionValues.conjPl P = P`. Establish `HM` using `(GlobalTheory.Hk3.TwoSidedInert.twoSided_of_inert hHU R F hLI hC hS t P hP hs (hFix t P hP hs)).1.2 (Finsupp.single d 1)`. Consider the cases of `HM with`. Consider the case `intro cX hM`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hmatch P hP cX _ hM`. Conclude with `e1.trans (congrArg (fun z : ℂ => z • R.Th t (LinearMap.adjoint (R.Th t) x)) (evS P d hd))`. Establish `hcP : Good R t (Formalism.DivisionValues.conjPl P)` using `(gp.2.1 t P hP).2.1`. Establish `hcs : Formalism.DivisionValues.conjPl (Formalism.DivisionValues.conjPl P) ≠ Formalism.DivisionValues.conjPl P`. Rewrite using `[Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl P]`.
-
-Conclude with `fun e => hs e.symm`. Conclude with `GlobalTheory.Hk3.SplitLabels.eq_of_split_vec R F hC t h hh P hP hs c x _ hx0 hxe (fun k hk => ⟨hsplit P hP hs k hk, hsplit _ hcP hcs k hk⟩) d hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem kept : GlobalTheory.Published.CuspRapidDecay → HoweUnram → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type}
     {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)

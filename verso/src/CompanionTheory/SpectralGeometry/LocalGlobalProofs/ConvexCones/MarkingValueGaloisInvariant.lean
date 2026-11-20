@@ -36,9 +36,9 @@ Both sides reduce to the same expression.
     twForm σ n β a b = β (fun j => σ (a j)) (fun j => σ (b j)) := rfl
 
 /- English proof (translation)
-Use `⟨fun y z => by simp only [twForm_apply]; exact h.1 _ _, fun a y z => ?_⟩` and prove the remaining obligations. Simplify using `only [twForm_apply]`. Establish `e1 : (fun j => σ ((a • y) j)) = σ a • fun j => σ (y j)` using `funext fun j => by simp`. Establish `e2 : (fun j => σ ((bar a • z) j)) = bar (σ a) • fun j => σ (z j)` using `funext fun j => by`. Simplify using `[hb.comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2]`. Conclude with `h.2 _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twForm_mem_balForms {bar : O → O} (hb : CMOrd O bar) (σ : O ≃+* O) {n : ℕ}
     {β : LinearMap.BilinForm ℤ (Fin n → O)}
@@ -52,13 +52,13 @@ theorem twForm_mem_balForms {bar : O → O} (hb : CMOrd O bar) (σ : O ≃+* O) 
   exact h.2 _ _ _
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext₂ fun a b => by simp`.
+A detailed English derivation is pending.
 -/
 theorem twForm_symm_twForm (σ : O ≃+* O) {n : ℕ} (β : LinearMap.BilinForm ℤ (Fin n → O)) :
     twForm σ.symm n (twForm σ n β) = β := LinearMap.ext₂ fun a b => by simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => by simpa [twForm_symm_twForm] using twForm_mem_balForms hb σ.symm h, twForm_mem_balForms hb σ⟩`.
+Supply the required witnesses or components.
 -/
 theorem twForm_mem_balForms_iff {bar : O → O} (hb : CMOrd O bar) (σ : O ≃+* O) {n : ℕ}
     (β : LinearMap.BilinForm ℤ (Fin n → O)) :
@@ -66,7 +66,7 @@ theorem twForm_mem_balForms_iff {bar : O → O} (hb : CMOrd O bar) (σ : O ≃+*
   ⟨fun h => by simpa [twForm_symm_twForm] using twForm_mem_balForms hb σ.symm h, twForm_mem_balForms hb σ⟩
 
 /- English proof (translation)
-Unfold `InvFun.evalZ`. Rewrite using `[InvFun.eval_pi, InvFun.eval_pi]`. Conclude with `hφ σ hσ n fun a b => (β a b : ℝ)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalZ_twForm {w0 : O} {φ : InvFun O} (hφ : IsTwG w0 φ) {σ : O ≃+* O} (hσ : σ w0 = w0)
     {n : ℕ} (β : LinearMap.BilinForm ℤ (Fin n → O)) : φ.evalZ (twForm σ n β) = φ.evalZ β := by
@@ -75,11 +75,11 @@ theorem evalZ_twForm {w0 : O} {φ : InvFun O} (hφ : IsTwG w0 φ) {σ : O ≃+* 
   exact hφ σ hσ n fun a b => (β a b : ℝ)
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar w0 hb ψ lab i hψ hlab σ hσ n B`. Unfold `markVal`. Distinguish the cases in `h2 : ∃ β : LinearMap.BilinForm ℤ (Fin n → O), ∀ a b, B a b = β a b`. Establish `h1 : ∃ β : LinearMap.BilinForm ℤ (Fin n → O), ∀ a b, B (fun j => σ (a j)) (fun j => σ (b j)) = β a b` using `⟨twForm σ n h2.choose, fun a b => h2.choose_spec _ _⟩`. Rewrite using `[dif_pos h1, dif_pos h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : h1.choose = twForm σ n h2.choose` using `LinearMap.ext₂ fun a b => by`. Use `(h1.choose_spec a b).symm.trans (h2.choose_spec _ _)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Rewrite using `[e, isMarked_transport (T := (twPi σ n).toEquiv) (fun _ _ _ => rfl) (twForm_mem_balForms_iff hb σ) (evalZ_twForm hψ hσ) (evalZ_twForm hlab hσ)]`. Establish `h1 : ¬ ∃ β : LinearMap.BilinForm ℤ (Fin n → O), ∀ a b, B (fun j => σ (a j)) (fun j => σ (b j)) = β a b` using `fun ⟨β, hβ⟩ => h2 ⟨twForm σ.symm n β, fun a b => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hβ (fun j => σ.symm (a j)) (fun j => σ.symm (b j))` as an intermediate fact. Simplify using `using this⟩`. Rewrite using `[dif_neg h1, dif_neg h2]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem markVal_twist : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O)
     (w0 : O), CMOrd O bar → ∀ (ψ lab : InvFun O) (i : ℕ), IsTwG w0 ψ → IsTwG w0 lab →

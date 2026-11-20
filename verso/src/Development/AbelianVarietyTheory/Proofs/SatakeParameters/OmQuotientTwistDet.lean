@@ -10,7 +10,7 @@ namespace GlobalTheory.OmTwist
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [om, MonoidHom.mul_apply, Pi.smul_apply, smul_eq_mul, Units.val_mul, mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem om_mul {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (μ χ : kˣ →* ℂˣ)
     (g : GL a k) (h : GL b k) (Φ : Matrix b a k → ℂ) :
@@ -22,7 +22,7 @@ theorem om_mul {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq
   ring
 
 /- English proof (translation)
-Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `v w`. Simplify using `[TensorProduct.smul_tmul', TensorProduct.tmul_smul, smul_smul, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem tmap_twist {r n : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (σ : Representation ℂ (GL (Fin r) k) V) (τ : Representation ℂ (GL (Fin n) k) W) (χ : kˣ →* ℂˣ)
@@ -35,9 +35,9 @@ theorem tmap_twist {r n : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [Add
   simp [TensorProduct.smul_tmul', TensorProduct.tmul_smul, smul_smul, mul_comm]
 
 /- English proof (translation)
-Take `⟨f, hf0, hf⟩` from `hq`. Use `⟨f, hf0, fun g h Φ Φ' hΦ' => ?_⟩` and prove the remaining obligations. Use `set c : ℂˣ := χ (Matrix.GeneralLinearGroup.det g) * (χ (Matrix.GeneralLinearGroup.det h))⁻¹ with hc`. Set `Ψ : SB (Matrix (Fin n) (Fin r) k)` to `((c⁻¹ : ℂˣ) : ℂ) • Φ'`. Establish `hΨ : (Ψ : Matrix (Fin n) (Fin r) k → ℂ) = om μ g h Φ` using `by show ((c⁻¹ : ℂˣ) : ℂ) • (Φ' : Matrix (Fin n) (Fin r) k → ℂ) = _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΦ', om_mul, ← hc, smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`. Establish `hΦΨ : Φ' = (c : ℂ) • Ψ` using `by show Φ' = (c : ℂ) • (((c⁻¹ : ℂˣ) : ℂ) • Φ')`. Rewrite using `[smul_smul, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_smul]`. Rewrite using `[tmap_twist, ← hc, hΦΨ, map_smul, hf g h Φ Ψ hΨ, LinearMap.smul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem omQuot_mul {r n : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (μ χ : kˣ →* ℂˣ) (σ : Representation ℂ (GL (Fin r) k) V) (τ : Representation ℂ (GL (Fin n) k) W)
@@ -56,11 +56,11 @@ theorem omQuot_mul {r n : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [Add
   rw [tmap_twist, ← hc, hΦΨ, map_smul, hf g h Φ Ψ hΨ, LinearMap.smul_apply]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ r n μ V W _ _ _ _ σ τ`. Prove the components needed by the constructor for the conclusion. Introduce `hq`. Use `omQuot_mul μ μ⁻¹ σ τ hq` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, inv_inv]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `hq`. Use `omQuot_mul 1 μ _ _ hq` as an intermediate fact. Establish `e1 : detChar (Fin r) μ * detChar (Fin r) μ⁻¹ = (1 : GL (Fin r) k →* ℂˣ)`. Use extensionality with `g`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `e2 : detChar (Fin n) μ⁻¹ * detChar (Fin n) μ = (1 : GL (Fin n) k →* ℂˣ)`. Use extensionality with `g`. Simplify using the standard rewrite rules. Rewrite `this` using `[one_mul, twist_twist, twist_twist, e1, e2, twist_one, twist_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem main : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r n : ℕ) (μ : kˣ →* ℂˣ) (V W : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GL (Fin r) k) V) (τ : Representation ℂ (GL (Fin n) k) W), OmQuot μ σ τ ↔ OmQuot 1 (twist σ (detChar (Fin r) μ⁻¹)) (twist τ (detChar (Fin n) μ)) := by
   intro k _ _ _ _ r n μ V W _ _ _ _ σ τ

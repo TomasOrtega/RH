@@ -5,7 +5,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 namespace PositivityTheory.Rg.BcB.CG
 
 /- English proof (translation)
-The claim follows from `reproEx PositivityTheory.RgBcC.wave_existence_speed_multiplicity.2.2.1 PositivityTheory.RgBcC.wave_existence_speed_multiplicity.2.2.2 PositivityTheory.RgBcC.Bridge.bridge`.
+A detailed English derivation is pending.
 -/
 theorem reproEx_holds : ReproEx :=
   reproEx PositivityTheory.RgBcC.wave_existence_speed_multiplicity.2.2.1 PositivityTheory.RgBcC.wave_existence_speed_multiplicity.2.2.2 PositivityTheory.RgBcC.Bridge.bridge

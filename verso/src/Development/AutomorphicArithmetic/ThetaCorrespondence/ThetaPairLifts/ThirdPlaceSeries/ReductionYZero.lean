@@ -19,9 +19,9 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
 abbrev reductionYZero_alt (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (h : GA D (D.sp.Y 0)) : Formalism.L2.DIV.G0 (_root_.GlobalTheory.Fam.pk_z W).Pg D.R.r :=
   Formalism.L2.DIV.rTup ((_root_.GlobalTheory.Fam.pk_z W).βY 0) ((_root_.GlobalTheory.Fam.pk_z W).dat0 (_root_.GlobalTheory.Fam.complexLevelStructure W)) (finE (Yc D 0) h)
 /- English proof (translation)
-Establish `h2` using `hh.2`. Establish `h3` using `(Formalism.L2.DIV.mem_lev.1 h2).2`. Use `⟨h3, ?_⟩` and prove the remaining obligations. Simplify using `only [_root_.GlobalTheory.MiTop.realCharacter, Formalism.IndefR.Lev.levChi, Formalism.L2.DIV.levFn]`. Rewrite using `[Formalism.L2.DIV.extendOne_of_mem _ h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Formalism.IndefR.Links.LevCh.dat0, Formalism.IndefR.Lev.datY]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem rChi_eq_lvP_chi_of_mem (W : _root_.GlobalTheory.MiS.RealPackAlt ex) {h : GA D (D.sp.Y 0)} (hh : h ∈ _root_.GlobalTheory.MiTop.rJ_z W) :
     ∃ hg : _root_.GlobalTheory.FamTraceChi.reductionYZero_alt W h ∈ (_root_.GlobalTheory.Fam.complexLevelStructure W).H, _root_.GlobalTheory.MiTop.realCharacter W h = (((_root_.GlobalTheory.Fam.complexLevelStructure W).chi ⟨_, hg⟩ : ℂˣ) : ℂ) := by

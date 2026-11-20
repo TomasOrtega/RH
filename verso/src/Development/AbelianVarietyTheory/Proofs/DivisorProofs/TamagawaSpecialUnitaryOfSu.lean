@@ -16,7 +16,7 @@ open GlobalTheory.TamSU GlobalTheory.SUVol GlobalTheory.UCls GlobalTheory.AdLat 
 namespace GlobalTheory.TamUnfoldSU
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, inferInstance, Algebra.IsQuadraticExtension.finrank_eq_two _ _, fun τ x => IsCMField.complexEmbedding_complexConj E τ x⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCMExt_maxReal (E : Type) [Field E] [NumberField E] [IsCMField E] :
     Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt (maximalRealSubfield E) E (IsCMField.complexConj E).toAlgHom :=
@@ -24,17 +24,17 @@ theorem isCMExt_maxReal (E : Type) [Field E] [NumberField E] [IsCMField E] :
     fun τ x => IsCMField.complexEmbedding_complexConj E τ x⟩
 
 /- English proof (translation)
-Introduce `hP E _ _ _ r G Λ Ψ _ _ e J s hr hU hSD hΨ he hli hs`. Establish `hcm` using `isCMExt_maxReal E`. Take `⟨hGc, hGd, hFG, hspan, -⟩` from `id hSD`. Take `⟨hsum, hmain⟩` from `hP (maximalRealSubfield E) E (IsCMField.complexConj E).toAlgHom hcm r Gᵀ hr ⟨fun i j => hGc i j, by rwa [det_transpose]⟩ Λ hFG hspan`. Establish `hlocf : locVol (IsCMField.complexConj E).toAlgHom Gᵀ Λ = locFactor E r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `(GlobalTheory.T.local_volume_eq_local_factor E r G Λ hr hU hSD)`. Take `⟨hlie, hidx, hpos⟩` from `GlobalTheory.T.lie_lattice_integral_index E r G Λ e hSD he hli`. Rewrite `hsum` using `[hlocf]`. Establish `hmul : Multipliable (locFactor E r)`. Establish `e1 : locFactor E r = fun v => 1 + (locFactor E r v - 1)` using `by funext v; ring`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Conclude with `Real.multipliable_one_add_of_summable hsum`. Establish `hprod0 : ∏' v, locFactor E r v ≠ 0`. Establish `h` using `tprod_one_add_ne_zero_of_summable (f := fun v => locFactor E r v - 1) (fun v => by have := hpos v; ring_nf; exact this.ne') (by simpa [Real.norm_eq_abs] using hsum.abs)`. Simplify using `using h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hprod : 0 < ∏' v, locFactor E r v` using `lt_of_le_of_ne (tprod_nonneg fun v => (hpos v).le) (Ne.symm hprod0)`. Establish `hD : 0 < |(discr (maximalRealSubfield E) : ℝ)| ^ (-((r : ℝ) ^ 2 - 1) / 2)` using `Real.rpow_pos_of_pos (abs_pos.2 (by exact_mod_cast discr_ne_zero (maximalRealSubfield E))) _`. Establish `hI : (0 : ℝ) < ((Submodule.span (𝓞 (maximalRealSubfield E)) (Set.range e)).toAddSubgroup.relIndex (lieLat G Λ) : ℝ)` using `by exact_mod_cast Nat.pos_of_ne_zero hidx`. Establish `hc0 : ENNReal.ofReal (|(discr (maximalRealSubfield E) : ℝ)| ^ (-((r : ℝ) ^ 2 - 1) / 2) * ((Submodule.span (𝓞 (maximalRealSubfield E)) (Set.range e)).toAddSubgroup.relIndex (lieLat G Λ) : ℝ) * ∏' v, locFactor E r v) ≠ 0` using `(ENNReal.ofReal_pos.2 (mul_pos (mul_pos hD hI) hprod)).ne'`. Use `choose θ hθ using fun ρ : Ψ => (GlobalTheory.Mem.VolEmb.existsUnique_infEmb (maximalRealSubfield E) E (IsCMField.complexConj E).toAlgHom hcm ρ.1).exists`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hHaar0, hDens⟩` from `GlobalTheory.SUVol.DensOne.tangentHaar_formLie Ψ G hGd e (fun i => ⟨(he i).1, (he i).2.1⟩) hli`. Take `⟨μ, 𝓕, hHaar, hT, hFD, hμ⟩` from `GlobalTheory.T.special_unitary_tamagawa_measure E r G Λ Ψ θ (formLie Ψ e) (tangentHaar (realSU Ψ G) (formLie Ψ e)) J s _ hSD hΨ hθ hHaar0 hDens hs hc0 ENNReal.ofReal_ne_top`. Establish `hTam : IsTamagawa (IsCMField.complexConj E).toAlgHom Gᵀ Λ Ψ θ e μ`. Use `⟨hHaar, ?_⟩` and prove the remaining obligations. Rewrite using `[hlie, hlocf]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `hT`. Establish `h1` using `hmain Ψ θ e hΨ hθ (fun i => hlie ▸ he i) hli μ hTam 𝓕 hFD`. Conclude with `⟨hmul, hμ.symm.trans h1⟩`.
+A detailed English derivation is pending.
 -/
 theorem tamagawaSpecialUnitary : TamagawaNumberSU → TamagawaSpecialUnitary := by
   intro hP E _ _ _ r G Λ Ψ _ _ e J s hr hU hSD hΨ he hli hs

@@ -17,7 +17,7 @@ class IsNormalScheme (X : Scheme.{u}) : Prop where
 attribute [instance] IsNormalScheme.isDomain_stalk IsNormalScheme.isIntegrallyClosed_stalk
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h x ↦ ⟨h.1 x, h.2 x⟩, fun h ↦ ⟨fun x ↦ (h x).1, fun x ↦ (h x).2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isNormalScheme_iff (X : Scheme.{u}) :
     IsNormalScheme X ↔
@@ -25,21 +25,21 @@ theorem isNormalScheme_iff (X : Scheme.{u}) :
   ⟨fun h x ↦ ⟨h.1 x, h.2 x⟩, fun h ↦ ⟨fun x ↦ (h x).1, fun x ↦ (h x).2⟩⟩
 
 /- English proof (translation)
-The claim follows from `isNormalScheme_iff X`.
+A detailed English derivation is pending.
 -/
 theorem isNormalScheme_iff_pred (X : Scheme.{0}) :
     GlobalTheory.IsNormalScheme X ↔ ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X :=
   isNormalScheme_iff X
 
 /- English proof (translation)
-The claim follows from `(isNormalScheme_iff_pred X).mp h`.
+A detailed English derivation is pending.
 -/
 theorem IsNormalScheme.pred (X : Scheme.{0}) [h : GlobalTheory.IsNormalScheme X] :
     ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X :=
   (isNormalScheme_iff_pred X).mp h
 
 /- English proof (translation)
-The claim follows from `(isNormalScheme_iff_pred X).mpr h`.
+A detailed English derivation is pending.
 -/
 theorem IsNormalScheme.of_pred {X : Scheme.{0}} (h : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X) :
     GlobalTheory.IsNormalScheme X :=
@@ -48,7 +48,7 @@ theorem IsNormalScheme.of_pred {X : Scheme.{0}} (h : ReciprocityTheory.ChartRest
 namespace IsNormalScheme
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨_, _⟩ ↦ ⟨e.symm.toMulEquiv.isDomain _, .of_equiv e⟩, fun ⟨_, _⟩ ↦ ⟨e.toMulEquiv.isDomain _, .of_equiv e.symm⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isDomain_and_isIntegrallyClosed_iff_of_ringEquiv {R S : Type*} [CommRing R] [CommRing S]
     (e : R ≃+* S) : (IsDomain R ∧ IsIntegrallyClosed R) ↔ (IsDomain S ∧ IsIntegrallyClosed S) :=
@@ -56,7 +56,7 @@ theorem isDomain_and_isIntegrallyClosed_iff_of_ringEquiv {R S : Type*} [CommRing
     fun ⟨_, _⟩ ↦ ⟨e.toMulEquiv.isDomain _, .of_equiv e.symm⟩⟩
 
 /- English proof (translation)
-The claim follows from `(isNormalScheme_iff X).mpr fun x ↦ (isDomain_and_isIntegrallyClosed_iff_of_ringEquiv (asIso (f.stalkMap x)).commRingCatIsoToRingEquiv).mp ⟨inferInstance, inferInstance⟩`.
+A detailed English derivation is pending.
 -/
 theorem of_isIso_stalkMap {X Y : Scheme.{u}} (f : X ⟶ Y) [∀ x, IsIso (f.stalkMap x)]
     [IsNormalScheme Y] : IsNormalScheme X :=
@@ -65,7 +65,7 @@ theorem of_isIso_stalkMap {X Y : Scheme.{u}} (f : X ⟶ Y) [∀ x, IsIso (f.stal
       (asIso (f.stalkMap x)).commRingCatIsoToRingEquiv).mp ⟨inferInstance, inferInstance⟩
 
 /- English proof (translation)
-The claim follows from `of_isIso_stalkMap f`.
+A detailed English derivation is pending.
 -/
 theorem of_isOpenImmersion {X Y : Scheme.{u}} (f : X ⟶ Y) [IsOpenImmersion f]
     [IsNormalScheme Y] : IsNormalScheme X :=
@@ -79,14 +79,14 @@ instance openCover_X {X : Scheme.{u}} [IsNormalScheme X] (𝒰 : X.OpenCover) (i
   of_isOpenImmersion (𝒰.f i)
 
 /- English proof (translation)
-The claim follows from `of_isOpenImmersion (inv f)`.
+A detailed English derivation is pending.
 -/
 theorem of_isIso {X Y : Scheme.{u}} (f : X ⟶ Y) [IsIso f] [IsNormalScheme X] :
     IsNormalScheme Y :=
   of_isOpenImmersion (inv f)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ ↦ of_isIso e.hom, fun _ ↦ of_isIso e.inv⟩`.
+Supply the required witnesses or components.
 -/
 theorem iff_of_iso {X Y : Scheme.{u}} (e : X ≅ Y) : IsNormalScheme X ↔ IsNormalScheme Y :=
   ⟨fun _ ↦ of_isIso e.hom, fun _ ↦ of_isIso e.inv⟩
@@ -96,7 +96,7 @@ instance isClosedUnderIsomorphisms :
   ⟨fun e _ ↦ of_isIso e.hom⟩
 
 /- English proof (translation)
-Use `(isNormalScheme_iff X).mpr fun x ↦ ?_` and prove the remaining obligations. Take `⟨Y, f, _, _, y, rfl⟩` from `h x`. Conclude with `(isDomain_and_isIntegrallyClosed_iff_of_ringEquiv (asIso (f.stalkMap y)).commRingCatIsoToRingEquiv).mpr ⟨inferInstance, inferInstance⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem of_forall_exists_isOpenImmersion {X : Scheme.{u}}
     (h : ∀ x : X, ∃ (Y : Scheme.{u}) (f : Y ⟶ X) (_ : IsOpenImmersion f),
@@ -107,7 +107,7 @@ theorem of_forall_exists_isOpenImmersion {X : Scheme.{u}}
       (asIso (f.stalkMap y)).commRingCatIsoToRingEquiv).mpr ⟨inferInstance, inferInstance⟩
 
 /- English proof (translation)
-The claim follows from `of_forall_exists_isOpenImmersion fun x ↦ by obtain ⟨U, hx, hU⟩ := h x exact ⟨U, U.ι, inferInstance, hU, by simpa using hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem of_forall_exists_opens {X : Scheme.{u}}
     (h : ∀ x : X, ∃ U : X.Opens, x ∈ U ∧ IsNormalScheme U) : IsNormalScheme X :=
@@ -116,7 +116,7 @@ theorem of_forall_exists_opens {X : Scheme.{u}}
     exact ⟨U, U.ι, inferInstance, hU, by simpa using hx⟩
 
 /- English proof (translation)
-The claim follows from `of_forall_exists_isOpenImmersion fun x ↦ by obtain ⟨i, y, rfl⟩ := 𝒰.exists_eq x exact ⟨_, 𝒰.f i, inferInstance, inferInstance, y, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem of_openCover {X : Scheme.{u}} (𝒰 : X.OpenCover) [∀ i, IsNormalScheme (𝒰.X i)] :
     IsNormalScheme X :=
@@ -125,14 +125,14 @@ theorem of_openCover {X : Scheme.{u}} (𝒰 : X.OpenCover) [∀ i, IsNormalSchem
     exact ⟨_, 𝒰.f i, inferInstance, inferInstance, y, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ ↦ inferInstance, fun _ ↦ of_openCover 𝒰⟩`.
+Supply the required witnesses or components.
 -/
 theorem iff_of_openCover {X : Scheme.{u}} (𝒰 : X.OpenCover) :
     IsNormalScheme X ↔ ∀ i, IsNormalScheme (𝒰.X i) :=
   ⟨fun _ ↦ inferInstance, fun _ ↦ of_openCover 𝒰⟩
 
 /- English proof (translation)
-Use `⟨fun _ _ ↦ inferInstance, fun h ↦ of_forall_exists_opens fun x ↦ ?_⟩` and prove the remaining obligations. Establish `hx : x ∈ iSup U` using `hU ▸ trivial`. Take `⟨i, hi⟩` from `Opens.mem_iSup.mp hx`. Conclude with `⟨U i, hi, h i⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem iff_of_iSup_eq_top {X : Scheme.{u}} {ι : Sort*} (U : ι → X.Opens) (hU : iSup U = ⊤) :
     IsNormalScheme X ↔ ∀ i, IsNormalScheme (U i) := by
@@ -145,22 +145,20 @@ instance (priority := 900) isReduced {X : Scheme.{u}} [IsNormalScheme X] : IsRed
   isReduced_of_isReduced_stalk X
 
 /- English proof (translation)
-The claim follows from `isIntegral_of_irreducibleSpace_of_isReduced X`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_of_irreducibleSpace (X : Scheme.{u}) [IsNormalScheme X] [IrreducibleSpace X] :
     IsIntegral X :=
   isIntegral_of_irreducibleSpace_of_isReduced X
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isEmptyElim, isEmptyElim⟩`.
+Supply the required witnesses or components.
 -/
 theorem of_isEmpty (X : Scheme.{u}) [IsEmpty X] : IsNormalScheme X :=
   ⟨isEmptyElim, isEmptyElim⟩
 
 /- English proof (translation)
-Rewrite using `[isNormalScheme_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h p hp`. Conclude with `(isDomain_and_isIntegrallyClosed_iff_of_ringEquiv (Spec.stalkIso R ⟨p, hp⟩).commRingCatIsoToRingEquiv).mp (h ⟨p, hp⟩)`. Introduce `h x`.
-
-Conclude with `(isDomain_and_isIntegrallyClosed_iff_of_ringEquiv (Spec.stalkIso R x).commRingCatIsoToRingEquiv).mpr (@h x.asIdeal x.isPrime)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem spec_iff (R : CommRingCat.{u}) :
     IsNormalScheme (Spec R) ↔ ∀ (p : Ideal R) [p.IsPrime],
@@ -180,28 +178,28 @@ instance spec (R : CommRingCat.{u}) [IsDomain R] [IsIntegrallyClosed R] :
     ⟨inferInstance, isIntegrallyClosed_of_isLocalization _ _ p.primeCompl_le_nonZeroDivisors⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h ↦ .of_localization_maximal fun p _ _ ↦ ((spec_iff R).mp h p).2, fun _ ↦ inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 theorem spec_iff_of_isDomain (R : CommRingCat.{u}) [IsDomain R] :
     IsNormalScheme (Spec R) ↔ IsIntegrallyClosed R :=
   ⟨fun h ↦ .of_localization_maximal fun p _ _ ↦ ((spec_iff R).mp h p).2, fun _ ↦ inferInstance⟩
 
 /- English proof (translation)
-The claim follows from `iff_of_iso hU.isoSpec`.
+A detailed English derivation is pending.
 -/
 theorem iff_spec_of_isAffineOpen {X : Scheme.{u}} {U : X.Opens} (hU : IsAffineOpen U) :
     IsNormalScheme U ↔ IsNormalScheme (Spec Γ(X, U)) :=
   iff_of_iso hU.isoSpec
 
 /- English proof (translation)
-The claim follows from `(iff_spec_of_isAffineOpen hU).mp inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem spec_of_isAffineOpen {X : Scheme.{u}} [IsNormalScheme X] {U : X.Opens}
     (hU : IsAffineOpen U) : IsNormalScheme (Spec Γ(X, U)) :=
   (iff_spec_of_isAffineOpen hU).mp inferInstance
 
 /- English proof (translation)
-Use `⟨fun _ U hU ↦ (spec_iff _).mp (spec_of_isAffineOpen hU), fun h ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[iff_of_iSup_eq_top _ (iSup_affineOpens_eq_top X)]`. Conclude with `fun U ↦ (iff_spec_of_isAffineOpen U.2).mpr ((spec_iff _).mpr (h U U.2))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem iff_forall_isAffineOpen (X : Scheme.{u}) :
     IsNormalScheme X ↔ ∀ U : X.Opens, IsAffineOpen U → ∀ (p : Ideal Γ(X, U)) [p.IsPrime],
@@ -211,7 +209,7 @@ theorem iff_forall_isAffineOpen (X : Scheme.{u}) :
   exact fun U ↦ (iff_spec_of_isAffineOpen U.2).mpr ((spec_iff _).mpr (h U U.2))
 
 /- English proof (translation)
-Use `of_forall_exists_opens fun x ↦ ?_` and prove the remaining obligations. Take `⟨_, ⟨U, hU, rfl⟩, hx, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Establish `: Nonempty U` using `⟨⟨x, hx⟩⟩`. Use `h U hU` as an intermediate fact. Conclude with `⟨U, hx, (iff_spec_of_isAffineOpen hU).mpr inferInstance⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem of_isIntegral_of_isIntegrallyClosed (X : Scheme.{u}) [IsIntegral X]
     (h : ∀ (U : X.Opens) [Nonempty U], IsAffineOpen U → IsIntegrallyClosed Γ(X, U)) :
@@ -224,9 +222,9 @@ theorem of_isIntegral_of_isIntegrallyClosed (X : Scheme.{u}) [IsIntegral X]
   exact ⟨U, hx, (iff_spec_of_isAffineOpen hU).mpr inferInstance⟩
 
 /- English proof (translation)
-Establish `h1 : Ring.KrullDimLE 1 (X.presheaf.stalk x)` using `krullDimLE_of_coheight_le hx.le`. Establish `hf : ¬ IsField (X.presheaf.stalk x)` using `fun h ↦ by`. Use `ringKrullDim_eq_zero_of_isField h` as an intermediate fact. Rewrite `this` using `[ringKrullDim_stalk_eq_coheight, hx]`. Simplify using `at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hm` using `IsLocalRing.isField_iff_maximalIdeal_eq.not.mp hf`. Establish `h3 : IsIntegrallyClosed (X.presheaf.stalk x) ∧ ∃! P : Ideal (X.presheaf.stalk x), P ≠ ⊥ ∧ P.IsPrime` using `⟨inferInstance, _, ⟨hm, inferInstance⟩, fun P hP ↦ IsLocalRing.eq_maximalIdeal (Ring.krullDimLE_one_iff_of_noZeroDivisors.mp h1 P hP.1 hP.2)⟩`. Conclude with `((IsDiscreteValuationRing.TFAE (X.presheaf.stalk x) hf).out 0 3).mpr h3`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isDiscreteValuationRing_stalk {X : Scheme.{u}} [IsNormalScheme X] [IsLocallyNoetherian X]
     {x : X} (hx : Order.coheight x = 1) : IsDiscreteValuationRing (X.presheaf.stalk x) := by
@@ -243,7 +241,7 @@ theorem isDiscreteValuationRing_stalk {X : Scheme.{u}} [IsNormalScheme X] [IsLoc
   exact ((IsDiscreteValuationRing.TFAE (X.presheaf.stalk x) hf).out 0 3).mpr h3
 
 /- English proof (translation)
-Use `⟨fun h ↦ ?_, isDiscreteValuationRing_stalk⟩` and prove the remaining obligations. Use `IsDiscreteValuationRing.ringKrullDim_eq_one (X.presheaf.stalk x)` as an intermediate fact. Rewrite `this` using `[ringKrullDim_stalk_eq_coheight]`. Conclude with `this` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDiscreteValuationRing_stalk_iff {X : Scheme.{u}} [IsNormalScheme X]
     [IsLocallyNoetherian X] {x : X} :
@@ -254,9 +252,9 @@ theorem isDiscreteValuationRing_stalk_iff {X : Scheme.{u}} [IsNormalScheme X]
   exact_mod_cast this
 
 /- English proof (translation)
-Use `first`. Consider the case `(rename_i h_2; revert X x h_2 Z W hZ hW hxZ hxW; exact @_root_.GlobalTheory.IrreducibleGeneralizations.main)`. Consider the case `exact @_root_.GlobalTheory.IrreducibleGeneralizations.main`. Consider the case `exact _root_.GlobalTheory.IrreducibleGeneralizations.main`. Consider the case `(apply _root_.GlobalTheory.IrreducibleGeneralizations.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply _root_.GlobalTheory.IrreducibleGeneralizations.main <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.IrreducibleGeneralizations.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IrreducibleGeneralizations.main ..)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eq_of_mem_irreducibleComponents_of_isDomain {X : Scheme.{u}} {x : X}
     [IsDomain (X.presheaf.stalk x)] {Z W : Set X} (hZ : Z ∈ irreducibleComponents X)
@@ -271,7 +269,7 @@ theorem eq_of_mem_irreducibleComponents_of_isDomain {X : Scheme.{u}} {x : X}
   | (intros; exact _root_.GlobalTheory.IrreducibleGeneralizations.main ..)
 
 /- English proof (translation)
-The claim follows from `eq_of_mem_irreducibleComponents_of_isDomain hZ hW hxZ hxW`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_mem_irreducibleComponents {X : Scheme.{u}} [IsNormalScheme X] {x : X}
     {Z W : Set X} (hZ : Z ∈ irreducibleComponents X) (hW : W ∈ irreducibleComponents X)
@@ -279,14 +277,14 @@ theorem eq_of_mem_irreducibleComponents {X : Scheme.{u}} [IsNormalScheme X] {x :
   eq_of_mem_irreducibleComponents_of_isDomain hZ hW hxZ hxW
 
 /- English proof (translation)
-The claim follows from `fun _ hZ _ hW hne ↦ Set.disjoint_left.mpr fun _ hxZ hxW ↦ hne (eq_of_mem_irreducibleComponents hZ hW hxZ hxW)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pairwiseDisjoint_irreducibleComponents (X : Scheme.{u}) [IsNormalScheme X] :
     (irreducibleComponents X).PairwiseDisjoint id := fun _ hZ _ hW hne ↦
   Set.disjoint_left.mpr fun _ hxZ hxW ↦ hne (eq_of_mem_irreducibleComponents hZ hW hxZ hxW)
 
 /- English proof (translation)
-The claim follows from `eq_of_mem_irreducibleComponents (irreducibleComponent_mem_irreducibleComponents x) hZ mem_irreducibleComponent hx`.
+A detailed English derivation is pending.
 -/
 theorem irreducibleComponent_eq {X : Scheme.{u}} [IsNormalScheme X] {x : X} {Z : Set X}
     (hZ : Z ∈ irreducibleComponents X) (hx : x ∈ Z) : irreducibleComponent x = Z :=
@@ -294,11 +292,9 @@ theorem irreducibleComponent_eq {X : Scheme.{u}} [IsNormalScheme X] {x : X} {Z :
     mem_irreducibleComponent hx
 
 /- English proof (translation)
-Establish `: Zᶜ = ⋃ W ∈ irreducibleComponents X \ {Z}, W`. Use extensionality with `x`. Simplify using `only [Set.mem_compl_iff, Set.mem_iUnion, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨_, ⟨irreducibleComponent_mem_irreducibleComponents x, fun h ↦ hx ?_⟩, mem_irreducibleComponent⟩` and prove the remaining obligations. Conclude with `(show irreducibleComponent x = Z from h) ▸ mem_irreducibleComponent`. Introduce and unpack `⟨W, ⟨hW, hne⟩, hxW⟩ hxZ`. Conclude with `hne (eq_of_mem_irreducibleComponents hW hZ hxW hxZ)`. Rewrite using `[← isClosed_compl_iff, this]`.
-
-Conclude with `hX.sdiff.isClosed_biUnion fun W hW ↦ isClosed_of_mem_irreducibleComponents W hW.1`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_of_mem_irreducibleComponents_of_finite {X : Scheme.{u}} [IsNormalScheme X]
     (hX : (irreducibleComponents X).Finite) {Z : Set X} (hZ : Z ∈ irreducibleComponents X) :
@@ -317,11 +313,11 @@ theorem isOpen_of_mem_irreducibleComponents_of_finite {X : Scheme.{u}} [IsNormal
   exact hX.sdiff.isClosed_biUnion fun W hW ↦ isClosed_of_mem_irreducibleComponents W hW.1
 
 /- English proof (translation)
-Use `isOpen_iff_forall_mem_open.mpr fun x hx ↦ ?_` and prove the remaining obligations. Take `⟨_, ⟨(U : X.Opens), hU, rfl⟩, hxU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Establish `: IsNoetherianRing Γ(X, U)` using `IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`. Establish `: NoetherianSpace U.toScheme` using `noetherianSpace_of_isAffineOpen U hU`. Set `y : U.toScheme` to `⟨x, hxU⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hy : U.ι y = x` using `rfl`. Establish `ho : IsOpen (irreducibleComponent y)` using `isOpen_of_mem_irreducibleComponents_of_finite NoetherianSpace.finite_irreducibleComponents (irreducibleComponent_mem_irreducibleComponents y)`. Establish `hi : IsIrreducible (U.ι '' irreducibleComponent y)` using `isIrreducible_irreducibleComponent.image _ U.ι.continuous.continuousOn`. Establish `hxi : x ∈ U.ι '' irreducibleComponent y` using `⟨y, mem_irreducibleComponent, hy⟩`. Take `⟨W, hW, hle⟩` from `exists_mem_irreducibleComponents_subset_of_isIrreducible _ hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨_, ?_, U.ι.isOpenEmbedding.isOpenMap _ ho, hxi⟩` and prove the remaining obligations. Rewrite using `[eq_of_mem_irreducibleComponents hZ hW hx (hle hxi)]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem isOpen_of_mem_irreducibleComponents {X : Scheme.{u}} [IsNormalScheme X]
     [IsLocallyNoetherian X] {Z : Set X} (hZ : Z ∈ irreducibleComponents X) : IsOpen Z := by
@@ -342,14 +338,14 @@ theorem isOpen_of_mem_irreducibleComponents {X : Scheme.{u}} [IsNormalScheme X]
   rwa [eq_of_mem_irreducibleComponents hZ hW hx (hle hxi)]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isClosed_of_mem_irreducibleComponents Z hZ, isOpen_of_mem_irreducibleComponents hZ⟩`.
+Supply the required witnesses or components.
 -/
 theorem isClopen_of_mem_irreducibleComponents {X : Scheme.{u}} [IsNormalScheme X]
     [IsLocallyNoetherian X] {Z : Set X} (hZ : Z ∈ irreducibleComponents X) : IsClopen Z :=
   ⟨isClosed_of_mem_irreducibleComponents Z hZ, isOpen_of_mem_irreducibleComponents hZ⟩
 
 /- English proof (translation)
-The claim follows from `((isClopen_of_mem_irreducibleComponents (irreducibleComponent_mem_irreducibleComponents x)).connectedComponent_subset mem_irreducibleComponent).antisymm irreducibleComponent_subset_connectedComponent`.
+A detailed English derivation is pending.
 -/
 theorem connectedComponent_eq_irreducibleComponent {X : Scheme.{u}} [IsNormalScheme X]
     [IsLocallyNoetherian X] (x : X) : connectedComponent x = irreducibleComponent x :=
@@ -358,7 +354,7 @@ theorem connectedComponent_eq_irreducibleComponent {X : Scheme.{u}} [IsNormalSch
       mem_irreducibleComponent).antisymm irreducibleComponent_subset_connectedComponent
 
 /- English proof (translation)
-Take `⟨x⟩ : Nonempty X` from `inferInstance`. Establish `: IrreducibleSpace X`. Rewrite using `[irreducibleSpace_def, Set.top_eq_univ, ← PreconnectedSpace.connectedComponent_eq_univ x, connectedComponent_eq_irreducibleComponent]`. Conclude with `isIrreducible_irreducibleComponent`. Conclude with `isIntegral_of_irreducibleSpace X`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_connectedSpace (X : Scheme.{u}) [IsNormalScheme X] [IsLocallyNoetherian X]
     [ConnectedSpace X] : IsIntegral X := by
@@ -382,18 +378,18 @@ def component (Z : irreducibleComponents X) : X.Opens :=
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem coe_component (Z : irreducibleComponents X) : (component Z : Set X) = Z.1 := rfl
 
 @[simp]
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_component {Z : irreducibleComponents X} {x : X} : x ∈ component Z ↔ x ∈ Z.1 := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `isClosed_of_mem_irreducibleComponents _ Z.2`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_component (Z : irreducibleComponents X) : IsClosed (component Z : Set X) :=
   isClosed_of_mem_irreducibleComponents _ Z.2
@@ -412,7 +408,7 @@ instance isClosedImmersion_component_ι (Z : irreducibleComponents X) :
 variable (X) in
 
 /- English proof (translation)
-The claim follows from `eq_top_iff.mpr fun x _ ↦ Opens.mem_iSup.mpr ⟨⟨_, irreducibleComponent_mem_irreducibleComponents x⟩, mem_irreducibleComponent⟩`.
+A detailed English derivation is pending.
 -/
 theorem iSup_component : ⨆ Z : irreducibleComponents X, component Z = ⊤ :=
   eq_top_iff.mpr fun x _ ↦ Opens.mem_iSup.mpr
@@ -421,7 +417,7 @@ theorem iSup_component : ⨆ Z : irreducibleComponents X, component Z = ⊤ :=
 variable (X) in
 
 /- English proof (translation)
-Introduce `Z W hne`. Rewrite using `[← Opens.coe_disjoint]`. Conclude with `pairwiseDisjoint_irreducibleComponents X Z.2 W.2 (fun h ↦ hne (Subtype.ext h))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairwise_disjoint_component :
     Pairwise fun Z W : irreducibleComponents X ↦ Disjoint (component Z) (component W) := by
@@ -436,7 +432,7 @@ noncomputable def componentCover : X.OpenCover :=
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem componentCover_X (Z : irreducibleComponents X) :
     (componentCover X).X Z = (component Z).toScheme := rfl
@@ -459,7 +455,7 @@ instance finite_componentCover_index {X : Scheme.{u}} [IsNormalScheme X] [IsNoet
 variable (X) in
 
 /- English proof (translation)
-The claim follows from `nonempty_isColimit_cofanMk_of _ (by simpa using iSup_component X) (by simpa [Function.onFun] using pairwise_disjoint_component X)`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_isColimit_component :
     Nonempty (IsColimit (Cofan.mk X fun Z : irreducibleComponents X ↦ (component Z).ι)) :=
@@ -475,18 +471,16 @@ instance isIso_sigmaDesc_component :
 end Components
 
 /- English proof (translation)
-The claim follows from `(spec_iff_of_isDomain _).mp (spec_of_isAffineOpen hU)`.
+A detailed English derivation is pending.
 -/
 theorem isIntegrallyClosed_of_isAffineOpen {X : Scheme.{u}} [IsNormalScheme X] {U : X.Opens}
     (hU : IsAffineOpen U) [IsDomain Γ(X, U)] : IsIntegrallyClosed Γ(X, U) :=
   (spec_iff_of_isDomain _).mp (spec_of_isAffineOpen hU)
 
 /- English proof (translation)
-Use `choose V hV s hxV hVU hs using h`. Establish `hg : ∀ (W : X.Opens) [Nonempty W], genericPoint X ∈ W` using `fun W h ↦ ((genericPoint_spec X).mem_open_set_iff W.isOpen).mpr (by simpa using h)`. Take `⟨a, ha, -⟩` from `X.sheaf.existsUnique_gluing' (fun x : U ↦ V x.1 x.2) U (fun x ↦ homOfLE (hVU x.1 x.2)) (fun x hx ↦ Opens.mem_iSup.mpr ⟨⟨x, hx⟩, hxV x hx⟩) (fun x ↦ s x.1 x.2) (fun x y ↦ by`. Use `hV x.1 x.2` as an intermediate fact. Use `hV y.1 y.2` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `germ_injective_of_isIntegral X (genericPoint X) (U := V x.1 x.2 ⊓ V y.1 y.2) ⟨hg _, hg _⟩` to reduce the goal to its premises. Conclude with `((X.presheaf.germ_res_apply _ _ _ _).trans (hs x.1 x.2)).trans ((X.presheaf.germ_res_apply _ _ _ _).trans (hs y.1 y.2)).symm)`. Take `⟨x⟩` from `‹Nonempty U›`. Use `hV x.1 x.2` as an intermediate fact. Use `⟨a, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hs x.1 x.2, ← ha x]`. Conclude with `(X.presheaf.germ_res_apply (homOfLE (hVU x.1 x.2)) _ (hg _) a).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_germToFunctionField_eq_of_locally {X : Scheme.{u}} [IsIntegral X] (U : X.Opens)
     [Nonempty U] (t : X.functionField)
@@ -538,14 +532,14 @@ instance isIntegrallyClosed_globalSections {X : Scheme.{u}} [IsNormalScheme X] [
   isIntegrallyClosed_sections ⊤
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ ↦ inferInstance, fun h ↦ of_isIntegral_of_isIntegrallyClosed X fun U _ _ ↦ h U⟩`.
+Supply the required witnesses or components.
 -/
 theorem iff_isIntegrallyClosed_sections (X : Scheme.{u}) [IsIntegral X] :
     IsNormalScheme X ↔ ∀ (U : X.Opens) [Nonempty U], IsIntegrallyClosed Γ(X, U) :=
   ⟨fun _ _ _ ↦ inferInstance, fun h ↦ of_isIntegral_of_isIntegrallyClosed X fun U _ _ ↦ h U⟩
 
 /- English proof (translation)
-Establish `: IrreducibleSpace U.toScheme` using `Subtype.irreducibleSpace hU`. Use `isIntegral_of_irreducibleSpace U.toScheme` as an intermediate fact. Conclude with `(isDomain_and_isIntegrallyClosed_iff_of_ringEquiv U.topIso.commRingCatIsoToRingEquiv).mp ⟨inferInstance, inferInstance⟩`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isDomain_and_isIntegrallyClosed_of_isIrreducible {X : Scheme.{u}} [IsNormalScheme X]
     {U : X.Opens} (hU : IsIrreducible (U : Set X)) :
@@ -556,17 +550,17 @@ theorem isDomain_and_isIntegrallyClosed_of_isIrreducible {X : Scheme.{u}} [IsNor
     U.topIso.commRingCatIsoToRingEquiv).mp ⟨inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap A B)` using `IsIntegralClosure.algebraMap_injective A A B`. Use `isIntegrallyClosedIn_iff.mpr ⟨?_, fun {s} hs ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨⟨a, m⟩, e⟩` from `IsLocalization.surj M x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : algebraMap B Bₘ (algebraMap A B a) = 0`. Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply A Aₘ Bₘ, ← e, map_mul, hx, zero_mul]`. Take `⟨⟨_, c, hc, rfl⟩, h2⟩` from `(IsLocalization.map_eq_zero_iff (Algebra.algebraMapSubmonoid B M) Bₘ _).mp h1`. Establish `h3 : c * a = 0` using `hinj (by simpa using h2)`. Establish `h4 : algebraMap A Aₘ a = 0` using `(IsLocalization.map_eq_zero_iff M Aₘ _).mpr ⟨⟨c, hc⟩, h3⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[h4]`. Conclude with `(IsLocalization.map_units Aₘ m).mul_left_eq_zero.mp e`. Take `⟨⟨x, _, m₁, hm₁, rfl⟩, e⟩` from `IsLocalization.surj (Algebra.algebraMapSubmonoid B M) s`. Simplify using `only [← IsScalarTower.algebraMap_apply] at e`. Take `⟨⟨m₂, hm₂⟩, hm₂s⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization M _ hs`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submonoid.smul_def, Algebra.smul_def] at hm₂s`. Take `⟨m₃, hm₃, hm₃s⟩` from `IsLocalization.exists_isIntegral_smul_of_isIntegral_map (Sₘ := Bₘ) M (x := m₂ • x) <| by`. Simplify using `only [Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply, ← e, ← mul_assoc]`. Conclude with `hm₂s.mul isIntegral_algebraMap`. Take `⟨a, ha⟩` from `IsIntegrallyClosedIn.algebraMap_eq_of_integral hm₃s`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `m : M` to `⟨_, mul_mem hm₁ (mul_mem hm₂ hm₃)⟩`. Use `⟨IsLocalization.mk' Aₘ a m, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (algebraMap A Bₘ m)`. Rewrite using `[IsScalarTower.algebraMap_apply A Aₘ Bₘ]`. Conclude with `(IsLocalization.map_units Aₘ m).map _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `hu.mul_right_cancel` to reduce the goal to its premises. Rewrite using `[IsScalarTower.algebraMap_apply A Aₘ Bₘ, ← map_mul, IsLocalization.mk'_spec, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply A B Bₘ a, ha]`. Simplify using `only [m, Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply, ← e]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isIntegrallyClosedIn_localization {A B Aₘ Bₘ : Type*} [CommRing A] [CommRing B]
     [CommRing Aₘ] [CommRing Bₘ] [Algebra A B] [Algebra A Aₘ] [Algebra B Bₘ] [Algebra Aₘ Bₘ]
@@ -610,11 +604,11 @@ theorem isIntegrallyClosedIn_localization {A B Aₘ Bₘ : Type*} [CommRing A] [
     ring
 
 /- English proof (translation)
-Set `: Algebra A C` to `((algebraMap B C).comp (algebraMap A B)).toAlgebra`. Establish `: IsScalarTower A B C` using `.of_algebraMap_eq' rfl`. Establish `hu : IsUnit (algebraMap A C a)` using `IsLocalization.Away.algebraMap_isUnit (algebraMap A B a)`. Set `: Algebra (Localization.Away a) C` to `(IsLocalization.Away.lift a hu).toAlgebra`. Establish `: IsScalarTower A (Localization.Away a) C` using `.of_algebraMap_eq' (IsLocalization.Away.lift_comp a hu).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsLocalization (Algebra.algebraMapSubmonoid B (.powers a)) C`. Rewrite using `[Algebra.algebraMapSubmonoid_powers]` and apply the resulting hypothesis. Use `isIntegrallyClosedIn_localization (B := B) (Aₘ := Localization.Away a) (Bₘ := C) (.powers a)` as an intermediate fact. Establish `hinj : Function.Injective (algebraMap (Localization.Away a) C)` using `IsIntegralClosure.algebraMap_injective _ (Localization.Away a) C`. Establish `: FaithfulSMul (Localization.Away a) C` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr hinj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨hinj.isDomain _, .of_isIntegrallyClosed_of_isIntegrallyClosedIn _ C⟩`.
+Supply the required witnesses or components.
 -/
 theorem isDomain_and_isIntegrallyClosed_away {A B C : Type*} [CommRing A] [CommRing B]
     [CommRing C] [Algebra A B] [Algebra B C] [IsIntegrallyClosedIn A B] (a : A)
@@ -637,17 +631,15 @@ theorem isDomain_and_isIntegrallyClosed_away {A B C : Type*} [CommRing A] [CommR
   exact ⟨hinj.isDomain _, .of_isIntegrallyClosed_of_isIntegrallyClosedIn _ C⟩
 
 /- English proof (translation)
-Establish `hV : V ≤ U` using `hU ▸ le_sup_left`. Establish `hW : W ≤ U` using `hU ▸ le_sup_right`. Establish `hs : ∀ T : X.Opens, T = ⊥ → Subsingleton Γ(X, T)` using `fun T hT ↦ CommRingCat.subsingleton_of_isTerminal (X.sheaf.isTerminalOfEqEmpty hT)`. Apply the tactic sequence `obtain ⟨e, he, -⟩ := X.sheaf.existsUnique_gluing' (fun b : Bool ↦ cond b V W) U (fun b ↦ homOfLE (by cases b <;> assumption)) (by rw [iSup_bool_eq]; exact hU.ge) (fun b ↦ match b with | true => (1 : Γ(X, V)) | false => (0 : Γ(X, W))) (by`. Introduce and unpack `(_ | _) (_ | _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components.
 
-Both sides reduce to the same expression. Conclude with `(hs _ (hVW.symm.eq_bot)).elim _ _`. Conclude with `(hs _ (hVW.eq_bot)).elim _ _`. Use the proof step `rfl)`. Use `replace he : ∃ e : Γ(X, U), X.presheaf.map (homOfLE hV).op e = 1 ∧ X.presheaf.map (homOfLE hW).op e = 0 := ⟨e, he true, he false⟩`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `clear e`. Take `⟨e, h1, h0⟩` from `he`. Establish `key : ∀ {V W : X.Opens} (hV : V ≤ U) (hW : W ≤ U), V ⊔ W = U → ∀ e : Γ(X, U), X.presheaf.map (homOfLE hV).op e = 1 → X.presheaf.map (homOfLE hW).op e = 0 → X.basicOpen e = V`. Introduce `V W hV hW hU e h1 h0`. Establish `a1` using `X.basicOpen_res e (homOfLE hV).op`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `a0` using `X.basicOpen_res e (homOfLE hW).op`. Rewrite `a1` using `[h1, X.basicOpen_one]`. Rewrite `a0` using `[h0, X.basicOpen_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hU, inf_eq_right.mpr (X.basicOpen_le e)]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `_ = V := by rw [inf_sup_right, ← a1, ← a0, sup_bot_eq]`. Use `⟨e, ?_, key hV hW hU e h1 h0, key hW hV (sup_comm W V ▸ hU) _ ?_ ?_⟩` and prove the remaining obligations. Use `X.sheaf.eq_of_locally_eq₂ (homOfLE hV) (homOfLE hW) hU.ge _ _ ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `X.presheaf.map (homOfLE hV).op (e * e) = X.presheaf.map (homOfLE hV).op e`. Rewrite using `[map_mul, h1, mul_one]`.
-
-Express the relevant statement in the definitionally equal form `X.presheaf.map (homOfLE hW).op (e * e) = X.presheaf.map (homOfLE hW).op e`. Rewrite using `[map_mul, h0, mul_zero]`. Rewrite using `[map_sub, map_one, h0, sub_zero]`. Rewrite using `[map_sub, map_one, h1, sub_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isIdempotentElem_basicOpen_eq {X : Scheme.{u}} {U V W : X.Opens}
     (hU : V ⊔ W = U) (hVW : Disjoint V W) :
@@ -690,7 +682,7 @@ theorem exists_isIdempotentElem_basicOpen_eq {X : Scheme.{u}} {U V W : X.Opens}
   · rw [map_sub, map_one, h1, sub_self]
 
 /- English proof (translation)
-Use `IsIntegrallyClosedIn.algebraMap_eq_of_integral ⟨Polynomial.X * (Polynomial.X - Polynomial.C 1), Polynomial.monic_X.mul (Polynomial.monic_X_sub_C 1), ?_⟩` and prove the remaining obligations. Simplify using `[mul_sub, he.eq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_algebraMap_eq_of_isIdempotentElem {A B : Type*} [CommRing A] [CommRing B]
     [Algebra A B] [IsIntegrallyClosedIn A B] {e : B} (he : IsIdempotentElem e) :
@@ -701,21 +693,17 @@ theorem exists_algebraMap_eq_of_isIdempotentElem {A B : Type*} [CommRing A] [Com
   simp [mul_sub, he.eq]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap A Γ(X, U))` using `IsIntegralClosure.algebraMap_injective A A _`. Set `W (Z : irreducibleComponents X) : X.Opens` to `⟨Z.1ᶜ, (isClosed_component Z).isOpen_compl⟩`. Establish `H (Z : irreducibleComponents X)` using `exists_isIdempotentElem_basicOpen_eq (X := X) (U := U) (V := U ⊓ component Z) (W := U ⊓ W Z) (by`. Use `le_antisymm (sup_le inf_le_left inf_le_left) fun x hx ↦ ?_` and prove the remaining obligations. Distinguish the cases in `h : x ∈ Z.1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `exacts [Or.inl ⟨hx, h⟩, Or.inr ⟨hx, h⟩])`. Use the proof step `(by`. Rewrite using `[← Opens.coe_disjoint]`. Conclude with `Set.disjoint_left.mpr fun x hx hx' ↦ hx'.2 hx.2)`. Use `choose e he h1 h0 using H`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `choose a ha using fun Z ↦ exists_algebraMap_eq_of_isIdempotentElem (A := A) (he Z)`. Take `⟨s, hs⟩` from `hU.elim_finite_subcover (fun Z : irreducibleComponents X ↦ Z.1) (fun Z ↦ isOpen_of_mem_irreducibleComponents Z.2) (fun x _ ↦ Set.mem_iUnion.mpr ⟨⟨_, irreducibleComponent_mem_irreducibleComponents x⟩, mem_irreducibleComponent⟩)`. Establish `hprod : ∏ Z ∈ s, (1 - a Z) = 0`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero, ← basicOpen_eq_bot_iff, eq_bot_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Take `⟨Z, hZ, hxZ⟩` from `Set.mem_iUnion₂.mp (hs (X.basicOpen_le _ hx))`. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem (fun Z ↦ 1 - a Z) hZ`. Rewrite `hx` using `[hc, map_mul, X.basicOpen_mul, map_sub, map_one, ha, h0]`. Conclude with `hx.1.2 hxZ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `of_forall_exists_isOpenImmersion fun p ↦ ?_` and prove the remaining obligations. Establish `hp` using `p.isPrime`. Take `⟨Z, hZ⟩ : ∃ Z, a Z ∉ p.asIdeal` from `by by_contra! h`. Take `⟨Z, -, hZ⟩` from `(Ideal.IsPrime.prod_mem_iff (s := s) (x := fun Z ↦ 1 - a Z) (p := p.asIdeal)).mp (hprod ▸ p.asIdeal.zero_mem)`. Conclude with `hp.ne_top ((Ideal.eq_top_iff_one _).mpr (by simpa using p.asIdeal.add_mem hZ (h Z)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hne : X.basicOpen (e Z) ≠ ⊥` using `fun h ↦ hZ <| by`. Rewrite `h` using `[basicOpen_eq_bot_iff, ← ha, map_eq_zero_iff _ hinj]`. Conclude with `h ▸ p.asIdeal.zero_mem`. Establish `hirr : IsIrreducible (X.basicOpen (e Z) : Set X)` using `⟨(Opens.ne_bot_iff_nonempty _).mp hne, Z.2.1.2.open_subset (X.basicOpen (e Z)).isOpen (by rw [h1]; exact fun _ h ↦ h.2)⟩`. Take `⟨_, _⟩` from `isDomain_and_isIntegrallyClosed_of_isIrreducible hirr`.
-
-Establish `: IsLocalization.Away (algebraMap A Γ(X, U) (a Z)) Γ(X, X.basicOpen (e Z))`. Rewrite using `[ha]`. Conclude with `isLocalization_basicOpen_of_qcqs hU (.of_quasiSeparatedSpace _) (e Z)`. Take `⟨_, _⟩` from `isDomain_and_isIntegrallyClosed_away (B := Γ(X, U)) (C := Γ(X, X.basicOpen (e Z))) (a Z)`. Use `⟨Spec (.of (Localization.Away (a Z))), Spec.map (CommRingCat.ofHom (algebraMap A (Localization.Away (a Z)))), inferInstance, inferInstance, ?_⟩` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `p ∈ Set.range (PrimeSpectrum.comap (algebraMap A (Localization.Away (a Z))))`. Rewrite using `[PrimeSpectrum.localization_away_comap_range _ (a Z)]`. Conclude with `hZ`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spec_of_isIntegrallyClosedIn {X : Scheme.{u}} [IsNormalScheme X] [IsLocallyNoetherian X]
     {U : X.Opens} (hU : IsCompact (U : Set X)) (A : Type u) [CommRing A] [Algebra A Γ(X, U)]
@@ -773,18 +761,18 @@ theorem spec_of_isIntegrallyClosedIn {X : Scheme.{u}} [IsNormalScheme X] [IsLoca
   exact hZ
 
 /- English proof (translation)
-The claim follows from `spec_of_isIntegrallyClosedIn hU Γ(X, U)`.
+A detailed English derivation is pending.
 -/
 theorem spec_sections_of_isCompact {X : Scheme.{u}} [IsNormalScheme X] [IsLocallyNoetherian X]
     {U : X.Opens} (hU : IsCompact (U : Set X)) : IsNormalScheme (Spec Γ(X, U)) :=
   spec_of_isIntegrallyClosedIn hU Γ(X, U)
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap A Γ(X, U))` using `IsIntegralClosure.algebraMap_injective A A _`. Distinguish the cases in `h : Nonempty U`. Establish `: IsDomain A` using `hinj.isDomain _`. Establish `: FaithfulSMul A Γ(X, U)` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr hinj`. Establish `: IsIntegrallyClosed A` using `.of_isIntegrallyClosed_of_isIntegrallyClosedIn _ Γ(X, U)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `hU : U = ⊥`. Assume the negation of the conclusion as `hU`. Conclude with `h ((Opens.ne_bot_iff_nonempty _).mp hU).to_subtype`. Establish `: Subsingleton Γ(X, U)` using `CommRingCat.subsingleton_of_isTerminal (X.sheaf.isTerminalOfEqEmpty hU)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: Subsingleton A` using `hinj.subsingleton`. Use `(spec_iff _).mpr fun p hp ↦ (hp.ne_top (Subsingleton.elim _ _)).elim` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem spec_of_isIntegrallyClosedIn_of_isIntegral {X : Scheme.{u}} [IsNormalScheme X]
     [IsIntegral X] (U : X.Opens) (A : Type u) [CommRing A] [Algebra A Γ(X, U)]
@@ -812,7 +800,7 @@ instance normalization {X Y : Scheme.{u}} (f : X ⟶ Y) [QuasiCompact f] [QuasiS
       (integralClosure Γ(Y, U.1) Γ(X, f ⁻¹ᵁ U.1))
 
 /- English proof (translation)
-The claim follows from `(iff_of_openCover f.normalizationOpenCover).mpr fun U ↦ letI := (f.app U.1).hom.toAlgebra spec_of_isIntegrallyClosedIn_of_isIntegral (f ⁻¹ᵁ U.1) (integralClosure Γ(Y, U.1) Γ(X, f ⁻¹ᵁ U.1))`.
+A detailed English derivation is pending.
 -/
 theorem normalization_of_isIntegral {X Y : Scheme.{u}} (f : X ⟶ Y) [QuasiCompact f]
     [QuasiSeparated f] [IsNormalScheme X] [IsIntegral X] : IsNormalScheme f.normalization :=
@@ -833,17 +821,17 @@ instance coprod (X Y : Scheme.{u}) [IsNormalScheme X] [IsNormalScheme Y] :
     · exact inferInstanceAs (IsNormalScheme Y)
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsNormalScheme (Spec (.of ℤ)) := inferInstance
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsNormalScheme (Spec (.of (MvPolynomial (Fin 2) ℤ))) := inferInstance
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨of_isIso (coprodSpec ℚ ℚ), fun h ↦ have : IsDomain (ℚ × ℚ) := (affine_isIntegral_iff _).mp h false_of_nontrivial_of_product_domain ℚ ℚ⟩`.
+Supply the required witnesses or components.
 -/
 example : IsNormalScheme (Spec (.of (ℚ × ℚ))) ∧ ¬ IsIntegral (Spec (.of (ℚ × ℚ))) :=
   ⟨of_isIso (coprodSpec ℚ ℚ), fun h ↦
@@ -851,14 +839,14 @@ example : IsNormalScheme (Spec (.of (ℚ × ℚ))) ∧ ¬ IsIntegral (Spec (.of 
     false_of_nontrivial_of_product_domain ℚ ℚ⟩
 
 /- English proof (translation)
-The claim follows from `fun _ ↦ by have : _root_.IsReduced (ZMod 4) := (affine_isReduced_iff (.of (ZMod 4))).mp inferInstance exact absurd (IsNilpotent.eq_zero (x := (2 : ZMod 4)) ⟨2, by decide⟩) (by decide)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ¬ IsNormalScheme (Spec (.of (ZMod 4))) := fun _ ↦ by
   have : _root_.IsReduced (ZMod 4) := (affine_isReduced_iff (.of (ZMod 4))).mp inferInstance
   exact absurd (IsNilpotent.eq_zero (x := (2 : ZMod 4)) ⟨2, by decide⟩) (by decide)
 
 /- English proof (translation)
-The claim follows from `fun h ↦ by have : Zsqrtd.Nonsquare 5 := ⟨fun n hn ↦ by have : n ≤ 2 := by nlinarith interval_cases n <;> omega⟩ have : IsIntegrallyClosed (ℤ√((5 : ℕ) : ℤ)) := (spec_iff_of_isDomain _).mp h have h1 : (⟨2, 0⟩ : ℤ√((5 : ℕ) : ℤ)) ^ 3 ∣ ⟨1, 1⟩ ^ 3 := ⟨⟨2, 1⟩, by decide⟩ obtain ⟨c, hc⟩ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ¬ IsNormalScheme (Spec (.of (ℤ√((5 : ℕ) : ℤ)))) := fun h ↦ by
   have : Zsqrtd.Nonsquare 5 := ⟨fun n hn ↦ by
@@ -872,13 +860,13 @@ example : ¬ IsNormalScheme (Spec (.of (ℤ√((5 : ℕ) : ℤ)))) := fun h ↦ 
   omega
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsNormalScheme
     (Spec.map (CommRingCat.ofHom (algebraMap ℤ ℚ))).normalization := inferInstance
 
 /- English proof (translation)
-Set `x : Spec (.of ℤ)` to `⟨Ideal.span {2}, (Ideal.span_singleton_prime two_ne_zero).mpr Int.prime_two⟩`. Establish `hx : Order.coheight x = 1`. Rewrite using `[← idealHeight_eq_coheight]`. Conclude with `Ideal.height_span_singleton_eq_one_of_mem_nonZeroDivisors (R := ℤ) (mem_nonZeroDivisors_of_ne_zero two_ne_zero) Int.prime_two.not_unit`. Conclude with `⟨x, hx, isDiscreteValuationRing_stalk hx⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 example : ∃ x : Spec (.of ℤ), Order.coheight x = 1 ∧
     IsDiscreteValuationRing ((Spec (.of ℤ)).presheaf.stalk x) := by
@@ -891,12 +879,12 @@ example : ∃ x : Spec (.of ℤ), Order.coheight x = 1 ∧
   exact ⟨x, hx, isDiscreteValuationRing_stalk hx⟩
 
 /- English proof (translation)
-The claim follows from `pred _`.
+A detailed English derivation is pending.
 -/
 example : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (Spec (.of ℤ)) := pred _
 
 /- English proof (translation)
-The claim follows from `fun h ↦ by have := of_pred h have : _root_.IsReduced (ZMod 4) := (affine_isReduced_iff (.of (ZMod 4))).mp inferInstance exact absurd (IsNilpotent.eq_zero (x := (2 : ZMod 4)) ⟨2, by decide⟩) (by decide)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ¬ ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (Spec (.of (ZMod 4))) := fun h ↦ by
   have := of_pred h

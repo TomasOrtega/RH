@@ -10,11 +10,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.BZPhiPG.OntoO
 
 /- English proof (translation)
-Establish `key : ∀ x : Fin (i + (t + 1) + 1), (x : ℕ) = i + 1 + t → ((GlobalTheory.BZMir.Leib.eGP (i + 1) t ((GlobalTheory.BZMir.Leib.ePG i (t + 1)).symm x) : Fin ((i + 1) + t + 1)) : ℕ) = i`. Introduce `x hx`. Establish `hxl : x = Fin.last (i + (t + 1))` using `Fin.ext (by rw [Fin.val_last]; omega)`. Substitute `hxl` using the available equality. Establish `h2 : (GlobalTheory.BZMir.Leib.ePG i (t + 1)).symm (Fin.last (i + (t + 1))) = ⟨false, Fin.last i⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[Equiv.symm_apply_eq, GlobalTheory.BZMir.Leib.ePG_false_last]`. Rewrite using `[h2]`. Conclude with `GlobalTheory.CompanionTheory.LeibPhi.blockIndex_false_val (i + 1) t (Fin.last i)`. Use `first`. Consider the case `(simp only [GlobalTheory.CompanionTheory.BZPhiPG.piPerm, Equiv.trans_apply]; exact key _ rfl)`.
-
-Consider the case `exact key _ rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem piPerm_last_val (i t : ℕ) : ((piPerm i t (Fin.last ((i + 1) + t)) : Fin ((i + 1) + t + 1)) : ℕ) = i := by
   have key : ∀ x : Fin (i + (t + 1) + 1), (x : ℕ) = i + 1 + t →
@@ -35,9 +33,9 @@ theorem piPerm_last_val (i t : ℕ) : ((piPerm i t (Fin.last ((i + 1) + t)) : Fi
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hσ : GlobalTheory.CompanionTheory.BZPhiPG.piPerm i t (Fin.last ((i + 1) + t)) = c` using `Fin.ext ((GlobalTheory.CompanionTheory.BZPhiPG.OntoO.piPerm_last_val i t).trans hc.symm)`. Rewrite using `[GlobalTheory.CompanionTheory.BZPhiPG.wEl, ← map_inv]`. Express the relevant statement in the definitionally equal form `GlobalTheory.BZMir.glEmbMat k ((i + 1) + t + 1) (((GlobalTheory.CompanionTheory.BZPhiPG.wGL k i t)⁻¹ : GL (Fin ((i + 1) + t + 1)) k) : Matrix (Fin ((i + 1) + t + 1)) (Fin ((i + 1) + t + 1)) k) (Fin.castSucc (Fin.last ((i + 1) + t))) (Fin.castSucc c) = 1`. Simplify using `only [GlobalTheory.BZMir.glEmbMat, Fin.lastCases_castSucc]`. Express the relevant statement in the definitionally equal form `Equiv.Perm.permMatrix k (GlobalTheory.CompanionTheory.BZPhiPG.piPerm i t) (Fin.last ((i + 1) + t)) c = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, hσ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wEl_inv_entry (i t : ℕ) (c : Fin ((i + 1) + t + 1)) (hc : (c : ℕ) = i) :
     ((((wEl k i t)⁻¹ : Mir k ((i + 1) + t + 1)) : GL (Fin ((i + 1) + t + 2)) k) :
@@ -55,9 +53,9 @@ theorem wEl_inv_entry (i t : ℕ) (c : Fin ((i + 1) + t + 1)) (hc : (c : ℕ) = 
   simp [Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, hσ]
 
 /- English proof (translation)
-Establish `h : Fin.append (0 : Fin (i + 1) → k) (0 : Fin (t + 1) → k) = 0`. Use function extensionality and compare the values at `j`. Use `Fin.addCases (fun a => ?_) (fun b => ?_) j` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Fin.append_right]`. Both sides reduce to the same expression. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `GlobalTheory.BZMir.unip k ((i + 1) + (t + 1)) (Multiplicative.ofAdd (Fin.append (0 : Fin (i + 1) → k) (0 : Fin (t + 1) → k))) = 1`. Rewrite using `[h, ofAdd_zero, map_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem dEmb_zero (i t : ℕ) : dEmb k i t 0 = 1 := by
   have h : Fin.append (0 : Fin (i + 1) → k) (0 : Fin (t + 1) → k) = 0 := by
@@ -71,9 +69,9 @@ theorem dEmb_zero (i t : ℕ) : dEmb k i t 0 = 1 := by
   rw [h, ofAdd_zero, map_one]
 
 /- English proof (translation)
-Introduce `hmem`. Simplify using `only [GlobalTheory.CompanionTheory.BZPhiPG.Cl, Set.mem_setOf_eq] at hmem`. Establish `h` using `hmem (Fin.last i)`. Establish `hc : (Fin.castLE (by omega) (Fin.last i) : Fin ((i + 1) + t + 1 + 1)) = Fin.castSucc (⟨i, by omega⟩ : Fin ((i + 1) + t + 1))` using `Fin.ext rfl`. Apply the tactic sequence `rw [hc, GlobalTheory.CompanionTheory.BZPhiPG.OntoO.wEl_inv_entry k i t ⟨i, by omega⟩ rfl] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `one_ne_zero h`.
+A detailed English derivation is pending.
 -/
 theorem wEl_notMem_Cl (i t : ℕ) : wEl k i t ∉ Cl k i t := by
   intro hmem
@@ -85,7 +83,7 @@ theorem wEl_notMem_Cl (i t : ℕ) : wEl k i t ∉ Cl k i t := by
   exact one_ne_zero h
 
 /- English proof (translation)
-Introduce `k _ _ _ _ i t`. Conclude with `⟨GlobalTheory.CompanionTheory.BZPhiPG.OntoO.wEl_notMem_Cl k i t, GlobalTheory.CompanionTheory.BZPhiPG.OntoO.dEmb_zero k i t⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem wEl_notMem_Cl_and_dEmb_zero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (i t : ℕ), wEl k i t ∉ Cl k i t ∧ dEmb k i t 0 = 1 := by

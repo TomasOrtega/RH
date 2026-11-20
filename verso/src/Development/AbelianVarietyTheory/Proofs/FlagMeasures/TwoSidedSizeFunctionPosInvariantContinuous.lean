@@ -13,13 +13,11 @@ namespace GlobalTheory.Amp.TwoSided
 open GlobalTheory.Mom.LowVec
 
 /- English proof (translation)
-Distinguish the cases in `ha : a.val < r`. Use `⟨eI k r ⟨a.val, ha⟩, le_of_eq rfl, ?_⟩` and prove the remaining obligations. Simplify using `only [fvec, dif_pos ha, bvec, Pi.single_eq_same]`. Conclude with `one_ne_zero`. Establish `hz0 : ∃ i, z i ≠ 0`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `: z = 0` using `funext h`. Substitute `this` using the available equality. Simplify using `[Tz, herm] at hT`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i, hi⟩` from `hz0`. Establish `hri : r ≤ i.val`. Assume the negation of the conclusion as `h`. Conclude with `hi (hz i (Or.inl (Nat.lt_of_not_le h)))`. Use `⟨i, le_trans (Nat.le_of_lt_succ a.isLt) hri, ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [fvec, dif_neg ha]`. Conclude with `hi`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coord {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z) (a : Fin (r + 1)) :
     ∃ i : Fin (2 * r + k + 1), a.val ≤ i.val ∧ fvec k r z a i ≠ 0 := by
@@ -43,17 +41,15 @@ theorem exists_coord {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k 
     exact hi
 
 /- English proof (translation)
-Take `⟨i, hai, hi⟩` from `exists_coord hz hT a`. Establish `hu : IsUnit x.det` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hx`. Establish `hc : 0 < ∑ j, ‖x i j‖ + 1` using `by positivity`. Establish `key : ∀ y ∈ Submodule.span ℂ (Set.range fun b : {b : Fin r // b.val < a.val} => Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r b.1)), ‖fvec k r z a i‖ / (∑ j, ‖x i j‖ + 1) ≤ eucl (x⁻¹ *ᵥ (fvec k r z a - y))`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy' : y ∈ GlobalTheory.Mom.LowVec.flagSpan k r a` using `hy`. Establish `hyi : y i = 0` using `(GlobalTheory.Mom.LowVec.mem_flagSpan.1 hy') i hai`. Use `set w := x⁻¹ *ᵥ (fvec k r z a - y) with hw`. Establish `hv : fvec k r z a - y = x *ᵥ w`. Rewrite using `[hw, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv x hu, Matrix.one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hvi : fvec k r z a i = ∑ j, x i j * w j`. Use `congrFun hv i` as an intermediate fact. Simplify using `only [Pi.sub_apply, hyi, sub_zero] at this`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hwe : 0 ≤ eucl w` using `Real.sqrt_nonneg _`. Establish `hle : ‖fvec k r z a i‖ ≤ (∑ j, ‖x i j‖ + 1) * eucl w`. Rewrite using `[hvi]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `GlobalTheory.Amp.LInv.norm_le_eucl w j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `_ = (∑ j, ‖x i j‖) * eucl w := by rw [Finset.sum_mul]`. Use `_ ≤ (∑ j, ‖x i j‖ + 1) * eucl w := by nlinarith`. Rewrite using `[div_le_iff₀ hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `lA`.
-
-Use `lt_of_lt_of_le (div_pos (norm_pos_iff.mpr hi) hc) ?_` and prove the remaining obligations. Use `le_csInf ⟨_, 0, Submodule.zero_mem _, rfl⟩ ?_` and prove the remaining obligations. Introduce and unpack `t ⟨y, hy, rfl⟩`. Conclude with `key y hy`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem lA_pos {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z)
     {x : Mat k r} (hx : x ∈ GG k r) (a : Fin (r + 1)) : 0 < lA k r z x a := by
@@ -94,17 +90,15 @@ theorem lA_pos {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (
   exact key y hy
 
 /- English proof (translation)
-Introduce `k r z hz hT`. Establish `hpos : ∀ x ∈ GG k r, ∀ a, 0 < lA k r z x a` using `fun x hx a => lA_pos hz hT hx a`. Take `⟨hinv, -, hSg⟩` from `GlobalTheory.Amp.LInv.lengths_basic k r z hz`. Use `⟨hpos, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx s hs κ hκ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `(hinv x hx s hs κ hκ).1`. Simplify using `only [Sg2, h]`. Establish `hc` using `(GlobalTheory.Amp.LenCont.lA_Sg_continuousOn k r z).1`. Conclude with `GlobalTheory.Amp.LenCont.fold_continuousOn (GG k r) (fun a x => max (lA k r z x a) (lA k r z x a)⁻¹) (fun a => continuous_max.comp_continuousOn (ContinuousOn.prodMk (hc a) (ContinuousOn.inv₀ (hc a) fun x hx => (hpos x hx a).ne'))) Finset.univ`. Introduce `x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : ∀ a, max (lA k r z x a) (lA k r z x a)⁻¹ ≤ Sg2 k r z x` using `fun a => (Finset.le_fold_max _).2 (Or.inr ⟨a, Finset.mem_univ _, le_rfl⟩)`. Establish `h1 : 1 ≤ Sg2 k r z x` using `(Finset.le_fold_max _).2 (Or.inl le_rfl)`. Use `⟨h1, ?_, fun a => ⟨(le_max_left _ _).trans (hle a), (le_max_right _ _).trans (hle a)⟩, ?_⟩` and prove the remaining obligations. Conclude with `(Finset.fold_max_le _).2 ⟨h1, fun a _ => (le_max_left _ _).trans (hle a)⟩`. Establish `key : ∀ s : Finset (Fin (r + 1)), s.fold max 1 (fun a => max (lA k r z x a) (lA k r z x a)⁻¹) = 1 ∨ ∃ a, s.fold max 1 (fun a => max (lA k r z x a) (lA k r z x a)⁻¹) = max (lA k r z x a) (lA k r z x a)⁻¹`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Use `left`. Simplify using the standard rewrite rules. Introduce `a s ha ih`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative.
 
-Rewrite using `[Finset.fold_insert ha]`. Break down `max_choice (max (lA k r z x a) (lA k r z x a)⁻¹) (s.fold max 1 (fun a => max (lA k r z x a) (lA k r z x a)⁻¹)) with h | h` into its components or cases. Conclude with `Or.inr ⟨a, h⟩`. Rewrite using `[h]`. Conclude with `ih`.
-
-Conclude with `key Finset.univ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Sg2_invariant_continuousOn_one_le_bounds : ∀ (k r : ℕ) (z : (Fin (2 * r + k + 1) → ℂ)), inWb k r z → 0 < Tz k r z → (∀ x ∈ GG k r, ∀ a, 0 < lA k r z x a) ∧ (∀ x ∈ GG k r, ∀ s ∈ Sset k r z, ∀ κ ∈ (GG k r ∩ (Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ : Set (Mat k r))), Sg2 k r z (s * x * κ) = Sg2 k r z x) ∧ ContinuousOn (Sg2 k r z) (GG k r) ∧ ∀ x, 1 ≤ Sg2 k r z x ∧ Sg k r z x ≤ Sg2 k r z x ∧ (∀ a, lA k r z x a ≤ Sg2 k r z x ∧ (lA k r z x a)⁻¹ ≤ Sg2 k r z x) ∧ (Sg2 k r z x = 1 ∨ ∃ a, Sg2 k r z x = max (lA k r z x a) (lA k r z x a)⁻¹) := by
   intro k r z hz hT

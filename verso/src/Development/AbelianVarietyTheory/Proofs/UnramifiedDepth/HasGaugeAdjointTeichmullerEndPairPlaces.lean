@@ -14,17 +14,15 @@ open NumberField Formalism.IncomingBounds Formalism.L2.FormalSeriesBounds Formal
 namespace GlobalTheory.TeichPair
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y d _ I _ p g`. Take `⟨s, N, ζ, hs, hN, h1, h2, h3, hζ⟩` from `exists_seq V Y.cpl (p.em g) (p.em_int g) (p.em_frob g) (fun a a' h => p.em_sep (g, a) (g, a') fun h' => h (congrArg Prod.snd h')) (p.em_unr g)`. Take `⟨M, M', hM, -, hl, hl'⟩` from `GlobalTheory.T.exists_adjointIntegralEnd_of_ladicLimit C V O dd Y d I p s hs`. Establish `key : ∀ (a : ZMod d) (z w : C), V.Ge 0 w → (∀ N : ℕ, ∃ n0, ∀ n ≥ n0, V.Ge N (z - p.em g a (s n) * w)) → z = ζ a * w` using `fun a z w hw h => by`. Rewrite using `[← sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `eq_zero_of_ge (V := V) fun n => ?_` and prove the remaining obligations. Take `⟨n0, hn⟩` from `h n`. Establish `e1` using `hn (max n0 n) (le_max_left _ _)`. Establish `e2` using `(hw.mul_int (hζ a (max n0 n))).mono (w' := n) (by exact_mod_cast le_max_right _ _)`. Use `e1.sub e2` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hconj : ∀ a x, p.em (1 - g) a (star x) = p.em g a x` using `fun a x => by fin_cases g`. Use `show p.em 1 a (star x) = p.em 0 a x`. Rewrite using `[p.em_conj, star_star]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show p.em 0 a (star x) = p.em 1 a x`. Rewrite using `[p.em_conj]`. Use `⟨N, ζ, M, M', hN, h1, h2, h3, hM, fun c => funext fun i => ?_, fun q => funext fun i => ?_⟩` and prove the remaining obligations. Use `key _ _ _ (p.u_int g c i) fun n => ?_` and prove the remaining obligations. Use `hl n (p.u g c) i` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [p.u_eig] at this`. Conclude with `this`. Use `key _ _ _ (p.u_int (1 - g) q i) fun n => ?_` and prove the remaining obligations. Use `hl' n (p.u (1 - g) q) i` as an intermediate fact. Simplify using `only [p.u_eig, hconj] at this`.
-
-Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasTeich : ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (O : Type) [CommRing O] [StarRing O] (dd : ℕ) (Y : FBChart C V O dd) (d : ℕ) [NeZero d] (I : Fin 2 → Type) [∀ g, Fintype (I g)] (p : PairData Y d I), ∀ g, HasTeich (Y.raw p) V g := by
   intro C _ _ V O _ _ dd Y d _ I _ p g

@@ -13,23 +13,21 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {Y : Spc F E n}
 
 /- English proof (translation)
-Unfold `incM`. Rewrite using `[← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem incM_mul_inv (b : GL (Fin n ⊕ Fin n) E) : incM F b.1 * incM F (b⁻¹).1 = 1 := by
   unfold incM
   rw [← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Unfold `incM`. Rewrite using `[← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem incM_inv_mul (b : GL (Fin n ⊕ Fin n) E) : incM F (b⁻¹).1 * incM F b.1 = 1 := by
   unfold incM
   rw [← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Unfold `inFrame`. Use `show incM F (b⁻¹).1 * (mat2 x * mat2 y) * incM F b.1 = incM F (b⁻¹).1 * mat2 x * incM F b.1 * (incM F (b⁻¹).1 * mat2 y * incM F b.1)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[incM_mul_inv, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`.
-
-Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inFrame_mul (b : GL (Fin n ⊕ Fin n) E) (x y : G2 σ Y) : inFrame b (x * y) = inFrame b x * inFrame b y := by
   unfold inFrame
@@ -41,7 +39,7 @@ theorem inFrame_mul (b : GL (Fin n ⊕ Fin n) E) (x y : G2 σ Y) : inFrame b (x 
     _ = _ := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Unfold `inFrame`. Use `show incM F (b⁻¹).1 * 1 * incM F b.1 = 1`. Rewrite using `[Matrix.mul_one, incM_inv_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inFrame_one (b : GL (Fin n ⊕ Fin n) E) : inFrame b (1 : G2 σ Y) = 1 := by
   unfold inFrame
@@ -49,19 +47,19 @@ theorem inFrame_one (b : GL (Fin n ⊕ Fin n) E) : inFrame b (1 : G2 σ Y) = 1 :
   rw [Matrix.mul_one, incM_inv_mul]
 
 /- English proof (translation)
-Rewrite using `[← inFrame_mul, inv_mul_cancel, inFrame_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inFrame_inv_mul (b : GL (Fin n ⊕ Fin n) E) (x : G2 σ Y) : inFrame b x⁻¹ * inFrame b x = 1 := by
   rw [← inFrame_mul, inv_mul_cancel, inFrame_one]
 
 /- English proof (translation)
-The claim follows from `(Matrix.inv_eq_left_inv (inFrame_inv_mul b x)).symm`.
+A detailed English derivation is pending.
 -/
 theorem inFrame_inv (b : GL (Fin n ⊕ Fin n) E) (x : G2 σ Y) : inFrame b x⁻¹ = (inFrame b x)⁻¹ :=
   (Matrix.inv_eq_left_inv (inFrame_inv_mul b x)).symm
 
 /- English proof (translation)
-Establish `hm : Continuous fun g : G2 σ Y => mat2 g` using `Units.continuous_val.comp continuous_subtype_val`. Conclude with `(continuous_const.matrix_mul hm).matrix_mul continuous_const`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_inFrame (b : GL (Fin n ⊕ Fin n) E) : Continuous (inFrame (σ := σ) (Y := Y) b) := by
   have hm : Continuous fun g : G2 σ Y => mat2 g := Units.continuous_val.comp continuous_subtype_val

@@ -38,23 +38,21 @@ structure FrameData (A : HLat K) (J : Type) [Fintype J] [DecidableEq J] where
 variable [IsTotallyComplex K]
 
 /- English proof (translation)
-Use `set j := Fintype.card J with hj`. Use `set eq := Fintype.equivFin J`. Use `set e' : Fin j → A.V := fun a => F.e (eq.symm a) with he'`. Establish `hli : LinearIndependent K e'` using `F.e.linearIndependent.comp _ eq.symm.injective`. Establish `hrange : Set.range e' = Set.range F.e`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨_, rfl⟩`. Introduce and unpack `⟨a, rfl⟩; exact ⟨eq a, by simp [he']⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne : A.L ≠ ⊥`. Introduce `h`. Establish `h2` using `hA.2.2`. Rewrite `h2` using `[h]`. Simplify using `only [Submodule.bot_coe, Submodule.span_zero_singleton] at h2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i⟩` from `(inferInstance : Nonempty J)`. Establish `: F.e i ∈ (⊥ : Submodule K A.V)` using `h2 ▸ Submodule.mem_top`. Conclude with `F.e.ne_zero i ((Submodule.mem_bot K).1 this)`. Establish `hsp : Submodule.span K (A.L : Set A.V) = Submodule.span K (Set.range e')`. Rewrite using `[hA.2.2, hrange, F.e.span_eq]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨hrk, -, hG, hsupp, hmu⟩` from `Formalism.LFunctionChainParameters.LLcv.log_covolume_slope_mu K A.V A.ι A.b A.X hA.1 j e' A.L hli hA.2.1 hne hsp`. Establish `hgram : ∀ v, (gramPl A.b A.X v e').det = (gramJ A F.e v).det`. Introduce `v`. Establish `: gramPl A.b A.X v e' = (gramJ A F.e v).submatrix eq.symm eq.symm` using `rfl`. Rewrite using `[this, Matrix.det_submatrix_equiv_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hidx : ∀ p : FinPl K, (haveI` using `p.2.isPrime; lidx p.1 (Submodule.span (𝓞 K) (Set.range e')) A.L) = vAdd (toH p) (F.Γ p).det := by`. Introduce `p`. Rewrite using `[hrange]`. Establish `h1` using `lidx_congr (toH p) (A := latOf (K := K) F.e) (A' := latOf (K := K) F.e) rfl (F.loc p)`. Establish `h2` using `lidx_latOf (toH p) F.e F.e.linearIndependent (F.Γ p) (F.det_ne p)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.trans h2`. Use `⟨fun v => by rw [← hgram]; exact (hG v).1, ?_, ?_⟩` and prove the remaining obligations. Use `hsupp.subset fun p hp => ?_` and prove the remaining obligations. Simplify using `only [Function.mem_support] at hp ⊢`. Rewrite using `[hidx p]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Conclude with `hp`. Establish `hj0 : (j : ℝ) ≠ 0`. Establish `: 0 < j` using `Fintype.card_pos`. Conclude with `this.ne'` after adjusting the coercions. Use `show (j : ℝ) * muDef A.b A.X A.L = _`.
-
-Rewrite using `[hmu, hrk]`. Unfold `Formalism.LFunctionChainParameters.LLcv.lcv Formalism.LFunctionChainParameters.LLcv.lcvInf Formalism.LFunctionChainParameters.LLcv.lcvFin infPart finPart ellP`. Simplify using `only [hgram, hidx]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem mu_of_frames (A : HLat K) (hA : A.Good) {J : Type} [Fintype J] [DecidableEq J] [Nonempty J] (F : FrameData A J) :
     (∀ v, 0 < (gramJ A F.e v).det.re) ∧ (Function.support fun p => vAdd (toH p) (F.Γ p).det).Finite ∧
@@ -111,25 +109,25 @@ section Functor
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Simplify using `only [vAdd, map_pow, WithZero.log_pow, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vAdd_pow' (w : HeightOneSpectrum (𝓞 K)) (x : K) (m : ℕ) : vAdd w (x ^ m) = m * vAdd w x := by
   simp only [vAdd, map_pow, WithZero.log_pow, nsmul_eq_mul]
   ring
 
 /- English proof (translation)
-Simplify using `only [vAdd, map_zpow₀, WithZero.log_zpow, zsmul_eq_mul, Int.cast_id]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vAdd_zpow' (w : HeightOneSpectrum (𝓞 K)) (x : K) (m : ℤ) : vAdd w (x ^ m) = m * vAdd w x := by
   simp only [vAdd, map_zpow₀, WithZero.log_zpow, zsmul_eq_mul, Int.cast_id]
   ring
 
 /- English proof (translation)
-Establish `hm : ∀ y z : K, y ≠ 0 → z ≠ 0 → vAdd w (y * z) = vAdd w y + vAdd w z`. Introduce `y z hy hz`. Simplify using `only [vAdd, map_mul]`. Rewrite using `[WithZero.log_mul ((map_ne_zero _).2 hy) ((map_ne_zero _).2 hz)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Proceed by induction on `T using Finset.cons_induction with`. Consider the case `empty => simp [vAdd]`. Consider the case `cons s T hs ih`. Establish `h1 : x s ^ a s ≠ 0` using `zpow_ne_zero _ (hx s)`. Establish `h2 : ∏ i ∈ T, x i ^ a i ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => zpow_ne_zero _ (hx i)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_cons, Finset.sum_cons, hm _ _ h1 h2, ih, vAdd_zpow']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vAdd_prod_zpow (w : HeightOneSpectrum (𝓞 K)) {S : Type} (T : Finset S) (x : S → K) (hx : ∀ s, x s ≠ 0) (a : S → ℤ) :
     vAdd w (∏ s ∈ T, x s ^ a s) = ∑ s ∈ T, a s * vAdd w (x s) := by
@@ -146,7 +144,7 @@ theorem vAdd_prod_zpow (w : HeightOneSpectrum (𝓞 K)) {S : Type} (T : Finset S
     rw [Finset.prod_cons, Finset.sum_cons, hm _ _ h1 h2, ih, vAdd_zpow']
 
 /- English proof (translation)
-Rewrite using `[Real.log_prod (fun s _ => (zpow_pos (hx s) _).ne')]`. Conclude with `Finset.sum_congr rfl fun s _ => by rw [Real.log_zpow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_prod_zpow {S : Type} (T : Finset S) (x : S → ℝ) (hx : ∀ s, 0 < x s) (a : S → ℤ) :
     Real.log (∏ s ∈ T, x s ^ a s) = ∑ s ∈ T, (a s : ℝ) * Real.log (x s) := by
@@ -156,29 +154,27 @@ theorem log_prod_zpow {S : Type} (T : Finset S) (x : S → ℝ) (hx : ∀ s, 0 <
 variable [StarRing K] [IsTotallyComplex K]
 
 /- English proof (translation)
-Use `haveI : ∀ s, Nonempty (Q s).ι := fun s => Fintype.card_pos_iff.1 (by rw [hcard s]; exact hk)`. Take `⟨-, hAf, hAmu⟩` from `mu_of_frames A hA F`. Establish `hQm : ∀ s, (k : ℝ) * (Q s).mu = -(infPart (fun v => (gramJ (Q s) (FQ s).e v).det.re) + finPart fun p => ((FQ s).Γ p).det)`. Introduce `s`. Establish `h1` using `(mu_of_frames (Q s) (hQ s) (FQ s)).2.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[hcard s]`. Then use the resulting hypothesis. Establish `hQp : ∀ s v, 0 < (gramJ (Q s) (FQ s).e v).det.re` using `fun s => (mu_of_frames (Q s) (hQ s) (FQ s)).1`. Establish `hQf : ∀ s, (Function.support fun p => vAdd (toH p) ((FQ s).Γ p).det).Finite` using `fun s => (mu_of_frames (Q s) (hQ s) (FQ s)).2.1`. Establish `hn : (nPl K : ℝ) ≠ 0`. Establish `h1 : 0 < nPl K` using `Fintype.card_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.ne'` after adjusting the coercions. Establish `hnpl : (nPl K : ℝ) = (Fintype.card (InfinitePlace K) : ℝ)` using `rfl`. Establish `hv : ∀ v, (k : ℝ) * Real.log (gramJ A F.e v).det.re = (k : ℝ) * Real.log g0 + ∑ s, (a s : ℝ) * Real.log (gramJ (Q s) (FQ s).e v).det.re`. Introduce `v`. Rewrite using `[← Real.log_pow, hinf v, Real.log_mul (pow_pos hg0 k).ne' (Finset.prod_ne_zero_iff.2 fun s _ => (zpow_pos (hQp s v) _).ne'), Real.log_pow, log_prod_zpow _ _ (fun s => hQp s v)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∑ v, (k : ℝ) * Real.log (gramJ A F.e v).det.re = (Fintype.card (InfinitePlace K) : ℝ) * ((k : ℝ) * Real.log g0) + ∑ s, (a s : ℝ) * ∑ v, Real.log (gramJ (Q s) (FQ s).e v).det.re`. Rewrite using `[Finset.sum_congr rfl (fun v _ => hv v), Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Finset.sum_comm]`. Simplify using `only [Finset.mul_sum]`. Establish `hinfk : (k : ℝ) * infPart (fun v => (gramJ A F.e v).det.re) = (k : ℝ) * Real.log g0 + ∑ s, (a s : ℝ) * infPart (fun v => (gramJ (Q s) (FQ s).e v).det.re)`. Simplify using `only [infPart]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[mul_left_comm, Finset.mul_sum, hsum, ← hnpl, mul_add, ← mul_assoc, one_div_mul_cancel hn, one_mul, Finset.mul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun s _ => by ring`. Establish `hd0 : ∀ s p, ((FQ s).Γ p).det ≠ 0` using `fun s p => (FQ s).det_ne p`. Establish `hpv : ∀ p, (k : ℤ) * vAdd (toH p) (F.Γ p).det = ∑ s, a s * vAdd (toH p) ((FQ s).Γ p).det`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `p`. Rewrite using `[← vAdd_pow', hfin p, vAdd_prod_zpow _ _ _ (fun s => hd0 s p) _]`. Establish `h1 : ∀ p, (k : ℝ) * (ellP p * (vAdd (toH p) (F.Γ p).det : ℝ)) = ∑ s, (a s : ℝ) * (ellP p * (vAdd (toH p) ((FQ s).Γ p).det : ℝ))`. Introduce `p`. Establish `h2` using `congrArg (Int.cast : ℤ → ℝ) (hpv p)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Move the coercions through the operations in `at h2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun s _ => by ring`. Establish `finA : (Function.support fun p => ellP p * (vAdd (toH p) (F.Γ p).det : ℝ)).Finite` using `hAf.subset fun p hp h => hp (by simp [h])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Establish `finQ : ∀ s, (Function.support fun p => ellP p * (vAdd (toH p) ((FQ s).Γ p).det : ℝ)).Finite` using `fun s => (hQf s).subset fun p hp h => hp (by simp [h])`. Establish `hfink : (k : ℝ) * finPart (fun p => (F.Γ p).det) = ∑ s, (a s : ℝ) * finPart (fun p => ((FQ s).Γ p).det)`. Simplify using `only [finPart]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_left_comm, mul_finsum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = 2 * ∑ᶠ p, ∑ s, (a s : ℝ) * (ellP p * (vAdd (toH p) ((FQ s).Γ p).det : ℝ)) := by`. Rewrite using `[finsum_congr h1]`. Use `_ = 2 * ∑ s, ∑ᶠ p, (a s : ℝ) * (ellP p * (vAdd (toH p) ((FQ s).Γ p).det : ℝ)) := by`. Rewrite using `[finsum_sum_comm _ _ (fun s _ => (finQ s).subset fun p hp h => hp (by simp [h]))]`. Use `_ = _ := by`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_finsum]`. Expand and normalize the polynomial expressions, which then agree. Establish `hk' : (k : ℝ) ≠ 0` using `by exact_mod_cast hk.ne'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `mul_left_cancel₀ hk'` to reduce the goal to its premises. Establish `h3 : (k : ℝ) * ∑ s, (a s : ℝ) * (Q s).mu = ∑ s, (a s : ℝ) * ((k : ℝ) * (Q s).mu)`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun s _ => by ring`. Rewrite using `[hAmu, mul_add, h3]`.
-
-Simplify using `only [hQm]`. Rewrite using `[mul_neg, mul_add, hinfk, hfink]`. Simplify using `only [mul_neg, mul_add, Finset.sum_neg_distrib, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mu_functor (A : HLat K) (hA : A.Good) {J : Type} [Fintype J] [DecidableEq J] [Nonempty J] (F : FrameData A J)
     {S : Type} [Fintype S] (Q : S → HLat K) (hQ : ∀ s, (Q s).Good) (k : ℕ) (hk : 0 < k)

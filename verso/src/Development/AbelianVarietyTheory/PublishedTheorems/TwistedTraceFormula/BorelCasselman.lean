@@ -14,7 +14,7 @@ def BorelCasselman : Prop :=
     IsAdmissible π → Function.Bijective (iwahoriProj π)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(isSmooth_ofChar_iff _).2 hχ.detChar, fun _ _ _ => inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 example (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n : Type) [Fintype n] [DecidableEq n] {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :

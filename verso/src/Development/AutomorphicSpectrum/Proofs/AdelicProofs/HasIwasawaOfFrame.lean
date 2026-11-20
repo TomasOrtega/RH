@@ -19,7 +19,7 @@ open Matrix GlobalTheory.WeilM GlobalTheory.CompanionTheory.VacLoc
 variable {S : Type} [CommRing S]
 
 /- English proof (translation)
-Establish `h : (diagCols β : Matrix (β ⊕ β) β S).map c = diagCols β`. Apply the tactic sequence `ext (i | i) j <;> simp [diagCols, Matrix.one_apply, apply_ite c]`. Rewrite using `[h]`. Simplify using `[diagCols, dbl, Matrix.transpose_fromRows, Matrix.fromCols_mul_fromBlocks, Matrix.fromCols_mul_fromRows]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem diagCols_isotropic (c : S →ₐ[ℤ] S) {β : Type} [Fintype β] [DecidableEq β] (H : Matrix β β S) :
     (diagCols β : Matrix (β ⊕ β) β S)ᵀ * dbl H * (diagCols β : Matrix (β ⊕ β) β S).map c = 0 := by
@@ -29,11 +29,11 @@ theorem diagCols_isotropic (c : S →ₐ[ℤ] S) {β : Type} [Fintype β] [Decid
   simp [diagCols, dbl, Matrix.transpose_fromRows, Matrix.fromCols_mul_fromBlocks, Matrix.fromCols_mul_fromRows]
 
 /- English proof (translation)
-Establish `hd : dbl J₀ᵀ = ((dblGram finSumFinEquiv J₀)ᵀ).submatrix finSumFinEquiv finSumFinEquiv`. Rewrite using `[← Matrix.transpose_submatrix, dblGram, submatrix_blkMat, dbl, Matrix.fromBlocks_transpose]`. Simplify using the standard rewrite rules. Establish `hL : (x.submatrix finSumFinEquiv finSumFinEquiv)ᵀ * ((dblGram finSumFinEquiv J₀)ᵀ).submatrix finSumFinEquiv finSumFinEquiv * (x.submatrix finSumFinEquiv finSumFinEquiv).map c = ((cT c x * dblGram finSumFinEquiv J₀ * x)ᵀ).submatrix finSumFinEquiv finSumFinEquiv`. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, cT, Matrix.transpose_transpose, Matrix.transpose_submatrix, Matrix.submatrix_mul_equiv, ← Matrix.submatrix_map, Matrix.submatrix_mul_equiv, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd, hL]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun X => (X.submatrix finSumFinEquiv.symm finSumFinEquiv.symm)ᵀ) h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem iso_iff {n : ℕ} (c : S →+* S) (J₀ : Matrix (Fin n) (Fin n) S) (x : Matrix (Fin (n + n)) (Fin (n + n)) S) :
     cT c x * dblGram finSumFinEquiv J₀ * x = dblGram finSumFinEquiv J₀ ↔
@@ -58,14 +58,14 @@ theorem iso_iff {n : ℕ} (c : S →+* S) (J₀ : Matrix (Fin n) (Fin n) S) (x :
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Rewrite using `[← cT_mul, Units.mul_inv]`. Simplify using `[cT, Matrix.map_one _ (map_zero c) (map_one c)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cT_unit_mul (c : S →+* S) (B : GL ι S) : cT c (B⁻¹).1 * cT c B.1 = 1 := by
   rw [← cT_mul, Units.mul_inv]
   simp [cT, Matrix.map_one _ (map_zero c) (map_one c)]
 
 /- English proof (translation)
-Substitute `hB` using the available equality. Simplify using `only [Units.val_mul, cT_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [cT_unit_mul, Units.mul_inv, Matrix.mul_one, Matrix.mul_one, hX]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_iso (c : S →+* S) {Q' Q₀ : Matrix ι ι S} (B : GL ι S) (hB : cT c B.1 * Q' * B.1 = Q₀) {X : GL ι S}
     (hX : cT c X.1 * Q' * X.1 = Q') : cT c (B⁻¹ * X * B).1 * Q₀ * (B⁻¹ * X * B).1 = Q₀ := by
@@ -76,7 +76,7 @@ theorem conj_iso (c : S →+* S) {Q' Q₀ : Matrix ι ι S} (B : GL ι S) (hB : 
     _ = _ := by rw [cT_unit_mul, Units.mul_inv, Matrix.mul_one, Matrix.mul_one, hX]
 
 /- English proof (translation)
-Substitute `hB` using the available equality. Combine the equalities or inequalities in the displayed calculation.
+Substitute using the available equality. Chain the equalities or inequalities of the calculation.
 -/
 theorem conj_back (c : S →+* S) {Q' Q₀ : Matrix ι ι S} (B : GL ι S) (hB : cT c B.1 * Q' * B.1 = Q₀) :
     cT c (B⁻¹).1 * Q₀ * (B⁻¹).1 = Q' := by
@@ -90,7 +90,7 @@ def reGL {α : Type} [Fintype α] [DecidableEq α] (e : α ≃ ι) (u : GL α S)
     by rw [Matrix.submatrix_mul_equiv, Units.inv_mul, Matrix.submatrix_one_equiv]⟩
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVec_mulVec, Matrix.submatrix_mulVec_equiv]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Simplify using `[pairVec, diagCols, Matrix.fromRows_mulVec]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_diagCols {n : ℕ} (M : Matrix (Fin (n + n)) (Fin (n + n)) S) (u : Fin n → S) :
     (M.submatrix finSumFinEquiv finSumFinEquiv * diagCols (E := S) (Fin n)) *ᵥ u =
@@ -101,15 +101,13 @@ theorem mulVec_diagCols {n : ℕ} (M : Matrix (Fin (n + n)) (Fin (n + n)) S) (u 
   simp [pairVec, diagCols, Matrix.fromRows_mulVec]
 
 /- English proof (translation)
-Use `set B := blkGL finSumFinEquiv (b, b) with hBdef`. Use `set x := B⁻¹ * G⁻¹ * B with hx`. Establish `hB : G * B * x = B` using `by rw [hx]; group`. Use `keepsDiag_of_mulVec fun w hw => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `(mem_diagSub finSumFinEquiv).1 hw`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu⟩ : ∃ u, u = (b⁻¹).1 *ᵥ z` from `⟨_, rfl⟩`. Establish `e1 : (B⁻¹).1 *ᵥ pairVec finSumFinEquiv z z = pairVec finSumFinEquiv u u`. Establish `: B⁻¹ = blkGL finSumFinEquiv (b⁻¹, b⁻¹)` using `by rw [hBdef, ← map_inv, Prod.inv_mk]`. Rewrite using `[this, val_blkGL, hu]`. Conclude with `blkMat_mulVec _ _ _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : Y.1 *ᵥ pairVec finSumFinEquiv u u = x.1 *ᵥ pairVec finSumFinEquiv (t *ᵥ u) (t *ᵥ u)`. Establish `h : (Y.1 *ᵥ pairVec finSumFinEquiv u u) ∘ finSumFinEquiv = (x.1 *ᵥ pairVec finSumFinEquiv (t *ᵥ u) (t *ᵥ u)) ∘ finSumFinEquiv`. Rewrite using `[← mulVec_diagCols, ← mulVec_diagCols, hY, Matrix.mulVec_mulVec]`. Conclude with `finSumFinEquiv.surjective.injective_comp_right h`. Establish `e3 : (G * (B * Y * B⁻¹)).1 *ᵥ pairVec finSumFinEquiv z z = pairVec finSumFinEquiv (b.1 *ᵥ t *ᵥ u) (b.1 *ᵥ t *ᵥ u)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Use `_ = (G * B).1 *ᵥ (x.1 *ᵥ pairVec finSumFinEquiv (t *ᵥ u) (t *ᵥ u)) := by rw [e1, e2]`. Use `_ = (G * B * x).1 *ᵥ pairVec finSumFinEquiv (t *ᵥ u) (t *ᵥ u) := by`. Simplify using `only [Units.val_mul, Matrix.mulVec_mulVec]`.
-
-Use `_ = B.1 *ᵥ pairVec finSumFinEquiv (t *ᵥ u) (t *ᵥ u) := by rw [hB]`. Use `_ = _ := by rw [hBdef, val_blkGL]; exact blkMat_mulVec _ _ _ _ _`. Rewrite using `[e3]`. Conclude with `(mem_diagSub finSumFinEquiv).2 ⟨_, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem keepsDiag_of_frame {n : ℕ} (G : GL (Fin (n + n)) S) (b : GL (Fin n) S) (Y : GL (Fin (n + n)) S)
     (t : Matrix (Fin n) (Fin n) S)
@@ -151,7 +149,7 @@ section Points
 variable {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R] [Algebra F R] {n : ℕ}
 
 /- English proof (translation)
-Substitute `hQ` using the available equality. Rewrite using `[JR_dblGram, val_blkGL, cT_blkMat, dblGram, blkMat_mul, blkMat_mul, dblGram, locGram]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gram_blk (σ : E →ₐ[F] E) {J : Matrix (Fin n) (Fin n) E} {Q : Matrix (Fin (n + n)) (Fin (n + n)) E}
     (hQ : Q = dblGram finSumFinEquiv J) (b : GL (Fin n) (R ⊗[F] E)) :
@@ -162,9 +160,9 @@ theorem gram_blk (σ : E →ₐ[F] E) {J : Matrix (Fin n) (Fin n) E} {Q : Matrix
   simp only [Matrix.mul_neg, Matrix.neg_mul]
 
 /- English proof (translation)
-Establish `h1 : cT (sigR R σ) (JR (F` using `F) R J) = JR R J := by`. Use extensionality with `i j`. Simplify using `only [cT, JR, Matrix.transpose_apply, Matrix.map_apply]`. Rewrite using `[← hJ i j]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2 : cT (sigR R σ) (cT (sigR R σ) b.1) = b.1`. Use extensionality with `i j`. Simplify using `[cT, GlobalTheory.Doubling.sigR_invol hσ]`. Rewrite using `[locGram, cT_mul, cT_mul, h1, h2, Matrix.mul_assoc]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_locGram (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {J : Matrix (Fin n) (Fin n) E}
     (hJ : ∀ i j, σ (J j i) = J i j) (b : GL (Fin n) (R ⊗[F] E)) :

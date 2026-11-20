@@ -14,14 +14,14 @@ def CongSpan (S : Set (ι → F)) (v : ι → F) : Prop :=
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Conclude with `fun i => add_mem (hv i) (hw i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intVec_add {v w : ι → F} (hv : IntVec O v) (hw : IntVec O w) : IntVec O (v + w) := by
   exact fun i => add_mem (hv i) (hw i)
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Conclude with `fun i => mul_mem c.2 (hv i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intVec_smul (c : O) {v : ι → F} (hv : IntVec O v) : IntVec O ((c : F) • v) := by
   exact fun i => mul_mem c.2 (hv i)
@@ -33,7 +33,7 @@ open Matrix
 variable {F : Type} [Field F] (O : ValuationSubring F) (γ : O) {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Introduce `i`. Use `show (∑ j, M i j * z j) ∈ O`. Conclude with `sum_mem fun j _ => mul_mem (hM i j) (hz j)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem intVec_mulVec (M : Matrix ι ι F) (hM : ∀ i j, M i j ∈ O) {z : ι → F} (hz : IntVec O z) :
     IntVec O (M *ᵥ z) := by
@@ -42,13 +42,13 @@ theorem intVec_mulVec (M : Matrix ι ι F) (hM : ∀ i j, M i j ∈ O) {z : ι �
   exact sum_mem fun j _ => mul_mem (hM i j) (hz j)
 
 /- English proof (translation)
-Conclude with `⟨0, zero_mem _, 0, fun _ => zero_mem _, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem congSpan_zero (S : Set (ι → F)) : CongSpan O γ S 0 := by
   exact ⟨0, zero_mem _, 0, fun _ => zero_mem _, by simp⟩
 
 /- English proof (translation)
-Establish `key : ∀ x, CongSpan O γ S x → CongSpan O γ S (-x)`. Introduce and unpack `x ⟨w, hw, z, hz, rfl⟩`. Conclude with `⟨-w, neg_mem hw, -z, fun i => neg_mem (hz i), by rw [smul_neg, neg_add]⟩`. Conclude with `⟨fun h => by simpa using key _ h, key v⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem congSpan_neg (S : Set (ι → F)) (v : ι → F) : CongSpan O γ S (-v) ↔ CongSpan O γ S v := by
   have key : ∀ x, CongSpan O γ S x → CongSpan O γ S (-x) := by

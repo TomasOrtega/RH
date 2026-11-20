@@ -9,13 +9,11 @@ open scoped ComplexOrder
 namespace GlobalTheory.CompanionTheory.CountClosedComm
 
 /- English proof (translation)
-Establish `hfin : Finite S` using `hS.to_subtype`. Use `choose φ hφ hφM using h`. Set `ψ : W ⧸ M.subgroupOf W → S` to `fun q => ⟨φ q.out q.out.2, hφ _ q.out.2⟩`. Establish `hinj : Function.Injective ψ`. Introduce `q q' hqq`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : φ q.out q.out.2 = φ q'.out q'.out.2` using `congrArg Subtype.val hqq`. Establish `a` using `hφM _ q.out.2`. Establish `b` using `hφM _ q'.out.2`. Rewrite `b` using `[← e]`. Establish `hm : (q.out)⁻¹ * q'.out ∈ M.subgroupOf W`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.mem_subgroupOf]`. Use `M.mul_mem (M.inv_mem a) b` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Establish `: Finite (W ⧸ M.subgroupOf W)` using `Finite.of_injective ψ hinj`.
-
-Conclude with `Subgroup.index_ne_zero_of_finite`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero_of_cover {G : Type} [Group G] (M W : Subgroup G) (S : Set G) (hS : S.Finite)
     (h : ∀ w ∈ W, ∃ s ∈ S, s⁻¹ * w ∈ M) : M.relIndex W ≠ 0 := by
@@ -39,7 +37,7 @@ theorem relIndex_ne_zero_of_cover {G : Type} [Group G] (M W : Subgroup G) (S : S
   exact Subgroup.index_ne_zero_of_finite
 
 /- English proof (translation)
-The claim follows from `_root_.Bl.FirstLemmaC.goal1 L hL t hc`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_mem {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (L : Subgroup G)
     (hL : IsOpen (L : Set G)) (t : G) (hc : IsCompact (closure (Subgroup.zpowers t : Set G))) :
@@ -47,9 +45,9 @@ theorem exists_pow_mem {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalG
   _root_.Bl.FirstLemmaC.goal1 L hL t hc
 
 /- English proof (translation)
-Establish `hTC : IsCompact ((T : Set G) ∩ C)` using `hC.inter_left hTc`. Take `⟨F, hF, hU⟩` from `hTC.elim_nhds_subcover (fun z => {g | z⁻¹ * g ∈ (L : Set G)}) (fun z _ => IsOpen.mem_nhds (hLo.preimage (continuous_const.mul continuous_id)) (by simp [L.one_mem]))`. Use `⟨F, fun f hf => (hF f hf).1, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Take `⟨γ, hγ, c, hc, rfl⟩` from `hcov t ht`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hcT : c ∈ T`. Use `T.mul_mem (T.inv_mem (hΓ hγ)) ht` as an intermediate fact. Simplify using `using this`. Take `⟨f, hf, hcf⟩` from `Set.mem_iUnion₂.1 (hU ⟨hcT, hc⟩)`. Conclude with `⟨γ, hγ, f, hf, f⁻¹ * c, ⟨T.mul_mem (T.inv_mem (hF f hf).1) hcT, hcf⟩, by group⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cover_cosets {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (L T Γ : Subgroup G) (C : Set G) (hLo : IsOpen (L : Set G)) (hTc : IsClosed (T : Set G)) (hΓ : Γ ≤ T)
@@ -81,14 +79,14 @@ def powRad {G : Type} [Group G] (T M : Subgroup G) (hcomm : ∀ a ∈ T, ∀ b �
     exact ⟨T.inv_mem ha, k, hk, by rw [inv_pow]; exact M.inv_mem hak⟩
 
 /- English proof (translation)
-Introduce `m hm` and use `⟨hM hm, 1, one_pos, by simpa using hm⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem le_powRad {G : Type} [Group G] (T M : Subgroup G) (hcomm : ∀ a ∈ T, ∀ b ∈ T, a * b = b * a)
     (hM : M ≤ T) : M ≤ powRad T M hcomm :=
   fun m hm => ⟨hM hm, 1, one_pos, by simpa using hm⟩
 
 /- English proof (translation)
-Rewrite using `[cptPart, Subgroup.closure_le]`. Introduce and unpack `t ⟨ht, hc⟩`. Take `⟨k, hk, hkL⟩` from `exists_pow_mem L hLo t hc`. Conclude with `⟨ht, k, hk, T.pow_mem ht k, hkL⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cptPart_le_powRad {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (T L : Subgroup G) (hcomm : ∀ a ∈ T, ∀ b ∈ T, a * b = b * a) (hLo : IsOpen (L : Set G)) :
@@ -99,7 +97,7 @@ theorem cptPart_le_powRad {G : Type} [Group G] [TopologicalSpace G] [IsTopologic
   exact ⟨ht, k, hk, T.pow_mem ht k, hkL⟩
 
 /- English proof (translation)
-Introduce `t ht`. Apply `Subgroup.subset_closure` to reduce the goal to its premises. Use `⟨ht.1, hL.of_isClosed_subset isClosed_closure ?_⟩` and prove the remaining obligations. Conclude with `closure_minimal (fun x hx => (Subgroup.zpowers_le.2 ht.2) hx) hL.isClosed`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem inf_le_cptPart' {G : Type} [Group G] [TopologicalSpace G] [T2Space G] (T L : Subgroup G)
     (hL : IsCompact (L : Set G)) : T ⊓ L ≤ cptPart T := by
@@ -109,9 +107,9 @@ theorem inf_le_cptPart' {G : Type} [Group G] [TopologicalSpace G] [T2Space G] (T
   exact closure_minimal (fun x hx => (Subgroup.zpowers_le.2 ht.2) hx) hL.isClosed
 
 /- English proof (translation)
-Establish `h : IsOfFinOrder (γ ^ k)`. Rewrite using `[← finite_powers]`. Use `hfin.subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, rfl⟩`. Conclude with `⟨Γ.pow_mem (Γ.pow_mem hγ k) n, M.pow_mem hkM n⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `h.of_pow hk.ne'`.
+A detailed English derivation is pending.
 -/
 theorem isOfFinOrder_of_pow_mem {G : Type} [Group G] (Γ M : Subgroup G)
     (hfin : ((Γ : Set G) ∩ (M : Set G)).Finite) (γ : G) (hγ : γ ∈ Γ) (k : ℕ) (hk : 0 < k) (hkM : γ ^ k ∈ M) :
@@ -124,17 +122,17 @@ theorem isOfFinOrder_of_pow_mem {G : Type} [Group G] (Γ M : Subgroup G)
   exact h.of_pow hk.ne'
 
 /- English proof (translation)
-Establish `hr : ∀ f : G, ∃ r : G, (∃ t ∈ W, ∃ γ ∈ Γ, ∃ m ∈ M, t = γ * f * m) → r ∈ W ∧ ∃ γ ∈ Γ, ∃ m ∈ M, r = γ * f * m`. Introduce `f`. Distinguish the cases in `h : ∃ t ∈ W, ∃ γ ∈ Γ, ∃ m ∈ M, t = γ * f * m`. Take `⟨t, ht, hh⟩` from `h`. Conclude with `⟨t, fun _ => ⟨ht, hh⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨1, fun h' => absurd h' h⟩`. Use `choose r hr using hr`. Use `relIndex_ne_zero_of_cover M W (Set.image2 (fun f σ => r f * σ) (F : Set G) Tor) (Set.Finite.image2 _ F.finite_toSet hTor) ?_` and prove the remaining obligations. Introduce `w hw`. Take `⟨a, ha, f, hf, c, hc, rfl⟩` from `hcov w (hWT hw)`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hrW, d, hd, e, he, hrf⟩` from `hr f ⟨_, hw, a, ha, c, hc, rfl⟩`. Establish `hσT : d⁻¹ * a ∈ T` using `T.mul_mem (T.inv_mem (hΓ hd)) (hΓ ha)`. Establish `hσΓ : d⁻¹ * a ∈ Γ` using `Γ.mul_mem (Γ.inv_mem hd) ha`. Establish `h1 : (r f)⁻¹ * (a * f * c) = e⁻¹ * (d⁻¹ * a) * c`. Establish `hb : f * (d⁻¹ * a) = (d⁻¹ * a) * f` using `hcomm _ (hF f hf) _ hσT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb' : f⁻¹ * (d⁻¹ * a) * f = d⁻¹ * a` using `by rw [mul_assoc, ← hb]; group`. Rewrite using `[hrf]`. Combine the equalities or inequalities in the displayed calculation. Establish `hσW : d⁻¹ * a ∈ W`. Establish `h2 : d⁻¹ * a = e * ((r f)⁻¹ * (a * f * c)) * c⁻¹` using `by rw [h1]; group`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `W.mul_mem (W.mul_mem (hMW he) (W.mul_mem (W.inv_mem hrW) hw)) (W.inv_mem (hMW hc))`. Use `⟨r f * (d⁻¹ * a), ⟨f, hf, d⁻¹ * a, hsub _ hσΓ hσW, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hcm : e⁻¹ * (d⁻¹ * a) = (d⁻¹ * a) * e⁻¹` using `hcomm _ (T.inv_mem (hMT he)) _ hσT`. Establish `h3 : (r f * (d⁻¹ * a))⁻¹ * (a * f * c) = e⁻¹ * c`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.mul_inv_rev, mul_assoc, h1, hcm]`. Use `group`. Rewrite using `[h3]`. Conclude with `M.mul_mem (M.inv_mem he) hc`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero_of_torsion {G : Type} [Group G] (T M W Γ : Subgroup G)
     (hcomm : ∀ a ∈ T, ∀ b ∈ T, a * b = b * a) (hMT : M ≤ T) (hMW : M ≤ W) (hΓ : Γ ≤ T)
@@ -175,7 +173,7 @@ theorem relIndex_ne_zero_of_torsion {G : Type} [Group G] (T M W Γ : Subgroup G)
   exact M.mul_mem (M.inv_mem he) hc
 
 /- English proof (translation)
-Rewrite using `[Subgroup.coe_inf]`. Conclude with `hL.inter_left hTc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_inf {G : Type} [Group G] [TopologicalSpace G] [T2Space G] (T L : Subgroup G)
     (hTc : IsClosed (T : Set G)) (hL : IsCompact (L : Set G)) : IsCompact ((T ⊓ L : Subgroup G) : Set G) := by
@@ -183,11 +181,11 @@ theorem isCompact_inf {G : Type} [Group G] [TopologicalSpace G] [T2Space G] (T L
   exact hL.inter_left hTc
 
 /- English proof (translation)
-Use `set M := T ⊓ L with hM`. Establish `hMT : M ≤ T` using `inf_le_left`. Establish `hsub : ∀ σ ∈ Γ, σ ∈ powRad T M hcomm → σ ∈ {γ : G | γ ∈ Γ ∧ IsOfFinOrder γ}`. Introduce and unpack `σ hσ ⟨-, k, hk, hkM⟩`. Conclude with `⟨hσ, isOfFinOrder_of_pow_mem Γ M (hfin _ (isCompact_inf T L hTc hLc)) σ hσ k hk hkM⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hle : cptPart T ≤ powRad T M hcomm` using `cptPart_le_powRad T L hcomm hLo`. Take `⟨F, hF, hcovF⟩` from `cover_cosets L T Γ C hLo hTc hΓ hC hcov`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hW : M.relIndex (powRad T M hcomm) ≠ 0` using `relIndex_ne_zero_of_torsion T M (powRad T M hcomm) Γ hcomm hMT (le_powRad T M hcomm hMT) hΓ F hF (fun _ h => h.1) hcovF _ htor hsub`. Conclude with `fun h0 => hW (Subgroup.relIndex_eq_zero_of_le_right hle h0)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `: ((Γ ⊓ cptPart T : Subgroup G) : Set G).Finite` using `htor.subset fun σ hσ => hsub σ hσ.1 (hle hσ.2)`. Conclude with `this.to_subtype`.
+A detailed English derivation is pending.
 -/
 theorem part {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] (L T Γ : Subgroup G)
     (C : Set G) (hLo : IsOpen (L : Set G)) (hLc : IsCompact (L : Set G)) (hTc : IsClosed (T : Set G))
@@ -212,11 +210,11 @@ theorem part {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T
     exact this.to_subtype
 
 /- English proof (translation)
-Take `⟨F, hF, hcovF⟩` from `cover_cosets L T Γ C hLo hTc hΓ hC hcov`. Set `φ : F → DoubleCoset.Quotient (((Γ.subgroupOf T) : Subgroup T) : Set T) (((cptPart T).subgroupOf T : Subgroup T) : Set T)` to `fun f => DoubleCoset.mk _ _ ⟨f.1, hF f.1 f.2⟩`. Use `Finite.of_surjective φ fun q => ?_` and prove the remaining obligations. Proceed by induction on `q using Quotient.inductionOn' with`. Consider the case `h t`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Take `⟨γ, hγ, f, hf, m, hm, ht⟩` from `hcovF t.1 t.2`. Use `⟨⟨f, hf⟩, ?_⟩` and prove the remaining obligations. Use `Quotient.sound' ?_` and prove the remaining obligations. Rewrite using `[DoubleCoset.rel_iff]`. Use `⟨⟨γ, hΓ hγ⟩, ?_, ⟨m, hm.1⟩, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Subgroup.mem_subgroupOf.2 hγ`. Conclude with `Subgroup.mem_subgroupOf.2 (inf_le_cptPart' T L hLc hm)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[ht, mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_doubleCoset {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     (L T Γ : Subgroup G) (C : Set G) (hLo : IsOpen (L : Set G)) (hLc : IsCompact (L : Set G))
@@ -242,13 +240,13 @@ theorem finite_doubleCoset {G : Type} [Group G] [TopologicalSpace G] [IsTopologi
       simp [ht, mul_assoc]
 
 /- English proof (translation)
-Introduce `G _ _ _ _ K T Γ C hKo hKc hTc hcomm hΓ hC hcov hfin htor`. Establish `hLo : ∀ x : G, IsOpen ((K.map (MulAut.conj x).toMonoidHom : Subgroup G) : Set G)`. Introduce `x`. Establish `: ((K.map (MulAut.conj x).toMonoidHom : Subgroup G) : Set G) = (Homeomorph.mulRight x⁻¹ ∘ Homeomorph.mulLeft x) '' (K : Set G)`. Use extensionality with `g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[MulAut.conj_apply]`. Rewrite using `[this, Set.image_comp]`. Conclude with `(Homeomorph.mulRight x⁻¹).isOpenMap _ ((Homeomorph.mulLeft x).isOpenMap _ hKo)`. Establish `hLc : ∀ x : G, IsCompact ((K.map (MulAut.conj x).toMonoidHom : Subgroup G) : Set G)`. Introduce `x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: ((K.map (MulAut.conj x).toMonoidHom : Subgroup G) : Set G) = (fun g => x * g * x⁻¹) '' (K : Set G)`. Use extensionality with `g`. Simplify using `[MulAut.conj_apply]`. Rewrite using `[this]`. Conclude with `hKc.image (by fun_prop)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun x => ⟨inf_le_cptPart' T _ (hLc x), (part _ T Γ C (hLo x) (hLc x) hTc hcomm hΓ hC hcov hfin htor).1⟩, fun x => ?_, (part K T Γ C hKo hKc hTc hcomm hΓ hC hcov hfin htor).2, finite_doubleCoset K T Γ C hKo hKc hTc hΓ hC hcov⟩` and prove the remaining obligations. Establish `: ((Γ ⊓ K.map (MulAut.conj x).toMonoidHom : Subgroup G) : Set G).Finite`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `hfin _ (hLc x)`. Conclude with `this.to_subtype`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] (K T Γ : Subgroup G) (C : Set G),
   IsOpen (K : Set G) → IsCompact (K : Set G) → IsClosed (T : Set G) → (∀ a ∈ T, ∀ b ∈ T, a * b = b * a) → Γ ≤ T →

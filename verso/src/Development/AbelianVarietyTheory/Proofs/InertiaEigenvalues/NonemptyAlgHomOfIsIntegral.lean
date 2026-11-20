@@ -17,11 +17,9 @@ namespace GlobalTheory.SeriesTie
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Set `p : Ideal R` to `RingHom.ker (algebraMap R κ)`. Use `haveI : p.IsPrime := RingHom.ker_isPrime _`. Take `⟨P, hP, hPp⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral_of_isDomain (S := S) p (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 (FaithfulSMul.algebraMap_injective R S)]`. Conclude with `bot_le)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `haveI : P.LiesOver p := ⟨hPp.symm⟩`. Use `letI : Algebra (R ⧸ p) κ := (RingHom.kerLift (algebraMap R κ)).toAlgebra`. Use `haveI : FaithfulSMul (R ⧸ p) κ := (faithfulSMul_iff_algebraMap_injective _ _).2 (RingHom.kerLift_injective _)`. Use `haveI : IsScalarTower R (R ⧸ p) κ := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : Algebra.IsIntegral (R ⧸ p) (S ⧸ P) := inferInstance`.
-
-Set `f : (S ⧸ P) →ₐ[R ⧸ p] κ` to `IsAlgClosed.lift`. Conclude with `⟨(f.restrictScalars R).comp (Ideal.Quotient.mkₐ R P)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_algHom_of_isIntegral (R S κ : Type) [CommRing R] [CommRing S] [IsDomain S] [Algebra R S] [Algebra.IsIntegral R S]
     [FaithfulSMul R S] [Field κ] [IsAlgClosed κ] [Algebra R κ] : Nonempty (S →ₐ[R] κ) := by
@@ -38,17 +36,15 @@ theorem nonempty_algHom_of_isIntegral (R S κ : Type) [CommRing R] [CommRing S] 
   exact ⟨(f.restrictScalars R).comp (Ideal.Quotient.mkₐ R P)⟩
 
 /- English proof (translation)
-Establish `hint : ∀ a : 𝓞 k, ∃ y : O, algebraMap O K y = algebraMap k K a` using `fun a => IsIntegrallyClosed.isIntegral_iff.1 (a.isIntegral_coe.map_of_comp_eq (Int.castRingHom _) (algebraMap k K) (RingHom.ext_int _ _))`. Use `choose y hy using hint`. Establish `inj` using `IsFractionRing.injective O K`. Set `ι : 𝓞 k →+* O` to `{ toFun := y map_one' := inj (by simp [hy]) map_mul' := fun a b => inj (by simp [hy]) map_zero' := inj (by simp [hy]) map_add' := fun a b => inj (by simp [hy]) }`. Use `letI : Algebra (𝓞 k) O := ι.toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Take `⟨f⟩` from `nonempty_algHom_of_isIntegral (𝓞 k) (𝓞 L) (IsLocalRing.ResidueField O)`. Set `P : Ideal (𝓞 L)` to `RingHom.ker f`. Use `haveI : P.IsPrime := RingHom.ker_isPrime _`. Use `haveI := hu P (by`. Rewrite using `[RingHom.mem_ker, map_natCast, ← map_natCast (IsLocalRing.residue O)]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Conclude with `(IsLocalRing.residue_eq_zero_iff _).2 hl)`. Use `haveI : Algebra.FinitePresentation (𝓞 k) (𝓞 L) := Algebra.FinitePresentation.of_finiteType.1 inferInstance`. Use `haveI : Algebra.IsEtaleAt (𝓞 k) P := Algebra.IsEtaleAt.of_isUnramifiedAt_of_flat _`. Establish `hun : ∀ z : P.primeCompl, IsUnit (f z)` using `fun z => IsUnit.mk0 _ z.2`. Set `F : Localization.AtPrime P →ₐ[𝓞 k] O ⧸ IsLocalRing.maximalIdeal O` to `IsLocalization.liftAlgHom (f := f) hun`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨G, -⟩` from `Algebra.FormallySmooth.exists_mkₐ_comp_eq_of_isAdicComplete F`. Set `g : 𝓞 L →+* K` to `(algebraMap O K).comp (G.toRingHom.comp (algebraMap _ _))`. Establish `hg : ∀ a : 𝓞 k, g (algebraMap _ _ a) = algebraMap k K a` using `fun a => by`. Express the relevant statement in the definitionally equal form `algebraMap O K (G (algebraMap _ _ (algebraMap _ _ a))) = _`. Rewrite using `[← IsScalarTower.algebraMap_apply, G.commutes]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hy a`. Establish `ginj : Function.Injective g`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Use `Ideal.eq_bot_of_comap_eq_bot (R := 𝓞 k) (eq_bot_iff.2 fun a ha => ?_)` and prove the remaining obligations. Establish `h1 : algebraMap k K a = 0` using `(hg a).symm.trans ha`.
-
-Conclude with `RingOfIntegers.coe_eq_zero_iff.1 ((map_eq_zero _).1 h1)`. Use `⟨{ IsFractionRing.lift (K := L) ginj with commutes' := fun a => ?_ }⟩` and prove the remaining obligations. Establish `: (IsFractionRing.lift (K` using `L) ginj).comp (algebraMap k L) = algebraMap k K := IsFractionRing.ringHom_ext (A := 𝓞 k) fun a => by`. Rewrite using `[RingHom.comp_apply, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (𝓞 k) (𝓞 L) L, IsFractionRing.lift_algebraMap, hg]`. Conclude with `RingHom.congr_fun this a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_algHom_of_unramified (l : ℕ) (O K k L : Type) [CommRing O] [IsDomain O] [IsLocalRing O] [IsIntegrallyClosed O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [IsAlgClosed (IsLocalRing.ResidueField O)] [Field K] [Algebra O K]
@@ -96,11 +92,11 @@ theorem nonempty_algHom_of_unramified (l : ℕ) (O K k L : Type) [CommRing O] [I
   exact RingHom.congr_fun this a
 
 /- English proof (translation)
-Use `letI : Algebra k K := ι.toAlgebra`. Take `⟨φ⟩` from `nonempty_algHom_of_unramified l O K k L hl hu`. Use `letI : Algebra k ℂ := (e.comp ι).toAlgebra`. Use `letI : Algebra L ℂ := σ.toAlgebra`. Use `haveI : IsScalarTower k L ℂ := IsScalarTower.of_algebraMap_eq fun a => (h a).symm`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `ψ : L →ₐ[k] ℂ` to `{ e.comp φ.toRingHom with commutes' := fun a => congrArg e (φ.commutes a) }`. Set `τ : L ≃ₐ[k] L` to `ψ.restrictNormal' L`. Use `⟨φ (τ.symm x), ?_⟩` and prove the remaining obligations. Use `ψ.restrictNormal_commutes L (τ.symm x)` as an intermediate fact. Establish `h2 : ψ.restrictNormal L (τ.symm x) = x` using `τ.apply_symm_apply x`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h2]`. Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_of_unramified (l : ℕ) (O K k L : Type) [CommRing O] [IsDomain O] [IsLocalRing O] [IsIntegrallyClosed O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [IsAlgClosed (IsLocalRing.ResidueField O)] [Field K] [Algebra O K]
@@ -132,7 +128,7 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type}
 variable {YS v₀ i j b} in
 
 /- English proof (translation)
-Use `choose y hy using hz`. Conclude with `(mem_range_realRd_iff YS v₀ hρ i j b hν g).2 ⟨n, y, x, h.trans (Finset.sum_congr rfl fun k _ => by rw [← hy k])⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_realRd_of_sum {ν : ℂ} (hν : ν ≠ 0) {g : GA D (Wc D j) → ℂ} {n : ℕ} (z : Fin n → ℂ)
     (hz : ∀ k, ∃ y, ρ.e i b y = z k) (x : Fin n → NX.FmK S ((j : ℕ) + 1))
@@ -159,7 +155,7 @@ def RatUnivUr (ν : ℂ) : Prop := ∀ Q M, InRange D.ntw i Q → ∀ s h, ρ.Is
 variable {YS v₀ i j b}
 
 /- English proof (translation)
-Take `⟨k, L, _, _, _, _, _, ι, σ, hN, hu, he, n, a, x, h⟩` from `h`. Use `haveI := D.ntw.resO_ac i`. Use `haveI := D.ntw.O_complete i`. Conclude with `mem_range_realRd_of_sum hρ hν _ (fun c => mem_range_of_unramified (D.ntw.l i) (D.ntw.O i) _ k L ι (D.ntw.O_l i) hu (ρ.e i b) σ he (a c)) x h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UnrComb.mem_range {ν : ℂ} (hν : ν ≠ 0) {g : GA D (Wc D j) → ℂ} (h : UnrComb YS v₀ ρ i j b (ν • g)) :
     g ∈ Set.range (realRd YS v₀ hρ i j b ν) := by
@@ -185,18 +181,18 @@ def xiLin (Q : Finset (Pl D.host.E)) (M : ℕ) (h : GA D (Vc D j)) (a : ↥(half
   map_smul' c P := by funext g; simp only [Base.xiCoef_apply, map_smul, Pi.smul_apply, RingHom.id_apply]
 
 /- English proof (translation)
-Introduce `s g P hd` and use `by have := h ∅ 0 ⟨by simp, fun _ h => absurd h (Finset.notMem_empty _), by simp⟩ s g P hd (by simp) 0 rwa [ρ.xi_of_empty i j b Y (by simp)] at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem RatUniv.ratBase {rd : Rd ρ Y i j b} (h : RatUniv rd) : RatBase rd := fun s g P hd => by
   have := h ∅ 0 ⟨by simp, fun _ h => absurd h (Finset.notMem_empty _), by simp⟩ s g P hd (by simp) 0
   rwa [ρ.xi_of_empty i j b Y (by simp)] at this
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `h1`. Take `⟨f', h2⟩` from `h2`. Establish `hf : f ≠ 0` using `fun h => hg (by rw [h, map_zero])`. Establish `hdep : ¬ LinearIndependent (FractionRing (X.O i)) ![f, f']` using `fun h => by`. Establish `h3 : LinearIndependent ℂ ![rd f, rd f']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hF 2 _ h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `c`. Apply the tactic sequence `fin_cases c <;> rfl`. Use `(LinearIndependent.pair_iff.1 h3 u (-1) (by rw [h2]; simp)).2` as an intermediate fact. Simplify using `at this`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hdep` using `[LinearIndependent.pair_iff' hf]`. Use `push Not at hdep`. Take `⟨y, rfl⟩` from `hdep`. Rewrite `h2` using `[map_smulₛₗ]`. Conclude with `⟨y, smul_left_injective ℂ hg h2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Faithful.mem_range_of_smul {rd : Rd ρ Y i j b} (hF : Faithful rd) {g : GA D (Wc D j) → ℂ} (hg : g ≠ 0) {u : ℂ}
     (h1 : g ∈ Set.range rd) (h2 : u • g ∈ Set.range rd) : ∃ y, ρ.e i b y = u := by
@@ -217,13 +213,13 @@ theorem Faithful.mem_range_of_smul {rd : Rd ρ Y i j b} (hF : Faithful rd) {g : 
   exact ⟨y, smul_left_injective ℂ hg h2⟩
 
 /- English proof (translation)
-Establish `key : ∀ φ ∈ coefLatFn (embLL0 D) (labLL0 D) (ρ.eO i b).range (ρ.B i j b).w.lam ((ρ.B i j b).latAt (finPt _ h)), ∃ P' ∈ (ρ.B i j b).valSpace, harmFn (Wc D j).rank (ρ.B i j b).w (ρ.B i j b).F.BS P' = φ ∧ Φ P' ∈ Set.range rd`. Introduce `φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem _ h1`. Take `⟨F, -, rfl⟩` from `h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨P', h2, h3⟩` from `honto F`. Conclude with `⟨P', h2, h3, hΦ P' h2 F h3⟩`. Consider the case `zero => exact ⟨0, zero_mem _, map_zero _, 0, by rw [map_zero, map_zero]⟩`. Consider the case `add _ _ _ _ h1 h2`. Take `⟨P₁, a1, rfl, f₁, e1⟩` from `h1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨P₂, a2, rfl, f₂, e2⟩` from `h2`. Conclude with `⟨P₁ + P₂, add_mem a1 a2, map_add _ _ _, f₁ + f₂, by rw [map_add, map_add, e1, e2]⟩`. Consider the case `smul c _ _ h1`. Take `⟨P₁, a1, rfl, f₁, e1⟩` from `h1`. Take `⟨_, o, rfl⟩` from `c`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ρ.eO i b o • P₁, Submodule.smul_mem _ _ a1, map_smul _ _ _, o • f₁, by rw [rd_smul, map_smul, e1]⟩`. Take `⟨P', h1, h2, h3⟩` from `key _ hP.2`. Rewrite using `[sub_eq_zero.1 (hinj (P - P') (sub_mem hP.1 h1) (by rw [map_sub, h2]; exact sub_self _))]` and apply the resulting hypothesis.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_range_of_small (rd : Rd ρ Y i j b) (Φ : PolF D (Wc D j).rank (Vc D j).rank →ₗ[ℂ] (GA D (Wc D j) → ℂ))
     (hinj : ∀ P ∈ (ρ.B i j b).valSpace, harmFn (Wc D j).rank (ρ.B i j b).w (ρ.B i j b).F.BS P = 0 → P = 0)
@@ -266,7 +262,7 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type}
 variable {YS v₀ i j b}
 
 /- English proof (translation)
-Introduce `Q M hQ s g _ hd hs a` and use `mem_range_of_small _ (xiLin ρ D.nexp i j b Q M g a) hinj honto (fun P' h1 F h2 => (h Q M hQ s g ⟨hd.split, hd.off, hd.fin, hd.supp, zero_mem _⟩ hs P' h1 F h2 a).mem_range hρ hν) hd.mem`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ratUniv_of_unram {ν : ℂ} (hν : ν ≠ 0)
     (hinj : ∀ P ∈ (ρ.B i j b).valSpace, harmFn (Wc D j).rank (ρ.B i j b).w (ρ.B i j b).F.BS P = 0 → P = 0)
@@ -277,7 +273,7 @@ theorem ratUniv_of_unram {ν : ℂ} (hν : ν ≠ 0)
     (fun P' h1 F h2 => (h Q M hQ s g ⟨hd.split, hd.off, hd.fin, hd.supp, zero_mem _⟩ hs P' h1 F h2 a).mem_range hρ hν) hd.mem
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `h2 s g P hd`. Use `hF.mem_range_of_smul h0 (h1 s g P hd) ⟨f, ?_⟩` and prove the remaining obligations. Rewrite using `[← hf, realRd_apply YS v₀ hρ i j b ν, realRd_apply YS v₀ hρ i j b (u * ν), smul_smul, mul_inv, mul_inv_cancel_left₀ hu]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem scalar_mem_range {ν u : ℂ} (hu : u ≠ 0) (hF : Faithful (realRd YS v₀ hρ i j b ν))
     (h1 : RatBase (realRd YS v₀ hρ i j b ν)) (h2 : RatBase (realRd YS v₀ hρ i j b (u * ν))) {s g P}
@@ -298,9 +294,9 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T0 : Type}
   {v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec}
 
 /- English proof (translation)
-Establish `hx : (YS.fi j).e.symm ((t.e j f : (Rl.FW j).WK) : Fin (Rl.nW j) → D.what₂.LL) ∈ (S.A ((j : ℕ) + 1)).WK`. Use `((YS.fi j).wk _).2 ?_` and prove the remaining obligations. Establish `e1 : (YS.fi j).e ((YS.fi j).e.symm ((t.e j f : (Rl.FW j).WK) : Fin (Rl.nW j) → D.what₂.LL)) = ((t.e j f : (Rl.FW j).WK) : Fin (Rl.nW j) → D.what₂.LL)` using `LinearEquiv.apply_symm_apply _ _`. Rewrite using `[e1]`. Conclude with `(t.e j f).2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨_, hx⟩, Eq.trans ?_ (ht j (sg0 D A3.A) hσ hV f)⟩` and prove the remaining obligations. Establish `e2` using `LinearEquiv.apply_symm_apply (YS.fi j).e ((t.e j f : (Rl.FW j).WK) : Fin (Rl.nW j) → D.what₂.LL)`. Simplify using `only [evW, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Rewrite using `[e2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_evW_eq_phiC (t : FWTie T Rl.toRealDat κ v₀) (ht : t.Evaluates) (j : Fin D.R.m)
     (hσ : GoodEmb T.Q.c (res T (sg0 D A3.A))) (hV : T.V ((j : ℕ) + 1) (res T (sg0 D A3.A)) = Wc D j) (f : Cu T κ j) :

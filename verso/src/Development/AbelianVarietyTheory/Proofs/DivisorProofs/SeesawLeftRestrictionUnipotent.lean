@@ -20,19 +20,17 @@ noncomputable section
 namespace GlobalTheory.DblEvNonvan
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he dd omd dd₁ omd₁ hD hD₁ l hl hinv hl0`. Take `⟨d₁', -, hdc₁, -, -⟩` from `hD₁`. Establish `hinv' : ∀ x y : Fin n₁ × Fin d → AF F, ∀ φ ∈ schA F ((Fin n₁ × Fin d) ⊕ (Fin n₁ × Fin d)), l (schr B.ψ (Sum.elim x x, Sum.elim y (-y)) φ) = l φ`. Introduce `x y φ hφ`. Take `⟨z, hz⟩` from `d₁'.e.surjective (x, y)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h` using `hinv z φ hφ`. Establish `h2` using `congrFun (GlobalTheory.WeilSchUnique.dd_rho_diag hdc₁ B.ψ z) φ`. Rewrite `h2` using `[hz]`. Use `erw [h2] at h`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `GlobalTheory.T.diagonal_invariant_form_unique F B.ψ hP.base.std _ l hl hinv'`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Take `⟨φ, hφ, hne⟩` from `hl0`. Conclude with `hne (by rw [hc φ hφ, zero_mul])`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨φ₀, h₀, hne⟩` from `GlobalTheory.EvSchANe.exists_mem_schA_ne_zero F E σ B n d n₁ d X W X₁ W M M₁ H.ι 1 _ e hP.good hP₁.good he`. Establish `h₁ : (fun x => starRingEnd ℂ (φ₀ x)) ∈ schA F (Fin n × Fin d)` using `GlobalTheory.SchAConj.star_mem_schA F _ φ₀ h₀`. Establish `hg : e φ₀ ∈ schA F (Fin n₁ × Fin d)` using `he.maps φ₀ h₀`. Use `⟨boxFun φ₀ (fun x => starRingEnd ℂ (φ₀ x)), GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ φ₀ h₀ _ h₁, ?_⟩` and prove the remaining obligations. Establish `het : (partRₗ (conjLin e) ∘ₗ partLₗ e) (boxFun φ₀ (fun x => starRingEnd ℂ (φ₀ x))) = boxFun (e φ₀) (fun x => starRingEnd ℂ (e φ₀ x))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Simplify using `only [LinearMap.comp_apply, partLₗ_apply, partRₗ_apply, partR, partL, boxFun, Sum.elim_comp_inl, Sum.elim_comp_inr]`. Establish `h1 : (fun x => e (fun x' => φ₀ x' * starRingEnd ℂ (φ₀ x)) (y ∘ Sum.inl)) = e φ₀ (y ∘ Sum.inl) • (fun x => starRingEnd ℂ (φ₀ x))` using `funext fun x => by`. Rewrite using `[show (fun x' => φ₀ x' * starRingEnd ℂ (φ₀ x)) = starRingEnd ℂ (φ₀ x) • φ₀ from`. Use function extensionality and compare the values at `fun x' => by simp [mul_comm], map_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_comm]`. Rewrite using `[h1, map_smul]`. Simplify using `[conjLin_apply]`. Establish `hb : boxFun (e φ₀) (fun x => starRingEnd ℂ (e φ₀ x)) ∈ schA F ((Fin n₁ × Fin d) ⊕ (Fin n₁ × Fin d))` using `GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ _ hg _ (GlobalTheory.SchAConj.star_mem_schA F _ _ hg)`. Rewrite using `[het, hc _ hb]`.
-
-Conclude with `mul_ne_zero hc0 (GlobalTheory.T.diag_form_box_conj_ne_zero F _ (e φ₀) hg hne)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem doubled_eval_nonvanishing : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

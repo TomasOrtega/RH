@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.LimV
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨ψ, hψ, rfl⟩`. Take `⟨ψ', hψ', hx⟩` from `h ψ hψ`. Use `⟨mulChi N (Model.absC E z) ψ', ⟨ψ', hψ', rfl⟩, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearEquiv.coe_coe, mulChi_apply, hx, mul_assoc]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem carries_tw {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ} (e : GA E N → ℂ)
     (U U' : Submodule ℂ (Sm E N)) (z : ℂ) (h : Carries e U U') : Carries e (tw U z) (tw U' z) := by

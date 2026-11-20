@@ -12,13 +12,11 @@ open scoped ENNReal Topology
 namespace GlobalTheory.GrowthShift
 
 /- English proof (translation)
-Use `lift a to NNReal using ha.ne_top`. Establish `ha' : (a : ℝ) < 1` using `by exact_mod_cast ha`. Establish `h1 : Tendsto (fun k : ℕ => ((k : ℝ) / (k + (e : ℝ))) ^ D) atTop (𝓝 1)`. Simplify using `using (tendsto_natCast_div_add_atTop (e : ℝ)).pow D`. Use `filter_upwards [h1.eventually (lt_mem_nhds ha'), eventually_gt_atTop 0] with k hk hk0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkR : (0 : ℝ) < k` using `Nat.cast_pos.2 hk0`. Establish `hke : (0 : ℝ) < ((k : ℝ) + e) ^ D` using `by positivity`. Rewrite `hk` using `[div_pow, lt_div_iff₀ hke]`. Establish `h2 : (a : ℝ≥0∞) * ((k + e : ℕ) : ℝ≥0∞) ^ D ≤ (k : ℝ≥0∞) ^ D`. Establish `h3 : a * ((k + e : ℕ) : NNReal) ^ D ≤ (k : NNReal) ^ D`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← NNReal.coe_le_coe]`. Use `push_cast`. Conclude with `hk.le`. Conclude with `h3` after adjusting the coercions. Establish `n0 : (k : ℝ≥0∞) ^ D ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hk0.ne')`.
-
-Establish `nt : (k : ℝ≥0∞) ^ D ≠ ⊤` using `ENNReal.pow_ne_top (ENNReal.natCast_ne_top k)`. Rewrite using `[ENNReal.le_inv_iff_mul_le, mul_right_comm, ← div_eq_mul_inv, ENNReal.div_le_iff n0 nt, one_mul]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_mul_inv_pow_le (D e : ℕ) {a : ℝ≥0∞} (ha : a < 1) :
     ∀ᶠ k : ℕ in atTop, a * ((k : ℝ≥0∞) ^ D)⁻¹ ≤ (((k + e : ℕ) : ℝ≥0∞) ^ D)⁻¹ := by
@@ -42,9 +40,9 @@ theorem eventually_mul_inv_pow_le (D e : ℕ) {a : ℝ≥0∞} (ha : a < 1) :
   exact h2
 
 /- English proof (translation)
-Introduce `D e r`. Use `ENNReal.le_of_forall_lt_one_mul_le fun a ha => ?_` and prove the remaining obligations. Rewrite using `[growth, growth, ← ENNReal.limsup_const_mul_of_ne_top ha.ne_top, ← Filter.limsup_nat_add (fun τ : ℕ => (D.factorial : ℝ≥0∞) * (r τ : ℝ≥0∞) / (τ : ℝ≥0∞) ^ D) e]`. Use `limsup_le_limsup ((eventually_mul_inv_pow_le D e ha).mono fun k hk => ?_)` and prove the remaining obligations. Simplify using `only [div_eq_mul_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_left_comm]`. Conclude with `mul_le_mul_right hk _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem growth_shift_le : ∀ (D e : ℕ) (r : ℕ → ℕ∞), growth D (fun k => r (k + e)) ≤ growth D r := by
   intro D e r

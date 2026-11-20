@@ -14,7 +14,7 @@ namespace GlobalTheory.ChartUnip
 open Matrix
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `rcases h : finSumFinEquiv.symm j with k | k <;>`. Simplify using `[rat, Tm, HypDec.jX, HypDec.jY, Matrix.submatrix_apply, h, Matrix.map_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem rat_Tm {D : D7} (A : HSp D) (μ : D.host.E) :
     (rat (Tm A μ) : Mx D (A.rank + A.rank) (A.rank + A.rank)) =
@@ -24,7 +24,7 @@ theorem rat_Tm {D : D7} (A : HSp D) (μ : D.host.E) :
     simp [rat, Tm, HypDec.jX, HypDec.jY, Matrix.submatrix_apply, h, Matrix.map_apply]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use extensionality with `i s`. Simplify using `[Matrix.mul_apply, Matrix.submatrix_apply]`.
+Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cancel_mul {R : Type*} [CommRing R] {k a m : ℕ} {P : Matrix (Fin k) (Fin (m + m)) R}
     {M : Matrix (Fin k) (Fin a) R} {N : Matrix (Fin a) (Fin m ⊕ Fin m) R}
@@ -34,7 +34,7 @@ theorem cancel_mul {R : Type*} [CommRing R] {k a m : ℕ} {P : Matrix (Fin k) (F
   simp [Matrix.mul_apply, Matrix.submatrix_apply]
 
 /- English proof (translation)
-Establish `h3` using `congrArg (fun M => u • M) h`. Simplify using `only [smul_add, smul_smul, huv, one_smul] at h3`. Rewrite using `[Matrix.mul_smul, add_comm, h3]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem unscale {R : Type*} [CommRing R] {k m : ℕ} {X Y Z : Matrix (Fin k) (Fin m) R} {b : Matrix (Fin m) (Fin m) R}
     {u v : R} (huv : u * v = 1) (h : X * b + v • Y = v • Z) : Z = Y + X * (u • b) := by
@@ -43,7 +43,7 @@ theorem unscale {R : Type*} [CommRing R] {k m : ℕ} {X Y Z : Matrix (Fin k) (Fi
   rw [Matrix.mul_smul, add_comm, h3]
 
 /- English proof (translation)
-Establish `h0 : adj (mt S g ⬝ d.jY) ⬝ (gA S ⬝ (mt S g ⬝ d.jY)) = 0`. Rewrite using `[adj_mul, Matrix.mul_assoc, cancel₃ (mt_unitary S g), d.gram_YY]`. Rewrite `h0` using `[hY]`. Simplify using `only [adj_add, adj_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, d.gram_YY, d.gram_XY, cancel₃ d.gram_XX, cancel₃ d.gram_YX, Matrix.zero_mul, Matrix.mul_zero, Matrix.one_mul, Matrix.mul_one, add_zero, zero_add] at h0`. Conclude with `mem_skewA.2 (eq_neg_of_add_eq_zero_left h0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem skew_of_image {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (g : GA D S) (c : Mx D ρ ρ)
     (hY : mt S g ⬝ d.jY = d.jY + d.jX ⬝ c) : c ∈ skewA D ρ := by
@@ -56,11 +56,11 @@ theorem skew_of_image {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ
   exact mem_skewA.2 (eq_neg_of_add_eq_zero_left h0)
 
 /- English proof (translation)
-Introduce `D A μ hμ κ hκ g b hg`. Establish `hT` using `hκ g`. Rewrite `hT` using `[hg, rat_Tm, blk4, Matrix.submatrix_mul_equiv, fromCols_mul_fromBlocks]`. Establish `hT'` using `cancel_mul hT`. Rewrite `hT'` using `[mul_fromCols, Matrix.submatrix_submatrix, Function.comp_id, Equiv.symm_comp_self, Matrix.submatrix_id_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨h1, h2⟩` from `fromCols_inj hT'`. Rewrite `h1` using `[Matrix.mul_one, Matrix.mul_zero, add_zero]`. Rewrite `h2` using `[Matrix.mul_one, Matrix.mul_smul]`. Establish `hunit : incA D μ⁻¹ * incA D μ = 1` using `by rw [← map_mul, inv_mul_cancel₀ hμ.1, map_one]`. Establish `hX : mt (dblSp A) g ⬝ (dblDec A).jX = (dblDec A).jX` using `h1.symm`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY : mt (dblSp A) g ⬝ (dblDec A).jY = (dblDec A).jY + (dblDec A).jX ⬝ (incA D μ⁻¹ • b)` using `unscale hunit h2`. Use `⟨⟨incA D μ⁻¹ • b, skew_of_image (dblDec A) g _ hY⟩, rfl, ?_⟩` and prove the remaining obligations. Use `(dblDec A).ga_ext ?_ (Matrix.ext fun _ j => Fin.elim0 j) ?_` and prove the remaining obligations. Rewrite using `[hX, HypDec.nC_jX]`. Rewrite using `[hY, HypDec.nC_jY]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem chart_unip : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ → ∀ κ : GA D (dblSp A) ≃* G D A.rank,
     IsChart A μ κ → ∀ (g : GA D (dblSp A)) (b : Mx D A.rank A.rank), mat (κ g) = blk4 1 b 0 1 →

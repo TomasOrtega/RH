@@ -21,9 +21,9 @@ namespace GlobalTheory.TruncKerConst
 variable {D : D7} {V : HSp D}
 
 /- English proof (translation)
-Use `eq_bot_iff.2 fun g hg => ?_` and prove the remaining obligations. Establish `ht : 𝔉.X (Fin.last 𝔉.k) = ⊥`. Establish `e : (Fin.last 𝔉.k) = 0` using `Fin.ext (by simp [h])`. Rewrite using `[e, 𝔉.zero]`. Establish `h2` using `(IsoFlag.mem_unip.1 hg).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `g ∈ trivOn _ V _ (𝔉.X (Fin.last 𝔉.k)) (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.perp V (𝔉.X (Fin.last 𝔉.k))) at h2`. Rewrite `h2` using `[ht, perp_bot, trivOn_bot_top]`. Conclude with `h2`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem NA_eq_bot_of_k_eq_zero (𝔉 : IsoFlag V) (h : 𝔉.k = 0) : NA 𝔉 = ⊥ := by
   refine eq_bot_iff.2 fun g hg => ?_
@@ -36,7 +36,7 @@ theorem NA_eq_bot_of_k_eq_zero (𝔉 : IsoFlag V) (h : 𝔉.k = 0) : NA 𝔉 = �
   exact h2
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun γ _ => IsoFlag.mem_parRat.2 fun i x hx => ?_` and prove the remaining obligations. Establish `hi : i = 0` using `Fin.ext (by have := i.2; simp; omega)`. Rewrite `hx`, the goal using `[hi, 𝔉.zero]`. Rewrite `hx`, the goal using `[Submodule.mem_bot]`. Rewrite using `[hx, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem parRat_eq_top_of_k_eq_zero (𝔉 : IsoFlag V) (h : 𝔉.k = 0) : 𝔉.parRat D.sp.cm = ⊤ := by
   refine eq_top_iff.2 fun γ _ => IsoFlag.mem_parRat.2 fun i x hx => ?_
@@ -46,11 +46,11 @@ theorem parRat_eq_top_of_k_eq_zero (𝔉 : IsoFlag V) (h : 𝔉.k = 0) : 𝔉.pa
   rw [hx, map_zero]
 
 /- English proof (translation)
-Establish `hb` using `NA_eq_bot_of_k_eq_zero 𝔉 h`. Establish `h1' : ∀ g ∈ NA 𝔉, g = 1` using `fun g hg => Subgroup.mem_bot.1 (hb ▸ hg)`. Use `haveI : Subsingleton (NA 𝔉) := ⟨fun a b => Subtype.ext ((h1' _ a.2).trans (h1' _ b.2).symm)⟩`. Use `letI : Unique (NA 𝔉) := { default := 1, uniq := fun _ => Subsingleton.elim _ _ }`. Establish `h1 : (Measure.haar : Measure (NA 𝔉)) univ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.haar, ← (Classical.arbitrary (TopologicalSpace.PositiveCompacts (NA 𝔉))).nonempty.eq_univ]`. Conclude with `Measure.haarMeasure_self`. Establish `h2 : quotMeasure (NQ 𝔉) Measure.haar univ = 1`. Rewrite using `[quotMeasure, Measure.map_apply GlobalTheory.AutomorphicL2Unitary.measurable_mk MeasurableSet.univ, Set.preimage_univ, Measure.restrict_apply_univ, Set.Nonempty.eq_univ (s := GlobalTheory.AutomorphicL2Unitary.stdDom (NQ 𝔉)) ⟨_, GlobalTheory.AutomorphicL2Unitary.sec_mem (GlobalThe …`. Rewrite using `[integral_unique, unipMeas, Measure.real, Measure.smul_apply, h2, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem integral_unipMeas_of_k_eq_zero (𝔉 : IsoFlag V) (h : 𝔉.k = 0) (φ : GA D V → ℂ) :
     ∫ n : NA 𝔉, φ n ∂unipMeas 𝔉 = φ 1 := by
@@ -80,19 +80,17 @@ end GlobalTheory.TruncKerConst
 open GlobalTheory.TruncKerConst in
 
 /- English proof (translation)
-Introduce `D V Φ K f hf 𝔬 h𝔬 Tr x`. Rewrite using `[kT, Finset.sum_eq_single (∅ : Finset (Fin (wittIndex V)))]`. Establish `hk : (Φ.stdFlag (∅ : Finset (Fin (wittIndex V)))).k = 0` using `rfl`. Use `haveI : Subsingleton (GlobalTheory.AutomorphicL2Unitary.Quot ((Φ.stdFlag ∅).parRat D.sp.cm)) := ⟨fun a b => by`. Proceed by induction on `a using Quotient.inductionOn`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Proceed by induction.
 
-Proceed by induction on `b using Quotient.inductionOn`. Conclude with `Quotient.sound (QuotientGroup.rightRel_apply.2 (by rw [parRat_eq_top_of_k_eq_zero _ hk]; trivial))⟩`. Use `set ξ₀ : GlobalTheory.AutomorphicL2Unitary.Quot ((Φ.stdFlag ∅).parRat D.sp.cm) := GlobalTheory.AutomorphicL2Unitary.mk _ 1`. Rewrite using `[tsum_eq_single ξ₀ (fun b hb => absurd (Subsingleton.elim b ξ₀) hb)]`. Establish `hτ : tauHat (stdPar (∅ : Finset (Fin (wittIndex V)))) ∅ (H0 Φ K (rat V ξ₀.out * x) - Tr) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[tauHat, stdPar]`. Rewrite using `[hτ, Finset.card_empty, pow_zero, one_mul, Complex.ofReal_one, one_mul, kerP]`. Use `set g := ξ₀.out`. Establish `hl : Φ.levi D.sp.cm (AF D.host.F) (stdPar (∅ : Finset (Fin (wittIndex V)))) = ⊤`. Simplify using `[WittFrame.levi, stdPar]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Set `e : 𝔬 ≃ {δ : GF V // δ ∈ 𝔬 ∧ rat V δ ∈ Φ.levi D.sp.cm (AF D.host.F) (stdPar (∅ : Finset (Fin (wittIndex V))))}` to `(conjEquiv 𝔬 h𝔬 g).trans { toFun := fun δ => ⟨δ.1, δ.2, by rw [hl]; trivial⟩ invFun := fun δ => ⟨δ.1, δ.2.1⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Rewrite using `[← e.tsum_eq]`. Use `tsum_congr fun δ => ?_` and prove the remaining obligations. Use `(integral_unipMeas_of_k_eq_zero (φ := fun n => f (((rat V) g * x)⁻¹ * rat V (e δ).1 * n * ((rat V) g * x))) _ hk).trans ?_` and prove the remaining obligations. Establish `hδ : ((e δ).1 : GF V) = g * δ.1 * g⁻¹` using `rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [hδ, OneMemClass.coe_one, map_mul, map_inv, mul_inv_rev, mul_one]`. Use `congr 1`. Use `group`. Introduce `J _ hJ`. Establish `hp : (Φ.stdFlag J).Proper` using `by show 0 < J.card`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.card_pos.2 (Finset.nonempty_iff_ne_empty.2 hJ)`. Establish `h0 : ∀ y : GA D V, kerP Φ J 𝔬 f y y = 0` using `fun y => by`. Rewrite using `[kerP]`. Use `(tsum_congr fun δ => ?_).trans tsum_zero` and prove the remaining obligations. Rewrite using `[unipMeas, integral_smul_measure, ((hf _ hp) Measure.haar (y⁻¹ * rat V δ) y).2, smul_zero]`.
-
-Simplify using `[h0]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TruncKer.kT_eq_of_unipIntegralsVanish : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (K : Subgroup (GA D V)) (f : GA D V → ℂ), (∀ 𝔉 : IsoFlag V, 𝔉.Proper → GlobalTheory.IndefiniteRowSideFullHecke.ConstantTermVanishing.UnipIntegralsVanish 𝔉 f) → ∀ 𝔬 : Set (GF V), (∀ δ ∈ 𝔬, ∀ g, g * δ * g⁻¹ ∈ 𝔬) → ∀ Tr x, kT Φ K 𝔬 f Tr x = ∑' δ : 𝔬, f (x⁻¹ * rat V δ * x) := by
   intro D V Φ K f hf 𝔬 h𝔬 Tr x

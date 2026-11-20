@@ -9,15 +9,15 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `V _ _ _ l _ _ _`. Take `⟨n, b⟩ : ∃ n, Nonempty (Module.Basis (Fin n) (IsLocalRing.ResidueField V) l)` from `⟨_, ⟨Module.finBasis (IsLocalRing.ResidueField V) l⟩⟩`. Take `⟨b⟩` from `b`. Establish `hne : ∀ i, minpoly (IsLocalRing.ResidueField V) (b i) ≠ 0` using `fun i => minpoly.ne_zero (Algebra.IsIntegral.isIntegral (b i))`. Take `⟨R1, _, _, _, f1, _, hinj1, hsplit⟩` from `PositivityTheory.HtPt.Pdvr.exists_splits _ V (∏ i, minpoly (IsLocalRing.ResidueField V) (b i)) rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `letI : Algebra (IsLocalRing.ResidueField V) (IsLocalRing.ResidueField R1) := (IsLocalRing.ResidueField.map f1).toAlgebra`. Establish `hS : IntermediateField.adjoin (IsLocalRing.ResidueField V) (Set.range b) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hspan : Submodule.span (IsLocalRing.ResidueField V) (Set.range b) ≤ (IntermediateField.adjoin (IsLocalRing.ResidueField V) (Set.range b)).toSubalgebra.toSubmodule` using `Submodule.span_le.mpr (IntermediateField.subset_adjoin _ _)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hspan (b.span_eq ▸ Submodule.mem_top)`. Establish `hK : ∀ s ∈ Set.range b, IsIntegral (IsLocalRing.ResidueField V) s ∧ ((minpoly (IsLocalRing.ResidueField V) s).map (algebraMap (IsLocalRing.ResidueField V) (IsLocalRing.ResidueField R1))).Splits`. Introduce and unpack `s ⟨i, rfl⟩`. Use `⟨Algebra.IsIntegral.isIntegral (b i), ?_⟩` and prove the remaining obligations. Use `Polynomial.Splits.of_dvd hsplit ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `Polynomial.map_ne_zero (Finset.prod_ne_zero_iff.mpr fun j _ => hne j)`. Conclude with `Polynomial.map_dvd _ (Finset.dvd_prod_of_mem _ (Finset.mem_univ i))`. Take `⟨φ⟩` from `IntermediateField.nonempty_algHom_of_adjoin_splits hK hS`. Take `⟨R, _, _, _, f2, _, hcomp, hinj2⟩` from `PositivityTheory.HtPt.Pdvr.exists_complete R1`. Use `⟨R, inferInstance, inferInstance, inferInstance, f2.comp f1, inferInstance, (IsLocalRing.ResidueField.map f2).comp φ.toRingHom, hcomp, hinj2.comp hinj1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Rewrite using `[IsLocalRing.ResidueField.map_comp]`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.complete_dvr_dominating_valuation : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (l : Type) [Field l] [Algebra (IsLocalRing.ResidueField V) l] [FiniteDimensional (IsLocalRing.ResidueField V) l], ∃ (R : Type) (_ : CommRing R) (_ : IsDomain R) (_ : IsDiscreteValuationRing R) (f : V →+* R) (_ : IsLocalHom f) (s : l →+* IsLocalRing.ResidueField R), IsAdicComplete (IsLocalRing.maximalIdeal R) R ∧ Function.Injective f ∧ s.comp (algebraMap _ l) = IsLocalRing.ResidueField.map f := by
   intro V _ _ _ l _ _ _

@@ -6,27 +6,27 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory.JR.Hyp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A e hee hse`. Take `⟨-, hinj, hnorm, htr, -⟩` from `Et.quadratic_structure F E A`. Establish `htrs : ∀ (a : A.K) (f : A.L), Algebra.trace A.K A.L (algebraMap A.K A.L a * f) = a * Algebra.trace A.K A.L f`. Introduce `a f`. Rewrite using `[← Algebra.smul_def, LinearMap.map_smul, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hone : ∀ f : A.L, star f = 1 - f → Algebra.trace A.K A.L f = 1`. Introduce `f hf`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[htr, hf, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hte : Algebra.trace A.K A.L e = 1` using `hone e hse`. Establish `htf : Algebra.trace A.K A.L (1 - e) = 1` using `hone (1 - e) (by rw [star_sub, star_one, hse])`. Establish `hst : ∀ p : A.K × A.K, star (Hyp.cc A e p) = algebraMap A.K A.L p.1 * (1 - e) + algebraMap A.K A.L p.2 * e`. Introduce `p`. Simplify using `only [Hyp.cc, star_add, star_mul, star_sub, star_one, hse, A.star_K]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hme : ∀ p : A.K × A.K, Hyp.cc A e p * e = algebraMap A.K A.L p.1 * e`. Introduce `p`. Simplify using `only [Hyp.cc]`. Take the linear combination `(algebraMap A.K A.L p.1 - algebraMap A.K A.L p.2) * hee`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hmf : ∀ p : A.K × A.K, Hyp.cc A e p * (1 - e) = algebraMap A.K A.L p.2 * (1 - e)`. Introduce `p`. Simplify using `only [Hyp.cc]`. Take the linear combination `(algebraMap A.K A.L p.2 - algebraMap A.K A.L p.1) * hee`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p`. Simplify using `only [Hyp.ci]`. Rewrite using `[hme p, hmf p, htrs, htrs, hte, htf, mul_one, mul_one]`. Introduce `y`. Simplify using `only [Hyp.cc, Hyp.ci, htr, star_mul, star_sub, star_one, hse]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take the linear combination `(2 * y - 2 * star y) * hee`. Introduce `p`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hnorm, hst, map_mul]`. Simplify using `only [Hyp.cc]`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-(algebraMap A.K A.L p.1 - algebraMap A.K A.L p.2) ^ 2) * hee`. Introduce `ψ x p q`. Establish `hprod : star (Hyp.cc A e q) * Hyp.cc A e p = algebraMap A.K A.L (q.1 * p.2) * (1 - e) + algebraMap A.K A.L (q.2 * p.1) * e`. Rewrite using `[hst]`. Simplify using `only [Hyp.cc, map_mul]`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `(algebraMap A.K A.L q.1 * algebraMap A.K A.L p.2 + algebraMap A.K A.L q.2 * algebraMap A.K A.L p.1 - algebraMap A.K A.L q.1 * algebraMap A.K A.L p.1 - algebraMap A.K A.L q.2 * algebraMap A.K A.L p.2) * hee`. Establish `ht : Algebra.trace A.K A.L (star (Hyp.cc A e q) * Hyp.cc A e p) = q.1 * p.2 + q.2 * p.1`. Rewrite using `[hprod, map_add, htrs, htrs, hte, htf, mul_one, mul_one]`. Simplify using `only [Et.kerL, Hyp.kx, Et.psiK]`. Rewrite using `[ht]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show x * (q.1 * p.2 + q.2 * p.1) = x * q.1 * p.2 + x * q.2 * p.1 by ring, map_add, AddChar.map_add_eq_mul]`. Introduce `s p`. Simplify using `only [Hyp.cc, Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `s`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : algebraMap A.K A.L (s : A.K) * algebraMap A.K A.L ((s⁻¹ : A.Kˣ) : A.K) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Use `isUnit_iff_exists_inv.mpr ⟨Hyp.cc A e (((s⁻¹ : A.Kˣ) : A.K), 1), ?_⟩` and prove the remaining obligations. Simplify using `only [Hyp.cc, map_one]`. Take the linear combination `(2 - algebraMap A.K A.L (s : A.K) - algebraMap A.K A.L ((s⁻¹ : A.Kˣ) : A.K)) * hee + e * e * hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem coord_structure : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (e : A.L), e * e = e → star e = 1 - e → (∀ p, Hyp.ci A e (Hyp.cc A e p) = p) ∧ (∀ y, Hyp.cc A e (Hyp.ci A e y) = y) ∧ (∀ p, A.NL (Hyp.cc A e p) = p.1 * p.2) ∧ (∀ (ψ : AddChar F ℂ) (x : A.K) (p q : A.K × A.K), A.kerL ψ x (Hyp.cc A e q) (Hyp.cc A e p) = Hyp.kx A ψ x q.1 p.2 * Hyp.kx A ψ x q.2 p.1) ∧ (∀ (s : A.K) p, s • Hyp.cc A e p = Hyp.cc A e (s * p.1, s * p.2)) ∧ ∀ s : A.Kˣ, IsUnit (Hyp.cc A e ((s : A.K), 1)) := by
   intro F E _ _ _ _ _ A e hee hse

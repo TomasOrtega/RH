@@ -11,15 +11,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Set `Q : Matrix (Fin (j + j')) (Fin (j + j')) ℂ` to `A.submatrix id finSumFinEquiv.symm`. Establish `e : Qᴴ * (G.map τ)ᵀ * Q = Matrix.diagonal fun a : Fin (j + j') => ((sgn j (a : ℕ) : ℝ) : ℂ)`. Establish `: Qᴴ * (G.map τ)ᵀ * Q = (Aᴴ * (G.map τ)ᵀ * A).submatrix finSumFinEquiv.symm finSumFinEquiv.symm`. Use extensionality with `a b`. Simplify using `[Q, Matrix.mul_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, h]`. Use extensionality with `a b`. Take `⟨a, rfl⟩` from `finSumFinEquiv.surjective a`. Take `⟨b, rfl⟩` from `finSumFinEquiv.surjective b`. Rewrite using `[Matrix.submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply, Matrix.diagonal_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [EmbeddingLike.apply_eq_iff_eq]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [sgI, sgn, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use `⟨Q, fun h0 => ?_, ?_⟩` and prove the remaining obligations. Use `congrArg det e` as an intermediate fact.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[det_mul, h0, mul_zero, det_diagonal]`. Use `Finset.prod_ne_zero_iff.2 (fun a _ => ?_) this.symm` and prove the remaining obligations. Simplify using `only [sgn]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[← diagonal_transpose, ← e]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.gram, hermC, ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul, Matrix.conjTranspose_apply, Complex.star_def]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sig_of_sgI {j j' : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin (j + j')) (Fin (j + j')) E)
     (A : Matrix (Fin (j + j')) (Sg j j') ℂ) (h : Aᴴ * (G.map τ)ᵀ * A = sgI j j') :
@@ -51,31 +51,29 @@ theorem sig_of_sgI {j j' : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin (j + j')) (F
     exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Set `i0 : Fin r` to `⟨0, by omega⟩`. Set `i1 : Fin r` to `⟨r - 1, by omega⟩`. Set `m : Fin r` to `⟨1, by omega⟩`. Establish `hm0 : i0 ≠ m` using `by simp [i0, m, Fin.ext_iff]`. Establish `hm1 : i1 ≠ m` using `by simp [i1, m, Fin.ext_iff]; omega`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h01 : i0 ≠ i1` using `by simp [i0, i1, Fin.ext_iff]; omega`. Set `ε : Fin r → ℤ` to `fun a => if (a : ℕ) < p then 1 else -1`. Apply the tactic sequence `have hε : ∀ a, ε a * ε a = 1 := fun a => by simp only [ε]; split_ifs <;> norm_num`. Establish `hεs : ∀ a : Fin r, ((sgn p (a : ℕ) : ℝ) : ℂ) = (ε a : ℂ)` using `fun a => by`. Apply the tactic sequence `simp only [ε, sgn]; split_ifs <;> simp`.
+Establish an intermediate fact. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Set `π : ℤ` to `∏ a ∈ Finset.univ.erase m, ε a`. Establish `hπ : π * π = 1`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun a _ => hε a`. Set `d : Fin r → E` to `fun a => if a = m then G.det * π else ε a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hdet : (diagonal d).det = G.det`. Rewrite using `[det_diagonal, ← Finset.mul_prod_erase _ _ (Finset.mem_univ m), Finset.prod_congr rfl (g := fun a => (ε a : E)) fun a ha => if_neg (Finset.ne_of_mem_erase ha)]`. Simplify using `only [d, if_true]`. Rewrite using `[← Int.cast_prod, mul_assoc, ← Int.cast_mul, hπ, Int.cast_one, mul_one]`. Establish `hcd : ∀ a, cc (d a) = d a` using `fun a => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.Published.cc_det_of_herm hG` as an intermediate fact. Simplify using `only [d]`. Use `split_ifs`. Simplify using `only [cc, map_mul, map_intCast] at this ⊢`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `[cc]`. Take `⟨P, hP, e⟩` from `GlobalTheory.Published.Landherr.of_signature GlobalTheory.QNorm.landherr_and_landherrSt.1 (G' := diagonal d) hG (fun a b => by`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[hcd]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `[h, Ne.symm h, cc])`. Use `hd (by rw [hdet]; exact hd) Ψ hΨ`. Use the proof step `(fun τ hτ => ⟨p, hs τ hτ, by`. Take `⟨Q, hQ, e⟩` from `hs τ hτ`. Establish `h2` using `congrArg det e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[GlobalTheory.Published.gram_eq, det_mul, det_mul, det_transpose, ← RingHom.mapMatrix_apply, ← RingHom.map_det, ← RingHom.mapMatrix_apply, ← RingHom.map_det, det_diagonal, ← Finset.mul_prod_erase _ _ (Finset.mem_univ m)]`. Simplify using `only [hεs] at h2`. Rewrite `h2` using `[← Int.cast_prod]`. Use `⟨diagonal fun a => if a = m then Q.det else 1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[det_diagonal]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `exact Finset.prod_ne_zero_iff.2 fun a _ => by split_ifs <;> simp [hQ]`. Rewrite using `[GlobalTheory.Published.gram_eq, diagonal_transpose, diagonal_map (map_zero _), diagonal_map (map_zero _), diagonal_mul_diagonal, diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[hεs]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : a = m`. Substitute `h` using the available equality. Establish `hπ' : (π : ℂ) * π = 1` using `by exact_mod_cast hπ`. Simplify using `only [d, if_true, map_mul, map_intCast]`. Take the linear combination `(π : ℂ) * h2 + (ε m : ℂ) * hπ'`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[d, h]⟩)`. Use the proof step `⟨1, by rw [hdet, div_self hd]; simp [cc]⟩`. Use `⟨P *ᵥ (Pi.single i0 1 + Pi.single i1 1), fun h => ?_, ?_⟩` and prove the remaining obligations. Use `congrFun (Matrix.eq_zero_of_mulVec_eq_zero hP h) i0` as an intermediate fact. Simplify using `[Pi.single_eq_of_ne h01] at this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[herm_mulVec', show Pᵀ * G * P.map (ccH E) = diagonal d from e.symm]`. Establish `e0 : d i0 = 1` using `by simp [d, hm0, ε, i0, h0]`. Establish `e1 : d i1 = -1`. Establish `: ¬ (r - 1 < p)` using `by omega`. Simplify using `[d, hm1, ε, i1, this]`.
-
-Simplify using `[herm, cc, diagonal_apply, Pi.single_apply, apply_ite (IsCMField.complexConj E), add_mul, mul_add, Finset.sum_add_distrib, h01, h01.symm, e0, e1]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isotropic_of_sig {r p : ℕ} (G : Matrix (Fin r) (Fin r) E) (hG : ∀ a b, cc (G a b) = G b a) (hd : G.det ≠ 0)
     (Ψ : Set (E →+* ℂ)) (hΨ : ∀ τ : E →+* ℂ, τ ∈ Ψ ∨ ComplexEmbedding.conjugate τ ∈ Ψ)
@@ -149,15 +147,13 @@ theorem isotropic_of_sig {r p : ℕ} (G : Matrix (Fin r) (Fin r) E) (hG : ∀ a 
       Finset.sum_add_distrib, h01, h01.symm, e0, e1]
 
 /- English proof (translation)
-Introduce `E _ _ _ _ Ψ j j' s G G' L L' ξ 𝔞 hΨ hj hj' hr hG hG' hd hd' hs hs' hL hL' hξ hc hS hS' h𝔞 hN`. Establish `t : ∀ u ∈ Set.range s, ∃ Q : Matrix (Fin (j + j')) (Fin (j + j')) ℂ, Q.det ≠ 0 ∧ ReciprocityTheory.ChartRestriction.G.FD.gram u G Q = Matrix.diagonal fun a : Fin (j + j') => ((sgn j (a : ℕ) : ℝ) : ℂ)`. Introduce and unpack `_ ⟨τ, rfl⟩`. Conclude with `(hs τ).elim fun A => sig_of_sgI _ _ A`. Establish `t' : ∀ u ∈ Set.range s, ∃ Q : Matrix (Fin (j + j')) (Fin (j + j')) ℂ, Q.det ≠ 0 ∧ ReciprocityTheory.ChartRestriction.G.FD.gram u G' Q = Matrix.diagonal fun a : Fin (j + j') => ((sgn j (a : ℕ) : ℝ) : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨τ, rfl⟩`. Conclude with `(hs' τ).elim fun A => sig_of_sgI _ _ A`. Take `⟨P, hP, hPG⟩` from `(GlobalTheory.selfDual_lattices_one_genus hG hG' hd hd' hL hL' (Or.inr ⟨ξ, hξ, hc, hS, hS'⟩)).2.2 GlobalTheory.QNorm.landherr_and_landherrSt.1 GlobalTheory.T.hasse_norm_theorem_quadratic_extension (Set.range s) hΨ fun u hu => ⟨j, t u hu, t' u hu⟩`. Set `a : GL (Fin (j + j')) E` to `Matrix.GeneralLinearGroup.mkOfDetNeZero P hP`. Establish `ha : (a : Matrix (Fin (j + j')) (Fin (j + j')) E)ᵀ * G * (a : Matrix (Fin (j + j')) (Fin (j + j')) E).map (ccH E) = G'` using `hPG.symm`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨aL', haL', hmap, -, t2⟩` from `dualTransport E _ G G' a L' ha hL'`. Establish `hg` using `localToAdelic E _ G L aL' hL haL' ((GlobalTheory.selfDual_lattices_one_genus hG hG hd hd haL' hL (Or.inr ⟨ξ, hξ, hc, t2 ξ hS', hS⟩)).2.1 rfl)`. Establish `hI : IsIsotropicHermitianSetting (IsCMField.complexConj E) G`. Use `⟨Algebra.IsQuadraticExtension.finrank_eq_two _ _, IsCMField.complexConj_ne_one E, ?_, isUnit_iff_ne_zero.2 hd, isotropic_of_sig G hG hd _ hΨ t hr hj (by omega)⟩` and prove the remaining obligations. Use extensionality with `i k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hG i k).symm`. Establish `e : conjBy a (levelGrp (ccH E) G' L' 𝔞) = levelGrp (ccH E) G aL' 𝔞` using `(levelFacts _ E _ (IsCMField.complexConj E) G' L' 𝔞 hL' (isUnit_iff_ne_zero.2 hd')).2 G a aL' ha hmap`. Use `⟨a, ha, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `inf_le_left`.
-
-Rewrite using `[e]`. Conclude with `levelIndexEq _ E _ _ G L aL' 𝔞 hI hL haL' h𝔞 hN hg`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arithIdx : ArithIdx := by
   intro E _ _ _ _ Ψ j j' s G G' L L' ξ 𝔞 hΨ hj hj' hr hG hG' hd hd' hs hs' hL hL' hξ hc hS hS' h𝔞 hN

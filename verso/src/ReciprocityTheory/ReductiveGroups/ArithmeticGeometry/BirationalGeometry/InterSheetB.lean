@@ -15,15 +15,11 @@ def secSet (P : Ideal (MRing ι)) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ]
   {G | (∀ y ∉ B, G y = 0) ∧ DifferentiableOn ℂ G B ∧ ∀ y ∈ B, G y ∈ fibre P Ψ y}
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨y0, hy0⟩ : ∃ y0, G y0 ≠ G' y0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hne (funext hcon)`. Establish `hy0b : y0 ∈ ball c r`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hb`. Conclude with `hy0 (by rw [hG.1 y0 hb, hG'.1 y0 hb])`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, G y0 i ≠ G' y0 i := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hy0 (funext hcon)`. Use `set f : (Fin e → ℂ) → ℂ := fun y => G y i - G' y i with hf`. Establish `hdiff : DifferentiableOn ℂ f (ball c r)`. Establish `h1 : DifferentiableOn ℂ (fun y => G y i) (ball c r)` using `fun y hy => (differentiableWithinAt_pi.1 (hG.2.1 y hy)) i`. Establish `h2 : DifferentiableOn ℂ (fun y => G' y i) (ball c r)` using `fun y hy => (differentiableWithinAt_pi.1 (hG'.2.1 y hy)) i`.
-
-Conclude with `h1.sub h2`. Establish `han : AnalyticOnNhd ℂ f (ball c r)` using `hA e (ball c r) f isOpen_ball hdiff`. Establish `hnull` using `ReciprocityTheory.AnForm.volume_zero_set_of_analyticOnNhd isOpen_ball (convex_ball c r).isPreconnected han ⟨y0, hy0b, sub_ne_zero.2 hi⟩`. Use `measure_mono_null ?_ hnull` and prove the remaining obligations. Introduce `y hy`.
-
-Conclude with `⟨hy.1, by simp [f, hy.2]⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coincide_null (hA : OsgoodStatement) {P : Ideal (MRing ι)}
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} {c : Fin e → ℂ} {r : ℝ}
@@ -56,15 +52,15 @@ theorem coincide_null (hA : OsgoodStatement) {P : Ideal (MRing ι)}
   exact ⟨hy.1, by simp [f, hy.2]⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hinf`. Establish `hS : (secSet P Ψ (ball c r)).Infinite` using `hinf`. Establish `key : ∀ m : ℕ, volume {y | y ∈ ball c r ∧ (fibre P Ψ y).ncard < m} = 0`. Introduce `m`. Take `⟨F, hFS, hFc⟩` from `hS.exists_subset_card_eq m`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hnull : volume (⋃ G ∈ (↑F : Set ((Fin e → ℂ) → ((k : K) → ι k) → ℂ)), ⋃ G' ∈ (↑F : Set ((Fin e → ℂ) → ((k : K) → ι k) → ℂ)), {y | G ≠ G' ∧ y ∈ ball c r ∧ G y = G' y}) = 0`. Use `(measure_biUnion_null_iff (Finset.countable_toSet F)).2 fun G hG => (measure_biUnion_null_iff (Finset.countable_toSet F)).2 fun G' hG' => ?_` and prove the remaining obligations. Distinguish the cases in `h : G = G'`. Simplify using `[h]`. Use `measure_mono_null ?_ (coincide_null hA (hFS hG) (hFS hG') h)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Conclude with `⟨hy.2.1, hy.2.2⟩`. Use `measure_mono_null (fun y hy => ?_) hnull` and prove the remaining obligations. Take `⟨hyb, hlt⟩` from `hy`. Assume the negation of the conclusion as `hnot`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hinj : Set.InjOn (fun G : ((Fin e → ℂ) → ((k : K) → ι k) → ℂ) => G y) (↑F : Set ((Fin e → ℂ) → ((k : K) → ι k) → ℂ))` using `fun G hG G' hG' heq => by`. Assume the negation of the conclusion as `hne`. Conclude with `hnot (Set.mem_iUnion₂.2 ⟨G, hG, Set.mem_iUnion₂.2 ⟨G', hG', ⟨hne, hyb, heq⟩⟩⟩)`. Establish `hmaps : Set.MapsTo (fun G : ((Fin e → ℂ) → ((k : K) → ι k) → ℂ) => G y) (↑F : Set ((Fin e → ℂ) → ((k : K) → ι k) → ℂ)) (fibre P Ψ y)` using `fun G hG => (hFS hG).2.2 y hyb`. Establish `hle` using `Set.ncard_le_ncard_of_injOn (fun G : ((Fin e → ℂ) → ((k : K) → ι k) → ℂ) => G y) hmaps hinj (hfin y)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hle` using `[Set.ncard_coe_finset, hFc]`. Use linear arithmetic over natural numbers and integers. Establish `hcover : ball c r ⊆ ⋃ m : ℕ, {y | y ∈ ball c r ∧ (fibre P Ψ y).ncard < m}` using `fun y hy => Set.mem_iUnion.2 ⟨(fibre P Ψ y).ncard + 1, hy, Nat.lt_succ_self _⟩`. Establish `h0 : volume (ball c r) = 0` using `measure_mono_null hcover (measure_iUnion_null key)`. Conclude with `(Metric.measure_ball_pos volume c hr).ne' h0`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem secSet_finite (hA : OsgoodStatement) {P : Ideal (MRing ι)}
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} (hfin : ∀ y, (fibre P Ψ y).Finite)
@@ -104,11 +100,9 @@ def badSet (P : Ideal (MRing ι)) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ]
     ¬ ((fun y' => segre (γ y')) =ᶠ[𝓝 y] fun y' => segre (γ' y'))}
 
 /- English proof (translation)
-Rewrite using `[differentiableAt_pi]`. Introduce `i`. Simplify using `only [segre]`. Establish `key : ∀ s : Finset K, DifferentiableAt ℂ (fun x => ∏ k ∈ s, γ x ⟨k, i k⟩) y`. Introduce `s`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `a s ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `((differentiableAt_pi.1 hγ) ⟨a, i a⟩).mul ih`.
-
-Conclude with `key Finset.univ`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem segre_differentiableAt {γ : (Fin e → ℂ) → (Σ k, ι k) → ℂ} {y : Fin e → ℂ}
     (hγ : DifferentiableAt ℂ γ y) : DifferentiableAt ℂ (fun y' => segre (γ y')) y := by
@@ -126,7 +120,7 @@ theorem segre_differentiableAt {γ : (Fin e → ℂ) → (Σ k, ι k) → ℂ} {
   exact key Finset.univ
 
 /- English proof (translation)
-Use `⟨fun y hy => Set.indicator_of_notMem hy _, ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hd : DifferentiableOn ℂ (fun y' => segre (γ y')) B` using `fun y' hy' => (segre_differentiableAt (h y' hy').1).differentiableWithinAt`. Conclude with `hd.congr (fun y' hy' => Set.indicator_of_mem hy' _)`. Rewrite using `[Set.indicator_of_mem hy]`. Conclude with `⟨γ y, (h y hy).2.1, rfl, (h y hy).2.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_secSet_of_sheet {P : Ideal (MRing ι)}
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} {B : Set (Fin e → ℂ)}
@@ -141,25 +135,23 @@ theorem mem_secSet_of_sheet {P : Ideal (MRing ι)}
     exact ⟨γ y, (h y hy).2.1, rfl, (h y hy).2.2⟩
 
 /- English proof (translation)
-Take `⟨Dc, hDc, hDd⟩` from `TopologicalSpace.exists_countable_dense (Fin e → ℂ)`. Set `S : (Fin e → ℂ) → ℚ → Set (Fin e → ℂ)` to `fun d q => ⋃ G ∈ secSet P Ψ (ball d q), ⋃ G' ∈ secSet P Ψ (ball d q), {y | G ≠ G' ∧ y ∈ ball d (q : ℝ) ∧ G y = G' y}`. Establish `hS : ∀ d q, volume (S d q) = 0`. Introduce `d q`. Distinguish the cases in `hq : (0 : ℝ) < q`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hfinS` using `secSet_finite hA hfin d hq`. Use `(measure_biUnion_null_iff hfinS.countable).2 fun G hG => (measure_biUnion_null_iff hfinS.countable).2 fun G' hG' => ?_` and prove the remaining obligations. Distinguish the cases in `h : G = G'`. Simplify using `[h]`. Use `measure_mono_null ?_ (coincide_null hA hG hG' h)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Conclude with `⟨hy.2.1, hy.2.2⟩`. Establish `hempty : ball d (q : ℝ) = ∅` using `Metric.ball_eq_empty.2 (not_lt.1 hq)`. Use `measure_mono_null ?_ measure_empty` and prove the remaining obligations. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [S, Set.mem_iUnion] at hy`. Take `⟨G, _, G', _, _, hyb, _⟩` from `hy`. Rewrite `hyb` using `[hempty]`. Conclude with `hyb`. Establish `hcount : volume (⋃ d ∈ Dc, ⋃ q : ℚ, S d q) = 0` using `(measure_biUnion_null_iff hDc).2 fun d _ => measure_iUnion_null fun q => hS d q`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `measure_mono_null ?_ hcount` and prove the remaining obligations. Introduce `y hy`. Take `⟨w, γ, γ', ⟨hγw, hγev⟩, ⟨hγ'w, hγ'ev⟩, hne⟩` from `hy`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.1 (hγev.and hγ'ev)`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq0, hqε⟩ : ∃ q : ℚ, 0 < (q : ℝ) ∧ (q : ℝ) < ε / 2 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q, h1, h2⟩` from `exists_rat_btwn (half_pos hε)`. Conclude with `⟨q, h1, h2⟩`. Take `⟨d, hdD, hd⟩` from `hDd.exists_mem_open isOpen_ball ⟨y, mem_ball_self hq0⟩`. Establish `hdy : dist y d < q`. Rewrite using `[dist_comm]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hd`. Establish `hyB : y ∈ ball d (q : ℝ)`. Rewrite using `[mem_ball]`. Conclude with `hdy`. Establish `hBsub : ball d (q : ℝ) ⊆ ball y ε`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Introduce `y' hy'`. Rewrite `hy'`, the goal using `[mem_ball]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[dist_comm d y]`. Conclude with `add_lt_add hy' hdy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ < ε := by linarith`. Establish `hG : (ball d (q : ℝ)).indicator (fun y' => segre (γ y')) ∈ secSet P Ψ (ball d (q : ℝ))` using `mem_secSet_of_sheet (fun y' hy' => (hball y' (hBsub hy')).1)`. Establish `hG' : (ball d (q : ℝ)).indicator (fun y' => segre (γ' y')) ∈ secSet P Ψ (ball d (q : ℝ))` using `mem_secSet_of_sheet (fun y' hy' => (hball y' (hBsub hy')).2)`. Use `Set.mem_iUnion₂.2 ⟨d, hdD, Set.mem_iUnion.2 ⟨q, Set.mem_iUnion₂.2 ⟨_, hG, Set.mem_iUnion₂.2 ⟨_, hG', ?_, hyB, ?_⟩⟩⟩⟩` and prove the remaining obligations. Introduce `heq`.
-
-Apply `hne` to reduce the goal to its premises. Use `filter_upwards [isOpen_ball.mem_nhds hyB] with y' hy'`. Establish `h1` using `congrFun heq y'`. Simplify `h1` using `[Set.indicator_of_mem hy']`. Simplify using `[Set.indicator_of_mem hyB, hγw, hγ'w]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem badSet_null (hA : OsgoodStatement) {P : Ideal (MRing ι)}
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} (hfin : ∀ y, (fibre P Ψ y).Finite) :

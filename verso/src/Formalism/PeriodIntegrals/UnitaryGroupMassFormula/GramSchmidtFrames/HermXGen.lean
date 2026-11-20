@@ -14,17 +14,17 @@ section iso
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `hlo : ∀ j : Fin (2 * r + k + 1), r ≤ j.val → x j = 0`. Introduce `j hj`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hne : j ≠ eI k r a`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `[eI] at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `[bvec, Pi.single_apply, hne]`. Consider the case `zero => rfl`. Consider the case `add y z _ _ hy hz => simp [hy, hz]`. Consider the case `smul c y _ hy => simp [hy]`. Unfold `herm`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions.
 
-Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply]`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : r ≤ j.val`. Rewrite using `[hlo j hj, mul_zero, mul_zero]`. Use `push_neg at hj`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : r + k < i.val`. Rewrite using `[hw i hi, star_zero, zero_mul]`. Use `push_neg at hi`. Establish `hH : Hpk k r i j = 0`. Unfold `Hpk`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`. Rewrite using `[hH, zero_mul, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma herm_X_gen {x w : Fin (2 * r + k + 1) → ℂ} (hx : x ∈ Xsp k r) (hw : ∀ i : Fin (2 * r + k + 1), r + k < i.val → w i = 0) :
     herm (Hpk k r) x w = 0 := by
@@ -58,17 +58,17 @@ lemma herm_X_gen {x w : Fin (2 * r + k + 1) → ℂ} (hx : x ∈ Xsp k r) (hw : 
       rw [hH, zero_mul, mul_zero]
 
 /- English proof (translation)
-Establish `hlo : ∀ j : Fin (2 * r + k + 1), r ≤ j.val → x j = 0`. Introduce `j hj`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hne : j ≠ eI k r a`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `[eI] at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `[bvec, Pi.single_apply, hne]`. Consider the case `zero => rfl`. Consider the case `add y z _ _ hy hz => simp [hy, hz]`. Consider the case `smul c y _ hy => simp [hy]`. Unfold `herm`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions.
 
-Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply]`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : r ≤ i.val`. Rewrite using `[hlo i hi, star_zero, zero_mul]`. Use `push_neg at hi`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : r + k < j.val`. Rewrite using `[hw j hj, mul_zero, mul_zero]`. Use `push_neg at hj`. Establish `hH : Hpk k r i j = 0`. Unfold `Hpk`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`. Rewrite using `[hH, zero_mul, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma herm_wb_X {x w : Fin (2 * r + k + 1) → ℂ} (hx : x ∈ Xsp k r) (hw : ∀ i : Fin (2 * r + k + 1), r + k < i.val → w i = 0) :
     herm (Hpk k r) w x = 0 := by
@@ -102,11 +102,11 @@ lemma herm_wb_X {x w : Fin (2 * r + k + 1) → ℂ} (hx : x ∈ Xsp k r) (hw : �
       rw [hH, zero_mul, mul_zero]
 
 /- English proof (translation)
-Introduce `i hi`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`. Establish `hne : i ≠ eI k r a`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `[eI] at this`. Use linear arithmetic over natural numbers and integers. Simplify using `[bvec, Pi.single_apply, hne]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Consider the case `zero => rfl`. Consider the case `add y z _ _ hy hz => simp [hy, hz]`. Consider the case `smul c y _ hy => simp [hy]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 lemma X_hi {x : Fin (2 * r + k + 1) → ℂ} (hx : x ∈ Xsp k r) : ∀ i : Fin (2 * r + k + 1), r + k < i.val → x i = 0 := by
   intro i hi
@@ -124,16 +124,16 @@ lemma X_hi {x : Fin (2 * r + k + 1) → ℂ} (hx : x ∈ Xsp k r) : ∀ i : Fin 
   | smul c y _ hy => simp [hy]
 
 /- English proof (translation)
-Introduce `i hi`. Conclude with `hx i (Or.inr hi)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma wb_hi {x : Fin (2 * r + k + 1) → ℂ} (hx : inWb k r x) : ∀ i : Fin (2 * r + k + 1), r + k < i.val → x i = 0 := by
   intro i hi
   exact hx i (Or.inr hi)
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`. Conclude with `hg a`. Consider the case `zero => exact Matrix.mulVec_zero g`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz => rw [Matrix.mulVec_add, hy, hz]`. Consider the case `smul c y _ hy => rw [Matrix.mulVec_smul, hy]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma fix_X {g : B.Mat k r} (hg : ∀ a : Fin r, g *ᵥ bvec (eI k r a) = bvec (eI k r a)) {x : Fin (2 * r + k + 1) → ℂ}
     (hx : x ∈ Xsp k r) : g *ᵥ x = x := by
@@ -146,25 +146,25 @@ lemma fix_X {g : B.Mat k r} (hg : ∀ a : Fin r, g *ᵥ bvec (eI k r a) = bvec (
   | smul c y _ hy => rw [Matrix.mulVec_smul, hy]
 
 /- English proof (translation)
-Take `⟨hzW, hTz⟩` from `hz`. Establish `hzz : herm (Hpk k r) z z ≠ 0`. Introduce `h0`. Unfold `Formalism.QuantumDeterminants.Tz at hTz`. Rewrite `hTz` using `[h0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at hTz`. Establish `hlin_sub : ∀ a b w, herm (Hpk k r) (a - b) w = herm (Hpk k r) a w - herm (Hpk k r) b w`. Introduce `a b w`. Simplify using `[herm, Matrix.mulVec_sub, dotProduct_sub]`. Establish `hlin_smul : ∀ (c : ℂ) a w, herm (Hpk k r) (c • a) w = c * herm (Hpk k r) a w`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `c a w`. Simplify using `[herm, Matrix.mulVec_smul, dotProduct_smul]`. Establish `hW : ∀ v, inWb k r v → h *ᵥ v = α *ᵥ v`. Introduce `v hv`. Take `⟨d, hd⟩ : ∃ d, d = herm (Hpk k r) v z / herm (Hpk k r) z z` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hv'W : inWb k r (v - d • z)` using `fun i hi => by simp [hv i hi, hzW i hi]`. Establish `hv'z : herm (Hpk k r) (v - d • z) z = 0`. Rewrite using `[hlin_sub, hlin_smul, hd, div_mul_cancel₀ _ hzz, sub_self]`. Take `⟨c, hc⟩ : ∃ c, c = herm (Hpk k r) (v - d • z) nu` from `⟨_, rfl⟩`. Establish `hu : (v - d • z) - c • nu ∈ U0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hU0]`. Use `⟨⟨fun i hi => by simp [hv'W i hi, hnu.1 i hi], ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hlin_sub, hlin_smul, hv'z, hnu.2, mul_zero, sub_zero]`. Rewrite using `[hlin_sub, hlin_smul, hnu1, mul_one, hc, sub_self]`. Establish `hv_dec : v = ((v - d • z) - c • nu) + c • nu + d • z` using `by abel`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hv_dec, Matrix.mulVec_add, Matrix.mulVec_add, Matrix.mulVec_add, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.mulVec_smul, hU _ hu, hn, hh.2.2, hα.2.2]`. Establish `hcol : ∀ j : Fin (2 * r + k + 1), h *ᵥ Pi.single j 1 = α *ᵥ Pi.single j 1`. Introduce `j`. Distinguish the cases in `hj1 : j.val < r`. Establish `e : (Pi.single j (1 : ℂ) : Fin (2 * r + k + 1) → ℂ) = bvec (eI k r ⟨j.val, hj1⟩)` using `by show Pi.single j 1 = Pi.single (eI k r ⟨j.val, hj1⟩) 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `congr 1`. Rewrite using `[e, (hh.2.1 _).1, (hα.2.1 _).1]`. Distinguish the cases in `hj2 : r + k < j.val`. Establish `hlt` using `j.isLt`. Establish `e : (Pi.single j (1 : ℂ) : Fin (2 * r + k + 1) → ℂ) = bvec (esI k r ⟨2 * r + k - j.val, by omega⟩)` using `by show Pi.single j 1 = Pi.single (esI k r ⟨2 * r + k - j.val, by omega⟩) 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Conclude with `Fin.ext (by simp only [esI]; omega)`. Rewrite using `[e, (hh.2.1 _).2, (hα.2.1 _).2]`. Apply `hW` to reduce the goal to its premises. Introduce `i hi`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne : i ≠ j`. Introduce `hij`. Substitute `hij` using the available equality. Use linear arithmetic over natural numbers and integers. Simplify using `[Pi.single_apply, hne]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Establish `h1` using `congrFun (hcol j) i`. Simplify `h1` using `[Matrix.mulVec_single_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma uw_eq {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) {nu : Fin (2 * r + k + 1) → ℂ} {U0 : Set (Fin (2 * r + k + 1) → ℂ)}
     (hnu : nu ∈ Wsp k r z) (hnu1 : herm (Hpk k r) nu nu = 1)

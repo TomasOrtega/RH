@@ -17,56 +17,56 @@ open GlobalTheory.Doubling (absE)
 namespace PositivityTheory.SiegelWeilFormula.KSplit
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Conclude with `_root_.PositivityTheory.SiegelWeilFormula.KSplitW.commW_k d R w x hx y`.
+A detailed English derivation is pending.
 -/
 theorem commW_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F) (x : d.G) (hx : d.cw w (inFrame d.b x) = 1) (y : GR d.n) :
     x * R.ι w y = R.ι w y * x := by
   exact _root_.PositivityTheory.SiegelWeilFormula.KSplitW.commW_k d R w x hx y
 /- English proof (translation)
-Conclude with `_root_.PositivityTheory.SiegelWeilFormula.KSplitW.iota_mem_K_k d R w y hy`.
+A detailed English derivation is pending.
 -/
 theorem iota_mem_K_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F) (y : GR d.n) (hy : InK (mR y)) : R.ι w y ∈ d.K := by
   exact _root_.PositivityTheory.SiegelWeilFormula.KSplitW.iota_mem_K_k d R w y hy
 /- English proof (translation)
-Conclude with `_root_.PositivityTheory.SiegelWeilFormula.KSplitW.kSplit_k d R w k hk`.
+A detailed English derivation is pending.
 -/
 theorem kSplit_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F) (k : d.G) (hk : k ∈ d.K) :
     ∃ y : GR d.n, (R.ι w y)⁻¹ * k ∈ d.K ∧ d.cw w (inFrame d.b ((R.ι w y)⁻¹ * k)) = 1 := by
   exact _root_.PositivityTheory.SiegelWeilFormula.KSplitW.kSplit_k d R w k hk
 /- English proof (translation)
-Conclude with `_root_.PositivityTheory.SiegelWeilFormula.KSplitP.iota_isPar_k d R w q hq`.
+A detailed English derivation is pending.
 -/
 theorem iota_isPar_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F) (q : GR d.n) (hq : (mR q).toBlocks₂₁ = 0) :
     ∃ t, IsPar (R.ι w q) t ∧ (absE F E (Matrix.GeneralLinearGroup.det t) : ℝ) = ‖(mR q).toBlocks₁₁.det‖ ^ 2 := by
   exact _root_.PositivityTheory.SiegelWeilFormula.KSplitP.iota_isPar_k d R w q hq
 /- English proof (translation)
-Conclude with `_root_.PositivityTheory.SiegelWeilFormula.KSplitP.siegel_k d hp`.
+A detailed English derivation is pending.
 -/
 theorem siegel_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {p : d.G} {t : GL (Fin d.n) (AE F E)} (hp : IsPar p t) :
     ∃ C : ℂ, ∀ Φ ∈ d.sch, d.l (d.om p Φ) = C * d.l Φ := by
   exact _root_.PositivityTheory.SiegelWeilFormula.KSplitP.siegel_k d hp
 /- English proof (translation)
-Conclude with `_root_.PositivityTheory.SiegelWeilFormula.KSplitP.T_zero_k d Φ`.
+A detailed English derivation is pending.
 -/
 theorem T_zero_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (Φ : d.Fn) : d.T Φ 0 = d.l Φ := by
   exact _root_.PositivityTheory.SiegelWeilFormula.KSplitP.T_zero_k d Φ
 /- English proof (translation)
-Conclude with `_root_.PositivityTheory.SiegelWeilFormula.KSplitP.loc_zero_k d R w`.
+A detailed English derivation is pending.
 -/
 theorem loc_zero_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F) : R.loc w 0 = 0 := by
   exact _root_.PositivityTheory.SiegelWeilFormula.KSplitP.loc_zero_k d R w
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d R w L hL Ψ hΨ φ hφ g`. Take `⟨p, t, hp, k, hk, rfl⟩` from `d.ok.hgt.iwa g`. Take `⟨y, hk'K, hk'w⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KSplit.kSplit_k d R w k hk`. Use `set k' := (R.ι w y)⁻¹ * k with hk'`. Establish `hcomm` using `_root_.PositivityTheory.SiegelWeilFormula.KSplit.commW_k d R w k' hk'w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hA⟩` from `hAw F E σ d R w k' hk'w`. Establish `hΨi : d.Indep w Ψ` using `((hF F E σ d R).2.1 w Ψ hΨ).2`. Take `⟨C, hC⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KSplit.siegel_k d hp`. Use `⟨p * k', y, C * A Ψ 0, (absE F E (Matrix.GeneralLinearGroup.det t) : ℝ), absE_pos _, ?_, fun y' => ⟨?_, fun P => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, hcomm y, hk', mul_inv_cancel_left]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨q, k₀, rfl, hq, hk₀, hloc⟩` from `Glob.locIwasawa y'`. Take `⟨tq, hPq, habs⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KSplit.iota_isPar_k d R w q hq`. Establish `e : p * k' * R.ι w (q * k₀) = (p * R.ι w q) * (R.ι w k₀ * k')`. Rewrite using `[map_mul, mul_assoc p, ← mul_assoc k', hcomm q, mul_assoc (R.ι w q), hcomm k₀]`. Simplify using `only [mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hval` using `d.ok.hgt.val _ _ (isPar_mul hp hPq) _ ((d.K).mul_mem (_root_.PositivityTheory.SiegelWeilFormula.KSplit.iota_mem_K_k d R w k₀ hk₀) hk'K)`. Establish `h0 : 0 ≤ d.a ((p * R.ι w q) * (R.ι w k₀ * k'))` using `by rw [hval]; exact NNReal.coe_nonneg _`. Use `show ((d.a (p * k' * R.ι w (q * k₀))).toNNReal : ℝ) = _`. Rewrite using `[e, Real.coe_toNNReal _ h0, hval, map_mul, map_mul, NNReal.coe_mul, habs, hloc]`. Establish `hsw` using `fP_sw P`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΞ` using `(hL y' (fP P) hsw).2 Ψ hΨi (φ P) (hφ P).1 (hφ P).2`. Establish `hΞs : d.om (R.ι w y') (φ P) ∈ d.sch` using `d.ok.dbl.weil.2.1.pres _ _ (hφ P).1`. Establish `h2` using `(hA Ψ hΨi).2 _ (hL y' (fP P) hsw).1 _ hΞs hΞ`. Establish `hs2 : d.om k' (d.om (R.ι w y') (φ P)) ∈ d.sch` using `d.ok.dbl.weil.2.1.pres _ _ hΞs`. Unfold `_root_.PositivityTheory.SiegelWeilFormula.SD_k.sec0`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hC _ hs2, ← _root_.PositivityTheory.SiegelWeilFormula.KSplit.T_zero_k, h2]`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.RD_k.tens, _root_.PositivityTheory.SiegelWeilFormula.KSplit.loc_zero_k]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gSplit_of_k (hF : _root_.PositivityTheory.SiegelWeilFormula.FockMem_k) (hAw : _root_.PositivityTheory.SiegelWeilFormula.AwayAct_k) : _root_.PositivityTheory.SiegelWeilFormula.GSplit_k := by
   intro F E _ _ _ _ _ σ d R w L hL Ψ hΨ φ hφ g

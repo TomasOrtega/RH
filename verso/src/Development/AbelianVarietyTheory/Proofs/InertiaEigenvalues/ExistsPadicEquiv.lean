@@ -15,13 +15,11 @@ noncomputable section
 namespace GlobalTheory.SplitTypeCompl
 
 /- English proof (translation)
-Introduce `D s hs`. Take `⟨w, hw, k, hk⟩` from `hs`. Use `haveI : IsGalois ℚ D.host.E := D.host.hostE_isGalois`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Establish `hwk : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal` using `by simpa [placesOver] using hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : ((D.host.g k : ℕ) : 𝓞 (maximalRealSubfield D.host.E)) ∈ s.v.asIdeal`. Rewrite using `[← hw, Ideal.mem_comap, map_natCast]`. Conclude with `hwk`. Establish `hsw : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ s.w.asIdeal`. Use `hv` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[← s.w_under, Ideal.mem_comap, map_natCast]`. Conclude with `this`. Take `⟨h1, h2, -⟩` from `GlobalTheory.Mem.Chr.splitsC_place (D.host.g_prime k) (D.nd.g_split k) _ hsw`. Use `haveI : CharZero (s.w.adicCompletion D.host.E) := charZero_of_injective_ringHom (algebraMap D.host.E _).injective`. Take `⟨φ, h, -⟩` from `GlobalTheory.QpChar.exists_ringEquiv_padic (s.w.adicCompletion D.host.E) (D.host.g k) ((GlobalTheory.LocLanglands.resCard_eq_normV _).trans h1) (GlobalTheory.TypeIdent.irreducible_natCast_compl _ hsw h2)`.
-
-Conclude with `⟨D.host.g k, inferInstance, φ, h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_padic_equiv : ∀ (D : D7) (s : SplitPlace D.host.E), s.v ∈ gPl D →
     ∃ (g : ℕ) (_ : Fact g.Prime) (i : ℚ_[g] ≃+* s.w.adicCompletion D.host.E), Continuous i := by

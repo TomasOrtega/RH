@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.OddFrame
 
 /- English proof (translation)
-Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[neg_mul_neg, mul_inv_cancel]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem neg_inv_SL (a : SL(2, ℤ)) : (-a)⁻¹ = -a⁻¹ := by
   apply inv_eq_of_mul_eq_one_right
@@ -38,16 +38,16 @@ theorem mem_pmSub {Γ : Subgroup SL(2, ℤ)} {g : SL(2, ℤ)} : g ∈ pmSub Γ �
   rfl
 
 /- English proof (translation)
-Introduce `g hg`. Conclude with `Or.inl hg`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the first alternative.
 -/
 theorem le_pmSub (Γ : Subgroup SL(2, ℤ)) : Γ ≤ pmSub Γ := by
   intro g hg
   exact Or.inl hg
 
 /- English proof (translation)
-Rewrite using `[Subgroup.relIndex_eq_two_iff]`. Use `⟨-1, mem_pmSub.2 (Or.inr (by rw [neg_neg]; exact Γ.one_mem)), fun b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_neg_one]`. Break down `mem_pmSub.1 hb with h | h` into its components or cases. Use `Or.inr ⟨h, fun h' => hm ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `Γ.mul_mem (Γ.inv_mem h) h'` as an intermediate fact. Rewrite `this` using `[mul_neg, inv_mul_cancel]`. Then use the resulting hypothesis. Use `Or.inl ⟨h, fun h' => hm ?_⟩` and prove the remaining obligations. Use `Γ.mul_mem (Γ.inv_mem h') h` as an intermediate fact. Rewrite `this` using `[mul_neg, inv_mul_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem relIndex_pmSub {Γ : Subgroup SL(2, ℤ)} (hm : (-1 : SL(2, ℤ)) ∉ Γ) : Γ.relIndex (pmSub Γ) = 2 := by
   rw [Subgroup.relIndex_eq_two_iff]
@@ -62,19 +62,19 @@ theorem relIndex_pmSub {Γ : Subgroup SL(2, ℤ)} (hm : (-1 : SL(2, ℤ)) ∉ Γ
     rwa [mul_neg, inv_mul_cancel] at this
 
 /- English proof (translation)
-Introduce `Γ hΓ hm`. Establish `: (pmSub Γ).FiniteIndex` using `Subgroup.finiteIndex_of_le (le_pmSub Γ)`. Set `e : Fin (Nat.card (SL(2, ℤ) ⧸ pmSub Γ)) ≃ SL(2, ℤ) ⧸ pmSub Γ` to `(Finite.equivFin (SL(2, ℤ) ⧸ pmSub Γ)).symm`. Use `⟨Nat.card (SL(2, ℤ) ⧸ pmSub Γ), fun i => (Quotient.out (e i))⁻¹, ⟨fun x => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `e.surjective (QuotientGroup.mk x⁻¹)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hq : (QuotientGroup.mk (Quotient.out (e i)) : SL(2, ℤ) ⧸ pmSub Γ) = QuotientGroup.mk x⁻¹`. Rewrite using `[hi]`. Conclude with `QuotientGroup.out_eq' _`. Establish `hp` using `QuotientGroup.eq.1 hq`. Establish `hx : x = ((Quotient.out (e i))⁻¹ * x⁻¹)⁻¹ * (Quotient.out (e i))⁻¹` using `by group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨i, ?_⟩` and prove the remaining obligations. Break down `mem_pmSub.1 ((pmSub Γ).inv_mem hp) with h | h` into its components or cases. Conclude with `⟨_, h, Or.inl hx⟩`. Use `⟨_, h, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[neg_mul, neg_neg]`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx`. Introduce `i j γ hγ hij dsimp only at hij`. Establish `hp : ∃ p ∈ pmSub Γ, (Quotient.out (e i))⁻¹ = p * (Quotient.out (e j))⁻¹`. Break down `hij with h | h` into its components or cases. Conclude with `⟨γ, le_pmSub Γ hγ, h⟩`.
+Simplify by unfolding definitions. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨-γ, mem_pmSub.2 (Or.inr (by rw [neg_neg]; exact hγ)), ?_⟩` and prove the remaining obligations. Rewrite using `[h, neg_mul]`. Take `⟨p, hpP, hpe⟩` from `hp`. Establish `hmem : (Quotient.out (e j))⁻¹ * Quotient.out (e i) ∈ pmSub Γ`. Establish `: (Quotient.out (e j))⁻¹ * Quotient.out (e i) = p⁻¹`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : Quotient.out (e i) = Quotient.out (e j) * p⁻¹`. Rewrite using `[← inv_inv (Quotient.out (e i)), hpe, mul_inv_rev, inv_inv]`. Rewrite using `[hi, ← mul_assoc, inv_mul_cancel, one_mul]`. Rewrite using `[this]`. Conclude with `(pmSub Γ).inv_mem hpP`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hq` using `QuotientGroup.eq.2 hmem`. Rewrite `hq` using `[QuotientGroup.out_eq', QuotientGroup.out_eq']`. Conclude with `e.injective hq.symm`. Rewrite using `[← Subgroup.relIndex_mul_index (le_pmSub Γ), relIndex_pmSub hm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem reps_index : ∀ (Γ : Subgroup SL(2, ℤ)), Γ.FiniteIndex → (-1 : SL(2, ℤ)) ∉ Γ →
     ∃ (r : ℕ) (s : Fin r → SL(2, ℤ)), IsReps Γ s ∧ 2 * r = Γ.index := by

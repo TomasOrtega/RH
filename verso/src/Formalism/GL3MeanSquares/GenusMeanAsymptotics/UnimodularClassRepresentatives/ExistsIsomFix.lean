@@ -10,7 +10,7 @@ def quasiRefl (h : V →ₗ⋆[K] V →ₗ[K] K) (u : V) (a : K) : V →ₗ[K] V
   LinearMap.id - a • (h u).smulRight u
 
 /- English proof (translation)
-Use `first`. Consider the case `simp [quasiRefl, smul_smul]`. Consider the case `rw [quasiRefl, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.smul_apply, LinearMap.smulRight_apply, smul_smul]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem quasiRefl_apply (h : V →ₗ⋆[K] V →ₗ[K] K) (u : V) (a : K) (v : V) :
     quasiRefl h u a v = v - (a * h u v) • u := by
@@ -20,9 +20,9 @@ theorem quasiRefl_apply (h : V →ₗ⋆[K] V →ₗ[K] K) (u : V) (a : K) (v : 
       LinearMap.smulRight_apply, smul_smul]
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply]`. Rewrite using `[quasiRefl_apply, quasiRefl_apply]`. Simplify using `only [map_sub, map_smul, map_smulₛₗ, RingHom.id_apply, smul_eq_mul]`. Rewrite using `[sub_sub, ← add_smul, sub_eq_self, smul_eq_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `left`. Take the linear combination `(h u v) * hab`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem quasiRefl_comp (h : V →ₗ⋆[K] V →ₗ[K] K) (u : V) {a b : K}
     (hab : a + b = a * b * h u u) : quasiRefl h u a ∘ₗ quasiRefl h u b = LinearMap.id := by
@@ -35,9 +35,9 @@ theorem quasiRefl_comp (h : V →ₗ⋆[K] V →ₗ[K] K) (u : V) {a b : K}
   linear_combination (h u v) * hab
 
 /- English proof (translation)
-Establish `hsym : star (h u v) = h v u`. Use `hs.eq u v` as an intermediate fact. Simplify `this` using `[starRingEnd_apply]`. Rewrite using `[quasiRefl_apply, quasiRefl_apply]`. Simplify using `only [map_sub, map_smulₛₗ, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, star_mul, hsym, RingHom.id_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-(h v u * h u w)) * ha`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem quasiRefl_isom {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (u : V) {a : K}
     (ha : a + star a = a * star a * h u u) (v w : V) :
@@ -51,23 +51,21 @@ theorem quasiRefl_isom {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (u : V
   linear_combination (-(h v u * h u w)) * ha
 
 /- English proof (translation)
-Establish `hsym : ∀ p q : V, star (h p q) = h q p` using `fun p q => by`. Use `hs.eq p q` as an intermediate fact. Simplify `this` using `[starRingEnd_apply]`. Distinguish the cases in `hyx : h y x = 1`. Establish `hxy : h x y = 1` using `by rw [← hsym, hyx, star_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hu : h (x - y) (x - y) = 0`. Simplify using `only [map_sub, LinearMap.sub_apply, hx, hy, hxy, hyx]`. Expand and normalize the polynomial expressions, which then agree. Establish `hxy' : x = y` using `sub_eq_zero.mp (hd _ hu)`. Substitute `hxy'` using the available equality.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `⟨1, one_mem _, rfl, fun v _ _ => rfl⟩`. Establish `hp : (1 : K) - h y x ≠ 0` using `sub_ne_zero.mpr (Ne.symm hyx)`. Establish `hq : (1 : K) - h x y ≠ 0`. Introduce `h0`. Apply `hp` to reduce the goal to its premises.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congrArg star h0` as an intermediate fact. Rewrite `this` using `[star_sub, star_one, hsym, star_zero]`. Conclude with `this`. Establish `huu : h (x - y) (x - y) = (1 - h y x) + (1 - h x y)`. Simplify using `only [map_sub, LinearMap.sub_apply, hx, hy]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hux : h (x - y) x = 1 - h y x`. Simplify using `only [map_sub, LinearMap.sub_apply, hx]`. Establish `hsa : star ((1 - h y x)⁻¹) = (1 - h x y)⁻¹` using `by first`. Consider the case `rw [star_inv₀, star_sub, star_one, hsym]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `rw [star_inv', star_sub, star_one, hsym]`. Establish `e1 : (1 - h y x)⁻¹ * (1 - h y x) = 1` using `inv_mul_cancel₀ hp`. Establish `e2 : (1 - h x y)⁻¹ * (1 - h x y) = 1` using `inv_mul_cancel₀ hq`. Establish `ha : (1 - h y x)⁻¹ + star ((1 - h y x)⁻¹) = (1 - h y x)⁻¹ * star ((1 - h y x)⁻¹) * h (x - y) (x - y)`. Rewrite using `[hsa, huu]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-(1 - h x y)⁻¹) * e1 - (1 - h y x)⁻¹ * e2`. Establish `hb : star ((1 - h y x)⁻¹) + (1 - h y x)⁻¹ = star ((1 - h y x)⁻¹) * (1 - h y x)⁻¹ * h (x - y) (x - y)`. Rewrite using `[add_comm, mul_comm (star _) _]`. Conclude with `ha`. Use `⟨LinearEquiv.ofLinear (quasiRefl h (x - y) ((1 - h y x)⁻¹)) (quasiRefl h (x - y) (star ((1 - h y x)⁻¹))) (quasiRefl_comp h (x - y) ha) (quasiRefl_comp h (x - y) hb), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `exact fun v w => quasiRefl_isom hs (x - y) ha v w`. Consider the case `(intro v w; exact quasiRefl_isom hs (x - y) ha v w)`. Consider the case `(show ∀ v w, _ = _; intro v w; exact quasiRefl_isom hs (x - y) ha v w)`. Use `show quasiRefl h (x - y) ((1 - h y x)⁻¹) x = y`.
-
-Rewrite using `[quasiRefl_apply, hux, inv_mul_cancel₀ hp, one_smul, sub_sub_cancel]`. Introduce `v h1 h2 show quasiRefl h (x - y) ((1 - h y x)⁻¹) v = v`. Rewrite using `[quasiRefl_apply, map_sub, LinearMap.sub_apply, h1, h2, sub_zero, mul_zero, zero_smul, sub_zero]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isom_fix {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : ∀ x, h x x = 0 → x = 0)
     {x y : V} (hx : h x x = 1) (hy : h y y = 1) :

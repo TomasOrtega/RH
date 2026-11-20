@@ -13,21 +13,21 @@ set_option backward.isDefEq.respectTransparency false
 namespace GlobalTheory.UnitAboveOpen
 
 /- English proof (translation)
-Establish `: Nonempty U.toScheme` using `⟨⟨hU.some, hU.some_mem⟩⟩`. Establish `: IsIntegral H` using `GeometricallyIntegral.isIntegral_of_isLocallyNoetherian p`. Establish `hP : IsPullback (p ⁻¹ᵁ U).ι (p ∣_ U) p U.ι` using `(isPullback_morphismRestrict p U).flip`. Set `eU : U.toScheme ⟶ (p ⁻¹ᵁ U).toScheme` to `hP.lift (U.ι ≫ e) (𝟙 _) (by simp [he])`. Establish `heU : eU ≫ (p ⁻¹ᵁ U).ι = U.ι ≫ e` using `hP.lift_fst _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Nonempty (p ⁻¹ᵁ U).toScheme` using `⟨eU (Nonempty.some inferInstance)⟩`. Set `L : LB H` to `⟨PUnit, fun _ ↦ ⊤, fun _ _ ↦ 1⟩`. Establish `hL : L.IsLB` using `⟨by simp [L], fun _ ↦ map_one _, fun _ _ _ ↦ by simp [L]⟩`. Set `φ : PEmpty → (H ⟶ H)` to `PEmpty.elim`. Set `ε : PEmpty → ℤ` to `PEmpty.elim`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hw {Y : Scheme.{0}} (ψ : PEmpty → (Y ⟶ H)) (a) (y : Y) : y ∈ LB.wchart L ψ a` using `Set.mem_iInter.2 fun k ↦ k.elim`. Establish `hm (y : (p ⁻¹ᵁ U).toScheme) : (p ⁻¹ᵁ U).ι y ∈ p ⁻¹ᵁ U` using `y.2`. Set `t : LB.Gen (LB.LinComb L (fun i ↦ (p ⁻¹ᵁ U).ι ≫ φ i) ε)` to `⟨fun a ↦ res (fun y _ ↦ hm y) (pullU (p ⁻¹ᵁ U).ι _ F)⟩`. Establish `htg {Z : Scheme.{0}} (r : Z ⟶ (p ⁻¹ᵁ U).toScheme) (z : Z) (a) : gm r z (LB.wchart L (fun i ↦ (p ⁻¹ᵁ U).ι ≫ φ i) a) (t.s a) = gm (r ≫ (p ⁻¹ᵁ U).ι) z (p ⁻¹ᵁ U) F` using `(gm_res r z _ (hw _ _ _) _).trans (gm_pull r _ z _ (hm _) F)`. Set `ρ : LB.Gen (LB.LinComb L (fun i ↦ e ≫ φ i) ε)` to `⟨fun a ↦ 1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `ht : t.IsGen` using `fun a b ↦ by`. Take `rfl : a = b` from `funext fun k ↦ PEmpty.elim k`. Simplify using `[LB.LinComb]`. Establish `hρ : ρ.IsGen` using `fun a b ↦ by`. Take `rfl : a = b` from `funext fun k ↦ PEmpty.elim k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `[LB.LinComb]`. Establish `hc : LB.Gen.Corr L _ _ _ _ (LB.pullGen L _ _ t eU) (LB.pullGen L _ _ ρ U.ι)`. Introduce `a b _ _ _`. Use `unit_ext fun y hy ↦ ?_` and prove the remaining obligations. Rewrite using `[gm_res _ y _ hy, gm_res _ y _ hy]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans (b := 1) ((gm_res _ y _ (hw _ _ _) _).trans ((gm_pull _ _ y _ (hw _ _ _) _).trans ((htg _ _ _).trans ?_))) ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp, heU, hF]`. Use `Eq.symm ((gm_res _ y _ (hw _ _ _) _).trans ((gm_pull _ _ y _ (hw _ _ _) _).trans ?_))` and prove the remaining obligations. Conclude with `map_one _`. Take `⟨c, ⟨-, hc'⟩, -⟩` from `GlobalTheory.GenExtendNormal.existsUnique_gen_extend T hT U.toScheme H (p ⁻¹ᵁ U).toScheme H U.ι p e (p ⁻¹ᵁ U).ι (p ∣_ U) eU hs hg he hP heU L hL PEmpty φ ε t ρ ht hρ hc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `a : PEmpty → L.ι` to `PEmpty.elim`. Use `⟨res (fun y _ ↦ hw φ a y : (⊤ : H.Opens) ≤ LB.wchart L φ a) (c.s a), GlobalTheory.GenExtendNormal.unit_ext_of_isOpenImmersion (p ⁻¹ᵁ U).ι fun y hy ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[gm_res _ y _ hy, gm_res (p ⁻¹ᵁ U).ι y (V := ⊤) _ trivial]`. Establish `h₁` using `htg (𝟙 _) y a`. Rewrite `h₁` using `[← hc', Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h₁]`. Conclude with `(gm_res _ y _ (hw _ _ _) _).trans ((gm_pull _ _ y _ (hw _ _ _) _).trans (by rw [Category.id_comp]))`.
+A detailed English derivation is pending.
 -/
 theorem exists_extend (T H : Scheme.{0}) [IsIntegral T] [IsLocallyNoetherian T]
     (hT : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme T) (U : T.Opens) (hU : (U : Set T).Nonempty)
@@ -83,9 +83,9 @@ theorem exists_extend (T H : Scheme.{0}) [IsIntegral T] [IsLocallyNoetherian T]
     (by rw [Category.id_comp]))
 
 /- English proof (translation)
-Introduce `T H _ _ hT U hU p e hs hg he F`. Establish `hle : U ≤ e ⁻¹ᵁ p ⁻¹ᵁ U`. Rewrite using `[← Scheme.Hom.comp_preimage, he]`. Both sides reduce to the same expression. Set `w : Γ(T, U)ˣ` to `res hle (pullU e _ F)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Take `⟨G, hG⟩` from `exists_extend T H hT U hU p e hs hg he (F * (pullU p U w)⁻¹) fun y ↦ by`. Establish `hy : U.ι y ∈ U` using `y.2`. Establish `hy' : p ((U.ι ≫ e) y) ∈ U` using `hle hy`. Rewrite using `[map_mul, map_inv, gm_pull _ p y U hy', Category.assoc, he, Category.comp_id, gm_res _ y hle hy, gm_pull _ e y _ (hle hy), mul_inv_cancel]`. Conclude with `⟨G, w, by rw [← hG, inv_mul_cancel_right]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_eq_res_mul_pullU :
     ∀ (T H : Scheme.{0}) [IsIntegral T] [IsLocallyNoetherian T], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme T → ∀ (U : T.Opens), (U : Set T).Nonempty → ∀ (p : H ⟶ T) (e : T ⟶ H), Smooth p → GeometricallyIntegral p → e ≫ p = 𝟙 _ → ∀ F : Γ(H, p ⁻¹ᵁ U)ˣ, ∃ (G : Γ(H, ⊤)ˣ) (w : Γ(T, U)ˣ), F = res (le_top : p ⁻¹ᵁ U ≤ ⊤) G * pullU p U w := by

@@ -25,15 +25,15 @@ theorem extZ_apply (z : (Fin n' → F) →ₗ[F] (Fin n → F)) (v : Fin (n' + c
     extZ c' c z v = Loc.inX F n c (z fun a => v (Fin.castAdd c' a)) := rfl
 
 /- English proof (translation)
-Use `LinearMap.pi_ext' fun s => LinearMap.ext_ring ?_` and prove the remaining obligations. Use function extensionality and compare the values at `l`. Express the relevant statement in the definitionally equal form `Loc.xx1 (xj + a • z) t (Pi.single s 1) l = Loc.xx1 xj t (Pi.single s 1) l + a * extZ c' c z (Pi.single s 1) l`. Rewrite using `[linearMap_unfolding_apply_single, linearMap_unfolding_apply_single, extZ_apply, inX_apply]`. Distinguish the cases in `hs : s.1 < n'`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hf : ¬ Loc.IsFree n' n c l.1 s.1` using `fun h => by have := h.1; omega`. Establish `e : (fun b : Fin n' => (Pi.single s (1 : F) : Fin (n' + c') → F) (Fin.castAdd c' b)) = Pi.single (⟨s.1, hs⟩ : Fin n') 1`. Use function extensionality and compare the values at `b`. Simplify using `only [Pi.single_apply, Fin.ext_iff, Fin.val_castAdd]`. Rewrite using `[dif_neg hf, dif_neg hf, dif_pos hs, dif_pos hs, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hl`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish `e : (fun b : Fin n' => (Pi.single s (1 : F) : Fin (n' + c') → F) (Fin.castAdd c' b)) = 0`. Use function extensionality and compare the values at `b`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `b.2` as an intermediate fact. Rewrite using `[Pi.single_apply, if_neg]`. Both sides reduce to the same expression. Introduce `h`. Apply `hs` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Simplify using the standard rewrite rules. Rewrite using `[e, map_zero, dif_neg hs, dif_neg hs]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unfoldingAffineLinearMap_add_eq_add_frM (xj z : (Fin n' → F) →ₗ[F] (Fin n → F)) (a : F) (t : Loc.FC n' c' n c → F) :
     Loc.xx1 (xj + a • z) t = Loc.xx1 xj t + a • extZ c' c z := by
@@ -65,7 +65,7 @@ theorem unfoldingAffineLinearMap_add_eq_add_frM (xj z : (Fin n' → F) →ₗ[F]
     simp
 
 /- English proof (translation)
-Unfold `Loc.chArg`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, LinearMap.smul_apply, atN_add, atN_smul, extZ_apply, atN_of_mem_Ufl (inX_mem_Ufl i _), mul_zero, add_zero]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem chArg_add (x : (Fin (n' + c') → F) →ₗ[F] (Fin (n + c) → F)) (z : (Fin n' → F) →ₗ[F] (Fin n → F)) (a : F) :
     Loc.chArg (x + a • extZ c' c z) = Loc.chArg x := by
@@ -79,7 +79,7 @@ end SlopeTestRemainingChoices
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Introduce `l`. Rewrite using `[inX_apply]`. Use `split_ifs`. Conclude with `hv _`. Conclude with `IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_zero P`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intV_inX {P : HeightOneSpectrum (𝓞 E)} {n c : ℕ} {v : Fin n → E} (hv : IntV P v) : IntV P (Loc.inX E n c v) := by
   intro l
@@ -89,13 +89,11 @@ theorem intV_inX {P : HeightOneSpectrum (𝓞 E)} {n c : ℕ} {v : Fin n → E} 
   · exact IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_zero P
 
 /- English proof (translation)
-Introduce `E _ _ K _ P n' c' n c psi N A B Psi hPsi`. Use `⟨fun xj hx => ?_, fun xj z hz => ?_⟩` and prove the remaining obligations. Unfold `IndefiniteRowSideFullHecke.SourceLatticeInvariance.unfoldAB Loc.E1 at hx`. Take `⟨t, -, ht⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (right_ne_zero_of_mul hx)`. Establish `h` using `hPsi.1 _ (left_ne_zero_of_mul ht)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `v hv a`. Establish `h2` using `h _ (intV_inX (c := c') hv) (Fin.castAdd c a)`. Rewrite `h2` using `[LinearMap.smul_apply, unfoldingAffinePointMap_apply_inclusion, Pi.smul_apply, inX_castAdd]`. Conclude with `h2`. Establish `hy : IntHom P (extZ c' c z)` using `fun v hv => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[extZ_apply]`. Conclude with `intV_inX (hz _ fun a => hv _)`. Unfold `IndefiniteRowSideFullHecke.SourceLatticeInvariance.unfoldAB Loc.E1`. Use `congr 1`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[unfoldingAffineLinearMap_add_eq_add_frM, chArg_add, hPsi.2 _ _ hy]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unfold_bdd : ∀ (E : Type) [Field E] [NumberField E] (K : Type) [Field K] (P : HeightOneSpectrum (𝓞 E)) (n' c' n c : ℕ) (psi : E → K) (N A B : ℕ) (Psi : Loc.SF E K (n' + c') (n + c)), HomBdd P N Psi → (∀ xj : (Fin n' → E) →ₗ[E] (Fin n → E), GlobalTheory.IndefiniteRowSideFullHecke.SourceLatticeInvariance.unfoldAB P psi A B Psi xj ≠ 0 → IntHom P (((qOf P : E) ^ N) • xj)) ∧ ∀ xj z : (Fin n' → E) →ₗ[E] (Fin n → E), IntHom P z → GlobalTheory.IndefiniteRowSideFullHecke.SourceLatticeInvariance.unfoldAB P psi A B Psi (xj + ((qOf P : E) ^ N) • z) = GlobalTheory.IndefiniteRowSideFullHecke.SourceLatticeInvariance.unfoldAB P psi A B Psi xj := by
   intro E _ _ K _ P n' c' n c psi N A B Psi hPsi

@@ -19,7 +19,7 @@ open scoped TensorProduct in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.herm, diagonal_apply, mul_ite, ite_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.UTrans.herm_diagonal_self {r : ℕ} (g u : Fin r → E) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.herm (Matrix.diagonal g) u u = ∑ i, u i * g i * _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (u i) := by
@@ -30,17 +30,15 @@ open scoped TensorProduct in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Establish `hiso : _root_.GlobalTheory.LocalQuad.HermClass.Isotropy` using `fun F _ _ ι _ a h5 ha hsgn => _root_.GlobalTheory.LocalQuad.isotropic_of_indefinite _root_.GlobalTheory.QNorm.hasseNormSt F a h5 ha hsgn`. Establish `hsign : ∀ τ : E →+* ℂ, ∃ k : Fin m, 0 < (τ (g k.succ)).re ↔ 0 < (τ (-g 0)).re`. Introduce `τ`. Take `⟨⟨i, hi⟩, j, hj⟩` from `hs τ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h0 : (τ (g 0)).re ≠ 0` using `_root_.GlobalTheory.LocalQuad.HermClass.re_ne_zero τ (hg 0) (hg0 0)`. Rewrite using `[map_neg, Complex.neg_re]`. Distinguish the cases in `hpos : 0 < (τ (g 0)).re`. Break down `Fin.eq_zero_or_eq_succ j with rfl | ⟨k, rfl⟩` into its components or cases. Conclude with `absurd hj (not_lt.2 hpos.le)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨k, iff_of_false (not_lt.2 hj.le) (by linarith)⟩`. Establish `hneg : (τ (g 0)).re < 0` using `lt_of_le_of_ne (not_lt.1 hpos) h0`. Break down `Fin.eq_zero_or_eq_succ i with rfl | ⟨k, rfl⟩` into its components or cases. Conclude with `absurd hi hpos`. Conclude with `⟨k, iff_of_true hi (by linarith)⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (-g 0) = -g 0` using `by show IsCMField.complexConj E (-g 0) = -g 0`. Rewrite using `[map_neg]`. Conclude with `congrArg Neg.neg (hg 0)`. Take `⟨w, hw⟩` from `_root_.GlobalTheory.LocalQuad.HermClass.exists_represent hiso (r := m) (by omega) (g := fun k => g k.succ) (fun k => hg _) (fun k => hg0 _) hc (neg_ne_zero.2 (hg0 0)) hsign`. Use `⟨Fin.cons 1 w, fun h => one_ne_zero (α := E) (by simpa using congr_fun h 0), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hw`, the goal using `[_root_.GlobalTheory.UTrans.herm_diagonal_self]`. Rewrite using `[Fin.sum_univ_succ]`. Establish `h1 : _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (1 : E) = 1` using `map_one (IsCMField.complexConj E)`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, one_mul, h1, mul_one]`. Rewrite using `[hw]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UTrans.exists_isotropic_diagonal {n : ℕ} (hn : 3 ≤ n) {g : Fin n → E}
     (hg : ∀ i, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (g i) = g i) (hg0 : ∀ i, g i ≠ 0)
@@ -80,7 +78,7 @@ open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.herm, dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma herm_eq_dotProduct_mulVec_cc {r : ℕ} (H : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.herm H x y = x ⬝ᵥ (H *ᵥ fun b => _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (y b)) := by
@@ -90,7 +88,7 @@ open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Establish `hc : (fun b => _root_.ReciprocityTheory.ChartRestriction.G.FD.cc ((P *ᵥ v) b)) = P.map _root_.ReciprocityTheory.ChartRestriction.G.FD.cc *ᵥ fun b => _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (v b)`. Use extensionality with `b`. Simplify using `[mulVec, dotProduct, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc, map_sum, map_mul]`. Rewrite using `[herm_eq_dotProduct_mulVec_cc, herm_eq_dotProduct_mulVec_cc, hc, ← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec u, vecMul_transpose]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma herm_mulVec_mulVec' {r : ℕ} (G P : Matrix (Fin r) (Fin r) E) (u v : Fin r → E) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G (P *ᵥ u) (P *ᵥ v) = _root_.ReciprocityTheory.ChartRestriction.G.FD.herm (Pᵀ * G * P.map _root_.ReciprocityTheory.ChartRestriction.G.FD.cc) u v := by
@@ -104,7 +102,7 @@ open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul, _root_.GlobalTheory.Published.embedding_cc, mul_right_comm, Complex.mul_conj, Complex.re_ofReal_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma re_mul_cc_eq_normSq_mul_re (τ : E →+* ℂ) (y d : E) :
     (τ (y * d * _root_.ReciprocityTheory.ChartRestriction.G.FD.cc y)).re = Complex.normSq (τ y) * (τ d).re := by
@@ -115,9 +113,7 @@ open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Rewrite `hy` using `[_root_.GlobalTheory.UTrans.herm_diagonal_self, map_sum, Complex.re_sum]`. Use `absurd hy (not_lt.2 (Finset.sum_nonpos fun i _ => ?_))` and prove the remaining obligations. Rewrite using `[re_mul_cc_eq_normSq_mul_re]`.
-
-Conclude with `mul_nonpos_of_nonneg_of_nonpos (Complex.normSq_nonneg _) (h i)`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_re_pos_of_herm_diagonal_re_pos {r : ℕ} (τ : E →+* ℂ) (d y : Fin r → E)
     (hy : 0 < (τ (_root_.ReciprocityTheory.ChartRestriction.G.FD.herm (Matrix.diagonal d) y y)).re) : ∃ i, 0 < (τ (d i)).re := by
@@ -132,9 +128,7 @@ open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Rewrite `hy` using `[_root_.GlobalTheory.UTrans.herm_diagonal_self, map_sum, Complex.re_sum]`. Use `absurd hy (not_lt.2 (Finset.sum_nonneg fun i _ => ?_))` and prove the remaining obligations. Rewrite using `[re_mul_cc_eq_normSq_mul_re]`.
-
-Conclude with `mul_nonneg (Complex.normSq_nonneg _) (h i)`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_re_neg_of_herm_diagonal_re_neg {r : ℕ} (τ : E →+* ℂ) (d y : Fin r → E)
     (hy : (τ (_root_.ReciprocityTheory.ChartRestriction.G.FD.herm (Matrix.diagonal d) y y)).re < 0) : ∃ i, (τ (d i)).re < 0 := by
@@ -150,17 +144,17 @@ open scoped TensorProduct in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Introduce `E _ _ _ n σ G hσ hG hn hs`. Establish `hf : ∀ x y, _root_.GlobalTheory.UTrans.hf σ G x y = _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G x y`. Introduce `x y`. Simplify using `only [_root_.GlobalTheory.UTrans.hf, _root_.ReciprocityTheory.ChartRestriction.G.FD.herm, hσ]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hGc : ∀ a b, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (G a b) = G b a` using `fun a b => by`. Rewrite using `[← hG.herm a b, hσ]`. Both sides reduce to the same expression. Take `⟨P, d, hP, hPd, hd, -⟩` from `_root_.GlobalTheory.HermDiag.exists_congr_diagonal_herm hGc`. Establish `hPinv : ∀ x, P *ᵥ (P⁻¹ *ᵥ x) = x` using `fun x => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[mulVec_mulVec, mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hP), one_mulVec]`. Establish `hform : ∀ y, _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G (P *ᵥ y) (P *ᵥ y) = _root_.ReciprocityTheory.ChartRestriction.G.FD.herm (Matrix.diagonal d) y y` using `fun y => by`. Rewrite using `[herm_mulVec_mulVec', hPd]`. It suffices to establish `∃ y, y ≠ 0 ∧ _root_.ReciprocityTheory.ChartRestriction.G.FD.herm (Matrix.diagonal d) y y = 0 by`. Take `⟨y, hy, hy0⟩` from `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨P *ᵥ y, fun h => hy (eq_zero_of_mulVec_eq_zero hP h), by rw [hf, hform, hy0]⟩`. Distinguish the cases in `hd0 : ∃ i, d i = 0`. Take `⟨i, hi⟩` from `hd0`. Use `⟨Pi.single i 1, fun h => one_ne_zero (α := E) (by simpa using congr_fun h i), ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.UTrans.herm_diagonal_self, Finset.sum_eq_single i]`.
+Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hi]`. Introduce `j _ hj`. Simplify using `[Pi.single_apply, hj]`. Simplify using the standard rewrite rules. Use `push_neg at hd0`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `_root_.GlobalTheory.UTrans.exists_isotropic_diagonal hn hd hd0 fun τ => ?_` and prove the remaining obligations. Take `⟨⟨x, hx⟩, y, hy⟩` from `hs τ`. Rewrite `hx` using `[hf, ← hPinv x, hform]`. Rewrite `hy` using `[hf, ← hPinv y, hform]`. Conclude with `⟨exists_re_pos_of_herm_diagonal_re_pos τ d _ hx, exists_re_neg_of_herm_diagonal_re_neg τ d _ hy⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UTrans.exists_isotropic_of_indefinite : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (σ : E →+* E) (G : Matrix (Fin n) (Fin n) E), (∀ a, σ a = IsCMField.complexConj E a) → _root_.GlobalTheory.UTrans.IsHerm σ G → 3 ≤ n → (∀ τ : E →+* ℂ, (∃ x, 0 < (τ (_root_.GlobalTheory.UTrans.hf σ G x x)).re) ∧ ∃ y, (τ (_root_.GlobalTheory.UTrans.hf σ G y y)).re < 0) → ∃ z : Fin n → E, z ≠ 0 ∧ _root_.GlobalTheory.UTrans.hf σ G z z = 0 := by
   intro E _ _ _ n σ G hσ hG hn hs

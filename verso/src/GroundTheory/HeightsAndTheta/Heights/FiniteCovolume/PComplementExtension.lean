@@ -14,28 +14,28 @@ variable {W : Type*} [AddCommGroup W] [Module E W]
 variable {h : HermitianForm F E W} {v w : W}
 
 /- English proof (translation)
-The claim follows from `hp.1`.
+A detailed English derivation is pending.
 -/
 theorem toSesq_v_v (hp : IsHyperbolicPair h v w) : h.toSesq v v = 0 := hp.1
 
 /- English proof (translation)
-The claim follows from `hp.2.1`.
+A detailed English derivation is pending.
 -/
 theorem toSesq_w_w (hp : IsHyperbolicPair h v w) : h.toSesq w w = 0 := hp.2.1
 
 /- English proof (translation)
-The claim follows from `hp.2.2`.
+A detailed English derivation is pending.
 -/
 theorem toSesq_v_w (hp : IsHyperbolicPair h v w) : h.toSesq v w = 1 := hp.2.2
 
 /- English proof (translation)
-Rewrite using `[← h.isSymm.eq v w, hp.2.2, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toSesq_w_v (hp : IsHyperbolicPair h v w) : h.toSesq w v = 1 := by
   rw [← h.isSymm.eq v w, hp.2.2, map_one]
 
 /- English proof (translation)
-Rewrite using `[← h.isSymm.eq u z, hz, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toSesq_swap_eq_zero {u z : W} (hz : h.toSesq u z = 0) : h.toSesq z u = 0 := by
   rw [← h.isSymm.eq u z, hz, map_zero]
@@ -56,14 +56,14 @@ theorem proj_apply (hp : IsHyperbolicPair h v w) (x : W) :
     (proj hp x : W) = x - h.toSesq w x • v - h.toSesq v x • w := rfl
 
 /- English proof (translation)
-Rewrite using `[proj_apply]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem split (hp : IsHyperbolicPair h v w) (x : W) :
     h.toSesq w x • v + (proj hp x : W) + h.toSesq v x • w = x := by
   rw [proj_apply]; abel
 
 /- English proof (translation)
-Take `⟨hvz, hwz⟩` from `mem_hypComplement.1 z.2`. Take `⟨hvz', hwz'⟩` from `mem_hypComplement.1 z'.2`. Establish `hzv` using `toSesq_swap_eq_zero hvz`. Establish `hzw` using `toSesq_swap_eq_zero hwz`. Simplify using `only [map_add, LinearMap.map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, map_smul, smul_eq_mul, toSesq_v_v hp, toSesq_w_w hp, toSesq_v_w hp, toSesq_w_v hp, hvz', hwz', hzv, hzw]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -91,7 +91,7 @@ theorem extMap_apply (hp : IsHyperbolicPair h v w)
     extMap hp m x = h.toSesq w x • v + (m (proj hp x) : W) + h.toSesq v x • w := rfl
 
 /- English proof (translation)
-Use `(mem_hypComplement.1 (m (proj hp x)).2).2` as an intermediate fact. Simplify using `only [extMap_apply, map_add, map_smul, smul_eq_mul, toSesq_w_w hp, toSesq_w_v hp, this]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem toSesq_w_extMap (hp : IsHyperbolicPair h v w)
     (m : hypComplement h v w →ₗ[E] hypComplement h v w) (x : W) :
@@ -101,7 +101,7 @@ theorem toSesq_w_extMap (hp : IsHyperbolicPair h v w)
   ring
 
 /- English proof (translation)
-Use `(mem_hypComplement.1 (m (proj hp x)).2).1` as an intermediate fact. Simplify using `only [extMap_apply, map_add, map_smul, smul_eq_mul, toSesq_v_v hp, toSesq_v_w hp, this]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem toSesq_v_extMap (hp : IsHyperbolicPair h v w)
     (m : hypComplement h v w →ₗ[E] hypComplement h v w) (x : W) :
@@ -111,7 +111,7 @@ theorem toSesq_v_extMap (hp : IsHyperbolicPair h v w)
   ring
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[proj_apply, toSesq_w_extMap, toSesq_v_extMap, extMap_apply]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem proj_extMap (hp : IsHyperbolicPair h v w)
     (m : hypComplement h v w →ₗ[E] hypComplement h v w) (x : W) :
@@ -121,7 +121,7 @@ theorem proj_extMap (hp : IsHyperbolicPair h v w)
   abel
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[LinearMap.comp_apply, extMap_apply hp m, toSesq_w_extMap, toSesq_v_extMap, proj_extMap, extMap_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem extMap_comp (hp : IsHyperbolicPair h v w)
     (m m' : hypComplement h v w →ₗ[E] hypComplement h v w) :
@@ -132,7 +132,7 @@ theorem extMap_comp (hp : IsHyperbolicPair h v w)
   rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[extMap_apply, LinearMap.id_apply, LinearMap.id_apply]`. Conclude with `split hp x`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extMap_id (hp : IsHyperbolicPair h v w) : extMap hp LinearMap.id = LinearMap.id := by
   ext x
@@ -140,7 +140,7 @@ theorem extMap_id (hp : IsHyperbolicPair h v w) : extMap hp LinearMap.id = Linea
   exact split hp x
 
 /- English proof (translation)
-Take `⟨hvx, hwx⟩` from `mem_hypComplement.1 x.2`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[proj_apply, hvx, hwx]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem proj_of_mem (hp : IsHyperbolicPair h v w) (x : hypComplement h v w) :
     proj hp (x : W) = x := by
@@ -150,7 +150,7 @@ theorem proj_of_mem (hp : IsHyperbolicPair h v w) (x : hypComplement h v w) :
   simp
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[proj_apply, toSesq_w_v hp, hp.1]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem proj_v (hp : IsHyperbolicPair h v w) : proj hp v = 0 := by
   apply Subtype.ext
@@ -158,7 +158,7 @@ theorem proj_v (hp : IsHyperbolicPair h v w) : proj hp v = 0 := by
   simp
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[proj_apply, hp.2.1, hp.2.2]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem proj_w (hp : IsHyperbolicPair h v w) : proj hp w = 0 := by
   apply Subtype.ext
@@ -166,17 +166,15 @@ theorem proj_w (hp : IsHyperbolicPair h v w) : proj hp w = 0 := by
   simp
 
 /- English proof (translation)
-Introduce `v w hp h' hh' m`. Set `M : hypComplement h v w ≃ₗ[E] hypComplement h v w` to `m`. Set `e : W ≃ₗ[E] W` to `LinearEquiv.ofLinearMap (extMap hp M.toLinearMap) (extMap hp M.symm.toLinearMap) (by rw [extMap_comp, LinearEquiv.comp_symm, extMap_id]) (by rw [extMap_comp, LinearEquiv.symm_comp, extMap_id])`. Establish `he : ∀ x, e x = extMap hp M.toLinearMap x` using `fun x => rfl`. Establish `hM : ∀ a b, h.toSesq (M a : W) (M b : W) = h.toSesq (a : W) b`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b`. Rewrite using `[← hh', ← hh']`. Conclude with `m.2 a b`. Establish `hmem : e ∈ h.unitaryGroup`. Introduce `x y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, he, extMap_apply, extMap_apply, toSesq_split hp]`. Use `conv_rhs => rw [← split hp x, ← split hp y]`. Rewrite using `[toSesq_split hp]`. Simplify using `only [LinearEquiv.coe_coe, hM]`. Use `⟨⟨e, hmem⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `e v = v`. Rewrite using `[he, extMap_apply, proj_v, map_zero, toSesq_w_v hp, hp.1]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `e w = w`. Rewrite using `[he, extMap_apply, proj_w, map_zero, hp.2.1, hp.2.2]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `x`. Express the relevant statement in the definitionally equal form `e x = ((M x : hypComplement h v w) : W)`. Take `⟨hvx, hwx⟩` from `mem_hypComplement.1 x.2`. Rewrite using `[he, extMap_apply, proj_of_mem, hvx, hwx]`.
-
-Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem proof (h : HermitianForm F E W) : ComplementExtension.Statement h := by
   intro v w hp h' hh' m

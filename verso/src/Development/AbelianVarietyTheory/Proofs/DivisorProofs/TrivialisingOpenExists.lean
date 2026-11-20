@@ -13,17 +13,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.WeilIntegral
 
 /- English proof (translation)
-Take `⟨R, j, hj, ⟨x', rfl⟩, -⟩` from `X.exists_affine_mem_range_and_range_subset (x := x) (U := ⊤) trivial`. Establish `: Nonempty (Spec R)` using `⟨x'⟩`. Establish `: IsIntegral (Spec R)` using `isIntegral_of_isOpenImmersion j`. Establish `: IsDomain R` using `(affine_isIntegral_iff R).1 ‹_›`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (j ≫ f)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hs : Smooth (Spec.map φ)` using `by rw [hφ]; infer_instance`. Establish `hs' : φ.hom.Smooth` using `(HasRingHomProperty.Spec_iff (P := @Smooth)).1 hs`. Use `letI : Algebra O R := φ.hom.toAlgebra`. Establish `: Algebra.Smooth O R` using `hs'`. Establish `key : ∀ (z : Spec R) (c : O), c ∈ PrimeSpectrum.asIdeal (R` using `O) (f (j z)) ↔ algebraMap O R c ∈ PrimeSpectrum.asIdeal (R := R) z := by`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z c`. Rewrite using `[← Scheme.Hom.comp_apply, ← hφ]`. Both sides reduce to the same expression. Take `⟨_, hz, z, rfl⟩` from `nonempty_preirreducible_inter W.isOpen j.isOpenEmbedding.isOpen_range hW ⟨_, x', rfl⟩`. Take `⟨_, ⟨_, ⟨a, rfl⟩, rfl⟩, hza, ha⟩` from `PrimeSpectrum.isBasis_basic_opens.exists_subset_of_mem_open (a := (z : PrimeSpectrum R)) (u := (j ⁻¹ᵁ W : Set (Spec R))) hz (j ⁻¹ᵁ W).isOpen`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `hza (Ideal.zero_mem _)`. Take `⟨q, g, c, hq, hg, hc, d, hd⟩` from `h R a ha0 ⟨x', by simpa using (key x' p).1 hx⟩`. Use `⟨j ''ᵁ (PrimeSpectrum.basicOpen g), ⟨j q, ⟨q, hg, rfl⟩, (key q p).2 (by simpa using hq)⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨y, hy, rfl⟩ h0`. Use `ha (a := y) fun hay => ?_` and prove the remaining obligations. Establish `h1 : algebraMap O R c * g ∈ PrimeSpectrum.asIdeal (R` using `R) y := hd ▸ Ideal.mul_mem_right _ _ hay`. Break down `(PrimeSpectrum.isPrime (R := R) y).mem_or_mem h1 with h2 | h2` into its components or cases. Conclude with `hc (h0.le ((key y c).2 h2))`.
-
-Conclude with `hy h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_open_generic_le (p : ℕ) (O : Type) [CommRing O] (h : SpecialFibreNotInClosure p O)
     {X : Scheme.{0}} [IsIntegral X] (f : X ⟶ Sp O) [Smooth f] (x : X)
@@ -60,15 +58,15 @@ theorem exists_open_generic_le (p : ℕ) (O : Type) [CommRing O] (h : SpecialFib
   · exact hy h2
 
 /- English proof (translation)
-Establish `hinj` using `P.integers.hom_inj`. Establish `: IsDomain O` using `hinj.isDomain (algebraMap O C)`. Establish `: IsFractionRing O C` using `P.integers.isFractionRing`. Use `P.semi.smooth` as an intermediate fact. Use `P.semi.geomConnected` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIntegral P.G.left` using `isIntegral_of_smooth_of_geometricallyConnected P.G.hom`. Use `geometricallyIntegral_of_smooth P.G.hom` as an intermediate fact. Establish `: IsPreimmersion (spMap (algebraMap O C))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors O)`. Establish `: IsPreimmersion P.gen` using `MorphismProperty.of_isPullback P.gen_pull.1.flip ‹_›`. Take `⟨m, hm, hpm⟩` from `exists_max_ideal_of_mem_nonunits (mem_nonunits_iff.2 hp.out)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `P.G.hom.surjective (⟨m, hm.isPrime⟩ : PrimeSpectrum O)`. Use `P.A.isAb.smooth` as an intermediate fact. Use `P.A.isAb.geomConnected` as an intermediate fact. Establish `: IsIntegral P.A.A.left` using `isIntegral_of_smooth_of_geometricallyConnected P.A.A.hom`. Take `⟨a⟩ : Nonempty P.A.A.left` from `inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (P.A.isLB.cover.ge (Set.mem_univ a))`. Take `⟨W, hW, hWV⟩` from `P.gen.isEmbedding.isInducing.isOpen_iff.1 (P.A.L.U i).isOpen`. Take `⟨U, hU, hUW⟩` from `exists_open_generic_le p O h P.G.hom x (by rw [hx]; exact hpm) ⟨W, hW⟩ ⟨P.gen a, hWV.ge hi⟩`. Use `⟨U, hU, ChartRig.exists_gen_pull _ _ i P.A.isLB fun y _ => hWV.le (hUW _ y.2 ?_)⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, P.gen_pull.1.w, Scheme.Hom.comp_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ z : PrimeSpectrum C, Ideal.comap (algebraMap O C) z.asIdeal = ⊥` using `fun z => by`. Rewrite using `[Ideal.eq_bot_of_prime z.asIdeal]`. Conclude with `Ideal.comap_bot_of_injective _ hinj`. Conclude with `e _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasTrivialisingOpen_of_specialFibreNotInClosure (p : ℕ) [Fact p.Prime] (C : Type) [Field C]
     (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [hp : Fact ¬IsUnit (p : O)]
@@ -101,7 +99,7 @@ theorem hasTrivialisingOpen_of_specialFibreNotInClosure (p : ℕ) [Fact p.Prime]
   exact e _
 
 /- English proof (translation)
-The claim follows from `hasTrivialisingOpen_of_specialFibreNotInClosure p C v O Λ P h`.
+A detailed English derivation is pending.
 -/
 theorem hasTrivialisingOpen (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]

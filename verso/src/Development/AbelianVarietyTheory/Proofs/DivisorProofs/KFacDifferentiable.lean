@@ -57,9 +57,9 @@ def IsGood (P : ℂ → (Emb F → ℂ) → ℂ) : Prop :=
   (∀ w : List (Emb F × Bool), ∀ z ∈ upperHalf F, DifferentiableOn ℂ (fun σ => wirtWord w (P σ) z) halfPlane)
 
 /- English proof (translation)
-Introduce `σ`. Unfold `kFac`. Rewrite using `[show (fun σ : ℂ => ∏ _τ : Emb F, ((2 * (Real.pi : ℂ) * I)⁻¹ ^ 2 * ((2 * Real.pi : ℝ) : ℂ) ^ (-2 * σ))) = fun σ => ((2 * (Real.pi : ℂ) * I)⁻¹ ^ 2 * ((2 * Real.pi : ℝ) : ℂ) ^ (-2 * σ)) ^ Fintype.card (Emb F) from`. Use function extensionality and compare the values at `fun σ => Finset.prod_const _]`. Use `DifferentiableAt.pow (DifferentiableAt.const_mul ?_ _) _` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `DifferentiableAt.const_cpow (differentiableAt_id.const_mul _) (Or.inl ?_)` and prove the remaining obligations. Conclude with `(mul_pos two_pos Real.pi_pos).ne'` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem kFac_differentiable : Differentiable ℂ (kFac F) := by
   intro σ
@@ -72,7 +72,7 @@ theorem kFac_differentiable : Differentiable ℂ (kFac F) := by
   exact_mod_cast (mul_pos two_pos Real.pi_pos).ne'
 
 /- English proof (translation)
-Simplify using `[eisTerm, latPt]`.
+Simplify using the standard rewrite rules.
 -/
 example (𝔞 : Frac F) (σ : ℂ) (z : Emb F → ℂ) (a : F) : eisTerm 2 σ z (a, 0) = eisTerm 2 σ 0 (a, 0) := by
   simp [eisTerm, latPt]

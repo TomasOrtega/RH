@@ -14,11 +14,11 @@ open GlobalTheory.Mem.Col2.SplitChar (finIdl)
 namespace GlobalTheory.BotPairSmall.CongApprox
 
 /- English proof (translation)
-Introduce `D 𝔫 h𝔫 a d M m hm`. Take `⟨n, hn, hnI⟩` from `GlobalTheory.CompletedLattice.exists_mul_IhE_mem D ⊤`. Establish `hN : 0 < Ideal.absNorm 𝔫` using `Nat.pos_of_ne_zero (by rwa [Ne, Ideal.absNorm_eq_zero_iff])`. Take `⟨z, hz⟩` from `GlobalTheory.NormSum.VacMove.MI_approx (D := D) (cc := ⊤) top_ne_bot M (m * (n * Ideal.absNorm 𝔫)) (Nat.mul_pos hm (Nat.mul_pos hn hN))`. Use `⟨z, GlobalTheory.NormSum.VacMove.MI.of_dvd (dvd_mul_right m _) hz, fun i l => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy, e⟩` from `hz i l`. Establish `hny : (n : AE D) * y ∈ OhE D` using `hnI y hy`. Establish `hmny : (m : AE D) * ((n : AE D) * y) ∈ OhE D` using `mul_mem (natCast_mem _ m) hny`. Establish `h2` using `GlobalTheory.BotPairSmall.BlockIdx.absNorm_mul_mem_hatId D 𝔫 hmny`. Establish `e2 : (M - z.map (inc D)) i l = -((Ideal.absNorm 𝔫 : AE D) * ((m : AE D) * ((n : AE D) * y)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← neg_sub, Matrix.neg_apply, e]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `neg_mem h2`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem approx_two_moduli : ∀ (D : D7) (𝔫 : Ideal (𝓞 D.host.E)), 𝔫 ≠ ⊥ → ∀ (a d : ℕ) (M : Matrix (Fin d) (Fin a) (AE D)) (m : ℕ), 0 < m → ∃ z : Matrix (Fin d) (Fin a) D.host.E, (∀ i l, ∃ y ∈ IhE D ⊤, (z.map (inc D) - M) i l = (m : AE D) * y) ∧ ∀ i l, (M - z.map (inc D)) i l ∈ hatId D 𝔫 := by
   intro D 𝔫 h𝔫 a d M m hm

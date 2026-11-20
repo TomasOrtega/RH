@@ -59,7 +59,7 @@ open Formalism.BasicNotions (Ranks)
 variable {X : Fields} {Pr : Primes X} {R : Ranks}
 
 /- English proof (translation)
-Introduce and unpack `⟨w, hw, hov⟩`. Apply `T_notMem_vGs hPr u ⟨w, hw⟩` to reduce the goal to its premises. Establish `: (Pr.T u : 𝓞 X.F) ∈ w.asIdeal.comap (algebraMap (𝓞 X.F) (𝓞 X.E))` using `hov ▸ h`. Rewrite `this` using `[Ideal.mem_comap, map_natCast]`. Then use the resulting hypothesis.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem rls_T_notUnder (hPr : Pr.Ok) (u : Pr.Word) (v : HeightOneSpectrum (𝓞 X.F)) (h : (Pr.T u : 𝓞 X.F) ∈ v.asIdeal) :
     v ∉ plUnder X.F Pr.vGs := by
@@ -69,7 +69,7 @@ theorem rls_T_notUnder (hPr : Pr.Ok) (u : Pr.Word) (v : HeightOneSpectrum (𝓞 
   rwa [Ideal.mem_comap, map_natCast] at this
 
 /- English proof (translation)
-The claim follows from `mem_divs (basePi_of_ok hX hPr u).ne_zero P`.
+A detailed English derivation is pending.
 -/
 theorem rls_vT_iff (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (P : Pl X.E) : P ∈ Pr.vT u ↔ Pr.piT u ∈ P.asIdeal :=
   mem_divs (basePi_of_ok hX hPr u).ne_zero P

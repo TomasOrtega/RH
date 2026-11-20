@@ -14,29 +14,29 @@ namespace GlobalTheory.HolHomOnto
 open GlobalTheory.TangentOrigin GlobalTheory.HolHom
 
 /- English proof (translation)
-Take `⟨U₀, -, U, hU, hp, hle, hsm⟩` from `Smooth.exists_isStandardSmooth s (x (default : PrimeSpectrum ℂ))`. Establish `hU₀ : U₀ = ⊤`. Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations. Establish `h1 : s (x (default : PrimeSpectrum ℂ)) ∈ U₀` using `hle hp`. Establish `h2 : y = s (x (default : PrimeSpectrum ℂ))` using `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Conclude with `h1`. Substitute `hU₀` using the available equality. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n, RingHom.IsStandardSmoothOfRelativeDimension n (s.appLE ⊤ U hle).hom := by`. Set `_` to `(s.appLE ⊤ U hle).hom.toAlgebra`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Algebra.IsStandardSmooth Γ(Sp ℂ, ⊤) Γ(Y, U)` using `hsm`. Take `⟨_, _, _, _, ⟨P⟩⟩` from `this`. Conclude with `⟨P.dimension, _, _, _, ‹_›, P, rfl⟩`. Set `c : ℂ →+* Γ(Y, U)` to `(s.appLE ⊤ U hle).hom.comp (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom`. Establish `hcc : ∀ a, constFn s U a = c a` using `fun a => rfl`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : c.IsStandardSmoothOfRelativeDimension n` using `RingHom.isStandardSmoothOfRelativeDimension_respectsIso.2 (s.appLE ⊤ U hle).hom (Scheme.ΓSpecIso (CommRingCat.of ℂ)).symm.commRingCatIsoToRingEquiv hn`. Establish `hconst : ∀ {R : Type} [CommRing R] (ψ : ℂ →+* R) (y : Sp R ⟶ Y) (hy : ⊤ ≤ y ⁻¹ᵁ U), y ≫ s = spMap ψ → ∀ a, evalPt y U hy (c a) = ψ a`. Introduce `R _ ψ y hy hys a`. Rewrite using `[← hcc, evalPt_constFn]`. Conclude with `(congrArg (fun y : Sp R ⟶ Sp ℂ => evalPt y ⊤ le_rfl ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a)) hys).trans (evalPt_spMap _ a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxU : ⊤ ≤ x ⁻¹ᵁ U` using `(le_preimage_iff x U).2 hp`. Establish `hxc : ∀ a, evalPt x U hxU (c a) = a` using `hconst (RingHom.id ℂ) x hxU (hx.trans (Spec.map_id _).symm)`. Take `⟨φ, hφc, hφ, hφ0⟩` from `HolChart.exists_etale_coords_vanishing c hc (evalPt x U hxU) hxc`. Establish `hφc' : ∀ a, φ (MvPolynomial.C a) = c a` using `fun a => by rw [← hφc]; rfl`. Set `_ : Algebra ℂ Γ(Y, U)` to `c.toAlgebra`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `_ : Algebra (MvPolynomial (Fin n) ℂ) Γ(Y, U)` to `φ.toAlgebra`. Establish `_ : IsScalarTower ℂ (MvPolynomial (Fin n) ℂ) Γ(Y, U)` using `IsScalarTower.of_algebraMap_eq' hφc.symm`. Establish `_ : Algebra.Etale (MvPolynomial (Fin n) ℂ) Γ(Y, U)` using `hφ`. Set `eA : Γ(Y, U) →ₐ[ℂ] ℂ` to `{ evalPt x U hxU with commutes' := hxc }`. Take `⟨W, σ, m, f, ε, hW, hW0, -, -, -, hσt, -⟩` from `exists_holomorphic_section_of_etale n Γ(Y, U) eA hφ0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨n, U, fun i => φ (MvPolynomial.X i), W, hxU, hW, hW0, fun w hw => ?_, fun v v' hv hv' h0 h0' ht => ?_⟩` and prove the remaining obligations. Take `⟨p, hpU, hpσ⟩` from `exists_evalPt_eq hU (σ w).toRingHom`. Use `⟨p, ?_, hpU, fun i => ?_⟩` and prove the remaining obligations. Use `(eq_spMap_of_evalPt _ (RingHom.id ℂ) fun a => ?_).trans (Spec.map_id _)` and prove the remaining obligations. Rewrite using `[← evalPt_constFn s p U hpU, hpσ, hcc]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(σ w).commutes a`. Rewrite using `[valAt'_eq_evalPt _ _ hpU, hpσ]`. Conclude with `hσt w hw i`. Establish `hvU` using `(le_preimage_dual_iff h0 U).2 hxU`. Establish `hvU'` using `(le_preimage_dual_iff h0' U).2 hxU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ∀ f, valR v U f = evalPt v U hvU f` using `valR_eq _ _ hvU`. Establish `e2 : ∀ f, valR v' U f = evalPt v' U hvU' f` using `valR_eq _ _ hvU'`. Establish `f1 : ∀ f, (evalPt v U hvU f).fst = evalPt x U hxU f` using `fun f => by`. Rewrite using `[← e1, fst_valR h0 hxU, valAt'_eq_evalPt]`. Establish `f2 : ∀ f, (evalPt v' U hvU' f).fst = evalPt x U hxU f` using `fun f => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← e2, fst_valR h0' hxU, valAt'_eq_evalPt]`. Set `D : Γ(Y, U) →+ ℂ` to `{ toFun := fun f => (evalPt v U hvU f).snd - (evalPt v' U hvU' f).snd map_zero' := by simp map_add' := fun f f' => by`. Simplify using `only [map_add, TrivSqZeroExt.snd_add]`. Use `ring }`. Establish `hD : ∀ f, D f = (evalPt v U hvU f).snd - (evalPt v' U hvU' f).snd` using `fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : D = 0`. Use `HolChart.derivation_eq_zero φ hφ (evalPt x U hxU) D (fun a => ?_) (fun f f' => ?_) fun i => ?_` and prove the remaining obligations. Rewrite using `[hD, hφc', hconst _ v hvU hv, hconst _ v' hvU' hv', sub_self]`. Rewrite using `[hD, hD, hD, map_mul, map_mul, DualNumber.snd_mul, DualNumber.snd_mul, f1, f1, f2, f2]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hD, ← e1, ← e2, ht, sub_self]`. Use `ext_evalPt hU hvU hvU' (RingHom.ext fun f => TrivSqZeroExt.ext ((f1 f).trans (f2 f).symm) ?_)` and prove the remaining obligations. Use `hD f` as an intermediate fact. Rewrite `this` using `[hz]`. Conclude with `sub_eq_zero.1 this.symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_coords {Y : Scheme.{0}} (s : Y ⟶ Sp ℂ) [Smooth s] (x : Sp ℂ ⟶ Y) (hx : x ≫ s = 𝟙 _) :
     ∃ (n : ℕ) (U : Y.Opens) (t : Fin n → Γ(Y, U)) (W : Set (Fin n → ℂ)),
@@ -117,23 +117,21 @@ theorem exists_coords {Y : Scheme.{0}} (s : Y ⟶ Sp ℂ) [Smooth s] (x : Sp ℂ
     exact sub_eq_zero.1 this.symm
 
 /- English proof (translation)
-Introduce `G _ y hy hs g e he hsurj hol v hv hv0`. Substitute `hy` using the available equality. Take `⟨n, U, t, W, h0, hW, hW0, hp, hext⟩` from `exists_coords G.hom (e 0).left (Over.w (e 0))`. Establish `hA` using `holAt_of_isHolTo hol (Set.mem_univ 0)`. Set `L : (Fin g → ℂ) →ₗ[ℂ] (Fin n → ℂ)` to `LinearMap.pi fun i => (fderiv ℂ (fun z => valAt' (e z).left U (t i)) 0).toLinearMap`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hover : ∀ {w u}, IsDerivAt (fun z => (show Sp ℂ ⟶ G.left from (e z).left)) 0 w u → u ≫ G.hom = spMap (algebraMap ℂ (DualNumber ℂ))` using `fun hu => (IsDerivAt.over (a := e) hu).trans (Category.comp_id _)`. Establish `key : ∀ (w : Fin g → ℂ) (u : Sp (DualNumber ℂ) ⟶ G.left), u ≫ G.hom = spMap (algebraMap ℂ (DualNumber ℂ)) → spMap fstC ≫ u = (e 0).left → (L w = fun i => (valR u U (t i)).snd) → IsDerivAt (fun z => (show Sp ℂ ⟶ G.left from (e z).left)) 0 w u`. Introduce `w u hu hu0 hL`. Take `⟨u', hu'⟩` from `hA.exists_isDerivAt w`. Establish `: u = u'` using `hext u u' hu (hover hu') hu0 hu'.1 fun i => (congrFun hL i).symm.trans (hu'.2 U h0 (t i)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `this ▸ hu'`. It suffices to establish `hL : Function.Surjective L by`. Take `⟨w, hw⟩` from `hL fun i => (valR v U (t i)).snd`. Conclude with `⟨w, key w v hv hv0 hw⟩`. Take `⟨ρ, hρ⟩` from `L.rangeRestrict.exists_rightInverse_of_surjective L.range_rangeRestrict`.
+Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `P : (Fin g → ℂ) →L[ℂ] (Fin g → ℂ)` to `LinearMap.toContinuousLinearMap (ρ ∘ₗ L.rangeRestrict)`. Establish `hLP : ∀ z, L (P z) = L z` using `fun z => congrArg Subtype.val (DFunLike.congr_fun hρ (L.rangeRestrict z))`. Establish `hfac : e = fun z => e (P z)`. Use `eq_of_fderiv_eq he (fun z w => by rw [map_add, he]) hol (isHolTo_of_holAt isOpen_univ fun z _ => (holAt_of_isHolTo hol (Set.mem_univ (P z))).precomp P.differentiableAt) fun V hV f => ?_` and prove the remaining obligations. Use `ext1 z`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : HasFDerivAt (fun z => valAt' (e z).left V f) (fderiv ℂ (fun z => valAt' (e z).left V f) 0) (P 0)`. Rewrite using `[map_zero]`. Conclude with `((hA V hV).2 f).hasFDerivAt`. Use `Eq.trans ?_ (congrArg (· z) (h1.comp 0 P.hasFDerivAt).fderiv).symm` and prove the remaining obligations. Take `⟨u, hu⟩` from `hA.exists_isDerivAt z`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu'` using `key (P z) u (hover hu) hu.1 ((hLP z).trans (funext fun i => (hu.2 U h0 (t i)).symm))`. Conclude with `(hu.2 V hV f).symm.trans (hu'.2 V hV f)`. Establish `hol' : IsHolTo Set.univ (fun r : LinearMap.range L => (show Sp ℂ ⟶ G.left from (e (ρ r)).left))` using `isHolTo_of_holAt isOpen_univ fun r _ => (holAt_of_isHolTo hol (Set.mem_univ (ρ r))).precomp (LinearMap.toContinuousLinearMap ρ).differentiableAt`. Rewrite using `[← LinearMap.range_eq_top]`. Assume the negation of the conclusion as `hne`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlt : Module.finrank ℂ (LinearMap.range L) < n`. Simplify using `using Submodule.finrank_lt hne`. Establish `hnull` using `AffinePoints.volume_image_eq_zero_of_finrank_lt hlt (f := fun r i => valAt' (e (ρ r)).left U (t i)) (differentiableOn_pi.2 fun i => (hol' U (t i)).2)`. Use `(hW.measure_pos MeasureTheory.volume ⟨0, hW0⟩).ne' (MeasureTheory.measure_mono_null (fun w hw => ?_) hnull)` and prove the remaining obligations. Take `⟨p, hps, hpU, hpt⟩` from `hp w hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality.
 
-Take `⟨z, hz⟩` from `hsurj (Over.homMk p hps)`. Establish `hz' : (e (ρ (L.rangeRestrict z))).left = p` using `congrArg (·.left) ((congrFun hfac z).symm.trans hz)`. Use `⟨L.rangeRestrict z, ⟨trivial, ?_⟩, funext fun i => ?_⟩` and prove the remaining obligations. Substitute `hz'` using the available equality. Conclude with `hpU`.
-
-Substitute `hz'` using the available equality. Conclude with `hpt i`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_isDerivAt_of_surjective : ∀ (G : Over (Sp ℂ)) [GrpObj G] (y : Sp ℂ ⟶ Sp ℂ), y = 𝟙 _ → Smooth G.hom → ∀ (g : ℕ) (e : (Fin g → ℂ) → (Over.mk y ⟶ G)), (∀ z w, e (z + w) = e z * e w) → Function.Surjective e → IsHolTo Set.univ (fun z => (show Sp ℂ ⟶ G.left from (e z).left)) → ∀ v : Sp (DualNumber ℂ) ⟶ G.left, v ≫ G.hom = spMap (algebraMap ℂ (DualNumber ℂ)) → spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = (e 0).left → ∃ w, GlobalTheory.HolHom.IsDerivAt (fun z => (show Sp ℂ ⟶ G.left from (e z).left)) 0 w v := by
   intro G _ y hy hs g e he hsurj hol v hv hv0

@@ -134,7 +134,7 @@ def fstHom : (MA.DQ P).Pr →+ (MA.DQ P).Op where
   map_add' _ _ := rfl
 
 /- English proof (translation)
-The claim follows from `map_sum (fstHom P) x s`.
+A detailed English derivation is pending.
 -/
 theorem fst_sum {ι : Type} (s : Finset ι) (x : ι → (MA.DQ P).Pr) : (∑ i ∈ s, x i).1 = ∑ i ∈ s, (x i).1 :=
   map_sum (fstHom P) x s
@@ -155,14 +155,14 @@ def evalHom (g : (MA.DQ P).R) : (MA.DQ P).Op →+ (MA.DQ P).R where
   map_add' _ _ := rfl
 
 /- English proof (translation)
-The claim follows from `map_sum (evalHom P g) X s`.
+A detailed English derivation is pending.
 -/
 theorem op_sum_apply {ι : Type} (s : Finset ι) (X : ι → (MA.DQ P).Op) (g : (MA.DQ P).R) :
     (∑ i ∈ s, X i) g = ∑ i ∈ s, X i g :=
   map_sum (evalHom P g) X s
 
 /- English proof (translation)
-Use function extensionality and compare the values at `π`. Simplify using `only [MA.actA, Matrix.zero_apply, fst_zero, Pi.zero_apply]`. Conclude with `Finset.sum_eq_zero fun π' _ => op_zero_apply P (f π')`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actA_zero (f : M.Ty P → MA.SmQ P.r P.TT) : MA.actA P 0 f = 0 := by
   funext π
@@ -170,7 +170,7 @@ theorem actA_zero (f : M.Ty P → MA.SmQ P.r P.TT) : MA.actA P 0 f = 0 := by
   exact Finset.sum_eq_zero fun π' _ => op_zero_apply P (f π')
 
 /- English proof (translation)
-Use function extensionality and compare the values at `π`. Simplify using `only [MA.actA, Matrix.add_apply, fst_add, Pi.add_apply]`. Conclude with `(Finset.sum_congr rfl fun π' _ => op_add_apply P _ _ (f π')).trans Finset.sum_add_distrib`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actA_add (x y : MA.A P (MA.DQ P)) (f : M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P (x + y) f = MA.actA P x f + MA.actA P y f := by
@@ -179,7 +179,7 @@ theorem actA_add (x y : MA.A P (MA.DQ P)) (f : M.Ty P → MA.SmQ P.r P.TT) :
   exact (Finset.sum_congr rfl fun π' _ => op_add_apply P _ _ (f π')).trans Finset.sum_add_distrib
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty, actA_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, actA_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem actA_sum {ι : Type} (s : Finset ι) (x : ι → MA.A P (MA.DQ P)) (f : M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P (∑ i ∈ s, x i) f = ∑ i ∈ s, MA.actA P (x i) f := by
@@ -189,7 +189,7 @@ theorem actA_sum {ι : Type} (s : Finset ι) (x : ι → MA.A P (MA.DQ P)) (f : 
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, actA_add, ih]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `π`. Simplify using `only [MA.actA, Matrix.mul_apply, fst_sum, fst_mul]`. Establish `h1 : ∀ π'' : M.Ty P, (∑ j, (x π j).1 * (y j π'').1) (f π'') = ∑ j, (x π j).1 ((y j π'').1 (f π''))` using `fun π'' => op_sum_apply P Finset.univ (fun j => (x π j).1 * (y j π'').1) (f π'')`. Establish `h2 : ∀ π' : M.Ty P, (x π π').1 (∑ π'', (y π' π'').1 (f π'')) = ∑ π'', (x π π').1 ((y π' π'').1 (f π''))` using `fun π' => map_sum (x π π').1 _ _`. Conclude with `(Finset.sum_congr rfl fun π'' _ => h1 π'').trans (Finset.sum_comm.trans (Finset.sum_congr rfl fun π' _ => (h2 π').symm))`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem actA_mul (x y : MA.A P (MA.DQ P)) (f : M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P (x * y) f = MA.actA P x (MA.actA P y f) := by
@@ -204,13 +204,13 @@ theorem actA_mul (x y : MA.A P (MA.DQ P)) (f : M.Ty P → MA.SmQ P.r P.TT) :
     (Finset.sum_comm.trans (Finset.sum_congr rfl fun π' _ => (h2 π').symm))
 
 /- English proof (translation)
-Simplify using `[MA.toSm, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toSm_of_mem {u : MA.Qp P.r P.TT → ℂ} (h : u ∈ MA.smSub P.r P.TT) : MA.toSm P u = ⟨u, h⟩ := by
   simp [MA.toSm, h]
 
 /- English proof (translation)
-Rewrite using `[toSm_of_mem P hu, toSm_of_mem P hv, toSm_of_mem P (add_mem hu hv)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toSm_add {u v : MA.Qp P.r P.TT → ℂ} (hu : u ∈ MA.smSub P.r P.TT) (hv : v ∈ MA.smSub P.r P.TT) :
     MA.toSm P (u + v) = MA.toSm P u + MA.toSm P v := by

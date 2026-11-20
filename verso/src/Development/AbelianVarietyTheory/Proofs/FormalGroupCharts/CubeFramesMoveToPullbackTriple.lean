@@ -25,13 +25,11 @@ section
 variable {X0 X' Y : Scheme.{0}} {L : LB X0} {L' : LB X'} {F : X' ⟶ X0} {K : Type} [Fintype K]
 
 /- English proof (translation)
-Use `choose u hu using fun p q => exists_pw w φ' ε p q`. Establish `glue : ∀ q : K → L'.ι, ∃ s : Γ(Y, LB.wchart L' φ' q)ˣ, ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) p, r z ∈ LB.wchart L (fun k => φ' k ≫ F) p → r z ∈ LB.wchart L' φ' q → gm r z _ s = (pw w φ' ε r z p q)⁻¹ * gm r z (LB.wchart L (fun k => φ' k ≫ F) p) (t.s p)`. Introduce `q`. Establish `hv : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) p, r z ∈ LB.wchart L (fun k => φ' k ≫ F) p ⊓ LB.wchart L' φ' q → gm r z _ ((u p q)⁻¹ * res inf_le_left (t.s p)) = (pw w φ' ε r z p q)⁻¹ * gm r z (LB.wchart L (fun k => φ' k ≫ F) p) (t.s p)` using `fun Z r z p hz => (map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_inv _ _).trans (congrArg (·⁻¹) (hu p q _ _ z hz))) (gm_res _ z _ hz _))`. Take `⟨s, hs⟩` from `glue_unit _ (fun p => LB.wchart L (fun k => φ' k ≫ F) p ⊓ LB.wchart L' φ' q) (fun _ => inf_le_right) (fun y hy => by choose p hp using fun k => exists_chart hL (F (φ' k y))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Opens.mem_iSup.2 ⟨p, Set.mem_iInter.2 hp, hy⟩) (fun p => (u p q)⁻¹ * res inf_le_left (t.s p))`. Use the proof step `(fun p p' y hy => by`. Rewrite using `[hv _ _ y p hy.1, hv _ _ y p' hy.2, pw_trans hw φ' ε (𝟙 Y) y hy.1.1 hy.2.1 hy.1.2 hy.1.2, trF_self hL' _ ε (𝟙 Y) y hy.1.2, gen_trans ht (𝟙 Y) y hy.1.1 hy.2.1, inv_one, _root_.mul_one, mul_inv, _root_.mul_mul_mul_comm, inv_mul_cancel, _root_.one_mul])`. Use `⟨s, fun Z r z p h₁ h₂ => ?_⟩` and prove the remaining obligations. Establish `hz : r z ∈ LB.wchart L (fun k => φ' k ≫ F) p ⊓ LB.wchart L' φ' q` using `⟨h₁, h₂⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(gm_res _ z inf_le_right hz s).symm.trans ((congrArg (gm _ z _) (hs p)).trans (hv Z r z p hz))`. Use `choose s hs using glue`. Use `⟨⟨s⟩, isGen_of_gm _ fun y j j' hj hj' => ?_, fun Z r z p q hp hq => ?_⟩` and prove the remaining obligations. Use `choose p hp using fun k => exists_chart hL (F (φ' k y))`. Establish `m : y ∈ LB.wchart L (fun k => φ' k ≫ F) p` using `Set.mem_iInter.2 hp`.
-
-Use `(hs j _ (𝟙 Y) y p m hj).trans (Eq.trans ?_ (congrArg _ (hs j' _ (𝟙 Y) y p m hj')).symm)` and prove the remaining obligations. Rewrite using `[pw_trans hw φ' ε (𝟙 Y) y m m hj hj', trF_self hL _ ε (𝟙 Y) y m, _root_.one_mul, mul_inv, inv_inv, _root_.mul_assoc]`. Conclude with `((congrArg _ (hs q Z r z p hp hq)).trans (mul_inv_cancel_left _ _)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_down_val {w : LB.Iso L' (L.pull F)} (hw : PGen w) (hL : L.IsLB) (hL' : L'.IsLB)
     {φ' : K → (Y ⟶ X')} {ε : K → ℤ}
@@ -76,11 +74,9 @@ theorem exists_down_val {w : LB.Iso L' (L.pull F)} (hw : PGen w) (hL : L.IsLB) (
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ H X0 t S _ x0 t' mp w hw d x x' hx e he`. Establish `hφ : ∀ m, (fun J => cφG t' ![jptG t' (𝟙 (Sp S)) d x' m (0 : Fin 2), jptG t' (𝟙 (Sp S)) d x' m (1 : Fin 2)] J ≫ mp.φ) = cφG t ![jptG t x0 d x m (0 : Fin 2), jptG t x0 d x m (1 : Fin 2)]`. Introduce `m`. Use function extensionality and compare the values at `J`. Set `U : Over.mk ((jOG (𝟙 (Sp S)) d m 2).hom ≫ x0) ⟶ jOG x0 d m 2` to `Over.homMk (𝟙 _) (by simp [overAt])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression.
 
-Establish `hj : ∀ i : Fin 2, pushPt mp.cart.1.w (jptG t' (𝟙 (Sp S)) d x' m i) = U ≫ jptG t x0 d x m i` using `fun i => Over.OverMorphism.ext (by show ((homAt (𝟙 (Sp S)) (jetCopy d m i)).left ≫ (x' m).left) ≫ mp.φ = 𝟙 _ ≫ (homAt x0 (jetCopy d m i)).left ≫ (x m).left`. Rewrite using `[Category.assoc, hx, Category.id_comp]`. Use the proof step `rfl)`. Use `(psum_push mp.cart _ ![jptG t x0 d x m (0 : Fin 2), jptG t x0 d x m (1 : Fin 2)] U (fun i => ?_) J.down).trans (Category.id_comp _)` and prove the remaining obligations. Use `fin_cases i`.
-
-Conclude with `hj 0`. Conclude with `hj 1`. Use `choose c₁ hc₁ hcorr using fun m => ChartPrimTrPf.exists_reindex t.PP.L (hφ m) (cε 2) (e m) (he m)`. Use `choose a ha hv using fun m => exists_down_val ((isGen_iff w).1 hw.1) t.PP.isLB t'.PP.isLB (c₁ m) (hc₁ m)`. Conclude with `⟨a, ha, fun m => ⟨c₁ m, hcorr m, ChartPrimTrPf.maps_flat w _ _ (a m) (c₁ m) (hv m)⟩⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem frames_pull_back : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X0 : Scheme.{0}) (t : SAB H X0) (S : Type) [CommRing S] (x0 : Sp S ⟶ X0) (t' : SAB H (Sp S)) (mp : SABMap t' t x0) (w : LB.Iso t'.PP.L (t.PP.L.pull mp.φ)), RigIso mp w → ∀ (d : ℕ) (x : ∀ m, jOG x0 d m 1 ⟶ t.G) (x' : ∀ m, jOG (𝟙 (Sp S)) d m 1 ⟶ t'.G), (∀ m, (x' m).left ≫ mp.φ = (x m).left) → ∀ e : ∀ m, FrTyG t x0 d x m, (∀ m, (e m).IsGen) → ∃ e' : ∀ m, FrTyG t' (𝟙 (Sp S)) d x' m, (∀ m, (e' m).IsGen) ∧ (∀ m, ∃ c₁ : LB.Gen (LB.LinComb t.PP.L (fun J => cφG t' ![jptG t' (𝟙 (Sp S)) d x' m (0 : Fin 2), jptG t' (𝟙 (Sp S)) d x' m (1 : Fin 2)] J ≫ mp.φ) (cε 2)), LB.Gen.Corr t.PP.L _ _ _ _ c₁ (e m) ∧ LB.Gen.Maps (LB.linCombIso w (cφG t' ![jptG t' (𝟙 (Sp S)) d x' m (0 : Fin 2), jptG t' (𝟙 (Sp S)) d x' m (1 : Fin 2)]) (cε 2)) (e' m) (flatGen t.PP.L mp.φ _ _ c₁)) := by
   intro E _ _ _ H X0 t S _ x0 t' mp w hw d x x' hx e he

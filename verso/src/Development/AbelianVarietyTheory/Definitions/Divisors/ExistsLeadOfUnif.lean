@@ -127,9 +127,9 @@ def Trait.Exp {C : LabCover D} {W : Type} [CommRing W] [IsDomain W] [IsLocalRing
       sval σ p z J = gs p z ⊤ (scal T.G.hom a) * sval s p' z J
 
 /- English proof (translation)
-Take `⟨W', _, _, _, io, G', _, _, β, D', A', U', hD, hW', hi, hf, hc, ⟨ℓ, hℓ⟩, hlab⟩` from `C.trait W hW φ ξ hφ hl hξ`. Establish `hio : IsLocalHom io`. Use `letI := io.toAlgebra`. Establish `: Module.Finite W W'` using `hf`. Establish `: FaithfulSMul W W'` using `(faithfulSMul_iff_algebraMap_injective W W').2 hi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(inferInstance : IsLocalHom (algebraMap W W'))`. Use `⟨W', inferInstance, inferInstance, inferInstance, io, { cdvr := hW', φ := io.comp φ, inj := hi.comp hφ, loc := inferInstance, ξ := spMap io ≫ ξ, ξ_π := ?_, G := G', β := β, cart := hc, D' := D', A := A', U := U', hD := hD, ℓ := ℓ, ℓ_gen := hℓ, lab := hlab }, hi, hf, rfl, rfl⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hξ, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem LabCover.exists_trait (C : LabCover D) (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (hW : GlobalTheory.LN.CDvr W)
     (φ : R →+* W) (ξ : Sp W ⟶ C.S) (hφ : Function.Injective φ) (hl : IsLocalHom φ) (hξ : ξ ≫ C.π = spMap φ) :
@@ -147,11 +147,11 @@ theorem LabCover.exists_trait (C : LabCover D) (W : Type) [CommRing W] [IsDomain
   rw [Category.assoc, hξ, ← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Take `⟨D, hr, h, -, -⟩` from `LabCover.exists_toric_rank_one`. Establish `hu : IsUnit ((3 : ℕ) : PowerSeries ℚ)`. Rewrite using `[← map_natCast (algebraMap ℚ (PowerSeries ℚ))]`. Conclude with `(IsUnit.mk0 _ (by norm_num)).map _`. Take `⟨C, h₁, -⟩` from `h.labCover base_powerSeries 3 Nat.prime_three (by decide) hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hW : GlobalTheory.LN.CDvr (PowerSeries ℚ)` using `⟨inferInstance, base_powerSeries.1.2.2.2, base_powerSeries.2⟩`. Establish `hx : ∃ ξ : Sp (PowerSeries ℚ) ⟶ C.toModif.S, ξ ≫ C.toModif.π = spMap (RingHom.id _)`. Rewrite using `[h₁]`. Conclude with `⟨spMap (RingHom.id _), Category.comp_id _⟩`. Take `⟨ξ, hξ⟩` from `hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W', _, _, _, io, T, -⟩` from `C.exists_trait _ hW (RingHom.id _) ξ Function.injective_id inferInstance hξ`. Conclude with `⟨D, C, W', _, _, _, hr, ⟨T⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Trait.exists_toric_rank_one : ∃ (D : DegData (PowerSeries ℚ) (maximalIdeal (PowerSeries ℚ))) (C : LabCover D)
     (W : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsLocalRing W), Module.finrank ℤ D.toPre.X = 1 ∧ Nonempty (Trait C W) := by
@@ -170,13 +170,13 @@ theorem Trait.exists_toric_rank_one : ∃ (D : DegData (PowerSeries ℚ) (maxima
 open ReciprocityTheory.ChartRestriction.G.DVR ReciprocityTheory.ChartRestriction.G.DVR.TG in
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Take `⟨ϑ, hϑ, -⟩` from `GlobalTheory.ThetaSectionTest.exists_isTheta_of_dvr GlobalTheory.allSixLaws.1 V D A G U`. Take `⟨F, g, -, x, f⟩` from `integral_exp rfl U ϑ`. Establish `hv` using `terms_vanish hϖ rfl F g f`. Establish `h1 : Out.scal (DegPre.BF D.toPre (FractionRing V)).hom (1 : V) = 1` using `by unfold Out.scal; rw [map_one, map_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨F, g, fun α => h1 ▸ f α, fun e => ?_⟩, ⟨rfl, hv⟩, leading_expansion_term_ne_zero rfl U ϑ (nonzero_of_isTheta rfl U hϑ) g (x 0) hv⟩` and prove the remaining obligations. Take `⟨S, hS, -⟩` from `x e`. Use `S.finite_toSet.subset fun α hα => by_contra fun h => hα fun j => ?_` and prove the remaining obligations. Use `(U.gt e).q_flat` as an intermediate fact. Use `(U.gt e).q_surj` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `app_injective_of_flat_surj (U.gt e).q.left` to reduce the goal to its premises. Rewrite using `[map_zero]`. Establish `h'` using `hS α h j`. Establish `e' : (U.gt e).pG.left = (U.gt e).q.left ≫ pullback.fst D.toPre.P.A.hom (thick V (maximalIdeal V) e)` using `rfl`. Rewrite `h'` using `[e', Scheme.Hom.comp_app]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h'`.
+A detailed English derivation is pending.
 -/
 theorem IntFam.exists_lead_of_unif {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     {D : DegData V (maximalIdeal V)} {A : PolAV (Sp (FractionRing V))} {G : Over (Sp V)} [GrpObj G] [IsCommMonObj G]
@@ -200,7 +200,7 @@ theorem IntFam.exists_lead_of_unif {V : Type} [CommRing V] [IsDomain V] [IsDiscr
   exact h'
 
 /- English proof (translation)
-Take `⟨A, G, _, _, D, U, -, -, hr, -⟩` from `GlobalTheory.TateUnif.exists_unif_rank_one`. Take `⟨F, h⟩` from `IntFam.exists_lead_of_unif U`. Conclude with `⟨D, F, hr, h⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IntFam.exists_toric_rank_one : ∃ (D : DegData (PowerSeries ℚ) (maximalIdeal (PowerSeries ℚ)))
     (F : IntFam (maximalIdeal (PowerSeries ℚ)) D.toPre 1), Module.finrank ℤ D.toPre.X = 1 ∧ F.Lead 0 (F.f 0) ∧
@@ -210,7 +210,7 @@ theorem IntFam.exists_toric_rank_one : ∃ (D : DegData (PowerSeries ℚ) (maxim
   exact ⟨D, F, hr, h⟩
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (D : DegPre (PowerSeries ℚ)) : Nonempty (Ext D) := inferInstance
 

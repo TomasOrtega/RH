@@ -5,7 +5,7 @@ open CategoryTheory AlgebraicGeometry TensorProduct Opposite MonoidalCategory Ca
 namespace GlobalTheory.CompanionTheory.PerfectFirstCohomologyUniversal
 
 /- English proof (translation)
-Proceed by induction on `u with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem lid_lTensor_apply {R X Y : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup Y] [Module R Y]
     (f : X →ₗ[R] Y) (u : R ⊗[R] X) :
@@ -16,37 +16,35 @@ theorem lid_lTensor_apply {R X Y : Type} [CommRing R] [AddCommGroup X] [Module R
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Introduce `R A₀ A₁ A₂ P₀ P₁ P₂ _ _ _ _ _ _ _ _ _ _ _ _ _ d₀ d₁ a₀ a₁ ψ₀ ψ₁ ψ₂ r Z dZ hZ hdZ haa hc₀ hc₁ hr hQ M _ _`. Establish `hr' : ∀ p, a₁ (r (a₁ p)) = a₁ p` using `fun p => LinearMap.congr_fun hr p`. Establish `haa' : ∀ p, a₁ (a₀ p) = 0` using `fun p => LinearMap.congr_fun haa p`. Establish `hc₀' : ∀ p, ψ₁ (a₀ p) = d₀ (ψ₀ p)` using `fun p => LinearMap.congr_fun hc₀ p`. Establish `hc₁' : ∀ p, ψ₂ (a₁ p) = d₁ (ψ₁ p)` using `fun p => LinearMap.congr_fun hc₁ p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ε : P₁ →ₗ[R] LinearMap.ker a₁` to `(LinearMap.id - r ∘ₗ a₁).codRestrict (LinearMap.ker a₁) (fun p => by`. Simplify using `[LinearMap.mem_ker, hr'])`. Set `ψZ : LinearMap.ker a₁ →ₗ[R] Z` to `(ψ₁ ∘ₗ (LinearMap.ker a₁).subtype).codRestrict Z (fun p => (hZ _).2 (by`. Establish `hp : a₁ (p : P₁) = 0` using `p.2`. Simplify using `[← hc₁', hp]))`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `a₀Z : P₀ →ₗ[R] LinearMap.ker a₁` to `a₀.codRestrict (LinearMap.ker a₁) (fun p => haa' p)`. Establish `hεs : (LinearMap.ker a₁).subtype ∘ₗ ε = LinearMap.id - r ∘ₗ a₁`. Use extensionality with `p`. Both sides reduce to the same expression. Establish `hει : ε ∘ₗ (LinearMap.ker a₁).subtype = LinearMap.id`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use extensionality with `p`. Establish `hp : a₁ (p : P₁) = 0` using `p.2`. Simplify using `[ε, hp]`. Establish `hιψ : Z.subtype ∘ₗ ψZ = ψ₁ ∘ₗ (LinearMap.ker a₁).subtype`. Use extensionality with `p`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Establish `hιd : Z.subtype ∘ₗ dZ = d₀`. Use extensionality with `y`. Conclude with `hdZ y`. Establish `hεa : ε ∘ₗ a₀ = a₀Z`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `p`. Use `show a₀ p - r (a₁ (a₀ p)) = a₀ p`. Rewrite using `[haa', map_zero, sub_zero]`. Establish `hψa : ψZ ∘ₗ a₀Z = dZ ∘ₗ ψ₀`. Use extensionality with `p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show ψ₁ (a₀ p) = (dZ (ψ₀ p) : A₁)`. Rewrite using `[hc₀', hdZ]`. Establish `ha₁ι : a₁ ∘ₗ (LinearMap.ker a₁).subtype = 0`. Use extensionality with `p`. Conclude with `p.2`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun x hx => ?_, fun t y h => ?_⟩` and prove the remaining obligations. Take `⟨w, y, hw, hy⟩` from `(hQ M).2 x hx`. Establish `hwε : (LinearMap.ker a₁).subtype.lTensor M (ε.lTensor M w) = w`. Rewrite using `[← LinearMap.lTensor_comp_apply, hεs, LinearMap.lTensor_sub, LinearMap.sub_apply, LinearMap.lTensor_id, LinearMap.id_apply, LinearMap.lTensor_comp_apply, hw, map_zero, sub_zero]`. Use `⟨ψZ.lTensor M (ε.lTensor M w), -y, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← LinearMap.lTensor_comp_apply, hιψ, LinearMap.lTensor_comp_apply, hwε, map_neg, ← hy]`. Normalize the expressions using the abelian group laws. Establish `hsurj : Function.Surjective (ψZ.coprod dZ)`. Introduce `z`. Take `⟨x, y, hx, hy⟩` from `(hQ R).2 ((1 : R) ⊗ₜ (z : A₁)) (by simp [(hZ z).1 z.2])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁ : a₁ (TensorProduct.lid R P₁ x) = 0`. Rewrite using `[← lid_lTensor_apply, hx, map_zero]`. Establish `e₂ : ψ₁ (TensorProduct.lid R P₁ x) - z = d₀ (TensorProduct.lid R A₀ y)`. Use `congrArg (TensorProduct.lid R A₁) hy` as an intermediate fact. Rewrite `this` using `[map_sub, lid_lTensor_apply, TensorProduct.lid_tmul, one_smul, lid_lTensor_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Conclude with `this`. Use `⟨(⟨TensorProduct.lid R P₁ x, e₁⟩, -TensorProduct.lid R A₀ y), Subtype.ext ?_⟩` and prove the remaining obligations. Establish `e₃ : ((ψZ ⟨TensorProduct.lid R P₁ x, e₁⟩ : Z) : A₁) = ψ₁ (TensorProduct.lid R P₁ x)` using `rfl`. Simplify using `only [LinearMap.coprod_apply, Submodule.coe_add, e₃, map_neg, Submodule.coe_neg, hdZ, ← e₂]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu⟩` from `LinearMap.lTensor_surjective M hsurj t`. Establish `hcop : ψZ.coprod dZ = ψZ ∘ₗ LinearMap.fst R _ _ + dZ ∘ₗ LinearMap.snd R _ _`. Apply the tactic sequence `ext <;> simp`. Choose the witnesses or unpack the hypotheses as in `⟨t₁, y₁, ht⟩ : ∃ (t₁ : M ⊗[R] LinearMap.ker a₁) (y₁ : M ⊗[R] A₀), t = ψZ.lTensor M t₁ + dZ.lTensor M y₁ := by`. Use `⟨(LinearMap.fst R _ _).lTensor M u, (LinearMap.snd R _ _).lTensor M u, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hu, hcop, LinearMap.lTensor_add, LinearMap.add_apply, LinearMap.lTensor_comp_apply, LinearMap.lTensor_comp_apply]`. Establish `h1 : Z.subtype.lTensor M (ψZ.lTensor M t₁) = ψ₁.lTensor M ((LinearMap.ker a₁).subtype.lTensor M t₁)`. Rewrite using `[← LinearMap.lTensor_comp_apply, hιψ, LinearMap.lTensor_comp_apply]`. Establish `h2 : Z.subtype.lTensor M (dZ.lTensor M y₁) = d₀.lTensor M y₁`. Rewrite using `[← LinearMap.lTensor_comp_apply, hιd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hιP : d₀.lTensor M (y - y₁) = ψ₁.lTensor M ((LinearMap.ker a₁).subtype.lTensor M t₁)`. Rewrite using `[map_sub, ← h, ht, map_add, h1, h2]`. Normalize the expressions using the abelian group laws. Take `⟨p, hp⟩` from `(hQ M).1 ((LinearMap.ker a₁).subtype.lTensor M t₁) (by`. Rewrite using `[← LinearMap.lTensor_comp_apply, ha₁ι, LinearMap.lTensor_zero, LinearMap.zero_apply]) ⟨_, hιP⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht₁ : t₁ = a₀Z.lTensor M p`. Rewrite using `[← hεa, LinearMap.lTensor_comp_apply, hp, ← LinearMap.lTensor_comp_apply, hει, LinearMap.lTensor_id, LinearMap.id_apply]`. Use `⟨ψ₀.lTensor M p + y₁, ?_⟩` and prove the remaining obligations. Establish `h3 : dZ.lTensor M (ψ₀.lTensor M p) = ψZ.lTensor M t₁`. Rewrite using `[ht₁, ← LinearMap.lTensor_comp_apply, ← LinearMap.lTensor_comp_apply, hψa]`.
-
-Rewrite using `[map_add, h3, ← ht]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem univ_coeff : ∀ (R A₀ A₁ A₂ P₀ P₁ P₂ : Type) [CommRing R] [AddCommGroup A₀] [Module R A₀] [AddCommGroup A₁] [Module R A₁] [AddCommGroup A₂] [Module R A₂] [AddCommGroup P₀] [Module R P₀] [AddCommGroup P₁] [Module R P₁] [AddCommGroup P₂] [Module R P₂] (d₀ : A₀ →ₗ[R] A₁) (d₁ : A₁ →ₗ[R] A₂) (a₀ : P₀ →ₗ[R] P₁) (a₁ : P₁ →ₗ[R] P₂) (ψ₀ : P₀ →ₗ[R] A₀) (ψ₁ : P₁ →ₗ[R] A₁) (ψ₂ : P₂ →ₗ[R] A₂) (r : P₂ →ₗ[R] P₁) (Z : Submodule R A₁) (dZ : A₀ →ₗ[R] Z), (∀ z, z ∈ Z ↔ d₁ z = 0) → (∀ y, (dZ y : A₁) = d₀ y) → a₁ ∘ₗ a₀ = 0 → ψ₁ ∘ₗ a₀ = d₀ ∘ₗ ψ₀ → ψ₂ ∘ₗ a₁ = d₁ ∘ₗ ψ₁ → a₁ ∘ₗ r ∘ₗ a₁ = a₁ → (∀ (M : Type) [AddCommGroup M] [Module R M], QIsoAt (a₀.lTensor M) (a₁.lTensor M) (d₀.lTensor M) (d₁.lTensor M) (ψ₁.lTensor M)) → ∀ (M : Type) [AddCommGroup M] [Module R M], (∀ x : M ⊗[R] A₁, d₁.lTensor M x = 0 → ∃ (t : M ⊗[R] Z) (y : M ⊗[R] A₀), Z.subtype.lTensor M t + d₀.lTensor M y = x) ∧ (∀ (t : M ⊗[R] Z) (y : M ⊗[R] A₀), Z.subtype.lTensor M t = d₀.lTensor M y → ∃ y' : M ⊗[R] A₀, dZ.lTensor M y' = t) := by
   intro R A₀ A₁ A₂ P₀ P₁ P₂ _ _ _ _ _ _ _ _ _ _ _ _ _ d₀ d₁ a₀ a₁ ψ₀ ψ₁ ψ₂ r Z dZ hZ hdZ haa hc₀ hc₁ hr hQ M _ _

@@ -8,7 +8,7 @@ open CategoryTheory GroundTheory.ProfCoh ReciprocityTheory.Gal ValuativeRel
 namespace CompanionTheory.LocalTateOrthogonality.Gcoh
 
 /- English proof (translation)
-Use extensionality with `x`. Express the relevant statement in the definitionally equal form `valuation ℚ_[p] x ≤ 1 ↔ ‖x‖ ≤ 1`. Rewrite using `[← (valuation ℚ_[p]).map_one, ← Valuation.Compatible.vle_iff_le, Valuation.Compatible.vle_iff_le (v := Padic.mulValuation), GroundTheory.LocalField.Padic.mulValuation_le_iff_norm_le, norm_one]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem integer_padic_eq (p : ℕ) [Fact p.Prime] : 𝒪[ℚ_[p]] = PadicInt.subring p := by
   ext x
@@ -18,7 +18,7 @@ theorem integer_padic_eq (p : ℕ) [Fact p.Prime] : 𝒪[ℚ_[p]] = PadicInt.sub
     GroundTheory.LocalField.Padic.mulValuation_le_iff_norm_le, norm_one]
 
 /- English proof (translation)
-Set `e : 𝒪[ℚ_[p]] ≃+* ℤ_[p]` to `RingEquiv.subringCongr (integer_padic_eq p)`. Establish `h1 : Ideal.span {((p ^ m : ℕ) : ℤ_[p])} = (Ideal.span {((p ^ m : ℕ) : 𝒪[ℚ_[p]])}).map (e : 𝒪[ℚ_[p]] →+* ℤ_[p])`. Rewrite using `[Ideal.map_span, Set.image_singleton, map_natCast]`. Rewrite using `[Nat.card_congr (Ideal.quotientEquiv _ _ e h1).toEquiv, Nat.cast_pow, ← PadicInt.ker_toZModPow, Nat.card_congr (RingHom.quotientKerEquivOfSurjective (ZMod.ringHom_surjective (PadicInt.toZModPow m))).toEquiv, Nat.card_zmod]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_quotient_padic (p : ℕ) [Fact p.Prime] (m : ℕ) :
     Nat.card (𝒪[ℚ_[p]] ⧸ Ideal.span {((p ^ m : ℕ) : 𝒪[ℚ_[p]])}) = p ^ m := by
@@ -32,14 +32,14 @@ theorem card_quotient_padic (p : ℕ) [Fact p.Prime] (m : ℕ) :
       (ZMod.ringHom_surjective (PadicInt.toZModPow m))).toEquiv, Nat.card_zmod]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, Algebra.isSeparable_tower_top_of_isSeparable ℚ_[l] K _⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSepClosure_padic (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) :
     IsSepClosure ↥K (PadicAlgCl l) :=
   ⟨inferInstance, Algebra.isSeparable_tower_top_of_isSeparable ℚ_[l] K _⟩
 
 /- English proof (translation)
-Introduce `l _ K hK`. Use `⟨isSepClosure_padic l K, ?_⟩` and prove the remaining obligations. Take `⟨v, t, h1, h2⟩` from `GroundTheory.LocalField.exists_isNonarchimedeanLocalField_valuativeExtension ℚ_[l] K`. Use `⟨v, t, h1, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[@card_quotient_span_natCast_finiteExtension ℚ_[l] K _ _ _ _ _ v t h1 _ h2 hK, card_quotient_padic]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gcField : SgcField := by
   intro l _ K hK

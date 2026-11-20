@@ -12,7 +12,7 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Unfold `sgn sv`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sgn_cast_eq (p0 r : ℕ) : (fun a : Fin r => ((sgn p0 (a : ℕ) : ℝ) : ℂ)) = sv p0 := by
   funext a
@@ -20,9 +20,9 @@ lemma sgn_cast_eq (p0 r : ℕ) : (fun a : Fin r => ((sgn p0 (a : ℕ) : ℝ) : �
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hn` using `Complex.normSq_pos.mpr hc`. Rewrite using `[mul_comm c d, mul_assoc, Complex.mul_conj]`. Simplify using `only [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, mul_zero, sub_zero]`. Establish `h2 : s * (d.re * Complex.normSq c) = (s * d.re) * Complex.normSq c` using `by ring`. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_pos h hn`.
+A detailed English derivation is pending.
 -/
 lemma pos_conj_mul {s : ℝ} {c d : ℂ} (hc : c ≠ 0) (h : 0 < s * d.re) : 0 < s * (c * d * conj c).re := by
   have hn := Complex.normSq_pos.mpr hc
@@ -33,11 +33,9 @@ lemma pos_conj_mul {s : ℝ} {c d : ℂ} (hc : c ≠ 0) (h : 0 < s * d.re) : 0 <
   exact mul_pos h hn
 
 /- English proof (translation)
-Introduce `τ`. Establish `hg : gram τ.1 X.Gm (P τ * y τ) = Gy X.p0 (y τ)`. Rewrite using `[FrameDegreeData.gram_mul, (hP τ).2, sgn_cast_eq]`. Both sides reduce to the same expression. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (P τ * y τ).det ≠ 0`. Rewrite using `[det_mul]`. Conclude with `mul_ne_zero (hP τ).1 (det_ne_of_ok (hy τ))`. Use `show 0 < psgn X.p0 i * (lminor (gram τ.1 X.Gm (P τ * y τ)) i).re`. Rewrite using `[hg]`.
-
-Unfold `psgn sgn lminor`. Conclude with `lead_pos (hy τ) i (Nat.le_of_lt_succ i.isLt)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma mem_dom_of_ok {r : ℕ} (X : Data E r) (P : X.Ψ → Matrix (Fin r) (Fin r) ℂ)
     (hP : ∀ τ, (P τ).det ≠ 0 ∧ gram τ.1 X.Gm (P τ) = diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ))
@@ -57,9 +55,7 @@ lemma mem_dom_of_ok {r : ℕ} (X : Data E r) (P : X.Ψ → Matrix (Fin r) (Fin r
     exact lead_pos (hy τ) i (Nat.le_of_lt_succ i.isLt)
 
 /- English proof (translation)
-Introduce `τ`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Use `show (mat x τ * mat b τ).det ≠ 0`. Rewrite using `[det_mul]`. Conclude with `mul_ne_zero (hx τ).1 (hb τ).1`.
-
-Rewrite using `[FrameDegreeData.dmin_rmul X x hb τ i]`. Conclude with `pos_conj_mul (Finset.prod_ne_zero_iff.2 fun j _ => FrameDegreeData.bdiag_ne X hb τ _) ((hx τ).2 i)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma rmul_mem {r : ℕ} (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) {b : Frame X.Ψ r}
     (hb : b ∈ Bor X.Ψ r) : rmul x b ∈ X.dom := by
@@ -72,23 +68,21 @@ lemma rmul_mem {r : ℕ} (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) {b
     exact pos_conj_mul (Finset.prod_ne_zero_iff.2 fun j _ => FrameDegreeData.bdiag_ne X hb τ _) ((hx τ).2 i)
 
 /- English proof (translation)
-Introduce `r X`. Use `choose P hP using X.signature`. Set `K : Set (X.Ψ → Matrix (Fin r) (Fin r) ℂ)` to `{y | ∀ τ, Ok X.p0 (y τ)}`. Set `φ : (X.Ψ → Matrix (Fin r) (Fin r) ℂ) → Frame X.Ψ r` to `fun y τ => (P τ * y τ : Matrix (Fin r) (Fin r) ℂ)`. Establish `hφc : Continuous φ` using `continuous_pi fun τ => continuous_const.matrix_mul (continuous_apply τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : ∀ y ∈ K, φ y ∈ X.dom` using `fun y hy => mem_dom_of_ok X P hP y hy`. Establish `hKc : IsPreconnected (φ '' K)` using `isPreconnected_ok.image φ hφc.continuousOn`. Establish `hss : ∀ a : Fin r, sv X.p0 a * sv X.p0 a = 1` using `fun a => by`. Unfold `sv`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h1 : (1 : X.Ψ → Matrix (Fin r) (Fin r) ℂ) ∈ K` using `fun τ => ok_of_blk (fun k a hka => by`. Establish `hne : k ≠ a`. Introduce and unpack `rfl`. Conclude with `hka Iff.rfl`. Simplify using `[Matrix.one_apply_ne hne]) (by simp)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨φ 1, hK 1 h1⟩, isPreconnected_of_forall (φ 1) fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨b, hb, hort⟩` from `(orthonormalFlagTranslate_holds r X).1 x hx`. Set `y0 : X.Ψ → Matrix (Fin r) (Fin r) ℂ` to `fun τ => (P τ)⁻¹ * mat (rmul x b) τ`. Establish `hy0τ : ∀ τ, P τ * y0 τ = mat (rmul x b) τ` using `fun τ => Matrix.mul_nonsing_inv_cancel_left _ _ (isUnit_iff_ne_zero.2 (hP τ).1)`. Establish `hy0 : φ y0 = rmul x b` using `funext fun τ => hy0τ τ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy0K : y0 ∈ K`. Introduce `τ`. Establish `hg : Gy X.p0 (y0 τ) = diagonal (sv X.p0)`. Establish `h2 : gram τ.1 X.Gm (P τ * y0 τ) = Gy X.p0 (y0 τ)`. Rewrite using `[FrameDegreeData.gram_mul, (hP τ).2, sgn_cast_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← h2, hy0τ τ, hort τ, sgn_cast_eq]`. Unfold `Ok`. Rewrite using `[hg, diagonal_mul_diagonal]`. Simplify using `only [hss]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[diagonal_one]`. Conclude with `PosDef.one`. Establish `hB : IsPreconnected (Bor X.Ψ r)` using `isPreconnected_upper (ι := X.Ψ) (r := r)`. Establish `h1B : (fun _ => (1 : Matrix (Fin r) (Fin r) ℂ) : Frame X.Ψ r) ∈ Bor X.Ψ r` using `fun τ => ⟨by show (1 : Matrix (Fin r) (Fin r) ℂ).det ≠ 0 simp, fun a c hca => Matrix.one_apply_ne (ne_of_gt hca)⟩`. Establish `hxB : rmul x (fun _ => (1 : Matrix (Fin r) (Fin r) ℂ)) = x`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `τ`. Conclude with `Matrix.mul_one (mat x τ)`. Establish `hrc : Continuous fun b' : Frame X.Ψ r => rmul x b'` using `continuous_pi fun τ => continuous_const.matrix_mul (continuous_apply τ)`. Use `⟨(fun b' => rmul x b') '' Bor X.Ψ r ∪ φ '' K, ?_, Or.inr ⟨1, h1, rfl⟩, Or.inl ⟨_, h1B, hxB⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `z (⟨b', hb', rfl⟩ | ⟨y, hy, rfl⟩)`.
-
-Conclude with `rmul_mem X hx hb'`. Conclude with `hK y hy`. Conclude with `IsPreconnected.union (rmul x b) ⟨b, hb, rfl⟩ ⟨y0, hy0K, hy0⟩ (hB.image _ hrc.continuousOn) hKc`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem flag_domain_frames_connected : GGConnStatement (E := E) := by
   intro r X

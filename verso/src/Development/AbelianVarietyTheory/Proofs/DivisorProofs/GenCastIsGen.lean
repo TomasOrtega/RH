@@ -18,7 +18,7 @@ namespace GlobalTheory.Mum.Conj
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Rewrite using `[spMap, jFK, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `σ.comp_algebraMap`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem spMap_jFK (σ : Kb R →ₐ[FractionRing R] Kb R) :
     spMap σ.toRingHom ≫ jFK (R := R) (Kb R) = jFK (R := R) (Kb R) := by
@@ -39,19 +39,19 @@ def mTw (A : PolAV (Sp (FractionRing R))) (σ : Kb R →ₐ[FractionRing R] Kb R
   lift (fst _ _ ≫ twK σ) (snd _ _)
 
 /- English proof (translation)
-The claim follows from `lift_fst _ _`.
+A detailed English derivation is pending.
 -/
 theorem mTw_fst (A : PolAV (Sp (FractionRing R))) (σ : Kb R →ₐ[FractionRing R] Kb R) :
     mTw A σ ≫ fst _ _ = fst _ _ ≫ twK σ := lift_fst _ _
 
 /- English proof (translation)
-The claim follows from `lift_snd _ _`.
+A detailed English derivation is pending.
 -/
 theorem mTw_snd (A : PolAV (Sp (FractionRing R))) (σ : Kb R →ₐ[FractionRing R] Kb R) :
     mTw A σ ≫ snd _ _ = snd _ _ := lift_snd _ _
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, mTw_fst, Over.comp_left]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mTw_fst_left (A : PolAV (Sp (FractionRing R))) (σ : Kb R →ₐ[FractionRing R] Kb R) :
     (mTw A σ).left ≫ (fst (TFK (R := R) (Kb R)) A.A).left =
@@ -59,7 +59,7 @@ theorem mTw_fst_left (A : PolAV (Sp (FractionRing R))) (σ : Kb R →ₐ[Fractio
   rw [← Over.comp_left, mTw_fst, Over.comp_left]; rfl
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, mTw_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mTw_snd_left (A : PolAV (Sp (FractionRing R))) (σ : Kb R →ₐ[FractionRing R] Kb R) :
     (mTw A σ).left ≫ (snd (TFK (R := R) (Kb R)) A.A).left = (snd (TFK (R := R) (Kb R)) A.A).left := by
@@ -87,14 +87,14 @@ def genCast {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ φ' : K →
   h ▸ t
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `ht`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem genCast_isGen {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ φ' : K → (Y ⟶ X)} {ε : K → ℤ}
     (h : φ = φ') {t : LB.Gen (LB.LinComb L φ ε)} (ht : t.IsGen) : (genCast h t).IsGen := by
   subst h; exact ht
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem val_genCast {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ φ' : K → (Y ⟶ X)} {ε : K → ℤ}
     (h : φ = φ') (t : LB.Gen (LB.LinComb L φ ε)) (r : Z ⟶ Y) (z : Z) (J : (Z ⟶ X) → L.ι) :
@@ -102,7 +102,7 @@ theorem val_genCast {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ �
   subst h; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `mTw_snd_left A σ`. Use `show (mTw A σ).left ≫ (translPt A.A x).left = (translPt A.A (twK σ ≫ x)).left`. Rewrite using `[← Over.comp_left, translPt, translPt, ← Category.assoc, comp_lift, ← Category.assoc, mTw_fst, mTw_snd, Category.assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaφ_mTw (A : PolAV (Sp (FractionRing R))) (σ : Kb R →ₐ[FractionRing R] Kb R)
     (x : TFK (R := R) (Kb R) ⟶ A.A) :
@@ -122,7 +122,7 @@ def thTw (A : PolAV (Sp (FractionRing R))) (k : ℤ) (σ : Kb R →ₐ[FractionR
   isGen := genCast_isGen _ (ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen A.L _ _ θ.φ θ.isGen _)
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, spMap_jFK]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_jFKR (σ : Kb R →ₐ[FractionRing R] Kb R) :
     spMap σ.toRingHom ≫ (jFK (R := R) (Kb R) ≫ jK R) = jFK (R := R) (Kb R) ≫ jK R := by
@@ -132,7 +132,7 @@ def twF (σ : Kb R →ₐ[FractionRing R] Kb R) : TF (R := R) (Kb R) ⟶ TF (R :
   Over.homMk (spMap σ.toRingHom) (spMap_jFKR σ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Use `fin_cases k`. Use `show (twF τ).left ≫ (toUnit _ ≫ η[D.P.A]).left = (toUnit _ ≫ η[D.P.A]).left`. Rewrite using `[← Over.comp_left, ← Category.assoc, comp_toUnit]`. Conclude with `h.2.1.symm`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lineφ_tw (D : DegPre R) {N : ℕ} (τ : Kb R →ₐ[FractionRing R] Kb R) {p p₀ : QkPt D (Kb R) N}
     (h : QkExt τ.toRingHom p p₀) :

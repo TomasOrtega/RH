@@ -7,9 +7,9 @@ open GlobalTheory GlobalTheory.VB GlobalTheory.TangentOrigin GlobalTheory.Toroid
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `V h`. Establish `hM' : IsUnit ((resG X h).mapMatrix M)` using `hM.map _`. Establish `hb : Function.Bijective ((resG X h).mapMatrix M).mulVec` using `⟨Matrix.mulVec_injective_of_isUnit hM', Matrix.mulVec_surjective_iff_isUnit.2 hM'⟩`. Establish `key : ⇑(Fintype.linearCombination Γ(X, V) fun j => GlobalTheory.Twist.resM F h (∑ i, M i j • e i)) = (Fintype.linearCombination Γ(X, V) fun i => GlobalTheory.Twist.resM F h (e i)) ∘ ((resG X h).mapMatrix M).mulVec`. Use function extensionality and compare the values at `a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp_apply, Fintype.linearCombination_apply, map_sum, GlobalTheory.Twist.resM_smul, Matrix.mulVec, dotProduct, Finset.sum_smul, Finset.smul_sum, smul_smul, RingHom.mapMatrix_apply, Matrix.map_apply]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`. Rewrite using `[key]`. Conclude with `(he V h).comp hb`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem frame_mul {X : Scheme.{0}} {F : X.Modules} {U : X.Opens} {n : Type} [Fintype n]
     [DecidableEq n] {e : n → Γ(F, U)} (he : VB.IsFrame e) (M : Matrix n n Γ(X, U)) (hM : IsUnit M) :
@@ -31,7 +31,7 @@ private theorem frame_mul {X : Scheme.{0}} {F : X.Modules} {U : X.Opens} {n : Ty
   exact (he V h).comp hb
 
 /- English proof (translation)
-Introduce `p _` and use `by have h₁ : X.fromSpecStalk x p ∈ Set.range (X.fromSpecStalk x) := ⟨p, rfl⟩ rw [Scheme.range_fromSpecStalk] at h₁ exact h₁.mem_open U.isOpen h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem stalk_pre {X : Scheme.{0}} {x : X} {U : X.Opens} (h : x ∈ U) : ⊤ ≤ (X.fromSpecStalk x) ⁻¹ᵁ U :=
   fun p _ => by
@@ -40,9 +40,9 @@ private theorem stalk_pre {X : Scheme.{0}} {x : X} {U : X.Opens} (h : x ∈ U) :
     exact h₁.mem_open U.isOpen h
 
 /- English proof (translation)
-Establish `e : (X.fromSpecStalk x).appLE U ⊤ h' ≫ (Scheme.ΓSpecIso (X.presheaf.stalk x)).hom = X.presheaf.germ U x h`. Rewrite using `[Scheme.Hom.appLE, Scheme.fromSpecStalk_app h]`. Simplify using `only [Category.assoc, ← Functor.map_comp_assoc]`. Rewrite using `[show (homOfLE (le_top : _ ≤ (⊤ : (Spec (X.presheaf.stalk x)).Opens))).op ≫ (homOfLE h').op = 𝟙 _ from Subsingleton.elim _ _]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg (fun φ => φ.hom s) e`.
+A detailed English derivation is pending.
 -/
 private theorem evalPt_stalk {X : Scheme.{0}} {x : X} {U : X.Opens} (h : x ∈ U)
     (h' : ⊤ ≤ (X.fromSpecStalk x) ⁻¹ᵁ U) (s : Γ(X, U)) :
@@ -55,9 +55,9 @@ private theorem evalPt_stalk {X : Scheme.{0}} {x : X} {U : X.Opens} (h : x ∈ U
   exact congrArg (fun φ => φ.hom s) e
 
 /- English proof (translation)
-Use `choose V hV s hs using fun i => X.presheaf.germ_exist (t i)`. Establish `hx : x ∈ U ⊓ ⨅ i, V i`. Use `⟨h, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x ∈ ((⨅ i, V i : X.Opens) : Set X)`. Rewrite using `[TopologicalSpace.Opens.coe_iInf]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Set.mem_iInter.2 hV`. Use `⟨U ⊓ ⨅ i, V i, hx, inf_le_left, fun i => X.presheaf.map (homOfLE (inf_le_right.trans (iInf_le V i))).op (s i), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[TopCat.Presheaf.germ_res_apply, hs]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_lift {X : Scheme.{0}} {x : X} {U : X.Opens} (h : x ∈ U) {ι : Type} [Finite ι]
     (t : ι → X.presheaf.stalk x) :
@@ -73,17 +73,15 @@ private theorem exists_lift {X : Scheme.{0}} {x : X} {U : X.Opens} (h : x ∈ U)
   rw [TopCat.Presheaf.germ_res_apply, hs]
 
 /- English proof (translation)
-Introduce `X M r ch x hx T hT`. Take `⟨W, hW, hWU, s, hs⟩` from `exists_lift hx (fun p : Fin r × Fin r => T p.1 p.2)`. Set `S : Matrix (Fin r) (Fin r) Γ(X, W)` to `Matrix.of fun a b => s (a, b)`. Establish `hS : (X.presheaf.germ W x hW).hom.mapMatrix S = T`. Use extensionality with `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `hs (a, b)`. Establish `hxV : x ∈ X.basicOpen S.det`. Rewrite using `[Scheme.mem_basicOpen X S.det x hW, RingHom.map_det, hS]`. Conclude with `hT`. Establish `hVW : X.basicOpen S.det ≤ W` using `X.basicOpen_le _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hVU` using `hVW.trans hWU`. Set `S' : Matrix (Fin r) (Fin r) Γ(X, X.basicOpen S.det)` to `(resG X hVW).mapMatrix S`. Establish `hS' : IsUnit S'`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, ← RingHom.map_det]`. Conclude with `X.toRingedSpace.isUnit_res_basicOpen S.det`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨X.basicOpen S.det, _, frame_mul (ch.isFrame.res hVU) S' hS'⟩, hxV, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Use `(trAt_apply (K := X.presheaf.stalk x) (x := X.fromSpecStalk x) ch ⟨X.basicOpen S.det, _, frame_mul (ch.isFrame.res hVU) S' hS'⟩ hVU le_rfl (stalk_pre hxV) a b).trans ?_` and prove the remaining obligations. Use `(evalPt_stalk hxV _ _).trans ?_` and prove the remaining obligations. Establish `: ((ch.isFrame.basis hVU).repr (GlobalTheory.Twist.resM M le_rfl (∑ i, S' i b • GlobalTheory.Twist.resM M hVU (ch.e i)))) a = S' a b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `e : GlobalTheory.Twist.resM M le_rfl (∑ i, S' i b • GlobalTheory.Twist.resM M hVU (ch.e i)) = ∑ i, S' i b • ch.isFrame.basis hVU i`. Simplify using `only [map_sum, GlobalTheory.Twist.resM_smul, GlobalTheory.Twist.resM_resM, IsFrame.basis_apply]`. Simplify using `[resG]`. Rewrite using `[e, Module.Basis.repr_sum_self]`. Use `(congrArg _ this).trans ?_` and prove the remaining obligations.
-
-Conclude with `(TopCat.Presheaf.germ_res_apply X.presheaf (homOfLE hVW) x hxV (s (a, b))).trans (hs (a, b))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_chart_transition :
     ∀ (X : Scheme.{0}) (M : X.Modules) (r : ℕ) (ch : Chart M r) (x : X), x ∈ ch.U → ∀ T : Matrix (Fin r) (Fin r) (X.presheaf.stalk x), IsUnit T.det → ∃ ch' : Chart M r, x ∈ ch'.U ∧ trAt (K := X.presheaf.stalk x) (X.fromSpecStalk x) ch ch' = T := by

@@ -16,7 +16,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-The claim follows from `Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 theorem alg_inj : Function.Injective (algebraMap 𝒪[k] k) := Subtype.val_injective
 
@@ -29,15 +29,15 @@ theorem coe_map_apply {n : ℕ} (A : GL (Fin n) 𝒪[k]) (i j : Fin n) :
       Matrix (Fin n) (Fin n) k) i j = algebraMap 𝒪[k] k ((A : Matrix (Fin n) (Fin n) 𝒪[k]) i j) := rfl
 
 /- English proof (translation)
-Take `⟨A, rfl⟩` from `hg`. Take `⟨⟨B, rfl⟩, hB⟩` from `hu`. Establish `hB' : ∀ i j, (B : Matrix (Fin n) (Fin n) 𝒪[k]) i j - (1 : Matrix (Fin n) (Fin n) 𝒪[k]) i j ∈ 𝓂[k] ^ r`. Introduce `i j`. Take `⟨y, hy, hyx⟩` from `hB i j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hyeq : y = (B : Matrix (Fin n) (Fin n) 𝒪[k]) i j - (1 : Matrix (Fin n) (Fin n) 𝒪[k]) i j`. Apply `alg_inj` to reduce the goal to its premises. Rewrite using `[hyx, coe_map_apply, map_sub, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Conclude with `hyeq ▸ hy`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `key : ∀ i j, ((A⁻¹ * B * A : GL (Fin n) 𝒪[k]) : Matrix (Fin n) (Fin n) 𝒪[k]) i j - (1 : Matrix (Fin n) (Fin n) 𝒪[k]) i j ∈ 𝓂[k] ^ r`. Introduce `i j`. Establish `h : ((A⁻¹ * B * A : GL (Fin n) 𝒪[k]) : Matrix (Fin n) (Fin n) 𝒪[k]) - 1 = ((A⁻¹ : GL (Fin n) 𝒪[k]) : Matrix (Fin n) (Fin n) 𝒪[k]) * ((B : Matrix (Fin n) (Fin n) 𝒪[k]) - 1) * (A : Matrix (Fin n) (Fin n) 𝒪[k])`. Rewrite using `[Units.val_mul, Units.val_mul, mul_sub, sub_mul, mul_one, Units.inv_mul]`. Rewrite using `[← Matrix.sub_apply, h, Matrix.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Ideal.sum_mem _ fun m _ => Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply]`. Conclude with `hB' m l`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_inv, ← map_mul, ← map_mul]`. Use `⟨⟨_, rfl⟩, fun i j => ⟨_, key i j, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[coe_map_apply, map_sub, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem conj_mem_KC {n r : ℕ} (g u : GL (Fin n) k) (hg : g ∈ KO k (Fin n)) (hu : u ∈ KC k n r) :
     g⁻¹ * u * g ∈ KC k n r := by
@@ -72,11 +72,9 @@ theorem conj_mem_KC {n r : ℕ} (g u : GL (Fin n) k) (hg : g ∈ KO k (Fin n)) (
 end P_V0stable
 
 /- English proof (translation)
-Introduce `_ _ g φ hφ`. Take `⟨h1, h2⟩ : (∀ p : ↥(KO k (Fin n)), (p : GL (Fin n) k) ∈ G.PO → ∀ x, φ (p * x) = G.lam p * φ x) ∧ ∀ x (u : ↥(KO k (Fin n))), (u : GL (Fin n) k) ∈ KC k n G.lev → φ (x * u) = φ x` from `hφ`. Use `show (∀ p : ↥(KO k (Fin n)), (p : GL (Fin n) k) ∈ G.PO → ∀ x, Rreg (k := k) (n := n) g φ (p * x) = G.lam p * Rreg (k := k) (n := n) g φ x) ∧ ∀ x (u : ↥(KO k (Fin n))), (u : GL (Fin n) k) ∈ KC k n G.lev → Rreg (k := k) (n := n) g φ (x * u) = Rreg (k := k) (n := n) g φ x`. Use `⟨fun p hp x => ?_, fun x u hu => ?_⟩` and prove the remaining obligations. Use `show φ (p * x * g) = G.lam p * φ (x * g)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc]`. Conclude with `h1 p hp (x * g)`. Use `show φ (x * u * g) = φ (x * g)`. Establish `hc : ((g⁻¹ * u * g : ↥(KO k (Fin n))) : GL (Fin n) k) ∈ KC k n G.lev`. Express the relevant statement in the definitionally equal form `((g : GL (Fin n) k))⁻¹ * (u : GL (Fin n) k) * (g : GL (Fin n) k) ∈ KC k n G.lev`.
-
-Conclude with `P_V0stable.conj_mem_KC _ _ g.2 hu`. Establish `e : x * u * g = x * g * (g⁻¹ * u * g)` using `by group`. Rewrite using `[e]`. Conclude with `h2 _ _ hc`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step_V0stable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : ℕ} (G : Grp k n) : FixedSubspaceStableProp G := by

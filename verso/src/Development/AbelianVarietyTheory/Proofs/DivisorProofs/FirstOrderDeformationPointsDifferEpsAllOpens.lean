@@ -22,7 +22,7 @@ namespace GlobalTheory.CechKS.EpsDiff
 open GlobalTheory.FlagMod (ev_spMap spMap_ev tau tau_le le_preimage_comp le_preimage_map)
 
 /- English proof (translation)
-The claim follows from `(Spec.map_comp _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem spc {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp _ _).symm
@@ -36,7 +36,7 @@ def FR (ε : B) : Subring (B × DualNumber (B ⧸ Ideal.span {ε})) :=
     ((TrivSqZeroExt.fstHom (B ⧸ Ideal.span {ε}) _ _).toRingHom.comp (RingHom.snd _ _))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_FR {ε : B} {r : B × DualNumber (B ⧸ Ideal.span {ε})} : r ∈ FR ε ↔ mkE ε r.1 = r.2.fst := Iff.rfl
 
@@ -45,13 +45,13 @@ def p1 (ε : B) : FR ε →+* B := (RingHom.fst _ _).comp (FR ε).subtype
 def p2 (ε : B) : FR ε →+* DualNumber (B ⧸ Ideal.span {ε}) := (RingHom.snd _ _).comp (FR ε).subtype
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Prod.ext h1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem FR_ext {ε : B} {r s : FR ε} (h1 : p1 ε r = p1 ε s) (h2 : p2 ε r = p2 ε s) : r = s :=
   Subtype.ext (Prod.ext h1 h2)
 
 /- English proof (translation)
-The claim follows from `r.2`.
+A detailed English derivation is pending.
 -/
 theorem epsFibreProduct_quotient_fst_eq_dual_fst {ε : B} (r : FR ε) : mkE ε (p1 ε r) = (p2 ε r).fst := r.2
 
@@ -71,7 +71,7 @@ theorem snd_comp_liftFR {ε : B} {C : Type} [CommRing C] (a : C →+* B) (b : C 
     (h : ∀ c, mkE ε (a c) = (b c).fst) : (p2 ε).comp (liftFR a b h) = b := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨liftFR a b h, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_liftFR {ε : B} {C : Type} [CommRing C] (a : C →+* B) (b : C →+* DualNumber (B ⧸ Ideal.span {ε}))
     (h : ∀ c, mkE ε (a c) = (b c).fst) : ∃ q : C →+* FR ε, (p1 ε).comp q = a ∧ (p2 ε).comp q = b :=
@@ -110,7 +110,7 @@ Both sides reduce to the same expression.
 theorem sg_apply {ε : B} (hε : ε * ε = 0) (r : FR ε) : sg hε r = p1 ε r + mulE hε (p2 ε r).snd := rfl
 
 /- English proof (translation)
-Introduce `w`. Take `⟨b, hb⟩` from `Ideal.Quotient.mk_surjective w.fst`. Conclude with `⟨⟨(b, w), hb⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem epsFibreProductSnd_surjective (ε : B) : Function.Surjective (p2 ε) := by
   intro w
@@ -118,13 +118,13 @@ theorem epsFibreProductSnd_surjective (ε : B) : Function.Surjective (p2 ε) := 
   exact ⟨⟨(b, w), hb⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `q`. Establish `hk : RingHom.ker (p2 ε) ≤ q.asIdeal`. Introduce `r hr`. Establish `hr' : p2 ε r = 0` using `hr`. Use `q.isPrime.mem_of_pow_mem 2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : mkE ε (p1 ε r) = 0` using `by rw [epsFibreProduct_quotient_fst_eq_dual_fst, hr']; rfl`. Take `⟨d, hd⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq_zero_iff_mem.1 h1)`. Establish `: r ^ 2 = 0`. Apply `FR_ext` to reduce the goal to its premises. Rewrite using `[map_pow, ← hd, map_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(d * d) * hε`. Rewrite using `[map_pow, hr', map_zero]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `zero_mem _`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_root_.range_comap_of_surjective _ (p2 ε) (epsFibreProductSnd_surjective ε)` as an intermediate fact. Establish `hq : q ∈ Set.range (PrimeSpectrum.comap (p2 ε))`. Rewrite using `[this]`. Conclude with `hk`. Conclude with `hq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem specMap_epsFibreProductSnd_surjective {ε : B} (hε : ε * ε = 0) : Function.Surjective (spMap (p2 ε)) := by
   intro q
@@ -146,7 +146,7 @@ theorem specMap_epsFibreProductSnd_surjective {ε : B} (hε : ε * ε = 0) : Fun
   exact hq
 
 /- English proof (translation)
-Introduce `p _`. Take `⟨q, rfl⟩` from `specMap_epsFibreProductSnd_surjective hε p`. Conclude with `h (Set.mem_univ q)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem top_le_preimage_of_epsFibreSnd_comp {ε : B} (hε : ε * ε = 0) {Y : Scheme.{0}} {T : Sp (FR ε) ⟶ Y} {O : Y.Opens}
     (h : ⊤ ≤ (spMap (p2 ε) ≫ T) ⁻¹ᵁ O) : ⊤ ≤ T ⁻¹ᵁ O := by
@@ -155,7 +155,7 @@ theorem top_le_preimage_of_epsFibreSnd_comp {ε : B} (hε : ε * ε = 0) {Y : Sc
   exact h (Set.mem_univ q)
 
 /- English proof (translation)
-Establish `e1` using `GlobalTheory.FlagMod.ev_congr h1 U (le_preimage_comp _ ha) (le_preimage_comp _ hb)`. Establish `e2` using `GlobalTheory.FlagMod.ev_congr h2 U (le_preimage_comp _ ha) (le_preimage_comp _ hb)`. Rewrite `e1`, `e2` using `[ev_spMap _ _ _ ha, ev_spMap _ _ _ hb]`. Establish `e : ev a U ha = ev b U hb` using `RingHom.ext fun f => FR_ext (RingHom.congr_fun e1 f) (RingHom.congr_fun e2 f)`. Rewrite using `[← spMap_ev a hU ha, ← spMap_ev b hU hb, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_ext {ε : B} {Y : Scheme.{0}} {U : Y.Opens} (hU : IsAffineOpen U) {a b : Sp (FR ε) ⟶ Y}
     (ha : ⊤ ≤ a ⁻¹ᵁ U) (hb : ⊤ ≤ b ⁻¹ᵁ U) (h1 : spMap (p1 ε) ≫ a = spMap (p1 ε) ≫ b)
@@ -175,35 +175,33 @@ open EpsDiff
 open GlobalTheory.FlagMod (ev_spMap spMap_ev tau tau_le le_preimage_comp le_preimage_map)
 
 /- English proof (translation)
-Introduce `K _ A A' i hi X Z h y1 m m' hm' him U hU' Ω hΩ B _ _ x hxΩ S hS hSx l₁ l₂ hl₁ hl₂ hΩ₁ hΩ₂ h₂ h₁₂ O hxO f`. Use `set ε : B := algebraMap (DualNumber K) B DualNumber.eps with hεd`. Establish `hε : ε * ε = 0` using `by rw [hεd, ← map_mul, DualNumber.eps_mul_eps, map_zero]`. Establish `hmkε : mkE ε ε = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self ε)`. Establish `hxm : ⊤ ≤ (x ≫ m) ⁻¹ᵁ Ω.1` using `hxΩ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSxm : spMap (TrivSqZeroExt.fstHom B B B).toRingHom ≫ S ≫ m = x ≫ m` using `by rw [← Category.assoc, hSx]`. Establish `hSm : ⊤ ≤ (S ≫ m) ⁻¹ᵁ Ω.1` using `le_preimage_of_red hSxm hxm`. Establish `hSO : ⊤ ≤ S ⁻¹ᵁ (i ⁻¹ᵁ O)` using `le_preimage_of_red hSx hxO`. Establish `hfst : ∀ g, (ev (S ≫ m) Ω.1 hSm g).fst = ev (x ≫ m) Ω.1 hxm g` using `fun g => by`. Rewrite using `[GlobalTheory.FlagMod.ev_congr hSxm.symm Ω.1 hxm (le_preimage_comp _ hSm), ev_spMap _ _ _ hSm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨q, hqa, hqb⟩` from `exists_liftFR (ev (l₂ ≫ m') Ω.1 hΩ₂) ((dualMap (mkE ε)).comp (ev (S ≫ m) Ω.1 hSm)) (fun g => by`. Take `⟨c, hc⟩` from `h₂ g`. Rewrite `hc` using `[valR_eq_ev _ _ hΩ₂, valR_eq_ev _ _ hxm]`. Rewrite using `[hc, map_add, map_mul, hmkε, MulZeroClass.zero_mul, add_zero, ← hfst]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[dualMap])`. Set `j2 : DualNumber K →+* DualNumber (B ⧸ Ideal.span {ε})` to `((dualMap (mkE ε)).comp ((algebraMap B (DualNumber B)).comp (baseMap K B))).comp (TrivSqZeroExt.fstHom K K K).toRingHom`. Establish `hj2 : ∀ a, j2 a = TrivSqZeroExt.inl (mkE ε (baseMap K B a.fst))` using `fun a => by`. Apply the tactic sequence `ext <;> simp [j2, dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Take `⟨j, hja, hjb⟩` from `exists_liftFR (algebraMap (DualNumber K) B) j2 (fun a => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha : a = algebraMap K (DualNumber K) a.fst + DualNumber.eps * algebraMap K (DualNumber K) a.snd`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[hj2, TrivSqZeroExt.fst_inl]`. Use `conv_lhs => rw [ha]`. Rewrite using `[map_add, map_mul, ← hεd, map_add, map_mul, hmkε, MulZeroClass.zero_mul, add_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `rfl)`. Establish `b1 : spMap (p1 ε) ≫ spMap j = l₂ ≫ A'.hom` using `by rw [spc, hl₂, hja]`. Establish `b2 : spMap (p2 ε) ≫ spMap j = (spMap (dualMap (mkE ε)) ≫ S ≫ i) ≫ A'.hom`. Rewrite using `[Category.assoc, Category.assoc, hi, ← Category.assoc S, hS, ← Category.assoc, spc, spc]`. Rewrite using `[hjb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(spc (TrivSqZeroExt.fstHom K K K).toRingHom ((dualMap (mkE ε)).comp ((algebraMap B (DualNumber B)).comp (baseMap K B)))).symm`. Establish `b3 : spMap (sg hε) ≫ spMap j = l₁ ≫ A'.hom`. Rewrite using `[spc, hl₁]`. Use `congrArg spMap (RingHom.ext fun a => ?_)` and prove the remaining obligations. Establish `e1 : p1 ε (j a) = algebraMap (DualNumber K) B a` using `RingHom.congr_fun hja a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : p2 ε (j a) = j2 a` using `RingHom.congr_fun hjb a`. Rewrite using `[RingHom.comp_apply, sg_apply, e1, e2, hj2, TrivSqZeroExt.snd_inl, map_zero, add_zero]`. Establish `z1 : spMap (p1 ε) ≫ spMap q ≫ tau Ω.2 = l₂ ≫ m'`. Rewrite using `[← Category.assoc, spc, hqa]`. Conclude with `spMap_ev _ Ω.2 hΩ₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `z2 : spMap (p2 ε) ≫ spMap q ≫ tau Ω.2 = (spMap (dualMap (mkE ε)) ≫ S ≫ i) ≫ m'`. Rewrite using `[Category.assoc, Category.assoc, him, ← Category.assoc, spc, hqb, ← spc, Category.assoc]`. Conclude with `congrArg _ (spMap_ev (S ≫ m) Ω.2 hSm)`. Establish `z3 : spMap (sg hε) ≫ spMap q ≫ tau Ω.2 = l₁ ≫ m'`. Rewrite using `[← Category.assoc, spc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: (sg hε).comp q = ev (l₁ ≫ m') Ω.1 hΩ₁`. Use `RingHom.ext fun g => ?_` and prove the remaining obligations. Establish `e` using `h₁₂ g`. Rewrite `e` using `[valR_eq_ev _ _ hΩ₂, valR_eq_ev _ _ hΩ₁, valR_eq_ev _ _ hSm]`. Establish `e' : (dualMap (mkE ε) (ev (S ≫ m) Ω.1 hSm g)).snd = mkE ε (ev (S ≫ m) Ω.1 hSm g).snd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[dualMap]`. Establish `e1 : p1 ε (q g) = ev (l₂ ≫ m') Ω.1 hΩ₂ g` using `RingHom.congr_fun hqa g`. Establish `e2 : p2 ε (q g) = dualMap (mkE ε) (ev (S ≫ m) Ω.1 hSm g)` using `RingHom.congr_fun hqb g`. Rewrite using `[RingHom.comp_apply, sg_apply, e1, e2, e', mulE_mk, ← e]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this]`. Conclude with `spMap_ev _ Ω.2 hΩ₁`. Establish `hw : (spMap q ≫ tau Ω.2) ≫ h = spMap j ≫ y1`. Use `pt_ext U.2 (le_preimage_map h hΩ (le_preimage_comp _ (tau_le Ω.2 le_rfl))) (le_preimage_comp _ hU') ?_ ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, z1, ← Category.assoc, b1, Category.assoc, Category.assoc, hm'.w]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, z2, ← Category.assoc (spMap (p2 ε)), b2, Category.assoc _ m', Category.assoc _ A'.hom, hm'.w]`. Take `⟨T, T1, T2⟩ : ∃ T : Sp (FR ε) ⟶ A'.left, T ≫ m' = spMap q ≫ tau Ω.2 ∧ T ≫ A'.hom = spMap j` from `⟨hm'.lift _ _ hw, hm'.lift_fst _ _ hw, hm'.lift_snd _ _ hw⟩`. Establish `t1 : spMap (p1 ε) ≫ T = l₂` using `hm'.hom_ext (by rw [Category.assoc, T1, z1]) (by rw [Category.assoc, T2, b1])`. Establish `t2 : spMap (p2 ε) ≫ T = spMap (dualMap (mkE ε)) ≫ S ≫ i` using `hm'.hom_ext (by rw [Category.assoc, T1, z2]) (by rw [Category.assoc, T2, b2])`. Establish `t3 : spMap (sg hε) ≫ T = l₁` using `hm'.hom_ext (by rw [Category.assoc, T1, z3]) (by rw [Category.assoc, T2, b3])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hSi : ⊤ ≤ (S ≫ i) ⁻¹ᵁ O` using `hSO`. Establish `hT : ⊤ ≤ T ⁻¹ᵁ O` using `top_le_preimage_of_epsFibreSnd_comp hε (by rw [t2]; exact le_preimage_comp _ hSi)`. Establish `v2` using `GlobalTheory.FlagMod.ev_congr t2 O (le_preimage_comp _ hT) (le_preimage_comp _ hSi)`. Rewrite `v2` using `[ev_spMap _ _ _ hT, ev_spMap _ _ _ hSi]`. Establish `v2' : p2 ε (ev T O hT f) = dualMap (mkE ε) (ev (S ≫ i) O hSi f)` using `RingHom.congr_fun v2 f`.
-
-Establish `e' : (dualMap (mkE ε) (ev (S ≫ i) O hSi f)).snd = mkE ε (ev (S ≫ i) O hSi f).snd`. Simplify using `[dualMap]`. Rewrite using `[← valR_comp_app, valR_eq_ev _ _ hSi, ← t1, ← t3, valR_eq_ev _ _ (le_preimage_comp _ hT), valR_eq_ev _ _ (le_preimage_comp _ hT), ev_spMap _ _ _ hT, ev_spMap _ _ _ hT, RingHom.comp_apply, RingHom.comp_apply, sg_apply, v2', e', mulE_mk]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem valR_sub_eq_eps_mul_of_affine : ∀ {K : Type} [Field K] {A : Over (Sp K)} {A' : Over (Sp (DualNumber K))} {i : A.left ⟶ A'.left} (hi : i ≫ A'.hom = A.hom ≫ GlobalTheory.DeRham.epsRed K) {X Z : Scheme.{0}} {h : Z ⟶ X} {y1 : Sp (DualNumber K) ⟶ X} {m : A.left ⟶ Z} {m' : A'.left ⟶ Z} (hm' : IsPullback m' A'.hom h y1) (him : i ≫ m' = m) (U : X.affineOpens) (hU' : ⊤ ≤ y1 ⁻¹ᵁ U.1) (Ω : Z.affineOpens) (hΩ : Ω.1 ≤ h ⁻¹ᵁ U.1) {B : Type} [CommRing B] [Algebra (DualNumber K) B] (x : Sp B ⟶ A.left) (hxΩ : ⊤ ≤ x ⁻¹ᵁ (m ⁻¹ᵁ Ω.1)) (S : Sp (DualNumber B) ⟶ A.left) (hS : S ≫ A.hom = spMap ((algebraMap B (DualNumber B)).comp (baseMap K B))) (hSx : spMap (TrivSqZeroExt.fstHom B B B).toRingHom ≫ S = x) (l₁ l₂ : Sp B ⟶ A'.left) (hl₁ : l₁ ≫ A'.hom = spMap (algebraMap (DualNumber K) B)) (hl₂ : l₂ ≫ A'.hom = spMap (algebraMap (DualNumber K) B)) (hΩ₁ : ⊤ ≤ (l₁ ≫ m') ⁻¹ᵁ Ω.1) (hΩ₂ : ⊤ ≤ (l₂ ≫ m') ⁻¹ᵁ Ω.1) (h₂ : ∀ f, ∃ c : B, valR (l₂ ≫ m') Ω.1 f = valR (x ≫ m) Ω.1 f + algebraMap (DualNumber K) B DualNumber.eps * c) (h₁₂ : ∀ f, valR (l₁ ≫ m') Ω.1 f - valR (l₂ ≫ m') Ω.1 f = algebraMap (DualNumber K) B DualNumber.eps * (valR (S ≫ m) Ω.1 f).snd) (O : A'.left.Opens) (hxO : ⊤ ≤ x ⁻¹ᵁ (i ⁻¹ᵁ O)) (f : Γ(A'.left, O)), valR l₁ O f - valR l₂ O f = algebraMap (DualNumber K) B DualNumber.eps * (valR S (i ⁻¹ᵁ O) ((i.app O).hom f)).snd := by
   intro K _ A A' i hi X Z h y1 m m' hm' him U hU' Ω hΩ B _ _ x hxΩ S hS hSx l₁ l₂ hl₁ hl₂ hΩ₁ hΩ₂ h₂ h₁₂ O hxO f

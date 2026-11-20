@@ -4,7 +4,7 @@ open IsLocalRing NumberField IsDedekindDomain GlobalTheory.ValCount
 open scoped Classical
 
 /- English proof (translation)
-Establish `h : IsIntegral V (a : F)` using `(RingOfIntegers.isIntegral_coe a).tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.integer_mem_valuationSubring {F : Type} [Field F] [NumberField F] (V : ValuationSubring F) (a : 𝓞 F) :
     (a : F) ∈ V := by
@@ -14,15 +14,15 @@ private theorem UpperTheory.integer_mem_valuationSubring {F : Type} [Field F] [N
   exact y.2
 
 /- English proof (translation)
-Set `f : 𝓞 F →+* V` to `(algebraMap (𝓞 F) F).codRestrict V (UpperTheory.integer_mem_valuationSubring V)`. Set `P : Ideal (𝓞 F)` to `(maximalIdeal V).comap f`. Establish `hP : ∀ a : 𝓞 F, a ∈ P ↔ (a : F) ∈ V.nonunits` using `fun a => (V.coe_mem_nonunits_iff (a := f a)).symm`. Establish `hinv : ∀ a : 𝓞 F, a ∉ P → (a : F)⁻¹ ∈ V` using `fun a ha => by`. Rewrite `ha` using `[hP, ValuationSubring.mem_nonunits_iff_or, not_or, not_not]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ha.2`. Establish `hprime : P.IsPrime` using `Ideal.comap_isPrime f _`. Establish `hne : P ≠ ⊥`. Introduce `h`. Apply `hV` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 F) x`. Rewrite using `[div_eq_mul_inv]`. Use `V.mul_mem _ _ (UpperTheory.integer_mem_valuationSubring V a) (hinv b ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, Ideal.mem_bot]`. Conclude with `nonZeroDivisors.ne_zero hb`. Use `⟨⟨P, hprime, hne⟩, ?_, hP⟩` and prove the remaining obligations. Use `symm`. Use `ValuationSubring.eq_of_le_of_ne_top _ ?_ hV` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `x ⟨a, s, hs, rfl⟩`. Use `V.mul_mem _ _ (UpperTheory.integer_mem_valuationSubring V a) (hinv s hs)` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.valuationSubring_eq_prime {F : Type} [Field F] [NumberField F] (V : ValuationSubring F) (hV : V ≠ ⊤) :
     ∃ v : HeightOneSpectrum (𝓞 F), V = v.valuationSubringAtPrime F ∧
@@ -53,23 +53,21 @@ private theorem UpperTheory.valuationSubring_eq_prime {F : Type} [Field F] [Numb
   simpa using this
 
 /- English proof (translation)
-Introduce `F _ _ O hO s hs hT`. Take `⟨w, hw1, hw2⟩` from `UpperTheory.valuationSubring_eq_prime O hO`. Use `choose v hv1 hv2 using fun V : s => UpperTheory.valuationSubring_eq_prime V.1 (hT V.1 V.2)`. Use `haveI : Finite s := hs.to_subtype`. Use `haveI : Fintype s := Fintype.ofFinite s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `h1 : ∀ V : s, ∃ y : 𝓞 F, V.1 ≠ O → y ∈ (v V).asIdeal ∧ 1 - y ∈ w.asIdeal`. Introduce `V`. Distinguish the cases in `hVO : V.1 = O`. Conclude with `⟨0, fun h => absurd hVO h⟩`. Establish `hne : (v V).asIdeal ≠ w.asIdeal`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hVO` to reduce the goal to its premises. Rewrite using `[hv1 V, hw1, HeightOneSpectrum.ext h]`. Establish `hsup` using `Ideal.IsMaximal.coprime_of_ne (v V).isMaximal w.isMaximal hne`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 ((Ideal.eq_top_iff_one _).1 hsup)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression.
 
-Conclude with `⟨a, fun _ => ⟨ha, by rw [← hab]; simpa using hb⟩⟩`. Use `choose y hy using h1`. Distinguish the cases in `hex : ∃ V : s, V.1 ≠ O`. Set `t : Finset s` to `Finset.univ.filter fun V => V.1 ≠ O`. Establish `hx : 1 - ∏ V ∈ t, y V ∈ w.asIdeal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq, map_prod, map_one]`. Use `symm`. Use `Finset.prod_eq_one fun V hV => ?_` and prove the remaining obligations. Use `(hy V (Finset.mem_filter.1 hV).2).2` as an intermediate fact. Rewrite `this` using `[← Ideal.Quotient.eq, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.symm`. Establish `hn : ∀ V : s, V.1 ≠ O → 1 - ∏ V ∈ t, y V ∉ (v V).asIdeal`. Introduce `V hV h`. Establish `h2 : ∏ V ∈ t, y V ∈ (v V).asIdeal` using `Ideal.prod_mem _ (Finset.mem_filter.2 ⟨Finset.mem_univ V, hV⟩) (hy V hV).1`. Establish `h3` using `Ideal.add_mem _ h h2`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h3` using `[sub_add_cancel]`. Conclude with `(v V).isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h3)`. Use `⟨((1 - ∏ V ∈ t, y V : 𝓞 F) : F), ?_, (hw2 _).1 hx, fun V hV hVO => ⟨UpperTheory.integer_mem_valuationSubring V _, ?_⟩⟩` and prove the remaining obligations. Take `⟨V, hV⟩` from `hex`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Apply `hn V hV` to reduce the goal to its premises. Rewrite using `[RingOfIntegers.coe_eq_zero_iff.1 h]`. Conclude with `zero_mem _`. Use `hn ⟨V, hV⟩ hVO` as an intermediate fact. Rewrite `this` using `[hv2, ValuationSubring.mem_nonunits_iff_or, not_or, not_not]`.
-
-Conclude with `this.2`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot w.ne_bot`. Conclude with `⟨a, fun h => ha0 (RingOfIntegers.coe_eq_zero_iff.1 h), (hw2 a).1 ha, fun V hV hVO => absurd ⟨⟨V, hV⟩, hVO⟩ hex⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_approximation_valuations :
     ∀ (F : Type) [Field F] [NumberField F] (O : ValuationSubring F), O ≠ ⊤ → ∀ s : Set (ValuationSubring F), s.Finite → (∀ V ∈ s, V ≠ ⊤) → ∃ x : F, x ≠ 0 ∧ x ∈ O.nonunits ∧ ∀ V ∈ s, V ≠ O → x ∈ V ∧ x⁻¹ ∈ V := by

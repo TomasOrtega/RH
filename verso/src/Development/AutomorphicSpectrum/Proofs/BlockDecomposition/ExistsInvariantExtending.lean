@@ -20,13 +20,13 @@ def lowS (D : Fin n → Fin n → Module.End ℂ H) (S : Submodule ℂ H) (k : �
   Nat.rec S (fun _ N => N ⊔ ⨆ (a : Fin n) (b : Fin n) (_ : b < a), N.map (D a b)) k
 
 /- English proof (translation)
-The claim follows from `le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem lowS_le_succ (D : Fin n → Fin n → Module.End ℂ H) (S : Submodule ℂ H) (k : ℕ) :
     lowS D S k ≤ lowS D S (k + 1) := le_sup_left
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sup_right (Submodule.mem_iSup_of_mem a (Submodule.mem_iSup_of_mem b (Submodule.mem_iSup_of_mem h (Submodule.mem_map_of_mem hu))))`.
+A detailed English derivation is pending.
 -/
 theorem lowS_low (D : Fin n → Fin n → Module.End ℂ H) (S : Submodule ℂ H) (k : ℕ) {a b : Fin n} (h : b < a)
     {u : H} (hu : u ∈ lowS D S k) : D a b u ∈ lowS D S (k + 1) :=
@@ -34,21 +34,17 @@ theorem lowS_low (D : Fin n → Fin n → Module.End ℂ H) (S : Submodule ℂ H
     (Submodule.mem_iSup_of_mem h (Submodule.mem_map_of_mem hu))))
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `c d hcd x hx`. Express the relevant statement in the definitionally equal form `x ∈ S at hx`. Express the relevant statement in the definitionally equal form `D c d x ∈ S`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Break down `hcd.lt_or_eq with h | rfl` into its components or cases. Rewrite using `[(hS x hx).2 c d h rfl]`. Conclude with `S.zero_mem`. Rewrite using `[(hS x hx).1 c]`. Conclude with `S.smul_mem _ hx`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `succ k ih`. Establish `step : ∀ (x y : Fin n), ∀ w ∈ lowS D S k, D x y w ∈ lowS D S (k + 1)`. Introduce `x y w hw`. Break down `lt_or_ge y x with h | h` into its components or cases. Conclude with `lowS_low D S k h hw`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `lowS_le_succ D S k (ih x y h w hw)`. Introduce `c d hcd`. It suffices to establish `h : lowS D S (k + 1) ≤ (lowS D S (k + 1)).comap (D c d) from fun u hu => h hu`. Use `sup_le (fun u hu => step c d u hu) ?_` and prove the remaining obligations. Use `iSup_le fun a => iSup_le fun b => iSup_le fun hab => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨w, hw, rfl⟩`. Establish `hc` using `congrArg (fun A : Module.End ℂ H => A w) (hD c d a b)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at hc`. Establish `e : D c d (D a b w) = D a b (D c d w) + ((if d = a then D c b else 0) - (if b = c then D a d else 0) : Module.End ℂ H) w`. Rewrite using `[LinearMap.sub_apply, ← hc]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Normalize the expressions using the abelian group laws. Express the relevant statement in the definitionally equal form `D c d (D a b w) ∈ lowS D S (k + 1)`. Rewrite using `[e]`. Use `Submodule.add_mem _ (lowS_low D S k hab (ih c d hcd w hw)) ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sub_apply]`.
-
-Use `Submodule.sub_mem _ ?_ ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `step _ _ w hw`. Simplify using the standard rewrite rules. Use `split_ifs`.
-
-Conclude with `step _ _ w hw`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lowS_stable {D : Fin n → Fin n → Module.End ℂ H} (hD : Formalism.REAL.GlRel D) {S : Submodule ℂ H} {μ : Fin n → ℝ}
     (hS : ∀ x ∈ S, Formalism.REAL.KHighest (fun _ => true) D μ x) (k : ℕ) :
@@ -93,15 +89,15 @@ theorem lowS_stable {D : Fin n → Fin n → Module.End ℂ H} (hD : Formalism.R
       · simp
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `x ∈ S at hx`. Take `⟨a, ha⟩` from `Function.ne_iff.1 hne`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result.
 
-Establish `h` using `hU a a x y`. Rewrite `h` using `[(hS x hx).1 a, hy.1 a, inner_smul_left, inner_smul_right, Complex.conj_ofReal]`. Establish `h' : ((μ a : ℂ) - (ν a : ℂ)) * ⟪x, y⟫_ℂ = 0`. Rewrite using `[sub_mul, h, sub_self]`. Establish `hd : (μ a : ℂ) - (ν a : ℂ) ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sub_ne_zero]`. Conclude with `fun e => ha (Complex.ofReal_injective e).symm`. Conclude with `(mul_eq_zero.1 h').resolve_left hd`. Consider the case `succ k ih`. It suffices to establish `h : lowS D S (k + 1) ≤ (ℂ ∙ y)ᗮ by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Use `Submodule.mem_orthogonal_singleton_iff_inner_left.1 (h hu)` as an intermediate fact. Conclude with `this`. Use `sup_le (fun u hu => Submodule.mem_orthogonal_singleton_iff_inner_left.2 (ih u hu)) ?_` and prove the remaining obligations. Use `iSup_le fun a => iSup_le fun b => iSup_le fun hab => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨w, hw, rfl⟩`. Use `Submodule.mem_orthogonal_singleton_iff_inner_left.2 ?_` and prove the remaining obligations. Rewrite using `[hU, hy.2 b a hab rfl, inner_zero_right]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowS_orth {D : Fin n → Fin n → Module.End ℂ H} (hU : ∀ a b (x y : H), ⟪D a b x, y⟫_ℂ = ⟪x, D b a y⟫_ℂ)
     {S : Submodule ℂ H} {μ ν : Fin n → ℝ} (hS : ∀ x ∈ S, Formalism.REAL.KHighest (fun _ => true) D μ x) (hne : ν ≠ μ) {y : H}
@@ -131,17 +127,15 @@ theorem lowS_orth {D : Fin n → Fin n → Module.End ℂ H} (hU : ∀ a b (x y 
     rw [hU, hy.2 b a hab rfl, inner_zero_right]
 
 /- English proof (translation)
-Use `set N : Submodule ℂ H := ⨆ k, lowS D S k with hN`. Establish `hmem : ∀ k, lowS D S k ≤ N` using `fun k => le_iSup (lowS D S) k`. Establish `hstab : ∀ a b, ∀ u ∈ N, D a b u ∈ N`. Introduce `a b`. It suffices to establish `h : N ≤ N.comap (D a b) from fun u hu => h hu`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations.
 
-Use `iSup_le fun k u hu => ?_` and prove the remaining obligations. Break down `lt_or_ge b a with h | h` into its components or cases. Conclude with `hmem _ (lowS_low D S k h hu)`. Conclude with `hmem _ (lowS_stable hD hS k a b h u hu)`. Use `⟨(N.starProjection : H →ₗ[ℂ] H), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b w`. Express the relevant statement in the definitionally equal form `N.starProjection (D a b w) = D a b (N.starProjection w)`. Use `(Submodule.eq_starProjection_of_mem_orthogonal (hstab a b _ (Submodule.starProjection_apply_mem N w)) ?_)` and prove the remaining obligations. Rewrite using `[← map_sub]`. Establish `hw` using `Submodule.sub_starProjection_mem_orthogonal (K := N) w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hw`, the goal using `[Submodule.mem_orthogonal]`. Introduce `u hu`. Rewrite using `[← hU, hw _ (hstab b a u hu)]`. Introduce `x hx`. Conclude with `Submodule.starProjection_eq_self_iff.2 (hmem 0 hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ν hne y hy`. Use `Submodule.eq_starProjection_of_mem_orthogonal N.zero_mem ?_` and prove the remaining obligations. Rewrite using `[sub_zero, Submodule.mem_orthogonal]`. Introduce `u hu`. It suffices to establish `h : N ≤ (ℂ ∙ y)ᗮ from Submodule.mem_orthogonal_singleton_iff_inner_left.1 (h hu)`.
-
-Conclude with `iSup_le fun k u hu => Submodule.mem_orthogonal_singleton_iff_inner_left.2 (lowS_orth hU hS hne hy k u hu)`.
+Reduce the argument to an intermediate assertion. A detailed English derivation is pending.
 -/
 theorem exists_proj [FiniteDimensional ℂ H] {D : Fin n → Fin n → Module.End ℂ H} (hD : Formalism.REAL.GlRel D)
     (hU : ∀ a b (x y : H), ⟪D a b x, y⟫_ℂ = ⟪x, D b a y⟫_ℂ) {S : Submodule ℂ H} {μ : Fin n → ℝ}
@@ -176,11 +170,9 @@ theorem exists_proj [FiniteDimensional ℂ H] {D : Fin n → Fin n → Module.En
     exact iSup_le fun k u hu => Submodule.mem_orthogonal_singleton_iff_inner_left.2 (lowS_orth hU hS hne hy k u hu)
 
 /- English proof (translation)
-Use `choose P hP1 hP2 hP3 using fun i => exists_proj hD hU (hHs i)`. Use `choose T hT1 hT2 using fun i => GlobalTheory.T.highest_weight_tensor_decomposition H V D D' (wt i) hD hD' hU hU' (Hs i) (hHs i) (f i) (hf i)`. Use `⟨∑ i ∈ M, (T i).comp (P i), ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi x`. Rewrite using `[LinearMap.sum_apply, Finset.sum_eq_single i]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.comp_apply, hP2 i _ x.2, hT1]`. Introduce `j _ hji`. Rewrite using `[LinearMap.comp_apply, hP3 j _ (fun e => hji (hwt e).symm) _ (hHs i _ x.2), map_zero]`. Conclude with `fun h => absurd hi h`. Introduce `a b w`.
-
-Simplify using `only [LinearMap.sum_apply, LinearMap.comp_apply, map_sum, hP1, hT2]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_multi {H V : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
     [NormedAddCommGroup V] [InnerProductSpace ℂ V] (D : Fin n → Fin n → Module.End ℂ H)
@@ -204,9 +196,9 @@ theorem exists_multi {H V : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ 
     simp only [LinearMap.sum_apply, LinearMap.comp_apply, map_sum, hP1, hT2]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, ← Matrix.exp_conjTranspose]`. Establish `h : ((s : ℂ) • X)ᴴ = -((s : ℂ) • X)`. Rewrite using `[conjTranspose_smul, hX]`. Simplify using the standard rewrite rules. Establish `hc : Commute ((s : ℂ) • X) (-((s : ℂ) • X))` using `(Commute.refl _).neg_right`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h, ← Matrix.exp_add_of_commute _ _ hc]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exp_mem_unitary (X : Matrix (Fin n) (Fin n) ℂ) (hX : Xᴴ = -X) (s : ℝ) :
     NormedSpace.exp ((s : ℂ) • X) ∈ Matrix.unitaryGroup (Fin n) ℂ := by
@@ -219,7 +211,7 @@ theorem exp_mem_unitary (X : Matrix (Fin n) (Fin n) ℂ) (hX : Xᴴ = -X) (s : �
   simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [conjTranspose_apply, Matrix.single_apply]`. Distinguish the cases in `h : a = j ∧ b = i`. Rewrite using `[if_pos h, if_pos ⟨h.2, h.1⟩]`. Rewrite using `[if_neg h, if_neg (fun hh => h ⟨hh.2, hh.1⟩)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -233,7 +225,7 @@ theorem single_conjT (a b : Fin n) (c : ℂ) :
     simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.neg_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem single_neg' (a b : Fin n) (c : ℂ) :
     (Matrix.single a b (-c) : Matrix (Fin n) (Fin n) ℂ) = -Matrix.single a b c := by
@@ -242,9 +234,9 @@ theorem single_neg' (a b : Fin n) (c : ℂ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single a, Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[hj.symm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `i _ hi`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Simplify using `[hi.symm]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_single {W : Type} [AddCommGroup W] [Module ℂ W] (L : Fin n → Fin n → W) (a b : Fin n) (c : ℂ) :
     ∑ i, ∑ j, (Matrix.single a b c : Matrix (Fin n) (Fin n) ℂ) i j • L i j = c • L a b := by
@@ -259,9 +251,9 @@ theorem sum_single {W : Type} [AddCommGroup W] [Module ℂ W] (L : Fin n → Fin
   · simp
 
 /- English proof (translation)
-Establish `h1` using `h (Matrix.single a b 1 - Matrix.single b a 1) (by`. Rewrite using `[conjTranspose_sub, single_conjT, single_conjT, star_one, neg_sub])`. Establish `h2` using `h (Matrix.single a b Complex.I + Matrix.single b a Complex.I) (by`. Rewrite using `[conjTranspose_add, single_conjT, single_conjT, Complex.star_def, Complex.conj_I, single_neg', single_neg', neg_add, add_comm])`. Simplify using `only [Matrix.sub_apply, Matrix.add_apply, sub_smul, add_smul, Finset.sum_sub_distrib, Finset.sum_add_distrib, sum_single] at h1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[one_smul, one_smul, sub_eq_zero]`. Rewrite `h2` using `[← h1, ← two_smul ℂ, smul_smul]`. Conclude with `(smul_eq_zero.1 h2).resolve_left (by simp)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_zero {W : Type} [AddCommGroup W] [Module ℂ W] (L : Fin n → Fin n → W)
     (h : ∀ X : Matrix (Fin n) (Fin n) ℂ, Xᴴ = -X → ∑ i, ∑ j, X i j • L i j = 0) (a b : Fin n) : L a b = 0 := by
@@ -277,11 +269,11 @@ theorem coef_zero {W : Type} [AddCommGroup W] [Module ℂ W] (L : Fin n → Fin 
   exact (smul_eq_zero.1 h2).resolve_left (by simp)
 
 /- English proof (translation)
-Establish `key` using `coef_zero (fun i j => G' i j (e ξ) - e (G i j ξ)) (fun X hX => by`. Set `γ : ℝ → Matrix.unitaryGroup (Fin n) ℂ` to `fun t => ⟨_, exp_mem_unitary X hX t⟩`. Establish `h1` using `hGd X γ hX (fun _ => rfl) (e ξ)`. Establish `h2` using `hG.2 X γ hX (fun _ => rfl) ξ`. Establish `h3 : HasDerivAt (fun t : ℝ => e (ξ ∘L E.ρ (γ t)⁻¹)) (e (∑ a, ∑ b, X a b • G a b ξ)) 0` using `((LinearMap.toContinuousLinearMap e.toLinearMap).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (fun t : ℝ => ρ' (γ t) (e ξ)) = fun t : ℝ => e (ξ ∘L E.ρ (γ t)⁻¹)`. Use function extensionality and compare the values at `t`. Conclude with `(he (γ t) ξ).symm`. Rewrite `h1` using `[h4]`. Establish `h5` using `h1.unique h3`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_smul] at h5`. Simplify using `only [smul_sub, Finset.sum_sub_distrib]`. Rewrite using `[h5, sub_self]) a b`. Conclude with `sub_eq_zero.1 key`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_rel (E : KMod n) (G : Fin n → Fin n → Module.End ℂ (E.V →L[ℂ] ℂ)) (hG : IsDualFam E G)
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
@@ -308,19 +300,19 @@ theorem dual_rel (E : KMod n) (G : Fin n → Fin n → Module.End ℂ (E.V →L[
   exact sub_eq_zero.1 key
 
 /- English proof (translation)
-Introduce `n V _ _ E1 E2 σ hp hσ E G hG M f`. Take `⟨e, ρ', hc, hi, he⟩` from `GlobalTheory.T.unitary_euclidean_model E`. Take `⟨G', hG', hGa, hGd⟩` from `GlobalTheory.T.exists_compact_lie_action _ ρ' hc hi`. Establish `hK : Formalism.REAL.GlRel (kF E1 E2)`. Introduce `a b c d`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hp.gl1 a b c d`. Establish `h2` using `hp.gl2 a b c d`. Establish `e' : kF E1 E2 a b * kF E1 E2 c d - kF E1 E2 c d * kF E1 E2 a b = (E1 a b * E1 c d - E1 c d * E1 a b) + (E2 a b * E2 c d - E2 c d * E2 a b)`. Simplify using `only [kF, add_mul, mul_add]`. Rewrite using `[hp.comm a b c d, hp.comm c d a b]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e', h1, h2]`. Apply the tactic sequence `split_ifs <;> simp [kF] <;> abel`. Establish `hrel` using `dual_rel E G hG e ρ' he G' hGd`. Establish `hHigh : ∀ (μ : Fin n → ℤ), ∀ x ∈ (hwOf G (wtR μ)).map e.toLinearMap, Formalism.REAL.KHighest (fun _ => true) G' (wtR μ) x`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `μ _ ⟨ξ, hξ, rfl⟩`. Use `⟨fun a => ?_, fun a b hab h => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `G' a a (e ξ) = _ • e ξ`. Rewrite using `[hrel, hξ.1 a, map_smul]`. Express the relevant statement in the definitionally equal form `G' a b (e ξ) = 0`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hrel, hξ.2 a b hab h, map_zero]`. Set `eS : ∀ μ : Fin n → ℤ, hwOf G (wtR μ) ≃ₗ[ℂ] (hwOf G (wtR μ)).map e.toLinearMap` to `fun μ => e.submoduleMap _`. Take `⟨T, hT1, hT2⟩` from `exists_multi G' (kF E1 E2) hG' hK hGa hp.unitK M wtR wtR_injective (fun μ => (hwOf G (wtR μ)).map e.toLinearMap) hHigh (fun μ => ((hwSp E1 E2 (wtR μ)).subtype.comp (f μ)).comp (eS μ).symm.toLinearMap) (fun μ x => (f μ ((eS μ).symm x)).2)`. Establish `hint` using `GlobalTheory.T.derivative_unitary_action _ V ρ' G' hGd σ (kF E1 E2) hσ hp.unitK T hT2`. Use `⟨T.comp e.toLinearMap, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k ξ`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[he, hint]`. Introduce `μ hμ ξ`. Use `hT1 μ hμ (eS μ ξ)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, Submodule.subtype_apply] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_inv_multi : ∀ {n : ℕ} (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     (E1 E2 : Fin n → Fin n → Module.End ℂ V) (σ : Matrix.unitaryGroup (Fin n) ℂ →* (V →ₗ[ℂ] V)), IsPair E1 E2 →

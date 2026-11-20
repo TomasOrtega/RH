@@ -5,31 +5,31 @@ import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.
 namespace Formalism.L2.Th1.F
 
 /- English proof (translation)
-The claim follows from `has_cm_stable`.
+A detailed English derivation is pending.
 -/
 theorem hasCMByStable : HasCMByStable := has_cm_stable
 /- English proof (translation)
-The claim follows from `has_cm_scale`.
+A detailed English derivation is pending.
 -/
 theorem hasCMByScale : HasCMByScale := has_cm_scale
 /- English proof (translation)
-The claim follows from `cm_pair_has_cm`.
+A detailed English derivation is pending.
 -/
 theorem cmPairHasCMBy : CmPairHasCMBy := cm_pair_has_cm
 /- English proof (translation)
-The claim follows from `j_invariant_scale`.
+A detailed English derivation is pending.
 -/
 theorem jInvScale : JInvScale := j_invariant_scale
 /- English proof (translation)
-The claim follows from `series_scale`.
+A detailed English derivation is pending.
 -/
 theorem seriesScale : SeriesScale := series_scale
 /- English proof (translation)
-The claim follows from `sigma_scale'`.
+A detailed English derivation is pending.
 -/
 theorem sigmaScale : SigmaScale := sigma_scale'
 /- English proof (translation)
-The claim follows from `series_map`.
+A detailed English derivation is pending.
 -/
 theorem seriesMap : SeriesMap := series_map
 

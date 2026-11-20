@@ -10,7 +10,7 @@ open scoped TensorProduct
 noncomputable section
 
 /- English proof (translation)
-Apply `GDet.ext` to reduce the goal to its premises. Introduce `B _ _ x`. Use `show (D.D B) ((MonoidAlgebra.mapDomainRingHom B f') ((MonoidAlgebra.mapDomainRingHom B f) x)) = (D.D B) (MonoidAlgebra.mapDomainRingHom B (f'.comp f) x)`. Rewrite using `[MonoidAlgebra.mapDomainRingHom_comp, RingHom.comp_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gdet_comap_comap {n : ℕ} {A G G' G'' : Type} [CommRing A] [Group G] [Group G'] [Group G'']
     (D : GDet n A G'') (f : G →* G') (f' : G' →* G'') : (D.comap f').comap f = D.comap (f'.comp f) := by
@@ -75,17 +75,15 @@ private def MapsP (A : TWRing b h ut N) (Nq : Fin q → ℕ) (P : Fin q → Poly
     (∀ z, φ (ψ z) = fEl Nq A.U • z) ∧ ∀ z, ψ (φ z) = θ (fEl Nq A.U) • z
 
 /- English proof (translation)
-Establish `H : MapsP A Nq fun j => u.D.chi (MonoidAlgebra.single (h.p₀ (ph j)) 1)` using `⟨m.θ, m.φ, m.ψ, m.θ_pair, m.theta_coefficientMap_eq, m.θ_U, m.φ_smul, m.ψ_smul, m.φψ, m.ψφ⟩`. Establish `e : (fun j => u.D.chi (MonoidAlgebra.single (h.p₀ (ph j)) 1)) = fun j => u'.D.chi (MonoidAlgebra.single (h'.p₀ (g.p₀ (ph j))) 1)` using `funext fun j => by`. Rewrite using `[← hD, (comap_lam n B _ _ g0.p₀ u'.D).1, mapDom_single, comm]`. Rewrite `H` using `[e]`. Take `⟨θ, φ, ψ, ⟨h1, h1'⟩, h2, h3, h4, h5, h6, h7⟩` from `H`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `htr : ∀ y, p'.D.tr (MonoidAlgebra.mapDomainRingHom A.R g.p₀ y) = A.p.D.tr y` using `fun y => by`. Rewrite using `[← hpD, (comap_lam n A.R _ _ g.p₀ p'.D).2.2.1]`. Take `⟨-, -, s1, s2⟩` from `map_star l L G G' g n O A.R`. Use `⟨⟨θ, ⟨?_, fun v i => ?_⟩, h2, h3, φ, ψ, h4, h5, h6, h7, fun j a x => ?_, fun j i a x => ?_⟩⟩` and prove the remaining obligations. Use `((comap_lam n _ _ _ g.p₀ _).2.2.2.2.2 g.p₀_surj).1 _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1` using `(comap_lam n _ _ _ g.p₀ p'.D).2.2.2.1 _ θ.toRingHom`. Establish `e2` using `(comap_lam n _ _ _ g.p₀ (u'.D.comap h'.p₀)).2.2.2.1 _ (algebraMap B (SpAt u' (fun j => h'.p₀ (g.p₀ (ph j))) ut))`. Establish `e3 : (u'.D.comap h'.p₀).comap g.p₀ = u.D.comap h.p₀`. Rewrite using `[← hD, gdet_comap_comap, gdet_comap_comap]`. Conclude with `congrArg _ (MonoidHom.ext comm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[hpD]`. Rewrite `e2` using `[e3]`. Conclude with `e1.symm.trans (h1.trans e2)`. Use `h1' v i` as an intermediate fact. Rewrite `this` using `[← hp, ← hψ]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `this`. Take `⟨a, rfl⟩` from `g.p₀_surj a`. Use `m.rel1 j a x` as an intermediate fact. Rewrite `this` using `[← htr, map_mul, mapDom_single, s1]`. Conclude with `this`.
-
-Take `⟨a, rfl⟩` from `g.p₀_surj a`. Use `m.rel2 j i a x` as an intermediate fact. Rewrite `this` using `[← htr, map_mul, mapDom_single, s2]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem maps_desc (A : TWRing b h ut N) (hr : r.psib = r'.psib) (hψ : u'.ψ = u.ψ)
     (rN' : Resid G'.frame O n) (hc : Glob.Compat h' rN' r') (p' : Pair rN' A.R) (hp : p'.ψ = A.p.ψ)
@@ -129,7 +127,7 @@ private theorem maps_desc (A : TWRing b h ut N) (hr : r.psib = r'.psib) (hψ : u
 end
 
 /- English proof (translation)
-Set `U : OpenNormalSubgroup Γ` to `{ toOpenSubgroup := ⟨(H.toOpenSubgroup : Subgroup Γ').comap f, H.isOpen'.preimage hf⟩ isNormal' := Subgroup.Normal.comap H.isNormal' f }`. Establish `hU : PL l (Subgroup.comap f (H.toOpenSubgroup : Subgroup Γ')) ≤ (U.toOpenSubgroup : Subgroup Γ)` using `iInf_le_of_le U (iInf_le_of_le (fun k hk => ⟨0, by rw [pow_zero, pow_one]; exact hk⟩) le_rfl)`. Conclude with `hU ha`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem apply_mem_openNormalSubgroup_of_mem_PL_comap (l : ℕ) {Γ Γ' : Type} [Group Γ] [TopologicalSpace Γ] [Group Γ']
     [TopologicalSpace Γ'] (f : Γ →* Γ') (hf : Continuous f) (H : OpenNormalSubgroup Γ') (a : Γ)
@@ -143,21 +141,17 @@ private theorem apply_mem_openNormalSubgroup_of_mem_PL_comap (l : ℕ) {Γ Γ' :
   exact hU ha
 
 /- English proof (translation)
-Introduce `l _ L G0 T Q n O _ _ _ _ _ r r' B _ _ _ u u' J σ D hAd hC hD hψ W`. Establish `hr : r.psib = r'.psib` using `hC.2.1`. Establish `key : ∀ N : ℕ, ∃ (rN' : Resid (Q.GN' N).frame O n) (_ : Glob.Compat (Q.h' N) rN' r') (p' : Pair rN' (W.A N).R) (_ : p'.ψ = (W.A N).p.ψ), p'.D.comap (Q.gN N).p₀ = (W.A N).p.D`. Introduce `N`. Establish `hchi : ∀ (a : (T.GN N).G₀) (i : Fin n), (W.A N).rN.chib i a = r.chib i ((T.h N).p₀ a)` using `fun a i => by rw [(W.A N).compat.1 i]; rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hH : ∀ a : (T.GN N).G₀, (a : (T.GN N).Γ) ∈ Subgroup.comap (T.h N).p (T.H.toOpenSubgroup : Subgroup G0.Γ) → ∀ i, (W.A N).rN.chib i a = 1`. Introduce `a ha i`. Rewrite using `[hchi]`. Conclude with `hAd.1 ((T.h N).p₀ a) ha i`. Take `⟨rN', hc1, _⟩` from `resid_desc l L (T.GN N) (Q.GN' N) (Q.gN N) n O (W.A N).rN (by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha i`. Apply `hH a _ i` to reduce the goal to its premises. Establish `hk : (a : (T.GN N).Γ) ∈ (Q.gN N).p.ker`. Rewrite using `[MonoidHom.mem_ker]`. Conclude with `congrArg Subtype.val ha`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hk` using `[Q.kerN N]`. Conclude with `apply_mem_openNormalSubgroup_of_mem_PL_comap l (T.h N).p (T.h N).cont T.H _ hk)`. Establish `hleη : Subgroup.comap (T.h N).p (T.H.toOpenSubgroup : Subgroup G0.Γ) ≤ (T.GN N).η.ker`. Introduce `a ha`. Rewrite using `[MonoidHom.mem_ker, ← (T.h N).η a]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `T.H_η _ ha`. Take `⟨p', hpD, hp⟩` from `pair_desc l L (T.GN N) (Q.GN' N) (Q.gN N) n O (W.A N).rN rN' (W.A N).R (W.A N).p (Subgroup.comap (T.h N).p (T.H.toOpenSubgroup : Subgroup G0.Γ)) (T.H.isOpen'.preimage (T.h N).cont) hleη hH (Q.kerN N) hc1`. Use `⟨rN', ⟨fun i => ?_, ?_, ?_⟩, p', hp, hpD⟩` and prove the remaining obligations. Use `MonoidHom.ext fun b => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(Q.gN N).p₀_surj b`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show rN'.chib i ((Q.gN N).p₀ a) = r'.chib i ((Q.h' N).p₀ ((Q.gN N).p₀ a))`. Rewrite using `[Q.comm₀ N a]`. Establish `e1 : (W.A N).rN.chib i a = rN'.chib i ((Q.gN N).p₀ a)` using `by rw [hc1.1 i]; rfl`. Establish `e2 : r.chib i ((T.h N).p₀ a) = r'.chib i (Q.g0.p₀ ((T.h N).p₀ a))` using `by rw [hC.1 i]; rfl`. Rewrite using `[← e1, hchi, e2]`.
-
-Conclude with `hc1.2.1.symm.trans ((W.A N).compat.2.1.trans hr)`. Conclude with `hc1.2.2.symm.trans ((W.A N).compat.2.2.trans hC.2.2)`. Use `choose rN' hc p' hp hpD using key`. Use `⟨⟨baseDesc W.b hr hψ, W.ut, ?_, fun N => ringDesc (W.A N) hr hψ (rN' N) (hc N) (p' N) (hp N), W.ex, fun N => ?_⟩⟩` and prove the remaining obligations. Introduce `j i`.
-
-Rewrite using `[W.ut_res j i, hC.1 i]`. Both sides reduce to the same expression. Conclude with `(maps_desc (W.A N) hr hψ (rN' N) (hc N) (p' N) (hp N) Q.g0 (Q.gN N) (Q.comm₀ N) hD (hpD N) (T.Nq N) (T.ph N) (T.ta N) W.ex (W.m N)).some`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.aut_desc :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (Q : TWQuot T) (n : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (r : Resid G0.frame O n) (r' : Resid Q.G0'.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (u' : Pair r' B) (J : Ideal B) (σ : Type) (D : ℕ), Adapted T (r := r) → Glob.Compat Q.g0 r r' → u'.D.comap Q.g0.p₀ = u.D → u'.ψ = u.ψ → TWAut u J σ D T → Nonempty (TWAut u' J σ D Q.grp) := by

@@ -11,7 +11,7 @@ namespace ReciprocityTheory.ChartRestriction.DS.Mult1
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 
 /- English proof (translation)
-Unfold `ell`. Use `continuous_finsetSum _ (fun a _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> fun_prop`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bc_continuous_ell (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : Continuous (ell k r z) := by
   unfold ell
@@ -19,7 +19,7 @@ theorem bc_continuous_ell (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : Contin
   split_ifs <;> fun_prop
 
 /- English proof (translation)
-Simplify using `[psiD, psi, Complex.norm_exp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bc_norm_psiD {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : RealPlaceData k r Wp Wq) (m : Mat k r) :
@@ -27,21 +27,19 @@ theorem bc_norm_psiD {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerPr
   simp [psiD, psi, Complex.norm_exp]
 
 /- English proof (translation)
-Introduce `k r Wp _ _ _ D X hD hsq b hb u v ⟨C, hC⟩`. Take `⟨⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hGL, -, -, -, hCG, hCN, hCW, -⟩, -⟩` from `id h`. Establish `sW` using `bc_isHaarOn_sigmaFinite D.haarW`. Establish `sN` using `bc_isHaarOn_sigmaFinite D.haarN`. Establish `hint` using `(stSInt h k r Wp D hD b (bc_AB_le_of b hb)).const_mul C`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set S : Set (Mt k r × Mt k r) := {p | (Matrix.of p.1 : Mat k r) ∈ UWset k r D.z ∧ (Matrix.of p.2 : Mat k r) ∈ Nset k r} with hSdef`. Establish `aeS : ∀ᵐ p ∂(D.μW.prod D.μN), p ∈ S` using `bc_ae_prod_and (bc_isHaarOn_ae_mem D.haarW) (bc_isHaarOn_ae_mem D.haarN)`. Establish `hinvW : ∀ x ∈ UWset k r D.z, x⁻¹ ∈ UWset k r D.z` using `(hCW k r D.z).inv_mem`. Establish `hnorm : ∀ p ∈ S, ‖beInt D X u v p‖ ≤ C * gN (Matrix.of p.2 * Matrix.of p.1) ^ (-b)`. Introduce `p hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hG : (Matrix.of p.2 : Mat k r) * Matrix.of p.1 ∈ GV k r` using `(hCG k r).mul_mem _ hp.2.1 _ hp.1.1`. Establish `h1` using `hC _ hG`. Establish `hπ : ‖D.π (Matrix.of p.1 : Mat k r)⁻¹‖ ≤ 1`. Use `ContinuousLinearMap.opNorm_le_bound _ zero_le_one (fun w => ?_)` and prove the remaining obligations. Rewrite using `[D.π_unitary _ (hinvW _ hp.1) w, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `beInt`. Rewrite using `[norm_smul, norm_mul, norm_star, bc_norm_psiD, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Use `Integrable.mono' hint ?_ ?_` and prove the remaining obligations. Establish `cW : IsClosed {x : Mt k r | (Matrix.of x : Mat k r) ∈ UWset k r D.z}` using `(hCW k r D.z).closed`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cN : IsClosed {x : Mt k r | (Matrix.of x : Mat k r) ∈ Nset k r}` using `(hCN k r).closed`. Establish `hSmeas : MeasurableSet S` using `(cW.measurableSet.preimage measurable_fst).inter (cN.measurableSet.preimage measurable_snd)`. Establish `c1 : ContinuousOn (fun p : Mt k r × Mt k r => mc X u v (Matrix.of p.2 * Matrix.of p.1)) S`. Establish `hm : ContinuousOn (fun p : Mt k r × Mt k r => X.σ (Matrix.of p.2 * Matrix.of p.1) u) S` using `(X.rep.2.2 u).comp (bc_continuous_mulM.comp continuous_swap).continuousOn (fun p hp => (hCG k r).mul_mem _ hp.2.1 _ hp.1.1)`. Conclude with `continuousOn_const.inner hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `c2 : Continuous (fun p : Mt k r × Mt k r => star (psiD D (Matrix.of p.2)))`. Unfold `psiD psi`. Conclude with `(Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (Complex.continuous_re.comp (continuous_const.mul ((bc_continuous_ell k r D.z).comp continuous_snd)))))).star`. Establish `c3 : ContinuousOn (fun p : Mt k r × Mt k r => D.π (Matrix.of p.1 : Mat k r)⁻¹) S`. Use `D.π_cont.comp (f := fun p : Mt k r × Mt k r => (Matrix.of p.1 : Mat k r)⁻¹) ?_ (fun p hp => hinvW _ hp.1)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `p hp`. Apply `ContinuousAt.continuousWithinAt` to reduce the goal to its premises. Establish `hdet : (Matrix.of p.1 : Mat k r).det ≠ 0` using `((hCW k r D.z).unit _ hp.1).ne_zero`. Establish `hi : ContinuousAt (fun x : Mat k r => x⁻¹) (Matrix.of p.1)` using `continuousAt_matrix_inv _ (by rw [Ring.inverse_eq_inv']; exact continuousAt_inv₀ hdet)`. Conclude with `hi.comp (f := fun p : Mt k r × Mt k r => (Matrix.of p.1 : Mat k r)) continuous_fst.continuousAt`.
-
-Establish `hcont : ContinuousOn (beInt D X u v) S` using `(c1.mul c2.continuousOn).smul c3`. Establish `hm` using `hcont.aestronglyMeasurable (μ := D.μW.prod D.μN) hSmeas`. Rewrite `hm` using `[Measure.restrict_eq_self_of_ae_mem aeS]`. Then use the resulting hypothesis. Use `filter_upwards [aeS] with p hp`. Conclude with `hnorm p hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem stBeConv (h : UnitaryGroupStructuralFacts) : StBeConv := by
   intro k r Wp _ _ _ D X hD hsq b hb u v ⟨C, hC⟩

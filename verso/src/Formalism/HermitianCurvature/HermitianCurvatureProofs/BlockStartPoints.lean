@@ -12,9 +12,9 @@ noncomputable section
 variable {E W : Type} [Field E]
 
 /- English proof (translation)
-Establish `h` using `(Matrix.PosSemidef.hadamard hk hg).dotProduct_mulVec_nonneg (fun _ => (1 : ℂ))`. Establish `e : star (fun _ : Y => (1 : ℂ)) ⬝ᵥ (Matrix.mulVec (Matrix.hadamard (Matrix.of fun x y : Y => k x y) (Matrix.of fun x y : Y => g x y)) (fun _ => (1 : ℂ))) = ∑ p ∈ Y, ∑ q ∈ Y, k p q * g p q`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.hadamard_apply, Matrix.of_apply, Pi.star_apply, star_one, one_mul, mul_one]`. Rewrite using `[← Finset.sum_coe_sort Y]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_coe_sort Y]`. Rewrite `h` using `[e]`. Conclude with `(Complex.le_def.1 h).1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma psd_sum_nonneg {α : Type} (Y : Finset α) (k g : α → α → ℂ) (hk : PSDOn Y k)
     (hg : PSDOn Y g) : 0 ≤ (∑ p ∈ Y, ∑ q ∈ Y, k p q * g p q).re := by
@@ -31,43 +31,43 @@ lemma psd_sum_nonneg {α : Type} (Y : Finset α) (k g : α → α → ℂ) (hk :
   exact (Complex.le_def.1 h).1
 
 /- English proof (translation)
-The claim follows from `Matrix.PosSemidef.submatrix hk (fun a : Y => (⟨φ a, hφ a a.2⟩ : Z))`.
+A detailed English derivation is pending.
 -/
 lemma psd_comp {α β : Type} (Y : Finset α) (Z : Finset β) (φ : α → β) (hφ : ∀ a ∈ Y, φ a ∈ Z)
     (k : β → β → ℂ) (hk : PSDOn Z k) : PSDOn Y (fun a b => k (φ a) (φ b)) :=
   Matrix.PosSemidef.submatrix hk (fun a : Y => (⟨φ a, hφ a a.2⟩ : Z))
 
 /- English proof (translation)
-Simplify using `[level, join]`.
+Simplify using the standard rewrite rules.
 -/
 lemma level_join (h : Pt E) (s : ℕ) (t : E) : level (join h s t) = level h + s := by
   simp [level, join]
 
 /- English proof (translation)
-Simplify using `[blockStart, join, List.take_append_of_le_length hk]`.
+Simplify using the standard rewrite rules.
 -/
 lemma blockStart_join (h : Pt E) (s : ℕ) (t : E) (k : ℕ) (hk : k ≤ h.length) :
     blockStart (join h s t) k = blockStart h k := by
   simp [blockStart, join, List.take_append_of_le_length hk]
 
 /- English proof (translation)
-Simplify using `[blockStart, level]`.
+Simplify using the standard rewrite rules.
 -/
 lemma blockStart_length (h : Pt E) : blockStart h h.length = level h + 1 := by
   simp [blockStart, level]
 
 /- English proof (translation)
-Rewrite using `[T.isTower, T.isTower, level_join]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, ⟨rfl, fun k hk => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hk' : k < (join h s t).length` using `by simp [join]; omega`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3` using `h2 k hk'`. Rewrite `h3` using `[blockStart_join _ _ _ _ hk.le]`. Establish `e : (join h s t)[k]'hk' = h[k]'hk` using `by simp [join, List.getElem_append_left hk]`. Rewrite `h3` using `[e]`. Then use the resulting hypothesis. Establish `hk' : h.length < (join h s t).length` using `by simp [join]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h3` using `h2 h.length hk'`. Rewrite `h3` using `[blockStart_join _ _ _ _ le_rfl, blockStart_length]`. Establish `e : (join h s t)[h.length]'hk' = (s, t)` using `by simp [join]`. Rewrite `h3` using `[e]`. Then use the resulting hypothesis. Introduce and unpack `⟨h1, ⟨_, h2⟩, h3, h4⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Use `⟨h1, fun k hk => ?_⟩` and prove the remaining obligations. Establish `hk' : k < h.length + 1` using `by simpa [join] using hk`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hk' with hlt | heq` into its components or cases. Rewrite using `[blockStart_join _ _ _ _ hlt.le]`. Establish `e : (join h s t)[k]'hk = h[k]'hlt` using `by simp [join, List.getElem_append_left hlt]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `h2 k hlt`. Substitute `heq` using the available equality. Rewrite using `[blockStart_join _ _ _ _ le_rfl, blockStart_length]`. Establish `e : (join h s t)[h.length]'hk = (s, t)` using `by simp [join]`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `⟨h3, h4⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma mem_X_join (T : Tower E) (h : Pt E) (s : ℕ) (t : E) (i : ℕ) :
     join h s t ∈ T.X i ↔
@@ -101,13 +101,13 @@ lemma mem_X_join (T : Tower E) (h : Pt E) (s : ℕ) (t : E) (i : ℕ) :
       exact ⟨h3, h4⟩
 
 /- English proof (translation)
-Use extensionality with `p`. Simplify using `only [Xs, pts, mem_filter, mem_image, mem_product, Prod.exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hp, hl⟩`. Break down `List.eq_nil_or_concat p with rfl | ⟨h, x, rfl⟩` into its components or cases.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `at hl`. Take `⟨s', t⟩` from `x`. Establish `hss : s' = s` using `by simpa using hl`. Substitute `hss` using the available equality. Rewrite `hp` using `[List.concat_eq_append]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨h1, h2, h3, h4⟩` from `(mem_X_join T h s' t i).1 hp`. Establish `hlev : level h = i - s'` using `by omega`. Use `⟨h, t, ⟨?_, ?_⟩, by rw [List.concat_eq_append]; rfl⟩` and prove the remaining obligations. Rewrite using `[← hlev]`. Conclude with `h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hlev]`. Conclude with `h4`. Introduce and unpack `⟨h, t, ⟨hh, ht⟩, rfl⟩`. Establish `hlev : level h = i - s` using `((T.isTower _ _).1 hh).1`. Conclude with `⟨(mem_X_join T h s t i).2 ⟨by omega, by rw [hlev]; exact hh, hs, by rw [hlev]; exact ht⟩, by simp [join]⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma Xs_eq (T : Tower E) (i s : ℕ) (hs : 1 ≤ s) (hsi : s ≤ i) :
     Xs T i s = pts (T.X (i - s)) s (T.Sg (i - s + 1) s) := by
@@ -132,9 +132,9 @@ lemma Xs_eq (T : Tower E) (i s : ℕ) (hs : 1 ≤ s) (hsi : s ≤ i) :
       by simp [join]⟩
 
 /- English proof (translation)
-Unfold `pts`. Rewrite using `[Finset.sum_image, Finset.sum_product_right]`. Introduce and unpack `⟨h, t⟩ _ ⟨h', t'⟩ _ e`. Simplify using `only [join] at e`. Establish `h2` using `List.append_inj' e rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma sum_pts {β : Type} [AddCommMonoid β] (Y : Finset (Pt E)) (s : ℕ) (S : Finset E)
     (F : Pt E → β) : ∑ p ∈ pts Y s S, F p = ∑ t ∈ S, ∑ h ∈ Y, F (join h s t) := by
@@ -146,11 +146,11 @@ lemma sum_pts {β : Type} [AddCommMonoid β] (Y : Finset (Pt E)) (s : ℕ) (S : 
   simpa using h2
 
 /- English proof (translation)
-Establish `e : ∑ t ∈ S, ∑ t' ∈ S, m t t' * ((a t + b t') / 2) = (∑ t ∈ S, a t * ∑ t' ∈ S, m t t') / 2 + (∑ t' ∈ S, b t' * ∑ t ∈ S, m t t') / 2`. Establish `e2 : ∑ t' ∈ S, b t' * ∑ t ∈ S, m t t' = ∑ t ∈ S, ∑ t' ∈ S, b t' * m t t'`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun t' _ => Finset.mul_sum _ _ _`. Rewrite using `[e2, ← add_div, ← Finset.sum_add_distrib, Finset.sum_div]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib, Finset.sum_div]`. Conclude with `Finset.sum_congr rfl fun t' _ => by ring`. Rewrite using `[e]`. Establish `h1 : ∑ t ∈ S, a t * ∑ t' ∈ S, m t t' ≤ ep * M`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ∑ t' ∈ S, b t' * ∑ t ∈ S, m t t' ≤ ep * M`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma schur_real {τ : Type} (S : Finset τ) (m : τ → τ → ℝ) (ep M : ℝ) (hep : 0 ≤ ep)
     (row : ∀ t ∈ S, ∑ t' ∈ S, m t t' ≤ ep) (col : ∀ t' ∈ S, ∑ t ∈ S, m t t' ≤ ep)
@@ -180,7 +180,7 @@ lemma schur_real {τ : Type} (S : Finset τ) (m : τ → τ → ℝ) (ep M : ℝ
   linarith
 
 /- English proof (translation)
-Repeatedly rewrite using `[Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion repeatedly using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma phi_sum {τ J : Type} (S : Finset τ) (Js : Finset J) (m : τ → τ → ℝ) (g : J → τ → τ → ℝ) :
     ∑ t ∈ S, ∑ t' ∈ S, m t t' * ∑ j ∈ Js, g j t t' =
@@ -192,7 +192,7 @@ lemma phi_sum {τ J : Type} (S : Finset τ) (Js : Finset J) (m : τ → τ → �
     _ = ∑ j ∈ Js, ∑ t ∈ S, ∑ t' ∈ S, m t t' * g j t t' := Finset.sum_comm
 
 /- English proof (translation)
-Unfold `Data.Nst`. Rewrite using `[Complex.div_ofReal_re]`. Use `div_nonneg ?_ (hW w).le` and prove the remaining obligations. Conclude with `psd_sum_nonneg Y _ (fun h h' => D.gram ε i w (join h s t) (join h' s t)) (psd_comp Y (Y.image fun h => join h s t) (fun h => join h s t) (fun a ha => mem_image_of_mem _ ha) _ (hK.1 i _)) (psd_comp Y (Y.image fun h => join h s t) (fun h => join h s t) (fun a ha => mem_image_of_mem …`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma diag_nonneg (D : Data E W) (hG : D.GramPSD) (hK : D.KernelPSD) (hW : D.WordsPos) (ε : ℝ)
     (hε : 0 < ε) (i s : ℕ) (w : W) (Y : Finset (Pt E)) (t : E) :
@@ -207,9 +207,9 @@ lemma diag_nonneg (D : Data E W) (hG : D.GramPSD) (hK : D.KernelPSD) (hW : D.Wor
       (fun a ha => mem_image_of_mem _ ha) _ (hG ε hε i w _))
 
 /- English proof (translation)
-Unfold `Data.Sf Data.Nst`. Rewrite using `[sum_pts]`. Repeatedly rewrite using `[sum_pts, Complex.div_ofReal_re, Complex.re_sum, blk]`. Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm, Finset.sum_div]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma Sf_pts (D : Data E W) (ε : ℝ) (i s : ℕ) (w : W) (Y : Finset (Pt E)) (S : Finset E) :
     D.Sf ε i w (pts Y s S) / D.wt w =
@@ -231,55 +231,49 @@ open Finset Formalism.FourierDecayAlt.TB Formalism.FourierDecayAlt.TB.Data Forma
 open Classical
 
 /- English proof (translation)
-Introduce `E W _ D ep hG hK hW hA2 hEL hLS T ε hε i s hs hsi hi w hw hcnt M hM`. Establish `hlev : ∀ h ∈ T.X (i - s), level h = i - s` using `fun h hh => ((T.isTower _ _).1 hh).1`. Establish `hS0 : ∀ t ∈ T.Sg (i - s + 1) s, t ≠ 0` using `fun t ht h0 => T.zero_not_mem _ _ (h0 ▸ ht)`. Establish `hep : 0 ≤ ep` using `by simpa using hLS.1 i (by omega) hi ∅ (by simp)`. Establish `ha : ∀ w' t, 0 ≤ (D.Nst ε i s w' (T.X (i - s)) (blk (D.Kr i) s t t) t t).re` using `fun w' t => diag_nonneg D hG hK hW ε hε i s w' _ t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM0 : 0 ≤ M` using `le_trans (Finset.sum_nonneg fun t _ => ha w t) (hM w (by simp [Data.Wb, hw]))`. Rewrite using `[Xs_eq T i s hs hsi, Sf_pts]`. Generalize the expression as in `hY : T.X (i - s) = Y at *`. Generalize the expression as in `hS : T.Sg (i - s + 1) s = S at *`. Establish `hDg : ∀ w', D.Dg T ε i s w' = ∑ t ∈ S, (D.Nst ε i s w' Y (blk (D.Kr i) s t t) t t).re`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Introduce `w'`. Unfold `Data.Dg`. Rewrite using `[hY, hS]`. Simplify using `only [hDg] at hM ⊢`. Establish `hz : ∀ t ∈ S, ∀ t' ∈ S, t ≠ t' → ((i = D.r + 1 ∧ s = 1) ∨ t⁻¹ - t'⁻¹ ∉ D.Lap (i - s + 1) s) → D.Nst ε i s w Y (blk (D.Kr i) s t t') t t' = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `t ht t' ht' hne hc`. Unfold `Data.Nst`. Rewrite using `[Finset.sum_eq_zero, zero_div]`. Introduce `h hh`. Use `Finset.sum_eq_zero fun h' hh' => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hk0 : D.Kr i (join h s t) (join h' s t') = 0`. Assume the negation of the conclusion as `hk`. Take `⟨h1, h2⟩` from `hA2 i s hs hsi hi h h' t t' (hlev h hh) (hlev h' hh') (hS0 t ht) (hS0 t' ht') hne hk`. Break down `hc with hc | hc` into its components or cases. Conclude with `h1 hc`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `hc h2`. Simplify using `[blk, hk0]`. Establish `split : ∀ B : E → E → ℝ, (∀ t ∈ S, ∀ t' ∈ S, t ≠ t' → (D.Nst ε i s w Y (blk (D.Kr i) s t t') t t').re ≤ B t t') → (∀ t, 0 ≤ B t t) → ∑ t ∈ S, ∑ t' ∈ S, (D.Nst ε i s w Y (blk (D.Kr i) s t t') t t').re ≤ ∑ t ∈ S, (D.Nst ε i s w Y (blk (D.Kr i) s t t) t t).re + ∑ t ∈ S, ∑ t' ∈ S, B …`. Introduce `B hB hB0`. Rewrite using `[← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_le_sum fun t ht => ?_` and prove the remaining obligations. Establish `e : (D.Nst ε i s w Y (blk (D.Kr i) s t t) t t).re = ∑ t' ∈ S, if t' = t then (D.Nst ε i s w Y (blk (D.Kr i) s t' t') t' t').re else 0`. Rewrite using `[Finset.sum_ite_eq' S t, if_pos ht]`. Rewrite using `[e, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun t' ht' => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `htt : t' = t`. Substitute `htt` using the available equality. Rewrite using `[if_pos rfl]`. Combine the linear relations using `[hB0 t']`. Rewrite using `[if_neg htt, zero_add]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `hB t ht t' ht' (Ne.symm htt)`. Distinguish the cases in `htop : i = D.r + 1 ∧ s = 1`. Establish `h1` using `split (fun _ _ => 0) (fun t ht t' ht' hne => by rw [hz t ht t' ht' hne (Or.inl htop)]; simp) (fun _ => le_rfl)`. Establish `h2 : 0 ≤ 3 ^ D.f * ep * M` using `by positivity`. Simplify using `only [Finset.sum_const_zero, add_zero] at h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨θ, hθ, hE⟩` from `hEL ε hε i s hs hsi hi htop w hw hcnt`. Establish `hE'` using `hE Y S (D.Kr i) hlev (hK.1 i _)`. Use `set WW := D.Wb (D.cnt w + D.K) ×ˢ D.Wb (D.cnt w + D.K) with hWW`. Use `set ρ := D.szL (i - s + 1) s with hρ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `set a : W → E → ℝ := fun w' t => (D.Nst ε i s w' Y (blk (D.Kr i) s t t) t t).re with hadef`. Set `P : E → E → Prop` to `fun t t' => t ≠ t' ∧ t⁻¹ - t'⁻¹ ∈ D.Lap (i - s + 1) s ∧ 0 ≤ D.maj ρ (t⁻¹ - t'⁻¹)`. Set `m : E → E → ℝ` to `fun t t' => if P t t' then D.maj ρ (t⁻¹ - t'⁻¹) else 0`. Establish `hm0 : ∀ t t', 0 ≤ m t t'`. Introduce `t t'`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Distinguish the cases in `hP : P t t'`. Simplify using `only [m, if_pos hP]`. Conclude with `hP.2.2`. Simplify using `only [m, if_neg hP]`. Conclude with `le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Establish `row : ∀ t ∈ S, ∑ t' ∈ S, m t t' ≤ ep`. Introduce `t _`. Establish `h1` using `hLS.2 i s hs hsi hi htop ((S.filter fun t' => P t t').image fun t' => t⁻¹ - t'⁻¹) (by`. Introduce `l hl`. Take `⟨t', ht', rfl⟩` from `Finset.mem_image.1 hl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP` using `(Finset.mem_filter.1 ht').2`. Conclude with `⟨hP.2.1, sub_ne_zero.2 fun e => hP.1 (inv_injective e)⟩)`. Rewrite using `[Finset.sum_image (by`. Introduce `x _ y _ e`. Conclude with `inv_injective (sub_right_injective e)), Finset.sum_filter] at h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1`. Establish `col : ∀ t' ∈ S, ∑ t ∈ S, m t t' ≤ ep`. Introduce `t' _`. Establish `h1` using `hLS.2 i s hs hsi hi htop ((S.filter fun t => P t t').image fun t => t⁻¹ - t'⁻¹) (by`. Introduce `l hl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht, rfl⟩` from `Finset.mem_image.1 hl`. Establish `hP` using `(Finset.mem_filter.1 ht).2`. Conclude with `⟨hP.2.1, sub_ne_zero.2 fun e => hP.1 (inv_injective e)⟩)`. Rewrite using `[Finset.sum_image (by`. Introduce `x _ y _ e`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `inv_injective (sub_left_injective e)), Finset.sum_filter] at h1`. Conclude with `h1`. Establish `hX0 : ∀ π t t', 0 ≤ ∑ x ∈ WW, θ π x * ((a x.1 t + a x.2 t') / 2)`. Introduce `π t t'`. Use `Finset.sum_nonneg fun x _ => mul_nonneg ((hθ π).1 x) ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `ha x.1 t` as an intermediate fact. Use `ha x.2 t'` as an intermediate fact. Simplify using `only [hadef]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `split (fun t t' => m t t' * ∑ π, ∑ x ∈ WW, θ π x * ((a x.1 t + a x.2 t') / 2)) (by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `t ht t' ht' hne`. Establish `hG0 : 0 ≤ ∑ π, ∑ x ∈ WW, θ π x * ((a x.1 t + a x.2 t') / 2)` using `Finset.sum_nonneg fun π _ => hX0 π t t'`. Distinguish the cases in `hL : t⁻¹ - t'⁻¹ ∈ D.Lap (i - s + 1) s`. Take `⟨π, hπ⟩` from `hE' t ht t' ht' (hS0 t ht) (hS0 t' ht') (sub_ne_zero.2 fun e => hne (inv_injective e))`. Establish `h2 : (D.Nst ε i s w Y (blk (D.Kr i) s t t') t t').re ≤ D.maj ρ (t⁻¹ - t'⁻¹) * ∑ x ∈ WW, θ π x * ((a x.1 t + a x.2 t') / 2)` using `le_trans (Complex.re_le_norm _) hπ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `h3 : ∑ x ∈ WW, θ π x * ((a x.1 t + a x.2 t') / 2) ≤ ∑ π, ∑ x ∈ WW, θ π x * ((a x.1 t + a x.2 t') / 2)` using `Finset.single_le_sum (f := fun π => ∑ x ∈ WW, θ π x * ((a x.1 t + a x.2 t') / 2)) (fun π _ => hX0 π t t') (Finset.mem_univ π)`. Distinguish the cases in `hmj : 0 ≤ D.maj ρ (t⁻¹ - t'⁻¹)`. Establish `hP : P t t'` using `⟨hne, hL, hmj⟩`. Simplify using `only [m, if_pos hP]`. Conclude with `le_trans h2 (mul_le_mul_of_nonneg_left h3 hmj)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4 : D.maj ρ (t⁻¹ - t'⁻¹) * ∑ x ∈ WW, θ π x * ((a x.1 t + a x.2 t') / 2) ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg (not_le.1 hmj).le (hX0 π t t')`. Conclude with `le_trans (le_trans h2 h4) (mul_nonneg (hm0 t t') hG0)`. Rewrite using `[hz t ht t' ht' hne (Or.inr hL)]`. Conclude with `mul_nonneg (hm0 t t') hG0)`. Use the proof step `(fun t => mul_nonneg (hm0 t t) (Finset.sum_nonneg fun π _ => hX0 π t t))`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `le_trans h1 (add_le_add le_rfl ?_)` and prove the remaining obligations. Rewrite using `[phi_sum]`. Establish `h5 : ∀ π : Fin D.f → Fin 3, ∑ t ∈ S, ∑ t' ∈ S, m t t' * ∑ x ∈ WW, θ π x * ((a x.1 t + a x.2 t') / 2) ≤ ep * M`. Introduce `π`. Rewrite using `[phi_sum]`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun t' _ => by ring`. Use `_ ≤ ∑ x ∈ WW, θ π x * (ep * M) := by`. Use `Finset.sum_le_sum fun x hx => mul_le_mul_of_nonneg_left ?_ ((hθ π).1 x)` and prove the remaining obligations. Establish `hx'` using `Finset.mem_product.1 hx`. Conclude with `schur_real S m ep M hep row col (a x.1) (a x.2) (ha x.1) (ha x.2) (hM x.1 hx'.1) (hM x.2 hx'.2)`.
-
-Use `_ = ep * M := by rw [← Finset.sum_mul, (hθ π).2.2, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fun, Fintype.card_fin, Fintype.card_fin, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem schurRecursion_true : Formalism.FourierDecayAlt.TB.SchurStep := by
   intro E W _ D ep hG hK hW hA2 hEL hLS T ε hε i s hs hsi hi w hw hcnt M hM

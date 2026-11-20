@@ -25,9 +25,9 @@ section Res
 variable (O R : Type) [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [IsCO O R]
 
 /- English proof (translation)
-Use `⟨(ResidueField.map (algebraMap O R)).injective, fun y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `residue_surjective y`. Take `⟨a, ha⟩` from `IsCO.res_surj (O := O) x`. Use `⟨residue O a, ?_⟩` and prove the remaining obligations. Rewrite using `[ResidueField.map_residue]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((Ideal.Quotient.eq).2 ha).symm`.
+A detailed English derivation is pending.
 -/
 theorem resMap_bijective : Function.Bijective (ResidueField.map (algebraMap O R)) := by
   refine ⟨(ResidueField.map (algebraMap O R)).injective, fun y => ?_⟩
@@ -45,7 +45,7 @@ def res : R →ₐ[O] ResidueField O :=
       exact (ResidueField.map_residue _ _).symm }
 
 /- English proof (translation)
-Use `show (RingEquiv.ofBijective _ (resMap_bijective O R)).symm (residue R x) = 0 ↔ _`. Rewrite using `[map_eq_zero_iff _ (RingEquiv.injective _), residue_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_eq_zero_iff (x : R) : res O R x = 0 ↔ x ∈ maximalIdeal R := by
   show (RingEquiv.ofBijective _ (resMap_bijective O R)).symm (residue R x) = 0 ↔ _
@@ -54,15 +54,13 @@ theorem res_eq_zero_iff (x : R) : res O R x = 0 ↔ x ∈ maximalIdeal R := by
 variable {O R} in
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `IsCO.res_surj (O := O) x`. Establish `h1 : res O R x = algebraMap O _ a`. Use `(res_eq_zero_iff O R _).2 ha` as an intermediate fact. Rewrite `this` using `[map_sub, AlgHom.commutes, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hm : ∀ y ∈ maximalIdeal R, f y ∈ maximalIdeal R'` using `fun y hy => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Take `⟨b, hb⟩` from `IsCO.res_surj (O := O) (f y)`. Distinguish the cases in `hu : IsUnit b`. It suffices to derive a contradiction. Establish `h2 : IsUnit (y - algebraMap O R b)`. Assume the negation of the conclusion as `hn`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h3 : y - algebraMap O R b ∈ maximalIdeal R` using `hn`. Establish `h4 : algebraMap O R b ∈ maximalIdeal R` using `by simpa using Ideal.sub_mem _ hy h3`. Conclude with `h4 (hu.map _)`. Establish `h5` using `h2.map f`. Rewrite `h5` using `[map_sub, AlgHom.commutes]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hb h5`. Establish `h6 : algebraMap O R' b ∈ maximalIdeal R'` using `fun h => hu (IsLocalHom.map_nonunit b h)`. Simplify using `using Ideal.add_mem _ hb h6`. Establish `h2` using `(res_eq_zero_iff O R' _).2 (hm _ ha)`. Rewrite `h2` using `[map_sub, map_sub, AlgHom.commutes, AlgHom.commutes, sub_eq_zero]`.
-
-Rewrite using `[h2, h1]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_map {R' : Type} [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R') (x : R) :
     res O R' (f x) = res O R x := by
@@ -122,13 +120,13 @@ theorem coeff_wcomp (j : X) (f : MvPowerSeries σ O) (n : σ →₀ ℕ) :
     coeff n (wcomp O wt j f) = if Finsupp.weight wt n = j then coeff n f else 0 := rfl
 
 /- English proof (translation)
-Introduce `n hn` and use `by rw [coeff_wcomp, if_neg hn]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wcomp_mem (j : X) (f : MvPowerSeries σ O) : wcomp O wt j f ∈ wtPart O wt j :=
   fun n hn => by rw [coeff_wcomp, if_neg hn]
 
 /- English proof (translation)
-Introduce `n hn` and use `by classical rw [coeff_mul] refine Finset.sum_eq_zero fun p hp => ?_ by_cases h1 : Finsupp.weight wt p.1 = i · have h2 : Finsupp.weight wt p.2 ≠ j := fun h2 => hn (by rw [← Finset.HasAntidiagonal.mem_antidiagonal.1 hp, map_add, h1, h2]) rw [hg _ h2, mul_zero] · rw [hf _ h1, zero_ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_mem_wtPart {i j : X} {f g : MvPowerSeries σ O} (hf : f ∈ wtPart O wt i) (hg : g ∈ wtPart O wt j) :
     f * g ∈ wtPart O wt (i + j) := fun n hn => by
@@ -142,7 +140,7 @@ theorem mul_mem_wtPart {i j : X} {f g : MvPowerSeries σ O} (hf : f ∈ wtPart O
   · rw [hf _ h1, zero_mul]
 
 /- English proof (translation)
-Introduce `n hn` and use `by classical rw [coeff_one, if_neg] rintro rfl exact hn (map_zero _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_mem_wtPart : (1 : MvPowerSeries σ O) ∈ wtPart O wt 0 := fun n hn => by
   classical
@@ -151,7 +149,7 @@ theorem one_mem_wtPart : (1 : MvPowerSeries σ O) ∈ wtPart O wt 0 := fun n hn 
   exact hn (map_zero _)
 
 /- English proof (translation)
-Introduce `n hn` and use `by classical rw [coeff_X, if_neg] rintro rfl exact hn (by simp [Finsupp.weight_single])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem X_mem_wtPart (i : σ) : (MvPowerSeries.X i : MvPowerSeries σ O) ∈ wtPart O wt (wt i) := fun n hn => by
   classical
@@ -211,7 +209,7 @@ instance : SetLike.GradedMonoid W.part where
     exact ⟨f * g, mul_mem_wtPart O W.wt hf hg, map_mul W.π f g⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, X_mem_wtPart O W.wt i, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem z_mem (i : W.σ) : W.z i ∈ W.part (W.wt i) := ⟨_, X_mem_wtPart O W.wt i, rfl⟩
 
@@ -224,7 +222,7 @@ instance : SetLike.GradedMonoid W.gr where
   mul_mem _ _ _ _ ha hb := (SetLike.GradedMul.mul_mem ha hb : _ ∈ W.part _)
 
 /- English proof (translation)
-The claim follows from `le_iSup W.part j hx`.
+A detailed English derivation is pending.
 -/
 theorem part_le_A {j : X} {x : R} (hx : x ∈ W.part j) : x ∈ W.A := le_iSup W.part j hx
 
@@ -238,9 +236,9 @@ def origin (h : W.HasOrigin) : R →ₐ[O] O :=
     h).comp (Ideal.quotientKerAlgEquivOfSurjective W.surj).symm.toAlgHom
 
 /- English proof (translation)
-Establish `: (Ideal.quotientKerAlgEquivOfSurjective W.surj).symm (W.π f) = Ideal.Quotient.mk _ f`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [origin, AlgHom.comp_apply, AlgEquiv.coe_algHom]`. Use `erw [this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem origin_π (h : W.HasOrigin) (f : MvPowerSeries W.σ O) : W.origin h (W.π f) = constantCoeff f := by
   have : (Ideal.quotientKerAlgEquivOfSurjective W.surj).symm (W.π f) = Ideal.Quotient.mk _ f := by
@@ -265,7 +263,7 @@ def act (t : Multiplicative X →* Kˣ) (ξ : A →ₐ[O] K) : A →ₐ[O] K :=
       ring)).comp (DirectSum.decomposeAlgEquiv 𝒜).toAlgHom
 
 /- English proof (translation)
-Establish `h : DirectSum.decompose 𝒜 f = DirectSum.of (fun j => 𝒜 j) j ⟨f, hf⟩` using `DirectSum.decompose_of_mem 𝒜 hf`. Simplify using `[act, h, DirectSum.toAlgebra]`. Use `erw [DirectSum.toSemiring_of]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem act_of_mem (t : Multiplicative X →* Kˣ) (ξ : A →ₐ[O] K) {j : X} {f : A} (hf : f ∈ 𝒜 j) :
     act 𝒜 t ξ f = t (Multiplicative.ofAdd j) * ξ f := by

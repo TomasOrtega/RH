@@ -28,9 +28,9 @@ Both sides reduce to the same expression.
 theorem trivialTuple_coe (S : Set ℕ) : ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K) = 1 := rfl
 
 /- English proof (translation)
-Unfold `QE Qprime`. Use `split_ifs with h`. Rewrite using `[Finset.image_eq_empty, Set.Finite.toFinset_eq_empty]`. Use extensionality with `v`. Simplify using `[trivialTuple_coe]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem twistPrimes_trivialTuple_empty (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S : Set ℕ) :
     QE sel ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K) = ∅ := by
@@ -42,27 +42,25 @@ theorem twistPrimes_trivialTuple_empty (sel : HeightOneSpectrum (𝓞 X.F) → H
   · rfl
 
 /- English proof (translation)
-Establish `hmem : ∀ j, P ∈ Pr.vG j → X.conjO (Pr.piG j) ∈ P.asIdeal` using `fun j h => ChainCounts.mem_of_mem_divs h`. Establish `hcomap : ∀ y : 𝓞 X.E, y ∈ (HeckeExHost.conjPrime₂ P).asIdeal ↔ X.conjO y ∈ P.asIdeal` using `fun y => Iff.rfl`. Establish `hcop : ∀ j, Pr.piG j ∈ P.asIdeal → X.conjO (Pr.piG j) ∈ P.asIdeal → False`. Introduce `j h1 h2`. Take `⟨a, b, hab⟩` from `hPr.piG_cop j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `P.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hab]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, P ∈ Pr.vG i := by`. Break down `Finset.mem_union.1 hP with h | h` into its components or cases.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨0, h⟩`. Conclude with `⟨1, h⟩`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `h1 : Pr.piG i ∈ (HeckeExHost.conjPrime₂ P).asIdeal` using `(hcomap _).2 (hmem i hi)`. Rewrite `h1` using `[h]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hcop i h1 (hmem i hi)`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, HeckeExHost.conjPrime₂ P ∈ Pr.vG j := by`. Break down `Finset.mem_union.1 h with h' | h'` into its components or cases. Conclude with `⟨0, h'⟩`. Conclude with `⟨1, h'⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Pr.piG j ∈ P.asIdeal`. Use `(hcomap _).1 (ChainCounts.mem_of_mem_divs hj)` as an intermediate fact. Rewrite `this` using `[HeckeExHost.conjO_conjO']`. Then use the resulting hypothesis. Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hcop j h1 (hmem j hi)`. Establish `hg1 : ((Pr.g j : ℕ) : 𝓞 X.E) ∈ P.asIdeal`. Rewrite using `[← hPr.piG_norm j]`. Conclude with `Ideal.mul_mem_right _ _ h1`. Establish `hg2 : ((Pr.g i : ℕ) : 𝓞 X.E) ∈ P.asIdeal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[← hPr.piG_norm i]`. Conclude with `Ideal.mul_mem_left _ _ (hmem i hi)`. Establish `hne : Pr.g j ≠ Pr.g i`. Establish `key : ∀ a b : Fin 2, a ≠ b → (a = 0 ∧ b = 1) ∨ (a = 1 ∧ b = 0)` using `by decide`. Break down `key j i hij with ⟨h0, h1'⟩ | ⟨h0, h1'⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h0, h1']`. Conclude with `hPr.g_ne`. Rewrite using `[h0, h1']`. Conclude with `hPr.g_ne.symm`. Establish `hcopZ : Nat.Coprime (Pr.g j) (Pr.g i)` using `(Nat.coprime_primes (hPr.g_prime j) (hPr.g_prime i)).2 hne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨a, b, hab⟩ : ∃ a b : ℤ, a * (Pr.g j : ℤ) + b * (Pr.g i : ℤ) = 1 := by`. Use `⟨Nat.gcdA (Pr.g j) (Pr.g i), Nat.gcdB (Pr.g j) (Pr.g i), ?_⟩` and prove the remaining obligations. Use `Nat.gcd_eq_gcd_ab (Pr.g j) (Pr.g i)` as an intermediate fact. Rewrite `this` using `[hcopZ]`. Move the coercions through the operations in `at this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Apply `P.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `e : (1 : 𝓞 X.E) = (a : 𝓞 X.E) * ((Pr.g j : ℕ) : 𝓞 X.E) + (b : 𝓞 X.E) * ((Pr.g i : ℕ) : 𝓞 X.E)`. Use `congrArg (fun z : ℤ => (z : 𝓞 X.E)) hab` as an intermediate fact.
-
-Move the coercions through the operations in `at this`. Conclude with `this.symm`. Rewrite using `[e]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ hg1) (Ideal.mul_mem_left _ _ hg2)`.
+A detailed English derivation is pending.
 -/
 theorem conjP_vGs (hX : X.Ok) (hPr : Pr.Ok) {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∈ Pr.vGs) :
     HeckeExHost.conjPrime₂ P ≠ P ∧ HeckeExHost.conjPrime₂ P ∉ Pr.vGs := by
@@ -128,39 +126,33 @@ open Classical
 variable {X : Fields} {Pr : Primes X} {R : Ranks}
 
 /- English proof (translation)
-Use `set mu := mu0 X.F X.E X.K S with hmu`. Use `set SB := rowSG Pr sel mu with hSBdef`. Use `set ξ : Chr X.F X.E X.K := Dc.muAt i * (mu : Chr X.F X.E X.K) with hξdef`. Establish `hξ' : ξ = Dc.muAt i` using `by rw [hξdef, hmu, trivialTuple_coe, mul_one]`. Use `set g : GL (Fin N) (X.E ⊗[X.F] Formalism.L2.Herm.Af X.F) := (ptOf hc N ST Pr.vGs p : GL (Fin N) (X.E ⊗[X.F] Formalism.L2.Herm.Af X.F)) with hgdef`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : g ∈ UAd hc N` using `(ptOf hc N ST Pr.vGs p).2`. Take `⟨x, hx⟩` from `h1 X.F X.E hc N g hg`. Establish `htriv : (h90 hc.sig).ker ≤ ξ.ker` using `hLoc.trivF i hi`. Establish `hdet : detTw hc.sig (Dc.muAt i) g = ξ x`. Rewrite using `[← hξ']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Formalism.L2.DIV.detTw_of_det hc.sig ξ htriv g x hx`. Establish `hSB : SB = Pr.vGs` using `ChainCounts.rowSG_eq_of_QE sel mu (twistPrimes_trivialTuple_empty sel S)`. Take `⟨hfr, hunitL, hcongL⟩` from `h3 X.F X.E hc N ST Pr.vGs g hg`. Rewrite `hfr`, `hunitL`, `hcongL` using `[hdec]`. Establish `hframe : ∀ P : HeightOneSpectrum (𝓞 X.E), ∀ z, frameAt P p.1.N z ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal p.1.N ↔ z ∈ stdAt X.E N P`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `P`. Take `⟨f, hf⟩` from `hfr P`. Conclude with `Classical.epsilon_spec (p := fun f : Sp X.E N ≃ₗ[X.E] Sp X.E N => ∀ z, f z ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal p.1.N ↔ z ∈ stdAt X.E N P) ⟨f, hf⟩`. Establish `hfrs : ∀ (P : HeightOneSpectrum (𝓞 X.E)) (h : P ∈ SB), ∃ hw : P ∈ Pr.vGs, frsD sel mu p ⟨P, h⟩ = p.1.liftFr ⟨P, hw⟩`. Introduce `P h`.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : P ∈ Pr.vGs` using `hSB ▸ h`. Conclude with `⟨hw, by unfold frsD; rw [dif_pos hw]⟩`. Establish `hlift : ∀ w : Pr.vGs, ∀ z, p.1.liftFr w z ∈ Formalism.HermitianLatticesTheory.localization₂ w.1.asIdeal p.1.N ↔ z ∈ stdAt X.E N w.1` using `fun w => (Deco.liftFr_spec (p.2.hasLift w)).1`. Set `a : HeightOneSpectrum (𝓞 X.E) → X.Eˣ` to `fun P => if h : P ∈ SB then LinearEquiv.det (frsD sel mu p ⟨P, h⟩) else LinearEquiv.det (frameAt P p.1.N)`. Establish `haS : ∀ (P : HeightOneSpectrum (𝓞 X.E)) (h : P ∈ SB), a P = LinearEquiv.det (frsD sel mu p ⟨P, h⟩)` using `fun P h => dif_pos h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `haN : ∀ P : HeightOneSpectrum (𝓞 X.E), P ∉ SB → a P = LinearEquiv.det (frameAt P p.1.N)` using `fun P h => dif_neg h`. Establish `hunit : ∀ P : HeightOneSpectrum (𝓞 X.E), UnitAtI P (h90 hc.sig x * (ratId X.F X.E (a P))⁻¹)`. Introduce `P`. Rewrite using `[hx]`. Distinguish the cases in `h : P ∈ SB`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hw, he⟩` from `hfrs P h`. Rewrite using `[haS P h, he]`. Conclude with `hunitL P _ (hlift ⟨P, hw⟩)`. Rewrite using `[haN P h]`. Conclude with `hunitL P _ (hframe P)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcong : ∀ P ∈ SB, CongOneAtI P ((h90 hc.sig x * (ratId X.F X.E (a P))⁻¹ : (AfE X.F X.E)ˣ) : AfE X.F X.E)`. Introduce `P h`. Rewrite using `[hx]`. Take `⟨hw, he⟩` from `hfrs P h`. Rewrite using `[haS P h, he]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the second alternative. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hcongL ⟨P, hw⟩`. Establish `hfin : {P : HeightOneSpectrum (𝓞 X.E) | ordE P (a P : X.E) ≠ 0}.Finite`. Establish `hF` using `frame_det_unit_almost_all_primes (E := X.E) N p.1.N ⟨p.2.lat, p.2.uni⟩`. Use `(hF.union (SB : Set (HeightOneSpectrum (𝓞 X.E))).toFinite).subset ?_` and prove the remaining obligations. Introduce `P hP`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : P ∈ SB`. Conclude with `Or.inr h`. Use `left show ordDet P p.1.N ≠ 0`. Use `hP` as an intermediate fact. Simplify using `only [Set.mem_ofPred_eq] at this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[haN P h]`. Conclude with `this`. Set `k : HeightOneSpectrum (𝓞 X.E) → X.Kˣ` to `fun P => if h : P ∈ SB then Classical.choose (hLoc.atq_ex i hi ⟨P, h⟩) else 1`. Establish `hk : ∀ P (h : P ∈ SB), IsQValC ξ P (k P)`. Introduce `P h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `show IsQValC ξ P (if h : P ∈ SB then Classical.choose (hLoc.atq_ex i hi ⟨P, h⟩) else 1)`. Rewrite using `[dif_pos h]`. Conclude with `Classical.choose_spec (hLoc.atq_ex i hi ⟨P, h⟩)`. Set `χ : ∀ P : HeightOneSpectrum (𝓞 X.E), (𝓞 X.E ⧸ P.asIdeal)ˣ →* X.Kˣ` to `fun P => if P ∈ Pr.vGs then (chiP Ch P i)⁻¹ else resChar (mu : Chr X.F X.E X.K) P`. Establish `hsplit : ∀ P ∈ SB, ∃ P' : HeightOneSpectrum (𝓞 X.E), P' ≠ P ∧ P'.asIdeal.under (𝓞 X.F) = P.asIdeal.under (𝓞 X.F) ∧ P' ∉ SB`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `P h`. Establish `hw : P ∈ Pr.vGs` using `hSB ▸ h`. Take `⟨hne, hnot⟩` from `conjP_vGs hX hPr hw`. Use `⟨HeckeExHost.conjPrime₂ P, hne, ?_, by rw [hSB]; exact hnot⟩` and prove the remaining obligations. Conclude with `congrArg HeightOneSpectrum.asIdeal (HeckeExHost.conjP_under hX P)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hfac` using `h2 X.F X.E X.K hc ξ SB sel (fun P => (mUof Ch mu i P)⁻¹) χ k a x hsel hsplit (fun P h => ChainCounts.unifG_of hX hPr P (hSB ▸ h)) htriv (hLoc.unr i hi) (fun P h => hLoc.unif i hi P h) (fun P h v hv => hLoc.tame i hi P h v hv) (fun P h => hLoc.res i hi ⟨P, h⟩) hk hfin hunit hcong`. Rewrite using `[hdet, hfac]`. Unfold `muInvDet muOff`. Use `congr 1`. Use `finprod_congr fun v => ?_ split_ifs with hv` and prove the remaining obligations.
-
-Both sides reduce to the same expression. Establish `hsv : sel v ∉ SB` using `fun h => hv ⟨sel v, h, hsel v⟩`. Rewrite using `[inv_inv, haN (sel v) hsv]`. Both sides reduce to the same expression. Rewrite using `[← Finset.prod_coe_sort SB]`.
-
-Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations. Rewrite using `[haS P.1 P.2]`. Establish `hq` using `hLoc.atq i hi P (k P.1) (hk P.1 P.2)`. Unfold `muAt`. Rewrite using `[hq]`.
-
-Use `congr 1`. Express the relevant statement in the definitionally equal form `((if P.1 ∈ Pr.vGs then (chiP Ch P.1 i)⁻¹ else resChar (mu : Chr X.F X.E X.K) P.1) : (𝓞 X.E ⧸ P.1.asIdeal)ˣ →* X.Kˣ)⁻¹ = _`. Apply the tactic sequence `split_ifs <;> simp [hmu]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem core (h1 : HilbertNinetyDeterminant) (h3 : DetAtP) (h2 : CharFactor) {Ch : Chars X Pr R.m}
     {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ}
@@ -271,7 +263,7 @@ theorem core (h1 : HilbertNinetyDeterminant) (h3 : DetAtP) (h2 : CharFactor) {Ch
     split_ifs <;> simp [hmu]
 
 /- English proof (translation)
-Introduce `X Pr R Ch sel S cst Dc hc u hX hPr hsel hLoc hPt i hi n hn p`. Apply the tactic sequence `have hnm : n ≤ R.m := by rcases hn with rfl | rfl <;> omega`. Conclude with `core h1 h3 h2 hX hPr hsel hLoc hi p (hPt n hnm p)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem muDetOfLoc_of_leaves (h1 : HilbertNinetyDeterminant) (h3 : DetAtP) (h2 : CharFactor) : MuDetOfLoc := by
   intro X Pr R Ch sel S cst Dc hc u hX hPr hsel hLoc hPt i hi n hn p

@@ -21,9 +21,9 @@ def sigI : InfinitePlace X.B.I.F ≃ {w : InfinitePlace D.host.E // w.IsComplex}
   X.pl.trans (Formalism.MainNotions.BlockEstimateWords.l2Pl D)
 
 /- English proof (translation)
-Establish `h : (sigI X v).1 = InfinitePlace.mk (embS D (X.pl v))` using `rfl`. Break down `InfinitePlace.embedding_mk_eq (embS D (X.pl v)) with h1 | h1` into its components or cases. Use `left`. Rewrite using `[h, h1]`. Use `right`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[h, h1]`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem embS_sig (v : InfinitePlace X.B.I.F) :
     embS D (X.pl v) = (sigI X v).1.embedding ∨
@@ -35,18 +35,18 @@ theorem embS_sig (v : InfinitePlace X.B.I.F) :
     ext x; simp
 
 /- English proof (translation)
-The claim follows from `D.host.der.discr_sq`.
+A detailed English derivation is pending.
 -/
 theorem discrE_eq : discr D.host.E = discr D.host.F ^ 2 := D.host.der.discr_sq
 
 /- English proof (translation)
-Rewrite using `[← IsFractionRing.finrank_eq (𝓞 D.host.F) D.host.F (𝓞 D.host.E) D.host.E]`. Conclude with `D.sp.cm.deg2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_O : Module.finrank (𝓞 D.host.F) (𝓞 D.host.E) = 2 := by
   rw [← IsFractionRing.finrank_eq (𝓞 D.host.F) D.host.F (𝓞 D.host.E) D.host.E]; exact D.sp.cm.deg2
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_algebraMap, NumberField.absNorm_differentIdeal D.host.F (𝓞 D.host.F), finrank_O]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem absNorm_ddS_ideal :
     Ideal.absNorm (Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (differentIdeal ℤ (𝓞 D.host.F))) =
@@ -54,7 +54,7 @@ theorem absNorm_ddS_ideal :
   rw [Ideal.absNorm_algebraMap, NumberField.absNorm_differentIdeal D.host.F (𝓞 D.host.F), finrank_O]
 
 /- English proof (translation)
-Unfold `ddS`. Rewrite using `[FractionalIdeal.coeIdeal_absNorm, absNorm_ddS_ideal]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem absNorm_ddS : FractionalIdeal.absNorm (ddS D) = (((discr D.host.F).natAbs ^ 2 : ℕ) : ℚ) := by
   unfold ddS
@@ -77,24 +77,24 @@ def fIso : X.B.I.F ≃+* D.host.F :=
         exact ⟨a, Subtype.ext ha⟩⟩
 
 /- English proof (translation)
-The claim follows from `discr_eq_discr_of_ringEquiv X.B.I.F (fIso X)`.
+A detailed English derivation is pending.
 -/
 theorem discrF_eq : discr X.B.I.F = discr D.host.F := discr_eq_discr_of_ringEquiv X.B.I.F (fIso X)
 
 /- English proof (translation)
-Rewrite using `[discrE_eq, discrF_eq]`. Use `push_cast`. Rewrite using `[abs_pow]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem absDiscrE : |(discr D.host.E : ℝ)| = |(discr X.B.I.F : ℝ)| ^ 2 := by
   rw [discrE_eq, discrF_eq]; push_cast; rw [abs_pow]
 
 /- English proof (translation)
-Rewrite using `[absDiscrE, Real.sqrt_sq (abs_nonneg _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sqrtDiscrE : √|(discr D.host.E : ℝ)| = |(discr X.B.I.F : ℝ)| := by
   rw [absDiscrE, Real.sqrt_sq (abs_nonneg _)]
 
 /- English proof (translation)
-The claim follows from `abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero X.B.I.F)`.
+A detailed English derivation is pending.
 -/
 theorem dF_pos : 0 < |(discr X.B.I.F : ℝ)| :=
   abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero X.B.I.F)
@@ -110,7 +110,7 @@ Both sides reduce to the same expression.
 theorem embVHom_apply (t : D.host.E) : embVHom X t = fun v => embS D (X.pl v) t := rfl
 
 /- English proof (translation)
-Introduce `a b h`. Take `⟨v⟩ : Nonempty (InfinitePlace X.B.I.F)` from `inferInstance`. Conclude with `(embS D (X.pl v)).injective (congrFun h v)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem embVHom_injective : Function.Injective (embVHom X) := by
   intro a b h
@@ -118,7 +118,7 @@ theorem embVHom_injective : Function.Injective (embVHom X) := by
   exact (embS D (X.pl v)).injective (congrFun h v)
 
 /- English proof (translation)
-Establish `e : embV X '' (I : Set D.host.E) = embVHom X '' (((I : Submodule (𝓞 D.host.E) D.host.E).toAddSubgroup : AddSubgroup D.host.E) : Set D.host.E)` using `rfl`. Rewrite using `[e]`. Rewrite using `[← AddMonoidHom.map_closure, AddSubgroup.closure_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem closure_embV (I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) :
     AddSubgroup.closure (embV X '' (I : Set D.host.E)) =
@@ -129,7 +129,7 @@ theorem closure_embV (I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.ho
   rw [← AddMonoidHom.map_closure, AddSubgroup.closure_eq]
 
 /- English proof (translation)
-Rewrite using `[closure_embV, AddSubgroup.mem_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_closure_embV (I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)
     (a : InfinitePlace X.B.I.F → ℂ) :
@@ -138,23 +138,19 @@ theorem mem_closure_embV (I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) 
   rfl
 
 /- English proof (translation)
-Use `set C := AddSubgroup.closure (embV X '' (I : Set D.host.E)) with hC`. Use `set ΛE : AddSubgroup D.host.E := (I : Submodule (𝓞 D.host.E) D.host.E).toAddSubgroup with hΛE`. Use `set Iu : (FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)ˣ := Units.mk0 I hI with hIu`. Establish `hIu' : ((Iu : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)) = I` using `rfl`. Use `set φ : InfinitePlace X.B.I.F → (D.host.E →+* ℂ) := fun v => embS D (X.pl v) with hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsig : ∀ v, φ v = (sigI X v).1.embedding ∨ φ v = ComplexEmbedding.conjugate (sigI X v).1.embedding` using `fun v => embS_sig X v`. Establish `hΛ : ∀ a ∈ ΛE, a ∈ (Iu : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)` using `fun a ha => ha`. Establish `hk : ΛE.relIndex (((Iu : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Submodule (𝓞 D.host.E) D.host.E).toAddSubgroup) = 1`. Rewrite using `[hIu']`. Conclude with `AddSubgroup.relIndex_self ΛE`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hmemC : ∀ a, a ∈ C ↔ ∃ t ∈ I, embVHom X t = a` using `mem_closure_embV X I`. Establish `hto : ∀ F : Set (InfinitePlace X.B.I.F → ℂ), ∀ v, (∃! a : ΛE, (fun i => (1 : ℂ) * φ i a) + v ∈ F) → ∃! b : C, (b : InfinitePlace X.B.I.F → ℂ) + v ∈ F`. Introduce `F v ⟨a, ha, hu⟩`. Use `⟨⟨embVHom X a, (hmemC _).2 ⟨a, a.2, rfl⟩⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify `ha` using `[embVHom_apply, hφ]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 
-Introduce and unpack `⟨b, hb⟩ hbF`. Take `⟨t, ht, rfl⟩` from `(hmemC b).1 hb`. Use `hu ⟨t, ht⟩ (by simpa [embVHom_apply, hφ] using hbF)` as an intermediate fact. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hfrom : ∀ F : Set (InfinitePlace X.B.I.F → ℂ), ∀ v, (∃! b : C, (b : InfinitePlace X.B.I.F → ℂ) + v ∈ F) → ∃! a : ΛE, (fun i => (1 : ℂ) * φ i a) + v ∈ F`. Introduce `F v ⟨⟨b, hb⟩, hbF, hu⟩`. Take `⟨t, ht, rfl⟩` from `(hmemC b).1 hb`. Use `⟨⟨t, ht⟩, by simpa [embVHom_apply, hφ] using hbF, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, ha⟩ haF`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `hu ⟨embVHom X a, (hmemC _).2 ⟨a, ha, rfl⟩⟩ (by simpa [embVHom_apply, hφ] using haF)` as an intermediate fact. Establish `h2 : embVHom X a = embVHom X t` using `congrArg Subtype.val this`. Conclude with `Subtype.ext (embVHom_injective X h2)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: Countable D.host.E`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `b` to `Module.finBasis ℚ D.host.E`. Conclude with `Function.Injective.countable b.equivFun.injective`. Rewrite using `[hC, closure_embV]`. Conclude with `Function.Surjective.countable (f := fun a : ΛE => (⟨embVHom X a, AddSubgroup.mem_map_of_mem _ a.2⟩ : ΛE.map (embVHom X))) (fun ⟨y, hy⟩ => by obtain ⟨a, ha, rfl⟩ := AddSubgroup.mem_map.1 hy; exact ⟨⟨a, ha⟩, rfl⟩)`. Take `⟨F, hF, hFd⟩` from `Formalism.L2.SG.NGCut.SplitEmbedding.exists_fd D.host.E (InfinitePlace X.B.I.F) φ (sigI X) hsig Iu ΛE hΛ (by rw [hk]; exact one_ne_zero) 1 one_ne_zero`.
-
-Conclude with `⟨F, hF, fun v => hto F v (hFd v)⟩`. Introduce `F hF hFd`. Establish `h` using `Formalism.L2.SG.NGCut.SplitEmbedding.idealCovolC D.host.E (InfinitePlace X.B.I.F) φ (sigI X) hsig Iu ΛE hΛ 1 hk one_ne_zero 1 one_ne_zero F hF (fun v => hfrom F v (hFd v))`. Rewrite using `[h, hIu', sqrtDiscrE X]`. Use `congr 1`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem idealBlock (I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) (hI : I ≠ 0) :
     Countable (AddSubgroup.closure (embV X '' (I : Set D.host.E))) ∧
@@ -217,15 +213,15 @@ theorem idealBlock (I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host
     simp
 
 /- English proof (translation)
-Rewrite using `[discrF_eq, Nat.cast_natAbs, Int.cast_abs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dF_natAbs : |(discr X.B.I.F : ℝ)| = ((discr D.host.F).natAbs : ℝ) := by
   rw [discrF_eq, Nat.cast_natAbs, Int.cast_abs]
 
 /- English proof (translation)
-Unfold `aaD`. Rewrite using `[map_zpow₀, absNorm_ddS, Rat.cast_zpow, dF_natAbs X]`. Use `push_cast`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_intCast, ← Real.rpow_mul (by positivity)]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem absNorm_aaD (a : Fin D.R.rS) :
     ((FractionalIdeal.absNorm (aaD D a) : ℚ) : ℝ) = |(discr X.B.I.F : ℝ)| ^ (-(2 * ((D.R.rS : ℝ) - (a : ℕ)))) := by
@@ -236,7 +232,7 @@ theorem absNorm_aaD (a : Fin D.R.rS) :
   congr 1; push_cast; ring
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `absNorm_aaD Y a`. Rewrite `h1` using `[h, map_zero, Rat.cast_zero]`. Use `Real.rpow_pos_of_pos (dF_pos Y) (-(2 * ((D.R.rS : ℝ) - (a : ℕ))))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem aaD_ne_zero (Y : HidaSetting D) (a : Fin D.R.rS) : aaD D a ≠ 0 := by
   intro h
@@ -246,15 +242,15 @@ theorem aaD_ne_zero (Y : HidaSetting D) (a : Fin D.R.rS) : aaD D a ≠ 0 := by
   linarith
 
 /- English proof (translation)
-Rewrite using `[← h, Real.rpow_add hd, Real.rpow_add hd, Real.rpow_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rpow_combine {d : ℝ} (hd : 0 < d) {x y z : ℝ} (h : x + y + 1 = z) : d ^ x * d ^ y * d = d ^ z := by
   rw [← h, Real.rpow_add hd, Real.rpow_add hd, Real.rpow_one]
 
 /- English proof (translation)
-Establish `hI : aaD D p.1.1 * (aaD D p.1.2)⁻¹ ≠ 0` using `mul_ne_zero (aaD_ne_zero X _) (inv_ne_zero (aaD_ne_zero X _))`. Take `⟨h1, h2, h3⟩` from `idealBlock X _ hI`. Use `⟨h1, h2, fun F hF hFd => (h3 F hF hFd).trans ?_⟩` and prove the remaining obligations. Use `congr 1`. Use `show _ = (2 : ℝ)⁻¹ ^ Fintype.card (InfinitePlace X.B.I.F) * |(NumberField.discr X.B.I.F : ℝ)| ^ ((1 : ℝ) - 2 * ((p.1.2 : ℕ) - (p.1.1 : ℕ) : ℝ))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_inv₀, Rat.cast_mul, Rat.cast_inv, absNorm_aaD X, absNorm_aaD X, ← Real.rpow_neg (abs_nonneg _)]`. Rewrite using `[show ∀ a b c e : ℝ, a * b * c * e = (a * b * e) * c by intros; ring, rpow_combine (dF_pos X)]`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem blockCovol_X (u : D.what₂.Word) (p : LsNc5.LtPair D.R.rS) :
     Countable (cLat X u (Sum.inl (Sum.inl p))) ∧
@@ -277,9 +273,9 @@ theorem blockCovol_X (u : D.what₂.Word) (p : LsNc5.LtPair D.R.rS) :
   · ring
 
 /- English proof (translation)
-Establish `hI : aaD D p.1.1 * aaD D p.1.2 ≠ 0` using `mul_ne_zero (aaD_ne_zero X _) (aaD_ne_zero X _)`. Take `⟨h1, h2, h3⟩` from `idealBlock X _ hI`. Use `⟨h1, h2, fun F hF hFd => (h3 F hF hFd).trans ?_⟩` and prove the remaining obligations. Use `congr 1`. Use `show _ = (2 : ℝ)⁻¹ ^ Fintype.card (InfinitePlace X.B.I.F) * |(NumberField.discr X.B.I.F : ℝ)| ^ ((1 : ℝ) - 2 * ((D.R.rS : ℝ) - (p.1.1 : ℕ)) - 2 * ((D.R.rS : ℝ) - (p.1.2 : ℕ)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, Rat.cast_mul, absNorm_aaD X, absNorm_aaD X]`. Rewrite using `[show ∀ a b c e : ℝ, a * b * c * e = (a * b * e) * c by intros; ring, rpow_combine (dF_pos X)]`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem blockCovol_K (u : D.what₂.Word) (p : LsNc5.LtPair D.R.rS) :
     Countable (cLat X u (Sum.inr (Sum.inl p))) ∧

@@ -18,19 +18,17 @@ namespace GlobalTheory
 namespace TorsTuple
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, ∃ (R : Over X) (p : Fin n → (R ⟶ Q)), IsAffineHom R.hom ∧ Flat R.hom ∧ ∀ (T : Over X) (u : Fin n → (T ⟶ Q)), ∃ v : T ⟶ R, ∀ i, v ≫ p i = u i`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Use `⟨Over.mk (𝟙 X), fun i => i.elim0, ?_, ?_, fun T u => ⟨Over.homMk T.hom (by simp), fun i => i.elim0⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `show IsAffineHom (𝟙 X) infer_instance`. Use `show Flat (𝟙 X) infer_instance`. Consider the case `succ n ih`. Take `⟨R, p, hRa, hRf, hR⟩` from `ih`. Establish `ha : IsAffineHom (pullback.fst R.hom Q.hom)` using `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsAffineHom) (IsPullback.of_hasPullback R.hom Q.hom).flip ‹_›`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `R' : Over X` to `Over.mk (pullback.fst R.hom Q.hom ≫ R.hom)`. Set `a : R' ⟶ Q` to `Over.homMk (pullback.snd R.hom Q.hom) pullback.condition.symm`. Set `b : R' ⟶ R` to `Over.homMk (pullback.fst R.hom Q.hom) rfl`. Use `⟨R', Fin.cons (α := fun _ => R' ⟶ Q) a (fun i => b ≫ p i), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show IsAffineHom (pullback.fst R.hom Q.hom ≫ R.hom) infer_instance`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show Flat (pullback.fst R.hom Q.hom ≫ R.hom) infer_instance`. Introduce `T u`. Take `⟨v, hv⟩` from `hR T (fun i => u i.succ)`. Establish `hc : v.left ≫ R.hom = (u 0).left ≫ Q.hom` using `by rw [Over.w v, Over.w (u 0)]`. Use `⟨Over.homMk (pullback.lift v.left (u 0).left hc) (by` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `_ ≫ pullback.fst R.hom Q.hom ≫ R.hom = _`. Rewrite using `[pullback.lift_fst_assoc, Over.w v]), ?_⟩`. Use `Fin.cases ?_ (fun i => ?_)` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [a, Fin.cons_zero, Over.comp_left, Over.homMk_left]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `pullback.lift_snd _ _ _`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [b, Fin.cons_succ, Over.comp_left, Over.homMk_left, ← hv i]`. Rewrite using `[pullback.lift_fst_assoc]`. Take `⟨n, ⟨e⟩⟩` from `Finite.exists_equiv_fin J`.
-
-Take `⟨R, p, ha, hf, hu⟩` from `key n`. Use `⟨R, fun j => p (e j), ha, hf, fun T u => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `hu T (fun i => u (e.symm i))`. Conclude with `⟨v, fun j => by simpa using hv (e j)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_power {X : Scheme.{0}} (Q : Over X) [IsAffineHom Q.hom] [Flat Q.hom] (J : Type) [Finite J] :
     ∃ (R : Over X) (p : J → (R ⟶ Q)), IsAffineHom R.hom ∧ Flat R.hom ∧
@@ -79,15 +77,15 @@ theorem exists_power {X : Scheme.{0}} (Q : Over X) [IsAffineHom Q.hom] [Flat Q.h
   exact ⟨v, fun j => by simpa using hv (e j)⟩
 
 /- English proof (translation)
-Establish `: IsAffine (pullback x0 R.hom)` using `inferInstance`. Set `e` to `(pullback x0 R.hom).isoSpec`. Take `⟨φ, hφ⟩ : ∃ φ : S →+* Γ(pullback x0 R.hom, ⊤), spMap φ = e.inv ≫ pullback.fst x0 R.hom` from `⟨_, Spec.map_preimage _⟩`. Establish `hw : (e.inv ≫ pullback.snd x0 R.hom) ≫ R.hom = (Over.mk (spMap φ ≫ x0)).hom`. Simplify using `[hφ, pullback.condition]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨Γ(pullback x0 R.hom, ⊤), inferInstance, φ, Over.homMk (e.inv ≫ pullback.snd x0 R.hom) hw, ?_, ?_⟩` and prove the remaining obligations. Establish `hfl : Flat (spMap φ)`. Rewrite using `[hφ]`. Use `infer_instance`. Conclude with `(HasRingHomProperty.Spec_iff (P := @Flat)).mp hfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `T _ ψ u`. Set `g : Sp T ⟶ pullback x0 R.hom` to `pullback.lift (spMap ψ) u.left (Over.w u).symm`. Take `⟨χ, hχ⟩ : ∃ χ : Γ(pullback x0 R.hom, ⊤) →+* T, spMap χ = g ≫ e.hom` from `⟨_, Spec.map_preimage _⟩`. Use `⟨χ, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : spMap (χ.comp φ) = spMap ψ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom φ ≫ CommRingCat.ofHom χ) = _`. Rewrite using `[Spec.map_comp]`. Express the relevant statement in the definitionally equal form `spMap χ ≫ spMap φ = _`. Rewrite using `[hχ, hφ, Category.assoc, Iso.hom_inv_id_assoc]`. Conclude with `pullback.lift_fst _ _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h1)`. Rewrite using `[hχ]`. Express the relevant statement in the definitionally equal form `u.left = (g ≫ e.hom) ≫ e.inv ≫ pullback.snd x0 R.hom`. Rewrite using `[Category.assoc, Iso.hom_inv_id_assoc]`. Conclude with `(pullback.lift_snd _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_point {X : Scheme.{0}} (R : Over X) [IsAffineHom R.hom] [Flat R.hom] (S : Type) [CommRing S]
     (x0 : Sp S ⟶ X) :
@@ -123,17 +121,15 @@ theorem exists_point {X : Scheme.{0}} (R : Over X) [IsAffineHom R.hom] [Flat R.h
       exact (pullback.lift_snd _ _ _).symm
 
 /- English proof (translation)
-Establish `hm : ∀ {T : Over X} (u : T ⟶ A), u ^ k = u ≫ mulA A k`. Introduce `T u`. Rewrite using `[show mulA A k = 𝟙 A ^ k from rfl, MonObj.comp_pow, Category.comp_id]`. Set `Q : Over X` to `Over.mk (pullback.snd (mulA A k).left (MonObj.one : 𝟙_ (Over X) ⟶ A).left : _ ⟶ X)`. Establish `hjw : pullback.fst (mulA A k).left (MonObj.one : 𝟙_ (Over X) ⟶ A).left ≫ A.hom = Q.hom`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← Over.w (mulA A k), pullback.condition_assoc, Over.w]`. Conclude with `Category.comp_id _`. Set `j : Q ⟶ A` to `Over.homMk (pullback.fst _ _) hjw`. Use `⟨Q, j, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show IsAffineHom (pullback.snd (mulA A k).left (MonObj.one : 𝟙_ (Over X) ⟶ A).left) infer_instance`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show Flat (pullback.snd (mulA A k).left (MonObj.one : 𝟙_ (Over X) ⟶ A).left) infer_instance`. Rewrite using `[hm j]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show (j ≫ mulA A k).left = (toUnit Q ≫ MonObj.one).left`. Rewrite using `[Over.comp_left, Over.comp_left]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `pullback.condition`. Introduce `T u hu`. Establish `h0 : u ≫ mulA A k = toUnit T ≫ MonObj.one`. Rewrite using `[← hm u, hu]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : u.left ≫ (mulA A k).left = T.hom ≫ (MonObj.one : 𝟙_ (Over X) ⟶ A).left`. Establish `h2` using `congrArg (fun f => f.left) h0`. Simplify using `only [Over.comp_left] at h2`. Conclude with `h2`. Use `⟨Over.homMk (pullback.lift u.left T.hom h1) (pullback.lift_snd _ _ _), ?_⟩` and prove the remaining obligations.
-
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left]`. Conclude with `pullback.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_kernel {X : Scheme.{0}} (A : Over X) [GrpObj A] (k : ℕ) [IsFinite (mulA A k).left]
     [Flat (mulA A k).left] :
@@ -173,13 +169,13 @@ theorem exists_kernel {X : Scheme.{0}} (A : Over X) [GrpObj A] (k : ℕ) [IsFini
     exact pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Take `⟨Q, j, hQa, hQf, hj, hQ⟩` from `exists_kernel A k`. Use `hQa` as an intermediate fact. Use `hQf` as an intermediate fact. Take `⟨R, p, hRa, hRf, hR⟩` from `exists_power Q J`. Use `hRa` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hRf` as an intermediate fact. Take `⟨B, iB, φ, w, hφ, hw⟩` from `exists_point R S x0`. Use `⟨B, iB, φ, fun i => w ≫ p i ≫ j, hφ, fun i => ?_, ?_⟩` and prove the remaining obligations. Use `show (w ≫ p i ≫ j) ^ k = 1`. Rewrite using `[← Category.assoc, ← MonObj.comp_pow, hj, MonObj.comp_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T _ ψ u hu choose v hv using fun i => hQ _ (u i) (hu i)`. Take `⟨v', hv'⟩` from `hR _ v`. Take `⟨χ, hχ, hχw⟩` from `hw T ψ v'`. Use `⟨χ, hχ, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← hv i, ← hv' i]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hχw]`.
+A detailed English derivation is pending.
 -/
 theorem exists_tuple {X : Scheme.{0}} (A : Over X) [GrpObj A] (k : ℕ) [IsFinite (mulA A k).left]
     [Flat (mulA A k).left] (S : Type) [CommRing S] (x0 : Sp S ⟶ X) (J : Type) [Finite J] :
@@ -207,9 +203,9 @@ theorem exists_tuple {X : Scheme.{0}} (A : Over X) [GrpObj A] (k : ℕ) [IsFinit
 end TorsTuple
 
 /- English proof (translation)
-Introduce `hL E _ _ _ H Dw l Xo S _ x0 k hk J _`. Establish `hN` using `hL.mulN`. Unfold `MulNSt at hN`. Take `⟨hloc, -⟩` from `moduli_univ_polAV E H Dw l Xo`. Take `⟨hfin, hfl, -⟩` from `hN Xo.X (UnivPol.pol Xo) k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfin' : IsFinite (mulA Xo.univ.t.G k).left` using `hfin`. Establish `hfl' : Flat (mulA Xo.univ.t.G k).left` using `hfl`. Conclude with `TorsTuple.exists_tuple Xo.univ.t.G k S x0 J`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_flat_universal_torsion_tuple :
     Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S : Type) [CommRing S] (x0 : Sp S ⟶ Xo.X) (k : ℕ), 0 < k → ∀ (J : Type) [Fintype J], ∃ (B : Type) (_ : CommRing B) (φ : S →+* B) (w : J → (ptO Xo (spMap φ ≫ x0) ⟶ Xo.univ.t.G)), φ.Flat ∧ (∀ i, w i ^ k = 1) ∧ ∀ (T : Type) [CommRing T] (ψ : S →+* T) (u : J → (ptO Xo (spMap ψ ≫ x0) ⟶ Xo.univ.t.G)), (∀ i, u i ^ k = 1) → ∃ χ : B →+* T, χ.comp φ = ψ ∧ ∀ i, (u i).left = spMap χ ≫ (w i).left := by

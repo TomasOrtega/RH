@@ -6,7 +6,7 @@ open CategoryTheory AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.Ar.HT
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.HtPt.Twhopf.padic_alg`.
+A detailed English derivation is pending.
 -/
 theorem padicComplete_integers_structure : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [IsDomain O] [Algebra O C] (hv : v.Integers O) (hp : v (p : C) < 1) (hO : IsAdicComplete (Ideal.span {(p : O)}) O), Nonempty (Algebra ℤ_[p] O) ∧ HenselianLocalRing O ∧ IsIntegrallyClosed O ∧ ValuationRing O ∧ IsAlgClosed (FractionRing O) ∧ IsFractionRing O C :=
   @PositivityTheory.HtPt.Twhopf.padic_alg

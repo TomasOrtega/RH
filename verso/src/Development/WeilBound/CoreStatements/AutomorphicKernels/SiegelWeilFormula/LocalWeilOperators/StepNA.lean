@@ -14,9 +14,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 section Alg
 
 /- English proof (translation)
-Establish `h1 : frᵀ * J * fr.map star = (ζ⁻¹ * s) • (1 : Matrix (Fin m) (Fin m) ℂ)`. Rewrite using `[mul_smul, ← hfr, smul_smul, inv_mul_cancel₀ hζ, one_smul]`. Establish `hmap : (fr * u.map star).map star = fr.map star * u`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, star_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hmap, Matrix.transpose_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gram_loc {m n : ℕ} (fr : Matrix (Fin m) (Fin m) ℂ) (J : Matrix (Fin m) (Fin m) ℂ) (ζ s : ℂ) (hζ : ζ ≠ 0)
     (hfr : ζ • (frᵀ * J * fr.map star) = s • 1) (u : Matrix (Fin m) (Fin n) ℂ) :
@@ -34,9 +34,9 @@ theorem gram_loc {m n : ℕ} (fr : Matrix (Fin m) (Fin m) ℂ) (J : Matrix (Fin 
         rfl
 
 /- English proof (translation)
-Establish `h : star (A * B).trace = (A * B).trace`. Rewrite using `[← Matrix.trace_conjTranspose, Matrix.conjTranspose_mul, hA, hB, Matrix.trace_mul_comm]`. Establish `him : (A * B).trace.im = 0`. Establish `h'` using `congrArg Complex.im h`. Rewrite `h'` using `[Complex.star_def, Complex.conj_im]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Complex.ext (by simp) (by simp [him])`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem trace_herm_real {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) (hA : Aᴴ = A) (hB : Bᴴ = B) :
     (((A * B).trace.re : ℝ) : ℂ) = (A * B).trace := by

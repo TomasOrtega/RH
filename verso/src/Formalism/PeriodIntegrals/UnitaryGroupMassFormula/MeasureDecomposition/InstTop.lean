@@ -9,14 +9,14 @@ open scoped ENNReal Pointwise
 namespace PI.ScMuExists.UnitaryGroupMassFormula
 
 /- English proof (translation)
-Apply the tactic sequence `rcases j with a | a | u <;> simp [instFvec, frameSet]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inst_mem_frameSet {I : Formalism.MainNotions.S.AutInst} {r : ℕ} (e f : Fin r → Fin I.n → I.E) (z : Fin I.n → I.E)
     (j : Fin r ⊕ Fin r ⊕ Unit) : instFvec e f z j ∈ frameSet I e f z := by
   rcases j with a | a | u <;> simp [instFvec, frameSet]
 
 /- English proof (translation)
-Use extensionality with `i`. Rewrite using `[Matrix.mulVec_single_one]`. Simplify using `[instBmat]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inst_col {I : Formalism.MainNotions.S.AutInst} (v : InfinitePlace I.F) {r : ℕ} (e f : Fin r → Fin I.n → I.E)
     (z : Fin I.n → I.E) (j : Fin r ⊕ Fin r ⊕ Unit) :
@@ -26,9 +26,9 @@ theorem inst_col {I : Formalism.MainNotions.S.AutInst} (v : InfinitePlace I.F) {
   simp [instBmat]
 
 /- English proof (translation)
-Introduce `x hx`. Choose the witnesses or unpack the hypotheses as in `⟨j, rfl⟩ : ∃ j, instFvec e f z j = x := by`. Break down `hx with (⟨a, rfl⟩ | ⟨a, rfl⟩) | hx` into its components or cases. Conclude with `⟨Sum.inl a, rfl⟩`. Conclude with `⟨Sum.inr (Sum.inl a), rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨Sum.inr (Sum.inr ()), (Set.mem_singleton_iff.1 hx).symm⟩`. Rewrite using `[← inst_col v e f z j, Matrix.mulVec_mulVec, hm]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem inst_fix_of {I : Formalism.MainNotions.S.AutInst} (v : InfinitePlace I.F) {r : ℕ} (e f : Fin r → Fin I.n → I.E)
     (z : Fin I.n → I.E) (m : Matrix (Fin I.n) (Fin I.n) ℂ) (hm : m * instBmat I v e f z = instBmat I v e f z) :
@@ -42,9 +42,9 @@ theorem inst_fix_of {I : Formalism.MainNotions.S.AutInst} (v : InfinitePlace I.F
   rw [← inst_col v e f z j, Matrix.mulVec_mulVec, hm]
 
 /- English proof (translation)
-Establish `hcol : ∀ j, (m * instBmat I v e f z) *ᵥ Pi.single j 1 = instBmat I v e f z *ᵥ Pi.single j 1`. Introduce `j`. Rewrite using `[← Matrix.mulVec_mulVec, inst_col v e f z j, hm _ (inst_mem_frameSet e f z j)]`. Use extensionality with `i j`. Establish `h` using `congrFun (hcol j) i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify `h` using `[Matrix.mulVec_single_one, Matrix.transpose_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inst_fixB_of {I : Formalism.MainNotions.S.AutInst} (v : InfinitePlace I.F) {r : ℕ} (e f : Fin r → Fin I.n → I.E)
     (z : Fin I.n → I.E) (m : Matrix (Fin I.n) (Fin I.n) ℂ)
@@ -57,29 +57,25 @@ theorem inst_fixB_of {I : Formalism.MainNotions.S.AutInst} (v : InfinitePlace I.
   simpa [Matrix.mulVec_single_one, Matrix.transpose_apply] using h
 
 /- English proof (translation)
-Introduce `I r e f z hF h hh`. Establish `key` using `fun v : InfinitePlace I.F => hP I.n (I.ε v) (Fin r ⊕ Fin r ⊕ Unit) (instBmat I v e f z) (hG I r e f z hF v) (Formalism.MainNotions.S.uMat (h v)) (h v).2 (inst_fixB_of v e f z _ (hh v))`. Use `choose k p σ hk hp hσ hkB hpB hσB hkp hσσ hσp C hCc hC1 hCk using key`. Establish `Jsq : ∀ v, Formalism.REAL.Jm (I.ε v) * Formalism.REAL.Jm (I.ε v) = 1`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Apply the tactic sequence `by_cases hε : I.ε v a <;> simp [Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, hε]`. Simplify using `[Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, Matrix.one_apply, hab]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hU : ∀ v (m : Matrix (Fin I.n) (Fin I.n) ℂ), Formalism.REAL.inUJ (I.ε v) m → ∃ u : Formalism.REAL.UJ (I.ε v), (((u : (Matrix (Fin I.n) (Fin I.n) ℂ)ˣ)) : Matrix (Fin I.n) (Fin I.n) ℂ) = m`. Introduce `v m hm`. Establish `hl : (Formalism.REAL.Jm (I.ε v) * mᴴ * Formalism.REAL.Jm (I.ε v)) * m = 1`. Establish `: Formalism.REAL.Jm (I.ε v) * mᴴ * Formalism.REAL.Jm (I.ε v) * m = Formalism.REAL.Jm (I.ε v) * (mᴴ * Formalism.REAL.Jm (I.ε v) * m)`. Simplify using `only [Matrix.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[this, show mᴴ * Formalism.REAL.Jm (I.ε v) * m = Formalism.REAL.Jm (I.ε v) from hm, Jsq v]`. Establish `hr : m * (Formalism.REAL.Jm (I.ε v) * mᴴ * Formalism.REAL.Jm (I.ε v)) = 1` using `by first`. Consider the case `exact mul_eq_one_comm.1 hl`. Consider the case `exact (Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).1 hl`. Conclude with `⟨⟨⟨m, _, hr, hl⟩, hm⟩, rfl⟩`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Use `choose ku hku using fun v => hU v (k v) (hk v)`. Use `choose pu hpu using fun v => hU v (p v) (hp v)`. Use `choose su hsu using fun v => hU v (σ v) (hσ v)`. Set `K : I.Ginf` to `fun v => ku v`. Set `P : I.Ginf` to `fun v => pu v`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `S : I.Ginf` to `fun v => su v`. Establish `memH : ∀ (X : I.Ginf) (m : ∀ v, Matrix (Fin I.n) (Fin I.n) ℂ), (∀ v, (((X v : (Matrix (Fin I.n) (Fin I.n) ℂ)ˣ)) : Matrix (Fin I.n) (Fin I.n) ℂ) = m v) → (∀ v, m v * instBmat I v e f z = instBmat I v e f z) → X ∈ Hset I (frameSet I e f z)`. Introduce `X m hX hmB v x hx`. Use `show (((X v : (Matrix (Fin I.n) (Fin I.n) ℂ)ˣ)) : Matrix (Fin I.n) (Fin I.n) ℂ) *ᵥ _ = _`. Rewrite using `[hX v]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `inst_fix_of v e f z (m v) (hmB v) x hx`. Establish `ext' : ∀ X Y : I.Ginf, (∀ v, (((X v : (Matrix (Fin I.n) (Fin I.n) ℂ)ˣ)) : Matrix (Fin I.n) (Fin I.n) ℂ) = (((Y v : (Matrix (Fin I.n) (Fin I.n) ℂ)ˣ)) : Matrix (Fin I.n) (Fin I.n) ℂ)) → X = Y`. Introduce `X Y hXY`. Use function extensionality and compare the values at `v`. Conclude with `Subtype.ext (Units.ext (hXY v))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hSS : S * S = 1` using `ext' _ _ fun v => by`. Simplify using `only [Pi.mul_apply, Pi.one_apply, Subgroup.coe_mul, Subgroup.coe_one, Units.val_mul, Units.val_one, S, hsu]`. Conclude with `hσσ v`. Establish `hSPSP : S * P * S * P = 1` using `ext' _ _ fun v => by`. Simplify using `only [Pi.mul_apply, Pi.one_apply, Subgroup.coe_mul, Subgroup.coe_one, Units.val_mul, Units.val_one, S, P, hsu, hpu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hσp v`. Use `⟨K, memH K k hku hkB, P, memH P p hpu hpB, S, memH S σ hsu hσB, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `ext' _ _ fun v => ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, Subgroup.coe_mul, Units.val_mul, K, P, hku, hpu]`. Conclude with `hkp v`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hSi : S⁻¹ = S` using `inv_eq_of_mul_eq_one_right hSS`. Rewrite using `[hSi]`. Conclude with `eq_inv_of_mul_eq_one_left hSPSP`. Use `⟨Set.pi Set.univ C, isCompact_univ_pi hCc, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[interior_pi_set Set.finite_univ]`.
-
-Introduce `v _`. Conclude with `hC1 v`. Introduce `x`. Simplify using `only [Set.mem_univ_pi]`. Use `forall_congr' fun v => hCk v _ _ ?_` and prove the remaining obligations.
-
-Establish `hg : (K * x * K⁻¹) v * ku v = ku v * x v`. Simplify using `[K]`. Use `congrArg (fun g : Formalism.REAL.UJ (I.ε v) => (((g : (Matrix (Fin I.n) (Fin I.n) ℂ)ˣ)) : Matrix (Fin I.n) (Fin I.n) ℂ)) hg` as an intermediate fact. Simplify using `only [Subgroup.coe_mul, Units.val_mul, hku] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem instDecomp_of (hP : InstPlaceDecomp) (hG : InstFrameGram) : InstDecomp := by
   intro I r e f z hF h hh

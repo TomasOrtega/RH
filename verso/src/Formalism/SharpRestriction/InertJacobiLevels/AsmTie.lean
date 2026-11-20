@@ -33,9 +33,9 @@ structure RecMore (D : D7) (gatT : GatTies D) (sc : Scale) where
   pos : ∀ (L : SizeData₂ D) (X : G.Inst D L), X.bs = bsA → L.sc = sc → PosHyp gatT X
 
 /- English proof (translation)
-Substitute `hL` using the available equality. Establish `h1 : ¬ (((D.what₂.places.resChar w : ℕ) : ℝ) ≤ L.sc.X'' D.R.n ∨ D.what₂.places.resChar w ∈ ({D.host.d, D.host.g 0, D.host.g 1} : Finset ℕ))` using `fun h' => h w h' hw`. Rewrite `h1` using `[not_or]`. Use `FvalP_above _ j (not_le.1 h1.1) (fun h' => h1.2 ?_) (fun h' => h1.2 ?_)` and prove the remaining obligations. Establish `h2 : D.what₂.places.resChar w ∈ ({D.host.g 0, D.host.g 1} : Finset ℕ)` using `h'`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[Finset.mem_insert, Finset.mem_singleton]`. Apply the tactic sequence `rcases h2 with h2 | h2 <;> simp [h2]`. Simplify using `[h']`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem fval_zero_of_tw {D : D7} {sc : Scale}
     (h : ∀ w, (((D.what₂.places.resChar w : ℕ) : ℝ) ≤ sc.X'' D.R.n ∨

@@ -145,7 +145,7 @@ attribute [local instance] projectiveLineMeasurableSpace
 instance projectiveLineBorel : BorelSpace (OnePoint ℂ) := ⟨rfl⟩
 
 /- English proof (translation)
-The claim follows from `(OnePoint.continuous_coe.comp (continuous_apply 0)).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_p1Chart0_symm : Measurable projectiveLineChartAtZero.symm :=
   (OnePoint.continuous_coe.comp (continuous_apply 0)).measurable
@@ -153,9 +153,9 @@ theorem measurable_p1Chart0_symm : Measurable projectiveLineChartAtZero.symm :=
 def fubiniStudyVolumeProjectiveLine : Measure (OnePoint ℂ) := (GroundTheory.Heights₂.Heights.CP.fsChartMeasure (N := 1) 0).map projectiveLineChartAtZero.symm
 
 /- English proof (translation)
-Establish `h : GroundTheory.Heights₂.Heights.CP.fsVolumeDensity (N` using `1) i = fun z => (Nat.factorial 1 : ℝ) / (Real.pi ^ 1 * (1 + GroundTheory.Heights₂.Heights.normSqSum z) ^ (1 + 1)) := by`. Use function extensionality and compare the values at `z`. Conclude with `GroundTheory.Heights₂.Heights.CP.fsVolumeDensity_eq i z`. Rewrite using `[h]`. Use `contDiff_const.div (contDiff_const.mul ((contDiff_const.add ?_).pow _)) fun z => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `GroundTheory.Heights₂.Heights.CP.contDiff_normSqSum`. Use `GroundTheory.Heights₂.Heights.one_add_normSqSum_pos z` as an intermediate fact. Use `Real.pi_pos` as an intermediate fact. Check the signs of the components of the expression.
+Establish an intermediate fact. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem contDiff_fsVolumeDensity (i : Fin 2) :
     ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (GroundTheory.Heights₂.Heights.CP.fsVolumeDensity (N := 1) i) := by
@@ -171,9 +171,9 @@ theorem contDiff_fsVolumeDensity (i : Fin 2) :
     positivity
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Take `rfl : k = 0` from `Subsingleton.elim _ _`. Rewrite using `[GroundTheory.Heights₂.Heights.CP.transition_apply]`. Simplify using `[GroundTheory.Heights₂.Heights.CP.chartVec, Fin.insertNth]`. Use `first`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `rfl`. Consider the case `simp [Fin.succAboveCases]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem transition_apply_one_zero (v : Fin 1 → ℂ) :
     GroundTheory.Heights₂.Heights.CP.transition (N := 1) 1 0 v = fun _ => (v 0)⁻¹ := by
@@ -186,7 +186,7 @@ theorem transition_apply_one_zero (v : Fin 1 → ℂ) :
   | simp [Fin.succAboveCases]
 
 /- English proof (translation)
-Simplify using `[GroundTheory.Heights₂.Heights.CP.chartVec, Fin.insertNth]`. Use `first`. Consider the case `rfl`. Consider the case `simp [Fin.succAboveCases]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem chartVec_one_zero' (v : Fin 1 → ℂ) : GroundTheory.Heights₂.Heights.CP.chartVec (N := 1) 1 v 0 = v 0 := by
   simp [GroundTheory.Heights₂.Heights.CP.chartVec, Fin.insertNth]
@@ -195,7 +195,7 @@ theorem chartVec_one_zero' (v : Fin 1 → ℂ) : GroundTheory.Heights₂.Heights
   | simp [Fin.succAboveCases]
 
 /- English proof (translation)
-Rewrite using `[fubiniStudyVolumeProjectiveLine, Measure.map_apply measurable_p1Chart0_symm hS, GroundTheory.Heights₂.Heights.CP.fsChartMeasure, withDensity_apply _ (measurable_p1Chart0_symm hS)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fubiniStudyVolume_projectiveLine_apply {S : Set (OnePoint ℂ)} (hS : MeasurableSet S) :
     fubiniStudyVolumeProjectiveLine S = ∫⁻ w in projectiveLineChartAtZero.symm ⁻¹' S,
@@ -204,40 +204,36 @@ theorem fubiniStudyVolume_projectiveLine_apply {S : Set (OnePoint ℂ)} (hS : Me
     withDensity_apply _ (measurable_p1Chart0_symm hS)]
 
 /- English proof (translation)
-Use `show projectiveLineChartAtInfinity.invFun v = _`. Simplify using `only [projectiveLineChartAtInfinity, hv, if_false]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem projectiveLineSecondChart_symm_eq (v : Fin 1 → ℂ) (hv : v 0 ≠ 0) : projectiveLineChartAtInfinity.symm v = (((v 0)⁻¹ : ℂ) : OnePoint ℂ) := by
   show projectiveLineChartAtInfinity.invFun v = _
   simp only [projectiveLineChartAtInfinity, hv, if_false]
 
 /- English proof (translation)
-Use `⟨⟨?_⟩, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[fubiniStudyVolume_projectiveLine_apply MeasurableSet.univ, Set.preimage_univ, Measure.restrict_univ]`. Conclude with `GroundTheory.Heights₂.Heights.CP.lintegral_fsVolumeDensity 0`. Use `fin_cases j`. Use `⟨GroundTheory.Heights₂.Heights.CP.fsVolumeDensity (N := 1) 0, (contDiff_fsVolumeDensity 0).contDiffOn, fun y _ => GroundTheory.Heights₂.Heights.CP.fsVolumeDensity_pos 0 y, fun S hS _ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = ∫⁻ y in projectiveLineChartAtZero.target ∩ projectiveLineChartAtZero.symm ⁻¹' S, _`. Rewrite using `[projLineChart0_target, Set.univ_inter, fubiniStudyVolume_projectiveLine_apply hS]`. Use `⟨GroundTheory.Heights₂.Heights.CP.fsVolumeDensity (N := 1) 1, (contDiff_fsVolumeDensity 1).contDiffOn, fun y _ => GroundTheory.Heights₂.Heights.CP.fsVolumeDensity_pos 1 y, fun S hS hsub => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ∫⁻ y in projectiveLineChartAtInfinity.target ∩ projectiveLineChartAtInfinity.symm ⁻¹' S, _`. Establish `hsub' : S ⊆ {x | x ≠ ((0 : ℂ) : OnePoint ℂ)}` using `hsub`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[projLineChart1_target, Set.univ_inter, fubiniStudyVolume_projectiveLine_apply hS]`. Use `set T := GroundTheory.Heights₂.Heights.CP.transition (N := 1) 1 0 with hT`. Use `set A := projectiveLineChartAtInfinity.symm ⁻¹' S with hAdef`. Use `set A' := A ∩ {v : Fin 1 → ℂ | v 0 ≠ 0} with hA'def`. Establish `hA : MeasurableSet A` using `continuous_chart1_inv.measurable hS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Establish `hA' : MeasurableSet A'` using `hA.inter (isOpen_ne_fun (continuous_apply 0) continuous_const).measurableSet`. Establish `hTv : ∀ v : Fin 1 → ℂ, T v = fun _ => (v 0)⁻¹` using `transition_apply_one_zero`. Establish `himg : T '' A' = projectiveLineChartAtZero.symm ⁻¹' S`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨v, ⟨hvA, hv0⟩, rfl⟩`. Express the relevant statement in the definitionally equal form `projectiveLineChartAtZero.symm (T v) ∈ S`. Rewrite using `[projLineChart0_symm_apply, hTv]`. Use `hvA` as an intermediate fact. Rewrite `this` using `[Set.mem_preimage, projectiveLineSecondChart_symm_eq v hv0]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Introduce `hw`. Rewrite `hw` using `[Set.mem_preimage, projLineChart0_symm_apply]`. Establish `hw0 : w 0 ≠ 0` using `fun h => hsub' hw (by rw [h])`. Use `⟨fun _ => (w 0)⁻¹, ⟨?_, inv_ne_zero hw0⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Set.mem_preimage, projectiveLineSecondChart_symm_eq _ (inv_ne_zero hw0), inv_inv]`. Conclude with `hw`. Rewrite using `[hTv]`. Use function extensionality and compare the values at `k`. Take `rfl : k = 0` from `Subsingleton.elim _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Establish `hderiv : ∀ v ∈ A', HasFDerivWithinAt T (fderiv ℝ T v) A' v`. Introduce `v hv`. Establish `hz : GroundTheory.Heights₂.Heights.CP.chartVec (N` using `1) 1 v 0 ≠ 0 := by`. Rewrite using `[chartVec_one_zero']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Conclude with `hv.2`. Conclude with `(((GroundTheory.Heights₂.Heights.CP.differentiableAt_transition 1 0 hz).restrictScalars ℝ).hasFDerivAt).hasFDerivWithinAt`. Establish `hinj : Set.InjOn T A'`. Introduce `v hv v' hv' h`. Rewrite `h` using `[hTv, hTv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0` using `congrFun h 0`. Simplify using `only [inv_inj] at h0`. Use function extensionality and compare the values at `k`. Take `rfl : k = 0` from `Subsingleton.elim _ _`. Conclude with `h0`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[← himg, lintegral_image_eq_lintegral_abs_det_fderiv_mul volume hA' hderiv hinj]`. Establish `hae : A =ᵐ[volume] A'`. Use `(ae_eq_set.mpr ⟨?_, ?_⟩).symm` and prove the remaining obligations. Rewrite using `[Set.sdiff_eq_empty.mpr Set.inter_subset_left]`. Conclude with `measure_empty`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `measure_mono_null (t := {0}) ?_ (measure_singleton 0)` and prove the remaining obligations. Introduce and unpack `v ⟨hvA, hv⟩`. Rewrite using `[Set.mem_singleton_iff]`. Use function extensionality and compare the values at `k`. Take `rfl : k = 0` from `Subsingleton.elim _ _`.
-
-Assume the negation of the conclusion as `h`. Conclude with `hv ⟨hvA, h⟩`. Rewrite using `[setLIntegral_congr hae]`. Use `setLIntegral_congr_fun hA' fun v hv => ?_` and prove the remaining obligations. Establish `hz : GroundTheory.Heights₂.Heights.CP.chartVec (N` using `1) 1 v 0 ≠ 0 := by`.
-
-Rewrite using `[chartVec_one_zero']`. Conclude with `hv.2`. Rewrite using `[← ENNReal.ofReal_mul (abs_nonneg _), ← GroundTheory.Heights₂.Heights.CP.fsVolumeDensity_transition 1 0 hz]`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothVolume_p1Vol : IsSmoothVolume p1 fubiniStudyVolumeProjectiveLine := by
   refine ⟨⟨?_⟩, fun j => ?_⟩

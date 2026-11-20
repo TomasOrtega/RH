@@ -22,7 +22,7 @@ section VLevel
 variable {K : Type} [Field K] [CharZero K] {G : Type} [Group G] [Fintype G]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[← Module.End.mul_apply, hf]`. Introduce `h`. Conclude with `⟨x, h⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 lemma mem_range_idem {V : Type} [AddCommGroup V] [Module K V] (f : Module.End K V) (hf : f * f = f) (x : V) :
     x ∈ LinearMap.range f ↔ f x = x := by
@@ -37,7 +37,7 @@ variable (T : GoodSet K G) (s : T.S) (P0 P : Pair K G) (cB : MonoidAlgebra K G �
 
 include hlift in
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `hy`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Establish `: eps P0 * a * (eps P0 * eS T s) = eps P0 * a * eps P0 * eS T s` using `by simp only [mul_assoc]`. Rewrite using `[this, hlift, map_smul, LinearMap.smul_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma key_scalar (a : MonoidAlgebra K G) (y : V) (hy : y ∈ LinearMap.range (ρ.asAlgebraHom (eps P0 * eS T s))) :
     ρ.asAlgebraHom (eps P0 * a) y = cB a • y := by
@@ -48,9 +48,9 @@ lemma key_scalar (a : MonoidAlgebra K G) (y : V) (hy : y ∈ LinearMap.range (ρ
 
 include hlift in
 /- English proof (translation)
-Apply `unit_vec _ hN y` to reduce the goal to its premises. Introduce `j`. Use `congrArg (ρ.asAlgebraHom (eps P0 * MonoidAlgebra.of K G (h j))) h0` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`. Rewrite using `[← this]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, show eps P0 * MonoidAlgebra.of K G (h j) * (eps P * MonoidAlgebra.of K G (g i)) = eps P0 * (MonoidAlgebra.of K G (h j) * eps P * MonoidAlgebra.of K G (g i)) by simp only [mul_assoc], key_scalar T s P0 cB hlift ρ _ _ (hy i)]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma inj_phi (hN : IsUnit (Matrix.of fun j i => cB (MonoidAlgebra.of K G (h j) * eps P * MonoidAlgebra.of K G (g i))))
     (y : Fin (nS T P s) → V) (hy : ∀ i, y i ∈ LinearMap.range (ρ.asAlgebraHom (eps P0 * eS T s)))
@@ -69,25 +69,23 @@ lemma inj_phi (hN : IsUnit (Matrix.of fun j i => cB (MonoidAlgebra.of K G (h j) 
 
 include hlift in
 /- English proof (translation)
-Use `set E0 := ρ.asAlgebraHom (eps P0 * eS T s) with hE0`. Use `set Ep := ρ.asAlgebraHom (eps P * eS T s) with hEp`. Establish `hidem : ∀ Q : Pair K G, ρ.asAlgebraHom (eps Q * eS T s) * ρ.asAlgebraHom (eps Q * eS T s) = ρ.asAlgebraHom (eps Q * eS T s)` using `fun Q => by`. Rewrite using `[← map_mul, mul_idem (eps_idem Q) (eS_idem T s) (eS_comm T s (eps Q)).symm]`. Establish `he : ∀ y ∈ LinearMap.range E0, ρ.asAlgebraHom (eS T s) y = y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[hE0, ← Module.End.mul_apply, ← map_mul, ← mul_assoc, ← eS_comm, mul_assoc, eS_idem]`. Establish `hmemΦ : ∀ (y : Fin (nS T P s) → LinearMap.range E0), ∑ i, ρ.asAlgebraHom (eps P * MonoidAlgebra.of K G (g i)) ((y i : LinearMap.range E0) : V) ∈ LinearMap.range Ep`. Introduce `y`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_range_idem Ep (hidem P)]`. Use `conv_rhs => rw [← he _ (y i).2]`. Rewrite using `[hEp, ← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Set `Φ : (Fin (nS T P s) → LinearMap.range E0) →ₗ[K] LinearMap.range Ep` to `{ toFun := fun y => ⟨_, hmemΦ y⟩ map_add' := by`. Introduce `y z`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Finset.sum_add_distrib]`. Use the proof step `map_smul' := by`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `c y`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Finset.smul_sum] }`. Establish `hΦinj : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `y hy`. Establish `h1` using `congrArg Subtype.val hy`. Use `inj_phi T s P0 P cB g h hlift ρ hN (fun i => ((y i : LinearMap.range E0) : V)) (fun i => (y i).2) h1` as an intermediate fact. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `congrFun this i`. Establish `hdim : finrank K (Fin (nS T P s) → LinearMap.range E0) = finrank K (LinearMap.range Ep)`. Rewrite using `[Module.finrank_pi_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, hEp, finrank_range_eps_mul_eS_eq_nS_mul T P0 P hM ρ s]`. Establish `hΦsurj : Function.Surjective Φ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).mp hΦinj`. Take `⟨y, hy⟩` from `hΦsurj ⟨x, hx⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxy : x = ∑ i, ρ.asAlgebraHom (eps P * MonoidAlgebra.of K G (g i)) ((y i : LinearMap.range E0) : V)` using `(congrArg Subtype.val hy).symm`. Establish `hsum0 : ∑ i, ρ.asAlgebraHom (eps P * MonoidAlgebra.of K G (g i)) ((y i : LinearMap.range E0) : V) = 0`. Establish `hz : (fun i => ((y i : LinearMap.range E0) : V)) = 0`. Apply `unit_vec _ hN` to reduce the goal to its premises. Introduce `j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `h0 j` as an intermediate fact. Rewrite `this` using `[hxy, map_sum]`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, show eps P0 * MonoidAlgebra.of K G (h j) * (eps P * MonoidAlgebra.of K G (g i)) = eps P0 * (MonoidAlgebra.of K G (h j) * eps P * MonoidAlgebra.of K G (g i)) by simp only [mul_assoc], key_scalar T s P0 cB hlift ρ _ _ (y i).2]`.
-
-Both sides reduce to the same expression. Establish `hzi : ∀ i, ((y i : LinearMap.range E0) : V) = 0` using `fun i => congrFun hz i`. Simplify using `only [hzi, map_zero, Finset.sum_const_zero]`. Rewrite using `[hxy, hsum0]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma inj_psi (hM : M1 T P0) [FiniteDimensional K V]
     (hN : IsUnit (Matrix.of fun j i => cB (MonoidAlgebra.of K G (h j) * eps P * MonoidAlgebra.of K G (g i))))

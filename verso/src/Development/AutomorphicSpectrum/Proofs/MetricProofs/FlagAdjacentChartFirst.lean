@@ -13,13 +13,13 @@ section Gen
 variable {e N : ℕ} {s : Set (Fin e → ℂ)}
 
 /- English proof (translation)
-Distinguish the cases in `e' : I.card = J.card`. Establish `hfun : (fun w => minorIJ (g w) I J) = fun w => ∑ σ : Equiv.Perm (Fin J.card), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, g w (I.orderEmbOfFin e' (σ i)) (J.orderEmbOfFin rfl i)`. Use function extensionality and compare the values at `w`. Rewrite using `[minorIJ, dif_pos e', Matrix.det_apply']`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hfun]`. Establish `H` using `Finset.analyticOnNhd_sum (𝕜 := ℂ) (s := s) (Finset.univ : Finset (Equiv.Perm (Fin J.card))) (f := fun σ w => ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, g w (I.orderEmbOfFin e' (σ i)) (J.orderEmbOfFin rfl i)) (fun σ _ => analyticOnNhd_const.mul (by`. Establish `P` using `Finset.analyticOnNhd_prod (𝕜 := ℂ) (s := s) (Finset.univ : Finset (Fin J.card)) (f := fun i w => g w (I.orderEmbOfFin e' (σ i)) (J.orderEmbOfFin rfl i)) (fun i _ => hg _ _)`. Use `P using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Finset.prod_apply]))`. Use `H using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `w`. Rewrite using `[Finset.sum_apply]`. Establish `hfun : (fun w => minorIJ (g w) I J) = fun _ => 0`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `w`. Rewrite using `[minorIJ, dif_neg e']`. Rewrite using `[hfun]`. Conclude with `analyticOnNhd_const`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem analytic_minorIJ (g : (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ)
     (hg : ∀ a b, AnalyticOnNhd ℂ (fun w => g w a b) s) (I J : Finset (Fin N)) :
@@ -49,7 +49,7 @@ theorem analytic_minorIJ (g : (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ)
     exact analyticOnNhd_const
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply]`. Establish `H` using `Finset.analyticOnNhd_sum (𝕜 := ℂ) (s := s) (Finset.univ : Finset (Fin N)) (f := fun c w => g w a c * g' w c b) (fun c _ => (hg a c).mul (hg' c b))`. Use `H using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `w`. Rewrite using `[Finset.sum_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem analytic_mul_entry (g g' : (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ)
     (hg : ∀ a b, AnalyticOnNhd ℂ (fun w => g w a b) s)
@@ -63,7 +63,7 @@ theorem analytic_mul_entry (g g' : (Fin e → ℂ) → Matrix (Fin N) (Fin N) �
   rw [Finset.sum_apply]
 
 /- English proof (translation)
-Conclude with `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin e => ℂ) i).analyticOnNhd s`.
+A detailed English derivation is pending.
 -/
 theorem analytic_coord (i : Fin e) : AnalyticOnNhd ℂ (fun w : Fin e → ℂ => w i) s := by
   exact (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin e => ℂ) i).analyticOnNhd s
@@ -76,11 +76,11 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
   {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N j : ℕ} {n e : ℕ}
 
 /- English proof (translation)
-Distinguish the cases in `hc : b < a ∧ ((a : ℕ) < N - j ↔ (b : ℕ) < N - j)`. Establish `hfun : (fun w => lowMat (wL ε w) τ' a b) = fun w => w (ε (Sum.inr (Sum.inl ⟨(τ', a, b), hc⟩)))`. Use function extensionality and compare the values at `w`. Simplify using `only [lowMat]`. Rewrite using `[dif_pos hc]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hfun]`. Conclude with `analytic_coord _`. Establish `hfun : (fun w => lowMat (wL ε w) τ' a b) = fun _ => if a = b then (1 : ℂ) else 0`. Use function extensionality and compare the values at `w`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [lowMat]`. Rewrite using `[dif_neg hc]`. Rewrite using `[hfun]`. Conclude with `analyticOnNhd_const`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem analytic_lowMat (s : Set (Fin e → ℂ)) (ε : Fin n ⊕ LowIdx Ψ N j ⊕ Unit ≃ Fin e) (τ' : Ψ) (a b : Fin N) :
     AnalyticOnNhd ℂ (fun w => lowMat (wL ε w) τ' a b) s := by
@@ -100,7 +100,7 @@ theorem analytic_lowMat (s : Set (Fin e → ℂ)) (ε : Fin n ⊕ LowIdx Ψ N j 
     exact analyticOnNhd_const
 
 /- English proof (translation)
-Apply the tactic sequence `exact analytic_mul_entry (s := s) (fun _ => h τ') (fun w => lowMat (wL ε w) τ') (fun _ _ => analyticOnNhd_const) (fun a b => analytic_lowMat s ε τ' a b) a b`.
+A detailed English derivation is pending.
 -/
 theorem analytic_wH (s : Set (Fin e → ℂ)) (h : Ψ → Matrix (Fin N) (Fin N) ℂ)
     (ε : Fin n ⊕ LowIdx Ψ N j ⊕ Unit ≃ Fin e) (τ' : Ψ) (a b : Fin N) :
@@ -109,11 +109,11 @@ theorem analytic_wH (s : Set (Fin e → ℂ)) (h : Ψ → Matrix (Fin N) (Fin N)
     (fun a b => analytic_lowMat s ε τ' a b) a b
 
 /- English proof (translation)
-Apply the tactic sequence `refine analytic_mul_entry (s := s) (fun w => wH h ε τ w) (fun w => 1 + Matrix.single cb ca (wT ε w)) (fun a b => analytic_wH s h ε τ a b) (fun a' b' => ?_) a b`. Use `beta_reduce`. Distinguish the cases in `hc : cb = a' ∧ ca = b'`. Establish `hfun : (fun w => (1 + Matrix.single cb ca (wT ε w)) a' b') = fun w => (1 : Matrix (Fin N) (Fin N) ℂ) a' b' + w (ε (Sum.inr (Sum.inr ())))`. Use function extensionality and compare the values at `w`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.add_apply, Matrix.single_apply, if_pos hc]`. Both sides reduce to the same expression. Rewrite using `[hfun]`. Conclude with `analyticOnNhd_const.add (analytic_coord _)`. Establish `hfun : (fun w => (1 + Matrix.single cb ca (wT ε w)) a' b') = fun _ => (1 : Matrix (Fin N) (Fin N) ℂ) a' b' + 0`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `w`. Rewrite using `[Matrix.add_apply, Matrix.single_apply, if_neg hc]`. Rewrite using `[hfun]`. Conclude with `analyticOnNhd_const`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem analytic_wH_snd (s : Set (Fin e → ℂ)) (h : Ψ → Matrix (Fin N) (Fin N) ℂ)
     (ε : Fin n ⊕ LowIdx Ψ N j ⊕ Unit ≃ Fin e) (τ : Ψ) (ca cb : Fin N) (a b : Fin N) :
@@ -137,13 +137,13 @@ theorem analytic_wH_snd (s : Set (Fin e → ℂ)) (h : Ψ → Matrix (Fin N) (Fi
     exact analyticOnNhd_const
 
 /- English proof (translation)
-Distinguish the cases in `e' : ∃ p, M.blk p = some q.1`. Establish `hfun : (fun w => flagZ M F (zb w) (H w) q) = fun w => ∑ I, valAt M.x (F.u q I) (zb w) * minorIJ (H w e'.choose.1) I (stepCols N j e'.choose.2)`. Use function extensionality and compare the values at `w`. Simplify using `only [flagZ]`. Rewrite using `[dif_pos e']`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun]`. Establish `S` using `Finset.analyticOnNhd_sum (𝕜 := ℂ) (s := s) Finset.univ (f := fun I w => valAt M.x (F.u q I) (zb w) * minorIJ (H w e'.choose.1) I (stepCols N j e'.choose.2)) (fun I _ => (hval q I).mul (analytic_minorIJ (fun w => H w e'.choose.1) (fun a b => hH _ a b) I _))`. Use `S using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `w`. Rewrite using `[Finset.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hfun : (fun w => flagZ M F (zb w) (H w) q) = fun w => zb w ⟨⟨q.1, fun p hp => e' ⟨p, hp⟩⟩, q.2⟩`. Use function extensionality and compare the values at `w`. Simplify using `only [flagZ]`. Rewrite using `[dif_neg e']`. Rewrite using `[hfun]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hzb _`.
+A detailed English derivation is pending.
 -/
 theorem analytic_flagZ (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) {s : Set (Fin e → ℂ)}
     (zb : (Fin e → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (H : (Fin e → ℂ) → Ψ → Matrix (Fin N) (Fin N) ℂ)
@@ -172,7 +172,7 @@ theorem analytic_flagZ (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.bl
     exact hzb _
 
 /- English proof (translation)
-Conclude with `AnalyticOnNhd.pi (fun i => analytic_coord (s := wD ε V) (ε (Sum.inl i)))`.
+A detailed English derivation is pending.
 -/
 theorem analytic_wB {Λ : Type} (ε : Fin n ⊕ Λ ⊕ Unit ≃ Fin e) (V : Set (Fin n → ℂ)) :
     AnalyticOnNhd ℂ (wB ε) (wD ε V) := by
@@ -181,15 +181,15 @@ theorem analytic_wB {Λ : Type} (ε : Fin n ⊕ Λ ⊕ Unit ≃ Fin e) (V : Set 
 end Flag
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hctx p`. Take `⟨-, -, -, -, -, -, -, ⟨-, -, hbl, hvl, -⟩, -, -, -⟩` from `hctx`. Establish `hB : AnalyticOnNhd ℂ (wB ε) (wD ε V)` using `analytic_wB ε V`. Establish `hmaps : Set.MapsTo (wB ε) (wD ε V) V` using `fun w hw => hw`. Establish `hzb : ∀ q, AnalyticOnNhd ℂ (fun w => bl (wB ε w) q) (wD ε V)` using `fun q => (hbl q).comp hB hmaps`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval : ∀ q I, AnalyticOnNhd ℂ (fun w => valAt M.x (F.u q I) (bl (wB ε w))) (wD ε V)` using `fun q I => (hvl q I).comp hB hmaps`. Take `⟨o, m⟩` from `p`. Consider the cases of `o with`. Consider the case `some k`. Conclude with `analytic_flagZ M F (fun w => bl (wB ε w)) (fun w τ' => wH h ε τ' w) hzb hval (fun τ' a' b' => analytic_wH _ h ε τ' a' b') ⟨k, m⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `none`. Use `analytic_flagZ M F (fun w => bl (wB ε w)) (fun w => Function.update (fun τ' => wH h ε τ' w) τ (wH h ε τ w * (1 + Matrix.single cb ca (wT ε w)))) hzb hval ?_ ⟨k₀, m⟩` and prove the remaining obligations. Introduce `τ' a' b'`. Distinguish the cases in `hτ : τ' = τ`. Establish `hfun : (fun w => Function.update (fun τ'' => wH h ε τ'' w) τ (wH h ε τ w * (1 + Matrix.single cb ca (wT ε w))) τ' a' b') = fun w => (wH h ε τ w * (1 + Matrix.single cb ca (wT ε w))) a' b'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `w`. Rewrite using `[Function.update_apply, if_pos hτ]`. Rewrite using `[hfun]`. Conclude with `analytic_wH_snd _ h ε τ ca cb a' b'`. Establish `hfun : (fun w => Function.update (fun τ'' => wH h ε τ'' w) τ (wH h ε τ w * (1 + Matrix.single cb ca (wT ε w))) τ' a' b') = fun w => wH h ε τ' w a' b'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `w`. Rewrite using `[Function.update_apply, if_neg hτ]`. Rewrite using `[hfun]`. Conclude with `analytic_wH _ h ε τ' a' b'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wPhi_holo : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (τ : Ψ) (a b : Fin N) (k₀ : K) (ca cb : Fin N) (F : FrameData ι Ψ N M.Ω M.blk) (kb : Fin Rb.A.n) (V : Set (Fin n → ℂ)) (bl : (Fin n → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (r : ((Σ k, baseIdx ι M.blk k) → ℂ) → Rb.X) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (ε : Fin n ⊕ LowIdx Ψ N j ⊕ Unit ≃ Fin (d + 2)), IsWCtx M Rb τ a b k₀ ca cb d F kb V bl r h → ∀ p, AnalyticOnNhd ℂ (fun w => wPhi M F bl h ε k₀ τ ca cb w p) (wD ε V) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hctx p

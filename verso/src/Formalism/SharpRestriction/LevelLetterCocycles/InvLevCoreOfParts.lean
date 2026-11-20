@@ -65,7 +65,7 @@ def levEv_of (W : LocWach PD LL O v n) (a : ZMod n) (s : ℕ) (hB : LevBasics W 
   rat := hR
 
 /- English proof (translation)
-The claim follows from `invLevCore_of W hπ (fun a s => levEv_of W a s (hB a s) (hD a s) (hR a s)) hPC`.
+A detailed English derivation is pending.
 -/
 theorem invLevCore_of_parts (W : LocWach PD LL O v n) (hπ : W.π₀ ∈ W.AΔ) (hB : ∀ a s, LevBasics W a s)
     (hD : ∀ a s, LevDiv W a s (hB a s).F (hB a s).ev) (hR : ∀ a s, LevRat W a s (hB a s).F (hB a s).ev)

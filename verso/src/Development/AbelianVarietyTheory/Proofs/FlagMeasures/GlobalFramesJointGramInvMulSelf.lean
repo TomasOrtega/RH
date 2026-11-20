@@ -15,7 +15,7 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL.GamInv
 
 /- English proof (translation)
-Simplify using `[hf, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_add_right {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E) {n : ℕ}
@@ -24,7 +24,7 @@ theorem hf_add_right {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   simp [hf, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hf, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hf_smul_right {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E) {n : ℕ}
@@ -35,39 +35,33 @@ theorem hf_smul_right {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ sig A r k G`. Use `set g : Fin (r + 1) ⊕ Fin (r + 1) → Fin (k + 2 * r + 1) → E := Sum.elim G.f G.f' with hg`. Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 F)`. Set `p : HeightOneSpectrum (𝓞 F)` to `⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField F)⟩`. Take `⟨hinj, -, -, -, hform, hind⟩` from `GlobalTheory.HL.RatExt.rational_extend A (k + 2 * r + 1) p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := (A.loc p).lf`. Use `haveI := (A.loc p).char0`. Take `⟨hli, hco, -⟩` from `GlobalTheory.FrameBasic.main (A.L p) r k (G.S p)`. Use `set S := G.S p with hS`. Use `set Ep := (A.loc p).Ep`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Set `s : Fin (r + 1) ⊕ Fin (r + 1) → Epˣ` to `fun q => Units.map (algebraMap (A.loc p).Fp Ep).toMonoidHom (G.c p ^ (r - (Sum.elim (fun a : Fin (r + 1) => (a : ℕ)) (fun a => (a : ℕ)) q)))`. Establish `hu : ∀ q, A.bc p (g q) = ((s q : Epˣ) : Ep) • Sum.elim S.f S.f' q`. Introduce `q`. Break down `q with a | a` into its components or cases. Simplify using `only [hg, Sum.elim_inl, s, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, Units.val_pow_eq_pow_val]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(G.f_eq p a).symm`. Simplify using `only [hg, Sum.elim_inr, s, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, Units.val_pow_eq_pow_val]`. Conclude with `(G.f'_eq p a).symm`. Establish `hgli : LinearIndependent E g`. Set `e` to `(finSumFinEquiv (m := r + 1) (n := r + 1))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(linearIndependent_equiv e.symm).1 ((hind _ (g ∘ e.symm)).2 ?_)` and prove the remaining obligations. Establish `: (fun q => A.bc p (g q)) = s • Sum.elim S.f S.f'`. Use function extensionality and compare the values at `q`. Rewrite using `[hu]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h2 : LinearIndependent Ep (fun q => A.bc p (g q))`. Rewrite using `[this]`. Conclude with `hli.units_smul s`. Conclude with `(linearIndependent_equiv e.symm).2 h2`. Establish `hME : S.ME = Submodule.span Ep (Set.range (Sum.elim S.f S.f'))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∀ v : Fin (r + 1) → S.V, S.spanTo v (r + 1) = Submodule.span Ep (Set.range v)`. Introduce `v`. Unfold `Frames.spanTo`. Use `congr 1`. Use extensionality with `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_image, Set.mem_setOf_eq, Set.mem_range]`. Conclude with `⟨fun ⟨a, _, h⟩ => ⟨a, h⟩, fun ⟨a, h⟩ => ⟨a, a.isLt, h⟩⟩`. Rewrite using `[Frames.ME, h1, h1, Set.Sum.elim_range, Submodule.span_union]`. Use `set Γ : Matrix (Fin (r + 1) ⊕ Fin (r + 1)) (Fin (r + 1) ⊕ Fin (r + 1)) E := Matrix.of fun k l => ∑ i, ∑ j, g k i * G.Hm i j * sig (g l j) with hΓ`. Establish `key : ∀ v : Fin (r + 1) ⊕ Fin (r + 1) → E, Matrix.vecMul v Γ = 0 → v = 0`.
+Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv`. Use `set x : Fin (k + 2 * r + 1) → E := ∑ q, v q • g q with hx`. Establish `hx0 : ∀ l, ∑ i, ∑ j, x i * G.Hm i j * sig (g l j) = 0`. Introduce `l`. Establish `h : Matrix.vecMul v Γ l = 0` using `congrFun hv l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← h]`. Simplify using `only [Matrix.vecMul, dotProduct, hΓ, Matrix.of_apply, hx, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum, Pi.zero_apply]`. Use `symm`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun q _ => by ring`. Establish `hloc : ∀ q, hf (A.L p) S.Hm (A.bc p x) (A.bc p (g q)) = 0`. Introduce `q`. Rewrite using `[G.Hm_eq p, hform, hx0, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Establish `hbcx : A.bc p x = ∑ q, (A.loc p).ιE (v q) • A.bc p (g q)`. Use function extensionality and compare the values at `i`. Simplify using `[Places.bc, hx, Finset.sum_apply, map_sum]`. Establish `hmem : A.bc p x ∈ S.ME`. Rewrite using `[hbcx, hME]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `Submodule.sum_mem _ fun q _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[hu]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨q, rfl⟩)`. Establish `hperp : A.bc p x ∈ S.W0` using `by show ∀ y ∈ S.ME, hf (A.L p) S.Hm (A.bc p x) y = 0`. Introduce `y hy`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[hME]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨q, rfl⟩` from `hy`. Establish `e1 : Sum.elim S.f S.f' q = ((s q)⁻¹ : Epˣ) • A.bc p (g q)`.
-
-Rewrite using `[hu, ← Units.smul_def, inv_smul_smul]`. Rewrite using `[e1, Units.smul_def, hf_smul_right, hloc q, mul_zero]`. Consider the case `zero => simp [hf]`. Consider the case `add y z _ _ hy hz => rw [hf_add_right, hy, hz, add_zero]`. Consider the case `smul c y _ hy => rw [hf_smul_right, hy, mul_zero]`.
-
-Establish `hbot : A.bc p x = 0`. Establish `h : A.bc p x ∈ S.ME ⊓ S.W0` using `⟨hmem, hperp⟩`. Rewrite `h` using `[hco.inf_eq_bot]`. Conclude with `(Submodule.mem_bot _).1 h`. Establish `hx00 : x = 0` using `hinj (by rw [hbot]; funext i; simp [Places.bc])`.
-
-Use function extensionality and compare the values at `q`. Conclude with `Fintype.linearIndependent_iff.1 hgli v (by rw [← hx]; exact hx00) q`. Establish `hU : IsUnit Γ` using `Matrix.vecMul_injective_iff_isUnit.1 fun a b h => sub_eq_zero.1 (key _ (by rw [Matrix.sub_vecMul]; exact sub_eq_zero.2 h))`. Conclude with `Matrix.nonsing_inv_mul Γ ((Matrix.isUnit_iff_isUnit_det Γ).1 hU)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E} (A : Places F E sig) (r k : ℕ) (G : GFrames A r k), (Matrix.of fun k l : Fin (r + 1) ⊕ Fin (r + 1) => ∑ i, ∑ j, Sum.elim G.f G.f' k i * G.Hm i j * sig (Sum.elim G.f G.f' l j))⁻¹ * (Matrix.of fun k l : Fin (r + 1) ⊕ Fin (r + 1) => ∑ i, ∑ j, Sum.elim G.f G.f' k i * G.Hm i j * sig (Sum.elim G.f G.f' l j)) = 1 := by
   intro F E _ _ _ _ _ sig A r k G

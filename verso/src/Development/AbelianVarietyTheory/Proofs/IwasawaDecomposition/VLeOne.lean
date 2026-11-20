@@ -9,11 +9,11 @@ section
 variable {l : ℕ} [Fact l.Prime] {A B : Type} [CommRing A] [IsDomain A] [CommRing B] [IsDomain B] [Algebra A B]
 
 /- English proof (translation)
-Set `_ : Algebra A ℂ_[l]` to `κ.toAlgebra`. Establish `hAF : Function.Injective (algebraMap A (FractionRing B))`. Rewrite using `[IsScalarTower.algebraMap_eq A B (FractionRing B)]`. Conclude with `(IsFractionRing.injective B (FractionRing B)).comp hi`. Establish `: Module.IsTorsionFree A ℂ_[l]` using `Module.isTorsionFree_iff_algebraMap_injective.mpr hκ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.IsTorsionFree A (FractionRing B)` using `Module.isTorsionFree_iff_algebraMap_injective.mpr hAF`. Establish `: Module.IsTorsionFree A B` using `Module.isTorsionFree_iff_algebraMap_injective.mpr hi`. Establish `: Algebra.IsAlgebraic A B` using `Algebra.IsIntegral.isAlgebraic`. Establish `: Algebra.IsAlgebraic A (FractionRing B)` using `(IsFractionRing.isAlgebraic_iff' A B (FractionRing B)).1 inferInstance`. Set `φ : FractionRing B →ₐ[A] ℂ_[l]` to `IsAlgClosed.lift`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨φ.toRingHom, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_apply A B (FractionRing B) y]`. Conclude with `φ.commutes y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extend [Module.Finite A B] (hi : Function.Injective (algebraMap A B)) (κ : A →+* ℂ_[l])
     (hκ : Function.Injective κ) :
@@ -35,15 +35,15 @@ theorem exists_extend [Module.Finite A B] (hi : Function.Injective (algebraMap A
   exact φ.commutes y
 
 /- English proof (translation)
-Take `⟨p, hpm, hp⟩` from `Algebra.IsIntegral.isIntegral (R := A) b`. Establish `hroot : p.eval₂ (j.comp (algebraMap A B)) (j b) = 0`. Rewrite using `[← Polynomial.hom_eval₂, hp, map_zero]`. Assume the negation of the conclusion as `hle`. Establish `hlt` using `not_le.mp hle`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `hroot` using `[hpm.as_sum, Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_finsetSum]`. Simplify using `only [Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_X_pow] at hroot`. Establish `hxn` using `eq_neg_of_add_eq_zero_left hroot`. Establish `hn : p.natDegree ≠ 0`. Introduce `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hxn` using `[h0]`. Simplify using `at hxn`. Establish `h1 : Valued.v (j b ^ p.natDegree) ≤ Valued.v (j b) ^ (p.natDegree - 1)`. Rewrite using `[hxn, Valuation.map_neg]`. Apply `Valuation.map_sum_le` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`. Rewrite using `[map_mul, map_pow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[map_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : Valued.v (j b) ^ (p.natDegree - 1) < Valued.v (j b) ^ p.natDegree` using `pow_lt_pow_right₀ hlt (by omega)`. Conclude with `absurd h1 (not_le.mpr h2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem v_le_one [Module.Finite A B] (j : B →+* ℂ_[l]) (hκ : ∀ y, Valued.v (j (algebraMap A B y)) ≤ (1 : ℝ≥0)) (b : B) :
     Valued.v (j b) ≤ (1 : ℝ≥0) := by
@@ -75,29 +75,23 @@ theorem v_le_one [Module.Finite A B] (j : B →+* ℂ_[l]) (hκ : ∀ y, Valued.
   exact absurd h1 (not_le.mpr h2)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, rfl⟩`. Conclude with `h b`. Introduce `hx`. Assume the negation of the conclusion as `hxn`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `set φ : B →+* ℂ_[l] := ι.comp (algebraMap B (FractionRing B)) with hφ`. Establish `hφ1 : ∀ b, Valued.v (φ b) ≤ (1 : ℝ≥0)` using `fun b => h b`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `hxn (RingHom.mem_range.mpr ⟨0, map_zero _⟩)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b, algebraMap B (FractionRing B) b = x⁻¹ := by`. Break down `ValuationRing.isInteger_or_isInteger B x with h1 | h1` into its components or cases. Conclude with `absurd (RingHom.mem_range.mpr (RingHom.mem_rangeS.mp h1)) hxn`. Conclude with `RingHom.mem_rangeS.mp h1`. Establish `hb0 : b ≠ 0`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `rfl`. Rewrite `hb` using `[map_zero]`. Conclude with `hx0 (inv_eq_zero.mp hb.symm)`. Establish `hbu : ¬ IsUnit b`. Introduce and unpack `⟨u, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hxn` to reduce the goal to its premises. Use `RingHom.mem_range.mpr ⟨(↑u⁻¹ : B), ?_⟩` and prove the remaining obligations. Rewrite using `[map_units_inv, hb, inv_inv]`. Establish `hl1 : Valued.v ((l : ℕ) : ℂ_[l]) < 1`. Rewrite using `[PadicComplex.valuation_p, one_div]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `: (1 : ℝ≥0) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Conclude with `inv_lt_one_of_one_lt₀ this`. Establish `hl0 : ((l : ℕ) : B) ≠ 0`. Introduce `h0`. Establish `h2 : φ ((l : ℕ) : B) = 0` using `by rw [h0, map_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_natCast]`. Conclude with `(Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero) h2`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible B`. Take `⟨k, hk⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hb0 hϖ`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hl0 hϖ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Conclude with `hbu (hk.symm.isUnit (by simp))`. Establish `hdvd : ((l : ℕ) : B) ∣ b ^ n`. Establish `h2 : ϖ ^ n ∣ ϖ ^ (k * n)` using `pow_dvd_pow ϖ (by have := Nat.pos_of_ne_zero hk0; nlinarith)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ϖ ^ (k * n) ∣ b ^ n`. Rewrite using `[pow_mul]`. Conclude with `(hk.pow_pow (n := n)).symm.dvd`. Conclude with `hn.dvd.trans (h2.trans h3)`. Take `⟨c, hc⟩` from `hdvd`.
-
-Establish `hvb : Valued.v (φ b) < 1`. Assume the negation of the conclusion as `hlt'`. Establish `hge` using `not_lt.mp hlt'`. Establish `h1 : 1 ≤ Valued.v (φ b) ^ n` using `one_le_pow₀ hge`. Rewrite `h1` using `[← map_pow Valued.v, ← map_pow φ, hc, map_mul, map_mul, map_natCast]`.
-
-Conclude with `absurd h1 (not_le.mpr (mul_lt_one_of_nonneg_of_lt_one_left (by positivity) hl1 (hφ1 c)))`. Establish `h1 : Valued.v (ι x) * Valued.v (φ b) = 1`. Rewrite using `[← map_mul]`. Establish `h3 : ι x * φ b = 1` using `by show ι x * ι (algebraMap B (FractionRing B) b) = 1`. Rewrite using `[← map_mul, hb, mul_inv_cancel₀ hx0, map_one]`.
-
-Rewrite using `[h3, map_one]`. Conclude with `absurd h1 (ne_of_lt (mul_lt_one_of_nonneg_of_lt_one_right hx (by positivity) hvb))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_iff [IsDiscreteValuationRing B] (ι : FractionRing B →+* ℂ_[l])
     (h : ∀ b, Valued.v (ι (algebraMap B (FractionRing B) b)) ≤ (1 : ℝ≥0)) (x : FractionRing B) :
@@ -165,17 +159,15 @@ theorem mem_range_iff [IsDiscreteValuationRing B] (ι : FractionRing B →+* ℂ
 end
 
 /- English proof (translation)
-Establish `hmem : ∀ x : L, g x ∈ (algebraMap (PadicAlgCl l) ℂ_[l]).range`. Introduce `x`. Take `⟨f, hf0, hf⟩` from `Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x`. Establish `hg : (f.map (algebraMap ℚ ℂ_[l])).eval (g x) = 0`. Establish `h1 : g (Polynomial.eval₂ (algebraMap ℚ L) x f) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Polynomial.aeval_def, hf, map_zero]`. Rewrite `h1` using `[Polynomial.hom_eval₂]`. Rewrite using `[Polynomial.eval_map]`. Establish `e : g.comp (algebraMap ℚ L) = algebraMap ℚ ℂ_[l]` using `RingHom.ext_rat _ _`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hsplit : (f.map (algebraMap ℚ (PadicAlgCl l))).Splits` using `IsAlgClosed.splits _`. Establish `hP0 : f.map (algebraMap ℚ (PadicAlgCl l)) ≠ 0` using `(Polynomial.map_ne_zero_iff (algebraMap ℚ (PadicAlgCl l)).injective).mpr hf0`. Establish `hmap : f.map (algebraMap ℚ ℂ_[l]) = (f.map (algebraMap ℚ (PadicAlgCl l))).map (algebraMap (PadicAlgCl l) ℂ_[l])`. Rewrite using `[Polynomial.map_map]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `RingHom.ext_rat _ _`. Establish `hroot : g x ∈ ((f.map (algebraMap ℚ (PadicAlgCl l))).map (algebraMap (PadicAlgCl l) ℂ_[l])).roots`. Rewrite using `[Polynomial.mem_roots ((Polynomial.map_ne_zero_iff (algebraMap (PadicAlgCl l) ℂ_[l]).injective).mpr hP0)]`. Use `show Polynomial.eval _ _ = 0`. Rewrite using `[← hmap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hg`. Rewrite `hroot` using `[hsplit.roots_map_of_injective (algebraMap (PadicAlgCl l) ℂ_[l]).injective, Multiset.mem_map]`. Take `⟨β, -, hβ⟩` from `hroot`. Conclude with `RingHom.mem_range.mpr ⟨β, hβ⟩`. Establish `hr : Function.Bijective (algebraMap (PadicAlgCl l) ℂ_[l]).rangeRestrict` using `⟨fun a b hab => (algebraMap (PadicAlgCl l) ℂ_[l]).injective (congrArg Subtype.val hab), RingHom.rangeRestrict_surjective _⟩`.
-
-Set `E` to `RingEquiv.ofBijective _ hr`. Use `⟨E.symm.toRingHom.comp (g.codRestrict _ hmem), fun x => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (E.apply_symm_apply (g.codRestrict _ hmem x))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_factor {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberField L] (g : L →+* ℂ_[l]) :
     ∃ e : L →+* PadicAlgCl l, ∀ x, algebraMap (PadicAlgCl l) ℂ_[l] (e x) = g x := by
@@ -213,11 +205,11 @@ theorem exists_factor {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberField
   exact congrArg Subtype.val (E.apply_symm_apply (g.codRestrict _ hmem x))
 
 /- English proof (translation)
-Take `⟨ι, hι⟩` from `exists_extend hi κ hκ`. Establish `hB : ∀ b, Valued.v (ι (algebraMap B (FractionRing B) b)) ≤ (1 : ℝ≥0)`. Introduce `b`. Use `v_le_one (A := A) (ι.comp (algebraMap B (FractionRing B))) (fun y => ?_) b` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hι]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv y`. Take `⟨e', he'⟩` from `exists_factor (ι.comp eB)`. Establish `hcond : ∀ x, ‖e x‖ ≤ 1 ↔ ‖e' x‖ ≤ 1`. Introduce `x`. Rewrite using `[← he x, mem_range_iff ι hB, ← RingHom.comp_apply ι eB, ← he' x, ← PadicComplex.coe_eq, PadicComplex.valuation_extends, PadicAlgCl.valuation_def, ← NNReal.coe_le_coe, coe_nnnorm, NNReal.coe_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ⟩` from `GlobalTheory.EmbUnitBallConj.exists_conj l L e e' hcond`. Use `⟨σ, ι, hι, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hσ, he']`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_common {l : ℕ} [Fact l.Prime] {A B L : Type} [CommRing A] [IsDomain A] [CommRing B] [IsDomain B]
     [IsDiscreteValuationRing B] [Algebra A B] [Module.Finite A B] (hi : Function.Injective (algebraMap A B))

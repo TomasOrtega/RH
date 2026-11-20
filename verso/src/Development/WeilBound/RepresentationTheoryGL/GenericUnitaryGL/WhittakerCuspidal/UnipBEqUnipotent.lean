@@ -9,9 +9,9 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL
 namespace PositivityTheory.rg.gu.whit
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[mem_unipB]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun i j hij => h1 i j hij, h2⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun i j hij => h1 hij, h2⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem unipB_eq_unipotent (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) : unipB k (Fin n) = GroundTheory.Automorphic.Iwasawa.unipotent k n := by
@@ -24,9 +24,9 @@ theorem unipB_eq_unipotent (k : Type) [Field k] [ValuativeRel k] [TopologicalSpa
     exact ⟨fun i j hij => h1 hij, h2⟩
 
 /- English proof (translation)
-Establish `hs : (∑ p : Fin n × Fin n with (p.2 : ℕ) = p.1 + 1, (u : GL (Fin n) k).val p.1 p.2) = GroundTheory.Automorphic.Whittaker.superdiagSum ((u : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)`. Rewrite using `[Finset.sum_filter, Fintype.sum_prod_type]`. Both sides reduce to the same expression. Use `show ((Circle.toUnits (ψ _) : ℂˣ) : ℂ) = ((ψ (GroundTheory.Automorphic.Whittaker.superdiagSum _) : Circle) : ℂ)`. Rewrite using `[hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem whitChar_eq_psiN (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (n : ℕ) (u : unipB k (Fin n)) :
@@ -41,11 +41,11 @@ theorem whitChar_eq_psiN (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace
   rfl
 
 /- English proof (translation)
-Establish `hfix : ∀ K : Subgroup G, fixed ρ K = GroundTheory.Automorphic.fixedVectors ρ K`. Introduce `K`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce `h g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h ⟨g, hg⟩` as an intermediate fact. Simplify using `using this`. Introduce `h g`. Use `h g g.2` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, fun K hc ho => hfix K ▸ h2 K ho hc⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, fun K ho hc => (hfix K).symm ▸ h2 K hc ho⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isAdmissible_iff {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V]
     [Module ℂ V] (ρ : Representation ℂ G V) : GlobalTheory.PRep.IsAdmissible ρ ↔ GroundTheory.Automorphic.IsAdmissible ρ := by

@@ -14,9 +14,9 @@ open Formalism Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Form
 open scoped Formalism.Per
 
 /- English proof (translation)
-Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq_zero_iff_mem]`. Use `H.haus _ fun n => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `h n`. Rewrite `hc` using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq]`. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton, hc, map_mul, map_pow, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dvd_mul_right _ _`.
+A detailed English derivation is pending.
 -/
 theorem dvd_of_isHausdorff {R : Type} [CommRing R] (p : ℕ) (x a : R)
     (H : IsHausdorff (Ideal.span {(p : R ⧸ Ideal.span {x})}) (R ⧸ Ideal.span {x}))
@@ -30,11 +30,11 @@ theorem dvd_of_isHausdorff {R : Type} [CommRing R] (p : ℕ) (x a : R)
   exact dvd_mul_right _ _
 
 /- English proof (translation)
-Take `⟨-, h2, -⟩` from `GlobalTheory.T.deRham_fil_quotient_xi_power_ainf l P AI T (GlobalTheory.ThetaTie.thetaL T) M`. Take `⟨-, h3⟩` from `GlobalTheory.T.fontaineXi_pow_saturated_quotient_complete l AI.ε (GlobalTheory.ThetaTie.isEps AI) M`. Take `⟨a₀, ha₀⟩` from `hb 0`. Rewrite `ha₀` using `[pow_zero, one_mul]`. Establish `hd : AI.ξ ^ M ∣ a₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `dvd_of_isHausdorff l _ _ h3.toIsHausdorff fun n => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hb n`. Use `⟨a, (h2 _).1 ?_⟩` and prove the remaining obligations. Use `sub_mem ha ha₀` as an intermediate fact. Rewrite using `[← io_apply, map_sub]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `add_mem ha₀ ((h2 a₀).2 hd)` as an intermediate fact. Rewrite `this` using `[← io_apply, sub_add_cancel]`. Then use the resulting hypothesis.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_FilB_of_forall_Lat (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P)
     (T : LocTied l P AI) (M : ℕ) (b : P.R.BdR) (hb : ∀ n : ℕ, b ∈ Lat AI M n) :

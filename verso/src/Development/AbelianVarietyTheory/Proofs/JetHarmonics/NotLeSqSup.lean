@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory.NotLeSqSup
 
 /- English proof (translation)
-Introduce `h`. Establish `key : ∀ j : ℕ, m ≤ m ^ (j + 1) ⊔ I`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simpa using (le_sup_left : m ≤ m ⊔ I)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ j ih`. Combine the equalities or inequalities in the displayed calculation. Use `sup_le ?_ le_sup_right` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Apply `hI` to reduce the goal to its premises.
+Treat this case separately. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `key n` using `[hn]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem not_le_sq_sup {A : Type} [CommRing A] {m I : Ideal A} {n : ℕ}
     (hn : m ^ (n + 1) = ⊥) (hI : ¬ m ≤ I) : ¬ m ≤ m ^ 2 ⊔ I := by
@@ -30,27 +30,25 @@ theorem not_le_sq_sup {A : Type} [CommRing A] {m I : Ideal A} {n : ℕ}
   simpa [hn] using key n
 
 /- English proof (translation)
-Introduce `k A _ _ _ aug I n hn hIm hmI`. Establish `hx : ¬ RingHom.ker aug ≤ RingHom.ker aug ^ 2 ⊔ I` using `not_le_sq_sup hn hmI`. Take `⟨x, hxm, hxN⟩` from `Set.not_subset.mp hx`. Set `N : Submodule k A` to `(RingHom.ker aug ^ 2 ⊔ I).restrictScalars k`. Establish `hq : N.mkQ x ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Ne, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hxN`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Module.Dual k (A ⧸ N), f (N.mkQ x) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hq ((Module.forall_dual_apply_eq_zero_iff k _).mp h)`. Set `g : A →ₗ[k] k` to `f.comp N.mkQ`. Establish `hgN : ∀ a ∈ RingHom.ker aug ^ 2 ⊔ I, g a = 0`. Introduce `a ha`. Establish `: N.mkQ a = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `ha`. Simplify using `only [g, LinearMap.comp_apply, this, map_zero]`. Set `D : A →ₗ[k] k` to `g.comp (LinearMap.id - (Algebra.linearMap k A).comp aug.toLinearMap)`. Establish `hD : ∀ a, D a = g (a - algebraMap k A (aug a))` using `fun a => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsub : ∀ a, a - algebraMap k A (aug a) ∈ RingHom.ker aug`. Introduce `a`. Simplify using `[RingHom.mem_ker]`. Establish `hDmul : ∀ a b, D (a * b) = aug a * D b + aug b * D a`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `e : a * b - algebraMap k A (aug (a * b)) = (a - algebraMap k A (aug a)) * (b - algebraMap k A (aug b)) + aug a • (b - algebraMap k A (aug b)) + aug b • (a - algebraMap k A (aug a))`. Rewrite using `[map_mul, Algebra.smul_def, Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : g ((a - algebraMap k A (aug a)) * (b - algebraMap k A (aug b))) = 0` using `hgN _ (Ideal.mem_sup_left (by rw [pow_two]; exact Ideal.mul_mem_mul (hsub a) (hsub b)))`. Rewrite using `[hD, hD, hD, e, map_add, map_add, h0, map_smul, map_smul, smul_eq_mul, smul_eq_mul, zero_add]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Set `L : A →ₗ[k] DualNumber k` to `(Algebra.linearMap k (DualNumber k)).comp aug.toLinearMap + (TrivSqZeroExt.inrHom k k).comp D`. Establish `hLfst : ∀ a, (L a).fst = aug a` using `by intro a; simp [L, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `hLsnd : ∀ a, (L a).snd = D a` using `by intro a; simp [L, TrivSqZeroExt.algebraMap_eq_inl]`. Apply the tactic sequence `let φ : A →ₐ[k] DualNumber k := AlgHom.ofLinearMap L (by ext <;> simp [hLfst, hLsnd, hD]) (by intro a b; ext <;> simp [hLfst, hLsnd, hDmul] <;> ring)`. Establish `hφ : ∀ a, φ a = L a` using `fun a => rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨φ, ?_, ?_, x, hxm, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Simplify using `[hφ, hLfst]`. Introduce `a ha`. Use `ext`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[hφ, hLfst]`. Conclude with `hIm ha`. Simplify using `only [hφ, hLsnd, TrivSqZeroExt.snd_zero]`. Rewrite using `[hD]`. Establish `: aug a = 0` using `hIm ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this, map_zero, sub_zero]`. Conclude with `hgN a (Ideal.mem_sup_right ha)`. Introduce `h0`. Apply `hf` to reduce the goal to its premises. Use `congrArg TrivSqZeroExt.snd h0` as an intermediate fact.
-
-Rewrite `this` using `[hφ, hLsnd, hD, TrivSqZeroExt.snd_zero, (RingHom.mem_ker).mp hxm, map_zero, sub_zero]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ {k A : Type} [inst : Field k] [inst_1 : CommRing A] [inst_2 : Algebra k A] (aug : A →ₐ[k] k) {I : Ideal A} {n : ℕ}, RingHom.ker aug ^ (n + (1 : ℕ)) = ⊥ → I ≤ RingHom.ker aug → ¬RingHom.ker aug ≤ I → ∃ (φ : A →ₐ[k] DualNumber k), AlgHom.comp (TrivSqZeroExt.fstHom k k k) φ = aug ∧ (∀ a ∈ I, (φ : A → DualNumber k) a = (0 : DualNumber k)) ∧ ∃ a ∈ RingHom.ker aug, (φ : A → DualNumber k) a ≠ (0 : DualNumber k) := by
   intro k A _ _ _ aug I n hn hIm hmI

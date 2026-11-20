@@ -12,7 +12,7 @@ open ReciprocityTheory.L2DbarEstimates (V cHess)
 open scoped ContDiff ComplexOrder Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.MixDens.exists_refMeasure` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArithmeticVarietyPartitionDensity.lean&line=168#L168)
 -/

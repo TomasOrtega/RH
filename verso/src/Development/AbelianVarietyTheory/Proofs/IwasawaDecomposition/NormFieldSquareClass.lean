@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.Mem.LiteralAutomorphy
 
 /- English proof (translation)
-Introduce `hI hFD hTE hBS`. Take `⟨CF0, h⟩` from `GlobalTheory.SqTop.SqField.gBig_and hFD (GlobalTheory.SqTop.SqField.gBig_and hTE hBS)`. Use `⟨CF0, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, x₀, h⟩` from `h ε CF hCF`. Use `⟨x₀, fun D large₂ he hx hR T L μ₀ hμ G => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨_, _, _, _, hΛ⟩, hT, hQ, -, hB⟩` from `h C0 le_rfl D large₂ he hx hR T L μ₀ hμ G`. Conclude with `GlobalTheory.SqTop.SqField.sqIn_of G μ₀ hI hΛ (fun i j s h1 h2 c => let ⟨x, a, b, _, d⟩ := hT i j s h1 h2 c; ⟨x, a, b, d⟩) hQ hB`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nfSq_of_fieldDat : GlobalTheory.NormSum.IntSt → GlobalTheory.SqTop.FieldDat → GlobalTheory.SqTop.TorEx → GlobalTheory.SqTop.BotSmall → NFSq := by
   intro hI hFD hTE hBS

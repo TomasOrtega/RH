@@ -8,7 +8,7 @@ open ValuativeRel
 namespace PI.ProdFormulaE.ROpen
 
 /- English proof (translation)
-Conclude with `H.isOpen_of_mem_nhds (Filter.mem_of_superset (hU.mem_nhds h0) hUH)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_addSubgroup {G : Type*} [TopologicalSpace G] [AddCommGroup G] [ContinuousAdd G]
     (H : AddSubgroup G) (U : Set G) (hU : IsOpen U) (h0 : (0 : G) ∈ U) (hUH : U ⊆ H) :
@@ -19,29 +19,25 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
 /- English proof (translation)
-The claim follows from `Valuation.isOpen_integer (v := ValuativeRel.valuation F)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_integer : IsOpen ((𝒪[F] : Subring F) : Set F) :=
   Valuation.isOpen_integer (v := ValuativeRel.valuation F)
 
 /- English proof (translation)
-Use `haveI := L.top`. Use `haveI := L.free`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [L.rank]; norm_num)`. Use `haveI : ContinuousAdd E := by first`. Consider the case `exact IsModuleTopology.toContinuousAdd F E`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `exact inferInstance`. Consider the case `(rw [IsModuleTopology.eq_moduleTopology F E]; exact ModuleTopology.continuousAdd F E)`. Use `set b := Module.finBasis F E`. Establish `hint : ∀ i, ∃ d : 𝒪[F], d ≠ 0 ∧ IsIntegral 𝒪[F] (algebraMap 𝒪[F] E d * b i)`. Introduce `i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `halg : IsAlgebraic 𝒪[F] (b i)` using `(IsFractionRing.isAlgebraic_iff 𝒪[F] F E).2 (Algebra.IsIntegral.isIntegral (b i)).isAlgebraic`. Take `⟨d, hd, hdi⟩` from `halg.exists_integral_multiple`. Conclude with `⟨d, hd, by simpa [Algebra.smul_def] using hdi⟩`. Use `choose d hd0 hdi using hint`. Use `set D : 𝒪[F] := ∏ i, d i with hD`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hDint : ∀ i, IsIntegral 𝒪[F] (algebraMap 𝒪[F] E D * b i)`. Introduce `i`. Rewrite using `[hD, ← Finset.prod_erase_mul _ _ (Finset.mem_univ i), map_mul, mul_assoc]`. Conclude with `(isIntegral_algebraMap).mul (hdi i)`. Set `f : E →ₗ[F] (Fin (Module.finrank F E) → F)` to `b.equivFun.toLinearMap`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf : Continuous f` using `IsModuleTopology.continuous_of_linearMap f`. Set `U : Set E` to `f ⁻¹' Set.pi Set.univ (fun _ => (fun c : F => c * ((D : 𝒪[F]) : F)⁻¹) ⁻¹' (𝒪[F] : Set F))`. Establish `hcont : Continuous (fun c : F => c * ((D : 𝒪[F]) : F)⁻¹)` using `continuous_id.mul continuous_const`. Establish `hUo : IsOpen U` using `hf.isOpen_preimage _ (isOpen_set_pi Set.finite_univ fun _ _ => hcont.isOpen_preimage _ isOpen_integer)`. Use `isOpen_addSubgroup L.O.toAddSubgroup U hUo ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i _`. Simplify using `[U, f]`. Introduce `x hx`. Establish `hx' : ∀ i, b.repr x i * ((D : 𝒪[F]) : F)⁻¹ ∈ 𝒪[F]` using `fun i => hx i (Set.mem_univ i)`. Use `show x ∈ L.O`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← b.sum_repr x]`. Use `Subring.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `hD0 : ((D : 𝒪[F]) : F) ≠ 0`. Rewrite using `[hD]`. Use `push_cast`.
-
-Conclude with `Finset.prod_ne_zero_iff.2 fun j _ => by exact_mod_cast hd0 j`. Establish `e : b.repr x i • b i = algebraMap 𝒪[F] E ⟨_, hx' i⟩ * (algebraMap 𝒪[F] E D * b i)`. Rewrite using `[← mul_assoc, ← map_mul, Algebra.smul_def, IsScalarTower.algebraMap_apply 𝒪[F] F E]`. Use `congr 2`. Use `show b.repr x i = b.repr x i * ((D : 𝒪[F]) : F)⁻¹ * ((D : 𝒪[F]) : F)`.
-
-Rewrite using `[mul_assoc, inv_mul_cancel₀ hD0, mul_one]`. Rewrite using `[e]`. Conclude with `L.O.mul_mem ((L.O_def _).2 isIntegral_algebraMap) ((L.O_def _).2 (hDint i))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_O (L : Formalism.MainNotions.S.Loc.LocE F E) : IsOpen (L.O : Set E) := by
   classical
@@ -93,23 +89,21 @@ theorem isOpen_O (L : Formalism.MainNotions.S.Loc.LocE F E) : IsOpen (L.O : Set 
     exact L.O.mul_mem ((L.O_def _).2 isIntegral_algebraMap) ((L.O_def _).2 (hDint i))
 
 /- English proof (translation)
-Use `haveI := M.L.top`. Use `haveI : ContinuousAdd E := by first`. Consider the case `exact IsModuleTopology.toContinuousAdd F E`. Consider the case `exact inferInstance`. Break down `hs : M.split with _ | g` into its components or cases.
+Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hR : M.R = M.L.O`. Simplify using `only [Formalism.MainNotions.S.Loc.Model.R, hs]`. Rewrite using `[hR]`. Conclude with `isOpen_O M.L`. Establish `hq0 : ((g.q : 𝒪[F]) : F) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `g.q_irr.ne_zero (Subtype.ext h)`. Establish `he : Continuous g.e` using `IsModuleTopology.continuous_of_linearMap g.e.toLinearMap`. Establish `hV : IsOpen ((fun c : F => c * ((g.q : 𝒪[F]) : F)⁻¹) ⁻¹' (𝒪[F] : Set F))` using `(continuous_id.mul continuous_const).isOpen_preimage _ isOpen_integer`. Establish `hU : IsOpen (g.e ⁻¹' (((fun c : F => c * ((g.q : 𝒪[F]) : F)⁻¹) ⁻¹' (𝒪[F] : Set F)) ×ˢ ((fun c : F => c * ((g.q : 𝒪[F]) : F)⁻¹) ⁻¹' (𝒪[F] : Set F))))` using `he.isOpen_preimage _ (hV.prod hV)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `isOpen_addSubgroup M.R.toAddSubgroup _ hU ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `x hx`. Take `⟨h1, h2⟩` from `hx`. Simplify using `only [Set.mem_preimage] at h1 h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `m1 : (g.e x).1 ∈ 𝒪[F]`. Establish `: (g.e x).1 = (g.e x).1 * ((g.q : 𝒪[F]) : F)⁻¹ * ((g.q : 𝒪[F]) : F)`. Rewrite using `[mul_assoc, inv_mul_cancel₀ hq0, mul_one]`. Rewrite using `[this]`. Conclude with `Subring.mul_mem _ h1 (g.q).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `m2 : (g.e x).2 ∈ 𝒪[F]`. Establish `: (g.e x).2 = (g.e x).2 * ((g.q : 𝒪[F]) : F)⁻¹ * ((g.q : 𝒪[F]) : F)`. Rewrite using `[mul_assoc, inv_mul_cancel₀ hq0, mul_one]`. Rewrite using `[this]`. Conclude with `Subring.mul_mem _ h2 (g.q).2`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `z1 : (⟨(g.e x).1, m1⟩ : 𝒪[F]) ∈ Ideal.span {g.q}`. Rewrite using `[Ideal.mem_span_singleton']`. Conclude with `⟨⟨_, h1⟩, Subtype.ext (by show (g.e x).1 * ((g.q : 𝒪[F]) : F)⁻¹ * ((g.q : 𝒪[F]) : F) = (g.e x).1`. Rewrite using `[mul_assoc, inv_mul_cancel₀ hq0, mul_one])⟩`. Establish `z2 : (⟨(g.e x).2, m2⟩ : 𝒪[F]) ∈ Ideal.span {g.q}`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.mem_span_singleton']`. Conclude with `⟨⟨_, h2⟩, Subtype.ext (by show (g.e x).2 * ((g.q : 𝒪[F]) : F)⁻¹ * ((g.q : 𝒪[F]) : F) = (g.e x).2`. Rewrite using `[mul_assoc, inv_mul_cancel₀ hq0, mul_one])⟩`. Use `show x ∈ (M.R : Set E)`. Simplify using `only [Formalism.MainNotions.S.Loc.Model.R, hs]`.
-
-Rewrite using `[SetLike.mem_coe, Subring.mem_comap, Subring.mem_map]`. Use `⟨(⟨(g.e x).1, m1⟩, ⟨(g.e x).2, m2⟩), ?_, rfl⟩` and prove the remaining obligations. Use `show _ = _`. Use `show Ideal.Quotient.mk (Ideal.span {g.q}) (⟨(g.e x).1, m1⟩ : 𝒪[F]) = Ideal.Quotient.mk (Ideal.span {g.q}) (⟨(g.e x).2, m2⟩ : 𝒪[F])`. Rewrite using `[(Ideal.Quotient.eq_zero_iff_mem).2 z1, (Ideal.Quotient.eq_zero_iff_mem).2 z2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_R [MeasurableSpace E] (M : Formalism.MainNotions.S.Loc.Model F E) : IsOpen (M.R : Set E) := by
   classical

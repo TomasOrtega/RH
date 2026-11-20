@@ -14,9 +14,9 @@ namespace GlobalTheory.StdUnn.HeightExists
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Establish `h` using `(hp (Pi.single (finSumFinEquiv (.inl j)) 1)).1 (by`. Use extensionality with `k`. Establish `: (finSumFinEquiv (Sum.inr k : Fin n ⊕ Fin n)) ≠ finSumFinEquiv (.inl j)`. Rewrite using `[Ne, finSumFinEquiv.apply_eq_iff_eq]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.funLeft_apply, Pi.single_eq_of_ne this, Pi.zero_apply])`. Establish `h2` using `congrFun h i`. Simplify using `only [LinearMap.funLeft_apply, Matrix.mulVec_single_one, Pi.zero_apply] at h2`. Conclude with `h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lower_eq_zero {p : G D n} (hp : p ∈ P D n) (i j : Fin n) :
     mat p (finSumFinEquiv (.inr i)) (finSumFinEquiv (.inl j)) = 0 := by
@@ -30,7 +30,7 @@ theorem lower_eq_zero {p : G D n} (hp : p ∈ P D n) (i j : Fin n) :
   exact h2
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `e : mat (p * q) = mat p * mat q` using `rfl`. Simplify using `only [e, blkA, Matrix.toBlocks₁₁, Matrix.of_apply, Matrix.submatrix_apply, Matrix.mul_apply]`. Rewrite using `[← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`. Simplify using `only [lower_eq_zero hq, mul_zero, Finset.sum_const_zero, add_zero]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blkA_mul {p q : G D n} (hq : q ∈ P D n) : blkA (mat (p * q)) = blkA (mat p) * blkA (mat q) := by
   ext i j
@@ -40,7 +40,7 @@ theorem blkA_mul {p q : G D n} (hq : q ∈ P D n) : blkA (mat (p * q)) = blkA (m
   simp only [lower_eq_zero hq, mul_zero, Finset.sum_const_zero, add_zero]
 
 /- English proof (translation)
-Establish `e : mat (1 : G D n) = 1` using `rfl`. Rewrite using `[e, blkA, Matrix.submatrix_one_equiv, ← Matrix.fromBlocks_one, Matrix.toBlocks_fromBlocks₁₁]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem blkA_one : blkA (mat (1 : G D n)) = 1 := by
   have e : mat (1 : G D n) = 1 := rfl
@@ -50,13 +50,13 @@ def leviBlock : P D n →* GL (Fin n) (AE D) :=
   MonoidHom.toHomUnits ⟨⟨fun p => blkA (mat p.1), blkA_one⟩, fun p q => blkA_mul q.2⟩
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp (isEmbedding_matHom (AF D.host.F) D.sp.cm.sig (Jst D n)).continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mat : Continuous (mat : G D n → Mx D (n + n) (n + n)) :=
   Units.continuous_val.comp (isEmbedding_matHom (AF D.host.F) D.sp.cm.sig (Jst D n)).continuous
 
 /- English proof (translation)
-Establish `hA : Continuous fun g : G D n => blkA (mat g)` using `continuous_matrix fun i j => continuous_mat.matrix_elem _ _`. Rewrite using `[Units.continuous_iff]`. Use `⟨hA.comp continuous_subtype_val, ?_⟩` and prove the remaining obligations. Use `(hA.comp (continuous_subtype_val.comp continuous_inv)).congr fun p => ?_` and prove the remaining obligations. Rewrite using `[← map_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -69,7 +69,7 @@ theorem continuous_leviBlock : Continuous (leviBlock (D := D) (n := n)) := by
   rw [← map_inv]; rfl
 
 /- English proof (translation)
-Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Rewrite using `[Units.continuous_iff]`. Use `⟨Units.continuous_val.matrix_det, (Units.continuous_coe_inv.matrix_det).congr fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem continuous_detGL : Continuous (Matrix.GeneralLinearGroup.det : GL (Fin n) (AE D) → (AE D)ˣ) := by
   haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)
@@ -78,18 +78,16 @@ theorem continuous_detGL : Continuous (Matrix.GeneralLinearGroup.det : GL (Fin n
   rw [← map_inv]; rfl
 
 /- English proof (translation)
-The claim follows from `haveI : Submodule.IsLattice D.host.E (stdLattice D.host.E (n + n)) := isLattice_stdLattice isCompact_levelAll (isCMExt_host D) _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_K : IsCompact (K D n : Set (G D n)) :=
   haveI : Submodule.IsLattice D.host.E (stdLattice D.host.E (n + n)) := isLattice_stdLattice
   isCompact_levelAll (isCMExt_host D) _ _ _
 
 /- English proof (translation)
-Use `haveI := t2Space_adeleRing' (F := D.host.F)`. Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Use `haveI := t2Space_tensorProduct_finiteExtension (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Establish `: (P D n : Set (G D n)) = ⋂ x ∈ upperHalf D n, ({g | (mat g).mulVec x ∈ upperHalf D n} ∩ {g | (mat g⁻¹).mulVec x ∈ upperHalf D n})`. Use extensionality with `g`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_iInter, Set.mem_inter_iff, Set.mem_setOf_eq, SetLike.mem_coe]`. Use `⟨fun h x hx => ⟨(h x).1 hx, ((P D n).inv_mem h x).1 hx⟩, fun h x => ⟨fun hx => (h x hx).1, fun hx => ?_⟩⟩` and prove the remaining obligations. Use `(h _ hx).2` as an intermediate fact. Express the relevant statement in the definitionally equal form `(mat g⁻¹).mulVec ((mat g).mulVec x) ∈ _ at this`. Rewrite `this` using `[Matrix.mulVec_mulVec, show mat g⁻¹ * mat g = mat (g⁻¹ * g) from rfl, inv_mul_cancel, show mat (1 : G D n) = 1 from rfl, Matrix.one_mulVec]`. Then use the resulting hypothesis.
-
-Establish `hU : IsClosed (upperHalf D n : Set (Fin (n + n) → AE D))` using `isClosed_eq (f := fun (x : Fin (n + n) → AE D) (i : Fin n) => x (finSumFinEquiv (Sum.inr i : Fin n ⊕ Fin n))) (g := fun _ => 0) (continuous_pi fun i => continuous_apply _) continuous_const`. Rewrite using `[this]`. Conclude with `isClosed_biInter fun x _ => (hU.preimage (continuous_mat.matrix_mulVec continuous_const)).inter (hU.preimage ((continuous_mat.comp continuous_inv).matrix_mulVec continuous_const))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_P : IsClosed (P D n : Set (G D n)) := by
   haveI := t2Space_adeleRing' (F := D.host.F)
@@ -118,9 +116,9 @@ namespace GlobalTheory.StdUnn
 open HeightExists in
 
 /- English proof (translation)
-Introduce `D n`. Set `δ : P D n →* ℝ≥0` to `(absA D).comp (Matrix.GeneralLinearGroup.det.comp leviBlock)`. Establish `hc : Continuous δ` using `continuous_absE.comp (continuous_detGL.comp continuous_leviBlock)`. Use `haveI := t2Space_adeleRing' (F := D.host.F)`. Establish `ht` using `triv_of_isCompact (δ := δ) isClosed_P hc isCompact_K`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨iwAbs δ (K D n), fun p hp a ha k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[show a = leviBlock (D := D) (n := n) ⟨p, hp⟩ from Units.ext ha.symm]`. Conclude with `iwAbs_mul_of_triv ht ⟨p, hp⟩ hk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_height : ∀ (D : D7) (n : ℕ), ∃ H : G D n → ℝ≥0, IsHeight H := by
   intro D n

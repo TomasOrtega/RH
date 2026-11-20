@@ -14,7 +14,7 @@ namespace GlobalTheory.FinPl.ExtZeroAt
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `i` and use `by simp only [Matrix.mulVec, dotProduct] exact sum_mem fun j _ => Ideal.mul_mem_left _ _ (hy j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mulVec_idAt {m n : ℕ} (M : Mx D m n) {P : Pl D → Prop} {y : Fin n → AE D} (hy : ∀ i, y i ∈ idAt D P) :
     ∀ i, (M *ᵥ y) i ∈ idAt D P := fun i => by
@@ -22,7 +22,7 @@ theorem mulVec_idAt {m n : ℕ} (M : Mx D m n) {P : Pl D → Prop} {y : Fin n �
   exact sum_mem fun j _ => Ideal.mul_mem_left _ _ (hy j)
 
 /- English proof (translation)
-Use `(GlobalTheory.FinPlLoc.part_lat P S₀ L₀ _ hL₀).2 ⟨mulVec_idAt _ (GlobalTheory.FinPlLoc.latV_idAt hy), fun v hv e he => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_smul]`. Conclude with `((hm v hv _).1 (GlobalTheory.FinPlLoc.smul_latV v he hy)).2.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wittProjectionZero_mem_latticeCompletion_of_splits {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {L : Lat S} {L₀ : Lat S₀} {P : Pl D → Prop}
     (hL₀ : Submodule.IsLattice D.host.E L₀) (hm : ∀ v, P v → MonoAt d L L₀ v) {y : Fin S.rank → AE D}
@@ -32,7 +32,7 @@ theorem wittProjectionZero_mem_latticeCompletion_of_splits {S S₀ : HSp D} {ρ 
   exact ((hm v hv _).1 (GlobalTheory.FinPlLoc.smul_latV v he hy)).2.2
 
 /- English proof (translation)
-Use `(GlobalTheory.FinPlLoc.part_lat P T L _ hL).2 ⟨mulVec_idAt _ (GlobalTheory.FinPlLoc.latV_idAt hu), fun v hv e he => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_smul]`. Conclude with `GlobalTheory.FinPl.VacFlat.wittCoreInclusion_mem_latticeCompletionAtPlace d (hm v hv) (GlobalTheory.FinPlLoc.smul_latV v he hu)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wittCoreInclusion_mem_latticeCompletionAtPlace {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) {L : Lat T} {L₀ : Lat T₀} {P : Pl D → Prop}
     (hL : Submodule.IsLattice D.host.E L) (hm : ∀ v, P v → MonoAt d L L₀ v) {u : Fin T₀.rank → AE D}

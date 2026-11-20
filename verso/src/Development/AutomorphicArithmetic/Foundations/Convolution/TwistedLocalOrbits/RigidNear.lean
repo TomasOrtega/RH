@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.TwistedLocalOrb
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel Matrix GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets UpperTheory.ConvolutionTheory.Loc
 
 /- English proof (translation)
-Proceed by induction on `q with`. Consider the case `zero => simp [nrm]`. Consider the case `succ q ih => rw [nrm_succ, ih, Function.iterate_fixed hu, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem UpperTheory.ConvolutionTheory.Loc.nrm_fixed_eq_pow {E : Type} [Field E] {n : ℕ} (σ : E ≃+* E) (q : ℕ) (u : GL (Fin n) E)
     (hu : sg σ u = u) : nrm σ q u = u ^ q := by
@@ -14,7 +14,7 @@ private theorem UpperTheory.ConvolutionTheory.Loc.nrm_fixed_eq_pow {E : Type} [F
   | succ q ih => rw [nrm_succ, ih, Function.iterate_fixed hu, pow_succ]
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n σ q hc r hr u hu u' hu' h h' g hg`. Establish `h1 : g⁻¹ * u ^ q * g = u' ^ q`. Rewrite using `[← UpperTheory.ConvolutionTheory.Loc.nrm_fixed_eq_pow σ q u h, ← UpperTheory.ConvolutionTheory.Loc.nrm_fixed_eq_pow σ q u' h', ← hg, nrm_conj hc.ord]`. Establish `h2` using `UpperTheory.ConvolutionTheory.Loc.rootConj E n q r hr u hu u' hu' g h1`. Conclude with `mul_left_cancel (hg.trans h2.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Loc.rigidNear :
     ∀ (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] (n : ℕ) (σ : E ≃+* E) (q : ℕ), Cyc σ q → ∀ r : ValueGroupWithZero E, r < valuation E (q : E) →

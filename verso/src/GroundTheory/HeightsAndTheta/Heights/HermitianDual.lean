@@ -23,7 +23,7 @@ def dualCoord :
 variable {σ E}
 
 /- English proof (translation)
-Rewrite using `[dualCoord, LinearMap.liftBaseChange_tmul, LinearMap.smul_apply, Module.Dual.baseChange_apply_tmul, smul_eq_mul, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dualCoord_tmul_tmul (z w : ComplexAt σ) (φ : Module.Dual (𝓞 K) E) (e : E) :
     dualCoord σ E (z ⊗ₜ φ) (w ⊗ₜ e) = z * (algebraMap (𝓞 K) (ComplexAt σ) (φ e) * w) := by
@@ -31,17 +31,17 @@ theorem dualCoord_tmul_tmul (z w : ComplexAt σ) (φ : Module.Dual (𝓞 K) E) (
     Module.Dual.baseChange_apply_tmul, smul_eq_mul, Algebra.smul_def]
 
 /- English proof (translation)
-Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' (𝓞 K) E`. Take `⟨s, hs⟩` from `f.exists_rightInverse_of_surjective (LinearMap.range_eq_top.mpr hf)`. Set `φ : Fin n → Module.Dual (𝓞 K) E` to `fun i ↦ LinearMap.proj i ∘ₗ s`. Set `g : Fin n → E` to `fun i ↦ f (fun j ↦ if i = j then 1 else 0)`. Establish `hdecomp : ∀ e : E, ∑ i, φ i e • g i = e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `e`. Establish `h1 : f (s e) = e` using `by rw [← LinearMap.comp_apply, hs, LinearMap.id_apply]`. Use `conv_rhs => rw [← h1, LinearMap.pi_apply_eq_sum_univ f (s e)]`. Both sides reduce to the same expression. Establish `hψ : ∀ ψ : Module.Dual (𝓞 K) E, ∑ i, ψ (g i) • φ i = ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ψ`. Use `LinearMap.ext fun e ↦ ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`. Use `conv_rhs => rw [← hdecomp e]`. Rewrite using `[map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, map_smul, smul_eq_mul, smul_eq_mul, mul_comm]`. Establish `hrec : ∀ x, ∑ i, dualCoord σ E x (1 ⊗ₜ g i) ⊗ₜ φ i = x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp only [map_zero, LinearMap.zero_apply, zero_tmul, Finset.sum_const_zero]`. Consider the case `add x y hx hy`. Simplify using `only [map_add, LinearMap.add_apply, add_tmul, Finset.sum_add_distrib, hx, hy]`. Consider the case `tmul z ψ => conv_rhs => rw [← hψ ψ]`. Rewrite using `[tmul_sum]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[dualCoord_tmul_tmul, mul_one, ← smul_tmul, Algebra.smul_def, mul_comm]`. Introduce `x y hxy`. Rewrite using `[← hrec x, ← hrec y, hxy]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualCoord_injective [Module.Finite (𝓞 K) E] [Module.Projective (𝓞 K) E] :
     Function.Injective (dualCoord σ E) := by
@@ -78,9 +78,9 @@ theorem dualCoord_injective [Module.Finite (𝓞 K) E] [Module.Projective (𝓞 
   rw [← hrec x, ← hrec y, hxy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, LinearMap.zero_apply]`. Consider the case `add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy]`. Consider the case `tmul z φ`. Proceed by induction on `u using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp only [map_zero]`. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`. Consider the case `tmul w e`. Rewrite using `[conjMap_tmul, conjMap_tmul, dualCoord_tmul_tmul, dualCoord_tmul_tmul, map_mul, map_mul]`. Both sides reduce to the same expression.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dualCoord_conjMap (x : Fibre σ (Module.Dual (𝓞 K) E)) (u : Fibre σ E) :
     dualCoord (conjugate σ) E (conjMap σ _ x) (conjMap σ E u) = conj σ (dualCoord σ E x u) := by
@@ -96,9 +96,9 @@ theorem dualCoord_conjMap (x : Fibre σ (Module.Dual (𝓞 K) E)) (u : Fibre σ 
       rfl
 
 /- English proof (translation)
-Introduce `v`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `add v v' hv hv'`. Take `⟨u, rfl⟩` from `hv`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨u', rfl⟩` from `hv'`. Conclude with `⟨u + u', map_add _ _ _⟩`. Consider the case `tmul w e`. Use `⟨ofComplex σ (starRingEnd ℂ ((ofComplex (conjugate σ)).symm w)) ⊗ₜ e, ?_⟩` and prove the remaining obligations. Rewrite using `[conjMap_tmul, conj_ofComplex, Complex.conj_conj]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -125,7 +125,7 @@ variable {E : Type*} [AddCommGroup E] [Module (𝓞 K) E] [Module.Finite (𝓞 K
 omit [NumberField K] [Module.Projective (𝓞 K) E] in
 
 /- English proof (translation)
-Establish `: Module.Finite ℂ (ComplexAt σ)` using `Module.Finite.equiv (ofComplex σ).toLinearEquiv`. Conclude with `Module.Finite.trans (ComplexAt σ) (Fibre σ E)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fibre_finite (σ : K →+* ℂ) : Module.Finite ℂ (Fibre σ E) := by
   have : Module.Finite ℂ (ComplexAt σ) := Module.Finite.equiv (ofComplex σ).toLinearEquiv
@@ -146,7 +146,7 @@ def riesz (σ : K →+* ℂ) (x : Fibre σ (Module.Dual (𝓞 K) E)) : FibreSpac
   (InnerProductSpace.toDual ℂ (FibreSpace h σ)).symm (dualFunctional h σ x)
 
 /- English proof (translation)
-Rewrite using `[riesz, InnerProductSpace.toDual_symm_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inner_riesz (σ : K →+* ℂ) (x : Fibre σ (Module.Dual (𝓞 K) E)) (v : FibreSpace h σ) :
     inner ℂ (riesz h σ x) v =
@@ -155,7 +155,7 @@ theorem inner_riesz (σ : K →+* ℂ) (x : Fibre σ (Module.Dual (𝓞 K) E)) (
   rfl
 
 /- English proof (translation)
-Use `ext_inner_right ℂ fun v ↦ ?_` and prove the remaining obligations. Rewrite using `[inner_add_left, inner_riesz, inner_riesz, inner_riesz, map_add, LinearMap.add_apply, map_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem riesz_add (σ : K →+* ℂ) (x y : Fibre σ (Module.Dual (𝓞 K) E)) :
     riesz h σ (x + y) = riesz h σ x + riesz h σ y := by
@@ -163,7 +163,7 @@ theorem riesz_add (σ : K →+* ℂ) (x y : Fibre σ (Module.Dual (𝓞 K) E)) :
   rw [inner_add_left, inner_riesz, inner_riesz, inner_riesz, map_add, LinearMap.add_apply, map_add]
 
 /- English proof (translation)
-Use `ext_inner_right ℂ fun v ↦ ?_` and prove the remaining obligations. Establish `hc : c • x = ofComplex σ c • x`. Rewrite using `[fibre_smul_eq σ _ (ofComplex σ c) x, AlgEquiv.symm_apply_apply]`. Rewrite using `[inner_smul_left, Complex.conj_conj, inner_riesz, inner_riesz, hc, map_smul, LinearMap.smul_apply, smul_eq_mul, map_mul, AlgEquiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem riesz_smul (σ : K →+* ℂ) (c : ℂ) (x : Fibre σ (Module.Dual (𝓞 K) E)) :
     riesz h σ (c • x) = starRingEnd ℂ c • riesz h σ x := by
@@ -174,9 +174,9 @@ theorem riesz_smul (σ : K →+* ℂ) (c : ℂ) (x : Fibre σ (Module.Dual (𝓞
     LinearMap.smul_apply, smul_eq_mul, map_mul, AlgEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Use `dualCoord_injective (σ := σ) ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Use `LinearMap.ext fun u ↦ ?_` and prove the remaining obligations. Use `inner_riesz h σ x (FibreSpace.equiv h σ u)` as an intermediate fact. Rewrite `this` using `[hx, inner_zero_left, LinearEquiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[LinearMap.zero_apply]`. Conclude with `(ofComplex σ).symm.injective (by rw [← this, map_zero])`. Use the proof step `@[instance_reducible]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem riesz_eq_zero (σ : K →+* ℂ) (x : Fibre σ (Module.Dual (𝓞 K) E)) (hx : riesz h σ x = 0) :
     x = 0 := by
@@ -198,9 +198,9 @@ def dualCore (σ : K →+* ℂ) : InnerProductSpace.Core ℂ (Fibre σ (Module.D
   definite x hx := riesz_eq_zero h σ x (inner_self_eq_zero.mp hx)
 
 /- English proof (translation)
-Use `ext_inner_right ℂ fun v ↦ ?_` and prove the remaining obligations. Take `⟨u, hu⟩` from `conjMap_surjective (σ := σ) ((FibreSpace.equiv h (conjugate σ)).symm v)`. Establish `hv : v = FibreSpace.equiv h (conjugate σ) (conjMap σ E u)`. Rewrite using `[hu, LinearEquiv.apply_symm_apply]`. Rewrite using `[inner_riesz, hv, LinearEquiv.symm_apply_apply, dualCoord_conjMap, FibreSpace.inner_equiv, h.form_conj]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← FibreSpace.inner_equiv, LinearEquiv.apply_symm_apply, inner_riesz, LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem riesz_conjMap (σ : K →+* ℂ) (x : Fibre σ (Module.Dual (𝓞 K) E)) :
     riesz h (conjugate σ) (conjMap σ _ x) =
@@ -229,7 +229,7 @@ def HermitianBundle.dual {K : Type u} [Field K] [NumberField K] (A : HermitianBu
   ⟨Module.Dual (𝓞 K) A.carrier, A.metric.dual⟩
 
 /- English proof (translation)
-The claim follows from `(gaussianStandard 2).dual`.
+A detailed English derivation is pending.
 -/
 example : HermitianBundle GaussianField := (gaussianStandard 2).dual
 

@@ -23,7 +23,7 @@ def killSub (A : PolAV (Sp (FractionRing R))) {O : Type} [Ring O] (ρ : RingAct 
   MonoidHom.ker (IsMonHom.monoidHom (ρ.act ga) (TFK (R := R) F))
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Iff.rfl`. Consider the case `exact MonoidHom.mem_ker`. Consider the case `simp [killSub, MonoidHom.mem_ker]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_killSub (A : PolAV (Sp (FractionRing R))) {O : Type} [Ring O] (ρ : RingAct A.A O) (ga : O)
     (x : TFK (R := R) F ⟶ A.A) : x ∈ killSub F A ρ ga ↔ x ≫ ρ.act ga = 1 := by
@@ -33,17 +33,15 @@ theorem mem_killSub (A : PolAV (Sp (FractionRing R))) {O : Type} [Ring O] (ρ : 
     | simp [killSub, MonoidHom.mem_ker]
 
 /- English proof (translation)
-Use `haveI : IsLocallyNoetherian (Sp (FractionRing R)) := by first`. Consider the case `infer_instance`. Consider the case `(unfold Sp; infer_instance)`. Take `⟨hEx, hMul, -, -⟩` from `hW (Sp (FractionRing R)) A N (TFK (R := R) F)`. Establish `huniq : ∀ (z x : TFK (R` using `R) F ⟶ A.A) (hz : z ^ N = 1) (hx : x ^ N = 1) (c : Γ((TFK (R := R) F).left, ⊤)ˣ), WeilIs A.A A.L N z x c → c = (hEx z x hz hx).exists.choose := fun z x hz hx c hc => (hEx z x hz hx).unique hc (hEx z x hz hx).exists.choose_spec`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `χ : killSub F A ρ ga → (killSub F A ρ gb →* Γ((TFK (R` to `R) F).left, ⊤)ˣ) := fun x => MonoidHom.mk' (fun z => (hEx z.1 x.1 (hgb _ z.2) (hga _ x.2)).exists.choose) (fun z z' => (huniq (z * z').1 x.1 (hgb _ (z * z').2) (hga _ x.2) _ (hMul _ _ _ _ _ (hEx z.1 x.1 (hgb _ z.2) (hga _ x.2)).exists.choose_spec (hEx z'.1 x.1 (hgb _ z'.2) (hga _ …`. Establish `hinj : Function.Injective χ`. Introduce `x x' hxx`. Assume the negation of the conclusion as `hne`. Take `⟨z, hz, c, c', hc, hc', hcc⟩` from `sep x.1 x.2 x'.1 x'.2 (fun h => hne (Subtype.ext h))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1` using `huniq z x.1 (hgb z hz) (hga _ x.2) c hc`. Establish `e2` using `huniq z x'.1 (hgb z hz) (hga _ x'.2) c' hc'`. Establish `e3 : χ x ⟨z, hz⟩ = χ x' ⟨z, hz⟩` using `by rw [hxx]`. Conclude with `hcc (e1.trans (e3.trans e2.symm))`. Set `ψ : killSub F A ρ ga → (killSub F A ρ gb →* Γ((TFK (R` to `R) F).left, ⊤)) := fun x => (Units.coeHom _).comp (χ x)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hψ : Function.Injective ψ`. Introduce `x x' h`. Apply `hinj` to reduce the goal to its premises. Use `MonoidHom.ext fun z => Units.ext ?_` and prove the remaining obligations. Conclude with `congrArg (fun f => f z) h`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `haveI : IsDomain Γ((TFK (R := R) F).left, ⊤) := by first`. Consider the case `infer_instance`. Consider the case `exact Function.Injective.isDomain (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of F)).hom).1`. Establish `hli` using `(linearIndependent_monoidHom (killSub F A ρ gb) Γ((TFK (R := R) F).left, ⊤)).comp ψ hψ`. Use `haveI := Fintype.ofFinite (killSub F A ρ ga)`.
-
-Use `haveI := Fintype.ofFinite (killSub F A ρ gb)`. Establish `hcard` using `hli.fintype_card_le_finrank`. Rewrite `hcard` using `[Module.finrank_fintype_fun_eq_card]`. Rewrite using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]`. Conclude with `hcard`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_killSub_le (hW : WeilSt) (A : PolAV (Sp (FractionRing R))) {O : Type} [Ring O] (ρ : RingAct A.A O)
     (N : ℕ) (ga gb : O) (hga : ∀ x ∈ killSub F A ρ ga, x ^ N = 1) (hgb : ∀ z ∈ killSub F A ρ gb, z ^ N = 1)
@@ -136,25 +134,21 @@ def torsionEquiv (A : PolAV (Sp (FractionRing R))) {O : Type} [CommRing O] (ρ :
 end Count
 
 /- English proof (translation)
-Introduce `E _ _ _ H V _ _ _ t P hTor α N hN1 hαN huu hNV F _ _ _ Dw hI`. Use `letI := H.starRing`. Take `⟨u, u', huu⟩` from `huu`. Use `haveI : IsLocallyNoetherian (Sp (FractionRing V)) := by first`. Consider the case `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `(unfold Sp; infer_instance)`. Set `ρ` to `P.oA.toRingAct`. Establish `hNF : ((N : ℕ) : F) ≠ 0`. Establish `h1` using `(hNV.map (algebraMap V (FractionRing V))).map (algebraMap (FractionRing V) F)`. Simplify using `only [map_natCast] at h1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h1.ne_zero`. Establish `hcardN` using `(hM (Sp (FractionRing V)) P.A N hN1).2.2.2.2 F (jFK (R := V) F) hNF`. Establish `hkA : ∀ x ∈ killSub F P.A ρ α, x ^ N = 1` using `fun x hx => pow_eq_one_of_kill ρ (show star α * α = (N : 𝓞 E) by rw [mul_comm]; exact hαN) x hx`. Establish `hkB : ∀ x ∈ killSub F P.A ρ (star α), x ^ N = 1` using `fun x hx => pow_eq_one_of_kill ρ hαN x hx`. Set `eqv` to `torsionEquiv F P.A ρ N α (star α) u u' hαN huu`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htot : Nat.card {y : TFK (R` using `V) F ⟶ P.A.A // y ^ N = 1} = Nat.card (killSub F P.A ρ α) * Nat.card (killSub F P.A ρ (star α)) := by`. Rewrite using `[Nat.card_congr eqv, Nat.card_prod]`. Establish `hpos : Nat.card {y : TFK (R` using `V) F ⟶ P.A.A // y ^ N = 1} ≠ 0 := by`. Rewrite using `[hcardN]`. Conclude with `pow_ne_zero _ (by omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI hfin : Finite {y : TFK (R := V) F ⟶ P.A.A // y ^ N = 1} := Nat.finite_of_card_ne_zero hpos`. Use `haveI : Finite (killSub F P.A ρ α × killSub F P.A ρ (star α)) := Finite.of_equiv _ eqv`. Use `haveI : Finite (killSub F P.A ρ α) := Finite.prod_left (killSub F P.A ρ (star α))`. Use `haveI : Finite (killSub F P.A ρ (star α)) := Finite.prod_right (killSub F P.A ρ α)`. Establish `sep1 : ∀ x ∈ killSub F P.A ρ (star α), ∀ x' ∈ killSub F P.A ρ (star α), x ≠ x' → ∃ z ∈ killSub F P.A ρ α, ∃ c c' : Γ((TFK (R` using `V) F).left, ⊤)ˣ, WeilIs P.A.A P.A.L N z x c ∧ WeilIs P.A.A P.A.L N z x' c' ∧ c ≠ c' := by`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx x' hx' hne`. Take `⟨z, hz, rest⟩` from `sep_core (F := F) P.A P.oA Dw hI N hN1 α u u' hαN huu x x' hx hx' hne`. Conclude with `⟨z, hz, rest⟩`. Establish `sep2 : ∀ x ∈ killSub F P.A ρ α, ∀ x' ∈ killSub F P.A ρ α, x ≠ x' → ∃ z ∈ killSub F P.A ρ (star α), ∃ c c' : Γ((TFK (R` using `V) F).left, ⊤)ˣ, WeilIs P.A.A P.A.L N z x c ∧ WeilIs P.A.A P.A.L N z x' c' ∧ c ≠ c' := by`. Introduce `x hx x' hx' hne`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : star α * star (star α) = (N : 𝓞 E)` using `by rw [star_star, mul_comm]; exact hαN`. Establish `h2 : u' * star α + u * star (star α) = 1` using `by rw [star_star, add_comm]; exact huu`. Take `⟨z, hz, rest⟩` from `sep_core (F := F) P.A P.oA Dw hI N hN1 (star α) u' u h1 h2 x x' (by rw [star_star]; exact hx) (by rw [star_star]; exact hx') hne`. Conclude with `⟨z, hz, rest⟩`. Establish `hle1` using `card_killSub_le F hW P.A ρ N (star α) α hkB hkA sep1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle2` using `card_killSub_le F hW P.A ρ N α (star α) hkA hkB sep2`. Establish `hc2 : Nat.card (killSub F P.A ρ (star α)) = N ^ P.A.g`. Establish `hsq : Nat.card (killSub F P.A ρ (star α)) ^ 2 = (N ^ P.A.g) ^ 2`. Rewrite using `[sq, ← pow_mul, mul_comm P.A.g 2, ← hcardN, htot, le_antisymm hle2 hle1]`. Conclude with `Nat.pow_left_injective two_ne_zero hsq`.
-
-Set `ev` to `(Finite.equivFinOfCardEq hc2).symm`. Take `⟨f, hToA, hsurj, -⟩` from `hTor F (1 * N) (by omega)`. Establish `hx1 : ∀ b, ((ev b).1) ^ (1 * N) = 1` using `fun b => by`. Rewrite using `[Nat.one_mul]`. Conclude with `hkB _ (ev b).2`.
-
-Use `⟨fun b => (hsurj _ (hx1 b)).choose, fun b => (ev b).1, fun b => ?_, fun b => (ev b).2, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hToA _ _).2 (hsurj _ (hx1 b)).choose_spec.symm`. Conclude with `Subtype.val_injective.comp ev.injective`. Introduce `y hy`. Conclude with `⟨ev.symm ⟨y, hy⟩, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem alphaBarEnum_holds (hW : WeilSt) (hM : MulNSt) : AlphaBarEnumStatement := by
   intro E _ _ _ H V _ _ _ t P hTor α N hN1 hαN huu hNV F _ _ _ Dw hI

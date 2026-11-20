@@ -11,9 +11,9 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open Topology Filter
 
 /- English proof (translation)
-Take `⟨r, hr, hball⟩` from `Metric.mem_nhds_iff.1 ((hf.eventually_analyticAt.and hg.eventually_analyticAt).and hfg)`. Distinguish the cases in `hf0 : ∀ z ∈ Metric.ball y r, f z = 0`. Conclude with `Or.inl (Filter.mem_of_superset (Metric.ball_mem_nhds y hr) hf0)`. Use `right push Not at hf0`. Take `⟨p, hp, hfp⟩` from `hf0`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgp : g =ᶠ[𝓝 p] 0` using `by filter_upwards [(hball hp).1.1.continuousAt.eventually_ne hfp, Metric.isOpen_ball.mem_nhds hp] with z hz1 hz2`. Conclude with `(mul_eq_zero.1 (hball hz2).2).resolve_left hz1`. Establish `hgan : AnalyticOnNhd ℂ g (Metric.ball y r)` using `fun z hz => (hball hz).1.2`. Establish `hzero` using `hgan.eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_ball y r).isPreconnected hp hgp`. Conclude with `Filter.mem_of_superset (Metric.ball_mem_nhds y hr) fun z hz => by simpa using hzero hz`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem germ_zero_of_mul_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {f g : E → ℂ} {y : E}
     (hf : AnalyticAt ℂ f y) (hg : AnalyticAt ℂ g y) (hfg : ∀ᶠ z in 𝓝 y, f z * g z = 0) :
@@ -34,11 +34,11 @@ private theorem germ_zero_of_mul_zero {E : Type*} [NormedAddCommGroup E] [Normed
     exact Filter.mem_of_superset (Metric.ball_mem_nhds y hr) fun z hz => by simpa using hzero hz
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Take `⟨z, hz⟩` from `hprod.exists`. Simplify using `at hz`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `hg : AnalyticAt ℂ (fun z => ∏ i ∈ s, h i z) y` using `Finset.analyticAt_fun_prod s fun i hi => han i (Finset.mem_insert_of_mem hi)`. Establish `hprod' : ∀ᶠ z in 𝓝 y, h a z * ∏ i ∈ s, h i z = 0` using `by filter_upwards [hprod] with z hz`. Rewrite `hz` using `[Finset.prod_insert ha]`. Then use the resulting hypothesis. Break down `germ_zero_of_mul_zero (han a (Finset.mem_insert_self a s)) hg hprod' with h1 | h1` into its components or cases. Conclude with `⟨a, Finset.mem_insert_self a s, h1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Take `⟨i, hi, h2⟩` from `ih (fun i hi => han i (Finset.mem_insert_of_mem hi)) h1`. Conclude with `⟨i, Finset.mem_insert_of_mem hi, h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem germ_factor_zero_of_prod_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {ι : Type*}
     (h : ι → E → ℂ) {y : E} (s : Finset ι) (han : ∀ i ∈ s, AnalyticAt ℂ (h i) y)
@@ -60,13 +60,11 @@ private theorem germ_factor_zero_of_prod_zero {E : Type*} [NormedAddCommGroup E]
       exact ⟨i, Finset.mem_insert_of_mem hi, h2⟩
 
 /- English proof (translation)
-Establish `hEq : N \ Y = ⋃ m, N ∩ φ m ⁻¹' {0}ᶜ`. Use extensionality with `z`. Simplify using `only [Set.mem_sdiff, Set.mem_iUnion, Set.mem_inter_iff, Set.mem_preimage, Set.mem_compl_iff, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hzN, hzY⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hz : z ∈ Y ∩ N`. Rewrite using `[hY]`. Conclude with `⟨hzN, fun m => hcon m hzN⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `hzY hz.1`. Introduce and unpack `⟨m, hzN, hzm⟩`. Use `⟨hzN, fun hzY => hzm ?_⟩` and prove the remaining obligations. Establish `hz : z ∈ Y ∩ N` using `⟨hzY, hzN⟩`. Rewrite `hz` using `[hY]`.
-
-Conclude with `hz.2 m`. Rewrite using `[hEq]`. Conclude with `isOpen_iUnion fun m => (hφ m).continuousOn.isOpen_inter_preimage hN isOpen_compl_singleton`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isOpen_diff_of_zeroSet {σ : Type} [Fintype σ] {Y N : Set (σ → ℂ)} {k : ℕ}
     {φ : Fin k → (σ → ℂ) → ℂ} (hN : IsOpen N) (hφ : ∀ m, AnalyticOnNhd ℂ (φ m) N)
@@ -92,43 +90,39 @@ private theorem isOpen_diff_of_zeroSet {σ : Type} [Fintype σ] {Y N : Set (σ �
   exact isOpen_iUnion fun m => (hφ m).continuousOn.isOpen_inter_preimage hN isOpen_compl_singleton
 
 /- English proof (translation)
-Introduce `σ _ X B k f d A hB hf hXB hopen w hw hiso`. Take `⟨n, Y, hY, hsepY, W0, hW0, hXW0⟩` from `hcomp σ X B k f d A hB hf hXB hopen w hw`. Take `⟨W, hW, hWiso⟩` from `hiso`. Establish `hisoY : ∀ i, ∃ W' ∈ 𝓝 w, ∀ x ∈ Y i ∩ W', A x = A w → x = w` using `fun i => ⟨W ∩ W0, inter_mem hW hW0, fun x hx hAx => by`. Establish `hxX : x ∈ X ∩ B ∩ W0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hXW0]`. Conclude with `⟨Set.mem_iUnion.2 ⟨i, hx.1⟩, hx.2.2⟩`. Conclude with `hWiso x ⟨hxX.1, hx.2.1⟩ hAx⟩`. Establish `hsh : ∀ i, ∃ δ : (Fin d → ℂ) → ℂ, AnalyticAt ℂ δ (A w) ∧ (¬ ∀ᶠ y in 𝓝 (A w), δ y = 0) ∧ ∃ M ∈ 𝓝 w, ∀ y ∈ Y i ∩ M, δ (A y) ≠ 0 → ∃ (O : Set (Fin d → ℂ)) (V : Set (σ → ℂ)) (g : (Fin d → ℂ) → σ → ℂ), IsOpen O ∧ IsOpen V ∧ y ∈ V ∧ AnalyticOnNhd ℂ g O ∧ (∀ t ∈ O, A (g t) = t) ∧ Y i ∩ …`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨ℓ, N, a, δ, q, ha, hδ, hq, hδ0, hP, hsep, hQ⟩` from `hprim σ (Y i) w d A (hY i).1 (hY i).2.1 (hisoY i) (hY i).2.2`. Conclude with `⟨δ, hδ, hδ0, hsheet σ (Y i) w d A (hY i).1 (hY i).2.1 (hisoY i) (hY i).2.2 ℓ N a δ q ha hδ hq hδ0 hP hsep hQ⟩`. Use `choose δ hδa hδ0 M hM hMsh using hsh`. Establish `hsp : ∀ i j, ∃ e : (Fin d → ℂ) → ℂ, AnalyticAt ℂ e (A w) ∧ (¬ ∀ᶠ y in 𝓝 (A w), e y = 0) ∧ (i ≠ j → ∀ᶠ z in 𝓝 w, z ∈ Y i → z ∈ Y j → e (A z) = 0)`. Introduce `i j`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hij : i = j`. Use `⟨fun _ => 1, analyticAt_const, fun h => ?_, fun h => absurd hij h⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `h.exists`. Conclude with `one_ne_zero hy`. Take `⟨e, he, he0, hez⟩` from `hmeet σ (Y i) (Y j) w d A (hY i).1 (hY i).2.1 (hisoY i) (hY j).1 (hsepY i j hij)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨e, he, he0, fun _ => hez⟩`. Use `choose e hea he0 hez using hsp`. Establish `hYa : ∀ j, ∃ (N : Set (σ → ℂ)) (kk : ℕ) (φ : Fin kk → (σ → ℂ) → ℂ), IsOpen N ∧ w ∈ N ∧ (∀ m, AnalyticOnNhd ℂ (φ m) N) ∧ Y j ∩ N = {z | z ∈ N ∧ ∀ m, φ m z = 0}` using `fun j => (hY j).1`. Use `choose N kk φ hNo hwN hφ hYN using hYa`. Establish `hfac : ∀ i, AnalyticAt ℂ (fun y => δ i y * ∏ j, e i j y) (A w)` using `fun i => (hδa i).mul (Finset.analyticAt_fun_prod _ fun j _ => hea i j)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨interior W0 ∩ (⋂ i, M i) ∩ (⋂ j, N j) ∩ {z | ∀ i j, i ≠ j → z ∈ Y i → z ∈ Y j → e i j (A z) = 0}, fun y => ∏ i, (δ i y * ∏ j, e i j y), ?_, Finset.analyticAt_fun_prod _ fun i _ => hfac i, ?_, ?_⟩` and prove the remaining obligations. Use `inter_mem (inter_mem (inter_mem (interior_mem_nhds.2 hW0) (iInter_mem.2 hM)) (iInter_mem.2 fun j => (hNo j).mem_nhds (hwN j))) ?_` and prove the remaining obligations. Establish `hev : ∀ i j, ∀ᶠ z in 𝓝 w, i ≠ j → z ∈ Y i → z ∈ Y j → e i j (A z) = 0` using `fun i j => by`. Distinguish the cases in `hij : i = j`. Conclude with `Eventually.of_forall fun _ h => absurd hij h`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [hez i j hij] with z hz _ using hz`. Conclude with `eventually_all.2 fun i => eventually_all.2 fun j => hev i j`. Introduce `hg0`. Take `⟨i, -, hi⟩` from `germ_factor_zero_of_prod_zero (fun i y => δ i y * ∏ j, e i j y) Finset.univ (fun i _ => hfac i) hg0`. Break down `germ_zero_of_mul_zero (hδa i) (Finset.analyticAt_fun_prod _ fun j _ => hea i j) hi with h1 | h1` into its components or cases.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `hδ0 i h1`. Take `⟨j, -, hj⟩` from `germ_factor_zero_of_prod_zero (e i) Finset.univ (fun j _ => hea i j) h1`. Conclude with `he0 i j hj`. Introduce `x hx hgx`. Take `⟨hxXB, ⟨⟨hxW0, hxM⟩, hxN⟩, hxe⟩` from `hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_iInter] at hxM hxN`. Establish `hgx' : ∀ i, δ i (A x) ≠ 0 ∧ ∀ j, e i j (A x) ≠ 0`. Introduce `i`. Establish `hi` using `(Finset.prod_ne_zero_iff.1 hgx) i (Finset.mem_univ i)`. Conclude with `⟨left_ne_zero_of_mul hi, fun j => (Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul hi)) j (Finset.mem_univ j)⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxU : x ∈ (⋃ i, Y i) ∩ W0`. Rewrite using `[← hXW0]`. Conclude with `⟨hxXB, interior_subset hxW0⟩`. Take `⟨i, hxi⟩` from `Set.mem_iUnion.1 hxU.1`. Establish `hxnot : ∀ j, j ≠ i → x ∉ Y j` using `fun j hji hxj => (hgx' i).2 j (hxe i j (Ne.symm hji) hxi hxj)`.
+Check the elementary cases of the proposition. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Set `U : Set (σ → ℂ)` to `interior W0 ∩ ⋂ j, (if j = i then Set.univ else N j \ Y j)`. Establish `hUo : IsOpen U`. Use `isOpen_interior.inter (isOpen_iInter_of_finite fun j => ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `isOpen_univ`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `isOpen_diff_of_zeroSet (hNo j) (hφ j) (hYN j)`. Establish `hxUm : x ∈ U`. Use `⟨hxW0, Set.mem_iInter.2 fun j => ?_⟩` and prove the remaining obligations. Use `split_ifs with hji`. Discharge the goal by the elementary cases of `trivial`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨hxN j, hxnot j hji⟩`. Establish `hXU : X ∩ B ∩ U = Y i ∩ U`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hzXB, hzU⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Establish `hzW : z ∈ (⋃ i, Y i) ∩ W0`. Rewrite using `[← hXW0]`. Conclude with `⟨hzXB, interior_subset hzU.1⟩`. Take `⟨j, hzj⟩` from `Set.mem_iUnion.1 hzW.1`. Distinguish the cases in `hji : j = i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Rewrite `hzj` using `[hji]`. Conclude with `⟨hzj, hzU⟩`. Establish `hzj'` using `Set.mem_iInter.1 hzU.2 j`. Rewrite `hzj'` using `[if_neg hji]`. Conclude with `absurd hzj hzj'.2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨hzi, hzU⟩`. Establish `hzW : z ∈ X ∩ B ∩ W0`. Rewrite using `[hXW0]`. Conclude with `⟨Set.mem_iUnion.2 ⟨i, hzi⟩, interior_subset hzU.1⟩`. Conclude with `⟨hzW.1, hzU⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Take `⟨O, V, h, hO, hV, hxV, hh, hAh, hYV⟩` from `hMsh i x ⟨hxi, hxM i⟩ (hgx' i).1`. Use `⟨O ∩ h ⁻¹' U, V ∩ U, h, hh.continuousOn.isOpen_inter_preimage hO hUo, hV.inter hUo, ⟨hxV, hxUm⟩, hh.mono Set.inter_subset_left, fun t ht => hAh t ht.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.image_inter_preimage, ← hYV]`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨hzXB, hzV, hzU⟩`. Establish `hz : z ∈ Y i ∩ U`. Rewrite using `[← hXU]`. Conclude with `⟨hzXB, hzU⟩`. Conclude with `⟨⟨hz.1, hzV⟩, hzU⟩`.
-
-Introduce and unpack `⟨⟨hzi, hzV⟩, hzU⟩`. Establish `hz : z ∈ X ∩ B ∩ U`. Rewrite using `[hXU]`. Conclude with `⟨hzi, hzU⟩`. Conclude with `⟨hz.1, hzV, hzU⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsolatedFibreLocalUnbranched.proof (hcomp : OpenProjectionDominantComponents.Statement)
     (hmeet : IrreducibleGermMeetOverHypersurface.Statement)

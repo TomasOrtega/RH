@@ -51,7 +51,7 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing w with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, mul_smul, ih, Δ.act_X_pow_smul, ← mul_smul, ← pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem act_vpow_smul {P : PhiMod O K l e a ι} (Δ : Descent P) (g : TameGal K l e a) (n : ℕ)
     (w : Vec K a ι) : Δ.act g (((X : K⟦X⟧) ^ e) ^ n • w) = ((X : K⟦X⟧) ^ e) ^ n • Δ.act g w := by
@@ -60,7 +60,7 @@ theorem act_vpow_smul {P : PhiMod O K l e a ι} (Δ : Descent P) (g : TameGal K 
   | succ n ih => rw [pow_succ, mul_smul, ih, Δ.act_X_pow_smul, ← mul_smul, ← pow_succ]
 
 /- English proof (translation)
-Use `ext1 τ`. Conclude with `smul_comm (s τ) f (w τ)`.
+A detailed English derivation is pending.
 -/
 theorem diagScale_smul (s : ZMod a → K) (f : K⟦X⟧) (w : Vec K a ι) :
     diagScale K a ι s (f • w) = f • diagScale K a ι s w := by
@@ -68,7 +68,7 @@ theorem diagScale_smul (s : ZMod a → K) (f : K⟦X⟧) (w : Vec K a ι) :
   exact smul_comm (s τ) f (w τ)
 
 /- English proof (translation)
-Use `letI := Fintype.ofFinite (rootsOfUnity e K)`. Simplify using `only [isoProj, LinearMap.smul_apply, LinearMap.sum_apply, LinearMap.comp_apply, act_vpow_smul, diagScale_smul, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun ζ _ => ?_` and prove the remaining obligations. Conclude with `smul_comm _ _ _`.
+Equip the data with the indicated structure. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isoProj_vpow {P : PhiMod O K l e a ι} (Δ : Descent P) (c : ZMod e) (n : ℕ) (v : Vec K a ι) :
     isoProj Δ c (((X : K⟦X⟧) ^ e) ^ n • v) = ((X : K⟦X⟧) ^ e) ^ n • isoProj Δ c v := by
@@ -79,9 +79,9 @@ theorem isoProj_vpow {P : PhiMod O K l e a ι} (Δ : Descent P) (c : ZMod e) (n 
   exact smul_comm _ _ _
 
 /- English proof (translation)
-Use `letI := Fintype.ofFinite (rootsOfUnity e K)`. Simplify using `only [isoProj, LinearMap.smul_apply, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.map_smul_of_tower, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun ζ _ => ?_` and prove the remaining obligations. Rewrite using `[← F.app_act]`.
+Equip the data with the indicated structure. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `ext1 τ`. Simplify using `only [diagScale_apply, BK.Hom.app_apply, Matrix.mulVec_smul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem app_isoProj {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} {Δ₁ : Descent P}
     {Δ₂ : Descent Q} (F : Descent.Hom Δ₁ Δ₂) (c : ZMod e) (v : Vec K a ι) :

@@ -23,13 +23,13 @@ def permUnit {N : ℕ} (σ : Equiv.Perm (Fin N)) : GL (Fin N) k :=
   Matrix.GeneralLinearGroup.map (n := Fin N) (algebraMap 𝒪[k] k) (permUnitO σ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨permUnitO σ, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem permUnit_mem_KO {N : ℕ} (σ : Equiv.Perm (Fin N)) : (permUnit σ : GL (Fin N) k) ∈ KO k (Fin N) :=
   ⟨permUnitO σ, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [permUnit, permUnitO, Matrix.GeneralLinearGroup.map_apply, RingHom.mapMatrix_apply, Matrix.map_apply, PEquiv.toMatrix_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem permUnit_val {N : ℕ} (σ : Equiv.Perm (Fin N)) :
     ((permUnit σ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) = σ.toPEquiv.toMatrix := by
@@ -39,7 +39,7 @@ theorem permUnit_val {N : ℕ} (σ : Equiv.Perm (Fin N)) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Establish `hinv : (((permUnit σ : GL (Fin N) k)⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) = σ.symm.toPEquiv.toMatrix` using `by show (σ.symm.toPEquiv.toMatrix : Matrix (Fin N) (Fin N) 𝒪[k]).map (algebraMap 𝒪[k] k) = _`. Conclude with `PEquiv.map_toMatrix _ _`. Rewrite using `[Units.val_mul, Units.val_mul, hinv, permUnit_val, torusElt, torusElt, val_diagT, val_diagT, PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv, Equiv.symm_symm, Matrix.submatrix_submatrix]`. Conclude with `Matrix.submatrix_diagonal_equiv _ σ`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_torusElt {N : ℕ} (ϖ : kˣ) (m : Fin N → ℤ) (σ : Equiv.Perm (Fin N)) :
     permUnit σ * torusElt k (Fin N) ϖ m * (permUnit σ)⁻¹ = torusElt k (Fin N) ϖ (m ∘ σ) := by
@@ -54,7 +54,7 @@ theorem conj_torusElt {N : ℕ} (ϖ : kˣ) (m : Fin N → ℤ) (σ : Equiv.Perm 
   exact Matrix.submatrix_diagonal_equiv _ σ
 
 /- English proof (translation)
-Rewrite using `[← conj_torusElt ϖ m σ]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torusElt_conj {N : ℕ} (ϖ : kˣ) (m : Fin N → ℤ) (σ : Equiv.Perm (Fin N)) :
     torusElt k (Fin N) ϖ m = (permUnit σ)⁻¹ * torusElt k (Fin N) ϖ (m ∘ σ) * permUnit σ := by
@@ -62,11 +62,11 @@ theorem torusElt_conj {N : ℕ} (ϖ : kˣ) (m : Fin N → ℤ) (σ : Equiv.Perm 
   group
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N ϖ hϖ g`. Take `⟨x, hx, y, hy, m, rfl⟩` from `GlobalTheory.LocalCartan.cartan_decomposition k (Fin N) ϖ g hϖ`. Take `⟨σ, hmono⟩ : ∃ σ : Equiv.Perm (Fin N), Monotone ((fun i => -m i) ∘ σ)` from `⟨_, Tuple.monotone_sort _⟩`. Use `⟨m ∘ σ, fun a b hab => ?_, x * (permUnit σ)⁻¹, mul_mem hx (inv_mem (permUnit_mem_KO σ)), permUnit σ * y, mul_mem (permUnit_mem_KO σ) hy, ?_⟩` and prove the remaining obligations. Use `hmono hab` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply] at this ⊢`. Use linear arithmetic over natural numbers and integers. Establish `h` using `torusElt_conj ϖ m σ`. Rewrite `h` using `[torusElt]`. Rewrite using `[h]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `group`.
+A detailed English derivation is pending.
 -/
 theorem cartan_antitone : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) (ϖ : kˣ), valuation k (ϖ : k) = uniformizer k → ∀ x : GL (Fin N) k, ∃ ν : Fin N → ℤ, Antitone ν ∧ ∃ κ ∈ KO k (Fin N), ∃ κ' ∈ KO k (Fin N), x = κ * torusElt k (Fin N) ϖ ν * κ' := by
   intro k _ _ _ _ N ϖ hϖ g

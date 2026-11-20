@@ -21,7 +21,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 omit [NumberField F] [NumberField E] in
 
 /- English proof (translation)
-Establish `h1 : a ⊗ₜ[F] e = a • ((1 : R) ⊗ₜ[F] e)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[h1, map_smul, Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_tmul (R : Type) [CommRing R] [Algebra F R] [FiniteDimensional F E] (a : R) (e : E) :
     Algebra.trace R (R ⊗[F] E) (a ⊗ₜ[F] e) = a * algebraMap F R (Algebra.trace F E e) := by
@@ -31,17 +31,17 @@ theorem trace_tmul (R : Type) [CommRing R] [Algebra F R] [FiniteDimensional F E]
     LinearMap.trace_baseChange, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `[cA, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cA_inclR (e : E) : cA σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by
   simp [cA, inclR]
 
 /- English proof (translation)
-Establish `hT : hTens (cA σ) (incM F JX) (incM F JW) (Matrix.vecMulVec (incV F ξ) (incV F y)) (Matrix.vecMulVec (T • incV F β) (incV F x)) = algebraMap (AF F) (AE F E) T * inclR (F` using `F) (AF F) (form σ JX ξ β * form σ JW y x) := by`. Simplify using `only [hTens, Matrix.vecMulVec_apply, Pi.smul_apply, incM, incV, Matrix.map_apply]`. Simplify using `only [form, dotProduct, Matrix.mulVec, Algebra.smul_def, map_mul, cA_inclR, AlgHom.commutes, map_sum, Finset.mul_sum, Finset.sum_mul]`. Use `symm`. Use `(Finset.sum_congr rfl fun j _ => Finset.sum_comm).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_comm.trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `Finset.sum_comm.trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[symp, hT, show inclR (F := F) (AF F) (form σ JX ξ β * form σ JW y x) = (1 : AF F) ⊗ₜ[F] (form σ JX ξ β * form σ JW y x) from rfl, ← Algebra.smul_def, mul_smul_comm, map_smul, smul_eq_mul, show (-1 : AE F E) * ((1 : AF F) ⊗ₜ[F] (form σ JX ξ β * form σ JW y x)) = (1 : AF F) ⊗ₜ[F] …`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem symp_vecMulVec {n d : ℕ} (JX : Matrix (Fin n) (Fin n) E) (JW : Matrix (Fin d) (Fin d) E)
     (ξ β : Fin n → E) (y x : Fin d → E) (T : AF F) :
@@ -68,9 +68,9 @@ theorem symp_vecMulVec {n d : ℕ} (JX : Matrix (Fin n) (Fin n) E) (JW : Matrix 
     trace_tmul, one_mul]
 
 /- English proof (translation)
-Establish `hw : M.co.rho B.ψ w Ψ ∈ schA F (Fin n × Fin d)` using `GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hψ w Ψ hΨ`. Establish `key : M.co.rho B.ψ w (M.co.rho B.ψ u Ψ) = B.ψ (symp (R` using `AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) w u) • M.co.rho B.ψ u (M.co.rho B.ψ w Ψ) := by`. Simplify using `only [Darboux.rho]`. Rewrite using `[GlobalTheory.ThetaQuasiRat.schr_schr, GlobalTheory.ThetaQuasiRat.schr_schr, add_comm (M.co.e u), smul_smul, ← AddChar.map_add_eq_mul, M.co.form w u]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h : ⅟(2 : AF F) * 2 = 1` using `invOf_mul_self 2`. Take the linear combination `((M.co.e w).1 ⬝ᵥ (M.co.e u).2 - (M.co.e u).1 ⬝ᵥ (M.co.e w).2) * h`. Rewrite using `[key, map_smul, he.inv u hu _ hw]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_rho_rho {n d d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {W₁ : Spc F E d₁} (B : Base F E)
     (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (e₀ : Fn F n d →ₗ[ℂ] Fn F n d₁)
@@ -94,33 +94,29 @@ end GlobalTheory.ExpandDenom
 open GlobalTheory.ExpandDenom in
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH _ e₀ he hB hM hXW Ψ hΨ`. Take `⟨r, s, r', s', hX, hW⟩` from `hXW`. Establish `hψ : IsStd B.ψ` using `hB.std`. Establish `hJ : X.J.det ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Conclude with `GlobalTheory.AdaptedPlaneIdeal.det_ne_zero_of_hasSig _ (hX.sig w) h0`. Take `⟨m, β, D, hD, hDen⟩` from `GlobalTheory.T.trace_dual_uniform_denominator E (σ : E →+* E) X.J hJ`. Use `choose yr zr hyz using fun j : Fin m => hM.rat (Matrix.vecMulVec (fun i => (β j i : E)) H'.x)`. Take `⟨N, hN, hinv⟩` from `GlobalTheory.T.schrodinger_fixes_scaled_lattice F (Fin n × Fin d) B.ψ hψ.1 Ψ hΨ m (fun j k => algebraMap F (Af F) (yr j k)) (fun j k => algebraMap F (Af F) (zr j k))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨D * N, Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero hD hN), fun ξ hξ => ?_⟩` and prove the remaining obligations. Use `set T : AF F := pairA F 0 (N : Af F) with hT`. Establish `hTa : ∀ q : F, T * algebraMap F (AF F) q = pairA F 0 ((N : Af F) * algebraMap F (Af F) q)`. Introduce `q`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `zero_mul _`. Both sides reduce to the same expression. Establish `hfix : ∀ j, M.co.rho B.ψ (Matrix.vecMulVec (T • incV F (fun i => (β j i : E))) (incV F H'.x)) Ψ = Ψ`. Introduce `j`. Establish `e1 : Matrix.vecMulVec (T • incV F (fun i => (β j i : E))) (incV F H'.x) = T • incM F (Matrix.vecMulVec (fun i => (β j i : E)) H'.x)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `a b`. Simplify using `only [Matrix.vecMulVec_apply, Matrix.smul_apply, Pi.smul_apply, incM, incV, Matrix.map_apply, map_mul, smul_mul_assoc]`. Rewrite using `[Darboux.rho, e1, map_smul, hyz j]`. Use `hinv j using 2` and compare the differences between its conclusion and the goal. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Conclude with `hTa (yr j k)`. Use function extensionality and compare the values at `k`. Conclude with `hTa (zr j k)`. Establish `hform : form σ W.J H'.y H'.x = -1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hH.xy`. Establish `h2 : σ (form σ W.J H'.x H'.y) = -form σ W.J H'.y H'.x`. Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hW.skew, Finset.mul_sum, neg_mul, mul_neg, Finset.sum_neg_distrib, AlgHom.commutes]`. Rewrite using `[Finset.sum_comm]`. Use `congrArg Neg.neg (Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[GlobalTheory.AdelicU.cm_conj_conj hB.cm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[h1, map_one]`. Take the linear combination `h2`. Establish `htr : ∀ j, ∃ z : ℤ, Algebra.trace ℚ E ((fun i => ((N : ℕ) : E) * ξ i) ⬝ᵥ X.J *ᵥ fun i => (σ : E →+* E) (β j i)) = z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `j`. Establish `hu : Matrix.vecMulVec (T • incV F (fun i => (β j i : E))) (incV F H'.x) ∈ iso0 (F` using `F) n H' := ⟨_, rfl⟩`. Establish `h1` using `ev_rho_rho B M M₁ H' e₀ he hψ (Matrix.vecMulVec (incV F ξ) (incV F H'.y)) _ hu Ψ hΨ`. Rewrite `h1` using `[hfix j, symp_vecMulVec, hform, mul_neg_one, neg_neg, hTa]`. Establish `h2 : B.ψ (pairA F 0 ((N : Af F) * algebraMap F (Af F) (Algebra.trace F E (form σ X.J ξ fun i => (β j i : E))))) = 1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hne`. Apply `hξ` to reduce the goal to its premises. Establish `h3 : (1 - B.ψ (pairA F 0 ((N : Af F) * algebraMap F (Af F) (Algebra.trace F E (form σ X.J ξ fun i => (β j i : E)))))) • e₀ (M.co.rho B.ψ (Matrix.vecMulVec (incV F ξ) (incV F H'.y)) Ψ) = 0`. Rewrite using `[sub_smul, one_smul, ← h1, sub_self]`. Conclude with `(smul_eq_zero.1 h3).resolve_left (sub_ne_zero.2 (Ne.symm hne))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[← map_natCast (algebraMap F (Af F)) N, ← map_mul, GlobalTheory.PsiNontriv.isStd_fin_rat hψ, Complex.exp_eq_one_iff]`. Take `⟨z, hz⟩` from `h2`. Use `⟨z, ?_⟩` and prove the remaining obligations. Establish `hq : ((Algebra.trace ℚ F ((N : F) * Algebra.trace F E (form σ X.J ξ fun i => (β j i : E))) : ℚ) : ℂ) = z`. Establish `hpi : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Apply `mul_left_cancel₀ hpi` to reduce the goal to its premises. Rewrite using `[hz]`. Expand and normalize the polynomial expressions, which then agree. Establish `hq' : Algebra.trace ℚ F ((N : F) * Algebra.trace F E (form σ X.J ξ fun i => (β j i : E))) = z`. Conclude with `hq` after adjusting the coercions.
-
-Establish `e1 : ((fun i => ((N : ℕ) : E) * ξ i) ⬝ᵥ X.J *ᵥ fun i => (σ : E →+* E) (β j i)) = algebraMap F E (N : F) * form σ X.J ξ (fun i => (β j i : E))`. Rewrite using `[map_natCast, show (fun i => ((N : ℕ) : E) * ξ i) = ((N : ℕ) : E) • ξ from rfl, smul_dotProduct, smul_eq_mul]`. Both sides reduce to the same expression. Rewrite using `[e1, ← Algebra.trace_trace (R := ℚ) (S := F) (T := E), ← Algebra.smul_def, map_smul, smul_eq_mul]`. Conclude with `hq'`.
-
-Introduce `i`. Take `⟨o, ho⟩` from `hDen _ htr i`. Conclude with `⟨o, by rw [← ho]; push_cast; ring⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ExpandDenom.main : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),

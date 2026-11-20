@@ -7,13 +7,13 @@ open GlobalTheory.PRep GlobalTheory.SmGL ValuativeRel PositivityTheory.Lbc
 namespace GlobalTheory.CompanionTheory.Lbc
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N h d hd J hJo hJc hI hpos V _ _ π hπ t ht T hT v`. Take `⟨r, hr, x, hx, hu⟩` from `GlobalTheory.T.dominant_iwahori_coset_reps k N h d hd J hJo hJc hI hpos t ht`. Establish `key` using `GlobalTheory.T.hecke_operator_coset_sum k N J hJc V π hπ (leviEmb k (stdBlocks d hd) t) T hT r x hr (fun i => (hx i).1) hu v`. Establish `hmk : ∀ i, (Submodule.Quotient.mk (π (x i * leviEmb k (stdBlocks d hd) t) (v : V)) : Jacquet π (unipRad k (stdBlocks d hd))) = Submodule.Quotient.mk (π (leviEmb k (stdBlocks d hd) t) (v : V))`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.Quotient.eq]`. Use `Submodule.subset_span ⟨⟨x i, (hx i).2⟩, π (leviEmb k (stdBlocks d hd) t) (v : V), ?_⟩` and prove the remaining obligations. Simplify using `[map_mul]`. Establish `hr0 : (r : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hr.ne'`. Establish `hsum : (Submodule.Quotient.mk ((T v : fixed π J) : V) : Jacquet π (unipRad k (stdBlocks d hd))) = Submodule.Quotient.mk (π (leviEmb k (stdBlocks d hd) t) (v : V))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[key, Submodule.Quotient.mk_smul]`. Establish `h2 : (Submodule.Quotient.mk (∑ i, π (x i * leviEmb k (stdBlocks d hd) t) (v : V)) : Jacquet π (unipRad k (stdBlocks d hd))) = ∑ i : Fin r, Submodule.Quotient.mk (π (x i * leviEmb k (stdBlocks d hd) t) (v : V))` using `map_sum (Submodule.mkQ _) _ _`. Rewrite using `[h2, Finset.sum_congr rfl fun i _ => hmk i]`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hr0, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum, jac_mk, smul_smul, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jacquet_hecke_operator_compat : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], PositivityTheory.Lbc.C2 k := by

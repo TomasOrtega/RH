@@ -15,7 +15,7 @@ open scoped TensorProduct
 namespace GlobalTheory.FormTies
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ toFun := fun g => (a (ℓ g)).restrict (hW (ℓ g)) map_one' := LinearMap.ext fun F => Subtype.ext (by rw [map_one]; exact h1 _ F.2) map_mul' := fun g g' => LinearMap.ext fun F => Subtype.ext (by rw [map_mul]; exact hm _ _ _ F.2) }, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_rep_restrict {K V G P : Type} [Field K] [AddCommGroup V] [Module K V] [Group G] [Group P] (ℓ : P →* G)
     (a : G → V →ₗ[K] V) (W : Submodule K V) (hW : ∀ g, ∀ f ∈ W, a g f ∈ W) (h1 : ∀ f ∈ W, a 1 f = f)
@@ -27,11 +27,11 @@ theorem exists_rep_restrict {K V G P : Type} [Field K] [AddCommGroup V] [Module 
     fun _ _ => rfl⟩
 
 /- English proof (translation)
-Introduce `D T h j hj w P _ ℓ`. Establish `hp` using `h.pins`. Establish `hpq : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q`. Rewrite using `[(hp.2.2.2 j hj).1, (hp.2.2.2 j hj).2.1]`. Use `hj.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hj.2` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact. Simplify using `only [Ranks.sigW]`. Use linear arithmetic over natural numbers and integers. Establish `hL` using `GlobalTheory.FullLevelAction.actLev_levFull D T.Q j hpq hp.2.1.2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `e : cutR T.C j w = T.cuspA j (wtA w) w.n` using `cutR_eq T.C hj w`. Establish `hnat` using `fun f (hf : f ∈ cutR T.C j w) => ((mem_cusp _ _ _ _ _ _).1 (e.le hf)).1.1`. Conclude with `exists_rep_restrict ℓ (actLev (Xo := T.Q.Xo j) T.Q.c (levFull (T.Q.Dw j) T.Q.l)) (cutR T.C j w) (fun γ f hf => e.ge (GlobalTheory.LevelCusp.actLev_mem_cuspA D T h j hj w γ f (e.le hf))) (fun f hf => actL_one _ _ _ hL.total hL.func hL.one (hnat f hf)) (fun γ γ' f hf => actL_mul _ …`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_rep_isLevAct : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (_hj : InR D j) (w : WeightFamilies.Wt D j) (P : Type) [Group P] (ℓ : P →* (LaMod (T.Q.Dw j) T.Q.l ≃ₗ[𝓞 D.host.E] LaMod (T.Q.Dw j) T.Q.l)), ∃ ρ : Representation (recB h.toLawsCore).KO P ((recB h.toLawsCore).Cusp j w), IsLevAct T h j w (fun g => ℓ g) (fun g F => ρ g F) := by
   intro D T h j hj w P _ ℓ

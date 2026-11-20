@@ -10,9 +10,9 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg
 open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 
 /- English proof (translation)
-Use `haveI : CompleteSpace S := hS.completeSpace_coe`. Rewrite using `[← S.orthogonal_orthogonal, Submodule.mem_orthogonal]`. Introduce `w hw`. Establish `h0 : P w = 0` using `(hP.2.2 w).2 ⟨fun u => Submodule.inner_right_of_mem_orthogonal (h₁ u) hw, fun v => Submodule.inner_right_of_mem_orthogonal (h₂ v) hw⟩`. Establish `h` using `hP.1.isSymmetric w φ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousLinearMap.coe_coe] at h`. Rewrite using `[← h, h0, inner_zero_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem p0_mem {H V W : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedAddCommGroup W] [InnerProductSpace ℂ W]
@@ -28,25 +28,21 @@ private theorem p0_mem {H V W : Type} [NormedAddCommGroup H] [InnerProductSpace 
   rw [← h, h0, inner_zero_left]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∫ X in unipFundamentalDomain K n r, rconv (rationalGLOne K n) μ f φ (unipOne K n r X * x) ∂unipMeasure K n r = 0`. Use `haveI : SigmaCompactSpace (normOneGL K n) := sigmaCompactSpace_of_locallyCompact_secondCountable`. Use `haveI : SigmaFinite μ := Measure.IsHaarMeasure.sigmaFinite μ`. Use `haveI : SFinite μ := instSFiniteOfSigmaFinite`. Use `set S := (x * ·) '' tsupport (f : normOneGL K n → ℂ)`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : IsCompact S` using `f.hasCompactSupport.isCompact.image (continuous_const_mul x)`. Take `⟨M, hM⟩` from `f.continuous.bounded_above_of_compact_support f.hasCompactSupport`. Establish `hfS : ∀ z ∉ S, f (x⁻¹ * z) = 0` using `fun z hz => image_eq_zero_of_notMem_tsupport fun h => hz ⟨x⁻¹ * z, h, by simp⟩`. Use `set F : (UPos n r → 𝔸[K]) → normOneGL K n → ℂ := fun X z => f (x⁻¹ * z) * φ (mk (rationalGLOne K n) (unipOne K n r X * z))`. Establish `hFm : StronglyMeasurable (Function.uncurry F)` using `(f.continuous.comp (continuous_const_mul x⁻¹ |>.comp continuous_snd)).stronglyMeasurable.mul ((Lp.stronglyMeasurable φ).comp_measurable ((measurable_mk (rationalGLOne K n)).comp (continuous_unipOne_mul r).measurable))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : Integrable (Function.uncurry F) (((unipMeasure K n r).restrict (unipFundamentalDomain K n r)).prod μ)`. Use `⟨hFm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Take `⟨C, hC, hCφ⟩` from `exists_lintegral_unip_sq_le μ r hS`. Establish `hfin : ∫⁻ z in S, ∫⁻ X in unipFundamentalDomain K n r, ‖φ (mk (rationalGLOne K n) (unipOne K n r X * z))‖ₑ ∂unipMeasure K n r ∂μ < ⊤` using `L2Kernel.lt_top_of_sq_lt_top ((hCφ φ).trans_lt (ENNReal.mul_lt_top hC.lt_top (ENNReal.pow_lt_top enorm_lt_top)))`. Establish `hmeas : Measurable fun p : (UPos n r → 𝔸[K]) × normOneGL K n => ‖φ (mk (rationalGLOne K n) (unipOne K n r p.1 * p.2))‖ₑ` using `((Lp.stronglyMeasurable φ).measurable.comp ((measurable_mk (rationalGLOne K n)).comp (continuous_unipOne_mul r).measurable)).enorm`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hasFiniteIntegral_iff_enorm, lintegral_prod _ hFm.aestronglyMeasurable.enorm]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun X => ?_` and prove the remaining obligations. Rewrite using `[← lintegral_indicator hS.measurableSet]`. Use `lintegral_mono fun z => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hz : z ∈ S`. Rewrite using `[indicator_of_mem hz]`. Simplify using `only [F, Function.uncurry_apply_pair, enorm_mul]`. Use `gcongr`. Rewrite using `[← ofReal_norm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ENNReal.ofReal_le_ofReal (hM _)`. Rewrite using `[indicator_of_notMem hz]`. Simplify using `[F, hfS z hz]`. Use `_ = ENNReal.ofReal M * ∫⁻ z in S, ∫⁻ X in unipFundamentalDomain K n r, ‖φ (mk (rationalGLOne K n) (unipOne K n r X * z))‖ₑ ∂unipMeasure K n r ∂μ := by`. Repeatedly rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congr 1`. Conclude with `lintegral_lintegral_swap hmeas.aemeasurable`. Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hfin`. Establish `hinner : ∀ X, rconv (rationalGLOne K n) μ f φ (unipOne K n r X * x) = ∫ z, F X z ∂μ`. Introduce `X`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[rconv, ← integral_mul_left_eq_self _ (unipOne K n r X)]`. Use `congr 1`. Use extensionality with `z`. Simplify using `only [F, mul_inv_rev, mul_assoc, inv_mul_cancel_left]`. Establish `hCT : ∀ z, ∫ X in unipFundamentalDomain K n r, F X z ∂unipMeasure K n r = f (x⁻¹ * z) * constantTermL2 μ r φ z`.
-
-Introduce `z`. Simplify using `only [F, constantTermL2, ctFun]`. Conclude with `integral_const_mul _ _`. Repeatedly rewrite using `[hinner]`. Rewrite using `[integral_integral_swap hint]`.
-
-Repeatedly rewrite using `[hCT]`. Use `integral_eq_zero_of_ae ?_` and prove the remaining obligations. Use `filter_upwards [hφ] with z hz`. Rewrite using `[hz, Pi.zero_apply, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ct_rc_zero {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (G1 K n)) [μ.IsHaarMeasure]
     (f : CC K n) (φ : L2 μ) (r : ℕ) (hφ : constantTermL2 μ r φ =ᵐ[μ] 0) (x : G1 K n) : ct r (rc μ f φ) x = 0 := by
@@ -118,15 +114,13 @@ private theorem ct_rc_zero {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : 
   rw [hz, Pi.zero_apply, mul_zero]
 
 /- English proof (translation)
-Introduce `K _ _ _ μ _ μ₂ _ τ₁ τ₂ hp D d d' A A' a P hP`. Establish `hp' : Pair μ₂ τ₂ τ₁` using `⟨hp.irr₂, hp.irr₁, hp.orth.symm⟩`. Establish `h₁` using `ctZero K μ μ₂ τ₁ τ₂ hp D d d' A A'`. Establish `h₂` using `ctZero K μ μ₂ τ₂ τ₁ hp' D d' d A' A`. Use `⟨fun φ hφ z => ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨S, hS, hm⟩` from `ctClosed μ 1`. Use `ct_rc_zero μ a φ 1 ((hm φ).1 ?_) z` and prove the remaining obligations. Rewrite using `[← hφ]`. Conclude with `p0_mem hP S hS (fun u => (hm _).2 (h₁ u).2.2.1) (fun u => (hm _).2 (h₂ u).2.2.1) φ`. Take `⟨S, hS, hm⟩` from `ctClosed μ 3`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `ct_rc_zero μ a φ 3 ((hm φ).1 ?_) z` and prove the remaining obligations. Rewrite using `[← hφ]`. Conclude with `p0_mem hP S hS (fun u => (hm _).2 (h₁ u).2.2.2) (fun u => (hm _).2 (h₂ u).2.2.2) φ`. Use `ContinuousLinearMap.ext fun φ => ?_` and prove the remaining obligations. Conclude with `p0_mem hP (Pc μ).ker (Pc μ).isClosed_ker (fun u => (h₁ u).1) (fun u => (h₂ u).1) φ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `ContinuousLinearMap.ext fun φ => ?_` and prove the remaining obligations. Establish `hs : ∀ w, ⟪w, Pc μ φ⟫_ℂ = ⟪Pc μ w, φ⟫_ℂ` using `fun w => by`. Unfold `Pc`. Conclude with `(Submodule.inner_starProjection_left_eq_right _ w φ).symm`. Use `(hP.2.2 (Pc μ φ)).2 ⟨fun u => ?_, fun v => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hs, (h₁ u).1, inner_zero_left]`. Rewrite using `[hs, (h₂ v).1, inner_zero_left]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.ctVanish :
     ForAllC fun K _ _ μ _ _ _ _ _ _ _ _ A A' => ∀ (a : CC K (2 + 2)) (P : L2 μ →L[ℂ] L2 μ), IsOrthogonalProjectionTwoLines A.J A'.J P → (∀ φ, P φ = φ → ∀ z, ct 1 (rc μ a φ) z = 0 ∧ ct 3 (rc μ a φ) z = 0) ∧

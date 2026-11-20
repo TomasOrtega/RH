@@ -7,7 +7,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.SameZeroScheme
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE h₁).op ≫ X.presheaf.map (homOfLE h₂).op).hom a = _`. Rewrite using `[← X.presheaf.map_comp]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (a : Γ(X, U)) :
     resG X h₂ (resG X h₁ a) = resG X (h₂.trans h₁) a := by
@@ -16,7 +16,7 @@ theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W �
   rfl
 
 /- English proof (translation)
-Introduce `x _`. Apply `h` to reduce the goal to its premises. Establish `: hU.fromSpec (Spec.map φ x) ∈ Set.range hU.fromSpec` using `⟨_, rfl⟩`. Rewrite `this` using `[hU.range_fromSpec]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_le_preimage {Y : Scheme.{0}} {U V : Y.Opens} (hU : IsAffineOpen U) (h : U ≤ V)
     {A : CommRingCat.{0}} (φ : Γ(Y, U) ⟶ A) : ⊤ ≤ (Spec.map φ ≫ hU.fromSpec) ⁻¹ᵁ V := by
@@ -28,9 +28,9 @@ theorem top_le_preimage {Y : Scheme.{0}} {U V : Y.Opens} (hU : IsAffineOpen U) (
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Establish `h1 : ⊤ ≤ hU.fromSpec ⁻¹ᵁ V`. Rewrite using `[← hU.fromSpec_preimage_self]`. Conclude with `fun x hx => h hx`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE (Spec.map φ) hU.fromSpec V ⊤ ⊤ h1 le_top, Scheme.ΓSpecIso_inv_naturality]`. Establish `e1 : hU.fromSpec.appLE V ⊤ h1 = Y.presheaf.map (homOfLE h).op ≫ (Scheme.ΓSpecIso Γ(Y, U)).inv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Hom.appLE, hU.fromSpec_app_of_le V h, Category.assoc, Category.assoc, ← Functor.map_comp]`. Use `congr 1`. Establish `e2 : (Spec.map φ).appLE ⊤ ⊤ le_top = (Spec.map φ).appTop` using `(Scheme.Hom.app_eq_appLE _).symm`. Rewrite using `[e1, e2, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem appLE_spec {Y : Scheme.{0}} {U V : Y.Opens} (hU : IsAffineOpen U) (h : U ≤ V)
     {A : CommRingCat.{0}} (φ : Γ(Y, U) ⟶ A) :
@@ -51,11 +51,11 @@ theorem appLE_spec {Y : Scheme.{0}} {U V : Y.Opens} (hU : IsAffineOpen U) (h : U
   rw [e1, e2, Category.assoc]
 
 /- English proof (translation)
-Set `I : Ideal Γ(Y, U)` to `Ideal.span {resG Y h a}`. Set `φ : Γ(Y, U) ⟶ CommRingCat.of (Γ(Y, U) ⧸ I)` to `CommRingCat.ofHom (Ideal.Quotient.mk I)`. Establish `key` using `H _ _ (top_le_preimage hU h φ)`. Rewrite `key` using `[appLE_spec hU h φ]`. Establish `hinj : Function.Injective (Scheme.ΓSpecIso (CommRingCat.of (Γ(Y, U) ⧸ I))).inv.hom` using `(Scheme.ΓSpecIso (CommRingCat.of (Γ(Y, U) ⧸ I))).commRingCatIsoToRingEquiv.symm.injective`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ha : Ideal.Quotient.mk I (resG Y h a) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`. Establish `hb` using `key (by`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of (Γ(Y, U) ⧸ I))).inv.hom (Ideal.Quotient.mk I (resG Y h a)) = 0`. Rewrite using `[ha]`. Conclude with `map_zero _)`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb' : Ideal.Quotient.mk I (resG Y h b) = 0` using `hinj (hb.trans (map_zero _).symm)`. Conclude with `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq_zero_iff_mem.1 hb')`.
+A detailed English derivation is pending.
 -/
 theorem dvd_on_affine {Y : Scheme.{0}} {U V : Y.Opens} (hU : IsAffineOpen U) (h : U ≤ V)
     (a b : Γ(Y, V))
@@ -79,21 +79,19 @@ theorem dvd_on_affine {Y : Scheme.{0}} {U V : Y.Opens} (hU : IsAffineOpen U) (h 
   exact Ideal.mem_span_singleton.1 (Ideal.Quotient.eq_zero_iff_mem.1 hb')
 
 /- English proof (translation)
-Set `J` to `{U : Y.Opens // IsAffineOpen U ∧ U ≤ V}`. Set `W : J → Y.Opens` to `fun i => i.1`. Establish `hW : ∀ i, W i ≤ V` using `fun i => i.2.2`. Establish `hcov : ∀ y ∈ V, ∃ i, y ∈ W i` using `fun y hy => by`. Take `⟨_, ⟨U, hU, rfl⟩, hyU, hUV⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open hy V.isOpen`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨U, hU, hUV⟩, hyU⟩`. Establish `hc : V ≤ iSup W` using `fun y hy => TopologicalSpace.Opens.mem_iSup.2 (hcov y hy)`. Establish `hloc : ∀ i, ∃ c : Γ(Y, W i), IsUnit c ∧ resG Y (hW i) b = c * resG Y (hW i) a` using `fun i => by`. Take `⟨c, hc⟩` from `dvd_on_affine i.2.1 (hW i) a b fun T t h => (H T t h).1`. Take `⟨d, hd⟩` from `dvd_on_affine i.2.1 (hW i) b a fun T t h => (H T t h).2`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨c, ?_, hc.trans (mul_comm _ _)⟩` and prove the remaining obligations. Establish `e : (c * d) * resG Y (hW i) a = 1 * resG Y (hW i) a`. Rewrite using `[_root_.one_mul]`. Use `conv_rhs => rw [hd, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Conclude with `IsUnit.of_mul_eq_one d ((mul_cancel_right_mem_nonZeroDivisors (ha _ (hW i))).1 e)`. Use `choose u hu hub using hloc`. Establish `hh : ∀ i j, resG Y (inf_le_left : W i ⊓ W j ≤ W i) (u i) = resG Y inf_le_right (u j)`. Introduce `i j`. Establish `e₁` using `congrArg (resG Y (inf_le_left : W i ⊓ W j ≤ W i)) (hub i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e₂` using `congrArg (resG Y (inf_le_right : W i ⊓ W j ≤ W j)) (hub j)`. Rewrite `e₁`, `e₂` using `[map_mul, res_res, res_res]`. Conclude with `(mul_cancel_right_mem_nonZeroDivisors (ha _ (inf_le_left.trans (hW i)))).1 (e₁.symm.trans e₂)`. Take `⟨s, hs, -⟩` from `Y.sheaf.existsUnique_gluing' W V (fun i => homOfLE (hW i)) hc u hh`. Establish `hs' : ∀ i, resG Y (hW i) (show Γ(Y, V) from s) = u i` using `hs`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hunit : IsUnit (show Γ(Y, V) from s)` using `Y.toRingedSpace.isUnit_of_isUnit_germ V _ fun y hy => by`. Take `⟨i, hi⟩` from `hcov y hy`. Establish `h1` using `(hu i).map (Y.presheaf.germ (W i) y hi).hom`. Rewrite `h1` using `[← hs' i]`. Establish `h2` using `Y.presheaf.germ_res_apply (homOfLE (hW i)) y hi (show Γ(Y, V) from s)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h2 ▸ h1`. Use `⟨hunit.unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec]`. Apply `Y.sheaf.eq_of_locally_eq' W V (fun i => homOfLE (hW i)) hc` to reduce the goal to its premises. Introduce `i`.
-
-Express the relevant statement in the definitionally equal form `resG Y (hW i) b = resG Y (hW i) ((show Γ(Y, V) from s) * a)`. Rewrite using `[map_mul, hs', hub]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_mul (Y : Scheme.{0}) (V : Y.Opens) (a b : Γ(Y, V))
     (ha : ∀ (V' : Y.Opens) (h : V' ≤ V), resG Y h a ∈ nonZeroDivisors Γ(Y, V'))

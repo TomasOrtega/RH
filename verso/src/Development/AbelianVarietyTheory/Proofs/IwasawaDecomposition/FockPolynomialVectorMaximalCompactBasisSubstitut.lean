@@ -18,9 +18,9 @@ section Generic
 variable {ι X : Type} {A A' : ι → (X → ℂ) → (X → ℂ)} {P : (X → ℂ) → Prop}
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq, ← mul_one (MvPolynomial.C a), MvPolynomial.C_mul', map_smul, map_smul, pure_one, pure_one]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`. Consider the case `mul_X p v hp`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[mul_comm, pure_X_mul hadd hsm hA' hc' Aadd' Asm' hf, hp, h _ _ (pure_mem hadd hsm hA hf _), map_mul, MvPolynomial.aeval_X, Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, map_smul, pure_X_mul hadd hsm hA hc Aadd Asm hf]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pure_subst {κ : Type} [Fintype κ] (hadd : ∀ f f', P f → P f' → P (f + f'))
     (hsm : ∀ (a : ℂ) f, P f → P (a • f))
@@ -55,7 +55,7 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 include hψ hθ hf
 
 /- English proof (translation)
-Establish `e : w • u = (w.re : ℂ) • u + (w.im : ℂ) • (I • u)`. Rewrite using `[smul_smul, ← add_smul, Complex.re_add_im]`. Rewrite using `[e, (dRho_laws hψ hθ hf τ _).2.2.1, (dRho_laws hψ hθ hf τ _).2.2.2.1, (dRho_laws hψ hθ hf τ _).2.2.2.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dRho_csmul (w : ℂ) (u : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
     Datum.dRho (heisO ψ S T) θ τ (w • u) f =
@@ -65,7 +65,7 @@ theorem dRho_csmul (w : ℂ) (u : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
   rw [e, (dRho_laws hψ hθ hf τ _).2.2.1, (dRho_laws hψ hθ hf τ _).2.2.2.1, (dRho_laws hψ hθ hf τ _).2.2.2.1]
 
 /- English proof (translation)
-Simplify using `only [aPlus_eq, GlobalTheory.OrientedRealForm.cplxO_add, fun z => (dRho_laws hψ hθ hf τ z).2.2.1]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aPlus_dir_add (z z' : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
     aPlus (heisO ψ S T) θ τ (cplxO s t) (z + z') f =
@@ -74,7 +74,7 @@ theorem aPlus_dir_add (z z' : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
   module
 
 /- English proof (translation)
-Use `aPlus_dir_add hψ hθ τ s t hf 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aPlus_dir_zero : aPlus (heisO ψ S T) θ τ (cplxO s t) 0 f = 0 := by
   have := aPlus_dir_add hψ hθ τ s t hf 0 0
@@ -82,7 +82,7 @@ theorem aPlus_dir_zero : aPlus (heisO ψ S T) θ τ (cplxO s t) 0 f = 0 := by
   exact left_eq_add.1 this
 
 /- English proof (translation)
-Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => simpa using aPlus_dir_zero hψ hθ τ s t hf`. Consider the case `insert a F ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, aPlus_dir_add hψ hθ τ s t hf, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem aPlus_dir_sum {κ : Type} (F : Finset κ) (z : κ → Matrix (Fin T.rank) (Fin S.rank) ℂ) :
     aPlus (heisO ψ S T) θ τ (cplxO s t) (∑ b ∈ F, z b) f = ∑ b ∈ F, aPlus (heisO ψ S T) θ τ (cplxO s t) (z b) f := by
@@ -92,9 +92,9 @@ theorem aPlus_dir_sum {κ : Type} (F : Finset κ) (z : κ → Matrix (Fin T.rank
   | insert a F ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, aPlus_dir_add hψ hθ τ s t hf, ih]
 
 /- English proof (translation)
-Establish `h1 : cplxO s t (w • u) = (w * ((if e then 1 else -1 : ℂ) * I)) • u`. Rewrite using `[← smul_smul, ← hu]`. Unfold `cplxO`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, smul_comm]`. Rewrite using `[aPlus_eq, aPlus_eq, h1, hu, dRho_csmul hψ hθ τ hf w, dRho_csmul hψ hθ τ hf (w * _), dRho_csmul hψ hθ τ hf (_ * I)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨x, y, rfl⟩ : ∃ x y : ℝ, w = x + y * I` from `⟨w.re, w.im, (Complex.re_add_im w).symm⟩`. Consider the cases of `e`. Apply the tactic sequence `simp only [Bool.false_eq_true, if_false, map_add, map_mul, Complex.conj_ofReal, Complex.conj_I] match_scalars <;> simp <;> ring_nf <;> simp`. Apply the tactic sequence `simp only [if_true] match_scalars <;> simp <;> ring_nf <;> simp`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem aPlus_dir_smul (e : Bool) (w : ℂ) {u : Matrix (Fin T.rank) (Fin S.rank) ℂ}
     (hu : cplxO s t u = ((if e then 1 else -1 : ℂ) * I) • u) :
@@ -116,9 +116,9 @@ theorem aPlus_dir_smul (e : Bool) (w : ℂ) {u : Matrix (Fin T.rank) (Fin S.rank
 omit hψ hθ hf
 
 /- English proof (translation)
-Establish `e : k * single a j (1 : ℂ) = ∑ b, k b a • single b j (1 : ℂ)`. Use extensionality with `p q`. Distinguish the cases in `h : j = q`. Substitute `h` using the available equality. Simplify using `[Matrix.sum_apply, Matrix.single_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.sum_apply, Matrix.single_apply, Matrix.mul_apply, h]`. Unfold `unitMap`. Rewrite using `[Matrix.mul_assoc B', e, Matrix.mul_sum, Matrix.sum_mul]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unitMap_mul {m n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ) (B' k : Matrix (Fin m) (Fin m) ℂ) (a : Fin m)
     (j : Fin n) : unitMap B (B' * k) a j = ∑ b, k b a • unitMap B B' b j := by
@@ -133,11 +133,11 @@ theorem unitMap_mul {m n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ) (B' k : Matrix 
   simp only [Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Establish `h1 : M.fr τ * (M.fr τ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ))`. Establish `e : Formalism.REAL.Jm (M.ε τ) * single b j (1 : ℂ) = (if M.ε τ b then 1 else -1 : ℂ) • single b j (1 : ℂ)`. Use extensionality with `p q`. Rewrite using `[Formalism.REAL.Jm, diagonal_mul, Matrix.smul_apply, Matrix.single_apply, smul_eq_mul]`. Distinguish the cases in `h : b = p`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h]`. Simplify using `[h]`. Unfold `cplxO unitMap cart onb`. Rewrite using `[Matrix.mul_one, mul_comm _ I, ← smul_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h1, Matrix.mul_one, e, Matrix.mul_smul, Matrix.smul_mul]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cplxO_unitMap {S' : D.what₂.Tau → SPar} (M : DSModel T S') {n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ)
     (b : Fin T.rank) (j : Fin n) : cplxO 1 (cart M τ) (unitMap B (onb M τ) b j) =
@@ -157,7 +157,7 @@ theorem cplxO_unitMap {S' : D.what₂.Tau → SPar} (M : DSModel T S') {n : ℕ}
     _ = _ := by rw [h1, Matrix.mul_one, e, Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Establish `e` using `congrFun (congrFun hk.2 b) a`. Rewrite `e` using `[Formalism.REAL.Jm, mul_diagonal, diagonal_mul]`. Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;> simp only [ha, hb, ne_eq, not_true_eq_false] at h e <;> simp at e <;> first | linear_combination (1 / 2 : ℂ) * e | linear_combination (-1 / 2 : ℂ) * e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kset_zero {n : ℕ} {ε : Fin n → Bool} {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Formalism.REAL.Kset ε) {a b : Fin n}
     (h : ε b ≠ ε a) : k b a = 0 := by
@@ -167,13 +167,13 @@ theorem kset_zero {n : ℕ} {ε : Fin n → Bool} {k : Matrix (Fin n) (Fin n) �
     first | linear_combination (1 / 2 : ℂ) * e | linear_combination (-1 / 2 : ℂ) * e
 
 /- English proof (translation)
-Introduce `D ψ θ S T S' M BS f k c hψ hθ hS hf hk hc P`. Establish `hT` using `GlobalTheory.Chain.VacVec.cart_isCartanInv M`. Establish `hA : ∀ (B : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) i f, IsThetaFunO ψ S T f → IsThetaFunO ψ S T (aPlusAll (heisO ψ S T) θ (fun τ => cplxO 1 (cart M τ)) BS B i f)` using `fun _ _ _ h => aPlus_th hψ hθ _ _ _ h`. Establish `Aadd : ∀ (B : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) i f f', IsThetaFunO ψ S T f → IsThetaFunO ψ S T f' → aPlusAll (heisO ψ S T) θ (fun τ => cplxO 1 (cart M τ)) BS B i (f + f') = aPlusAll (heisO ψ S T) θ (fun τ => cplxO 1 (cart M τ)) BS B i f + aPlusAll (heisO ψ S T) θ …` using `fun _ _ _ _ h h' => aPlus_add hψ hθ _ _ _ h h'`. Establish `Asm : ∀ (B : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) i (a : ℂ) f, IsThetaFunO ψ S T f → aPlusAll (heisO ψ S T) θ (fun τ => cplxO 1 (cart M τ)) BS B i (a • f) = a • aPlusAll (heisO ψ S T) θ (fun τ => cplxO 1 (cart M τ)) BS B i f` using `fun _ _ a _ h => aPlus_smul hψ hθ _ _ _ a h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `Ac : ∀ (B : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) i j f, IsThetaFunO ψ S T f → aPlusAll (heisO ψ S T) θ (fun τ => cplxO 1 (cart M τ)) BS B i (aPlusAll (heisO ψ S T) θ (fun τ => cplxO 1 (cart M τ)) BS B j f) = aPlusAll (heisO ψ S T) θ (fun τ => cplxO 1 (cart M τ)) BS B …` using `fun _ i j _ h => aPlus_comm (sS := fun _ => 1) (sT := cart M) hψ hθ i.1 _ hS hT j.1 _ h`. Establish `key : ∀ (i : FVar D T.rank S.rank) g, IsThetaFunO ψ S T g → aPlusAll (heisO ψ S T) θ (fun τ => cplxO 1 (cart M τ)) BS (fun τ => onb M τ * k τ) i g = ∑ b, c i.1 b i.2.1 • aPlusAll (heisO ψ S T) θ (fun τ => cplxO 1 (cart M τ)) BS (onb M) (i.1, b, i.2.2) g`. Introduce and unpack `⟨τ, a, j⟩ g hg`. Simplify using `only [aPlusAll]`. Rewrite using `[unitMap_mul, aPlus_dir_sum hψ hθ τ _ _ hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[aPlus_dir_smul hψ hθ τ _ _ hg _ _ (cplxO_unitMap τ M _ b j), hc]`. Distinguish the cases in `h : M.ε τ b = M.ε τ a`. Rewrite using `[h]`. Rewrite using `[kset_zero (hk τ) h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Unfold `pureTensorO`. Conclude with `pure_subst (P := IsThetaFunO ψ S T) (fun _ _ => theta_add) (fun a _ => theta_smul a) (hA _) (Ac _) (Aadd _) (Asm _) (hA _) (Ac _) (Aadd _) (Asm _) (fun v b => c v.1 b v.2.1) (fun v b => (v.1, b, v.2.2)) key hf P`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pureTensorO_subst : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (S' : D.what₂.Tau → SPar) (M : DSModel T S') (BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (f : WO S T → ℂ) (k c : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ), IsStdChar D ψ (-1) → IsInfFam θ → (∀ τ, IsCartanInv (gramAt D S τ) 1) → IsThetaFunO ψ S T f → (∀ τ, k τ ∈ Formalism.REAL.Kset (M.ε τ)) → (∀ τ a b, c τ b a = if M.ε τ a then k τ b a else starRingEnd ℂ (k τ b a)) → ∀ P : MvPolynomial (FVar D T.rank S.rank) ℂ, pureTensorO ψ θ S T (fun _ => 1) (cart M) BS (fun τ => onb M τ * k τ) f P = pureTensorO ψ θ S T (fun _ => 1) (cart M) BS (onb M) f (MvPolynomial.aeval (fun v : FVar D T.rank S.rank => ∑ b, c v.1 b v.2.1 • (MvPolynomial.X (v.1, b, v.2.2) : MvPolynomial (FVar D T.rank S.rank) ℂ)) P) := by
   intro D ψ θ S T S' M BS f k c hψ hθ hS hf hk hc P

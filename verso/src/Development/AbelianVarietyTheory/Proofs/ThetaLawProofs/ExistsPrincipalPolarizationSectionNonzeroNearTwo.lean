@@ -24,9 +24,9 @@ section General
 variable {X : Scheme.{0}} {L : LB X}
 
 /- English proof (translation)
-Take `⟨n, t, ht⟩` from `AbLaw.SecOn.exists_pow_smul_eq_restrict hL (V := ⊤) isCompact_univ isQuasiSeparated_univ a le_top rfl (AbLaw.SecOn.restrict L hV ((AbLaw.SecOn.equivFamilies _ _).symm ⟨θ, hθ⟩))`. Establish `hi' : g ∈ V ⊓ L.U i` using `X.basicOpen_le _ hi`. Establish `hm : (𝟙 X : X ⟶ X) g ∈ X.basicOpen a ⊓ L.U i` using `⟨hg, hi'.2⟩`. Use `⟨AbLaw.SecOn.topEquiv _ t, (mem_nonzeroLocus _ _).2 ⟨i, hi'.2, ?_⟩⟩` and prove the remaining obligations. Establish `q` using `congrArg (fun s => gs (𝟙 X) g _ (GlobalTheory.LB.coord s i)) ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : gs (𝟙 X) g (L.U i) ((AbLaw.SecOn.topEquiv _ t).f i) = gs (𝟙 X) g ⊤ a ^ n * gs (𝟙 X) g (V ⊓ L.U i) (θ i)`. Use `(gs_res (𝟙 X) g _ hi'.2 _).trans ((gs_res (𝟙 X) g _ hm _).symm.trans (q.symm.trans ((gs_mul (𝟙 X) g _ hm _ _).trans (congrArg₂ (· * ·) ?_ (gs_res (𝟙 X) g _ hm _)))))` and prove the remaining obligations. Conclude with `(gs_res (𝟙 X) g _ hm _).trans ((LBGerm.gs_pow (𝟙 X) g _ hg _ _).trans (congrArg (· ^ n) (gs_res (𝟙 X) g _ hg _)))`. Rewrite using `[e]`. Conclude with `(((LBGerm.isUnit_gs_iff (𝟙 X) g ⊤ trivial a).2 hg).pow n).mul ((LBGerm.isUnit_gs_iff (𝟙 X) g _ hi' _).2 hi)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_global [CompactSpace X] [QuasiSeparatedSpace X] (hL : L.IsLB) (a : Γ(X, ⊤)) {V : X.Opens}
     (hV : X.basicOpen a ≤ V) {θ : ∀ i, Γ(X, V ⊓ L.U i)} (hθ : θ ∈ secOn L V) {g : X} (hg : g ∈ X.basicOpen a)
@@ -52,18 +52,18 @@ def add (s t : L.Sec) : L.Sec :=
   ⟨fun i => s.f i + t.f i, fun i j => by rw [map_add, map_add, s.compat i j, t.compat i j, mul_add]⟩
 
 /- English proof (translation)
-Unfold `add`. Simplify using `only [add_comm (s.f _)]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem add_comm' (s t : L.Sec) : add s t = add t s := by
   unfold add
   simp only [add_comm (s.f _)]
 
 /- English proof (translation)
-Take `⟨k, hk, u⟩` from `(mem_nonzeroLocus _ _).1 hs`. Use `(mem_nonzeroLocus _ _).2 ⟨k, hk, ?_⟩` and prove the remaining obligations. Establish `hn : ¬ IsUnit (gs (𝟙 X) y (L.U k) (t.f k))` using `fun h => ht ((mem_nonzeroLocus _ _).2 ⟨k, hk, h⟩)`. Establish `e : gs (𝟙 X) y (L.U k) ((add s t).f k) = gs (𝟙 X) y (L.U k) (s.f k) + gs (𝟙 X) y (L.U k) (t.f k)` using `gs_add (𝟙 X) y _ hk _ _`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Establish `h₁` using `(IsLocalRing.mem_maximalIdeal _).2 h`. Establish `h₂` using `(IsLocalRing.mem_maximalIdeal _).2 hn`. Establish `h₃` using `Ideal.sub_mem _ h₁ h₂`. Rewrite `h₃` using `[add_sub_cancel_right]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(IsLocalRing.mem_maximalIdeal _).1 h₃ u`.
+A detailed English derivation is pending.
 -/
 theorem mem_nonzeroLocus_add {s t : L.Sec} {y : X} (hs : y ∈ Out.nonzeroLocus s) (ht : y ∉ Out.nonzeroLocus t) :
     y ∈ Out.nonzeroLocus (add s t) := by
@@ -83,9 +83,9 @@ theorem mem_nonzeroLocus_add {s t : L.Sec} {y : X} (hs : y ∈ Out.nonzeroLocus 
 end General
 
 /- English proof (translation)
-Take `⟨I, hI⟩` from `(PrimeSpectrum.isClosed_iff_zeroLocus_ideal _).1 hU.isClosed_compl`. Establish `key : ∀ z : PrimeSpectrum R, z ∈ U ↔ ¬ I ≤ z.asIdeal` using `fun z => by`. Rewrite using `[← Set.notMem_compl_iff, hI]`. Both sides reduce to the same expression. Establish `: ¬ (I : Set R) ⊆ p.asIdeal ∪ q.asIdeal` using `fun h => (Ideal.subset_union.1 h).elim ((key p).1 hp) ((key q).1 hq)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Take `⟨r, hr, hn⟩` from `Set.not_subset.1 this`. Conclude with `⟨r, fun h => hn (Or.inl h), fun h => hn (Or.inr h), fun z hz => (key z).2 fun h => hz (h hr)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_basicOpen_two {R : Type} [CommRing R] {U : Set (PrimeSpectrum R)} (hU : IsOpen U)
     {p q : PrimeSpectrum R} (hp : p ∈ U) (hq : q ∈ U) :
@@ -100,9 +100,9 @@ theorem exists_basicOpen_two {R : Type} [CommRing R] {U : Set (PrimeSpectrum R)}
   exact ⟨r, fun h => hn (Or.inl h), fun h => hn (Or.inr h), fun z hz => (key z).2 fun h => hz (h hr)⟩
 
 /- English proof (translation)
-Take `⟨V, hV, θ, hθ, -, nz⟩` from `PushInv.pushInvertible_any hL₂.secBaseChangeAny hL.globalSectionsRank _ Q p`. Take `⟨g, i, hg, hi⟩` from `nz p hV`. Take `⟨f, hf, hpf⟩` from `(isAffineOpen_top (Sp R)).exists_basicOpen_le (V := V) ⟨p, hV⟩ trivial`. Use `Q.isAb.proper` as an intermediate fact. Establish `: CompactSpace Q.A.left` using `QuasiCompact.compactSpace_of_compactSpace Q.A.hom`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: QuasiSeparatedSpace Q.A.left` using `quasiSeparatedSpace_of_quasiSeparated Q.A.hom`. Establish `e` using `Scheme.preimage_basicOpen_top Q.A.hom f`. Take `⟨u, hu⟩` from `exists_global Q.isLB (Q.A.hom.appTop f) (e.ge.trans (Q.A.hom.preimage_mono hf)) hθ (g := g) (e.le (show Q.A.hom g ∈ (Sp R).basicOpen f from hg ▸ hpf)) hi`. Conclude with `⟨u, g, hg, hu⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sec_fibre (hL : Out.Laws) (hL₂ : Out.Laws2) {R : Type} [CommRing R] (Q : Out.PolAV (Sp R)) (p : Sp R) :
     ∃ th : Q.L.Sec, ∃ x : Q.A.left, Q.A.hom x = p ∧ x ∈ Out.nonzeroLocus th := by
@@ -120,13 +120,13 @@ theorem exists_sec_fibre (hL : Out.Laws) (hL₂ : Out.Laws2) {R : Type} [CommRin
 open GlobalTheory.KeyPow GlobalTheory.KeyFam GlobalTheory.ZM GlobalTheory.AbLaw
 
 /- English proof (translation)
-Introduce `hL hL₂ R _ _ Q p q`. Choose the witnesses or unpack the hypotheses as in `⟨th, hp, hq⟩ : ∃ th : Q.L.Sec, (∃ x : Q.A.left, Q.A.hom x = p ∧ x ∈ Out.nonzeroLocus th) ∧ ∃ x : Q.A.left, Q.A.hom x = q ∧ x ∈ Out.nonzeroLocus th := by`. Take `⟨s, x, hx, hs⟩` from `exists_sec_fibre hL hL₂ Q p`. Take `⟨t, y, hy, ht⟩` from `exists_sec_fibre hL hL₂ Q q`. Distinguish the cases in `h₁ : y ∈ Out.nonzeroLocus s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨s, ⟨x, hx, hs⟩, y, hy, h₁⟩`. Distinguish the cases in `h₂ : x ∈ Out.nonzeroLocus t`. Conclude with `⟨t, ⟨x, hx, h₂⟩, y, hy, ht⟩`. Conclude with `⟨add s t, ⟨x, hx, mem_nonzeroLocus_add hs h₂⟩, y, hy, add_comm' t s ▸ mem_nonzeroLocus_add ht h₁⟩`. Use `Q.isAb.smooth` as an intermediate fact.
+Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨x, hx, hx'⟩` from `hp`. Take `⟨y, hy, hy'⟩` from `hq`. Take `⟨r, h₁, h₂, h₃⟩` from `exists_basicOpen_two (R := R) (p := p) (q := q) (Q.A.hom.isOpenMap _ (Out.nonzeroLocus th).isOpen) ⟨x, hx', hx⟩ ⟨y, hy', hy⟩`. Use `⟨th, r, h₁, h₂, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, e⟩` from `h₃ z hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w, e, hw⟩`.
+Supply the required witnesses or components.
 -/
 theorem main : Out.Laws → Out.Laws2 → ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (Q : Out.PolAV (Sp R)) (p q : PrimeSpectrum R), ∃ (th : Q.L.Sec) (r : R), r ∉ p.asIdeal ∧ r ∉ q.asIdeal ∧ ∀ z : Sp R, r ∉ z.asIdeal → ∃ x : Q.A.left, Q.A.hom x = z ∧ x ∈ Out.nonzeroLocus th := by
   intro hL hL₂ R _ _ Q p q

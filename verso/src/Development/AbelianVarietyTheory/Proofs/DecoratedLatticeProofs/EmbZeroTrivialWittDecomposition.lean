@@ -18,11 +18,11 @@ variable {D : D7}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨N, hN, hker, -⟩` from `GlobalTheory.CharFin.char_finUnit_finite_order D χ hχ`. Use `filter_upwards [GlobalTheory.FinPl.AeUnit.eventually_incA_mul_mem_intAt D (N : D.host.E)⁻¹] with v hv x h1 h2 h3 h4`. Establish `ha : (x : AE D) - 1 ∈ intAt D (· = v)`. Use `⟨Ideal.mem_inf.2 ⟨?_, Submodule.mem_iInf _ |>.2 fun w => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker, RingHom.map_sub, RingHom.map_one, h1, sub_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.mem_ker, RingHom.map_sub, RingHom.map_one, GlobalTheory.FinPl.compAt, RingHom.comp_apply, h2 _ w.2, sub_self]`. Rewrite using `[RingHom.map_sub, RingHom.map_one]`. Conclude with `sub_mem h3 (GlobalTheory.HeckeConj.one_mem_intAE D)`. Establish `e : (x : AE D) - 1 = N • (incA D (N : D.host.E)⁻¹ * ((x : AE D) - 1))`. Rewrite using `[nsmul_eq_mul, ← mul_assoc, ← map_natCast (incA D), ← RingHom.map_mul, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hN.ne'), RingHom.map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy, hye⟩ : ∃ y, y ∈ intAt D (· = v) ∧ (x : AE D) - 1 = N • y` from `⟨_, hv _ ha, e⟩`. Use `hker x ⟨h1, h3, h4⟩ ⟨finPart D y, hy.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← RingHom.map_one (finPart D), ← RingHom.map_sub, hye]`. Conclude with `(finPart D).toAddMonoidHom.map_nsmul _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_charUnramAt (D : D7) (χ : (AE D)ˣ →* Circle) (hχ : Continuous χ) :
     ∀ᶠ v : Pl D in Filter.cofinite, CharUnramAt D χ v := by

@@ -1,19 +1,19 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ σ hE hσ`. Take `⟨w⟩ : Nonempty (NumberField.InfinitePlace E)` from `inferInstance`. Establish `hw : ¬ NumberField.ComplexEmbedding.IsReal w.embedding` using `NumberField.InfinitePlace.isComplex_iff.mp (hE.isComplex w)`. Generalize the expression as in `w.embedding = τ at hw`. Establish `hinv : ∀ x : E, σ (σ x) = x` using `fun x => τ.injective (by rw [hσ, hσ, star_star])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : E, σ a ≠ a := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hw` to reduce the goal to its premises. Rewrite using `[NumberField.ComplexEmbedding.isReal_iff]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Use `hσ τ x` as an intermediate fact. Rewrite `this` using `[h]`. Rewrite using `[NumberField.ComplexEmbedding.conjugate_coe_eq]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ∀ n : ℕ, (n : E) + a ≠ 0`. Introduce `n hn`. Apply `ha` to reduce the goal to its premises. Establish `: a = -(n : E)` using `by linear_combination hn`. Rewrite using `[this, map_neg, map_natCast]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : ∀ n : ℕ, (n : E) + σ a ≠ 0`. Introduce `n hn`. Apply `h1 n` to reduce the goal to its premises. Use `congrArg σ hn` as an intermediate fact. Rewrite `this` using `[map_add, map_natCast, hinv, map_zero]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Set.infinite_of_injective_forall_mem (f := fun n : ℕ => ((n : E) + a) / ((n : E) + σ a)) ?_ ?_` and prove the remaining obligations. Introduce `m n hmn`. Establish `h3` using `(div_eq_div_iff (h2 m) (h2 n)).mp hmn`. Establish `h4 : ((m : E) - n) * (σ a - a) = 0` using `by linear_combination h3`. Break down `mul_eq_zero.mp h4 with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.cast_injective (R := E) (sub_eq_zero.mp h)`. Conclude with `absurd (sub_eq_zero.mp h) ha`. Introduce `n show _ * σ _ = 1`. Rewrite using `[map_div₀, map_add, map_add, map_natCast, hinv, div_mul_div_cancel₀ (h2 n), div_self (h1 n)]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.infinite_norm_one_elements :
     ∀ {F E : Type} [CommSemiring F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),

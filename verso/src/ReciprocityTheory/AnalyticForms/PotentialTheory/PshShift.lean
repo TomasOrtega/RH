@@ -15,7 +15,7 @@ def LeviCompStatement : Prop :=
       levi (φ ∘ τ) z w = levi φ (τ z) (fderiv ℂ τ z w)
 
 /- English proof (translation)
-The claim follows from `plurisubharmonicShift_proof`.
+A detailed English derivation is pending.
 -/
 theorem pshShift : PshShiftStatement := plurisubharmonicShift_proof
 

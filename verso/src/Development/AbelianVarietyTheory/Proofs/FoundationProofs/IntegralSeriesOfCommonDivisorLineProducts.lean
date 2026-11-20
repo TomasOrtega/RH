@@ -11,9 +11,9 @@ open scoped BigOperators
 namespace GlobalTheory.EvenTheta
 
 /- English proof (translation)
-Establish `h : (∏ i, ∏ j, (b j - a i)) ∈ (Ideal.span {d}).radical`. Rewrite using `[Ideal.radical_eq_sInf, Ideal.mem_sInf]`. Introduce and unpack `P ⟨hle, hP⟩`. Establish `h1 : (∏ i, a i) ∈ P` using `hP.mem_of_pow_mem 2 (hle (Ideal.mem_span_singleton.2 ha))`. Establish `h2 : (∏ j, b j) ∈ P` using `hle (Ideal.mem_span_singleton.2 hb)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i, -, hi⟩` from `Ideal.IsPrime.prod_mem_iff.1 h1`. Take `⟨j, -, hj⟩` from `Ideal.IsPrime.prod_mem_iff.1 h2`. Conclude with `Ideal.IsPrime.prod_mem_iff.2 ⟨i, Finset.mem_univ _, Ideal.IsPrime.prod_mem_iff.2 ⟨j, Finset.mem_univ _, P.sub_mem hj hi⟩⟩`. Take `⟨N, hN⟩` from `h`. Conclude with `⟨N, Ideal.mem_span_singleton.1 hN⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dvd_pow_prod_sub {R ι κ : Type*} [CommRing R] [Fintype ι] [Fintype κ] (d : R) (a : ι → R)
     (b : κ → R) (ha : d ∣ (∏ i, a i) ^ 2) (hb : d ∣ ∏ j, b j) :
@@ -41,17 +41,17 @@ noncomputable def bddSubring (p : ℕ) [Fact p.Prime] : Subring (PowerSeries ℂ
     exact ⟨B, fun n => by simpa using hB n⟩
 
 /- English proof (translation)
-Establish `hl : ∀ x : ℂ_[p], lineSer e x ∈ bddSubring p` using `fun x => (bddSubring p).sub_mem he ((bddSubring p).mul_mem ((GlobalTheory.T.padicComplex_integral_bounded_series_laws p).2.2.1 x).1 ((bddSubring p).pow_mem (show BddSer _ from ⟨1, (GlobalTheory.T.padicComplex_integral_bounded_series_laws p).2.2.2.1⟩) 2))`. Take `⟨N, H, hH⟩` from `dvd_pow_prod_sub (R := bddSubring p) ⟨Ψ, hΨ⟩ (fun i => ⟨lineSer e (y i), hl _⟩) (fun j => ⟨lineSer e (y' j), hl _⟩) ⟨⟨A, hA⟩, Subtype.ext (by simpa using hΨA.symm)⟩ ⟨⟨B, hB⟩, Subtype.ext (by simpa using hΨB.symm)⟩`. Use `set c : ℂ_[p] := (∏ i, ∏ j, (y i - y' j)) ^ N with hc`. Establish `hc0 : c ≠ 0` using `pow_ne_zero _ (Finset.prod_ne_zero_iff.2 fun i _ => Finset.prod_ne_zero_iff.2 fun j _ => sub_ne_zero.2 (hy i j))`. Establish `key : Ψ * (H : PowerSeries ℂ_[p]) = PowerSeries.monomial (2 * n * m * N) c`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg Subtype.val hH`. Establish `e1 : ∀ i j, lineSer e (y' j) - lineSer e (y i) = PowerSeries.C (y i - y' j) * PowerSeries.X ^ 2` using `fun i j => by`. Simplify using `only [lineSer, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [SubmonoidClass.coe_pow, Subring.coe_mul, SubmonoidClass.coe_finsetProd, AddSubgroupClass.coe_sub, e1, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, mul_pow, ← pow_mul] at h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, PowerSeries.monomial_eq_C_mul_X_pow, hc]`. Simplify using `only [map_pow, map_prod, mul_assoc]`. Establish `hHc : PowerSeries.coeff (2 * n * m * N) (H : PowerSeries ℂ_[p]) = c`. Establish `hinv : Ψ⁻¹ * Ψ = 1` using `PowerSeries.inv_mul_cancel _ (by simp [h1])`. Establish `: (H : PowerSeries ℂ_[p]) = PowerSeries.X ^ (2 * n * m * N) * (PowerSeries.C c * Ψ⁻¹)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (Ψ⁻¹ * ·) key`. Simplify using `only [← mul_assoc, hinv, one_mul, PowerSeries.monomial_eq_C_mul_X_pow] at h2`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, PowerSeries.coeff_X_pow_mul']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[h1]`. Introduce `i`. Use `GlobalTheory.T.powerSeries_supNorm_mul_padicComplex p Ψ H ‖c‖ hΨ H.2 (fun k => by` as an intermediate fact. Rewrite using `[key, PowerSeries.coeff_monomial]`. Apply the tactic sequence `split_ifs <;> simp) i (2 * n * m * N)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hHc]`. Conclude with `le_of_mul_le_mul_right (by simpa using this) (norm_pos_iff.2 hc0)`.
+A detailed English derivation is pending.
 -/
 theorem intSer_of_common_divisor (p : ℕ) [Fact p.Prime] (m n : ℕ) (e Ψ A B : PowerSeries ℂ_[p])
     (y : Fin m → ℂ_[p]) (y' : Fin n → ℂ_[p]) (he : BddSer e) (hΨ : BddSer Ψ) (hA : BddSer A)

@@ -12,7 +12,7 @@ def ClassMapInjectiveBijectiveNorms (D : Formalism.BasicNotions.D7) (HW : HWOf D
       ((HW l).W K s LL h).ClNat
 
 /- English proof (translation)
-Introduce `l _ K s LL g` and use `⟨(h l K s LL g).1, (h l K s LL g).2.1, (h l K s LL g).2.2.1⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem classMapInjectiveBijectiveNorms_of_aux6 {D : Formalism.BasicNotions.D7} {HW : HWOf D.loc} {F : FonOf D.loc D.locA HW}
     (h : Conclusion6 D HW F) : ClassMapInjectiveBijectiveNorms D HW F :=

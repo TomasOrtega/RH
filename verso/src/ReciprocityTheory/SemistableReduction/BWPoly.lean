@@ -10,25 +10,21 @@ namespace ReciprocityTheory.MultiplicativeHeights
 open Polynomial
 
 /- English proof (translation)
-Introduce `p a P hP hT`. Take `⟨F, hF⟩` from `bwp_ext_poly (σ := Fin p × Fin p) (∑ i, a i) (fun z => P (bwpMat z)) (fun z => (bwpMat z).det) (bwpId p) (fun z => bwp_finite_det_id_line z) (fun z v hz => bwp_finite_det_line z v hz) (fun z v hB => bwp_line_poly hH hO a P hP hT z v hB)`. Establish `hF' : ∀ z, (bwpMat z).det ≠ 0 → P (bwpMat z) = MvPolynomial.eval z F` using `fun z hz => hF z hz`. Use `⟨MvPolynomial.homogeneousComponent (∑ i, a i) F, MvPolynomial.homogeneousComponent_isHomogeneous _ _, fun x hx => ?_⟩` and prove the remaining obligations. Use `set z : Fin p × Fin p → ℂ := fun ij => x ij.1 ij.2 with hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hxz : bwpMat z = x`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hPz : P x = MvPolynomial.eval z F`. Rewrite using `[← hxz]`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hF' z (by rw [hxz]; exact hx)`. Rewrite using `[hPz]`. Establish `hscale : ∀ t : ℂ, t ≠ 0 → MvPolynomial.eval (t • z) F = t ^ (∑ i, a i) * MvPolynomial.eval z F`. Introduce `t ht`. Establish `hb : bwpMat (t • z) = x * (t • (1 : Matrix (Fin p) (Fin p) ℂ))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `[bwpMat, hz, Matrix.mul_smul]`. Establish `hbdet : (t • (1 : Matrix (Fin p) (Fin p) ℂ)).det ≠ 0`. Rewrite using `[Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hbtri : (t • (1 : Matrix (Fin p) (Fin p) ℂ)).BlockTriangular id`. Introduce `i j h`. Establish `hij : i ≠ j` using `fun hij => by subst hij; exact lt_irrefl _ h`. Rewrite using `[Matrix.smul_apply, Matrix.one_apply_ne hij, smul_zero]`. Establish `hdet : (bwpMat (t • z)).det ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hb, Matrix.det_mul]`. Conclude with `mul_ne_zero hx hbdet`. Rewrite using `[← hF' _ hdet, hb, hT x _ hx hbdet hbtri, hPz]`. Use `congr 1`. Simplify using `[triChar, Finset.prod_pow_eq_pow_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : ∀ t : ℂ, MvPolynomial.eval (t • z) F = ∑ j ∈ Finset.range (F.totalDegree + 1), t ^ j * MvPolynomial.eval z (MvPolynomial.homogeneousComponent j F)`. Introduce `t`. Use `conv_lhs => rw [← MvPolynomial.sum_homogeneousComponent F]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl (fun j _ => bwp_eval_smul_of_isHomogeneous (MvPolynomial.homogeneousComponent_isHomogeneous j F) t z)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hΦ : (∑ j ∈ Finset.range (F.totalDegree + 1), Polynomial.C (MvPolynomial.eval z (MvPolynomial.homogeneousComponent j F)) * Polynomial.X ^ j) = Polynomial.C (MvPolynomial.eval z F) * Polynomial.X ^ (∑ i, a i)`. Use `bwp_poly_eq_of_eval_eq_off _ _ {0} (Set.finite_singleton 0) (fun t ht => ?_)` and prove the remaining obligations. Establish `ht0 : t ≠ 0` using `ht`. Rewrite using `[Polynomial.eval_finset_sum, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, mul_comm, ← hscale t ht0, hsum t]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations.
-
-Rewrite using `[Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, mul_comm]`. Establish `hc` using `congrArg (fun q => Polynomial.coeff q (∑ i, a i)) hΦ`. Simplify using `only [Polynomial.finset_sum_coeff, Polynomial.coeff_C_mul_X_pow, if_pos rfl] at hc`. Rewrite `hc` using `[Finset.sum_ite_eq]`. Use `split_ifs at hc with hk`.
-
-Conclude with `hc.symm`. Rewrite using `[MvPolynomial.homogeneousComponent_eq_zero _ _ (by simpa using hk), map_zero]`. Conclude with `hc.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bwPoly_holds (hH : LemmaHStatement) (hE : ∀ n, ReciprocityTheory.L2DbarEstimates.EXTStatement n)
     (hO : OnePolyGrowthStatement) : BWPolyStatement := by

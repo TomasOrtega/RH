@@ -12,21 +12,19 @@ open scoped nonZeroDivisors
 variable (K : Type) [Field K] [NumberField K]
 
 /- English proof (translation)
-Use `set n := finrank ℚ K with hn_def`. Establish `hn : 0 < n` using `finrank_pos`. Establish `hN : 0 < (Ideal.absNorm I : ℝ)` using `Nat.cast_pos.2 (Ideal.absNorm_pos_iff_mem_nonZeroDivisors.2 (mem_nonZeroDivisors_of_ne_zero (by simpa using hI)))`. Establish `hD : 0 < Real.sqrt |(discr K : ℝ)|` using `Real.sqrt_pos.2 (abs_pos.2 (Int.cast_ne_zero.2 (discr_ne_zero K)))`. Use `set X : ℝ := (Ideal.absNorm I : ℝ) * Real.sqrt |(discr K : ℝ)| with hX_def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : 0 < X` using `mul_pos hN hD`. Use `set R : ℝ := 3 * X ^ ((n : ℝ)⁻¹) with hR_def`. Establish `hR : 0 < R` using `by positivity`. Establish `hRn : R ^ n = 3 ^ n * X`. Rewrite using `[hR_def, mul_pow, ← Real.rpow_natCast (X ^ ((n : ℝ)⁻¹)), ← Real.rpow_mul hX.le, inv_mul_cancel₀ (Nat.cast_ne_zero.2 hn.ne'), Real.rpow_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `J : (FractionalIdeal (𝓞 K)⁰ K)ˣ` to `Units.mk0 (I : FractionalIdeal (𝓞 K)⁰ K) (FractionalIdeal.coeIdeal_ne_zero.2 hI)`. Set `f : InfinitePlace K → NNReal` to `fun _ => ⟨R, hR.le⟩`. Establish `hL : (minkowskiBound K J).toReal = (Ideal.absNorm I : ℝ) * (2 : ℝ)⁻¹ ^ nrComplexPlaces K * Real.sqrt |(discr K : ℝ)| * 2 ^ n`. Repeatedly rewrite using `[minkowskiBound, volume_fundamentalDomain_fractionalIdealLatticeBasis, volume_fundamentalDomain_latticeBasis, toReal_mul, toReal_pow, toReal_inv, coe_toReal, toReal_ofNat, mixedEmbedding.finrank]`. Rewrite using `[ENNReal.toReal_ofReal (Rat.cast_nonneg.mpr (FractionalIdeal.absNorm_nonneg _))]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [J, Units.val_mk0, FractionalIdeal.coeIdeal_absNorm, Rat.cast_natCast, Real.coe_sqrt, coe_nnnorm, Int.norm_eq_abs]`. Expand and normalize the polynomial expressions, which then agree. Establish `hV : volume (convexBodyLT K f) ≠ ⊤`. Rewrite using `[convexBodyLT_volume]`. Conclude with `mul_ne_top coe_ne_top coe_ne_top`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `hR' : (volume (convexBodyLT K f)).toReal = (convexBodyLTFactor K : ℝ) * R ^ n`. Rewrite using `[convexBodyLT_volume, toReal_mul, coe_toReal, coe_toReal]`. Use `congr 1`. Rewrite using `[NNReal.coe_prod]`. Establish `e : ∀ x : InfinitePlace K, ((f x ^ x.mult : NNReal) : ℝ) = R ^ x.mult` using `fun x => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[NNReal.coe_pow]`. Both sides reduce to the same expression. Rewrite using `[Finset.prod_congr rfl fun x _ => e x, Finset.prod_pow_eq_pow_sum, sum_mult_eq]`. Establish `h : minkowskiBound K J < volume (convexBodyLT K f)`. Rewrite using `[← ENNReal.toReal_lt_toReal (minkowskiBound_lt_top K J).ne hV, hL, hR', hRn]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h1 : (1 : ℝ) ≤ convexBodyLTFactor K` using `by exact_mod_cast one_le_convexBodyLTFactor K`. Establish `h2 : (2 : ℝ)⁻¹ ^ nrComplexPlaces K ≤ 1` using `pow_le_one₀ (by norm_num) (by norm_num)`. Establish `h3 : (2 : ℝ) ^ n < 3 ^ n` using `pow_lt_pow_left₀ (by norm_num) (by norm_num) hn.ne'`. Combine the equalities or inequalities in the displayed calculation. Take `⟨a, ha, hne, hlt⟩` from `exists_ne_zero_mem_ideal_lt K J h`.
-
-Rewrite `ha` using `[Units.val_mk0, FractionalIdeal.mem_coeIdeal]`. Take `⟨x, hx, rfl⟩` from `ha`. Use `⟨x, hx, fun h0 => hne (by rw [h0, map_zero]), fun w => ?_⟩` and prove the remaining obligations. Conclude with `hlt w`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_small_mem_ideal (I : Ideal (𝓞 K)) (hI : I ≠ ⊥) :
     ∃ a : 𝓞 K, a ∈ I ∧ a ≠ 0 ∧ ∀ w : InfinitePlace K,
@@ -84,7 +82,7 @@ theorem exists_small_mem_ideal (I : Ideal (𝓞 K)) (hI : I ≠ ⊥) :
   exact hlt w
 
 /- English proof (translation)
-Take `⟨a, ha, hne, hlt⟩` from `exists_small_mem_ideal K I hI`. Conclude with `⟨a, ha, hne, fun σ => (InfinitePlace.apply σ (a : K)).symm ▸ hlt (InfinitePlace.mk σ)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_small_mem_ideal' (I : Ideal (𝓞 K)) (hI : I ≠ ⊥) :
     ∃ a : 𝓞 K, a ∈ I ∧ a ≠ 0 ∧ ∀ σ : K →+* ℂ,

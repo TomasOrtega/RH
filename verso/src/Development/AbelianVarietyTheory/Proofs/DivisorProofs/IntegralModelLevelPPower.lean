@@ -22,13 +22,11 @@ noncomputable section
 namespace GlobalTheory.FlatModel
 
 /- English proof (translation)
-Establish `hc2 : ‖c₂‖ ≤ 1`. Use `IsUltrametricDist.norm_add_le_max (c₂ - a₂) a₂` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Conclude with `this.trans (max_le (hc₂.trans hε1) h₂)`. Establish `e : c₁ * c₂ - a₁ * a₂ = (c₁ - a₁) * c₂ + a₁ * (c₂ - a₂)` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ‖c₁ * c₂ - a₁ * a₂‖ ≤ ε`. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `(mul_le_mul hc₁ hc2 (norm_nonneg _) ((norm_nonneg _).trans hc₁)).trans_eq (mul_one ε)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_mul]`. Conclude with `(mul_le_mul h₁ hc₂ (norm_nonneg _) zero_le_one).trans_eq (one_mul ε)`. Use `IsUltrametricDist.norm_add_le_max (a₁ * a₂ - c₁ * c₂) (c₁ * c₂)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, norm_sub_rev]`. Break down `le_max_iff.1 this with h | h` into its components or cases.
-
-Conclude with `absurd (hε.trans_le h) (not_lt.2 hd)`. Conclude with `hε.trans_le h`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem lt_norm_mul_of_close {K : Type} [NormedField K] [IsUltrametricDist K] {a₁ a₂ c₁ c₂ : K} {ε : ℝ}
     (h₂ : ‖a₂‖ ≤ 1) (hc₁ : ‖c₁ - a₁‖ ≤ ε) (hc₂ : ‖c₂ - a₂‖ ≤ ε) (hε1 : ε ≤ 1) (h₁ : ‖a₁‖ ≤ 1)
@@ -52,21 +50,21 @@ theorem lt_norm_mul_of_close {K : Type} [NormedField K] [IsUltrametricDist K] {a
   · exact hε.trans_le h
 
 /- English proof (translation)
-Introduce `hKer hTate hVal hBound E _ _ _ H Dw τ p _ _ hs n l l' Xo Xo' c c' W Y r ν hle hov hA N a T S hLat _ f yb yy P π ψ y hHT hn β hβ g e U₁ U₂ h hTan hE₁ hE₂ hApp`. Take `⟨ta, w₁, w₂, σ, hta, hw₁, hw₂, hG₁, hG₂⟩` from `GlobalTheory.T.integral_model_level_p_power_frame hKer hTate hVal E H Dw τ p hs n l l' Xo Xo' c c' W Y r ν hle hov hA N a T S hLat yb yy P π ψ y hHT β hβ`. Take `⟨x, hx, hM⟩` from `GlobalTheory.T.integral_model_map_over_inclusion E H Dw p l l' Xo Xo' c c' W Y r ν hle hov yb yy P π ψ y hHT β hβ g e hTan`. Establish `hCB : GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel.CokernelBound P` using `(hKer p ℂ_[p] _ 𝓞_ℂ_[p] (𝓞 E) P).2.2.1`. Use `set d : ℂ_[p] := ((discr E : ℤ) : ℂ_[p]) with hd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnorm : ∀ z : 𝓞_ℂ_[p], ‖(z : ℂ_[p])‖ ≤ 1` using `fun z => (GlobalTheory.PadicComplexHost.mem_iff_norm p _).1 z.2`. Establish `hd0 : d ^ 2 * (p : ℂ_[p]) ^ 2 ≠ 0` using `mul_ne_zero (pow_ne_zero _ (Int.cast_ne_zero.2 (NumberField.discr_ne_zero E))) (pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero))`. Establish `hε1 : (p : ℝ)⁻¹ ^ n ≤ 1` using `pow_le_one₀ (by positivity) (inv_le_one_of_one_le₀ (by exact_mod_cast (Fact.out : p.Prime).one_lt.le))`. Establish `key : ∀ (σ' : E →+* ℂ) (U : Fin g → Fin g → 𝓞_ℂ_[p]), EigAt Y.t yb (β.comp (embV c' W σ')) e U → ∀ w : P.V, w ∈ htLat c P σ' → w ∈ Submodule.span ℂ_[p] (Set.range P.bLie) → w ∈ P.eigV (embInt c P.integers σ') → ∃ M : Fin g → 𝓞_ℂ_[p], (d ^ 2 * (p : ℂ_[p]) ^ 2) • w = ∑ k, (M k : ℂ_ …`. Introduce `σ' U hU w h1 h2 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x', hx'e, hx'⟩` from `hBound E H l c p P hCB σ' w h1 h2 h3`. Take `⟨M, hM'⟩` from `hM σ' U hU x' hx'e`. Use `⟨M, ?_⟩` and prove the remaining obligations. Rewrite using `[← hM', hx', smul_smul]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `choose M₁ hM₁ using fun i => key τ.1 U₁ hE₁ (w₁ i) (hw₁ i).1 (hw₁ i).2.1 (hw₁ i).2.2`. Use `choose M₂ hM₂ using fun i => key (conjEmb τ.1) U₂ hE₂ (w₂ i) (hw₂ i).1 (hw₂ i).2.1 (hw₂ i).2.2`. Establish `hcong : ∀ (U : Fin g → 𝓞_ℂ_[p]) (Tc : Ind Dw τ.1 → Fin N → 𝓞_ℂ_[p]) (i : Ind Dw τ.1), ‖(((∑ b, (∑ a, Tc i a * h a b) * U b : 𝓞_ℂ_[p]) : ℂ_[p]) - P.pairV (∑ b, (U b : ℂ_[p]) • P.bLie (x b)) (∑ m, (Tc i m : ℂ_[p]) ⊗ₜ[ℤ_[p]] ta m))‖ ≤ (p : ℝ)⁻¹ ^ n` using `fun U Tc i => GlobalTheory.T.p_adic_pairing_approximation E p P n N g ta x h Tc U (fun m b => hApp m (ta m) (hta m) b (x b) (hx b)) i`. Establish `hpair : ∀ (M : Fin g → 𝓞_ℂ_[p]) (X : Fin g → P.V) (t : P.V), P.pairV (∑ k, (M k : ℂ_[p]) • X k) t = ∑ k, (M k : ℂ_[p]) * P.pairV (X k) t`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `M X t`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Take `⟨K₁, hK₁, hK₁', hK₁''⟩` from `GlobalTheory.T.exists_minor_norm_det_bounds_and_det_sub_le p n (Dw.mult τ.1) g (d ^ 2 * (p : ℂ_[p]) ^ 2) (fun k j => P.pairV (∑ b, (U₁ k b : ℂ_[p]) • P.bLie (x b)) (∑ m, ((β (T (σ (Sum.inl j)) m) : 𝓞_ℂ_[p]) : ℂ_[p]) ⊗ₜ[ℤ_[p]] ta m)) (fun k j => ((∑ b, covec β T h (σ ∘ Sum.inl) j …`. Rewrite using `[Matrix.of_apply, ← smul_eq_mul, ← LinearMap.smul_apply, ← map_smul, hM₁ i, hpair])`. Take `⟨K₂, hK₂, hK₂', hK₂''⟩` from `GlobalTheory.T.exists_minor_norm_det_bounds_and_det_sub_le p n (Dw.mult (conjEmb τ.1)) g (d ^ 2 * (p : ℂ_[p]) ^ 2) (fun k j => P.pairV (∑ b, (U₂ k b : ℂ_[p]) • P.bLie (x b)) (∑ m, ((β (S (σ (Sum.inr j)) m) : 𝓞_ℂ_[p]) : ℂ_[p]) ⊗ₜ[ℤ_[p]] ta m)) (fun k j => ((∑ b, covec β S h (σ ∘ S …`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Matrix.of_apply, ← smul_eq_mul, ← LinearMap.smul_apply, ← map_smul, hM₂ i, hpair])`. Use `⟨σ, K₁, K₂, ?_⟩` and prove the remaining obligations. Establish `e₁ : ((pairDet (covec β T h (σ ∘ Sum.inl)) (U₁ ∘ K₁) : 𝓞_ℂ_[p]) : ℂ_[p]) = (Matrix.of fun k j => ((∑ b, covec β T h (σ ∘ Sum.inl) j b * U₁ (K₁ k) b : 𝓞_ℂ_[p]) : ℂ_[p])).det`. Express the relevant statement in the definitionally equal form `algebraMap 𝓞_ℂ_[p] ℂ_[p] (Matrix.det _) = _`. Rewrite using `[RingHom.map_det]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Both sides reduce to the same expression. Establish `e₂ : ((pairDet (covec β S h (σ ∘ Sum.inr)) (U₂ ∘ K₂) : 𝓞_ℂ_[p]) : ℂ_[p]) = (Matrix.of fun k j => ((∑ b, covec β S h (σ ∘ Sum.inr) j b * U₂ (K₂ k) b : 𝓞_ℂ_[p]) : ℂ_[p])).det`. Express the relevant statement in the definitionally equal form `algebraMap 𝓞_ℂ_[p] ℂ_[p] (Matrix.det _) = _`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(p : ℝ)⁻¹ ^ n < ‖((pairDet (covec β T h (σ ∘ Sum.inl)) (U₁ ∘ K₁) : 𝓞_ℂ_[p]) : ℂ_[p]) * ((pairDet (covec β S h (σ ∘ Sum.inr)) (U₂ ∘ K₂) : 𝓞_ℂ_[p]) : ℂ_[p])‖`. Rewrite using `[e₁, e₂]`. Use `lt_norm_mul_of_close hK₂' hK₁'' hK₂'' hε1 hK₁' (hn.trans_le ?_)` and prove the remaining obligations. Rewrite using `[pow_add, norm_mul, norm_pow, norm_pow]`. Conclude with `(mul_le_mul hK₁ hK₂ (by positivity) (norm_nonneg _)).trans_eq (norm_mul _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_large_minors : GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel.HodgeTateKernelAtPoint → TateSt → ValueSt → BoundSt →
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (τ : Psi H) (p : ℕ) [Fact p.Prime]

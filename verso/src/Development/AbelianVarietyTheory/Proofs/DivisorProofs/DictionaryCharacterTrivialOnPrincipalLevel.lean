@@ -17,13 +17,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.MuLevel
 
 /- English proof (translation)
-Set `L : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)` to `V.L0.map (V.frame.equivFun.toLinearMap.restrictScalars (𝓞 D.host.E))`. Establish `hL : latHat V = GlobalTheory.AdLat.hat D.host.F (L : Set (Fin V.rank → D.host.E))`. Unfold `Formalism.L2.Pj.latHat GlobalTheory.AdLat.hat`. Use `congr 1`. Use extensionality with `z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, x, hx, rfl⟩`. Conclude with `⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩`. Introduce and unpack `⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, x, hx, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hfg : L.FG` using `V.standardTuple_isLattice.fg.map _`. Establish `hsp : Submodule.span D.host.E (L : Set (Fin V.rank → D.host.E)) = ⊤`. Establish `: (L : Set (Fin V.rank → D.host.E)) = V.frame.equivFun.toLinearMap '' (V.L0 : Set V.V)` using `rfl`. Rewrite using `[this, Submodule.span_image, V.standardTuple_isLattice.span_eq_top, Submodule.map_top, LinearEquiv.range]`. Rewrite `hk` using `[hL]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[GlobalTheory.IdeleParts.integralFiniteAdeles_eq_adelicCompletion_integers]`. Conclude with `GlobalTheory.MarkDet.det_sub_one_of_cong D.host.F L hfg hsp N hN _ hk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_cong_of_level {D : D7} (V : HSp D) (N : ℕ) (hN : N ≠ 0) (k : GA D V)
     (hk : ∀ z ∈ latHat V, ∃ y ∈ latHat V, (finHom V k).1.mulVec z - z = N • y) :
@@ -50,13 +50,13 @@ theorem det_cong_of_level {D : D7} (V : HSp D) (N : ℕ) (hN : N ≠ 0) (k : GA 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨w, hw, hwe⟩` from `det_cong_of_level V N hN.pos.ne' k hk`. Establish `hn` using `GlobalTheory.RecDict.det_finHom_norm V k`. Take `⟨y, y', hy, hy', hyy, hroot, p, hp, hpe⟩` from `GlobalTheory.OddRoot.exists_root_odd D N hN _ w hw hwe hn`. Take `⟨Y, hY1, hY2, hY3⟩` from `GlobalTheory.DetRootCong.exists_idele D y y' hyy`. Use `⟨Y, ?_, ⟨hY1, hY2 ▸ hy, hY3 ▸ hy'⟩, p, hp, hY2 ▸ hpe⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨e, he, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Establish `he1 : ∀ z, (e z).1 = infPart D z` using `fun z => (he z).1`. Establish `he2 : ∀ z, (e z).2 = finPart D z` using `fun z => (he z).2`. Establish `hdet : (finHom V k).1.det = finPart D (matHom V k).1.det` using `((finPart D).map_det _).symm`. Establish `hdet' : (infHom V k).1.det = infPart D (matHom V k).1.det` using `((infPart D).map_det _).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : infHom V k = 1` using `hf`. Establish `hs : infPart D (sigR (AF D.host.F) D.sp.cm.sig (Y : AE D)) = sigR (Ainf D.host.F) D.sp.cm.sig (infPart D (Y : AE D))` using `GlobalTheory.DetRootCong.map_sigR _ _ _`. Use `e.injective (Prod.ext ?_ ?_)` and prove the remaining obligations. Rewrite using `[he1, he1, RingHom.map_mul, hs, ← hdet', h1, hY1, RingHom.map_one, mul_one]`. Conclude with `Matrix.det_one.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs'` using `GlobalTheory.DetRootCong.finPart_sigR D (Y : AE D)`. Rewrite `hs'` using `[hY2]`. Rewrite `hroot` using `[hdet, ← hs', ← RingHom.map_mul]`. Conclude with `(he2 _).trans ((hY2.trans hroot).trans (he2 _).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_root_of_level {D : D7} (V : HSp D) (N : ℕ) (hN : Odd N) (k : GA D V) (hf : k ∈ GfC V)
     (hk : ∀ z ∈ latHat V, ∃ y ∈ latHat V, (finHom V k).1.mulVec z - z = N • y) :
@@ -83,7 +83,7 @@ theorem exists_root_of_level {D : D7} (V : HSp D) (N : ℕ) (hN : Odd N) (k : GA
     exact (he2 _).trans ((hY2.trans hroot).trans (he2 _).symm)
 
 /- English proof (translation)
-Use `letI : Algebra K ℂ := σ.toAlgebra`. Establish `: Algebra.IsAlgebraic K L` using `Algebra.IsAlgebraic.tower_top (K := ℚ) K`. Set `f : L →ₐ[K] ℂ` to `IsAlgClosed.lift`. Conclude with `⟨f.toRingHom, RingHom.ext fun x => f.commutes x⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_ext {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] (σ : K →+* ℂ) :
     ∃ τ : L →+* ℂ, τ.comp (algebraMap K L) = σ := by
@@ -95,13 +95,11 @@ theorem exists_ext {K L : Type} [Field K] [NumberField K] [Field L] [NumberField
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R κ v₀ hL h _ i σ hσ _ k hk`. Establish `hj` using `inR i`. Take `⟨τ, rfl⟩` from `exists_ext (L := D.what₂.LL) σ`. Take `⟨hf, hk'⟩` from `(h.laws.levelK _ hj _ hσ k).1 hk`. Establish `hodd : Odd (D.host.g 0 * D.host.g 1)` using `h.laws.pins.2.1.1 ▸ T.Q.l.odd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx, hu, hc⟩` from `exists_root_of_level _ _ hodd k hf hk'`. Establish `hm` using `R.C.isMu0 i`. Establish `h1 : R.mu0 ((i : ℕ) + 1) x = 1`. Use `GlobalTheory.tame_heckeChar_eq_one_of_finUnit D _ _ (hL.mu0 i) hm.tame _ (fun P hP => hm.unr P fun a ha => hP ?_) x hu hc` and prove the remaining obligations. Rewrite using `[Nat.cast_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `fin_cases a`. Conclude with `Ideal.mul_mem_right _ _ ha`. Conclude with `Ideal.mul_mem_left _ _ ha`. Take `⟨y, hy1, hy2⟩` from `(h.chiR i τ hσ).2.2.2.1 x hu.1`. Establish `h2 : algebraMap T.Q.c.F D.what₂.LL y = 1` using `D.what₂.embLL.injective (by rw [← hy1, h1, map_one, Circle.coe_one])`.
-
-Rewrite using `[(h.laws.muVal _ hj _ hσ).2 k x hx, hy2, h2, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mu_eq_one_of_mem_level : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.toLevCh.Is A.μ0 → TieIn T R κ v₀ → T.pb = R.C.P.pb → ∀ (i : Fin D.R.m) (σ : T.Q.c.F →+* ℂ), GoodEmb T.Q.c σ → ∀ hV : T.V ((i : ℕ) + 1) σ = Wc D i, ∀ k ∈ T.Kf ((i : ℕ) + 1) σ, T.mu ((i : ℕ) + 1) σ k = 1 := by
   intro D G _ _ Pl0 T0 A T _ R κ v₀ hL h _ i σ hσ _ k hk

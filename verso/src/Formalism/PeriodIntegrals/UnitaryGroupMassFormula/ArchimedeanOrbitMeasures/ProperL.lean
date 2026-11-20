@@ -10,9 +10,9 @@ open MeasureTheory Topology Formalism.BasicNotions Formalism.L2.SG.HidaSetting F
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hH K hK hKI`. Establish `: FiniteDimensional X.B.I.F X.B.I.E` using `fd_of X`. Establish `: X.measG.μGinf.IsHaarMeasure` using `X.measG_norm.2.1`. Take `⟨N, hN, C, hC, hNC⟩` from `h X u' ψ hT μinf νinf fibInf hH K hK hKI`. Rewrite using `[Measure.map_apply (measurable_orbM X u') hK.isClosed.measurableSet]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `lt_of_le_of_lt (measure_mono fun g hg => hNC 1 (mem_of_mem_nhds hN) g ?_) hC.measure_lt_top` and prove the remaining obligations. Rewrite using `[rmulT_one]`. Conclude with `hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pushLFin_of_proper (h : ProperOrb) : PushLFin := by
   intro D X u' ψ hT μinf νinf fibInf hH K hK hKI

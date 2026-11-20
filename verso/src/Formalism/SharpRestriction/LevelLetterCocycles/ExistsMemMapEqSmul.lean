@@ -14,7 +14,7 @@ private theorem linearMap_mul_apply {M : Type*} [AddCommGroup M] [Module O M] (g
     (x : M) : (g * h) x = g (h x) := rfl
 
 /- English proof (translation)
-Proceed by induction on `k generalizing y with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, pow_succ, linearMap_mul_apply, linearMap_mul_apply, ih, hf]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem linearMap_pow_apply_comm_of_intertwine (f : M₁ →ₗ[O] M₂) (d₁ : M₁ →ₗ[O] M₁) (d₂ : M₂ →ₗ[O] M₂)
     (hf : ∀ y, f (d₁ y) = d₂ (f y)) (k : ℕ) (y : M₁) : f ((d₁ ^ k) y) = (d₂ ^ k) (f y) := by
@@ -29,7 +29,7 @@ private theorem linearMap_add_apply {M : Type*} [AddCommGroup M] [Module O M] (g
     (x : M) : (g + h) x = g x + h x := rfl
 
 /- English proof (translation)
-Rewrite using `[aeval_monomial, linearMap_mul_apply]`. Use `first`. Consider the case `rw [Module.algebraMap_end_apply]`. Consider the case `simp`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem aeval_end_monomial_apply {M : Type*} [AddCommGroup M] [Module O M]
     (d : M →ₗ[O] M) (n : ℕ) (a : O) (x : M) :
@@ -40,7 +40,7 @@ private theorem aeval_end_monomial_apply {M : Type*} [AddCommGroup M] [Module O 
     | simp
 
 /- English proof (translation)
-Use `Polynomial.induction_on' P (fun p q hp hq => ?_) (fun n a => ?_)` and prove the remaining obligations. Rewrite using `[map_add, map_add, linearMap_add_apply, linearMap_add_apply, map_add, hp, hq]`. Rewrite using `[aeval_end_monomial_apply, aeval_end_monomial_apply, map_smul, linearMap_pow_apply_comm_of_intertwine f d₁ d₂ hf]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem linearMap_aeval_apply_comm_of_intertwine (f : M₁ →ₗ[O] M₂) (d₁ : M₁ →ₗ[O] M₁) (d₂ : M₂ →ₗ[O] M₂)
     (hf : ∀ y, f (d₁ y) = d₂ (f y)) (P : O[X]) (y : M₁) :
@@ -50,7 +50,7 @@ theorem linearMap_aeval_apply_comm_of_intertwine (f : M₁ →ₗ[O] M₂) (d₁
   · rw [aeval_end_monomial_apply, aeval_end_monomial_apply, map_smul, linearMap_pow_apply_comm_of_intertwine f d₁ d₂ hf]
 
 /- English proof (translation)
-Proceed by induction on `k generalizing y with`. Consider the case `zero => simpa using hy`. Consider the case `succ k ih`. Rewrite using `[pow_succ, linearMap_mul_apply]`. Conclude with `ih (hN y hy)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_apply_mem_of_invariant' (N : Submodule O M₁) (d : M₁ →ₗ[O] M₁) (hN : ∀ y ∈ N, d y ∈ N)
     (k : ℕ) {y : M₁} (hy : y ∈ N) : (d ^ k) y ∈ N := by
@@ -61,7 +61,7 @@ private theorem pow_apply_mem_of_invariant' (N : Submodule O M₁) (d : M₁ →
     exact ih (hN y hy)
 
 /- English proof (translation)
-Use `Polynomial.induction_on' P (fun p q hp hq => ?_) (fun n a => ?_)` and prove the remaining obligations. Rewrite using `[map_add, linearMap_add_apply]`. Conclude with `N.add_mem hp hq`. Rewrite using `[aeval_end_monomial_apply]`. Conclude with `N.smul_mem a (pow_apply_mem_of_invariant' N d hN n hy)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_apply_mem_of_invariant (N : Submodule O M₁) (d : M₁ →ₗ[O] M₁) (hN : ∀ y ∈ N, d y ∈ N)
     (P : O[X]) {y : M₁} (hy : y ∈ N) : aeval d P y ∈ N := by
@@ -72,7 +72,7 @@ theorem aeval_apply_mem_of_invariant (N : Submodule O M₁) (d : M₁ →ₗ[O] 
     exact N.smul_mem a (pow_apply_mem_of_invariant' N d hN n hy)
 
 /- English proof (translation)
-Rewrite using `[aeval_C]`. Use `first`. Consider the case `rw [Module.algebraMap_end_apply]`. Consider the case `simp`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem aeval_end_C_apply {M : Type*} [AddCommGroup M] [Module O M]
     (d : M →ₗ[O] M) (a : O) (x : M) : aeval d (C a) x = a • x := by
@@ -82,9 +82,9 @@ private theorem aeval_end_C_apply {M : Type*} [AddCommGroup M] [Module O M]
     | simp
 
 /- English proof (translation)
-Take `⟨A, B, hAB⟩ : ∃ A B : O[X], A * P₁ + B * P₂ = C e` from `by first`. Consider the case `exact Ideal.mem_span_pair.1 he`. Consider the case `simpa [smul_eq_mul] using Submodule.mem_span_pair.1 he`. Take `⟨y₁, hy₁, hfy₁⟩` from `h₁`. Take `⟨y₂, hy₂, hfy₂⟩` from `h₂`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨aeval d₁ A y₁ + aeval d₁ B y₂, N₁.add_mem (aeval_apply_mem_of_invariant N₁ d₁ hN A hy₁) (aeval_apply_mem_of_invariant N₁ d₁ hN B hy₂), ?_⟩` and prove the remaining obligations. Rewrite using `[← aeval_end_C_apply d₂ e x, ← hAB, map_add (aeval d₂), map_mul (aeval d₂), map_mul (aeval d₂), linearMap_add_apply, linearMap_mul_apply, linearMap_mul_apply, ← hfy₁, ← hfy₂, map_add f, linearMap_aeval_apply_comm_of_intertwine f d₁ d₂ hf, linearMap_aeval_apply_comm_of_intertwine …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_mem_map_eq_smul (f : M₁ →ₗ[O] M₂) (d₁ : M₁ →ₗ[O] M₁) (d₂ : M₂ →ₗ[O] M₂)
     (hf : ∀ y, f (d₁ y) = d₂ (f y)) (N₁ : Submodule O M₁) (hN : ∀ y ∈ N₁, d₁ y ∈ N₁)

@@ -8,21 +8,21 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ m _ U hUo hUc`. Establish `hcl : IsClopen (U : Set (AdelicGLn.FiniteAdelicGL K n))` using `⟨U.isClosed_of_isOpen hUo, hUo⟩`. Establish `hpos : (m.real U : ℝ) ≠ 0`. Rewrite using `[Measure.real, ENNReal.toReal_ne_zero]`. Conclude with `⟨(hUo.measure_pos m ⟨1, U.one_mem⟩).ne', hUc.measure_lt_top.ne⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨-, hmem, a1, a2, a3, hmul, -, -, -⟩` from `UpperTheory.ConvolutionTheory.Tf.commPrj K n μ U`. Set `e : TF K n` to `⟨⟨(U : Set (AdelicGLn.FiniteAdelicGL K n)).indicator (fun _ => ((m.real U : ℝ) : ℂ)⁻¹), hcl.continuous_indicator continuous_const⟩, HasCompactSupport.intro hUc fun x hx => Set.indicator_of_notMem hx (fun _ => ((m.real U : ℝ) : ℂ)⁻¹)⟩`. Establish `he : ∀ h, e h = (U : Set (AdelicGLn.FiniteAdelicGL K n)).indicator (fun _ => ((m.real U : ℝ) : ℂ)⁻¹) h` using `fun _ => rfl`. Use `⟨e, he, ContinuousLinearMap.ext fun v => ?_⟩` and prove the remaining obligations. Establish `hO : Ofin μ m e v = ∫ h, e h • rhoF μ h v ∂m`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `Ofin`. Rewrite using `[UnitaryRep.integrated_ccToL1_apply]`. Both sides reduce to the same expression. Establish `hint : Integrable (fun h => e h • rhoF μ h v) m` using `(e.continuous.smul (((rightRegularRep (rationalGLOne K n) μ).continuous_orbit v).comp MultiplicityOne.continuous_finProj)).integrable_of_hasCompactSupport e.hasCompactSupport.smul_right`. Establish `h1 : Ofin μ m e v ∈ fixF μ U`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hmem]`. Introduce `u hu`. Rewrite using `[hO, ← ContinuousLinearMap.integral_comp_comm _ hint, ← integral_mul_left_eq_self (fun h => e h • rhoF μ h v) u]`. Use `congr 1`. Use function extensionality and compare the values at `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: e (u * h) = e h`. Rewrite using `[he, he]`. Distinguish the cases in `hh : h ∈ U`. Rewrite using `[Set.indicator_of_mem (show u * h ∈ (U : Set _) from U.mul_mem hu hh), Set.indicator_of_mem (show h ∈ (U : Set _) from hh)]`. Rewrite using `[Set.indicator_of_notMem (show u * h ∉ (U : Set _) from fun h' => hh ((U.mul_mem_cancel_left hu).1 h')), Set.indicator_of_notMem (show h ∉ (U : Set _) from hh)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[this, hmul, map_smul, ContinuousLinearMap.comp_apply]`. Rewrite using `[← a2 _ h1, hO, ← ContinuousLinearMap.integral_comp_comm _ hint]`. Establish `h2 : (fun h => prj (fixF μ U) (e h • rhoF μ h v)) = fun h => e h • prj (fixF μ U) v`. Use function extensionality and compare the values at `h`. Rewrite using `[map_smul, he]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hh : h ∈ U`. Rewrite using `[← ContinuousLinearMap.comp_apply, (a3 h hh).2]`. Rewrite using `[Set.indicator_of_notMem (show h ∉ (U : Set _) from hh), zero_smul, zero_smul]`. Rewrite using `[h2, integral_smul_const]`. Simplify using `only [he]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[integral_indicator_const _ hUo.measurableSet, Complex.real_smul, mul_inv_cancel₀ (by exact_mod_cast hpos), one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.ConvolutionTheory.Tf.prjFix :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (m : Measure (AdelicGLn.FiniteAdelicGL K n)) [m.IsHaarMeasure] (U : Subgroup (AdelicGLn.FiniteAdelicGL K n)),

@@ -21,9 +21,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.QKAvg
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace (radN d) := (GlobalTheory.T.isClosed_unipotent_radical_stabilizer D B W t d).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : LocallyCompactSpace (levM d) := (GlobalTheory.T.unipotent_radical_stabilizer_property D B W t d).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology (GlobalTheory.RegSW.stab d) := TopologicalSpace.Subtype.secondCountableTopology _`. Take `⟨νN, h1, h2, h3⟩` from `GlobalTheory.T.exists_haar_unipotent_radical_conj_scaling D B W t d`. Take `⟨νM, h4, h5⟩` from `GlobalTheory.T.exists_right_invariant_haar_levi D B W t d`.
-
-Conclude with `GlobalTheory.T.haar_measure_semidirect_product_formula (GlobalTheory.RegSW.stab d) (radN d) (levM d) (GlobalTheory.T.isClosed_unipotent_radical_stabilizer D B W t d) (GlobalTheory.T.unipotent_radical_stabilizer_property D B W t d) (exists_radN_mul_levM d) (GlobalTheory.T.unipoten …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem modular_stab (D : D7) (B W : HSp D) (t : ℕ) (d : HypDec B W t) [LocallyCompactSpace (GlobalTheory.RegSW.stab d)]
     (q : GlobalTheory.RegSW.stab d) :
@@ -39,9 +37,9 @@ theorem modular_stab (D : D7) (B W : HSp D) (t : ℕ) (d : HypDec B W t) [Locall
     (fun n hn => by simp [GlobalTheory.T.absDet_unipotent_radical_eq_one D B W t d n hn]) (fun m hm => by simpa using h3 m hm) q
 
 /- English proof (translation)
-Introduce `D t B W d l hl νK hνK s hs hlaw g`. Take `⟨hIw, hK⟩` from `GlobalTheory.RegSch.FirstTermCompare.hasIw_of_good d hl`. Use `haveI : LocallyCompactSpace (GlobalTheory.RegSW.stab d) := (GlobalTheory.RegSW.isClosed_stab d).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Set `μ : Measure (GA D B)` to `Measure.haar`. Use `haveI : μ.IsMulRightInvariant := GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D B μ inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.T.haar_measure_iwasawa_modular_character (GA D B) μ (GlobalTheory.RegSW.stab d) l.K (GlobalTheory.RegSW.isClosed_stab d) hK (fun g => ?_) ((powMonoidHom (W.rank + t) : ℝ≥0 →* ℝ≥0).comp (GlobalTheory.RegSW.absDet d)) (show Continuous fun q => GlobalTheory.RegSW.absDet …` and prove the remaining obligations. Take `⟨q, k, hk, e⟩` from `hIw g`. Conclude with `⟨q, q.2, k, hk, e⟩`. Simplify using `using modular_stab D B W t d q`. Simplify using `using hlaw q h`.
+Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem qk : PositivityTheory.Rg.Rsw.L.QK := by
   intro D t B W d l hl νK hνK s hs hlaw g

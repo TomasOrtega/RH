@@ -38,7 +38,7 @@ def SecondRankHypothesis : Prop :=
 def SecondPropositionOfRank : Prop := ∀ (D : D7) (HW : HWOf D.loc), modelQR D HW → SecondRankCountAll D HW → u2R D HW
 
 /- English proof (translation)
-Introduce `D HW F Cm CA CB CK hA` and use `hL D HW (hQ D HW F Cm CA CB CK hA) (hR D HW F Cm CA CB CK hA (hML D HW F Cm CA CB CK hA))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem second_proposition_of_models (hL : SecondPropositionOfRank) (hQ : ModelQStep) (hR : SecondRankHypothesis) (hML : ModelLStep) : SecondPropositionHypothesis :=
   fun D HW F Cm CA CB CK hA =>

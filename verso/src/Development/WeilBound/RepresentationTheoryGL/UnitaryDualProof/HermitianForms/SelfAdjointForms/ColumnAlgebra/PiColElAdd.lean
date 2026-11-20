@@ -20,32 +20,32 @@ def fp (ξ : Fin (m + 1) → k) (p : AddSubgroup (Fin (m + 1) → k) × Finset (
 variable {ψ h π}
 
 /- English proof (translation)
-Rewrite using `[← colEl_add, ← colEl_add, add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem colEl_comm (x y : Fin (m + 1) → k) : colEl k m N h x * colEl k m N h y = colEl k m N h y * colEl k m N h x := by
   rw [← colEl_add, ← colEl_add, add_comm]
 
 /- English proof (translation)
-Rewrite using `[colEl_add, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pi_colEl_add (x y : Fin (m + 1) → k) (v : V) :
     π (colEl k m N h (x + y)) v = π (colEl k m N h x) (π (colEl k m N h y) v) := by
   rw [colEl_add, map_mul]; rfl
 
 /- English proof (translation)
-Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, Circle.norm_coe]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem psi_mul_conj (c : Circle) : ((c : ℂ)) * starRingEnd ℂ (c : ℂ) = 1 := by
   rw [Complex.mul_conj, Complex.normSq_eq_norm_sq, Circle.norm_coe]; simp
 
 /- English proof (translation)
-Rewrite using `[mul_comm, psi_mul_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mul_psi (c : Circle) : starRingEnd ℂ (c : ℂ) * (c : ℂ) = 1 := by
   rw [mul_comm, psi_mul_conj]
 
 /- English proof (translation)
-Unfold `fp`. Rewrite using `[← smul_add, ← Finset.sum_add_distrib]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun t _ => by rw [map_add, smul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem fp_add (ξ : Fin (m + 1) → k) (p : AddSubgroup (Fin (m + 1) → k) × Finset (Fin (m + 1) → k)) (x y : V) :
     fp ψ h π ξ p (x + y) = fp ψ h π ξ p x + fp ψ h π ξ p y := by
@@ -53,7 +53,7 @@ theorem fp_add (ξ : Fin (m + 1) → k) (p : AddSubgroup (Fin (m + 1) → k) × 
   exact Finset.sum_congr rfl fun t _ => by rw [map_add, smul_add]
 
 /- English proof (translation)
-Unfold `fp`. Simplify using `only [map_smul, Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fp_smul (ξ : Fin (m + 1) → k) (p : AddSubgroup (Fin (m + 1) → k) × Finset (Fin (m + 1) → k)) (c : ℂ) (x : V) :
     fp ψ h π ξ p (c • x) = c • fp ψ h π ξ p x := by
@@ -64,7 +64,7 @@ theorem fp_smul (ξ : Fin (m + 1) → k) (p : AddSubgroup (Fin (m + 1) → k) ×
   ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [fp]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, fp_add, fp_smul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem fp_sum (s : Finset (Fin (m + 1) → k)) (ξ : Fin (m + 1) → k)
     (p : AddSubgroup (Fin (m + 1) → k) × Finset (Fin (m + 1) → k)) (x : V) :
@@ -76,7 +76,7 @@ theorem fp_sum (s : Finset (Fin (m + 1) → k)) (ξ : Fin (m + 1) → k)
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, fp_add, fp_smul, ih]
 
 /- English proof (translation)
-Take `⟨t, ht, -⟩` from `hp.2.2.2.2.2 0 A.zero_mem`. Conclude with `Finset.card_pos.2 ⟨t, ht.1⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem card_pos {ξ : Fin (m + 1) → k} {A : AddSubgroup (Fin (m + 1) → k)} {v : V}
     {p : AddSubgroup (Fin (m + 1) → k) × Finset (Fin (m + 1) → k)} (hp : AvgData ψ h π ξ A v p) : 0 < p.2.card := by
@@ -84,7 +84,7 @@ theorem card_pos {ξ : Fin (m + 1) → k} {A : AddSubgroup (Fin (m + 1) → k)} 
   exact Finset.card_pos.2 ⟨t, ht.1⟩
 
 /- English proof (translation)
-Establish `e : ∀ t ∈ T, (starRingEnd ℂ ((f t : Circle) : ℂ)) • (((f t : Circle) : ℂ) • y) = y` using `fun t _ => by`. Rewrite using `[smul_smul, conj_mul_psi, one_smul]`. Establish `e2 : ∑ t ∈ T, (starRingEnd ℂ ((f t : Circle) : ℂ)) • (((f t : Circle) : ℂ) • y) = ∑ t ∈ T, y` using `Finset.sum_congr rfl e`. Rewrite using `[e2, Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ T.card y, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hT.ne' : (T.card : ℂ) ≠ 0), one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem collapse {X : Type} (T : Finset X) (hT : 0 < T.card) (f : X → Circle) (y : V) :
     ((T.card : ℂ)⁻¹) • ∑ t ∈ T, (starRingEnd ℂ ((f t : Circle) : ℂ)) • (((f t : Circle) : ℂ) • y) = y := by
@@ -96,7 +96,7 @@ theorem collapse {X : Type} (T : Finset X) (hT : 0 < T.card) (f : X → Circle) 
     inv_mul_cancel₀ (by exact_mod_cast hT.ne' : (T.card : ℂ) ≠ 0), one_smul]
 
 /- English proof (translation)
-Unfold `fp`. Rewrite using `[map_smul, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← pi_colEl_add, ← pi_colEl_add, add_comm y t]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fp_comm (ξ : Fin (m + 1) → k) (p : AddSubgroup (Fin (m + 1) → k) × Finset (Fin (m + 1) → k)) (y : Fin (m + 1) → k)
     (x : V) : π (colEl k m N h y) (fp ψ h π ξ p x) = fp ψ h π ξ p (π (colEl k m N h y) x) := by
@@ -107,21 +107,19 @@ theorem fp_comm (ξ : Fin (m + 1) → k) (p : AddSubgroup (Fin (m + 1) → k) ×
   rw [map_smul, ← pi_colEl_add, ← pi_colEl_add, add_comm y t]
 
 /- English proof (translation)
-Establish `hs : ∀ t ∈ p.2, ∃ t', t' ∈ p.2 ∧ (t + y) - t' ∈ p.1` using `fun t ht => (htr _ (A.add_mem (hT t ht) hy)).exists`. Establish `hr : ∀ t ∈ p.2, ∃ t', t' ∈ p.2 ∧ (t - y) - t' ∈ p.1` using `fun t ht => (htr _ (A.sub_mem (hT t ht) hy)).exists`. Set `σ : (Fin (m + 1) → k) → (Fin (m + 1) → k)` to `fun t => if hh : ∃ t', t' ∈ p.2 ∧ (t + y) - t' ∈ p.1 then hh.choose else t`. Set `τ : (Fin (m + 1) → k) → (Fin (m + 1) → k)` to `fun t => if hh : ∃ t', t' ∈ p.2 ∧ (t - y) - t' ∈ p.1 then hh.choose else t`. Establish `hσ : ∀ t ∈ p.2, σ t ∈ p.2 ∧ (t + y) - σ t ∈ p.1` using `fun t ht => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [σ, dif_pos (hs t ht)]`. Conclude with `(hs t ht).choose_spec`. Establish `hτ : ∀ t ∈ p.2, τ t ∈ p.2 ∧ (t - y) - τ t ∈ p.1` using `fun t ht => by`. Simplify using `only [τ, dif_pos (hr t ht)]`. Conclude with `(hr t ht).choose_spec`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `fp`. Rewrite using `[smul_comm (((ψ (ξ ⬝ᵥ y) : Circle) : ℂ)) ((p.2.card : ℂ)⁻¹)]`. Use `congr 1`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_nbij' σ τ (fun t ht => (hσ t ht).1) (fun t ht => (hτ t ht).1) (fun t ht => ?_) (fun t ht => ?_) (fun t ht => ?_)` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hσ t ht`. Establish `h2` using `hτ _ h1.1`. Use `((htr _ (A.sub_mem (hT _ h1.1) hy)).unique ⟨h2.1, h2.2⟩ ⟨ht, ?_⟩)` and prove the remaining obligations. Establish `: (σ t - y) - t = -((t + y) - σ t)` using `by abel`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `p.1.neg_mem h1.2`. Establish `h1` using `hτ t ht`. Establish `h2` using `hσ _ h1.1`. Use `((htr _ (A.add_mem (hT _ h1.1) hy)).unique ⟨h2.1, h2.2⟩ ⟨ht, ?_⟩)` and prove the remaining obligations. Establish `: (τ t + y) - t = -((t - y) - τ t)` using `by abel`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `p.1.neg_mem h1.2`. Take `⟨h1, h2⟩` from `hσ t ht set u := (t + y) - σ t with hu`. Establish `et : t + y = σ t + u` using `by rw [hu]; abel`. Establish `hdot : ξ ⬝ᵥ t = ξ ⬝ᵥ σ t + ξ ⬝ᵥ u - ξ ⬝ᵥ y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← dotProduct_add, ← dotProduct_sub, ← et, add_sub_cancel_right]`. Establish `hψt : ψ (ξ ⬝ᵥ t) = ψ (ξ ⬝ᵥ σ t) / ψ (ξ ⬝ᵥ y)`. Rewrite using `[hdot, AddChar.map_sub_eq_div, AddChar.map_add_eq_mul, hH u h2, mul_one]`. Rewrite using `[← pi_colEl_add, et, pi_colEl_add, hx u h2, smul_smul]`. Use `congr 1`.
-
-Rewrite using `[hψt, Circle.coe_div, map_div₀, div_eq_mul_inv, mul_comm]`. Use `congr 1`. Rewrite using `[← Circle.coe_inv_eq_conj, Circle.coe_inv, inv_inv]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fp_shift (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)}
     (p : AddSubgroup (Fin (m + 1) → k) × Finset (Fin (m + 1) → k)) (hH : ∀ a ∈ p.1, ψ (ξ ⬝ᵥ a) = 1)
@@ -171,7 +169,7 @@ theorem fp_shift (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)}
     rw [← Circle.coe_inv_eq_conj, Circle.coe_inv, inv_inv]
 
 /- English proof (translation)
-Rewrite using `[fp_comm]`. Conclude with `fp_shift ξ p hp.2.2.2.1 hp.2.2.2.2.1 hp.2.2.2.2.2 x hp.2.2.1 hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fp_eigen (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)} {x : V}
     {p : AddSubgroup (Fin (m + 1) → k) × Finset (Fin (m + 1) → k)} (hp : AvgData ψ h π ξ A x p)
@@ -181,7 +179,7 @@ theorem fp_eigen (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)} 
   exact fp_shift ξ p hp.2.2.2.1 hp.2.2.2.2.1 hp.2.2.2.2.2 x hp.2.2.1 hy
 
 /- English proof (translation)
-Unfold `fp`. Rewrite using `[Finset.sum_congr rfl fun t ht => by rw [hu t (hT t ht)]]`. Conclude with `collapse p.2 hc (fun t => ψ (ξ ⬝ᵥ t)) u`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fp_of_eigen (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)}
     (p : AddSubgroup (Fin (m + 1) → k) × Finset (Fin (m + 1) → k)) (hT : ∀ t ∈ p.2, t ∈ A) (hc : 0 < p.2.card)
@@ -191,7 +189,7 @@ theorem fp_of_eigen (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k
   exact collapse p.2 hc (fun t => ψ (ξ ⬝ᵥ t)) u
 
 /- English proof (translation)
-Establish `e : fp ψ h π ξ p x = ((p.2.card : ℂ)⁻¹) • ∑ t ∈ p.2, (starRingEnd ℂ ((ψ (ξ ⬝ᵥ t) : Circle) : ℂ)) • π (colEl k m N h t) x` using `rfl`. Rewrite using `[e, fp_smul, fp_sum]`. Rewrite using `[Finset.sum_congr rfl fun t ht => by rw [fp_shift ξ q hH hT htr x hx (hp t ht)]]`. Conclude with `collapse p.2 hcp (fun t => ψ (ξ ⬝ᵥ t)) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fp_fp (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)}
     (p q : AddSubgroup (Fin (m + 1) → k) × Finset (Fin (m + 1) → k)) (hp : ∀ t ∈ p.2, t ∈ A) (hcp : 0 < p.2.card)
@@ -204,9 +202,9 @@ theorem fp_fp (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)}
   exact collapse p.2 hcp (fun t => ψ (ξ ⬝ᵥ t)) _
 
 /- English proof (translation)
-Establish `hd : ∃ p, AvgData ψ h π ξ A v p` using `⟨p, hp⟩`. Establish `hp0` using `hd.choose_spec`. Establish `e : avg ψ h π ξ A v = fp ψ h π ξ hd.choose v`. Unfold `avg`. Rewrite using `[dif_pos hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Establish `h1 : fp ψ h π ξ hd.choose (fp ψ h π ξ p v) = fp ψ h π ξ p v` using `fp_of_eigen ξ hd.choose hp0.2.2.2.2.1 (card_pos hp0) _ fun a ha => fp_eigen ξ hp ha`. Establish `h2 : fp ψ h π ξ hd.choose (fp ψ h π ξ p v) = fp ψ h π ξ hd.choose v` using `fp_fp ξ p hd.choose hp.2.2.2.2.1 (card_pos hp) hp0.2.2.2.1 hp0.2.2.2.2.1 hp0.2.2.2.2.2 v hp0.2.2.1`. Rewrite using `[← h2, h1]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem avg_eq_fp (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)} {v : V}
     {p : AddSubgroup (Fin (m + 1) → k) × Finset (Fin (m + 1) → k)} (hp : AvgData ψ h π ξ A v p) :
@@ -225,9 +223,9 @@ theorem avg_eq_fp (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)}
 variable {s : ℝ} {B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ}
 
 /- English proof (translation)
-Establish `hmem : unip k (m + 1) (Multiplicative.ofAdd x) ∈ Mir k (m + 1)` using `by first`. Consider the case `exact MirU_le_Mir k (m + 1) ⟨Multiplicative.ofAdd x, rfl⟩`. Consider the case `exact MirU_le_Mir (m + 1) ⟨Multiplicative.ofAdd x, rfl⟩`. Establish `e` using `hB.mir _ hmem v w`. Establish `hd : nabs k (Matrix.GeneralLinearGroup.det (unip k (m + 1) (Multiplicative.ofAdd x))) = 1`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[det_unip]`. Simplify using `[nabs]`. Rewrite `e` using `[hd, Real.one_rpow, Complex.ofReal_one, one_mul]`. Conclude with `e`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem B_colEl (hB : Lv ψ h π s B) (x : Fin (m + 1) → k) (v w : V) :
     B (π (colEl k m N h x) v) (π (colEl k m N h x) w) = B v w := by
@@ -242,7 +240,7 @@ theorem B_colEl (hB : Lv ψ h π s B) (x : Fin (m + 1) → k) (v w : V) :
   exact e
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `avgData_exists ψ h π hB.cont hB.smooth ξ A hA v`. Rewrite using `[avg_eq_fp ξ hp]`. Conclude with `fp_eigen ξ hp hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_eig (hB : Lv ψ h π s B) (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat A) (v : V)
     {y : Fin (m + 1) → k} (hy : y ∈ A) :
@@ -252,11 +250,11 @@ theorem avg_eig (hB : Lv ψ h π s B) (ξ : Fin (m + 1) → k) {A : AddSubgroup 
   exact fp_eigen ξ hp hy
 
 /- English proof (translation)
-Take `⟨pw, hpw⟩` from `avgData_exists ψ h π hB.cont hB.smooth ξ A hA w`. Use `set a := avg ψ h π ξ A v with ha_def`. Establish `hterm : ∀ t ∈ pw.2, B a ((starRingEnd ℂ ((ψ (ξ ⬝ᵥ t) : Circle) : ℂ)) • π (colEl k m N h t) w) = B a w`. Introduce `t ht`. Establish `htA : -t ∈ A` using `A.neg_mem (hpw.2.2.2.2.1 t ht)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : a = π (colEl k m N h t) (π (colEl k m N h (-t)) a)`. Rewrite using `[← pi_colEl_add, add_neg_cancel, colEl_zero, map_one]`. Both sides reduce to the same expression. Establish `e2 : B a (π (colEl k m N h t) w) = ((ψ (ξ ⬝ᵥ (-t)) : Circle) : ℂ) * B a w` using `by conv_lhs => rw [e1]`. Rewrite using `[B_colEl hB, avg_eig hB ξ hA v htA, LinearMap.map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.map_smulₛₗ, starRingEnd_self_apply, e2, smul_eq_mul, ← mul_assoc, dotProduct_neg, AddChar.map_neg_eq_inv, Circle.coe_inv_eq_conj, psi_mul_conj, one_mul]`. Rewrite using `[avg_eq_fp ξ hpw]`. Unfold `fp`. Rewrite using `[LinearMap.map_smulₛₗ, map_sum, Finset.sum_congr rfl hterm, Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, map_inv₀, map_natCast, inv_mul_cancel₀ (by exact_mod_cast (card_pos hpw).ne' : (pw.2.card : ℂ) ≠ 0), one_smul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_selfadj (hB : Lv ψ h π s B) (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat A)
     (v w : V) : B (avg ψ h π ξ A v) w = B (avg ψ h π ξ A v) (avg ψ h π ξ A w) := by
@@ -280,13 +278,11 @@ theorem avg_selfadj (hB : Lv ψ h π s B) (ξ : Fin (m + 1) → k) {A : AddSubgr
     one_smul]
 
 /- English proof (translation)
-Take `⟨x, hx, hne⟩` from `hne`. Use `set a := avg ψ h π ξ A v`. Use `set b := avg ψ h π η A w`. Establish `e` using `B_colEl hB x a b`. Rewrite `e` using `[avg_eig hB ξ hA v hx, avg_eig hB η hA w hx, LinearMap.map_smul, LinearMap.smul_apply, LinearMap.map_smulₛₗ, smul_eq_mul, smul_eq_mul, ← mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hX`. Apply `hne` to reduce the goal to its premises. Establish `hc : ((ψ (ξ ⬝ᵥ x) : Circle) : ℂ) * starRingEnd ℂ ((ψ (η ⬝ᵥ x) : Circle) : ℂ) = 1`. Establish `h1 : (((ψ (ξ ⬝ᵥ x) : Circle) : ℂ) * starRingEnd ℂ ((ψ (η ⬝ᵥ x) : Circle) : ℂ) - 1) * B a b = 0`. Rewrite using `[sub_mul, one_mul, e, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h1).resolve_right hX)`. Establish `h2 : ((ψ (ξ ⬝ᵥ x) : Circle) : ℂ) = ((ψ (η ⬝ᵥ x) : Circle) : ℂ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[conj_mul_psi, mul_one]`. Use `_ = ((ψ (η ⬝ᵥ x) : Circle) : ℂ) := by rw [← mul_assoc, hc, one_mul]`.
-
-Apply the tactic sequence `first | exact Circle.ext h2 | exact Subtype.ext h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_orth (hB : Lv ψ h π s B) (ξ η : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat A)
     (hne : ∃ x ∈ A, ψ (ξ ⬝ᵥ x) ≠ ψ (η ⬝ᵥ x)) (v w : V) : B (avg ψ h π ξ A v) (avg ψ h π η A w) = 0 := by
@@ -310,11 +306,9 @@ theorem avg_orth (hB : Lv ψ h π s B) (ξ η : Fin (m + 1) → k) {A : AddSubgr
   first | exact Circle.ext h2 | exact Subtype.ext h2
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `avgData_exists ψ h π hB.cont hB.smooth ξ A hA v`. Take `⟨p', hp'⟩` from `avgData_exists ψ h π hB.cont hB.smooth ξ A' hA' v`. Prove the components needed by the constructor for the conclusion. Establish `hu : AvgData ψ h π ξ A' (fp ψ h π ξ p v) p'`. Use `⟨hp'.1, hp'.2.1, fun a ha => ?_, hp'.2.2.2.1, hp'.2.2.2.2.1, hp'.2.2.2.2.2⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[fp_comm, hp'.2.2.1 a ha]`. Rewrite using `[avg_eq_fp ξ hp, avg_eq_fp ξ hu, avg_eq_fp ξ hp']`. Conclude with `fp_fp ξ p p' (fun t ht => hAA (hp.2.2.2.2.1 t ht)) (card_pos hp) hp'.2.2.2.1 hp'.2.2.2.2.1 hp'.2.2.2.2.2 v hp'.2.2.1`. Take `⟨q, hq⟩` from `avgData_exists ψ h π hB.cont hB.smooth ξ A hA (avg ψ h π ξ A' v)`. Rewrite using `[avg_eq_fp ξ hq]`.
-
-Conclude with `fp_of_eigen ξ q hq.2.2.2.2.1 (card_pos hq) _ fun a ha => avg_eig hB ξ hA' v (hAA ha)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_avg (hB : Lv ψ h π s B) (ξ : Fin (m + 1) → k) {A A' : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat A)
     (hA' : IsLat A') (hAA : A ≤ A') (v : V) :

@@ -7,11 +7,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
 /- English proof (translation)
-Introduce `n A E _ _ _ D σ M hM h`. Take `⟨o1, o2, o3⟩` from `UpperTheory.V.CA.d_op D`. Take `⟨p1, -, p3, p4⟩` from `UpperTheory.V.CA.d_pull D.op σ`. Establish `key : D.op.pull σ = D`. Use `UpperTheory.V.CA.d_ext _ _ M hM fun x hx i h1 h2 => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h x hx i h1 h2]`. Unfold `Det.lam`. Rewrite using `[p1 x, ← o1, MulOpposite.op_unop]`. Use `⟨key, fun x hx => ?_, fun hs x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← o3, MulOpposite.op_unop]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `p3 x (by rw [key]; exact hx)`. Rewrite using `[← o2, MulOpposite.op_unop]`. Conclude with `(p4 hs).1 x (by rw [key]; exact hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.d_star :
     ∀ {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) (σ : E →ₐ[A] Eᵐᵒᵖ) (M : Submonoid E), Submodule.span A (M : Set E) = ⊤ → (∀ x ∈ M, ∀ i, 1 ≤ i → i ≤ n → D.lam i (σ x).unop = D.lam i x) → D.op.pull σ = D ∧ (∀ x ∈ D.CH, (σ x).unop ∈ D.CH) ∧ (Function.Surjective σ → ∀ x ∈ D.ker, (σ x).unop ∈ D.ker) := by

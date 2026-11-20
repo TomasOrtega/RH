@@ -21,15 +21,15 @@ namespace GlobalTheory.OrthoHerm
 open scoped Matrix ComplexConjugate in
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.UnitFrame.trace_eq_sum_re Ψ hΨ]`. Set `p : (Fin r → E) → Ψ × Fin r → ℂ` to `fun v t => if (t.2 : ℕ) < q then FD.hermC t.1.1 Gm (FD.col (FD.mat x t.1) t.2) (FD.Data.emb t.1.1 v) else ((FD.mat x t.1)⁻¹ *ᵥ FD.Data.emb t.1.1 v) t.2`. Establish `h2 : hermForm (Matrix.diagonal fun k => ((2 * ((idx k).1.1 ξ).im : ℝ) : ℂ)) z z' = ∑ t : Ψ × Fin r, ((2 * (t.1.1 ξ).im : ℝ) : ℂ) * (p v t * conj (p w t))`. Rewrite using `[hermForm, dotProduct]`. Use `Fintype.sum_equiv idx _ _ fun k => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mulVec_diagonal, Pi.star_apply, hz, hz']`. Simplify using `only [p, RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, Fintype.sum_prod_type, Complex.im_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [p]`. Rewrite using `[← Finset.mul_sum, Complex.im_ofReal_mul, GlobalTheory.UnitFrame.im_sum_periods q τ.1 Gm (FD.mat x τ) (hx τ)]`. Establish `h3 : τ.1 (FD.herm Gm v w) = FD.hermC τ.1 Gm (FD.Data.emb τ.1 v) (FD.Data.emb τ.1 w)`. Simplify using `[FD.hermC, FD.herm, FD.Data.emb, FD.cc, IsCMField.complexEmbedding_complexConj]`. Establish `hre : (τ.1 ξ).re = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h` using `congrArg τ.1 hξ`. Rewrite `h` using `[FD.cc, IsCMField.complexEmbedding_complexConj, map_neg]`. Use `congrArg Complex.re h` as an intermediate fact. Simplify using `only [Complex.conj_re, Complex.neg_re] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[map_mul, h3, Complex.mul_re, hre]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem im_diag_eq_trace {E : Type} [Field E] [NumberField E] [IsCMField E] {r g : ℕ} (q : ℕ) (ξ : E)
     (Gm : Matrix (Fin r) (Fin r) E) (Ψ : Finset (E →+* ℂ))
@@ -74,23 +74,23 @@ theorem im_diag_eq_trace {E : Type} [Field E] [NumberField E] [IsCMField E] {r g
   ring
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U ξ hσ hU k x W Wu hξ hx`. Take `⟨hbij, hrt, -, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hσ`. Take `⟨hp0, hty⟩` from `hU.2.1 k`. Take `⟨f, hf⟩` from `GlobalTheory.FrameUnif.exists_letter_equiv (U.X k).Ψ (U.X k).cmType Dw.p Dw.q r hU.1 (relab c σ) hbij Dw.mult (fun τ h => by unfold Datum.mult; rw [if_pos ((hrt τ).1 ((hty _).1 h))]) (fun τ h => by unfold Datum.mult; rw [if_neg (fun h' => h ((hty _).2 ((hrt τ).2 h')))])`. Establish `hper : ∀ (v : Fin r → E) j, perFr (U.X k) x.1 v (relab c σ (W.e j).1) (W.e j).2 = if (((W.e.trans f) j).2 : ℕ) < (U.X k).p0 then FD.hermC ((W.e.trans f) j).1.1 (U.X k).Gm (FD.col (FD.mat x.1 ((W.e.trans f) j).1) ((W.e.trans f) j).2) (FD.Data.emb ((W.e.trans f) j).1.1 v) else ((FD …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `v j`. Establish `h` using `hf (W.e j)`. Rewrite using `[Equiv.trans_apply]`. Generalize the expression as in `f (W.e j) = t at h ⊢`. Take `⟨⟨τ, hτ⟩, ⟨n, hn⟩⟩` from `t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Generalize the expression as in `((W.e j).2 : ℕ) = i at h ⊢`. Simplify using `only at h ⊢`. Rewrite `h` using `[← hp0]`. Break down `h with ⟨a, rfl, rfl⟩ | ⟨a, rfl, rfl, d⟩` into its components or cases. Rewrite using `[if_neg (by omega)]`.
+Replace the chosen expression with an arbitrary variable. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Unfold `perFr`. Rewrite using `[dif_pos a, dif_pos hn]`. Rewrite using `[if_pos (by omega)]`. Unfold `perFr`. Rewrite using `[dif_neg a, dif_pos (show conjEmb (relab c σ (W.e j).1) ∈ (U.X k).Ψ from hτ), dif_pos hn]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hcc : FD.cc (-(U.X k).ξ0) = -(-(U.X k).ξ0)`. Establish `h` using `(U.X k).ξ0_im`. Unfold `FD.cc at h ⊢`. Rewrite using `[map_neg, h]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `key : Wu.Hm = Matrix.diagonal fun j => ((2 * (((W.e.trans f) j).1.1 (-(U.X k).ξ0)).im : ℝ) : ℂ)`. Use `PullbackSections.UH.herm_eq_of_im W.Pm W.per.2.2.2.1 _ _ fun a b => ?_` and prove the remaining obligations. Rewrite using `[Wu.c1, im_diag_eq_trace (U.X k).p0 _ (U.X k).Gm (U.X k).Ψ (U.X k).cmType (W.e.trans f) hcc x.1 hx (W.φ k a) (W.φ k b) _ _ (fun j => (W.pm_eq a j).trans (hper _ j)) (fun j => (W.pm_eq b j).trans (hper _ j)), ← W.isom, Rat.cast_intCast]`. Establish `hd : ∀ j, (((W.e.trans f) j).1.1 (-(U.X k).ξ0)).im = ξ`. Introduce `j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpos` using `Wu.pos (Pi.single j 1) (by simp)`. Rewrite `hpos` using `[key, hermForm, single_dotProduct, Matrix.mulVec_diagonal, Pi.star_apply, Pi.single_eq_same, star_one, _root_.one_mul, _root_.mul_one, Complex.ofReal_re]`. Generalize the expression as in `((W.e.trans f) j).1.1 = τ at hpos ⊢`. Establish `hre : (τ (-(U.X k).ξ0)).re = 0`. Establish `h` using `congrArg τ hcc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[FD.cc, IsCMField.complexEmbedding_complexConj, map_neg τ (-(U.X k).ξ0)]`. Use `congrArg Complex.re h` as an intermediate fact. Simplify using `only [Complex.conj_re, Complex.neg_re] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hp : 0 < (τ (-(U.X k).ξ0)).im` using `by linarith`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[← hξ τ, ← norm_neg, ← map_neg, ← Complex.abs_im_eq_norm.mpr hre, abs_of_pos hp]`. Rewrite using `[key]`. Simplify using `only [hd]`. Rewrite using `[Matrix.smul_one_eq_diagonal]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hm_eq_smul_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r) (ξ : ℝ), GoodEmb c σ → IsUnf U → ∀ (k : U.Comp) (x : (U.X k).dom) (W : PullbackSections.UnfAt U k x) (Wu : PullbackSections.UnitAt W), (∀ τ : E →+* ℂ, ‖τ (U.X k).ξ0‖ = ξ) → (U.X k).IsOrtho x.1 → Wu.Hm = ((2 * ξ : ℝ) : ℂ) • (1 : Matrix (Fin W.g) (Fin W.g) ℂ) := by
   intro E _ _ _ H Dw l Xo c σ r U ξ hσ hU k x W Wu hξ hx

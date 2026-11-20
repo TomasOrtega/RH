@@ -7,7 +7,7 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.AdicSpan
 
 /- English proof (translation)
-Take `⟨d, hd, h⟩` from `HeightOneSpectrum.adicCompletion.mul_nonZeroDivisor_mem_adicCompletionIntegers v a`. Use `⟨d, nonZeroDivisors.ne_zero hd, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm]`. Simplify using `using h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_int_smul_mem_adicCompletionIntegers_of_elt (v : HeightOneSpectrum ℤ) (a : v.adicCompletion ℚ) :
     ∃ d : ℤ, d ≠ 0 ∧ (d : v.adicCompletion ℚ) * a ∈ v.adicCompletionIntegers ℚ := by
@@ -17,9 +17,9 @@ theorem exists_int_smul_mem_adicCompletionIntegers_of_elt (v : HeightOneSpectrum
   simpa using h
 
 /- English proof (translation)
-Introduce `M _ _ κ b v y`. Use `choose d hd0 hd using exists_int_smul_mem_adicCompletionIntegers_of_elt v`. Use `set c := (Algebra.TensorProduct.basis (v.adicCompletion ℚ) b).repr y with hc`. Use `⟨∏ i ∈ c.support, d (c i), Finset.prod_ne_zero_iff.mpr fun i _ => hd0 _, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[map_zsmul, ← hc, Finsupp.smul_apply, zsmul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hi : i ∈ c.support`. Rewrite using `[← Finset.prod_erase_mul _ _ hi, Int.cast_mul, mul_assoc]`. Conclude with `mul_mem (intCast_mem _ _) (hd _)`. Rewrite using `[Finsupp.notMem_support_iff.mp hi, mul_zero]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_smul_isIntB : ∀ (M : Type) [AddCommGroup M] [Module ℚ M] (κ : Type) (b : Module.Basis κ ℚ M)
     (v : HeightOneSpectrum ℤ) (y : v.adicCompletion ℚ ⊗[ℚ] M), ∃ D : ℤ, D ≠ 0 ∧ IsIntB v b (D • y) := by

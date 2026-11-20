@@ -13,13 +13,13 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {Φ : ι → ι → Prop}
 def Supp (Φ : ι → ι → Prop) (N : Matrix ι ι K) : Prop := ∀ i j, N i j ≠ 0 → Φ i j
 
 /- English proof (translation)
-Unfold `patSet`. Rewrite using `[Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hu i j hN`. Assume the negation of the conclusion as `hΦ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hN` to reduce the goal to its premises. Break down `eq_or_ne i j with rfl | hij` into its components or cases. Rewrite using `[Matrix.sub_apply, Matrix.one_apply_eq, (hu i i).1 rfl, sub_self]`. Rewrite using `[Matrix.sub_apply, Matrix.one_apply_ne hij, (hu i j).2 hij hΦ, sub_zero]`. Introduce `hS i j`.
+Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun hij => ?_, fun hij hΦ => ?_⟩` and prove the remaining obligations. Substitute `hij` using the available equality. Establish `h0 : ((u : Matrix ι ι K) - 1) i i = 0`. Assume the negation of the conclusion as `hne`. Conclude with `h.1 i (hS i i hne)`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h0` using `[Matrix.sub_apply, Matrix.one_apply_eq, sub_eq_zero]`. Then use the resulting hypothesis. Establish `h0 : ((u : Matrix ι ι K) - 1) i j = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hΦ (hS i j hne)`. Rewrite `h0` using `[Matrix.sub_apply, Matrix.one_apply_ne hij, sub_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_patSet_iff (h : IsPat Φ) (u : GL ι K) :
     u ∈ patSet K Φ ↔ Supp Φ ((u : Matrix ι ι K) - 1) := by
@@ -45,7 +45,7 @@ theorem mem_patSet_iff (h : IsPat Φ) (u : GL ι K) :
       rwa [Matrix.sub_apply, Matrix.one_apply_ne hij, sub_zero] at h0
 
 /- English proof (translation)
-Introduce `i j hij`. Rewrite `hij` using `[Matrix.mul_apply]`. Take `⟨k, -, hk⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hij`. Conclude with `h.2 i k j (hA i k (left_ne_zero_of_mul hk)) (hB k j (right_ne_zero_of_mul hk))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Supp.mul (h : IsPat Φ) {A B : Matrix ι ι K} (hA : Supp Φ A) (hB : Supp Φ B) :
     Supp Φ (A * B) := by
@@ -55,9 +55,9 @@ theorem Supp.mul (h : IsPat Φ) {A B : Matrix ι ι K} (hA : Supp Φ A) (hB : Su
   exact h.2 i k j (hA i k (left_ne_zero_of_mul hk)) (hB k j (right_ne_zero_of_mul hk))
 
 /- English proof (translation)
-Introduce `i j hij`. Distinguish the cases in `ha : A i j = 0`. Apply `hB` to reduce the goal to its premises. Introduce `hb`. Apply `hij` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Matrix.add_apply, ha, hb, add_zero]`. Conclude with `hA i j ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Supp.add {A B : Matrix ι ι K} (hA : Supp Φ A) (hB : Supp Φ B) : Supp Φ (A + B) := by
   intro i j hij
@@ -69,19 +69,17 @@ theorem Supp.add {A B : Matrix ι ι K} (hA : Supp Φ A) (hB : Supp Φ B) : Supp
   · exact hA i j ha
 
 /- English proof (translation)
-Set `b : ι → ℕ` to `fun i => (Finset.univ.filter fun k => Φ k i).card`. Establish `hb : ∀ i j, Φ i j → b i < b j`. Introduce `i j hij`. Apply `Finset.card_lt_card` to reduce the goal to its premises. Use `(Finset.ssubset_iff_of_subset ?_).2 ⟨i, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k hk`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hk ⊢`. Conclude with `h.2 k i j hk hij`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `hij`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `h.1 i`. Establish `hN0 : ∀ i j, b j ≤ b i → N i j = 0`. Introduce `i j hle`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `absurd (hb i j (hN i j hne)) (not_lt.2 hle)`. Establish `hT : (1 + N).BlockTriangular b`. Introduce `i j hlt`. Establish `hij : i ≠ j`. Introduce and unpack `rfl`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `lt_irrefl _ hlt`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne hij, hN0 i j hlt.le, add_zero]`. Rewrite using `[hT.det]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Establish `hblk : (1 + N).toSquareBlock b a = 1`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `⟨i, hi⟩ ⟨j, hj⟩`. Use `show (1 + N) i j = (1 : Matrix {a' // b a' = a} {a' // b a' = a} K) ⟨i, hi⟩ ⟨j, hj⟩`. Establish `hNij : N i j = 0` using `hN0 i j (by rw [hi, hj])`. Break down `eq_or_ne i j with rfl | hij` into its components or cases. Rewrite using `[Matrix.add_apply, hNij, add_zero, Matrix.one_apply_eq, Matrix.one_apply_eq]`.
-
-Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne hij, hNij, add_zero, Matrix.one_apply_ne (fun e => hij (congrArg Subtype.val e))]`. Rewrite using `[hblk, Matrix.det_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_one_add (h : IsPat Φ) {N : Matrix ι ι K} (hN : Supp Φ N) : (1 + N).det = 1 := by
   classical
@@ -159,7 +157,7 @@ def fill (Φ : ι → ι → Prop) (f : {p : ι × ι // Φ p.1 p.2} → K) : Ma
   fun i j => if h : Φ i j then f ⟨(i, j), h⟩ else 0
 
 /- English proof (translation)
-Introduce `i j hij`. Assume the negation of the conclusion as `hΦ`. Apply `hij` to reduce the goal to its premises. Simplify using `[fill, hΦ]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem supp_fill (f : {p : ι × ι // Φ p.1 p.2} → K) : Supp Φ (fill Φ f) := by
   intro i j hij
@@ -168,17 +166,15 @@ theorem supp_fill (f : {p : ι × ι // Φ p.1 p.2} → K) : Supp Φ (fill Φ f)
   simp [fill, hΦ]
 
 /- English proof (translation)
-Establish `hunit : ∀ f : {p : ι × ι // Φ p.1 p.2} → K, IsUnit (1 + fill Φ f).det` using `fun f => by`. Rewrite using `[det_one_add h (supp_fill f)]`. Conclude with `isUnit_one`. Set `e : patSet K Φ ≃ ({p : ι × ι // Φ p.1 p.2} → K)` to `{ toFun := fun u p => (u.1 : Matrix ι ι K) p.1.1 p.1.2 invFun := fun f => ⟨Matrix.nonsingInvUnit (1 + fill Φ f) (hunit f), by`. Use `(mem_patSet_iff h _).2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show Supp Φ ((1 + fill Φ f) - 1)`. Rewrite using `[add_sub_cancel_left]`. Conclude with `supp_fill f⟩`. Use `left_inv := fun u => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Units.ext` to reduce the goal to its premises. Use `show 1 + fill Φ (fun p => (u.1 : Matrix ι ι K) p.1.1 p.1.2) = (u.1 : Matrix ι ι K)`. Use extensionality with `i j`. Establish `hu` using `(show ∀ i j, (i = j → (u.1 : Matrix ι ι K) i j = 1) ∧ (i ≠ j → ¬Φ i j → (u.1 : Matrix ι ι K) i j = 0) from u.2) i j`. Rewrite using `[Matrix.add_apply]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [fill]`. Break down `eq_or_ne i j with rfl | hij` into its components or cases. Rewrite using `[Matrix.one_apply_eq, dif_neg (h.1 i), add_zero, hu.1 rfl]`. Rewrite using `[Matrix.one_apply_ne hij, zero_add]`. Distinguish the cases in `hΦ : Φ i j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hΦ]`. Rewrite using `[dif_neg hΦ, hu.2 hij hΦ]`. Use `right_inv := fun f => by`. Use function extensionality and compare the values at `p`. Use `show (1 + fill Φ f) p.1.1 p.1.2 = f p`.
-
-Establish `hne : p.1.1 ≠ p.1.2` using `fun e => h.1 p.1.2 (by have hp := p.2; rw [e] at hp; exact hp)`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne hne, zero_add]`. Simplify using `only [fill]`. Rewrite using `[dif_pos p.2] }`. Rewrite using `[← Nat.card_coe_set_eq, Nat.card_congr e, Nat.card_fun, Nat.card_eq_fintype_card (α := K)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_patSet (h : IsPat Φ) :
     (patSet K Φ).ncard = Fintype.card K ^ Nat.card {p : ι × ι // Φ p.1 p.2} := by
@@ -220,16 +216,16 @@ theorem card_patSet (h : IsPat Φ) :
 def pair (E : ι → ι → K) (M : Matrix ι ι K) : K := ∑ i, ∑ j, E i j * M i j
 
 /- English proof (translation)
-Unfold `pair`. Simplify using `only [Matrix.add_apply, mul_add, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem pair_add (E : ι → ι → K) (A B : Matrix ι ι K) : pair E (A + B) = pair E A + pair E B := by
   unfold pair
   simp only [Matrix.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `pair`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Break down `eq_or_ne i j with rfl | hij` into its components or cases. Establish `hEi : E i i = 0`. Assume the negation of the conclusion as `hne`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `h.1 i (hE.1 i i hne)`. Rewrite using `[hEi, zero_mul]`. Rewrite using `[Matrix.one_apply_ne hij, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_one (h : IsPat Φ) {E : ι → ι → K} (hE : IsPatChar Φ E) : pair E (1 : Matrix ι ι K) = 0 := by
   unfold pair
@@ -242,9 +238,9 @@ theorem pair_one (h : IsPat Φ) {E : ι → ι → K} (hE : IsPatChar Φ E) : pa
   · rw [Matrix.one_apply_ne hij, mul_zero]
 
 /- English proof (translation)
-Unfold `pair`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hAk : A i k = 0`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hAk, zero_mul, mul_zero]`. Distinguish the cases in `hBk : B k j = 0`. Rewrite using `[hBk, mul_zero, mul_zero]`. Rewrite using `[hE.2 i k j (hA i k hAk) (hB k j hBk), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pair_mul {E : ι → ι → K} (hE : IsPatChar Φ E) {A B : Matrix ι ι K}
     (hA : Supp Φ A) (hB : Supp Φ B) : pair E (A * B) = 0 := by
@@ -259,13 +255,13 @@ theorem pair_mul {E : ι → ι → K} (hE : IsPatChar Φ E) {A B : Matrix ι ι
   rw [hE.2 i k j (hA i k hAk) (hB k j hBk), zero_mul]
 
 /- English proof (translation)
-Establish `hu'` using `(mem_patSet_iff h u).1 hu`. Establish `hv'` using `(mem_patSet_iff h v).1 hv`. Establish `key : ∀ w : GL ι K, patChar E ψ₀ w = ψ₀ (pair E (w : Matrix ι ι K))` using `fun w => rfl`. Rewrite using `[key, key, key, ← AddChar.map_add_eq_mul]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `set A := (u : Matrix ι ι K) - 1 with hAdef`. Use `set Bm := (v : Matrix ι ι K) - 1 with hBdef`. Establish `eu : (u : Matrix ι ι K) = 1 + A`. Rewrite using `[hAdef]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ev : (v : Matrix ι ι K) = 1 + Bm`. Rewrite using `[hBdef]`. Normalize the expressions using the abelian group laws. Rewrite using `[Units.val_mul, eu, ev]`. Establish `e2 : (1 + A) * (1 + Bm) = 1 + (A + Bm + A * Bm)` using `by noncomm_ring`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2]`. Simplify using `only [pair_add]`. Rewrite using `[pair_one h hE, pair_mul hE hu' hv']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem patChar_mul (h : IsPat Φ) {E : ι → ι → K} (hE : IsPatChar Φ E) (ψ₀ : AddChar K ℂ)
     {u v : GL ι K} (hu : u ∈ patSet K Φ) (hv : v ∈ patSet K Φ) :
@@ -291,7 +287,7 @@ theorem patChar_mul (h : IsPat Φ) {E : ι → ι → K} (hE : IsPatChar Φ E) (
   ring
 
 /- English proof (translation)
-Use `show ψ₀ (pair E ((1 : GL ι K) : Matrix ι ι K)) = 1`. Rewrite using `[Units.val_one, pair_one h hE, AddChar.map_zero_eq_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem patChar_one (h : IsPat Φ) {E : ι → ι → K} (hE : IsPatChar Φ E) (ψ₀ : AddChar K ℂ) :
     patChar E ψ₀ (1 : GL ι K) = 1 := by
@@ -299,13 +295,13 @@ theorem patChar_one (h : IsPat Φ) {E : ι → ι → K} (hE : IsPatChar Φ E) (
   rw [Units.val_one, pair_one h hE, AddChar.map_zero_eq_one]
 
 /- English proof (translation)
-Distinguish the cases in `h1 : L 1 = 0`. Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `hL0 : ∀ x, L x = 0` using `fun x => by rw [← mul_one x, hL, h1, mul_zero]`. Simplify using `[hL0]`. Establish `hL1 : L 1 = 1`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h11` using `hL 1 1`. Rewrite `h11` using `[mul_one]`. Conclude with `(mul_left_cancel₀ h1 (by rw [mul_one]; exact h11)).symm`. Set `σ' : Representation ℂ H V` to `{ toFun := fun x => L x • σ x map_one' := by show L 1 • σ 1 = 1`. Rewrite using `[map_one, hL1, one_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_mul' := fun a b => by show L (a * b) • σ (a * b) = (L a • σ a) * (L b • σ b)`. Rewrite using `[hL, map_mul, smul_mul_smul_comm] }`. Use `haveI : Invertible (Nat.card H : ℂ) := invertibleOfNonzero (Nat.cast_ne_zero.2 Nat.card_pos.ne')`. Use `⟨Module.finrank ℂ (Representation.invariants (FDRep.of σ').ρ), ?_⟩` and prove the remaining obligations. Rewrite using `[← FDRep.average_char_eq_finrank_invariants, Nat.card_eq_fintype_card]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `show L x * LinearMap.trace ℂ V (σ x) = LinearMap.trace ℂ V (L x • σ x)`. Rewrite using `[LinearMap.map_smul, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_avg {H V : Type} [Group H] [Fintype H] [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] (L : H → ℂ) (hL : ∀ a b, L (a * b) = L a * L b)
@@ -337,13 +333,11 @@ theorem exists_nat_avg {H V : Type} [Group H] [Fintype H] [AddCommGroup V] [Modu
     rw [LinearMap.map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Use `set G' := patSubgroup (K := K) h with hG'`. Establish `hmem : ∀ u : GL ι K, u ∈ G' ↔ u ∈ patSet K Φ` using `fun u => by`. Rewrite using `[← coe_patSubgroup h]`. Both sides reduce to the same expression. Take `⟨m, hm⟩` from `exists_nat_avg (H := G') (V := V) (fun x => (patChar E ψ₀ (x : GL ι K))⁻¹) (fun a b => by show (patChar E ψ₀ ((a : GL ι K) * b))⁻¹ = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[patChar_mul h hE ψ₀ ((hmem _).1 a.2) ((hmem _).1 b.2), mul_inv])`. Use the proof step `(ρ.comp G'.subtype)`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[← hm]`. Unfold `wh`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : ((patSet K Φ).ncard : ℂ) = (Fintype.card G' : ℂ)`. Rewrite using `[← Nat.card_eq_fintype_card, ← coe_patSubgroup h]`. Conclude with `congrArg _ (Nat.card_coe_set_eq _).symm`. Rewrite using `[hcard, ← Finset.sum_filter]`. Use `congr 1`.
-
-Conclude with `Finset.sum_subtype _ (fun u => by simp [hmem]) _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_nat_wh (h : IsPat Φ) {E : ι → ι → K} (hE : IsPatChar Φ E) (ψ₀ : AddChar K ℂ)
     {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
@@ -369,11 +363,9 @@ theorem exists_nat_wh (h : IsPat Φ) {E : ι → ι → K} (hE : IsPatChar Φ E)
   exact Finset.sum_subtype _ (fun u => by simp [hmem]) _
 
 /- English proof (translation)
-Introduce `K _ _ _ ι _ _ Φ h`. Use `⟨⟨patSubgroup h, coe_patSubgroup h⟩, card_patSet h, fun E ψ₀ hE => ⟨fun u hu v hv => patChar_mul h hE ψ₀ hu hv, patChar_one h hE ψ₀, fun u hu => ?_, fun V _ _ _ ρ => exists_nat_wh h hE ψ₀ ρ⟩⟩` and prove the remaining obligations. Establish `hu' : u ∈ ((patSubgroup h : Subgroup (GL ι K)) : Set (GL ι K))`. Rewrite using `[coe_patSubgroup h]`. Conclude with `hu`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : u⁻¹ ∈ patSet K Φ`. Rewrite using `[← coe_patSubgroup h]`. Conclude with `(patSubgroup (K := K) h).inv_mem hu'`. Establish `hm` using `patChar_mul h hE ψ₀ hu hinv`. Rewrite `hm` using `[mul_inv_cancel, patChar_one h hE ψ₀]`.
-
-Conclude with `eq_inv_of_mul_eq_one_right hm.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem patGroup : ReciprocityTheory.Ty.Fin.St.PatGroup := by
   intro K _ _ _ ι _ _ Φ h

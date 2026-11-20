@@ -22,11 +22,9 @@ noncomputable section
 namespace GlobalTheory.FockSubstHarm
 
 /- English proof (translation)
-Use `Equiv.ext fun ℓ => ?_` and prove the remaining obligations. Take `⟨hb, h1⟩` from `h ℓ`. Take `⟨hb', h1'⟩` from `h' ℓ`. Establish `hpsi : ∀ ρ, InPsi H (tauE D ρ)` using `fun ρ => (hΨ _).2 ⟨ρ, rfl⟩`. Establish `hnot : ∀ ρ, ¬ InPsi H (ComplexEmbedding.conjugate (tauE D ρ))` using `fun ρ hc => (GlobalTheory.Harm.not_mem_hostType_iff H (ComplexEmbedding.conjugate (tauE D ρ))).2 (by have e := ComplexEmbedding.involutive_conjugate _ (tauE D ρ); have := hpsi ρ; rw [← e] at this; exact this) hc`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases h1 with ⟨e1, e2⟩ | ⟨e1, e2⟩ <;> rcases h1' with ⟨e1', e2'⟩ | ⟨e1', e2'⟩`. Establish `hρ : (lt ℓ).1 = (lt' ℓ).1` using `GlobalTheory.StdRat.tauE_injective D (e1.symm.trans e1')`. Conclude with `Prod.ext hρ (Prod.ext (Fin.ext (by omega)) (hb.trans hb'.symm))`. Conclude with `absurd (e1 ▸ hpsi (lt ℓ).1 : InPsi H ℓ.1) (e1' ▸ hnot (lt' ℓ).1)`. Conclude with `absurd (e1' ▸ hpsi (lt' ℓ).1 : InPsi H ℓ.1) (e1 ▸ hnot (lt ℓ).1)`.
-
-Establish `hρ : (lt ℓ).1 = (lt' ℓ).1` using `GlobalTheory.StdRat.tauE_injective D ((ComplexEmbedding.involutive_conjugate _).injective (e1.symm.trans e1'))`. Conclude with `Prod.ext hρ (Prod.ext (Fin.ext (by omega)) (hb.trans hb'.symm))`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLetters_unique {D : D7} {H : Geo.Tor.Host D.host.E} (Dw : Datum H) {m n : ℕ}
     (hΨ : ∀ τ : D.host.E →+* ℂ, InPsi H τ ↔ ∃ ρ, τ = tauE D ρ) {lt lt' : LtN Dw n ≃ FVar D m n}
@@ -53,11 +51,11 @@ noncomputable section
 namespace GlobalTheory.FockSubstHarm
 
 /- English proof (translation)
-Use `MvPolynomial.algHom_ext fun v => ?_` and prove the remaining obligations. Take `⟨ρ, i, b⟩` from `v`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left i`. Establish `hi : ((Fin.castAdd Dw.q i : Fin (Dw.p + Dw.q)) : ℕ) < (fun _ => Dw.p) ρ` using `by simp`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `only [AlgHom.comp_apply, GlobalTheory.ExportSeries.fockSubst, MvPolynomial.aeval_X, if_pos hi, map_sum, map_mul, MvPolynomial.rename_C, MvPolynomial.rename_X]`. Simplify using `only [GlobalTheory.FockLetters.fockVarEquiv, Equiv.prodCongr_apply, Prod.map, finCongr_refl, Equiv.refl_trans, Equiv.refl_apply, finSumFinEquiv_symm_apply_castAdd]`. Use `erw [GlobalTheory.Harm.colSubst_X_xVar]`. Simplify using `[GlobalTheory.Harm.xForm_apply]`. Consider the case `right j`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `hj : ¬ ((Fin.natAdd Dw.p j : Fin (Dw.p + Dw.q)) : ℕ) < (fun _ => Dw.p) ρ` using `by simp`. Simplify using `only [AlgHom.comp_apply, GlobalTheory.ExportSeries.fockSubst, MvPolynomial.aeval_X, if_neg hj, map_sum, map_mul, MvPolynomial.rename_C, MvPolynomial.rename_X]`. Simplify using `only [GlobalTheory.FockLetters.fockVarEquiv, Equiv.prodCongr_apply, Prod.map, finCongr_refl, Equiv.refl_trans, Equiv.refl_apply, finSumFinEquiv_symm_apply_natAdd]`. Use `erw [GlobalTheory.Harm.colSubst_X_yVar]`. Simplify using `[GlobalTheory.Harm.yForm_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rename_comp_fockSubst {D : D7} {H : Geo.Tor.Host D.host.E} (Dw : Datum H) {n : ℕ}
     (hΨ : ∀ τ : D.host.E →+* ℂ, InPsi H τ ↔ ∃ ρ, τ = tauE D ρ) (u : GlobalTheory.ExportSeries.GLR D n) :
@@ -88,15 +86,13 @@ theorem rename_comp_fockSubst {D : D7} {H : Geo.Tor.Host D.host.E} (Dw : Datum H
     simp [GlobalTheory.Harm.yForm_apply]
 
 /- English proof (translation)
-Introduce `D H Dw m n lt hm hΨ hlt u wa Q hQ`. Substitute `hm` using the available equality. Take `rfl : lt = GlobalTheory.FockLetters.letterEquiv Dw hΨ rfl` from `isLetters_unique Dw hΨ hlt (GlobalTheory.FockLetters.isLetters_letterEquiv Dw hΨ rfl)`. Break down `GlobalTheory.Harm.HHa_eq_zero_or_rowHighest (Ψ := InPsi H) (ComplexEmbedding.involutive_conjugate D.host.E) (GlobalTheory.Harm.not_mem_hostType_iff H) (fun _ => GlobalTheory.Harm.mult_of_mem Dw) (fun _ => GlobalTheory.Harm.mult_conjEmb_of_mem Dw) (n := n) (K := ℂ) (fun τ i => wa …` into its components or cases. Establish `hQ0` using `h0 Q hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite `hQ`, the goal using `[hQ0]`. Rewrite using `[map_zero, map_zero, map_zero]`. Conclude with `hQ`. Rewrite `hQ`, the goal using `[hiff]`. Express the relevant statement in the definitionally equal form `MvPolynomial.rename (GlobalTheory.Harm.thetaLetterEquiv Dw n) _ ∈ _ at hQ`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `MvPolynomial.rename (GlobalTheory.Harm.thetaLetterEquiv Dw n) _ ∈ _`. Establish `e1 : ∀ P : MvPolynomial (FVar D (Dw.p + Dw.q) n) ℂ, MvPolynomial.rename (GlobalTheory.Harm.thetaLetterEquiv Dw n) (MvPolynomial.rename (GlobalTheory.FockLetters.letterEquiv Dw hΨ rfl).symm P) = MvPolynomial.rename (GlobalTheory.FockLetters.fockVarEquiv Dw hΨ rfl) P` using `fun P => by`. Rewrite using `[MvPolynomial.rename_rename]`. Use `congrArg (fun f => MvPolynomial.rename f P) (funext fun v => ?_)` and prove the remaining obligations. Simplify using `[GlobalTheory.FockLetters.letterEquiv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : MvPolynomial.rename (GlobalTheory.FockLetters.fockVarEquiv Dw hΨ rfl) (MvPolynomial.rename (GlobalTheory.FockLetters.letterEquiv Dw hΨ rfl) Q) = MvPolynomial.rename (GlobalTheory.Harm.thetaLetterEquiv Dw n) Q`. Rewrite using `[MvPolynomial.rename_rename]`. Use `congrArg (fun f => MvPolynomial.rename f Q) (funext fun v => ?_)` and prove the remaining obligations. Simplify using `[GlobalTheory.FockLetters.letterEquiv]`. Rewrite using `[e1, ← AlgHom.comp_apply, rename_comp_fockSubst, AlgHom.comp_apply, e2]`.
-
-Conclude with `GlobalTheory.Harm.colSubst_mem_rowHighest (fun t => Units.inv_mul _) hQ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rename_fockSubst_mem_HHa : ∀ (D : D7) (H : Geo.Tor.Host D.host.E) (Dw : Datum H) (m n : ℕ) (lt : LtN Dw n ≃ FVar D m n),
     m = Dw.p + Dw.q → (∀ τ : D.host.E →+* ℂ, InPsi H τ ↔ ∃ ρ, τ = tauE D ρ) → IsLetters Dw lt →

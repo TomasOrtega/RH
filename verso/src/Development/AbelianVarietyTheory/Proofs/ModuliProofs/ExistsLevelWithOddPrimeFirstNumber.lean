@@ -12,17 +12,17 @@ open GlobalTheory.ZM
 namespace GlobalTheory.ZM
 
 /- English proof (translation)
-Introduce `E _ _ _ H l`. Establish `hM1 : l.M ≠ 1` using `by have := l.three_le; omega`. Take `⟨n, hn, hnM⟩` from `Nat.exists_prime_and_dvd hM1`. Establish `hodd : Odd n` using `Odd.of_dvd_nat l.odd hnM`. Establish `h3 : 3 ≤ n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hn.two_le`. Break down `hodd with ⟨k, hk⟩` into its components or cases. Use linear arithmetic over natural numbers and integers. Use `⟨n, hn, hodd, fun A₀ hA₀ => ?_⟩` and prove the remaining obligations. Establish `hmap : (l.Mb ⊔ Ideal.span {(n : 𝓞 E)}).map (H.bar : 𝓞 E →+* 𝓞 E) = l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) ⊔ Ideal.span {(n : 𝓞 E)}`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton, map_natCast]`. Establish `hMn : Ideal.span {(l.M : 𝓞 E)} ≤ Ideal.span {(n : 𝓞 E)}` using `Ideal.span_singleton_le_span_singleton.2 (Nat.cast_dvd_cast hnM)`. Use `⟨⟨n, h3, hodd, l.Mb ⊔ Ideal.span {(n : 𝓞 E)}, ?_, ?_, ?_, A₀, hA₀⟩, ⟨l.M, l.three_le, l.odd, l.Mb, l.fromK, l.prod, l.coprime, Nat.lcm l.A A₀, Nat.lcm_pos l.A_pos hA₀⟩, rfl, rfl, ⟨hnM, le_sup_left, Nat.dvd_lcm_right _ _⟩, ⟨dvd_rfl, le_rfl, Nat.dvd_lcm_left _ _⟩⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Apply `sup_le` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `l.fromK.le.trans (Ideal.span_mono ?_)` and prove the remaining obligations. Introduce `a ha`. Conclude with `⟨Ideal.mem_sup_left ha.1, ha.2⟩`. Use `Ideal.span_mono ?_` and prove the remaining obligations. Introduce `a ha`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `ha` using `[Set.mem_singleton_iff]`. Substitute `ha` using the available equality. Conclude with `⟨Ideal.mem_sup_right (Ideal.mem_span_singleton_self _), natCast_mem _ _⟩`. Conclude with `Ideal.span_le.2 fun a ha => ha.1`. Rewrite using `[hmap, Ideal.sup_mul, Ideal.mul_sup, Ideal.mul_sup, l.prod] set N : Ideal (𝓞 E) := Ideal.span {(n : 𝓞 E)}`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Apply the tactic sequence `refine sup_le (sup_le hMn ?_) (sup_le ?_ ?_) <;> first | exact Ideal.mul_le_left | exact Ideal.mul_le_right`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hmap, eq_top_iff, ← l.coprime]`. Conclude with `sup_le_sup le_sup_left le_sup_left`.
+Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prime_level :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H), ∃ n : ℕ, n.Prime ∧ Odd n ∧

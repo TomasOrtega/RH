@@ -16,7 +16,7 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 namespace GlobalTheory.CompanionTheory.Ar.Approx
 
 /- English proof (translation)
-Rewrite using `[← cancel_mono e.hom, Category.assoc, IsMonHom.mul_hom, ← BraidedCategory.braiding_naturality_assoc, IsCommMonObj.mul_comm N]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isCommMonObj_of_iso {C : Type*} [Category C] [MonoidalCategory C] [BraidedCategory C] {M N : C}
     [MonObj M] [MonObj N] [IsCommMonObj N] (e : M ≅ N) [IsMonHom e.hom] : IsCommMonObj M where
@@ -25,11 +25,9 @@ theorem isCommMonObj_of_iso {C : Type*} [Category C] [MonoidalCategory C] [Braid
       IsCommMonObj.mul_comm N]
 
 /- English proof (translation)
-Take `⟨e, he, -⟩` from `grpPullback_iso h (isGrpPullback_pullback G f)`. Use `hG.comm` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Use `hG.proper` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨isCommMonObj_of_iso e, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show Smooth (pullback.snd G.hom f)`. Use `infer_instance`. Use `show IsProper (pullback.snd G.hom f)`. Use `infer_instance`.
-
-Use `show GeometricallyConnected (pullback.snd G.hom f)`. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_of_isGrpPullback {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G]
     [GrpObj (Over.mk (pullback.snd G.hom f))] (φ : pullback G.hom f ⟶ G.left)
@@ -46,13 +44,13 @@ theorem isAbelianScheme_of_isGrpPullback {S S' : Scheme.{0}} {f : S' ⟶ S} {G :
   · show GeometricallyConnected (pullback.snd G.hom f); infer_instance
 
 /- English proof (translation)
-Introduce `R _ g A _ F hA hg`. Take `⟨S, B, instB, φ, hFS, hS, hB, hφ⟩` from `GlobalTheory.T.abelianScheme_spreads_out_finiteType_subring R A F hA`. Establish `: IsNoetherianRing S` using `Algebra.FiniteType.isNoetherianRing ℤ S`. Use `hB.smooth` as an intermediate fact. Use `hB.proper` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsnd : SmoothOfRelativeDimension g (pullback.snd B.hom (spMap (algebraMap S R)))`. Establish `hp : IsPullback φ A.hom B.hom (spMap S.subtype)` using `hφ.1`. Use `smoothOfRelativeDimension_isStableUnderBaseChange (n := g)` as an intermediate fact. Establish `key : ∀ e : pullback B.hom (spMap S.subtype) ≅ A.left, e.hom ≫ A.hom = pullback.snd _ _ → SmoothOfRelativeDimension g (pullback.snd B.hom (spMap S.subtype))` using `fun e he => MorphismProperty.of_isPullback (IsPullback.of_horiz_isIso (fst := e.hom) (g := 𝟙 (Sp R)) ⟨by rw [Category.comp_id, he]⟩) hg`. Conclude with `key hp.isoPullback.symm hp.isoPullback_inv_snd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨R', hR'fg, hR'⟩` from `exists_fg_smoothOfRelativeDimension S R B.left B.hom g inferInstance inferInstance hsnd`. Take `⟨instB₂, φ₁, hB₂, hAB₂, -⟩` from `model_passes_to_subalgebra S R A B φ hφ R'`. Use `⟨R'.toSubring, Over.mk (pullback.snd B.hom (spMap (algebraMap S R'))), instB₂, φ₁, ?_, ?_, ?_, hR', hAB₂⟩` and prove the remaining obligations. Introduce `x hx`. Conclude with `R'.algebraMap_mem ⟨x, hFS hx⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.FiniteType S R'` using `(Subalgebra.fg_iff_finiteType R').1 hR'fg`. Establish `h1 : Algebra.FiniteType ℤ R'` using `Algebra.FiniteType.trans (S := S) hS this`. Conclude with `h1`. Conclude with `isAbelianScheme_of_isGrpPullback _ hB₂ hB`.
+A detailed English derivation is pending.
 -/
 theorem exists_model_relDim : ∀ (R : Type) [CommRing R] (g : ℕ) (A : Over (Sp R)) [GrpObj A] (F : Finset R),
     IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∃ (S : Subring R) (B : Over (Sp S)) (_ : GrpObj B)

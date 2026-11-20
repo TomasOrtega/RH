@@ -6,13 +6,13 @@ open CategoryTheory CategoryTheory.Limits DirectSum MvPolynomial TensorProduct G
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `q₀ : M₂ →ₗ[R₀] (M₂ ⧸ LinearMap.range f₀)` to `(LinearMap.range f₀).mkQ.restrictScalars R₀`. Set `q : N₂ →ₗ[R] (N₂ ⧸ LinearMap.range f)` to `(LinearMap.range f).mkQ.restrictScalars R`. Establish `hq₀ : Function.Surjective q₀` using `(LinearMap.range f₀).mkQ_surjective`. Establish `hq : Function.Surjective q` using `(LinearMap.range f).mkQ_surjective`. Establish `hex₀ : Function.Exact (f₀.restrictScalars R₀) q₀` using `LinearMap.exact_map_mkQ_range f₀`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : Function.Exact (f.restrictScalars R) q` using `LinearMap.exact_map_mkQ_range f`. Establish `hker : LinearMap.ker q₀ ≤ LinearMap.ker ((q.restrictScalars R₀).comp h₂)`. Introduce `y hy`. Take `⟨x, rfl⟩` from `(hex₀ y).1 hy`. Conclude with `(hex _).2 ⟨h₁ x, (hcomm x).symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `ψ : (M₂ ⧸ LinearMap.range f₀) →ₗ[R₀] (N₂ ⧸ LinearMap.range f)` to `((LinearMap.ker q₀).liftQ _ hker).comp (q₀.quotKerEquivOfSurjective hq₀).symm.toLinearMap`. Establish `hψ : ∀ y, ψ (q₀ y) = q (h₂ y)`. Introduce `y`. Establish `: (q₀.quotKerEquivOfSurjective hq₀).symm (q₀ y) = Submodule.Quotient.mk y`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `only [ψ, LinearMap.comp_apply, LinearEquiv.coe_coe, this]`. Both sides reduce to the same expression. Conclude with `⟨ψ, IsBaseChange.of_right_exact R (f := f₀.restrictScalars R₀) (g := q₀) (f' := f.restrictScalars R) (g' := q) h₁ h₂ ψ (LinearMap.ext hcomm) (LinearMap.ext hψ) b₁ b₂ hex₀ hq₀ hex hq, hψ⟩`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isBaseChange_coker {R₀ R A₀ A M₁ M₂ N₁ N₂ : Type*} [CommRing R₀] [CommRing R]
     [Algebra R₀ R] [Ring A₀] [Ring A] [Algebra R₀ A₀] [Algebra R A] [SMul R₀ A]
@@ -50,9 +50,9 @@ theorem exists_isBaseChange_coker {R₀ R A₀ A M₁ M₂ N₁ N₂ : Type*} [C
     b₁ b₂ hex₀ hq₀ hex hq, hψ⟩
 
 /- English proof (translation)
-Introduce `ι R₀ R _ _ _ a b Φ₀ Φ hΦ`. Establish `hm : IsBaseChange R (mapAlgHom (σ` using `ι) (Algebra.ofId R₀ R)).toLinearMap := IsBaseChange.of_equiv (algebraTensorAlgEquiv R₀ R).toLinearEquiv fun p => by`. Simplify using `[mapAlgHom_apply]`. Use `exists_isBaseChange_coker Φ₀.mulVecLin Φ.mulVecLin _ _ (IsBaseChange.finitePow (Fin b) hm) (IsBaseChange.finitePow (Fin a) hm) fun x => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← hΦ]`. Conclude with `RingHom.map_mulVec (MvPolynomial.map (algebraMap R₀ R)) Φ₀ x l`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBaseChange_coker_matrix_mvPolynomial :
     ∀ (ι : Type) (R₀ R : Type) [CommRing R₀] [CommRing R] [Algebra R₀ R] (a b : ℕ)

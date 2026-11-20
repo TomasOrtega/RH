@@ -15,9 +15,9 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimension
   [MeasurableSpace E] [BorelSpace E]
 
 /- English proof (translation)
-Use `by_contra! hlt`. Set `b` to `Free.chooseBasis ℤ L`. Establish `fund : IsAddFundamentalDomain L.toAddSubgroup (ZSpan.fundamentalDomain (b.ofZLatticeBasis ℝ)) μ` using `ZLattice.isAddFundamentalDomain b μ`. Establish `hc : Countable L.toAddSubgroup` using `inferInstanceAs (Countable L)`. Establish `hcov` using `ZLattice.covolume_eq_measure_fundamentalDomain L μ (ZLattice.isAddFundamentalDomain b μ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : μ (ZSpan.fundamentalDomain (b.ofZLatticeBasis ℝ)) ≠ ⊤` using `(ZSpan.fundamentalDomain_isBounded _).measure_lt_top.ne`. Take `⟨x, hx0, hxs⟩` from `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure fund hsymm hconv (by`. Rewrite using `[← ENNReal.ofReal_toReal hfin, ← measureReal_def, ← hcov, ← ENNReal.ofReal_ofNat, ← ENNReal.ofReal_pow (by norm_num), ← ENNReal.ofReal_mul (ZLattice.covolume_pos L μ).le, mul_comm])` and apply the resulting hypothesis. Conclude with `hL x x.2 (fun h ↦ hx0 (Subtype.ext h)) hxs`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem measure_le_two_pow_mul_covolume (L : Submodule ℤ E) [DiscreteTopology L] [IsZLattice ℝ L]
     (μ : Measure E) [μ.IsAddHaarMeasure] {s : Set E} (hsymm : ∀ x ∈ s, -x ∈ s) (hconv : Convex ℝ s)
@@ -47,23 +47,23 @@ section Euclidean
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
 
 /- English proof (translation)
-Take `⟨b, hbL, hbN⟩` from `exists_basis_norm_eq_succMin L`. Establish `h : finrank ℝ E = Fintype.card (Fin (finrank ℝ E))` using `(Fintype.card_fin _).symm`. Set `o` to `InnerProductSpace.gramSchmidtOrthonormalBasis h b`. Set `l : Fin (finrank ℝ E) → ℝ` to `fun i ↦ succMin L (i + 1)`. Establish `hl : ∀ i, 0 < l i` using `fun i ↦ succMin_pos_of_isZLattice (by omega) i.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `T : E →ₗ[ℝ] E` to `Matrix.toLin o.toBasis o.toBasis (Matrix.diagonal fun i ↦ (l i)⁻¹)`. Establish `hT : ∀ x i, o.repr (T x) i = (l i)⁻¹ * o.repr x i`. Introduce `x i`. Use `Matrix.repr_toLin o.toBasis o.toBasis (Matrix.diagonal fun i ↦ (l i)⁻¹) x` as an intermediate fact. Establish `h2` using `congrFun this i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[Matrix.mulVec_diagonal]`. Conclude with `h2`. Use `⟨T, ?_, fun x hx h0 ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.det_toLin, Matrix.det_diagonal, Finset.prod_inv_distrib]`. Establish `hne : (Finset.univ.filter fun i ↦ o.repr x i ≠ 0).Nonempty`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Apply `h0` to reduce the goal to its premises. Apply `o.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Simplify using `using (Finset.filter_eq_empty_iff.1 (Finset.not_nonempty_iff_eq_empty.1 hc) (Finset.mem_univ i))`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, hmax⟩` from `Finset.exists_max_image _ id hne`. Establish `hk0 : o.repr x k ≠ 0` using `(Finset.mem_filter.1 hk).2`. Establish `hspan : x ∉ span ℝ (b '' {j | (j : ℕ) < k})`. Introduce `hmem`. Establish `hle : span ℝ (b '' {j | (j : ℕ) < k}) ≤ LinearMap.ker (o.toBasis.coord k)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Conclude with `InnerProductSpace.gramSchmidtOrthonormalBasis_inv_triangular' h b (show j < k from hj)`. Conclude with `hk0 (hle hmem)`. Establish `hx1 : l k ≤ ‖x‖` using `succMin_le_norm_of_notMem_span b.linearIndependent hbL (fun j ↦ (hbN j).le) k.2.le hx hspan`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcmp : ‖(l k)⁻¹ • x‖ ^ 2 ≤ ‖T x‖ ^ 2`. Rewrite using `[← o.repr.norm_map, ← o.repr.norm_map, EuclideanSpace.norm_sq_eq, EuclideanSpace.norm_sq_eq]`. Use `Finset.sum_le_sum fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[hT, map_smul, PiLp.smul_apply, smul_eq_mul]`. Distinguish the cases in `hi : o.repr x i = 0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hi]`. Establish `hik : i ≤ k` using `hmax i (Finset.mem_filter.2 ⟨Finset.mem_univ _, hi⟩)`. Establish `hlik : l i ≤ l k` using `succMin_mono_of_isZLattice (Nat.succ_le_succ hik) k.2`. Rewrite using `[norm_mul, norm_mul, Real.norm_of_nonneg (inv_pos.2 (hl i)).le, Real.norm_of_nonneg (inv_pos.2 (hl k)).le]`. Use `hl i` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hl k` as an intermediate fact. Use `gcongr`. Use `le_trans ?_ (le_of_pow_le_pow_left₀ two_ne_zero (norm_nonneg _) hcmp)` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_of_nonneg (inv_pos.2 (hl k)).le, le_inv_mul_iff₀ (hl k), mul_one]`. Conclude with `hx1`.
+A detailed English derivation is pending.
 -/
 theorem exists_linearMap_det_eq_prod_inv_succMin (L : Submodule ℤ E) [DiscreteTopology L]
     [IsZLattice ℝ L] :
@@ -124,7 +124,7 @@ theorem exists_linearMap_det_eq_prod_inv_succMin (L : Submodule ℤ E) [Discrete
 variable [MeasurableSpace E] [BorelSpace E]
 
 /- English proof (translation)
-The claim follows from `ENNReal.toReal_pos (Metric.measure_ball_pos _ _ one_pos).ne' measure_ball_lt_top.ne`.
+A detailed English derivation is pending.
 -/
 theorem volume_real_unitBall_pos : 0 < volume.real (Metric.ball (0 : E) 1) :=
   ENNReal.toReal_pos (Metric.measure_ball_pos _ _ one_pos).ne' measure_ball_lt_top.ne
@@ -132,11 +132,11 @@ theorem volume_real_unitBall_pos : 0 < volume.real (Metric.ball (0 : E) 1) :=
 variable (E) in
 
 /- English proof (translation)
-Set `o` to `stdOrthonormalBasis ℝ E`. Set `f : E →ₗ[ℝ] (Fin (finrank ℝ E) → ℝ)` to `(WithLp.linearEquiv 2 ℝ (Fin (finrank ℝ E) → ℝ)).toLinearMap ∘ₗ o.repr.toLinearEquiv.toLinearMap`. Establish `hf : MeasurePreserving f` using `(PiLp.volume_preserving_ofLp _).comp o.measurePreserving_repr`. Use `set r : ℝ := (√(finrank ℝ E : ℝ))⁻¹ with hr`. Establish `hr0 : 0 ≤ r` using `by positivity`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : volume (f ⁻¹' Metric.closedBall 0 r) = ENNReal.ofReal ((2 * r) ^ finrank ℝ E)`. Rewrite using `[hf.measure_preimage Metric.isClosed_closedBall.measurableSet.nullMeasurableSet, Real.volume_pi_closedBall _ hr0, Fintype.card_fin]`. Establish `hsub : f ⁻¹' Metric.closedBall 0 r ⊆ Metric.closedBall (0 : E) 1`. Introduce `x hx`. Establish `hi : ∀ i, ‖o.repr x i‖ ≤ r` using `fun i ↦ (pi_norm_le_iff_of_nonneg hr0).1 (mem_closedBall_zero_iff.1 hx) i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_closedBall_zero_iff, ← sq_le_one_iff₀ (norm_nonneg _), ← o.repr.norm_map, EuclideanSpace.norm_sq_eq]`. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `measure_mono (μ := volume) hsub`. Rewrite `h` using `[hs, Measure.addHaar_unitClosedBall_eq_addHaar_unitBall, ENNReal.ofReal_le_iff_le_toReal measure_ball_lt_top.ne]`. Rewrite using `[div_eq_mul_inv]` and apply the resulting hypothesis.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem two_div_sqrt_pow_le_volume_unitBall :
     (2 / √(finrank ℝ E : ℝ)) ^ finrank ℝ E ≤ volume.real (Metric.ball (0 : E) 1) := by
@@ -167,11 +167,11 @@ theorem two_div_sqrt_pow_le_volume_unitBall :
 variable (E) in
 
 /- English proof (translation)
-Establish `h` using `two_div_sqrt_pow_le_volume_unitBall E`. Establish `h2 : (finrank ℝ E : ℝ) ^ ((finrank ℝ E : ℝ) / 2) = √(finrank ℝ E : ℝ) ^ finrank ℝ E`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_mul_natCast (Nat.cast_nonneg _)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h3 : 0 < √(finrank ℝ E : ℝ) ^ finrank ℝ E`. Break down `Nat.eq_zero_or_pos (finrank ℝ E) with h0 | hpos` into its components or cases. Simplify using `[h0]`. Check the signs of the components of the expression. Rewrite `h` using `[div_pow, div_le_iff₀ h3]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h2, div_le_iff₀ volume_real_unitBall_pos, mul_comm]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem two_pow_div_volume_unitBall_le :
     2 ^ finrank ℝ E / volume.real (Metric.ball (0 : E) 1) ≤
@@ -190,9 +190,9 @@ theorem two_pow_div_volume_unitBall_le :
 variable (L : Submodule ℤ E) [DiscreteTopology L] [IsZLattice ℝ L]
 
 /- English proof (translation)
-Take `⟨T, hdet, hT⟩` from `exists_linearMap_det_eq_prod_inv_succMin L`. Establish `hP : 0 < ∏ i : Fin (finrank ℝ E), succMin L (i + 1)` using `Finset.prod_pos fun i _ ↦ succMin_pos_of_isZLattice (by omega) i.2`. Establish `h` using `measure_le_two_pow_mul_covolume L volume (s := T ⁻¹' Metric.ball 0 1) (fun x hx ↦ by simpa using hx) ((convex_ball 0 1).linear_preimage T) (fun x hx h0 hs ↦ (hT x hx h0).not_gt (mem_ball_zero_iff.1 hs))`. Establish `hc` using `ZLattice.covolume_pos L volume`. Rewrite `h` using `[Measure.addHaar_preimage_linearMap _ (by rw [hdet]; positivity), hdet, inv_inv, abs_of_pos hP, ← ofReal_measureReal measure_ball_lt_top.ne, ← ENNReal.ofReal_mul hP.le, ENNReal.ofReal_le_ofReal_iff (by positivity)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem prod_succMin_mul_volume_unitBall_le :
     (∏ i : Fin (finrank ℝ E), succMin L (i + 1)) * volume.real (Metric.ball (0 : E) 1) ≤
@@ -210,7 +210,7 @@ theorem prod_succMin_mul_volume_unitBall_le :
   exact h
 
 /- English proof (translation)
-Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ volume_real_unitBall_pos]`. Conclude with `prod_succMin_mul_volume_unitBall_le L`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_succMin_le_two_pow_div_mul_covolume :
     ∏ i : Fin (finrank ℝ E), succMin L (i + 1) ≤
@@ -219,7 +219,7 @@ theorem prod_succMin_le_two_pow_div_mul_covolume :
   exact prod_succMin_mul_volume_unitBall_le L
 
 /- English proof (translation)
-The claim follows from `(prod_succMin_le_two_pow_div_mul_covolume L).trans (mul_le_mul_of_nonneg_right (two_pow_div_volume_unitBall_le E) (ZLattice.covolume_pos L volume).le)`.
+A detailed English derivation is pending.
 -/
 theorem prod_succMin_le_rpow_mul_covolume :
     ∏ i : Fin (finrank ℝ E), succMin L (i + 1) ≤
@@ -229,7 +229,7 @@ theorem prod_succMin_le_rpow_mul_covolume :
       (ZLattice.covolume_pos L volume).le)
 
 /- English proof (translation)
-Use `le_trans ?_ (prod_succMin_le_rpow_mul_covolume L)` and prove the remaining obligations. Set `j : Fin (finrank ℝ E)` to `⟨k - 1, by omega⟩`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ j), show (j : ℕ) + 1 = k by simp [j]; omega]`. Use `mul_le_mul_of_nonneg_left ?_ (succMin_nonneg L k)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem succMin_mul_minNorm_pow_le {k : ℕ} (h1 : 1 ≤ k) (hk : k ≤ finrank ℝ E) :
     succMin L k * minNorm L ^ (finrank ℝ E - 1) ≤
@@ -250,7 +250,7 @@ variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDim
   (L : Submodule ℤ E) [DiscreteTopology L]
 
 /- English proof (translation)
-Use `borelize E`. Establish `h` using `prod_succMin_le_rpow_mul_covolume (inSpan L)`. Simplify using `only [succMin_inSpan] at h`. Rewrite using `[spanCovol_eq_covolume_comap_span, ← finrank_span_eq_finrank_int]`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_succMin_le_rpow_mul_spanCovol :
     ∏ i : Fin (finrank ℤ L), succMin L (i + 1) ≤

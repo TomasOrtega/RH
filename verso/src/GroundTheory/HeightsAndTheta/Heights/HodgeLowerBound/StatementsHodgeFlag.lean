@@ -32,9 +32,9 @@ variable {D : ComponentData II Ψ K ι Ω E} (Pl : PlueckerData D)
 def xV : (Σ k, ι k) → (Σ k, Pl.ιY k) := fun p => ⟨Sum.inl p.1, p.2⟩
 
 /- English proof (translation)
-Use `⟨Sum.inl_injective, ?_, fun _ => rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨k, i⟩ ⟨k', i'⟩ h`. Consider the cases of `h`. Both sides reduce to the same expression. Introduce and unpack `⟨k', i⟩ ⟨k, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨k, i⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isBlockMap_xV : IsBlockMap (Sum.inl : K → K ⊕ (Ψ × Fin (D.N - 1))) Pl.xV := by
   refine ⟨Sum.inl_injective, ?_, fun _ => rfl, ?_⟩
@@ -53,15 +53,15 @@ Both sides reduce to the same expression.
 theorem ofΩHom_apply (x : Ω) : Pl.ofΩHom x = Pl.ofΩ x := rfl
 
 /- English proof (translation)
-The claim follows from `(IsFractionRing.injective (MvPolynomial (Ψ × Fin D.N × Fin D.N) Ω) Pl.ΩY).comp (C_injective _ _)`.
+A detailed English derivation is pending.
 -/
 theorem ofΩHom_injective : Function.Injective Pl.ofΩHom :=
   (IsFractionRing.injective (MvPolynomial (Ψ × Fin D.N × Fin D.N) Ω) Pl.ΩY).comp (C_injective _ _)
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p x hp`. Simplify using `only [map_mul, hp, rename_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `[mConeMap, xV, yY, ofΩHom_apply]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem mConeMap_yY_rename_xV (f : MRing ι) :
     mConeMap Pl.yY (rename Pl.xV f) =
@@ -75,7 +75,7 @@ theorem mConeMap_yY_rename_xV (f : MRing ι) :
     simp [mConeMap, xV, yY, ofΩHom_apply]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective fun g : MvPolynomial K Ω => rename (Sum.inl : K → K ⊕ (Ψ × Fin (D.N - 1))) (MvPolynomial.map Pl.ofΩHom g)` using `(rename_injective _ Sum.inl_injective).comp (map_injective _ Pl.ofΩHom_injective)`. Use extensionality with `f`. Use `show mConeMap Pl.yY (rename Pl.xV f) = 0 ↔ mConeMap D.y f = 0`. Rewrite using `[mConeMap_yY_rename_xV]`. Conclude with `⟨fun h => hinj (h.trans (by simp)), fun h => by simp [h]⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem imageZ_xV_PY : imageZ Pl.xV Pl.PY = mCoordIdeal D.y := by
   have hinj : Function.Injective fun g : MvPolynomial K Ω =>
@@ -104,9 +104,9 @@ def flagPrime : Ideal (MRing Pl.ιY) := mCoordIdeal (Pl.flagGenericPoint B)
 instance isPrime_flagPrime : (Pl.flagPrime B).IsPrime := RingHom.ker_isPrime (mConeMap (Pl.flagGenericPoint B))
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p x hp`. Simplify using `only [map_mul, hp, rename_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `[mConeMap, xV, flagGenericPoint, ofΩHom_apply]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem mConeMap_flagGenericPoint_rename (f : MRing ι) :
     mConeMap (Pl.flagGenericPoint B) (rename Pl.xV f) =
@@ -120,7 +120,7 @@ theorem mConeMap_flagGenericPoint_rename (f : MRing ι) :
     simp [mConeMap, xV, flagGenericPoint, ofΩHom_apply]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective fun g : MvPolynomial K Ω => rename (Sum.inl : K → K ⊕ (Ψ × Fin (D.N - 1))) (MvPolynomial.map Pl.ofΩHom g)` using `(rename_injective _ Sum.inl_injective).comp (map_injective _ Pl.ofΩHom_injective)`. Use extensionality with `f`. Use `show mConeMap (Pl.flagGenericPoint B) (rename Pl.xV f) = 0 ↔ mConeMap D.y f = 0`. Rewrite using `[mConeMap_flagGenericPoint_rename]`. Conclude with `⟨fun h => hinj (h.trans (by simp)), fun h => by simp [h]⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem imageZ_forget_flagPrime : imageZ Pl.xV (Pl.flagPrime B) = mCoordIdeal D.y := by
   have hinj : Function.Injective fun g : MvPolynomial K Ω =>
@@ -173,7 +173,7 @@ theorem flagDim0_line : lineDataZero.flagDim0 = 0 := rfl
 end Line
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Line.linePl Line.zeroSystem fun _ _ => le_rfl, Line.lineAdapted Line.zeroSystem fun _ _ => le_rfl)⟩`.
+Supply the required witnesses or components.
 -/
 theorem HodgeFlagArith.hyps_inhabited :
     Nonempty (PlueckerData Line.lineDataZero × AdaptedBasis (Line.lineHodge Line.zeroSystem fun _ _ => le_rfl)) :=

@@ -18,11 +18,11 @@ open scoped Classical ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hP : ∀ k ∉ P.support, P.coeff k = 0` using `fun k hk => by`. Simplify `hk` using `only [MvPolynomial.mem_support_iff, not_not]`. Establish `hQ : ∀ k ∉ Q.support, Q.coeff k = 0` using `fun k hk => by`. Simplify `hk` using `only [MvPolynomial.mem_support_iff, not_not]`. Express the relevant statement in the definitionally equal form `∑ k ∈ P.support, P.coeff k * conj (Q.coeff k) * (multiFact k : ℂ) = _`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hL : ∑ k ∈ P.support, P.coeff k * conj (Q.coeff k) * (multiFact k : ℂ) = ∑ k ∈ P.support ∪ Q.support, P.coeff k * conj (Q.coeff k) * (multiFact k : ℂ)`. Apply `Finset.sum_subset Finset.subset_union_left` to reduce the goal to its premises. Introduce `k _ hk`. Rewrite using `[hP k hk, zero_mul, zero_mul]`. Establish `hR : ∑ k ∈ Q.support, P.coeff k * conj (Q.coeff k) * (multiFact k : ℂ) = ∑ k ∈ P.support ∪ Q.support, P.coeff k * conj (Q.coeff k) * (multiFact k : ℂ)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Finset.sum_subset Finset.subset_union_right` to reduce the goal to its premises. Introduce `k _ hk`. Rewrite using `[hQ k hk, map_zero, mul_zero, zero_mul]`. Rewrite using `[hL, hR]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem fockIp_eq {ι : Type} (P Q : MvPolynomial ι ℂ) :
     fockIp P Q = ∑ k ∈ Q.support, P.coeff k * conj (Q.coeff k) * (multiFact k : ℂ) := by
@@ -47,9 +47,7 @@ theorem fockIp_eq {ι : Type} (P Q : MvPolynomial ι ℂ) :
 def sgn {n : ℕ} (ε : Fin n → Bool) (a : Fin n) : ℝ := if ε a then 1 else -1
 
 /- English proof (translation)
-Unfold `sgn`. Distinguish the cases in `h : ε a`. Use `left`. Simplify using `[h]`. Use `right`.
-
-Simplify using `[h]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sgn_cases {n : ℕ} (ε : Fin n → Bool) (a : Fin n) : sgn ε a = 1 ∨ sgn ε a = -1 := by
   unfold sgn
@@ -58,7 +56,7 @@ theorem sgn_cases {n : ℕ} (ε : Fin n → Bool) (a : Fin n) : sgn ε a = 1 ∨
   · right; simp [h]
 
 /- English proof (translation)
-Unfold `Formalism.REAL.Jm`. Use `congr 1`. Use function extensionality and compare the values at `a`. Unfold `sgn`. Apply the tactic sequence `by_cases h : ε a <;> simp [h]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_eq_sgn {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm ε = diagonal fun a => (sgn ε a : ℂ) := by
   unfold Formalism.REAL.Jm
@@ -68,9 +66,9 @@ theorem Jm_eq_sgn {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm ε = diago
   by_cases h : ε a <;> simp [h]
 
 /- English proof (translation)
-Take `⟨hu, hG, hs⟩` from `h`. Establish `hd : IsUnit fr.det` using `(Matrix.isUnit_iff_isUnit_det fr).mp hu`. Use `⟨Matrix.isUnit_nonsing_inv_det fr hd, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hs, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one, Jm_eq_sgn]`. Establish `e1 : (fr⁻¹)ᴴ * frᴴ = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hd, Matrix.conjTranspose_one]`. Rewrite using `[← hG]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul, Matrix.mul_one, Jm_eq_sgn]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_inv {n : ℕ} {G s fr : Mn n} {ε : Fin n → Bool} (h : IsFrameOf G s ε fr) :
     IsUnit (fr⁻¹).det ∧ s * fr⁻¹ = fr⁻¹ * diagonal (fun a => (sgn ε a : ℂ)) ∧
@@ -88,13 +86,13 @@ theorem frame_inv {n : ℕ} {G s fr : Mn n} {ε : Fin n → Bool} (h : IsFrameOf
         rw [e1, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul, Matrix.mul_one, Jm_eq_sgn]
 
 /- English proof (translation)
-Establish `hBi : B⁻¹ * s = (diagonal fun a => (ε a : ℂ)) * B⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hs, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hB, Matrix.one_mul]`. Establish `hd : (diagonal fun a => (ε' a : ℂ)) * single i j (1 : ℂ) * (diagonal fun a => (ε a : ℂ)) = ((ε' i * ε j : ℝ) : ℂ) • single i j (1 : ℂ)`. Use extensionality with `a b`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.smul_apply, Matrix.single_apply, smul_eq_mul]`. Distinguish the cases in `ha : i = a`. Distinguish the cases in `hb : j = b`. Substitute `ha hb` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hb]`. Simplify using `[ha]`. Combine the equalities or inequalities in the displayed calculation. Unfold `Formalism.IndefR.Datum.cplxO Formalism.IndefR.Datum.unitMap`. Use `congr 1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← hBi, ← Matrix.mul_assoc s' B', hs', Matrix.mul_assoc]`. Use `_ = (Complex.I * ((ε' i * ε j : ℝ) : ℂ)) • unitMap B B' i j := by`. Rewrite using `[hd, Matrix.mul_smul, Matrix.smul_mul, smul_smul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem cplxO_unitMap_eq_I_mul_sign_smul {m n : ℕ} {s B : Matrix (Fin n) (Fin n) ℂ} {s' B' : Matrix (Fin m) (Fin m) ℂ}
     {ε : Fin n → ℝ} {ε' : Fin m → ℝ} (hB : IsUnit B.det) (hs : s * B = B * diagonal fun a => (ε a : ℂ))
@@ -126,11 +124,11 @@ private theorem cplxO_unitMap_eq_I_mul_sign_smul {m n : ℕ} {s B : Matrix (Fin 
         rfl
 
 /- English proof (translation)
-Establish `hdd : (diagonal fun a => (ε a : ℂ)) * (diagonal fun a => (ε a : ℂ)) = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `rcases hε a with h | h <;> simp [h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e : Bᴴ * G = (diagonal fun a => (ε a : ℂ)) * B⁻¹`. Combine the equalities or inequalities in the displayed calculation. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hdd, Matrix.mul_one, Matrix.mul_nonsing_inv _ hB]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem inv_eq_mul_diagonal_sign_mul_conjTranspose {n : ℕ} {G B : Matrix (Fin n) (Fin n) ℂ} {ε : Fin n → ℝ}
     (hε : ∀ a, ε a = 1 ∨ ε a = -1) (hB : IsUnit B.det) (hG : Bᴴ * G * B = diagonal fun a => (ε a : ℂ)) :
@@ -152,9 +150,9 @@ private theorem inv_eq_mul_diagonal_sign_mul_conjTranspose {n : ℕ} {G B : Matr
     _ = 1 := by rw [hdd, Matrix.mul_one, Matrix.mul_nonsing_inv _ hB]
 
 /- English proof (translation)
-Establish `h1 : Bᴴ * (B⁻¹)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, Matrix.nonsing_inv_mul _ hB, Matrix.conjTranspose_one]`. Rewrite using `[inv_eq_mul_diagonal_sign_mul_conjTranspose hε hB hG, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Establish `step : B * (diagonal fun a => (ε a : ℂ)) * Bᴴ * ((B⁻¹)ᴴ * (Yᴴ * B'ᴴ)) * G' * (B' * X * B⁻¹) = B * ((diagonal fun a => (ε a : ℂ)) * Yᴴ * (B'ᴴ * G' * B') * X) * B⁻¹`. Simplify using `only [← Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_assoc (B * (diagonal fun a => (ε a : ℂ))) Bᴴ (B⁻¹)ᴴ, h1, Matrix.mul_one]`. Rewrite using `[step, Matrix.trace_mul_comm, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hB, Matrix.one_mul, hG']`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem trace_inv_gram_conjTranspose_conj_eq_sign_trace {m n : ℕ} {G B : Matrix (Fin n) (Fin n) ℂ} {G' B' : Matrix (Fin m) (Fin m) ℂ}
     {ε : Fin n → ℝ} {ε' : Fin m → ℝ} (hε : ∀ a, ε a = 1 ∨ ε a = -1) (hB : IsUnit B.det)
@@ -172,11 +170,11 @@ private theorem trace_inv_gram_conjTranspose_conj_eq_sign_trace {m n : ℕ} {G B
   rw [step, Matrix.trace_mul_comm, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hB, Matrix.one_mul, hG']
 
 /- English proof (translation)
-Establish `hY : (single i' j' (1 : ℂ) : Matrix (Fin m) (Fin n) ℂ)ᴴ = single j' i' 1`. Use extensionality with `a b`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.single_apply]`. Apply the tactic sequence `by_cases h1 : j' = a <;> by_cases h2 : i' = b <;> simp [h1, h2]`. Establish `hD : (diagonal fun a => (ε a : ℂ)) * (single j' i' (1 : ℂ) : Matrix (Fin n) (Fin m) ℂ) * (diagonal fun a => (ε' a : ℂ)) = single j' i' ((ε j' : ℂ) * ε' i')`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use extensionality with `a b`. Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.single_apply]`. Apply the tactic sequence `by_cases h1 : j' = a <;> by_cases h2 : i' = b <;> simp [h1, h2]`. Rewrite using `[hY, hD, Matrix.trace_single_mul, Matrix.single_apply, smul_eq_mul]`. Distinguish the cases in `h : i = i' ∧ j = j'`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Take `⟨rfl, rfl⟩` from `h`. Simplify using `[mul_comm]`. Establish `h' : ¬ (i, j) = (i', j')` using `fun e => h ⟨(Prod.mk.inj e).1, (Prod.mk.inj e).2⟩`. Simplify using `[h, h']`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem trace_diagonal_single_conjTranspose_single {m n : ℕ} (ε : Fin n → ℝ) (ε' : Fin m → ℝ) (i i' : Fin m) (j j' : Fin n) :
     ((diagonal fun a => (ε a : ℂ)) * (single i' j' (1 : ℂ) : Matrix (Fin m) (Fin n) ℂ)ᴴ *
@@ -199,7 +197,7 @@ private theorem trace_diagonal_single_conjTranspose_single {m n : ℕ} (ε : Fin
     simp [h, h']
 
 /- English proof (translation)
-Rewrite using `[trace_inv_gram_conjTranspose_conj_eq_sign_trace hε hB hG hG', trace_diagonal_single_conjTranspose_single]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem trace_inv_gram_single_conj_eq_ite_sign {m n : ℕ} {G B : Matrix (Fin n) (Fin n) ℂ} {G' B' : Matrix (Fin m) (Fin m) ℂ}
     {ε : Fin n → ℝ} {ε' : Fin m → ℝ} (hε : ∀ a, ε a = 1 ∨ ε a = -1) (hB : IsUnit B.det)
@@ -211,7 +209,7 @@ private theorem trace_inv_gram_single_conj_eq_ite_sign {m n : ℕ} {G B : Matrix
   rw [trace_inv_gram_conjTranspose_conj_eq_sign_trace hε hB hG hG', trace_diagonal_single_conjTranspose_single]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ toFun := fun g => ⟨T g, hmem g g.2⟩ map_add' := fun g h => Subtype.ext (hadd g g.2 h h.2) map_smul' := fun c g => Subtype.ext (hsmul c g g.2) }, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_end_coe_eq_of_linear_on_submodule {X : Type*} (M : Submodule ℂ (X → ℂ)) (T : (X → ℂ) → (X → ℂ))
     (hmem : ∀ g ∈ M, T g ∈ M) (hadd : ∀ g ∈ M, ∀ h ∈ M, T (g + h) = T g + T h)
@@ -223,107 +221,103 @@ private theorem exists_end_coe_eq_of_linear_on_submodule {X : Type*} (M : Submod
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Establish `hsk` using `GlobalTheory.ThetaSquare.derSkew (V := V) (W := W) hψ hθ`. Establish `hco` using `GlobalTheory.ThetaSquare.derComm (V := V) (W := W) hψ hθ`. Establish `hsq` using `GlobalTheory.VacuumFockLaws.fockScale_sq (D := D) τ`. Establish `hc0` using `GlobalTheory.VacuumFockLaws.fockScale_ne (D := D) τ`. Establish `hcinv : (fockScale D τ : ℂ)⁻¹ * (fockScale D τ : ℂ)⁻¹ * (8 * Real.pi * ((tauE D τ D.host.xi0).im : ℂ)) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hsq]`. Clear the denominators using the available nonvanishing facts. Establish `hconj : (starRingEnd ℂ) (fockScale D τ : ℂ)⁻¹ = (fockScale D τ : ℂ)⁻¹` using `by rw [map_inv₀, Complex.conj_ofReal]`. Establish `hconjE : (starRingEnd ℂ) (-((fockScale D τ : ℂ)⁻¹ * Complex.I)) = -(-((fockScale D τ : ℂ)⁻¹ * Complex.I))`. Rewrite using `[map_neg, map_mul, hconj, Complex.conj_I]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `Dth : ∀ z g, IsThetaFunO ψ V W g → IsThetaFunO ψ V W (Formalism.IndefR.Datum.dRho (heisO ψ V W) θ τ z g)` using `fun z g hg => (hsk τ z).2.1 g hg`. Establish `Dlin : ∀ z (α β : ℂ) F G, IsThetaFunO ψ V W F → IsThetaFunO ψ V W G → Formalism.IndefR.Datum.dRho (heisO ψ V W) θ τ z (α • F + β • G) = α • Formalism.IndefR.Datum.dRho (heisO ψ V W) θ τ z F + β • Formalism.IndefR.Datum.dRho (heisO ψ V W) θ τ z G`. Introduce `z α β F G hF hG`. Rewrite using `[GlobalTheory.Size.dRho_add hψ hθ τ z (GlobalTheory.OrientedHeis.theta_smul α hF) (GlobalTheory.OrientedHeis.theta_smul β hG), GlobalTheory.Size.dRho_smul, GlobalTheory.Size.dRho_smul]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `Cm : ∀ z w g, IsThetaFunO ψ V W g → ∀ x, Formalism.IndefR.Datum.dRho (heisO ψ V W) θ τ z (Formalism.IndefR.Datum.dRho (heisO ψ V W) θ τ w g) x = Formalism.IndefR.Datum.dRho (heisO ψ V W) θ τ w (Formalism.IndefR.Datum.dRho (heisO ψ V W) θ τ z g) x + GlobalTheory.IndefiniteRowSideF …`. Introduce `z w g hg x`. Establish `e` using `congrFun ((hco τ τ z w).2 g hg) x`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul] at e`. Take the linear combination `e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hJ : ∀ k : Fin W.rank × Fin V.rank, cplxO s s' (unitMap B B' k.1 k.2) = ((Complex.I * ((ε' k.1 * ε k.2 : ℝ) : ℂ)) • unitMap B B' k.1 k.2)` using `fun k => cplxO_unitMap_eq_I_mul_sign_smul hB hs hs' k.1 k.2`. Establish `hσ : ∀ k : Fin W.rank × Fin V.rank, (ε' k.1 * ε k.2) * (ε' k.1 * ε k.2) = 1`. Introduce `k`. Apply the tactic sequence `rcases hε k.2 with h | h <;> rcases hε' k.1 with h' | h' <;> rw [h, h'] <;> norm_num`. Establish `htr : ∀ (α β : ℂ) (k l : Fin W.rank × Fin V.rank), ((gramAt D V τ)⁻¹ * (β • unitMap B B' l.1 l.2)ᴴ * gramAt D W τ * (α • unitMap B B' k.1 k.2)).trace = α * ((starRingEnd ℂ) β * (if k = l then ((ε' k.1 * ε k.2 : ℝ) : ℂ) else 0))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `α β k l`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.mul_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mul, Matrix.trace_smul, Matrix.trace_smul, smul_eq_mul, smul_eq_mul, ← trace_inv_gram_single_conj_eq_ite_sign hε hB hG hG' k l]`. Both sides reduce to the same expression. Establish `kap : ∀ (α β : ℂ) (k l : Fin W.rank × Fin V.rank), GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.commScalar V W τ τ (α • unitMap B B' k.1 k.2) (β • unitMap B B' l.1 l.2) = -(2 * Real.pi * Complex.I) * (((2 * (tauE D τ D.host.xi0 * (α * ((starRingEnd ℂ) β * (i …`. Introduce `α β k l`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.commScalar GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.symplAt GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.hermAt`. Rewrite using `[if_pos rfl, htr]`. Establish `kap0 : ∀ (α β : ℂ) (k l : Fin W.rank × Fin V.rank), k ≠ l → GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.commScalar V W τ τ (α • unitMap B B' k.1 k.2) (β • unitMap B B' l.1 l.2) = 0`. Introduce `α β k l hkl`. Rewrite using `[kap, if_neg hkl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `kapI : ∀ k : Fin W.rank × Fin V.rank, GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.commScalar V W τ τ (unitMap B B' k.1 k.2) ((Complex.I * ((ε' k.1 * ε k.2 : ℝ) : ℂ)) • unitMap B B' k.1 k.2) = -(4 * Real.pi * Complex.I) * ((tauE D τ D.host.xi0).im : ℂ)`. Introduce `k`. Establish `e` using `kap 1 (Complex.I * ((ε' k.1 * ε k.2 : ℝ) : ℂ)) k k`. Rewrite `e` using `[one_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e, if_pos rfl]`. Establish `h2 : (tauE D τ D.host.xi0 * (1 * ((starRingEnd ℂ) (Complex.I * ((ε' k.1 * ε k.2 : ℝ) : ℂ)) * ((ε' k.1 * ε k.2 : ℝ) : ℂ)))).re = (tauE D τ D.host.xi0).im`. Establish `e2 : (1 : ℂ) * ((starRingEnd ℂ) (Complex.I * ((ε' k.1 * ε k.2 : ℝ) : ℂ)) * ((ε' k.1 * ε k.2 : ℝ) : ℂ)) = -Complex.I * (((ε' k.1 * ε k.2) * (ε' k.1 * ε k.2) : ℝ) : ℂ)`. Rewrite using `[map_mul, Complex.conj_I, Complex.conj_ofReal]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, hσ k]`. Simplify using `[Complex.mul_re]`. Rewrite using `[h2]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hA : ∀ (k : Fin W.rank × Fin V.rank) h, Formalism.IndefR.Datum.aPlus (heisO ψ V W) θ τ (cplxO s s') (unitMap B B' k.1 k.2) h = (fockScale D τ : ℂ)⁻¹ • Formalism.IndefR.Datum.dRho (heisO ψ V W) θ τ (unitMap B B' k.1 k.2) h + (-((fockScale D τ : ℂ)⁻¹ * Complex.I)) • Formalism.Indef …`. Introduce `k h`. Unfold `Formalism.IndefR.Datum.aPlus Formalism.IndefR.Datum.crea`. Rewrite using `[hJ k]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hBo : ∀ (k : Fin W.rank × Fin V.rank) h, ((-(fockScale D τ : ℂ)⁻¹) • Formalism.IndefR.Datum.annih (heisO ψ V W) θ τ (cplxO s s') (unitMap B B' k.1 k.2) h) = (-(fockScale D τ : ℂ)⁻¹) • Formalism.IndefR.Datum.dRho (heisO ψ V W) θ τ (unitMap B B' k.1 k.2) h + (-((fockScale D τ : ℂ)⁻ …`. Introduce `k h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `Formalism.IndefR.Datum.annih`. Rewrite using `[hJ k]`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `Ath : ∀ (k : Fin W.rank × Fin V.rank) g, IsThetaFunO ψ V W g → IsThetaFunO ψ V W (Formalism.IndefR.Datum.aPlus (heisO ψ V W) θ τ (cplxO s s') (unitMap B B' k.1 k.2) g)`. Introduce `k g hg`. Rewrite using `[hA]`. Conclude with `GlobalTheory.OrientedHeis.theta_add (GlobalTheory.OrientedHeis.theta_smul _ (Dth _ _ hg)) (GlobalTheory.OrientedHeis.theta_smul _ (Dth _ _ hg))`. Establish `Bth : ∀ (k : Fin W.rank × Fin V.rank) g, IsThetaFunO ψ V W g → IsThetaFunO ψ V W ((-(fockScale D τ : ℂ)⁻¹) • Formalism.IndefR.Datum.annih (heisO ψ V W) θ τ (cplxO s s') (unitMap B B' k.1 k.2) g)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k g hg`. Rewrite using `[hBo]`. Conclude with `GlobalTheory.OrientedHeis.theta_add (GlobalTheory.OrientedHeis.theta_smul _ (Dth _ _ hg)) (GlobalTheory.OrientedHeis.theta_smul _ (Dth _ _ hg))`. Establish `Aadd : ∀ (k : Fin W.rank × Fin V.rank) g h, IsThetaFunO ψ V W g → IsThetaFunO ψ V W h → Formalism.IndefR.Datum.aPlus (heisO ψ V W) θ τ (cplxO s s') (unitMap B B' k.1 k.2) (g + h) = Formalism.IndefR.Datum.aPlus (heisO ψ V W) θ τ (cplxO s s') (unitMap B B' k.1 k.2) g + Formalism.In …`. Introduce `k g h hg hh`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hA]`. Rewrite using `[GlobalTheory.Size.dRho_add hψ hθ τ _ hg hh, GlobalTheory.Size.dRho_add hψ hθ τ _ hg hh]`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `Badd : ∀ (k : Fin W.rank × Fin V.rank) g h, IsThetaFunO ψ V W g → IsThetaFunO ψ V W h → ((-(fockScale D τ : ℂ)⁻¹) • Formalism.IndefR.Datum.annih (heisO ψ V W) θ τ (cplxO s s') (unitMap B B' k.1 k.2) (g + h)) = ((-(fockScale D τ : ℂ)⁻¹) • Formalism.IndefR.Datum.annih (heisO ψ V W) …`. Introduce `k g h hg hh`. Simplify using `only [hBo]`. Rewrite using `[GlobalTheory.Size.dRho_add hψ hθ τ _ hg hh, GlobalTheory.Size.dRho_add hψ hθ τ _ hg hh]`. Use function extensionality and compare the values at `x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `Asmul : ∀ (k : Fin W.rank × Fin V.rank) (c : ℂ) g, Formalism.IndefR.Datum.aPlus (heisO ψ V W) θ τ (cplxO s s') (unitMap B B' k.1 k.2) (c • g) = c • Formalism.IndefR.Datum.aPlus (heisO ψ V W) θ τ (cplxO s s') (unitMap B B' k.1 k.2) g`. Introduce `k c g`. Simplify using `only [hA]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[GlobalTheory.Size.dRho_smul, GlobalTheory.Size.dRho_smul]`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `Bsmul : ∀ (k : Fin W.rank × Fin V.rank) (c : ℂ) g, ((-(fockScale D τ : ℂ)⁻¹) • Formalism.IndefR.Datum.annih (heisO ψ V W) θ τ (cplxO s s') (unitMap B B' k.1 k.2) (c • g)) = c • ((-(fockScale D τ : ℂ)⁻¹) • Formalism.IndefR.Datum.annih (heisO ψ V W) θ τ (cplxO s s') (unitMap B B' k …`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `k c g`. Simplify using `only [hBo]`. Rewrite using `[GlobalTheory.Size.dRho_smul, GlobalTheory.Size.dRho_smul]`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `ccr1 : ∀ (k l : Fin W.rank × Fin V.rank) g, IsThetaFunO ψ V W g → Formalism.IndefR.Datum.aPlus (heisO ψ V W) θ τ (cplxO s s') (unitMap B B' k.1 k.2) (Formalism.IndefR.Datum.aPlus (heisO ψ V W) θ τ (cplxO s s') (unitMap B B' l.1 l.2) g) = Formalism.IndefR.Datum.aPlus (heisO ψ V W) …`. Introduce `k l g hg`. Distinguish the cases in `hkl : k = l`. Rewrite using `[hkl]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `L` using `fun z z1 z2 (α β : ℂ) => Dlin z α β (Formalism.IndefR.Datum.dRho (heisO ψ V W) θ τ z1 g) (Formalism.IndefR.Datum.dRho (heisO ψ V W) θ τ z2 g) (Dth z1 g hg) (Dth z2 g hg)`. Simplify using `only [hA, L]`. Use function extensionality and compare the values at `x`. Establish `k1` using `kap0 1 1 k l hkl`. Rewrite `k1` using `[one_smul, one_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `k2` using `kap0 1 (Complex.I * ((ε' l.1 * ε l.2 : ℝ) : ℂ)) k l hkl`. Rewrite `k2` using `[one_smul]`. Establish `k3` using `kap0 (Complex.I * ((ε' k.1 * ε k.2 : ℝ) : ℂ)) 1 k l hkl`. Rewrite `k3` using `[one_smul]`. Establish `k4` using `kap0 (Complex.I * ((ε' k.1 * ε k.2 : ℝ) : ℂ)) (Complex.I * ((ε' l.1 * ε l.2 : ℝ) : ℂ)) k l hkl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `Cm (unitMap B B' k.1 k.2) (unitMap B B' l.1 l.2) g hg x`. Establish `e2` using `Cm (unitMap B B' k.1 k.2) ((Complex.I * ((ε' l.1 * ε l.2 : ℝ) : ℂ)) • unitMap B B' l.1 l.2) g hg x`. Establish `e3` using `Cm ((Complex.I * ((ε' k.1 * ε k.2 : ℝ) : ℂ)) • unitMap B B' k.1 k.2) (unitMap B B' l.1 l.2) g hg x`. Establish `e4` using `Cm ((Complex.I * ((ε' k.1 * ε k.2 : ℝ) : ℂ)) • unitMap B B' k.1 k.2) ((Complex.I * ((ε' l.1 * ε l.2 : ℝ) : ℂ)) • unitMap B B' l.1 l.2) g hg x`. Rewrite `e1` using `[k1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[k2]`. Rewrite `e3` using `[k3]`. Rewrite `e4` using `[k4]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `(fockScale D τ : ℂ)⁻¹ * (fockScale D τ : ℂ)⁻¹ * e1 + (fockScale D τ : ℂ)⁻¹ * (-((fockScale D τ : ℂ)⁻¹ * Complex.I)) * e2 + (-((fockScale D τ : ℂ)⁻¹ * Complex.I)) * (fockScale D τ : ℂ)⁻¹ * e3 + (-((fockScale D τ : ℂ)⁻¹ * Complex.I)) * (-((fockScale D τ : ℂ)⁻¹ * Complex.I)) * e4`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ccr2 : ∀ (k l : Fin W.rank × Fin V.rank) g, IsThetaFunO ψ V W g → ((-(fockScale D τ : ℂ)⁻¹) • Formalism.IndefR.Datum.annih (heisO ψ V W) θ τ (cplxO s s') (unitMap B B' k.1 k.2) (Formalism.IndefR.Datum.aPlus (heisO ψ V W) θ τ (cplxO s s') (unitMap B B' l.1 l.2) g)) = Formalism.Ind …`. Introduce `k l g hg`. Establish `L` using `fun z z1 z2 (α β : ℂ) => Dlin z α β (Formalism.IndefR.Datum.dRho (heisO ψ V W) θ τ z1 g) (Formalism.IndefR.Datum.dRho (heisO ψ V W) θ τ z2 g) (Dth z1 g hg) (Dth z2 g hg)`. Simplify using `only [hA, hBo, L]`. Distinguish the cases in `hkl : k = l`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hkl` using the available equality. Rewrite using `[if_pos rfl]`. Use function extensionality and compare the values at `x`. Establish `e2` using `Cm (unitMap B B' k.1 k.2) ((Complex.I * ((ε' k.1 * ε k.2 : ℝ) : ℂ)) • unitMap B B' k.1 k.2) g hg x`. Rewrite `e2` using `[kapI k]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `((-((fockScale D τ : ℂ)⁻¹ * Complex.I)) * (-(fockScale D τ : ℂ)⁻¹ - (fockScale D τ : ℂ)⁻¹)) * e2 + (g x) * hcinv + (-(8 * Real.pi) * (fockScale D τ : ℂ)⁻¹ * (fockScale D τ : ℂ)⁻¹ * ((tauE D τ D.host.xi0).im : ℂ) * g x) * Complex.I_mul_I`. Rewrite using `[if_neg hkl]`. Use function extensionality and compare the values at `x`. Establish `k1` using `kap0 1 1 k l hkl`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `k1` using `[one_smul, one_smul]`. Establish `k2` using `kap0 1 (Complex.I * ((ε' l.1 * ε l.2 : ℝ) : ℂ)) k l hkl`. Rewrite `k2` using `[one_smul]`. Establish `k3` using `kap0 (Complex.I * ((ε' k.1 * ε k.2 : ℝ) : ℂ)) 1 k l hkl`. Rewrite `k3` using `[one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k4` using `kap0 (Complex.I * ((ε' k.1 * ε k.2 : ℝ) : ℂ)) (Complex.I * ((ε' l.1 * ε l.2 : ℝ) : ℂ)) k l hkl`. Establish `e1` using `Cm (unitMap B B' k.1 k.2) (unitMap B B' l.1 l.2) g hg x`. Establish `e2` using `Cm (unitMap B B' k.1 k.2) ((Complex.I * ((ε' l.1 * ε l.2 : ℝ) : ℂ)) • unitMap B B' l.1 l.2) g hg x`. Establish `e3` using `Cm ((Complex.I * ((ε' k.1 * ε k.2 : ℝ) : ℂ)) • unitMap B B' k.1 k.2) (unitMap B B' l.1 l.2) g hg x`. Establish `e4` using `Cm ((Complex.I * ((ε' k.1 * ε k.2 : ℝ) : ℂ)) • unitMap B B' k.1 k.2) ((Complex.I * ((ε' l.1 * ε l.2 : ℝ) : ℂ)) • unitMap B B' l.1 l.2) g hg x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[k1]`. Rewrite `e2` using `[k2]`. Rewrite `e3` using `[k3]`. Rewrite `e4` using `[k4]`. Simplify using `only [ Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `(-(fockScale D τ : ℂ)⁻¹) * (fockScale D τ : ℂ)⁻¹ * e1 + (-(fockScale D τ : ℂ)⁻¹) * (-((fockScale D τ : ℂ)⁻¹ * Complex.I)) * e2 + (-((fockScale D τ : ℂ)⁻¹ * Complex.I)) * (fockScale D τ : ℂ)⁻¹ * e3 + (-((fockScale D τ : ℂ)⁻¹ * Complex.I)) * (-((fockScale D τ : ℂ)⁻¹ * Complex.I)) * …`. Establish `hex : ∀ T : (WO V W → ℂ) → (WO V W → ℂ), (∀ g, IsThetaFunO ψ V W g → IsThetaFunO ψ V W (T g)) → (∀ g h, IsThetaFunO ψ V W g → IsThetaFunO ψ V W h → T (g + h) = T g + T h) → (∀ (c : ℂ) g, T (c • g) = c • T g) → ∃ e : Module.End ℂ (GlobalTheory.VacuumFockLaws.thetaSub V W ψ), ∀ g : …` using `fun T h1 h2 h3 => exists_end_coe_eq_of_linear_on_submodule _ T (fun g hg => h1 g hg) (fun g hg h hh => h2 g h hg hh) (fun c g _ => h3 c g)`. Use `choose a ha using fun k : Fin W.rank × Fin V.rank => hex (fun g => Formalism.IndefR.Datum.aPlus (heisO ψ V W) θ τ (cplxO s s') (unitMap B B' k.1 k.2) g) (Ath k) (Aadd k) (Asmul k)`. Use `choose b hb using fun k : Fin W.rank × Fin V.rank => hex (fun g => ((-(fockScale D τ : ℂ)⁻¹) • Formalism.IndefR.Datum.annih (heisO ψ V W) θ τ (cplxO s s') (unitMap B B' k.1 k.2) g)) (Bth k) (Badd k) (Bsmul k)`. Establish `ha' : ∀ (k : Fin W.rank × Fin V.rank) (g : GlobalTheory.VacuumFockLaws.thetaSub V W ψ), (a k g : WO V W → ℂ) = Formalism.IndefR.Datum.aPlus (heisO ψ V W) θ τ (cplxO s s') (unitMap B B' k.1 k.2) (g : WO V W → ℂ)` using `fun k g => ha k g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hb' : ∀ (k : Fin W.rank × Fin V.rank) (g : GlobalTheory.VacuumFockLaws.thetaSub V W ψ), (b k g : WO V W → ℂ) = ((-(fockScale D τ : ℂ)⁻¹) • Formalism.IndefR.Datum.annih (heisO ψ V W) θ τ (cplxO s s') (unitMap B B' k.1 k.2) (g : WO V W → ℂ))` using `fun k g => hb k g`. Establish `haa : ∀ i j (g : GlobalTheory.VacuumFockLaws.thetaSub V W ψ), a i (a j g) = a j (a i g)`. Introduce `i j g`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [ha']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Conclude with `ccr1 i j g g.2`. Establish `hba : ∀ i j (g : GlobalTheory.VacuumFockLaws.thetaSub V W ψ), b i (a j g) = a j (b i g) + (@ite ℂ (i = j) (Classical.propDecidable (i = j)) 1 0) • g`. Introduce `i j g`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [ha', hb', Submodule.coe_add, Submodule.coe_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ccr2 i j g g.2`. Establish `hv : ∀ z, Formalism.IndefR.Datum.annih (heisO ψ V W) θ τ (cplxO s s') z f = 0` using `hvac`. Establish `hfb : ∀ i, b i ⟨f, hf⟩ = 0`. Introduce `i`. Apply `Subtype.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hb']`. Simplify using `[hv]`. Establish `R` using `GlobalTheory.VacuumFockLaws.fock_of_ccr (ι := Fin W.rank × Fin V.rank) (X := WO V W) (GlobalTheory.VacuumFockLaws.thetaSub V W ψ) (fun (k : Fin W.rank × Fin V.rank) (h : WO V W → ℂ) => Formalism.IndefR.Datum.aPlus (heisO ψ V W) θ τ (cplxO s s') (unitMap B B' k.1 k.2) h) a b (fun …`. Establish `thP : ∀ P, IsThetaFunO ψ V W (GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ptAt ψ θ V W τ s s' B B' f P)` using `fun P => R.1 P`. Establish `IPkey : ∀ (μ : Measure (WO V W)) (𝓕 : Set (WO V W)), μ.IsAddHaarMeasure → IsAddFundamentalDomain (ratL W V) 𝓕 μ → ∀ (β : Fin W.rank × Fin V.rank →₀ ℕ) (Q : MvPolynomial (Fin W.rank × Fin V.rank) ℂ), ipO μ 𝓕 (GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ptAt ψ θ V W τ …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `μ 𝓕 hμ h𝓕`. Establish `ipL : ∀ (α β : ℂ) F G H, IsThetaFunO ψ V W F → IsThetaFunO ψ V W G → IsThetaFunO ψ V W H → ipO μ 𝓕 (α • F + β • G) H = α * ipO μ 𝓕 F H + β * ipO μ 𝓕 G H`. Introduce `α β F G H hF hG hH`. Rewrite using `[GlobalTheory.Size.ipO_add_left hψ hμ h𝓕 (GlobalTheory.OrientedHeis.theta_smul α hF) (GlobalTheory.OrientedHeis.theta_smul β hG) hH, GlobalTheory.Size.ipO_smul_left, GlobalTheory.Size.ipO_smul_left]`. Establish `ipR : ∀ (α β : ℂ) F G H, IsThetaFunO ψ V W F → IsThetaFunO ψ V W G → IsThetaFunO ψ V W H → ipO μ 𝓕 H (α • F + β • G) = (starRingEnd ℂ) α * ipO μ 𝓕 H F + (starRingEnd ℂ) β * ipO μ 𝓕 H G`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `α β F G H hF hG hH`. Rewrite using `[GlobalTheory.Size.ipO_add_right hψ hμ h𝓕 hH (GlobalTheory.OrientedHeis.theta_smul α hF) (GlobalTheory.OrientedHeis.theta_smul β hG), GlobalTheory.Size.ipO_smul_right, GlobalTheory.Size.ipO_smul_right]`. Establish `sk : ∀ z F H, IsThetaFunO ψ V W F → IsThetaFunO ψ V W H → ipO μ 𝓕 (Formalism.IndefR.Datum.dRho (heisO ψ V W) θ τ z F) H = -ipO μ 𝓕 F (Formalism.IndefR.Datum.dRho (heisO ψ V W) θ τ z H)` using `fun z F H hF hH => (hsk τ z).2.2 μ 𝓕 hμ h𝓕 F H hF hH`. Apply `R.2 (ipO μ 𝓕)` to reduce the goal to its premises. Introduce `x y z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.Size.ipO_add_left hψ hμ h𝓕 x.2 y.2 z.2`. Introduce `c x z`. Conclude with `GlobalTheory.Size.ipO_smul_left (μ := μ) (𝓕 := 𝓕) c x z`. Introduce `x`. Establish `e` using `GlobalTheory.Size.ipO_smul_right (μ := μ) (𝓕 := 𝓕) (0 : ℂ) x 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using e`. Introduce `i x y`. Establish `hx : IsThetaFunO ψ V W (x : WO V W → ℂ)` using `x.2`. Establish `hy : IsThetaFunO ψ V W (y : WO V W → ℂ)` using `y.2`. Simplify using `only [ha', hb', hA, hBo]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[ipL _ _ _ _ _ (Dth _ _ hx) (Dth _ _ hx) hy, ipR _ _ _ _ _ (Dth _ _ hy) (Dth _ _ hy) hx, sk _ _ _ hx hy, sk _ _ _ hx hy, map_neg, hconj, hconjE]`. Expand and normalize the polynomial expressions, which then agree. Introduce `i x y`. Establish `hx : IsThetaFunO ψ V W (x : WO V W → ℂ)` using `x.2`. Establish `hy : IsThetaFunO ψ V W (y : WO V W → ℂ)` using `y.2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [ha', hb', hA, hBo]`. Rewrite using `[ipR _ _ _ _ _ (Dth _ _ hy) (Dth _ _ hy) hx, ipL _ _ _ _ _ (Dth _ _ hx) (Dth _ _ hx) hy, sk _ _ _ hx hy, sk _ _ _ hx hy, hconj, hconjE]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨thP, fun hne => ?_, fun μ 𝓕 hμ h𝓕 P Q => ?_⟩` and prove the remaining obligations. Introduce `P Q hPQ`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨μ, 𝓕, hcov⟩` from `GlobalTheory.Size.exists_isCovolOne (D := D) V W`. Take `⟨hμ, h𝓕, -⟩` from `hcov`. Establish `key` using `IPkey μ 𝓕 hμ h𝓕`. Establish `hff : ipO μ 𝓕 f f ≠ 0` using `fun h0 => hne ((GlobalTheory.Size.ipO_self_eq_zero_iff hψ hμ h𝓕 hf).mp h0)`. Use extensionality with `β`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `key β P`. Establish `e2` using `key β Q`. Rewrite `e1` using `[hPQ]`. Establish `hm : (multiFact β : ℂ) ≠ 0`. Rewrite using `[Nat.cast_ne_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `multiFact`. Rewrite using `[Finsupp.prod]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun a _ => Nat.factorial_ne_zero _`. Conclude with `mul_right_cancel₀ (mul_ne_zero hm hff) (e1.symm.trans e2)`. Establish `key` using `IPkey μ 𝓕 hμ h𝓕`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `lin : GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ptAt ψ θ V W τ s s' B B' f Q = ∑ β ∈ Q.support, Q.coeff β • GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ptAt ψ θ V W τ s s' B B' f (MvPolynomial.monomial β 1)` using `by conv_lhs => rw [Q.as_sum]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ptAt Formalism.IndefR.Datum.pureTensorL`. Rewrite using `[map_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `β _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_smul, MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Establish `thsum : ∀ (t : Finset (Fin W.rank × Fin V.rank →₀ ℕ)) (cf : (Fin W.rank × Fin V.rank →₀ ℕ) → ℂ), IsThetaFunO ψ V W (∑ β ∈ t, cf β • GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ptAt ψ θ V W τ s s' B B' f (MvPolynomial.monomial β 1))`. Introduce `t cf`. Use `Finset.induction_on t ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_empty]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.OrientedHeis.theta_zero`. Introduce `β t hβ ih`. Rewrite using `[Finset.sum_insert hβ]`. Conclude with `GlobalTheory.OrientedHeis.theta_add (GlobalTheory.OrientedHeis.theta_smul _ (thP _)) ih`. Establish `ipRs : ∀ (t : Finset (Fin W.rank × Fin V.rank →₀ ℕ)) (cf : (Fin W.rank × Fin V.rank →₀ ℕ) → ℂ), ipO μ 𝓕 (GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ptAt ψ θ V W τ s s' B B' f P) (∑ β ∈ t, cf β • GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ptAt ψ θ V W …`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `t cf`. Use `Finset.induction_on t ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Establish `e` using `GlobalTheory.Size.ipO_smul_right (μ := μ) (𝓕 := 𝓕) (0 : ℂ) (GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ptAt ψ θ V W τ s s' B B' f P) 0`. Simplify using `using e`.
-
-Introduce `β t hβ ih`. Rewrite using `[Finset.sum_insert hβ, Finset.sum_insert hβ, GlobalTheory.Size.ipO_add_right hψ hμ h𝓕 (thP P) (GlobalTheory.OrientedHeis.theta_smul _ (thP _)) (thsum t cf), GlobalTheory.Size.ipO_smul_right, ih]`. Rewrite using `[lin, ipRs, fockIp_eq, Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `β _`.
-
-Rewrite using `[key β P]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem laws_lemma_7 {D : D7} {V W : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     (τ : D.what₂.Tau) {s B : Mn V.rank} {s' B' : Mn W.rank} {ε : Fin V.rank → ℝ} {ε' : Fin W.rank → ℝ}
@@ -631,7 +625,7 @@ private theorem laws_lemma_7 {D : D7} {V W : HSp D} {ψ : AddChar (AF D.host.F) 
 variable {D : D7} {V W : HSp D}
 
 /- English proof (translation)
-The claim follows from `laws_lemma_7 hψ hθ τ hε hε' hB hs hs' hG hG' hf hvac`.
+A detailed English derivation is pending.
 -/
 theorem laws {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     (τ : D.what₂.Tau) {s B : Mn V.rank} {s' B' : Mn W.rank} {ε : Fin V.rank → ℝ} {ε' : Fin W.rank → ℝ}
@@ -658,19 +652,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ArchRec
 
 /- English proof (translation)
-Introduce `D ψ θ S T τ hψ hθ sS frS εS sT frT εT hS hT f hf hvac`. Take `⟨hdS, hsS, hGS⟩` from `frame_inv hS`. Take `⟨hdT, hsT, hGT⟩` from `frame_inv hT`. Establish `L` using `laws (D := D) (V := S) (W := T) hψ hθ τ (ε := fun a => sgn εS a) (ε' := fun a => sgn εT a) (fun a => sgn_cases εS a) (fun a => sgn_cases εT a) hdS hsS hsT hGS hGT hf hvac`. Use `⟨L.1, fun hne => ⟨L.2.1 hne, ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `μ 𝓕 hμ h𝓕`. Establish `hne0 : GlobalTheory.Ker.ipO μ 𝓕 f f ≠ 0` using `fun h0 => hne ((GlobalTheory.Size.ipO_self_eq_zero_iff hψ hμ h𝓕 hf).mp h0)`. Establish `hre : GlobalTheory.Ker.ipO μ 𝓕 f f = (((GlobalTheory.Ker.ipO μ 𝓕 f f).re : ℝ) : ℂ)`. Establish `hc : (starRingEnd ℂ) (GlobalTheory.Ker.ipO μ 𝓕 f f) = GlobalTheory.Ker.ipO μ 𝓕 f f` using `GlobalTheory.Size.ipO_conj (μ := μ) (𝓕 := 𝓕) f f`. Apply `Complex.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Complex.ofReal_re]`. Establish `him` using `congrArg Complex.im hc`. Rewrite `him` using `[Complex.conj_im]`. Simplify using `only [Complex.ofReal_im]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hnn : 0 ≤ (GlobalTheory.Ker.ipO μ 𝓕 f f).re`. Establish `hI` using `GlobalTheory.Size.integrableOn_mul_conj hψ hμ h𝓕 hf hf`. Unfold `GlobalTheory.Ker.ipO`. Establish `key : (∫ w in 𝓕, f w * (starRingEnd ℂ) (f w) ∂μ).re = ∫ w in 𝓕, (f w * (starRingEnd ℂ) (f w)).re ∂μ` using `(integral_re hI).symm`. Rewrite using `[key]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `MeasureTheory.integral_nonneg fun w => by`. Simplify using `only [Complex.mul_conj, Complex.ofReal_re]`. Conclude with `Complex.normSq_nonneg _`. Establish `hpos : 0 < (GlobalTheory.Ker.ipO μ 𝓕 f f).re`. Break down `hnn.lt_or_eq with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Conclude with `h`. Conclude with `absurd (by rw [hre, ← h, Complex.ofReal_zero]) hne0`. Use `⟨(GlobalTheory.Ker.ipO μ 𝓕 f f).re, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.ArchRec.Fischer`. Use `⟨hpos, fun P Q => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[LinearEquiv.refl_apply, LinearEquiv.refl_apply, ← hre, ← L.2.2 μ 𝓕 hμ h𝓕 P Q]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fock_at_one_place : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (τ : D.what₂.Tau), IsStdChar D ψ (-1) → IsInfFam θ → ∀ (sS frS : Mn S.rank) (εS : Fin S.rank → Bool) (sT frT : Mn T.rank) (εT : Fin T.rank → Bool), IsFrameOf (gramAt D S τ) sS εS frS → IsFrameOf (gramAt D T τ) sT εT frT → ∀ f, IsThetaFunO ψ S T f → IsFockVacAt (heisO ψ S T) θ τ (cplxO sS sT) f → (∀ P, IsThetaFunO ψ S T (ptAt ψ θ S T τ sS sT frS⁻¹ frT⁻¹ f P)) ∧ (f ≠ 0 → Function.Injective (ptAt ψ θ S T τ sS sT frS⁻¹ frT⁻¹ f) ∧ ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), μ.IsAddHaarMeasure → IsAddFundamentalDomain (ratL T S) 𝓕 μ → ∃ N, Fischer (ptAt ψ θ S T τ sS sT frS⁻¹ frT⁻¹ f) (ipTh μ 𝓕) (LinearEquiv.refl ℂ _) N) := by
   intro D ψ θ S T τ hψ hθ sS frS εS sT frT εT hS hT f hf hvac

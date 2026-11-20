@@ -9,28 +9,28 @@ namespace GlobalTheory.CayleyInv
 variable {R : Type} [CommRing R] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ h, Matrix.map_one σ (map_zero σ) (map_one σ)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mul_map_inv (σ : R →+* R) (M : Matrix (Fin n) (Fin n) R) (h : IsUnit M.det) :
     M.map σ * (M⁻¹).map σ = 1 := by
   rw [← Matrix.map_mul, Matrix.mul_nonsing_inv _ h, Matrix.map_one σ (map_zero σ) (map_one σ)]
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_add σ (map_add σ), Matrix.map_one σ (map_zero σ) (map_one σ)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_one_add (σ : R →+* R) (M : Matrix (Fin n) (Fin n) R) :
     (1 + M).map σ = 1 + M.map σ := by
   rw [Matrix.map_add σ (map_add σ), Matrix.map_one σ (map_zero σ) (map_one σ)]
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_sub σ (map_sub σ), Matrix.map_one σ (map_zero σ) (map_one σ)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_one_sub (σ : R →+* R) (M : Matrix (Fin n) (Fin n) R) :
     (1 - M).map σ = 1 - M.map σ := by
   rw [Matrix.map_sub σ (map_sub σ), Matrix.map_one σ (map_zero σ) (map_one σ)]
 
 /- English proof (translation)
-Establish `h1 : (1 + g) * (1 + g)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ h`. Establish `h2 : (1 + g) + (1 - g) = (2 : R) • (1 : Matrix (Fin n) (Fin n) R)`. Rewrite using `[two_smul]`. Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Chain the equalities or inequalities of the calculation.
 -/
 theorem one_add_cayley (g : Matrix (Fin n) (Fin n) R) (h : IsUnit (1 + g).det) :
     1 + (1 - g) * (1 + g)⁻¹ = (2 : R) • (1 + g)⁻¹ := by
@@ -42,7 +42,7 @@ theorem one_add_cayley (g : Matrix (Fin n) (Fin n) R) (h : IsUnit (1 + g).det) :
     _ = (2 : R) • (1 + g)⁻¹ := by rw [h2, Matrix.smul_mul, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `h1 : (1 + g) * (1 + g)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ h`. Establish `h2 : (1 + g) - (1 - g) = (2 : R) • g`. Rewrite using `[two_smul]`. Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Chain the equalities or inequalities of the calculation.
 -/
 theorem one_sub_cayley (g : Matrix (Fin n) (Fin n) R) (h : IsUnit (1 + g).det) :
     1 - (1 - g) * (1 + g)⁻¹ = (2 : R) • (g * (1 + g)⁻¹) := by
@@ -54,14 +54,14 @@ theorem one_sub_cayley (g : Matrix (Fin n) (Fin n) R) (h : IsUnit (1 + g).det) :
     _ = (2 : R) • (g * (1 + g)⁻¹) := by rw [h2, Matrix.smul_mul]
 
 /- English proof (translation)
-Rewrite using `[one_add_cayley g h, smul_mul_smul_comm, hc, one_smul, Matrix.nonsing_inv_mul _ h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_add_cayley_mul (g : Matrix (Fin n) (Fin n) R) (h : IsUnit (1 + g).det) (c : R)
     (hc : 2 * c = 1) : (1 + (1 - g) * (1 + g)⁻¹) * (c • (1 + g)) = 1 := by
   rw [one_add_cayley g h, smul_mul_smul_comm, hc, one_smul, Matrix.nonsing_inv_mul _ h]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.nonsing_inv_mul _ hA, Matrix.mul_nonsing_inv _ hB, Matrix.one_mul, Matrix.mul_one]`. Use `_ = A⁻¹ * (A * X * B) * B⁻¹ := by simp only [Matrix.mul_assoc]`. Use `_ = 0 := by rw [h, Matrix.mul_zero, Matrix.zero_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_zero_of_mul_mul_eq_zero_of_isUnit_det (A B X : Matrix (Fin n) (Fin n) R)
     (hA : IsUnit A.det) (hB : IsUnit B.det) (h : A * X * B = 0) : X = 0 := by
@@ -72,36 +72,34 @@ private theorem eq_zero_of_mul_mul_eq_zero_of_isUnit_det (A B X : Matrix (Fin n)
     _ = 0 := by rw [h, Matrix.mul_zero, Matrix.zero_mul]
 
 /- English proof (translation)
-Simplify `h.map σ` using `[RingHom.map_det, RingHom.mapMatrix_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem isUnit_det_map_of_isUnit_det (σ : R →+* R) (M : Matrix (Fin n) (Fin n) R)
     (h : IsUnit M.det) : IsUnit (M.map σ).det := by
   simpa [RingHom.map_det, RingHom.mapMatrix_apply] using h.map σ
 
 /- English proof (translation)
-Introduce `R _ σ n G hσ hG hGu h2`. Take `⟨c, hc⟩` from `h2.exists_right_inv`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg hP`. Establish `hSP : (1 - g) * (1 + g)⁻¹ * (1 + g) = 1 - g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hP, Matrix.mul_one]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply `eq_zero_of_mul_mul_eq_zero_of_isUnit_det ((1 + g)ᵀ) ((1 + g).map σ) _ (by rwa [Matrix.det_transpose]) (isUnit_det_map_of_isUnit_det σ _ hP)` to reduce the goal to its premises. Establish `e1 : (1 + g)ᵀ * ((1 - g) * (1 + g)⁻¹)ᵀ = (1 - g)ᵀ`. Rewrite using `[← Matrix.transpose_mul, hSP]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ((1 - g) * (1 + g)⁻¹).map σ * (1 + g).map σ = (1 - g).map σ`. Rewrite using `[← Matrix.map_mul, hSP]`. Establish `e3 : (1 - gᵀ) * G * (1 + g.map σ) + (1 + gᵀ) * G * (1 - g.map σ) = (G - gᵀ * G * g.map σ) + (G - gᵀ * G * g.map σ)` using `by noncomm_ring`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = (1 - g)ᵀ * G * (1 + g).map σ + (1 + g)ᵀ * G * (1 - g).map σ := by rw [e1, e2]`. Use `_ = 0 := by`. Rewrite using `[Matrix.transpose_sub, Matrix.transpose_add, Matrix.transpose_one, map_one_add, map_one_sub, e3, hg, sub_self, add_zero]`. Rewrite using `[one_add_cayley g hP, Matrix.det_smul]`. Conclude with `(h2.pow _).mul (Matrix.isUnit_nonsing_inv_det _ hP)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hP`. Establish `hinv : (1 + (1 - g) * (1 + g)⁻¹)⁻¹ = c • (1 + g)` using `Matrix.inv_eq_right_inv (one_add_cayley_mul g hP c hc)`. Rewrite using `[hinv, one_sub_cayley g hP, smul_mul_smul_comm, hc, one_smul, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hP, Matrix.mul_one]`. Introduce `S hS hP`. Establish `hgP : (1 - S) * (1 + S)⁻¹ * (1 + S) = 1 - S`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hP, Matrix.mul_one]`. Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_mul_mul_eq_zero_of_isUnit_det ((1 + S)ᵀ) ((1 + S).map σ) _ (by rwa [Matrix.det_transpose]) (isUnit_det_map_of_isUnit_det σ _ hP)` to reduce the goal to its premises. Establish `e1 : (1 + S)ᵀ * ((1 - S) * (1 + S)⁻¹)ᵀ = (1 - S)ᵀ`. Rewrite using `[← Matrix.transpose_mul, hgP]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ((1 - S) * (1 + S)⁻¹).map σ * (1 + S).map σ = (1 - S).map σ`. Rewrite using `[← Matrix.map_mul, hgP]`. Establish `e3 : (1 - Sᵀ) * G * (1 - S.map σ) - (1 + Sᵀ) * G * (1 + S.map σ) = -((Sᵀ * G + G * S.map σ) + (Sᵀ * G + G * S.map σ))` using `by noncomm_ring`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `_ = (1 - S)ᵀ * G * (1 - S).map σ - (1 + S)ᵀ * G * (1 + S).map σ := by rw [e1, e2]`. Use `_ = 0 := by`. Rewrite using `[Matrix.transpose_sub, Matrix.transpose_add, Matrix.transpose_one, map_one_add, map_one_sub, e3, hS, add_zero, neg_zero]`. Introduce `A`. Establish `hGinvG : G⁻¹ * G = 1` using `Matrix.nonsing_inv_mul _ hGu`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hKG : ((G⁻¹).map σ)ᵀ * G = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hGK : G * ((G⁻¹).map σ)ᵀ = 1`. Rewrite using `[← Matrix.inv_eq_left_inv hKG]`. Conclude with `Matrix.mul_nonsing_inv _ hGu`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hAA : (A.map σ).map σ = A`. Use extensionality with `i j`. Simplify using `[hσ]`. Establish `hT : (A - (G * A.map σ * G⁻¹)ᵀ)ᵀ = Aᵀ - G * A.map σ * G⁻¹`. Rewrite using `[Matrix.transpose_sub, Matrix.transpose_transpose]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hTs : (A - (G * A.map σ * G⁻¹)ᵀ).map σ = A.map σ - ((G⁻¹).map σ)ᵀ * (Aᵀ * G)`. Rewrite using `[Matrix.map_sub σ (map_sub σ), Matrix.transpose_map, Matrix.map_mul, Matrix.map_mul, hAA, Matrix.transpose_mul, Matrix.transpose_mul, hG]`. Rewrite using `[hT, hTs]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc]`.
-
-Use `_ = 0 := by`. Rewrite using `[hGinvG, hGK, Matrix.mul_one, Matrix.one_mul]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem cayley_transform : ∀ (R : Type) [CommRing R] (σ : R →+* R) (n : ℕ) (G : Matrix (Fin n) (Fin n) R), (∀ x, σ (σ x) = x) → (G.map σ)ᵀ = G → IsUnit G.det → IsUnit (2 : R) → (∀ g : Matrix (Fin n) (Fin n) R, gᵀ * G * g.map σ = G → IsUnit (1 + g).det → ((1 - g) * (1 + g)⁻¹)ᵀ * G + G * ((1 - g) * (1 + g)⁻¹).map σ = 0 ∧ IsUnit (1 + (1 - g) * (1 + g)⁻¹ : Matrix (Fin n) (Fin n) R).det) ∧ (∀ g : Matrix (Fin n) (Fin n) R, IsUnit (1 + g).det → (1 - (1 - g) * (1 + g)⁻¹) * (1 + (1 - g) * (1 + g)⁻¹)⁻¹ = g) ∧ (∀ S : Matrix (Fin n) (Fin n) R, Sᵀ * G + G * S.map σ = 0 → IsUnit (1 + S).det → ((1 - S) * (1 + S)⁻¹)ᵀ * G * ((1 - S) * (1 + S)⁻¹).map σ = G) ∧ ∀ A : Matrix (Fin n) (Fin n) R, (A - (G * A.map σ * G⁻¹)ᵀ)ᵀ * G + G * (A - (G * A.map σ * G⁻¹)ᵀ).map σ = 0 := by
   intro R _ σ n G hσ hG hGu h2

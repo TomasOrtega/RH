@@ -18,16 +18,16 @@ section Rec
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `SizeData₂.lwP Formalism.BasicNotions.lw`. Conclude with `div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem zero_le_logWeight (w : D.what₂.places.Pl) : 0 ≤ SizeData₂.lwP w := by
   unfold SizeData₂.lwP Formalism.BasicNotions.lw
   exact div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)
 
 /- English proof (translation)
-Establish `hx : 0 < L.sc.x` using `lt_trans one_pos L.sc.one_lt_alt`. Establish `h1` using `Real.rpow_pos_of_pos hx L.sc.eps`. Establish `h2` using `Real.rpow_pos_of_pos hx (-L.sc.eps)`. Unfold `SizeData₂.Nc budgetNc rankBudget bSize`. Use `div_nonneg ?_ (mul_nonneg (Nat.cast_nonneg _) (mul_nonneg (Nat.cast_nonneg _) h2.le))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_nonneg (mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)) (Real.exp_pos _).le) h1.le`.
+A detailed English derivation is pending.
 -/
 theorem Nc_nonneg_rec (L : SizeData₂ D) : 0 ≤ L.Nc := by
   have hx : 0 < L.sc.x := lt_trans one_pos L.sc.one_lt_alt
@@ -65,11 +65,11 @@ def RowCountEqDimension : Prop := D.what₂.D0 = (F.R F.μ0).dZ (F.lvl P ψ) (Zs
 end Ties
 
 /- English proof (translation)
-Establish `h` using `(isLittleO_log_rpow_atTop (half_pos he)).bound one_pos`. Take `⟨X, hX⟩` from `Filter.eventually_atTop.1 h`. Use `⟨max X 1, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx1 : 1 ≤ x` using `le_trans (le_max_right _ _) hx`. Establish `h1` using `hX x (le_trans (le_max_left _ _) hx)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[one_mul, Real.norm_eq_abs, Real.norm_eq_abs]`. Establish `hl : 0 ≤ Real.log x` using `Real.log_nonneg hx1`. Establish `hp : 0 ≤ x ^ (e / 2)` using `Real.rpow_nonneg (by linarith) _`. Rewrite `h1` using `[abs_of_nonneg hl, abs_of_nonneg hp]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (by linarith)]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem log_sq_le_rpow_eventually {e : ℝ} (he : 0 < e) : ∃ X : ℝ, ∀ x ≥ X, Real.log x ^ 2 ≤ x ^ e := by
   have h := (isLittleO_log_rpow_atTop (half_pos he)).bound one_pos
@@ -87,7 +87,7 @@ theorem log_sq_le_rpow_eventually {e : ℝ} (he : 0 < e) : ∃ X : ℝ, ∀ x �
       norm_num
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem subspace_rank_at_of_family {eps : ℝ} (Fm : FamP eps) (h : SmallLevelRankEq Fm) :
     ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, SubspaceRankAt (Fm.L x i) := h

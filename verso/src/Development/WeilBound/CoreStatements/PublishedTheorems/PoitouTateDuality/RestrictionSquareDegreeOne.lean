@@ -9,7 +9,7 @@ open CategoryTheory MonoidalCategory TensorProduct GroundTheory.ProfCoh Reciproc
 namespace PositivityTheory.Lit1.PTN
 
 /- English proof (translation)
-Rewrite using `[cupPairing_apply, cupPairing_apply, cohomologyMap_comp, ConcreteCategory.comp_apply, cohomologyMap_braiding_cup (rfl : 1 + 1 = 2) (rfl : 1 + 1 = 2) y x]`. Establish `h1 : ((-1 : ULift.{0} ℤ) ^ (1 * 1)) = -1` using `by simp`. Rewrite using `[h1, neg_one_smul, map_neg, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cupPairing_swap_degree_one {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
     [CompactSpace Γ] [TotallyDisconnectedSpace Γ]
@@ -24,11 +24,11 @@ theorem cupPairing_swap_degree_one {Γ : Type} [Group Γ] [TopologicalSpace Γ] 
 attribute [local instance 2000] Rep.hV2
 
 /- English proof (translation)
-Take `⟨e1, he1a, -⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gc1 Hv R M (rho.comp ev.toMonoidHom) A eA heA`. Take `⟨x, hx⟩` from `he1a (restrictCocycles1 rho ev.toMonoidHom hevc z)`. Take `⟨e1', he1b, -⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gc1 Hv R M' (rho'.comp ev.toMonoidHom) B eB heB`. Take `⟨x', hx'⟩` from `he1b (restrictCocycles1 rho' ev.toMonoidHom hevc z')`. Establish `hEa : E (Submodule.Quotient.mk z) = cohomologyπ A 1 x` using `hE z x (fun s => hx s)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hEb : E' (Submodule.Quotient.mk z') = cohomologyπ B 1 x'` using `hE' z' x' (fun s => hx' s)`. Take `⟨y, hy, hπ⟩` from `cup_compare_degree_one_one (rho.comp ev.toMonoidHom) (rho'.comp ev.toMonoidHom) (rhoP.comp ev.toMonoidHom) b hb (fun g x y => hbe (ev g) x y) (show ContAction (rho'.comp ev.toMonoidHom) from hc.comp ((hevc.comp continuous_fst).prodMk continuous_snd)) A B C eA eB eC heB μ hbμ (res …`. Use `⟨y, fun s => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hy s]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hEa, hEb, hπ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cup_degree_one_compatible {Lv Hv : Type} [Group Lv] [TopologicalSpace Lv] [IsTopologicalGroup Lv]
     [Group Hv] [TopologicalSpace Hv] [IsTopologicalGroup Hv] (ev : Hv ≃* Lv)
@@ -73,9 +73,9 @@ theorem cup_degree_one_compatible {Lv Hv : Type} [Group Lv] [TopologicalSpace Lv
   · rw [hEa, hEb, hπ]
 
 /- English proof (translation)
-Take `⟨za, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨zb, rfl⟩` from `Submodule.Quotient.mk_surjective _ b'`. Establish `hbμ' : ∀ x y, eC (b x y) = ((β_ A B).hom ≫ μ').hom (eA x ⊗ₜ[ULift.{0} ℤ] eB y)`. Introduce `x y`. Rewrite using `[hbμ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨y, hy, hπ⟩` from `cup_degree_one_compatible ev hevc rho rho' rhoP b hb hbe hc A B C eA eB eC heA heB ((β_ A B).hom ≫ μ') hbμ' E hE E' hE' zb za`. Establish `hcup : cupProductH1H1 rho rho' rhoP b hb hbe hc (Submodule.Quotient.mk zb) (Submodule.Quotient.mk za) = Submodule.Quotient.mk (cupCocycleZ1Z1 rho rho' rhoP b hb hbe hc zb za)` using `rfl`. Rewrite using `[hcup, hIJ _ y hy, cupPairing_swap_degree_one μ', hπ, map_neg]`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem restriction_square_degree_one {Lv Hv : Type} [Group Lv] [TopologicalSpace Lv] [IsTopologicalGroup Lv]
     [Group Hv] [TopologicalSpace Hv] [IsTopologicalGroup Hv] [CompactSpace Hv]
@@ -119,13 +119,13 @@ theorem restriction_square_degree_one {Lv Hv : Type} [Group Lv] [TopologicalSpac
   rw [hcup, hIJ _ y hy, cupPairing_swap_degree_one μ', hπ, map_neg]
 
 /- English proof (translation)
-Take `⟨e1, he1a, -⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gc1 Hv R M (rho.comp ev.toMonoidHom) A eA heA`. Take `⟨x, hx⟩` from `he1a (restrictCocycles1 rho ev.toMonoidHom hevc z)`. Take `⟨e1', he1b, -⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gc1 Hv R M' (rho'.comp ev.toMonoidHom) B eB heB`. Take `⟨x', hx'⟩` from `he1b (restrictCocycles1 rho' ev.toMonoidHom hevc z')`. Establish `hEa : E (Submodule.Quotient.mk z) = cohomologyπ A 1 x` using `hE z x (fun s => hx s)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hEb : E' (Submodule.Quotient.mk z') = cohomologyπ B 1 x'` using `hE' z' x' (fun s => hx' s)`. Establish `hcup : cupProductH1H1 rho rho' rhoP b hb hbe hc (Submodule.Quotient.mk z) (Submodule.Quotient.mk z') = Submodule.Quotient.mk (cupCocycleZ1Z1 rho rho' rhoP b hb hbe hc z z')` using `rfl`. Rewrite using `[hEa, hEb, cupPairing_cohomologyπ, hcup]`. Use `hJ _ _ (fun s => ?_)` and prove the remaining obligations. Rewrite using `[cochainOf_cocycleι_cyclesMap_cupCocycles, hx, hx']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Fin.partialProd s ⟨1, by omega⟩ = s 0` using `by show Fin.partialProd s (Fin.succ 0) = s 0`. Rewrite using `[Fin.partialProd_succ]`. Use `show Fin.partialProd s 0 * s 0 = s 0`. Rewrite using `[Fin.partialProd_zero, one_mul]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hbμ (z.1 (ev (s 0))) (rho' (ev (s 0)) (z'.1 (ev (s 1))))` as an intermediate fact. Rewrite `this` using `[heB]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transfer_cup_degree_one_one {Lv Hv : Type} [Group Lv] [TopologicalSpace Lv] [IsTopologicalGroup Lv]
     [Group Hv] [TopologicalSpace Hv] [IsTopologicalGroup Hv] (ev : Hv ≃* Lv)
@@ -179,9 +179,9 @@ theorem transfer_cup_degree_one_one {Lv Hv : Type} [Group Lv] [TopologicalSpace 
   exact this
 
 /- English proof (translation)
-Proceed by induction on `a using Submodule.Quotient.induction_on with`. Consider the case `H z' => ?_`. Proceed by induction on `b' using Submodule.Quotient.induction_on with`. Consider the case `H z => ?_`. Establish `hbμ' : ∀ x y, rel (b x y) (((β_ A B).hom ≫ μ').hom (eA x ⊗ₜ[ULift.{0} ℤ] eB y))` using `fun x y => hbμ y x`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[cupPairing_swap_degree_one μ', map_neg, transfer_cup_degree_one_one ev hevc rho rho' rhoP b hb hbe hc A B C eA eB heA heB ((β_ A B).hom ≫ μ') rel hbμ' E hE E' hE' jp J hJ z z']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transfer_cup_one_one_general {Lv Hv : Type} [Group Lv] [TopologicalSpace Lv] [IsTopologicalGroup Lv]
     [Group Hv] [TopologicalSpace Hv] [IsTopologicalGroup Hv] [CompactSpace Hv]

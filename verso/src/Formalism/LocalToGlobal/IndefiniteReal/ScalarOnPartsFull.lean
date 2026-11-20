@@ -256,7 +256,7 @@ def Wpart (j : ℕ) (M : DSModel (D.sp.W j) (parW (D.sp.W j) (Formalism.L2.NThet
   partFull θ M J χ Sb c ⊓ WgoodRec θ j M J χ e
 
 /- English proof (translation)
-Establish `h1` using `(h v v).2`. Establish `h2` using `(h' v v).2`. Rewrite `h2` using `[h1]`. Conclude with `mul_right_cancel₀ hv h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasPeterssonInner_unique (M : DSModel V S) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (T T' : MMap M) {c c' : ℂ}
     (v : M.Vec) (hv : ∏ τ, ⟪(v τ : M.H τ), (v τ : M.H τ)⟫_ℂ ≠ 0)
@@ -267,7 +267,7 @@ theorem hasPeterssonInner_unique (M : DSModel V S) (μ : Measure (GA D V)) (𝓕
   exact mul_right_cancel₀ hv h2
 
 /- English proof (translation)
-Rewrite using `[ipM, dif_pos h]`. Conclude with `h.choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipM_spec (M : DSModel V S) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (T T' : MMap M)
     (h : ∃ c, IsMultIP M μ 𝓕 T T' c) : IsMultIP M μ 𝓕 T T' (ipM M μ 𝓕 T T') := by
@@ -319,7 +319,7 @@ def DualConj (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) (Sb : Fi
     ∀ c ∈ IxFull θ M J χ Sb e, ∀ P d, (∃ R, Hecke₂ V J χ Sb P d R) → c P (dualLab d) = star (c P d)
 
 /- English proof (translation)
-Simplify using `[dualPar, Finset.image_image, Function.comp_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualPar_dualPar (S : SPar) : dualPar (dualPar S) = S := by
   simp [dualPar, Finset.image_image, Function.comp_def]
@@ -337,21 +337,21 @@ theorem heckeLin_apply (R : Finset (GA D V)) (F : GA D V → ℂ) (g : GA D V) :
     heckeLin V R F g = ∑ γ ∈ R, F (g * γ) := rfl
 
 /- English proof (translation)
-The claim follows from `inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem goodPart_le (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) (e : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)) :
     goodPart θ M J χ e ≤ Mult θ M J χ := inf_le_left
 
 /- English proof (translation)
-The claim follows from `inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem part_le (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F)))
     (c : HeightOneSpectrum (𝓞 D.host.E) → ℕ → ℂ) : part θ M J χ Sb c ≤ Mult θ M J χ := inf_le_left
 
 /- English proof (translation)
-Rewrite using `[goodPart, Submodule.mem_inf, LinearMap.mem_ker]`. Use `and_congr Iff.rfl ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h v`. Establish `h1` using `congrArg (fun S => S v) h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `h1` using `[postOn_apply, sub_eq_zero]`. Introduce `h`. Use extensionality with `v`. Simplify using `[postOn_apply, h]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mem_goodPart (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) (e : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ))
     (T : MMap M) : T ∈ goodPart θ M J χ e ↔ T ∈ Mult θ M J χ ∧ ∀ v, e (T v) = T v := by
@@ -366,9 +366,9 @@ theorem mem_goodPart (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) 
     simp [postOn_apply, h]
 
 /- English proof (translation)
-Simplify using `only [part, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker]`. Use `and_congr Iff.rfl ?_` and prove the remaining obligations. Use `forall_congr' fun P => forall_congr' fun k => forall_congr' fun R => forall_congr' fun _ => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h v`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrArg (fun S => S v) h`. Simplify `h1` using `[heckeOn, postOn_apply, sub_eq_zero]`. Introduce `h`. Use extensionality with `v`. Simplify using `[heckeOn, postOn_apply, h]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mem_part (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F)))
     (c : HeightOneSpectrum (𝓞 D.host.E) → ℕ → ℂ) (T : MMap M) :
@@ -386,9 +386,9 @@ theorem mem_part (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) (Sb 
     simp [heckeOn, postOn_apply, h]
 
 /- English proof (translation)
-Simplify using `only [partFull, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker]`. Use `and_congr Iff.rfl ?_` and prove the remaining obligations. Use `forall_congr' fun P => forall_congr' fun d => forall_congr' fun R => forall_congr' fun _ => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h v`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrArg (fun S => S v) h`. Simplify `h1` using `[heckeOn, postOn_apply, sub_eq_zero]`. Introduce `h`. Use extensionality with `v`. Simplify using `[heckeOn, postOn_apply, h]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mem_partFull (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ)
     (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) (c : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ) (T : MMap M) :
@@ -414,9 +414,9 @@ def ipT (M : DSModel V S) (μ : Measure (GA D V)) (𝓕 : Set (GA D V))
   ipM M μ 𝓕 (PiTensorProduct.lift.symm y) (PiTensorProduct.lift.symm x)
 
 /- English proof (translation)
-Unfold `MultT`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Conclude with `⟨_, h, LinearEquiv.apply_symm_apply _ x⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_multT (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ)
     (x : (⨂[ℂ] τ, M.sm τ) →ₗ[ℂ] (GA D V → ℂ)) :

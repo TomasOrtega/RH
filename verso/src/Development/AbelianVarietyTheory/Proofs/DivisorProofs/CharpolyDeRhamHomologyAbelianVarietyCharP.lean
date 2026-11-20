@@ -16,21 +16,19 @@ noncomputable section
 namespace GlobalTheory.DeRhamCharpolyP
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis R M`. Set `v : Module.Free.ChooseBasisIndex R M → V` to `fun i => red (b i)`. Establish `hred : ∀ m, red m = ∑ i, π (b.repr m i) • v i` using `fun m => by conv_lhs => rw [← b.sum_repr m]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => map_smulₛₗ red _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent K v`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Set `a : Module.Free.ChooseBasisIndex R M → R` to `fun j => Function.surjInv hπ (g j)`. Establish `ha : ∀ j, π (a j) = g j` using `fun j => Function.surjInv_eq hπ (g j)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : red (∑ j, a j • b j) = 0`. Rewrite using `[map_sum]`. Repeatedly rewrite using `[map_smulₛₗ, ha]`. Conclude with `hg`. Take `⟨n, hn⟩` from `(hk _).1 h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hai : a i = (c : R) * b.repr n i`. Use `congrArg (fun m => b.repr m i) hn` as an intermediate fact. Simplify using `only [map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, Module.Basis.repr_self, smul_eq_mul, map_nsmul, Finsupp.coe_smul, Pi.smul_apply] at this`. Rewrite `this` using `[Finset.sum_eq_single i (fun j _ hj => by simp [Finsupp.single_apply, hj]) (fun hi => absurd (Finset.mem_univ i) hi)]`. Simplify `this` using `[nsmul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← ha i, hai, map_mul, map_natCast, hc, zero_mul]`. Establish `hsp : ⊤ ≤ Submodule.span K (Set.range v)`. Introduce `x _`. Take `⟨m, rfl⟩` from `hs x`. Rewrite using `[hred m]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Set `bV : Module.Basis (Module.Free.ChooseBasisIndex R M) K V` to `Module.Basis.mk hli hsp`. Establish `hbV : ∀ i, bV i = red (b i)` using `fun i => Module.Basis.mk_apply hli hsp i`. Use `haveI : Module.Finite K V := Module.Finite.of_basis bV`. Use `⟨this, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmat : LinearMap.toMatrix bV bV ψ = (LinearMap.toMatrix b b φ).map π`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, LinearMap.toMatrix_apply, LinearMap.toMatrix_apply, hbV j, ← h, hred]`. Establish `hv : ∀ i', v i' = bV i'` using `fun i' => (hbV i').symm`. Simplify using `only [hv, map_sum, map_smul, Module.Basis.repr_self, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, Finsupp.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
-
-Conclude with `mul_one _`. Rewrite using `[← LinearMap.charpoly_toMatrix ψ bV, hmat, Matrix.charpoly_map, LinearMap.charpoly_toMatrix]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_of_red {R K M V : Type} [CommRing R] [Field K] [AddCommGroup M] [Module R M]
     [Module.Free R M] [Module.Finite R M] [AddCommGroup V] [Module K V]
@@ -83,7 +81,7 @@ theorem charpoly_of_red {R K M V : Type} [CommRing R] [Field K] [AddCommGroup M]
   rw [← LinearMap.charpoly_toMatrix ψ bV, hmat, Matrix.charpoly_map, LinearMap.charpoly_toMatrix]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.charpoly_toMatrix f (Module.finBasis K V), ← LinearMap.charpoly_toMatrix f.dualMap (Module.finBasis K V).dualBasis, ← Matrix.charpoly_transpose, LinearMap.dualMap_def, LinearMap.toMatrix_transpose, Matrix.transpose_transpose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_dualMap {K V : Type*} [Field K] [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     [Module.Finite K (Module.Dual K V)] (f : Module.End K V) : (f.dualMap).charpoly = f.charpoly := by
@@ -99,17 +97,15 @@ namespace GlobalTheory.DeRhamCharpolyP
 open GlobalTheory.AV GlobalTheory.PDivGroup in
 
 /- English proof (translation)
-Introduce `p _ k _ _ _ B f _`. Take `⟨G, -, ⟨t⟩⟩` from `GlobalTheory.AVTower.exists_tower p k B`. Set `T` to `GlobalTheory.Dieu.theory p`. Use `haveI : Module.Free (WittVector p k) (T.M G) := T.base.free G trivial`. Use `haveI : Module.Finite (WittVector p k) (T.M G) := T.base.finite G trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.Dieu.CharpolyAV.charpoly_map_eq p T k B G t f`. Establish `hπ : Function.Surjective (WittVector.constantCoeff : WittVector p k →+* k)` using `fun x => ⟨WittVector.teichmuller p x, by simp⟩`. Take `⟨hfin, h2⟩` from `charpoly_of_red (WittVector.constantCoeff : WittVector p k →+* k) hπ p (CharP.cast_eq_zero k p) (T.red G) (T.base.red_surjective G trivial) (T.base.red_eq_zero G trivial) (T.map (t.map t f.hom)) (rigExtMap (t.map t f.hom)) (fun m => by`. Use `T.base.red_smap trivial trivial (SemiHom.ofHom (t.map t f.hom)) m` as an intermediate fact. Rewrite `this` using `[SemiHom.ofHom_rig]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `this)`. Take `⟨e, he, -, -⟩` from `GlobalTheory.deRhamVectorExtension p`. Establish `hR : IsNilpotent (p : k)` using `by rw [CharP.cast_eq_zero]; exact IsNilpotent.zero`. Set `E` to `e hR B.ab t`. Use `haveI : Module.Finite k (primDR B.X) := Module.Finite.equiv E.symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hconj : primPull (dp0 k) (𝟙 _) f.hom = E.symm.conj (rigExtMap (t.map t f.hom))`. Use `LinearMap.ext fun c => ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.conj_apply_apply, LinearEquiv.symm_symm, LinearEquiv.eq_symm_apply]`. Conclude with `he.primPull hR B.ab B.ab t t f.hom c`. Establish `h3 : (primPull (dp0 k) (𝟙 _) f.hom).charpoly = (rigExtMap (t.map t f.hom)).charpoly`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hconj, LinearEquiv.charpoly_conj]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, h1]`. Use `_ = (GlobalTheory.AV.AbVar.charpoly f).map (Int.castRingHom k) := by`. Rewrite using `[Polynomial.map_map]`.
-
-Use `congr 1`. Conclude with `RingHom.ext_int _ _`.
+A detailed English derivation is pending.
 -/
 theorem charpoly_push : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p]
     (B : GlobalTheory.AV.AbVar k) (f : B ⟶ B) [Module.Finite k (HdR B.X)],

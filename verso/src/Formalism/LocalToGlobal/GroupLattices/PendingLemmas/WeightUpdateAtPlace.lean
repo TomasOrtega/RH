@@ -13,7 +13,7 @@ variable {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationR
   {P : Places p O Kf} (C : Level P)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Use extensionality with `x`. Simplify using `[Level.smul]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lsmul_one (L : P.Tup) : C.smul 1 L = L := by
   funext v
@@ -21,7 +21,7 @@ theorem lsmul_one (L : P.Tup) : C.smul 1 L = L := by
   simp [Level.smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Use extensionality with `x`. Simplify using `[Level.smul, Matrix.mulVec_mulVec]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lsmul_mul (γ γ' : C.Γ) (L : P.Tup) : C.smul (γ * γ') L = C.smul γ (C.smul γ' L) := by
   funext v
@@ -29,13 +29,13 @@ theorem lsmul_mul (γ γ' : C.Γ) (L : P.Tup) : C.smul (γ * γ') L = C.smul γ 
   simp [Level.smul, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Rewrite using `[← lsmul_mul, inv_mul_cancel, lsmul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lsmul_inv_lsmul (γ : C.Γ) (L : P.Tup) : C.smul γ⁻¹ (C.smul γ L) = L := by
   rw [← lsmul_mul, inv_mul_cancel, lsmul_one]
 
 /- English proof (translation)
-Rewrite using `[← lsmul_mul, mul_inv_cancel, lsmul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lsmul_lsmul_inv (γ : C.Γ) (L : P.Tup) : C.smul γ (C.smul γ⁻¹ L) = L := by
   rw [← lsmul_mul, mul_inv_cancel, lsmul_one]
@@ -55,28 +55,28 @@ def orbS : Setoid P.Tup where
 def can (L : P.Tup) : P.Tup := (Quotient.mk (orbS C) L).out
 
 /- English proof (translation)
-Conclude with `Quotient.mk_out (s := orbS C) L`.
+A detailed English derivation is pending.
 -/
 theorem can_rel (L : P.Tup) : ∃ γ : C.Γ, L = C.smul γ (can C L) := by
   exact Quotient.mk_out (s := orbS C) L
 
 /- English proof (translation)
-Unfold `can`. Rewrite using `[Quotient.sound (s := orbS C) h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem can_eq {L L' : P.Tup} (h : ∃ γ : C.Γ, L' = C.smul γ L) : can C L = can C L' := by
   unfold can
   rw [Quotient.sound (s := orbS C) h]
 
 /- English proof (translation)
-Conclude with `can_eq C (can_rel C L)`.
+A detailed English derivation is pending.
 -/
 theorem can_can (L : P.Tup) : can C (can C L) = can C L := by
   exact can_eq C (can_rel C L)
 
 /- English proof (translation)
-Introduce `v`. Take `⟨g, hg, hLv⟩` from `hL v`. Use `⟨((C.act v γ : GL (Fin (P.m + 1)) (P.Qq v)) : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) (P.Qq v)) * g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`. Conclude with `(Matrix.isUnits_det_units _).mul hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (L v).map _ = _`. Rewrite using `[hLv]`. Unfold `colSpan`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem isLatTup_smul_of_isLatTup (γ : C.Γ) {L : P.Tup} (hL : P.IsLatTup L) : P.IsLatTup (C.smul γ L) := by
   intro v
@@ -91,7 +91,7 @@ private theorem isLatTup_smul_of_isLatTup (γ : C.Γ) {L : P.Tup} (hL : P.IsLatT
     congr 1
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `can_rel C L`. Establish `hc : C.smul γ⁻¹ L = can C L` using `by conv_lhs => rw [hγ]`. Conclude with `lsmul_inv_lsmul C γ (can C L)`. Rewrite using `[← hc]`. Conclude with `isLatTup_smul_of_isLatTup C γ⁻¹ hL`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem can_lat {L : P.Tup} (hL : P.IsLatTup L) : P.IsLatTup (can C L) := by
   obtain ⟨γ, hγ⟩ := can_rel C L
@@ -105,7 +105,7 @@ def repC (h : C.FinClasses) : Finset P.Tup := by
   classical exact (Classical.choose h).image (can C)
 
 /- English proof (translation)
-Unfold `repC`. Conclude with `Finset.mem_image`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mem_repC (h : C.FinClasses) (L0 : P.Tup) : L0 ∈ repC C h ↔ ∃ L ∈ Classical.choose h, can C L = L0 := by
   classical
@@ -113,16 +113,16 @@ theorem mem_repC (h : C.FinClasses) (L0 : P.Tup) : L0 ∈ repC C h ↔ ∃ L ∈
   exact Finset.mem_image
 
 /- English proof (translation)
-Take `⟨L, hL, rfl⟩` from `(mem_repC C h L0).mp h0`. Conclude with `can_lat C ((Classical.choose_spec h).1 L hL)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem repC_lat (h : C.FinClasses) {L0 : P.Tup} (h0 : L0 ∈ repC C h) : P.IsLatTup L0 := by
   obtain ⟨L, hL, rfl⟩ := (mem_repC C h L0).mp h0
   exact can_lat C ((Classical.choose_spec h).1 L hL)
 
 /- English proof (translation)
-Take `⟨L₀, hL₀, γ, hγ⟩` from `(Classical.choose_spec h).2 L hL`. Take `⟨γ', hγ'⟩` from `can_rel C L₀`. Use `⟨can C L₀, ⟨(mem_repC C h _).mpr ⟨L₀, hL₀, rfl⟩, γ * γ', by rw [hγ, lsmul_mul, ← hγ']⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `L1 ⟨h1, δ, hδ⟩`. Establish `e1 : can C L1 = L1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨M, _, rfl⟩` from `(mem_repC C h L1).mp h1`. Conclude with `can_can C M`. Establish `e2 : can C L₀ = can C L` using `can_eq C ⟨γ, hγ⟩`. Establish `e3 : can C L1 = can C L` using `can_eq C ⟨δ, hδ⟩`. Rewrite using `[← e1, e3, e2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repC_ex (h : C.FinClasses) (L : P.Tup) (hL : P.IsLatTup L) :
     ∃! L0 : P.Tup, L0 ∈ repC C h ∧ ∃ γ : C.Γ, L = C.smul γ L0 := by
@@ -151,7 +151,7 @@ def stabConj (δ : C.Γ) (L : P.Tup) :
     group
 
 /- English proof (translation)
-Conclude with `Nat.card_congr (stabConj C δ L)`.
+A detailed English derivation is pending.
 -/
 theorem card_stab_smul (δ : C.Γ) (L : P.Tup) :
     Nat.card {γ : C.Γ // C.smul γ (C.smul δ L) = C.smul δ L} = Nat.card {γ : C.Γ // C.smul γ L = L} := by
@@ -174,9 +174,9 @@ def repOf (h : ∀ j c, (Lv.lev j c).FinClasses) (j : ℕ) : Finset (Lv.comp j �
   exact Finset.univ.biUnion fun c => (repC (Lv.lev j c) (h j c)).image fun L => (c, L)
 
 /- English proof (translation)
-Simplify using `only [repOf, Finset.mem_biUnion, Finset.mem_univ, true_and, Finset.mem_image, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c', L', hL', rfl, rfl⟩`. Conclude with `hL'`. Introduce `hL`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨c, L, hL, rfl, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_repOf (h : ∀ j c, (Lv.lev j c).FinClasses) (j : ℕ) (c : Lv.comp j) (L : (Fl.Pj j).Tup) :
     (c, L) ∈ repOf Lv h j ↔ L ∈ repC (Lv.lev j c) (h j c) := by
@@ -189,7 +189,7 @@ theorem mem_repOf (h : ∀ j c, (Lv.lev j c).FinClasses) (j : ℕ) (c : Lv.comp 
     exact ⟨c, L, hL, rfl, rfl⟩
 
 /- English proof (translation)
-Introduce and unpack `j ⟨c, L⟩ hLa`. Conclude with `repC_lat _ (h j c) ((mem_repOf Lv h j c L).mp hLa)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem repOf_lat (h : ∀ j c, (Lv.lev j c).FinClasses) :
     ∀ j (La : Lv.comp j × (Fl.Pj j).Tup), La ∈ repOf Lv h j → (Fl.Pj j).IsLatTup La.2 := by
@@ -197,7 +197,7 @@ theorem repOf_lat (h : ∀ j c, (Lv.lev j c).FinClasses) :
   exact repC_lat _ (h j c) ((mem_repOf Lv h j c L).mp hLa)
 
 /- English proof (translation)
-Introduce `j c L hL`. Take `⟨L0, ⟨h1, hγ⟩, huniq⟩` from `repC_ex (Lv.lev j c) (h j c) L hL`. Conclude with `⟨L0, ⟨(mem_repOf Lv h j c L0).mpr h1, hγ⟩, fun L1 hL1 => huniq L1 ⟨(mem_repOf Lv h j c L1).mp hL1.1, hL1.2⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem repOf_ex (h : ∀ j c, (Lv.lev j c).FinClasses) :
     ∀ j (c : Lv.comp j) (L : (Fl.Pj j).Tup), (Fl.Pj j).IsLatTup L →
@@ -216,7 +216,7 @@ def dGOf (h : ∀ j c, (Lv.lev j c).FinClasses) (j : ℕ) : ℕ :=
     padicValNat p (Nat.card {γ : (Lv.lev j La.1).Γ // (Lv.lev j La.1).smul γ La.2 = La.2})
 
 /- English proof (translation)
-Introduce `j c L hL`. Take `⟨L0, ⟨h1, γ0, hγ0⟩, _⟩` from `repOf_ex Lv h j c L hL`. Establish `hc` using `card_stab_smul (Lv.lev j c) γ0 L0`. Rewrite using `[hγ0, hc]`. Conclude with `Finset.le_sup (f := fun La : Lv.comp j × (Fl.Pj j).Tup => padicValNat p (Nat.card {γ : (Lv.lev j La.1).Γ // (Lv.lev j La.1).smul γ La.2 = La.2})) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dG_spec (h : ∀ j c, (Lv.lev j c).FinClasses) :
     ∀ j (c : Lv.comp j) (L : (Fl.Pj j).Tup), (Fl.Pj j).IsLatTup L →
@@ -237,7 +237,7 @@ variable {p : ℕ} (G : GAtP p)
 def vpOf : G.O := Classical.choose (IsDiscreteValuationRing.exists_irreducible G.O)
 
 /- English proof (translation)
-Conclude with `Classical.choose_spec (IsDiscreteValuationRing.exists_irreducible G.O)`.
+A detailed English derivation is pending.
 -/
 theorem vpOf_irreducible : Irreducible (vpOf G) := by
   exact Classical.choose_spec (IsDiscreteValuationRing.exists_irreducible G.O)
@@ -246,15 +246,15 @@ def eOOf (h0 : (p : G.O) ≠ 0) : ℕ :=
   Classical.choose (IsDiscreteValuationRing.associated_pow_irreducible h0 (vpOf_irreducible G))
 
 /- English proof (translation)
-Conclude with `Classical.choose_spec (IsDiscreteValuationRing.associated_pow_irreducible h0 (vpOf_irreducible G))`.
+A detailed English derivation is pending.
 -/
 theorem eOOf_spec (h0 : (p : G.O) ≠ 0) : Associated (p : G.O) (vpOf G ^ eOOf G h0) := by
   exact Classical.choose_spec (IsDiscreteValuationRing.associated_pow_irreducible h0 (vpOf_irreducible G))
 
 /- English proof (translation)
-Establish `hS` using `G.P.setting v`. Use `haveI := hS.frac_alt`. Introduce `h`. Establish `hW : (p : G.P.W v) ≠ 0` using `hS.p_unif.ne_zero`. Apply `hW` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1 : G.P.ι v (algebraMap (G.P.W v) (G.P.Qq v) (p : G.P.W v)) = algebraMap G.O G.Kf (G.P.j v (p : G.P.W v))` using `hS.ι_comp _`. Rewrite `h1` using `[map_natCast (G.P.j v), h, map_zero]`. Establish `h2 : algebraMap (G.P.W v) (G.P.Qq v) (p : G.P.W v) = 0` using `(map_eq_zero_iff _ (G.P.ι v).injective).mp h1`. Conclude with `(map_eq_zero_iff _ (IsFractionRing.injective _ _)).mp h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem p_ne_zero_of_place (v : Fin G.P.nV) : (p : G.O) ≠ 0 := by
   have hS := G.P.setting v
@@ -287,9 +287,9 @@ abbrev sysOf {p : ℕ} [Fact p.Prime] (G : GAtP p) (Fl : Fills G) (Lv : Levels F
   om := om
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h u hu`. Establish `h1` using `congrFun h u`. Simplify `h1` using `[hu]`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `u`. Distinguish the cases in `hu : u = u0`. Substitute `hu` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hu, h u hu]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem update_eq_update_iff {ι : Type} [DecidableEq ι] {β : ι → Type} (u0 : ι) (b : β u0) (A B : ∀ i, β i) :
     Function.update A u0 b = Function.update B u0 b ↔ ∀ u, u ≠ u0 → A u = B u := by
@@ -309,7 +309,7 @@ section OverSys
 variable {p : ℕ} [Fact p.Prime] (X : Sys p)
 
 /- English proof (translation)
-Introduce `j La hLa`. Use `haveI := h j La.1 La.2 hLa`. Use `haveI : Nonempty {γ : (X.Lv.lev j La.1).Γ // (X.Lv.lev j La.1).smul γ La.2 = La.2} := ⟨⟨1, lsmul_one _ _⟩⟩`. Conclude with `Nat.card_pos`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stab_fin (h : FinStab X.Lv) : ∀ j (La : X.Lt j), (X.Pj j).IsLatTup La.2 → 0 < X.stab j La := by
   intro j La hLa
@@ -323,7 +323,7 @@ def aw (v : X.Pl) (j : ℕ) (La : X.Lt j) (La' : X.Lt (j + 1)) : Aw X v j :=
   ((La.1, Function.update La.2 (X.vJ j v) ⊥), (La'.1, Function.update La'.2 (X.vJ (j + 1) v) ⊥))
 
 /- English proof (translation)
-Introduce `v j La La' L''`. Conclude with `congrArg (fun M => ((La.1, M), (La'.1, Function.update La'.2 (X.vJ (j + 1) v) ⊥))) (Function.update_idem _ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem weight_update_at_place : ∀ v j (La : X.Lt j) (La' : X.Lt (j + 1))
     (L'' : Submodule ((X.Pj j).W (X.vJ j v)) (Fin ((X.Pj j).m + 1) → (X.Pj j).Qq (X.vJ j v))),
@@ -333,7 +333,7 @@ theorem weight_update_at_place : ∀ v j (La : X.Lt j) (La' : X.Lt (j + 1))
     (Function.update_idem _ _ _)
 
 /- English proof (translation)
-Introduce `v j La La' L''`. Conclude with `congrArg (fun M => ((La.1, Function.update La.2 (X.vJ j v) ⊥), (La'.1, M))) (Function.update_idem _ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem aw_tgt : ∀ v j (La : X.Lt j) (La' : X.Lt (j + 1))
     (L'' : Submodule ((X.Pj (j + 1)).W (X.vJ (j + 1) v))
@@ -344,7 +344,7 @@ theorem aw_tgt : ∀ v j (La : X.Lt j) (La' : X.Lt (j + 1))
     (Function.update_idem _ _ _)
 
 /- English proof (translation)
-Unfold `aw`. Conclude with `Prod.ext_iff.trans (and_congr (Prod.ext_iff.trans (and_congr Iff.rfl (update_eq_update_iff _ _ _ _))) (Prod.ext_iff.trans (and_congr Iff.rfl (update_eq_update_iff _ _ _ _))))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem aw_eq_iff (v : X.Pl) (j : ℕ) (La Ma : X.Lt j) (La' Ma' : X.Lt (j + 1)) :
     aw X v j La La' = aw X v j Ma Ma' ↔

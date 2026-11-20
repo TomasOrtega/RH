@@ -9,7 +9,7 @@ open NumberField Matrix
 namespace Formalism.L2.SG.Pf.Carrier
 
 /- English proof (translation)
-Conclude with `Formalism.FourierDecayAlt.Final.jc_propGramOfPlaces E Wp Wq S _ (fun v => Formalism.FourierDecayAlt.JC.vecPlace S T f ν' m₀ v) H Vt hVt (Formalism.FourierDecayAlt.Final.jc_gramPlaceBuilt Formalism.FourierDecayAlt.Final.d_ptPermSpec Formalism.FourierDecayAlt.Final.d_ptGSpec Formal …`.
+A detailed English derivation is pending.
 -/
 theorem propGram_of_vtTensor {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePlace E → Type}
     [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]

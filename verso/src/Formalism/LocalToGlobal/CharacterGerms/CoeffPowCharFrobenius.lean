@@ -12,11 +12,11 @@ namespace FrobP
 variable {C : Type} [Field C] {V : VF C}
 
 /- English proof (translation)
-Establish `hnat : ∀ m : ℕ, (0 : WithTop ℝ) ≤ V.v (m : C)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp [AddValuation.map_zero]`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `push_cast`. Conclude with `le_trans (le_min ih (by rw [AddValuation.map_one])) (AddValuation.map_add _ _ _)`. Unfold `VF.Ge`. Rewrite using `[WithTop.coe_zero]`. Break down `Int.eq_nat_or_neg z with ⟨m, rfl | rfl⟩` into its components or cases.
+Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hnat m`. Use `push_cast`. Rewrite using `[AddValuation.map_neg]`. Simplify using `using hnat m`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ge_intCast (z : ℤ) : V.Ge 0 (z : C) := by
   have hnat : ∀ m : ℕ, (0 : WithTop ℝ) ≤ V.v (m : C) := by
@@ -35,13 +35,13 @@ theorem ge_intCast (z : ℤ) : V.Ge 0 (z : C) := by
     simpa using hnat m
 
 /- English proof (translation)
-Introduce `h`. Establish `hcop : Nat.Coprime V.l m` using `(Nat.Prime.coprime_iff_not_dvd V.l_prime).mpr hm`. Establish `hA` using `ge_intCast (V := V) (Nat.gcdA V.l m)`. Establish `hB` using `ge_intCast (V := V) (Nat.gcdB V.l m)`. Unfold `VF.Ge at hA hB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `hA`, `hB` using `[WithTop.coe_zero]`. Unfold `VF.MM at h`. Establish `h0` using `Nat.gcd_eq_gcd_ab V.l m`. Rewrite `h0` using `[Nat.Coprime.gcd_eq_one hcop]`. Establish `hsum` using `congrArg (fun z : ℤ => (z : C)) h0`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Int.cast_add, Int.cast_mul, Int.cast_natCast, Nat.cast_one, Int.cast_one] at hsum`. Establish `h1 : (0 : WithTop ℝ) < V.v ((V.l : C) * ((Nat.gcdA V.l m : ℤ) : C))`. Rewrite using `[AddValuation.map_mul, V.v_l]`. Conclude with `lt_of_lt_of_le zero_lt_one (le_add_of_nonneg_right hA)`. Establish `h2 : (0 : WithTop ℝ) < V.v ((m : C) * ((Nat.gcdB V.l m : ℤ) : C))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddValuation.map_mul]`. Conclude with `lt_of_lt_of_le h (le_add_of_nonneg_right hB)`. Establish `hmin` using `AddValuation.map_add V.v ((V.l : C) * ((Nat.gcdA V.l m : ℤ) : C)) ((m : C) * ((Nat.gcdB V.l m : ℤ) : C))`. Rewrite `hmin` using `[← hsum, AddValuation.map_one]`. Conclude with `absurd hmin (not_le.mpr (lt_min h1 h2))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_mm_nat {m : ℕ} (hm : ¬ V.l ∣ m) : ¬ V.MM (m : C) := by
   intro h
@@ -66,9 +66,9 @@ theorem not_mm_nat {m : ℕ} (hm : ¬ V.l ∣ m) : ¬ V.MM (m : C) := by
   exact absurd hmin (not_le.mpr (lt_min h1 h2))
 
 /- English proof (translation)
-Establish `hge` using `ge_intCast (V := V) (m : ℤ)`. Unfold `VF.Ge at hge`. Rewrite `hge` using `[WithTop.coe_zero, Int.cast_natCast]`. Establish `h0 : V.v (m : C) = 0` using `le_antisymm (not_lt.mp (not_mm_nat hm)) hge`. Unfold `VF.MM at h ⊢`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `h` using `[AddValuation.map_mul, h0, add_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mm_of_mul_nat {c : C} {m : ℕ} (hm : ¬ V.l ∣ m) (h : V.MM (c * m)) : V.MM c := by
   have hge := ge_intCast (V := V) (m : ℤ)
@@ -82,13 +82,13 @@ end FrobP
 
 open FrobP in
 /- English proof (translation)
-Introduce `C _ V σ f hf μ ⟨i, hi⟩`. Establish `hpos : 1 ≤ μ i`. Break down `Nat.eq_zero_or_pos (μ i) with h0 | h0` into its components or cases. Rewrite `hi` using `[h0]`. Conclude with `absurd (dvd_zero _) hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h0`. Establish `h1` using `hf i (μ - Finsupp.single i 1)`. Rewrite `h1` using `[MvPowerSeries.coeff_pderiv]`. Establish `e1 : μ - Finsupp.single i 1 + Finsupp.single i 1 = μ` using `tsub_add_cancel_of_le (Finsupp.single_le_iff.mpr hpos)`. Establish `e2 : (μ - Finsupp.single i 1 : σ →₀ ℕ) i + 1 = μ i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Finsupp.tsub_apply, Finsupp.single_eq_same]`. Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[e1]`. Establish `e3 : (((μ - Finsupp.single i 1 : σ →₀ ℕ) i : ℕ) : C) + 1 = ((μ i : ℕ) : C)`. Rewrite using `[← e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[e3]`. Conclude with `FrobP.mm_of_mul_nat hi h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobSer : FrobSerSt := by
   intro C _ V σ f hf μ ⟨i, hi⟩
@@ -117,7 +117,7 @@ namespace FrobP
 variable {C : Type} [Field C] {V : VF C}
 
 /- English proof (translation)
-Unfold `VF.MM`. Rewrite using `[V.v_l]`. Conclude with `zero_lt_one`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mm_l : V.MM (V.l : C) := by
   unfold VF.MM
@@ -125,9 +125,9 @@ theorem mm_l : V.MM (V.l : C) := by
   exact zero_lt_one
 
 /- English proof (translation)
-Introduce `n`. Unfold `VF.Ge at *`. Rewrite using `[PowerSeries.coeff_mul]`. Apply `AddValuation.map_le_sum` to reduce the goal to its premises. Introduce `x _`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[AddValuation.map_mul]`. Establish `h1` using `hf x.1`. Establish `h2` using `hg x.2`. Rewrite `h1`, `h2`, the goal using `[WithTop.coe_zero]`. Conclude with `add_nonneg h1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_coeff_mul_nonneg {f g : PowerSeries C} (hf : ∀ n, V.Ge 0 (PowerSeries.coeff n f))
     (hg : ∀ n, V.Ge 0 (PowerSeries.coeff n g)) : ∀ n, V.Ge 0 (PowerSeries.coeff n (f * g)) := by
@@ -143,11 +143,9 @@ theorem valuation_coeff_mul_nonneg {f g : PowerSeries C} (hf : ∀ n, V.Ge 0 (Po
   exact add_nonneg h1 h2
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `n`. Unfold `VF.Ge`. Rewrite using `[pow_zero, PowerSeries.coeff_one, WithTop.coe_zero]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Rewrite using `[AddValuation.map_one]`. Rewrite using `[AddValuation.map_zero]`. Conclude with `le_top`. Consider the case `succ k ih`.
-
-Rewrite using `[pow_succ]`. Conclude with `valuation_coeff_mul_nonneg ih hf`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_coeff_pow_nonneg {f : PowerSeries C} (hf : ∀ n, V.Ge 0 (PowerSeries.coeff n f)) (k : ℕ) :
     ∀ n, V.Ge 0 (PowerSeries.coeff n (f ^ k)) := by
@@ -165,15 +163,15 @@ theorem valuation_coeff_pow_nonneg {f : PowerSeries C} (hf : ∀ n, V.Ge 0 (Powe
     exact valuation_coeff_mul_nonneg ih hf
 
 /- English proof (translation)
-Take `⟨l', hl'⟩ : ∃ l', V.l = l' + 1` from `⟨V.l - 1, (Nat.succ_pred_eq_of_pos V.l_prime.pos).symm⟩`. Establish `hmid : (A + B) ^ V.l - A ^ V.l - B ^ V.l = ∑ i ∈ Finset.range l', ((V.l.choose (i + 1) : ℕ) : C) • (A ^ (i + 1) * B ^ (V.l - (i + 1)))`. Rewrite using `[add_pow, hl', Finset.sum_range_succ, Finset.sum_range_succ']`. Simplify using `only [Nat.choose_self, Nat.choose_zero_right, Nat.cast_one, mul_one, pow_zero, Nat.sub_self, Nat.sub_zero, one_mul]`. Establish `hsm : ∀ i ∈ Finset.range l', A ^ (i + 1) * B ^ (l' + 1 - (i + 1)) * (((l' + 1).choose (i + 1) : ℕ) : PowerSeries C) = (((l' + 1).choose (i + 1) : ℕ) : C) • (A ^ (i + 1) * B ^ (l' + 1 - (i + 1)))` using `fun i _ => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[mul_comm, Nat.cast_smul_eq_nsmul, nsmul_eq_mul]`. Rewrite using `[Finset.sum_congr rfl hsm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hmid, map_sum]`. Unfold `VF.MM`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `lt_of_lt_of_le zero_lt_one (AddValuation.map_le_sum _ fun i hi => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul, smul_eq_mul, AddValuation.map_mul]`. Establish `hi'` using `Finset.mem_range.mp hi`. Take `⟨q, hq⟩` from `V.l_prime.dvd_choose_self (Nat.succ_ne_zero i) (by omega)`. Establish `hq' : (((V.l.choose (i + 1)) : ℕ) : C) = (V.l : C) * ((q : ℤ) : C)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hq', AddValuation.map_mul, V.v_l]`. Establish `hqge` using `ge_intCast (V := V) (q : ℤ)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcoef` using `valuation_coeff_mul_nonneg (valuation_coeff_pow_nonneg hA (i + 1)) (valuation_coeff_pow_nonneg hB (V.l - (i + 1))) m`. Unfold `VF.Ge at hqge hcoef`. Rewrite `hqge`, `hcoef` using `[WithTop.coe_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem frob_ser {A B : PowerSeries C} (hA : ∀ n, V.Ge 0 (PowerSeries.coeff n A))
     (hB : ∀ n, V.Ge 0 (PowerSeries.coeff n B)) (m : ℕ) :
@@ -210,37 +208,33 @@ theorem frob_ser {A B : PowerSeries C} (hA : ∀ n, V.Ge 0 (PowerSeries.coeff n 
       add_le_add (add_le_add le_rfl hqge) hcoef
 
 /- English proof (translation)
-Establish `hl` using `V.l_prime`. Establish `hl0 : 0 < V.l` using `hl.pos`. Establish `mm_add : ∀ x y : C, V.MM x → V.MM y → V.MM (x + y)` using `fun x y hx hy => by`. Unfold `VF.MM at *`. Conclude with `lt_of_lt_of_le (lt_min hx hy) (AddValuation.map_add _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `mm_zero : V.MM (0 : C)`. Unfold `VF.MM`. Rewrite using `[AddValuation.map_zero]`. Conclude with `WithTop.coe_lt_top 0`. Introduce `m`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Introduce `f hf`. Use `set a := PowerSeries.constantCoeff f with ha`. Use `set g := PowerSeries.mk fun n => PowerSeries.coeff (n + 1) f with hgdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Establish `hfg : f = PowerSeries.C a + PowerSeries.X * g`. Use extensionality with `n`. Consider the cases of `n with`. Consider the case `zero => simp [a, g]`. Consider the case `succ k => simp [g, PowerSeries.coeff_succ_X_mul]`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hCa : ∀ n, V.Ge 0 (PowerSeries.coeff n (PowerSeries.C a))`. Introduce `n`. Rewrite using `[PowerSeries.coeff_C]`. Use `split_ifs`. Use `hf 0` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[a]`. Unfold `VF.Ge`. Rewrite using `[AddValuation.map_zero]`. Conclude with `le_top`. Establish `hg : ∀ n, V.Ge 0 (PowerSeries.coeff n g)` using `fun n => by simpa [g] using hf (n + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Establish `hXg : ∀ n, V.Ge 0 (PowerSeries.coeff n (PowerSeries.X * g))`. Introduce `n`. Consider the cases of `n with`. Consider the case `zero`. Unfold `VF.Ge`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[AddValuation.map_zero]`. Consider the case `succ k`. Rewrite using `[PowerSeries.coeff_succ_X_mul]`. Conclude with `hg k`. Establish `hfr` using `frob_ser hCa hXg m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hfr` using `[← hfg, map_sub, map_sub]`. Establish `e1 : PowerSeries.coeff m (PowerSeries.C a ^ V.l) = if m = 0 then a ^ V.l else 0`. Rewrite using `[← map_pow, PowerSeries.coeff_C]`. Establish `e2 : PowerSeries.coeff m ((PowerSeries.X * g) ^ V.l) = if V.l ≤ m then PowerSeries.coeff (m - V.l) (g ^ V.l) else 0`. Rewrite using `[mul_pow, PowerSeries.coeff_X_pow_mul']`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hsec : V.MM (PowerSeries.coeff m (PowerSeries.C a ^ V.l) + PowerSeries.coeff m ((PowerSeries.X * g) ^ V.l) - if V.l ∣ m then PowerSeries.coeff (m / V.l) f ^ V.l else 0)`. Rewrite using `[e1, e2]`. Break down `Nat.eq_zero_or_pos m with h0 | hpos` into its components or cases. Substitute `h0` using the available equality. Establish `hnl : ¬ V.l ≤ 0` using `by omega`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [if_true, hnl, if_false, add_zero, dvd_zero, Nat.zero_div]`. Rewrite using `[show PowerSeries.coeff 0 f = a by simp [a], sub_self]`. Conclude with `mm_zero`. Distinguish the cases in `hlm : V.l ≤ m`. Establish `hm0 : m ≠ 0` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiv : (V.l ∣ m) ↔ (V.l ∣ m - V.l)`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `Nat.dvd_sub h (dvd_refl _)`. Introduce `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Nat.dvd_add h (dvd_refl V.l)` as an intermediate fact. Rewrite `this` using `[Nat.sub_add_cancel hlm]`. Then use the resulting hypothesis. Establish `hq : m / V.l = (m - V.l) / V.l + 1` using `Nat.div_eq_sub_div hl0 hlm`. Establish `hih` using `ih (m - V.l) (by omega) g hg`. Simplify using `only [hm0, if_false, hlm, if_true, zero_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e3 : (if V.l ∣ m then PowerSeries.coeff (m / V.l) f ^ V.l else 0) = if V.l ∣ m - V.l then PowerSeries.coeff ((m - V.l) / V.l) g ^ V.l else 0`. Distinguish the cases in `h : V.l ∣ m`. Rewrite using `[if_pos h, if_pos (hdiv.1 h), hq]`. Simplify using `[g]`. Rewrite using `[if_neg h, if_neg (fun h' => h (hdiv.2 h'))]`.
-
-Rewrite using `[e3]`. Conclude with `hih`. Establish `hm0 : m ≠ 0` using `by omega`. Establish `hnd : ¬ V.l ∣ m` using `fun h => hlm (Nat.le_of_dvd hpos h)`. Simplify using `only [hm0, if_false, hlm, hnd, add_zero, sub_self]`.
-
-Conclude with `mm_zero`. Establish `h` using `mm_add _ _ hfr hsec`. Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem coeff_pow_char_frobenius : ∀ (m : ℕ) (f : PowerSeries C), (∀ n, V.Ge 0 (PowerSeries.coeff n f)) →
     V.MM (PowerSeries.coeff m (f ^ V.l) - if V.l ∣ m then PowerSeries.coeff (m / V.l) f ^ V.l else 0) := by
@@ -330,9 +324,9 @@ end FrobP
 
 open FrobP in
 /- English proof (translation)
-Introduce `C _ V f hf`. Use `⟨fun n => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Establish `h` using `FrobP.coeff_pow_char_frobenius (V := V) (V.l * n) f hf`. Rewrite `h` using `[if_pos (dvd_mul_right _ _), Nat.mul_div_cancel_left _ V.l_prime.pos]`. Then use the resulting hypothesis. Establish `h` using `FrobP.coeff_pow_char_frobenius (V := V) m f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h` using `[if_neg hm, sub_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem frobPow : FrobPowSt := by
   intro C _ V f hf

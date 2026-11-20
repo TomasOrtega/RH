@@ -8,9 +8,9 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open Finset Comb
 
 /- English proof (translation)
-Introduce `k hk`. Establish `hterm : ∀ l ∈ Finset.range k, numStandardTable (hookShape k k l) = (k - 1).choose l`. Introduce `l hl`. Establish `hl' : l < k` using `Finset.mem_range.mp hl`. Take `⟨hanti, hsum⟩` from `h2 k k l hl' le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1 k (hookShape k k l) hanti, hsum]`. Conclude with `h3 k k l hl' le_rfl`. Rewrite using `[Finset.sum_congr rfl hterm]`. Take `⟨n, rfl⟩ : ∃ n, k = n + 1` from `⟨k - 1, by omega⟩`. Simplify using `using Nat.sum_range_choose n`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem HookDimensionSum.proof (h1 : CombTableEqWords.Statement)
     (h2 : CombHookShapeFacts.Statement) (h3 : CombHookCount.Statement) :

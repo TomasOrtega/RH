@@ -22,7 +22,7 @@ def coef (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (μ : Measure (WO S T)) 
     (w : WO S T) : ℂ := ∫ x in 𝓕, heisO ψ S T w f x * star (f x) ∂μ
 
 /- English proof (translation)
-Establish `h` using `heisO_heisO ψ S T w u f`. Rewrite `h` using `[hu]`. Unfold `coef`. Rewrite using `[h, ← integral_const_mul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coef_right (μ : Measure (WO S T)) (𝓕 : Set (WO S T)) {f : WO S T → ℂ} {u : WO S T}
     (hu : heisO ψ S T u f = f) (w : WO S T) :
@@ -34,13 +34,13 @@ theorem coef_right (μ : Measure (WO S T)) (𝓕 : Set (WO S T)) {f : WO S T →
   simp only [Pi.smul_apply, smul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Use `haveI : Countable (ratL T S) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `key` using `setIntegral_add_right (G := WO S T) (ratL T S) μ 𝓕 h𝓕 (fun x => heisO ψ S T w f x * star (f x)) (by`. Introduce `γ hγ x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `mul_conj_of_norm_one (hψ.2.1 (-(symplOH S T γ x)))`. Establish `h1` using `heisO_quasi hf w γ hγ x`. Establish `h2` using `heisO_quasi hf 0 γ hγ x`. Rewrite `h2` using `[heisO_zero]`. Use `show heisO ψ S T w f (γ + x) * (starRingEnd ℂ) (f (γ + x)) = _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, map_mul, mul_mul_mul_comm, h0, one_mul]`. Use the proof step `rfl) u`. Unfold `coef`. Rewrite using `[← key, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `mul_conj_of_norm_one (hψ.2.1 (symplOH S T x u))`. Establish `h1 : ψ (symplOH S T x u) * heisO ψ S T w f (x + u) = ψ (symplOH S T u w) * heisO ψ S T (u + w) f x` using `congrFun (heisO_heisO ψ S T u w f) x`. Establish `h2 : ψ (symplOH S T x u) * f (x + u) = f x` using `congrFun hu x`. Use `show heisO ψ S T w f (x + u) * (starRingEnd ℂ) (f (x + u)) = ψ (symplOH S T u w) * (heisO ψ S T (w + u) f x * (starRingEnd ℂ) (f x))`. Rewrite using `[← h2, add_comm w u, ← mul_assoc, ← h1, map_mul, mul_mul_mul_comm, h0, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem coef_left (hψ : IsCharAF D.host.F ψ) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)} (hμ : μ.IsAddHaarMeasure)
     (h𝓕 : IsAddFundamentalDomain (ratL T S) 𝓕 μ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) {u : WO S T}
@@ -71,9 +71,9 @@ theorem coef_left (hψ : IsCharAF D.host.F ψ) {μ : Measure (WO S T)} {𝓕 : S
   rw [← h2, add_comm w u, ← mul_assoc, ← h1, map_mul, mul_mul_mul_comm, h0, one_mul]
 
 /- English proof (translation)
-Establish `h1` using `coef_right μ 𝓕 hu w`. Establish `h2` using `coef_left hψ hμ h𝓕 hf hu w`. Establish `h3 : coef ψ S T μ 𝓕 f (w + u) ≠ 0` using `fun h => hw (by rw [h1, h, mul_zero])`. Establish `h4` using `mul_right_cancel₀ h3 (h1.symm.trans h2)`. Rewrite using `[← symplOH_add_self, AddChar.map_add_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `nth_rewrite 2 [h4]`. Rewrite using `[← AddChar.map_add_eq_mul, symplOH_skew S T w u, add_neg_cancel, AddChar.map_zero_eq_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_eq_one (hψ : IsCharAF D.host.F ψ) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)} (hμ : μ.IsAddHaarMeasure)
     (h𝓕 : IsAddFundamentalDomain (ratL T S) 𝓕 μ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) {u : WO S T}
@@ -87,9 +87,9 @@ theorem char_eq_one (hψ : IsCharAF D.host.F ψ) {μ : Measure (WO S T)} {𝓕 :
   rw [← AddChar.map_add_eq_mul, symplOH_skew S T w u, add_neg_cancel, AddChar.map_zero_eq_one]
 
 /- English proof (translation)
-Establish `hu : IsUnit (N : AE D)`. Establish `h1 : IsUnit (N : D.host.F)` using `(Nat.cast_ne_zero.2 hN.ne').isUnit`. Establish `h2` using `(h1.map (algebraMap D.host.F (AF D.host.F))).map (algebraMap (AF D.host.F) (AE D))`. Rewrite `h2` using `[map_natCast, map_natCast]`. Then use the resulting hypothesis. Use `Matrix.ext fun i j => hu.mul_left_cancel ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : N • x i j = N • y i j` using `congrFun (congrFun h i) j`. Rewrite `h3` using `[nsmul_eq_mul, nsmul_eq_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem nsmul_cancel {m n : ℕ} {N : ℕ} (hN : 0 < N) {x y : Mx D m n} (h : N • x = N • y) : x = y := by
   have hu : IsUnit (N : AE D) := by
@@ -101,14 +101,14 @@ theorem nsmul_cancel {m n : ℕ} {N : ℕ} (hN : 0 < N) {x y : Mx D m n} (h : N 
   rwa [nsmul_eq_mul, nsmul_eq_mul] at h3
 
 /- English proof (translation)
-Establish `h` using `symplO_smul S T (N : AE D) x y`. Rewrite `h` using `[map_natCast, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem symplO_nsmul (N : ℕ) (x y : WO S T) : symplO S T (N • x) y = symplO S T x (N • y) := by
   have h := symplO_smul S T (N : AE D) x y
   rwa [map_natCast, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul] at h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Use `show finPart D (realIdem D * w i j) = 0`. Rewrite using `[RingHom.map_mul, finPart_realIdem, zero_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem real_part (w : WO S T) : (realIdem D • w).map (finPart D) = 0 := by
   funext i j
@@ -116,7 +116,7 @@ theorem real_part (w : WO S T) : (realIdem D • w).map (finPart D) = 0 := by
   rw [RingHom.map_mul, finPart_realIdem, zero_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Use `show infPart D (w i j - realIdem D * w i j) = 0`. Rewrite using `[RingHom.map_sub, RingHom.map_mul, infPart_realIdem, one_mul, sub_self]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_part (w : WO S T) : (w - realIdem D • w).map (infPart D) = 0 := by
   funext i j
@@ -124,9 +124,9 @@ theorem fin_part (w : WO S T) : (w - realIdem D • w).map (infPart D) = 0 := by
   rw [RingHom.map_sub, RingHom.map_mul, infPart_realIdem, one_mul, sub_self]
 
 /- English proof (translation)
-Establish `h1 : (Formalism.L2.Theta.mt T h).map (infPart D) = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 hh)`. Establish `h2 : (Formalism.L2.Theta.mt S g⁻¹).map (infPart D) = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 (inv_mem hg))`. Establish `h3 : (actO S T g h u).map (infPart D) = u.map (infPart D)`. Unfold `actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, h1, h2, Matrix.one_mul, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : (actO S T g h u).map (finPart D) = u.map (finPart D)`. Unfold `actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hu, Matrix.mul_zero, Matrix.zero_mul]`. Conclude with `Matrix.ext fun i j => adele_ext (congrFun (congrFun h3 i) j) (congrFun (congrFun h4 i) j)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actO_real {g : GA D S} {h : GA D T} (hg : g ∈ GfC S) (hh : h ∈ GfC T) {u : WO S T}
     (hu : u.map (finPart D) = 0) : actO S T g h u = u := by
@@ -141,11 +141,11 @@ theorem actO_real {g : GA D S} {h : GA D T} (hg : g ∈ GfC S) (hh : h ∈ GfC T
   exact Matrix.ext fun i j => adele_ext (congrFun (congrFun h3 i) j) (congrFun (congrFun h4 i) j)
 
 /- English proof (translation)
-Take `⟨G, hG, hGl, hgen⟩` from `GlobalTheory.LatFinGen.latO_finitely_generated D S T ΛS ΛT hS hT`. Establish `h` using `(Filter.eventually_all_finite hG).2 fun u hu => GlobalTheory.LatNhds.eventually_move S T ΛS ΛT hS hT u (latO_fin (hGl u hu)) N hN`. Use `filter_upwards [h] with p hp`. Introduce `w hw`. Establish `key` using `hgen (((latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True).map (nsmulAddMonoidHom N)).comap (GlobalTheory.LatLevel.actHom S T p.1 p.2 - AddMonoidHom.id _)) (fun α hα u hu => ?_) w hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl, e⟩` from `key`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Establish `e' : N • l = actO S T p.1 p.2 w - w` using `e`. Rewrite using `[e', add_sub_cancel]`. Take `⟨l, hl, e⟩` from `hp u hu`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α) • l, GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ _ (AddSubgroup.subset_closure ⟨α, hα, 1, rfl⟩) _ hl, ?_⟩` and prove the remaining obligations. Use `show N • (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α) • l) = actO S T p.1 p.2 (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α) • u) - algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α) • u`. Rewrite using `[GlobalTheory.LatNhds.actO_smul, e, smul_add, add_sub_cancel_left, smul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_mod (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E))
     (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT)
@@ -174,15 +174,15 @@ theorem eventually_mod (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E
     rw [GlobalTheory.LatNhds.actO_smul, e, smul_add, add_sub_cancel_left, smul_comm]
 
 /- English proof (translation)
-Establish `hS` using `GlobalTheory.PlaceModel.isSelfDualC_latFrame S`. Establish `hT` using `GlobalTheory.PlaceModel.isSelfDualC_latFrame T`. Take `⟨U, hU, hUf⟩` from `hf.level`. Take `⟨N, hN, hNU⟩` from `(GlobalTheory.LatLevel.level_of_generators D S T _ _ hS hT (GlobalTheory.LatFinGen.latO_finitely_generated D S T _ _ hS hT)).1 U hU`. Establish `hfix` using `fun u hu => hUf _ (hNU u hu) (latO_fin (AddSubgroup.nsmul_mem _ hu N))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `filter_upwards [eventually_mod _ _ hS hT (N * (2 * N)) (by positivity)] with p hp hg hh w hw`. Establish `hfin : (N • (w - realIdem D • w)).map (infPart D) = 0`. Rewrite using `[GlobalTheory.LatNhds.fin_iff, smul_comm, GlobalTheory.LatNhds.fin_iff.1 (fin_part w), nsmul_zero]`. Establish `hmem` using `GlobalTheory.LatVac.mem_of_char hψ hS hT hfin fun u hu => by`. Rewrite using `[symplO_nsmul, symplO_sub_left, symplO_real_fin S T (real_part w) (latO_fin (AddSubgroup.nsmul_mem _ hu N)), sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `char_eq_one hψ.1 hμ h𝓕 hf (hfix u hu) hw`. Take `⟨l, hl, e⟩` from `hp _ hmem`. Establish `e1 : actO S T p.1 p.2 (w - realIdem D • w) = (w - realIdem D • w) + (2 * N) • l`. Use `nsmul_cancel hN ?_` and prove the remaining obligations. Rewrite using `[nsmul_add, ← mul_nsmul', ← e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(map_nsmul (GlobalTheory.LatLevel.actHom S T p.1 p.2) N _).symm`. Establish `e2 : actO S T p.1 p.2 w = w + N • (l + l)`. Establish `h` using `GlobalTheory.LatNhds.actO_add p.1 p.2 (realIdem D • w) (w - realIdem D • w)`. Rewrite `h` using `[e1, actO_real hg hh (real_part w), ← add_assoc, add_sub_cancel]`. Rewrite using `[h, ← two_nsmul, ← mul_nsmul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `coef_right μ 𝓕 (hfix _ (AddSubgroup.add_mem _ hl hl)) w`. Rewrite `h1` using `[nsmul_add, symplOH_add_right, symplOH_add_self, char_eq_one hψ.1 hμ h𝓕 hf (hfix l hl) hw, one_mul, ← nsmul_add]`. Rewrite using `[e2, ← h1]`.
+A detailed English derivation is pending.
 -/
 theorem eventually_coef_of_ne (hψ : IsStdChar D ψ (-1)) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
     (hμ : μ.IsAddHaarMeasure) (h𝓕 : IsAddFundamentalDomain (ratL T S) 𝓕 μ) {f : WO S T → ℂ}
@@ -216,11 +216,11 @@ theorem eventually_coef_of_ne (hψ : IsStdChar D ψ (-1)) {μ : Measure (WO S T)
   rw [e2, ← h1]
 
 /- English proof (translation)
-Introduce `D ψ hψ S T μ 𝓕 hμ h𝓕 f hf`. Establish `h1` using `eventually_coef_of_ne hψ hμ h𝓕 hf`. Use `haveI : ∀ V : HSp D, IsTopologicalGroup (GA D V) := fun V => Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Establish `ht : Filter.Tendsto (fun p : GA D S × GA D T => p⁻¹) (𝓝 1) (𝓝 1)`. Use `(continuous_inv (G := GA D S × GA D T)).tendsto 1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[inv_one]`. Then use the resulting hypothesis. Use `filter_upwards [h1, ht.eventually h1] with p hp hp' hg hh w`. Use `show coef ψ S T μ 𝓕 f (actO S T p.1 p.2 w) = coef ψ S T μ 𝓕 f w`. Distinguish the cases in `hw : coef ψ S T μ 𝓕 f w = 0`. Assume the negation of the conclusion as `hne`.
+Consider separately whether the proposition holds or fails. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hp' (inv_mem hg) (inv_mem hh) _ (hw ▸ hne)`. Establish `h3` using `GlobalTheory.AdelicLatMove.actO_actO_inv S T p.1⁻¹ p.2⁻¹ w`. Rewrite `h3` using `[inv_inv, inv_inv]`. Conclude with `hne (h2.symm.trans (congrArg _ h3))`. Conclude with `hp hg hh w hw`.
+A detailed English derivation is pending.
 -/
 theorem eventually_coef_actO : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), μ.IsAddHaarMeasure → IsAddFundamentalDomain (ratL T S) 𝓕 μ → ∀ f : WO S T → ℂ, IsThetaFunO ψ S T f → ∀ᶠ p : GA D S × GA D T in 𝓝 1, p.1 ∈ GfC S → p.2 ∈ GfC T → ∀ w, ∫ x in 𝓕, heisO ψ S T (actO S T p.1 p.2 w) f x * star (f x) ∂μ = ∫ x in 𝓕, heisO ψ S T w f x * star (f x) ∂μ := by
   intro D ψ hψ S T μ 𝓕 hμ h𝓕 f hf

@@ -11,29 +11,25 @@ open scoped ComplexConjugate
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
 /- English proof (translation)
-Establish `hNpos : (0 : ℝ) < ((X.m * X.chiOrd la : ℕ) : ℝ)`. Establish `h1 : 0 < X.m` using `X.m_pos`. Establish `h2 : 0 < X.chiOrd la` using `(X.χ_fin la).choose_spec.1`. Conclude with `Nat.mul_pos h1 h2` after adjusting the coercions. Establish `hD` using `integerApproximationCount_holds (E := E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `IntegerApproximationCount at hD`. Take `⟨happrox, -⟩` from `hD r X`. Establish `hadd : ∀ x y : E, cc (x + y) = cc x + cc y`. Introduce `x y`. Unfold `cc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_add _ x y`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Rewrite using `[← SetLike.mem_coe]`. Apply `(Submodule.closed_of_finiteDimensional _).closure_subset` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Metric.mem_closure_iff]`. Introduce `ε hε`. Use `set N : ℝ := ((X.m * X.chiOrd la : ℕ) : ℝ) with hN`. Use `set B : ℝ := 2 * (fdeg E : ℝ) ^ 2 * rdE E with hB`. Use `set t : ℝ := (|B| + 1) / ε with ht`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result.
 
-Establish `htpos : 0 < t` using `div_pos (by positivity) hε`. Establish `hεt : ε * t = |B| + 1`. Rewrite using `[ht]`. Clear the denominators using the available nonvanishing facts. Take `⟨α, hα⟩` from `happrox (fun τ => ((t * v τ : ℝ) : ℂ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a : E := (α : E) + cc (α : E) with ha`. Establish `hcca : cc a = a`. Rewrite using `[ha, hadd, cc_cc, add_comm]`. Establish `hinta : IsIntegral ℤ a`. Establish `h0 : IsIntegral ℤ (α : E)` using `NumberField.RingOfIntegers.isIntegral_coe α`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0.add (isIntegral_cc h0)`. Establish `hre : ∀ τ : X.Ψ, (τ.1 a).re = 2 * (τ.1 (α : E)).re`. Introduce `τ`. Rewrite using `[ha, map_add, emb_cc, Complex.add_re, Complex.conj_re]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨(1 / (2 * N * t)) • (fun τ : X.Ψ => N * (τ.1 a).re), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe]`. Apply `Submodule.smul_mem` to reduce the goal to its premises. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨a, hcca, hinta, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[dist_eq_norm]`. Establish `hlt : ∀ τ : X.Ψ, ‖(v - (1 / (2 * N * t)) • (fun τ : X.Ψ => N * (τ.1 a).re)) τ‖ < ε`. Introduce `τ`. Establish `hval : (v - (1 / (2 * N * t)) • (fun τ : X.Ψ => N * (τ.1 a).re)) τ = (t * v τ - (τ.1 (α : E)).re) / t`. Establish `hN0 : N ≠ 0` using `hNpos.ne'`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ht0 : t ≠ 0` using `htpos.ne'`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, hre]`. Apply the tactic sequence `field_simp <;> ring`. Rewrite using `[hval, Real.norm_eq_abs, abs_div, abs_of_pos htpos, div_lt_iff₀ htpos]`. Establish `h1 : |t * v τ - (τ.1 (α : E)).re| ≤ ‖τ.1 (α : E) - ((t * v τ : ℝ) : ℂ)‖`.
-
-Establish `h` using `Complex.abs_re_le_norm (τ.1 (α : E) - ((t * v τ : ℝ) : ℂ))`. Rewrite `h` using `[Complex.sub_re, Complex.ofReal_re]`. Rewrite using `[abs_sub_comm]`. Conclude with `h`. Establish `h2 : ‖τ.1 (α : E) - ((t * v τ : ℝ) : ℂ)‖ ≤ B` using `hα τ`.
-
-Combine the linear relations using `[le_abs_self B]`. Conclude with `(pi_norm_lt_iff hε).2 hlt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem realFlowPeriods_span_eq_top {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) :
     Submodule.span ℝ {p : X.Ψ → ℝ | ∃ a : E, cc a = a ∧ IsIntegral ℤ a ∧
@@ -100,35 +96,31 @@ theorem realFlowPeriods_span_eq_top {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) :
     exact (pi_norm_lt_iff hε).2 hlt
 
 /- English proof (translation)
-Unfold `CuspFormGapCondition`. Introduce `r X la P hP`. Establish `hP' : X.IsBddSec la P ∧ ∀ ξ, X.IsIso ξ → ∀ x ∈ X.dom, X.fj la ξ 0 P x = 0` using `hP`. Establish `hB : X.IsSec la P ∧ ∃ C : ℝ, ∀ x ∈ X.dom, X.pnorm la P x ≤ C` using `hP'.1`. Take `⟨C, hC⟩` from `hB.2`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm3` using `moderateCoefficientPositivity_holds (E := E)`. Unfold `ModerateCoefficientPositivity at hm3`. Establish `hnn` using `(hm3 r X la P C 0 hB.1 (fun x hx => by simpa using hC x hx)).1`. Establish `hspan` using `realFlowPeriods_span_eq_top X la`. Take `⟨T, hTS, hTspan, hTli⟩` from `exists_linearIndependent ℝ {p : X.Ψ → ℝ | ∃ a : E, cc a = a ∧ IsIntegral ℤ a ∧ p = fun τ => ((X.m * X.chiOrd la : ℕ) : ℝ) * (τ.1 a).re}`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hTspan` using `[hspan]`. Establish `hTfin : T.Finite` using `hTli.setFinite`. Use `set M : ℝ := ∑ p ∈ hTfin.toFinset, ∑ σ, |p σ| with hM`. Establish `hM0 : 0 ≤ M` using `Finset.sum_nonneg (fun p _ => Finset.sum_nonneg (fun σ _ => abs_nonneg (p σ)))`. Establish `hcpos : (0 : ℝ) < 1 / (2 * M + 2)` using `div_pos one_pos (by linarith)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1 / (2 * M + 2), hcpos, ?_⟩` and prove the remaining obligations. Use `show P ∈ X.SS la ∧ ∀ ξ, X.IsIso ξ → ∀ ν : X.Ψ → ℝ, ∑ τ, ν τ ≤ 1 / (2 * M + 2) → ∀ x ∈ X.dom, X.fj la ξ ν P x = 0`. Use `⟨hP, ?_⟩` and prove the remaining obligations. Introduce `ξ hξ ν hν x hx`. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hint : ∀ p ∈ X.periods la, ∃ k : ℤ, 2 * ∑ τ, ν τ * p τ = k`. Assume the negation of the conclusion as `hc`. Apply `hne` to reduce the goal to its premises. Rewrite using `[Data.fj, if_neg hc]`. Establish `hpos : ∀ τ, 0 ≤ ν τ` using `hnn ξ hξ ν x hx hne`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsmall : ∀ τ, ν τ ≤ 1 / (2 * M + 2)` using `fun τ => le_trans (Finset.single_le_sum (fun σ _ => hpos σ) (Finset.mem_univ τ)) hν`. Establish `hzero : ∀ p ∈ T, ∑ σ, ν σ * p σ = 0`. Introduce `p hp`. Take `⟨k, hk⟩` from `hint p (AddSubgroup.subset_closure (hTS hp))`. Establish `hpM : ∑ σ, |p σ| ≤ M` using `Finset.single_le_sum (f := fun q : X.Ψ → ℝ => ∑ σ, |q σ|) (fun q _ => Finset.sum_nonneg (fun σ _ => abs_nonneg (q σ))) (hTfin.mem_toFinset.2 hp)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `habs : |∑ σ, ν σ * p σ| ≤ 1 / (2 * M + 2) * M`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `σ _`. Rewrite using `[abs_mul, abs_of_nonneg (hpos σ)]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_right (hsmall σ) (abs_nonneg _)`. Use `_ = 1 / (2 * M + 2) * ∑ σ, |p σ| := by simp only [Finset.mul_sum]`. Use `_ ≤ 1 / (2 * M + 2) * M := mul_le_mul_of_nonneg_left hpM hcpos.le`. Establish `hfrac : 2 * (1 / (2 * M + 2) * M) < 1`. Rewrite using `[show 2 * (1 / (2 * M + 2) * M) = (2 * M) / (2 * M + 2) by ring, div_lt_one (by linarith)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlt : |(k : ℝ)| < 1`. Rewrite using `[← hk, abs_mul, abs_two]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk0 : k = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `abs_lt.1 hlt`. Establish `h1 : -1 < k` using `by exact_mod_cast h.1`. Establish `h2 : k < 1` using `by exact_mod_cast h.2`. Use linear arithmetic over natural numbers and integers. Rewrite `hk` using `[hk0, Int.cast_zero]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Set `f : (X.Ψ → ℝ) →ₗ[ℝ] ℝ` to `{ toFun := fun q => ∑ σ, ν σ * q σ map_add' := fun q q' => by`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Use the proof step `map_smul' := fun c q => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl (fun σ _ => by ring) }`. Establish `hle : Submodule.span ℝ T ≤ LinearMap.ker f`. Rewrite using `[Submodule.span_le]`. Introduce `p hp`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hzero p hp`. Establish `hmem : ν ∈ Submodule.span ℝ T`. Rewrite using `[hTspan]`. Conclude with `Submodule.mem_top`. Establish `hsq : ∑ σ, ν σ * ν σ = 0` using `LinearMap.mem_ker.1 (hle hmem)`.
-
-Establish `hν0 : ν = 0`. Use function extensionality and compare the values at `σ`. Establish `h` using `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => mul_self_nonneg (ν i))).1 hsq σ (Finset.mem_univ σ)`. Simplify using `using mul_self_eq_zero.1 h`. Substitute `hν0` using the available equality.
-
-Conclude with `hne (hP'.2 ξ hξ x hx)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem spectralGap_holds : CuspFormGapCondition (E := E) := by
   classical

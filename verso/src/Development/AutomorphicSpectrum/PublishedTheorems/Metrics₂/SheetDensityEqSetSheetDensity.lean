@@ -71,7 +71,7 @@ theorem isGoodProj_eq_isSetGoodProj (P : Ideal (MRing ι))
 end Integral
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `only [mcPts, ReciprocityTheory.AnForm.R.conePts, Set.mem_setOf_eq]`. Use `and_congr_right fun _ => ⟨fun h f hf => ?_, fun h f hf => h _ (Ideal.mem_map_of_mem _ hf)⟩` and prove the remaining obligations. Establish `hle : P ≤ Ideal.comap (map (Int.castRingHom ℂ) : MRing ι →+* MRingOver ℂ ι) (RingHom.ker (eval z))` using `fun g hg => Ideal.mem_comap.mpr (RingHom.mem_ker.mpr (h g hg))`. Conclude with `RingHom.mem_ker.mp (Ideal.map_le_of_le_comap hle hf)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mcPts_eq_conePts {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) :
     mcPts P = ReciprocityTheory.AnForm.R.conePts (P.map (map (Int.castRingHom ℂ) : MRing ι →+* MRingOver ℂ ι)) := by

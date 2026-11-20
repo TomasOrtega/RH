@@ -10,7 +10,7 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Unfold `alternant`. Rewrite using `[AlgHom.map_det, ← Matrix.det_submatrix_equiv_self e (Matrix.of fun p p' : κ => (X p : MvPolynomial κ ℚ) ^ (v ∘ e.symm) p')]`. Use `congr 1`. Use extensionality with `i i'`. Simplify using `[Matrix.map_apply, Matrix.submatrix_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rename_alternant_equiv {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ]
     [DecidableEq κ] (e : ι ≃ κ) (v : ι → ℕ) :
@@ -34,9 +34,9 @@ def smallBlockEquiv (r a : ℕ) (c : SmallBlock) : Fin r ⊕ Fin a ≃ Fin (r + 
       apply Fin.ext <;> simp [smallBlockPlace, yIndex, zIndex] <;> omega
 
 /- English proof (translation)
-Introduce `r a c v`. Establish `hg : smallBlockPlace r a c = (fun p : Fin (r + a) => ((0 : Fin 1), p)) ∘ smallBlockEquiv r a c`. Use function extensionality and compare the values at `x`. Conclude with `Prod.ext (Subsingleton.elim _ _) rfl`. Establish `hs : (smallBlockEquiv r a c).symm = smallBlockOf r a c` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, ← rename_rename]`. Use `congr 1`. Rewrite using `[rename_alternant_equiv, hs]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SchAlternantRenamePlace.proof : SchAlternantRenamePlace.Statement := by
   intro r a c v

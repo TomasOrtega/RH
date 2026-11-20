@@ -14,7 +14,7 @@ def strHom {R : Type} [CommRing R] {X : Scheme.{0}} (q : X ⟶ Sp R) (U : X.Open
   (Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ q.appLE ⊤ U le_top
 
 /- English proof (translation)
-Rewrite using `[← IsAffineOpen.SpecMap_appLE_fromSpec q (isAffineOpen_top _) hU le_top, IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fromSpec_str {R : Type} [CommRing R] {X : Scheme.{0}} (q : X ⟶ Sp R) {U : X.Opens} (hU : IsAffineOpen U) :
     hU.fromSpec ≫ q = Spec.map (strHom q U) := by
@@ -23,9 +23,9 @@ theorem fromSpec_str {R : Type} [CommRing R] {X : Scheme.{0}} (q : X ⟶ Sp R) {
   rfl
 
 /- English proof (translation)
-Establish `h₁ : (q.appLE ⊤ U le_top).hom.Flat` using `HasRingHomProperty.appLE @Flat q inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ le_top`. Establish `h₂ : (strHom q U).hom.Flat` using `RingHom.Flat.comp (RingHom.Flat.of_bijective (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of ℤ)).inv)) h₁`. Establish `h₃ : (algebraMap ℤ Γ(X, U)).Flat`. Rewrite using `[Subsingleton.elim (algebraMap ℤ Γ(X, U)) (strHom q U).hom]` and apply the resulting hypothesis. Use `RingHom.flat_algebraMap_iff.1 h₃` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `charZero_of_injective_algebraMap (FaithfulSMul.algebraMap_injective ℤ Γ(X, U))`.
+A detailed English derivation is pending.
 -/
 theorem charZero {X : Scheme.{0}} (q : X ⟶ Sp ℤ) [Flat q] {U : X.Opens} (hU : IsAffineOpen U)
     [Nontrivial Γ(X, U)] : CharZero Γ(X, U) := by
@@ -40,29 +40,25 @@ theorem charZero {X : Scheme.{0}} (q : X ⟶ Sp ℤ) [Flat q] {U : X.Opens} (hU 
   exact charZero_of_injective_algebraMap (FaithfulSMul.algebraMap_injective ℤ Γ(X, U))
 
 /- English proof (translation)
-Introduce `F _ _ Y N W z g hz hg hzg`. Use `N.ar.isIntegral` as an intermediate fact. Use `N.ar.flat` as an intermediate fact. Establish `: IsProper N.p`. Take `⟨n, c, hc, h⟩` from `N.ar.isProjOver`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `isProper_str (𝓞 F) n` as an intermediate fact. Rewrite using `[← h]`. Use `infer_instance`. Take `⟨U, hU, hzU, hUW⟩` from `exists_isAffineOpen_mem_and_subset hz`. Establish `hle : U ≤ W` using `hUW`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Nonempty U` using `⟨⟨z, hzU⟩⟩`. Establish `: CharZero Γ(N.X, U)` using `charZero (N.p ≫ spMap (Int.castRingHom (𝓞 F))) hU`. Set `_ : Algebra (𝓞 F) Γ(N.X, U)` to `(strHom N.p U).hom.toAlgebra`. Establish `: Algebra.FiniteType (𝓞 F) Γ(N.X, U)` using `RingHom.FiniteType.comp (N.p.finiteType_appLE (isAffineOpen_top _) hU le_top) (RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (𝓞 F))).inv).2)`. Use `set g' : Γ(N.X, U) := N.X.presheaf.map (homOfLE hle).op g with hg'`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg0 : g' ≠ 0` using `fun h => hg (map_injective_of_isIntegral N.X (homOfLE hle) (by rw [← hg', h, map_zero]))`. Establish `hb : ∀ x : PrimeSpectrum Γ(N.X, U), hU.fromSpec x ∈ N.X.basicOpen g ↔ g' ∉ x.asIdeal`. Introduce `x`. Establish `h₁ : hU.fromSpec x ∈ U`. Use `hU.range_fromSpec` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(Set.ext_iff.1 this _).1 ⟨x, rfl⟩`. Establish `h₂ : hU.fromSpec x ∈ N.X.basicOpen g' ↔ g' ∉ x.asIdeal`. Express the relevant statement in the definitionally equal form `x ∈ hU.fromSpec ⁻¹ᵁ N.X.basicOpen g' ↔ _`. Rewrite using `[hU.fromSpec_preimage_basicOpen]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[← h₂, hg', Scheme.basicOpen_res]`. Conclude with `⟨fun h => ⟨h₁, h⟩, fun h => h.2⟩`. Establish `hp : g' ∈ (hU.primeIdealOf ⟨z, hzU⟩).asIdeal`. Assume the negation of the conclusion as `h`. Use `(hb _).2 h` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[hU.fromSpec_primeIdealOf]`. Conclude with `hzg this`. Take `⟨𝔪, h𝔪, hle'⟩` from `Ideal.exists_le_maximal _ (hU.primeIdealOf ⟨z, hzU⟩).isPrime.ne_top`. Take `⟨v, e, φ, h₁, h₂, h₃⟩` from `GlobalTheory.T.exists_ext_place_of_ne_zero_maximal F Γ(N.X, U) 𝔪 h𝔪 g' hg0`. Set `yt : Sp e.O ⟶ N.X` to `Spec.map (CommRingCat.ofHom φ) ≫ hU.fromSpec`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hw : (spMap e.O.subtype ≫ yt) ≫ N.p = spMap (algebraMap F (AlgebraicClosure F)) ≫ spMap (algebraMap (𝓞 F) F)`. Simplify using `only [yt, Category.assoc]`. Rewrite using `[fromSpec_str, ← Spec.map_comp, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h₁ a`. Establish `hy` using `N.pb.lift_fst _ _ hw`. Use `⟨v, e, ⟨N.pb.lift _ _ hw, N.pb.lift_snd _ _ hw⟩, yt, hy.symm, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x _`. Conclude with `hle ((Set.ext_iff.1 hU.range_fromSpec _).1 ⟨_, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use `(hb (PrimeSpectrum.comap φ (IsLocalRing.closedPoint e.O))).1 h ?_` and prove the remaining obligations. Use `hle' hp` as an intermediate fact. Rewrite `this` using `[← h₂]`. Conclude with `this`.
-
-Express the relevant statement in the definitionally equal form `(N.pb.lift _ _ hw ≫ N.j) (IsLocalRing.closedPoint (AlgebraicClosure F)) ∈ _`. Rewrite using `[hy]`. Use `(hb (PrimeSpectrum.comap φ (PrimeSpectrum.comap e.O.subtype (IsLocalRing.closedPoint (AlgebraicClosure F))))).2 fun h => h₃ ?_` and prove the remaining obligations. Establish `h' : ((φ g' : e.O) : AlgebraicClosure F) ∈ IsLocalRing.maximalIdeal (AlgebraicClosure F)` using `h`. Rewrite `h'` using `[IsLocalRing.maximalIdeal_eq_bot, Ideal.mem_bot]`.
-
-Conclude with `Subtype.ext h'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (N : TrueGeo.Model Y) (W : N.X.Opens) (z : N.X) (g : Γ(N.X, W)), z ∈ W → g ≠ 0 → z ∉ N.X.basicOpen g → ∃ (v : HeightOneSpectrum (𝓞 F)) (e : Ext v) (y : AlgPt Y) (yt : Sp e.O ⟶ N.X), spMap e.O.subtype ≫ yt = y.1 ≫ N.j ∧ ⊤ ≤ yt ⁻¹ᵁ W ∧ yt (IsLocalRing.closedPoint e.O) ∉ N.X.basicOpen g ∧ N.j (below y.1) ∈ N.X.basicOpen g := by
   intro F _ _ Y N W z g hz hg hzg

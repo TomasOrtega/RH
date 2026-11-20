@@ -11,11 +11,11 @@ open Matrix
 noncomputable section
 
 /- English proof (translation)
-Introduce `d k S N U hU`. Establish `hmap : (N * U).map (Int.cast : ℤ → ℝ) = N.map (Int.cast : ℤ → ℝ) * U.map (Int.cast : ℤ → ℝ)` using `Matrix.map_mul (f := Int.castRingHom ℝ)`. Establish `hdet : (U.map (Int.cast : ℤ → ℝ)).det = ((U.det : ℤ) : ℝ)` using `((Int.castRingHom ℝ).map_det U).symm`. Establish `hsq : ((U.det : ℤ) : ℝ) * (U.det : ℝ) = 1`. Apply the tactic sequence `rcases Int.isUnit_iff.mp hU with h | h <;> rw [h] <;> norm_num`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Unfold `intGram`. Rewrite using `[hmap, transpose_mul]`. Establish `e : (U.map (Int.cast : ℤ → ℝ))ᵀ * (N.map (Int.cast : ℤ → ℝ))ᵀ * S * (N.map (Int.cast : ℤ → ℝ) * U.map (Int.cast : ℤ → ℝ)) = (U.map (Int.cast : ℤ → ℝ))ᵀ * ((N.map (Int.cast : ℤ → ℝ))ᵀ * S * N.map (Int.cast : ℤ → ℝ)) * U.map (Int.cast : ℤ → ℝ)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, det_mul, det_mul, det_transpose, hdet]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem IntGramUnimodular.proof : IntGramUnimodular.Statement := by
   intro d k S N U hU

@@ -12,7 +12,7 @@ open scoped GlobalTheory.MixModel
 namespace GlobalTheory.WittSect
 
 /- English proof (translation)
-Rewrite using `[hv, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hP, hQ, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_one_mulVec_eq_zero {R : Type*} [CommRing R] {n a b : ℕ} (M : Matrix (Fin n) (Fin n) R)
     (P : Matrix (Fin n) (Fin a) R) (Q : Matrix (Fin n) (Fin b) R) (v : Fin n → R) (p : Fin a → R) (q : Fin b → R)
@@ -21,27 +21,25 @@ theorem sub_one_mulVec_eq_zero {R : Type*} [CommRing R] {n a b : ℕ} (M : Matri
     sub_self]
 
 /- English proof (translation)
-Introduce `D V V' r C B hs`. Take `⟨C', h1, h2, h3⟩` from `GlobalTheory.TwistDual.exists_isotropic_dual D V V' r C B hs`. Establish `e : ∀ {a b : ℕ} (M : Matrix (Fin a) (Fin b) D.host.E), GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj D M = Mᴴ` using `fun _ => rfl`. Establish `hG` using `GlobalTheory.MixModel.gram_conjTranspose V`. Rewrite `h1`, `h2`, `h3` using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hee : Cᴴ * V.gram * C = 0` using `hs.frame.2.2`. Establish `horth : Cᴴ * V.gram * B = 0` using `by rw [← e]; exact hs.orth`. Establish `hiso : Bᴴ * V.gram * B = V'.gram` using `by rw [← e]; exact hs.isom`. Establish `h1' : C'ᴴ * V.gram * C = 1`. Use `congrArg Matrix.conjTranspose h1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.conjTranspose_mul, hG, Matrix.mul_assoc]`. Establish `h0e : Bᴴ * V.gram * C = 0`. Use `congrArg Matrix.conjTranspose horth` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_mul, hG, Matrix.mul_assoc]`. Establish `h0e' : Bᴴ * V.gram * C' = 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg Matrix.conjTranspose h3` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_mul, hG, Matrix.mul_assoc]`. Set `d : GlobalTheory.MixModel.HypDec V V' r` to `{ e := C, e' := C', i₀ := B, ee := hee, e'e' := h2, e'e := h1', iso := hiso, i₀e := h0e, i₀e' := h0e', rank_add := hs.rank.symm }`. Use `⟨d, rfl, rfl, fun m hC hB => Subgroup.subset_closure ?_⟩` and prove the remaining obligations. Establish `hu` using `GlobalTheory.MixModel.mt_unitary V m`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsum : C * (C'ᴴ * V.gram) + B * (V'.gram⁻¹ * (Bᴴ * V.gram)) + C' * (Cᴴ * V.gram) = 1` using `d.sum_eq_one_rat`. Establish `hCm : GlobalTheory.MixModel.adj (C.map (incA D)) ⬝ GlobalTheory.MixModel.gA V ⬝ mt V m = GlobalTheory.MixModel.adj (C.map (incA D)) ⬝ GlobalTheory.MixModel.gA V`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[GlobalTheory.MixModel.adj_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = _ := by rw [hu]`. Simplify using `only [Set.mem_setOf_eq]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(mt V m - 1) ⬝ C.map (incA D) = 0`. Rewrite using `[Matrix.sub_mul, hC, Matrix.one_mul, sub_self]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_mul]`. Express the relevant statement in the definitionally equal form `GlobalTheory.MixModel.adj (C.map (incA D)) ⬝ GlobalTheory.MixModel.gA V ⬝ (mt V m - 1) = 0`. Rewrite using `[Matrix.mul_sub, hCm, Matrix.mul_one, sub_self]`. Introduce `x hx`. Use `⟨0, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_zero]`. Establish `hx0 : (Cᴴ * V.gram) *ᵥ x = 0` using `hx`. Take `⟨u, hu⟩ : ∃ u, u = (C'ᴴ * V.gram) *ᵥ x` from `⟨_, rfl⟩`. Take `⟨w, hw⟩ : ∃ w, w = (V'.gram⁻¹ * (Bᴴ * V.gram)) *ᵥ x` from `⟨_, rfl⟩`. Establish `hx' : x = C *ᵥ u + B *ᵥ w`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun M => M *ᵥ x) hsum` as an intermediate fact. Rewrite `this` using `[Matrix.add_mulVec, Matrix.add_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec (M := C), ← Matrix.mulVec_mulVec (M := B), ← Matrix.mulVec_mulVec (M := C'), hx0, Matrix.mulVec_zero, add_zero]`. Rewrite using `[hu, hw]`. Conclude with `this.symm`. Establish `hxA : (fun i => incA D (x i)) = C.map (incA D) *ᵥ (incA D ∘ u) + B.map (incA D) *ᵥ (incA D ∘ w)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Establish `hi : x i = (C *ᵥ u) i + (B *ᵥ w) i` using `congrFun hx' i`. Establish `ha` using `RingHom.map_mulVec (incA D) C u i`. Establish `hb` using `RingHom.map_mulVec (incA D) B w i`. Rewrite using `[Pi.add_apply, ← ha, ← hb, hi]`.
-
-Conclude with `RingHom.map_add (incA D) _ _`. Use `sub_one_mulVec_eq_zero _ (C.map (incA D)) (B.map (incA D)) _ (incA D ∘ u) (incA D ∘ w) ?_ ?_ ?_` and prove the remaining obligations. Conclude with `hxA`. Conclude with `hC`. Conclude with `hB`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_hypDec_mem_NI : ∀ (D : D7) (V V' : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E)
     (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.IsIsoSplit V V' C B →

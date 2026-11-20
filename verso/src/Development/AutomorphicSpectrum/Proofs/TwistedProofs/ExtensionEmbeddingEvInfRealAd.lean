@@ -10,11 +10,11 @@ open scoped TensorProduct
 open GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 /- English proof (translation)
-Establish `h` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply (algebraMap ℝ (mixedEmbedding.mixedSpace F) t)`. Establish `e : evInf F w (realAd F t) = ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ (mixedEmbedding.mixedSpace F) t)) w` using `rfl`. Rewrite using `[e]`. Generalize the expression as in `(InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ (mixedEmbedding.mixedSpace F) t) = y at h`. Rewrite `h` using `[InfiniteAdeleRing.ringEquiv_mixedSpace_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hw : w.IsReal`. Establish `h1` using `congrFun (congrArg Prod.fst h) ⟨w, hw⟩`. Establish `h2 : InfinitePlace.Completion.extensionEmbeddingOfIsReal hw (y w) = t` using `h1`. Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hw, h2]`. Establish `h1` using `congrFun (congrArg Prod.snd h) ⟨w, InfinitePlace.not_isReal_iff_isComplex.1 hw⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem extensionEmbedding_evInf_realAd {F : Type} [Field F] [NumberField F] (w : InfinitePlace F) (t : ℝ) :
     InfinitePlace.Completion.extensionEmbedding w (evInf F w (realAd F t)) = (t : ℂ) := by
@@ -34,9 +34,9 @@ theorem extensionEmbedding_evInf_realAd {F : Type} [Field F] [NumberField F] (w 
     exact h1
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, mul_add]`. Consider the case `tmul a e`. Establish `h : ∀ b : AF F, piInf τ (b ⊗ₜ[F] e) = InfinitePlace.Completion.extensionEmbedding w (evInf F w b) * τ.1 e` using `fun b => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, h, h, map_mul, map_mul, extensionEmbedding_evInf_realAd, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem piInf_realAd_smul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {w : InfinitePlace F} (τ : GlobalTheory.AdelicU.EmbOver E w) (t : ℝ) (x : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) :

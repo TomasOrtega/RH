@@ -12,7 +12,7 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω]
 variable {ξ : Spec (CommRingCat.of Ω) ⟶ X} {E : Type} [AddCommGroup E] [Module Ω E]
 
 /- English proof (translation)
-Introduce `p _`. Conclude with `⟨⊤, trivial, b, fun _ => rfl, fun q _ _ => And.intro hb rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem isFlagVBOn_frame {r : ℕ} (b : Fin r → E) (hb : LinearIndependent Ω b) (T : Set (Cpt ξ)) :
     Lat.IsFlagVBOn (fun p => Submodule.span (regAt ξ p) (Set.range b) : Lat ξ E) T b := by
@@ -20,30 +20,28 @@ theorem isFlagVBOn_frame {r : ℕ} (b : Fin r → E) (hb : LinearIndependent Ω 
   exact ⟨⊤, trivial, b, fun _ => rfl, fun q _ _ => And.intro hb rfl⟩
 
 /- English proof (translation)
-Conclude with `hb.notMem_span_image (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem not_mem_flagStep {r : ℕ} (b : Fin r → E) (hb : LinearIndependent Ω b) (i : Fin r) :
     b i ∉ flagStep Ω b i := by
   exact hb.notMem_span_image (by simp)
 
 /- English proof (translation)
-Take `⟨hb, hLp⟩` from `hL`. Establish `hbi : b i ∉ flagStep Ω b i` using `not_mem_flagStep b hb i`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Apply `hbi` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hF]`. Simplify using `using hc`. Use `⟨hc0, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `t ⟨e, he, het⟩`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite `he` using `[hLp]`. Take `⟨d, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun (regAt ξ p)).mp he`. Establish `het' : ∑ k, (d k : Ω) • b k - t • b₀ i ∈ flagStep Ω b₀ i` using `het`. Use `set S : Submodule Ω E := Submodule.span Ω (b '' {k | k ≠ i}) with hS`. Establish `hFS : flagStep Ω b₀ i ≤ S`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hF]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Use `⟨k, fun hki => ?_, rfl⟩` and prove the remaining obligations. Substitute `hki` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `lt_irrefl (k : ℕ) hk`. Establish `h1 : c • (∑ k, (d k : Ω) • b k - t • b₀ i) ∈ S` using `S.smul_mem c (hFS het')`. Establish `h2 : c • ∑ k ∈ Finset.univ.erase i, (d k : Ω) • b k ∈ S` using `S.smul_mem c (Submodule.sum_mem _ fun k hk => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, Finset.ne_of_mem_erase hk, rfl⟩))`. Establish `h3 : t • (b i - c • b₀ i) ∈ S` using `S.smul_mem t (hFS hc)`. Establish `heq : (c * (d i : Ω) - t) • b i = c • (∑ k, (d k : Ω) • b k - t • b₀ i) - c • ∑ k ∈ Finset.univ.erase i, (d k : Ω) • b k - t • (b i - c • b₀ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ i)]`. Use `module`. Establish `key : (c * (d i : Ω) - t) • b i ∈ S`. Rewrite using `[heq]`. Conclude with `S.sub_mem (S.sub_mem h1 h2) h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hzero : c * (d i : Ω) - t = 0`. Assume the negation of the conclusion as `hne`. Apply `hb.notMem_span_image (s := {k | k ≠ i}) (x := i) (by simp)` to reduce the goal to its premises. Use `S.smul_mem (c * (d i : Ω) - t)⁻¹ key` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hne, one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Submodule.mem_span_singleton.mpr ⟨d i, ?_⟩` and prove the remaining obligations. Use `show (d i : Ω) * c = t`. Rewrite using `[mul_comm]`. Conclude with `sub_eq_zero.mp hzero`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations.
-
-Introduce and unpack `_ rfl`. Use `Submodule.subset_span ⟨b i, ?_, hc⟩` and prove the remaining obligations. Rewrite using `[hLp]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gr_isGenAt {r : ℕ} (L : Lat ξ E) (b b₀ : Fin r → E) (p : Cpt ξ) (hL : L.IsFrameAt b p)
     (hF : ∀ i, flagStep Ω b i = flagStep Ω b₀ i) (i : Fin r) (c : Ω)
@@ -98,13 +96,11 @@ theorem gr_isGenAt {r : ℕ} (L : Lat ξ E) (b b₀ : Fin r → E) (p : Cpt ξ) 
     exact Submodule.subset_span ⟨i, rfl⟩
 
 /- English proof (translation)
-Take `⟨U, hpU, b, hF, hfr⟩` from `h p hp`. Establish `hL` using `hfr p hp hpU`. Establish `hmem : b i ∈ flagStep Ω b₀ ((i : ℕ) + 1)`. Rewrite using `[← hF]`. Conclude with `Submodule.subset_span ⟨i, Nat.lt_add_one _, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsub : b₀ '' {k : Fin r | (k : ℕ) < (i : ℕ) + 1} ⊆ insert (b₀ i) (b₀ '' {k : Fin r | (k : ℕ) < i})`. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Break down `(Nat.lt_add_one_iff.mp hk).lt_or_eq with h' | h'` into its components or cases. Conclude with `Set.mem_insert_of_mem _ ⟨k, h', rfl⟩`. Rewrite using `[Fin.ext h']`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Set.mem_insert _ _`. Establish `hmem' : b i ∈ Submodule.span Ω (insert (b₀ i) (b₀ '' {k : Fin r | (k : ℕ) < i}))` using `Submodule.span_mono hsub hmem`. Rewrite `hmem'` using `[Submodule.span_insert]`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.mp hmem'`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.mp hy`.
-
-Use `⟨a, gr_isGenAt L b b₀ p hL hF i a ?_⟩` and prove the remaining obligations. Rewrite using `[← hyz, add_sub_cancel_left]`. Conclude with `hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gen {r : ℕ} (L : Lat ξ E) (T : Set (Cpt ξ)) (b₀ : Fin r → E) (h : L.IsFlagVBOn T b₀)
     (p : Cpt ξ) (hp : p ∈ T) (i : Fin r) : ∃ c, (L.gr b₀ i).IsGenAt p c := by
@@ -130,15 +126,13 @@ theorem exists_gen {r : ℕ} (L : Lat ξ E) (T : Set (Cpt ξ)) (b₀ : Fin r →
   exact hz
 
 /- English proof (translation)
-Take `⟨hs0, hsp⟩` from `hs`. Take `⟨ht0, htp⟩` from `ht`. Establish `h1 : t ∈ Submodule.span (regAt ξ p) {s}`. Rewrite using `[← hsp, htp]`. Conclude with `Submodule.mem_span_singleton_self t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : s ∈ Submodule.span (regAt ξ p) {t}`. Rewrite using `[← htp, hsp]`. Conclude with `Submodule.mem_span_singleton_self s`. Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.mp h1`. Take `⟨a', ha'⟩` from `Submodule.mem_span_singleton.mp h2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hts : t / s = a`. Rewrite using `[div_eq_iff hs0]`. Conclude with `ha.symm`. Establish `hst : s / t = a'`. Rewrite using `[div_eq_iff ht0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha'.symm`. Break down `n with m | m` into its components or cases. Rewrite using `[Int.ofNat_eq_natCast, zpow_natCast, hts]`. Conclude with `pow_mem a.2 m`. Rewrite using `[zpow_negSucc, ← inv_pow, inv_div, hst]`.
-
-Conclude with `pow_mem a'.2 _`.
+A detailed English derivation is pending.
 -/
 theorem zpow_ratio (Λ : Lat ξ Ω) (p : Cpt ξ) (s t : Ω) (hs : Λ.IsGenAt p s) (ht : Λ.IsGenAt p t) (n : ℤ) :
     (t / s) ^ n ∈ regAt ξ p := by
@@ -165,9 +159,9 @@ theorem zpow_ratio (Λ : Lat ξ Ω) (p : Cpt ξ) (s t : Ω) (hs : Λ.IsGenAt p s
     exact pow_mem a'.2 _
 
 /- English proof (translation)
-Use `⟨Finset.prod_ne_zero_iff.mpr fun i _ => zpow_ne_zero _ (hs i).1, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `t ⟨s', hs', rfl⟩`. Establish `hr : ∏ i, (s' i / s i) ^ a i ∈ regAt ξ p` using `prod_mem fun i _ => zpow_ratio (Λ i) p (s i) (s' i) (hs i) (hs' i) (a i)`. Use `Submodule.mem_span_singleton.mpr ⟨⟨_, hr⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (∏ i, (s' i / s i) ^ a i) * ∏ i, s i ^ a i = ∏ i, s' i ^ a i`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zpow, div_mul_cancel₀ _ (hs i).1]`. Conclude with `Submodule.span_mono (Set.singleton_subset_iff.mpr ⟨s, hs, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_isGenAt {I : Type} [Fintype I] (Λ : I → Lat ξ Ω) (a : I → ℤ) (p : Cpt ξ) (s : I → Ω)
     (hs : ∀ i, (Λ i).IsGenAt p (s i)) : (Lat.tens Λ a).IsGenAt p (∏ i, s i ^ a i) := by
@@ -184,7 +178,7 @@ theorem tens_isGenAt {I : Type} [Fintype I] (Λ : I → Lat ξ Ω) (a : I → �
   · exact Submodule.span_mono (Set.singleton_subset_iff.mpr ⟨s, hs, rfl⟩)
 
 /- English proof (translation)
-Establish `hq : ∀ q : Σ σ, Fin (r σ), ∃ c, ((L q.1).gr (b₀ q.1) q.2).IsGenAt p c` using `fun q => exists_gen (L q.1) T (b₀ q.1) (h q.1) p hp q.2`. Use `choose s hs using hq`. Conclude with `⟨_, tens_isGenAt _ a p s hs⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem grTens_exists_gen {S : Type} [Fintype S] {r : S → ℕ} (L : S → Lat ξ E) (b₀ : ∀ σ, Fin (r σ) → E)
     (a : (Σ σ, Fin (r σ)) → ℤ) (T : Set (Cpt ξ)) (h : ∀ σ, (L σ).IsFlagVBOn T (b₀ σ)) (p : Cpt ξ) (hp : p ∈ T) :
@@ -198,21 +192,21 @@ def jPlane (Ω : Type) [Field Ω] : (Fin 2 → Ω) →+ (Fin 2 → RatFunc Ω) :
   ((algebraMap Ω (RatFunc Ω)).toAddMonoidHom).compLeft (Fin 2)
 
 /- English proof (translation)
-Establish `hj : ∀ (v : Fin 2 → Ω) (m : Fin 2), jPlane Ω v m = algebraMap Ω (RatFunc Ω) (v m)` using `fun _ _ => rfl`. Establish `hU : ∀ (ι : Type) (hι : Unique ι) (x : ι → RatFunc Ω), x default = RatFunc.X → AlgebraicIndependent Ω x`. Introduce `ι hι x hx`. Rewrite using `[algebraicIndependent_unique_type_iff, hx]`. Conclude with `RatFunc.transcendental_X`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ K : IntermediateField Ω (RatFunc Ω), RatFunc.X ∈ K → Module.finrank K (RatFunc Ω) = 1`. Introduce `K hK`. Establish `hK' : K = ⊤`. Rewrite using `[eq_top_iff, ← RatFunc.adjoin_X]`. Conclude with `IntermediateField.adjoin_simple_le_iff.mpr hK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hK'` using the available equality. Conclude with `IntermediateField.finrank_top`. Use `⟨fun _ => ⇑(Pi.basisFun Ω (Fin 2)), fun _ => !![1, 0; RatFunc.X, 1], fun _ => ⟨(Pi.basisFun Ω (Fin 2)).linearIndependent, (Pi.basisFun Ω (Fin 2)).span_eq⟩, ?_, ?_, ?_, ?_, ?_, ?_, ?_, Nat.one_pos, ?_⟩` and prove the remaining obligations. Introduce `a e`. Use extensionality with `m`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `[hj, map_mul]`. Introduce `_`. Use `(Pi.basisFun (RatFunc Ω) (Fin 2)).linearIndependent using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first`. Consider the case `rfl`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Consider the case `(ext k m fin_cases k <;> fin_cases m <;> simp [hj])`. Introduce `_`. Use `LinearIndependent.pair_iff.mpr fun s t h => ?_` and prove the remaining obligations. Establish `h0` using `congrFun h 0`. Establish `h1` using `congrFun h 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `at h0 h1`. Substitute `h0` using the available equality. Simplify using `using h1`. Apply the tactic sequence `intro _ k fin_cases k <;> simp`. Apply the tactic sequence `intro _ l k h fin_cases l <;> fin_cases k <;> simp at h ⊢`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `_ i`. Use `congr 1`. Use extensionality with `k m`. Apply the tactic sequence `fin_cases k <;> fin_cases m <;> simp [hj, Fin.sum_univ_two, Finset.sum_apply]`. Use `hU _ ?_ _ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression.
 
-Use `⟨⟨⟨(), ⟨(1, 0), by decide⟩⟩⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨⟩, ⟨⟨l, k⟩, h⟩⟩`. Apply the tactic sequence `fin_cases l <;> fin_cases k <;> first | rfl | exact absurd h (by decide)`. Both sides reduce to the same expression. Conclude with `key _ (IntermediateField.subset_adjoin _ _ ⟨⟨(), (1, 0)⟩, by simp⟩)`.
+A detailed English derivation is pending.
 -/
 theorem isGenericFlag_plane :
     IsGenericFlag (Ω := Ω) (Ω' := RatFunc Ω) (jPlane Ω) (S := Unit) (r := fun _ => 2) (fun _ => ⊤)
@@ -267,7 +261,7 @@ theorem isGenericFlag_plane :
   · exact key _ (IntermediateField.subset_adjoin _ _ ⟨⟨(), (1, 0)⟩, by simp⟩)
 
 /- English proof (translation)
-Introduce and unpack `⟨c, u, -, -, -, -, -, -, -, hai, -, -⟩`. Conclude with `hai.transcendental ⟨(), ⟨(1, 0), by decide⟩⟩ (isAlgebraic_algebraMap (R := Ω) (A := Ω) _)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem not_isGenericFlag_self {E' : Type} [AddCommGroup E'] [Module Ω E'] (j : E →+ E') (V : Unit → Submodule Ω E)
     (b₀ : Unit → Fin 2 → E') (d : ℕ) : ¬ IsGenericFlag (Ω' := Ω) j (r := fun _ => 2) V b₀ d := by

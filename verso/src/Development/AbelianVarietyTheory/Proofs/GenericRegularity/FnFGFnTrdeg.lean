@@ -9,7 +9,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 namespace GlobalTheory.FlagDim
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c`. Take `⟨h1, h2⟩` from `GlobalTheory.Reg.kap_fg_trdeg E H Dw l Xo c`. Use `⟨fnFG_of Xo c h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← dim_add_card_flagVar E H Dw]`. Conclude with `fnTrdeg_of Xo c Dw.dim h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fnFG_fnTrdeg : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), ∀ (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), FnFG Xo c ∧ FnTrdeg Xo c (Module.finrank ℚ E / 2 * (Dw.p * Dw.q + Dw.p * (Dw.p - 1) / 2 + Dw.q * (Dw.q - 1) / 2)) := by
   intro E _ _ _ H Dw l Xo c

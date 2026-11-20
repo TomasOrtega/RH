@@ -47,14 +47,12 @@ def LevMatch (B : Base S T) (t : Twist D Circle) (φ : GAf D.host.E n ≃* Bridg
     ∀ g (h : g ∈ J) (h' : φ g ∈ B.levJ t), e ((χ ⟨g, h⟩ : Kˣ) : K) = ((B.levLam t ⟨φ g, h'⟩ : ℂˣ) : ℂ)
 
 /- English proof (translation)
-The claim follows from `Ideal.finiteQuotientOfFreeOfNeBot _ P.ne_bot`.
+A detailed English derivation is pending.
 -/
 theorem finite_kP (P : Pl D.host.E) : Finite (kP P) := Ideal.finiteQuotientOfFreeOfNeBot _ P.ne_bot
 
 /- English proof (translation)
-Use `haveI : ∀ P : Pl D.host.E, Finite (kP P) := finite_kP`. Establish `hprod : ∀ {ι : Type} (s : Finset ι) (f : ι → ℂˣ), (∀ i ∈ s, IsOfFinOrder (f i)) → IsOfFinOrder (∏ i ∈ s, f i)` using `fun s f h => Finset.prod_induction f IsOfFinOrder (fun _ _ => IsOfFinOrder.mul) IsOfFinOrder.one h`. Unfold `levFn`. Use `(IsOfFinOrder.mul ?_ (hprod _ _ fun P _ => hprod _ _ fun c _ => ?_)).mul (hprod _ _ fun P _ => ?_)` and prove the remaining obligations. Unfold `ext1 split_ifs with h`.
-
-Conclude with `MonoidHom.isOfFinOrder _ (isOfFinOrder_of_finite _)`. Conclude with `IsOfFinOrder.one`. Conclude with `MonoidHom.isOfFinOrder _ (isOfFinOrder_of_finite _)`. Conclude with `MonoidHom.isOfFinOrder _ (isOfFinOrder_of_finite _)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isOfFinOrder_levFn {m : ℕ} (β : GL (Fin m) (Lev.EAf D)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ m) (x : GL (Fin m) (Lev.EAf D)) :
     IsOfFinOrder (levFn β L x) := by
@@ -71,7 +69,7 @@ theorem isOfFinOrder_levFn {m : ℕ} (β : GL (Fin m) (Lev.EAf D)) (L : Formalis
   · exact MonoidHom.isOfFinOrder _ (isOfFinOrder_of_finite _)
 
 /- English proof (translation)
-Take `⟨m, hm, h1⟩` from `hz.exists_pow_eq_one`. Establish `h2 : x ^ m = 1` using `e.injective (by rw [map_pow, h, ← Units.val_pow_eq_pow_val, h1, map_one, Units.val_one])`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (IsIntegral.of_pow (R := R) hm (h2 ▸ isIntegral_one))`. Conclude with `⟨y, by rw [RingHom.comp_apply, hy, h]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_range_of_finOrder {R : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] (e : FractionRing R →+* ℂ)
     {x : FractionRing R} {z : ℂˣ} (hz : IsOfFinOrder z) (h : e x = z) : (z : ℂ) ∈ (e.comp (algebraMap R (FractionRing R))).range := by
@@ -81,25 +79,25 @@ theorem mem_range_of_finOrder {R : Type} [CommRing R] [IsDomain R] [IsIntegrally
   exact ⟨y, by rw [RingHom.comp_apply, hy, h]⟩
 
 /- English proof (translation)
-Set `r : V →ₛₗ[e] (G' → P)` to `{ toFun := fun f h => ω ((real f).1 (φ.symm h)) map_add' := fun f f' => by funext h; simp map_smul' := fun c f => by funext h; simp [map_smulₛₗ] }`. Establish `hr_apply : ∀ f g, r f (φ g) = ω ((real f).1 g)` using `fun f g => by`. Express the relevant statement in the definitionally equal form `ω ((real f).1 (φ.symm (φ g))) = _`. Rewrite using `[φ.symm_apply_apply]`. Establish `hlaw : ∀ f γ h (k : J'), r f (ι γ * h * k) = lam k • act γ (r f h)` using `fun f γ' h k => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨γ, hγ⟩` from `hr2 γ'`. Take `⟨g, rfl⟩` from `φ.surjective h`. Take `⟨k, hk⟩` from `k`. Take `⟨κ, rfl⟩` from `φ.surjective k`. Establish `hκ` using `(hJ1 κ).2 hk`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `r f (ι γ' * φ g * φ κ) = _`. Establish `h2` using `(hA _).1 (real f).2`. Rewrite using `[hγ, ← map_mul, ← map_mul, hr_apply, hr_apply, h2.2 ⟨κ, hκ⟩, h2.1, map_smulₛₗ, heq γ γ' hγ, hJ2 κ hκ hk]`. Use `⟨r, fun f f' h => ?_, fun F hF => ?_, ?_, hr_apply⟩` and prove the remaining obligations. Use `real.injective (Subtype.ext (funext fun g => hinj ?_))` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hr_apply, ← hr_apply, h]`. Take `⟨⟨-, hF3⟩, hF2⟩` from `(hM F).1 hF choose u hu using fun g => hrange (φ g) _ (hF2 (φ g))`. Establish `hmem : u ∈ A`. Use `(hA u).2 ⟨fun γ g => hinj ?_, fun κ g => hinj ?_⟩` and prove the remaining obligations. Take `⟨γ', hγ⟩` from `hr1 γ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `hF3 γ' (φ g) 1` as an intermediate fact. Rewrite using `[heq γ γ' hγ, hu, hu, map_mul, ← hγ]`. Simplify `this` using `[hl1]`. Establish `hk` using `(hJ1 κ).1 κ.2`. Take `⟨γ, hγ, hγ'⟩` from `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hF3 γ (φ g) ⟨φ κ, hk⟩` as an intermediate fact. Rewrite using `[map_smulₛₗ, hu, hu, map_mul, hJ2 κ κ.2 hk]`. Simplify `this` using `[hγ, hγ']`. Use `⟨real.symm ⟨u, hmem⟩, funext fun h => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `φ.surjective h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hr_apply, real.apply_symm_apply, hu]`. Use `eq_top_iff.2 fun f _ => ?_ haveI := Fintype.ofFinite I classical choose c hc0 hcm using fun i => hden (y i) ((real f).1 (φ.symm (y i)))` and prove the remaining obligations. Establish `hd : algebraMap R (FractionRing R) (∏ i, c i) ≠ 0`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => hc0 i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : r (algebraMap R (FractionRing R) (∏ i, c i) • f) ∈ M`. Use `(hM _).2 ⟨⟨fun h => hval _, hlaw _⟩, fun h => ?_⟩` and prove the remaining obligations. Take `⟨i, γ, k, rfl⟩` from `hy h`. Establish `e1 : r (algebraMap R (FractionRing R) (∏ i, c i) • f) (y i) = e (algebraMap R (FractionRing R) (∏ j ∈ Finset.univ.erase i, c j)) • ω (algebraMap R (FractionRing R) (c i) • (real f).1 (φ.symm (y i)))`. Rewrite using `[← map_smulₛₗ, smul_smul, ← map_mul, Finset.prod_erase_mul _ _ (Finset.mem_univ i)]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `ω ((real (_ • f)).1 _) = _`. Rewrite using `[map_smul]`. Both sides reduce to the same expression. Establish `h2 : r (algebraMap R (FractionRing R) (∏ i, c i) • f) (y i) ∈ L (y i)`. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ (⟨_, _, rfl⟩ : (e.comp (algebraMap R (FractionRing R))).range) (hcm i)`. Rewrite using `[hlaw]`. Conclude with `Submodule.smul_mem _ (⟨_, hlam k⟩ : (e.comp (algebraMap R (FractionRing R))).range) (hact γ _ k _ h2)`. Use `Submodule.smul_mem _ (algebraMap R (FractionRing R) (∏ i, c i))⁻¹ (Submodule.subset_span (R := FractionRing R) (s := {f | r f ∈ M}) hm)` as an intermediate fact. Rewrite `this` using `[inv_smul_smul₀ hd]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem read_abstract {G G' Γ' R W P I V : Type} [Group G] [Group G'] [Group Γ'] [CommRing R] [IsDomain R] [AddCommGroup W]
     [Module (FractionRing R) W] [AddCommGroup P] [Module ℂ P] [Finite I] [AddCommGroup V] [Module (FractionRing R) V]
@@ -182,9 +180,9 @@ theorem read_abstract {G G' Γ' R W P I V : Type} [Group G] [Group G'] [Group Γ
     rwa [inv_smul_smul₀ hd] at this
 
 /- English proof (translation)
-Use `read_abstract φ (ReciprocityTheory.Aut.GQ D.host.E n) J (B.levJ t) (Bridge.ratF S) e (fun γ => ρ γ) (fun κ => (χ κ : FractionRing R)) (fun γ => B.act (γ : GA D S)) (fun k => ((B.levLam t k : ℂˣ) : ℂ)) ω B.valSpace (B.coefLat (embLL0 D) (labLL0 D) (e.comp (algebraMap R (FractionRi …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `B.act 1 x = x`. Rewrite using `[MonoidHom.map_one]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `((B.levLam t 1 : ℂˣ) : ℂ) = 1`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[MonoidHom.map_one]`. Both sides reduce to the same expression. Take `⟨k, hk⟩` from `k`. Take `⟨κ, rfl⟩` from `φ.surjective k`. Conclude with `mem_range_of_finOrder e (isOfFinOrder_levFn _ _ _) (hJ.2 κ ((hJ.1 κ).2 hk) hk)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem read_cell (B : Base S T) (hB : B.Good) (t : Twist D Circle) (φ : GAf D.host.E n ≃* Bridge.Gf S) (R : Type) [CommRing R]
     [IsDomain R] [IsIntegrallyClosed R] (e : FractionRing R →+* ℂ)
@@ -217,9 +215,9 @@ theorem read_cell (B : Base S T) (hB : B.Good) (t : Twist D Circle) (φ : GAf D.
     exact mem_range_of_finOrder e (isOfFinOrder_levFn _ _ _) (hJ.2 κ ((hJ.1 κ).2 hk) hk)
 
 /- English proof (translation)
-Take `⟨hsplit, hdisj, hopen, hanti, hzk, hram, -⟩` from `h`. Establish `hS : ∀ P ∈ Q, P ∉ D.ntw.S0 i` using `fun P hP => Finset.disjoint_left.1 hdisj hP`. Establish `hz : D.ntw.zk i k ^ (D.ntw.l i ^ k) = 1` using `Units.ext (by simpa using (D.ntw.zk_prim i k).pow_eq_one)`. Use `⟨fun P hP => ⟨hsplit P hP, fun h => hS P hP (D.ntw.twistExcludedPlaces_contains_residueChar i h)⟩, fun P hP => ⟨fun h => hS P hP (D.ntw.primes_subset_exceptional i h), fun k' h => hS P hP (D.ntw.placesOver_subset_exceptional i k' h)⟩, hopen, hanti, fun σ => ⟨k, ?_⟩, fun P hP A hA …` and prove the remaining obligations. Take `⟨m, hm⟩` from `hzk σ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hm, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hz, one_zpow]`. Assume the negation of the conclusion as `h`. Conclude with `hP ((hram P A hA).1 ⟨σ, hσ, h⟩)`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem admissible_twist_of_twisting_character {i : D.ntw.Tw} {k : ℕ} {Q : Finset (PlE D.host)} {ψ : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ}
     (h : TwOK i k Q ψ) : NX.AdmTw D i k Q ψ := by
@@ -235,15 +233,15 @@ theorem admissible_twist_of_twisting_character {i : D.ntw.Tw} {k : ℕ} {Q : Fin
     exact hP ((hram P A hA).1 ⟨σ, hσ, h⟩)
 
 /- English proof (translation)
-Establish `key : ∀ c : Fin m → ℤ, NG.infOf c = (Finset.univ.val.map fun i : Fin m => c i - (i : ℕ)).map fun z : ℤ => (z : ℂ) + ((m : ℂ) - 1) / 2` using `fun c => by`. Rewrite using `[NG.infOf, Multiset.map_map]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[key, key]`. Establish `h2` using `Multiset.map_injective (fun x y hxy => by exact_mod_cast add_right_cancel hxy) h`. Establish `sa : ∀ c : Fin m → ℤ, Antitone c → StrictAnti fun i : Fin m => c i - (i : ℕ)` using `fun c hc i j hij => by`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hc hij.le` as an intermediate fact. Establish `h3 : (i : ℕ) < j` using `hij`. Use `beta_reduce`. Use linear arithmetic over natural numbers and integers. Establish `hr : Set.range (fun i : Fin m => a i - (i : ℕ)) = Set.range fun i : Fin m => b i - (i : ℕ)`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `z`. Use `congrArg (z ∈ ·) h2` as an intermediate fact. Simplify using `using this`. Establish `h4` using `((sa a ha).range_inj (sa b hb)).1 hr`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congrFun h4 i` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem eq_of_infOf_eq {m : ℕ} {a b : Fin m → ℤ} (ha : Antitone a) (hb : Antitone b) (h : NG.infOf a = NG.infOf b) : a = b := by
   have key : ∀ c : Fin m → ℤ, NG.infOf c =

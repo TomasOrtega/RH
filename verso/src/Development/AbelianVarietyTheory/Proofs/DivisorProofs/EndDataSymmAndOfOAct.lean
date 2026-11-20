@@ -14,7 +14,7 @@ namespace GlobalTheory.Mum.RosatiSymmetry
 variable {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A]
 
 /- English proof (translation)
-Use `show x * y = y * x`. Conclude with `mul_comm x y`.
+A detailed English derivation is pending.
 -/
 theorem padd_comm' {T : Over S} (x y : T ⟶ A) : padd A x y = padd A y x := by
   show x * y = y * x
@@ -23,19 +23,19 @@ theorem padd_comm' {T : Over S} (x y : T ⟶ A) : padd A x y = padd A y x := by
 abbrev sw : A ⊗ A ⟶ A ⊗ A := lift (snd A A) (fst A A)
 
 /- English proof (translation)
-Simplify using `only [padd, comp_lift_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sw_padd (x y : A ⊗ A ⟶ A) : sw A ≫ padd A x y = padd A (sw A ≫ x) (sw A ≫ y) := by
   simp only [padd, comp_lift_assoc]
 
 /- English proof (translation)
-Introduce `U _ h`. Establish `e0 : (sw A).left ≫ (padd A (fst A A ≫ g) (snd A A)).left = (padd A (fst A A) (snd A A ≫ g)).left`. Rewrite using `[← Over.comp_left, sw_padd, padd_comm']`. Simplify using `only [lift_fst_assoc, lift_snd]`. Establish `e1 : (sw A).left ≫ (fst A A ≫ g).left = (snd A A ≫ g).left`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, lift_fst_assoc]`. Establish `e2 : (sw A).left ≫ (snd A A).left = (fst A A).left`. Rewrite using `[← Over.comp_left, lift_snd]`. Establish `e3 : (sw A).left ≫ (padd A (fst A A) (snd A A ≫ f)).left = (padd A (fst A A ≫ f) (snd A A)).left`. Rewrite using `[← Over.comp_left, sw_padd, padd_comm']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [lift_fst, lift_snd_assoc]`. Establish `e4 : (sw A).left ≫ (fst A A).left = (snd A A).left`. Rewrite using `[← Over.comp_left, lift_fst]`. Establish `e5 : (sw A).left ≫ (snd A A ≫ f).left = (fst A A ≫ f).left`. Rewrite using `[← Over.comp_left, lift_snd_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.prod_univ_six, rosatiφ, rosatiε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four, Matrix.cons_val_succ, Matrix.cons_val, Matrix.vecHead, Matrix.vecTail, Function.comp_apply, Matrix.head_cons, e0, e1, e2, e3, e4 …`. Simplify using `only [neg_neg, zpow_neg, zpow_one]`. The two sides agree by associativity and commutativity.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. The two sides agree by associativity and commutativity.
 -/
 theorem formEq_sw (f g : A ⟶ A) (Y : Scheme.{0}) (p : Y ⟶ (A ⊗ A).left) :
     FormEq (fun k => p ≫ (sw A).left ≫ rosatiφ A g f k) (fun k => - rosatiε k)
@@ -59,20 +59,20 @@ theorem formEq_sw (f g : A ⟶ A) (Y : Scheme.{0}) (p : Y ⟶ (A ⊗ A).left) :
   ac_rfl
 
 /- English proof (translation)
-Simplify `formEq_sw A f g _ (𝟙 _)` using `only [Category.id_comp]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem formEq_sw' (f g : A ⟶ A) :
     FormEq (fun k => (sw A).left ≫ rosatiφ A g f k) (fun k => - rosatiε k) (rosatiφ A f g) rosatiε := by
   simpa only [Category.id_comp] using formEq_sw A f g _ (𝟙 _)
 
 /- English proof (translation)
-Introduce `s`. Take `⟨U, hs, t, ht⟩` from `h s`. Use `⟨U, hs, ?_⟩` and prove the remaining obligations. Establish `hW : (A ⊗ A).hom ⁻¹ᵁ U ≤ (sw A).left ⁻¹ᵁ ((A ⊗ A).hom ⁻¹ᵁ U)`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show ((sw A).left ≫ (A ⊗ A).hom) x ∈ U`. Rewrite using `[Over.w]`. Conclude with `hx`. Set `σ` to `(sw A).left.resLE ((A ⊗ A).hom ⁻¹ᵁ U) ((A ⊗ A).hom ⁻¹ᵁ U) hW`. Establish `hσ : σ ≫ ((A ⊗ A).hom ⁻¹ᵁ U).ι = ((A ⊗ A).hom ⁻¹ᵁ U).ι ≫ (sw A).left` using `Scheme.Hom.resLE_comp_ι _ _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : FormEq (fun k => σ ≫ ((A ⊗ A).hom ⁻¹ᵁ U).ι ≫ rosatiφ A f g k) (fun k => - rosatiε k) (fun k => ((A ⊗ A).hom ⁻¹ᵁ U).ι ≫ rosatiφ A g f k) rosatiε`. Establish `e : (fun k => σ ≫ ((A ⊗ A).hom ⁻¹ᵁ U).ι ≫ rosatiφ A f g k) = fun k => ((A ⊗ A).hom ⁻¹ᵁ U).ι ≫ (sw A).left ≫ rosatiφ A f g k`. Use function extensionality and compare the values at `k`. Rewrite using `[← Category.assoc, hσ, Category.assoc]`. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `formEq_sw A g f _ _`. Take `⟨t', ht', -⟩` from `exists_gen hL hF (LB.invGen L _ _ (LB.pullGen L _ _ t σ)) (DVR.invGen_isGen L _ _ _ (DVR.pullGen_isGen L _ _ t ht σ))`. Conclude with `⟨t', ht'⟩`.
+A detailed English derivation is pending.
 -/
 theorem rosatiAdj_symm (L : LB A.left) (hL : L.IsLB) (f g : A ⟶ A) (h : RosatiAdj A L f g) : RosatiAdj A L g f := by
   intro s
@@ -100,7 +100,7 @@ namespace GlobalTheory.Mum.RosatiSymmetry
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Simplify using `only [DegPre.tau, val_mul hJ, val_inv]`. Establish `e : val (D.psi (a + b)) r z J = val (D.psi (b + a)) r z J` using `by rw [add_comm]`. Rewrite using `[e, mul_right_comm (val (D.psi (b + a)) r z J)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_tau_symm (D : DegPre R) {Z : Scheme.{0}} {z : Z} {J : (Z ⟶ D.P.A.left) → D.P.L.ι} (hJ : Good D.P.L z J)
     (r : Z ⟶ (TK R).left) (a b : D.X) : val (D.tau a b) r z J = val (D.tau b a) r z J := by
@@ -109,13 +109,13 @@ theorem val_tau_symm (D : DegPre R) {Z : Scheme.{0}} {z : Z} {J : (Z ⟶ D.P.A.l
   rw [e, mul_right_comm (val (D.psi (b + a)) r z J)]
 
 /- English proof (translation)
-Introduce `u' hu' hn y y'`. Establish `hL` using `D.P.isLB`. Take `⟨u, hu, hv⟩` from `exists_gen hL (formEq_sw' D.P.A f g) (LB.invGen D.P.L _ _ (LB.pullGen D.P.L _ _ u' (sw D.P.A).left)) (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ u' hu' _))`. Establish `hz : zero2 D.P.A ≫ (sw D.P.A).left = zero2 D.P.A`. Rewrite using `[zero2, ← Over.comp_left, comp_lift, lift_snd, lift_fst]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : D.pt2 y' y ≫ (sw D.P.A).left = D.pt2 y y'`. Rewrite using `[DegPre.pt2, DegPre.pt2, ← Over.comp_left, comp_lift, lift_snd, lift_fst]`. Establish `hnu : LB.Gen.Corr D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ u (zero2 D.P.A)) (LB.oneGen D.P.L)`. Use `corr_of_val hL fun z J hJ => ?_` and prove the remaining obligations. Establish `h1` using `val_corr hJ hn (𝟙 _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[val_pull hJ, val_one]`. Rewrite using `[val_pull hJ, val_one, hv _ _ _ _ hJ, val_inv, val_pull hJ, Category.assoc, hz, h1, inv_one]`. Establish `H'` using `H u hu hnu y' y`. Use `corr_of_val hL fun z J hJ => ?_` and prove the remaining obligations. Establish `h2` using `val_corr hJ H' (𝟙 _)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[val_mul hJ, val_pull hJ, hv _ _ _ _ hJ, val_inv, val_pull hJ, Category.assoc, hp]`. Rewrite using `[val_mul hJ, val_pull hJ, val_tau_symm D hJ _ (a' y) y', ← h2, val_tau_symm D hJ _ (a y') y]`. Use `group`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tauBal_symm (D : DegPre R) (f g : D.P.A ⟶ D.P.A) (a a' : D.X → D.X) (H : D.TauBal f g a a') :
     D.TauBal g f a' a := by
@@ -145,7 +145,7 @@ end GlobalTheory.Mum.RosatiSymmetry
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ D`. Use `⟨fun a a' h h' ⟨h1, h2, h3, h4, h5, h6⟩ => ⟨h2, h1, RosatiSymmetry.rosatiAdj_symm D.P.A D.P.L D.P.isLB a a' h3, h5, h4, RosatiSymmetry.tauBal_symm D a a' h h' h6⟩, fun O _ _ _ o x => ?_⟩` and prove the remaining obligations. Conclude with `⟨o.onB.hom x, o.onB.hom (star x), o.onB.rosati x, fun y => o.c_lin x y, fun y => o.c_lin (star x) y, o.tau_bal x⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem endData_symm_and_ofOAct : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R),
     (∀ (a a' : D.P.A ⟶ D.P.A) (h h' : D.X →+ D.X), EndData D a a' h h' → EndData D a' a h' h) ∧

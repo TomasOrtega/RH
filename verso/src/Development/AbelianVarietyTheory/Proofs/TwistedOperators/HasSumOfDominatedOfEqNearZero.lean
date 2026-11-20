@@ -5,21 +5,17 @@ open Metric Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `z hz`. Establish `hr : 0 < r` using `lt_of_le_of_lt (norm_nonneg z) hz`. Establish `hbound : ∀ i (w : ℂ), ‖b i * w ^ n i‖ ≤ c i * ‖w‖ ^ n i`. Introduce `i w`. Rewrite using `[norm_mul, norm_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_right (hbc i) (pow_nonneg (norm_nonneg w) _)`. Establish `hsum : ∀ w : ℂ, ‖w‖ < r → Summable (fun i => b i * w ^ n i)`. Introduce `w hw`. Conclude with `Summable.of_norm_bounded (hc ‖w‖ (norm_nonneg w) hw) (fun i => hbound i w)`. Set `F : ℂ → ℂ` to `fun w => ∑' i, b i * w ^ n i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hFd : DifferentiableOn ℂ F (ball 0 r)`. Introduce `w hw`. Establish `hw' : ‖w‖ < r` using `by simpa using hw`. Take `⟨s, hws, hsr⟩` from `exists_between hw'`. Establish `hs0 : 0 ≤ s` using `le_trans (norm_nonneg w) hws.le`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : DifferentiableOn ℂ F (ball 0 s)`. Use `Complex.differentiableOn_tsum_of_summable_norm (u := fun i => c i * s ^ n i) (hc s hs0 hsr) (fun i => ?_) isOpen_ball (fun i v hv => ?_)` and prove the remaining obligations. Conclude with `((differentiable_const _).mul (differentiable_id.pow _)).differentiableOn`. Use `(hbound i v).trans ?_` and prove the remaining obligations. Establish `hv' : ‖v‖ < s` using `by simpa using hv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hci : 0 ≤ c i` using `(norm_nonneg _).trans (hbc i)`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (norm_nonneg v) hv'.le _) hci`. Conclude with `(hd.differentiableAt (isOpen_ball.mem_nhds (by simpa using hws))).differentiableWithinAt`. Establish `hFa : AnalyticOnNhd ℂ F (ball 0 r)` using `hFd.analyticOnNhd isOpen_ball`. Establish `hRa : AnalyticOnNhd ℂ R (ball 0 r)` using `hR.analyticOnNhd isOpen_ball`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfreq : ∃ᶠ w in 𝓝[≠] (0:ℂ), F w = R w`. Apply `Eventually.frequently` to reduce the goal to its premises. Establish `h1 : ∀ᶠ w in 𝓝 (0:ℂ), w ∈ ball (0:ℂ) ε` using `isOpen_ball.mem_nhds (mem_ball_self hε)`. Use `filter_upwards [nhdsWithin_le_nhds h1, self_mem_nhdsWithin] with w hw hw0`. Establish `hw0' : 0 < ‖w‖` using `norm_pos_iff.mpr hw0`.
-
-Establish `hwε : ‖w‖ < ε` using `by simpa using hw`. Conclude with `(hnear w hw0' hwε).tsum_eq`. Establish `heq` using `hFa.eqOn_of_preconnected_of_frequently_eq hRa (convex_ball (0:ℂ) r).isPreconnected (mem_ball_self hr) hfreq`. Establish `hzb : z ∈ ball (0:ℂ) r` using `by simpa using hz`. Rewrite using `[← heq hzb]`.
-
-Conclude with `(hsum z hz).hasSum`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_of_dominated_of_eq_near_zero {ι : Type} (b : ι → ℂ) (c : ι → ℝ) (n : ι → ℕ)
     (R : ℂ → ℂ) (r ε : ℝ)
@@ -68,7 +64,7 @@ theorem hasSum_of_dominated_of_eq_near_zero {ι : Type} (b : ι → ℂ) (c : ι
   exact (hsum z hz).hasSum
 
 /- English proof (translation)
-Introduce `b c n R r ε h1 h2 h3 h4 h5` and use `hasSum_of_dominated_of_eq_near_zero b c n R r ε h1 h2 h3 h4 h5`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasSum_of_dominated_of_eq_near_zero' : ∀ {ι : Type} (b : ι → ℂ) (c : ι → ℝ) (n : ι → ℕ) (R : ℂ → ℂ) (r ε : ℝ), (∀ i, ‖b i‖ ≤ c i) →
     (∀ x : ℝ, 0 ≤ x → x < r → Summable (fun i => c i * x ^ n i)) → 0 < ε →

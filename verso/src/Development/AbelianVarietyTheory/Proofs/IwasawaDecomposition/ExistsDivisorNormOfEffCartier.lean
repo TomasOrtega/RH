@@ -12,13 +12,13 @@ open scoped ContDiff
 namespace GlobalTheory.ShFam
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `EffCartierData.exists_idealSheaf_eq hC`. Take `⟨φ, hφ⟩` from `Weight.exists_isSmooth_of_isProjOver hp R D.lb D.isLB_lb`. Use `CxPts.compactSpace σ hp` as an intermediate fact. Establish `hs` using `secVal_mem (p := p) (σ := σ) D.canonical`. Establish `hc : Continuous (φ.nsq (secVal p σ D.canonical))` using `hφ.continuous_nsq ⟨hs, fun i => R.holoOn_ev _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨M, hM⟩` from `(isCompact_range hc).bddAbove`. Establish `hM' : ∀ y, φ.nsq (secVal p σ D.canonical) y ≤ Real.exp M` using `fun y => (hM ⟨y, rfl⟩).trans (by linarith [Real.add_one_le_exp M])`. Establish `h0 : ∀ y, 0 ≤ φ.nsq (secVal p σ D.canonical) y * Real.exp (-M)` using `fun y => mul_nonneg (φ.nsq_nonneg _ y) (Real.exp_pos _).le`. Use `⟨fun y => √(φ.nsq (secVal p σ D.canonical) y * Real.exp (-M)), fun y => ⟨Real.sqrt_nonneg _, ?_⟩, fun y => ?_⟩` and prove the remaining obligations. Use `Real.sqrt_le_one.2 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Real.exp_neg, ← div_eq_mul_inv]`. Conclude with `(div_le_one (Real.exp_pos _)).2 (hM' y)`. Take `⟨i, hi⟩` from `D.exists_mem (y.1 (IsLocalRing.closedPoint ℂ))`. Take `⟨V, hy, hV⟩` from `EffCartierData.exists_affine_le hi`. Use `⟨V, _, fun z => φ.φ i z + M, mem_ptsIn.2 hy, hD ▸ D.ideal_idealSheaf V i hV, fun j => ((hφ i).mono (ptsIn_mono hV) j).add contDiffOn_const, fun z hz => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.sq_sqrt (h0 z), φ.nsq_eq hs (i := i) (ptsIn_mono hV hz), ev_res hV hz, neg_add, Real.exp_add, _root_.mul_assoc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_isDivNorm_of_isProjOver {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {d : ℕ}
     (R : AnRead p σ d) (C : Closeds Y) (hp : IsProjOver p)
@@ -48,7 +48,7 @@ theorem exists_isDivNorm_of_isProjOver {k : Type} [CommRing k] {Y : Scheme.{0}} 
     rfl
 
 /- English proof (translation)
-The claim follows from `exists_isDivNorm_of_isProjOver _ C hp hC`.
+A detailed English derivation is pending.
 -/
 theorem exists_isDivNorm (k : Type) [Field k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (d : ℕ) [SmoothOfRelativeDimension d p]
     (σ : k →+* ℂ) (C : Closeds Y) (hp : IsProjOver p)

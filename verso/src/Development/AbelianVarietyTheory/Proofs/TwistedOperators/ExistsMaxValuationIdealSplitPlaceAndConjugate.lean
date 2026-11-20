@@ -12,19 +12,17 @@ noncomputable section
 namespace GlobalTheory.SplitIdealMax
 
 /- English proof (translation)
-Establish `hfg : (D.host.AA : Submodule (𝓞 D.host.E) D.host.E).FG` using `FractionalIdeal.fg_of_isUnit _ (Ne.isUnit (GlobalTheory.SplitHomLattice.ideal_ne_zero D))`. Take `⟨s, hs⟩` from `hfg`. Establish `hne : s.Nonempty`. Rewrite using `[Finset.nonempty_iff_ne_empty]`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `hs` using `[Finset.coe_empty, Submodule.span_empty]`. Conclude with `GlobalTheory.SplitHomLattice.ideal_ne_zero D (FractionalIdeal.coeToSubmodule_eq_bot.1 hs.symm)`. Take `⟨a₀, ha₀, hmax⟩` from `s.exists_max_image (fun a => Valued.v (g a)) hne`. Establish `hle : ∀ a ∈ (D.host.AA : Submodule (𝓞 D.host.E) D.host.E), Valued.v (g a) ≤ Valued.v (g a₀)`. Introduce `a ha`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha` using `[← hs]`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem a ha => exact hmax a ha`. Consider the case `zero => simp only [map_zero, zero_le]`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Valuation.map_add_le _ hx hy`. Consider the case `smul o x _ hx`. Rewrite using `[show o • x = (o : D.host.E) * x from rfl, map_mul, Valuation.map_mul]`. Conclude with `(mul_le_of_le_one_left' (hg o)).trans hx`. Establish `hmem : a₀ ∈ D.host.AA` using `by show a₀ ∈ (D.host.AA : Submodule (𝓞 D.host.E) D.host.E)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hs]`. Conclude with `Submodule.subset_span ha₀`. Establish `h0 : a₀ ≠ 0`. Introduce and unpack `rfl`. Apply `GlobalTheory.SplitHomLattice.ideal_ne_zero D` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[FractionalIdeal.eq_zero_iff]`. Introduce `a ha`. Use `hle a ha` as an intermediate fact. Rewrite `this` using `[map_zero, map_zero, le_zero_iff, map_eq_zero]`. Conclude with `(map_eq_zero g).1 this`.
-
-Conclude with `⟨a₀, hmem, h0, fun a' ha' => hle a' ha'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_max_of_int (D : D7) {v : FinPl D} (g : D.host.E →+* Fv D.host.F v)
     (hg : ∀ o : 𝓞 D.host.E, Valued.v (g (o : D.host.E)) ≤ 1) :
@@ -62,7 +60,7 @@ theorem exists_max_of_int (D : D7) {v : FinPl D} (g : D.host.E →+* Fv D.host.F
   exact ⟨a₀, hmem, h0, fun a' ha' => hle a' ha'⟩
 
 /- English proof (translation)
-The claim follows from `(o.2).map (starRingEnd D.host.E).toIntAlgHom`.
+A detailed English derivation is pending.
 -/
 theorem star_int (D : D7) (o : 𝓞 D.host.E) : IsIntegral ℤ (star (o : D.host.E)) :=
   (o.2).map (starRingEnd D.host.E).toIntAlgHom
@@ -71,7 +69,7 @@ end GlobalTheory.SplitIdealMax
 
 open GlobalTheory.SplitIdealMax in
 /- English proof (translation)
-Introduce `D v φ _ _`. Use `⟨exists_max_of_int D (GlobalTheory.PlaceRed.rdQh φ) fun o => GlobalTheory.PlaceRed.rdQ_int φ o, exists_max_of_int D ((GlobalTheory.PlaceRed.rdQh φ).comp (starRingEnd D.host.E)) fun o => GlobalTheory.PlaceRed.rdQ_int φ ⟨star (o : D.host.E), star_int D o⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem GlobalTheory.SplitIdealMax.exists_max_both : ∀ (D : D7) (v : FinPl D) (φ : SplitProj D v) (e : AE D), IsIdemOf φ e → (∃ a : D.host.E, a ∈ D.host.AA ∧ a ≠ 0 ∧ ∀ a' : D.host.E, a' ∈ D.host.AA → Valued.v (rdQ φ a') ≤ Valued.v (rdQ φ a)) ∧ (∃ a : D.host.E, a ∈ D.host.AA ∧ a ≠ 0 ∧ ∀ a' : D.host.E, a' ∈ D.host.AA → Valued.v (rdQ φ (star a')) ≤ Valued.v (rdQ φ (star a))) := by
   intro D v φ _ _

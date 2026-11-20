@@ -10,7 +10,7 @@ namespace UpperTheory.Esk
 namespace KernelSumBound
 
 /- English proof (translation)
-Unfold `kap`. Use `split_ifs with h`. Conclude with `div_nonneg (mul_nonneg (by norm_num) h.le) (by positivity)`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem kap_nonneg (z w : P) : 0 ≤ kap z w := by
   unfold kap
@@ -19,7 +19,7 @@ theorem kap_nonneg (z w : P) : 0 ≤ kap z w := by
   · exact le_rfl
 
 /- English proof (translation)
-Unfold `Kap`. Conclude with `Finset.prod_nonneg fun v _ => Real.rpow_nonneg (kap_nonneg _ _) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Kap_nonneg {I : Type} [Fintype I] (k : I → ℕ) (z w : X I) : 0 ≤ Kap k z w := by
   unfold Kap
@@ -28,13 +28,11 @@ theorem Kap_nonneg {I : Type} [Fintype I] (k : I → ℕ) (z w : X I) : 0 ≤ Ka
 variable {F I Gf ι : Type} [Field F] [Group Gf] [Fintype I] [Fintype ι]
 
 /- English proof (translation)
-Establish `hpt : ∀ γ : PG F, ‖D.kk k a γ y‖ₑ ≤ ∑ i, Set.indicator {γ : PG F | γ • y.1 = ((D.rep y.1 * a i : Gf) : Gf ⧸ D.H)} (fun γ => ENNReal.ofReal C₀ * ENNReal.ofReal (Kap k y.2 (γ • y.2 : D.Xs))) γ`. Introduce `γ`. Distinguish the cases in `h0 : D.Te a γ.out (D.rep y.1) = 0`. Establish `hz : D.kk k a γ y = 0`. Simplify using `only [Dat.kk, Dat.kt, h0, zero_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hz, enorm_zero]`. Conclude with `zero_le`. Take `⟨i, hi⟩` from `hsupp γ y.1 h0`. Combine the equalities or inequalities in the displayed calculation. Establish `hsub : ∀ i : ι, ∑' γ : PG F, Set.indicator {γ : PG F | γ • y.1 = ((D.rep y.1 * a i : Gf) : Gf ⧸ D.H)} (fun γ => ENNReal.ofReal C₀ * ENNReal.ofReal (Kap k y.2 (γ • y.2 : D.Xs))) γ ≤ ENNReal.ofReal C₀ * ENNReal.ofReal B`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[← tsum_subtype, ENNReal.tsum_mul_left]`. Use `gcongr`. Conclude with `hB ((D.rep y.1 * a i : Gf) : Gf ⧸ D.H)`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bound (D : Dat F I Gf) (k : I → ℕ) (a : ι → Gf) (C₀ : ℝ)
     (hk : ∀ (γ : PG F) (y : D.Y), ‖D.kk k a γ y‖ ≤ C₀ * Kap k y.2 (γ • y.2 : D.Xs))
@@ -89,13 +87,13 @@ end KernelSumBound
 end UpperTheory.Esk
 
 /- English proof (translation)
-Introduce `h0c h0d hks F I Gf ι _ _ _ _ D k a hyp`. Take `⟨-, -, -, ⟨C₀, hC₀⟩, hsupp, -⟩` from `h0c F I Gf ι D k a hyp`. Take `⟨c₀, hc₀, hmink⟩` from `hyp.ax.mink`. Take `⟨C, hC⟩` from `hks F I Gf D hyp.ax k hyp.four c₀ hc₀`. Take `⟨-, -, -, -, -, -, -, -, hT, -, -⟩` from `h0d F I Gf D hyp.ax`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ T : ℝ, ∀ y ∈ D.abelian₂ T, ∑' γ : UpperTheory.Esk.PG F, ‖D.kk k a γ y‖ₑ ≤ Fintype.card ι * (ENNReal.ofReal C₀ * ENNReal.ofReal (max C 0 * (1 + T)))`. Introduce `T y hy`. Take `⟨s, hs, hcs⟩` from `hmink y.2 (D.rep y.1)`. Establish `hpos : 0 < D.HtY s y` using `lt_of_lt_of_le hc₀ hcs`. Establish `hle : D.HtY s y ≤ T` using `hy s hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `UpperTheory.Esk.KernelSumBound.bound D k a C₀ hC₀ hsupp y (max C 0 * (1 + T)) fun ω' => ?_` and prove the remaining obligations. Use `(hC y s hs hcs ω' y.2).trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Conclude with `mul_le_mul (le_max_left C 0) (by linarith) (by linarith) (le_max_right C 0)`. Use `⟨fun y => ?_, fun T => ⟨Fintype.card ι * (C₀.toNNReal * (max C 0 * (1 + T)).toNNReal), fun y hy => ?_⟩⟩` and prove the remaining obligations. Take `⟨T₀, hT₀⟩` from `hT y`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfin : ∑' γ : UpperTheory.Esk.PG F, ‖D.kk k a γ y‖ₑ ≠ ⊤` using `ne_top_of_le_ne_top (ENNReal.mul_ne_top (ENNReal.natCast_ne_top _) (ENNReal.mul_ne_top ENNReal.ofReal_ne_top ENNReal.ofReal_ne_top)) (key T₀ y (hT₀ T₀ le_rfl))`. Conclude with `(ENNReal.summable_toReal hfin).congr fun γ => toReal_enorm _`. Use `(key T y hy).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[ENNReal.coe_mul, ENNReal.coe_mul, ENNReal.coe_natCast]`. Apply the tactic sequence `all_goals rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Esk.kernel_sum_bounded_proof : UpperTheory.Esk.KernelTermsInvariantBounded → UpperTheory.Esk.E0d → UpperTheory.Esk.KapSum → UpperTheory.Esk.E2 := by
   intro h0c h0d hks F I Gf ι _ _ _ _ D k a hyp

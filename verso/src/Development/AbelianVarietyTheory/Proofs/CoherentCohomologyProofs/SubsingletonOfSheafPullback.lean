@@ -18,7 +18,7 @@ section Restriction
 variable {X Y : TopCat.{u}} {j : Y ⟶ X} (hj : IsOpenEmbedding j)
 
 /- English proof (translation)
-Establish `h₁ : PreservesFiniteLimits (TopCat.Sheaf.pullback AddCommGrpCat.{u} j)` using `Functor.sheafPullbackConstruction.preservesFiniteLimits (Opens.map j) AddCommGrpCat.{u} _ _`. Establish `h₂ : PreservesFiniteLimits (hj.sheafPullback AddCommGrpCat.{u})` using `preservesFiniteLimits_of_natIso (hj.sheafPullbackIso _)`. Establish `h₃ : PreservesFiniteColimits (hj.sheafPullback AddCommGrpCat.{u})` using `preservesFiniteColimits_of_natIso (hj.sheafPullbackIso _)`. Conclude with `hS.map_of_exact _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma shortExact_map_sheafPullback {S : ShortComplex (X.Sheaf AddCommGrpCat.{u})}
     (hS : S.ShortExact) [(hj.sheafPullback AddCommGrpCat.{u}).PreservesZeroMorphisms] :
@@ -32,9 +32,9 @@ lemma shortExact_map_sheafPullback {S : ShortComplex (X.Sheaf AddCommGrpCat.{u})
   exact hS.map_of_exact _
 
 /- English proof (translation)
-Use `haveI : (hj.sheafPullback AddCommGrpCat.{u}).PreservesZeroMorphisms := ⟨fun _ _ ↦ rfl⟩`. Proceed by induction on `n generalizing F with`. Consider the case `zero`. Establish `hS` using `Flasque.injectiveShortComplex_shortExact F`. Conclude with `SheafLES.subsingleton₁_one_of_sections_surjective.{u} hS _ (SheafLES.sections_surjective_of_subsingleton.{u} (shortExact_map_sheafPullback hj hS) V h) (Flasque.subsingleton_H'_of_isFlasque _ 0 _)`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `succ n ih`. Establish `hS` using `Flasque.injectiveShortComplex_shortExact F`. Establish `hI : (Flasque.injectiveShortComplex F).X₂.IsFlasque` using `inferInstance`. Establish `hI' : ((hj.sheafPullback AddCommGrpCat.{u}).obj (Flasque.injectiveShortComplex F).X₂).IsFlasque` using `⟨fun _ ↦ hI.epi _⟩`. Conclude with `SheafLES.subsingleton₁.{u} hS (n + 1) _ (ih _ (SheafLES.subsingleton₃.{u} (shortExact_map_sheafPullback hj hS) (n + 1) V (Flasque.subsingleton_H'_of_isFlasque _ (hF := hI') n V) h)) (Flasque.subsingleton_H'_of_isFlasque _ (n + 1) _)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma subsingleton_of_sheafPullback (V : Opens Y) (n : ℕ) (F : X.Sheaf AddCommGrpCat.{u})
     (h : Subsingleton (Sheaf.H'.{u} ((hj.sheafPullback AddCommGrpCat.{u}).obj F) (n + 1) V)) :
@@ -61,7 +61,7 @@ end Restriction
 variable {X Y : Scheme.{u}}
 
 /- English proof (translation)
-The claim follows from `subsingleton_of_sheafPullback j.isOpenEmbedding V n ((toAbSheaf X).obj F) h`.
+A detailed English derivation is pending.
 -/
 lemma subsingleton_of_restrict (j : Y ⟶ X) [IsOpenImmersion j] (F : X.Modules) (V : Y.Opens)
     (n : ℕ) (h : Subsingleton (cohOn (F.restrict j) V (n + 1))) :
@@ -75,7 +75,7 @@ abbrev toInterModule (F : X.Modules) (W : X.Opens) : F ⟶ interModule F W :=
   (Scheme.Modules.restrictAdjunction W.ι).unit.app F
 
 /- English proof (translation)
-The claim follows from `haveI : IsIso ((Kempf.toInter AddCommGrpCat.{u} W).app ((toAbSheaf X).obj (interModule F W))) := Kempf.isIso_toInter_app_pushforward (A := AddCommGrpCat.{u}) W.ι.base W (fun y ↦ y.2) ((toAbSheaf W).obj (F.restrict W.ι)) Kempf.map_eq_zero_of_map_toInter_eq_zero.{u} ((toAbSheaf X). …`.
+A detailed English derivation is pending.
 -/
 lemma map_toInterModule_eq_zero (F : X.Modules) (W V : X.Opens) (n : ℕ) (α : cohOn F V n)
     (h : SheafLES.map.{u} ((Kempf.toInter AddCommGrpCat.{u} W).app ((toAbSheaf X).obj F)) n V
@@ -87,9 +87,9 @@ lemma map_toInterModule_eq_zero (F : X.Modules) (W V : X.Opens) (n : ℕ) (α : 
   Kempf.map_eq_zero_of_map_toInter_eq_zero.{u} ((toAbSheaf X).map (toInterModule F W)) h
 
 /- English proof (translation)
-Use `⟨fun {Z} a b hab ↦ ?_⟩` and prove the remaining obligations. Use `Scheme.Modules.hom_ext _ _ fun U ↦ ?_` and prove the remaining obligations. Use extensionality with `s`. Use `QCoh.section_eq_of_cover F (fun i ↦ (W i).ι ''ᵁ ((W i).ι ⁻¹ᵁ U)) (fun i ↦ (W i).ι.image_preimage_le U) (fun x hx ↦ ?_) _ _ fun i ↦ ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (hW (Set.mem_univ x))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `Opens.mem_iSup.2 ⟨i, ⟨x, hi⟩, hx, rfl⟩`. Establish `h : a ≫ toInterModule F (W i) = b ≫ toInterModule F (W i)`. Simplify using `using hab =≫ Pi.π _ i`. Conclude with `congr(($h).app U s)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma mono_lift_toInterModule (F : X.Modules) {ι : Type u} [Finite ι] (W : ι → X.Opens)
     (hW : ⊤ ≤ iSup W) : Mono (Pi.lift fun i ↦ toInterModule F (W i)) := by
@@ -105,15 +105,13 @@ lemma mono_lift_toInterModule (F : X.Modules) {ι : Type u} [Finite ι] (W : ι 
     exact congr(($h).app U s)
 
 /- English proof (translation)
-Use `subsingleton_of_forall_eq 0 fun α ↦ ?_` and prove the remaining obligations. Take `⟨𝔘, h𝔘, hfin, hsup, h0⟩` from `Kempf.exists_finite_cover_map_toInter_eq_zero.{u} (X := X) (𝔅 := X.affineOpens) X.isBasis_affineOpens (fun B hB B' hB' ↦ IsAffineOpen.inf hB hB') ((toAbSheaf X).obj F) ⊤ (isAffineOpen_top X).isCompact (Nat.le_add_left 1 n) (fun q hq hqn B hB ↦ ih q hq hqn F B hB) (cohOn.toH' F ⊤ …`. Use `haveI : Finite 𝔘 := hfin`. Use `haveI (W : 𝔘) : IsAffine W.1 := h𝔘 W.2`. Set `φ : F ⟶ ∏ᶜ (fun W : 𝔘 ↦ interModule F W.1)` to `Pi.lift fun W ↦ toInterModule F W.1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Mono φ := mono_lift_toInterModule F (fun W : 𝔘 ↦ W.1) (by`. Rewrite using `[← sSup_eq_iSup', hsup])`. Establish `hα : cohOn.map ℤ φ ⊤ (n + 1) α = 0`. Apply `(cohOn.piEquiv ℤ ⊤ (n + 1) _).injective` to reduce the goal to its premises. Use extensionality with `W`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[cohOn.piEquiv_apply, cohOn.map_map, map_zero, Pi.zero_apply, Pi.lift_π]`. Conclude with `map_toInterModule_eq_zero F W.1 ⊤ (n + 1) α (h0 W.1 W.2)`. Establish `hS : (ShortComplex.mk φ (cokernel.π φ) (cokernel.condition φ)).ShortExact` using `{ exact := ShortComplex.exact_cokernel φ }`. Establish `hT` using `SheafLES.shortExact_map_toAbSheaf hS`. Establish `hinj : Function.Injective (SheafLES.map.{u} ((toAbSheaf X).map φ) (n + 1) ⊤)`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the cases of `n with`. Consider the case `zero`. Conclude with `SheafLES.map_f_one_injective_of_sections_surjective.{u} hT ⊤ (QCoh.surjective_cokernel_π_app φ (isAffineOpen_top X))`. Consider the case `succ n`. Use `SheafLES.map_f_injective_of_surjective.{u} hT (n + 1) ⊤ fun y ↦ ⟨0, ?_⟩` and prove the remaining obligations.
-
-Conclude with `@Subsingleton.elim _ (ih (n + 1) n.succ_pos (by omega) (cokernel φ) ⊤ (isAffineOpen_top X)) _ _`. Conclude with `(cohOn.toH' F ⊤ (n + 1)).injective (hinj (hα.trans (by`. Rewrite using `[map_zero]`. Conclude with `(map_zero _).symm)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma subsingleton_top [IsAffine X] (n : ℕ)
     (ih : ∀ q, 0 < q → q < n + 1 → ∀ (G : X.Modules) [G.IsQuasicoherent] (U : X.Opens),
@@ -155,9 +153,9 @@ end AffineVanishing
 open AffineVanishing
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on generalizing X with`. Consider the case `_ n ih`. Take `⟨n, rfl⟩` from `Nat.exists_eq_add_one_of_ne_zero hn.ne'`. Use `haveI : IsAffine U := hU`. Establish `h` using `subsingleton_of_restrict U.ι F ⊤ n (subsingleton_top n (fun q hq hqn G _ V hV ↦ ih q hqn G hV hq) (F.restrict U.ι))`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[Scheme.Opens.ι_image_top]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem cohOn.subsingleton_of_isAffineOpen {X : Scheme.{u}} (F : X.Modules) [F.IsQuasicoherent]
     {U : X.Opens} (hU : IsAffineOpen U) {n : ℕ} (hn : 0 < n) : Subsingleton (cohOn F U n) := by
@@ -170,7 +168,7 @@ theorem cohOn.subsingleton_of_isAffineOpen {X : Scheme.{u}} (F : X.Modules) [F.I
     rwa [Scheme.Opens.ι_image_top] at h
 
 /- English proof (translation)
-The claim follows from `cohOn.subsingleton_of_isAffineOpen F (isAffineOpen_top X) hn`.
+A detailed English derivation is pending.
 -/
 theorem coh.subsingleton_of_isAffine {X : Scheme.{u}} [IsAffine X] (F : X.Modules)
     [F.IsQuasicoherent] {n : ℕ} (hn : 0 < n) : Subsingleton (coh F n) :=

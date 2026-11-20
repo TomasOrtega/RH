@@ -12,9 +12,9 @@ open ReciprocityTheory.AnForm.M (FinHolAtlas LocPot IsPotential IsSection logNor
 variable {D : ℕ} {X : Type*} [TopologicalSpace X]
 
 /- English proof (translation)
-Use `set c := A.chart j`. Establish `hmem : c z ∈ c.target ∩ c.symm ⁻¹' U` using `⟨c.map_source hzj, by simpa [c.left_inv hzj] using hz⟩`. Establish `h1 : ContinuousAt (f ∘ c.symm) (c z)` using `hf.continuousAt ((c.isOpen_inter_preimage_symm hU).mem_nhds hmem)`. Establish `h2 : ContinuousAt (f ∘ c.symm ∘ c) z` using `h1.comp (c.continuousAt hzj)`. Use `h2.congr ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [c.open_source.mem_nhds hzj] with y hy`. Simplify using `[c.left_inv hy]`.
+A detailed English derivation is pending.
 -/
 theorem continuousAt_of_chart {β : Type*} [TopologicalSpace β] (A : FinHolAtlas D X) {f : X → β}
     {U : Set X} (hU : IsOpen U) {z : X} (hz : z ∈ U) (j : Fin A.n) (hzj : z ∈ (A.chart j).source)
@@ -30,7 +30,7 @@ theorem continuousAt_of_chart {β : Type*} [TopologicalSpace β] (A : FinHolAtla
   simp [c.left_inv hy]
 
 /- English proof (translation)
-Use `filter_upwards [(L.isOpen_U y).mem_nhds (L.mem_U y)] with z hz`. Conclude with `hs.2 z y z ⟨L.mem_U z, hz⟩`.
+A detailed English derivation is pending.
 -/
 theorem normSec_eventuallyEq {A : FinHolAtlas D X} {L : LocPot X} {s : X → X → ℂ}
     (hs : IsSection A L s) (y : X) :
@@ -39,9 +39,9 @@ theorem normSec_eventuallyEq {A : FinHolAtlas D X} {L : LocPot X} {s : X → X �
   exact hs.2 z y z ⟨L.mem_U z, hz⟩
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun y => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `A.cover y`. Establish `h : ContinuousAt (fun z => ‖s y z‖ * Real.exp (-L.φ y z)) y`. Use `continuousAt_of_chart A (L.isOpen_U y) (L.mem_U y) j hj ?_` and prove the remaining obligations. Establish `h1` using `(hs.1 y j).continuousOn`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `(hL.1 y j).continuousOn`. Conclude with `h1.norm.mul (Real.continuous_exp.comp_continuousOn h2.neg)`. Conclude with `h.congr (normSec_eventuallyEq hs y).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_normSec {A : FinHolAtlas D X} {L : LocPot X} {s : X → X → ℂ}
     (hL : IsPotential A L) (hs : IsSection A L s) :
@@ -56,7 +56,7 @@ theorem continuous_normSec {A : FinHolAtlas D X} {L : LocPot X} {s : X → X →
   exact h.congr (normSec_eventuallyEq hs y).symm
 
 /- English proof (translation)
-Establish `h : secOpen s = (fun z => ‖s z z‖ * Real.exp (-L.φ z z)) ⁻¹' {0}ᶜ`. Use extensionality with `y`. Simplify using `[secOpen, Real.exp_ne_zero]`. Rewrite using `[h]`. Conclude with `(continuous_normSec hL hs).isOpen_preimage _ isOpen_compl_singleton`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_secOpen {A : FinHolAtlas D X} {L : LocPot X} {s : X → X → ℂ}
     (hL : IsPotential A L) (hs : IsSection A L s) : IsOpen (secOpen s) := by
@@ -67,7 +67,7 @@ theorem isOpen_secOpen {A : FinHolAtlas D X} {L : LocPot X} {s : X → X → ℂ
   exact (continuous_normSec hL hs).isOpen_preimage _ isOpen_compl_singleton
 
 /- English proof (translation)
-Use `continuousOn_const.sub (continuousOn_const.mul ((continuous_normSec hL hs).continuousOn.log fun y hy => ?_))` and prove the remaining obligations. Conclude with `mul_ne_zero (norm_ne_zero_iff.2 hy) (Real.exp_ne_zero _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuousOn_rSec {A : FinHolAtlas D X} {L : LocPot X} {s : X → X → ℂ}
     (hL : IsPotential A L) (hs : IsSection A L s) : ContinuousOn (rSec L s) (secOpen s) := by
@@ -76,7 +76,7 @@ theorem continuousOn_rSec {A : FinHolAtlas D X} {L : LocPot X} {s : X → X → 
   exact mul_ne_zero (norm_ne_zero_iff.2 hy) (Real.exp_ne_zero _)
 
 /- English proof (translation)
-Establish `h : logNormSec L s y ≤ 0` using `Real.log_nonpos (mul_nonneg (norm_nonneg _) (Real.exp_pos _).le) (hle y)`. Unfold `rSec`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exp_one_le_rSec {L : LocPot X} {s : X → X → ℂ}
     (hle : ∀ y, ‖s y y‖ * Real.exp (-L.φ y y) ≤ 1) (y : X) : Real.exp 1 ≤ rSec L s y := by
@@ -86,7 +86,7 @@ theorem exp_one_le_rSec {L : LocPot X} {s : X → X → ℂ}
   linarith
 
 /- English proof (translation)
-Introduce `X _ _ _ D A Om L s hL hs hd hle C₁ hC₁`. Take `⟨CE, hCE⟩` from `h₁ D A Om L s hL hs hd hle C₁ hC₁`. Use `⟨shellConst D * CE, fun u hu => ?_⟩` and prove the remaining obligations. Conclude with `h₂ D A (secOpen s) (rSec L s) Om.pot u (isOpen_secOpen hL hs) (continuousOn_rSec hL hs) (fun y _ => exp_one_le_rSec hle y) Om.isPot (fun i => (hu i).smooth) (fun i => (hu i).nonneg) CE (hCE u hu)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem LemmaETailLog.proof (h₁ : LemmaETailMass.Statement) (h₂ : TailLogOfMass.Statement) :
     LemmaETailLog.Statement := by

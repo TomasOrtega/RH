@@ -7,7 +7,7 @@ open scoped Matrix
 open GlobalTheory.UPel.HT
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.UPel.HT.Unif.exists_unifAt) | (exact GlobalTheory.UPel.HT.Unif.exists_unifAt) | (intros; apply GlobalTheory.UPel.HT.Unif.exists_unifAt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_complexUniformisation_harrisTaylor : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (σ : R →+* ℂ) (ρ : D.O →+* Matrix (Fin D.g) (Fin D.g) ℂ) (o : Obj b N (spMap σ)) h hL, 0 < N → N.Coprime p → b.IsType σ ρ → ∃ D' t Q e, D.Cls N D' t ∧ UnifAt (o.fam h hL) σ ρ N D' t Q (𝟙 _) e := by
   first | (exact @GlobalTheory.UPel.HT.Unif.exists_unifAt) | (exact GlobalTheory.UPel.HT.Unif.exists_unifAt) | (intros; apply GlobalTheory.UPel.HT.Unif.exists_unifAt <;> assumption)

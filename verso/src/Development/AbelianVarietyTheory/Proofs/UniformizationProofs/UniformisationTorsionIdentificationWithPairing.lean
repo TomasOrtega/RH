@@ -23,9 +23,9 @@ open GlobalTheory.UT
 namespace GlobalTheory.TorsionIso
 
 /- English proof (translation)
-Establish `h : ∀ z : T ⟶ A, translPt A z = snd T A * (fst T A ≫ z)` using `fun z => by`. Rewrite using `[mul_comm]`. Both sides reduce to the same expression. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[translT]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [translT, Category.assoc, lift_snd, h, MonObj.comp_mul, lift_fst_assoc, _root_.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem translT_comp {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] {T : Over S} (x y : T ⟶ A) :
     translT A x ≫ translT A y = translT A (x * y) := by
@@ -36,19 +36,17 @@ theorem translT_comp {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] {
   · simp only [translT, Category.assoc, lift_snd, h, MonObj.comp_mul, lift_fst_assoc, _root_.mul_assoc]
 
 /- English proof (translation)
-Introduce `hL R _ _ _ I hI D A G _ _ hG U F _ _ _ k hk`. Establish `hqk` using `GlobalTheory.T.inducesFrobeniusOnSections_translation_iff_image hL R I hI D A G hG U F k hk`. Establish `hcomp` using `GlobalTheory.T.indAt_comp_equiv_unique_id hL R I hI D A G hG U F k hk`. Establish `huniq` using `GlobalTheory.TorsionImage.qkToAkU_unique hL.1 hL.2.1 R I hI D A G hG U F k hk`. Establish `hinj` using `GlobalTheory.TorsionMapInj.qkToAk_injective hL.1 hL.2.1 R I hI D A G hG U F k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : ∀ p : QkPt D.toPre F k, ∃ x, QkToAkU U.toUnifPre F k p x` using `fun p => by`. Take `⟨x, hx⟩` from `GlobalTheory.T.exists_inducedTranslation_frobeniusOnSections hL R I hI D A G hG U F k hk p`. Conclude with `⟨x, (hqk p x).1 (hx 1 k le_rfl (mul_one k).symm p (one_smul _ _).symm rfl)⟩`. Use `choose f hf using hex`. Establish `hwd : ∀ p p', QkPt.Equiv D.toPre F p p' → f p = f p'` using `fun p p' h => huniq p' _ _ ((hqk _ _).1 ((hcomp p p' p' _ (𝟙 _) ((hqk _ _).2 (hf p))).2.1 h)) (hf p')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow : ∀ p, f p ^ k = 1` using `fun p => by`. Take `⟨w, hw⟩` from `U.ext`. Conclude with `(hf p w hw).1`. Use `⟨f, fun p x => ⟨fun h => huniq p _ _ h (hf p), fun h => h ▸ hf p⟩, ?_, fun p p' => ⟨fun h => hinj p p' (f p) (hf p) (h ▸ hf p'), hwd p p'⟩, ?_, fun p p' z => GlobalTheory.T.weilQkIs_iff_commutatorPairing_torsion hL R I hI D A G hG U F k hk p p' _ _ (hf p) (hf p') z⟩` and prove the remaining obligations. Use `haveI : CharZero (FractionRing R) := inferInstance haveI : CharZero F := charZero_of_injective_algebraMap (algebraMap (FractionRing R) F).injective`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `(hL.1.mulN _ A k hk).2.2.2.2 F (jFK (R := R) F) (Nat.cast_ne_zero.2 (by omega))`. Establish `hQ` using `GlobalTheory.T.card_quotient_kTorsion_pairs hL R I hI D F k hk`. Establish `hd` using `GlobalTheory.T.unif_g_eq_rank_add_g hL R I hI D A G hG U`. Set `φ : Quot (QkPt.Equiv D.toPre F (k` to `k)) → {x : TFK (R := R) F ⟶ A.A // x ^ k = 1} := Quot.lift (fun p => ⟨f p, hpow p⟩) (fun p p' h => Subtype.ext (hwd p p' h))`. Establish `hφ : Function.Injective φ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨p⟩ ⟨p'⟩ h`. Establish `h' : f p = f p'` using `congrArg Subtype.val h`. Conclude with `Quot.sound (hinj p p' (f p) (hf p) (h' ▸ hf p'))`. Use `haveI : Finite {x : TFK (R := R) F ⟶ A.A // x ^ k = 1} := Nat.finite_of_card_ne_zero (by rw [hA]; positivity)`. Establish `hb : Function.Bijective φ` using `hφ.bijective_of_nat_card_le (by rw [hA, hQ, hd])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨⟨p⟩, hp⟩` from `hb.2 ⟨x, hx⟩`. Conclude with `⟨p, congrArg Subtype.val hp⟩`. Introduce `p p' p'' h`. Use `(hcomp p p' p'' _ _ ((hqk _ _).2 (hf p))).1 ((hqk _ _).2 (hf p')) h` as an intermediate fact.
-
-Rewrite `this` using `[translT_comp]`. Conclude with `huniq p'' _ _ (hf p'') ((hqk _ _).1 this)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsion_eq : LL → AllUF fun {R} _ _ {I} {D} {A} {G} _ _ U F _ _ => ∀ (k : ℕ), 1 ≤ k → ∃ f, Tors U.toUnifPre F k f := by
   intro hL R _ _ _ I hI D A G _ _ hG U F _ _ _ k hk

@@ -18,11 +18,11 @@ private def unitBall (p : ℕ) [Fact p.Prime] : Subring (PadicAlgCl p) where
   neg_mem' := by simp
 
 /- English proof (translation)
-Introduce `hd`. Establish `hnum : ¬ (p : ℤ) ∣ q.num`. Introduce `hn`. Establish `h1 : p ∣ q.num.natAbs` using `Int.natCast_dvd.mp hn`. Establish `h2` using `Nat.dvd_gcd h1 hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[Nat.Coprime.gcd_eq_one q.reduced]`. Conclude with `hp.out.one_lt.ne' (Nat.dvd_one.mp h2)`. Establish `hn1 : ‖(q.num : ℚ_[p])‖ = 1` using `le_antisymm (Padic.norm_int_le_one _) (not_lt.mp fun hlt => hnum (Padic.norm_intCast_lt_one_iff.mp hlt))`. Establish `hd1 : ‖(q.den : ℚ_[p])‖ < 1` using `Padic.norm_natCast_lt_one_iff.mpr hd`. Establish `heq : (q : ℚ_[p]) * q.den = q.num` using `by exact_mod_cast Rat.mul_den_eq_num q`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn` using `congrArg norm heq`. Rewrite `hn` using `[norm_mul, hn1]`. Use polynomial arithmetic with `[norm_nonneg (q.den : ℚ_[p]), norm_nonneg (q : ℚ_[p])]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem den_of_norm {p : ℕ} [hp : Fact p.Prime] (q : ℚ) (h : ‖(q : ℚ_[p])‖ ≤ 1) :
     ¬ p ∣ q.den := by
@@ -43,17 +43,17 @@ private theorem den_of_norm {p : ℕ} [hp : Fact p.Prime] (q : ℚ) (h : ‖(q :
   nlinarith [norm_nonneg (q.den : ℚ_[p]), norm_nonneg (q : ℚ_[p])]
 
 /- English proof (translation)
-Establish `hx : IsIntegral ℚ x` using `Algebra.IsIntegral.isIntegral x`. Use `set P := (minpoly ℚ x).map (algebraMap ℚ (PadicAlgCl p)) with hP`. Establish `hPm : P.Monic` using `(minpoly.monic hx).map _`. Establish `hroot : ∀ r ∈ P.roots, ‖r‖ ≤ 1`. Introduce `r hr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hr' : r ∈ (minpoly ℚ x).rootSet (PadicAlgCl p)`. Rewrite using `[Polynomial.mem_rootSet]`. Use `⟨minpoly.ne_zero hx, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map]`. Conclude with `(Polynomial.mem_roots hPm.ne_zero).mp hr`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hr'` using `[← Algebra.IsAlgebraic.range_eval_eq_rootSet_minpoly]`. Take `⟨ψ, rfl⟩` from `hr'`. Conclude with `h ψ.toRingHom`. Establish `hprod : (P.roots.map fun a => Polynomial.X - Polynomial.C a).prod = P` using `Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq hPm IsAlgClosed.card_roots_eq_natDegree`. Establish `hlift : P ∈ Polynomial.lifts (unitBall p).subtype`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hprod]`. Use `Subsemiring.multiset_prod_mem _ _ ?_` and prove the remaining obligations. Introduce `f hf`. Take `⟨a, ha, rfl⟩` from `Multiset.mem_map.mp hf`. Conclude with `⟨Polynomial.X - Polynomial.C ⟨a, hroot a ha⟩, by simp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩` from `(Polynomial.lifts_iff_coeff_lifts P).mp hlift i`. Establish `hn : ‖P.coeff i‖ ≤ 1`. Rewrite using `[← hy]`. Conclude with `y.2`. Rewrite `hn` using `[hP, Polynomial.coeff_map]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `den_of_norm` to reduce the goal to its premises. Establish `hc : algebraMap ℚ (PadicAlgCl p) ((minpoly ℚ x).coeff i) = algebraMap ℚ_[p] (PadicAlgCl p) (((minpoly ℚ x).coeff i : ℚ) : ℚ_[p])`. Simplify using `only [eq_ratCast, map_ratCast]`. Rewrite `hn` using `[hc]`. Conclude with `(PadicAlgCl.norm_extends p _).symm.trans_le hn`.
+A detailed English derivation is pending.
 -/
 private theorem coeff_den {p : ℕ} [Fact p.Prime] {F : Type} [Field F] [NumberField F] (x : F)
     (h : ∀ τ : F →+* PadicAlgCl p, ‖τ x‖ ≤ 1) (i : ℕ) : ¬ p ∣ ((minpoly ℚ x).coeff i).den := by
@@ -91,21 +91,19 @@ private theorem coeff_den {p : ℕ} [Fact p.Prime] {F : Type} [Field F] [NumberF
   exact (PadicAlgCl.norm_extends p _).symm.trans_le hn
 
 /- English proof (translation)
-Establish `hx : IsIntegral ℚ x` using `Algebra.IsIntegral.isIntegral x`. Use `set P := minpoly ℚ x with hP`. Use `set M : ℕ := ∏ i ∈ Finset.range (P.natDegree + 1), (P.coeff i).den with hM`. Establish `hMcop : M.Coprime p` using `Nat.Coprime.prod_left fun i _ => ((Nat.Prime.coprime_iff_not_dvd (Fact.out : p.Prime)).mpr (h i)).symm`. Establish `hQ : P.scaleRoots (M : ℚ) ∈ Polynomial.lifts (Int.castRingHom ℚ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `i`. Rewrite using `[Polynomial.coeff_scaleRoots]`. Distinguish the cases in `hi : i ≤ P.natDegree`. Break down `hi.lt_or_eq with hlt | heq` into its components or cases.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩ : (P.coeff i).den ∣ M` from `Finset.dvd_prod_of_mem _ (Finset.mem_range.mpr (by omega))`. Establish `hc : P.coeff i * M = (P.coeff i).num * k`. Rewrite using `[hk]`. Use `push_cast`. Rewrite using `[← _root_.mul_assoc, Rat.mul_den_eq_num]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpow : (M : ℚ) ^ (P.natDegree - i) = M * M ^ (P.natDegree - i - 1)`. Rewrite using `[← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Use `⟨(P.coeff i).num * k * M ^ (P.natDegree - i - 1), ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hpow, ← _root_.mul_assoc, hc]`. Simplify using the standard rewrite rules. Substitute `heq` using the available equality. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.sub_self, pow_zero, _root_.mul_one, map_one]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `(minpoly.monic hx).leadingCoeff.symm`. Use `⟨0, ?_⟩` and prove the remaining obligations. Simplify using `[Polynomial.coeff_eq_zero_of_natDegree_lt (not_le.mp hi)]`. Establish `hmon : (P.scaleRoots (M : ℚ)).Monic` using `(Polynomial.monic_scaleRoots_iff _).mpr (minpoly.monic hx)`. Take `⟨Q, hQmap, -, hQm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hQ hmon`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hint : IsIntegral ℤ ((M : F) * x)`. Use `⟨Q, hQm, ?_⟩` and prove the remaining obligations. Establish `h0` using `Polynomial.scaleRoots_aeval_eq_zero (r := (M : ℚ)) (minpoly.aeval ℚ x)`. Establish `hcast : Int.castRingHom ℚ = algebraMap ℤ ℚ` using `Subsingleton.elim _ _`. Rewrite `h0` using `[← hP, ← hQmap, hcast, Polynomial.aeval_map_algebraMap, map_natCast]`.
-
-Rewrite using `[← Polynomial.aeval_def]`. Conclude with `h0`. Conclude with `⟨M, ⟨(M : F) * x, hint⟩, hMcop, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem integral_multiple_coprime {p : ℕ} [Fact p.Prime] {F : Type} [Field F] [NumberField F] (x : F)
     (h : ∀ i, ¬ p ∣ ((minpoly ℚ x).coeff i).den) :
@@ -153,9 +151,9 @@ private theorem integral_multiple_coprime {p : ℕ} [Fact p.Prime] {F : Type} [F
   exact ⟨M, ⟨(M : F) * x, hint⟩, hMcop, rfl⟩
 
 /- English proof (translation)
-Introduce `hE p _ G x hx`. Apply `integral_multiple_coprime` to reduce the goal to its premises. Apply `coeff_den` to reduce the goal to its premises. Introduce `τ`. Take `⟨w, σ, h | h⟩` from `hE p G τ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h x]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h x]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem UpperTheory.Gal.W2.fInt_of :
     UpperTheory.Gal.W2.EmbAll → UpperTheory.Gal.W2.FInt := by

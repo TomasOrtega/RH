@@ -10,9 +10,9 @@ open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
 /- English proof (translation)
-Introduce `E _ _ _ n μ _ π V h w B`. Prove the components needed by the constructor for the conclusion. Introduce `hB`. Take `⟨B', rfl⟩` from `(sSatUnit E n μ w V B hB).1`. Conclude with `⟨B', rfl, (satIff E n μ π V h w B').2 ((tsphVec E n μ w V h.summand B').2 hB)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨B', rfl, hB⟩`. Conclude with `(tsphVec E n μ w V h.summand B').1 ((satIff E n μ π V h w B').1 hB)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Dp.sSatIff :
     UpperTheory.ConvolutionTheory.Dp.SSatIff := by

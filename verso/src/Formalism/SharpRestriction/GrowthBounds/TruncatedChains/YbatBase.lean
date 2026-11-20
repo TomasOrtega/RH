@@ -16,7 +16,7 @@ variable {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
 def resOps {m : ℕ} (E : GLOps n K V) (φ : Fin m → Fin n) : GLOps m K V := fun i j => E (φ i) (φ j)
 
 /- English proof (translation)
-Simplify using `only [weightSp, Submodule.mem_iInf, LinearMap.mem_ker] at hx ⊢`. Introduce `i`. Conclude with `hx (φ i)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem res_mem {m : ℕ} (E : GLOps n K V) (φ : Fin m → Fin n) (ν : Fin n → ℤ) (x : V) (hx : x ∈ weightSp E ν) :
     x ∈ weightSp (resOps E φ) (ν ∘ φ) := by
@@ -25,9 +25,9 @@ theorem res_mem {m : ℕ} (E : GLOps n K V) (φ : Fin m → Fin n) (ν : Fin n �
   exact hx (φ i)
 
 /- English proof (translation)
-Use `⟨fun a b c d => ?_, fun x => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hE.1 (φ a) (φ b) (φ c) (φ d)`. Simplify `h` using `only [resOps, hφ.eq_iff]`. Take `⟨W, hW, hx, hst⟩` from `hE.2.1 x`. Conclude with `⟨W, hW, hx, fun a b y hy => hst (φ a) (φ b) y hy⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[eq_top_iff, ← hE.2.2]`. Conclude with `iSup_le fun mu => le_iSup_of_le (mu ∘ φ) fun x hx => res_mem E φ mu x hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_rep {m : ℕ} {E : GLOps n K V} (hE : IsGLRep E) (φ : Fin m → Fin n) (hφ : Function.Injective φ) :
     IsGLRep (resOps E φ) := by
@@ -42,29 +42,27 @@ theorem res_rep {m : ℕ} {E : GLOps n K V} (hE : IsGLRep E) (φ : Fin m → Fin
 end
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ n E hE a b c hab hac hbc ν s t hs ht T hT x hx`. Establish `hs' : (s : ℤ) = ν a - ν b + 1` using `by push_cast at hs; linarith`. Establish `ht' : (t : ℤ) = ν b - ν c + 1` using `by push_cast at ht; linarith`. Establish `hu1 : ((s + t : ℕ) : ℤ) - (ν a - ν c) - 1 = (s : ℤ) - (ν a - ν b)` using `by push_cast; linarith`. Establish `hu2 : ((s + t : ℕ) : ℤ) - (ν a - ν c) - 1 = (t : ℤ) - (ν b - ν c)` using `by push_cast; linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsh` using `gl_rep_shifts_weights hE`. Establish `hx1 : pf E b c t T x ∈ weightSp E ν` using `pf_wt hsh ν b c t T x hx`. Establish `hx2 : pf E a c (s + t) T (pf E b c t T x) ∈ weightSp E ν` using `pf_wt hsh ν a c (s + t) T _ hx1`. Establish `hz1 : pf E a b s T x ∈ weightSp E ν` using `pf_wt hsh ν a b s T x hx`. Establish `hz2 : pf E a c (s + t) T (pf E a b s T x) ∈ weightSp E ν` using `pf_wt hsh ν a c (s + t) T _ hz1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLw : pf E a b s T (pf E a c (s + t) T (pf E b c t T x)) ∈ weightSp E ν` using `pf_wt hsh ν a b s T _ hx2`. Establish `hRw : pf E b c t T (pf E a c (s + t) T (pf E a b s T x)) ∈ weightSp E ν` using `pf_wt hsh ν b c t T _ hz2`. Establish `hL_ab : E a b (pf E a b s T (pf E a c (s + t) T (pf E b c t T x))) = 0` using `hK K V n E hE a b hab ν s hs' T hT _ hx2`. Establish `hL_bc : E b c (pf E a b s T (pf E a c (s + t) T (pf E b c t T x))) = 0`. Rewrite using `[hP K V n E hE a b c hab hac hbc ν s (s + t) hu1 T hT _ hx1, hK K V n E hE b c hbc ν t ht' T hT x hx, map_zero, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hR_bc : E b c (pf E b c t T (pf E a c (s + t) T (pf E a b s T x))) = 0` using `hK K V n E hE b c hbc ν t ht' T hT _ hz2`. Establish `hR_ab : E a b (pf E b c t T (pf E a c (s + t) T (pf E a b s T x))) = 0`. Rewrite using `[hP' K V n E hE a b c hab hac hbc ν t (s + t) hu2 T hT _ hz1, hK K V n E hE a b hab ν s hs' T hT x hx, map_zero, map_zero]`. Use `set Lv := pf E a b s T (pf E a c (s + t) T (pf E b c t T x)) with hLv`. Use `set Rv := pf E b c t T (pf E a c (s + t) T (pf E a b s T x)) with hRv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφ : Function.Injective ![a, b, c]`. Introduce `i j h`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all`. Establish `hE'` using `res_rep hE ![a, b, c] hφ`. Establish `hv' : Lv - Rv ∈ weightSp (resOps E ![a, b, c]) (ν ∘ ![a, b, c])` using `res_mem E ![a, b, c] ν _ (Submodule.sub_mem _ hLw hRw)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvab : E a b (Lv - Rv) = 0` using `by rw [map_sub, hL_ab, hR_ab, sub_zero]`. Establish `hvbc : E b c (Lv - Rv) = 0` using `by rw [map_sub, hL_bc, hR_bc, sub_zero]`. Establish `hvac : E a c (Lv - Rv) = 0`. Establish `h` using `hE.1 a b b c`. Rewrite `h` using `[if_pos rfl, if_neg hac.symm, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h, LinearMap.sub_apply, Module.End.mul_apply, Module.End.mul_apply, hvbc, hvab, map_zero, map_zero, sub_zero]`. Establish `hraise : ∀ i j : Fin 3, i < j → resOps E ![a, b, c] i j (Lv - Rv) = 0`. Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Apply the tactic sequence `all_goals first`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact absurd hij (by decide)`. Consider the case `exact hvab`. Consider the case `exact hvac`. Consider the case `exact hvbc`. Establish `hlow : ∀ (i j : Fin 3), j < i → ∀ (cc : ℕ) (y : V), pf E (![a, b, c] j) (![a, b, c] i) cc T y - y ∈ nMinus (resOps E ![a, b, c])`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j hji cc y`. Take `⟨w, hw⟩` from `pf_sub E (![a, b, c] j) (![a, b, c] i) cc T y`. Rewrite using `[← hw]`. Conclude with `lowering_operator_mem_nMinus (resOps E ![a, b, c]) hji w`. Establish `hLx : Lv - x ∈ nMinus (resOps E ![a, b, c])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Establish `e : Lv - x = (pf E a b s T (pf E a c (s + t) T (pf E b c t T x)) - pf E a c (s + t) T (pf E b c t T x)) + (pf E a c (s + t) T (pf E b c t T x) - pf E b c t T x) + (pf E b c t T x - x)`. Rewrite using `[hLv]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `add_mem (add_mem (hlow 1 0 (by decide) s _) (hlow 2 0 (by decide) (s + t) _)) (hlow 2 1 (by decide) t x)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Establish `hRx : Rv - x ∈ nMinus (resOps E ![a, b, c])`. Establish `e : Rv - x = (pf E b c t T (pf E a c (s + t) T (pf E a b s T x)) - pf E a c (s + t) T (pf E a b s T x)) + (pf E a c (s + t) T (pf E a b s T x) - pf E a b s T x) + (pf E a b s T x - x)`. Rewrite using `[hRv]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
-
-Conclude with `add_mem (add_mem (hlow 2 1 (by decide) t _) (hlow 2 0 (by decide) (s + t) _)) (hlow 1 0 (by decide) s x)`. Establish `hvn : Lv - Rv ∈ nMinus (resOps E ![a, b, c])`. Establish `h` using `Submodule.sub_mem _ hLx hRx`. Rewrite `h` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Conclude with `sub_eq_zero.mp (hwv_mem_nMinus_eq_zero D (resOps E ![a, b, c]) hE' (ν ∘ ![a, b, c]) (Lv - Rv) hv' hraise hvn)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ybat_base (D : Formalism.BasicNotions.D7) (hK : RestKill) (hP : RestPair) (hP' : RestPair') : YBat 0 0 := by
   intro K V _ _ _ _ _ n E hE a b c hab hac hbc ν s t hs ht T hT x hx

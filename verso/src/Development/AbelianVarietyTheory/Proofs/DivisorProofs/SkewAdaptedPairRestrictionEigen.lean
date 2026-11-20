@@ -13,9 +13,9 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.LagrUniqW
 
 /- English proof (translation)
-Introduce `_hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hA hP₁ l l' hl hl' h0 h1 hne`. Take `⟨L, hiso, hrank, hL⟩` from `GlobalTheory.T.skew_adapted_pair_restriction_theta F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hA hP₁`. Establish `hstd : IsStd B.ψ` using `hP.base.std`. Establish `key : ∀ m : Fn F n d →ₗ[ℂ] ℂ, (∀ u ∈ iso0 n H', ∀ Φ ∈ schA F (Fin n × Fin d), m (M.co.rho B.ψ u Φ) = m Φ) → (∀ z : Matrix (Fin n) (Fin d₁) (AE F E), (M₁.co.e z).1 = 0 → ∀ Φ ∈ schA F (Fin n × Fin d), m (M.co.rho B.ψ (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ) Φ) = …`. Introduce `m hm0 hm1 t w hw φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu, z, hz, heq⟩` from `hL t w hw`. Rewrite using `[heq, hm0 u hu _ (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hstd _ φ hφ), hm1 z hz φ hφ]`. Conclude with `GlobalTheory.T.adelicStoneVonNeumann_lagrangian_uniqueness F B.ψ hstd (Fin n × Fin d) L hiso hrank l hl l' hl' (key l (fun u hu Φ hΦ => (h0 u hu Φ hΦ).1) (fun z hz Φ hΦ => (h1 z hz Φ hΦ).1)) (key l' (fun u hu Φ hΦ => (h0 u hu Φ hΦ).2) (fun z hz Φ hΦ => (h1 z hz Φ hΦ).2)) hne`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

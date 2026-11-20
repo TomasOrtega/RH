@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.Gl2L2Integrality
 import Formalism.GL3MeanSquares.PrimeCountAsymptoticInProgressions
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PsiTail.psi_tail_bound | exact GlobalTheory.PsiTail.psi_tail_bound | (intros; apply GlobalTheory.PsiTail.psi_tail_bound <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.gl2a2_integral_bound_of_sums : Formalism.HermitianLattices.GL2a2.PartialSumIntegralBound := by
   first | exact @GlobalTheory.PsiTail.psi_tail_bound | exact GlobalTheory.PsiTail.psi_tail_bound | (intros; apply GlobalTheory.PsiTail.psi_tail_bound <;> assumption)

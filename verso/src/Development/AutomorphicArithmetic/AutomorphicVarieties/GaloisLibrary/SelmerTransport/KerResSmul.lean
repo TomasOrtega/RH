@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Imports
 open ReciprocityTheory.Gal UpperTheory.V.Base
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qi36.aux π H f hf h0`.
+A detailed English derivation is pending.
 -/
 private theorem aux {R Q M : Type} [CommRing R] [Group Q] [AddCommGroup M] [Module R M]
     (π : Representation R Q M) (H : Subgroup Q) (f : Q → M) (hf : ∀ g h, f (g * h) = f g + π g (f h))
@@ -12,13 +12,11 @@ private theorem aux {R Q M : Type} [CommRing R] [Group Q] [AddCommGroup M] [Modu
   _root_.UpperTheory.Reformulated.B.Qi36.aux π H f hf h0
 
 /- English proof (translation)
-Introduce `R G M _ _ _ _ _ _ _ _ _ _ ρ U' U h x hx`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨m, hm⟩` from `(resU_mk_eq_zero ρ h z).1 hx`. Take `⟨s, hs⟩` from `aux (ρ.comp U.subtype : Representation R U M) (U'.subgroupOf U) (fun u => z.1 u - (ρ u m - m)) (fun g k => by`. Establish `e : z.1 (g * k) = z.1 g + ρ g (z.1 k)` using `z.2.2 g k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show z.1 (g * k) - (ρ ((g : G) * k) m - m) = z.1 g - (ρ g m - m) + ρ g (z.1 k - (ρ k m - m))`. Rewrite using `[e, map_mul, Module.End.mul_apply, map_sub, map_sub]`. Use the proof step `abel)`. Use the proof step `(fun u hu => sub_eq_zero.2 (hm ⟨u.1, hu⟩))`. Establish `e0 : U'.relIndex U • (Submodule.Quotient.mk z : H1U ρ U) = Submodule.Quotient.mk (U'.relIndex U • z)` using `(map_nsmul (Submodule.mkQ _) _ z).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e0, Submodule.Quotient.mk_eq_zero]`. Use `(mem_coboundaries1 _ _).2 ⟨s + U'.relIndex U • m, fun g => ?_⟩` and prove the remaining obligations. Establish `e : U'.relIndex U • (z.1 g - (ρ g m - m)) = ρ g s - s` using `hs g`. Use `show U'.relIndex U • z.1 g = ρ g (s + U'.relIndex U • m) - (s + U'.relIndex U • m)`. Rewrite `e` using `[smul_sub, smul_sub, sub_eq_iff_eq_add]`.
-
-Rewrite using `[e, map_add, map_nsmul]`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Base.kerResSmul :
     ∀ (R G M : Type) [CommRing R] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup M] [Module R M]

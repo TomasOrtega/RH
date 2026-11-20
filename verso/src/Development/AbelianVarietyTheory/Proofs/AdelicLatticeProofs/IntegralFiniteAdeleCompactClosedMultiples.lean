@@ -11,14 +11,14 @@ namespace GlobalTheory.IntegralFinAdele
 variable (F : Type) [Field F] [NumberField F]
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (T2Space (RestrictedProduct (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) Filter.cofinite))`.
+A detailed English derivation is pending.
 -/
 theorem t2Space_finiteAdeleRing' : T2Space (FiniteAdeleRing (𝓞 F) F) :=
   inferInstanceAs (T2Space (RestrictedProduct (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F)
     (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) Filter.cofinite))
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap F (FiniteAdeleRing (𝓞 F) F)), FiniteAdeleRing.algebraMap_apply, map_natCast (algebraMap (𝓞 F) F)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natCast_apply (M : ℕ) (v : HeightOneSpectrum (𝓞 F)) :
     (M : FiniteAdeleRing (𝓞 F) F) v = ((algebraMap (𝓞 F) F (M : 𝓞 F) : F) : v.adicCompletion F) := by
@@ -32,7 +32,7 @@ theorem mul_apply' (a b : FiniteAdeleRing (𝓞 F) F) (v : HeightOneSpectrum (�
     (a * b) v = a v * b v := rfl
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero]`. Both sides reduce to the same expression. Consider the case `succ n ih => rw [pow_succ, pow_succ, mul_apply', ih]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem pow_apply' (a : FiniteAdeleRing (𝓞 F) F) (n : ℕ) (v : HeightOneSpectrum (𝓞 F)) :
     (a ^ n) v = a v ^ n := by
@@ -41,13 +41,11 @@ theorem pow_apply' (a : FiniteAdeleRing (𝓞 F) F) (n : ℕ) (v : HeightOneSpec
   | succ n ih => rw [pow_succ, pow_succ, mul_apply', ih]
 
 /- English proof (translation)
-Use `FiniteAdeleRing.ext F fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a v = 0`. Assume the negation of the conclusion as `h0`. Use `set N := Ideal.absNorm v.asIdeal with hN`. Establish `hNpos : 0 < N` using `Nat.pos_of_ne_zero (by`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot)`. Establish `hlt : Valued.v ((N : FiniteAdeleRing (𝓞 F) F) v) < 1`. Rewrite using `[natCast_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_lt_one_iff_mem]`. Conclude with `Ideal.absNorm_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hv0 : Valued.v (a v) ≠ 0` using `by simpa using h0`. Take `⟨n, hn⟩` from `exists_pow_lt₀ hlt (Units.mk0 _ hv0)`. Take `⟨c, hc, hac⟩` from `h (N ^ n) (pow_pos hNpos n)`. Establish `hc' : Valued.v (c v) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (hc v)`. Establish `: Valued.v (a v) ≤ Valued.v ((N : FiniteAdeleRing (𝓞 F) F) v) ^ n` using `by conv_lhs => rw [hac]`.
-
-Rewrite using `[mul_apply', Nat.cast_pow, pow_apply', map_mul, map_pow]`. Conclude with `mul_le_of_le_one_right' hc'`. Conclude with `absurd hn (not_lt.2 this)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_mul (a : FiniteAdeleRing (𝓞 F) F)
     (h : ∀ M : ℕ, 0 < M → ∃ c : FiniteAdeleRing (𝓞 F) F,
@@ -74,9 +72,9 @@ theorem eq_zero_of_forall_mul (a : FiniteAdeleRing (𝓞 F) F)
   exact absurd hn (not_lt.2 this)
 
 /- English proof (translation)
-Take `⟨x, b, hb, hab⟩` from `GlobalTheory.AdLat.exists_eq_algebraMap_add_nsmul F 1 one_pos a`. Use `haveI : Algebra.IsAlgebraic ℤ F := (IsFractionRing.comap_isAlgebraic_iff (A := ℤ) (K := ℚ) (C := F)).2 inferInstance`. Take `⟨m, y, hm, hmx⟩` from `IsAlgebraic.exists_nsmul_eq (𝓞 F) (Algebra.IsAlgebraic.isAlgebraic (R := ℤ) x)`. Use `⟨m, Nat.pos_of_ne_zero hm, fun v => ?_⟩` and prove the remaining obligations. Establish `h : (m : FiniteAdeleRing (𝓞 F) F) * a = algebraMap F (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 F) F y) + (m : FiniteAdeleRing (𝓞 F) F) * b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hab, ← hmx, one_smul, map_nsmul, nsmul_eq_mul, mul_add]`. Rewrite using `[h]`. Use `add_mem (HeightOneSpectrum.coe_mem_adicCompletionIntegers v y) (mul_mem ?_ (hb v))` and prove the remaining obligations. Conclude with `natCast_apply F m v ▸ HeightOneSpectrum.coe_mem_adicCompletionIntegers v (m : 𝓞 F)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_integral (a : FiniteAdeleRing (𝓞 F) F) :
     ∃ M : ℕ, 0 < M ∧ ∀ v, ((M : FiniteAdeleRing (𝓞 F) F) * a) v ∈
@@ -96,11 +94,11 @@ theorem exists_nat_mul_integral (a : FiniteAdeleRing (𝓞 F) F) :
   exact natCast_apply F m v ▸ HeightOneSpectrum.coe_mem_adicCompletionIntegers v (m : 𝓞 F)
 
 /- English proof (translation)
-Introduce `F _ _`. Use `⟨GlobalTheory.AdeleCocompact.isCompact_integral F, fun M _ => ?_, eq_zero_of_forall_mul F, fun x hx => ?_, exists_nat_mul_integral F, ⟨fun a ⟨n, hn⟩ => ?_⟩⟩` and prove the remaining obligations. Use `haveI := t2Space_finiteAdeleRing' F`. Establish `h` using `((GlobalTheory.AdeleCocompact.isCompact_integral F).image (continuous_const_mul (M : FiniteAdeleRing (𝓞 F) F))).isClosed`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Simplify using `only [Set.mem_image, Set.mem_setOf_eq, eq_comm]`. Take `⟨y, hy⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one F x fun v => by`. Use `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (hx v)` as an intermediate fact. Rewrite `this` using `[FiniteAdeleRing.algebraMap_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
 
-Conclude with `⟨y, hy.symm⟩`. Use `FiniteAdeleRing.ext F fun v => ?_` and prove the remaining obligations. Establish `: a v ^ n = 0` using `by rw [← pow_apply', hn]; rfl`. Conclude with `eq_zero_of_pow_eq_zero this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integral_finiteAdele_properties : ∀ (F : Type) [Field F] [NumberField F], IsCompact {a : FiniteAdeleRing (𝓞 F) F | (∀ v, (a : FiniteAdeleRing (𝓞 F) F) v ∈ HeightOneSpectrum.adicCompletionIntegers F v)} ∧ (∀ M : ℕ, 0 < M → IsClosed {a : FiniteAdeleRing (𝓞 F) F | ∃ c : FiniteAdeleRing (𝓞 F) F, (∀ v, (c : FiniteAdeleRing (𝓞 F) F) v ∈ HeightOneSpectrum.adicCompletionIntegers F v) ∧ a = (M : FiniteAdeleRing (𝓞 F) F) * c}) ∧ (∀ a : FiniteAdeleRing (𝓞 F) F, (∀ M : ℕ, 0 < M → ∃ c : FiniteAdeleRing (𝓞 F) F, (∀ v, (c : FiniteAdeleRing (𝓞 F) F) v ∈ HeightOneSpectrum.adicCompletionIntegers F v) ∧ a = (M : FiniteAdeleRing (𝓞 F) F) * c) → a = 0) ∧ (∀ x : F, (∀ v, (algebraMap F (FiniteAdeleRing (𝓞 F) F) x : FiniteAdeleRing (𝓞 F) F) v ∈ HeightOneSpectrum.adicCompletionIntegers F v) → ∃ y : 𝓞 F, x = y) ∧ (∀ a : FiniteAdeleRing (𝓞 F) F, ∃ M : ℕ, 0 < M ∧ (∀ v, (((M : FiniteAdeleRing (𝓞 F) F) * a) : FiniteAdeleRing (𝓞 F) F) v ∈ HeightOneSpectrum.adicCompletionIntegers F v)) ∧ IsReduced (FiniteAdeleRing (𝓞 F) F) := by
   intro F _ _

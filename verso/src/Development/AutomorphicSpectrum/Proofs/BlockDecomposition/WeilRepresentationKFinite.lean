@@ -24,15 +24,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.ThTot
 
 /- English proof (translation)
-Set `A : HSp D` to `Formalism.BasicNotions.Examples₂.posSpace (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral n`. Take `⟨ψ₀, μ', lam, κ, omh, hstd, hsk, hlam, hψeq, hchart, hdat, htr⟩` from `GlobalTheory.T.exists_weilDatum_doubled_of_schrodingerFormulas D A V ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω`. Take `⟨lam', hlam', -, l', hl', habs⟩` from `GlobalTheory.StdUnn.shift_char_realPar D ψ₀ hstd θ hθ μ' hsk`. Establish `hll : lam' = lam` using `(algebraMap D.host.F D.host.E).injective (hlam'.trans hlam.symm)`. Substitute `hll` using the available equality.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hl'' : HasRealPar ψ θ l'` using `hψeq ▸ hl'`. Establish `hleq : l = l'` using `GlobalTheory.T.archimedean_parameters_addChar_unique D ψ θ hθ l l' hl hl''`. Substitute `hleq` using the available equality. Take `⟨-, hsurj, -⟩` from `GlobalTheory.T.schrodingerTheta_eq_schwartzBruhat D ψ₀ hstd θ hθ A V μ 𝓕 hμ`. Take `⟨f, hf, hfΦ⟩` from `hsurj Φ.1 Φ.2`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s', hstd', hcomm⟩` from `GlobalTheory.T.exists_standardCartanInvolution_commute_compact D A μ' hsk κ hchart θ hθ`. Establish `hfock : IsFockVec ψ₀ θ (dblSp A) V s' s f` using `GlobalTheory.T.isFockVector_of_schrodinger_mem_fockSpace D ψ₀ hstd θ hθ A V μ 𝓕 hμ μ' hsk s' s hstd' hs l habs f hf (hfΦ ▸ hΦ)`. Take `⟨hth, N, hN⟩` from `hfock`. Establish `hk' : κ (κ.symm k) ∈ K D A.rank`. Rewrite using `[show κ (κ.symm k) = k from κ.apply_symm_apply k]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hk`. Establish `hfock' : IsFockVec ψ₀ θ (dblSp A) V s' s (omh (κ.symm k, 1) f)` using `⟨hdat.om_pres _ f hth, N, GlobalTheory.T.weilRep_preserves_fockDegree_of_commute_cartan D ψ₀ θ (dblSp A) V 1 χ⁻¹ omh s' s hdat hθ (κ.symm k) (hcomm _ hk') N f hth hN⟩`. Establish `hmem` using `GlobalTheory.T.schroedingerFunction_fockVector_polynomial_gaussian D ψ₀ hstd θ hθ A V μ 𝓕 hμ μ' hsk s' s hstd' hs l habs _ hfock'`. Establish `htrk` using `htr (κ.symm k) f hf Φ hfΦ.symm`. Rewrite `htrk` using `[show κ (κ.symm k) = k from κ.apply_symm_apply k]`.
-
-Conclude with `Eq.mpr (congrArg (fun φ : Mx D V.rank n → ℂ => φ ∈ fockA θ V n l s) htrk) hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weil_fock_mem (D : D7) (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ)
     (χ : (AE D)ˣ →* Circle) (hχ : IsHeckeChar D χ) (hr : ResEta D χ V.rank) (θ : InfFam D) (hθ : IsInfFam θ)
@@ -68,9 +66,9 @@ theorem weil_fock_mem (D : D7) (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F)
   exact Eq.mpr (congrArg (fun φ : Mx D V.rank n → ℂ => φ ∈ fockA θ V n l s) htrk) hmem
 
 /- English proof (translation)
-Introduce `D n V ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω l hl s hs Φ hΦ`. Establish `hfin` using `GlobalTheory.StdUnn.KFin.fock_kfinite D n V ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω l hl s hs Φ hΦ`. Use `set S := Submodule.span ℂ {Ψ : schwartzA θ V.rank n | ∃ k ∈ K D n, Ψ = ω k Φ} with hS`. Use `⟨S.map (schwartzA θ V.rank n).subtype, Module.Finite.map S _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hS, Submodule.map_span]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨Ψ, ⟨k, hk, rfl⟩, rfl⟩`. Conclude with `weil_fock_mem D n V ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω l hl s hs Φ hΦ k hk`. Introduce `k hk`. Conclude with `⟨ω k Φ, Submodule.subset_span ⟨k, hk, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem weilKFin : WeilKFin := by
   intro D n V ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω l hl s hs Φ hΦ

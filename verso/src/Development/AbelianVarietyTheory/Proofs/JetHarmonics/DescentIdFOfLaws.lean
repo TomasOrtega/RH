@@ -22,7 +22,7 @@ open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 namespace GlobalTheory.PowDescent
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `eq_of_heq h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem eq_famCast_of_heq {R : Type} [CommRing R] [IsDomain R] {Dp : DegPre R} {F : Type} [Field F]
     [Algebra (FractionRing R) F] {k k' : ℕ} (e : k = k') (r : Fam Dp F k') (s : Fam Dp F k) (h : HEq r s) :
@@ -31,7 +31,7 @@ theorem eq_famCast_of_heq {R : Type} [CommRing R] [IsDomain R] {Dp : DegPre R} {
   exact eq_of_heq h
 
 /- English proof (translation)
-Use `letI := H.starRing`. Introduce `a a' g g' k e`. Substitute `e` using the available equality. Conclude with `descent_one_generator hL hL2 hL4 hT V E H t P hP a a' g g'`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem descent_cast (hL : Laws) (hL2 : Laws2) (hL4 : Laws4) (hT : TwistBaseChangeStatement)
     (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V]
@@ -66,15 +66,15 @@ theorem descent_cast (hL : Laws) (hL2 : Laws2) (hL4 : Laws4) (hT : TwistBaseChan
   exact descent_one_generator hL hL2 hL4 hT V E H t P hP a a' g g'
 
 /- English proof (translation)
-Introduce `hL hL2 hL3 hL4 hL5 hT E _ _ _ H Dw l Xo c n`. Use `letI := H.starRing`. Introduce `T io y _ C P _ g g' hg hg' hne _ _ π π' hπ hπ' _ _ _ F _ _ _ _ _ _ v ϖ _ _ Q _ D' A' G' gr cm pD pA pG U' PU md oD' hx hoD oA' hoA θ θα hθ pb wb ζb xb tb₀ tb hxb hxba hwb hζb hfb hΦb hsb p w ζ x hw hζ hf hpx hxπ s₂ t₀ r hs₂ hΦ hr`. Take `⟨oA'', hoA'', t', P', e₁, e₂, e₃, e₄, e₅, e₆, e₇, e₈, e₉⟩` from `exists_pelUnif_of_unifPow hL hL2 hL4 hT T.V E H C.I.G P n D' A' G' pD pA pG U' PU oD' hx hoD`. Establish `hact : ∀ a, oA'.act a = oA''.act a` using `fun a => Fan.IsLimit.hom_ext pA.lim _ _ fun i => (hoA a i).trans (hoA'' a i).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxa : x ≫ oA''.act (star (star π)) = 1`. Use `Fan.IsLimit.hom_ext pA.lim _ _ fun i => ?_` and prove the remaining obligations. Use `pA.hom i` as an intermediate fact. Express the relevant statement in the definitionally equal form `(x ≫ oA''.act (star (star π))) ≫ pA.pr i = 1 ≫ pA.pr i`. Rewrite using `[star_star, Category.assoc, hoA'', hxπ, MonObj.one_comp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `htors : P'.TorsionIso` using `GlobalTheory.T.torsionIso_of_linear_uniformisation_triple ⟨hL, hL2, hL3, hL4, hL5⟩ (twistBCSpan_of hT) GlobalTheory.RatioVal.main (twisting_statements_of_laws hL hT).1 (GlobalTheory.UnitBallFree.main hL.globalFns hT) E H T.V (maximalIdeal T.V) ⟨inferInstance, inferInstance, infer …`. Rewrite `hxba` using `[hact]`. Simplify using `only [hact]`. Use `clear hoA hact hoA'' hxπ hx hoD PU pD pA pG`. Substitute `e₁ e₄ e₇` using the available equality.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `e₂`. Consider the cases of `e₃`. Consider the cases of `e₅`. Consider the cases of `e₆`. Consider the cases of `e₈`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `e₉`. Take `⟨θα₂, p₂, w₂, ζ₂, x₂, r₀, r₂, k₁, k₂, k₃, k₄, k₅, k₆, k₇, k₈, k₉⟩` from `descent_cast hL hL2 hL4 hT T.V E H t' P' htors (star π) (star π') g g' g' (one_mul g') hg.one_le hg'.one_le ((Nat.coprime_primes hg hg').2 hne) (by rw [star_star, _root_.mul_comm, hπ]) (by rw [star_star, _root_.mul_comm, hπ']) F θ θα hθ pb wb ζb xb tb₀ tb hxb hxba hwb hζb hfb hΦb …`. Conclude with `⟨θα₂, p₂, w₂, ζ₂, x₂, r₀, r₂, k₁, k₂, k₃, k₄, k₅, k₆, k₇, k₈, eq_famCast_of_heq _ _ _ k₉⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem descentIdF_of_laws :
     Laws → Laws2 → Laws3 → Laws4 → Laws5 → TwistBaseChangeStatement → DescentIdF := by

@@ -54,7 +54,7 @@ Both sides reduce to the same expression.
 @[simp] theorem piL_apply (X : Matrix (Fin N) (Fin (N + 1)) ℂ) : piL N X = piF X := rfl
 
 /- English proof (translation)
-Use extensionality with `i l`. Use `Fin.cases ?_ (fun m => ?_) i` and prove the remaining obligations. Simplify using `[Matrix.single_apply, (Fin.succ_ne_zero k).symm]`. Simplify using `[Matrix.single_apply, Fin.succ_inj]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem phiF_single (k : Fin N) (j : Fin (N + 1)) :
     phiF (Matrix.single k j (1 : ℂ)) = Matrix.single k.succ j 1 := by
@@ -64,21 +64,21 @@ theorem phiF_single (k : Fin N) (j : Fin (N + 1)) :
   · simp [Matrix.single_apply, Fin.succ_inj]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[piF, Matrix.single_apply, Fin.succ_inj]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem piF_single_succ (k : Fin N) (j : Fin N) :
     piF (Matrix.single k j.succ (1 : ℂ)) = Matrix.single k j 1 := by
   ext a b; simp [piF, Matrix.single_apply, Fin.succ_inj]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [piF, Matrix.single_apply, Matrix.zero_apply]`. Rewrite using `[if_neg]`. Introduce and unpack `⟨_, h⟩`. Conclude with `Fin.succ_ne_zero b h.symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem piF_single_zero (k : Fin N) : piF (Matrix.single k (0 : Fin (N + 1)) (1 : ℂ)) = 0 := by
   ext a b; simp only [piF, Matrix.single_apply, Matrix.zero_apply]
   rw [if_neg]; rintro ⟨_, h⟩; exact Fin.succ_ne_zero b h.symm
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_succ_row_zero, Finset.sum_eq_single 0]`. Simplify using `[h]`. Introduce `j _ hj`. Simplify using `[h, hj]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem det_first_row_expansion (A : Matrix (Fin (N + 1)) (Fin (N + 1)) ℂ) (a : ℂ) (h : ∀ j, A 0 j = if j = 0 then a else 0) :
     A.det = a * (A.submatrix Fin.succ Fin.succ).det := by
@@ -88,9 +88,9 @@ theorem det_first_row_expansion (A : Matrix (Fin (N + 1)) (Fin (N + 1)) ℂ) (a 
   · simp
 
 /- English proof (translation)
-Establish `hsub : (1 + phiF X + s • Matrix.single 0 0 1).submatrix Fin.succ Fin.succ = 1 + piF X`. Use extensionality with `k l`. Simplify using `[piF, Matrix.one_apply, Matrix.single_apply, Fin.succ_inj, Fin.succ_ne_zero]`. Introduce `h`. Conclude with `absurd h.symm (Fin.succ_ne_zero k)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[det_first_row_expansion _ (1 + s), hsub]`. Introduce `j`. Use `Fin.cases ?_ (fun m => ?_) j` and prove the remaining obligations. Simplify using `[Matrix.one_apply, Matrix.single_apply]`. Simplify using `[Matrix.one_apply, Matrix.single_apply, Fin.succ_ne_zero, (Fin.succ_ne_zero m).symm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_corner_perturbation (X : Matrix (Fin N) (Fin (N + 1)) ℂ) (s : ℂ) :
     (1 + phiF X + s • Matrix.single 0 0 1).det = (1 + s) * (1 + piF X).det := by
@@ -105,15 +105,15 @@ theorem det_corner_perturbation (X : Matrix (Fin N) (Fin (N + 1)) ℂ) (s : ℂ)
   · simp [Matrix.one_apply, Matrix.single_apply, Fin.succ_ne_zero, (Fin.succ_ne_zero m).symm]
 
 /- English proof (translation)
-Use `set A := 1 + phiF X + s • Matrix.single 0 c.succ (1 : ℂ) with hA`. Establish `hne : c.succ ≠ (0 : Fin (N + 1))` using `Fin.succ_ne_zero c`. Establish `hz : ∀ k : Fin N, ((0 : Fin (N + 1)) = k.succ) ↔ False` using `fun k => ⟨fun h => Fin.succ_ne_zero k h.symm, False.elim⟩`. Rewrite using `[← Matrix.det_updateCol_add_smul_self A hne (-s)]`. Rewrite using `[det_first_row_expansion _ 1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_mul]`. Use `congr 1`. Use extensionality with `k l`. Distinguish the cases in `hl : l = c`. Substitute `hl` using the available equality.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[A, Matrix.updateCol_apply, piF, colQ, Matrix.one_apply, Matrix.single_apply, Fin.succ_inj, Fin.succ_ne_zero, hz]`. Expand and normalize the polynomial expressions, which then agree. Establish `hl' : l.succ ≠ c.succ` using `fun h => hl (Fin.succ_inj.mp h)`. Simplify using `[A, Matrix.updateCol_apply, piF, colQ, Matrix.one_apply, Matrix.single_apply, Fin.succ_inj, hl, hl', Fin.succ_ne_zero, hz]`. Introduce `j`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : j = c.succ`. Substitute `hj` using the available equality. Simplify using `[A, Matrix.updateCol_apply, Matrix.one_apply, Matrix.single_apply, Fin.succ_ne_zero, hz]`. Break down `Fin.eq_zero_or_eq_succ j with rfl | ⟨m, rfl⟩` into its components or cases. Simplify using `[A, Matrix.updateCol_apply, Matrix.one_apply, Matrix.single_apply, hne.symm, hz]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hm : m ≠ c` using `fun h => hj (by rw [h])`. Simplify using `[A, Matrix.updateCol_apply, Matrix.one_apply, Matrix.single_apply, hm, Fin.succ_ne_zero, hz, Fin.succ_inj, Ne.symm hm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_column_perturbation (X : Matrix (Fin N) (Fin (N + 1)) ℂ) (s : ℂ) (c : Fin N) :
     (1 + phiF X + s • Matrix.single 0 c.succ 1).det = (1 + piF X - s • colQ X c).det := by

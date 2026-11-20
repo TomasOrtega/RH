@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.NL.CmpCris
 
 /- English proof (translation)
-Introduce `l _ K s LL h T hT`. Take `⟨h1, h2, -, h4⟩` from `cmp_iso D HW F Cm l K s LL h T hT`. Use `⟨fun x hx => ?_, h2, fun x k hk => h4 x k hk⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `(h1 x).1 hx`. Conclude with `⟨y, y.2, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem wachLattice_comparison_dcris (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) : P3 D HW F Cm := by

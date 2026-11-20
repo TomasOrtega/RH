@@ -8,13 +8,13 @@ import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
 namespace GlobalTheory.RootsOfUnityClose
 
 /- English proof (translation)
-Establish `hz1 : ‖z‖ ≤ 1`. Establish `h` using `IsUltrametricDist.norm_add_le_max (z - 1) 1`. Rewrite `h` using `[sub_add_cancel, norm_one]`. Conclude with `h.trans (max_le hz.le le_rfl)`. Proceed by induction on `n with`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ n ih`. Take `⟨h1, h2⟩` from `ih`. Prove the components needed by the constructor for the conclusion. Establish `e : z ^ (n + 1) - 1 = z * (z ^ n - 1) + (z - 1)` using `by ring`.
+Treat this case separately. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ hz)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) hz1).trans_lt h1`. Establish `e : (∑ i ∈ Finset.range (n + 1), z ^ i) - ((n + 1 : ℕ) : K) = ((∑ i ∈ Finset.range n, z ^ i) - (n : K)) + (z ^ n - 1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Finset.sum_range_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt h2 h1)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geom_sum_close {K : Type*} [NormedField K] [IsUltrametricDist K] {z : K}
     (hz : ‖z - 1‖ < 1) (n : ℕ) :
@@ -40,7 +40,7 @@ theorem geom_sum_close {K : Type*} [NormedField K] [IsUltrametricDist K] {z : K}
       exact (IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt h2 h1)
 
 /- English proof (translation)
-Establish `e : (m : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) (m : ℚ_[l])` using `by simp`. Rewrite using `[e, norm_algebraMap']`. Conclude with `Padic.norm_natCast_eq_one_iff.mpr ((Nat.Prime.coprime_iff_not_dvd Fact.out).mpr h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_natCast_eq_one {l : ℕ} [Fact l.Prime] {m : ℕ} (h : ¬ l ∣ m) :
     ‖(m : PadicAlgCl l)‖ = 1 := by
@@ -49,15 +49,13 @@ theorem norm_natCast_eq_one {l : ℕ} [Fact l.Prime] {m : ℕ} (h : ¬ l ∣ m) 
   exact Padic.norm_natCast_eq_one_iff.mpr ((Nat.Prime.coprime_iff_not_dvd Fact.out).mpr h)
 
 /- English proof (translation)
-Establish `hb1 : ‖b‖ = 1`. Establish `h : ‖b‖ ^ m = 1` using `by rw [← norm_pow, hb, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').mp h`. Establish `hb0 : b ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hb1` using `[h, norm_zero]`. Conclude with `zero_ne_one hb1`. Establish `hz : ‖a / b - 1‖ < 1`. Rewrite using `[div_sub_one hb0, norm_div, hb1, div_one]`. Conclude with `hab`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hzm : (a / b) ^ m = 1` using `by rw [div_pow, ha, hb, div_one]`. Assume the negation of the conclusion as `hne`. Establish `hne1 : a / b - 1 ≠ 0`. Rewrite using `[sub_ne_zero]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hne ((div_eq_one_iff_eq hb0).mp h)`. Establish `hs : (∑ i ∈ Finset.range m, (a / b) ^ i) = 0`. Establish `h` using `geom_sum_mul (a / b) m`. Rewrite `h` using `[hzm, sub_self]`. Conclude with `(mul_eq_zero.mp h).resolve_right hne1`.
-
-Establish `h` using `(geom_sum_close hz m).2`. Rewrite `h` using `[hs, zero_sub, norm_neg, norm_natCast_eq_one hl]`. Conclude with `lt_irrefl _ h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_pow_eq_one_of_norm_sub_lt_one {l : ℕ} [Fact l.Prime] {m : ℕ} (hm : 0 < m)
     (hl : ¬ l ∣ m) {a b : Formalism.BasicNotions.Loc.Om l} (ha : a ^ m = 1) (hb : b ^ m = 1)

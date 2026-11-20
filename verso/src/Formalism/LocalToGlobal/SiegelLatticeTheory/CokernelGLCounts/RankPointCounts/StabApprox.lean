@@ -15,7 +15,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-Break down `hM : (Zd.M p).split with _ | g` into its components or cases. Conclude with `target_L Zd u u' p hM w hL₁ hU₁ hZ hA₀ hB₀ hl hρ h`. Conclude with `target_G Zd u u' p hM w hL₁ hU₁ hZ hA₀ hB₀ hl hρ h`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem locTarget (Zd : LocDat D) (u u' : D.what₂.Word) (p : PlF D) (w : Point D.host.E (D.R.rS + 1))
     {Z₁ L₁ U₁ A₀ B₀ : PairVal.MatR D} (hL₁ : IsLo L₁) (hU₁ : IsUp U₁)
@@ -29,11 +29,11 @@ theorem locTarget (Zd : LocDat D) (u u' : D.what₂.Word) (p : PlF D) (w : Point
   · exact target_G Zd u u' p hM w hL₁ hU₁ hZ hA₀ hB₀ hl hρ h
 
 /- English proof (translation)
-Establish `e1 : (D.s.atP p).ιE ((uP p : ℚ) : D.host.E) = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((D.s.atP p).ιF ((uP p : ℚ) : D.host.F))`. Rewrite using `[← (D.s.atP p).compat, map_ratCast (algebraMap D.host.F D.host.E)]`. Establish `e2 : (D.s.atP p).ιE (((uP p : ℚ) : D.host.E)⁻¹) = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (((D.s.atP p).ιF ((uP p : ℚ) : D.host.F))⁻¹)`. Rewrite using `[← map_inv₀ (D.s.atP p).ιF, ← (D.s.atP p).compat, map_inv₀ (algebraMap D.host.F D.host.E), map_ratCast (algebraMap D.host.F D.host.E)]`. Establish `hy : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (yP Zd p) ∈ (D.s.atP p).O`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `yP`. Rewrite using `[map_mul, ← e1]`. Conclude with `(D.s.atP p).O.mul_mem (LocModel.LM.algebraMap_mem_O p hδ1) hu1`. Establish `hyi : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (yP Zd p)⁻¹ ∈ (D.s.atP p).O`. Unfold `yP`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv, map_mul, ← e2]`. Conclude with `(D.s.atP p).O.mul_mem (LocModel.LM.algebraMap_mem_O p hδ2) hu2`. Conclude with `⟨fun a => by unfold cf; rw [map_pow]; exact pow_mem hyi _, fun a => by unfold cfi; rw [map_pow]; exact pow_mem hy _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cf_int (Zd : LocDat D) (p : PlF D) (hδ1 : Zd.δ p ∈ 𝒪[(D.s.atP p).Fp])
     (hδ2 : (Zd.δ p)⁻¹ ∈ 𝒪[(D.s.atP p).Fp]) (hu1 : (D.s.atP p).ιE (uP p : D.host.E) ∈ (D.s.atP p).O)
@@ -59,21 +59,19 @@ theorem cf_int (Zd : LocDat D) (p : PlF D) (hδ1 : Zd.δ p ∈ 𝒪[(D.s.atP p).
     fun a => by unfold cfi; rw [map_pow]; exact pow_mem hy _⟩
 
 /- English proof (translation)
-Introduce `w Z₁ A₀ B₀ hAt hA₀ hB₀ hloc`. Take `⟨L₁, U₁, hL₁u, hU₁u, e₁⟩` from `hAt`. Establish `hL₁ : IsLo L₁` using `isLo_of_uni hL₁u`. Establish `hU₁ : IsUp U₁` using `isUp_of_uni hU₁u`. Rewrite `e₁` using `[zhatOM_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `choose l ρ hl hρ hlr using hloc`. Use `choose T c hc0 hT using fun p => locTarget Zd u u' p w hL₁ hU₁ e₁ hA₀ hB₀ (hl p) (hρ p) (hlr p)`. Establish `hE : ∀ᶠ p in Filter.cofinite, ∀ (k : Fin 8) (i j : Fin (D.R.rS + 1)), (D.s.atP p).ιE ((![A₀, B₀, L₁, L₁⁻¹, U₁, U₁⁻¹, Matrix.of fun i _ => pv w.1 i, Matrix.of fun i _ => (pv w.1 i)⁻¹] : Fin 8 → PairVal.MatR D) k i j) ∈ (D.s.atP p).O` using `Filter.eventually_all.2 fun k => Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => LocModel.LM.iotaIntegral_almost_all D _`. Establish `hG` using `(LocModel.good_cofinite Zd.δ Zd.M Zd.agree ∅).and hE`. Establish `hfin` using `Filter.eventually_cofinite.1 hG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose t ht1 ht2 using fun ij : Fin (D.R.rS + 1) × Fin (D.R.rS + 1) => sa_lat D.s.atP hfin.toFinset (fun p => T p ij.1 ij.2) c (fun p _ => hc0 p)`. Set `X' : PairVal.MatR D` to `Matrix.of fun i j => if Free (fσ w) i j then t (i, j) else (1 : PairVal.MatR D) i j`. Establish `hX'1 : ∀ i j, ¬ Free (fσ w) i j → X' i j = (1 : PairVal.MatR D) i j` using `fun i j h => by`. Simplify using `only [X', Matrix.of_apply, if_neg h]`. Establish `hX'2 : ∀ i j, Free (fσ w) i j → X' i j = t (i, j)` using `fun i j h => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [X', Matrix.of_apply, if_pos h]`. Establish `hX' : IsLo X'` using `⟨fun a => by rw [hX'1 a a (fun h => lt_irrefl a h.1), Matrix.one_apply_eq], fun a b hab => by rw [hX'1 a b (fun h => absurd h.1 (not_lt.2 hab.le)), Matrix.one_apply_ne hab.ne]⟩`. Establish `hpat : ∀ i j, fσ w j < fσ w i → X' i j = 0` using `fun i j hij => by`. Establish `hf : ¬ Free (fσ w) i j` using `fun h => absurd h.2 (not_lt.2 hij.le)`. Establish `hne : i ≠ j` using `fun e => by rw [e] at hij; exact lt_irrefl _ hij`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hX'1 i j hf, Matrix.one_apply_ne hne]`. Take `⟨hgX, hgY, hst⟩` from `glob_stab w hL₁ hU₁ e₁ hX' hpat`. Use `⟨gX L₁ X', gY w U₁ X', hgX, hgY, hst, fun p => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hp : p ∈ hfin.toFinset`. Conclude with `hT p X' hX' hpat fun i j hf => by rw [hX'2 i j hf]; exact ht1 (i, j) p hp`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgp : _ ∧ _` using `not_not.1 ((Set.Finite.mem_toFinset hfin).not.1 hp)`. Take `⟨⟨hM, ⟨hδ1, hδ2⟩, ⟨hu1, hu2⟩, -⟩, hEp⟩` from `hgp`. Take `⟨hcf, hcfi⟩` from `cf_int Zd p hδ1 hδ2 hu1 hu2`. Establish `hXi : ∀ i j, (D.s.atP p).ιE (X' i j) ∈ (D.s.atP p).O`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hf : Free (fσ w) i j`. Rewrite using `[hX'2 i j hf]`. Conclude with `ht2 (i, j) p hp`. Rewrite using `[hX'1 i j hf, Matrix.one_apply] split_ifs`. Rewrite using `[map_one]`.
-
-Conclude with `Subring.one_mem _`. Rewrite using `[map_zero]`. Conclude with `Subring.zero_mem _`. Conclude with `good_at Zd p hM w hL₁ hU₁ hA₀ hB₀ hX' hpat hcf hcfi (fun i j => hEp 0 i j) (fun i j => hEp 1 i j) (fun i j => hEp 2 i j) (fun i j => hEp 3 i j) (fun i j => hEp 4 i j) (fun i j => hEp 5 i j) (fun a => hEp 6 a a) (fun a => hEp 7 a a) hXi`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stabApprox (Zd : LocDat D) (u u' : D.what₂.Word) : Formalism.L2.SG.Pf.TupGlob.StabApprox Zd u u' := by
   intro w Z₁ A₀ B₀ hAt hA₀ hB₀ hloc

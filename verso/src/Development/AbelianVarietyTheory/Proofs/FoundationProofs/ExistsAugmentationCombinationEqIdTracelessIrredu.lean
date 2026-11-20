@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.Sl2Ad
 
 /- English proof (translation)
-Use `first`. Consider the case `exact ⟨fun v w => by simp only [RingHom.id_apply, form_apply]; ring⟩`. Consider the case `exact fun v w => by simp only [RingHom.id_apply, form_apply]; ring`. Consider the case `(intro v w; simp only [RingHom.id_apply, form_apply]; ring)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem form_isSymm {K : Type} [Field K] : (form (K := K)).IsSymm := by
   first
@@ -23,9 +23,9 @@ theorem form_isSymm {K : Type} [Field K] : (form (K := K)).IsSymm := by
   | (intro v w; simp only [RingHom.id_apply, form_apply]; ring)
 
 /- English proof (translation)
-Rewrite using `[← coord_conj_ofCoord, ← coord_conj_ofCoord, form_coord (by rw [trace_conj, trace_ofCoord]) (by rw [trace_conj, trace_ofCoord])]`. Use `conv_rhs => rw [← coord_ofCoord v, ← coord_ofCoord w, form_coord (trace_ofCoord v) (trace_ofCoord w)]`. Establish `: ((A : Matrix (Fin 2) (Fin 2) K) * ofCoord v * ((A⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K)) * ((A : Matrix (Fin 2) (Fin 2) K) * ofCoord w * ((A⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K)) = (A : Matrix (Fin 2) (Fin 2) K) * (ofCoord v * ofCoord w) * ((A⁻¹ : GL (Fin 2) K) …`. Establish `h : ((A⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) * (A : Matrix (Fin 2) (Fin 2) K) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc ((A⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K), h, Matrix.one_mul]`. Rewrite using `[this, trace_conj]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_ad {K : Type} [Field K] (A : GL (Fin 2) K) (v w : Fin 3 → K) :
     form (ad A *ᵥ v) (ad A *ᵥ w) = form v w := by
@@ -42,21 +42,21 @@ theorem form_ad {K : Type} [Field K] (A : GL (Fin 2) K) (v w : Fin 3 → K) :
   rw [this, trace_conj]
 
 /- English proof (translation)
-Rewrite using `[form, LinearMap.BilinForm.nondegenerate_toBilin'_iff_det_ne_zero]`. Simplify using `[Matrix.det_fin_three]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem form_nondegenerate {K : Type} [Field K] [CharZero K] : (form (K := K)).Nondegenerate := by
   rw [form, LinearMap.BilinForm.nondegenerate_toBilin'_iff_det_ne_zero]
   simp [Matrix.det_fin_three]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i; fin_cases i <;> simp [coord]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coord_smul_scalar {F K : Type} [Field F] [Field K] [Algebra F K] (a : F) (X : Matrix (Fin 2) (Fin 2) K) :
     coord (a • X) = a • coord X := by
   ext i; fin_cases i <;> simp [coord]
 
 /- English proof (translation)
-Apply the tactic sequence `ext j; fin_cases j <;> simp [coord, Matrix.sum_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coord_sum {K : Type} [Field K] {ι : Type} (s : Finset ι) (f : ι → Matrix (Fin 2) (Fin 2) K) :
     coord (∑ i ∈ s, f i) = ∑ i ∈ s, coord (f i) := by
@@ -67,29 +67,25 @@ end GlobalTheory.Sl2Ad
 open GlobalTheory.Sl2Ad in
 
 /- English proof (translation)
-Introduce `l _ c Γ _ r _ hirr`. Use `set S : Γ →* Matrix (Fin 3) (Fin 3) (Qbar l) := adHom.comp r with hS`. Establish `hSg : ∀ g, S g = ad (r g)` using `fun g => rfl`. Establish `h1` using `GlobalTheory.T.one_mem_span_sub_one_of_orthogonal_irreducible_three S form form_nondegenerate form_isSymm (fun g v w => form_ad _ v w) (fun v hv => GlobalTheory.T.forall_ad_invariant_eq_zero_of_isIrr r hirr v (fun g => by rw [← hSg]; exact hv g)) (fun y hy hy' => GlobalTheory.T.t …`. Take `⟨n, b, g, hg⟩` from `Submodule.mem_span_set'.mp h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose γ hγ using fun i => (g i).2`. Establish `hdet : (∑ i, b i • (S (γ i) - 1)).det ≠ 0`. Establish `: ∑ i, b i • (S (γ i) - 1) = 1` using `(Finset.sum_congr rfl fun i _ => by rw [← hγ i]).trans hg`. Rewrite using `[this, Matrix.det_one]`. Conclude with `one_ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha⟩` from `GlobalTheory.T.exists_nat_coeffs_det_sum_smul_ne_zero (fun i => S (γ i) - 1) b hdet`. Use `set J : Submodule ℚ_[l] (Matrix (Fin 3) (Fin 3) (Qbar l)) := Submodule.span ℚ_[l] (Set.range fun g => S g - 1) with hJ`. Establish `hmul : ∀ x ∈ J, ∀ y ∈ J, x * y ∈ J`. Introduce `x hx y hy`. Proceed by induction on `hx using Submodule.span_induction with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨h, rfl⟩` from `hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `: (S g - 1) * (S h - 1) = (S (g * h) - 1) - (S g - 1) - (S h - 1)`. Rewrite using `[map_mul]`. Use `noncomm_ring`. Rewrite using `[this]`. Conclude with `J.sub_mem (J.sub_mem (Submodule.subset_span ⟨_, rfl⟩) (Submodule.subset_span ⟨_, rfl⟩)) (Submodule.subset_span ⟨_, rfl⟩)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [mul_zero]`. Conclude with `J.zero_mem`. Consider the case `add y z _ _ hy hz => rw [mul_add]`. Conclude with `J.add_mem hy hz`. Consider the case `smul t y _ hy => rw [mul_smul_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `J.smul_mem t hy`. Consider the case `zero => rw [zero_mul]`. Conclude with `J.zero_mem`. Consider the case `add x z _ _ hx hz => rw [add_mul]`. Conclude with `J.add_mem hx hz`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul t x _ hx => rw [smul_mul_assoc]`. Conclude with `J.smul_mem t hx`. Establish `hT : (∑ i, (a i : Qbar l) • (S (γ i) - 1)) ∈ J`. Use `J.sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `J.nsmul_mem (Submodule.subset_span ⟨_, rfl⟩) _`. Establish `hone` using `GlobalTheory.T.one_mem_of_mul_mem_of_det_ne_zero J hmul _ hT ha`. Take `⟨n', a', g', hg'⟩` from `Submodule.mem_span_set'.mp hone`. Use `choose γ' hγ' using fun i => (g' i).2`. Use `⟨n', γ', a', fun X hX => ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htr : (∑ i, a' i • ((r (γ' i) : Matrix (Fin 2) (Fin 2) (Qbar l)) * X * ((r (γ' i))⁻¹ : GL (Fin 2) (Qbar l)) - X)).trace = 0`. Rewrite using `[Matrix.trace_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.trace_smul, Matrix.trace_sub, trace_conj, hX, sub_zero, smul_zero]`. Use `((ofCoord_coord hX).symm.trans ?_).trans (ofCoord_coord htr)` and prove the remaining obligations.
-
-Use `congr 1`. Rewrite using `[coord_sum]`. Establish `: ∀ i, coord (a' i • ((r (γ' i) : Matrix (Fin 2) (Fin 2) (Qbar l)) * X * (((r (γ' i))⁻¹ : GL (Fin 2) (Qbar l)) : Matrix (Fin 2) (Fin 2) (Qbar l)) - X)) = (a' i • (S (γ' i) - 1)) *ᵥ coord X`. Introduce `i`. Rewrite using `[coord_smul_scalar, show ((r (γ' i) : Matrix (Fin 2) (Fin 2) (Qbar l)) * X * (((r (γ' i))⁻¹ : GL (Fin 2) (Qbar l)) : Matrix (Fin 2) (Fin 2) (Qbar l)) - X) = (r (γ' i) : Matrix (Fin 2) (Fin 2) (Qbar l)) * X * (((r (γ' i))⁻¹ : GL (Fin 2) (Qbar l)) : Matrix (Fin 2) (Fin 2) (Qbar l)) …`.
-
-Rewrite using `[neg_one_smul, ← sub_eq_add_neg], coord_add, coord_conj _ hX, coord_smul, hSg, Matrix.smul_mulVec,`. Use the proof step `Matrix.sub_mulVec, Matrix.one_mulVec, neg_one_smul, ← sub_eq_add_neg]`. Repeatedly rewrite using `[this, ← Matrix.sum_mulVec]`. Establish `e : ∑ i, a' i • (S (γ' i) - 1) = 1` using `(Finset.sum_congr rfl fun i _ => by rw [← hγ' i]).trans hg'`. Rewrite using `[e, Matrix.one_mulVec]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Sl2Ad.augmentation_contains_one : ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) (Γ : Type) [Group Γ] (r : Γ →* GL (Fin 2) (Qbar l)), (∀ g i j, (r g : Matrix (Fin 2) (Fin 2) (Qbar l)) i j ∈ c.O) → IsIrr r → ∃ (n : ℕ) (γ : Fin n → Γ) (a : Fin n → ℚ_[l]), ∀ X : Matrix (Fin 2) (Fin 2) (Qbar l), X.trace = 0 → X = ∑ i, a i • ((r (γ i) : Matrix (Fin 2) (Fin 2) (Qbar l)) * X * ((r (γ i))⁻¹ : GL (Fin 2) (Qbar l)) - X) := by
   intro l _ c Γ _ r _ hirr

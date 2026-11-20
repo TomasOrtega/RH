@@ -12,9 +12,9 @@ open GlobalTheory.CompanionTheory.Ar.RiemannLimit GlobalTheory.CompanionTheory.A
 namespace GlobalTheory.CompanionTheory.Ar.IntegralKernel
 
 /- English proof (translation)
-Establish `hdvd : ∀ i, ∃ k : ℤ, (∏ j, ((w j).den : ℤ)) = ((w i).den : ℤ) * k` using `fun i => Finset.dvd_prod_of_mem (fun j => ((w j).den : ℤ)) (Finset.mem_univ i)`. Use `choose k hk using hdvd`. Use `⟨∏ j, ((w j).den : ℤ), fun i => (w i).num * k i, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_ne_zero_iff.mpr fun j _ => by exact_mod_cast (w j).den_nz`. Introduce `i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hk i]`. Use `push_cast`. Establish `h` using `Rat.mul_den_eq_num (w i)`. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_clear_denominators {g : ℕ} (w : Fin g → ℚ) :
     ∃ (D : ℤ) (v : Fin g → ℤ), D ≠ 0 ∧ ∀ i, (v i : ℚ) = (D : ℚ) * w i := by
@@ -32,40 +32,38 @@ theorem exists_clear_denominators {g : ℕ} (w : Fin g → ℚ) :
     ring
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cast_mulVec {g : ℕ} (S : Matrix (Fin g) (Fin g) ℤ) (v : Fin g → ℤ) (i : Fin g) :
     (((S *ᵥ v) i : ℤ) : ℚ) = ((S.map (Int.cast : ℤ → ℚ)) *ᵥ (fun j => (v j : ℚ))) i := by
   simp [Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Set `Sq : Matrix (Fin g) (Fin g) ℚ` to `S.map (Int.cast : ℤ → ℚ)`. Set `uq : Fin g → ℚ` to `fun i => (u i : ℚ)`. Establish `hSq : Sqᵀ = Sq`. Use extensionality with `i j`. Use `congrFun (congrFun hS i) j` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [Matrix.transpose_apply] at this`. Simplify using `[Sq, this]`. Establish `hker : ∀ w : Fin g → ℚ, Sq *ᵥ w = 0 → uq ⬝ᵥ w = 0`. Introduce `w hw`. Take `⟨D, v, hD, hv⟩` from `exists_clear_denominators w`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hvq : (fun j => (v j : ℚ)) = (D : ℚ) • w`. Use function extensionality and compare the values at `j`. Simplify using `[hv j]`. Establish `hSv : S *ᵥ v = 0`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `cast_mulVec S v i`. Rewrite `h1` using `[hvq, Matrix.mulVec_smul]`. Establish `h2 : (((S *ᵥ v) i : ℤ) : ℚ) = 0`. Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `((D : ℚ) • (Sq *ᵥ w)) i = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hw]`. Simplify using the standard rewrite rules. Conclude with `h2` after adjusting the coercions. Establish `h0` using `hu v hSv`. Establish `h1 : ((u ⬝ᵥ v : ℤ) : ℚ) = (D : ℚ) * (uq ⬝ᵥ w)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [dotProduct, Int.cast_sum, Int.cast_mul, Finset.mul_sum, hv, uq]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite `h1` using `[h0]`. Establish `hDq : (D : ℚ) ≠ 0` using `by exact_mod_cast hD`. Simplify `h1.symm` using `[hDq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f : (Fin g → ℚ) →ₗ[ℚ] (Fin g → ℚ)` to `Sq.mulVecLin`. Set `φ : Module.Dual ℚ (Fin g → ℚ)` to `{ toFun := fun w => uq ⬝ᵥ w map_add' := fun a b => dotProduct_add uq a b map_smul' := fun r a => by simp [dotProduct_smul] }`. Establish `hφ : φ ∈ LinearMap.range f.dualMap`. Rewrite using `[LinearMap.range_dualMap_eq_dualAnnihilator_ker]`. Rewrite using `[Submodule.mem_dualAnnihilator]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `w hw`. Conclude with `hker w (by simpa [f] using hw)`. Take `⟨ψ, hψ⟩` from `hφ`. Set `c : Fin g → ℚ` to `fun i => ψ (Pi.single i 1)`. Establish `hψc : ∀ w, ψ w = c ⬝ᵥ w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `w`. Use `conv_lhs => rw [pi_eq_sum_univ' w]`. Simplify using `[map_sum, c, dotProduct, mul_comm]`. Establish `hu_eq : uq = Sq *ᵥ c`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : φ (Pi.single i 1) = uq i`. Express the relevant statement in the definitionally equal form `uq ⬝ᵥ Pi.single i 1 = uq i`. Simplify using the standard rewrite rules. Establish `h2 : φ (Pi.single i 1) = ψ (Sq *ᵥ Pi.single i 1)`. Rewrite using `[← hψ]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Rewrite using `[← h1, h2, hψc, Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hSq]`. Simplify using the standard rewrite rules. Take `⟨D, v, hD, hv⟩` from `exists_clear_denominators c`. Use `⟨D, v, hD, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Establish `h1` using `cast_mulVec S v i`. Establish `hvq : (fun j => (v j : ℚ)) = (D : ℚ) • c`. Use function extensionality and compare the values at `j`. Simplify using `[hv j]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h1` using `[hvq, Matrix.mulVec_smul]`. Establish `h2 : (((D • u) i : ℤ) : ℚ) = (((S *ᵥ v) i : ℤ) : ℚ)`. Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `_ = ((D : ℚ) • (Sq *ᵥ c)) i`. Rewrite using `[← hu_eq]`.
-
-Simplify using `[uq]`. Conclude with `h2` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_smul_eq_mulVec (g : ℕ) (S : Matrix (Fin g) (Fin g) ℤ) (hS : Sᵀ = S)
     (u : Fin g → ℤ) (hu : ∀ v : Fin g → ℤ, S *ᵥ v = 0 → u ⬝ᵥ v = 0) :

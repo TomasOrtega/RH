@@ -20,14 +20,14 @@ def rmulL : Lie E a →L[ℝ] Lie E a →L[ℝ] Lie E a :=
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `(rmulL (E := E) (a := a)).le_opNorm y`.
+A detailed English derivation is pending.
 -/
 theorem norm_rmul_le (y : Lie E a) : ‖rmul y‖ ≤ ‖(rmulL : Lie E a →L[ℝ] Lie E a →L[ℝ] Lie E a)‖ * ‖y‖ :=
   (rmulL (E := E) (a := a)).le_opNorm y
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `(rmulL (E := E) (a := a)).le_opNorm₂ y x`.
+A detailed English derivation is pending.
 -/
 theorem norm_mul_le (x y : Lie E a) :
     ‖toL (Matrix.of x * Matrix.of y)‖ ≤ ‖(rmulL : Lie E a →L[ℝ] Lie E a →L[ℝ] Lie E a)‖ * ‖y‖ * ‖x‖ :=
@@ -36,9 +36,9 @@ theorem norm_mul_le (x y : Lie E a) :
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-Establish `hc : ContinuousAt (fun Y : Lie E a => toL (Matrix.of Y)⁻¹) (oneL E a)`. Establish `h` using `continuousAt_matrix_inv (1 : Matrix (Fin a) (Fin a) (Cinf E)) (by`. Rewrite using `[Matrix.det_one]`. Conclude with `NormedRing.inverse_continuousAt (1 : (Cinf E)ˣ))`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : toL (Matrix.of (oneL E a))⁻¹ = oneL E a` using `by simp`. Establish `h0 : ‖toL (Matrix.of (oneL E a))⁻¹‖ < ‖oneL E a‖ + 1` using `by rw [h1]; exact lt_add_one _`. Establish `h2` using `hc.norm.eventually (gt_mem_nhds h0)`. Conclude with `Filter.Eventually.and (isOpen_invSet.mem_nhds (isUnit_one : oneL E a ∈ invSet E a)) h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_inv_bdd :
     ∀ᶠ Y in 𝓝 (oneL E a), Y ∈ invSet E a ∧ ‖toL (Matrix.of Y)⁻¹‖ < ‖oneL E a‖ + 1 := by
@@ -53,7 +53,7 @@ theorem eventually_inv_bdd :
   exact Filter.Eventually.and (isOpen_invSet.mem_nhds (isUnit_one : oneL E a ∈ invSet E a)) h2
 
 /- English proof (translation)
-Unfold `chart`. Use `split_ifs`. Conclude with `le_max_of_le_left (hC _)`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_chart_le (φ : GA E a → ℂ) (g : GA E a) {C : ℝ} (hC : ∀ g, ‖φ g‖ ≤ C) (Y : Lie E a) :
     ‖chart φ g Y‖ ≤ max C 0 := by
@@ -63,9 +63,9 @@ theorem norm_chart_le (φ : GA E a → ℂ) (g : GA E a) {C : ℝ} (hC : ∀ g, 
   · simp
 
 /- English proof (translation)
-Establish `h` using `ContinuousOn.measurable_piecewise (hφ g).continuousOn (continuousOn_const (c := (0 : ℂ))) isOpen_invSet.measurableSet`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `Y`. Distinguish the cases in `hY : Y ∈ invSet E a`. Rewrite using `[Set.piecewise_eq_of_mem _ _ _ hY]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.piecewise_eq_of_notMem _ _ _ hY]`. Establish `hY' : ¬ IsUnit (Matrix.of Y)` using `hY`. Simplify using `[chart, hY']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem measurable_chart {φ : GA E a → ℂ} (hφ : φ ∈ Sm E a) (g : GA E a) : Measurable (chart φ g) := by
   classical
@@ -80,39 +80,31 @@ theorem measurable_chart {φ : GA E a → ℂ} (hφ : φ ∈ Sm E a) (g : GA E a
     simp [chart, hY']
 
 /- English proof (translation)
-Take `⟨hkm, hγm, hint⟩` from `hk`. Take `⟨Cφ, hCφ⟩` from `hφ`. Take `⟨CD, hCD⟩` from `hD`. Use `set M := ‖(rmulL : Lie E a →L[ℝ] Lie E a →L[ℝ] Lie E a)‖ with hM`. Use `set B := ‖oneL E a‖ + 1 with hB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM0 : 0 ≤ M` using `norm_nonneg _`. Establish `hB0 : 0 ≤ B` using `by positivity`. Use `set s : Set (Lie E a) := {Y | Y ∈ invSet E a ∧ ‖toL (Matrix.of Y)⁻¹‖ < B} with hs_def`. Establish `hs : s ∈ 𝓝 (oneL E a)` using `eventually_inv_bdd`. Use `set F : Lie E a → X → ℂ := fun Y x => k x * chart φ.1 g (rmul (toL (γ x).val) Y) with hF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set F' : Lie E a → X → (Lie E a →L[ℝ] ℂ) := fun Y x => k x • (fderiv ℝ (chart φ.1 g) (rmul (toL (γ x).val) Y)).comp (rmul (toL (γ x).val)) with hF'`. Establish `hγL : Measurable fun x => toL (γ x).val` using `hγm`. Establish `heq : chart (kerOp ν k γ φ.1) g =ᶠ[𝓝 (oneL E a)] fun Y => ∫ x, F Y x ∂ν` using `by filter_upwards [isOpen_invSet.mem_nhds (isUnit_one : oneL E a ∈ invSet E a)] with Y hY`. Take `⟨u, hu⟩` from `hY`. Establish `hY' : Y = toL u.val` using `hu.symm`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Substitute `hY'` using the available equality. Rewrite using `[chart_val]`. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `k x * φ.1 (g * infGL E a u * infGL E a (γ x)) = k x * chart φ.1 g (rmul (toL (γ x).val) (toL u.val))`. Rewrite using `[mul_assoc, ← map_mul, ← chart_val φ.1 g (u * γ x)]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `e1 : ∀ x, rmul (toL (γ x).val) (oneL E a) = toL (γ x).val` using `fun x => one_mul (γ x).val`. Establish `hF'1 : F' (oneL E a) = fun x => k x • (fderiv ℝ (chart φ.1 g) (toL (γ x).val)).comp (rmul (toL (γ x).val))`. Use function extensionality and compare the values at `x`. Simplify using `only [hF', e1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `HasFDerivAt.congr_of_eventuallyEq ?_ heq` and prove the remaining obligations. Rewrite using `[← hF'1]`. Establish `hmeasF : ∀ Y, AEStronglyMeasurable (F Y) ν` using `fun Y => by`. Use `(hkm.aestronglyMeasurable).mul ?_` and prove the remaining obligations. Use `((measurable_chart φ.2 g).comp ?_).aestronglyMeasurable` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((rmulL (E := E) (a := a)).flip Y).continuous.measurable.comp hγL`. Establish `hmeasF' : AEStronglyMeasurable (F' (oneL E a)) ν`. Rewrite using `[hF'1]`. Use `hkm.aestronglyMeasurable.smul ?_` and prove the remaining obligations. Conclude with `(ContinuousLinearMap.compL ℝ (Lie E a) (Lie E a) ℂ).aestronglyMeasurable_comp₂ ((measurable_fderiv ℝ (chart φ.1 g)).comp hγL).aestronglyMeasurable ((rmulL (E := E) (a := a)).continuous.measurable.comp hγL).aestronglyMeasurable`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint0 : Integrable (F (oneL E a)) ν`. Use `Integrable.mono' ((hint 0).mul_const (max Cφ 0)) (hmeasF _) (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Simplify using `only [hF, norm_mul, pow_zero, mul_one]`. Conclude with `mul_le_mul_of_nonneg_left (norm_chart_le φ.1 g hCφ _) (norm_nonneg _)`. Use `set K := max CD 0 * M * B * M with hK`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hbound : ∀ᵐ x ∂ν, ∀ Y ∈ s, ‖F' Y x‖ ≤ ‖k x‖ * height (γ x) ^ 2 * K`. Use `ae_of_all _ fun x Y hY => ?_` and prove the remaining obligations. Establish `hu : IsUnit (Matrix.of Y)` using `hY.1`. Use `set y := hu.unit * γ x with hy`. Establish `hyv : rmul (toL (γ x).val) Y = toL y.val`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[hy, Units.val_mul, IsUnit.unit_spec]`. Both sides reduce to the same expression. Establish `hyi : toL (y⁻¹).val = toL (Matrix.of (toL (γ x)⁻¹.val) * Matrix.of (toL (hu.unit⁻¹).val))`. Rewrite using `[hy, _root_.mul_inv_rev, Units.val_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hui : ‖toL (hu.unit⁻¹).val‖ ≤ B`. Rewrite using `[Matrix.coe_units_inv, IsUnit.unit_spec]`. Conclude with `hY.2.le`. Establish `hg1 : ‖toL (γ x).val‖ ≤ height (γ x)`. Unfold `height`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Combine the linear relations using `[norm_nonneg (toL (γ x)⁻¹.val)]`. Establish `hg2 : ‖toL (γ x)⁻¹.val‖ ≤ height (γ x)`. Unfold `height`. Combine the linear relations using `[norm_nonneg (toL (γ x).val)]`. Establish `hL : ‖fderiv ℝ (chart φ.1 g) (rmul (toL (γ x).val) Y)‖ ≤ max CD 0 * (M * B * height (γ x))`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hyv]`. Use `(hCD g y).trans ?_` and prove the remaining obligations. Establish `h1 : ‖toL (y⁻¹).val‖ ≤ M * B * height (γ x)`. Rewrite using `[hyi]`. Use `(norm_mul_le _ _).trans ?_` and prove the remaining obligations.
-
-Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Establish `hR : ‖rmul (toL (γ x).val)‖ ≤ M * height (γ x)` using `(norm_rmul_le _).trans (mul_le_mul_of_nonneg_left hg1 hM0)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hF', norm_smul]`.
-
-Use `gcongr`. Conclude with `ContinuousLinearMap.opNorm_comp_le _ _`. Use `_ ≤ ‖k x‖ * ((max CD 0 * (M * B * height (γ x))) * (M * height (γ x))) := by`. Establish `hh0 : 0 ≤ height (γ x)` using `(norm_nonneg _).trans hg1`. Use `gcongr`.
-
-Use `_ = ‖k x‖ * height (γ x) ^ 2 * K := by rw [hK]; ring`. Establish `hdiff : ∀ᵐ x ∂ν, ∀ Y ∈ s, HasFDerivAt (F · x) (F' Y x) Y`. Use `ae_of_all _ fun x Y hY => ?_` and prove the remaining obligations. Establish `hmem : rmul (toL (γ x).val) Y ∈ invSet E a` using `IsUnit.mul hY.1 (γ x).isUnit`. Establish `h1 : HasFDerivAt (chart φ.1 g) (fderiv ℝ (chart φ.1 g) (rmul (toL (γ x).val) Y)) (rmul (toL (γ x).val) Y)` using `((contDiffAt_chart φ.2 g hmem).differentiableAt (by simp)).hasFDerivAt`.
-
-Conclude with `(h1.comp Y (rmul (toL (γ x).val)).hasFDerivAt).const_mul (k x)`. Conclude with `hasFDerivAt_integral_of_dominated_of_fderiv_le hs (Filter.Eventually.of_forall hmeasF) hint0 hmeasF' hbound ((hint 2).mul_const K) hdiff`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_chart_kerOp_of_bound {X : Type} [MeasurableSpace X] (ν : Measure X)
     (k : X → ℂ) (γ : X → GL (Fin a) (Cinf E)) (hk : IsRapidInf ν k γ) (φ : Sm E a) (hφ : ∃ C : ℝ, ∀ g, ‖φ.1 g‖ ≤ C)
@@ -214,7 +206,7 @@ end GlobalTheory.JSW.KerDeriv
 namespace GlobalTheory.JSW
 
 /- English proof (translation)
-Introduce `E _ _ _ a _ _ ν k γ hk φ hφ hL g` and use `KerDeriv.hasFDerivAt_chart_kerOp_of_bound ν k γ hk φ hφ (GlobalTheory.T.norm_fderiv_chart_le_of_bounded_lieDerivatives E a φ hL) g`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_chart_kerOp : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (X : Type)
     [MeasurableSpace X] (ν : Measure X)

@@ -15,7 +15,7 @@ namespace SchurBAux
 open Formalism.QuantumDeterminants
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hd, Matrix.nonsing_inv_mul _ hd, Matrix.mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conj_cancel {k r : ℕ} {P : Mat k r} (hd : IsUnit P.det) (g : Mat k r) :
     P⁻¹ * (P * g * P⁻¹) * P = g := by
@@ -23,7 +23,7 @@ theorem conj_cancel {k r : ℕ} {P : Mat k r} (hd : IsUnit P.det) (g : Mat k r) 
     Matrix.mul_one]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hd, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conj_cancel' {k r : ℕ} {P : Mat k r} (hd : IsUnit P.det) (g : Mat k r) :
     P * (P⁻¹ * g * P) * P⁻¹ = g := by
@@ -31,18 +31,16 @@ theorem conj_cancel' {k r : ℕ} {P : Mat k r} (hd : IsUnit P.det) (g : Mat k r)
     Matrix.mul_one]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conj_mul {k r : ℕ} {P : Mat k r} (hd : IsUnit P.det) (a b : Mat k r) :
     P * (a * b) * P⁻¹ = (P * a * P⁻¹) * (P * b * P⁻¹) := by
   simp only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hd]
 
 /- English proof (translation)
-Take `⟨hPu, hPe⟩` from `hP`. Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hPu`. Establish `ha' : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Establish `hq1 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hd`. Establish `hq2 : (P⁻¹)ᴴ * Pᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hq1, Matrix.conjTranspose_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (P * a * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * a * P⁻¹) = Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (P⁻¹)ᴴ * (Pᴴ * Formalism.REAL.Jm ε * P) * P⁻¹ := by rw [hPe, ha']`. Use `_ = ((P⁻¹)ᴴ * Pᴴ) * Formalism.REAL.Jm ε * (P * P⁻¹) := by simp only [Matrix.mul_assoc]`.
-
-Use `_ = Formalism.REAL.Jm ε := by rw [hq1, hq2, Matrix.one_mul, Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_inUJ {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayley k r ε P)
     {a : Mat k r} (ha : a ∈ UH (Hpk k r)) : Formalism.REAL.inUJ ε (P * a * P⁻¹) := by
@@ -60,14 +58,14 @@ theorem conj_inUJ {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} 
     _ = Formalism.REAL.Jm ε := by rw [hq1, hq2, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Conclude with `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem cont_conj {k r : ℕ} (A B : Mat k r) :
     Continuous (fun x : Mt k r => ((A * Matrix.of x * B : Mat k r) : Mt k r)) := by
   exact (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
 
 /- English proof (translation)
-Set `e : Mt k r ≃ₜ Mt k r` to `{ toFun := fun x => ((P⁻¹ * Matrix.of x * P : Mat k r) : Mt k r) invFun := fun x => ((P * Matrix.of x * P⁻¹ : Mat k r) : Mt k r) left_inv := fun x => conj_cancel' hd (Matrix.of x) right_inv := fun x => conj_cancel hd (Matrix.of x) continuous_toFun := cont_conj _ _ continuous_invF …`. Establish `h1 : Topology.IsClosedEmbedding (fun g : Formalism.REAL.UJ ε => (Formalism.MainNotions.S.umat g : Mt k r))` using `(Formalism.REAL.isClosedEmbeddingMatrix _ ε).1`. Conclude with `(e.isClosedEmbedding.comp h1).measurableEmbedding`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measEmb {k r : ℕ} (ε : Fin (2 * r + k + 1) → Bool) {P : Mat k r} (hd : IsUnit P.det) :
     MeasurableEmbedding (α := Formalism.REAL.UJ ε) (β := Mt k r) (fun g => ((P⁻¹ * Formalism.MainNotions.S.umat g * P : Mat k r) : Mt k r)) := by
@@ -87,23 +85,21 @@ end SchurBAux
 open Formalism.QuantumDeterminants SchurBAux
 
 /- English proof (translation)
-Introduce `k r ε lam H _ _ _ σ μG hDSH hH`. Take `⟨P, ⟨hCay, _⟩, hDS⟩` from `hDSH`. Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hCay.1`. Take `⟨σ', hσ'⟩ : ∃ σ' : Mat k r → (H →L[ℂ] H), σ' = fun g => σ (P⁻¹ * g * P)` from `⟨_, rfl⟩`. Rewrite `hDS` using `[← hσ']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hrep : ∀ g, σ g = σ' (P * g * P⁻¹)`. Introduce `g`. Rewrite using `[hσ']`. Conclude with `(congrArg σ (conj_cancel hd g)).symm`. Establish `uj : ∀ a ∈ UH (Hpk k r), P * a * P⁻¹ ∈ Formalism.MainNotions.S.UJset ε` using `fun a ha => conj_inUJ hCay ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨h1, hmul⟩, hiso, hcont⟩` from `hDS.2.2.1`. Use `⟨⟨⟨?_, ?_⟩, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hrep, Matrix.mul_one, Matrix.mul_nonsing_inv _ hd]`. Conclude with `h1`. Introduce `a ha b hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hrep (a * b), hrep a, hrep b, conj_mul hd]`. Conclude with `hmul _ (uj a ha) _ (uj b hb)`. Introduce `g hg v`. Rewrite using `[hrep]`. Conclude with `hiso _ (uj g hg) v`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Establish `hc : Continuous (fun g : Mat k r => P * g * P⁻¹)` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Use `((hcont v).comp hc.continuousOn (fun g hg => uj g hg)).congr ?_` and prove the remaining obligations. Introduce `g _`. Use `show σ g v = σ' (P * g * P⁻¹) v`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hrep]`. Take `⟨d, hd0, hF⟩` from `Formalism.MainNotions.BridgeCSchur.fdeg_of_DS lam σ' hDS`. Establish `hmap` using `haarMap k r ε P hCay`. Take `⟨c, hc, hμ⟩` from `haarUniq2 k r _ _ μG (closedSubgroups k r 0).1 hmap hH`. Establish `hemb` using `measEmb ε hd`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨d / (c : ℝ), div_pos hd0 (by exact_mod_cast hc), fun v w v' w' => ?_⟩` and prove the remaining obligations. Substitute `hσ'` using the available equality. Establish `hint` using `(hF v w v' w').1`. Establish `hval` using `(hF v w v' w').2`. Rewrite using `[hμ]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `⟨((hemb.integrable_map_iff (g := fun x : Mt k r => ⟪w, σ (Matrix.of x) v⟫_ℂ * star ⟪w', σ (Matrix.of x) v'⟫_ℂ)).mpr hint).smul_measure_nnreal, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_smul_nnreal_measure, hemb.integral_map]`. Conclude with `congrArg (c • ·) hval`. Use `_ = _ := by`.
-
-Rewrite using `[NNReal.smul_def, Complex.real_smul]`. Use `push_cast`. Rewrite using `[div_div_eq_mul_div]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem schurB : SchurBStatement := by
   intro k r ε lam H _ _ _ σ μG hDSH hH

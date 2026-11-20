@@ -3,11 +3,11 @@ import Mathlib
 open IsLocalRing
 
 /- English proof (translation)
-Use `haveI : Fintype σ := Fintype.ofFinite σ`. Use `set D : σ →₀ ℕ := Finsupp.equivFunOnFinite.symm (fun _ => d) with hD`. Use `⟨∑ m ∈ Finset.Iic D, MvPolynomial.monomial m (if m.degree ≤ d then MvPowerSeries.coeff m F else 0), fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_sum]`. Simplify using `only [MvPolynomial.coeff_monomial]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Finset.sum_ite_eq']`. Distinguish the cases in `h : m.degree ≤ d`. Establish `hm : m ∈ Finset.Iic D`. Use `Finset.mem_Iic.mpr (Finsupp.le_def.mpr fun i => (Finsupp.le_degree i m).trans (h.trans ?_))` and prove the remaining obligations. Simplify using `[hD]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_pos hm]`. Simplify using `[h]`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.CA.exists_part {R σ : Type} [CommRing R] [Finite σ]
     (F : MvPowerSeries σ R) (d : ℕ) :
@@ -29,55 +29,51 @@ private theorem UpperTheory.V.CA.exists_part {R σ : Type} [CommRing R] [Finite 
   · simp [h]
 
 /- English proof (translation)
-Introduce `R σ _ _ _ P hP F`. Establish `hsumco : ∀ (f : MvPolynomial σ R) (d : ℕ) (m : σ →₀ ℕ), MvPolynomial.coeff m (∑ k ∈ Finset.range (d + 1), MvPolynomial.homogeneousComponent k f) = if m.degree ≤ d then MvPolynomial.coeff m f else 0`. Introduce `f d m`. Rewrite using `[MvPolynomial.coeff_sum]`. Simplify using `only [MvPolynomial.coeff_homogeneousComponent]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_ite_eq]`. Simplify using `only [Finset.mem_range, Nat.lt_succ_iff]`. Establish `htr` using `UpperTheory.V.CA.exists_part (R := R) (σ := σ)`. Establish `hpolyQ : ∀ f ∈ P, ∀ (d : ℕ) (g : MvPolynomial σ R), (∀ m : σ →₀ ℕ, g.coeff m = if m.degree ≤ d then MvPolynomial.coeff m f else 0) → g ∈ P`. Introduce `f hf d g hg`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgeq : g = ∑ k ∈ Finset.range (d + 1), MvPolynomial.homogeneousComponent k f`. Use extensionality with `m`. Rewrite using `[hg, hsumco]`. Rewrite using `[hgeq]`. Conclude with `Ideal.sum_mem _ fun k _ => hP f hf k`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hRQ : ∀ G : MvPowerSeries σ R, ((∀ (d : ℕ) (g : MvPolynomial σ R), (∀ m : σ →₀ ℕ, g.coeff m = if m.degree = d then MvPowerSeries.coeff m G else 0) → g ∈ P) ↔ (∀ (d : ℕ) (g : MvPolynomial σ R), (∀ m : σ →₀ ℕ, g.coeff m = if m.degree ≤ d then MvPowerSeries.coeff m G else 0) → g ∈ P …`. Introduce `G`. Prove the components needed by the constructor for the conclusion. Introduce `h d g hg`. Establish `hgeq : g = ∑ k ∈ Finset.range (d + 1), MvPolynomial.homogeneousComponent k g`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `m`. Rewrite using `[hsumco]`. Distinguish the cases in `hm : m.degree ≤ d`. Rewrite using `[if_pos hm]`. Rewrite using `[if_neg hm, hg, if_neg hm]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgeq]`. Use `Ideal.sum_mem _ fun k hk => h k _ fun m => ?_` and prove the remaining obligations. Establish `hk' : k ≤ d` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)`. Rewrite using `[MvPolynomial.coeff_homogeneousComponent, hg]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h d g hg`. Take `⟨T, hT⟩` from `htr G d`. Establish `hTP : T ∈ P` using `h d T hT`. Establish `hgeq : g = MvPolynomial.homogeneousComponent d T`. Use extensionality with `m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, MvPolynomial.coeff_homogeneousComponent, hT]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`. Rewrite using `[hgeq]`. Conclude with `hP T hTP d`. Use `Iff.trans ?_ (hRQ F).symm` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hF`. Establish `hF' : F ∈ Submodule.span (MvPowerSeries σ R) (MvPolynomial.coeToMvPowerSeries.ringHom (σ` using `σ) (R := R) '' (P : Set (MvPolynomial σ R))) := hF`. Use `Submodule.span_induction (p := fun x _ => ∀ (d : ℕ) (g : MvPolynomial σ R), (∀ m : σ →₀ ℕ, g.coeff m = if m.degree ≤ d then MvPowerSeries.coeff m x else 0) → g ∈ P) ?_ ?_ ?_ ?_ hF'` and prove the remaining obligations. Introduce and unpack `x ⟨f, hf, rfl⟩ d g hg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hpolyQ f hf d g fun m => ?_` and prove the remaining obligations. Rewrite using `[hg, MvPolynomial.coeToMvPowerSeries.ringHom_apply, MvPolynomial.coeff_coe]`. Introduce `d g hg`. Establish `hg0 : g = 0`. Use extensionality with `m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hg]`. Rewrite using `[hg0]`. Conclude with `P.zero_mem`. Introduce `x y _ _ hx hy d g hg`. Take `⟨gx, hgx⟩` from `htr x d`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Take `⟨gy, hgy⟩` from `htr y d`. Establish `hgeq : g = gx + gy`. Use extensionality with `m`. Rewrite using `[hg, MvPolynomial.coeff_add, hgx, hgy, map_add]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hgeq]`. Conclude with `P.add_mem (hx d gx hgx) (hy d gy hgy)`. Introduce `a x _ hx d g hg`. Take `⟨Ta, hTa⟩` from `htr a d`. Take `⟨Tx, hTx⟩` from `htr x d`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hTxP` using `hx d Tx hTx`. Establish `hgeq : g = ∑ k ∈ Finset.range (d + 1), MvPolynomial.homogeneousComponent k (Ta * Tx)`. Use extensionality with `m`. Rewrite using `[hsumco, hg, smul_eq_mul]`. Distinguish the cases in `hm : m.degree ≤ d`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_pos hm, if_pos hm, MvPowerSeries.coeff_mul, MvPolynomial.coeff_mul]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hpm : p.1 + p.2 = m` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hp`. Establish `hdeg : p.1.degree + p.2.degree = m.degree` using `by rw [← map_add, hpm]`. Rewrite using `[hTa, hTx, if_pos (by omega), if_pos (by omega)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_neg hm, if_neg hm]`. Rewrite using `[hgeq]`. Conclude with `Ideal.sum_mem _ fun k _ => hP _ (P.mul_mem_left Ta hTxP) k`. Introduce `hQ`. Take `⟨s, hs⟩` from `(IsNoetherian.noetherian P : P.FG)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set D := s.sup MvPolynomial.totalDegree with hD`. Set `h : ↥s × Fin (D + 1) → MvPolynomial σ R` to `fun i => MvPolynomial.homogeneousComponent i.2.val i.1.val`. Establish `hhP : ∀ i, h i ∈ P`. Introduce `i`. Establish `hi : (i.1 : MvPolynomial σ R) ∈ P`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hs]`. Conclude with `Submodule.subset_span i.1.2`. Conclude with `hP _ hi _`. Establish `hPspan : P ≤ Ideal.span (Set.range h)`. Rewrite using `[← hs, Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `f hf`. Establish `hf' : f ∈ s` using `Finset.mem_coe.mp hf`. Establish `hfsum : f = ∑ k ∈ Finset.range (D + 1), MvPolynomial.homogeneousComponent k f`. Rewrite using `[← Finset.sum_subset (Finset.range_subset_range.mpr (Nat.succ_le_succ (Finset.le_sup (f := MvPolynomial.totalDegree) hf'))) ?_, MvPolynomial.sum_homogeneousComponent]`. Introduce `k _ hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mem_range] at hk`. Conclude with `MvPolynomial.homogeneousComponent_eq_zero k f (by omega)`. Rewrite using `[SetLike.mem_coe, hfsum]`. Conclude with `Ideal.sum_mem _ fun k hk => Ideal.subset_span ⟨(⟨f, hf'⟩, ⟨k, Finset.mem_range.mp hk⟩), rfl⟩`. Establish `hcomp : ∀ d : ℕ, ∃ c : ↥s × Fin (D + 1) → MvPolynomial σ R, ∑ i, c i • h i = MvPolynomial.homogeneousComponent d (Classical.choose (htr F d))`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `d`. Establish `hmem : MvPolynomial.homogeneousComponent d (Classical.choose (htr F d)) ∈ P` using `hP _ (hQ d _ (Classical.choose_spec (htr F d))) d`. Conclude with `(Submodule.mem_span_range_iff_exists_fun _).mp (hPspan hmem)`. Use `choose c hc using hcomp`. Establish `hcoefF : ∀ m : σ →₀ ℕ, MvPolynomial.coeff m (∑ i, c m.degree i • h i) = MvPowerSeries.coeff m F`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `m`. Rewrite using `[hc, MvPolynomial.coeff_homogeneousComponent, if_pos rfl, Classical.choose_spec (htr F m.degree) m, if_pos le_rfl]`. Set `C : ↥s × Fin (D + 1) → MvPowerSeries σ R` to `fun i p => MvPolynomial.coeff p (c (p.degree + i.2.val) i)`. Establish `hFeq : F = ∑ i, C i * MvPolynomial.coeToMvPowerSeries.ringHom (σ` using `σ) (R := R) (h i) := by`. Use extensionality with `m`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcoefF m, map_sum, MvPolynomial.coeff_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_mul, smul_eq_mul, MvPolynomial.coeff_mul]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeToMvPowerSeries.ringHom_apply, MvPolynomial.coeff_coe]`.
-
-Establish `hpm : p.1 + p.2 = m` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hp`. Establish `hdeg : p.1.degree + p.2.degree = m.degree` using `by rw [← map_add, hpm]`. Use `show MvPolynomial.coeff p.1 (c m.degree i) * MvPolynomial.coeff p.2 (h i) = MvPolynomial.coeff p.1 (c (p.1.degree + i.2.val) i) * MvPolynomial.coeff p.2 (h i)`. Distinguish the cases in `h2 : p.2.degree = i.2.val`. Rewrite using `[← h2, hdeg]`.
-
-Establish `h0 : MvPolynomial.coeff p.2 (h i) = 0` using `by show MvPolynomial.coeff p.2 (MvPolynomial.homogeneousComponent i.2.val i.1.val) = 0`. Rewrite using `[MvPolynomial.coeff_homogeneousComponent, if_neg h2]`. Rewrite using `[h0, mul_zero, mul_zero]`. Rewrite using `[hFeq]`. Conclude with `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ (hhP i))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.g_hommem :
     ∀ (R σ : Type) [CommRing R] [IsNoetherianRing R] [Finite σ] (P : Ideal (MvPolynomial σ R)),

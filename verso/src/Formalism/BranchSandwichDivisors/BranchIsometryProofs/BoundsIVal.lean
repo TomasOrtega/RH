@@ -7,7 +7,7 @@ open scoped Matrix ComplexOrder
 namespace Formalism.BranchingDeterminantCap
 
 /- English proof (translation)
-Introduce `K _ _ _ _ K0 hK0 v0 hv0 n' n D H' E I0 hH hE hHE hI0 hrange hK0H hpos P hP A Bd hA G dG hG hdG hdual hBd w e he`. Take `⟨hlat, hdual'⟩` from `hI K n' n H' E I0 hH hE hHE hI0 hrange A Bd hA G dG hG hdG hdual hBd`. Establish `key` using `Formalism.DivisionValues.reduction_lemma_first K K0 hK0 v0 hv0 n D (I0ᴴ * H' * I0) hK0H hpos P hP _ hlat (G * dG) 1 (Nat.mul_pos hG hdG) hdual' w e he`. Simplify `key` using `only [Nat.cast_one, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem boundsIVal_of (hI : BoundsI) : BoundsIVal := by
   intro K _ _ _ _ K0 hK0 v0 hv0 n' n D H' E I0 hH hE hHE hI0 hrange hK0H hpos P hP A Bd hA G dG hG hdG hdual hBd w e he

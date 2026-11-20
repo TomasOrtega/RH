@@ -13,13 +13,13 @@ abbrev specOver (R A : Type u) [CommRing R] [CommRing A] [Algebra R A] : Over (S
   Over.mk (Spec.map (CommRingCat.ofHom (algebraMap R A)))
 
 /- English proof (translation)
-Establish `key : ∀ x : X, ∃ e : f x = g x, f.stalkMap x = (Y.presheaf.stalkCongr (Inseparable.of_eq e)).hom ≫ g.stalkMap x`. Introduce `x`. Establish `e1 : (SpecToEquivOfLocalRing Y (X.presheaf.stalk x)).symm ⟨f x, f.stalkMap x, inferInstance⟩ = (SpecToEquivOfLocalRing Y (X.presheaf.stalk x)).symm ⟨g x, g.stalkMap x, inferInstance⟩`. Simplify using `only [SpecToEquivOfLocalRing_symm_apply]`. Rewrite using `[Scheme.SpecMap_stalkMap_fromSpecStalk, Scheme.SpecMap_stalkMap_fromSpecStalk, h x]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `SpecToEquivOfLocalRing_eq_iff.mp ((Equiv.injective _) e1)`. Establish `hc : ∀ (U : Y.Opens) (s : Γ(Y, U)) (y y' : Y) (e : y = y') (hy : y ∈ U) (hy' : y' ∈ U), (Y.presheaf.stalkCongr (Inseparable.of_eq e)).hom (Y.presheaf.germ U y hy s) = Y.presheaf.germ U y' hy' s`. Introduce and unpack `U s y _ rfl hy hy'`. Simplify using the standard rewrite rules. Use `Scheme.Hom.ext ?_ fun U => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Conclude with `(key x).1`. Use extensionality with `s`. Apply `TopCat.Presheaf.section_ext X.sheaf` to reduce the goal to its premises. Introduce `x hx`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `key x`. Establish `hfx : f x ∈ U` using `e ▸ hx`. Express the relevant statement in the definitionally equal form `X.presheaf.germ _ x hx _ = X.presheaf.germ _ x hx _`. Rewrite using `[CommRingCat.comp_apply, TopCat.Presheaf.germ_res_apply, ← Scheme.Hom.germ_stalkMap_apply f U x hfx, ← Scheme.Hom.germ_stalkMap_apply g U x hx, he, CommRingCat.comp_apply, hc U s (f x) (g x) e hfx hx]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_ext_of_fromSpecStalk {X Y : Scheme.{u}} {f g : X ⟶ Y}
     (h : ∀ x, X.fromSpecStalk x ≫ f = X.fromSpecStalk x ≫ g) : f = g := by
@@ -50,7 +50,7 @@ theorem hom_ext_of_fromSpecStalk {X Y : Scheme.{u}} {f g : X ⟶ Y}
       CommRingCat.comp_apply, hc U s (f x) (g x) e hfx hx]
 
 /- English proof (translation)
-Apply `hom_ext_of_fromSpecStalk` to reduce the goal to its premises. Introduce `x`. Rewrite using `[Spec.fromSpecStalk_eq']`. Conclude with `h ((Spec (.of A)).presheaf.stalk x) (StructureSheaf.toStalk _ _).hom`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_ext_of_isLocalRing {A : Type u} [CommRing A] {Y : Scheme.{u}}
     {f g : Spec (.of A) ⟶ Y}
@@ -66,25 +66,23 @@ section Glue
 variable {R : Type u} [CommRing R]
 
 /- English proof (translation)
-Use `choose U j hj fU hmem hfU using H`. Set `𝒰 : T.left.OpenCover` to `{ I₀ := T.left, X i := (U i).left, f i := (j i).left, mem₀ := by`. Rewrite using `[Scheme.presieve₀_mem_precoverage_iff]`. Conclude with `⟨fun t ↦ ⟨t, by simpa using hmem t⟩, fun i ↦ hj i⟩ }`. Establish `hcomp : ∀ a b, pullback.fst (j a).left (j b).left ≫ (fU a).left = pullback.snd (j a).left (j b).left ≫ (fU b).left`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Use `hj a` as an intermediate fact. Use `hj b` as an intermediate fact. Set `P : Over (Spec (.of R))` to `Over.mk (pullback.fst (j a).left (j b).left ≫ (j a).left ≫ T.hom)`. Use `haveI : IsReduced P.left := isReduced_of_isOpenImmersion (pullback.fst (j a).left (j b).left ≫ (j a).left)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `p₁ : P ⟶ U a` to `Over.homMk (pullback.fst _ _) (by show _ = pullback.fst _ _ ≫ (j a).left ≫ T.hom`. Rewrite using `[Over.w])`. Set `p₂ : P ⟶ U b` to `Over.homMk (pullback.snd _ _) (by show _ = pullback.fst _ _ ≫ (j a).left ≫ T.hom`. Rewrite using `[pullback.condition_assoc, Over.w])`. Establish `hp : p₁ ≫ j a = p₂ ≫ j b`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `ext`. Simplify using `[p₁, p₂, pullback.condition]`. Establish `key : p₁ ≫ fU a = p₂ ≫ fU b`. Rewrite using `[over_hom_eq_iff_forall_field_algebra]`. Introduce `k _ _ x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← Category.assoc, ← Category.assoc, hfU, hfU, Category.assoc, Category.assoc, hp]`. Simplify `congrArg CommaMorphism.left key` using `[p₁, p₂]`. Set `g₀ : T.left ⟶ Y.left` to `𝒰.glueMorphisms (fun t ↦ (fU t).left) hcomp`. Establish `hg : ∀ t, (j t).left ≫ g₀ = (fU t).left` using `fun t ↦ 𝒰.ι_glueMorphisms _ hcomp t`. Establish `hw : g₀ ≫ Y.hom = T.hom`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `𝒰.hom_ext _ _ fun t ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(j t).left ≫ g₀ ≫ Y.hom = (j t).left ≫ T.hom`. Rewrite using `[← Category.assoc, hg, Over.w, Over.w]`. Use `⟨Over.homMk g₀ hw, fun k _ _ x ↦ ?_⟩` and prove the remaining obligations. Use `set t := x.left (IsLocalRing.closedPoint k) with ht`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `hj t` as an intermediate fact. Establish `hr : Set.range x.left ⊆ Set.range (j t).left`. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[Subsingleton.elim (α := ↥(Spec (CommRingCat.of k))) p (IsLocalRing.closedPoint k)]`. Conclude with `hmem t`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `y₀ : Spec (.of k) ⟶ (U t).left` to `IsOpenImmersion.lift (j t).left x.left hr`. Establish `hy₀ : y₀ ≫ (j t).left = x.left` using `IsOpenImmersion.lift_fac _ _ _`. Set `y : specOver R k ⟶ U t` to `Over.homMk y₀ (by`. Rewrite using `[← Over.w (j t), ← Category.assoc, hy₀, Over.w])`. Establish `hxy : x = y ≫ j t`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `ext`. Simplify using `[y, hy₀]`. Establish `hjt : j t ≫ Over.homMk g₀ hw = fU t`. Use `ext`. Simplify using `[hg]`.
-
-Rewrite using `[hxy, Category.assoc, hjt, hfU]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_over_hom_of_locally {T Y : Over (Spec (.of R))} [IsReduced T.left]
     [IsSeparated Y.hom]
@@ -180,7 +178,7 @@ def grpObjOfIsPullback [GrpObj G] (h : IsPullback φ G'.hom G.hom f) : GrpObj G'
   GrpObj.ofRepresentableBy G' _ (pullbackRepresentableBy h)
 
 /- English proof (translation)
-Conclude with `((yonedaGrpObjIsoOfRepresentableBy G' _ (pullbackRepresentableBy h)).hom.app (Opposite.op T)).hom.map_mul x y`.
+A detailed English derivation is pending.
 -/
 theorem pullbackPointEquiv_mul [GrpObj G] (h : IsPullback φ G'.hom G.hom f) {T : Over S'}
     (x y : T ⟶ G') :
@@ -190,9 +188,9 @@ theorem pullbackPointEquiv_mul [GrpObj G] (h : IsPullback φ G'.hom G.hom f) {T 
     (Opposite.op T)).hom.map_mul x y
 
 /- English proof (translation)
-Use `letI := grpObjOfIsPullback h`. Use `letI : CommMonoid ((Over.map f).obj (G' ⊗ G') ⟶ G) := Hom.commMonoid`. Use `⟨(pullbackPointEquiv h _).injective ?_⟩` and prove the remaining obligations. Establish `e1 : (β_ G' G').hom ≫ μ = snd G' G' * fst G' G'`. Rewrite using `[Hom.mul_def]`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `e2 : (μ : G' ⊗ G' ⟶ G') = fst G' G' * snd G' G'`. Rewrite using `[Hom.mul_def, lift_fst_snd, Category.id_comp]`. Rewrite using `[e1, e2, pullbackPointEquiv_mul, pullbackPointEquiv_mul, mul_comm]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCommMonObj_of_isPullback [GrpObj G] [IsCommMonObj G]
     (h : IsPullback φ G'.hom G.hom f) :
@@ -209,9 +207,9 @@ theorem isCommMonObj_of_isPullback [GrpObj G] [IsCommMonObj G]
   rw [e1, e2, pullbackPointEquiv_mul, pullbackPointEquiv_mul, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[← pullbackPointEquiv_apply_left h, hm, Hom.mul_def, Hom.mul_def, Over.comp_left, Over.comp_left, ← Category.assoc]`. Use `congr 1`. Use `ext`. Rewrite using `[Category.assoc]`. Express the relevant statement in the definitionally equal form `(lift (pullbackPointEquiv h T' x') (pullbackPointEquiv h T' y') ≫ fst G G).left = t ≫ (lift x y ≫ fst G G).left`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[lift_fst, lift_fst, pullbackPointEquiv_apply_left, hx]`. Rewrite using `[Category.assoc]`. Express the relevant statement in the definitionally equal form `(lift (pullbackPointEquiv h T' x') (pullbackPointEquiv h T' y') ≫ snd G G).left = t ≫ (lift x y ≫ snd G G).left`. Rewrite using `[lift_snd, lift_snd, pullbackPointEquiv_apply_left, hy]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_left_comp_of_pullbackPointEquiv_mul [GrpObj G] [GrpObj G']
     (h : IsPullback φ G'.hom G.hom f) {T' : Over S'} {T : Over S} (t : T'.left ⟶ T.left)

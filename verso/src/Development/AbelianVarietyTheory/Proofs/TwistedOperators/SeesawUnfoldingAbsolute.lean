@@ -26,33 +26,31 @@ namespace GlobalTheory.SquareAgree.KerPFin
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.WeilM GlobalTheory.AdelicU
 
 /- English proof (translation)
-Introduce `hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB _hθ _hTr hO hT Pim rf rl p p' hMt v f φ hf hSB hvac hv`. Establish `hψ : IsStd ψ` using `hO.psi ▸ hT.base.std`. Establish `hM` using `hT.geo.hM'`. Establish `hstd : ∀ᶠ w in Filter.cofinite, φ w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers D.host.F} 1` using `(hvac.and hM.std).mono fun w hw => hw.1.trans hw.2`. Take `⟨r, hr, hrt⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φ hstd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc : (-1 : D.host.E) ≠ 0` using `neg_ne_zero.mpr one_ne_zero`. Establish `hk : kapX X e hO.JX 1 = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[kapX]`. Establish `halg : ∀ x ∈ SB _, tens (evFin D.host.F v) x r ∈ algD Γ.M' Bs.ψ Bs.emb`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hSBx : ∀ w, Function.update φ v x w ∈ SB _`. Introduce `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `using hx`. Rewrite using `[Function.update_of_ne h]`. Conclude with `hSB w`. Establish `hvacx : ∀ᶠ w in Filter.cofinite, Function.update φ v x w = Γ.M'.vac w` using `(hvac.and (Filter.eventually_cofinite_ne v)).mono fun w hw => by rw [Function.update_of_ne hw.2]; exact hw.1`. Rewrite using `[hrt]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion.
 
-Conclude with `Submodule.subset_span ⟨f, _, hf, hSBx, hvacx, rfl⟩`. It suffices to establish `H : ∀ x ∈ augAt om' v, tens (evFin D.host.F v) x r ∈ kerPD ψ θ A₁ B Bs Γ cB p' by`. Use `H _ hv` as an intermediate fact. Rewrite `this` using `[hrt, Function.update_eq_self]`. Then use the resulting hypothesis. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨g, hg, φ₀, hφ₀, φ₁, hφ₁, hact, rfl⟩` from `hz`. Establish `hsub : tens (evFin D.host.F v) (φ₁ - φ₀) r = tens (evFin D.host.F v) φ₁ r - tens (evFin D.host.F v) φ₀ r`. Use function extensionality and compare the values at `y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [tens, Pi.sub_apply, sub_mul]`. Establish `hRest : Rest (evFin D.host.F v) φ₀ r`. Use `⟨hr, ?_⟩` and prove the remaining obligations. Establish `hSB0 : ∀ w, Function.update φ v φ₀ w ∈ SB _`. Introduce `w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using `using hφ₀`. Rewrite using `[Function.update_of_ne h]`. Conclude with `hSB w`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hrt]`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f _ hSB0 (GlobalTheory.PureFactor.update_eventually φ v φ₀ hstd)`. Establish `hmove : om' (g, 1) (tens (evFin D.host.F v) φ₀ r) = tens (evFin D.host.F v) φ₁ r` using `hact r hRest`. Take `⟨Ψ, hΨ, hD0⟩` from `hO.algB' _ (halg φ₀ hφ₀)`. Establish `hgu : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W₁ (-1) hO.JW₁ (GlobalTheory.ConjUTransport.conjUInv W₁ (-1) hc hO.JW₁ g) = g` using `(GlobalTheory.ConjUTransport.conjEquiv W₁ (-1) hc hO.JW₁).right_inv g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hg0` using `GlobalTheory.SquareAgree.CoinvPass.conjUInv_mem_GfC W₁ Γ.V' (-1) hc hO.JW₁ v g hg`. Establish `hW` using `hO.weilB _ Ψ hD0 (GlobalTheory.ConjUTransport.conjUInv W₁ (-1) hc hO.JW₁ g) 1`. Rewrite `hW` using `[hgu, hk, hmove]`. Establish `hDd` using `GlobalTheory.SquareAgree.CoinvPass.isDatum_sub hψ hW hD0`. Rewrite using `[hsub, mem_kerPD hψ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Use `⟨Submodule.sub_mem _ (halg φ₁ hφ₁) (halg φ₀ hφ₀), _, Submodule.sub_mem _ (hMt.mapB.stabM.1 _ hg0 Ψ hΨ) hΨ, hDd, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, hMt.mapB.invf _ hg0 Ψ hΨ, sub_self]`. Consider the case `zero`. Establish `: tens (evFin D.host.F v) (0 : (Fin W₁.rank × Fin (W.rank + W₁.rank) → Fv D.host.F v) → ℂ) r = 0`. Use function extensionality and compare the values at `y`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `[tens]`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb`. Establish `: tens (evFin D.host.F v) (a + b) r = tens (evFin D.host.F v) a r + tens (evFin D.host.F v) b r`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Simplify using `only [tens, Pi.add_apply, add_mul]`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha`.
-
-Establish `: tens (evFin D.host.F v) (c • a) r = c • tens (evFin D.host.F v) a r`. Use function extensionality and compare the values at `y`. Simplify using `only [tens, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c ha`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerPD_fin : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))

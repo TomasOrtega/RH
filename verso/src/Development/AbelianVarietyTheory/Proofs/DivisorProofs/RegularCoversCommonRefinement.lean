@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.RegCoverCommon
 
 /- English proof (translation)
-Introduce `hRA k _ B _ q hq C₁ C₂`. Take `⟨Z, hZ, t₁, t₂, e, hZa, g₁, g₂, d₁, d₂⟩` from `RegCover.exists_common hq C₁ C₂`. Take `⟨D⟩` from `GlobalTheory.T.exists_regular_cover_of_alteration hRA k Z ((t₁ ≫ C₁.ρ) ≫ q) hZa`. Use `⟨⟨D.Y, D.ρ ≫ t₁ ≫ C₁.ρ, ?_, ?_, ?_⟩, ⟨D.ρ ≫ t₁, by simp⟩, ⟨D.ρ ≫ t₂, by simp [e]⟩⟩` and prove the remaining obligations. Simplify `D.reg` using `[Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Scheme.Hom.comp_apply]`. Rewrite using `[D.generic, g₁, C₁.generic]`. Rewrite using `[CurveDegreesCompare.residueDegree_comp, CurveDegreesCompare.residueDegree_comp, D.generic, g₁]`. Conclude with `mul_ne_zero (mul_ne_zero C₁.finite d₁) D.finite`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_regCover_le_both : RegularAlteration → ∀ (k : Type) [CommRing k] (B : Scheme.{0}) [IsIntegral B]
     (q : B ⟶ Sp k), IsArithVar q 1 → ∀ C₁ C₂ : RegCover q, ∃ C : RegCover q,

@@ -15,39 +15,35 @@ open PI.UnitaryGroupMassFormula.BetaLUniq
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D T' F' τ w hT' hw hwX`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Establish `hτ : ∀ a : D.host.E, τ (star a) = starRingEnd ℂ (τ a)` using `D.sp.cm.cmUnram.2.1 τ`. Establish `hTE : ((T' : ℕ) : D.host.E) ≠ 0` using `by exact_mod_cast hT'.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsymm : ∀ x y : (hS D).V, (hS D).hT y x = star ((hS D).hT x y)`. Introduce `x y`. Rewrite using `[← (hS D).herm.eq x y, starRingEnd_apply]`. Establish `horth` using `(mem_orth (hS D)).1 hw`. Establish `hez : ∀ a, (hS D).hT (F'.fl.e a) F'.fl.z = 0` using `F'.fl.z_orth`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hze : ∀ a, (hS D).hT F'.fl.z (F'.fl.e a) = 0`. Introduce `a`. Rewrite using `[hsymm, hez, star_zero]`. Establish `hXz : ∀ x ∈ Xsp F', (hS D).hT x F'.fl.z = 0`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`. Conclude with `hez a`. Consider the case `zero => simp`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y y' _ _ h1 h2 => simp [h1, h2]`. Consider the case `smul c y _ h1 => simp [h1]`. Establish `hzX : ∀ x ∈ Xsp F', (hS D).hT F'.fl.z x = 0`. Introduce `x hx`. Rewrite using `[hsymm, hXz x hx, star_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzz : (hS D).hT F'.fl.z F'.fl.z = -((T' : ℕ) : D.host.E)` using `F'.fl.z_norm`. Establish `he_mem : ∀ a, F'.fl.e a ∈ Xplus F'` using `fun a => Submodule.mem_sup_left (Submodule.subset_span ⟨a, rfl⟩)`. Establish `hz_mem : F'.fl.z ∈ Xplus F'` using `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`. Establish `hew : ∀ a, (hS D).hT (F'.fl.e a) w = 0` using `fun a => horth _ (he_mem a)`. Establish `hzw : (hS D).hT F'.fl.z w = 0` using `horth _ hz_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwe : ∀ a, (hS D).hT w (F'.fl.e a) = 0` using `by intro a; rw [hsymm, hew, star_zero]`. Establish `hwz : (hS D).hT w F'.fl.z = 0` using `by rw [hsymm, hzw, star_zero]`. Establish `hzX' : F'.fl.z ∉ Submodule.span D.host.E (Set.range F'.fl.e)`. Introduce `h`. Use `hXz _ h` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hzz]`. Conclude with `hTE (neg_eq_zero.1 this)`. Establish `hwX' : w ∉ Submodule.span D.host.E (Set.range (Fin.snoc F'.fl.e F'.fl.z : Fin (D.R.rS + 1) → (hS D).V))`. Introduce `h`. Establish `hle : Submodule.span D.host.E (Set.range (Fin.snoc F'.fl.e F'.fl.z : Fin (D.R.rS + 1) → (hS D).V)) ≤ Xsp F' ⊔ Submodule.span D.host.E {F'.fl.z}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Simplify using `only [Fin.snoc_last]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`. Consider the case `cast a`. Simplify using `only [Fin.snoc_castSucc]`. Conclude with `Submodule.mem_sup_left (Submodule.subset_span ⟨a, rfl⟩)`. Take `⟨x, hx, y, hy, hxy⟩` from `Submodule.mem_sup.1 (hle h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Establish `h0 : (hS D).hT F'.fl.z (x + c • F'.fl.z) = 0` using `by rw [hxy]; exact hzw`. Rewrite `h0` using `[map_add, hzX x hx, map_smul, hzz, zero_add, smul_eq_mul]`. Establish `hc : c = 0`. Break down `mul_eq_zero.1 h0 with h' | h'` into its components or cases.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h'`. Conclude with `absurd (neg_eq_zero.1 h') hTE`. Apply `hwX` to reduce the goal to its premises. Rewrite using `[← hxy, hc, zero_smul, add_zero]`. Conclude with `hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `u : Fin (D.R.rS + 1 + 1) → (hS D).V` to `Fin.snoc (Fin.snoc F'.fl.e F'.fl.z : Fin (D.R.rS + 1) → (hS D).V) w`. Establish `hu : LinearIndependent D.host.E u` using `linearIndependent_finSnoc.2 ⟨linearIndependent_finSnoc.2 ⟨F'.fl.e_indep, hzX'⟩, hwX'⟩`. Establish `hsig : Formalism.UG.HasSignature (((hS D).gram).map τ) (D.R.k + D.R.rS) (D.R.rS + 1)`. Establish `h` using `D.sp.Y_sig 0 τ`. Rewrite `h` using `[D.sp.baseSpace_signature_eq τ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Take `⟨hcard, Q, hQ⟩` from `wa_sig_data _ _ _ hsig`. Establish `hdim` using `wa_neg_dim (((hS D).gram).map τ) Q hQ hcard (fun k => wa_cv (hS D) τ (u k)) (fun x hx => wa_indep u hu x hx) (by`. Introduce `x`. Rewrite using `[wa_comb hτ x u]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Fin.sum_univ_castSucc, u, Fin.snoc_castSucc, Fin.snoc_last, F'.fl.e_iso, hez, hze, hew, hwe, hzw, hwz, hzz, map_zero, mul_zero, Finset.sum_const_zero, add_zero, zero_add]`. Establish `h1 : ∀ c : ℂ, starRingEnd ℂ c * c = (Complex.normSq c : ℂ)`. Introduce `c`. Rewrite using `[mul_comm]`. Conclude with `Complex.mul_conj c`.
-
-Rewrite using `[h1, h1, map_neg, map_natCast]`. Simplify using `only [Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, Complex.neg_re, Complex.neg_im, Complex.natCast_re, Complex.natCast_im, zero_mul, sub_zero, mul_zero]`. Use `Complex.normSq_nonneg (x (Fin.castSucc (Fin.last D.R.rS)))` as an intermediate fact. Use `Complex.normSq_nonneg (x (Fin.last (D.R.rS + 1)))` as an intermediate fact. Establish `: (0 : ℝ) ≤ (T' : ℝ)` using `Nat.cast_nonneg _`.
-
-Use the proof step `nlinarith)`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem positive_weight_holds : PosW := by
   intro D T' F' τ w hT' hw hwX

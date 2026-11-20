@@ -42,9 +42,9 @@ def padM {n M : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin M) (Fin M) �
   Matrix.of fun i j => if hij : (i : ℕ) < n ∧ (j : ℕ) < n then A ⟨i, hij.1⟩ ⟨j, hij.2⟩ else 0
 
 /- English proof (translation)
-Apply `Matrix.IsHermitian.ext` to reduce the goal to its premises. Introduce `i j`. Distinguish the cases in `h : (i : ℕ) < n ∧ (j : ℕ) < n`. Establish `h' : (j : ℕ) < n ∧ (i : ℕ) < n` using `⟨h.2, h.1⟩`. Simplify using `only [padM, Matrix.of_apply, dif_pos h, dif_pos h']`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hA.apply _ _`. Establish `h' : ¬((j : ℕ) < n ∧ (i : ℕ) < n)` using `fun h' => h ⟨h'.2, h'.1⟩`. Simplify using `[padM, h, h']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem padM_herm {n M : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) :
     (padM (M := M) A).IsHermitian := by
@@ -78,9 +78,9 @@ def eL (n M : ℕ) : HS L M :=
       · simp [padMat, h, e, Ne.symm e]
 
 /- English proof (translation)
-Rewrite using `[Matrix.reindex_apply]`. Apply `Matrix.IsHermitian.submatrix` to reduce the goal to its premises. Apply `Matrix.IsHermitian.ext` to reduce the goal to its premises. Introduce `x y`. Rewrite using `[Matrix.kroneckerMap_apply, Matrix.kroneckerMap_apply, star_mul', hA.apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Distinguish the cases in `e : x.1 = y.1`. Simplify using `[Matrix.one_apply, e]`. Simplify using `[Matrix.one_apply, e, Ne.symm e]`.
+Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem blk_herm {d n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) :
     (Matrix.reindex finProdFinEquiv finProdFinEquiv

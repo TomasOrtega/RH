@@ -15,17 +15,15 @@ variable {K M N N' : Type*} [Field K] [AddCommGroup M] [Module K M] [FiniteDimen
   [AddCommGroup N] [Module K N] [AddCommGroup N'] [Module K N']
 
 /- English proof (translation)
-Establish `h1` using `LinearMap.finrank_range_add_finrank_ker (f.domRestrict P)`. Establish `h2 : LinearMap.range (f.domRestrict P) = P.map f`. Apply `Submodule.ext` to reduce the goal to its premises. Introduce `y`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hy`. Take `⟨z, rfl⟩` from `LinearMap.mem_range.1 hy`. Conclude with `Submodule.mem_map.2 ⟨z, z.2, rfl⟩`. Introduce `hy`. Take `⟨z, hz, rfl⟩` from `Submodule.mem_map.1 hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `LinearMap.mem_range.2 ⟨⟨z, hz⟩, rfl⟩`. Establish `h3 : finrank K (LinearMap.ker (f.domRestrict P)) = finrank K (P ⊓ LinearMap.ker f : Submodule K M)`. Establish `e` using `Submodule.equivMapOfInjective P.subtype (by intro u w h; exact Subtype.ext h) (LinearMap.ker (f.domRestrict P))`. Rewrite using `[e.finrank_eq]`. Establish `heq : Submodule.map P.subtype (LinearMap.ker (f.domRestrict P)) = (P ⊓ LinearMap.ker f : Submodule K M)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Submodule.ext` to reduce the goal to its premises. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx'`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hx'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.mem_inf.2 ⟨y.2, LinearMap.mem_ker.2 (by simpa using LinearMap.mem_ker.1 hy)⟩`. Introduce `hx`. Take `⟨hx1, hx2⟩` from `Submodule.mem_inf.1 hx`. Conclude with `Submodule.mem_map.2 ⟨⟨x, hx1⟩, LinearMap.mem_ker.2 (by simpa using LinearMap.mem_ker.1 hx2), rfl⟩`. Rewrite using `[heq]`.
-
-Rewrite using `[← h2, ← h3]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_map_add_inf_ker (P : Submodule K M) (f : M →ₗ[K] N) :
     finrank K (P.map f) + finrank K (P ⊓ LinearMap.ker f : Submodule K M) = finrank K P := by
@@ -59,9 +57,9 @@ theorem finrank_map_add_inf_ker (P : Submodule K M) (f : M →ₗ[K] N) :
   rw [← h2, ← h3]; exact h1
 
 /- English proof (translation)
-Establish `hf` using `finrank_map_add_inf_ker P f`. Establish `hg` using `finrank_map_add_inf_ker P g`. Establish `: finrank K (P ⊓ LinearMap.ker g : Submodule K M) ≤ finrank K (P ⊓ LinearMap.ker f : Submodule K M)`. Apply `Submodule.finrank_mono` to reduce the goal to its premises. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hx1, hx2⟩` from `Submodule.mem_inf.1 hx`. Conclude with `Submodule.mem_inf.2 ⟨hx1, LinearMap.mem_ker.2 (h x hx1 (LinearMap.mem_ker.1 hx2))⟩`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_map_le_of_ker (P : Submodule K M) (f : M →ₗ[K] N) (g : M →ₗ[K] N')
     (h : ∀ x ∈ P, g x = 0 → f x = 0) : finrank K (P.map f) ≤ finrank K (P.map g) := by
@@ -76,11 +74,11 @@ theorem finrank_map_le_of_ker (P : Submodule K M) (f : M →ₗ[K] N) (g : M →
   omega
 
 /- English proof (translation)
-Establish `hf` using `finrank_map_add_inf_ker P f`. Establish `hQ` using `finrank_map_add_inf_ker (P ⊓ LinearMap.ker f) g`. Establish `h0 : (P ⊓ LinearMap.ker f) ⊓ LinearMap.ker g = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hx1, hx2⟩` from `Submodule.mem_inf.1 hx`. Take `⟨hx3, hx4⟩` from `Submodule.mem_inf.1 hx1`. Conclude with `(Submodule.mem_bot K).2 (h x hx3 (LinearMap.mem_ker.1 hx4) (LinearMap.mem_ker.1 hx2))`. Rewrite `hQ` using `[h0]`. Simplify using `only [finrank_bot, add_zero] at hQ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: finrank K ((P ⊓ LinearMap.ker f).map g) ≤ finrank K (P.map g)` using `Submodule.finrank_mono (Submodule.map_mono inf_le_left)`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_le_add_of_ker (P : Submodule K M) (f : M →ₗ[K] N) (g : M →ₗ[K] N')
     (h : ∀ x ∈ P, f x = 0 → g x = 0 → x = 0) :
@@ -99,9 +97,9 @@ theorem finrank_le_add_of_ker (P : Submodule K M) (f : M →ₗ[K] N) (g : M →
   omega
 
 /- English proof (translation)
-Establish `hf` using `finrank_map_add_inf_ker P f`. Establish `h0 : P ⊓ LinearMap.ker f = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Take `⟨hx1, hx2⟩` from `Submodule.mem_inf.1 hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(Submodule.mem_bot K).2 (h x hx1 (LinearMap.mem_ker.1 hx2))`. Rewrite `hf` using `[h0]`. Simplify using `only [finrank_bot, add_zero] at hf`. Use `Submodule.finrank_le (P.map f)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem injective_bound (P : Submodule K M) (f : M →ₗ[K] N) [FiniteDimensional K N]
     (h : ∀ x ∈ P, f x = 0 → x = 0) : finrank K P ≤ finrank K N := by
@@ -140,7 +138,7 @@ theorem rs_coe (W : Submodule ℂ V) (x : Module.End ℂ V) (h : ∀ v ∈ W, x 
     ((rs W x h v : W) : V) = x v := rfl
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show a i (a j (v : V)) = a j (a i (v : V))`. Conclude with `LinearMap.congr_fun (ha i j) v`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem rs_comm (W : Submodule ℂ V) {ι : Type*} (a : ι → Module.End ℂ V)
     (ha : ∀ i j, a i * a j = a j * a i) (h : ∀ i, ∀ v ∈ W, a i v ∈ W) (i j : ι) :
@@ -150,9 +148,9 @@ theorem rs_comm (W : Submodule ℂ V) {ι : Type*} (a : ι → Module.End ℂ V)
   exact LinearMap.congr_fun (ha i j) v
 
 /- English proof (translation)
-Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx => obtain ⟨j, rfl⟩ := hx`. Conclude with `hy j`. Consider the case `algebraMap r => exact Algebra.commutes r y`. Consider the case `add x z _ _ hx hz => rw [add_mul, mul_add, hx, hz]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mul x z _ _ hx hz => rw [mul_assoc, hz, ← mul_assoc, hx, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem comm_of_mem {ι : Type*} (a : ι → Module.End ℂ V) (y : Module.End ℂ V)
     (hy : ∀ i, a i * y = y * a i) {x : Module.End ℂ V} (hx : x ∈ Algebra.adjoin ℂ (Set.range a)) :
@@ -164,15 +162,15 @@ theorem comm_of_mem {ι : Type*} (a : ι → Module.End ℂ V) (y : Module.End �
   | mul x z _ _ hx hz => rw [mul_assoc, hz, ← mul_assoc, hx, mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `⟨rs W (a i) (h i), Algebra.subset_adjoin (Set.mem_range_self i), LinearMap.ext fun v => rfl⟩`. Consider the case `algebraMap r`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Use `⟨algebraMap ℂ _ r, Subalgebra.algebraMap_mem _ r, LinearMap.ext fun v => ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `rfl`. Consider the case `simp [pre, post]`. Consider the case `simp [pre, post, Module.algebraMap_end_apply]`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x z _ _ hx hz`. Take `⟨y1, h1, e1⟩` from `hx`. Take `⟨y2, h2, e2⟩` from `hz`. Conclude with `⟨y1 + y2, add_mem h1 h2, by rw [map_add, map_add, e1, e2]⟩`. Consider the case `mul x z _ _ hx hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨y1, h1, e1⟩` from `hx`. Take `⟨y2, h2, e2⟩` from `hz`. Use `⟨y1 * y2, mul_mem h1 h2, LinearMap.ext fun v => ?_⟩` and prove the remaining obligations. Establish `e1'` using `LinearMap.congr_fun e1 (y2 v)`. Establish `e2'` using `LinearMap.congr_fun e2 v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((y1 (y2 v) : W) : V) = x (z (v : V))`. Express the relevant statement in the definitionally equal form `((y1 (y2 v) : W) : V) = x ((y2 v : W) : V) at e1'`. Express the relevant statement in the definitionally equal form `((y2 v : W) : V) = z (v : V) at e2'`. Rewrite using `[e1', e2']`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_post (W : Submodule ℂ V) {ι : Type*} (a : ι → Module.End ℂ V)
     (h : ∀ i, ∀ v ∈ W, a i v ∈ W) {x : Module.End ℂ V}
@@ -204,7 +202,7 @@ theorem exists_post (W : Submodule ℂ V) {ι : Type*} (a : ι → Module.End �
     rw [e1', e2']
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Subalgebra.finrank_toSubmodule S`. Consider the case `rfl`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sub_finrank (S : Subalgebra ℂ (Module.End ℂ V)) [FiniteDimensional ℂ V] :
     finrank ℂ (Subalgebra.toSubmodule S) = finrank ℂ S := by
@@ -213,9 +211,9 @@ theorem sub_finrank (S : Subalgebra ℂ (Module.End ℂ V)) [FiniteDimensional �
   | rfl
 
 /- English proof (translation)
-Rewrite using `[← sub_finrank]`. Combine the equalities or inequalities in the displayed calculation. Apply `Submodule.finrank_mono` to reduce the goal to its premises. Introduce `u hu`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 hu`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, e⟩` from `exists_post W a h hx`. Conclude with `Submodule.mem_map.2 ⟨y, hy, e⟩`. Use `_ ≤ _ := Submodule.finrank_map_le _ _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finrank_map_pre_le [FiniteDimensional ℂ V] (W : Submodule ℂ V) {ι : Type*}
     (a : ι → Module.End ℂ V) (h : ∀ i, ∀ v ∈ W, a i v ∈ W) :
@@ -232,7 +230,7 @@ theorem finrank_map_pre_le [FiniteDimensional ℂ V] (W : Submodule ℂ V) {ι :
     _ ≤ _ := Submodule.finrank_map_le _ _
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Module.finrank_linearMap ℂ ℂ W V`. Consider the case `exact Module.finrank_linearMap ℂ W V`. Consider the case `simp [Module.finrank_linearMap]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem finrank_hom [FiniteDimensional ℂ V] (W : Submodule ℂ V) :
     finrank ℂ (W →ₗ[ℂ] V) = finrank ℂ W * finrank ℂ V := by
@@ -242,7 +240,7 @@ theorem finrank_hom [FiniteDimensional ℂ V] (W : Submodule ℂ V) :
   | simp [Module.finrank_linearMap]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Module.finrank_linearMap ℂ ℂ V V`. Consider the case `exact Module.finrank_linearMap ℂ V V`. Consider the case `simp [Module.finrank_linearMap]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem finrank_end [FiniteDimensional ℂ V] :
     finrank ℂ (Module.End ℂ V) = finrank ℂ V * finrank ℂ V := by
@@ -252,7 +250,7 @@ theorem finrank_end [FiniteDimensional ℂ V] :
   | simp [Module.finrank_linearMap]
 
 /- English proof (translation)
-Rewrite using `[← sub_finrank, ← finrank_end]`. Conclude with `Submodule.finrank_le _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_sub_le_sq [FiniteDimensional ℂ V] (S : Subalgebra ℂ (Module.End ℂ V)) :
     finrank ℂ S ≤ finrank ℂ V * finrank ℂ V := by
@@ -260,15 +258,13 @@ theorem finrank_sub_le_sq [FiniteDimensional ℂ V] (S : Subalgebra ℂ (Module.
   exact Submodule.finrank_le _
 
 /- English proof (translation)
-Establish `key : ∀ k : ℕ, U ⊔ LinearMap.range (c ^ k) = ⊤`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[eq_top_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Introduce `v _`. Conclude with `Submodule.mem_sup_right (LinearMap.mem_range.2 ⟨v, by simp⟩)`. Consider the case `succ k ih`. Rewrite using `[eq_top_iff]`. Introduce `v _`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hv : v ∈ U ⊔ LinearMap.range c` using `by rw [h]; exact Submodule.mem_top`. Take `⟨u, hu, w, hw, rfl⟩` from `Submodule.mem_sup.1 hv`. Take `⟨z, rfl⟩` from `LinearMap.mem_range.1 hw`. Establish `hz : z ∈ U ⊔ LinearMap.range (c ^ k)` using `by rw [ih]; exact Submodule.mem_top`. Take `⟨u', hu', w', hw', rfl⟩` from `Submodule.mem_sup.1 hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z', rfl⟩` from `LinearMap.mem_range.1 hw'`. Rewrite using `[map_add, ← add_assoc]`. Apply `Submodule.add_mem_sup (U.add_mem hu (hU _ hu'))` to reduce the goal to its premises. Conclude with `LinearMap.mem_range.2 ⟨z', by rw [pow_succ']; rfl⟩`. Use `key N` as an intermediate fact.
-
-Rewrite `this` using `[hc, LinearMap.range_zero, sup_bot_eq]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem nak_one (U : Submodule ℂ V) (c : Module.End ℂ V) (N : ℕ) (hc : c ^ N = 0)
     (hU : ∀ v ∈ U, c v ∈ U) (h : U ⊔ LinearMap.range c = ⊤) : U = ⊤ := by
@@ -293,9 +289,9 @@ theorem nak_one (U : Submodule ℂ V) (c : Module.End ℂ V) (N : ℕ) (hc : c ^
   rwa [hc, LinearMap.range_zero, sup_bot_eq] at this
 
 /- English proof (translation)
-Establish `hle : (⨆ i ∈ s, LinearMap.range (b i)) ≤ (⨆ i ∈ s, LinearMap.range (b i)).comap x`. Use `iSup₂_le fun i hi => ?_` and prove the remaining obligations. Introduce `w hw`. Take `⟨z, rfl⟩` from `LinearMap.mem_range.1 hw`. Rewrite using `[Submodule.mem_comap]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `e : x (b i z) = b i (x z)` using `LinearMap.congr_fun (hx i) z`. Rewrite using `[e]`. Conclude with `(le_iSup₂ (f := fun i (_ : i ∈ s) => LinearMap.range (b i)) i hi) (LinearMap.mem_range_self _ _)`. Introduce `v hv`. Conclude with `Submodule.mem_comap.1 (hle hv)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem iSup_range_inv {ι : Type*} (s : Finset ι) (b : ι → Module.End ℂ V) (x : Module.End ℂ V)
     (hx : ∀ i, x * b i = b i * x) :
@@ -313,13 +309,11 @@ theorem iSup_range_inv {ι : Type*} (s : Finset ι) (b : ι → Module.End ℂ V
   exact Submodule.mem_comap.1 (hle hv)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro U _ h`. Simplify using `using h`. Consider the case `insert j s hj ih`. Introduce `U hU h`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[Finset.iSup_insert]`. Apply `ih U hU` to reduce the goal to its premises. Take `⟨N, hN⟩` from `hnil j`. Apply `nak_one _ (b j) N hN` to reduce the goal to its premises. Introduce `v hv`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu, w, hw, rfl⟩` from `Submodule.mem_sup.1 hv`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (hU j u hu) (iSup_range_inv s b (b j) (fun i => hcomm j i) w hw)`. Rewrite using `[← h]`. Apply `le_antisymm` to reduce the goal to its premises.
-
-Conclude with `sup_le (sup_le le_sup_left (le_sup_of_le_right le_sup_right)) (le_sup_of_le_right le_sup_left)`. Conclude with `sup_le (le_sup_of_le_left le_sup_left) (sup_le le_sup_right (le_sup_of_le_left le_sup_right))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem nak {ι : Type*} [DecidableEq ι] (s : Finset ι) (b : ι → Module.End ℂ V)
     (hcomm : ∀ i j, b i * b j = b j * b i) (hnil : ∀ i, ∃ N : ℕ, b i ^ N = 0) :
@@ -354,13 +348,13 @@ def Pl (l t c : ℕ) : Prop :=
       Module.finrank ℂ V ^ 2 + c * Module.finrank ℂ V
 
 /- English proof (translation)
-Introduce `V _ _ _ a _`. Rewrite using `[Set.range_eq_empty a, Algebra.adjoin_empty]`. Establish `hsq` using `finrank_sub_le_sq (V := V) ⊥`. Break down `Nat.eq_zero_or_pos (finrank ℂ V) with h0 | hpos` into its components or cases. Rewrite `hsq`, the goal using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `: finrank ℂ (⊥ : Subalgebra ℂ (Module.End ℂ V)) = 0` using `by omega`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Use `haveI : Nontrivial V := Module.finrank_pos_iff.1 hpos`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Nontrivial (Module.End ℂ V) := ⟨⟨1, 0, fun h => hv (by simpa using LinearMap.congr_fun h v)⟩⟩`. Establish `h1 : finrank ℂ (⊥ : Subalgebra ℂ (Module.End ℂ V)) ≤ 1` using `by first`. Consider the case `exact (Subalgebra.finrank_bot).le`. Consider the case `exact le_of_eq Subalgebra.finrank_bot`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `Nat.mul_le_mul_left t h1`. Establish `e2` using `Nat.mul_le_mul_left t (show 1 ≤ finrank ℂ V from hpos)`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem base (t : ℕ) : Pl 0 t t := by
   intro V _ _ _ a _
@@ -389,33 +383,31 @@ def IHn (l t c n : ℕ) : Prop :=
     t * finrank ℂ (Algebra.adjoin ℂ (Set.range a)) ≤ m ^ 2 + c * m
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `hs`. Establish `hc` using `(hN i).1`. Establish `hfA : (a i - algebraMap ℂ (Module.End ℂ V) (μ i)) ^ N i ∈ Algebra.adjoin ℂ (Set.range a)` using `pow_mem (sub_mem (Algebra.subset_adjoin (Set.mem_range_self i)) (Subalgebra.algebraMap_mem _ _)) _`. Generalize the expression as in `hf : (a i - algebraMap ℂ (Module.End ℂ V) (μ i)) ^ N i = f at hc hi hfA`. Establish `hxa : ∀ j, f * a j = a j * f` using `fun j => comm_of_mem a (a j) (fun k => ha k j) hfA`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hKinv : ∀ j, ∀ v ∈ LinearMap.ker f, a j v ∈ LinearMap.ker f`. Introduce `j v hv`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Establish `e : f (a j v) = a j (f v)` using `LinearMap.congr_fun (hxa j) v`. Rewrite using `[e, hv, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hRinv : ∀ j, ∀ v ∈ LinearMap.range f, a j v ∈ LinearMap.range f`. Introduce `j v hv`. Take `⟨w, rfl⟩` from `LinearMap.mem_range.1 hv`. Establish `e : f (a j w) = a j (f w)` using `LinearMap.congr_fun (hxa j) w`. Conclude with `LinearMap.mem_range.2 ⟨a j w, e⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKne : LinearMap.ker f ≠ ⊥`. Take `⟨v, hv⟩` from `(hμ i).exists_hasEigenvector`. Establish `hav : a i v = μ i • v` using `by first`. Consider the case `exact hv.apply_eq_smul`. Consider the case `exact Module.End.mem_eigenspace_iff.1 hv.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hv0 : v ≠ 0` using `by first`. Consider the case `exact hv.2`. Consider the case `exact hv.right`. Consider the case `exact hv.ne_zero`. Establish `hbv : (a i - algebraMap ℂ (Module.End ℂ V) (μ i)) v = 0` using `by first`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `rw [LinearMap.sub_apply, Module.algebraMap_end_apply, hav, sub_self]`. Consider the case `simp [hav]`. Introduce `hK`. Apply `hv0` to reduce the goal to its premises. Establish `hvK : v ∈ LinearMap.ker f`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.mem_ker, ← hf]`. Take `⟨k, hk⟩ : ∃ k, N i = k + 1` from `⟨N i - 1, by have := (hN i).2; omega⟩`. Rewrite using `[hk, pow_succ]`. Use `show ((a i - algebraMap ℂ (Module.End ℂ V) (μ i)) ^ k) ((a i - algebraMap ℂ (Module.End ℂ V) (μ i)) v) = 0`. Rewrite using `[hbv, map_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hvK` using `[hK]`. Conclude with `(Submodule.mem_bot ℂ).1 hvK`. Establish `hsum` using `Submodule.finrank_add_eq_of_isCompl hc`. Rewrite `hsum` using `[hn]`. Establish `hKpos : 0 < finrank ℂ (LinearMap.ker f)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.eq_zero_or_pos (finrank ℂ (LinearMap.ker f)) with h | h` into its components or cases. Apply the tactic sequence `exact (hKne (by first | exact Submodule.finrank_eq_zero.1 h | exact finrank_eq_zero.1 h)).elim`. Conclude with `h`. Establish `hRpos : 0 < finrank ℂ (LinearMap.range f)`. Break down `Nat.eq_zero_or_pos (finrank ℂ (LinearMap.range f)) with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply the tactic sequence `exact (hi (by first | exact Submodule.finrank_eq_zero.1 h | exact finrank_eq_zero.1 h)).elim`. Conclude with `h`. Establish `hK` using `IH _ (by omega) (LinearMap.ker f) rfl (fun j => rs _ (a j) (hKinv j)) (rs_comm _ a ha hKinv)`. Establish `hR` using `IH _ (by omega) (LinearMap.range f) rfl (fun j => rs _ (a j) (hRinv j)) (rs_comm _ a ha hRinv)`. Establish `h1` using `finrank_le_add_of_ker (Subalgebra.toSubmodule (Algebra.adjoin ℂ (Set.range a))) (pre (LinearMap.ker f)) (pre (LinearMap.range f)) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x _ hx1 hx2`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Establish `hv : v ∈ LinearMap.ker f ⊔ LinearMap.range f`. Rewrite using `[hc.sup_eq_top]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.mem_top`. Take `⟨k, hk, r, hr, rfl⟩` from `Submodule.mem_sup.1 hv`. Establish `e1` using `LinearMap.congr_fun hx1 ⟨k, hk⟩`. Establish `e2` using `LinearMap.congr_fun hx2 ⟨r, hr⟩`. Express the relevant statement in the definitionally equal form `x k = 0 at e1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Express the relevant statement in the definitionally equal form `x r = 0 at e2`. Rewrite using `[map_add, e1, e2, add_zero, LinearMap.zero_apply])`. Establish `h2` using `finrank_map_pre_le (LinearMap.ker f) a hKinv`. Establish `h3` using `finrank_map_pre_le (LinearMap.range f) a hRinv`. Rewrite `h1` using `[sub_finrank]`.
-
-Establish `h4` using `Nat.mul_le_mul_left t (le_trans h1 (Nat.add_le_add h2 h3))`. Rewrite using `[← hsum]`. Use polynomial arithmetic with `[Nat.zero_le (finrank ℂ (LinearMap.ker f) * finrank ℂ (LinearMap.range f))]`.
+A detailed English derivation is pending.
 -/
 theorem split_case (l t c n : ℕ) (IH : IHn l t c n) (V : Type) [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] (hn : finrank ℂ V = n) (a : Fin (l + 1) → Module.End ℂ V)
@@ -501,13 +493,13 @@ theorem split_case (l t c n : ℕ) (IH : IHn l t c n) (V : Type) [AddCommGroup V
   nlinarith [Nat.zero_le (finrank ℂ (LinearMap.ker f) * finrank ℂ (LinearMap.range f))]
 
 /- English proof (translation)
-Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Break down `Fin.eq_zero_or_eq_succ i with rfl | ⟨j, rfl⟩` into its components or cases. Conclude with `⟨algebraMap ℂ _ μ0, Subalgebra.algebraMap_mem _ _, 1, one_mem _, by rw [hb0, mul_one]; abel⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨a j.succ, Algebra.subset_adjoin (Set.mem_range_self j), 0, zero_mem _, by rw [mul_zero, add_zero]⟩`. Consider the case `algebraMap r`. Conclude with `⟨algebraMap ℂ _ r, Subalgebra.algebraMap_mem _ _, 0, zero_mem _, by rw [mul_zero, add_zero]⟩`. Consider the case `add x1 x2 _ _ h1 h2`. Take `⟨y1, hy1, z1, hz1, rfl⟩` from `h1`.
+Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨y2, hy2, z2, hz2, rfl⟩` from `h2`. Conclude with `⟨y1 + y2, add_mem hy1 hy2, z1 + z2, add_mem hz1 hz2, by rw [mul_add]; abel⟩`. Consider the case `mul x1 x2 _ _ h1 h2`. Take `⟨y1, hy1, z1, hz1, rfl⟩` from `h1`. Take `⟨y2, hy2, z2, hz2, rfl⟩` from `h2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hc1 : y1 * b0 = b0 * y1` using `hxb y1 (hle hy1)`. Establish `e : y1 * (b0 * z2) = b0 * (y1 * z2)` using `by rw [← mul_assoc, hc1, mul_assoc]`. Use `⟨y1 * y2, mul_mem hy1 hy2, z1 * y2 + y1 * z2 + z1 * (b0 * z2), add_mem (add_mem (mul_mem hz1 (hle hy2)) (mul_mem (hle hy1) hz2)) (mul_mem hz1 (mul_mem hb0mem hz2)), ?_⟩` and prove the remaining obligations. Simplify using `only [add_mul, mul_add, mul_assoc]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -545,15 +537,15 @@ theorem decomp (l : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V] (a : Fin (l 
     rw [e]; abel
 
 /- English proof (translation)
-Distinguish the cases in `hcase : t * m ≤ n + c`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hcase` using `[not_le]`. Establish `hm : 1 ≤ m`. Break down `Nat.eq_zero_or_pos m with h | h` into its components or cases.
+Consider separately whether the proposition holds or fails. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hcase` using `[h]`. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Establish `htpos : 0 < t`. Break down `Nat.eq_zero_or_pos t with h | h` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hcase` using `[h]`. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Establish `hd1` using `h1 hm`. Substitute `hdim` using the available equality.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `Nat.mul_le_mul_left (t * t) hsum2`. Establish `h5` using `Nat.mul_le_mul_left t hd1`. Establish `h3 : (n1 + m) * (n1 + m + c) ≤ (t * m) * (n1 + m + c)` using `Nat.mul_le_mul_right _ (by omega)`. Establish `h4 : (t * m) * (n1 + m + c) ≤ (t * m) * (2 * n1 + m + c)` using `Nat.mul_le_mul_left _ (by omega)`. Establish `key : t * (t * dA) ≤ t * ((n1 + m) ^ 2 + c * (n1 + m))` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Use `Nat.mul_lt_mul_of_pos_left hlt htpos` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem arith_local (t c n m n1 dA dA' d1 : ℕ) (hdim : n1 + m = n) (hI : dA ≤ m * n)
     (hsum2 : dA ≤ dA' + d1) (hA' : t * t * dA' ≤ n ^ 2 + c * n)
@@ -585,31 +577,29 @@ theorem arith_local (t c n m n1 dA dA' d1 : ℕ) (hdim : n1 + m = n) (hI : dA �
     omega
 
 /- English proof (translation)
-Simplify using `only [not_exists, not_not] at hs`. Set `b : Fin (l + 1) → Module.End ℂ V` to `fun i => a i - algebraMap ℂ (Module.End ℂ V) (μ i)`. Establish `hbmem : ∀ i, b i ∈ Algebra.adjoin ℂ (Set.range a)` using `fun i => sub_mem (Algebra.subset_adjoin (Set.mem_range_self i)) (Subalgebra.algebraMap_mem _ _)`. Establish `hab : ∀ i j, a j * b i = b i * a j`. Introduce `i j`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show a j * (a i - _) = (a i - _) * a j`. Rewrite using `[mul_sub, sub_mul, ha j i, Algebra.commutes]`. Establish `hxb : ∀ i, ∀ x ∈ Algebra.adjoin ℂ (Set.range a), x * b i = b i * x` using `fun i x hx => comm_of_mem a (b i) (fun j => hab i j) hx`. Establish `hbb : ∀ i j, b i * b j = b j * b i` using `fun i j => hxb j (b i) (hbmem i)`. Establish `hnil : ∀ i, ∃ M : ℕ, b i ^ M = 0` using `fun i => ⟨N i, LinearMap.range_eq_bot.1 (hs i)⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨V1, hV1⟩ : ∃ V1 : Submodule ℂ V, V1 = ⨆ i ∈ (Finset.univ : Finset (Fin (l + 1))), LinearMap.range (b i)` from `⟨_, rfl⟩`. Take `⟨L, hL⟩` from `Submodule.exists_isCompl V1`. Establish `hdim` using `Submodule.finrank_add_eq_of_isCompl hL`. Rewrite `hdim` using `[hn]`. Establish `hV1inv : ∀ j, ∀ v ∈ V1, a j v ∈ V1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hV1]`. Conclude with `fun j => iSup_range_inv _ b (a j) (fun i => hab i j)`. Establish `hI : finrank ℂ (Algebra.adjoin ℂ (Set.range a)) ≤ finrank ℂ L * n`. Rewrite using `[← sub_finrank, ← hn, ← finrank_hom L]`. Apply `injective_bound _ (pre L)` to reduce the goal to its premises.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx hx0`. Establish `hLk : L ≤ LinearMap.ker x`. Introduce `v hv`. Establish `e` using `LinearMap.congr_fun hx0 ⟨v, hv⟩`. Express the relevant statement in the definitionally equal form `x v = 0 at e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Conclude with `LinearMap.mem_ker.2 e`. Establish `hU : LinearMap.ker x = ⊤`. Apply `nak Finset.univ b hbb hnil` to reduce the goal to its premises. Introduce `i v hv`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : x (b i v) = b i (x v)` using `LinearMap.congr_fun (hxb i x hx) v`. Rewrite using `[e, hv, map_zero]`. Rewrite using `[← hV1, eq_top_iff, ← hL.sup_eq_top]`. Conclude with `sup_le le_sup_right (le_sup_of_le_left hLk)`. Conclude with `LinearMap.ker_eq_top.1 hU`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hle : Algebra.adjoin ℂ (Set.range fun j : Fin l => a j.succ) ≤ Algebra.adjoin ℂ (Set.range a)` using `Algebra.adjoin_mono (by rintro _ ⟨j, rfl⟩; exact ⟨j.succ, rfl⟩)`. Establish `hAsup : Subalgebra.toSubmodule (Algebra.adjoin ℂ (Set.range a)) ≤ Subalgebra.toSubmodule (Algebra.adjoin ℂ (Set.range fun j : Fin l => a j.succ)) ⊔ (Subalgebra.toSubmodule (Algebra.adjoin ℂ (Set.range a))).map (LinearMap.mulLeft ℂ (b 0))`. Introduce `x hx`. Take `⟨y, hy, z, hz, rfl⟩` from `decomp l a (b 0) (μ 0) rfl (hxb 0) (hbmem 0) hle hx`. Conclude with `Submodule.add_mem_sup hy (Submodule.mem_map.2 ⟨z, hz, rfl⟩)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmul : finrank ℂ ((Subalgebra.toSubmodule (Algebra.adjoin ℂ (Set.range a))).map (LinearMap.mulLeft ℂ (b 0))) ≤ finrank ℂ ((Subalgebra.toSubmodule (Algebra.adjoin ℂ (Set.range a))).map (pre V1))`. Apply `finrank_map_le_of_ker` to reduce the goal to its premises. Introduce `x hx hx0`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hbv : b 0 v ∈ V1`. Rewrite using `[hV1]`. Conclude with `(le_iSup₂ (f := fun i (_ : i ∈ (Finset.univ : Finset (Fin (l + 1)))) => LinearMap.range (b i)) 0 (Finset.mem_univ 0)) (LinearMap.mem_range_self _ _)`. Establish `e1` using `LinearMap.congr_fun hx0 ⟨b 0 v, hbv⟩`. Express the relevant statement in the definitionally equal form `x (b 0 v) = 0 at e1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (b 0 * x) v = (x * b 0) v` using `(LinearMap.congr_fun (hxb 0 x hx) v).symm`. Use `show (b 0 * x) v = 0`. Rewrite using `[e2]`. Conclude with `e1`. Establish `h3` using `finrank_map_pre_le V1 a hV1inv`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `Submodule.finrank_mono hAsup`. Establish `h5` using `Submodule.finrank_add_le_finrank_add_finrank (Subalgebra.toSubmodule (Algebra.adjoin ℂ (Set.range fun j : Fin l => a j.succ))) ((Subalgebra.toSubmodule (Algebra.adjoin ℂ (Set.range a))).map (LinearMap.mulLeft ℂ (b 0)))`. Establish `eA` using `sub_finrank (Algebra.adjoin ℂ (Set.range a))`. Establish `eA'` using `sub_finrank (Algebra.adjoin ℂ (Set.range fun j : Fin l => a j.succ))`. Establish `hsum2 : finrank ℂ (Algebra.adjoin ℂ (Set.range a)) ≤ finrank ℂ (Algebra.adjoin ℂ (Set.range fun j : Fin l => a j.succ)) + finrank ℂ (Algebra.adjoin ℂ (Set.range fun j => rs V1 (a j) (hV1inv j)))`.
-
-Use linear arithmetic over natural numbers and integers. Establish `hA'` using `hP V (fun j : Fin l => a j.succ) (fun i j => ha i.succ j.succ)`. Rewrite `hA'` using `[hn]`. Conclude with `arith_local t c n (finrank ℂ L) (finrank ℂ V1) _ _ _ hdim hI hsum2 hA' (fun hm => IH _ (by omega) V1 rfl (fun j => rs V1 (a j) (hV1inv j)) (rs_comm V1 a ha hV1inv))`.
+A detailed English derivation is pending.
 -/
 theorem local_case (l t c : ℕ) (hP : Pl l (t * t) c) (n : ℕ) (IH : IHn l t c n) (V : Type)
     [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (hn : finrank ℂ V = n)
@@ -695,19 +685,17 @@ theorem local_case (l t c : ℕ) (hP : Pl l (t * t) c) (n : ℕ) (IH : IHn l t c
     (fun hm => IH _ (by omega) V1 rfl (fun j => rs V1 (a j) (hV1inv j)) (rs_comm V1 a ha hV1inv))
 
 /- English proof (translation)
-It suffices to establish `H : ∀ n : ℕ, ∀ (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V], finrank ℂ V = n → ∀ (a : Fin (l + 1) → Module.End ℂ V), (∀ i j, a i * a j = a j * a i) → t * finrank ℂ (Algebra.adjoin ℂ (Set.range a)) ≤ n ^ 2 + c * n by`. Introduce `V _ _ _ a ha`. Conclude with `H _ V rfl a ha`. Introduce `n`. Use `Nat.strong_induction_on n ?_` and prove the remaining obligations.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n IH V _ _ _ hn a ha`. Break down `Nat.eq_zero_or_pos n with hn0 | hnpos` into its components or cases. Substitute `hn0` using the available equality. Establish `h` using `finrank_sub_le_sq (Algebra.adjoin ℂ (Set.range a))`. Rewrite `h` using `[hn]`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: finrank ℂ (Algebra.adjoin ℂ (Set.range a)) = 0` using `by omega`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Use `haveI : Nontrivial V := Module.finrank_pos_iff.1 (show 0 < finrank ℂ V by omega)`. Use `choose μ hμ using fun i => Module.End.exists_eigenvalue (a i)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b : Fin (l + 1) → Module.End ℂ V` to `fun i => a i - algebraMap ℂ (Module.End ℂ V) (μ i)`. Establish `hb : ∀ i, b i = a i - algebraMap ℂ (Module.End ℂ V) (μ i)` using `fun i => rfl`. Establish `hamem : ∀ i, a i ∈ Algebra.adjoin ℂ (Set.range a)` using `fun i => Algebra.subset_adjoin (Set.mem_range_self i)`. Establish `hbmem : ∀ i, b i ∈ Algebra.adjoin ℂ (Set.range a)` using `fun i => sub_mem (hamem i) (Subalgebra.algebraMap_mem _ _)`. Establish `hab : ∀ i j, a j * b i = b i * a j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i j`. Rewrite using `[hb, mul_sub, sub_mul, ha j i, Algebra.commutes]`. Establish `hxa : ∀ i, ∀ x ∈ Algebra.adjoin ℂ (Set.range a), x * a i = a i * x` using `fun i x hx => comm_of_mem a (a i) (fun j => ha j i) hx`. Establish `hxb : ∀ i, ∀ x ∈ Algebra.adjoin ℂ (Set.range a), x * b i = b i * x` using `fun i x hx => comm_of_mem a (b i) (fun j => hab i j) hx`. Establish `hbb : ∀ i j, b i * b j = b j * b i` using `fun i j => hxb j (b i) (hbmem i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Establish `hfit : ∀ i, ∃ N : ℕ, IsCompl (LinearMap.ker (b i ^ N)) (LinearMap.range (b i ^ N)) ∧ 1 ≤ N`. Introduce `i`. Use `first`. Consider the case `exact ((LinearMap.eventually_isCompl_ker_pow_range_pow (b i)).and (Filter.eventually_ge_atTop 1)).exists`. Consider the case `exact ((Module.End.eventually_isCompl_ker_pow_range_pow (b i)).and (Filter.eventually_ge_atTop 1)).exists`.
-
-Use `choose N hN using hfit`. Distinguish the cases in `hs : ∃ i, LinearMap.range (b i ^ N i) ≠ ⊥`. Conclude with `split_case l t c n IH V hn a ha μ hμ N hN hs`. Conclude with `local_case l t c hP n IH V hn a ha μ N hs`.
+Treat this case separately. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem step (l t c : ℕ) (hP : Pl l (t * t) c) : Pl (l + 1) t c := by
   suffices H : ∀ n : ℕ, ∀ (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V],
@@ -751,9 +739,9 @@ theorem step (l t c : ℕ) (hP : Pl l (t * t) c) : Pl (l + 1) t c := by
   · exact local_case l t c hP n IH V hn a ha μ N hs
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `zero => intro t`. Conclude with `⟨t, base t⟩`. Consider the case `succ l ih => intro t`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨c, hc⟩` from `ih (t * t)`. Conclude with `⟨c, step l t c hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem allP : ∀ l t : ℕ, ∃ c, Pl l t c := by
   intro l
@@ -766,7 +754,7 @@ end DiscreteGroups.sglob.LConv.Comm
 namespace DiscreteGroups.sglob.LConv
 
 /- English proof (translation)
-Introduce `l t`. Take `⟨c, hc⟩` from `Comm.allP l t`. Conclude with `⟨c, hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem commBound : CommBound := by
   intro l t

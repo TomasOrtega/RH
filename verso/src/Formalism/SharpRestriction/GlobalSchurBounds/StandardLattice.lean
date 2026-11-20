@@ -298,7 +298,7 @@ def gram_det_kernel_dual_lattice (D : D7) : Prop :=
   ∀ M : ℕ, 2 ≤ M → |Real.log (Formalism.HermitianLatticesTheory.lValEta D.host.E M)| ≤ (D.R.f : ℝ) * Real.log (zetaR M)
 
 /- English proof (translation)
-Set `_` to `D.host.cmStar`. Introduce `M hM`. Conclude with `h D.host.E D.sp.cm.cmUnram M hM`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mass_ratio_of_general (D : D7) (h : SiegelMassRatioCM) : MassRatio₂ D := by
   let _ := D.host.cmStar
@@ -306,11 +306,11 @@ theorem mass_ratio_of_general (D : D7) (h : SiegelMassRatioCM) : MassRatio₂ D 
   exact h D.host.E D.sp.cm.cmUnram M hM
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero => simp [facProd]`. Consider the case `succ m`. Establish `h1` using `Matrix.det_vandermonde (fun i : Fin (m + 1) => ((i : ℕ) : ℝ))`. Establish `h2` using `Matrix.det_vandermonde_id_eq_superFactorial (R := ℝ) m`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (∏ a : Fin (m + 1), ∏ b ∈ univ.filter (fun b : Fin (m + 1) => a < b), (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ))) = ∏ i : Fin (m + 1), ∏ j ∈ Ioi i, (((j : ℕ) : ℝ) - ((i : ℕ) : ℝ))`. Use `Finset.prod_congr rfl fun a _ => Finset.prod_congr ?_ fun _ _ => rfl` and prove the remaining obligations. Use extensionality with `b`. Simplify using the standard rewrite rules. Rewrite using `[h3, ← h1, h2, facProd, ← Nat.prod_range_succ_factorial]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem prod_gap_eq_facProd (n : ℕ) :
     (∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b), (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ))) = facProd n := by
@@ -328,9 +328,9 @@ theorem prod_gap_eq_facProd (n : ℕ) :
     rfl
 
 /- English proof (translation)
-Unfold `dimV Formalism.QuantumDeterminants.fdegHC vand`. Rewrite using `[prod_gap_eq_facProd]`. Use `congr 1`. Use `Finset.prod_congr rfl fun a _ => Finset.prod_congr rfl fun b hb => ?_` and prove the remaining obligations. Establish `hab : a < b` using `(Finset.mem_filter.1 hb).2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[abs_of_pos (sub_pos.2 (h hab))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dimV_eq_fdegHC {n : ℕ} (lam : Fin n → ℝ) (h : StrictAnti lam) :
     dimV lam = Formalism.QuantumDeterminants.fdegHC lam := by
@@ -481,7 +481,7 @@ def Conclusion4f (D : D7) (_Lv : LevelData D) : Prop :=
       duStarU D u * (((D.mem u).A.T : ℝ) ^ D.R.k - 1) ^ D.R.f
 
 /- English proof (translation)
-Introduce `hg hs u hT hM`. Rewrite using `[hM (hd hg u), hn hg hs u hT]`. Unfold `duStarU duStarP`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem level_rank_of_trivial_stabilisers (D : D7) (Lv : LevelData D) (hd : SmallOrderPrimeLogSumBound D Lv) (hn : ClassNumberFormula₂ D Lv) : Conclusion4f D Lv := by
   intro hg hs u hT hM
@@ -606,9 +606,9 @@ def Stmt (D : D7) (Lv : LevelData D) (sc : Scale) (C3 C0 C : ℝ) : Prop :=
   admitted D Lv → TiesP D → Conclusion₂ D Lv sc C3 C0 C
 
 /- English proof (translation)
-Introduce and unpack `⟨hA3, h17⟩ ⟨hV, hc, hd⟩`. Establish `p2` using `h2 h1 hV`. Establish `p3a` using `h3a hA3 hc`. Establish `p3` using `h3 p3a hA3.2.2 hd`. Establish `p4` using `h4 p2 p3 h17`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p4B` using `h4B p4`. Conclude with `⟨h1, h2a h1, p2, p3a, p3, p4, p4B, h5 p2 p3 p4.1 p4.2.1 p4B⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem stmt_of_items (D : D7) (Lv : LevelData D) (sc : Scale) (C3 C0 C : ℝ)
     (h1 : IntegralityFromMetric D) (h2a : AbsoluteConstantSecondPart D) (h2 : HodgeTateFromSandwich D) (h3a : TheoremThreeCompactDual D C3) (h3 : TowerRallisLemma D C3)
@@ -660,9 +660,9 @@ def ConclusionOnFamily (C3 : ℝ) : Prop :=
 def KudlaFamilyStatement (C3 : ℝ) : Prop := AdmF Fm → TiesF Fm → ConclusionOnFamily Fm C3
 
 /- English proof (translation)
-Introduce and unpack `⟨hA3, h17⟩ ⟨hV, hd⟩`. Establish `p2` using `h2 h1 hV`. Establish `p3a` using `h3a hA3`. Establish `p3` using `h3 p3a hA3 hd`. Establish `p4` using `h4 p2 p3 h17`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p4B` using `h4B p4`. Conclude with `⟨h1, h2a h1, p2, p3a, p3, p4, p4B, h5 p2 p3 p4 p4B⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem stmtF_of_items (C3 : ℝ) (h1 : PeriodFamilyStatement Fm) (h2a : FamilyMassTheoremAll Fm) (h2 : DeterminantValueFamily Fm)
     (h3a : FamilyTheoremThreeAll Fm C3) (h3 : FlatLineDegreeFamilyStatement Fm C3) (h4 : LiftNormFamilyStatement Fm C3) (h4B : FamilySectionBStatement Fm C3)
@@ -682,13 +682,13 @@ def FactDuStar (D : D7) : Prop := ∀ u, ((D.mem u).A.duStar : ℝ) = duStarU D 
 def FactDstar (D : D7) : Prop := D.what₂.Dstar = DstarD D
 
 /- English proof (translation)
-The claim follows from `(Fm.ex x hx i).duStar_def`.
+A detailed English derivation is pending.
 -/
 theorem factDuStar_fam {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) :
     FactDuStar (Fm.D x i) := (Fm.ex x hx i).duStar_def
 
 /- English proof (translation)
-The claim follows from `(Fm.ex x hx i).Dstar_def`.
+A detailed English derivation is pending.
 -/
 theorem factDstar_fam {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) :
     FactDstar (Fm.D x i) := (Fm.ex x hx i).Dstar_def

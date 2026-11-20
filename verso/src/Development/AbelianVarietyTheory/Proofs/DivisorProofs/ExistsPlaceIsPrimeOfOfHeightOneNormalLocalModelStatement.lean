@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MemRange
 open GlobalTheory GlobalTheory.FieldPair
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FieldPair.exists_place_isPrimeOf_of_height_eq_one | exact GlobalTheory.FieldPair.exists_place_isPrimeOf_of_height_eq_one | (intros; apply GlobalTheory.FieldPair.exists_place_isPrimeOf_of_height_eq_one <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_place_isPrimeOf_of_height_one_normal_localModel : ∀ {K : Type} [Field K] (cK : ℂ →+* K) (R : Subring K), IsLocModel cK R → IsIntegrallyClosed R →
     ∀ p : Ideal R, p.IsPrime → p.height = 1 →

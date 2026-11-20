@@ -11,7 +11,7 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Rewrite using `[← Real.rpow_add hvr]`. Evaluate the numerical expressions using `[Real.rpow_neg_one]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem ShortVectorsOrthogonal.rpow_neg_half_mul_self {vr : ℝ} (hvr : 0 < vr) :
     vr ^ (-(1 / 2 : ℝ)) * vr ^ (-(1 / 2 : ℝ)) = vr⁻¹ := by
@@ -19,11 +19,11 @@ theorem ShortVectorsOrthogonal.rpow_neg_half_mul_self {vr : ℝ} (hvr : 0 < vr) 
   norm_num [Real.rpow_neg_one]
 
 /- English proof (translation)
-Introduce `L _ len E a vr h v w hv hw`. Use `set r := vr ^ (-(1 / 2 : ℝ)) with hr`. Establish `hvr` using `h.vr_pos`. Establish `hr_pos : 0 < r` using `Real.rpow_pos_of_pos hvr _`. Establish `hrr : vr * (r * r) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr, ShortVectorsOrthogonal.rpow_neg_half_mul_self hvr, mul_inv_cancel₀ hvr.ne']`. Establish `hv0` using `h.len_nonneg v`. Establish `hw0` using `h.len_nonneg w`. Establish `hprod : len v * len w < r * r`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hbound : |(E (a v) w : ℝ)| < 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hint : |E (a v) w| < 1` using `by exact_mod_cast hbound`. Conclude with `Int.abs_lt_one_iff.mp hint`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ShortVectorsOrthogonal.proof : ShortVectorsOrthogonal.Statement := by
   intro L _ len E a vr h v w hv hw

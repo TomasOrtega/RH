@@ -18,7 +18,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.GenusStab
 
 /- English proof (translation)
-Rewrite using `[finrank_Vp]`. Establish `h2` using `D.R.two_le_m`. Take `⟨c, hc⟩` from `D.R.m_even`. Simplify using `only [Ranks.r, Ranks.rS]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_Vp_k (D : D7) (p : PlF D) :
     Module.finrank (D.s.atP p).Ep (Vp D p) = D.R.k + 2 * D.R.rS + 1 := by
@@ -29,23 +29,21 @@ theorem finrank_Vp_k (D : D7) (p : PlF D) :
   omega
 
 /- English proof (translation)
-Introduce `D X Y u u' F F' w hw hG Z FP hB hRel Λ d y y' hov hgen hgr`. Take `⟨hext, hUW, -, hmove⟩` from `GlobalTheory.T.rationalAutomorphism_local_extension_moves_lattices D X Y u u' F F' w hw hG Z FP hB hRel`. Take `⟨h, hh, hmv⟩` from `hgr`. Take `⟨y'', hov'', hmv''⟩` from `hmove h hh Λ y hov`. Establish `hact` using `fun p => GlobalTheory.T.exists_complementUnitary_mulAction_localInnerDatum (Z.M p) (Z.agree p).1 (locH Z p) D.R.rS D.R.k (FP p) (finrank_Vp_k D p) (hRel p)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose act hiff _ using hact`. Establish `heq : ∀ p, y' p = y'' p`. Introduce `p`. Take `⟨g1, he1, hm1⟩` from `hmv p`. Take `⟨g2, he2, hm2⟩` from `hmv'' p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : g1 = g2` from `(hext h p).unique he1 he2`. Establish `hg : g1 ∈ (FP p).UW0` using `hUW h hh p g1 he1`. Establish `a1` using `((hiff p) ⟨g1, hg⟩ (y p) (y' p)).1 hm1`. Establish `a2` using `((hiff p) ⟨g1, hg⟩ (y p) (y'' p)).1 hm2`. Rewrite using `[← a1, ← a2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun p => ?_, ?_⟩` and prove the remaining obligations. Take `⟨g0, hg0, hm0⟩` from `hgen.1 p`. Take `⟨g1, he1, hm1⟩` from `hmv p`. Establish `hg1 : g1 ∈ (FP p).UW0` using `hUW h hh p g1 he1`. Establish `a0` using `((hiff p) ⟨g0, hg0⟩ (d p) (y p)).1 hm0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1` using `((hiff p) ⟨g1, hg1⟩ (y p) (y' p)).1 hm1`. Use `⟨g1 * g0, mul_mem hg1 hg0, ((hiff p) ⟨g1 * g0, mul_mem hg1 hg0⟩ (d p) (y' p)).2 ?_⟩` and prove the remaining obligations. Use `letI := act p`. Set `a : (FP p).UW0` to `⟨g1, hg1⟩`. Set `b : (FP p).UW0` to `⟨g0, hg0⟩`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hm : (a * b) • d p = a • (b • d p)` using `mul_smul a b (d p)`. Express the relevant statement in the definitionally equal form `(a * b) • d p = y' p`. Rewrite using `[hm]`. Express the relevant statement in the definitionally equal form `a • (act p).smul b (d p) = y' p`. Rewrite using `[a0]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `a1`. Establish `hfin` using `((GlobalTheory.T.hermitianLattice_local_global_principle D Z).1 Λ (Formalism.HermitianLatticesTheory.gmap h Λ) hov.1 hov''.1).1`. Use `(hfin.union hgen.2).subset fun p hp => ?_` and prove the remaining obligations. Distinguish the cases in `hyd : y p = d p`. Use `left`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `hl`. Apply `hp` to reduce the goal to its premises. Rewrite using `[heq p, ← hyd]`. Take `⟨τ, hτ, hL⟩` from `hov.2 p`. Take `⟨τ'', hτ'', hL''⟩` from `hov''.2 p`.
-
-Establish `hlam : τ''.abelian₂ = τ.abelian₂` using `by rw [hL'', hL]; exact hl.symm`. Establish `key` using `GlobalTheory.T.hermitianDatum_eq_of_same_lattice (Z.M p) (Z.agree p).1 (locH Z p) D.R.rS D.R.k (FP p) (finrank_Vp_k D p) (hRel p) (y'' p) (y p) τ'' τ hτ'' hτ`. Conclude with `key hlam`. Use `right`. Conclude with `hyd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inGen_of_gRel : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (w : Point D.host.E (D.R.rS + 1)), ZhatOM (ZhatL F F') = ptMat w → Gval F F' ≠ 0 → ∀ (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS), Based Z FP (Tu D u) (Tu D u') F F' → (∀ p, (FP p).RelG (LocNG.theta (Z.M p))) → ∀ (Λ : LV D) (d y y' : Dat Z FP), LocOver Λ y → InGen d y → GRel F F' y y' → InGen d y' := by
   intro D X Y u u' F F' w hw hG Z FP hB hRel Λ d y y' hov hgen hgr

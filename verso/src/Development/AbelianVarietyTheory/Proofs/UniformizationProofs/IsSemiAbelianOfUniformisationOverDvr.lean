@@ -16,11 +16,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `c₁ : CompactSpace ↥(pullback f (spMap (IsLocalRing.residue V)))` using `QuasiCompact.compactSpace_of_compactSpace (pullback.snd f _)`. Establish `c₂ : CompactSpace ↥(pullback f (jK V))` using `QuasiCompact.compactSpace_of_compactSpace (pullback.snd f _)`. Establish `hu : Set.range (pullback.fst f (spMap (IsLocalRing.residue V))) ∪ Set.range (pullback.fst f (jK V)) = Set.univ`. Rewrite using `[Scheme.Pullback.range_fst, Scheme.Pullback.range_fst, Set.eq_univ_iff_forall]`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : (Sp V).fromSpecResidueField (f x) (default : PrimeSpectrum _) = f x` using `Scheme.fromSpecResidueField_apply _ _`. Break down `ZJ.field_point_factor_dvr V ((Sp V).residueField (f x)) ((Sp V).fromSpecResidueField (f x)) with ⟨r, hr⟩ | ⟨r, hr⟩` into its components or cases. Conclude with `Or.inl ⟨r (default : PrimeSpectrum _), (congrArg (fun g => g (default : PrimeSpectrum _)) hr).symm.trans hx⟩`. Conclude with `Or.inr ⟨r (default : PrimeSpectrum _), (congrArg (fun g => g (default : PrimeSpectrum _)) hr).symm.trans hx⟩`. Establish `: CompactSpace X` using `⟨hu ▸ (isCompact_range (pullback.fst f _).continuous).union (isCompact_range (pullback.fst f _).continuous)⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact.
 
-Conclude with `(quasiCompact_iff_compactSpace f).2 this`.
+A detailed English derivation is pending.
 -/
 theorem quasiCompact_of_fibres_dvr (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     {X : Scheme.{0}} (f : X ⟶ Sp V)
@@ -45,11 +45,11 @@ theorem quasiCompact_of_fibres_dvr (V : Type) [CommRing V] [IsDomain V] [IsDiscr
   exact (quasiCompact_iff_compactSpace f).2 this
 
 /- English proof (translation)
-Introduce `V _ _ _ D A G _ _ U`. Take `⟨E, -, -, -, -, hE⟩` from `gtCoord_isGt V (maximalIdeal V) D.toPre 0 G ⟨U.gt 0⟩`. Establish `h0` using `isSemiAbelian_of_isGt _ E _ hE`. Use `U.gen_hom` as an intermediate fact. Establish `hK : IsSemiAbelian ((Over.pullback (jK V)).obj G)` using `isSemiAbelian_of_grpIso U.gen (isSemiAbelian_of_isAbelianScheme A.A A.isAb)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ρ : V ⧸ (maximalIdeal V) ^ (0 + 1) →+* ResidueField V` to `Ideal.Quotient.factor (Ideal.pow_le_self (by norm_num))`. Establish `hr : spMap (residue V) = spMap ρ ≫ thick V (maximalIdeal V) 0`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Establish `hk : IsSemiAbelian ((Over.pullback (spMap (residue V))).obj G)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[hr]`. Conclude with `isSemiAbelian_of_grpIso (pullCompIso (spMap ρ) (thick V (maximalIdeal V) 0) G) (IsSemiAbelian.pullback (spMap ρ) _ h0)`. Conclude with `ZJ.isSemiAbelian_of_fibres_dvr V G U.smooth U.separated (quasiCompact_of_fibres_dvr V G.hom hk.quasiCompact hK.quasiCompact) hk hK`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSemiAbelian_of_unifPre_dvr : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (D : DegData V (maximalIdeal V)) (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G], UnifPre (maximalIdeal V) D A G → IsSemiAbelian G := by
   intro V _ _ _ D A G _ _ U

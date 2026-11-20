@@ -26,7 +26,7 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Establish `e3 : (frGL β y).1 = β.1 * (intGL F E n y).1 * (β⁻¹).1` using `rfl`. Rewrite using `[e3, Matrix.mulVec_sub, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_sub_eq (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y : GL (Fin n) (Formalism.L2.Herm.intAf F E))
     (v : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) :
@@ -36,13 +36,13 @@ theorem frame_sub_eq (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y : GL
     Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.Grid.mem_princGL, ← stabilizer_eq_stabilizer_lattice F E n Λ β hfr]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl, hy⟩`. Use `⟨⟨y, rfl⟩, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.FrameIdeal.mem_hatL_smul_iff β Λ hfr I, frame_sub_eq]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Establish `hw` using `(hfr v).1 hv`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `GlobalTheory.FrameIdeal.inId_sum _ fun k => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.FrameIdeal.inId_mul (hw k) ⟨_, hy i k, GlobalTheory.LevRedTriv.coe_sub_one_apply y i k⟩`. Introduce and unpack `⟨⟨y, rfl⟩, h⟩`. Use `⟨y, rfl, fun i j => ?_⟩` and prove the remaining obligations. Establish `h1` using `(GlobalTheory.FrameIdeal.mem_hatL_smul_iff β Λ hfr I _).1 (h _ (GlobalTheory.ChainOnto.LStab.col_mem_hatL hfr j)) i`. Establish `e : (β⁻¹).1 *ᵥ (β.1 *ᵥ Pi.single j 1) = Pi.single j (1 : E ⊗[F] Formalism.L2.Herm.Af F)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Rewrite `h1` using `[frame_sub_eq, e, Matrix.mulVec_single_one]`. Take `⟨s, hs, e⟩` from `h1`. Establish `: s = (y.1 - 1) i j` using `Subtype.ext (e.trans (GlobalTheory.LevRedTriv.coe_sub_one_apply y i j).symm)`. Conclude with `this ▸ hs`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_princGL_iff {β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ : Submodule (𝓞 E) (Fin n → E)}
     (hfr : IsFrame β Λ) (I : Ideal (𝓞 E)) (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) :
@@ -70,7 +70,7 @@ theorem mem_princGL_iff {β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ 
     exact this ▸ hs
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Subgroup.mem_inf, mem_princGL_iff hfr, mem_congLev]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem princ_eq_congLev [StarRing E] (hc : CMData F E) (J : Matrix (Fin n) (Fin n) E) {β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)}
     {Λ : Submodule (𝓞 E) (Fin n → E)} (hfr : IsFrame β Λ) (I : Ideal (𝓞 E)) :
@@ -91,9 +91,9 @@ namespace GlobalTheory.ColMeas
 open GlobalTheory.GridJoin
 
 /- English proof (translation)
-Take `⟨L, h1, h2, e⟩` from `hsp`. Take `⟨V', S, M, Λ', β⟩` from `N`. Simplify using `only at e hlat hfr ⊢`. Substitute `e` using the available equality. Take `rfl` from `eq_of_heq hlat`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨ν, fd⟩, HEq.rfl, HEq.rfl, fun h => h.elim, fun _ => ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.Grid.Node.princ`. Rewrite using `[princ_eq_congLev _ _ hfr]`. Conclude with `hm`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_measDat {D : D7} (N : GlobalTheory.Grid.Node D) {V : HSp D} (hsp : SameSp V N.V)
     {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (hlat : HEq N.Λ Λ) (hfr : IsFrame N.β N.Λ)
@@ -119,13 +119,13 @@ noncomputable section
 namespace GlobalTheory.ColMeas
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R ch G hG hsp hfr hrow`. Establish `H : ∀ i, ∃ md : (G.V i 0).MeasDat, i ≤ D.R.m → HEq md.ν (ch.M.ν (.grid i 0)) ∧ HEq md.fd (ch.M.fd (.grid i 0)) ∧ md.Is False ((G.V i 0).princ (G.lvl R))`. Introduce `i`. Distinguish the cases in `hi : i ≤ D.R.m`. Establish `hN` using `hsp.vert i 0 hi (Nat.zero_le _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hr` using `hrow.row i hi`. Establish `hne : GlobalTheory.ChiGrid.Node.neg D.R.m (.grid i 0) ≠ 0`. Simplify using `only [GlobalTheory.ChiGrid.Node.neg, Nat.sub_zero]`. Use `D.R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Unfold `Vol.IsAt at hr`. Rewrite `hr` using `[if_neg hne]`. Take `⟨md, h1, h2, h3⟩` from `exists_measDat (G.V i 0) hN.sp hN.lat (hfr i hi) _ hr`. Conclude with `⟨md, fun _ => ⟨h1, h2, hsp.lvl ▸ h3⟩⟩`. Conclude with `⟨G.measCol i, fun h => absurd h hi⟩`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose f hf using H`. Use `⟨f 0, fun i j => match j with | 0 => f (i + 1) | j + 1 => G.mV i (j + 1), ⟨fun i hi => ?_, fun i j hi hj => hG.vert i j hi hj, hG.P, hG.X⟩, fun i hi => ?_, fun i hi => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `cases i <;> exact (hf _ hi).2.2`. Apply the tactic sequence `cases i <;> exact (hf _ hi).1`. Apply the tactic sequence `cases i <;> exact (hf _ hi).2.1`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem measCol_of_choice : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R)

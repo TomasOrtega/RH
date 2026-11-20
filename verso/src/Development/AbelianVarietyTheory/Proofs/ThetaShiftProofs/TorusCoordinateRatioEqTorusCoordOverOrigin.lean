@@ -9,9 +9,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.AbelianLetters.TorusRatio
 
 /- English proof (translation)
-Establish `e` using `h j PEmpty.elim hj (fun k => k.elim) (fun _ k => k.elim)`. Establish `hx' : ⊤ ≤ x ⁻¹ᵁ (LB.wchart L φ j ⊓ LB.wchart L (PEmpty.elim : PEmpty → (Y ⟶ X)) PEmpty.elim)` using `fun y hy => ⟨hx hy, Set.mem_iInter.2 fun k => k.elim⟩`. Establish `e1 : res (inf_le_left : LB.wchart L φ j ⊓ LB.wchart L (PEmpty.elim : PEmpty → (Y ⟶ X)) PEmpty.elim ≤ _) (t.s j) = 1` using `e.trans (map_one _)`. Use `(HolHom.valR_res x inf_le_left _ hx').symm.trans ?_` and prove the remaining obligations. Use `(congrArg (fun q => valR x _ q.val) e1).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(HolHom.valR_eq x _ hx' _).trans (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem valR_of_corr_one {A : Type} [CommRing A] {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {ε : K → ℤ}
     {φ : K → (Y ⟶ X)} {t : LB.Gen (LB.LinComb L φ ε)} (h : LB.Gen.Corr L _ _ _ _ t (LB.oneGen L))
@@ -27,9 +27,9 @@ theorem valR_of_corr_one {A : Type} [CommRing A] {X Y : Scheme.{0}} {L : LB X} {
   exact (HolHom.valR_eq x _ hx' _).trans (map_one _)
 
 /- English proof (translation)
-Use `corr_of_val D.P.isLB fun y J hJ => ?_` and prove the remaining obligations. Establish `e` using `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_pull hJ _ _ _))).symm.trans ((val_corr hJ (h.2 χ) (𝟙 _)).trans (val_mul hJ _ _ _))`. Establish `c1 : TorusCoord.cubVal (𝟙 _ ≫ (lift (Out.DegPre.cT D T χ) (lift g.b g.b)).left) y J = 1`. Rewrite using `[Category.id_comp, hb]`. Conclude with `(isCub_cubV D.cub hJ).face₂ _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `(congrArg (val (g.s χ) (𝟙 _) y J * ·) c1).symm.trans e`. Rewrite `e2` using `[_root_.mul_one]`. Conclude with `(mul_eq_left.1 e2.symm).trans (val_one _).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isZero_of_isAdd {R : Type} [CommRing R] [IsDomain R] {D : Out.DegPre R} {T : Over (Sp R)}
     {g : Out.GtPt D T} (hb : g.b = 1) (h : Out.GtPt.IsAdd g g g) (χ : D.X) :
@@ -45,15 +45,13 @@ theorem isZero_of_isAdd {R : Type} [CommRing R] [IsDomain R] {D : Out.DegPre R} 
   exact (mul_eq_left.1 e2.symm).trans (val_one _).symm
 
 /- English proof (translation)
-Use `⟨fun p hp => ⟨hp.1, fun χ j hj hc => valR_of_corr_one (hp.2 χ) (𝟙 (Sp ℂ)) j hj hc⟩, fun u hu z xv hz ht x => ?_⟩` and prove the remaining obligations. Establish `hz1 : (ex z).b = 1` using `hz`. Take `⟨J, hJ⟩` from `TorusCoord.exists_good' D.P.isLB (Z := Sp ℂ) (IsLocalRing.closedPoint ℂ)`. Establish `hs : (sB (Out.TF (R` using `ℂ) ℂ) 1).b = (ex ((n : ℂ) • z)).b := by`. Rewrite using `[hb, b_nsmul hex, hz1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `j : Fin 4 → D.P.L.ι` to `fun k => J (Out.DegPre.gtφ D ℂ (ex ((n : ℂ) • z)).b x k)`. Establish `hj : LB.Coh D.P.L (Out.DegPre.gtφ D ℂ (ex ((n : ℂ) • z)).b x) j` using `fun _ _ e => congrArg J e`. Establish `hc : ⊤ ≤ LB.wchart D.P.L (Out.DegPre.gtφ D ℂ (ex ((n : ℂ) • z)).b x) j` using `fun y _ => Set.mem_iInter.2 fun k => by`. Take `rfl : y = IsLocalRing.closedPoint ℂ` from `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Conclude with `hJ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `hu x z j hc`. Rewrite `h1` using `[ht.2 x j hj hc]`. Establish `hp` using `hpull D.P.A (Out.TF (R := ℂ) ℂ) (ex z).b (𝟙 _)`. Establish `ha` using `hadd (Out.TF (R := ℂ) ℂ) 1 1`. Rewrite `ha` using `[_root_.mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (ex z).b ≫ 𝟙 D.P.A = 1` using `(Category.comp_id _).trans hz1`. Rewrite `hp` using `[e1]`. Establish `h2` using `valR_of_isPull (A := ℂ) (p := (Out.TF (R := ℂ) ℂ).hom) hp x j`. Establish `h3` using `valR_of_corr_one (isZero_of_isAdd ((hb _ _).trans (one_pow n)) ha x) (𝟙 (Sp ℂ)) j (by rw [hs]; exact hj) (by rw [hs]; exact hc)`. Establish `h4` using `h2.symm.trans h3`.
-
-Conclude with `((congrArg (u x z * ·) h4).trans (_root_.mul_one _)).symm.trans h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ratio_eq_torus_coord [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (D : Out.DegPre ℂ)
     (g n : ℕ) (ex : (Fin g → ℂ) → Out.GtPtF D ℂ) (sB : ∀ Tt : Over (Sp ℂ), (Tt ⟶ D.P.A) → Out.GtPt D Tt)

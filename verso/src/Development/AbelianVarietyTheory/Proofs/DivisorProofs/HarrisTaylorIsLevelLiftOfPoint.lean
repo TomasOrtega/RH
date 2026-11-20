@@ -10,25 +10,23 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Introduce `p _ D R _ b N N' hd hc S S' s s' o o' f om T g lv hT hlv`. Take `⟨T, ⟨⟨⟩⟩, h⟩` from `T`. Express the relevant statement in the definitionally equal form `T ⟶ S' at g`. Use `replace hT : (g ≫ f : T ⟶ S) = h := hT`. Substitute `hT` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ⟩ : ∃ φ : o'.A.left ⟶ o.A.left, φ = om.φ` from `⟨om.φ, rfl⟩`. Establish `hlv' : ∀ a, (lv a).left = g ≫ (o'.eta a).left ≫ φ` using `fun a => by rw [hφ]; exact hlv a`. Establish `cart : IsGrpPullback o'.A o.A f φ` using `by rw [hφ]; exact om.cart`. Establish `sq : IsSquare φ om.φ₂` using `by rw [hφ]; exact om.sq`. Establish `ha : ∀ c, (o'.act.act c).left ≫ φ = φ ≫ (o.act.act c).left` using `fun c => by rw [hφ]; exact om.act c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : ∀ x, (o'.eta ((N' / N) • x)).left ≫ φ = f ≫ (o.eta x).left` using `fun x => by rw [hφ]; exact om.eta x`. Set `T' : Over S'` to `Over.mk g`. Set `q : D.La → (T' ⟶ o'.A)` to `fun a => toUnit T' ≫ o'.eta a`. Establish `hq : ∀ a, (q a).left = g ≫ (o'.eta a).left` using `fun a => by`. Simplify using `only [q, Over.comp_left, Over.toUnit_left]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `key : ∀ a, (lv a).left = (q a).left ≫ φ` using `fun a => by rw [hlv', hq, Category.assoc]`. Establish `mulx : ∀ x y : D.La, (lv x * lv y).left = (q x * q y).left ≫ φ` using `fun x y => cart.2 T' (q x) (q y) (lv x) (lv y) (key x) (key y)`. Use `⟨fun x y => ?_, fun x => ?_, fun c x => ?_, fun x => ?_, fun k _ _ x => ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulx, key]`. Use `congr 1`. Use `show (toUnit T' ≫ o'.eta (x + y)).left = (toUnit T' ≫ o'.eta x * toUnit T' ≫ o'.eta y).left`. Rewrite using `[o'.eta_add, MonObj.comp_mul]`. Establish `h1 : q (N' • x) = 1` using `by show toUnit T' ≫ o'.eta (N' • x) = 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[o'.eta_ker, MonObj.comp_one]`. Establish `hzz : lv (N' • x) * lv (N' • x) = lv (N' • x) * 1`. Rewrite using `[_root_.mul_one]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[mulx, key, h1, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_left_cancel hzz`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, hlv', hlv', o'.eta_lin, Over.comp_left]`. Simplify using `only [Category.assoc, ha]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hlv', he, Over.comp_left, Over.toUnit_left]`. Conclude with `(Category.assoc _ _ _).symm`. Take `⟨I', hI'⟩` from `o'.geom k (x ≫ g) (Spec.preimage ((x ≫ g) ≫ s')).hom (Spec.map_preimage _).symm`. Establish `h3` using `(GlobalTheory.T.tateSimilitude_prime_to_p_pullback_square p D R b N N' S S' s s' o o' f φ om.φ₂ cart sq ha om.pol k (x ≫ g)).1 I'`. Rewrite `h3` using `[Category.assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨I, hI⟩` from `h3`. Use `⟨I, fun y => ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, hI, ← hI' y, Over.comp_left, Over.toUnit_left]`. Express the relevant statement in the definitionally equal form `x ≫ (lv y).left = _`.
-
-Rewrite using `[hlv']`. Simplify using `only [Over.mk_hom, Category.assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isLift_of_point : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N N' : ℕ) (hd : N ∣ N') (hc : N'.Coprime p) (S S' : Scheme.{0}) (s : S ⟶ Sp R) (s' : S' ⟶ Sp R) (o : Obj b N s) (o' : Obj b N' s') (f : S' ⟶ S) (om : ObjMap (o'.forget N hd hc) o f) (T : Over S) (g : T.left ⟶ S') (lv : D.La → (T ⟶ o.A)), g ≫ f = T.hom → (∀ a, (lv a).left = g ≫ (o'.eta a).left ≫ om.φ) → IsLift o N' T lv := by
   intro p _ D R _ b N N' hd hc S S' s s' o o' f om T g lv hT hlv

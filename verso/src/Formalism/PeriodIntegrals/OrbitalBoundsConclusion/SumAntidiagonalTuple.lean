@@ -2,7 +2,7 @@ import Mathlib
 import Formalism.PeriodIntegrals.SumAntidiagonalTuple
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ, ih, show n + 1 + E + 1 = (n + E + 1) + 1 by omega, Nat.choose_succ_succ (n + E + 1) E, show n + 1 + E = n + E + 1 by omega]`. Simplify using `only [Nat.succ_eq_add_one]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -17,13 +17,13 @@ private theorem sum_range_add_choose_eq_choose_succ (E n : ℕ) :
     omega
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.card_nbij' (fun x => ⟨x 0, Fin.tail x⟩) (fun p => Fin.cons p.1 p.2) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Finset.mem_coe, Finset.Nat.mem_antidiagonalTuple] at hx`. Rewrite `hx` using `[Fin.sum_univ_succ]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Finset.mem_coe, Finset.mem_sigma, Finset.mem_range, Finset.Nat.mem_antidiagonalTuple, Fin.tail]`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨i, y⟩ hp`. Simplify using `only [Finset.mem_coe, Finset.mem_sigma, Finset.mem_range, Finset.Nat.mem_antidiagonalTuple] at hp`. Simplify using `only [Finset.mem_coe, Finset.Nat.mem_antidiagonalTuple, Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Introduce `x _`. Simplify using the standard rewrite rules. Introduce and unpack `⟨i, y⟩ _`. Simplify using the standard rewrite rules.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Use `_ = ∑ i ∈ Finset.range (k + 1), (Finset.Nat.antidiagonalTuple D (k - i)).card := Finset.card_sigma _ _`.
+A detailed English derivation is pending.
 -/
 private theorem card_antidiagonal_tuple_succ_eq_sum_range (D k : ℕ) :
     (Finset.Nat.antidiagonalTuple (D + 1) k).card =
@@ -52,13 +52,13 @@ private theorem card_antidiagonal_tuple_succ_eq_sum_range (D k : ℕ) :
         Finset.card_sigma _ _
 
 /- English proof (translation)
-Proceed by induction on `D with`. Consider the case `zero`. Introduce `k`. Rewrite using `[card_antidiagonal_tuple_succ_eq_sum_range, Finset.sum_eq_single k]`. Simplify using `[Finset.Nat.antidiagonalTuple_zero_zero]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `i hi hik`. Simplify using `only [Finset.mem_range] at hi`. Take `⟨m, hm⟩ : ∃ m, k - i = m + 1` from `⟨k - i - 1, by omega⟩`. Rewrite using `[hm, Finset.Nat.antidiagonalTuple_zero_succ, Finset.card_empty]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `at h`. Consider the case `succ D ih`. Introduce `k`. Rewrite using `[card_antidiagonal_tuple_succ_eq_sum_range]`. Simplify using `only [ih]`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h : ∑ j ∈ Finset.range (k + 1), (k - j + D).choose D = ∑ j ∈ Finset.range (k + 1), (j + D).choose D`. Use `Finset.sum_range_reflect (fun i => (i + D).choose D) (k + 1)` as an intermediate fact. Simplify `this` using `only [Nat.add_sub_cancel]`. Rewrite using `[h, sum_range_add_choose_eq_choose_succ, Nat.add_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 private theorem card_antidiagonal_tuple_succ_eq_choose (D : ℕ) :
     ∀ k, (Finset.Nat.antidiagonalTuple (D + 1) k).card = (k + D).choose D := by
@@ -84,11 +84,11 @@ private theorem card_antidiagonal_tuple_succ_eq_choose (D : ℕ) :
     rw [h, sum_range_add_choose_eq_choose_succ, Nat.add_assoc]
 
 /- English proof (translation)
-Introduce `D T hDT`. Consider the cases of `D with`. Consider the case `zero`. Take `⟨n, rfl⟩ : ∃ n, T = n + 1` from `⟨T - 1, by omega⟩`. Simplify using `only [Nat.sub_zero, Nat.add_sub_cancel, Nat.choose_zero_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_range_succ']`. Simplify using `[Finset.Nat.antidiagonalTuple_zero_succ, Finset.Nat.antidiagonalTuple_zero_zero]`. Consider the case `succ E`. Take `⟨n, rfl⟩ : ∃ n, T = n + E + 2` from `⟨T - E - 2, by omega⟩`. Establish `h1 : n + E + 2 - (E + 1) = n + 1` using `by omega`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : n + E + 2 - 1 = n + E + 1` using `by omega`. Rewrite using `[h1, h2]`. Simplify using `only [card_antidiagonal_tuple_succ_eq_choose]`. Conclude with `sum_range_add_choose_eq_choose_succ E n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_antidiagonalTuple : PI.SumAntidiagonalTuple := by
   intro D T hDT

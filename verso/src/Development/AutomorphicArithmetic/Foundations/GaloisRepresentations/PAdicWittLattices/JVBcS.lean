@@ -6,9 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC GlobalTheory.Et Gl
 universe u v
 
 /- English proof (translation)
-Introduce `l _ k Ω _ _ _ _ φ hl X p _ _ n i`. Use `GlobalTheory.GenusTwoPureComparison.Cmp.pullHQ_bijective l _ n i fun m => ?_` and prove the remaining obligations. Use `haveI : NeZero (l ^ m) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `hq : IsUnit ((l ^ m : ℕ) : k)`. Use `push_cast`.
-
-Conclude with `hl.pow m`. Conclude with `GlobalTheory.GenusTwoPureComparison.Cmp.eqv_fieldChange UpperTheory.Et.proper_base_change UpperTheory.Et.etale_base_change_of_duality (l ^ m) k Ω φ hq p i n`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.jVBcS :
     VBcS := by

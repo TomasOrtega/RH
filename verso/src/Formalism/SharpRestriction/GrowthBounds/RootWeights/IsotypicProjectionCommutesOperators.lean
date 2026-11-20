@@ -13,7 +13,7 @@ section abstract
 variable {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V] (E : GLOps n K V)
 
 /- English proof (translation)
-Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `x ⟨u, hu, v, _, hv, rfl⟩`. Conclude with `⟨u, hu, v, hv, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isotypicPartIn_le (W : Submodule K V) (mu : Fin n → ℤ) : isotypicPartIn E W mu ≤ isoSub E mu := by
   apply Submodule.span_mono
@@ -21,12 +21,12 @@ theorem isotypicPartIn_le (W : Submodule K V) (mu : Fin n → ℤ) : isotypicPar
   exact ⟨u, hu, v, hv, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Submonoid.subset_closure ⟨(a, b), rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem operator_mem_envelopingMonoid (a b : Fin n) : E a b ∈ Umon E := Submonoid.subset_closure ⟨(a, b), rfl⟩
 
 /- English proof (translation)
-Establish `: (isoSub E mu).map (E a b) ≤ isoSub E mu`. Rewrite using `[isoSub, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨u, hu, v, hv, rfl⟩, rfl⟩`. Conclude with `Submodule.subset_span ⟨E a b * u, (Umon E).mul_mem (operator_mem_envelopingMonoid E a b) hu, v, hv, rfl⟩`. Conclude with `this (Submodule.mem_map_of_mem hx)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isotypicSubmodule_stable (mu : Fin n → ℤ) (a b : Fin n) {x : V} (hx : x ∈ isoSub E mu) :
     E a b x ∈ isoSub E mu := by
@@ -37,11 +37,11 @@ theorem isotypicSubmodule_stable (mu : Fin n → ℤ) (a b : Fin n) {x : V} (hx 
   exact this (Submodule.mem_map_of_mem hx)
 
 /- English proof (translation)
-Establish `h : (⨆ ν, isoSub E ν) ≤ LinearMap.eqLocus ((e mu).comp (E a b)) ((E a b).comp (e mu))`. Use `iSup_le fun ν y hy => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_eqLocus]`. Simplify using `only [LinearMap.comp_apply]`. Distinguish the cases in `hν : ν = mu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hν` using the available equality. Rewrite using `[(he ν).1 _ (isotypicSubmodule_stable E ν a b hy), (he ν).1 _ hy]`. Rewrite using `[(he mu).2 ν hν _ (isotypicSubmodule_stable E ν a b hy), (he mu).2 ν hν _ hy, map_zero]`. Establish `h2 : x ∈ ⨆ ν, isoSub E ν` using `by rw [htop]; exact Submodule.mem_top`. Use `h h2` as an intermediate fact.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[LinearMap.mem_eqLocus]`. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isotypic_projection_commutes_operators (htop : (⨆ mu, isoSub E mu) = ⊤) (e : (Fin n → ℤ) → Module.End K V)
     (he : ∀ mu, IsIsoProj E mu (e mu)) (mu : Fin n → ℤ) (a b : Fin n) (x : V) :
@@ -60,9 +60,9 @@ theorem isotypic_projection_commutes_operators (htop : (⨆ mu, isoSub E mu) = �
   simpa using this
 
 /- English proof (translation)
-Unfold `Umon at hu`. Proceed by induction on `hu using Submonoid.closure_induction generalizing x with`. Consider the case `mem u hu`. Take `⟨⟨a, b⟩, rfl⟩` from `hu`. Conclude with `isotypic_projection_commutes_operators E htop e he mu a b x`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `one => rfl`. Consider the case `mul u w _ _ ihu ihw`. Simplify using `only [Module.End.mul_apply]`. Rewrite using `[ihu, ihw]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isotypic_projection_commutes_monoid (htop : (⨆ mu, isoSub E mu) = ⊤) (e : (Fin n → ℤ) → Module.End K V)
     (he : ∀ mu, IsIsoProj E mu (e mu)) (mu : Fin n → ℤ) {u : Module.End K V} (hu : u ∈ Umon E) (x : V) :
@@ -78,9 +78,7 @@ theorem isotypic_projection_commutes_monoid (htop : (⨆ mu, isoSub E mu) = ⊤)
     rw [ihu, ihw]
 
 /- English proof (translation)
-Rewrite using `[map_finsuppSum, Finsupp.sum_eq_single mu]`. Conclude with `(he mu).1 _ (hf mu)`. Introduce `ν _ hne`. Conclude with `(he mu).2 ν hne _ (hf ν)`. Introduce `_`.
-
-Conclude with `map_zero _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isotypic_projection_of_sum (e : (Fin n → ℤ) → Module.End K V) (he : ∀ mu, IsIsoProj E mu (e mu))
     (f : (Fin n → ℤ) →₀ V) (hf : ∀ ν, f ν ∈ isoSub E ν) (mu : Fin n → ℤ) :
@@ -95,14 +93,12 @@ theorem isotypic_projection_of_sum (e : (Fin n → ℤ) → Module.End K V) (he 
 def generatedSubmodule (x : V) : Submodule K V := Submodule.span K {y | ∃ u ∈ Umon E, y = u x}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨1, (Umon E).one_mem, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_generatedSubmodule_self (x : V) : x ∈ generatedSubmodule E x := Submodule.subset_span ⟨1, (Umon E).one_mem, rfl⟩
 
 /- English proof (translation)
-Introduce `a b y hy`. Establish `: (generatedSubmodule E x).map (E a b) ≤ generatedSubmodule E x`. Rewrite using `[generatedSubmodule, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨u, hu, rfl⟩, rfl⟩`. Conclude with `Submodule.subset_span ⟨E a b * u, (Umon E).mul_mem (operator_mem_envelopingMonoid E a b) hu, rfl⟩`.
-
-Conclude with `this (Submodule.mem_map_of_mem hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem generatedSubmodule_isStable (x : V) : IsStableUnderOperators E (generatedSubmodule E x) := by
   intro a b y hy
@@ -115,9 +111,9 @@ theorem generatedSubmodule_isStable (x : V) : IsStableUnderOperators E (generate
 variable {E}
 
 /- English proof (translation)
-Unfold `Umon at hu`. Proceed by induction on `hu using Submonoid.closure_induction generalizing x with`. Consider the case `mem u hu`. Take `⟨⟨a, b⟩, rfl⟩` from `hu`. Conclude with `hT a b x hx`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `one => exact hx`. Consider the case `mul u w _ _ ihu ihw => exact ihu (ihw hx)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem envelopingMonoid_preserves_stable {T : Submodule K V} (hT : IsStableUnderOperators E T) {u : Module.End K V} (hu : u ∈ Umon E) {x : V}
     (hx : x ∈ T) : u x ∈ T := by
@@ -130,7 +126,7 @@ theorem envelopingMonoid_preserves_stable {T : Submodule K V} (hT : IsStableUnde
   | mul u w _ _ ihu ihw => exact ihu (ihw hx)
 
 /- English proof (translation)
-Rewrite using `[generatedSubmodule, Submodule.span_le]`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Conclude with `envelopingMonoid_preserves_stable hT hu hx`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem generatedSubmodule_le_of_stable {T : Submodule K V} (hT : IsStableUnderOperators E T) {x : V} (hx : x ∈ T) : generatedSubmodule E x ≤ T := by
   rw [generatedSubmodule, Submodule.span_le]
@@ -138,9 +134,9 @@ theorem generatedSubmodule_le_of_stable {T : Submodule K V} (hT : IsStableUnderO
   exact envelopingMonoid_preserves_stable hT hu hx
 
 /- English proof (translation)
-Unfold `divPowE`. Rewrite using `[LinearMap.smul_apply]`. Apply `W.smul_mem` to reduce the goal to its premises. Proceed by induction on `k generalizing x with`. Consider the case `zero => simpa using hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih`. Rewrite using `[pow_succ, Module.End.mul_apply]`. Conclude with `ih (hW a b x hx)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divPowE_preserves_stable {W : Submodule K V} (hW : IsStableUnderOperators E W) (a b : Fin n) (k : ℕ) {x : V} (hx : x ∈ W) :
     divPowE E a b k x ∈ W := by
@@ -154,7 +150,7 @@ theorem divPowE_preserves_stable {W : Submodule K V} (hW : IsStableUnderOperator
     exact ih (hW a b x hx)
 
 /- English proof (translation)
-Proceed by induction on `L generalizing x with`. Consider the case `nil => simpa using hx`. Consider the case `cons f L ih`. Rewrite using `[List.prod_cons, Module.End.mul_apply]`. Conclude with `h f List.mem_cons_self _ (ih (fun g hg => h g (List.mem_cons_of_mem _ hg)) hx)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem list_prod_preserves_stable_alt {W : Submodule K V} (L : List (Module.End K V)) (h : ∀ f ∈ L, ∀ x ∈ W, f x ∈ W) {x : V}
     (hx : x ∈ W) : L.prod x ∈ W := by
@@ -165,9 +161,9 @@ theorem list_prod_preserves_stable_alt {W : Submodule K V} (L : List (Module.End
     exact h f List.mem_cons_self _ (ih (fun g hg => h g (List.mem_cons_of_mem _ hg)) hx)
 
 /- English proof (translation)
-Unfold `binomE`. Rewrite using `[LinearMap.smul_apply]`. Apply `W.smul_mem` to reduce the goal to its premises. Apply `list_prod_preserves_stable_alt _ _ hx` to reduce the goal to its premises. Introduce `f hf y hy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨j, _, rfl⟩` from `List.mem_map.1 hf`. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply]`. Conclude with `W.sub_mem (hW a a y hy) (W.smul_mem _ hy)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem binomE_preserves_stable {W : Submodule K V} (hW : IsStableUnderOperators E W) (a : Fin n) (k : ℕ) {x : V} (hx : x ∈ W) :
     binomE E a k x ∈ W := by
@@ -187,21 +183,19 @@ section concrete
 variable {R : Type} [Field R] [CharZero R] {ι : Type} [Fintype ι] (LL : Letters ι) {n : ℕ} (S : Set ι)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[polGenSub]`. Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Establish `key : ∀ x ∈ generatedSubmodule (glOps R n LL S) G, u x ∈ generatedSubmodule (glOps R n LL S) G`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Proceed by induction on `hu using Submonoid.closure_induction with`. Consider the case `mem u hu`. Break down `hu with ⟨a, b, k, hab, rfl⟩ | ⟨a, k, rfl⟩` into its components or cases. Introduce `x hx`. Rewrite using `[← hDP R ι LL n S a b k hab]`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `divPowE_preserves_stable (generatedSubmodule_isStable _ G) a b k hx`. Introduce `x hx`. Rewrite using `[← hBin R ι LL n S a k]`. Conclude with `binomE_preserves_stable (generatedSubmodule_isStable _ G) a k hx`. Consider the case `one => intro x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Consider the case `mul u w _ _ ihu ihw => intro x hx`. Conclude with `ihu _ (ihw _ hx)`. Conclude with `key G (mem_generatedSubmodule_self _ G)`. Rewrite using `[generatedSubmodule]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨u, ?_, rfl⟩` and prove the remaining obligations. Establish `: Umon (glOps R n LL S) ≤ Submonoid.closure (polUZgens R LL S)`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Apply `Submonoid.closure_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨⟨a, b⟩, rfl⟩`. Apply `Submonoid.subset_closure` to reduce the goal to its premises. Distinguish the cases in `hab : a = b`. Substitute `hab right` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a, 1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hBin R ι LL n S a 1]`. Simplify using `[binomE]`. Use `left`. Use `⟨a, b, 1, hab, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hDP R ι LL n S a b 1 hab]`. Simplify using `[divPowE]`. Conclude with `this hu`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem polynomial_generated_eq_enveloping (hDP : DividedPowerFormulaCharZero) (hBin : BinomialFormulaCharZero) (G : MvPolynomial (ι × Fin n) R) :
     polGenSub R LL S G = generatedSubmodule (glOps R n LL S) G := by
@@ -244,7 +238,7 @@ theorem polynomial_generated_eq_enveloping (hDP : DividedPowerFormulaCharZero) (
     exact this hu
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[x.as_sum]`. Use `Submodule.sum_mem _ fun m _ => ?_` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem (wtS LL S m) ((hWt R ι LL n S).1 m _)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem weightSpaces_span_polynomials (hWt : MonomialsAreWeightVectors) : (⨆ mu, weightSp (glOps R n LL S) mu) = ⊤ := by
   rw [eq_top_iff]
@@ -254,7 +248,7 @@ theorem weightSpaces_span_polynomials (hWt : MonomialsAreWeightVectors) : (⨆ m
   exact Submodule.mem_iSup_of_mem (wtS LL S m) ((hWt R ι LL n S).1 m _)
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨T, hT1, hxT, hT2⟩` from `hFin R ι LL n S x`. Establish `h` using `hCR R _ n (glOps R n LL S) (hRel R ι LL n S) T hT1 hT2 (by rw [weightSpaces_span_polynomials LL S hWt]; exact le_top) hxT`. Conclude with `(iSup_mono fun mu => isotypicPartIn_le _ T mu) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem polynomial_isotypic_span_top (hCR : StableSubspaceCompleteReducibility) (hRel : PolynomialOperatorsGLRelations) (hWt : MonomialsAreWeightVectors) (hFin : PolynomialLocallyFinite) :
     (⨆ mu, isoSub (glOps R n LL S) mu) = ⊤ := by
@@ -265,7 +259,7 @@ theorem polynomial_isotypic_span_top (hCR : StableSubspaceCompleteReducibility) 
   exact (iSup_mono fun mu => isotypicPartIn_le _ T mu) h
 
 /- English proof (translation)
-Take `⟨T, hT1, hxT, hT2⟩` from `hFin R ι LL n S G`. Conclude with `Submodule.finiteDimensional_of_le (generatedSubmodule_le_of_stable hT2 hxT)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem generatedSubmodule_finiteDimensional (hFin : PolynomialLocallyFinite) (G : MvPolynomial (ι × Fin n) R) :
     FiniteDimensional R (generatedSubmodule (glOps R n LL S) G) := by
@@ -273,13 +267,11 @@ theorem generatedSubmodule_finiteDimensional (hFin : PolynomialLocallyFinite) (G
   exact Submodule.finiteDimensional_of_le (generatedSubmodule_le_of_stable hT2 hxT)
 
 /- English proof (translation)
-Rewrite using `[polynomial_generated_eq_enveloping LL S hDP hBin]`. Establish `h` using `hCR R _ n (glOps R n LL S) (hRel R ι LL n S) _ (generatedSubmodule_finiteDimensional LL S hFin G) (generatedSubmodule_isStable _ G) (by rw [weightSpaces_span_polynomials LL S hWt]; exact le_top) (mem_generatedSubmodule_self _ G)`. Take `⟨f, hf, hsum⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ _).1 h`. Establish `h1 : e mu G = f mu`. Rewrite using `[← hsum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isotypic_projection_of_sum _ e he f (fun ν => isotypicPartIn_le _ _ ν (hf ν)) mu`. Assume the negation of the conclusion as `hno`. Apply `hne` to reduce the goal to its premises. Rewrite using `[h1]`. Establish `hbot : isotypicPartIn (glOps R n LL S) (generatedSubmodule (glOps R n LL S) G) mu = ⊥`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[isotypicPartIn, Submodule.span_eq_bot]`. Introduce and unpack `x ⟨u, _, v, hv, hw, rfl⟩`. Conclude with `absurd ⟨v, hv, hw.1, fun m hm => (hWt R ι LL n S).2 mu v hw.2.1 m hm⟩ hno`. Use `hf mu` as an intermediate fact. Rewrite `this` using `[hbot]`.
-
-Conclude with `(Submodule.mem_bot R).1 this`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isotypic_component_weight_mem (hCR : StableSubspaceCompleteReducibility) (hRel : PolynomialOperatorsGLRelations) (hWt : MonomialsAreWeightVectors) (hFin : PolynomialLocallyFinite) (hDP : DividedPowerFormulaCharZero) (hBin : BinomialFormulaCharZero)
     (e : (Fin n → ℤ) → Module.End R (MvPolynomial (ι × Fin n) R))
@@ -304,21 +296,21 @@ theorem isotypic_component_weight_mem (hCR : StableSubspaceCompleteReducibility)
   exact (Submodule.mem_bot R).1 this
 
 /- English proof (translation)
-Rewrite using `[polynomial_generated_eq_enveloping LL S hDP hBin]`. Introduce and unpack `ν ⟨x, hx, hx0, hxν⟩`. Establish `htop` using `polynomial_isotypic_span_top (R := R) LL (n := n) S hCR hRel hWt hFin`. Establish `hxt : x ∈ ⨆ mu, isoSub (glOps R n LL S) mu` using `by rw [htop]; exact Submodule.mem_top`. Take `⟨f, hf, hsum⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ _).1 hxt`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfe : ∀ mu, e mu x = f mu` using `fun mu => by`. Rewrite using `[← hsum]`. Conclude with `isotypic_projection_of_sum _ e he f hf mu`. Establish `hker : ∀ mu, e mu G = 0 → e mu x = 0`. Introduce `mu h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : generatedSubmodule (glOps R n LL S) G ≤ LinearMap.ker (e mu)`. Rewrite using `[generatedSubmodule, Submodule.span_le]`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Express the relevant statement in the definitionally equal form `e mu (u G) = 0`. Rewrite using `[isotypic_projection_commutes_monoid _ htop e he mu hu, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hle hx`. Establish `hiso : ∀ mu, cond mu → isoSub (glOps R n LL S) mu ≤ MvPolynomial.restrictSupport R {m | cond (wtS LL S m)}`. Introduce `mu hmu`. Rewrite using `[isoSub, Submodule.span_le]`. Introduce and unpack `_ ⟨u, hu, v, hv, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hHW R _ n (glOps R n LL S) (hRel R ι LL n S) mu v hv u hu`. Use `(iSup₂_le fun ν' hν' => ?_ : (⨆ ν' ∈ {ν' : Fin n → ℤ | mu (lastIdx n) ≤ ν' (lastIdx n) ∧ ν' 0 ≤ mu 0}, weightSp (glOps R n LL S) ν') ≤ _) h1` and prove the remaining obligations. Introduce `y hy`. Rewrite using `[MvPolynomial.mem_restrictSupport_iff]`. Introduce `m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `(hWt R ι LL n S).2 ν' y hy m (by simpa using hm)` as an intermediate fact. Express the relevant statement in the definitionally equal form `cond (wtS LL S m)`. Rewrite using `[this]`. Conclude with `hmono mu ν' hmu hν'.1 hν'.2`. Establish `hxZ : x ∈ MvPolynomial.restrictSupport R {m | cond (wtS LL S m)}`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hsum]`. Use `Submodule.sum_mem _ fun mu hmu => ?_` and prove the remaining obligations. Establish `hne : f mu ≠ 0` using `Finsupp.mem_support_iff.1 hmu`. Establish `hG : e mu G ≠ 0` using `fun h0 => hne (by rw [← hfe mu]; exact hker mu h0)`. Conclude with `hiso mu (h mu hG) (hf mu)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨m, hm⟩` from `MvPolynomial.support_nonempty.2 hx0`. Establish `h2` using `(MvPolynomial.mem_restrictSupport_iff R).1 hxZ (by simpa using hm : m ∈ (x.support : Set _))`. Establish `h3 : cond (wtS LL S m)` using `h2`. Rewrite `h3` using `[hxν m hm]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem weight_type_of_isotypic_projections [NeZero n] (hCR : StableSubspaceCompleteReducibility) (hHW : HighestWeightModuleWeightBounds) (hRel : PolynomialOperatorsGLRelations) (hWt : MonomialsAreWeightVectors) (hFin : PolynomialLocallyFinite)
     (hDP : DividedPowerFormulaCharZero) (hBin : BinomialFormulaCharZero)
@@ -373,11 +365,11 @@ theorem weight_type_of_isotypic_projections [NeZero n] (hCR : StableSubspaceComp
 end concrete
 
 /- English proof (translation)
-Introduce `R _ _ ι _ LL n _ S e he`. Take `⟨_, _, _, _, h5, h6⟩` from `hV1 R ι LL n S`. Use `⟨fun G th => ?_, fun G M => ?_⟩` and prove the remaining obligations. Rewrite using `[h5 G th]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h mu hne`. Conclude with `h mu (isotypic_component_weight_mem LL S hCR hRel hWt hFin hDP hBin e he G mu hne)`. Introduce `h`. Conclude with `weight_type_of_isotypic_projections LL S hCR hHW hRel hWt hFin hDP hBin e he G (fun ν => th ≤ ν (lastIdx n)) (fun mu ν h1 h2 _ => le_trans h1 h2) h`. Rewrite using `[h6 G M]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h mu hne`. Conclude with `h mu (isotypic_component_weight_mem LL S hCR hRel hWt hFin hDP hBin e he G mu hne)`. Introduce `h`. Conclude with `weight_type_of_isotypic_projections LL S hCR hHW hRel hWt hFin hDP hBin e he G (fun ν => ν 0 ≤ M) (fun mu ν h1 _ h3 => le_trans h3 h1) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem generated_weight_lemma_char_zero (D : Formalism.BasicNotions.D7) (hV1 : ValuationsAdditive D) (hCR : StableSubspaceCompleteReducibility) (hHW : HighestWeightModuleWeightBounds) (hRel : PolynomialOperatorsGLRelations) (hWt : MonomialsAreWeightVectors)
     (hFin : PolynomialLocallyFinite) (hDP : DividedPowerFormulaCharZero) (hBin : BinomialFormulaCharZero) : ShaLengthVersionTwo D := by

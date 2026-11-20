@@ -15,7 +15,7 @@ namespace GlobalTheory.HeisComb
 variable {D : D7}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [heisO, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heisO_finset_sum (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (x : WO S T) {ι : Type} (s : Finset ι)
     (a : ι → ℂ) (g : ι → WO S T → ℂ) :
@@ -32,7 +32,7 @@ theorem comb_eq_sum (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (c : WO S T �
     comb ψ S T c f = c.sum fun u a => a • heisO ψ S T u f := rfl
 
 /- English proof (translation)
-Unfold `comb`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[heisO_finset_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem comb_comb (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (c c' : WO S T →₀ ℂ) (f : WO S T → ℂ) :
     comb ψ S T c (comb ψ S T c' f) =
@@ -44,9 +44,9 @@ theorem comb_comb (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (c c' : WO S T 
   rw [smul_smul]
 
 /- English proof (translation)
-Establish `h0 : e * cA D e' = 0` using `by conv_lhs => rw [← he]`. Rewrite using `[← map_mul, hee, map_zero]`. Establish `hh : hO S T x y = 0`. Unfold `hO`. Use `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => Finset.sum_eq_zero fun c _ => Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hy c b, ← hx d a, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Unfold `symplO`. Rewrite using `[hh, mul_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_half (S T : HSp D) (e e' : AE D) (x y : WO S T) (he : cA D e = e) (hee : e * e' = 0)
     (hx : IsHalf e x) (hy : IsHalf e' y) : symplO S T x y = 0 := by
@@ -65,17 +65,17 @@ theorem symplO_half (S T : HSp D) (e e' : AE D) (x y : WO S T) (he : cA D e = e)
   rw [hh, mul_zero, map_zero]
 
 /- English proof (translation)
-Introduce `D ψ S T`. Use `⟨fun c c' => ?_, fun c c' h f => ?_, fun c f hf hc hψ => ?_, fun e e' x y he hee hx hy => symplO_half S T e e' x y he hee hx hy⟩` and prove the remaining obligations. Use `⟨∑ x ∈ c.support, ∑ y ∈ c'.support, Finsupp.single (x + y) (c x * c' y * ψ (symplOH S T x y)), ?_, fun f => ?_⟩` and prove the remaining obligations. Introduce `w hw`. Establish `h1` using `Finsupp.support_finset_sum hw`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[Finset.mem_biUnion]`. Take `⟨x, hx, hw2⟩` from `h1`. Establish `h2` using `Finsupp.support_finset_sum hw2`. Rewrite `h2` using `[Finset.mem_biUnion]`. Take `⟨y, hy, hw3⟩` from `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h3` using `Finsupp.support_single_subset hw3`. Rewrite `h3` using `[Finset.mem_singleton]`. Conclude with `⟨x, hx, y, hy, h3⟩`. Rewrite using `[comb_comb, comb_eq_sum]`. Rewrite using `[← Finsupp.sum_finset_sum_index (fun u => zero_smul ℂ (heisO ψ S T u f)) (fun u a b => add_smul a b (heisO ψ S T u f))]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[← Finsupp.sum_finset_sum_index (fun u => zero_smul ℂ (heisO ψ S T u f)) (fun u a b => add_smul a b (heisO ψ S T u f))]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_single_index (zero_smul ℂ (heisO ψ S T (x + y) f)), GlobalTheory.WeilVacMove.heisO_heisO, smul_smul]`. Rewrite using `[comb_comb, comb_comb, Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun y hy => Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Establish `h0 : symplOH S T x y = 0`. Unfold `symplOH`. Rewrite using `[h x hx y hy, mul_zero]`. Establish `h1 : symplOH S T y x = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.MixModel.symplOH_skew, h0, neg_zero]`. Rewrite using `[GlobalTheory.WeilVacMove.heisO_heisO, GlobalTheory.WeilVacMove.heisO_heisO, h0, h1, add_comm x y, mul_comm (c x)]`. Conclude with `GlobalTheory.FinTranslate.isTheta_sum_heisO_fin D ψ S T hψ.1 f hf (WO S T) c.support id (fun u => c u) hc`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D), (∀ c c' : WO S T →₀ ℂ, ∃ c'' : WO S T →₀ ℂ, (∀ w ∈ c''.support, ∃ x ∈ c.support, ∃ y ∈ c'.support, w = x + y) ∧ ∀ f, comb ψ S T c'' f = comb ψ S T c (comb ψ S T c' f)) ∧ (∀ c c' : WO S T →₀ ℂ, (∀ x ∈ c.support, ∀ y ∈ c'.support, symplO S T x y = 0) → ∀ f, comb ψ S T c (comb ψ S T c' f) = comb ψ S T c' (comb ψ S T c f)) ∧ (∀ (c : WO S T →₀ ℂ) f, IsThetaFunO ψ S T f → IsFinComb c → IsStdChar D ψ (-1) → IsThetaFunO ψ S T (comb ψ S T c f)) ∧ ∀ (e e' : AE D) (x y : WO S T), cA D e = e → e * e' = 0 → IsHalf e x → IsHalf e' y → symplO S T x y = 0 := by
   intro D ψ S T

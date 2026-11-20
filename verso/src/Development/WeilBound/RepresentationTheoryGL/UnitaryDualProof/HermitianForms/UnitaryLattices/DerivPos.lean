@@ -10,13 +10,13 @@ namespace PositivityTheory.RgUd.Form.U.Final
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `hB` and use `(Asm.uAsm (k := k) (Atom.uAtom (k := k)) (Dens.uDens k) (Atom.uSplit (k := k)) (Lift2.uLift (k := k)) (Shell.uShell (k := k)) (Eig.uEig k) (Eig.uAdm k) hB).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem derivTop : PositivityTheory.RgUd.ThmB k → PositivityTheory.RgUd.DerivTop k := fun hB =>
   (Asm.uAsm (k := k) (Atom.uAtom (k := k)) (Dens.uDens k) (Atom.uSplit (k := k)) (Lift2.uLift (k := k)) (Shell.uShell (k := k)) (Eig.uEig k) (Eig.uAdm k) hB).1
 
 /- English proof (translation)
-Introduce `hB` and use `(Asm.uAsm (k := k) (Atom.uAtom (k := k)) (Dens.uDens k) (Atom.uSplit (k := k)) (Lift2.uLift (k := k)) (Shell.uShell (k := k)) (Eig.uEig k) (Eig.uAdm k) hB).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem derivPos : PositivityTheory.RgUd.ThmB k → PositivityTheory.RgUd.DerivPos k := fun hB =>
   (Asm.uAsm (k := k) (Atom.uAtom (k := k)) (Dens.uDens k) (Atom.uSplit (k := k)) (Lift2.uLift (k := k)) (Shell.uShell (k := k)) (Eig.uEig k) (Eig.uAdm k) hB).2

@@ -14,21 +14,19 @@ open MeasureTheory Formalism.IndefR.Datum Formalism.L2.Theta Formalism.BasicNoti
 namespace GlobalTheory.ThetaLiftGrowth
 
 /- English proof (translation)
-Introduce `D ψ V W χS χT om hom hV ν 𝓕 hν h𝓕 X _ _ _ L hL u hu hinv`. Take `⟨K, hK, hcov⟩` from `GlobalTheory.definite_unitary_cocompact V hV`. Take `⟨H, hH⟩` from `GlobalTheory.Grow.exists_height_le_of_isCompact V hK`. Set `b` to `Module.finBasis ℂ X`. Establish `hgr` using `fun k => GlobalTheory.Core.Rk.ThetaGrowthBoth.thetaKO_modGrowth₂ D ψ V W χS χT om hom (L (b k)) (hL _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose C A hCA using hgr`. Establish `hM : ∀ k, ∃ M : ℝ, ∀ c ∈ K, ‖b.coord k (u c)‖ ≤ M` using `fun k => hK.exists_bound_of_continuousOn ((b.coord k).continuous_of_finiteDimensional.comp hu).continuousOn`. Use `choose M hM using hM`. Establish `hfin` using `GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol V ν 𝓕 hν h𝓕`. Establish `hdec : ∀ h g, thetaKO om h g (L (u h)) = ∑ k, b.coord k (u h) * thetaKO om h g (L (b k))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h g`. Use `conv_lhs => rw [← b.sum_repr (u h)]`. Simplify using `only [thetaKO, map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Module.Basis.coord_apply]`. Establish `hθinv : ∀ γ ∈ GQ V, ∀ c g (f : WO V W → ℂ), IsThetaFunO ψ V W f → thetaKO om (γ * c) g f = thetaKO om c g f`. Introduce `γ hγ c g f hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (γ * c, g) = ((γ, 1) : GA D V × GA D W) * (c, g)` using `by rw [Prod.mk_mul_mk, one_mul]`. Simplify using `only [thetaKO]`. Rewrite using `[e, map_mul]`. Conclude with `hom.om_aut γ hγ 1 (one_mem _) _ (hom.om_pres _ _ hf)`. Use `set H' := max H 1 with hH'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set N := ∑ k, A k with hN`. Use `set B := ∑ k, |M k| * |C k| with hB`. Establish `hb : ∀ g h, ‖thetaKO om h g (L (u h))‖ ≤ B * (H' * GlobalTheory.Grow.height W g) ^ N`. Introduce `g h`. Take `⟨γ, hγ, c, hc, rfl⟩` from `hcov h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hdec, hB, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, hinv γ hγ c, hθinv γ hγ c g _ (hL _)]`. Establish `h1c` using `GlobalTheory.Grow.one_le_height V c`. Establish `h1g` using `GlobalTheory.Grow.one_le_height W g`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `hcH : GlobalTheory.Grow.height V c ≤ H'` using `(hH c hc).trans (le_max_left _ _)`. Establish `hx1 : 1 ≤ GlobalTheory.Grow.height V c * GlobalTheory.Grow.height W g` using `one_le_mul_of_one_le_of_one_le h1c h1g`. Establish `hxy : GlobalTheory.Grow.height V c * GlobalTheory.Grow.height W g ≤ H' * GlobalTheory.Grow.height W g` using `mul_le_mul_of_nonneg_right hcH (by linarith)`. Establish `hθ : ‖thetaKO om c g (L (b k))‖ ≤ |C k| * (H' * GlobalTheory.Grow.height W g) ^ N`. Use `(hCA k c g).trans ?_` and prove the remaining obligations.
-
-Use `mul_le_mul (le_abs_self _) ?_ (by positivity) (abs_nonneg _)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Use `⟨B * H' ^ N * ν.real 𝓕, N, fun g => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem modGrowth_thetaIntegral : ∀ {D : D7} (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F) ℂ) (V W : Formalism.BasicNotions.TH.HSp D)
     (χS χT : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)),

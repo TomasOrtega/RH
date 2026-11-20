@@ -11,9 +11,9 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic
 namespace GlobalTheory.Discrepancy
 
 /- English proof (translation)
-Use `⟨?_⟩` and prove the remaining obligations. Establish `hd : Dense (U : Set X)` using `U.isOpen.dense hU`. Use `hd.mono ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, hy⟩` from `(s ∣_ U).surjective ⟨x, hx⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨y.1, ?_⟩` and prove the remaining obligations. Use `morphismRestrict_base_coe s U y` as an intermediate fact. Rewrite `this` using `[hy]`. Conclude with `this.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDominant_of_isIso_restrict (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (s : Y ⟶ X)
     (U : X.Opens) (hU : (U : Set X).Nonempty) (h : IsIso (s ∣_ U)) : IsDominant s := by

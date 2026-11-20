@@ -16,19 +16,19 @@ open scoped Matrix
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `L Ω _ _ _ _ _ _ hU E B hE hB hconj P M hM hsplit hev`. Take `⟨c, hc⟩` from `Ga.conjEx L Ω`. Establish `hbad : {w : Plc L | ¬ (w ∈ P → ∀ s, Ga.FrobAt w s → s ∈ E)}.Finite` using `Filter.eventually_cofinite.mp hev`. Set `T : Set (HeightOneSpectrum (𝓞 L))` to `⋃ w ∈ {w : Plc L | ¬ (w ∈ P → ∀ s, Ga.FrobAt w s → s ∈ E)}, {v | HeightOneSpectrum.under (𝓞 (Lp L)) w = HeightOneSpectrum.under (𝓞 (Lp L)) v}`. Establish `hT : T.Finite`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `hbad.biUnion fun w _ => ?_` and prove the remaining obligations. Establish `hfin` using `IsDedekindDomain.primesOver_finite (HeightOneSpectrum.under (𝓞 (Lp L)) w).asIdeal (𝓞 L)`. Use `(hfin.preimage (fun a _ b _ h => HeightOneSpectrum.ext h)).subset ?_` and prove the remaining obligations. Introduce `v hv`. Use `⟨v.isPrime, ⟨?_⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hv]`. Both sides reduce to the same expression. Establish `hMne : ((M : 𝓞 L) : 𝓞 L) ≠ 0` using `by exact_mod_cast hM`. Establish `hMfin : {v : HeightOneSpectrum (𝓞 L) | (M : 𝓞 L) ∈ v.asIdeal}.Finite`. Use `(Ideal.finite_factors (I := Ideal.span {(M : 𝓞 L)}) ?_).subset ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hMne`. Introduce `v hv`. Conclude with `Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem _).mpr hv)`. Establish `hS : ({v : HeightOneSpectrum (𝓞 L) | (M : 𝓞 L) ∈ v.asIdeal} ∪ T).Finite` using `hMfin.union hT`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hD` using `GlobalTheory.Published.ChebotarevDegreeOne.dense (F := L) (Ω := Ω) GlobalTheory.Published.chebotarevDegreeOne' hS`. Introduce `σ hσB`. Establish `hcl` using `hD.open_subset_closure_inter hB.isOpen_compl hσB`. Use `closure_minimal ?_ hE hcl` and prove the remaining obligations. Introduce and unpack `τ ⟨hτB, v, hvS, hdeg, A, hA, hfr⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFrob : Ga.FrobAt v τ` using `⟨A, hA, hfr⟩`. Establish `hMv : (M : 𝓞 L) ∉ v.asIdeal` using `fun h => hvS (Or.inl h)`. Establish `hspl : IsSplitAt v` using `UpperTheory.isSplitAt_of_unramified_of_inertiaDeg_eq_one L v (hU v) hdeg`. Take `⟨w', hw'P, hw'⟩` from `hsplit v hspl hMv ⟨τ, hFrob, hτB⟩`. Establish `hgood : ∀ s, Ga.FrobAt w' s → s ∈ E`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis.
 
-Assume the negation of the conclusion as `hcon`. Conclude with `hvS (Or.inr (Set.mem_biUnion (x := w') (fun h => hcon (h hw'P)) hw'))`. Break down `Ga.conjFrob L Ω c hc v w' hw' τ hFrob with h1 | ⟨s', hs', hres⟩` into its components or cases. Conclude with `hgood τ h1`. Conclude with `hconj c hc τ s' hres (hgood s' hs')`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Ga.spread :
     ∀ (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω], Unr L → ∀ E B : Set (G L Ω), IsClosed E → IsClosed B → (∀ c : G (maximalRealSubfield L) Ω, IsConjEl c → ∀ s s' : G L Ω, s'.restrictScalars (maximalRealSubfield L) = c * s.restrictScalars (maximalRealSubfield L) * c⁻¹ → s' ∈ E → s ∈ E) → ∀ (P : Set (Plc L)) (M : ℕ), M ≠ 0 → (∀ w, IsSplitAt w → (M : 𝓞 L) ∉ w.asIdeal → (∃ s, Ga.FrobAt w s ∧ s ∉ B) → ∃ w' ∈ P, w'.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))) → (∀ᶠ w in Filter.cofinite, w ∈ P → ∀ s, Ga.FrobAt w s → s ∈ E) → Bᶜ ⊆ E := by

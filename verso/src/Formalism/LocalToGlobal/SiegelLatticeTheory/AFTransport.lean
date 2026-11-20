@@ -17,7 +17,7 @@ def iotaFHom : X.B.I.F →+* D.host.F :=
     (fun a => (X.ιE_F _).2 ⟨a, rfl⟩)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(iotaFHom X).injective, fun y => by obtain ⟨a, ha⟩ := (X.ιE_F y).1 y.2 exact ⟨a, Subtype.ext ha⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem iotaFHom_bijective : Function.Bijective (iotaFHom X) :=
   ⟨(iotaFHom X).injective, fun y => by

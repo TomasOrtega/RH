@@ -15,11 +15,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ B _ _ hB φ _ _ x`. Use `hB.geomConnected` as an intermediate fact. Establish `: ConnectedSpace B.left` using `GeometricallyConnected.connectedSpace_of_subsingleton B.hom`. Set `o : 𝟙_ (Over (Spec (CommRingCat.of K))) ⟶ B` to `1`. Set `t : Spec (CommRingCat.of K) ⟶ B.left` to `o.left`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨z⟩ : Nonempty (Spec (CommRingCat.of K))` from `inferInstance`. Establish `ht : t ≫ B.hom = 𝟙 _` using `Over.w o`. Rewrite using `[(Scheme.Hom.isLocallyConstant_finrank φ.left).apply_eq_of_preconnectedSpace x (t z), ← (GlobalTheory.FinEt.card_points_eq_finrank φ.left t z).2]`. Use `Nat.card_congr { toFun := fun y ↦ ⟨Over.homMk y.1 ?_, Over.OverMorphism.ext y.2⟩ invFun := fun y ↦ ⟨y.1.left, congrArg CommaMorphism.left y.2⟩ left_inv := fun y ↦ rfl right_inv := fun y ↦ Subtype.ext (Over.OverMorphism.ext rfl) }` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y.1 ≫ B.hom = 𝟙 _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Over.w φ, ← Category.assoc, y.2, ht]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_eq_card_kernel_points_of_etale :
     ∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Spec (CommRingCat.of K))) [GrpObj B] [IsCommMonObj B], IsAbelianScheme B → ∀ φ : B ⟶ B, ∀ [IsFinite φ.left] [Etale φ.left], ∀ x : B.left, φ.left.finrank x = Nat.card {y : 𝟙_ _ ⟶ B // y ≫ φ = 1} := by

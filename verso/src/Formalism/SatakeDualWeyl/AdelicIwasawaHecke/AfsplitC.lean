@@ -25,19 +25,19 @@ theorem afsplitC_apply (M : Matrix n n Rv) (N : Matrix n n R) (i j : n) :
     afsplitC v M N i j = afsplitIE v (M i j) + (1 - afsplitEps E v) * N i j := rfl
 
 /- English proof (translation)
-Rewrite using `[sub_mul, one_mul, afsplit_eps_mul_IE, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem afsplit_om_eps_IE (x : Rv) : (1 - afsplitEps E v) * afsplitIE v x = 0 := by
   rw [sub_mul, one_mul, afsplit_eps_mul_IE, sub_self]
 
 /- English proof (translation)
-Take the linear combination `(afsplit_eps_idem (E := E) v)`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem afsplit_om_idem : (1 - afsplitEps E v) * (1 - afsplitEps E v) = 1 - afsplitEps E v := by
   linear_combination (afsplit_eps_idem (E := E) v)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, Matrix.zero_apply]`. Conclude with `afsplit_om_eps_IE v (M i j)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem afsplit_smul_map (M : Matrix n n Rv) : (1 - afsplitEps E v) • M.map (afsplitIE v) = 0 := by
   ext i j
@@ -45,9 +45,9 @@ theorem afsplit_smul_map (M : Matrix n n Rv) : (1 - afsplitEps E v) • M.map (a
   exact afsplit_om_eps_IE v (M i j)
 
 /- English proof (translation)
-Unfold `afsplitC`. Establish `h1 : M.map (afsplitIE v) * ((1 - afsplitEps E v) • N') = 0`. Rewrite using `[Matrix.mul_smul, ← Matrix.smul_mul, afsplit_smul_map, Matrix.zero_mul]`. Establish `h2 : ((1 - afsplitEps E v) • N) * M'.map (afsplitIE v) = 0`. Rewrite using `[Matrix.smul_mul, ← Matrix.mul_smul, afsplit_smul_map, Matrix.mul_zero]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ((1 - afsplitEps E v) • N) * ((1 - afsplitEps E v) • N') = (1 - afsplitEps E v) • (N * N')`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, afsplit_om_idem]`. Rewrite using `[add_mul, mul_add, mul_add, h1, h2, h3, Matrix.map_mul, add_zero, zero_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem afsplitC_mul (M M' : Matrix n n Rv) (N N' : Matrix n n R) :
     afsplitC v M N * afsplitC v M' N' = afsplitC v (M * M') (N * N') := by
@@ -62,9 +62,9 @@ theorem afsplitC_mul (M M' : Matrix n n Rv) (N N' : Matrix n n R) :
   rw [add_mul, mul_add, mul_add, h1, h2, h3, Matrix.map_mul, add_zero, zero_add]
 
 /- English proof (translation)
-Establish `h1 : afsplitIE v (1 : Rv) = afsplitEps E v`. Establish `h` using `afsplit_decomp (E := E) v 1`. Rewrite `h` using `[map_one, mul_one]`. Then use the resulting hypothesis. Use extensionality with `i j`. Distinguish the cases in `h : i = j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[Matrix.one_apply, h1]`. Simplify using `[Matrix.one_apply, h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem afsplit_one_map : (1 : Matrix n n Rv).map (afsplitIE v) = afsplitEps E v • (1 : Matrix n n R) := by
   have h1 : afsplitIE v (1 : Rv) = afsplitEps E v := by
@@ -77,7 +77,7 @@ theorem afsplit_one_map : (1 : Matrix n n Rv).map (afsplitIE v) = afsplitEps E v
   · simp [Matrix.one_apply, h]
 
 /- English proof (translation)
-Unfold `afsplitC`. Rewrite using `[afsplit_one_map, ← add_smul]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem afsplitC_one : afsplitC v (1 : Matrix n n Rv) (1 : Matrix n n R) = 1 := by
   unfold afsplitC
@@ -85,7 +85,7 @@ theorem afsplitC_one : afsplitC v (1 : Matrix n n Rv) (1 : Matrix n n R) = 1 := 
   simp
 
 /- English proof (translation)
-Unfold `afsplitC`. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[afsplit_decomp]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem afsplitC_decomp (N : Matrix n n R) : afsplitC v (N.map (prV (E := E) v)) N = N := by
   unfold afsplitC
@@ -95,7 +95,7 @@ theorem afsplitC_decomp (N : Matrix n n R) : afsplitC v (N.map (prV (E := E) v))
   ring
 
 /- English proof (translation)
-Unfold `afsplitC`. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul]`. Rewrite using `[afsplit_prV_IE, map_sub, map_one, afsplit_prV_eps, sub_self, zero_mul, add_zero]`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem afsplitC_prV (M : Matrix n n Rv) (N : Matrix n n R) :
     (afsplitC v M N).map (prV (E := E) v) = M := by
@@ -105,7 +105,7 @@ theorem afsplitC_prV (M : Matrix n n Rv) (N : Matrix n n R) :
   rw [afsplit_prV_IE, map_sub, map_one, afsplit_prV_eps, sub_self, zero_mul, add_zero]
 
 /- English proof (translation)
-Unfold `afsplitC`. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, map_sub, map_one, afsplit_prV_IE_ne v w h, afsplit_prV_eps_ne v w h, sub_zero, one_mul, zero_add]`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem afsplitC_prV_ne (w : HeightOneSpectrum (𝓞 F)) (h : w ≠ v) (M : Matrix n n Rv)
     (N : Matrix n n R) : (afsplitC v M N).map (prV (E := E) w) = N.map (prV (E := E) w) := by
@@ -115,7 +115,7 @@ theorem afsplitC_prV_ne (w : HeightOneSpectrum (𝓞 F)) (h : w ≠ v) (M : Matr
     map_one, afsplit_prV_IE_ne v w h, afsplit_prV_eps_ne v w h, sub_zero, one_mul, zero_add]
 
 /- English proof (translation)
-Unfold `afsplitC`. Rewrite using `[smul_add, afsplit_smul_map, zero_add, smul_smul, afsplit_om_idem]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem afsplitC_C (M M' : Matrix n n Rv) (N : Matrix n n R) :
     afsplitC v M (afsplitC v M' N) = afsplitC v M N := by
@@ -123,7 +123,7 @@ theorem afsplitC_C (M M' : Matrix n n Rv) (N : Matrix n n R) :
   rw [smul_add, afsplit_smul_map, zero_add, smul_smul, afsplit_om_idem]
 
 /- English proof (translation)
-Unfold `cT afsplitC`. Use extensionality with `i j`. Simplify using `[Matrix.transpose_apply, Matrix.map_apply, afsplit_sigR_IE, afsplit_sigR_eps]`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem afsplitC_cT (σ : E →ₐ[F] E) (M : Matrix n n Rv) (N : Matrix n n R) :
     cT (sigR σ 𝔸) (afsplitC v M N) =
@@ -133,7 +133,7 @@ theorem afsplitC_cT (σ : E →ₐ[F] E) (M : Matrix n n Rv) (N : Matrix n n R) 
   simp [Matrix.transpose_apply, Matrix.map_apply, afsplit_sigR_IE, afsplit_sigR_eps]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [afsplitC, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Establish `h` using `afsplit_decomp (E := E) v (inclE (F := F) 𝔸 (J i j))`. Rewrite `h` using `[afsplit_prV_inclE]`. Rewrite using `[h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -166,7 +166,7 @@ theorem afsplitU_inv_coe (h : GL n Rv) (k : GL n R) :
     (((afsplitU v h k)⁻¹ : GL n R) : Matrix n n R) = afsplitC v (h⁻¹ : GL n Rv) (k⁻¹ : GL n R) := rfl
 
 /- English proof (translation)
-Use extensionality with `: 1`. Simplify using `only [Units.val_mul, afsplitU_coe, afsplitC_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem afsplitU_mul (h h' : GL n Rv) (k k' : GL n R) :
     afsplitU v (h * h') (k * k') = afsplitU v h k * afsplitU v h' k' := by
@@ -174,7 +174,7 @@ theorem afsplitU_mul (h h' : GL n Rv) (k k' : GL n R) :
   simp only [Units.val_mul, afsplitU_coe, afsplitC_mul]
 
 /- English proof (translation)
-Unfold `UPts UJ at hh hk ⊢`. Simplify using `only [Subgroup.mem_mk, Submonoid.mem_mk, Subsemigroup.mem_mk, Set.mem_setOf_eq] at hh hk ⊢`. Rewrite using `[afsplitU_coe]`. Use `conv_lhs => rw [afsplitC_J v J]`. Rewrite using `[afsplitC_cT, afsplitC_mul, afsplitC_mul, hh, hk, ← afsplitC_J]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem afsplitU_mem (σ : E →ₐ[F] E) (J : Matrix n n E) (h : GL n Rv) (k : GL n R)
     (hh : h ∈ UPts σ J (v.adicCompletion F)) (hk : k ∈ UPts σ J 𝔸) :

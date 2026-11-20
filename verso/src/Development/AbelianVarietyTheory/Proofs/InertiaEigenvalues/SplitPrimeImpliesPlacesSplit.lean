@@ -12,23 +12,23 @@ namespace GlobalTheory.SplitPlaces
 variable {R : Ranks} (H : Host R)
 
 /- English proof (translation)
-Conclude with `H.sqd_sq`.
+A detailed English derivation is pending.
 -/
 theorem sqrt_sq : (H.sqd) ^ 2 = -(H.d : H.E) := by
   exact H.sqd_sq
 
 /- English proof (translation)
-Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.Rc9.conj_sqrt <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem conj_sqrt : H.conj (H.sqd) = -H.sqd :=
   by apply _root_.UpperTheory.Reformulated.B.Rc9.conj_sqrt <;> assumption
 
 /- English proof (translation)
-Set `c : 𝓞 H.E ≃+* 𝓞 H.E` to `RingOfIntegers.mapRingEquiv H.conj.toRingEquiv`. Use `⟨HeightOneSpectrum.comap (c.symm : 𝓞 H.E →+* 𝓞 H.E) c.symm.surjective w, ?_, ?_⟩` and prove the remaining obligations. Use `show (c.symm : 𝓞 H.E →+* 𝓞 H.E) (l : 𝓞 H.E) ∈ w.asIdeal`. Rewrite using `[map_natCast]`. Conclude with `hw`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x y hxy`. Establish `: y = c x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hxy]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `this` using the available equality. Use `show _ ↔ c.symm (c x) ∈ w.asIdeal`. Rewrite using `[c.symm_apply_apply]`.
+A detailed English derivation is pending.
 -/
 theorem exists_conjPl (l : ℕ) (w : HeightOneSpectrum (𝓞 H.E)) (hw : w ∈ placesOver H.E l) :
     ∃ w' ∈ placesOver H.E l, IsConjPl H w w' := by
@@ -46,27 +46,25 @@ theorem exists_conjPl (l : ℕ) (w : HeightOneSpectrum (𝓞 H.E)) (hw : w ∈ p
     rw [c.symm_apply_apply]
 
 /- English proof (translation)
-Introduce `h`. Establish `: Fact l.Prime` using `⟨hl⟩`. Take `⟨m, hm⟩` from `ZMod.isSquare_of_jacobiSym_eq_one hj`. Take `⟨n, rfl⟩` from `ZMod.intCast_surjective m`. Establish `hdvd : (l : ℤ) ∣ n * n + H.d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Move the coercions through the operations in `at hm ⊢`. Rewrite using `[← hm]`. Expand and normalize the polynomial expressions, which then agree. Establish `hint : IsIntegral ℤ (H.sqd)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Apply `IsIntegral.of_pow (n := 2) (by norm_num)` to reduce the goal to its premises. Rewrite using `[sqrt_sq]`. Conclude with `(isIntegral_natCast _).neg`. Set `b : 𝓞 H.E` to `⟨H.sqd, hint⟩`. Establish `hb : b ^ 2 = -(H.d : 𝓞 H.E)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `e : ((b : 𝓞 H.E) : H.E) = H.sqd` using `rfl`. Simplify using `only [map_neg, map_pow, map_natCast, e]`. Conclude with `sqrt_sq H`. Establish `hiff : b - n ∈ w.asIdeal ↔ b + n ∈ w.asIdeal`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h (b - n) (-(b + n)) ?_, neg_mem_iff]`. Establish `e : ((b : 𝓞 H.E) : H.E) = H.sqd` using `rfl`. Simplify using `only [map_neg, map_add, map_sub, map_intCast, e, conj_sqrt]`. Expand and normalize the polynomial expressions, which then agree. Establish `hprod : (b - n) * (b + n) ∈ w.asIdeal`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `hdvd`. Establish `hk' : ((n * n + H.d : ℤ) : 𝓞 H.E) = ((l * k : ℤ) : 𝓞 H.E)` using `by rw [hk]`. Move the coercions through the operations in `at hk'`. Establish `: (b - n) * (b + n) = (l : 𝓞 H.E) * (-k)`. Take the linear combination `hb - hk'`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `w.asIdeal.mul_mem_right _ hw`. Establish `hboth : b - n ∈ w.asIdeal ∧ b + n ∈ w.asIdeal`. Break down `w.isPrime.mem_or_mem hprod with h1 | h1` into its components or cases. Use `exacts [⟨h1, hiff.mp h1⟩, ⟨hiff.mpr h1, h1⟩]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations.
 
-Establish `h2n : ((2 * n : ℤ) : 𝓞 H.E) ∈ w.asIdeal`. Use `w.asIdeal.sub_mem hboth.2 hboth.1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hlo` using `GlobalTheory.HubLoc.liesOver_of_mem hl hw`. Establish `hl2n : (l : ℤ) ∣ 2 * n`. Rewrite using `[← Ideal.mem_span_singleton, hlo.over, Ideal.under_def, Ideal.mem_comap]`. Simplify using `using h2n`. Establish `hp : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.mp hl`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hp.dvd_or_dvd hl2n with h1 | h1` into its components or cases. Establish `h3 : l ∣ 2` using `by exact_mod_cast h1`. Conclude with `hl2 ((Nat.prime_dvd_prime_iff_eq hl Nat.prime_two).mp h3)`. Establish `h3 : (l : ℤ) ∣ H.d` using `(dvd_add_right (h1.mul_right n)).mp hdvd`. Establish `h4 : l ∣ H.d` using `by exact_mod_cast h3`.
-
-Conclude with `hld ((Nat.prime_dvd_prime_iff_eq hl H.hyp.2.1).mp h4)`.
+A detailed English derivation is pending.
 -/
 theorem not_isConjPl_self {l : ℕ} (hl : l.Prime) (hl2 : l ≠ 2) (hld : l ≠ H.d)
     (hj : jacobiSym (-(H.d : ℤ)) l = 1) (w : HeightOneSpectrum (𝓞 H.E)) (hw : w ∈ placesOver H.E l) :
@@ -122,9 +120,9 @@ theorem not_isConjPl_self {l : ℕ} (hl : l.Prime) (hl2 : l ≠ 2) (hld : l ≠ 
     exact hld ((Nat.prime_dvd_prime_iff_eq hl H.hyp.2.1).mp h4)
 
 /- English proof (translation)
-Introduce `R H l ⟨hl, h5, _, hd, _, hc⟩ w hw`. Establish `hl2 : l ≠ 2` using `by omega`. Take `⟨hN, hj⟩` from `(primeClass_eq_splitK_iff' (H := H.toHostRaw) hl).1 hc`. Use `⟨GlobalTheory.HubLoc.ramIdx_eq_one H hl hN w hw, exists_conjPl H l w hw, ?_⟩` and prove the remaining obligations. Introduce and unpack `w' h rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `not_isConjPl_self H hl hl2 hd hj _ hw h`.
+A detailed English derivation is pending.
 -/
 theorem placesSplit : ∀ {R : Ranks} (H : Host R) (l : ℕ), SplitRowPrime H l → PlacesSplit H l := by
   intro R H l ⟨hl, h5, _, hd, _, hc⟩ w hw

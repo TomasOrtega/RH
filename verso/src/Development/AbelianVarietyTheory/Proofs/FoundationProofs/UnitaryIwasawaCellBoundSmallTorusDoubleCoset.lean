@@ -13,7 +13,7 @@ section Local
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `sum_mem fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Conclude with `zsmul_mem (prod_mem fun i _ => h _ _) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem det_mem_foundation {m : Type} [Fintype m] [DecidableEq m] (M : Matrix m m L)
     (h : ∀ i j, M i j ∈ intL L) : M.det ∈ intL L := by
@@ -23,7 +23,7 @@ private theorem det_mem_foundation {m : Type} [Fintype m] [DecidableEq m] (M : M
   exact zsmul_mem (prod_mem fun i _ => h _ _) _
 
 /- English proof (translation)
-Rewrite using `[map_zpow₀, hϖ, ← WithZero.exp_zsmul]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 private theorem valuation_zpow_uniformizer' {ϖ : L} (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) (m : ℤ) :
     Valued.v (ϖ ^ m) = WithZero.exp (-m) := by
@@ -32,7 +32,7 @@ private theorem valuation_zpow_uniformizer' {ϖ : L} (hϖ : Valued.v ϖ = WithZe
   simp
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `j s hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj, map_mul, ih, valuation_zpow_uniformizer' hϖ, ← WithZero.exp_add]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -48,23 +48,23 @@ private theorem valuation_prod_zpow_uniformizer {ϖ : L} (hϖ : Valued.v ϖ = Wi
     ring
 
 /- English proof (translation)
-Establish `hint : ∀ x : L, x ∈ intL L ↔ Valued.v x ≤ 1` using `fun x => Iff.rfl`. Set `A : Matrix I (Fin n) L` to `fun i s => k₁ i s * ϖ ^ μ s`. Set `B : Matrix (Fin n) I L` to `fun s j => k₂ s j`. Establish `hM : b.submatrix (fun i : I => (i : Fin n)) (fun i : I => (i : Fin n)) = A * B`. Use extensionality with `i j`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.mul_apply]`. Simplify using `[A, B, e, Matrix.mul_apply, Matrix.diagonal_apply]`. Establish `hdet : (b.submatrix (fun i : I => (i : Fin n)) (fun i : I => (i : Fin n))).det = ∏ i : I, ϖ ^ a i`. Establish `ht : (b.submatrix (fun i : I => (i : Fin n)) (fun i : I => (i : Fin n))).BlockTriangular id` using `fun i j hij => hb (show (j : Fin n) < i from hij)`. Rewrite using `[Matrix.det_of_upperTriangular ht]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hd]`. Establish `hexp : (A * B).det = ∑ f : I → Fin n, (∏ i, B (f i) i) * (A.submatrix id f).det`. Simplify using `only [Matrix.det_apply, Matrix.mul_apply, Finset.prod_univ_sum, Fintype.piFinset_univ, Finset.smul_sum, Finset.mul_sum, Matrix.submatrix_apply, id]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun f _ => Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Units.smul_def, zsmul_eq_mul, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Establish `hterm : ∀ f : I → Fin n, Valued.v ((∏ i, B (f i) i) * (A.submatrix id f).det) ≤ WithZero.exp (-c)`. Introduce `f`. Distinguish the cases in `hf : Function.Injective f`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hA : A.submatrix id f = k₁.submatrix (fun i : I => (i : Fin n)) f * Matrix.diagonal (fun j => ϖ ^ μ (f j))`. Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_diagonal, id]`. Both sides reduce to the same expression. Rewrite using `[hA, Matrix.det_mul, Matrix.det_diagonal, map_mul, map_mul, valuation_prod_zpow_uniformizer hϖ]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Valued.v (∏ i, B (f i) i) ≤ 1` using `(hint _).mp (prod_mem fun i _ => h₂ _ _)`. Establish `h2 : Valued.v (k₁.submatrix (fun i : I => (i : Fin n)) f).det ≤ 1` using `(hint _).mp (det_mem_foundation _ fun i j => h₁ _ _)`. Establish `h3 : c ≤ ∑ i, μ (f i)`. Use `hc (Finset.univ.image f) (by rw [Finset.card_image_of_injective _ hf, Finset.card_univ, Fintype.card_coe])` as an intermediate fact. Rewrite `this` using `[Finset.sum_image (fun x _ y _ h => hf h)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Combine the equalities or inequalities in the displayed calculation. Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij, hne⟩ : ∃ i j, f i = f j ∧ i ≠ j := by`. Simplify using `only [Function.Injective, not_forall] at hf`. Take `⟨i, j, h, hne⟩` from `hf`. Conclude with `⟨i, j, h, hne⟩`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[Matrix.det_zero_of_column_eq hne (fun r => by simp [hij]), mul_zero, map_zero]`. Conclude with `zero_le'`. Establish `hle : Valued.v (∏ i : I, ϖ ^ a i) ≤ WithZero.exp (-c)`. Rewrite using `[← hdet, hM, hexp]`. Conclude with `Valuation.map_sum_le _ fun f _ => hterm f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hle` using `[valuation_prod_zpow_uniformizer hϖ, WithZero.exp_le_exp]`. Establish `: ∑ i : I, a i = ∑ i ∈ I, a i` using `Finset.sum_coe_sort I a`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem minor_le {ϖ : L} (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) {a μ : Fin n → ℤ}
     {b k₁ k₂ : Matrix (Fin n) (Fin n) L} (hb : b.BlockTriangular id) (hd : ∀ i, b i i = ϖ ^ a i)
@@ -130,7 +130,7 @@ theorem minor_le {ϖ : L} (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) {a μ : 
 end Local
 
 /- English proof (translation)
-Unfold `tExp`. Use `split_ifs with h h'`. Both sides reduce to the same expression. Conclude with `absurd i.2 h`. Conclude with `absurd i.2 h`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tExp_lo {n : ℕ} (a : Fin (n / 2) → ℤ) (i : Fin (n / 2)) :
     tExp n (n / 2) a ⟨i.1, by omega⟩ = a i := by
@@ -141,11 +141,11 @@ theorem tExp_lo {n : ℕ} (a : Fin (n / 2) → ℤ) (i : Fin (n / 2)) :
   · exact absurd i.2 h
 
 /- English proof (translation)
-Establish `hi` using `i.2`. Establish `e : n - 1 - (n - 1 - i.1) = i.1` using `by omega`. Unfold `tExp`. Use `split_ifs with h h'`. It suffices to derive a contradiction.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `h2 : n - 1 - i.1 < n / 2` using `h`. Use linear arithmetic over natural numbers and integers. Rewrite using `[neg_inj]`. Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. It suffices to derive a contradiction.
 
-Conclude with `e`. It suffices to derive a contradiction. Conclude with `h' ⟨by show n - n / 2 ≤ n - 1 - i.1; omega, by show n - 1 - (n - 1 - i.1) < n / 2; omega⟩`.
+A detailed English derivation is pending.
 -/
 theorem tExp_hi {n : ℕ} (a : Fin (n / 2) → ℤ) (i : Fin (n / 2)) :
     tExp n (n / 2) a ⟨n - 1 - i.1, by omega⟩ = -a i := by
@@ -164,21 +164,19 @@ theorem tExp_hi {n : ℕ} (a : Fin (n / 2) → ℤ) (i : Fin (n / 2)) :
     exact h' ⟨by show n - n / 2 ≤ n - 1 - i.1; omega, by show n - 1 - (n - 1 - i.1) < n / 2; omega⟩
 
 /- English proof (translation)
-Use `set f : Fin n → ℤ := fun j => min (tExp n (n / 2) a j) 0 with hf`. Set `lo : Fin (n / 2) → Fin n` to `fun i => ⟨i.1, by omega⟩`. Set `hi : Fin (n / 2) → Fin n` to `fun i => ⟨n - 1 - i.1, by omega⟩`. Establish `hlo : Function.Injective lo` using `fun i i' h => Fin.ext (by simpa [lo] using congrArg Fin.val h)`. Establish `hhi : Function.Injective hi`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i i' h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [hi] at this`. Use `i.2` as an intermediate fact. Use `i'.2` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Fin.ext (by omega)`. Establish `hdisj : Disjoint (Finset.univ.image lo) (Finset.univ.image hi)`. Rewrite using `[Finset.disjoint_left]`. Introduce `j hj hj'`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.mp hj`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i', -, h⟩` from `Finset.mem_image.mp hj'`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [lo, hi] at this`. Use `i.2` as an intermediate fact. Use `i'.2` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hzero : ∀ j ∉ Finset.univ.image lo ∪ Finset.univ.image hi, f j = 0`. Introduce `j hj`. Rewrite `hj` using `[Finset.mem_union, not_or]`. Simplify using `only [hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. It suffices to derive a contradiction.
 
-Unfold `tExp`. Use `split_ifs with h1 h2`. Conclude with `(hj.1 (Finset.mem_image.mpr ⟨⟨j.1, h1⟩, Finset.mem_univ _, rfl⟩)).elim`. It suffices to derive a contradiction. Apply `hj.2` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.mem_image.mpr ⟨⟨n - 1 - j.1, h2.2⟩, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Conclude with `Fin.ext (by show n - 1 - (n - 1 - j.1) = j.1; have := j.2; omega)`. Simplify using the standard rewrite rules. Rewrite using `[← Finset.sum_subset (Finset.subset_univ _) (fun j _ hj => hzero j hj), Finset.sum_union hdisj, Finset.sum_image (fun x _ y _ h => hlo h), Finset.sum_image (fun x _ y _ h => hhi h), ← Finset.sum_add_distrib, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Simplify using `only [hf, lo, hi, tExp_lo, tExp_hi]`. Break down `le_total (a i) 0 with h | h` into its components or cases. Rewrite using `[abs_of_nonpos h, min_eq_left h, min_eq_right (by omega)]; ring`. Rewrite using `[abs_of_nonneg h, min_eq_right h, min_eq_left (by omega)]; ring`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_min_tExp {n : ℕ} (a : Fin (n / 2) → ℤ) :
     ∑ j, min (tExp n (n / 2) a j) 0 = -∑ i, |a i| := by
@@ -223,9 +221,7 @@ theorem sum_min_tExp {n : ℕ} (a : Fin (n / 2) → ℤ) :
   · rw [abs_of_nonneg h, min_eq_right h, min_eq_left (by omega)]; ring
 
 /- English proof (translation)
-Unfold `tExp`. Use `split_ifs with h1 h2`. Conclude with `(abs_le.mp (h _)).1`. Use `(abs_le.mp (h ⟨n - 1 - j.1, h2.2⟩)).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Evaluate the numerical expressions.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem neg_one_le_tExp {n : ℕ} {a : Fin (n / 2) → ℤ} (h : ∀ i, |a i| ≤ 1) (j : Fin n) :
     -1 ≤ tExp n (n / 2) a j := by
@@ -237,9 +233,9 @@ theorem neg_one_le_tExp {n : ℕ} {a : Fin (n / 2) → ℤ} (h : ∀ i, |a i| �
   · norm_num
 
 /- English proof (translation)
-Rewrite `hk` using `[KU, Subgroup.mem_subgroupOf]`. Unfold `intPts at hk`. Take `⟨g, hg⟩` from `(Subgroup.mem_inf.mp hk).2`. Rewrite using `[← hg]`. Unfold `bc`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `((g : Matrix (Fin n) (Fin n) (intL L)) i j).2`.
+A detailed English derivation is pending.
 -/
 private theorem entries_mem_intL_of_mem_KU {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
     {σ : L →+* L} {n : ℕ} {k : GU σ n} (hk : k ∈ KU σ n) (i j : Fin n) :
@@ -252,7 +248,7 @@ private theorem entries_mem_intL_of_mem_KU {L : Type} [Field L] [Valued L (WithZ
   exact ((g : Matrix (Fin n) (Fin n) (intL L)) i j).2
 
 /- English proof (translation)
-Unfold `tMat tExp`. Use `congr 1`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem tMat_eq_diagonal_pow_tExp {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L)
     (n : ℕ) (a : Fin (n / 2) → ℤ) :
@@ -263,25 +259,21 @@ private theorem tMat_eq_diagonal_pow_tExp {L : Type} [Field L] [Valued L (WithZe
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `L _ _ ϖ σ q n hU ε κ u k k₁ k₂ hε hu hk hk₁ hk₂ e`. Establish `hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hU.2.2.2.1`. Use `set U := ((u : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) with hU'`. Use `set K := ((k : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) with hK`. Use `set K₁ := ((k₁ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) with hK₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set K₂ := ((k₂ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) with hK₂`. Use `set Ki := (((k⁻¹ : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) with hKi`. Establish `hKK : K * Ki = 1` using `by show ((k : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (((k : GL (Fin n) L)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = 1`. Conclude with `Units.mul_inv _`. Establish `hint₂ : ∀ i j, (K₂ * Ki) i j ∈ intL L` using `fun i j => entries_mem_intL_of_mem_KU (mul_mem hk₂ (inv_mem hk)) i j`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set b := tMat ϖ n (n / 2) κ * U with hbdef`. Establish `hbe : b = K₁ * Matrix.diagonal (fun j => ϖ ^ tExp n (n / 2) ε j) * (K₂ * Ki)`. Combine the equalities or inequalities in the displayed calculation. Establish `hbT : b.BlockTriangular id`. Introduce `i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hbdef, tMat_eq_diagonal_pow_tExp, Matrix.diagonal_mul]`. Conclude with `mul_eq_zero_of_right _ (show U i j = 0 from hu.1 i j hij)`. Establish `hbd : ∀ j, b j j = ϖ ^ tExp n (n / 2) κ j`. Introduce `j`. Rewrite using `[hbdef, tMat_eq_diagonal_pow_tExp, Matrix.diagonal_mul, show U j j = 1 from hu.2 j, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `key` using `fun I c hc => minor_le hϖ hbT hbd (fun i j => entries_mem_intL_of_mem_KU hk₁ i j) hint₂ hbe I c hc`. Establish `hlow : ∀ j, -1 ≤ tExp n (n / 2) κ j`. Introduce `j`. Use `key {j} (-1) (by` as an intermediate fact. Introduce `S hS`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨s, rfl⟩` from `Finset.card_eq_one.mp (by rw [hS, Finset.card_singleton])`. Rewrite using `[Finset.sum_singleton]`. Conclude with `neg_one_le_tExp hε s)`. Rewrite `this` using `[Finset.sum_singleton]`. Then use the resulting hypothesis. Use `⟨fun i => abs_le.mpr ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hlow ⟨i.1, by omega⟩` as an intermediate fact. Rewrite `this` using `[tExp_lo]`. Then use the resulting hypothesis. Use `hlow ⟨n - 1 - i.1, by omega⟩` as an intermediate fact. Rewrite `this` using `[tExp_hi]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hS : ∀ S : Finset (Fin n), -∑ i, |ε i| ≤ ∑ i ∈ S, tExp n (n / 2) ε i`. Introduce `S`. Rewrite using `[← sum_min_tExp, ← Finset.sum_sdiff (Finset.subset_univ S)]`. Establish `h1 : ∑ i ∈ Finset.univ \ S, min (tExp n (n / 2) ε i) 0 ≤ 0` using `Finset.sum_nonpos fun i _ => min_le_right _ _`. Establish `h2 : ∑ i ∈ S, min (tExp n (n / 2) ε i) 0 ≤ ∑ i ∈ S, tExp n (n / 2) ε i` using `Finset.sum_le_sum fun i _ => min_le_left _ _`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Use `key (Finset.univ.filter fun j => tExp n (n / 2) κ j < 0) _ (fun S _ => hS S)` as an intermediate fact. Rewrite `this` using `[Finset.sum_filter]`. Establish `h3 : ∑ j, (if tExp n (n / 2) κ j < 0 then tExp n (n / 2) κ j else 0) = ∑ j, min (tExp n (n / 2) κ j) 0`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Use `split_ifs with h`. Conclude with `(min_eq_left h.le).symm`. Conclude with `(min_eq_right (not_lt.mp h)).symm`. Rewrite `this` using `[h3, sum_min_tExp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cell_bound : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (q n : ℕ), IsUnramInv ϖ σ q → ∀ (ε κ : Fin (n / 2) → ℤ) (u k k₁ k₂ : GU σ n), (∀ i, |ε i| ≤ 1) → IsUnipU u → k ∈ KU σ n → k₁ ∈ KU σ n → k₂ ∈ KU σ n → tMat ϖ n (n / 2) κ * ((u : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * ((k : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = ((k₁ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * tMat ϖ n (n / 2) ε * ((k₂ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) → (∀ i, |κ i| ≤ 1) ∧ ∑ i, |κ i| ≤ ∑ i, |ε i| := by
   intro L _ _ ϖ σ q n hU ε κ u k k₁ k₂ hε hu hk hk₁ hk₂ e

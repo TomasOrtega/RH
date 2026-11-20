@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubqu
 open GlobalTheory.PRep GlobalTheory.SmGL
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.IsoSub.equiv_of_isSubquotient` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FSubquotientEquivOfIrreducibleImage.lean&line=36#L36)
 -/

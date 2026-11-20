@@ -13,9 +13,9 @@ def LeafDimOpen : Prop := ∀ (k : Type) [Field k] {X : Scheme.{0}} (b : X ⟶ S
     IsIntegral X → ∀ U : Set X, IsOpen U → U.Nonempty → topologicalKrullDim X ≤ topologicalKrullDim U
 
 /- English proof (translation)
-Introduce `k _ A _ _ _ _`. Take `⟨B, b, ι, hB, hb, hι, hc⟩` from `h1 k A`. Use `⟨B, b, ι, hB, hb, hι, hc, ?_⟩` and prove the remaining obligations. Take `⟨x⟩ : Nonempty (PrimeSpectrum A)` from `inferInstance`. Establish `hemb` using `ι.isOpenEmbedding`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem goal_of (h1 : LeafProjModel) (h2 : LeafDimOpen) : LateralTheory.E.LeafSpreadVCut.LeafCloseB := by
   intro k _ A _ _ _ _

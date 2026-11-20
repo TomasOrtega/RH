@@ -52,7 +52,7 @@ def PatchC : Prop :=
 variable {u u' F0 what₂}
 
 /- English proof (translation)
-Introduce `γ w hγ w' hG' hk Z hZ`. Take `⟨F'₂, φ, φ', hF, -, hT, hC, ⟨e⟩⟩` from `hA γ w hγ w' hG' hk Z hZ`. Use `⟨F'₂, φ, φ', hF, hT, ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.card_coe_set_eq, Nat.card_congr e]`. Conclude with `hB γ w hγ w' hG' hk Z hZ F'₂ φ φ' hF hT hC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frGlob_of (hA : FStarC Zd u u' F0 what₂) (hB : PatchC Zd u u' F0 what₂) : FrGlob Zd u u' F0 what₂ := by
   intro γ w hγ w' hG' hk Z hZ

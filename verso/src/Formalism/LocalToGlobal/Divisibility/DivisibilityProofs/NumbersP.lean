@@ -13,21 +13,21 @@ section LP
 variable (l d : ℕ) [NeZero d] (Ds : ZMod d → ℝ)
 
 /- English proof (translation)
-The claim follows from `Fintype.sum_equiv (Equiv.subRight c) _ _ (fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem sum_zmod_sub_const (x : ZMod d → ℝ) (c : ZMod d) : ∑ s, x (s - c) = ∑ s, x s :=
   Fintype.sum_equiv (Equiv.subRight c) _ _ (fun _ => rfl)
 
 /- English proof (translation)
-Establish `hl' : (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Introduce and unpack `y ⟨xs, hx0, hodd, hcon, rfl⟩`. Establish `hsum` using `Finset.sum_le_sum fun s (_ : s ∈ Finset.univ) => hcon s`. Rewrite `hsum` using `[Finset.sum_add_distrib]`. Establish `hshift : ∑ s, ∑ i ∈ Finset.range d, xs (s - (i : ZMod d)) i = ∑ s, ∑ i ∈ Finset.range d, xs s i`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `Fintype.sum_equiv (Equiv.subRight (i : ZMod d)) _ _ (fun s => rfl)`. Establish `hfirst : (l : ℝ) * ∑ s, ∑ i ∈ Finset.range d, xs s i ≤ ∑ s, ∑ i ∈ Finset.range d, (l : ℝ) ^ i * xs s i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `ho : Odd i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hli : (l : ℝ) ≤ (l : ℝ) ^ i`. Take `⟨k, rfl⟩` from `ho`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_le_mul_of_nonneg_right hli (hx0 s i)`. Rewrite using `[hodd s i (Or.inl ho)]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `hsum` using `[hshift]`. Rewrite using `[le_div_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lpFeasible_le (hl : 2 ≤ l) : ∀ y ∈ lpFeasible l d Ds, y ≤ (∑ s, Ds s) / ((l : ℝ) + 1) := by
   have hl' : (2 : ℝ) ≤ l := by exact_mod_cast hl
@@ -59,13 +59,13 @@ theorem lpFeasible_le (hl : 2 ≤ l) : ∀ y ∈ lpFeasible l d Ds, y ≤ (∑ s
   linarith
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => 0, fun _ _ => le_rfl, fun _ _ _ => rfl, fun s => by simp [hD s], by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem zero_mem_lpFeasible (hD : ∀ s, 0 ≤ Ds s) : (0 : ℝ) ∈ lpFeasible l d Ds :=
   ⟨fun _ _ => 0, fun _ _ => le_rfl, fun _ _ _ => rfl, fun s => by simp [hD s], by simp⟩
 
 /- English proof (translation)
-Establish `hl' : (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `h1 : (l : ℝ) + 1 ≠ 0` using `by linarith`. Establish `h2 : (l : ℝ) - 1 ≠ 0` using `by linarith`. Establish `h3 : (l : ℝ) ^ 2 - 1 = ((l : ℝ) - 1) * ((l : ℝ) + 1)` using `by ring`. Rewrite using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -80,7 +80,7 @@ theorem gamma_sub (hl : 2 ≤ l) (S : ℝ) :
   ring
 
 /- English proof (translation)
-Establish `h` using `csSup_le ⟨0, zero_mem_lpFeasible l d Ds hD⟩ (lpFeasible_le l d Ds hl)`. Unfold `lpF`. Rewrite using `[← gamma_sub l hl]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem lpF_ge (hl : 2 ≤ l) (hD : ∀ s, 0 ≤ Ds s) : (∑ s, Ds s) / ((l : ℝ) ^ 2 - 1) ≤ lpF l d Ds := by
   have h := csSup_le ⟨0, zero_mem_lpFeasible l d Ds hD⟩ (lpFeasible_le l d Ds hl)
@@ -89,7 +89,7 @@ theorem lpF_ge (hl : 2 ≤ l) (hD : ∀ s, 0 ≤ Ds s) : (∑ s, Ds s) / ((l : �
   linarith
 
 /- English proof (translation)
-The claim follows from `| 0, c, h0, _ => by simp [h0 0] | n + 1, c, h0, h1 => by obtain ⟨a, b⟩ := alt_sum_bounds n (fun k => c (k + 1)) (fun k => h0 _) (fun k => h1 _) rw [Finset.sum_range_succ'] have h : ∑ k ∈ Finset.range n, (-1 : ℝ) ^ (k + 1) * c (k + 1) = -∑ k ∈ Finset.range n, (-1 : ℝ) ^ k * c (k + …`.
+A detailed English derivation is pending.
 -/
 theorem alt_sum_bounds : ∀ (n : ℕ) (c : ℕ → ℝ), (∀ k, 0 ≤ c k) → (∀ k, c (k + 1) ≤ c k) →
     0 ≤ ∑ k ∈ Finset.range n, (-1 : ℝ) ^ k * c k ∧ ∑ k ∈ Finset.range n, (-1 : ℝ) ^ k * c k ≤ c 0
@@ -110,13 +110,13 @@ def cycSum (n : ℕ) (s : ZMod d) : ℝ :=
   ∑ k ∈ Finset.range n, (-1 : ℝ) ^ k * (((l : ℝ)⁻¹) ^ (k + 1) * Ds (s - (k : ZMod d)))
 
 /- English proof (translation)
-Establish `hl0 : (l : ℝ) ≠ 0`. Establish `: (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Combine the linear equalities and inequalities to obtain the conclusion. Proceed by induction on `n with`. Consider the case `zero => simp [cycSum]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n ih`. Establish `e1 : cycSum l d Ds (n + 1) s = cycSum l d Ds n s + (-1 : ℝ) ^ n * (((l : ℝ)⁻¹) ^ (n + 1) * Ds (s - (n : ZMod d)))` using `Finset.sum_range_succ _ _`. Establish `e2 : cycSum l d Ds (n + 1) (s - 1) = cycSum l d Ds n (s - 1) + (-1 : ℝ) ^ n * (((l : ℝ)⁻¹) ^ (n + 1) * Ds (s - 1 - (n : ZMod d)))` using `Finset.sum_range_succ _ _`. Establish `e3 : s - 1 - (n : ZMod d) = s - ((n + 1 : ℕ) : ZMod d)`. Use `push_cast`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e4 : (l : ℝ) * ((l : ℝ)⁻¹) ^ (n + 1) = ((l : ℝ)⁻¹) ^ n`. Rewrite using `[pow_succ, mul_comm, mul_assoc, inv_mul_cancel₀ hl0, mul_one]`. Rewrite using `[e1, e2, e3]`. Establish `e5 : (l : ℝ) * (cycSum l d Ds n s + (-1 : ℝ) ^ n * (((l : ℝ)⁻¹) ^ (n + 1) * Ds (s - (n : ZMod d)))) = (l : ℝ) * cycSum l d Ds n s + (-1 : ℝ) ^ n * (((l : ℝ) * ((l : ℝ)⁻¹) ^ (n + 1)) * Ds (s - (n : ZMod d)))`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e5, e4]`. Establish `e6 : (-1 : ℝ) ^ (n + 1) = -(-1 : ℝ) ^ n` using `by ring`. Rewrite using `[e6]`. Take the linear combination `ih`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cycSum_rec (hl : 2 ≤ l) (n : ℕ) (s : ZMod d) :
     (l : ℝ) * cycSum l d Ds n s + cycSum l d Ds n (s - 1) =
@@ -146,9 +146,9 @@ theorem cycSum_rec (hl : 2 ≤ l) (n : ℕ) (s : ZMod d) :
     linear_combination ih
 
 /- English proof (translation)
-Establish `hl' : (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hi0 : 0 ≤ (l : ℝ)⁻¹` using `by positivity`. Establish `hi1 : (l : ℝ)⁻¹ ≤ 1 / 2`. Rewrite using `[inv_eq_one_div]`. Conclude with `one_div_le_one_div_of_le (by norm_num) hl'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : 1 ≤ d` using `Nat.one_le_iff_ne_zero.2 (NeZero.ne d)`. Establish `hp : ((l : ℝ)⁻¹) ^ d ≤ ((l : ℝ)⁻¹) ^ 1` using `pow_le_pow_of_le_one hi0 (by linarith) hd`. Establish `hp0 : 0 ≤ ((l : ℝ)⁻¹) ^ d` using `pow_nonneg hi0 _`. Apply the tactic sequence `rcases neg_one_pow_eq_or ℝ d with h | h <;> rw [h] <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cyc_den_pos (hl : 2 ≤ l) : 0 < 1 - (-1 : ℝ) ^ d * ((l : ℝ)⁻¹) ^ d := by
   have hl' : (2 : ℝ) ≤ l := by exact_mod_cast hl
@@ -162,25 +162,25 @@ theorem cyc_den_pos (hl : 2 ≤ l) : 0 < 1 - (-1 : ℝ) ^ d * ((l : ℝ)⁻¹) ^
   rcases neg_one_pow_eq_or ℝ d with h | h <;> rw [h] <;> linarith
 
 /- English proof (translation)
-Establish `hl' : (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hl0 : (0 : ℝ) < l` using `by linarith`. Establish `hi0 : 0 ≤ (l : ℝ)⁻¹` using `by positivity`. Use `set ρ : ℝ := 1 - (-1 : ℝ) ^ d * ((l : ℝ)⁻¹) ^ d with hρ`. Establish `hρ0 : 0 < ρ` using `cyc_den_pos l d hl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set x : ZMod d → ℝ := fun s => cycSum l d Ds d s / ρ with hx`. Establish `hx0 : ∀ s, 0 ≤ x s`. Introduce `s`. Use `div_nonneg ?_ hρ0.le` and prove the remaining obligations. Use `(alt_sum_bounds d (fun k => ((l : ℝ)⁻¹) ^ (k + 1) * Ds (s - (k : ZMod d))) (fun k => mul_nonneg (pow_nonneg hi0 _) (hD _)) (fun k => ?_)).1` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (l : ℝ)⁻¹ * Ds (s - ((k + 1 : ℕ) : ZMod d)) ≤ Ds (s - (k : ZMod d))`. Rewrite using `[inv_mul_le_iff₀ hl0]`. Conclude with `hflat _ _`. Combine the equalities or inequalities in the displayed calculation. Establish `hrec : ∀ s, (l : ℝ) * x s + x (s - 1) = Ds s`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `s`. Establish `h` using `cycSum_rec l d Ds hl d s`. Rewrite `h` using `[ZMod.natCast_self, sub_zero]`. Simplify using `only [hx]`. Rewrite using `[mul_div_assoc', ← add_div, h, div_eq_iff hρ0.ne', hρ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `htot : (∑ s, Ds s) / ((l : ℝ) + 1) = ∑ s, x s`. Rewrite using `[div_eq_iff (by linarith)]`. Establish `h1 : ∑ s, Ds s = ∑ s, ((l : ℝ) * x s + x (s - 1))` using `Finset.sum_congr rfl fun s _ => (hrec s).symm`. Rewrite using `[h1, Finset.sum_add_distrib, sum_zmod_sub_const d x 1, ← Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hmem : 1 ∈ Finset.range d` using `Finset.mem_range.2 (by omega)`. Use `⟨fun s i => if i = 1 then x s else 0, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s i dsimp only split_ifs`. Conclude with `hx0 s`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_rfl`. Introduce and unpack `s i h dsimp only`. Rewrite using `[if_neg]`. Introduce and unpack `rfl`. Break down `h with h | h` into its components or cases.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h odd_one`. Use linear arithmetic over natural numbers and integers. Introduce `s`. Establish `h1 : ∑ i ∈ Finset.range d, (l : ℝ) ^ i * (if i = 1 then x s else 0) = (l : ℝ) * x s`. Rewrite using `[Finset.sum_eq_single 1 (fun i _ hi => by rw [if_neg hi, mul_zero]) (fun h => absurd hmem h)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h2 : ∑ i ∈ Finset.range d, (if i = 1 then x (s - (i : ZMod d)) else 0) = x (s - 1)`. Rewrite using `[Finset.sum_eq_single 1 (fun i _ hi => by rw [if_neg hi]) (fun h => absurd hmem h)]`. Simplify using the standard rewrite rules. Rewrite using `[h1, h2, hrec s]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[htot]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single 1 (fun i _ hi => if_neg hi) (fun h => absurd hmem h)]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem flat_mem_lpFeasible (hl : 2 ≤ l) (hd : 2 ≤ d) (hD : ∀ s, 0 ≤ Ds s) (hflat : ∀ a b, Ds a ≤ (l : ℝ) * Ds b) :
     (∑ s, Ds s) / ((l : ℝ) + 1) ∈ lpFeasible l d Ds := by
@@ -242,7 +242,7 @@ theorem flat_mem_lpFeasible (hl : 2 ≤ l) (hd : 2 ≤ d) (hD : ∀ s, 0 ≤ Ds 
     simp
 
 /- English proof (translation)
-Establish `hS : sSup (lpFeasible l d Ds) = (∑ s, Ds s) / ((l : ℝ) + 1)` using `le_antisymm (csSup_le ⟨0, zero_mem_lpFeasible l d Ds hD⟩ (lpFeasible_le l d Ds hl)) (le_csSup ⟨_, lpFeasible_le l d Ds hl⟩ (flat_mem_lpFeasible l d Ds hl hd hD hflat))`. Unfold `lpF`. Rewrite using `[hS, gamma_sub l hl]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lpF_flat (hl : 2 ≤ l) (hd : 2 ≤ d) (hD : ∀ s, 0 ≤ Ds s) (hflat : ∀ a b, Ds a ≤ (l : ℝ) * Ds b) :
     lpF l d Ds = (∑ s, Ds s) / ((l : ℝ) ^ 2 - 1) := by
@@ -259,9 +259,9 @@ namespace NumDatum
 variable (N : NumDatum)
 
 /- English proof (translation)
-Introduce `z z' h`. Establish `h1 : xor z.1 (decide (N.cls p = PrimeClass.signal ∧ Odd n)) = xor z'.1 (decide (N.cls p = PrimeClass.signal ∧ Odd n))` using `congrArg Prod.fst h`. Establish `h2 : z.2 + n • N.hP p = z'.2 + n • N.hP p` using `congrArg Prod.snd h`. Use `Prod.ext ?_ (add_right_cancel h2)` and prove the remaining obligations. Use `revert h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `cases z.1 <;> cases z'.1 <;> cases decide (N.cls p = PrimeClass.signal ∧ Odd n) <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem pos_injective (p n : ℕ) : Function.Injective fun z : RPl N.R => N.pos p z n := by
   intro z z' h
@@ -273,14 +273,14 @@ theorem pos_injective (p n : ℕ) : Function.Injective fun z : RPl N.R => N.pos 
   cases z.1 <;> cases z'.1 <;> cases decide (N.cls p = PrimeClass.signal ∧ Odd n) <;> simp
 
 /- English proof (translation)
-The claim follows from `Fintype.sum_bijective (fun z : RPl N.R => N.pos p z n) (Finite.injective_iff_bijective.1 (N.pos_injective p n)) _ _ (fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem sum_pos (p n : ℕ) (g : RPl N.R → ℝ) : ∑ z, g (N.pos p z n) = ∑ z, g z :=
   Fintype.sum_bijective (fun z : RPl N.R => N.pos p z n)
     (Finite.injective_iff_bijective.1 (N.pos_injective p n)) _ _ (fun _ => rfl)
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [sum_pos]`. Rewrite using `[Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_orbit_total (p : ℕ) (g : RPl N.R → ℝ) :
     ∑ z, ∑ s : ZMod (N.ordP p), g (N.pos p z s.val) = (N.ordP p : ℝ) * ∑ z, g z := by
@@ -289,7 +289,7 @@ theorem sum_orbit_total (p : ℕ) (g : RPl N.R → ℝ) :
   rw [Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul]
 
 /- English proof (translation)
-Establish `h` using `N.R.m_add_three_le_k`. Establish `h1 : (1 : ℝ) ≤ (N.R.k : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ N.R.k)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem k_sub_one_nonneg : 0 ≤ (N.R.k : ℝ) - 1 := by
   have h := N.R.m_add_three_le_k
@@ -297,9 +297,9 @@ theorem k_sub_one_nonneg : 0 ≤ (N.R.k : ℝ) - 1 := by
   linarith
 
 /- English proof (translation)
-Unfold `ordP`. Break down `hc with hc | hc` into its components or cases. Rewrite using `[if_neg (by rw [hc]; decide)]`. Establish `h0 : N.hP p ≠ 0` using `fun e => h ⟨hc, e⟩`. Establish `h1 : addOrderOf (N.hP p) ≠ 1` using `fun e => h0 (AddMonoid.addOrderOf_eq_one_iff.1 e)`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `addOrderOf_pos (N.hP p)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos hc]`. Establish `h2` using `addOrderOf_pos (2 • N.hP p)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem two_le_ordP {p : ℕ} (hc : N.cls p = PrimeClass.inertClass ∨ N.cls p = PrimeClass.signal)
     (h : ¬ (N.cls p = PrimeClass.inertClass ∧ N.hP p = 0)) : 2 ≤ N.ordP p := by
@@ -317,11 +317,9 @@ theorem two_le_ordP {p : ℕ} (hc : N.cls p = PrimeClass.inertClass ∨ N.cls p 
 end NumDatum
 
 /- English proof (translation)
-Introduce `N j p hp _ hw`. Establish `hk` using `N.k_sub_one_nonneg`. Unfold `NumDatum.FInert`. Use `split_ifs with h`. Conclude with `le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : (0 : ℝ) < (N.ordP p : ℝ)` using `Nat.cast_pos.2 (Nat.pos_of_ne_zero (NeZero.ne _))`. Rewrite using `[le_div_iff₀ hn]`. Establish `h1 : ∀ z : RPl N.R, (∑ s : ZMod (N.ordP p), ((N.R.k : ℝ) - 1) * N.w j (N.pos p z s.val)) / ((p : ℝ) ^ 2 - 1) ≤ N.FOrb j p z` using `fun z => lpF_ge p (N.ordP p) _ hp.two_le (fun s => mul_nonneg hk (hw _))`. Use `le_trans (le_of_eq ?_) (Finset.sum_le_sum fun z _ => h1 z)` and prove the remaining obligations. Rewrite using `[← Finset.sum_div, ← Finset.sum_div, N.sum_orbit_total p (fun z => ((N.R.k : ℝ) - 1) * N.w j z)]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem numDatum_fInertGe : NumDatum.FInertGe := by
   intro N j p hp _ hw
@@ -339,11 +337,9 @@ theorem numDatum_fInertGe : NumDatum.FInertGe := by
     ring
 
 /- English proof (translation)
-Introduce `N j p hp hc hw hflat`. Establish `hk` using `N.k_sub_one_nonneg`. Unfold `NumDatum.FInert`. Use `split_ifs with h`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hn : (N.ordP p : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (NeZero.ne _)`. Establish `h1 : ∀ z : RPl N.R, N.FOrb j p z = (∑ s : ZMod (N.ordP p), ((N.R.k : ℝ) - 1) * N.w j (N.pos p z s.val)) / ((p : ℝ) ^ 2 - 1)` using `fun z => lpF_flat p (N.ordP p) _ hp.two_le (N.two_le_ordP hc h) (fun s => mul_nonneg hk (hw _)) (fun a b => by`. Use `mul_le_mul_of_nonneg_left (hflat (N.pos p z b.val) (N.pos p z a.val)) hk` as an intermediate fact. Use the proof step `linarith)`. Rewrite using `[Finset.sum_congr rfl fun z _ => h1 z, ← Finset.sum_div, ← Finset.sum_div, N.sum_orbit_total p (fun z => ((N.R.k : ℝ) - 1) * N.w j z)]`.
-
-Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem inert_flat : NumDatum.FInertFlat := by
   intro N j p hp hc hw hflat
@@ -367,7 +363,7 @@ section Places
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `: Finite (𝓞 K ⧸ w.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot w.asIdeal w.ne_bot`. Establish `: w.asIdeal.IsPrime` using `w.isPrime`. Conclude with `CharP.char_is_prime (𝓞 K ⧸ w.asIdeal) (ringChar (𝓞 K ⧸ w.asIdeal))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem plc_prime' (w : HeightOneSpectrum (𝓞 K)) : (Formalism.EigenvalueLevelCeiling.plc w).Prime := by
   have : Finite (𝓞 K ⧸ w.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot w.asIdeal w.ne_bot
@@ -375,13 +371,13 @@ theorem plc_prime' (w : HeightOneSpectrum (𝓞 K)) : (Formalism.EigenvalueLevel
   exact CharP.char_is_prime (𝓞 K ⧸ w.asIdeal) (ringChar (𝓞 K ⧸ w.asIdeal))
 
 /- English proof (translation)
-Establish `hnot : (p : 𝓞 K) ∉ w.asIdeal`. Introduce `hmem`. Rewrite `hmem` using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Establish `hdvd : Formalism.EigenvalueLevelCeiling.plc w ∣ p` using `(ringChar.spec (𝓞 K ⧸ w.asIdeal) p).1 hmem`. Conclude with `hne ((Nat.prime_dvd_prime_iff_eq (plc_prime' w) hp).1 hdvd).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : ((p : 𝓞 K) : K) = (p : K)` using `map_natCast _ p`. Establish `hx : (p : 𝓞 K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hJ : (Ideal.span {(p : 𝓞 K)} : Ideal (𝓞 K)) ≠ 0`. Rewrite using `[ne_eq, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h, Formalism.DivisionValues.W5.vw_int, FractionalIdeal.count_coe K w hJ]`. Establish `hm : Associates.mk (Ideal.span {(p : 𝓞 K)} : Ideal (𝓞 K)) ≠ 0`. Rewrite using `[ne_eq, Associates.mk_eq_zero]` and apply the resulting hypothesis. Establish `h0 : (Associates.mk w.asIdeal).count (Associates.mk (Ideal.span {(p : 𝓞 K)} : Ideal (𝓞 K))).factors = 0`. Assume the negation of the conclusion as `hc`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : 1 ≤ (Associates.mk w.asIdeal).count (Associates.mk (Ideal.span {(p : 𝓞 K)} : Ideal (𝓞 K))).factors` using `Nat.one_le_iff_ne_zero.2 hc`. Rewrite `h1` using `[← Associates.prime_pow_dvd_iff_le hm w.associates_irreducible, pow_one, Associates.mk_le_mk_iff_dvd, Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hnot h1`. Rewrite using `[h0]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem vw_prime_eq_zero (w : HeightOneSpectrum (𝓞 K)) {p : ℕ} (hp : p.Prime) (hne : p ≠ Formalism.EigenvalueLevelCeiling.plc w) :
     Formalism.DivisionValues.vw w (p : K) = 0 := by
@@ -413,9 +409,9 @@ theorem vw_prime_eq_zero (w : HeightOneSpectrum (𝓞 K)) {p : ℕ} (hp : p.Prim
 end Places
 
 /- English proof (translation)
-Unfold `NumDatum.suppP at h`. Simplify using `only [Finset.mem_union, Finset.mem_filter, Finset.mem_range, Finset.mem_insert, Finset.mem_singleton] at h`. Break down `h with ⟨_, h⟩ | h | h | h` into its components or cases. Conclude with `h`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `N.g_prime 0`. Rewrite using `[h]`. Conclude with `N.g_prime 1`. Rewrite using `[h]`. Conclude with `N.hyp.2.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem NumDatum.prime_of_mem_primeSupport (N : NumDatum) {p : ℕ} (h : p ∈ N.suppP) : p.Prime := by
   unfold NumDatum.suppP at h
@@ -427,15 +423,15 @@ theorem NumDatum.prime_of_mem_primeSupport (N : NumDatum) {p : ℕ} (h : p ∈ N
   · rw [h]; exact N.hyp.2.1
 
 /- English proof (translation)
-Introduce `N K _ _`. Establish `hfun : ∀ j, (fun w : HeightOneSpectrum (𝓞 K) => Formalism.DivisionValues.lw w * ((Formalism.EigenvalueLevelCeiling.ramw w : ℝ) * N.Fj j w)) = fun w => ∑ p ∈ N.suppP, (Formalism.DivisionValues.lw w * (Formalism.DivisionValues.vw w (p : K) : ℝ)) * N.FjP j p`. Introduce `j`. Use function extensionality and compare the values at `w`. Rewrite using `[Finset.sum_eq_single (Formalism.EigenvalueLevelCeiling.plc w)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Unfold `NumDatum.Fj Formalism.EigenvalueLevelCeiling.ramw`. Expand and normalize the polynomial expressions, which then agree. Introduce `p hp hne`. Rewrite using `[vw_prime_eq_zero w (N.prime_of_mem_primeSupport hp) hne]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `hs`. Rewrite using `[N.FjP_off_supp j (plc_prime' w) hs, mul_zero]`. Establish `hfin : ∀ j, ∀ p ∈ N.suppP, (Function.support fun w : HeightOneSpectrum (𝓞 K) => (Formalism.DivisionValues.lw w * (Formalism.DivisionValues.vw w (p : K) : ℝ)) * N.FjP j p).Finite`. Introduce `j p hp`. Conclude with `((Formalism.DivisionValues.place_sum_natural K p (N.prime_of_mem_primeSupport hp).pos).1).subset (Function.support_mul_subset_left _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun j]`. Conclude with `(Set.Finite.biUnion N.suppP.finite_toSet (fun p hp => hfin j p hp)).subset (Finset.support_sum _ _)`. Unfold `NumDatum.Fo`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hfun j, finsum_sum_comm _ _ (hfin j)]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hP` using `Formalism.DivisionValues.place_sum_natural K p (N.prime_of_mem_primeSupport hp).pos`. Rewrite using `[← finsum_mul, hP.2.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_places : NumDatum.FoPlaces := by
   intro N K _ _

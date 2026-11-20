@@ -14,9 +14,9 @@ variable {F L Ω : Type*} [Field F] [NumberField F] [Field L] [NumberField L] [F
   [Algebra F Ω] [Algebra L Ω] [IsScalarTower F L Ω] {A : ValuationSubring Ω}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h x`. Establish `h' : σ • B = B` using `h`. Establish `e` using `ValuationSubring.smul_mem_pointwise_smul_iff (g := σ) (S := B) (x := x)`. Rewrite `e` using `[h']`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e`. Introduce `h show σ • B = B`. Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ← h (σ⁻¹ • x), AlgEquiv.smul_def]`. Rewrite using `[show σ (σ⁻¹ x) = x from AlgEquiv.apply_symm_apply σ x]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_decompositionSubgroup_iff_galois_valuations {K : Type*} [Field K] [Algebra K Ω] {B : ValuationSubring Ω}
     {σ : Ω ≃ₐ[K] Ω} : σ ∈ B.decompositionSubgroup K ↔ ∀ x, σ x ∈ B ↔ x ∈ B := by
@@ -33,7 +33,7 @@ private theorem mem_decompositionSubgroup_iff_galois_valuations {K : Type*} [Fie
     rw [show σ (σ⁻¹ x) = x from AlgEquiv.apply_symm_apply σ x]
 
 /- English proof (translation)
-Use `show resGal F L Ω σ ∈ A.decompositionSubgroup F ↔ σ ∈ A.decompositionSubgroup L`. Rewrite using `[mem_decompositionSubgroup_iff_galois_valuations, mem_decompositionSubgroup_iff_galois_valuations]`. Simplify using `only [resGal_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem resGal_mem_Dec_iff {σ : G L Ω} :
     resGal F L Ω σ ∈ Dec (F := F) A ↔ σ ∈ Dec (F := L) A := by
@@ -53,9 +53,9 @@ Both sides reduce to the same expression.
 theorem decRes_apply (σ : Dec (F := L) A) : (decRes F L A σ : G F Ω) = resGal F L Ω σ := rfl
 
 /- English proof (translation)
-Introduce `σ τ h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`. Use `congrArg (fun g : Dec (F := F) A => (g : G F Ω) x) h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[decRes_apply, resGal_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem decRes_injective : Function.Injective (decRes F L A) := by
   intro σ τ h
@@ -66,9 +66,9 @@ theorem decRes_injective : Function.Injective (decRes F L A) := by
   simpa [decRes_apply, resGal_apply] using this
 
 /- English proof (translation)
-Introduce `τ`. Take `⟨σ, hσ⟩` from `MonoidHom.mem_range.mp (h τ.2)`. Use `⟨⟨σ, resGal_mem_Dec_iff.mp (by rw [hσ]; exact τ.2)⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[decRes_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hσ`.
+A detailed English derivation is pending.
 -/
 theorem decRes_surjective (h : Dec (F := F) A ≤ (resGal F L Ω).range) :
     Function.Surjective (decRes F L A) := by
@@ -80,9 +80,9 @@ theorem decRes_surjective (h : Dec (F := F) A ≤ (resGal F L Ω).range) :
   exact hσ
 
 /- English proof (translation)
-Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Establish `hc : Continuous (resGal F L Ω)` using `(isClosedEmbedding_resGal (F := F) (L := L) (Ω := Ω)).continuous`. Establish `e : ((↑) : Dec (F` using `F) A → G F Ω) ∘ decRes F L A = resGal F L Ω ∘ ((↑) : Dec (F := L) A → G L Ω) := by`. Use function extensionality and compare the values at `σ`. Conclude with `decRes_apply σ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hc.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_decRes [IsAlgClosure F Ω] : Continuous (decRes F L A) := by
   refine continuous_induced_rng.2 ?_
@@ -109,11 +109,9 @@ def decEquiv [IsAlgClosure F Ω] (h : Dec (F := F) A ≤ (resGal F L Ω).range) 
       ((MulEquiv.ofBijective (decRes F L A) ⟨decRes_injective, decRes_surjective h⟩).apply_symm_apply τ)
 
 /- English proof (translation)
-Establish `e : normV v = Ideal.absNorm v.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression. Rewrite using `[e]`. Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `v.isPrime.ne_top`.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem one_lt_normV (v : HeightOneSpectrum (𝓞 F)) : 1 < normV v := by
   have e : normV v = Ideal.absNorm v.asIdeal := by

@@ -5,9 +5,9 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.RankTwoDesce
 open scoped Classical
 
 /- English proof (translation)
-Establish `hy : ∀ w, y.val w ≠ 0` using `fun w h => by`. Use `congrFun y.mul_inv w` as an intermediate fact. Simplify using `[h] at this`. Use `choose z hz using fun w => IsAlgClosed.exists_pow_nat_eq (y.val w) (n := 2) (by norm_num)`. Establish `hz0 : ∀ w, z w ≠ 0` using `fun w h => hy w (by rw [← hz w, h]; simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨z, fun w => (z w)⁻¹, funext fun w => mul_inv_cancel₀ (hz0 w), funext fun w => inv_mul_cancel₀ (hz0 w)⟩, Units.ext (funext fun w => ?_)⟩` and prove the remaining obligations. Conclude with `hz w`.
+A detailed English derivation is pending.
 -/
 private theorem cinf_sq {E : Type} [Field E] (y : (Cinf E)ˣ) : ∃ r : (Cinf E)ˣ, r ^ 2 = y := by
   have hy : ∀ w, y.val w ≠ 0 := fun w h => by
@@ -19,7 +19,7 @@ private theorem cinf_sq {E : Type} [Field E] (y : (Cinf E)ˣ) : ∃ r : (Cinf E)
   exact hz w
 
 /- English proof (translation)
-Establish `h : ∀ x, pInf E (GlobalTheory.CuspRep.sInf E x) = x` using `fun x => (infEq E).symm_apply_apply x`. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pInf E (1 - GlobalTheory.CuspRep.sInf E 1 + GlobalTheory.CuspRep.sInf E r.val) = r.val`. Simplify using `[h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem pInf_infId {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (r : (Cinf E)ˣ) :
     Units.map (pInf E).toMonoidHom (infId E r) = r := by
@@ -29,9 +29,9 @@ private theorem pInf_infId {E : Type} [Field E] [NumberField E] [IsTotallyComple
   simp [h]
 
 /- English proof (translation)
-Use `⟨GeneralLinearGroup.map (pFin E) (dM t), ?_⟩` and prove the remaining obligations. Establish `h : GeneralLinearGroup.map (pInf E) (dM t) = 1`. Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [ht]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `conv_lhs => rw [← infGL_mul_finGL (dM t), h, map_one, one_mul]`.
+A detailed English derivation is pending.
 -/
 private theorem dM_fin {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (t : (A E)ˣ)
     (ht : pInf E (t : A E) = 1) : ∃ k, dM t = finGL E 2 k := by
@@ -43,15 +43,15 @@ private theorem dM_fin {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
   conv_lhs => rw [← infGL_mul_finGL (dM t), h, map_one, one_mul]
 
 /- English proof (translation)
-Introduce `E _ _ _ P ω hω f hf x`. Take `⟨g0, hg0⟩` from `exists_gl_mul_dM x`. Take `⟨r, hr⟩` from `cinf_sq (Units.map (pInf E).toMonoidHom (GeneralLinearGroup.det x))`. Take `⟨s, hs⟩ : ∃ s : (A E)ˣ, Units.map (pInf E).toMonoidHom s = r` from `⟨infId E r, pInf_infId r⟩`. Take `⟨t, ht⟩ : ∃ t : (A E)ˣ, GeneralLinearGroup.det x = s ^ 2 * t` from `⟨(s ^ 2)⁻¹ * GeneralLinearGroup.det x, by group⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ht1 : pInf E (t : A E) = 1`. Establish `h1 : Units.map (pInf E).toMonoidHom t = 1`. Establish `h2` using `congrArg (Units.map (pInf E).toMonoidHom) ht`. Rewrite `h2` using `[map_mul, map_pow, hs, hr]`. Conclude with `(mul_eq_left.1 h2.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg Units.val h1`. Take `⟨k, hk⟩` from `dM_fin t ht1`. Use `⟨((ω.1 (ideleNorm ℚ E s) : ℂˣ) : ℂ), act (.fin k) f, g0 * (mD s)⁻¹, P.stable (.fin k) f hf, fun g => ?_⟩` and prove the remaining obligations. Establish `hx : x = Matrix.GeneralLinearGroup.scalar (Fin 2) s * (gl (g0 * (mD s)⁻¹) * dM t)`. Establish `e : dM (s ^ 2) = (gl (mD s))⁻¹ * Matrix.GeneralLinearGroup.scalar (Fin 2) s`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← gl_mD_mul_dM_sq, inv_mul_cancel_left]`. Rewrite using `[gl_mul, gl_inv]`. Use `conv_lhs => rw [hg0, ht, dM_mul, e]`. Rewrite using `[scalar_comm s (gl g0 * (gl (mD s))⁻¹ * dM t), mul_assoc (gl (mD s))⁻¹, scalar_comm s (dM t)]`. Simplify using `only [mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : g * x = Matrix.GeneralLinearGroup.scalar (Fin 2) s * (g * gl (g0 * (mD s)⁻¹) * finGL E 2 k)`. Rewrite using `[hx, hk, ← mul_assoc g, ← scalar_comm s g, mul_assoc, mul_assoc]`. Rewrite using `[hg, hω f hf]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.cuspSubspace_translate_eq_smul_special_translate :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (P : CuspSub E 2) (ω : HChar ℚ), CenN P ω → ∀ f ∈ P.V, ∀ x : GL (Fin 2) (A E), ∃ (c : ℂ) (f' : Sm E 2) (h : G1 E), f' ∈ P.V ∧ ∀ g, f.1 (g * x) = c * f'.1 (g * gl h) := by

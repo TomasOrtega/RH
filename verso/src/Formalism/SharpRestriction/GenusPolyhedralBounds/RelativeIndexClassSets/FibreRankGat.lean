@@ -18,7 +18,7 @@ def localDataAtPlace : ∀ (u : W) (w : (@placesOf H.E _ _ H.cmStar).Pl), GIdx H
     (fun ψ => lamOf (hcW u ψ) 0) ((K u).cls 0 × Fin n) (eOf ((@placesOf H.E _ _ H.cmStar).resChar w))
 
 /- English proof (translation)
-Introduce `_ _ _` and use `by classical rw [localDataAtPlace, gatNZ_d, Fintype.card_prod, Fintype.card_fin]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem local_data_dimension_eq : ∀ u w h, (localDataAtPlace H hcW K T rOf eOf bs n u w h).d = Fintype.card ((K u).cls 0) * n := fun _ _ _ => by
   classical
@@ -33,12 +33,12 @@ variable {R : Ranks} {Tau : Type} [Fintype Tau] (hc : Tau → HCParam R)
 def fibreDim : ℕ := ∏ ρ, (dimV_hc (hc ρ)).choose
 
 /- English proof (translation)
-The claim follows from `Finset.prod_pos fun ρ _ => (dimV_hc (hc ρ)).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem fibreDim_pos : 0 < fibreDim hc := Finset.prod_pos fun ρ _ => (dimV_hc (hc ρ)).choose_spec.1
 
 /- English proof (translation)
-Unfold `fibreDim`. Use `push_cast`. Conclude with `Finset.prod_congr rfl fun ρ _ => (dimV_hc (hc ρ)).choose_spec.2`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem fibreDim_eq : (fibreDim hc : ℝ) = ∏ ρ, Formalism.MainNotions.StandardLattice.dimV (fun i => (((hc ρ).u i : ℚ) : ℝ)) := by
   unfold fibreDim

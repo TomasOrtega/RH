@@ -7,13 +7,11 @@ namespace Formalism.MainNotions.ModuliIntegralCharts.H1
 open Formalism.BasicNotions Formalism.MainNotions
 
 /- English proof (translation)
-Introduce `i`. Establish `h6` using `h3.2.2.2.2.2`. Establish `hq : (WeightAlgebra.qq D : ℝ) ≤ (D.host.g i : ℝ)`. Establish `: WeightAlgebra.qq D ≤ D.host.g i` using `by fin_cases i`. Conclude with `min_le_left _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `min_le_right _ _`. Conclude with `this` after adjusting the coercions. Establish `hY' : (6 : ℝ) ≤ (WeightFamilies.dimY D j : ℝ) + 4`. Establish `: (2 : ℝ) ≤ (WeightFamilies.dimY D j : ℝ)` using `by exact_mod_cast hY`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD' : (1 : ℝ) ≤ (WeightAlgebra.DF wL : ℝ)` using `by exact_mod_cast hD`. Establish `h7 : 6 * (WeightAlgebra.DF wL : ℝ) ≤ ((WeightFamilies.dimY D j : ℝ) + 4) * (WeightAlgebra.DF wL : ℝ)` using `mul_le_mul_of_nonneg_right hY' (by linarith)`. Establish `h8 : ((4 * WeightAlgebra.DF wL + 4 : ℕ) : ℝ) ≤ (D.host.g i : ℝ)`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Conclude with `h8` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem level_bound_of_third_hypothesis {D : D7} {j : ℕ} (large₂ : SizeData₂ D) (H : WeightAlgebra.KHyp) (C2 A2 CR Bx : ℝ)
     (wL : WeightFamilies.Wt D j) (T : ℕ) (h3 : WeightAlgebra.H3 large₂ H C2 A2 CR Bx wL T) (hY : 2 ≤ WeightFamilies.dimY D j)

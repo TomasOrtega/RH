@@ -10,7 +10,7 @@ open GlobalTheory.CompanionTheory.FreeQuotProof GlobalTheory.CompanionTheory.Hyp
 namespace GlobalTheory.CompanionTheory.PrimesToPts
 
 /- English proof (translation)
-Rewrite using `[← Scheme.isoSpec_hom]`. Use `⟨fun a b h => ?_, fun y => ⟨X.isoSpec.inv y, Scheme.inv_hom_apply _ _⟩⟩` and prove the remaining obligations. Establish `h'` using `congrArg X.isoSpec.inv h`. Rewrite `h'` using `[Scheme.hom_inv_apply, Scheme.hom_inv_apply]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem to_spec_gamma_bijective (X : Scheme.{0}) [IsAffine X] : Function.Bijective X.toSpecΓ := by
   rw [← Scheme.isoSpec_hom]
@@ -19,7 +19,7 @@ private theorem to_spec_gamma_bijective (X : Scheme.{0}) [IsAffine X] : Function
   rwa [Scheme.hom_inv_apply, Scheme.hom_inv_apply] at h'
 
 /- English proof (translation)
-Rewrite using `[← X.toSpecΓ_preimage_basicOpen f]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_basicOpen_iff_toSpecΓ {X : Scheme.{0}} (f : Γ(X, ⊤)) (x : X) :
     x ∈ X.basicOpen f ↔ f ∉ (X.toSpecΓ x : PrimeSpectrum Γ(X, ⊤)).asIdeal := by
@@ -27,7 +27,7 @@ theorem mem_basicOpen_iff_toSpecΓ {X : Scheme.{0}} (f : Γ(X, ⊤)) (x : X) :
   exact Iff.rfl
 
 /- English proof (translation)
-Establish `h : D.toSpecΓ (v z) = Spec.map v.appTop (P.toSpecΓ z)`. Rewrite using `[← Scheme.Hom.comp_apply, Scheme.toSpecΓ_naturality, Scheme.Hom.comp_apply]`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comap_toSpecΓ {P D : Scheme.{0}} (v : P ⟶ D) (z : P) :
     (P.toSpecΓ z : PrimeSpectrum Γ(P, ⊤)).asIdeal.comap v.appTop.hom =
@@ -38,11 +38,11 @@ theorem comap_toSpecΓ {P D : Scheme.{0}} (v : P ⟶ D) (z : P) :
   rfl
 
 /- English proof (translation)
-Introduce `P D _ _ v N e hN y`. Use `(GlobalTheory.CompanionTheory.PrimesToPts.mem_basicOpen_iff_toSpecΓ N y).trans ((hN (D.toSpecΓ y)).trans ?_)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `H z hz`. Use `(GlobalTheory.CompanionTheory.PrimesToPts.mem_basicOpen_iff_toSpecΓ e z).2 (H _ ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(GlobalTheory.CompanionTheory.PrimesToPts.comap_toSpecΓ v z).trans (by rw [hz])`. Introduce `H q hq`. Take `⟨z, rfl⟩` from `(to_spec_gamma_bijective P).2 q`. Establish `hz : v z = y`. Apply `(to_spec_gamma_bijective D).1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Conclude with `(GlobalTheory.CompanionTheory.PrimesToPts.comap_toSpecΓ v z).symm.trans hq`. Conclude with `(GlobalTheory.CompanionTheory.PrimesToPts.mem_basicOpen_iff_toSpecΓ e z).1 (H z hz)`.
+A detailed English derivation is pending.
 -/
 theorem primes_to_pts : ∀ {P D : Scheme.{0}} [IsAffine P] [IsAffine D] (v : P ⟶ D) (N : Γ(D, ⊤)) (e : Γ(P, ⊤)), (∀ p : PrimeSpectrum Γ(D, ⊤), N ∉ p.asIdeal ↔ ∀ q : PrimeSpectrum Γ(P, ⊤), q.asIdeal.comap v.appTop.hom = p.asIdeal → e ∉ q.asIdeal) → ∀ y : D, y ∈ D.basicOpen N ↔ ∀ z : P, v z = y → z ∈ P.basicOpen e := by
   intro P D _ _ v N e hN y

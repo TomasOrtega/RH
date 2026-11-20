@@ -7,7 +7,7 @@ open Filter UpperTheory.V.AlgebraTools
 open scoped TensorProduct
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun f hf => by simp only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] at hf ⊢ obtain ⟨L, hL⟩ := IsPrecomplete.prec' (I := J) (fun k => f ((e + 1) * k)) (fun {m n} hmn => by rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] have h := hf (Nat.mul_le_mul_left (e + 1) hmn) rw [pow_mul …`.
+Supply the required witnesses or components.
 -/
 private theorem prec_cofinal {R : Type*} [CommRing R] {I J : Ideal R} (hJI : J ≤ I) {e : ℕ}
     (he : I ^ e ≤ J) (hJ : IsPrecomplete J R) : IsPrecomplete I R := ⟨fun f hf => by
@@ -26,11 +26,11 @@ private theorem prec_cofinal {R : Type*} [CommRing R] {I J : Ideal R} (hJI : J �
 
 open IsLocalRing in
 /- English proof (translation)
-Use `haveI hN : IsNoetherianRing R' := IsNoetherianRing.of_finite R R'`. Establish `hcomap : (maximalIdeal R').comap (algebraMap R R') = maximalIdeal R` using `eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (maximalIdeal R'))`. Establish `hle : (maximalIdeal R).map (algebraMap R R') ≤ maximalIdeal R'` using `Ideal.map_le_iff_le_comap.2 hcomap.ge`. Establish `hrad : maximalIdeal R' ≤ ((maximalIdeal R).map (algebraMap R R')).radical`. Rewrite using `[Ideal.radical_eq_sInf]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_sInf fun P hP => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hP`. Establish `h3 : P.comap (algebraMap R R') = maximalIdeal R` using `((maximalIdeal.isMaximal R).eq_of_le (Ideal.comap_ne_top _ h2.ne_top) (Ideal.map_le_iff_le_comap.1 h1)).symm`. Establish `h4 : P.IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := R) P (h3 ▸ maximalIdeal.isMaximal R)`. Conclude with `(eq_maximalIdeal h4).ge`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg hrad (IsNoetherian.noetherian _)`. Establish `h0 : IsAdicComplete (maximalIdeal R) R'` using `GlobalTheory.isAdicComplete_of_finite _ R'`. Establish `hP : IsPrecomplete (maximalIdeal R') R'` using `prec_cofinal hle he (IsPrecomplete.map_algebraMap_iff.2 h0.toIsPrecomplete)`. Conclude with `{ toIsHausdorff := inferInstance, toIsPrecomplete := hP }`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem complete_of_finite (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     [IsAdicComplete (maximalIdeal R) R] (R' : Type) [CommRing R'] [Algebra R R'] [Module.Finite R R']
@@ -57,19 +57,17 @@ private theorem complete_of_finite (R : Type) [CommRing R] [IsLocalRing R] [IsNo
   exact { toIsHausdorff := inferInstance, toIsPrecomplete := hP }
 
 /- English proof (translation)
-Introduce `R _ _ _ _ A _ _ _ n hn`. Use `letI : HenselianLocalRing R := GlobalTheory.henselianLocalRing_of_henselianRing R`. Establish `hfin : Module.Finite R (Localization.AtPrime n)` using `GlobalTheory.finite_localization_of_henselian R n`. Use `⟨GlobalTheory.surjective_algebraMap_localization_of_henselian R n, hfin, ⟨fun a ha => ?_⟩, complete_of_finite R _, fun hF => ?_, ?_, fun C _ _ f hf => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h1 : a ∈ IsLocalRing.maximalIdeal R` using `h`. Rewrite `h1` using `[← GlobalTheory.comap_eq_maximalIdeal_of_finite (IsLocalRing.maximalIdeal (Localization.AtPrime n)), Ideal.mem_comap]`. Conclude with `h1 ha`. Use `haveI : Module.Flat A (Localization.AtPrime n) := IsLocalization.flat _ n.primeCompl haveI : Module.Flat R (Localization.AtPrime n) := Module.Flat.trans R A _`. Conclude with `Module.free_of_flat_of_isLocalRing`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he, H⟩` from `GlobalTheory.exists_idempotent_notMem_iff_of_henselian R n`. Use `⟨e, he, H, le_antisymm (fun x hx => ?_) ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `(IsLocalization.map_eq_zero_iff n.primeCompl _ x).1 hx`. Establish `heq : e ∉ n` using `(H n hn).2 rfl`. Establish `hu : IsUnit (e * s + (1 - e))`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Assume the negation of the conclusion as `h`. Take `⟨m, hm, hmem⟩` from `exists_max_ideal_of_mem_nonunits h`. Distinguish the cases in `hen : e ∈ m`. Rewrite `hmem` using `[Submodule.add_mem_iff_right _ (Ideal.mul_mem_right _ _ hen), GlobalTheory.one_sub_mem_iff_notMem_of_isIdempotentElem he]`. Conclude with `hmem hen`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `hmem` using `[Submodule.add_mem_iff_left _ ((GlobalTheory.one_sub_mem_iff_notMem_of_isIdempotentElem he m).2 hen), (H m hm).1 hen]`. Conclude with `(hn.isPrime.mem_or_mem hmem).elim heq s.2`. Take `⟨v, hv⟩` from `hu.exists_left_inv`. Use `Ideal.mem_span_singleton'.2 ⟨v * x, ?_⟩` and prove the remaining obligations. Take the linear combination `x * hv - v * e * hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Ideal.span_singleton_le_iff_mem, RingHom.mem_ker, map_sub, map_one, sub_eq_zero]`. Conclude with `((IsIdempotentElem.iff_eq_one_of_isUnit (IsLocalization.map_units _ (⟨e, (H n hn).2 rfl⟩ : n.primeCompl))).1 (he.map _)).symm`. Establish `hu : ∀ y : n.primeCompl, IsUnit (f y)` using `fun y => by`. Assume the negation of the conclusion as `h`. Establish `h1 : (y : A) ∈ (IsLocalRing.maximalIdeal C).comap f` using `h`.
-
-Rewrite `h1` using `[hf]`. Conclude with `y.2 h1`. Conclude with `⟨IsLocalization.lift hu, IsLocalization.lift_comp hu⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.local_factor :
     ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (IsLocalRing.maximalIdeal R) R] (A : Type) [CommRing A] [Algebra R A] [Module.Finite R A] (n : Ideal A) [n.IsMaximal],

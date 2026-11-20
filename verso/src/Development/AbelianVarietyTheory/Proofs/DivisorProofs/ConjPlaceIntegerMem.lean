@@ -21,19 +21,17 @@ namespace GlobalTheory.CompanionTheory.ConjPlaceInt
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `Formalism.UG.P.csDual_sig_mem D.sp.cm.sig hx`.
+A detailed English derivation is pending.
 -/
 theorem sg_mem_OA {x : GlobalTheory.IndefiniteRowSideFullHecke.ChainMatrices.Ef D} (hx : x ∈ OA D) : sg D x ∈ OA D :=
   Formalism.UG.P.csDual_sig_mem D.sp.cm.sig hx
 
 /- English proof (translation)
-Introduce `D Q z hz`. Take `⟨e, -, -, h1, h0⟩` from `exists_idem (D := D) ({Q} : Set (Pl D.host.E))`. Establish `he1 : cpt Q e = 1` using `h1 Q rfl`. Establish `hez : e * z ∈ OA D` using `(mem_OA_iff _).2 fun P => by`. Distinguish the cases in `hP : P = Q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `hP` using the available equality. Rewrite using `[map_mul, he1, one_mul]`. Conclude with `hz`. Rewrite using `[map_mul, h0 P hP, zero_mul]`. Conclude with `zero_mem _`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : cpt (GlobalTheory.IdemSupport.cP Q) (sg D e) = 1`. Establish `h2 : cpt (GlobalTheory.IdemSupport.cP Q) (sg D (1 - e)) = 0` using `cpt_sg_eq_zero (by rw [cP_cP, map_sub, map_one, he1, sub_self])`. Rewrite `h2` using `[map_sub, map_sub, map_one, map_one, sub_eq_zero]`. Conclude with `h2.symm`. Establish `h3` using `(mem_OA_iff _).1 (sg_mem_OA hez) (GlobalTheory.IdemSupport.cP Q)`.
-
-Rewrite `h3` using `[map_mul, map_mul, hs, one_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cpt_sg_mem_integers : ∀ {D : D7} (Q : Pl D.host.E) (z : Lev.EAf D),
     cpt Q z ∈ Q.adicCompletionIntegers D.host.E →
@@ -74,7 +72,7 @@ open GlobalTheory.FunObj GlobalTheory.ChiGrid GlobalTheory.SplitFlip GlobalTheor
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField GlobalTheory.FunObj.borelKw GlobalTheory.FunObj.borelSpaceKw
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact @ConjugatePlaceIntegrality.GlobalTheory.CompanionTheory.ConjPlaceInt.cpt_sg_mem_integers | exact ConjugatePlaceIntegrality.GlobalTheory.CompanionTheory.ConjPlaceInt.cpt_sg_mem_integers | (intros; apply ConjugatePlaceIntegrality.GlobalTheory.CompanionTheory.ConjPlace …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.Adopt.conj_place_integer_mem : ∀ {D : D7} (Q : Pl D.host.E) (z : Lev.EAf D), cpt Q z ∈ Q.adicCompletionIntegers D.host.E → cpt (GlobalTheory.IdemSupport.cP Q) (sg D z) ∈ (GlobalTheory.IdemSupport.cP Q).adicCompletionIntegers D.host.E := by
   first | exact @ConjugatePlaceIntegrality.GlobalTheory.CompanionTheory.ConjPlaceInt.cpt_sg_mem_integers | exact ConjugatePlaceIntegrality.GlobalTheory.CompanionTheory.ConjPlaceInt.cpt_sg_mem_integers | (intros; apply ConjugatePlaceIntegrality.GlobalTheory.CompanionTheory.ConjPlaceInt.cpt_sg_mem_integers <;> assumption)

@@ -93,7 +93,7 @@ noncomputable def tateCupHomotopyL {s m : ℕ} (h : s = m + 1) :
 
 omit [∀ w, IsDiscreteRep (Aᵣ w)] in
 /- English proof (translation)
-The claim follows from `Prod.ext neg_zero rfl`.
+A detailed English derivation is pending.
 -/
 theorem tateCupHomotopyL_apply {s m : ℕ} (h : s = m + 1) (e : ∀ w, Aᵣ w)
     (z : (cochainsComplex B).X s) :
@@ -161,27 +161,23 @@ theorem tateCupHomotopy_zero_succ (s n : ℕ) (h : 0 + s = n + 1) (hs : s = n + 
 include hμ hμr in
 
 /- English proof (translation)
-Break down `r with _ | r` into its components or cases. Break down `s with _ | t` into its components or cases. Take `rfl : n = 0` from `by omega`. Rewrite using `[tateCupHomotopy_zero_zero, tateCupHomotopy_succ_left, tateCupHomotopy_zero_succ ψ μᵣ 1 0 _ rfl, LinearMap.zero_apply, LinearMap.zero_apply, LinearMap.zero_apply, LinearMap.zero_apply, map_zero, add_zero, add_zero]`. Rewrite using `[pow_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `erw [one_smul]`. Rewrite using `[shiftNegOneSucc_apply, shiftNegOneSucc_apply]`. Use `erw [tateCupHomotopyL_apply]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((localRes φ C Cᵥ c).f 0).hom (cupPairingCochains μ h x.1 z) = (LeibnizPairing.pi fun v => cupLeibniz (μᵥ v)).μ h (((localRes φ A Aᵥ a).f 0).hom x.1) (((localRes φ B _ fun _ => 𝟙 _).f 0).hom z) + 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[add_zero]`. Conclude with `localRes_cupPairingCochains φ μ μᵥ hμ h x.1 z`. Use `funext fun w => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((localRes ψ C Cᵣ cr).f 0).hom (cupPairingCochains μ h x.1 z) w + zeroCochain (Cᵣ w) ((Cᵣ w).ρ.norm (tateExtraPairing ψ μᵣ (show ∀ w, Aᵣ w from x.2) z w)) = cupPairingCochains (μᵣ w) h (((localRes ψ A Aᵣ ar).f 0).hom x.1 w + zeroCochain (Aᵣ w) ((Aᵣ w).ρ.norm ((show ∀ w, Aᵣ w from …`. Establish `hres` using `congrFun (localRes_cupPairingCochains ψ μ μᵣ hμr h x.1 z) w`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : ((localRes ψ B (fun w => Rep.res (ψ w).toMonoidHom B) fun _ => 𝟙 _).f (0 + 1)).hom (((cochainsComplex B).d 0 (0 + 1)).hom z) w = ((cochainsComplex (Rep.res (ψ w).toMonoidHom B)).d 0 (0 + 1)).hom (((localRes ψ B (fun w => Rep.res (ψ w).toMonoidHom B) fun _ => 𝟙 _).f 0).hom z …`. Rewrite using `[hom_f_d_apply]`. Conclude with `piComplex_d_hom_apply _ 0 _ w`. Establish `hz0 : cochainOf (Rep.res (ψ w).toMonoidHom B) (((localRes ψ B (fun w => Rep.res (ψ w).toMonoidHom B) fun _ => 𝟙 _).f 0).hom z w) (fun i => i.elim0) = cochainOf B z (fun i => i.elim0)` using `congrArg (cochainOf B z) (Subsingleton.elim _ _)`. Rewrite using `[hres, LinearMap.map_add₂, hd, normHomotopy_d_zero, hz0]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ + zeroCochain (Cᵣ w) ((Cᵣ w).ρ.norm ((μᵣ w).hom _)) = _`. Normalize the expressions using the abelian group laws. Take `rfl : n = t + 1` from `by omega`. Rewrite using `[tateCupHomotopy_zero_succ ψ μᵣ (t + 1) t _ rfl, tateCupHomotopy_succ_left, tateCupHomotopy_zero_succ ψ μᵣ (t + 1 + 1) (t + 1) _ rfl, LinearMap.zero_apply, LinearMap.zero_apply, add_zero]`. Rewrite using `[pow_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `erw [one_smul]`. Rewrite using `[shiftNegOneSucc_apply, shiftNegOneSucc_apply, shiftNegOneD_succ_apply]`. Use `erw [tateCupHomotopyL_apply, tateCupHomotopyL_apply, prodComplex_d_hom_apply]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((localRes φ C Cᵥ c).f (t + 1)).hom (cupPairingCochains μ h x.1 z) + -((piComplex fun v => cochainsComplex (Cᵥ v)).d t (t + 1)).hom 0 = (LeibnizPairing.pi fun v => cupLeibniz (μᵥ v)).μ h (((localRes φ A Aᵥ a).f 0).hom x.1) (((localRes φ B _ fun _ => 𝟙 _).f (t + 1)).hom z) + 0`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_zero, neg_zero, add_zero, add_zero]`. Conclude with `localRes_cupPairingCochains φ μ μᵥ hμ h x.1 z`. Use `funext fun w => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((localRes ψ C Cᵣ cr).f (t + 1)).hom (cupPairingCochains μ h x.1 z) w + ((normCochains Cᵣ).f (t + 1)).hom (LeibnizPairing.degZeroμ (tateExtraPairing ψ μᵣ) 0 (t + 1) (t + 1) h x.2 z) w + -(((piComplex fun w => cochainsComplex (Cᵣ w)).d t (t + 1)).hom (-tateNormHomotopy ψ μᵣ (rfl : …`. Use `erw [piComplex_d_hom_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Normalize the expressions using the abelian group laws.
 
-Express the relevant statement in the definitionally equal form `((localRes ψ C Cᵣ cr).f (t + 1)).hom (cupPairingCochains μ h x.1 z) w + ((normCochains Cᵣ).f (t + 1)).hom (LeibnizPairing.degZeroμ (tateExtraPairing ψ μᵣ) 0 (t + 1) (t + 1) h x.2 z) w + -((cochainsComplex (Cᵣ w)).d t (t + 1)).hom (-normHomotopy (μᵣ w) rfl ((show ∀ w, Aᵣ w from x. …`. Establish `hres : ((localRes ψ C Cᵣ cr).f (t + 1)).hom (cupPairingCochains μ h x.1 z) w = cupPairingCochains (μᵣ w) h (((localRes ψ A Aᵣ ar).f 0).hom x.1 w) (((localRes ψ B (fun w => Rep.res (ψ w).toMonoidHom B) fun _ => 𝟙 _).f (t + 1)).hom z w)` using `congrFun (localRes_cupPairingCochains ψ μ μᵣ hμr h x.1 z) w`. Establish `hd : ((localRes ψ B (fun w => Rep.res (ψ w).toMonoidHom B) fun _ => 𝟙 _).f (t + 1 + 1)).hom (((cochainsComplex B).d (t + 1) (t + 1 + 1)).hom z) w = ((cochainsComplex (Rep.res (ψ w).toMonoidHom B)).d (t + 1) (t + 1 + 1)).hom (((localRes ψ B (fun w => Rep.res (ψ w).toMonoidHom B) f …`. Rewrite using `[hom_f_d_apply]`. Conclude with `piComplex_d_hom_apply _ (t + 1) _ w`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `d_normHomotopy_add (μᵣ w) ((show ∀ w, Aᵣ w from x.2) w) (((localRes ψ B (fun w => Rep.res (ψ w).toMonoidHom B) fun _ => 𝟙 _).f (t + 1)).hom z w)`. Rewrite using `[hres, LinearMap.map_add₂, hd, map_neg, neg_neg, ← key]`. Express the relevant statement in the definitionally equal form `_ + (0 : (cochainsComplex (Cᵣ w)).X (t + 1)) + _ = _`. Normalize the expressions using the abelian group laws. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨r + s, by omega⟩`.
-
-Rewrite using `[tateCupHomotopy_succ_left, tateCupHomotopy_succ_left, tateCupHomotopy_succ_left, LinearMap.zero_apply, LinearMap.zero_apply, LinearMap.zero_apply, LinearMap.zero_apply, LinearMap.zero_apply, LinearMap.zero_apply, map_zero, add_zero, add_zero, smul_zero, add_zero, shiftNegOneSucc …`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `localRes_cupPairingCochains φ μ μᵥ hμ h x.1 z`. Express the relevant statement in the definitionally equal form `((localRes ψ C Cᵣ cr).f (m + 1)).hom (cupPairingCochains μ h x.1 z) + ((normCochains Cᵣ).f (m + 1)).hom (LeibnizPairing.degZeroμ (tateExtraPairing ψ μᵣ) (r + 1) s (m + 1) h x.2 z) = (LeibnizPairing.pi fun w => cupLeibniz (μᵣ w)).μ h (((localRes ψ A Aᵣ ar).f (r + 1)).hom x.1 + ((n …`. Rewrite using `[normCochains_f_succ_apply', normCochains_f_succ_apply', add_zero, add_zero]`.
-
-Conclude with `localRes_cupPairingCochains ψ μ μᵣ hμr h x.1 z`.
+A detailed English derivation is pending.
 -/
 theorem tateCupHomotopy_spec {r s n : ℕ} (h : r + s = n) (x : (tateGlobalComplex A Aᵣ).X r)
     (z : (cochainsComplex B).X s) :
@@ -308,9 +304,9 @@ section ProdHomology
 variable {M₁ M₂ N₁ N₂ P₁ P₂ N : CochainComplex (ModuleCat.{u} k) ℕ}
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `homologyπ_hom_surjective _ r x`. Take `⟨y, rfl⟩` from `homologyπ_hom_surjective _ s y`. Rewrite using `[LeibnizPairing.homology_homologyπ, homologyMap_homologyπ_apply, homologyMap_homologyπ_apply, homologyMap_homologyπ_apply, LeibnizPairing.homology_homologyπ]`. Use `congr 1`. Apply `iCycles_hom_injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[iCycles_cyclesMap_apply, LeibnizPairing.iCycles_cycles, LeibnizPairing.iCycles_cycles, iCycles_cyclesMap_apply, iCycles_cyclesMap_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem LeibnizPairing.homologyMap_prodFst_prod_homology (μ₁ : LeibnizPairing M₁ N₁ P₁)
     (μ₂ : LeibnizPairing M₂ N₂ P₂) {r s n : ℕ} (h : r + s = n)
@@ -329,9 +325,9 @@ theorem LeibnizPairing.homologyMap_prodFst_prod_homology (μ₁ : LeibnizPairing
   rfl
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `homologyπ_hom_surjective _ r x`. Take `⟨y, rfl⟩` from `homologyπ_hom_surjective _ s y`. Rewrite using `[LeibnizPairing.homology_homologyπ, homologyMap_homologyπ_apply, homologyMap_homologyπ_apply, homologyMap_homologyπ_apply, LeibnizPairing.homology_homologyπ]`. Use `congr 1`. Apply `iCycles_hom_injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[iCycles_cyclesMap_apply, LeibnizPairing.iCycles_cycles, LeibnizPairing.iCycles_cycles, iCycles_cyclesMap_apply, iCycles_cyclesMap_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem LeibnizPairing.homologyMap_prodSnd_prod_homology (μ₁ : LeibnizPairing M₁ N₁ P₁)
     (μ₂ : LeibnizPairing M₂ N₂ P₂) {r s n : ℕ} (h : r + s = n)
@@ -378,15 +374,15 @@ noncomputable def tateCompactCup {r s n : ℕ} (h : r + s = n) :
   (tateCompactCupLeibniz φ ψ μ μᵥ μᵣ hμ hμr).homology h
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(tateCompactCupLeibniz φ ψ μ μᵥ μᵣ hμ hμr).homology h' ((mappingCoconeNat.homologyδ (tateCompactRes φ ψ A Aᵥ a Aᵣ ar) r).hom ((tateLocalCohomologyIso Aᵥ Aᵣ r).inv.hom ξ)) z = (mappingCoconeNat.homologyδ (tateCompactRes φ ψ C Cᵥ c Cᵣ cr) n).hom ((tateLocalCohomologyIso Cᵥ Cᵣ n).in …`. Use `(LeibnizPairing.coconeLeftHtpy_homology_homologyδ _ _ _ _ _ h h' _ z).trans ?_` and prove the remaining obligations. Use `congr 1`. Apply `(ModuleCat.mono_iff_injective (tateLocalCohomologyIso Cᵥ Cᵣ n).hom).1 inferInstance` to reduce the goal to its premises. Rewrite using `[hom_apply_hom_apply_of_comp_eq (tateLocalCohomologyIso Cᵥ Cᵣ n).inv_hom_id]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hξ` using `hom_apply_hom_apply_of_comp_eq (tateLocalCohomologyIso Aᵥ Aᵣ r).inv_hom_id (show ModuleCat.of k ((∀ v, cohomology (Aᵥ v) r) × (∀ w, cohomology (Aᵣ w) r)) from ξ)`. Rewrite `hξ` using `[tateLocalCohomologyIso_hom_apply]`. Rewrite using `[tateLocalCohomologyIso_hom_apply]`. Establish `ρ1 : tateLocalResB φ ψ B ≫ prodFst _ _ = localRes φ B (fun v => Rep.res (φ v).toMonoidHom B) (fun _ => 𝟙 _)` using `prodLift_prodFst _ _`. Establish `ρ2 : tateLocalResB φ ψ B ≫ prodSnd _ _ = localRes ψ B (fun w => Rep.res (ψ w).toMonoidHom B) (fun _ => 𝟙 _)` using `prodLift_prodSnd _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Prod.ext (funext fun v => ?_) (funext fun w => ?_)` and prove the remaining obligations. Rewrite using `[tateLocalCup, LeibnizPairing.homologyMap_prodFst_prod_homology]`. Use `(LeibnizPairing.piHomologyIso_hom_pi_homology (fun v => cupLeibniz (μᵥ v)) h _ _ v).trans ?_` and prove the remaining obligations. Use `(cupLeibniz_homology (μᵥ v) h _ _).trans ?_` and prove the remaining obligations. Use `congrArg₂ (fun p q => cupPairing (μᵥ v) h p q) (congrFun (congrArg Prod.fst hξ) v) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hom_apply_hom_apply_of_comp_eq (HomologicalComplex.homologyMap_comp (tateLocalResB φ ψ B) (prodFst _ _) s).symm z, ρ1]`. Conclude with `congrFun (ConcreteCategory.congr_hom (homologyMap_piLift_piHomologyIso_hom _ (fun v => cochainsMapAlong (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (𝟙 (Rep.res (φ v).toMonoidHom B))) s) z) v`. Rewrite using `[tateLocalCup, LeibnizPairing.homologyMap_prodSnd_prod_homology]`. Use `(LeibnizPairing.piHomologyIso_hom_pi_homology (fun w => cupLeibniz (μᵣ w)) h _ _ w).trans ?_` and prove the remaining obligations. Use `(cupLeibniz_homology (μᵣ w) h _ _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg₂ (fun p q => cupPairing (μᵣ w) h p q) (congrFun (congrArg Prod.snd hξ) w) ?_` and prove the remaining obligations. Rewrite using `[hom_apply_hom_apply_of_comp_eq (HomologicalComplex.homologyMap_comp (tateLocalResB φ ψ B) (prodSnd _ _) s).symm z, ρ2]`. Conclude with `congrFun (ConcreteCategory.congr_hom (homologyMap_piLift_piHomologyIso_hom _ (fun w => cochainsMapAlong (ψ w).toMonoidHom (continuous_toMonoidHom (ψ w)) (𝟙 (Rep.res (ψ w).toMonoidHom B))) s) z) w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tateCompactCup_tateLocalToCompact {r s n : ℕ} (h : r + s = n) (h' : r + 1 + s = n + 1)
     (ξ : (∀ v, cohomology (Aᵥ v) r) × (∀ w, cohomology (Aᵣ w) r)) (z : cohomology B s) :

@@ -17,15 +17,13 @@ variable {O : Type} [CommRing O] [StarRing O]
 omit [StarRing O] in
 
 /- English proof (translation)
-Set `_ : Module O V` to `Module.compHom V F`. Establish `e0 : ex 0 = 1`. Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `c0 : c 0 = 1`. Use `hc 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`. Set `P : Submodule O (X × V)` to `{ carrier := {p | ex p.2 = c p.1} zero_mem' := e0.trans c0.symm add_mem' := fun {p q} hp hq => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ex (p.2 + q.2) = c (p.1 + q.1)`. Rewrite using `[hadd, hc, (show ex p.2 = _ from hp), (show ex q.2 = _ from hq)]`. Use the proof step `smul_mem' := fun a p hp => hl a p.1 p.2 hp }`. Take `⟨g, hg⟩` from `GlobalTheory.Forms.exists_linearMap_lift_of_int (LinearMap.fst O X V ∘ₗ P.subtype) (fun x => by`. Take `⟨z, hz⟩` from `hs (c x)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨⟨(x, z), hz⟩, rfl⟩) LinearMap.id`. Use `⟨(LinearMap.snd O X V ∘ₗ P.subtype ∘ₗ g).toAddMonoidHom, fun a x => (LinearMap.snd O X V ∘ₗ P.subtype ∘ₗ g).map_smul a x, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : (g x).1.1 = x` using `hg x`. Establish `h2 : ex (g x).1.2 = c (g x).1.1` using `(g x).2`. Rewrite `h2` using `[h1]`.
-
-Conclude with `h2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_ct [IsDedekindDomain O] [Module.Finite ℤ O] {V G X : Type} [AddCommGroup V] [Module ℂ V] [CommGroup G]
     [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] [Module O X] (F : O →+* Module.End ℂ V) (ex : V → G)
@@ -60,15 +58,13 @@ theorem exists_lift_ct [IsDedekindDomain O] [Module.Finite ℤ O] {V G X : Type}
   exact h2.symm
 
 /- English proof (translation)
-Use `GlobalTheory.Forms.projective_of_int O X` as an intermediate fact. Establish `: Module.Finite O X` using `Module.Finite.of_restrictScalars_finite ℤ O X`. Take `⟨T, h1, h2, h3⟩` from `GlobalTheory.Forms.exists_log_of_bimul hw (fun x y : X => N.τ (e x) (e y) * fr (ct x + ct y) / fr (ct x) / fr (ct y)) (fun y x x' => by`. Establish `a` using `congrArg Additive.ofMul (N.τ_add_right (e y) (e x) (e x'))`. Establish `b` using `congrArg Additive.ofMul (hab.2.2.2.2.2.1 (ct x) (ct x') (ct y))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [hc, map_add, add_comm (ct y), ofMul_mul, ofMul_div] at a b ⊢`. Take the linear combination `(norm := abel) a - b)`. Use the proof step `(fun y x => by rw [N.τ_symm, add_comm, div_right_comm])`. Use the proof step `(fun a y x => by`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `b` using `hbal a y x`. Simplify using `only [← Units.val_mul, Units.val_inj] at b`. Use `replace b := congrArg Additive.ofMul b`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div] at b ⊢`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Take the linear combination `(norm := abel) b)`. Use `⟨AddMonoidHom.mk' (fun x => (T x).toAddMonoidHom) fun x y => by ext; simp, h1, h2, fun x y => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Complex.exp (2 * Real.pi * Complex.I * T x y) * _ * _ = _`. Rewrite using `[← h3]`. Simplify using `only [← Units.val_mul, Units.val_inj]`.
-
-Rewrite using `[mul_right_comm, div_mul_cancel, div_mul_cancel]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_log_frame [IsDedekindDomain O] [Module.Finite ℤ O] [Module.Free ℤ O] {N : NumD ℂ} {B : AnArc O}
     {ex : (Fin B.gB → ℂ) → N.A} {fr : (Fin B.gB → ℂ) → ℂˣ} {th : (Fin B.gB → ℂ) → ℂ} (hab : IsAbFrame N.toNumB B ex fr th)
@@ -105,33 +101,29 @@ theorem exists_log_frame [IsDedekindDomain O] [Module.Finite ℤ O] [Module.Free
 end Generic
 
 /- English proof (translation)
-Introduce `hBr hVal E _ _ _ H D R _ _ _ A k β hβ`. Set `_` to `H.starRing`. Take `⟨B, ex, fr, th, hab, hth, hchi, hsig, hF, hros, hprim⟩` from `hVal E H D R A`. Use `A.closed` as an intermediate fact. Take `⟨b1, b2, b3⟩` from `hBr R A.D₀ A.even A.bimult ℂ A.N A.ν (𝓞 E) A.oa`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `A.D₀.freeX` as an intermediate fact. Use `A.D₀.finX` as an intermediate fact. Use `set e : A.D₀.X ≃+ A.N.X := A.ν.eX.symm with he`. Establish `hee : ∀ x, A.ν.eX (e x) = x` using `A.ν.eX.apply_symm_apply`. Establish `hw : H.w0 + star H.w0 = 1` using `by show H.w0 + H.bar H.w0 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.HostModel.cmHost_bar_halfIntegerGenerator, add_sub_cancel]`. Take `⟨ct, hct, hc⟩` from `exists_lift_ct B.F ex hab.1 hab.2.1 (fun x : A.D₀.X => A.N.c (e x)) (fun x y => by rw [map_add, A.N.c_add]) (fun a x z hz => A.ν.eA.injective (by`. Rewrite using `[hF, hz, A.ν.c_eq, A.ν.c_eq, hee, hee, DegPre.cF, DegPre.cF, A.oa.c_lin, Category.assoc]))`. Take `⟨T, hT1, hT2, hT⟩` from `exists_log_frame hab e ct hc hw (fun a y x => by`. Take `⟨r, hr, h⟩` from `b1 a`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `h (e y) (e x)`. Establish `h2` using `hros a (star a) r hr (ct y) (ct x)`. Rewrite `h1` using `[hee, hee, hc, hc]`. Rewrite using `[← h1, hct, hct]`. Take the linear combination `-(A.N.τ (e (a • y)) (e x) : ℂ) * h2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hact : ∀ (a : 𝓞 E) x, e (a • x) = A.act a (e x)` using `fun a x => by rw [ArcF.act, hee]`. Set `B' : An H` to `{ B with X := A.D₀.X acg := inferInstance free := inferInstance fin := inferInstance mod := inferInstance ct := ct ct_smul := hct T := T T_symm := hT1 T_adj := hT2 psi := fun x => A.N.ψ (e x) * fr (ct x) psi_neg := fun x => by`. Rewrite using `[map_neg, map_neg, ← hab.2.2.2.2.2.2.1, ← hc, ← _root_.mul_assoc, A.N.even]`. Use `psi_add := fun x y => by`. Establish `h` using `hT x y`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[map_add, map_add, A.N.ψ_add]`. Use `push_cast`. Take the linear combination `-(A.N.ψ (e x) : ℂ) * A.N.ψ (e y) * h`. Use `be := β.be.comp e.toIntLinearEquiv.toLinearMap e.toIntLinearEquiv.toLinearMap`. Use `be_symm := fun x y => β.symm _ _`.
+Take a linear combination of the given relations to obtain the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `be_pos := fun x hx => β.pos _ fun h => hx (e.map_eq_zero_iff.1 h)`. Use `be_adj := fun a y x => by`. Express the relevant statement in the definitionally equal form `β.be (e (a • y)) (e x) = β.be (e y) (e (star a • x))`. Rewrite using `[hact, hact]`. Conclude with `hβ a _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `be_even := fun x => (dvd_mul_right 2 (k : ℤ)).trans (β.dvd _ _) }`. Establish `hab' : IsAbFrame A.N.toNumB B' ex fr th`. Take `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9⟩` from `hab`. Use `⟨a1, a2, a3, a4, a5, a6, a7, ⟨a8.1, fun l z => ?_⟩, a9⟩` and prove the remaining obligations. Use `a8.2 l z` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this`, the goal using `[map_zero]`. Conclude with `this`. Use `⟨B', ⟨e, ex, fr, th, hab', hc, fun _ => rfl⟩, ⟨hact, ?_⟩, fun _ _ => rfl, ⟨hw, hchi, fun y => ?_⟩, hth, hsig⟩` and prove the remaining obligations. Introduce and unpack `a g g' c c' v hg hg' hgg ⟨hv1, hv2⟩`. Take `⟨r, hr, h⟩` from `b2 a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨h1, h2⟩` from `h g g' c c' hg hg' hgg`. Express the relevant statement in the definitionally equal form `c.b = ex v.2 at hv1`. Use `⟨A.ν.eA.injective (by rw [h1, hv1]; exact (hF a v.2).symm), fun x : A.D₀.X => ?_⟩` and prove the remaining obligations. Establish `h3` using `h2 (e x)`. Establish `h4 : (c.s (e (star a • x)) : ℂ) * fr (ct (star a • x) + v.2) = eTwoPi (v.1 (star a • x)) * fr (ct (star a • x)) * fr v.2` using `hv2 (star a • x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h5` using `hros (star a) a r hr (ct x) v.2`. Rewrite `h3` using `[hee, hc, hv1]`. Rewrite `h4` using `[hct]`. Express the relevant statement in the definitionally equal form `(c'.s (e x) : ℂ) * fr (ct x + B.F a v.2) = eTwoPi (v.1 (star a • x)) * fr (ct x) * fr (B.F a v.2)`. Use `mul_right_cancel₀ (mul_ne_zero (fr (B.F (star a) (ct x))).ne_zero (fr v.2).ne_zero) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h3]`. Take the linear combination `(c.s (e (star a • x)) : ℂ) * h5 + (fr (ct x) : ℂ) * fr (B.F a v.2) * h4`. Take `⟨t, ht, h⟩` from `b3 H.w0 A.w0`. Establish `h1` using `h (e y)`. Establish `h2` using `hprim t ht (ct y)`.
-
-Establish `h3` using `hT y (H.w0 • y)`. Rewrite `h1` using `[hee, hc]`. Rewrite `h3` using `[hct]`. Express the relevant statement in the definitionally equal form `((A.N.ψ (e y) * fr (ct y) : ℂˣ) : ℂ) = eTwoPi (T y (H.w0 • y))`. Use `mul_right_cancel₀ (mul_ne_zero (fr (ct y)).ne_zero (fr (B.F H.w0 (ct y))).ne_zero) ?_` and prove the remaining obligations.
-
-Rewrite using `[Units.val_mul, ← h1]`. Take the linear combination `(A.N.τ (e y) (e (H.w0 • y)) : ℂ) * h2 - h3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem dict_of_val : BrActSt → ValSt → DictSt := by
   intro hBr hVal E _ _ _ H D R _ _ _ A k β hβ

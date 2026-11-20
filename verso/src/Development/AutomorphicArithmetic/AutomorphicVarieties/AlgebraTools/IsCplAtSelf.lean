@@ -14,7 +14,7 @@ structure IsCplAt (R : Type) [CommRing R] (p : Ideal R) (B : Type) [CommRing B] 
   strict : ∀ (n : ℕ) (a : R), algebraMap R B a ∈ maximalIdeal B ^ n → ∃ s : R, s ∉ p ∧ s * a ∈ p ^ n
 
 /- English proof (translation)
-Rewrite using `[← h.comap_eq]`. Conclude with `Ideal.comap_isPrime _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsCplAt.isPrime {R : Type} [CommRing R] {p : Ideal R} {B : Type} [CommRing B]
     [IsLocalRing B] [Algebra R B] (h : IsCplAt R p B) : p.IsPrime := by

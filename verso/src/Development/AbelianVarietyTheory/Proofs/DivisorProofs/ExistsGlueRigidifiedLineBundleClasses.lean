@@ -19,27 +19,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PicGlue
 
 /- English proof (translation)
-Establish `hpe : ∀ y : Y, p (e y) = y` using `fun y ↦ by`. Rewrite using `[← Scheme.Hom.comp_apply, hep]`. Both sides reduce to the same expression. Establish `hrange : ∀ i, (f i).opensRange = p ⁻¹ᵁ V i` using `fun i ↦ by`. Use extensionality with `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `hr i x`. Use `choose M hM hMc using fun i ↦ cls_surj (c i)`. Use `choose L hL hLM using fun i ↦ GlobalTheory.T.exists_cech_lineBundle_ambient_of_openImmersion X (X' i) (f i) (M i) (hM i)`. Establish `hL' : ∀ i, IsOn (p ⁻¹ᵁ V i) (L i)` using `fun i ↦ hrange i ▸ hL i`. Establish `hfm : ∀ i (z : X' i), f i z ∈ p ⁻¹ᵁ V i` using `fun i z ↦ (hr i _).1 ⟨z, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfl : ∀ i, ((L i).pull (f i)).IsLB` using `fun i ↦ GlobalTheory.T.isLineBundle_pull_of_isLineBundleOnOpen X _ _ (L i) (f i) (hL' i) (hfm i)`. Establish `hcl : ∀ i, cls _ (hfl i) = c i` using `fun i ↦ ((cls_eq_iff (hfl i) (hM i)).2 (hLM i)).trans (hMc i)`. Establish `lifts : ∀ i (T : Scheme.{0}) (g : T ⟶ X), (∀ z, g z ∈ p ⁻¹ᵁ V i) → ∃ t : T ⟶ X' i, t ≫ f i = g` using `fun i T g hg ↦ ⟨IsOpenImmersion.lift (f i) g (by rintro _ ⟨z, rfl⟩; exact (hr i _).2 (hg z)), IsOpenImmersion.lift_fac _ _ _⟩`. Establish `hpl : ∀ i (T : Scheme.{0}) (t : T ⟶ X' i) (g : T ⟶ X), t ≫ f i = g → ∃ h : ((L i).pull g).IsLB, cls _ h = GlobalTheory.CechPic.pull t (c i)`. Introduce and unpack `i T t _ rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : ((L i).pull (t ≫ f i)).IsLB` using `GlobalTheory.T.isLineBundle_pull_of_isLineBundleOnOpen X _ _ (L i) _ (hL' i) fun z ↦ by`. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `hfm i _`. Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[← hcl i, ← cls_pull (hfl i) t (pull_isLB (hfl i) t)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `((cls_eq_iff _ _).2 (GlobalTheory.T.lineBundleOnOpen_pull_comp_iso X _ _ _ (L i) (f i) t (hL' i) (hfm i))).symm`. Establish `hR : ∀ i, ∃ r : RigD e (L i), RigOn e (L i) r` using `fun i ↦ by`. Use `GlobalTheory.T.exists_pullbackGenerator_of_trivial_on_open X Y e (V i) (L i) (fun a y hy ↦ ?_) ?_` and prove the remaining obligations. Establish `: p (e y) ∈ V i` using `(hL' i).le a hy`. Rewrite `this` using `[hpe]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `lifts i _ ((V i).ι ≫ e) fun z ↦ by`. Rewrite using `[Scheme.Hom.comp_apply]`. Express the relevant statement in the definitionally equal form `p (e _) ∈ V i`. Rewrite using `[hpe]`. Conclude with `z.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hc⟩` from `hpl i _ t _ ht`. Conclude with `(cls_eq_zero_iff h).1 (hc.trans (hrig i _ t _ ht))`. Use `choose r hr' using hR`. Establish `hw : ∀ i k, ∃ w : Cmp (p ⁻¹ᵁ (V i ⊓ V k)) (L i) (L k), IsoOn (p ⁻¹ᵁ (V i ⊓ V k)) (L i) (L k) w ∧ Norm e (p ⁻¹ᵁ (V i ⊓ V k)) (L i) (L k) w (r i) (r k)` using `fun i k ↦ by`. Take `⟨a, ha⟩` from `lifts i _ (p ⁻¹ᵁ (V i ⊓ V k)).ι fun z ↦ z.2.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb⟩` from `lifts k _ (p ⁻¹ᵁ (V i ⊓ V k)).ι fun z ↦ z.2.2`. Take `⟨h1, e1⟩` from `hpl i _ a _ ha`. Take `⟨h2, e2⟩` from `hpl k _ b _ hb`. Take `⟨w, hw⟩` from `GlobalTheory.T.exists_isLineBundleIsoOnOpen_of_restriction_iso X (p ⁻¹ᵁ (V i ⊓ V k)) (L i) (L k) ((cls_eq_iff h1 h2).1 (e1.trans ((hov i k _ a b (ha.trans hb.symm)).trans e2.symm)))`. Conclude with `GlobalTheory.T.exists_lineBundleIso_normalisedAlongSection_retraction X Y p e hep (V i ⊓ V k) _ _ (L i) (L k) w (r i) (r k) (hL' i) (hL' k) (fun _ h ↦ h.1) (fun _ h ↦ h.2) hw (hr' i) (hr' k)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `choose w hwi hwn using hw`. Take `⟨N, hN, hv⟩` from `GlobalTheory.T.lineBundle_glue_of_openCover_cocycle X Ix (fun i ↦ p ⁻¹ᵁ V i) L w (fun x ↦ hV (p x)) hL' hwi fun i j k x a b d ha hb hd ↦ GlobalTheory.T.normalised_lineBundleIso_cocycle_identity X Y p e hep hp (V i ⊓ V j ⊓ V k) _ _ _ _ _ _ (L i) (L j) (L k) (w i j) (w j k) (w i k) …`. Establish `hNc : ∀ i, GlobalTheory.CechPic.pull (f i) (cls N hN) = c i` using `fun i ↦ by`. Take `⟨v, hv⟩` from `hv i`. Rewrite using `[← hcl i, ← cls_pull hN (f i) (pull_isLB hN _)]`.
-
-Conclude with `(cls_eq_iff _ _).2 (GlobalTheory.T.lineBundleIso_pull_of_isLineBundleIsoOnOpen X _ _ N (L i) v (f i) hv (hfm i))`. Use `⟨cls N hN - GlobalTheory.CechPic.pull p (GlobalTheory.CechPic.pull e (cls N hN)), ?_, fun i ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, ← pull_comp e p, hep, pull_id, sub_self]`. Take `⟨t, ht⟩` from `lifts i _ ((f i ≫ p) ≫ e) fun z ↦ by`. Rewrite using `[Scheme.Hom.comp_apply]`.
-
-Express the relevant statement in the definitionally equal form `p (e _) ∈ V i`. Rewrite using `[hpe, Scheme.Hom.comp_apply]`. Conclude with `hfm i z`. Rewrite using `[map_sub, hNc, ← pull_comp (f i) p, ← pull_comp (f i ≫ p) e, ← ht, pull_comp, hNc, hrig i _ t _ ht, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_glue_rigidified (X Y : Scheme.{0}) (p : X ⟶ Y) (e : Y ⟶ X) (hep : e ≫ p = 𝟙 Y) (hp : FnBij p)
     (Ix : Type) (X' : Ix → Scheme.{0}) (f : ∀ i, X' i ⟶ X) (V : Ix → Y.Opens) (c : ∀ i, Pic (X' i))

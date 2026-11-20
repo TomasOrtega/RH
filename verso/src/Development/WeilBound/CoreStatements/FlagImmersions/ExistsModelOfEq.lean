@@ -25,7 +25,7 @@ section Stalk
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {G : Over X} [GrpObj G]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨M, fun _ => rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_model_of_eq {R : Type} [CommRing R] {z z' : Sp R ⟶ X} (h : z = z') {E : Type} [AddCommGroup E]
     [Module R E] (M : LieModel G z E) : ∃ M' : LieModel G z' E, ∀ e, (M'.pt e).left = (M.pt e).left := by
@@ -33,21 +33,19 @@ theorem exists_model_of_eq {R : Type} [CommRing R] {z z' : Sp R ⟶ X} (h : z = 
   exact ⟨M, fun _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨T, iT, mT, ⟨M0⟩⟩` from `lieModel_exists X G (X.presheaf.stalk (centre z)) (X.fromSpecStalk (centre z))`. Set `q : Cpt ξ` to `⟨centre z, h⟩`. Establish `exi : ∀ t, ∃ e, M.pt e = LieTangent.epsBase (genMap ξ q) (LieTangent.spec_genMap ξ q) ≫ M0.pt t` using `fun t => M.onto _ (LieTangent.isTanAt_base _ _ (M0.tan t))`. Use `choose fi hfi using exi`. Establish `exb : ∀ t, ∃ x, Mz.pt x = LieTangent.epsBase _ (LieTangent.spec_centre z) ≫ M0.pt t` using `fun t => Mz.onto _ (LieTangent.isTanAt_base _ _ (M0.tan t))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose fb hfb using exb`. Set `i : T →+ Li` to `AddMonoidHom.mk' fi fun a b => M.inj (by rw [M.add, hfi, hfi, hfi, M0.add, comp_mul])`. Set `β : T →+ V` to `AddMonoidHom.mk' fb fun a b => Mz.inj (by rw [Mz.add, hfb, hfb, hfb, M0.add, comp_mul])`. Establish `hi : ∀ t, M.pt (i t) = LieTangent.epsBase (genMap ξ q) (LieTangent.spec_genMap ξ q) ≫ M0.pt t` using `hfi`. Establish `hβ : ∀ t, Mz.pt (β t) = LieTangent.epsBase _ (LieTangent.spec_centre z) ≫ M0.pt t` using `hfb`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hext : ∀ t, M.Extends q (i t) (M0.pt t)` using `fun t => (M.extends_iff _ _ _).2 ⟨M0.tan t, hi t⟩`. Establish `hsi : ∀ (a : X.presheaf.stalk (centre z)) t, i (a • t) = genMap ξ q a • i t` using `fun a t => M.inj (by`. Rewrite using `[hi, LieModel.pt_smul, LieModel.pt_smul, hi, ← Category.assoc, LieTangent.base_scale, Category.assoc])`. Establish `hsβ : ∀ (a : X.presheaf.stalk (centre z)) t, β (a • t) = (Scheme.stalkClosedPointTo z).hom a • β t` using `fun a t => Mz.inj (by`. Rewrite using `[hβ, LieModel.pt_smul, LieModel.pt_smul, hβ, ← Category.assoc, LieTangent.base_scale, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `rfl)`. Establish `honto : ∀ e ∈ M.lat q, ∃ t, i t = e`. Introduce `e he`. Take `⟨w, hw⟩` from `(M.mem_lat_iff q e).1 he`. Take `⟨t, rfl⟩` from `M0.onto w hw.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Use `⟨t, M.inj ?_⟩` and prove the remaining obligations. Rewrite using `[hi, ((M.extends_iff _ _ _).1 hw).2]`. Use `letI alg : Algebra (X.presheaf.stalk (centre z)) L := (Scheme.stalkClosedPointTo z).hom.toAlgebra`. Use `letI mV : Module (X.presheaf.stalk (centre z)) V := Module.compHom V (Scheme.stalkClosedPointTo z).hom`. Establish `hmV : ∀ (a : X.presheaf.stalk (centre z)) (x : V), a • x = (Scheme.stalkClosedPointTo z).hom a • x` using `fun _ _ => rfl`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI tower : IsScalarTower (X.presheaf.stalk (centre z)) L V := ⟨fun a b x => by rw [Algebra.smul_def, hmV, mul_smul]; rfl⟩`. Take `⟨M', hM'⟩` from `exists_model_of_eq (show z = Spec.map (CommRingCat.ofHom (algebraMap (X.presheaf.stalk (centre z)) L)) ≫ X.fromSpecStalk (centre z) from (LieTangent.spec_centre z).symm) Mz`. Set `j : T →ₗ[X.presheaf.stalk (centre z)] V` to `{ toFun := β map_add' := map_add β map_smul' := fun a t => hsβ a t }`. Establish `hbc : IsBaseChange L j` using `(PositivityTheory.HtPt.Htat.lie_proj X G (X.presheaf.stalk (centre z)) (X.fromSpecStalk (centre z)) T M0).2.2 L V M' j fun t => by`. Rewrite using `[hM']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `congrArg (fun w => w.left) (hβ t)`. Use `⟨T, iT, mT, M0, i, β, hext, hβ, hsi, hsβ, honto, fun ψ hψ => ?_, fun P hP => ?_⟩` and prove the remaining obligations. Set `ψl : T →ₗ[X.presheaf.stalk (centre z)] L` to `{ toFun := ψ map_add' := map_add ψ map_smul' := fun a t => by`. Rewrite using `[hψ, RingHom.id_apply, Algebra.smul_def]`. Use `rfl }`.
-
-Conclude with `⟨hbc.lift ψl, fun t => hbc.lift_eq ψl t⟩`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Conclude with `hbc.inductionOn x (· ∈ P) P.zero_mem hP (fun c n hn => P.smul_mem c hn) (fun _ _ => P.add_mem)`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem stalk_model [IsCommMonObj G] [Smooth G.hom] {Li : Type} [AddCommGroup Li] [Module Ω Li] (M : LieModel G ξ Li)
     (hξ : IsCptGen ξ) {L : Type} [Field L] (z : Sp L ⟶ X) (h : genPt ξ ⤳ centre z) {V : Type} [AddCommGroup V]
@@ -116,15 +114,13 @@ theorem stalk_model [IsCommMonObj G] [Smooth G.hom] {Li : Type} [AddCommGroup Li
     exact hbc.inductionOn x (· ∈ P) P.zero_mem hP (fun c n hn => P.smul_mem c hn) (fun _ _ => P.add_mem)
 
 /- English proof (translation)
-Take `⟨T, _, _, M0, i, β, hext, hβ, hsi, -, -, hlift, -⟩` from `stalk_model M hξ z h Mz`. Establish `hgi : Function.Injective (genMap ξ ⟨centre z, h⟩)` using `hξ.inj ⟨centre z, h⟩`. Establish `hs : ∀ t, ∃ s, genMap ξ ⟨centre z, h⟩ s = f (i t)` using `fun t => hf _ ((M.mem_lat_iff _ _).2 ⟨_, hext t⟩)`. Use `choose σ hσ using hs`. Take `⟨F, hF⟩` from `hlift (AddMonoidHom.mk' (fun t => (Scheme.stalkClosedPointTo z).hom (σ t)) fun t t' => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: σ (t + t') = σ t + σ t'` using `hgi (by simp [hσ])`. Rewrite using `[this, map_add]) fun a t => by`. Establish `: σ (a • t) = a * σ t` using `hgi (by rw [hσ, map_mul, hσ, hsi, map_smul, smul_eq_mul])`. Use `show (Scheme.stalkClosedPointTo z).hom (σ (a • t)) = _ * (Scheme.stalkClosedPointTo z).hom (σ t)`. Rewrite using `[this, map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨F, fun e x u hx hu => ?_⟩` and prove the remaining obligations. Take `⟨h', v, hv, hw⟩` from `hx`. Take `⟨t, rfl⟩` from `M0.onto v hv.1`. Establish `e1 : i t = e` using `M.inj (Over.OverMorphism.ext ((hext t).2.trans hv.2.symm))`. Establish `e2 : β t = x` using `Mz.inj (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hβ]`. Conclude with `Over.OverMorphism.ext hw.symm)`. Take `⟨_, s, hs, rfl⟩` from `hu`. Rewrite using `[← e2, hF]`. Establish `: σ t = s` using `hgi (by rw [hσ, e1, hs])`.
-
-Use `show (Scheme.stalkClosedPointTo z).hom (σ t) = _`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_functional [IsCommMonObj G] [Smooth G.hom] {Li : Type} [AddCommGroup Li] [Module Ω Li] (M : LieModel G ξ Li)
     (hξ : IsCptGen ξ) {L : Type} [Field L] (z : Sp L ⟶ X) (h : genPt ξ ⤳ centre z) {V : Type} [AddCommGroup V]
@@ -163,25 +159,23 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {J : K → Type} [∀ k, Fintype (J k)] {y : (Σ k, J k) → Ω}
 
 /- English proof (translation)
-Establish `hgen : genPt 𝔐.ξ ⤳ centre z` using `𝔐.all _`. Establish `hβ : Function.Injective (algebraMap (𝓞 c.F) c.F)` using `NumberField.RingOfIntegers.coe_injective`. Establish `hξ : IsCptGen 𝔐.ξ` using `𝔐.tie.gen`. Take `⟨-, -, hc0, -, -, -, hind, -⟩` from `GlobalTheory.T.hodge_cpt_interior_generic E H D l Xo c _ _ Y S Ω K J y 𝔐 hβ`. Use `hc0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpol` using `GlobalTheory.T.interior_point_polarised E H D l Xo c Y S Ω K J y 𝔐 z hz`. Take `⟨hV, -, hlat⟩` from `GlobalTheory.T.hodge_cpt_away_from_primes E H D l Xo c _ _ Y S Ω K J y 𝔐 hβ ⟨centre z, hgen⟩ fun r hr => not_inFibre_centre hgen hr`. Establish `hdR : ∀ k, b k ∈ 𝔐.dR s ⟨centre z, hgen⟩` using `fun k => by`. Establish `h1 : b k ∈ 𝔐.V s ⟨centre z, hgen⟩`. Rewrite using `[hb.2]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Rewrite `h1` using `[hV s]`. Then use the resulting hypothesis. Use `⟨fun k => (hdR k).2, ?_⟩` and prove the remaining obligations. Set `bb : Fin N → ↥(𝔐.Vgen s ⊔ 𝔐.Vgen s)` to `fun k => ⟨b k, Submodule.mem_sup_left (hdR k).2⟩`. Establish `hspan : (Submodule.span (regAt 𝔐.ξ ⟨centre z, hgen⟩) (Set.range bb)).map ((𝔐.Vgen s ⊔ 𝔐.Vgen s).subtype.restrictScalars (regAt 𝔐.ξ ⟨centre z, hgen⟩)) = Submodule.span (regAt 𝔐.ξ ⟨centre z, hgen⟩) (Set.range b)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `hfr : (Lat.comap (fun p => 𝔐.V s p ⊔ 𝔐.V s p) (𝔐.Vgen s ⊔ 𝔐.Vgen s).subtype).IsFrameAt bb ⟨centre z, hgen⟩`. Use `⟨LinearIndependent.of_comp (𝔐.Vgen s ⊔ 𝔐.Vgen s).subtype hb.1, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h1 : (x : 𝔐.Li) ∈ 𝔐.V s ⟨centre z, hgen⟩ ⊔ 𝔐.V s ⟨centre z, hgen⟩` using `hx`. Rewrite `h1` using `[sup_idem, hb.2, ← hspan]`. Take `⟨x', hx', e⟩` from `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e' : x' = x` using `Subtype.ext e`. Conclude with `e' ▸ hx'`. Introduce `hx show (x : 𝔐.Li) ∈ 𝔐.V s ⟨centre z, hgen⟩ ⊔ 𝔐.V s ⟨centre z, hgen⟩`. Rewrite using `[sup_idem, hb.2, ← hspan]`. Conclude with `⟨x, hx, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsm : Smooth 𝔐.t.G.hom` using `𝔐.t.semi.smooth`. Take `⟨Vz, _, _, ⟨MR⟩⟩` from `lieModel_exists 𝔐.X 𝔐.t.G ℂ z`. Take `⟨f, hHI, hh, hp⟩` from `GlobalTheory.T.hodge_hermitian_form_exists E H 𝔐.X 𝔐.t z Vz MR hpol`. Take `⟨π, hπ, hreg⟩` from `exists_dual_sum 𝔐 hind ⟨centre z, hgen⟩ hV hlat s s bb hfr`. Establish `hval : ∀ k, ∃ x : Vz, 𝔐.M.ValAt z (b k) (MR.pt x)` using `fun k => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `(𝔐.M.exists_valAt_iff z _).2 ⟨hgen, (hdR k).1⟩`. Take `⟨x, rfl⟩` from `MR.onto w hw.isTanAt`. Conclude with `⟨x, hw⟩`. Use `choose x hx using hval`. Establish `hg : ∀ j, ∃ g : Vz →ₗ[ℂ] ℂ, ∀ k, g (x k) = if j = k then 1 else 0` using `fun j => by`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `exists_functional 𝔐.M hξ z hgen MR (π j) (hreg j)`. Use `⟨g, fun k => hg _ _ _ (hx k) ?_⟩` and prove the remaining obligations. Establish `e` using `hπ j k`. Express the relevant statement in the definitionally equal form `π j (b k) = _ at e`. Rewrite using `[e]`.
-
-Use `split_ifs`. Conclude with `CxVal.one hgen`. Conclude with `⟨hgen, 0, map_zero _, map_zero _⟩`. Use `choose g hg using hg`. Conclude with `⟨Matrix.of fun p q => f (x p) (x q), ⟨fun k => MR.pt (x k), hx, fun p q => (hHI _ _ _).2 rfl⟩, posDef_of_dual f hh hp x g hg⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_gram (𝔐 : HodgeCpt Y S y) {z : Sp ℂ ⟶ 𝔐.X} (hz : 𝔐.Interior z) (s : CMType H ⊕ CMType H) {N : ℕ}
     {b : Fin N → 𝔐.Li} (hb : (𝔐.V s).IsFrameAt b ⟨centre z, 𝔐.all _⟩) :
@@ -244,9 +238,9 @@ theorem exists_gram (𝔐 : HodgeCpt Y S y) {z : Sp ℂ ⟶ 𝔐.X} (hz : 𝔐.I
     posDef_of_dual f hh hp x g hg⟩
 
 /- English proof (translation)
-Use `Fintype.linearIndependent_iff.2 fun w hw => ?_` and prove the remaining obligations. Establish `h0 : R.gram x *ᵥ w = 0`. Use extensionality with `a`. Establish `: (R.gram x *ᵥ w) a = (∑ i, w i • x i) ⬝ᵥ R.Hm *ᵥ star (x a)`. Rewrite using `[sum_dotProduct]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec, RiemLat.gram, RiemLat.ip, smul_dotProduct, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Rewrite using `[this, hw, zero_dotProduct, Pi.zero_apply]`. Use `Matrix.eq_zero_of_mulVec_eq_zero h.det_pos.ne' h0` as an intermediate fact. Conclude with `fun i => congrFun this i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem linInd_of_posDef {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ] (R : RiemLat E g Λ) {m : ℕ}
     (x : Fin m → Fin g → ℂ) (h : (R.gram x).PosDef) : LinearIndependent ℂ x := by
@@ -262,9 +256,9 @@ theorem linInd_of_posDef {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E
   exact fun i => congrFun this i
 
 /- English proof (translation)
-Establish `e : (eigSp B s).map φ.toLinearMap = eigSp B' s`. Use extensionality with `p`. Take `⟨p, rfl⟩` from `φ.surjective p`. Establish `: φ p ∈ (eigSp B s).map φ.toLinearMap ↔ p ∈ eigSp B s` using `⟨fun ⟨q, hq, e⟩ => φ.injective e ▸ hq, fun hp => ⟨p, hp, rfl⟩⟩`. Rewrite using `[this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [eigSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[← h, ← φ.injective.eq_iff]`. Simplify using the standard rewrite rules. Rewrite using `[← e, LinearEquiv.finrank_map_eq]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_eig_eq {g g' : ℕ} (B : 𝓞 E →+* Module.End ℂ (Fin g → ℂ)) (B' : 𝓞 E →+* Module.End ℂ (Fin g' → ℂ))
     (φ : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g' → ℂ)) (h : ∀ a p, φ (B a p) = B' a (φ p)) (s : 𝓞 E →+* ℂ) :
@@ -284,17 +278,17 @@ theorem finrank_eig_eq {g g' : ℕ} (B : 𝓞 E →+* Module.End ℂ (Fin g → 
 end FV
 
 /- English proof (translation)
-Introduce `hG E _ _ _ H D l Xo c Y Ω _ K _ J _ y 𝔐 z s b h1 hz hb`. Take `⟨hbs, Γ₀, hΓ₀, hp₀⟩` from `FV.exists_gram 𝔐 hz s hb`. Use `⟨fun i => hΓ₀.elim fun v hv => ⟨_, hv.1 i⟩, ?_⟩` and prove the remaining obligations. Introduce `g Λ _ _ R σ x v hσ hv hf`. Establish `hgram : 𝔐.M.GramAt 𝔐.t.PP.L z b ((Real.pi : ℂ) • R.gram x)` using `⟨v, hv, fun p q => MuPsh.hodgeInnerProduct_of_fibreLatticeVector hf (fun a => (hv a).isTanAt) p q⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨-, -, hc0, -⟩` from `GlobalTheory.T.hodge_cpt_interior_generic E H D l Xo c _ _ Y ∅ Ω K J y 𝔐 NumberField.RingOfIntegers.coe_injective`. Use `hc0` as an intermediate fact. Establish `e` using `GlobalTheory.T.gram_matrix_change_frame E H D l Xo c Y ∅ Ω K J y 𝔐 z _ b _ _ (GlobalTheory.T.interior_point_polarised E H D l Xo c Y ∅ Ω K J y 𝔐 z hz) hgram hΓ₀`. Establish `hpos : (R.gram x).PosDef`. Establish `h2 : R.gram x = ((Real.pi⁻¹ : ℝ) : ℂ) • Γ₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e, smul_smul, ← Complex.ofReal_mul, inv_mul_cancel₀ Real.pi_ne_zero, Complex.ofReal_one, one_smul]`. Rewrite using `[h2]`. Conclude with `hp₀.smul (Complex.zero_lt_real.2 (inv_pos.2 Real.pi_pos))`. Establish `hli` using `FV.linInd_of_posDef R x hpos`. Establish `hmem : ∀ i, x i ∈ eigSp R.B (σ s)` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Submodule.mem_iInf _).2 fun a => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Take `⟨A, _, φ, u, χ, hpb, hAH, hact, -, -, h3⟩` from `hf`. Take `⟨v₁, e₁, d₁⟩` from `h3 i`. Take `⟨h1, w, hw, hr⟩` from `hσ s a`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := 𝔐.t.act.hom a`. Establish `hsc` using `PhMuFree.val_eig 𝔐 𝔐.tie.gen h1 s a w hw (hbs i) (hv i)`. Conclude with `SheetPot.eig_of_isDiff hpb u (𝔐.t.act.act a) (R.B a) (fun p => hact a p) (hv i).isTanAt (c := σ s a) (by rw [← hr]; exact hsc) e₁ d₁`. Take `⟨g', Λ', _, _, R', x', hf', -, hrk⟩` from `GlobalTheory.T.interior_point_lattice_data hG.2.2.2.2.1 E H D l Xo c Y ∅ Ω K J y 𝔐 z h1 hz hG _ v fun i => (hv i).isTanAt`. Take `⟨φ, -, -, hφ, -⟩` from `GlobalTheory.T.fibre_lattice_linear_equiv E H 𝔐.X 𝔐.t z g g' Λ Λ' R R' _ x x' v hf hf'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hli, ?_, hgram, hpos⟩` and prove the remaining obligations. Use `Submodule.eq_of_le_of_finrank_eq (Submodule.span_le.2 (Set.range_subset_iff.2 hmem)) ?_` and prove the remaining obligations. Rewrite using `[finrank_span_eq_card hli, Fintype.card_fin, FV.finrank_eig_eq R.B R'.B φ hφ, hrk σ hσ s]`.
+A detailed English derivation is pending.
 -/
 theorem frameVals : FrameVals := by
   intro hG E _ _ _ H D l Xo c Y Ω _ K _ J _ y 𝔐 z s b h1 hz hb

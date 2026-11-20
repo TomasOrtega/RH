@@ -9,11 +9,9 @@ open MvPolynomial Finset Coinv
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ _ f n H`. Use `choose v hv hvI using fun d => h1 K f n d`. Use `⟨∑ d ∈ H.support, coeff d H • v d, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun d _ => Submodule.smul_mem _ _ (hv d)`. Establish `e1 : H - ∑ d ∈ H.support, coeff d H • v d = (∑ d ∈ H.support, monomial d (coeff d H)) - ∑ d ∈ H.support, coeff d H • v d`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← H.as_sum]`. Establish `e2 : (∑ d ∈ H.support, monomial d (coeff d H)) - ∑ d ∈ H.support, coeff d H • v d = ∑ d ∈ H.support, C (coeff d H) * (monomial d (1 : K) - v d)`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[mul_sub, C_mul_monomial, mul_one, smul_eq_C_mul]`.
-
-Rewrite using `[e1, e2]`. Conclude with `Ideal.sum_mem _ fun d _ => Ideal.mul_mem_left _ _ (hvI d)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoinvPolynomialReduction.proof (h1 : CoinvMonomialReduction.Statement) :
     CoinvPolynomialReduction.Statement := by

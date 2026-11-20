@@ -18,7 +18,7 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
   {V : Type*} [AddCommGroup V] [Module ℂ V] {π : Representation ℂ (GL (Fin n) F) V}
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [mem_fixedVectors]`. Use `forall₂_congr fun y hy => ?_` and prove the remaining obligations. Rewrite using `[jacquetRep, twist_apply, MonoidHom.comp_apply, invSqrtModular_leviIncl_of_mem y (congruenceSubgroup_le F n m (Subgroup.mem_subgroupOf.1 hy)), one_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fixedVectors_jacquetRep_congruenceSubgroup (m : ℕ) :
     fixedVectors (jacquetRep F n β π) ((congruenceSubgroup F n m).subgroupOf (levi F n β)) =
@@ -31,9 +31,9 @@ theorem fixedVectors_jacquetRep_congruenceSubgroup (m : ℕ) :
     one_smul]
 
 /- English proof (translation)
-Use `⟨isSmooth_jacquetRep π hπ.1, fun L hLc hLo => ?_⟩` and prove the remaining obligations. Take `⟨m₁, hm₁⟩` from `exists_subgroupOf_congruenceSubgroup_subset (hLo.mem_nhds L.one_mem)`. Use `set m := max m₁ 1`. Establish `hle : (congruenceSubgroup F n m).subgroupOf (levi F n β) ≤ L` using `fun x hx => hm₁ (Subgroup.mem_subgroupOf.2 (congruenceSubgroup_antitone F n (le_max_left _ _) (Subgroup.mem_subgroupOf.1 hx)))`. Establish `: FiniteDimensional ℂ (fixedVectors π (congruenceSubgroup F n m))` using `hπ.2 _ (isCompact_congruenceSubgroup F n m) (isOpen_congruenceSubgroup F n m)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : FiniteDimensional ℂ (fixedVectors (jacquetRep F n β π) ((congruenceSubgroup F n m).subgroupOf (levi F n β)))`. Rewrite using `[fixedVectors_jacquetRep_congruenceSubgroup]`. Conclude with `Module.Finite.of_surjective _ (jacquetFixedMap_surjective_congruenceSubgroup β hπ (le_max_right m₁ 1))`. Conclude with `Submodule.finiteDimensional_of_le (fixedVectors_antitone _ hle)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdmissible_jacquetRep (hπ : IsAdmissible π) : IsAdmissible (jacquetRep F n β π) := by
   refine ⟨isSmooth_jacquetRep π hπ.1, fun L hLc hLo => ?_⟩

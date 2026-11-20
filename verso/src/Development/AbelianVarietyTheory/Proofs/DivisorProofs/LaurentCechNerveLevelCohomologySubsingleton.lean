@@ -8,11 +8,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite Simplicial GlobalTheory.Et
 namespace GlobalTheory.EtC.GmStep
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `Module.Finite.fg_top (R := A) (M := A')`. Use `⟨⟨Finset.univ.image (fun r : ι → S => PiTensorProduct.tprod A (fun i => (r i : A'))), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← PiTensorProduct.span_tprod_eq_top, Submodule.span_le]`. Introduce and unpack `_ ⟨m, rfl⟩`. Establish `hm : ∀ i, m i ∈ Submodule.span A (S : Set A')` using `fun i => hS ▸ Submodule.mem_top`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `choose c hc using fun i => (Submodule.mem_span_finset).1 (hm i)`. Establish `hm' : m = fun i => ∑ s ∈ S, c i s • s` using `funext fun i => ((hc i).2).symm`. Rewrite using `[hm', MultilinearMap.map_sum_finset]`. Use `Submodule.sum_mem _ fun r hr => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Rewrite using `[Finset.coe_image]`. Use `⟨fun i => ⟨r i, Fintype.mem_piFinset.1 hr i⟩, by simp, rfl⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finite_piTensorProduct_const (A A' : Type) [CommRing A] [CommRing A'] [Algebra A A'] [Module.Finite A A']
     (ι : Type) [Fintype ι] : Module.Finite A (PiTensorProduct A fun _ : ι => A') := by
@@ -32,9 +32,9 @@ theorem finite_piTensorProduct_const (A A' : Type) [CommRing A] [CommRing A'] [A
   refine ⟨fun i => ⟨r i, Fintype.mem_piFinset.1 hr i⟩, by simp, rfl⟩
 
 /- English proof (translation)
-Introduce `q _ n hyp A _ _ hSH hq A' _ _ hfin k s i hs hsn`. Take `⟨_, e, -, -⟩` from `GlobalTheory.T.laurentCechNerve_level_spec_tensorPower A A' k`. Establish `hT` using `GlobalTheory.T.tateTwistCohomology_laurent_vanishing_finite_algebra q n hyp A hSH hq (PiTensorProduct A fun _ : Fin (k + 1) => A') (finite_piTensorProduct_const A A' (Fin (k + 1))) s i hs hsn`. Use `haveI : Subsingleton (Ht q (disc.obj (yoneda.obj (Spec (CommRingCat.of (LaurentPolynomial (PiTensorProduct A fun _ : Fin (k + 1) => A')))))) s i) := hT`. Set `f` to `disc.mapIso e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `inj : Function.Injective (pull (ZMod q) f.hom (tw q i) s)` using `fun x y h => by`. Establish `h'` using `congrArg (pull (ZMod q) f.inv (tw q i) s) h`. Rewrite `h'` using `[← pull_comp, ← pull_comp, Iso.inv_hom_id, pull_id, pull_id]`. Then use the resulting hypothesis. Conclude with `inj.subsingleton`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem level_vanish : ∀ (q : ℕ) [NeZero q] (n : ℤ), (∀ (A : Type) [CommRing A] [IsNoetherianRing A], SH A → IsUnit (q : A) →
   ∀ m i : ℤ, 2 ≤ m → m < n → Subsingleton (Ht q (sp (LaurentPolynomial A)) m i)) →

@@ -14,11 +14,11 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensiona
 
 omit [NormedSpace ℝ V] [FiniteDimensional ℝ V] in
 /- English proof (translation)
-Take `⟨δ, hδ, h⟩` from `Metric.isOpen_iff.1 (isOpen_discrete ({0} : Set Λ)) 0 rfl`. Use `⟨δ / 2, by positivity, fun x y hxy => ?_⟩` and prove the remaining obligations. Apply `Metric.ball_disjoint_ball` to reduce the goal to its premises. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hxy` to reduce the goal to its premises. Establish `hm : x - y ∈ ball (0 : Λ) δ`. Rewrite using `[mem_ball_zero_iff]`. Establish `: ‖x - y‖ = dist (x : V) (y : V)`. Rewrite using `[dist_eq_norm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `sub_eq_zero.1 (h hm)`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem oneVar_sep (Λ : Submodule ℤ V) [DiscreteTopology Λ] :
     ∃ ε : ℝ, 0 < ε ∧ Pairwise (Function.onFun Disjoint fun x : Λ => ball (x : V) ε) := by
@@ -37,11 +37,11 @@ theorem oneVar_sep (Λ : Submodule ℤ V) [DiscreteTopology Λ] :
 
 omit [NormedSpace ℝ V] [FiniteDimensional ℝ V] in
 /- English proof (translation)
-Establish `hcn : ‖c • (1 : ℝ)‖ = c` using `by simp [abs_of_pos hc]`. Rewrite using `[hcn]`. Establish `h1 : ‖y‖ ≤ ‖x‖ + ε`. Use `mem_ball_iff_norm.1 hy` as an intermediate fact. Establish `h2` using `norm_le_norm_add_norm_sub' y x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx` using `norm_nonneg x`. Establish `hy0` using `norm_nonneg y`. Establish `h2 : 1 + c * ‖y‖ ≤ (1 + ε) * (1 + c * ‖x‖)`. Establish `: c * ‖y‖ ≤ c * (‖x‖ + ε)` using `mul_le_mul_of_nonneg_left h1 hc.le`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : c * ε ≤ ε` using `by nlinarith`. Establish `h4 : 0 ≤ ε * (c * ‖x‖)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ (by positivity), inv_mul_eq_div, div_le_iff₀ (by positivity), ← mul_pow]`. Conclude with `pow_le_pow_left₀ (by positivity) h2 N`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneVar_pt {c ε : ℝ} (hc : 0 < c) (hc1 : c ≤ 1) (hε : 0 < ε) (N : ℕ) {x y : V} (hy : y ∈ ball x ε) :
     ((1 + c * ‖x‖) ^ N)⁻¹ ≤ (1 + ε) ^ N * ((1 + ‖c • (1 : ℝ)‖ * ‖y‖) ^ N)⁻¹ := by
@@ -62,23 +62,19 @@ theorem oneVar_pt {c ε : ℝ} (hc : 0 < c) (hc1 : c ≤ 1) (hε : 0 < ε) (N : 
   exact pow_le_pow_left₀ (by positivity) h2 N
 
 /- English proof (translation)
-Use `borelize V`. Use `haveI : ProperSpace V := FiniteDimensional.proper_real V`. Use `haveI : Countable Λ := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Use `set μ : Measure V := Measure.addHaar with hμ`. Take `⟨ε, hε, hd⟩` from `oneVar_sep Λ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set f : V → ℝ≥0∞ := fun y => ENNReal.ofReal (((1 + ‖y‖) ^ N)⁻¹) with hf`. Establish `hfm : Measurable f`. Rewrite using `[hf]`. Use `fun_prop`. Establish `hI : ∫⁻ y, f y ∂μ < ⊤`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `finite_integral_one_add_norm (E := V) (μ := μ) (r := (N : ℝ)) (by exact_mod_cast hN)` as an intermediate fact. Use `lt_of_eq_of_lt (lintegral_congr fun y => ?_) this` and prove the remaining obligations. Rewrite using `[hf, Real.rpow_neg (by positivity), Real.rpow_natCast]`. Use `set b : ℝ≥0∞ := μ (ball (0 : V) ε) with hb`. Establish `hb0 : b ≠ 0` using `(measure_ball_pos μ _ hε).ne'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbt : b ≠ ⊤` using `measure_ball_lt_top.ne`. Use `set A : ℝ≥0∞ := ENNReal.ofReal ((1 + ε) ^ N) with hA`. Establish `hK : b⁻¹ * A * ∫⁻ y, f y ∂μ ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.mul_ne_top (ENNReal.inv_ne_top.2 hb0) ENNReal.ofReal_ne_top) hI.ne`. Use `⟨(b⁻¹ * A * ∫⁻ y, f y ∂μ).toNNReal, fun c hc hc1 => ?_⟩` and prove the remaining obligations. Rewrite using `[ENNReal.coe_toNNReal hK]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hsc : ∫⁻ y, f (c • y) ∂μ = ENNReal.ofReal ((c ^ Module.finrank ℝ V)⁻¹) * ∫⁻ y, f y ∂μ`. Rewrite using `[← lintegral_map hfm (measurable_const_smul c), Measure.map_addHaar_smul μ hc.ne', lintegral_smul_measure, abs_of_pos (by positivity), smul_eq_mul]`. Establish `hpt : ∀ x : Λ, b * ENNReal.ofReal (((1 + c * ‖(x : V)‖) ^ N)⁻¹) ≤ A * ∫⁻ y in ball (x : V) ε, f (c • y) ∂μ`. Introduce `x`. Establish `e1 : b = μ (ball (x : V) ε)` using `(Measure.addHaar_ball_center μ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[e1, mul_comm, ← setLIntegral_const, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `setLIntegral_mono' measurableSet_ball fun y hy => ?_` and prove the remaining obligations. Simplify using `only [hf]`. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `oneVar_pt hc hc1 hε N hy` as an intermediate fact. Simplify `this` using `[norm_smul]`. Establish `hsum : b * ∑' x : Λ, ENNReal.ofReal (((1 + c * ‖(x : V)‖) ^ N)⁻¹) ≤ A * ∫⁻ y, f (c • y) ∂μ`. Rewrite using `[← ENNReal.tsum_mul_left]`. Use `(ENNReal.tsum_le_tsum hpt).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[ENNReal.tsum_mul_left, ← lintegral_iUnion (fun _ => measurableSet_ball) hd]`. Use `gcongr`. Conclude with `Measure.restrict_le_self`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ENNReal.inv_mul_cancel hb0 hbt, one_mul]`.
-
-Use `_ ≤ b⁻¹ * (A * ∫⁻ y, f (c • y) ∂μ) := by gcongr`. Use `_ = _ := by rw [hsc]; ring`.
+A detailed English derivation is pending.
 -/
 theorem oneVar_core (Λ : Submodule ℤ V) [DiscreteTopology Λ] (N : ℕ) (hN : Module.finrank ℝ V < N) :
     ∃ K : ℝ≥0, ∀ c : ℝ, 0 < c → c ≤ 1 →
@@ -131,9 +127,9 @@ theorem oneVar_core (Λ : Submodule ℤ V) [DiscreteTopology Λ] (N : ℕ) (hN :
 end
 
 /- English proof (translation)
-Introduce `V _ _ _ Λ _ N hN`. Take `⟨K, hK⟩` from `oneVar_core Λ N hN`. Use `⟨K, fun l => ?_⟩` and prove the remaining obligations. Establish `h` using `hK (Real.exp (-max 0 l)) (Real.exp_pos _) (Real.exp_le_one_iff.2 (by simp))`. Rewrite `h` using `[← Real.exp_nat_mul, ← Real.exp_neg, mul_neg, neg_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `le_trans (ENNReal.tsum_le_tsum fun x => ENNReal.ofReal_le_ofReal ?_) h` and prove the remaining obligations. Establish `: Real.exp (-max 0 l) ≤ Real.exp (-l)` using `Real.exp_le_exp.2 (neg_le_neg (le_max_right _ _))`. Use `gcongr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem oneVar_of : OneVar := by
   intro V _ _ _ Λ _ N hN

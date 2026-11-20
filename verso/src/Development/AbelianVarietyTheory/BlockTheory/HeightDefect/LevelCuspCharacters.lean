@@ -32,7 +32,7 @@ def mirabolic : Subgroup (GL (Fin r) k) where
     simp [ha i hi]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun j _ hj => ?_) (fun h => absurd (Finset.mem_univ i) h)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hj with h | h` into its components or cases. Rewrite using `[hA (show id j < id i from h), zero_mul]`. Rewrite using `[hB (show id i < id j from h), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem diag_mul_of_upper {r : ℕ} {k : Type} [Field k] (A B : Matrix (Fin r) (Fin r) k)
     (hA : A.BlockTriangular id) (hB : B.BlockTriangular id) (i : Fin r) : (A * B) i i = A i i * B i i := by
@@ -66,7 +66,7 @@ def superDiag (u : Matrix (Fin r) (Fin r) k) : k :=
   ∑ i : Fin r, ∑ j : Fin r, if j.val = i.val + 1 then u i j else 0
 
 /- English proof (translation)
-Simplify using `[superDiag, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 example (a : k) : superDiag !![1, a; 0, 1] = a := by
   simp [superDiag, Fin.sum_univ_two]
@@ -92,7 +92,7 @@ def twistInv (χ : G →* Kˣ) : MonoidAlgebra K G →ₐ[K] MonoidAlgebra K G :
       map_mul' := fun a b => by simp [MonoidAlgebra.single_mul_single, mul_comm] }
 
 /- English proof (translation)
-Simplify using `[twistInv]`.
+Simplify using the standard rewrite rules.
 -/
 example (χ : G →* Kˣ) (a : G) :
     twistInv χ (MonoidAlgebra.single a 1) = MonoidAlgebra.single a (((χ a)⁻¹ : Kˣ) : K) := by
@@ -122,13 +122,13 @@ def toTorOne : (ZMod p)ˣ →* Tor p 1 :=
     rw [mem_rootsOfUnity, ← map_pow, pow_one, ZMod.units_pow_card_sub_one_eq_one, map_one])
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a b h`. Establish `h1` using `congrArg (fun x : Tor p 1 => ((x : (Fbar p)ˣ) : Fbar p)) h`. Conclude with `Units.ext ((algebraMap (ZMod p) (Fbar p)).injective h1)`. Introduce `x`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx` using `x.2`. Rewrite `hx` using `[mem_rootsOfUnity, pow_one]`. Establish `h2 : ((x : (Fbar p)ˣ) : Fbar p) ^ p = ((x : (Fbar p)ˣ) : Fbar p)`. Establish `h3 : ((x : (Fbar p)ˣ) : Fbar p) ^ (p - 1) = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, hx, Units.val_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : p = (p - 1) + 1` using `(Nat.sub_add_cancel hp.out.one_le).symm`. Combine the equalities or inequalities in the displayed calculation. Take `⟨n, hn⟩` from `(mem_bot_iff_intCast p (Fbar p)).1 ((Subfield.mem_bot_iff_pow_eq_self (Fbar p) p).2 h2)`. Establish `hn' : algebraMap (ZMod p) (Fbar p) (n : ZMod p) = ((x : (Fbar p)ˣ) : Fbar p)` using `by rw [map_intCast, hn]`. Establish `h0 : (n : ZMod p) ≠ 0`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite `hn'` using `[h, map_zero]`. Conclude with `(x : (Fbar p)ˣ).ne_zero hn'.symm`. Conclude with `⟨Units.mk0 _ h0, Subtype.ext (Units.ext hn')⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem toTorOne_bijective : Function.Bijective (toTorOne p) := by
   constructor
@@ -175,14 +175,14 @@ abbrev Cyc {r : ℕ} (b : Fin r → Fin r) : Type := {c : Fin r // ∃ i, b i = 
 abbrev cycLen {r : ℕ} (b : Fin r → Fin r) (c : Cyc b) : ℕ := Fintype.card {i : Fin r // b i = c.1}
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `c.2`. Conclude with `Fintype.card_pos_iff.2 ⟨⟨i, hi⟩⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cycLen_pos {r : ℕ} (b : Fin r → Fin r) (c : Cyc b) : 0 < cycLen b c := by
   obtain ⟨i, hi⟩ := c.2
   exact Fintype.card_pos_iff.2 ⟨⟨i, hi⟩⟩
 
 /- English proof (translation)
-The claim follows from `Nat.dvd_factorial (cycLen_pos b c) (by simpa using Fintype.card_subtype_le (fun i : Fin r => b i = c.1))`.
+A detailed English derivation is pending.
 -/
 theorem cycLen_dvd {r : ℕ} (b : Fin r → Fin r) (c : Cyc b) : cycLen b c ∣ r.factorial :=
   Nat.dvd_factorial (cycLen_pos b c) (by simpa using Fintype.card_subtype_le (fun i : Fin r => b i = c.1))
@@ -303,7 +303,7 @@ def goodTypes (om : ∀ i : Fin 2, (ZMod (H.g i))ˣ →* Kˣ) : Set (LevelGroup 
   tupleChar '' {s | IsGoodParam om s}
 
 /- English proof (translation)
-The claim follows from `(Set.toFinite _).image _`.
+A detailed English derivation is pending.
 -/
 theorem goodTypes_finite (om : ∀ i : Fin 2, (ZMod (H.g i))ˣ →* Kˣ) : (goodTypes om).Finite :=
   (Set.toFinite _).image _

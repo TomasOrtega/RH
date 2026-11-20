@@ -10,7 +10,7 @@ open scoped ContDiff
 namespace GlobalTheory.CompanionTheory.SmoothRep
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.ZalgCentral.Zalg_mul_lie`.
+A detailed English derivation is pending.
 -/
 theorem Zalg_comm_lie : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (z : Module.End ℂ (Sm E a)), z ∈ Zalg E a → ∀ X : Lie E a, z * lie E a X = lie E a X * z :=

@@ -10,7 +10,7 @@ namespace GlobalTheory
 variable {R : Type} [CommRing R] {X Y : Scheme.{0}}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨N, i, hi, hq, rfl⟩ haveI := hi haveI := hq haveI : IsProper (PSpace.str R N) := ((isProjOver_iff_isProper_and_exists_isAmpleLB (PSpace.str R N)).1 ⟨N, 𝟙 _, inferInstance, Category.id_comp _⟩).1`. Conclude with `⟨inferInstance, _, IsAmpleLB.pull_of_isImmersion (isAmpleLB_basic.2.2.2.2.2.2.1 R N) i⟩`. Introduce and unpack `⟨hs, L, hL⟩ haveI := hs`. Conclude with `hL.isQProjOver s`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isQProjOver_iff_locallyOfFiniteType_and_exists_isAmpleLB (s : X ⟶ Sp R) :
     IsQProjOver s ↔ LocallyOfFiniteType s ∧ ∃ L : LB X, IsAmpleLB L := by
@@ -27,7 +27,7 @@ theorem isQProjOver_iff_locallyOfFiniteType_and_exists_isAmpleLB (s : X ⟶ Sp R
     exact hL.isQProjOver s
 
 /- English proof (translation)
-Take `⟨hs, L, hL⟩` from `(isQProjOver_iff_locallyOfFiniteType_and_exists_isAmpleLB s).1 h`. Use `haveI := hs`. Use `(isQProjOver_iff_locallyOfFiniteType_and_exists_isAmpleLB (f ≫ s)).2 ⟨inferInstance, L.pull f, ?_⟩` and prove the remaining obligations. Conclude with `isAmpleLB_basic.2.2.1 f inferInstance hL`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isQProjOver_comp_of_isAffineHom (f : Y ⟶ X) [IsAffineHom f] [LocallyOfFiniteType f] {s : X ⟶ Sp R}
     (h : IsQProjOver s) : IsQProjOver (f ≫ s) := by
@@ -37,13 +37,13 @@ theorem isQProjOver_comp_of_isAffineHom (f : Y ⟶ X) [IsAffineHom f] [LocallyOf
   exact isAmpleLB_basic.2.2.1 f inferInstance hL
 
 /- English proof (translation)
-The claim follows from `isQProjOver_comp_of_isAffineHom f h`.
+A detailed English derivation is pending.
 -/
 theorem isQProjOver_comp_of_isFinite (f : Y ⟶ X) [IsFinite f] {s : X ⟶ Sp R}
     (h : IsQProjOver s) : IsQProjOver (f ≫ s) := isQProjOver_comp_of_isAffineHom f h
 
 /- English proof (translation)
-Take `⟨hs, L, hL⟩` from `(isQProjOver_iff_locallyOfFiniteType_and_exists_isAmpleLB s).1 h`. Use `(isQProjOver_iff_locallyOfFiniteType_and_exists_isAmpleLB s').2 ⟨?_, L.pull π, ?_⟩` and prove the remaining obligations. Conclude with `MorphismProperty.of_isPullback (P := @LocallyOfFiniteType) H hs`. Conclude with `hL.pull_of_isPullback H`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isQProjOver_of_isPullback {R' : Type} [CommRing R'] {b : R →+* R'} {s : X ⟶ Sp R} {π : Y ⟶ X}
     {s' : Y ⟶ Sp R'} (H : IsPullback π s' s (spMap b)) (h : IsQProjOver s) : IsQProjOver s' := by
@@ -53,7 +53,7 @@ theorem isQProjOver_of_isPullback {R' : Type} [CommRing R'] {b : R →+* R'} {s 
   · exact hL.pull_of_isPullback H
 
 /- English proof (translation)
-Introduce `R _ _ X s h`. Use `⟨fun Y f hf => ?_, fun R' _ b => ?_⟩` and prove the remaining obligations. Use `haveI := hf`. Conclude with `isQProjOver_comp_of_isFinite f h`. Conclude with `isQProjOver_of_isPullback (IsPullback.of_hasPullback s (spMap b)) h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isQProjOver_finite_and_baseChange :
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (X : Scheme.{0}) (s : X ⟶ Sp R), IsQProjOver s →

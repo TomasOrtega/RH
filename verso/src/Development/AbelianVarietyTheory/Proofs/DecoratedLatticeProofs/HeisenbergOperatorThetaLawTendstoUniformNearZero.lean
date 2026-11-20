@@ -20,17 +20,15 @@ open GlobalTheory.Unf
 namespace GlobalTheory.HeisNearZero
 
 /- English proof (translation)
-Introduce `D ψ hψ A T q hq hlaw ε hε`. Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.MixModel.lattice_Mx D T.rank A.rank`. Establish `hc : Continuous ψ` using `hψ.1.1`. Establish `hn : ∀ x, ‖ψ x‖ = 1` using `hψ.1.2.1`. Set `Φ : WO A T × WO A T → ℂ` to `fun p => heisO ψ A T p.1 q p.2 - q p.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hΦ : Continuous Φ`. Establish `h1 : Continuous fun p : WO A T × WO A T => symplOH A T p.2 p.1` using `GlobalTheory.OrientedHeis.continuous_symplOH continuous_snd continuous_fst`. Conclude with `((hc.comp h1).mul (hq.comp (continuous_snd.add continuous_fst))).sub (hq.comp continuous_snd)`. Establish `hΦ0 : ∀ w, Φ (0, w) = 0`. Introduce `w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Φ, heisO, GlobalTheory.MixModel.symplOH_zero_right, AddChar.map_zero_eq_one, one_mul, add_zero, sub_self]`. Establish `hev : ∀ᶠ a in 𝓝 (0 : WO A T), ∀ w ∈ K, ‖Φ (a, w)‖ < ε`. Use `hK.eventually_forall_of_forall_eventually fun w _ => ?_` and prove the remaining obligations. Establish `ht : Filter.Tendsto Φ (𝓝 ((0 : WO A T), w)) (𝓝 0)`. Use `hΦ.tendsto ((0 : WO A T), w)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hΦ0]`. Then use the resulting hypothesis. Conclude with `(ht.norm.eventually (gt_mem_nhds (by simpa using hε))).mono fun z hz => by simpa using hz`. Use `⟨_, hev, fun a ha w => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, hgw⟩` from `hKc w`. Take `⟨γ, rfl⟩` from `GlobalTheory.MixModel.mem_ratMx.1 hg`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : Φ (a, GlobalTheory.MixModel.rat γ + w) = ψ (-(symplOH A T (ratW T A γ) w)) * Φ (a, w)`. Simplify using `only [Φ]`. Rewrite using `[← GlobalTheory.MixModel.ratW_eq, GlobalTheory.OrientedHeis.heisO_quasi a q hlaw γ w, hlaw γ w, mul_sub]`. Establish `h` using `ha _ hgw`. Rewrite `h` using `[e, norm_mul, hn, one_mul]`.
-
-Conclude with `h.le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heisO_near_zero_unif : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (A T : HSp D) (q : WO A T → ℂ), Continuous q → (∀ (γ : Matrix (Fin T.rank) (Fin A.rank) D.host.E) (u : WO A T), q (ratW T A γ + u) = ψ (-(symplOH A T (ratW T A γ) u)) * q u) → ∀ ε : ℝ, 0 < ε → ∃ N ∈ 𝓝 (0 : WO A T), ∀ a ∈ N, ∀ w, ‖heisO ψ A T a q w - q w‖ ≤ ε := by
   intro D ψ hψ A T q hq hlaw ε hε

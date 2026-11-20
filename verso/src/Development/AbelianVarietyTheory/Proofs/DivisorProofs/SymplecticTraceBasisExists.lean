@@ -14,7 +14,7 @@ namespace GlobalTheory.ArchDualPair
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `show Algebra.trace (AF F) (AF F ⊗[F] E) ((1 : AF F) ⊗ₜ[F] e) = _`. Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_inclR' (e : E) : Algebra.trace (AF F) (AE F E) (inclR (F := F) (AF F) e) =
     algebraMap F (AF F) (Algebra.trace F E e) := by
@@ -22,9 +22,9 @@ theorem trace_inclR' (e : E) : Algebra.trace (AF F) (AE F E) (inclR (F := F) (AF
   rw [Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]
 
 /- English proof (translation)
-Unfold `hTens form`. Simplify using `only [Matrix.vecMulVec_apply, dotProduct, Matrix.mulVec, map_mul, Finset.sum_mul, Finset.mul_sum]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hTens_vecMulVec' (σ : E →ₐ[F] E) {n d : ℕ} (JA : Matrix (Fin n) (Fin n) E) (JB : Matrix (Fin d) (Fin d) E)
     (x x' : Fin n → E) (y y' : Fin d → E) :
@@ -40,7 +40,7 @@ theorem hTens_vecMulVec' (σ : E →ₐ[F] E) {n d : ℕ} (JA : Matrix (Fin n) (
   ring
 
 /- English proof (translation)
-Establish `hc : ∀ e : E, cA σ (inclR (F` using `F) (AF F) e) = inclR (F := F) (AF F) (σ e) := fun e => rfl`. Simplify using `only [hTens, incM, Matrix.map_apply, hc, map_mul, map_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem hTens_incM (σ : E →ₐ[F] E) {n d : ℕ} (JA : Matrix (Fin n) (Fin n) E) (JB : Matrix (Fin d) (Fin d) E)
     (A B : Matrix (Fin n) (Fin d) E) :
@@ -49,7 +49,7 @@ theorem hTens_incM (σ : E →ₐ[F] E) {n d : ℕ} (JA : Matrix (Fin n) (Fin n)
   simp only [hTens, incM, Matrix.map_apply, hc, map_mul, map_sum]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM, incV, Matrix.vecMulVec_apply, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lhs_eq {n d : ℕ} (b : E) (x : Fin n → E) (y' : Fin d → E) :
     inclR (F := F) (AF F) b • Matrix.vecMulVec (incV F x) (incV F y') = incM F (Matrix.vecMulVec (b • x) y') := by
@@ -57,7 +57,7 @@ theorem lhs_eq {n d : ℕ} (b : E) (x : Fin n → E) (y' : Fin d → E) :
   simp [incM, incV, Matrix.vecMulVec_apply, mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM, incV, Matrix.vecMulVec_apply, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rhs_eq {n d : ℕ} (t : E) (y : Fin n → E) (x' : Fin d → E) :
     Matrix.vecMulVec (inclR (F := F) (AF F) t • incV F y) (incV F x') = incM F (Matrix.vecMulVec (t • y) x') := by
@@ -65,7 +65,7 @@ theorem rhs_eq {n d : ℕ} (t : E) (y : Fin n → E) (x' : Fin d → E) :
   simp [incM, incV, Matrix.vecMulVec_apply, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [form, Pi.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[show (fun i => σ t * σ (y i)) = σ t • fun i => σ (y i) from rfl, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_smul (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (b t : E) (x y : Fin n → E) :
     form σ J (b • x) (t • y) = b * σ t * form σ J x y := by
@@ -77,13 +77,13 @@ theorem form_smul (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) 
 end GlobalTheory.ArchDualPair
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d J J' x y x' y' h1 h2`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Set `bb` to `Module.finBasis F E`. Set `b'` to `(Algebra.traceForm F E).dualBasis (traceForm_nondegenerate F E) bb`. Establish `hbij : Function.Bijective σ` using `σ.bijective`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `s : E ≃ₐ[F] E` to `AlgEquiv.ofBijective σ hbij`. Use `⟨fun i => s.symm (b' i), fun i j => ?_⟩` and prove the remaining obligations. Establish `hσt : σ (s.symm (b' i)) = b' i` using `s.apply_symm_apply (b' i)`. Rewrite using `[GlobalTheory.ArchDualPair.lhs_eq, GlobalTheory.ArchDualPair.rhs_eq, symp, GlobalTheory.ArchDualPair.hTens_incM, GlobalTheory.ArchDualPair.hTens_vecMulVec', GlobalTheory.ArchDualPair.form_smul, hσt, h1, h2, show (-1 : AE F E) = inclR (F := F) (AF F) (-1) by simp, ← map_mul, Globa …`. Establish `ht : Algebra.trace F E (-1 * (bb j * b' i * 1 * -1)) = Algebra.traceForm F E (b' i) (bb j)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.traceForm_apply]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ht, LinearMap.BilinForm.apply_dualBasis_left]`. Distinguish the cases in `hij : i = j`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (Ne.symm hij), if_neg hij, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ArchDualPair.dualPair : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (J' : Matrix (Fin d) (Fin d) E) (x y : Fin n → E) (x' y' : Fin d → E),

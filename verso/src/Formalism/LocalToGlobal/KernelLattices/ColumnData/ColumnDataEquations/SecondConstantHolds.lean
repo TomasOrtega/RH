@@ -16,33 +16,33 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : Car}
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.StarSqrtNeg.star_sqrt_neg x n hn hx`.
+A detailed English derivation is pending.
 -/
 theorem star_sqrt_neg (x : D.host.E) (n : ℕ) (hn : 0 < n) (hx : x ^ 2 = -(n : D.host.E)) : star x = -x :=
   _root_.UpperTheory.Reformulated.B.StarSqrtNeg.star_sqrt_neg x n hn hx
 
 /- English proof (translation)
-Use `⟨Polynomial.X ^ 2 + Polynomial.C (n : ℤ), Polynomial.monic_X_pow_add_C _ two_ne_zero, ?_⟩` and prove the remaining obligations. Simplify using `[hx]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isIntegral_sqrt (x : D.host.E) (n : ℕ) (hx : x ^ 2 = -(n : D.host.E)) : IsIntegral ℤ x := by
   refine ⟨Polynomial.X ^ 2 + Polynomial.C (n : ℤ), Polynomial.monic_X_pow_add_C _ two_ne_zero, ?_⟩
   simp [hx]
 
 /- English proof (translation)
-Use `isIntegral_algebraMap (R := ℤ) (A := D.host.E) (x := k)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isIntegral_int (k : ℤ) : IsIntegral ℤ (k : D.host.E) := by
   have := isIntegral_algebraMap (R := ℤ) (A := D.host.E) (x := k)
   simpa using this
 
 /- English proof (translation)
-Introduce `m hm`. Take `⟨hq, hd, hq8, hd16, -⟩` from `D.host.hyp`. Establish `hqd : D.host.q ≠ D.host.d` using `by omega`. Take `⟨α, β, γ, δ, s, h⟩` from `Neg.rep_int D.host.q D.host.d hq hd hq8 hqd m hm`. Establish `ha : (D.host.sqq : D.host.E) ^ 2 = -(D.host.q : D.host.E)` using `D.host.sqq_sq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : (D.host.sqd : D.host.E) ^ 2 = -(D.host.d : D.host.E)` using `D.host.sqd_sq`. Take `⟨a, haa⟩ : ∃ a : D.host.E, a = D.host.sqq` from `⟨_, rfl⟩`. Take `⟨b, hbb⟩ : ∃ b : D.host.E, b = D.host.sqd` from `⟨_, rfl⟩`. Rewrite `ha` using `[← haa]`. Rewrite `hb` using `[← hbb]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsa` using `star_sqrt_neg a _ hq.pos ha`. Establish `hsb` using `star_sqrt_neg b _ hd.pos hb`. Establish `hint : IsIntegral ℤ (((α : D.host.E) + β * a) * ((γ : D.host.E) + δ * b))` using `((isIntegral_int α).add ((isIntegral_int β).mul (isIntegral_sqrt a _ ha))).mul ((isIntegral_int γ).add ((isIntegral_int δ).mul (isIntegral_sqrt b _ hb)))`. Use `⟨⟨_, hint⟩, ⟨_, isIntegral_int s⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show star (s : D.host.E) = (s : D.host.E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `star_intCast s`. Use `show star (((α : D.host.E) + β * a) * ((γ : D.host.E) + δ * b)) * (((α : D.host.E) + β * a) * ((γ : D.host.E) + δ * b)) = -1 + (m : D.host.E) * (s : D.host.E)`. Establish `hZ : ((α : D.host.E) ^ 2 + D.host.q * (β : D.host.E) ^ 2) * ((γ : D.host.E) ^ 2 + D.host.d * (δ : D.host.E) ^ 2) = -1 + (m : D.host.E) * (s : D.host.E)` using `by exact_mod_cast congrArg (Int.cast : ℤ → D.host.E) h`. Rewrite using `[star_mul', star_add, star_add, star_mul', star_mul', star_intCast, star_intCast, star_intCast, star_intCast, hsa, hsb]`. Take the linear combination `hZ + (-(β : D.host.E) ^ 2 * ((γ : D.host.E) ^ 2 - (δ : D.host.E) ^ 2 * b ^ 2)) * ha + (-((α : D.host.E) ^ 2 + D.host.q * (β : D.host.E) ^ 2) * (δ : D.host.E) ^ 2) * hb`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem negOneNorm (D : Car) : NegOneNorm D := by
   intro m hm
@@ -77,7 +77,7 @@ theorem negOneNorm (D : Car) : NegOneNorm D := by
 variable {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {B : Cd.Base D cc δ}
 
 /- English proof (translation)
-The claim follows from `eqP_of_neg B hcc hδ hδ0 hS χ hχ hSq hTL hTR (negOneNorm D)`.
+A detailed English derivation is pending.
 -/
 theorem eqP_of_paths (B : Cd.Base D cc δ) (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (hδ0 : δ ≠ 0)
     (hS : B.StdOK) (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ)

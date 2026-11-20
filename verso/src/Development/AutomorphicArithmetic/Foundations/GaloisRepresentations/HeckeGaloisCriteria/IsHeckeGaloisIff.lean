@@ -12,21 +12,21 @@ open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotion
 variable {D : D7} {c : CutD D}
 
 /- English proof (translation)
-Conclude with `Finset.mem_subtype`.
+A detailed English derivation is pending.
 -/
 theorem mem_Zgood {i : (cut D c).nd.Loc} {x : (cut D c).nd.X i} : x ∈ (cut D c).nd.Zgood i ↔ x.1 ∈ D.nd.Zgood i.1 := by
   classical
   exact Finset.mem_subtype
 
 /- English proof (translation)
-The claim follows from `((cut D c).Zgood_tie i x).symm.trans (mem_Zgood.trans (D.Zgood_tie i.1 x.1))`.
+A detailed English derivation is pending.
 -/
 theorem mem_ZgoodN {i : (cut D c).nd.Loc} {x : (cut D c).nd.X i} :
     x ∈ ZgoodN (cut D c).nd (cut D c).naut i ↔ x.1 ∈ ZgoodN D.nd D.naut i.1 :=
   ((cut D c).Zgood_tie i x).symm.trans (mem_Zgood.trans (D.Zgood_tie i.1 x.1))
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `(h.keep i.1).1 i.2`. Conclude with `⟨⟨x, h.good _ x hx⟩, mem_ZgoodN.2 ((D.Zgood_tie i.1 x).1 hx)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem CutD.Good.hG (h : c.Good) (i : (cut D c).nd.Loc) : HG (cut D c).nd (cut D c).naut i := by
   obtain ⟨x, hx⟩ := (h.keep i.1).1 i.2
@@ -38,13 +38,13 @@ abbrev qc (c : CutD D) (i : (cut D c).nd.Loc) :
   qK (D.nd.T i.1) (D.nd.act i.1) (c.Xs i.1)
 
 /- English proof (translation)
-Take `⟨α, -, hα1, hα2⟩` from `h.op i.1 i.2`. Establish `hn : D.what₂.restRowsFiniteGroupCard ≠ 0` using `(D.what₂.restRowsFiniteGroupCard_pos).ne'`. Establish `hA : ((D.what₂.restRowsFiniteGroupCard : ℕ) : D.nd.O i.1) ≠ 0`. Introduce `hz`. Establish `h1 : ((D.what₂.restRowsFiniteGroupCard : D.what₂.LL) : D.what₂.LL) ≠ 0` using `Nat.cast_ne_zero.mpr hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : D.nd.embK i.1 (D.what₂.restRowsFiniteGroupCard : D.what₂.LL) = 0`. Rewrite using `[map_natCast, ← map_natCast (algebraMap (D.nd.O i.1) (FractionRing (D.nd.O i.1))), hz, map_zero]`. Conclude with `h1 ((map_eq_zero_iff _ (D.nd.embK i.1).injective).mp h2)`. Establish `hα1' : ∀ x ∈ D.nd.Zgood i.1, ∀ u ∈ heckeEig (D.nd.T i.1) (D.nd.act i.1) x, (LinearMap.baseChange (FractionRing (D.nd.O i.1)) α) u = ((D.what₂.restRowsFiniteGroupCard : ℕ) : D.nd.O i.1) • u`. Introduce `x hx u hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hα1 x hx u hu, Int.cast_natCast, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Establish `hY : ∀ x : ↥(c.Xs i.1), x ∈ (((cut D c).nd.Zgood i : Finset ((cut D c).nd.X i)) : Set ((cut D c).nd.X i)) ↔ (x : D.nd.X i.1) ∈ D.nd.Zgood i.1` using `fun x => Iff.trans Finset.mem_coe mem_Zgood`. Establish `key` using `Alg.length_le (D.nd.T i.1) (D.nd.act i.1) (c.Xs i.1) (D.nd.T_sep i.1) (D.nd.Zgood i.1) _ hY α _ hA hα1' hα2`. Establish `hfinE : Module.length (D.nd.O i.1) (D.nd.O i.1 ⧸ Ideal.span {((D.what₂.restRowsFiniteGroupCard : ℕ) : D.nd.O i.1)}) ≠ ⊤` using `Module.length_ne_top_iff.mpr (isFiniteLength_quotient_span_singleton _ (mem_nonZeroDivisors_of_ne_zero hA))`. Establish `hpad` using `GlobalTheory.CutAtGood.lenUnit_natCast_le i.1 D.what₂.restRowsFiniteGroupCard hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Alg.lenUnit_le_add (D.nd.l i.1) _ hfinE (fun hC => absurd hC ?_) key).trans ?_` and prove the remaining obligations. Conclude with `Alg.length_ne_top ((cut D c).nd.T i) ((cut D c).nd.act i) ((cut D c).nd.T_sep i) ((cut D c).nd.Zgood i)`. Conclude with `add_le_add le_rfl (mul_le_mul_of_nonneg_left hpad (Nat.cast_nonneg _))`.
+A detailed English derivation is pending.
 -/
 theorem eta_le (h : c.Good) (i : (cut D c).nd.Loc) : D.nd.etaLoc i.1 ≤ (cut D c).nd.etaLoc i +
     (∑ x ∈ D.nd.Zgood i.1, D.nd.mult i.1 x : ℕ) * (padicValNat (D.nd.l i.1) D.what₂.restRowsFiniteGroupCard : ℚ) := by
@@ -73,11 +73,11 @@ theorem eta_le (h : c.Good) (i : (cut D c).nd.Loc) : D.nd.etaLoc i.1 ≤ (cut D 
   · exact add_le_add le_rfl (mul_le_mul_of_nonneg_left hpad (Nat.cast_nonneg _))
 
 /- English proof (translation)
-Establish `hsum : N.eigSum i ↑(N.Zgood i) = ⊥`. Rewrite using `[h]`. Simplify using `[NData.eigSum]`. Establish `hup : N.MtUp i = ⊥`. Simplify using `[NData.MtUp, hsum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsub : Subsingleton (N.MtUp i)`. Rewrite using `[hup]`. Use `infer_instance`. Establish `hq : Subsingleton (↥(N.MtUp i) ⧸ Submodule.comap (N.MtUp i).subtype (N.MtLow i))` using `by infer_instance`. Unfold `NData.etaLoc lenUnit`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.length_eq_zero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eta_zero {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (i : N.Loc) (h : N.Zgood i = ∅) :
     N.etaLoc i = 0 := by
@@ -96,19 +96,17 @@ theorem eta_zero {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H
   simp
 
 /- English proof (translation)
-Set `F : D.nd.Loc → ℚ` to `fun i => if hk : c.keep i then (cut D c).nd.etaLoc (⟨i, hk⟩ : (cut D c).nd.Loc) else 0`. Establish `hcut : (cut D c).what₂.etaJ j w = ∑ i ∈ D.nd.locs j w, F i`. Rewrite using `[(cut D c).etaJ_tie j w h1 h2]`. Use `show ∑ i ∈ Finset.subtype c.keep (D.nd.locs j w), (cut D c).nd.etaLoc i = _`. Establish `hF : ∀ i ∈ Finset.subtype c.keep (D.nd.locs j w), (cut D c).nd.etaLoc i = F i.1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _`. Simplify using `only [F, dif_pos i.2]`. Rewrite using `[Finset.sum_congr rfl hF, Finset.sum_subtype_eq_sum_filter]`. Use `Finset.sum_filter_of_ne ?_` and prove the remaining obligations. Introduce `i _ hne`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hk`. Conclude with `hne (dif_neg hk)`. Establish `hD` using `D.etaJ_tie j w h1 h2`. Establish `hpt : ∀ i ∈ D.nd.locs j w, D.nd.etaLoc i ≤ F i + (∑ π ∈ D.nd.Zgood i, (D.nd.mult i π : ℚ)) * (padicValNat (D.what₂.places.resChar w) D.what₂.restRowsFiniteGroupCard : ℚ)`. Introduce `i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : D.nd.w i = w` using `((D.nd.locs_mem j w i).mp hi).2`. Establish `hl : D.what₂.places.resChar w = D.nd.l i`. Rewrite using `[← hw]`. Conclude with `D.nd.w_l i`. Rewrite using `[hl]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hk : c.keep i`. Establish `hb` using `eta_le h (⟨i, hk⟩ : (cut D c).nd.Loc)`. Simplify using `only [F, dif_pos hk]`. Move the coercions through the operations in `at hb`. Conclude with `hb`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : D.nd.Zgood i = ∅`. Rewrite using `[← Finset.not_nonempty_iff_eq_empty]`. Conclude with `fun hne => hk ((h.keep i).mpr hne)`. Rewrite using `[eta_zero D.nd i hz]`. Simplify using `only [F, dif_neg hk, zero_add]`.
-
-Check the signs of the components of the expression. Establish `hQ : D.what₂.etaJ j w ≤ (cut D c).what₂.etaJ j w + (∑ i ∈ D.nd.locs j w, ∑ π ∈ D.nd.Zgood i, (D.nd.mult i π : ℚ)) * (padicValNat (D.what₂.places.resChar w) D.what₂.restRowsFiniteGroupCard : ℚ)`. Rewrite using `[hD, hcut, Finset.sum_mul, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_le_sum hpt`. Conclude with `hQ` after adjusting the coercions.
+Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etaJ_le (h : c.Good) (j : ℕ) (w : D.what₂.places.Pl) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) :
     (D.what₂.etaJ j w : ℝ) ≤ ((cut D c).what₂.etaJ j w : ℝ) +

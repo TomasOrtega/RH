@@ -14,17 +14,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AnPer
 
 /- English proof (translation)
-Introduce `I _ g Λ _ F B _ X s σ u hX K hK`. Use `choose U hU hUE using hK`. Establish `hx` using `fun k => exists_pt_of_affine u (K.W k) (K.base k) (U k) (hU k) (hUE k)`. Use `choose x hxU hxE using hx`. Establish `uniq : ∀ k (y : Sp (Hol (K.W k)) ⟶ X), (∀ p (hp : p ∈ K.W k), spMap (Hol.ev p hp).toRingHom ≫ y = u.E p) → y = x k` using `fun k y hy => point_hol_ext_of_isSeparated (K.W k) hX y (x k) (fun p hp => (hy p hp).trans (hxE k p hp).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨x, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `k`. Apply `point_hol_ext_of_isSeparated (K.W k) inferInstance` to reduce the goal to its premises. Introduce `p hp`. Rewrite using `[← Category.assoc, hxE k p hp, u.w p (K.base k p hp), ← ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Introduce `l k k' h`. Apply `uniq k'` to reduce the goal to its premises. Introduce `p hp`. Rewrite using `[← Category.assoc, ← ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e : ((Hol.ev p hp).toRingHom.comp (Charts.sh h)) = (Hol.ev (F.shift l p) (K.maps h p hp)).toRingHom`. Use extensionality with `f`. Simplify using `[Hol.ev_apply, Charts.fn_sh h f hp]`. Rewrite using `[e, hxE k _ (K.maps h p hp), u.per l p (K.base k' p hp)]`. Introduce `k p hp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hxE k p hp`. Introduce `k V hV hVE`. Take `⟨y, hyV, hyE⟩` from `exists_pt_of_affine u (K.W k) (K.base k) V hV hVE`. Establish `e` using `uniq k y hyE`. Substitute `e` using the available equality.
-
-Conclude with `hyV`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_real_isFor : ∀ {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ} {B : Type} [CommRing B] {X : Scheme.{0}} {s : X ⟶ Sp B} {σ : B →+* Hol F.V} (u : Unif F s σ), X.IsSeparated → ∀ K : Charts F, (∀ k, ∃ U, IsAffineOpen U ∧ ∀ p ∈ K.W k, ⊤ ≤ u.E p ⁻¹ᵁ U) → ∃ r : Real K s σ, r.IsFor u ∧ ∀ k (U : X.Opens), IsAffineOpen U → (∀ p ∈ K.W k, ⊤ ≤ u.E p ⁻¹ᵁ U) → ⊤ ≤ r.x k ⁻¹ᵁ U := by
   intro I _ g Λ _ F B _ X s σ u hX K hK

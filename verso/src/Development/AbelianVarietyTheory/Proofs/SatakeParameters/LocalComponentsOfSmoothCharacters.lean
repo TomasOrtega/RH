@@ -26,9 +26,9 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `Multiset.card_eq_one.1 ((Segment.card_ms Δ).trans h1)`. Establish `h3 : z = Δ.first`. Establish `hm : z ∈ Δ.ms` using `by rw [hz]; exact Multiset.mem_singleton_self z`. Take `⟨a, ha, rfl⟩` from `Segment.mem_carrier.1 (Segment.mem_ms.1 hm)`. Take `rfl : a = 0` from `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Rewrite using `[hz, h3]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ms_eq_singleton {Δ : Segment k} (h1 : Δ.len = 1) : Δ.ms = {Δ.first} := by
   obtain ⟨z, hz⟩ := Multiset.card_eq_one.1 ((Segment.card_ms Δ).trans h1)

@@ -13,11 +13,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `: NeZero (n ^ J)` using `⟨pow_ne_zero _ hn⟩`. Establish `hv : n ^ J ∣ n * t.val`. Rewrite using `[← ZMod.natCast_eq_zero_iff, Nat.cast_mul, ZMod.natCast_zmod_val, ← nsmul_eq_mul]`. Conclude with `ht`. Take `⟨k, hk⟩` from `hv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : t.val = n * (n ^ (J - 2) * k)`. Apply `Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero hn)` to reduce the goal to its premises. Rewrite using `[hk, show n ^ J = n * (n * n ^ (J - 2)) by`. Rewrite using `[← pow_succ', ← pow_succ']`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use the proof step `omega]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨((n ^ (J - 2) * k : ℕ) : ZMod (n ^ J)), ?_⟩` and prove the remaining obligations. Rewrite using `[nsmul_eq_mul, ← Nat.cast_mul, ← h1, ZMod.natCast_zmod_val]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zmod_pow_exists_eq_nsmul_of_nsmul_eq_zero (n J : ℕ) (hn : n ≠ 0) (hJ : 2 ≤ J)
     (t : ZMod (n ^ J)) (ht : n • t = 0) : ∃ s : ZMod (n ^ J), t = n • s := by
@@ -35,21 +35,19 @@ theorem zmod_pow_exists_eq_nsmul_of_nsmul_eq_zero (n J : ℕ) (hn : n ≠ 0) (hJ
   rw [nsmul_eq_mul, ← Nat.cast_mul, ← h1, ZMod.natCast_zmod_val]
 
 /- English proof (translation)
-Introduce `I X _ _ n J M hn hJ hM yy hyy Z hZ hcov`. Substitute `hM` using the available equality. Establish `key : ∀ b : I → ZMod (n ^ J), n • b = 0 → b ∈ yy.ker → ∃ k ∈ yy.ker, n • k = b`. Introduce `b hb hbk`. Establish `hc : ∀ i, ∃ s, b i = n • s` using `fun i => zmod_pow_exists_eq_nsmul_of_nsmul_eq_zero n J hn hJ (b i) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using congrFun hb i)`. Use `choose c hc using hc`. Establish `hbc : b = n • c` using `funext fun i => by simpa using hc i`. Take `⟨x, hx⟩` from `QuotientAddGroup.mk_surjective (yy c)`. Establish `hnx : n • x ∈ (nsmulAddMonoidHom (n ^ J) : X →+ X).range`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← QuotientAddGroup.eq_zero_iff, QuotientAddGroup.mk_nsmul, hx, ← map_nsmul, ← hbc]`. Conclude with `hbk`. Take `⟨x', hx'⟩` from `hnx`. Establish `hx'' : (n ^ J) • x' = n • x` using `hx'`. Establish `hxx : x = n ^ (J - 1) • x'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (n : ℤ) • x = (n : ℤ) • (n ^ (J - 1) • x')`. Rewrite using `[natCast_zsmul, natCast_zsmul, smul_smul, ← pow_succ', show J - 1 + 1 = J by omega]`. Conclude with `hx''.symm`. Conclude with `smul_right_injective X (by exact_mod_cast hn) h2`. Take `⟨c', hc'⟩` from `hyy (QuotientAddGroup.mk x')`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨c - n ^ (J - 1) • c', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[AddMonoidHom.mem_ker, map_sub, map_nsmul, hc', ← QuotientAddGroup.mk_nsmul, ← hxx, hx, sub_self]`. Establish `h0 : (n ^ J) • c' = 0` using `funext fun i => by`. Simplify using `only [Pi.smul_apply, Pi.zero_apply, nsmul_eq_mul, ZMod.natCast_self, zero_mul]`. Rewrite using `[smul_sub, smul_smul, ← pow_succ', show J - 1 + 1 = J by omega, ← hbc, h0, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `(AddSubgroup.closure_le _).2 hZ`. Introduce `a ha`. Take `⟨b, hb, hab⟩` from `hcov a ha`. Establish `hbk : b ∈ yy.ker`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h3 : yy (a + b) = 0` using `hZ hab`. Rewrite `ha`, the goal using `[AddMonoidHom.mem_ker]`. Rewrite `h3` using `[map_add, ha, zero_add]`. Then use the resulting hypothesis. Take `⟨k, hk, hkb⟩` from `key b hb hbk`. Take `⟨b', hb', hkb'⟩` from `hcov k hk`.
-
-Establish `h4 : a = (a + b) - n • (k + b')`. Rewrite using `[smul_add, hb', add_zero, hkb, add_sub_cancel_right]`. Rewrite using `[h4]`. Conclude with `sub_mem (AddSubgroup.subset_closure hab) (nsmul_mem (AddSubgroup.subset_closure hkb') n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closure_eq_ker_of_meets_torsion_cosets :
     ∀ (I X : Type) [AddCommGroup X] [Module.Free ℤ X] (n J M : ℕ), n ≠ 0 → 2 ≤ J → M = n ^ J → ∀ (yy : (I → ZMod M) →+ X ⧸ (nsmulAddMonoidHom M : X →+ X).range), Function.Surjective yy → ∀ Z : Set (I → ZMod M), Z ⊆ yy.ker → (∀ a ∈ yy.ker, ∃ b, n • b = 0 ∧ a + b ∈ Z) → AddSubgroup.closure Z = yy.ker := by

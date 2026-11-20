@@ -7,11 +7,11 @@ noncomputable section
 namespace Deduction
 
 /- English proof (translation)
-Proceed by induction on `N, hN using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ N hN ih`. Rewrite using `[Finset.sum_Ioc_succ_top (Nat.zero_le _)]`. Establish `hN' : (0 : ℝ) < N` using `by exact_mod_cast hN`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Real.log ((N : ℝ) / (N + 1)) ≤ (N : ℝ) / (N + 1) - 1` using `Real.log_le_sub_one_of_pos (by positivity)`. Rewrite `h1` using `[Real.log_div hN'.ne' (by positivity)]`. Establish `h2` using `mul_le_mul_of_nonneg_left h1 (show (0 : ℝ) ≤ N + 1 by positivity)`. Establish `h3 : ((N : ℝ) + 1) * ((N : ℝ) / (N + 1) - 1) = -1` using `by field_simp; ring`. Rewrite `h2` using `[h3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem mertens_upper_sum_log (N : ℕ) (hN : 1 ≤ N) :
     ∑ n ∈ Finset.Ioc 0 N, Real.log n ≤ N * Real.log N - N + 1 + Real.log N := by
@@ -30,7 +30,7 @@ theorem mertens_upper_sum_log (N : ℕ) (hN : 1 ≤ N) :
     nlinarith
 
 /- English proof (translation)
-Establish `h` using `Real.log_le_sub_one_of_pos (show 0 < x / c by positivity)`. Rewrite `h` using `[Real.log_div hx.ne' hc.ne']`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem mertens_upper_log_le (x c : ℝ) (hx : 0 < x) (hc : 0 < c) :
     Real.log x ≤ Real.log c + x / c - 1 := by
@@ -39,19 +39,19 @@ theorem mertens_upper_log_le (x c : ℝ) (hx : 0 < x) (hc : 0 < c) :
   linarith
 
 /- English proof (translation)
-Establish `hN' : (1 : ℝ) ≤ N` using `by exact_mod_cast hN`. Establish `hl2` using `Real.log_two_lt_d9`. Establish `h4 : Real.log 4 = 2 * Real.log 2`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; norm_num`. Establish `h16 : Real.log 16 = 4 * Real.log 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show (16 : ℝ) = 2 ^ 4 by norm_num, Real.log_pow]; norm_num`. Distinguish the cases in `h25 : 25 ≤ N`. Establish `hp` using `Chebyshev.psi_le hN'`. Rewrite `hp` using `[Chebyshev.psi, Nat.floor_natCast]`. Establish `h25' : (25 : ℝ) ≤ N` using `by exact_mod_cast h25`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : 5 ≤ Real.sqrt N` using `Real.le_sqrt_of_sq_le (by linarith)`. Establish `hss : Real.sqrt N * Real.sqrt N = N` using `Real.mul_self_sqrt (by linarith)`. Establish `hL : Real.log N = 2 * Real.log (Real.sqrt N)`. Rewrite using `[Real.log_sqrt (by linarith)]; ring`. Establish `hl` using `mertens_upper_log_le (Real.sqrt N) 4 (by linarith) (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set s := Real.sqrt N`. Establish `hl' : Real.log N ≤ 0.78 + s / 2` using `by linarith`. Establish `h5 : 2 * s * Real.log N ≤ 2 * s * (0.78 + s / 2)` using `mul_le_mul_of_nonneg_left hl' (by linarith)`. Establish `h6 : Real.log 4 * N ≤ 1.39 * N` using `mul_le_mul_of_nonneg_right (by linarith) (by linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h1 : ∑ n ∈ Finset.Ioc 0 N, ArithmeticFunction.vonMangoldt n ≤ ∑ n ∈ Finset.Ioc 0 N, Real.log n` using `Finset.sum_le_sum fun n _ => ArithmeticFunction.vonMangoldt_le_log`. Establish `h2` using `mertens_upper_sum_log N hN`. Establish `h24 : (N : ℝ) ≤ 24` using `by exact_mod_cast (by omega : N ≤ 24)`. Distinguish the cases in `h3 : 3 ≤ N`. Establish `h3' : (3 : ℝ) ≤ N` using `by exact_mod_cast h3`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl` using `mertens_upper_log_le N 16 (by linarith) (by norm_num)`. Establish `hl' : Real.log N ≤ 1.78 + N / 16` using `by linarith`. Establish `h5 : ((N : ℝ) + 2) * Real.log N ≤ (N + 2) * (1.78 + N / 16)` using `mul_le_mul_of_nonneg_left hl' (by linarith)`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2' : (N : ℝ) ≤ 2` using `by exact_mod_cast (by omega : N ≤ 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl` using `Real.log_le_sub_one_of_pos (show (0 : ℝ) < N by linarith)`. Establish `h5 : ((N : ℝ) + 2) * Real.log N ≤ (N + 2) * (N - 1)` using `mul_le_mul_of_nonneg_left hl (by linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem mertens_upper_psi_bound (N : ℕ) (hN : 1 ≤ N) :
     ∑ n ∈ Finset.Ioc 0 N, ArithmeticFunction.vonMangoldt n + 1 + Real.log N ≤ 3 * N := by
@@ -95,15 +95,15 @@ theorem mertens_upper_psi_bound (N : ℕ) (hN : 1 ≤ N) :
       nlinarith
 
 /- English proof (translation)
-Establish `hN' : (0 : ℝ) < N` using `by exact_mod_cast hN`. Establish `hid` using `ArithmeticFunction.sum_Ioc_mul_zeta_eq_sum ArithmeticFunction.vonMangoldt N`. Rewrite `hid` using `[ArithmeticFunction.vonMangoldt_mul_zeta]`. Simplify using `only [ArithmeticFunction.log_apply] at hid`. Establish `h1` using `mertens_upper_sum_log N hN`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `mertens_upper_psi_bound N hN`. Establish `h3 : N * ∑ n ∈ Finset.Ioc 0 N, ArithmeticFunction.vonMangoldt n / (n : ℝ) ≤ ∑ n ∈ Finset.Ioc 0 N, ArithmeticFunction.vonMangoldt n * ((N / n : ℕ) : ℝ) + ∑ n ∈ Finset.Ioc 0 N, ArithmeticFunction.vonMangoldt n`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun n hn => ?_` and prove the remaining obligations. Establish `hn0 : 0 < n` using `(Finset.mem_Ioc.mp hn).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn0`. Establish `hlt : (N : ℝ) / n ≤ ((N / n : ℕ) : ℝ) + 1`. Rewrite using `[div_le_iff₀ hn']`. Establish `: N ≤ (N / n + 1) * n`. Use `Nat.lt_div_mul_add (a := N) hn0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Conclude with `this` after adjusting the coercions. Establish `hΛ : 0 ≤ ArithmeticFunction.vonMangoldt n` using `ArithmeticFunction.vonMangoldt_nonneg`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h3` using `[← hid]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_of_mul_le_mul_left ?_ hN'` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem mertens_upper_nat (N : ℕ) (hN : 1 ≤ N) :
     ∑ n ∈ Finset.Ioc 0 N, ArithmeticFunction.vonMangoldt n / (n : ℝ) ≤ Real.log N + 2 := by
@@ -137,9 +137,9 @@ theorem mertens_upper_nat (N : ℕ) (hN : 1 ≤ N) :
   nlinarith
 
 /- English proof (translation)
-Establish `hN : 1 ≤ ⌊y⌋₊` using `Nat.le_floor (by exact_mod_cast hy)`. Establish `h` using `mertens_upper_nat ⌊y⌋₊ hN`. Establish `hN' : (0 : ℝ) < (⌊y⌋₊ : ℕ)` using `by exact_mod_cast hN`. Establish `hl : Real.log (⌊y⌋₊ : ℕ) ≤ Real.log y` using `Real.log_le_log hN' (Nat.floor_le (by linarith))`. Rewrite using `[Nat.range_succ_eq_Icc_zero, ← Finset.add_sum_Ioc_eq_sum_Icc (Nat.zero_le _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Nat.cast_zero, div_zero, zero_add]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem mertens_upper (y : ℝ) (hy : 1 ≤ y) :
     ∑ n ∈ Finset.range (⌊y⌋₊ + 1), ArithmeticFunction.vonMangoldt n / (n : ℝ) ≤ Real.log y + 2 := by

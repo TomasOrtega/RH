@@ -14,13 +14,13 @@ variable {G D W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [A
   [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Establish `hK : IsOpen {g : G | ind H σ g f.1 = f.1}` using `f.2`. Set `c : D → G` to `fun a => y⁻¹ * e a * y`. Establish `hc : Continuous c` using `by fun_prop`. Establish `hU : IsOpen (c ⁻¹' {g : G | ind H σ g f.1 = f.1})` using `hK.preimage hc`. Rewrite using `[IsLocallyConstant.iff_exists_open]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `d`. Use `⟨(fun x => -d + x) ⁻¹' (c ⁻¹' {g : G | ind H σ g f.1 = f.1}), hU.preimage (by fun_prop), ?_, ?_⟩` and prove the remaining obligations. Use `show ind H σ (c (-d + d)) f.1 = f.1`. Simplify using `[c, h0]`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx' : ind H σ (c (-d + x)) f.1 = f.1` using `hx`. Establish `h1 : e x = e d * e (-d + x)` using `by rw [← hadd, add_neg_cancel_left]`. Establish `h2` using `congrArg (fun v : indSpace H σ => v.1 (e d * y)) hx'`. Establish `h3 : (ind H σ (c (-d + x)) f.1).1 (e d * y) = f.1.1 (e d * y * c (-d + x))` using `rfl`. Simplify using `only [h3] at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h4 : e d * y * c (-d + x) = e x * y`. Simplify using `only [c, h1]`. Use `group`. Simplify `h2` using `[h4]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_translate (H : Subgroup G) (σ : Representation ℂ H W)
     (f : smoothPart (ind H σ)) (e : D → G) (he : Continuous e) (h0 : e 0 = 1)
@@ -50,13 +50,13 @@ end Abstract
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Simplify using `[ePG]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ePG_true_val (i t : ℕ) (b : Fin t) : ((ePG i t ⟨true, b⟩ : Fin (i + t + 1)) : ℕ) = i + b := by
   simp [ePG]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `: Fin.append (0 : Fin (i + 1) → k) (0 : Fin (t + 1) → k) = 0`. Apply the tactic sequence `funext x; refine Fin.addCases ?_ ?_ x <;> simp`. Simplify using `[dEmb, this]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem dEmb_zero (i t : ℕ) : dEmb k i t 0 = 1 := by
   apply Subtype.ext
@@ -65,7 +65,7 @@ theorem dEmb_zero (i t : ℕ) : dEmb k i t 0 = 1 := by
   simp [dEmb, this]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `: Fin.append (0 : Fin (i + 1) → k) (a + b) = Fin.append (0 : Fin (i + 1) → k) a + Fin.append (0 : Fin (i + 1) → k) b`. Apply the tactic sequence `funext x; refine Fin.addCases ?_ ?_ x <;> simp`. Simplify using `only [dEmb, Subgroup.coe_mul, this, ofAdd_add, map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem dEmb_add (i t : ℕ) (a b : Fin (t + 1) → k) : dEmb k i t (a + b) = dEmb k i t a * dEmb k i t b := by
   apply Subtype.ext
@@ -74,13 +74,11 @@ theorem dEmb_add (i t : ℕ) (a b : Fin (t + 1) → k) : dEmb k i t (a + b) = dE
   simp only [dEmb, Subgroup.coe_mul, this, ofAdd_add, map_mul]
 
 /- English proof (translation)
-Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Rewrite using `[Units.continuous_iff]`. Establish `hcol : Continuous fun d : Fin (t + 1) → k => colMat k ((i + 1) + (t + 1)) (Fin.append (0 : Fin (i + 1) → k) d)`. Use `continuous_matrix fun r c => ?_` and prove the remaining obligations. Distinguish the cases in `hc : c = Fin.last _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hc` using the available equality. Use `Fin.lastCases ?_ (fun r' => ?_) r` and prove the remaining obligations. Simplify `continuous_const` using `[colMat]`. Simplify using `only [colMat, if_true, Fin.lastCases_castSucc]`. Use `Fin.addCases (fun a => ?_) (fun a => ?_) r'` and prove the remaining obligations.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using continuous_const`. Simplify using `using continuous_apply a`. Simplify `continuous_const` using `[colMat, hc]`. Prove the components needed by the constructor for the conclusion. Conclude with `continuous_const.add hcol`.
-
-Conclude with `continuous_const.sub hcol`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem continuous_dEmb (i t : ℕ) : Continuous (dEmb k i t) := by
   refine Continuous.subtype_mk ?_ _
@@ -101,11 +99,11 @@ theorem continuous_dEmb (i t : ℕ) : Continuous (dEmb k i t) := by
   · exact continuous_const.sub hcol
 
 /- English proof (translation)
-Establish `hg : ((g : GL (Fin ((i + 1) + t + 2)) k) : Matrix (Fin ((i + 1) + t + 2)) (Fin ((i + 1) + t + 2)) k) (Fin.last _) (Fin.last _) = 1`. Use `congrFun ((mem_Mir_iff k _).1 g.2) (Fin.last _)` as an intermediate fact. Simplify `this` using `[eLast]`. Establish `hv : ((dEmb k i t d : Mir k ((i + 1) + t + 1)) : GL (Fin ((i + 1) + t + 2)) k).val = 1 + colMat k ((i + 1) + (t + 1)) (Fin.append (0 : Fin (i + 1) → k) d)` using `rfl`. Establish `hc : colMat k ((i + 1) + (t + 1)) (Fin.append (0 : Fin (i + 1) → k) d) (Fin.castSucc (Fin.natAdd (i + 1) b)) (Fin.last _) = d b`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [colMat, if_true, Fin.lastCases_castSucc, Fin.append_right]`. Rewrite using `[Subgroup.coe_mul, Units.val_mul, hv, add_mul, one_mul, Matrix.add_apply, mul_apply, Finset.sum_eq_single (Fin.last _)]`. Rewrite using `[hc]`. Conclude with `congrArg (_ + ·) ((congrArg (d b * ·) hg).trans (mul_one _))`. Introduce `l _ hl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[colMat, hl]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dEmb_mul_entry (i t : ℕ) (d : Fin (t + 1) → k) (g : Mir k ((i + 1) + t + 1)) (b : Fin (t + 1)) :
     (((dEmb k i t d * g : Mir k ((i + 1) + t + 1)) : GL (Fin ((i + 1) + t + 2)) k) :
@@ -131,9 +129,9 @@ theorem dEmb_mul_entry (i t : ℕ) (d : Fin (t + 1) → k) (g : Mir k ((i + 1) +
   · simp
 
 /- English proof (translation)
-Establish `h1` using `mem_parab_iff.1 (show ((h : GL (Fin ((i + 1) + (t + 1) + 1)) k)) ∈ parab k (ePG (i + 1) (t + 1)) from hh) true false b (Fin.last (i + 1)) (by decide)`. Rewrite `h1` using `[ePG_false_last]`. Establish `h2 : ePG (i + 1) (t + 1) ⟨true, b⟩ = Fin.castSucc (Fin.natAdd (i + 1) b)`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[ePG_true_val]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `h1` using `[h2]`. Conclude with `h1`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hpg_entry_eq_zero (i t : ℕ) (h : Mir k ((i + 1) + t + 1)) (hh : h ∈ HPG k (i + 1) (t + 1)) (b : Fin (t + 1)) :
     ((h : GL (Fin ((i + 1) + t + 2)) k) : Matrix (Fin ((i + 1) + t + 2)) (Fin ((i + 1) + t + 2)) k)
@@ -149,13 +147,13 @@ theorem hpg_entry_eq_zero (i t : ℕ) (h : Mir k ((i + 1) + t + 1)) (hh : h ∈ 
   exact h1
 
 /- English proof (translation)
-Use `⟨isLocallyConstant_translate (HPG k (i + 1) (t + 1)) (sigX τ σ) f.1 (dEmb k i t) (continuous_dEmb i t) (dEmb_zero i t) (dEmb_add i t) y, ?_⟩` and prove the remaining obligations. Take `⟨C, hC, hf⟩` from `f.2`. Set `φ : Mir k ((i + 1) + t + 1) → Fin (t + 1) → k` to `fun c b => -(((y * c⁻¹ : Mir k ((i + 1) + t + 1)) : GL (Fin ((i + 1) + t + 2)) k) : Matrix (Fin ((i + 1) + t + 2)) (Fin ((i + 1) + t + 2)) k) (Fin.castSucc (Fin.natAdd (i + 1) b)) (Fin.last _)`. Establish `hφ : Continuous φ`. Use `continuous_pi fun b => Continuous.neg ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : Continuous fun c : Mir k ((i + 1) + t + 1) => (((y * c⁻¹ : Mir k ((i + 1) + t + 1)) : GL (Fin ((i + 1) + t + 2)) k) : Matrix (Fin ((i + 1) + t + 2)) (Fin ((i + 1) + t + 2)) k)` using `Units.continuous_val.comp (continuous_subtype_val.comp (continuous_const.mul continuous_inv))`. Conclude with `(continuous_apply_apply _ _).comp h1`. Use `HasCompactSupport.intro (hC.image hφ) fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨h, hh, c, hc, e⟩` from `hf (dEmb k i t x * y) hne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hx ⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `e1 : h = dEmb k i t x * (y * c⁻¹)`. Rewrite using `[← mul_assoc]`. Conclude with `eq_mul_inv_of_mul_eq e.symm`. Use function extensionality and compare the values at `b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0` using `hpg_entry_eq_zero i t h hh b`. Rewrite `h0` using `[e1, dEmb_mul_entry]`. Conclude with `neg_eq_of_add_eq_zero_right h0`.
+A detailed English derivation is pending.
 -/
 theorem fibre_isLocallyConstant_hasCompactSupport (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (i t : ℕ) (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (f : XS τ σ)

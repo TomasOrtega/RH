@@ -18,7 +18,7 @@ open GlobalTheory.FinPlLoc
 variable {D : D7}
 
 /- English proof (translation)
-Conclude with `RestrictedProduct.single_eq_same (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) v y`.
+A detailed English derivation is pending.
 -/
 theorem evalV_single_same (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v) :
     evalV F v (singleV F v y) = y := by
@@ -26,7 +26,7 @@ theorem evalV_single_same (F : Type) [Field F] [NumberField F] (v : HeightOneSpe
   exact RestrictedProduct.single_eq_same (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) v y
 
 /- English proof (translation)
-Conclude with `RestrictedProduct.single_eq_of_ne (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) y h`.
+A detailed English derivation is pending.
 -/
 theorem evalV_single_ne (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v)
     {w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) : evalV F w (singleV F v y) = 0 := by
@@ -37,15 +37,13 @@ def intIn (D : D7) (v : Pl D) : v.adicCompletionIntegers D.host.F →+* Fv D.hos
   (algebraMap (Fv D.host.F v) (Fv D.host.F v ⊗[D.host.F] D.host.E)).comp (algebraMap _ (Fv D.host.F v))
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, o, rfl⟩` from `hz`. Establish `e : GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.compFin D v (a ⊗ₜ[D.host.F] (o : D.host.E)) = intIn D v ⟨evalV D.host.F v a, ha v⟩ * (Algebra.TensorProduct.includeRight : D.host.E →ₐ[D.host.F] Fv D.host.F v ⊗[D.host.F] D.host.E) (o : D.host.E)` using `by show Algebra.TensorProduct.map (evalV D.host.F v) (AlgHom.id _ _) (a ⊗ₜ[D.host.F] (o : D.host.E)) = (evalV D.host.F v a ⊗ₜ[D.host.F] (1 : D.host.E)) * ((1 : Fv D.host.F v) ⊗ₜ[D.host.F] (o : D.host.E))`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Use `RingHom.IsIntegralElem.mul _ (RingHom.isIntegralElem_map _) ?_` and prove the remaining obligations. Take `⟨p, hp, hpo⟩ : IsIntegral ℤ (o : D.host.E)` from `o.2`. Use `⟨p.map (Int.castRingHom _), hp.map _, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.eval₂_map]`. Establish `h` using `congrArg (Algebra.TensorProduct.includeRight : D.host.E →ₐ[D.host.F] Fv D.host.F v ⊗[D.host.F] D.host.E).toRingHom hpo`. Rewrite `h` using `[Polynomial.hom_eval₂, map_zero]`. Rewrite using `[RingHom.ext_int ((intIn D v).comp (Int.castRingHom _)) ((Algebra.TensorProduct.includeRight : D.host.E →ₐ[D.host.F] Fv D.host.F v ⊗[D.host.F] D.host.E).toRingHom.comp (algebraMap ℤ D.host.E))]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `RingHom.isIntegralElem_zero _`. Consider the case `add z z' _ _ h h' => rw [map_add]`. Conclude with `RingHom.IsIntegralElem.add _ h h'`. Consider the case `neg z _ h => rw [map_neg]`.
-
-Conclude with `RingHom.IsIntegralElem.neg _ h`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem integral_compFin (v : Pl D) {z : Af D.host.F ⊗[D.host.F] D.host.E} (hz : z ∈ intAE D) :
     (intIn D v).IsIntegralElem (GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.compFin D v z) := by
@@ -73,9 +71,9 @@ theorem integral_compFin (v : Pl D) {z : Af D.host.F ⊗[D.host.F] D.host.E} (hz
   | neg z _ h => rw [map_neg]; exact RingHom.IsIntegralElem.neg _ h
 
 /- English proof (translation)
-Take `⟨p, hp, hpa⟩` from `h`. Establish `hinj : Function.Injective (algebraMap (Fv D.host.F v) (Fv D.host.F v ⊗[D.host.F] D.host.E))` using `RingHom.injective _`. Establish `hi : IsIntegral (v.adicCompletionIntegers D.host.F) a`. Use `⟨p, hp, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.hom_eval₂, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hpa`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hi`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_int_of_integral (v : Pl D) (a : Fv D.host.F v)
     (h : (intIn D v).IsIntegralElem (a ⊗ₜ[D.host.F] (1 : D.host.E))) : a ∈ v.adicCompletionIntegers D.host.F := by
@@ -91,13 +89,13 @@ theorem mem_int_of_integral (v : Pl D) (a : Fv D.host.F v)
   exact y.2
 
 /- English proof (translation)
-Take `⟨c, hci, hc⟩ : ∃ c : Fv D.host.F v, c ∈ v.adicCompletionIntegers D.host.F ∧ (u.val.1 : Fv D.host.F v) * c = 1` from `⟨u.inv.1, u.inv.2, congrArg Subtype.val u.val_inv⟩`. Use `⟨pairA D.host.F 0 (singleV D.host.F v c) ⊗ₜ[D.host.F] (1 : D.host.E), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `pair_mem_idAt _ _ (fun w hw => evalV_single_ne _ v c hw) _`. Rewrite using `[finPart_pair]`. Use `AddSubgroup.subset_closure ⟨singleV D.host.F v c, fun w => ?_, 1, rfl⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[evalV_single_same]`. Conclude with `hci`. Rewrite using `[evalV_single_ne _ v c hw]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `zero_mem _`. Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_comp` to reduce the goal to its premises. Rewrite using `[map_sub, map_mul, infPart_of_idAt hx, infPart_of_idAt (idem_mem_idAt _), zero_mul, sub_zero]`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[map_sub, map_mul, compAt_idem]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[hu, compAt_pair, evalV_single_same, if_pos rfl, Algebra.TensorProduct.tmul_mul_tmul, mul_one, hc, ← Algebra.TensorProduct.one_def, sub_self]`. Rewrite using `[compAt_of_idAt hx hw, if_neg hw, zero_mul, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inv (v : Pl D) {x : AE D} (hx : x ∈ idAt D (· = v)) (u : (v.adicCompletionIntegers D.host.F)ˣ)
     (hu : compAt D v x = ((u : v.adicCompletionIntegers D.host.F) : Fv D.host.F v) ⊗ₜ[D.host.F] (1 : D.host.E)) :
@@ -124,15 +122,15 @@ theorem exists_inv (v : Pl D) {x : AE D} (hx : x ∈ idAt D (· = v)) (u : (v.ad
       · rw [compAt_of_idAt hx hw, if_neg hw, zero_mul, sub_zero]
 
 /- English proof (translation)
-Introduce `D v ε _ _ _ hε hid x hx hfix`. Establish `hεe : ε = idem D (· = v)`. Establish `h1` using `(hid _).1 (idem_mem_idAt (· = v))`. Establish `h2` using `(mem_idAt_iff (· = v) ε).1 hε.1`. Rewrite using `[← h2, mul_comm, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Substitute `hεe` using the available equality. Take `⟨b, hb⟩` from `GlobalTheory.CharConjFixed.fixed_mem D x hfix`. Establish `hcomp : compAt D v x = evalV D.host.F v (sndA D.host.F b) ⊗ₜ[D.host.F] (1 : D.host.E)`. Rewrite using `[← hb]`. Use `show Algebra.TensorProduct.map (evalV D.host.F v) (AlgHom.id _ _) (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id _ _) (b ⊗ₜ[D.host.F] (1 : D.host.E))) = _`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression. Establish `hint : evalV D.host.F v (sndA D.host.F b) ∈ v.adicCompletionIntegers D.host.F`. Apply `mem_int_of_integral` to reduce the goal to its premises. Rewrite using `[← hcomp]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `integral_compFin v hx.2`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self (⟨_, hint⟩ : v.adicCompletionIntegers D.host.F) with ⟨u, hu⟩ | ⟨u, hu⟩` into its components or cases. Use `left`. Use `exists_inv v hx.1 u ?_` and prove the remaining obligations. Rewrite using `[hu, hcomp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `right`. Use `exists_inv v (sub_mem (idem_mem_idAt _) hx.1) u ?_` and prove the remaining obligations. Rewrite using `[hu, map_sub, compAt_idem, if_pos rfl, hcomp, Algebra.TensorProduct.one_def, ← TensorProduct.sub_tmul]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem fixed_unit_or : ∀ (D : D7) (v : Pl D) (ε : AE D), Tame D v → ε * ε = ε → cA D ε = ε → ε ∈ intAt D (· = v) →
     (∀ a, a ∈ idAt D (· = v) ↔ ε * a = a) → ∀ x ∈ intAt D (· = v), cA D x = x →

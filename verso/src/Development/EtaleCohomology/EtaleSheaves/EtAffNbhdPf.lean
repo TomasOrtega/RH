@@ -7,15 +7,15 @@ open CategoryTheory Limits AlgebraicGeometry
 namespace LateralTheory.E.EtAffNbhdPf
 
 /- English proof (translation)
-Introduce `A _ V g hg _`. Take `⟨m, hm⟩` from `Ideal.exists_maximal A`. Set `x : Spec A` to `⟨m, hm.isPrime⟩`. Take `⟨v, hv⟩` from `g.surjective x`. Set `𝒰` to `V.affineCover`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨p, hp⟩` from `𝒰.covers v`. Set `ι` to `𝒰.f (𝒰.idx v)`. Establish `: IsOpenImmersion ι` using `inferInstanceAs (IsOpenImmersion (𝒰.f (𝒰.idx v)))`. Establish `: Etale ι` using `inferInstance`. Establish `: Etale (ι ≫ g)` using `inferInstance`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f : A ⟶ _` to `Spec.preimage (ι ≫ g)`. Establish `hfg : Spec.map f = ι ≫ g` using `Spec.map_preimage _`. Use `⟨_, f, ι, ?_, hfg.symm, p.asIdeal, p.isPrime, ?_⟩` and prove the remaining obligations. Establish `: Etale (Spec.map f)` using `by have h := ‹Etale (ι ≫ g)›; rw [← hfg] at h; exact h`. Conclude with `(HasRingHomProperty.Spec_iff (P := @Etale)).mp this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (Spec.map f).base p = x`. Rewrite using `[hfg]`. Express the relevant statement in the definitionally equal form `g.base (ι.base p) = x`. Rewrite using `[hp, hv]`. Establish `h2 : ((Spec.map f).base p).asIdeal = p.asIdeal.comap f.hom` using `rfl`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2, h1]`. Conclude with `hm`.
+A detailed English derivation is pending.
 -/
 theorem EtAffNbhd_of : LateralTheory.E.SHSectionPf.EtAffNbhd := by
   intro A _ V g hg _

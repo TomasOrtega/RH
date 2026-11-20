@@ -23,49 +23,43 @@ noncomputable section
 namespace GlobalTheory.InertBigCell
 
 /- English proof (translation)
-Introduce `H F E _ _ _ _ _ σ B d W r s hB hW v w hw g hg`. Take `⟨hinj, -, -, -, -, -, -⟩` from `GlobalTheory.T.inertCompletionToAdeles_properties σ hw`. Take `⟨gmul, gone, ginj, gat, gsurj, gvec⟩` from `GlobalTheory.T.adelicMatrixGluedAtInertPlace_properties hw (ι := Fin d ⊕ Fin d)`. Take `⟨gmul', gone', -, -, -, gvec'⟩` from `GlobalTheory.T.adelicMatrixGluedAtInertPlace_properties hw (ι := Fin d)`. Take `⟨hJ, -, -⟩` from `GlobalTheory.T.adelicMatrix_trivial_off_inertPlace_unitary_at_place σ hw (ι := Fin d ⊕ Fin d)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hdiag, hhalfblk⟩` from `GlobalTheory.T.adelicMatrix_trivial_off_inertPlace_unitary_at_place σ hw (ι := Fin d)`. Take `⟨b, δ, hb, hδ, hint, hdet, hdetinv⟩` from `GlobalTheory.T.exists_unimodular_frame_inertPlace σ B W r s hB hW hw`. Take `⟨cc, cO, h2, calg⟩` from `GlobalTheory.T.inertCompletionConjugation_properties σ B hB hw`. Establish `hlat` using `GlobalTheory.T.mem_adelicLatticeAtFinitePlace_iff_inert hw W`. Establish `hvec : ∀ x : Fin d → w.adicCompletion E, (fun i => iotaW hw (x i)) ∈ GlobalTheory.InertSph.latAt W v ↔ InLat (w.adicCompletionIntegers E) b x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[hlat]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, he⟩`. Establish `hxu : x = u` using `funext fun i => hinj (congrFun he i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Substitute `hxu` using the available equality. Conclude with `(hb x).1 hu`. Introduce `hx`. Conclude with `⟨x, (hb x).2 hx, rfl⟩`. Establish `hvec2 : ∀ x : Fin d ⊕ Fin d → w.adicCompletion E, (fun i => iotaW hw (x i)) ∈ GlobalTheory.DblVac.latD W v ↔ InLat2 (w.adicCompletionIntegers E) b x`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Conclude with `and_congr (hvec (x ∘ Sum.inl)) (hvec (x ∘ Sum.inr))`. Establish `hsurj2 : ∀ z ∈ GlobalTheory.DblVac.latD W v, ∃ x : Fin d ⊕ Fin d → w.adicCompletion E, z = fun i => iotaW hw (x i)`. Introduce and unpack `z ⟨h1, h2⟩`. Take `⟨x1, -, e1⟩` from `(hlat _).1 h1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x2, -, e2⟩` from `(hlat _).1 h2`. Use `⟨Sum.elim x1 x2, funext fun i => ?_⟩` and prove the remaining obligations. Break down `i with i | i` into its components or cases. Conclude with `congrFun e1 i`. Conclude with `congrFun e2 i`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hpres : ∀ P : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (w.adicCompletion E), (∀ x, InLat2 (w.adicCompletionIntegers E) b x → InLat2 (w.adicCompletionIntegers E) b (P *ᵥ x)) → ∀ z ∈ GlobalTheory.DblVac.latD W v, glueW hw P *ᵥ z ∈ GlobalTheory.DblVac.latD W v`. Introduce `P hP z hz`. Take `⟨x, rfl⟩` from `hsurj2 z hz`. Rewrite using `[gvec]`. Conclude with `(hvec2 _).2 (hP x ((hvec2 x).1 hz))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hpres' : ∀ P : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (w.adicCompletion E), (∀ z ∈ GlobalTheory.DblVac.latD W v, glueW hw P *ᵥ z ∈ GlobalTheory.DblVac.latD W v) → ∀ x, InLat2 (w.adicCompletionIntegers E) b x → InLat2 (w.adicCompletionIntegers E) b (P *ᵥ x)`. Introduce `P hP x hx`. Use `hP _ ((hvec2 x).2 hx)` as an intermediate fact. Rewrite `this` using `[gvec]`. Conclude with `(hvec2 _).1 this`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e1 : incM F (dbl W.J) = dbl (incM F W.J)`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [incM, dbl]`. Establish `e2 : (dbl W.J).map (algebraMap E (w.adicCompletion E)) = dbl (W.J.map (algebraMap E (w.adicCompletion E)))`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [dbl]`. Establish `hskew : (W.J.map (algebraMap E (w.adicCompletion E)))ᵀ = -(W.J.map (algebraMap E (w.adicCompletion E))).map (conjW σ hw)`. Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply, Matrix.neg_apply, calg, hW.skew j i, map_neg, neg_neg]`. Establish `h2ne : (2 : w.adicCompletion E) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(algebraMap E (w.adicCompletion E)).injective.ne (two_ne_zero : (2 : E) ≠ 0)`. Rewrite using `[show (2 : w.adicCompletion E) = algebraMap E (w.adicCompletion E) 2 from (map_ofNat _ 2).symm]`. Conclude with `h`. Take `⟨hgat, hglat⟩` from `hg`. Establish `hgg : GlobalTheory.DblVac.matD g * GlobalTheory.DblVac.matD g⁻¹ = 1` using `Units.mul_inv g.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hgg' : GlobalTheory.DblVac.matD g⁻¹ * GlobalTheory.DblVac.matD g = 1` using `Units.inv_mul g.1`. Establish `hginvat : At (evFin F v) (GlobalTheory.DblVac.matD g⁻¹ - 1)`. Introduce `u hu`. Establish `e : GlobalTheory.DblVac.matD g⁻¹ - 1 = -(GlobalTheory.DblVac.matD g⁻¹ * (GlobalTheory.DblVac.matD g - 1))`. Rewrite using `[Matrix.mul_sub, hgg', Matrix.mul_one, neg_sub]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[e, smul_neg, ← Matrix.mul_smul, hgat u hu, Matrix.mul_zero, neg_zero]`. Take `⟨P, hP⟩` from `gsurj _ hgat`. Take `⟨Q, hQ⟩` from `gsurj _ hginvat`. Establish `hPQ : P * Q = 1` using `ginj (by rw [gmul, hP, hQ, gone]; exact hgg)`. Establish `hU : Pᵀ * dbl (W.J.map (algebraMap E (w.adicCompletion E))) * P.map (conjW σ hw) = dbl (W.J.map (algebraMap E (w.adicCompletion E)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← e2]`. Apply `(hJ (dbl W.J) P).1` to reduce the goal to its premises. Rewrite using `[hP, e1]`. Conclude with `g.2`. Establish `hPlat : ∀ z, InLat2 (w.adicCompletionIntegers E) b z → InLat2 (w.adicCompletionIntegers E) b (P *ᵥ z) ∧ InLat2 (w.adicCompletionIntegers E) b (Q *ᵥ z)` using `fun z hz => ⟨hpres' P (fun y hy => by rw [hP]; exact (hglat y hy).1) z hz, hpres' Q (fun y hy => by rw [hQ]; exact (hglat y hy).2) z hz⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P0, P0', hPP, hP0U, hP0d, hP0lat, N, hN, hNlat⟩` from `GlobalTheory.T.inertPlace_bigCell_local_unitary_decomposition H (w.adicCompletionIntegers E) (conjW σ hw) cc cO h2 h2ne (W.J.map (algebraMap E (w.adicCompletion E))) hskew b δ hδ hint hdet hdetinv P Q hPQ hU hPlat`. Set `u : GL (Fin d ⊕ Fin d) (AE F E)` to `⟨glueW hw P0, glueW hw P0', by rw [← gmul, hPP, gone], by`. Establish `hPP' : P0' * P0 = 1` using `mul_eq_one_comm.mp hPP`. Rewrite using `[← gmul, hPP', gone]⟩`. Establish `hu : u ∈ UG (cA σ) (dbl (incM F W.J))` using `by show (glueW hw P0)ᵀ * dbl (incM F W.J) * (glueW hw P0).map (cA σ) = dbl (incM F W.J)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e1]`. Apply `(hJ (dbl W.J) P0).2` to reduce the goal to its premises. Rewrite using `[e2]`. Conclude with `hP0U`. Set `p : GlobalTheory.DblVac.UD σ W` to `⟨u, hu⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp : GlobalTheory.DblVac.matD p = glueW hw P0` using `rfl`. Establish `hp' : GlobalTheory.DblVac.matD p⁻¹ = glueW hw P0'` using `rfl`. Establish `hmul : ∀ a c : GlobalTheory.DblVac.UD σ W, GlobalTheory.DblVac.matD (a * c) = GlobalTheory.DblVac.matD a * GlobalTheory.DblVac.matD c` using `fun _ _ => rfl`. Establish `hpl : ∀ z ∈ GlobalTheory.DblVac.latD W v, GlobalTheory.DblVac.matD p *ᵥ z ∈ GlobalTheory.DblVac.latD W v` using `hpres P0 (fun x hx => (hP0lat x hx).1)`. Establish `hpl' : ∀ z ∈ GlobalTheory.DblVac.latD W v, GlobalTheory.DblVac.matD p⁻¹ *ᵥ z ∈ GlobalTheory.DblVac.latD W v` using `hpres P0' (fun x hx => (hP0lat x hx).2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hpg : GlobalTheory.DblVac.matD (p * g) = glueW hw (P0 * P)`. Rewrite using `[gmul, hP]`. Both sides reduce to the same expression. Use `⟨p, ⟨?_, fun z hz => ⟨hpl z hz, hpl' z hz⟩⟩, ⟨1, ?_⟩, ⟨?_, fun z hz => ⟨?_, ?_⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hp]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `gat P0`. Rewrite using `[hp]`. Use `(hdiag P0 hP0d).trans ?_` and prove the remaining obligations. Conclude with `(Matrix.mul_one _).symm`. Rewrite using `[hpg]`.
-
-Conclude with `gat _`. Rewrite using `[hmul, ← Matrix.mulVec_mulVec]`. Conclude with `hpl _ (hglat z hz).1`. Rewrite using `[mul_inv_rev, hmul, ← Matrix.mulVec_mulVec]`. Conclude with `(hglat _ (hpl' z hz)).2`.
-
-Use `⟨glueW hw N, ?_, ?_⟩` and prove the remaining obligations. Establish `hd : GlobalTheory.DblVac.diagonalBlockOfMatrix (p * g) = glueW hw ((2 : w.adicCompletion E)⁻¹ • ((P0 * P).toBlocks₁₁ + (P0 * P).toBlocks₁₂ + (P0 * P).toBlocks₂₁ + (P0 * P).toBlocks₂₂))`. Unfold `GlobalTheory.DblVac.diagonalBlockOfMatrix`. Rewrite using `[hpg]`. Conclude with `hhalfblk _`.
-
-Rewrite using `[hd, ← gmul', hN, gone']`. Introduce `z hz`. Take `⟨x, hx, rfl⟩` from `(hlat z).1 hz`. Rewrite using `[gvec']`. Conclude with `(hvec _).2 (hNlat x ((hb x).1 hx))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bigCell : (∀ {O : Type} [CommRing O] [IsLocalRing O] (c : O →+* O), (∀ x, c (c x) = x) → IsUnit (2 : O) →
     ∀ {n : ℕ} (S : Matrix (Fin n) (Fin n) O), IsUnit S.det → Sᵀ = -S.map c →

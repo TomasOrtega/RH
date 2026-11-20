@@ -7,15 +7,13 @@ namespace GlobalTheory.HaarFundDom
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ Γ _ _ K hK hcov`. Set `μ₀ : Measure G` to `Measure.haar`. Take `⟨𝓕, h𝓕m, h𝓕⟩` from `GlobalTheory.FundDomDiscrete.exists_measurable_section Γ`. Establish `hD : IsFundamentalDomain Γ 𝓕 μ₀` using `IsFundamentalDomain.mk' h𝓕m.nullMeasurableSet h𝓕`. Use `haveI : MeasurableMul G := ⟨fun g => (continuous_const.mul continuous_id).measurable, fun g => (continuous_id.mul continuous_const).measurable⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : MeasurableConstSMul Γ G := ⟨fun γ => (continuous_const.mul continuous_id : Continuous fun x : G => (γ : G) * x).measurable⟩`. Use `haveI : SMulInvariantMeasure Γ G μ₀ := ⟨fun γ A _ => measure_preimage_mul μ₀ (γ : G) A⟩`. Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Establish `hsub : 𝓕 ⊆ ⋃ γ : Γ, γ • K ∩ 𝓕`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨γ, hγ⟩` from `hcov x`. Use `Set.mem_iUnion.2 ⟨γ⁻¹, Set.mem_smul_set.2 ⟨γ • x, hγ, ?_⟩, hx⟩` and prove the remaining obligations. Simplify using `[Subgroup.smul_def, smul_eq_mul, mul_assoc]`. Establish `hfin : μ₀ 𝓕 < ⊤`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne : μ₀ 𝓕 ≠ 0`. Introduce `h0`. Establish `h1` using `hD.measure_eq_tsum' Set.univ`. Simplify using `only [Set.univ_inter, measure_smul, h0, tsum_zero] at h1`. Conclude with `(Measure.measure_univ_pos.2 (NeZero.ne μ₀)).ne' h1`.
-
-Use `⟨(μ₀ 𝓕)⁻¹ • μ₀, 𝓕, ?_, hD.mono Measure.smul_absolutelyContinuous, ?_⟩` and prove the remaining obligations. Conclude with `Measure.IsHaarMeasure.smul μ₀ (ENNReal.inv_ne_zero.2 hfin.ne) (ENNReal.inv_ne_top.2 hne)`. Rewrite using `[Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel hne hfin.ne]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_haar_fundDom_mass_one : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]

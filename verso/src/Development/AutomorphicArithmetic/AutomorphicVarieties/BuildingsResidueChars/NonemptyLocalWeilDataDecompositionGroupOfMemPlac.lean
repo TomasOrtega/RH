@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.D
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 
 /- English proof (translation)
-Establish `hc : (commutator G).topologicalClosure ≤ ((commutator G').topologicalClosure).comap f`. Apply `Subgroup.topologicalClosure_minimal` to reduce the goal to its premises. Rewrite using `[commutator_def, Subgroup.commutator_le]`. Introduce `a _ b _`. Rewrite using `[Subgroup.mem_comap, map_commutatorElement]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.le_topologicalClosure _ (Subgroup.commutator_mem_commutator (Subgroup.mem_top _) (Subgroup.mem_top _))`. Conclude with `(Subgroup.isClosed_topologicalClosure _).preimage hf`. Conclude with `⟨QuotientGroup.map _ _ f hc, fun g => rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem ab_map {G G' : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group G'] [TopologicalSpace G']
     [IsTopologicalGroup G'] (f : G →* G') (hf : Continuous f) :
@@ -23,7 +23,7 @@ private theorem ab_map {G G' : Type} [Group G] [TopologicalSpace G] [IsTopologic
   exact ⟨QuotientGroup.map _ _ f hc, fun g => rfl⟩
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `(Iff.rfl : x ∈ CommGroup.primaryComponent A l ↔ ∃ k : ℕ, x ^ l ^ k = 1).mp hx`. Conclude with `(Iff.rfl : F x ∈ CommGroup.primaryComponent B l ↔ ∃ k : ℕ, F x ^ l ^ k = 1).mpr ⟨k, by rw [← map_pow, hk, map_one]⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem map_prim {A B : Type} [CommGroup A] [CommGroup B] (l : ℕ) [Fact l.Prime] (F : A →* B) {x : A}
     (hx : x ∈ CommGroup.primaryComponent A l) : F x ∈ CommGroup.primaryComponent B l := by
@@ -33,23 +33,21 @@ private theorem map_prim {A B : Type} [CommGroup A] [CommGroup B] (l : ℕ) [Fac
 
 open UpperTheory.V.W in
 /- English proof (translation)
-Take `⟨Fe, hFe⟩` from `ab_map e.toMonoidHom he`. Take `⟨Fs, hFs⟩` from `ab_map e.symm.toMonoidHom he'`. Establish `mu1 : ∀ g, g ∈ muG l G → e g ∈ muG l G'`. Introduce `g hg`. Establish `h1` using `map_prim l Fe (x := QuotientGroup.mk' (commutator G).topologicalClosure g) hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `hFe g`. Simplify using `only [MulEquiv.coe_toMonoidHom] at h2`. Rewrite `h1` using `[h2]`. Conclude with `h1`. Establish `mu2 : ∀ g', g' ∈ muG l G' → e.symm g' ∈ muG l G`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Establish `h1` using `map_prim l Fs (x := QuotientGroup.mk' (commutator G').topologicalClosure g) hg`. Establish `h2` using `hFs g`. Simplify using `only [MulEquiv.coe_toMonoidHom] at h2`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `h1`. Set `bm : CommGroup.primaryComponent (TopologicalAbelianization G') l →* CommGroup.primaryComponent (TopologicalAbelianization G) l` to `MonoidHom.codRestrict (Fs.comp (CommGroup.primaryComponent _ l).subtype) _ (fun x => map_prim l Fs x.2)`. Use `⟨LocAb.mk (A.a.comp e.toMonoidHom) (A.cont.comp he) (A.surj.comp e.surjective) ?_ ?_ ((bm.comp A.b).comp e.toMonoidHom) ?_ ?_⟩` and prove the remaining obligations. Introduce `x`. Rewrite using `[← A.inertia x]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, h⟩`. Conclude with `⟨e g, (hI g).2 hg, h⟩`. Introduce and unpack `⟨g', hg', h⟩`. Conclude with `⟨e.symm g', (hI _).1 (by simpa using hg'), by simpa using h⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `C _ _ hC χ hχo hmu`. Establish `key` using `A.univ C hC (χ.comp e.symm.toMonoidHom) (hχo.preimage he') (by`. Introduce `g' hg'`. Conclude with `(MonoidHom.mem_ker).1 (hmu (mu2 g' hg')))`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3 : e g ∈ (χ.comp e.symm.toMonoidHom).ker` using `key (MonoidHom.mem_ker.2 (MonoidHom.mem_ker.1 hg))`. Establish `h5` using `MonoidHom.mem_ker.1 h3`. Simplify using `only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_apply] at h5`. Conclude with `MonoidHom.mem_ker.2 h5`. Use `Subgroup.isOpen_mono (H₁ := A.b.ker.comap e.toMonoidHom) ?_ (A.b_open.preimage he)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Rewrite `hg` using `[Subgroup.mem_comap, MonoidHom.mem_ker]`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, MonoidHom.comp_apply, hg, map_one]`. Introduce `g hg show Fs ((A.b (e g)) : TopologicalAbelianization G') = _`. Rewrite using `[A.b_mu _ (mu1 g hg)]`.
-
-Establish `h4` using `hFs (e g)`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_apply] at h4`. Conclude with `h4`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem locAb_transport (l : ℕ) [Fact l.Prime] {G G' : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [Group G'] [TopologicalSpace G'] [IsTopologicalGroup G'] (e : G ≃* G') (he : Continuous e) (he' : Continuous e.symm)
@@ -107,15 +105,15 @@ private theorem locAb_transport (l : ℕ) [Fact l.Prime] {G G' : Type} [Group G]
 
 open Formalism.BasicNotions.Loc in
 /- English proof (translation)
-Introduce `l _ F Ω _ _ _ _ _ _ A w hA hl`. Take `⟨j, hj⟩` from `(UpperTheory.V.Loc.decEmb (F := F) (Ω := Ω) (v := l)).1 A w hA hl`. Substitute `hj` using the available equality. Take `⟨-, φ, hφ, -, hran, hin, -, hidx⟩` from `(UpperTheory.V.Loc.decEmb (F := F) (Ω := Ω) (v := l)).2 j`. Set `K : FinExt l` to `⟨IntermediateField.adjoin ℚ_[l] (Set.range fun x : F => j (algebraMap F Ω x)), GlobalTheory.PlaceBridge.finiteDimensional_adjoin_range (j.comp (algebraMap F Ω))⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hK : ∀ τ, τ ∈ GK K ↔ ∀ x : F, τ (j (algebraMap F Ω x)) = j (algebraMap F Ω x)` using `GlobalTheory.PlaceBridge.mem_GK_iff (E := F) (Ω := Ω) K rfl`. Establish `hR : φ.range = GK K`. Use extensionality with `τ`. Rewrite using `[hran τ, hK τ]`. Establish `hd : Module.finrank ℚ_[l] K.1 = locDeg w`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[IntermediateField.finrank_eq_fixingSubgroup_index, ← hidx w hA, hR]`. Both sides reduce to the same expression. Take `⟨B⟩` from `UpperTheory.V.W.lam_local l K`. Rewrite `B` using `[hd]`. Set `e` to `(MonoidHom.ofInjective hφ.injective).trans (MulEquiv.subgroupCongr hR)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Use `locAb_transport l e ?_ ?_ _ _ ?_ _ B` and prove the remaining obligations. Conclude with `continuous_induced_rng.2 hφ.continuous`. Use `hφ.toIsEmbedding.continuous_iff.2 ?_` and prove the remaining obligations. Establish `h : (⇑φ ∘ ⇑e.symm) = Subtype.val` using `funext fun τ => congrArg Subtype.val (e.apply_symm_apply τ)`. Rewrite using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `continuous_subtype_val`. Introduce `g`. Rewrite using `[Subgroup.mem_comap, Subgroup.mem_subgroupOf]`. Conclude with `hin g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.nonempty_localWeilData_decompositionGroup_of_mem_place :
     ∀ (l : ℕ) [Fact l.Prime] {F Ω : Type} [Field F] [NumberField F] [Field Ω] [CharZero Ω] [Algebra F Ω] [IsAlgClosure F Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 F)), IsPlaceOver A w → ((l : ℕ) : 𝓞 F) ∈ w.asIdeal → Nonempty (UpperTheory.V.W.LocAb l (Dec (F := F) A) ((Ine (F := F) A).subgroupOf (Dec (F := F) A)) (locDeg w)) := by

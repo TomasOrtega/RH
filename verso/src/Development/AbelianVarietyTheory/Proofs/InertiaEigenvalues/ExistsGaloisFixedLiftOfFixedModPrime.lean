@@ -10,7 +10,7 @@ open scoped TensorProduct
 namespace GlobalTheory.Decompl
 
 /- English proof (translation)
-The claim follows from `WittVector.map_teichmuller l (autCb l (AI.actT g)).toRingHom c`.
+A detailed English derivation is pending.
 -/
 theorem actWCbHom_teichmuller_eq {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P)
     (g : GQ l) (c : Cb l) :
@@ -19,9 +19,9 @@ theorem actWCbHom_teichmuller_eq {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI :
   WittVector.map_teichmuller l (autCb l (AI.actT g)).toRingHom c
 
 /- English proof (translation)
-Take `⟨y, hy⟩ : ∃ y : RW LL, ∀ i, crd (basisO LL) i y = WittVector.teichmuller l ((crd (basisO LL) i x).coeff 0)` from `⟨∑ j, basisO LL j ⊗ₜ[ℤ_[l]] WittVector.teichmuller l ((crd (basisO LL) j x).coeff 0), fun i => crd_sum (basisO LL) _ i⟩`. Use `⟨y, mem_fixSub.2 fun g hg => ext_crd (basisO LL) fun i => ?_, (dvd_iff_crd LL _).2 fun i => ?_⟩` and prove the remaining obligations. Establish `h1` using `(dvd_iff_crd LL _).1 (h g hg) i`. Rewrite `h1` using `[LinearMap.map_sub, sub_coeff_zero, crd_gRW, coeff_actWCbHom]`. Rewrite using `[crd_gRW, hy, actWCbHom_teichmuller_eq, sub_eq_zero.1 h1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.map_sub, sub_coeff_zero, hy, WittVector.teichmuller_coeff_zero, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_fix_lift_of_fix_mod (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P)
     (LL : FinExt l) (H : Set (GQ l)) (x : RW LL)

@@ -9,13 +9,13 @@ private def Fty {I : Type} (f : (I → ℂ) → ℂ) : Prop :=
   ∃ L : I →₀ ℂ, ∀ b : I → ℂ, Finsupp.linearCombination ℂ b L = f b
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Finsupp.single i a, fun b => by rw [Finsupp.linearCombination_single, smul_eq_mul]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem fty_ev {I : Type} (a : ℂ) (i : I) : Fty fun b : I → ℂ => a * b i :=
   ⟨Finsupp.single i a, fun b => by rw [Finsupp.linearCombination_single, smul_eq_mul]⟩
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `hf`. Take `⟨M, hM⟩` from `hg`. Conclude with `⟨L - M, fun b => by rw [map_sub, hL, hM]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem fty_sub {I : Type} {f g : (I → ℂ) → ℂ} (hf : Fty f) (hg : Fty g) : Fty fun b => f b - g b := by
   obtain ⟨L, hL⟩ := hf
@@ -23,7 +23,7 @@ private theorem fty_sub {I : Type} {f g : (I → ℂ) → ℂ} (hf : Fty f) (hg 
   exact ⟨L - M, fun b => by rw [map_sub, hL, hM]⟩
 
 /- English proof (translation)
-Use `choose L hL using hf`. Conclude with `⟨∑ k ∈ t, L k, fun b => by rw [map_sum]; exact Finset.sum_congr rfl fun k _ => hL k b⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem fty_sum {I K : Type} (t : Finset K) (f : K → (I → ℂ) → ℂ) (hf : ∀ k, Fty (f k)) :
     Fty fun b => ∑ k ∈ t, f k b := by
@@ -31,9 +31,9 @@ private theorem fty_sum {I K : Type} (t : Finset K) (f : K → (I → ℂ) → �
   exact ⟨∑ k ∈ t, L k, fun b => by rw [map_sum]; exact Finset.sum_congr rfl fun k _ => hL k b⟩
 
 /- English proof (translation)
-Use `choose L hL using hf`. Establish `hs : ∀ (b : I → ℂ) j, (L j).sum (fun i x => x * b i) = f j b`. Introduce `b j`. Rewrite using `[← hL, Finsupp.linearCombination_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `absSolve I J L c cn (fun k => by`. Take `⟨b, hb⟩` from `h k`. Conclude with `⟨b, fun j => by rw [hs, hb]⟩) hl`. Conclude with `⟨b, fun j => by rw [← hs, hb]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem fty_solve {I J : Type} (f : J → (I → ℂ) → ℂ) (hf : ∀ j, Fty (f j)) (c : J → ℂ) (cn : ℕ → J → ℂ)
     (h : ∀ k, ∃ b, ∀ j, f j b = cn k j) (hl : ∀ j, Tendsto (fun k => cn k j) atTop (𝓝 (c j))) :
@@ -49,25 +49,23 @@ private theorem fty_solve {I J : Type} (f : J → (I → ℂ) → ℂ) (hf : ∀
   exact ⟨b, fun j => by rw [← hs, hb]⟩
 
 /- English proof (translation)
-Introduce `Γ S _ d ρ hρ q c cn h hl`. Establish `hlim : ∀ x : List Γ, x.length = q + 1 → ∀ s i, Tendsto (fun k => (c - cn k) x s i) atTop (𝓝 (c x s i))`. Introduce `x hx s i`. Establish `h1 : Tendsto (fun k => cn k x s i) atTop (𝓝 0)` using `tendsto_pi_nhds.1 (hl x hx s) i`. Simplify using `using (tendsto_const_nhds (x := c x s i)).sub h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the cases of `q with`. Consider the case `zero`. Introduce `x hx`. Use function extensionality and compare the values at `s i`. Establish `h1` using `hlim x hx s i`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h2 : (fun k => (c - cn k) x s i) = fun _ => (0 : ℂ)`. Use function extensionality and compare the values at `k`. Rewrite using `[h k x hx]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `tendsto_nhds_unique h1 tendsto_const_nhds`. Consider the case `succ q`. Set `cur : (List Γ × S × Fin d → ℂ) → List Γ → S → Fin d → ℂ` to `fun b x s i => b (x, s, i)`. Set `f : (Γ × {x : List Γ // x.length = q + 1} × S × Fin d) ⊕ ({x : List Γ // x.length = q + 2} × S × Fin d) → (List Γ × S × Fin d → ℂ) → ℂ` to `Sum.elim (fun p b => cur b (p.2.1.1.map (p.1 * ·)) p.2.2.1 p.2.2.2 - ρ p.1 (cur b p.2.1.1) p.2.2.1 p.2.2.2) (fun p b => hd (cur b) p.1.1 p.2.1 p.2.2)`. Establish `hf : ∀ j, Fty (f j)`.
+Treat this case separately. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `(⟨γ, x, s, i⟩ | ⟨x, s, i⟩)`. Take `⟨s', B, hB⟩` from `hρ γ s`. Establish `e : f (Sum.inl (γ, x, s, i)) = fun b => 1 * b (x.1.map (γ * ·), s, i) - ∑ j, B i j * b (x.1, s', j)`. Use function extensionality and compare the values at `b`. Simplify using `only [f, Sum.elim_inl, hB, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `fty_sub (fty_ev _ _) (fty_sum _ _ fun j => fty_ev _ _)`. Establish `e : f (Sum.inr (x, s, i)) = fun b => ∑ j ∈ Finset.range x.1.length, ((-1 : ℂ) ^ j) * b (x.1.eraseIdx j, s, i)`. Use function extensionality and compare the values at `b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[f, cur, hd, Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `fty_sum _ _ fun j => fty_ev _ _`. Take `⟨b, hb⟩` from `fty_solve f hf (Sum.elim (fun _ => 0) fun p => c p.1.1 p.2.1 p.2.2) (fun k => Sum.elim (fun _ => 0) fun p => (c - cn k) p.1.1 p.2.1 p.2.2) (fun k => by`. Take `⟨b, h1, h2⟩` from `h k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨fun p => b p.1 p.2.1 p.2.2, ?_⟩` and prove the remaining obligations. Introduce and unpack `(⟨γ, x, s, i⟩ | ⟨x, s, i⟩)`. Express the relevant statement in the definitionally equal form `b (x.1.map (γ * ·)) s i - ρ γ (b x.1) s i = 0`. Rewrite using `[h1 γ x.1 x.2, sub_self]`. Express the relevant statement in the definitionally equal form `hd b x.1 s i = (c - cn k) x.1 s i`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h2 x.1 x.2]) (by`. Introduce and unpack `(p | ⟨x, s, i⟩)`. Conclude with `tendsto_const_nhds`. Conclude with `hlim x.1 x.2 s i)`. Use `⟨cur b, fun γ x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
-
-Use function extensionality and compare the values at `s i`. Conclude with `sub_eq_zero.1 (hb (Sum.inl (γ, ⟨x, hx⟩, s, i)))`. Use function extensionality and compare the values at `s i`. Conclude with `(hb (Sum.inr (⟨x, hx⟩, s, i))).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.hCobLim :
     UpperTheory.V.Cj.H.HCobLim := by

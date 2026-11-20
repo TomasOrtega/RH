@@ -12,9 +12,9 @@ section Helpers
 variable {k Γ Δ V : Type*} [CommRing k] [Group Γ] [Group Δ] [AddCommGroup V] [Module k V]
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [Representation.mem_invariants, MonoidHom.coe_comp, Function.comp_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h g`. Take `⟨d, rfl⟩` from `hf g`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `h d`. Introduce `h d`. Conclude with `h (f d)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem invariants_comp_surjective (σ : Representation k Γ V) (f : Δ →* Γ)
     (hf : Function.Surjective f) : Representation.invariants (σ.comp f) = σ.invariants := by
@@ -28,20 +28,20 @@ theorem invariants_comp_surjective (σ : Representation k Γ V) (f : Δ →* Γ)
     exact h (f d)
 
 /- English proof (translation)
-The claim follows from `invariants_comp_surjective σ R.subtype fun γ => ⟨⟨γ, hR γ⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem invariants_comp_subtype_top (σ : Representation k Γ V) (R : Subgroup Γ)
     (hR : ∀ γ, γ ∈ R) : Representation.invariants (σ.comp R.subtype) = σ.invariants :=
   invariants_comp_surjective σ R.subtype fun γ => ⟨⟨γ, hR γ⟩, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [Representation.mem_invariants, MonoidHom.coe_comp, Function.comp_apply, Subgroup.coe_subtype, MulEquiv.coe_toMonoidHom]`. Prove the components needed by the constructor for the conclusion. Introduce `h r`. Establish `hm : e r.1 ∈ D`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hD]`. Conclude with `⟨r.1, r.2, rfl⟩`. Use `h ⟨e r.1, hm⟩` as an intermediate fact. Simplify using `using this`. Introduce `h d`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm : d.1 ∈ R.map e.toMonoidHom` using `by rw [hD]; exact d.2`. Take `⟨r, hr, hrd⟩` from `hm`. Use `h ⟨r, hr⟩` as an intermediate fact. Simplify using `only at this`. Rewrite using `[← hrd]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem invariants_comp_equiv_map (σ : Representation k Γ V) (e : Γ ≃* Δ) (R : Subgroup Γ)
     (D : Subgroup Δ) (hD : R.map e.toMonoidHom = D) :
@@ -66,9 +66,9 @@ theorem invariants_comp_equiv_map (σ : Representation k Γ V) (e : Γ ≃* Δ) 
     simpa using this
 
 /- English proof (translation)
-Set `eT : ULift.{0} k ⊗[k] N ≃ₗ[k] N` to `(TensorProduct.congr ULift.moduleEquiv (LinearEquiv.refl _ _)).trans (TensorProduct.lid _ _)`. Use `finrank_invariants_eq_of_linearEquiv _ eT fun g x => ?_` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a n => simp [eT, Representation.tprod_apply]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem finrank_invariants_trivial_tprod {k Γ N : Type} [CommRing k] [Group Γ] [AddCommGroup N]
     [Module k N] (σ : Representation k Γ N) :
@@ -92,17 +92,15 @@ variable {K L : FiniteSubfield} [Fact (K ≤ L)] {S : Set (HeightOneSpectrum (�
   (hΓ : Nat.Coprime (Nat.card (L.1 ≃ₐ[K.1] L.1)) ℓ)
 
 /- English proof (translation)
-Establish `hT : Module.finrank (ZMod ℓ) (gsRootsZMod S ℓ) = 1` using `finrank_gsRootsZMod ℓ hℓS`. Establish `hN` using `homRep_ρ_of_mem (gsOpenSubgroup S hL) (gsRootsZMod S ℓ) M (roots_trivial hL hζ) hM`. Establish `hfin : Finite (galUnramifiedOutside K.1 ℚ̄ S ⧸ PP hL)` using `Finite.of_equiv _ (gsQuotientGalEquiv hL).symm.toEquiv`. Establish `: Fintype ((QuotientGroup.mk' (PP hL)).comp (MonoidHom.id (galUnramifiedOutside K.1 ℚ̄ S))).range` using `Fintype.ofFinite _`. Establish `hD : (Fintype.card ((QuotientGroup.mk' (PP hL)).comp (MonoidHom.id (galUnramifiedOutside K.1 ℚ̄ S))).range : ZMod ℓ) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Nat.card_eq_fintype_card, Ne, ZMod.natCast_eq_zero_iff]`. Introduce `hdvd`. Establish `h1` using `Subgroup.card_subgroup_dvd_card ((QuotientGroup.mk' (PP hL)).comp (MonoidHom.id (galUnramifiedOutside K.1 ℚ̄ S))).range`. Establish `h2 : Nat.card (galUnramifiedOutside K.1 ℚ̄ S ⧸ PP hL) = Nat.card (L.1 ≃ₐ[K.1] L.1)` using `Nat.card_congr (gsQuotientGalEquiv hL).toEquiv`. Rewrite `h1` using `[h2]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Nat.Prime.coprime_iff_not_dvd (Fact.out : ℓ.Prime)).1 hΓ.symm (dvd_trans hdvd h1)`. Establish `key` using `finrank_invariants_dualRep_comp (gsRootsZMod S ℓ) M hT (PP hL) hN (MonoidHom.id (galUnramifiedOutside K.1 ℚ̄ S)) hD`. Establish `hsurj : ∀ γ, γ ∈ ((QuotientGroup.mk' (PP hL)).comp (MonoidHom.id (galUnramifiedOutside K.1 ℚ̄ S))).range` using `fun γ => by`. Take `⟨x, rfl⟩` from `QuotientGroup.mk'_surjective (PP hL) γ`. Conclude with `⟨x, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `e1 : Representation.invariants ((dualRep (gsRootsZMod S ℓ) M).ρ.comp (MonoidHom.id (galUnramifiedOutside K.1 ℚ̄ S))) = (dualRep (gsRootsZMod S ℓ) M).ρ.invariants` using `invariants_comp_surjective (dualRep (gsRootsZMod S ℓ) M).ρ (MonoidHom.id (galUnramifiedOutside K.1 ℚ̄ S)) Function.surjective_id`. Establish `e2 : Representation.invariants ((quotientRep (PP hL) (homRep (gsRootsZMod S ℓ) M) hN).comp ((QuotientGroup.mk' (PP hL)).comp (MonoidHom.id (galUnramifiedOutside K.1 ℚ̄ S))).range.subtype) = (quotientRep (PP hL) (homRep (gsRootsZMod S ℓ) M) hN).invariants` using `invariants_comp_subtype_top _ _ hsurj`. Establish `key2 : Module.finrank (ZMod ℓ) (dualRep (gsRootsZMod S ℓ) M).ρ.invariants = Module.finrank (ZMod ℓ) (quotientRep (PP hL) (homRep (gsRootsZMod S ℓ) M) hN).invariants` using `((congrArg (fun p : Submodule (ZMod ℓ) _ => Module.finrank (ZMod ℓ) p) e1).symm.trans key).trans (congrArg (fun p : Submodule (ZMod ℓ) _ => Module.finrank (ZMod ℓ) p) e2)`. Rewrite using `[key2]`. Establish `e3 : Representation.invariants (nRep hL hζ M hM) = (quotientRep (PP hL) (homRep (gsRootsZMod S ℓ) M) hN).invariants`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `nRep`. Conclude with `invariants_comp_surjective _ _ (gsQuotientGalEquiv hL).symm.surjective`. Establish `e4` using `finrank_invariants_trivial_tprod (nRep hL hζ M hM)`. Establish `e4'` using `e4.trans (congrArg (fun p : Submodule (ZMod ℓ) _ => Module.finrank (ZMod ℓ) p) e3)`. Establish `e5 : (dN hL hζ M hM hΓ).one = (Module.finrank (ZMod ℓ) ((Representation.trivial (ZMod ℓ) (L.1 ≃ₐ[K.1] L.1) (ULift.{0} (ZMod ℓ))).tprod (nRep hL hζ M hM)).invariants : ℤ)` using `AdditiveFunction.invariantsTensor_apply _ _ _ _ _ _`.
-
-Conclude with `(congrArg (Nat.cast : ℕ → ℤ) e4'.symm).trans e5.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem global_dual_invariants_finrank (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal) :
     (Module.finrank (ZMod ℓ) (dualRep (gsRootsZMod S ℓ) M).ρ.invariants : ℤ) = (dN hL hζ M hM hΓ).one := by
@@ -155,15 +153,15 @@ theorem global_dual_invariants_finrank (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞
   exact (congrArg (Nat.cast : ℕ → ℤ) e4'.symm).trans e5.symm
 
 /- English proof (translation)
-Establish `hT : Module.finrank (ZMod ℓ) (gsRootsZMod S ℓ) = 1` using `finrank_gsRootsZMod ℓ hℓS`. Establish `hN` using `homRep_ρ_of_mem (gsOpenSubgroup S hL) (gsRootsZMod S ℓ) M (roots_trivial hL hζ) hM`. Establish `hfin : Finite (galUnramifiedOutside K.1 ℚ̄ S ⧸ PP hL)` using `Finite.of_equiv _ (gsQuotientGalEquiv hL).symm.toEquiv`. Establish `hv : ∀ v : S, Module.finrank (ZMod ℓ) (Representation.invariants ((dualRep (gsRootsZMod S ℓ) M).ρ.comp (gsFinFamily S ιs v).toMonoidHom)) = Module.finrank (ZMod ℓ) (Representation.invariants ((nRep hL hζ M hM).comp (gsDecompGroup hL ιs v).subtype))`. Introduce `v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: Fintype ((QuotientGroup.mk' (PP hL)).comp (gsFinFamily S ιs v).toMonoidHom).range` using `Fintype.ofFinite _`. Establish `hD : (Fintype.card ((QuotientGroup.mk' (PP hL)).comp (gsFinFamily S ιs v).toMonoidHom).range : ZMod ℓ) ≠ 0`. Rewrite using `[← Nat.card_eq_fintype_card, Ne, ZMod.natCast_eq_zero_iff]`. Introduce `hdvd`. Establish `h1` using `Subgroup.card_subgroup_dvd_card ((QuotientGroup.mk' (PP hL)).comp (gsFinFamily S ιs v).toMonoidHom).range`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : Nat.card (galUnramifiedOutside K.1 ℚ̄ S ⧸ PP hL) = Nat.card (L.1 ≃ₐ[K.1] L.1)` using `Nat.card_congr (gsQuotientGalEquiv hL).toEquiv`. Rewrite `h1` using `[h2]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd (Fact.out : ℓ.Prime)).1 hΓ.symm (dvd_trans hdvd h1)`. Establish `key` using `finrank_invariants_dualRep_comp (gsRootsZMod S ℓ) M hT (PP hL) hN (gsFinFamily S ιs v).toMonoidHom hD`. Establish `e` using `invariants_comp_equiv_map (quotientRep (PP hL) (homRep (gsRootsZMod S ℓ) M) hN) (gsQuotientGalEquiv hL) _ _ (map_range_gsQuotientGalEquiv hL ιs v)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `key.trans (congrArg (fun p : Submodule (ZMod ℓ) _ => Module.finrank (ZMod ℓ) p) e.symm)`. Establish `hsum : (letI` using `placesOverAction (L := L.1) S Module.finrank (ZMod ℓ) ((funPermRep (ZMod ℓ) (L.1 ≃ₐ[K.1] L.1) (placesOver S : Set (HeightOneSpectrum (𝓞 L.1)))).tprod (nRep hL hζ M hM)).invariants) = ∑ v : S, Module.finrank (ZMod ℓ) (Representation.invariants ((nRep hL hζ M hM).comp (gsDecompGrou …`. Establish `hP : dPlaces (S` using `S) (dN hL hζ M hM hΓ) = ((letI := placesOverAction (L := L.1) S Module.finrank (ZMod ℓ) ((funPermRep (ZMod ℓ) (L.1 ≃ₐ[K.1] L.1) (placesOver S : Set (HeightOneSpectrum (𝓞 L.1)))).tprod (nRep hL hζ M hM)).invariants : ℕ) : ℤ) :=`. Both sides reduce to the same expression. Use `Eq.trans ?_ hP.symm` and prove the remaining obligations.
+Establish an intermediate fact. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (congrArg (Nat.cast : ℕ → ℤ) hsum).symm` and prove the remaining obligations. Use `Eq.trans ?_ (Nat.cast_sum _ _).symm` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun v _ => congrArg (Nat.cast : ℕ → ℤ) (hv v)`.
+A detailed English derivation is pending.
 -/
 theorem local_dual_invariants_sum [Fintype S] (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal)
     (ιs : ∀ v : S, ℚ̄ →ₐ[K.1] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)) :

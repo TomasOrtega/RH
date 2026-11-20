@@ -18,11 +18,11 @@ open GlobalTheory.LvT.StartTie GlobalTheory.Mem.Col2.ClsZero
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X}
 
 /- English proof (translation)
-Establish `hc : I.eCls0 l u a ((I.eCls0 l u a).symm ((I.stp u a 0).cl b' p')) = (I.stp u a 0).cl b' p'` using `(I.eCls0 l u a).apply_symm_apply _`. Establish `hdeco : ((I.stp u a 0).rep ((I.stp u a 0).cl b' p')).1.1.deco = ((I.stp u I.mu0 0).rep ((I.eCls0 l u a).symm ((I.stp u a 0).cl b' p'))).1.1.deco` using `by conv_lhs => rw [← hc]`. Conclude with `stepZero_corresponding_representatives_same_deco hI u a _ _`. Use `show (I.stp u a 0).tr B.fields.emb B.embLL b' ((I.stp u a 0).mv b' p') (φ ((I.eCls0 l u a).symm ((I.stp u a 0).cl b' p'))) = _`. Generalize the expression as in `(I.eCls0 l u a).symm ((I.stp u a 0).cl b' p') = c at hdeco ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b₁, q⟩` from `c`. Take `rfl : b = b₁` from `stepZero_chartIndex_subsingleton hI _ _ _`. Establish `hm` using `(I.stp u a 0).mv_smul b' p'`. Establish `hy : ∀ N, (ysAt B.R I.sel (I.tup I.mu0) (I.cst I.mu0) 0).ys N = {∅}` using `fun N => by rw [ys0]; rfl`. Take `⟨g, g1, g2, g3⟩` from `GlobalTheory.LvT.StartTie.exists_lift (y' := ysAt B.R I.sel (I.tup a) (I.cst a) 0) hy ((levelTypePrimes_stepZero_eq_colLev hI I.mu0 b).trans (levelTypePrimes_stepZero_eq_colLev hI a b').symm) (chartIndexLevelTwistPrimes_stepZero_eq_top hI I.mu0 b) (chartIndexLevelTwistPrimes_step …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `valAt_eq B.fields.emb B.embLL (l.lev u I.mu0).free0 φ ⟨b, q⟩ g`. Use `Eq.trans ?_ (h1.symm.trans (congrArg _ g1))` and prove the remaining obligations. Establish `h2 : (I.stp u a 0).tr B.fields.emb B.embLL b' ((I.stp u a 0).mv b' p') = (I.stp u I.mu0 0).tr B.fields.emb B.embLL b g` using `congrArg₂ (trFr B.fields.emb B.embLL) (congrArg (Formalism.L2.Col.ufGL B.fields.E (B.R.N 0)) g2.symm) g3.symm`. Conclude with `congrFun (congrArg DFunLike.coe h2) _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valAt_eCls0 (hI : I.Ok) (l : I.Laws) (u : B.Word) (a : I.ι)
     (φ : (I.stp u I.mu0 0).Cl → Fr B.fields.emb B.embLL (B.R.N 0) → ℂ)
@@ -63,7 +63,7 @@ open GlobalTheory.LvT.StartTie GlobalTheory.Mem.Col2.ClsZero
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X}
 
 /- English proof (translation)
-Use `conv_rhs => rw [← (I.eCls0 l u a).apply_symm_apply c']`. Conclude with `(stepZero_corresponding_representatives_same_deco hI u a _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem rep_eCls0_symm (hI : I.Ok) (l : I.Laws) (u : B.Word) (a : I.ι) (c' : (I.stp u a 0).Cl) :
     ((I.stp u I.mu0 0).rep ((I.eCls0 l u a).symm c')).1.1.deco = ((I.stp u a 0).rep c').1.1.deco := by
@@ -71,9 +71,7 @@ theorem rep_eCls0_symm (hI : I.Ok) (l : I.Laws) (u : B.Word) (a : I.ι) (c' : (I
   exact (stepZero_corresponding_representatives_same_deco hI u a _ _).symm
 
 /- English proof (translation)
-Unfold `Nm`. Use `erw [LinearMap.sum_apply, LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `c'`. Use `(valAt_eCls0 hI l u a φ _ _ _ _ ?_).symm` and prove the remaining obligations.
-
-Conclude with `(dia_deco _ v a').trans ((congrArg (Formalism.L2.Col.DecoSet.dia1 v a') (rep_eCls0_symm hI l u a c')).trans (dia_deco _ v a').symm)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nm_eCls0 (hI : I.Ok) (l : I.Laws) (l0 : I.Law0 l) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι)
     (v : (tw (I.tw l l0 Z) u a).A.vT) (φ : Fn (tw (I.tw l l0 Z) u I.mu0) 0) :
@@ -95,11 +93,11 @@ open GlobalTheory.LvT.StartTie GlobalTheory.Mem.Col2.ClsZero
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(p.mv (p.1.1.deco.up P ((I.atIn u a).T : 𝓞 B.fields.E) x)).1.1.deco = _`. Distinguish the cases in `hc : (p.1.1.deco.1.up P ((I.atIn u a).T : 𝓞 B.fields.E) x).Ok`. Apply `mv_deco` to reduce the goal to its premises. Establish `h1` using `congrArg Formalism.L2.Col.Deco.N (((l.lev u a).tied 0).up_deco b p P x hx hf)`. Use `Eq.trans h1 ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Formalism.L2.Col.DecoSet.up`. Rewrite using `[dif_pos hc]`. Both sides reduce to the same expression. Establish `h1 : p.1.1.deco.up P ((I.atIn u a).T : 𝓞 B.fields.E) x = p.1.1.deco` using `dif_neg hc`. Rewrite using `[h1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun q : PtAt B.R I.sel (I.tup a) (I.cst a) u 0 => q.1.1.deco) (dif_pos ⟨p.1.1.2, p.2⟩ : p.mv p.1.1.deco = _)`.
+A detailed English derivation is pending.
 -/
 theorem up_deco0 (l : I.Laws) (u : B.Word) (a : I.ι) (b : (I.stp u a 0).β) (p : (I.stp u a 0).D b)
     (P : (I.atIn u a).ST) (x : Formalism.L2.Col.Sp B.fields.E (B.R.N 0)) (hx : x ∈ p.1.1.deco.1.N) (hf : p.1.1.deco.1.f P x = 1) :
@@ -120,14 +118,14 @@ def onesAt {D : D7} {u' : D.what₂.Word} (Y : Ch D u') (v : Y.A.vT) (c : Y.C.cl
   Finset.univ.filter (fun x : Y.fm.lv 0 v c => Y.fm.fv 0 v c x = 1)
 
 /- English proof (translation)
-Simplify using `[onesAt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_onesAt {D : D7} {u' : D.what₂.Word} (Y : Ch D u') (v : Y.A.vT) (c : Y.C.cls 0) (x : Y.fm.lv 0 v c) :
     x ∈ onesAt Y v c ↔ Y.fm.fv 0 v c x = 1 := by
   simp [onesAt]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Simplify using `[Uop, LinearMap.sum_apply, onesAt]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem uop_apply {D : D7} {u' : D.what₂.Word} (Y : Ch D u') (v) (φ : Fn Y 0) :
     Uop Y 0 v φ = fun c => ∑ x ∈ onesAt Y v c, Y.fm.upT 0 v c x (φ (Y.fm.up 0 v c x)) := by
@@ -135,13 +133,13 @@ theorem uop_apply {D : D7} {u' : D.what₂.Word} (Y : Ch D u') (v) (φ : Fn Y 0)
   simp [Uop, LinearMap.sum_apply, onesAt]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c'`. Establish `hd` using `rep_eCls0_symm hI l u a c'`. Establish `hN` using `congrArg (fun d : Formalism.L2.Col.DecoSet B.fields.E (B.R.N 0) _ _ => d.1.N) hd`. Establish `hF` using `congrArg (fun d : Formalism.L2.Col.DecoSet B.fields.E (B.R.N 0) _ _ => d.1.f v) hd`. Use `(show (I.cols l).e0Tw u a (Uop (tw (I.tw l l0 Z) u I.mu0) 0 v φ) c' = Uop (tw (I.tw l l0 Z) u I.mu0) 0 v φ ((I.eCls0 l u a).symm c') from rfl).trans ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrFun (uop_apply (tw (I.tw l l0 Z) u I.mu0) v φ) _).trans (Eq.trans ?_ (congrFun (uop_apply (tw (I.tw l l0 Z) u a) v ((I.cols l).e0Tw u a φ)) c').symm)` and prove the remaining obligations. Use `revert hd hN hF`. Generalize the expression as in `(I.eCls0 l u a).symm c' = c`. Introduce `hd hN hF`. Use `Eq.trans ?e1 (up_match B.fields.emb B.embLL (l.lev u I.mu0).free0 ((l.lev u I.mu0).lev 0) ((l.lev u I.mu0).tied 0) ((l.lev u a).lev 0) ((l.lev u a).tied 0) v (onesAt (tw (I.tw l l0 Z) u I.mu0) v) ?hs c' _ ?hs' φ ((I.cols l).e0Tw u a φ) c.1 ((I.stp u I.mu0 0).rep c) hN hF ?hup)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Use `case e1 =>`. Conclude with `(valAt_rep B.fields.emb B.embLL (l.lev u I.mu0).free0 (fun c => ∑ x ∈ onesAt (tw (I.tw l l0 Z) u I.mu0) v c, valAt (I.stp u I.mu0 0) B.fields.emb B.embLL φ c.1 (((I.atIn u I.mu0).A 0).upPt v c x)) c).symm`. Use `case hs => exact fun c x => mem_onesAt (tw (I.tw l l0 Z) u I.mu0) v c x`. Use `case hs' => exact fun x => mem_onesAt (tw (I.tw l l0 Z) u a) v c' x`. Use `case hup =>`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx h1`. Use `valAt_eCls0 hI l u a φ _ _ _ _ ?_` and prove the remaining obligations. Use `(up_deco0 l u I.mu0 _ _ v x hx h1).trans ((congrArg (fun d : Formalism.L2.Col.DecoSet B.fields.E (B.R.N 0) _ _ => d.up v ((I.atIn u a).T : 𝓞 B.fields.E) x) hd).trans (up_deco0 l u a _ _ v x (hN ▸ hx) (by rw [← congrFun hF x]; exact h1)).symm)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem uop_eCls0 (hI : I.Ok) (l : I.Laws) (l0 : I.Law0 l) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι)
     (v : (tw (I.tw l l0 Z) u a).A.vT) (φ : Fn (tw (I.tw l l0 Z) u I.mu0) 0) :
@@ -181,7 +179,7 @@ open GlobalTheory.LvT.StartTie GlobalTheory.Mem.Col2.ClsZero
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X}
 
 /- English proof (translation)
-Use `erw [uop_apply]`. Conclude with `DiaStab.mem_Fi _ B.fields.emb B.embLL _ (l.lev u a).free0 _ fun _ => Submodule.sum_mem _ fun _ _ => DiaStab.tr_mem _ B.fields.emb B.embLL _ _ _ (hφ _).1`.
+A detailed English derivation is pending.
 -/
 theorem uop_mem (l : I.Laws) (l0 : I.Law0 l) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι)
     (v : (tw (I.tw l l0 Z) u a).A.vT) {φ : Fn (tw (I.tw l l0 Z) u a) 0} (hφ : φ ∈ (tw (I.tw l l0 Z) u a).fm.Fi 0) :
@@ -191,7 +189,7 @@ theorem uop_mem (l : I.Laws) (l0 : I.Law0 l) (Z : TC.Later B (I.cols l)) (u : B.
     DiaStab.tr_mem _ B.fields.emb B.embLL _ _ _ (hφ _).1
 
 /- English proof (translation)
-Proceed by induction on `ls with`. Consider the case `nil => exact hφ`. Consider the case `cons v ls ih => exact uop_mem l l0 Z u a v ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem ulist_mem (l : I.Laws) (l0 : I.Law0 l) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι)
     (ls : List (tw (I.tw l l0 Z) u a).A.vT) {φ : Fn (tw (I.tw l l0 Z) u a) 0} (hφ : φ ∈ (tw (I.tw l l0 Z) u a).fm.Fi 0) :
@@ -201,7 +199,7 @@ theorem ulist_mem (l : I.Laws) (l0 : I.Law0 l) (Z : TC.Later B (I.cols l)) (u : 
   | cons v ls ih => exact uop_mem l l0 Z u a v ih
 
 /- English proof (translation)
-Proceed by induction on `ls with`. Consider the case `nil => rfl`. Consider the case `cons v ls ih => exact (uop_eCls0 hI l l0 Z u a v _).trans (congrArg (Uop (tw (I.tw l l0 Z) u a) 0 v) ih)`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem ulist_eCls0 (hI : I.Ok) (l : I.Laws) (l0 : I.Law0 l) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι)
     (ls : List (tw (I.tw l l0 Z) u a).A.vT) (φ : Fn (tw (I.tw l l0 Z) u I.mu0) 0) :
@@ -211,7 +209,7 @@ theorem ulist_eCls0 (hI : I.Ok) (l : I.Laws) (l0 : I.Law0 l) (Z : TC.Later B (I.
   | cons v ls ih => exact (uop_eCls0 hI l l0 Z u a v _).trans (congrArg (Uop (tw (I.tw l l0 Z) u a) 0 v) ih)
 
 /- English proof (translation)
-Introduce `B X I hI l l0 Z u a w _`. Use `⟨rfl, fun x hx => ?_⟩` and prove the remaining obligations. Use `nlam_map (X := tw (I.tw l l0 Z) u I.mu0) (Y := tw (I.tw l l0 Z) u a) (e := (I.cols l).e0Tw u a) (eL := (I.tw l l0 Z).e0 u a) w rfl ((I.tw l l0 Z).embed_mul_block_embedding u a) (fun x hx => ((I.tw l l0 Z).twist_preserves_base_lattice u a x).1 hx) (fun v => ⟨v, fun φ _ => nm_eCls0 …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem step0Tie_trueCols : ∀ (B : GlobalTheory.Mem.Base) (X : PreX B.toPre) (I : TC B X), I.Ok → ∀ (l : I.Laws) (l0 : I.Law0 l) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι), Step0Tie (I.tw l l0 Z) u a := by
   intro B X I hI l l0 Z u a w _

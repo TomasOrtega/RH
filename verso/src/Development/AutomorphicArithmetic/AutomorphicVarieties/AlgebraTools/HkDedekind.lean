@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.HkDef
 open MvPolynomial Equiv UpperTheory.V.AlgebraTools.Hk
 
 /- English proof (translation)
-Introduce `R _ _ n K _ _ _ f hf`. Set `φ : Perm (Fin n) → (MvPolynomial (Fin n) R →* K)` to `fun u => (algebraMap (MvPolynomial (Fin n) R) K).toMonoidHom.comp (rename u : MvPolynomial (Fin n) R →ₐ[R] MvPolynomial (Fin n) R).toRingHom.toMonoidHom`. Establish `hinj : Function.Injective φ`. Introduce `u v huv`. Use extensionality with `i`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `h` using `DFunLike.congr_fun huv (X i)`. Simplify using `only [φ, MonoidHom.comp_apply, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.coe_toRingHom, rename_X] at h`. Establish `h2` using `IsFractionRing.injective (MvPolynomial (Fin n) R) K h`. Conclude with `congrArg Fin.val (X_injective h2)`. Establish `hli` using `(linearIndependent_monoidHom (MvPolynomial (Fin n) R) K).comp φ hinj`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Use function extensionality and compare the values at `u`. Apply `hli f` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Simplify `hf x` using `[φ, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.hkDedekind :
     ∀ (R : Type) [CommRing R] [IsDomain R] (n : ℕ) (K : Type) [Field K] [Algebra (MvPolynomial (Fin n) R) K] [IsFractionRing (MvPolynomial (Fin n) R) K] (f : Perm (Fin n) → K),

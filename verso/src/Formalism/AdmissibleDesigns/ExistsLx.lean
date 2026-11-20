@@ -16,9 +16,9 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   (r : (D.nd.Om ≃ₐ[D.host.E] D.nd.Om) →* R') (χ : (D.nd.Om ≃ₐ[D.host.E] D.nd.Om) →* Tcˣ)
 
 /- English proof (translation)
-Use `⟨Lx i dc r χ x' l, ?_, ?_, ?_, hdim⟩` and prove the remaining obligations. Apply the tactic sequence `apply colD_le_Lx <;> assumption`. Introduce `f z hz`. Apply the tactic sequence `apply comp_mem_Lx <;> assumption`. Introduce `f z hz`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `apply comp_mem_Lx <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_Lx {Pe : Type} [AddCommGroup Pe] [Module R' Pe] [Module (D.nd.O i) Pe] [SMulCommClass R' (D.nd.O i) Pe]
     {PE : Type} [AddCommGroup PE] [Module R' PE] [Module (D.nd.O i) PE] [SMulCommClass R' (D.nd.O i) PE]

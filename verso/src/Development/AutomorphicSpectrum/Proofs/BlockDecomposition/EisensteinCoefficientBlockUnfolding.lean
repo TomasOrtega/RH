@@ -16,7 +16,7 @@ namespace Core
 variable {D : D7}
 
 /- English proof (translation)
-Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Conclude with `IsModuleTopology.continuous_of_linearMap (Algebra.trace (AF D.host.F) (AE D))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_trA_AE : Continuous (trA (D := D)) := by
   haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)
@@ -24,14 +24,14 @@ theorem continuous_trA_AE : Continuous (trA (D := D)) := by
   exact IsModuleTopology.continuous_of_linearMap (Algebra.trace (AF D.host.F) (AE D))
 
 /- English proof (translation)
-Unfold `halfTr`. Conclude with `continuous_const.mul continuous_trA_AE`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_halfTr_AE : Continuous (halfTr (D := D)) := by
   unfold halfTr
   exact continuous_const.mul continuous_trA_AE
 
 /- English proof (translation)
-Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Unfold `StdUnn.inner`. Conclude with `(continuous_adj.comp hu).matrix_mul (continuous_const.matrix_mul hv)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_inner_pair (V : HSp D) {n : ℕ} {X : Type*} [TopologicalSpace X] {u v : X → Mx D V.rank n}
     (hu : Continuous u) (hv : Continuous v) : Continuous fun x => inner V (u x) (v x) := by
@@ -40,9 +40,7 @@ theorem continuous_inner_pair (V : HSp D) {n : ℕ} {X : Type*} [TopologicalSpac
   exact (continuous_adj.comp hu).matrix_mul (continuous_const.matrix_mul hv)
 
 /- English proof (translation)
-Use `continuous_matrix fun i k => ?_` and prove the remaining obligations. Use `Fin.addCases (fun j => ?_) (fun j => ?_) k` and prove the remaining obligations. Simplify using `only [colJoin_castAdd]`. Conclude with `hu.matrix_elem i j`. Simplify using `only [colJoin_natAdd]`.
-
-Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_colJoin_left {X : Type*} [TopologicalSpace X] {m r s : ℕ} {u : X → Mx D m r} (hu : Continuous u)
     (v : Mx D m s) : Continuous fun x => colJoin (u x) v := by
@@ -54,7 +52,7 @@ theorem continuous_colJoin_left {X : Type*} [TopologicalSpace X] {m r s : ℕ} {
     exact continuous_const
 
 /- English proof (translation)
-Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Conclude with `hψ.1.comp (continuous_halfTr_AE.comp (continuous_const.matrix_mul (continuous_inner_pair V continuous_id continuous_id)).matrix_trace)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_quad (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) (V : HSp D) {r : ℕ}
     (b : Matrix (Fin r) (Fin r) D.host.E) :
@@ -65,7 +63,7 @@ theorem continuous_quad (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.
     (continuous_const.matrix_mul (continuous_inner_pair V continuous_id continuous_id)).matrix_trace)
 
 /- English proof (translation)
-Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Conclude with `hψ.1.comp (continuous_trA_AE.comp (continuous_inner_pair V continuous_const continuous_id).matrix_trace)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_lin (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) (V : HSp D) {s : ℕ}
     (x : Mx D V.rank s) :
@@ -75,13 +73,13 @@ theorem continuous_lin (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F
     (continuous_inner_pair V continuous_const continuous_id).matrix_trace)
 
 /- English proof (translation)
-Rewrite using `[← ofReal_norm_eq_enorm, hψ.2.1, ENNReal.ofReal_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem enorm_char (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) (x : AF D.host.F) : ‖ψ x‖ₑ = 1 := by
   rw [← ofReal_norm_eq_enorm, hψ.2.1, ENNReal.ofReal_one]
 
 /- English proof (translation)
-Establish `h : colJoin (rat p - y) (rat q) = colJoin (rat p) (rat q) - colJoin y (0 : Mx D m s)`. Rewrite using `[← colJoin_sub, sub_zero]`. Rewrite using `[h, Matrix.sub_mul, rat_mul, rat_colJoin, sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem join_mul_eq {m r s : ℕ} (a : Matrix (Fin (r + s)) (Fin (r + s)) D.host.E)
     (p : Matrix (Fin m) (Fin r) D.host.E) (q : Matrix (Fin m) (Fin s) D.host.E) (y : Mx D m r) :
@@ -92,9 +90,9 @@ theorem join_mul_eq {m r s : ℕ} (a : Matrix (Fin (r + s)) (Fin (r + s)) D.host
   rw [h, Matrix.sub_mul, rat_mul, rat_colJoin, sub_eq_add_neg]
 
 /- English proof (translation)
-Introduce and unpack `⟨p, q⟩ ⟨p', q'⟩ h`. Establish `h' : colJoin p q = colJoin p' q'`. Use `congrArg (· * a⁻¹) h` as an intermediate fact. Simplify `this` using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv a ha]`. Take `⟨h1, h2⟩` from `colJoin_injective h'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem join_mul_injective {m r s : ℕ} {a : Matrix (Fin (r + s)) (Fin (r + s)) D.host.E} (ha : IsUnit a.det) :
     Function.Injective fun pq : Matrix (Fin m) (Fin r) D.host.E × Matrix (Fin m) (Fin s) D.host.E =>
@@ -107,9 +105,7 @@ theorem join_mul_injective {m r s : ℕ} {a : Matrix (Fin (r + s)) (Fin (r + s))
   rw [h1, h2]
 
 /- English proof (translation)
-Use `set w : Mx D m (r + s) := -(HMul.hMul (colJoin y (0 : Mx D m s)) (rat a) : Mx D m (r + s)) with hw`. Combine the equalities or inequalities in the displayed calculation. Use `tsum_congr fun pq => ?_` and prove the remaining obligations. Simplify using `only [join_mul_eq, hw]`. Use `_ ≤ ∑' ξ : Matrix (Fin m) (Fin (r + s)) D.host.E, ‖Φ (rat ξ + w)‖ₑ := ENNReal.tsum_comp_le_tsum_of_injective (join_mul_injective ha) _`.
-
-Use `_ ≤ B := hB w`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tsum_join_le {m r s : ℕ} {a : Matrix (Fin (r + s)) (Fin (r + s)) D.host.E} (ha : IsUnit a.det)
     {Φ : Mx D m (r + s) → ℂ} {B : ℝ≥0}
@@ -128,14 +124,14 @@ theorem tsum_join_le {m r s : ℕ} {a : Matrix (Fin (r + s)) (Fin (r + s)) D.hos
     _ ≤ B := hB w
 
 /- English proof (translation)
-Use `haveI : Countable D.host.E := (Module.finBasis ℚ D.host.E).equivFun.injective.countable`. Conclude with `inferInstanceAs (Countable (Fin m → Fin n → D.host.E))`.
+A detailed English derivation is pending.
 -/
 theorem countable_mat (D : D7) (m n : ℕ) : Countable (Matrix (Fin m) (Fin n) D.host.E) := by
   haveI : Countable D.host.E := (Module.finBasis ℚ D.host.E).equivFun.injective.countable
   exact inferInstanceAs (Countable (Fin m → Fin n → D.host.E))
 
 /- English proof (translation)
-Simplify using `only [cellTerm, enorm_mul, enorm_char ψ hψ, one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem enorm_cellTerm (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) (V : HSp D) {r s : ℕ}
     (b : Matrix (Fin r) (Fin r) D.host.E) (a : Matrix (Fin (r + s)) (Fin (r + s)) D.host.E)
@@ -152,9 +148,7 @@ def cellRest (ψ : AddChar (AF D.host.F) ℂ) (V : HSp D) {r s : ℕ} (b : Matri
     Φ (HMul.hMul (colJoin (rat p - y₁) (rat q)) (rat a))
 
 /- English proof (translation)
-Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Take `⟨i1, -⟩` from `lattice_Mx D V.rank r`. Use `haveI : ContinuousSub (Mx D V.rank r) := IsTopologicalAddGroup.to_continuousSub`. Establish `h1 : Continuous fun y₁ : Mx D V.rank r => y₁ - rat p` using `continuous_id.sub continuous_const`. Establish `h2 : Continuous fun y₁ : Mx D V.rank r => rat p - y₁` using `(continuous_const (y := rat p)).sub continuous_id`.
-
-Conclude with `((continuous_quad ψ hψ V b).comp h1).mul (hΦ.comp ((continuous_colJoin_left h2 _).matrix_mul continuous_const))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_cellRest (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) (V : HSp D) {r s : ℕ}
     (b : Matrix (Fin r) (Fin r) D.host.E) (a : Matrix (Fin (r + s)) (Fin (r + s)) D.host.E)
@@ -175,7 +169,7 @@ def cellZero (ψ : AddChar (AF D.host.F) ℂ) (V : HSp D) {r s : ℕ} (b : Matri
     Φ (HMul.hMul (colJoin (-t) (0 : Mx D V.rank s)) (rat a))
 
 /- English proof (translation)
-Simplify using `only [cellRest, cellZero, rat_zero, neg_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cellRest_zero (ψ : AddChar (AF D.host.F) ℂ) (V : HSp D) {r s : ℕ} (b : Matrix (Fin r) (Fin r) D.host.E)
     (a : Matrix (Fin (r + s)) (Fin (r + s)) D.host.E) (Φ : Mx D V.rank (r + s) → ℂ)
@@ -184,7 +178,7 @@ theorem cellRest_zero (ψ : AddChar (AF D.host.F) ℂ) (V : HSp D) {r s : ℕ} (
   simp only [cellRest, cellZero, rat_zero, neg_sub]
 
 /- English proof (translation)
-Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Take `⟨i1, -⟩` from `lattice_Mx D V.rank r`. Conclude with `(continuous_quad ψ hψ V b).mul (hΦ.comp ((continuous_colJoin_left continuous_neg _).matrix_mul continuous_const))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem continuous_cellZero (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) (V : HSp D) {r s : ℕ}
     (b : Matrix (Fin r) (Fin r) D.host.E) (a : Matrix (Fin (r + s)) (Fin (r + s)) D.host.E)
@@ -195,7 +189,7 @@ theorem continuous_cellZero (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.h
     (hΦ.comp ((continuous_colJoin_left continuous_neg _).matrix_mul continuous_const))
 
 /- English proof (translation)
-Establish `hinj : Function.Injective fun p : Matrix (Fin V.rank) (Fin r) D.host.E => ((p, 0) : Matrix (Fin V.rank) (Fin r) D.host.E × Matrix (Fin V.rank) (Fin s) D.host.E)` using `fun _ _ h => congrArg Prod.fst h`. Use `le_trans (le_of_eq (tsum_congr fun p => ?_)) ((ENNReal.tsum_comp_le_tsum_of_injective hinj _).trans (tsum_join_le (s := s) ha hB y))` and prove the remaining obligations. Simplify using `only [cellZero, enorm_mul, enorm_char ψ hψ, one_mul, neg_sub, rat_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tsum_cellZero_le (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) (V : HSp D) {r s : ℕ}
     (b : Matrix (Fin r) (Fin r) D.host.E) {a : Matrix (Fin (r + s)) (Fin (r + s)) D.host.E} (ha : IsUnit a.det)
@@ -212,21 +206,17 @@ theorem tsum_cellZero_le (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host
 end Core
 
 /- English proof (translation)
-Introduce `D ψ hψ V r s μr 𝓕r μs 𝓕s hr hs b a ha Φ hΦ B hB`. Take `⟨i1, i2, i3, i4, -, -⟩` from `lattice_Mx D V.rank r`. Take `⟨j1, j2, j3, j4, -, -⟩` from `lattice_Mx D V.rank s`. Use `haveI : BorelSpace (Mx D V.rank r) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx D V.rank s) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI := hr.1`. Use `haveI := hs.1`. Use `haveI := Core.countable_mat D V.rank r`. Use `haveI := Core.countable_mat D V.rank s`. Use `haveI : IsFiniteMeasure (μr.restrict 𝓕r) := ⟨by simp [hr.2.2]⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `haveI : IsFiniteMeasure (μs.restrict 𝓕s) := ⟨by simp [hs.2.2]⟩`. Rewrite using `[← Measure.prod_restrict]`. Establish `hνu : ((μr.restrict 𝓕r).prod (μs.restrict 𝓕s)) Set.univ = 1`. Rewrite using `[← Set.univ_prod_univ, Measure.prod_prod]`. Simplify using `[hr.2.2, hs.2.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hform : ∀ (pq : Matrix (Fin V.rank) (Fin r) D.host.E × Matrix (Fin V.rank) (Fin s) D.host.E) (z : Mx D V.rank r × Mx D V.rank s), cellTerm ψ V b a Φ pq.1 pq.2 z.1 z.2 = Core.cellRest ψ V b a Φ pq.1 pq.2 z.1 * ψ (trA (Matrix.trace (inner V (rat pq.2) z.2)))` using `fun pq z => mul_comm _ _`. Establish `hcont : ∀ pq : Matrix (Fin V.rank) (Fin r) D.host.E × Matrix (Fin V.rank) (Fin s) D.host.E, Continuous fun z : Mx D V.rank r × Mx D V.rank s => cellTerm ψ V b a Φ pq.1 pq.2 z.1 z.2` using `fun pq => by`. Simplify using `only [hform]`. Conclude with `((Core.continuous_cellRest ψ hψ V b a hΦ pq.1 pq.2).comp continuous_fst).mul ((Core.continuous_lin ψ hψ V (rat pq.2)).comp continuous_snd)`. Establish `hsum : ∑' pq : Matrix (Fin V.rank) (Fin r) D.host.E × Matrix (Fin V.rank) (Fin s) D.host.E, ∫⁻ z, ‖cellTerm ψ V b a Φ pq.1 pq.2 z.1 z.2‖ₑ ∂((μr.restrict 𝓕r).prod (μs.restrict 𝓕s)) ≠ ∞`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← lintegral_tsum fun pq => (hcont pq).enorm.measurable.aemeasurable]`. Use `ne_top_of_le_ne_top ?_ (lintegral_mono (g := fun _ => (B : ℝ≥0∞)) fun z => ?_)` and prove the remaining obligations. Simplify using `[hνu]`. Simplify using `only [Core.enorm_cellTerm ψ hψ]`. Conclude with `Core.tsum_join_le ha hB z.1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Rewrite using `[integral_tsum (fun pq => (hcont pq).aestronglyMeasurable) hsum]`. Establish `hterm : ∀ pq : Matrix (Fin V.rank) (Fin r) D.host.E × Matrix (Fin V.rank) (Fin s) D.host.E, ∫ z, cellTerm ψ V b a Φ pq.1 pq.2 z.1 z.2 ∂((μr.restrict 𝓕r).prod (μs.restrict 𝓕s)) = (∫ y in 𝓕r, Core.cellRest ψ V b a Φ pq.1 pq.2 y ∂μr) * ∫ y in 𝓕s, ψ (trA (Matrix.trace (inner V (rat p …` using `fun pq => by`. Simplify using `only [hform]`. Conclude with `integral_prod_mul (Core.cellRest ψ V b a Φ pq.1 pq.2) (fun y => ψ (trA (Matrix.trace (inner V (rat pq.2) y))))`. Simplify using `only [hterm]`.
-
-Establish `hinj : Function.Injective fun p : Matrix (Fin V.rank) (Fin r) D.host.E => ((p, 0) : Matrix (Fin V.rank) (Fin r) D.host.E × Matrix (Fin V.rank) (Fin s) D.host.E)` using `fun _ _ h => congrArg Prod.fst h`. Rewrite using `[← hinj.tsum_eq]`. Take `⟨-, hu⟩` from `GlobalTheory.T.periodization_integral_unfolding D V.rank r μr 𝓕r hr (Core.cellZero (s := s) ψ V b a Φ) (Core.continuous_cellZero ψ hψ V b a hΦ) B (Core.tsum_cellZero_le ψ hψ V b ha hB)`. Use `Eq.trans (tsum_congr fun p => ?_) hu` and prove the remaining obligations. Simplify using `only [(GlobalTheory.T.character_integral_orthogonality D ψ hψ V s μs 𝓕s hs 0).1 rfl, mul_one, Core.cellRest_zero]`.
-
-Introduce and unpack `⟨p, q⟩ hne`. Distinguish the cases in `hq : q = 0`. Conclude with `⟨p, by rw [hq]⟩`. Conclude with `absurd (by simp only [(GlobalTheory.T.character_integral_orthogonality D ψ hψ V s μs 𝓕s hs q).2 hq, mul_zero]) hne`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem integral_cells_eq : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ → ∀ (V : HSp D) (r s : ℕ)
     (μr : Measure (Mx D V.rank r)) (𝓕r : Set (Mx D V.rank r)) (μs : Measure (Mx D V.rank s)) (𝓕s : Set (Mx D V.rank s)),

@@ -13,7 +13,7 @@ open NumberField IsDedekindDomain
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Establish `h : IsIntegral ℤ (star (x : E))`. Use `(RingOfIntegers.isIntegral_coe x).map (starRingEnd E).toIntAlgHom` as an intermediate fact. Conclude with `this`. Conclude with `⟨⟨star (x : E), h⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem star_int (x : 𝓞 E) : ∃ y : 𝓞 E, (y : E) = star (x : E) := by
   have h : IsIntegral ℤ (star (x : E)) := by
@@ -24,26 +24,26 @@ theorem star_int (x : 𝓞 E) : ∃ y : 𝓞 E, (y : E) = star (x : E) := by
 def cj (x : 𝓞 E) : 𝓞 E := Classical.choose (star_int x)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (star_int x)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem coe_cj (x : 𝓞 E) : ((cj x : 𝓞 E) : E) = star (x : E) := Classical.choose_spec (star_int x)
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem cj_cj (x : 𝓞 E) : cj (cj x) = x := by
   apply RingOfIntegers.ext; simp
 
 /- English proof (translation)
-Establish `hP0 : (P.asIdeal : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.mpr P.ne_bot`. Establish `hnot : ¬ ((P.asIdeal : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)⁻¹ ≤ 1)`. Introduce `hle`. Establish `h1 : (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ≤ P.asIdeal`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite `h1` using `[← FractionalIdeal.coeIdeal_top, FractionalIdeal.coeIdeal_le_coeIdeal]`. Conclude with `P.isPrime.ne_top (top_le_iff.mp h1)`. Take `⟨β, hβ, hβ1⟩` from `Set.not_subset.mp hnot`. Establish `hmem` using `(FractionalIdeal.mem_inv_iff hP0).mp hβ`. Establish `hPO : ∀ p ∈ P.asIdeal, ∃ o : 𝓞 E, β * (p : E) = (o : E)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Take `⟨o, ho⟩` from `(FractionalIdeal.mem_one_iff _).mp (hmem _ (FractionalIdeal.mem_coeIdeal_of_mem _ hp))`. Conclude with `⟨o, ho.symm⟩`. Use `⟨β, hPO, fun s hs o ho => hβ1 ?_⟩` and prove the remaining obligations. Take `⟨y, i, hi, hyi⟩` from `P.isMaximal.exists_inv hs`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨o', ho'⟩` from `hPO i hi`. Use `(FractionalIdeal.mem_one_iff _).mpr ⟨y * o + o', ?_⟩` and prove the remaining obligations. Establish `: β = (y : E) * ((s : E) * β) + β * (i : E)`. Establish `h1 : ((y * s + i : 𝓞 E) : E) = 1` using `by rw [hyi]; simp`. Move the coercions through the operations in `at h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-β) * h1`. Rewrite using `[this, ho, ho']`. Rewrite using `[map_add, map_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_beta (P : HeightOneSpectrum (𝓞 E)) :
     ∃ β : E, (∀ p ∈ P.asIdeal, ∃ o : 𝓞 E, β * (p : E) = (o : E)) ∧

@@ -12,15 +12,15 @@ variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Modul
   [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Rewrite using `[Subgroup.relIndex, AddSubgroup.relIndex, Subgroup.index, AddSubgroup.index]`. Establish `hrel : ∀ a b : G', (a⁻¹ * b ∈ H.subgroupOf G') ↔ (-(⟨φ a, h1 a a.2⟩ : P) + ⟨φ b, h1 b b.2⟩ ∈ N.addSubgroupOf P)`. Introduce `a b`. Rewrite using `[Subgroup.mem_subgroupOf, AddSubgroup.mem_addSubgroupOf]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, AddSubgroup.coe_add, AddSubgroup.coe_neg, neg_add_eq_sub]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h3 a a.2 b b.2`. Set `f : G' ⧸ H.subgroupOf G' → P ⧸ N.addSubgroupOf P` to `Quotient.map' (fun x : G' => (⟨φ x, h1 x x.2⟩ : P)) (fun a b hab => by`. Rewrite `hab` using `[QuotientGroup.leftRel_apply]`. Rewrite using `[QuotientAddGroup.leftRel_apply]`. Conclude with `(hrel a b).1 hab)`.
+Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Use `Nat.card_congr (Equiv.ofBijective f ⟨fun a b hab => ?_, fun p => ?_⟩)` and prove the remaining obligations. Proceed by induction on `a using QuotientGroup.induction_on with`. Consider the case `H a`. Proceed by induction on `b using QuotientGroup.induction_on with`. Consider the case `H b`.
+Treat this case separately. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hab' : ((⟨φ a, h1 a a.2⟩ : P) : P ⧸ N.addSubgroupOf P) = ((⟨φ b, h1 b b.2⟩ : P) : _)` using `hab`. Rewrite `hab'` using `[QuotientAddGroup.eq]`. Conclude with `QuotientGroup.eq.2 ((hrel a b).2 hab')`. Proceed by induction on `p using QuotientAddGroup.induction_on with`. Consider the case `H p`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨x, hx, hφ⟩` from `h2 p p.2`. Use `⟨((⟨x, hx⟩ : G') : G' ⧸ H.subgroupOf G'), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((⟨φ x, h1 x hx⟩ : P) : P ⧸ N.addSubgroupOf P) = (p : _)`. Use `congr 1`. Conclude with `Subtype.ext hφ`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem relIndex_eq_of_map {G M : Type*} [Group G] [AddCommGroup M] (H G' : Subgroup G)
     (N P : AddSubgroup M) (φ : G → M) (h1 : ∀ x ∈ G', φ x ∈ P) (h2 : ∀ p ∈ P, ∃ x ∈ G', φ x = p)
@@ -56,31 +56,29 @@ theorem relIndex_eq_of_map {G M : Type*} [Group G] [AddCommGroup M] (H G' : Subg
     exact Subtype.ext hφ
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_endL_le hB₀ hA₀ h𝔭`. Take `⟨k₁, hk₁⟩` from `nSub_le_glSub hA₀ hB₀ h𝔭`. Use `⟨r, fun c hc => ⟨max k₁ 1, fun k hk => ?_⟩⟩` and prove the remaining obligations. Establish `hk1 : 1 ≤ k` using `le_trans (le_max_right _ _) hk`. Establish `hle : endL (locF 𝔭 B₀) (extP K 𝔭 ^ (k + c) • locF 𝔭 B₀) ≤ endL (locF 𝔭 A₀) (extP K 𝔭 ^ k • locF 𝔭 A₀)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `D hD`. Use `hr k ?_` and prove the remaining obligations. Introduce `x hx`. Conclude with `smul_anti 𝔭 _ (by omega) (hD x hx)`. Establish `hlift : ∀ D ∈ endL (locF 𝔭 A₀) (extP K 𝔭 ^ k • locF 𝔭 A₀), ∃ X ∈ nSub (locF 𝔭 A₀) 𝔭 k, (X : V →ₗ[K] V) - LinearMap.id = D`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `D hD`. Establish `hD1 : D ∈ endL (locF 𝔭 A₀) (extP K 𝔭 • locF 𝔭 A₀)`. Introduce `x hx`. Use `smul_anti 𝔭 (locF 𝔭 A₀) hk1 (hD x hx)` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨X, hX, hXg⟩` from `exists_equiv_of_mem_endL hA₀ h𝔭 hD1`. Use `⟨X, mem_nSub.2 ⟨hXg, fun x hx => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hX, add_sub_cancel_left]`. Conclude with `hD x hx`. Use extensionality with `v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hX]`. Establish `hnsub : nSub (locF 𝔭 B₀) 𝔭 (k + c) ≤ nSub (locF 𝔭 A₀) 𝔭 k`. Introduce `X hXm`. Take `⟨hXB, hX⟩` from `mem_nSub.1 hXm`. Establish `hD : (X : V →ₗ[K] V) - LinearMap.id ∈ endL (locF 𝔭 B₀) (extP K 𝔭 ^ (k + c) • locF 𝔭 B₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `x hx`. Simplify using `using hX x hx`. Take `⟨X', hX'm, hX'⟩` from `hlift _ (hle hD)`. Establish `hXX : X' = X`. Use extensionality with `v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `LinearMap.congr_fun hX' v` as an intermediate fact. Simplify using `using this`. Rewrite using `[← hXX]`. Conclude with `hX'm`. Use `⟨hnsub, hle, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Use `relIndex_eq_of_map _ _ _ _ (fun X => (X : V →ₗ[K] V) - LinearMap.id) (fun X hX => ?_) (fun D hD => ?_) (fun x hx y hy => ?_)` and prove the remaining obligations. Introduce `v hv`. Simplify using `using (mem_nSub.1 hX).2 v hv`. Take `⟨X, hXm, hX⟩` from `hlift D hD`. Conclude with `⟨X, hXm, hX⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxB : x ∈ glSub (locF 𝔭 B₀)` using `hk₁ k (le_trans (le_max_left _ _) hk) hx`. Establish `hyB : y ∈ glSub (locF 𝔭 B₀)` using `hk₁ k (le_trans (le_max_left _ _) hk) hy`. Establish `hxyB : x⁻¹ * y ∈ glSub (locF 𝔭 B₀)` using `mul_mem (inv_mem hxB) hyB`. Establish `e1 : ∀ v : V, x (x⁻¹ v) = v` using `fun v => by`. Rewrite using `[← LinearEquiv.mul_apply, mul_inv_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Both sides reduce to the same expression. Rewrite using `[mem_nSub]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h⟩ v hv`. Establish `h'` using `apply_mem_smul hxB _ (h v hv)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : x ((x⁻¹ * y) v - v) = y v - x v`. Rewrite using `[map_sub, LinearEquiv.mul_apply, e1]`. Rewrite `h'` using `[e2]`. Simplify using `using h'`. Introduce `h`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hxyB, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h'` using `apply_mem_smul (inv_mem hxB) _ (h v hv)`. Establish `e2 : x⁻¹ ((((y : V →ₗ[K] V) - LinearMap.id) - ((x : V →ₗ[K] V) - LinearMap.id) : V →ₗ[K] V) v) = (x⁻¹ * y) v - v`. Simplify using `only [LinearMap.sub_apply, LinearEquiv.coe_coe, LinearMap.id_apply, sub_sub_sub_cancel_right, map_sub, LinearEquiv.mul_apply]`. Rewrite using `[← LinearEquiv.mul_apply x⁻¹ x, inv_mul_cancel]`.
-
-Both sides reduce to the same expression. Rewrite `h'` using `[e2]`. Conclude with `h'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_nSub_eq {A₀ B₀ : Submodule (𝓞 K) V}
     (hA₀ : Submodule.IsLattice K A₀) (hB₀ : Submodule.IsLattice K B₀) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) :
@@ -162,29 +160,27 @@ theorem relIndex_nSub_eq {A₀ B₀ : Submodule (𝓞 K) V}
       exact h'
 
 /- English proof (translation)
-Take `⟨a, b, e, c0, hc0, he, hA, hB, hbe⟩` from `exists_smith hA₀ hB₀ h𝔭`. Establish `hinj` using `IsFractionRing.injective (𝓞 K) K`. Use `set eK : Fin (finrank K V) → K := fun i => algebraMap (𝓞 K) K (e i) with heKdef`. Use `set c0K : K := algebraMap (𝓞 K) K c0 with hc0Kdef`. Establish `heK : ∀ i, eK i ≠ 0` using `fun i => (map_ne_zero_iff _ hinj).2 (he i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0K : c0K ≠ 0` using `(map_ne_zero_iff _ hinj).2 hc0`. Establish `hbeK : ∀ i, c0K • b i = eK i • a i` using `fun i => by`. Simplify using `only [c0K, eK, algebraMap_smul]`. Conclude with `hbe i`. Establish `hab : ∀ l, a l = (c0K / eK l) • b l` using `fun l => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_eq_mul_inv, mul_comm, ← smul_smul, hbeK l, smul_smul, inv_mul_cancel₀ (heK l), one_smul]`. Establish `hba : ∀ j, b j = (eK j / c0K) • a j` using `fun j => by`. Rewrite using `[div_eq_mul_inv, mul_comm, ← smul_smul, ← hbeK j, smul_smul, inv_mul_cancel₀ hc0K, one_smul]`. Establish `key : ∀ (D : V →ₗ[K] V) i j, LinearMap.toMatrix b b D i j * eK i = eK j * LinearMap.toMatrix a a D i j`. Introduce `D i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : D (a j) = ∑ l, (LinearMap.toMatrix a a D l j * (c0K / eK l)) • b l` using `by conv_lhs => rw [← a.sum_repr (D (a j))]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.toMatrix_apply, ← smul_smul, ← hab l]`. Rewrite using `[LinearMap.toMatrix_apply b b, hba j, map_smul, h2, map_smul, Finsupp.smul_apply, map_sum, Finsupp.finset_sum_apply]`. Simplify using `only [map_smul, Basis.repr_self, Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Clear denominators, using `[heK i, hc0K]` for the nonvanishing conditions. Set `φA : (V →ₗ[K] V) →+ Matrix (Fin (finrank K V)) (Fin (finrank K V)) K` to `(LinearMap.toMatrix a a).toLinearMap.toAddMonoidHom`. Establish `hφA : Function.Surjective φA` using `(LinearMap.toMatrix a a).surjective`. Establish `hEA : endL (locF 𝔭 A₀) (extP K 𝔭 ^ k • locF 𝔭 A₀) = (matL 𝔭 k (fun _ _ => (1 : K)) (fun _ _ => 1)).comap φA`. Use extensionality with `D`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[AddSubgroup.mem_comap, ← hA, mem_endL_iff a h𝔭]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Conclude with `⟨_, h i j, by simp [φA]⟩`. Introduce `h i j`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw, hw'⟩` from `h i j`. Simplify using `only [one_mul, φA] at hw'`. Rewrite using `[show LinearMap.toMatrix a a D i j = w from hw']`. Conclude with `hw`. Establish `hEB : endL (locF 𝔭 B₀) (extP K 𝔭 ^ (k + c) • locF 𝔭 B₀) = (matL 𝔭 (k + c) (fun _ j => eK j) (fun i _ => eK i)).comap φA`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `D`. Rewrite using `[AddSubgroup.mem_comap, ← hB, mem_endL_iff b h𝔭]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Use `⟨_, h i j, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [φA, LinearEquiv.coe_toLinearMap, LinearMap.toAddMonoidHom_coe]`. Rewrite using `[← key, mul_comm]`. Introduce `h i j`. Take `⟨w, hw, hw'⟩` from `h i j`. Simplify using `only [φA, LinearEquiv.coe_toLinearMap, LinearMap.toAddMonoidHom_coe] at hw'`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hw'` using `[← key, mul_comm]`. Rewrite using `[mul_left_cancel₀ (heK i) hw']`. Conclude with `hw`. Rewrite `hle`, the goal using `[hEA, hEB]`. Establish `hle' : matL 𝔭 (k + c) (fun _ j => eK j) (fun i _ => eK i) ≤ matL 𝔭 k (fun _ _ => (1 : K)) (fun _ _ => 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `M hM`. Take `⟨D, rfl⟩` from `hφA M`. Conclude with `hle hM`. Rewrite using `[AddSubgroup.relIndex_comap, AddSubgroup.map_comap_eq_self_of_surjective hφA]`. Establish `hmat` using `relIndex_matL hK hF h𝔭 (fun _ j => eK j) (fun i _ => eK i) (fun _ j => ⟨algebraMap_mem_pK 𝔭 _, heK j⟩) (fun i _ => ⟨algebraMap_mem_pK 𝔭 _, heK i⟩) k c hle'`.
-
-Rewrite `hmat` using `[Finset.prod_comm]`. Establish `hP : (∏ i : Fin (finrank K V), ∏ _j : Fin (finrank K V), nO 𝔭 (eK i)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => Finset.prod_ne_zero_iff.2 fun _ _ => nO_ne_zero hK hF h𝔭 (algebraMap_mem_pK 𝔭 _) (heK i)`. Rewrite `hmat` using `[mul_comm _ (Ideal.absNorm 𝔭 ^ _)]`. Simplify `Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero hP) hmat` using `[Fintype.card_fin]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem relIndex_endL (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {A₀ B₀ : Submodule (𝓞 K) V}
     (hA₀ : Submodule.IsLattice K A₀) (hB₀ : Submodule.IsLattice K B₀) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {k c : ℕ}
@@ -267,9 +263,9 @@ theorem relIndex_endL (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF :
   simpa [Fintype.card_fin] using Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero hP) hmat
 
 /- English proof (translation)
-Take `⟨c₀, hc₀⟩` from `relIndex_nSub_eq hA₀ hB₀ h𝔭`. Use `⟨c₀, fun c hc => ?_⟩` and prove the remaining obligations. Take `⟨k₀, hk₀⟩` from `hc₀ c hc`. Use `⟨k₀, fun k hk => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `hk₀ k hk`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h1, h3.trans (relIndex_endL hK hF hA₀ hB₀ h𝔭 h2)⟩`.
+Supply the required witnesses or components.
 -/
 theorem relIndex_nSub (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {A₀ B₀ : Submodule (𝓞 K) V}
     (hA₀ : Submodule.IsLattice K A₀) (hB₀ : Submodule.IsLattice K B₀) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) :

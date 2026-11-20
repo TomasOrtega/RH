@@ -24,15 +24,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Introduce `T hT c x k hk hxc hexp`. Establish `hs : W.s = 1` using `hA.2.1`. Establish `hp : (PD.p : LL) ≠ 0`. Introduce `h0`. Use `W.v_l` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[h0, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe this`. Take `⟨M, h, hJ⟩` from `jumpsLet_exists W hA hD T hT`. Establish `h5T` using `(h5 T M h hT hJ).2.2 x ⟨k, hk⟩`. Use `h5T.2 fun i ζ hQ k' hk' => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hic : i = c`. Substitute `hic` using the available equality. Establish `hζ` using `qroot_prim W hs hp hQ`. Use `fd_ιDi W hA hD T hT i` as an intermediate fact. Conclude with `mem_vanI_at W hFr T i ζ ((h1 T hT).2 i) (h3 T hT) (h4 T hT i 0 ζ (by rwa [zero_add, pow_one])) (W.Q ^ k' • x) hk' (by rw [smul_comm, hxc]) k' (shift_exp W hs hp T i hζ x k hk (hexp ζ hζ) k' hk')`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl : (letE c : LetA O n) ∈ Formalism.MainNotions.DeltaInvariantLattices.vanI W i ζ k'` using `by show W.lev i ζ (letE c) ∈ Ideal.span {(PowerSeries.X : PowerSeries LL) ^ k'}`. Rewrite using `[W.lev_letter i ζ _ (by simp [letE, Pi.single_eq_of_ne hic])]`. Conclude with `Ideal.zero_mem _`. Establish `e1 : W.Q ^ k' • x = (letE c : LetA O n) • (W.Q ^ k' • x)` using `by rw [smul_comm, hxc]`. Rewrite using `[e1]`.
-
-Conclude with `Submodule.smul_mem_smul hl hk'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem memCrit_of_free [NeZero n] (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (hFr : IsFractionRing O LL)
     (h1 : Formalism.MainNotions.DeltaInvariantLattices.WachLatticeFree W) (h3 : Formalism.MainNotions.DeltaInvariantLattices.P3W W) (h4 : Formalism.MainNotions.WachCoordinates.LevelMapHodgeFiltration W)
@@ -65,7 +63,7 @@ theorem memCrit_of_free [NeZero n] (hA : Formalism.MainNotions.LiftingTheory.Cas
 end Pf
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.UnusedSlot80.neZero_finrank_max_unramified K MemCrit ((HW l).W K 1 LL hG) := by intro l _ K LL hG hCA h5l haveI := Formalism.MainNotions.UnusedSlot80.neZero_finrank_max_unramified K have hCW : Formalism.MainNotions.LiftingTheory.CaseA ((HW l).W K 1 LL hG) := …`.
+A detailed English derivation is pending.
 -/
 theorem memCritL_of (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h1f : Formalism.MainNotions.DeltaInvariantLattices.WachLatticeFreeGlobal D HW F) (h3 : Formalism.MainNotions.DeltaInvariantLattices.P3 D HW F Cm) (h4 : Formalism.MainNotions.DeltaInvariantLattices.P4 D HW F Cm)
@@ -88,7 +86,7 @@ namespace Formalism.MainNotions.UnusedSlot80
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.ArcLiftingSetup
 
 /- English proof (translation)
-The claim follows from `arc_coordinates_of_frobenius_levels D HW F Cm hA hA.2.1 hA.2.2.2.1 (lev0MprL_of D HW F Cm hA (Formalism.MainNotions.N.Pv.LocalLengthBound.memCritL_of D HW F Cm h1f hA.1 hA.2.1 hA.2.2.1 hA.2.2.2.1 h11))`.
+A detailed English derivation is pending.
 -/
 theorem arc_coordinates_final (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (hA : AdmArcA D HW F Cm) (h1f : Formalism.MainNotions.DeltaInvariantLattices.WachLatticeFreeGlobal D HW F) (h11 : Formalism.MainNotions.RamifiedCoefficientChains.adm11 D) :
@@ -97,7 +95,7 @@ theorem arc_coordinates_final (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA
     (lev0MprL_of D HW F Cm hA (Formalism.MainNotions.N.Pv.LocalLengthBound.memCritL_of D HW F Cm h1f hA.1 hA.2.1 hA.2.2.1 hA.2.2.2.1 h11))
 
 /- English proof (translation)
-The claim follows from `split_case_A_of_hypotheses D HW F Cm hA hArc hArc.2.1 h6 hArc.2.2.2.1 hArc.2.2.2.2.1 hArc.2.2.2.2.2.1 hWX hFont h23 h17 (lev0MprL_of D HW F Cm hArc (Formalism.MainNotions.N.Pv.LocalLengthBound.memCritL_of D HW F Cm h1f hArc.1 hArc.2.1 hArc.2.2.1 hArc.2.2.2.1 h11))`.
+A detailed English derivation is pending.
 -/
 theorem split_case_A_final (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (hA : AdmSplitA D HW F Cm) (hArc : AdmArcA D HW F Cm) (h1f : Formalism.MainNotions.DeltaInvariantLattices.WachLatticeFreeGlobal D HW F)

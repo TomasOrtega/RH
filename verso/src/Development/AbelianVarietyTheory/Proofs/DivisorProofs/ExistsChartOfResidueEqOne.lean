@@ -17,7 +17,7 @@ section Gen
 variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {N : ℕ}
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show spOver ψ ≫ (spOver φ ≫ z.1) = spOver (ψ.comp φ) ≫ z.1`. Rewrite using `[← Category.assoc, spOver_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsMap_comp {B C D : Type} [CommRing B] [Algebra R B] [CommRing C] [Algebra R C] [CommRing D]
     [Algebra R D] (φ : B →ₐ[R] C) (ψ : C →ₐ[R] D) (z : Tors G N B) :
@@ -27,21 +27,21 @@ theorem torsMap_comp {B C D : Type} [CommRing B] [Algebra R B] [CommRing C] [Alg
   rw [← Category.assoc, spOver_comp]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (MonObj.comp_mul _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem torsMap_mul {B C : Type} [CommRing B] [Algebra R B] [CommRing C] [Algebra R C] (φ : B →ₐ[R] C)
     (x y : Tors G N B) : torsMap φ (x * y) = torsMap φ x * torsMap φ y :=
   Subtype.ext (MonObj.comp_mul _ _ _)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (MonObj.comp_one _)`.
+A detailed English derivation is pending.
 -/
 theorem torsMap_one {B C : Type} [CommRing B] [Algebra R B] [CommRing C] [Algebra R C] (φ : B →ₐ[R] C) :
     torsMap φ (1 : Tors G N B) = 1 :=
   Subtype.ext (MonObj.comp_one _)
 
 /- English proof (translation)
-The claim follows from `map_inv ({ toFun := torsMap φ, map_one' := torsMap_one φ, map_mul' := torsMap_mul φ } : Tors G N B →* Tors G N C) x`.
+A detailed English derivation is pending.
 -/
 theorem torsMap_inv {B C : Type} [CommRing B] [Algebra R B] [CommRing C] [Algebra R C] (φ : B →ₐ[R] C)
     (x : Tors G N B) : torsMap φ x⁻¹ = (torsMap φ x)⁻¹ :=
@@ -49,9 +49,9 @@ theorem torsMap_inv {B C : Type} [CommRing B] [Algebra R B] [CommRing C] [Algebr
     Tors G N B →* Tors G N C) x
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hx : (x : PrimeSpectrum A) ⤳ IsLocalRing.closedPoint A` using `IsLocalRing.specializes_closedPoint x`. Use `(hx.map z.1.left.continuous).mem_open W.isOpen ?_` and prove the remaining obligations. Establish `hm` using `h ⟨IsLocalRing.closedPoint (IsLocalRing.ResidueField A), rfl⟩`. Rewrite `hm` using `[torsMap_val, Over.comp_left, spOver_left]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (spMap (IsLocalRing.residue A)).base (IsLocalRing.closedPoint (IsLocalRing.ResidueField A)) = IsLocalRing.closedPoint A` using `IsLocalRing.comap_closedPoint (IsLocalRing.residue A)`. Establish `hm' : z.1.left ((spMap (IsLocalRing.residue A)).base (IsLocalRing.closedPoint (IsLocalRing.ResidueField A))) ∈ W` using `hm`. Rewrite `hm'` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem range_subset_of_residue (W : G.left.Opens) (A : Type) [CommRing A] [IsLocalRing A] [Algebra R A]
     (z : Tors G N A)
@@ -80,9 +80,9 @@ section Chart
 variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {N : ℕ}
 
 /- English proof (translation)
-Take `⟨⟨ψ, hψ⟩, -⟩` from `hc`. Establish `hrκ : IsUnit (algebraMap R (IsLocalRing.ResidueField A) c.r)`. Rewrite using `[IsScalarTower.algebraMap_apply R A (IsLocalRing.ResidueField A)]`. Conclude with `hr.map _`. Set `φ : Localization.Away c.r →ₐ[R] IsLocalRing.ResidueField A` to `IsLocalization.liftAlgHom (M := Submonoid.powers c.r) (f := Algebra.ofId R (IsLocalRing.ResidueField A)) (by rintro ⟨_, n, rfl⟩; simpa using hrκ.pow n)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : Set.range (torsMap (φ.comp ψ) c.j).1.left ⊆ c.W` using `(c.bij _).mapsTo (Set.mem_univ (φ.comp ψ))`. Rewrite `h1` using `[← torsMap_comp, hψ, torsMap_one, ← hz]`. Establish `h2 : z ∈ {z : Tors G N A | Set.range z.1.left ⊆ c.W}` using `range_subset_of_residue c.W A z h1`. Take `⟨ψ₀, -, h⟩` from `(c.bij A).surjOn h2`. Conclude with `⟨ψ₀, h⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_chart_of_residue_eq_one {q : PrimeSpectrum R} (c : PreChart G N q) (hc : c.IsGrp)
     (A : Type) [CommRing A] [IsLocalRing A] [Algebra R A] (hr : IsUnit (algebraMap R A c.r)) (z : Tors G N A)
@@ -103,19 +103,17 @@ theorem exists_chart_of_residue_eq_one {q : PrimeSpectrum R} (c : PreChart G N q
 end Chart
 
 /- English proof (translation)
-Set `incl` to `IsScalarTower.toAlgHom R c'.C (Localization.AtPrime P)`. Set `u : Tors G N (Localization.AtPrime P)` to `torsMap incl c'.j`. Set `ρ` to `IsScalarTower.toAlgHom R (Localization.AtPrime P) (IsLocalRing.ResidueField (Localization.AtPrime P))`. Take `⟨r', ψ, z', hz'⟩` from `hlift (IsLocalRing.ResidueField (Localization.AtPrime P)) (torsMap ρ u)`. Establish `hu' : IsUnit (algebraMap R (Localization.AtPrime P) r')`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hn`. Establish `h0 : algebraMap R (IsLocalRing.ResidueField (Localization.AtPrime P)) r' = 0`. Rewrite using `[IsScalarTower.algebraMap_apply R (Localization.AtPrime P)]`. Conclude with `(IsLocalRing.residue_eq_zero_iff _).2 hn`. Establish `h2 : IsUnit (ψ (algebraMap R _ r'))` using `(IsLocalization.Away.algebraMap_isUnit r').map ψ`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[ψ.commutes, h0]`. Conclude with `not_isUnit_zero h2`. Set `lam : Localization.Away r' →ₐ[R] Localization.AtPrime P` to `IsLocalization.liftAlgHom (M := Submonoid.powers r') (f := Algebra.ofId R _) (by rintro ⟨_, n, rfl⟩; simpa using hu'.pow n)`. Set `t : Tors G N (Localization.AtPrime P)` to `torsMap lam z'`. Establish `ht : torsMap ρ (u * t⁻¹) = 1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[torsMap_mul, torsMap_inv, torsMap_comp lam ρ, (IsLocalization.algHom_subsingleton (Submonoid.powers r')).elim (ρ.comp lam) ψ, hz', mul_inv_cancel]`. Establish `hrA : IsUnit (algebraMap R (Localization.AtPrime P) c.r)`. Rewrite using `[IsScalarTower.algebraMap_apply R c'.C (Localization.AtPrime P)]`. Conclude with `(IsLocalization.AtPrime.isUnit_to_map_iff _ P _).2 hP`. Take `⟨ψ₀, hψ₀⟩` from `exists_chart_of_residue_eq_one c hc (Localization.AtPrime P) hrA (u * t⁻¹) ht`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Distinguish the cases in `hK : Nonempty (Localization.AtPrime P →ₐ[R] K)`. Take `⟨ψK⟩` from `hK`. Set `tK : Tors G N K` to `torsMap (ψK.comp lam) z'`. Take `⟨a, ha⟩` from `hf (s * tK)`. Use `⟨ψ₀ a, fun χ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : χ (ψ₀ a) = (χ.comp ψ₀) a` using `rfl`. Establish `e2 : torsMap χ t = tK`. Rewrite using `[torsMap_comp lam χ, (IsLocalization.algHom_subsingleton (Submonoid.powers r')).elim (χ.comp lam) (ψK.comp lam)]`. Rewrite using `[e1, ha, ← torsMap_comp ψ₀ χ, hψ₀, torsMap_mul, torsMap_inv, e2, ← torsMap_comp incl χ]`. Use `congr 1`.
-
-Rewrite using `[_root_.mul_comm (torsMap χ u), _root_.mul_assoc, _root_.mul_inv_cancel_left]`. Conclude with `⟨0, fun χ => (hK ⟨χ⟩).elim⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_localElem_of_lift {R K : Type} [CommRing R] [Field K] [Algebra R K] (G : Over (Sp R)) [GrpObj G]
     [IsCommMonObj G] (N : ℕ)

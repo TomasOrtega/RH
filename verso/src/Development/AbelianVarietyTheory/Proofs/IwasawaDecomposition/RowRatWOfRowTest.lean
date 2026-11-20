@@ -7,7 +7,7 @@ open GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl
 namespace GlobalTheory.Mem.LiteralAutomorphy
 
 /- English proof (translation)
-Introduce `H` and use `((StepW.of_all fun _ _ _ _ _ _ _ s => s.1 : StepW Start Pinned).trans H).trans (StepW.of_all fun _ _ _ _ _ _ _ G Z hX Wt z a b _ c d _ _ _ _ => G Z hX Wt z a b c d)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rowRatW_of_rowTest :
     (AtDat fun _ _ _ _ _ _ _ _ z => Formalism.IndefR.Rat.RowTest (z.R.toCx3 z.F)) → RowRatW :=

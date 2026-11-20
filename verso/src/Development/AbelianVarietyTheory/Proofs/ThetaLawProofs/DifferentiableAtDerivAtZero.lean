@@ -13,9 +13,9 @@ def derivAtZero (τ : ℂ) : ℂ := jacobiTheta₂' ((τ + 1) / 2) τ
 open Complex Filter in
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold Topology Real in
 /- English proof (translation)
-Establish `h1` using `jacobiTheta₂_add_left' (-((τ + 1) / 2)) τ`. Establish `h2` using `jacobiTheta₂_add_left (-((τ + 1) / 2) + τ) τ`. Rewrite `h1` using `[jacobiTheta₂_neg_left]`. Establish `e1 : -((τ + 1) / 2) + τ + 1 = (τ + 1) / 2` using `by ring`. Establish `e2 : -↑π * I * (τ + 2 * -((τ + 1) / 2)) = ↑π * I` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[e1, h1, e2, exp_pi_mul_I]`. Take the linear combination `h2 / 2`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem _root_.GlobalTheory.JacobiDeriv.jacobiTheta₂_half_period (τ : ℂ) : jacobiTheta₂ ((τ + 1) / 2) τ = 0 := by
   have h1 := jacobiTheta₂_add_left' (-((τ + 1) / 2)) τ
@@ -29,9 +29,9 @@ theorem _root_.GlobalTheory.JacobiDeriv.jacobiTheta₂_half_period (τ : ℂ) : 
 open Complex Filter in
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold Topology Real in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.thetaChar jacobiTheta₂`. Rewrite using `[← tsum_mul_left]`. Rewrite using `[← (Equiv.funUnique (Fin 1) ℤ).symm.tsum_eq]`. Use `congr 1`. Use extensionality with `n`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[jacobiTheta₂_term, dotProduct, Matrix.mulVec, ← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem _root_.GlobalTheory.JacobiDeriv.thetaChar_half_half (τ z : ℂ) :
     _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.thetaChar (g := 1) !![τ] ![1 / 2] ![1 / 2] ![z] =
@@ -48,9 +48,9 @@ theorem _root_.GlobalTheory.JacobiDeriv.thetaChar_half_half (τ z : ℂ) :
 open Complex Filter in
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold Topology Real in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.JacobiDeriv.derivAtZero jacobiTheta₂'`. Use `congr 1`. Use extensionality with `n`. Unfold `jacobiTheta₂'_term jacobiTheta₂_term`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨m, hm⟩` from `Int.even_mul_succ_self n`. Rewrite using `[Complex.exp_eq_exp_iff_exists_int]`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `hm' : ((n : ℂ) * (n + 1)) = (m : ℂ) + m` using `by exact_mod_cast hm`. Take the linear combination `(π * I) * hm'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma _root_.GlobalTheory.JacobiDeriv.derivAtZero_add_one (τ : ℂ) :
     _root_.GlobalTheory.JacobiDeriv.derivAtZero (τ + 1) = _root_.GlobalTheory.JacobiDeriv.derivAtZero τ := by
@@ -66,7 +66,7 @@ lemma _root_.GlobalTheory.JacobiDeriv.derivAtZero_add_one (τ : ℂ) :
   linear_combination (π * I) * hm'
 
 /- English proof (translation)
-Rewrite using `[jacobiTheta₂'_term, norm_mul, norm_jacobiTheta₂_term]`. Use `congr 1`. Simplify using `[abs_of_pos Real.pi_pos]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -81,11 +81,9 @@ theorem norm_term_eq (n : ℤ) (τ : ℂ) :
     ring
 
 /- English proof (translation)
-Rewrite using `[norm_term_eq, pow_one, mul_assoc]`. Establish `h0 : (0 : ℝ) ≤ n * (n + 1)`. Establish `: 0 ≤ n * (n + 1)`. Break down `le_or_gt 0 n with h | h` into its components or cases. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Check the signs of the components of the expression.
 
-Conclude with `mul_nonneg_of_nonpos_of_nonpos h.le (by omega)`. Conclude with `this` after adjusting the coercions. Use `gcongr`. Establish `h1` using `neg_abs_le (n : ℝ)`. Establish `h2 : π * (n * (n + 1)) * T ≤ π * (n * (n + 1)) * τ.im` using `mul_le_mul_of_nonneg_left hτ (mul_nonneg Real.pi_pos.le h0)`.
-
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h1 (mul_pos Real.pi_pos hT).le]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_term_le {T : ℝ} (hT : 0 < T) (n : ℤ) {τ : ℂ} (hτ : T ≤ τ.im) :
     ‖jacobiTheta₂'_term n ((τ + 1) / 2) τ‖ ≤
@@ -106,13 +104,13 @@ theorem norm_term_le {T : ℝ} (hT : 0 < T) (n : ℤ) {τ : ℂ} (hτ : T ≤ τ
 open Complex Filter in
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold Topology Real in
 /- English proof (translation)
-Establish `him : ((w + 1) / 2).im = w.im / 2` using `by simp`. Rewrite using `[jacobiTheta₂'_term, norm_mul, norm_jacobiTheta₂_term, him]`. Establish `h1 : ‖2 * (π : ℂ) * I * (n : ℂ)‖ = 2 * π * |(n : ℝ)|`. Simplify using `[abs_of_pos Real.pi_pos]`. Rewrite using `[h1, pow_one, ← mul_assoc, Int.cast_abs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `gcongr`. Establish `hz : |n| ≤ n ^ 2`. Use `Int.le_self_sq |n|` as an intermediate fact. Rewrite `this` using `[sq_abs]`. Then use the resulting hypothesis. Establish `hz' : (|n| : ℝ) ≤ (n : ℝ) ^ 2` using `by exact_mod_cast hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : 0 ≤ (n : ℝ) + |(n : ℝ)|`. Use `neg_abs_le (n : ℝ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hwy : 0 ≤ w.im - y` using `by linarith`. Rewrite `hn`, `hz'`, the goal using `[← Int.cast_abs]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[mul_nonneg hwy (by nlinarith : (0 : ℝ) ≤ (n : ℝ) ^ 2 + n), mul_nonneg hy hn, Real.pi_pos]`.
+A detailed English derivation is pending.
 -/
 private lemma norm_jacobiTheta₂'_term_half_period_le {y : ℝ} (n : ℤ) {w : ℂ} (hy : 0 ≤ y)
     (hw : y ≤ w.im) :
@@ -139,7 +137,7 @@ private lemma norm_jacobiTheta₂'_term_half_period_le {y : ℝ} (n : ℤ) {w : 
 open Complex Filter in
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold Topology Real in
 /- English proof (translation)
-The claim follows from `(hasSum_jacobiTheta₂'_term _ hw).tsum_eq.symm`.
+A detailed English derivation is pending.
 -/
 private lemma derivAtZero_eq_tsum_jacobiTheta₂'_term {w : ℂ} (hw : 0 < w.im) :
     _root_.GlobalTheory.JacobiDeriv.derivAtZero w = ∑' n : ℤ, jacobiTheta₂'_term n ((w + 1) / 2) w :=
@@ -148,11 +146,9 @@ private lemma derivAtZero_eq_tsum_jacobiTheta₂'_term {w : ℂ} (hw : 0 < w.im)
 open Complex Filter in
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold Topology Real in
 /- English proof (translation)
-Establish `hy : 0 < τ.im / 2` using `by linarith`. Establish `hU : IsOpen {w : ℂ | τ.im / 2 < w.im}` using `isOpen_lt continuous_const continuous_im`. Establish `hd : DifferentiableOn ℂ (fun w => ∑' n : ℤ, jacobiTheta₂'_term n ((w + 1) / 2) w) {w : ℂ | τ.im / 2 < w.im}`. Use `differentiableOn_tsum_of_summable_norm ((summable_pow_mul_jacobiTheta₂_term_bound (τ.im / 2 / 2) hy 1).mul_left (2 * π)) (fun n => ?_) hU (fun n w hw => norm_jacobiTheta₂'_term_half_period_le n hy.le (le_of_lt hw))` and prove the remaining obligations. Unfold `jacobiTheta₂'_term jacobiTheta₂_term`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `fun_prop`. Establish `hτU : τ ∈ {w : ℂ | τ.im / 2 < w.im}` using `by show τ.im / 2 < τ.im`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(hd.differentiableAt (hU.mem_nhds hτU)).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_lt continuous_const continuous_im).mem_nhds (show (0 : ℝ) < τ.im from hτ)] with w hw`.
-
-Conclude with `derivAtZero_eq_tsum_jacobiTheta₂'_term hw`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.JacobiDeriv.differentiableAt_derivAtZero {τ : ℂ} (hτ : 0 < τ.im) :
     DifferentiableAt ℂ _root_.GlobalTheory.JacobiDeriv.derivAtZero τ := by
@@ -176,23 +172,21 @@ theorem _root_.GlobalTheory.JacobiDeriv.differentiableAt_derivAtZero {τ : ℂ} 
 open Complex Filter in
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold Topology Real in
 /- English proof (translation)
-Establish `hg : (2 * π * I : ℂ) = ∑' n : ℤ, if n = -1 then 2 * π * I else 0`. Rewrite using `[tsum_ite_eq]`. Rewrite using `[hg]`. Use `Tendsto.congr (fun τ : ℍ => (derivAtZero_eq_tsum_jacobiTheta₂'_term τ.im_pos).symm) ?_` and prove the remaining obligations. Establish `him : Tendsto (fun τ : ℍ => τ.im) UpperHalfPlane.atImInfty atTop` using `tendsto_comap`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `tendsto_tsum_of_dominated_convergence ((summable_pow_mul_jacobiTheta₂_term_bound (1 / 2) one_pos 1).mul_left (2 * π)) (fun n => ?_) ?_` and prove the remaining obligations. Use `split_ifs with hn`. Substitute `hn` using the available equality. Use `tendsto_const_nhds.congr fun τ => ?_` and prove the remaining obligations. Establish `e : 2 * π * I * ((-1 : ℤ) : ℂ) * (((τ : ℂ) + 1) / 2) + π * I * ((-1 : ℤ) : ℂ) ^ 2 * τ = -(π * I)` using `by push_cast; ring`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [jacobiTheta₂'_term, jacobiTheta₂_term, e, exp_neg, exp_pi_mul_I]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Break down `eq_or_ne n 0 with h0 | h0` into its components or cases. Substitute `h0` using the available equality.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[jacobiTheta₂'_term]`. Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Establish `hpos : 0 < π * ((n : ℝ) ^ 2 + n)`. Establish `h1 : (1 : ℤ) ≤ n ^ 2 + n`. Break down `lt_or_gt_of_ne h0 with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `: n ≤ -2` using `by omega`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish `: (1 : ℝ) ≤ (n : ℝ) ^ 2 + n` using `by exact_mod_cast h1`. Check the signs of the components of the expression.
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `ht : Tendsto (fun τ : ℍ => 2 * π * |(n : ℝ)| * Real.exp (-(π * ((n : ℝ) ^ 2 + n) * τ.im))) UpperHalfPlane.atImInfty (𝓝 0)`. Use `(Real.tendsto_exp_atBot.comp (tendsto_neg_atTop_atBot.comp (him.const_mul_atTop hpos))).const_mul (2 * π * |(n : ℝ)|)` as an intermediate fact. Rewrite `this` using `[mul_zero]`. Conclude with `this.congr fun τ => by simp [Function.comp_def, mul_assoc]`. Use `ht.congr fun τ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hi : (((τ : ℂ) + 1) / 2).im = τ.im / 2` using `by simp`. Rewrite using `[jacobiTheta₂'_term, norm_mul, norm_jacobiTheta₂_term, hi]`. Simplify using `[abs_of_pos Real.pi_pos]`. Use `left`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Filter.eventually_iff, UpperHalfPlane.atImInfty_mem]`. Use `⟨1, fun τ hτ n => ?_⟩` and prove the remaining obligations. Use `norm_jacobiTheta₂'_term_half_period_le n zero_le_one hτ` as an intermediate fact. Evaluate the numerical expressions using `at this ⊢`.
-
-Conclude with `this`.
+Establish an intermediate fact. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.JacobiDeriv.tendsto_derivAtZero :
     Tendsto (fun τ : ℍ => _root_.GlobalTheory.JacobiDeriv.derivAtZero τ) UpperHalfPlane.atImInfty
@@ -249,7 +243,7 @@ def eighthPower (τ : ℍ) : ℂ := cexp (2 * π * I * τ) * derivAtZero τ ^ 8
 open Complex Filter in
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold Topology Real in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.JacobiDeriv.derivAtZero`. Rewrite using `[jacobiTheta₂'_functional_equation]`. Establish `h1 : -1 / (-τ)⁻¹ = τ` using `by field_simp`. Establish `h2 : ((-τ)⁻¹ + 1) / 2 / (-τ)⁻¹ = -((τ + 1) / 2) + 1` using `by field_simp; ring`. Rewrite using `[h1, h2, jacobiTheta₂'_add_left, jacobiTheta₂_add_left, jacobiTheta₂'_neg_left, jacobiTheta₂_neg_left, _root_.GlobalTheory.JacobiDeriv.jacobiTheta₂_half_period]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -268,17 +262,17 @@ private lemma derivAtZero_neg_inv (τ : ℂ) (hτ : τ ≠ 0) :
 open Complex Filter in
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold Topology Real in
 /- English proof (translation)
-Use extensionality with `τ`. Rewrite using `[ModularForm.SL_slash_apply, ModularGroup.denom_S, UpperHalfPlane.modular_S_smul]`. Unfold `_root_.GlobalTheory.JacobiDeriv.eighthPower`. Simplify using `only [UpperHalfPlane.coe_mk]`. Establish `hτ : (τ : ℂ) ≠ 0` using `τ.ne_zero`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set t : ℂ := (τ : ℂ) with ht`. Rewrite using `[derivAtZero_neg_inv t hτ]`. Establish `hc : ((-I * (-t)⁻¹) ^ (1 / 2 : ℂ)) ^ 8 = ((-t)⁻¹) ^ 4`. Establish `h` using `Complex.cpow_nat_inv_pow (-I * (-t)⁻¹) (n := 2) two_ne_zero`. Rewrite `h` using `[show ((2 : ℕ) : ℂ)⁻¹ = 1 / 2 by norm_num]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show (8 : ℕ) = 2 * 4 by rfl, pow_mul, h, mul_pow]`. Rewrite using `[show (-I) ^ 4 = (1 : ℂ) by rw [neg_pow, I_pow_four]; norm_num, one_mul]`. Establish `hE : cexp (-π * I * (((-t)⁻¹ + 1) / 2) ^ 2 / (-t)⁻¹) ^ 8 = cexp (8 * (-π * I * (((-t)⁻¹ + 1) / 2) ^ 2 / (-t)⁻¹))`. Rewrite using `[← Complex.exp_nat_mul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hsum : cexp (2 * π * I * (-t)⁻¹) * cexp (8 * (-π * I * (((-t)⁻¹ + 1) / 2) ^ 2 / (-t)⁻¹)) = cexp (2 * π * I * t)`. Rewrite using `[← Complex.exp_add, Complex.exp_eq_exp_iff_exists_int]`. Use `⟨-2, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hpow : ((-t)⁻¹) ^ 12 * t ^ 12 = 1`. Rewrite using `[← mul_pow, inv_neg, neg_mul, inv_mul_cancel₀ hτ]`. Evaluate the numerical expressions. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_neg, zpow_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = cexp (2 * π * I * t) * _root_.GlobalTheory.JacobiDeriv.derivAtZero t ^ 8 := by`. Rewrite using `[hE, hsum, hc, ← pow_add, hpow, inv_one, mul_one]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma eighthPower_slash_S :
     _root_.GlobalTheory.JacobiDeriv.eighthPower ∣[(12 : ℤ)] ModularGroup.S =
@@ -321,9 +315,9 @@ private lemma eighthPower_slash_S :
 open Complex Filter in
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold Topology Real in
 /- English proof (translation)
-Use extensionality with `τ`. Establish `hd : UpperHalfPlane.denom (Matrix.SpecialLinearGroup.toGL ((Matrix.SpecialLinearGroup.map (Int.castRingHom ℝ)) ModularGroup.T)) ↑τ = 1`. Simplify using `[UpperHalfPlane.denom, Matrix.SpecialLinearGroup.map_apply_coe, ModularGroup.coe_T]`. Rewrite using `[ModularForm.SL_slash_apply, hd, one_zpow, mul_one, UpperHalfPlane.modular_T_smul]`. Unfold `_root_.GlobalTheory.JacobiDeriv.eighthPower`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[UpperHalfPlane.coe_vadd, add_comm (((1 : ℝ) : ℂ)), Complex.ofReal_one, _root_.GlobalTheory.JacobiDeriv.derivAtZero_add_one, mul_add, Complex.exp_add, mul_one]`. Establish `: cexp (2 * π * I) = 1` using `Complex.exp_two_pi_mul_I`. Rewrite using `[this, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma eighthPower_slash_T :
     _root_.GlobalTheory.JacobiDeriv.eighthPower ∣[(12 : ℤ)] ModularGroup.T =
@@ -342,11 +336,11 @@ private lemma eighthPower_slash_T :
 open Complex Filter in
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold Topology Real in
 /- English proof (translation)
-Establish `hγ : γ ∈ Subgroup.closure {ModularGroup.S, ModularGroup.T}`. Rewrite using `[SpecialLinearGroup.SL2Z_generators]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hγ using Subgroup.closure_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Break down `hx with rfl | rfl` into its components or cases. Conclude with `eighthPower_slash_S`. Conclude with `eighthPower_slash_T`. Consider the case `one => exact SlashAction.slash_one _ _`. Consider the case `mul x y _ _ hx hy => rw [SlashAction.slash_mul, hx, hy]`.
+Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `inv x _ hx => conv_lhs => rw [← hx]`. Rewrite using `[← SlashAction.slash_mul, mul_inv_cancel, SlashAction.slash_one]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.JacobiDeriv.eighthPower_slash (γ : SL(2, ℤ)) :
     _root_.GlobalTheory.JacobiDeriv.eighthPower ∣[(12 : ℤ)] γ = _root_.GlobalTheory.JacobiDeriv.eighthPower := by
@@ -366,7 +360,7 @@ theorem _root_.GlobalTheory.JacobiDeriv.eighthPower_slash (γ : SL(2, ℤ)) :
 open Complex Filter in
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold Topology Real in
 /- English proof (translation)
-Simplify using `[Function.Periodic.qParam]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.JacobiDeriv.qParam_one (τ : ℂ) : Function.Periodic.qParam 1 τ = cexp (2 * π * I * τ) := by
   simp [Function.Periodic.qParam]
@@ -395,9 +389,9 @@ def eighthPowerForm : CuspForm 𝒮ℒ 12 where
 open Complex Filter in
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold Topology Real in
 /- English proof (translation)
-Repeatedly rewrite using `[_root_.GlobalTheory.JacobiDeriv.thetaChar_half_half]`. Establish `hθ : HasDerivAt (fun z : ℂ => jacobiTheta₂ (z + ((τ : ℂ) + 1) / 2) τ) (jacobiTheta₂' (0 + ((τ : ℂ) + 1) / 2) τ) 0` using `(hasDerivAt_jacobiTheta₂_fst _ τ.im_pos).comp_add_const _ _`. Establish `he : HasDerivAt (fun z : ℂ => cexp (π * I * ((τ : ℂ) / 4 + z + 1 / 2))) (cexp (π * I * ((τ : ℂ) / 4 + 0 + 1 / 2)) * (π * I)) 0`. Establish `h` using `((((hasDerivAt_id (0 : ℂ)).const_add ((τ : ℂ) / 4)).add_const (1 / 2)).const_mul (π * I)).cexp`. Simplify using `using h`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(HasDerivAt.deriv (he.mul hθ)).trans ?_` and prove the remaining obligations. Simplify using `only [zero_add, add_zero, _root_.GlobalTheory.JacobiDeriv.jacobiTheta₂_half_period]`. Unfold `_root_.GlobalTheory.JacobiDeriv.derivAtZero`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma deriv_thetaChar_half_half' (τ : ℍ) :
     deriv (fun z : ℂ => _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.thetaChar (g := 1) !![(τ : ℂ)] ![1 / 2] ![1 / 2] ![z]) 0 =
@@ -419,7 +413,7 @@ private lemma deriv_thetaChar_half_half' (τ : ℍ) :
 open Complex Filter in
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold Topology Real in
 /- English proof (translation)
-Rewrite using `[deriv_thetaChar_half_half', mul_pow, _root_.GlobalTheory.JacobiDeriv.eighthPower, ← Complex.exp_nat_mul]`. Use `congr 1`. Rewrite using `[Complex.exp_eq_exp_iff_exists_int]`. Use `⟨2, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -437,17 +431,17 @@ open Complex Filter in
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold Topology Real in
 
 /- English proof (translation)
-Establish `hΔ : CuspForm.discriminant ≠ 0`. Introduce `h`. Use `congrArg (fun f : CuspForm 𝒮ℒ 12 => f UpperHalfPlane.I) h` as an intermediate fact. Conclude with `ModularForm.discriminant_ne_zero UpperHalfPlane.I (by simpa using this)`. Establish `hrank : Module.finrank ℂ (CuspForm 𝒮ℒ 12) = 1` using `Module.finrank_eq_of_rank_eq CuspForm.rank_eq_one_of_weight_eq_twelve`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `(finrank_eq_one_iff_of_nonzero' _ hΔ).mp hrank _root_.GlobalTheory.JacobiDeriv.eighthPowerForm`. Establish `hpt : ∀ τ : ℍ, _root_.GlobalTheory.JacobiDeriv.eighthPower τ = c * ModularForm.discriminant τ`. Introduce `τ`. Use `congrArg (fun f : CuspForm 𝒮ℒ 12 => f τ) hc` as an intermediate fact. Establish `h2 : _root_.GlobalTheory.JacobiDeriv.eighthPowerForm τ = c * ModularForm.discriminant τ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this.symm`. Conclude with `h2`. Establish `hD : ∀ τ : ℍ, _root_.GlobalTheory.JacobiDeriv.derivAtZero τ ^ 8 = c * ∏' n : ℕ, (1 - ModularForm.eta_q n τ) ^ 24`. Introduce `τ`. Establish `h` using `hpt τ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[ModularForm.discriminant_eq_q_prod, _root_.GlobalTheory.JacobiDeriv.qParam_one, _root_.GlobalTheory.JacobiDeriv.eighthPower]`. Establish `hq : cexp (2 * π * I * τ) ≠ 0` using `Complex.exp_ne_zero _`. Apply `mul_left_cancel₀ hq` to reduce the goal to its premises. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlim1` using `_root_.GlobalTheory.JacobiDeriv.tendsto_derivAtZero.pow 8`. Establish `hlim2` using `ModularForm.tendsto_atImInfty_tprod_one_sub_eta_q_pow.const_mul c`. Establish `hc' : (2 * π * I) ^ 8 = c * 1` using `tendsto_nhds_unique hlim1 (hlim2.congr fun τ => (hD τ).symm)`. Introduce `τ`. Rewrite `*` using `[deriv_thetaChar_pow_eight_eq, hpt, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hc']`. Establish `hI : I ^ 8 = 1`. Rewrite using `[show (8 : ℕ) = 4 * 2 from rfl, pow_mul, I_pow_four, one_pow]`. Rewrite using `[mul_pow, mul_pow, hI, mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.JacobiDeriv.deriv_thetaChar_pow_eight : ∀ τ : UpperHalfPlane,
     (deriv (fun z : ℂ => _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.thetaChar (g := 1) !![(τ : ℂ)] ![1 / 2] ![1 / 2] ![z]) 0) ^ 8 =

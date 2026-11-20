@@ -23,11 +23,11 @@ namespace GlobalTheory.SecAdicSum
 open GlobalTheory.AbLaw GlobalTheory.AbLaw.Seesaw
 
 /- English proof (translation)
-Set `N : Submodule R (Fin a → R)` to `LinearMap.ker A.mulVecLin`. Take `⟨c, hc⟩` from `Ideal.exists_pow_inf_eq_pow_smul I N`. Use `⟨N.map ev, (IsNoetherian.noetherian N).map ev, ⟨v₀, hv₀, rfl⟩, fun i => ⟨v i, hv i, rfl⟩, fun n => ?_⟩` and prove the remaining obligations. Take `⟨S, hS⟩` from `h (n + c)`. Use `⟨S, fun T hT => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `m₁ : v₀ - ∑ i ∈ T, v i ∈ N` using `N.sub_mem hv₀ (N.sum_mem fun i _ => hv i)`. Establish `m₂ : v₀ - ∑ i ∈ T, v i ∈ I ^ (n + c) • (⊤ : Submodule R (Fin a → R))`. Rewrite using `[pi_eq_sum_univ (v₀ - ∑ i ∈ T, v i)]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem_smul (Ideal.pow_le_pow_right (Nat.le_succ _) (hS T hT k)) Submodule.mem_top`. Establish `m₃` using `(hc (n + c) (Nat.le_add_left _ _)).le ⟨m₂, m₁⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `m₃` using `[Nat.add_sub_cancel]`. Rewrite using `[← map_sum, ← map_sub, ← Submodule.map_smul'']`. Conclude with `⟨_, Submodule.smul_mono le_rfl inf_le_right m₃, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sumI_of_ker {R : Type} [CommRing R] [IsNoetherianRing R] (I : Ideal R) {a b : ℕ}
     (A : Matrix (Fin b) (Fin a) R) {E Ix : Type} [AddCommGroup E] [Module R E] (ev : (Fin a → R) →ₗ[R] E)
@@ -54,11 +54,11 @@ variable {X X' : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R'] {f : X ⟶
   (P : Perf f M)
 
 /- English proof (translation)
-Establish `h : IsPullback (𝟙 X) f f (Spec.map (CommRingCat.ofHom (RingHom.id R)))`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id]`. Conclude with `IsPullback.of_horiz_isIso ⟨by simp⟩`. Take `⟨E, hE⟩` from `P.sec R (RingHom.id R) X (𝟙 X) f h`. Establish `le : ∀ j : PUnit → M.ι, (M.pull (𝟙 X)).U j ≤ M.U (j PUnit.unit)` using `fun j y hy => Set.mem_iInter.1 hy PUnit.unit`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `t : LB.Sec (M.pull (𝟙 X))` to `⟨fun j => AbLaw.rs X (le j) (s.f (j PUnit.unit)), fun j j' => fn_ext fun y hy => by`. Establish `hm : y ∈ M.U (j PUnit.unit) ⊓ M.U (j' PUnit.unit)` using `⟨le j hy.1, le j' hy.2⟩`. Use `((gs_res (𝟙 X) y _ hy _).trans (gs_res (𝟙 X) y _ hy.1 _)).trans (Eq.trans ?_ ((gs_mul (𝟙 X) y _ hy _ _).trans (congrArg₂ (· * ·) ((gs_unit (𝟙 X) y _ hy _).trans (congrArg Units.val (gm_linComb M _ _ (𝟙 X) y j j' hy.1 hy.2))) ((gs_res (𝟙 X) y _ hy _).trans (gs_res (𝟙 X) y _ hy.2 _ …` and prove the remaining obligations. Rewrite using `[Fintype.prod_unique, zpow_one]`. Conclude with `(gs_res (𝟙 X) y _ hm _).symm.trans ((congrArg (gs (𝟙 X) y _) (s.compat _ _)).trans ((gs_mul (𝟙 X) y _ hm _ _).trans (congrArg₂ (· * ·) (gs_unit (𝟙 X) y _ hm _) (gs_res (𝟙 X) y _ hm _))))⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, hv⟩` from `E.surjective t`. Use `⟨v.1, v.2, fun i => ?_⟩` and prove the remaining obligations. Establish `e` using `hE v i`. Rewrite `e` using `[hv]`. Conclude with `(AbLaw.rs_rs _ _ _).symm.trans e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_vec (s : LB.Sec M) :
     ∃ v : Fin P.a → R, P.D₀.mulVec v = 0 ∧ ∀ i, AbLaw.rs X (P.le i) (s.f (P.ch i)) = loc₀ P v i := by
@@ -84,9 +84,9 @@ theorem exists_vec (s : LB.Sec M) :
   exact (AbLaw.rs_rs _ _ _).symm.trans e
 
 /- English proof (translation)
-Take `⟨E, hE⟩` from `P.sec R' g X' π f' h`. Establish `k₁ : (P.D₀.map g).mulVec (g ∘ v) = 0` using `funext fun j => (RingHom.map_mulVec g _ _ j).symm.trans ((congrArg g (congrFun hv j)).trans (map_zero g))`. Use `congrArg Subtype.val (E.injective (a₁ := ⟨_, k₁⟩) (a₂ := ⟨0, Matrix.mulVec_zero _⟩) ?_)` and prove the remaining obligations. Use `Seesaw.sec_ext _ _ (fun i => π ⁻¹ᵁ P.W i) (fun i _ => P.ch i) (fun i => le_pull M π (P.le i)) (fun y => exists_mem P (π y)) fun i => ?_` and prove the remaining obligations. Use `(hE _ i).trans (Eq.trans ?_ (hE _ i).symm)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(loc_comp P h v i).trans (Eq.trans (fn_ext (b := 0) fun y hy => ?_) (by simp))` and prove the remaining obligations. Use `(gs_pull (𝟙 X') π y _ hy _).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp, h0 i y hy, gs_eq (𝟙 X') y (π ⁻¹ᵁ P.W i) hy, map_zero, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_eq_zero {g : R →+* R'} {π : X' ⟶ X} {f' : X' ⟶ Spec (CommRingCat.of R')}
     (h : IsPullback π f' f (Spec.map (CommRingCat.ofHom g))) (v : Fin P.a → R) (hv : P.D₀.mulVec v = 0)
@@ -103,7 +103,7 @@ theorem comp_eq_zero {g : R →+* R'} {π : X' ⟶ X} {f' : X' ⟶ Spec (CommRin
   rw [Category.id_comp, h0 i y hy, gs_eq (𝟙 X') y (π ⁻¹ᵁ P.W i) hy, map_zero, map_zero]
 
 /- English proof (translation)
-Simplify using `only [loc₀, Pi.sub_apply, Finset.sum_apply, map_sub, map_sum, sub_mul, Finset.sum_mul, Finset.sum_sub_distrib]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem loc₀_sub_sum {Ix : Type} (v₀ : Fin P.a → R) (v : Ix → Fin P.a → R) (T : Finset Ix) (i : P.I) :
     loc₀ P (v₀ - ∑ j ∈ T, v j) i = loc₀ P v₀ i - ∑ j ∈ T, loc₀ P (v j) i := by
@@ -118,7 +118,7 @@ variable {X Y Z : Scheme.{0}} {L : LB Y} {K : Type} [Fintype K] {φ : K → (X �
   {f : X ⟶ Spec (CommRingCat.of R)} (P : Perf f (LB.LinComb L φ ε))
 
 /- English proof (translation)
-Rewrite using `[← h i]`. Conclude with `(gs_res r z (P.le i) hi _).trans (sec_trans s r z (P.le i hi) (hJ.mem φ r))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_loc₀ {s : LB.Sec (LB.LinComb L φ ε)} {v : Fin P.a → R}
     (h : ∀ i, AbLaw.rs X (P.le i) (s.f (P.ch i)) = loc₀ P v i) (r : Z ⟶ X) (z : Z) {i : P.I} (hi : r z ∈ P.W i)
@@ -130,7 +130,7 @@ theorem gs_loc₀ {s : LB.Sec (LB.LinComb L φ ε)} {v : Fin P.a → R}
 end
 
 /- English proof (translation)
-Establish `w : b.left ≫ B.hom = 𝟙 _ ≫ Spec.map (CommRingCat.ofHom ((algebraMap (FractionRing R) F).comp (algebraMap R (FractionRing R))))`. Rewrite using `[Over.w b, Category.id_comp, CommRingCat.ofHom_comp, Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[gs_eq b.left z W hz, app_cst w W c]`. Conclude with `TopCat.Presheaf.germ_res_apply (TF (R := R) F).left.presheaf _ z hz _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_cst_point {R : Type} [CommRing R] [IsDomain R] {F : Type} [Field F] [Algebra (FractionRing R) F]
     {B : Over (Spec (CommRingCat.of R))} (b : TF (R := R) F ⟶ B) (z : (TF (R := R) F).left) (W : B.left.Opens)
@@ -144,21 +144,21 @@ theorem gs_cst_point {R : Type} [CommRing R] [IsDomain R] {F : Type} [Field F] [
   exact TopCat.Presheaf.germ_res_apply (TF (R := R) F).left.presheaf _ z hz _
 
 /- English proof (translation)
-Introduce `_ R _ _ _ I hR D F _ _ _ K _ φ ε Ix n n₀ hS b τ _ x x₀ hx`. Use `hR.1` as an intermediate fact. Use `D.toPre.P.isAb.smooth` as an intermediate fact. Establish `hL` using `D.toPre.P.isLB`. Take `⟨P⟩` from `GlobalTheory.T.nonempty_perfectSectionsComplex_of_noetherian R _ D.toPre.P.A.hom inferInstance (GlobalTheory.AbProj.isProjBy_of_isPullback D.toPre.P (IsPullback.id_horiz _)) _ (LB.isLB_linComb hL φ ε)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose v hv hv' using fun i => exists_vec P (n i)`. Take `⟨v₀, hv₀, hv₀'⟩` from `exists_vec P n₀`. Take `⟨z⟩` from `CoefBasic.exists_pt (R := R) (F := F)`. Take `⟨J, hJ⟩` from `CoefBasic.exists_good' hL z`. Take `⟨i₀, hi₀⟩` from `exists_mem P (b.left z)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `t` to `trF φ ε b.left z (P.ch i₀) (fun k => J (b.left ≫ φ k)) * val τ (𝟙 _) z J`. Use `choose y hy using fun k => CoefBasic.cstH_surj z (gs b.left z _ (P.u k i₀) * (t⁻¹).val)`. Use `letI : Module R F := Module.compHom F (algebraMap R (FractionRing R))`. Set `ev : (Fin P.a → R) →ₗ[R] F` to `Fintype.linearCombination R y`. Establish `key : ∀ (s : LB.Sec (LB.LinComb D.toPre.P.L φ ε)) (w : Fin P.a → R) (c : F), (∀ i, AbLaw.rs _ (P.le i) (s.f (P.ch i)) = loc₀ P w i) → sval s b.left z J = UT.cst F z c * (val τ (𝟙 _) z J).val → c = ev w` using `fun s w c h₁ h₂ => by`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `gs_loc₀ P h₁ b.left z hi₀ hJ`. Rewrite `e` using `[h₂, mul_left_comm, ← Units.val_mul, CoefBasic.cst_eq]`. Use `CoefBasic.cstH_inj (R := R) z ?_` and prove the remaining obligations. Establish `e' : CoefBasic.cstH z c = gs b.left z _ (loc₀ P w i₀) * (t⁻¹).val` using `(Units.eq_mul_inv_iff_mul_eq t).2 e.symm`. Establish `hs : ∀ a : Fin P.a → Γ(D.toPre.P.A.left, P.W i₀), gs b.left z _ (∑ k, a k) = ∑ k, gs b.left z _ (a k)` using `fun a => by simp only [gs_eq b.left z _ hi₀, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e', loc₀, hs, Finset.sum_mul]`. Use `Eq.trans (Finset.sum_congr rfl fun k _ => ?_) (map_sum _ (fun k => w k • y k) _).symm` and prove the remaining obligations. Rewrite using `[gs_mul b.left z _ hi₀, gs_cst_point b z _ hi₀, _root_.mul_assoc, ← hy, ← map_mul, ← Algebra.smul_def]`. Both sides reduce to the same expression. Take `rfl : x = fun i => ev (v i)` from `funext fun i => key _ _ _ (hv' i) ((hx z J hJ).1 i)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl : x₀ = ev v₀` from `key _ _ _ hv₀' (hx z J hJ).2`. Use `sumI_of_ker I P.D₀ ev v v₀ hv hv₀ fun e => ?_` and prove the remaining obligations. Take `⟨S, hS⟩` from `hS e`. Use `⟨S, fun T hT k => Ideal.Quotient.eq_zero_iff_mem.1 (congrFun (comp_eq_zero P (IsPullback.of_hasPullback D.toPre.P.A.hom (thick R I e)) (v₀ - ∑ i ∈ T, v i) ?_ fun i p hp => ?_) k)⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVec_sub, Matrix.mulVec_sum, hv, hv₀, Finset.sum_const_zero, sub_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨J', hJ'⟩` from `CoefBasic.exists_good' hL p`. Take `⟨h₁, h₂⟩` from `hS _ (𝟙 _) p J' hJ'`. Rewrite `h₁`, `h₂` using `[Category.id_comp]`. Establish `h₃` using `h₂.trans (Finset.sum_subset hT fun j _ hj => h₁ j hj)`. Establish `e₀` using `gs_loc₀ P hv₀' _ p hp hJ'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₁` using `fun j => gs_loc₀ P (hv' j) _ p hp hJ'`. Rewrite `e₀` using `[gs_eq _ p _ hp]`. Simplify using `only [gs_eq _ p _ hp] at e₁`. Rewrite using `[loc₀_sub_sum, gs_eq _ p _ hp, map_sub, map_sub, map_sum, map_sum, e₀, Finset.sum_congr rfl fun j _ => e₁ j, ← Finset.mul_sum]`. Conclude with `sub_eq_zero.2 (congrArg _ h₃)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sumF_of_sum_on_thickenings : LL → AllD fun {R} _ _ {I} D F _ _ => ∀ (K : Type) [Fintype K] (φ : K → (D.toPre.P.A.left ⟶ D.toPre.P.A.left)) (ε : K → ℤ) (Ix : Type) (n : Ix → LB.Sec (LB.LinComb D.toPre.P.L φ ε)) (n₀ : LB.Sec (LB.LinComb D.toPre.P.L φ ε)), (∀ e : ℕ, ∃ S : Finset Ix, ∀ (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e D.toPre.P.A).left) (z : Z) (J), Good D.toPre.P.L z J → (∀ i ∉ S, sval (n i) (r ≫ (D.toPre.prBe I e).left) z J = 0) ∧ sval n₀ (r ≫ (D.toPre.prBe I e).left) z J = ∑ i ∈ S, sval (n i) (r ≫ (D.toPre.prBe I e).left) z J) → ∀ (b : TF (R := R) F ⟶ D.toPre.P.A) (τ : LB.Gen (LB.LinComb D.toPre.P.L (fun i => b.left ≫ φ i) ε)), τ.IsGen → ∀ (x : Ix → F) (x₀ : F), (∀ z J, Good D.toPre.P.L z J → (∀ i, sval (n i) b.left z J = cst F z (x i) * (val τ (𝟙 _) z J).val) ∧ sval n₀ b.left z J = cst F z x₀ * (val τ (𝟙 _) z J).val) → SumF I F x x₀ := by
   intro _ R _ _ _ I hR D F _ _ _ K _ φ ε Ix n n₀ hS b τ _ x x₀ hx

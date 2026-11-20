@@ -20,7 +20,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PDivGroup.CotDim
 
 /- English proof (translation)
-Set `f : (A ⧸ I) →ₗ[k] (A ⧸ J)` to `(Ideal.Quotient.factorₐ k hIJ).toLinearMap`. Establish `hf : Function.Surjective f` using `Ideal.Quotient.factor_surjective hIJ`. Use `LinearMap.finrank_range_le f` as an intermediate fact. Rewrite `this` using `[LinearMap.range_eq_top.2 hf, finrank_top]`. Then use the resulting hypothesis.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem quot_finrank_le {k A : Type} [Field k] [CommRing A] [Algebra k A] [Module.Finite k A]
     {I J : Ideal A} (hIJ : I ≤ J) : Module.finrank k (A ⧸ J) ≤ Module.finrank k (A ⧸ I) := by
@@ -30,7 +30,7 @@ theorem quot_finrank_le {k A : Type} [Field k] [CommRing A] [Algebra k A] [Modul
   rwa [LinearMap.range_eq_top.2 hf, finrank_top] at this
 
 /- English proof (translation)
-Take `⟨q⟩ : Nonempty (PrimeSpectrum k)` from `inferInstance`. Establish `h` using `G.rank_eq 1 q`. Rewrite `h` using `[Module.rankAtStalk_eq_finrank_of_free]`. Simplify using `using h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finrank_level_one {p : ℕ} {k : Type} [Field k] (G : PDivGroup p k) :
     Module.finrank k (G.A 1) = p ^ G.height := by
@@ -44,15 +44,15 @@ end GlobalTheory.PDivGroup.CotDim
 open GlobalTheory.PDivGroup.CotDim in
 
 /- English proof (translation)
-Establish `hp : (p : k) = 0` using `CharP.cast_eq_zero k p`. Establish `hp2 : 2 ≤ p` using `(Fact.out : p.Prime).two_le`. Establish `hdimD` using `finrank_level_one Γ.dual`. Establish `hmulP : Function.Injective (Γ.mulP 1)` using `fun a b e => by`. Use `CartierDual.eq_of_forall_apply (R := k) fun φ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ψ, rfl⟩` from `Γ.dual_mulP_surjective 1 φ`. Express the relevant statement in the definitionally equal form `ψ.ofConv (Γ.mulP 1 a) = ψ.ofConv (Γ.mulP 1 b)`. Rewrite using `[e]`. Establish `hord` using `finrank_eq_ker_mul_range k (Γ.dual.A 1) _ ((relFrob hp Γ.dual).app 1)`. Establish `haD : p ^ Module.finrank k (Cot k (Γ.dual.A 1)) ≤ Module.finrank k (Γ.dual.A 1 ⧸ kerIdeal ((relFrob hp Γ.dual).app 1))` using `(GlobalTheory.T.pow_finrank_cotangent_le_finrank_frobeniusKernelQuotient p k (Γ.dual.A 1)).trans (quot_finrank_le (GlobalTheory.T.relativeFrobeniusKernelIdeal_le_frobeniusKernelIdeal p k hp Γ.dual 1))`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hker : LinearMap.ker ((verschiebung hp Γ).app 1 : Γ.A 1 →ₐ[k] (frobTwist hp Γ).A 1).toLinearMap ≤ (kerIdeal ((relFrob hp Γ).app 1)).restrictScalars k` using `fun a ha => by`. Establish `h1` using `GlobalTheory.T.mulP_mem_kerIdeal_comp_relFrob_of_verschiebung_eq_zero p k hp Γ a ha`. Rewrite `h1` using `[kerIdeal_comp]`. Rewrite using `[Submodule.restrictScalars_mem, ← GlobalTheory.T.comap_map_eq_self_of_injective_finiteHopf k _ _ (Γ.mulP 1) hmulP (kerIdeal ((relFrob hp Γ).app 1))]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hV` using `GlobalTheory.T.finrank_frobeniusDual_add_finrank_ker_verschiebung p k hp Γ`. Establish `hq` using `Submodule.finrank_quotient_add_finrank ((kerIdeal ((relFrob hp Γ).app 1)).restrictScalars k)`. Rewrite `hq` using `[(Submodule.Quotient.restrictScalarsEquiv k (kerIdeal ((relFrob hp Γ).app 1))).finrank_eq]`. Establish `hmono` using `Submodule.finrank_mono hker`. Establish `haA : p ^ Module.finrank k (Cot k (Γ.A 1)) ≤ Module.finrank k (Γ.A 1 ⧸ kerIdeal ((relFrob hp Γ).app 1))` using `(GlobalTheory.T.pow_finrank_cotangent_le_finrank_frobeniusKernelQuotient p k (Γ.A 1)).trans (quot_finrank_le (GlobalTheory.T.relativeFrobeniusKernelIdeal_le_frobeniusKernelIdeal p k hp Γ 1))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrD : Module.finrank k (Γ.A 1 ⧸ kerIdeal ((relFrob hp Γ).app 1)) ≤ Module.finrank k (LinearMap.range ((relFrob hp Γ.dual).app 1 : (frobTwist hp Γ.dual).A 1 →ₐ[k] Γ.dual.A 1).toLinearMap)` using `by omega`. Establish `key : p ^ (Module.finrank k (Cot k (Γ.A 1)) + Module.finrank k (Cot k (Γ.dual.A 1))) ≤ p ^ Γ.height`. Rewrite using `[pow_add, mul_comm, ← hdimD, hord]`. Conclude with `Nat.mul_le_mul haD (haA.trans hrD)`. Conclude with `(Nat.pow_le_pow_iff_right hp2).1 key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PDivGroup.finrank_cot_add_finrank_cot_dual_le (p : ℕ) [Fact p.Prime] (k : Type) [Field k]
     [IsAlgClosed k] [CharP k p] (Γ : PDivGroup p k) :

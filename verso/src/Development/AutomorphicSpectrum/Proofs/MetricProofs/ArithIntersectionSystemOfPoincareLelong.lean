@@ -28,7 +28,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Pub
 open GroundTheory.Heights₂.Heights ReciprocityTheory.ChartRestriction.G.AI.I4
 
 /- English proof (translation)
-The claim follows from `have hIntZero : Inter.PFIntZero.Statement := Inter.PFIntZero.proof (Inter.pointFormRank_holds.proof Inter.RatioAlgDep.proof) have hVert : Inter.PFVert.Statement := Inter.PFVert.proof (by intros; exact geoNumStatement _) (by intros; exact Targets.ExistsUnique.full _ _) Targets.con …`.
+A detailed English derivation is pending.
 -/
 theorem contractMixed_closed : ContractMixedStatement :=
   have hIntZero : Inter.PFIntZero.Statement :=
@@ -43,7 +43,7 @@ theorem contractMixed_closed : ContractMixedStatement :=
     hIntZero hVert
 
 /- English proof (translation)
-Introduce `hPL hRK` and use `Targets.ArithIntersectionSystem.of_found (GlobalTheory.T.intersection_exists_of_poincare_lelong hPL (GlobalTheory.T.resolution_exists_of_resolution_statement hRK)) (GlobalTheory.T.degree_and_coordinates_of_resolution (GlobalTheory.T.resolution_exists_of_resolution_statement hRK)) …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem arithIntersectionSystem_of_poincareLelong_resK :
     GlobalTheory.CompanionTheory.Ar.Pub.PoincareLelong → ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement →

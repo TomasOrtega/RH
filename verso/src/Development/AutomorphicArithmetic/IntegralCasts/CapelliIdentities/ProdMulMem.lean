@@ -3,9 +3,9 @@ import Mathlib
 namespace UpperTheory.Reformulated.B.S3
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hv`. Consider the case `insert a s ha ih`. Establish `h` using `W.sub_mem (hW _ ih) (W.smul_mem (d a) ih)`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `j`. Simplify using `only [Finset.prod_insert ha, Pi.sub_apply, Pi.smul_apply, Matrix.mulVec_diagonal, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem prod_mul_mem {k : Type} [Field k] {n : ℕ} (W : Submodule k (Fin n → k)) (d : Fin n → k)
     (hW : ∀ v ∈ W, (Matrix.diagonal d).mulVec v ∈ W) (v : Fin n → k) (hv : v ∈ W) (s : Finset (Fin n)) :
@@ -20,11 +20,11 @@ private theorem prod_mul_mem {k : Type} [Field k] {n : ℕ} (W : Submodule k (Fi
     ring
 
 /- English proof (translation)
-Establish `h` using `prod_mul_mem W d hW v hv (Finset.univ.erase i)`. Establish `hc : (∏ l ∈ Finset.univ.erase i, (d i - d l)) * v i ≠ 0`. Use `mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun l hl => ?_) hi` and prove the remaining obligations. Conclude with `sub_ne_zero.mpr fun e => (Finset.ne_of_mem_erase hl) (hd e).symm`. Establish `h2` using `W.smul_mem ((∏ l ∈ Finset.univ.erase i, (d i - d l)) * v i)⁻¹ h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Rewrite using `[Pi.single_eq_same, Pi.smul_apply, smul_eq_mul, inv_mul_cancel₀ hc]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : (∏ l ∈ Finset.univ.erase i, (d j - d l)) = 0` using `Finset.prod_eq_zero (Finset.mem_erase.mpr ⟨hj, Finset.mem_univ j⟩) (sub_self _)`. Rewrite using `[Pi.single_eq_of_ne hj, Pi.smul_apply, smul_eq_mul, hz, zero_mul, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem single_mem {k : Type} [Field k] {n : ℕ} (W : Submodule k (Fin n → k)) (d : Fin n → k) (hd : Function.Injective d)
     (hW : ∀ v ∈ W, (Matrix.diagonal d).mulVec v ∈ W) (v : Fin n → k) (hv : v ∈ W) (i : Fin n) (hi : v i ≠ 0) :

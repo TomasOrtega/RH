@@ -10,13 +10,13 @@ open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
 /- English proof (translation)
-Introduce `E _ _ _ a μ _ _ W hW h`. Rewrite using `[Submodule.eq_bot_iff]`. Introduce `F hF`. Use `approx (GA E a) (latticeGL E a) μ F fun U hU => ?_` and prove the remaining obligations. Establish `hU' : (interior U)⁻¹ ∈ 𝓝 (1 : GA E a)` using `inv_mem_nhds_one _ (interior_mem_nhds.2 hU)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨ψ, hψ, hpos, hne, hout⟩` from `testBump E a {1} (interior U)⁻¹ isCompact_singleton isOpen_interior.inv (Set.singleton_subset_iff.2 (mem_of_mem_nhds hU'))`. Establish `hc : Continuous ψ.1` using `((testOps E a ψ).1 hψ.2).1`. Establish `hc' : Continuous fun y => ψ.1 y⁻¹` using `hc.comp continuous_inv`. Establish `hs : HasCompactSupport fun y => ψ.1 y⁻¹` using `hψ.1.comp_homeomorph (Homeomorph.inv (GA E a))`. Use `⟨fun y => ψ.1 y⁻¹, hc', hs, fun y => hpos _, by simpa using hne 1 rfl, fun y hy => hout _ ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hh`. Conclude with `hy (interior_subset (by simpa using hh))`. Establish `e` using `(clFacts E a μ).2.2.2 ψ ⟨cv ψ.1 F, cvSm E a μ ψ hψ F⟩ F hψ rfl`. Rewrite using `[← e]`. Use `h _ (Submodule.subset_span ⟨ψ, F, hψ, rfl⟩) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hW.Rop_mem (hc'.integrable_of_hasCompactSupport hs) hF`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.gardSep :
     UpperTheory.V.Cj.H.GardSep := by

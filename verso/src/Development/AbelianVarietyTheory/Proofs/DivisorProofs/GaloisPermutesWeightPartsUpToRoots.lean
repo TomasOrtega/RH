@@ -26,9 +26,9 @@ variable {o Ω o' Ω' : Type} [CommRing o] [Field Ω] [Algebra o Ω] [CommRing o
   {P₀ : PolAV (Sp Ω')} {a : P₀.A.left ⟶ ρ.P.A.left} {a' : P₀.A.left ⟶ ρ'.P.A.left}
 
 /- English proof (translation)
-Take `⟨w, hw, hadd, -⟩` from `GalAct.exists_generic_labels ρ' h₂`. Take `⟨e, he⟩` from `GalAct.exists_mulEquiv_points h₁ (𝟙 _) _ (Category.id_comp _)`. Use `GalTrans.mono_val S'.R S'.frac` as an intermediate fact. Establish `: Mono a'` using `(MorphismProperty.monomorphisms Scheme).of_isPullback h₂.1.flip (.infer_property _)`. Use `⟨fun b => e (w b), ⟨h₁, h₂, l₁, l₂, fun b => ⟨(w b).left, Over.w (w b), (he _).symm, hw b⟩, fun k => ?_⟩, fun b b' => by simp only [hadd, map_mul]⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, hv, hv'⟩` from `hpt k`. Take `rfl : v = (w (lab k)).left` from `(cancel_mono a').1 (hv'.trans (hw _).symm)`. Conclude with `Over.OverMorphism.ext ((he _).trans hv)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_isGenLab_of (h₁ : IsGrpPullback P₀.A ρ.P.A (spMap (φ.comp S.R.val.toRingHom)) a)
     (h₂ : IsGrpPullback P₀.A ρ'.P.A (spMap S'.R.val.toRingHom) a') (l₁ : LBIso P₀.L (ρ.P.L.pull a))
@@ -49,15 +49,15 @@ theorem exists_isGenLab_of (h₁ : IsGrpPullback P₀.A ρ.P.A (spMap (φ.comp S
 variable {x : S'.Gam → (genPt (φ.comp S.R.val.toRingHom) ⟶ ρ.P.A)}
 
 /- English proof (translation)
-Take `⟨h₁, h₂, l₁, l₂, hw, hlab⟩` from `hx`. Establish `hs : spMap σ ≫ spMap (φ.comp S.R.val.toRingHom) = spMap (φ.comp S.R.val.toRingHom)` using `GalTrans.sp_comp (by rw [← RingHom.comp_assoc, hφ])`. Take `⟨t, ht₁, ht₂⟩ : ∃ t : P₀.A.left ⟶ P₀.A.left, t ≫ a = a ∧ t ≫ P₀.A.hom = P₀.A.hom ≫ spMap σ` from `⟨h₁.1.lift a (P₀.A.hom ≫ spMap σ) (by rw [Category.assoc, hs, h₁.1.w]), h₁.1.lift_fst _ _ _, h₁.1.lift_snd _ _ _⟩`. Establish `ht : IsGrpPullback P₀.A P₀.A (spMap σ) t` using `h₁.cancel (h₁.congr hs.symm ht₁.symm) ht₂`. Establish `lt : LBIso (P₀.L.pull t) (ρ.P.L.pull a)` using `l₁.chartPull (Geo.Tor.chartPullPull P₀.L t t rfl) (chartPullSame ρ.P.L (fun _ => a) (fun _ => a) _ t fun _ => ht₁.symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g, hg, hg'⟩` from `GalAct.exists_label_action ρ' h₂ σ hσ ht`. Use `GalTrans.mono_val S'.R S'.frac` as an intermediate fact. Establish `: Mono a'` using `(MorphismProperty.monomorphisms Scheme).of_isPullback h₂.1.flip (.infer_property _)`. Use `⟨g, Over.homMk (spMap σ) hs, t, rfl, fun b => Over.OverMorphism.ext ?_, fun k => ?_, ht₁, ht, LBIso.trans P₀.isLB (pull_isLB ρ.P.isLB _) (pull_isLB P₀.isLB _) l₁ lt.symm, hg⟩` and prove the remaining obligations. Take `⟨w, e₀, e₁, e₂⟩` from `hw b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨w', -, e₁', e₂'⟩` from `hw (g b)`. Establish `c : (spMap σ ≫ w) ≫ P₀.A.hom = 𝟙 _ ≫ spMap σ` using `by rw [Category.assoc, e₀]; simp`. Establish `k` using `ht.1.lift_fst _ _ c`. Take `rfl : w' = ht.1.lift _ _ c` from `(cancel_mono a').1 (e₂'.trans (hg b w _ e₂ k).symm)`. Rewrite using `[← e₁', ← ht₁, reassoc_of% k, e₁]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨w, e₀, e₁, e₂⟩` from `hw (lab k)`. Use `hg' _ w e₂ (h₁.1.hom_ext ?_ ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, ht₁, e₁, hlab]`. Conclude with `((Category.assoc _ _ _).symm.trans (congrArg (· ≫ _) hs)).symm`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc, ht₂, reassoc_of% e₀, e₀, Category.comp_id]`.
+A detailed English derivation is pending.
 -/
 theorem exists_conj_over (hx : IsGenLab ρ ρ' lab φ P₀ a a' x) (σ : Ω' →+* Ω') (hσ : Function.Surjective σ)
     (hφ : σ.comp φ = φ) : ∃ (g : S'.Gam ≃+ S'.Gam)
@@ -96,19 +96,19 @@ theorem exists_conj_over (hx : IsGenLab ρ ρ' lab φ P₀ a a' x) (σ : Ω' →
 open Classical in
 
 /- English proof (translation)
-Use `Fintype.ofFinite (S'.perp H)` as an intermediate fact. Use `choose V hV₁ using fun t : S'.perp H => TV.ex hx hadd hm t e`. Establish `hV : ∀ h' ∈ H, m • h' = lab κ → ∀ t : S'.perp H, TV ρ x m t h' κ (V t)` using `fun h' hh' e' t => by`. Use `(hV₁ t).transl hx hadd hm (k := h' - h) (by rw [smul_sub, e, e', sub_self]) (t.2 _ (sub_mem hh' hh))` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hφ₀ : φ (S.th x₀) ≠ 0` using `(map_ne_zero φ).2 h₀`. Take `⟨ξ, hξ, hc⟩` from `GlobalTheory.T.twistedThetaValue_eq_root_mul_thetaOperatorValue ρ ρ' lab φ P₀ a a' x hx m hm κ x₀ h e`. Establish `hf : ∀ b, ξ * (partV S' H ρ'.i₀ b h / S'.th (lab x₀)) = algebraMap o' Ω' (Ring.inverse (Nat.card (S'.perp H) : o')) * (∑ t : S'.perp H, algebraMap o' Ω' (S'.ζN ^ (-(wtChar S' _ b t)).val) * V t) / φ (S.th x₀)` using `fun b => by`. Establish `hv : ∀ t : S'.perp H, V t = (ξ * φ (S.th x₀) / S'.th (lab x₀)) * ∑ j, algebraMap o' Ω' (S'.ρ t j ρ'.i₀) * S'.ev h j` using `fun t => by`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff h₀']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hc t _ (hV₁ t)`. Simplify using `only [hv, partV_eq, mul_left_comm _ (ξ * φ (S.th x₀) / S'.th (lab x₀)), ← Finset.mul_sum]`. Clear the denominators using the available nonvanishing facts. Use `⟨ξ, hξ, fun σ hφ s hs g hg hl hH b => ?_⟩` and prove the remaining obligations. Establish `hw` using `hx.weil_conj σ s hs hg`.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ∀ y y', eStd S'.g _ y y' = 0 ↔ eStd S'.g _ (g y) (g y') = 0` using `fun y y' => by`. Rewrite using `[← zeta_pow_eq_one_iff, ← zeta_pow_eq_one_iff, ← hw, map_eq_one_iff σ σ.injective]`. Establish `hT : ∀ t, t ∈ S'.perp H ↔ g t ∈ S'.perp H` using `fun t => ⟨fun ht y hy => by`. Take `⟨y, rfl⟩` from `g.surjective y`. Conclude with `(h0 _ _).1 (ht y ((hH y).1 hy)), fun ht y hy => (h0 _ _).2 (ht _ ((hH y).2 hy))⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `e' : S'.perp H ≃ S'.perp H` to `g.toEquiv.subtypeEquiv hT`. Establish `hζ : ∀ t : S'.perp H, σ (algebraMap o' Ω' (S'.ζN ^ (-(wtChar S' _ b t)).val)) = algebraMap o' Ω' (S'.ζN ^ (-(wtChar S' _ (g b) (e' t))).val)` using `fun t => by`. Establish `e₁ : σ (algebraMap o' Ω' (S'.ζN ^ (wtChar S' _ b t).val)) = algebraMap o' Ω' (S'.ζN ^ (wtChar S' _ (g b) (e' t)).val)`. Use `(congrArg (fun q => σ (algebraMap o' Ω' q)) (zetaN_pow_cast _)).trans (Eq.trans ?_ (congrArg (algebraMap o' Ω') (zetaN_pow_cast _)).symm)` and prove the remaining obligations. Rewrite using `[map_pow, map_pow, hw, ← map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `e₂` using `congrArg (fun q => σ (algebraMap o' Ω' q)) (zetaN_neg_mul (wtChar S' _ b t))`. Establish `e₃` using `congrArg (algebraMap o' Ω') (zetaN_neg_mul (wtChar S' _ (g b) (e' t)))`. Simplify using `only [map_mul, map_one] at e₂ e₃`. Rewrite `e₂` using `[e₁]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(eq_inv_of_mul_eq_one_left e₂).trans (eq_inv_of_mul_eq_one_left e₃).symm`. Establish `hσV : ∀ t : S'.perp H, σ (V t) = V (e' t)` using `fun t => ((hV₁ t).conj σ s hs g.toAddMonoidHom hg).unique ρ' (hV (g h) ((hH h).2 hh) (by rw [← map_nsmul, e, hl]) (e' t))`. Rewrite using `[hf, hf, map_div₀, map_mul, map_inverse_natCast, map_sum, show σ (φ (S.th x₀)) = φ (S.th x₀) from RingHom.congr_fun hφ _, ← Equiv.sum_comp e' fun t => algebraMap o' Ω' (S'.ζN ^ (-(wtChar S' _ (g b) t)).val) * V t]`. Simplify using `only [map_mul, hζ, hσV]`.
+A detailed English derivation is pending.
 -/
 theorem exists_root_conj [ArithBase o Ω] [ArithBase o' Ω'] (hx : IsGenLab ρ ρ' lab φ P₀ a a' x)
     (hadd : ∀ b b', x (b + b') = x b * x b') {m : ℕ} (hm : S'.N = m ^ 2) (H : AddSubgroup S'.Gam) (x₀ : S.Gam)
@@ -166,17 +166,15 @@ theorem exists_root_conj [ArithBase o Ω] [ArithBase o' Ω'] (hx : IsGenLab ρ �
 end General
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁ hg hn hodd hi hE hT hP ε₁ hε₁ D z₁ z₂ hq`. Take `⟨P₀, a₁, a₂, ε₀, h₁, h₂, l₁, l₂, hε, hpt⟩` from `D.same`. Take `⟨x, hx, hadd⟩` from `exists_isGenLab_of h₁ h₂ l₁ l₂ hpt`. Establish `hb : GSum.base X₁ z₁ ∈ X₁.S.supI X₁.M z₁`. Establish `hne : (X₁.S.supI X₁.M z₁).Nonempty` using `X₁.div z₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GSum.base, dif_pos hne]`. Conclude with `hne.some_mem`. Establish `hb'` using `GlobalTheory.T.thetaSetup_dividingLabel_persists_deeperLevel g n F W Z i X₁ hg hn hodd hi hE hT hP ε₁ hε₁ D z₁ _ hb z₂ hq`. Establish `hl : ∀ κ : X₁.S.Gam, GSum.lift D z₂ κ ∈ D.X.S.HH D.X.M z₂ ∧ ∃ κ', D.m • GSum.lift D z₂ κ = D.lab κ'` using `fun κ => by`. Distinguish the cases in `h : ∃ h' ∈ D.X.S.HH D.X.M z₂, D.m • h' = D.lab κ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GSum.lift, dif_pos h]`. Conclude with `⟨h.choose_spec.1, κ, h.choose_spec.2⟩`. Rewrite using `[GSum.lift, dif_neg h]`. Conclude with `⟨zero_mem _, 0, by rw [smul_zero, map_zero]⟩`. Use `choose U hU hσU using fun κ : X₁.S.HH X₁.M z₁ => exists_root_conj hx hadd D.sq (D.X.S.HH D.X.M z₂) _ hb.1 hb'.1 (hl κ).1 (hl κ).2.choose_spec`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨U, hU, fun σ => ?_⟩` and prove the remaining obligations. Establish `hφ : (σ : D.X.Ω₁ →+* D.X.Ω₁).comp (algebraMap X₁.Ω₁ D.X.Ω₁) = algebraMap X₁.Ω₁ D.X.Ω₁` using `RingHom.ext fun y => σ.commutes y`. Take `⟨a, s, t, hs, ha, hlab, ht₁, ht, lt, hpt'⟩` from `exists_conj_over hx (σ : D.X.Ω₁ →+* D.X.Ω₁) σ.surjective hφ`. Use `⟨a, ⟨P₀, a₂, t, ε₀, h₂, ht, l₂, lt, fun E => ⟨(hε E).2, ?_⟩, hpt'⟩, hlab, fun hH b κ => ?_⟩` and prove the remaining obligations. Establish `ht₂` using `ht.1.w`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `h₁.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, ht₁, (hε E).1, ← Category.assoc, ht₁]`. Rewrite using `[Category.assoc, Category.assoc, ht₂, Over.w (ε₀ E), ← Category.assoc, Over.w (ε₀ E), ht₂]`. Establish `key` using `hσU κ _ hφ s hs a ha hlab hH (D.m • b)`. Rewrite `key` using `[map_nsmul]`.
-
-Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_root_galois : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i), 1 ≤ g → 3 ≤ n → Odd n → IsOpenImmersion i → IsE8 W → ThetaInt F W i → IsProjOver X₁.M.s → ∀ (ε₁ : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), IsDiagEnd F W X₁.ρ.P X₁.u ε₁ → ∀ (D : Deep X₁ ε₁) (z₁ : X₁.M.Z) (z₂ : D.X.M.Z), D.q z₂ = z₁ → ∃ U : X₁.S.HH X₁.M z₁ → D.X.Ω₁, (∀ κ, ∃ k : ℕ, 0 < k ∧ U κ ^ k = 1) ∧ ∀ σ : D.X.Ω₁ ≃ₐ[X₁.Ω₁] D.X.Ω₁, ∃ a : D.X.S.Gam ≃+ D.X.S.Gam, D.GalLab σ a ∧ (∀ x, a (D.lab x) = D.lab x) ∧ ((∀ x, a x ∈ D.X.S.HH D.X.M z₂ ↔ x ∈ D.X.S.HH D.X.M z₂) → ∀ b κ, σ (U κ * GSum.part D z₁ z₂ b κ) = U κ * GSum.part D z₁ z₂ (a b) κ) := by
   intro g n F W Z i X₁ hg hn hodd hi hE hT hP ε₁ hε₁ D z₁ z₂ hq

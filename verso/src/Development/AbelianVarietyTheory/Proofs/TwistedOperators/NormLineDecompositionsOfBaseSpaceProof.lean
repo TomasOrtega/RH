@@ -10,9 +10,9 @@ namespace GlobalTheory.Proof.normLineDecompositionsOfBaseSpace_proof
 open GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents
 
 /- English proof (translation)
-Use `D.host.der.cm` as an intermediate fact. Take `⟨ψ⟩` from `(inferInstance : Nonempty (D.host.E →+* ℂ))`. Establish `hc : ∀ y, ψ (D.host.conj y) = starRingEnd ℂ (ψ y)` using `(D.host.der.conj_iff ψ D.host.conj).2 (MulEquiv.apply_symm_apply _ _)`. Apply `ψ.injective` to reduce the goal to its premises. Rewrite using `[hc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `NumberField.IsCMField.complexEmbedding_complexConj _ ψ x`.
+A detailed English derivation is pending.
 -/
 theorem star_eq_conj (D : D7) (x : D.host.E) : star x = D.host.conj x := by
   have := D.host.der.cm
@@ -24,22 +24,22 @@ theorem star_eq_conj (D : D7) (x : D.host.E) : star x = D.host.conj x := by
   exact NumberField.IsCMField.complexEmbedding_complexConj _ ψ x
 
 /- English proof (translation)
-Rewrite using `[← S.herm.eq x y, h, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hT_zero_symm {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E) {x y : S.V}
     (h : S.hT x y = 0) : S.hT y x = 0 := by
   rw [← S.herm.eq x y, h, map_zero]
 
 /- English proof (translation)
-Establish `hm : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Establish `hsym : ∀ a b : (D.sp.Y 0).V, (D.sp.Y 0).hT a b = 0 → (D.sp.Y 0).hT b a = 0` using `fun a b h => hT_zero_symm (D.sp.Y 0) h`. Use `{ isom := D.sp.iXY_isom 0 hm a_le := le_rfl rank := ?_ z_norm := ?_ z_X := ?_ ee := ?_ ff := ?_ ef := ?_ hyp_X := ?_ hyperbolicDecomp_hyp_orthogonal_line := ?_ }` and prove the remaining obligations. Rewrite using `[D.sp.Y_rank 0 (Nat.zero_le _), D.sp.X_rank 0 (Nat.zero_le _)]`. Take `⟨j, hj⟩` from `D.R.m_even`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Formalism.BasicNotions.Ranks.rankY, Formalism.BasicNotions.Ranks.N, Formalism.BasicNotions.Ranks.r, Formalism.BasicNotions.Ranks.rS]`. Use linear arithmetic over natural numbers and integers. Introduce `i`. Simplify using `only [HSpace.hD, LinearMap.map_smulₛₗ₂, map_smul, D.sp.zm_norm, starRingEnd_apply, smul_eq_mul, D.sp_T]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `i x`. Simplify using `only [HSpace.hD, LinearMap.map_smulₛₗ₂, hsym _ _ (D.sp.zm_orth x), smul_zero]`. Introduce `i j`. Conclude with `D.sp.hyp_ee j i`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `D.sp.hyp_ff j i`. Introduce `i j`. Simplify using `only [HSpace.hD]`. Rewrite using `[← (D.sp.Y 0).herm.eq (D.sp.hypE i) (D.sp.hypF j), D.sp.hyp_ef]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `i x`. Conclude with `⟨hsym _ _ (D.sp.hyp_orthX i x).1, hsym _ _ (D.sp.hyp_orthX i x).2⟩`. Introduce `i j`. Simplify using `only [HSpace.hD, map_smul, hsym _ _ (D.sp.hyp_orthz i).1, hsym _ _ (D.sp.hyp_orthz i).2, smul_zero, and_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isDec_smul (D : D7) (t : D.host.E) :
     IsDec (D.sp.Y 0) (D.sp.X 0) (D.sp.iXY 0) (fun _ : Fin 1 => t • D.sp.zm)
@@ -83,15 +83,15 @@ theorem isDec_smul (D : D7) (t : D.host.E) :
       and_self]
 
 /- English proof (translation)
-Use `⟨fun u => ?_, ?_⟩` and prove the remaining obligations. Establish `hc0` using `D.cOf_ne u`. Establish `hc1 : D.host.conj (D.cOf u) ≠ 0` using `(map_ne_zero _).2 hc0`. Establish `h` using `isDec_smul D (D.cOf u)⁻¹`. Establish `hs : -((D.cOf u)⁻¹ * star (D.cOf u)⁻¹ * ((D.mem D.u₀).A.T : D.host.E)) = -Tu D u`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[star_inv₀, star_eq_conj, ← D.cOf_eq u]`. Clear the denominators using the available nonvanishing facts. Rewrite `h` using `[hs]`. Conclude with `h`. Take `⟨π, -, hπ, -⟩` from `D.T_norm D.u₀`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hT : ((D.mem D.u₀).A.T : D.host.E) ≠ 0`. Rewrite using `[← D.sp_T]`. Conclude with `D.sp.T_prime.ne_zero` after adjusting the coercions. Establish `hπ0 : (π : D.host.E) ≠ 0`. Introduce and unpack `h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hπ` using `[h0, zero_mul]`. Conclude with `hT hπ.symm`. Establish `hπ1 : D.host.conj (π : D.host.E) ≠ 0` using `(map_ne_zero _).2 hπ0`. Use `⟨(π : D.host.E)⁻¹ • D.sp.zm, ?_⟩` and prove the remaining obligations. Establish `h` using `isDec_smul D (π : D.host.E)⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hs : -((π : D.host.E)⁻¹ * star (π : D.host.E)⁻¹ * ((D.mem D.u₀).A.T : D.host.E)) = -1`. Rewrite using `[star_inv₀, star_eq_conj, ← hπ]`. Clear the denominators using the available nonvanishing facts. Rewrite `h` using `[hs]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem recordDec (D : D7) : RecordDecSt D := by
   refine ⟨fun u => ?_, ?_⟩

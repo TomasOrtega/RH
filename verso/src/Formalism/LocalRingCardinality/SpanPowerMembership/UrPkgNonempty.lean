@@ -35,25 +35,19 @@ structure UrPkg (l : ℕ) [Fact l.Prime] (O0 : Type) [CommRing O0] : Type 1 wher
   iC_int : ∀ x : FractionRing O, ‖iC x‖ ≤ 1 ↔ x ∈ (algebraMap O (FractionRing O)).range
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O0`. Establish `h0 : j ϖ ≠ 0` using `(map_ne_zero_iff j hj).mpr hϖ.ne_zero`. Establish `h1 : ‖j ϖ‖ < 1` using `hlt ϖ hϖ.not_isUnit`. Establish `hu : ∀ u : O0ˣ, ‖j u‖ = 1` using `fun u => le_antisymm (hle _) (by`. Establish `h : ‖j u‖ * ‖j (u⁻¹ : O0ˣ)‖ = 1` using `by rw [← norm_mul, ← map_mul, u.mul_inv, map_one, norm_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[hle (u⁻¹ : O0ˣ), norm_nonneg (j u), norm_nonneg (j (u⁻¹ : O0ˣ))])`. Establish `hn : ∀ a : O0, a ≠ 0 → ∃ n : ℕ, ‖j a‖ = ‖j ϖ‖ ^ n` using `fun a ha => by`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hϖ`. Conclude with `⟨n, by rw [map_mul, norm_mul, hu, one_mul, map_pow, norm_pow]⟩`. Set `J : FractionRing O0 →+* ℂ_[l]` to `IsFractionRing.lift hj`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `hJ : ∀ a, J (algebraMap _ _ a) = j a` using `IsFractionRing.lift_algebraMap hj`. Establish `hL : Disc J.fieldRange (j ϖ)`. Introduce and unpack `_ ⟨x, rfl⟩ hx`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := O0) x`. Rewrite `hx`, the goal using `[map_div₀, hJ, hJ]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨n, hn1⟩` from `hn a (by rintro rfl; simp at hx)`. Take `⟨m, hm⟩` from `hn b (nonZeroDivisors.ne_zero hb)`. Conclude with `⟨n - m, by rw [norm_div, hn1, hm, zpow_sub₀ (norm_ne_zero_iff.mpr h0), zpow_natCast, zpow_natCast]⟩`. Take `⟨M, hLM, hM⟩` from `exists_max _ _ hL`. Establish `hmem : ∀ a, j a ∈ M` using `fun a => hLM ⟨_, hJ a⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc` using `closed_of_max hM`. Use `isDVR (hmem ϖ) h0 h1 hM.1` as an intermediate fact. Set `_ : Algebra O0 (ball M)` to `(j.codRestrict (ball M) fun a => (show j a ∈ ball M from And.intro (hmem a) (hle a))).toAlgebra`. Establish `hζ : ∀ k : ℕ, ∃ ζ : ℂ_[l], IsPrimitiveRoot ζ (l ^ k)` using `fun k => haveI : NeZero (l ^ k) := ⟨pow_ne_zero k hl.out.ne_zero⟩ HasEnoughRootsOfUnity.exists_primitiveRoot _ _`. Use `choose ζ hζ using hζ`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : ∀ k, 0 < l ^ k` using `fun k => pow_pos hl.out.pos k`. Establish `hint : ∀ k, IsIntegral M (ζ k)` using `fun k => ⟨Polynomial.X ^ (l ^ k) - Polynomial.C 1, Polynomial.monic_X_pow_sub_C _ (hpos k).ne', by`. Simplify using `[(hζ k).pow_eq_one]⟩`. Establish `hnorm : ∀ k, ‖ζ k‖ = 1` using `fun k => (pow_eq_one_iff_of_nonneg (norm_nonneg _) (hpos k).ne').mp (by rw [← norm_pow, (hζ k).pow_eq_one, norm_one])`. Set `z : ∀ k, ball (ext M (ζ k))` to `fun k => ⟨ζ k, IntermediateField.mem_adjoin_simple_self M (ζ k), (hnorm k).le⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hz : ∀ k, IsUnit (z k)` using `fun k => (Ur.isUnit_iff _ _).mpr (hnorm k)`. Establish `hext` using `fun k => ext_spec (hπ := hmem ϖ) (h0 := h0) (h1 := h1) (hD := hM.1) (ζ := ζ k) hc (hint k)`. Conclude with `⟨{ O := ball M O_inj := fun a b h => hj (congrArg (fun t : ball M => (t : ℂ_[l])) h) O_l := (mem_max M _).mpr (by`. Rewrite using `[SubringClass.coe_natCast, ← map_natCast (algebraMap ℚ_[l] ℂ_[l])]`. Conclude with `(norm_algebraMap' ℂ_[l] (l : ℚ_[l])).trans_lt Padic.norm_p_lt_one)`.
-
-Use `O_adic := isAdic (hmem ϖ) h0 h1 hM.1`. Use `resO_ac := res_algClosed hM`. Use `O_complete := isComplete (hmem ϖ) h0 h1 hM.1 hc`. Use `Ok := fun k => ball (ext M (ζ k))`. Use `dvrOk := fun k => (hext k).2`.
-
-Use `Ok_inj := fun k => ext_inj M (ζ k)`. Use `Ok_fin := fun k => (hext k).1`. Use `zk := fun k => (hz k).unit`. Use `zk_prim := fun k => IsPrimitiveRoot.of_map_of_injective (f := (ball (ext M (ζ k))).subtype) (hζ k) Subtype.val_injective`. Use `Ok_gen := fun k => ext_gen (ζ := ζ k) (hint k) (z k) rfl`.
-
-Use `iC := Ur.iC M`. Use `iC_int := Ur.iC_int M }⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem urPkg_nonempty (l : ℕ) [hl : Fact l.Prime] (O0 : Type) [CommRing O0] [IsDomain O0]
     [IsDiscreteValuationRing O0] (j : O0 →+* ℂ_[l]) (hj : Function.Injective j) (hle : ∀ x, ‖j x‖ ≤ 1)

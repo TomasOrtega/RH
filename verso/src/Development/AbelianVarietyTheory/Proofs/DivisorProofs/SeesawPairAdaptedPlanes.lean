@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.MixedLagrXW
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.MixedLagrGram.hTens_eq_trace]`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.map_mul, Matrix.transpose_map, Matrix.mul_assoc]`. Rewrite using `[Matrix.trace_mul_comm Q]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hTens_sandwich {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c : E →ₐ[R] E)
     {α β γ δ γ' δ' : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype γ] [Fintype δ]
@@ -29,11 +29,11 @@ theorem hTens_sandwich {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c :
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `hm : z ∈ Submodule.span E (Y.L : Set (Fin n → E))`. Rewrite using `[Submodule.IsLattice.span_eq_top (self := hlat)]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem z hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Take `⟨s, t, u, -, -, -, h⟩` from `hH.split z hz`. Conclude with `⟨s, t, u, h⟩`. Consider the case `zero => exact ⟨0, 0, 0, by simp⟩`. Consider the case `add z z' _ _ h h'`. Take `⟨s, t, u, rfl⟩` from `h`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨s', t', u', rfl⟩` from `h'`. Conclude with `⟨s + s', t + t', u + u', by rw [Matrix.mulVec_add]; module⟩`. Consider the case `smul c z _ h`. Take `⟨s, t, u, rfl⟩` from `h`. Conclude with `⟨c * s, c * t, c • u, by rw [Matrix.mulVec_smul]; module⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem span_decomp {B : Base F E} {n n₁ : ℕ} {Y : Spc F E n} {Y₁ : Spc F E n₁} {H : Plane E n n₁} {i₀ i₁ : ℕ}
     (hlat : Y.L.IsLattice E) (hH : H.IsAdapted σ B Y Y₁ i₀ i₁) (z : Fin n → E) :
@@ -54,13 +54,13 @@ theorem span_decomp {B : Base F E} {n n₁ : ℕ} {Y : Spc F E n} {Y₁ : Spc F 
     exact ⟨c * s, c * t, c • u, by rw [Matrix.mulVec_smul]; module⟩
 
 /- English proof (translation)
-Set `b : Fin n₁ ⊕ Fin 2 → (Fin n → E)` to `Sum.elim (fun k i => H.ι i k) ![H.x, H.y]`. Establish `hsum : ∀ g : Fin n₁ ⊕ Fin 2 → E, ∑ i, g i • b i = g (Sum.inr 0) • H.x + H.ι *ᵥ (g ∘ Sum.inl) + g (Sum.inr 1) • H.y`. Introduce `g`. Rewrite using `[Fintype.sum_sum_type, Fin.sum_univ_two]`. Use function extensionality and compare the values at `i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[b, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Expand and normalize the polynomial expressions, which then agree. Establish `hli : LinearIndependent E b`. Use `linearIndependent_of_top_le_span_of_card_eq_finrank ?_ ?_` and prove the remaining obligations. Introduce `z _`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, t, u, rfl⟩` from `span_decomp hlat hH z`. Establish `: s • H.x + H.ι *ᵥ u + t • H.y = ∑ i, (Sum.elim u ![s, t]) i • b i`. Rewrite using `[hsum]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Simplify using `[hH.rank]`. Establish `h0` using `Fintype.linearIndependent_iff.1 hli (Sum.elim u ![s, t]) (by rw [hsum]; exact h)`. Conclude with `⟨h0 (Sum.inr 0), funext fun k => h0 (Sum.inl k), h0 (Sum.inr 1)⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem indep {B : Base F E} {n n₁ : ℕ} {Y : Spc F E n} {Y₁ : Spc F E n₁} {H : Plane E n n₁} {i₀ i₁ : ℕ}
     (hlat : Y.L.IsLattice E) (hH : H.IsAdapted σ B Y Y₁ i₀ i₁) (s t : E) (u : Fin n₁ → E)
@@ -91,7 +91,7 @@ variable {B : Base F E} {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X
 
 open GlobalTheory.MixedLagrX in
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[gram_apply]`. Conclude with `hG.xx`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem replicateCol_transpose_mul_J_mul_map_eq_zero_of_isAdapted {k k₁ : ℕ} {Y : Spc F E k} {Y₁ : Spc F E k₁} {G : Plane E k k₁} {a b : ℕ} (hG : G.IsAdapted σ B Y Y₁ a b) :
     (Matrix.replicateCol Unit G.x)ᵀ * Y.J * (Matrix.replicateCol Unit G.x).map σ = 0 := by
@@ -101,7 +101,7 @@ theorem replicateCol_transpose_mul_J_mul_map_eq_zero_of_isAdapted {k k₁ : ℕ}
 
 open GlobalTheory.MixedLagrX in
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[gram_apply]`. Use `(hG.orth (Pi.single i 1)).1` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one]`. Conclude with `this`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_ιx {k k₁ : ℕ} {Y : Spc F E k} {Y₁ : Spc F E k₁} {G : Plane E k k₁} {a b : ℕ} (hG : G.IsAdapted σ B Y Y₁ a b) :
     G.ιᵀ * Y.J * (Matrix.replicateCol Unit G.x).map σ = 0 := by
@@ -112,13 +112,13 @@ theorem gram_ιx {k k₁ : ℕ} {Y : Spc F E k} {Y₁ : Spc F E k₁} {G : Plane
   exact this
 
 /- English proof (translation)
-Simplify using `only [incM]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem incM_one' {m : ℕ} : incM F (1 : Matrix (Fin m) (Fin m) E) = 1 := by
   simp only [incM]; exact Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Rewrite using `[incM_one', Matrix.one_mul]`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, Matrix.mul_apply, incM, incV]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem repA (y : Fin n → AE F E) (w : Fin d → E) :
     Matrix.vecMulVec y (incV F w) =
@@ -128,7 +128,7 @@ theorem repA (y : Fin n → AE F E) (w : Fin d → E) :
   simp [Matrix.vecMulVec_apply, Matrix.mul_apply, incM, incV]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.vecMulVec_apply, Matrix.mul_apply, incM, incV, Matrix.mulVec, dotProduct, Finset.mul_sum, Matrix.replicateCol_apply, Matrix.replicateRow_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.univ_unique, Finset.sum_singleton]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repB (x : Fin n → E) (ι' : Matrix (Fin d) (Fin d₁) E) (z₂ : Fin d₁ → AE F E) :
     Matrix.vecMulVec (incV F x) (incM F ι' *ᵥ z₂) =
@@ -145,7 +145,7 @@ abbrev sy (X : Spc F E n) (W : Spc F E d) := symp (cA σ) (-1 : AE F E) (incM F 
 
 open GlobalTheory.MixedLagrX in
 /- English proof (translation)
-Rewrite using `[sy, symp, repA, repA, hTens_sandwich, incM_gram, incM_gram, replicateCol_transpose_mul_J_mul_map_eq_zero_of_isAdapted hH', incM_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sAA (hH' : H'.IsAdapted σ B W W₁ i₀ i₁) (y y' : Fin n → AE F E) :
     sy σ X W (Matrix.vecMulVec y (incV F H'.x)) (Matrix.vecMulVec y' (incV F H'.x)) = 0 := by
@@ -154,7 +154,7 @@ theorem sAA (hH' : H'.IsAdapted σ B W W₁ i₀ i₁) (y y' : Fin n → AE F E)
 
 open GlobalTheory.MixedLagrX in
 /- English proof (translation)
-Rewrite using `[sy, symp, repB, repA, hTens_sandwich, incM_gram, incM_gram, gram_ιx hH', incM_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sBA (hH' : H'.IsAdapted σ B W W₁ i₀ i₁) (z₂ : Fin d₁ → AE F E) (y' : Fin n → AE F E) :
     sy σ X W (Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ z₂)) (Matrix.vecMulVec y' (incV F H'.x)) = 0 := by
@@ -163,7 +163,7 @@ theorem sBA (hH' : H'.IsAdapted σ B W W₁ i₀ i₁) (z₂ : Fin d₁ → AE F
 
 open GlobalTheory.MixedLagrX in
 /- English proof (translation)
-Rewrite using `[sy, symp, repA, hTens_sandwich, incM_gram, incM_gram, gram_ιx hH', incM_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sCA (hH' : H'.IsAdapted σ B W W₁ i₀ i₁) (z : Matrix (Fin n₁) (Fin d₁) (AE F E)) (y' : Fin n → AE F E) :
     sy σ X W (incM F H.ι * z * (incM F H'.ι)ᵀ) (Matrix.vecMulVec y' (incV F H'.x)) = 0 := by
@@ -172,7 +172,7 @@ theorem sCA (hH' : H'.IsAdapted σ B W W₁ i₀ i₁) (z : Matrix (Fin n₁) (F
 
 open GlobalTheory.MixedLagrX in
 /- English proof (translation)
-Rewrite using `[sy, symp, repB, repB, hTens_sandwich, incM_gram, incM_gram, replicateCol_transpose_mul_J_mul_map_eq_zero_of_isAdapted hH, incM_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sBB (hH : H.IsAdapted σ B X X₁ j₀ j₁) (z₂ z₂' : Fin d₁ → AE F E) :
     sy σ X W (Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ z₂)) (Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ z₂')) = 0 := by
@@ -181,7 +181,7 @@ theorem sBB (hH : H.IsAdapted σ B X X₁ j₀ j₁) (z₂ z₂' : Fin d₁ → 
 
 open GlobalTheory.MixedLagrX in
 /- English proof (translation)
-Rewrite using `[sy, symp, repB, hTens_sandwich, incM_gram, incM_gram, gram_ιx hH, incM_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sCB (hH : H.IsAdapted σ B X X₁ j₀ j₁) (z : Matrix (Fin n₁) (Fin d₁) (AE F E)) (z₂' : Fin d₁ → AE F E) :
     sy σ X W (incM F H.ι * z * (incM F H'.ι)ᵀ) (Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ z₂')) = 0 := by
@@ -190,7 +190,7 @@ theorem sCB (hH : H.IsAdapted σ B X X₁ j₀ j₁) (z : Matrix (Fin n₁) (Fin
 
 open GlobalTheory.MixedLagrX in
 /- English proof (translation)
-Rewrite using `[sy, sy, symp, symp, hTens_sandwich, incM_gram, incM_gram, hH.gram, hH'.gram, GlobalTheory.MixedLagrGram.hTens_eq_trace]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sCC (hH : H.IsAdapted σ B X X₁ j₀ j₁) (hH' : H'.IsAdapted σ B W W₁ i₀ i₁) (z z' : Matrix (Fin n₁) (Fin d₁) (AE F E)) :
     sy σ X W (incM F H.ι * z * (incM F H'.ι)ᵀ) (incM F H.ι * z' * (incM F H'.ι)ᵀ) = sy σ X₁ W₁ z z' := by
@@ -203,7 +203,7 @@ variable {B : Base F E} {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X
   {H : Plane E n n₁} {H' : Plane E d d₁} {j₀ j₁ i₀ i₁ : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [Matrix.add_apply, Matrix.vecMulVec_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, zero_mul, add_zero, Matrix.mulVec, dotProduct, Matrix.mul_apply (M := H.ι * z), Matrix.transpose_apply, mul_add, Finset.sum_add_distrib, Finset.mul_sum]`. Rewrite using `[add_assoc]`. Use `congr 1`. Apply the tactic sequence `congr 1 <;> exact Finset.sum_congr rfl fun k _ => by ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem row_eq (y : Fin n → E) (z₂ : Fin d₁ → E) (z : Matrix (Fin n₁) (Fin d₁) E) (i : Fin n) :
     (Matrix.vecMulVec y H'.x + Matrix.vecMulVec H.x (H'.ι *ᵥ z₂) + H.ι * z * H'.ιᵀ) i =
@@ -217,13 +217,13 @@ theorem row_eq (y : Fin n → E) (z₂ : Fin d₁ → E) (z : Matrix (Fin n₁) 
   congr 1 <;> exact Finset.sum_congr rfl fun k _ => by ring
 
 /- English proof (translation)
-Establish `hr : ∀ i, y i = 0 ∧ H.x i • z₂ + (H.ι * z) i = 0`. Introduce `i`. Use `congrFun h i` as an intermediate fact. Rewrite `this` using `[row_eq]`. Take `⟨a, b, -⟩` from `indep hW hH' _ _ _ this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, b⟩`. Establish `hc : ∀ j, z₂ j = 0 ∧ (fun k => z k j) = 0`. Introduce `j`. Establish `e : z₂ j • H.x + H.ι *ᵥ (fun k => z k j) + (0 : E) • H.y = 0`. Use function extensionality and compare the values at `i`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrFun (hr i).2 j` as an intermediate fact. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Matrix.mul_apply, Pi.zero_apply] at this`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, zero_mul, add_zero, Matrix.mulVec, dotProduct, Pi.zero_apply]`. Rewrite using `[← this, mul_comm]`. Take `⟨a, b, -⟩` from `indep hX hH _ _ _ e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, b⟩`. Use `⟨funext fun i => (hr i).1, funext fun j => (hc j).1, ?_⟩` and prove the remaining obligations. Use extensionality with `k j`. Conclude with `congrFun (hc j).2 k`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem mixed_injective (hX : X.L.IsLattice E) (hW : W.L.IsLattice E) (hH : H.IsAdapted σ B X X₁ j₀ j₁)
     (hH' : H'.IsAdapted σ B W W₁ i₀ i₁) (y : Fin n → E) (z₂ : Fin d₁ → E) (z : Matrix (Fin n₁) (Fin d₁) E)
@@ -256,15 +256,15 @@ variable {B : Base F E} {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X
   {H : Plane E n n₁} {H' : Plane E d d₁} {j₀ j₁ i₀ i₁ : ℕ}
 
 /- English proof (translation)
-Establish `hD : ∀ p q, sy σ X W p q = (M.co.e p).1 ⬝ᵥ (M.co.e q).2 - (M.co.e q).1 ⬝ᵥ (M.co.e p).2` using `M.co.form`. Establish `ba` using `sBA (X := X) (H := H) hH' z₂ y`. Establish `ca` using `sCA (X := X) (H := H) hH' z y`. Establish `cb` using `sCB (W := W) (H' := H') hH z z₂`. Rewrite `ba`, `ca`, `cb` using `[hD]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨?_, ?_, fun hz hz' => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, Prod.fst_add, Prod.snd_add, add_dotProduct, dotProduct_add]`. Take the linear combination `-ba - ca`. Take the linear combination `-cb`. Establish `aa` using `sAA (X := X) hH' y y'`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `ba'` using `sBA (X := X) (H := H) hH' z₂' y`. Establish `ca'` using `sCA (X := X) (H := H) hH' z' y`. Establish `ba₂` using `sBA (X := X) (H := H) hH' z₂ y'`. Establish `bb` using `sBB (W := W) (H' := H') hH z₂ z₂'`. Establish `cb'` using `sCB (W := W) (H' := H') hH z' z₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ca₂` using `sCA (X := X) (H := H) hH' z y'`. Establish `cb₂` using `sCB (W := W) (H' := H') hH z z₂'`. Establish `cc` using `sCC hH hH' z z'`. Establish `cc' : sy σ X₁ W₁ z z' = 0`. Rewrite using `[sy, M₁.co.form, hz, hz', zero_dotProduct, zero_dotProduct, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `cc` using `[cc']`. Rewrite `aa`, `ba'`, `ca'`, `ba₂`, `bb`, `cb'`, `ca₂`, `cb₂`, `cc` using `[hD]`. Simplify using `only [map_add, Prod.fst_add, Prod.snd_add, add_dotProduct, dotProduct_add]`. Take the linear combination `aa - ba' - ca' + ba₂ + bb - cb' + ca₂ + cb₂ + cc`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem orth_pieces (M : Model σ X W) (M₁ : Model σ X₁ W₁) (hH : H.IsAdapted σ B X X₁ j₀ j₁)
     (hH' : H'.IsAdapted σ B W W₁ i₀ i₁) (y y' : Fin n → AE F E) (z₂ z₂' : Fin d₁ → AE F E)
@@ -312,27 +312,25 @@ theorem orth_pieces (M : Model σ X W) (M₁ : Model σ X₁ W₁) (hH : H.IsAda
 end Main
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M χX χW om r s r' s' hP H H' j₀ j₁ i₀ i₁ M₁ hH hH' hM₁`. Take `⟨f, hf, hfe⟩` from `GlobalTheory.MixedLagrX.exists_ratMap M hP.good.rat`. Take `⟨f₁, hf₁, hfe₁⟩` from `GlobalTheory.MixedLagrX.exists_ratMap M₁ hM₁.rat`. Establish `h2 : Module.finrank F E = 2` using `hP.base.cm.2.2.1`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hK, hKz⟩` from `GlobalTheory.MixedLagr.rat_first_zero_dim F E σ n₁ d₁ X₁ W₁ M₁ h2 f₁ hf₁ hfe₁`. Set `Φ : (Fin n → E) × (Fin d₁ → E) × K →ₗ[F] Matrix (Fin n) (Fin d) E` to `{ toFun := fun p => Matrix.vecMulVec p.1 H'.x + Matrix.vecMulVec H.x (H'.ι *ᵥ p.2.1) + H.ι * (p.2.2 : Matrix (Fin n₁) (Fin d₁) E) * H'.ιᵀ map_add' := fun p q => by`. Simplify using `only [Prod.fst_add, Prod.snd_add, Submodule.coe_add, Matrix.add_vecMulVec, Matrix.mulVec_add, Matrix.vecMulVec_add, Matrix.mul_add, Matrix.add_mul]`. Normalize the expressions using the abelian group laws. Use the proof step `map_smul' := fun c p => by`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Prod.smul_fst, Prod.smul_snd, Submodule.coe_smul, Matrix.smul_vecMulVec, Matrix.mulVec_smul, Matrix.vecMulVec_smul, Matrix.mul_smul, Matrix.smul_mul, RingHom.id_apply, smul_add] }`. Establish `hΦ : ∀ p, Φ p = Matrix.vecMulVec p.1 H'.x + Matrix.vecMulVec H.x (H'.ι *ᵥ p.2.1) + H.ι * (p.2.2 : Matrix (Fin n₁) (Fin d₁) E) * H'.ιᵀ` using `fun _ => rfl`. Establish `hinj : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `p hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h1, h2, h3⟩` from `mixed_injective hP.herm.lat hP.skew.lat hH hH' _ _ _ hp`. Conclude with `Prod.ext h1 (Prod.ext h2 (Subtype.ext h3))`. Establish `hhat : ∀ p, GlobalTheory.MixedLagr.hat (f (Φ p)) = M.co.e (Matrix.vecMulVec (incV F p.1) (incV F H'.x) + Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ incV F p.2.1) + incM F H.ι * incM F (p.2.2 : Matrix (Fin n₁) (Fin d₁) E) * (incM F H'.ι)ᵀ)`. Introduce `p`. Rewrite using `[hfe, hΦ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use extensionality with `i j`. Simplify using `[incM, incV, Matrix.vecMulVec_apply, Matrix.mul_apply, Matrix.mulVec, dotProduct, map_sum, map_mul]`. Use `⟨LinearMap.range (f ∘ₗ Φ), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩ _ ⟨q, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h` using `(orth_pieces M M₁ hH hH' (incV F p.1) (incV F q.1) (incV F p.2.1) (incV F q.2.1) (incM F (p.2.2 : Matrix (Fin n₁) (Fin d₁) E)) (incM F (q.2.2 : Matrix (Fin n₁) (Fin d₁) E))).2.2 (hKz _ p.2.2.2) (hKz _ q.2.2.2)`. Rewrite `h` using `[← hhat, ← hhat]`. Apply `AdeleRing.algebraMap_injective (𝓞 F) F` to reduce the goal to its premises. Rewrite using `[RingHom.map_dotProduct, RingHom.map_dotProduct]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components.
 
-Rewrite using `[LinearMap.finrank_range_of_inj (f := f ∘ₗ Φ) (hf.comp hinj), Module.finrank_prod, Module.finrank_prod, Module.finrank_pi_fintype, Module.finrank_pi_fintype, hK]`. Simplify using `[h2, hH.rank, hH'.rank]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `t _ ⟨p, rfl⟩`. Establish `hz : (M₁.co.e (t • incM F (p.2.2 : Matrix (Fin n₁) (Fin d₁) E))).1 = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.map_smul, Prod.smul_fst, hKz _ p.2.2.2, smul_zero]`. Use `⟨t • incV F p.1, t • incV F p.2.1, t • incM F (p.2.2 : Matrix (Fin n₁) (Fin d₁) E), hz, fun φ => ?_⟩` and prove the remaining obligations. Establish `he : t • GlobalTheory.MixedLagr.hat (f (Φ p)) = M.co.e (Matrix.vecMulVec (t • incV F p.1) (incV F H'.x) + Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ (t • incV F p.2.1)) + incM F H.ι * (t • incM F (p.2.2 : Matrix (Fin n₁) (Fin d₁) E)) * (incM F H'.ι)ᵀ)`. Rewrite using `[hhat, ← LinearEquiv.map_smul]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.smul_vecMulVec, Matrix.mulVec_smul, Matrix.vecMulVec_smul, Matrix.mul_smul, Matrix.smul_mul, smul_add, smul_add]`. Take `⟨o1, o2, -⟩` from `orth_pieces M M₁ hH hH' (t • incV F p.1) (t • incV F p.1) (t • incV F p.2.1) (t • incV F p.2.1) (t • incM F (p.2.2 : Matrix (Fin n₁) (Fin d₁) E)) (t • incM F (p.2.2 : Matrix (Fin n₁) (Fin d₁) E))`. Use `show schr B.ψ (t • GlobalTheory.MixedLagr.hat (f (Φ p))) φ = _`. Rewrite using `[he]`. Simplify using `only [Darboux.rho]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set Am := Matrix.vecMulVec (t • incV F p.1) (incV F H'.x)`. Use `set Bm := Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ (t • incV F p.2.1))`. Use `set Cm := incM F H.ι * (t • incM F (p.2.2 : Matrix (Fin n₁) (Fin d₁) E)) * (incM F H'.ι)ᵀ`. Establish `k1` using `GlobalTheory.MixedLagr.schr_comp B.ψ (M.co.e Bm) (M.co.e Cm) φ`. Rewrite `k1` using `[o2, mul_zero, AddChar.map_zero_eq_one, one_smul, ← map_add]`.
-
-Establish `k2` using `GlobalTheory.MixedLagr.schr_comp B.ψ (M.co.e Am) (M.co.e (Bm + Cm)) φ`. Rewrite `k2` using `[o1, mul_zero, AddChar.map_zero_eq_one, one_smul, ← map_add, ← add_assoc]`. Rewrite using `[k1, k2]`.
+A detailed English derivation is pending.
 -/
 theorem exists_ratLagr : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d n₁ d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),

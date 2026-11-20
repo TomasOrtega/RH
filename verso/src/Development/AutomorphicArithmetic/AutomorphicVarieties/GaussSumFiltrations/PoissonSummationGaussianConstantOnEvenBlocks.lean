@@ -12,7 +12,7 @@ section General
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec, vecMul_transpose, ← ofReal_mulVec_eq P x]`. Simplify using `only [dotProduct, mulVec_diagonal]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dotProduct_transpose_mul_diagonal_mul_mulVec (P : Matrix ι ι ℝ) (t : ι → ℂ) (x : ι → ℝ) :
     (fun i => (x i : ℂ)) ⬝ᵥ ((P.map ofReal)ᵀ * diagonal t * P.map ofReal) *ᵥ (fun i => (x i : ℂ)) =
@@ -23,11 +23,11 @@ theorem dotProduct_transpose_mul_diagonal_mul_mulVec (P : Matrix ι ι ℝ) (t :
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Establish `hb (i : ι) : 0 < (-(π * I * t i)).re` using `by simpa using mul_pos Real.pi_pos (ht i)`. Establish `key` using `GaussianFourier.integral_cexp_neg_sum_mul_add hb fun _ => 0`. Establish `hc` using `integral_comp_mulVec_of_det_ne_zero hP (f := fun y : ι → ℝ => cexp (-∑ i, -(π * I * t i) * (y i : ℂ) ^ 2 + ∑ i, (0 : ℂ) * y i)) (by fun_prop)`. Rewrite `hc` using `[key]`. Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, zero_div, Complex.exp_zero, mul_one] at hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hc, siegelGaussIntegral]`. Use `congr 2 with x`. Rewrite using `[dotProduct_transpose_mul_diagonal_mul_mulVec]`. Use `congr 1`. Simplify using `only [Finset.mul_sum, ← Finset.sum_neg_distrib, zero_mul, Finset.sum_const_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem siegelGaussIntegral_transpose_mul_diagonal_mul {P : Matrix ι ι ℝ} (hP : P.det ≠ 0)
     {t : ι → ℂ} (ht : ∀ i, 0 < (t i).im) :
@@ -48,23 +48,23 @@ theorem siegelGaussIntegral_transpose_mul_diagonal_mul {P : Matrix ι ι ℝ} (h
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Establish `hz0 (i : ι) : z i ≠ 0` using `fun h0 => by simpa [h0] using hz i`. Establish `hπ : (π : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Establish `ht (i : ι) : 0 < (-(z i)⁻¹).im`. Rewrite using `[neg_im, inv_im, neg_div, neg_neg]`. Conclude with `div_pos (hz i) (normSq_pos.2 (hz0 i))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ht0 (i : ι) : -(z i)⁻¹ ≠ 0` using `neg_ne_zero.2 (inv_ne_zero (hz0 i))`. Establish `h` using `(isSiegel_diagonal_iff.2 ht).transpose_mul_mul hB`. Establish `key` using `h.riemannTheta_eq_neg_inv (B⁻¹ *ᵥ u) 0`. Rewrite `key` using `[siegelGaussIntegral_transpose_mul_diagonal_mul hB ht, riemannTheta, riemannTheta]`. Simplify using `only [mulVec_zero, dotProduct_zero, mul_zero, Complex.exp_zero, mul_one, riemannThetaTerm_def] at key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinv : ((B.map ofReal)ᵀ * diagonal (fun i => -(z i)⁻¹) * B.map ofReal)⁻¹ = ((B⁻¹ᵀ).map ofReal)ᵀ * diagonal (fun i => -z i) * (B⁻¹ᵀ).map ofReal`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, inv_diagonal_of_ne_zero ht0, ← transpose_nonsing_inv, inv_map_ofReal hB, transpose_map, transpose_transpose, Matrix.mul_assoc]`. Simplify using the standard rewrite rules. Rewrite `key` using `[hinv]`. Establish `hc : ((|B.det⁻¹| : ℝ) : ℂ) * ∏ i, (π / -(π * I * -(z i)⁻¹)) ^ (1 / 2 : ℂ) = ((|B.det| : ℝ) : ℂ)⁻¹ * ∏ j, (-I * z j) ^ (1 / 2 : ℂ)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[abs_inv, ofReal_inv]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Clear denominators, using `[hz0 i]` for the nonvanishing conditions.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite `key` using `[hc]`. Use `(tsum_congr fun m => ?_).trans (key.trans (congrArg _ (tsum_congr fun m => ?_)))` and prove the remaining obligations. Establish `e` using `dotProduct_transpose_mul_diagonal_mul_mulVec B (fun i => -(z i)⁻¹) ((fun i => (m i : ℝ)) + B⁻¹ *ᵥ u)`. Rewrite `e` using `[mulVec_add, mulVec_mulVec, mul_nonsing_inv _ hB.isUnit, one_mulVec]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, ofReal_add, ofReal_intCast] at e`. Rewrite using `[e]`. Simplify using `only [Pi.zero_apply, ofReal_zero, add_zero, dotProduct, mul_zero, Finset.sum_const_zero, ofReal_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `e` using `dotProduct_transpose_mul_diagonal_mul_mulVec B⁻¹ᵀ (fun i => -z i) (fun i => (m i : ℝ))`. Establish `e2 : (B⁻¹ᵀ *ᵥ fun i => (m i : ℝ)) ⬝ᵥ u = (fun i => (m i : ℝ)) ⬝ᵥ B⁻¹ *ᵥ u`. Rewrite using `[mulVec_transpose, dotProduct_mulVec]`. Simplify using `only [ofReal_intCast] at e`. Simplify using `only [Pi.zero_apply, ofReal_zero, add_zero, zero_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[neg_mulVec, dotProduct_neg, e, ← Complex.exp_add, ← ofReal_sum]`. Express the relevant statement in the definitionally equal form `_ = cexp (_ + 2 * π * I * (((B⁻¹ᵀ *ᵥ fun i => (m i : ℝ)) ⬝ᵥ u : ℝ) : ℂ))`. Rewrite using `[e2]`. Simplify using `only [dotProduct, neg_mul, Finset.sum_neg_distrib, ofReal_sum, ofReal_mul, ofReal_intCast]`. Use `congr 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem tsum_cexp_diagonal_gaussian {B : Matrix ι ι ℝ} (hB : B.det ≠ 0) (u : ι → ℝ) {z : ι → ℂ}
     (hz : ∀ i, 0 < (z i).im) :
@@ -125,9 +125,9 @@ theorem tsum_cexp_diagonal_gaussian {B : Matrix ι ι ℝ} (hB : B.det ≠ 0) (u
 end General
 
 /- English proof (translation)
-Introduce `V κ _ _ _ _ k hk B hB u z hz`. Rewrite using `[tsum_cexp_diagonal_gaussian hB u (z := fun j => z j.1) fun j => hz j.1]`. Use `congr 2`. Rewrite using `[Fintype.prod_prod_type, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.prod_const, Finset.card_univ, hk]`. Rewrite using `[pow_mul, one_div, cpow_ofNat_inv_pow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem tsum_cexp_block_gaussian : ∀ (V κ : Type) [Fintype V] [DecidableEq V] [Fintype κ] [DecidableEq κ] (k : ℕ), Fintype.card κ = 2 * k → ∀ (B : Matrix (V × κ) (V × κ) ℝ), B.det ≠ 0 → ∀ (u : V × κ → ℝ) (z : V → ℂ), (∀ v, 0 < (z v).im) → ∑' m : V × κ → ℤ, Complex.exp (Real.pi * Complex.I * ∑ j, (-(z j.1)⁻¹) * (((B *ᵥ fun i => (m i : ℝ)) j + u j : ℝ) : ℂ) ^ 2) = ((|B.det| : ℝ) : ℂ)⁻¹ * (∏ v, (-Complex.I * z v)) ^ k * ∑' m : V × κ → ℤ, Complex.exp (Real.pi * Complex.I * ∑ j, z j.1 * (((B⁻¹ᵀ *ᵥ fun i => (m i : ℝ)) j : ℝ) : ℂ) ^ 2) * Complex.exp (2 * Real.pi * Complex.I * ∑ j, (((B⁻¹ᵀ *ᵥ fun i => (m i : ℝ)) j * u j : ℝ) : ℂ)) := by
   intro V κ _ _ _ _ k hk B hB u z hz
@@ -144,7 +144,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.tsum_cexp_block_gaussian | exact GlobalTheory.HilbertThetaSeries.tsum_cexp_block_gaussian | (intros; apply GlobalTheory.HilbertThetaSeries.tsum_cexp_block_gaussian <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.poisson_summation_gaussian_constant_on_even_blocks : ∀ (V κ : Type) [Fintype V] [DecidableEq V] [Fintype κ] [DecidableEq κ] (k : ℕ), Fintype.card κ = 2 * k → ∀ (B : Matrix (V × κ) (V × κ) ℝ), B.det ≠ 0 → ∀ (u : V × κ → ℝ) (z : V → ℂ), (∀ v, 0 < (z v).im) → ∑' m : V × κ → ℤ, Complex.exp (Real.pi * Complex.I * ∑ j, (-(z j.1)⁻¹) * (((B *ᵥ fun i => (m i : ℝ)) j + u j : ℝ) : ℂ) ^ 2) = ((|B.det| : ℝ) : ℂ)⁻¹ * (∏ v, (-Complex.I * z v)) ^ k * ∑' m : V × κ → ℤ, Complex.exp (Real.pi * Complex.I * ∑ j, z j.1 * (((B⁻¹ᵀ *ᵥ fun i => (m i : ℝ)) j : ℝ) : ℂ) ^ 2) * Complex.exp (2 * Real.pi * Complex.I * ∑ j, (((B⁻¹ᵀ *ᵥ fun i => (m i : ℝ)) j * u j : ℝ) : ℂ)) := by
   first | exact @GlobalTheory.HilbertThetaSeries.tsum_cexp_block_gaussian | exact GlobalTheory.HilbertThetaSeries.tsum_cexp_block_gaussian | (intros; apply GlobalTheory.HilbertThetaSeries.tsum_cexp_block_gaussian <;> assumption)

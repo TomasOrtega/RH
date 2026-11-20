@@ -14,7 +14,7 @@ noncomputable def fib_init {C : Type u} [Category.{v} C] (T : C) :
   StructuredArrow.mkIdInitial (T := 𝟭 C) (Y := T)
 
 /- English proof (translation)
-Use `(fib_init T).hom_ext ((fib_init T).to y) (StructuredArrow.homMk y.hom (by simp))` as an intermediate fact. Conclude with `congrArg CommaMorphism.right this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fib_to {C : Type u} [Category.{v} C] (T : C) (y : StructuredArrow T (𝟭 C)) :
     ((fib_init T).to y).right = y.hom := by
@@ -22,7 +22,7 @@ theorem fib_to {C : Type u} [Category.{v} C] (T : C) (y : StructuredArrow T (�
   exact congrArg CommaMorphism.right this
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `a`. Use function extensionality and compare the values at `c`. Express the relevant statement in the definitionally equal form `m.τ _ ((F.map ((fib_init T).to ((relMor (𝟭 C) m T).G.obj (c.obj (Fin.last 0)))).right).hom a) = m.τ _ ((F.map (c.obj (Fin.last 0)).hom).hom a)`. Rewrite using `[fib_to]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -39,11 +39,11 @@ theorem fib_aug {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : Type
 end CrystallineSemistableComparison.B
 
 /- English proof (translation)
-Introduce `R _ C _ C' _ F F' m s hT n`. Establish `key : ∀ (T : C) q, UpTo s ((relMor (𝟭 C) m T).pull q)`. Introduce `T`. Use `(CrystallineSemistableComparison.B.P.res_le _ _ (relMor (𝟭 C) m T) _ (CrystallineSemistableComparison.B.fib_init T) s).1 ?_` and prove the remaining obligations. Rewrite using `[CrystallineSemistableComparison.B.fib_aug m T]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hT T`. Introduce `j hj`. Establish `h1` using `CrystallineSemistableComparison.P.rel (𝟭 C) m s j (fun i q _ => key i q)`. Take `⟨k, rfl⟩ : ∃ k, n = j + k` from `⟨n - j, by omega⟩`. Establish `e : s ^ (2 * (j + k) + 3) = s ^ (2 * j + 3) * s ^ (2 * k)` using `by rw [← pow_add]; ring_nf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(CrystallineSemistableComparison.P.upTo_alg (m.pull j) LinearMap.id _ _).2.2.2.1 h1`.
+A detailed English derivation is pending.
 -/
 theorem CrystallineSemistableComparison.B.P.fib : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : Type u'} [Category.{v'} C'] {F : C ⥤ ModuleCat.{w} R} {F' : C' ⥤ ModuleCat.{w'} R} (m : Mor F F' (RingHom.id R)) (s : R), (∀ T : C, (cx (StructuredArrow.proj T m.G ⋙ F')).ResUpTo s (aug (StructuredArrow.proj T m.G ⋙ F') fun x => (m.τ x.right) ∘ₗ (F.map x.hom).hom)) → ∀ n, IsoLe (s ^ (2 * n + 3)) n m := by
   intro R _ C _ C' _ F F' m s hT n

@@ -16,11 +16,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Proceed by induction on `hb using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨p, rfl⟩` from `hx`. Rewrite using `[Valuation.mem_integer_iff, map_div₀]`. Break down `eq_or_ne (v.valuation F (z ⟨p.1, c p.1⟩)) 0 with h0 | h0` into its components or cases.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[h0]`. Conclude with `(div_le_one₀ (zero_lt_iff.mpr h0)).mpr (hc p)`. Consider the case `algebraMap r => rw [eq_intCast]`. Conclude with `intCast_mem _ r`. Consider the case `add x w _ _ hx hw => exact add_mem hx hw`.
-
-Consider the case `mul x w _ _ hx hw => exact mul_mem hx hw`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_integer_of_mem_chartRingZ {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
     (z : (Σ k, ι k) → F) (c : ∀ k, ι k)
@@ -40,11 +38,11 @@ theorem mem_integer_of_mem_chartRingZ {F : Type} [Field F] [NumberField F] (v : 
 omit [Fintype K] in
 
 /- English proof (translation)
-It suffices to establish `hv : ∀ v : HeightOneSpectrum (𝓞 F), v.valuation F b ≤ 1 by`. Take `⟨r, hr⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 F) F b hv`. Rewrite using `[← hr]`. Conclude with `r.2`. Introduce `v`.
+Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmax : ∀ k, ∃ i, ∀ j, v.valuation F (z ⟨k, j⟩) ≤ v.valuation F (z ⟨k, i⟩)` using `fun k => by`. Take `⟨i, -, hi⟩` from `Finset.exists_max_image Finset.univ (fun j => v.valuation F (z ⟨k, j⟩)) ⟨c0 k, Finset.mem_univ _⟩`. Conclude with `⟨i, fun j => hi j (Finset.mem_univ _)⟩`. Use `choose c hc using hmax`. Establish `hcz : ∀ k, z ⟨k, c k⟩ ≠ 0` using `fun k h0 => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hc k (c0 k)`. Rewrite `h1` using `[h0, map_zero]`. Conclude with `hc0 k ((Valuation.zero_iff _).mp (le_antisymm h1 zero_le))`. Conclude with `mem_integer_of_mem_chartRingZ v z c (fun p => hc p.1 p.2) (hb c hcz)`.
+A detailed English derivation is pending.
 -/
 theorem mem_integralClosure {F : Type} [Field F] [NumberField F] (z : (Σ k, ι k) → F) (c0 : ∀ k, ι k)
     (hc0 : ∀ k, z ⟨k, c0 k⟩ ≠ 0) {b : F}
@@ -69,7 +67,7 @@ theorem mem_integralClosure {F : Type} [Field F] [NumberField F] (z : (Σ k, ι 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Use `charZero_of_injective_algebraMap (R := ℤ) ((injective_iff_map_eq_zero _).mpr fun m hm => ?_)` and prove the remaining obligations. Establish `h : m ∈ (mCoordIdeal y).comap (C : ℤ →+* MRing ι)`. Rewrite using `[Ideal.mem_comap, mCoordIdeal, RingHom.mem_ker, mConeMap, aeval_C, MvPolynomial.algebraMap_apply, hm, C_0]`. Rewrite `h` using `[show (mCoordIdeal y).comap (C : ℤ →+* MRing ι) = ⊥ from hy, Ideal.mem_bot]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem charZero {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (hy : IsHorizontal (mCoordIdeal y)) :
     CharZero Ω := by
@@ -84,23 +82,19 @@ end CurveRingFiniteAlt
 open CurveRingFiniteAlt IndefiniteRowSideFullHecke.HeightsSet.CoordCurveDegree in
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y hy`. Use `CurveRingFiniteAlt.charZero y hy.2.2.1` as an intermediate fact. Use `choose c0 hc0 using hy.2.1.2.2`. Establish `hy0 : ∀ k, y ⟨k, c0 k⟩ ≠ 0` using `fun k h => hc0 k (X_mem_of_eq_zero h)`. Set `r : (Σ k, ι k) → Ω` to `fun p => y p / y ⟨p.1, c0 p.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `κ : IntermediateField ℚ Ω` to `IntermediateField.adjoin ℚ (Set.range r)`. Establish `: FiniteDimensional ℚ κ` using `IntermediateField.finiteDimensional_adjoin fun x hx => by`. Take `⟨p, rfl⟩` from `hx`. Conclude with `(isAlgebraic_ratio hy c0 hy0 p).isIntegral`. Establish `: NumberField κ` using `{ to_charZero := charZero_of_injective_algebraMap (algebraMap ℚ κ).injective to_finiteDimensional := inferInstance }`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `z : (Σ k, ι k) → κ` to `fun p => ⟨r p, IntermediateField.subset_adjoin ℚ _ ⟨p, rfl⟩⟩`. Establish `hzy : ∀ p q : Σ k, ι k, p.1 = q.1 → ((z p / z q : κ) : Ω) = y p / y q`. Introduce and unpack `⟨k, i⟩ ⟨k', j⟩ h`. Simplify using `only at h`. Substitute `h` using the available equality.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `div_div_div_cancel_right₀ (hy0 k) _ _`. Establish `hyz : ∀ p, z p ≠ 0 → y p ≠ 0` using `fun p h hp => h (Subtype.ext (by show y p / y ⟨p.1, c0 p.1⟩ = 0`. Rewrite using `[hp, zero_div]))`. Set `φ : κ →ₐ[ℤ] Ω` to `(IntermediateField.val κ).toRingHom.toIntAlgHom`. Establish `hmap : ∀ c : ∀ k, ι k, chartRingZ y c = (chartRingZ z c).map φ` using `fun c => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[chartRingZ, chartRingZ, AlgHom.map_adjoin, ← Set.range_comp]`. Use `congr 2`. Use function extensionality and compare the values at `p`. Conclude with `(hzy p ⟨p.1, c p.1⟩ rfl).symm`. Establish `hκ : ∀ b ∈ curveRing y, b ∈ κ` using `fun b hb => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `mem_curveRing.mp hb c0 hy0`. Rewrite `h` using `[hmap, Subalgebra.mem_map]`. Take `⟨x, -, rfl⟩` from `h`. Conclude with `x.2`. Establish `hint : ∀ b (hb : b ∈ curveRing y), (⟨b, hκ b hb⟩ : κ) ∈ integralClosure ℤ κ` using `fun b hb => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `mem_integralClosure z c0 (fun k h => ?_) fun c hc => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (fun x : κ => (x : Ω)) h`. Establish `h2 : y ⟨k, c0 k⟩ / y ⟨k, c0 k⟩ = 0` using `h1`. Conclude with `one_ne_zero ((div_self (hy0 k)).symm.trans h2)`. Establish `h` using `mem_curveRing.mp hb c (fun k => hyz _ (hc k))`.
-
-Rewrite `h` using `[hmap, Subalgebra.mem_map]`. Take `⟨x, hx, hxb⟩` from `h`. Establish `e : x = ⟨b, hκ b hb⟩` using `Subtype.ext hxb`. Conclude with `e ▸ hx`. Establish `: Module.Finite ℤ (integralClosure ℤ κ)` using `inferInstanceAs (Module.Finite ℤ (𝓞 κ))`.
-
-Set `f : curveRing y →ₗ[ℤ] integralClosure ℤ κ` to `{ toFun := fun b => ⟨⟨b, hκ b b.2⟩, hint b b.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Conclude with `Module.Finite.of_injective f fun a b h => Subtype.ext (congrArg (fun w : integralClosure ℤ κ => ((w : κ) : Ω)) h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem CurveRingFinite.proof : CurveRingFinite.Statement := by
   intro K _ ι _ Ω _ y hy

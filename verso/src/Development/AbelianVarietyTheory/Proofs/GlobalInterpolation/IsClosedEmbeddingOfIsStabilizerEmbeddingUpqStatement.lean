@@ -11,7 +11,7 @@ open NumberField MeasureTheory Matrix Topology Formalism.BasicNotions Formalism.
 open scoped ENNReal TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.StabEmbClosed.isClosedEmbedding_of_isStabEmb` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FIsClosedEmbeddingOfIsStabilizerEmbeddingUpq.lean&line=35#L35)
 -/

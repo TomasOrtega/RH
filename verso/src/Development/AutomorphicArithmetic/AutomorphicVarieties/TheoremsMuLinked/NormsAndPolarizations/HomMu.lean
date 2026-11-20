@@ -3,21 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.N
 open IsLocalRing Matrix NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th UpperTheory.V.Th.Nm GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Introduce `l _ c G _ _ _ d hd hadd g hg`. Establish `hd1 : d 1 = 0`. Establish `h` using `hadd 1 1`. Rewrite `h` using `[mul_one]`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Set `f : G →* Multiplicative c.O` to `{ toFun := fun x => Multiplicative.ofAdd (d x) map_one' := by simp [hd1] map_mul' := fun x y => by show Multiplicative.ofAdd (d (x * y)) = Multiplicative.ofAdd (d x) * Multiplicative.ofAdd (d y)`. Rewrite using `[hadd]`. Use `rfl }`. Establish `hcomm : ∀ x ∈ commutator G, d x = 0`. Introduce `x hx`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Abelianization.commutator_subset_ker f hx` as an intermediate fact. Rewrite `this` using `[MonoidHom.mem_ker]`. Conclude with `this`. Establish `hcl : ∀ x ∈ (commutator G).topologicalClosure, d x = 0`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmemN : ∀ N : ℕ, d x ∈ (maximalIdeal c.O) ^ N`. Introduce `N`. Establish `hclosed` using `(hd N).isClosed_fiber 0`. Establish `hsub : ((commutator G : Subgroup G) : Set G) ⊆ {y | Ideal.Quotient.mk ((maximalIdeal c.O) ^ N) (d y) = 0}`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq]`. Rewrite using `[hcomm y hy, map_zero]`. Establish `hx' : x ∈ closure ((commutator G : Subgroup G) : Set G)`. Rewrite using `[← Subgroup.topologicalClosure_coe]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hfib` using `closure_minimal hsub hclosed hx'`. Simplify using `only [Set.mem_setOf_eq] at hfib`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp hfib`. Establish `hbot` using `Ideal.iInf_pow_eq_bot_of_isLocalRing (maximalIdeal c.O) (maximalIdeal.isMaximal c.O).ne_top`. Establish `hin : d x ∈ ⨅ i, (maximalIdeal c.O) ^ i` using `(Submodule.mem_iInf _).mpr hmemN`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hin` using `[hbot]`. Conclude with `(Submodule.mem_bot _).mp hin`. Establish `hg' : (QuotientGroup.mk' (commutator G).topologicalClosure g : TopologicalAbelianization G) ∈ CommGroup.primaryComponent (TopologicalAbelianization G) l` using `hg`. Take `⟨k, hk⟩` from `hg'`. Rewrite `hk` using `[← map_pow, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]`.
-
-Establish `h0` using `hcl _ hk`. Establish `hdp : d (g ^ (l ^ k)) = (l ^ k) • d g` using `map_pow f g (l ^ k)`. Rewrite `h0` using `[hdp]`. Conclude with `(smul_eq_zero.mp h0).resolve_left (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.Nm.homMu :
     ∀ {l : ℕ} [Fact l.Prime] (c : Coef l) (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (d : G → c.O), AdicCont (maximalIdeal c.O) d → (∀ g h, d (g * h) = d g + d h) → ∀ g ∈ muG l G, d g = 0 := by

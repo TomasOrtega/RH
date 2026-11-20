@@ -15,9 +15,9 @@ abbrev Deg (wL : WeightFamilies.Wt D j) (m : ℕ) : Submodule B.KO X.Forms :=
   LinearMap.range (X.inc (addL (wt0 D j) wL m))
 
 /- English proof (translation)
-Take `⟨F, rfl⟩` from `hx`. Take `⟨G, rfl⟩` from `hy`. Establish `h : X.inc _ F * X.inc _ G ∈ LinearMap.range (X.inc (wadd (addL (wt0 D j) wL m) (addL (wt0 D j) wL n)))`. Take `⟨H, hH⟩` from `X.inc_mul _ _ F G`. Conclude with `⟨H, hH.symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `h` using `[wadd_addL_addL, zero_weight_add]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem deg_mul {m n : ℕ} {x y : X.Forms} (hx : x ∈ Deg X wL m) (hy : y ∈ Deg X wL n) :
     x * y ∈ Deg X wL (m + n) := by
@@ -30,7 +30,7 @@ theorem deg_mul {m n : ℕ} {x y : X.Forms} (hx : x ∈ Deg X wL m) (hy : y ∈ 
   rwa [wadd_addL_addL, zero_weight_add] at h
 
 /- English proof (translation)
-Establish `h : X.inc wL F ∈ LinearMap.range (X.inc wL)` using `⟨F, rfl⟩`. Unfold `Deg`. Rewrite using `[add_zero_weight_one_eq]` and apply the resulting hypothesis.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem deg_one (F : B.Cusp j wL) : X.inc wL F ∈ Deg X wL 1 := by
   have h : X.inc wL F ∈ LinearMap.range (X.inc wL) := ⟨F, rfl⟩
@@ -38,7 +38,7 @@ theorem deg_one (F : B.Cusp j wL) : X.inc wL F ∈ Deg X wL 1 := by
   rwa [add_zero_weight_one_eq]
 
 /- English proof (translation)
-Establish `h : X.inc _ g ∈ LinearMap.range (X.inc (wsmul k wL))` using `⟨g, rfl⟩`. Unfold `Deg`. Rewrite using `[addL, zero_weight_add]` and apply the resulting hypothesis.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem deg_wsmul (k : ℕ) (g : B.Cusp j (wsmul k wL)) : X.inc (wsmul k wL) g ∈ Deg X wL k := by
   have h : X.inc _ g ∈ LinearMap.range (X.inc (wsmul k wL)) := ⟨g, rfl⟩
@@ -46,7 +46,7 @@ theorem deg_wsmul (k : ℕ) (g : B.Cusp j (wsmul k wL)) : X.inc (wsmul k wL) g �
   rwa [addL, zero_weight_add]
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simpa using hy`. Consider the case `succ e ih`. Rewrite using `[pow_succ, ← mul_assoc, ← add_assoc]`. Conclude with `deg_mul X ih hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_mul_pow {m : ℕ} {y x : X.Forms} (hy : y ∈ Deg X wL m) (hx : x ∈ Deg X wL 1) (e : ℕ) :
     y * x ^ e ∈ Deg X wL (m + e) := by
@@ -57,9 +57,9 @@ theorem deg_mul_pow {m : ℕ} {y x : X.Forms} (hy : y ∈ Deg X wL m) (hx : x �
     exact deg_mul X ih hx
 
 /- English proof (translation)
-Use `Finset.induction_on s (by simpa using hy) ?_` and prove the remaining obligations. Introduce `a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`. Establish `e1 : y * (X.inc wL (w a) ^ d a * ∏ i ∈ s, X.inc wL (w i) ^ d i) = (y * ∏ i ∈ s, X.inc wL (w i) ^ d i) * X.inc wL (w a) ^ d a` using `by ring`. Establish `e2 : m + (d a + ∑ i ∈ s, d i) = m + ∑ i ∈ s, d i + d a` using `by ring`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2]`. Conclude with `deg_mul_pow X ih (deg_one X (w a)) (d a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_mul_prod (d : Fin N →₀ ℕ) {m : ℕ} {y : X.Forms} (hy : y ∈ Deg X wL m) (s : Finset (Fin N)) :
     y * ∏ i ∈ s, X.inc wL (w i) ^ d i ∈ Deg X wL (m + ∑ i ∈ s, d i) := by
@@ -74,9 +74,9 @@ theorem deg_mul_prod (d : Fin N →₀ ℕ) {m : ℕ} {y : X.Forms} (hy : y ∈ 
   exact deg_mul_pow X ih (deg_one X (w a)) (d a)
 
 /- English proof (translation)
-Rewrite using `[Pw.as_sum, map_sum, Finset.mul_sum]`. Use `Submodule.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_monomial, mul_left_comm, ← Algebra.smul_def]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hdeg : ∑ i ∈ d.support, d i = k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hPw (MvPolynomial.mem_support_iff.mp hd)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum]`. Establish `h` using `deg_mul_prod X w d hy d.support`. Rewrite `h` using `[hdeg]`. Conclude with `h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_mul_aeval {k : ℕ} (Pw : MvPolynomial (Fin N) B.KO) (hPw : Pw.IsHomogeneous k) {m : ℕ} {y : X.Forms}
     (hy : y ∈ Deg X wL m) :
@@ -94,13 +94,13 @@ theorem deg_mul_aeval {k : ℕ} (Pw : MvPolynomial (Fin N) B.KO) (hPw : Pw.IsHom
   exact h
 
 /- English proof (translation)
-Take `⟨k, g, Pw, hPw, hne, he⟩` from `hB a`. Use `⟨k, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨e, rfl⟩` from `Nat.exists_eq_add_of_lt hm`. Establish `h1 : X.inc wL (w k0) * X.inc wL (w k0) ^ e ∈ Deg X wL (1 + e)` using `deg_mul_pow X (deg_one X (w k0)) (deg_one X (w k0)) e`. Establish `hd` using `deg_mul_aeval X w Pw hPw h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn` using `deg_mul X h1 (deg_wsmul X k g)`. Establish `e1 : 1 + e + k = k + e + 1` using `by ring`. Rewrite `hd`, `hn` using `[e1]`. Take `⟨d, hd⟩` from `hd`. Take `⟨n, hn⟩` from `hn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hPv : gF (MvPolynomial.aeval (fun i => X.inc wL (w i)) Pw) = MvPolynomial.aeval (fun i => gF (X.inc wL (w i))) Pw` using `MvPolynomial.comp_aeval_apply (fun i => X.inc wL (w i)) gF Pw`. Use `⟨n, d, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hd, map_mul, map_mul, map_pow, hPv]`. Conclude with `mul_ne_zero (mul_ne_zero hk0 (pow_ne_zero _ hk0)) hne`. Rewrite using `[hd, hn, map_mul, map_mul gF _ (MvPolynomial.aeval _ Pw), hPv, ← he]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem ratio_large {Ω : Type} [Field Ω] [Algebra B.KO Ω] (gF : X.Forms →ₐ[B.KO] Ω)
     (hB : CurveLoc.BirAt X N w gF) (k0 : Fin N) (hk0 : gF (X.inc wL (w k0)) ≠ 0) (a : Ω) :
@@ -133,25 +133,23 @@ namespace GlobalTheory
 open ConstRatio in
 
 /- English proof (translation)
-Introduce `D B P j X la N wL w Pt _ U _ ev ι Ω _ _ gF Zc jz h1 h2 h3 hB hs a`. Use `haveI := Fintype.ofFinite Pt`. Use `choose k0 hk0 using h1`. Establish `hg0 : ∀ ζ, gF (Zc ζ) (X.inc wL (w (k0 ζ))) ≠ 0` using `fun ζ h => hk0 ζ (h2 ζ wL _ h)`. Use `choose K hK using fun ζ => ratio_large X w (gF (Zc ζ)) (hB _) (k0 ζ) (hg0 ζ) (a _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `set M : ℕ := Finset.univ.sup K with hM`. Establish `hlt : ∀ ζ, K ζ < 1 + M` using `fun ζ => by`. Establish `: K ζ ≤ M` using `Finset.le_sup (f := K) (Finset.mem_univ ζ)`. Use linear arithmetic over natural numbers and integers. Establish `key : ∀ Z, ∃ n d : B.Cusp j (addL (wt0 D j) wL (1 + M)), (∀ Z', Z' ≠ Z → gF Z' (X.inc _ n) = 0 ∧ gF Z' (X.inc _ d) = 0) ∧ (Z ∈ Set.range Zc → gF Z (X.inc _ d) ≠ 0 ∧ gF Z (X.inc _ n) = a Z * gF Z (X.inc _ d))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `Z`. Distinguish the cases in `hZ : Z ∈ Set.range Zc`. Take `⟨ζ, rfl⟩` from `hZ`. Take `⟨n, d, hd, hn⟩` from `hK ζ _ (hlt ζ)`. Take `⟨n', hn1, hn2⟩` from `hs (Zc ζ) _ n`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨d', hd1, hd2⟩` from `hs (Zc ζ) _ d`. Use `⟨n', d', fun Z' h => ⟨hn2 Z' h, hd2 Z' h⟩, fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hn1, hd1]`. Conclude with `⟨hd, hn⟩`. Conclude with `⟨0, 0, fun Z' _ => by simp, fun h => absurd h hZ⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose n d hoff hon using key`. Establish `hsum : ∀ (f : ι → B.Cusp j (addL (wt0 D j) wL (1 + M))), (∀ Z Z', Z' ≠ Z → gF Z' (X.inc _ (f Z)) = 0) → ∀ ζ, gF (Zc ζ) (X.inc _ (∑ Z ∈ Finset.univ.image Zc, f Z)) = gF (Zc ζ) (X.inc _ (f (Zc ζ)))`. Introduce `f hf ζ`. Rewrite using `[map_sum, map_sum]`. Conclude with `Finset.sum_eq_single_of_mem _ (Finset.mem_image_of_mem _ (Finset.mem_univ ζ)) fun Z _ h => hf Z _ h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨1 + M, ∑ Z ∈ Finset.univ.image Zc, n Z, ∑ Z ∈ Finset.univ.image Zc, d Z, fun ζ => ?_⟩` and prove the remaining obligations. Establish `hn` using `hsum n (fun Z Z' h => (hoff Z Z' h).1) ζ`. Establish `hd` using `hsum d (fun Z Z' h => (hoff Z Z' h).2) ζ`. Take `⟨o1, o2⟩` from `hon (Zc ζ) ⟨ζ, rfl⟩`. Rewrite `o1` using `[← hd]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result.
 
-Rewrite `o2` using `[← hd, ← hn]`. Generalize the expression as in `(∑ Z ∈ Finset.univ.image Zc, n Z) = F at o2 ⊢`. Generalize the expression as in `(∑ Z ∈ Finset.univ.image Zc, d Z) = F' at o1 o2 ⊢`. Establish `hj : jz ζ (gF (Zc ζ) (X.inc _ F')) ≠ 0` using `(map_ne_zero _).2 o1`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨G, hG⟩` from `deg_mul_pow X (deg_one X (w (k0 ζ))) (deg_one X (w (k0 ζ))) M`. Establish `hev : ev ζ (Formalism.MainNotions.Gaps.EtaleWeightGaps.emb X la N (X.inc _ G)) ≠ 0`. Rewrite using `[hG, map_mul, map_mul, map_pow, map_pow]`. Conclude with `mul_ne_zero (hk0 ζ) (pow_ne_zero _ (hk0 ζ))`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h` using `h3 ζ _ F' G`. Rewrite `h` using `[h0, mul_zero]`. Conclude with `mul_ne_zero hj hev h`. Establish `h` using `h3 ζ _ F F'`. Rewrite `h` using `[o2, map_mul]`.
-
-Apply `mul_left_cancel₀ hj` to reduce the goal to its premises. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_ratio_forms_at_points : ∀ (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) (N : ℕ) (wL : WeightFamilies.Wt D j) (w : Fin N → B.Cusp j wL) (Pt : Type) [Finite Pt] (U : Pt → Type) [∀ ζ, Field (U ζ)] (ev : ∀ ζ, Rp X la N →+* U ζ) (ι : Type) (Ω : ι → Type) [∀ Z, Field (Ω Z)] [∀ Z, Algebra B.KO (Ω Z)] (gF : ∀ Z, X.Forms →ₐ[B.KO] Ω Z) (Zc : Pt → ι) (jz : ∀ ζ, Ω (Zc ζ) →+* U ζ), (∀ ζ, ∃ k, ev ζ (Formalism.MainNotions.Gaps.EtaleWeightGaps.emb X la N (X.inc wL (w k))) ≠ 0) → (∀ ζ (u : WeightFamilies.Wt D j) (F : B.Cusp j u), gF (Zc ζ) (X.inc u F) = 0 → ev ζ (Formalism.MainNotions.Gaps.EtaleWeightGaps.emb X la N (X.inc u F)) = 0) → (∀ ζ (u : WeightFamilies.Wt D j) (F F' : B.Cusp j u), jz ζ (gF (Zc ζ) (X.inc u F)) * ev ζ (Formalism.MainNotions.Gaps.EtaleWeightGaps.emb X la N (X.inc u F')) = jz ζ (gF (Zc ζ) (X.inc u F')) * ev ζ (Formalism.MainNotions.Gaps.EtaleWeightGaps.emb X la N (X.inc u F))) → (∀ Z, CurveLoc.BirAt X N w (gF Z)) → (∀ Z (u : WeightFamilies.Wt D j) (F : B.Cusp j u), ∃ F' : B.Cusp j u, gF Z (X.inc u F') = gF Z (X.inc u F) ∧ ∀ Z', Z' ≠ Z → gF Z' (X.inc u F') = 0) → ∀ a : ∀ Z, Ω Z, ∃ (k : ℕ) (F F' : B.Cusp j (addL (wt0 D j) wL k)), ∀ ζ, ev ζ (Formalism.MainNotions.Gaps.EtaleWeightGaps.emb X la N (X.inc _ F')) ≠ 0 ∧ ev ζ (Formalism.MainNotions.Gaps.EtaleWeightGaps.emb X la N (X.inc _ F)) = jz ζ (a (Zc ζ)) * ev ζ (Formalism.MainNotions.Gaps.EtaleWeightGaps.emb X la N (X.inc _ F')) := by
   intro D B P j X la N wL w Pt _ U _ ev ι Ω _ _ gF Zc jz h1 h2 h3 hB hs a

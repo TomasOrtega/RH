@@ -10,7 +10,7 @@ namespace GlobalTheory.CompanionTheory.WaveSpd.IntDeriv
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hopen : IsOpen ((Set.univ : Set ℝ) ×ˢ GLs n)` using `isOpen_univ.prod isOpen_GLs`. Establish `hd : DifferentiableAt ℝ (Function.uncurry ρ) (s, y)` using `((h.contDiffAt (hopen.mem_nhds ⟨Set.mem_univ _, hy⟩)).differentiableAt (by simp))`. Establish `hc : HasDerivAt (fun r : ℝ => (r, y)) ((1 : ℝ), (0 : Mat n)) s` using `(hasDerivAt_id s).prodMk (hasDerivAt_const s y)`. Establish `hd' : HasFDerivAt (Function.uncurry ρ) (fderiv ℝ (Function.uncurry ρ) (s, y)) ((fun r : ℝ => (r, y)) s)` using `hd.hasFDerivAt`. Conclude with `hd'.comp_hasDerivAt s hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_fderiv {ρ : ℝ → Mat n → ℝ} (h : Sm ρ) (s : ℝ) {y : Mat n} (hy : y ∈ GLs n) :
     HasDerivAt (fun r => ρ r y) (fderiv ℝ (Function.uncurry ρ) (s, y) (1, 0)) s := by
@@ -24,7 +24,7 @@ theorem hasDerivAt_fderiv {ρ : ℝ → Mat n → ℝ} (h : Sm ρ) (s : ℝ) {y 
   exact hd'.comp_hasDerivAt s hc
 
 /- English proof (translation)
-Establish `h2` using `hasDerivAt_fderiv h s hy`. Establish `: dt ρ s y = fderiv ℝ (Function.uncurry ρ) (s, y) (1, 0)` using `h2.deriv`. Rewrite using `[this]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_dt {ρ : ℝ → Mat n → ℝ} (h : Sm ρ) (s : ℝ) {y : Mat n} (hy : y ∈ GLs n) :
     HasDerivAt (fun r => ρ r y) (dt ρ s y) s := by
@@ -33,9 +33,9 @@ theorem hasDerivAt_dt {ρ : ℝ → Mat n → ℝ} (h : Sm ρ) (s : ℝ) {y : Ma
   rw [this]; exact h2
 
 /- English proof (translation)
-Establish `hopen : IsOpen ((Set.univ : Set ℝ) ×ˢ GLs n)` using `isOpen_univ.prod isOpen_GLs`. Establish `hc : ContinuousOn (fderiv ℝ (Function.uncurry ρ)) (Set.univ ×ˢ GLs n)` using `ContDiffOn.continuousOn_fderiv_of_isOpen h hopen (by simp)`. Establish `h1 : ContinuousOn (fun p : ℝ × Mat n => fderiv ℝ (Function.uncurry ρ) p (1, 0)) (Set.univ ×ˢ GLs n)` using `hc.clm_apply continuousOn_const`. Use `h1.congr ?_` and prove the remaining obligations. Introduce and unpack `⟨s, y⟩ ⟨-, hy⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(hasDerivAt_fderiv h s hy).deriv`.
+A detailed English derivation is pending.
 -/
 theorem continuousOn_dt {ρ : ℝ → Mat n → ℝ} (h : Sm ρ) :
     ContinuousOn (Function.uncurry (dt ρ)) (Set.univ ×ˢ GLs n) := by
@@ -49,12 +49,12 @@ theorem continuousOn_dt {ρ : ℝ → Mat n → ℝ} (h : Sm ρ) :
   exact (hasDerivAt_fderiv h s hy).deriv
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_val_G : Continuous (fun y : G n => (y.val : Mat n)) := Units.continuous_val
 
 /- English proof (translation)
-Establish `hm : Continuous (fun p : ℝ × G n => ((p.1, p.2.val) : ℝ × Mat n))` using `continuous_fst.prodMk (continuous_val_G.comp continuous_snd)`. Conclude with `h.comp_continuous hm (fun p => ⟨Set.mem_univ _, val_mem_GLs p.2⟩)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_comp_val {W : Type} [TopologicalSpace W] {f : ℝ → Mat n → W}
     (h : ContinuousOn (Function.uncurry f) (Set.univ ×ˢ GLs n)) :
@@ -64,19 +64,17 @@ theorem continuous_comp_val {W : Type} [TopologicalSpace W] {f : ℝ → Mat n �
   exact h.comp_continuous hm (fun p => ⟨Set.mem_univ _, val_mem_GLs p.2⟩)
 
 /- English proof (translation)
-Establish `hF : Continuous (fun p : ℝ × G n => ρ p.1 p.2.val)` using `continuous_comp_val hρ.continuousOn`. Establish `hF' : Continuous (fun p : ℝ × G n => dt ρ p.1 p.2.val)` using `continuous_comp_val (continuousOn_dt hρ)`. Establish `hFs : ∀ s, Continuous (fun y : G n => ρ s y.val)` using `fun s => hF.comp (continuous_const.prodMk continuous_id)`. Establish `hFs' : ∀ s, Continuous (fun y : G n => dt ρ s y.val)` using `fun s => hF'.comp (continuous_const.prodMk continuous_id)`. Establish `hKm : MeasurableSet K` using `hK.measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv' : ∀ s ∈ Metric.ball s₀ ε, ∀ y : G n, y ∉ K → dt ρ s y.val = 0`. Introduce `s hs y hy`. Establish `hev : (fun r => ρ r y.val) =ᶠ[𝓝 s] fun _ => (0 : ℝ)` using `by filter_upwards [Metric.isOpen_ball.mem_nhds hs] with r hr using hv r hr y hy`. Establish `: dt ρ s y.val = deriv (fun r => ρ r y.val) s` using `rfl`. Rewrite using `[this, hev.deriv_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hint : ∀ s ∈ Metric.ball s₀ ε, Integrable (fun y : G n => ρ s y.val) μ`. Introduce `s hs`. Use `(hFs s).integrable_of_hasCompactSupport (HasCompactSupport.intro hK ?_)` and prove the remaining obligations. Conclude with `fun y hy => hv s hs y hy`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hint' : Integrable (fun y : G n => dt ρ s₀ y.val) μ`. Use `(hFs' s₀).integrable_of_hasCompactSupport (HasCompactSupport.intro hK ?_)` and prove the remaining obligations. Conclude with `fun y hy => hv' s₀ (Metric.mem_ball_self hε) y hy`. Establish `hs₀ : s₀ ∈ Metric.ball s₀ ε` using `Metric.mem_ball_self hε`. Take `⟨M, hM⟩` from `((isCompact_closedBall s₀ (ε / 2)).prod hK).exists_bound_of_continuousOn hF'.continuousOn`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hball : Metric.ball s₀ (ε / 2) ⊆ Metric.ball s₀ ε` using `Metric.ball_subset_ball (by linarith)`. Establish `hbound : ∀ᵐ y ∂μ, ∀ s ∈ Metric.ball s₀ (ε / 2), ‖dt ρ s (y : G n).val‖ ≤ K.indicator (fun _ => M) y`. Use `Filter.Eventually.of_forall fun y s hs => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ K`. Rewrite using `[Set.indicator_of_mem hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hM (s, y) ⟨Metric.ball_subset_closedBall hs, hy⟩`. Rewrite using `[Set.indicator_of_notMem hy, hv' s (hball hs) y hy]`. Simplify using the standard rewrite rules. Establish `hbi : Integrable (K.indicator (fun _ : G n => M)) μ` using `(integrable_indicator_iff hKm).2 (integrableOn_const hK.measure_lt_top.ne)`. Use `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (F := fun s (y : G n) => ρ s y.val) (F' := fun s (y : G n) => dt ρ s y.val) (x₀ := s₀) (s := Metric.ball s₀ (ε / 2)) (bound := K.indicator (fun _ => M)) (Metric.ball_mem_nhds s₀ (by linarith)) (Filter.Eventually.of_forall …` as an intermediate fact.
-
-Conclude with `this.2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_integral_compact {n : ℕ} [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n))
     [μ.IsHaarMeasure] (ρ : ℝ → Mat n → ℝ) (hρ : Sm ρ) (K : Set (G n)) (hK : IsCompact K)

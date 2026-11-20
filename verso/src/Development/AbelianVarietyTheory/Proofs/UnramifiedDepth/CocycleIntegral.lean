@@ -27,11 +27,11 @@ def valRing (V : VF C) : Subring C where
   neg_mem' := fun ha => VF.Ge.neg ha
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hf`. Set `g : MvPowerSeries σ (valRing V)` to `fun n => ⟨coeff n f, hf n⟩`. Use `RingHom.mem_range.2 ⟨g, ?_⟩` and prove the remaining obligations. Use extensionality with `n`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[coeff_map]`. Both sides reduce to the same expression. Introduce `hf n`. Take `⟨g, rfl⟩` from `RingHom.mem_range.1 hf`. Rewrite using `[coeff_map]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(coeff n g).2`.
+A detailed English derivation is pending.
 -/
 theorem intS_iff_ig (V : VF C) {σ : Type} (f : MvPowerSeries σ C) : IntS V f ↔ f ∈ Ig (valRing V) C σ := by
   constructor
@@ -50,7 +50,7 @@ variable [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {d : ℕ}
 
 omit [CharZero C] in
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_map]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_self {σ : Type} (f : MvPowerSeries σ C) : MvPowerSeries.map (algebraMap C C) f = f := by
   ext n

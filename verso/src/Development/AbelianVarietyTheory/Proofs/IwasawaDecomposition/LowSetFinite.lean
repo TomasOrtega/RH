@@ -67,7 +67,7 @@ def SpanC (S : RatDat D.ntw) (Sb : Finset (PlE D.host)) (θ : ∀ kk : Fin 2, Mu
 def lowSet (D : D7) : Set (PlE D.host) := {v | ∃ p ∈ lowAll D, p ≠ 0 ∧ ((p : ℕ) : 𝓞 D.host.E) ∈ v.asIdeal}
 
 /- English proof (translation)
-Use `Set.Finite.subset (Set.Finite.biUnion (s := (((lowAll D).filter (· ≠ 0) : Finset ℕ) : Set ℕ)) (Finset.finite_toSet _) fun p hp => GlobalTheory.RowTie.placesOver_finite_of_ne_zero D.host.E p (Finset.mem_filter.1 hp).2) ?_` and prove the remaining obligations. Introduce and unpack `v ⟨p, hp, hp0, hv⟩`. Conclude with `Set.mem_biUnion (Finset.mem_coe.2 (Finset.mem_filter.2 ⟨hp, hp0⟩)) hv`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem lowSet_finite (D : D7) : (lowSet D).Finite := by
   refine Set.Finite.subset (Set.Finite.biUnion (s := (((lowAll D).filter (· ≠ 0) : Finset ℕ) : Set ℕ)) (Finset.finite_toSet _)
@@ -78,7 +78,7 @@ theorem lowSet_finite (D : D7) : (lowSet D).Finite := by
 def SbD (D : D7) : Finset (PlE D.host) := (lowSet_finite D).toFinset
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨p, hp, -, hv⟩` from `(lowSet_finite D).mem_toFinset.1 hv`. Conclude with `⟨p, hp, hv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem overSet_SbD (D : D7) : OverSet D (SbD D) (lowAll D) := by
   intro v hv

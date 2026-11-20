@@ -9,23 +9,21 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hP f b hf hfP W hW hrel hϖW`. Establish `hWp : W.IsPrime` using `hW.1.1`. Establish `hPp : P.IsPrime` using `hP.multiProj.isPrime`. Establish `hPW : P ≤ W` using `le_sup_left.trans hW.1.2`. Establish `hϖP : (C ϖ : MRing ι O) ∉ P`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hmem`. Establish `: ϖ ∈ P.comap (C : O →+* MRing ι O)` using `hmem`. Rewrite `this` using `[hP.noTorsion, Ideal.mem_bot]`. Conclude with `hϖ.ne_zero this`. Establish `hmin : W ∈ (P ⊔ Ideal.span {(C ϖ : MRing ι O)}).minimalPrimes`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨hWp, sup_le hPW ((Ideal.span_singleton_le_iff_mem _).mpr hϖW)⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `Q ⟨hQ, hQle⟩ hQW`. Assume the negation of the conclusion as `hWQ`. Establish `hlt : Q < W` using `lt_of_le_of_ne hQW (fun e => hWQ (e ▸ le_rfl))`. Establish `hPQ : P ≤ Q` using `le_sup_left.trans hQle`.
+Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hϖQ : (C ϖ : MRing ι O) ∈ Q` using `hQle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Set `π` to `Ideal.Quotient.mk P`. Establish `hsurj : Function.Surjective π` using `Ideal.Quotient.mk_surjective`. Establish `: (W.map π).IsPrime` using `Ideal.map_isPrime_of_surjective hsurj (by rw [Ideal.mk_ker]; exact hPW)`. Establish `: (Q.map π).IsPrime` using `Ideal.map_isPrime_of_surjective hsurj (by rw [Ideal.mk_ker]; exact hPQ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle1 : (W.map π).height ≤ 1` using `Ideal.map_height_le_one_of_mem_minimalPrimes hW`. Establish `hlt' : Q.map π < W.map π`. Use `(Ideal.map_mono hlt.le).lt_of_not_ge fun e => hlt.not_ge ?_` and prove the remaining obligations. Use `Ideal.comap_mono (f := π) e` as an intermediate fact. Rewrite `this` using `[Ideal.comap_map_of_surjective' π hsurj, Ideal.comap_map_of_surjective' π hsurj, Ideal.mk_ker, sup_eq_left.mpr hPW, sup_eq_left.mpr hPQ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `: (W.map π).FiniteHeight` using `⟨Or.inr (hle1.trans_lt (WithTop.coe_lt_top 1)).ne⟩`. Establish `h0` using `(Ideal.height_strict_mono_of_isPrime_of_isPrime hlt').trans_le hle1`. Rewrite `h0` using `[Order.lt_one_iff, Ideal.height_eq_zero_iff]`. Establish `hbot : Q.map π ≤ ⊥` using `h0.2 ⟨Ideal.isPrime_bot, bot_le⟩ bot_le`. Establish `: π (C ϖ) ∈ (⊥ : Ideal (MRing ι O ⧸ P))` using `hbot (Ideal.mem_map_of_mem π hϖQ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hϖP this`. Establish `hdiv : divCycle P (C ϖ) W ≠ 0`. Unfold `divCycle`. Rewrite using `[dif_pos ⟨hmin, hrel⟩]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : IsLocalRing.maximalIdeal (Localization.AtPrime W) ∈ ((P ⊔ Ideal.span {(C ϖ : MRing ι O)}).map (algebraMap (MRing ι O) (Localization.AtPrime W))).minimalPrimes`. Rewrite using `[IsLocalization.minimalPrimes_map W.primeCompl (Localization.AtPrime W), Set.mem_preimage, Localization.AtPrime.under_maximalIdeal]`. Conclude with `hmin`. Establish `hne` using `ReciprocityTheory.ChartRestriction.G.AI.I1.SwapLoc.length_quot_ne_top_of_mem_minimalPrimes _ hm`. Establish `: Nontrivial (Localization.AtPrime W ⧸ (P ⊔ Ideal.span {(C ϖ : MRing ι O)}).map (algebraMap (MRing ι O) (Localization.AtPrime W)))` using `Ideal.Quotient.nontrivial_iff.mpr (ne_top_of_le_ne_top (IsLocalRing.maximalIdeal.isMaximal _).ne_top hm.1.2)`.
-
-Establish `hpos` using `Module.length_pos (R := Localization.AtPrime W) (M := Localization.AtPrime W ⧸ (P ⊔ Ideal.span {(C ϖ : MRing ι O)}).map (algebraMap (MRing ι O) (Localization.AtPrime W)))`. Rewrite using `[multAt, ReciprocityTheory.ChartRestriction.G.AI.I1.inh_length_locQuot]`. Conclude with `(ENat.toNat_pos hpos.ne' hne).ne'` after adjusting the coercions. Conclude with `(h O ϖ hϖ K ι P d hP).2 W hdiv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem VerticalComponentFibre.proof (h : FibreVarieties.Statement.{0}) :
     VerticalComponentFibre.Statement := by

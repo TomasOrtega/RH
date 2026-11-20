@@ -17,7 +17,7 @@ variable {T : Type} [Fintype T]
 omit [Fintype T] in
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp only [aeval_C]`. Rewrite using `[eq_intCast, eq_intCast, map_intCast]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p n hp => simp [hp]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 -/
 theorem ringHom_aeval {A A' : Type*} [CommRing A] [CommRing A'] [Algebra ℤ A] (f : A →+* A')
     (z : (Σ _ : Unit, T) → A) (g : MRing (fun _ : Unit => T)) :
@@ -28,9 +28,9 @@ theorem ringHom_aeval {A A' : Type*} [CommRing A] [CommRing A'] [Algebra ℤ A] 
   | mul_X p n hp => simp [hp]
 
 /- English proof (translation)
-Use `conv_lhs => rw [g.as_sum]`. Use `conv_rhs => rw [g.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial, aeval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdeg : ∑ p : (Σ _ : Unit, T), m p = d`. Rewrite using `[Fintype.sum_sigma, Fintype.sum_unique]`. Conclude with `hg m hm default`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem aeval_smul_of_homog {S : Type*} [CommRing S] {g : MRing (fun _ : Unit => T)} {d : ℕ}
     (hg : IsMultiHomog g (fun _ => d)) (c : S) (z : (Σ _ : Unit, T) → S) :
@@ -51,7 +51,7 @@ theorem aeval_smul_of_homog {S : Type*} [CommRing S] {g : MRing (fun _ : Unit =>
 variable {K' : Type} [Field K']
 
 /- English proof (translation)
-Establish `h` using `aeval_smul_of_homog hg (y ⟨(), t⟩)⁻¹ y`. Rewrite using `[show (fun p => y p / y ⟨(), t⟩) = fun p => (y ⟨(), t⟩)⁻¹ * y p from`. Use function extensionality and compare the values at `fun p => by rw [div_eq_inv_mul], h, inv_pow, div_eq_inv_mul]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 -/
 theorem aeval_ratio_of_homog (y : (Σ _ : Unit, T) → K') (t : T) {g : MRing (fun _ : Unit => T)}
     {d : ℕ} (hg : IsMultiHomog g (fun _ => d)) :
@@ -61,7 +61,7 @@ theorem aeval_ratio_of_homog (y : (Σ _ : Unit, T) → K') (t : T) {g : MRing (f
     funext fun p => by rw [div_eq_inv_mul], h, inv_pow, div_eq_inv_mul]
 
 /- English proof (translation)
-Rewrite using `[mCoordIdeal, RingHom.mem_ker, HilbertSamuel.SectionBounded.mConeMap_homog y hg, mul_eq_zero, C_eq_zero]`. Conclude with `or_iff_left (Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (X_ne_zero k))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_mCoordIdeal_iff {Ω : Type} [Field Ω] (y : (Σ _ : Unit, T) → Ω)
     {g : MRing (fun _ : Unit => T)} {d : ℕ} (hg : IsMultiHomog g (fun _ => d)) :
@@ -71,7 +71,7 @@ theorem mem_mCoordIdeal_iff {Ω : Type} [Field Ω] (y : (Σ _ : Unit, T) → Ω)
   exact or_iff_left (Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (X_ne_zero k))
 
 /- English proof (translation)
-Rewrite using `[mem_mCoordIdeal_iff y (HilbertSamuel.SectionBounded.homog_sub hf hg), map_sub, h, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_mem_mCoordIdeal {Ω : Type} [Field Ω] (y : (Σ _ : Unit, T) → Ω)
     {f g : MRing (fun _ : Unit => T)} {d : ℕ} (hf : IsMultiHomog f (fun _ => d))
@@ -79,28 +79,28 @@ theorem sub_mem_mCoordIdeal {Ω : Type} [Field Ω] (y : (Σ _ : Unit, T) → Ω)
   rw [mem_mCoordIdeal_iff y (HilbertSamuel.SectionBounded.homog_sub hf hg), map_sub, h, sub_self]
 
 /- English proof (translation)
-The claim follows from `HilbertSamuel.SectionBounded.homog_congr hf fun _ => h`.
+A detailed English derivation is pending.
 -/
 theorem homogDeg {f : MRing (fun _ : Unit => T)} {a b : ℕ} (hf : IsMultiHomog f (fun _ => a))
     (h : a = b) : IsMultiHomog f (fun _ => b) :=
   HilbertSamuel.SectionBounded.homog_congr hf fun _ => h
 
 /- English proof (translation)
-The claim follows from `HilbertSamuel.SectionBounded.homog_congr (HilbertSamuel.SectionBounded.homog_mul hf hg) fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem homogMul {f g : MRing (fun _ : Unit => T)} {a b : ℕ} (hf : IsMultiHomog f (fun _ => a))
     (hg : IsMultiHomog g (fun _ => b)) : IsMultiHomog (f * g) (fun _ => a + b) :=
   HilbertSamuel.SectionBounded.homog_congr (HilbertSamuel.SectionBounded.homog_mul hf hg) fun _ => rfl
 
 /- English proof (translation)
-The claim follows from `HilbertSamuel.SectionBounded.homog_congr (HilbertSamuel.SectionBounded.homog_X _) fun k => by cases k; simp`.
+A detailed English derivation is pending.
 -/
 theorem homogXt (t : T) : IsMultiHomog (X ⟨(), t⟩ : MRing (fun _ : Unit => T)) (fun _ => 1) :=
   HilbertSamuel.SectionBounded.homog_congr (HilbertSamuel.SectionBounded.homog_X _) fun k => by
     cases k; simp
 
 /- English proof (translation)
-The claim follows from `HilbertSamuel.SectionBounded.homog_congr (HilbertSamuel.SectionBounded.homog_pow (homogXt t) n) fun _ => by simp`.
+A detailed English derivation is pending.
 -/
 theorem homogXtPow (t : T) (n : ℕ) :
     IsMultiHomog ((X ⟨(), t⟩ : MRing (fun _ : Unit => T)) ^ n) (fun _ => n) :=
@@ -108,7 +108,7 @@ theorem homogXtPow (t : T) (n : ℕ) :
     fun _ => by simp
 
 /- English proof (translation)
-Establish `hc : (c : K') ∈ chartRingZ y (fun _ => t)` using `mem_curveRing.mp c.2 (fun _ => t) (fun _ => ht)`. Take `⟨δ, g, hg, hgy⟩` from `HilbertSamuel.SectionBounded.exists_form_of_mem_chartRingZ y (fun _ => t) (fun _ => ht) hc`. Use `⟨δ (), g, HilbertSamuel.SectionBounded.homog_congr hg fun k => by cases k; rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[hgy, Fintype.prod_unique]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_form (y : (Σ _ : Unit, T) → K') (t : T) (ht : y ⟨(), t⟩ ≠ 0) (c : curveRing y) :
     ∃ (e : ℕ) (g : MRing (fun _ : Unit => T)), IsMultiHomog g (fun _ => e) ∧
@@ -125,7 +125,7 @@ def formSet (y : (Σ _ : Unit, T) → K') (t : T) (Q : Ideal (MRing (fun _ : Uni
     aeval y g = (c : K') * y ⟨(), t⟩ ^ e ∧ g ∈ Q}
 
 /- English proof (translation)
-Rewrite using `[formSet, Set.mem_ofPred_eq]`. Conclude with `⟨e, g, hg, hv, hgQ⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_formSet_of {y : (Σ _ : Unit, T) → K'} {t : T} {Q : Ideal (MRing (fun _ : Unit => T))}
     {c : curveRing y} (e : ℕ) {g : MRing (fun _ : Unit => T)} (hg : IsMultiHomog g (fun _ => e))
@@ -134,9 +134,9 @@ theorem mem_formSet_of {y : (Σ _ : Unit, T) → K'} {t : T} {Q : Ideal (MRing (
   exact ⟨e, g, hg, hv, hgQ⟩
 
 /- English proof (translation)
-Take `⟨e1, g1, hg1, hv1, hQ1⟩` from `h1`. Take `⟨e2, g2, hg2, hv2, hQ2⟩` from `h2`. Establish `H1` using `homogMul hg1 (homogXtPow t e2)`. Establish `H2` using `homogDeg (homogMul hg2 (homogXtPow t e1)) (show e2 + e1 = e1 + e2 by omega)`. Establish `H3` using `HilbertSamuel.SectionBounded.homog_add H1 H2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[formSet, Set.mem_ofPred_eq]`. Use `⟨e1 + e2, _, H3, ?_, Q.add_mem (Q.mul_mem_right _ hQ1) (Q.mul_mem_right _ hQ2)⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, map_pow, map_pow, aeval_X, hv1, hv2, Subring.coe_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem formSet_add (y : (Σ _ : Unit, T) → K') (t : T) (Q : Ideal (MRing (fun _ : Unit => T)))
     {c1 c2 : curveRing y} (h1 : c1 ∈ formSet y t Q) (h2 : c2 ∈ formSet y t Q) :
@@ -152,7 +152,7 @@ theorem formSet_add (y : (Σ _ : Unit, T) → K') (t : T) (Q : Ideal (MRing (fun
   ring
 
 /- English proof (translation)
-Rewrite using `[formSet, Set.mem_ofPred_eq]`. Conclude with `⟨0, 0, HilbertSamuel.SectionBounded.homog_zero _, by simp, Q.zero_mem⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem formSet_zero (y : (Σ _ : Unit, T) → K') (t : T) (Q : Ideal (MRing (fun _ : Unit => T))) :
     (0 : curveRing y) ∈ formSet y t Q := by
@@ -160,9 +160,9 @@ theorem formSet_zero (y : (Σ _ : Unit, T) → K') (t : T) (Q : Ideal (MRing (fu
   exact ⟨0, 0, HilbertSamuel.SectionBounded.homog_zero _, by simp, Q.zero_mem⟩
 
 /- English proof (translation)
-Take `⟨e2, g2, hg2, hv2, hQ2⟩` from `h2`. Take `⟨e, h, hh, hv⟩` from `exists_form y t ht c`. Establish `H` using `homogMul hh hg2`. Rewrite using `[formSet, Set.mem_ofPred_eq]`. Use `⟨e + e2, _, H, ?_, Q.mul_mem_left _ hQ2⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, hv, hv2, Subring.coe_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem formSet_mul (y : (Σ _ : Unit, T) → K') (t : T) (ht : y ⟨(), t⟩ ≠ 0)
     (Q : Ideal (MRing (fun _ : Unit => T))) (c : curveRing y) {c2 : curveRing y}
@@ -183,7 +183,7 @@ def formIdeal (y : (Σ _ : Unit, T) → K') (t : T) (ht : y ⟨(), t⟩ ≠ 0)
   smul_mem' := fun c _ h2 => formSet_mul y t ht Q c h2
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_formIdeal {y : (Σ _ : Unit, T) → K'} {t : T} {ht : y ⟨(), t⟩ ≠ 0}
     {Q : Ideal (MRing (fun _ : Unit => T))} {c : curveRing y} :
@@ -191,33 +191,31 @@ theorem mem_formIdeal {y : (Σ _ : Unit, T) → K'} {t : T} {ht : y ⟨(), t⟩ 
   Iff.rfl
 
 /- English proof (translation)
-Establish `hXtpowQ : ∀ n, (X ⟨(), t⟩ : MRing (fun _ : Unit => T)) ^ n ∉ Q` using `fun n h => hXt (hQW (hQ.mem_of_pow_mem _ h))`. Establish `htr : ∀ {f g : MRing (fun _ : Unit => T)} {n : ℕ}, IsMultiHomog f (fun _ => n) → IsMultiHomog g (fun _ => n) → aeval y f = aeval y g → g ∈ Q → f ∈ Q`. Introduce `f g n hf hg he hgQ`. Establish `h1` using `Q.add_mem (hPQ (sub_mem_mCoordIdeal y hf hg he)) hgQ`. Rewrite `h1` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hIQm : formIdeal y t ht Q ≤ m`. Introduce `c hc`. Take `⟨e, g, hg, hv, hgQ⟩` from `mem_formIdeal.mp hc`. Conclude with `(hWB c hg hv).mp (hQW hgQ)`. Establish `haIQ : a ∈ formIdeal y t ht Q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e, h, hh, hv⟩` from `exists_form y t ht b`. Use `mem_formIdeal.mpr (mem_formSet_of (e + 1) (homogMul hh hs) ?_ (Q.mul_mem_left _ hsQ))` and prove the remaining obligations. Rewrite using `[map_mul, hv]`. Take the linear combination `(y ⟨(), t⟩ ^ e) * hbx`. Establish `hIQprime : (formIdeal y t ht Q).IsPrime`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.eq_top_iff_one]`. Introduce `h1`. Take `⟨e, g, hg, hv, hgQ⟩` from `mem_formIdeal.mp h1`. Use `hXtpowQ e (htr (homogXtPow t e) hg ?_ hgQ)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, aeval_X, hv]`. Simplify using the standard rewrite rules. Introduce `c1 c2 h12`. Take `⟨e, g, hg, hv, hgQ⟩` from `mem_formIdeal.mp h12`. Take `⟨e1, h1, hh1, hv1⟩` from `exists_form y t ht c1`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e2, h2, hh2, hv2⟩` from `exists_form y t ht c2`. Establish `hf : h1 * h2 * X ⟨(), t⟩ ^ e ∈ Q`. Use `htr (homogMul (homogMul hh1 hh2) (homogXtPow t e)) (homogDeg (homogMul hg (homogXtPow t (e1 + e2))) (by omega)) ?_ (Q.mul_mem_right _ hgQ)` and prove the remaining obligations. Simplify using `only [map_mul, map_pow, aeval_X, hv1, hv2, hv]`. Use `push_cast`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Break down `hQ.mem_or_mem hf with h12 | h3` into its components or cases. Break down `hQ.mem_or_mem h12 with h1Q | h2Q` into its components or cases. Conclude with `Or.inl (mem_formIdeal.mpr (mem_formSet_of e1 hh1 hv1 h1Q))`. Conclude with `Or.inr (mem_formIdeal.mpr (mem_formSet_of e2 hh2 hv2 h2Q))`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact.
 
-Conclude with `absurd h3 (hXtpowQ e)`. Establish `hIQmax : (formIdeal y t ht Q).IsMaximal`. Establish `hcomap : (formIdeal y t ht Q).comap (algebraMap ℤ (curveRing y)) ≠ ⊥` using `Ideal.comap_ne_bot_of_integral_mem ha0 haIQ (Algebra.IsIntegral.isIntegral a)`. Establish `: ((formIdeal y t ht Q).comap (algebraMap ℤ (curveRing y))).IsPrime` using `Ideal.IsPrime.comap _`. Conclude with `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap _ (IsPrime.to_maximal_ideal hcomap)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hIQeq : formIdeal y t ht Q = m` using `hIQmax.eq_of_le hm.ne_top hIQm`. Take `⟨S, hS, hWS⟩` from `hWforms`. Introduce `f hfW`. Rewrite `hfW` using `[hWS]`. Use `(Ideal.span_le.mpr ?_) hfW` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `f hf`. Take `⟨δ, hδ⟩` from `hS f hf`. Establish `hf' : IsMultiHomog f (fun _ => δ ())` using `HilbertSamuel.SectionBounded.homog_congr hδ fun k => by cases k; rfl`. Establish `hfW' : f ∈ W` using `by rw [hWS]; exact Ideal.subset_span hf`. Take `⟨a', b', ha'm, hb'm, hv'⟩` from `hWfrac hf' hfW'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ha'IQ : a' ∈ formIdeal y t ht Q` using `by rw [hIQeq]; exact ha'm`. Take `⟨ea, ga, hga, hva, hgaQ⟩` from `mem_formIdeal.mp ha'IQ`. Take `⟨eb, hb, hhb, hvb⟩` from `exists_form y t ht b'`. Establish `hbQ : hb ∉ Q`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hbIQ : b' ∈ formIdeal y t ht Q` using `mem_formIdeal.mpr (mem_formSet_of eb hhb hvb h)`. Rewrite `hbIQ` using `[hIQeq]`. Conclude with `hb'm hbIQ`. Establish `h1 : hb * f * X ⟨(), t⟩ ^ ea ∈ Q`. Use `htr (homogMul (homogMul hhb hf') (homogXtPow t ea)) (homogDeg (homogMul hga (homogXtPow t (eb + δ ()))) (by omega)) ?_ (Q.mul_mem_right _ hgaQ)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [map_mul, map_pow, aeval_X, hvb, hva]`. Take the linear combination `(y ⟨(), t⟩ ^ (eb + ea)) * hv'`. Break down `hQ.mem_or_mem h1 with h2 | h3` into its components or cases. Break down `hQ.mem_or_mem h2 with h4 | h5` into its components or cases. Conclude with `absurd h4 hbQ`.
-
-Conclude with `h5`. Conclude with `absurd h3 (hXtpowQ ea)`.
+A detailed English derivation is pending.
 -/
 theorem le_of_minimal_prime_over_coord (y : (Σ _ : Unit, T) → K') (t : T) (ht : y ⟨(), t⟩ ≠ 0)
     (hfin : Module.Finite ℤ (curveRing y)) (m : Ideal (curveRing y)) (hm : m.IsMaximal)
@@ -307,11 +305,11 @@ theorem le_of_minimal_prime_over_coord (y : (Σ _ : Unit, T) → K') (t : T) (ht
   · exact absurd h3 (hXtpowQ ea)
 
 /- English proof (translation)
-Establish `key : ∀ w : LocalizedModule m.primeCompl (R ⧸ Ideal.span {a}), w = 0`. Introduce `w`. Proceed by induction on `w using LocalizedModule.induction_on with`. Consider the case `h c s`. Rewrite using `[← LocalizedModule.zero_mk s, LocalizedModule.mk_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨a, ha⟩, ?_⟩` and prove the remaining obligations. Take `⟨c', rfl⟩` from `Ideal.Quotient.mk_surjective c`. Rewrite using `[smul_zero, smul_zero, Submonoid.smul_def, Submonoid.smul_def, Algebra.smul_def, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self a)`. Establish `hsub : Subsingleton (LocalizedModule m.primeCompl (R ⧸ Ideal.span {a}))` using `⟨fun u v => by rw [key u, key v]⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[locLen, dif_pos ‹m.IsPrime›, Module.length_eq_zero_iff.mpr hsub]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem locLen_quot_eq_zero {R : Type*} [CommRing R] (m : Ideal R) [m.IsPrime] {a : R} (ha : a ∉ m) :
     locLen m (R ⧸ Ideal.span {a}) = 0 := by
@@ -336,57 +334,51 @@ end VerticalPointSurjective
 open VerticalPointSurjective in
 
 /- English proof (translation)
-Introduce `T _ K' _ _ y s hP hs hsP m hm hlen`. Take `⟨hfin, -, hch⟩` from `hC T K' y hP`. Take `⟨t, hyt, hrat⟩` from `hch m hm`. Establish `hrat'` using `hrat`. Establish `: m.IsPrime` using `hm.isPrime`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hunit : ∀ b : m.primeCompl, IsUnit ((curveRing y).subtype (b : curveRing y))`. Introduce `b`. Use `isUnit_iff_ne_zero.mpr fun h => b.2 ?_` and prove the remaining obligations. Establish `hb0 : (b : curveRing y) = 0` using `Subtype.ext h`. Rewrite using `[hb0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `m.zero_mem`. Set `L` to `Localization.AtPrime m`. Set `ι : L →+* K'` to `IsLocalization.lift hunit`. Establish `hinj0 : Function.Injective (algebraMap (curveRing y) L)` using `IsLocalization.injective L (Ideal.primeCompl_le_nonZeroDivisors m)`. Establish `hιinj : Function.Injective ι` using `(IsLocalization.lift_injective_iff hunit).mpr fun c c' => ⟨fun h => by rw [hinj0 h], fun h => by rw [Subtype.val_injective h]⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hιB : ∀ c : curveRing y, ι (algebraMap _ L c) = c` using `fun c => IsLocalization.lift_eq hunit c`. Establish `hιmk : ∀ (a : curveRing y) (b : m.primeCompl) (v : K'), ι (IsLocalization.mk' L a b) = v ↔ (a : K') = ((b : curveRing y) : K') * v` using `fun a b v => IsLocalization.lift_mk'_spec hunit a v b`. Use `choose α β hβ hαβ using hrat`. Set `ρ : (Σ _ : Unit, T) → L` to `fun p => IsLocalization.mk' L (α p.2) (⟨β p.2, hβ p.2⟩ : m.primeCompl)`. Establish `hιρ : ∀ p, ι (ρ p) = y p / y ⟨(), t⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨⟨⟩, u⟩`. Conclude with `(hιmk _ _ _).mpr (hαβ u).symm`. Establish `hιev : ∀ {g : MRing (fun _ : Unit => T)} {d : ℕ}, IsMultiHomog g (fun _ => d) → ι (aeval ρ g) = aeval y g / y ⟨(), t⟩ ^ d`. Introduce `g d hg`. Rewrite using `[ringHom_aeval ι ρ g, show (fun p => ι (ρ p)) = fun p => y p / y ⟨(), t⟩ from funext hιρ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `aeval_ratio_of_homog y t hg`. Establish `hevB : ∀ {g : MRing (fun _ : Unit => T)} {d : ℕ} (c : curveRing y), IsMultiHomog g (fun _ => d) → aeval y g = (c : K') * y ⟨(), t⟩ ^ d → aeval ρ g = algebraMap _ L c`. Introduce `g d c hg hgc`. Apply `hιinj` to reduce the goal to its premises. Rewrite using `[hιev hg, hιB, hgc, mul_div_assoc, div_self (pow_ne_zero _ hyt), mul_one]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `r : (Σ _ : Unit, T) → IsLocalRing.ResidueField L` to `fun p => IsLocalRing.residue L (ρ p)`. Establish `hWform : ∀ {g : MRing (fun _ : Unit => T)} {d : ℕ}, IsMultiHomog g (fun _ => d) → (g ∈ mCoordIdeal r ↔ aeval ρ g ∈ IsLocalRing.maximalIdeal L)`. Introduce `g d hg`. Rewrite using `[mem_mCoordIdeal_iff r hg, ← IsLocalRing.residue_eq_zero_iff, ringHom_aeval]`. Establish `hWB : ∀ {g : MRing (fun _ : Unit => T)} {d : ℕ} (c : curveRing y), IsMultiHomog g (fun _ => d) → aeval y g = (c : K') * y ⟨(), t⟩ ^ d → (g ∈ mCoordIdeal r ↔ c ∈ m)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `g d c hg hgc`. Rewrite using `[hWform hg, hevB c hg hgc]`. Conclude with `IsLocalization.AtPrime.to_map_mem_maximal_iff L m c`. Establish `hXt : (X ⟨(), t⟩ : MRing (fun _ : Unit => T)) ∉ mCoordIdeal r`. Rewrite using `[hWB 1 (homogXt t) (by simp)]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `fun h => hm.ne_top ((Ideal.eq_top_iff_one m).mpr h)`. Establish `hWprime : (mCoordIdeal r).IsPrime` using `RingHom.ker_isPrime _`. Establish `hPW : mCoordIdeal y ≤ mCoordIdeal r`. Take `⟨S, hS, hPS⟩` from `CoordinateConeArithVar.isMultiHomogIdeal y`. Introduce `f hfP`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hfP` using `[hPS]`. Use `(Ideal.span_le.mpr ?_) hfP` and prove the remaining obligations. Introduce `f hf`. Take `⟨a, ha⟩` from `hS f hf`. Establish `ha' : IsMultiHomog f (fun _ => a ())` using `HilbertSamuel.SectionBounded.homog_congr ha fun k => by cases k; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hfP' : f ∈ mCoordIdeal y` using `by rw [hPS]; exact Ideal.subset_span hf`. Establish `hf0 : aeval y f = ((0 : curveRing y) : K') * y ⟨(), t⟩ ^ a ()`. Rewrite using `[(mem_mCoordIdeal_iff y ha').mp hfP']`. Simplify using the standard rewrite rules. Conclude with `(hWB 0 ha' hf0).mpr m.zero_mem`.
+Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.mk'_surjective m.primeCompl (aeval ρ s)`. Simplify using `only at hab`. Establish `hbx : ((b : curveRing y) : K') * aeval y s = (a : K') * y ⟨(), t⟩`. Establish `h1` using `hιev (d := 1) hs`. Rewrite `h1` using `[← hab, pow_one]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[(hιmk a b _).mp h1]`. Clear the denominators using the available nonvanishing facts. Establish `hlenA : locLen m (curveRing y ⧸ Ideal.span {a}) ≠ 0`. Rewrite using `[← hSQ T K' y s hP hs hsP m t hm.isPrime hrat' a b b.2 hbx]` and apply the resulting hypothesis. Establish `ham : a ∈ m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `h`. Conclude with `hlenA (locLen_quot_eq_zero m h)`. Establish `hsW : s ∈ mCoordIdeal r`. Rewrite using `[hWform hs, ← hab]`. Conclude with `(IsLocalization.AtPrime.mk'_mem_maximal_iff L m a b).mpr ham`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJW : mCoordIdeal y ⊔ Ideal.span {s} ≤ mCoordIdeal r` using `sup_le hPW ((Ideal.span_singleton_le_iff_mem _).mpr hsW)`. Establish `hcurve : curvePtIdeal y (mCoordIdeal r) = m`. Apply `le_antisymm` to reduce the goal to its premises. Use `Ideal.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `c ⟨d, g, h, hg, hh, hgW, hhW, hc⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hg' : IsMultiHomog g (fun _ => d ())` using `HilbertSamuel.SectionBounded.homog_congr hg fun k => by cases k; rfl`. Establish `hh' : IsMultiHomog h (fun _ => d ())` using `HilbertSamuel.SectionBounded.homog_congr hh fun k => by cases k; rfl`. Establish `heq : algebraMap _ L c * aeval ρ h = aeval ρ g`. Apply `hιinj` to reduce the goal to its premises. Rewrite using `[map_mul, hιB, hιev hh', hιev hg', ← hc, mul_div_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : algebraMap _ L c * aeval ρ h ∈ IsLocalRing.maximalIdeal L`. Rewrite using `[heq]`. Conclude with `(hWform hg').mp hgW`. Break down `(IsLocalRing.maximalIdeal.isMaximal L).isPrime.mem_or_mem hmem with h1 | h1` into its components or cases. Conclude with `(IsLocalization.AtPrime.to_map_mem_maximal_iff L m c).mp h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `absurd ((hWform hh').mpr h1) hhW`. Introduce `c hc`. Take `⟨e, g, hg, hgc⟩` from `exists_form y t hyt c`. Establish `hgW : g ∈ mCoordIdeal r` using `(hWB c hg hgc).mpr hc`. Establish `hXW : (X ⟨(), t⟩ : MRing (fun _ : Unit => T)) ^ e ∉ mCoordIdeal r` using `fun h => hXt (hWprime.mem_of_pow_mem _ h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hval : (c : K') * aeval y ((X ⟨(), t⟩ : MRing (fun _ : Unit => T)) ^ e) = aeval y g`. Rewrite using `[map_pow, aeval_X, hgc]`. Establish `key : ∀ h : MRing (fun _ : Unit => T), IsMultiHomog h (fun _ => e) → h ∉ mCoordIdeal r → (c : K') * aeval y h = aeval y g → c ∈ {b : curveRing y | ∃ (d : Unit → ℕ) (g h : MRing (fun _ : Unit => T)), IsMultiHomog g d ∧ IsMultiHomog h d ∧ g ∈ mCoordIdeal r ∧ h ∉ mCoordIdeal r ∧ (b …` using `fun h hh hhW hv => ⟨fun _ => e, g, h, hg, hh, hgW, hhW, hv⟩`. Conclude with `Ideal.subset_span (key _ (homogXtPow t e) hXW hval)`. Establish `ha0 : a ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Introduce `h0`. Establish `hx0 : aeval y s ≠ 0` using `fun h => hsP ((mem_mCoordIdeal_iff y hs).mpr h)`. Establish `hb0 : ((b : curveRing y) : K') ≠ 0`. Introduce `h`. Apply `b.2` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[show (b : curveRing y) = 0 from Subtype.ext h]`. Conclude with `m.zero_mem`. Establish `h2` using `hbx`. Rewrite `h2` using `[h0, ZeroMemClass.coe_zero, zero_mul]`. Conclude with `mul_ne_zero hb0 hx0 h2`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hWfrac : ∀ {f : MRing (fun _ : Unit => T)} {n : ℕ}, IsMultiHomog f (fun _ => n) → f ∈ mCoordIdeal r → ∃ a' b' : curveRing y, a' ∈ m ∧ b' ∉ m ∧ ((b' : curveRing y) : K') * aeval y f = (a' : K') * y ⟨(), t⟩ ^ n`. Introduce `f n hf hfW`. Take `⟨⟨a', b'⟩, hab'⟩` from `IsLocalization.mk'_surjective m.primeCompl (aeval ρ f)`. Simplify using `only at hab'`. Use `⟨a', b', ?_, b'.2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `h1` using `(hWform hf).mp hfW`. Rewrite `h1` using `[← hab']`. Conclude with `(IsLocalization.AtPrime.mk'_mem_maximal_iff L m a' b').mp h1`. Establish `h1` using `hιev hf`. Rewrite `h1` using `[← hab']`.
-
-Rewrite using `[(hιmk a' b' _).mp h1]`. Clear the denominators using the available nonvanishing facts. Establish `hmin : ∀ Q : Ideal (MRing (fun _ : Unit => T)), Q.IsPrime → mCoordIdeal y ⊔ Ideal.span {s} ≤ Q → Q ≤ mCoordIdeal r → mCoordIdeal r ≤ Q`. Introduce `Q hQ hJQ hQW`. Establish `hPQ : mCoordIdeal y ≤ Q` using `le_trans le_sup_left hJQ`.
-
-Establish `hsQ : s ∈ Q` using `hJQ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self s))`. Conclude with `le_of_minimal_prime_over_coord y t hyt hfin m hm (mCoordIdeal r) Q hQ hPQ hQW hXt hWB hWfrac (CoordinateConeArithVar.isMultiHomogIdeal r) ha0 hs hsQ hbx`. Establish `hmp : mCoordIdeal r ∈ (mCoordIdeal y ⊔ Ideal.span {s}).minimalPrimes` using `⟨⟨hWprime, hJW⟩, fun Q hQ hQW => hmin Q hQ.1 hQ.2 hQW⟩`. Establish `hD : mCoordIdeal r ∈ divSupp (mCoordIdeal y) s`. Rewrite using `[divSupp, Set.mem_ofPred_eq]`.
-
-Conclude with `⟨hmp, fun _ => ⟨t, hXt⟩⟩`. Conclude with `⟨mCoordIdeal r, hD, hcurve⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem VertPointSurj.proof (hC : CurveCharts.Statement) (hSQ : SectionQuotLocal.Statement) :
     VertPointSurj.Statement := by

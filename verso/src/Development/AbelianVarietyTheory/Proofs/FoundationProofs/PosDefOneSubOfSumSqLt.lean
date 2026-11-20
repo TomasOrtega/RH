@@ -7,13 +7,13 @@ open scoped ComplexOrder MatrixOrder
 namespace GlobalTheory.HolDS
 
 /- English proof (translation)
-Establish `key : ∀ {k : Type} [Fintype k] (v : k → ℂ), star v ⬝ᵥ v = ((∑ a, ‖v a‖ ^ 2 : ℝ) : ℂ)`. Introduce `k _ v`. Simplify using `only [dotProduct, Pi.star_apply, Complex.star_def, Complex.conj_mul', Complex.ofReal_sum, Complex.ofReal_pow]`. Use `Matrix.PosDef.of_dotProduct_mulVec_pos (Matrix.isHermitian_one.sub (Matrix.isHermitian_conjTranspose_mul_self M)) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, dotProduct_sub, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec, key, key, ← Complex.ofReal_sub, Complex.zero_lt_real]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hpos : 0 < ∑ a, ‖x a‖ ^ 2`. Take `⟨a, ha⟩` from `Function.ne_iff.1 hx`. Conclude with `Finset.sum_pos' (fun _ _ => by positivity) ⟨a, Finset.mem_univ _, by`. Establish `: 0 < ‖x a‖` using `norm_pos_iff.2 ha`. Use the proof step `positivity⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : ∑ i, ‖(M *ᵥ x) i‖ ^ 2 ≤ (∑ i, ∑ j, ‖M i j‖ ^ 2) * ∑ a, ‖x a‖ ^ 2`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Use `le_trans ?_ (Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun j => ‖M i j‖) (fun j => ‖x j‖))` and prove the remaining obligations. Use `pow_le_pow_left₀ (norm_nonneg _) ?_ 2` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.mulVec, dotProduct]`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [norm_mul]`. Use the polynomial consequences of the given equalities and inequalities.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem posDef_one_sub_of_sum_sq_lt {m n : Type} [Fintype m] [Fintype n] [DecidableEq n] (M : Matrix m n ℂ)
     (h : ∑ i, ∑ j, ‖M i j‖ ^ 2 < 1) : (1 - Mᴴ * M).PosDef := by
@@ -41,9 +41,9 @@ theorem posDef_one_sub_of_sum_sq_lt {m n : Type} [Fintype m] [Fintype n] [Decida
   nlinarith
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.1 h.posSemidef.nonneg`. Rewrite `hB` using `[Matrix.star_eq_conjTranspose]`. Establish `hd : B.det ≠ 0`. Establish `h2` using `h.det_pos.ne'`. Rewrite `h2` using `[hB, Matrix.det_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `right_ne_zero_of_mul h2`. Use `⟨B⁻¹, Matrix.isUnit_nonsing_inv_det _ hd.isUnit, ?_⟩` and prove the remaining obligations. Rewrite using `[hB, ← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd.isUnit]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_congr_one_of_posDef {n : Type} [Fintype n] [DecidableEq n] {S : Matrix n n ℂ} (h : S.PosDef) :
     ∃ d : Matrix n n ℂ, IsUnit d.det ∧ dᴴ * S * d = 1 := by
@@ -58,15 +58,15 @@ theorem exists_congr_one_of_posDef {n : Type} [Fintype n] [DecidableEq n] {S : M
   simp
 
 /- English proof (translation)
-Use `set M : Matrix (Fin p) (Fin q) ℂ := Matrix.of fun i j => Z (i, j) with hM`. Take `⟨d, hd, hd1⟩` from `exists_congr_one_of_posDef (posDef_one_sub_of_sum_sq_lt M h)`. Take `⟨a, -, ha1⟩` from `exists_congr_one_of_posDef (posDef_one_sub_of_sum_sq_lt Mᴴ (by`. Rewrite using `[Finset.sum_comm]`. Simplify `h))` using `[hM]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha1` using `[Matrix.conjTranspose_conjTranspose]`. Use `⟨Matrix.fromBlocks a (M * d) (Mᴴ * a) d, ?_, ?_⟩` and prove the remaining obligations. Unfold `InU`. Rewrite using `[Jm_eq, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply, Matrix.fromBlocks_inj]`. Simplify using `only [Matrix.mul_one, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_neg, Matrix.neg_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.mul_assoc] at ha1 hd1`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← ha1]`. Normalize the expressions using the abelian group laws. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Normalize the expressions using the abelian group laws. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[← hd1]`. Normalize the expressions using the abelian group laws. Use function extensionality and compare the values at `ij`. Simplify using `only [zOf, Matrix.toBlocks_fromBlocks₁₂, Matrix.toBlocks_fromBlocks₂₂, Matrix.mul_nonsing_inv_cancel_right _ _ hd]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_inU_zOf_eq {p q : ℕ} (Z : Fin p × Fin q → ℂ) (h : ∑ i, ∑ j, ‖Z (i, j)‖ ^ 2 < 1) :
     ∃ x : Mat p q, InU x ∧ zOf x = Z := by
@@ -94,11 +94,11 @@ theorem exists_inU_zOf_eq {p q : ℕ} (Z : Fin p × Fin q → ℂ) (h : ∑ i, �
     rfl
 
 /- English proof (translation)
-Use `set e : ℝ := 1 / ((p : ℝ) * q + 1) with he`. Establish `hpq : (0 : ℝ) ≤ (p : ℝ) * q` using `by positivity`. Establish `he0 : 0 < e` using `by positivity`. Establish `he1 : e * ((p : ℝ) * q + 1) = 1` using `by rw [he]; field_simp`. Establish `hele : e ≤ 1` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `MvPolynomial.funext_set (fun _ => Metric.ball (0 : ℂ) e) (fun _ => infinite_of_mem_nhds (0 : ℂ) (Metric.ball_mem_nhds _ he0)) fun Z hZ => ?_` and prove the remaining obligations. Establish `hZ' : ∀ ij, ‖Z ij‖ ^ 2 ≤ e` using `fun ij => by`. Establish `h1 : ‖Z ij‖ < e` using `by simpa using hZ ij (Set.mem_univ _)`. Use `norm_nonneg (Z ij)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, rfl⟩` from `exists_inU_zOf_eq Z (by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h x hx, map_zero]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_eval_zOf (p q : ℕ) (P : PolB p q)
     (h : ∀ x : Mat p q, InU x → MvPolynomial.eval (zOf x) P = 0) : P = 0 := by

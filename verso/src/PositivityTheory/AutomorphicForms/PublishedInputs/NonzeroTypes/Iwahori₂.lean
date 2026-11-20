@@ -15,14 +15,14 @@ variable {n : ℕ} (G : Grp k n)
 namespace Iwahori₂
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `⟨y, Ideal.pow_le_pow_right hab hy, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inPow_mono {a b : ℕ} (hab : a ≤ b) {x : k} (hx : InPow b x) : InPow a x := by
   obtain ⟨y, hy, rfl⟩ := hx
   exact ⟨y, Ideal.pow_le_pow_right hab hy, rfl⟩
 
 /- English proof (translation)
-Take `⟨x', hx', rfl⟩` from `hx`. Take `⟨y', hy', rfl⟩` from `hy`. Conclude with `⟨x' * y', by rw [pow_add]; exact Ideal.mul_mem_mul hx' hy', map_mul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inPow_mul {a b : ℕ} {x y : k} (hx : InPow a x) (hy : InPow b y) : InPow (a + b) (x * y) := by
   obtain ⟨x', hx', rfl⟩ := hx
@@ -30,7 +30,7 @@ theorem inPow_mul {a b : ℕ} {x y : k} (hx : InPow a x) (hy : InPow b y) : InPo
   exact ⟨x' * y', by rw [pow_add]; exact Ideal.mul_mem_mul hx' hy', map_mul _ _ _⟩
 
 /- English proof (translation)
-Take `⟨x', hx', rfl⟩` from `hx`. Take `⟨y', hy', rfl⟩` from `hy`. Conclude with `⟨x' + y', add_mem hx' hy', map_add _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inPow_add {a : ℕ} {x y : k} (hx : InPow a x) (hy : InPow a y) : InPow a (x + y) := by
   obtain ⟨x', hx', rfl⟩ := hx
@@ -38,12 +38,12 @@ theorem inPow_add {a : ℕ} {x y : k} (hx : InPow a x) (hy : InPow a y) : InPow 
   exact ⟨x' + y', add_mem hx' hy', map_add _ _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, zero_mem _, map_zero _⟩`.
+Supply the required witnesses or components.
 -/
 theorem inPow_zero (a : ℕ) : InPow a (0 : k) := ⟨0, zero_mem _, map_zero _⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => simpa using inPow_zero (k := k) a`. Consider the case `cons i s hi ih`. Rewrite using `[Finset.sum_cons]`. Conclude with `inPow_add (h i (by simp)) (ih fun j hj => h j (by simp [hj]))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inPow_sum {a : ℕ} {ι : Type} (s : Finset ι) (f : ι → k) (h : ∀ i ∈ s, InPow a (f i)) :
     InPow a (∑ i ∈ s, f i) := by
@@ -54,7 +54,7 @@ theorem inPow_sum {a : ℕ} {ι : Type} (s : Finset ι) (f : ι → k) (h : ∀ 
     exact inPow_add (h i (by simp)) (ih fun j hj => h j (by simp [hj]))
 
 /- English proof (translation)
-Take `⟨g', rfl⟩` from `hg`. Conclude with `⟨(g' : Matrix (Fin n) (Fin n) 𝒪[k]) i j, by simp, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inPow_zero_of_KO {g : GL (Fin n) k} (hg : g ∈ KO k (Fin n)) (i j : Fin n) :
     InPow 0 ((g : Matrix (Fin n) (Fin n) k) i j) := by
@@ -62,11 +62,11 @@ theorem inPow_zero_of_KO {g : GL (Fin n) k} (hg : g ∈ KO k (Fin n)) (i j : Fin
   exact ⟨(g' : Matrix (Fin n) (Fin n) 𝒪[k]) i j, by simp, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[mem_unipRadLower, mem_parabLower_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i j`. Take `⟨⟨a, i'⟩, rfl⟩` from `G.e.surjective i`. Take `⟨⟨b, j'⟩, rfl⟩` from `G.e.surjective j`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Grp.bl, Equiv.symm_apply_apply]`. Use `⟨fun h => h1 a b i' j' h, fun h => ?_⟩` and prove the remaining obligations. Substitute `h` using the available equality. Rewrite using `[h2 a i' j', Matrix.one_apply]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h`. Use `⟨fun a b i' j' hab => (h _ _).1 (by simpa [Grp.bl] using hab), fun a i' j' => ?_⟩` and prove the remaining obligations. Rewrite using `[(h _ _).2 (by simp [Grp.bl]), Matrix.one_apply]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_uRL {R : Type} [CommRing R] (X : GL (Fin n) R) :
     X ∈ unipRadLower R G.e ↔ ∀ i j, (G.bl i < G.bl j → (X : Matrix (Fin n) (Fin n) R) i j = 0) ∧
@@ -89,13 +89,13 @@ theorem mem_uRL {R : Type} [CommRing R] (X : GL (Fin n) R) :
 abbrev Lt (b : Fin G.s) : Type := {j : Fin n // G.bl j < b}
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos (b : ℕ) with hb | hb` into its components or cases. Establish `: IsEmpty (Lt G b)` using `⟨fun j => by`. Use `j.2` as an intermediate fact. Rewrite `this` using `[Fin.lt_def]`. Use the proof step `omega⟩`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_isEmpty]`. Conclude with `isUnit_one`. Set `a : Fin G.s` to `⟨b - 1, by omega⟩`. Take `⟨u, hu⟩` from `hA a`. Establish `hiff : ∀ j : Fin n, G.bl j ≤ a ↔ G.bl j < b` using `fun j => by`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Fin.le_def, Fin.lt_def, a]`. Use linear arithmetic over natural numbers and integers. Set `f : {j : Fin n // G.bl j ≤ a} ≃ Lt G b` to `Equiv.subtypeEquivRight hiff`. Rewrite using `[← Matrix.det_submatrix_equiv_self f]`. Establish `h2 : algebraMap 𝒪[k] k ((A : Matrix (Fin n) (Fin n) 𝒪[k]).submatrix (Subtype.val : {j : Fin n // G.bl j ≤ a} → Fin n) Subtype.val).det = algebraMap 𝒪[k] k u`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← hu, Grp.Δ, RingHom.map_det]`. Both sides reduce to the same expression. Establish `h3` using `Subtype.val_injective h2`. Use `u.isUnit using 2` and compare the differences between its conclusion and the goal. Conclude with `h3`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem isUnit_det_lt (A : GL (Fin n) 𝒪[k])
     (hA : ∀ a, ∃ u : 𝒪[k]ˣ, G.Δ a (Matrix.GeneralLinearGroup.map (n := Fin n) (algebraMap 𝒪[k] k) A) =
@@ -135,7 +135,7 @@ def Wm (M : Matrix (Fin n) (Fin n) 𝒪[k]) : Matrix (Fin n) (Fin n) 𝒪[k] :=
   Matrix.of fun i l => if h : G.bl l < G.bl i then rowv M i ⟨l, h⟩ else (1 : Matrix (Fin n) (Fin n) 𝒪[k]) i l
 
 /- English proof (translation)
-Establish `h1 : ¬ G.bl l < G.bl i` using `not_lt.2 h.le`. Establish `h2 : i ≠ l` using `fun e => by subst e; exact lt_irrefl _ h`. Simplify using `[Wm, h1, Matrix.one_apply_ne h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem Wm_upper (M : Matrix (Fin n) (Fin n) 𝒪[k]) (i l : Fin n) (h : G.bl i < G.bl l) : Wm G M i l = 0 := by
   have h1 : ¬ G.bl l < G.bl i := not_lt.2 h.le
@@ -143,7 +143,7 @@ theorem Wm_upper (M : Matrix (Fin n) (Fin n) 𝒪[k]) (i l : Fin n) (h : G.bl i 
   simp [Wm, h1, Matrix.one_apply_ne h2]
 
 /- English proof (translation)
-Establish `h1 : ¬ G.bl l < G.bl i` using `by rw [h]; exact lt_irrefl _`. Simplify using `[Wm, h1, Matrix.one_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem Wm_diag (M : Matrix (Fin n) (Fin n) 𝒪[k]) (i l : Fin n) (h : G.bl i = G.bl l) :
     Wm G M i l = if i = l then 1 else 0 := by
@@ -151,9 +151,9 @@ theorem Wm_diag (M : Matrix (Fin n) (Fin n) 𝒪[k]) (i l : Fin n) (h : G.bl i =
   simp [Wm, h1, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `hb : (Wm G M).BlockTriangular (fun i => OrderDual.toDual (G.bl i))` using `fun i l h => Wm_upper M i l (OrderDual.toDual_lt_toDual.1 h)`. Rewrite using `[hb.det_fintype]`. Use `Finset.prod_eq_one fun c _ => ?_` and prove the remaining obligations. Establish `: (Wm G M).toSquareBlock (fun i => OrderDual.toDual (G.bl i)) c = 1`. Use `Matrix.ext fun x y => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.toSquareBlock_def, Matrix.of_apply]`. Rewrite using `[Wm_diag M x.1 y.1 (by simpa using x.2.trans y.2.symm)]`. Simplify using `[Matrix.one_apply, Subtype.ext_iff]`. Rewrite using `[this, Matrix.det_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_Wm (M : Matrix (Fin n) (Fin n) 𝒪[k]) : (Wm G M).det = 1 := by
   have hb : (Wm G M).BlockTriangular (fun i => OrderDual.toDual (G.bl i)) := fun i l h =>
@@ -168,13 +168,13 @@ theorem det_Wm (M : Matrix (Fin n) (Fin n) 𝒪[k]) : (Wm G M).det = 1 := by
   rw [this, Matrix.det_one]
 
 /- English proof (translation)
-Establish `hs` using `Fintype.sum_subtype_add_sum_subtype (fun l => G.bl l < G.bl i) (fun l => Wm G M i l * M l j)`. Establish `h1 : ∑ l : Lt G (G.bl i), Wm G M i l.1 * M l.1 j = Matrix.vecMul (rowv M i) (M.submatrix (Subtype.val : Lt G (G.bl i) → Fin n) Subtype.val) (⟨j, hij⟩ : Lt G (G.bl i))`. Simplify using `only [Matrix.vecMul, dotProduct, Wm, Matrix.of_apply, Matrix.submatrix_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[dif_pos l.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∑ l : {l : Fin n // ¬ G.bl l < G.bl i}, Wm G M i l.1 * M l.1 j = M i j`. Rewrite using `[Finset.sum_eq_single ⟨i, lt_irrefl _⟩]`. Simplify using `[Wm]`. Introduce `l _ hl`. Establish `: l.1 ≠ i` using `fun h => hl (Subtype.ext h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[Wm, l.2, Matrix.one_apply_ne' this]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[Matrix.mul_apply, ← hs]`. Use `erw [h1, h2]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[rowv, Matrix.neg_vecMul, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hu, Matrix.vecMul_one]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem Wm_mul (M : Matrix (Fin n) (Fin n) 𝒪[k]) (i j : Fin n) (hij : G.bl j < G.bl i)
     (hu : IsUnit (M.submatrix (Subtype.val : Lt G (G.bl i) → Fin n) Subtype.val).det) :
@@ -199,9 +199,9 @@ theorem Wm_mul (M : Matrix (Fin n) (Fin n) 𝒪[k]) (i j : Fin n) (hij : G.bl j 
   simp
 
 /- English proof (translation)
-Rewrite `hp`, the goal using `[GlobalTheory.StepData.mem_KO]`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[leviProj_apply]`. Conclude with `hp.1 _ _`. Establish `hinv : (leviProj k (stdBlocks d hd) p a)⁻¹ = leviProj k (stdBlocks d hd) p⁻¹ a`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv, Pi.inv_apply]`. Rewrite using `[hinv, leviProj_apply]`. Conclude with `hp.2 _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leviProj_mem_KO {s : ℕ} (d : Fin s → ℕ) (hd : ∑ a, d a = n) (p : parab k (stdBlocks d hd))
     (hp : (p : GL (Fin n) k) ∈ KO k (Fin n)) (a : Fin s) :
@@ -218,25 +218,23 @@ theorem leviProj_mem_KO {s : ℕ} (d : Fin s → ℕ) (hd : ∑ a, d a = n) (p :
 variable (G)
 
 /- English proof (translation)
-Introduce `g hg`. Establish `hΔg` using `hΔ g hg`. Take `⟨A, hA⟩` from `MonoidHom.mem_range.1 hg.1`. Substitute `hA` using the available equality. Use `set φ := Matrix.GeneralLinearGroup.map (n := Fin n) (algebraMap 𝒪[k] k) with hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
 
-Use `set M : Matrix (Fin n) (Fin n) 𝒪[k] := (A : Matrix (Fin n) (Fin n) 𝒪[k]) with hM`. Establish `hunit` using `isUnit_det_lt G A hΔg`. Set `W : GL (Fin n) 𝒪[k]` to `Matrix.nonsingInvUnit (Wm G M) (by rw [det_Wm]; exact isUnit_one)`. Establish `hWval : (W : Matrix (Fin n) (Fin n) 𝒪[k]) = Wm G M` using `rfl`. Establish `hWL : W ∈ unipRadLower 𝒪[k] G.e` using `(mem_uRL G W).2 fun i j => ⟨Wm_upper M i j, Wm_diag M i j⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : ∀ i j, G.bl j < G.bl i → ((W * A : GL (Fin n) 𝒪[k]) : Matrix (Fin n) (Fin n) 𝒪[k]) i j = 0` using `fun i j h => by rw [Units.val_mul, hWval]; exact Wm_mul M i j h (hunit _)`. Apply the tactic sequence `have hentry : ∀ X : GL (Fin n) 𝒪[k], ∀ i j, ((φ X : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j = algebraMap 𝒪[k] k ((X : Matrix (Fin n) (Fin n) 𝒪[k]) i j) := fun _ _ _ => rfl`. Use `set p := φ (W * A) with hp`. Use `set v := φ W⁻¹ with hv`. Establish `hpP : p ∈ parab k G.e` using `mem_parab.2 fun i j h => by rw [hentry, hP i j h, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpK : p ∈ KO k (Fin n)` using `⟨W * A, rfl⟩`. Establish `hvK : v ∈ KO k (Fin n)` using `⟨W⁻¹, rfl⟩`. Establish `hgvp : φ A = v * p` using `by rw [hv, hp, ← map_mul, inv_mul_cancel_left]`. Establish `hvN : v ∈ G.Nbar`. Establish `h` using `(mem_uRL G W⁻¹).1 (inv_mem hWL)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `i j`. Use `⟨fun hij => by rw [hentry, (h i j).1 hij, map_zero], fun hij => ?_⟩` and prove the remaining obligations. Rewrite using `[hentry, (h i j).2 hij]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hvJ : v ∈ G.JSet`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hvK, fun i j hij => ?_⟩` and prove the remaining obligations. Establish `hv' : v = φ A * p⁻¹` using `by rw [hgvp, mul_inv_cancel_right]`. Rewrite using `[hv', Units.val_mul, Matrix.mul_apply]`. Use `inPow_sum _ _ fun l _ => ?_` and prove the remaining obligations. Break down `le_or_gt (G.bl l) (G.bl j) with hl | hl` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hg.2 i l (lt_of_le_of_lt hl hij)`. Establish `h3` using `inPow_mul h1 (inPow_zero_of_KO (inv_mem hpK) l j)`. Rewrite `h3` using `[add_zero]`. Conclude with `inPow_mono (G.ball _ _ _ _ hl hij le_rfl) h3`. Rewrite using `[mem_parab.1 (inv_mem hpP) l j hl, mul_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `inPow_zero _`. Set `pp : parab k G.e` to `⟨p, hpP⟩`. Establish `hm : leviProj k G.e pp ∈ leviK k (m` using `fun a : Fin G.s => Fin (G.d a)) := (Subgroup.mem_pi _).2 fun a _ => leviProj_mem_KO G.d G.hd pp hpK a`. Take `⟨u, hu, hpu⟩` from `exists_levi_mul_unip k G.e pp`. Establish `hE` using `leviEmb_mem_KO G.e hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `huK : u ∈ KO k (Fin n)`. Establish `: u = (leviEmb k G.e (leviProj k G.e pp))⁻¹ * p`. Rewrite using `[eq_inv_mul_iff_mul_eq]`. Conclude with `hpu.symm`. Rewrite using `[this]`.
-
-Conclude with `mul_mem (inv_mem hE) hpK`. Use `⟨v, hvN, hvJ, leviProj k G.e pp, hm, u, ⟨hu, huK⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hgvp, mul_assoc, ← hpu]`.
+A detailed English derivation is pending.
 -/
 theorem iwahori_of (hΔ : ∀ g ∈ G.JSet, ∀ a, ∃ u : 𝒪[k]ˣ, G.Δ a g = algebraMap 𝒪[k] k u) :
     ∀ g ∈ G.JSet, ∃ v ∈ G.Nbar, v ∈ G.JSet ∧
@@ -298,7 +296,7 @@ theorem iwahori_of (hΔ : ∀ g ∈ G.JSet, ∀ a, ∃ u : 𝒪[k]ˣ, G.Δ a g =
 end Iwahori₂
 
 /- English proof (translation)
-Introduce `_ hcc hΔ _ _`. Conclude with `Iwahori₂.iwahori_of G (hΔ hcc)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem step_iwahori : IwahoriDecompositionProp G := by
   intro _ hcc hΔ _ _

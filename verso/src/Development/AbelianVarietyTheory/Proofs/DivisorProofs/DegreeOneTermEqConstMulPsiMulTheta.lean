@@ -18,15 +18,15 @@ noncomputable section
 namespace GlobalTheory.Poinc.IntTerm
 
 /- English proof (translation)
-Introduce `V _ _ _ D θ hθ s`. Take `⟨c₀, hc₀, hc⟩` from `GlobalTheory.T.psi_zero_mul_rigidification_constant_ne_zero V D`. Take `⟨κ₀, hκ⟩` from `GlobalTheory.T.degreeOneFamily_term_eq_psi_thetaValue_character V D θ hθ s`. Use `⟨κ₀ / c₀, fun g g' w l hpull hw hint mu r hr => ?_⟩` and prove the remaining obligations. Take `⟨gam, hgam, vgam⟩` from `GlobalTheory.T.exists_integralGenerator_of_psiCoordinate V D mu r hr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hu⟩` from `GlobalTheory.T.exists_base_element_theta_term_integralPoint V D θ g g' w l hpull hint mu gam hgam`. Use `⟨a, ?_, fun h => GlobalTheory.T.isUnit_of_isUnit_constant_closedPoint_localRing V a (hu h)⟩` and prove the remaining obligations. Take `⟨z⟩` from `CoefBasic.exists_pt (R := V) (F := FractionRing V)`. Take `⟨J, hJ⟩` from `CoefBasic.exists_good' D.P.isLB z`. Establish `e₁` using `hκ g' w hw mu z J hJ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e₂` using `hc z J hJ`. Establish `e₃` using `vgam z J hJ`. Establish `e₄` using `ha z J hJ`. Rewrite `e₁` using `[_root_.mul_assoc (GlobalTheory.UT.cst _ z _), mul_comm (rigV D _ z J).val, e₂, e₃]`. Establish `e₅ : GlobalTheory.UT.cst (FractionRing V) z (l * coef s g' w mu * c₀) = GlobalTheory.UT.cst (FractionRing V) z (κ₀ * (algebraMap V (FractionRing V) r * algebraMap V (FractionRing V) a))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [CoefBasic.cst_eq, map_mul] at e₁ e₄ ⊢`. Rewrite using `[← e₄]`. Take the linear combination `CoefBasic.cstH z l * e₁`. Establish `e₆` using `CoefBasic.cstH_inj z ((CoefBasic.cst_eq _ _).symm.trans (e₅.trans (CoefBasic.cst_eq _ _)))`. Rewrite using `[map_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `e₆`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem term_eq_const_psi_theta : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (D : DegPre V) (θ : D.SecB 1 0), IntTerm.IsTheta D θ → ∀ s : Fam D (FractionRing V) 1, ∃ κ : FractionRing V, ∀ (g : GtPt D (𝟙_ (Over (Sp V)))) (g' : GtPtF D (FractionRing V)) (w : Frm D (FractionRing V) 1 g'.b) (l : FractionRing V), GtPt.IsPullF (FractionRing V) (toUnit (TF (R := V) (FractionRing V))).left g g' → w.IsGen → IntTerm.IntFrm D g.b w l → ∀ (mu : D.X) (r : V), Formalism.L2.Pj.PsiCoord D mu r → ∃ a : V, l * coef s g' w mu = κ * algebraMap V (FractionRing V) (r * a) ∧ (IntTerm.UnitAt D θ (D.c mu * g.b) → IsUnit a) := by
   intro V _ _ _ D θ hθ s

@@ -26,30 +26,28 @@ def chartPullComp {X Y Z : Scheme.{0}} (L : LB X) (F : Y ⟶ X) (h : Z ⟶ Y) :
     rw [Category.id_comp]
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (chartPullPull L' h h rfl) (chartPullComp L F h) H`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull {X Y Z : Scheme.{0}} {L' : LB Y} {L : LB X} {F : Y ⟶ X} (H : LBIso L' (L.pull F)) (h : Z ⟶ Y) :
     LBIso (L'.pull h) (L.pull (h ≫ F)) :=
   LBIso.chartPull (chartPullPull L' h h rfl) (chartPullComp L F h) H
 
 /- English proof (translation)
-Introduce `E _ _ _ H X X' t t' f g Λ _ _ R R' z`. Use `⟨fun ⟨m⟩ => ⟨?_, ?_⟩, fun hP hH hB => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨A, _, φ, u, χ, hpb, hAH, hact, hinj, hmem, -⟩`. Take `⟨w, hw, -⟩` from `m.lin`. Take `⟨v, hv⟩` from `lbIso_pull (L' := t'.PP.L) (L := t.PP.L) ⟨w, hw⟩ φ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h₁` using `pull_isLB t'.PP.isLB φ`. Establish `h₂` using `pull_isLB t.PP.isLB (φ ≫ m.cm.F)`. Use `⟨A, inferInstance, φ ≫ m.cm.F, GlobalTheory.ArchMetricCompare.carry u h₁ h₂ hv, χ, hpb.comp m.cart, GlobalTheory.ArchMetricCompare.carry_isAH h₁ h₂ hv hAH, fun a p => ?_, hinj, hmem, fun i => i.elim⟩` and prove the remaining obligations. Use `show (u.ex (R.B a p)).left ≫ φ ≫ m.cm.F = (u.ex p).left ≫ (φ ≫ m.cm.F) ≫ (t.act.act a).left`. Rewrite using `[← Category.assoc, hact a p, Category.assoc, Category.assoc, Category.assoc, m.act a]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨A, _, φ, u, χ, hpb, hAH, hact, hinj, hmem, -⟩`. Establish `hp` using `m.cart.1`. Take `⟨F, rfl, hw⟩ : ∃ F : A.left ⟶ t'.G.left, F ≫ m.cm.F = φ ∧ F ≫ t'.G.hom = A.hom ≫ z` from `⟨hp.lift φ (A.hom ≫ z) (by rw [hpb.1.w, Category.assoc]), hp.lift_fst _ _ _, hp.lift_snd _ _ _⟩`. Take `⟨w, hw', -⟩` from `m.lin`. Take `⟨v, hv⟩` from `(lbIso_pull (L' := t'.PP.L) (L := t.PP.L) ⟨w, hw'⟩ F).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h₁` using `pull_isLB t'.PP.isLB F`. Establish `h₂` using `pull_isLB t.PP.isLB (F ≫ m.cm.F)`. Use `⟨A, inferInstance, F, GlobalTheory.ArchMetricCompare.carry u h₂ h₁ hv, χ, m.cart.cancel hpb hw, GlobalTheory.ArchMetricCompare.carry_isAH h₂ h₁ hv hAH, fun a p => ?_, hinj, hmem, fun i => i.elim⟩` and prove the remaining obligations. Use `show (u.ex (R.B a p)).left ≫ F = (u.ex p).left ≫ F ≫ (t'.act.act a).left`. Apply `hp.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e` using `hact a p`. Simplify using `only [Category.assoc] at e ⊢`. Rewrite using `[m.act a]`. Conclude with `e`. Simplify using `only [Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[Over.w (t'.act.act a), hw, ← Category.assoc, ← Category.assoc, Over.w (u.ex _), Over.w (u.ex _)]`. Introduce and unpack `⟨A, _, φ, u, χ, hpb, hAH, hact, hinj, hmem, -⟩`. Establish `h` using `isGrpPullback_pullback A (spMap (starRingEnd ℂ))`. Use `⟨(Over.pullback (spMap (starRingEnd ℂ))).obj A, inferInstance, pullback.fst _ _ ≫ φ, GlobalTheory.ArchMetricCompare.cjUnif h u, fun l => star (χ ⟨star l.1, l.2⟩), h.comp hpb, ?_, fun a p => ?_, ?_, fun p => ?_, fun i => i.elim⟩` and prove the remaining obligations. Rewrite using `[hH]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `GlobalTheory.ArchMetricCompare.cj_isAH h u hAH`. Use `show (GlobalTheory.ArchMetricCompare.cjPt h (u.ex (star (R'.B a p)))).left ≫ pullback.fst _ _ ≫ φ = (GlobalTheory.ArchMetricCompare.cjPt h (u.ex (star p))).left ≫ (pullback.fst _ _ ≫ φ) ≫ (t'.act.act a).left`. Rewrite using `[hB a p, star_star, GlobalTheory.ArchMetricCompare.cjPt_comp' h, Category.assoc, ← Category.assoc _ φ, ← Category.assoc _ (pullback.fst _ _ ≫ φ), GlobalTheory.ArchMetricCompare.cjPt_comp', hact a (star p)]`. Simplify using `only [Category.assoc]`. Introduce `x y e`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite `e` using `[hP, hP]`. Conclude with `hinj (star_injective e)`. Use `show star p ∈ u.Λ ↔ _`. Rewrite using `[hmem]`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨x, by rw [hP, hx, star_star]⟩`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨x, by rw [hP, star_star]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fibreLat_move : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X X' : Scheme.{0}) (t : SAB H X) (t' : SAB H X') (f : X' ⟶ X) (g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (R R' : RiemLat E g Λ) (z : Sp ℂ ⟶ X'), (Nonempty (SABMap t' t f) → (FibreLat t' z R ↔ FibreLat t (z ≫ f) R)) ∧ ((∀ x, R'.P x = star (R.P x)) → R'.Hm = R.Hm.map (starRingEnd ℂ) → (∀ a x, R'.B a x = star (R.B a (star x))) → FibreLat t' z R → FibreLat t' (spMap (starRingEnd ℂ) ≫ z) R') := by
   intro E _ _ _ H X X' t t' f g Λ _ _ R R' z

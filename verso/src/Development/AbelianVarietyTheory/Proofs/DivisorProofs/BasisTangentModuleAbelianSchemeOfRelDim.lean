@@ -23,19 +23,19 @@ namespace GlobalTheory.TanBasisDim
 open ReciprocityTheory.ChartRestriction.G.PullbackSections in
 
 /- English proof (translation)
-Establish `hS` using `isGrpPullback_pullback G (𝟙 (Sp R))`. Establish `hsm : SmoothOfRelativeDimension d ((Over.pullback (𝟙 (Sp R))).obj G).hom` using `by show SmoothOfRelativeDimension d (pullback.snd _ _)`. Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange d).of_isPullback (IsPullback.of_hasPullback _ _) hG`. Take `⟨v, hv⟩` from `GlobalTheory.KeyPow.exists_isLieBasis ((Over.pullback (𝟙 (Sp R))).obj G) hsm`. Set `b : Fin d → TanM (𝟙 (Sp R)) G` to `fun i => mkT (pushHom hS (epsR R) (v i)) ((isTangent_iff hS _).1 (hv.1 i))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hb : ∀ m : TanM (𝟙 (Sp R)) G, ∃! a : Fin d → R, m = ∑ i, a i • b i` using `fun m => by`. Take `⟨w', hw'⟩` from `push_surj hS (tv m)`. Establish `htan : IsTangent w'` using `(isTangent_iff hS w').2 (by rw [hw']; exact tv_mem m)`. Establish `key : ∀ a : Fin d → R, IsLieComb a v w' ↔ m = ∑ i, a i • b i`. Introduce `a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[isLieComb_iff hS, hw']`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `tanM_ext` to reduce the goal to its premises. Rewrite using `[h, GlobalTheory.RayBasis.tv_sum]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[tv_smul]`. Both sides reduce to the same expression. Introduce `h`. Rewrite using `[h, GlobalTheory.RayBasis.tv_sum]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[tv_smul]`. Both sides reduce to the same expression. Take `⟨C, hC, hCu⟩` from `hv.2 w' htan`. Conclude with `⟨C, (key C).1 hC, fun a ha => hCu a ((key a).2 ha)⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Module.Basis.mk (v := b) ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Conclude with `congrFun ((hb 0).unique hg.symm (y₂ := 0) (by simp)) i`. Introduce `m _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, -⟩` from `hb m`. Rewrite using `[ha]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem basis_tanM_of_dim {R : Type} [CommRing R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]
     (d : ℕ) (hG : SmoothOfRelativeDimension d G.hom) :
@@ -77,7 +77,7 @@ theorem basis_tanM_of_dim {R : Type} [CommRing R] [IsLocalRing R] (G : Over (Sp 
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Introduce `R _ _ _ G _ _ d _ hG`. Conclude with `basis_tanM_of_dim G d hG`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem basis_tanM_abelian : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (d : ℕ), IsAbelianScheme G → SmoothOfRelativeDimension d G.hom → Nonempty (Module.Basis (Fin d) R (TanM (𝟙 (Sp R)) G)) := by
   intro R _ _ _ G _ _ d _ hG

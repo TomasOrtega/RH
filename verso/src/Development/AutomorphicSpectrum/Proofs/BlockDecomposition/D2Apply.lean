@@ -20,7 +20,7 @@ def Ext {N Q : Type} [AddCommGroup N] [Module R N] [AddCommGroup Q] [Module R' Q
 variable {R R'}
 
 /- English proof (translation)
-Use `Fintype.ofFinite J` as an intermediate fact. Use `choose e he using h`. Use `⟨(TensorProduct.piRight R R' R' N).trans (LinearEquiv.piCongrRight e), fun b ↦ funext fun i ↦ ?_⟩` and prove the remaining obligations. Simplify using `[he]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Ext.pi {J : Type} [Finite J] {N Q : J → Type} [∀ i, AddCommGroup (N i)] [∀ i, Module R (N i)]
     [∀ i, AddCommGroup (Q i)] [∀ i, Module R' (Q i)] (c : ∀ i, N i → Q i) (h : ∀ i, Ext R R' (c i)) :
@@ -41,13 +41,13 @@ def tw (E : R' ⊗[R] N ≃ₗ[R'] Q) : M ⊗[R] N ≃+ M ⊗[R'] Q :=
   ((AlgebraTensorModule.cancelBaseChange R R' R' M N).symm.trans (LinearEquiv.lTensor M E)).toAddEquiv
 
 /- English proof (translation)
-Simplify using `[tw]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tw_tmul (E : R' ⊗[R] N ≃ₗ[R'] Q) (x : M) (n : N) : tw M E (x ⊗ₜ n) = x ⊗ₜ E (1 ⊗ₜ n) := by
   simp [tw]
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `tmul x n => simp [tw_tmul, H]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tw_nat (E : R' ⊗[R] N ≃ₗ[R'] Q) (E₂ : R' ⊗[R] N₂ ≃ₗ[R'] Q₂) (g : N →ₗ[R] N₂) (h : Q →ₗ[R'] Q₂)
     (H : ∀ n, h (E (1 ⊗ₜ n)) = E₂ (1 ⊗ₜ g n)) (t : M ⊗[R] N) :
@@ -60,11 +60,11 @@ theorem tw_nat (E : R' ⊗[R] N ≃ₗ[R'] Q) (E₂ : R' ⊗[R] N₂ ≃ₗ[R'] 
 end Gen
 
 /- English proof (translation)
-Take `⟨q₁, q₂⟩` from `q`. Use `⟨fun x' hx ⟨y', hy⟩ ↦ ?_, fun z' hz ↦ ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `u₁.surjective x'`. Take `⟨y, hy'⟩` from `hb' y'`. Take `⟨w, hw⟩` from `q₁ x (u₂.injective (by rw [h₁, hx, map_zero])) ⟨y, v₁.injective (by rw [hy', hy, hf])⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w', hw'⟩` from `ha w`. Conclude with `⟨w', by rw [hw', hw]⟩`. Take `⟨z, rfl⟩` from `v₁.surjective z'`. Take `⟨x, y, hx, hy⟩` from `q₂ z (v₂.injective (by rw [h₂, hz, map_zero]))`. Take `⟨y', hy'⟩` from `hb y`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨u₁ x, y', by rw [← h₁, hx, map_zero], by rw [hy', ← hy, map_sub, hf]⟩`.
+Supply the required witnesses or components.
 -/
 theorem QIsoAt.transport {R R' A₀ A₁ A₂ B₀ B₁ B₂ A₀' A₁' A₂' B₀' B₁' B₂' : Type} [CommRing R] [CommRing R']
     [AddCommGroup A₀] [AddCommGroup A₁] [AddCommGroup A₂] [AddCommGroup B₀] [AddCommGroup B₁] [AddCommGroup B₂]
@@ -93,9 +93,9 @@ theorem QIsoAt.transport {R R' A₀ A₁ A₂ B₀ B₁ B₂ A₀' A₁' A₂' B
 section Main
 
 /- English proof (translation)
-Use `LinearMap.ext fun t ↦ ?_` and prove the remaining obligations. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `tmul r n`. Establish `e : r ⊗ₜ[R] n = r • ((1 : R') ⊗ₜ[R] n)` using `by simp [TensorProduct.smul_tmul']`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[e, map_smul, map_smul, H]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem bc_ext {R R' N Q : Type} [CommRing R] [CommRing R'] [Algebra R R'] [AddCommGroup N] [Module R N]
     [AddCommGroup Q] [Module R' Q] (g h : R' ⊗[R] N →ₗ[R'] Q) (H : ∀ n, g (1 ⊗ₜ n) = h (1 ⊗ₜ n)) : g = h := by
@@ -119,13 +119,13 @@ variable {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {C : Type} [Cat
   {F : C ⥤ CommAlgCat.{0} R} {F' : C ⥤ CommAlgCat.{0} R'} [Finite C] [∀ T T' : C, Finite (T ⟶ T')]
 
 /- English proof (translation)
-The claim follows from `Ext.pi (fun T b ↦ m.α T b) fun T ↦ m.bij T`.
+A detailed English derivation is pending.
 -/
 theorem ext0 (m : BC F F') : Ext R R' (fun (f : C0 F) T ↦ m.α T (f T) : C0 F → C0 F') :=
   Ext.pi (fun T b ↦ m.α T b) fun T ↦ m.bij T
 
 /- English proof (translation)
-The claim follows from `Ext.pi (Q := fun T ↦ ∀ (T' : C) (_ : T ⟶ T'), F'.obj T') (fun T (g : ∀ (T' : C) (_ : T ⟶ T'), F.obj T') T' φ ↦ m.α T' (g T' φ)) fun T ↦ Ext.pi (Q := fun T' ↦ ∀ (_ : T ⟶ T'), F'.obj T') (fun T' (g : ∀ (_ : T ⟶ T'), F.obj T') φ ↦ m.α T' (g φ)) fun T' ↦ Ext.pi (fun _ b ↦ m.α T' b) f …`.
+A detailed English derivation is pending.
 -/
 theorem ext1 (m : BC F F') : Ext R R' (fun (f : C1 F) T T' φ ↦ m.α T' (f T T' φ) : C1 F → C1 F') :=
   Ext.pi (Q := fun T ↦ ∀ (T' : C) (_ : T ⟶ T'), F'.obj T')
@@ -135,7 +135,7 @@ theorem ext1 (m : BC F F') : Ext R R' (fun (f : C1 F) T T' φ ↦ m.α T' (f T T
   Ext.pi (fun _ b ↦ m.α T' b) fun _ ↦ m.bij T'
 
 /- English proof (translation)
-The claim follows from `Ext.pi (Q := fun T ↦ ∀ (T' T'' : C) (_ : T ⟶ T') (_ : T' ⟶ T''), F'.obj T'') (fun T (g : ∀ (T' T'' : C) (_ : T ⟶ T') (_ : T' ⟶ T''), F.obj T'') T' T'' φ ψ ↦ m.α T'' (g T' T'' φ ψ)) fun T ↦ Ext.pi (Q := fun T' ↦ ∀ (T'' : C) (_ : T ⟶ T') (_ : T' ⟶ T''), F'.obj T'') (fun T' (g : ∀ ( …`.
+A detailed English derivation is pending.
 -/
 theorem ext2 (m : BC F F') :
     Ext R R' (fun (f : C2 F) T T' T'' φ ψ ↦ m.α T'' (f T T' T'' φ ψ) : C2 F → C2 F') :=
@@ -152,7 +152,7 @@ theorem ext2 (m : BC F F') :
   Ext.pi (fun _ b ↦ m.α T'' b) fun _ ↦ m.bij T''
 
 /- English proof (translation)
-The claim follows from `Ext.pi (Q := fun T ↦ ∀ (T' T'' T''' : C) (_ : T ⟶ T') (_ : T' ⟶ T'') (_ : T'' ⟶ T'''), F'.obj T''') (fun T (g : ∀ (T' T'' T''' : C) (_ : T ⟶ T') (_ : T' ⟶ T'') (_ : T'' ⟶ T'''), F.obj T''') T' T'' T''' φ ψ χ ↦ m.α T''' (g T' T'' T''' φ ψ χ)) fun T ↦ Ext.pi (Q := fun T' ↦ ∀ (T'' T …`.
+A detailed English derivation is pending.
 -/
 theorem ext3 (m : BC F F') :
     Ext R R' (fun (f : C3 F) T T' T'' T''' φ ψ χ ↦ m.α T''' (f T T' T'' T''' φ ψ χ) : C3 F → C3 F') :=
@@ -175,29 +175,29 @@ theorem ext3 (m : BC F F') :
   Ext.pi (fun _ b ↦ m.α T''' b) fun _ ↦ m.bij T'''
 
 /- English proof (translation)
-Take `⟨P₀, P₁, P₂, P₃, a₀, a₁, a₂, ψ₀, ψ₁, ψ₂, ⟨f₀, p₀⟩, ⟨f₁, p₁⟩, ⟨f₂, p₂⟩, ⟨f₃, p₃⟩, h₁₀, h₂₁, s₀, s₁, ⟨ψ₃, s₂⟩, hM⟩` from `h`. Take `⟨E₀, e₀⟩` from `ext0 m`. Take `⟨E₁, e₁⟩` from `ext1 m`. Take `⟨E₂, e₂⟩` from `ext2 m`. Take `⟨E₃, e₃⟩` from `ext3 m`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `t₀ : ∀ x, d0 F' (E₀ (1 ⊗ₜ x)) = E₁ (1 ⊗ₜ d0 F x)` using `fun x ↦ by`. Rewrite using `[e₀, e₁]`. Use function extensionality and compare the values at `T T' φ`. Simplify using `only [amitsur_d0_apply, map_sub, m.naturality]`. Establish `t₁ : ∀ x, d1 F' (E₁ (1 ⊗ₜ x)) = E₂ (1 ⊗ₜ d1 F x)` using `fun x ↦ by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e₁, e₂]`. Use function extensionality and compare the values at `T T' T'' φ ψ`. Simplify using `only [d1_apply, map_sub, map_add, m.naturality]`. Establish `t₂ : ∀ x, d2 F' (E₂ (1 ⊗ₜ x)) = E₃ (1 ⊗ₜ d2 F x)` using `fun x ↦ by`. Rewrite using `[e₂, e₃]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `T T' T'' T''' φ ψ χ`. Simplify using `only [d2_apply, map_sub, map_add, m.naturality]`. Use `⟨.of R' (R' ⊗[R] P₀), .of R' (R' ⊗[R] P₁), .of R' (R' ⊗[R] P₂), .of R' (R' ⊗[R] P₃), a₀.baseChange R', a₁.baseChange R', a₂.baseChange R', E₀.toLinearMap ∘ₗ ψ₀.baseChange R', E₁.toLinearMap ∘ₗ ψ₁.baseChange R', E₂.toLinearMap ∘ₗ ψ₂.baseChange R', ⟨inferInstanceAs (Module.Finite R …` and prove the remaining obligations. Use `bc_ext _ _ fun n ↦ ?_` and prove the remaining obligations. Use `LinearMap.congr_fun h₁₀ n` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply] at this`. Simplify using `[LinearMap.baseChange_tmul, this]`. Use `bc_ext _ _ fun n ↦ ?_` and prove the remaining obligations. Use `LinearMap.congr_fun h₂₁ n` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply] at this`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[LinearMap.baseChange_tmul, this]`. Use `bc_ext _ _ fun n ↦ ?_` and prove the remaining obligations. Use `LinearMap.congr_fun s₀ n` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this`. Simplify using `only [LinearMap.comp_apply, LinearMap.baseChange_tmul, LinearEquiv.coe_coe, this, t₀]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `bc_ext _ _ fun n ↦ ?_` and prove the remaining obligations. Use `LinearMap.congr_fun s₁ n` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this`. Simplify using `only [LinearMap.comp_apply, LinearMap.baseChange_tmul, LinearEquiv.coe_coe, this, t₁]`. Use `bc_ext _ _ fun n ↦ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.congr_fun s₂ n` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this`. Simplify using `only [LinearMap.comp_apply, LinearMap.baseChange_tmul, LinearEquiv.coe_coe, this, t₂]`. Use `letI : Module R M := Module.compHom M (algebraMap R R') haveI : IsScalarTower R R' M := ⟨fun r s x ↦ by`. Express the relevant statement in the definitionally equal form `(r • s) • x = (algebraMap R R' r) • (s • x)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Take `⟨q₀, q₁, q₂⟩` from `hM (ModuleCat.of R M)`. Set `r₀ : R' ⊗[R] P₀ ≃ₗ[R'] R' ⊗[R] P₀` to `.refl _ _`. Set `r₁ : R' ⊗[R] P₁ ≃ₗ[R'] R' ⊗[R] P₁` to `.refl _ _`. Set `r₂ : R' ⊗[R] P₂ ≃ₗ[R'] R' ⊗[R] P₂` to `.refl _ _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `r₃ : R' ⊗[R] P₃ ≃ₗ[R'] R' ⊗[R] P₃` to `.refl _ _`. Establish `nA₀ : ∀ t, tw M r₁ (a₀.lTensor M t) = (a₀.baseChange R').lTensor M (tw M r₀ t)` using `tw_nat r₀ r₁ a₀ _ fun n ↦ by simp [r₀, r₁, LinearMap.baseChange_tmul]`. Establish `nA₁ : ∀ t, tw M r₂ (a₁.lTensor M t) = (a₁.baseChange R').lTensor M (tw M r₁ t)` using `tw_nat r₁ r₂ a₁ _ fun n ↦ by simp [r₁, r₂, LinearMap.baseChange_tmul]`. Establish `nA₂ : ∀ t, tw M r₃ (a₂.lTensor M t) = (a₂.baseChange R').lTensor M (tw M r₂ t)` using `tw_nat r₂ r₃ a₂ _ fun n ↦ by simp [r₂, r₃, LinearMap.baseChange_tmul]`. Establish `nD₀ : ∀ t, tw M E₁ ((d0 F).lTensor M t) = (d0 F').lTensor M (tw M E₀ t)` using `tw_nat E₀ E₁ _ _ t₀`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `nD₁ : ∀ t, tw M E₂ ((d1 F).lTensor M t) = (d1 F').lTensor M (tw M E₁ t)` using `tw_nat E₁ E₂ _ _ t₁`. Establish `nD₂ : ∀ t, tw M E₃ ((d2 F).lTensor M t) = (d2 F').lTensor M (tw M E₂ t)` using `tw_nat E₂ E₃ _ _ t₂`. Establish `nP₀ : ∀ t, tw M E₀ (ψ₀.lTensor M t) = (E₀.toLinearMap ∘ₗ ψ₀.baseChange R').lTensor M (tw M r₀ t)` using `tw_nat r₀ E₀ ψ₀ _ fun n ↦ by simp [r₀, LinearMap.baseChange_tmul]`. Establish `nP₁ : ∀ t, tw M E₁ (ψ₁.lTensor M t) = (E₁.toLinearMap ∘ₗ ψ₁.baseChange R').lTensor M (tw M r₁ t)` using `tw_nat r₁ E₁ ψ₁ _ fun n ↦ by simp [r₁, LinearMap.baseChange_tmul]`. Establish `nP₂ : ∀ t, tw M E₂ (ψ₂.lTensor M t) = (E₂.toLinearMap ∘ₗ ψ₂.baseChange R').lTensor M (tw M r₂ t)` using `tw_nat r₂ E₂ ψ₂ _ fun n ↦ by simp [r₂, LinearMap.baseChange_tmul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨QIsoAt.transport (tw M r₀) (tw M r₁) (tw M E₀) (tw M E₁) nA₀ nD₀ nP₀ (fun _ ↦ ⟨0, by simp⟩) (fun _ ↦ ⟨0, by simp⟩) (fun _ ↦ ⟨0, by simp⟩) q₀, QIsoAt.transport (tw M r₁) (tw M r₂) (tw M E₁) (tw M E₂) nA₁ nD₁ nP₁ (fun y ↦ ⟨tw M r₀ y, (nA₀ y).symm⟩) (fun y ↦ ⟨tw M E₀ y, (nD₀ y).sym …`.
+Supply the required witnesses or components.
 -/
 theorem perf_ext (m : BC F F') (h : Perf F) : Perf F' := by
   obtain ⟨P₀, P₁, P₂, P₃, a₀, a₁, a₂, ψ₀, ψ₁, ψ₂, ⟨f₀, p₀⟩, ⟨f₁, p₁⟩, ⟨f₂, p₂⟩, ⟨f₃, p₃⟩, h₁₀, h₂₁, s₀, s₁,
@@ -285,7 +285,7 @@ theorem perf_ext (m : BC F F') (h : Perf F) : Perf F' := by
 end Main
 
 /- English proof (translation)
-Introduce `R _ P _ _ F h R' _ _ F' m`. Use `haveI : Finite Pᵒᵖ := Finite.of_injective unop unop_injective`. Use `haveI : ∀ T T' : Pᵒᵖ, Finite (T ⟶ T') := fun _ _ ↦ Finite.of_subsingleton`. Conclude with `perf_ext m h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : PerfBaseSt := by
   intro R _ P _ _ F h R' _ _ F' m

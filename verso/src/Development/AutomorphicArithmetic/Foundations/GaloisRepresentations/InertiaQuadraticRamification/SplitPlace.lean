@@ -14,13 +14,11 @@ open scoped Pointwise
 namespace UpperTheory.Gal.UnramifiedFromSplittingCriterion
 
 /- English proof (translation)
-Establish `hprime : Nat.Prime (Ideal.absNorm u.asIdeal)` using `((GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified F).1 u).2 hd`. Use `haveI : Fact (Nat.Prime (Ideal.absNorm u.asIdeal)) := ⟨hprime⟩`. Establish `hmemZ : ((Ideal.absNorm u.asIdeal : ℕ) : ℤ) ∈ u.asIdeal.under ℤ`. Rewrite using `[Ideal.under_def, Ideal.mem_comap]`. Simplify using `using Ideal.absNorm_mem u.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hspan : u.asIdeal.under ℤ = Ideal.span {((Ideal.absNorm u.asIdeal : ℕ) : ℤ)}` using `((Int.ideal_span_isMaximal_of_prime (Ideal.absNorm u.asIdeal)).eq_of_le Ideal.IsPrime.ne_top' ((Ideal.span_singleton_le_iff_mem _).2 hmemZ)).symm`. Establish `hp0 : u.asIdeal.under ℤ ≠ ⊥`. Rewrite using `[hspan, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hprime.ne_zero` after adjusting the coercions. Establish `he' : (u.asIdeal.under ℤ).ramificationIdx' u.asIdeal = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ideal.ramificationIdx'_eq_ramificationIdx (u.asIdeal.under ℤ) u.asIdeal hp0]`. Conclude with `he`. Establish `hmap : (u.asIdeal.under ℤ).map (algebraMap ℤ (𝓞 F)) ≤ u.asIdeal` using `Ideal.map_comap_le`. Introduce `hmem`. Use `(Ideal.ramificationIdx'_ne_one_iff hmap).2 ?_ he'` and prove the remaining obligations.
-
-Rewrite using `[hspan, Ideal.map_span, Ideal.span_le, Set.image_singleton, Set.singleton_subset_iff]`. Simplify using `using hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem norm_not_mem_sq {F : Type} [Field F] [NumberField F] (u : HeightOneSpectrum (𝓞 F))
     (hd : u.asIdeal.inertiaDeg ℤ = 1) (he : u.asIdeal.ramificationIdx ℤ = 1) :
@@ -48,9 +46,9 @@ private theorem norm_not_mem_sq {F : Type} [Field F] [NumberField F] (u : Height
   simpa using hmem
 
 /- English proof (translation)
-Introduce `d hd`. Establish `h` using `GlobalTheory.TameQuot.closure_frob_sup_Ine F Ω B u hB ⟨σ, hσ.1⟩ hσ`. Establish `hc : IsClosed ((N.subgroupOf (Dec (F` using `F) B) : Subgroup (Dec (F := F) B)) : Set (Dec (F := F) B)) := (N.isClosed_of_isOpen hNo).preimage continuous_subtype_val`. Establish `h2` using `Subgroup.topologicalClosure_minimal (Subgroup.zpowers (⟨σ, hσ.1⟩ : Dec (F := F) B) ⊔ (Ine (F := F) B).subgroupOf (Dec (F := F) B)) (sup_le (Subgroup.zpowers_le.2 (Subgroup.mem_subgroupOf.2 hσN)) (fun x hx => Subgroup.mem_subgroupOf.2 (hI (Subgroup.mem_subgroupOf.1 hx)))) hc`. Rewrite `h2` using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Subgroup.mem_subgroupOf.1 (h2 (Subgroup.mem_top (⟨d, hd⟩ : Dec (F := F) B)))`.
+A detailed English derivation is pending.
 -/
 private theorem dec_le {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     {N : Subgroup (G F Ω)} (hNo : IsOpen (N : Set (G F Ω))) {B : ValuationSubring Ω}
@@ -68,17 +66,15 @@ private theorem dec_le {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algeb
   exact Subgroup.mem_subgroupOf.1 (h2 (Subgroup.mem_top (⟨d, hd⟩ : Dec (F := F) B)))
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ U hU T hT`. Take `⟨N, hNn, hNo, -, hNU⟩` from `GlobalTheory.T.exists_openNormal_finiteIndex_le_absGaloisGroup Ω F U hU`. Establish `hc : GlobalTheory.TwSys.Cheb` using `GlobalTheory.Published.chebotarevDegreeOne_iff_cheb.1 GlobalTheory.Published.chebotarevDegreeOne'`. Unfold `GlobalTheory.TwSys.Cheb at hc`. Take `⟨v, hvA, hd, he, B, hB, hIB, σ, hσ, hσN⟩` from `hc F Ω N hNo hNn 1 hT.toFinset`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Establish `hvT : v ∉ T` using `fun h => hvA (hT.mem_toFinset.2 h)`. Establish `hσN' : σ ∈ N` using `by simpa using hσN`. Establish `hdec` using `dec_le hNo hB hIB hσ hσN'`. Establish `hnorm : normV v = Ideal.absNorm v.asIdeal`. Simplify using `[Formalism.ConjugateSelfDual.normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨v, hvT, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hnorm]`. Conclude with `((GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified F).1 v).2 hd`. Rewrite using `[hnorm]`. Conclude with `Ideal.absNorm_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hnorm]`. Conclude with `norm_not_mem_sq v hd he`. Introduce `A hA ρ hρ`. Take `⟨τ, hτ⟩` from `exists_smul_eq_of_isPlaceOver hB hA`. Apply `hNU` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : τ⁻¹ * ρ * τ ∈ Dec (F` using `F) B := by`. Rewrite `hρ`, the goal using `[mem_Dec]`. Rewrite `hρ` using `[← hτ]`. Rewrite using `[mul_smul, mul_smul, hρ, ← mul_smul, inv_mul_cancel, one_smul]`. Establish `h2` using `hNn.conj_mem _ (hdec h1) τ`.
-
-Simplify `h2` using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem splitPlace : SplitPlace := by
   intro F Ω _ _ _ _ _ U hU T hT

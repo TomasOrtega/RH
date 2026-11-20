@@ -9,11 +9,11 @@ open scoped TensorProduct
 namespace GlobalTheory.KilledByLowerStable
 
 /- English proof (translation)
-Establish `hY : Y = ∑ i, ∑ j, Y i j • Eab i j` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single Y]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[Eab, Matrix.smul_single]`. Rewrite using `[hY]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Break down `i with a | b` into its components or cases. Rewrite using `[h1, zero_smul]`. Break down `j with a | b'` into its components or cases. Rewrite using `[hx a b, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, zero_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act_eq_zero_of_lower {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (x : V) (hx : KilledByLower act x) (Y : Mat p q)
@@ -33,13 +33,13 @@ theorem act_eq_zero_of_lower {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ
     · rw [h2, zero_smul]
 
 /- English proof (translation)
-Introduce `p q V _ _ act hact Z hZ x hx a b`. Establish `h` using `congrArg (fun f : Module.End ℂ V => f x) (hact (Eab (Sum.inr b) (Sum.inl a)) Z)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h`. Rewrite `h` using `[hx a b, map_zero, sub_zero]`. Rewrite using `[← h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `act_eq_zero_of_lower act x hx` to reduce the goal to its premises. Introduce `a' j`. Establish `h0 : Z (Sum.inl a') (Sum.inr b) = 0` using `hZ _ _ (by simp [sameBlock])`. Distinguish the cases in `hj : j = Sum.inl a`. Substitute `hj` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Eab, h0]`. Simplify using `[Eab, hj]`. Introduce `i b'`. Establish `h0 : Z (Sum.inl a) (Sum.inr b') = 0` using `hZ _ _ (by simp [sameBlock])`. Distinguish the cases in `hi : i = Sum.inr b`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `hi` using the available equality. Simplify using `[Eab, h0]`. Simplify using `[Eab, hi]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem killedByLower_act : ∀ (p q : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (act : Mat p q →ₗ[ℂ] Module.End ℂ V), IsLieAct act → ∀ Z : Mat p q, IsKC Z →

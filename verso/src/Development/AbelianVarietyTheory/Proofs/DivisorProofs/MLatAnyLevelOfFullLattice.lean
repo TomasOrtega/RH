@@ -29,7 +29,7 @@ def kapRec (D : D7) : D7 :=
     nth := { D.nth with } }
 
 /- English proof (translation)
-Introduce `j _ _ τ` and use `⟨fun i => (DV.aPlusQ_int D j τ i).choose_spec.symm, fun c => by show ((-(DV.aMinusQ_int D j τ c).choose : ℤ) : ℚ) = -DV.aMinusQ D j τ c rw [Int.cast_neg, ← (DV.aMinusQ_int D j τ c).choose_spec]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem kapDef_kapRec (D : D7) : DV.KapDef (kapRec D) := fun j _ _ τ =>
   ⟨fun i => (DV.aPlusQ_int D j τ i).choose_spec.symm, fun c => by
@@ -40,13 +40,13 @@ def kapCore {D : D7} (T : Core D) : Core (kapRec D) :=
   { T with Q := { T.Q with } }
 
 /- English proof (translation)
-Unfold `volPair`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem volPair_kapRec (D : D7) (V : TH.HSp D) : volPair (D := kapRec D) V = volPair (D := D) V := by
   unfold volPair; rfl
 
 /- English proof (translation)
-The claim follows from `congrArg (fun p : MeasureTheory.Measure (Formalism.L2.Theta.GA D V) × Set (Formalism.L2.Theta.GA D V) => (p.1.restrict p.2).map (autMk (D := D) V)) (volPair_kapRec D V)`.
+A detailed English derivation is pending.
 -/
 theorem muQ_kapRec (D : D7) (V : TH.HSp D) : muQ (D := kapRec D) V = muQ (D := D) V :=
   congrArg (fun p : MeasureTheory.Measure (Formalism.L2.Theta.GA D V) × Set (Formalism.L2.Theta.GA D V) =>
@@ -54,7 +54,7 @@ theorem muQ_kapRec (D : D7) (V : TH.HSp D) : muQ (D := kapRec D) V = muQ (D := D
 
 open Classical in
 /- English proof (translation)
-The claim follows from `congrArg (fun μ : MeasureTheory.Measure (AutQ (D := D) V) => if μ Set.univ ≠ 0 ∧ μ Set.univ ≠ ⊤ then (μ Set.univ)⁻¹ • μ else MeasureTheory.Measure.dirac (autMk (D := D) V 1)) (muQ_kapRec D V)`.
+A detailed English derivation is pending.
 -/
 theorem muQ1_congr_datum (D : D7) (V : TH.HSp D) : muQ1 (D := kapRec D) V = muQ1 (D := D) V :=
   congrArg (fun μ : MeasureTheory.Measure (AutQ (D := D) V) =>
@@ -62,21 +62,21 @@ theorem muQ1_congr_datum (D : D7) (V : TH.HSp D) : muQ1 (D := kapRec D) V = muQ1
     (muQ_kapRec D V)
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun μ : MeasureTheory.Measure (AutQ (D := D) V) => μ Set.univ ≠ 0 ∧ μ Set.univ ≠ ⊤) (muQ_kapRec D V)).mpr h`.
+A detailed English derivation is pending.
 -/
 theorem finVol_kapRec {D : D7} {V : TH.HSp D} (h : FinVol (D := D) V) : FinVol (D := kapRec D) V :=
   (congrArg (fun μ : MeasureTheory.Measure (AutQ (D := D) V) => μ Set.univ ≠ 0 ∧ μ Set.univ ≠ ⊤)
     (muQ_kapRec D V)).mpr h
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun μ : MeasureTheory.Measure (AutQ (D := D) V) => MeasureTheory.MemLp φ 2 μ) (muQ1_congr_datum D V)).mpr h`.
+A detailed English derivation is pending.
 -/
 theorem memLp_kapRec {D : D7} {V : TH.HSp D} {φ : AutQ (D := D) V → ℂ}
     (h : MeasureTheory.MemLp φ 2 (muQ1 (D := D) V)) : MeasureTheory.MemLp φ 2 (muQ1 (D := kapRec D) V) :=
   (congrArg (fun μ : MeasureTheory.Measure (AutQ (D := D) V) => MeasureTheory.MemLp φ 2 μ) (muQ1_congr_datum D V)).mpr h
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem norm_toLp_congr {α : Type} [MeasurableSpace α] {μ ν : MeasureTheory.Measure α} (e : μ = ν) {φ : α → ℂ}
     (h : MeasureTheory.MemLp φ 2 μ) (h' : MeasureTheory.MemLp φ 2 ν) : ‖h.toLp φ‖ = ‖h'.toLp φ‖ := by
@@ -90,13 +90,13 @@ variable {D : D7} {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {
   (dict : Formalism.L2.Theta.GA D V → Σ c, ReciprocityTheory.ChartRestriction.G.FD.Frame (X c).Ψ r) (mu : Formalism.L2.Theta.GA D V → ℂ)
 
 /- English proof (translation)
-Introduce `f` and use `memLp_kapRec (φ := jFn (D := D) V σ rd dict mu f) (h f)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem j_mem_l2_under_datum_change (h : JMemL2 (D := D) V σ rd dict mu) : JMemL2 (D := kapRec D) V σ rd dict mu := fun f =>
   memLp_kapRec (φ := jFn (D := D) V σ rd dict mu f) (h f)
 
 /- English proof (translation)
-Introduce `f h0` and use `hd f ((norm_toLp_congr (φ := jFn (D := D) V σ rd dict mu f) (muQ1_congr_datum D V) (h' f) (h f)).symm.trans h0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem jMemL2_congr_datum (h : JMemL2 (D := D) V σ rd dict mu) (h' : JMemL2 (D := kapRec D) V σ rd dict mu)
     (hd : L2Definite (D := D) V σ rd dict mu h) : L2Definite (D := kapRec D) V σ rd dict mu h' := fun f h0 =>
@@ -105,14 +105,14 @@ theorem jMemL2_congr_datum (h : JMemL2 (D := D) V σ rd dict mu) (h' : JMemL2 (D
 end Readings
 
 /- English proof (translation)
-Introduce `a n hd` and use `j_mem_l2_under_datum_change (D := D) (T.V j σ) σ (rdC (T.U j) σ a n) (T.dict j σ) (T.mu j σ) (h.cuspidalL2Subspace j hj σ hσ a n hd)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cusp_l2_under_datum_change {D : D7} {T : Core D} (h : LawsM T) (j : ℕ) (hj : InR D j) (σ : T.Q.c.F →+* ℂ)
     (hσ : GoodEmb T.Q.c σ) : CuspL2 (D := kapRec D) (T.U j) σ (T.V j σ) (T.dict j σ) (T.mu j σ) := fun a n hd =>
   j_mem_l2_under_datum_change (D := D) (T.V j σ) σ (rdC (T.U j) σ a n) (T.dict j σ) (T.mu j σ) (h.cuspidalL2Subspace j hj σ hσ a n hd)
 
 /- English proof (translation)
-Introduce `a n hd` and use `jMemL2_congr_datum (D := D) (T.V j σ) σ (rdC (T.U j) σ a n) (T.dict j σ) (T.mu j σ) _ (h' a n hd) (h.l2Def j hj σ hσ a n hd)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cuspL2_congr_core_of_lawsM {D : D7} {T : Core D} (h : LawsM T) (j : ℕ) (hj : InR D j) (σ : T.Q.c.F →+* ℂ)
     (hσ : GoodEmb T.Q.c σ) (h' : CuspL2 (D := kapRec D) (T.U j) σ (T.V j σ) (T.dict j σ) (T.mu j σ)) :
@@ -123,7 +123,7 @@ theorem cuspL2_congr_core_of_lawsM {D : D7} {T : Core D} (h : LawsM T) (j : ℕ)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-The claim follows from `h.pins half := h.half evalWD := h.evalWD unf := h.unf unTest := h.unTest chiTriv := h.chiTriv dictU := h.dictU spaceW := h.spaceW levelK := h.levelK xiAbs := h.xiAbs muUnit := h.muUnit muCont := h.muCont finVol j hj σ hσ := finVol_kapRec (D := D) (V := T.V j σ) (h.finVol j hj σ h …`.
+A detailed English derivation is pending.
 -/
 theorem lawsM_kapCore {D : D7} {T : Core D} (h : LawsM T) : LawsM (kapCore T) where
   pins := h.pins
@@ -147,11 +147,11 @@ theorem lawsM_kapCore {D : D7} {T : Core D} (h : LawsM T) : LawsM (kapCore T) wh
   ptNe := h.ptNe
 
 /- English proof (translation)
-Take `⟨-, h⟩` from `isKappa_kaWt (D := kapRec D) (kapDef_kapRec D) hn hj`. Establish `hP : (DIV.Cons.kaWt (kapRec D) (kapDef_kapRec D) hn j).aP = w.aP`. Use function extensionality and compare the values at `τ i`. Conclude with `((h τ).1 i).trans ((hw.2 τ).1 i).symm` after adjusting the coercions. Establish `hM : (DIV.Cons.kaWt (kapRec D) (kapDef_kapRec D) hn j).aM = w.aM`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `τ c`. Take `⟨c, rfl⟩` from `Fin.rev_surjective c`. Conclude with `((h τ).2 c).trans ((hw.2 τ).2 c).symm` after adjusting the coercions. Use function extensionality and compare the values at `x`. Unfold `kappaExp wtA`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hP, hM]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem wtA_eq {D : D7} {j : ℕ} (hj : InR D j) {w : WeightFamilies.Wt D j} (hw : IsKappa D j w) (hn : Even D.R.nV) :
     kappaExp (kapRec D) (kapDef_kapRec D) hn j = wtA w := by
@@ -170,15 +170,15 @@ theorem wtA_eq {D : D7} {j : ℕ} (hj : InR D j) {w : WeightFamilies.Wt D j} (hw
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem supLatticeFullAt_kapCore {D : D7} (T : Core D) (j : ℕ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
     SupLatticeFullAt (kapCore T) j a n ↔ SupLatticeFullAt T j a n := Iff.rfl
 
 /- English proof (translation)
-Establish `hn : Even D.R.nV` using `hw.1 ▸ w.n_even`. Establish `h` using `H (kapRec D) (kapDef_kapRec D) hn (kapCore T) (lawsM_kapCore hT) j hj`. Establish `h'` using `(supLatticeFullAt_kapCore T j _ _).1 h`. Rewrite `h'` using `[wtA_eq hj hw hn]`. Establish `h'' : SupLatticeFullAt T j (wtA w) w.n` using `by rw [hw.1]; exact h'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(supIn_full_iff _ _ _).1 h''`.
+A detailed English derivation is pending.
 -/
 theorem fullLat_of_kappa (H : IntegralCuspFormsFullLattice) {D : D7} (T : Core D) (hT : LawsM T) {j : ℕ} (hj : InR D j)
     {w : WeightFamilies.Wt D j} (hw : IsKappa D j w) :
@@ -201,9 +201,9 @@ variable {G : Type} [Group G] [Fintype G]
 omit [Module (𝓞 LL) WL] [IsScalarTower (𝓞 LL) LL WL] [Module (𝓞 Ks) WL] [IsScalarTower (𝓞 Ks) Ks WL] [Fintype G] in
 
 /- English proof (translation)
-Set `b` to `Module.finBasis Ks C`. Set `B` to `(Algebra.TensorProduct.basis LL b).map hι.equiv`. Establish `e : ∀ i, B i = ι (b i)` using `fun i => by`. Simplify using `[B, Algebra.TensorProduct.basis_apply]`. Establish `e' : (fun i => ι (b i)) = B` using `funext fun i => (e i).symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨_, fun i => ι (b i), fun i => hW ▸ ⟨b i, rfl⟩, ?_, ?_, e' ▸ B.linearIndependent, e' ▸ B.span_eq⟩` and prove the remaining obligations. Rewrite using `[e']`. Conclude with `B.linearIndependent.restrict_scalars' Ks`. Use `show Submodule.span Ks (Set.range (ι ∘ b)) = _`. Rewrite using `[Set.range_comp, Submodule.span_image, b.span_eq, Submodule.map_top, hW]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isKsForm_of_isBaseChange (A : FormsL LL Ks WL W G) {C : Type} [AddCommGroup C] [Module Ks C]
     [FiniteDimensional Ks C] (ι : C →ₗ[Ks] WL) (hι : IsBaseChange LL ι) (hW : A.WK = LinearMap.range ι) :
@@ -220,7 +220,7 @@ theorem isKsForm_of_isBaseChange (A : FormsL LL Ks WL W G) {C : Type} [AddCommGr
     rw [Set.range_comp, Submodule.span_image, b.span_eq, Submodule.map_top, hW]
 
 /- English proof (translation)
-Use `⟨?_, fun d b hb => isLattice_Mcoord A hK hM J0 lam0 eC b hb.1 fun i => hb.2 ▸ Submodule.subset_span ⟨i, rfl⟩⟩` and prove the remaining obligations. Take `⟨n, b, -, -, -, h3, h4⟩` from `hK`. Establish `: FiniteDimensional LL WL` using `(Module.Basis.mk h3 h4.ge).finiteDimensional_of_finite`. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mjFull_of_full (A : FormsL LL Ks WL W G) (hK : A.IsKsForm) (hM : A.MKFull) (J0 : Subgroup G)
     (lam0 : J0 →* LLˣ) (eC : G → LL) : MjFull A J0 lam0 eC := by
@@ -242,11 +242,11 @@ variable {W : (LL →+* ℂ) → Type} [∀ σ, NormedAddCommGroup (W σ)] [∀ 
 variable {G : Type} [Group G] [Fintype G]
 
 /- English proof (translation)
-Take `⟨hι, hW, hN⟩` from `hA`. Establish `hfd : FiniteDimensional T.Q.c.F (Cusp T j w)`. Take `⟨s, hs⟩` from `hl.fg`. Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[← hl.span_eq_top, ← hs, Submodule.span_span_of_tower]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mjFull_of_full A (isKsForm_of_isBaseChange A ι hι hW) (mkFull_of A ι hW (fun x => ?_) hl) J0 lam0 eC` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, h⟩`. Take `⟨f, rfl⟩` from `hW ▸ hx`. Conclude with `⟨f, fun la v hv => (T.nrmM_le_one_iff j la ⟨v, hv⟩ _).1 ((hN la f hx).1 (h la) ⟨v, hv⟩), rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨f, hf, rfl⟩`. Establish `hx : ι f ∈ A.WK` using `hW ▸ ⟨f, rfl⟩`. Conclude with `⟨hx, fun la => (hN la f hx).2 fun y => (T.nrmM_le_one_iff j la y _).2 (hf la y.1 y.2)⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem mjFull_of_fullLat (A : FormsL LL T.Q.c.F WL W G) (ι : Cusp T j w →ₗ[T.Q.c.F] WL) (hA : CarriesCusp T j w A ι)
     (hl : FullLat (T.cuspA j (wtA w) w.n) (valSet (T.Q.Xo j) T.Q.c (algCls (T.Q.Xo j) T.Q.c))
@@ -269,14 +269,14 @@ theorem mjFull_of_fullLat (A : FormsL LL T.Q.c.F WL W G) (ι : Cusp T j w →ₗ
 end Comparison₂
 
 /- English proof (translation)
-Introduce `D T hT j hj w hw LL _ _ _ WL _ _ _ _ _ _ _ _ W _ _ G _ _ A ι hA J0 lam0 eC`. Conclude with `mjFull_of_fullLat T j w A ι hA (fullLat_of_kappa H T hT hj hw) J0 lam0 eC`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mLatAnyLevel_of_fullLattice (H : IntegralCuspFormsFullLattice) : MLatAnyLevel := by
   intro D T hT j hj w hw LL _ _ _ WL _ _ _ _ _ _ _ _ W _ _ G _ _ A ι hA J0 lam0 eC
   exact mjFull_of_fullLat T j w A ι hA (fullLat_of_kappa H T hT hj hw) J0 lam0 eC
 
 /- English proof (translation)
-The claim follows from `MLat.of_anyLevel (mLatAnyLevel_of_fullLattice H)`.
+A detailed English derivation is pending.
 -/
 theorem mLat_of_fullLattice (H : IntegralCuspFormsFullLattice) : MLat :=
   MLat.of_anyLevel (mLatAnyLevel_of_fullLattice H)

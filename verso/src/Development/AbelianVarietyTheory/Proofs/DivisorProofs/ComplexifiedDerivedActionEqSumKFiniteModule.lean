@@ -14,11 +14,11 @@ open scoped InnerProductSpace
 namespace GlobalTheory.HolomorphicDiscreteSeriesDecomposition
 
 /- English proof (translation)
-Introduce `n ε H _ _ σ D E hK Z v`. Establish `hG : IsUnit (Jm ε)` using `IsUnit.of_mul_eq_one _ (Formalism.REAL.Jm_mul_self ε)`. Take `⟨h1, h2⟩` from `GlobalTheory.SmVec.parts_mem hG (Formalism.REAL.Jm_conjTranspose ε) Z`. Establish `key : ∀ X, inG ε X → Formalism.L2.Theta.dRep σ X (v : H) = ∑ a, ∑ b, X a b • (E a b v : H)` using `fun X hX => by`. Use `hK.real X hX v` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Complex.coe_smul] at this`. Conclude with `this.deriv`. Unfold `GlobalTheory.SmVec.dRepC`. Rewrite using `[key _ h1, key _ h2]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.smul_sum, ← Finset.sum_add_distrib, smul_smul, ← add_smul]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `only [Matrix.smul_apply, Matrix.add_apply, Matrix.sub_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dRepC_eq_sum : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (D : Submodule ℂ H) (E : Fin n → Fin n → Module.End ℂ D), IsKMod ε σ D E → ∀ (Z : Matrix (Fin n) (Fin n) ℂ) (v : D), GlobalTheory.SmVec.dRepC (Jm ε) σ Z v = ((∑ a, ∑ b, Z a b • E a b v : D) : H) := by
   intro n ε H _ _ σ D E hK Z v

@@ -21,25 +21,23 @@ namespace ReciprocityTheory.ChartRestriction.DS.Lap
 open ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Introduce `hIS k r ε u h hgap hp hq lam s hlam hgl hlam' hgl' hu hB`. Take `⟨T, μ, P, z, c, Vp, _, _, _, π, μW, μN, hμ, hP, hBD, v₁, v₂, ξ, x₀, x, hx₀, hx, hne⟩` from `hB`. Take `⟨hq0, hNeed⟩` from `gapNeed k r ε h hp hq hgap`. Take `⟨H, _, _, _, σ, D, E, V, ι, hσ, hD, hV, hc, hVK, hcoef⟩` from `LemK.psiDatum (2 * r + k + 1) ε lam h T μ hlam hgl hNeed hq0 hμ`. Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hX₀ : P * x₀ * P⁻¹ ∈ UJset ε` using `cayley_conj_mem_unitary_group hP hx₀`. Establish `hper : per P μW μN (Formalism.MainNotions.S.psiGen k r z c) π (coefX σ (P * x₀ * P⁻¹) (((ι.symm v₂ : V) : D) : H) (((ι.symm v₁ : V) : D) : H)) ξ x = aaFun T μ P μW μN (Formalism.MainNotions.S.psiGen k r z c) π v₁ v₂ ξ x₀ x`. Establish `hHW` using `hBD.2.2.2.2.1`. Establish `hHN` using `hBD.2.2.2.2.2`. Establish `: SigmaFinite μW` using `hHW.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SigmaFinite μN` using `hHN.1`. Unfold `per aaFun sInt`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [ae_mem_unitary_nilpotent_product z μW μN hHW hHN] with p hp'`. Establish `hs : Matrix.of p.1 * Matrix.of p.2 ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `unitary_hermitian_form_mul_mem hp'.1.1 hp'.2.1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `unitary_hermitian_form_mul_mem hs hx`. Establish `hinv : x₀⁻¹ ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `(Transport.uh_facts hP hx₀).2.1`. Establish `hG : P * (x₀⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * x)) * P⁻¹ ∈ UJset ε` using `cayley_conj_mem_unitary_group hP (unitary_hermitian_form_mul_mem hinv hg)`. Establish `hX : P⁻¹ * (P * x₀ * P⁻¹) * P = x₀`. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hd, Matrix.nonsing_inv_mul _ hd, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `heq : (P * x₀ * P⁻¹)⁻¹ * (P * (Matrix.of p.1 * Matrix.of p.2 * x) * P⁻¹) = P * (x₀⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * x)) * P⁻¹`. Establish `h1` using `conj_inv_mul_conj P (P * x₀ * P⁻¹) (Matrix.of p.1 * Matrix.of p.2 * x) hd`. Rewrite `h1` using `[hX]`. Conclude with `h1.symm`. Use `show coefX σ (P * x₀ * P⁻¹) _ _ (P * (Matrix.of p.1 * Matrix.of p.2 * x) * P⁻¹) • _ = psiCoef T μ P v₁ v₂ (x₀⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * x)) • _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `coefX psiCoef`. Rewrite using `[heq, hcoef _ hG (ι.symm v₁) (ι.symm v₂)]`. Simplify using `only [LinearEquiv.apply_symm_apply]`. Establish `hne' : per P μW μN (Formalism.MainNotions.S.psiGen k r z c) π (coefX σ (P * x₀ * P⁻¹) (((ι.symm v₂ : V) : D) : H) (((ι.symm v₁ : V) : D) : H)) ξ x ≠ 0`. Rewrite using `[hper]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hne`. Take `⟨y, hy⟩` from `evalP k r ε u lam h H σ D E V T μ ι hσ hD hV hc hVK hμ hcoef hp hq hgap hlam hgl z c Vp π μW μN P hP hBD (P * x₀ * P⁻¹) (ι.symm v₂) (ι.symm v₁) ξ s x hX₀ hx hu hne'`. Establish `hGl : IsGlRep E` using `hD.glRep`. Establish `hstab : ∀ a b, ∀ m ∈ genSub E V, E a b m ∈ genSub E V` using `fun a b m hm => Submodule.mem_sInf.2 fun S hS => hS.2 a b m (Submodule.mem_sInf.1 hm S hS)`. Establish `hkill : ∀ m ∈ genSub E V, Capelli.capelliC E (((-(LemK.thV lam s)) : ℝ) : ℂ) m = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `m hm`. Rewrite using `[capVal (2 * r + k + 1) ε lam h H σ D E V T μ ι hσ hD hV hc hVK hμ hcoef hlam hgl hNeed hq0 _ m hm, Finset.prod_eq_zero (Finset.mem_univ s) (by push_cast; ring), zero_smul]`. Establish `hvS : (((ι.symm v₁ : V) : D)) ∈ genSub E V` using `Submodule.mem_sInf.2 fun S hS => hS.1 (ι.symm v₁).2`. Establish `hXs` using `(eig D (2 * r + k) E (genSub E V) (-(LemK.thV lam s)) y y ((ι.symm v₁ : V) : D) hGl hstab hkill hvS).1`. Rewrite `hXs` using `[neg_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨Wf, W', hWf, hW', hirr, hcas, hK, hinj⟩` from `quotP k r ε u lam h H σ D E V T μ ι hσ hD hV hc hVK hμ hcoef hp hq hgap hlam hgl z c Vp π μW μN P hP hBD (P * x₀ * P⁻¹) (ι.symm v₂) ξ s (Capelli.nnPlus E y (((-(LemK.thV lam s)) : ℝ) : ℂ) ((ι.symm v₁ : V) : D)) hX₀ hlam' hgl' hXs ⟨x, hx, hy⟩`. Use `finStep hIS k r ε u (lam + Pi.single s 1) h z c Vp π μW μN P hP hBD hp hq hgap hlam' hgl' ξ Wf W' ?_ hW' hirr hcas hK hinj` and prove the remaining obligations. Introduce `F hF`. Take `⟨y', hy', rfl⟩` from `hWf F hF`. Establish `hyS : ∀ c', y' c' ∈ genSub E V` using `fun c' => (Submodule.mem_pi.1 (Submodule.mem_inf.1 hy').1) c' (Set.mem_univ _)`.
-
-Take `⟨hsm, -, hbd⟩` from `tMap_spec k r ε lam h H σ D E V T μ ι hσ hD hV hc hVK hμ hcoef hp hq hgap hlam hgl (xJ P z) (P * x₀ * P⁻¹) (ι.symm v₂) hX₀ y' hyS`. Take `⟨C, hC⟩` from `hbd []`. Conclude with `⟨CapelliMinorRestriction.cont_of_smoothOnG hsm.1, C, hC⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stepUp : StepUpStatement := by
   intro hIS k r ε u h hgap hp hq lam s hlam hgl hlam' hgl' hu hB

@@ -8,7 +8,7 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible
 namespace GlobalTheory.DetSqrtCover
 
 /- English proof (translation)
-Introduce `p q` and use `⟨grpOf p q MeasureTheory.Measure.haar⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem nonempty_grpData : ∀ p q : ℕ, Nonempty (GrpData p q) :=
   fun p q => ⟨grpOf p q MeasureTheory.Measure.haar⟩

@@ -27,7 +27,7 @@ def EigVec (i : Fin D.R.m) (k : ℕ) (Q : PlE D.host) (Rr : Finset (GA D (Wc D i
     D.what₂.embLL ((c : ↥D.LL0) : D.what₂.LL) • (R.HW i (sg0 D A3.A)).e v
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem eigAd_iff_eigVec (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (Sb : Finset (PlE D.host))
     (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0) : EigAd Y Sb eig ↔
@@ -35,7 +35,7 @@ theorem eigAd_iff_eigVec (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (Sb : Fin
       EigVec R i k Q Rr (eig (i.1 + 1) σ k Q) (Y.mj.eW i y) := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `eq_of_heq e ▸ h`.
+A detailed English derivation is pending.
 -/
 theorem EigVec.congr {i : Fin D.R.m} {k : ℕ} {Q : PlE D.host} {Rr : Finset (GA D (Wc D i))} {c : ↥D.LL0}
     {v v' : (R.HW i (sg0 D A3.A)).H} (h : EigVec R i k Q Rr c v) (e : HEq v' v) : EigVec R i k Q Rr c v' := eq_of_heq e ▸ h
@@ -46,27 +46,27 @@ variable {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} {B : Base} {f 
   {x : St P} (L : LocAll (lay0 (Dof x)))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(by with_unfolding_all exact (h.split :)), (by with_unfolding_all exact (h.offS :)), (by with_unfolding_all exact (h.odd :)), (by with_unfolding_all exact (h.le :)), (by with_unfolding_all exact (h.elt :)), (by with_unfolding_all exact (h.reps :))⟩`.
+Supply the required witnesses or components.
 -/
 theorem eig_hkDat_back (l : LC hL x) {i k Q α Rr} (h : HkDat (datL x L).R (sbD L l) i k Q α Rr) :
     HkDat x.m.z.R l.rat.In.Sb ((i)) k ((Q)) ((α)) ((Rr)) :=
   ⟨(by with_unfolding_all exact (h.split :)), (by with_unfolding_all exact (h.offS :)), (by with_unfolding_all exact (h.odd :)), (by with_unfolding_all exact (h.le :)), (by with_unfolding_all exact (h.elt :)), (by with_unfolding_all exact (h.reps :))⟩
 
 /- English proof (translation)
-The claim follows from `(h)`.
+A detailed English derivation is pending.
 -/
 theorem eigVec_loc {i k Q Rr c v} (h : EigVec x.m.z.R i k Q Rr c v) :
     EigVec (datL x L).R ((i)) k ((Q)) ((Rr)) ((c)) ((v)) := (h)
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact (((eigAd_iff_eigVec _ _ _).1 l.rat.rat.eig i σ k Q α Rr hd hσ y hy) :))`.
+A detailed English derivation is pending.
 -/
 theorem eigVec_state (l : LC hL x) (i σ k Q α Rr) (hd : HkDat x.m.z.R l.rat.In.Sb i k Q α Rr) (hσ : (Dof x).nd.goodRow σ) (y)
     (hy : y ∈ (Dof x).what₂.isot (i.1 + 1) σ) : EigVec x.m.z.R i k Q Rr (l.rat.In.eig (i.1 + 1) σ k Q) (x.r.Y.mj.eW i y) :=
   (by with_unfolding_all exact (((eigAd_iff_eigVec _ _ _).1 l.rat.rat.eig i σ k Q α Rr hd hσ y hy) :))
 
 /- English proof (translation)
-The claim follows from `(eigAd_iff_eigVec _ _ _).2 fun i σ k Q α Rr hd hσ y hy => (by with_unfolding_all exact ((EigVec.congr (v' := ((Y.mj.eW i y))) (eigVec_loc L (eigVec_state l ((i)) ((σ)) k ((Q)) ((α)) ((Rr)) (((eig_hkDat_back L l hd))) ((hσ)) ((y)) ((hy)))) (((hY.eW i y)))) : _))`.
+A detailed English derivation is pending.
 -/
 theorem eigAd_loc (l : LC hL x) {p0 : BaseLevelRowSide (w.D (oL x L).Z)} (Y : YT x L p0) (hY : YRel L Y) :
     EigAd Y (sbD L l) (eigD L l) :=

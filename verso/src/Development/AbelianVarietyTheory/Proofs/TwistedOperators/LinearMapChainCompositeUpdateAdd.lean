@@ -5,7 +5,7 @@ open GlobalTheory.FunObj
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `| 0, _ => rfl | n + 1, h => by show Function.update k j₀ A n ∘ₗ chainTo (Function.update k j₀ A) n = k n ∘ₗ chainTo k n rw [Function.update_of_ne (by omega : n ≠ j₀), chainTo_update_of_le k j₀ A n (by omega)]`.
+A detailed English derivation is pending.
 -/
 theorem chainTo_update_of_le {V : ℕ → Type} [∀ j, AddCommGroup (V j)] [∀ j, Module ℂ (V j)]
     (k : ∀ j, V j →ₗ[ℂ] V (j + 1)) (j₀ : ℕ) (A : V j₀ →ₗ[ℂ] V (j₀ + 1)) :
@@ -16,7 +16,7 @@ theorem chainTo_update_of_le {V : ℕ → Type} [∀ j, AddCommGroup (V j)] [∀
     rw [Function.update_of_ne (by omega : n ≠ j₀), chainTo_update_of_le k j₀ A n (by omega)]
 
 /- English proof (translation)
-Use `show Function.update k j₀ A j₀ ∘ₗ chainTo (Function.update k j₀ A) j₀ = _`. Rewrite using `[Function.update_self, chainTo_update_of_le k j₀ A j₀ le_rfl]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chainTo_update_succ {V : ℕ → Type} [∀ j, AddCommGroup (V j)] [∀ j, Module ℂ (V j)]
     (k : ∀ j, V j →ₗ[ℂ] V (j + 1)) (j₀ : ℕ) (A : V j₀ →ₗ[ℂ] V (j₀ + 1)) :
@@ -25,9 +25,9 @@ theorem chainTo_update_succ {V : ℕ → Type} [∀ j, AddCommGroup (V j)] [∀ 
   rw [Function.update_self, chainTo_update_of_le k j₀ A j₀ le_rfl]
 
 /- English proof (translation)
-Introduce `V _ _ k j₀ A B n hn`. Proceed by induction on `n, hn using Nat.le_induction with`. Consider the case `base`. Rewrite using `[chainTo_update_succ, chainTo_update_succ, chainTo_update_succ, LinearMap.add_comp]`. Consider the case `succ n hn ih => show Function.update k j₀ (A + B) n ∘ₗ chainTo (Function.update k j₀ (A + B)) n = Function.update k j₀ A n ∘ₗ chainTo (Function.update k j₀ A) n + Function.update k j₀ B n ∘ₗ chainTo (Function.update k j₀ B) n`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `hne : n ≠ j₀` using `by omega`. Rewrite using `[Function.update_of_ne hne, Function.update_of_ne hne, Function.update_of_ne hne, ih, LinearMap.comp_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem chainTo_update_add : ∀ {V : ℕ → Type} [∀ j, AddCommGroup (V j)] [∀ j, Module ℂ (V j)] (k : ∀ j, V j →ₗ[ℂ] V (j + 1)) (j₀ : ℕ)
     (A B : V j₀ →ₗ[ℂ] V (j₀ + 1)) (n : ℕ), j₀ < n →
@@ -43,7 +43,7 @@ theorem chainTo_update_add : ∀ {V : ℕ → Type} [∀ j, AddCommGroup (V j)] 
     rw [Function.update_of_ne hne, Function.update_of_ne hne, Function.update_of_ne hne, ih, LinearMap.comp_add]
 
 /- English proof (translation)
-The claim follows from `chainTo_update_add`.
+A detailed English derivation is pending.
 -/
 example : ∀ {V : ℕ → Type} [∀ j, AddCommGroup (V j)] [∀ j, Module ℂ (V j)] (k : ∀ j, V j →ₗ[ℂ] V (j + 1)) (j₀ : ℕ)
     (A B : V j₀ →ₗ[ℂ] V (j₀ + 1)) (n : ℕ), j₀ < n →

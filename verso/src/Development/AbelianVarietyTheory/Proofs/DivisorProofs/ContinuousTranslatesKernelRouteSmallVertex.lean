@@ -16,13 +16,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.SmallRoute
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL W B ρ t i j Θ Θ' hΘ g₁ z`. Take `⟨_, _, _, _, hTG, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V (.grid i j))`. Establish `hc` using `W.om_is (.chi (i : ℕ) j) ⟨i.2, j.2.le⟩`. Establish `hm` using `W.om_is (.mu t (i : ℕ) j) ⟨i.2.le, j.2⟩`. Establish `hK : ∀ d ∈ Θ'.support, Continuous (fun q : GA D (G.V (.grid i (j + 1))) × GA D (G.V (.grid i j)) => W.kerA (.down t i j) d.1.2 q.1 q.2 * W.kerA (.right i j) d.2 q.2 g₁)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `d hd`. Take `⟨h2, h1⟩` from `theta_of_matched hΘ hd`. Use `Continuous.mul ?_ ?_` and prove the remaining obligations. Use `show Continuous fun q : GA D (G.V (.grid i (j + 1))) × GA D (G.V (.grid i j)) => thetaKO (W.om (.mu t (i : ℕ) j)) q.2 q.1 d.1.2`. Conclude with `(hm.om_cont _ h1 0).comp (continuous_snd.prodMk continuous_fst)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `show Continuous fun q : GA D (G.V (.grid i (j + 1))) × GA D (G.V (.grid i j)) => thetaKO (W.om (.chi (i : ℕ) j)) (negGA _ g₁) q.2 d.2`. Conclude with `(hc.om_cont _ h2 0).comp (continuous_const.prodMk continuous_snd)`. Unfold `translates kerSmall`. Simplify using `only [Finsupp.sum]`. Use `continuous_finset_sum _ fun k _ => continuous_const.mul ?_` and prove the remaining obligations.
-
-Use `continuous_finset_sum _ fun d hd => continuous_const.mul ?_` and prove the remaining obligations. Conclude with `(hK d hd).comp (continuous_fst.prodMk (continuous_snd.mul continuous_const))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_translates_kerSmall : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G)
     (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (Θ : TotT G (routeBig t i j)) (Θ' : TotT G (routeSmall t i j))

@@ -9,11 +9,11 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum.Desc
 
 /- English proof (translation)
-Use `N.smooth` as an intermediate fact. Take `⟨s, hs⟩` from `π.surjective (closedPoint R)`. Set `e : S ⟶ G'.left` to `(1 : Over.mk (𝟙 S) ⟶ G').left`. Establish `he : e ≫ G'.hom = 𝟙 S` using `Over.w (1 : Over.mk (𝟙 S) ⟶ G')`. Establish `hes : G'.hom (e s) = s`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Hom.comp_apply, he]`. Both sides reduce to the same expression. Take `⟨z, hz⟩ : e s ∈ Set.range N.u` from `N.all _ (by rw [hes]; exact hs)`. Establish `hzs : pullback.snd N.U.hom π z = s`. Rewrite using `[← N.u_over, Scheme.Hom.comp_apply, hz, hes]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : closedPoint R ∈ Set.range N.U.hom` using `⟨pullback.fst N.U.hom π z, by`. Rewrite using `[← Scheme.Hom.comp_apply, pullback.condition, Scheme.Hom.comp_apply, hzs, hs]⟩`. Conclude with `⟨fun x => (Flat.generalizingMap N.U.hom).stableUnderGeneralization_range (IsLocalRing.specializes_closedPoint x) hc⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem surjective_U_hom {R : Type} [CommRing R] [IsLocalRing R] {S : Scheme.{0}} {π : S ⟶ Sp R} (hπ : Surjective π)
     {G' : Over S} [GrpObj G'] (N : Near π G') : Surjective N.U.hom := by
@@ -32,7 +32,7 @@ theorem surjective_U_hom {R : Type} [CommRing R] [IsLocalRing R] {S : Scheme.{0}
     (IsLocalRing.specializes_closedPoint x) hc⟩
 
 /- English proof (translation)
-Introduce `R _ _ S π hπ G' _ N`. Use `surjective_U_hom hπ N` as an intermediate fact. Conclude with `inferInstanceAs (Surjective (pullback.snd N.U.hom (pullback.fst π π ≫ π)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem surjective_UT_hom : ∀ (R : Type) [CommRing R] [IsLocalRing R] (S : Scheme.{0}) (π : S ⟶ Sp R), Surjective π →
     ∀ (G' : Over S) [GrpObj G'] (N : Near π G'), Surjective (Desc.UT N).hom := by

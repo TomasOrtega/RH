@@ -14,19 +14,17 @@ open GlobalTheory.Models
 namespace GlobalTheory.Models
 
 /- English proof (translation)
-Use `haveI : NeZero (4 * d) := ⟨by have := hd.pos; omega⟩`. Take `⟨n, hn, hp, hmod⟩` from `Nat.forall_exists_prime_gt_and_eq_mod (q := 4 * d) (a := -1) isUnit_one.neg (max b d)`. Establish `hdvd : 4 * d ∣ n + 1`. Rewrite using `[← ZMod.natCast_eq_zero_iff]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmod]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : n % 4 = 3`. Establish `: 4 ∣ n + 1` using `Dvd.dvd.trans (Dvd.intro _ rfl) hdvd`. Use linear arithmetic over natural numbers and integers.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hdn : (n : ZMod d) = -1`. Establish `: d ∣ n + 1` using `Dvd.dvd.trans (Dvd.intro_left _ rfl) hdvd`. Rewrite `this` using `[← ZMod.natCast_eq_zero_iff]`. Move the coercions through the operations in `at this`. Conclude with `eq_neg_of_add_eq_zero_left this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlt : d < n` using `lt_of_le_of_lt (le_max_right _ _) hn`. Use `haveI : Fact n.Prime := ⟨hp⟩`. Use `haveI : Fact d.Prime := ⟨hd⟩`. Use `⟨n, lt_of_le_of_lt (le_max_left _ _) hn, hp, by rw [Nat.odd_iff]; omega, ?_⟩` and prove the remaining obligations. Establish `h1 : IsSquare (d : ZMod n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ZMod.exists_sq_eq_prime_iff_of_mod_four_eq_three h4 hd4 hlt.ne', hdn, ZMod.exists_sq_eq_neg_one_iff]`. Simplify using `[hd4]`. Establish `h0 : (d : ZMod n) ≠ 0`. Rewrite using `[Ne, ZMod.natCast_eq_zero_iff]`. Conclude with `Nat.not_dvd_of_pos_of_lt hd.pos hlt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h2`. Establish `h3 : IsSquare (-1 : ZMod n)`. Use `h2.div h1` as an intermediate fact. Rewrite `this` using `[neg_div, div_self h0]`. Then use the resulting hypothesis. Rewrite `h3` using `[ZMod.exists_sq_eq_neg_one_iff]`.
-
-Conclude with `h3 h4`.
+A detailed English derivation is pending.
 -/
 theorem exists_prime_gt_neg_not_isSquare (d : ℕ) (hd : d.Prime) (hd4 : d % 4 = 3) (b : ℕ) :
     ∃ n : ℕ, b < n ∧ n.Prime ∧ Odd n ∧ ¬ IsSquare (-(d : ZMod n)) := by
@@ -66,9 +64,9 @@ theorem exists_prime_gt_neg_not_isSquare (d : ℕ) (hd : d.Prime) (hd4 : d % 4 =
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.CMGeneratorSquareModuli.main`. Consider the case `exact _root_.GlobalTheory.CMGeneratorSquareModuli.main`. Consider the case `(apply _root_.GlobalTheory.CMGeneratorSquareModuli.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.CMGeneratorSquareModuli.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.CMGeneratorSquareModuli.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.CMGeneratorSquareModuli.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_eq_of_mem_adjoin_quadratic_generator (H : Host E) {a : 𝓞 E} (ha : a ∈ Algebra.adjoin ℤ {H.w0}) :
     ∃ u v : ℤ, a = (u : 𝓞 E) + (v : 𝓞 E) * H.w0 := by
@@ -81,25 +79,23 @@ theorem exists_eq_of_mem_adjoin_quadratic_generator (H : Host E) {a : 𝓞 E} (h
   | (intros; exact _root_.GlobalTheory.CMGeneratorSquareModuli.main ..)
 
 /- English proof (translation)
-Take `⟨hp, hodd, hsq, -⟩` from `hn`. Use `haveI : Fact n.Prime := ⟨hp⟩`. Establish `key : ∀ m : ℤ, (m : 𝓞 E) ∈ P → (n : ℤ) ∣ m`. Introduce `m hm`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hc : IsCoprime (n : ℤ) m` using `(Irreducible.coprime_iff_not_dvd (Nat.prime_iff_prime_int.mp hp).irreducible).mpr h`. Take `⟨s, t, hst⟩` from `hc`. Apply `hP.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `: (1 : 𝓞 E) = (s : 𝓞 E) * n + (t : 𝓞 E) * m`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (Int.cast : ℤ → 𝓞 E) hst.symm` after adjusting the coercions. Rewrite using `[this]`. Conclude with `P.add_mem (P.mul_mem_left _ hnP) (P.mul_mem_left _ hm)`. Take `⟨u, v, rfl⟩` from `exists_eq_of_mem_adjoin_quadratic_generator H ha`. Establish `hN : (n : ℤ) ∣ (2 * u + v) ^ 2 + H.d * v ^ 2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Apply `key` to reduce the goal to its premises. Establish `: (((2 * u + v) ^ 2 + H.d * v ^ 2 : ℤ) : 𝓞 E) = (2 * ((2 * u + v : 𝓞 E) - v * H.rt)) * ((u : 𝓞 E) + v * H.w0)`. Use `push_cast`. Take the linear combination `(-((2 * u + v : 𝓞 E) - v * H.rt) * v) * H.two_weight_eq_one_add_root + (v : 𝓞 E) ^ 2 * H.rt_sq`. Rewrite using `[this]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Conclude with `P.mul_mem_left _ haP`. Rewrite `hN` using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Move the coercions through the operations in `at hN`. Establish `hv : (v : ZMod n) = 0`. Assume the negation of the conclusion as `hv`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply `hsq` to reduce the goal to its premises. Use `⟨(2 * u + v) / v, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Take the linear combination `-hN`. Establish `h2 : (2 : ZMod n) ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Establish `: ((2 : ℕ) : ZMod n) = 0` using `by exact_mod_cast h`. Rewrite `this` using `[ZMod.natCast_eq_zero_iff]`. Use `(Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).mp this` as an intermediate fact. Substitute `this` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd hodd (by decide)`. Establish `hu : (u : ZMod n) = 0`. Rewrite `hN` using `[hv]`. Simplify `hN` using `[h2]`. Rewrite `hu`, `hv` using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Take `⟨u', rfl⟩` from `hu`. Take `⟨v', rfl⟩` from `hv`. Establish `: H.bar (((n * u' : ℤ) : 𝓞 E) + ((n * v' : ℤ) : 𝓞 E) * H.w0) = ((u' : 𝓞 E) + v' * H.bar H.w0) * n`. Simplify using `only [map_add, map_mul, map_intCast]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `P.mul_mem_left _ hnP`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bar_mem_of_mem (H : Host E) {n : ℕ} (hn : AuxiliaryInertOddPrime H n) (P : Ideal (𝓞 E)) (hP : P.IsPrime)
     (hnP : (n : 𝓞 E) ∈ P) {a : 𝓞 E} (ha : a ∈ Algebra.adjoin ℤ {H.w0}) (haP : a ∈ P) : H.bar a ∈ P := by
@@ -156,9 +152,9 @@ theorem bar_mem_of_mem (H : Host E) {n : ℕ} (hn : AuxiliaryInertOddPrime H n) 
   exact P.mul_mem_left _ hnP
 
 /- English proof (translation)
-Introduce `h`. Apply `hP.ne_top` to reduce the goal to its premises. Rewrite using `[eq_top_iff, ← l.coprime]`. Use `sup_le h ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap, l.fromK, Ideal.span_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `a ⟨haM, ha⟩`. Conclude with `bar_mem_of_mem H hn P hP hnP ha (h haM)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem not_Mb_le (H : Host E) {n : ℕ} (hn : AuxiliaryInertOddPrime H n) (l : Level H) (P : Ideal (𝓞 E)) (hP : P.IsPrime)
     (hnP : (n : 𝓞 E) ∈ P) : ¬ l.Mb ≤ P := by
@@ -171,15 +167,13 @@ theorem not_Mb_le (H : Host E) {n : ℕ} (hn : AuxiliaryInertOddPrime H n) (l : 
   exact bar_mem_of_mem H hn P hP hnP ha (h haM)
 
 /- English proof (translation)
-Rewrite using `[Nat.Prime.coprime_iff_not_dvd hn.1]`. Introduce and unpack `⟨m, hm⟩`. Establish `hnu : Ideal.span {(n : 𝓞 E)} ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Introduce `hu`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hu.map (Algebra.norm ℤ)`. Establish `h2 : Algebra.norm ℤ (n : 𝓞 E) = (n : ℤ) ^ Module.finrank ℤ (𝓞 E)`. Rewrite using `[← Algebra.norm_algebraMap]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h2, isUnit_pow_iff Module.finrank_pos.ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Nat.prime_iff_prime_int.mp hn.1).not_unit h1`. Take `⟨P, hP, hle⟩` from `Ideal.exists_le_maximal _ hnu`. Establish `hnP : (n : 𝓞 E) ∈ P` using `hle (Ideal.mem_span_singleton_self _)`. Establish `hM : l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) ≤ P`. Rewrite using `[l.prod, Ideal.span_singleton_le_iff_mem, hm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Conclude with `P.mul_mem_right _ hnP`. Break down `hP.isPrime.mul_le.mp hM with h | h` into its components or cases. Conclude with `not_Mb_le H hn l P hP.isPrime hnP h`. Rewrite using `[Ideal.map_le_iff_le_comap] at h haveI := hP.isPrime`.
-
-Use `not_Mb_le H hn l _ (Ideal.comap_isPrime _ P) ?_ h` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hnP`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AuxiliaryInertOddPrime.coprime_level {H : Host E} {n : ℕ} (hn : AuxiliaryInertOddPrime H n) (l : Level H) : n.Coprime l.M := by
   rw [Nat.Prime.coprime_iff_not_dvd hn.1]
@@ -207,7 +201,7 @@ theorem AuxiliaryInertOddPrime.coprime_level {H : Host E} {n : ℕ} (hn : Auxili
     exact hnP
 
 /- English proof (translation)
-Take `⟨n, hn, hp, hodd, hsq⟩` from `exists_prime_gt_neg_not_isSquare H.d H.d_prime (by have := H.d_mod; omega) (max b (NumberField.discr E).natAbs)`. Use `⟨n, lt_of_le_of_lt (le_max_left _ _) hn, hp, hodd, hsq, ?_⟩` and prove the remaining obligations. Rewrite using `[Int.natCast_dvd]`. Conclude with `Nat.not_dvd_of_pos_of_lt (Int.natAbs_pos.mpr (NumberField.discr_ne_zero E)) (lt_of_le_of_lt (le_max_right _ _) hn)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_large_auxiliary_prime (H : Host E) (b : ℕ) : ∃ n : ℕ, b < n ∧ AuxiliaryInertOddPrime H n := by
   obtain ⟨n, hn, hp, hodd, hsq⟩ := exists_prime_gt_neg_not_isSquare H.d H.d_prime
@@ -218,7 +212,7 @@ theorem exists_large_auxiliary_prime (H : Host E) (b : ℕ) : ∃ n : ℕ, b < n
     (lt_of_le_of_lt (le_max_right _ _) hn)
 
 /- English proof (translation)
-Introduce `E _ _ _ H`. Take `⟨n, -, hn⟩` from `exists_large_auxiliary_prime H 0`. Take `⟨n', hlt, hn'⟩` from `exists_large_auxiliary_prime H n`. Conclude with `⟨⟨n, n', hn, hn', hlt.ne⟩, fun _ h l => h.coprime_level l⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_two_auxiliary_inert_odd_primes_coprime_level :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E),

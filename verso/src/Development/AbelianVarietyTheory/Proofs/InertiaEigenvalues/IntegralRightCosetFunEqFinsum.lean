@@ -7,45 +7,37 @@ open GlobalTheory.UnitLemma Matrix MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hfib : ∀ g, π ⁻¹' {π g} = (fun x => x * g⁻¹) ⁻¹' H`. Introduce `g`. Use extensionality with `x`. Simplify using `[hπ g x]`. Establish `hfibO : ∀ g, IsOpen (π ⁻¹' {π g})`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `g`. Rewrite using `[hfib g]`. Conclude with `hH.preimage (continuous_mul_right _)`. Establish `hfibM : ∀ l, MeasurableSet (π ⁻¹' {l})`. Introduce `l`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hl : l ∈ Set.range π`. Take `⟨g, rfl⟩` from `hl`. Conclude with `(hfibO g).measurableSet`. Establish `: π ⁻¹' {l} = ∅`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false]`. Conclude with `fun h => hl ⟨x, h⟩`. Rewrite using `[this]`. Conclude with `MeasurableSet.empty`. Establish `hfib1 : ∀ g, μ (π ⁻¹' {π g}) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Introduce `g`. Rewrite using `[hfib g, measure_preimage_mul_right, hμ]`. Use `set S := Set.range π ∩ Function.support s with hSdef`. Distinguish the cases in `hS : S.Finite`. Use `set T := hS.toFinset with hT`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hfun : (fun g => s (π g)) = fun g => ∑ l ∈ T, (π ⁻¹' {l}).indicator (fun _ => s l) g`. Use function extensionality and compare the values at `g`. Establish `: ∀ l, (π ⁻¹' {l}).indicator (fun _ => s l) g = if π g = l then s (π g) else 0`. Introduce `l`. Distinguish the cases in `h : π g = l`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Set.indicator_apply, h]`. Simplify using `only [this, Finset.sum_ite_eq]`. Use `split_ifs with h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Establish `: π g ∉ S` using `by rw [hT, Set.Finite.mem_toFinset] at *; exact h`. Assume the negation of the conclusion as `hne`. Conclude with `this ⟨⟨g, rfl⟩, Ne.symm hne |>.symm⟩`. Rewrite using `[hfun, integral_finset_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[← finsum_mem_inter_support, finsum_mem_eq_finite_toFinset_sum _ hS]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce `l hl`. Rewrite using `[integral_indicator_const _ (hfibM l)]`. Establish `hl' : l ∈ Set.range π` using `((Set.Finite.mem_toFinset hS).1 hl).1`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Take `⟨g, rfl⟩` from `hl'`. Simplify using `[Measure.real, hfib1 g]`. Introduce `l _`. Conclude with `(integrable_indicator_iff (hfibM l)).2 (by`. Distinguish the cases in `hl : l ∈ Set.range π`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨g, rfl⟩` from `hl haveI : IsFiniteMeasure (μ.restrict (π ⁻¹' {π g})) := ⟨by simp [hfib1 g]⟩`. Conclude with `integrable_const _`. Establish `: π ⁻¹' {l} = ∅`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Conclude with `fun h => hl ⟨x, h⟩`. Rewrite using `[this]`. Conclude with `integrableOn_empty)`. Rewrite using `[finsum_mem_eq_zero_of_infinite hS]`. Apply `integral_undef` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Introduce `hint`. Establish `hfin` using `hint.2`. Establish `hbound : ∀ F : Finset Λ, (↑F : Set Λ) ⊆ S → (F.card : ENNReal) ≤ ∫⁻ g, ‖s (π g)‖ₑ ∂μ`. Introduce `F hF`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.card_eq_sum_ones, Nat.cast_sum]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce `l hl`. Take `⟨⟨g, rfl⟩, _⟩` from `hF hl`. Simplify using `[hfib1 g]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `_ = ∫⁻ g, ∑ l ∈ F, (π ⁻¹' {l}).indicator 1 g ∂μ := by`. Rewrite using `[lintegral_finset_sum]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce `l _`. Rewrite using `[lintegral_indicator_one (hfibM l)]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `l _`. Conclude with `(measurable_one.indicator (hfibM l))`. Use `_ ≤ ∫⁻ g, ‖s (π g)‖ₑ ∂μ := by`. Apply `lintegral_mono` to reduce the goal to its premises. Introduce `g`.
-
-Establish `: ∀ l, (π ⁻¹' {l}).indicator (1 : G → ENNReal) g = if π g = l then 1 else 0`. Introduce `l`. Simplify using `[Set.indicator_apply]`. Simplify using `only [this, Finset.sum_ite_eq]`. Use `split_ifs with h`.
-
-Take `⟨_, hsupp⟩` from `hF h`. Break down `hs (π g) with h0 | h1` into its components or cases. Conclude with `absurd h0 hsupp`. Rewrite using `[← ofReal_norm_eq_enorm, h1]`. Simplify using the standard rewrite rules.
-
-Conclude with `bot_le`. Take `⟨n, hn⟩` from `ENNReal.exists_nat_gt hfin.ne`. Take `⟨F, hFS, hFc⟩` from `Set.Infinite.exists_subset_card_eq (hS : S.Infinite) n`. Use `hbound F hFS` as an intermediate fact. Rewrite `this` using `[hFc]`.
-
-Conclude with `absurd (lt_of_le_of_lt this hn) (lt_irrefl _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_rightCoset_fun_eq_finsum (G Λ : Type) [Group G] [TopologicalSpace G] [ContinuousMul G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsMulRightInvariant] (H : Set G)

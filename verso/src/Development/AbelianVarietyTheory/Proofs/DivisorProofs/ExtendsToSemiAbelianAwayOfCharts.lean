@@ -23,7 +23,7 @@ open GlobalTheory.Desc
 namespace GlobalTheory.Desc
 
 /- English proof (translation)
-Establish `: IsRegularRing E` using `GlobalTheory.isRegularRing_of_isRegularLocalRing E`. Use `ExtendRig.isRegularRing_stalk isRegularRing_of_smooth E p y` as an intermediate fact. Conclude with `uniqueFactorizationMonoid_of_isRegularRing_of_isLocalRing exists_hasProjectiveDimensionLE_of_isRegularLocalRing isPrincipal_map_away_of_hasProjectiveDimensionLE _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ufm_stalk_of_smooth_regularLocal {E : Type} [CommRing E] [IsRegularLocalRing E] {Y : Scheme.{0}} [IsIntegral Y]
     (p : Y ⟶ Sp E) [Smooth p] (y : Y) : UniqueFactorizationMonoid (Y.presheaf.stalk y) := by
@@ -33,19 +33,15 @@ theorem ufm_stalk_of_smooth_regularLocal {E : Type} [CommRing E] [IsRegularLocal
     isPrincipal_map_away_of_hasProjectiveDimensionLE _
 
 /- English proof (translation)
-Introduce `R _ _ _ _ f hf A _ hA L hL hamp hC`. Establish `: IsDomain (Localization.Away f)` using `IsLocalization.isDomain_localization (powers_le_nonZeroDivisors_of_noZeroDivisors hf)`. Establish `: IsIntegral A.left` using `isIntegral_left_of_isAbelianScheme A`. Take `⟨D, hD, hsym⟩` from `GlobalTheory.SymDiv.exists_ampleDiv_symm _ A hA L hL hamp`. Set `C : ∀ x : Sp R, Chart (awayMap f) A x` to `fun x => (hC x).some`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `intC : ∀ x, IsIntegral (C x).G.left` using `fun x =>`. Use `(C x).semi` as an intermediate fact. Use `isIntegral_left_of_isSemiAbelian (C x).G`. Use `choose ρ V φ θ hρ hflat hV hcart hcompat hθ using fun x => chart_part R f hf A hA x (C x)`. Establish `hdiv : ∀ x, ∃ D₁ : CartierDiv (C x).G.left, PPull (V x).ι (φ x) (θ x) D D₁ ∧ ∀ z, Vert (C x).G.hom (ρ x f) z → D₁.IsEqn z 1` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(C x).semi.smooth` as an intermediate fact. Establish `: IsLocallyNoetherian (C x).G.left` using `LocallyOfFiniteType.isLocallyNoetherian (C x).G.hom`. Establish `hρf : Flat (spMap (ρ x))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `hflat x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hφ : Flat (φ x)` using `MorphismProperty.of_isPullback (hcart x).flip hρf`. Take `⟨D₁, h₁, h₂⟩` from `exists_cartierDiv_closure (C x).G.left (V x).toScheme A.left (ufm_stalk_of_smooth_regularLocal (C x).G.hom) (V x).ι (φ x) (θ x) hφ (hθ x) D`. Use `⟨D₁, h₁, fun z hz => h₂ z ?_ hz.1⟩` and prove the remaining obligations. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `fun hzV => (hV x z).1 hzV hz.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose D₁ hpull hvert using hdiv`. Establish `hamp₁ : ∀ x, AmpleDiv (D₁ x)` using `fun x => by`. Use `(C x).charZero` as an intermediate fact. Establish `hne : ρ x f ≠ 0` using `fun h0 => by`. Take `⟨l, -⟩` from `hθ x`.
-
-Set `v : (V x).toScheme` to `l (closedPoint _)`. Use `(hV x v.1).1 v.2 ?_` and prove the remaining obligations. Rewrite using `[h0]`. Conclude with `zero_mem _`. Conclude with `ampleDiv_closure_on_chart R f A hA D hD hsym (C x).R (C x).complete (ρ x) (hflat x) hne (C x).G (C x).semi (V x) (φ x) (θ x) (D₁ x) (hV x) (hcart x) (C x).y (C x).α (C x).gen (hcompat x) (hθ x) (hpull x)`.
-
-Conclude with `hasExt_of_setup { R := R, f := f, hf := hf, A := A, ab := hA, D := D, amp := hD, C := C, ρ := ρ, hρ := hρ, flat := hflat, V := V, hV := hV, φ := φ, cart := hcart, compat := hcompat, θ := θ, hθ := hθ, D₁ := D₁, pull := hpull, noVert := hvert, amp₁ := hamp₁ }`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasExt_awayMap_of_charts : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] (f : R), f ≠ 0 → ∀ (A : Over (Sp (Localization.Away f))) [GrpObj A], IsAbelianScheme A → ∀ L : LB A.left, L.IsLB → RelAmple A L → (∀ x : Sp R, Nonempty (Chart (awayMap f) A x)) → HasExt (awayMap f) A := by
   intro R _ _ _ _ f hf A _ hA L hL hamp hC

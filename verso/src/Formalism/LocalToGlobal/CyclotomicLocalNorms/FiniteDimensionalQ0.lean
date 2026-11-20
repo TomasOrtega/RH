@@ -13,7 +13,7 @@ variable {l : ℕ} [Fact l.Prime]
 abbrev Q0 (l : ℕ) [Fact l.Prime] : IntermediateField ℚ_[l] (Om l) := ⊥
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_Q0_alt : FiniteDimensional ℚ_[l] (Q0 l) := inferInstance
 
@@ -31,21 +31,19 @@ Both sides reduce to the same expression.
 theorem ofGQ_apply (g : GQ l) (x : Om l) : ofGQ g x = g x := rfl
 
 /- English proof (translation)
-Take `⟨f, hf, hq⟩` from `LocalClassField.qK_eq_pow l (Q0 l) finiteDimensional_Q0_alt`. Establish `hl : 1 < l` using `(Fact.out : l.Prime).one_lt`. Establish `hle : LocalClassField.qK l (Q0 l) ≤ l`. Establish `hs : Function.Surjective (fun n : Fin l => (⟨((n : ℕ) : LocalClassField.kbar l), natCast_mem _ _⟩ : LocalClassField.resK l (Q0 l)))`. Introduce and unpack `⟨c, hc⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨x, hx, rfl⟩` from `(LocalClassField.mem_resK_iff l (Q0 l) c).1 hc`. Take `⟨a, ha⟩` from `IntermediateField.mem_bot.1 hx`. Establish `ha1 : ‖a‖ ≤ 1`. Rewrite using `[← PadicAlgCl.norm_extends, show ((a : ℚ_[l]) : Om l) = (x : Om l) from ha]`. Conclude with `LocalClassField.mem_Obar_iff.1 x.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `set A : ℤ_[l] := ⟨a, ha1⟩ with hA`. Take `⟨n, hn, hmem⟩` from `PadicInt.exists_mem_range A`. Use `⟨⟨n, hn⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((n : ℕ) : LocalClassField.kbar l) = _`. Rewrite using `[← map_natCast (IsLocalRing.residue (LocalClassField.Obar l)) n, eq_comm, LocalClassField.residue_eq_iff]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : ‖A - (n : ℤ_[l])‖ < 1`. Rewrite `hmem` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, PadicInt.not_isUnit_iff]`. Then use the resulting hypothesis. Establish `h3 : ((x : LocalClassField.Obar l) : Om l) - (((n : ℕ) : LocalClassField.Obar l) : Om l) = algebraMap ℚ_[l] (Om l) (a - (n : ℚ_[l]))`. Rewrite using `[map_sub, ha, map_natCast]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h3]`. Establish `h4` using `PadicAlgCl.norm_extends (p := l) (a - (n : ℚ_[l]))`. Rewrite `h4` using `[show ((a - (n : ℚ_[l]) : ℚ_[l]) : Om l) = algebraMap ℚ_[l] (Om l) (a - (n : ℚ_[l])) from rfl]`. Rewrite using `[h4]`. Rewrite `h2` using `[PadicInt.norm_def]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h2`. Conclude with `h2`. Use `Nat.card_le_card_of_surjective _ hs` as an intermediate fact. Conclude with `this.trans_eq ((Nat.card_eq_fintype_card (α := Fin l)).trans (Fintype.card_fin l))`. Rewrite `hle`, the goal using `[hq]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `: f ≤ 1`. Assume the negation of the conclusion as `hcon`. Establish `h2 : l ^ 2 ≤ l ^ f` using `Nat.pow_le_pow_right (by omega) (by omega)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hf1 : f = 1` using `by omega`.
-
-Rewrite using `[hf1, pow_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qK_bot : LocalClassField.qK l (Q0 l) = l := by
   obtain ⟨f, hf, hq⟩ := LocalClassField.qK_eq_pow l (Q0 l) finiteDimensional_Q0_alt
@@ -88,9 +86,9 @@ theorem qK_bot : LocalClassField.qK l (Q0 l) = l := by
   rw [hf1, pow_one]
 
 /- English proof (translation)
-Rewrite using `[LocalClassField.Kur_eq finiteDimensional_Q0_alt, bot_sup_eq, MaximalUnramifiedExtension]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, hx⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨m, Nat.pos_of_ne_zero (by rintro rfl; exact hm (dvd_zero l)), hm, hx⟩`. Introduce and unpack `⟨m, -, hm, hx⟩`. Conclude with `⟨m, hm, hx⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem Kur_eq : LocalClassField.MaximalUnramifiedExtension l (Q0 l) = MaximalUnramifiedExtension l := by
   rw [LocalClassField.Kur_eq finiteDimensional_Q0_alt, bot_sup_eq, MaximalUnramifiedExtension]
@@ -112,7 +110,7 @@ Both sides reduce to the same expression.
 theorem FrobQ_apply (x : Om l) : FrobQ l x = LocalClassField.frobK l (Q0 l) x := rfl
 
 /- English proof (translation)
-Proceed by induction on `i generalizing x with`. Consider the case `zero => rfl`. Consider the case `succ k ih => rw [pow_succ, pow_succ, AlgEquiv.mul_apply, AlgEquiv.mul_apply, ih, FrobQ_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem FrobQ_pow_apply (i : ℕ) (x : Om l) : (FrobQ l ^ i) x = (LocalClassField.frobK l (Q0 l) ^ i) x := by
   induction i generalizing x with
@@ -120,14 +118,14 @@ theorem FrobQ_pow_apply (i : ℕ) (x : Om l) : (FrobQ l ^ i) x = (LocalClassFiel
   | succ k ih => rw [pow_succ, pow_succ, AlgEquiv.mul_apply, AlgEquiv.mul_apply, ih, FrobQ_apply]
 
 /- English proof (translation)
-Use `LocalClassField.isFrob_frobK (finiteDimensional_Q0_alt (l := l)) x hx` as an intermediate fact. Rewrite `this` using `[qK_bot]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem FrobQ_spec (x : Om l) (hx : ‖x‖ ≤ 1) : ‖FrobQ l x - x ^ l‖ < 1 := by
   have := LocalClassField.isFrob_frobK (finiteDimensional_Q0_alt (l := l)) x hx
   rwa [qK_bot] at this
 
 /- English proof (translation)
-The claim follows from `LocalClassField.norm_GK l (Q0 l) (ofGQ g) x`.
+A detailed English derivation is pending.
 -/
 theorem norm_GQ (g : GQ l) (x : Om l) : ‖g x‖ = ‖x‖ := LocalClassField.norm_GK l (Q0 l) (ofGQ g) x
 
@@ -136,7 +134,7 @@ section Fin
 variable {F : IntermediateField ℚ_[l] (Om l)}
 
 /- English proof (translation)
-Rewrite `hx` using `[← Kur_eq]`. Take `⟨n, hn, hxn⟩` from `(LocalClassField.mem_Kur_iff finiteDimensional_Q0_alt x).1 hx`. Take `⟨y, hy, h⟩` from `LocalClassField.norm_Kn l (Q0 l) finiteDimensional_Q0_alt hn hxn`. Take `⟨a, rfl⟩` from `IntermediateField.mem_bot.1 hy`. Conclude with `⟨a, h.trans (PadicAlgCl.norm_extends l a)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem norm_Kur {x : Om l} (hx : x ∈ MaximalUnramifiedExtension l) : ∃ a : ℚ_[l], ‖x‖ = ‖a‖ := by
   rw [← Kur_eq] at hx
@@ -146,9 +144,9 @@ theorem norm_Kur {x : Om l} (hx : x ∈ MaximalUnramifiedExtension l) : ∃ a : 
   exact ⟨a, h.trans (PadicAlgCl.norm_extends l a)⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `norm_Kur hx`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `ha` using `[norm_zero, norm_eq_zero]`. Conclude with `h0 ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨-a.valuation, ha.trans (Padic.norm_eq_zpow_neg_valuation ha0)⟩`.
+A detailed English derivation is pending.
 -/
 theorem norm_Kur_zpow {x : Om l} (hx : x ∈ MaximalUnramifiedExtension l) (h0 : x ≠ 0) : ∃ k : ℤ, ‖x‖ = (l : ℝ) ^ k := by
   obtain ⟨a, ha⟩ := norm_Kur hx
@@ -159,7 +157,7 @@ theorem norm_Kur_zpow {x : Om l} (hx : x ∈ MaximalUnramifiedExtension l) (h0 :
   exact ⟨-a.valuation, ha.trans (Padic.norm_eq_zpow_neg_valuation ha0)⟩
 
 /- English proof (translation)
-Use `LocalClassField.eq_Kn_of_norm l (Q0 l) finiteDimensional_Q0_alt bot_le Module.finrank_pos ?_ ?_` and prove the remaining obligations. Rewrite using `[IntermediateField.finrank_bot, mul_one]`. Introduce `x hx`. Take `⟨a, ha⟩` from `norm_Kur (hle hx)`. Conclude with `⟨algebraMap ℚ_[l] (Om l) a, IntermediateField.algebraMap_mem _ a, ha.trans (PadicAlgCl.norm_extends l a).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem eq_Kn (hF : FiniteDimensional ℚ_[l] F) (hle : F ≤ MaximalUnramifiedExtension l) :
     F = LocalClassField.Kn l (Q0 l) (Module.finrank ℚ_[l] F) := by
@@ -171,7 +169,7 @@ theorem eq_Kn (hF : FiniteDimensional ℚ_[l] F) (hle : F ≤ MaximalUnramifiedE
       ha.trans (PadicAlgCl.norm_extends l a).symm⟩
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[eq_Kn hF hle]`. Conclude with `LocalClassField.map_mem_Kn l (Q0 l) _ (ofGQ g) hx`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem (hF : FiniteDimensional ℚ_[l] F) (hle : F ≤ MaximalUnramifiedExtension l) (g : GQ l) {x : Om l}
     (hx : x ∈ F) : g x ∈ F := by
@@ -179,7 +177,7 @@ theorem map_mem (hF : FiniteDimensional ℚ_[l] F) (hle : F ≤ MaximalUnramifie
   exact LocalClassField.map_mem_Kn l (Q0 l) _ (ofGQ g) hx
 
 /- English proof (translation)
-Rewrite using `[IntermediateField.normal_iff_forall_map_le']`. Introduce and unpack `g _ ⟨x, hx, rfl⟩`. Conclude with `map_mem hF hle g hx`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem normal_of_le_Kur (hF : FiniteDimensional ℚ_[l] F) (hle : F ≤ MaximalUnramifiedExtension l) : Normal ℚ_[l] F := by
   rw [IntermediateField.normal_iff_forall_map_le']
@@ -187,7 +185,7 @@ theorem normal_of_le_Kur (hF : FiniteDimensional ℚ_[l] F) (hle : F ≤ Maximal
   exact map_mem hF hle g hx
 
 /- English proof (translation)
-Use `⟨AlgEquiv.ofBijective (τ.liftNormal (Om l)) (Algebra.IsAlgebraic.algHom_bijective _), ?_⟩` and prove the remaining obligations. Introduce `x`. Conclude with `τ.liftNormal_commutes (Om l) x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_GQ_of_algHom (τ : F →ₐ[ℚ_[l]] Om l) : ∃ g : GQ l, ∀ x : F, g x = τ x := by
   refine ⟨AlgEquiv.ofBijective (τ.liftNormal (Om l)) (Algebra.IsAlgebraic.algHom_bijective _), ?_⟩
@@ -195,7 +193,7 @@ theorem exists_GQ_of_algHom (τ : F →ₐ[ℚ_[l]] Om l) : ∃ g : GQ l, ∀ x 
   exact τ.liftNormal_commutes (Om l) x
 
 /- English proof (translation)
-Take `⟨i, hi, h⟩` from `LocalClassField.IsFrobOn.exists_pow l (Q0 l) finiteDimensional_Q0_alt (Module.finrank_pos (R := ℚ_[l]) (M := F)) ((LocalClassField.isFrob_frobK (finiteDimensional_Q0_alt (l := l))).isFrobOn _) (ofGQ g)`. Use `⟨i, hi, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[FrobQ_pow_apply, ← h x (by rwa [← eq_Kn hF hle])]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_pow_of_GQ (hF : FiniteDimensional ℚ_[l] F) (hle : F ≤ MaximalUnramifiedExtension l) (g : GQ l) :
     ∃ i < Module.finrank ℚ_[l] F, ∀ x ∈ F, g x = (FrobQ l ^ i) x := by
@@ -206,7 +204,7 @@ theorem exists_pow_of_GQ (hF : FiniteDimensional ℚ_[l] F) (hle : F ≤ Maximal
   rfl
 
 /- English proof (translation)
-Rewrite using `[← LocalClassField.IsFrobOn.pow_fixes_iff l (Q0 l) finiteDimensional_Q0_alt (Module.finrank_pos (R := ℚ_[l]) (M := F)) ((LocalClassField.isFrob_frobK (finiteDimensional_Q0_alt (l := l))).isFrobOn _) i, ← eq_Kn hF hle]`. Simplify using `only [FrobQ_pow_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pow_fixes_iff (hF : FiniteDimensional ℚ_[l] F) (hle : F ≤ MaximalUnramifiedExtension l) (i : ℕ) :
     (∀ x ∈ F, (FrobQ l ^ i) x = x) ↔ Module.finrank ℚ_[l] F ∣ i := by
@@ -215,9 +213,7 @@ theorem pow_fixes_iff (hF : FiniteDimensional ℚ_[l] F) (hle : F ≤ MaximalUnr
   simp only [FrobQ_pow_apply]
 
 /- English proof (translation)
-Establish `h1 : LocalClassField.IsFrobOn l (Q0 l) (Module.finrank ℚ_[l] F) (ofGQ g)`. Introduce `y hy hy1`. Rewrite `hy` using `[← eq_Kn hF hle]`. Rewrite using `[qK_bot]`. Conclude with `hg y hy hy1`.
-
-Conclude with `LocalClassField.IsFrobOn.eqOn l (Q0 l) finiteDimensional_Q0_alt (Module.finrank_pos (R := ℚ_[l]) (M := F)) h1 ((LocalClassField.isFrob_frobK (finiteDimensional_Q0_alt (l := l))).isFrobOn _) (by rwa [← eq_Kn hF hle])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_FrobQ_of_congr (hF : FiniteDimensional ℚ_[l] F) (hle : F ≤ MaximalUnramifiedExtension l) (g : GQ l)
     (hg : ∀ x ∈ F, ‖x‖ ≤ 1 → ‖g x - x ^ l‖ < 1) {x : Om l} (hx : x ∈ F) : g x = FrobQ l x := by
@@ -232,16 +228,16 @@ theorem eq_FrobQ_of_congr (hF : FiniteDimensional ℚ_[l] F) (hle : F ≤ Maxima
 end Fin
 
 /- English proof (translation)
-Rewrite `hx` using `[← Kur_eq]`. Conclude with `LocalClassField.mem_of_frobK_fixed finiteDimensional_Q0_alt hx h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_bot_of_FrobQ_fixed {x : Om l} (hx : x ∈ MaximalUnramifiedExtension l) (h : FrobQ l x = x) : x ∈ Q0 l := by
   rw [← Kur_eq] at hx
   exact LocalClassField.mem_of_frobK_fixed finiteDimensional_Q0_alt hx h
 
 /- English proof (translation)
-Establish `hx'` using `hx`. Rewrite `hx'` using `[← Kur_eq]`. Take `⟨n, hn, hxn⟩` from `(LocalClassField.mem_Kur_iff finiteDimensional_Q0_alt x).1 hx'`. Establish `hle : LocalClassField.Kn l (Q0 l) n ≤ MaximalUnramifiedExtension l`. Rewrite using `[← Kur_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LocalClassField.Kn_le_Kur hn`. Conclude with `eq_FrobQ_of_congr (LocalClassField.finiteDimensional_Kn l (Q0 l) finiteDimensional_Q0_alt hn) hle g (fun y hy => hg y (hle hy)) hxn`.
+A detailed English derivation is pending.
 -/
 theorem eq_FrobQ_on_Kur (g : GQ l) (hg : ∀ x ∈ MaximalUnramifiedExtension l, ‖x‖ ≤ 1 → ‖g x - x ^ l‖ < 1) {x : Om l}
     (hx : x ∈ MaximalUnramifiedExtension l) : g x = FrobQ l x := by
@@ -255,7 +251,7 @@ theorem eq_FrobQ_on_Kur (g : GQ l) (hg : ∀ x ∈ MaximalUnramifiedExtension l,
     (fun y hy => hg y (hle hy)) hxn
 
 /- English proof (translation)
-The claim follows from `mem_bot_of_FrobQ_fixed hx ((eq_FrobQ_on_Kur g hg hx).symm.trans h)`.
+A detailed English derivation is pending.
 -/
 theorem mem_bot_of_fixed (g : GQ l) (hg : ∀ x ∈ MaximalUnramifiedExtension l, ‖x‖ ≤ 1 → ‖g x - x ^ l‖ < 1) {x : Om l}
     (hx : x ∈ MaximalUnramifiedExtension l) (h : g x = x) : x ∈ Q0 l :=

@@ -29,7 +29,7 @@ def matrixCoordTEquiv {X : Type*} : Matrix (Fin n) (Fin n) X ≃ (Fin n × Fin n
   right_inv _ := rfl
 
 /- English proof (translation)
-Rewrite using `[trace_mul_comm, trace_mul_eq_sum]`. Conclude with `Finset.sum_congr rfl fun p _ ↦ mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_mul_eq_sum' {R : Type*} [CommRing R] (x y : Matrix (Fin n) (Fin n) R) :
     trace (y * x) = ∑ p, matrixCoordT y p * matrixCoord x p := by
@@ -41,13 +41,13 @@ section Perm
 variable {K} {ι : Type*} [Fintype ι]
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`. Use `set L : (ι → mixedSpace K) ≃L[ℝ] (ι → mixedSpace K) := (LinearEquiv.funCongrLeft ℝ (mixedSpace K) σ).toContinuousLinearEquiv`. Establish `hL : ∀ u, L u = fun i ↦ u (σ i)` using `fun u ↦ rfl`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Continuous fun z : ι → 𝔸ᶠ[K] ↦ fun i ↦ z (σ i)` using `continuous_pi fun i ↦ continuous_apply (σ i)`. Establish `hcont' : Continuous fun z : ι → 𝔸ᶠ[K] ↦ fun i ↦ z (σ.symm i)` using `continuous_pi fun i ↦ continuous_apply (σ.symm i)`. Establish `hemb : Topology.IsClosedEmbedding fun z : ι → 𝔸ᶠ[K] ↦ fun i ↦ z (σ i)` using `Function.LeftInverse.isClosedEmbedding (f := fun z : ι → 𝔸ᶠ[K] ↦ fun i ↦ z (σ.symm i)) (fun z ↦ funext fun i ↦ by simp) hcont' hcont`. Establish `hg' : (fun z : ι → 𝔸ᶠ[K] ↦ g fun i ↦ z (σ i)) ∈ finiteSchwartzBruhatPi K` using `⟨hg.1.comp_continuous hcont, hg.2.comp_isClosedEmbedding hemb⟩`. Use `schwartzBruhatTensorPi_mem (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ L φ) hg' using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [schwartzBruhatTensorPi, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, hL]`. Both sides reduce to the same expression. Consider the case `zero => exact zero_mem _`. Consider the case `add G H _ _ hG hH => exact add_mem hG hH`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c G _ hG => exact Submodule.smul_mem _ c hG`.
+A detailed English derivation is pending.
 -/
 theorem comp_perm_mem_schwartzBruhatPi (σ : ι ≃ ι) {F : (ι → 𝔸[K]) → ℂ}
     (hF : F ∈ schwartzBruhatPi K ι) : (fun z ↦ F (fun i ↦ z (σ i))) ∈ schwartzBruhatPi K ι := by
@@ -88,7 +88,7 @@ def matrixSchwartzBruhat : Submodule ℂ (Matrix (Fin n) (Fin n) 𝔸[K] → ℂ
 variable {K n}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_matrixSchwartzBruhat {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ} :
     Φ ∈ matrixSchwartzBruhat K n ↔
@@ -112,7 +112,7 @@ theorem coordFun_matrixCoord (Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ)
     (x : Matrix (Fin n) (Fin n) 𝔸[K]) : coordFun Φ (matrixCoord x) = Φ x := rfl
 
 /- English proof (translation)
-The claim follows from `(measurePreserving_matrixCoord (n := Fin n) (adeleMeasure K)).integral_comp (MeasurableEquiv.curry (Fin n) (Fin n) 𝔸[K]).symm.measurableEmbedding g`.
+A detailed English derivation is pending.
 -/
 theorem integral_matrixCoord (g : (Fin n × Fin n → 𝔸[K]) → ℂ) :
     ∫ x, g (matrixCoord x) ∂adelicMatrixMeasure K n = ∫ z, g z ∂adeleMeasurePi K :=
@@ -120,9 +120,9 @@ theorem integral_matrixCoord (g : (Fin n × Fin n → 𝔸[K]) → ℂ) :
     (MeasurableEquiv.curry (Fin n) (Fin n) 𝔸[K]).symm.measurableEmbedding g
 
 /- English proof (translation)
-Establish `hT : matrixCoordT (n` using `Fin n) (X := 𝔸[K]) = ⇑(MeasurableEquiv.piCongrLeft (fun _ ↦ 𝔸[K]) (Equiv.prodComm (Fin n) (Fin n))) ∘ ⇑(MeasurableEquiv.curry (Fin n) (Fin n) 𝔸[K]).symm := by`. Use function extensionality and compare the values at `x p`. Simplify using `only [MeasurableEquiv.piCongrLeft, Equiv.piCongrLeft, MeasurableEquiv.coe_mk, matrixCoordT]`. Both sides reduce to the same expression. Establish `hemb : MeasurableEmbedding (matrixCoordT (n` using `Fin n) (X := 𝔸[K])) := by`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hT]`. Conclude with `(MeasurableEquiv.piCongrLeft (fun _ ↦ 𝔸[K]) (Equiv.prodComm (Fin n) (Fin n))).measurableEmbedding.comp (MeasurableEquiv.curry (Fin n) (Fin n) 𝔸[K]).symm.measurableEmbedding`. Conclude with `(measurePreserving_matrixCoordT (n := Fin n) (adeleMeasure K)).integral_comp hemb g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_matrixCoordT (g : (Fin n × Fin n → 𝔸[K]) → ℂ) :
     ∫ x, g (matrixCoordT x) ∂adelicMatrixMeasure K n = ∫ z, g z ∂adeleMeasurePi K := by
@@ -140,7 +140,7 @@ theorem integral_matrixCoordT (g : (Fin n × Fin n → 𝔸[K]) → ℂ) :
   exact (measurePreserving_matrixCoordT (n := Fin n) (adeleMeasure K)).integral_comp hemb g
 
 /- English proof (translation)
-Rewrite using `[adelicMatrixFourier, adelicFourierPi, ← integral_matrixCoord]`. Simplify using `only [trace_mul_eq_sum, coordFun_matrixCoord]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adelicMatrixFourier_eq (Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ)
     (y : Matrix (Fin n) (Fin n) 𝔸[K]) :
@@ -149,7 +149,7 @@ theorem adelicMatrixFourier_eq (Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ)
   simp only [trace_mul_eq_sum, coordFun_matrixCoord]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Rewrite using `[coordFun, adelicMatrixFourier_eq]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coordFun_adelicMatrixFourier (Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ) :
     coordFun (adelicMatrixFourier K Φ) =
@@ -159,7 +159,7 @@ theorem coordFun_adelicMatrixFourier (Φ : Matrix (Fin n) (Fin n) 𝔸[K] → �
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_matrixSchwartzBruhat]`. Express the relevant statement in the definitionally equal form `coordFun (adelicMatrixFourier K Φ) ∈ _`. Rewrite using `[coordFun_adelicMatrixFourier]`. Conclude with `comp_perm_mem_schwartzBruhatPi (Equiv.prodComm (Fin n) (Fin n)) (adelicFourierPi_mem_schwartzBruhatPi (F := coordFun Φ) hΦ)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adelicMatrixFourier_mem {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ}
     (hΦ : Φ ∈ matrixSchwartzBruhat K n) : adelicMatrixFourier K Φ ∈ matrixSchwartzBruhat K n := by
@@ -170,7 +170,7 @@ theorem adelicMatrixFourier_mem {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ}
     (adelicFourierPi_mem_schwartzBruhatPi (F := coordFun Φ) hΦ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `h : adelicFourierPi K (adelicFourierPi K (coordFun Φ)) (matrixCoord x) = coordFun Φ (-matrixCoord x)` using `congrFun (adelicFourierPi_adelicFourierPi (F := coordFun Φ) hΦ) (matrixCoord x)`. Rewrite using `[adelicMatrixFourier, ← coordFun_matrixCoord Φ (-x), matrixCoord_neg, ← h, adelicFourierPi, ← integral_matrixCoordT]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y ↦ ?_)` and prove the remaining obligations. Simplify using `only [adelicMatrixFourier_eq, trace_mul_eq_sum']`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem adelicMatrixFourier_adelicMatrixFourier {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ}
     (hΦ : Φ ∈ matrixSchwartzBruhat K n) :
@@ -185,9 +185,9 @@ theorem adelicMatrixFourier_adelicMatrixFourier {Φ : Matrix (Fin n) (Fin n) �
   simp only [adelicMatrixFourier_eq, trace_mul_eq_sum']
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `poisson_of_mem_schwartzBruhatPi (F := coordFun Φ) hΦ`. Establish `eL : ∀ ξ : Matrix (Fin n) (Fin n) K, Φ (ξ.map (algebraMap K 𝔸[K])) = coordFun Φ (fun p ↦ algebraMap K 𝔸[K] (matrixCoordEquiv ξ p))` using `fun _ ↦ rfl`. Establish `eR : ∀ ξ : Matrix (Fin n) (Fin n) K, adelicMatrixFourier K Φ (ξ.map (algebraMap K 𝔸[K])) = adelicFourierPi K (coordFun Φ) (fun p ↦ algebraMap K 𝔸[K] (matrixCoordTEquiv ξ p))` using `fun ξ ↦ by rw [adelicMatrixFourier_eq]; rfl`. Simplify using `only [eL, eR]`. Use `⟨(matrixCoordEquiv.summable_iff (f := fun z : Fin n × Fin n → K ↦ ‖coordFun Φ (fun p ↦ algebraMap K 𝔸[K] (z p))‖)).mpr h1, (matrixCoordTEquiv.summable_iff (f := fun z : Fin n × Fin n → K ↦ ‖adelicFourierPi K (coordFun Φ) (fun p ↦ algebraMap K 𝔸[K] (z p))‖)).mpr h2, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[matrixCoordEquiv.tsum_eq (fun z : Fin n × Fin n → K ↦ coordFun Φ (fun p ↦ algebraMap K 𝔸[K] (z p))), matrixCoordTEquiv.tsum_eq (fun z : Fin n × Fin n → K ↦ adelicFourierPi K (coordFun Φ) (fun p ↦ algebraMap K 𝔸[K] (z p)))]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem poisson_matrix {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ} (hΦ : Φ ∈ matrixSchwartzBruhat K n) :
     Summable (fun ξ : Matrix (Fin n) (Fin n) K ↦ ‖Φ (ξ.map (algebraMap K 𝔸[K]))‖) ∧

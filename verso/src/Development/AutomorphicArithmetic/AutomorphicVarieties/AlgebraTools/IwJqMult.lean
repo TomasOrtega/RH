@@ -14,11 +14,11 @@ private def Tri (ρ : Representation ℂ G V) {N : ℕ} (χ : Fin N → G →* �
       ∀ g, ∀ x ∈ S t.succ, ρ g x - (χ t g : ℂ) • x ∈ S t.castSucc
 
 /- English proof (translation)
-Take `⟨S, h1, h2, h3, h4⟩` from `h`. Take `⟨U, f, hf⟩` from `hs`. Use `⟨fun i => ((S i).comap U.toSubmodule.subtype).map f.toLinearMap, fun i j hij => Submodule.map_mono (Submodule.comap_mono (h1 hij)), ?_, ?_, fun t => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `[h2]`. Simplify using `only [h3, Submodule.comap_top, Submodule.map_top]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `LinearMap.range_eq_top.2 hf`. Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩`. Break down `(h4 t).1 _ hx _ hy with h | ⟨a, h⟩` into its components or cases. Conclude with `Or.inl ⟨y, h, rfl⟩`. Conclude with `Or.inr ⟨a, x - a • y, h, by simp⟩`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `g _ ⟨x, hx, rfl⟩`. Use `⟨U.toRepresentation g x - (χ t g : ℂ) • x, (h4 t).2 g _ hx, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul]`. Use `congr 1`. Conclude with `f.isIntertwining _ _ g x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem Tri.sq {ρ : Representation ℂ G V} {σ : Representation ℂ G W} {N : ℕ} {χ : Fin N → G →* ℂˣ}
     (h : Tri ρ χ) (hs : IsSubquotient σ ρ) : Tri σ χ := by
@@ -40,17 +40,17 @@ private theorem Tri.sq {ρ : Representation ℂ G V} {σ : Representation ℂ G 
     exact f.isIntertwining _ _ g x
 
 /- English proof (translation)
-Proceed by induction on `i using Fin.induction with`. Consider the case `zero => rw [h2, inf_bot_eq]; exact ⟨inferInstance, by simp⟩`. Consider the case `succ t ih`. Take `⟨ih1, ih2⟩` from `ih`. Establish `hsub : (Finset.univ.filter fun s : Fin N => s.val < t.castSucc.val ∧ p s) ⊆ (Finset.univ.filter fun s : Fin N => s.val < t.succ.val ∧ p s)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `s`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.val_castSucc, Fin.val_succ]`. Conclude with `fun h => ⟨by omega, h.2⟩`. Distinguish the cases in `hle : E ⊓ S t.succ ≤ S t.castSucc`. Establish `: E ⊓ S t.succ = E ⊓ S t.castSucc` using `le_antisymm (le_inf inf_le_left hle) (inf_le_inf_left _ (h1 t.castSucc_le_succ))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `⟨ih1, ih2.trans (Finset.card_le_card hsub)⟩`. Establish `hpt : p t` using `by_contra fun h => hle (hp t h)`. Take `⟨y, hy, hy'⟩` from `SetLike.not_le_iff_exists.1 hle`. Establish `hle2 : E ⊓ S t.succ ≤ (E ⊓ S t.castSucc) ⊔ Submodule.span ℂ {y}`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨a, ha⟩` from `(h4 t x hx.2 y hy.2).resolve_left hy'`. Establish `: x = (x - a • y) + a • y` using `by simp`. Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup ⟨sub_mem hx.1 (E.smul_mem a hy.1), ha⟩ (Submodule.smul_mem _ a (Submodule.mem_span_singleton_self y))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Submodule.finiteDimensional_of_le hle2, (Submodule.finrank_mono hle2).trans ?_⟩` and prove the remaining obligations. Use `(Submodule.finrank_add_le_finrank_add_finrank _ _).trans ?_` and prove the remaining obligations. Establish `h5 : Module.finrank ℂ (Submodule.span ℂ {y}) ≤ 1`. Simplify using `using finrank_span_le_card (R := ℂ) ({y} : Set V)`. Establish `h6` using `Finset.card_lt_card (Finset.ssubset_iff_of_subset hsub |>.2 ⟨t, by simp [hpt], by simp⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 private theorem bound {N : ℕ} (S : Fin (N + 1) → Submodule ℂ V) (h1 : Monotone S) (h2 : S 0 = ⊥)
     (h4 : ∀ t : Fin N, ∀ x ∈ S t.succ, ∀ y ∈ S t.succ, y ∈ S t.castSucc ∨ ∃ a : ℂ, x - a • y ∈ S t.castSucc)
@@ -89,9 +89,9 @@ private theorem bound {N : ℕ} (S : Fin (N + 1) → Submodule ℂ V) (h1 : Mono
       omega
 
 /- English proof (translation)
-Take `⟨S, h1, h2, h3, h4⟩` from `h`. Use `bound S h1 h2 (fun t => (h4 t).1) ⊤ (fun _ => True) (fun t h => (h trivial).elim) (Fin.last N)` as an intermediate fact. Rewrite `this` using `[h3, inf_top_eq]`. Take `⟨a, b⟩` from `this`. Use `⟨Module.Finite.equiv Submodule.topEquiv, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `b` using `[finrank_top]`. Conclude with `b.trans ((Finset.card_le_univ _).trans (by simp))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Tri.fin {ρ : Representation ℂ G V} {N : ℕ} {χ : Fin N → G →* ℂˣ} (h : Tri ρ χ) :
     FiniteDimensional ℂ V ∧ Module.finrank ℂ V ≤ N := by
@@ -104,17 +104,17 @@ private theorem Tri.fin {ρ : Representation ℂ G V} {N : ℕ} {χ : Fin N → 
   exact b.trans ((Finset.card_le_univ _).trans (by simp))
 
 /- English proof (translation)
-Take `⟨S, h1, h2, h3, h4⟩` from `h`. Use `(bound S h1 h2 (fun t => (h4 t).1) (⨅ t, Module.End.maxGenEigenspace (ρ t) (μ t : ℂ)) (fun t => μ = χ t) (fun t h => ?_) (Fin.last N)).2` as an intermediate fact. Rewrite `this` using `[h3, inf_top_eq]`. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.card_le_card fun s => by simp`. Take `⟨g, hg⟩ : ∃ g, μ g ≠ χ t g` from `by by_contra! hh`. Conclude with `h (MonoidHom.ext hh)`. Introduce and unpack `x ⟨hx, hx'⟩`. Take `⟨m, hm⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).1 ((Submodule.mem_iInf _).1 hx g)`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ (m : ℕ), ∀ x ∈ S t.succ, ((ρ g - (μ g : ℂ) • (1 : Module.End ℂ V)) ^ m) x - ((χ t g : ℂ) - μ g) ^ m • x ∈ S t.castSucc`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `a1` using `(h4 t).2 g x hx`. Establish `a2 : (ρ g - (μ g : ℂ) • (1 : Module.End ℂ V)) x ∈ S t.succ`. Use `add_mem (h1 t.castSucc_le_succ a1) ((S t.succ).smul_mem ((χ t g : ℂ) - μ g) hx)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[sub_smul]`. Use `add_mem (ih _ a2) ((S t.castSucc).smul_mem (((χ t g : ℂ) - μ g) ^ m) a1)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[pow_succ, Module.End.mul_apply]`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `module`. Establish `h5` using `key m x hx'`. Rewrite `h5` using `[hm, zero_sub, neg_mem_iff]`. Use `(Submodule.smul_mem_iff _ (pow_ne_zero m (sub_ne_zero.2 fun h => hg (Units.ext h.symm)))).1 h5` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem Tri.eig {ρ : Representation ℂ G V} {N : ℕ} {χ : Fin N → G →* ℂˣ} (h : Tri ρ χ) (μ : G →* ℂˣ) :
     Module.finrank ℂ (⨅ t, Module.End.maxGenEigenspace (ρ t) (μ t : ℂ) : Submodule ℂ V) ≤
@@ -160,13 +160,13 @@ section Cell
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `h2 : modExp c a = 0`. Unfold `modExp`. Rewrite using `[Finset.sum_eq_zero, Finset.sum_eq_zero, sub_zero]`. Introduce `b hb`. Use `ha b (Finset.mem_filter.1 hb).2.ne` as an intermediate fact.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Introduce `b hb`. Use `ha b (Finset.mem_filter.1 hb).2.ne'` as an intermediate fact. Simplify using the standard rewrite rules. Rewrite using `[deltaHalf_apply]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_eq_one fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using `[h2]`. Use `ha b hb` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Subsingleton.elim (g b) 1, map_one, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem deltaHalf_one {α : Type} [Fintype α] [LinearOrder α] {c : α → Type} [∀ a, Fintype (c a)]
     [∀ a, DecidableEq (c a)] (a : α) (ha : ∀ b, b ≠ a → IsEmpty (c b)) (g : Levi k c) : deltaHalf k c g = 1 := by
@@ -188,11 +188,11 @@ private theorem deltaHalf_one {α : Type} [Fintype α] [LinearOrder α] {c : α 
     rw [Subsingleton.elim (g b) 1, map_one, map_one]
 
 /- English proof (translation)
-Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `d2 : relDeltaHalf k c p = 1`. Rewrite using `[relDeltaHalf_apply]`. Conclude with `Finset.prod_eq_one fun i _ => deltaHalf_one (w.symm i) (fun j hj => hw i j fun h => hj (by simp [h])) _`. Establish `e : torusChar ψ ((leviTorus k (Fin n)).symm (relEmb k f p)) = ∏ j, ψ (w j) (GeneralLinearGroup.det (p (w j) j))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[torusChar_apply, ← Equiv.prod_comp w]`. Use `Finset.prod_congr rfl fun j _ => congrArg _ ?_` and prove the remaining obligations. Use `(det_leviEmb k (f (w j)) (p (w j))).trans (Finset.prod_eq_single j (fun i _ hi => ?_) (by simp))` and prove the remaining obligations. Use `hw (w j) i (fun h => hi (w.injective h).symm)` as an intermediate fact. Rewrite using `[Subsingleton.elim (p (w j) i) 1, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[relJac_mk, d2, inv_one, Units.val_one, one_smul, hρ, e, ← smul_eq_mul, Submodule.Quotient.mk_smul]`.
+A detailed English derivation is pending.
 -/
 private theorem row {n : ℕ} {c : Fin n → Fin n → Type} [∀ i j, Fintype (c i j)] [∀ i j, DecidableEq (c i j)]
     (w : Equiv.Perm (Fin n)) (hw : ∀ i j, i ≠ w j → IsEmpty (c i j))
@@ -215,19 +215,17 @@ private theorem row {n : ℕ} {c : Fin n → Fin n → Type} [∀ i j, Fintype (
   rw [relJac_mk, d2, inv_one, Units.val_one, one_smul, hρ, e, ← smul_eq_mul, Submodule.Quotient.mk_smul]
 
 /- English proof (translation)
-Establish `hP : ∀ t : Levi k (fun _ : Fin n => Unit), t ∈ relParab k g` using `fun t j _ => mem_parab.2 fun a b h => absurd h (by rw [Subsingleton.elim a b]; exact lt_irrefl _)`. Establish `law : ∀ (x : smoothPart (ind (relParab k g) ((twist τ (relDeltaHalf k c)).comp (relProj k g)))) t s, x.1.1 (t * s) = (torusChar ψ ((leviTorus k (Fin n)).symm t) : ℂ) • x.1.1 s`. Introduce `x t s`. Use `(x.1.2 ⟨t, hP t⟩ s).trans ?_` and prove the remaining obligations. Generalize the expression as in `x.1.1 s = y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable.
 
-Establish `d1 : relDeltaHalf k c (relProj k g ⟨t, hP t⟩) = 1`. Rewrite using `[relDeltaHalf_apply]`. Conclude with `Finset.prod_eq_one fun j _ => deltaHalf_one (w j) (fun i hi => hw j i hi) _`. Establish `e : ∏ j, ψ j (GeneralLinearGroup.det (relProj k g ⟨t, hP t⟩ j (w j))) = torusChar ψ ((leviTorus k (Fin n)).symm t)`. Rewrite using `[torusChar_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun j _ => congrArg _ (Eq.symm ?_)` and prove the remaining obligations. Use `(det_parab k (g j) ⟨t j, hP t j trivial⟩).trans (Finset.prod_eq_single (w j) (fun i _ hi => ?_) (by simp))` and prove the remaining obligations. Use `hw j i hi` as an intermediate fact. Rewrite using `[Subsingleton.elim (leviProj k (g j) _ i) 1, map_one]`. Rewrite using `[MonoidHom.comp_apply, twist_apply, d1, hτ, e, Units.val_one, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun t x => Subtype.ext (Subtype.ext (funext fun s => ?_)), fun x y => ?_⟩` and prove the remaining obligations. Use `show x.1.1 (s * t) = (torusChar ψ ((leviTorus k (Fin n)).symm t) : ℂ) • x.1.1 s`. Establish `: s * t = t * s`. Apply `(leviTorus k (Fin n)).symm.injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, mul_comm]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, law]`. Establish `h1` using `fun s => law x s 1`. Establish `h2` using `fun s => law y s 1`. Simplify using `only [mul_one] at h1 h2`. Break down `hY (x.1.1 1) (y.1.1 1) with h | ⟨a, h⟩` into its components or cases.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Or.inl (Subtype.ext (Subtype.ext (funext fun s => ?_)))` and prove the remaining obligations. Use `h2 s` as an intermediate fact. Rewrite `this` using `[h, smul_zero]`. Conclude with `this`. Use `Or.inr ⟨a, Subtype.ext (Subtype.ext (funext fun s => ?_))⟩ show x.1.1 s = a • y.1.1 s` and prove the remaining obligations.
-
-Rewrite using `[h1 s, h2 s, h, smul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem col {n : ℕ} {c : Fin n → Fin n → Type} [∀ i j, Fintype (c i j)] [∀ i j, DecidableEq (c i j)]
     (w : Fin n → Fin n) (hw : ∀ j i, i ≠ w j → IsEmpty (c j i))
@@ -276,7 +274,7 @@ private theorem col {n : ℕ} {c : Fin n → Fin n → Type} [∀ i j, Fintype (
       rw [h1 s, h2 s, h, smul_comm]
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Distinguish the cases in `h0 : v = 0`. Conclude with `Or.inl (by rw [h0, Submodule.Quotient.mk_zero])`. Conclude with `Or.inr ⟨u / v, by rw [← Submodule.Quotient.mk_smul, smul_eq_mul, div_mul_cancel₀ _ h0]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 -/
 private theorem quot_line (U : Submodule ℂ ℂ) (x y : ℂ ⧸ U) : y = 0 ∨ ∃ a : ℂ, x = a • y := by
   obtain ⟨u, rfl⟩ := Submodule.Quotient.mk_surjective _ x
@@ -287,9 +285,9 @@ private theorem quot_line (U : Submodule ℂ ℂ) (x y : ℂ ⧸ U) : y = 0 ∨ 
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Establish `key : ∀ x : S.toSubmodule, φ (Submodule.Quotient.mk x) = 0 → x.1 ∈ T.toSubmodule` using `fun x hx => (Submodule.Quotient.mk_eq_zero (T.toSubmodule.comap S.toSubmodule.subtype)).1 (φ.injective (hx.trans (map_zero φ).symm))`. Use `⟨fun x hx y hy => ?_, fun g x hx => ?_⟩` and prove the remaining obligations. Break down `c2 (φ (Submodule.Quotient.mk ⟨x, hx⟩)) (φ (Submodule.Quotient.mk ⟨y, hy⟩)) with h | ⟨a, h⟩` into its components or cases. Conclude with `Or.inl (key _ h)`. Use `Or.inr ⟨a, key (⟨x, hx⟩ - a • ⟨y, hy⟩) ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.Quotient.mk_sub, Submodule.Quotient.mk_smul, map_sub, map_smul, h, sub_self]`. Use `key (S.toRepresentation g ⟨x, hx⟩ - (χ g : ℂ) • ⟨x, hx⟩) ?_` and prove the remaining obligations. Rewrite using `[Submodule.Quotient.mk_sub, Submodule.Quotient.mk_smul, map_sub, map_smul, sub_eq_zero]`. Conclude with `(φ.toIntertwiningMap.isIntertwining _ _ g (Submodule.Quotient.mk ⟨x, hx⟩)).trans (c1 g _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem step {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ G V} {σ : Representation ℂ G W} {S T : Subrepresentation ρ} (φ : (subQuot S T).Equiv σ)
@@ -308,7 +306,7 @@ private theorem step {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [A
     exact (φ.toIntertwiningMap.isIntertwining _ _ g (Submodule.Quotient.mk ⟨x, hx⟩)).trans (c1 g _)
 
 /- English proof (translation)
-Establish `h` using `col (k := k) (c := fun j i => c i j) w (fun j i => hw i j) g (ψ ∘ w) ((relJac (m := fun _ => Unit) f ρ).comp (swapBlocks k c)) (fun p y => row w hw f ψ ρ hρ (swapBlocks k c p) y) (quot_line _)`. Conclude with `step φ _ h.1 h.2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cell {n : ℕ} {c : Fin n → Fin n → Type} [∀ i j, Fintype (c i j)] [∀ i j, DecidableEq (c i j)]
     (w : Equiv.Perm (Fin n)) (hw : ∀ i j, i ≠ w j → IsEmpty (c i j))
@@ -327,13 +325,13 @@ private theorem cell {n : ℕ} {c : Fin n → Fin n → Type} [∀ i j, Fintype 
   exact step φ _ h.1 h.2
 
 /- English proof (translation)
-Establish `col : ∀ j, ∃ i, ∀ i', b.1 i' j = if i' = i then 1 else 0` using `fun j => by`. Establish `hsum : ∑ i, b.1 i j = 1` using `by simpa using b.2.2 j`. Take `⟨i, -, hi0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (hsum.trans_ne one_ne_zero)`. Establish `hsplit` using `Finset.add_sum_erase Finset.univ (fun i => b.1 i j) (Finset.mem_univ i)`. Use `⟨i, fun i' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `only at hsplit`. Use linear arithmetic over natural numbers and integers. Establish `h0 : ∑ i ∈ Finset.univ.erase i, b.1 i j = 0` using `by simp only at hsplit; omega`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.sum_eq_zero_iff.1 h0 i' (Finset.mem_erase.2 ⟨h, Finset.mem_univ _⟩)`. Use `choose w hw using col`. Establish `hs : Function.Surjective w` using `fun i => by`. Establish `hsum : ∑ j, b.1 i j = 1` using `by simpa using b.2.1 i`. Take `⟨j, -, hj⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (hsum.trans_ne one_ne_zero)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `⟨j, by_contra fun h => hj ?_⟩` and prove the remaining obligations. Rewrite using `[hw, if_neg (Ne.symm h)]`. Conclude with `⟨Equiv.ofBijective w ⟨Finite.injective_iff_surjective.2 hs, hs⟩, fun i j => hw j i⟩`.
+A detailed English derivation is pending.
 -/
 private theorem exists_perm {n : ℕ} (b : SizeMatrix (fun _ : Fin n => Unit) (fun _ : Fin n => Unit)) :
     ∃ w : Equiv.Perm (Fin n), ∀ i j, b.1 i j = if i = w j then 1 else 0 := by
@@ -355,13 +353,11 @@ private theorem exists_perm {n : ℕ} (b : SizeMatrix (fun _ : Fin n => Unit) (f
   exact ⟨Equiv.ofBijective w ⟨Finite.injective_iff_surjective.2 hs, hs⟩, fun i j => hw j i⟩
 
 /- English proof (translation)
-Take `⟨N, b, hb⟩` from `hG (Fin n) (Fin n) (Fin n) (fun _ => Unit) (fun _ => Unit) (points _) (points _)`. Establish `hs : IsSmoothChar (torusChar ψ)`. Unfold `torusChar`. Use `Finset.prod_induction _ IsSmoothChar (fun _ _ => IsSmoothChar.mul) isSmoothChar_one fun a _ => ?_` and prove the remaining obligations. Conclude with `(hψ a).comp _ (continuous_apply a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨S, h1, h2, h3, h4⟩` from `hb ℂ ((ofChar (torusChar ψ)).comp (leviTorus k (Fin n)).symm.toMonoidHom) (isSmooth_comp ((isSmooth_ofChar_iff _).2 hs) _ (continuous_pi fun i => continuous_glDet.comp (continuous_apply i)))`. Use `choose w hw using exists_perm (n := n)`. Use `⟨N, fun t => w (b t), fun s t h => b.injective (Subtype.ext (funext fun i => funext fun j => ?_)), fun i => (S i).toSubmodule, fun i j hij => h1 hij, by simp only [h2]; rfl, by simp only [h3]; rfl, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[hw, hw]`. Simplify using `only at h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h]`. Take `⟨φ⟩` from `h4 t (b t).nonempty_rows.some (b t).nonempty_cols.some`. Establish `he : ∀ i j, i ≠ w (b t) j → IsEmpty (Fin ((b t).1 i j))` using `fun i j h => by`. Rewrite using `[hw, if_neg h]`. Use `infer_instance`.
-
-Conclude with `cell (w (b t)) he _ _ ψ _ (fun t v => ofChar_apply _ _ _) φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tri_prin (hG : JacquetOfInducedFiltration k) {n : ℕ} {ψ : Fin n → kˣ →* ℂˣ}
     (hψ : ∀ i, IsSmoothChar (ψ i)) : ∃ (N : ℕ) (w : Fin N → Equiv.Perm (Fin n)), Function.Injective w ∧
@@ -387,11 +383,11 @@ private theorem tri_prin (hG : JacquetOfInducedFiltration k) {n : ℕ} {ψ : Fin
     exact cell (w (b t)) he _ _ ψ _ (fun t v => ofChar_apply _ _ _) φ
 
 /- English proof (translation)
-Take `⟨S, f, hf⟩` from `h`. Set `ι : S.toRepresentation.IntertwiningMap τ` to `⟨S.toSubmodule.subtype, fun _ => rfl⟩`. Use `(IsSubquotient.of_surjective (jacMap _ f) fun y => ?_).trans (.of_injective (jacMap _ ι) ?_)` and prove the remaining obligations. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Take `⟨v, rfl⟩` from `hf w`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Submodule.Quotient.mk v, rfl⟩`. Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `h1 : ι v ∈ twKer τ (unipRad k (points (Fin n))) 1` using `(Submodule.Quotient.mk_eq_zero _).1 hx`. Establish `hN` using `GlobalTheory.InertSupp.unipRad_eq_unipOf k (e := points (Fin n)) (c := fun i => ((blk (points (Fin n)) i).val : ℤ)) fun i j => by simp`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨T, hT, h2⟩` from `GlobalTheory.JacquetExact.exists_finset_of_mem_twKer h1`. Take `⟨H, hle, hH, hSH⟩` from `GlobalTheory.UnipCompact.exists_compact_subgroup k _ _ T (hN ▸ hT)`. Use `(Submodule.Quotient.mk_eq_zero _).2 ?_` and prove the remaining obligations. Conclude with `GlobalTheory.IwahoriInj.twKer_mono (hle.trans hN.ge) (GlobalTheory.JacquetExact.mem_twKer_of_compact hτ ι Subtype.val_injective hH (h2 H hSH))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem sq_jac {n : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {π : Representation ℂ (GL (Fin n) k) V} {τ : Representation ℂ (GL (Fin n) k) W} (hτ : IsSmooth τ)
@@ -414,9 +410,9 @@ private theorem sq_jac {n : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [A
       (GlobalTheory.JacquetExact.mem_twKer_of_compact hτ ι Subtype.val_injective hH (h2 H hSH))
 
 /- English proof (translation)
-Take `⟨N, w, hw, hT⟩` from `tri_prin hG hψ`. Take `⟨S, h1, h2, h3, h4⟩` from `hT.sq (sq_jac (isSmooth_parInd _ _) h)`. Use `⟨N, w, hw, S, h1, h2, h3, fun t => ⟨(h4 t).1, fun g x hx => ?_⟩⟩` and prove the remaining obligations. Use `(h4 t).2 (leviTorus k (Fin n) g) x hx` as an intermediate fact. Simplify using `only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_apply] at this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 private theorem tri_jacB (hG : JacquetOfInducedFiltration k) {n : ℕ} {ψ : Fin n → kˣ →* ℂˣ}
     (hψ : ∀ i, IsSmoothChar (ψ i)) {V : Type} [AddCommGroup V] [Module ℂ V] {π : Representation ℂ (GL (Fin n) k) V}
@@ -434,7 +430,7 @@ end Cell
 end UpperTheory.V.AlgebraTools.JqMult
 
 /- English proof (translation)
-Introduce `hG _ k _ _ _ _ n V _ _ π ψ _ hψ h`. Take `⟨N, w, hw, hT⟩` from `JqMult.tri_jacB (hG k).1 hψ h`. Use `⟨hT.fin.1, hT.fin.2.trans ?_, fun μ => (hT.eig μ).trans ?_⟩` and prove the remaining obligations. Simplify `Fintype.card_le_of_injective w hw` using `[Fintype.card_perm]`. Conclude with `Nat.card_le_card_of_injective (fun t => ⟨w t.1, t.2⟩) fun s t h => Subtype.ext (hw (congrArg Subtype.val h))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.jqMult :
     GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V) (ψ : Fin n → kˣ →* ℂˣ), IsSmooth π → (∀ i, IsSmoothChar (ψ i)) → IsSubquotient π (prinSeries ψ) → FiniteDimensional ℂ (Jacquet π (unipB k (Fin n))) ∧ Module.finrank ℂ (Jacquet π (unipB k (Fin n))) ≤ n.factorial ∧ ∀ μ : (Fin n → kˣ) →* ℂˣ, Module.finrank ℂ (⨅ t, Module.End.maxGenEigenspace (jacB π t) (μ t : ℂ) : Submodule ℂ (Jacquet π (unipB k (Fin n)))) ≤ Nat.card {w : Equiv.Perm (Fin n) // μ = torusChar (ψ ∘ w)} := by

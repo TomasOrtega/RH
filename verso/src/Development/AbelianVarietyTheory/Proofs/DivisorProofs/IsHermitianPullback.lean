@@ -14,9 +14,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AHExists
 
 /- English proof (translation)
-Establish `e : ((LinearMap.toMatrix' J).map star).mulVec (star w) = star (J w)`. Rewrite using `[← LinearMap.toMatrix'_mulVec J w]`. Generalize the expression as in `LinearMap.toMatrix' J = N`. Use function extensionality and compare the values at `a`. Simplify using `[Matrix.mulVec, dotProduct, star_sum, _root_.mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, e, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, LinearMap.toMatrix'_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dotProduct_pullback {g n : ℕ} (J : (Fin g → ℂ) →ₗ[ℂ] (Fin n → ℂ)) (H : Matrix (Fin n) (Fin n) ℂ)
     (z w : Fin g → ℂ) :
@@ -31,7 +31,7 @@ theorem dotProduct_pullback {g n : ℕ} (J : (Fin g → ℂ) →ₗ[ℂ] (Fin n 
     LinearMap.toMatrix'_mulVec]
 
 /- English proof (translation)
-Establish `e : N.transpose = (N.map star).conjTranspose`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `Matrix.isHermitian_conjTranspose_mul_mul _ hH`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHermitian_pullback {g n : ℕ} (N : Matrix (Fin n) (Fin g) ℂ) {H : Matrix (Fin n) (Fin n) ℂ}
     (hH : H.IsHermitian) : (N.transpose * H * N.map star).IsHermitian := by
@@ -42,17 +42,15 @@ theorem isHermitian_pullback {g n : ℕ} (N : Matrix (Fin n) (Fin g) ℂ) {H : M
   exact Matrix.isHermitian_conjTranspose_mul_mul _ hH
 
 /- English proof (translation)
-Introduce `A _ g hA L u`. Take `⟨Q, v, i, r, J, R, m, -, hi, -, hm, hJ, -, -, -, hRJ⟩` from `GlobalTheory.HolUnifHom.exists_linear_factor A g hA (GlobalTheory.AHPos.smoothOfRelativeDimension_of_holUnif hA u) L u`. Take `⟨rig, hrig⟩` from `Q.rigid`. Take `⟨v', Hm, χ', -, hAH, -, hv1, hv2, -⟩` from `thetaUnifAV_all Q rig hrig`. Take `⟨J', hJ', hJΛ, -, -⟩` from `HomLinear.exists_linear_of_isMonHom A Q.A hA Q.isAb L Q.L g Q.g u v' hv1 hv2 i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hinj : ∀ z, J' z = 0 → z = 0`. Introduce `z hz`. Establish `h0 : J z = 0` using `LatticeHom.eq_zero_of_forall_smul_mem v.Λ v.discrete fun t => by`. Rewrite using `[← map_smul, ← v.ker, hJ, ← hJ', map_smul, hz, smul_zero, v'.ker]`. Conclude with `v'.Λ.zero_mem`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hRJ z`. Rewrite `h1` using `[h0, map_zero, ← Nat.cast_smul_eq_nsmul ℂ]`. Conclude with `(smul_eq_zero.1 h1.symm).resolve_left (by exact_mod_cast (show m ≠ 0 by omega))`. Take `⟨u₁, hex, hΛ₁, hfr⟩` from `GlobalTheory.exists_holUnif_linComb A Q.A L Q.L g Q.g u v' PUnit (fun _ => i) (fun _ => J') (fun _ => 1) (fun _ z => hJ' z)`. Establish `hmem : ∀ l : u₁.Λ, J' (l : Fin g → ℂ) ∈ v'.Λ` using `fun l => hJΛ _ (hΛ₁ ▸ l.2)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, u₁, (LinearMap.toMatrix' J').transpose * Hm * (LinearMap.toMatrix' J').map star, fun l => χ' ⟨J' l.1, hmem l⟩, LB.isLB_linComb Q.isLB _ _, hex, hΛ₁, isHermitian_pullback _ hAH.1, fun z hz => ?_, fun l => hAH.2.2.1 _, ?_⟩` and prove the remaining obligations. Rewrite using `[dotProduct_pullback]`. Conclude with `hAH.2.1 _ fun h => hz (hinj z h)`. Introduce `l j z hz`. Rewrite `hz` using `[hex]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz' : ⊤ ≤ (v'.ex (J' z)).left ⁻¹ᵁ Q.L.U (j PUnit.unit)`. Rewrite using `[hJ' z]`. Conclude with `(CubeValues.le_preimage_wchart (u.ex z).left Q.L (fun _ => i.left) j).1 hz PUnit.unit`. Establish `e1 : u₁.fr j z = v'.fr (j PUnit.unit) (J' z)` using `by simpa using hfr j z`. Establish `e2 : u₁.fr j (z + l) = v'.fr (j PUnit.unit) (J' z + J' l)` using `by simpa using hfr j (z + l)`.
-
-Rewrite using `[e1, e2, dotProduct_pullback, dotProduct_pullback]`. Conclude with `hAH.2.2.2 ⟨J' l.1, hmem l⟩ (j PUnit.unit) (J' z) hz'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isAH : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ), IsAbelianScheme A → ∀ (L : LB A.left) (u : HolUnif A L g), ∃ (M : LB A.left) (u' : HolUnif A M g) (H : Matrix (Fin g) (Fin g) ℂ) (χ : u'.Λ → ℂ), M.IsLB ∧ u'.ex = u.ex ∧ u'.Λ = u.Λ ∧ u'.IsAH H χ := by
   intro A _ g hA L u

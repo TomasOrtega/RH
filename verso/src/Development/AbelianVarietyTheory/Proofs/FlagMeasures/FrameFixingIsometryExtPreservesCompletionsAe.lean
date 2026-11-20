@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Unfold
 
 /- English proof (translation)
-The claim follows from `hΛ.fg.map _ span_eq_top := by have h1 : ((Formalism.HermitianLatticesTheory.gmap g Λ : LV D) : Set (VS D).V) = (g : (VS D).V →ₗ[D.host.E] (VS D).V) '' (Λ : Set (VS D).V) := by unfold Formalism.HermitianLatticesTheory.gmap rfl rw [h1, Submodule.span_image, hΛ.span_eq_top, Submodul …`.
+A detailed English derivation is pending.
 -/
 theorem gmap_isLattice_rat {D : D7} (g : GV D) (Λ : LV D) (hΛ : Submodule.IsLattice D.host.E Λ) :
     Submodule.IsLattice D.host.E (Formalism.HermitianLatticesTheory.gmap g Λ) where
@@ -26,11 +26,11 @@ theorem gmap_isLattice_rat {D : D7} (g : GV D) (Λ : LV D) (hΛ : Submodule.IsLa
     exact g.surjective
 
 /- English proof (translation)
-Introduce `D X Y u u' F F' w hw hG Z FP hB hR φ hφ Λ₀ hΛ₀ h`. Take `⟨-, -, hlat, -⟩` from `GlobalTheory.T.rationalAutomorphism_local_extension_moves_lattices D X Y u u' F F' w hw hG Z FP hB hR`. Establish `hfin` using `((GlobalTheory.T.hermitianLattice_local_global_principle D Z).1 (Formalism.HermitianLatticesTheory.gmap (h : GV D) Λ₀) Λ₀ (gmap_isLattice_rat _ _ hΛ₀) hΛ₀).1`. Use `hfin.subset ?_` and prove the remaining obligations. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_setOf_eq] at hp ⊢`. Introduce `heq`. Apply `hp` to reduce the goal to its premises. Apply `Subgroup.subset_closure` to reduce the goal to its premises. Use `show LocNG.img _ _ = _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hlat (h : GV D) p _ Λ₀ (hφ h p)]`. Conclude with `heq`.
+A detailed English derivation is pending.
 -/
 theorem ext_fix_lattice_ae : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (w : Point D.host.E (D.R.rS + 1)), ZhatOM (ZhatL F F') = ptMat w → Gval F F' ≠ 0 → ∀ (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS), Based Z FP (Tu D u) (Tu D u') F F' → (∀ p, (FP p).RelG (LocNG.theta (Z.M p))) → ∀ (φ : ↥(FlagPairStabilizer F F') →* (∀ p, ↥(FP p).UW0)), (∀ (h : ↥(FlagPairStabilizer F F')) p, Ext p (h : GV D) ((φ h p : ↥(FP p).UW0) : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p)) → ∀ Λ₀ : LV D, Submodule.IsLattice D.host.E Λ₀ → ∀ h : ↥(FlagPairStabilizer F F'), {p | ((φ h p : ↥(FP p).UW0) : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) ∉ LocNG.Aut (lattice₂ D Z.M p Λ₀)}.Finite := by
   intro D X Y u u' F F' w hw hG Z FP hB hR φ hφ Λ₀ hΛ₀ h

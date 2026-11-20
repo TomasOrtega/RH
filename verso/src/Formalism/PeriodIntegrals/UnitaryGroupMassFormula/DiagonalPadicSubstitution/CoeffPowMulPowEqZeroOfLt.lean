@@ -23,7 +23,7 @@ def ballSub (p : ℕ) [Fact p.Prime] : Subring ℂ_[p] where
   neg_mem' {a} ha := by simpa using ha
 
 /- English proof (translation)
-Introduce `n` and use `by rw [coeff_one]; split_ifs · exact (ballSub p).one_mem · exact (ballSub p).zero_mem`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intMv_one : IntegralMv (1 : MvPowerSeries σ ℂ_[p]) := fun n => by
   rw [coeff_one]; split_ifs
@@ -31,11 +31,11 @@ theorem intMv_one : IntegralMv (1 : MvPowerSeries σ ℂ_[p]) := fun n => by
   · exact (ballSub p).zero_mem
 
 /- English proof (translation)
-Set `F' : MvPowerSeries σ (ballSub p)` to `fun n => ⟨coeff n F, hF n⟩`. Establish `hmap : map (ballSub p).subtype F' = F`. Use extensionality with `n`. Rewrite using `[coeff_map]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hc : constantCoeff F' = 1`. Apply `Subtype.val_injective` to reduce the goal to its premises. Use `constantCoeff_map (ballSub p).subtype F'` as an intermediate fact. Rewrite `this` using `[hmap, h1]`. Simplify using `using this.symm`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hG' : F' * invOfUnit F' 1 = 1` using `mul_invOfUnit F' 1 (by rw [hc, Units.val_one])`. Use `⟨map (ballSub p).subtype (invOfUnit F' 1), fun n => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_map]`. Conclude with `(coeff n (invOfUnit F' 1)).2`. Rewrite using `[← hmap, ← map_mul, hG', map_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intMv_inv {F : MvPowerSeries σ ℂ_[p]} (hF : IntegralMv F) (h1 : constantCoeff F = 1) :
     ∃ G : MvPowerSeries σ ℂ_[p], IntegralMv G ∧ F * G = 1 := by
@@ -63,7 +63,7 @@ theorem coeff_expMv (f : MvPowerSeries σ ℂ_[p]) (α : σ →₀ ℕ) :
       ∑ n ∈ Finset.range (Finsupp.degree α + 1), coeff α (f ^ n) / (n.factorial : ℂ_[p]) := rfl
 
 /- English proof (translation)
-Simplify using `only [expT, map_sum, map_smul, smul_eq_mul, div_eq_inv_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coeff_expT (f : MvPowerSeries σ ℂ_[p]) (N : ℕ) (α : σ →₀ ℕ) :
     coeff α (expT f N) = ∑ n ∈ Finset.range N, coeff α (f ^ n) / (n.factorial : ℂ_[p]) := by
@@ -76,7 +76,7 @@ open IntegralPowerSeriesBall
 variable {p : ℕ} [Fact p.Prime] {σ : Type*}
 
 /- English proof (translation)
-Apply `coeff_of_lt_order` to reduce the goal to its premises. Conclude with `lt_of_lt_of_le (by exact_mod_cast h) (le_order_pow_of_constantCoeff_eq_zero n hf)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem coeff_pow_eq_zero_of_lt {f : MvPowerSeries σ ℂ_[p]} (hf : constantCoeff f = 0) {n : ℕ}
     {α : σ →₀ ℕ} (h : Finsupp.degree α < n) : coeff α (f ^ n) = 0 := by
@@ -84,7 +84,7 @@ theorem coeff_pow_eq_zero_of_lt {f : MvPowerSeries σ ℂ_[p]} (hf : constantCoe
   exact lt_of_lt_of_le (by exact_mod_cast h) (le_order_pow_of_constantCoeff_eq_zero n hf)
 
 /- English proof (translation)
-Apply `coeff_of_lt_order` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 theorem coeff_pow_mul_pow_eq_zero_of_lt {x y : MvPowerSeries σ ℂ_[p]} (hx : constantCoeff x = 0)
     (hy : constantCoeff y = 0) {m j : ℕ} {α : σ →₀ ℕ} (h : Finsupp.degree α < m + j) :
@@ -98,9 +98,9 @@ theorem coeff_pow_mul_pow_eq_zero_of_lt {x y : MvPowerSeries σ ℂ_[p]} (hx : c
     _ ≤ (x ^ m * y ^ j).order := le_order_mul
 
 /- English proof (translation)
-Rewrite using `[coeff_expMv, coeff_expT]`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `n hn`. Simplify using `only [Finset.mem_range] at *`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `n _ hn`. Simplify using `only [Finset.mem_range, not_lt] at hn`. Rewrite using `[coeff_pow_eq_zero_of_lt hf (by omega), zero_div]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_expMv_eq_expT {f : MvPowerSeries σ ℂ_[p]} (hf : constantCoeff f = 0) {α : σ →₀ ℕ}
     {N : ℕ} (hN : Finsupp.degree α < N) : coeff α (expMv f) = coeff α (expT f N) := by
@@ -112,9 +112,9 @@ theorem coeff_expMv_eq_expT {f : MvPowerSeries σ ℂ_[p]} (hf : constantCoeff f
     rw [coeff_pow_eq_zero_of_lt hf (by omega), zero_div]
 
 /- English proof (translation)
-Establish `h1` using `Nat.choose_mul_factorial_mul_factorial h`. Establish `hn : (n.factorial : ℂ_[p]) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero n`. Establish `hm : (m.factorial : ℂ_[p]) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero m`. Establish `hk : ((n - m).factorial : ℂ_[p]) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Establish `h2 : (n.choose m : ℂ_[p]) * m.factorial * (n - m).factorial = n.factorial`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1` after adjusting the coercions. Clear the denominators using the available nonvanishing facts. Conclude with `h2`.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem inv_fact_mul_choose (n m : ℕ) (h : m ≤ n) :
     (n.factorial : ℂ_[p])⁻¹ * (n.choose m : ℂ_[p]) =
@@ -129,9 +129,9 @@ theorem inv_fact_mul_choose (n m : ℕ) (h : m ≤ n) :
   exact h2
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_range_diag_flip N (fun m j => (((m.factorial : ℂ_[p])⁻¹ * (j.factorial : ℂ_[p])⁻¹) • (x ^ m * y ^ j)))]`. Unfold `expT`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[add_pow, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmn : m ≤ n` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hm)`. Rewrite using `[← inv_fact_mul_choose n m hmn, mul_comm _ (n.choose m : ℂ_[p]), ← smul_smul, mul_comm _ ((n.choose m : ℕ) : MvPowerSeries σ ℂ_[p]), ← nsmul_eq_mul, Nat.cast_smul_eq_nsmul]`. Conclude with `smul_comm _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expT_add (x y : MvPowerSeries σ ℂ_[p]) (N : ℕ) :
     expT (x + y) N = ∑ m ∈ Finset.range N, ∑ j ∈ Finset.range (N - m),
@@ -149,7 +149,7 @@ theorem expT_add (x y : MvPowerSeries σ ℂ_[p]) (N : ℕ) :
   exact smul_comm _ _ _
 
 /- English proof (translation)
-Unfold `expT`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_smul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem expT_mul_expT (x y : MvPowerSeries σ ℂ_[p]) (N : ℕ) :
     expT x N * expT y N = ∑ m ∈ Finset.range N, ∑ j ∈ Finset.range N,
@@ -160,9 +160,9 @@ theorem expT_mul_expT (x y : MvPowerSeries σ ℂ_[p]) (N : ℕ) :
   rw [smul_mul_smul_comm]
 
 /- English proof (translation)
-Rewrite using `[expT_add, expT_mul_expT, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[map_sum, map_sum]`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `j hj`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_range] at *`. Use linear arithmetic over natural numbers and integers. Introduce `j _ hj`. Simplify using `only [Finset.mem_range, not_lt] at hm hj`. Rewrite using `[map_smul, coeff_pow_mul_pow_eq_zero_of_lt hx hy (by omega), smul_zero]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_expT_add {x y : MvPowerSeries σ ℂ_[p]} (hx : constantCoeff x = 0)
     (hy : constantCoeff y = 0) {α : σ →₀ ℕ} {N : ℕ} (hN : Finsupp.degree α < N) :
@@ -177,9 +177,9 @@ theorem coeff_expT_add {x y : MvPowerSeries σ ℂ_[p]} (hx : constantCoeff x = 
     rw [map_smul, coeff_pow_mul_pow_eq_zero_of_lt hx hy (by omega), smul_zero]
 
 /- English proof (translation)
-Use extensionality with `α`. Establish `hN : Finsupp.degree α < Finsupp.degree α + 1` using `Nat.lt_succ_self _`. Establish `hxy : constantCoeff (x + y) = 0` using `by rw [map_add, hx, hy, add_zero]`. Rewrite using `[coeff_expMv_eq_expT hxy hN, coeff_expT_add hx hy hN, coeff_mul, coeff_mul]`. Use `Finset.sum_congr rfl fun βγ hβγ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : Finsupp.degree α = Finsupp.degree βγ.1 + Finsupp.degree βγ.2`. Rewrite using `[← map_add, Finset.HasAntidiagonal.mem_antidiagonal.1 hβγ]`. Rewrite using `[coeff_expMv_eq_expT (N := Finsupp.degree α + 1) hx (by omega), coeff_expMv_eq_expT (N := Finsupp.degree α + 1) hy (by omega)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem expMv_add {x y : MvPowerSeries σ ℂ_[p]} (hx : constantCoeff x = 0)
     (hy : constantCoeff y = 0) : expMv (x + y) = expMv x * expMv y := by
@@ -194,7 +194,7 @@ theorem expMv_add {x y : MvPowerSeries σ ℂ_[p]} (hx : constantCoeff x = 0)
     coeff_expMv_eq_expT (N := Finsupp.degree α + 1) hy (by omega)]
 
 /- English proof (translation)
-Use extensionality with `α`. Rewrite using `[coeff_expMv, Finset.sum_range_succ']`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem expMv_zero : expMv (0 : MvPowerSeries σ ℂ_[p]) = 1 := by
   ext α
@@ -202,14 +202,14 @@ theorem expMv_zero : expMv (0 : MvPowerSeries σ ℂ_[p]) = 1 := by
   simp
 
 /- English proof (translation)
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_expMv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_expMv (f : MvPowerSeries σ ℂ_[p]) : constantCoeff (expMv f) = 1 := by
   rw [← coeff_zero_eq_constantCoeff_apply, coeff_expMv]
   simp
 
 /- English proof (translation)
-Introduce `n` and use `by rw [coeff_mul] exact (ballSub p).sum_mem fun x _ => (ballSub p).mul_mem (hF x.1) (hG x.2)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem integral_mul {F G : MvPowerSeries σ ℂ_[p]} (hF : IntegralMv F) (hG : IntegralMv G) :
     IntegralMv (F * G) := fun n => by
@@ -217,9 +217,9 @@ theorem integral_mul {F G : MvPowerSeries σ ℂ_[p]} (hF : IntegralMv F) (hG : 
   exact (ballSub p).sum_mem fun x _ => (ballSub p).mul_mem (hF x.1) (hG x.2)
 
 /- English proof (translation)
-Take `⟨G, hG, hG1⟩` from `intMv_inv h (constantCoeff_expMv x)`. Establish `hnx : constantCoeff (-x) = 0` using `by rw [map_neg, hx, neg_zero]`. Establish `hmul : expMv (-x) * expMv x = 1` using `by rw [← expMv_add hnx hx, neg_add_cancel, expMv_zero]`. Establish `: expMv (-x) = G`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[this]`. Conclude with `hG`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_expMv_neg {x : MvPowerSeries σ ℂ_[p]} (hx : constantCoeff x = 0)
     (h : IntegralMv (expMv x)) : IntegralMv (expMv (-x)) := by
@@ -232,14 +232,14 @@ theorem integral_expMv_neg {x : MvPowerSeries σ ℂ_[p]} (hx : constantCoeff x 
   rw [this]; exact hG
 
 /- English proof (translation)
-Use `⟨by rw [sub_self, map_zero], ?_⟩` and prove the remaining obligations. Rewrite using `[sub_self, expMv_zero]`. Conclude with `intMv_one`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem simeq_refl (f : MvPowerSeries σ ℂ_[p]) : Simeq f f := by
   refine ⟨by rw [sub_self, map_zero], ?_⟩
   rw [sub_self, expMv_zero]; exact intMv_one
 
 /- English proof (translation)
-Establish `e : g - f = -(f - g)` using `(neg_sub f g).symm`. Use `⟨by rw [e, map_neg, h.1, neg_zero], ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `integral_expMv_neg h.1 h.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem simeq_symm {f g : MvPowerSeries σ ℂ_[p]} (h : Simeq f g) : Simeq g f := by
   have e : g - f = -(f - g) := (neg_sub f g).symm
@@ -247,7 +247,7 @@ theorem simeq_symm {f g : MvPowerSeries σ ℂ_[p]} (h : Simeq f g) : Simeq g f 
   rw [e]; exact integral_expMv_neg h.1 h.2
 
 /- English proof (translation)
-Establish `e : f + f' - (g + g') = (f - g) + (f' - g')` using `add_sub_add_comm f f' g g'`. Use `⟨by rw [e, map_add, h.1, h'.1, add_zero], ?_⟩` and prove the remaining obligations. Rewrite using `[e, expMv_add h.1 h'.1]`. Conclude with `integral_mul h.2 h'.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem simeq_add {f g f' g' : MvPowerSeries σ ℂ_[p]} (h : Simeq f g) (h' : Simeq f' g') :
     Simeq (f + f') (g + g') := by
@@ -256,7 +256,7 @@ theorem simeq_add {f g f' g' : MvPowerSeries σ ℂ_[p]} (h : Simeq f g) (h' : S
   rw [e, expMv_add h.1 h'.1]; exact integral_mul h.2 h'.2
 
 /- English proof (translation)
-Establish `e : f - h = (f - g) + (g - h)` using `(sub_add_sub_cancel f g h).symm`. Use `⟨by rw [e, map_add, h1.1, h2.1, add_zero], ?_⟩` and prove the remaining obligations. Rewrite using `[e, expMv_add h1.1 h2.1]`. Conclude with `integral_mul h1.2 h2.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem simeq_trans {f g h : MvPowerSeries σ ℂ_[p]} (h1 : Simeq f g) (h2 : Simeq g h) :
     Simeq f h := by
@@ -265,7 +265,7 @@ theorem simeq_trans {f g h : MvPowerSeries σ ℂ_[p]} (h1 : Simeq f g) (h2 : Si
   rw [e, expMv_add h1.1 h2.1]; exact integral_mul h1.2 h2.2
 
 /- English proof (translation)
-Introduce `_ _ _ f _ _ _ _` and use `⟨simeq_refl f, simeq_symm, simeq_trans, simeq_add⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem simeq_equivalence_additive : S0 := fun _ _ _ f _ _ _ _ =>
   ⟨simeq_refl f, simeq_symm, simeq_trans, simeq_add⟩

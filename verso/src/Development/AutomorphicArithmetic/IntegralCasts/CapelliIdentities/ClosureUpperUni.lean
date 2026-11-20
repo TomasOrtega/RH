@@ -8,7 +8,7 @@ noncomputable def UpperTheory.Reformulated.B.Qe27.upperUni :
           (j < i → (↑x : Matrix (Fin k) (Fin k) A) i j = (0 : A)) ∧ (↑x : Matrix (Fin k) (Fin k) A) i i = (1 : A)}
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun j _ hj => ?_) (fun h => absurd (Finset.mem_univ i) h)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hj with h | h` into its components or cases. Rewrite using `[hM (show id j < id i from h), zero_mul]`. Rewrite using `[hN (show id i < id j from h), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.Reformulated.B.Qe27.diag_mul {k : ℕ} {A : Type} [CommRing A]
     (M N : Matrix (Fin k) (Fin k) A) (hM : M.BlockTriangular id) (hN : N.BlockTriangular id)
@@ -20,7 +20,7 @@ private theorem UpperTheory.Reformulated.B.Qe27.diag_mul {k : ℕ} {A : Type} [C
   · rw [hN (show id i < id j from h), mul_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨fun i j hij => (h i j).1 hij, fun i => (h i i).2⟩, fun h i _ => ⟨fun hij => h.1 hij, h.2 i⟩⟩`.
+Supply the required witnesses or components.
 -/
 private theorem UpperTheory.Reformulated.B.Qe27.mem_iff {k : ℕ} {A : Type} [CommRing A] (x : GL (Fin k) A) :
     x ∈ UpperTheory.Reformulated.B.Qe27.upperUni k A ↔
@@ -30,15 +30,13 @@ private theorem UpperTheory.Reformulated.B.Qe27.mem_iff {k : ℕ} {A : Type} [Co
     fun h i _ => ⟨fun hij => h.1 hij, h.2 i⟩⟩
 
 /- English proof (translation)
-Introduce `k A _ x hx`. Proceed by induction on `hx using Subgroup.closure_induction with`. Consider the case `mem y hy => exact hy`. Consider the case `one`. Rewrite using `[UpperTheory.Reformulated.B.Qe27.mem_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨Matrix.blockTriangular_one, fun i => Matrix.one_apply_eq i⟩`. Consider the case `mul y z _ _ hy hz`. Rewrite `hy`, `hz`, the goal using `[UpperTheory.Reformulated.B.Qe27.mem_iff]`. Rewrite using `[Units.val_mul]`. Use `⟨hy.1.mul hz.1, fun i => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[UpperTheory.Reformulated.B.Qe27.diag_mul _ _ hy.1 hz.1, hy.2, hz.2, one_mul]`. Consider the case `inv y _ hy`. Rewrite `hy`, the goal using `[UpperTheory.Reformulated.B.Qe27.mem_iff]`. Establish `hinv : ((y⁻¹ : GL (Fin k) A) : Matrix (Fin k) (Fin k) A).BlockTriangular id`. Use `letI : Invertible (y : Matrix (Fin k) (Fin k) A) := y.invertible`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Rewrite using `[Matrix.coe_units_inv]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hy.1`. Use `⟨hinv, fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `UpperTheory.Reformulated.B.Qe27.diag_mul _ _ hy.1 hinv i`. Rewrite `h` using `[Units.mul_inv, Matrix.one_apply_eq, hy.2, one_mul]`.
-
-Conclude with `h.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qe27.closure_upperUni :
     ∀ {k : ℕ} (A : Type) [inst : CommRing A],

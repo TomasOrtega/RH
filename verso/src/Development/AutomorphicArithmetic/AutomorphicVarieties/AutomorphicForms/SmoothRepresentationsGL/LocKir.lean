@@ -9,11 +9,11 @@ open UpperTheory.V.TR (Rinf Lie chart infGL pInf sInf toL lmul oneL invSet CuspS
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨⊤, by simp⟩`. Consider the case `insert a s _ ih`. Take `⟨V, hV⟩` from `ih`. Establish `hc : Continuous (MulAut.conj a⁻¹).toMonoidHom`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Continuous fun u : G => a⁻¹ * u * a⁻¹⁻¹`. Use `fun_prop`. Use `⟨V ⊓ U.comap (MulAut.conj a⁻¹).toMonoidHom hc, fun u hu x hx => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `OpenSubgroup.mem_inf.1 hu`. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h3 : x⁻¹ * u * x⁻¹⁻¹ ∈ U` using `OpenSubgroup.mem_comap.1 h2`. Rewrite `h3` using `[inv_inv]`. Then use the resulting hypothesis. Conclude with `hV u h1 x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem exists_conj_le {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (U : OpenSubgroup G) (s : Finset G) : ∃ U₁ : OpenSubgroup G, ∀ u ∈ U₁, ∀ x ∈ s, x⁻¹ * u * x ∈ U := by
@@ -33,7 +33,7 @@ private theorem exists_conj_le {G : Type} [Group G] [TopologicalSpace G] [IsTopo
     · exact hV u h1 x hx
 
 /- English proof (translation)
-Unfold `supN`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `Matrix.one_apply_ne (by rintro rfl; omega)`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem supN_one {R : Type} [CommRing R] {n : ℕ} : supN (1 : Matrix (Fin n) (Fin n) R) = 0 := by
   unfold supN
@@ -43,7 +43,7 @@ private theorem supN_one {R : Type} [CommRing R] {n : ℕ} : supN (1 : Matrix (F
   · rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [rowM, Matrix.of_apply]`. Use `split_ifs with h`. Rewrite using `[h.1]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem rowM_one {R : Type} [CommRing R] {n : ℕ} (m : Fin n) :
     rowM m ((1 : Matrix (Fin n) (Fin n) R) m) = 1 := by
@@ -54,7 +54,7 @@ private theorem rowM_one {R : Type} [CommRing R] {n : ℕ} (m : Fin n) :
   · rfl
 
 /- English proof (translation)
-Introduce `ν hν g`. Unfold `comb`. Rewrite using `[Finsupp.mul_sum]`. Use `Finsupp.sum_congr fun x _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, hW ν hν]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -68,21 +68,21 @@ private theorem isWh_comb {R : Type} [CommRing R] {n : ℕ} {ψ : R → ℂ} {W 
   ring
 
 /- English proof (translation)
-Introduce `hcol hrow hstep E _ _ w ψ h0 h1 n m hm U`. Proceed by induction on `m with`. Consider the case `zero`. Use `⟨Finsupp.single 1 1, fun p => ψ (supN p.val), ?_, fun W hW _ p hp => ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_one, supN_one, AddChar.map_zero_eq_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Unfold `comb`. Rewrite using `[Finsupp.sum_single_index (by simp), one_mul, hW p hp]`. Consider the case `succ m ih`. Take `⟨c₀, H₀, hH₀, hc₀⟩` from `ih (by omega)`. Take `⟨U₁, hU₁⟩` from `exists_conj_le U c₀.support`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `m' : Fin n` to `⟨m, by omega⟩`. Take `⟨c₁, h, hh1, hh, hc₁⟩` from `hstep E w ψ h0 h1 n m' hm U₁`. Take `⟨c, -, hc⟩` from `exists_comb_comb c₁ c₀`. Establish `hσ : ∃ σ : (Fin n → w.adicCompletion E) → GL (Fin n) (w.adicCompletion E), ∀ ξ (s : GL (Fin n) (w.adicCompletion E)), s.val = rowM m' ξ → σ ξ = s`. Use `⟨fun ξ => if e : ∃ s : GL (Fin n) (w.adicCompletion E), s.val = rowM m' ξ then e.choose else 1, fun ξ s hs => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ∃ s : GL (Fin n) (w.adicCompletion E), s.val = rowM m' ξ` using `⟨s, hs⟩`. Simplify using `only [dif_pos e]`. Conclude with `Units.ext (e.choose_spec.trans hs.symm)`. Take `⟨σ, hσ⟩` from `hσ`. Use `⟨c, fun p => h (p.val m') * H₀ (p * (σ (p.val m'))⁻¹), ?_, fun W hW hWU p hp => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: σ ((1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) m') = 1` using `hσ _ 1 (rowM_one m').symm`. Simplify using `only [Units.val_one, hh1, this, inv_one, mul_one, one_mul, hH₀]`. Establish `hinv : ∀ g, ∀ u ∈ U₁, comb c₀ W (g * u) = comb c₀ W g`. Introduce `g u hu`. Unfold `comb`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finsupp.sum_congr fun x hx => ?_` and prove the remaining obligations. Rewrite using `[← hWU (g * x) _ (hU₁ u hu x hx)]`. Use `congr 2`. Use `group`. Rewrite using `[hc, hc₁ (comb c₀ W) hinv p (p.val m') ?_]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hz : h (p.val m') = 0`. Simplify using `only [hz, zero_mul]`. Take `⟨s, hsU, hs⟩` from `hh _ hz`. Simplify using `only [hσ _ s hs]`. Rewrite using `[← hinv p s⁻¹ (U₁.inv_mem hsU), hc₀ W hW hWU _ (hrow _ n m' p s hp hs), mul_assoc]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `u t ht`. Take `⟨ν, hν, e1, e2⟩` from `hcol _ n m' hm p hp u`. Establish `e : p * t = ν * p` using `Units.ext (by rw [Units.val_mul, Units.val_mul, ht, e2])`. Rewrite using `[e, isWh_comb hW c₀ ν hν, e1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Smo.locKir :
     UpperTheory.V.Af.Smo.ColConj → UpperTheory.V.Af.Smo.RowStep → UpperTheory.V.Af.Smo.LocStep → UpperTheory.V.Af.Smo.LocKir := by

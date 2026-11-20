@@ -16,7 +16,7 @@ open scoped LaurentSeries
 namespace GlobalTheory.ArcCM
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨H1.dim_unique _ D'.P.smoothDim ((smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (pull_grp p).1 D.P.smoothDim) (eSec D'.P.A (Classical.arbitrary (PrimeSpectrum R'))), pull_grp p, LBIso.symm ⟨p.w, p.w_gen⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem DescNum.isPolFibre_of_isPullDeg {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {f : R →+* R'}
     {D : Out.DegPre R} {D' : Out.DegPre R'} (p : Out.IsPullDeg f D D') : IsPolFibre f D.P D'.P (prj p) :=
@@ -25,9 +25,7 @@ theorem DescNum.isPolFibre_of_isPullDeg {R R' : Type} [CommRing R] [IsDomain R] 
     (eSec D'.P.A (Classical.arbitrary (PrimeSpectrum R'))), pull_grp p, LBIso.symm ⟨p.w, p.w_gen⟩⟩
 
 /- English proof (translation)
-Use `letI := f.toAlgebra`. Use `haveI h₁ : Flat (spMap f) := by`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `(inferInstance : Module.Flat K K')`. Use `haveI h₂ : Surjective (spMap f) := ⟨fun p => ⟨(⊥ : PrimeSpectrum K'), Subsingleton.elim (α := PrimeSpectrum K) _ _⟩⟩`.
-
-Use `haveI : Flat φ := MorphismProperty.of_isPullback (P := @Flat) h.flip h₁`. Use `haveI : Surjective φ := MorphismProperty.of_isPullback (P := @Surjective) h.flip h₂`. Conclude with `Flat.epi_of_flat_of_surjective φ`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DescNum.epi_of_isPullback_field {K K' : Type} [Field K] [Field K'] (f : K →+* K') {X X' : Scheme.{0}} {φ : X' ⟶ X}
     {s' : X' ⟶ Sp K'} {s : X ⟶ Sp K} (h : IsPullback φ s' s (spMap f)) : Epi φ := by
@@ -41,19 +39,19 @@ theorem DescNum.epi_of_isPullback_field {K K' : Type} [Field K] [Field K'] (f : 
   exact Flat.epi_of_flat_of_surjective φ
 
 /- English proof (translation)
-Introduce `hK E _ _ _ H Dw l c K _ _ _ σ₁ σ B aC φ n hσ hn hφ hact htau`. Use `letI := H.starRing`. Take `⟨oa, hoa, -⟩` from `GlobalTheory.LamF.exists_oAct_rosatiConj hK.laws E H (fun _ => rfl) K B`. Take `⟨P, φP, hP⟩` from `exists_isPolFibre hK.laws.polBaseChange (algebraMap (𝓞 K) K) B.pol`. Take `⟨φ₁, hφ₁, e₁⟩` from `PolFibre.cancel hP hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨K₂, _, _, i₂, σ₂, D₂, p₂, ψ₂, hi₂, hψ₂, e₂⟩` from `GlobalTheory.T.exists_numberField_normalised_degenerationData hK K σ₁ P aC.D₀ φ₁ n hn hφ₁ aC.even aC.bimult htau`. Establish `hM : 0 < l.M'` using `Nat.lcm_pos (by have := l.three_le; omega) l.A_pos`. Take `⟨K₃, _, _, i₃, σ₃, D₃, q, p₃, hi₃, e₃, hQ⟩` from `GlobalTheory.T.exists_numberField_qkPoints_complex_degeneration hK K₂ σ₂ D₂ aC.D₀ p₂ n l.M' hn hM aC.bimult htau.1`. Establish `hψ : IsPolFibre ((i₃.comp i₂).comp (algebraMap (𝓞 K) K)) B.pol D₃.P ((prj q ≫ ψ₂) ≫ φP)` using `PolFibre.comp hP (PolFibre.comp hψ₂ (DescNum.isPolFibre_of_isPullDeg q))`. Establish `eψ : prj p₃ ≫ (prj q ≫ ψ₂) ≫ φP = φ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e₁, ← e₂, ← e₃]`. Simplify using `only [Category.assoc]`. Generalize the expression as in `(prj q ≫ ψ₂) ≫ φP = ψ at hψ eψ`. Take `⟨oB, hoB⟩` from `polOActPull _ _ _ B.pol D₃.P ψ hψ.2.1 hψ.2.2 (𝓞 E) oa`. Use `letI : Algebra c.F K₃ := ((i₃.comp i₂).comp (algebraMap c.F K)).toAlgebra`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Set `i : K →ₐ[c.F] K₃` to `{ i₃.comp i₂ with commutes' := fun _ => rfl }`. Establish `hσ₃ : σ₃.comp (i₃.comp i₂) = σ₁` using `by rw [← RingHom.comp_assoc, hi₃, hi₂]`. Establish `hb : σ = σ₃.comp (algebraMap c.F K₃)` using `by rw [← hσ, ← hσ₃]; rfl`. Establish `hp₃` using `(pull_grp p₃).1`. Establish `hcomm : ∀ x, (aC.oa.onB.act x).left ≫ prj p₃ = prj p₃ ≫ (oB.act x).left` using `fun x => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w : prj p₃ ≫ D₃.P.A.hom = aC.D₀.P.A.hom ≫ spMap σ₃` using `hp₃.w`. Generalize the expression as in `prj p₃ = π at eψ w`. Use `hψ.2.1.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, eψ, hoB, ← Category.assoc, eψ, hact, hoa]`. Rewrite using `[Category.assoc, Category.assoc, Over.w, w, ← Category.assoc, Over.w]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, p', ha, hp', hbc, hta⟩` from `GlobalTheory.T.arcData_descends_principalIdealSubring hK E H Dw l c c.F (RingHom.id c.F) K₃ ℂ σ₃ (algebraMap c.F K₃) σ aC D₃ p₃ n oB σ₃.injective hb hn htau hcomm (fun v => hQ _ (Nat.dvd_lcm_left _ _) _) (fun v => hQ _ (Nat.dvd_lcm_right _ _) _)`. Substitute `ha` using the available equality. Take `rfl` from `eq_of_heq hp'`. Use `⟨K₃, inferInstance, inferInstance, inferInstance, i, σ₃, a, p', ψ, hσ₃, hbc, hta, hψ, fun x => ?_⟩` and prove the remaining obligations. Establish `hepi : Epi (prj p')` using `DescNum.epi_of_isPullback_field σ₃ hp₃`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `hbc.2.2.2.1 x`. Generalize the expression as in `prj p' = π at eψ h hepi`. Rewrite using `[← cancel_epi π, ← Category.assoc, ← h, Category.assoc, eψ, ← Category.assoc, eψ, hact]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_arcIn_numberField : Known → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (c : Coeff l) (K : Type) [Field K] [NumberField K] [Algebra c.F K] (σ₁ : K →+* ℂ) (σ : c.F →+* ℂ) (B : GlobalTheory.CM.PAT H (Sp (𝓞 K))) (aC : ArcIn Dw l (RingHom.id c.F) ℂ σ) (φ : aC.D₀.P.A.left ⟶ B.pol.A.left) (n : ℕ), letI := H.starRing; σ₁.comp (algebraMap c.F K) = σ → 0 < n → IsPolFibre (σ₁.comp (algebraMap (𝓞 K) K)) B.pol aC.D₀.P φ → (∀ x, (aC.oa.onB.act x).left ≫ φ = φ ≫ (B.t.act.act x).left) → TauCan aC.D₀ n → ∃ (K₂ : Type) (_ : Field K₂) (_ : NumberField K₂) (_ : Algebra c.F K₂) (i : K →ₐ[c.F] K₂) (σ₂ : K₂ →+* ℂ) (a : ArcIn Dw l (RingHom.id c.F) K₂ (algebraMap c.F K₂)) (p : Out.IsPullDeg σ₂ a.D₀ aC.D₀) (ψ : a.D₀.P.A.left ⟶ B.pol.A.left), σ₂.comp (i : K →+* K₂) = σ₁ ∧ InBC σ₂ a aC p ∧ TauCan a.D₀ n ∧ IsPolFibre ((i : K →+* K₂).comp (algebraMap (𝓞 K) K)) B.pol a.D₀.P ψ ∧ ∀ x, (a.oa.onB.act x).left ≫ ψ = ψ ≫ (B.t.act.act x).left := by
   intro hK E _ _ _ H Dw l c K _ _ _ σ₁ σ B aC φ n hσ hn hφ hact htau

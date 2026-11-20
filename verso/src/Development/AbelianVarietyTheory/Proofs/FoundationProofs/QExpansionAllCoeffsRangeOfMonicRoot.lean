@@ -17,7 +17,7 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.FN
 
 /- English proof (translation)
-Take `⟨a, ha, -⟩` from `h`. Conclude with `(GlobalTheory.QFam.hasQ_mdifferentiable_and_isBoundedAtImInfty N f a hN ha).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem qAll_isBoundedAtImInfty {p : ℂ → Prop} {N : ℕ} {f : ℍ → ℂ} (hN : 0 < N) (h : QAll p N f) :
     UpperHalfPlane.IsBoundedAtImInfty f := by
@@ -25,9 +25,9 @@ theorem qAll_isBoundedAtImInfty {p : ℂ → Prop} {N : ℕ} {f : ℍ → ℂ} (
   exact (GlobalTheory.QFam.hasQ_mdifferentiable_and_isBoundedAtImInfty N f a hN ha).2
 
 /- English proof (translation)
-Establish `hb : ∀ τ, ‖h τ‖ ≤ 1 + ∑ j, ‖s j τ‖` using `fun τ => GlobalTheory.T.norm_root_le_one_add_sum_norm_coeff n (fun j => s j τ) (h τ) (hrel τ)`. Establish `hsum : (fun τ => 1 + ∑ j, ‖s j τ‖) =O[UpperHalfPlane.atImInfty] (1 : ℍ → ℝ)`. Use `Asymptotics.IsBigO.add (Asymptotics.isBigO_refl _ _) ?_` and prove the remaining obligations. Use `Asymptotics.IsBigO.sum (A := fun j τ => ‖s j τ‖) (s := Finset.univ) (fun j _ => (hs j).norm_left) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `τ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `[Finset.sum_apply]`. Use `Asymptotics.IsBigO.trans (Asymptotics.isBigO_of_le _ fun τ => ?_) hsum` and prove the remaining obligations. Use `(hb τ).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (by positivity)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isBoundedAtImInfty_of_monic_root {n : ℕ} {h : ℍ → ℂ} {s : Fin n → ℍ → ℂ}
     (hs : ∀ j, UpperHalfPlane.IsBoundedAtImInfty (s j))
@@ -46,23 +46,23 @@ end GlobalTheory.FN
 namespace GlobalTheory.FN
 
 /- English proof (translation)
-Introduce `Ω _ _ ε N n h s hN hh hper hs hrel`. Take `⟨b, hb⟩` from `GlobalTheory.T.hasQExpansion_of_periodic_bounded_holomorphic N h hN hh hper (isBoundedAtImInfty_of_monic_root (fun j => qAll_isBoundedAtImInfty hN (hs j)) hrel)`. Use `choose a ha hain using hs`. Set `p : ℕ → ℍ → ℂ` to `fun i => if hi : i < n then s ⟨i, hi⟩ else fun _ => 1`. Set `c : ℕ → ℕ → ℂ` to `fun i => if hi : i < n then a ⟨i, hi⟩ else fun k => if k = 0 then 1 else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hp : ∀ i, HasQ N (p i) (c i)`. Introduce `i`. Distinguish the cases in `hi : i < n`. Simplify `ha ⟨i, hi⟩` using `[p, c, hi]`. Simplify `HasQ.const N 1` using `[p, c, hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hrel' : ∀ τ, ∑ i ∈ Finset.range (n + 1), p i τ * h τ ^ i = 0`. Introduce `τ`. Rewrite using `[Finset.sum_range_succ, Finset.sum_range, add_comm, ← hrel τ]`. Simplify using `[p]`. Establish `hQ` using `GlobalTheory.T.polynomial_relation_passes_to_qExpansions N n h b p c hN hb hp hrel'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Q := ∑ i ∈ Finset.range (n + 1), Polynomial.monomial i (PowerSeries.mk (c i)) with hQdef`. Establish `hcoeff : ∀ i, Q.coeff i = if i < n + 1 then PowerSeries.mk (c i) else 0`. Introduce `i`. Rewrite using `[hQdef, Polynomial.finsetSum_coeff]`. Simplify using `only [Polynomial.coeff_monomial]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_ite_eq' (Finset.range (n + 1)) i (fun j => PowerSeries.mk (c j))]`. Simplify using the standard rewrite rules. Establish `hcn : PowerSeries.mk (c n) = 1`. Use extensionality with `k`. Simplify using `[c, PowerSeries.coeff_one]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQ0 : Q ≠ 0`. Introduce `h0`. Use `hcoeff n` as an intermediate fact. Rewrite `this` using `[h0, if_pos (Nat.lt_succ_self n), hcn]`. Simplify using `at this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcr : ∀ i k, PowerSeries.coeff k (Q.coeff i) ∈ ε.range`. Introduce `i k`. Rewrite using `[hcoeff i]`. Use `split_ifs with hi`. Rewrite using `[PowerSeries.coeff_mk]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hin : i < n`. Simplify `hain ⟨i, hin⟩ k` using `[c, hin]`. Simplify using `only [c, hin, dite_false] split_ifs`. Conclude with `⟨1, map_one ε⟩`. Conclude with `⟨0, map_zero ε⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Simplify using `only [map_zero]`. Conclude with `⟨0, map_zero ε⟩`. Establish `key` using `GlobalTheory.T.coeff_mem_range_of_isRoot_of_coeff_mem_range Ω ε (PowerSeries.mk b) Q hQ0 hcr hQ`. Conclude with `⟨b, hb, fun k => by simpa using key k⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem qAll_range_of_monic_root : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (ε : Ω →+* ℂ) (N n : ℕ) (h : ℍ → ℂ) (s : Fin n → ℍ → ℂ), 0 < N → MDifferentiable 𝓘(ℂ) 𝓘(ℂ) h → (∀ τ : ℍ, h ((N : ℝ) +ᵥ τ) = h τ) → (∀ j, QAll (· ∈ ε.range) N (s j)) → (∀ τ, h τ ^ n + ∑ j, s j τ * h τ ^ (j : ℕ) = 0) → QAll (· ∈ ε.range) N h := by
   intro Ω _ _ ε N n h s hN hh hper hs hrel

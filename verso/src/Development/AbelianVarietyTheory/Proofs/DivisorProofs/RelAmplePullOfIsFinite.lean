@@ -23,11 +23,11 @@ open GlobalTheory.CechPic
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Use `relAmple_of_isAmpleLB A (pull_isLB hD _) fun V hV => ?_` and prove the remaining obligations. Establish `le : A.hom ⁻¹ᵁ V ≤ χ.left ⁻¹ᵁ (G.hom ⁻¹ᵁ V)`. Rewrite using `[← Scheme.Hom.comp_preimage, Over.w]`. Establish `le' : χ.left ⁻¹ᵁ (G.hom ⁻¹ᵁ V) ≤ A.hom ⁻¹ᵁ V`. Rewrite using `[← Scheme.Hom.comp_preimage, Over.w]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : A.hom ⁻¹ᵁ V = χ.left ⁻¹ᵁ (G.hom ⁻¹ᵁ V)` using `le_antisymm le le'`. Rewrite using `[e]`. Establish `h₁` using `(isAmpleLB_of_relAmple G hD h V hV).pull_of_isFinite (χ.left ∣_ (G.hom ⁻¹ᵁ V))`. Use `(isAmpleLB_congr (pull_isLB (pull_isLB hD _) _) (pull_isLB (pull_isLB hD _) _) ?_).1 h₁` and prove the remaining obligations. Use `(cls_eq_iff (pull_isLB (pull_isLB hD _) _) (pull_isLB (pull_isLB hD _) _)).1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[cls_pull (pull_isLB hD _), cls_pull (pull_isLB hD _), cls_pull hD, cls_pull hD, ← pull_comp, ← pull_comp, morphismRestrict_ι]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relAmple_pull_of_isFinite {A G : Over S} [IsProper A.hom] (χ : A ⟶ G) [IsFinite χ.left]
     {D : LB G.left} (hD : D.IsLB) (h : Out.RelAmple G D) : Out.RelAmple A (D.pull χ.left) := by
@@ -45,7 +45,7 @@ theorem relAmple_pull_of_isFinite {A G : Over S} [IsProper A.hom] (χ : A ⟶ G)
     morphismRestrict_ι]
 
 /- English proof (translation)
-Rewrite `h` using `[relAmple_iff_isAmpleLB A hM]`. Use `relAmple_of_isAmpleLB A hL fun U hU => (isAmpleLB_pow_iff (pull_isLB hL _) hd).1 ?_` and prove the remaining obligations. Use `(isAmpleLB_congr (isLB_lbPow (pull_isLB hL _) d) (pull_isLB hM _) ((cls_eq_iff (isLB_lbPow (pull_isLB hL _) d) (pull_isLB hM _)).1 ?_)).2 (h U hU)` and prove the remaining obligations. Rewrite using `[cls_lbPow (pull_isLB hL _), cls_pull hL, cls_pull hM, e, map_nsmul]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem relAmple_of_relAmple_pow {A : Over S} [IsProper A.hom] {L M : LB A.left} (hL : L.IsLB)
     (hM : M.IsLB) {d : ℕ} (hd : 1 ≤ d) (e : cls M hM = d • cls L hL) (h : Out.RelAmple A M) : Out.RelAmple A L := by

@@ -12,7 +12,7 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Establish `hy : X.xZ x Z ∈ X.dom` using `xZ_mem_dom X hx ho (by linarith)`. Conclude with `mj_bounds X hx ho hρ0 hρ hZ hy τ v`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem maj_xZ {x : Frame X.Ψ r} (hx : x ∈ X.dom) (ho : X.IsOrtho x) {ρ : ℝ} (hρ0 : 0 < ρ) (hρ : ρ ≤ 1 / 10)
     {Z : X.Coord} (hZ : X.zN Z ≤ ρ) (τ : X.Ψ) (v : Fin r → ℂ) :

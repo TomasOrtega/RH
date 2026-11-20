@@ -14,43 +14,37 @@ noncomputable section
 namespace GlobalTheory.HeisUniqLoc
 
 /- English proof (translation)
-Introduce `F _ _ v κ G _ _ ψ₀ hc hne ℓ Γ hopen hcpt hdual χ φ φ' hφ hE hE'`. Use `set Λ := Γ.map ℓ with hΛ`. Establish `hψne : ∀ z, ψ₀ z ≠ 0` using `fun z h => by`. Establish `h0` using `AddChar.map_zero_eq_one ψ₀`. Rewrite `h0` using `[← add_neg_cancel z, AddChar.map_add_eq_mul, h, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_ne_one h0`. Establish `hpt : ∀ (f : (κ → Fv F v) → ℂ), (∀ γ ∈ Γ, schr ψ₀ (ℓ γ) f = χ γ • f) → ∀ γ ∈ Γ, ∀ x, ψ₀ (x ⬝ᵥ (ℓ γ).2 + ⅟(2 : Fv F v) * ((ℓ γ).1 ⬝ᵥ (ℓ γ).2)) * f (x + (ℓ γ).1) = χ γ * f x`. Introduce `f hf γ hγ x`. Conclude with `congrFun (hf γ hγ) x`. Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀⟩ : ∃ x₀, φ x₀ ≠ 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hφ (funext h)`. Establish `horth0 : ∀ f : (κ → Fv F v) → ℂ, (∀ γ ∈ Γ, schr ψ₀ (ℓ γ) f = χ γ • f) → ∀ x, f x ≠ 0 → ∀ γ ∈ Γ, (ℓ γ).1 = 0 → ψ₀ (x ⬝ᵥ (ℓ γ).2) = χ γ`. Introduce `f hf x hx γ hγ h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e` using `hpt f hf γ hγ x`. Rewrite `e` using `[h1, zero_dotProduct, mul_zero, add_zero, add_zero]`. Conclude with `mul_right_cancel₀ hx e`. Establish `horth : ∀ x, (φ x ≠ 0 ∨ φ' x ≠ 0) → ∀ y, ((0 : κ → Fv F v), y) ∈ Λ → ψ₀ ((x - x₀) ⬝ᵥ y) = 1`. Introduce `x hx y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨γ, hγ, hℓ⟩` from `AddSubgroup.mem_map.1 hy`. Establish `h1γ : (ℓ γ).1 = 0` using `by rw [hℓ]`. Establish `h0` using `horth0 φ hE x₀ hx₀ γ hγ h1γ`. Establish `h1 : ψ₀ (x ⬝ᵥ (ℓ γ).2) = χ γ`. Break down `hx with hx | hx` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `horth0 φ hE x hx γ hγ h1γ`. Conclude with `horth0 φ' hE' x hx γ hγ h1γ`. Rewrite `h0`, `h1` using `[hℓ]`. Rewrite using `[sub_dotProduct, AddChar.map_sub_eq_div, h0, h1, div_self]`. Rewrite using `[← h0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `hψne _`. Establish `hmem : ∀ x, (φ x ≠ 0 ∨ φ' x ≠ 0) → ∃ u₂, (x - x₀, u₂) ∈ Λ`. Introduce `x hx`. Establish `ht` using `horth x hx`. Establish `hwd : ∀ a ∈ Λ, ∀ b ∈ Λ, a.1 = b.1 → ψ₀ ((x - x₀) ⬝ᵥ a.2) = ψ₀ ((x - x₀) ⬝ᵥ b.2)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce `a ha b hb hab`. Establish `hd : ((0 : κ → Fv F v), a.2 - b.2) ∈ Λ`. Establish `hs` using `Λ.sub_mem ha hb`. Use `hs using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext <;> simp [hab]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e` using `ht _ hd`. Rewrite `e` using `[dotProduct_sub, AddChar.map_sub_eq_div, div_eq_one_iff_eq (hψne _)]`. Conclude with `e`. Set `L : AddSubgroup (κ → Fv F v)` to `Λ.map (AddMonoidHom.fst _ _)`. Set `L' : AddSubgroup (κ → Fv F v)` to `Λ.comap (AddMonoidHom.inl _ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `c' : (κ → Fv F v) → ℂ` to `fun p => if h : ∃ a ∈ Λ, a.1 = p then ψ₀ ((x - x₀) ⬝ᵥ (Classical.choose h).2) else 1`. Establish `hc' : ∀ a ∈ Λ, c' a.1 = ψ₀ ((x - x₀) ⬝ᵥ a.2)`. Introduce `a ha`. Establish `h : ∃ b ∈ Λ, b.1 = a.1` using `⟨a, ha, rfl⟩`. Simplify using `only [c', dif_pos h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hb, hb1⟩` from `Classical.choose_spec h`. Conclude with `hwd _ hb _ ha hb1`. Establish `hLc : IsCompact (L : Set (κ → Fv F v))`. Simplify using `only [L, AddSubgroup.coe_map]`. Conclude with `hcpt.image continuous_fst`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinl : Continuous (fun p : κ → Fv F v => (p, (0 : κ → Fv F v)))` using `by fun_prop`. Establish `hL'o : IsOpen (L' : Set (κ → Fv F v))`. Simplify using `only [L', AddSubgroup.coe_comap]`. Conclude with `hopen.preimage hinl`. Establish `hmul : ∀ y ∈ L, ∀ y' ∈ L, c' (y + y') = c' y * c' y'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy y' hy'`. Take `⟨a, ha, rfl⟩` from `AddSubgroup.mem_map.1 hy`. Take `⟨b, hb, rfl⟩` from `AddSubgroup.mem_map.1 hy'`. Establish `e` using `hc' (a + b) (Λ.add_mem ha hb)`. Simplify using `only [AddMonoidHom.coe_fst, Prod.fst_add, Prod.snd_add] at e ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hc' a ha, hc' b hb, dotProduct_add, AddChar.map_add_eq_mul]`. Establish `htriv : ∀ y ∈ L, y ∈ L' → c' y = 1`. Introduce `y _ hy'`. Establish `hy'' : (y, (0 : κ → Fv F v)) ∈ Λ` using `hy'`. Establish `e` using `hc' _ hy''`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e, dotProduct_zero, AddChar.map_zero_eq_one]`. Take `⟨u₂, hu₂⟩` from `GlobalTheory.CompactCharDual.exists_dotProduct_eq_local v ψ₀ hc hne L hLc L' hL'o c' hmul htriv`. Use `⟨u₂, hdual _ ?_⟩` and prove the remaining obligations. Introduce `γ hγ`. Establish `hlam : ℓ γ ∈ Λ` using `AddSubgroup.mem_map_of_mem ℓ hγ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hu₂ (ℓ γ).1 (AddSubgroup.mem_map_of_mem (AddMonoidHom.fst _ _) hlam)`. Rewrite `h1` using `[hc' _ hlam]`. Use `show ψ₀ ((ℓ γ).1 ⬝ᵥ u₂ - (x - x₀) ⬝ᵥ (ℓ γ).2) = 1`. Rewrite using `[AddChar.map_sub_eq_div, dotProduct_comm, ← h1, div_self (hψne _)]`. Use `⟨φ' x₀ / φ x₀, funext fun x => ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hx : φ x ≠ 0 ∨ φ' x ≠ 0`. Take `⟨u₂, hu⟩` from `hmem x hx`. Take `⟨γ, hγ, hℓ⟩` from `AddSubgroup.mem_map.1 hu`. Establish `e1` using `hpt φ hE γ hγ x₀`.
-
-Establish `e2` using `hpt φ' hE' γ hγ x₀`. Simplify using `only [hℓ] at e1 e2`. Rewrite `e1`, `e2` using `[show x₀ + (x - x₀) = x by abel]`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hx₀]`. Apply `mul_left_cancel₀ (hψne (x₀ ⬝ᵥ u₂ + ⅟(2 : Fv F v) * ((x - x₀) ⬝ᵥ u₂)))` to reduce the goal to its premises.
-
-Take the linear combination `(φ x₀) * e2 - (φ' x₀) * e1`. Use `push_neg at hx`. Rewrite using `[hx.1, hx.2, mul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigen_unique : ∀ {F : Type} [Field F] [NumberField F] (v : Pl F) {κ G : Type} [Fintype κ] [AddCommGroup G]
     (ψ₀ : AddChar (Fv F v) ℂ), Continuous ψ₀ → ψ₀ ≠ 1 →

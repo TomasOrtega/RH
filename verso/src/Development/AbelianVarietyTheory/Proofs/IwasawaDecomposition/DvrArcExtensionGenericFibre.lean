@@ -12,9 +12,9 @@ open ReciprocityTheory.ChartRestriction.G.DVR
 open GlobalTheory.ArcBuild in
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y T io b y z h₁ h₂ h₃ h₄ t m P hP hX ϖ hϖ hdiv hL`. Establish `hdiv' : ∀ a a', (2 * l.M' : ℤ) ∣ beF P hϖ a a'` using `fun a a' => hdiv _ (isQ_qv P hϖ) a a'`. Establish `hLie : LieCl P D β b`. Introduce `F _ _ _ r hr τ`. Establish `hf : Function.Injective ((algebraMap (FractionRing T.V) F).comp (algebraMap T.V (FractionRing T.V)))` using `(algebraMap (FractionRing T.V) F).injective.comp (IsFractionRing.injective T.V _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.LieUnif.lieMult_unif E H T t P F _ hf τ _ (GlobalTheory.T.dvr_arc_extension_residue E H D l Xo c O β Y T io b y z h₁ h₂ h₃ h₄ t m F r hr τ)`. Conclude with `⟨arc P hϖ Y b y m hX hdiv' hL hLie (GlobalTheory.T.dvr_arc_extension_special E H D l Xo c O β Y T io b y z h₁ h₂ h₃ h₄ t m P hP ϖ hϖ hdiv' hL), GlobalTheory.T.dvr_arc_extension_valuation E H D l Xo c O β Y T io b y z h₁ h₂ h₃ h₄ t m P hX ϖ hϖ hdiv' hL hLie _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ArcBuild.exists_arcIn_hasArcData : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : CDVR) (io : c.F →+* T.Fr) (b : O →+* T.V) (y : Sp T.V ⟶ Y.X) (z : Sp T.Fr ⟶ Xo.XF c), (algebraMap T.V T.Fr).comp b = io.comp β → y ≫ Y.s = spMap b → z ≫ pullback.snd _ _ = spMap io → z ≫ Y.j = spMap (algebraMap T.V T.Fr) ≫ y → ∀ (t : SAB H (Sp T.V)) (m : SABMap t Y.t y) (P : PELUnif (maximalIdeal T.V) t), P.TorsionIso → Nontrivial P.D.toPre.X → ∀ ϖ : T.V, Irreducible ϖ → (∀ Q : P.D.toPre.X → ℤ, ReciprocityTheory.ChartRestriction.G.DVR.QForm.IsQ P.D.toPre ϖ Q → ∀ u v, (2 * l.M' : ℤ) ∣ ReciprocityTheory.ChartRestriction.G.DVR.QForm.bOf P.D.toPre Q u v) → GlobalTheory.ArcExt.LevelReps Y y t m P → ∃ a : ArcIn D l β T.V b, Y.HasArcData a (Ideal.span {ϖ}) (RingHom.id T.V) ϖ y := by
   intro E _ _ _ H D l Xo c O _ β Y T io b y z h₁ h₂ h₃ h₄ t m P hP hX ϖ hϖ hdiv hL

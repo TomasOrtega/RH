@@ -12,7 +12,7 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 
 /- English proof (translation)
-Apply `X.y_bij.1` to reduce the goal to its premises. Use `show DoubleCoset.mk _ _ (X.y c) = DoubleCoset.mk _ _ (X.y c')`. Conclude with `(DoubleCoset.eq _ _ _ _).2 ⟨a, ha, k, Subgroup.mem_subgroupOf.2 hk, h⟩`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem ClassTie.eq_of_mul {hc : CMData F E} {S : HSpace E} {Lb : Submodule (𝓞 E) (Fin S.rank → E)}
     {U : Subgroup (GL (Fin S.rank) (E ⊗[F] Formalism.L2.Herm.Af F))} {cls : Type} {stab : cls → Type}
@@ -27,7 +27,7 @@ theorem ClassTie.eq_of_mul {hc : CMData F E} {S : HSpace E} {Lb : Submodule (�
 end General
 
 /- English proof (translation)
-Apply `L.y_bij.1` to reduce the goal to its premises. Use `show DoubleCoset.mk _ _ (L.y c) = DoubleCoset.mk _ _ (L.y c')`. Conclude with `(DoubleCoset.eq _ _ _ _).2 ⟨a, ha, k, Subgroup.mem_subgroupOf.2 hk, h⟩`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem ColLevel.eq_of_mul {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [StarRing E] [Algebra F E] {sp : Spaces R F E} {gp : Fin 2 → ℕ}

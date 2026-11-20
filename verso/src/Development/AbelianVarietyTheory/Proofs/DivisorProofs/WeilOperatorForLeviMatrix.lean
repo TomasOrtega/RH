@@ -12,21 +12,21 @@ namespace GlobalTheory.LeviOp
 variable {F : Type} [Field F] {κ : Type} [Fintype κ] [DecidableEq κ]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul A h, Matrix.map_one g (map_zero g) (map_one g)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_inv_mul {S : Type} [CommRing S] (g : F →+* S) (A : Matrix κ κ F) (h : IsUnit A.det) :
     A⁻¹.map g * A.map g = 1 := by
   rw [← Matrix.map_mul, Matrix.nonsing_inv_mul A h, Matrix.map_one g (map_zero g) (map_one g)]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv A h, Matrix.map_one g (map_zero g) (map_one g)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mul_inv {S : Type} [CommRing S] (g : F →+* S) (A : Matrix κ κ F) (h : IsUnit A.det) :
     A.map g * A⁻¹.map g = 1 := by
   rw [← Matrix.map_mul, Matrix.mul_nonsing_inv A h, Matrix.map_one g (map_zero g) (map_one g)]
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem hom_mulVec {S T : Type} [CommRing S] [CommRing T] (f : S →+* T) (g : F →+* S) (g' : F →+* T)
     (hg : f.comp g = g') (M : Matrix κ κ F) (x : κ → S) (i : κ) :
@@ -35,7 +35,7 @@ theorem hom_mulVec {S T : Type} [CommRing S] [CommRing T] (f : S →+* T) (g : F
   simp [Matrix.mulVec, dotProduct, map_sum, map_mul]
 
 /- English proof (translation)
-Unfold `GlobalTheory.SympChange.spAct GlobalTheory.SympChange.leviM`. Rewrite using `[Matrix.fromBlocks_map, Matrix.fromBlocks_mulVec]`. Apply the tactic sequence `ext k <;> simp [Matrix.transpose_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem spAct_levi {R : Type} [CommRing R] [Algebra F R] (A : Matrix κ κ F) (w : (κ → R) × (κ → R)) :
     GlobalTheory.SympChange.spAct (GlobalTheory.SympChange.leviM A) w =
@@ -45,7 +45,7 @@ theorem spAct_levi {R : Type} [CommRing R] [Algebra F R] (A : Matrix κ κ F) (w
   ext k <;> simp [Matrix.transpose_map]
 
 /- English proof (translation)
-Rewrite using `[spAct_levi]`. Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.WeilM.schr]`. Establish `h1` using `map_inv_mul (algebraMap F R) A hA`. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec, Matrix.dotProduct_mulVec x, Matrix.vecMul_transpose, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem schr_levi {R : Type} [CommRing R] [Algebra F R] [Invertible (2 : R)] (ψ : AddChar R ℂ)
     (A : Matrix κ κ F) (hA : IsUnit A.det) (w : (κ → R) × (κ → R)) (φ : (κ → R) → ℂ) :
@@ -86,7 +86,7 @@ def linEquiv {S : Type} [CommRing S] [Algebra ℝ S] [TopologicalSpace S] [IsTop
   continuous_invFun := Continuous.matrix_mulVec continuous_const continuous_id
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hφ.1.comp_continuous h.continuous, hφ.2.comp_homeomorph h⟩`.
+Supply the required witnesses or components.
 -/
 theorem sb_comp {X : Type} [TopologicalSpace X] (h : X ≃ₜ X) {φ : X → ℂ} (hφ : φ ∈ SB X) : φ ∘ h ∈ SB X :=
   ⟨hφ.1.comp_continuous h.continuous, hφ.2.comp_homeomorph h⟩
@@ -97,7 +97,7 @@ def evIr : AF F →+* mixedEmbedding.mixedSpace F :=
   (InfiniteAdeleRing.ringEquiv_mixedSpace F).toRingHom.comp (RingHom.fst _ _)
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`. Conclude with `sum_mem fun j _ => mul_mem (hM i j) (hx j)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_mem {v : Pl F} (M : Matrix κ κ F)
     (hM : ∀ i j, algebraMap F (Fv F v) (M i j) ∈ v.adicCompletionIntegers F) (x : κ → Fv F v)
@@ -107,7 +107,7 @@ theorem mulVec_mem {v : Pl F} (M : Matrix κ κ F)
   exact sum_mem fun j _ => mul_mem (hM i j) (hx j)
 
 /- English proof (translation)
-Simplify using `only [Filter.eventually_all]`. Conclude with `fun i j => (algebraMap F (Af F) (M i j)).2`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eventually_int (M : Matrix κ κ F) :
     ∀ᶠ v : Pl F in cofinite, ∀ i j, algebraMap F (Fv F v) (M i j) ∈ v.adicCompletionIntegers F := by
@@ -117,33 +117,29 @@ theorem eventually_int (M : Matrix κ κ F) :
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `F _ _ ψ _ _ _ κ _ _ A hA`. Set `gI : F →+* mixedEmbedding.mixedSpace F` to `(evIr (F := F)).comp (algebraMap F (AF F))`. Set `gF : F →+* FiniteAdeleRing (𝓞 F) F` to `(RingHom.snd _ _).comp (algebraMap F (AF F))`. Set `L` to `linEquiv (κ := κ) gI A hA`. Use `⟨LinearMap.funLeft ℂ ℂ (fun x : κ → AF F => A⁻¹.map (algebraMap F (AF F)) *ᵥ x), SchwartzMap.compCLMOfContinuousLinearEquiv ℂ L, fun v => LinearMap.funLeft ℂ ℂ (fun x : κ → Fv F v => A⁻¹.map (algebraMap F (Fv F v)) *ᵥ x), ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `f`. Use `⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ L.symm f, ?_⟩` and prove the remaining obligations. Use `SchwartzMap.ext fun x => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `key : ∀ (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ), LinearMap.funLeft ℂ ℂ (fun x : κ → AF F => A⁻¹.map (algebraMap F (AF F)) *ᵥ x) (pureA F f g) = pureA F (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ L f) (g ∘ homeo gF A hA)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `f g`. Use function extensionality and compare the values at `x`. Simplify using `only [LinearMap.funLeft_apply, pureA, Function.comp_apply, homeo_apply, SchwartzMap.compCLMOfContinuousLinearEquiv_apply]`. Use `congr 1`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Conclude with `hom_mulVec evIr (algebraMap F (AF F)) gI rfl A⁻¹ x i`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `hom_mulVec (RingHom.snd _ _) (algebraMap F (AF F)) gF rfl A⁻¹ x i`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : schA F κ ≤ (schA F κ).comap (LinearMap.funLeft ℂ ℂ (fun x : κ → AF F => A⁻¹.map (algebraMap F (AF F)) *ᵥ x))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, g, hg, rfl⟩`. Use `show _ ∈ schA F κ`. Rewrite using `[key]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.subset_span ⟨_, _, sb_comp (homeo gF A hA) hg, rfl⟩`. Conclude with `fun Φ hΦ => hle hΦ`. Introduce `w Φ _`. Conclude with `schr_levi ψ A hA w Φ`. Introduce `v`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `le_antisymm (Submodule.map_le_iff_le_comap.2 fun φ hφ => sb_comp (homeo _ A hA) hφ) ?_` and prove the remaining obligations. Introduce `φ hφ`. Use `⟨φ ∘ (homeo (algebraMap F (Fv F v)) A hA).symm, sb_comp _ hφ, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `only [LinearMap.funLeft_apply, Function.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `congrArg φ ((homeo (algebraMap F (Fv F v)) A hA).symm_apply_apply x)`. Introduce `v φ _ h`. Use function extensionality and compare the values at `x`. Use `congrFun h ((homeo (algebraMap F (Fv F v)) A hA).symm x)` as an intermediate fact. Simplify using `only [LinearMap.funLeft_apply, Pi.zero_apply] at this`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hx : A⁻¹.map (algebraMap F (Fv F v)) *ᵥ (homeo (algebraMap F (Fv F v)) A hA).symm x = x` using `(homeo (algebraMap F (Fv F v)) A hA).apply_symm_apply x`. Rewrite `this` using `[hx]`. Conclude with `this`. Introduce `v w φ _`. Conclude with `schr_levi (GlobalTheory.LatVac.psiAt ψ v) A hA w φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `filter_upwards [eventually_int A, eventually_int A⁻¹] with v hA1 hA2`. Use function extensionality and compare the values at `x`. Establish `hiff : (∀ i, (A⁻¹.map (algebraMap F (Fv F v)) *ᵥ x) i ∈ v.adicCompletionIntegers F) ↔ ∀ i, x i ∈ v.adicCompletionIntegers F`. Prove the components needed by the constructor for the conclusion. Introduce `h i`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : x = A.map (algebraMap F (Fv F v)) *ᵥ (A⁻¹.map (algebraMap F (Fv F v)) *ᵥ x)` using `((homeo (algebraMap F (Fv F v)) A hA).symm_apply_apply x).symm`. Rewrite using `[e]`. Conclude with `mulVec_mem A hA1 _ h i`. Introduce `h i`. Conclude with `mulVec_mem A⁻¹ hA2 x h i`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Set.indicator _ _ _ = Set.indicator _ _ _`. Distinguish the cases in `hx : ∀ i, x i ∈ v.adicCompletionIntegers F`. Rewrite using `[Set.indicator_of_mem (show _ ∈ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from hiff.2 hx), Set.indicator_of_mem (show x ∈ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from hx)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (show _ ∉ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from mt hiff.1 hx), Set.indicator_of_notMem (show x ∉ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from hx)]`.
-
-Introduce `f φ _ _`. Use function extensionality and compare the values at `x`. Simplify using `only [LinearMap.funLeft_apply, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply]`. Use `congr 1`. Use `congr 1`.
-
-Use function extensionality and compare the values at `i`. Conclude with `hom_mulVec evIr (algebraMap F (AF F)) gI rfl A⁻¹ x i`. Use `finprod_congr fun v => congrArg (φ v) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `hom_mulVec (evFin F v).toRingHom (algebraMap F (AF F)) (algebraMap F (Fv F v)) (RingHom.ext fun c => (evFin F v).commutes c) A⁻¹ x i`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem hasOp_levi : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → (∀ᶠ v in cofinite, PsiUnr ψ v) →
     (∀ v : Pl F, ∃ x, psiLoc ψ v x ≠ 1) → ∀ (κ : Type) [Fintype κ] [DecidableEq κ] (A : Matrix κ κ F), IsUnit A.det →

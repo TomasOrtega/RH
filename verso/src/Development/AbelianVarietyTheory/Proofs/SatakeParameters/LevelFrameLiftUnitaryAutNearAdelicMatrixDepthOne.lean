@@ -12,11 +12,11 @@ noncomputable section
 namespace GlobalTheory.FrameRat
 
 /- English proof (translation)
-Introduce `D X s n ST SG d w g hq y hy`. Establish `hf` using `GlobalTheory.TopStep.liftFr_spec d.2 w`. Establish `hf' : GlobalTheory.TopStep.IsLiftFr (d.1.act g.1 1) w (((g, (1 : GLG X.E n SG)) • d).1.liftFr w)`. Use `GlobalTheory.TopStep.liftFr_spec ((g, (1 : GLG X.E n SG)) • d).2 w` as an intermediate fact. Rewrite `this` using `[DecoSet.smul_val]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `set κ := GlobalTheory.TopStep.passFr g.1 1 hf hf' with hκ`. Establish `hred : GlobalTheory.TopStep.redGL n w.1 κ = 1` using `GlobalTheory.TopStep.redGL_passFr g.1 1 hf hf'`. Establish `hred' : GlobalTheory.TopStep.redGL n w.1 κ⁻¹ = 1` using `by rw [map_inv, hred, inv_one]`. Establish `he : ((g, (1 : GLG X.E n SG)) • d).1.liftFr w = g.1 * d.1.liftFr w * (κ⁻¹).1`. Rewrite using `[InvMemClass.coe_inv, hκ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = g.1 * d.1.liftFr w * ((((g, (1 : GLG X.E n SG)) • d).1.liftFr w)⁻¹ * g.1 * d.1.liftFr w)⁻¹`. Use `group`. Rewrite using `[he, map_mul, map_mul, mul_assoc, nearAt_rat_mul]`. Conclude with `GlobalTheory.CplPt.nearAt_mul 1 hy (GlobalTheory.CplPt.congAt_one_of_redGL s hq κ⁻¹ hred')`.
+A detailed English derivation is pending.
 -/
 theorem nearAt_liftFr_smul : ∀ {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))} (d : DecoSet X.E n ST SG) (w : SG) (g : UF X.E n), ((qOf w.1 : ℕ) : 𝓞 X.E) ∉ w.1.asIdeal ^ 2 → ∀ (y : GL (Fin n) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)), NearAt (seamP s w.1) 1 y (seamGL s (d.1.liftFr w)) → NearAt (seamP s w.1) 1 (ratA D.host.F (seamGL s g.1) * y) (seamGL s (((g, (1 : GLG X.E n SG)) • d).1.liftFr w)) := by
   intro D X s n ST SG d w g hq y hy

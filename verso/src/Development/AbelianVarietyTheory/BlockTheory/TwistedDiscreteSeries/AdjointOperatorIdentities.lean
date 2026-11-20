@@ -136,19 +136,19 @@ def PairOperatorStatement : Prop :=
 section Examples
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Set.bijOn_id _, fun _ _ _ _ _ _ => (one_mul _).symm⟩`.
+Supply the required witnesses or components.
 -/
 example {n : Type} (W : Submodule ℂ (Form k n ℂ)) : IsScaledUnitaryOn W 1 1 :=
   ⟨Set.bijOn_id _, fun _ _ _ _ _ _ => (one_mul _).symm⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _ _` and use `Finset.mem_univ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {V : Type} [AddCommGroup V] [Module 𝓀[k] V] [Fintype {x : V // x ≠ 0}] :
     IsUnitStable (k := k) (Finset.univ : Finset {x : V // x ≠ 0}) := fun _ _ _ _ _ => Finset.mem_univ _
 
 /- English proof (translation)
-Take `⟨P⟩ : Nonempty (Pair k n)` from `inferInstance`. Introduce and unpack `⟨h, -⟩`. Take `⟨φ, -, hφ⟩` from `h.surjOn (show Pi.single P (1 : ℂ) ∈ {φ : Form k n ℂ | φ ∈ (⊤ : Submodule ℂ _) ∧ (Function.support φ).Finite} from ⟨trivial, (Set.finite_singleton P).subset Pi.support_single_subset⟩)`. Simplify using `using congrFun hφ P`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 example {n : Type} [Fintype n] [Nonempty n] (a : ℂ) : ¬ IsScaledUnitaryOn (k := k) (n := n) ⊤ a 0 := by
   classical

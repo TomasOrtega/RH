@@ -6,27 +6,27 @@ open IsLocalRing TensorProduct Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨hD, hI⟩` from `GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing S`. Establish `hinj : Function.Injective (algebraMap S (FractionRing S))` using `IsFractionRing.injective S (FractionRing S)`. Distinguish the cases in `hA : ∀ a ∈ maximalIdeal S, ∃ y ∈ maximalIdeal S, algebraMap S (FractionRing S) y = a • c`. Set `N : Submodule S (FractionRing S)` to `Submodule.map (Algebra.linearMap S (FractionRing S)) (maximalIdeal S)`. Establish `hne : maximalIdeal S ≠ ⊥`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `h`. Establish `hF : IsField S` using `(isField_iff_maximalIdeal_eq).2 h`. Use `ringKrullDim_eq_zero_of_isField hF` as an intermediate fact. Rewrite `hdim` using `[this]`. Conclude with `absurd hdim (by decide)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hN : N ≠ ⊥`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: Algebra.linearMap S (FractionRing S) x ∈ N` using `Submodule.mem_map_of_mem hx`. Rewrite `this` using `[h, Submodule.mem_bot]`. Rewrite using `[Submodule.mem_bot]`. Conclude with `hinj (by simpa using this)`. Establish `hFG : N.FG` using `Submodule.FG.map _ (IsNoetherian.noetherian _)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hint : IsIntegral S c`. Use `isIntegral_of_smul_mem_submodule N hN hFG c ?_` and prove the remaining obligations. Introduce `n hn`. Take `⟨a, ha, rfl⟩` from `Submodule.mem_map.1 hn`. Take `⟨y, hy, hy'⟩` from `hA a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Submodule.mem_map.2 ⟨y, hy, ?_⟩` and prove the remaining obligations. Simplify using `only [Algebra.linearMap_apply, smul_eq_mul]`. Rewrite using `[hy', Algebra.smul_def, mul_comm]`. Conclude with `(IsIntegrallyClosed.isIntegral_iff).1 hint`. Use `exfalso push_neg at hA`.
+Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha, hy⟩` from `hA`. Take `⟨y, hy'⟩` from `hc a ha`. Establish `hyu : y ∉ maximalIdeal S` using `fun h => hy y h hy'`. Establish `hyunit : IsUnit y` using `by simpa [mem_maximalIdeal, mem_nonunits_iff] using hyu`. Establish `hspan : maximalIdeal S = Ideal.span {a}`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `b hb`. Take `⟨z, hz⟩` from `hc b hb`. Establish `key : b * y = a * z`. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul, map_mul, hy', hz, ← Algebra.smul_def, ← Algebra.smul_def, smul_comm]`. Rewrite using `[Ideal.mem_span_singleton']`. Take `⟨u, rfl⟩` from `hyunit`. Use `⟨z * ↑u⁻¹, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[Ideal.span_le]`. Simplify using `using ha`. Establish `h1 : (maximalIdeal S).spanFinrank ≤ 1`. Rewrite using `[hspan]`. Use `(Submodule.spanFinrank_span_le_ncard_of_finite (Set.finite_singleton a)).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `h2` using `ringKrullDim_le_spanFinrank_maximalIdeal S`. Establish `h3 : ringKrullDim S ≤ 1` using `h2.trans (by exact_mod_cast h1)`. Use `hdim.trans h3` as an intermediate fact. Conclude with `absurd this (by decide)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isInteger_of_maximalIdeal_smul_isInteger (S : Type) [CommRing S] [IsRegularLocalRing S]
     (hdim : 2 ≤ ringKrullDim S) (c : FractionRing S)
@@ -93,11 +93,11 @@ theorem isInteger_of_maximalIdeal_smul_isInteger (S : Type) [CommRing S] [IsRegu
     exact absurd this (by decide)
 
 /- English proof (translation)
-Introduce `S _ _ hdim k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `c hc`. Simplify using `using hc 1 (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ k ih`. Introduce `c hc`. Apply `isInteger_of_maximalIdeal_smul_isInteger S hdim c` to reduce the goal to its premises. Introduce `a ha`. Apply `ih` to reduce the goal to its premises.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `b hb`. Rewrite using `[smul_smul]`. Apply `hc` to reduce the goal to its premises. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_mul hb ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInteger_of_maximalIdeal_pow_smul_isInteger :
     ∀ (S : Type) [CommRing S] [IsRegularLocalRing S], 2 ≤ ringKrullDim S →

@@ -19,15 +19,13 @@ section Denominators
 variable {σ : Type} {L : Type} [Field L] [Algebra ℚ L]
 
 /- English proof (translation)
-Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨p, rfl⟩` from `hx`. Conclude with `⟨1, one_ne_zero, ⟨X p, by rw [Nat.cast_one, one_mul]⟩⟩`. Consider the case `algebraMap q`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Use `⟨q.den, q.den_nz, ⟨(q.num : MvPolynomial σ ℤ), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_intCast, ← map_natCast (algebraMap ℚ L), ← map_mul, Rat.den_mul_eq_num, map_intCast]`. Consider the case `add x y _ _ hx hy`. Take `⟨n, hn, hnx⟩` from `hx`. Take `⟨m, hm, hmy⟩` from `hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨n * m, mul_ne_zero hn hm, ?_⟩` and prove the remaining obligations. Establish `e : ((n * m : ℕ) : L) * (x + y) = m * (n * x) + n * (m * y)` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `add_mem (mul_mem (natCast_mem _ _) hnx) (mul_mem (natCast_mem _ _) hmy)`. Consider the case `mul x y _ _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn, hnx⟩` from `hx`. Take `⟨m, hm, hmy⟩` from `hy`. Use `⟨n * m, mul_ne_zero hn hm, ?_⟩` and prove the remaining obligations. Establish `e : ((n * m : ℕ) : L) * (x * y) = (n * x) * (m * y)` using `by push_cast; ring`. Rewrite using `[e]`.
-
-Conclude with `mul_mem hnx hmy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_mem_range (ψ : MvPolynomial σ ℤ →+* L) {y : L}
     (hy : y ∈ adjoin ℚ (Set.range fun p ↦ ψ (X p))) :
@@ -55,11 +53,9 @@ theorem exists_nat_mul_mem_range (ψ : MvPolynomial σ ℤ →+* L) {y : L}
     exact mul_mem hnx hmy
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `@insert a s ha ih`. Take `⟨n, hn, hns⟩` from `ih fun y hy ↦ hs y (Finset.mem_insert_of_mem hy)`. Take `⟨m, hm, hma⟩` from `exists_nat_mul_mem_range ψ (hs a (Finset.mem_insert_self a s))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨n * m, mul_ne_zero hn hm, fun y hy ↦ ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hy with rfl | hy` into its components or cases. Rewrite using `[Nat.cast_mul, mul_assoc]`. Conclude with `mul_mem (natCast_mem _ _) hma`. Rewrite using `[Nat.cast_mul, mul_comm (n : L), mul_assoc]`.
-
-Conclude with `mul_mem (natCast_mem _ _) (hns y hy)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_mem_range_finset (ψ : MvPolynomial σ ℤ →+* L) (s : Finset L)
     (hs : ∀ y ∈ s, y ∈ adjoin ℚ (Set.range fun p ↦ ψ (X p))) :
@@ -88,7 +84,7 @@ def forgetWeight (κ : K → K') : (Σ k', ι' k') → (Forgotten κ → ℕ) :=
   fun q k ↦ if q.1 = k.1 then 1 else 0
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by intro; simp), Finset.sum_apply, Fintype.sum_sigma, Finset.sum_eq_single k.1]`. Simplify using `[forgetWeight]`. Introduce `b _ hb`. Simplify using `[forgetWeight, hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem weight_forgetWeight (κ : K → K') (m : (Σ k', ι' k') →₀ ℕ) (k : Forgotten κ) :
     Finsupp.weight (forgetWeight (ι' := ι') κ) m k = ∑ i, m ⟨k.1, i⟩ := by
@@ -100,9 +96,9 @@ theorem weight_forgetWeight (κ : K → K') (m : (Σ k', ι' k') →₀ ℕ) (k 
   · simp
 
 /- English proof (translation)
-Take `⟨S, hS, rfl⟩` from `h`. Use `Ideal.homogeneous_span _ S fun x hx ↦ ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hS x hx`. Use `⟨fun k ↦ a k.1, (mem_weightedHomogeneousSubmodule _ _ _ _).mpr ?_⟩` and prove the remaining obligations. Introduce `d hd`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[weight_forgetWeight]`. Conclude with `ha d (mem_support_iff.mpr hd) k.1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHomogeneous_forgetWeight (κ : K → K') {P : Ideal (MRing ι')} (h : IsMultiHomogIdeal P) :
     P.IsHomogeneous (weightedHomogeneousSubmodule ℤ (forgetWeight (ι' := ι') κ)) := by
@@ -118,11 +114,11 @@ theorem isHomogeneous_forgetWeight (κ : K → K') {P : Ideal (MRing ι')} (h : 
 omit [Fintype K'] [∀ k, Fintype (ι' k)] in
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => rw [rename_C]`. Conclude with `isWeightedHomogeneous_C _ _`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `hp.add hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mul_X p q hp`. Rewrite using `[map_mul, rename_X]`. Establish `h0 : forgetWeight κ (v q) = 0`. Use function extensionality and compare the values at `k`. Simplify using `only [forgetWeight, Pi.zero_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Introduce `h`. Conclude with `k.2 (h ▸ hv q)`. Use `hp.mul (isWeightedHomogeneous_X ℤ (forgetWeight κ) (v q))` as an intermediate fact. Rewrite `this` using `[h0, add_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isWeightedHomogeneous_rename (κ : K → K') {v : (Σ k, ι k) → (Σ k', ι' k')}
     (hv : ∀ p, (v p).1 ∈ Set.range κ) (g : MvPolynomial (Σ k, ι k) ℤ) :
@@ -147,9 +143,9 @@ def forgetMonomial (κ : K → K') (i : ∀ k : Forgotten κ, ι' k.1) (a : Forg
 omit [∀ k, Fintype (ι' k)] in
 
 /- English proof (translation)
-Use `IsWeightedHomogeneous.prod Finset.univ (fun k ↦ (X ⟨k.1, i k⟩ : MRing ι') ^ a k) (fun k ↦ a k • forgetWeight κ ⟨k.1, i k⟩) fun k _ ↦ (isWeightedHomogeneous_X ℤ (forgetWeight κ) _).pow (a k)` as an intermediate fact. Unfold `forgetMonomial`. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single j]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[forgetWeight]`. Introduce `b _ hb`. Rewrite using `[Pi.smul_apply, forgetWeight, if_neg (fun h ↦ hb (Subtype.ext h)), smul_zero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isWeightedHomogeneous_forgetMonomial (κ : K → K') (i : ∀ k : Forgotten κ, ι' k.1)
     (a : Forgotten κ →₀ ℕ) :
@@ -178,27 +174,23 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Rewrite using `[algebraicIndependent_iff]`. Introduce `p hp`. Use `set ψ : MvPolynomial (Σ k, ι k) ℤ →+* L := φ.comp (rename v).toRingHom with hψ`. Establish `hA : adjoin ℚ (Set.range fun p : Σ k, ι k ↦ φ (X (v p))) = adjoin ℚ (Set.range fun p ↦ ψ (X p))`. Simplify using `[ψ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN, hNs⟩` from `exists_nat_mul_mem_range_finset ψ (p.support.image fun a ↦ ((coeff a p : S) : L)) (by`. Introduce `y hy`. Take `⟨a, -, rfl⟩` from `Finset.mem_image.mp hy`. Rewrite using `[← hA]`. Conclude with `hS (coeff a p).2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose g hg using fun a : p.support ↦ RingHom.mem_range.mp (hNs _ (Finset.mem_image_of_mem _ a.2))`. Use `set H : MRing ι' := ∑ a : p.support, rename v (g a) * forgetMonomial κ i a.1 with hHdef`. Establish `hH : H ∈ P'`. Rewrite using `[← hker, RingHom.mem_ker]`. Establish `e1 : φ H = (N : L) * aeval (fun k : Forgotten κ ↦ φ (X ⟨k.1, i k⟩)) p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hHdef, map_sum, aeval_def, eval₂_eq', Finset.mul_sum, ← Finset.sum_coe_sort p.support]`. Use `Finset.sum_congr rfl fun a _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_mul, show φ (rename v (g a)) = ψ (g a) from rfl, hg a, forgetMonomial, map_prod]`. Simplify using `only [map_pow, mul_assoc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[e1, hp, mul_zero]`. Use `MvPolynomial.ext _ _ fun a ↦ ?_` and prove the remaining obligations. Rewrite using `[coeff_zero]`. Distinguish the cases in `ha : a ∈ p.support`. Use `swap`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `notMem_support_iff.mp ha`. Establish `hhom : ∀ b : p.support, IsWeightedHomogeneous (forgetWeight κ) (rename v (g b) * forgetMonomial κ i b.1) ⇑b.1`. Introduce `b`. Use `(isWeightedHomogeneous_rename κ (fun p ↦ ⟨p.1, (hv p).symm⟩) (g b)).mul (isWeightedHomogeneous_forgetMonomial κ i b.1)` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcomp` using `weightedHomogeneousComponent_mem_of_mem ℤ (forgetWeight κ) (isHomogeneous_forgetWeight κ hP) hH (⇑a)`. Establish `e2 : weightedHomogeneousComponent (forgetWeight κ) (⇑a) H = rename v (g ⟨a, ha⟩) * forgetMonomial κ i a`. Rewrite using `[hHdef, map_sum, Finset.sum_eq_single ⟨a, ha⟩]`. Conclude with `(hhom ⟨a, ha⟩).weightedHomogeneousComponent_same`. Introduce `b _ hb`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hhom b).weightedHomogeneousComponent_ne _ (fun h ↦ hb (Subtype.ext (DFunLike.coe_injective h).symm))`. Simplify using the standard rewrite rules. Rewrite `hcomp` using `[e2]`. Break down `hprime.mem_or_mem hcomp with h1 | h1` into its components or cases. Rewrite `h1` using `[← hker, RingHom.mem_ker]`.
+Establish an intermediate fact. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h2 : (N : L) * ((coeff a p : S) : L) = 0`. Rewrite using `[← hg ⟨a, ha⟩]`. Conclude with `h1`. Establish `: CharZero L` using `charZero_of_injective_algebraMap (algebraMap ℚ L).injective`. Establish `h3` using `(mul_eq_zero.mp h2).resolve_left (Nat.cast_ne_zero.mpr hN)`.
-
-Conclude with `h3` after adjusting the coercions. It suffices to derive a contradiction. Use `hprime` as an intermediate fact. Rewrite `h1` using `[forgetMonomial]`. Take `⟨k, -, hk⟩` from `Ideal.IsPrime.prod_mem_iff.mp h1`.
-
-Conclude with `hi k (hprime.mem_of_pow_mem _ hk)`.
+A detailed English derivation is pending.
 -/
 theorem algebraicIndependent_forgotten (hv : ∀ p, (v p).1 = κ p.1) (hP : IsMultiHomogIdeal P')
     (hprime : P'.IsPrime) (hker : RingHom.ker φ = P') (i : ∀ k : Forgotten κ, ι' k.1)
@@ -265,15 +257,13 @@ theorem algebraicIndependent_forgotten (hv : ∀ p, (v p).1 = κ p.1) (hP : IsMu
 end Independence
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v P' L _ _ φ hκv hP hker`. Take `⟨hκ, -, hv, -⟩` from `hκv`. Use `choose i hi using fun k : Forgotten κ ↦ hP.2.2 k.1`. Use `set A := adjoin ℚ (Set.range fun p : Σ k, ι k ↦ φ (X (v p))) with hAdef`. Use `set B := adjoin ℚ (Set.range fun q : Σ k', ι' k' ↦ φ (X q)) with hBdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: FaithfulSMul ℚ A` using `(faithfulSMul_iff_algebraMap_injective ℚ A).mpr (algebraMap ℚ A).injective`. Take `⟨τ, x, hx⟩` from `exists_isTranscendenceBasis' ℚ A`. Use `set b₀ : τ → L := A.val ∘ x with hb₀def`. Establish `hb₀ : AlgebraicIndependent ℚ b₀` using `hx.1.map' Subtype.val_injective`. Establish `hSA : adjoin ℚ (Set.range b₀) ≤ A` using `adjoin_le (Set.range_subset_iff.mpr fun j ↦ (x j).2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he` using `algebraicIndependent_forgotten hv hP.2.1 hP.1 hker i hi _ hSA`. Establish `hind : AlgebraicIndependent ℚ (Sum.elim (fun k : Forgotten κ ↦ φ (X ⟨k.1, i k⟩)) b₀)` using `hb₀.sumElim he`. Establish `hAB : A ≤ B` using `adjoin_mono (Set.range_subset_iff.mpr fun p ↦ ⟨v p, rfl⟩)`. Establish `hmem : ∀ j, Sum.elim (fun k : Forgotten κ ↦ φ (X ⟨k.1, i k⟩)) b₀ j ∈ B`. Introduce and unpack `(k | j)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `subset_adjoin ⟨_, rfl⟩`. Conclude with `hAB (x j).2`. Establish `hy : AlgebraicIndependent ℚ (fun j ↦ (⟨_, hmem j⟩ : B))` using `AlgebraicIndependent.of_comp B.val hind`. Establish `hle` using `hy.cardinalMk_le_trdeg`. Establish `hcard : ((Fintype.card K' - Fintype.card K : ℕ) : Cardinal) = #(Forgotten κ)`.
-
-Rewrite using `[Cardinal.mk_fintype, Fintype.card_subtype_compl, Set.card_range_of_injective hκ]`. Rewrite using `[← hx.cardinalMk_eq_trdeg, hcard, add_comm, ← lift_id #(Forgotten κ), ← lift_id #τ, ← mk_sum]`. Conclude with `hle`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proof : Statement := by
   intro K _ ι _ K' _ ι' _ κ v P' L _ _ φ hκv hP hker

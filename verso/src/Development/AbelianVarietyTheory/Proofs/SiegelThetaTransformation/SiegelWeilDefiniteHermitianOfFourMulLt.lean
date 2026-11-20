@@ -9,9 +9,9 @@ open scoped ComplexConjugate ComplexOrder Real Classical
 namespace GlobalTheory.SW
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ hΨ n N hn`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `_ M R φ _ Z _`. Rewrite using `[Base.swd_zero, Base.swDiff_deg_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ N ih`. Introduce `h`. Conclude with `GlobalTheory.T.siegelWeil_formula_degree_succ E Ψ hΨ n N hn h (ih (by omega))`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem siegel_weil_definite : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)), IsType Ψ → ∀ (n N : ℕ), Even n → 4 * N < n → SWAt Ψ n N := by
   intro E _ _ _ Ψ hΨ n N hn

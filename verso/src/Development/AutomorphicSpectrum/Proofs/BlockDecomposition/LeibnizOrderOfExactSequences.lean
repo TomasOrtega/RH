@@ -25,58 +25,58 @@ section leaf
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.mirabolic_extension_exact k n A B C h`.
+A detailed English derivation is pending.
 -/
 theorem ses_of_mext {n : ℕ} {A B C : MRep k n} (h : MExt A B C) : Ses A.ρ B.ρ C.ρ := GlobalTheory.T.mirabolic_extension_exact k n A B C h
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.phi_preserves_isomorphism k ψ n A B h`.
+A detailed English derivation is pending.
 -/
 theorem miso_phiN (ψ : AddChar k Circle) {n : ℕ} {A B : MRep k (n + 1)} (h : MIso A B) : MIso (phiN ψ A) (phiN ψ B) :=
   GlobalTheory.T.phi_preserves_isomorphism k ψ n A B h
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.psi_preserves_isomorphism k n A B h`.
+A detailed English derivation is pending.
 -/
 theorem giso_psiN {n : ℕ} {A B : MRep k n} (h : MIso A B) : GIso (psiN A) (psiN B) := GlobalTheory.T.psi_preserves_isomorphism k n A B h
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.phi_product_rank_zero_trivial k ψ hc h1 m ρ τ h hρ hτ`.
+A detailed English derivation is pending.
 -/
 theorem phi_gp_zero (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) {m : ℕ} (ρ : GRep k (m + 1)) (τ : MRep k 0)
     (h : (m + 1) + 0 = (m + 0) + 1) (hρ : IsSmooth ρ.ρ) (hτ : IsSmooth τ.ρ) :
     Subsingleton (phiN ψ (mcast h (prodGPn ρ τ))).V := GlobalTheory.T.phi_product_rank_zero_trivial k ψ hc h1 m ρ τ h hρ hτ
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.phi_product_left_rank_zero k ψ hc h1 i τ σ h hτ hσ`.
+A detailed English derivation is pending.
 -/
 theorem phi_product_trivial_right (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) {i : ℕ} (τ : MRep k (i + 1)) (σ : GRep k 0)
     (h : (i + 1) + 0 = (i + 0) + 1) (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) :
     MIso (phiN ψ (mcast h (prodPGn τ σ))) (prodPGn (phiN ψ τ) σ) := GlobalTheory.T.phi_product_left_rank_zero k ψ hc h1 i τ σ h hτ hσ
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.restriction_product_rank_zero_left k j n π₁ π₂ h h' s₁ s₂`.
+A detailed English derivation is pending.
 -/
 theorem restriction_product_left_trivial {j n : ℕ} (π₁ : GRep k 0) (π₂ : GRep k (j + 1)) (h : 0 + (j + 1) = n + 1) (h' : 0 + j = n)
     (s₁ : IsSmooth π₁.ρ) (s₂ : IsSmooth π₂.ρ) :
     MIso (gres ((π₁.prod π₂).cast h)) (mcast h' (prodGPn π₁ (gres π₂))) := GlobalTheory.T.restriction_product_rank_zero_left k j n π₁ π₂ h h' s₁ s₂
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.restriction_product_rank_zero_right k i n π₁ π₂ h h' s₁ s₂`.
+A detailed English derivation is pending.
 -/
 theorem restriction_product_right_trivial {i n : ℕ} (π₁ : GRep k (i + 1)) (π₂ : GRep k 0) (h : (i + 1) + 0 = n + 1) (h' : i + 0 = n)
     (s₁ : IsSmooth π₁.ρ) (s₂ : IsSmooth π₂.ρ) :
     MIso (gres ((π₁.prod π₂).cast h)) (mcast h' (prodPGn (gres π₁) π₂)) := GlobalTheory.T.restriction_product_rank_zero_right k i n π₁ π₂ h h' s₁ s₂
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.derivative_twisted_iso k ψ j n π`.
+A detailed English derivation is pending.
 -/
 theorem derivB_iso (ψ : AddChar k Circle) (j : ℕ) {n : ℕ} (π : GRep k (n + j)) :
     GIso (derivB ψ j π) ((dG ψ j π).tw ((j : ℝ) / 2)) := GlobalTheory.T.derivative_twisted_iso k ψ j n π
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.twist_product_distributes k r t A B s`.
+A detailed English derivation is pending.
 -/
 theorem tw_prod {r t : ℕ} (A : GRep k r) (B : GRep k t) (s : ℝ) :
     GIso ((A.prod B).tw s) ((A.tw s).prod (B.tw s)) := GlobalTheory.T.twist_product_distributes k r t A B s
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.twist_twist_add k n A s s'`.
+A detailed English derivation is pending.
 -/
 theorem tw_tw {n : ℕ} (A : GRep k n) (s s' : ℝ) : GIso ((A.tw s).tw s') (A.tw (s + s')) := GlobalTheory.T.twist_twist_add k n A s s'
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_antitone_filtration_of_chain k n R Z a b X h`.
+A detailed English derivation is pending.
 -/
 theorem chain_filtration {n : ℕ} {R : ℕ → GRep k n → Prop} {Z : ℕ → Prop} {a b : ℕ} {X : GRep k n}
     (h : Chain R Z a b X) :
@@ -89,7 +89,7 @@ section deriv
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, h => h | j + 1, _, _, h => isSmooth_iterN ψ j (isSmooth_phiN ψ h)`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_iterN (ψ : AddChar k Circle) : ∀ (j : ℕ) {n : ℕ} {τ : MRep k (n + j)}, IsSmooth τ.ρ →
     IsSmooth (iterN ψ j τ).ρ
@@ -97,13 +97,13 @@ theorem isSmooth_iterN (ψ : AddChar k Circle) : ∀ (j : ℕ) {n : ℕ} {τ : M
   | j + 1, _, _, h => isSmooth_iterN ψ j (isSmooth_phiN ψ h)
 
 /- English proof (translation)
-The claim follows from `isSmooth_psiN (isSmooth_iterN ψ j h)`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_dN (ψ : AddChar k Circle) (j : ℕ) {n : ℕ} {τ : MRep k (n + j)} (h : IsSmooth τ.ρ) :
     IsSmooth (dN ψ j τ).ρ := isSmooth_psiN (isSmooth_iterN ψ j h)
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _, _, _, _, _, h => h | j + 1, _, _, _, _, hA, hB, hC, h => ses_iterN ψ hc j (isSmooth_phiN ψ hA) (isSmooth_phiN ψ hB) (isSmooth_phiN ψ hC) (ses_phiN ψ hc hA hB hC h)`.
+A detailed English derivation is pending.
 -/
 theorem ses_iterN (ψ : AddChar k Circle) (hc : Continuous ψ) : ∀ (j : ℕ) {n : ℕ} {A B C : MRep k (n + j)},
     IsSmooth A.ρ → IsSmooth B.ρ → IsSmooth C.ρ → Ses A.ρ B.ρ C.ρ →
@@ -113,7 +113,7 @@ theorem ses_iterN (ψ : AddChar k Circle) (hc : Continuous ψ) : ∀ (j : ℕ) {
     ses_iterN ψ hc j (isSmooth_phiN ψ hA) (isSmooth_phiN ψ hB) (isSmooth_phiN ψ hC) (ses_phiN ψ hc hA hB hC h)
 
 /- English proof (translation)
-The claim follows from `ses_psiN (isSmooth_iterN ψ j hA) (isSmooth_iterN ψ j hB) (isSmooth_iterN ψ j hC) (ses_iterN ψ hc j hA hB hC h)`.
+A detailed English derivation is pending.
 -/
 theorem ses_dN (ψ : AddChar k Circle) (hc : Continuous ψ) (j : ℕ) {n : ℕ} {A B C : MRep k (n + j)}
     (hA : IsSmooth A.ρ) (hB : IsSmooth B.ρ) (hC : IsSmooth C.ρ) (h : Ses A.ρ B.ρ C.ρ) :
@@ -121,7 +121,7 @@ theorem ses_dN (ψ : AddChar k Circle) (hc : Continuous ψ) (j : ℕ) {n : ℕ} 
   ses_psiN (isSmooth_iterN ψ j hA) (isSmooth_iterN ψ j hB) (isSmooth_iterN ψ j hC) (ses_iterN ψ hc j hA hB hC h)
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _, h => h | j + 1, _, _, _, h => miso_iterN ψ j (miso_phiN ψ h)`.
+A detailed English derivation is pending.
 -/
 theorem miso_iterN (ψ : AddChar k Circle) : ∀ (j : ℕ) {n : ℕ} {A B : MRep k (n + j)}, MIso A B →
     MIso (iterN ψ j A) (iterN ψ j B)
@@ -129,20 +129,20 @@ theorem miso_iterN (ψ : AddChar k Circle) : ∀ (j : ℕ) {n : ℕ} {A B : MRep
   | j + 1, _, _, _, h => miso_iterN ψ j (miso_phiN ψ h)
 
 /- English proof (translation)
-The claim follows from `giso_psiN (miso_iterN ψ j h)`.
+A detailed English derivation is pending.
 -/
 theorem giso_dN (ψ : AddChar k Circle) (j : ℕ) {n : ℕ} {A B : MRep k (n + j)} (h : MIso A B) :
     GIso (dN ψ j A) (dN ψ j B) := giso_psiN (miso_iterN ψ j h)
 
 /- English proof (translation)
-The claim follows from `Function.Surjective.subsingleton (Submodule.mkQ_surjective (twKer A.ρ (MirUin k (n + 1)) (mirChar k ψ n)))`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_phiN (ψ : AddChar k Circle) {n : ℕ} {A : MRep k (n + 1)} (h : Subsingleton A.V) :
     Subsingleton (phiN ψ A).V :=
   Function.Surjective.subsingleton (Submodule.mkQ_surjective (twKer A.ρ (MirUin k (n + 1)) (mirChar k ψ n)))
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, h => h | j + 1, _, _, h => subsingleton_iterN ψ j (subsingleton_phiN ψ h)`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_iterN (ψ : AddChar k Circle) : ∀ (j : ℕ) {n : ℕ} {A : MRep k (n + j)}, Subsingleton A.V →
     Subsingleton (iterN ψ j A).V
@@ -150,64 +150,62 @@ theorem subsingleton_iterN (ψ : AddChar k Circle) : ∀ (j : ℕ) {n : ℕ} {A 
   | j + 1, _, _, h => subsingleton_iterN ψ j (subsingleton_phiN ψ h)
 
 /- English proof (translation)
-The claim follows from `Function.Surjective.subsingleton (Submodule.mkQ_surjective (twKer A.ρ (MirUin k n) 1))`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_psiN {n : ℕ} {A : MRep k n} (h : Subsingleton A.V) : Subsingleton (psiN A).V :=
   Function.Surjective.subsingleton (Submodule.mkQ_surjective (twKer A.ρ (MirUin k n) 1))
 
 /- English proof (translation)
-The claim follows from `subsingleton_psiN (subsingleton_iterN ψ j h)`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_dN (ψ : AddChar k Circle) (j : ℕ) {n : ℕ} {A : MRep k (n + j)} (h : Subsingleton A.V) :
     Subsingleton (dN ψ j A).V := subsingleton_psiN (subsingleton_iterN ψ j h)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem subsingleton_mcast {a b : ℕ} (e : a = b) {A : MRep k a} (h : Subsingleton A.V) : Subsingleton (mcast e A).V := by
   subst e; exact h
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem phiN_mcast (ψ : AddChar k Circle) {a b c : ℕ} (X : MRep k a) (h : a = b + 1) (h2 : a = c + 1) (e : c = b) :
     phiN ψ (mcast h X) = mcast e (phiN ψ (mcast h2 X)) := by
   subst e; rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Substitute `e'` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem mcast_mcast {a b c : ℕ} (e : a = b) (e' : b = c) (X : MRep k a) :
     mcast e' (mcast e X) = mcast (e.trans e') X := by
   subst e; subst e'; rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ses_mcast {a b : ℕ} (e : a = b) {A B C : MRep k a} (h : Ses A.ρ B.ρ C.ρ) :
     Ses (mcast e A).ρ (mcast e B).ρ (mcast e C).ρ := by
   subst e; exact h
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hπ`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isSmooth_gcast {a b : ℕ} (h : a = b) {π : GRep k a} (hπ : IsSmooth π.ρ) : IsSmooth (π.cast h).ρ := by
   subst h; exact hπ
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SmGL.isSmooth_parInd _ _`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_prod {r t : ℕ} (A : GRep k r) (B : GRep k t) : IsSmooth (A.prod B).ρ :=
   GlobalTheory.SmGL.isSmooth_parInd _ _
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `n m ρ τ N hN h hρ hτ`. Substitute `hN` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Conclude with `hPsi m n ρ τ hρ hτ`. Consider the case `succ j ih`. Introduce `n m ρ τ N hN h hρ hτ`. Substitute `hN` using the available equality. Establish `h2 : m + (n + (j + 1)) = (m + (n + j)) + 1` using `by omega`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : m + (n + j) = (m + n) + j` using `by omega`. Establish `s1` using `hPhi ψ hc h1 m (n + j) ρ τ hρ hτ`. Establish `s2 : MIso (phiN ψ (mcast h (prodGPn ρ τ))) (mcast e (prodGPn ρ (phiN ψ τ)))`. Rewrite using `[phiN_mcast ψ _ h h2 e]`. Conclude with `miso_mcast e s1`.
-
-Conclude with `giso_trans (giso_dN ψ j s2) (ih n m ρ (phiN ψ τ) _ rfl e hρ (isSmooth_phiN ψ hτ))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gp_iso (hPsi : PsiGP k) (hPhi : PhiGP k) (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) :
     ∀ (j n m : ℕ) (ρ : GRep k m) (τ : MRep k (n + j)) (N : ℕ) (hN : m + n = N) (h : m + (n + j) = N + j),
@@ -230,15 +228,13 @@ theorem gp_iso (hPsi : PsiGP k) (hPhi : PhiGP k) (ψ : AddChar k Circle) (hc : C
     exact giso_trans (giso_dN ψ j s2) (ih n m ρ (phiN ψ τ) _ rfl e hρ (isSmooth_phiN ψ hτ))
 
 /- English proof (translation)
-Introduce `a`. Proceed by induction on `a with`. Consider the case `zero`. Introduce `j m n ρ τ h hj hρ hτ`. Take `⟨j, rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨m, rfl⟩ : ∃ m', m = m' + 1` from `⟨m - 1, by omega⟩`. Establish `e : m + 0 = n + j` using `by omega`. Establish `h2 : (m + 1) + 0 = (m + 0) + 1` using `by omega`. Use `show Subsingleton (dN ψ j (phiN ψ (mcast h (prodGPn ρ τ)))).V`. Rewrite using `[phiN_mcast ψ _ h h2 e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `subsingleton_dN ψ j (subsingleton_mcast e (phi_gp_zero ψ hc h1 ρ τ h2 hρ hτ))`. Consider the case `succ a ih`. Introduce `j m n ρ τ h hj hρ hτ`. Take `⟨j, rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`. Establish `e : m + a = n + j` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : m + (a + 1) = (m + a) + 1` using `by omega`. Establish `s1` using `hPhi ψ hc h1 m a ρ τ hρ hτ`. Establish `s2 : MIso (phiN ψ (mcast h (prodGPn ρ τ))) (mcast e (prodGPn ρ (phiN ψ τ)))`. Rewrite using `[phiN_mcast ψ _ h h2 e]`. Conclude with `miso_mcast e s1`.
-
-Use `ih j m n ρ (phiN ψ τ) e (by omega) hρ (isSmooth_phiN ψ hτ)` as an intermediate fact. Conclude with `subsingleton_of_giso (giso_symm (giso_dN ψ j s2))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gp_zero (hPhi : PhiGP k) (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) :
     ∀ (a j m n : ℕ) (ρ : GRep k m) (τ : MRep k a) (h : m + a = n + j), a < j → IsSmooth ρ.ρ → IsSmooth τ.ρ →
@@ -267,7 +263,7 @@ theorem gp_zero (hPhi : PhiGP k) (ψ : AddChar k Circle) (hc : Continuous ψ) (h
     exact subsingleton_of_giso (giso_symm (giso_dN ψ j s2))
 
 /- English proof (translation)
-Take `⟨b, d, i', t', rfl, hbd, hi, ht, hs, hA⟩` from `h`. Substitute `hi` using the available equality. Conclude with `⟨b + 1, d, i', t', rfl, by omega, rfl, ht, hs, hA⟩`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem rp_shift (ψ : AddChar k Circle) {i t n j c : ℕ} (τ : MRep k (i + 1)) (σ : GRep k t) (A : GRep k n)
     (h : RP ψ (phiN ψ τ) σ j c A) : RP ψ τ σ (j + 1) (c + 1) A := by
@@ -276,15 +272,15 @@ theorem rp_shift (ψ : AddChar k Circle) {i t n j c : ℕ} (τ : MRep k (i + 1))
   exact ⟨b + 1, d, i', t', rfl, by omega, rfl, ht, hs, hA⟩
 
 /- English proof (translation)
-Unfold `ZP at *`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem zp_shift {i t j c : ℕ} (h : ZP i t j c) : ZP (i + 1) t (j + 1) (c + 1) := by
   unfold ZP at *; omega
 
 /- English proof (translation)
-Distinguish the cases in `hj : j ≤ t`. Take `⟨t, rfl⟩ : ∃ t', t = t' + j` from `⟨t - j, by omega⟩`. Establish `hN : i + t = n` using `by omega`. Use `Or.inl ⟨_, ?_, gp_iso hPsi hPhi ψ hc h1 j t i (psiN τ) (gres σ) n hN e (isSmooth_psiN hτ) (isSmooth_gres hσ)⟩` and prove the remaining obligations. Conclude with `⟨0, j + 1, i, t, rfl, by omega, rfl, rfl, hN, giso_refl _⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Use `Or.inr ⟨?_, gp_zero hPhi ψ hc h1 t j i n (psiN τ) (gres σ) e (by omega) (isSmooth_psiN hτ) (isSmooth_gres hσ)⟩` and prove the remaining obligations. Unfold `ZP`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem top_gp (hPsi : PsiGP k) (hPhi : PhiGP k) (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1)
     {i t n j : ℕ} (τ : MRep k i) (σ : GRep k (t + 1)) (e : i + t = n + j) (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) :
@@ -298,21 +294,19 @@ theorem top_gp (hPsi : PsiGP k) (hPhi : PhiGP k) (ψ : AddChar k Circle) (hc : C
     unfold ZP; omega
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `i t n τ σ h hτ hσ`. Take `rfl : n = i + t` from `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `chain_top' (R := RP ψ τ σ 0) (Z := ZP i t 0) (a := 1) (X := dN ψ 0 (mcast h (prodPGn τ σ))) (Or.inl ⟨_, ⟨0, 0, i, t, rfl, rfl, rfl, rfl, rfl, giso_refl _⟩, hPsiPG i t τ σ hτ hσ⟩) 0 (by intro c; omega)` as an intermediate fact. Conclude with `this`. Consider the case `succ j ih`. Introduce `i t n τ σ h hτ hσ`. Use `show Chain _ _ 1 (j + 1 + 2) (dN ψ j (phiN ψ (mcast h (prodPGn τ σ))))`.
+Establish an intermediate fact. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers.
 
-Apply the tactic sequence `rcases i with _ | i <;> rcases t with _ | t`. Use linear arithmetic over natural numbers and integers. Establish `e : 0 + t = n + j` using `by omega`. Establish `h2 : 0 + (t + 1) = (0 + t) + 1` using `by omega`. Establish `s2 : MIso (phiN ψ (mcast h (prodPGn τ σ))) (mcast e (prodGPn (psiN τ) (gres σ)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[phiN_mcast ψ _ h h2 e]`. Conclude with `miso_mcast e (hPhiPG0 ψ hc h1 t τ σ hσ)`. Take `⟨e2⟩` from `giso_dN ψ j s2`. Use `chain_top (Y := zeroG n) (ses_zero_left e2) (top_gp hPsi hPhi ψ hc h1 τ σ e hτ hσ) ?_` and prove the remaining obligations. Use `chain_zero (R := RP ψ τ σ (j + 1)) (Z := ZP 0 (t + 1) (j + 1)) (X := zeroG n) inferInstance (j + 1) 2 (by intro c h3 _; unfold ZP; omega)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[show 2 + (j + 1) = j + 1 + 2 by omega]`. Then use the resulting hypothesis. Establish `e : i + 0 = n + j` using `by omega`. Establish `h2 : (i + 1) + 0 = (i + 0) + 1` using `by omega`. Establish `s2 : MIso (phiN ψ (mcast h (prodPGn τ σ))) (mcast e (prodPGn (phiN ψ τ) σ))`. Rewrite using `[phiN_mcast ψ _ h h2 e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `miso_mcast e (phi_product_trivial_right ψ hc h1 τ σ h2 hτ hσ)`. Establish `c1` using `(ih i 0 n (phiN ψ τ) σ e (isSmooth_phiN ψ hτ) hσ).shift (R' := RP ψ τ σ (j + 1)) (Z' := ZP (i + 1) 0 (j + 1)) (fun c A hA => rp_shift ψ τ σ A hA) (fun c hZ => zp_shift hZ)`. Conclude with `Chain.skip (by unfold ZP; omega) (giso_symm (giso_dN ψ j s2)) c1`. Establish `e : i + t + 1 = n + j` using `by omega`. Establish `h2 : (i + 1) + (t + 1) = (i + t + 1) + 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ea : i + (t + 1) = n + j` using `by omega`. Establish `eb : (i + 1) + t = n + j` using `by omega`. Establish `ea' : i + (t + 1) = i + t + 1` using `by omega`. Establish `eb' : (i + 1) + t = i + t + 1` using `by omega`. Establish `hext` using `hPhiPG ψ hc h1 i t τ σ hτ hσ`.
-
-Establish `ses0` using `ses_mcast e (ses_of_mext hext)`. Rewrite `ses0` using `[mcast_mcast, mcast_mcast, ← phiN_mcast ψ _ h h2 e]`. Establish `ses1` using `ses_dN ψ hc j (isSmooth_mcast _ (isSmooth_prodPGn _ _)) (isSmooth_phiN ψ (isSmooth_mcast _ (isSmooth_prodPGn _ _))) (isSmooth_mcast _ (isSmooth_prodGPn _ _)) ses0`. Establish `c1` using `(ih i (t + 1) n (phiN ψ τ) σ ea (isSmooth_phiN ψ hτ) hσ).shift (R' := RP ψ τ σ (j + 1)) (Z' := ZP (i + 1) (t + 1) (j + 1)) (fun c A hA => rp_shift ψ τ σ A hA) (fun c hZ => zp_shift hZ)`. Conclude with `chain_top ses1 (top_gp hPsi hPhi ψ hc h1 τ σ eb hτ hσ) c1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pg_chain (hPsi : PsiGP k) (hPhi : PhiGP k) (hPsiPG : PsiPG k) (hPhiPG : PhiPG k) (hPhiPG0 : PhiPG0 k)
     (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) :
@@ -373,7 +367,7 @@ section final
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨b, c, r', t', rfl, hbc, hi, ht, hs, hA⟩` from `h`. Substitute `hi` using the available equality. Conclude with `⟨c, r', t', by omega, rfl, ht, hs, hA⟩`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem rp_to_rf (ψ : AddChar k Circle) {r t n j a : ℕ} (π₁ : GRep k (r + 1)) (π₂ : GRep k t) (A : GRep k n)
     (h : RP ψ (gres π₁) π₂ j a A) : RF ψ π₁ π₂ (j + 1) a A := by
@@ -382,26 +376,24 @@ theorem rp_to_rf (ψ : AddChar k Circle) {r t n j a : ℕ} (π₁ : GRep k (r + 
   exact ⟨c, r', t', by omega, rfl, ht, hs, hA⟩
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem zp_to_zf {r t j a : ℕ} (h : ZP r t j a) : ZF (r + 1) t (j + 1) a := h
 
 /- English proof (translation)
-Consider the cases of `ℓ with`. Consider the case `zero`. Take `rfl : n = r + t` from `by omega`. Establish `top : Top (RF ψ π₁ π₂ 0) (ZF r t 0) 0 ((π₁.prod π₂).cast hn)` using `Or.inl ⟨_, ⟨0, r, t, rfl, rfl, rfl, rfl, giso_refl _⟩, giso_refl _⟩`. Conclude with `chain_top' top 0 (by intro c; omega)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `succ j => show Chain _ _ 0 (j + 1 + 1) (dN ψ j (gres ((π₁.prod π₂).cast hn)))`. Apply the tactic sequence `rcases r with _ | r <;> rcases t with _ | t`. Use linear arithmetic over natural numbers and integers. Take `rfl : t = n + j` from `by omega`. Establish `e : 0 + (n + j) = n + j` using `by omega`.
+Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s` using `restriction_product_left_trivial π₁ π₂ hn e s₁ s₂`. Establish `top : Top (RF ψ π₁ π₂ (j + 1)) (ZF 0 (n + j + 1) (j + 1)) 0 (dN ψ j (gres ((π₁.prod π₂).cast hn)))`. Use `Or.inl ⟨_, ?_, giso_trans (giso_dN ψ j s) (gp_iso hPsi hPhi ψ hc h1 j n 0 π₁ (gres π₂) n (by omega) e s₁ (isSmooth_gres s₂))⟩` and prove the remaining obligations. Conclude with `⟨j + 1, 0, n, by omega, rfl, rfl, by omega, giso_refl _⟩`. Establish `c2` using `chain_top' top (j + 1) (by intro c h3 _; unfold ZF; omega)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `c2` using `[show 0 + 1 + (j + 1) = j + 1 + 1 by omega]`. Then use the resulting hypothesis. Establish `e : r + 0 = n + j` using `by omega`. Establish `s` using `restriction_product_right_trivial π₁ π₂ hn e s₁ s₂`. Establish `c1` using `(pg_chain hPsi hPhi hPsiPG hPhiPG hPhiPG0 ψ hc h1 j r 0 n (gres π₁) π₂ e (isSmooth_gres s₁) s₂).mono (R' := RF ψ π₁ π₂ (j + 1)) (Z' := ZF (r + 1) 0 (j + 1)) (fun c A hA => rp_to_rf ψ π₁ π₂ A hA) (fun c hZ => zp_to_zf hZ)`. Conclude with `Chain.skip (a := 0) (by unfold ZF; omega) (giso_symm (giso_dN ψ j s)) c1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : r + t + 1 = n + j` using `by omega`. Establish `e1 : r + (t + 1) = n + j` using `by omega`. Establish `e2 : (r + 1) + t = n + j` using `by omega`. Establish `hx` using `hRes r t (n + j) e0 π₁ π₂ s₁ s₂`. Establish `ses` using `ses_dN ψ hc j (isSmooth_mcast _ (isSmooth_prodPGn _ _)) (isSmooth_gres (isSmooth_gcast _ (isSmooth_prod _ _))) (isSmooth_mcast _ (isSmooth_prodGPn _ _)) (ses_of_mext hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1` using `(pg_chain hPsi hPhi hPsiPG hPhiPG hPhiPG0 ψ hc h1 j r (t + 1) n (gres π₁) π₂ e1 (isSmooth_gres s₁) s₂).mono (R' := RF ψ π₁ π₂ (j + 1)) (Z' := ZF (r + 1) (t + 1) (j + 1)) (fun c A hA => rp_to_rf ψ π₁ π₂ A hA) (fun c hZ => zp_to_zf hZ)`. Establish `top : Top (RF ψ π₁ π₂ (j + 1)) (ZF (r + 1) (t + 1) (j + 1)) 0 (dN ψ j (mcast e2 (prodGPn π₁ (gres π₂))))`. Distinguish the cases in `hj : j ≤ t`. Take `⟨t, rfl⟩ : ∃ t', t = t' + j` from `⟨t - j, by omega⟩`. Establish `hN : r + 1 + t = n` using `by omega`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Use `Or.inl ⟨_, ?_, gp_iso hPsi hPhi ψ hc h1 j t (r + 1) π₁ (gres π₂) n hN e2 s₁ (isSmooth_gres s₂)⟩` and prove the remaining obligations. Conclude with `⟨j + 1, r + 1, t, by omega, rfl, rfl, hN, giso_refl _⟩`. Use `Or.inr ⟨?_, gp_zero hPhi ψ hc h1 t j (r + 1) n π₁ (gres π₂) e2 (by omega) s₁ (isSmooth_gres s₂)⟩` and prove the remaining obligations. Unfold `ZF`. Use linear arithmetic over natural numbers and integers.
-
-Conclude with `chain_top ses top c1`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem main_chain (hRes : ResSeq k) (hPsi : PsiGP k) (hPhi : PhiGP k) (hPsiPG : PsiPG k) (hPhiPG : PhiPG k)
     (hPhiPG0 : PhiPG0 k) (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1)
@@ -453,9 +445,9 @@ theorem main_chain (hRes : ResSeq k) (hPsi : PsiGP k) (hPhi : PhiGP k) (hPsiPG :
       exact chain_top ses top c1
 
 /- English proof (translation)
-Use `giso_trans (tw_cast hs _ _) (giso_cast hs ?_)` and prove the remaining obligations. Use `giso_trans (tw_prod _ _ _) (giso_prod ?_ ?_)` and prove the remaining obligations. Use `giso_symm (giso_trans (giso_tw _ (derivB_iso ψ a B₁)) (giso_trans (tw_tw _ _ _) ?_))` and prove the remaining obligations. Establish `: (a : ℝ) / 2 + (c : ℝ) / 2 = (ℓ : ℝ) / 2` using `by subst hac; push_cast; ring`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `giso_refl _`. Use `giso_symm (giso_trans (giso_tw _ (derivB_iso ψ c B₂)) (giso_trans (tw_tw _ _ _) ?_))` and prove the remaining obligations. Establish `: (c : ℝ) / 2 + (a : ℝ) / 2 = (ℓ : ℝ) / 2` using `by subst hac; push_cast; ring`. Rewrite using `[this]`. Conclude with `giso_refl _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step_iso (ψ : AddChar k Circle) {r' t' a c ℓ n : ℕ} (hac : a + c = ℓ) (B₁ : GRep k (r' + a))
     (B₂ : GRep k (t' + c)) (hs : r' + t' = n) :
@@ -473,13 +465,13 @@ theorem step_iso (ψ : AddChar k Circle) {r' t' a c ℓ n : ℕ} (hac : a + c = 
 end final
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hRes hPsi hPhi hPsiPG hPhiPG hPhiPG0 ψ hc h1 r t ℓ n hn π₁ π₂ s₁ s₂`. Establish `c0` using `main_chain hRes hPsi hPhi hPsiPG hPhiPG hPhiPG0 ψ hc h1 ℓ r t n hn π₁ π₂ s₁ s₂`. Establish `c1` using `(c0.tw ((ℓ : ℝ) / 2)).iso (giso_symm (derivB_iso ψ ℓ ((π₁.prod π₂).cast hn)))`. Take `⟨F, hF, htop, hbot, hstep⟩` from `chain_filtration c1`. Use `⟨F, hF, htop, hbot, fun i hi => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs` using `hstep i (Nat.zero_le _) (by omega)`. Use `split_ifs with hcond`. Break down `hs with ⟨A', ⟨A, ⟨c, r', t', hac, h₁, h₂, hsz, hA⟩, hA'⟩, hq⟩ | ⟨hZ, _⟩` into its components or cases. Take `rfl : c = ℓ - i` from `by omega`. Take `rfl : r' = r - i` from `by omega`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : t' = t - (ℓ - i)` from `by omega`. Use `⟨hsz, ?_⟩` and prove the remaining obligations. Take `⟨q⟩` from `hq`. Take `⟨e⟩` from `giso_trans hA' (giso_trans (giso_tw _ hA) (step_iso ψ hac (π₁.cast h₁) (π₂.cast h₂) hsz))`. Conclude with `⟨q.trans e⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd hcond hZ`. Break down `hs with ⟨A', ⟨A, ⟨c, r', t', hac, h₁, h₂, hsz, hA⟩, hA'⟩, hq⟩ | ⟨_, he⟩` into its components or cases. Conclude with `absurd ⟨by omega, by omega⟩ hcond`. Conclude with `he`.
+A detailed English derivation is pending.
 -/
 theorem leibnizOrd_of_parts : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     ResSeq k → PsiGP k → PhiGP k → PsiPG k → PhiPG k → PhiPG0 k → LeibnizOrd k := by

@@ -11,15 +11,15 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 namespace GlobalTheory.CompanionTheory.GE.Step
 
 /- English proof (translation)
-Introduce and unpack `x ⟨c0, rfl⟩`. Establish `hLB : (GlobalTheory.lbZPow H n).IsLB` using `GlobalTheory.Twist.isLB_lbZPow hH n`. Set `S0 : ShortComplex X.Modules` to `ShortComplex.mk (incl (anti hS) (e + 1)) (grπ (anti hS) (e + 1)) (incl_grπ (anti hS) (e + 1))`. Establish `hex0 : S0.Exact` using `S0.exact_of_g_is_cokernel (cokernelIsCokernel _)`. Establish `hex1 : (S0.map (GlobalTheory.twistFunctor (GlobalTheory.lbZPow H n))).Exact` using `(GlobalTheory.Twist.exact_map_iff hLB S0).mpr hex0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmono0 : Mono (incl (anti hS) (e + 1))` using `mono_of_mono_fac (incl_arrow (anti hS) (e + 1))`. Establish `hmono1 : Mono (S0.map (GlobalTheory.twistFunctor (GlobalTheory.lbZPow H n))).f` using `(GlobalTheory.Twist.mono_map_iff hLB (incl (anti hS) (e + 1))).mpr hmono0`. Establish `hexΓ` using `GlobalTheory.QCoh.exact_app_of_exact_of_mono hex1 ⊤`. Set `c1 : Γ(GlobalTheory.twistZ (lvl S (e + 1) : X.Modules) H n, ⊤)` to `c0`. Take `⟨c, hc1, hc2⟩` from `hL ((GlobalTheory.Twist.map (GlobalTheory.lbZPow H n) (grπ (anti hS) (e + 1))).app ⊤ c1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hker : (GlobalTheory.Twist.map (GlobalTheory.lbZPow H n) (grπ (anti hS) (e + 1))).app ⊤ (c1 - c) = 0`. Rewrite using `[map_sub, hc1, sub_self]`. Take `⟨d, hd⟩` from `(hexΓ (c1 - c)).mp hker`. Set `d1 : Γ(GlobalTheory.twistZ (S (e + 1) : X.Modules) H n, ⊤)` to `d`. Establish `hd' : (GlobalTheory.Twist.map (GlobalTheory.lbZPow H n) (incl (anti hS) (e + 1))).app ⊤ d1 = c1 - c` using `hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨(GlobalTheory.Twist.map (GlobalTheory.lbZPow H n) (S (e + 1)).arrow).app ⊤ d1, ⟨d1, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `harr0 : incl (anti hS) (e + 1) ≫ (S e).arrow = (S (e + 1)).arrow` using `incl_arrow (anti hS) (e + 1)`. Establish `harr : (GlobalTheory.Twist.map (GlobalTheory.lbZPow H n) (S (e + 1)).arrow).app ⊤ d1 = (GlobalTheory.Twist.map (GlobalTheory.lbZPow H n) (S e).arrow).app ⊤ (c1 - c)` using `(congrArg (fun φ => (GlobalTheory.Twist.map (GlobalTheory.lbZPow H n) φ).app ⊤ d1) harr0.symm).trans ((congrArg (fun f => f.app ⊤ d1) (GlobalTheory.Twist.map_comp (GlobalTheory.lbZPow H n) (incl (anti hS) (e + 1)) (S e).arrow)).trans ((GlobalTheory.QCoh.app_app _ _ ⊤ d1).symm.tra …`. Establish `hfin : (GlobalTheory.Twist.map (GlobalTheory.lbZPow H n) (S e).arrow).app ⊤ c0 - (GlobalTheory.Twist.map (GlobalTheory.lbZPow H n) (S (e + 1)).arrow).app ⊤ d1 = (GlobalTheory.Twist.map (GlobalTheory.lbZPow H n) (S e).arrow).app ⊤ c`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hfin]`. Conclude with `hc2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step_of_lifts {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A) {X : Scheme.{0}}
     [X.Over (Spec (.of A))] (H : ReciprocityTheory.ChartRestriction.G.Semi.LB X) (hH : H.IsLB) {P : X.Modules}

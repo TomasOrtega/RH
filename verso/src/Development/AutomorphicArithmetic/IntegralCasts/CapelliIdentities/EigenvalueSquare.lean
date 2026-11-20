@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `A hA r hr`. Rewrite `hr` using `[Matrix.eval_charpoly]`. Take `⟨v, hv, hz⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hr`. Establish `hAv : A.mulVec v = (r : ℂ) • v`. Rewrite `hz` using `[Matrix.sub_mulVec, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hz]`. Use extensionality with `i`. Simplify using `[Matrix.scalar_apply, Matrix.mulVec_diagonal]`. Establish `h1 : star (A.mulVec v) ⬝ᵥ A.mulVec v = star v ⬝ᵥ v`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Matrix.star_eq_conjTranspose, hA, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : star v ⬝ᵥ v ≠ 0` using `by open ComplexOrder in`. Conclude with `fun h => hv (dotProduct_star_self_eq_zero.mp h)`. Rewrite `h1` using `[hAv, star_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, ← mul_assoc]`. Establish `h3 : star (r : ℂ) * (r : ℂ) = 1` using `mul_right_cancel₀ h2 (by rw [h1, one_mul])`. Rewrite `h3` using `[Complex.star_def, Complex.conj_ofReal]`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : r * r = 1` using `by exact_mod_cast h3`. Rewrite using `[sq, h4]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.EigenvalueSquare.eig_sq :
     ∀ {A : Matrix (Fin (3 : ℕ)) (Fin (3 : ℕ)) ℂ},

@@ -11,11 +11,11 @@ open scoped TensorProduct NNReal ENNReal Topology
 namespace GlobalTheory.CompanionTheory.RapidDecay
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h` using `congrFun (congrFun e i) (Fin.castLE s.2 j)`. Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply, id_eq] at h ⊢`. Rewrite using `[h]`. Use `(Fintype.sum_of_injective (Fin.castLE s.2) (Fin.castLE_injective s.2) _ _ ?_ ?_).symm` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `l hl`. Establish `hlt : Fin.castLE s.2 j < l`. Assume the negation of the conclusion as `hc`. Apply `hl` to reduce the goal to its premises. Establish `hj` using `j.isLt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hc' : l.val ≤ j.val` using `not_lt.mp hc`. Conclude with `⟨⟨l.val, by omega⟩, Fin.ext rfl⟩`. Establish `h0 : B l (Fin.castLE s.2 j) = 0` using `hB hlt`. Rewrite using `[h0, mul_zero]`. Introduce `l`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
 Both sides reduce to the same expression.
 -/
@@ -42,17 +42,15 @@ theorem mul_firstCols_eq {R : Type} [CommRing R] {n r : ℕ} (M : Matrix (Fin n)
     rfl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X p hp s`. Take `⟨B, hB, e, hu⟩` from `hp`. Use `choose u hu1 _ using hu`. Establish `e1` using `mul_firstCols_eq _ _ B hB e s`. Establish `hBs : (B.submatrix (Fin.castLE s.2) (Fin.castLE s.2)).BlockTriangular id`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij`. Conclude with `hB hij`. Establish `hdet : IsUnit (B.submatrix (Fin.castLE s.2) (Fin.castLE s.2)).det`. Rewrite using `[Matrix.det_of_isUpperTriangular hBs]`. Use `⟨∏ i, u (Fin.castLE s.2 i), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Units.coe_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.submatrix_apply, hu1]`. Establish `hZ : GlobalTheory.SiegelSet.adMat F (pre X s) = (GlobalTheory.SiegelSet.adMat F X).submatrix id (Fin.castLE s.2)` using `rfl`. Use `⟨⟨B.submatrix (Fin.castLE s.2) (Fin.castLE s.2), ?_, ?_⟩, ⟨(B.submatrix (Fin.castLE s.2) (Fin.castLE s.2))⁻¹, ?_, ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j h`. Conclude with `absurd h (lt_irrefl 0)`. Rewrite using `[hZ]`. Conclude with `e1`. Introduce `i j h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd h (lt_irrefl 0)`. Rewrite using `[hZ, map_inv] set g := GlobalTheory.AdelicU.matHom (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) σ J p set Z := (GlobalTheory.SiegelSet.adMat F X).submatrix id (Fin.castLE s.2) set Bs := B.submatrix (Fin.castLE s.2) (Fin.castLE s.2)`. Establish `h1 : Bs * Bs⁻¹ = 1` using `Matrix.mul_nonsing_inv Bs hdet`. Establish `h2 : (g⁻¹).val * g.val = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Z * Bs⁻¹ := by rw [← Matrix.mul_assoc, h2, Matrix.one_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_parFlag_first_of_minParOne : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X : Matrix (Fin n) (Fin r) E), ∀ p ∈ minParOne σ J X, ∀ s : Fin r, p ∈ GlobalTheory.UAut.parFlag σ J (pre X s) fun _ => 0 := by
   intro F E _ _ _ _ _ σ n J r X p hp s

@@ -47,9 +47,9 @@ namespace GlobalTheory.CovTop.GoodDom
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hP D T j Y e o hG hE hp hq la hA hb hfd`. Use `letI := T.Q.H.starRing`. Use `GlobalTheory.fg_of_integral_functionals Y.d.c₂.F (Y.V (wtOf _ la 0)) _ fun x hx => ?_` and prove the remaining obligations. Take `⟨z, La, y, hz, hyx, hne⟩` from `GlobalTheory.T.exists_cm_point_good_section hP D T j Y e o hG hE hp hq la hA hb (fun _ => rfl) x.1 x.2 (fun h => hx (Subtype.ext h))`. Take `⟨N, hN, hint⟩` from `GlobalTheory.T.exists_frame_denominator_dominant_weight_cm _ _ _ _ _ _ z _ La hz y hyx hp hq la hA hb`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨z.K, inferInstance, inferInstance, inferInstance, { toFun := fun F => N * evR Y.d.Xo₂ Y.d.c₂ F.1 y map_add' := fun F G => ?_ map_smul' := fun s F => ?_ }, mul_ne_zero hN hne, fun F hF => hint F.1 (GlobalTheory.AllWt.cuspW_le_secZ _ F.2) hF⟩` and prove the remaining obligations. Rewrite using `[← mul_add]`. Conclude with `congrArg _ (evalAt_add _ _ F.1 G.1 y)`. Establish `e1 : evR Y.d.Xo₂ Y.d.c₂ (s • F).1 y = algebraMap Y.d.c₂.F z.K s * evR Y.d.Xo₂ Y.d.c₂ F.1 y` using `evalAt_smul _ _ s F.1 y`. Rewrite using `[e1, RingHom.id_apply, Algebra.smul_def, mul_left_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latW_fg_dom : GlobalTheory.CovTop.Hypotheses2 → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o →
     2 < Module.finrank ℚ D.host.E / 2 → 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → ∀ la : GlobalTheory.AllWt.Weight (T.Q.Dw j), (∀ τ, Antitone (la τ)) → (∀ τ, 1 ≤ gap (la τ) ((T.Q.Dw j).p - 1)) →
@@ -73,11 +73,11 @@ theorem latW_fg_dom : GlobalTheory.CovTop.Hypotheses2 → ∀ (D : D7) (T : Core
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `hP D T j Y e o hY hE hp hq la hA hb`. Use `eq_top_iff.2 fun f _ => ?_` and prove the remaining obligations. Take `⟨k, a, n, g, h, t, hdom, hn, hmem, ht, hgh, hh⟩` from `GlobalTheory.T.exists_power_cusp_multiplier_gap hP D T j Y e o hY hE hp hq la hA hb f.1 f.2`. Take `⟨s, hs, hsv⟩` from `GlobalTheory.T.exists_scalar_cusp_form_integral hP D T j Y e o hY hE a n hdom hn _ hmem`. Establish `key : ∀ la', ∀ v ∈ valSet Y.d.Xo₂ Y.d.c₂ (algCls Y.d.Xo₂ Y.d.c₂) la', 0 ≤ v ((s * t) • ((f : Rul Y.d.Xo₂ Y.d.c₂) ^ (k + 1)))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `la' v hv`. Establish `hV` using `isVal_valSet la' v hv`. Establish `e1 : (s • ((f : Rul Y.d.Xo₂ Y.d.c₂) ^ (k + 1) * g)) * h = (s * t) • ((f : Rul Y.d.Xo₂ Y.d.c₂) ^ (k + 1))`. Rewrite using `[smul_mul_assoc, mul_assoc, hgh, mul_smul_comm, mul_one, smul_smul]`. Rewrite using `[← e1, hV.mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_nonneg (hsv la' v hv) (hh la' v hv)`. Take `⟨s', hs', h'⟩` from `GlobalTheory.SupFull.exists_smul_nonneg_of_pow (valSet Y.d.Xo₂ Y.d.c₂ (algCls Y.d.Xo₂ Y.d.c₂)) (fun la => isVal_valSet la) {(f : Rul Y.d.Xo₂ Y.d.c₂) ^ (k + 1)} (by rintro g' rfl; exact ⟨s * t, mul_ne_zero hs ht, key⟩) (f : Rul Y.d.Xo₂ Y.d.c₂) k (Submodule.subset_span rfl)`. Establish `hmem' : s' • f ∈ GlobalTheory.AllWt.latW Y.U (wtOf _ la 0)` using `GlobalTheory.AllWt.mem_supLat.2 fun la v hv => h' la v hv`. Rewrite using `[← inv_smul_smul₀ hs' f]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_latW_dom : GlobalTheory.CovTop.Hypotheses2 → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ),
     Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → ∀ la : GlobalTheory.AllWt.Weight (T.Q.Dw j), (∀ τ, Antitone (la τ)) → (∀ τ, 1 ≤ gap (la τ) ((T.Q.Dw j).p - 1)) →
@@ -106,7 +106,7 @@ theorem span_latW_dom : GlobalTheory.CovTop.Hypotheses2 → ∀ (D : D7) (T : Co
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hP D T hL j hp hq hE _ Y e o hY la hA hb`. Establish `hfd` using `GlobalTheory.Deep.finiteDimensional_V_of_good D T.toCore j Y e o hY (wtOf _ la 0)`. Establish `hG : Y.GoodAt (wtOf _ la 0)` using `⟨hasGram_nrm_of_good D T.toCore j Y e o hY _, latW_fg_dom hP D T.toCore j Y e o hY hE hp hq la hA hb hfd, span_latW_dom hP D T.toCore j Y e o hY hE hp hq la hA hb⟩`. Conclude with `⟨hG, fun Z => goodOn_of_goodAt D T.toCore j Y e o hY hE Z _ hG⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem goodAt_dom : Hypotheses2 → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ la : AllWt.Weight (T.Q.Dw j), (∀ τ, Antitone (la τ)) → (∀ τ, 1 ≤ gap (la τ) ((T.Q.Dw j).p - 1)) → Y.GoodAt (wtOf _ la 0) ∧ ∀ Z, GoodOn Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtOf _ la 0) := by
   intro hP D T hL j hp hq hE _ Y e o hY la hA hb

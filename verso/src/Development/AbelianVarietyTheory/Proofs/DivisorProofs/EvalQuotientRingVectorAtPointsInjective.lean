@@ -10,9 +10,9 @@ namespace GlobalTheory.HerbrandBridge
 open Polynomial
 
 /- English proof (translation)
-Distinguish the cases in `h0 : g = 0`. Simplify using `[h0]`. Establish `hprod : (∏ s, (X - C (b s))) = ((Finset.univ.val.map b).map (fun t => X - C t)).prod`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hprod, Multiset.prod_X_sub_C_dvd_iff_le_roots h0]`. Rewrite using `[Multiset.le_iff_subset (Multiset.Nodup.map hb Finset.univ.nodup)]`. Introduce `t ht`. Take `⟨s, -, rfl⟩` from `Multiset.mem_map.1 ht`. Conclude with `(mem_roots h0).2 (hg s)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem prod_X_sub_C_dvd_of_eval_zero {O S : Type} [CommRing O] [IsDomain O] [Fintype S]
     (b : S → O) (hb : Function.Injective b) (g : O[X]) (hg : ∀ s, g.eval (b s) = 0) :
@@ -28,15 +28,15 @@ theorem prod_X_sub_C_dvd_of_eval_zero {O S : Type} [CommRing O] [IsDomain O] [Fi
   exact (mem_roots h0).2 (hg s)
 
 /- English proof (translation)
-Introduce `ha`. Establish `hinj : Function.Injective (liftA hv a)`. Introduce `s t hst`. Apply `ha` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congrArg (fun u : Int0 v => (u : C)) hst` as an intermediate fact. Conclude with `this`. Establish `key : ∀ x : Fin N → RS (liftA hv a), evalVec (liftA hv a) N x = 0 → x = 0`. Introduce `x hx`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `AdjoinRoot.mk_surjective (x i)`. Rewrite using `[Pi.zero_apply, ← hg, AdjoinRoot.mk_eq_zero]`. Apply `prod_X_sub_C_dvd_of_eval_zero _ hinj` to reduce the goal to its premises. Introduce `s`. Establish `h1` using `congrFun (congrFun hx s) i`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [evalVec, Pi.zero_apply, ← hg] at h1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[show ((0 : Int0 v) : C) = 0 from rfl, ← h1]`. Use `congr 1`. Introduce `x y hxy`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `key (x - y) (by rw [evalVec_sub, hxy, sub_self])` as an intermediate fact. Conclude with `sub_eq_zero.1 this`.
+A detailed English derivation is pending.
 -/
 theorem evalVec_injective_of_injective (C : Type) [Field C] (w : Valuation C ℝ≥0)
     (v : AddValuation C (WithTop ℝ)) (hv : ∀ x, x ∈ Int0 v ↔ x ∈ w.valuationSubring)

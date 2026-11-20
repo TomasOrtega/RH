@@ -19,9 +19,9 @@ def cechMap (P Q : PM.{w} R ι) (e : ∀ S, P.M S →ₗ[R] Q.M S) (n : ℕ) : P
   LinearMap.pi fun i => (e (ent i)).comp (LinearMap.proj i)
 
 /- English proof (translation)
-Rewrite using `[Cos.d_apply, Cos.d_apply, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(hn _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem cechMap_d (P Q : PM.{w} R ι) (e : ∀ S, P.M S →ₗ[R] Q.M S)
     (hn : ∀ {S T : Finset ι} (h : S ⊆ T) x, e T (P.res h x) = Q.res h (e S x)) (n : ℕ) (x : P.cech.X n) :
@@ -34,7 +34,7 @@ theorem cechMap_d (P Q : PM.{w} R ι) (e : ∀ S, P.M S →ₗ[R] Q.M S)
   exact (hn _ _).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Conclude with `(hn _ _).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem cechMap_aug (P Q : PM.{w} R ι) (e : ∀ S, P.M S →ₗ[R] Q.M S)
     (hn : ∀ {S T : Finset ι} (h : S ⊆ T) x, e T (P.res h x) = Q.res h (e S x)) (x : P.M ∅) :
@@ -43,27 +43,25 @@ theorem cechMap_aug (P Q : PM.{w} R ι) (e : ∀ S, P.M S →ₗ[R] Q.M S)
   exact (hn _ _).symm
 
 /- English proof (translation)
-Establish `hn' : ∀ {S T : Finset ι} (h : S ⊆ T) x, (e T).symm (P.res h x) = Q.res h ((e S).symm x)`. Introduce `S T h x`. Apply `(e T).injective` to reduce the goal to its premises. Rewrite using `[hn]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `f : ∀ S, P.M S →ₗ[R] Q.M S` to `fun S => ((e S).symm : P.M S →ₗ[R] Q.M S)`. Set `g : ∀ S, Q.M S →ₗ[R] P.M S` to `fun S => ((e S) : Q.M S →ₗ[R] P.M S)`. Establish `hf : ∀ {S T : Finset ι} (h : S ⊆ T) x, f T (P.res h x) = Q.res h (f S x)` using `hn'`. Establish `hg : ∀ {S T : Finset ι} (h : S ⊆ T) x, g T (Q.res h x) = P.res h (g S x)` using `hn`. Establish `fg : ∀ n (y : Q.cech.X n), cechMap P Q f n (cechMap Q P g n y) = y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `n y`. Use function extensionality and compare the values at `t`. Conclude with `(e _).symm_apply_apply _`. Establish `gf0 : ∀ n (y : P.cech.X n), cechMap Q P g n (cechMap P Q f n y) = y`. Introduce `n y`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Conclude with `(e _).apply_symm_apply _`. Take `⟨h0, h1, h2, h3⟩` from `hP`. Use `⟨fun y => ?_, fun y hy => ?_, fun y hy => ?_, fun n y hy => ?_⟩` and prove the remaining obligations. Establish `: Q.aug y = cechMap P Q f 0 (P.aug (g ∅ y))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← cechMap_aug P Q f hf]`. Use `congr 1`. Conclude with `((e ∅).symm_apply_apply y).symm`. Express the relevant statement in the definitionally equal form `Q.cech.d 0 (Q.aug y) = 0`. Rewrite using `[this, cechMap_d P Q f hf, show P.cech.d 0 (P.aug (g ∅ y)) = 0 from h0 _, map_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `h1 (g ∅ y) (by`. Use `cechMap_aug Q P g hg y` as an intermediate fact. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `cechMap Q P g 0 (Q.aug y) = 0 at *`. Rewrite using `[hy, map_zero])`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h`, the goal using `[one_smul]`. Conclude with `(e ∅).injective (by rw [map_zero]; exact h)`. Take `⟨x, hx⟩` from `h2 (cechMap Q P g 0 y) (by`. Express the relevant statement in the definitionally equal form `P.cech.d 0 _ = 0`. Rewrite using `[cechMap_d Q P g hg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hy' : Q.cech.d 0 y = 0` using `hy`. Rewrite using `[hy', map_zero])`. Use `⟨f ∅ x, ?_⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[one_smul]`. Rewrite using `[cechMap_aug P Q f hf]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hx' : P.aug x = cechMap Q P g 0 y` using `hx`. Rewrite using `[hx', fg]`. Take `⟨x, hx⟩` from `h3 n (cechMap Q P g (n + 1) y) (by`. Express the relevant statement in the definitionally equal form `P.cech.d (n + 1) _ = 0`. Rewrite using `[cechMap_d Q P g hg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hy' : Q.cech.d (n + 1) y = 0` using `hy`. Rewrite using `[hy', map_zero])`. Use `⟨cechMap P Q f n x, ?_⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[one_smul]`. Express the relevant statement in the definitionally equal form `Q.cech.d n _ = y`.
-
-Rewrite using `[cechMap_d P Q f hf]`. Establish `hx' : P.cech.d n x = cechMap Q P g (n + 1) y` using `hx`. Rewrite using `[hx', fg]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_of_equiv (P Q : PM.{w} R ι) (e : ∀ S, Q.M S ≃ₗ[R] P.M S)
     (hn : ∀ {S T : Finset ι} (h : S ⊆ T) x, e T (Q.res h x) = P.res h (e S x)) (hP : P.Ex) : Q.Ex := by
@@ -122,7 +120,7 @@ theorem ex_of_equiv (P Q : PM.{w} R ι) (e : ∀ S, Q.M S ≃ₗ[R] P.M S)
     rw [hx', fg]
 
 /- English proof (translation)
-Establish `hX : ∀ n, Subsingleton (P.cech.X n)` using `fun n => inferInstanceAs (Subsingleton (∀ i : Fin (n + 1) → ι, P.M (ent i)))`. Use `⟨fun x => Subsingleton.elim (α := P.cech.X 1) _ _, fun x _ => Subsingleton.elim _ _, fun y _ => ⟨0, Subsingleton.elim (α := P.cech.X 0) _ _⟩, fun n y _ => ⟨0, Subsingleton.elim (α := P.cech.X (n + 1)) _ _⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem ex_of_subsingleton (P : PM.{w} R ι) (h : ∀ S, Subsingleton (P.M S)) : P.Ex := by
   have hX : ∀ n, Subsingleton (P.cech.X n) := fun n =>
@@ -144,9 +142,9 @@ def shEv (ς : ℤˣ) (k : ℕ) (C : Cx.{w} K) {m n : ℕ} (h : m + k = n) : (Sh
       refine ⟨fun p => (show m = p.1 by have := p.2; omega) ▸ x, rfl⟩)
 
 /- English proof (translation)
-Introduce `n`. Distinguish the cases in `hk : k ≤ n`. Establish `h : n - k + k = n` using `by omega`. Conclude with `ex_of_equiv (A.term (n - k)) ((shSy ς k A).term n) (fun S => shEv ς k (A.K S) h) (fun _ _ => rfl) (hA (n - k))`. Use `ex_of_subsingleton _ fun S => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: IsEmpty {m : ℕ // m + k = n}` using `⟨fun p => hk (by have := p.2; omega)⟩`. Conclude with `inferInstanceAs (Subsingleton (∀ m : {m : ℕ // m + k = n}, (A.K S).X m.1))`.
+A detailed English derivation is pending.
 -/
 theorem shSy_desc {ς : ℤˣ} {k : ℕ} {A : Sy.{w} K ι} (hA : A.Desc) : (shSy ς k A).Desc := by
   intro n
@@ -159,7 +157,7 @@ theorem shSy_desc {ς : ℤˣ} {k : ℕ} {A : Sy.{w} K ι} (hA : A.Desc) : (shSy
     exact inferInstanceAs (Subsingleton (∀ m : {m : ℕ // m + k = n}, (A.K S).X m.1))
 
 /- English proof (translation)
-Introduce `_ _ _ h` and use `shSy_desc h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sh_desc : ∀ {K : Type} [Field K] {ι : Type} [DecidableEq ι] (ς : ℤˣ) (k : ℕ) (A : Sy.{1} K ι),
     A.Desc → (shSy ς k A).Desc :=

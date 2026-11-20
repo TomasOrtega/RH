@@ -151,13 +151,13 @@ def adjProd (T : Type) [Fintype T] (N j : ℕ) (hj : 0 < j) (hjN : j < N) : Poly
   ∏ τ : T, (X (τ, ⟨j - 1, by omega⟩) - X (τ, ⟨j, hjN⟩))
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.G.Geo.lineBundle ℤ _ 1`.
+A detailed English derivation is pending.
 -/
 example : ReciprocityTheory.ChartRestriction.G.Geo.ChartBundle ℤ (fun _ : Fin 2 => (1 : ℚ)) 1 ℚ :=
   ReciprocityTheory.ChartRestriction.G.Geo.lineBundle ℤ _ 1
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : FiniteDimensional ℚ ℚ := inferInstance
 

@@ -7,9 +7,9 @@ open scoped Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hsD : IsAddFundamentalDomain L (s +ᵥ D) volume` using `hD.vadd_of_comm s`. Establish `himg : (fun t => s + t) '' D = s +ᵥ D`. Express the relevant statement in the definitionally equal form `(fun t => s +ᵥ t) '' D = s +ᵥ D`. Conclude with `Set.image_vadd`. Rewrite using `[← (measurePreserving_add_left volume s).setIntegral_image_emb (MeasurableEquiv.addLeft s).measurableEmbedding g D, himg]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hsD.setIntegral_eq hD (fun p x => ?_)` and prove the remaining obligations. Rewrite using `[AddSubgroup.vadd_def, vadd_eq_add, add_comm]`. Conclude with `hp p p.2 x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_translate_of_periodic {n : Type} [Fintype n] (L : AddSubgroup (n → ℝ))
     [Countable L] (D : Set (n → ℝ)) (g : (n → ℝ) → ℂ)
@@ -26,13 +26,13 @@ theorem setIntegral_translate_of_periodic {n : Type} [Fintype n] (L : AddSubgrou
   exact hp p p.2 x
 
 /- English proof (translation)
-Introduce `n _ L L' _ _ D D' g hD hD' hDfin hD'fin hg ⟨C, hC⟩ hp hp'`. Establish `: IsFiniteMeasure (volume.restrict D)` using `⟨by rw [Measure.restrict_apply_univ]; exact hDfin⟩`. Establish `: IsFiniteMeasure (volume.restrict D')` using `⟨by rw [Measure.restrict_apply_univ]; exact hD'fin⟩`. Establish `hint : Integrable (Function.uncurry fun s t => g (s + t)) ((volume.restrict D).prod (volume.restrict D'))`. Use `Integrable.of_bound ?_ C (Filter.Eventually.of_forall fun z => hC _)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hg.comp (continuous_fst.add continuous_snd)).aestronglyMeasurable`. Establish `h1 : ∫ s in D, ∫ t in D', g (s + t) = ((volume D).toReal : ℂ) * ∫ t in D', g t`. Repeatedly rewrite using `[setIntegral_translate_of_periodic L' D' g hD' hp']`. Rewrite using `[setIntegral_const]`. Simplify using `[Complex.real_smul, Measure.real]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : ∫ t in D', ∫ s in D, g (s + t) = ((volume D').toReal : ℂ) * ∫ s in D, g s`. Establish `: ∀ t, ∫ s in D, g (s + t) = ∫ s in D, g s` using `fun t => by`. Repeatedly rewrite using `[add_comm _ t]`. Conclude with `setIntegral_translate_of_periodic L D g hD hp t`. Repeatedly rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[setIntegral_const]`. Simplify using `[Complex.real_smul, Measure.real]`. Rewrite using `[← h1, ← h2]`. Conclude with `integral_integral_swap hint`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mean_fundamentalDomain_eq_of_periodic :
     ∀ (n : Type) [Fintype n] (L L' : AddSubgroup (n → ℝ)) [Countable L] [Countable L'] (D D' : Set (n → ℝ)) (g : (n → ℝ) → ℂ), MeasureTheory.IsAddFundamentalDomain L D MeasureTheory.volume → MeasureTheory.IsAddFundamentalDomain L' D' MeasureTheory.volume → MeasureTheory.volume D < ⊤ → MeasureTheory.volume D' < ⊤ → Continuous g → (∃ C : ℝ, ∀ s, ‖g s‖ ≤ C) → (∀ p ∈ L, ∀ s, g (s + p) = g s) → (∀ p ∈ L', ∀ s, g (s + p) = g s) → ((MeasureTheory.volume D).toReal : ℂ) * ∫ s in D', g s = ((MeasureTheory.volume D').toReal : ℂ) * ∫ s in D, g s := by

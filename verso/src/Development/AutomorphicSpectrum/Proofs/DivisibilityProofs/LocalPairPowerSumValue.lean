@@ -12,15 +12,15 @@ open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR GlobalTheory.Compan
 namespace GlobalTheory.CompanionTheory.Ar.Num
 
 /- English proof (translation)
-Introduce `O _ _ _ K _ _ ι _ σ _ _ T P r k e G`. Establish `hcomp : (Sum.elim T.x T.x') ∘ Sum.map e e = Sum.elim (T.x ∘ e) (T.x' ∘ e)`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `cases s <;> rfl`. Establish `hfin : ∀ f g : MRing ι O, (Function.support (ratDiv P f g)).Finite` using `fun f g => ratDiv_support_finite DivCycleFiniteSupport.full P f g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hterm : ∀ (i : σ) (L : List (K → ℤ)), cycNum (ratDiv P (T.f i) (T.g i)) (Sum.elim T.x T.x') (∑ a ∈ Finset.univ.filter (fun a => e a = i), rename (Sum.map e e) (MvPolynomial.map (Int.castRingHom ℝ) (psumExpansion r k a))) L = ∑ a ∈ Finset.univ.filter (fun a => e a = i), ((cycEval …`. Introduce `i L`. Rewrite using `[(GlobalTheory.T.cycle_number_linear O K ι (σ ⊕ σ) (ratDiv P (T.f i) (T.g i)) (Sum.elim T.x T.x') L).2.2.1]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Take `rfl : e a = i` from `(Finset.mem_filter.mp ha).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[GlobalTheory.T.cycle_number_rename.1 O K ι (Fin r ⊕ Fin r) (σ ⊕ σ) (Sum.map e e) _ (Sum.elim T.x T.x') _ L, hcomp]`. Conclude with `(cycNum_int_and_comb O K ι (Fin r ⊕ Fin r) (Sum.elim (T.x ∘ e) (T.x' ∘ e)) L).1 _ (hfin _ _) _`. Establish `hck : ∀ L : List (K → ℤ), (((T.comp e).ck P k L : ℤ) : ℝ) = ∑ i, ∑ a ∈ Finset.univ.filter (fun a => e a = i), ((cycEval (fun W => classNum (Sum.elim (T.x ∘ e) (T.x' ∘ e)) (psumExpansion r k a) L W) (ratDiv P (T.f (e a)) (T.g (e a))) : ℤ) : ℝ)`. Introduce `L`. Rewrite using `[Finset.sum_fiberwise]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [LocPair.ck, pairNum, LocPair.comp, Function.comp_apply, Int.cast_sum]`. Unfold `LocPair.val`. Simplify using `only [GlobalTheory.T.cycle_number_mul_expand O K ι (σ ⊕ σ), List.append_nil, hterm]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.mul_sum, hck]`.
+A detailed English derivation is pending.
 -/
 theorem val_psumExpansion_mul : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (σ : Type) [Fintype σ] [DecidableEq σ] (T : LocPair ι O σ) (P : Ideal (MRing ι O)) (r k : ℕ) (e : Fin r → σ) (G : MvPolynomial (σ ⊕ σ) ℝ), T.val P (fun i => (∑ a ∈ Finset.univ.filter (fun a => e a = i), rename (Sum.map e e) (MvPolynomial.map (Int.castRingHom ℝ) (psumExpansion r k a))) * G) = ∑ μ ∈ G.support, G.coeff μ * (((T.comp e).ck P k (classList (Sum.elim T.x T.x') μ) : ℤ) : ℝ) := by
   intro O _ _ _ K _ _ ι _ σ _ _ T P r k e G

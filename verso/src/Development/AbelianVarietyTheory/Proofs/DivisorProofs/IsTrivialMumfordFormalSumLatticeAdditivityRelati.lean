@@ -39,13 +39,13 @@ def rels (r : ℕ) : Set (PVec r →₀ ℤ) :=
   Set.range (fun p : Vec r × Vec r × Vec r => rel1 p.1 p.2.1 p.2.2) ∪ Set.range (fun p : Vec r × Vec r => rel2 p.1 p.2)
 
 /- English proof (translation)
-Simplify using `[flat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem flat_single (u v : Vec r) : flat (Finsupp.single (u, v) 1) = lam u v := by
   simp [flat]
 
 /- English proof (translation)
-Simplify using `only [sigP, sig, map_sum, map_zsmul, flat_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem flat_sigP (W A A' : Matrix (Fin r) (Fin r) ℤ) : flat (sigP W A A') = sig W A A' := by
   simp only [sigP, sig, map_sum, map_zsmul, flat_single]
@@ -89,20 +89,20 @@ section Maps
 variable {S : Scheme.{0}} {A B : Over S} [GrpObj B] [IsCommMonObj B]
 
 /- English proof (translation)
-Simplify using `only [vecHom, Pi.add_apply, zpow_add, Finset.prod_mul_distrib]`. Conclude with `mul_mul_mul_comm _ _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vecHom_add (pr : Fin r → (A ⟶ B)) (u v : Vec r) : vecHom pr (u + v) = vecHom pr u * vecHom pr v := by
   simp only [vecHom, Pi.add_apply, zpow_add, Finset.prod_mul_distrib]
   exact mul_mul_mul_comm _ _ _ _
 
 /- English proof (translation)
-Simplify using `only [vecHom, Pi.zero_apply, zpow_zero, Finset.prod_const_one, _root_.mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vecHom_zero (pr : Fin r → (A ⟶ B)) : vecHom pr 0 = 1 := by
   simp only [vecHom, Pi.zero_apply, zpow_zero, Finset.prod_const_one, _root_.mul_one]
 
 /- English proof (translation)
-Rewrite using `[vecHom, MonObj.comp_mul, GlobalTheory.Mum.TensAct.comp_prod_zpow, GlobalTheory.Mum.TensAct.comp_prod_zpow]`. Simplify using `only [lift_fst_assoc, lift_snd_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem comp_vecHom (pr : Fin r → (A ⟶ B)) {Z : Over S} (p q : Z ⟶ A) (v : Vec r) :
     lift p q ≫ vecHom pr v = (∏ k, (p ≫ pr k) ^ v (Sum.inl k)) * ∏ k, (q ≫ pr k) ^ v (Sum.inr k) := by
@@ -112,7 +112,7 @@ theorem comp_vecHom (pr : Fin r → (A ⟶ B)) {Z : Over S} (p q : Z ⟶ A) (v :
 end Maps
 
 /- English proof (translation)
-Simplify using `only [vecLat, Pi.add_apply, add_smul, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem vecLat_add {X X' : Type} [AddCommGroup X] [AddCommGroup X'] (xe : X' ≃+ (Fin r → X)) (u v : Vec r) (y y' : X') :
     vecLat xe (u + v) y y' = vecLat xe u y y' + vecLat xe v y y' := by
@@ -127,7 +127,7 @@ open GlobalTheory.TensBal
 variable {R : Type} [CommRing R] [IsDomain R] {r : ℕ}
 
 /- English proof (translation)
-The claim follows from `Finset.prod_coe_sort d.support (fun v => g v (d v))`.
+A detailed English derivation is pending.
 -/
 theorem prod_support_eq {U : Type} [CommGroup U] (g : Vec r → ℤ → U) (d : Vec r →₀ ℤ) :
     ∏ v : d.support, g v.1 (d v.1) = d.prod g :=
@@ -136,7 +136,7 @@ theorem prod_support_eq {U : Type} [CommGroup U] (g : Vec r → ℤ → U) (d : 
 variable (Q : Data R) (D' : DegPre R) (pr : Fin r → (D'.P.A ⟶ Q.B))
 
 /- English proof (translation)
-Take `⟨t, ht, hv⟩` from `exists_gen Q.M.isLB (φ' := fun v : (0 : Vec r →₀ ℤ).support => (vecHom pr v.1).left) (ε' := fun v => (0 : Vec r →₀ ℤ) v.1) (fun U _ h => by simp) (LB.oneGen Q.M.L (Y := (D'.P.A ⊗ D'.P.A).left)) (LB.isGen_oneGen _)`. Use `⟨t, ht, fun z J hJ => (hv _ _ z J hJ).trans (val_one _), fun z J hJ y y' => ?_⟩` and prove the remaining obligations. Rewrite using `[hv _ _ z J hJ, val_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem triv_zero : Triv Q D' pr 0 (fun _ _ _ _ => 1) := by
   obtain ⟨t, ht, hv⟩ := exists_gen Q.M.isLB
@@ -148,11 +148,11 @@ theorem triv_zero : Triv Q D' pr 0 (fun _ _ _ _ => 1) := by
 variable {Q D' pr}
 
 /- English proof (translation)
-Take `⟨Ξ, hΞ, h1, h2⟩` from `h`. Take `⟨Ξ', hΞ', h1', h2'⟩` from `h'`. Establish `hform : FormEq (Sum.elim (fun v : c.support => (vecHom pr v.1).left) (fun v : c'.support => (vecHom pr v.1).left)) (Sum.elim (fun v : c.support => c v.1) (fun v : c'.support => c' v.1)) (fun v : (c + c').support => (vecHom pr v.1).left) (fun v => (c + c') v.1)`. Introduce `U _ h`. Rewrite using `[Fintype.prod_sum_type]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[prod_support_eq (fun v n => h (vecHom pr v).left ^ n) c, prod_support_eq (fun v n => h (vecHom pr v).left ^ n) c', prod_support_eq (fun v n => h (vecHom pr v).left ^ n) (c + c'), Finsupp.prod_add_index' (fun _ => zpow_zero _) (fun _ _ _ => zpow_add _ _ _)]`. Take `⟨Ξ'', hΞ'', hv⟩` from `exists_gen Q.M.isLB hform _ (ReciprocityTheory.ChartRestriction.G.DVR.mulGen_isGen _ _ _ _ _ _ _ hΞ hΞ')`. Use `⟨Ξ'', hΞ'', fun z J hJ => ?_, fun z J hJ y y' => ?_⟩` and prove the remaining obligations. Rewrite using `[hv _ _ z J hJ, val_mul hJ, h1 z J hJ, h1' z J hJ, _root_.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv _ _ z J hJ, val_mul hJ, h2 z J hJ y y', h2' z J hJ y y']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem triv_add {c c' : Vec r →₀ ℤ} {V V'} (h : Triv Q D' pr c V) (h' : Triv Q D' pr c' V') :
     Triv Q D' pr (c + c') (fun z J y y' => V z J y y' * V' z J y y') := by
@@ -175,9 +175,9 @@ theorem triv_add {c c' : Vec r →₀ ℤ} {V V'} (h : Triv Q D' pr c V) (h' : T
   · rw [hv _ _ z J hJ, val_mul hJ, h2 z J hJ y y', h2' z J hJ y y']
 
 /- English proof (translation)
-Take `⟨Ξ, hΞ, h1, h2⟩` from `h`. Establish `hF : FormEq (fun v : c.support => (vecHom pr v.1).left) (fun v => -(c v.1)) (fun v : (-c).support => (vecHom pr v.1).left) (fun v => (-c) v.1)`. Introduce `U _ h`. Rewrite using `[Finset.prod_coe_sort c.support (fun v => h (vecHom pr v).left ^ (-(c v))), Finset.prod_coe_sort (-c).support (fun v => h (vecHom pr v).left ^ ((-c) v)), Finsupp.support_neg]`. Simplify using `only [Finsupp.neg_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨Ξ', hΞ', hv⟩` from `exists_gen Q.M.isLB hF (LB.invGen Q.M.L _ _ Ξ) (LB.isGen_invGen Q.M.L _ _ Ξ hΞ)`. Use `⟨Ξ', hΞ', fun z J hJ => ?_, fun z J hJ y y' => ?_⟩` and prove the remaining obligations. Rewrite using `[hv _ _ z J hJ, val_inv, h1 z J hJ, inv_one]`. Rewrite using `[hv _ _ z J hJ, val_inv, h2 z J hJ y y']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem triv_neg {c : Vec r →₀ ℤ} {V} (h : Triv Q D' pr c V) :
     Triv Q D' pr (-c) (fun z J y y' => (V z J y y')⁻¹) := by
@@ -195,7 +195,7 @@ theorem triv_neg {c : Vec r →₀ ℤ} {V} (h : Triv Q D' pr c V) :
   · rw [hv _ _ z J hJ, val_inv, h2 z J hJ y y']
 
 /- English proof (translation)
-Establish `h : ∀ k, η[D'.P.A] ≫ pr k = 1` using `fun k => by haveI := hpr k`. Rewrite using `[IsMonHom.one_hom, Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Simplify using `only [comp_vecHom, h, one_zpow, Finset.prod_const_one, _root_.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem zero_vecHom (hpr : ∀ i, IsMonHom (pr i)) (v : Vec r) : lift η[D'.P.A] η[D'.P.A] ≫ vecHom pr v = 1 := by
   have h : ∀ k, η[D'.P.A] ≫ pr k = 1 := fun k => by
@@ -204,7 +204,7 @@ theorem zero_vecHom (hpr : ∀ i, IsMonHom (pr i)) (v : Vec r) : lift η[D'.P.A]
   simp only [comp_vecHom, h, one_zpow, Finset.prod_const_one, _root_.mul_one]
 
 /- English proof (translation)
-Establish `hp : ∀ x k, DVR.cP D' (TK R) x ≫ pr k = toUnit (TK R) ≫ Q.c (xe x k)` using `fun x k => by`. Simplify using `only [DVR.cP, Category.assoc, hc]`. Rewrite using `[comp_vecHom, vecLat, Q.c_add, PowLim.c_sum_zsmul Q, PowLim.c_sum_zsmul Q, MonObj.comp_mul, GlobalTheory.Mum.TensAct.comp_prod_zpow, GlobalTheory.Mum.TensAct.comp_prod_zpow]`. Simplify using `only [hp]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pt_vecHom (xe : D'.X ≃+ (Fin r → Q.X)) (hc : ∀ z i, D'.c z ≫ pr i = Q.c (xe z i)) (y y' : D'.X) (v : Vec r) :
     lift (DVR.cP D' (TK R) y) (DVR.cP D' (TK R) y') ≫ vecHom pr v = toUnit (TK R) ≫ Q.c (vecLat xe v y y') := by
@@ -215,9 +215,9 @@ theorem pt_vecHom (xe : D'.X ≃+ (Fin r → Q.X)) (hc : ∀ z i, D'.c z ≫ pr 
   simp only [hp]
 
 /- English proof (translation)
-Establish `hF : FormEq (fun I => (lift (vecHom pr a) (lift (vecHom pr b) (vecHom pr c))).left ≫ thφ Q.B (x3 Q.B) I) thε (fun v : (theta a b c).support => (vecHom pr v.1).left) (fun v => theta a b c v.1)` using `fun U _ h => by`. Use `(prod_cub (vecHom pr a) (vecHom pr b) (vecHom pr c) h).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_coe_sort (theta a b c).support (fun v => h (vecHom pr v).left ^ theta a b c v), prod_theta, vecHom_add, vecHom_add, vecHom_add, vecHom_add, vecHom_zero]`. Take `⟨Ξ, hΞ, hv⟩` from `exists_gen Q.M.isLB hF (LB.pullGen Q.M.L (thφ Q.B (x3 Q.B)) thε Q.cub.t (lift (vecHom pr a) (lift (vecHom pr b) (vecHom pr c))).left) (ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen _ _ _ _ Q.cub.isGen _)`. Use `⟨Ξ, hΞ, fun z J hJ => ?_, fun z J hJ y y' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hv _ _ z J hJ).trans ((val_cub Q.cub (lift η[D'.P.A] η[D'.P.A]) hJ _ _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[zero_vecHom hpr, zero_vecHom hpr, zero_vecHom hpr]`. Conclude with `(isCub_cubV Q.cub hJ).face _ _`. Use `(hv _ _ z J hJ).trans ((val_cub Q.cub (lift (DVR.cP D' (TK R) y) (DVR.cP D' (TK R) y')) hJ _ _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[pt_vecHom xe hc, pt_vecHom xe hc, pt_vecHom xe hc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triv_theta (xe : D'.X ≃+ (Fin r → Q.X)) (hpr : ∀ i, IsMonHom (pr i))
     (hc : ∀ z i, D'.c z ≫ pr i = Q.c (xe z i)) (a b c : Vec r) :
@@ -246,7 +246,7 @@ open GlobalTheory.TensBal
 variable {R : Type} [CommRing R] [IsDomain R] {r : ℕ} {Q : Data R} {D' : DegPre R} {pr : Fin r → (D'.P.A ⟶ Q.B)}
 
 /- English proof (translation)
-Take `⟨Ξ, hΞ, h1, h2⟩` from `h`. Conclude with `⟨Ξ, hΞ, h1, fun z J hJ y y' => (h2 z J hJ y y').trans (e z J hJ y y')⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem triv_congr {c : Vec r →₀ ℤ} {V V'} (h : Triv Q D' pr c V)
     (e : ∀ z J, Good Q.M.L z J → ∀ y y', V z J y y' = V' z J y y') : Triv Q D' pr c V' := by
@@ -257,13 +257,13 @@ section TV
 variable (Q) {X' : Type} [AddCommGroup X'] (xe : X' ≃+ (Fin r → Q.X))
 
 /- English proof (translation)
-The claim follows from `Finsupp.prod_add_index' (fun _ => by simp only [neg_zero, zpow_zero]) (fun _ _ _ => by simp only [neg_add, zpow_add])`.
+A detailed English derivation is pending.
 -/
 theorem tv_add (n n' : PVec r →₀ ℤ) (z J) (y y' : X') : tv Q xe (n + n') z J y y' = tv Q xe n z J y y' * tv Q xe n' z J y y' :=
   Finsupp.prod_add_index' (fun _ => by simp only [neg_zero, zpow_zero]) (fun _ _ _ => by simp only [neg_add, zpow_add])
 
 /- English proof (translation)
-Rewrite using `[tv, tv, Finsupp.prod_neg_index (fun _ => by simp only [neg_zero, zpow_zero]), ← Finsupp.prod_inv]`. Use `Finsupp.prod_congr fun p _ => ?_` and prove the remaining obligations. Rewrite using `[neg_neg, zpow_neg, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tv_neg (n : PVec r →₀ ℤ) (z J) (y y' : X') : tv Q xe (-n) z J y y' = (tv Q xe n z J y y')⁻¹ := by
   rw [tv, tv, Finsupp.prod_neg_index (fun _ => by simp only [neg_zero, zpow_zero]), ← Finsupp.prod_inv]
@@ -271,12 +271,12 @@ theorem tv_neg (n : PVec r →₀ ℤ) (z J) (y y' : X') : tv Q xe (-n) z J y y'
   rw [neg_neg, zpow_neg, inv_inv]
 
 /- English proof (translation)
-The claim follows from `Finsupp.prod_zero_index`.
+A detailed English derivation is pending.
 -/
 theorem tv_zero (z J) (y y' : X') : tv Q xe 0 z J y y' = 1 := Finsupp.prod_zero_index
 
 /- English proof (translation)
-The claim follows from `Finsupp.prod_single_index (by simp only [neg_zero, zpow_zero])`.
+A detailed English derivation is pending.
 -/
 theorem tv_single (p : PVec r) (k : ℤ) (z J) (y y' : X') : tv Q xe (Finsupp.single p k) z J y y' =
     val (Q.tau (vecLat xe p.1 y y') (vecLat xe p.2 y y')) (𝟙 _) z J ^ (-k) :=
@@ -285,14 +285,14 @@ theorem tv_single (p : PVec r) (k : ℤ) (z J) (y y' : X') : tv Q xe (Finsupp.si
 end TV
 
 /- English proof (translation)
-Simplify using `only [rel1, map_sub, flat_single, lam, theta]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem flattenMumfordBundleFormalSum_additivityRelation (u u' v : Vec r) : flat (rel1 u u' v) = theta u u' v := by
   simp only [rel1, map_sub, flat_single, lam, theta]
   abel
 
 /- English proof (translation)
-Simplify using `only [rel2, map_sub, flat_single, lam, add_comm v u]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem flattenMumfordBundleFormalSum_symmetryRelation (u v : Vec r) : flat (rel2 u v) = 0 := by
   simp only [rel2, map_sub, flat_single, lam, add_comm v u]
@@ -302,9 +302,9 @@ variable (xe : D'.X ≃+ (Fin r → Q.X)) (hpr : ∀ i, IsMonHom (pr i)) (hc : �
 include hpr hc
 
 /- English proof (translation)
-Rewrite using `[flattenMumfordBundleFormalSum_additivityRelation]`. Use `triv_congr (triv_theta xe hpr hc u u' v) fun z J hJ y y' => ?_` and prove the remaining obligations. Establish `e` using `Q.tau_add (vecLat xe u y y') (vecLat xe u' y y') (vecLat xe v y y') z J hJ`. Rewrite using `[rel1, sub_eq_add_neg, sub_eq_add_neg, ← Finsupp.single_neg, ← Finsupp.single_neg, tv_add, tv_add, tv_single, tv_single, tv_single, vecLat_add]`. Simplify using `only [neg_neg, zpow_one, zpow_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e'` using `congrArg Additive.ofMul e`. Simplify using `only [ofMul_mul, ofMul_inv] at e' ⊢`. Take the linear combination `(norm := abel) e'`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem isTrivialMumfordFormalSumLattice_additivityRelation (u u' v : Vec r) : Triv Q D' pr (flat (rel1 u u' v)) (tv Q xe (rel1 u u' v)) := by
   rw [flattenMumfordBundleFormalSum_additivityRelation]
@@ -319,7 +319,7 @@ theorem isTrivialMumfordFormalSumLattice_additivityRelation (u u' v : Vec r) : T
   linear_combination (norm := abel) e'
 
 /- English proof (translation)
-Rewrite using `[flattenMumfordBundleFormalSum_symmetryRelation]`. Use `triv_congr (triv_zero Q D' pr) fun z J hJ y y' => ?_` and prove the remaining obligations. Rewrite using `[rel2, sub_eq_add_neg, ← Finsupp.single_neg, tv_add, tv_single, tv_single]`. Simplify using `only [neg_neg, zpow_one, zpow_neg]`. Rewrite using `[Q.tau_symm _ _ z J hJ, inv_mul_cancel]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isTrivialMumfordFormalSumLattice_symmetryRelation (u v : Vec r) : Triv Q D' pr (flat (rel2 u v)) (tv Q xe (rel2 u v)) := by
   rw [flattenMumfordBundleFormalSum_symmetryRelation]
@@ -329,17 +329,13 @@ theorem isTrivialMumfordFormalSumLattice_symmetryRelation (u v : Vec r) : Triv Q
   rw [Q.tau_symm _ _ z J hJ, inv_mul_cancel]
 
 /- English proof (translation)
-Proceed by induction on `hn using Submodule.span_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨p, rfl⟩ | ⟨p, rfl⟩` into its components or cases. Conclude with `isTrivialMumfordFormalSumLattice_additivityRelation xe hpr hc _ _ _`. Conclude with `isTrivialMumfordFormalSumLattice_symmetryRelation xe hpr hc _ _`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero`. Rewrite using `[map_zero]`. Conclude with `triv_congr (triv_zero Q D' pr) fun z J _ y y' => (tv_zero Q xe z J y y').symm`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `triv_congr (triv_add hx hy) fun z J _ a b => (tv_add Q xe x y z J a b).symm`. Consider the case `smul k x _ hx`. Establish `hneg : ∀ m, Triv Q D' pr (flat m) (tv Q xe m) → Triv Q D' pr (flat (-m)) (tv Q xe (-m))` using `fun m hm => by`. Rewrite using `[map_neg]`. Conclude with `triv_congr (triv_neg hm) fun z J _ a b => (tv_neg Q xe m z J a b).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Establish `hadd : ∀ m m', Triv Q D' pr (flat m) (tv Q xe m) → Triv Q D' pr (flat m') (tv Q xe m') → Triv Q D' pr (flat (m + m')) (tv Q xe (m + m'))` using `fun m m' hm hm' => by`. Rewrite using `[map_add]`. Conclude with `triv_congr (triv_add hm hm') fun z J _ a b => (tv_add Q xe m m' z J a b).symm`. Establish `h0 : Triv Q D' pr (flat 0) (tv Q xe 0)`. Rewrite using `[map_zero]`.
-
-Conclude with `triv_congr (triv_zero Q D' pr) fun z J _ y y' => (tv_zero Q xe z J y y').symm`. Proceed by induction on `k using Int.induction_on with`. Consider the case `zero => rw [zero_smul]`. Conclude with `h0`. Consider the case `succ j ih => rw [add_smul, one_smul]`.
-
-Conclude with `hadd _ _ ih hx`. Consider the case `pred j ih`. Rewrite using `[sub_smul, one_smul, sub_eq_add_neg]`. Conclude with `hadd _ _ ih (hneg _ hx)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triv_span {n : PVec r →₀ ℤ} (hn : n ∈ Submodule.span ℤ (rels r)) : Triv Q D' pr (flat n) (tv Q xe n) := by
   induction hn using Submodule.span_induction with
@@ -380,7 +376,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {r : ℕ} {Q : Data R} {D' : DegPr
   (hl : IsLimit (Fan.mk D'.P.A pr))
 
 /- English proof (translation)
-Rewrite using `[Fintype.prod_eq_single i (fun k hk => by rw [Pi.single_eq_of_ne hk, zpow_zero])]`. Rewrite using `[Pi.single_eq_same, zpow_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_single' {G : Type} [CommGroup G] (f : Fin r → G) (i : Fin r) :
     ∏ k, f k ^ (Pi.single i (1 : ℤ) : Fin r → ℤ) k = f i := by
@@ -388,21 +384,21 @@ theorem prod_single' {G : Type} [CommGroup G] (f : Fin r → G) (i : Fin r) :
   rw [Pi.single_eq_same, zpow_one]
 
 /- English proof (translation)
-Simplify using `only [vecHom, xv, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, zpow_zero, Finset.prod_const_one, _root_.mul_one]`. Conclude with `prod_single' _ i`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vecHom_xv (i : Fin r) : vecHom pr (xv i) = fst D'.P.A D'.P.A ≫ pr i := by
   simp only [vecHom, xv, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, zpow_zero, Finset.prod_const_one, _root_.mul_one]
   exact prod_single' _ i
 
 /- English proof (translation)
-Simplify using `only [vecHom, zv, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, zpow_zero, Finset.prod_const_one, _root_.one_mul]`. Conclude with `prod_single' _ i`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vecHom_zv (i : Fin r) : vecHom pr (zv i) = snd D'.P.A D'.P.A ≫ pr i := by
   simp only [vecHom, zv, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, zpow_zero, Finset.prod_const_one, _root_.one_mul]
   exact prod_single' _ i
 
 /- English proof (translation)
-Simplify using `only [vecHom, axv, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, zpow_zero, Finset.prod_const_one, _root_.mul_one]`. Rewrite using `[PowLim.comp_act_pr]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem vecHom_axv (A : Matrix (Fin r) (Fin r) ℤ) (i : Fin r) :
     vecHom pr (axv A i) = fst D'.P.A D'.P.A ≫ PowLim.act pr hl A ≫ pr i := by
@@ -410,7 +406,7 @@ theorem vecHom_axv (A : Matrix (Fin r) (Fin r) ℤ) (i : Fin r) :
   rw [PowLim.comp_act_pr]
 
 /- English proof (translation)
-Simplify using `only [vecHom, azv, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, zpow_zero, Finset.prod_const_one, _root_.one_mul]`. Rewrite using `[PowLim.comp_act_pr]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem vecHom_azv (A : Matrix (Fin r) (Fin r) ℤ) (i : Fin r) :
     vecHom pr (azv A i) = snd D'.P.A D'.P.A ≫ PowLim.act pr hl A ≫ pr i := by
@@ -418,11 +414,11 @@ theorem vecHom_azv (A : Matrix (Fin r) (Fin r) ℤ) (i : Fin r) :
   rw [PowLim.comp_act_pr]
 
 /- English proof (translation)
-Use `fin_cases a`. Use `⟨(fst D'.P.A D'.P.A ≫ PowLim.act pr hl A) * snd D'.P.A D'.P.A, rfl, fun k => ?_⟩ show _ = vecHom pr (axv A k + zv k) haveI := hpr k` and prove the remaining obligations. Rewrite using `[MonObj.mul_comp, Category.assoc, vecHom_add, vecHom_axv hl, vecHom_zv]`. Use `⟨fst D'.P.A D'.P.A ≫ PowLim.act pr hl A, rfl, fun k => ?_⟩ show _ = vecHom pr (axv A k)` and prove the remaining obligations. Rewrite using `[vecHom_axv hl, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨snd D'.P.A D'.P.A, rfl, fun k => ?_⟩ show _ = vecHom pr (zv k)` and prove the remaining obligations. Rewrite using `[vecHom_zv]`. Use `⟨fst D'.P.A D'.P.A * (snd D'.P.A D'.P.A ≫ PowLim.act pr hl A'), rfl, fun k => ?_⟩ show _ = vecHom pr (xv k + azv A' k) haveI := hpr k` and prove the remaining obligations. Rewrite using `[MonObj.mul_comp, Category.assoc, vecHom_add, vecHom_xv, vecHom_azv hl]`. Use `⟨fst D'.P.A D'.P.A, rfl, fun k => ?_⟩ show _ = vecHom pr (xv k)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[vecHom_xv]`. Use `⟨snd D'.P.A D'.P.A ≫ PowLim.act pr hl A', rfl, fun k => ?_⟩ show _ = vecHom pr (azv A' k)` and prove the remaining obligations. Rewrite using `[vecHom_azv hl, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ros_pr (hpr : ∀ i, IsMonHom (pr i)) (A A' : Matrix (Fin r) (Fin r) ℤ) (a : Fin 6) :
     ∃ q : D'.P.A ⊗ D'.P.A ⟶ D'.P.A, rosatiφ D'.P.A (PowLim.act pr hl A) (PowLim.act pr hl A') a = q.left ∧
@@ -460,13 +456,11 @@ variable {R : Type} [CommRing R] [IsDomain R] {r : ℕ} {Q : Data R} {D' : DegPr
 def lamV (u v : Vec r) : Fin 4 → Vec r := ![u + v, u, v, 0]
 
 /- English proof (translation)
-Take `⟨q, hq, hk⟩` from `ros_pr hl hpr A A' a`. Rewrite using `[hq]`. Use `fin_cases s`. Use `show q.left ≫ (pr i * pr j).left = _`. Rewrite using `[← Over.comp_left, MonObj.comp_mul, hk, hk]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = (vecHom pr (rosVec A A' a i + rosVec A A' a j)).left`. Rewrite using `[vecHom_add]`. Use `show q.left ≫ (pr i).left = _`. Rewrite using `[← Over.comp_left, hk]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show q.left ≫ (pr j).left = _`. Rewrite using `[← Over.comp_left, hk]`. Both sides reduce to the same expression. Use `show q.left ≫ (1 : D'.P.A ⟶ Q.B).left = _`. Rewrite using `[← Over.comp_left, MonObj.comp_one]`.
-
-Use `show _ = (vecHom pr 0).left`. Rewrite using `[vecHom_zero]`.
+A detailed English derivation is pending.
 -/
 theorem ros_lam (hpr : ∀ i, IsMonHom (pr i)) (A A' : Matrix (Fin r) (Fin r) ℤ) (a : Fin 6) (i j : Fin r) (s : Fin 4) :
     rosatiφ D'.P.A (PowLim.act pr hl A) (PowLim.act pr hl A') a ≫ GlobalTheory.PolDeg.lamPts (pr i) (pr j) s =
@@ -488,17 +482,17 @@ theorem ros_lam (hpr : ∀ i, IsMonHom (pr i)) (A A' : Matrix (Fin r) (Fin r) �
     rw [vecHom_zero]
 
 /- English proof (translation)
-Introduce `U _ h`. Set `H : Vec r → Additive U` to `fun v => Additive.ofMul (h (vecHom pr v).left)`. Set `F : (Vec r →₀ ℤ) →+ Additive U` to `Finsupp.liftAddHom fun v => zmultiplesHom (Additive U) (H v)`. Establish `hF1 : ∀ x, F (Finsupp.single x 1) = H x` using `fun x => by`. Simplify using `only [F, Finsupp.liftAddHom_apply_single, zmultiplesHom_apply, one_zsmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hlam : ∀ u v, F (lam u v) = ∑ s : Fin 4, Oε s • H (lamV u v s)` using `fun u v => by`. Simplify using `only [lam, map_add, map_sub, hF1, Fin.sum_univ_four]`. Simplify using `[Oε, lamV]`. Normalize the expressions using the abelian group laws. Establish `hR : Additive.ofMul (∏ v : (sig W A A').support, h (vecHom pr v.1).left ^ sig W A A' v.1) = F (sig W A A')`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite using `[ofMul_prod]`. Simplify using `only [ofMul_zpow]`. Rewrite using `[Finset.sum_coe_sort (sig W A A').support (fun v => sig W A A' v • H v)]`. Simplify using `only [F, Finsupp.liftAddHom_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Rewrite using `[hR]`. Simplify using `only [ofMul_prod, ofMul_zpow, sig, map_sum, map_zsmul, hlam]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.sum_prod_type, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `show (rosatiε a * (W i j * Oε s)) • Additive.ofMul (h (rosatiφ D'.P.A (PowLim.act pr hl A) (PowLim.act pr hl A') a ≫ GlobalTheory.PolDeg.lamPts (pr i) (pr j) s)) = _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ros_lam hl hpr, ← _root_.mul_assoc, mul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem formEq_sig (hpr : ∀ i, IsMonHom (pr i)) (W A A' : Matrix (Fin r) (Fin r) ℤ) :
     FormEq (fun p : Fin 6 × ((Fin r × Fin r) × Fin 4) =>
@@ -535,11 +529,11 @@ theorem formEq_sig (hpr : ∀ i, IsMonHom (pr i)) (W A A' : Matrix (Fin r) (Fin 
   rw [ros_lam hl hpr, ← _root_.mul_assoc, mul_smul]
 
 /- English proof (translation)
-Establish `hG : GlobalFnsSt` using `GlobalTheory.SemiRigid.globalFns`. Use `haveI := PowLim.act_isMonHom pr hl hpr A`. Use `haveI := PowLim.act_isMonHom pr hl hpr A'`. Establish `sj : Function.Surjective ((snd D'.P.A D'.P.A).left ≫ D'.P.A.hom).appTop.hom` using `surj_comp (surj_snd hG D'.P.isAb _) (hG _ _ D'.P.isAb).2`. Establish `he : zero2 D'.P.A ≫ (snd D'.P.A D'.P.A).left ≫ D'.P.A.hom = 𝟙 _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Over.w]`. Conclude with `Over.w (lift η[D'.P.A] η[D'.P.A])`. Use `GlobalTheory.TensBalUniq.iso_unique Q.M.isLB D'.P.isLB w hw (formEq_sig hl hpr W A A') hu' hΞ _ (zero2 D'.P.A) he sj (fun s I I' hI hI' => ?_) _ (D'.pt2 y y') z J J' hJ hJ'` and prove the remaining obligations. Establish `o : (η[D'.P.A] : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ D'.P.A) = 1` using `by simp [Hom.one_def]`. Establish `p` using `prod_ros (PowLim.act pr hl A) (PowLim.act pr hl A') η[D'.P.A] η[D'.P.A] (fun q => isoV w s I I' q)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `p` using `[IsMonHom.one_hom, IsMonHom.one_hom, show η[D'.P.A] * η[D'.P.A] = η[D'.P.A] by rw [o, _root_.mul_one]]`. Establish `v'` using `val_corr hI' hn' (𝟙 _)`. Rewrite `v'` using `[val_pull hI', Category.id_comp, val_one]`. Rewrite using `[hΞ0 s I hI]`. Use `(congrArg₂ (· * ·) p v').trans (by simp)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ros_sig (hpr : ∀ i, IsMonHom (pr i)) {W : Matrix (Fin r) (Fin r) ℤ}
     (w : LB.Iso D'.P.L (LB.LinComb Q.M.L (tensφ pr) (tensε W))) (hw : w.IsGen) (A A' : Matrix (Fin r) (Fin r) ℤ)
@@ -579,25 +573,25 @@ section Lat
 variable {X X' : Type} [AddCommGroup X] [AddCommGroup X'] (xe : X' ≃+ (Fin r → X)) (y y' : X')
 
 /- English proof (translation)
-Simplify using `[vecLat, xv, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vecLat_xv (i : Fin r) : vecLat xe (xv i) y y' = xe y i := by
   simp [vecLat, xv, Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `[vecLat, zv, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vecLat_zv (i : Fin r) : vecLat xe (zv i) y y' = xe y' i := by
   simp [vecLat, zv, Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `[vecLat, axv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vecLat_axv (A : Matrix (Fin r) (Fin r) ℤ) (i : Fin r) : vecLat xe (axv A i) y y' = ∑ k, A i k • xe y k := by
   simp [vecLat, axv]
 
 /- English proof (translation)
-Simplify using `[vecLat, azv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vecLat_azv (A : Matrix (Fin r) (Fin r) ℤ) (i : Fin r) : vecLat xe (azv A i) y y' = ∑ k, A i k • xe y' k := by
   simp [vecLat, azv]
@@ -605,13 +599,13 @@ theorem vecLat_azv (A : Matrix (Fin r) (Fin r) ℤ) (i : Fin r) : vecLat xe (azv
 end Lat
 
 /- English proof (translation)
-Set `T : (PVec r →₀ ℤ) →+ Additive ((TK R).left.presheaf.stalk z)ˣ` to `{ toFun := fun n => Additive.ofMul (tv Q xe n z J y y') map_zero' := by simp only [tv_zero]; rfl map_add' := fun n n' => by simp only [tv_add]; rfl }`. Establish `hl : ∀ a i, vecLat xe (rosVec A A' a i) y y' = xe (![fA y + y', fA y, y', y + fA' y', y, fA' y'] a) i`. Introduce `a i`. Apply the tactic sequence `fin_cases a <;> simp [rosVec, vecLat_add, vecLat_xv, vecLat_zv, vecLat_axv, vecLat_azv, hA, hA']`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `T (sigP W A A') = _`. Simplify using `only [sigP, map_sum, map_zsmul, ofMul_prod, ofMul_zpow]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show (rosatiε a * W i j) • Additive.ofMul (tv Q xe (Finsupp.single _ 1) z J y y') = _`. Rewrite using `[tv_single, hl, hl, ofMul_zpow, smul_smul, smul_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem tv_sigP (Q : Data R) {X' : Type} [AddCommGroup X'] (xe : X' ≃+ (Fin r → Q.X)) (W A A' : Matrix (Fin r) (Fin r) ℤ)
     (fA fA' : X' → X') (hA : ∀ y i, xe (fA y) i = ∑ j, A i j • xe y j) (hA' : ∀ y i, xe (fA' y) i = ∑ j, A' i j • xe y j)
@@ -644,7 +638,7 @@ namespace GlobalTheory.Mum.PolTens
 open GlobalTheory.TensBal
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Break down `k with k | k` into its components or cases. Simplify using `[axv, xv, Finset.sum_apply, Pi.single_apply]`. Simplify using `[axv, xv, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem axv_eq {r : ℕ} (A : Matrix (Fin r) (Fin r) ℤ) (i : Fin r) : axv A i = ∑ l, A i l • xv l := by
   funext k
@@ -653,7 +647,7 @@ theorem axv_eq {r : ℕ} (A : Matrix (Fin r) (Fin r) ℤ) (i : Fin r) : axv A i 
   · simp [axv, xv, Finset.sum_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Break down `k with k | k` into its components or cases. Simplify using `[azv, zv, Finset.sum_apply]`. Simplify using `[azv, zv, Finset.sum_apply, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem azv_eq {r : ℕ} (A : Matrix (Fin r) (Fin r) ℤ) (i : Fin r) : azv A i = ∑ l, A i l • zv l := by
   funext k
@@ -662,33 +656,31 @@ theorem azv_eq {r : ℕ} (A : Matrix (Fin r) (Fin r) ℤ) (i : Fin r) : azv A i 
   · simp [azv, zv, Finset.sum_apply, Pi.single_apply]
 
 /- English proof (translation)
-Use `set N := Submodule.span ℤ (rels r)`. Set `F : Vec r → Vec r → (PVec r →₀ ℤ) ⧸ N` to `fun u v => N.mkQ (Finsupp.single (u, v) 1)`. Establish `hF1 : ∀ u u' v, F (u + u') v = F u v + F u' v` using `fun u u' v => by`. Establish `hm : rel1 u u' v ∈ N` using `Submodule.subset_span (Or.inl ⟨(u, u', v), rfl⟩)`. Establish `h0` using `(Submodule.Quotient.mk_eq_zero N).2 hm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [rel1] at h0`. Rewrite `h0` using `[Submodule.Quotient.mk_sub, Submodule.Quotient.mk_sub, sub_sub, sub_eq_zero]`. Conclude with `h0`. Establish `hF2 : ∀ u v, F u v = F v u` using `fun u v => by`. Establish `hm : rel2 u v ∈ N` using `Submodule.subset_span (Or.inr ⟨(u, v), rfl⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0` using `(Submodule.Quotient.mk_eq_zero N).2 hm`. Simplify using `only [rel2] at h0`. Rewrite `h0` using `[Submodule.Quotient.mk_sub, sub_eq_zero]`. Conclude with `h0`. Establish `hF1' : ∀ u v v', F u (v + v') = F u v + F u v'` using `fun u v v' => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[hF2, hF1, hF2 v, hF2 v']`. Set `Fl : Vec r → Vec r →+ (PVec r →₀ ℤ) ⧸ N` to `fun v => AddMonoidHom.mk' (fun u => F u v) (fun u u' => hF1 u u' v)`. Set `Fr : Vec r → Vec r →+ (PVec r →₀ ℤ) ⧸ N` to `fun u => AddMonoidHom.mk' (fun v => F u v) (fun v v' => hF1' u v v')`. Establish `hsumL : ∀ (c : Fin r → ℤ) (s : Fin r → Vec r) v, F (∑ l, c l • s l) v = ∑ l, c l • F (s l) v` using `fun c s v => by`. Use `map_sum (Fl v) (fun l => c l • s l) Finset.univ` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_zsmul] at this`. Conclude with `this`. Establish `hsumR : ∀ (c : Fin r → ℤ) (s : Fin r → Vec r) u, F u (∑ l, c l • s l) = ∑ l, c l • F u (s l)` using `fun c s u => by`. Use `map_sum (Fr u) (fun l => c l • s l) Finset.univ` as an intermediate fact. Simplify using `only [map_zsmul] at this`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Set `X : (Fin r → Vec r) → (Fin r → Vec r) → (PVec r →₀ ℤ) ⧸ N` to `fun s t => ∑ i, ∑ j, W i j • F (s i) (t j)`. Set `Bf : (Fin r → Vec r) → (Fin r → Vec r) → (PVec r →₀ ℤ) ⧸ N` to `fun s t => ∑ i, ∑ j, (W + W.transpose) i j • F (s i) (t j)`. Establish `expand : ∀ s t : Fin r → Vec r, X (fun i => s i + t i) (fun i => s i + t i) = X s s + X t t + Bf s t`. Introduce `s t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ∑ i, ∑ j, W i j • F (t i) (s j) = ∑ i, ∑ j, W.transpose i j • F (s i) (t j)`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Matrix.transpose_apply, hF2 (t _)]`. Simplify using `only [X, Bf, hF1, hF1', smul_add, Finset.sum_add_distrib, Matrix.add_apply, add_smul]`. Rewrite using `[hc]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `hπ : N.mkQ (sigP W A A') = ∑ a : Fin 6, rosatiε a • X (rosVec A A' a) (rosVec A A' a)`. Simplify using `only [sigP, map_sum, map_zsmul, X, Finset.smul_sum, mul_smul]`. Both sides reduce to the same expression. Establish `e0 : rosVec A A' 0 = fun i => axv A i + zv i` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : rosVec A A' 1 = fun i => axv A i` using `rfl`. Establish `e2 : rosVec A A' 2 = fun i => zv i` using `rfl`. Establish `e3 : rosVec A A' 3 = fun i => xv i + azv A' i` using `rfl`. Establish `e4 : rosVec A A' 4 = fun i => xv i` using `rfl`. Establish `e5 : rosVec A A' 5 = fun i => azv A' i` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ε0 : rosatiε 0 = 1` using `rfl`. Establish `ε1 : rosatiε 1 = -1` using `rfl`. Establish `ε2 : rosatiε 2 = -1` using `rfl`. Establish `ε3 : rosatiε 3 = -1` using `rfl`. Establish `ε4 : rosatiε 4 = 1` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ε5 : rosatiε 5 = 1` using `rfl`. Establish `L : Bf (fun i => axv A i) (fun i => zv i) = ∑ l, ∑ j, (A.transpose * (W + W.transpose)) l j • F (xv l) (zv j)`. Simplify using `only [Bf, axv_eq, hsumL, Finset.smul_sum, smul_smul, Matrix.mul_apply, Matrix.transpose_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_congr rfl fun i _ => Finset.sum_comm, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Establish `Rr : Bf (fun i => xv i) (fun i => azv A' i) = ∑ i, ∑ m, ((W + W.transpose) * A') i m • F (xv i) (zv m)`. Simplify using `only [Bf, azv_eq, hsumR, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Establish `hB : Bf (fun i => axv A i) (fun i => zv i) = Bf (fun i => xv i) (fun i => azv A' i)`. Rewrite using `[L, Rr, hA]`. Rewrite using `[← Submodule.Quotient.mk_eq_zero N]`.
-
-Express the relevant statement in the definitionally equal form `N.mkQ (sigP W A A') = 0`. Rewrite using `[hπ, Fin.sum_univ_six, ε0, ε1, ε2, ε3, ε4, ε5, e0, e1, e2, e3, e4, e5, expand, expand, hB]`. Simplify using `only [one_smul, neg_smul]`. Normalize the expressions using the abelian group laws.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem span_sigP {r : ℕ} (W A A' : Matrix (Fin r) (Fin r) ℤ)
     (hA : A.transpose * (W + W.transpose) = (W + W.transpose) * A') : sigP W A A' ∈ Submodule.span ℤ (rels r) := by
@@ -771,7 +763,7 @@ namespace GlobalTheory.Mum.PolTens
 open GlobalTheory.TensBal
 
 /- English proof (translation)
-Establish `hb : ((symUnitOf W h).1 : Matrix (Fin r) (Fin r) ℤ) = W + W.transpose` using `rfl`. Rewrite using `[TensO.star_def]`. Use `show _ = (W + W.transpose) * (((((symUnitOf W h).1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) * (TensO.mat _ a).transpose * ((symUnitOf W h).1 : Matrix (Fin r) (Fin r) ℤ)))`. Rewrite using `[hb.symm, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transpose_mul_eq {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (h : IsUnit (W + W.transpose).det)
     (a : TensO (symUnitOf W h)) :
@@ -785,7 +777,7 @@ theorem transpose_mul_eq {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (h : IsUnit 
 variable {R : Type} [CommRing R] [IsDomain R] {r : ℕ} {Q : Data R} {D' : DegPre R} {pr : Fin r → (D'.P.A ⟶ Q.B)}
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.TauBalBox.tau_val D' hJ', hpsi _ z J J' hJ hJ', hpsi _ z J J' hJ hJ', hpsi _ z J J' hJ hJ']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tau_pol {W : Matrix (Fin r) (Fin r) ℤ} (xe : D'.X ≃+ (Fin r → Q.X))
     (w : LB.Iso D'.P.L (LB.LinComb Q.M.L (tensφ pr) (tensε W)))

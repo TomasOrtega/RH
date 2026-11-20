@@ -209,7 +209,7 @@ def KernelValuationBoundGains (rb : ℕ) (nu : Sh.Wt) (Th : MvPowerSeries Sh.ZV 
     gaussGe p Oc y (∑ v, g0 p Sh.r0 Sh.r1 rb (TT v) (nu v))
 
 /- English proof (translation)
-Introduce `TT y hy` and use `(h TT y hy).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem corollary_valuation_of_theorem {rb : ℕ} {nu : Sh.Wt} {Th : MvPowerSeries Sh.ZV Kc} (h : ValuationOneKernel p Oc Sh rb nu Th) :
     KernelValuationBoundGains p Oc Sh rb nu Th := fun TT y hy => (h TT y hy).1
@@ -390,7 +390,7 @@ def JetIntegralityAwayFromD (D : D7) (T : Tor D) (e : FamE D) : Prop :=
 open TaylorLogMetric in
 
 /- English proof (translation)
-Introduce `p _ lam hp N N' L L' F hA hC` and use `((h p lam N N' L L' hA).1 hp F hC).2.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem jet_integrality_of_integral (D : D7) (T : Tor D) (e : FamE D) (h : int22 D T e) : JetIntegralityAwayFromD D T e :=
   fun p _ lam hp N N' L L' F hA hC => ((h p lam N N' L L' hA).1 hp F hC).2.1
@@ -581,11 +581,11 @@ def StatementFamilyValuationsAtKernels {eps : ℝ} (Fm : Formalism.MainNotions.F
 def StatementFamilyValuationTheta {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := ∀ x (i : Fm.Ix x), StatementValuationTheta (Fm.D x i)
 
 /- English proof (translation)
-Introduce `p r0 r1 rb n' nu s`. Establish `h : DSet {s} s = ∅`. Unfold `DSet`. Rewrite using `[Finset.image_eq_empty, Finset.filter_eq_empty_iff]`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[Finset.mem_singleton]`. Substitute `hx` using the available equality. Simplify using `[OtherPar]`. Use `⟨h, ?_⟩` and prove the remaining obligations. Unfold `g0 gsum`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Simplify using `[h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_top_odd_levels_gain : OneTopOddLevelsGain := by
   intro p r0 r1 rb n' nu s
@@ -601,11 +601,11 @@ theorem one_top_odd_levels_gain : OneTopOddLevelsGain := by
   simp [h]
 
 /- English proof (translation)
-Introduce `p r0 r1 rb n' nu TT hT`. Unfold `g0 gsum`. Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : DSet TT s = ∅`. Unfold `DSet`. Rewrite using `[Finset.image_eq_empty, Finset.filter_eq_empty_iff]`. Introduce `x hx`. Conclude with `hT s hs x hx`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`.
+A detailed English derivation is pending.
 -/
 theorem one_parity_tops_excluded_none : OneParityTopsNoExclusion := by
   intro p r0 r1 rb n' nu TT hT
@@ -621,7 +621,7 @@ theorem one_parity_tops_excluded_none : OneParityTopsNoExclusion := by
   simp [h]
 
 /- English proof (translation)
-Introduce `p r0 r1 rb n' nu`. Unfold `g0 gsum`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem no_top_gain_neg_defect : NoTopGainNegDefect := by
   intro p r0 r1 rb n' nu
@@ -629,15 +629,15 @@ theorem no_top_gain_neg_defect : NoTopGainNegDefect := by
   simp
 
 /- English proof (translation)
-Introduce `n' s s' s'' h`. Unfold `dLev at h`. Establish `h1` using `s.isLt`. Establish `h2` using `s'.isLt`. Establish `h3` using `s''.isLt`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Fin.ext` to reduce the goal to its premises. Apply the tactic sequence `by_cases a : s.val ≤ s'.val <;> by_cases b : s.val ≤ s''.val`. Establish `e1 : (s'.val + n' - s.val) % n' = s'.val - s.val`. Rewrite using `[show s'.val + n' - s.val = (s'.val - s.val) + n' by omega, Nat.add_mod_right, Nat.mod_eq_of_lt (by omega)]`. Establish `e2 : (s''.val + n' - s.val) % n' = s''.val - s.val`.
+Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show s''.val + n' - s.val = (s''.val - s.val) + n' by omega, Nat.add_mod_right, Nat.mod_eq_of_lt (by omega)]`. Use linear arithmetic over natural numbers and integers. Establish `e1 : (s'.val + n' - s.val) % n' = s'.val - s.val`. Rewrite using `[show s'.val + n' - s.val = (s'.val - s.val) + n' by omega, Nat.add_mod_right, Nat.mod_eq_of_lt (by omega)]`. Establish `e2 : (s''.val + n' - s.val) % n' = s''.val + n' - s.val` using `Nat.mod_eq_of_lt (by omega)`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `e2 : (s''.val + n' - s.val) % n' = s''.val - s.val`. Rewrite using `[show s''.val + n' - s.val = (s''.val - s.val) + n' by omega, Nat.add_mod_right, Nat.mod_eq_of_lt (by omega)]`. Establish `e1 : (s'.val + n' - s.val) % n' = s'.val + n' - s.val` using `Nat.mod_eq_of_lt (by omega)`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `e1 : (s'.val + n' - s.val) % n' = s'.val + n' - s.val` using `Nat.mod_eq_of_lt (by omega)`. Establish `e2 : (s''.val + n' - s.val) % n' = s''.val + n' - s.val` using `Nat.mod_eq_of_lt (by omega)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem fact_dinj_pf : fact_dinj := by
   intro n' s s' s'' h
@@ -665,7 +665,7 @@ theorem fact_dinj_pf : fact_dinj := by
     omega
 
 /- English proof (translation)
-Unfold `al FormalGroupSystem.al FormalGroupSystem.nu`. Establish `h1 : (1 ≤ 1 ∧ 1 ≤ k1 + 1)` using `⟨le_refl _, by omega⟩`. Establish `h2 : (1 ≤ 2 ∧ 2 ≤ k1 + 1)` using `⟨by omega, by omega⟩`. Simplify using `only [h1, h2, and_self, if_true]`. Apply the tactic sequence `split_ifs <;> ring`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem al_eq {n' k1 : ℕ} (t j : ℕ) (TT : Finset (Fin n')) (lam0 : Fin n' → Fin (k1 + 1) → ℤ) (w : ℕ → Fin n' → ℤ)
     (hk : 1 ≤ k1) (s : Fin n') : al TT (fun s i => FormalGroupSystem.nu t lam0 w j s i) s = FormalGroupSystem.al TT lam0 s := by
@@ -676,7 +676,7 @@ theorem al_eq {n' k1 : ℕ} (t j : ℕ) (TT : Finset (Fin n')) (lam0 : Fin n' �
   split_ifs <;> ring
 
 /- English proof (translation)
-Introduce `p n' k1 t j TT lam0 w hk`. Establish `ha` using `al_eq t j TT lam0 w hk`. Unfold `g0 gsum de FormalGroupSystem.gA FormalGroupSystem.de gain low sz lg FormalGroupSystem.lsz`. Simplify using `only [ha]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem corollary_notation_weights_holds : CorollaryNotationWeights := by
   intro p n' k1 t j TT lam0 w hk
@@ -689,7 +689,7 @@ section G
 variable {p : ℕ} [Fact p.Prime] (X : FormalGroupSystem.Sys p)
 
 /- English proof (translation)
-Unfold `FormalGroupSystem.Sys.colExp`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem colExp_zero (j : ℕ) (I : X.ColCh j) (v : X.Pl) (s : Fin (X.G.P.n' v)) (c : ℕ) :
     X.colExp j I (fun _ => 0) v s c = 0 := by
@@ -697,7 +697,7 @@ theorem colExp_zero (j : ℕ) (I : X.ColCh j) (v : X.Pl) (s : Fin (X.G.P.n' v)) 
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `FormalGroupSystem.Sys.PI Shape.PI`. Simplify using `only [colExp_zero, pow_zero, one_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem PI_X (j : ℕ) (I : X.ColCh j) : X.PI j I (fun _ => 0) = (shX X j).PI (rbX X j) (nuX X j) I := by
   unfold FormalGroupSystem.Sys.PI Shape.PI
@@ -705,7 +705,7 @@ theorem PI_X (j : ℕ) (I : X.ColCh j) : X.PI j I (fun _ => 0) = (shX X j).PI (r
   rfl
 
 /- English proof (translation)
-Unfold `FormalGroupSystem.Nprime`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem Nprime_zero {n' k1 : ℕ} (lam0 : Fin n' → Fin (k1 + 1) → ℤ) (w : ℕ → Fin n' → ℤ) (j : ℕ) :
     FormalGroupSystem.Nprime lam0 w j 0 = 0 := by
@@ -713,9 +713,9 @@ theorem Nprime_zero {n' k1 : ℕ} (lam0 : Fin n' → Fin (k1 + 1) → ℤ) (w : 
   simp
 
 /- English proof (translation)
-Introduce `j hj La c' L' L'' hLa hL' hEq`. Establish `e : L'' = L'` using `funext hEq`. Substitute `e` using the available equality. Take `⟨φ, hφ⟩` from `h j hj La (c', L'') hLa hL'`. Use `⟨φ, fun f g hI G hG => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Nprime_zero, zpow_zero, Finset.prod_const_one, one_smul]`. Use `hφ f g (fun I n => ?_) G hG` and prove the remaining obligations. Establish `e2 : (shX X j).PI (rbX X j) (nuX X j) I = X.PI j I (fun _ => 0)` using `(PI_X X j I).symm`. Rewrite using `[e2]`. Conclude with `hI I n`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem admissible_valuation_zero (D : Formalism.BasicNotions.D7) (Y : FormalGroupSystem.Pend X) (h : KernelSecondLevelBound D X Y) :
     ∀ j < X.mm, ∀ (La : X.Lt j) (c' : X.Lv.comp (j + 1)) (L' L'' : (X.Pj (j + 1)).Tup),
@@ -740,17 +740,17 @@ theorem admissible_valuation_zero (D : Formalism.BasicNotions.D7) (Y : FormalGro
 end G
 
 /- English proof (translation)
-Introduce `p hp`. Establish `hp' : (2 : ℝ) ≤ p` using `by exact_mod_cast hp`. Establish `h1 : (p : ℝ) ^ 2 - 1 ≠ 0` using `by nlinarith`. Establish `h2 : (p : ℝ) - 1 ≠ 0` using `by linarith`. Establish `h0 : (p : ℝ) ≠ 0` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (p : ℝ) + 1 ≠ 0` using `by linarith`. Use `⟨by unfold gam rho; ring, ?_, ?_⟩` and prove the remaining obligations. Establish `hlt : ((p : ℝ) ^ 2)⁻¹ < 1`. Apply `inv_lt_one_of_one_lt₀` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hg` using `(hasSum_geometric_of_lt_one (r := ((p : ℝ) ^ 2)⁻¹) (by positivity) hlt).mul_left ((p : ℝ)⁻¹)`. Establish `e1 : (fun e : ℕ => ((p : ℝ) ^ (2 * e + 1))⁻¹) = fun i => (p : ℝ)⁻¹ * ((p : ℝ) ^ 2)⁻¹ ^ i`. Use function extensionality and compare the values at `e`. Rewrite using `[pow_succ, pow_mul, mul_inv, inv_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : gam p = (p : ℝ)⁻¹ * (1 - ((p : ℝ) ^ 2)⁻¹)⁻¹`. Unfold `gam rho`. Establish `h4 : (1 - ((p : ℝ) ^ 2)⁻¹) = ((p : ℝ) ^ 2 - 1) / (p : ℝ) ^ 2`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h4, inv_div]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, e2]`. Conclude with `hg`. Unfold `gam rho`. Establish `: (p : ℝ) ^ 2 - 1 = ((p : ℝ) - 1) * ((p : ℝ) + 1)` using `by ring`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fact_gam_pf : fact_gam := by
   intro p hp

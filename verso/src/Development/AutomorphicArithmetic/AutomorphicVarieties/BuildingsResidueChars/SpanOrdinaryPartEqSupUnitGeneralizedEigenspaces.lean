@@ -5,7 +5,7 @@ open IsLocalRing UpperTheory.V.Hi UpperTheory.V.AlgebraTools.AnnihilatorQuotient
 
 open TensorProduct in
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[Algebra.smul_def, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.pi_scalar_right_tmul {O Ω ι : Type} [CommRing O] [Field Ω] [Algebra O Ω]
     [Fintype ι] [DecidableEq ι] (a : Ω) (v : ι → O) :
@@ -14,11 +14,11 @@ private theorem UpperTheory.pi_scalar_right_tmul {O Ω ι : Type} [CommRing O] [
   simp [Algebra.smul_def, mul_comm]
 
 /- English proof (translation)
-Establish `hp : ∀ (k : ℕ) x, ((g - μ • 1) ^ k) (E x) = E (((f - μ • 1) ^ k) x)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Introduce `x`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ← ih]`. Simplify using `[h]`. Use extensionality with `y`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Take `⟨x, rfl⟩` from `E.surjective y`. Rewrite using `[Submodule.mem_map_equiv, LinearEquiv.symm_apply_apply, Module.End.mem_maxGenEigenspace, Module.End.mem_maxGenEigenspace]`. Simplify using `only [hp, EmbeddingLike.map_eq_zero_iff]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.map_max_gen_eigenspace_of_intertwine {K V W : Type} [Field K] [AddCommGroup V] [Module K V]
     [AddCommGroup W] [Module K W] (E : V ≃ₗ[K] W) (f : Module.End K V) (g : Module.End K W)
@@ -39,19 +39,19 @@ private theorem UpperTheory.map_max_gen_eigenspace_of_intertwine {K V W : Type} 
   simp only [hp, EmbeddingLike.map_eq_zero_iff]
 
 /- English proof (translation)
-Introduce `O Ω ι _ hO _ _ _ _ T₀ T hT`. Use `haveI : IsAdicComplete (maximalIdeal O) O := hO.complete`. Establish `hadm` using `(UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.ordAdm_maximalIdeal_and_finite_quotients (R := O) (M := ι → O)).1`. Establish `hex` using `UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.ordExists hadm T₀`. Establish `key` using `UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.eigOrdInt (K := Ω) hex.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set E := TensorProduct.piScalarRight O Ω Ω ι with hE`. Establish `hEt : ∀ (a : Ω) (v : ι → O), E (a ⊗ₜ v) = a • fun i => algebraMap O Ω (v i)` using `UpperTheory.pi_scalar_right_tmul`. Establish `hc : ∀ x, T (E x) = E (T₀.baseChange Ω x)`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul a v => rw [LinearMap.baseChange_tmul, hEt, hEt, map_smul, hT]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `h1` using `congrArg (Submodule.map E.toLinearMap) key`. Simplify using `only [Submodule.map_iSup, UpperTheory.map_max_gen_eigenspace_of_intertwine E _ T hc] at h1`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[iSup_subtype]`. Use `Eq.trans ?_ (h1.symm.trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨_, ⟨x, rfl⟩, rfl⟩`.
+Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a v`. Rewrite using `[LinearMap.baseChange_tmul, LinearEquiv.coe_coe, hEt]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ?_, rfl⟩)` and prove the remaining obligations.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[← hex.2.1]`. Conclude with `⟨v, rfl⟩`. Consider the case `add x y hx hy => rw [map_add, map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Rewrite using `[Submodule.span_le]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨v, hv, rfl⟩`. Rewrite `hv` using `[← hex.2.1]`. Take `⟨w, rfl⟩` from `hv`. Use `⟨_, ⟨(1 : Ω) ⊗ₜ w, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.baseChange_tmul, LinearEquiv.coe_coe, hEt, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.span_ordinaryPart_eq_sup_unit_generalized_eigenspaces :
     ∀ (O Ω ι : Type) [CommRing O] [IsCNL O] [Field Ω] [IsAlgClosed Ω] [Algebra O Ω] [Fintype ι] (T₀ : Module.End O (ι → O)) (T : Module.End Ω (ι → Ω)), (∀ v, T (fun i => algebraMap O Ω (v i)) = fun i => algebraMap O Ω (T₀ v i)) → ⨆ μ : {μ : Ω // IsIntUnit O μ}, T.maxGenEigenspace μ.1 = Submodule.span Ω ((fun (v : ι → O) i => algebraMap O Ω (v i)) '' (ordPart T₀ : Set (ι → O))) := by

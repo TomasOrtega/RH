@@ -16,13 +16,13 @@ namespace GlobalTheory.CompanionTheory.UnipotentNormalizer
 variable {E : Type} [Field E] [NumberField E] {k : ℕ}
 
 /- English proof (translation)
-Set `c : ι → NNReal` to `fun p => Real.toNNReal ((GroundTheory.Global.IdeleGroup.ideleModule E (a p) : ℝ))⁻¹`. Establish `hm : ∀ p, (GroundTheory.Global.adeleMeasure E).map (fun x => a p • x) = c p • GroundTheory.Global.adeleMeasure E` using `fun p => by`. Rewrite using `[GroundTheory.Global.map_smul_adeleMeasure]`. Both sides reduce to the same expression. Establish `: ∀ p, SigmaFinite ((GroundTheory.Global.adeleMeasure E).map (fun x => a p • x))` using `fun p => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hm]`. Use `infer_instance`. Establish `hmeas : ∀ p, Measurable (fun x : Ad E => a p • x)` using `fun p => (show Continuous fun x : Ad E => (a p : Ad E) * x from continuous_const_mul _).measurable`. Establish `h` using `Measure.pi_map_pi (μ := fun _ : ι => GroundTheory.Global.adeleMeasure E) (f := fun p x => a p • x) (fun p => (hmeas p).aemeasurable)`. Rewrite using `[vecMeasure, h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hm]`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, Measure.pi_pi, smul_eq_mul, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem map_vec_smul {ι : Type} [Fintype ι] (a : ι → (Ad E)ˣ) :
     (vecMeasure E ι).map (fun x p => a p • x p) =
@@ -46,7 +46,7 @@ theorem map_vec_smul {ι : Type} [Fintype ι] (a : ι → (Ad E)ˣ) :
   rfl
 
 /- English proof (translation)
-Establish `hf : Measurable (fun (x : ι → Ad E) p => a p • x p)` using `measurable_pi_lambda _ fun p => (show Continuous fun x : Ad E => (a p : Ad E) * x from continuous_const_mul _).measurable.comp (measurable_pi_apply p)`. Rewrite using `[← lintegral_map hG hf, map_vec_smul, lintegral_smul_measure]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lintegral_vec_smul {ι : Type} [Fintype ι] (a : ι → (Ad E)ˣ) (G : (ι → Ad E) → ℝ≥0∞) (hG : Measurable G) :
     ∫⁻ x, G (fun p => a p • x p) ∂vecMeasure E ι =
@@ -57,15 +57,15 @@ theorem lintegral_vec_smul {ι : Type} [Fintype ι] (a : ι → (Ad E)ˣ) (G : (
   rfl
 
 /- English proof (translation)
-Rewrite using `[mul_inv_eq_iff_eq_mul]`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `D.val * (1 + posM Subtype.val x) = (1 + posM Subtype.val _) * D.val`. Rewrite using `[hD]`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.add_apply, Matrix.add_apply, mul_add, add_mul]`. Use `congr 1`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Simplify using `only [posM, Matrix.sum_apply, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : t.1.1 = i ∧ t.1.2 = j`. Take `⟨rfl, rfl⟩` from `h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Matrix.single_apply_same, Units.val_mul]`. Establish `e : ((u t.1.2)⁻¹ : Rˣ).val * (u t.1.2).val = 1` using `Units.inv_mul _`. Take the linear combination `(-(u t.1.1).val * x t) * e`. Establish `e : ∀ y : R, Matrix.single t.1.1 t.1.2 y i j = 0` using `fun y => by`. Rewrite using `[Matrix.single_apply_of_ne]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Rewrite using `[e, e]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_blkU {R : Type} [CommRing R] (D : GL (Fin k) R) (u : Fin k → Rˣ)
     (hD : D.val = diagonal fun i => (u i : R)) {r m : ℕ} (x : UnipotentBlockColumnIndex k r m → R) :
@@ -94,9 +94,9 @@ theorem conj_blkU {R : Type} [CommRing R] (D : GL (Fin k) R) (u : Fin k → Rˣ)
 def locId (w : Pl E) : (w.adicCompletion E)ˣ →* (Ad E)ˣ := (finId E).comp (Units.map (corner (sLoc E w)))
 
 /- English proof (translation)
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin k) (Fin k) (Ad E)) i j - sFin E ((1 : Matrix (Fin k) (Fin k) (Af E)) i j) + sFin E ((1 : Matrix (Fin k) (Fin k) (Af E)) i j - sLoc E w ((1 : Matrix (Fin k) (Fin k) (w.adicCompletion E)) i j) + sLoc E w ((Iwasawa.torusPow (w.adicCompletion E) k l).val i j)) = _`. Rewrite using `[Iwasawa.torusPow, Iwasawa.coe_diagGL]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Matrix.one_apply_eq, Matrix.diagonal_apply_eq]`. Both sides reduce to the same expression. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem fl_torus (w : Pl E) (l : Fin k → ℤ) :
     (fl k w (Iwasawa.torusPow (w.adicCompletion E) k l)).val =
@@ -123,7 +123,7 @@ def colS (e : Fin k → ℤ) (j : ℕ) : ℤ := ∑ p : UnipotentBlockColumnInde
 def totS (e : Fin k → ℤ) (d : ℕ) : ℤ := ∑ i ∈ Finset.range d, colS e (k - (i + 1))
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add₀ hq.ne', ENNReal.ofReal_mul (zpow_nonneg hq.le _)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_ofReal_zpow {ι : Type} (s : Finset ι) {q : ℝ} (hq : 0 < q) (e : ι → ℤ) :
     ∏ p ∈ s, ENNReal.ofReal (q ^ e p) = ENNReal.ofReal (q ^ ∑ p ∈ s, e p) := by
@@ -134,7 +134,7 @@ theorem prod_ofReal_zpow {ι : Type} (s : Finset ι) {q : ℝ} (hq : 0 < q) (e :
     rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add₀ hq.ne', ENNReal.ofReal_mul (zpow_nonneg hq.le _)]
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero => change SFinite (Measure.dirac _)`. Use `infer_instance`. Consider the case `succ d ih => change SFinite (Measure.map _ _)`. Use `infer_instance`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sFinite_nuD (d : ℕ) : SFinite (nuD E k d) := by
   induction d with
@@ -142,27 +142,25 @@ theorem sFinite_nuD (d : ℕ) : SFinite (nuD E k d) := by
   | succ d ih => change SFinite (Measure.map _ _); infer_instance
 
 /- English proof (translation)
-The claim follows from `((continuous_posU _).measurable.comp measurable_fst).mul measurable_snd`.
+A detailed English derivation is pending.
 -/
 theorem measurable_blkMul (j : ℕ) : Measurable (fun p : (UnipotentBlockColumnIndex k j j → Ad E) × GA E k => blkU p.1 * p.2) :=
   ((continuous_posU _).measurable.comp measurable_fst).mul measurable_snd
 
 /- English proof (translation)
-Establish `hc : Measurable (fun h : GA E k => t * h * t⁻¹)` using `((continuous_const.mul continuous_id).mul continuous_const).measurable`. Proceed by induction on `d generalizing F with`. Consider the case `zero`. Establish `hFc : Measurable fun h => F (t * h * t⁻¹)` using `hF.comp hc`. Express the relevant statement in the definitionally equal form `∫⁻ h, F (t * h * t⁻¹) ∂Measure.dirac 1 = _ * ∫⁻ h, F h ∂Measure.dirac 1`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[lintegral_dirac' _ hFc, lintegral_dirac' _ hF]`. Simplify using `[totS]`. Consider the case `succ d ih`. Use `sFinite_nuD (E := E) (k := k) d` as an intermediate fact. Establish `hM` using `measurable_blkMul (E := E) (k := k) (k - (d + 1))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `a : UnipotentBlockColumnIndex k (k - (d + 1)) (k - (d + 1)) → (Ad E)ˣ` to `fun p => u p.1.1 * (u p.1.2)⁻¹`. Set `G : (UnipotentBlockColumnIndex k (k - (d + 1)) (k - (d + 1)) → Ad E) → ℝ≥0∞` to `fun y => ∫⁻ h, F (blkU y * h) ∂nuD E k d`. Establish `hFM : Measurable fun p : (UnipotentBlockColumnIndex k (k - (d + 1)) (k - (d + 1)) → Ad E) × GA E k => F (blkU p.1 * p.2)` using `hF.comp hM`. Establish `hFc : Measurable fun h => F (t * h * t⁻¹)` using `hF.comp hc`. Establish `hFcM : Measurable fun p : (UnipotentBlockColumnIndex k (k - (d + 1)) (k - (d + 1)) → Ad E) × GA E k => F (t * (blkU p.1 * p.2) * t⁻¹)` using `hFc.comp hM`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : Measurable G` using `hFM.lintegral_prod_right'`. Establish `hf : Measurable (fun (x : UnipotentBlockColumnIndex k (k - (d + 1)) (k - (d + 1)) → Ad E) p => a p • x p)` using `measurable_pi_lambda _ fun p => (show Continuous fun x : Ad E => (a p : Ad E) * x from continuous_const_mul _).measurable.comp (measurable_pi_apply p)`. Establish `hR : ∫⁻ h, F h ∂nuD E k (d + 1) = ∫⁻ y, G y ∂vecMeasure E _`. Express the relevant statement in the definitionally equal form `∫⁻ h, F h ∂(Measure.map _ _) = _`. Rewrite using `[lintegral_map hF hM, lintegral_prod _ hFM.aemeasurable]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : ∫⁻ h, F (t * h * t⁻¹) ∂nuD E k (d + 1) = ∫⁻ x, ENNReal.ofReal (q ^ totS e d) * G (fun p => a p • x p) ∂vecMeasure E _`. Express the relevant statement in the definitionally equal form `∫⁻ h, F (t * h * t⁻¹) ∂(Measure.map _ _) = _`. Rewrite using `[lintegral_map hFc hM, lintegral_prod _ hFcM.aemeasurable]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Establish `key : ∀ h, t * (blkU x * h) * t⁻¹ = blkU (fun p => a p • x p) * (t * h * t⁻¹)` using `fun h => by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : blkU (fun p => a p • x p) = t * blkU x * t⁻¹` using `(conj_blkU t u ht x).symm`. Rewrite using `[e1]`. Use `group`. Simplify using `only [key]`. Conclude with `ih (fun y => F (blkU (fun p => a p • x p) * y)) (hF.comp (measurable_const_mul _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hstep : (∏ p, ENNReal.ofReal ((GroundTheory.Global.IdeleGroup.ideleModule E (a p) : ℝ))⁻¹) = ENNReal.ofReal (q ^ colS e (k - (d + 1)))`. Simplify using `only [a, hmod]`. Conclude with `prod_ofReal_zpow _ hq _`. Establish `hGf : Measurable fun x : UnipotentBlockColumnIndex k (k - (d + 1)) (k - (d + 1)) → Ad E => G (fun p => a p • x p)` using `hG.comp hf`. Rewrite using `[hL, hR, lintegral_const_mul _ hGf, lintegral_vec_smul a G hG, hstep, ← mul_assoc, ← ENNReal.ofReal_mul (zpow_nonneg hq.le _), ← zpow_add₀ hq.ne']`.
-
-Simplify using `only [totS, Finset.sum_range_succ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nuD_conj (t : GA E k) (u : Fin k → (Ad E)ˣ) (ht : t.val = diagonal fun i => (u i : Ad E)) {q : ℝ} (hq : 0 < q)
     (e : Fin k → ℤ) (hmod : ∀ a b, ((GroundTheory.Global.IdeleGroup.ideleModule E (u a * (u b)⁻¹) : ℝ))⁻¹ = q ^ (e a - e b))
@@ -212,9 +210,9 @@ theorem nuD_conj (t : GA E k) (u : Fin k → (Ad E)ˣ) (ht : t.val = diagonal fu
     simp only [totS, Finset.sum_range_succ]
 
 /- English proof (translation)
-Establish `h1 : IsMir 0 (1 : GL (Fin k) E)` using `fun i j _ => rfl`. Set `i0 : ({γ : GL (Fin k) E | IsMir 0 γ} : Set _)` to `⟨1, h1⟩`. Establish `hu : ∀ γ : ({γ : GL (Fin k) E | IsMir 0 γ} : Set _), γ = i0` using `fun γ => Subtype.ext (Units.ext (Matrix.ext fun i j => γ.2 i j (Or.inl (Nat.zero_le _))))`. Use extensionality with `s hs`. Rewrite using `[nuP, nuG, Measure.sum_apply _ hs, tsum_eq_single i0 (fun b hb => absurd (hu b) hb)]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[i0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nuP_zero : nuP E k 0 = nuD E k (k - 1) := by
   have h1 : IsMir 0 (1 : GL (Fin k) E) := fun i j _ => rfl
@@ -226,11 +224,11 @@ theorem nuP_zero : nuP E k 0 = nuD E k (k - 1) := by
   simp [i0]
 
 /- English proof (translation)
-Unfold `colS`. Rewrite using `[← Finset.sum_subtype (Finset.univ.filter fun p : Fin k × Fin k => (p.1 : ℕ) < c ∧ (c : ℕ) ≤ p.2 ∧ (p.2 : ℕ) ≤ c) (by simp) (fun p => l p.1 - l p.2), Finset.sum_filter, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single c]`. Simplify using `only [le_refl, and_true, Fin.val_fin_lt]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce and unpack `⟨-, h1, h2⟩`. Establish `h1' : (c : ℕ) ≤ b` using `h1`. Establish `h2' : (b : ℕ) ≤ c` using `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hb (Fin.ext (by omega))`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem colS_eq (l : Fin k → ℤ) (c : Fin k) : colS l c = ∑ i : Fin k, if i < c then l i - l c else 0 := by
   classical
@@ -249,17 +247,17 @@ theorem colS_eq (l : Fin k → ℤ) (c : Fin k) : colS l c = ∑ i : Fin k, if i
   · simp
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.CountingPairs.main l`.
+A detailed English derivation is pending.
 -/
 theorem sum_cols (l : Fin k → ℤ) : ∑ c : Fin k, ∑ i : Fin k, (if i < c then l i - l c else 0) = rhoPair l :=
   _root_.UpperTheory.Reformulated.B.CountingPairs.main l
 
 /- English proof (translation)
-Rewrite using `[← sum_cols l]`. Simplify using `only [← colS_eq]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun j => colS l j) k]`. Break down `k with _ | n` into its components or cases. Simplify using `[totS]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Establish `h0 : colS l 0 = 0` using `Finset.sum_eq_zero fun t _ => absurd t.2.1 (Nat.not_lt_zero _)`. Rewrite using `[← Finset.sum_range_reflect, Finset.sum_range_succ]`. Simplify using `only [totS, Nat.add_sub_cancel]`. Rewrite using `[Nat.sub_self, h0, add_zero]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Finset.mem_range.1 hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem totS_eq (l : Fin k → ℤ) : totS l (k - 1) = rhoPair l := by
   rw [← sum_cols l]
@@ -279,9 +277,9 @@ theorem totS_eq (l : Fin k → ℤ) : totS l (k - 1) = rhoPair l := by
 variable [IsTotallyComplex E]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, -, h, -⟩` from `hD E 1`. Establish `h2` using `h w (fun _ => m)`. Establish `e : GeneralLinearGroup.det (fl 1 w (Iwasawa.torusPow (w.adicCompletion E) 1 fun _ => m)) = locId w (Iwasawa.uniformizerUnit (w.adicCompletion E) ^ m)`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GeneralLinearGroup.val_det_apply, fl_torus, Matrix.det_diagonal]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `h2` using `[Dt, e]`. Simplify using `using h2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mod_locId (hD : D0) (w : Pl E) (m : ℤ) :
     (GroundTheory.Global.IdeleGroup.ideleModule E (locId w (Iwasawa.uniformizerUnit (w.adicCompletion E) ^ m)) : ℝ) =
@@ -297,11 +295,11 @@ theorem mod_locId (hD : D0) (w : Pl E) (m : ℤ) :
   simpa using h2
 
 /- English proof (translation)
-Introduce `hD _ E _ _ _ k w l F hF`. Establish `hm1` using `mod_locId hD w 1`. Establish `hq : 0 < (Ideal.absNorm w.asIdeal : ℝ)`. Establish `h0` using `(GroundTheory.Global.IdeleGroup.ideleModule E (locId w (Iwasawa.uniformizerUnit (w.adicCompletion E) ^ (1 : ℤ)))).2`. Rewrite `h0` using `[hm1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hc`. Establish `h00 : (Ideal.absNorm w.asIdeal : ℝ) = 0` using `le_antisymm (not_lt.1 hc) (Nat.cast_nonneg _)`. Rewrite `h0` using `[h00]`. Simplify using `at h0`. Establish `hmod : ∀ a b, ((GroundTheory.Global.IdeleGroup.ideleModule E (locId w (Iwasawa.uniformizerUnit (w.adicCompletion E) ^ l a) * (locId w (Iwasawa.uniformizerUnit (w.adicCompletion E) ^ l b))⁻¹) : ℝ))⁻¹ = (Ideal.absNorm w.asIdeal : ℝ) ^ (l a - l b)` using `fun a b => by`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← map_inv, ← map_mul, ← _root_.zpow_neg, ← _root_.zpow_add, ← sub_eq_add_neg, mod_locId hD, _root_.zpow_neg, inv_inv]`. Rewrite using `[nuP_zero, nuD_conj _ _ (fl_torus w l) hq l hmod (k - 1) F hF, totS_eq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem main : PositivityTheory.AdelicQuotientData.D0 → PositivityTheory.jumpWindows.G0 → PositivityTheory.AdelicQuotientData.N2 := by
   intro hD _ E _ _ _ k w l F hF

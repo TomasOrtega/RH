@@ -27,9 +27,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {β : Oz →+* c.F} (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β)
 
 /- English proof (translation)
-Establish `h1 : P (u' i)`. Use `(h' _ (hu'.1 i)).1 ⟨Pi.single i 1, fun k => ?_, isCombAtG_single Z.t x (fun j => (hu'.1 j).1) i⟩` and prove the remaining obligations. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne hk]`. Take `⟨a', ha', hc⟩` from `(h _ (hu'.1 i)).2 h1`. Rewrite using `[(hu.2 _ (hu'.1 i)).unique ha hc]`. Conclude with `ha' b`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_one {C : Type} [NormedField C] {φ : c.F →+* C} {x : Sp C ⟶ Z.X} {τ : E →+* ℂ} {r : ℕ}
     {u u' : Fin r → (Sp (DualNumber C) ⟶ Z.t.G.left)} (hu : IsEigBasis Z φ x τ u) (hu' : IsEigBasis Z φ x τ u')
@@ -47,15 +47,15 @@ theorem norm_le_one {C : Type} [NormedField C] {φ : c.F →+* C} {x : Sp C ⟶ 
   exact ha' b
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `Trans.exists_generic Z e jB πB (hV.preimage jB) hu hu'`. Establish `key : ∀ b i, ∃ f₀ : Γ(X, U ⊓ U'), jB.app (U ⊓ U') f₀ = T b i` using `fun b i => by`. Use `hI _ hV _ fun v ε xg xt h1 h2 h3 hx => ?_` and prove the remaining obligations. Take `⟨hp, hio, -⟩` from `ioOf_spec F v ε`. Use `haveI : Fact (resP v).Prime := ⟨hp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxU : ⊤ ≤ (xg ≫ jB) ⁻¹ᵁ U` using `fun p hp => (hx hp).1`. Establish `hxU' : ⊤ ≤ (xg ≫ jB) ⁻¹ᵁ U'` using `fun p hp => (hx hp).2`. Establish `hd` using `hL v hp ε xg xt h1 h2 (fun p hp => (h3 hp).1) hxU`. Establish `hd'` using `hL' v hp ε xg xt h1 h2 (fun p hp => (h3 hp).2) hxU'`. Establish `h4 : (spMap (ioOf (resP v) ε) ≫ xg) ≫ πB ≫ genStr Z ≫ spMap e.toRingHom = spMap ((ioOf (resP v) ε).comp (algebraMap F (AlgebraicClosure F)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, h1, sp_comp]`. Establish `hy : ⊤ ≤ ((spMap (ioOf (resP v) ε) ≫ xg) ≫ jB) ⁻¹ᵁ U` using `fun p _ => hxU (Set.mem_univ _)`. Establish `hy' : ⊤ ≤ ((spMap (ioOf (resP v) ε) ≫ xg) ≫ jB) ⁻¹ᵁ U'` using `fun p _ => hxU' (Set.mem_univ _)`. Establish `b1` using `hu.1 _ _ hy _ h4`. Establish `b2` using `hu'.1 _ _ hy' _ h4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `b1` using `[show u _ _ hy = _ from funext fun k => hu.2 _ _ _ xg hxU hy k, Category.assoc]`. Rewrite `b2` using `[show u' _ _ hy' = _ from funext fun k => hu'.2 _ _ _ xg hxU' hy' k, Category.assoc]`. Conclude with `(hio _).1 (norm_le_one Z b1 b2 hd hd' (GlobalTheory.LatDRFree.comb_map Z.t (ioOf (resP v) ε) (hT _ xg hxU hxU' hx i)) b)`. Use `choose A hA using key`. Use `⟨Matrix.of A, fun K _ x hx hx' hxx i => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h` using `hT K x hx hx' hxx i`. Simplify using `only [← hA] at h`. Simplify using `only [Matrix.of_apply, Trans.evalPt_app]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem exists_isTrans {F : Type} [Field F] [NumberField F] (e : F ≃+* c.F) {X W : Scheme.{0}} (jB : W ⟶ X)
     (πB : W ⟶ gen Z) [IsAffineHom jB] (hI : IntCrit (πB ≫ genStr Z ≫ spMap e.toRingHom) jB) {r : ℕ} {τ : E →+* ℂ}
@@ -91,7 +91,7 @@ theorem exists_isTrans {F : Type} [Field F] [NumberField F] (e : F ≃+* c.F) {X
   exact h
 
 /- English proof (translation)
-Take `⟨b, hb, hc⟩` from `hb`. Use `⟨_, fun a => ?_, isCombAtG_mul Z.t x hu hu' hw A b h hc⟩` and prove the remaining obligations. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hA a i) (norm_nonneg _) (hb i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_mono {C : Type} [NormedField C] [IsUltrametricDist C] {x : Sp C ⟶ Z.X} {r : ℕ}
     {u u' : Fin r → (Sp (DualNumber C) ⟶ Z.t.G.left)} (hu : ∀ i, IsTanAtG Z.t x (u i)) (hu' : ∀ i, IsTanAtG Z.t x (u' i))
@@ -106,13 +106,13 @@ theorem span_mono {C : Type} [NormedField C] [IsUltrametricDist C] {x : Sp C ⟶
   exact mul_le_one₀ (hA a i) (norm_nonneg _) (hb i)
 
 /- English proof (translation)
-Take `⟨hp, hio, -⟩` from `ioOf_spec F v ε`. Establish `h4 : (spMap (ioOf (resP v) ε) ≫ xg) ≫ πB ≫ genStr Z ≫ spMap e.toRingHom = spMap ((ioOf (resP v) ε).comp (algebraMap F (AlgebraicClosure F)))`. Rewrite using `[Category.assoc, h1, sp_comp]`. Establish `hy : ⊤ ≤ ((spMap (ioOf (resP v) ε) ≫ xg) ≫ jB) ⁻¹ᵁ U` using `fun p _ => hx (Set.mem_univ _)`. Establish `hy' : ⊤ ≤ ((spMap (ioOf (resP v) ε) ≫ xg) ≫ jB) ⁻¹ᵁ U'` using `fun p _ => hx' (Set.mem_univ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b1` using `huu.1 U f hf _ _ hy _ h4`. Establish `b2` using `huu.1 U' f' hf' _ _ hy' _ h4`. Rewrite `b1` using `[show uu U f hf _ _ hy = _ from funext fun k => huu.2.2 U f hf _ _ _ xg hx hy k, Category.assoc]`. Rewrite `b2` using `[show uu U' f' hf' _ _ hy' = _ from funext fun k => huu.2.2 U' f' hf' _ _ _ xg hx' hy' k, Category.assoc]`. Establish `hxx : ⊤ ≤ (xg ≫ jB) ⁻¹ᵁ (U ⊓ U')` using `fun p hp => ⟨hx hp, hx' hp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `htt : ⊤ ≤ xt ⁻¹ᵁ (U ⊓ U')` using `fun p hp => ⟨ht hp, ht' hp⟩`. Use `span_mono Z (fun i => (b1.1 i).1) (fun i => (b2.1 i).1) (Matrix.of fun a i => ioOf (resP v) ε (evalPt (xg ≫ jB) (U ⊓ U') hxx (trCo hf f' a i))) (fun a i => ?_) (fun i => GlobalTheory.LatDRFree.comb_map Z.t (ioOf (resP v) ε) (huu.2.1 U U' f f' hf hf' _ xg hx hx' hxx i)) hw hb` and prove the remaining obligations. Use `(hio _).2 ?_` and prove the remaining obligations. Generalize the expression as in `xg ≫ jB = y at h2 hxx`. Substitute `h2` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Substitute using the available equality.
 
-Rewrite using `[evalPt_spMap_comp _ xt _ htt hxx]`. Conclude with `SetLike.coe_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_span_le {F : Type} [Field F] [NumberField F] (e : F ≃+* c.F) {X W : Scheme.{0}} (jB : W ⟶ X)
     (πB : W ⟶ gen Z) {M : X.Modules} {r : ℕ} {τ : E →+* ℂ} {uu : FrAssign Z M r jB}
@@ -149,7 +149,7 @@ theorem frame_span_le {F : Type} [Field F] [NumberField F] (e : F ≃+* c.F) {X 
   exact SetLike.coe_mem _
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `hcov (xt (IsLocalRing.closedPoint R))`. Conclude with `⟨i, (Scheme.preimage_eq_top_of_closedPoint_mem (R := .of R) xt hi).ge⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_le_of_cover {R : Type} [CommRing R] [IsLocalRing R] {X : Scheme.{0}} (xt : Sp R ⟶ X) {ι : Type}
     (V : ι → X.Opens) (hcov : ∀ x : X, ∃ i, x ∈ V i) : ∃ i, ⊤ ≤ xt ⁻¹ᵁ V i := by
@@ -157,7 +157,7 @@ theorem exists_le_of_cover {R : Type} [CommRing R] [IsLocalRing R] {X : Scheme.{
   exact ⟨i, (Scheme.preimage_eq_top_of_closedPoint_mem (R := .of R) xt hi).ge⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `fun p _ => hb (Set.mem_univ _)`.
+Substitute using the available equality. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem comp_le_of_le {S T X : Scheme.{0}} (a : S ⟶ T) (b : T ⟶ X) {c : S ⟶ X} (h : a ≫ b = c) {V : X.Opens}
     (hb : ⊤ ≤ b ⁻¹ᵁ V) : ⊤ ≤ c ⁻¹ᵁ V := by
@@ -165,7 +165,7 @@ theorem comp_le_of_le {S T X : Scheme.{0}} (a : S ⟶ T) (b : T ⟶ X) {c : S �
   exact fun p _ => hb (Set.mem_univ _)
 
 /- English proof (translation)
-Introduce `v hp ε xg xt h1 h2 U f hf ht hx` and use `h U f hf v hp ε xg xt h1 h2 ht hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isGrLat_of_loc {F : Type} [Field F] [NumberField F] (e : F ≃+* c.F) {X W : Scheme.{0}} (jB : W ⟶ X)
     (πB : W ⟶ gen Z) {M : X.Modules} {r : ℕ} {τ : E →+* ℂ} {uu : FrAssign Z M r jB}
@@ -174,9 +174,9 @@ theorem isGrLat_of_loc {F : Type} [Field F] [NumberField F] (e : F ≃+* c.F) {X
   fun v hp ε xg xt h1 h2 U f hf ht hx => h U f hf v hp ε xg xt h1 h2 ht hx
 
 /- English proof (translation)
-Use `isGrLat_of_loc Z e jB πB fun U f hf => ?_` and prove the remaining obligations. Introduce `v hp ε xg xt h1 h2 ht hx w hw`. Take `⟨i, ht'⟩` from `exists_le_of_cover xt V hcov`. Establish `hx' : ⊤ ≤ (xg ≫ jB) ⁻¹ᵁ V i` using `comp_le_of_le _ _ h2 ht'`. Use `Iff.trans (Iff.intro ?_ ?_) (hL i v hp ε xg xt h1 h2 ht' hx' w hw)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `@frame_span_le _ _ _ _ _ _ _ _ _ _ _ _ Z _ _ _ e _ _ jB πB _ _ _ _ huu v (_) ε xg xt h1 h2 _ _ _ _ (hg i) hf ht' ht hx' hx w hw.1`. Conclude with `@frame_span_le _ _ _ _ _ _ _ _ _ _ _ _ Z _ _ _ e _ _ jB πB _ _ _ _ huu v (_) ε xg xt h1 h2 _ _ _ _ hf (hg i) ht ht' hx hx' w hw.1`.
+A detailed English derivation is pending.
 -/
 theorem isGrLat_of_cover {F : Type} [Field F] [NumberField F] (e : F ≃+* c.F) {X W : Scheme.{0}} (jB : W ⟶ X)
     (πB : W ⟶ gen Z) {M : X.Modules} {r : ℕ} {τ : E →+* ℂ} {uu : FrAssign Z M r jB}
@@ -198,13 +198,11 @@ end GlobalTheory.TwoLat.GrGlue
 namespace GlobalTheory.TwoLat
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Oz _ β Z F _ _ e X W q jB πB d hq hn hpb r τ h`. Use `choose U u hx hU hfr hlat using h`. Establish `hcov : ∀ x : X, ∃ i, x ∈ U i` using `fun x => ⟨x, hx x⟩`. Establish `haff : IsAffineHom jB` using `MorphismProperty.of_isPullback hpb.flip (isAffineHom_of_isAffine _)`. Establish `hsep : X.IsSeparated`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper q` using `projProper _ _ _ hq.isProjOver`. Conclude with `⟨by rw [← Limits.terminal.comp_from q]; infer_instance⟩`. Establish `hc` using `IntCritPf.intCrit F X W q _ jB d hq hn hpb`. Use `choose A hA using fun i j => GrGlue.exists_isTrans Z e jB πB hc ((hU i).inf (hU j)) (hfr i) (hfr j) (hlat i) (hlat j)`. Take `⟨h1, h2⟩` from `isTrans_cocycle E H Dw l Xo c Oz β Z F e X W q jB πB d hq hpb r τ X U u A hfr hA`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨M, f, hf, hm⟩` from `GlobalTheory.MatrixCocycle.exists_frames X r X U A hcov h1 h2`. Take `⟨uu, huu, hag⟩` from `GlobalTheory.T.arithmetic_model_flag_height_third E H Dw l Xo c Oz β Z F e X W jB πB M r τ false X U f hf u hcov hfr fun i j K _ x h₁ h₂ h₃ a => by`. Simplify using `only [cond_false, hm]`. Conclude with `hA i j K x h₁ h₂ h₃ a`. Use `⟨M, uu, fun x => ⟨U x, f x, hx x, hf x⟩, huu, GrGlue.isGrLat_of_cover Z e jB πB huu U f hf hcov fun i => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hag]`. Conclude with `hlat i`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_grBundle : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
@@ -241,7 +239,7 @@ end GlobalTheory.TwoLat
 end
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.TwoLat.exists_grBundle`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.model_change_of_field_points_a : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}

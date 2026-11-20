@@ -9,7 +9,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory.ClosedPt
 
 /- English proof (translation)
-Take `⟨N, hN, hle⟩` from `Ideal.exists_le_maximal (hV.primeIdealOf ⟨x, hx⟩).asIdeal (hV.primeIdealOf ⟨x, hx⟩).isPrime.ne_top`. Use `⟨⟨N, hN.isPrime⟩, hN, hle, ?_⟩` and prove the remaining obligations. Establish `h1 : (hV.primeIdealOf ⟨x, hx⟩) ⤳ (⟨N, hN.isPrime⟩ : PrimeSpectrum Γ(Y, V))` using `(PrimeSpectrum.le_iff_specializes _ _).mp hle`. Establish `h2` using `Specializes.map (f := hV.fromSpec) h1 hV.fromSpec.continuous`. Rewrite `h2` using `[hV.fromSpec_primeIdealOf]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma exists_max_specializes {Y : Scheme.{0}} {V : Y.Opens} (hV : IsAffineOpen V) (x : Y)
     (hx : x ∈ V) : ∃ N : PrimeSpectrum Γ(Y, V), N.asIdeal.IsMaximal ∧
@@ -23,7 +23,7 @@ lemma exists_max_specializes {Y : Scheme.{0}} {V : Y.Opens} (hV : IsAffineOpen V
   rwa [hV.fromSpec_primeIdealOf] at h2
 
 /- English proof (translation)
-Establish `: hV.fromSpec N ∈ Set.range hV.fromSpec` using `⟨N, rfl⟩`. Rewrite `this` using `[hV.range_fromSpec]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma fromSpec_mem {Y : Scheme.{0}} {V : Y.Opens} (hV : IsAffineOpen V)
     (N : PrimeSpectrum Γ(Y, V)) : hV.fromSpec N ∈ V := by
@@ -31,19 +31,17 @@ lemma fromSpec_mem {Y : Scheme.{0}} {V : Y.Opens} (hV : IsAffineOpen V)
   rwa [hV.range_fromSpec] at this
 
 /- English proof (translation)
-Introduce `Y x`. Take `⟨V, hV, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (X := Y) (x := x) (U := ⊤) trivial`. Take `⟨N, hN, -, hxN⟩` from `exists_max_specializes hV x hx`. Use `⟨V, hV, hV.fromSpec N, fromSpec_mem hV N, hxN, ?_⟩` and prove the remaining obligations. Introduce `V₂ hle hV₂ hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcl : ∀ y₁ ∈ V₂, hV.fromSpec N ⤳ y₁ → y₁ = hV.fromSpec N`. Introduce `y₁ hy₁ hs`. Establish `e` using `hV.fromSpec_primeIdealOf ⟨y₁, hle hy₁⟩`. Establish `hs' : hV.fromSpec N ⤳ hV.fromSpec (hV.primeIdealOf ⟨y₁, hle hy₁⟩)`. Rewrite using `[e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs`. Establish `h3 : N ⤳ hV.primeIdealOf ⟨y₁, hle hy₁⟩` using `(hV.fromSpec.isOpenEmbedding.isInducing.specializes_iff).mp hs'`. Establish `h4 : N ≤ hV.primeIdealOf ⟨y₁, hle hy₁⟩` using `(PrimeSpectrum.le_iff_specializes _ _).mpr h3`. Establish `h5 : N = hV.primeIdealOf ⟨y₁, hle hy₁⟩` using `PrimeSpectrum.ext (hN.eq_of_le (hV.primeIdealOf ⟨y₁, hle hy₁⟩).isPrime.ne_top h4)`. Rewrite using `[h5]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `e.symm`. Use `⟨hcl, (hV₂.primeIdealOf ⟨_, hy⟩).asIdeal, ?_, ?_⟩` and prove the remaining obligations. Take `⟨N₂, hN₂, -, hs⟩` from `exists_max_specializes hV₂ _ hy`. Establish `e` using `hcl _ (fromSpec_mem hV₂ N₂) hs`. Establish `e2` using `hV₂.fromSpec_primeIdealOf ⟨_, hy⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: N₂ = hV₂.primeIdealOf ⟨_, hy⟩` using `hV₂.fromSpec.isOpenEmbedding.injective (e.trans e2.symm)`. Rewrite using `[← this]`. Conclude with `hN₂`. Introduce `a`. Establish `e2` using `hV₂.fromSpec_primeIdealOf ⟨_, hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `hV₂.fromSpec_preimage_basicOpen a`. Establish `h' : hV₂.fromSpec (hV₂.primeIdealOf ⟨_, hy⟩) ∈ Y.basicOpen a ↔ hV₂.primeIdealOf ⟨_, hy⟩ ∈ PrimeSpectrum.basicOpen a`. Rewrite using `[← h]`. Both sides reduce to the same expression. Rewrite `h'` using `[e2, PrimeSpectrum.mem_basicOpen]`.
-
-Conclude with `(not_iff_comm.mp h'.symm).symm`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_closed_point : ∀ (Y : Scheme.{0}) (x : Y), ∃ V : Y.Opens, IsAffineOpen V ∧ ∃ y ∈ V, x ⤳ y ∧ ∀ V₂ : Y.Opens, V₂ ≤ V → IsAffineOpen V₂ → y ∈ V₂ → (∀ y₁ ∈ V₂, y ⤳ y₁ → y₁ = y) ∧ ∃ M : Ideal Γ(Y, V₂), M.IsMaximal ∧ ∀ a : Γ(Y, V₂), a ∈ M ↔ y ∉ Y.basicOpen a := by
   intro Y x

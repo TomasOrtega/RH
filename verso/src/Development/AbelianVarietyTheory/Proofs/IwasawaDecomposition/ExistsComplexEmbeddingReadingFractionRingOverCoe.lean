@@ -16,11 +16,11 @@ open GlobalTheory.TwistChoice (Reading ReadsAt)
 namespace GlobalTheory.ReadingEmb
 
 /- English proof (translation)
-Use `haveI : CharZero A := (RingHom.charZero_iff i.injective).1 inferInstance`. Set `B` to `FractionRing (MvPolynomial ℝ A)`. Establish `hB : Cardinal.mk B = Cardinal.continuum`. Rewrite using `[Cardinal.mk_fractionRing, MvPolynomial.cardinalMk_eq_max, Cardinal.mk_real, max_eq_right hA, max_eq_left Cardinal.aleph0_le_continuum]`. Set `C` to `AlgebraicClosure B`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hC : Cardinal.mk C = Cardinal.continuum`. Use `le_antisymm ((Algebra.IsAlgebraic.cardinalMk_le_max B C).trans (max_le hB.le Cardinal.aleph0_le_continuum)) ?_` and prove the remaining obligations. Rewrite using `[← hB]`. Conclude with `Cardinal.mk_le_of_injective (algebraMap B C).injective`. Set `j : A →+* C` to `(algebraMap B C).comp ((algebraMap (MvPolynomial ℝ A) B).comp MvPolynomial.C)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `haveI : CharZero C := (RingHom.charZero_iff j.injective).1 inferInstance`. Take `⟨e, he⟩` from `GlobalTheory.algClosed_continuum_ringEquiv_complex_extending C hC K (j.comp i) s`. Conclude with `⟨e.toRingHom.comp j, fun x => he x⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_ringHom_complex_extending (A : Type) [Field A] (hA : Cardinal.mk A ≤ Cardinal.continuum)
     (K : Type) [Field K] [NumberField K] (i : K →+* A) (s : K →+* ℂ) :
@@ -42,7 +42,7 @@ theorem exists_ringHom_complex_extending (A : Type) [Field A] (hA : Cardinal.mk 
   exact ⟨e.toRingHom.comp j, fun x => he x⟩
 
 /- English proof (translation)
-Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' R S`. Use `(Cardinal.mk_le_of_surjective hf).trans ?_` and prove the remaining obligations. Rewrite using `[← Cardinal.power_def, Cardinal.mk_fin]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem mk_le_of_finite (R S : Type) [CommRing R] [AddCommGroup S] [Module R S] [Module.Finite R S]
     (h : Cardinal.mk R ≤ Cardinal.continuum) : Cardinal.mk S ≤ Cardinal.continuum := by
@@ -55,9 +55,9 @@ theorem mk_le_of_finite (R S : Type) [CommRing R] [AddCommGroup S] [Module R S] 
     _ = Cardinal.continuum := Cardinal.continuum_power_aleph0
 
 /- English proof (translation)
-Introduce `D F i k b v ρ`. Use `haveI := D.ntw.lPrime i`. Establish `h1 : Cardinal.mk (D.ntw.Ok i k) ≤ Cardinal.continuum`. Establish `hinj : Function.Injective (fun x : D.ntw.Ok i k => ((F.eOk i k x : _) : ℂ_[D.ntw.l i]))` using `Subtype.val_injective.comp (F.eOk i k).injective`. Use `(Cardinal.mk_le_of_injective hinj).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(GlobalTheory.PadicCard.card_padicAlgCl_padicComplex (D.ntw.l i)).2, Cardinal.mk_complex]`. Use `haveI := ρ.fin`. Establish `h2 : Cardinal.mk ρ.Oe ≤ Cardinal.continuum` using `mk_le_of_finite (D.ntw.Ok i k) ρ.Oe h1`. Conclude with `exists_ringHom_complex_extending (FractionRing ρ.Oe) (by rw [Cardinal.mk_fractionRing]; exact h2) D.what₂.LL ρ.emb D.what₂.embLL`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_complex_emb : ∀ (D : D7) (F : TwFrameC D) (i : D.ntw.Tw) (k : ℕ) (b : Bool) (v : D.what₂.places.Pl) (ρ : Reading i k b v), ∃ ι : FractionRing ρ.Oe →+* ℂ, ∀ x, ι (ρ.emb x) = D.what₂.embLL x := by
   intro D F i k b v ρ

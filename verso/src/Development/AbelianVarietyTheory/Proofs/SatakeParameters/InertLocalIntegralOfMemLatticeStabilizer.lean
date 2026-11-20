@@ -22,9 +22,9 @@ variable (L : Type) [Field L] [NumberField L] [IsCMField L]
 omit [IsCMField L] in
 
 /- English proof (translation)
-Establish `key : ALint L ≤ (tensInt (F` using `maximalRealSubfield L) (v.adicCompletion (maximalRealSubfield L)) (intOE L) (Formalism.UG.Ov (maximalRealSubfield L) v)).comap (compAt L v) := by`. Rewrite using `[ALint, Subring.closure_le]`. Introduce and unpack `_ (⟨y, rfl⟩ | ⟨a, ha, rfl⟩)`. Rewrite using `[SetLike.mem_coe, Subring.mem_comap, GlobalTheory.InertUmax.compAt_tmul]`. Conclude with `Subring.subset_closure (Or.inl ⟨⟨(y : L), y, rfl⟩, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, Subring.mem_comap, GlobalTheory.InertUmax.compAt_tmul]`. Conclude with `Subring.subset_closure (Or.inr ⟨⟨a v, ha v⟩, rfl⟩)`. Conclude with `key hx`.
+A detailed English derivation is pending.
 -/
 theorem compAt_mem_tensInt (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) {x : AL L}
     (hx : x ∈ ALint L) :
@@ -46,9 +46,9 @@ end GlobalTheory.InertUmaxInt
 open GlobalTheory.InertUmaxInt in
 
 /- English proof (translation)
-Introduce `L _ _ _ n v w Dv u hu i j`. Establish `hP` using `GlobalTheory.InertUmax.entries_mem_of_range _ _ Dv.Pint`. Establish `hP'` using `GlobalTheory.InertUmax.entries_mem_of_range _ _ (inv_mem Dv.Pint)`. Establish `he : ∀ k l, Dv.e (compAt L v ((u.1 : Matrix (Fin n) (Fin n) (AL L)) k l)) ∈ intL (w.adicCompletion L)` using `fun k l => (Dv.integ _).1 (compAt_mem_tensInt L v (hu k l))`. Unfold `InertDatum.loc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [Units.val_mul, Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun k _ => Subring.mul_mem _ (Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hP' i l) (he l k)) (hP k j)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.InertUmaxInt.loc_integral_of_mem_Umax : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)) (Dv : InertDatum L n v w), ∀ u : GAf L n, u ∈ Umax L n → ∀ i j, ((Dv.loc u : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) i j ∈ intL (w.adicCompletion L) := by
   intro L _ _ _ n v w Dv u hu i j

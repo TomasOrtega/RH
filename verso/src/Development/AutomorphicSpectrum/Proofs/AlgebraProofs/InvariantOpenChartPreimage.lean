@@ -11,17 +11,15 @@ open GlobalTheory.CompanionTheory.FreeQuotProof GlobalTheory.CompanionTheory.Hyp
 namespace GlobalTheory.CompanionTheory.FreeQuotGlue
 
 /- English proof (translation)
-Use `h.isFinite` as an intermediate fact. Establish `hsat : ∀ u v : V.toScheme, q u = q v → V.ι u ∈ V' → V.ι v ∈ V'`. Introduce `u v huv hu`. Take `⟨p, hpa, hpb⟩` from `(h.apply_eq_iff u v).1 huv`. Establish `hp : p ∈ a ⁻¹ᵁ V'` using `by show a p ∈ V'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hpa]`. Conclude with `hu`. Rewrite `hp` using `[hs]`. Establish `hb : b p ∈ V'` using `hp`. Rewrite `hb` using `[hpb]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Set `C : Set V.toScheme` to `((V.ι ⁻¹ᵁ V' : V.toScheme.Opens) : Set V.toScheme)ᶜ`. Establish `hC : IsClosed C` using `(V.ι ⁻¹ᵁ V').isOpen.isClosed_compl`. Establish `hqC : IsClosed (q '' C)` using `q.isClosedMap C hC`. Use `⟨⟨(q '' C)ᶜ, hqC.isOpen_compl⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Assume the negation of the conclusion as `hx`. Conclude with `hu ⟨u, hx, rfl⟩`. Introduce `hx`.
+Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨u, rfl⟩ : ∃ u, V.ι u = x := by`. Rewrite using `[← Set.mem_range, Scheme.Opens.range_ι]`. Conclude with `hV hx`. Use `⟨u, ?_, rfl⟩` and prove the remaining obligations. Introduce and unpack `⟨v, hv, hvu⟩`.
-
-Conclude with `hv (hsat u v hvu.symm hx)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem IsChart.exists_opens_image_preimage {P X Y : Scheme.{0}} {a b : P ⟶ X} {V : X.Opens}
     {q : V.toScheme ⟶ Y} (h : IsChart a b V q) (V' : X.Opens) (hV : V' ≤ V)

@@ -26,9 +26,9 @@ def glue : Submodule (MvPolynomial ι A) (∀ i : ι, P {i}) := LinearMap.ker (g
 
 variable {res} in
 /- English proof (translation)
-Rewrite using `[glue, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Establish `hk` using `congrFun h (i, j)`. Simplify `hk` using `[glueD, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Use function extensionality and compare the values at `k`. Simplify using `[glueD, sub_eq_zero, h k.1 k.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mem_glue {c : ∀ i : ι, P {i}} : c ∈ glue res ↔
     ∀ i j, res {i} {i, j} (sub_pair_left i j) (c i) = res {j} {i, j} (sub_pair_right i j) (c j) := by
@@ -56,9 +56,9 @@ def ev (I : Finset ι) (hI : I.Nonempty) : glue res →ₗ[MvPolynomial ι A] P 
 variable {res}
 
 /- English proof (translation)
-Establish `hsub : ({i, i'} : Finset ι) ⊆ I`. Introduce `x hx`. Rewrite `hx` using `[Finset.mem_insert, Finset.mem_singleton]`. Break down `hx with rfl | rfl` into its components or cases. Conclude with `hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `hi'`. Establish `hm` using `(mem_glue.1 m.2) i i'`. Establish `e1 : res {i} I (Finset.singleton_subset_iff.2 hi) (m.1 i) = res {i, i'} I hsub (res {i} {i, i'} (sub_pair_left i i') (m.1 i))` using `(hcomp _ _ _ _ _ _).symm`. Establish `e2 : res {i'} I (Finset.singleton_subset_iff.2 hi') (m.1 i') = res {i, i'} I hsub (res {i'} {i, i'} (sub_pair_right i i') (m.1 i'))` using `(hcomp _ _ _ _ _ _).symm`. Rewrite using `[evAt_apply, evAt_apply, e1, e2, hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evAt_eq (hcomp : ∀ S S' S'' (h : S ⊆ S') (h' : S' ⊆ S'') a,
       res S' S'' h' (res S S' h a) = res S S'' (h.trans h') a)
@@ -80,7 +80,7 @@ theorem evAt_eq (hcomp : ∀ S S' S'' (h : S ⊆ S') (h' : S' ⊆ S'') a,
   rw [evAt_apply, evAt_apply, e1, e2, hm]
 
 /- English proof (translation)
-Use `show evAt res (I.min' hI) I (I.min'_mem hI) m = _`. Rewrite using `[evAt_eq hcomp (I.min'_mem hI) hi m, evAt_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_eq (hcomp : ∀ S S' S'' (h : S ⊆ S') (h' : S' ⊆ S'') a,
       res S' S'' h' (res S S' h a) = res S S'' (h.trans h') a)
@@ -90,7 +90,7 @@ theorem ev_eq (hcomp : ∀ S S' S'' (h : S ⊆ S') (h' : S' ⊆ S'') a,
   rw [evAt_eq hcomp (I.min'_mem hI) hi m, evAt_apply]
 
 /- English proof (translation)
-Establish `hi` using `I.min'_mem hI`. Rewrite using `[ev_eq hcomp hI hi, ev_eq hcomp hJ (h hi), hcomp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem res_ev (hcomp : ∀ S S' S'' (h : S ⊆ S') (h' : S' ⊆ S'') a,
       res S' S'' h' (res S S' h a) = res S S'' (h.trans h') a)
@@ -103,7 +103,7 @@ variable [Fintype ι] (𝒢 : ∀ S, ℤ → Submodule A (P S)) [∀ S, DirectSu
 
 omit [Fintype ι] [∀ S, DirectSum.Decomposition (𝒢 S)] in
 /- English proof (translation)
-Unfold `glueD`. Use `IsGradedMap.pi fun k => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[sub_eq_add_neg]`. Conclude with `((hgr _ _ _).comp (isGradedMap_piProj _ _ k.1)).add ((hgr _ _ _).comp (isGradedMap_piProj _ _ k.2)).neg`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGradedMap_glueD (hgr : ∀ S S' (h : S ⊆ S'), IsGradedMap (𝒢 S) (𝒢 S') (res S S' h)) :
     IsGradedMap (grPi fun i : ι => 𝒢 {i}) (grPi fun k : ι × ι => 𝒢 {k.1, k.2}) (glueD res) := by
@@ -130,7 +130,7 @@ instance glueGr.polyGradedSMul [∀ S, PolyGradedSMul ι (𝒢 S)] :
 
 omit [Fintype ι] [∀ S, DirectSum.Decomposition (𝒢 S)] in
 /- English proof (translation)
-Unfold `ev evAt glueGr`. Conclude with `(hgr _ _ _).comp ((isGradedMap_piProj _ _ _).comp (isGradedMap_subtype _ _))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isGradedMap_ev (hgr : ∀ S S' (h : S ⊆ S'), IsGradedMap (𝒢 S) (𝒢 S') (res S S' h))
     (I : Finset ι) (hI : I.Nonempty) : IsGradedMap (glueGr res 𝒢) (𝒢 I) (ev res I hI) := by

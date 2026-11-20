@@ -20,7 +20,7 @@ def galConjFun (e : F ≃+* F') (E : Ω ≃+* Ω')
     simp [h1, hE])
 
 /- English proof (translation)
-Simplify using `[galConjFun]`.
+Simplify using the standard rewrite rules.
 -/
 theorem galConjFun_apply (e : F ≃+* F') (E : Ω ≃+* Ω')
     (hE : ∀ x : F, E (algebraMap F Ω x) = algebraMap F' Ω' (e x)) (σ : Ω ≃ₐ[F] Ω) (x : Ω) :
@@ -43,7 +43,7 @@ def galConjHom (e : F ≃+* F') (E : Ω ≃+* Ω')
       AlgEquiv.mul_apply]
 
 /- English proof (translation)
-The claim follows from `galConjFun_apply e E hE σ x`.
+A detailed English derivation is pending.
 -/
 theorem galConjHom_apply (e : F ≃+* F') (E : Ω ≃+* Ω')
     (hE : ∀ x : F, E (algebraMap F Ω x) = algebraMap F' Ω' (e x)) (σ : Ω ≃ₐ[F] Ω) (x : Ω) :
@@ -51,13 +51,13 @@ theorem galConjHom_apply (e : F ≃+* F') (E : Ω ≃+* Ω')
   galConjFun_apply e E hE σ x
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_one _ ?_` and prove the remaining obligations. Introduce `s hs`. Rewrite `hs` using `[map_one, krullTopology_mem_nhds_one_iff]`. Take `⟨K', hK', hKs⟩` from `hs`. Set `b` to `Module.finBasis F' K'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `T : Set Ω` to `Set.range fun i => E.symm (b i : Ω')`. Set `L : IntermediateField F Ω` to `IntermediateField.adjoin F T`. Establish `hL : FiniteDimensional F L` using `IntermediateField.finiteDimensional_adjoin (fun x _ => Algebra.IsIntegral.isIntegral x)`. Rewrite using `[Filter.mem_map, krullTopology_mem_nhds_one_iff]`. Use `⟨L, hL, fun σ hσ => hKs ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfix : ∀ i, galConjHom e E hE σ (b i : Ω') = (b i : Ω')`. Introduce `i`. Establish `hmem : E.symm (b i : Ω') ∈ L` using `IntermediateField.subset_adjoin F T ⟨i, rfl⟩`. Establish `h1 : σ (E.symm (b i : Ω')) = E.symm (b i : Ω')` using `(IntermediateField.mem_fixingSubgroup_iff L σ).1 hσ _ hmem`. Establish `h2` using `galConjHom_apply e E hE σ (E.symm (b i : Ω'))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[h1, RingEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Establish `hlin : ((galConjHom e E hE σ).toAlgHom.comp K'.val).toLinearMap = K'.val.toLinearMap` using `b.ext fun i => hfix i`. Use `(IntermediateField.mem_fixingSubgroup_iff K' _).2 fun x hx => ?_` and prove the remaining obligations. Conclude with `congrArg (fun f : K' →ₗ[F'] Ω' => f ⟨x, hx⟩) hlin`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_galConjHom [Algebra.IsAlgebraic F Ω]
     (e : F ≃+* F') (E : Ω ≃+* Ω')
@@ -90,13 +90,11 @@ theorem continuous_galConjHom [Algebra.IsAlgebraic F Ω]
 end GalConj
 
 /- English proof (translation)
-Introduce `F Ω F' Ω' _ _ _ _ _ _ _ _ _ _ e E hE`. Use `haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic`. Use `haveI : Algebra.IsAlgebraic F' Ω' := IsAlgClosure.isAlgebraic`. Establish `hE' : ∀ x : F', E.symm (algebraMap F' Ω' x) = algebraMap F Ω (e.symm x)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[RingEquiv.symm_apply_eq, hE, RingEquiv.apply_symm_apply]`. Use `⟨{ toFun := galConjHom e E hE invFun := galConjHom e.symm E.symm hE' left_inv := ?_ right_inv := ?_ map_mul' := map_mul _ continuous_toFun := continuous_galConjHom e E hE continuous_invFun := continuous_galConjHom e.symm E.symm hE' }, fun σ x => galConjHom_apply e E hE σ x⟩` and prove the remaining obligations. Introduce `σ`. Use extensionality with `x`. Establish `h` using `galConjHom_apply e.symm E.symm hE' (galConjHom e E hE σ) (E x)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[galConjHom_apply e E hE σ x, RingEquiv.symm_apply_apply, RingEquiv.symm_apply_apply]`. Conclude with `h`. Introduce `τ`. Use extensionality with `y`. Establish `h` using `galConjHom_apply e E hE (galConjHom e.symm E.symm hE' τ) (E.symm y)`.
-
-Rewrite `h` using `[galConjHom_apply e.symm E.symm hE' τ y, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`. Conclude with `h`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_galContinuousMulEquiv : ∀ (F Ω F' Ω' : Type) [Field F] [NumberField F] [Field Ω]
     [Algebra F Ω] [IsAlgClosure F Ω] [Field F'] [NumberField F'] [Field Ω'] [Algebra F' Ω']

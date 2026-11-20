@@ -9,7 +9,7 @@ namespace GlobalTheory.Ord2
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Rewrite using `[norm_pow, norm_pow]`. Conclude with `pow_le_pow_of_le_one (norm_nonneg _) norm_natCast_l_lt_one.le h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_l_pow_anti {m n : ℕ} (h : n ≤ m) :
     ‖((l : ℕ) : Qbar l) ^ m‖ ≤ ‖((l : ℕ) : Qbar l) ^ n‖ := by
@@ -17,17 +17,15 @@ theorem norm_l_pow_anti {m n : ℕ} (h : n ≤ m) :
   exact pow_le_pow_of_le_one (norm_nonneg _) norm_natCast_l_lt_one.le h
 
 /- English proof (translation)
-Take `⟨k, s, hs⟩` from `Module.Finite.exists_fin (R := ℤ_[l]) (M := c.O)`. Set `f : (Fin k → ℤ_[l]) → Qbar l` to `fun v => ∑ i, algebraMap ℤ_[l] (Qbar l) (v i) * (s i : Qbar l)`. Establish `hcont : Continuous f`. Establish `ha : Continuous (algebraMap ℤ_[l] (Qbar l))`. Establish `: ⇑(algebraMap ℤ_[l] (Qbar l)) = fun a : ℤ_[l] => algebraMap ℚ_[l] (Qbar l) (a : ℚ_[l])`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Conclude with `IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (Qbar l) a`. Rewrite using `[this]`. Conclude with `(continuous_algebraMap ℚ_[l] (Qbar l)).comp continuous_subtype_val`. Conclude with `continuous_finset_sum _ fun i _ => (ha.comp (continuous_apply i)).mul continuous_const`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Establish `heq : (c.O : Set (Qbar l)) = Set.range f`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hmem : (⟨x, hx⟩ : c.O) ∈ Submodule.span ℤ_[l] (Set.range s)` using `by rw [hs]; trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨v, hv⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ_[l]).1 hmem`. Use `⟨v, ?_⟩` and prove the remaining obligations. Use `congrArg (fun y : c.O => (y : Qbar l)) hv` as an intermediate fact. Simplify using `only [AddSubmonoidClass.coe_finset_sum] at this`. Rewrite using `[← this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def]`. Both sides reduce to the same expression. Introduce and unpack `⟨v, rfl⟩`. Conclude with `c.O.sum_mem fun i _ => c.O.mul_mem (c.O.algebraMap_mem _) (s i).2`.
-
-Rewrite using `[heq]`. Conclude with `isCompact_range hcont`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_coef (c : Coef l) : IsCompact (c.O : Set (Qbar l)) := by
   obtain ⟨k, s, hs⟩ := Module.Finite.exists_fin (R := ℤ_[l]) (M := c.O)
@@ -59,9 +57,9 @@ theorem isCompact_coef (c : Coef l) : IsCompact (c.O : Set (Qbar l)) := by
   exact isCompact_range hcont
 
 /- English proof (translation)
-Proceed by induction on `m, hnm using Nat.le_induction with`. Consider the case `base => unfold Cg`. Simplify using the standard rewrite rules. Consider the case `succ m hm ih`. Establish `h1 : Cg n (a (m + 1)) (a m)`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Unfold `Cg at *`. Conclude with `(h m).trans (norm_l_pow_anti hm)`. Conclude with `cg_trans h1 ih`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cg_of_le {a : ℕ → Qbar l} (h : ∀ n, Cg n (a (n + 1)) (a n)) {n m : ℕ} (hnm : n ≤ m) :
     Cg n (a m) (a n) := by
@@ -73,13 +71,13 @@ theorem cg_of_le {a : ℕ → Qbar l} (h : ∀ n, Cg n (a (n + 1)) (a n)) {n m :
     exact cg_trans h1 ih
 
 /- English proof (translation)
-Introduce `l _ c X a hO hC`. Establish `key : ∀ x, ∃ y ∈ (c.O : Set (Qbar l)), ∀ n, Cg n y (a n x)`. Introduce `x`. Establish `hle : ∀ n m, n ≤ m → ‖a m x - a n x‖ ≤ ‖((l : ℕ) : Qbar l) ^ n‖` using `fun n m h => cg_of_le (a := fun k => a k x) (fun k => hC k x) h`. Establish `hcs : CauchySeq (fun m => a m x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Metric.cauchySeq_iff']`. Introduce `ε hε`. Take `⟨N, hN⟩` from `(tendsto_norm_l_pow (l := l)).eventually (gt_mem_nhds hε) |>.exists_forall_of_atTop`. Use `⟨N, fun m hm => ?_⟩` and prove the remaining obligations. Rewrite using `[dist_eq_norm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hle N m hm).trans_lt (hN N le_rfl)`. Take `⟨y, hy, hlim⟩` from `cauchySeq_tendsto_of_isComplete (isCompact_coef c).isComplete (fun m => hO m x) hcs`. Use `⟨y, hy, fun n => ?_⟩` and prove the remaining obligations. Unfold `Cg`. Establish `ht : Filter.Tendsto (fun m => ‖a m x - a n x‖) Filter.atTop (nhds ‖y - a n x‖)` using `(hlim.sub_const _).norm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `le_of_tendsto ht (Filter.eventually_atTop.2 ⟨n, fun m hm => hle n m hm⟩)`. Use `choose z hz using key`. Conclude with `⟨z, fun x => (hz x).1, fun n x => (hz x).2 n⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_limit_coef : ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) (X : Type) (a : ℕ → X → Qbar l),
     (∀ n x, a n x ∈ c.O) → (∀ n x, Cg n (a (n + 1) x) (a n x)) →

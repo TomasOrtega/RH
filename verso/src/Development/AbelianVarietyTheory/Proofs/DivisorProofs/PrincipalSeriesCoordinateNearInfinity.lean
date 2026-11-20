@@ -10,16 +10,16 @@ namespace GlobalTheory.PrinTwo
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[inv_eq_iff_mul_eq_one]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nL_inv (x : k) : ((nL x)⁻¹ : GL (Fin (1 + 1)) k) = nL (-x) := by
   rw [inv_eq_iff_mul_eq_one]
   ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Establish `h : Continuous fun x : k => ((nL x : GL (Fin (1 + 1)) k) : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k)`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> fun_prop`. Use `Units.continuous_iff.2 ⟨h, ?_⟩` and prove the remaining obligations. Simplify using `only [nL_inv]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `h.comp continuous_neg`.
+A detailed English derivation is pending.
 -/
 theorem continuous_nL : Continuous (nL : k → GL (Fin (1 + 1)) k) := by
   have h : Continuous fun x : k => ((nL x : GL (Fin (1 + 1)) k) : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k) := by
@@ -30,15 +30,15 @@ theorem continuous_nL : Continuous (nL : k → GL (Fin (1 + 1)) k) := by
   exact h.comp continuous_neg
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nL_zero : (nL (0 : k) : GL (Fin (1 + 1)) k) = 1 := by
   ext i j; fin_cases i <;> fin_cases j <;> simp
 
 /- English proof (translation)
-Establish `hS : IsOpen {g : GL (Fin (1 + 1)) k | psRep μ₁ μ₂ g f = f}` using `isSmooth_parInd _ _ f`. Establish `hU : nL ⁻¹' {g : GL (Fin (1 + 1)) k | psRep μ₁ μ₂ g f = f} ∈ 𝓝 (0 : k)` using `(hS.preimage continuous_nL).mem_nhds (by simp [nL_zero])`. Take `⟨γ, hγ⟩` from `(IsValuativeTopology.mem_nhds_zero_iff _).mp hU`. Take `⟨y, hy⟩` from `ValuativeRel.valuation_surjective (γ : ValueGroupWithZero k)`. Establish `hy0 : y ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `γ.ne_zero (by simpa using hy.symm)`. Use `⟨Units.mk0 y hy0, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hz' : psRep μ₁ μ₂ (nL z) f = f` using `hγ (by rw [← hy]; exact hz)`. Rewrite using `[← one_mul (nL z), ← ev_act, hz']`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ev_nL_eq {μ₁ μ₂ : kˣ →* ℂˣ} (f : PSp μ₁ μ₂) :
     ∃ r : kˣ, ∀ z : k, valuation k z < valuation k (r : k) → ev f (nL z) = ev f 1 := by
@@ -55,9 +55,9 @@ theorem exists_ev_nL_eq {μ₁ μ₂ : kˣ →* ℂˣ} (f : PSp μ₁ μ₂) :
   rw [← one_mul (nL z), ← ev_act, hz']
 
 /- English proof (translation)
-Introduce `k _ _ _ _ μ₁ μ₂ f`. Take `⟨r, hr⟩` from `exists_ev_nL_eq f`. Use `⟨r⁻¹, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[coord, wE_mul_nU_eq, ev_bor, hr]`. Establish `hx0 : (0 : ValueGroupWithZero k) < valuation k (x : k)` using `by simp [zero_lt_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hr0 : (0 : ValueGroupWithZero k) < valuation k (r : k)` using `by simp [zero_lt_iff]`. Simplify using `only [Units.val_inv_eq_inv_val, map_inv₀] at hx ⊢`. Conclude with `(inv_lt_comm₀ hr0 hx0).mp hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coord_eq_of_far : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (μ₁ μ₂ : kˣ →* ℂˣ) (f : GlobalTheory.PrinTwo.PSp μ₁ μ₂), ∃ R : kˣ, ∀ x : kˣ,

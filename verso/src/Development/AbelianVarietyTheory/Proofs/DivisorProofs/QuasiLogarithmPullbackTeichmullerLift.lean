@@ -14,7 +14,7 @@ namespace GlobalTheory.KatzPull
 open GlobalTheory.Katz
 
 /- English proof (translation)
-Use extensionality with `α`. Rewrite using `[coeff_lift, coeff_X, coeff_X]`. Use `split_ifs`. Rewrite using `[map_one, map_one]`. Rewrite using `[WittVector.teichmuller_zero, map_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_X (p : ℕ) [Fact p.Prime] {k : Type} [Field k] [CharP k p] {σ : Type} (s : σ) :
     Katz.lift p (X s : MvPowerSeries σ k) = X s := by
@@ -26,17 +26,17 @@ theorem lift_X (p : ℕ) [Fact p.Prime] {k : Type} [Field k] [CharP k p] {σ : T
   · rw [WittVector.teichmuller_zero, map_zero]
 
 /- English proof (translation)
-Establish `ha'` using `hasSubst_of_constantCoeff_zero ha`. Establish `hcard : ∀ α : Fin e →₀ ℕ, Multiset.card (Finsupp.toMultiset α) = α.degree` using `fun α => by`. Rewrite using `[Finsupp.card_toMultiset, Finsupp.degree]`. Both sides reduce to the same expression. Establish `inj : Function.Injective (Finsupp.toMultiset : (Fin e →₀ ℕ) → Multiset (Fin e))` using `fun x y hxy => by simpa using congrArg Multiset.toFinsupp hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `set f1 : MvPowerSeries (Fin e) R := C (constantCoeff f) + ∑ j, C (lin f j) * X j with hf1`. Establish `hf2 : ∀ α : Fin e →₀ ℕ, α.degree < 2 → coeff α (f - f1) = 0`. Introduce `α hα`. Break down `(show α.degree = 0 ∨ α.degree = 1 by omega) with h | h` into its components or cases. Establish `h0 : α = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `inj` to reduce the goal to its premises. Rewrite using `[map_zero, ← Multiset.card_eq_zero, hcard, h]`. Substitute `h0` using the available equality. Simplify using `[hf1, coeff_X]`. Take `⟨j, hj⟩` from `Multiset.card_eq_one.1 ((hcard α).trans h)`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : α = Finsupp.single j 1`. Apply `inj` to reduce the goal to its premises. Rewrite using `[hj, Finsupp.toMultiset_single, one_smul]`. Substitute `h1` using the available equality. Simplify using `[hf1, coeff_X, coeff_C, lin, Finsupp.single_eq_single_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Establish `key` using `(GlobalTheory.T.coeff_subst_leading_of_agree_degree_one R (Fin e) (Fin d) a a 2 (f - f1) ha ha (fun _ _ _ => rfl) hf2 (Finsupp.single i 1)).1 (by rw [Finsupp.degree_single]; norm_num)`. Rewrite `key` using `[subst_sub ha', map_sub, sub_eq_zero]`. Unfold `lin pullLin`. Rewrite using `[key, hf1, subst_add ha', subst_C, map_add, coeff_C, if_neg (Finsupp.single_ne_zero.2 one_ne_zero), zero_add, ← coe_substAlgHom ha', map_sum, map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, coe_substAlgHom ha', subst_C, subst_X ha', coeff_C_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lin_subst {R : Type} [CommRing R] {d e : ℕ} (a : Fin e → MvPowerSeries (Fin d) R)
     (ha : ∀ j, constantCoeff (a j) = 0) (f : MvPowerSeries (Fin e) R) :
@@ -74,33 +74,29 @@ theorem lin_subst {R : Type} [CommRing R] {d e : ℕ} (a : Fin e → MvPowerSeri
   rfl
 
 /- English proof (translation)
-Introduce `p _ k _ _ _ d e μ ν hμ hν φ hφ f hf`. Take `⟨hf1, hf2⟩` from `hf`. Establish `hΦ0 : ∀ j, constantCoeff (Katz.lift p (φ j)) = 0` using `fun j => constantCoeff_lift p (hφ.const j)`. Establish `hΦs : HasSubst (fun j => Katz.lift p (φ j))` using `hasSubst_of_constantCoeff_zero hΦ0`. Establish `hLμ0 : ∀ i, constantCoeff (Katz.lift p (μ i)) = 0` using `fun i => constantCoeff_lift p (hμ.const i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLμs : HasSubst (fun i => Katz.lift p (μ i))` using `hasSubst_of_constantCoeff_zero hLμ0`. Establish `hLν0 : ∀ i, constantCoeff (Katz.lift p (ν i)) = 0` using `fun i => constantCoeff_lift p (hν.const i)`. Establish `hXl0 : ∀ i : Fin d, constantCoeff (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) (Fr p k)) = 0` using `fun _ => constantCoeff_X _`. Establish `hXr0 : ∀ i : Fin d, constantCoeff (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) (Fr p k)) = 0` using `fun _ => constantCoeff_X _`. Establish `hXls` using `hasSubst_of_constantCoeff_zero hXl0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXrs` using `hasSubst_of_constantCoeff_zero hXr0`. Establish `RR` using `fun σ => GlobalTheory.T.mvPowerSeries_reduction_mod_prime_rules p k σ`. Establish `hRedΦ : ∀ j, Red p (Katz.lift p (φ j)) (φ j)` using `fun j => (RR _).2.2.1 (φ j)`. Establish `redX : ∀ {σ : Type} (s : σ), Red p (X s : MvPowerSeries σ (Fr p k)) (X s)` using `fun s => by`. Simplify `(RR _).2.2.1 (X s : MvPowerSeries _ k)` using `[lift_X]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hIL` using `GlobalTheory.T.isIntegralReducingToMvPowerSeries_subst p k (Fin d) (Fin d ⊕ Fin d) (fun i => X (Sum.inl i)) (fun i => X (Sum.inl i)) hXl0 (fun i => redX _)`. Establish `hIR` using `GlobalTheory.T.isIntegralReducingToMvPowerSeries_subst p k (Fin d) (Fin d ⊕ Fin d) (fun i => X (Sum.inr i)) (fun i => X (Sum.inr i)) hXr0 (fun i => redX _)`. Use `set U : Fin e ⊕ Fin e → MvPowerSeries (Fin d ⊕ Fin d) (Fr p k) := Sum.elim (fun j => inL (Katz.lift p (φ j))) (fun j => inR (Katz.lift p (φ j))) with hU`. Use `set U' : Fin e ⊕ Fin e → MvPowerSeries (Fin d ⊕ Fin d) k := Sum.elim (fun j => inL (φ j)) (fun j => inR (φ j)) with hU'`. Establish `hinL0 : ∀ j, constantCoeff (inL (Katz.lift p (φ j))) = 0` using `fun j => constantCoeff_subst_eq_zero hXls hXl0 (hΦ0 j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinR0 : ∀ j, constantCoeff (inR (Katz.lift p (φ j))) = 0` using `fun j => constantCoeff_subst_eq_zero hXrs hXr0 (hΦ0 j)`. Establish `hU0 : ∀ s, constantCoeff (U s) = 0`. Introduce and unpack `(j | j)`. Conclude with `hinL0 j`. Conclude with `hinR0 j`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRedU : ∀ s, Red p (U s) (U' s)`. Introduce and unpack `(j | j)`. Conclude with `hIL.1 _ _ (hRedΦ j)`. Conclude with `hIR.1 _ _ (hRedΦ j)`. Establish `hIU` using `GlobalTheory.T.isIntegralReducingToMvPowerSeries_subst p k (Fin e ⊕ Fin e) (Fin d ⊕ Fin d) U U' hU0 hRedU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `C6` using `GlobalTheory.T.powerSeriesEvalTwoGroups_rules (Fr p k) e (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (fun j => inL (Katz.lift p (φ j))) (fun j => inR (Katz.lift p (φ j))) hinL0 hinR0`. Use `set A : Fin e → MvPowerSeries (Fin d ⊕ Fin d) (Fr p k) := fun j => subst (fun i => Katz.lift p (μ i)) (Katz.lift p (φ j)) with hA`. Use `set B : Fin e → MvPowerSeries (Fin d ⊕ Fin d) (Fr p k) := fun j => subst U (Katz.lift p (ν j)) with hB`. Establish `hA0 : ∀ j, constantCoeff (A j) = 0` using `fun j => constantCoeff_subst_eq_zero hLμs hLμ0 (hΦ0 j)`. Establish `hB0 : ∀ j, constantCoeff (B j) = 0` using `fun j => constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero hU0) hU0 (hLν0 j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hRA : ∀ j, Red p (A j) (subst μ (φ j))` using `fun j => (GlobalTheory.T.isIntegralReducingToMvPowerSeries_subst p k (Fin d) (Fin d ⊕ Fin d) _ μ hLμ0 (fun i => (RR _).2.2.1 (μ i))).1 _ _ (hRedΦ j)`. Establish `hRB : ∀ j, Red p (B j) (subst μ (φ j))` using `fun j => by`. Rewrite using `[hφ.hom j]`. Conclude with `hIU.1 _ _ ((RR _).2.2.1 (ν j))`. Establish `hD` using `GlobalTheory.T.subst_sub_subst_integral_of_integral_differential p k (Fin e) (Fin d ⊕ Fin d) A B (fun j => subst μ (φ j)) f hA0 hB0 hRA hRB hf1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hid : cob1 (fun i => Katz.lift p (μ i)) (subst (fun j => Katz.lift p (φ j)) f) = (subst A f - subst B f) + subst U (cob1 (fun j => Katz.lift p (ν j)) f)`. Establish `e1 : subst U (cob1 (fun j => Katz.lift p (ν j)) f) =`. Substitute `B f - subst (fun j => inL (Katz.lift p (φ j))) f - subst (fun j => inR (Katz.lift p (φ j))) f := by` using the available equality. Express the relevant statement in the definitionally equal form `at2 (cob1 (fun j => Katz.lift p (ν j)) f) _ _ = _`. Unfold `cob1`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(C6.2.2.1 _ _).2, (C6.2.2.1 _ _).2, C6.1, C6.2.1, C6.2.2.2.2.2.1 e _ hLν0]`. Both sides reduce to the same expression. Rewrite using `[e1]`. Unfold `cob1 inL inR`. Rewrite using `[subst_comp_subst_apply hΦs hLμs, subst_comp_subst_apply hΦs hXls, subst_comp_subst_apply hΦs hXrs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Normalize the expressions using the abelian group laws. Establish `part2 : ∀ c, Red p (cob1 (fun j => Katz.lift p (ν j)) f) c → Red p (cob1 (fun i => Katz.lift p (μ i)) (subst (fun j => Katz.lift p (φ j)) f)) (pull2 φ c)`. Introduce `c hc`. Rewrite using `[hid]`. Establish `h1` using `((RR _).2.2.2.2.2.1 _).1 hD`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h2` using `hIU.1 _ _ hc`. Use `((RR _).2.2.2.1 _ _ _ _ h1 h2).1` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Use `⟨⟨GlobalTheory.T.subst_mem_integralDifferentialSubmodule p k (Fin e) (Fin d) _ f hΦ0 (fun j => ((RR _).1 _).2 ⟨φ j, hRedΦ j⟩) hf1, ?_⟩, part2, ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `((RR _).1 _).1 hf2`.
-
-Conclude with `((RR _).1 _).2 ⟨_, part2 c hc⟩`. Introduce `w hw i`. Rewrite using `[lin_subst _ hΦ0]`. Use `choose a ha ha' using hw`. Use `⟨∑ j, a j * WittVector.teichmuller p (lin (φ j) i), ?_, ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [pullLin, map_sum, map_mul, ha]`. Both sides reduce to the same expression. Simplify using `only [pullLin, map_sum, map_mul, ha', WittVector.teichmuller_coeff_zero]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem quasiLog_pull : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p] (d e : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k) (ν : Fin e → MvPowerSeries (Fin e ⊕ Fin e) k) (hμ : IsLaw μ) (hν : IsLaw ν) (φ : Fin e → MvPowerSeries (Fin d) k), IsHom μ ν φ → ∀ f ∈ quasiLog p hν, subst (fun j => Katz.lift p (φ j)) f ∈ quasiLog p hμ ∧ (∀ c, Red p (cob1 (fun j => Katz.lift p (ν j)) f) c → Red p (cob1 (fun i => Katz.lift p (μ i)) (subst (fun j => Katz.lift p (φ j)) f)) (pull2 φ c)) ∧ ∀ w, RedV p (lin f) w → RedV p (lin (subst (fun j => Katz.lift p (φ j)) f)) (pullLin φ w) := by
   intro p _ k _ _ _ d e μ ν hμ hν φ hφ f hf

@@ -10,7 +10,7 @@ open scoped ComplexConjugate ValuativeRel
 namespace GlobalTheory.CompanionTheory.QL.SphLaw
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `j _ hj`. Break down `lt_or_gt_of_ne hj with h | h` into its components or cases. Rewrite using `[ha h, zero_mul]`. Rewrite using `[hb h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -25,7 +25,7 @@ theorem diag_mul {F : Type} [Field F] {c : ℕ} {a b : Matrix (Fin c) (Fin c) F}
   · simp
 
 /- English proof (translation)
-Establish `h : (b : Matrix (Fin c) (Fin c) F).det ≠ 0` using `(Matrix.isUnits_det_units b).ne_zero`. Rewrite `h` using `[Matrix.det_of_upperTriangular hb]`. Conclude with `Finset.prod_ne_zero_iff.mp h i (Finset.mem_univ i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_ne_zero {F : Type} [Field F] {c : ℕ} (b : GL (Fin c) F)
     (hb : (b : Matrix (Fin c) (Fin c) F).BlockTriangular id) (i : Fin c) :
@@ -39,9 +39,9 @@ noncomputable def wt {F : Type} [Field F] (nrm : AbsoluteValue F ℝ) {c : ℕ} 
   ∏ i : Fin c, χ i (b i i) * ((nrm (b i i) ^ (((c : ℝ) - 1) / 2 - (i : ℕ)) : ℝ) : ℂ)
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `hv x hx`. Take `⟨e', he'⟩` from `hv y hy`. Establish `hq0 : (q : ℝ) ≠ 0`. Establish `: 0 < q` using `by omega`. Check the signs of the components of the expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `hxy : nrm (x * y) = (q : ℝ) ^ (-(e + e'))`. Rewrite using `[map_mul, he, he', neg_add, zpow_add₀ hq0]`. Rewrite using `[hU.2 i _ _ hxy, hU.2 i _ _ he, hU.2 i _ _ he', zpow_add₀ (hU.1 i)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_mul {F : Type} [Field F] {nrm : AbsoluteValue F ℝ} {q : ℕ} (hq : 1 < q)
     (hv : ∀ x : F, x ≠ 0 → ∃ e : ℤ, nrm x = (q : ℝ) ^ (-e))
@@ -57,9 +57,9 @@ theorem chi_mul {F : Type} [Field F] {nrm : AbsoluteValue F ℝ} {q : ℕ} (hq :
   rw [hU.2 i _ _ hxy, hU.2 i _ _ he, hU.2 i _ _ he', zpow_add₀ (hU.1 i)]
 
 /- English proof (translation)
-Unfold `wt`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hd : ((a * b : GL (Fin c) F) : Matrix (Fin c) (Fin c) F) i i = (a : Matrix (Fin c) (Fin c) F) i i * (b : Matrix (Fin c) (Fin c) F) i i`. Rewrite using `[Units.val_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `diag_mul ha hb i`. Rewrite using `[hd, chi_mul hq hv hU i (diag_ne_zero a ha i) (diag_ne_zero b hb i), map_mul, Real.mul_rpow (nrm.nonneg _) (nrm.nonneg _)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem wt_mul {F : Type} [Field F] {nrm : AbsoluteValue F ℝ} {q : ℕ} (hq : 1 < q)
     (hv : ∀ x : F, x ≠ 0 → ∃ e : ℤ, nrm x = (q : ℝ) ^ (-e))
@@ -80,23 +80,23 @@ theorem wt_mul {F : Type} [Field F] {nrm : AbsoluteValue F ℝ} {q : ℕ} (hq : 
   ring
 
 /- English proof (translation)
-Introduce `F _ _ _ _ O ϖ nrm q hLF c χ α hU φ hφ`. Take `⟨hq, -, -, -, hv', -, -⟩` from `GlobalTheory.T.localField_uniformizer_norm_properties hLF`. Establish `hv : ∀ x : F, x ≠ 0 → ∃ e : ℤ, nrm x = (q : ℝ) ^ (-e)` using `fun x hx => (hv' x hx).imp fun _ h => h.1`. Establish `hIw` using `(GlobalTheory.T.iwasawa_decomposition_upperTriangular hLF) c`. Establish `hKo : IsOpen (GLint O c : Set (GL (Fin c) F))` using `(GlobalTheory.T.generalLinear_integral_compact_open hLF c).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval : ∀ (ψ : GL (Fin c) F → ℂ), IsSphFn O nrm χ ψ → ∀ b : GL (Fin c) F, (b : Matrix (Fin c) (Fin c) F).BlockTriangular id → ∀ k ∈ GLint O c, ψ (b * k) = wt nrm χ (b : Matrix (Fin c) (Fin c) F)` using `fun ψ hψ b hb k hk => hψ b hb k hk`. Establish `hone : (1 : GL (Fin c) F) ∈ GLint O c` using `one_mem _`. Establish `h1t : ((1 : GL (Fin c) F) : Matrix (Fin c) (Fin c) F).BlockTriangular id`. Simplify using `using (Matrix.blockTriangular_one (b := (id : Fin c → Fin c)) (R := F))`. Establish `hb1 : ∀ b : GL (Fin c) F, (b : Matrix (Fin c) (Fin c) F).BlockTriangular id → φ b = wt nrm χ (b : Matrix (Fin c) (Fin c) F)` using `fun b hb => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hval φ hφ b hb 1 hone`. Establish `hχ1 : ∀ i, χ i 1 = 1` using `fun i => by`. Use `hU.2 i 1 0 (by simp)` as an intermediate fact. Simplify using `using this`. Establish `hright : ∀ g, ∀ k ∈ GLint O c, φ (g * k) = φ g`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `g k hk`. Take `⟨b, hb, k', hk', rfl⟩` from `hIw g`. Rewrite using `[mul_assoc, hval φ hφ b hb _ ((GLint O c).mul_mem hk' hk), hval φ hφ b hb _ hk']`. Use `⟨?_, hright, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hval φ hφ 1 h1t k hk` as an intermediate fact. Rewrite `this` using `[one_mul]`. Rewrite using `[this]`. Simplify using `[wt, hχ1]`. Introduce `b hb g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨b', hb', k, hk, rfl⟩` from `hIw g`. Establish `hbb : ((b * b' : GL (Fin c) F) : Matrix (Fin c) (Fin c) F).BlockTriangular id`. Rewrite using `[Units.val_mul]`. Conclude with `hb.mul hb'`. Rewrite using `[← mul_assoc, hval φ hφ _ hbb k hk, hval φ hφ b' hb' k hk, hb1 b hb, wt_mul hq hv hU b b' hb hb']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsLocallyConstant.continuous ?_` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `g`. Use `⟨(fun x => g⁻¹ * x) ⁻¹' (GLint O c : Set (GL (Fin c) F)), hKo.preimage (continuous_const.mul continuous_id), ?_, ?_⟩` and prove the remaining obligations. Simplify using `[one_mem]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Use `hright g _ hx` as an intermediate fact. Simplify using `using this`. Introduce `φ' hφ'`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, k, hk, rfl⟩` from `hIw g`. Rewrite using `[hval φ' hφ' b hb k hk, hval φ hφ b hb k hk]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {O : Subring F} {ϖ : F} {nrm : AbsoluteValue F ℝ} {q : ℕ}, LF O ϖ nrm q → ∀ {c : ℕ} (χ : Fin c → F → ℂ) (α : Fin c → ℂ), UnrChar nrm q χ α → ∀ (φ : GL (Fin c) F → ℂ), IsSphFn O nrm χ φ → (∀ k ∈ GLint O c, φ k = 1) ∧ (∀ g, ∀ k ∈ GLint O c, φ (g * k) = φ g) ∧ (∀ b : GL (Fin c) F, (b : Matrix (Fin c) (Fin c) F).BlockTriangular id → ∀ g, φ (b * g) = φ b * φ g) ∧ Continuous φ ∧ ∀ φ', IsSphFn O nrm χ φ' → φ' = φ := by
   intro F _ _ _ _ O ϖ nrm q hLF c χ α hU φ hφ

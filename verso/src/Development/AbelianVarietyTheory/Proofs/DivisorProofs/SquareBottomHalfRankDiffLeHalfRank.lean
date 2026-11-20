@@ -16,15 +16,15 @@ namespace GlobalTheory.LValNe
 variable {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I]
 
 /- English proof (translation)
-Establish `hpi : (2 * (Real.pi : ℂ)) ≠ 0` using `mul_ne_zero two_ne_zero (by exact_mod_cast Real.pi_ne_zero)`. Establish `hA : ∀ (z : ℂ) i, (2 * (2 * (Real.pi : ℂ)) ^ (-(z + ((|n i| : ℤ) : ℂ) / 2))) ≠ 0` using `fun z i => mul_ne_zero two_ne_zero (by rw [Ne, Complex.cpow_eq_zero_iff]; tauto)`. Set `g : ℂ → ℂ` to `fun z => Λ z * ∏ i, ((2 * (2 * (Real.pi : ℂ)) ^ (-(z + ((|n i| : ℤ) : ℂ) / 2)))⁻¹ * (Complex.Gamma (z + ((|n i| : ℤ) : ℂ) / 2))⁻¹)`. Establish `key : ∀ z : ℂ, (∀ i, Complex.Gamma (z + ((|n i| : ℤ) : ℂ) / 2) ≠ 0) → archFactor n z * ∏ i, ((2 * (2 * (Real.pi : ℂ)) ^ (-(z + ((|n i| : ℤ) : ℂ) / 2)))⁻¹ * (Complex.Gamma (z + ((|n i| : ℤ) : ℂ) / 2))⁻¹) = 1` using `fun z hz => by`. Unfold `archFactor`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_mul_mul_comm, mul_inv_cancel₀ (hA z i), mul_inv_cancel₀ (hz i), one_mul]`. Establish `hg : Differentiable ℂ g`. Use `h.1.mul (Differentiable.fun_finsetProd fun i _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Differentiable.mul (fun z => ?_) ?_` and prove the remaining obligations. Use `DifferentiableAt.inv ?_ (hA z i)` and prove the remaining obligations. Conclude with `(((differentiableAt_id.add_const _).neg).const_cpow (Or.inl hpi)).const_mul 2`. Conclude with `Complex.differentiable_one_div_Gamma.comp (differentiable_id.add_const _)`. Establish `hgL : g = L` using `entire_eq_of_halfPlane hg hL.1 1 fun z hz => by`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz' : ∀ i, Complex.Gamma (z + ((|n i| : ℤ) : ℂ) / 2) ≠ 0` using `fun i => Complex.Gamma_ne_zero_of_re_pos (by`. Establish `: (0 : ℝ) ≤ ((|n i| : ℤ) : ℝ)` using `by exact_mod_cast abs_nonneg (n i)`. Simplify using `only [Complex.add_re, Complex.div_re, Complex.intCast_re, Complex.intCast_im]`. Evaluate the numerical expressions. Use `abs_nonneg (n i)` as an intermediate fact.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (0:ℝ) ≤ |(n i : ℝ)|` using `abs_nonneg _`. Use the proof step `linarith)`. Use `show Λ z * _ = L z`. Rewrite using `[h.eq_mul hL hz, mul_comm (archFactor n z), mul_assoc, key z hz', mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem completed_eq {χ : HChar E} {n : I → ℤ} {Λ L : ℂ → ℂ} (h : IsCompletedL χ n Λ) (hL : IsHeckeL χ L) {s : ℂ}
     (hs : ∀ i, Complex.Gamma (s + ((|n i| : ℤ) : ℂ) / 2) ≠ 0) : Λ s = archFactor n s * L s := by
@@ -68,7 +68,7 @@ namespace GlobalTheory.LValNe
 variable {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I]
 
 /- English proof (translation)
-Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Take `⟨i, -⟩` from `hφ w.embedding`. Conclude with `⟨i⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_of_isCMType {φ : I → E →+* ℂ} (hφ : IsCMType φ) : Nonempty I := by
   obtain ⟨w⟩ : Nonempty (InfinitePlace E) := inferInstance
@@ -76,7 +76,7 @@ theorem nonempty_of_isCMType {φ : I → E →+* ℂ} (hφ : IsCMType φ) : None
   exact ⟨i⟩
 
 /- English proof (translation)
-Take `⟨i₀⟩` from `nonempty_of_isCMType hφ`. Conclude with `GlobalTheory.ToricDistribution.exists_isHeckeL_of_hasInf E I φ m χ hφ hu hm ⟨i₀, (hpos i₀).ne'⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_heckeL [IsCMField E] {φ : I → E →+* ℂ} (hφ : IsCMType φ) {χ : HChar E} {m : I → ℤ} (hu : IsUnitary χ)
     (hm : HasInf χ φ m) (hpos : ∀ i, 0 < m i) : ∃ Λ, IsHeckeL χ Λ := by
@@ -84,25 +84,25 @@ theorem exists_heckeL [IsCMField E] {φ : I → E →+* ℂ} (hφ : IsCMType φ)
   exact GlobalTheory.ToricDistribution.exists_isHeckeL_of_hasInf E I φ m χ hφ hu hm ⟨i₀, (hpos i₀).ne'⟩
 
 /- English proof (translation)
-The claim follows from `Complex.Gamma_ne_zero_of_re_pos (by simp only [Complex.intCast_re]; exact_mod_cast hk)`.
+A detailed English derivation is pending.
 -/
 theorem gamma_int_ne_zero {k : ℤ} (hk : 0 < k) : Complex.Gamma (k : ℂ) ≠ 0 :=
   Complex.Gamma_ne_zero_of_re_pos (by simp only [Complex.intCast_re]; exact_mod_cast hk)
 
 /- English proof (translation)
-Rewrite using `[abs_of_pos (by omega)]; push_cast; ring`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem half_abs_two_mul (a : ℤ) (ha : 0 < a) : ((|2 * a| : ℤ) : ℂ) / 2 = (a : ℂ) := by
   rw [abs_of_pos (by omega)]; push_cast; ring
 
 /- English proof (translation)
-Rewrite using `[abs_neg, half_abs_two_mul a ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem half_abs_neg_two_mul (a : ℤ) (ha : 0 < a) : ((|-(2 * a)| : ℤ) : ℂ) / 2 = (a : ℂ) := by
   rw [abs_neg, half_abs_two_mul a ha]
 
 /- English proof (translation)
-Establish `hpi : (2 * (Real.pi : ℂ)) ≠ 0` using `mul_ne_zero two_ne_zero (by exact_mod_cast Real.pi_ne_zero)`. Use `Finset.prod_ne_zero_iff.2 fun i _ => mul_ne_zero (mul_ne_zero two_ne_zero ?_) (hs i)` and prove the remaining obligations. Rewrite using `[Ne, Complex.cpow_eq_zero_iff]`. The claim follows by propositional logic.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. The claim follows by propositional logic.
 -/
 theorem archFactor_ne_zero {n : I → ℤ} {s : ℂ} (hs : ∀ i, Complex.Gamma (s + ((|n i| : ℤ) : ℂ) / 2) ≠ 0) :
     archFactor n s ≠ 0 := by
@@ -111,21 +111,19 @@ theorem archFactor_ne_zero {n : I → ℤ} {s : ℂ} (hs : ∀ i, Complex.Gamma 
   rw [Ne, Complex.cpow_eq_zero_iff]; tauto
 
 /- English proof (translation)
-Break down `le_or_gt 1 s with h1 | h1` into its components or cases. Establish `e : ((s.toNat : ℕ) : ℂ) = (s : ℂ)`. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg (by omega)]`. Rewrite using `[← e]`. Conclude with `hL.ne_zero_nat hu (by omega)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨i₀⟩` from `nonempty_of_isCMType hφ`. Establish `hn : ∃ i, 2 * m i ≠ 0` using `⟨i₀, by have := hpos i₀; omega⟩`. Establish `hn' : ∃ i, -(2 * m i) ≠ 0` using `⟨i₀, by have := hpos i₀; omega⟩`. Establish `hm' : Formalism.L2.Host.HChar.HasInf χ⁻¹ φ (fun i => -(2 * m i))` using `GlobalTheory.Published.HeckeFEModel.hasInf_inv hm`. Establish `hu'` using `GlobalTheory.Published.HeckeFEModel.isUnitary_inv hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmi : HasInf χ⁻¹ φ (fun i => -m i)`. Establish `e : (fun i => 2 * -m i) = fun i => -(2 * m i)` using `funext fun i => by ring`. Use `show Formalism.L2.Host.HChar.HasInf χ⁻¹ φ (fun i => 2 * -m i)`. Rewrite using `[e]`. Conclude with `hm'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Λ, hΛ, -⟩` from `hB E I φ hφ χ (fun i => 2 * m i) hu hm hn`. Take `⟨Λ', hΛ', -⟩` from `hB E I φ hφ χ⁻¹ (fun i => -(2 * m i)) hu' hm' hn'`. Take `⟨L', hL'⟩` from `GlobalTheory.ToricDistribution.exists_isHeckeL_of_hasInf E I φ (fun i => -m i) χ⁻¹ hφ hu' hmi ⟨i₀, by have := hpos i₀; omega⟩`. Establish `g1 : ∀ i, Complex.Gamma ((1 - (s : ℂ)) + ((|-(2 * m i)| : ℤ) : ℂ) / 2) ≠ 0` using `fun i => by`. Rewrite using `[half_abs_neg_two_mul _ (hpos i)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Use `gamma_int_ne_zero (k := 1 - s + m i) (by have := hpos i; omega)` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `e1` using `completed_eq hΛ' hL' g1`. Establish `hL1 : L' (1 - (s : ℂ)) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (((1 - s).toNat : ℕ) : ℂ) = 1 - (s : ℂ)`. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg (by omega)]; push_cast; ring`. Rewrite using `[← e]`. Conclude with `hL'.ne_zero_nat hu' (by omega)`. Establish `hΛ'1 : Λ' (1 - (s : ℂ)) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Conclude with `mul_ne_zero (archFactor_ne_zero g1) hL1`. Establish `hΛs : Λ s ≠ 0` using `fun h0 => hΛ'1 ((GlobalTheory.Published.HeckeFEModel.zero_iff hFE hφ hu hm hn hΛ hΛ' s).1 h0)`. Establish `g0 : ∀ i, Complex.Gamma ((s : ℂ) + ((|2 * m i| : ℤ) : ℂ) / 2) ≠ 0` using `fun i => by`. Rewrite using `[half_abs_two_mul _ (hpos i)]`.
-
-Use `gamma_int_ne_zero (hs i)` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite `hΛs` using `[completed_eq hΛ hL g0]`. Conclude with `right_ne_zero_of_mul hΛs`.
+Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeL_ne_zero_int (hFE : GlobalTheory.Published.HeckeFunctionalEquationAbs) (hB : CompletedLBoundedInStrips) [IsCMField E]
     {φ : I → E →+* ℂ} (hφ : IsCMType φ) {χ : HChar E} {m : I → ℤ} (hu : IsUnitary χ) (hm : HasInf χ φ m)
@@ -178,24 +176,22 @@ namespace GlobalTheory.SqTop
 open Formalism.BasicNotions Formalism.IndefR.Links GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.FunObj.SqNum
 
 /- English proof (translation)
-Unfold `e0 halfRank botBig botSmall`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem squareBottomHalfRankDiff_le_halfRank (D : D7) (i j : ℕ) : e0 D i j ≤ halfRank D i j := by
   unfold e0 halfRank botBig botSmall
   omega
 
 /- English proof (translation)
-Establish `hv` using `GlobalTheory.FunObj.SqNum.Model.isValChar_nu hL G i j (Nat.zero_le (halfRank D i j))`. Establish `hpos : ∀ τ, 0 < ((kap D sc.cGap i j 0 τ : ℕ) : ℤ) + ((0 : ℕ) : ℤ)` using `fun τ => by`. Use `(GlobalTheory.FunObj.SqNum.Model.kap_add D sc.cGap i j τ (Nat.zero_le (halfRank D i j))).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `fam_ok : ∀ χ : HChar D.host.E, IsValChar (cmPhi D) 0 (kap D sc.cGap i j 0) (condF G.pl) ∅ χ → ∃ Λ, IsHeckeL χ Λ ∧ ∀ s : ℕ, 1 ≤ s → Λ s ≠ 0` using `fun χ h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Take `⟨Λ, hΛ⟩` from `GlobalTheory.LValNe.exists_heckeL hφ h.1 h.2.2.1 hpos`. Conclude with `⟨Λ, hΛ, fun s hs => hΛ.ne_zero_nat h.1 hs⟩`. Use `⟨fun t => ?_, fun c => ?_⟩` and prove the remaining obligations. Establish `e : nuH G t i j = nuH G μ₀ i j * Lc.xiH t`. Simplify using `only [nuH, hL.xi_base, mul_one]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `mul_div_right_comm _ _ _`. Take `⟨n, hn, hf⟩` from `hL.xi_fin t`. Establish `hu : IsUnitary (nuH G t i j)` using `GlobalTheory.ChrEqUnique.isUnitary_of_chrEq D _ _ (chrEq_nu G t i j hL)`. Establish `hm : HasInf (nuH G t i j) (cmPhi D) (fun τ => ((kap D sc.cGap i j 0 τ : ℕ) : ℤ) + ((0 : ℕ) : ℤ))`. Introduce `k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Formalism.L2.Host.HChar.inf_mul, GlobalTheory.TypeValues.inf_eq_one (Lc.xiH t) hn hf k, mul_one]`. Conclude with `hv.1.2.2.1 k`. Take `⟨Λ, hΛ⟩` from `GlobalTheory.LValNe.exists_heckeL hφ hu hm hpos`. Use `⟨Λ, hΛ, fun s hs1 hs2 => GlobalTheory.LValNe.heckeL_ne_zero_int hFE hB hφ hu hm hpos hΛ s fun τ => ?_⟩` and prove the remaining obligations. Establish `a0` using `(GlobalTheory.FunObj.SqNum.Model.kap_add D sc.cGap i j τ (Nat.zero_le (halfRank D i j))).1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1` using `GlobalTheory.FunObj.SqNum.Model.kap_add D sc.cGap i j τ (le_refl (halfRank D i j))`. Establish `a2` using `squareBottomHalfRankDiff_le_halfRank D i j`. Use linear arithmetic over natural numbers and integers. Consider the cases of `c with`. Consider the case `none => exact fam_ok _ hv.1`.
-
-Consider the case `some c => exact fam_ok _ (hv.2 c)`.
+Use linear arithmetic over natural numbers and integers. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lNe_square (hFE : GlobalTheory.Published.HeckeFunctionalEquationAbs) (hB : CompletedLBoundedInStrips) {D : D7} {T : Type}
     {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} [IsCMField D.host.E] (hφ : IsCMType (cmPhi D)) {μ₀ : T} (hL : Lc.Is μ₀)
@@ -231,9 +227,9 @@ theorem lNe_square (hFE : GlobalTheory.Published.HeckeFunctionalEquationAbs) (hB
     | some c => exact fam_ok _ (hv.2 c)
 
 /- English proof (translation)
-Introduce `hFE hB hFD`. Take `⟨CF0, h⟩` from `hFD`. Use `⟨CF0, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, x₀, h'⟩` from `h ε CF hCF`. Use `⟨C0, x₀, fun C hC D large₂ he hx hR T Lc μ₀ hL G => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hCM, -, hFd, -, -⟩` from `h' C hC D large₂ he hx hR T Lc μ₀ hL G`. Take `⟨-, -, -, -, -, -, hφ, -⟩` from `hFd`. Conclude with `fun i j => lNe_square hFE hB hφ hL G i j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lNe_of_functionalEquation :
     GlobalTheory.Published.HeckeFunctionalEquationAbs → GlobalTheory.IndefiniteRowSideFullHecke.CompletedLStripBounds.CompletedLBoundedInStrips → FieldDat → LNe := by

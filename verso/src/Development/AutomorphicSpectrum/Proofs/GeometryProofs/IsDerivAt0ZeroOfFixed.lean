@@ -51,9 +51,9 @@ namespace GlobalTheory.CompanionTheory.Ar.QuotLoc.DiffL
 open ReciprocityTheory.ChartRestriction.G.PullbackSections.ExpRows ReciprocityTheory.ChartRestriction.G.TB.ValAt Formalism.L2.Pj
 
 /- English proof (translation)
-Use `⟨h0, fun U h f => ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Establish `key : ∀ (v' : Sp (DualNumber ℂ) ⟶ Y) (_ : v' = spMap (epsMul (0 : ℂ)) ≫ v) (h' : ⊤ ≤ v' ⁻¹ᵁ U), TrivSqZeroExt.snd (show DualNumber ℂ from (Scheme.ΓSpecIso (CommRingCat.of (DualNumber ℂ))).hom.hom ((v'.appLE U ⊤ h').hom f)) = 0`. Introduce and unpack `_ rfl h'`. Establish `hs` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.specMap_comp_appLE (CommRingCat.ofHom (epsMul (0 : ℂ))) v U h' h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `ConcreteCategory.congr_hom hs f` as an intermediate fact. Rewrite `this` using `[ConcreteCategory.comp_apply, ConcreteCategory.comp_apply, ConcreteCategory.comp_apply]`. Use `erw [this]`. Simplify using `[epsMul]`. Conclude with `key v hv.symm h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isDerivAt0_zero_of_fixed {g : ℕ} {Y : Scheme.{0}} {F : (Fin g → ℂ) → (Sp ℂ ⟶ Y)}
     {v : Sp (DualNumber ℂ) ⟶ Y} (h0 : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = F 0)
@@ -72,9 +72,9 @@ theorem isDerivAt0_zero_of_fixed {g : ℕ} {Y : Scheme.{0}} {F : (Fin g → ℂ)
   exact key v hv.symm h
 
 /- English proof (translation)
-Introduce `U f`. Take `⟨h1, h2⟩` from `h U f`. Establish `hc : Continuous (fun z : Fin g → ℂ => (b, z))` using `by fun_prop`. Establish `hmem : ∀ z, z ∈ {z ∈ (Set.univ : Set (Fin g → ℂ)) | ⊤ ≤ F (b, z) ⁻¹ᵁ U} → (b, z) ∈ {bz ∈ B ×ˢ (Set.univ : Set (Fin g → ℂ)) | ⊤ ≤ F bz ⁻¹ᵁ U}` using `fun z hz => ⟨⟨hb, trivial⟩, hz.2⟩`. Establish `hset : {z ∈ (Set.univ : Set (Fin g → ℂ)) | ⊤ ≤ F (b, z) ⁻¹ᵁ U} = (fun z => (b, z)) ⁻¹' {bz ∈ B ×ˢ (Set.univ : Set (Fin g → ℂ)) | ⊤ ≤ F bz ⁻¹ᵁ U}` using `Set.ext fun z => ⟨hmem z, fun hz => ⟨trivial, hz.2⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hset ▸ h1.preimage hc, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hd` using `(h2 _ (hmem z hz)).differentiableAt (h1.mem_nhds (hmem z hz))`. Establish `hi : DifferentiableAt ℂ (fun z : Fin g → ℂ => (b, z)) z` using `by fun_prop`. Conclude with `(DifferentiableAt.comp z hd hi).differentiableWithinAt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isHolTo_slice {n g : ℕ} {B : Set (Fin n → ℂ)} {Y : Scheme.{0}}
     {F : (Fin n → ℂ) × (Fin g → ℂ) → (Sp ℂ ⟶ Y)} (h : IsHolTo (B ×ˢ Set.univ) F) {b : Fin n → ℂ} (hb : b ∈ B) :
@@ -94,17 +94,17 @@ theorem isHolTo_slice {n g : ℕ} {B : Set (Fin n → ℂ)} {Y : Scheme.{0}}
   exact (DifferentiableAt.comp z hd hi).differentiableWithinAt
 
 /- English proof (translation)
-Establish `h1 : e.ex b 0 = 1`. Use `e.add b hb 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.mp this.symm`. Establish `h0 : (fun z => (e.ex b z).left) 0 = (1 : Over.mk (spMap (ψ b)) ⟶ G).left` using `congrArg (·.left) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbas : ∀ i, IsDerivAt0 (fun z => (e.ex b z).left) (Pi.single i 1) (Mz.pt (Pi.single i 1)).left` using `fun i => by`. Establish `h` using `e.diff b hb i`. Establish `h'` using `hL i`. Unfold `LieModel.Lifts at h'`. Rewrite `h'` using `[Category.comp_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[← h']`. Then use the resulting hypothesis. Establish `hsc : ∀ (c : ℂ) i, IsDerivAt0 (fun z => (e.ex b z).left) (c • Pi.single i 1) (Mz.pt (c • Pi.single i 1)).left` using `fun c i => by`. Rewrite using `[Mz.smul]`. Conclude with `isDerivAt0_smul (hbas i) c`. Establish `hzero : IsDerivAt0 (fun z => (e.ex b z).left) 0 (Mz.pt 0).left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `isDerivAt0_zero_of_fixed ((Mz.tan 0).trans h0.symm) ?_` and prove the remaining obligations. Use `Mz.smul 0 0` as an intermediate fact. Rewrite `this` using `[zero_smul]`. Conclude with `this.symm`. Establish `hsum : ∀ s : Finset (Fin g), IsDerivAt0 (fun z => (e.ex b z).left) (∑ i ∈ s, x i • Pi.single i 1) (Mz.pt (∑ i ∈ s, x i • Pi.single i 1)).left` using `fun s => by classical`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hzero`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Mz.add]`. Conclude with `UnifCompare.isDerivAt0_mul h0 (hsc _ _) ih`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hx : ∑ i, x i • (Pi.single i 1 : Fin g → ℂ) = x`. Use function extensionality and compare the values at `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `hsum Finset.univ` as an intermediate fact. Rewrite `this` using `[hx]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isDerivAt0_pt {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {g n : ℕ}
     {M : LieModel G (𝟙 (Sp R)) (Fin g → R)} {B : Set (Fin n → ℂ)} {ψ : (Fin n → ℂ) → (R →+* ℂ)}
@@ -146,9 +146,9 @@ theorem isDerivAt0_pt {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {g n 
   rwa [hx] at this
 
 /- English proof (translation)
-Take `⟨hpr, ham, hk⟩` from `hP`. Use `t.semi.smooth` as an intermediate fact. Use `t.semi.geomConnected` as an intermediate fact. Establish `: ConnectedSpace t.G.left` using `GeometricallyConnected.geometrically_connectedSpace (f := t.G.hom) (𝟙 _) (𝟙 _) t.G.hom (IsPullback.of_horiz_isIso ⟨by simp⟩)`. Take `⟨d, hd⟩` from `exists_dim_of_preconnected t.G.hom (eSec t.G (default : PrimeSpectrum ℂ))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `Q : Out.PolAV (Sp ℂ)` to `{ A := t.G, g := d, smoothDim := hd, L := t.PP.L, isLB := t.PP.isLB, ample := ham, ktriv := hk isAb := ⟨inferInstance, inferInstance, hpr, ‹_›⟩ rigid := ⟨t.PP.rig, t.PP.rigGen⟩ sym := GlobalTheory.CechPic.sym_of_isSymmetric t.PP t.sym }`. Establish `hφ' : IsGrpPullback A Q.A (𝟙 _) φ` using `hφ`. Take `⟨-, -, -, -, t1, -, -⟩` from `GlobalTheory.AHWeil.tangent_and_weil_of_isAH GlobalTheory.thetaUnifAV_all (GlobalTheory.CompanionTheory.Ar.QuotLoc.DiffL.Pol.pullPolL Q hφ') g' u Hm χ hA`. Conclude with `(t1 v hv).unique h h'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isDiff_unique {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (t : SAB H (Sp ℂ))
     (hP : IsPrincipal t) {A : Over (Sp ℂ)} [GrpObj A] {φ : A.left ⟶ t.G.left} (hφ : IsGrpPullback A t.G (𝟙 _) φ)
@@ -172,19 +172,17 @@ theorem isDiff_unique {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Ho
   exact (t1 v hv).unique h h'
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ t g n M B ψ e b P A _ φ g' u Hm χ ℓ hb hφ hA hP hl Mz hL x v v' w hv hv' hw`. Establish `Hc` using `P.m.cart.1`. Establish `hex : ∀ y, ∃ s : 𝟙_ (Over (Sp ℂ)) ⟶ P.tK.G, s.left ≫ P.m.φ = (e.ex b y).left` using `fun y => ⟨Over.homMk (Hc.lift (e.ex b y).left (𝟙 _) (by simpa using Over.w (e.ex b y))) (Hc.lift_snd _ _ _), Hc.lift_fst _ _ _⟩`. Use `choose s hs using hex`. Establish `hd1` using `isDerivAt0_pt e hb Mz hL x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFeq : (fun z => (s z).left ≫ P.m.φ) = fun z => (e.ex b z).left` using `funext hs`. Establish `hd2 : IsDerivAt0 (fun z => (s z).left) x v.left` using `GlobalTheory.FibreDeriv.isDerivAt0_of_isPullback Hc (fun z => Over.w (s z)) (by rw [hFeq]; exact isHolTo_slice e.hol hb) (by simpa using Over.w v) (by rw [hFeq, hv]; exact hd1)`. Establish `: IsIso φ` using `hφ.1.isIso_fst_of_isIso`. Establish `hd3` using `isDerivAt0_comp_hom hd2 ((P.τ.q ≫ P.e.hom).left ≫ inv φ)`. Establish `e1 : v.left ≫ (P.τ.q ≫ P.e.hom).left ≫ inv φ = v'.left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, ← Over.comp_left, ← hv', Category.assoc, IsIso.hom_inv_id, Category.comp_id]`. Establish `e2 : (fun z => (s z).left ≫ (P.τ.q ≫ P.e.hom).left ≫ inv φ) = fun z => (u.ex (ℓ z)).left`. Use function extensionality and compare the values at `fun z => by`. Rewrite using `[← Category.assoc, ← Over.comp_left, ← hl z (s z) (hs z), Category.assoc, IsIso.hom_inv_id, Category.comp_id]`. Rewrite `hd3` using `[e1, e2]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : (u.ex (ℓ 0)).left = η[A].left`. Rewrite using `[map_zero]`. Conclude with `GlobalTheory.CompanionTheory.Ar.Flat.PerGram.ex_zero_left u`. Establish `htan : IsTangent v'` using `hd3.1.trans hz`. Establish `hdiff : u.IsDiff (ℓ x) v'` using `fun U h f => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hd3.2 U h f).trans ?_` and prove the remaining obligations. Establish `hU : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U`. Use `tangent_open_preimage_zero hd3 U h` as an intermediate fact. Simplify using `using this`. Establish `hd : DifferentiableAt ℂ (fun z => valAt' (u.ex z).left U f) (ℓ.toContinuousLinearMap 0)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_zero]`. Conclude with `((u.hol U f).2 0 hU).differentiableAt ((u.hol U f).1.mem_nhds hU)`. Use `fderiv_comp (𝕜 := ℂ) (0 : Fin g → ℂ) hd ℓ.toContinuousLinearMap.differentiableAt` as an intermediate fact. Use `show fderiv ℂ ((fun z => valAt' (u.ex z).left U f) ∘ ℓ.toContinuousLinearMap) 0 x = _`. Rewrite using `[this, ContinuousLinearMap.comp_apply, ContinuousLinearMap.fderiv, map_zero]`.
-
-Both sides reduce to the same expression. Conclude with `isDiff_unique P.tB hP hφ u Hm χ hA htan hw hdiff`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isDiff_eq_lift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] (t : SAB H (Sp R)) (g n : ℕ) (M : LieModel t.G (𝟙 (Sp R)) (Fin g → R)) (B : Set (Fin n → ℂ)) (ψ : (Fin n → ℂ) → (R →+* ℂ)) (e : Flat.FamExp t.G M B ψ) (b : Fin n → ℂ) (P : AbPart t (spMap (ψ b))) (A : Over (Sp ℂ)) (_ : GrpObj A) (φ : A.left ⟶ P.tB.G.left) (g' : ℕ) (u : HolUnif A (P.tB.PP.L.pull φ) g') (Hm : Matrix (Fin g') (Fin g') ℂ) (χ : u.Λ → ℂ) (ℓ : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)), b ∈ B → IsGrpPullback A P.tB.G (𝟙 _) φ → u.IsAH Hm χ → IsPrincipal P.tB → GlobalTheory.CompanionTheory.Ar.QuotLoc.IsAbLift e b P φ u ℓ → ∀ (Mz : LieModel t.G (spMap (ψ b)) (Fin g → ℂ)), (∀ i, M.Lifts (ψ b) (𝟙 _) (Pi.single i 1) (Mz.pt (Pi.single i 1))) → ∀ (x : Fin g → ℂ) (v : epsAt (𝟙 (Sp ℂ)) ⟶ P.tK.G) (v' : epsR ℂ ⟶ A) (w : Fin g' → ℂ), v.left ≫ P.m.φ = (Mz.pt x).left → v'.left ≫ φ = (v ≫ P.τ.q ≫ P.e.hom).left → u.IsDiff w v' → w = ℓ x := by
   intro E _ _ _ H R _ t g n M B ψ e b P A _ φ g' u Hm χ ℓ hb hφ hA hP hl Mz hL x v v' w hv hv' hw

@@ -13,11 +13,11 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ K _ _ χ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `o ho`. Assume the negation of the conclusion as `hne`. Establish `hdvd` using `Algebra.dvd_algebraMap_intNorm_self ℤ (𝓞 E) o`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hn : Algebra.intNorm ℤ (𝓞 E) o ≠ 0` using `Algebra.intNorm_ne_zero.mpr hne`. Establish `h2` using `map_dvd χ hdvd`. Rewrite `h2` using `[ho, zero_dvd_iff]`. Establish `h3 : χ (algebraMap ℤ (𝓞 E) (Algebra.intNorm ℤ (𝓞 E) o)) = ((Algebra.intNorm ℤ (𝓞 E) o : ℤ) : K)`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[h3]`. Conclude with `hn (by exact_mod_cast h2)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringHom_integers_injective_of_charZero :
     ∀ (E : Type) [Field E] [NumberField E] (K : Type) [Field K] [CharZero K]

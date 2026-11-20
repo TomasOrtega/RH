@@ -50,9 +50,9 @@ def subAct : Γ →* (B →ₐ[K] B) where
   map_mul' g h := AlgHom.ext fun f => Subtype.ext (tm g h f)
 
 /- English proof (translation)
-Establish `e : B.val.toRingHom.mapMatrix (Matrix.of fun a b : S => subAct B tr t1 tm tB ((a : Γ) * b) u) = ((Matrix.of fun a b : S => tr ((a * b : S) : Γ)⁻¹ u).submatrix (Equiv.inv S) (Equiv.inv S)).transpose`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Use `show tr ((a : Γ) * b) u = tr ((b⁻¹ * a⁻¹ : S) : Γ)⁻¹ u`. Simplify using the standard rewrite rules. Rewrite using `[mem_nonZeroDivisors_iff_left]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf`. Use `Subtype.ext (h f f.2 ?_)` and prove the remaining obligations. Establish `h1` using `congrArg B.val.toRingHom hf`. Rewrite `h1` using `[map_mul, map_zero, RingHom.map_det, e, Matrix.det_transpose, Matrix.det_submatrix_equiv_self]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem_nonZeroDivisors (S : Subgroup Γ) [Fintype S] [DecidableEq S] (u : B)
     (h : ∀ f ∈ B, (Matrix.of fun a b : S => tr ((a * b : S) : Γ)⁻¹ u).det * f = 0 → f = 0) :
@@ -85,9 +85,7 @@ def subRep (V : Submodule K A) (hV : ∀ g, ∀ f ∈ V, tr g f ∈ V) : Represe
 include t1 tm tB in
 
 /- English proof (translation)
-Take `⟨u0, hu0, r0⟩` from `h0`. Take `⟨u, hu, r1⟩` from `h1`. Use `haveI := (subEquiv B V b0).symm.finiteDimensional`. Use `haveI := (subEquiv B V₂ b2).symm.finiteDimensional`. Use `GlobalTheory.BadCount.embReg_count_of_ranks K Γ B (ℂ ⊗[K] V) (subAct B tr t1 tm tB) S₀ S ⟨u0, bU _ hu0⟩ ⟨u, bU _ hu⟩ (det_mem_nonZeroDivisors B tr t1 tm tB S₀ _ r0) (det_mem_nonZeroDivisors B tr t1 tm tB S _ r1) (Vm.comap B.val.toLinearMap) (V.comap B.val.toLinearMap) (V₁.comap B …` and prove the remaining obligations.
-
-Rewrite using `[(subEquiv B V₂ b2).finrank_eq, (subEquiv B Vm bm).finrank_eq]` and apply the resulting hypothesis. Conclude with `IsBaseChange.of_equiv ((subEquiv B V b0).baseChange K ℂ _ _) fun x => by simp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem embReg_of_submodules [Algebra K ℂ] [Finite Γ] (Vm V V₁ V₂ U : Submodule K A) (bm : ∀ f ∈ Vm, f ∈ B)
     (b0 : ∀ f ∈ V, f ∈ B) (b2 : ∀ f ∈ V₂, f ∈ B) (bU : ∀ f ∈ U, f ∈ B)
@@ -124,14 +122,14 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r)
 
 /- English proof (translation)
-Rewrite using `[← LevDesc.pull_inv]`. Conclude with `k _ f hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transl_mem {G : WTZ E} (k : KeepsCusp U G) (g : LevelAut Dw l) (f : Rul Xo c) (hf : f ∈ cuspW Xo c U G) :
     transl Xo c g f ∈ cuspW Xo c U G := by
   rw [← LevDesc.pull_inv]; exact k _ f hf
 
 /- English proof (translation)
-The claim follows from `LevDesc.mem_secRing (AllWt.cuspW_le_secZ _ hf)`.
+A detailed English derivation is pending.
 -/
 theorem cusp_mem_secRing (G : WTZ E) (f : Rul Xo c) (hf : f ∈ cuspW Xo c U G) : f ∈ secRing Xo c :=
   LevDesc.mem_secRing (AllWt.cuspW_le_secZ _ hf)
@@ -139,7 +137,7 @@ theorem cusp_mem_secRing (G : WTZ E) (f : Rul Xo c) (hf : f ∈ cuspW Xo c U G) 
 include hpq hA in
 
 /- English proof (translation)
-Establish `e0 : Even G.2` using `a0 ▸ em.add eW`. Establish `e1 : Even G₁.2` using `a1 ▸ e0.add eW`. Conclude with `embReg_of_submodules (secRing Xo c) (transl Xo c) (LevDesc.transl_one hpq hA) (LevDesc.transl_mul hpq hA) (fun g f hf => by rw [← LevDesc.pull_inv]; exact LevDesc.pull_mem_secRing hpq hA _ hf) (cuspW Xo c U Gm) (cuspW Xo c U G) (cuspW Xo c U G₁) (cuspW Xo c U G₂) (cuspW Xo c U W) …`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem embReg_of_cusp (Gm G G₁ G₂ W : WTZ E) (em : Even Gm.2) (eW : Even W.2) (a0 : Gm + W = G) (a1 : G + W = G₁)
     (a2 : G₁ + W = G₂) (kW : KeepsCusp U W) (k0 : KeepsCusp U G) (k1 : KeepsCusp U G₁)
@@ -169,7 +167,7 @@ section Weights
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H)
 
 /- English proof (translation)
-Rewrite using `[shiftG, shiftG, add_smul, add_assoc]`. Conclude with `congrArg _ (AllWt.wtOf_add _ _ 0 0).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shiftG_add (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (s t : ℤ) :
     shiftG Dw a n s + wtOf Dw (t • hodgeWt Dw) 0 = shiftG Dw a n (s + t) := by
@@ -177,19 +175,19 @@ theorem shiftG_add (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (s t : ℤ) :
   exact congrArg _ (AllWt.wtOf_add _ _ 0 0).symm
 
 /- English proof (translation)
-Rewrite using `[shiftG, zero_smul, AllWt.wtOf_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem shiftG_zero' (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) : shiftG Dw a n 0 = wtZ a n := by
   rw [shiftG, zero_smul, AllWt.wtOf_zero, add_zero]
 
 /- English proof (translation)
-The claim follows from `Even.add ((Int.even_coe_nat n).2 hn) (AllWt.even_wtOf _ _)`.
+A detailed English derivation is pending.
 -/
 theorem even_shiftG (a : (E →+* ℂ) × ℕ → ℕ) {n : ℕ} (hn : Even n) (s : ℤ) : Even (shiftG Dw a n s).2 :=
   Even.add ((Int.even_coe_nat n).2 hn) (AllWt.even_wtOf _ _)
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `h` using `hv hab`. Establish `hab' : (a : ℕ) ≤ b` using `hab`. Simplify using `only [hodgeWt, CompHt.barWt, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem antitone_add_hodge (v : AllWt.Weight Dw) (τ : Psi H) (hv : Antitone (v τ)) {t : ℤ} (ht : 0 ≤ t) :
     Antitone ((v + t • hodgeWt Dw) τ) := by
@@ -200,7 +198,7 @@ theorem antitone_add_hodge (v : AllWt.Weight Dw) (τ : Psi H) (hv : Antitone (v 
   split_ifs <;> omega
 
 /- English proof (translation)
-Establish `hk : Dw.p - 1 + 1 < Dw.p + Dw.q` using `by omega`. Simplify using `only [gap, dif_pos hk, Pi.add_apply, Pi.smul_apply, hodgeWt, CompHt.barWt, Fin.val_mk, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> first | omega | ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gap_add_hodge (hp : 1 ≤ Dw.p) (hq : 1 ≤ Dw.q) (v : AllWt.Weight Dw) (τ : Psi H) (t : ℤ) :
     gap ((v + t • hodgeWt Dw) τ) (Dw.p - 1) = gap (v τ) (Dw.p - 1) + t := by
@@ -211,7 +209,7 @@ theorem gap_add_hodge (hp : 1 ≤ Dw.p) (hq : 1 ≤ Dw.q) (v : AllWt.Weight Dw) 
 end Weights
 
 /- English proof (translation)
-Use `⟨Module.Finite.of_basis h.1.some.2.1.1, ?_⟩` and prove the remaining obligations. Use `show _ = Module.finrank Y.d.c₂.F (Submodule.span Y.d.c₂.F (latW Y.U G : Set (Y.V G)))`. Rewrite using `[h.2.2, finrank_top]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_of_goodAt {D : D7} {T : Core D} {j : ℕ} {Y : Deep T j} {G : WTZ D.host.E} (h : Y.GoodAt G) :
     FiniteDimensional Y.d.c₂.F (Y.V G) ∧ Module.finrank Y.d.c₂.F (Y.V G) = Y.rk G := by
@@ -220,9 +218,9 @@ theorem finrank_of_goodAt {D : D7} {T : Core D} {j : ℕ} {Y : Deep T j} {G : WT
   rw [h.2.2, finrank_top]
 
 /- English proof (translation)
-Establish `kp` using `fun G hG => (GlobalTheory.LevelIsometry.keeps_cusp_lattice_norm D T hL j hp1 hq1 hf hj Y e o hY G hG).1`. Establish `hA : Y.d.l₂.A.Coprime Y.d.l₂.M` using `by rw [hY.lev.2]; exact Nat.coprime_one_left _`. Rewrite `hr` using `[← (finrank_of_goodAt g2).2, ← (finrank_of_goodAt gm).2]`. Establish `a0 : shiftG (T.Q.Dw j) a n (-c) + wtOf (T.Q.Dw j) (c • hodgeWt (T.Q.Dw j)) 0 = wtZ a n`. Rewrite using `[shiftG_add, neg_add_cancel, shiftG_zero']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `embReg_of_cusp (le_add_right hp1) hA Y.U (shiftG (T.Q.Dw j) a n (-c)) (wtZ a n) (shiftG (T.Q.Dw j) a n c) (shiftG (T.Q.Dw j) a n (c + c)) (wtOf (T.Q.Dw j) (c • hodgeWt (T.Q.Dw j)) 0) (even_shiftG _ _ hn _) (AllWt.even_wtOf _ _) a0 rfl (shiftG_add _ _ _ _ _) (kp _ (AllWt.even_wtOf …`.
+A detailed English derivation is pending.
 -/
 theorem embReg_deep {D : D7} {T : CoreJ D} (hL : LawsJ T) {j : ℕ} (hp1 : 1 ≤ (T.Q.Dw j).p) (hq1 : 1 ≤ (T.Q.Dw j).q)
     (hf : 2 < Module.finrank ℚ D.host.E / 2) (hj : InR D j) (Y : Deep T.toCore j) {e : ℕ} {o : ℝ} (hY : Y.Good e o)
@@ -250,9 +248,9 @@ theorem embReg_deep {D : D7} {T : CoreJ D} (hL : LawsJ T) {j : ℕ} (hp1 : 1 ≤
     (finrank_of_goodAt g0).1 (finrank_of_goodAt g2).1 t ht hr S₀ S h0 h1 ρ χ lam hρ
 
 /- English proof (translation)
-Use `(((h₁.and h₂).and h₃).and h₄).imp fun Fm CH _ h' => ?_` and prove the remaining obligations. Take `⟨⟨⟨⟨_, -, a1⟩, _, -, a2⟩, _, -, a3⟩, _, -, a4⟩` from `h'`. Take `⟨x0, h'⟩` from `((a1.and a2).and a3).and a4`. Use `⟨0, le_rfl, x0, fun x hx hle ι p hp i => ?_⟩` and prove the remaining obligations. Take `⟨⟨⟨b1, b2⟩, b3⟩, b4⟩` from `h' x hx hle ι p hp`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `h Fm x hx ι p i _ _ _ _ _ (b1 i) (b2 i) (b3 i) (b4 i)`.
+A detailed English derivation is pending.
 -/
 theorem lifts_of_four {Q₁ Q₂ Q₃ Q₄ R : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x) (p : Pt Fm x hx ι)
       (_i : Fin (Fm.D x ι).R.m) (_PP _C : ℝ), Prop}
@@ -270,23 +268,19 @@ theorem lifts_of_four {Q₁ Q₂ Q₃ Q₄ R : ∀ {eps : ℝ} (Fm : FamP eps) (
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hX hP hGD hQ hS hT hSA _ hDG hSz hFD hDg hSh`. Use `first`. Consider the case `have h4 := GlobalTheory.T.rank_growth_bound_small_scale hX hP hS hT hGD hQ hSA hDG hSz hFD hDg hSh`. Consider the case `have h4 := GlobalTheory.T.rank_growth_bound_small_scale hP hS hT hGD hQ hSA hDG hSz hFD hDg hSh`. Use `first`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `have ua0 := GlobalTheory.T.type_frame_large_genus_bound hX hP hGD hQ hS hT hSA`. Consider the case `have ua0 := GlobalTheory.T.type_frame_large_genus_bound hP hGD hQ hS hT hSA`. Use `first`. Consider the case `have sg := GlobalTheory.T.good_at_of_antitone_gap_weight hX hP`. Consider the case `have sg := GlobalTheory.T.good_at_of_antitone_gap_weight hP`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Establish `h3` using `GlobalTheory.T.size_bounds_for_family hSz`. Unfold `DeepGood Covers at hDG`. Unfold `Covers at h3 h4 ⊢`. Use `lifts_of_four hDG GlobalTheory.T.weight_conditions_at_index h3 h4 ?_` and prove the remaining obligations. Use `clear hDG h3 h4`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `eps Fm x hx ι p i PP _ _ _ _ b1 b2 b3 b4 hi Y hY fr π ρ χ Pb lamb H hPb hH hρ k`. Establish `g0` using `(b1 hi Y hY).1`. Establish `gm` using `(b1 hi Y hY).2.1`. Establish `hL` using `(b2 hi).1`. Establish `hp1` using `(b2 hi).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq1` using `(b2 hi).2.2.1`. Establish `hf` using `(b2 hi).2.2.2.1`. Establish `hj` using `(b2 hi).2.2.2.2.1`. Establish `hn` using `(b2 hi).2.2.2.2.2.1`. Establish `hs` using `(b2 hi).2.2.2.2.2.2.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he` using `(b3 hi Y hY).2.2.2.2.2.2.1`. Establish `hg` using `(b3 hi Y hY).2.2.2.2.2.2.2.1`. Establish `hrk` using `b4 hi Y hY 2 one_le_two le_rfl`. Establish `hc0 : 0 ≤ cZero (Fm.D x ι) ((i : ℕ) + 1)` using `Int.natCast_nonneg _`. Establish `hs1` using `hs _ (Or.inr (Or.inr rfl))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ec : ((2 : ℕ) : ℤ) * cZero (Fm.D x ι) ((i : ℕ) + 1) = cZero (Fm.D x ι) ((i : ℕ) + 1) + cZero (Fm.D x ι) ((i : ℕ) + 1)` using `by push_cast; ring`. Rewrite `hrk` using `[ec]`. Establish `g2 : Y.GoodAt (Gs p i (cZero (Fm.D x ι) ((i : ℕ) + 1) + cZero (Fm.D x ι) ((i : ℕ) + 1)))` using `sg _ p.T hL _ hp1 hq1 hf hj Y _ _ hY.1 (wtA (p.κ i)) (p.κ i).n _ hn (fun τ => by`. Rewrite using `[add_smul, ← add_assoc]`. Conclude with `antitone_add_hodge _ _ τ (hs1.1 τ) hc0)`.
-
-Use the proof step `(fun τ => by`. Rewrite using `[add_smul, ← add_assoc, gap_add_hodge _ hp1 hq1]`. Conclude with `le_add_of_le_of_nonneg (hs1.2 τ) hc0)`. Establish `ua` using `ua0 _ p.T hL _ hp1 hq1 hf hj Y _ _ hY.1 he hg fr`. Establish `hr : (Y.rk (Gs p i (cZero (Fm.D x ι) ((i : ℕ) + 1) + cZero (Fm.D x ι) ((i : ℕ) + 1))) : ℝ) ≤ 3 / 2 * Y.rk (Gs p i (-(cZero (Fm.D x ι) ((i : ℕ) + 1))))`.
-
-Use `hrk.trans (mul_le_mul_of_nonneg_right ?_ (Nat.cast_nonneg _))` and prove the remaining obligations. Conclude with `(add_le_add_right (min_le_left _ _) _).trans (by norm_num)`. Conclude with `embReg_deep hL hp1 hq1 hf hj Y hY.1 _ _ hn _ g0 gm g2 (3 / 2) (by norm_num) hr _ _ (ua _ (Or.inl hPb)) (ua _ (Or.inr ⟨k, hH k⟩)) ρ χ lamb hρ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem embReg_cover : GlobalTheory.CovTop.HypothesesX → Hypotheses2 → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → Gram → DeepGood → Size → FlatDeg → Deg → Share → Covers fun Fm x _ ι p i Y _ _ => ∀ (fr : TypeFrame (dat p i) Y.d.l₂) (π : (LevelAut (dat p i) Y.d.l₂) →* G0g (Fm.D x ι).nd) (ρ : Representation ℂ (LevelAut (dat p i) Y.d.l₂) (ℂ ⊗[Y.d.c₂.F] Y.V (Gk p i))) (χ : (LevelAut (dat p i) Y.d.l₂) →* ℂˣ) (Pb : Subgroup (G0g (Fm.D x ι).nd)) (lamb : Pb.comap π →* ℂˣ) (H : Fin 2 → Subgroup (G0g (Fm.D x ι).nd)), Pb.comap π = grpHR fr → (∀ k, (H k).comap π = grpGHR fr k) → (∀ (g : (LevelAut (dat p i) Y.d.l₂)) (v w : Y.V (Gk p i)), (w : Rul Y.d.Xo₂ Y.d.c₂) = transl Y.d.Xo₂ Y.d.c₂ g v → ρ g ((1 : ℂ) ⊗ₜ[Y.d.c₂.F] v) = ((χ g : ℂˣ) : ℂ) • ((1 : ℂ) ⊗ₜ[Y.d.c₂.F] w)) → ∀ k : Fin 2, ∃ n : ℕ, EmbReg ρ ((H k).comap π) n ∧ (n : ℝ) * Nat.card ((H k).comap π) ≤ 3 / 2 * Nat.card (Pb.comap π) * Module.finrank ℂ (eig ρ (Pb.comap π) lamb) := by
   intro hX hP hGD hQ hS hT hSA _ hDG hSz hFD hDg hSh

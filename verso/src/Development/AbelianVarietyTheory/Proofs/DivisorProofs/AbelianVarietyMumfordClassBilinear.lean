@@ -11,7 +11,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Rewrite using `[AbVar.lam, AbVar.lam, mul_comm x y]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem lam_swap_of_comm {K : Type} [Field K] {A : AbVar K} (c : Pic A.X.left) {Y : Over (Sp K)} (x y : Y ⟶ A.X) :
     AbVar.lam c x y = AbVar.lam c y x := by
@@ -26,11 +26,11 @@ def lamLeftMonoidHom {K : Type} [Field K] (A : AbVar K) (c : Pic A.X.left) {Y : 
     rw [← ofAdd_add, lam_mul_left_of_cube])
 
 /- English proof (translation)
-Introduce `K _ A c Y x y y' n`. Establish `hL : ∀ x z : Y ⟶ A.X, ∀ m : ℤ, AbVar.lam c (x ^ m) z = m • AbVar.lam c x z` using `fun x z m => by`. Use `map_zpow (lamLeftMonoidHom A c z) x m` as an intermediate fact. Simplify `congrArg Multiplicative.toAdd this` using `[lamLeftMonoidHom]`. Establish `h1 : ∀ z : Y ⟶ A.X, AbVar.lam c 1 z = 0` using `fun z => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hL 1 z 0`. Use `⟨?_, h1 y, ?_, hL x y n, ?_⟩` and prove the remaining obligations. Rewrite using `[lam_swap_of_comm c x, lam_swap_of_comm c x, lam_swap_of_comm c x, lam_mul_left_of_cube]`. Rewrite using `[lam_swap_of_comm]`. Conclude with `h1 x`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lam_swap_of_comm, hL, lam_swap_of_comm]`.
+A detailed English derivation is pending.
 -/
 theorem lam_bilinear : ∀ (K : Type) [Field K] (A : AbVar K) (c : Pic A.X.left) (Y : Over (Sp K)) (x y y' : Y ⟶ A.X) (n : ℤ), AbVar.lam c x (y * y') = AbVar.lam c x y + AbVar.lam c x y' ∧ AbVar.lam c 1 y = 0 ∧ AbVar.lam c x 1 = 0 ∧ AbVar.lam c (x ^ n) y = n • AbVar.lam c x y ∧ AbVar.lam c x (y ^ n) = n • AbVar.lam c x y := by
   intro K _ A c Y x y y' n

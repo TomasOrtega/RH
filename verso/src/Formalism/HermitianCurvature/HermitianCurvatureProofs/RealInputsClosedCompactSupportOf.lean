@@ -8,15 +8,13 @@ namespace Formalism.FourierDecayAlt.P
 noncomputable section
 
 /- English proof (translation)
-Take `⟨hl1, hl2, hLA, hSl, htop, hGr, hW, hTW, hLB, hLT, hTL, hSF, -, -, -, hVt⟩` from `hIn`. Establish `hlen : ∀ v, ∀ w, D.AdmAt S v w → w.length ≤ S.Ntop`. Introduce and unpack `v w ⟨w', rfl⟩`. Conclude with `le_trans (Finset.le_sup (f := fun u => (w'.1 u).length) (Finset.mem_univ v)) w'.2.2`. Establish `hPos : C.ThmPPos S`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `positivity_of_module E Wp Wq S T f χ ν' m₀ top A₀ hB (fun v => ?_) htop` and prove the remaining obligations. Take `⟨KK, hKK, hmem⟩` from `hMA hPA hRMF hPD hFS (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (T v) (S.l + 1) S.Ntop (D.AdmAt S v) (P5.Auser (D.parOf S v) S.Ntop + 1) (P5.mmUser (D.parOf S v) S.Ntop) (by omega) (by change S.l + 1 ≤ S.G.k; omega) (hlen v) le_rfl le_rfl (hLA v)`. Use `⟨KK, hKK, fun ε hε i hi w hw p hp a => ?_⟩` and prove the remaining obligations. Take `⟨ε', hε', hCk, hCC, hs⟩` from `hSl v ε hε i hi w hw p hp a`. Conclude with `hmem ⟨i, Nat.lt_succ_of_le hi⟩ _ ε' hε' hCC hCk hs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hInt : C.ThmPInt S`. Take `⟨dl, hdl, hpl⟩` from `hIBl`. Use `theorem_P_integral_of_places E Wp Wq S dl hPos hdl (fun i _ _ => ?_) hpl` and prove the remaining obligations. Establish `hg : 0 < S.g` using `Nat.mul_pos hg1 hg2`. Establish `hrd` using `jct_rd_pos E`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Rewrite using `[unipotent_dual_lattice_covolume E hU S.g _ 1 hg]`. Check the signs of the components of the expression. Use `⟨hPos, hGr, hInt, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `plane_exponential_bound_of_places gram_positive_semidefinite words_pos_of_parts E Wp Wq S Lw hPos hGr hW hTW`. Conclude with `off_diagonal_lift_bound_of_places third_polynomial_prime_combine gram_positive_semidefinite words_pos_of_parts E Wp Wq S Ll Ll' hPos hGr hLB hLT hTL`.
-
-Conclude with `corollary_T_of_sum_form blockEstimateOfCosetSum gram_positive_semidefinite words_pos_of_parts E Wp Wq S C₄ hPos hGr hSF`. Conclude with `gram_proposition_of_places E Wp Wq S (fun v => PiLp 2 (fun _ : Fin (Module.finrank ℂ (Wq (S.pl v))) => Wp (S.pl v))) (JC.vecPlace S T f ν' m₀) H Vt hVt (gram_at_built_place ptPerm_spec ptG_spec relevant_points_holds hMu orbital_integral_cutoff_scalar E Wp Wq S T f χ ν' m₀ top A₀ …`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem jct_parts_loc_cpt (hPA : P5.ThmPActualCpt) (hRMF : JC.RadialModuleForm) (hPD : JC.PosDensityCpt)
     (hFS : JC.FormLevSesqMM) (hMA : JC.ThmPModuleOfActualCpt) (hMu : D.MuRHaar)
@@ -84,17 +82,15 @@ open Formalism.FourierDecayAlt.P Formalism.FourierDecayAlt.P.PBJoint
 noncomputable section
 
 /- English proof (translation)
-Introduce `hPA hRMF hPD hFS hMA hMu hLEM hLA hSL hMP hTP hBB Cb`. Take `⟨C₆, hC₆, hLE⟩` from `lemma_E_of_model lemma_E_of_residue level_zero_holds good_of_admissible hLEM`. Take `⟨c1, hLA⟩` from `hLA`. Take `⟨c2, hSL⟩` from `hSL`. Take `⟨c7, hMP⟩` from `hMP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c3, C₄, hC₄, hBB⟩` from `hBB hPA Cb`. Use `⟨C₆, max c1 (max c2 (max c3 c7)), C₄, hC₆, hC₄, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S p f χ A₀ c H _ _ Vt hBPT hSB hc hcut hVt`. Take `⟨-, -, -, -, hOk, hWd, hWd', -⟩` from `hBPT.1`. Establish `hBP` using `toBuiltPlace hBPT`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `m1` using `jct_isBuiltPlace_mono (by simp) hBP (c := c1)`. Establish `m2` using `jct_isBuiltPlace_mono (by simp) hBP (c := c2)`. Establish `m7` using `jct_isBuiltPlace_mono (by simp) hBP (c := c7)`. Establish `hB2 : KB.IsLeadingFormSetting Cb c3 S p f χ A₀` using `built_setting_to_model_place (by simp) hBPT.1`. Take `⟨-, hIA, ⟨Lw, hW, hTW⟩, ⟨Ll, Ll', hLB, hLT, hTL⟩, hSF⟩` from `hBB E Wp Wq S p f χ A₀ hB2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `htop : ∀ v, D.TopPSD (KB.plT S p v) (f v) χ (D.AdmAt S v) (KB.plTop S p v)` using `fun v => hTP (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (S.l + 1) (p v).T (p v).ν' (p v).m₀ (p v).Θ (p v).TP (f v) χ (D.AdmAt S v)`. Take `⟨hg1, hg2, hU, hB, hl1, hl2, hGr, -, -, hsm, -, -, -⟩` from `hBP`. Use `choose L j lam Cm σ hmod using hMP E Wp Wq S (KB.plT S p) f χ (KB.plν S p) (KB.plm S p) (KB.plTop S p) A₀ m7 hOk hWd hWd' c hc`. Establish `hIn : JCT.BuiltInputs C₄ C₆ S (KB.plT S p) f χ (KB.plν S p) (KB.plm S p) (KB.plTop S p) L j lam c Cm σ Lw Ll Ll' Vt` using `⟨hl1, hl2, hLA E Wp Wq S _ f χ _ _ _ A₀ m1, hSL E Wp Wq S _ f χ _ _ _ A₀ m2 hSB, htop, hGr, hW, hTW, hLB, hLT, hTL, hSF, hsm, hcut, hmod, hVt⟩`. Use `⟨L, j, lam, Cm, σ, hmod, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Kr hK0 Th e`. Establish `hg : 0 < S.g` using `Nat.mul_pos hg1 hg2`. Establish `hIBl : ∃ dl : ℕ → Fin S.f → ℝ, (∀ i, 1 ≤ i → i ≤ S.G.r + 1 → ∏ v, dl i v = ZLattice.covolume (J.eLat E (S6.perLat E S.g (S6.nuBlock S.G.r i 1) 1) 1)) ∧ ∀ v, JC.ThmPIntPlace S v fun i => dl i v` using `⟨fun i _ => KB.dlB S i 1, fun i _ _ => prod_dlB S hU hg i, hIA⟩`. Take `⟨hPos, hGr', hInt, hP1, hP23, hT, hPG⟩` from `jct_parts_loc_cpt hPA hRMF hPD hFS hMA hMu C₄ C₆ E Wp Wq S (KB.plT S p) f χ (KB.plν S p) (KB.plm S p) (KB.plTop S p) A₀ L j lam c Cm σ Lw Ll Ll' H Vt hg1 hg2 hU hB hIBl hIn`. Establish `hE : C.LemmaE S (JCT.jvModel S j Cm)` using `hLE E Wp Wq S (KB.plT S p) f χ (KB.plν S p) (KB.plm S p) (KB.plTop S p) A₀ L j lam c Cm σ hB (fun v ε hε => cutoff_smooth _ _ _ _ (KB.plT S p v).base χ (f v) ε hB.1 (hsm v) hε) hcut hmod`.
-
-Conclude with `real_inputs_concrete_holds E Wp Wq S (JCT.jvModel S j Cm) H Vt C₄ hg1 hg2 hPos hGr' hInt hP1 hP23 hT hE hPG Kr hK0 Th e`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem real_inputs_closed_compact_support_of : KB.ArchimedeanUniformConstantsCompactSupport := by
   intro hPA hRMF hPD hFS hMA hMu hLEM hLA hSL hMP hTP hBB Cb

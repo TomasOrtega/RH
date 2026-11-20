@@ -22,17 +22,15 @@ def lpS (Λ : Submodule (𝓞 D.host.E) (VS D).V) : Submodule (𝓞 D.host.E) (V
 variable {D F0}
 
 /- English proof (translation)
-Establish `hsm : ∀ (r : 𝓞 D.host.E) (v : (VS D).V), r • v = (algebraMap (𝓞 D.host.E) D.host.E r) • v` using `fun r v => (algebraMap_smul D.host.E r v).symm`. Establish `hq : (Submodule.Quotient.mk (∑ i, o i • a i - d • b) : WbQ D F0) = 0`. Rewrite using `[← Submodule.mkQ_apply, map_sub, map_sum]`. Simplify using `only [LinearMap.map_smul_of_tower, Submodule.mkQ_apply, hac, ho, sub_self]`. Establish `hmem` using `(Submodule.Quotient.mk_eq_zero _).mp hq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hmem` using `[Submodule.mem_comap]`. Establish `hzX : ((∑ i, o i • y i - d • yb : lpS D F0 Λ) : (VS D).V) ∈ F0.X`. Use `hmem using 1` and compare the differences between its conclusion and the goal. Simplify using `[hya, hyb]`. Establish `hρz` using `hρid _ hzX`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e` using `congrArg (fun u : lpS D F0 Λ => (u : (VS D).V)) hρz`. Simplify using `only [map_sub, map_sum, map_smul, Submodule.coe_sub, Submodule.coe_sum, Submodule.coe_smul] at e`. Establish `h1 : ∑ i, o i • (y i : (VS D).V) - ∑ i, o i • (ρ (y i) : (VS D).V) = d • (yb : (VS D).V) - d • (ρ yb : (VS D).V)`. Rewrite using `[sub_eq_sub_iff_sub_eq_sub]`. Conclude with `e.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun q => ((sE q : perpS (VS D) F0.X) : (VS D).V)) ho`. Simplify using `only [map_sum, LinearMap.map_smul_of_tower, Submodule.coe_sum, Submodule.coe_smul_of_tower, hsEc] at h2`. Establish `hd : (algebraMap (𝓞 D.host.E) D.host.E d) ≠ 0`. Introduce `h0`. Apply `hd0` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(FaithfulSMul.algebraMap_injective (𝓞 D.host.E) D.host.E) (h0.trans (map_zero _).symm)`. Apply `smul_right_injective (VS D).V hd` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[← hsm, ← hsm, ← h2]`. Simplify using `only [smul_sub, Finset.sum_sub_distrib]`.
-
-Rewrite using `[h1, hyb]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sE_eq (Λ : Submodule (𝓞 D.host.E) (VS D).V) (ρ : lpS D F0 Λ →ₗ[𝓞 D.host.E] lpS D F0 Λ)
     (hρid : ∀ y : lpS D F0 Λ, (y : (VS D).V) ∈ F0.X → ρ y = y)
@@ -77,19 +75,17 @@ theorem sE_eq (Λ : Submodule (𝓞 D.host.E) (VS D).V) (ρ : lpS D F0 Λ →ₗ
   rw [h1, hyb]
 
 /- English proof (translation)
-Establish `hlpfg : (lpS D F0 Λ).FG` using `Submodule.FG.of_le hL.fg inf_le_left`. Take `⟨ρ, hρX, hρid⟩` from `PI.UnitaryGroupMassFormula.BetaModX.Iota.exists_retract (lpS D F0 Λ) hlpfg F0.X`. Establish `hlpP : ∀ y : lpS D F0 Λ, (y : (VS D).V) ∈ perpS (VS D) F0.X` using `fun y => (Submodule.mem_inf.1 y.2).2`. Establish `hlpΛ : ∀ y : lpS D F0 Λ, (y : (VS D).V) ∈ Λ` using `fun y => (Submodule.mem_inf.1 y.2).1`. Establish `hPmem : ∀ y : lpS D F0 Λ, (y : (VS D).V) - (ρ y : (VS D).V) ∈ perpS (VS D) F0.X` using `fun y => Submodule.sub_mem _ (hlpP y) (hlpP (ρ y))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPΛ : ∀ y : lpS D F0 Λ, (y : (VS D).V) - (ρ y : (VS D).V) ∈ Λ` using `fun y => Submodule.sub_mem _ (hlpΛ y) (hlpΛ (ρ y))`. Establish `hMlat` using `Mof_isLattice D F0 Λ hL`. Take `⟨s, _, c, hcv, hsM⟩` from `Formalism.HermitianLatticesTheory.dualLattice_basis (R := 𝓞 D.host.E) (Mof D F0 Λ) hMlat.span_eq_top`. Establish `hci : ∀ i, c i ∈ Mof D F0 Λ` using `fun i => by rw [hcv]; exact hsM i.2`. Use `choose a haΛ hac using fun i => (mem_Mof D F0 Λ (c i)).1 (hci i)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `y : s → lpS D F0 Λ` to `fun i => ⟨(a i : (VS D).V), Submodule.mem_inf.2 ⟨haΛ i, (a i).2⟩⟩`. Set `sE : WbQ D F0 →ₗ[D.host.E] perpS (VS D) F0.X` to `c.constr D.host.E (fun i => ⟨(y i : (VS D).V) - (ρ (y i) : (VS D).V), hPmem (y i)⟩)`. Establish `hsEc : ∀ i, (sE (c i) : (VS D).V) = (y i : (VS D).V) - (ρ (y i) : (VS D).V)`. Introduce `i`. Simplify using `only [sE, Basis.constr_basis]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsE : ∀ b, (Submodule.Quotient.mk (sE b) : WbQ D F0) = b`. Establish `hlin : (F0.X.comap (perpS (VS D) F0.X).subtype).mkQ ∘ₗ sE = LinearMap.id`. Use `c.ext fun i => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply, LinearMap.id_coe, id_eq]`. Use `conv_rhs => rw [← hac i]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mk_eq_mk, hsEc]`. Establish `: (y i : (VS D).V) = (a i : (VS D).V)` using `rfl`. Rewrite using `[this, sub_sub_cancel_left]`. Conclude with `F0.X.neg_mem (hρX (y i))`. Introduce `b`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `LinearMap.congr_fun hlin b`. Use `⟨sE, hsE, ?_⟩` and prove the remaining obligations. Introduce `m hm`. Take `⟨b, hbΛ, rfl⟩` from `(mem_Mof D F0 Λ m).1 hm`. Set `yb : lpS D F0 Λ` to `⟨(b : (VS D).V), Submodule.mem_inf.2 ⟨hbΛ, b.2⟩⟩`.
-
-Take `⟨d, hd0, hdM⟩` from `Formalism.HermitianLatticesTheory.dualLattice_denom c (Mof D F0 Λ) hMlat.fg`. Take `⟨o, ho⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 D.host.E)).1 (hdM _ hm)`. Rewrite using `[sE_eq Λ ρ hρid c a hac y (fun i => rfl) sE hsEc b yb rfl d hd0 o ho]`. Conclude with `hPΛ yb`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sE (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hL : Submodule.IsLattice D.host.E Λ) :
     ∃ sE : WbQ D F0 →ₗ[D.host.E] perpS (VS D) F0.X,

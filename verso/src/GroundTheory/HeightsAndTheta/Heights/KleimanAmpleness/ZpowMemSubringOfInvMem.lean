@@ -17,13 +17,11 @@ section Base
 variable {F : Type} [Field F] {Ω : Type} [Field Ω] [Algebra F Ω]
 
 /- English proof (translation)
-Set `I : Ideal B` to `{ carrier := {a | (a : Ω) * u ∈ B} add_mem' := fun {a b} ha hb => by show ((a : Ω) + b) * u ∈ B`. Rewrite using `[add_mul]`. Conclude with `B.add_mem ha hb`. Use the proof step `zero_mem' := by show (0 : Ω) * u ∈ B; rw [zero_mul]; exact B.zero_mem`. Use the proof step `smul_mem' := fun c a ha => by show ((c : Ω) * a) * u ∈ B`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc]`. Conclude with `B.mul_mem c.2 ha }`. Distinguish the cases in `hI : I = ⊤`. Establish `h1 : (1 : B) ∈ I` using `hI ▸ Submodule.mem_top`. Establish `h2 : ((1 : B) : Ω) * u ∈ B` using `h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `using h2`. Take `⟨p, hp, hIp⟩` from `Ideal.exists_le_maximal I hI`. Use `hp.isPrime` as an intermediate fact. Take `⟨a, b, hb, hu⟩` from `mem_locIn.mp (h p hp)`. Establish `hb0 : (b : Ω) ≠ 0` using `coe_ne_zero_of_not_mem hb`.
-
-Use `absurd (hIp ?_) hb` and prove the remaining obligations. Use `show (b : Ω) * u ∈ B`. Rewrite using `[hu, mul_div_cancel₀ _ hb0]`. Conclude with `a.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_mem_locIn (B : Subalgebra F Ω) {u : Ω}
     (h : ∀ p : Ideal B, p.IsMaximal → u ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn B p) : u ∈ B := by
@@ -54,7 +52,7 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type}
 omit [Fintype K] [DecidableEq K] in
 
 /- English proof (translation)
-Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Algebra.subset_adjoin ⟨⟨k₀, i⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem adjoin_base_le (y : (Σ k, ι k) → Ω) (k₀ : K) (c : ∀ k, ι k) :
     Algebra.adjoin F (Set.range fun i => IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ i / IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ (c k₀)) ≤
@@ -64,9 +62,9 @@ theorem adjoin_base_le (y : (Σ k, ι k) → Ω) (k₀ : K) (c : ∀ k, ι k) :
   exact Algebra.subset_adjoin ⟨⟨k₀, i⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_eq_single k₀]`. Simplify using `[IndefiniteRowSideFullHecke.Kleiman2.baseDeg]`. Introduce `k _ hk`. Simplify using `[IndefiniteRowSideFullHecke.Kleiman2.baseDeg, hk]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ k₀) h`.
+A detailed English derivation is pending.
 -/
 theorem prod_baseDeg (y : (Σ k, ι k) → Ω) (k₀ : K) (c : ∀ k, ι k) (m : ℤ) :
     (∏ k, y ⟨k, c k⟩ ^ (-(m • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀) k)) = y ⟨k₀, c k₀⟩ ^ (-m) := by
@@ -77,7 +75,7 @@ theorem prod_baseDeg (y : (Σ k, ι k) → Ω) (k₀ : K) (c : ∀ k, ι k) (m :
   · intro h; exact absurd (Finset.mem_univ k₀) h
 
 /- English proof (translation)
-Break down `Int.eq_nat_or_neg m with ⟨n, rfl | rfl⟩` into its components or cases. Rewrite using `[zpow_natCast]`. Conclude with `z.pow_mem hr n`. Rewrite using `[zpow_neg, zpow_natCast, ← inv_pow]`. Conclude with `z.pow_mem hr' n`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zpow_mem_subring_of_inv_mem (z : Subring Ω) {r : Ω} (hr : r ∈ z) (hr' : r⁻¹ ∈ z) (m : ℤ) : r ^ m ∈ z := by
   rcases Int.eq_nat_or_neg m with ⟨n, rfl | rfl⟩
@@ -85,19 +83,17 @@ theorem zpow_mem_subring_of_inv_mem (z : Subring Ω) {r : Ω} (hr : r ∈ z) (hr
   · rw [zpow_neg, zpow_natCast, ← inv_pow]; exact z.pow_mem hr' n
 
 /- English proof (translation)
-Use `set x' := IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ with hx'`. Establish `hmem : ∀ t, t ∈ secOver F y (m • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀) ↔ ∀ c : ∀ k, ι k, (∀ k, y ⟨k, c k⟩ ≠ 0) → t * y ⟨k₀, c k₀⟩ ^ (-m) ∈ chartRingOver F y c`. Introduce `t`. Simplify using `only [secOver, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mulRight_apply, Subalgebra.mem_toSubmodule, prod_baseDeg]`. Use extensionality with `t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmem, mem_secOver_oneBlock]`. Prove the components needed by the constructor for the conclusion. Introduce `ht j hj`. Apply `mem_of_forall_mem_locIn` to reduce the goal to its premises. Introduce `p hp`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpp` using `hp.isPrime`. Establish `hz : IndefiniteRowSideFullHecke.Kleiman2.locIn _ p ∈ IndefiniteRowSideFullHecke.Kleiman2.modelPts F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x')`. Use `⟨fun _ => j, fun _ => hj, ?_⟩` and prove the remaining obligations. Rewrite using `[chartRingOver_oneBlock_eq]`. Conclude with `⟨p, hp.isPrime, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[← hy.2]`. Take `⟨c, hc, q, hq, hzq⟩` from `hz`. Establish `hA : ∀ a ∈ chartRingOver F y c, a ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn _ p` using `fun a ha => by`. Rewrite using `[hzq, mem_locIn]`. Conclude with `⟨⟨a, ha⟩, 1, fun h => one_not_mem_of_prime hq h, by simp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hB : ∀ a ∈ Algebra.adjoin F (Set.range fun i => x' i / x' j), a ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn _ p` using `fun a ha => mem_locIn.mpr ⟨⟨a, ha⟩, 1, fun h => one_not_mem_of_prime hpp h, by simp⟩`. Establish `hyc : y ⟨k₀, c k₀⟩ ≠ 0` using `hc k₀`. Establish `hr : y ⟨k₀, c k₀⟩ / x' j ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn _ p` using `hB _ (Algebra.subset_adjoin ⟨c k₀, rfl⟩)`. Establish `hr' : (y ⟨k₀, c k₀⟩ / x' j)⁻¹ ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn _ p`. Rewrite using `[inv_div]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hA _ (Algebra.subset_adjoin ⟨⟨k₀, j⟩, rfl⟩)`. Establish `e : t * x' j ^ (-m) = t * y ⟨k₀, c k₀⟩ ^ (-m) * (y ⟨k₀, c k₀⟩ / x' j) ^ m`. Rewrite using `[div_zpow, zpow_neg, zpow_neg]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
-
-Conclude with `Subring.mul_mem _ (hA _ (ht c hc)) (zpow_mem_subring_of_inv_mem _ hr hr' m)`. Introduce `ht c hc`. Conclude with `adjoin_base_le y k₀ c (ht (c k₀) (hc k₀))`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem secOver_baseDeg_eq (y : (Σ k, ι k) → Ω) (k₀ : K) (hy : IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase F y k₀) (m : ℤ) :
     secOver F y (m • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀) =
@@ -142,7 +138,7 @@ theorem secOver_baseDeg_eq (y : (Σ k, ι k) → Ω) (k₀ : K) (hy : Indefinite
 end Base
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ Ω _ _ y k₀ N e x hx hy b c`. Rewrite using `[Kleiman.twistBundle_toSubSystem, Kleiman.twistSys_twist_twistSys, twistSys_secs_eq_secOver, ← add_smul, secOver_baseDeg_eq y k₀ hy, hx, secOver_oneBlock_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem BaseRealises.proof : BaseRealises.Statement := by
   intro F _ K _ _ ι _ Ω _ _ y k₀ N e x hx hy b c

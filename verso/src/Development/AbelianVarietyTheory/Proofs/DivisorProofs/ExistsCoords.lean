@@ -33,20 +33,20 @@ def graphFil (A₀ : Over (Sp k)) [GrpObj A₀] (f : HdR A₀ →ₗ[k] HdR A₀
 variable {A₀ : Over (Sp k)} [GrpObj A₀]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_graphFil {f : HdR A₀ →ₗ[k] HdR A₀} {d : Crys (epsDP k) (GlobalTheory.DeRham.epsRed k) A₀} :
     d ∈ graphFil A₀ f ↔ ∃ x ∈ Fil A₀, ∃ y ∈ Fil A₀, ∀ c : primDR A₀,
       d ((constMor A₀).pull c) = TrivSqZeroExt.inl (x c) + TrivSqZeroExt.inr (f x c + y c) := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SqZeroCrys.isBC_trivSqZeroExt k k A₀ hA (SqExt.dual k).sq (constMor A₀)`.
+A detailed English derivation is pending.
 -/
 theorem isBC_constMor (hA : IsAbelianScheme A₀) : (constMor A₀).IsBC :=
   GlobalTheory.SqZeroCrys.isBC_trivSqZeroExt k k A₀ hA (SqExt.dual k).sq (constMor A₀)
 
 /- English proof (translation)
-Take `⟨d₁, h₁⟩` from `(isBC_constMor hA).exists u`. Take `⟨d₂, h₂⟩` from `(isBC_constMor hA).exists v`. Use `⟨d₁ + (TrivSqZeroExt.inr (1 : k) : DualNumber k) • d₂, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, LinearMap.smul_apply, h₁ c, h₂ c]`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_crys (hA : IsAbelianScheme A₀) (u v : HdR A₀) :
     ∃ d : Crys (epsDP k) (GlobalTheory.DeRham.epsRed k) A₀, ∀ c : primDR A₀,
@@ -60,9 +60,9 @@ theorem exists_crys (hA : IsAbelianScheme A₀) (u v : HdR A₀) :
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `LinearMap.ext fun c' => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `(isBC_constMor hA).2 c'`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul x c => rw [liftSemi_tmul, map_smul, map_smul, h c]`.
+Treat this case separately.
 -/
 theorem crys_ext (hA : IsAbelianScheme A₀) {d d' : Crys (epsDP k) (GlobalTheory.DeRham.epsRed k) A₀}
     (h : ∀ c : primDR A₀, d ((constMor A₀).pull c) = d' ((constMor A₀).pull c)) : d = d' := by
@@ -81,7 +81,7 @@ def coordOf (g : DualNumber k →ₗ[k] k) (d : Crys (epsDP k) (GlobalTheory.DeR
     rfl
 
 /- English proof (translation)
-Use `⟨coordOf (TrivSqZeroExt.fstHom k k k).toLinearMap d, coordOf (TrivSqZeroExt.sndHom k k) d, fun c => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [coordOf]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_coords (d : Crys (epsDP k) (GlobalTheory.DeRham.epsRed k) A₀) :
     ∃ u v : HdR A₀, ∀ c : primDR A₀,

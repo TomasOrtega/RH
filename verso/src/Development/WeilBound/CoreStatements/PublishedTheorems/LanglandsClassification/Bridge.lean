@@ -15,9 +15,9 @@ section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨n, a⟩` from `x`. Take `⟨m, b⟩` from `y`. Establish `hn : n = m` using `hx.deg_eq.symm.trans hy.deg_eq`. Substitute `hn` using the available equality. Take `⟨e⟩` from `hx.unique hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `hab : a = b` using `Quotient.out_equiv_out.mp ⟨e.symm⟩`. Rewrite using `[hab]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_isLSeg {Δ : Segment k} {x y : IrrGL k} (hx : IsLSeg Δ x.rep) (hy : IsLSeg Δ y.rep) : x = y := by
   obtain ⟨n, a⟩ := x
@@ -29,7 +29,7 @@ theorem eq_of_isLSeg {Δ : Segment k} {x y : IrrGL k} (hx : IsLSeg Δ x.rep) (hy
   rw [hab]
 
 /- English proof (translation)
-Take `⟨n, x⟩` from `x`. Take `⟨m, y⟩` from `y`. Take `rfl : n = m` from `hd.symm.trans hd'`. Conclude with `(IrrGL.of_rep ⟨n, x⟩).symm.trans ((IrrGL.of_eq_of.2 (hy.unique hx)).trans (IrrGL.of_rep ⟨n, y⟩))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_of_isCosocle {h : ℕ} {z : Fin h → IrrGL k} {x y : IrrGL k} {hd : ∑ a, (z a).1 = x.1} {hd' : ∑ a, (z a).1 = y.1}
     (hx : IsCosocle x.rep (prodIrr z hd)) (hy : IsCosocle y.rep (prodIrr z hd')) : x = y := by
@@ -44,7 +44,7 @@ variable {Lseg : Segment k → IrrGL k} {L : Multiset (Segment k) → IrrGL k} (
 
 include h1 h3 in
 /- English proof (translation)
-Take `⟨Δ, ho, hΔ⟩` from `hx`. Take `rfl : x = fun a => Lseg (Δ a)` from `funext fun a => eq_of_isLSeg (hΔ a) (h1 _)`. Conclude with `h3 𝔪 h Δ ho`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cosocle_of_lFactors {𝔪 : Multiset (Segment k)} {h : ℕ} {x : Fin h → IrrGL k} (hx : LFactors 𝔪 x) :
     ∃ hd : ∑ a, (x a).1 = (L 𝔪).1, IsCosocle (L 𝔪).rep (prodIrr x hd) := by
@@ -54,7 +54,7 @@ theorem cosocle_of_lFactors {𝔪 : Multiset (Segment k)} {h : ℕ} {x : Fin h �
 
 include h1 h3 in
 /- English proof (translation)
-Take `⟨h, z, hd, hz, hc⟩` from `hx`. Take `⟨hd', hc'⟩` from `cosocle_of_lFactors h1 h3 hz`. Conclude with `eq_of_isCosocle hc hc'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_of_isL {𝔪 : Multiset (Segment k)} {x : IrrGL k} (hx : IsL 𝔪 x.rep) : x = L 𝔪 := by
   obtain ⟨h, z, hd, hz, hc⟩ := hx

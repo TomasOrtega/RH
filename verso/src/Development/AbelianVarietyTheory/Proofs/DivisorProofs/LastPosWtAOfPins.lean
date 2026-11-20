@@ -14,13 +14,13 @@ namespace GlobalTheory
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D Q h j hj w hw τ hτ hm`. Take `⟨t, rfl⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.exists_tau_of_inPsi Q h.1 τ hτ`. Establish `hmult : (Q.Dw j).mult (DV.tauEmb D t) = (D.R.sigW j).1`. Unfold `ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum.mult`. Establish `hτ' : (DV.tauEmb D t) (Q.H.rt : D.host.E) = Q.H.rt0` using `hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[if_pos hτ']`. Conclude with `(h.2.2.2 j hj).1`. Rewrite `hm`, the goal using `[hmult]`. Establish `h1 : 1 ≤ w.aP t ⟨(D.R.sigW j).1 - 1, by omega⟩` using `hw t _ (by show (D.R.sigW j).1 - 1 + 1 = _; omega)`. Establish `h2 : ext0 (w.aP t) ((D.R.sigW j).1 - 1) = w.aP t ⟨(D.R.sigW j).1 - 1, by omega⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `ext0`. Rewrite using `[dif_pos (by omega)]`. Unfold `wtA`. Use `lt_of_lt_of_le ?_ (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ t))` and prove the remaining obligations. Simplify using `only [if_true]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem lastPos_wtA_of_pins : ∀ (D : D7) (Q : Par D), Q.Pins → ∀ j, InR D j → ∀ w : WeightFamilies.Wt D j,
     w.LastPos → Formalism.L2.Pj.LastPos (Q.Dw j) (wtA w) := by

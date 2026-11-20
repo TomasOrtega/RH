@@ -36,20 +36,20 @@ variable {D : D7} {V : HSp D}
 variable {β : GL (Fin V.rank) (EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
 
 /- English proof (translation)
-The claim follows from `h.le.trans (Ideal.prod_le_inf.trans (Finset.inf_le hw))`.
+A detailed English derivation is pending.
 -/
 theorem le_of_half {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {l : Level H} {Pg : Finset (Pl D.host.E)}
     (h : l.Mb = ∏ w ∈ Pg, w.asIdeal) {w : Pl D.host.E} (hw : w ∈ Pg) : l.Mb ≤ w.asIdeal :=
   h.le.trans (Ideal.prod_le_inf.trans (Finset.inf_le hw))
 
 /- English proof (translation)
-Set `φ₀ : La →ₗ[𝓞 E] (Fin n → 𝓞 E ⧸ I)` to `{ toFun := fun a i => GlobalTheory.GeoActCompare.resI F I hI (ρ a i) map_add' := fun a b => funext fun i => by rw [map_add, Pi.add_apply, map_add]; rfl map_smul' := fun b a => funext fun i => by`. Rewrite using `[h1, Pi.smul_apply, smul_eq_mul, map_mul, GlobalTheory.GeoActCompare.resI_oToS]`. Conclude with `(Algebra.smul_def _ _).symm }`. Establish `hs : Function.Surjective φ₀` using `fun t => by choose u hu using fun i => Ideal.Quotient.mk_surjective (t i)`. Take `⟨a, s', e⟩` from `h2 fun i => oToS F E (u i)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, funext fun i => ?_⟩` and prove the remaining obligations. Establish `e1` using `congrArg (GlobalTheory.GeoActCompare.resI F I hI) (congrFun e i)`. Establish `e2 : ((M : ℕ) : 𝓞 E ⧸ I) = 0` using `by rw [← map_natCast (Ideal.Quotient.mk I), Ideal.Quotient.eq_zero_iff_mem.2 hM]`. Rewrite `e1` using `[GlobalTheory.GeoActCompare.resI_oToS, hu, Pi.add_apply, map_add, Pi.smul_apply, map_nsmul, nsmul_eq_mul, e2, zero_mul, add_zero]`. Conclude with `e1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hk : I • (⊤ : Submodule (𝓞 E) La) = LinearMap.ker φ₀`. Use `le_antisymm (Submodule.smul_le.2 fun b hb a _ => ?_) fun a ha => h3 a fun i => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, map_smul]`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem.2 hb, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components.
 
-Both sides reduce to the same expression. Conclude with `(GlobalTheory.GeoActCompare.resI_eq_zero_iff _ hI _).1 (congrFun ha i)`. Conclude with `⟨(Submodule.quotEquivOfEq _ _ hk).trans (φ₀.quotKerEquivOfSurjective hs), fun _ _ => rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_coord {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ} {I : Ideal (𝓞 E)}
     (hI : I ≠ ⊥) {M : ℕ} (hM : (M : 𝓞 E) ∈ I) {La : Type} [AddCommGroup La] [Module (𝓞 E) La]
@@ -104,7 +104,7 @@ def fullDat (n : ℕ) (Pg : Finset (Pl D.host.E)) : LevDat D.host.E ℂ n :=
 variable {β} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} {H H' : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E}
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hβ`. Use `GlobalTheory.ParahoricLift.liftsExist _ _ _ _ _ hc (fun PP h1 PP' h' => ?_) (hQ ▸ Finset.disjoint_empty_right _)` and prove the remaining obligations. Break down `h' with h' | h'` into its components or cases. Conclude with `GlobalTheory.LevelAction.not_isConjPl l (le_of_half h h1) (le_of_half h h')`. Conclude with `absurd (hQ ▸ h') (Finset.notMem_empty _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem liftsExist_of_half (hβ : IsSDFrame V β Λ 1) (l : Level H) (L : LevDat D.host.E ℂ V.rank) (hQ : L.Q = ∅)
     (h : l.Mb = ∏ w ∈ L.Pg, w.asIdeal) : LiftsExist V β L := by
@@ -123,7 +123,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
 open Classical in
 
 /- English proof (translation)
-Establish `hprod` using `l.prod`. Rewrite `hprod` using `[hM]`. Establish `hs : Squarefree l.Mb` using `(hprod ▸ GlobalTheory.CoverHalf.squarefree_span_g D : Squarefree (l.Mb * _)).of_mul_left`. Use `⟨fun Pg h => GlobalTheory.CoverHalf.eq_prod_of_squarefree hs _ h, (Ideal.finite_factors hs.ne_zero).toFinset, GlobalTheory.CoverHalf.eq_prod_of_squarefree hs _ fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, Ideal.dvd_iff_le]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_half_prod {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} (l : Level H) (hM : l.M = D.host.g 0 * D.host.g 1) :
     (∀ Pg : Finset (Pl D.host.E), (∀ w, w ∈ Pg ↔ l.Mb ≤ w.asIdeal) → l.Mb = ∏ w ∈ Pg, w.asIdeal) ∧
@@ -136,7 +136,7 @@ theorem exists_half_prod {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host 
   rw [Set.Finite.mem_toFinset, Set.mem_setOf_eq, Ideal.dvd_iff_le]
 
 /- English proof (translation)
-Rewrite using `[hL.Pg, GlobalTheory.HalfOnRecord.designLevel_Mb, GlobalTheory.CoverHalf.prod_map_le_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_Pg_iff {L : LevCh D T0} {μ0 : T0} (hL : L.Is μ0) (w : Pl D.host.E) :
     w ∈ L.Pg ↔ (GlobalTheory.HalfOnRecord.designLevel L.C.P).Mb ≤ w.asIdeal := by
@@ -144,25 +144,23 @@ theorem mem_Pg_iff {L : LevCh D T0} {μ0 : T0} (hL : L.Is μ0) (w : Pl D.host.E)
   rfl
 
 /- English proof (translation)
-The claim follows from `(exists_half_prod _ rfl).1 _ (mem_Pg_iff hL)`.
+A detailed English derivation is pending.
 -/
 theorem designLevel_prod {L : LevCh D T0} {μ0 : T0} (hL : L.Is μ0) :
     (GlobalTheory.HalfOnRecord.designLevel L.C.P).Mb = ∏ w ∈ L.Pg, w.asIdeal :=
   (exists_half_prod _ rfl).1 _ (mem_Pg_iff hL)
 
 /- English proof (translation)
-The claim follows from `liftsExist_of_half (hL.βW i) (GlobalTheory.HalfOnRecord.designLevel L.C.P) _ rfl (designLevel_prod hL)`.
+A detailed English derivation is pending.
 -/
 theorem levelLiftsExist_gridVertexSpaces {L : LevCh D T0} {μ0 : T0} (hL : L.Is μ0) (i : Fin D.R.m) :
     LiftsExist (Wc D i) (L.βW i) (L.datWp i L.triv) :=
   liftsExist_of_half (hL.βW i) (GlobalTheory.HalfOnRecord.designLevel L.C.P) _ rfl (designLevel_prod hL)
 
 /- English proof (translation)
-Take `⟨a, b, s, s', hb, hs, hs', hin, hout⟩` from `GlobalTheory.GeoLevel.exists_half_elements (GlobalTheory.HalfOnRecord.designLevel L.C.P) L.Pg (mem_Pg_iff hL)`. Take `⟨x, h1, h2, h3⟩` from `GlobalTheory.GeoLevel.exists_root_char (L := L.datWp i L.triv) (rank_Wc i).symm hk (hL.mu0 i) (L.C.isMu0 i).tame (D.host.g 0 * D.host.g 1) (fun P hP => (L.C.isMu0 i).unr P fun k hk => hP (by`. Rewrite using `[Nat.cast_mul]`. Use `fin_cases k`. Conclude with `Ideal.mul_mem_right _ _ hk`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_left _ _ hk))`. Use the proof step `(fun P => (L.chi ((i : ℕ) + 1) P)⁻¹) (hL.chi i) a b s s' hb hs hs' hin hout`. Use `⟨x, h1, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[h3]`. Use `(Finset.prod_mul_distrib (s := (Finset.univ : Finset L.Pg))).symm.trans (Finset.prod_eq_one fun P _ => ?_)` and prove the remaining obligations.
-
-Rewrite using `[← Units.val_mul, MonoidHom.inv_apply]`. Conclude with `congrArg Units.val (mul_inv_cancel _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_root {L : LevCh D T0} {μ0 : T0} (hL : L.Is μ0) (i : Fin D.R.m) {g : Formalism.L2.DIV.G0 L.Pg D.R.r} {k : GA D (Wc D i)}
     (hk : IsLevelLift (Wc D i) (L.βW i) (L.datWp i L.triv) g k) :

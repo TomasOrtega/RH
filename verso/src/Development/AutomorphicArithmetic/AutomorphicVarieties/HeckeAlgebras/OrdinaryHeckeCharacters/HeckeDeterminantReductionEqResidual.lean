@@ -9,11 +9,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ _ s n V Q c r ι Λ R hA T _ _ _ gen hgen D hD hF`. Use `JEx.red_eq r D hD _ hA.dense ?_` and prove the remaining obligations. Introduce and unpack `g ⟨w, hw, B, σ, hB, hσ, rfl⟩`. Establish `h1` using `hF ⟨w, hw⟩ B σ hB hσ`. Establish `h2` using `R.res.frob ⟨w, hw⟩ B σ hB hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(congrArg (Polynomial.map _) h1).trans (Eq.trans ?_ h2.symm)` and prove the remaining obligations. Rewrite using `[JEx.heckePol_map]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `split_ifs with h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h3` using `(Alg.res_eq_zero_iff c.O T _).2 (hgen (.inl (⟨w, hw⟩, ⟨j - 1, h.2⟩)))`. Rewrite `h3` using `[map_sub, AlgHom.commutes, sub_eq_zero]`. Conclude with `h3`. Conclude with `map_one _`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.heckeDeterminant_reduction_eq_residual :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ) (V : s.Lev) (Q : QData V) (c : Coef l) (r : Resid V.frame c.O n) (ι : Qbar l ≃+* ℂ) (Λ : LamObj r) (R : HD Q ι Λ), (hset Q R.τ₀).Ax →

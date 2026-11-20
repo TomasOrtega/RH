@@ -11,11 +11,11 @@ namespace GlobalTheory.EmbFrob
 open Polynomial
 
 /- English proof (translation)
-Use `haveI : CharP F p := f.charP f.injective p`. Use `letI : Algebra (ZMod p) F := ZMod.algebra F p`. Use `letI : Algebra (ZMod p) k := ZMod.algebra k p`. Use `letI : Algebra F k := f.toAlgebra`. Use `haveI : IsScalarTower (ZMod p) F k := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `g' : F →ₐ[ZMod p] k` to `{ g with commutes' := fun z => RingHom.congr_fun (Subsingleton.elim (g.comp (algebraMap (ZMod p) F)) (algebraMap _ k)) z }`. Take `⟨n, hn⟩` from `(FiniteField.bijective_frobeniusAlgEquivOfAlgebraic_pow (ZMod p) F).2 (g'.restrictNormal' F)`. Use `⟨n, fun a => ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap F k (g'.restrictNormal' F a) = g' (algebraMap F F a)` using `AlgHom.restrictNormal_commutes g' F a`. Establish `h2 : g'.restrictNormal' F a = a ^ p ^ (n : ℕ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hn]`. Simplify using `[AlgEquiv.coe_pow, FiniteField.coe_frobeniusAlgEquivOfAlgebraic_iterate]`. Rewrite `h1` using `[h2, map_pow]`. Conclude with `h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_of_finite_field (p : ℕ) [Fact p.Prime] {F k : Type} [Field F] [Finite F]
     [Field k] [CharP k p] (f g : F →+* k) : ∃ i : ℕ, ∀ a : F, g a = f a ^ p ^ i := by
@@ -41,15 +41,13 @@ theorem exists_pow_of_finite_field (p : ℕ) [Fact p.Prime] {F k : Type} [Field 
 open GlobalTheory.IndefiniteRowSideFullHecke.SplitUnramifiedPlaces
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hpQ : (p : OE) ∈ (IsLocalRing.maximalIdeal R).comap σ`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hp`. Establish `hQ : ((IsLocalRing.maximalIdeal R).comap σ).IsMaximal`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.IsPrime.isMaximal inferInstance fun h => ?_` and prove the remaining obligations. Rewrite `hpQ` using `[h, Ideal.mem_bot]`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero) hpQ`. Set `φ : w.Ow →+* R` to `Ideal.Quotient.lift _ (extend σ).toRingHom (by`. Introduce `z hz`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hz`. Simplify using `[hσ])`. Establish `hφ : ∀ a, φ (w.toOw a) = σ a` using `fun a => by show extend (p := p) σ (1 ⊗ₜ a) = σ a`. Simplify using the standard rewrite rules. Establish `hle : ((IsLocalRing.maximalIdeal R).comap σ).map w.toOw ≤ (IsLocalRing.maximalIdeal R).comap φ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, hφ]`. Conclude with `ha`. Rewrite `hle` using `[hP _ hQ hne, top_le_iff]`.
-
-Conclude with `Ideal.comap_ne_top φ (IsLocalRing.maximalIdeal.isMaximal R).ne_top hle`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_eq {p : ℕ} [Fact p.Prime] {OE : Type} [CommRing OE] [IsDedekindDomain OE]
     [CharZero OE] {R : Type} [CommRing R] [IsLocalRing R] [Algebra ℤ_[p] R]
@@ -80,15 +78,13 @@ theorem comap_eq {p : ℕ} [Fact p.Prime] {OE : Type} [CommRing OE] [IsDedekindD
   exact Ideal.comap_ne_top φ (IsLocalRing.maximalIdeal.isMaximal R).ne_top hle
 
 /- English proof (translation)
-Introduce `p _ OE _ _ _ _ C _ v R _ _ _ hv hp w σ τ hσ hτ`. Use `haveI : IsDomain R := hv.hom_inj.isDomain (algebraMap R C)`. Use `haveI : ValuationRing R := ValuationRing.of_integers v hv`. Set `w' : Place p OE` to `⟨w.e, w.idem, w.ne_zero, w.prim⟩`. Take `⟨P, hPm, hpP, -, hP⟩` from `GlobalTheory.OnePrime.exists_prime_under p OE w'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `comap_eq hp w' hP σ hσ`. Establish `h2` using `comap_eq hp w' hP τ hτ`. Establish `hP0 : P ≠ ⊥` using `fun h => by`. Rewrite `hpP` using `[h, Ideal.mem_bot]`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero) hpP`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Finite (OE ⧸ P) := Ideal.finiteQuotientOfFreeOfNeBot P hP0`. Use `letI : Field (OE ⧸ P) := Ideal.Quotient.field P`. Use `haveI : CharP (IsLocalRing.ResidueField R) p := by`. Use `(CharP.charP_iff_prime_eq_zero (Fact.out : p.Prime)).2 ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (IsLocalRing.residue R), IsLocalRing.residue_eq_zero_iff]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp`. Take `⟨i, hi⟩` from `exists_pow_of_finite_field p (k := IsLocalRing.ResidueField R) (Ideal.quotientMap (IsLocalRing.maximalIdeal R) σ h1.ge) (Ideal.quotientMap (IsLocalRing.maximalIdeal R) τ h2.ge)`. Use `⟨i, fun a => ?_⟩` and prove the remaining obligations. Establish `h3 : IsLocalRing.residue R (τ a) = IsLocalRing.residue R (σ a) ^ p ^ i` using `hi (Ideal.Quotient.mk P a)`. Establish `h4 : τ a - σ a ^ p ^ i ∈ IsLocalRing.maximalIdeal R`.
-
-Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, map_pow, h3, sub_self]`. Conclude with `lt_of_le_of_ne (hv.map_le_one _) fun h => h4 (hv.isUnit_iff_valuation_eq_one.2 h)`.
+A detailed English derivation is pending.
 -/
 theorem exists_frobenius_pow : ∀ (p : ℕ) [Fact p.Prime] (OE : Type) [CommRing OE]
     [IsDedekindDomain OE] [CharZero OE] [Module.Finite ℤ OE] (C : Type) [Field C]

@@ -9,13 +9,13 @@ open scoped TensorProduct
 namespace PI.ScPsiExists.UnitaryGroupMassFormula
 
 /- English proof (translation)
-Rewrite using `[trace_eq_sum_embeddings (E := ℂ)]`. Use `Fintype.sum_bijective (fun v : InfinitePlace F => v.embedding.toRatAlgHom) ⟨?_, ?_⟩ _ _ ?_` and prove the remaining obligations. Introduce `v w h`. Establish `h' : v.embedding = w.embedding`. Use `congrArg AlgHom.toRingHom h` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[RingHom.toRatAlgHom_toRingHom]`. Rewrite using `[← InfinitePlace.mk_embedding v, ← InfinitePlace.mk_embedding w, h']`. Introduce `σ`. Use `⟨InfinitePlace.mk (σ : F →+* ℂ), ?_⟩` and prove the remaining obligations. Establish `hr : ComplexEmbedding.IsReal (σ : F →+* ℂ)` using `InfinitePlace.isReal_mk_iff.mp (IsTotallyReal.isReal _)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `x`. Use `show (InfinitePlace.mk (σ : F →+* ℂ)).embedding x = σ x`. Rewrite using `[InfinitePlace.embedding_mk_eq_of_isReal hr]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_embedding_eq_trace (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (y : F) :
     ∑ v : InfinitePlace F, v.embedding y = algebraMap ℚ ℂ (Algebra.trace ℚ F y) := by
@@ -39,7 +39,7 @@ theorem sum_embedding_eq_trace (F : Type) [Field F] [NumberField F] [IsTotallyRe
     simp
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℤ (Algebra.trace ℚ F (algebraMap (𝓞 F) F c))` using `Algebra.isIntegral_trace (RingOfIntegers.isIntegral_coe c)`. Take `⟨n, hn⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := ℤ) (K := ℚ)).1 hi`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[sum_embedding_eq_trace, ← hn]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_embedding_int (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (c : 𝓞 F) :
     ∃ n : ℤ, ∑ v : InfinitePlace F, v.embedding (algebraMap (𝓞 F) F c) = (n : ℂ) := by
@@ -55,7 +55,7 @@ section Tau
 variable {F E : Type} [Field F] [Field E] [StarRing E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `RingHom.mem_range.1 ((hfix (x + star x)).1 (by rw [star_add, star_star, add_comm]))`.
+A detailed English derivation is pending.
 -/
 theorem add_star_mem (hfix : ∀ a : E, star a = a ↔ a ∈ (algebraMap F E).range) (x : E) :
     ∃ a : F, algebraMap F E a = x + star x :=
@@ -65,7 +65,7 @@ def tauFun (hfix : ∀ a : E, star a = a ↔ a ∈ (algebraMap F E).range) (x : 
   (add_star_mem hfix x).choose
 
 /- English proof (translation)
-The claim follows from `(add_star_mem hfix x).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem tauFun_spec (hfix : ∀ a : E, star a = a ↔ a ∈ (algebraMap F E).range) (x : E) :
     algebraMap F E (tauFun hfix x) = x + star x :=
@@ -81,16 +81,16 @@ def tau (hfix : ∀ a : E, star a = a ↔ a ∈ (algebraMap F E).range) : E →�
     ring)
 
 /- English proof (translation)
-The claim follows from `tauFun_spec hfix x`.
+A detailed English derivation is pending.
 -/
 theorem tau_apply (hfix : ∀ a : E, star a = a ↔ a ∈ (algebraMap F E).range) (x : E) :
     algebraMap F E (tau hfix x) = x + star x :=
   tauFun_spec hfix x
 
 /- English proof (translation)
-Establish `h1 : IsIntegral ℤ (algebraMap (𝓞 E) E c)` using `RingOfIntegers.isIntegral_coe c`. Establish `h2 : IsIntegral ℤ (star (algebraMap (𝓞 E) E c))`. Use `h1.map (starRingEnd E).toIntAlgHom` as an intermediate fact. Conclude with `this`. Establish `h3 : IsIntegral ℤ (algebraMap F E (tau hfix (algebraMap (𝓞 E) E c)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tau_apply]`. Conclude with `h1.add h2`. Establish `h4` using `(isIntegral_algebraMap_iff (algebraMap F E).injective).1 h3`. Conclude with `⟨⟨_, h4⟩, rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tau_int [NumberField F] [NumberField E]
     (hfix : ∀ a : E, star a = a ↔ a ∈ (algebraMap F E).range) (c : 𝓞 E) :
@@ -108,7 +108,7 @@ theorem tau_int [NumberField F] [NumberField E]
 end Tau
 
 /- English proof (translation)
-Introduce `v`. Use `show (algebraMap F (Af F) (algebraMap (𝓞 F) F d)) v ∈ v.adicCompletionIntegers F`. Rewrite using `[FiniteAdeleRing.algebraMap_apply, HeightOneSpectrum.mem_adicCompletionIntegers, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `HeightOneSpectrum.valuation_le_one v d`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alg_int_mem (F : Type) [Field F] [NumberField F] (d : 𝓞 F) :
     algebraMap F (Af F) (algebraMap (𝓞 F) F d) ∈ Formalism.UG.intAd F := by
@@ -119,9 +119,7 @@ theorem alg_int_mem (F : Type) [Field F] [NumberField F] (d : 𝓞 F) :
   exact HeightOneSpectrum.valuation_le_one v d
 
 /- English proof (translation)
-Establish `hv : ∀ v : HeightOneSpectrum (𝓞 F), v.valuation F y ≤ 1`. Introduce `v`. Establish `hv` using `h v`. Rewrite `hv` using `[FiniteAdeleRing.algebraMap_apply, HeightOneSpectrum.mem_adicCompletionIntegers, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `hv`.
-
-Conclude with `RingHom.mem_range.1 (HeightOneSpectrum.mem_integers_of_valuation_le_one F y hv)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_of_alg_mem (F : Type) [Field F] [NumberField F] (y : F)
     (h : algebraMap F (Af F) y ∈ Formalism.UG.intAd F) : ∃ d : 𝓞 F, algebraMap (𝓞 F) F d = y := by
@@ -141,26 +139,24 @@ def tT (τ : E →ₗ[F] F) : E ⊗[F] Af F →ₗ[F] Af F :=
   (TensorProduct.lid F (Af F)).toLinearMap ∘ₗ TensorProduct.map τ LinearMap.id
 
 /- English proof (translation)
-Simplify using `[tT, Algebra.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tT_tmul (τ : E →ₗ[F] F) (x : E) (b : Af F) :
     tT τ (x ⊗ₜ b) = algebraMap F (Af F) (τ x) * b := by
   simp [tT, Algebra.smul_def]
 
 /- English proof (translation)
-Set `f : 𝓞 E →ₐ[ℤ] E ⊗[F] Af F` to `((Formalism.UG.inclE (F := F) (Af F)).comp (algebraMap (𝓞 E) E)).toIntAlgHom`. Set `g : Formalism.UG.intAd F →ₐ[ℤ] E ⊗[F] Af F` to `(((Algebra.TensorProduct.includeRight : Af F →ₐ[F] E ⊗[F] Af F) : Af F →+* E ⊗[F] Af F).comp (Formalism.UG.intAd F).subtype).toIntAlgHom`. Establish `hP : ∀ w, tT τ (Algebra.TensorProduct.productMap f g w) ∈ Formalism.UG.intAd F`. Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul c b`. Rewrite using `[Algebra.TensorProduct.productMap_apply_tmul]`. Establish `hfg : f c * g b = (algebraMap (𝓞 E) E c) ⊗ₜ[F] (b : Af F)` using `by show ((algebraMap (𝓞 E) E c) ⊗ₜ[F] (1 : Af F)) * ((1 : E) ⊗ₜ[F] (b : Af F)) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfg, tT_tmul]`. Take `⟨d, hd⟩` from `hτ c`. Rewrite using `[← hd]`. Conclude with `mul_mem (alg_int_mem F d) b.2`. Consider the case `add w w' hw hw'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_add]`. Conclude with `add_mem hw hw'`. Establish `hle : IntAf F E ≤ (Algebra.TensorProduct.productMap f g).range.toSubring`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨⟨x, hx⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, rfl⟩` from `RingHom.mem_range.1 hx`. Use `⟨c ⊗ₜ 1, ?_⟩` and prove the remaining obligations. Use `show (Algebra.TensorProduct.productMap f g) (c ⊗ₜ[ℤ] 1) = (algebraMap (𝓞 E) E c) ⊗ₜ[F] (1 : Af F)`. Rewrite using `[Algebra.TensorProduct.productMap_apply_tmul]`. Use `show ((algebraMap (𝓞 E) E c) ⊗ₜ[F] (1 : Af F)) * ((1 : E) ⊗ₜ[F] ((1 : Formalism.UG.intAd F) : Af F)) = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Simplify using the standard rewrite rules. Use `⟨1 ⊗ₜ ⟨y, hy⟩, ?_⟩ show (Algebra.TensorProduct.productMap f g) (1 ⊗ₜ[ℤ] ⟨y, hy⟩) = (1 : E) ⊗ₜ[F] y` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.productMap_apply_tmul]`. Use `show ((algebraMap (𝓞 E) E 1) ⊗ₜ[F] (1 : Af F)) * ((1 : E) ⊗ₜ[F] y) = _`.
-
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, map_one, one_mul, one_mul]`. Take `⟨w, rfl⟩` from `(AlgHom.mem_range _).1 (Subalgebra.mem_toSubring.1 (hle hz))`. Conclude with `hP w`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tT_mem (τ : E →ₗ[F] F)
     (hτ : ∀ c : 𝓞 E, ∃ d : 𝓞 F, algebraMap (𝓞 F) F d = τ (algebraMap (𝓞 E) E c))
@@ -206,7 +202,7 @@ theorem tT_mem (τ : E →ₗ[F] F)
   exact hP w
 
 /- English proof (translation)
-Establish `h` using `tT_mem τ hτ _ hx`. Establish `he : tT τ (Formalism.UG.inclE (F` using `F) (Af F) x) = algebraMap F (Af F) (τ x) := by`. Simplify using `[Formalism.UG.inclE, tT_tmul]`. Rewrite `h` using `[he]`. Conclude with `int_of_alg_mem F _ h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_of_inclE_mem (τ : E →ₗ[F] F)
     (hτ : ∀ c : 𝓞 E, ∃ d : 𝓞 F, algebraMap (𝓞 F) F d = τ (algebraMap (𝓞 E) E c))
@@ -226,14 +222,14 @@ def sHom (I : AutInst) : I.E →+ ℝ :=
     simp only [map_add, Complex.add_re, mul_add, Finset.sum_add_distrib])
 
 /- English proof (translation)
-Rewrite using `[Complex.star_def]`. Conclude with `Complex.add_conj z`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem add_star_eq (z : ℂ) : z + star z = ((2 * z.re : ℝ) : ℂ) := by
   rw [Complex.star_def]
   exact Complex.add_conj z
 
 /- English proof (translation)
-Simplify using `only [add_star_eq]`. Simplify using `[sHom]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sHom_coe (I : AutInst) (x : I.E) :
     ((sHom I x : ℝ) : ℂ) = ∑ v, (I.φ v x + star (I.φ v x)) := by
@@ -241,7 +237,7 @@ theorem sHom_coe (I : AutInst) (x : I.E) :
   simp [sHom]
 
 /- English proof (translation)
-Rewrite using `[sHom_coe, Finset.mul_sum, Complex.exp_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem psiEinf_eq (I : AutInst) (x : I.E) :
     psiEinf I x = Complex.exp (2 * Real.pi * Complex.I * ((sHom I x : ℝ) : ℂ)) := by
@@ -249,9 +245,9 @@ theorem psiEinf_eq (I : AutInst) (x : I.E) :
   rfl
 
 /- English proof (translation)
-Use `I.cm.totReal` as an intermediate fact. Take `⟨d, hd⟩` from `int_of_inclE_mem (tau I.cm.fixed) (tau_int I.cm.fixed) x hx`. Take `⟨n, hn⟩` from `sum_embedding_int I.F d`. Use `⟨n, ?_⟩` and prove the remaining obligations. Apply `Complex.ofReal_injective` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : ∀ v, I.φ v x + star (I.φ v x) = v.embedding (algebraMap (𝓞 I.F) I.F d)`. Introduce `v`. Rewrite using `[hd, ← I.φ_over, tau_apply, map_add, I.cm.cmUnram.2.1 (I.φ v) x]`. Both sides reduce to the same expression. Rewrite using `[sHom_coe, Finset.sum_congr rfl (fun v _ => h2 v), hn]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -270,19 +266,19 @@ theorem sHom_int (I : AutInst) (x : I.E)
   simp
 
 /- English proof (translation)
-Introduce `I`. Establish `: Fact ((0 : ℝ) < 1)` using `⟨one_pos⟩`. Set `N : AddSubgroup (I.E ⊗[I.F] Af I.F)` to `(IntAf I.F I.E).toAddSubgroup`. Set `π : I.E ⊗[I.F] Af I.F →+ (I.E ⊗[I.F] Af I.F) ⧸ N` to `QuotientAddGroup.mk' N`. Set `j : I.E →+ (I.E ⊗[I.F] Af I.F) ⧸ N` to `π.comp (Formalism.UG.inclE (F := I.F) (Af I.F)).toAddMonoidHom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `sb : I.E →+ AddCircle (1 : ℝ)` to `(QuotientAddGroup.mk' (AddSubgroup.zmultiples (1 : ℝ))).comp (sHom I)`. Establish `hker : j.ker ≤ sb.ker`. Introduce `x hx`. Rewrite `hx`, the goal using `[AddMonoidHom.mem_ker]`. Establish `hx' : Formalism.UG.inclE (F` using `I.F) (Af I.F) x ∈ IntAf I.F I.E := (QuotientAddGroup.eq_zero_iff _).1 hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `sHom_int I x hx'`. Use `show ((sHom I x : ℝ) : AddCircle (1 : ℝ)) = 0`. Rewrite using `[hn, AddCircle.coe_eq_zero_iff]`. Conclude with `⟨n, by simp⟩`. Set `g0 : I.E ⧸ j.ker →+ AddCircle (1 : ℝ)` to `QuotientAddGroup.lift j.ker sb hker`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh⟩` from `(Module.Baer.of_divisible (AddCircle (1 : ℝ))).extension_property_addMonoidHom (QuotientAddGroup.kerLift j) (QuotientAddGroup.kerLift_injective j) g0`. Establish `hj : ∀ x, h (j x) = sb x`. Introduce `x`. Use `DFunLike.congr_fun hh (x : I.E ⧸ j.ker)` as an intermediate fact. Simplify `this` using `[g0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun z => ((AddCircle.toCircle (-(h (π z))) : Circle) : ℂ), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z w`. Simplify using `only [map_add, neg_add, AddCircle.toCircle_add, Circle.coe_mul]`. Introduce `z hz`. Establish `hz0 : π z = 0` using `(QuotientAddGroup.eq_zero_iff z).2 hz`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hz0, map_zero, neg_zero]`. Rewrite using `[← AddCircle.coe_zero, AddCircle.toCircle_apply_mk]`. Simplify using the standard rewrite rules. Introduce `x show ((AddCircle.toCircle (-(h (j x)))) : ℂ) * psiEinf I x = 1`. Rewrite using `[hj, psiEinf_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ((AddCircle.toCircle (-((sHom I x : ℝ) : AddCircle (1 : ℝ)))) : ℂ) * _ = 1`. Rewrite using `[← AddCircle.coe_neg, AddCircle.toCircle_apply_mk, Circle.coe_exp, ← Complex.exp_add]`. Use `Complex.exp_zero using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem norm_units_of_calculation : Target := by
   intro I

@@ -13,7 +13,7 @@ section Valuation
 variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
 
 /- English proof (translation)
-Rewrite using `[vle_iff_spectralNorm_le (K := K), vle_iff_spectralNorm_le (K := K)]`. Simplify using `only [spectralNorm, minpoly.algEquiv_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vle_algEquiv_apply_iff {L L' : Type*} [Field L] [Field L'] [Algebra K L] [Algebra K L']
     [Algebra.IsAlgebraic K L] [Algebra.IsAlgebraic K L'] [ValuativeRel L] [ValuativeRel L']
@@ -36,7 +36,7 @@ instance finiteDimensional_map_algEquiv :
   LinearEquiv.finiteDimensional (IntermediateField.equivMap E (σ : Ω →ₐ[K] Ω)).toLinearEquiv
 
 /- English proof (translation)
-The claim follows from `transport_localArtinMap_apply (IntermediateField.equivMap E (σ : Ω →ₐ[K] Ω)).toRingEquiv (fun a b => vle_algEquiv_apply_iff (IntermediateField.equivMap E (σ : Ω →ₐ[K] Ω)) a b) σ.toRingEquiv (fun _ => rfl) x hy`.
+A detailed English derivation is pending.
 -/
 theorem localArtinMap_conj_apply (x : Eˣ) {y : Ω} (hy : y ∈ maximalAbelianExtension E Ω) :
     σ ((localArtinMap E Ω x ⟨y, hy⟩ : maximalAbelianExtension E Ω) : Ω) =
@@ -62,9 +62,9 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
 omit [ValuativeRel K'] [TopologicalSpace K'] [IsNonarchimedeanLocalField K'] [ValuativeExtension K K'] in
 
 /- English proof (translation)
-Set `` to `algebraicValuativeRel K Ω`. Set `` to `algebraicTopology K Ω`. Use `algebraicValuativeRel_valuativeExtension K Ω` as an intermediate fact. Use `algebraicTopology_isValuativeTopology K Ω` as an intermediate fact. Use `set ι := IsScalarTower.toAlgHom K K' Ω`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FiniteDimensional K ι.fieldRange` using `LinearEquiv.finiteDimensional (AlgHom.equivFieldRange ι).toLinearEquiv`. Conclude with `(mem_maximalAbelianExtension_transport_iff (AlgHom.equivFieldRange ι).toRingEquiv (RingEquiv.refl Ω) (fun _ => rfl)).1 (maximalAbelianExtension_le_restrictScalars ι.fieldRange hy)`.
+A detailed English derivation is pending.
 -/
 theorem maximalAbelianExtension_le_of_algebra {y : Ω} (hy : y ∈ maximalAbelianExtension K Ω) :
     y ∈ maximalAbelianExtension K' Ω := by
@@ -79,11 +79,11 @@ theorem maximalAbelianExtension_le_of_algebra {y : Ω} (hy : y ∈ maximalAbelia
     (RingEquiv.refl Ω) (fun _ => rfl)).1 (maximalAbelianExtension_le_restrictScalars ι.fieldRange hy)
 
 /- English proof (translation)
-Set `` to `algebraicValuativeRel K Ω`. Set `` to `algebraicTopology K Ω`. Use `algebraicValuativeRel_valuativeExtension K Ω` as an intermediate fact. Use `algebraicTopology_isValuativeTopology K Ω` as an intermediate fact. Use `set ι := IsScalarTower.toAlgHom K K' Ω`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FiniteDimensional K ι.fieldRange` using `LinearEquiv.finiteDimensional (AlgHom.equivFieldRange ι).toLinearEquiv`. Use `set e := AlgHom.equivFieldRange ι`. Establish `he : ∀ a b : K', e a ≤ᵥ e b ↔ a ≤ᵥ b` using `vle_algEquiv_apply_iff e`. Establish `h1` using `transport_localArtinMap_apply e.toRingEquiv he (RingEquiv.refl Ω) (fun _ => rfl) x (maximalAbelianExtension_le_of_algebra hy)`. Simplify using `only [RingEquiv.refl_apply] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[h1, localArtinMap_apply_of_mem ι.fieldRange _ hy]`. Use `congr 3`. Use `ext`. Rewrite using `[coe_normUnits, coe_normUnits]`. Conclude with `Algebra.norm_eq_of_algEquiv e x`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localArtinMap_apply_of_algebra (x : K'ˣ) {y : Ω} (hy : y ∈ maximalAbelianExtension K Ω) :
     ((localArtinMap K' Ω x ⟨y, maximalAbelianExtension_le_of_algebra hy⟩ :

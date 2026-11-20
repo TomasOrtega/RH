@@ -14,13 +14,11 @@ open Classical
 namespace GlobalTheory.ValPt
 
 /- English proof (translation)
-Introduce `X x p _ y hy`. Substitute `hy` using the available equality. Use `⟨(Scheme.stalkClosedPointTo y).hom, inferInstance, Scheme.Spec_stalkClosedPointTo_fromSpecStalk y, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Establish `hpt : (X.fromSpecStalk (y (cPt p))) ((spMap g) (cPt p)) = (X.fromSpecStalk (y (cPt p))) (closedPoint (X.presheaf.stalk (y (cPt p))))`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Scheme.fromSpecStalk_closedPoint]`. Conclude with `congrArg (fun f : Sp (OO p) ⟶ X => f (cPt p)) hg`. Establish `hinj : Function.Injective (X.fromSpecStalk (y (cPt p)))` using `(X.fromSpecStalk (y (cPt p))).isEmbedding.injective`. Establish `hloc : IsLocalHom g`. Rewrite using `[isLocalHom_iff_comap_closedPoint]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hinj hpt`. Establish `e2` using `(SpecToEquivOfLocalRing X (CommRingCat.of (OO p))).symm.injective (a₁ := ⟨y (cPt p), CommRingCat.ofHom g, hloc⟩) (a₂ := ⟨y (cPt p), Scheme.stalkClosedPointTo y, inferInstance⟩) (by rw [SpecToEquivOfLocalRing_symm_apply, SpecToEquivOfLocalRing_symm_apply]`. Conclude with `hg.trans (Scheme.Spec_stalkClosedPointTo_fromSpecStalk y).symm)`. Take `⟨_, e3⟩` from `SpecToEquivOfLocalRing_eq_iff.mp e2`. Simplify using `only [TopCat.Presheaf.stalkCongr_hom, TopCat.Presheaf.stalkSpecializes_refl, Category.id_comp] at e3`.
-
-Conclude with `congrArg CommRingCat.Hom.hom e3`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_unique_stalk_hom : ∀ (X : Scheme.{0}) (x : X) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ X), y (cPt p) = x → ∃ φ : X.presheaf.stalk x →+* OO p, IsLocalHom φ ∧ spMap φ ≫ X.fromSpecStalk x = y ∧ ∀ g : X.presheaf.stalk x →+* OO p, spMap g ≫ X.fromSpecStalk x = y → g = φ := by
   intro X x p _ y hy

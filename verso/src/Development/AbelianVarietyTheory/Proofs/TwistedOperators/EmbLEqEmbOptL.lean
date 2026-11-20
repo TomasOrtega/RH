@@ -29,7 +29,7 @@ theorem embL_eq_embOptL {n : ℕ} (e : Option (Fin n) ≃ Fin (n + 1)) (X : Matr
     GlobalTheory.SepReal.embL e X = embOptL e X := rfl
 
 /- English proof (translation)
-Use extensionality with `a b`. Take `⟨a, rfl⟩` from `e.surjective a`. Take `⟨b, rfl⟩` from `e.surjective b`. Apply the tactic sequence `cases a <;> cases b <;> simp [embOpt, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem embOpt_one {m N : ℕ} (e : Option (Fin m) ≃ Fin N) : embOpt e 1 = 1 := by
   ext a b

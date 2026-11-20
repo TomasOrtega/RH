@@ -24,7 +24,7 @@ def unitriangular (p : Fin n → Fin n → R) : Matrix (Fin n) (Fin n) R :=
   Matrix.of fun i j => if i = j then 1 else if i < j then p i j else 0
 
 /- English proof (translation)
-Use `⟨fun i j hij => ?_, fun i => by simp [unitriangular]⟩` and prove the remaining obligations. Establish `h1 : i ≠ j` using `fun h => (lt_irrefl j) (h ▸ hij)`. Establish `h2 : ¬ i < j` using `not_lt.2 hij.le`. Simplify using `[unitriangular, h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem isUnitriangular_unitriangular (p : Fin n → Fin n → R) :
     IsUnitriangular (unitriangular p) := by
@@ -34,9 +34,7 @@ theorem isUnitriangular_unitriangular (p : Fin n → Fin n → R) :
   simp [unitriangular, h1, h2]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [unitriangular, of_apply]`. Use `split_ifs with h1 h2`. Substitute `h1` using the available equality. Conclude with `hM.2 i`.
-
-Both sides reduce to the same expression. Conclude with `hM.1 (lt_of_le_of_ne (not_lt.1 h2) (Ne.symm h1))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem IsUnitriangular.eq_unitriangular {M : Matrix (Fin n) (Fin n) R} (hM : IsUnitriangular M) :
     M = unitriangular fun i j => M i j := by
@@ -48,7 +46,7 @@ theorem IsUnitriangular.eq_unitriangular {M : Matrix (Fin n) (Fin n) R} (hM : Is
   · exact hM.1 (lt_of_le_of_ne (not_lt.1 h2) (Ne.symm h1))
 
 /- English proof (translation)
-Rewrite using `[det_of_isUpperTriangular hM.1]`. Simplify using `[hM.2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem IsUnitriangular.det_eq_one {M : Matrix (Fin n) (Fin n) R} (hM : IsUnitriangular M) :
     M.det = 1 := by
@@ -56,9 +54,9 @@ theorem IsUnitriangular.det_eq_one {M : Matrix (Fin n) (Fin n) R} (hM : IsUnitri
   simp [hM.2]
 
 /- English proof (translation)
-Use `⟨hM.1.mul hN.1, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[hM.2, hN.2, one_mul]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hM.1 h, zero_mul]`. Rewrite using `[hN.1 h, mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem IsUnitriangular.mul {M N : Matrix (Fin n) (Fin n) R} (hM : IsUnitriangular M)
     (hN : IsUnitriangular N) : IsUnitriangular (M * N) := by
@@ -74,7 +72,7 @@ theorem IsUnitriangular.mul {M N : Matrix (Fin n) (Fin n) R} (hM : IsUnitriangul
 end Unipotent
 
 /- English proof (translation)
-Take `⟨C, hC, hx⟩` from `exists_isCompact_forall_exists_sub_mem K`. Use `⟨C ×ˢ (integralFiniteAdeles (𝓞 K) K : Set (FiniteAdeleRing (𝓞 K) K)), hC.prod (isCompact_integralFiniteAdeles K), fun x => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hx x`. Conclude with `⟨-k, by rwa [map_neg, ← sub_eq_add_neg]⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isCompact_add_mem :
     ∃ D : Set 𝔸[K], IsCompact D ∧ ∀ x : 𝔸[K], ∃ k : K, x + algebraMap K 𝔸[K] k ∈ D := by
@@ -94,37 +92,35 @@ def lastColMat (A : Matrix (Fin m) (Fin m) R) (v : Fin m → R) :
     (fun i' => Fin.lastCases (v i') (fun j' => A i' j') j) i
 
 /- English proof (translation)
-Simplify using `[lastColMat]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem lastColMat_last_last (A : Matrix (Fin m) (Fin m) R) (v : Fin m → R) :
     lastColMat A v (Fin.last m) (Fin.last m) = 1 := by simp [lastColMat]
 
 /- English proof (translation)
-Simplify using `[lastColMat]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem lastColMat_last_castSucc (A : Matrix (Fin m) (Fin m) R) (v : Fin m → R) (j : Fin m) :
     lastColMat A v (Fin.last m) j.castSucc = 0 := by simp [lastColMat]
 
 /- English proof (translation)
-Simplify using `[lastColMat]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem lastColMat_castSucc_last (A : Matrix (Fin m) (Fin m) R) (v : Fin m → R) (i : Fin m) :
     lastColMat A v i.castSucc (Fin.last m) = v i := by simp [lastColMat]
 
 /- English proof (translation)
-Simplify using `[lastColMat]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem lastColMat_castSucc_castSucc (A : Matrix (Fin m) (Fin m) R) (v : Fin m → R)
     (i j : Fin m) : lastColMat A v i.castSucc j.castSucc = A i j := by simp [lastColMat]
 
 /- English proof (translation)
-Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact absurd hij (lt_irrefl _)`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `cast j => simp`. Consider the case `cast i`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact absurd hij (not_lt.2 (Fin.castSucc_lt_last i).le)`. Consider the case `cast j`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[lastColMat_castSucc_castSucc]`. Conclude with `hA.1 (Fin.castSucc_lt_castSucc_iff.1 hij)`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp`. Consider the case `cast i => rw [lastColMat_castSucc_castSucc]`.
-
-Conclude with `hA.2 i`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isUnitriangular_lastColMat {A : Matrix (Fin m) (Fin m) R} (hA : IsUnitriangular A)
     (v : Fin m → R) : IsUnitriangular (lastColMat A v) := by
@@ -147,15 +143,15 @@ theorem isUnitriangular_lastColMat {A : Matrix (Fin m) (Fin m) R} (hA : IsUnitri
 end LastCol
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => exact fun u _ => ⟨1, ⟨blockTriangular_one, fun i => i.elim0⟩, fun i => i.elim0⟩`. Consider the case `succ m ih`. Introduce `u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set u' : Matrix (Fin m) (Fin m) 𝔸[K] := Matrix.of fun i j => u i.castSucc j.castSucc with hu'`. Establish `hu'u : IsUnitriangular u'` using `⟨fun i j hij => hu.1 (Fin.castSucc_lt_castSucc_iff.2 hij), fun i => hu.2 i.castSucc⟩`. Take `⟨ν', hν', hν'D⟩` from `ih u' hu'u`. Use `set v : Fin m → 𝔸[K] := fun i => u i.castSucc (Fin.last m) with hv`. Use `choose w hw using fun i => hD ((ν'.map (algebraMap K 𝔸[K]) *ᵥ v) i)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction.
 
-Use `⟨lastColMat ν' w, isUnitriangular_lastColMat hν' w, fun i j hij => ?_⟩` and prove the remaining obligations. Establish `hul : ∀ j : Fin m, u (Fin.last m) j.castSucc = 0` using `fun j => hu.1 (Fin.castSucc_lt_last j)`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => exact absurd hij (not_lt.2 (Fin.le_last j))`. Consider the case `cast i`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `j using Fin.lastCases with`. Consider the case `last`. Use `hw i` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_castSucc, Matrix.map_apply, lastColMat_castSucc_castSucc, lastColMat_castSucc_last, hu.2, mul_one]`. Simplify `this` using `[mulVec, dotProduct, hv]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `cast j`. Use `hν'D i j (Fin.castSucc_lt_castSucc_iff.1 hij)` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_castSucc, Matrix.map_apply, lastColMat_castSucc_castSucc, lastColMat_castSucc_last, hul, mul_zero, add_zero]`. Simplify `this` using `[Matrix.mul_apply, hu']`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_unitriangular_mul_mem {D : Set 𝔸[K]}
     (hD : ∀ x : 𝔸[K], ∃ k : K, x + algebraMap K 𝔸[K] k ∈ D) :
@@ -208,7 +204,7 @@ Both sides reduce to the same expression.
     ((diagUnits n d : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = diagonal fun i => (d i : R) := rfl
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Continuous.matrix_diagonal (continuous_pi fun i => Units.continuous_val.comp (continuous_apply i))`. Express the relevant statement in the definitionally equal form `Continuous fun d : Fin n → IdeleGroup K => diagonal fun i => (((d i)⁻¹ : IdeleGroup K) : 𝔸[K])`. Conclude with `Continuous.matrix_diagonal (continuous_pi fun i => Units.continuous_val.comp ((continuous_apply i).inv))`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem continuous_diagUnits :
     Continuous (diagUnits n : (Fin n → IdeleGroup K) → AdelicGLn.AdelicGL K n) := by
@@ -220,7 +216,7 @@ theorem continuous_diagUnits :
       Units.continuous_val.comp ((continuous_apply i).inv))
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[AdelicGLn.diagonal_apply, coe_diagUnits, coe_diagUnits, diagonal_apply, diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp [IdeleGroup.coe_diagonal]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diagonal_diagUnits (c : Fin n → Kˣ) :
     AdelicGLn.diagonal K n (diagUnits n c) =
@@ -230,7 +226,7 @@ theorem diagonal_diagUnits (c : Fin n → Kˣ) :
   split_ifs <;> simp [IdeleGroup.coe_diagonal]
 
 /- English proof (translation)
-Rewrite using `[mem_adelicBorel, coe_diagUnits]`. Conclude with `blockTriangular_diagonal _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagUnits_mem_adelicBorel (d : Fin n → IdeleGroup K) :
     diagUnits n d ∈ adelicBorel := by
@@ -243,9 +239,7 @@ def unitriangularGL (p : Fin n → Fin n → 𝔸[K]) : AdelicGLn.AdelicGL K n :
     by rw [adjugate_mul, (isUnitriangular_unitriangular p).det_eq_one, one_smul]⟩
 
 /- English proof (translation)
-Establish `h : Continuous fun p : Fin n → Fin n → 𝔸[K] => unitriangular p`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [unitriangular, of_apply]`. Use `split_ifs`. Conclude with `continuous_const`.
-
-Conclude with `(continuous_apply j).comp (continuous_apply i)`. Conclude with `continuous_const`. Conclude with `Units.continuous_iff.2 ⟨h, h.matrix_adjugate⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_unitriangularGL :
     Continuous (unitriangularGL n : (Fin n → Fin n → 𝔸[K]) → AdelicGLn.AdelicGL K n) := by
@@ -259,7 +253,7 @@ theorem continuous_unitriangularGL :
   exact Units.continuous_iff.2 ⟨h, h.matrix_adjugate⟩
 
 /- English proof (translation)
-The claim follows from `(isUnitriangular_unitriangular p).1`.
+A detailed English derivation is pending.
 -/
 theorem unitriangularGL_mem_adelicBorel (p : Fin n → Fin n → 𝔸[K]) :
     unitriangularGL n p ∈ adelicBorel :=
@@ -277,41 +271,31 @@ def siegelSet (n : ℕ) (ω : Set (AdelicGLn.AdelicGL K n)) (t : ℝ) : Set (Ade
 open scoped Pointwise in
 
 /- English proof (translation)
-Take `⟨t₀, ht₀, hred⟩` from `exists_reduced (K := K)`. Take `⟨D, hD, hDmem⟩` from `exists_isCompact_add_mem (K := K)`. Take `⟨S, hS, hS1, hSmem⟩` from `exists_isCompact_normOneSubgroup K`. Use `set d : ℕ := Module.finrank ℚ K with hd`. Establish `hd0 : 0 < d` using `Module.finrank_pos`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set FN : Set (AdelicGLn.AdelicGL K n) := unitriangularGL n '' (Set.pi univ fun _ => Set.pi univ fun _ => D) with hFN`. Use `set FT : Set (AdelicGLn.AdelicGL K n) := diagUnits n '' (Set.pi univ fun _ => S) with hFT`. Establish `hFNc : IsCompact FN` using `(isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hD).image (continuous_unitriangularGL n)`. Establish `hFTc : IsCompact FT` using `(isCompact_univ_pi fun _ => hS).image (continuous_diagUnits n)`. Use `⟨FN * FT, hFNc.mul hFTc, ?_, t₀ ^ ((d : ℝ)⁻¹), Real.rpow_pos_of_pos ht₀ _, fun g => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, ⟨p, -, rfl⟩, y, ⟨e, -, rfl⟩, rfl⟩`. Conclude with `mul_mem (unitriangularGL_mem_adelicBorel n p) (diagUnits_mem_adelicBorel n e)`. Take `⟨γ, b, hb, k, hk, hγ, hratio⟩` from `hred n g`. Use `set B : Matrix (Fin n) (Fin n) 𝔸[K] := (b : Matrix (Fin n) (Fin n) 𝔸[K]) with hB`. Use `set dU : Fin n → IdeleGroup K := fun i => (isUnit_apply_self_of_mem_adelicBorel hb i).unit with hdU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdUv : ∀ i, ((dU i : IdeleGroup K) : 𝔸[K]) = B i i` using `fun i => IsUnit.unit_spec _`. Use `set r : Fin n → ℝ := fun i => (ideleModule K (dU i) : ℝ) ^ ((d : ℝ)⁻¹) with hr`. Establish `hrpos : ∀ i, 0 < r i` using `fun i => Real.rpow_pos_of_pos (ideleModule K (dU i)).2 _`. Establish `hrd : ∀ i, r i ^ d = ideleModule K (dU i)` using `fun i => Real.rpow_inv_natCast_pow (ideleModule K (dU i)).2.le hd0.ne'`. Establish `heqmod : ∀ i, ideleModule K (dU i) = ideleModule K (posIdele (r i) (hrpos i))` using `fun i => Subtype.ext (by rw [ideleModule_posIdele, ← hd, hrd i])`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hnorm : ∀ i, dU i * (posIdele (r i) (hrpos i))⁻¹ ∈ normOneSubgroup K` using `fun i => by`. Rewrite using `[normOneSubgroup, MonoidHom.mem_ker, map_mul, map_inv, heqmod i, mul_inv_cancel]`. Use `choose c hc using fun i => hSmem _ (hnorm i)`. Use `set σ : Fin n → IdeleGroup K := fun i => IdeleGroup.diagonal K (c i) * (dU i * (posIdele (r i) (hrpos i))⁻¹) with hσ`. Use `set e : Fin n → IdeleGroup K := fun i => IdeleGroup.diagonal K (c i) with he`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set δA : AdelicGLn.AdelicGL K n := diagUnits n e with hδA`. Establish `hδ : AdelicGLn.diagonal K n (diagUnits n c) = δA` using `diagonal_diagUnits n c`. Use `set u : AdelicGLn.AdelicGL K n := δA * b * (diagUnits n dU)⁻¹ * δA⁻¹ with hu`. Establish `hu_apply : ∀ i j, (u : Matrix (Fin n) (Fin n) 𝔸[K]) i j = (e i : 𝔸[K]) * B i j * (((dU j)⁻¹ : IdeleGroup K) : 𝔸[K]) * (((e j)⁻¹ : IdeleGroup K) : 𝔸[K])`. Introduce `i j`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hu, ← map_inv, ← map_inv]`. Simplify using `only [Units.val_mul, hδA, coe_diagUnits, Matrix.mul_diagonal, Matrix.diagonal_mul, Pi.inv_apply]`. Both sides reduce to the same expression. Establish `huu : IsUnitriangular (u : Matrix (Fin n) (Fin n) 𝔸[K])`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hu_apply, show B i j = 0 from hb hij]`. Simplify using the standard rewrite rules. Rewrite using `[hu_apply, ← hdUv i]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨ν, hν, hνD⟩` from `exists_unitriangular_mul_mem hDmem n _ huu`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `set νGL : GL (Fin n) K := GeneralLinearGroup.mkOfDetNeZero ν (by rw [hν.det_eq_one]; exact one_ne_zero) with hνGL`. Use `set νA : AdelicGLn.AdelicGL K n := AdelicGLn.diagonal K n νGL with hνA`. Establish `hνAmat : (νA : Matrix (Fin n) (Fin n) 𝔸[K]) = ν.map (algebraMap K 𝔸[K])` using `rfl`. Take `⟨d₀, hd₀⟩ : D.Nonempty` from `let ⟨k₀, hk₀⟩ := hDmem 0`. Use the proof step `⟨_, hk₀⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set p : Fin n → Fin n → 𝔸[K] := fun i j => if i < j then ((νA * u : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) i j else d₀ with hp`. Establish `hpD : p ∈ Set.pi univ fun _ => Set.pi univ fun _ => D`. Introduce `i _ j _`. Simplify using `only [hp]`. Use `split_ifs with hij`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, hνAmat]`. Conclude with `hνD i j hij`. Conclude with `hd₀`. Establish `hνu : νA * u = unitriangularGL n p`. Use `Units.ext ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsUnitriangular ((νA * u : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])`. Rewrite using `[Units.val_mul, hνAmat]`. Conclude with `IsUnitriangular.mul ⟨fun i j hij => by simp [hν.1 hij], fun i => by simp [hν.2 i]⟩ huu`. Rewrite using `[h1.eq_unitriangular]`. Express the relevant statement in the definitionally equal form `unitriangular _ = unitriangular p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `only [unitriangular, of_apply, hp]`. Apply the tactic sequence `split_ifs <;> rfl`. Establish `hdiag : δA * diagUnits n dU = diagUnits n σ * diagUnits n (fun i => posIdele (r i) (hrpos i))`. Rewrite using `[hδA, ← map_mul, ← map_mul]`.
-
-Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.mul_apply, hσ, he]`. Use `group`. Use `⟨νGL * diagUnits n c * γ, unitriangularGL n p * diagUnits n σ, ⟨_, ⟨p, hpD, rfl⟩, _, ⟨σ, fun i _ => hc i, rfl⟩, rfl⟩, diagUnits n (fun i => posIdele (r i) (hrpos i)), ⟨r, hrpos, fun i j hij => ?_, rfl⟩, k, hk, ?_⟩` and prove the remaining obligations.
-
-Establish `h` using `hratio i j hij`. Rewrite `h` using `[← hdUv j, ← hdUv i, adeleAbs_units, adeleAbs_units, ← hrd i, ← hrd j]`. Establish `hrj` using `(hrpos j).le`. Establish `hri` using `(hrpos i).le`. Establish `ht : (t₀ ^ ((d : ℝ)⁻¹)) ^ d = t₀` using `Real.rpow_inv_natCast_pow ht₀.le hd0.ne'`.
-
-Establish `htn : 0 ≤ t₀ ^ ((d : ℝ)⁻¹)` using `(Real.rpow_pos_of_pos ht₀ _).le`. Rewrite using `[← pow_le_pow_iff_left₀ (mul_nonneg htn hrj) hri hd0.ne', mul_pow, ht]`. Conclude with `h`. Establish `h1 : δA * b = u * (δA * diagUnits n dU)`. Rewrite using `[hu]`.
-
-Use `group`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_mul, hδ, ← hνA]`. Simplify using `only [mul_assoc]`. Use `_ = νA * (δA * b) * k := by rw [hγ]; simp only [mul_assoc]`.
-
-Use `_ = νA * u * (δA * diagUnits n dU) * k := by rw [h1]; simp only [mul_assoc]`. Use `_ = (νA * u) * diagUnits n σ * diagUnits n (fun i => posIdele (r i) (hrpos i)) * k := by`. Rewrite using `[hdiag]`. Simplify using `only [mul_assoc]`. Use `_ = _ := by rw [hνu]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_siegelSet (n : ℕ) :
     ∃ ω : Set (AdelicGLn.AdelicGL K n), IsCompact ω ∧
@@ -428,7 +412,7 @@ theorem exists_siegelSet (n : ℕ) :
 open scoped Pointwise in
 
 /- English proof (translation)
-Take `⟨ω, hω, hωB, t, ht, h⟩` from `exists_siegelSet (K := K) n`. Use `⟨ω, hω, hωB, t, ht, Set.eq_univ_of_forall fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `h g`. Conclude with `⟨AdelicGLn.diagonal K n γ⁻¹, ⟨γ⁻¹, rfl⟩, _, hγ, by simp [map_inv]⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rationalGL_mul_siegelSet_eq_univ (n : ℕ) :
     ∃ ω : Set (AdelicGLn.AdelicGL K n), IsCompact ω ∧

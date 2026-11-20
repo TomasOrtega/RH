@@ -17,63 +17,63 @@ import Formalism.BranchSandwichDivisors.BranchIsometryProofs.TransferMean
 namespace Formalism.BranchingDeterminantCap
 
 /- English proof (translation)
-The claim follows from `map_slope_mu`.
+A detailed English derivation is pending.
 -/
 theorem mapMu : MapMu := map_slope_mu
 /- English proof (translation)
-The claim follows from `scale_sandwich_bound`.
+A detailed English derivation is pending.
 -/
 theorem scaleSandwich : ScaleSandwich := scale_sandwich_bound
 /- English proof (translation)
-The claim follows from `orthogonal_sum_slope`.
+A detailed English derivation is pending.
 -/
 theorem orthSum : OrthSum := orthogonal_sum_slope
 /- English proof (translation)
-The claim follows from `power_slope_mu`.
+A detailed English derivation is pending.
 -/
 theorem powMu : PowMu := power_slope_mu
 /- English proof (translation)
-The claim follows from `divisor_bounds_first`.
+A detailed English derivation is pending.
 -/
 theorem boundsI : BoundsI := divisor_bounds_first
 /- English proof (translation)
-The claim follows from `boundsIVal_of boundsI`.
+A detailed English derivation is pending.
 -/
 theorem boundsIVal : BoundsIVal := boundsIVal_of boundsI
 /- English proof (translation)
-The claim follows from `orthogonal_sandwich_bound`.
+A detailed English derivation is pending.
 -/
 theorem orthSandwich : OrthSandwich := orthogonal_sandwich_bound
 /- English proof (translation)
-The claim follows from `transferPart_of mapMu powMu`.
+A detailed English derivation is pending.
 -/
 theorem transferPart : TransferPart := transferPart_of mapMu powMu
 /- English proof (translation)
-The claim follows from `transferMuMax_of scaleSandwich orthSum powMu`.
+A detailed English derivation is pending.
 -/
 theorem transferMuMax : TransferMuMax := transferMuMax_of scaleSandwich orthSum powMu
 /- English proof (translation)
-The claim follows from `degreeTransferBound`.
+A detailed English derivation is pending.
 -/
 theorem transferDeg : TransferDeg := degreeTransferBound
 /- English proof (translation)
-The claim follows from `interlaceIdentities`.
+A detailed English derivation is pending.
 -/
 theorem interlaceIdent : InterlaceIdent := interlaceIdentities
 /- English proof (translation)
-The claim follows from `capacity_constant_bound`.
+A detailed English derivation is pending.
 -/
 theorem capConst : CapConst := capacity_constant_bound
 /- English proof (translation)
-The claim follows from `weyl_dimension_bound`.
+A detailed English derivation is pending.
 -/
 theorem weylDimBound : WeylDimBound := weyl_dimension_bound
 /- English proof (translation)
-The claim follows from `branch_map_formula`.
+A detailed English derivation is pending.
 -/
 theorem branchMap : BranchMap := branch_map_formula
 /- English proof (translation)
-The claim follows from `xi_norm_bound`.
+A detailed English derivation is pending.
 -/
 theorem xiNorm : XiNorm := xi_norm_bound
 

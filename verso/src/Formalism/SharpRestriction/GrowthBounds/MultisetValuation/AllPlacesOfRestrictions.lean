@@ -12,7 +12,7 @@ attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNoti
 variable {p : ℕ} [hp : Fact p.Prime] (X : Sys p)
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Use `show (∑ l ∈ range ((0 : X.ZA j →₀ ℕ).degree + 1), if (0 : X.ZA j →₀ ℕ) = Finsupp.single (⟨v, (posSub e (2 * l), a, b)⟩ : X.ZA j) (p ^ (2 * l)) then ((-1 : K') ^ l) else 0) = 0`. Use `Finset.sum_eq_zero fun l _ => if_neg fun h => ?_` and prove the remaining obligations. Conclude with `pow_ne_zero (2 * l) hp.out.ne_zero (Finsupp.single_eq_zero.1 h.symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sSA_const (K' : Type) [Field K'] (j : ℕ) (v : X.Pl) (e : Fin (X.G.P.n' v)) (a : Fin (NN X.G.P.m X.t j))
     (b : Fin (NN X.G.P.m X.t (j + 1))) : MvPowerSeries.constantCoeff (X.sSA K' j v e a b) = 0 := by
@@ -24,7 +24,7 @@ theorem sSA_const (K' : Type) [Field K'] (j : ℕ) (v : X.Pl) (e : Fin (X.G.P.n'
   exact pow_ne_zero (2 * l) hp.out.ne_zero (Finsupp.single_eq_zero.1 h.symm)
 
 /- English proof (translation)
-Unfold `Sys.hhA`. Simplify using `only [map_sum, map_mul, sSA_const, mul_zero, Finset.sum_const_zero]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hhA_const (K' : Type) [Field K'] (j : ℕ) (v : X.Pl) (u : Fin (X.G.P.n' v) → K') :
     MvPowerSeries.constantCoeff (X.hhA K' j v u) = 0 := by
@@ -32,7 +32,7 @@ theorem hhA_const (K' : Type) [Field K'] (j : ℕ) (v : X.Pl) (u : Fin (X.G.P.n'
   simp only [map_sum, map_mul, sSA_const, mul_zero, Finset.sum_const_zero]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases x with ⟨v, r, a, b⟩ | ⟨v, r, a, b⟩ <;>`. Simplify using `only [Sys.coordZA, map_sum, map_mul, MvPowerSeries.constantCoeff_X, mul_zero, Finset.sum_const_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem coordZA_const (K' : Type) [Field K'] [Algebra (K0 p) K'] (j : ℕ) (x : X.EA j ⊕ X.EA j) :
     MvPowerSeries.constantCoeff (X.coordZA K' j x) = 0 := by
@@ -40,18 +40,18 @@ theorem coordZA_const (K' : Type) [Field K'] [Algebra (K0 p) K'] (j : ℕ) (x : 
   simp only [Sys.coordZA, map_sum, map_mul, MvPowerSeries.constantCoeff_X, mul_zero, Finset.sum_const_zero]
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.subst_mul (MvPowerSeries.hasSubst_of_constantCoeff_zero (coordZA_const X K' j)) f g`.
+A detailed English derivation is pending.
 -/
 theorem ThZA_mul (K' : Type) [Field K'] [Algebra (K0 p) K'] (j : ℕ) (f g : MvPowerSeries (X.EA j ⊕ X.EA j) K') :
     X.ThZA K' j (f * g) = X.ThZA K' j f * X.ThZA K' j g :=
   MvPowerSeries.subst_mul (MvPowerSeries.hasSubst_of_constantCoeff_zero (coordZA_const X K' j)) f g
 
 /- English proof (translation)
-Introduce `j hj La La' h1 h2 φ K' _ _ _ _ R' vp hvp hRp hR1`. Take `⟨Ph, U, hTh, hU, _, hbe, hPh⟩` from `hA.2.2.1 j hj La La' h1 h2 φ`. Take `⟨u, hu, V, hV, hEq⟩` from `hE (hA.1 p) Y.be hbe j Ph hPh Y.Kc K' vp hvp`. Use `⟨u, fun v s => hRp (hu v s), fun h' hh' => ?_⟩` and prove the remaining obligations. Use `choose h0' G hG hGE using hh'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hW` using `hI j Y.Kc Y.Oc U hU K' R' vp hvp hRp hR1`. Establish `hc : ∀ k : ℕ, (vp ^ (p + 1)) ^ k * ((k.factorial : K'))⁻¹ ∈ R'` using `fun k => hRp (piFact p K' vp hvp k)`. Establish `e1 : atPi vp (MvPowerSeries.map (algebraMap Y.Kc K') (X.ThZA Y.Kc j (Y.ThA j La La' φ))) = (∏ v, expK (-(MvPowerSeries.C (vp ^ (p + 1) / (p : K')) * h' v))) * ((∏ v, expK (MvPowerSeries.C (vp ^ (p + 1)) * G v)) * V * atPi vp (MvPowerSeries.map (algebraMap Y.Kc K') (X.ThZA Y.Kc j …`. Rewrite using `[hTh, ThZA_mul, map_mul, atPi_mul, hEq, Finset.prod_congr rfl fun v _ => exp_change K' (vp ^ (p + 1)) (X.hhA K' j v (u v)) (h' v) (G v) (hhA_const X K' j v (u v)) (h0' v) (hGE v), Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `inProd_of_exp (pK'_ne p K') hc h' h0' (IntR_mul (IntR_mul (IntR_prod _ _ fun v _ => IntR_expK hc (hG v)) (IntR_mono hRp hV)) hW)`.
+A detailed English derivation is pending.
 -/
 theorem all_places_of_restrictions (D : Formalism.BasicNotions.D7) (Y : Pend X) (hA : admitted D X Y)
     (hE : RestSExpA X) (hI : RestSIntA X) : ExpansionsMultiply D X Y := by

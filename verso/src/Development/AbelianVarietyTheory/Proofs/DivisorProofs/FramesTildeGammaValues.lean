@@ -9,7 +9,7 @@ namespace GlobalTheory.ColEvNorm
 
 open Formalism.L2.Col in
 /- English proof (translation)
-Substitute `hΛ` using the available equality. Substitute `e` using the available equality. Introduce `F G h`. Conclude with `h`.
+Substitute using the available equality. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rowCast_injective {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R)
     {SG' : Finset (HeightOneSpectrum (𝓞 X.E))} (e : Pr.vGs = SG') (A : LevFam X.E X.K (R.N R.m - 1) Pr.vGs)
@@ -22,7 +22,7 @@ theorem rowCast_injective {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr
 
 open Formalism.L2.Col in
 /- English proof (translation)
-Introduce `F G h`. Apply `rowCast_injective W (rcol_rowSG_eq sel mu hQ) (rowTyG Ch P).inv _ (rowTy_inv_cast Ch sel mu hQ P)` to reduce the goal to its premises. Apply `((rowGSD W (rowTyG Ch P).inv).hB hM).repr.injective` to reduce the goal to its premises. Use extensionality with `a`. Conclude with `σ₀.injective (congrFun h a)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem zOfRow_injective {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Formalism.L2.DIV.Tup X.F X.E X.K S)
@@ -42,17 +42,17 @@ namespace GlobalTheory.ColEvNorm
 open Formalism.L2.Col in
 
 /- English proof (translation)
-Substitute `gEq` using the available equality. Establish `hg : grp = (Pi.group : Group (G0 Xf.E Pr.vGs Rk.r))` using `eq_of_heq hgrp`. Substitute `hg` using the available equality. Use `run_tac do`. Introduce the local definition `g ← Lean.Elab.Tactic.getMainGoal`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce the local definition `g' ← g.withContext do`. Introduce the local definition `lctx ← Lean.getLCtx`. Set `some fe` to `lctx.findFromUserName? ′famEq | throwError "famEq"`. Set `some fi` to `lctx.findFromUserName? ′fin | throwError "fin"`. Introduce the local definition `t ← Lean.instantiateMVars fe.type`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce the local definition `ty ← Lean.Meta.whnf (← Lean.Meta.inferType t.appArg!)`. Set `inst` to `ty.getAppArgs[6]!`. Introduce the local definition `pf ← Lean.Meta.mkAppM ′′Subsingleton.elim #[fi.toExpr, inst]`. Introduce the local definition `(_, g') ← g.note ′hfin pf`. Use `pure g'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Substitute using the available equality. Substitute using the available equality.
 
-Use the proof step `Lean.Elab.Tactic.replaceMainGoal [g']`. Substitute `hfin` using the available equality. Substitute `hm3` using the available equality. Substitute `plEq` using the available equality. Substitute `i0Eq` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `tEq` using the available equality. Establish `hA` using `eq_of_heq famEq`. Substitute `hA` using the available equality. Establish `hp1` using `eq_of_heq hps1`. Substitute `hp1` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hp2` using `eq_of_heq hps2`. Substitute `hp2` using the available equality. Establish `hmuE : mu = fun t => t.1` using `funext muTie`. Substitute `hmuE` using the available equality. Conclude with `GlobalTheory.T.classSum_le_frameNorm_sq_good_part Xf Pr Rk W Ch sel Sg hX v0 TU Xg ∅ xiVal trIv Lv Zs _ (hP _) ok1 F F' hm hres v X0 (hX0 v).1 (hX0 v).2`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ipAt_le_of_ties {Xf : Fields} [IsTotallyComplex Xf.K]
     (Pr : Primes Xf) (Rk : Ranks) (W : Wts Xf Pr.Word Rk) (Ch : Chars Xf Pr Rk.m)
@@ -118,15 +118,13 @@ theorem ipAt_le_of_ties {Xf : Fields} [IsTotallyComplex Xf.K]
 end GlobalTheory.ColEvNorm
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex _ T P K hpin hmu X0 hX0 v F`. Establish `ht : P.I.tup P.A3.fam3.base3.μ0 = D.what₂.mu0` using `P.tied.div.tup.mu0`. Establish `hQ : Formalism.L2.Col.QE K.c.sel (K.c.mu P.A3.fam3.base3.μ0 : Formalism.L2.DIV.Chr K.X.F K.X.E D.what₂.LL) = ∅`. Rewrite using `[hmu]`. Establish `h : Formalism.L2.DIV.Qprime ((1 : Formalism.L2.DIV.Tup K.X.F K.X.E D.what₂.LL K.c.Sg) : Formalism.L2.DIV.Chr K.X.F K.X.E D.what₂.LL) = ∅`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Formalism.L2.DIV.Qprime (1 : Formalism.L2.DIV.Chr K.X.F K.X.E D.what₂.LL) = ∅`. Use extensionality with `w`. Simplify using `[Formalism.L2.DIV.Qprime, MonoidHom.ker_one]`. Unfold `Formalism.L2.Col.QE`. Use `split_ifs with hf`.
+Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(Set.Finite.toFinset_eq_empty (h := hf)).2 h]`. Both sides reduce to the same expression. Both sides reduce to the same expression. Take `⟨hM, hev⟩` from `hpin.columnEvaluationOk`. Take `⟨ι, h1, h2⟩` from `hev D.u₀`.
+Both sides reduce to the same expression. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨F', hm, hres, hι1⟩` from `h1 _ ht hQ ((Formalism.L2.DIV.rV0 D P.A3.A P.Ps P.ψs P.A3.fam3.base3.μ0).mulVec F)`. Take `⟨hm2, hι2⟩` from `h2 _ ht hQ F`. Establish `hz` using `hι1.symm.trans hι2`. Establish `hF` using `congrArg Subtype.val (GlobalTheory.ColEvNorm.zOfRow_injective _ _ _ _ _ _ _ _ hz)`. Rewrite using `[← hF]`.
-
-Conclude with `GlobalTheory.ColEvNorm.ipAt_le_of_ties (Xf := fieldsLL D K.X K.e) K.c.Pr K.c.Rk K.c.W K.c.Ch K.c.sel K.c.hX K.c.Lv K.c.Xg K.v0 K.TU K.xiVal K.trIv P.A3 P.Ps P.ψs P.Zs K.c.mu K.c.hP K.gEq hpin.grpTie (congrArg Ranks.m K.kerTie.2.1) K.plEq K.i0Eq K.tEq K.famEq K.muTie K.ok1 hpin.ps …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ColEvNorm.ev_ipAt_le_normAt_sq : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Y cX) [IsTotallyComplex D.what₂.LL] (T : Formalism.L2.TiedDataSK ex) (P : RowSideFamily ex) (K : SquareIntegrableColumnsCompatible T P), ColPins K → K.c.mu P.A3.fam3.base3.μ0 = 1 → ∀ X0, IsFrames (P.A3.side3 P.Ps P.ψs P.Zs) X0 → ∀ v F, ((Formalism.L2.Col.mtildeGSD K.c.W K.c.Ch K.c.sel (K.c.mu P.A3.fam3.base3.μ0) K.c.Lv).ipAt (K.c.hP P.A3.fam3.base3.μ0) v ((K.c.ev P.Zs P.A3.fam3.base3.μ0 F).1).1 ((K.c.ev P.Zs P.A3.fam3.base3.μ0 F).1).1).re ≤ Formalism.HermitianLatticesTheory.normAt (Pi.basisFun D.what₂.LL (Fin ((P.A3.side3 P.Ps P.ψs P.Zs).nV P.A3.fam3.base3.μ0))) X0 v F ^ 2 := by
   intro D L hT Gi Gl Kc Y cX ex _ T P K hpin hmu X0 hX0 v F

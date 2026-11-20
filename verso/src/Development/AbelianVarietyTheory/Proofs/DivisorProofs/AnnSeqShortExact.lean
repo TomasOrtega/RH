@@ -19,11 +19,11 @@ namespace GlobalTheory.DualFlag
 variable {X : Scheme.{0}} {S : ShortComplex X.Modules} {r s : ℕ}
 
 /- English proof (translation)
-Use `QCoh.epi_of_locally_app_surjective _ fun W x hx => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `VBExt.exists_adaptedChart hS h₁ h₃ x`. Establish `hb` using `VBExt.isFrame_sumElim hS c.he c.ht`. Use `⟨c.U ⊓ W, ⟨hc, hx⟩, inf_le_right, fun l => ?_⟩` and prove the remaining obligations. Use `⟨∑ a : Fin r, dualApp l le_rfl (resM S.X₁ inf_le_left (c.e a)) • resM (dual S.X₂) inf_le_left (hb.coord (Sum.inl a)), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `c.he.dual_ext inf_le_left fun i => ?_` and prove the remaining obligations. Rewrite using `[dualApp_dualMap, app_resM, dualApp_sum]`. Simplify using `only [LinearMap.sum_apply, dualApp_smul, dualApp_res, LinearMap.smul_apply]`. Establish `e (a : Fin r) : dualApp (hb.coord (Sum.inl a)) (le_refl (c.U ⊓ W) |>.trans inf_le_left) (resM S.X₂ inf_le_left (S.f.app c.U (c.e i))) = if i = a then 1 else 0`. Use `hb.dualApp_coord_frame (Sum.inl a) (Sum.inl i) (inf_le_left : c.U ⊓ W ≤ c.U)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Simplify using `only [e, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, resG_self]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem epi_dualMap_f (hS : S.ShortExact) (h₁ : IsVB S.X₁ r) (h₃ : IsVB S.X₃ s) :
     Epi (dualMap S.f) := by
@@ -46,7 +46,7 @@ theorem epi_dualMap_f (hS : S.ShortExact) (h₁ : IsVB S.X₁ r) (h₃ : IsVB S.
 variable {E : X.Modules} {N : ℕ}
 
 /- English proof (translation)
-The claim follows from `{ exact := ShortComplex.exact_cokernel _ }`.
+A detailed English derivation is pending.
 -/
 theorem shortExact_ι (fl : Vert.Flag E N) (i : Fin (N + 1)) :
     (ShortComplex.mk (fl.ι i) (cokernel.π _) (cokernel.condition _)).ShortExact :=
@@ -60,13 +60,13 @@ abbrev annSeq (fl : Vert.Flag E N) (i : Fin (N + 1)) : ShortComplex X.Modules :=
   .mk (kernel.ι (dualMap (fl.ι i))) (dualMap (fl.ι i)) (kernel.condition _)
 
 /- English proof (translation)
-The claim follows from `{ exact := ShortComplex.exact_of_f_is_kernel _ (kernelIsKernel _) }`.
+A detailed English derivation is pending.
 -/
 theorem annSeq_shortExact (fl : Vert.Flag E N) (i : Fin (N + 1)) : (annSeq fl i).ShortExact :=
   { exact := ShortComplex.exact_of_f_is_kernel _ (kernelIsKernel _) }
 
 /- English proof (translation)
-Rewrite using `[← fl.step_ι k, dualMap_comp, kernel.condition_assoc, zero_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kernel_ι_comp_dualMap (fl : Vert.Flag E N) (k : Fin N) :
     kernel.ι (dualMap (fl.ι k.succ)) ≫ dualMap (fl.ι k.castSucc) = 0 := by

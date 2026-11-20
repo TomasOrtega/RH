@@ -3,7 +3,7 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hd : (Matrix.fromBlocks (1 : Matrix (Fin a) (Fin a) F) 0 0 (0 : Matrix (Fin b) (Fin b) F)) = Matrix.diagonal (Sum.elim (fun _ => (1 : F)) (fun _ => 0))`. Rewrite using `[← Matrix.fromBlocks_diagonal]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.rank_submatrix, hd, Matrix.rank_diagonal]`. Simplify using `[Fintype.card_subtype, Finset.card_filter, Fintype.sum_sum_type]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma rank_submatrix_fromBlocks_one_zero_eq {F : Type} [Field F] {m : Type} [Fintype m] [DecidableEq m]
     (a b : ℕ) (e : m ≃ Fin a ⊕ Fin b) :
@@ -20,11 +20,11 @@ private lemma rank_submatrix_fromBlocks_one_zero_eq {F : Type} [Field F] {m : Ty
 open Matrix in
 
 /- English proof (translation)
-Take `⟨V, U, e, hV, hU, h⟩` from `Matrix.exists_rank_normal_form M`. Establish `hVd : IsUnit (V.map φ).det`. Rewrite using `[show (V.map φ).det = φ V.det from (RingHom.map_det φ V).symm]`. Conclude with `((Matrix.isUnit_iff_isUnit_det V).mp hV).map φ`. Establish `hUd : IsUnit (U.map φ).det`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (U.map φ).det = φ U.det from (RingHom.map_det φ U).symm]`. Conclude with `((Matrix.isUnit_iff_isUnit_det U).mp hU).map φ`. Establish `h' : V.map φ * M.map φ * U.map φ = (Matrix.fromBlocks (1 : Matrix (Fin M.rank) (Fin M.rank) L) 0 0 (0 : Matrix (Fin (Fintype.card n - M.rank)) (Fin (Fintype.card n - M.rank)) L)).submatrix e e`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, h]`. Simplify using `[← Matrix.submatrix_map, Matrix.fromBlocks_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[rank_mul_eq_left_of_isUnit_det _ _ hUd, rank_mul_eq_right_of_isUnit_det _ _ hVd]`. Use `_ = M.rank := by rw [h']; exact rank_submatrix_fromBlocks_one_zero_eq _ _ e`.
+A detailed English derivation is pending.
 -/
 theorem eigDim_rank_map {K L : Type} [Field K] [Field L] (φ : K →+* L) {n : Type} [Fintype n]
     [DecidableEq n] (M : Matrix n n K) : (M.map φ).rank = M.rank := by
@@ -47,7 +47,7 @@ theorem eigDim_rank_map {K L : Type} [Field K] [Field L] (φ : K →+* L) {n : T
     _ = M.rank := by rw [h']; exact rank_submatrix_fromBlocks_one_zero_eq _ _ e
 
 /- English proof (translation)
-Establish `h` using `LinearMap.finrank_range_add_finrank_ker (Matrix.toLin' A)`. Rewrite `h`, the goal using `[Matrix.toLin'_apply']`. Rewrite `h` using `[Module.finrank_pi]`. Unfold `Matrix.rank`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 private lemma finrank_ker_toLin'_add_rank_eq_card {L : Type} [Field L] {n : Type} [Fintype n] [DecidableEq n]
     (A : Matrix n n L) :
@@ -59,7 +59,7 @@ private lemma finrank_ker_toLin'_add_rank_eq_card {L : Type} [Field L] {n : Type
   omega
 
 /- English proof (translation)
-Establish `h1` using `finrank_ker_toLin'_add_rank_eq_card (M.map φ)`. Establish `h2` using `finrank_ker_toLin'_add_rank_eq_card M`. Rewrite `h1` using `[eigDim_rank_map]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem eigDim_ker_map {K L : Type} [Field K] [Field L] (φ : K →+* L) {n : Type} [Fintype n]
     [DecidableEq n] (M : Matrix n n K) :
@@ -71,7 +71,7 @@ theorem eigDim_ker_map {K L : Type} [Field K] [Field L] (φ : K →+* L) {n : Ty
   omega
 
 /- English proof (translation)
-The claim follows from `Polynomial.aeval_algHom_apply (Matrix.toLinAlgEquiv' : Matrix n n K ≃ₐ[K] _) M f`.
+A detailed English derivation is pending.
 -/
 theorem eigDim_aeval_toLin' {K : Type} [Field K] {n : Type} [Fintype n]
     [DecidableEq n] (M : Matrix n n K) (f : K[X]) :
@@ -79,7 +79,7 @@ theorem eigDim_aeval_toLin' {K : Type} [Field K] {n : Type} [Fintype n]
   Polynomial.aeval_algHom_apply (Matrix.toLinAlgEquiv' : Matrix n n K ≃ₐ[K] _) M f
 
 /- English proof (translation)
-Establish `h : (φ.mapMatrix : Matrix n n K →+* Matrix n n L).comp (algebraMap K (Matrix n n K)) = (algebraMap L (Matrix n n L)).comp φ`. Use extensionality with `r i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.algebraMap_matrix_apply, hij]`. Express the relevant statement in the definitionally equal form `φ.mapMatrix (Polynomial.eval₂ (algebraMap K (Matrix n n K)) M f) = Polynomial.eval₂ (algebraMap L (Matrix n n L)) (M.map φ) (f.map φ)`. Rewrite using `[Polynomial.hom_eval₂, Polynomial.eval₂_map, h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -96,7 +96,7 @@ theorem eigDim_aeval_map {K L : Type} [Field K] [Field L] (φ : K →+* L) {n : 
   rfl
 
 /- English proof (translation)
-Rewrite using `[eigDim_aeval_toLin', eigDim_aeval_toLin', ← eigDim_aeval_map, eigDim_ker_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eigDim_ker_aeval_map {K L : Type} [Field K] [Field L] (φ : K →+* L) {n : Type}
     [Fintype n] [DecidableEq n] (M : Matrix n n K) (f : K[X]) :
@@ -105,7 +105,7 @@ theorem eigDim_ker_aeval_map {K L : Type} [Field K] [Field L] (φ : K →+* L) {
   rw [eigDim_aeval_toLin', eigDim_aeval_toLin', ← eigDim_aeval_map, eigDim_ker_map]
 
 /- English proof (translation)
-Rewrite using `[← Polynomial.sup_ker_aeval_eq_ker_aeval_mul_of_coprime T h]`. Establish `hd` using `Polynomial.disjoint_ker_aeval_of_isCoprime T h`. Establish `hs` using `Submodule.finrank_sup_add_finrank_inf_eq (LinearMap.ker (aeval T p)) (LinearMap.ker (aeval T q))`. Rewrite `hs` using `[hd.eq_bot]`. Simplify using `using hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eigDim_ker_mul {K V : Type} [Field K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (T : Module.End K V) {p q : K[X]} (h : IsCoprime p q) :
@@ -120,9 +120,9 @@ theorem eigDim_ker_mul {K V : Type} [Field K] [AddCommGroup V] [Module K V]
   simpa using hs
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_empty, map_one, Module.End.one_eq_id, LinearMap.ker_id]`. Simplify using the standard rewrite rules. Introduce `a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, eigDim_ker_mul T, ih]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `IsCoprime.prod_right fun z hz => ?_` and prove the remaining obligations. Use `Polynomial.isCoprime_X_sub_C_of_isUnit_sub (sub_ne_zero.mpr ?_).isUnit` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `ha hz`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem eigDim_ker_prod {K V : Type} [Field K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (T : Module.End K V) (s : Finset K) :
@@ -140,19 +140,19 @@ theorem eigDim_ker_prod {K V : Type} [Field K] [AddCommGroup V] [Module K V]
     exact ha hz
 
 /- English proof (translation)
-Introduce `F _ _ ι _ _ M f y hf hy`. Rewrite using `[← eigDim_ker_aeval_map (algebraMap F (AlgebraicClosure F)) M f]`. Use `set g := f.map (algebraMap F (AlgebraicClosure F)) with hg`. Use `set T := Matrix.toLin' (M.map (algebraMap F (AlgebraicClosure F))) with hT`. Establish `hsep : g.Separable` using `(PerfectField.separable_of_irreducible hf).map`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : g ≠ 0` using `Polynomial.map_ne_zero hf.ne_zero`. Establish `hnd` using `Polynomial.nodup_roots hsep`. Establish `hcard : Multiset.card g.roots = g.natDegree` using `(IsAlgClosed.splits g).natDegree_eq_card_roots.symm`. Establish `hfac` using `Polynomial.C_leadingCoeff_mul_prod_multiset_X_sub_C hcard`. Establish `hprod : (g.roots.map fun a => X - C a).prod = ∏ a ∈ g.roots.toFinset, (X - C a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_eq_multiset_prod, Multiset.toFinset_val, Multiset.dedup_eq_self.mpr hnd]`. Establish `hlc : g.leadingCoeff ≠ 0` using `Polynomial.leadingCoeff_ne_zero.mpr hne`. Establish `hker : aeval T g = g.leadingCoeff • aeval T (∏ a ∈ g.roots.toFinset, (X - C a))` using `by conv_lhs => rw [← hfac, hprod]`. Rewrite using `[map_mul, Polynomial.aeval_C, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]`. Establish `hterm : ∀ a ∈ g.roots.toFinset, Module.finrank (AlgebraicClosure F) (LinearMap.ker (aeval T (X - C a))) = Module.finrank (AlgebraicClosure F) (Module.End.eigenspace T y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a ha`. Establish `haroot : aeval a f = 0`. Establish `h0` using `Polynomial.IsRoot.eq_zero ((Polynomial.mem_roots hne).mp (Multiset.mem_toFinset.mp ha))`. Rewrite `h0` using `[hg, Polynomial.eval_map_algebraMap]`. Then use the resulting hypothesis. Establish `hmin : minpoly F a = minpoly F y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← minpoly.eq_of_irreducible hf haroot, ← minpoly.eq_of_irreducible hf hy]`. Take `⟨σ, hσ⟩` from `MulAction.mem_orbit_iff.mp ((Normal.minpoly_eq_iff_mem_orbit (AlgebraicClosure F)).mp hmin)`. Rewrite `hσ` using `[AlgEquiv.smul_def]`. Establish `hmat : (M.map (algebraMap F (AlgebraicClosure F)) - y • (1 : Matrix ι ι (AlgebraicClosure F))).map (σ : AlgebraicClosure F →+* AlgebraicClosure F) = M.map (algebraMap F (AlgebraicClosure F)) - a • 1`. Use extensionality with `i j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases hij : i = j <;> simp [hij, hσ]`. Establish `e1 : aeval T (X - C a) = Matrix.toLin' (M.map (algebraMap F (AlgebraicClosure F)) - a • 1)`. Rewrite using `[map_sub, Polynomial.aeval_X, Polynomial.aeval_C, Algebra.algebraMap_eq_smul_one, hT, map_sub, map_smul, Matrix.toLin'_one, Module.End.one_eq_id]`. Establish `e2 : T - y • 1 = Matrix.toLin' (M.map (algebraMap F (AlgebraicClosure F)) - y • 1)`. Rewrite using `[hT, map_sub, map_smul, Matrix.toLin'_one, Module.End.one_eq_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.End.eigenspace_def, e1, e2, ← hmat, eigDim_ker_map]`. Rewrite using `[hker, LinearMap.ker_smul _ _ hlc, eigDim_ker_prod, Finset.sum_congr rfl hterm, Finset.sum_const, smul_eq_mul, Multiset.toFinset_card_of_nodup hnd, hcard, hg, Polynomial.natDegree_map]`.
+A detailed English derivation is pending.
 -/
 theorem finrank_ker_aeval_eq_natDegree_mul_finrank_eigenspace :
     ∀ (F : Type) [Field F] [Finite F] (ι : Type) [Fintype ι] [DecidableEq ι] (M : Matrix ι ι F) (f : F[X]) (y : AlgebraicClosure F), Irreducible f → aeval y f = 0 → Module.finrank F (LinearMap.ker (aeval (Matrix.toLin' M) f)) = f.natDegree * Module.finrank (AlgebraicClosure F) (Module.End.eigenspace (Matrix.toLin' (M.map (algebraMap F (AlgebraicClosure F)))) y) := by

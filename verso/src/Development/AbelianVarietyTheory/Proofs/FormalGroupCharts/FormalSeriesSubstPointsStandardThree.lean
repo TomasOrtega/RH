@@ -27,69 +27,69 @@ Both sides reduce to the same expression.
 theorem ev_eq {m n : ℕ} (a : Fin m → Pt k n d) (f : PS k m d) : ev a f = evAt a f := rfl
 
 /- English proof (translation)
-Introduce `j`. Use `fin_cases j`. Conclude with `hu`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cen1 {u : Fin d → MvPowerSeries μ k} (hu : Cen u) : ∀ j, Cen (![u] j) := by
   intro j; fin_cases j; exact hu
 
 /- English proof (translation)
-Introduce `j`. Use `fin_cases j`. Use `exacts [hu, hv]`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cen2 {u v : Fin d → MvPowerSeries μ k} (hu : Cen u) (hv : Cen v) :
     ∀ j, Cen (![u, v] j) := by
   intro j; fin_cases j; exacts [hu, hv]
 
 /- English proof (translation)
-Introduce `j`. Use `fin_cases j`. Use `exacts [hu, hv, hw]`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cen3 {u v w : Fin d → MvPowerSeries μ k} (hu : Cen u) (hv : Cen v) (hw : Cen w) :
     ∀ j, Cen (![u, v, w] j) := by
   intro j; fin_cases j; exacts [hu, hv, hw]
 
 /- English proof (translation)
-Introduce `j`. Use `fin_cases j`. Use `exacts [hu, hv, hw, ht]`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cen4 {u v w t : Fin d → MvPowerSeries μ k} (hu : Cen u) (hv : Cen v) (hw : Cen w)
     (ht : Cen t) : ∀ j, Cen (![u, v, w, t] j) := by
   intro j; fin_cases j; exacts [hu, hv, hw, ht]
 
 /- English proof (translation)
-Introduce `_` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cen_zero : Cen (0 : Fin d → MvPowerSeries μ k) := fun _ => by simp
 
 /- English proof (translation)
-Introduce `_` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cen_X (g : Fin d → μ) : Cen (fun i => (X (g i) : MvPowerSeries μ k)) := fun _ => by simp
 
 /- English proof (translation)
-Introduce `_` and use `by simp [pt]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cen_pt {n : ℕ} (j : Fin n) : Cen (pt k d j) := fun _ => by simp [pt]
 
 /- English proof (translation)
-Introduce `i` and use `by simp [hu i, hv i]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cen_add {u v : Fin d → MvPowerSeries μ k} (hu : Cen u) (hv : Cen v) : Cen (u + v) :=
   fun i => by simp [hu i, hv i]
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero fun p => ha p.1 p.2`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_pts {m : ℕ} {a : Fin m → Fin d → MvPowerSeries μ k} (ha : ∀ j, Cen (a j)) :
     HasSubst (fun p : Fin m × Fin d => a p.1 p.2) :=
   hasSubst_of_constantCoeff_zero fun p => ha p.1 p.2
 
 /- English proof (translation)
-Introduce `i` and use `constantCoeff_subst_eq_zero (hasSubst_pts ha) (fun p => ha p.1 p.2) (hF i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cen_evAt {m : ℕ} {a : Fin m → Fin d → MvPowerSeries μ k} (ha : ∀ j, Cen (a j))
     {F : Fin d → PS k m d} (hF : ∀ i, constantCoeff (F i) = 0) : Cen fun i => evAt a (F i) :=
   fun i => constantCoeff_subst_eq_zero (hasSubst_pts ha) (fun p => ha p.1 p.2) (hF i)
 
 /- English proof (translation)
-The claim follows from `subst_comp_subst_apply (hasSubst_pts ha) hb f`.
+A detailed English derivation is pending.
 -/
 theorem subst_evAt {m : ℕ} {b : μ → MvPowerSeries ν k} (hb : HasSubst b)
     {a : Fin m → Fin d → MvPowerSeries μ k} (ha : ∀ j, Cen (a j)) (f : PS k m d) :
@@ -97,7 +97,7 @@ theorem subst_evAt {m : ℕ} {b : μ → MvPowerSeries ν k} (hb : HasSubst b)
   subst_comp_subst_apply (hasSubst_pts ha) hb f
 
 /- English proof (translation)
-Rewrite using `[subst_evAt hb (cen1 hu)]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem subst_evAt1 {b : μ → MvPowerSeries ν k} (hb : HasSubst b)
     {u : Fin d → MvPowerSeries μ k} (hu : Cen u) (f : PS k 1 d) :
@@ -106,7 +106,7 @@ theorem subst_evAt1 {b : μ → MvPowerSeries ν k} (hb : HasSubst b)
   congr 1; funext j; fin_cases j; rfl
 
 /- English proof (translation)
-Rewrite using `[subst_evAt hb (cen2 hu hv)]`. Apply the tactic sequence `congr 1; funext j; fin_cases j <;> rfl`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem subst_evAt2 {b : μ → MvPowerSeries ν k} (hb : HasSubst b)
     {u v : Fin d → MvPowerSeries μ k} (hu : Cen u) (hv : Cen v) (f : PS k 2 d) :
@@ -115,7 +115,7 @@ theorem subst_evAt2 {b : μ → MvPowerSeries ν k} (hb : HasSubst b)
   congr 1; funext j; fin_cases j <;> rfl
 
 /- English proof (translation)
-Rewrite using `[subst_evAt hb (cen3 hu hv hw)]`. Apply the tactic sequence `congr 1; funext j; fin_cases j <;> rfl`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem subst_evAt3 {b : μ → MvPowerSeries ν k} (hb : HasSubst b)
     {u v w : Fin d → MvPowerSeries μ k} (hu : Cen u) (hv : Cen v) (hw : Cen w) (f : PS k 3 d) :
@@ -125,14 +125,14 @@ theorem subst_evAt3 {b : μ → MvPowerSeries ν k} (hb : HasSubst b)
   congr 1; funext j; fin_cases j <;> rfl
 
 /- English proof (translation)
-The claim follows from `funext fun i => subst_X (hasSubst_pts ha) (j, i)`.
+A detailed English derivation is pending.
 -/
 theorem subst_pt {m : ℕ} {a : Fin m → Fin d → MvPowerSeries μ k} (ha : ∀ j, Cen (a j))
     (j : Fin m) : (fun i => subst (fun p : Fin m × Fin d => a p.1 p.2) (pt k d j i)) = a j :=
   funext fun i => subst_X (hasSubst_pts ha) (j, i)
 
 /- English proof (translation)
-The claim follows from `funext fun _ => GlobalTheory.FormalCalc.subst_zero' hb`.
+A detailed English derivation is pending.
 -/
 theorem subst_zero_pt {b : μ → MvPowerSeries ν k} (hb : HasSubst b) :
     (fun i => subst b ((0 : Fin d → MvPowerSeries μ k) i)) = (0 : Fin d → MvPowerSeries ν k) :=
@@ -145,21 +145,21 @@ def mapAt (φ : Pt k 1 d) (u : Fin d → MvPowerSeries μ k) : Fin d → MvPower
   fun i => evAt ![u] (φ i)
 
 /- English proof (translation)
-The claim follows from `cen_evAt (cen2 hu hv) hF`.
+A detailed English derivation is pending.
 -/
 theorem cen_addAt {F : Fin d → PS k 2 d} (hF : ∀ i, constantCoeff (F i) = 0)
     {u v : Fin d → MvPowerSeries μ k} (hu : Cen u) (hv : Cen v) : Cen (addAt F u v) :=
   cen_evAt (cen2 hu hv) hF
 
 /- English proof (translation)
-The claim follows from `cen_evAt (cen1 hu) hφ`.
+A detailed English derivation is pending.
 -/
 theorem cen_mapAt {φ : Pt k 1 d} (hφ : ∀ i, constantCoeff (φ i) = 0)
     {u : Fin d → MvPowerSeries μ k} (hu : Cen u) : Cen (mapAt φ u) :=
   cen_evAt (cen1 hu) hφ
 
 /- English proof (translation)
-The claim follows from `funext fun i => subst_evAt2 hb hu hv (F i)`.
+A detailed English derivation is pending.
 -/
 theorem subst_addAt {b : μ → MvPowerSeries ν k} (hb : HasSubst b) (F : Fin d → PS k 2 d)
     {u v : Fin d → MvPowerSeries μ k} (hu : Cen u) (hv : Cen v) :
@@ -168,7 +168,7 @@ theorem subst_addAt {b : μ → MvPowerSeries ν k} (hb : HasSubst b) (F : Fin d
   funext fun i => subst_evAt2 hb hu hv (F i)
 
 /- English proof (translation)
-The claim follows from `funext fun i => subst_evAt1 hb hu (φ i)`.
+A detailed English derivation is pending.
 -/
 theorem subst_mapAt {b : μ → MvPowerSeries ν k} (hb : HasSubst b) (φ : Pt k 1 d)
     {u : Fin d → MvPowerSeries μ k} (hu : Cen u) :
@@ -176,9 +176,9 @@ theorem subst_mapAt {b : μ → MvPowerSeries ν k} (hb : HasSubst b) (φ : Pt k
   funext fun i => subst_evAt1 hb hu (φ i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `subst (fun p : Fin 1 × Fin d => (![(0 : Fin d → MvPowerSeries μ k)] p.1) p.2) (φ i) = 0`. Establish `e : (fun p : Fin 1 × Fin d => (![(0 : Fin d → MvPowerSeries μ k)] p.1) p.2) = 0`. Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `subst_zero_of_constantCoeff_zero (hφ i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapAt_zero {φ : Pt k 1 d} (hφ : ∀ i, constantCoeff (φ i) = 0) :
     mapAt φ (0 : Fin d → MvPowerSeries μ k) = 0 := by
@@ -190,7 +190,7 @@ theorem mapAt_zero {φ : Pt k 1 d} (hφ : ∀ i, constantCoeff (φ i) = 0) :
   exact subst_zero_of_constantCoeff_zero (hφ i)
 
 /- English proof (translation)
-Establish `hb` using `hasSubst_pts (cen1 hu)`. Establish `h1` using `subst_mapAt hb φ (u := ψ) hψ`. Establish `h2 : mapAt φ ψ = pt k (n` using `1) d 0 := h`. Rewrite `h1` using `[h2, subst_pt (cen1 hu)]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapAt_mapAt {φ ψ : Pt k 1 d} (hψ : ∀ i, constantCoeff (ψ i) = 0)
     (h : comp1 φ ψ = pt k (n := 1) d 0) {u : Fin d → MvPowerSeries μ k} (hu : Cen u) :
@@ -202,9 +202,9 @@ theorem mapAt_mapAt {φ ψ : Pt k 1 d} (hψ : ∀ i, constantCoeff (ψ i) = 0)
   exact h1.symm
 
 /- English proof (translation)
-Establish `ha` using `cen2 hu hv`. Establish `hb` using `hasSubst_pts ha`. Establish `h2 : mapAt ℓ (addAt F (pt k (n` using `2) d 0) (pt k (n := 2) d 1)) = mapAt ℓ (pt k (n := 2) d 0) + mapAt ℓ (pt k (n := 2) d 1) := h`. Establish `h1` using `subst_mapAt hb ℓ (cen_addAt hF (cen_pt (n := 2) 0) (cen_pt 1))`. Rewrite `h1` using `[h2, subst_addAt hb F (cen_pt 0) (cen_pt 1), subst_pt ha, subst_pt ha]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `subst_mapAt hb ℓ (cen_pt (k := k) (d := d) (n := 2) 0)`. Establish `h4` using `subst_mapAt hb ℓ (cen_pt (k := k) (d := d) (n := 2) 1)`. Rewrite `h3`, `h4` using `[subst_pt ha]`. Use `h1.symm.trans (funext fun i => ?_)` and prove the remaining obligations. Rewrite using `[Pi.add_apply, subst_add hb, congrFun h3 i, congrFun h4 i]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -228,7 +228,7 @@ theorem mapAt_addAt {ℓ : Pt k 1 d} (hℓ : ∀ i, constantCoeff (ℓ i) = 0)
   rfl
 
 /- English proof (translation)
-Establish `e : (fun p : Fin 3 × Fin d => (![pt k (n` using `3) d 0, pt k d 1, pt k d 2] p.1) p.2) = X := by`. Use function extensionality and compare the values at `p`. Take `⟨j, i⟩` from `p`. Apply the tactic sequence `fin_cases j <;> rfl`. Rewrite using `[evAt, e, subst_self]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -241,7 +241,7 @@ theorem formalSeriesSubstPoints_standard_three (c : PS k 3 d) : evAt ![pt k (n :
   rfl
 
 /- English proof (translation)
-Establish `ha` using `cen2 hu ht`. Establish `hb` using `hasSubst_pts ha`. Establish `h1` using `congrArg (subst (fun p : Fin 2 × Fin d => ![u, t] p.1 p.2)) h`. Rewrite `h1` using `[ev_eq, subst_evAt3 hb cen_zero (cen_pt 0) (cen_pt 1), subst_zero_pt hb, subst_pt ha, subst_pt ha, GlobalTheory.FormalCalc.subst_zero' hb]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem axis_at {c : PS k 3 d} (h : ev (n := 2) ![0, pt k d 0, pt k d 1] c = 0)
     {u t : Fin d → MvPowerSeries μ k} (hu : Cen u) (ht : Cen t) : evAt ![0, u, t] c = 0 := by
@@ -253,7 +253,7 @@ theorem axis_at {c : PS k 3 d} (h : ev (n := 2) ![0, pt k d 0, pt k d 1] c = 0)
   exact h1
 
 /- English proof (translation)
-Establish `ha` using `cen3 hu hv ht`. Establish `hb` using `hasSubst_pts ha`. Establish `h1` using `congrArg (subst (fun p : Fin 3 × Fin d => ![u, v, t] p.1 p.2)) h`. Rewrite `h1` using `[ev_eq, subst_evAt3 hb (cen_pt 1) (cen_pt 0) (cen_pt 2), subst_pt ha, subst_pt ha, subst_pt ha]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm_at {c : PS k 3 d} (h : ev (n := 3) ![pt k d 1, pt k d 0, pt k d 2] c = c)
     {u v t : Fin d → MvPowerSeries μ k} (hu : Cen u) (hv : Cen v) (ht : Cen t) :
@@ -266,9 +266,9 @@ theorem symm_at {c : PS k 3 d} (h : ev (n := 3) ![pt k d 1, pt k d 0, pt k d 2] 
   exact h1
 
 /- English proof (translation)
-Establish `ha` using `cen4 hu hv hw ht`. Establish `hb` using `hasSubst_pts ha`. Establish `h0 : evAt ![pt k (n` using `4) d 0, pt k d 1, pt k d 3] c + evAt ![addAt F (pt k (n := 4) d 0) (pt k d 1), pt k d 2, pt k d 3] c = evAt ![pt k (n := 4) d 1, pt k d 2, pt k d 3] c + evAt ![pt k (n := 4) d 0, addAt F (pt k d 1) (pt k d 2), pt k d 3] c := h`. Establish `h1` using `congrArg (subst (fun p : Fin 4 × Fin d => ![u, v, w, t] p.1 p.2)) h0`. Rewrite `h1` using `[subst_add hb, subst_add hb, subst_evAt3 hb (cen_pt 0) (cen_pt 1) (cen_pt 3), subst_evAt3 hb (cen_addAt hF (cen_pt 0) (cen_pt 1)) (cen_pt 2) (cen_pt 3), subst_evAt3 hb (cen_pt 1) (cen_pt 2) (cen_pt 3), subst_evAt3 hb (cen_pt 0) (cen_addAt hF (cen_pt 1) (cen_pt 2)) (cen_pt 3), sub …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [subst_pt ha] at h1`. Conclude with `h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cocycle_at {F : Fin d → PS k 2 d} (hF : ∀ i, constantCoeff (F i) = 0) {c : PS k 3 d}
     (h : ev (n := 4) ![pt k d 0, pt k d 1, pt k d 3] c +
@@ -294,21 +294,21 @@ theorem cocycle_at {F : Fin d → PS k 2 d} (hF : ∀ i, constantCoeff (F i) = 0
   exact h1
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero (by rintro (i | i); exacts [hu i, ht i])`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_elim2 {u t : Fin d → MvPowerSeries μ k} (hu : Cen u) (ht : Cen t) :
     HasSubst (Sum.elim u t) :=
   hasSubst_of_constantCoeff_zero (by rintro (i | i); exacts [hu i, ht i])
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero (by rintro (i | i | i); exacts [hu i, hv i, ht i])`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_elim3 {u v t : Fin d → MvPowerSeries μ k} (hu : Cen u) (hv : Cen v) (ht : Cen t) :
     HasSubst (Sum.elim u (Sum.elim v t)) :=
   hasSubst_of_constantCoeff_zero (by rintro (i | i | i); exacts [hu i, hv i, ht i])
 
 /- English proof (translation)
-Rewrite using `[subst_comp_subst_apply (hasSubst_elim2 hu ht) hb, GlobalTheory.FormalCalc.subst_sumElim]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_elim2 {b : μ → MvPowerSeries ν k} (hb : HasSubst b)
     {u t : Fin d → MvPowerSeries μ k} (hu : Cen u) (ht : Cen t)
@@ -320,37 +320,35 @@ theorem subst_elim2 {b : μ → MvPowerSeries ν k} (hb : HasSubst b)
 end Tools
 
 /- English proof (translation)
-Introduce `hlog hinv k _ _ d G c hax hsy hco`. Take `⟨ℓ, hℓ, hlin, hadd⟩` from `hlog k d G`. Take `⟨e, -, he, hle, hel⟩` from `hinv k d ℓ hℓ (by rw [hlin, Matrix.det_one]; exact isUnit_one)`. Establish `hF` using `G.const`. Establish `hexp : ∀ {μ : Type} {u v : Fin d → MvPowerSeries μ k}, Cen u → Cen v → addAt G.F (mapAt e u) (mapAt e v) = mapAt e (u + v)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `μ u v hu hv`. Establish `h1` using `mapAt_addAt hℓ hF hadd (cen_mapAt he hu) (cen_mapAt he hv)`. Rewrite `h1` using `[mapAt_mapAt he hle hu, mapAt_mapAt he hle hv]`. Rewrite using `[← h1, mapAt_mapAt hℓ hel (cen_addAt hF (cen_mapAt he hu) (cen_mapAt he hv))]`. Choose the witnesses or unpack the hypotheses as in `⟨B, hB⟩ : ∃ B : MvPowerSeries (Fin d ⊕ Fin d ⊕ Fin d) k, ∀ {μ : Type} {u v t : Fin d → MvPowerSeries μ k}, Cen u → Cen v → Cen t →`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Substitute `(Sum.elim u (Sum.elim v t)) B = evAt ![mapAt e u, mapAt e v, t] c := by` using the available equality. Use `⟨evAt ![mapAt e fun i => X (inl i), mapAt e fun i => X (inr (inl i)), fun i => X (inr (inr i))] c, ?_⟩` and prove the remaining obligations. Introduce `μ u v t hu hv ht`. Establish `hb` using `hasSubst_elim3 hu hv ht`. Rewrite using `[subst_evAt3 hb (cen_mapAt he (cen_X _)) (cen_mapAt he (cen_X _)) (cen_X _), subst_mapAt hb e (cen_X _), subst_mapAt hb e (cen_X _)]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [subst_X hb, elim_inl, elim_inr]`. Establish `hBX : B = evAt ![mapAt e fun i => X (inl i), mapAt e fun i => X (inr (inl i)), fun i => X (inr (inr i))] c`. Rewrite using `[← hB (cen_X _) (cen_X _) (cen_X _), GlobalTheory.FormalCalc.subst_elim_elim_X]`. Take `⟨K, ⟨hK0, hK1, hK⟩, -⟩` from `GlobalTheory.FormalCalc.existsUnique_coboundary_param (B := B) (by`. Establish `h1` using `hB (μ := Fin d) (u := 0) (v := 0) (t := X) cen_zero cen_zero (cen_X id)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[mapAt_zero he]`. Conclude with `h1.trans (axis_at hax cen_zero (cen_X id)))`. Use the proof step `(by`. Rewrite using `[hB (cen_X _) (cen_X _) (cen_X _)]`. Use `conv_rhs => rw [hBX]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `symm_at hsy (cen_mapAt he (cen_X _)) (cen_mapAt he (cen_X _)) (cen_X _))`. Use the proof step `(by`. Rewrite using `[hB (cen_X _) (cen_X _) (cen_X _), hB (cen_X _) (cen_X _) (cen_X _)]`. Establish `h1` using `hB (μ := Fin d ⊕ Fin d ⊕ Fin d ⊕ Fin d) (cen_add (cen_X fun i => inl i) (cen_X fun i => inr (inl i))) (cen_X fun i => inr (inr (inl i))) (cen_X fun i => inr (inr (inr i)))`. Establish `h2` using `hB (μ := Fin d ⊕ Fin d ⊕ Fin d ⊕ Fin d) (cen_X fun i => inl i) (cen_add (cen_X fun i => inr (inl i)) (cen_X fun i => inr (inr (inl i)))) (cen_X fun i => inr (inr (inr i)))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1`, `h2` using `[← hexp (cen_X _) (cen_X _)]`. Establish `h3` using `cocycle_at hF hco (μ := Fin d ⊕ Fin d ⊕ Fin d ⊕ Fin d) (cen_mapAt he (cen_X fun i => inl i)) (cen_mapAt he (cen_X fun i => inr (inl i))) (cen_mapAt he (cen_X fun i => inr (inr (inl i)))) (cen_X fun i => inr (inr (inr i)))`. Rewrite `h3` using `[← h1, ← h2]`. Conclude with `h3)`. Establish `hp : ∀ {n : ℕ} (j : Fin n), Cen (pt k d j)` using `cen_pt`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hev : ∀ {n : ℕ} {u t : Pt k n d} (L : MvPowerSeries (Fin d ⊕ Fin d) k), Cen u → Cen t → ev ![u, t] (subst (Sum.elim (mapAt ℓ (pt k (n` using `2) d 0)) (pt k d 1)) L) =`. Substitute `(Sum.elim (mapAt ℓ u) t) L := by` using the available equality. Introduce `n u t L hu ht`. Establish `ha` using `cen2 hu ht`. Establish `hb` using `hasSubst_pts ha`.
+Both sides reduce to the same expression. Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ev, subst_elim2 hb (cen_mapAt hℓ (hp 0)) (hp 1), subst_mapAt hb ℓ (hp 0), subst_pt ha, subst_pt ha]`. Both sides reduce to the same expression. Establish `hzero : ∀ L : MvPowerSeries (Fin d ⊕ Fin d) k,`. Substitute `(Sum.elim (fun _ => 0) X : Fin d ⊕ Fin d → MvPowerSeries (Fin d) k) L = 0 →` using the available equality. Use `ev (n := 1) ![0, pt k d 0] (subst (Sum.elim (mapAt ℓ (pt k (n := 2) d 0)) (pt k d 1)) L) = 0 := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `L hL`. Rewrite using `[hev L cen_zero (hp 0), mapAt_zero hℓ]`. Establish `hb : HasSubst (pt k (n` using `1) d 0) := hasSubst_of_constantCoeff_zero (hp 0)`. Establish `h1` using `subst_elim2 hb (u := 0) (t := X) cen_zero (cen_X id) L`. Rewrite `h1` using `[subst_zero_pt hb]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [subst_X hb] at h1`. Use `h1.symm.trans ?_` and prove the remaining obligations. Conclude with `(congrArg _ hL).trans (GlobalTheory.FormalCalc.subst_zero' hb)`. Establish `hneg : ∀ {m n : ℕ} {a : Fin m → Pt k n d}, (∀ j, Cen (a j)) → ∀ f : PS k m d, ev a (-f) = - ev a f`. Introduce `m n a ha f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Unfold `ev`. Rewrite using `[← coe_substAlgHom (hasSubst_pts ha), map_neg]`. Use `⟨-subst (Sum.elim (mapAt ℓ (pt k (n := 2) d 0)) (pt k d 1)) K, ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hneg (cen2 cen_zero (hp 0)), hzero K hK0, neg_zero]`. Establish `hb` using `hasSubst_pts (cen2 (cen_zero (μ := Fin 1 × Fin d)) (hp 0))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_neg, hneg (cen2 cen_zero (hp 0)), neg_eq_zero, GlobalTheory.FormalCalc.pderiv_subst (hasSubst_elim2 (cen_mapAt hℓ (hp 0)) (hp 1)), Fintype.sum_sum_type]`. Establish `h2 : ∀ j : Fin d, pderiv k ((0 : Fin 2), i) (pt k (n` using `2) d 1 j) = 0 := fun j => pderiv_X_of_ne (by simp)`. Simplify using `only [elim_inl, elim_inr, h2, mul_zero, Finset.sum_const_zero, add_zero]`. Rewrite using `[ev, GlobalTheory.FormalCalc.subst_sum' hb]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hzero _ (hK1 j)`. Rewrite `h3` using `[ev]`. Rewrite using `[subst_mul hb, h3, zero_mul]`. Establish `hA : Cen (addOf G.F (pt k (n` using `3) d 0) (pt k d 1)) := cen_addAt hF (hp 0) (hp 1)`. Rewrite using `[hneg (cen2 (hp 0) (hp 2)), hneg (cen2 (hp 1) (hp 2)), hneg (cen2 hA (hp 2)), hev K (hp 0) (hp 2), hev K (hp 1) (hp 2), hev K hA (hp 2)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl0` using `cen_mapAt hℓ (hp (n := 3) 0)`. Establish `hl1` using `cen_mapAt hℓ (hp (n := 3) 1)`. Establish `hb` using `hasSubst_elim3 hl0 hl1 (hp 2)`. Establish `h1` using `hB hl0 hl1 (hp 2)`. Rewrite `h1` using `[mapAt_mapAt hℓ hel (hp 0), mapAt_mapAt hℓ hel (hp 1), formalSeriesSubstPoints_standard_three, hK, subst_sub hb, subst_sub hb, subst_elim2 hb (fun _ => by simp) (cen_X _), subst_elim2 hb (cen_X _) (cen_X _), subst_elim2 hb (cen_X _) (cen_X _)]`.
-
-Simplify using `only [subst_add hb, subst_X hb, elim_inl, elim_inr] at h1`. Establish `h4 : mapAt ℓ (addOf G.F (pt k (n` using `3) d 0) (pt k d 1)) = fun i => mapAt ℓ (pt k (n := 3) d 0) i + mapAt ℓ (pt k (n := 3) d 1) i := mapAt_addAt hℓ hF hadd (hp 0) (hp 1)`. Rewrite using `[h4, ← h1]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_coboundary_of_symm_cocycle :
     LogSt → (∀ (k : Type) [CommRing k] (d : ℕ) (φ : Pt k 1 d), (∀ i, constantCoeff (φ i) = 0) → IsUnit (dLin φ).det → ∃ φi : Pt k 1 d, IsInvPair φ φi) → ∀ (k : Type) [CommRing k] [Algebra ℚ k] (d : ℕ) (G : FGLaw k d) (c : PS k 3 d), ev (n := 2) ![0, pt k d 0, pt k d 1] c = 0 → ev (n := 3) ![pt k d 1, pt k d 0, pt k d 2] c = c → ev (n := 4) ![pt k d 0, pt k d 1, pt k d 3] c + ev (n := 4) ![addOf G.F (pt k d 0) (pt k d 1), pt k d 2, pt k d 3] c = ev (n := 4) ![pt k d 1, pt k d 2, pt k d 3] c + ev (n := 4) ![pt k d 0, addOf G.F (pt k d 1) (pt k d 2), pt k d 3] c → ∃ h : PS k 2 d, ev (n := 1) ![0, pt k d 0] h = 0 ∧ (∀ i, ev (n := 1) ![0, pt k d 0] (pderiv k ((0 : Fin 2), i) h) = 0) ∧ c = (ev (n := 3) ![pt k d 0, pt k d 2] h + ev (n := 3) ![pt k d 1, pt k d 2] h - ev (n := 3) ![addOf G.F (pt k d 0) (pt k d 1), pt k d 2] h) := by

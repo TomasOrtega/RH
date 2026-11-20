@@ -27,9 +27,9 @@ namespace GlobalTheory.DiagThetaRule
 open GlobalTheory.Doubling Formalism.IndefR.Datum
 
 /- English proof (translation)
-Introduce `D S T JA JB ξ κ _ co hco x`. Take `⟨y₁, z₁, h₁⟩` from `hco ((x.submatrix id finSumFinEquiv).toCols₁)`. Take `⟨y₂, z₂, h₂⟩` from `hco ((x.submatrix id finSumFinEquiv).toCols₂)`. Use `⟨Sum.elim y₁ y₂, Sum.elim z₁ (-z₂), ?_⟩` and prove the remaining obligations. Establish `e : (GlobalTheory.DblSchr.ddr co).e (incM D.host.F x) = (Sum.elim (co.e (incM D.host.F (x.submatrix id finSumFinEquiv).toCols₁)).1 (co.e (incM D.host.F (x.submatrix id finSumFinEquiv).toCols₂)).1, Sum.elim (co.e (incM D.host.F (x.submatrix id finSumFinEquiv).toCols₁)).2 (-(co.e ( …` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e, h₁, h₂]`. Apply the tactic sequence `ext (i | i) <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ddr_rat : ∀ (D : D7) (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E)
     (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E) (ξ : AF D.host.F ⊗[D.host.F] D.host.E) (κ : Type) [Fintype κ]
@@ -52,9 +52,9 @@ theorem ddr_rat : ∀ (D : D7) (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.ra
   ext (i | i) <;> simp
 
 /- English proof (translation)
-Introduce `D S T w`. Establish `hl : GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.lagr S T w = (Matrix.fromCols w (-w)).submatrix id finSumFinEquiv.symm`. Use extensionality with `i j`. Apply the tactic sequence `rcases h : finSumFinEquiv.symm j with k | k <;> simp [GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.lagr, h]`. Establish `h1 : Formalism.L2.Theta.mt T (1 : GA D T) = 1` using `by simp [Formalism.L2.Theta.mt]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Unfold `actO`. Rewrite using `[inv_inv, h1, Matrix.one_mul, mt_epsD, hl, blkMat, Matrix.submatrix_mul_equiv, Matrix.fromCols_mul_fromBlocks]`. Simplify using `[GlobalTheory.DiagSiegel.diagMat]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem actO_epsD_lagr : ∀ (D : D7) (S T : HSp D) (w : WO S T),
     actO (dblSp S) T (epsD S)⁻¹ 1 (GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.lagr S T w) = GlobalTheory.DiagSiegel.diagMat w := by
@@ -68,9 +68,9 @@ theorem actO_epsD_lagr : ∀ (D : D7) (S T : HSp D) (w : WO S T),
   simp [GlobalTheory.DiagSiegel.diagMat]
 
 /- English proof (translation)
-Introduce `D S`. Use `Subgroup.mem_subgroupOf.2 (Subgroup.mem_map.2 ⟨blkGL finSumFinEquiv ((1, -1) : GL (Fin S.rank) D.host.E × GL (Fin S.rank) D.host.E), ?_, ?_⟩)` and prove the remaining obligations. Rewrite using `[show (dblSp S).gram = blkMat finSumFinEquiv S.gram (-S.gram) from gram_hdbl S, blkGL_mem_UJ]`. Conclude with `⟨one_mem _, neg_one_mem_UJ _ _⟩`. Rewrite using `[bc_blkGL]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Apply `Units.ext` to reduce the goal to its premises. Use `show blkMat finSumFinEquiv _ _ = blkMat finSumFinEquiv (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) (-1)`. Simplify using `[Formalism.UG.bc]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem epsD_mem_GQ : ∀ (D : D7) (S : HSp D), epsD S ∈ GQ (dblSp S) := by
   intro D S
@@ -84,9 +84,9 @@ theorem epsD_mem_GQ : ∀ (D : D7) (S : HSp D), epsD S ∈ GQ (dblSp S) := by
     simp [Formalism.UG.bc]
 
 /- English proof (translation)
-Introduce `D ψ V T χV χT ω hW γ hγ f hf x`. Establish `hx : actO V T γ 1 (actO V T γ⁻¹ 1 x) = x`. Simplify using `only [actO, Formalism.L2.Theta.mt, map_one, Units.val_one, Matrix.one_mul, inv_inv, Matrix.mul_assoc, ← Units.val_mul, ← map_mul, mul_inv_cancel, Matrix.mul_one]`. Establish `e1 : ∀ (g : WO V T → ℂ) (y : WO V T), heisO ψ V T y g 0 = g y`. Introduce `g y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : symplOH V T 0 y = 0` using `by simp [symplOH, symplO, hO]`. Simplify using `only [heisO, zero_add, h0, AddChar.map_zero_eq_one, one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem rat_act : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V T : HSp D) (χV χT : (AE D)ˣ →* Circle)
     (ω : GA D V × GA D T →* Module.End ℂ (WO V T → ℂ)), IsWeilDatumO ψ V T χV χT ω →
@@ -107,7 +107,7 @@ theorem rat_act : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V T : HSp D) (�
     _ = f (actO V T γ⁻¹ 1 x) := e1 _ _
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_unitary_invTranspose_of_scaledInverseGram`.
+A detailed English derivation is pending.
 -/
 theorem exists_transpose_inv : ∀ (D : D7) (V : HSp D) (J : Matrix (Fin V.rank) (Fin V.rank) D.host.E)
     (ξ : AF D.host.F ⊗[D.host.F] D.host.E), ξ • incM D.host.F J = incM D.host.F (D.host.xi0 • V.gram⁻¹) →
@@ -115,7 +115,7 @@ theorem exists_transpose_inv : ∀ (D : D7) (V : HSp D) (J : Matrix (Fin V.rank)
       ∃ g : GA D V, Formalism.L2.Theta.mt V g = (b⁻¹).1.1ᵀ := GlobalTheory.T.exists_unitary_invTranspose_of_scaledInverseGram
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_siegelParabolic_conj_invTranspose`.
+A detailed English derivation is pending.
 -/
 theorem siegel_conj : ∀ (D : D7) (S : HSp D) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
     (p : GlobalTheory.WeilM.UG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (GlobalTheory.WeilM.dbl (incM D.host.F JB)))
@@ -127,7 +127,7 @@ theorem siegel_conj : ∀ (D : D7) (S : HSp D) (JB : Matrix (Fin S.rank) (Fin S.
       GlobalTheory.Doubling.aP S h = GlobalTheory.Doubling.conjUnit D.sp.cm.sig (Matrix.GeneralLinearGroup.det t) := GlobalTheory.T.exists_siegelParabolic_conj_invTranspose
 
 /- English proof (translation)
-Introduce `D χ n h z`. Use `congrArg (fun m : (AE D)ˣ →* Circle => m z) (comp_conjUnit_eq_inv h)` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem chi_conj : ∀ (D : D7) (χ : (AE D)ˣ →* Circle) (n : ℕ), ResEta D χ n → ∀ z : (AE D)ˣ,
     χ (conjUnit D.sp.cm.sig z) = (χ z)⁻¹ := by
@@ -136,13 +136,13 @@ theorem chi_conj : ∀ (D : D7) (χ : (AE D)ˣ →* Circle) (n : ℕ), ResEta D 
   simpa using this
 
 /- English proof (translation)
-Introduce `_ z` and use `absE_conjUnit _ z`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem absA_conj : ∀ (D : D7) (z : (AE D)ˣ), absA D (conjUnit D.sp.cm.sig z) = absA D z :=
   fun _ z => absE_conjUnit _ z
 
 /- English proof (translation)
-Introduce `D z` and use `(GlobalTheory.ModuAdele.modu_norm_eq_absE D.host.F D.host.E z).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem absA_eq_modu : ∀ (D : D7) (z : (AE D)ˣ),
     absA D z = (GlobalTheory.WeilM.adeleClass D.host.F).modu (Units.map (Algebra.norm (AF D.host.F) : AE D →* AF D.host.F) z) :=
@@ -155,9 +155,9 @@ namespace GlobalTheory.DiagThetaRule
 open GlobalTheory.Doubling Formalism.IndefR.Datum
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.inv_apply, chi_conj D χT T.rank hrT, inv_inv, absA_conj, absA_eq_modu]`. Unfold `GlobalTheory.DiagSiegel.ruleFac GlobalTheory.Doubling.npow GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.sZero`. Rewrite using `[Complex.ofReal_cpow (NNReal.coe_nonneg _)]`. Use `congr 2`. Rewrite using `[Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem scalar_rule (D : D7) (S T : HSp D) (χT : (AE D)ˣ →* Circle) (hrT : ResEta D χT T.rank)
     (t : GL (Fin S.rank) (AF D.host.F ⊗[D.host.F] D.host.E)) :
@@ -179,15 +179,15 @@ namespace GlobalTheory.DiagThetaRule
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D ψ hψ S T JA JB ξ hA hB κ _ co hco ν 𝓕 hν χS χT hχS hχT hrS hrT ωd hW omd₀ hTr p t hpt Φ hΦ`. Establish `hBd` using `GlobalTheory.DblSchr.dblGram_xi D S JB ξ hB`. Take `⟨g', hg'⟩` from `exists_transpose_inv D (GlobalTheory.Doubling.dblSp S) (GlobalTheory.DblSchr.JBd S JB) ξ hBd (GlobalTheory.DblSchr.reG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) finSumFinEquiv.symm (GlobalTheory.DblSchr.incM_JBd S JB) p)`. Establish `h1 : Formalism.L2.Theta.mt T (1 : GA D T) = (1 : GlobalTheory.WeilM.UG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (incM D.host.F JA)).1.1`. Simplify using `[Formalism.L2.Theta.mt]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key` using `hTr 1 _ g' 1 h1 hg' Φ hΦ`. Use `⟨key.1, ?_⟩` and prove the remaining obligations. Rewrite using `[show GlobalTheory.DblSchr.omdOf omd₀ p = omd₀ (1, GlobalTheory.DblSchr.reG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) finSumFinEquiv.symm (GlobalTheory.DblSchr.incM_JBd S JB) p) from rfl, key.2]`. Establish `hf : Formalism.IndefR.Datum.IsThetaFunO ψ (GlobalTheory.Doubling.dblSp S) T (GlobalTheory.WeilSchrodinger.thetaTr D.host.F (GlobalTheory.DblSchr.ddr co) ψ Φ)` using `GlobalTheory.T.isThetaFunction_thetaTransform_rationalDarboux D ψ hψ (GlobalTheory.Doubling.dblSp S) T JA (GlobalTheory.DblSchr.JBd S JB) ξ hA hBd (κ ⊕ κ) (GlobalTheory.DblSchr.ddr co) (ddr_rat D S T JA JB ξ κ co hco) Φ hΦ`. Establish `hdiag : ∀ F, Formalism.IndefR.Datum.IsThetaFunO ψ (GlobalTheory.Doubling.dblSp S) T F → GlobalTheory.DiagSiegel.thetaDiagInt ν 𝓕 F = GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.swSec S T ωd ν 𝓕 F (epsD S)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `F hF`. Use `show ∫ w in 𝓕, F (GlobalTheory.DiagSiegel.diagMat w) ∂ν = ∫ w in 𝓕, ωd (epsD S, 1) F (GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.lagr S T w) ∂ν`. Use `congr 1`. Use function extensionality and compare the values at `w`. Rewrite using `[rat_act D ψ (GlobalTheory.Doubling.dblSp S) T 1 χT ωd hW (epsD S) (epsD_mem_GQ D S) F hF, actO_epsD_lagr]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hεg, haP⟩` from `siegel_conj D S JB p t hpt g' hg'`. Establish `hlaw` using `GlobalTheory.Core.Rk.SWLaw.swSec_law GlobalTheory.weilRepresentationUnitaryPair D ψ S T χT ωd hW ν 𝓕 hν _ hf h (epsD S)`. Establish `e1 : GlobalTheory.DiagSiegel.thetaDiagInt ν 𝓕 (ωd (g', 1) (GlobalTheory.WeilSchrodinger.thetaTr D.host.F (GlobalTheory.DblSchr.ddr co) ψ Φ)) = GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.swSec S T ωd ν 𝓕 (GlobalTheory.WeilSchrodinger.thetaTr D.host.F (GlobalTheory.DblSc …`. Rewrite using `[hdiag _ (hW.om_pres _ _ hf)]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.swSec`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`. Rewrite using `[e1, hεg, hlaw, ← hdiag _ hf, haP]`. Conclude with `congrArg (· * GlobalTheory.DiagSiegel.thetaDiagInt ν 𝓕 (GlobalTheory.WeilSchrodinger.thetaTr D.host.F (GlobalTheory.DblSchr.ddr co) ψ Φ)) (scalar_rule D S T χT hrT t)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaDiagInt_omdOf : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)

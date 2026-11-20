@@ -24,7 +24,7 @@ theorem ptHom_apply (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (a d : ℕ)
     (z : Matrix (Fin d) (Fin a) D.host.E) : ptHom D cc δ a d z = pt D (tor0 D cc δ) δ z := rfl
 
 /- English proof (translation)
-Introduce `y y' h`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `h1 : δ * embT D (D.eTau.symm 1) (y i j) = δ * embT D (D.eTau.symm 1) (y' i j)` using `congrFun (congrFun (congrFun h (D.eTau.symm 1)) i) j`. Conclude with `(embT D _).injective (mul_left_cancel₀ hδ h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ptHom_injective (D : D7) (cc : Ideal (𝓞 D.host.K)) {δ : ℂ} (hδ : δ ≠ 0) (a d : ℕ) :
     Function.Injective (ptHom D cc δ a d) := by
@@ -35,7 +35,7 @@ theorem ptHom_injective (D : D7) (cc : Ideal (𝓞 D.host.K)) {δ : ℂ} (hδ : 
   exact (embT D _).injective (mul_left_cancel₀ hδ h1)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Simplify using `only [ptHom_apply, pt, embV, tor0, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, map_mul, GlobalTheory.InducedType.restrict_K D τ, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ptHom_smul (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (a d : ℕ) (c : 𝓞 D.host.K)
     (y : Matrix (Fin d) (Fin a) D.host.E) :
@@ -46,13 +46,11 @@ theorem ptHom_smul (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (a d : ℕ) 
     GlobalTheory.InducedType.restrict_K D τ, mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `ht using Submodule.span_induction generalizing r with`. Consider the case `mem t ht`. Take `⟨c, hc, m, hm, rfl⟩` from `ht`. Use `AddSubgroup.subset_closure ⟨δ * D.host.φ₀ ((c : D.host.K) : D.host.E), AddSubgroup.subset_closure ⟨c, hc, rfl⟩, Matrix.single i j (r • m), ?_, ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.OddGenus.mem_iff_entries D a d _).2 fun k l => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.single_apply]`. Use `split_ifs`. Conclude with `(D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E).smul_mem r hm`. Conclude with `D.host.AA0.zero_mem`. Rewrite using `[← ptHom_smul, Matrix.smul_single, smul_eq_mul, mul_smul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [smul_zero, Matrix.single_zero, map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add, Matrix.single_add, map_add]`. Conclude with `add_mem (hx r) (hy r)`. Consider the case `smul s x _ hx => rw [smul_smul]`.
-
-Conclude with `hx _`.
+A detailed English derivation is pending.
 -/
 theorem single_mem (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (a d : ℕ) (i : Fin d) (j : Fin a)
     {t : D.host.E} (ht : t ∈ coefLat D cc) (r : 𝓞 D.host.E) :
@@ -73,11 +71,11 @@ theorem single_mem (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (a d : ℕ) 
   | smul s x _ hx => rw [smul_smul]; exact hx _
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, A, hA, rfl⟩`. Take `⟨c, hc, rfl⟩` from `(GlobalTheory.CurveLattice.mem_lamOf D cc δ w).1 hw`. Use `⟨((c : D.host.K) : D.host.E) • A, fun i j => ?_, ptHom_smul D cc δ a d c A⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.subset_span ⟨c, hc, A i j, (GlobalTheory.OddGenus.mem_iff_entries D a d A).1 hA i j, rfl⟩`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Rewrite using `[Matrix.matrix_eq_sum_single z, map_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Simplify using `using single_mem D cc δ a d i j (hz i j) 1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem La0_eq_map (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (a d : ℕ) :
     La0 D (tor0 D cc δ) a d = (lat0 D cc a d).map (ptHom D cc δ a d) := by
@@ -95,7 +93,7 @@ theorem La0_eq_map (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (a d : ℕ) 
     simpa using single_mem D cc δ a d i j (hz i j) 1
 
 /- English proof (translation)
-Introduce `D cc δ a d h z`. Establish `hδ : δ ≠ 0` using `(GlobalTheory.CurveLattice.lattice_of_curve D (GlobalTheory.InducedType.induced_type D).1 cc δ h).2.1`. Rewrite using `[La0_eq_map, ← ptHom_apply]`. Conclude with `AddSubgroup.mem_map_iff_mem (ptHom_injective D cc hδ a d)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_mem_iff : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (a d : ℕ), Crv D cc δ → ∀ z : Matrix (Fin d) (Fin a) D.host.E, pt D (tor0 D cc δ) δ z ∈ La0 D (tor0 D cc δ) a d ↔ z ∈ lat0 D cc a d := by
   intro D cc δ a d h z

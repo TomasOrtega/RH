@@ -9,11 +9,11 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 open Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Establish `hre : ((26 / 25 : ℂ) + t * I).re = 26 / 25`. Simplify using the standard rewrite rules. Establish `h1` using `abs_re_le_norm (z - ((26 / 25 : ℂ) + t * I))`. Rewrite `h1` using `[sub_re, hre]`. Establish `hn : ‖((26 / 25 : ℂ) + t * I)‖ ≤ 26 / 25 + |t|`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, Complex.norm_I, mul_one, Complex.norm_real, Real.norm_eq_abs]`. Evaluate the numerical expressions. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `(abs_le.mp (h1.trans hz)).1` as an intermediate fact.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `norm_sub_norm_le z ((26 / 25 : ℂ) + t * I)` as an intermediate fact. Combine the linear relations using `[abs_nonneg t]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma dhl_geom (t : ℝ) (z : ℂ) (hz : ‖z - ((26 / 25 : ℂ) + t * I)‖ ≤ 12 / 25) :
     1 / 2 ≤ z.re ∧ 1 + ‖z‖ ≤ 2 * (|t| + 2) := by
@@ -32,13 +32,13 @@ lemma dhl_geom (t : ℝ) (z : ℂ) (hz : ‖z - ((26 / 25 : ℂ) + t * I)‖ ≤
     linarith [abs_nonneg t]
 
 /- English proof (translation)
-Establish `hB1 : 1 ≤ K * X ^ 2` using `by nlinarith`. Take `⟨Z, m, hZ, hm, hsum, hexp⟩` from `hCau f ((26 / 25 : ℂ) + t * I) (12 / 25) (K * X ^ 2) (by norm_num) hB1 hf.differentiableOn hf0 (fun z hz => hB z (by rwa [Metric.mem_closedBall, dist_eq] at hz))`. Establish `hlog` using `dhl_log K X hK hX`. Establish `hlog0 : 0 ≤ Real.log (K * X ^ 2)` using `Real.log_nonneg hB1`. Use `⟨Z, m, ?_, hm, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `ρ`. Rewrite using `[hZ ρ, Metric.mem_closedBall, dist_eq]`. Evaluate the numerical expressions. Use `hsum.trans ?_` and prove the remaining obligations. Establish `h2 : (1 / 2 : ℝ) ≤ Real.log 2` using `by linarith [Real.log_two_gt_d9]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[div_le_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities. Introduce `k s hs hfs`. Use `hexp k s (by rw [Metric.mem_closedBall, dist_eq]; norm_num; linarith) hfs` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (72 * Real.log (K * X ^ 2) / (12 / 25) * (12 / (12 / 25)) ^ k : ℝ) = 150 * Real.log (K * X ^ 2) * 25 ^ k` using `by norm_num; ring`. Rewrite using `[e]`. Establish `: (0 : ℝ) < 25 ^ k` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma dhl_core (hCau : DHCauchy) (f : ℂ → ℂ) (t K X : ℝ) (hK : 1 ≤ K) (hX : 3 ≤ X)
     (hf : Differentiable ℂ f) (hf0 : f ((26 / 25 : ℂ) + t * I) ≠ 0)
@@ -83,9 +83,9 @@ lemma dhl_z0re (t : ℝ) : ((26 / 25 : ℂ) + t * I).re = 26 / 25 := by
   simp
 
 /- English proof (translation)
-Establish `h` using `inverseBound M ψ ((26 / 25 : ℂ) + t * I) (by rw [dhl_z0re]; norm_num)`. Rewrite `h` using `[dhl_z0re]`. Establish `hne : DirichletCharacter.LFunction ψ ((26 / 25 : ℂ) + t * I) ≠ 0` using `DirichletCharacter.LFunction_ne_zero_of_one_le_re ψ (Or.inr (by intro h; have := congrArg Complex.re h; rw [dhl_z0re] at this; norm_num at this)) (by rw [dhl_z0re]; norm_num)`. Establish `hpos : 0 < ‖DirichletCharacter.LFunction ψ ((26 / 25 : ℂ) + t * I)‖` using `norm_pos_iff.mpr hne`. Rewrite `h` using `[inv_le_comm₀ hpos (by norm_num)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions using `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma dhl_inv (M : ℕ) [NeZero M] (ψ : DirichletCharacter ℂ M) (t : ℝ) :
     1 ≤ 26 * ‖DirichletCharacter.LFunction ψ ((26 / 25 : ℂ) + t * I)‖ := by
@@ -112,26 +112,24 @@ def DHLocalAt (C : ℝ) (M : ℕ) [NeZero M] (ψ : DirichletCharacter ℂ M) (t 
             + ∑ ρ ∈ Z, (m ρ : ℂ) / (s - ρ) ^ (k + 1)‖ ≤ C * Real.log ((M : ℝ) * (|t| + 2)) * 25 ^ k
 
 /- English proof (translation)
-Establish `h3 : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Use polynomial arithmetic with `[abs_nonneg t]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma dhl_X (M : ℕ) (t : ℝ) (hM : 3 ≤ M) : 3 ≤ (M : ℝ) * (|t| + 2) := by
   have h3 : (3 : ℝ) ≤ M := by exact_mod_cast hM
   nlinarith [abs_nonneg t]
 
 /- English proof (translation)
-Establish `hX` using `dhl_X M t hM`. Establish `h3 : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hinv` using `dhl_inv M ψ t`. Establish `hf0 : DirichletCharacter.LFunction ψ ((26 / 25 : ℂ) + t * I) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hinv` using `[h, norm_zero]`. Evaluate the numerical expressions using `at hinv`. Take `⟨Z, m, hZ, hm, hsum, hexp⟩` from `dhl_core hCau (DirichletCharacter.LFunction ψ) t K ((M : ℝ) * (|t| + 2)) hK1 hX (DirichletCharacter.differentiable_LFunction hψ) hf0 (by`. Introduce `z hz`. Take `⟨hre, hn⟩` from `dhl_geom t z hz`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hC0 M ψ hψ z hre`. Establish `hz0` using `norm_nonneg z`. Establish `ht` using `abs_nonneg t`. Combine the equalities or inequalities in the displayed calculation. Establish `: C0 ≤ K / 52` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `gcongr`. Use `_ ≤ (K / 52) * M * (2 * (|t| + 2)) := by gcongr`. Use `_ = K * ((M : ℝ) * (|t| + 2)) * (1 / 26) := by ring`. Use `_ ≤ K * ((M : ℝ) * (|t| + 2)) ^ 2 * ‖DirichletCharacter.LFunction ψ ((26 / 25 : ℂ) + t * I)‖ := by`. Establish `hXX : (M : ℝ) * (|t| + 2) ≤ ((M : ℝ) * (|t| + 2)) ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `: (1 / 26 : ℝ) ≤ ‖DirichletCharacter.LFunction ψ ((26 / 25 : ℂ) + t * I)‖` using `by linarith`. Use the proof step `gcongr)`. Use `⟨Z, m, ?_, hm, ?_, hsum, ?_⟩` and prove the remaining obligations. Introduce `ρ`. Rewrite using `[hZ ρ]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `and_congr_right (fun _ => ⟨fun h => ⟨Or.inl hψ, h⟩, fun h => h.2⟩)`. Introduce `ρ hρ`. Assume the negation of the conclusion as `hcon`. Conclude with `DirichletCharacter.LFunction_ne_zero_of_one_le_re ψ (Or.inl hψ) (not_lt.mp hcon) ((hZ ρ).mp hρ).2`. Introduce `k s hs1 hs`.
-
-Establish `h` using `hexp k s hs (DirichletCharacter.LFunction_ne_zero_of_one_le_re ψ (Or.inl hψ) hs1.le)`. Rewrite using `[if_neg hψ, sub_zero]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 lemma dhl_nontriv (hCau : DHCauchy) (C0 K : ℝ)
     (hC0 : ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q), χ ≠ 1 → ∀ s : ℂ, 1 / 2 ≤ s.re →

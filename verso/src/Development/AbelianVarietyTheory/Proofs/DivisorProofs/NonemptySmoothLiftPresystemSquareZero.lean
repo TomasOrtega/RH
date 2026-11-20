@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.Obs
 
 /- English proof (translation)
-Introduce `R R₀ _ _ I hI π hπ hk C _ F hF`. Establish `h` using `fun T => GlobalTheory.T.smoothAlgebra_lifts_over_square_zero_thickening R R₀ I hI π hπ hk (F.obj T) (hF T)`. Use `choose B iB aB p hs hp hker hsm using h`. Use `letI := iB`. Use `letI := aB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hl : ∀ {T T' : C} (a : T ⟶ T'), ∃ ρ : B T →ₐ[R] B T', ∀ b, p T' (ρ b) = mp F a (p T b)` using `fun {T T'} a => homLift R R₀ I hI π hπ hk (B T) (F.obj T) (p T) (hs T) (hp T) (hker T) (B T') (F.obj T') (p T') (hs T') (hp T') (hker T') (mp F a)`. Conclude with `⟨{ B := fun T => CommAlgCat.of R (B T) p := p semi := hs surj := hp ker := hker smooth := hsm ρ := fun a => (hl a).choose nat := fun a b => (hl a).choose_spec b }⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pre_nonempty : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (C : Type) [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R₀), (∀ T, Algebra.Smooth R₀ (F.obj T)) → Nonempty (Pre I π F) := by
   intro R R₀ _ _ I hI π hπ hk C _ F hF

@@ -12,43 +12,37 @@ namespace GlobalTheory.LocCong
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D Z P hP`. Use `set p : PlF D := below D P with hp`. Establish `hmem : ∀ n : ℕ, ((n : 𝓞 D.host.F) ∈ p.asIdeal ↔ ((n : 𝓞 D.host.E)) ∈ P.asIdeal)`. Introduce `n`. Use `show (n : 𝓞 D.host.F) ∈ Ideal.comap _ P.asIdeal ↔ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ideal.mem_comap, map_natCast]`. Establish `hg : ∃ i, ((D.host.g i : ℕ) : 𝓞 D.host.F) ∈ p.asIdeal`. Establish `h1 : ((gS D : ℕ) : 𝓞 D.host.F) ∈ p.asIdeal` using `(hmem _).2 hP`. Simplify using `only [gS, Nat.cast_mul] at h1`. Break down `p.isPrime.mem_or_mem h1 with h | h` into its components or cases.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨0, h⟩`. Conclude with `⟨1, h⟩`. Take `⟨i, hi⟩` from `hg`. Establish `hchar : Loc.resChar p = D.host.g i`. Establish `hz : ((D.host.g i : ℕ) : 𝓞 D.host.F ⧸ p.asIdeal) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast (Ideal.Quotient.mk p.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hi`. Establish `hd : ringChar (𝓞 D.host.F ⧸ p.asIdeal) ∣ D.host.g i` using `ringChar.dvd hz`. Conclude with `(Nat.prime_dvd_prime_iff_eq (D.s.atP p).ellPrime.out (D.host.g_prime i)).1 hd`. Take `⟨j, hne, hgg⟩ : ∃ j : Fin 2, D.host.g i ≠ D.host.g j ∧ gS D = D.host.g i * D.host.g j` from `by fin_cases i`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `⟨1, D.host.g_ne, rfl⟩`. Conclude with `⟨0, D.host.g_ne.symm, by simp [gS, mul_comm]⟩`. Establish `hsome : (D.s.atP p).split.isSome` using `(D.s_split p).2 (by`. Apply the tactic sequence `rw [hchar]; fin_cases i <;> simp)`. Take `⟨sg0, hsg0⟩` from `Option.isSome_iff_exists.1 hsome`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hag` using `(Z.agree p).2.2.2.2.2`. Break down `hZs : (Z.M p).split with _ | sg` into its components or cases. Rewrite `hag` using `[hZs, hsg0]`. Conclude with `hag.elim`. Rewrite `hag` using `[hZs, hsg0]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨sg, rfl, ?_⟩` and prove the remaining obligations. Establish `hq : ((sg.q : 𝒪[(D.s.atP p).Fp]) : (D.s.atP p).Fp) = ((D.host.g i : ℕ) : (D.s.atP p).Fp)`. Rewrite using `[hag.2, sg0.q_eq, hchar]`. Establish `hqO : (sg.q : 𝒪[(D.s.atP p).Fp]) = ((D.host.g i : ℕ) : 𝒪[(D.s.atP p).Fp])`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hq]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hcop : Nat.Coprime (D.host.g i) (D.host.g j)` using `(Nat.coprime_primes (D.host.g_prime i) (D.host.g_prime j)).2 hne`. Establish `hbez : (1 : ℤ) = (D.host.g i : ℤ) * Int.gcdA (D.host.g i) (D.host.g j) + (D.host.g j : ℤ) * Int.gcdB (D.host.g i) (D.host.g j)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Int.gcd_eq_gcd_ab (D.host.g i : ℤ) (D.host.g j : ℤ)` as an intermediate fact. Rewrite `this` using `[Int.gcd_natCast_natCast, hcop.gcd_eq_one]`. Conclude with `this` after adjusting the coercions. Establish `hunit : IsUnit ((D.host.g j : ℕ) : 𝒪[(D.s.atP p).Fp])`. Establish `hqn : ((D.host.g i : ℕ) : 𝒪[(D.s.atP p).Fp]) ∈ IsLocalRing.maximalIdeal 𝒪[(D.s.atP p).Fp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hqO]`. Conclude with `sg.q_irr.not_isUnit`. Establish `h1 : IsUnit (1 - ((D.host.g i : ℕ) : 𝒪[(D.s.atP p).Fp]) * (Int.gcdA (D.host.g i) (D.host.g j) : 𝒪[(D.s.atP p).Fp]))` using `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits _ (Ideal.mul_mem_right _ _ hqn)`. Establish `h2 : (1 : 𝒪[(D.s.atP p).Fp]) - ((D.host.g i : ℕ) : 𝒪[(D.s.atP p).Fp]) * (Int.gcdA (D.host.g i) (D.host.g j) : 𝒪[(D.s.atP p).Fp]) = ((D.host.g j : ℕ) : 𝒪[(D.s.atP p).Fp]) * (Int.gcdB (D.host.g i) (D.host.g j) : 𝒪[(D.s.atP p).Fp])`. Use `congrArg (Int.cast : ℤ → 𝒪[(D.s.atP p).Fp]) hbez` as an intermediate fact.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h2]`. Conclude with `isUnit_of_mul_isUnit_left h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w : 𝒪[(D.s.atP p).Fp], (w : (D.s.atP p).Fp) * ((D.host.g j : ℕ) : (D.s.atP p).Fp) = 1 := by`. Use `⟨((hunit.unit⁻¹ : (𝒪[(D.s.atP p).Fp])ˣ) : 𝒪[(D.s.atP p).Fp]), ?_⟩` and prove the remaining obligations. Establish `h1 : ((hunit.unit⁻¹ : (𝒪[(D.s.atP p).Fp])ˣ) : 𝒪[(D.s.atP p).Fp]) * ((D.host.g j : ℕ) : 𝒪[(D.s.atP p).Fp]) = 1`. Use `hunit.unit.inv_mul` as an intermediate fact. Rewrite `this` using `[IsUnit.unit_spec]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation.
 
-Establish `h2` using `congrArg Subtype.val h1`. Conclude with `h2` after adjusting the coercions. Establish `hwO : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (w : (D.s.atP p).Fp) ∈ (Z.M p).L.O`. Rewrite using `[(Z.agree p).2.2.2.1, (D.s.atP p).O_def]`. Conclude with `isIntegral_algebraMap`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `hsc : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (sg.q : (D.s.atP p).Fp) = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (w : (D.s.atP p).Fp) * ((gS D : ℕ) : (D.s.atP p).Ep)`. Rewrite using `[← map_natCast (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep), ← map_mul, hq, hgg]`. Use `congr 1`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `Λ v hv`. Unfold `Loc.HermSp.smulLat at hv`. Use `(Submodule.span_le.2 ?_) hv` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Simplify using `only [SetLike.mem_coe]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Rewrite using `[hsc, mul_smul]`. Establish `e : ((gS D : ℕ) : (D.s.atP p).Ep) • baseChange₂ D p x = baseChange₂ D p (((gS D : ℕ) : 𝓞 D.host.E) • x)`.
-
-Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, map_nsmul]`. Rewrite using `[e]`. Conclude with `(lattice₂ D Z.M p _).smul_mem (⟨_, hwO⟩ : (Z.M p).L.O) (Submodule.subset_span ⟨_, Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) hx, rfl⟩)`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
-
-Consider the case `add a b _ _ ha hb => rw [smul_add]`. Conclude with `add_mem ha hb`. Consider the case `smul o y _ hy`. Establish `e : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (sg.q : (D.s.atP p).Fp) • (o • y) = o • (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (sg.q : (D.s.atP p).Fp) • y)` using `by show _ • ((o : (D.s.atP p).Ep) • y) = (o : (D.s.atP p).Ep) • _`. Rewrite using `[smul_smul, smul_smul, mul_comm]`.
-
-Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qsmul_latP_le_gS : ∀ (D : D7) (Z : LocDat D) (P : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E)), ((gS D : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal → ∃ sg : Loc.SplitG (Z.M (below D P)).L, (Z.M (below D P)).split = some sg ∧ ∀ (Λ : LV D) (v : Vp D (below D P)), v ∈ (locH Z (below D P)).smulLat (algebraMap (D.s.atP (below D P)).Fp (D.s.atP (below D P)).Ep (sg.q : (D.s.atP (below D P)).Fp)) (lattice₂ D Z.M (below D P) Λ) → v ∈ lattice₂ D Z.M (below D P) (Ideal.span {((gS D : ℕ) : 𝓞 D.host.E)} • Λ) := by
   intro D Z P hP

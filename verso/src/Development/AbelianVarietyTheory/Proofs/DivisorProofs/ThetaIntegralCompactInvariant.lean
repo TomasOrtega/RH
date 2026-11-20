@@ -15,11 +15,11 @@ namespace GlobalTheory.ThetaKInv
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨hrs, A, hA⟩` from `h`. Set `e : Fin r ⊕ Fin s ≃ Fin n` to `finSumFinEquiv.trans (finCongr hrs)`. Set `A' : Matrix (Fin n) (Fin n) ℂ` to `A.submatrix id e.symm`. Establish `h1 : A'ᵀ * M * A'.map star = (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1)).submatrix e.symm e.symm`. Rewrite using `[← hA]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[A', Matrix.mul_apply, Matrix.submatrix_apply, Matrix.transpose_apply, Matrix.map_apply]`. Establish `h2 : (A'ᵀ * M * A'.map star).det ≠ 0`. Rewrite using `[h1, Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁]`. Simplify using `[Matrix.det_neg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h0`. Apply `h2` to reduce the goal to its premises. Rewrite using `[Matrix.det_mul, Matrix.det_mul, h0]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_ne_zero_of_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨hrs, A, hA⟩ := h
@@ -36,9 +36,9 @@ theorem det_ne_zero_of_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h 
   rw [Matrix.det_mul, Matrix.det_mul, h0]; simp
 
 /- English proof (translation)
-Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace F))`. Use `det_ne_zero_of_hasSig (hX.sig w)` as an intermediate fact. Introduce `h0`. Apply `this` to reduce the goal to its premises. Establish `e` using `RingHom.map_det (B.emb w).1 X.J`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `e` using `[RingHom.mapMatrix_apply]`. Rewrite using `[← e, h0, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_ne_zero_of_isHerm {σ : E →ₐ[F] E} {B : Base F E} {n r s : ℕ} {X : Spc F E n} (hX : X.IsHerm σ B r s) :
     X.J.det ≠ 0 := by
@@ -50,7 +50,7 @@ theorem det_ne_zero_of_isHerm {σ : E →ₐ[F] E} {B : Base F E} {n r s : ℕ} 
   rw [← e, h0, map_zero]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cA_eq_sigR (σ : E →ₐ[F] E) (x : AE F E) : cA σ x = sigR (AF F) σ x := by
   induction x using TensorProduct.induction_on with
@@ -59,11 +59,11 @@ theorem cA_eq_sigR (σ : E →ₐ[F] E) (x : AE F E) : cA σ x = sigR (AF F) σ 
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Use extensionality with `g`. Establish `hc : (g : Matrix (Fin n) (Fin n) (AE F E)).map (cA σ) = (g : Matrix (Fin n) (Fin n) (AE F E)).map (sigR (AF F) σ)`. Use extensionality with `i j`. Conclude with `cA_eq_sigR σ _`. Establish `hJ : JR (AF F) Jᵀ = (incM F J)ᵀ` using `rfl`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(g : Matrix (Fin n) (Fin n) (AE F E))ᵀ * incM F J * (g : Matrix (Fin n) (Fin n) (AE F E)).map (cA σ) = incM F J ↔ Formalism.UG.cT (sigR (AF F) σ) (g : Matrix (Fin n) (Fin n) (AE F E)) * JR (AF F) Jᵀ * (g : Matrix (Fin n) (Fin n) (AE F E)) = JR (AF F) Jᵀ`. Rewrite using `[hc, hJ, Formalism.UG.cT]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg Matrix.transpose h` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Matrix.transpose_mul, Matrix.mul_assoc]`. Introduce `h`. Use `congrArg Matrix.transpose h` as an intermediate fact. Simplify `this` using `[Matrix.transpose_mul, Matrix.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UG_eq_HR (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     UG (cA σ) (incM F J) = HR (AF F) σ Jᵀ := by
@@ -89,11 +89,9 @@ namespace GlobalTheory.ThetaKInv
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hJ : IsHermND σ Jᵀ` using `⟨fun i j => by simp [Matrix.transpose_apply, herm], by rwa [Matrix.det_transpose]⟩`. Take `⟨hU, -⟩` from `GlobalTheory.AdelicStabUnimod.unimodularOver_adele F E σ hcm n Jᵀ hJ`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsTopologicalGroup (UA σ J) := inferInstanceAs (IsTopologicalGroup (UG (cA σ) (incM F J)))`. Use `haveI : BorelSpace (UA σ J) := ⟨rfl⟩`. Set `e : UA σ J ≃* HA (AF F) σ Jᵀ` to `MulEquiv.subgroupCongr (GlobalTheory.ThetaKInv.UG_eq_HR σ J)`. Establish `h1 : Continuous e` using `continuous_induced_rng.2 continuous_subtype_val`. Establish `h2 : Continuous e.symm` using `continuous_induced_rng.2 continuous_subtype_val`.
-
-Conclude with `(GlobalTheory.AdelicStabUnimod.isUnimodularLC_of_equiv hU e h1 h2).2.2.2.2.2.2 μ inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isMulRightInvariant (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (herm : ∀ i j, σ (J j i) = J i j) (hdet : J.det ≠ 0) (μ : Measure (UA σ J)) [μ.IsHaarMeasure] :
@@ -117,9 +115,9 @@ namespace GlobalTheory.ThetaKInv
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `haveI : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable`. Use `haveI : Countable (Matrix (Fin n) (Fin n) E) := inferInstanceAs (Countable (Fin n → Fin n → E))`. Use `haveI : Countable (GL (Fin n) E) := Function.Injective.countable (f := fun u : GL (Fin n) E => (u : Matrix (Fin n) (Fin n) E)) (fun _ _ h => Units.ext h)`. Set `f` to `Matrix.GeneralLinearGroup.map (n := Fin n) (inclR (F := F) (E := E) (AF F))`. Establish `hr : (Set.range f).Countable` using `Set.countable_range f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI : Countable (Set.range f) := hr.to_subtype`. Use `Function.Injective.countable (f := fun γ : ratU σ J => (⟨γ.1.1, γ.2⟩ : Set.range f)) ?_` and prove the remaining obligations. Introduce `a b hab`. Use `congrArg Subtype.val hab` as an intermediate fact. Conclude with `Subtype.ext (Subtype.ext (by simpa using this))`.
+A detailed English derivation is pending.
 -/
 theorem countable_ratU (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : Countable (ratU σ J) := by
   haveI : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable

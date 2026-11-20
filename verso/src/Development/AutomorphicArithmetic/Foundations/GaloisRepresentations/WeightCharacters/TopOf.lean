@@ -14,39 +14,37 @@ namespace UpperTheory.Gal.Wt
 
 open UpperTheory.Gal.Gen UpperTheory.Gal.Int.Cong in
 /- English proof (translation)
-Introduce `hEx hPr hWt E _ _ _ l _ ι a ha w₀ hw₀ hs₀ v' hv' hsv hap K hK hKv Kv hKvo lam Jx t η ht htv hact τ₀ hτ₀ U hU ε hε`. Take `⟨W, f, hW, hf0, hfU, hfK, -⟩` from `GlobalTheory.T.exists_algebraicForm_weight_level_smooth_at_place E a lam _ U (inf_le_left.trans hK.fin) hU w₀`. Take `rfl : lam = W.at` from `(funext hW).symm`. Take `⟨X, b, hbd, hdef, hne⟩` from `Loc.frame denomBdd_holds rhoBound_holds latFacts_holds levelEx_holds ι W t fun j => Or.inr (ht j)`. Choose the witnesses or unpack the hypotheses as in `⟨g₀, i₀, hz⟩ : ∃ g i, f.1 (b g i) g ≠ 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hf0 (hdef f h)`. Use `set z₀ := f.1 (b g₀ i₀) g₀ with hz₀`. Set `f₁ : algForms W` to `z₀⁻¹ • f`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf₁ : ∀ v g, f₁.1 v g = z₀⁻¹ * f.1 v g` using `fun v g => rfl`. Establish `hf₁K : f₁ ∈ fixedBy W (K ⊓ Kv.comap (cLoc v'))` using `fun k hk v g => by rw [hf₁, hf₁, hfK k hk v g]`. Establish `hf₁U : ∀ v, f₁.1 v ∈ U` using `fun v => U.smul_mem _ (hfU v)`. Take `⟨d, M, hM, hB⟩` from `hEx E l ι a ha w₀ hw₀ hs₀ v' hsv hap K hK hKv Kv hKvo W f₁ hf₁K τ₀ hτ₀ X b hbd ε hε`. Set `N : ℕ` to `(a + 1) * (2 * (2 * d) + a) + 1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `ν : DomWeight a` to `⟨fun k => (N : ℤ) * mu0 a k, fun _ _ h => mul_le_mul_of_nonneg_left (lacunaryBaseWeight_antitone a h) (Int.natCast_nonneg N)⟩`. Take `⟨B, hFam, hnear⟩` from `hB ν`. Take `⟨s₀, F, hF, hsum⟩` from `hPr E a τ₀ W K ν d B hFam`. Set `I` to `s₀.filter fun V => ∃ y₁ y₂ v, F V y₁ y₂ v ≠ 0`. Set `Ft : Submodule ℂ (UA E a → ℂ) → (W.Sp →ₗ[ℂ] (UA E a → ℂ))` to `fun V => LinearMap.pi fun g => (LinearMap.proj g) ∘ₗ F V (M g) (M g)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hFt : ∀ V v g, Ft V v g = F V (M g) (M g) v g` using `fun _ _ _ => rfl`. Set `T : Jx → Module.End ℂ (W.Sp →ₗ[ℂ] (UA E a → ℂ))` to `fun j => LinearMap.llcomp ℂ W.Sp (UA E a → ℂ) (UA E a → ℂ) (GlobalTheory.CongSc.opL (t j))`. Set `ev : UA E a × X → (W.Sp →ₗ[ℂ] (UA E a → ℂ)) →ₗ[ℂ] ℂ` to `fun x => (LinearMap.proj x.1) ∘ₗ (LinearMap.applyₗ (b x.1 x.2))`. Establish `hT : ∀ j (F' : W.Sp →ₗ[ℂ] (UA E a → ℂ)) v, T j F' v = opOf (RU E a) (t j) (F' v)` using `fun _ _ _ => rfl`. Establish `hev : ∀ x (F' : W.Sp →ₗ[ℂ] (UA E a → ℂ)), ev x F' = F' (b x.1 x.2) x.1` using `fun _ _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne' : ∀ (F' : W.Sp →ₗ[ℂ] (UA E a → ℂ)) (R' : ℝ), (∀ x, ‖ι.symm (ev x F')‖ ≤ R') → ∀ j x, ‖ι.symm (ev x (T j F'))‖ ≤ R'` using `fun F' R' hR' j x => hne F' R' (fun g i => hR' (g, i)) j x.1 x.2`. Establish `heig0 : ∀ j, T j f₁.1 = η U j • f₁.1`. Introduce `j`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hT, LinearMap.smul_apply]`. Conclude with `hact U hU.aut (f₁.1 v) (hf₁U v) (fun x hx => funext fun g => hf₁K x hx v g) j`. Establish `hnorm : ‖ι.symm (ev (g₀, i₀) f₁.1)‖ = 1`. Establish `: ev (g₀, i₀) f₁.1 = 1`. Rewrite using `[hev]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show z₀⁻¹ * f.1 (b g₀ i₀) g₀ = 1`. Conclude with `inv_mul_cancel₀ hz`. Rewrite using `[this, map_one, norm_one]`. Set `vv : ↥I → (W.Sp →ₗ[ℂ] (UA E a → ℂ))` to `fun V => -Ft V.1`. Establish `hop : ∀ j (φ : UA E a → ℂ) g, opOf (RU E a) (t j) φ g = ∑ h ∈ (t j).support, t j h * φ (g * h)` using `fun j φ g => by`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [opOf, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, RU_apply, smul_eq_mul]`. Establish `heig : ∀ (V : ↥I) j, T j (vv V) = η V.1 j • vv V`. Introduce and unpack `⟨V, hV⟩ j`. Take `⟨h1, h2, h3⟩` from `hF V (Finset.mem_filter.1 hV).1`. Establish `h : T j (Ft V) = η V j • Ft V`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Use function extensionality and compare the values at `g`. Establish `e` using `congrFun (hact V h1 _ (h3 (M g) (M g) v) (fun x hx => h2.fix x hx.1 _ _ _) j) g`. Rewrite using `[hT, hop, LinearMap.smul_apply, Pi.smul_apply, hFt]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[hop, Pi.smul_apply]`. Rewrite using `[← e]`. Use `Finset.sum_congr rfl fun h hh => ?_` and prove the remaining obligations. Rewrite using `[hFt, hM g h (ht j h hh).1 ((htv j h hh).2 v' (not_apart_self v'))]`. Use `show T j (-Ft V) = η V j • -Ft V`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_neg, h, smul_neg]`. Establish `hbound : ∀ x, ‖ι.symm (ev x (f₁.1 + ∑ V, vv V))‖ ≤ ε`. Introduce `x`. Establish `h1 : ev x (f₁.1 + ∑ V, vv V) = f₁.1 (b x.1 x.2) x.1 - B (M x.1) (M x.1) (b x.1 x.2) x.1`. Rewrite using `[map_add, map_sum, hev, sub_eq_add_neg, ← hsum, Finset.sum_apply, ← Finset.sum_neg_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Finset.sum_coe_sort I (fun V => ev x (-Ft V))]`. Use `(Finset.sum_filter_of_ne fun V _ hV => ?_).trans (Finset.sum_congr rfl fun V _ => rfl)` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `hV ?_` and prove the remaining obligations. Rewrite using `[map_neg, hev, hFt, h, Pi.zero_apply, neg_zero]`. Rewrite using `[h1]`. Conclude with `hnear _ _`. Take `⟨s, c, hs, hP⟩` from `GlobalTheory.T.eigenvector_small_sub_finite_eigen_approx_inequality l ι (W.Sp →ₗ[ℂ] (UA E a → ℂ)) (UA E a × X) Jx ↥I T ev hne' f₁.1 (η U) (g₀, i₀) heig0 hnorm vv (fun V => η V.1) heig ε hbound`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨s, c, ?_, hP⟩` and prove the remaining obligations. Introduce `z hz'`. Take `⟨⟨V, hV⟩, rfl⟩` from `hs z hz'`. Take `⟨hV1, hV2⟩` from `Finset.mem_filter.1 hV`. Take `⟨h1, h2, h3⟩` from `hF V hV1`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨mu, g1, g2, g3⟩` from `hWt E a τ₀ W K ν d (F V) h2 V h1 h3 hV2`. Use `⟨V, mu, fun τ hτ => ?_, gapJ_of_near (mu τ₀) N (2 * d) g3 (Nat.lt_succ_self _), g1, rfl⟩` and prove the remaining obligations. Establish `e : InfinitePlace.mk τ = InfinitePlace.mk τ₀`. Assume the negation of the conclusion as `h`. Conclude with `hτ (g2 τ h)`.
-
-Break down `InfinitePlace.mk_eq_iff.1 e with rfl | rfl` into its components or cases. Conclude with `Or.inl hτ₀`. Use `Or.inr fun x hx => ?_` and prove the remaining obligations. Use `hτ₀ x hx` as an intermediate fact. Rewrite `this` using `[ComplexEmbedding.conjugate_coe_eq, ← IsCMField.complexEmbedding_complexConj]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem top_of : FamEx → FamProj → FamWt → UpperTheory.Gal.Int.Cong.WtLacEx := by
   intro hEx hPr hWt E _ _ _ l _ ι a ha w₀ hw₀ hs₀ v' hv' hsv hap K hK hKv Kv hKvo lam Jx t η ht htv hact τ₀ hτ₀ U hU ε hε

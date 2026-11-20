@@ -21,20 +21,20 @@ def qj : ℍ[F, a, b] := ⟨0, 0, 1, 0⟩
 def qk : ℍ[F, a, b] := ⟨0, 0, 0, 1⟩
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [qi, qj, qk]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem decomp (y : ℍ[F, a, b]) : y = y.re • (1 : ℍ[F, a, b]) + y.imI • qi + y.imJ • qj + y.imK • qk := by
   ext <;> simp [qi, qj, qk]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_smul_F (c : F) (M : Matrix (Fin 2) (Fin 2) F) :
     (c • M).map (algebraMap F (AF F)) = algebraMap F (AF F) c • M.map (algebraMap F (AF F)) := by
   ext i j; simp
 
 /- English proof (translation)
-Rewrite using `[map_smul_F, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_smul_one (c : F) :
     (c • (1 : Matrix (Fin 2) (Fin 2) F)).map (algebraMap F (AF F)) = algebraMap F (AF F) c • 1 := by
@@ -67,7 +67,7 @@ def bcBasis : QuaternionAlgebra.Basis (Matrix (Fin 2) (Fin 2) (AF F)) (algebraMa
 def Φ : DA F a b →ₐ[AF F] Matrix (Fin 2) (Fin 2) (AF F) := (bcBasis φ).liftHom
 
 /- English proof (translation)
-Simplify using `[Φ, QuaternionAlgebra.Basis.liftHom, QuaternionAlgebra.Basis.lift, bcBasis, Algebra.algebraMap_eq_smul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Φ_apply (x : DA F a b) : Φ φ x = x.re • (1 : Matrix (Fin 2) (Fin 2) (AF F))
     + x.imI • (φ qi).map (algebraMap F (AF F)) + x.imJ • (φ qj).map (algebraMap F (AF F))
@@ -78,18 +78,18 @@ def Ψ (m : Matrix (Fin 2) (Fin 2) (AF F)) : DA F a b :=
   ∑ i, ∑ j, m i j • rat (φ.symm (Matrix.single i j 1))
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [rat]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rat_add (x y : ℍ[F, a, b]) : rat (x + y) = rat x + rat y := by ext <;> simp [rat]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [rat] <;> rw [Algebra.smul_def]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rat_smul (c : F) (x : ℍ[F, a, b]) : rat (c • x) = algebraMap F (AF F) c • rat x := by
   ext <;> simp [rat] <;> rw [Algebra.smul_def]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => ext <;> simp [rat]`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, rat_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem rat_sum {ι : Type} (s : Finset ι) (f : ι → ℍ[F, a, b]) : rat (∑ i ∈ s, f i) = ∑ i ∈ s, rat (f i) := by
   classical
@@ -98,24 +98,24 @@ theorem rat_sum {ι : Type} (s : Finset ι) (f : ι → ℍ[F, a, b]) : rat (∑
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, rat_add, ih]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [rat]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rat_one : rat (1 : ℍ[F, a, b]) = 1 := by ext <;> simp [rat]
 
 /- English proof (translation)
-Simplify using `only [Ψ, Matrix.add_apply, add_smul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Ψ_add (m n : Matrix (Fin 2) (Fin 2) (AF F)) : Ψ φ (m + n) = Ψ φ m + Ψ φ n := by
   simp only [Ψ, Matrix.add_apply, add_smul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Ψ, Matrix.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Ψ_smul (c : AF F) (m : Matrix (Fin 2) (Fin 2) (AF F)) : Ψ φ (c • m) = c • Ψ φ m := by
   simp only [Ψ, Matrix.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum]
 
 /- English proof (translation)
-Use `conv_rhs => rw [Matrix.matrix_eq_sum_single M]`. Simplify using `only [Ψ, Matrix.map_apply, map_sum, rat_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show Matrix.single i j (M i j) = M i j • Matrix.single i j (1 : F) by rw [Matrix.smul_single, smul_eq_mul, mul_one], map_smul, rat_smul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ψ_map (M : Matrix (Fin 2) (Fin 2) F) : Ψ φ (M.map (algebraMap F (AF F))) = rat (φ.symm M) := by
   conv_rhs => rw [Matrix.matrix_eq_sum_single M]
@@ -125,13 +125,13 @@ theorem Ψ_map (M : Matrix (Fin 2) (Fin 2) F) : Ψ φ (M.map (algebraMap F (AF F
     map_smul, rat_smul]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_one (algebraMap F (AF F)) (map_zero _) (map_one _), Ψ_map, map_one, rat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Ψ_one : Ψ φ 1 = 1 := by
   rw [← Matrix.map_one (algebraMap F (AF F)) (map_zero _) (map_one _), Ψ_map, map_one, rat_one]
 
 /- English proof (translation)
-Use `conv_rhs => rw [decomp y]`. Simplify using `only [Φ_apply, map_add, map_smul, map_one, Matrix.map_add, map_smul_F, Matrix.map_one _ (map_zero _) (map_one (algebraMap F (AF F)))]`. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, Matrix.one_apply, smul_eq_mul, map_add, map_mul, rat]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem Φ_rat (y : ℍ[F, a, b]) : Φ φ (rat y) = (φ y).map (algebraMap F (AF F)) := by
   conv_rhs => rw [decomp y]
@@ -141,7 +141,7 @@ theorem Φ_rat (y : ℍ[F, a, b]) : Φ φ (rat y) = (φ y).map (algebraMap F (AF
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `conv_rhs => rw [Matrix.matrix_eq_sum_single m]`. Simplify using `only [Ψ, map_sum, map_smul, Φ_rat, AlgEquiv.apply_symm_apply]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use extensionality with `k l`. Simplify using `[Matrix.single_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Φ_Ψ (m : Matrix (Fin 2) (Fin 2) (AF F)) : Φ φ (Ψ φ m) = m := by
   conv_rhs => rw [Matrix.matrix_eq_sum_single m]
@@ -150,7 +150,7 @@ theorem Φ_Ψ (m : Matrix (Fin 2) (Fin 2) (AF F)) : Φ φ (Ψ φ m) = m := by
   ext k l; simp [Matrix.single_apply]
 
 /- English proof (translation)
-Rewrite using `[Φ_apply, Ψ_add, Ψ_add, Ψ_add, Ψ_smul, Ψ_smul, Ψ_smul, Ψ_smul, Ψ_one, Ψ_map, Ψ_map, Ψ_map]`. Simplify using `only [AlgEquiv.symm_apply_apply]`. Apply the tactic sequence `ext <;> simp [rat, qi, qj, qk]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Ψ_Φ (x : DA F a b) : Ψ φ (Φ φ x) = x := by
   rw [Φ_apply, Ψ_add, Ψ_add, Ψ_add, Ψ_smul, Ψ_smul, Ψ_smul, Ψ_smul, Ψ_one, Ψ_map, Ψ_map, Ψ_map]
@@ -158,13 +158,13 @@ theorem Ψ_Φ (x : DA F a b) : Ψ φ (Φ φ x) = x := by
   ext <;> simp [rat, qi, qj, qk]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Φ_Ψ φ m, ← Φ_Ψ φ n, ← map_mul, Ψ_Φ]`.
+A detailed English derivation is pending.
 -/
 theorem Ψ_mul (m n : Matrix (Fin 2) (Fin 2) (AF F)) : Ψ φ (m * n) = Ψ φ m * Ψ φ n := by
   conv_lhs => rw [← Φ_Ψ φ m, ← Φ_Ψ φ n, ← map_mul, Ψ_Φ]
 
 /- English proof (translation)
-Simplify using `[Matrix.det_fin_two]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_four {R : Type} [CommRing R] (A₀ A₁ A₂ A₃ : Matrix (Fin 2) (Fin 2) R) (x₀ x₁ x₂ x₃ : R) :
     (x₀ • A₀ + x₁ • A₁ + x₂ • A₂ + x₃ • A₃).det = x₀ ^ 2 * A₀.det + x₁ ^ 2 * A₁.det + x₂ ^ 2 * A₂.det
@@ -174,11 +174,11 @@ theorem det_four {R : Type} [CommRing R] (A₀ A₁ A₂ A₃ : Matrix (Fin 2) (
   simp [Matrix.det_fin_two]; ring
 
 /- English proof (translation)
-Establish `hd : ∀ y : ℍ[F, a, b], ((φ y).map (algebraMap F (AF F))).det = algebraMap F (AF F) (nrm y)`. Introduce `y`. Rewrite using `[← hφ y, RingHom.map_det]`. Both sides reduce to the same expression. Establish `hd2 : ∀ y z : ℍ[F, a, b], ((φ y).map (algebraMap F (AF F)) + (φ z).map (algebraMap F (AF F))).det = algebraMap F (AF F) (nrm (y + z))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `y z`. Rewrite using `[← Matrix.map_add _ (map_add _), ← map_add]`. Conclude with `hd _`. Establish `h1 : (1 : Matrix (Fin 2) (Fin 2) (AF F)) = (φ 1).map (algebraMap F (AF F))`. Rewrite using `[map_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Φ_apply, h1, det_four]`. Simplify using `only [hd2, hd]`. Simplify using `[nrm, qi, qj, qk]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem det_Φ (hφ : ∀ x, (φ x).det = nrm x) (x : DA F a b) : (Φ φ x).det = nrm x := by
   have hd : ∀ y : ℍ[F, a, b], ((φ y).map (algebraMap F (AF F))).det = algebraMap F (AF F) (nrm y) := by
@@ -194,15 +194,15 @@ theorem det_Φ (hφ : ∀ x, (φ x).det = nrm x) (x : DA F a b) : (Φ φ x).det 
   ring
 
 /- English proof (translation)
-Rewrite using `[← det_Φ φ hφ, Φ_Ψ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nrm_Ψ (hφ : ∀ x, (φ x).det = nrm x) (m : Matrix (Fin 2) (Fin 2) (AF F)) : nrm (Ψ φ m) = m.det := by
   rw [← det_Φ φ hφ, Φ_Ψ]
 
 /- English proof (translation)
-Establish `hc : ∀ x : DA F a b, coords x = QuaternionAlgebra.linearEquivTuple _ _ _ x` using `fun x => by`. Apply the tactic sequence `ext k; fin_cases k <;> rfl`. Apply `continuous_induced_rng.2` to reduce the goal to its premises. Establish `: (coords ∘ Ψ φ : Matrix (Fin 2) (Fin 2) (AF F) → Fin 4 → AF F) = fun m => ∑ i, ∑ j, m i j • coords (rat (φ.symm (Matrix.single i j 1)) : DA F a b)`. Use function extensionality and compare the values at `m`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp, Ψ, hc, map_sum, map_smul]`. Rewrite using `[this]`. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `(continuous_id.matrix_elem i j).smul continuous_const`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Ψ_cont : Continuous (Ψ φ) := by
   have hc : ∀ x : DA F a b, coords x = QuaternionAlgebra.linearEquivTuple _ _ _ x := fun x => by
@@ -216,7 +216,7 @@ theorem Ψ_cont : Continuous (Ψ φ) := by
   exact (continuous_id.matrix_elem i j).smul continuous_const
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, Ψ_add, show -(1 : Matrix (Fin 2) (Fin 2) (AF F)) = (-1 : AF F) • 1 by simp, Ψ_smul, Ψ_one]`. Simplify using `[sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Ψ_sub_one (m : Matrix (Fin 2) (Fin 2) (AF F)) : Ψ φ (m - 1) = Ψ φ m - 1 := by
   rw [sub_eq_add_neg, Ψ_add, show -(1 : Matrix (Fin 2) (Fin 2) (AF F)) = (-1 : AF F) • 1 by simp, Ψ_smul, Ψ_one]
@@ -227,11 +227,11 @@ end GlobalTheory.QSA.Split
 open GlobalTheory.QSA.Split in
 
 /- English proof (translation)
-Introduce `F _ _ a b ha hb hiso S₁ S₂ ε hε hS g hg`. Take `⟨φ, hφ⟩` from `GlobalTheory.T.quaternion_split_of_isotropic_norm F a b ha hb hiso`. Establish `hdet : (Φ φ g).det = 1` using `by rw [det_Φ φ hφ, hg]`. Establish `hcl` using `GlobalTheory.T.strong_approximation_SL2_adeles F S₁ S₂ ε hε hS (Φ φ g) hdet`. Rewrite using `[← Ψ_Φ φ g]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `map_mem_closure (Ψ_cont φ) hcl ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, hγ, h, hh, hεh, rfl⟩`. Use `⟨φ.symm γ, ?_, Ψ φ h, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ, AlgEquiv.apply_symm_apply, hγ]`. Rewrite using `[nrm_Ψ φ hφ, hh]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ψ_sub_one, ← Ψ_smul, hεh]`. Rewrite using `[Ψ_mul, Ψ_map]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.QSA.strongApprox_split : ∀ (F : Type) [Field F] [NumberField F] (a b : F), a ≠ 0 → b ≠ 0 → (∃ x : ℍ[F, a, b], x ≠ 0 ∧ nrm x = 0) → ∀ (S₁ : Finset (InfinitePlace F)) (S₂ : Finset (HeightOneSpectrum (𝓞 F))) (ε : AF F), IsPlacesIdem S₁ S₂ ε → (S₁.Nonempty ∨ S₂.Nonempty) → ∀ g : DA F a b, nrm g = 1 → g ∈ closure (H0 (a := a) (b := b) ε) := by
   intro F _ _ a b ha hb hiso S₁ S₂ ε hε hS g hg

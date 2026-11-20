@@ -12,13 +12,11 @@ namespace DiscreteGroups.sglob.DzType
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `E _ _ w g _ i hi n K _ _ hK hn χ₀`. Take `⟨χ, hχs, hχl⟩` from `DzTw.exists_liftsChar i hi χ₀`. Establish `hdet : ∀ k : GL (Fin n) ℤ_[g], χ (Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map i.toRingHom (inc g n k))) = χ₀ (Matrix.GeneralLinearGroup.det (red g n k))`. Introduce `k`. Rewrite using `[hχl.1 (Matrix.GeneralLinearGroup.det k) _ ?_]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Units.ext ?_` and prove the remaining obligations. Use `show PadicInt.toZMod ((k : Matrix (Fin n) (Fin n) ℤ_[g]).det) = ((red g n k : Matrix (Fin n) (Fin n) (ZMod g))).det`. Conclude with `RingHom.map_det _ _`. Use `show (i.toRingHom.mapMatrix ((algebraMap ℤ_[g] ℚ_[g]).mapMatrix (k : Matrix (Fin n) (Fin n) ℤ_[g]))).det = i.toRingHom ((algebraMap ℤ_[g] ℚ_[g]) (k : Matrix (Fin n) (Fin n) ℤ_[g]).det)`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[RingHom.map_det, RingHom.map_det]`. Use `⟨χ, hχs, hχl, fun θ hθ τ hτ hθτ σ hσ => ?_⟩` and prove the remaining obligations. Use `⟨DzTw.twFD τ χ₀, irrTwist σ (detChar (Fin n) χ) (hχs.detChar (n := Fin n)), DzTw.isRegularChar_mul K χ₀ hθ, DzTw.isCusp_twFD τ χ₀ hτ, DzTw.char_twFD K hK hn χ₀ θ τ hθτ, ?_, Sigma.ext rfl (heq_of_eq (clTwist_cl σ _ _).symm)⟩` and prove the remaining obligations. Take `⟨φ, hφ0, hφ⟩` from `hσ`. Use `⟨φ, hφ0, fun k v => ?_⟩` and prove the remaining obligations.
-
-Use `show φ ((((detChar (Fin n) χ₀ (red g n k)) : ℂˣ) : ℂ) • τ.ρ (red g n k) v) = (((detChar (Fin n) χ (Matrix.GeneralLinearGroup.map i.toRingHom (inc g n k))) : ℂˣ) : ℂ) • σ.ρ (Matrix.GeneralLinearGroup.map i.toRingHom (inc g n k)) (φ v)`. Rewrite using `[map_smul, hφ k v, detChar_apply, detChar_apply, hdet k, MonoidHom.comp_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lTw : LTw := by
   intro E _ _ w g _ i hi n K _ _ hK hn χ₀

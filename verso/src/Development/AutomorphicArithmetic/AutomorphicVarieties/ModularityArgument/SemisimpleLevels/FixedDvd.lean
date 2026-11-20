@@ -17,9 +17,9 @@ open GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.LocGL Globa
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `hd`. Establish `h0` using `congrArg (Polynomial.aeval f) hq`. Rewrite `h0` using `[map_mul, LinearMap.aeval_self_charpoly, zero_mul, map_pow, map_sub, Polynomial.aeval_X, map_one]`. Establish `hs : (f - algebraMap ℂ (Module.End ℂ V) 1).IsSemisimple` using `Module.End.isSemisimple_sub_algebraMap_iff.2 hf`. Rewrite `hs` using `[map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `sub_eq_zero.1 (Module.End.eq_zero_of_isNilpotent_isSemisimple ⟨_, h0⟩ hs)`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Lev.eq_one_of_charpoly_dvd {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (f : Module.End ℂ V) (hf : f.IsSemisimple) {n : ℕ} (hd : f.charpoly ∣ (Polynomial.X - 1) ^ n) : f = 1 := by
@@ -33,9 +33,9 @@ private theorem UpperTheory.V.Lev.eq_one_of_charpoly_dvd {V : Type} [AddCommGrou
   exact sub_eq_zero.1 (Module.End.eq_zero_of_isNilpotent_isSemisimple ⟨_, h0⟩ hs)
 
 /- English proof (translation)
-Take `⟨m, b, rfl, hb⟩` from `hz`. Establish `key : ∀ s : ↥(Ine (F` using `F) A), (∀ ζ : Ω, ζ ^ M = 1 → (s : G F Ω) ζ = ζ) → b.ρ (ineIncl h s) = 1 := by`. Introduce `s hs`. Establish `h2` using `hd (ineIncl h s)`. Rewrite `h2` using `[hx s hs, WD.charPol_mk]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `UpperTheory.V.Lev.eq_one_of_charpoly_dvd _ (b.semisimple _) h2`. Take `⟨ξ, hξ, h1, h2⟩` from `UpperTheory.irreducible_weilDeligne_tame_level_eq_character F Ω w A h M hM m b hb key`. Conclude with `⟨ξ, hξ, h1, fun s hs => h2 _ (key s hs)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Lev.char_of_dvd {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (w : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω) (h : IsPlaceOver A w) (M n : ℕ) (hM : 1 ≤ M) (x z : WD h)
@@ -55,9 +55,9 @@ private theorem UpperTheory.V.Lev.char_of_dvd {F Ω : Type} [Field F] [NumberFie
   exact ⟨ξ, hξ, h1, fun s hs => h2 _ (key s hs)⟩
 
 /- English proof (translation)
-Establish `: (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Rewrite using `[(isEquiv (valuation (w.adicCompletion F)) (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ)))).lt_one_iff_lt_one]`. Establish `h : Valued.v (((algebraMap (𝓞 F) F (M : 𝓞 F) : F)) : w.adicCompletion F) = w.valuation F (algebraMap (𝓞 F) F (M : 𝓞 F))` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _`. Establish `h2 : w.valuation F (algebraMap (𝓞 F) F (M : 𝓞 F)) < 1` using `(HeightOneSpectrum.valuation_lt_one_iff_mem w _).mpr hw`. Rewrite `h2` using `[← h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (((algebraMap (𝓞 F) F (M : 𝓞 F) : F)) : w.adicCompletion F) = ((M : ℕ) : w.adicCompletion F)`. Rewrite using `[map_natCast]`. Conclude with `map_natCast (algebraMap F (w.adicCompletion F)) M`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Lev.val_lt_one {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F)) {M : ℕ}
     (hw : (M : 𝓞 F) ∈ w.asIdeal) : valuation (w.adicCompletion F) (M : w.adicCompletion F) < 1 := by
@@ -75,21 +75,19 @@ private theorem UpperTheory.V.Lev.val_lt_one {F : Type} [Field F] [NumberField F
   rwa [e] at h2
 
 /- English proof (translation)
-Introduce `P F Ω _ _ _ _ _ n M hM w hw A h rc hrc σ hL`. Take `⟨a, ha, ε, -, H⟩` from `hrc`. Establish `hv : valuation (w.adicCompletion F) (M : w.adicCompletion F) < 1` using `UpperTheory.V.Lev.val_lt_one w hw`. Establish `hM0 : (M : w.adicCompletion F) ≠ 0`. Rewrite using `[← map_natCast (algebraMap F (w.adicCompletion F)), map_ne_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.cast_ne_zero.2 (by omega)`. Establish `hu0 : uniformizer (w.adicCompletion F) ≠ 0` using `by simp`. Establish `hv0 : valuation (w.adicCompletion F) (M : w.adicCompletion F) ≠ 0` using `by simpa using hM0`. Set `γ : (ValueGroupWithZero (w.adicCompletion F))ˣ` to `Units.mk0 (valuation _ (M : w.adicCompletion F) / uniformizer (w.adicCompletion F)) (div_ne_zero hv0 hu0)`. Establish `hlt : ∀ x : ValueGroupWithZero (w.adicCompletion F), x < γ ↔ x ≤ valuation _ (M : w.adicCompletion F)` using `fun x => by show x < _ / _ ↔ _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lt_div_iff₀ (zero_lt_iff.2 hu0)]`. Use `⟨fun h1 => not_lt.1 fun h2 => h1.not_ge ?_, fun h1 => (mul_le_mul_left h1 _).trans_lt (mul_lt_of_lt_one_right (zero_lt_iff.2 hv0) uniformizer_lt_one)⟩` and prove the remaining obligations. Establish `hx : 0 < x` using `(zero_lt_iff.2 hv0).trans h2`. Rewrite using `[← div_le_iff₀' hx, le_uniformizer_iff, div_lt_one₀ hx]` and apply the resulting hypothesis. Establish `hγ : γ ≤ 1` using `by show _ / _ ≤ (1 : ValueGroupWithZero (w.adicCompletion F))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_le_one₀ (zero_lt_iff.2 hu0), le_uniformizer_iff]`. Conclude with `hv`. Take `⟨s, hs⟩` from `GlobalTheory.LocGL.SupportRing.exists_hasSupport P.litN.loc.zel (algNorm σ)`. Establish `hch : ∀ y ∈ s, ∃ χ hχ, y = IrrGL.ofChar χ hχ ∧ ∀ u : (w.adicCompletion F)ˣ, valuation (w.adicCompletion F) ((u : w.adicCompletion F) - 1) < γ → χ u = 1` using `fun y hy => by`. Take `⟨ξ, hξ, e, hξ1⟩` from `UpperTheory.V.Lev.char_of_dvd w A h M n hM _ (rc y) hL ((H.cusp y).1 (hs.isCusp hy)) fun τ => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[H.supp _ s hs τ]`. Conclude with `Multiset.dvd_prod (Multiset.mem_map_of_mem (fun y => (rc y).charPol τ) hy)`. Take `⟨χ, hχ, rfl⟩` from `ha.factor ξ hξ`. Use `⟨χ, hχ, H.bij.1 (e.trans (H.one χ hχ).symm), fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨τ, rfl⟩` from `ha.surj u`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : valuation (w.adicCompletion F) (a τ : w.adicCompletion F) = 1`. Use `(valuation (w.adicCompletion F)).map_one_add_of_lt (hu.trans_le (Units.val_le_val.2 hγ))` as an intermediate fact. Simplify using `using this`. Take `⟨h2, h3⟩` from `UpperTheory.inertia_fixes_roots_of_unity_of_artin_congruence P.litN.aut.art F Ω w A h a ha M hM τ h1 ((hlt _).1 hu)`. Conclude with `hξ1 ⟨τ, h2⟩ h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Establish `hne` using `UpperTheory.jacquet_borel_nontrivial_of_character_support P.litN.loc.geo P.litN.loc.zel _ _ _ (algNorm σ).rep s hs fun y hy => by`. Take `⟨χ, hχ, rfl, -⟩` from `hch y hy`. Both sides reduce to the same expression. Take `⟨y, hy0, hy⟩` from `UpperTheory.jacquet_borel_exists_torus_congruence_fixed P.litN.loc.geo P.litN.loc.zel _ _ _ (algNorm σ).rep s γ hγ hs hch hne`. Establish `hf` using `UpperTheory.fixed_congruence_ne_bot_of_jacquet_torus_fixed _ _ _ (algNorm σ).rep γ hγ ((P.litN.loc.bz _).1 _ _ _ (algNorm σ).2.rep.smooth (algNorm σ).2.rep.irr) y hy0 hy`.
-
-Use `UpperTheory.hasFixed_of_algNorm_fixed_ne_bot F w n σ _ (fun g hg => (UpperTheory.mem_maximalCompact_and_congruent_of_mem_principalCongruence F w n M g hg).1) ?_` and prove the remaining obligations. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hf`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨v, fun g => hv ⟨g.1, fun i j => (hlt _).2 ((UpperTheory.mem_maximalCompact_and_congruent_of_mem_principalCongruence F w n M g.1 g.2).2 i j)⟩, hv0⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lev.fixedDvd :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Lev.FixedDvd := by

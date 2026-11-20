@@ -15,15 +15,13 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 namespace ChowFormHeightComparison₂.RegularPointExistence
 
 /- English proof (translation)
-Use `haveI := (hM.normal x).2`. Use `mem_of_forall_valuationSubring fun O hO => ?_` and prove the remaining obligations. Establish `hreg : ∀ g, GlobalTheory.Cartier.RegAt x g → g ∈ O` using `fun g ⟨a, ha⟩ => ha ▸ hO a`. Take `⟨la, O', hle, h1, h2⟩` from `exists_refine (K := K) (O.comap ψ) fun a => by`. Rewrite using `[ValuationSubring.mem_comap, hM.base a]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hreg _ (regAt_fnOf (TopologicalSpace.Opens.mem_top x) _ _)`. Take `⟨l, hl, hbl⟩` from `hb la O' h1 h2`. Rewrite `hbl` using `[← map_pow, ValuationSubring.valuation_le_iff]`. Take `⟨c, hc⟩` from `hbl`. Establish `hcO : ψ (c : Ω) ∈ O` using `(ValuationSubring.mem_comap).1 (hle c.2)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `hM.ratio ⟨l, hl⟩ w k (gen_mem hx)`. Establish `hψw : ψ (ev w) ≠ 0` using `(map_ne_zero ψ).2 hw`. Establish `e1 : ψ (ev l) * (ψ (ev w))⁻¹ * fnOf (L.B.U k) (gen_mem hx) ((s w).f k) = fnOf (L.B.U k) (gen_mem hx) ((s ⟨l, hl⟩).f k)`. Rewrite using `[mul_right_comm]`. Use `erw [hr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_right_comm, mul_inv_cancel₀ hψw, one_mul]`. Establish `e2 : ψ b * (ψ (ev w))⁻¹ ^ τ * fnOf (L.B.U k) (gen_mem hx) ((s w).f k) ^ τ = ψ (c : Ω) * fnOf (L.B.U k) (gen_mem hx) ((s ⟨l, hl⟩).f k) ^ τ`. Rewrite using `[← e1, ← hc, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`.
-
-Conclude with `O.mul_mem _ _ hcO (O.pow_mem (hreg _ (regAt_fnOf hx _ _)) τ)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reg_of_val {K V Ω : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] [Field Ω] [Algebra K Ω] {Nm : (K →+* ℂ) → V → ℝ} {W : Submodule (𝓞 K) V}
@@ -60,7 +58,7 @@ theorem reg_of_val {K V Ω : Type} [Field K] [NumberField K] [AddCommGroup V] [M
   exact O.mul_mem _ _ hcO (O.pow_mem (hreg _ (regAt_fnOf hx _ _)) τ)
 
 /- English proof (translation)
-Introduce `_ D T j Y e o _ _ Z u X _ p L ψ s t hG hB _ _ hM i _ f hf w hw k x hx`. Conclude with `reg_of_val hM (8 * i) (genVal Z (f : Rul Y.d.Xo₂ Y.d.c₂)) (fun la O h1 h2 => fin_small_gen Y.U Z _ hG.2.1 hG.2.2 hB la O.valuation h1 h2 (8 * i) f fun v hv => hf.1 la v hv) w hw k x hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem reg_all : Hypotheses2 → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (u : GlobalTheory.AllWt.Weight (T.Q.Dw j)) (X : AlgebraicGeometry.Scheme.{0}) [AlgebraicGeometry.IsIntegral X] (p : X ⟶ Sp (𝓞 Y.d.c₂.F)) (L : GlobalTheory.HermLB p) (ψ : Om Z →+* X.functionField) (s : latOn Y.U Z (wtOf (T.Q.Dw j) u 0) → L.B.Sec) (t : ℝ), GoodOn Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtOf (T.Q.Dw j) u 0) → GlobalTheory.DegVal.BirOn Y.U Z (wtOf (T.Q.Dw j) u 0) → NoBase Y.U Z (wtOf (T.Q.Dw j) u 0) → 0 < Y.dg u Z → GlobalTheory.ImageModel.IsModelOf (normOn Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtOf (T.Q.Dw j) u 0)) (latOn Y.U Z (wtOf (T.Q.Dw j) u 0)) (genPoint Z (cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0))) (dimFlag (T.Q.Dw j)) p L ψ s → ∀ i : ℕ, 1 ≤ i → ∀ f ∈ smallL Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtOf (T.Q.Dw j) u 0) (8 * i) t, ∀ w : latOn Y.U Z (wtOf (T.Q.Dw j) u 0), genVal Z ((w : cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0)) : Rul Y.d.Xo₂ Y.d.c₂) ≠ 0 → ∀ (k : L.B.ι) (x : X) (hx : x ∈ L.B.U k), GlobalTheory.Cartier.RegAt x (ψ (genVal Z (f : Rul Y.d.Xo₂ Y.d.c₂)) * (ψ (genVal Z ((w : cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0)) : Rul Y.d.Xo₂ Y.d.c₂)))⁻¹ ^ (8 * i) * fnOf (L.B.U k) (gen_mem hx) ((s w).f k) ^ (8 * i)) := by
   intro _ D T j Y e o _ _ Z u X _ p L ψ s t hG hB _ _ hM i _ f hf w hw k x hx
@@ -71,7 +69,7 @@ theorem reg_all : Hypotheses2 → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep 
 end ChowFormHeightComparison₂.RegularPointExistence
 
 /- English proof (translation)
-Introduce `hP D T j Y e o hY hE Z u X _ p L ψ s t hG hB hN hd hM i hi f hf w hw k x hx _` and use `ChowFormHeightComparison₂.RegularPointExistence.reg_all hP D T j Y e o hY hE Z u X p L ψ s t hG hB hN hd hM i hi f hf w hw k x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ChowFormHeightComparison₂.weight_sections_height_estimate : Hypotheses2 → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (u : GlobalTheory.AllWt.Weight (T.Q.Dw j)) (X : AlgebraicGeometry.Scheme.{0}) [AlgebraicGeometry.IsIntegral X] (p : X ⟶ Sp (𝓞 Y.d.c₂.F)) (L : GlobalTheory.HermLB p) (ψ : Om Z →+* X.functionField) (s : latOn Y.U Z (wtOf (T.Q.Dw j) u 0) → L.B.Sec) (t : ℝ), GoodOn Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtOf (T.Q.Dw j) u 0) → GlobalTheory.DegVal.BirOn Y.U Z (wtOf (T.Q.Dw j) u 0) → NoBase Y.U Z (wtOf (T.Q.Dw j) u 0) → 0 < Y.dg u Z → GlobalTheory.ImageModel.IsModelOf (normOn Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtOf (T.Q.Dw j) u 0)) (latOn Y.U Z (wtOf (T.Q.Dw j) u 0)) (genPoint Z (cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0))) (dimFlag (T.Q.Dw j)) p L ψ s → ∀ i : ℕ, 1 ≤ i → ∀ f ∈ smallL Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtOf (T.Q.Dw j) u 0) (8 * i) t, ∀ w : latOn Y.U Z (wtOf (T.Q.Dw j) u 0), genVal Z ((w : cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0)) : Rul Y.d.Xo₂ Y.d.c₂) ≠ 0 → ∀ (k : L.B.ι) (x : X) (hx : x ∈ L.B.U k), (p x).asIdeal = ⊥ → GlobalTheory.Cartier.RegAt x (ψ (genVal Z (f : Rul Y.d.Xo₂ Y.d.c₂)) * (ψ (genVal Z ((w : cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0)) : Rul Y.d.Xo₂ Y.d.c₂)))⁻¹ ^ (8 * i) * fnOf (L.B.U k) (gen_mem hx) ((s w).f k) ^ (8 * i)) :=
   fun hP D T j Y e o hY hE Z u X _ p L ψ s t hG hB hN hd hM i hi f hf w hw k x hx _ =>

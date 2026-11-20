@@ -13,13 +13,13 @@ noncomputable section
 namespace PositivityTheory.Rg.BcB.F.Fok.Mu3Aux1
 
 /- English proof (translation)
-Use `haveI : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `he` using `ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion E)) Valued.v`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[ValuativeRel.le_uniformizer_iff, he.lt_one_iff_lt_one, hx, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `ValuativeRel.valuation_surjective (ValuativeRel.uniformizer (w.adicCompletion E))`. Rewrite using `[← hy]`. Establish `h1 : Valued.v y < 1`. Rewrite using `[← he.lt_one_iff_lt_one, hy]`. Conclude with `ValuativeRel.uniformizer_lt_one`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[he.le_iff_le, hx]`. Distinguish the cases in `hy0 : Valued.v y = 0`. Rewrite using `[hy0]`. Conclude with `zero_le'`. Rewrite `h1`, the goal using `[← WithZero.exp_log hy0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h1` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem valuation_eq_uniformizer {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
     {x : w.adicCompletion E} (hx : Valued.v x = WithZero.exp (-1 : ℤ)) :
@@ -42,7 +42,7 @@ theorem valuation_eq_uniformizer {E : Type} [Field E] [NumberField E] (w : Heigh
       rw [WithZero.exp_le_exp]; omega
 
 /- English proof (translation)
-Use `haveI : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Conclude with `(ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion E)) Valued.v).eq_one_iff_eq_one.1 hx`.
+A detailed English derivation is pending.
 -/
 theorem valued_eq_one {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
     {x : w.adicCompletion E} (hx : ValuativeRel.valuation (w.adicCompletion E) x = 1) : Valued.v x = 1 := by
@@ -51,7 +51,7 @@ theorem valued_eq_one {E : Type} [Field E] [NumberField E] (w : HeightOneSpectru
   exact (ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion E)) Valued.v).eq_one_iff_eq_one.1 hx
 
 /- English proof (translation)
-Conclude with `Pi.mulSingle_eq_same v _`.
+A detailed English derivation is pending.
 -/
 theorem loc_same {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) (x : (v.adicCompletion K)ˣ) :
     (Neutral.B1.localIdele K v x).val.2 v = x := by
@@ -59,7 +59,7 @@ theorem loc_same {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (�
   exact Pi.mulSingle_eq_same v _
 
 /- English proof (translation)
-Conclude with `Pi.mulSingle_eq_of_ne h _`.
+A detailed English derivation is pending.
 -/
 theorem loc_ne {K : Type} [Field K] [NumberField K] {v w : HeightOneSpectrum (𝓞 K)} (h : w ≠ v)
     (x : (v.adicCompletion K)ˣ) : (Neutral.B1.localIdele K v x).val.2 w = 1 := by
@@ -76,23 +76,23 @@ theorem ideleMap_apply (K L : Type) [Field K] [NumberField K] [Field L] [NumberF
 open GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele (finiteCompletionMap ideleMap)
 
 /- English proof (translation)
-Introduce `E _ _ _ hU μ hres hunit w hw`. Establish `h2 : Module.finrank (maximalRealSubfield E) E = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Establish `hns : ¬ Formalism.MainNotions.SchurIrreducible.IsSplit (E` using `E) (w.under (𝓞 (maximalRealSubfield E))) := by`. Introduce `hs`. Take `⟨a, b, hab, ha, hb⟩` from `GlobalTheory.LFun.isSplit_iff.1 hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `hw` to reduce the goal to its premises. Break down `eq_or_ne a w with rfl | haw` into its components or cases. Conclude with `⟨b, hab.symm, hb⟩`. Conclude with `⟨a, haw, ha⟩`. Establish `hun : Formalism.MainNotions.SchurIrreducible.IsUnram (E` using `E) (w.under (𝓞 (maximalRealSubfield E))) := by`.
+Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `GlobalTheory.LFun.isUnram_iff.2 fun u hu => ?_` and prove the remaining obligations. Take `rfl` from `GlobalTheory.LFun.eq_of_not_isSplit hns hu rfl`. Use `u.isPrime` as an intermediate fact. Conclude with `Algebra.isUnramifiedAt_iff_of_isDedekindDomain.1 (hU u)`. Establish `he : w.asIdeal.ramificationIdx (𝓞 (maximalRealSubfield E)) = 1` using `GlobalTheory.LFun.isUnram_iff.1 hun w rfl`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ϖ, hϖ⟩` from `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.exists_isUniformiser (w.under (𝓞 (maximalRealSubfield E)))`. Use `set ϖE : (w.adicCompletion E)ˣ := Units.map (finiteCompletionMap (maximalRealSubfield E) E w).toMonoidHom ϖ with hϖE`. Establish `hvE : Valued.v (ϖE : w.adicCompletion E) = WithZero.exp (-1 : ℤ)`. Express the relevant statement in the definitionally equal form `Valued.v (finiteCompletionMap (maximalRealSubfield E) E w ϖ) = _`. Rewrite using `[← GlobalTheory.CharTransport.locMap_eq, ← GlobalTheory.LFun.complMap_rfl, GlobalTheory.LFun.valued_complMap rfl ϖ.ne_zero, he, pow_one]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hϖ`. Establish `hid : ideleMap (maximalRealSubfield E) E (Neutral.B1.localIdele _ (w.under (𝓞 (maximalRealSubfield E))) ϖ) = Neutral.B1.localIdele E w ϖE`. Use `Units.ext (Prod.ext ?_ (FiniteAdeleRing.ext _ fun u => ?_))` and prove the remaining obligations. Conclude with `map_one (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.infiniteAdeleMap (maximalRealSubfield E) E)`. Rewrite using `[ideleMap_apply]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Distinguish the cases in `hu : u = w`. Substitute `hu` using the available equality. Rewrite using `[loc_same, loc_same]`. Both sides reduce to the same expression. Establish `hu' : u.under (𝓞 (maximalRealSubfield E)) ≠ w.under (𝓞 (maximalRealSubfield E))` using `fun e => hu (GlobalTheory.LFun.eq_of_not_isSplit hns e rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[loc_ne hu', loc_ne hu, map_one]`. Establish `hq : (GlobalTheory.GalOfCusp.quadChar E).1 (Neutral.B1.localIdele _ (w.under (𝓞 (maximalRealSubfield E))) ϖ) = -1`. Express the relevant statement in the definitionally equal form `Units.map _ (GlobalTheory.IdeleNormChar.normSign E (Neutral.B1.localIdele _ _ ϖ)) = -1`. Rewrite using `[GlobalTheory.LFun.normSign_localIdele]`. Establish `hne` using `fun h => GlobalTheory.LFun.not_mem_normGroup_of_inert h2 hns hun hϖ (GlobalTheory.QuadSymbol.eta_eq_one_iff.1 h)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Break down `Int.units_eq_one_or (GlobalTheory.QuadSymbol.eta (maximalRealSubfield E) E _ ϖ) with h | h` into its components or cases. Conclude with `absurd h hne`. Rewrite using `[h]`. Use `ext`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hval : μ.loc w ϖE = -1`. Express the relevant statement in the definitionally equal form `μ.1 (Neutral.B1.localIdele E w ϖE) = -1`. Rewrite using `[← hid, hres, hq]`. Establish `hunr : GlobalTheory.SplitWeil.IsUnram (μ.loc w)` using `fun x hx => hunit w x hw (valued_eq_one w hx)`. Rewrite using `[GlobalTheory.SmGL.eq_unrChar hunr (valuation_eq_uniformizer w hvE), hval]`.
+A detailed English derivation is pending.
 -/
 theorem inert_character_unramified : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ μ : HChar E,
     (∀ x, μ.1 (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap (maximalRealSubfield E) E x) = (GlobalTheory.GalOfCusp.quadChar E).1 x) →

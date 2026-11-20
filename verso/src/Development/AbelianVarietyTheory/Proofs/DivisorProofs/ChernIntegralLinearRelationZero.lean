@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.ChernLinRel
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, Measure.restrict_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem restrict_finsetSum {α : Type} [MeasurableSpace α] {J : Type} (s : Finset J) (ν : J → Measure α) (S : Set α) :
     (∑ j ∈ s, ν j).restrict S = ∑ j ∈ s, (ν j).restrict S := by
@@ -27,31 +27,29 @@ end GlobalTheory.ChernLinRel
 open GlobalTheory.ChernLinRel in
 
 /- English proof (translation)
-Introduce `k _ X p hp σ D J _ a N hlin S g hint`. Use `haveI := CxPts.secondCountableTopology_of_isProjOver σ hp`. Use `set P : J → ℤˣ → Measure (CxPts p σ) := fun j ε => ((N j).φ σ).chernPart D ε with hPdef`. Set `ap : J → ℝ` to `fun j => max (a j) 0`. Set `an : J → ℝ` to `fun j => max (-a j) 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `μ : (J → ℝ) → (J → ℝ) → Measure (CxPts p σ)` to `fun u w => ∑ j, (ENNReal.ofReal (u j) • P j 1 + ENNReal.ofReal (w j) • P j (-1))`. Establish `hcont : ∀ j (c : AlgChart p σ D), ContinuousOn (fun v => c.chernDens ((N j).φ σ) (c.e.symm v)) c.e.target` using `fun j c => continuousOn_const.mul (Complex.continuous_re.comp_continuousOn ((Continuous.matrix_det continuous_id).comp_continuousOn ((GlobalTheory.MixDens.chernMat_isForm k X p σ D _ ((N j).φ σ) ((N j).cInf σ)).2.1 c)))`. Establish `hchart : ∀ (u w : J → ℝ) (c : AlgChart p σ D) (A : Set (CxPts p σ)), MeasurableSet A → A ⊆ c.e.source → μ u w A = ∫⁻ v in c.e '' A, ∑ j, (ENNReal.ofReal (u j) * ENNReal.ofReal (1 * c.chernDens ((N j).φ σ) (c.e.symm v)) + ENNReal.ofReal (w j) * ENNReal.ofReal (-1 * c.chernDens ((N …`. Introduce `u w c A hA hAc`. Establish `hsub : c.e '' A ⊆ c.e.target` using `fun _ ⟨y, hy, e⟩ => e ▸ c.e.map_source (hAc hy)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : ∀ j (s : ℝ), AEMeasurable (fun v => ENNReal.ofReal (s * c.chernDens ((N j).φ σ) (c.e.symm v))) (volume.restrict (c.e '' A))` using `fun j s => ((((hcont j c).aemeasurable c.e.open_target.measurableSet).const_mul s).ennreal_ofReal).mono_measure (Measure.restrict_mono hsub le_rfl)`. Establish `hP : ∀ j (ε : ℤˣ), P j ε A = ∫⁻ v in c.e '' A, ENNReal.ofReal ((ε : ℤ) * c.chernDens ((N j).φ σ) (c.e.symm v))` using `fun j ε => Weight.chernPart_apply ((N j).cInf σ) ε c hA hAc`. Establish `hm2 : ∀ j ∈ (Finset.univ : Finset J), AEMeasurable (fun v => ENNReal.ofReal (u j) * ENNReal.ofReal (1 * c.chernDens ((N j).φ σ) (c.e.symm v)) + ENNReal.ofReal (w j) * ENNReal.ofReal (-1 * c.chernDens ((N j).φ σ) (c.e.symm v))) (volume.restrict (c.e '' A))` using `fun j _ => ((hm j 1).const_mul _).add ((hm j (-1)).const_mul _)`. Rewrite using `[lintegral_finsetSum' _ hm2]`. Simplify using `only [μ, Measure.coe_finsetSum, Finset.sum_apply, Measure.add_apply, Measure.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[lintegral_add_left' ((hm j 1).const_mul _), lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, hP, hP]`. Simplify using the standard rewrite rules. Use `set U : Set (CxPts p σ) := ⋃ c : AlgChart p σ D, c.e.source with hUdef`. Establish `hUo : IsOpen U` using `isOpen_iUnion fun c => c.e.open_source`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hzero : ∀ u w : J → ℝ, μ u w Uᶜ = 0`. Introduce `u w`. Establish `h0 : ∀ j (ε : ℤˣ), P j ε Uᶜ = 0` using `fun j ε => Weight.chernPart_eq_zero ε hUo.measurableSet.compl fun c => Set.disjoint_compl_right_iff_subset.2 (Set.subset_iUnion (fun c : AlgChart p σ D => c.e.source) c)`. Simplify using `[μ, Measure.coe_finsetSum, Finset.sum_apply, Measure.add_apply, Measure.smul_apply, h0]`. Establish `hbal : μ ap an = μ an ap`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T, hTc, hT⟩` from `TopologicalSpace.isOpen_iUnion_countable (fun c : AlgChart p σ D => c.e.source) fun c => c.e.open_source`. Set `s : Option (AlgChart p σ D) → Set (CxPts p σ)` to `fun o => o.elim Uᶜ fun c => c.e.source`. Use `Measure.ext_of_biUnion_eq_univ (S := insert none (some '' T)) (s := s) ((hTc.image _).insert _) ?_ ?_` and prove the remaining obligations. Use `Set.eq_univ_of_forall fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ U`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Rewrite `hy` using `[hUdef, ← hT]`. Take `⟨c, hc, hyc⟩` from `Set.mem_iUnion₂.1 hy`. Conclude with `Set.mem_iUnion₂.2 ⟨some c, Set.mem_insert_of_mem _ ⟨c, hc, rfl⟩, hyc⟩`. Conclude with `Set.mem_iUnion₂.2 ⟨none, Set.mem_insert _ _, hy⟩`. Introduce and unpack `(_ | c) -`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (μ ap an).restrict Uᶜ = (μ an ap).restrict Uᶜ`. Rewrite using `[Measure.restrict_eq_zero.2 (hzero _ _), Measure.restrict_eq_zero.2 (hzero _ _)]`. Use `show (μ ap an).restrict c.e.source = (μ an ap).restrict c.e.source`. Use extensionality with `B hB`. Establish `hBs` using `hB.inter c.e.open_source.measurableSet`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Measure.restrict_apply hB, Measure.restrict_apply hB, hchart _ _ c _ hBs Set.inter_subset_right, hchart _ _ c _ hBs Set.inter_subset_right]`. Use `setLIntegral_congr_fun (GlobalTheory.ChartGlue.measurableSet_image _ hBs Set.inter_subset_right) fun v hv => ?_` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `hv`. Establish `h0` using `hlin c (c.e.symm (c.e y)) (c.e.map_target (c.e.map_source hy.2))`. Use `GlobalTheory.GoodMetric.ChernLin.ofReal_balance a fun j => c.chernDens ((N j).φ σ) (c.e.symm (c.e y))` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[h0, mul_zero, mul_zero, ENNReal.ofReal_zero, zero_add, zero_add]`. Conclude with `this.symm`. Establish `hI : ∀ u w : J → ℝ, (∀ j, 0 ≤ u j) → (∀ j, 0 ≤ w j) → ∫ y in S, g y ∂μ u w = ∑ j, (u j * ∫ y in S, g y ∂P j 1 + w j * ∫ y in S, g y ∂P j (-1))`. Introduce `u w hu hw`. Simplify using `only [μ, restrict_finsetSum, Measure.restrict_add, Measure.restrict_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[integral_finsetSum_measure fun j _ => ((hint j).1.smul_measure ENNReal.ofReal_ne_top).add_measure ((hint j).2.smul_measure ENNReal.ofReal_ne_top)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[integral_add_measure ((hint j).1.smul_measure ENNReal.ofReal_ne_top) ((hint j).2.smul_measure ENNReal.ofReal_ne_top), integral_smul_measure, integral_smul_measure, ENNReal.toReal_ofReal (hu j), ENNReal.toReal_ofReal (hw j), smul_eq_mul, smul_eq_mul]`. Establish `e` using `congrArg (fun m : Measure (CxPts p σ) => ∫ y in S, g y ∂m) hbal`. Rewrite `e` using `[hI _ _ (fun j => le_max_right _ _) (fun j => le_max_right _ _), hI _ _ (fun j => le_max_right _ _) (fun j => le_max_right _ _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∑ j, a j * ((N j).φ σ).chernInt D S g = ∑ j, (ap j * ∫ y in S, g y ∂P j 1 + an j * ∫ y in S, g y ∂P j (-1)) - ∑ j, (an j * ∫ y in S, g y ∂P j 1 + ap j * ∫ y in S, g y ∂P j (-1))`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `ha : ap j - an j = a j` using `GlobalTheory.GoodMetric.ChernLin.max_sub_max_neg (a j)`. Rewrite using `[Weight.chernInt]`.
-
-Simplify using `only [P]`. Take the linear combination `(-(∫ y in S, g y ∂((N j).φ σ).chernPart D 1) + ∫ y in S, g y ∂((N j).φ σ).chernPart D (-1)) * ha`. Rewrite using `[key, e, sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ChernLinRel.sum_chernInt_eq_zero : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k), IsProjOver p → ∀ (σ : k →+* ℂ) (D : ℕ) (J : Type) [Fintype J] (a : J → ℝ) (N : J → HermLB p), (∀ (c : AlgChart p σ D), ∀ y ∈ c.e.source, ∑ j, a j * c.chernDens ((N j).φ σ) y = 0) → ∀ (S : Set (CxPts p σ)) (g : CxPts p σ → ℝ), (∀ j, ((N j).φ σ).ChernIntegrableOn D S g) → ∑ j, a j * ((N j).φ σ).chernInt D S g = 0 := by
   intro k _ X p hp σ D J _ a N hlin S g hint

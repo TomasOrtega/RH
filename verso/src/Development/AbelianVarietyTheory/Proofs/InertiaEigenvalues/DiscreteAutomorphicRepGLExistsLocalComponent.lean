@@ -32,7 +32,7 @@ def locRepD {V : Submodule ℂ (Sm E a)} (hV : IsStable V) (w : HeightOneSpectru
   (finPartD hV).comp (locGL E a w)
 
 /- English proof (translation)
-Introduce `φ` and use `by convert (ha _ φ.2).level using 1 ext k exact Subtype.ext_iff`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmooth_finPartD {V : Submodule ℂ (Sm E a)} (hV : IsStable V) (ha : ∀ φ ∈ V, IsAutForm φ) :
     IsSmooth (finPartD hV) := fun φ => by
@@ -41,24 +41,22 @@ theorem isSmooth_finPartD {V : Submodule ℂ (Sm E a)} (hV : IsStable V) (ha : �
   exact Subtype.ext_iff
 
 /- English proof (translation)
-Introduce `φ` and use `(isSmooth_finPartD hV ha φ).preimage (CuspSub.continuous_locGL w)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmooth_locRepD {V : Submodule ℂ (Sm E a)} (hV : IsStable V) (ha : ∀ φ ∈ V, IsAutForm φ)
     (w : HeightOneSpectrum (𝓞 E)) : IsSmooth (locRepD hV w) := fun φ =>
   (isSmooth_finPartD hV ha φ).preimage (CuspSub.continuous_locGL w)
 
 /- English proof (translation)
-Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 hV.ne_bot`. Use `set U := Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a) with hU`. Establish `hfin : FiniteDimensional ℂ U` using `(hV.aut φ hφ).zfin`. Establish `hle : U ≤ V` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `Zalg_stable (fun X => hV.stable (.lie X)) hy φ hφ)`. Establish `hst : ∀ x ∈ U, z x ∈ U` using `fun x hx => by`. Establish `: U ≤ U.comap z` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `Submodule.subset_span ⟨z * y, mul_mem hz hy, rfl⟩)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `this hx`. Establish `hφU : φ ∈ U` using `Submodule.subset_span ⟨1, one_mem _, rfl⟩`. Establish `: Nontrivial U` using `⟨⟨φ, hφU⟩, 0, fun h => h0 (congrArg Subtype.val h)⟩`. Take `⟨c, hc'⟩` from `Module.End.exists_eigenvalue (z.restrict hst)`. Take `⟨v, hv⟩` from `hc'.exists_hasEigenvector`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hv1 : z v.1 = c • v.1` using `congrArg Subtype.val hv.apply_eq_smul`. Use `⟨c, fun ψ hψ => ?_⟩` and prove the remaining obligations. Break down `hV.irred (V ⊓ z.eigenspace c) inf_le_left (fun o x hx => ⟨hV.stable o x hx.1, by` into its components or cases. Establish `h1 : z x = c • x` using `Module.End.mem_eigenspace_iff.1 hx.2`. Use `Module.End.mem_eigenspace_iff.2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← map_smul, ← h1]`. Conclude with `LinearMap.congr_fun (hc o).eq x⟩) with h | h`. Establish `: v.1 ∈ V ⊓ z.eigenspace c` using `⟨hle v.2, Module.End.mem_eigenspace_iff.2 hv1⟩`. Rewrite `this` using `[h]`. Conclude with `absurd (Subtype.ext ((Submodule.mem_bot ℂ).1 this)) hv.2`.
-
-Rewrite `hψ` using `[← h]`. Conclude with `Module.End.mem_eigenspace_iff.1 hψ.2`.
+A detailed English derivation is pending.
 -/
 theorem exists_scalarD {V : Submodule ℂ (Sm E a)} (hV : IsDiscrete V) {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a)
     (hc : ∀ o : Op E a, Commute z (act o)) : ∃ c : ℂ, ∀ φ ∈ V, z φ = c • φ := by
@@ -91,11 +89,11 @@ theorem exists_scalarD {V : Submodule ℂ (Sm E a)} (hV : IsDiscrete V) {z : Mod
     exact Module.End.mem_eigenspace_iff.1 hψ.2
 
 /- English proof (translation)
-Consider the cases of `o with`. Consider the case `fin k`. Establish `h1` using `nullPart_act _ K (GeneralLinearGroup.map (pLoc E w) k) (nullPart_comm _ K (finPartD hV ((locGL E a w (GeneralLinearGroup.map (pLoc E w) k))⁻¹ * k)) (fun g' y => by`. Simplify using `only [locRepD, MonoidHom.comp_apply]`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, LocUniq.comm_locGL w (map_pLoc_inv_mul w k)]) hx)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[locRepD, MonoidHom.comp_apply, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`. Then use the resulting hypothesis. Consider the case `cpt k`. Use `nullPart_comm _ K _ (fun g y => Subtype.ext ?_) hx` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(rt E a (infGL E a (Unitary.toUnits k)) * rt E a (finGL E a (locGL E a w g))) y.1 = (rt E a (finGL E a (locGL E a w g)) * rt E a (infGL E a (Unitary.toUnits k))) y.1`. Rewrite using `[← map_mul, ← map_mul, infGL_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Consider the case `lie X`. Use `nullPart_comm _ K _ (fun g y => Subtype.ext ?_) hx` and prove the remaining obligations. Conclude with `LinearMap.congr_fun (lie_rt_fin X (locGL E a w g)) y.1`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nullPart_opD {V : Submodule ℂ (Sm E a)} (hV : IsStable V) (w : HeightOneSpectrum (𝓞 E))
     (K : Subgroup (GL (Fin a) (w.adicCompletion E)))
@@ -118,9 +116,9 @@ theorem nullPart_opD {V : Submodule ℂ (Sm E a)} (hV : IsStable V) (w : HeightO
     exact LinearMap.congr_fun (lie_rt_fin X (locGL E a w g)) y.1
 
 /- English proof (translation)
-Establish `hi` using `Submodule.map_injective_of_injective V.injective_subtype`. Break down `hV.irred ((nullPart (locRepD hV.stable w) K).map V.subtype) (Submodule.map_subtype_le _ _) (by` into its components or cases. Introduce and unpack `o _ ⟨x, hx, rfl⟩`. Conclude with `⟨_, nullPart_opD hV.stable w K o hx, rfl⟩) with h1 | h1`. Establish `h2 : nullPart (locRepD hV.stable w) K = ⊥` using `hi (h1.trans (Submodule.map_bot _).symm)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `le_bot_iff.1 (h2 ▸ le_nullPart (isSmooth_locRepD hV.stable hV.aut w) hK W hW h)`. Establish `h2 : nullPart (locRepD hV.stable w) K = ⊤` using `hi (h1.trans (Submodule.map_subtype_top _).symm)`. Conclude with `absurd (eq_zero_of_mem_nullPart (isSmooth_locRepD hV.stable hV.aut w) hK hφ (h2 ▸ Submodule.mem_top)) h0`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_bot_of_fixedD {V : Submodule ℂ (Sm E a)} (hV : IsDiscrete V) (w : HeightOneSpectrum (𝓞 E))
     {K : Subgroup (GL (Fin a) (w.adicCompletion E))} (hK : IsCompact (K : Set (GL (Fin a) (w.adicCompletion E))))
@@ -147,7 +145,7 @@ def typePartD {V : Submodule ℂ (Sm E a)} (hV : IsStable V) (w : HeightOneSpect
     fun g => Submodule.smul_mem _ c (hx.2 g)⟩
 
 /- English proof (translation)
-Use `⟨fun k h1 h2 => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[locRepD, MonoidHom.comp_apply, ← Module.End.mul_apply, ← map_mul, LocUniq.comm_locGL w h2, map_mul, Module.End.mul_apply, hx.1 k h1 h2]`. Use `hx.2 (y * finGL E a (locGL E a w g)) using 2 with k` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `x.1.1 (y * infGL E a _ * finGL E a _) = x.1.1 (y * finGL E a _ * infGL E a _)`. Rewrite using `[mul_assoc, mul_assoc, infGL_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem typePartD_act {V : Submodule ℂ (Sm E a)} (hV : IsStable V) (w : HeightOneSpectrum (𝓞 E))
     (L : Subgroup (GL (Fin a) (Af E)))
@@ -161,11 +159,11 @@ theorem typePartD_act {V : Submodule ℂ (Sm E a)} (hV : IsStable V) (w : Height
     rw [mul_assoc, mul_assoc, infGL_comm]
 
 /- English proof (translation)
-Establish `hc : ∀ τ u, ∃ c : ℂ, ∀ φ ∈ V, cap τ u φ = c • φ` using `fun τ u => exists_scalarD hV (z := cap τ u) (Algebra.subset_adjoin ⟨τ, u, rfl⟩) fun o => by`. Consider the cases of `o with`. Consider the case `fin k => exact commute_cap_finRep τ u k`. Consider the case `cpt k => exact GlobalTheory.CapAdInv.cap_commute_rt_infGL E a τ u _`. Consider the case `lie X => exact commute_cap_lie τ u X`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `choose c hc using hc`. Use `h E a (L ⊓ (K ⊓ L.comap (locGL E a w)).comap (GeneralLinearGroup.map (pLoc E w))) (hL.inter ((hK.inter (hL.preimage (CuspSub.continuous_locGL w))).preimage (continuous_map_pLoc w))) W ρ hρ c` as an intermediate fact. Use `FiniteDimensional.of_injective ((V.subtype ∘ₗ (typePartD hV.stable w L ρ ⊓ fixed (locRepD hV.stable w) K).subtype).codRestrict (Submodule.span ℂ (AutFinGL.forms (L ⊓ (K ⊓ L.comap (locGL E a w)).comap (GeneralLinearGroup.map (pLoc E w))) ρ c)) fun v => Submodule.subset_span ⟨hV.au …` and prove the remaining obligations. Establish `h1` using `v.2.1.1 _ (L.mul_mem (L.inv_mem hk.2.2) hk.1) (map_pLoc_inv_mul w k)`. Establish `h2` using `mem_fix.1 v.2.2 _ hk.2.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : finPartD hV.stable k v.1 = v.1`. Rewrite using `[← mul_inv_cancel_left (locGL E a w (GeneralLinearGroup.map (pLoc E w) k)) k, map_mul, Module.End.mul_apply, h1]`. Conclude with `h2`. Conclude with `congrArg Subtype.val h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_typePartD (h : AutomorphicFormsFiniteGL) {V : Submodule ℂ (Sm E a)} (hV : IsDiscrete V)
     (w : HeightOneSpectrum (𝓞 E))
@@ -197,9 +195,9 @@ theorem finiteDimensional_typePartD (h : AutomorphicFormsFiniteGL) {V : Submodul
   exact congrArg Subtype.val h3
 
 /- English proof (translation)
-Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 hV.ne_bot`. Establish `h0' : (⟨φ, hφ⟩ : V) ≠ 0` using `fun e => h0 (congrArg Subtype.val e)`. Establish `hL : IsOpen (stab (finPartD hV.stable) ⟨φ, hφ⟩ : Set (GL (Fin a) (Af E)))` using `isSmooth_finPartD hV.stable hV.aut _`. Take `⟨K, ho, hc, hK⟩` from `exists_compact_open w _ hL`. Establish `: FiniteDimensional ℂ (orbSpan φ)` using `(hV.aut φ hφ).kfin`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `exists_irred (isSmooth_locRepD hV.stable hV.aut w) ho (eq_bot_of_fixedD hV w hc h0' (mem_fix.2 hK)) (typePartD hV.stable w (stab (finPartD hV.stable) ⟨φ, hφ⟩) (sub (cptRep E a) (orbSpan φ) (orbSpan_stable φ))) (typePartD_act hV.stable w _ _) ((Submodule.ne_bot_iff _).2 ⟨⟨φ, hφ⟩, …` and prove the remaining obligations. Conclude with `AutFinGL.type_of_map (sub (cptRep E a) (orbSpan φ) (orbSpan_stable φ)) (orbSpan φ).subtype (fun _ _ => rfl) ⟨φ, Submodule.subset_span ⟨1, by simp⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_irred_sub (h : AutomorphicFormsFiniteGL) {V : Submodule ℂ (Sm E a)} (hV : IsDiscrete V)
     (w : HeightOneSpectrum (𝓞 E)) :
@@ -224,7 +222,7 @@ end GlobalTheory.DiscLocEx
 open GlobalTheory.DiscSpec GlobalTheory.SmGL in
 
 /- English proof (translation)
-Introduce `h E _ _ _ N V hV w`. Take `⟨σ, ⟨f, hf0, hf⟩, -⟩` from `GlobalTheory.DiscLocEx.exists_irred_sub h hV w`. Use `⟨σ, V.subtype ∘ₗ f, fun e => hf0 (LinearMap.ext fun v => Subtype.ext ?_), fun v => (f v).2, fun g v => congrArg Subtype.val (hf g v)⟩` and prove the remaining obligations. Conclude with `LinearMap.congr_fun e v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.DiscLocEx.exists_isLocCompGL : AutomorphicFormsFiniteGL → ∀ (E : Type) [Field E] [NumberField E]
     [IsTotallyComplex E] (N : ℕ), ∀ (V : Submodule ℂ (Sm E N)), IsDiscrete V →

@@ -18,11 +18,11 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hT : (tens (lbPow A j) (lbPow N m)).IsLB` using `isLB_tens (isLB_lbPow hA j) (isLB_lbPow hN m)`. Establish `hA'` using `LB.isLB_pull hA g`. Establish `hN'` using `LB.isLB_pull hN g`. Establish `hT' : (tens (lbPow (A.pull g) j) (lbPow (N.pull g) m)).IsLB` using `isLB_tens (isLB_lbPow hA' j) (isLB_lbPow hN' m)`. Establish `hTp` using `LB.isLB_pull hT g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : cls _ hT' = cls _ hTp`. Rewrite using `[cls_pull hT, cls_tens (isLB_lbPow hA j) (isLB_lbPow hN m), cls_tens (isLB_lbPow hA' j) (isLB_lbPow hN' m), cls_lbPow hA, cls_lbPow hN, cls_lbPow hA', cls_lbPow hN', cls_pull hA, cls_pull hN, map_add, map_nsmul, map_nsmul]`. Take `⟨i⟩` from `nonempty_twist_iso_of_cls_eq G hT' hTp e`. Use `Twist.isQuasicoherent_twist (F := G) hTp` as an intermediate fact. Establish `e₁ : coh (twist ((Scheme.Modules.pushforward g).obj G) (tens (lbPow A j) (lbPow N m))) p ≃ₗ[ℤ] coh (twist G (tens (lbPow (A.pull g) j) (lbPow (N.pull g) m))) p` using `(cohOn.mapIso ℤ ⊤ p (Twist.projIso _ g G).symm).trans ((coh.pushforwardEquiv ℤ (fun r => by simp) (twist G _) p).trans (cohOn.mapIso ℤ ⊤ p i.symm))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e₁.toEquiv.subsingleton_congr.symm`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_coh_twist_pushforward_iff {X Y : Scheme.{0}} (g : Y ⟶ X) [IsAffineHom g]
     {A N : LB X} (hA : A.IsLB) (hN : N.IsLB) (G : Y.Modules) [G.IsQuasicoherent] (j m p : ℕ) :
@@ -48,7 +48,7 @@ theorem subsingleton_coh_twist_pushforward_iff {X Y : Scheme.{0}} (g : Y ⟶ X) 
   exact e₁.toEquiv.subsingleton_congr.symm
 
 /- English proof (translation)
-Introduce `X Y g _ A N hA hN G _`. Unfold `TwistConeVanishing`. Simplify using `only [subsingleton_coh_twist_pushforward_iff g hA hN G]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem twistConeVanishing_pull_iff_pushforward : ∀ {X Y : Scheme.{0}} (g : Y ⟶ X) [IsAffineHom g]
     (A N : LB X), A.IsLB → N.IsLB → ∀ (G : Y.Modules) [G.IsQuasicoherent],

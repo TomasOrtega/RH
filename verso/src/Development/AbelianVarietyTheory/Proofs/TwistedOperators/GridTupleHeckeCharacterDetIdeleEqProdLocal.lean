@@ -15,9 +15,9 @@ open GlobalTheory.TopLevelInv
 namespace GlobalTheory.TopLevelInv
 
 /- English proof (translation)
-Introduce `D T L μ₀ hL t j hj`. Establish `hm : ChrEq (L.mu0 (j + 1 + 1)) (muBase L (j + 1 + 1))`. Use `hL.mu0 ⟨j + 1, hj⟩` as an intermediate fact. Simplify `this` using `[muBase, hj]`. Use `⟨GlobalTheory.TowerCharRead.chrEq_mul hm (hL.xi t), fun P => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (muBase L (j + 1 + 1)).TameAt P`. Rewrite using `[muBase, dif_pos hj]`. Conclude with `(L.C.isMu0 ⟨j + 1, hj⟩).tame P`. Conclude with `Formalism.L2.Host.HChar.LevelLe.mul h1 (hL.xi_tame t P)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chrEq_mu_succ_succ : ∀ {D : D7} {T : Type} {L : LevCh D T} {μ₀ : T}, L.Is μ₀ → ∀ (t : T) (j : ℕ), j + 1 < D.R.m → ChrEq (L.mu t (j + 1 + 1)) (muBase L (j + 1 + 1) * L.xiH t) ∧ ∀ P, (muBase L (j + 1 + 1) * L.xiH t).TameAt P := by
   intro D T L μ₀ hL t j hj
@@ -30,7 +30,7 @@ theorem chrEq_mu_succ_succ : ∀ {D : D7} {T : Type} {L : LevCh D T} {μ₀ : T}
   exact Formalism.L2.Host.HChar.LevelLe.mul h1 (hL.xi_tame t P)
 
 /- English proof (translation)
-Introduce `D T L sc G W U S t μ₀ hL ht Φ β j hj k hk e he`. Take `⟨hχ, htame⟩` from `chrEq_mu_succ_succ hL t j hj`. Take `⟨hinf, hin, hout⟩` from `GlobalTheory.T.determinantIdeleAtIdempotent_idempotentPart_components he (G.V (.top (j + 1))) ((((S.N.u (.top (j + 1)))⁻¹ * k * S.N.u (.top (j + 1)) : FinPt G (.top (j + 1))) : GA D (G.V (.top (j + 1)))))`. Rewrite using `[GlobalTheory.T.unitaryIdeleChar_eq_prod_loc_of_tameAt hχ (locPl G t) (fun P _ => htame P) (fun P => gdet (kapAt S t j hj k P)) _ hinf (fun P hP => (hin P hP).trans (GlobalTheory.T.det_unitaryConj_atPlace_eq_det_latticeBasisComponent S t j hj k _ P)) hout]`. Rewrite using `[← Finset.prod_coe_sort]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

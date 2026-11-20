@@ -10,13 +10,11 @@ open scoped ContDiff FourierTransform ENNReal
 noncomputable section
 
 /- English proof (translation)
-Take `⟨R, hR, hRU⟩` from `Metric.isOpen_iff.1 hU x0 hx0`. Set `χ : ContDiffBump x0` to `⟨R / 2, 3 * R / 4, by positivity, by linarith⟩`. Use `⟨R / 4, by positivity, ?_, fun x => ((χ x : ℝ) : ℂ) * a x, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Metric.ball_subset_ball (by linarith)).trans hRU`. Establish `hsub : tsupport χ ⊆ U`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[χ.tsupport_eq]`. Conclude with `(Metric.closedBall_subset_ball (by show 3 * R / 4 < R; linarith)).trans hRU`. Use `contDiff_iff_contDiffAt.2 fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ U`. Conclude with `((Complex.ofRealCLM.contDiff.comp χ.contDiff).contDiffAt).mul ((ha x hx).contDiffAt (hU.mem_nhds hx))`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hx' : x ∉ tsupport χ` using `fun h => hx (hsub h)`. Establish `hev : (fun x => ((χ x : ℝ) : ℂ) * a x) =ᶠ[nhds x] fun _ => 0` using `by filter_upwards [notMem_tsupport_iff_eventuallyEq.1 hx'] with y hy`. Simplify using `[hy]`. Conclude with `contDiffAt_const.congr_of_eventuallyEq hev`. Conclude with `(χ.hasCompactSupport.comp_left Complex.ofReal_zero).mul_right`.
-
-Introduce `x hx`. Establish `hx' : x ∈ Metric.closedBall x0 χ.rIn` using `by show x ∈ Metric.closedBall x0 (R / 2)`. Conclude with `Metric.closedBall_subset_closedBall (by linarith) hx`. Simplify using `[χ.one_of_mem_closedBall hx']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma exists_smooth_ext {d : ℕ} {U : Set (E d)} {a : E d → ℂ} {x0 : E d} (hU : IsOpen U) (hx0 : x0 ∈ U)
     (ha : ContDiffOn ℝ ∞ a U) :
@@ -46,7 +44,7 @@ lemma exists_smooth_ext {d : ℕ} {U : Set (E d)} {a : E d → ℂ} {x0 : E d} (
     simp [χ.one_of_mem_closedBall hx']
 
 /- English proof (translation)
-Establish `hmem : r⁻¹ • (x - x0) ∈ ball (0 : E d) 2` using `hψ0s (subset_tsupport _ hz)`. Rewrite `hmem` using `[mem_ball_zero_iff, norm_smul, Real.norm_eq_abs, abs_inv, abs_of_pos hr]`. Rewrite `hmem` using `[inv_mul_lt_iff₀ hr]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma norm_lt_of_psi_ne {d : ℕ} {ψ0 : E d → ℝ} (hψ0s : tsupport ψ0 ⊆ ball 0 2) {r : ℝ} (hr : 0 < r)
     {x x0 : E d} (hz : ψ0 (r⁻¹ • (x - x0)) ≠ 0) : ‖x - x0‖ < 2 * r := by
@@ -56,29 +54,25 @@ lemma norm_lt_of_psi_ne {d : ℕ} {ψ0 : E d → ℝ} (hψ0s : tsupport ψ0 ⊆ 
   linarith
 
 /- English proof (translation)
-Introduce `d U a x0 ψ0 hU hx0 ha hψ hψc hψs`. Take `⟨r0, hr0, hball, b, hb, hbc, hab⟩` from `exists_smooth_ext hU hx0 ha`. Establish `hψC : ContDiff ℝ ∞ (fun y : E d => ((ψ0 y : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp hψ`. Establish `hψCc : HasCompactSupport (fun y : E d => ((ψ0 y : ℝ) : ℂ))` using `hψc.comp_left Complex.ofReal_zero`. Use `set n := Module.finrank ℝ (E d) + 1 with hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hK⟩` from `derivL1Norm_rescaled_difference_le (fun y => ((ψ0 y : ℝ) : ℂ)) hψC hψCc b hb hbc x0 r0 n`. Use `set I := ∫⁻ w : E d, ENNReal.ofReal ((1 + ‖w‖) ^ (-((n : ℕ) : ℝ))) with hIdef`. Establish `hI : I < ⊤` using `finite_integral_one_add_norm (by rw [hn]; push_cast; linarith)`. Set `c : ℝ → E d → ℂ` to `fun r y => ((ψ0 y : ℝ) : ℂ) * (b (x0 + r • y) - b x0)`. Establish `hcs : ∀ r, ContDiff ℝ ∞ (c r)` using `fun r => hψC.mul ((hb.comp (contDiff_const.add (contDiff_id.const_smul r))).sub contDiff_const)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc : ∀ r, HasCompactSupport (c r)` using `fun r => hψCc.mul_right`. Establish `hf_eq : ∀ r : ℝ, 0 < r → r ≤ r0 → (fun x => ((ψ0 (r⁻¹ • (x - x0)) : ℝ) : ℂ) * (a x - a x0)) = fun x => c r (r⁻¹ • (x - x0))`. Introduce `r hr hrr`. Use function extensionality and compare the values at `x`. Establish `hx : x0 + r • (r⁻¹ • (x - x0)) = x`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[smul_smul, mul_inv_cancel₀ hr.ne', one_smul, add_sub_cancel]`. Simplify using `only [c, hx]`. Distinguish the cases in `hz : ψ0 (r⁻¹ • (x - x0)) = 0`. Simplify using `[hz]`. Establish `hlt` using `norm_lt_of_psi_ne hψs hr hz`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxm : x ∈ closedBall x0 (2 * r0)`. Rewrite using `[mem_closedBall, dist_eq_norm]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hab x hxm, hab x0 (mem_closedBall_self (by linarith))]`. Use `⟨r0, hr0, (2 ^ n * (1 + 2 ^ n)) * K * I.toReal, hball, fun r hr hrr => ⟨?_, fun N => ?_⟩⟩` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hf_eq r hr hrr]`. Establish `h2` using `hK r hr hrr`. Establish `hKr : 0 ≤ K * r` using `(derivL1Norm_nonneg _ _).trans h2`. Establish `hA : (0 : ℝ) ≤ 2 ^ n * (1 + 2 ^ n)` using `by positivity`. Establish `hAKr : 0 ≤ 2 ^ n * (1 + 2 ^ n) * K * r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc]`. Conclude with `mul_nonneg hA hKr`. Establish `hpt : ∀ ζ : E d, ‖𝓕 (fun x => c r (r⁻¹ • (x - x0))) ζ‖ₑ ≤ ENNReal.ofReal (2 ^ n * (1 + 2 ^ n) * K * r) * ENNReal.ofReal (r ^ Module.finrank ℝ (E d) * (1 + ‖r • ζ‖) ^ (-((n : ℕ) : ℝ)))`. Introduce `ζ`. Rewrite using `[← ofReal_norm, norm_fourier_comp_dil _ r hr x0 ζ, ← ENNReal.ofReal_mul hAKr]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `h1` using `norm_fourier_le_rpow (hcs r) (hcc r) n (r • ζ)`. Establish `hW : 0 ≤ (1 + ‖r • ζ‖) ^ (-((n : ℕ) : ℝ))` using `Real.rpow_nonneg (by positivity) _`. Establish `hrd : 0 ≤ r ^ Module.finrank ℝ (E d)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_dil_weight r hr _ (by rw [hn]; push_cast; linarith)]`. Use `_ = ENNReal.ofReal (2 ^ n * (1 + 2 ^ n) * K * I.toReal * r) := by`. Rewrite using `[← ENNReal.ofReal_toReal hI.ne, ← ENNReal.ofReal_mul hAKr, ENNReal.toReal_ofReal ENNReal.toReal_nonneg]`. Put the polynomial expressions in normal form.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hf_eq r hr hrr]`. Establish `hsm : ContDiff ℝ ∞ (fun x => c r (r⁻¹ • (x - x0)))` using `(hcs r).comp ((contDiff_id.sub contDiff_const).const_smul r⁻¹)`. Establish `hsc : HasCompactSupport (fun x => c r (r⁻¹ • (x - x0)))` using `(hcc r).comp_homeomorph ((Homeomorph.subRight x0).trans (Homeomorph.smulOfNeZero r⁻¹ (inv_ne_zero hr.ne')))`. Use `lt_of_le_of_lt (lintegral_mono fun ζ => ?_) (lintegral_weight_fourier_lt_top hsm hsc ⌈N + 1⌉₊)` and prove the remaining obligations. Use `gcongr`.
-
-Establish `h1 : 1 ≤ 1 + ‖ζ‖` using `by linarith [norm_nonneg ζ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.rpow_one]`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Use `_ = (1 + ‖ζ‖) ^ (N + 1) := by rw [← Real.rpow_add (by linarith)]; ring_nf`. Use `_ ≤ (1 + ‖ζ‖) ^ ((⌈N + 1⌉₊ : ℕ) : ℝ) := Real.rpow_le_rpow_of_exponent_le h1 (Nat.le_ceil _)`. Use `_ = (1 + ‖ζ‖) ^ ⌈N + 1⌉₊ := Real.rpow_natCast _ _`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem frozenKernelSmall : KernelSmall := by
   intro d U a x0 ψ0 hU hx0 ha hψ hψc hψs

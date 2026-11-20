@@ -24,7 +24,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations
 variable {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
 
 /- English proof (translation)
-Unfold `ord_vw`. Rewrite using `[map_mul, WithZero.log_mul (by simpa using hx) (by simpa using hy)]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ord_mul (x y : FractionRing R) (hx : x ≠ 0) (hy : y ≠ 0) :
     ord_vw R (x * y) = ord_vw R x + ord_vw R y := by
@@ -33,7 +33,7 @@ theorem ord_mul (x y : FractionRing R) (hx : x ≠ 0) (hy : y ≠ 0) :
   ring
 
 /- English proof (translation)
-Establish `h` using `ord_mul x x⁻¹ hx (inv_ne_zero hx)`. Rewrite `h` using `[mul_inv_cancel₀ hx]`. Establish `h1 : ord_vw R (1 : FractionRing R) = 0` using `by simp [ord_vw]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ord_inv (x : FractionRing R) (hx : x ≠ 0) : ord_vw R x⁻¹ = -ord_vw R x := by
   have h := ord_mul x x⁻¹ hx (inv_ne_zero hx)
@@ -42,7 +42,7 @@ theorem ord_inv (x : FractionRing R) (hx : x ≠ 0) : ord_vw R x⁻¹ = -ord_vw 
   omega
 
 /- English proof (translation)
-Unfold `ord_vw`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff.2 fun hm => (IsLocalRing.mem_maximalIdeal _).1 hm u.isUnit]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ord_unit (u : Rˣ) : ord_vw R (algebraMap R (FractionRing R) (u : R)) = 0 := by
   unfold ord_vw
@@ -51,11 +51,9 @@ theorem ord_unit (u : Rˣ) : ord_vw R (algebraMap R (FractionRing R) (u : R)) = 
   simp
 
 /- English proof (translation)
-Establish `h0' : ((l : ℕ) : FractionRing R) ≠ 0`. Rewrite using `[← map_natCast (algebraMap R (FractionRing R))]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 h0`. Establish `h1 : (IsDiscreteValuationRing.maximalIdeal R).valuation (FractionRing R) ((l : ℕ) : FractionRing R) < 1`. Rewrite using `[← map_natCast (algebraMap R (FractionRing R)), HeightOneSpectrum.valuation_lt_one_iff_mem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hm`. Establish `h2 : (IsDiscreteValuationRing.maximalIdeal R).valuation (FractionRing R) ((l : ℕ) : FractionRing R) ≠ 0`. Simplify using `using h0'`. Rewrite `h1` using `[← WithZero.exp_log h2, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Unfold `ord_vw`.
-
-Use linear arithmetic over natural numbers and integers.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem ord_pos (l : ℕ) (hm : (l : R) ∈ IsLocalRing.maximalIdeal R) (h0 : (l : R) ≠ 0) :
     0 < ord_vw R ((l : ℕ) : FractionRing R) := by
@@ -72,13 +70,13 @@ theorem ord_pos (l : ℕ) (hm : (l : R) ∈ IsLocalRing.maximalIdeal R) (h0 : (l
   omega
 
 /- English proof (translation)
-Introduce `R _ _ _ l hm h0 a b δ u ca cd ha hb hd hva hvb hvd`. Establish `hL` using `ord_pos (R := R) l hm h0`. Use `set L : ℚ := (ord_vw R ((l : ℕ) : FractionRing R) : ℚ) with hLdef`. Establish `hLq : (0 : ℚ) < L` using `by rw [hLdef]; exact_mod_cast hL`. Use `set w := algebraMap R (FractionRing R) (u : R) with hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw0 : w ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 u.ne_zero`. Establish `hx0 : w ^ 2 / (a * (δ * b)) ≠ 0`. Conclude with `div_ne_zero (pow_ne_zero 2 hw0) (mul_ne_zero ha (mul_ne_zero hd hb))`. Establish `hord : ord_vw R (w ^ 2 / (a * (δ * b))) = -(ord_vw R a + ord_vw R δ + ord_vw R b)`. Rewrite using `[div_eq_mul_inv, pow_two, ord_mul _ _ (mul_ne_zero hw0 hw0) (inv_ne_zero (mul_ne_zero ha (mul_ne_zero hd hb))), ord_mul _ _ hw0 hw0, ord_inv _ (mul_ne_zero ha (mul_ne_zero hd hb)), ord_mul _ _ ha (mul_ne_zero hd hb), ord_mul _ _ hd hb, hw, ord_unit]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [val_vp, if_neg ha, if_neg hb, if_neg hd, if_neg hx0] at hva hvb hvd ⊢`. Rewrite `hva`, `hvb`, `hvd`, the goal using `[← hLdef]`. Establish `h1 : (ord_vw R a : ℚ) / L ≤ ca` using `by exact_mod_cast hva`. Establish `h2 : (ord_vw R b : ℚ) / L ≤ 0` using `by exact_mod_cast hvb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (ord_vw R δ : ℚ) / L = cd` using `by exact_mod_cast hvd`. Rewrite using `[hord]`. Establish `e : ((-(ord_vw R a + ord_vw R δ + ord_vw R b) : ℤ) : ℚ) / L = -((ord_vw R a : ℚ) / L) - (ord_vw R δ : ℚ) / L - (ord_vw R b : ℚ) / L` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `(by linarith : -(ca + cd) ≤ -((ord_vw R a : ℚ) / L) - (ord_vw R δ : ℚ) / L - (ord_vw R b : ℚ) / L)` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_sq_div_ge : ∀ (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (l : ℕ),
     (l : R) ∈ IsLocalRing.maximalIdeal R → (l : R) ≠ 0 →

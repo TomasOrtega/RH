@@ -94,7 +94,7 @@ def famC [IsTotallyComplex K] (m : ℕ) (C : ColObj K I) (P : PlDat K I) (R : Ro
   e0 := R.e0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, fun _ => rfl, fun _ _ => rfl, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem famC_closed [IsTotallyComplex K] (C : ColObj K I) (P : PlDat K I) (R : RowArg C) :
     (famC P.N.R.m C P R).gain = Arith.famGain P.N P.Cs P.Lv ∧ (famC P.N.R.m C P R).Fj = Arith.famF P.N ∧

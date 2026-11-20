@@ -12,7 +12,7 @@ namespace Formalism.MainNotions.Gaps.EtaleWeightGaps
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `a using WithTop.recTopCoe with`. Consider the case `top => exact le_top`. Consider the case `coe m`. Establish `h' : (((n : ℤ) : ℝ) : EReal) ≤ (((m : ℤ) : ℝ) : EReal)` using `h`. Conclude with `WithTop.coe_le_coe.2 (by exact_mod_cast h')`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem le_of_coe_le_toE {n : ℤ} {a : WithTop ℤ} (h : (((n : ℤ) : ℝ) : EReal) ≤ toE a) : ((n : ℤ) : WithTop ℤ) ≤ a := by
   induction a using WithTop.recTopCoe with
@@ -22,7 +22,7 @@ theorem le_of_coe_le_toE {n : ℤ} {a : WithTop ℤ} (h : (((n : ℤ) : ℝ) : E
     exact WithTop.coe_le_coe.2 (by exact_mod_cast h')
 
 /- English proof (translation)
-Establish `h1 : ((t - (T : ℝ) * ν : ℝ) : EReal) ≤ v - (T : EReal) * d`. Rewrite using `[hd, EReal.coe_sub, EReal.coe_mul, EReal.coe_natCast]`. Conclude with `EReal.sub_le_sub hv le_rfl`. Rewrite using `[EReal.coe_mul, EReal.coe_natCast]`. Conclude with `mul_le_mul_of_nonneg_left h1 (by exact_mod_cast Nat.cast_nonneg ep)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ereal_bound {ep T : ℕ} {v d : EReal} {ν t : ℝ} (hd : d = (ν : EReal)) (hv : (t : EReal) ≤ v) :
     (((ep : ℝ) * (t - (T : ℝ) * ν) : ℝ) : EReal) ≤ (ep : EReal) * (v - (T : EReal) * d) := by
@@ -55,21 +55,21 @@ def Dp (u : WeightFamilies.Wt D j) (t : ι → ℝ) : Submodule (𝓞 B.KO) (B.C
         _ ≤ _ := add_le_add h1 (hF ζ)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Dp {u : WeightFamilies.Wt D j} {t : ι → ℝ} {F : B.Cusp j u} :
     F ∈ Dp X la y u t ↔ ∀ ζ, ((t ζ : ℝ) : EReal) ≤ X.vAt la (y ζ) (X.inc u F) := Iff.rfl
 
 /- English proof (translation)
-Introduce `_ hF ζ` and use `le_trans (by exact_mod_cast h ζ) (hF ζ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Dp_mono (u : WeightFamilies.Wt D j) {t t' : ι → ℝ} (h : ∀ ζ, t' ζ ≤ t ζ) : Dp X la y u t ≤ Dp X la y u t' :=
   fun _ hF ζ => le_trans (by exact_mod_cast h ζ) (hF ζ)
 
 /- English proof (translation)
-Use `Submodule.mul_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨F, hF, rfl⟩ _ ⟨G, hG, rfl⟩`. Take `⟨H, hH⟩` from `X.inc_mul wL u F G`. Use `⟨H, fun ζ => ?_, hH.symm⟩` and prove the remaining obligations. Rewrite using `[← hH, X.vAt_mul, EReal.coe_add]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_le_add (hW hF ζ) (hG ζ)`.
+A detailed English derivation is pending.
 -/
 theorem emb_mul_Dp_le {wL : WeightFamilies.Wt D j} (W : Submodule (𝓞 B.KO) (B.Cusp j wL)) (ν : ι → ℝ)
     (hW : W ≤ Dp X la y wL ν) (u : WeightFamilies.Wt D j) (t : ι → ℝ) :
@@ -82,9 +82,9 @@ theorem emb_mul_Dp_le {wL : WeightFamilies.Wt D j} (W : Submodule (𝓞 B.KO) (B
   exact add_le_add (hW hF ζ) (hG ζ)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero, one_mul, addL_zero]`. Conclude with `T0.emb_mono X u (Dp_mono X la y u fun ζ => by simp)`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ', mul_assoc]`. Use `(mul_le_mul' le_rfl ih).trans ((emb_mul_Dp_le X la y W ν hW _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[wadd_addL]`. Conclude with `T0.emb_mono X _ (Dp_mono X la y _ fun ζ => by push_cast; linarith)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_pow_mul_Dp_le {wL : WeightFamilies.Wt D j} (W : Submodule (𝓞 B.KO) (B.Cusp j wL)) (ν : ι → ℝ)
     (hW : W ≤ Dp X la y wL ν) (u : WeightFamilies.Wt D j) (t : ι → ℝ) (n : ℕ) :
@@ -108,7 +108,7 @@ variable {X : PJ D B P j} {wL wF : WeightFamilies.Wt D j} {T : ℕ} {G : GlobalF
   {la : HeightOneSpectrum (𝓞 B.KO)} (Q : LocalPointData G la) (S : Scal B)
 
 /- English proof (translation)
-Use `Submodule.subset_span ⟨toHK X la G.w wF T (embV X la G.N _ f), ⟨fun β _ => ?_, fun β hβ ζ => ?_⟩, rfl⟩` and prove the remaining obligations. Conclude with `(mem_HK X la G.w).2 (hasse_presentation X la G.w wF β _ ((mem_HK X la G.w).1 (toHK X la G.w wF T (embV X la G.N _ f)).2))`. Conclude with `le_of_coe_le_toE ((hf ζ).trans (hasse_order_bound G la Q S T integralClosure_dvr' hC hT hw f β hβ _ ζ))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rhoO_embV_mem_AAp (hC : Q.InCurve) (hT : Q.InTie S) (hw : ∀ k, G.w k ∈ X.WWc S.sW wL) (m : PtsG G la → ℕ)
     (f : B.Cusp j (addL wF wL T))
@@ -121,7 +121,7 @@ theorem rhoO_embV_mem_AAp (hC : Q.InCurve) (hT : Q.InTie S) (hw : ∀ k, G.w k �
   · exact le_of_coe_le_toE ((hf ζ).trans (hasse_order_bound G la Q S T integralClosure_dvr' hC hT hw f β hβ _ ζ))
 
 /- English proof (translation)
-Use `Submodule.span_mono (Set.image_mono ?_)` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hb⟩`. Use `⟨hx, fun β hβ ζ => le_trans (WithTop.coe_le_coe.2 ?_) (hb β hβ ζ)⟩` and prove the remaining obligations. Use `h ζ` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem AAp_mono {m m' : PtsG G la → ℕ} (h : ∀ ζ, m ζ ≤ m' ζ) : Q.AAp T m ≤ Q.AAp T m' := by
   refine Submodule.span_mono (Set.image_mono ?_)
@@ -131,12 +131,12 @@ theorem AAp_mono {m m' : PtsG G la → ℕ} (h : ∀ ζ, m ζ ≤ m' ζ) : Q.AAp
   omega
 
 /- English proof (translation)
-The claim follows from `AAp_mono Q fun _ => Nat.zero_le _`.
+A detailed English derivation is pending.
 -/
 theorem AA_le_AAp (m : PtsG G la → ℕ) : Q.AA T ≤ Q.AAp T m := AAp_mono Q fun _ => Nat.zero_le _
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, Algebra.smul_def, IsScalarTower.algebraMap_apply (Kp X la G.N) (Rp X la G.N) (Lc X la G.w), IsScalarTower.algebraMap_apply (X.Kl la) (Rp X la G.N) (Lc X la G.w), IsScalarTower.algebraMap_apply (X.Kl la) (Kp X la G.N) (Rp X la G.N)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_Lc_eq (c0 : X.Kl la) (z : Lc X la G.w) : (algebraMap (X.Kl la) (Kp X la G.N) c0) • z = c0 • z := by
   rw [Algebra.smul_def, Algebra.smul_def, IsScalarTower.algebraMap_apply (Kp X la G.N) (Rp X la G.N) (Lc X la G.w),
@@ -144,7 +144,7 @@ theorem smul_Lc_eq (c0 : X.Kl la) (z : Lc X la G.w) : (algebraMap (X.Kl la) (Kp 
     IsScalarTower.algebraMap_apply (X.Kl la) (Kp X la G.N) (Rp X la G.N)]
 
 /- English proof (translation)
-Rewrite using `[smul_Lc_eq, map_smul, smul_Lc_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hasse_smul_Kl (β : Idx D j G.N →₀ ℕ) (c0 : X.Kl la) (z : Lc X la G.w) :
     hasse X la G.w β ((algebraMap (X.Kl la) (Kp X la G.N) c0) • z) =
@@ -152,7 +152,7 @@ theorem hasse_smul_Kl (β : Idx D j G.N →₀ ℕ) (c0 : X.Kl la) (z : Lc X la 
   rw [smul_Lc_eq, map_smul, smul_Lc_eq]
 
 /- English proof (translation)
-Unfold `unifO`. Rewrite using `[← map_pow, ← IsScalarTower.algebraMap_apply (X.Ol la) (Op X la G.N) (Kp X la G.N), IsScalarTower.algebraMap_apply (X.Ol la) (X.Kl la) (Kp X la G.N)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem unifO_pow_eq (e : ℕ) : algebraMap (Op X la G.N) (Kp X la G.N) (unifO X la G.N ^ e) =
     algebraMap (X.Kl la) (Kp X la G.N) (algebraMap (X.Ol la) (X.Kl la) (unif X la ^ e)) := by
@@ -161,9 +161,9 @@ theorem unifO_pow_eq (e : ℕ) : algebraMap (Op X la G.N) (Kp X la G.N) (unifO X
     IsScalarTower.algebraMap_apply (X.Ol la) (X.Kl la) (Kp X la G.N)]
 
 /- English proof (translation)
-Use `isDVRAt_of_curve Q hC ζ` as an intermediate fact. Establish `hU` using `isUnif_of_curve Q hC`. Establish `h1 : algebraMap (Op X la G.N) (Kp X la G.N) (unifO X la G.N ^ e) • a = (algebraMap (Op X la G.N) (OsK X la G.w) (unifO X la G.N ^ e)) • a`. Rewrite using `[IsScalarTower.algebraMap_apply (Op X la G.N) (Kp X la G.N) (OsK X la G.w)]`. Conclude with `(algebraMap_smul (OsK X la G.w) _ a).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `LocalPointData.ordA`. Rewrite using `[h1, ordV_smul Q.c ζ hU hC.2.2, Algebra.algebraMap_eq_smul_one, ord_pow_smul ζ hU, ord_one ζ hU, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ordA_unif_smul (hC : Q.InCurve) (ζ : PtsG G la) (e : ℕ) (a : SectionSheafQuotient X la G.w wF) :
     Q.ordA ζ (algebraMap (Op X la G.N) (Kp X la G.N) (unifO X la G.N ^ e) • a) =
@@ -178,17 +178,15 @@ theorem ordA_unif_smul (hC : Q.InCurve) (ζ : PtsG G la) (e : ℕ) (a : SectionS
   rw [h1, ordV_smul Q.c ζ hU hC.2.2, Algebra.algebraMap_eq_smul_one, ord_pow_smul ζ hU, ord_one ζ hU, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨x0, ⟨hx0, hb0⟩, rfl⟩` from `hx`. Establish `hc` using `unifO_pow_eq (X := X) (G := G) (la := la) e`. Use `set c : Kp X la G.N := algebraMap (Op X la G.N) (Kp X la G.N) (unifO X la G.N ^ e) with hcdef`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh : ∀ β, hasse X la G.w β ((c • x0 : ↥(HK X la G.w wF)) : Lw X la G.w) = c • hasse X la G.w β (x0 : Lw X la G.w)` using `fun β => by`. Rewrite using `[hc]`. Conclude with `hasse_smul_Kl β _ _`. Establish `hx1 : ∀ β : Idx D j G.N →₀ ℕ, β.sum (fun _ n => n) ≤ a0 D j T - 1 → hasse X la G.w β ((c • x0 : ↥(HK X la G.w wF)) : Lw X la G.w) ∈ HK X la G.w wF` using `fun β hβ => by`. Rewrite using `[hh]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(c • (⟨_, hx0 β hβ⟩ : ↥(HK X la G.w wF))).2`. Use `Submodule.subset_span ⟨c • x0, ⟨hx1, fun β hβ ζ => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[show (⟨hasse X la G.w β ((c • x0 : ↥(HK X la G.w wF)) : Lw X la G.w), hx1 β hβ⟩ : ↥(HK X la G.w wF)) = c • ⟨hasse X la G.w β (x0 : Lw X la G.w), hx0 β hβ⟩ from Subtype.ext (hh β), LinearMap.map_smul_of_tower, ordA_unif_smul Q hC]`. Use `le_trans ?_ (add_le_add le_rfl (hb0 β hβ ζ))` and prove the remaining obligations. Rewrite using `[← WithTop.coe_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `WithTop.coe_le_coe.2 ?_` and prove the remaining obligations. Use `h ζ` as an intermediate fact. Use `push_cast`. Establish `h2 : ((m' ζ : ℕ) : ℤ) ≤ (m ζ : ℤ) + (e : ℤ) * (ep (unifO X la G.N) ζ : ℤ)` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Rewrite using `[LinearMap.map_smul_of_tower]`. Both sides reduce to the same expression. Consider the case `zero => rw [smul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [smul_add]`.
-
-Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul r a _ ih => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ r ih`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_AAp_mem (hC : Q.InCurve) (e : ℕ) (m m' : PtsG G la → ℕ)
     (h : ∀ ζ, m' ζ ≤ m ζ + e * ep (unifO X la G.N) ζ) {x : WK X la G.w wF (a0 D j T)} (hx : x ∈ Q.AAp T m') :
@@ -222,28 +220,28 @@ theorem smul_AAp_mem (hC : Q.InCurve) (e : ℕ) (m m' : PtsG G la → ℕ)
   | smul r a _ ih => rw [smul_comm]; exact Submodule.smul_mem _ r ih
 
 /- English proof (translation)
-The claim follows from `(EReal.coe_toReal (hT ζ).1 (hT ζ).2.1).symm`.
+A detailed English derivation is pending.
 -/
 theorem depth_eq_nu (hT : Q.InTie S) (ζ : PtsG G la) :
     X.depth S.sW wL la (Q.y ζ) = ((Q.nu S ζ : ℝ) : EReal) := (EReal.coe_toReal (hT ζ).1 (hT ζ).2.1).symm
 
 /- English proof (translation)
-Introduce `F hF ζ` and use `by rw [← depth_eq_nu Q S hT ζ] exact iInf₂_le F hF`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem WWc_le_Dp (hT : Q.InTie S) : X.WWc S.sW wL ≤ Dp X la Q.y wL (Q.nu S) := fun F hF ζ => by
   rw [← depth_eq_nu Q S hT ζ]
   exact iInf₂_le F hF
 
 /- English proof (translation)
-Introduce `F hF ζ` and use `by exact_mod_cast (X.Mlat_eq u F).1 hF la (Q.y ζ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Mlat_le_Dp (u : WeightFamilies.Wt D j) : B.Mlat j u ≤ Dp X la Q.y u fun _ => 0 := fun F hF ζ => by
   exact_mod_cast (X.Mlat_eq u F).1 hF la (Q.y ζ)
 
 /- English proof (translation)
-Establish `h1 : f ∈ Submodule.span (Op X la G.N) (embV X la G.N (addL wF wL T) '' (Ds : Set (B.Cusp j (addL wF wL T))))`. Rewrite using `[mem_span_subtype_iff (R := Op X la G.N) (Vw X la G.N (addL wF wL T))]`. Use `Submodule.span_mono ?_ hf` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨F, hF, rfl⟩, rfl⟩`. Conclude with `⟨embV X la G.N _ F, ⟨F, hF, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `h2 : Submodule.span (Op X la G.N) (embV X la G.N (addL wF wL T) '' (Ds : Set (B.Cusp j (addL wF wL T)))) ≤ (Q.AAp T m).comap (rhoO G la)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Conclude with `h F hF`. Conclude with `h2 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem rhoO_mem_of_upO (Ds : Submodule (𝓞 B.KO) (B.Cusp j (addL wF wL T))) (m : PtsG G la → ℕ)
     (h : ∀ F ∈ Ds, rhoO G la (embV X la G.N _ F) ∈ Q.AAp T m) (f : ↥(Vw X la G.N (addL wF wL T)))
@@ -261,9 +259,9 @@ theorem rhoO_mem_of_upO (Ds : Submodule (𝓞 B.KO) (B.Cusp j (addL wF wL T))) (
   exact h2 h1
 
 /- English proof (translation)
-Unfold `LocalPointData.mm`. Establish `h1` using `Int.le_ceil ((ep (unifO X la G.N) ζ : ℝ) * ((T : ℝ) * Q.nu S ζ - (e : ℝ)))`. Use `set c := ⌈(ep (unifO X la G.N) ζ : ℝ) * ((T : ℝ) * Q.nu S ζ - (e : ℝ))⌉ with hc`. Establish `h2 : c ≤ ((max 0 c).toNat : ℤ)` using `by omega`. Establish `h3 : (c : ℝ) ≤ (((max 0 c).toNat : ℤ) : ℝ)` using `by exact_mod_cast h2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[Int.cast_natCast]`. Conclude with `h1.trans h3`.
+A detailed English derivation is pending.
 -/
 theorem le_mm (e : ℕ) (ζ : PtsG G la) :
     (ep (unifO X la G.N) ζ : ℝ) * ((T : ℝ) * Q.nu S ζ - (e : ℝ)) ≤ (Q.mm S T e ζ : ℝ) := by
@@ -276,7 +274,7 @@ theorem le_mm (e : ℕ) (ζ : PtsG G la) :
   exact h1.trans h3
 
 /- English proof (translation)
-Unfold `LocalPointData.mm`. Establish `h : (ep (unifO X la G.N) ζ : ℝ) * ((T : ℝ) * Q.nu S ζ - ((0 : ℕ) : ℝ)) = (ep (unifO X la G.N) ζ : ℝ) * ((T : ℝ) * Q.nu S ζ - (e : ℝ)) + (((e * ep (unifO X la G.N) ζ : ℕ) : ℤ) : ℝ)` using `by push_cast; ring`. Rewrite using `[h, Int.ceil_add_intCast]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem mm_zero_le (e : ℕ) (ζ : PtsG G la) : Q.mm S T 0 ζ ≤ Q.mm S T e ζ + e * ep (unifO X la G.N) ζ := by
   unfold LocalPointData.mm
@@ -287,9 +285,9 @@ theorem mm_zero_le (e : ℕ) (ζ : PtsG G la) : Q.mm S T 0 ζ ≤ Q.mm S T e ζ 
   omega
 
 /- English proof (translation)
-Establish `h2 : M1 X la G.N (addL wF wL T) ≤ (Q.AAp T (Q.mm S T 0)).comap (rhoO G la)`. Rewrite using `[integralForms_eq_span, Submodule.span_le]`. Introduce and unpack `_ ⟨F, rfl⟩`. Use `rhoO_embV_mem_AAp Q S hC hT hw _ _ fun ζ => ?_` and prove the remaining obligations. Use `le_trans ?_ (ereal_bound (t := 0) (depth_eq_nu Q S hT ζ) (Mlat_le_Dp Q _ F.2 ζ))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `EReal.coe_le_coe_iff.2 ?_` and prove the remaining obligations. Use `le_mm Q S (T := T) 0 ζ` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h2 hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem reduction_integral_mem (hC : Q.InCurve) (hT : Q.InTie S) (hw : ∀ k, G.w k ∈ X.WWc S.sW wL)
     {x : ↥(Vw X la G.N (addL wF wL T))} (hx : x ∈ M1 X la G.N (addL wF wL T)) :
@@ -306,7 +304,7 @@ theorem reduction_integral_mem (hC : Q.InCurve) (hT : Q.InTie S) (hw : ∀ k, G.
   exact h2 hx
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `hx`. Rewrite using `[LinearMap.smul_apply, LinearMap.id_apply, map_smul]`. Conclude with `smul_AAp_mem Q hC e _ _ (mm_zero_le Q S e) (reduction_integral_mem Q S hC hT hw hy)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reduction_uniformizer_smul_mem (hC : Q.InCurve) (hT : Q.InTie S) (hw : ∀ k, G.w k ∈ X.WWc S.sW wL) (e : ℕ)
     {x : ↥(Vw X la G.N (addL wF wL T))} (hx : x ∈ (M1 X la G.N (addL wF wL T)).map ((unifO X la G.N ^ e) •
@@ -317,11 +315,11 @@ theorem reduction_uniformizer_smul_mem (hC : Q.InCurve) (hT : Q.InTie S) (hw : �
   exact smul_AAp_mem Q hC e _ _ (mm_zero_le Q S e) (reduction_integral_mem Q S hC hT hw hy)
 
 /- English proof (translation)
-Rewrite using `[reducedGenerators_eq_map, Submodule.map_le_iff_le_comap]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `f ⟨al, i, hal, hf⟩`. Use `rhoO_mem_of_upO Q (Dp X la Q.y (addL wF wL T) fun ζ => (T : ℝ) * Q.nu S ζ + 0) _ (fun F hF => ?_) f ?_` and prove the remaining obligations. Use `rhoO_embV_mem_AAp Q S hC hT hw _ _ fun ζ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ (ereal_bound (depth_eq_nu Q S hT ζ) (hF ζ))` and prove the remaining obligations. Use `EReal.coe_le_coe_iff.2 ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[hf]`. Establish `hle : ∑ i, al i ≤ T` using `le_trans hal.le (Nat.sub_le _ _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `upO_mono la G.N (emb_pow_mul_Dp_le X la Q.y _ _ (WWc_le_Dp Q S hT) wF _ T) (secPow_mul_mem_upO la G.w hw al hle (A := X.emb wF (Dp X la Q.y wF fun _ => 0)) ⟨G.th' i, Mlat_le_Dp Q wF (hth i), rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem reduced_generators_le (hC : Q.InCurve) (hT : Q.InTie S) (hw : ∀ k, G.w k ∈ X.WWc S.sW wL)
     (hth : ∀ i, G.th' i ∈ B.Mlat j wF) : firstLength_le_prime_bound G la T ≤ Q.AA T := by

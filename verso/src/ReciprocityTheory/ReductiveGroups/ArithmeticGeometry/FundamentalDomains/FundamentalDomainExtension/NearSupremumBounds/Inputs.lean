@@ -11,14 +11,14 @@ open ReciprocityTheory.ChartRestriction.G.FD NumberField Complex
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `r X la P ξ ν hP hξ`. Conclude with `ReciprocityTheory.ChartRestriction.G.FD.CuspCoefficientFlow.fj_diffOn X la P hP.1 hξ ν`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fourierJacobi_holomorphic : FjHolo (E := E) := by
   intro r X la P ξ ν hP hξ
   exact ReciprocityTheory.ChartRestriction.G.FD.CuspCoefficientFlow.fj_diffOn X la P hP.1 hξ ν
 
 /- English proof (translation)
-Introduce `r X la P ξ ν hP hξ x hx s`. Establish `hP' : X.IsBddSec la P ∧ ∀ ξ', X.IsIso ξ' → ∀ y ∈ X.dom, X.fj la ξ' 0 P y = 0` using `hP`. Conclude with `X.fj_flow_real la ξ hξ ν P hP'.1.1 hP'.1.2 x hx s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fourierJacobi_realFlow : FjRealFlow (E := E) := by
   intro r X la P ξ ν hP hξ x hx s
@@ -27,7 +27,7 @@ theorem fourierJacobi_realFlow : FjRealFlow (E := E) := by
   exact X.fj_flow_real la ξ hξ ν P hP'.1.1 hP'.1.2 x hx s
 
 /- English proof (translation)
-The claim follows from `fd_fj_near_sup_of flowDomainCriterion_holds fourierJacobi_holomorphic fourierJacobi_realFlow orthonormalFlagTranslate_holds`.
+A detailed English derivation is pending.
 -/
 theorem fd_fj_near_sup_full :
     HolomorphicPeriodicityExtension (E := E) → FlowNormRatio (E := E) → ModerateCoefficientPositivity (E := E) →

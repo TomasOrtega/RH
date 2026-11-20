@@ -10,19 +10,19 @@ noncomputable section
 namespace GlobalTheory.Mem.Col2.CurveLat
 
 /- English proof (translation)
-Set `b : Module.Basis (Fin 2) ℤ (𝓞 K)` to `Module.finBasisOfFinrankEq ℤ _ ((RingOfIntegers.rank K).trans hK)`. Establish `hs : ∀ x : 𝓞 K, σ x = b.repr x 0 * σ (b 0) + b.repr x 1 * σ (b 1)`. Introduce `x`. Use `congrArg σ (b.sum_repr x)` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_two]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this.symm`. Establish `hb0 : σ (b 0) ≠ 0` using `(map_ne_zero_iff σ hσ).2 (b.ne_zero 0)`. Establish `h0 : (σ (b 1) * starRingEnd ℂ (σ (b 0))).im ≠ 0`. Introduce `h0`. Establish `e` using `hs (a * b 0)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e'` using `congrArg (fun z => (z * starRingEnd ℂ (σ (b 0))).im) e`. Simplify using `only [map_mul] at e'`. Rewrite `e'` using `[add_mul, _root_.mul_assoc, _root_.mul_assoc, _root_.mul_assoc, Complex.mul_conj, Complex.add_im, Complex.mul_im, Complex.mul_im, Complex.mul_im, h0]`. Simplify using `[ha, hb0] at e'`. Use `⟨⟨δ * σ (b 0), δ * σ (b 1), ?_⟩, fun z => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearIndependent.pair_iff]`. Introduce `x y e0`. Establish `e : (x : ℂ) * σ (b 0) + (y : ℂ) * σ (b 1) = 0`. Apply `mul_left_cancel₀ hδ` to reduce the goal to its premises. Simplify using `only [Complex.real_smul] at e0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Take the linear combination `e0`. Establish `e1` using `congrArg Complex.re e`. Establish `e2` using `congrArg Complex.im e`. Simplify using `at e1 e2 h0`. Prove the components needed by the constructor for the conclusion.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use `mul_right_cancel₀ h0 ?_` and prove the remaining obligations. Take the linear combination `(σ (b 1)).im * e1 - (σ (b 1)).re * e2`. Use `mul_right_cancel₀ h0 ?_` and prove the remaining obligations. Take the linear combination `(σ (b 0)).re * e2 - (σ (b 0)).im * e1`. Rewrite using `[PeriodPair.mem_lattice]`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, n, rfl⟩`. Conclude with `⟨m • b 0 + n • b 1, by simp; ring⟩`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨b.repr x 0, b.repr x 1, by rw [hs x]; ring⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem exists_periodPair_mul_image {K : Type} [Field K] [NumberField K] (hK : Module.finrank ℚ K = 2)
     (σ : 𝓞 K →+* ℂ) (hσ : Function.Injective σ) (a : 𝓞 K) (ha : (σ a).im ≠ 0) (δ : ℂ) (hδ : δ ≠ 0) :
@@ -65,9 +65,9 @@ theorem exists_periodPair_mul_image {K : Type} [Field K] [NumberField K] (hK : M
       exact ⟨b.repr x 0, b.repr x 1, by rw [hs x]; ring⟩
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : IsIntegral ℤ (1 / 2 : ℚ)`. Use `(isIntegral_algHom_iff (algebraMap ℚ ℂ).toIntAlgHom (algebraMap ℚ ℂ).injective).1 ?_` and prove the remaining obligations. Simplify using `using h`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `h2 : (2 * y : ℚ) = 1`. Simplify using `only [eq_intCast] at hy`. Rewrite using `[hy]`. Evaluate the numerical expressions. Establish `h3 : 2 * y = 1` using `by exact_mod_cast h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -84,9 +84,9 @@ theorem not_isIntegral_half : ¬ IsIntegral ℤ (1 / 2 : ℂ) := by
   omega
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : IsIntegral ℤ (starRingEnd ℂ z)` using `h.map (starRingEnd ℂ).toIntAlgHom`. Establish `h2` using `h.add h1`. Rewrite `h2` using `[Complex.add_conj, hz]`. Apply `not_isIntegral_half` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e : ((2 * (1 / 4) : ℝ) : ℂ) = 1 / 2`. Use `push_cast`. Evaluate the numerical expressions. Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem not_isIntegral_of_re {z : ℂ} (hz : z.re = 1 / 4) : ¬ IsIntegral ℤ z := by
   intro h
@@ -104,13 +104,13 @@ variable {R : Ranks} (H : Host R)
 def embO : 𝓞 H.K →+* ℂ := (H.φ₀.comp H.K.val.toRingHom).comp (algebraMap (𝓞 H.K) H.K)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨c, -, rfl⟩` from `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, rfl⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨c, rfl⟩` from `hx`. Take `⟨c', rfl⟩` from `hy`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c + c', by rw [map_add, mul_add]⟩`. Consider the case `neg x _ hx`. Take `⟨c, rfl⟩` from `hx`. Conclude with `⟨-c, by rw [map_neg, mul_neg]⟩`. Introduce and unpack `⟨c, rfl⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `AddSubgroup.subset_closure ⟨c, Submodule.mem_top, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_lamOf_top (δ z : ℂ) : z ∈ Th.lamOf H ⊤ δ ↔ ∃ c : 𝓞 H.K, z = δ * embO H c := by
   constructor
@@ -131,11 +131,11 @@ theorem mem_lamOf_top (δ z : ℂ) : z ∈ Th.lamOf H ⊤ δ ↔ ∃ c : 𝓞 H.
     exact AddSubgroup.subset_closure ⟨c, Submodule.mem_top, rfl⟩
 
 /- English proof (translation)
-Establish `hK : Module.finrank ℚ H.K = 2` using `Formalism.FrobeniusOrbits.SplitK.finrank_K H.hyp.2.1.pos H.sqrtMinusD_sq`. Establish `hinj : Function.Injective (embO H)` using `(H.φ₀.comp H.K.val.toRingHom).injective.comp RingOfIntegers.coe_injective`. Establish `ha : (embO H ⟨_, HostK.isIntegral_half H⟩).im ≠ 0`. Establish `e : embO H ⟨_, HostK.isIntegral_half H⟩ = (1 + Complex.I * (Real.sqrt H.d : ℂ)) / 2`. Rewrite using `[← HostK.φ₀_sqrt]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(H.φ₀.comp H.K.val.toRingHom) ((1 + (⟨H.sqrtMinusD, HostK.sqrt_mem H⟩ : H.K)) / 2) = _`. Rewrite using `[map_div₀, map_add, map_one, map_ofNat]`. Both sides reduce to the same expression. Establish `hd : (0 : ℝ) < Real.sqrt H.d` using `Real.sqrt_pos.2 (by exact_mod_cast H.hyp.2.1.pos)`. Rewrite using `[e]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hd.ne']`. Take `⟨L, hL⟩` from `exists_periodPair_mul_image hK (embO H) hinj _ ha δ hδ`. Conclude with `⟨L, fun z => by rw [mem_lamOf_top, hL]⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_periodPair_lamOf (δ : ℂ) (hδ : δ ≠ 0) :
     ∃ L : PeriodPair, ∀ z, z ∈ Th.lamOf H ⊤ δ ↔ z ∈ L.lattice := by
@@ -155,7 +155,7 @@ theorem exists_periodPair_lamOf (δ : ℂ) (hδ : δ ≠ 0) :
   exact ⟨L, fun z => by rw [mem_lamOf_top, hL]⟩
 
 /- English proof (translation)
-Rewrite using `[mem_lamOf_top]`. Introduce and unpack `⟨c, hc⟩`. Apply `not_isIntegral_of_re hz` to reduce the goal to its premises. Rewrite using `[mul_left_cancel₀ hδ hc]`. Conclude with `(Algebra.IsIntegral.isIntegral (R := ℤ) c).map (embO H).toIntAlgHom`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_mem_lamOf (δ : ℂ) (hδ : δ ≠ 0) {z : ℂ} (hz : z.re = 1 / 4) : δ * z ∉ Th.lamOf H ⊤ δ := by
   rw [mem_lamOf_top]
@@ -171,13 +171,11 @@ namespace GlobalTheory.Mem.Col2
 open CurveLat
 
 /- English proof (translation)
-Introduce `R H`. Take `⟨L₁, h₁⟩` from `exists_periodPair_lamOf H 1 one_ne_zero`. Establish `hΔ` using `(GlobalTheory.LatticeInvariants.invariants_dictionary L₁ _ h₁).2.2.1`. Take `⟨δ, hδ⟩` from `IsAlgClosed.exists_pow_nat_eq (TaylorLogMetric.discr (Th.lamOf H ⊤ 1)) (n := 12) (by norm_num)`. Establish `hδ0 : δ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hΔ (by rw [← hδ]; norm_num)`. Take `⟨L, hL⟩` from `exists_periodPair_lamOf H δ hδ0`. Use `⟨δ, L, δ, hδ, AddSubgroup.ext fun z => (hL z).symm, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(mem_lamOf_top H δ _).2 ⟨1, by rw [map_one]; ring⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `not_mem_lamOf H δ hδ0 (z := (1 + Complex.I * (Real.sqrt H.d : ℂ)) / 4) (by simp)` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `not_mem_lamOf H δ hδ0 (z := (1 - Complex.I * (Real.sqrt H.d : ℂ)) / 4) (by simp)` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_curve_lattice : ∀ (R : Ranks) (H : Host R), ∃ (δ : ℂ) (L : PeriodPair) (ω₀ : ℂ), Th.IsDiscriminantTwelfthRootOfIdealLattice H ⊤ δ ∧ L.lattice.toAddSubgroup = Th.lamOf H ⊤ δ ∧ Th.IsTwoTorsionPointUnkilled H (Th.lamOf H ⊤ δ) (ω₀ / 2) := by
   intro R H

@@ -24,9 +24,9 @@ namespace GlobalTheory.CrysGal
 open GlobalTheory.Prism
 
 /- English proof (translation)
-Establish `hu` using `(E.tr_bc f (E.M P' ⧸ Submodule.span P'.A (Set.range (E.tr f))) 0).unique (y₁ := Submodule.mkQ _) (y₂ := 0) (fun x => by show Submodule.Quotient.mk _ = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.subset_span ⟨x, rfl⟩)`. Use the proof step `(fun x => rfl)`. Rewrite using `[eq_top_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x _`. Use `LinearMap.congr_fun hu x` as an intermediate fact. Rewrite `this` using `[Submodule.mkQ_apply, LinearMap.zero_apply, Submodule.Quotient.mk_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem span_range_tr {l : ℕ} {R : Type} [CommRing R] (E : FCrys l R) {P P' : Obj l R}
     (f : GlobalTheory.Prism.Hom P P') : Submodule.span P'.A (Set.range (E.tr f)) = ⊤ := by
@@ -43,9 +43,9 @@ theorem span_range_tr {l : ℕ} {R : Type} [CommRing R] (E : FCrys l R) {P P' : 
   rwa [Submodule.mkQ_apply, LinearMap.zero_apply, Submodule.Quotient.mk_eq_zero] at this
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span P'.A (Set.range (E.tr f))` using `(span_range_tr E f) ▸ Submodule.mem_top`. Use `(Submodule.span_le.2 ?_) hx` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Take `⟨N, c, s, hz⟩` from `hgen z`. Rewrite using `[hz, map_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Submodule.sum_mem _ fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, ← (oE (c j q)).u_tr]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨(c j q, j), rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_tr {l : ℕ} {R : Type} [CommRing R] (E : FCrys l R) {P P' : Obj l R}
     (f : GlobalTheory.Prism.Hom P P') {O ι : Type} [Fintype ι] (oE : O → FHom E E) (b : ι → E.M P)
@@ -64,9 +64,9 @@ theorem mem_span_tr {l : ℕ} {R : Type} [CommRing R] (E : FCrys l R) {P P' : Ob
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨(c j q, j), rfl⟩)
 
 /- English proof (translation)
-Use `choose n w gg hgg using fun j => Submodule.mem_span_set'.1 (hx j)`. Use `choose pc hpc using fun j k => (gg j k).2`. Use `⟨Σ j', Fin (n j'), inferInstance, fun i j q => (pc q.1 q.2).1, fun i j q => if q.1 = j then (if (pc q.1 q.2).2 = i then w q.1 q.2 else 0) else 0, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Rewrite using `[Fintype.sum_sigma]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single j (fun j' _ hj' => by simp [hj']) (by simp)]`. Rewrite using `[← hgg j]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [if_true, ite_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ]`. Rewrite using `[← hpc j k]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rep {A M O ι : Type} [CommRing A] [AddCommGroup M] [Module A M] [Fintype ι] [DecidableEq ι]
     (v : O → ι → M) (x : ι → M) (hx : ∀ j, x j ∈ Submodule.span A (Set.range fun p : O × ι => v p.1 p.2)) :
@@ -85,9 +85,9 @@ theorem exists_rep {A M O ι : Type} [CommRing A] [AddCommGroup M] [Module A M] 
   rw [← hpc j k]
 
 /- English proof (translation)
-Substitute `hw` using the available equality. Use `choose n₀ hn₀ using hconv`. Use `⟨Finset.univ.sup n₀, fun n hn => ?_⟩` and prove the remaining obligations. Repeatedly rewrite using `[hG, map_sum, map_smul, Finset.mul_sum, mul_smul_comm]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_sub_distrib]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.dvd_sum` to reduce the goal to its premises. Introduce `q _`. Rewrite using `[← Finset.smul_sum, show c q ⊗ₜ[ℤ_[l]] z q = c q • ((1 : O) ⊗ₜ[ℤ_[l]] z q) by`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one], ← smul_sub, Algebra.smul_def]`. Conclude with `Dvd.dvd.mul_left (hn₀ q n (le_trans (Finset.le_sup (Finset.mem_univ q)) hn)) _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_comb {l : ℕ} [Fact l.Prime] {a e : ℕ} [NeZero a] [NeZero e] {O K : Type} [CommRing O]
     [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K]
@@ -111,9 +111,9 @@ theorem conv_comb {l : ℕ} [Fact l.Prime] {a e : ℕ} [NeZero a] [NeZero e] {O 
   exact Dvd.dvd.mul_left (hn₀ q n (le_trans (Finset.le_sup (Finset.mem_univ q)) hn)) _
 
 /- English proof (translation)
-Introduce `k`. Use function extensionality and compare the values at `τ`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hG, Finset.sum_apply, AddSubmonoidClass.coe_finsetSum, map_sum, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.smul_apply, SetLike.val_smul, hF, PowerSeries.coeff_smul, mul_smul_comm, mul_smul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comb_S {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K]
     {a e : ℕ} {Q : Type} [Fintype Q] (c : Q → O) (w : ZMod a → Q → K⟦X⟧⟦X⟧)
@@ -131,15 +131,15 @@ theorem comb_S {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `BS l _ a e _ _ ϖ LL _ _ hl2 ι _ _ P T I hBK hS g`. Use `letI := zlLat (resF T (ϖ.field a))`. Take `⟨E, jA, hR, hIm⟩` from `hBK`. Establish `hO : ∀ c : ↥(OL LL), ∃ u : FHom E E, ∀ x, jA (u.u (ainfObj (ϖ.field a)) x) = (OfCrystal.mulZ (resF T (ϖ.field a)) c).lTensor (WCb l) (jA x)` using `fun c => by`. Take `⟨u, hu, -⟩` from `(BS l (ϖ.field a) (ainfObj (ϖ.field a)) (ainfId (ϖ.field a)) hR.ainf).2 _ _ _ _ E E jA jA hR hR (OfCrystal.mulZ (resF T (ϖ.field a)) c) fun g x => (((resF T (ϖ.field a)).actT g).map_smul c x).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨u, hu⟩`. Use `choose oE hoE using hO`. Take `⟨b, hb, hgen⟩` from `GlobalTheory.T.breuilKisinPrism_crystal_basis_and_span l a e ↥(OL LL) ↥LL.1 (thetaW a LL) ϖ ι P (resF T (ϖ.field a)) (I.res (inclG (ϖ.field a)) (continuous_subtype_val.subtype_mk _)) E jA hR hIm oE hoE`. Take `⟨sh, φ₂, hsh, hφC, hφsh⟩` from `GlobalTheory.TaylorShift.shift_frob_exists l ↥LL.1`. Take `⟨PP, S₀, p₀, p₁, δ, κ, κ₀, hPPI, hδ, hκ₀, hκp, hκφ, hSS, -, hev⟩` from `GlobalTheory.T.exists_crystalline_prisms l a e ↥(OL LL) ↥LL.1 (thetaW a LL) ϖ hl2 sh φ₂ hsh hφC hφsh`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, _, c, y, hε⟩` from `GlobalTheory.CrysGal.exists_rep (A := PP.A) (fun c i => (oE c).u PP (E.tr p₀ (b i))) (fun j => E.tr p₁ (b j)) (fun j => GlobalTheory.CrysGal.mem_span_tr E p₀ oE b hgen _)`. Establish `hF` using `GlobalTheory.T.crystal_changeOfBasis_frobenius_compat l a e ↥(OL LL) ↥LL.1 (thetaW a LL) ϖ ι P (resF T (ϖ.field a)) (I.res (inclG (ϖ.field a)) (continuous_subtype_val.subtype_mk _)) E jA hR hIm oE hoE b hb sh φ₂ hsh hφC PP p₀ p₁ κ hPPI hκp hκφ Q c y hε`. Establish `hD` using `GlobalTheory.T.prismCrystal_changeOfBasis_constantCoeff_eq_one l a e ↥(OL LL) ↥LL.1 (thetaW a LL) ϖ ι P (resF T (ϖ.field a)) (I.res (inclG (ϖ.field a)) (continuous_subtype_val.subtype_mk _)) E jA hR hIm oE hoE b hb PP S₀ p₀ p₁ δ κ κ₀ hδ hκ₀ (fun τ x => (hκp τ x).1) Q c y hε`. Establish `hK` using `GlobalTheory.T.frobeniusStratification_coeff_eq_connection_pow ↥(OL LL) ↥LL.1 l e a ι P sh φ₂ hsh hφC hφsh _ hD hF`. Take `⟨Cr, eC, h, hCrI, heCφ, heCh⟩` from `GlobalTheory.AcrisPrism.main l (ϖ.field a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hev'` using `hev Cr eC h hCrI heCφ heCh g`. Take `⟨ev, hevs⟩` from `hev'`. Establish `hG` using `GlobalTheory.T.galoisMatrix_eq_crystal_changeOfBasis_value l a e ↥(OL LL) ↥LL.1 (thetaW a LL) ϖ ι P (resF T (ϖ.field a)) (I.res (inclG (ϖ.field a)) (continuous_subtype_val.subtype_mk _)) E jA hR hIm oE hoE b hb PP p₀ p₁ Q c y hε Cr eC h heCh g ev hevs.1 hevs.2.1`. Take `⟨Γ, hΓ, hΓeq⟩` from `hG`. Establish `hconv` using `hevs.2.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Γ, hΓ, fun i j r => ?_⟩` and prove the remaining obligations. Establish `hG` using `GlobalTheory.CrysGal.comb_S (e := e) (c i j) (fun τ q => κ τ (y i j q)) (fun k τ => ⟨_, hS τ j k i⟩) (fun q k τ => ⟨_, hSS τ (y i j q) k⟩) (fun k τ => (congrArg ((X : (↥LL.1)⟦X⟧) ^ k * ·) (hK τ k i j)).symm) (fun q k τ => rfl)`. Conclude with `GlobalTheory.CrysGal.conv_comb (thetaW a LL) ϖ g (c i j) (fun q => eC (ev.f (y i j q))) (fun q k τ => ⟨_, hSS τ (y i j q) k⟩) (fun k τ => ⟨_, hS τ j k i⟩) hG r (fun q => hconv (y i j q) r) _ (hΓeq i j)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem galois_taylor_basis : GlobalTheory.Published.BhattScholzeCrystallineLattices → ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a], l ≠ 2 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod ↥(OL LL) ↥LL.1 l e a ι) (T : QLat LL) (I : Ident (thetaW a LL) ϖ P T), IsBK (T := resF T (ϖ.field a)) (I.res (inclG (ϖ.field a)) (continuous_subtype_val.subtype_mk _)) → ∀ (hS : ∀ (τ : ZMod a) (j : ι) (k : ℕ) (i : ι), (X : (↥LL.1)⟦X⟧) ^ k * (P.mxInv τ *ᵥ (P.nabla ^ k) (P.phi (bas j)) τ) i ∈ S (↥(OL LL)) (↥LL.1) e) (g : ↥(GK (ϖ.field a))), ∃ Γ, (I.res (inclG (ϖ.field a)) (continuous_subtype_val.subtype_mk _)).IsLMat (g : GQ l) g Γ ∧ ∀ (i j : ι) (r : ℕ), ∃ n₀ : ℕ, ∀ n ≥ n₀, (l : OCr l ↥(OL LL)) ^ r ∣ toOCr l ↥(OL LL) (Γ i j) - ∑ k ∈ Finset.range n, ϖ.muDiv a ↥(OL LL) g k * ϖ.iC (thetaW a LL) ↥LL.1 (fun τ => ⟨_, hS τ j k i⟩) := by
   intro BS l _ a e _ _ ϖ LL _ _ hl2 ι _ _ P T I hBK hS g

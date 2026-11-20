@@ -43,9 +43,9 @@ def phi (f : ℕ) : ↥L.1 ⊗[ℚ_[l]] P.R.B →ₐ[↥L.1] ↥L.1 ⊗[ℚ_[l]]
   Algebra.TensorProduct.map (AlgHom.id ↥L.1 ↥L.1) (P.φB ^ f)
 
 /- English proof (translation)
-Establish `h : ∀ (g : ↥(GK K)) y, actVB (P.PD K) (Formalism.WeaklyAdmissibleFiltrations.charRep χ) g y = ((χ g : (↥L.1)ˣ) : ↥L.1) • gal P L g y`. Introduce `g y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul v b`. Express the relevant statement in the definitionally equal form `(((χ g : (↥L.1)ˣ) : ↥L.1) • v) ⊗ₜ[ℚ_[l]] (P.PD K).actB g b = _`. Rewrite using `[P.PD_actB]`. Both sides reduce to the same expression. Simplify using `only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero, h]`.
+Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem mem_D (χ : ↥(GK K) →* (↥L.1)ˣ) (x : ↥L.1 ⊗[ℚ_[l]] P.R.B) :
     x ∈ Dcris (P.PD K) (Formalism.WeaklyAdmissibleFiltrations.charRep χ) ↔ ∀ g : ↥(GK K), ((χ g : (↥L.1)ˣ) : ↥L.1) • gal P L g x = x := by
@@ -62,7 +62,7 @@ theorem mem_D (χ : ↥(GK K) →* (↥L.1)ˣ) (x : ↥L.1 ⊗[ℚ_[l]] P.R.B) :
     sub_eq_zero, h]
 
 /- English proof (translation)
-Rewrite `hx`, `hy`, the goal using `[mem_D]`. Introduce `g`. Rewrite using `[map_mul, MonoidHom.mul_apply, Units.val_mul, ← smul_mul_smul_comm, hx, hy]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_mem_D {χ χ' : ↥(GK K) →* (↥L.1)ˣ} {x y : ↥L.1 ⊗[ℚ_[l]] P.R.B}
     (hx : x ∈ Dcris (P.PD K) (Formalism.WeaklyAdmissibleFiltrations.charRep χ)) (hy : y ∈ Dcris (P.PD K) (Formalism.WeaklyAdmissibleFiltrations.charRep χ')) :
@@ -80,13 +80,13 @@ def Eig (f : ℕ) (χ : ↥(GK K) →* (↥L.1)ˣ) (c : (↥L.1)ˣ) : Prop :=
 variable {P} {f : ℕ} {χ χ' : ↥(GK K) →* (↥L.1)ˣ} {c c' : (↥L.1)ˣ}
 
 /- English proof (translation)
-Introduce `y hy`. Establish `key : ∀ x ∈ Ideal.span {x | x ∈ Dcris (P.PD K) (Formalism.WeaklyAdmissibleFiltrations.charRep χ) ∧ phi P L f x = (c : ↥L.1) • x}, x * ((c : ↥L.1) • phi P L f y - y) = 0`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `h2` using `mul_mem_D P hx.1 hy`. Rewrite `h2` using `[mul_inv_cancel]`. Establish `h3` using `h1 _ h2`. Rewrite `h3` using `[map_mul, hx.2, Units.val_one, one_smul]`. Rewrite using `[mul_sub, mul_smul_comm, ← smul_mul_assoc, h3, sub_self]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => rw [zero_mul]`. Consider the case `add a b _ _ ha hb => rw [add_mul, ha, hb, add_zero]`. Consider the case `smul a x _ hx => rw [smul_eq_mul, mul_assoc, hx, mul_zero]`. Establish `h4` using `key 1 (by rw [h]; trivial)`. Rewrite `h4` using `[one_mul, sub_eq_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `conv_rhs => rw [← h4, smul_smul, Units.inv_mul, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem Gen.eig_inv (h1 : Eig P f (1 : ↥(GK K) →* (↥L.1)ˣ) 1) (h : Gen P f χ c) : Eig P f χ⁻¹ c⁻¹ := by
   intro y hy
@@ -108,7 +108,7 @@ theorem Gen.eig_inv (h1 : Eig P f (1 : ↥(GK K) →* (↥L.1)ˣ) 1) (h : Gen P 
   conv_rhs => rw [← h4, smul_smul, Units.inv_mul, one_smul]
 
 /- English proof (translation)
-Take `⟨m, b, d, hd, h1⟩` from `GlobalTheory.Per.TiedSpan.tied_crisSpan l P AI T (GlobalTheory.MemLoc.tied_regular_and_onto l P AI T).1 K L ↥L.1 _ hc 1`. Rewrite using `[Gen, Ideal.eq_top_iff_one, h1]`. Use `Ideal.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.TwistJump.map_mulLeft]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨hd i, h _ (hd i)⟩)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Eig.gen {AI : LocAinf l P} (T : LocTied l P AI) (hc : IsCrys (P.PD K) (Formalism.WeaklyAdmissibleFiltrations.charRep χ))
     (h : Eig P f χ c) : Gen P f χ c := by
@@ -120,11 +120,11 @@ theorem Eig.gen {AI : LocAinf l P} (T : LocTied l P AI) (hc : IsCrys (P.PD K) (F
   exact Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨hd i, h _ (hd i)⟩)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Express the relevant statement in the definitionally equal form `AI.ιA x = _`. Use `congr 1`. Use extensionality with `i`.
+Proceed by induction. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Consider the case `succ k ih`. Rewrite using `[pow_succ', AlgHom.mul_apply, ih, ← AI.ιA_φ, WittVector.frobenius_eq_map_frobenius]`. Use `congr 1`. Use extensionality with `i`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[iterateFrobenius_def, frobenius_def, pow_succ, pow_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phi_ιA (AI : LocAinf l P) (k : ℕ) (x : Ainf l) :
     (P.φB ^ k) (AI.ιA x) = AI.ιA (WittVector.map (iterateFrobenius _ l k) x) := by
@@ -151,7 +151,7 @@ variable {AI : LocAinf l P} (T : LocTied l P AI) (h1 : Eig P f (1 : ↥(GK K) �
 include T h1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(GlobalTheory.Adopt.isCrys_inv_and_hodgeTate_jumps_neg l P AI T K L χ a h.1 h.2.1).1, (GlobalTheory.Adopt.isCrys_inv_and_hodgeTate_jumps_neg l P AI T K L χ a h.1 h.2.1).2, (h.2.2.gen T h.1).eig_inv h1⟩`.
+Supply the required witnesses or components.
 -/
 theorem Good.inv (h : Good P f χ a c) : Good P f χ⁻¹ (-a) c⁻¹ :=
   ⟨(GlobalTheory.Adopt.isCrys_inv_and_hodgeTate_jumps_neg l P AI T K L χ a h.1 h.2.1).1, (GlobalTheory.Adopt.isCrys_inv_and_hodgeTate_jumps_neg l P AI T K L χ a h.1 h.2.1).2,

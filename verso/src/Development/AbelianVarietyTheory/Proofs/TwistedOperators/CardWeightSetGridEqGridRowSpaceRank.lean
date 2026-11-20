@@ -8,11 +8,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.IndefR Formalism
 namespace GlobalTheory.Grid
 
 /- English proof (translation)
-Introduce `D _ τ j _ hj`. Establish `hcen : GlobalTheory.Grid.cen D τ = GlobalTheory.ChiGrid.cen D 1 τ`. Use function extensionality and compare the values at `i`. Unfold `GlobalTheory.Grid.cen GlobalTheory.ChiGrid.cen GlobalTheory.Grid.gridOf`. Rewrite using `[GlobalTheory.GridJoin.gap_eq_chiGap D]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hg : GlobalTheory.Grid.grid D τ = GlobalTheory.ChiGrid.num D 1 τ`. Unfold `GlobalTheory.Grid.grid GlobalTheory.Grid.gridOf GlobalTheory.ChiGrid.num`. Rewrite using `[hcen, GlobalTheory.GridJoin.gap_eq_chiGap D]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hg, GlobalTheory.FunObj.card_weightX D 1 τ hj]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem card_weightX_grid : ∀ (D : D7), HostHyp D → ∀ (τ : D.what₂.Tau) (j : ℕ), 1 ≤ j → j ≤ D.R.m →
     ((GlobalTheory.Grid.grid D τ).weightX j).card = GlobalTheory.Grid.rkX D j := by

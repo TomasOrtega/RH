@@ -22,9 +22,9 @@ section SlopeTestRemainingChoices
 open ReciprocityTheory.ChartRestriction.G.AI.I1 GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.Inter.PointVertical
 
 /- English proof (translation)
-Establish `h1 : FieldNumbers.relDim V = ((1 : ℕ) : WithBot (WithTop ℤ))` using `(FieldNumbers.relDim_eq_iff_hasRelDim V 1).mpr hV.2`. Establish `h2 : FieldNumbers.relDim (FieldNumbers.contractPrime (Targets.ProjContract.emb hv) V) = ((e : ℕ) : WithBot (WithTop ℤ))`. Use `(FieldNumbers.relDim_eq_iff_hasRelDim _ e).mpr ?_` and prove the remaining obligations. Use `show ringKrullDim _ = _`. Rewrite using `[← Targets.ProjContract.ringKrullDim_imageVar hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `he.2`. Establish `h3` using `FieldNumbers.ContractRelDimLe.proof F K K' (Targets.ProjContract.emb hv) ι' V ((Bridge.isMultiProjPrime_iff V).mpr hV.1)`. Rewrite `h3` using `[h1, h2]`. Conclude with `h3` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem image_dim_le_one {K K' : Type} [Fintype K] [Fintype K'] {ι : K → Type} {ι' : K' → Type} [∀ k, Fintype (ι k)]
     [∀ k, Fintype (ι' k)] {κ : K → K'} {v : (Σ k, ι k) → Σ k, ι' k} (hv : IsBlockMap κ v) {F : Type} [Field F]
@@ -44,11 +44,9 @@ theorem image_dim_le_one {K K' : Type} [Fintype K] [Fintype K'] {ι : K → Type
   exact_mod_cast h3
 
 /- English proof (translation)
-Distinguish the cases in `h : IsRelevant W`. Use `⟨fun k => ∑ᶠ V ∈ divSupp W (X ⟨k, (h k).choose⟩), (multAt (W ⊔ Ideal.span {(X ⟨k, (h k).choose⟩ : MRing ι)}) V : ℤ) * geoNum 0 V Fin.elim0, fun k => ?_, fun a => ?_⟩` and prove the remaining obligations. Use `finsum_nonneg fun V => finsum_nonneg fun _ => mul_nonneg (Int.natCast_nonneg _) ?_` and prove the remaining obligations. Unfold `geoNum`. Use `split_ifs`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Int.natCast_nonneg _`. Conclude with `le_rfl`. Rewrite using `[geoNum, dif_pos h]`. Both sides reduce to the same expression. Use `⟨0, fun _ => le_rfl, fun a => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[geoNum, dif_neg h]`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem geoNum_one_linear {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (W : Ideal (MRing ι)) :
     ∃ w : K → ℤ, (∀ k, 0 ≤ w k) ∧ ∀ a : K → ℤ, geoNum 1 W (fun _ => a) = ∑ k, a k * w k := by
@@ -71,19 +69,17 @@ end SlopeTestRemainingChoices
 open ReciprocityTheory.ChartRestriction.G.AI.I1 GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.Inter.PointVertical in
 
 /- English proof (translation)
-Introduce `W hWm hPW hch hWd`. Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `hpW : ((p : ℕ) : MRing ι') ∈ W` using `hch ▸ ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.natCast_mem_of_charOf W`. Establish `hWp : IsProjVarF (W.map (red p)) 1` using `⟨isMultiProjPrime_red p hWm hpW, by rw [ringKrullDim_red p hpW, hWd]⟩`. Establish `hImm : IsMultiProjPrime (imageZ v W)` using `isMultiProjPrime_imageZ hv hWm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpI : ((p : ℕ) : MRing ι) ∈ imageZ v W` using `by show rename v ((p : ℕ) : MRing ι) ∈ W`. Simplify using `using hpW`. Establish `hVm` using `isMultiProjPrime_red p hImm hpI`. Take `⟨D, hKD, hD⟩` from `exists_dim_F p _ hVm`. Establish `hVi : IsProjVarF (imageVar (ZMod p) v (W.map (red p))) (D - Fintype.card K)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[imageVar_red p v hpW]`. Use `⟨hVm, ?_⟩` and prove the remaining obligations. Rewrite using `[hD, Nat.sub_add_cancel hKD]`. Establish `hle` using `image_dim_le_one hv hWp hVi`. Take `⟨I', hI', -⟩` from `Targets.ExistsUnique.full (ZMod p) ι'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨I, hI, -⟩` from `Targets.ExistsUnique.full (ZMod p) ι`. Rewrite using `[geoNumStatement ι' p I' hI' W 1 _ hWm hpW hWp]`. Break down `hle.lt_or_eq with hlt | heq` into its components or cases. Conclude with `(Targets.ProjContract.full (ZMod p) K ι K' ι' I' hI' κ v _ 1 _ (fun _ => a) hv hWp hVi hlt).ge`. Rewrite `hVi`, `choose`, `i'`, `hi'`, `using`, `hWp.1.2.2` using `[heq]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Targets.ProjDeg.of_found AutoClose.FieldNumbers_ProjectionFormulaDegree Targets.FnDegRelDeg.proof (ZMod p) ι ι' I I' hI hI' κ v _ 1 (fun _ => a) i' hv hWp hVi hi']`. Use `mul_nonneg (Int.natCast_nonneg _) ?_` and prove the remaining obligations. Rewrite `hVi`, the goal using `[imageVar_red p v hpW]`. Rewrite using `[← geoNumStatement ι p I hI (imageZ v W) 1 _ hImm hpI hVi]`. Use `h _ hImm (hP.trans (Ideal.comap_mono hPW)) ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hch]`. Establish `e : (imageZ v W).comap (C : ℤ →+* MRing ι) = W.comap (C : ℤ →+* MRing ι')`. Use extensionality with `n`. Use `show rename v (C n) ∈ W ↔ C n ∈ W`. Rewrite using `[rename_C]`.
-
-Conclude with `congrArg (fun J : Ideal ℤ => (Submodule.IsPrincipal.generator J).natAbs) e`. Rewrite using `[← ringKrullDim_red p hpI]`. Conclude with `hVi.2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nefAt_pull {K K' : Type} [Fintype K] [Fintype K'] {ι : K → Type} {ι' : K' → Type} [∀ k, Fintype (ι k)]
     [∀ k, Fintype (ι' k)] {κ : K → K'} {v : (Σ k, ι k) → Σ k, ι' k} (hv : IsBlockMap κ v) {P : Ideal (MRing ι)}
@@ -128,7 +124,7 @@ theorem nefAt_pull {K K' : Type} [Fintype K] [Fintype K'] {ι : K → Type} {ι'
       exact hVi.2
 
 /- English proof (translation)
-Introduce `W _ _ _ _`. Take `⟨w, hw, e⟩` from `geoNum_one_linear W`. Rewrite using `[e]`. Conclude with `Finset.sum_nonneg fun k _ => mul_nonneg (ha k) (hw k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nefAt_of_nonneg {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (p : ℕ)
     {a : K → ℤ} (ha : ∀ k, 0 ≤ a k) : PB.NefAt P p a := by
@@ -138,9 +134,9 @@ theorem nefAt_of_nonneg {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype
   exact Finset.sum_nonneg fun k _ => mul_nonneg (ha k) (hw k)
 
 /- English proof (translation)
-Introduce `W h1 h2 h3 h4`. Establish `ha'` using `ha W h1 h2 h3 h4`. Establish `hb'` using `hb W h1 h2 h3 h4`. Take `⟨w, -, e⟩` from `geoNum_one_linear W`. Rewrite `ha'`, `hb'`, the goal using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [Pi.add_apply, add_mul, Finset.sum_add_distrib]`. Conclude with `add_nonneg ha' hb'`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nefAt_add {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {P : Ideal (MRing ι)} {p : ℕ}
     {a b : K → ℤ} (ha : PB.NefAt P p a) (hb : PB.NefAt P p b) : PB.NefAt P p (a + b) := by
@@ -153,17 +149,17 @@ theorem nefAt_add {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k
   exact add_nonneg ha' hb'
 
 /- English proof (translation)
-Introduce `W h1 h2 h3 h4`. Set `mu : Top.Wt Ψ N` to `fun σ k => if σ = τ ∧ k ≤ i then 1 else 0`. Establish `hmu : Top.Dominant mu`. Introduce `σ a b hab`. Simplify using `only [mu]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `split_ifs with c1 c2`. Conclude with `le_rfl`. Conclude with `absurd ⟨c1.1, hab.trans c1.2⟩ c2`. Conclude with `zero_le_one`. Conclude with `le_rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key` using `h mu hmu W ⟨h1, h2, h3, h4⟩`. Take `⟨w, -, e⟩` from `geoNum_one_linear W`. Unfold `Top.RootModel.curveDeg at key`. Rewrite `key` using `[Fintype.sum_option, Fintype.sum_prod_type]`. Simplify using `only [Top.RootModel.coef, Top.RootModel.line, zero_div, zero_mul, zero_add, M.x_deg] at key`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `key` using `[Finset.sum_eq_single τ (fun σ _ hσ => by simp [mu, hσ]) (by simp)]`. Establish `e2 : ∑ k : Fin N, -mu τ k * (geoNum 1 W (fun _ => M.xdeg (τ, k)) : ℝ) = ((-∑ k ∈ Finset.Iic i, geoNum 1 W (fun _ => M.xdeg (τ, k)) : ℤ) : ℝ)`. Use `push_cast`. Rewrite using `[← Finset.sum_neg_distrib, ← Finset.sum_subset (Finset.subset_univ (Finset.Iic i))]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[mu, Finset.mem_Iic.1 hk]`. Introduce `k _ hk`. Establish `: ¬ k ≤ i` using `fun c => hk (Finset.mem_Iic.2 c)`. Simplify using `[mu, this]`. Rewrite `key` using `[e2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `key' : 0 ≤ -∑ k ∈ Finset.Iic i, geoNum 1 W (fun _ => M.xdeg (τ, k))` using `by exact_mod_cast key`. Simplify using `only [e] at key' ⊢`. Use `key' using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.neg_apply, Finset.sum_apply, neg_mul, Finset.sum_neg_distrib, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+A detailed English derivation is pending.
 -/
 theorem nefAt_step {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} (M : Top.RootModel Ψ N) (p : ℕ)
     (h : ∀ mu : Top.Wt Ψ N, Top.Dominant mu → M.NefAt p mu 0) (τ : Ψ) (i : Fin N) :

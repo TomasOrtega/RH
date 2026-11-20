@@ -15,27 +15,25 @@ variable {Q E : Type} [NormedAddCommGroup Q] [InnerProductSpace ℂ Q]
   [NormedAddCommGroup E] [InnerProductSpace ℂ E]
 
 /- English proof (translation)
-Establish `hF : F ∈ ⨆ p, Qp p` using `by rw [hsup]; exact Submodule.mem_top`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy, hFy⟩ : ∃ y : Ix → Q, (∀ p, y p ∈ Qp p) ∧ F = ∑ p, y p := by`. Use `Submodule.iSup_induction (motive := fun z => ∃ y : Ix → Q, (∀ p, y p ∈ Qp p) ∧ z = ∑ p, y p) Qp hF ?_ ?_ ?_` and prove the remaining obligations. Introduce `i x hx`. Use `⟨Pi.single i x, fun p => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Break down `eq_or_ne p i with rfl | h` into its components or cases. Simplify using `using hx`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `(Qp p).zero_mem`. Rewrite using `[Finset.sum_pi_single']`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `⟨0, fun p => (Qp p).zero_mem, by simp⟩`. Introduce and unpack `x1 x2 ⟨y1, hy1, h1⟩ ⟨y2, hy2, h2⟩`. Use `⟨y1 + y2, fun p => (Qp p).add_mem (hy1 p) (hy2 p), ?_⟩` and prove the remaining obligations. Rewrite using `[h1, h2]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_add_distrib]`. Establish `horth : ∀ p q, s p ≠ s q → ⟪y p, y q⟫_ℂ = 0`. Introduce `p q hpq`. Establish `h1` using `hι p (y p) (hy p) (y q)`. Establish `h2` using `hι q (y q) (hy q) (y p)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ⟪ι (y p), ι (y q)⟫_ℂ = (s q : ℂ) * ⟪y p, y q⟫_ℂ`. Rewrite using `[← inner_conj_symm, h2, map_mul, Complex.conj_ofReal, inner_conj_symm]`. Establish `h4 : ((s p : ℂ) - (s q : ℂ)) * ⟪y p, y q⟫_ℂ = 0`. Rewrite using `[sub_mul, ← h1, ← h3, sub_self]`. Establish `h5 : (s p : ℂ) - (s q : ℂ) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_ne_zero]`. Conclude with `hpq` after adjusting the coercions. Conclude with `(mul_eq_zero.mp h4).resolve_left h5`. Establish `hkey : ∀ p q, ⟪ι (y p), ι (y q)⟫_ℂ - (smin : ℂ) * ⟪y p, y q⟫_ℂ = ⟪((Real.sqrt (s p - smin) : ℝ) : ℂ) • y p, ((Real.sqrt (s q - smin) : ℝ) : ℂ) • y q⟫_ℂ`. Introduce `p q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hι p (y p) (hy p) (y q), inner_smul_left, inner_smul_right, Complex.conj_ofReal, ← sub_mul, ← mul_assoc]`. Distinguish the cases in `hpq : s p = s q`. Use `congr 1`. Establish `hc : Real.sqrt (s p - smin) * Real.sqrt (s q - smin) = s p - smin`. Rewrite using `[hpq, Real.mul_self_sqrt (by linarith [hs q])]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Complex.ofReal_mul, hc, Complex.ofReal_sub]`. Simplify using `[horth p q hpq]`. Establish `hsum : ⟪ι F, ι F⟫_ℂ - (smin : ℂ) * ⟪F, F⟫_ℂ = ⟪∑ p, ((Real.sqrt (s p - smin) : ℝ) : ℂ) • y p, ∑ p, ((Real.sqrt (s p - smin) : ℝ) : ℂ) • y p⟫_ℂ`. Simplify using `only [hFy, map_sum, sum_inner, inner_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `first`. Consider the case `exact hkey a b`. Consider the case `exact hkey b a`. Take `⟨Z, hZ⟩ : ∃ Z : Q, ⟪ι F, ι F⟫_ℂ - (smin : ℂ) * ⟪F, F⟫_ℂ = ⟪Z, Z⟫_ℂ` from `⟨_, hsum⟩`. Establish `hn : ∀ {G : Type} [NormedAddCommGroup G] [InnerProductSpace ℂ G] (x : G), (⟪x, x⟫_ℂ).re = ‖x‖ ^ 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Introduce `G _ _ x`. Use `first`. Consider the case `exact inner_self_eq_norm_sq (𝕜 := ℂ) x`. Consider the case `exact (norm_sq_eq_re_inner (𝕜 := ℂ) x).symm`. Consider the case `simp`.
-
-Establish `hre` using `congrArg Complex.re hZ`. Simplify using `only [Complex.sub_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero] at hre`. Rewrite `hre` using `[hn, hn, hn]`. Use polynomial arithmetic with `[sq_nonneg ‖Z‖]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_sq_le (ι : Q →ₗ[ℂ] E) {Ix : Type} [Fintype Ix] (Qp : Ix → Submodule ℂ Q)
     (hsup : (⨆ p, Qp p) = ⊤) (s : Ix → ℝ) (smin : ℝ) (hs : ∀ p, smin ≤ s p)
@@ -106,11 +104,11 @@ theorem norm_sq_le (ι : Q →ₗ[ℂ] E) {Ix : Type} [Fintype Ix] (Qp : Ix → 
 end NormSquareReduction
 
 /- English proof (translation)
-Introduce `Φ Cs Q E _ _ _ _ _ _ _ _ _ ι hsurj Ix _ Qp hsup s smin hsmin hs hι col k hcol P p hP B hB hk hp φ e`. Take `⟨F, rfl⟩` from `hsurj e`. Establish `hF` using `NormSquareReduction.norm_sq_le ι Qp hsup s smin hs hι F`. Establish `hsq : 0 < Real.sqrt smin` using `Real.sqrt_pos.mpr hsmin`. Establish `hFle : ‖F‖ ≤ ‖ι F‖ / Real.sqrt smin`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[le_div_iff₀ hsq]`. Establish `h1 : (‖F‖ * Real.sqrt smin) ^ 2 ≤ ‖ι F‖ ^ 2`. Rewrite using `[mul_pow, Real.sq_sqrt hsmin.le]`. Combine the linear equalities and inequalities to obtain the conclusion. Use polynomial arithmetic with `[norm_nonneg (ι F), mul_nonneg (norm_nonneg F) hsq.le]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[hB φ F]`. Establish `h1` using `hP (col φ) F`. Establish `h2` using `hcol φ`. Establish `hpk : p * ‖col φ‖ * ‖F‖ ≤ p * (k * ‖φ‖) * (‖ι F‖ / Real.sqrt smin)` using `mul_le_mul (mul_le_mul_of_nonneg_left h2 hp) hFle (norm_nonneg _) (mul_nonneg hp (mul_nonneg hk (norm_nonneg _)))`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem reduction_third_step : StepC := by
   intro Φ Cs Q E _ _ _ _ _ _ _ _ _ ι hsurj Ix _ Qp hsup s smin hsmin hs hι col k hcol P p hP B hB hk hp

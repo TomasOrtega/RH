@@ -16,9 +16,9 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) {E Ω : Type} [Field E] [Fiel
   [CommRing O] [IsDomain O] [Algebra ℤ_[l] O] [TopologicalSpace O]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨_, ⟨z, hz, rfl⟩, _, ⟨x, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 h`. Take `⟨m, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `⟨z, hz, m, fun g => rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨z, hz, m, h⟩`. Use `Submodule.mem_sup.2 ⟨_, ⟨z, hz, rfl⟩, _, ⟨Submodule.Quotient.mk m, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Conclude with `(h g).symm`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem mem_HfD_gen {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
     [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
@@ -48,7 +48,7 @@ set_option synthInstance.maxHeartbeats 400000 in
 omit [IsDomain O] in
 
 /- English proof (translation)
-The claim follows from `mem_HfD_gen (P.PD B.Kw) (Br.lat B M) w`.
+A detailed English derivation is pending.
 -/
 theorem mem_HfD_iff (B : LocBridge l E Ω Gw O) {k : ℕ} (M : ↥Gw →* Matrix (Fin k) (Fin k) O)
     (w : ↥(GK B.Kw) → (Fin k → Br.LLw B) ⧸ stdG (Br.Ow B) (Br.LLw B) k) :
@@ -71,7 +71,7 @@ def transport (B : LocBridge l E Ω Gw O) (k : ℕ) :
     exact (Br.phi B k).map_smulₛₗ c _
 
 /- English proof (translation)
-Rewrite using `[Br.toLLK_alg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem locM_apply (B : LocBridge l E Ω Gw O) {k : ℕ} (M : ↥Gw →* Matrix (Fin k) (Fin k) O)
     (g : ↥(GK B.Kw)) (i j : Fin k) :
@@ -79,7 +79,7 @@ theorem locM_apply (B : LocBridge l E Ω Gw O) {k : ℕ} (M : ↥Gw →* Matrix 
   rw [Br.toLLK_alg]; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `Br.toLLK B (∑ j, algebraMap O (FractionRing O) (M (Br.ι B g) i j) * u j) = ∑ j, Br.locM B M g i j * Br.toLLK B (u j)`. Simplify using `only [map_sum, map_mul, locM_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem vecS_mulVec (B : LocBridge l E Ω Gw O) {k : ℕ} (M : ↥Gw →* Matrix (Fin k) (Fin k) O)
     (g : ↥(GK B.Kw)) (u : Fin k → FractionRing O) :
@@ -93,11 +93,11 @@ theorem vecS_mulVec (B : LocBridge l E Ω Gw O) {k : ℕ} (M : ↥Gw →* Matrix
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨c₁, h₁, he⟩` from `hc`. Establish `he' : c₁ - c ∈ (ReciprocityTheory.Gal.B1 (WKG M)).comap (Z1 (WKG M)).subtype` using `(Submodule.Quotient.eq _).1 he`. Take `⟨x, hx⟩` from `(mem_coboundaries1 _ _).1 he'`. Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hB : Br.Phi B (WKG M) (c₁ - c) ∈ HfD (P.PD B.Kw) (Br.lat B M)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(mem_HfD_iff P B M _).2 ⟨0, Submodule.zero_mem _, Br.vecS B k u, fun g => ?_⟩` and prove the remaining obligations. Use `congrArg (Br.phi B k) (hx (Br.ι B g))` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[Pi.zero_apply, zero_add, ← vecS_mulVec, ← map_sub]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2 : c = c₁ - (c₁ - c)` using `by abel`. Rewrite using `[h2, map_sub]`. Conclude with `Submodule.sub_mem _ h₁ hB`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_mem_of_mem_bkG (B : LocBridge l E Ω Gw O) {k : ℕ} (M : ↥Gw →* Matrix (Fin k) (Fin k) O)
     (c : ↥(Z1 (WKG M))) (hc : Submodule.Quotient.mk c ∈ Br.bkG B P (WKG M) M) :
@@ -120,17 +120,17 @@ theorem phi_mem_of_mem_bkG (B : LocBridge l E Ω Gw O) {k : ℕ} (M : ↥Gw →*
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `exists_coefMap B₀ B f hf hz`. Take `⟨z, hzf, m, h⟩` from `(mem_HfD_iff P B₀ M₀ _).1 hc`. Set `θ : ↥(GK B.Kw) →* ↥(GK B₀.Kw)` to `B₀.e.toMonoidHom.comp (Br.ι B)`. Establish `hθι : ∀ g, Br.ι B₀ (θ g) = Br.ι B g` using `fun g => B₀.e.symm_apply_apply _`. Establish `hθ : Continuous θ` using `B₀.e_cont.comp (Br.ι_cont B)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ' : ∀ g : ↥(GK B.Kw), (g : GQ l) = σ * (θ g : GQ l) * σ⁻¹` using `fun g => by`. Use `hσ (Br.ι B g)` as an intermediate fact. Rewrite `this` using `[show B.e (Br.ι B g) = g from B.e.apply_symm_apply g]`. Then use the resulting hypothesis. Establish `hp : ∀ g (v : Fin k → ↥B₀.LL.1), (fun j => φ ((Br.locM B₀ M₀ (θ g)).mulVec v j)) = (Br.locM B (mapM f M₀) g).mulVec fun j => φ (v j)`. Introduce `g v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `φ (∑ j, Br.locM B₀ M₀ (θ g) i j * v j) = ∑ j, Br.locM B (mapM f M₀) g i j * φ (v j)`. Simplify using `only [map_sum, map_mul, locM_apply, hφ, fracMap_alg, hθι]`. Both sides reduce to the same expression. Use `(mem_HfD_iff P B _ _).2 ⟨_, crystallineCocycle_transport_conjugation P B₀.Kw B.Kw B₀.LL B.LL θ hθ σ hσ' _ _ φ.toLinearMap hp z hzf, fun j => φ (m j), fun g => ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg` using `h (θ g)`. Simplify using `only [hθι] at hg`. Take `⟨u, hu⟩` from `Submodule.Quotient.mk_surjective _ (c₀ (Br.ι B g))`. Rewrite `hg`, the goal using `[← hu]`. Take `⟨n, hn⟩ : Br.vecS B₀ k u - (z (θ g) + ((Br.locM B₀ M₀ (θ g)).mulVec m - m)) ∈ stdG (Br.Ow B₀) (Br.LLw B₀) k` from `(Submodule.Quotient.eq _).1 hg`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `(Submodule.Quotient.eq (stdG (Br.Ow B) (Br.LLw B) k)).2 ⟨fun j => B.eO (f (B₀.eO.symm (n j))), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Establish `h1` using `congrArg φ (congrFun hn j)`. Establish `h2 : algebraMap (Br.Ow B₀) (Br.LLw B₀) (n j) = Br.toLLK B₀ (algebraMap O₀ (FractionRing O₀) (B₀.eO.symm (n j)))`. Rewrite using `[Br.toLLK_alg, RingEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `φ (algebraMap (Br.Ow B₀) (Br.LLw B₀) (n j)) = φ (Br.toLLK B₀ (u j) - (z (θ g) j + ((Br.locM B₀ M₀ (θ g)).mulVec m j - m j))) at h1`. Rewrite `h1` using `[h2, hφ, fracMap_alg, Br.toLLK_alg, map_sub, map_add, map_sub, hφ, congrFun (hp g m) j]`. Conclude with `h1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem push_mem (B₀ : LocBridge l E Ω Gw O₀) (B : LocBridge l E Ω Gw O) (σ : GQ l)
     (hσ : ∀ g : ↥Gw, ((B.e g : ↥(GK B.Kw)) : GQ l) = σ * ((B₀.e g : ↥(GK B₀.Kw)) : GQ l) * σ⁻¹)
@@ -177,9 +177,9 @@ theorem push_mem (B₀ : LocBridge l E Ω Gw O₀) (B : LocBridge l E Ω Gw O) (
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `l _ P E Ω _ _ _ Gw O₀ O _ _ _ _ _ _ _ _ _ _ _ _ B₀ B σ hσ f hf hz k M₀`. Use `Submodule.map_mono ?_` and prove the remaining obligations. Introduce `c hc`. Establish `key : Submodule.span O {c : ↥Gw → KOG O k | ∃ c₀ : Z1 (WKG M₀), Submodule.Quotient.mk c₀ ∈ Br.bkG B₀ P (WKG M₀) M₀ ∧ c = fun g => pushKO f hf k ((c₀ : ↥Gw → KOG O₀ k) g)} ≤ (HfD (P.PD B.Kw) (Br.lat B (mapM f M₀))).comap (transport B k)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨c₀, h₀, rfl⟩`. Conclude with `push_mem P B₀ B σ hσ f hf hz M₀ c₀ (phi_mem_of_mem_bkG P B₀ M₀ c₀ h₀)`. Conclude with `key hc`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem extCond_le_bkG : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (E Ω : Type) [Field E] [Field Ω] [Algebra E Ω] (Gw : Subgroup (Ω ≃ₐ[E] Ω)) (O₀ O : Type) [CommRing O₀] [IsDomain O₀] [IsDiscreteValuationRing O₀] [Algebra ℤ_[l] O₀] [Module.Finite ℤ_[l] O₀] [TopologicalSpace O₀] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [TopologicalSpace O] (B₀ : LocBridge l E Ω Gw O₀) (B : LocBridge l E Ω Gw O) (σ : GQ l), (∀ g : ↥Gw, ((B.e g : ↥(GK B.Kw)) : GQ l) = σ * ((B₀.e g : ↥(GK B₀.Kw)) : GQ l) * σ⁻¹) → ∀ (f : O₀ →+* O) (hf : Function.Injective f), (∀ z : ℤ_[l], f (algebraMap ℤ_[l] O₀ z) = algebraMap ℤ_[l] O z) → ∀ (k : ℕ) (M₀ : ↥Gw →* Matrix (Fin k) (Fin k) O₀), extCond f hf (WKG M₀) (Br.bkG B₀ P (WKG M₀) M₀) (WKG (mapM f M₀)) ≤ Br.bkG B P (WKG (mapM f M₀)) (mapM f M₀) := by
   intro l _ P E Ω _ _ _ Gw O₀ O _ _ _ _ _ _ _ _ _ _ _ _ B₀ B σ hσ f hf hz k M₀

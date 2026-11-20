@@ -31,9 +31,9 @@ noncomputable section
 namespace GlobalTheory.HeightCounting.Up
 open RealOfReading
 /- English proof (translation)
-Introduce `hP hL`. Use `_root_.GlobalTheory.HeightCounting.Up.Model.AtMem.at_member_imp (_root_.GlobalTheory.HeightCounting.Up.Model.AtMem.and_z (_root_.GlobalTheory.T.exists_character_choice_pin_at_of_third_layer hP hL) (_root_.GlobalTheory.HeightCounting.Up.Model.AtMem.and_z (_root_.GlobalTheory.T.coe …` and prove the remaining obligations. Introduce and unpack `K B f T w Z Wt p0 t nch n c ⟨⟨P, hPin⟩, hC, htup, ⟨hPar, hGap⟩, hTT, ⟨Xd, E, ⟨labPi⟩⟩, hAg, hE0⟩`. Establish `hg : GlobalTheory.LiftRows.Given t.r.z.R.toRealDat t.r.z.F.lv2` using `⟨(GlobalTheory.CoreOfWeak.core_of_weak t.r.z.R t.r.z.F t.r.z.pins.char t.exAt).1, hPar, t.r.intersectionNumber_baseChange.ok.ok2.irr, GlobalTheory.HeightCounting.goodTypes_of_typesTrue_real _ _ _ _ _ _ _ t.r.z.pins.char.base.lev hTT, t.r.z.pins.keep.guard, hGap⟩`. Take `⟨ag⟩` from `hAg hC Xd E labPi t.r.z.pins.char.base htup hg t.r.z.pins.char.fullP`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨T0, hT0, hR⟩` from `_root_.GlobalTheory.HeightCounting.Up.RealOfReading.exists_linked_data_of_agreement P (realOfRead t.r.z.R.toRealDat t.r.z.F.lv2 t.r.Y n.tp hC Xd E labPi t.r.z.pins.char.base htup hg t.r.z.pins.char.fullP) hPin.cf_eq hPin.C_eq hPin.tp_eq hPin.M_eq (hPin.rep_eq.trans c.row.rep_eq) …`. Conclude with `⟨T0, by rw [hT0]; exact hPin, hR⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isTied_of_layer_member_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t nch n c =>
     ∃ X : _root_.GlobalTheory.NRows.LinkedData hL (w.D Z), _root_.GlobalTheory.HeightCounting.Up.PinnedAtCharacterChoice c.a X.P ∧ HEq X.X.R t.r.z.R.toRealDat := by
@@ -59,7 +59,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.HeightCounting.Up.isTied_of_layer_member_alt | exact _root_.GlobalTheory.HeightCounting.Up.isTied_of_layer_member_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.isTied_of_layer_member_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_linked_data_pinned_at_layer : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t nch n c => ∃ X : _root_.GlobalTheory.NRows.LinkedData hL (w.D Z), _root_.GlobalTheory.HeightCounting.Up.PinnedAtCharacterChoice c.a X.P ∧ HEq X.X.R t.r.z.R.toRealDat := by
   first | exact @_root_.GlobalTheory.HeightCounting.Up.isTied_of_layer_member_alt | exact _root_.GlobalTheory.HeightCounting.Up.isTied_of_layer_member_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.isTied_of_layer_member_alt <;> assumption)

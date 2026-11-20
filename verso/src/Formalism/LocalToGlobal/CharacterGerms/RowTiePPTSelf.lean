@@ -31,7 +31,7 @@ def LimSelfSt : Prop :=
     (∀ k, x k ∈ X.TySet V g) → VLim V x x' → x' ∈ X.TySet V g
 
 /- English proof (translation)
-Unfold `VF.Ge at *`. Rewrite using `[V.v.map_mul]`. Simplify using `only [WithTop.coe_zero] at *`. Conclude with `add_nonneg ha hb`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ge_zero_mul_field {C : Type} [Field C] (V : VF C) {a b : C} (ha : V.Ge 0 a) (hb : V.Ge 0 b) :
     V.Ge 0 (a * b) := by
@@ -41,7 +41,7 @@ private theorem ge_zero_mul_field {C : Type} [Field C] (V : VF C) {a b : C} (ha 
   exact add_nonneg ha hb
 
 /- English proof (translation)
-Use `Finset.sum_induction f (fun z => V.Ge 0 z) (fun a b ha hb => ?_) ?_ h` and prove the remaining obligations. Conclude with `le_trans (le_min ha hb) (V.v.map_add a b)`. Use `show ((0 : ℝ) : WithTop ℝ) ≤ V.v 0`. Rewrite using `[AddValuation.map_zero]`. Conclude with `le_top`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ge_zero_finset_sum_field {C : Type} [Field C] (V : VF C) {ι : Type} (s : Finset ι) (f : ι → C)
     (h : ∀ i ∈ s, V.Ge 0 (f i)) : V.Ge 0 (∑ i ∈ s, f i) := by
@@ -52,11 +52,11 @@ private theorem ge_zero_finset_sum_field {C : Type} [Field C] (V : VF C) {ι : T
     exact le_top
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[map_sub, ← pow_one (PowerSeries.X : PowerSeries C), PowerSeries.coeff_C_mul_X_pow]`. Simplify using `only [tyS, PowerSeries.coeff_mk]`. Establish `h1 : ∀ s, (if l ^ s = m then a s - (if s = 0 then c else 0) else 0) = (if l ^ s = m then a s else 0) - (if s = 0 then (if m = 1 then c else 0) else 0)`. Introduce `s`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hs : s = 0`. Substitute `hs` using the available equality. Distinguish the cases in `hm : m = 1`. Substitute `hm` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hm' : (1 : ℕ) ≠ m` using `fun h => hm h.symm`. Simplify using `[hm, hm']`. Simplify using `[hs]`. Rewrite using `[Finset.sum_congr rfl (fun s _ => h1 s), Finset.sum_sub_distrib, Finset.sum_ite_eq']`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem tyS_sub_ite_zero_eq_sub_C_mul_X {C : Type} [Field C] (l : ℕ) (a : ℕ → C) (c : C) :
     tyS l (fun s => a s - if s = 0 then c else 0) = tyS l a - PowerSeries.C c * PowerSeries.X := by
@@ -78,41 +78,35 @@ private theorem tyS_sub_ite_zero_eq_sub_C_mul_X {C : Type} [Field C] (l : ℕ) (
   simp
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y d _ I0 _ p g a w hw hty`. Take `⟨x, hx, hx0⟩` from `hEx C V O dd Y d I0 p g a w hw hty`. Take `⟨γ, lam, hγ, hlam, hlg, hq⟩` from `hx`. Establish `hl1 : V.l ≠ 1` using `V.l_prime.one_lt.ne'`. Establish `hγ0 : ∀ i, ∀ m < 1, PowerSeries.coeff m (γ i) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i m hm`. Rewrite using `[Nat.lt_one_iff.mp hm, PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `(hγ i).1`. Establish `c1 : ∀ f : ℕ → C, PowerSeries.coeff 1 (tyS V.l f) = f 0`. Introduce `f`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[tyS, PowerSeries.coeff_mk, Finset.sum_range_succ, hl1]`. Establish `hdeg : ∀ j : Fin 2 × Fin dd, (Finsupp.single j 1).degree ≤ 1`. Introduce `j`. Use `first`. Consider the case `simp [Finsupp.degree_single]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `(unfold Finsupp.degree; simp)`. Establish `hγ1 : ∀ i, PowerSeries.coeff 1 (γ i) = ∑ c, (Y.rawSelf p).u g c i * w c`. Introduce `i`. Establish `h1` using `congrArg (PowerSeries.coeff 1) (hlg i)`. Rewrite `h1` using `[coeff_alongCv_low le_rfl hγ0 (FBChart.self_chart_log_constantCoeff (Y := Y) (p := p) i), map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [PowerSeries.coeff_smul, c1, hx0, smul_eq_mul] at h1`. Rewrite using `[← h1, Finset.sum_eq_single i]`. Rewrite using `[FBChart.rawSelf_lin (Y := Y) (p := p) i _ (hdeg i), MvPowerSeries.coeff_X, if_pos rfl, one_mul]`. Introduce `j _ hji`. Rewrite using `[FBChart.rawSelf_lin (Y := Y) (p := p) i _ (hdeg j), MvPowerSeries.coeff_X, if_neg, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `hji (Finsupp.single_left_injective one_ne_zero h)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`. Establish `key : ∀ q : I0, V.Ge 0 (PowerSeries.coeff 1 (lam q) - x 0 (Sum.inr q))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `q`. Establish `h2` using `congrArg (PowerSeries.coeff 1) (hq q)`. Rewrite `h2` using `[c1, map_add, map_sub, map_sum, coeff_alongCv_low le_rfl hγ0 (RawChart.constantCoeff_sg (Y.rawSelf p) (fun e he => FBChart.rawSelf_axis0 (Y := Y) (p := p) e he) _)]`. Simplify using `only [hγ1] at h2`. Establish `hA : ∑ i, MvPowerSeries.coeff (Finsupp.single i 1) ((Y.rawSelf p).sg ((Y.rawSelf p).u (1 - g) q)) * ∑ c, (Y.rawSelf p).u g c i * w c = ∑ c, w c * (Y.rawSelf p).sg1 ((Y.rawSelf p).u g c) ((Y.rawSelf p).u (1 - g) q)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [RawChart.sg1, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun c _ => Finset.sum_congr rfl (fun i _ => by ring))` and prove the remaining obligations. Rewrite `h2` using `[hA]`. Establish `hS : ∀ c, PowerSeries.coeff 1 (if (Y.rawSelf p).ty g c = (Y.rawSelf p).ty (1 - g) q then (Y.rawSelf p).sg1 ((Y.rawSelf p).u g c) ((Y.rawSelf p).u (1 - g) q) • tyS V.l (fun s => x s (Sum.inl c)) else 0) = if (Y.rawSelf p).ty g c = (Y.rawSelf p).ty (1 - g) q then (Y.rawSelf p).sg1 …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `c`. Use `split_ifs`. Simplify using `only [PowerSeries.coeff_smul, c1, hx0, smul_eq_mul]`. Conclude with `map_zero _`. Simplify using `only [hS] at h2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : PowerSeries.coeff 1 (lam q) - x 0 (Sum.inr q) = ∑ c, if (Y.rawSelf p).ty g c = (Y.rawSelf p).ty (1 - g) q then 0 else w c * (Y.rawSelf p).sg1 ((Y.rawSelf p).u g c) ((Y.rawSelf p).u (1 - g) q)`. Rewrite using `[h2, show ∀ L A S : C, L - (L - A + S) = A - S from fun L A S => by ring, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[h3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `ge_zero_finset_sum_field V _ _ (fun c _ => ?_)` and prove the remaining obligations. Use `split_ifs with hne`. Use `show ((0 : ℝ) : WithTop ℝ) ≤ V.v 0`. Rewrite using `[AddValuation.map_zero]`. Conclude with `le_top`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `ge_zero_mul_field V (hw c) (hStab C V O dd Y d I0 p g c q hne)`. Establish `hyT : (fun s n => Sum.elim (fun c => x s (Sum.inl c)) (fun q => x s (Sum.inr q) - if s = 0 then x 0 (Sum.inr q) else 0) n : ℕ → I0 ⊕ I0 → C) ∈ (Y.rawSelf p).TySet V g`. Use `⟨γ, fun q => lam q - PowerSeries.C (x 0 (Sum.inr q)) * PowerSeries.X, hγ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[(hlam q).1]`. Introduce `m`. Break down `eq_or_ne m 1 with rfl | hm` into its components or cases. Establish `h4 : PowerSeries.coeff 1 (lam q - PowerSeries.C (x 0 (Sum.inr q)) * PowerSeries.X) = PowerSeries.coeff 1 (lam q) - x 0 (Sum.inr q)`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h4]`. Conclude with `key q`. Establish `h4 : PowerSeries.coeff m (lam q - PowerSeries.C (x 0 (Sum.inr q)) * PowerSeries.X) = PowerSeries.coeff m (lam q)`. Rewrite using `[map_sub, ← pow_one (PowerSeries.X : PowerSeries C), PowerSeries.coeff_C_mul_X_pow, if_neg hm, sub_zero]`. Rewrite using `[h4]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(hlam q).2 m`. Introduce `i`. Conclude with `hlg i`. Introduce `q show tyS V.l (fun s => x s (Sum.inr q) - if s = 0 then x 0 (Sum.inr q) else 0) = (lam q - PowerSeries.C (x 0 (Sum.inr q)) * PowerSeries.X) - alongCv γ ((Y.rawSelf p).sg ((Y.rawSelf p).u (1 - g) q)) + ∑ c, if (Y.rawSelf p).ty g c = (Y.rawSelf p).ty (1 - g) q then (Y.rawSelf p).s …`. Rewrite using `[tyS_sub_ite_zero_eq_sub_C_mul_X, hq q]`.
-
-Expand and normalize the polynomial expressions, which then agree. Take `⟨x', hx', h0, hvan⟩` from `hAvg C V O dd Y d I0 p g a _ hyT (by`. Introduce `n hn`. Break down `n with c | q` into its components or cases. Use `show x 0 (Sum.inl c) = 0`.
-
-Rewrite using `[hx0]`. Conclude with `hty c hn`. Use `show x 0 (Sum.inr q) - (if (0 : ℕ) = 0 then x 0 (Sum.inr q) else 0) = 0 simp)`. Use `⟨x', hx', ?_, hvan⟩` and prove the remaining obligations. Rewrite using `[h0]`.
-
-Use function extensionality and compare the values at `n`. Break down `n with c | q` into its components or cases. Conclude with `hx0 c`. Use `show x 0 (Sum.inr q) - (if (0 : ℕ) = 0 then x 0 (Sum.inr q) else 0) = 0`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ptSelf_of (hEx : PTExSelfSt) (hAvg : PTAvgSelfSt) (hStab : HStabSelfSt) : PTSelfSt := by
   intro C _ _ V O _ _ dd Y d _ I0 _ p g a w hw hty
@@ -227,17 +221,15 @@ theorem ptSelf_of (hEx : PTExSelfSt) (hAvg : PTAvgSelfSt) (hStab : HStabSelfSt) 
     simp
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y d _ I0 _ p g a x hx hx0`. Use `set X := Y.rawSelf p with hX`. Set `M : Set (ℕ → I0 ⊕ I0 → C)` to `{m | ∀ y ∈ X.TySet V g, m * y ∈ X.TySet V g}`. Establish `hAdd` using `addCvSelf_holds C V O dd Y d I0 p`. Establish `h1 : (1 : ℕ → I0 ⊕ I0 → C) ∈ M` using `fun y hy => by rwa [one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadd : ∀ m m', m ∈ M → m' ∈ M → m + m' ∈ M` using `fun m m' hm hm' y hy => by`. Rewrite using `[add_mul]`. Conclude with `X.add_mem V g hAdd (fun g c x => Y.rawSelf_u_integral p g c x) _ _ (hm y hy) (hm' y hy)`. Establish `hneg : ∀ m, m ∈ M → -m ∈ M` using `fun m hm y hy => by`. Rewrite using `[neg_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `X.neg_mem V g Y.l_odd _ (hm y hy)`. Establish `hmul : ∀ m m', m ∈ M → m' ∈ M → m * m' ∈ M` using `fun m m' hm hm' y hy => by`. Rewrite using `[mul_assoc]`. Conclude with `hm _ (hm' y hy)`. Establish `hteich : ∀ c : C, V.Ge 0 c → (fun s (_ : I0 ⊕ I0) => c ^ (V.l ^ s)) ∈ M` using `fun c hc y hy => X.teich_mem V g c hc y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hact : ∀ α : O, (fun (_ : ℕ) n => p.em (X.tyC g n) α) ∈ M` using `fun α y hy => hAct C V O dd Y d I0 p g α y hy`. Establish `hlim : ∀ (m : ℕ → ℕ → I0 ⊕ I0 → C) (m' : ℕ → I0 ⊕ I0 → C), (∀ k, m k ∈ M) → VLim V m m' → m' ∈ M` using `fun m m' hm hmm' y hy => hLim C V O dd Y d I0 p g (fun k => m k * y) (m' * y) (fun k => hm k y hy) (hmm'.mul_right y)`. Establish `hI` using `IndAr.ind_gen p.em p.em_int p.em_frob p.em_sep (I0 ⊕ I0) (X.tyC g) M h1 hadd hneg hmul hteich hact hlim a`. Use `⟨_, hI x hx, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `n`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.mul_apply, Nat.cast_zero, add_zero]`. Distinguish the cases in `hn : X.tyC g n = a`. Rewrite using `[if_pos hn, one_mul]`. Rewrite using `[if_neg hn, zero_mul, hx0 n hn]`. Introduce `i n hn`.
-
-Simplify using `only [Pi.mul_apply]`. Rewrite using `[if_neg hn, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptAvgSelf_of (hAct : OActSelfSt) (hLim : LimSelfSt) : PTAvgSelfSt := by
   intro C _ _ V O _ _ dd Y d _ I0 _ p g a x hx hx0
@@ -269,13 +261,13 @@ theorem ptAvgSelf_of (hAct : OActSelfSt) (hLim : LimSelfSt) : PTAvgSelfSt := by
     rw [if_neg hn, zero_mul]
 
 /- English proof (translation)
-The claim follows from `ptSelf_of hEx (ptAvgSelf_of hAct hLim) hStab`.
+A detailed English derivation is pending.
 -/
 theorem ptSelf_of_act (hEx : PTExSelfSt) (hAct : OActSelfSt) (hLim : LimSelfSt) (hStab : HStabSelfSt) : PTSelfSt :=
   ptSelf_of hEx (ptAvgSelf_of hAct hLim) hStab
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y d _ I0 _ p g a w hw hty`. Take `⟨x, hx, h0, -⟩` from `h C V O dd Y d I0 p g a w hw hty`. Conclude with `⟨x, hx, fun c => congrFun h0 (Sum.inl c)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ptExSelf_of_pt (h : PTSelfSt) : PTExSelfSt := by
   intro C _ _ V O _ _ dd Y d _ I0 _ p g a w hw hty

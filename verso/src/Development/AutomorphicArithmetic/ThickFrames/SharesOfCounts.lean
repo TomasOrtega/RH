@@ -4,41 +4,39 @@ open Finset UpperTheory.BernoulliSumsFrobeniusOrbits Formalism.G0
 open Classical
 
 /- English proof (translation)
-Introduce `A _ _ _ A0 T δ η D hδ hη hD hDη hc`. Use `set m : ℕ := A0.index with hm_def`. Use `set n : ℕ := Nat.card A0 with hn_def`. Establish `hm : (1:ℝ) ≤ m`. Establish `h0 : A0.index ≠ 0` using `AddSubgroup.index_ne_zero_of_finite`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Nat.one_le_iff_ne_zero.mpr h0` after adjusting the coercions. Establish `hn : (1:ℝ) ≤ n`. Establish `h0 : 0 < Nat.card A0` using `Nat.card_pos`. Conclude with `h0` after adjusting the coercions. Establish `hA : (Fintype.card A : ℝ) = m * n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `h1 : n * m = Fintype.card A`. Rewrite using `[hn_def, hm_def, A0.card_mul_index, Nat.card_eq_fintype_card]`. Rewrite using `[← h1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `hcardA0 : (Finset.univ.filter fun x : A => x ∈ A0).card = n`. Rewrite using `[hn_def, Nat.card_eq_fintype_card, Fintype.card_subtype]`. Establish `hsumN : ∑ γ : A, (T.filter fun t => t - γ ∈ A0).card = T.card * n`. Repeatedly rewrite using `[Finset.card_filter]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `inner : ∀ t : A, (∑ γ : A, if t - γ ∈ A0 then 1 else 0) = n`. Introduce `t`. Establish `h2` using `Equiv.sum_comp (Equiv.subLeft t) (fun x => if x ∈ A0 then (1:ℕ) else 0)`. Simplify using `only [Equiv.subLeft_apply] at h2`. Rewrite using `[h2, ← Finset.card_filter]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `hcardA0`. Rewrite using `[Finset.sum_congr rfl (fun t _ => inner t), Finset.sum_const, smul_eq_mul]`. Establish `hsum : (∑ γ : A, ((T.filter fun t => t - γ ∈ A0).card : ℝ)) = n * T.card`. Establish `h3` using `congrArg (Nat.cast : ℕ → ℝ) hsumN`. Move the coercions through the operations in `at h3`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h3]`. Expand and normalize the polynomial expressions, which then agree. Establish `hf : (∑ γ : A, (if γ ∈ A0 then δ else 3 / 4 * δ) * (n:ℝ)) = (3 * m + 1) / 4 * δ * n * n`. Establish `hpt : ∀ γ : A, (if γ ∈ A0 then δ else 3 / 4 * δ) * (n:ℝ) = 3 / 4 * δ * n + (if γ ∈ A0 then δ / 4 * n else 0)`. Introduce `γ`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[Finset.sum_congr rfl (fun γ _ => hpt γ), Finset.sum_add_distrib, ← Finset.sum_filter, Finset.sum_const, Finset.sum_const, hcardA0, Finset.card_univ, nsmul_eq_mul, nsmul_eq_mul, hA]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdiff : |(n:ℝ) * T.card - (3 * m + 1) / 4 * δ * n * n| ≤ m * n * D`. Rewrite using `[← hsum, ← hf, ← Finset.sum_sub_distrib]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hn0 : (0:ℝ) < n` using `by linarith`. Establish `hT : |(T.card : ℝ) - (3 * m + 1) / 4 * δ * n| ≤ m * D`. Establish `he : (n:ℝ) * T.card - (3 * m + 1) / 4 * δ * n * n = n * ((T.card : ℝ) - (3 * m + 1) / 4 * δ * n)` using `by ring`. Rewrite `hdiff` using `[he, abs_mul, abs_of_pos hn0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (n:ℝ) * |(T.card : ℝ) - (3 * m + 1) / 4 * δ * n| ≤ n * (m * D)` using `by linarith`. Conclude with `le_of_mul_le_mul_left h4 hn0`. Establish `hδn : 0 < δ * n` using `mul_pos hδ hn0`. Establish `hηδ : η * (δ * n) ≤ δ * n` using `mul_le_of_le_one_left (le_of_lt hδn) hη`. Establish `hmD : 0 ≤ (m:ℝ) * D` using `mul_nonneg (by linarith) hD`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hmδn : 0 ≤ (m:ℝ) * (δ * n)` using `mul_nonneg (by linarith) (le_of_lt hδn)`. Establish `hm1δn : 0 ≤ ((m:ℝ) - 1) * (δ * n)` using `mul_nonneg (by linarith) (le_of_lt hδn)`. Rewrite `hT` using `[abs_le]`. Establish `hX1 : 3 * m * δ * n / 4 ≤ (T.card : ℝ)` using `by nlinarith`. Establish `hη0 : 0 ≤ η`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Establish `h5 : η * (δ * n) < 0` using `mul_neg_of_neg_of_pos hneg hδn`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hηX : 3 * D ≤ η * T.card`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `hmm : 0 ≤ D * ((m:ℝ) * m - 1)` using `mul_nonneg hD (by nlinarith)`. Combine the equalities or inequalities in the displayed calculation. Establish `hK : (0:ℝ) < 3 * m + 1` using `by linarith`. Establish `key : ∀ w c : ℝ, 0 ≤ w → w ≤ 4 → |c - w * δ * n / 4| ≤ D → |c - w / (3 * m + 1) * T.card| ≤ η * T.card`. Introduce `w c hw0 hw4 hcw`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hE : w / (3 * m + 1) * (T.card : ℝ) = w * δ * n / 4 + w * ((T.card : ℝ) - (3 * m + 1) / 4 * δ * n) / (3 * m + 1)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : |w * ((T.card : ℝ) - (3 * m + 1) / 4 * δ * n) / (3 * m + 1)| ≤ 2 * D`. Rewrite using `[abs_div, abs_mul, abs_of_nonneg hw0, abs_of_pos hK, div_le_iff₀ hK]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `habs : |(T.card : ℝ) - (3 * m + 1) / 4 * δ * n| ≤ m * D` using `abs_le.mpr hT`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hE]`. Rewrite `hcw`, `h1`, the goal using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith [hcw.1, hcw.2, h1.1, h1.2]`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hA]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hA]`. Use the polynomial consequences of the given equalities and inequalities.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `γ`. Establish `hcγ` using `hc γ`. Distinguish the cases in `hγ : γ ∈ A0`. Simplify using `only [if_pos hγ] at hcγ ⊢`. Establish `e : (4:ℝ) * δ * n / 4 = δ * n` using `by ring`.
-
-Conclude with `key 4 _ (by norm_num) le_rfl (by rw [e]; exact hcγ)`. Simplify using `only [if_neg hγ] at hcγ ⊢`. Establish `e : (3:ℝ) * δ * n / 4 = 3 / 4 * δ * n` using `by ring`. Conclude with `key 3 _ (by norm_num) (by norm_num) (by rw [e]; exact hcγ)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.BernoulliSumsFrobeniusOrbits.shares_of_counts :
     ∀ (A : Type) [Fintype A] [DecidableEq A] [AddCommGroup A] (A0 : AddSubgroup A) (T : Finset A) (δ η D : ℝ),

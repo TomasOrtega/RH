@@ -6,17 +6,17 @@ open NumberField IsDedekindDomain MeasureTheory ValuativeRel Matrix Formalism.Ba
 namespace GlobalTheory.SymBridge
 
 /- English proof (translation)
-Introduce `k _ _ _ _ r t _ _ _ _ P μ hμ j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `g`. Use `⟨⟨(reGL (ixZero r t)).symm (g : GL (Ix r t 0) k), g.2⟩, fun i => i.elim0, rfl, fun i => i.elim0, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.prod_univ_zero, mul_one]`. Both sides reduce to the same expression. Consider the case `succ j ih`. Introduce `g`. Set `h : (P.iter t μ hμ j).stepJ t` to `⟨(reGL (ixSucc r t j)).symm g, g.2⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Take `⟨D, hD, eD⟩` from `h.2.2.2.2.2`. Establish `eu` using `TypeDatum.corner_val _ h`. Establish `e` using `TypeDatum.step_lam_eq _ (μ (j + 1)) (hμ _) h _ eu D eD`. Take `⟨g₀, D', e0, hD', el⟩` from `ih (TypeDatum.corner _ h)`. Use `⟨g₀, Fin.snoc (α := fun _ => GL t k) D' D, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e0, eu]`. Both sides reduce to the same expression. Introduce `i`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp only [Fin.snoc_last]; exact ⟨hD, by rw [eD]; rfl⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `cast i`. Simplify using `only [Fin.snoc_castSucc]`. Use `⟨(hD' i).1, ?_⟩` and prove the remaining obligations. Rewrite using `[(hD' i).2, eu]`. Both sides reduce to the same expression.
+Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Fin.prod_univ_castSucc]`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last, Fin.coe_castSucc, Fin.val_last]`. Rewrite using `[← mul_assoc, ← el]`. Conclude with `e`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iter_lam_closed : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r t : Type) [Fintype r] [DecidableEq r] [Fintype t] [DecidableEq t] (P : TypeDatum k r) (μ : ℕ → kˣ →* ℂˣ) (hμ : ∀ j, IsTame (μ j)) (j : ℕ) (g : (P.iter t μ hμ j).J), ∃ (g₀ : P.J) (D : Fin j → GL t k), (g₀ : GL r k).val = (g : GL (Ix r t j) k).val.submatrix Sum.inl Sum.inl ∧ (∀ i, D i ∈ KO k t ∧ (D i).val = Ix.diagonalBlockOfMatrix (g : GL (Ix r t j) k).val i) ∧ (P.iter t μ hμ j).lam g = P.lam g₀ * ∏ i : Fin j, μ (i.val + 1) (Matrix.GeneralLinearGroup.det (D i)) := by
   intro k _ _ _ _ r t _ _ _ _ P μ hμ j

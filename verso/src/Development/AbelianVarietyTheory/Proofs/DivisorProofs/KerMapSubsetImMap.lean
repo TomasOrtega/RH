@@ -6,21 +6,21 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 namespace GlobalTheory.DetInv
 
 /- English proof (translation)
-Take `⟨s, hs, hsker⟩` from `hker`. Use `choose a b ha hab using fun i => hfrac (x i)`. Use `set s0 : R := ∏ i, a i with hs0`. Establish `hs0ne : f s0 ≠ 0`. Rewrite using `[hs0, map_prod]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Finset.prod_ne_zero_iff.mpr fun i _ => ha i`. Set `t : Fin N → R` to `fun i => b i * ∏ j ∈ Finset.univ.erase i, a j`. Establish `ht : ∀ i, f (t i) = x i * f s0`. Introduce `i`. Establish `h1 : s0 = a i * ∏ j ∈ Finset.univ.erase i, a j` using `(Finset.mul_prod_erase Finset.univ a (Finset.mem_univ i)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [t, map_mul, ← hab i]`. Rewrite using `[h1, map_mul, mul_assoc]`. Establish `hft : (f ∘ t) = f s0 • x`. Use function extensionality and compare the values at `i`. Simplify using `[ht i, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hFt : ∀ i, f ((F *ᵥ t) i) = 0`. Introduce `i`. Rewrite using `[RingHom.map_mulVec, hft, Matrix.mulVec_smul, hx]`. Simplify using the standard rewrite rules. Use `choose w hw using fun i => hsker _ (hFt i)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hw' : s • (F *ᵥ t) = ξ • w`. Use function extensionality and compare the values at `i`. Simplify using `using hw i`. Establish `hG : ξ • ((s * ν) • t) = ξ • (G *ᵥ w)`. Establish `h2 : G *ᵥ (s • (F *ᵥ t)) = G *ᵥ (ξ • w)` using `by rw [hw']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hGF, Matrix.smul_mulVec, Matrix.one_mulVec]`. Rewrite using `[← h2]`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hcancel : ∀ i, (s * ν) * t i = (G *ᵥ w) i`. Introduce `i`. Establish `h3` using `congrFun hG i`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h3`. Conclude with `(mul_cancel_left_mem_nonZeroDivisors hξ).mp h3`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `⟨(f s * f ν * f s0)⁻¹ • (f ∘ w), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `h4 : f s * f ν * f s0 ≠ 0` using `mul_ne_zero (mul_ne_zero hs hν) hs0ne`. Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, ← RingHom.map_mulVec, ← hcancel i, map_mul, map_mul, ht i]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem ker_map_subset_im_map (R C : Type) [CommRing R] [Field C] (f : R →+* C) (ξ ν : R) (N : ℕ)
     (F G : Matrix (Fin N) (Fin N) R) (hξ : ξ ∈ nonZeroDivisors R) (hν : f ν ≠ 0)

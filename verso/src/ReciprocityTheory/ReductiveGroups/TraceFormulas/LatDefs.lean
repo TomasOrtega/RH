@@ -46,7 +46,7 @@ abbrev carry {G G' O : Type} [Group G] [TopologicalSpace G] [Group G'] [Topologi
     (i : G ≃ₜ* G') (ε : G →* Oˣ) : G' →* Oˣ := ε.comp i.symm.toMulEquiv.toMonoidHom
 
 /- English proof (translation)
-Conclude with `map_smul f _ m`.
+A detailed English derivation is pending.
 -/
 theorem twist_map {O G M M' : Type} [CommRing O] [Group G] [AddCommGroup M] [Module O M] [AddCommGroup M'] [Module O M']
     (ε : G →* Oˣ) (f : M →ₗ[O] M') (g : G) (m : M) : f (twist ε M g m) = twist ε M' g (f m) := by
@@ -92,7 +92,7 @@ def cupFG {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   cupProductH1H1 D.ρT D.ρT' (twist D.ε (FractionRing O)) D.bT D.contbT D.eqT D.contT'
 
 /- English proof (translation)
-Establish `h0 : algebraMap O (FractionRing O) c ≠ 0` using `fun h => hc (IsFractionRing.injective O (FractionRing O) (by simpa using h))`. Rewrite using `[← algebraMap_smul (FractionRing O) c y, smul_smul, inv_mul_cancel₀ h0, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_smul_smul_frac {O : Type} [CommRing O] [IsDomain O] {X : Type} [AddCommGroup X] [Module O X]
     [Module (FractionRing O) X] [IsScalarTower O (FractionRing O) X] {c : O} (hc : c ≠ 0) (y : X) :
@@ -113,7 +113,7 @@ section Tr
 variable {O Γ Γ' M M' : Type} [CommRing O] [Group Γ] [Group Γ'] [AddCommGroup M] [Module O M] [AddCommGroup M'] [Module O M']
 
 /- English proof (translation)
-Rewrite using `[LinearEquiv.symm_apply_eq, hu, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trCompat_symm (e : Γ ≃* Γ') (u : M ≃ₗ[O] M') (ρ : Representation O Γ M) (ρ' : Representation O Γ' M')
     (hu : ∀ g m, u (ρ g m) = ρ' (e g) (u m)) (g : Γ) (y : M') : u.symm (ρ' (e g) y) = ρ g (u.symm y) := by
@@ -137,11 +137,11 @@ def traceH1 (e : Γ ≃* Γ') (u : M ≃ₗ[O] M') (ρ : Representation O Γ M) 
     rw [← h1, map_sub, trCompat_symm e u ρ ρ' hu])
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `h1 : (Submodule.Quotient.mk (transportCocycles e u ρ ρ' hu z) : H1z ρ) = 0` using `hx`. Rewrite `h1`, the goal using `[Submodule.Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨v, hv⟩` from `h1`. Use `⟨u v, funext fun g' => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `e.surjective g'`. Establish `h2 : ρ g v - v = u.symm (z.1 (e g))` using `congrFun hv g`. Use `show ρ' (e g) (u v) - u v = z.1 (e g)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hu, ← map_sub, h2, LinearEquiv.apply_symm_apply]`.
+A detailed English derivation is pending.
 -/
 theorem transportH1_injective (e : Γ ≃* Γ') (u : M ≃ₗ[O] M') (ρ : Representation O Γ M) (ρ' : Representation O Γ' M')
     (hu : ∀ g m, u (ρ g m) = ρ' (e g) (u m)) : Function.Injective (traceH1 e u ρ ρ' hu) := by
@@ -183,9 +183,9 @@ def toH1Cocycles (ρ : Representation O Γ M) : ReciprocityTheory.Gal.H1 ρ →�
     exact ⟨m, funext fun g => (hm g).symm⟩)
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `h1 : (Submodule.Quotient.mk (continuousCocycleInclusion ρ z) : H1z ρ) = 0` using `hx`. Rewrite `h1` using `[Submodule.Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨v, hv⟩` from `h1`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `(ReciprocityTheory.Gal.mem_coboundaries1 ρ _).2 ⟨v, fun g => (congrFun hv g).symm⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousH1_toH1_injective (ρ : Representation O Γ M) : Function.Injective (toH1Cocycles ρ) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -356,7 +356,7 @@ section Wrap
 variable [hT2Core : Fact Core]
 
 /- English proof (translation)
-The claim follows from `hT2Core.out.dec A hp`.
+A detailed English derivation is pending.
 -/
 theorem exists_dec_equiv {p : ℕ} [Fact p.Prime] {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (A : ValuationSubring Ω) (hp : A.valuation (p : Ω) < 1) :
@@ -368,7 +368,7 @@ theorem exists_dec_equiv {p : ℕ} [Fact p.Prime] {F Ω : Type} [Field F] [Numbe
       ∀ v : HeightOneSpectrum (𝓞 F), IsPlaceOver A v → Module.finrank ℚ_[p] K = locDeg v := hT2Core.out.dec A hp
 
 /- English proof (translation)
-The claim follows from `hT2Core.out.inv hK hO hF i hε`.
+A detailed English derivation is pending.
 -/
 theorem exists_invariants_iso {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
@@ -380,7 +380,7 @@ theorem exists_invariants_iso {p : ℕ} [Fact p.Prime] {K : IntermediateField �
   hT2Core.out.inv hK hO hF i hε
 
 /- English proof (translation)
-The claim follows from `hT2Core.out.fin hK hO i hD`.
+A detailed English derivation is pending.
 -/
 theorem finite_H1_of_iso {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
@@ -394,7 +394,7 @@ theorem finite_H1_of_iso {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p]
     Module.Finite O (H1 D.ρTl') := hT2Core.out.fin hK hO i hD
 
 /- English proof (translation)
-The claim follows from `hT2Core.out.int hK hO hF i hD hi x hx`.
+A detailed English derivation is pending.
 -/
 theorem tate_integral_iso {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
@@ -409,7 +409,7 @@ theorem tate_integral_iso {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p
   hT2Core.out.int hK hO hF i hD hi x hx
 
 /- English proof (translation)
-The claim follows from `hT2Core.out.rat hK hO hF i hD hi (f.restrictScalars O)`.
+A detailed English derivation is pending.
 -/
 theorem tate_rational_frac {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
@@ -428,7 +428,7 @@ theorem tate_rational_frac {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[
   hT2Core.out.rat hK hO hF i hD hi (f.restrictScalars O)
 
 /- English proof (translation)
-The claim follows from `hT2Core.out.jspan hO hF i hD y`.
+A detailed English derivation is pending.
 -/
 theorem j'_span_iso {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
@@ -442,14 +442,14 @@ theorem j'_span_iso {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (Pad
     ∃ c : O, c ≠ 0 ∧ c • y ∈ LinearMap.range D.j' := hT2Core.out.jspan hO hF i hD y
 
 /- English proof (translation)
-The claim follows from `hT2Core.out.nat hK hO i hε`.
+A detailed English derivation is pending.
 -/
 theorem natInv_all_iso {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O] {G : Type} [Group G] [TopologicalSpace G]
     (hK : FiniteDimensional ℚ_[p] K) (hO : PadicCoeff p O) (i : G ≃ₜ* GK p K) {ε : G →* Oˣ} (hε : IsCyc p K (carry i ε)) :
     Nonempty (NatInv ε (fun M _ _ _ => IsFGTop O M)) := hT2Core.out.nat hK hO i hε
 
 /- English proof (translation)
-The claim follows from `hT2Core.out.shape hK hO hF i hε e he u ρ h`.
+A detailed English derivation is pending.
 -/
 theorem quotShape_G {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
@@ -460,7 +460,7 @@ theorem quotShape_G {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (Pad
     QuotShape (HcLC ρ) ⊥ (Module.finrank ℚ_[p] K) := hT2Core.out.shape hK hO hF i hε e he u ρ h
 
 /- English proof (translation)
-The claim follows from `hT2Core.out.shapeUnr hK hO hF i u ρ h I hI`.
+A detailed English derivation is pending.
 -/
 theorem quotShape_G_unr {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
@@ -471,12 +471,12 @@ theorem quotShape_G_unr {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] 
     QuotShape (HcLC ρ) (unrH1 ρ I) (Module.finrank ℚ_[p] K) := hT2Core.out.shapeUnr hK hO hF i u ρ h I hI
 
 /- English proof (translation)
-The claim follows from `hT2Core.out.elem.padicInt`.
+A detailed English derivation is pending.
 -/
 theorem padicCoeff_padicInt {p : ℕ} [Fact p.Prime] : PadicCoeff p ℤ_[p] := hT2Core.out.elem.padicInt
 
 /- English proof (translation)
-The claim follows from `hT2Core.out.elem.mulSub h hO ha`.
+A detailed English derivation is pending.
 -/
 theorem IsFGTop.isOpen_mulSub {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O]
     {M : Type} [AddCommGroup M] [Module O M] [TopologicalSpace M] [IsTopologicalAddGroup M]
@@ -484,14 +484,14 @@ theorem IsFGTop.isOpen_mulSub {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [Is
   hT2Core.out.elem.mulSub h hO ha
 
 /- English proof (translation)
-The claim follows from `hT2Core.out.elem.contQuot h T hT`.
+A detailed English derivation is pending.
 -/
 theorem contAction_quotient {O G V : Type} [CommRing O] [Group G] [TopologicalSpace G] [AddCommGroup V] [Module O V]
     [TopologicalSpace V] [IsTopologicalAddGroup V] {ρ : Representation O G V} (h : ContAction ρ)
     (T : Submodule O V) (hT : StableUnder ρ T) : ContAction (ρ.quotient T hT) := hT2Core.out.elem.contQuot h T hT
 
 /- English proof (translation)
-The claim follows from `hT2Core.out.elem.swapCob D x t c hc h`.
+A detailed English derivation is pending.
 -/
 theorem pr_eq_zero_of_swap_cob {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
@@ -506,20 +506,20 @@ theorem pr_eq_zero_of_swap_cob {O : Type} [CommRing O] [IsDomain O] [IsDiscreteV
     D.pr (Submodule.Quotient.mk x) (Submodule.Quotient.mk t) = 0 := hT2Core.out.elem.swapCob D x t c hc h
 
 /- English proof (translation)
-The claim follows from `hT2Core.out.elem.shapeEquiv Hc F Hc' F' d e h`.
+A detailed English derivation is pending.
 -/
 theorem quotShape_of_equiv {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {X : Type} [AddCommGroup X] [Module O X]
     (Hc F Hc' F' : Submodule O X) (d : ℕ) (e : (Hc ⧸ F.comap Hc.subtype) ≃ₗ[O] (Hc' ⧸ F'.comap Hc'.subtype))
     (h : QuotShape Hc F d) : QuotShape Hc' F' d := hT2Core.out.elem.shapeEquiv Hc F Hc' F' d e h
 
 /- English proof (translation)
-The claim follows from `hT2Core.out.elem.memOL LL x`.
+A detailed English derivation is pending.
 -/
 theorem GlobAlg.mem_OL {l : ℕ} [Fact l.Prime] (LL : Formalism.BasicNotions.Loc.FinExt l) (x : ↥LL.1) :
     x ∈ Formalism.BasicNotions.Loc.OL LL ↔ ‖(x : Formalism.BasicNotions.Loc.Om l)‖ ≤ 1 := hT2Core.out.elem.memOL LL x
 
 /- English proof (translation)
-The claim follows from `hT2Core.out.elem.openOL LL`.
+A detailed English derivation is pending.
 -/
 theorem GlobAlg.isOpen_range_OL {l : ℕ} [Fact l.Prime] (LL : Formalism.BasicNotions.Loc.FinExt l) :
     IsOpen (Set.range (algebraMap ↥(Formalism.BasicNotions.Loc.OL LL) ↥LL.1)) := hT2Core.out.elem.openOL LL
@@ -527,7 +527,7 @@ theorem GlobAlg.isOpen_range_OL {l : ℕ} [Fact l.Prime] (LL : Formalism.BasicNo
 end Wrap
 
 /- English proof (translation)
-Establish `e : F.comap Hc.subtype = F'.comap Hc.subtype` using `Submodule.ext fun x => h x.1 x.2`. Unfold `QuotShape at hs ⊢`. Rewrite using `[← e]`. Conclude with `hs`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotShape_congr {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {X : Type} [AddCommGroup X] [Module O X]
     (Hc F F' : Submodule O X) (d : ℕ) (h : ∀ x ∈ Hc, x ∈ F ↔ x ∈ F') (hs : QuotShape Hc F d) : QuotShape Hc F' d := by
@@ -537,9 +537,9 @@ theorem quotShape_congr {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuatio
   exact hs
 
 /- English proof (translation)
-Establish `h : D.pr (D.q a) t = D.inv (mapH2 (twist D.ε (FractionRing O)) (twist D.ε (KO O)) (toKO O) toKO_cont (toKO_equiv D.ε) (cupProductH1H1 D.ρT D.ρT' (twist D.ε (FractionRing O)) D.bT D.contbT D.eqT D.contT' a (D.j' t)))`. Proceed by induction on `a using Submodule.Quotient.induction_on with`. Consider the case `H a`. Proceed by induction on `t using Submodule.Quotient.induction_on with`. Consider the case `H t => rfl`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Rewrite using `[h, hc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tate_compat_iso {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [TopologicalSpace O] [TopologicalSpace (FractionRing O)]

@@ -12,7 +12,7 @@ namespace PositivityTheory.PrwZar.Qi
 variable {K H : Type} [Field K] [CommRing H] [Algebra K H]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Simplify using `only [Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.lmul'_apply_tmul, AlgHom.id_apply, AlgHom.comp_apply, Algebra.ofId_apply, map_mul, AlgHom.commutes]`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem comp_lmul_map_id (ε : H →ₐ[K] K) (f : H →ₐ[K] H) (t : H ⊗[K] H) :
     f (Algebra.TensorProduct.lmul' K (Algebra.TensorProduct.map (AlgHom.id K H) ((Algebra.ofId K H).comp ε) t)) =
@@ -25,13 +25,13 @@ theorem comp_lmul_map_id (ε : H →ₐ[K] K) (f : H →ₐ[K] H) (t : H ⊗[K] 
   | add s t hs ht => simp only [map_add, hs, ht]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => ext x`. Simplify using `[pw]`. Consider the case `succ n ih`. Use extensionality with `x`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. By extensionality, compare the relevant components.
 
-Establish `key : ∀ t : H ⊗[K] H, ε (Algebra.TensorProduct.lmul' K (Algebra.TensorProduct.map (pw Δ ε n) (AlgHom.id K H) t)) = ε (Algebra.TensorProduct.lmul' K (Algebra.TensorProduct.map ((Algebra.ofId K H).comp ε) (AlgHom.id K H) t))`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.lmul'_apply_tmul, map_mul, AlgHom.comp_apply, Algebra.ofId_apply, AlgHom.commutes, AlgHom.id_apply]`. Rewrite using `[← AlgHom.comp_apply ε (pw Δ ε n), ih]`. Simplify using the standard rewrite rules. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`. Establish `hx` using `DFunLike.congr_fun hL x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `only [CounitL, AlgHom.comp_apply, AlgHom.id_apply] at hx`. Use `show ε (Algebra.TensorProduct.lmul' K (Algebra.TensorProduct.map (pw Δ ε n) (AlgHom.id K H) (Δ x))) = ε x`. Rewrite using `[key, hx]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem counit_pw (Δ : H →ₐ[K] H ⊗[K] H) (ε : H →ₐ[K] K) (hL : CounitL Δ ε) (hR : CounitR Δ ε) (n : ℕ) :
     ε.comp (pw Δ ε n) = ε := by
@@ -58,19 +58,19 @@ theorem counit_pw (Δ : H →ₐ[K] H ⊗[K] H) (ε : H →ₐ[K] K) (hL : Couni
     rw [key, hx]
 
 /- English proof (translation)
-Establish `hx0 : ε x = 0` using `hx`. Use `set e : H →ₐ[K] H := (Algebra.ofId K H).comp ε with he`. Establish `gen : ∀ f : H →ₐ[K] H, ε.comp f = ε → ∀ t : H ⊗[K] H, Algebra.TensorProduct.lmul' K (Algebra.TensorProduct.map f (AlgHom.id K H) t) - Algebra.TensorProduct.lmul' K (Algebra.TensorProduct.map e (AlgHom.id K H) t) - Algebra.TensorProduct.lmul' K (Algebra.TensorProduct.map f e t) + …`. Introduce `f hf t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul a b`. Simplify using `only [Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.lmul'_apply_tmul, AlgHom.id_apply, he, AlgHom.comp_apply, Algebra.ofId_apply]`. Establish `e1 : f a * b - algebraMap K H (ε a) * b - f a * algebraMap K H (ε b) + algebraMap K H (ε a) * algebraMap K H (ε b) = (f a - algebraMap K H (ε a)) * (b - algebraMap K H (ε b))` using `by ring`. Rewrite using `[e1, pow_two]`.
+Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.mul_mem_mul ?_ ?_` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker, map_sub, ← AlgHom.comp_apply, hf, AlgHom.commutes]`. Simplify using the standard rewrite rules. Rewrite using `[RingHom.mem_ker, map_sub, AlgHom.commutes]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add s t hs ht`. Simplify using `only [map_add]`. Use `Ideal.add_mem _ hs ht using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Proceed by induction on `n with`.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp [pw, hx0]`. Consider the case `succ n ih`. Establish `h1` using `gen (pw Δ ε n) (counit_pw Δ ε hL hR n) (Δ x)`. Establish `hLx` using `DFunLike.congr_fun hL x`. Establish `hRx` using `DFunLike.congr_fun hR x`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [CounitL, CounitR, AlgHom.comp_apply, AlgHom.id_apply] at hLx hRx`. Rewrite `h1` using `[← comp_lmul_map_id ε (pw Δ ε n), ← comp_lmul_map_id ε e, hRx, hLx]`. Establish `hex : e x = 0` using `by simp [he, hx0]`. Rewrite `h1` using `[hex, add_zero]`. Establish `h2` using `Ideal.add_mem _ h1 ih`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : pw Δ ε (n + 1) x = Algebra.TensorProduct.lmul' K (Algebra.TensorProduct.map (pw Δ ε n) (AlgHom.id K H) (Δ x))` using `rfl`. Rewrite using `[hp]`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pw_sub_mem (Δ : H →ₐ[K] H ⊗[K] H) (ε : H →ₐ[K] K) (hL : CounitL Δ ε) (hR : CounitR Δ ε) (n : ℕ)
     {x : H} (hx : x ∈ RingHom.ker ε) : pw Δ ε n x - (n : H) * x ∈ RingHom.ker ε ^ 2 := by

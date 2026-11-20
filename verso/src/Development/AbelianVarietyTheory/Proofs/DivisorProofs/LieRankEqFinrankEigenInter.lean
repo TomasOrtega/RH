@@ -5,23 +5,19 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 namespace GlobalTheory.DetInv
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ hv ε Λ _ _ h D σ`. Use `haveI : IsFractionRing O C := hv.isFractionRing`. Establish `hinj : Function.Injective (algebraMap O C)` using `IsFractionRing.injective O C`. Set `j : (Fin h → O) →ₗ[O] (Fin h → C)` to `(Algebra.linearMap O C).compLeft (Fin h)`. Establish `hj : Function.Injective j` using `fun x y e => funext fun i => hinj (congrFun e i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mv : ∀ (X : Matrix (Fin h) (Fin h) O) (z : Fin h → O), j (Matrix.toLin' X z) = Matrix.toLin' (X.map (algebraMap O C)) (j z)`. Introduce `X z`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (algebraMap O C) X z i`. Establish `mb : ∀ z, j (D.bb z) = bC C D (j z)` using `fun z => mv _ z`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `mT : ∀ z, z ∈ D.Tsub σ ↔ j z ∈ eig C (actT D) σ`. Introduce `z`. Simplify using `only [Datum.Tsub, eig, Submodule.mem_iInf, Module.End.mem_eigenspace_iff]`. Use `forall_congr' fun b => ?_` and prove the remaining obligations. Rewrite using `[← mv, algebraMap_smul, ← map_smul, hj.eq_iff]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `set U := LinearMap.range (bC C D) ⊓ eig C (actT D) σ with hU`. Establish `hm : ∀ z : ↥(D.Lie ⊓ D.Tsub σ), j z ∈ U`. Introduce and unpack `⟨_, ⟨z, rfl⟩, hz⟩`. Conclude with `⟨⟨_, (mb z).symm⟩, (mT _).1 hz⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `g : ↥(D.Lie ⊓ D.Tsub σ) →ₗ[O] U` to `{ toFun := fun z => ⟨j z, hm z⟩ map_add' := fun x y => Subtype.ext (map_add j _ _) map_smul' := fun c x => Subtype.ext (map_smul j _ _) }`. Use `haveI : IsLocalizedModule (nonZeroDivisors O) g := { map_units := fun s => by`. Rewrite using `[Module.End.isUnit_iff]`. Establish `hs : algebraMap O C s ≠ 0` using `(IsLocalization.map_units C s).ne_zero`. Establish `e : ⇑(algebraMap O (Module.End O U) s) = fun z : U => algebraMap O C s • z`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `(MulAction.bijective (Units.mk0 _ hs))`. Use `surj := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨_, ⟨w, rfl⟩, hw⟩`. Take `⟨c, hc⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) w`. Use `choose z hz using hc`. Establish `e : j z = (c : O) • w` using `funext hz`. Establish `e2 : j (D.bb z) = (c : O) • bC C D w`.
-
-Rewrite using `[mb, e, ← algebraMap_smul C, map_smul, algebraMap_smul]`. Use `⟨⟨⟨D.bb z, ⟨z, rfl⟩, (mT _).2 ?_⟩, c⟩, Subtype.ext e2.symm⟩` and prove the remaining obligations. Rewrite using `[e2, ← algebraMap_smul C]`. Conclude with `Submodule.smul_mem _ _ hw`. Use `exists_of_eq := fun e => ⟨1, by`.
-
-Rewrite using `[Subtype.ext (hj (congrArg Subtype.val e))]⟩ }`. Rewrite using `[Datum.lieRank, ← IsLocalizedModule.finrank_eq (nonZeroDivisors O) g le_rfl, IsFractionRing.finrank_right_eq O C]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieRank_eq_finrank_range_bC_inf_eig : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C]
     [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]

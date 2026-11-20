@@ -12,9 +12,9 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker C
 namespace GlobalTheory.Ggeo.AdmEntInt
 
 /- English proof (translation)
-Rewrite `h` using `[jacobiSym.mod_left]`. Simplify using `only [Nat.cast_ofNat] at h`. Establish `: (-(d : ℤ)) % 3 = 0 ∨ (-(d : ℤ)) % 3 = 1 ∨ (-(d : ℤ)) % 3 = 2` using `by omega`. Apply the tactic sequence `rcases this with h0 | h0 | h0 <;> rw [h0] at h`. Evaluate the numerical expressions using `at h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Evaluate the numerical expressions.
 
-Use linear arithmetic over natural numbers and integers. Evaluate the numerical expressions using `at h`.
+Use linear arithmetic over natural numbers and integers. Evaluate the numerical expressions.
 -/
 theorem mod_three_eq_two_of_jacobiSym_neg_eq_one (d : ℕ) (h : jacobiSym (-(d : ℤ)) 3 = 1) : d % 3 = 2 := by
   rw [jacobiSym.mod_left] at h
@@ -28,11 +28,11 @@ theorem mod_three_eq_two_of_jacobiSym_neg_eq_one (d : ℕ) (h : jacobiSym (-(d :
 end GlobalTheory.Ggeo.AdmEntInt
 
 /- English proof (translation)
-Introduce `hIn D L hT Gi Gl K Y cX ex t hHyp h3 ep be sg`. Introduce `u μ w hlf hd i hi _heven c c'`. Establish `hlf' : LevFree Y u μ w` using `hlf`. Take `⟨hAdm, hComb⟩` from `GlobalTheory.Ggeo.KerComb.comb_of_tied hIn.algT D L hT Gi Gl K Y cX ex t hHyp u μ w hlf' i hi c c'`. Establish `hd3 : D.what₂.places.resChar w = 3 → D.host.d % 3 = 2` using `fun _ => GlobalTheory.Ggeo.AdmEntInt.mod_three_eq_two_of_jacobiSym_neg_eq_one _ (D.host.split_small 3 Nat.prime_three (by norm_num) h3)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hJ` using `GlobalTheory.T.integralJets_normalisedThetaCombinations_away_d hIn D t.cc t.δ t.cc_ok t.δ_ok t.B t.χ t.χ_ok t.X t.seam t.seam_ok _ _ _ _ hAdm (D.what₂.places.resChar w) (t.ent.lam w) hd hd3 _ hComb`. Set `T` to `t.kf u μ w hlf'`. Establish `hB` using `T.B_bas i hi.le c`. Establish `hB'` using `T.B_bas (i + 1) hi c'`. Establish `hK` using `GlobalTheory.T.integral_jets_realPlace_local_bases D (t.O u μ).dgen (t.O u μ).dgen_gen _ _ _ _ hAdm (D.what₂.places.resChar w) (t.ent.lam w) (T.B i c) (T.B (i + 1) c') (fun τ => T.c0 i c c' τ * TaylorLogMetric.lamC (t.ent.lam w) ((t.O u μ).dgen τ)) hB hB' (fun τ => by rw [norm_mu …`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hK` using `[← T.th i hi c c']`. Conclude with `GlobalTheory.T.kvalGe_zero_of_integral_jets _ _ _ _ _ _ hK`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Ggeo.AdmEntInt.kernelDatum_entries_integral_away_from_d : GlobalTheory.ThLoc.Inputs → ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.Inst D L) (Gl : G.LatInst D) (K : G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Y cX) (t : KerEntTied ex), t.Hyp → 3 ≤ D.host.splitBound → ∀ ep be sg, OrbitPlaces.JetIntegralityBis (OrbitPlaces.ofKer (nuRowOK D) t.ent ep be sg) Y := by
   intro hIn D L hT Gi Gl K Y cX ex t hHyp h3 ep be sg

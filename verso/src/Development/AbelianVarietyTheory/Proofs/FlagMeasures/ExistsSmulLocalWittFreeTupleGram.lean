@@ -10,11 +10,11 @@ open scoped TensorProduct ENNReal
 namespace GlobalTheory.LocalWittFree
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm n J hJ v r P T hP y hy hgram`. Take `⟨f, hf⟩` from `GlobalTheory.T.extend_free_tuple_gram_hermitian_frame F E σ hcm n J hJ v r P T hP y hy hgram`. Establish `hdet` using `(GlobalTheory.FrameGram.std_frame_gram F E σ hcm n J hJ r P T hP).1`. Take `⟨g, hg⟩` from `GlobalTheory.LocalWittND.exists_smul_ratTup_eq F E σ hcm n J hJ v (r + 1 + r) (tupH P) hdet (Fin.append y f) hf`. Use `⟨g, funext fun i => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hF : (fun j => tupH P (Fin.castAdd r j)) = F0 P`. Use function extensionality and compare the values at `fun j => by simp [tupH, Fin.append_left]`. Establish `h1 : (g • ratTup (F` using `F) (Fv F v) (tupH P)) (Fin.castAdd r i) = (g • ratTup (F := F) (Fv F v) (F0 P)) i := by`. Rewrite using `[← hF]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← h1, hg, Fin.append_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_smul_ratTup_eq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (v : HeightOneSpectrum (𝓞 F)), ∀ (r : ℕ) (P : Frame E n r) (T : F), P.IsStd σ J T → ∀ y : Fin (r + 1) → Fin n → Fv F v ⊗[F] E, LinearIndependent (Fv F v ⊗[F] E) y → gramR (Fv F v) σ J y = (gramE σ J (F0 P)).map (inclR (Fv F v)) → ∃ g : HA (Fv F v) σ J, g • ratTup (Fv F v) (F0 P) = y := by
   intro F E _ _ _ _ _ σ hcm n J hJ v r P T hP y hy hgram

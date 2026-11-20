@@ -17,21 +17,21 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {G : ChGlob X R.m} {m2 : ℕ} {u : Pr.Word}
 
 /- English proof (translation)
-The claim follows from `pow_dvd_pow_of_dvd (Finset.dvd_prod_of_mem (fun Q : rowSG Pr sel mu => qOf Q.1) (Finset.mem_univ P)) _`.
+A detailed English derivation is pending.
 -/
 theorem pow_dvd_cA (P : rowSG Pr sel mu) : qOf P.1 ^ cst.A ∣ cAof sel mu cst :=
   pow_dvd_pow_of_dvd (Finset.dvd_prod_of_mem (fun Q : rowSG Pr sel mu => qOf Q.1) (Finset.mem_univ P)) _
 
 /- English proof (translation)
-Substitute `hj` using the available equality. Establish `hm` using `hL.hm`. Rewrite `h` using `[castSp_comp]`. Take `⟨h1, h2⟩` from `mul_ne_zero_iff.1 h`. Establish `hl2` using `l.2`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hlt : l.1 < R.N R.m - 1`. Establish `h3` using `GlobalTheory.SuppTop.intAt_of_phiTop Ch mu cst.sharp _ hm P.1 _ h1 l.1 s.1 hlt s.2`. Establish `e1 : LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1))) (Loc.eN X.E (R.N (m2 + 1) + cOf R (m2 + 1)) s.1) = Pi.single s 1`. Use function extensionality and compare the values at `t`. Simplify using `[LinearMap.funLeft_apply, Loc.eN, Pi.single_apply, Fin.ext_iff]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply, e1] at h3`. Establish `hlt' : l.1 < R.N R.m - 1 + 0` using `hlt`. Simplify using `only [Loc.atN, dif_pos hlt', prXp, LinearMap.funLeft_apply] at h3`. Establish `h4` using `(GlobalTheory.SuppTop.intAt_nat P.1 (qOf P.1 ^ cst.A)).mul h3`. Rewrite `h4` using `[Nat.cast_pow]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h3` using `GlobalTheory.SuppTop.intAt_of_ftY sel mu cst P _ _ h2 s`. Establish `hl3 : R.N R.m - 1 < R.N R.m` using `by omega`. Establish `hl4 : (⟨R.N R.m - 1, hl3⟩ : Fin (R.N R.m)) = l` using `Fin.ext (by simp only; omega)`. Simplify using `only [LinearMap.comp_apply, atNL, dif_pos hl3, LinearMap.proj_apply, hl4] at h3`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le' hL.cst_ok.M_le_A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `h4` using `(GlobalTheory.SuppTop.intAt_nat P.1 (qOf P.1 ^ k)).mul h3`. Rewrite `h4` using `[Nat.cast_pow, ← mul_assoc, ← pow_add]`. Rewrite using `[hk]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem intAt_of_locTop (hL : L.Ok Ch sel mu cst G m2) (P : rowSG Pr sel mu) {j : ℕ} (hj : j = R.m)
     (x : HomE X.E (R.N (m2 + 1)) (R.N j)) (y : Sp X.E (R.N (m2 + 1)))
@@ -63,11 +63,9 @@ theorem intAt_of_locTop (hL : L.Ok Ch sel mu cst G m2) (P : rowSG Pr sel mu) {j 
     rwa [hk]
 
 /- English proof (translation)
-Establish `hm` using `hL.hm`. Break down `lt_trichotomy (i + 2) R.m with h | h | h` into its components or cases. Apply the tactic sequence `rw [xiAt_entry Ch sel mu cst L h (b.some_get (by omega)).symm (b'.some_get (by omega)).symm] at hx`. Conclude with `hL.xiSupp i (by omega) _ _ P _ (Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul hx) P (Finset.mem_univ _)) s l`. Take `rfl : i = m2` from `by omega`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[xiAt_penultimate_eq_xiCpl1 Ch sel mu cst L h (b.some_get (by omega)).symm]`. Conclude with `hL.psiSuppX _ P _ _ (Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul hx) P (Finset.mem_univ _)) s l`. Take `rfl : i = m2 + 1` from `by omega`. Establish `h1 : m2 + 1 + 1 = R.m` using `by omega`. Rewrite `hx` using `[xiAt_last Ch sel mu cst L h1]`.
-
-Conclude with `intAt_of_locTop hL P h1 _ _ (Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul hx) P (Finset.mem_univ _)) s l`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAt_of_xiAt (hL : L.Ok Ch sel mu cst G m2) {i : ℕ} (hi : i < R.m) {b : Idx sel mu L i} {b' : Idx sel mu L (i + 1)}
     {p : PtAt R sel mu cst u i} {p' : PtAt R sel mu cst u (i + 1)} {x : HomE X.E (R.N i) (R.N (i + 1))}
@@ -87,15 +85,13 @@ theorem intAt_of_xiAt (hL : L.Ok Ch sel mu cst G m2) {i : ℕ} (hi : i < R.m) {b
     exact intAt_of_locTop hL P h1 _ _ (Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul hx) P (Finset.mem_univ _)) s l
 
 /- English proof (translation)
-Introduce and unpack `X Pr R Ch sel S mu cst L G m2 u i hX hPr hsel hS hg hL hi ⟨σ₀, e, m0, eta, ht⟩ b b' p p'`. Use `⟨fun x hx P hP y hy => ?_, fun x y hy => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((cAof sel mu cst : ℕ) : 𝓞 X.E) • x y ∈ _`. Establish `hP' : P ∈ Pr.vT u ∨ P ∈ rowSG Pr sel mu`. Unfold `Sall at hP`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Finset.mem_union.1 hP`. Break down `hP' with hP | hP` into its components or cases. Conclude with `Submodule.smul_mem _ _ (phiT_of_xiAt_ne_zero Ch sel mu cst L hx ⟨P, hP⟩ y hy).1`. Take `⟨k, hk⟩ : qOf P ^ cst.A ∣ cAof sel mu cst` from `pow_dvd_cA ⟨P, hP⟩`. Establish `h` using `GlobalTheory.SuppTop.smul_mem_of_inFr P _ _ _ _ (isFrames_frsF p.1.1 ⟨P, hP⟩) (isFrames_frsF p'.1.1 ⟨P, hP⟩) (cAof sel mu cst) x (fun s l => by`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `(GlobalTheory.SuppTop.intAt_nat P k).mul (intAt_of_xiAt hL hi hx ⟨P, hP⟩ s l)`. Rewrite using `[hk, Nat.cast_mul, Nat.cast_pow, mul_comm _ (k : X.E), mul_assoc]`. Conclude with `h4) y hy`. Simplify `h` using `[Nat.cast_smul_eq_nsmul]`. Take `⟨Φ, hΦ⟩` from `exists_local hX hPr hsel hS hL (muqUnit_of_tied hX hPr hsel hS hg hL ht) hi b b'`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨w, hw⟩` from `exists_place X.K (hPr.T_prime u)`. Rewrite using `[(hΦ p p').1, (hΦ p p').1]`. Use `congr 1`. Conclude with `phiT_add _ p'.1.1.deco.2 (T := Pr.T u) (fun Q => T_mem_of_piT_mem hPr u (GlobalTheory.ColPeriod.mem_divs Q.2)) x fun Q => exists_of_mem_mulLat (Dvd.intro _ rfl) hy (Finset.mem_union_left _ Q.2)`. Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations.
-
-Establish `hdv : qOf P.1 ^ cst.B ∣ cBof sel mu cst u` using `Dvd.dvd.mul_left (pow_dvd_pow_of_dvd (Finset.dvd_prod_of_mem _ (Finset.mem_univ P)) _) _`. Take `⟨z, hz, rfl⟩` from `exists_of_mem_mulLat hdv hy (Finset.mem_union_right _ P.2)`. Rewrite using `[Nat.cast_pow]`. Conclude with `(awayAt_inFr (isFrames_frsF p.1.1 P) (isFrames_frsF p'.1.1 P) ((hΦ p p').2 P w hw)).2 x z hz`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inBox_xiAt : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S : Set ℕ) (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (G : ChGlob X R.m) (m2 : ℕ) (u : Pr.Word) (i : ℕ), X.Ok → Pr.Ok → IsSel X sel → Pr.T u ∈ S → (∀ k, Pr.g k ∈ S) → L.Ok Ch sel mu cst G m2 → i < R.m → (∃ (σ₀ : X.K →+* ℂ) (e : Fin R.m → X.Tau → ℚ) (m0 : Fin R.m → Formalism.L2.Host.HChar X.E) (eta : Formalism.L2.Host.HChar X.E), Ch.Tied σ₀ e m0 eta) → ∀ (b : Idx sel mu L i) (b' : Idx sel mu L (i + 1)) (p : PtAt R sel mu cst u i) (p' : PtAt R sel mu cst u (i + 1)), GlobalTheory.IndefiniteRowSideFullHecke.IndexExponentDegree.InBox (Sall sel mu u) (cAof sel mu cst) (cBof sel mu cst u) p.1.1.deco.1.N p'.1.1.deco.1.N (xiAt Ch sel mu cst L u i b b' p p') := by
   classical

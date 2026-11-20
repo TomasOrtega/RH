@@ -13,13 +13,13 @@ noncomputable section
 namespace GlobalTheory.VFormCong
 
 /- English proof (translation)
-Establish `hfr : Formalism.L2.DIV.IsFrame β Λ` using `by obtain ⟨c, h, -⟩ := hΛ; exact h`. Establish `hl : Formalism.L2.Pj.latHat V = GlobalTheory.AdLat.hat D.host.F (Λ : Set (Fin V.rank → D.host.E))`. Rewrite using `[GlobalTheory.PrincInLevel.eq_latC hΛ]`. Conclude with `(GlobalTheory.Member.latHat_eq_hat_and_gram D V).1`. Establish `hc : ∀ a : GA D V, GlobalTheory.Member.FinCong V N a → ∀ z ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) Λ, ∃ y ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ, (Lev.finE V a).1 *ᵥ z - z = N • y := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Unfold `GlobalTheory.Member.FinCong at ha`. Rewrite `ha` using `[hl]`. Conclude with `GlobalTheory.PrincInLevel.cong_swap Λ N _ ha`. Establish `hc'` using `hc _ (GlobalTheory.Member.PrincLevel.finCong_inv hk)`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hc'` using `[map_inv]`. Take `⟨y, hy, hred⟩` from `GlobalTheory.PrincInLevel.exists_int (Formalism.L2.Herm.intAf D.host.F D.host.E) β (Lev.finE V k) (Formalism.L2.Herm.hatL (F := D.host.F) Λ) N hfr (hc k hk) hc'`. Establish `hy' : Formalism.L2.DIV.frGL β y = Lev.finE V k` using `hy`. Introduce `PP hP`. Rewrite using `[← hy', Formalism.L2.DIV.redFn_frGL]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hred _ _ ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (Ideal.Quotient.mk PP.asIdeal)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (hN PP hP)`.
+A detailed English derivation is pending.
 -/
 theorem redFn_eq_one_of_finCong {D : D7} {V : TH.HSp D} {β : GL (Fin V.rank) (Lev.EAf D)}
     {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) {N : ℕ} {k : GA D V}
@@ -47,11 +47,11 @@ theorem redFn_eq_one_of_finCong {D : D7} {V : TH.HSp D} {β : GL (Fin V.rank) (L
   exact Ideal.Quotient.eq_zero_iff_mem.2 (hN PP hP)
 
 /- English proof (translation)
-Establish `e : Formalism.L2.DIV.levFn β L x = Formalism.L2.DIV.levFn β L 1`. Establish `hr : Formalism.L2.DIV.rTup β L x = Formalism.L2.DIV.rTup β L 1`. Use function extensionality and compare the values at `PP`. Use `show Formalism.L2.DIV.upperLeftBlock _ (Formalism.L2.DIV.redFn β PP.1 x) = Formalism.L2.DIV.upperLeftBlock _ (Formalism.L2.DIV.redFn β PP.1 1)`. Rewrite using `[h3 PP.1 (Or.inl PP.2), Formalism.L2.DIV.redFn_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.L2.DIV.levFn`. Rewrite using `[hr]`. Use `congr 1`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun PP hPP => Finset.prod_congr rfl fun c _ => by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3 PP (Or.inl hPP), Formalism.L2.DIV.redFn_one]`. Conclude with `Finset.prod_congr rfl fun PP hPP => by`. Rewrite using `[h3 PP (Or.inr hPP), Formalism.L2.DIV.redFn_one]`. Rewrite using `[e]`. Conclude with `(Formalism.L2.DIV.levChar D.sp.cm (1 : Matrix (Fin n) (Fin n) D.host.E) β L).map_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levFn_eq_one {D : D7} {n : ℕ} (β : GL (Fin n) (Lev.EAf D)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ n)
     (x : GL (Fin n) (Lev.EAf D)) (h3 : ∀ PP, PP ∈ L.Pg ∨ PP ∈ L.Q → Formalism.L2.DIV.redFn β PP x = 1) :
@@ -77,11 +77,11 @@ end GlobalTheory.VFormCong
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D cf nch tp X M rep hA j t`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN0, hNmem⟩ : ∃ N : ℕ, 0 < N ∧ ∀ PP, PP ∈ (X.R.datVt j t).Pg ∨ PP ∈ (X.R.datVt j t).Q → ((N : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal := by`. Use `⟨∏ PP ∈ (X.R.datVt j t).Pg ∪ (X.R.datVt j t).Q, Ideal.absNorm PP.asIdeal, Finset.prod_pos fun PP _ => Nat.pos_of_ne_zero fun h => PP.ne_bot (Ideal.absNorm_eq_zero_iff.1 h), fun PP hPP => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `Finset.dvd_prod_of_mem (fun PP => Ideal.absNorm (IsDedekindDomain.HeightOneSpectrum.asIdeal PP)) (Finset.mem_union.2 hPP)`. Rewrite using `[hu, Nat.cast_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)`. Take `⟨N', hN', hcong⟩` from `GlobalTheory.StdFrameCong.exists_cong_finCong D (Vc D j) D.R.nV (hA.PV j) hA.hF (hA.stdV j) N hN0`. Use `⟨N', hN', fun κ hκ => ?_⟩` and prove the remaining obligations. Establish `hk` using `hcong κ hκ`. Establish `hβ` using `X.given.core.lev.βV j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨GlobalTheory.PrincInLevel.finCong_mem_levEnv D (Vc D j) (X.R.βV j) (X.R.ΛV j) (X.R.datVt j t) N _ hβ hNmem hk, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((Formalism.L2.DIV.levFn (X.R.βV j) (Lev.flag1L (X.R.datVt j t)) (Lev.finE (Vc D j) ((hA.PV j).ψ κ)) : ℂˣ) : ℂ) = 1`. Rewrite using `[GlobalTheory.VFormCong.levFn_eq_one (X.R.βV j) (Lev.flag1L (X.R.datVt j t)) _ (fun PP hP => GlobalTheory.VFormCong.redFn_eq_one_of_finCong (X.R.datVt j t) hβ hNmem hk PP hP)]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.VFormCong.exists_cong_levEnv : ∀ (D : D7) (cf : CharFrame D) (nch : NChoice D) (tp : TupTied D cf nch) (X : GlobalTheory.NJoin.RealAt D cf nch tp) (M : MtFam D) (rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r) (hA : GlobalTheory.NJoin.Agree X M rep) (j : Fin D.R.m) (t : X.T), ∃ N : ℕ, 0 < N ∧ ∀ κ, NG.Cong D.host.E D.R.nV N κ → ∃ h : (finHom (Vc D j)).rangeRestrict ((hA.PV j).ψ κ) ∈ (levEnv (Vc D j) (X.R.βV j) (X.R.datVt j t)).J, (levEnv (Vc D j) (X.R.βV j) (X.R.datVt j t)).χ ⟨_, h⟩ = 1 := by
   intro D cf nch tp X M rep hA j t

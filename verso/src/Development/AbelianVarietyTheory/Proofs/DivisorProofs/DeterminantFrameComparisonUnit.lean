@@ -16,19 +16,17 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 namespace GlobalTheory.DetInv
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ N h hh D ψ hψ`. Take `⟨eT, eM, hT, hM, hrat⟩` from `GlobalTheory.T.determinant_frame_comparison p C v O hv ε hε Λ N h hh D`. Take `⟨tM, htM, htw⟩` from `GlobalTheory.T.exists_frobenius_twisted_frame p O Λ N h ψ D.ρM eM hψ hM`. Establish `hTw` using `GlobalTheory.T.frame_psi_coordinates_padic p O Λ N h ψ eT hψ hrat`. Take `⟨hscal, hFG, hG, hΨ, hΨ'⟩` from `GlobalTheory.T.sandwich_datum_scalar_action p C v O hv ε hε Λ h D`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, ψ₀, φ₀, hψ₀, -, -, hφψ⟩` from `GlobalTheory.DetInv.psi_phi_tensor p O Λ`. Establish `hψeq : ∀ r, ψ r = ψ₀ r`. Introduce `r`. Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a l => rw [hψ, hψ₀]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `hsurj : Function.Surjective ψ` using `fun r => ⟨φ₀ r, by rw [hψeq, hφψ]⟩`. Establish `calc₁` using `fun (e e' e'' : (Fin N → RL p O Λ) ≃ₗ[Ainf p O] (Fin h → Ainf p O)) => GlobalTheory.T.frame_matrix_composition_unique p O Λ N h e e' e''`. Take `⟨F, hF⟩` from `GlobalTheory.T.exists_matrix_of_intertwiner p O Λ N h (rhoTA D) D.ρM eT eM D.F hT hM (fun l => D.F_act l)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨G, hGm⟩` from `GlobalTheory.T.exists_matrix_of_intertwiner p O Λ N h D.ρM (rhoTA D) eM eT D.G hM hT hG`. Take `⟨Ψ, hΨm⟩` from `GlobalTheory.T.exists_matrix_of_intertwiner p O Λ N h (fun l => (D.ρM l).map (phiInv p O)) D.ρM tM eM D.Ψ htM hM hΨ`. Take `⟨Ψ', hΨ'm⟩` from `GlobalTheory.T.exists_matrix_of_intertwiner p O Λ N h D.ρM (fun l => (D.ρM l).map (phiInv p O)) eM tM D.Ψ' hM htM hΨ'`. Establish `hFψ` using `GlobalTheory.T.frame_transition_psi_matrix p O Λ N h ψ eT eM eT tM D.F F hsurj hTw htw hF`. Use `⟨⟨eT, eM, F, G, Ψ, Ψ', hT, hM, hF, hGm, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `(calc₁ eT eM eT).1 _ _ _ _ hF hGm`. Rewrite `h1` using `[D.G_mul_F]`. Conclude with `(calc₁ eT eT eT).2.1 _ _ _ h1 ((calc₁ eT eT eT).2.2 (mu ε))`. Establish `h1` using `(calc₁ eM eT eM).1 _ _ _ _ hGm hF`. Rewrite `h1` using `[hFG]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(calc₁ eM eM eM).2.1 _ _ _ h1 ((calc₁ eM eM eM).2.2 (mu ε))`. Establish `h1` using `(calc₁ eT tM eM).1 _ _ _ _ hFψ hΨm`. Rewrite `h1` using `[← D.F_eq]`. Conclude with `(calc₁ eT eM eM).2.1 _ _ _ hF h1`. Establish `h1` using `(calc₁ eM tM eM).1 _ _ _ _ hΨ'm hΨm`.
-
-Rewrite `h1` using `[D.Ψ_mul]`. Conclude with `(calc₁ eM eM eM).2.1 _ _ _ h1 ((calc₁ eM eM eM).2.2 (xi ε))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_freeForm : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ (ε : PreTilt O p), IsPrimitiveRoot (root ε).untilt p → ∀ (Λ : Type) [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [Algebra ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ] [FaithfulSMul ℤ_[p] Λ], ∀ (N h : ℕ) , h = Module.finrank ℤ_[p] Λ * N → ∀ (D : Datum ε h Λ) (ψ : RL p O Λ →+* RL p O Λ), IsPsi ψ → Nonempty (FreeForm D N ψ) := by
   intro p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ N h hh D ψ hψ

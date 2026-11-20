@@ -12,7 +12,7 @@ private noncomputable def fromSpecStalkPoint (X : Scheme.{u}) (x : X)
   (X.fromSpecStalk x).base p
 
 /- English proof (translation)
-The claim follows from `(AlgebraicGeometry.Scheme.Hom.isEmbedding (X.fromSpecStalk x)).toIsInducing.specializes_iff`.
+A detailed English derivation is pending.
 -/
 private theorem fromSpecStalkPoint_specializes_iff (X : Scheme.{u}) (x : X)
     (p q : PrimeSpectrum (X.presheaf.stalk x)) :
@@ -20,7 +20,7 @@ private theorem fromSpecStalkPoint_specializes_iff (X : Scheme.{u}) (x : X)
   (AlgebraicGeometry.Scheme.Hom.isEmbedding (X.fromSpecStalk x)).toIsInducing.specializes_iff
 
 /- English proof (translation)
-Establish `hy : y ∈ Set.range (X.fromSpecStalk x).base`. Rewrite using `[AlgebraicGeometry.Scheme.range_fromSpecStalk]`. Conclude with `h`. Take `⟨p, hp⟩` from `hy`. Conclude with `⟨p, hp⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_fromSpecStalkPoint_eq_of_specializes (X : Scheme.{u}) (x : X) {y : X} (h : y ⤳ x) :
     ∃ p : PrimeSpectrum (X.presheaf.stalk x), fromSpecStalkPoint X x p = y := by
@@ -30,7 +30,7 @@ private theorem exists_fromSpecStalkPoint_eq_of_specializes (X : Scheme.{u}) (x 
   exact ⟨p, hp⟩
 
 /- English proof (translation)
-Establish `hemb : Topology.IsEmbedding (X.fromSpecStalk x).base` using `AlgebraicGeometry.Scheme.Hom.isEmbedding (X.fromSpecStalk x)`. Establish `h1 : ringKrullDim (X.presheaf.stalk x) ≤ topologicalKrullDim (PrimeSpectrum (X.presheaf.stalk x))` using `(PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim _).ge`. Establish `h2 : topologicalKrullDim ↥(Spec (X.presheaf.stalk x)) ≤ topologicalKrullDim ↥X` using `hemb.toIsInducing.topologicalKrullDim_le`. Conclude with `le_trans h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_stalk_le_topologicalKrullDim (X : Scheme.{u}) (x : X) :
     ringKrullDim (X.presheaf.stalk x) ≤ topologicalKrullDim X := by
@@ -44,7 +44,7 @@ theorem ringKrullDim_stalk_le_topologicalKrullDim (X : Scheme.{u}) (x : X) :
   exact le_trans h1 h2
 
 /- English proof (translation)
-Establish `hemb : Topology.IsEmbedding (X.fromSpecStalk x).base` using `AlgebraicGeometry.Scheme.Hom.isEmbedding (X.fromSpecStalk x)`. Conclude with `hemb.toIsInducing.specializes_iff.mp hab`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem specializes_of_fromSpecStalk_base_specializes {X : Scheme.{u}} (x : X)
     {a b : PrimeSpectrum (X.presheaf.stalk x)}
@@ -54,23 +54,21 @@ private theorem specializes_of_fromSpecStalk_base_specializes {X : Scheme.{u}} (
   exact hemb.toIsInducing.specializes_iff.mp hab
 
 /- English proof (translation)
-Unfold `topologicalKrullDim`. Use `iSup_le fun p => ?_` and prove the remaining obligations. Establish `hSM` using `p.strictMono`. Establish `key : ∀ i : Fin (p.length + 1), ∃ z : X, closure ({z} : Set X) = (p i : Set X)`. Introduce `i`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, hz⟩` from `QuasiSober.sober (p i).isIrreducible' (p i).isClosed'`. Conclude with `⟨z, hz⟩`. Use `choose y hy using key`. Establish `hspec : ∀ i j : Fin (p.length + 1), i ≤ j → y j ⤳ y i`. Introduce `i j hij`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsub : (p i : Set X) ⊆ (p j : Set X)` using `SetLike.coe_subset_coe.mpr (hSM.monotone hij)`. Establish `hmem : y i ∈ closure ({y j} : Set X)`. Rewrite using `[hy j]`. Apply `hsub` to reduce the goal to its premises. Rewrite using `[← hy i]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `subset_closure rfl`. Conclude with `specializes_iff_mem_closure.mpr hmem`. Establish `hinj : Function.Injective y`. Introduce `i j hij`. Apply `hSM.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `SetLike.coe_injective` to reduce the goal to its premises. Rewrite using `[← hy i, ← hy j, hij]`. Establish `hrange : ∀ i : Fin (p.length + 1), ∃ z : PrimeSpectrum (X.presheaf.stalk (y 0)), (X.fromSpecStalk (y 0)).base z = y i`. Introduce `i`. Establish `hmem : y i ∈ Set.range (X.fromSpecStalk (y 0)).base`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Scheme.range_fromSpecStalk]`. Conclude with `hspec 0 i (Fin.zero_le i)`. Conclude with `hmem`. Use `choose q hq using hrange`. Establish `hg : StrictMono (fun i : Fin (p.length + 1) => q i.rev)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i j hij`. Establish `hlt : j.rev < i.rev` using `Fin.rev_lt_rev.mpr hij`. Establish `hsp : (X.fromSpecStalk (y 0)).base (q i.rev) ⤳ (X.fromSpecStalk (y 0)).base (q j.rev)`. Rewrite using `[hq i.rev, hq j.rev]`. Conclude with `hspec j.rev i.rev hlt.le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle : q i.rev ≤ q j.rev` using `(PrimeSpectrum.le_iff_specializes _ _).mpr (specializes_of_fromSpecStalk_base_specializes (y 0) hsp)`. Use `lt_of_le_of_ne hle ?_` and prove the remaining obligations. Introduce `hcon`. Establish `hcon' : q i.rev = q j.rev` using `hcon`. Establish `hyy : y i.rev = y j.rev` using `(hq i.rev).symm.trans ((congrArg (fun z : PrimeSpectrum (X.presheaf.stalk (y 0)) => (X.fromSpecStalk (y 0)).base z) hcon').trans (hq j.rev))`.
-
-Establish `h4` using `congrArg Fin.rev (hinj hyy)`. Rewrite `h4` using `[Fin.rev_rev, Fin.rev_rev]`. Conclude with `absurd h4 (ne_of_lt hij)`. Establish `hlen : (p.length : WithBot ℕ∞) ≤ ringKrullDim (X.presheaf.stalk (y 0))` using `le_iSup (fun t : LTSeries (PrimeSpectrum (X.presheaf.stalk (y 0))) => (t.length : WithBot ℕ∞)) ⟨p.length, fun i => q i.rev, fun i => hg Fin.castSucc_lt_succ⟩`. Conclude with `le_trans hlen (h (y 0))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_le_of_forall_ringKrullDim_stalk_le (X : Scheme.{u}) (d : WithBot ℕ∞)
     (h : ∀ x : X, ringKrullDim (X.presheaf.stalk x) ≤ d) :
@@ -131,9 +129,9 @@ theorem topologicalKrullDim_le_of_forall_ringKrullDim_stalk_le (X : Scheme.{u}) 
   exact le_trans hlen (h (y 0))
 
 /- English proof (translation)
-Establish `hft : (f.stalkMap y).hom.EssFiniteType` using `AlgebraicGeometry.LocallyOfFiniteType.stalkMap f y`. Establish `hfu : (f.stalkMap y).hom.FormallyUnramified` using `AlgebraicGeometry.FormallyUnramified.stalkMap f y`. Set `algStalk : Algebra (W.presheaf.stalk (f.base y)) (Y.presheaf.stalk y)` to `(f.stalkMap y).hom.toAlgebra`. Establish `: IsLocalHom (algebraMap (W.presheaf.stalk (f.base y)) (Y.presheaf.stalk y))` using `inferInstanceAs (IsLocalHom (f.stalkMap y).hom)`. Establish `: Module.Flat (W.presheaf.stalk (f.base y)) (Y.presheaf.stalk y)` using `AlgebraicGeometry.Flat.stalkMap f y`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.EssFiniteType (W.presheaf.stalk (f.base y)) (Y.presheaf.stalk y)` using `hft`. Establish `: Algebra.FormallyUnramified (W.presheaf.stalk (f.base y)) (Y.presheaf.stalk y)` using `hfu`. Conclude with `le_of_eq (FunctorialResolution.EmbeddedResolution.ringKrullDim_eq_of_flat_formallyUnramified (W.presheaf.stalk (f.base y)) (Y.presheaf.stalk y))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_stalk_le_of_etale {Y W : Scheme.{u}} (f : Y ⟶ W)
     [AlgebraicGeometry.Etale f] (y : Y) [IsNoetherianRing (Y.presheaf.stalk y)]
@@ -155,9 +153,9 @@ theorem ringKrullDim_stalk_le_of_etale {Y W : Scheme.{u}} (f : Y ⟶ W)
     (W.presheaf.stalk (f.base y)) (Y.presheaf.stalk y))
 
 /- English proof (translation)
-Establish `hft : (f.stalkMap y).hom.EssFiniteType` using `AlgebraicGeometry.LocallyOfFiniteType.stalkMap f y`. Establish `hfu : (f.stalkMap y).hom.FormallyUnramified` using `AlgebraicGeometry.FormallyUnramified.stalkMap f y`. Set `algStalk : Algebra (W.presheaf.stalk (f.base y)) (Y.presheaf.stalk y)` to `(f.stalkMap y).hom.toAlgebra`. Establish `: IsLocalHom (algebraMap (W.presheaf.stalk (f.base y)) (Y.presheaf.stalk y))` using `inferInstanceAs (IsLocalHom (f.stalkMap y).hom)`. Establish `: Module.Flat (W.presheaf.stalk (f.base y)) (Y.presheaf.stalk y)` using `AlgebraicGeometry.Flat.stalkMap f y`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.EssFiniteType (W.presheaf.stalk (f.base y)) (Y.presheaf.stalk y)` using `hft`. Establish `: Algebra.FormallyUnramified (W.presheaf.stalk (f.base y)) (Y.presheaf.stalk y)` using `hfu`. Conclude with `FunctorialResolution.EmbeddedResolution.ringKrullDim_eq_of_flat_formallyUnramified (W.presheaf.stalk (f.base y)) (Y.presheaf.stalk y)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_stalk_eq_of_etale {Y W : Scheme.{u}} (f : Y ⟶ W)
     [AlgebraicGeometry.Etale f] (y : Y) [IsNoetherianRing (Y.presheaf.stalk y)]
@@ -179,9 +177,9 @@ theorem ringKrullDim_stalk_eq_of_etale {Y W : Scheme.{u}} (f : Y ⟶ W)
     (W.presheaf.stalk (f.base y)) (Y.presheaf.stalk y)
 
 /- English proof (translation)
-Establish `h : ↥A ≃ₜ PrimeSpectrum ↥Γ(A, ⊤)` using `Scheme.homeoOfIso A.isoSpec`. Establish `hp : PrimeSpectrum ↥Γ(A, ⊤)` using `h a`. Take `⟨M, hM, -⟩` from `Ideal.exists_le_maximal hp.asIdeal hp.isPrime.ne_top`. Use `⟨h.symm ⟨M, hM.isPrime⟩, ?_⟩` and prove the remaining obligations. Establish `hq : IsClosed ({(⟨M, hM.isPrime⟩ : PrimeSpectrum ↥Γ(A, ⊤))} : Set (PrimeSpectrum ↥Γ(A, ⊤)))` using `(PrimeSpectrum.isClosed_singleton_iff_isMaximal _).mpr hM`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `h.symm.isClosedMap _ hq`. Rewrite `h2` using `[Set.image_singleton]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem exists_isClosed_singleton_of_isAffine (A : Scheme.{u}) [IsAffine A] (a : A) :
     ∃ x : A, IsClosed ({x} : Set A) := by
@@ -196,7 +194,7 @@ private theorem exists_isClosed_singleton_of_isAffine (A : Scheme.{u}) [IsAffine
   rwa [Set.image_singleton] at h2
 
 /- English proof (translation)
-Establish `: IsAffine U.toScheme` using `hU`. Take `⟨x0, hx0⟩` from `hne`. Conclude with `exists_isClosed_singleton_of_isAffine U.toScheme ⟨x0, hx0⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_isClosed_singleton_of_isAffineOpen {X : Scheme.{u}} (U : X.Opens)
     (hU : IsAffineOpen U) (hne : (U : Set X).Nonempty) :
@@ -206,7 +204,7 @@ theorem exists_isClosed_singleton_of_isAffineOpen {X : Scheme.{u}} (U : X.Opens)
   exact exists_isClosed_singleton_of_isAffine U.toScheme ⟨x0, hx0⟩
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `exists_isClosed_singleton_of_isAffineOpen U hU hne`. Take `⟨y, hy⟩` from `x`. Conclude with `⟨y, hy, hx⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mem_isClosed_singleton_of_isAffineOpen {X : Scheme.{u}} (U : X.Opens)
     (hU : IsAffineOpen U) (hne : (U : Set X).Nonempty) :
@@ -216,7 +214,7 @@ theorem exists_mem_isClosed_singleton_of_isAffineOpen {X : Scheme.{u}} (U : X.Op
   exact ⟨y, hy, hx⟩
 
 /- English proof (translation)
-Establish `h : topologicalKrullDim (PrimeSpectrum ↥R) = ringKrullDim ↥R` using `PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim ↥R`. Conclude with `le_of_eq h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem topologicalKrullDim_spec_le_ringKrullDim (R : CommRingCat.{u}) :
     topologicalKrullDim ↥(Spec R) ≤ ringKrullDim ↥R := by
@@ -225,7 +223,7 @@ private theorem topologicalKrullDim_spec_le_ringKrullDim (R : CommRingCat.{u}) :
   exact le_of_eq h
 
 /- English proof (translation)
-Set `e` to `Scheme.homeoOfIso (AffineSpace.SpecIso (ULift.{u} (Fin m)) (CommRingCat.of k))`. Establish `h3` using `(Homeomorph.isEmbedding e).toIsInducing.topologicalKrullDim_le`. Conclude with `h3.trans (topologicalKrullDim_spec_le_ringKrullDim (CommRingCat.of (MvPolynomial (ULift.{u} (Fin m)) k)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem topologicalKrullDim_affineSpace_le_ringKrullDim (k : Type u) [Field k] (m : ℕ) :
     topologicalKrullDim ↥(AffineSpace (ULift.{u} (Fin m)) (Spec (CommRingCat.of k))) ≤
@@ -237,7 +235,7 @@ private theorem topologicalKrullDim_affineSpace_le_ringKrullDim (k : Type u) [Fi
       (CommRingCat.of (MvPolynomial (ULift.{u} (Fin m)) k)))
 
 /- English proof (translation)
-Establish `he : ringKrullDim (MvPolynomial (ULift.{u} (Fin m)) k) = ringKrullDim (MvPolynomial (Fin m) k)` using `ringKrullDim_eq_of_ringEquiv (MvPolynomial.renameEquiv k (Equiv.ulift : ULift.{u} (Fin m) ≃ Fin m)).toRingEquiv`. Rewrite using `[he]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem ringKrullDim_mvPolynomial_uLift_le (k : Type u) [Field k] (m : ℕ) :
     ringKrullDim (MvPolynomial (ULift.{u} (Fin m)) k) ≤ ((m : ℕ∞) : WithBot ℕ∞) := by
@@ -249,7 +247,7 @@ private theorem ringKrullDim_mvPolynomial_uLift_le (k : Type u) [Field k] (m : �
   simp
 
 /- English proof (translation)
-Establish `hreg : _root_.IsRegularLocalRing ((AffineSpace (ULift.{u} (Fin m)) (Spec (CommRingCat.of k))).presheaf.stalk (c.base y))` using `isRegularLocalRing_stalk_affineSpace k (ULift.{u} (Fin m)) (c.base y)`. Establish `h1 : ringKrullDim (Y.presheaf.stalk y) ≤ ringKrullDim ((AffineSpace (ULift.{u} (Fin m)) (Spec (CommRingCat.of k))).presheaf.stalk (c.base y))` using `ringKrullDim_stalk_le_of_etale c y`. Establish `h2` using `ringKrullDim_stalk_le_topologicalKrullDim (AffineSpace (ULift.{u} (Fin m)) (Spec (CommRingCat.of k))) (c.base y)`. Conclude with `h1.trans (h2.trans ((topologicalKrullDim_affineSpace_le_ringKrullDim k m).trans (ringKrullDim_mvPolynomial_uLift_le k m)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_stalk_le_of_etale_affineSpace {k : Type u} [Field k] {m : ℕ} {Y : Scheme.{u}}
     (c : Y ⟶ AffineSpace (ULift.{u} (Fin m)) (Spec (CommRingCat.of k)))
@@ -267,9 +265,9 @@ theorem ringKrullDim_stalk_le_of_etale_affineSpace {k : Type u} [Field k] {m : �
     (ringKrullDim_mvPolynomial_uLift_le k m)))
 
 /- English proof (translation)
-Use `Ideal.ext fun a => ?_` and prove the remaining obligations. Establish `h : (φ.symm : B →+* A) ((φ : A →+* B) a) = a` using `φ.symm_apply_apply a`. Prove the components needed by the constructor for the conclusion. Introduce `hmem`. Establish `hmem' : (φ.symm : B →+* A) ((φ : A →+* B) a) ∈ I` using `hmem`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hmem'` using `[h]`. Then use the resulting hypothesis. Introduce `hmem show (φ.symm : B →+* A) ((φ : A →+* B) a) ∈ I`. Rewrite using `[h]`. Conclude with `hmem`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comap_comap_symm {A B : Type u} [CommRing A] [CommRing B] (φ : A ≃+* B)
     (I : Ideal A) : Ideal.comap (φ : A →+* B) (Ideal.comap (φ.symm : B →+* A) I) = I := by
@@ -285,9 +283,9 @@ private theorem comap_comap_symm {A B : Type u} [CommRing A] [CommRing B] (φ : 
     exact hmem
 
 /- English proof (translation)
-Use `Ideal.ext fun b => ?_` and prove the remaining obligations. Establish `h : (φ : A →+* B) ((φ.symm : B →+* A) b) = b` using `φ.apply_symm_apply b`. Prove the components needed by the constructor for the conclusion. Introduce `hmem`. Establish `hmem' : (φ : A →+* B) ((φ.symm : B →+* A) b) ∈ J` using `hmem`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hmem'` using `[h]`. Then use the resulting hypothesis. Introduce `hmem show (φ : A →+* B) ((φ.symm : B →+* A) b) ∈ J`. Rewrite using `[h]`. Conclude with `hmem`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comap_symm_comap {A B : Type u} [CommRing A] [CommRing B] (φ : A ≃+* B)
     (J : Ideal B) : Ideal.comap (φ.symm : B →+* A) (Ideal.comap (φ : A →+* B) J) = J := by
@@ -303,11 +301,11 @@ private theorem comap_symm_comap {A B : Type u} [CommRing A] [CommRing B] (φ : 
     exact hmem
 
 /- English proof (translation)
-Establish `hmono : Monotone (PrimeSpectrum.comap (φ : A →+* B))`. Introduce `p q h`. Rewrite using `[← PrimeSpectrum.asIdeal_le_asIdeal, PrimeSpectrum.comap_asIdeal, PrimeSpectrum.comap_asIdeal]`. Conclude with `Ideal.comap_mono ((PrimeSpectrum.asIdeal_le_asIdeal p q).mpr h)`. Establish `hinj : Function.Injective (PrimeSpectrum.comap (φ : A →+* B))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p q h`. Establish `h' : Ideal.comap (φ : A →+* B) p.asIdeal = Ideal.comap (φ : A →+* B) q.asIdeal`. Rewrite using `[← PrimeSpectrum.comap_asIdeal, ← PrimeSpectrum.comap_asIdeal, h]`. Establish `h2` using `congrArg (Ideal.comap (φ.symm : B →+* A)) h'`. Rewrite `h2` using `[comap_symm_comap φ p.asIdeal, comap_symm_comap φ q.asIdeal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `PrimeSpectrum.ext h2`. Establish `hstrict` using `hmono.strictMono_of_injective hinj`. Conclude with `⟨⟨s.length, fun i => PrimeSpectrum.comap (φ : A →+* B) (s i), fun i => hstrict (s.step i)⟩, rfl, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_ltSeries_comap {A B : Type u} [CommRing A] [CommRing B] (φ : A ≃+* B)
     (s : LTSeries (PrimeSpectrum B)) :
@@ -330,9 +328,9 @@ private theorem exists_ltSeries_comap {A B : Type u} [CommRing A] [CommRing B] (
     rfl, rfl⟩
 
 /- English proof (translation)
-Use `Ideal.ext fun a => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2 : (Polynomial.C a) ∈ I.map (Polynomial.C : S →+* Polynomial S)` using `h`. Establish `h3` using `(Ideal.mem_map_C_iff).mp h2 0`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h3`. Introduce `h`. Conclude with `Ideal.mem_map_of_mem _ h`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem comap_C_map_C {S : Type u} [CommRing S] (I : Ideal S) :
     Ideal.comap (Polynomial.C : S →+* Polynomial S) (I.map (Polynomial.C : S →+* Polynomial S))
@@ -347,11 +345,9 @@ private theorem comap_C_map_C {S : Type u} [CommRing S] (I : Ideal S) :
     exact Ideal.mem_map_of_mem _ h
 
 /- English proof (translation)
-Use `hM'` as an intermediate fact. Establish `hint : ((Ideal.Quotient.mk M').comp (Polynomial.C : S →+* Polynomial S)).IsIntegral` using `Polynomial.quotient_mk_comp_C_isIntegral_of_isJacobsonRing M'`. Establish `hbot : (⊥ : Ideal (Polynomial S ⧸ M')).IsMaximal`. Set `fieldQuot : Field (Polynomial S ⧸ M')` to `Ideal.Quotient.field M'`. Conclude with `Ideal.bot_isMaximal`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmax` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal' ((Ideal.Quotient.mk M').comp (Polynomial.C : S →+* Polynomial S)) hint (⊥ : Ideal (Polynomial S ⧸ M'))`. Establish `hker : Ideal.comap ((Ideal.Quotient.mk M').comp (Polynomial.C : S →+* Polynomial S)) (⊥ : Ideal (Polynomial S ⧸ M')) = Ideal.comap (Polynomial.C : S →+* Polynomial S) M'`. Use `Ideal.ext fun a => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, Ideal.mem_bot, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[← hker]`.
-
-Conclude with `hmax`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isMaximal_comap_C {S : Type u} [CommRing S] [IsJacobsonRing S]
     (M' : Ideal (Polynomial S)) (hM' : M'.IsMaximal) :
@@ -374,11 +370,11 @@ private theorem isMaximal_comap_C {S : Type u} [CommRing S] [IsJacobsonRing S]
   exact hmax
 
 /- English proof (translation)
-Introduce `h`. Establish `hX : (Polynomial.X : Polynomial S) ∉ M'`. Rewrite using `[← h]`. Introduce `hmem`. Establish `h1` using `(Ideal.mem_map_C_iff).mp hmem 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[Polynomial.coeff_X_one]`. Conclude with `hN.ne_top ((Ideal.eq_top_iff_one N).mpr h1)`. Take `⟨y, i, hi, hyi⟩` from `hM'.exists_inv hX`. Rewrite `hi` using `[← h]`. Establish `hc` using `(Ideal.mem_map_C_iff).mp hi 0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (y * Polynomial.X + i).coeff 0 = (1 : Polynomial S).coeff 0` using `by rw [hyi]`. Rewrite `h0` using `[Polynomial.coeff_add, Polynomial.coeff_one_zero, Polynomial.mul_coeff_zero, Polynomial.coeff_X_zero, mul_zero, zero_add]`. Establish `hone : (1 : S) ∈ N` using `by rw [← h0]; exact hc`. Conclude with `hN.ne_top ((Ideal.eq_top_iff_one N).mpr hone)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem map_C_ne_of_isMaximal {S : Type u} [CommRing S] (N : Ideal S) (hN : N.IsMaximal)
     (M' : Ideal (Polynomial S)) (hM' : M'.IsMaximal) :
@@ -400,23 +396,21 @@ private theorem map_C_ne_of_isMaximal {S : Type u} [CommRing S] (N : Ideal S) (h
   exact hN.ne_top ((Ideal.eq_top_iff_one N).mpr hone)
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `M hM`. Conclude with `⟨RelSeries.singleton _ ⟨M, hM.isPrime⟩, rfl, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `succ n ih`. Introduce `M hM`. Use `hM` as an intermediate fact. Establish `hJ : IsJacobsonRing (MvPolynomial (Fin n) k)`. Establish `: Algebra.FiniteType k (MvPolynomial (Fin n) k)` using `inferInstance`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isJacobsonRing_of_finiteType (A := k)`. Set `φ : MvPolynomial (Fin (n + 1)) k ≃+* Polynomial (MvPolynomial (Fin n) k)` to `(MvPolynomial.finSuccEquiv k n).toRingEquiv`. Set `M' : Ideal (Polynomial (MvPolynomial (Fin n) k))` to `Ideal.comap (φ.symm : Polynomial (MvPolynomial (Fin n) k) →+* MvPolynomial (Fin (n + 1)) k) M`. Establish `hM'max : M'.IsMaximal` using `Ideal.comap_isMaximal_of_surjective _ (RingEquiv.surjective φ.symm)`. Set `N : Ideal (MvPolynomial (Fin n) k)` to `Ideal.comap (Polynomial.C : MvPolynomial (Fin n) k →+* Polynomial (MvPolynomial (Fin n) k)) M'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hNmax : N.IsMaximal` using `isMaximal_comap_C M' hM'max`. Take `⟨t, htlen, htlast⟩` from `ih N hNmax`. Establish `hFs : StrictMono (fun p : PrimeSpectrum (MvPolynomial (Fin n) k) => (⟨p.asIdeal.map (Polynomial.C : MvPolynomial (Fin n) k →+* Polynomial (MvPolynomial (Fin n) k)), (Ideal.isPrime_map_C_iff_isPrime p.asIdeal).mpr p.isPrime⟩ : PrimeSpectrum (Polynomial (MvPolynomial (Fin n) k))))`. Use `Monotone.strictMono_of_injective ?_ ?_` and prove the remaining obligations. Introduce `p q hpq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← PrimeSpectrum.asIdeal_le_asIdeal]`. Conclude with `Ideal.map_mono ((PrimeSpectrum.asIdeal_le_asIdeal p q).mpr hpq)`. Introduce `p q hpq`. Establish `h' : p.asIdeal.map (Polynomial.C : MvPolynomial (Fin n) k →+* Polynomial (MvPolynomial (Fin n) k)) = q.asIdeal.map (Polynomial.C : MvPolynomial (Fin n) k →+* Polynomial (MvPolynomial (Fin n) k))` using `congrArg PrimeSpectrum.asIdeal hpq`. Use `PrimeSpectrum.ext ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← comap_C_map_C p.asIdeal, ← comap_C_map_C q.asIdeal, h']`. Set `t1 : LTSeries (PrimeSpectrum (Polynomial (MvPolynomial (Fin n) k)))` to `⟨t.length, fun i => ⟨(t i).asIdeal.map (Polynomial.C : MvPolynomial (Fin n) k →+* Polynomial (MvPolynomial (Fin n) k)), (Ideal.isPrime_map_C_iff_isPrime (t i).asIdeal).mpr (t i).isPrime⟩, fun i => hFs (t.step i)⟩`. Establish `ht1last : t1.last.asIdeal = N.map (Polynomial.C : MvPolynomial (Fin n) k →+* Polynomial (MvPolynomial (Fin n) k))` using `by show (t.last).asIdeal.map (Polynomial.C : MvPolynomial (Fin n) k →+* Polynomial (MvPolynomial (Fin n) k)) = _`. Rewrite using `[htlast]`. Establish `hle : t1.last.asIdeal ≤ M'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ht1last]`. Conclude with `Ideal.map_le_iff_le_comap.mpr le_rfl`. Establish `hlt : t1.last < (⟨M', hM'max.isPrime⟩ : PrimeSpectrum (Polynomial (MvPolynomial (Fin n) k)))`. Use `lt_of_le_of_ne ((PrimeSpectrum.asIdeal_le_asIdeal _ _).mp hle) ?_` and prove the remaining obligations. Introduce `hEq`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hEq' : t1.last.asIdeal = M'` using `congrArg PrimeSpectrum.asIdeal hEq`. Rewrite `hEq'` using `[ht1last]`. Conclude with `map_C_ne_of_isMaximal N hNmax M' hM'max hEq'`. Take `⟨s, hslen, hslast⟩` from `exists_ltSeries_comap φ (t1.snoc _ hlt)`. Use `⟨s, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hslen] show t.length + 1 = n + 1`. Rewrite using `[htlen]`. Rewrite using `[hslast, RelSeries.last_snoc]`. Conclude with `comap_comap_symm φ M`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_ltSeries_of_isMaximal_mvPolynomial (k : Type u) [Field k] :
     ∀ (m : ℕ) (M : Ideal (MvPolynomial (Fin m) k)), M.IsMaximal →
@@ -491,9 +485,9 @@ private theorem exists_ltSeries_of_isMaximal_mvPolynomial (k : Type u) [Field k]
       exact comap_comap_symm φ M
 
 /- English proof (translation)
-Use `hM` as an intermediate fact. Set `φ : MvPolynomial (ULift.{u} (Fin m)) k ≃+* MvPolynomial (Fin m) k` to `(MvPolynomial.renameEquiv k (Equiv.ulift : ULift.{u} (Fin m) ≃ Fin m)).toRingEquiv`. Establish `hmax : (Ideal.comap (φ.symm : MvPolynomial (Fin m) k →+* MvPolynomial (ULift.{u} (Fin m)) k) M).IsMaximal` using `Ideal.comap_isMaximal_of_surjective _ (RingEquiv.surjective φ.symm)`. Take `⟨t, htlen, htlast⟩` from `exists_ltSeries_of_isMaximal_mvPolynomial k m _ hmax`. Take `⟨s, hslen, hslast⟩` from `exists_ltSeries_comap φ t`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨s, by rw [hslen, htlen], ?_⟩` and prove the remaining obligations. Rewrite using `[hslast, htlast]`. Conclude with `comap_comap_symm φ M`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_ltSeries_of_isMaximal_mvPolynomial_uLift (k : Type u) [Field k] (m : ℕ)
     (M : Ideal (MvPolynomial (ULift.{u} (Fin m)) k)) (hM : M.IsMaximal) :
@@ -513,13 +507,11 @@ private theorem exists_ltSeries_of_isMaximal_mvPolynomial_uLift (k : Type u) [Fi
   exact comap_comap_symm φ M
 
 /- English proof (translation)
-Use `choose q hq using fun i => exists_fromSpecStalkPoint_eq_of_specializes X x (hspec i)`. Establish `hstep : ∀ i : Fin n, q i.castSucc < q i.succ`. Introduce `i`. Establish `h1 : fromSpecStalkPoint X x (q i.castSucc) ⤳ fromSpecStalkPoint X x (q i.succ)`. Rewrite using `[hq i.castSucc, hq i.succ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hmono _ _ Fin.castSucc_lt_succ`. Establish `hle : q i.castSucc ≤ q i.succ` using `(PrimeSpectrum.le_iff_specializes _ _).mpr ((fromSpecStalkPoint_specializes_iff X x _ _).mp h1)`. Use `lt_of_le_of_ne hle ?_` and prove the remaining obligations. Introduce `hEq`. Establish `hz : z i.castSucc = z i.succ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hq i.castSucc, ← hq i.succ, hEq]`. Conclude with `absurd (hinj hz) Fin.castSucc_lt_succ.ne`. Establish `hlen : ((n : ℕ) : WithBot ℕ∞) ≤ ringKrullDim (X.presheaf.stalk x)` using `le_iSup (fun t : LTSeries (PrimeSpectrum (X.presheaf.stalk x)) => (t.length : WithBot ℕ∞)) ⟨n, q, hstep⟩`. Establish `hcast : ((n : ℕ∞) : WithBot ℕ∞) = ((n : ℕ) : WithBot ℕ∞)` using `by norm_cast`. Rewrite using `[hcast]`.
-
-Conclude with `hlen`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem le_ringKrullDim_stalk_of_chain (X : Scheme.{u}) (x : X) (n : ℕ)
     (z : Fin (n + 1) → X) (hspec : ∀ i, z i ⤳ x)
@@ -547,15 +539,15 @@ private theorem le_ringKrullDim_stalk_of_chain (X : Scheme.{u}) (x : X) (n : ℕ
   exact hlen
 
 /- English proof (translation)
-Set `e : ↥(AffineSpace (ULift.{u} (Fin m)) (Spec (CommRingCat.of k))) ≃ₜ PrimeSpectrum (MvPolynomial (ULift.{u} (Fin m)) k)` to `Scheme.homeoOfIso (AffineSpace.SpecIso (ULift.{u} (Fin m)) (CommRingCat.of k))`. Establish `hclosed : IsClosed ({e x} : Set (PrimeSpectrum (MvPolynomial (ULift.{u} (Fin m)) k)))`. Establish `h2` using `e.isClosedMap _ hx`. Rewrite `h2` using `[Set.image_singleton]`. Then use the resulting hypothesis. Establish `hmax : (e x).asIdeal.IsMaximal` using `(PrimeSpectrum.isClosed_singleton_iff_isMaximal (e x)).mp hclosed`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Take `⟨s, hslen, hslast⟩` from `exists_ltSeries_of_isMaximal_mvPolynomial_uLift k m (e x).asIdeal hmax`. Establish `hlast : s.last = e x` using `PrimeSpectrum.ext hslast`. Establish `hspec : ∀ i, (fun j => e.symm (s j)) i ⤳ x`. Introduce `i`. Establish `h1 : s i ≤ s.last` using `s.strictMono.monotone (Fin.le_last i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : (s i) ⤳ s.last` using `(PrimeSpectrum.le_iff_specializes _ _).mp h1`. Establish `h3` using `h2.map e.symm.continuous`. Rewrite `h3` using `[hlast, e.symm_apply_apply]`. Conclude with `h3`. Establish `hmono : ∀ i j, i < j → (fun l => e.symm (s l)) i ⤳ (fun l => e.symm (s l)) j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij`. Establish `h1 : s i < s j` using `s.strictMono hij`. Conclude with `((PrimeSpectrum.le_iff_specializes _ _).mp h1.le).map e.symm.continuous`. Establish `hinj : Function.Injective (fun i => e.symm (s i))`. Introduce `i j hij`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `s.strictMono.injective (e.symm.injective hij)`. Establish `key` using `le_ringKrullDim_stalk_of_chain (AffineSpace (ULift.{u} (Fin m)) (Spec (CommRingCat.of k))) x s.length (fun i => e.symm (s i)) hspec hmono hinj`. Rewrite `key` using `[hslen]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 private theorem le_ringKrullDim_stalk_affineSpace (k : Type u) [Field k] (m : ℕ)
     (x : ↥(AffineSpace (ULift.{u} (Fin m)) (Spec (CommRingCat.of k))))
@@ -595,7 +587,7 @@ private theorem le_ringKrullDim_stalk_affineSpace (k : Type u) [Field k] (m : �
   exact key
 
 /- English proof (translation)
-Establish `hreg : _root_.IsRegularLocalRing ((AffineSpace (ULift.{u} (Fin m)) (Spec (CommRingCat.of k))).presheaf.stalk (c.base y))` using `isRegularLocalRing_stalk_affineSpace k (ULift.{u} (Fin m)) (c.base y)`. Use `le_antisymm (ringKrullDim_stalk_le_of_etale_affineSpace c y) ?_` and prove the remaining obligations. Establish `heq` using `ringKrullDim_stalk_eq_of_etale c y`. Rewrite using `[heq]`. Conclude with `le_ringKrullDim_stalk_affineSpace k m (c.base y) (AlgebraicGeometry.Scheme.Hom.closePoints_subset_preimage_closedPoints c hy)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_stalk_eq_of_etale_affineSpace {k : Type u} [Field k] {m : ℕ} {Y : Scheme.{u}}
     (c : Y ⟶ AffineSpace (ULift.{u} (Fin m)) (Spec (CommRingCat.of k)))

@@ -22,7 +22,7 @@ namespace LB
 variable {X Y : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 @[simp] theorem resG_resG {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (a : Γ(X, U)) :
     resG X h₂ (resG X h₁ a) = resG X (h₂.trans h₁) a := by
@@ -30,7 +30,7 @@ Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.ma
   rfl
 
 /- English proof (translation)
-Establish `: (homOfLE h).op = 𝟙 (op U)` using `rfl`. Rewrite using `[resG, this, X.presheaf.map_id]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 @[simp] theorem resG_self {U : X.Opens} (h : U ≤ U) (a : Γ(X, U)) : resG X h a = a := by
   have : (homOfLE h).op = 𝟙 (op U) := rfl
@@ -43,14 +43,14 @@ theorem val_res {U V : X.Opens} (h : V ≤ U) (a : Γ(X, U)ˣ) :
     ((res h a : Γ(X, V)ˣ) : Γ(X, V)) = resG X h (a : Γ(X, U)) := rfl
 
 /- English proof (translation)
-The claim follows from `X.sheaf.eq_of_locally_eq' W V (fun k => homOfLE (hW k)) hc a b h`.
+A detailed English derivation is pending.
 -/
 theorem fun_ext_of_cover {ι : Type*} {V : X.Opens} (W : ι → X.Opens) (hW : ∀ k, W k ≤ V)
     (hc : V ≤ iSup W) {a b : Γ(X, V)} (h : ∀ k, resG X (hW k) a = resG X (hW k) b) : a = b :=
   X.sheaf.eq_of_locally_eq' W V (fun k => homOfLE (hW k)) hc a b h
 
 /- English proof (translation)
-The claim follows from `(X.sheaf.existsUnique_gluing' W V (fun k => homOfLE (hW k)) hc a h).exists`.
+A detailed English derivation is pending.
 -/
 theorem exists_fun_of_cover {ι : Type*} {V : X.Opens} (W : ι → X.Opens) (hW : ∀ k, W k ≤ V)
     (hc : V ≤ iSup W) (a : ∀ k, Γ(X, W k))
@@ -60,7 +60,7 @@ theorem exists_fun_of_cover {ι : Type*} {V : X.Opens} (W : ι → X.Opens) (hW 
   (X.sheaf.existsUnique_gluing' W V (fun k => homOfLE (hW k)) hc a h).exists
 
 /- English proof (translation)
-Rewrite using `[← inf_iSup_eq, hU, inf_top_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem le_iSup_inf {ι : Type*} {U : ι → X.Opens} (hU : ⨆ i, U i = ⊤) (V : X.Opens) :
     V ≤ ⨆ i, V ⊓ U i := by
@@ -113,7 +113,7 @@ def secGroup (V : X.Opens) : AddSubgroup (∀ i, Γ(X, V ⊓ L.U i)) where
 variable {L} in
 
 /- English proof (translation)
-Use `congrArg (resG X (le_inf hi (hj.trans inf_le_right) : W ≤ V ⊓ L.U i ⊓ L.U j)) (hs i j)` as an intermediate fact. Simplify `this` using `only [map_mul, resG_resG]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem secOn_rel {V : X.Opens} {s : ∀ i, Γ(X, V ⊓ L.U i)} (hs : s ∈ secOn L V) (i j : L.ι)
     {W : X.Opens} (hi : W ≤ V ⊓ L.U i) (hj : W ≤ V ⊓ L.U j) (hij : W ≤ L.U i ⊓ L.U j) :
@@ -147,7 +147,7 @@ def secRes {V W : X.Opens} (h : W ≤ V) : secGroup L V →+ secGroup L W where
   map_add' s t := Subtype.ext <| funext fun i => map_add _ _ _
 
 /- English proof (translation)
-The claim follows from `Subtype.ext <| funext fun i => by change resG X _ (resG X _ r * m.1 i) = resG X _ (resG X h r) * resG X _ (m.1 i) rw [map_mul, resG_resG, resG_resG]`.
+A detailed English derivation is pending.
 -/
 theorem secRes_smul {V W : X.Opens} (h : W ≤ V) (r : Γ(X, V)) (m : secGroup L V) :
     secRes L h (r • m) = resG X h r • secRes L h m :=
@@ -166,13 +166,13 @@ def secPresheaf : TopCat.Presheaf Ab.{0} X where
     exact (resG_resG _ _ _).symm
 
 /- English proof (translation)
-Rewrite using `[TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing]`. Introduce `κ W sf hsf`. Establish `hc (i : L.ι) : iSup W ⊓ L.U i ≤ ⨆ k, W k ⊓ L.U i` using `by rw [iSup_inf_eq]`. Establish `hW (i : L.ι) (k : κ) : W k ⊓ L.U i ≤ iSup W ⊓ L.U i` using `inf_le_inf_right _ (le_iSup W k)`. Establish `H (i : L.ι) : ∃ b : Γ(X, iSup W ⊓ L.U i), ∀ k, resG X (hW i k) b = (sf k).1 i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `exists_fun_of_cover (fun k => W k ⊓ L.U i) (hW i) (hc i) (fun k => (sf k).1 i) fun k l => ?_` and prove the remaining obligations. Establish `e : resG X (inf_le_inf_right (L.U i) (inf_le_left : W k ⊓ W l ≤ W k)) ((sf k).1 i) = resG X (inf_le_inf_right (L.U i) (inf_le_right : W k ⊓ W l ≤ W l)) ((sf l).1 i)` using `congrFun (congrArg Subtype.val (hsf k l)) i`. Use `congrArg (resG X (le_inf (inf_le_inf inf_le_left inf_le_left) (inf_le_left.trans inf_le_right) : (W k ⊓ L.U i) ⊓ (W l ⊓ L.U i) ≤ W k ⊓ W l ⊓ L.U i)) e` as an intermediate fact. Simplify `this` using `only [resG_resG]`. Use `choose b hb using H`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨b, fun i j => ?_⟩, fun k => Subtype.ext (funext fun i => hb i k), fun t ht => ?_⟩` and prove the remaining obligations. Use `fun_ext_of_cover (fun k => W k ⊓ L.U i ⊓ L.U j) (fun k => inf_le_inf_right _ (hW i k)) (by rw [iSup_inf_eq, iSup_inf_eq]) fun k => ?_` and prove the remaining obligations. Use `(sf k).2 i j` as an intermediate fact. Rewrite `this` using `[← hb i k, ← hb j k]`. Simplify `this` using `only [map_mul, resG_resG]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext (funext fun i => fun_ext_of_cover _ (hW i) (hc i) fun k => ?_)` and prove the remaining obligations. Rewrite using `[hb i k]`. Conclude with `congrFun (congrArg Subtype.val (ht k)) i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSheaf_secPresheaf : (secPresheaf L).IsSheaf := by
   rw [TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing]
@@ -213,7 +213,7 @@ def coord {V : X.Opens} (s : Γ(toMod L, V)) (i : L.ι) : Γ(X, V ⊓ L.U i) :=
   (show secGroup L V from s).1 i
 
 /- English proof (translation)
-The claim follows from `(show secGroup L V from s).2`.
+A detailed English derivation is pending.
 -/
 theorem coord_mem {V : X.Opens} (s : Γ(toMod L, V)) : coord s ∈ secOn L V :=
   (show secGroup L V from s).2
@@ -228,7 +228,7 @@ Both sides reduce to the same expression.
     coord (mkSec f hf) = f := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext h)`.
+A detailed English derivation is pending.
 -/
 @[ext] theorem sec_ext {V : X.Opens} {s t : Γ(toMod L, V)} (h : ∀ i, coord s i = coord t i) :
     s = t := Subtype.ext (funext h)
@@ -278,7 +278,7 @@ Both sides reduce to the same expression.
       resG X (inf_le_inf_right _ h) (coord s i) := rfl
 
 /- English proof (translation)
-The claim follows from `secOn_rel (coord_mem s) i j hi hj hij`.
+A detailed English derivation is pending.
 -/
 theorem coord_rel {V : X.Opens} (s : Γ(toMod L, V)) (i j : L.ι)
     {W : X.Opens} (hi : W ≤ V ⊓ L.U i) (hj : W ≤ V ⊓ L.U j) (hij : W ≤ L.U i ⊓ L.U j) :
@@ -287,14 +287,14 @@ theorem coord_rel {V : X.Opens} (s : Γ(toMod L, V)) (i j : L.ι)
   secOn_rel (coord_mem s) i j hi hj hij
 
 /- English proof (translation)
-The claim follows from `congrArg Units.val (Semi.LB.res_g_self hL i h)`.
+A detailed English derivation is pending.
 -/
 theorem resG_g_self (hL : L.IsLB) (i : L.ι) {W : X.Opens} (h : W ≤ L.U i ⊓ L.U i) :
     resG X h (L.g i i : Γ(X, L.U i ⊓ L.U i)) = 1 :=
   congrArg Units.val (Semi.LB.res_g_self hL i h)
 
 /- English proof (translation)
-The claim follows from `congrArg Units.val (Semi.LB.res_cocycle hL i j k h₁ h₂ h₃)`.
+A detailed English derivation is pending.
 -/
 theorem resG_cocycle (hL : L.IsLB) (i j k : L.ι) {W : X.Opens}
     (h₁ : W ≤ L.U i ⊓ L.U j) (h₂ : W ≤ L.U j ⊓ L.U k) (h₃ : W ≤ L.U i ⊓ L.U k) :
@@ -327,7 +327,7 @@ instance : SMul ℤ (LB.Sec L) :=
     simp only [map_zsmul, s.compat, mul_smul_comm]⟩⟩
 
 /- English proof (translation)
-Introduce `_ _ h` and use `SecOps.sec_ext (congrFun h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem f_injective : Function.Injective (LB.Sec.f : LB.Sec L → ∀ i, Γ(X, L.U i)) :=
   fun _ _ h => SecOps.sec_ext (congrFun h)
@@ -371,7 +371,7 @@ instance secModuleTop : Module Γ(X, ⊤) (LB.Sec L) where
   zero_smul s := SecOps.sec_ext fun i => by rw [smul_f, map_zero, zero_mul, zero_f]
 
 /- English proof (translation)
-Establish `: resG X inf_le_left (s.f i) = _ * resG X inf_le_right (s.f j)` using `s.compat i j`. Simplify `congrArg (resG X hij) this` using `only [map_mul, resG_resG]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sec_rel (s : LB.Sec L) (i j : L.ι) {W : X.Opens} (hi : W ≤ L.U i) (hj : W ≤ L.U j)
     (hij : W ≤ L.U i ⊓ L.U j) :
@@ -391,7 +391,7 @@ Both sides reduce to the same expression.
     coord (ofSec s V) i = resG X inf_le_right (s.f i) := rfl
 
 /- English proof (translation)
-The claim follows from `sec_ext fun i => by rw [coord_map, coord_ofSec, resG_resG, coord_ofSec]`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem map_ofSec (s : LB.Sec L) {V W : X.Opens} (h : W ≤ V) :
     (toMod L).presheaf.map (homOfLE h).op (ofSec s V) = ofSec s W :=
@@ -451,7 +451,7 @@ theorem globalEquivSecM_apply (s : Γ(toMod (LPow A L₀ a T), ⊤)) :
     globalEquivSecM A L₀ a T s = SecM.ofSec A (globalEquiv _ s) := rfl
 
 /- English proof (translation)
-The claim follows from `congrArg (SecM.ofSec A) (map_smul (globalEquiv _) _ s)`.
+A detailed English derivation is pending.
 -/
 theorem globalEquivSecM_smul (r : Γ(T.left, ⊤)) (s : Γ(toMod (LPow A L₀ a T), ⊤)) :
     globalEquivSecM A L₀ a T ((show Γ((T ⊗ A).left, ⊤) from (fst T A).left.appTop r) • s) =
@@ -501,7 +501,7 @@ theorem chartEquiv_symm_apply (hL : L.IsLB) (i : L.ι) {V : X.Opens} (h : V ≤ 
       a • (toMod L).presheaf.map (homOfLE h).op (chartSec hL i) := rfl
 
 /- English proof (translation)
-Simplify using `only [chartEquiv_apply, coord_map, resG_resG]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chartEquiv_map (hL : L.IsLB) (i : L.ι) {V W : X.Opens} (h : V ≤ L.U i) (h' : W ≤ V)
     (s : Γ(toMod L, V)) :
@@ -510,7 +510,7 @@ theorem chartEquiv_map (hL : L.IsLB) (i : L.ι) {V W : X.Opens} (h : V ≤ L.U i
   simp only [chartEquiv_apply, coord_map, resG_resG]
 
 /- English proof (translation)
-The claim follows from `coord_rel s i j _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem chartEquiv_change (hL : L.IsLB) (i j : L.ι) {V : X.Opens} (hi : V ≤ L.U i)
     (hj : V ≤ L.U j) (s : Γ(toMod L, V)) :
@@ -519,7 +519,7 @@ theorem chartEquiv_change (hL : L.IsLB) (i j : L.ι) {V : X.Opens} (hi : V ≤ L
   coord_rel s i j _ _ _
 
 /- English proof (translation)
-The claim follows from `(chartEquiv hL i h).symm.bijective`.
+A detailed English derivation is pending.
 -/
 theorem bijective_smul_chartSec (hL : L.IsLB) (i : L.ι) (V : X.Opens) (h : V ≤ L.U i) :
     Function.Bijective
@@ -531,7 +531,7 @@ def chartIso (hL : L.IsLB) (i : L.ι) :
   Descent.freeIso (Descent.bijective_smul_stalk (bijective_smul_chartSec hL i))
 
 /- English proof (translation)
-The claim follows from `Descent.sectionHom_app _ W a`.
+A detailed English derivation is pending.
 -/
 theorem chartIso_hom_app (hL : L.IsLB) (i : L.ι) (W : (L.U i).toScheme.Opens)
     (a : Γ(X, (L.U i).ι ''ᵁ W)) :
@@ -553,7 +553,7 @@ def chartOverIso (hL : L.IsLB) (i : L.ι) :
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Rewrite using `[SheafOfModules.GeneratingSections.ofEpi_π, SheafOfModules.free.generatingSections_π]`. Conclude with `inferInstanceAs (IsIso (𝟙 (SheafOfModules.free I) ≫ e.hom))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_ofEpi_π.{v, u} {C : Type u} [Category.{v} C] {J : GrothendieckTopology C}
     {R : Sheaf J RingCat.{0}} [HasWeakSheafify J AddCommGrpCat.{0}]
@@ -578,7 +578,7 @@ def generatorsOfIso {F : X.Modules} {ι : Type} {U : ι → X.Opens} (hU : ⨆ i
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-The claim follows from `haveI : (generatorsOfIso hU e).IsLocallyFreeData := ⟨fun i => isIso_ofEpi_π (e i)⟩ ⟨(generatorsOfIso hU e).isLocallyFree, ⟨generatorsOfIso hU e, ⟨fun _ => ⟨inferInstanceAs (Finite PUnit.{1})⟩⟩⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem isLocallyFree_of_iso {F : X.Modules} {ι : Type} {U : ι → X.Opens} (hU : ⨆ i, U i = ⊤)
     (e : ∀ i, SheafOfModules.free (R := X.ringCatSheaf.over (U i)) PUnit.{1} ≅ F.over (U i)) :
@@ -588,7 +588,7 @@ theorem isLocallyFree_of_iso {F : X.Modules} {ι : Type} {U : ι → X.Opens} (h
     ⟨generatorsOfIso hU e, ⟨fun _ => ⟨inferInstanceAs (Finite PUnit.{1})⟩⟩⟩⟩
 
 /- English proof (translation)
-The claim follows from `(isLocallyFree_of_iso hL.cover (chartOverIso hL)).1`.
+A detailed English derivation is pending.
 -/
 theorem isLocallyFree_toMod (hL : L.IsLB) : (toMod L).IsLocallyFree :=
   (isLocallyFree_of_iso hL.cover (chartOverIso hL)).1
@@ -596,14 +596,14 @@ theorem isLocallyFree_toMod (hL : L.IsLB) : (toMod L).IsLocallyFree :=
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-The claim follows from `haveI := isLocallyFree_toMod hL inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isQuasicoherent_toMod (hL : L.IsLB) : (toMod L).IsQuasicoherent :=
   haveI := isLocallyFree_toMod hL
   inferInstance
 
 /- English proof (translation)
-The claim follows from `(isLocallyFree_of_iso hL.cover (chartOverIso hL)).2`.
+A detailed English derivation is pending.
 -/
 theorem isFiniteType_toMod (hL : L.IsLB) : (toMod L).IsFiniteType :=
   (isLocallyFree_of_iso hL.cover (chartOverIso hL)).2
@@ -615,7 +615,7 @@ variable {M : LB X}
 def homCoord (w : LB.Sec (LB.div M L)) (p : M.ι) (q : L.ι) : Γ(X, M.U p ⊓ L.U q) := w.f (p, q)
 
 /- English proof (translation)
-Establish `e : resG X h (homCoord w p q) = ((res (le_inf h h') (Semi.LB.dg M L (p, q) (p', q')) : Γ(X, W)ˣ) : Γ(X, W)) * resG X h' (homCoord w p' q')` using `sec_rel w (p, q) (p', q') h h' (le_inf h h')`. Establish `e₂ : res (le_inf h h') (Semi.LB.dg M L (p, q) (p', q')) = res hp (M.g p p') * (res hq (L.g q q'))⁻¹` using `Semi.LB.res_dg M L (p, q) (p', q') _`. Rewrite using `[e, e₂, ← val_res hq, ← val_res hp, Units.val_mul, mul_right_comm, Units.inv_mul_cancel_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem homCoord_rel (w : LB.Sec (LB.div M L)) (p p' : M.ι) (q q' : L.ι) {W : X.Opens}
     (h : W ≤ M.U p ⊓ L.U q) (h' : W ≤ M.U p' ⊓ L.U q') (hp : W ≤ M.U p ⊓ M.U p')
@@ -631,13 +631,13 @@ theorem homCoord_rel (w : LB.Sec (LB.div M L)) (p p' : M.ι) (q q' : L.ι) {W : 
     Units.inv_mul_cancel_right]
 
 /- English proof (translation)
-Establish `l₁ (p : M.ι) (q : L.ι) : V ⊓ M.U p ⊓ L.U q ≤ M.U p ⊓ L.U q` using `inf_le_inf_right _ inf_le_right`. Establish `l₂ (p : M.ι) (q : L.ι) : V ⊓ M.U p ⊓ L.U q ≤ V ⊓ L.U q` using `inf_le_inf_right _ inf_le_left`. Establish `H (p : M.ι) : ∃ b : Γ(X, V ⊓ M.U p), ∀ q, resG X inf_le_left b = resG X (l₁ p q) (homCoord w p q) * resG X (l₂ p q) (coord s q)`. Use `exists_fun_of_cover (fun q => V ⊓ M.U p ⊓ L.U q) (fun _ => inf_le_left) (le_iSup_inf hL.cover _) _ fun q q' => ?_` and prove the remaining obligations. Simplify using `only [map_mul, resG_resG]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[coord_rel s q q' _ (inf_le_right.trans (l₂ p q')) (inf_le_inf inf_le_right inf_le_right), ← mul_assoc, homCoord_rel w p p q q' _ (inf_le_right.trans (l₁ p q')) (le_inf (inf_le_left.trans (inf_le_left.trans inf_le_right)) (inf_le_left.trans (inf_le_left.trans inf_le_right))), res …`. Use `choose b hb using H`. Establish `hb' (p : M.ι) (q : L.ι) (W : X.Opens) (hp : W ≤ V ⊓ M.U p) (hq : W ≤ V ⊓ L.U q) (h : W ≤ M.U p ⊓ L.U q) : resG X hp (b p) = resG X h (homCoord w p q) * resG X hq (coord s q)`. Simplify `congrArg (resG X (le_inf hp (h.trans inf_le_right))) (hb p q)` using `only [map_mul, resG_resG]`. Use `⟨mkSec b fun p p' => ?_, hb'⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `fun_ext_of_cover (fun q => V ⊓ M.U p ⊓ M.U p' ⊓ L.U q) (fun _ => inf_le_left) (le_iSup_inf hL.cover _) fun q => ?_` and prove the remaining obligations. Establish `hq : V ⊓ M.U p ⊓ M.U p' ⊓ L.U q ≤ V ⊓ L.U q` using `inf_le_inf_right _ (inf_le_left.trans inf_le_left)`. Establish `h₁ : V ⊓ M.U p ⊓ M.U p' ⊓ L.U q ≤ M.U p ⊓ L.U q` using `inf_le_inf_right _ (inf_le_left.trans inf_le_right)`. Establish `h₂ : V ⊓ M.U p ⊓ M.U p' ⊓ L.U q ≤ M.U p' ⊓ L.U q` using `inf_le_inf_right _ inf_le_right`. Simplify using `only [map_mul, resG_resG]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb' p q _ _ hq h₁, hb' p' q _ _ hq h₂, ← mul_assoc, ← homCoord_rel w p p' q q h₁ h₂ _ (le_inf inf_le_right inf_le_right), resG_g_self hL, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_mul_sec (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div M L)) {V : X.Opens}
     (s : Γ(toMod L, V)) : ∃ t : Γ(toMod M, V), ∀ (p : M.ι) (q : L.ι) (W : X.Opens)
@@ -674,7 +674,7 @@ theorem exists_mul_sec (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div M L)) {V 
     ← homCoord_rel w p p' q q h₁ h₂ _ (le_inf inf_le_right inf_le_right), resG_g_self hL, mul_one]
 
 /- English proof (translation)
-The claim follows from `sec_ext fun p => fun_ext_of_cover (fun q => V ⊓ M.U p ⊓ U q) (fun _ => inf_le_left) (le_iSup_inf hU _) (h p)`.
+A detailed English derivation is pending.
 -/
 theorem sec_ext_of_cover {ι : Type*} {U : ι → X.Opens} (hU : ⨆ i, U i = ⊤) {V : X.Opens}
     {t t' : Γ(toMod M, V)}
@@ -688,7 +688,7 @@ def mulFun (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div M L)) {V : X.Opens}
   (exists_mul_sec hL hM w s).choose
 
 /- English proof (translation)
-The claim follows from `(exists_mul_sec hL hM w s).choose_spec p q W hp hq h`.
+A detailed English derivation is pending.
 -/
 theorem coord_mulFun (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div M L)) {V : X.Opens}
     (s : Γ(toMod L, V)) (p : M.ι) (q : L.ι) {W : X.Opens}
@@ -697,7 +697,7 @@ theorem coord_mulFun (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div M L)) {V : 
   (exists_mul_sec hL hM w s).choose_spec p q W hp hq h
 
 /- English proof (translation)
-The claim follows from `coord_mulFun hL hM w s p q _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem coord_mulFun' (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div M L)) {V : X.Opens}
     (s : Γ(toMod L, V)) (p : M.ι) (q : L.ι) :
@@ -716,7 +716,7 @@ def mulLinear (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div M L)) (V : X.Opens
     ring
 
 /- English proof (translation)
-The claim follows from `sec_ext_of_cover hL.cover fun p q => by simp only [coord_map, coord_mulFun', resG_resG] exact (coord_mulFun hL hM w s p q _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem mulFun_map (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div M L)) {V W : X.Opens}
     (h : W ≤ V) (s : Γ(toMod L, V)) :
@@ -730,7 +730,7 @@ def homOfSec (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div M L)) : toMod L ⟶
   homOfLinear (mulLinear hL hM w) (mulFun_map hL hM w)
 
 /- English proof (translation)
-The claim follows from `coord_mulFun hL hM w s p q hp hq h`.
+A detailed English derivation is pending.
 -/
 theorem coord_homOfSec_app (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div M L)) {V : X.Opens}
     (s : Γ(toMod L, V)) (p : M.ι) (q : L.ι) {W : X.Opens}
@@ -740,7 +740,7 @@ theorem coord_homOfSec_app (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div M L))
   coord_mulFun hL hM w s p q hp hq h
 
 /- English proof (translation)
-The claim follows from `sec_ext_of_cover hL.cover fun p q => by have := congrArg (resG X (inf_le_inf_right _ inf_le_right : V ⊓ M.U p ⊓ L.U q ≤ M.U p ⊓ L.U q)) (h p q) simp only [map_mul, map_one, resG_resG] at this rw [coord_mulFun', coord_mulFun hM hL w' t q p _ inf_le_left (le_inf inf_le_right (inf_l …`.
+A detailed English derivation is pending.
 -/
 theorem mulFun_mulFun (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div M L))
     (w' : LB.Sec (LB.div L M))
@@ -771,7 +771,7 @@ def isoOfGen (hL : L.IsLB) (hM : M.IsLB) (w : LB.Iso L M) (hw : w.IsGen) : toMod
     exact e (w.s (p, q))
 
 /- English proof (translation)
-The claim follows from `coord_mulFun hL hM _ s p q hp hq h`.
+A detailed English derivation is pending.
 -/
 theorem coord_isoOfGen_hom_app (hL : L.IsLB) (hM : M.IsLB) (w : LB.Iso L M) (hw : w.IsGen)
     {V : X.Opens} (s : Γ(toMod L, V)) (p : M.ι) (q : L.ι) {W : X.Opens}
@@ -782,7 +782,7 @@ theorem coord_isoOfGen_hom_app (hL : L.IsLB) (hM : M.IsLB) (w : LB.Iso L M) (hw 
   coord_mulFun hL hM _ s p q hp hq h
 
 /- English proof (translation)
-The claim follows from `let ⟨w, hw⟩ := h ⟨isoOfGen hL hM w hw⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_iso_of_lbIso (hL : L.IsLB) (hM : M.IsLB) (h : LBIso L M) :
     Nonempty (toMod L ≅ toMod M) :=
@@ -790,7 +790,7 @@ theorem nonempty_iso_of_lbIso (hL : L.IsLB) (hM : M.IsLB) (h : LBIso L M) :
   ⟨isoOfGen hL hM w hw⟩
 
 /- English proof (translation)
-The claim follows from `sec_ext_of_cover hL.cover fun p q => by have l : V ⊓ M.U p ⊓ L.U q ≤ M.U p ⊓ L.U q := inf_le_inf_right _ inf_le_right rw [coord_isoOfGen_hom_app hL hM w hw _ p q _ (inf_le_inf_right _ inf_le_left) l] have e : resG X inf_le_left ((b.s p : Γ(X, M.U p))) = ((show Γ(X, M.U p ⊓ L.U q) …`.
+A detailed English derivation is pending.
 -/
 theorem isoOfGen_hom_app_genSec (hL : L.IsLB) (hM : M.IsLB) (w : LB.Iso L M) (hw : w.IsGen)
     {a : LB.Gen L} {b : LB.Gen M} (ha : a.IsGen) (hb : b.IsGen) (h : LB.Gen.Maps w a b)
@@ -822,11 +822,11 @@ theorem unitHom_app (σ : LB.Sec L) (V : X.Opens) (a : Γ(X, V)) :
     (unitHom σ).app V a = a • ofSec σ V := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Use `fun_ext_of_cover (fun i => V ⊓ L.U i) (fun _ => inf_le_left) (le_iSup_inf hL V) fun i => ?_` and prove the remaining obligations. Conclude with `(res (inf_le_right : V ⊓ L.U i ≤ L.U i) (t.s i)).mul_left_inj.1 (congrArg (fun s => coord s i) hab)`. Introduce `s`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `exists_fun_of_cover (fun i => V ⊓ L.U i) (fun _ => inf_le_left) (le_iSup_inf hL V) (fun i => coord s i * ((res (inf_le_right : V ⊓ L.U i ≤ L.U i) (t.s i))⁻¹ : Γ(X, _)ˣ)) fun i j => by`. Establish `l : V ⊓ L.U i ⊓ (V ⊓ L.U j) ≤ L.U i ⊓ L.U j` using `inf_le_inf inf_le_right inf_le_right`. Establish `e` using `congrArg (res l) (ht i j)`. Simplify using `only [map_mul, Semi.LB.res_res] at e`. Rewrite using `[map_mul, map_mul, ← val_res, ← val_res, map_inv, map_inv, Semi.LB.res_res, Semi.LB.res_res, e, coord_rel s i j _ inf_le_right l, ← val_res l, mul_inv, Units.val_mul, mul_mul_mul_comm, Units.mul_inv, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, sec_ext fun i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `resG X _ a * (res (inf_le_right : V ⊓ L.U i ≤ L.U i) (t.s i)).val = _`. Rewrite using `[ha i, Units.inv_mul_cancel_right]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_smul_genSec (hL : ⨆ i, L.U i = ⊤) {t : LB.Gen L} (ht : t.IsGen) (V : X.Opens) :
     Function.Bijective fun a : Γ(X, V) => a • ofSec (DVR.genSec t ht) V := by
@@ -868,19 +868,19 @@ section Pull
 variable (f : Y ⟶ X)
 
 /- English proof (translation)
-The claim follows from `Semi.LB.wchart_le L (fun _ : PUnit.{1} => f) j PUnit.unit`.
+A detailed English derivation is pending.
 -/
 theorem pull_U_le (j : (L.pull f).ι) : (L.pull f).U j ≤ f ⁻¹ᵁ L.U (j PUnit.unit) :=
   Semi.LB.wchart_le L (fun _ : PUnit.{1} => f) j PUnit.unit
 
 /- English proof (translation)
-The claim follows from `le_antisymm (pull_U_le f j) fun _ hy => Set.mem_iInter.2 fun _ => hy`.
+A detailed English derivation is pending.
 -/
 theorem pull_U (j : (L.pull f).ι) : (L.pull f).U j = f ⁻¹ᵁ L.U (j PUnit.unit) :=
   le_antisymm (pull_U_le f j) fun _ hy => Set.mem_iInter.2 fun _ => hy
 
 /- English proof (translation)
-Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.Hom.map_appLE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem appLE_resG {U U' : X.Opens} (h : U' ≤ U) {W : Y.Opens} (e : W ≤ f ⁻¹ᵁ U')
     (a : Γ(X, U)) :
@@ -888,7 +888,7 @@ theorem appLE_resG {U U' : X.Opens} (h : U' ≤ U) {W : Y.Opens} (e : W ≤ f �
   rw [← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.Hom.map_appLE]
 
 /- English proof (translation)
-Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.Hom.appLE_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem resG_appLE {U : X.Opens} {W W' : Y.Opens} (e : W ≤ f ⁻¹ᵁ U) (h : W' ≤ W)
     (a : Γ(X, U)) :
@@ -902,7 +902,7 @@ theorem resG_app {U : X.Opens} {W : Y.Opens} (e : W ≤ f ⁻¹ᵁ U) (a : Γ(X,
     resG Y e ((f.app U).hom a) = (f.appLE U W e).hom a := rfl
 
 /- English proof (translation)
-Use `Semi.LB.res_lcg L (fun _ : PUnit.{1} => f) (fun _ => 1) i j h` as an intermediate fact. Rewrite `this` using `[Fintype.prod_unique, zpow_one]`. Conclude with `congrArg Units.val this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resG_pull_g (i j : (L.pull f).ι) {W : Y.Opens}
     (h : W ≤ (L.pull f).U i ⊓ (L.pull f).U j) :
@@ -915,7 +915,7 @@ theorem resG_pull_g (i j : (L.pull f).ι) {W : Y.Opens}
   exact congrArg Units.val this
 
 /- English proof (translation)
-The claim follows from `inf_le_inf_left _ (pull_U_le f j)`.
+A detailed English derivation is pending.
 -/
 theorem pull_inf_le (V : X.Opens) (j : (L.pull f).ι) :
     f ⁻¹ᵁ V ⊓ (L.pull f).U j ≤ f ⁻¹ᵁ (V ⊓ L.U (j PUnit.unit)) :=
@@ -948,7 +948,7 @@ Both sides reduce to the same expression.
       (f.appLE _ _ (pull_inf_le f V j)).hom (coord s (j PUnit.unit)) := rfl
 
 /- English proof (translation)
-The claim follows from `sec_ext fun j => by rw [coord_pullSec, coord_map, coord_map, coord_pullSec, resG_appLE, appLE_resG]`.
+A detailed English derivation is pending.
 -/
 theorem pullSec_map {V W : X.Opens} (h : W ≤ V) (s : Γ(toMod L, V)) :
     pullSec L f W ((toMod L).presheaf.map (homOfLE h).op s) =
@@ -957,7 +957,7 @@ theorem pullSec_map {V W : X.Opens} (h : W ≤ V) (s : Γ(toMod L, V)) :
     rw [coord_pullSec, coord_map, coord_map, coord_pullSec, resG_appLE, appLE_resG]
 
 /- English proof (translation)
-Rewrite using `[chartEquiv_apply, chartEquiv_apply, coord_pullSec, resG_appLE, ← appLE_resG f (le_inf le_rfl h) le_rfl, Scheme.Hom.appLE_eq_app]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chartEquiv_pullSec (hL : L.IsLB) (j : (L.pull f).ι) {V : X.Opens}
     (h : V ≤ L.U (j PUnit.unit)) (h' : f ⁻¹ᵁ V ≤ (L.pull f).U j) (s : Γ(toMod L, V)) :
@@ -967,7 +967,7 @@ theorem chartEquiv_pullSec (hL : L.IsLB) (j : (L.pull f).ι) {V : X.Opens}
     ← appLE_resG f (le_inf le_rfl h) le_rfl, Scheme.Hom.appLE_eq_app]
 
 /- English proof (translation)
-The claim follows from `sec_ext fun k => by rw [coord_pullSec, coord_map, coord_chartSec, coord_chartSec, resG_resG, resG_pull_g, appLE_resG]`.
+A detailed English derivation is pending.
 -/
 theorem pullSec_chartSec (hL : L.IsLB) (j : (L.pull f).ι) :
     pullSec L f _ (chartSec hL (j PUnit.unit)) =
@@ -978,7 +978,7 @@ theorem pullSec_chartSec (hL : L.IsLB) (j : (L.pull f).ι) :
       appLE_resG]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `resG Y (le_inf le_top le_rfl : (L.pull f).U j ≤ f ⁻¹ᵁ ⊤ ⊓ (L.pull f).U j) (coord (pullSec L f ⊤ (ofSec s ⊤)) j) = _`. Rewrite using `[coord_pullSec, resG_appLE, coord_ofSec, appLE_resG]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem globalEquiv_pullSec_f (s : LB.Sec L) (j : (L.pull f).ι) :
     (globalEquiv (L.pull f) (pullSec L f ⊤ (ofSec s ⊤))).f j =
@@ -1015,7 +1015,7 @@ def trivIso (X : Scheme.{0}) : unitMod X ≅ toMod (Out.Inh.trivLB X) :=
     exact (one_mul _).symm
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `resG X _ a * resG X _ 1 = _`. Rewrite using `[map_one, mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_trivIso_hom_app (V : X.Opens) (a : Γ(X, V)) (i : PUnit.{1}) :
     coord (L := Out.Inh.trivLB X) ((trivIso X).hom.app V a) i = resG X inf_le_left a := by
@@ -1032,7 +1032,7 @@ def twoChart (U₀ U₁ : X.Opens) (u : Γ(X, U₀ ⊓ U₁)ˣ) : LB X where
     | false, false => 1
 
 /- English proof (translation)
-The claim follows from `(iSup_bool_eq (f := fun i => cond i U₀ U₁)).trans h g_self := by rintro (_ | _) <;> exact map_one _ cocycle := by have aux {W : X.Opens} (h₁ : W ≤ U₁ ⊓ U₀) (h₂ : W ≤ U₀ ⊓ U₁) : res h₁ (res (le_inf inf_le_right inf_le_left) u)⁻¹ * res h₂ u = 1 := by rw [map_inv, Semi.LB.res_res, i …`.
+A detailed English derivation is pending.
 -/
 theorem twoChart_isLB {U₀ U₁ : X.Opens} (h : U₀ ⊔ U₁ = ⊤) (u : Γ(X, U₀ ⊓ U₁)ˣ) :
     (twoChart U₀ U₁ u).IsLB where
@@ -1053,11 +1053,11 @@ theorem twoChart_isLB {U₀ U₁ : X.Opens} (h : U₀ ⊔ U₁ = ⊤) (u : Γ(X,
     · exact (congrArg (· * _) (map_one _)).trans (one_mul _)
 
 /- English proof (translation)
-Use `⟨fun h => h true false, fun h => ?_⟩` and prove the remaining obligations. Introduce and unpack `(_ | _) (_ | _)`. Express the relevant statement in the definitionally equal form `resG X _ b = resG X _ 1 * resG X _ b`. Rewrite using `[map_one, one_mul]`. Establish `l : V ⊓ U₁ ⊓ U₀ ≤ V ⊓ U₀ ⊓ U₁` using `(inf_right_comm _ _ _).le`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `congrArg (resG X l) h`. Simplify using `only [map_mul, resG_resG] at e`. Express the relevant statement in the definitionally equal form `resG X (inf_le_left : V ⊓ U₁ ⊓ U₀ ≤ V ⊓ U₁) b = (res (inf_le_inf_right _ inf_le_right : V ⊓ U₁ ⊓ U₀ ≤ U₁ ⊓ U₀) (res (le_inf inf_le_right inf_le_left) u)⁻¹).val * resG X (inf_le_inf_right _ inf_le_left : V ⊓ U₁ ⊓ U₀ ≤ V ⊓ U₀) a`. Rewrite using `[e, map_inv, Semi.LB.res_res, ← val_res, Units.inv_mul_cancel_left]`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `resG X _ a = resG X _ 1 * resG X _ a`. Rewrite using `[map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_secOn_twoChart {U₀ U₁ : X.Opens} (u : Γ(X, U₀ ⊓ U₁)ˣ) (V : X.Opens)
     (a : Γ(X, V ⊓ U₀)) (b : Γ(X, V ⊓ U₁)) :
@@ -1082,7 +1082,7 @@ theorem mem_secOn_twoChart {U₀ U₁ : X.Opens} (u : Γ(X, U₀ ⊓ U₁)ˣ) (V
     rw [map_one, one_mul]
 
 /- English proof (translation)
-The claim follows from `(mem_secOn_twoChart (-1) V (-1) 1).2 (by simp only [map_one, Units.val_neg, Units.val_one, map_neg, mul_one] exact congrArg Neg.neg (map_one _))`.
+A detailed English derivation is pending.
 -/
 example (V : X.Opens) :
     (fun i : Bool => match i with | true => -1 | false => 1) ∈
@@ -1092,7 +1092,7 @@ example (V : X.Opens) :
     exact congrArg Neg.neg (map_one _))
 
 /- English proof (translation)
-Use `(mem_secOn_twoChart (-1) V 1 1).trans ?_` and prove the remaining obligations. Simplify using `only [map_one, Units.val_neg, Units.val_one, map_neg, mul_one]`. Rewrite using `[eq_neg_iff_add_eq_zero, one_add_one_eq_two]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 example (V : X.Opens) :
     (fun i : Bool => match i with | true => 1 | false => 1) ∈
@@ -1109,16 +1109,14 @@ example {U₀ U₁ : X.Opens} (h : U₀ ⊔ U₁ = ⊤) (u : Γ(X, U₀ ⊓ U₁
       resG X (le_inf inf_le_right inf_le_left : U₁ ⊓ U₀ ≤ U₀ ⊓ U₁) (u : Γ(X, U₀ ⊓ U₁)) := rfl
 
 /- English proof (translation)
-The claim follows from `isQuasicoherent_toMod (twoChart_isLB h u)`.
+A detailed English derivation is pending.
 -/
 example {U₀ U₁ : X.Opens} (h : U₀ ⊔ U₁ = ⊤) (u : Γ(X, U₀ ⊓ U₁)ˣ) :
     (toMod (twoChart U₀ U₁ u)).IsQuasicoherent :=
   isQuasicoherent_toMod (twoChart_isLB h u)
 
 /- English proof (translation)
-Introduce and unpack `(_ | _) (_ | _)`. Conclude with `(one_mul _).symm`. Establish `e` using `congrArg (res (le_inf inf_le_right inf_le_left : U₁ ⊓ U₀ ≤ U₀ ⊓ U₁)) h`. Rewrite `e` using `[map_mul, Semi.LB.res_res, Semi.LB.res_res]`. Conclude with `eq_inv_mul_of_mul_eq e.symm`.
-
-Conclude with `h`. Conclude with `(one_mul _).symm`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twoChart_isGen {U₀ U₁ : X.Opens} (u : Γ(X, U₀ ⊓ U₁)ˣ) (a : Γ(X, U₀)ˣ) (b : Γ(X, U₁)ˣ)
     (h : res inf_le_left a = u * res inf_le_right b) :
@@ -1133,7 +1131,7 @@ theorem twoChart_isGen {U₀ U₁ : X.Opens} (u : Γ(X, U₀ ⊓ U₁)ˣ) (a : �
   · exact (one_mul _).symm
 
 /- English proof (translation)
-Establish `h : X.basicOpen a ⊔ X.basicOpen (1 - a) = ⊤`. Use `eq_top_iff.2 (le_trans ?_ (X.basicOpen_add_le a (1 - a)))` and prove the remaining obligations. Rewrite using `[add_sub_cancel, X.basicOpen_of_isUnit isUnit_one]`. Take `⟨v, hv⟩ : IsUnit (resG X (le_top : X.basicOpen a ≤ ⊤) a)` from `X.toRingedSpace.isUnit_res_basicOpen a`. Use `⟨res inf_le_left v, by rw [val_res, hv, resG_resG], twoChart_isLB h _, ⟨unitIso (twoChart_isLB h _) _ (twoChart_isGen _ v 1 (by rw [map_one, mul_one]))⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 example (a : Γ(X, ⊤)) : ∃ u : Γ(X, X.basicOpen a ⊓ X.basicOpen (1 - a))ˣ,
     (u : Γ(X, X.basicOpen a ⊓ X.basicOpen (1 - a))) = resG X le_top a ∧

@@ -22,13 +22,13 @@ noncomputable section
 namespace GlobalTheory.SplitHgtDbl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n L v t b hb`. Establish `key : ∀ x y : Fin n → Fv F v, pairVec finSumFinEquiv x y ∈ splitLat t (sumLat finSumFinEquiv L L) ↔ x ∈ splitLat t L ∧ y ∈ splitLat t L`. Introduce `x y`. Simplify using `only [mem_splitLat, latLoc_sumLat]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨z, hz, hzu⟩`. Rewrite `hz` using `[← pairVec_eta finSumFinEquiv z, pairVec_mem_sumLat]`. Use `⟨⟨_, hz.1, funext fun i => ?_⟩, ⟨_, hz.2, funext fun i => ?_⟩⟩` and prove the remaining obligations. Use `congrFun hzu (finSumFinEquiv (.inl i))` as an intermediate fact. Simplify using `only [splitVec, pairVec_inl] at this`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Use `congrFun hzu (finSumFinEquiv (.inr i))` as an intermediate fact. Simplify using `only [splitVec, pairVec_inr] at this`. Conclude with `this`. Introduce and unpack `⟨⟨z₁, h₁, rfl⟩, ⟨z₂, h₂, rfl⟩⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨pairVec finSumFinEquiv z₁ z₂, (pairVec_mem_sumLat _).2 ⟨h₁, h₂⟩, funext fun j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := finSumFinEquiv.surjective j <;> simp only [splitVec, pairVec_inl, pairVec_inr]`. Introduce `u`. Rewrite using `[← pairVec_eta finSumFinEquiv u, val_blkGL, blkMat_mulVec, key, ← hb, ← hb, ← finSumFinEquiv.forall_congr_right, Sum.forall]`. Simplify using `only [pairVec_inl, pairVec_inr]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSplitBasis_sumLat : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)) (v : Pl F) (t : E →ₐ[F] Fv F v) (b : GL (Fin n) (Fv F v)), IsSplitBasis t L b → IsSplitBasis t (sumLat finSumFinEquiv L L) (blkGL finSumFinEquiv (b, b)) := by
   intro F E _ _ _ _ _ n L v t b hb
@@ -55,7 +55,7 @@ theorem isSplitBasis_sumLat : ∀ (F E : Type) [Field F] [NumberField F] [Field 
   simp only [pairVec_inl, pairVec_inr]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.KSplit.locMat_val, hD.emb, ← map_inv, Prod.inv_mk, val_blkGL, val_blkGL, val_blkGL, GlobalTheory.KSplit.locMat_val, blkMat_map _ _ (map_zero _), blkMat_mul, blkMat_mul, GlobalTheory.StabHaar.mat_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem locMat_io {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} {n : ℕ} {X : Spc F E n} {X₂ : Spc F E (n + n)} {i : UA σ X.J × UA σ X.J →* UA σ X₂.J}
@@ -68,9 +68,9 @@ theorem locMat_io {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   simp
 
 /- English proof (translation)
-Introduce `u hu`. Establish `h1 : ∀ a c, u • (mat g a c - (1 : Matrix (Fin n) (Fin n) (AE F E)) a c) = 0` using `fun a c => by`. Simplify using `using congrFun (congrFun (hg u hu) a) c`. Rewrite using `[hD.emb, GlobalTheory.StabHaar.mat_one, show (1 : Matrix (Fin (n + n)) (Fin (n + n)) (AE F E)) = blkMat finSumFinEquiv 1 1 from (blkMat_one _).symm]`. Use extensionality with `a c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `obtain ⟨a | a, rfl⟩ := finSumFinEquiv.surjective a <;> obtain ⟨c | c, rfl⟩ := finSumFinEquiv.surjective c <;>`. Simplify using `only [blkMat, Matrix.smul_apply, Matrix.sub_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, sub_self, smul_zero, h1]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem io_mem_UAt {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} {n : ℕ} {X : Spc F E n} {X₂ : Spc F E (n + n)} {i : UA σ X.J × UA σ X.J →* UA σ X₂.J}
@@ -88,23 +88,21 @@ theorem io_mem_UAt {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
       Matrix.zero_apply, sub_self, smul_zero, h1]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n X r s hB hX X₂ i K₂ hD v t b hb ϖ hϖ e T hT k₁ hk₁ k₂ hk₂ g hg hgT`. Establish `hcm` using `hB.cm`. Establish `hJ : X.J.det ≠ 0` using `GlobalTheory.HermSelfDualLoc.det_ne_zero_of_isHerm σ B hX`. Establish `hND₂ : IsHermND σ X₂.J` using `hD.gram ▸ GlobalTheory.LFun.DblSplit.isHermND_dbl σ ⟨hX.herm, hJ⟩`. Use `haveI := hX.lat`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLat₂ : X₂.L.IsLattice E` using `by rw [hD.lat]; infer_instance`. Establish `hQt : X₂.Jᵀ = dblGram finSumFinEquiv X.Jᵀ` using `by rw [hD.gram, GlobalTheory.DblIwasawa.transpose_dblGram]`. Establish `hSD₂ : IsSelfDualAt σ X₂.Jᵀ X₂.L v`. Rewrite using `[hD.lat]`. Conclude with `isSelfDualAt_dbl hQt (GlobalTheory.HermSelfDualLoc.isSelfDualAt_transpose F E σ B n X r s hB hX v)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb₂ : IsSplitBasis t X₂.L (blkGL finSumFinEquiv (b, b))`. Rewrite using `[hD.lat]`. Conclude with `GlobalTheory.SplitHgtDbl.isSplitBasis_sumLat F E n X.L v t b hb`. Take `⟨e₂, he₂, heK⟩` from `GlobalTheory.T.local_unitary_group_iso_GL F E σ B (n + n) X₂ hcm hND₂ hLat₂ v hSD₂ K₂ hD.stab t _ hb₂`. Take `⟨κ, hκ, hkeep, hl, hq⟩` from `GlobalTheory.GraphShear.graph_shear F v n ϖ.1 hϖ e T k₁ k₂ hT hk₁ hk₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `y : UAtSub σ X₂ (evFin F v)` to `⟨i (g, 1), io_mem_UAt hD hg⟩`. Set `p : UAtSub σ X₂ (evFin F v)` to `y * e₂.symm κ`. Establish `hk : (e₂.symm κ).1 ∈ K₂` using `(heK _).2 (by rw [e₂.apply_symm_apply]; exact hκ)`. Establish `hep : e₂ p = blkGL finSumFinEquiv (k₁ * T * k₂, 1) * κ`. Rewrite using `[map_mul, e₂.apply_symm_apply, he₂]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `GlobalTheory.KSplit.locMat t _ (i (g, 1)) * κ = _`. Rewrite using `[locMat_io hD t b g, hgT]`. Establish `hM : (mat p.1).map (piW t) = ((blkGL finSumFinEquiv (b⁻¹, b⁻¹))⁻¹ * e₂ p * blkGL finSumFinEquiv (b⁻¹, b⁻¹)).1`. Establish `hc : blkGL finSumFinEquiv (b⁻¹, b⁻¹) = (blkGL finSumFinEquiv (b, b))⁻¹`. Rewrite using `[← map_inv, Prod.inv_mk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hc, inv_inv, he₂, Units.val_mul, Units.val_mul, GlobalTheory.KSplit.locMat_val]`. Simplify using `only [Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one, Units.mul_inv_cancel_left]`. Establish `hkeep' : KeepsDiag finSumFinEquiv ((mat p.1).map (piW t))`. Rewrite using `[hM]; exact (GlobalTheory.LFun.DblSplit.keepsDiag_conj_iff _ _ _).2 (by rw [hep]; exact hkeep)`. Establish `hp` using `GlobalTheory.T.diagonal_preserving_in_siegel_parabolic F E σ hcm n X.J X₂ hJ hD.gram v t p.1 p.2 hkeep'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `habs` using `GlobalTheory.T.siegel_parabolic_modulus_character F E σ hcm n X.J X₂ hJ hD.gram v t p.1 p.2 hp`. Establish `hio : i (g, 1) = (⟨p.1, hp⟩ : siegelOf finSumFinEquiv (UG (cA σ) (incM F X₂.J)).subtype).1 * ((e₂.symm κ).1)⁻¹`. Express the relevant statement in the definitionally equal form `_ = (y.1 * (e₂.symm κ).1) * _`. Rewrite using `[mul_inv_cancel_right]`. Rewrite using `[hio, hD.iwa.hgtOf_mul _ (inv_mem hk), habs, hM, GlobalTheory.LFun.DblSplit.det_leviMat_conj _ _ (by rw [hep]; exact hkeep), GlobalTheory.LFun.DblSplit.det_quotMat_conj _ _ (by rw [hep]; exact hkeep), hep, hl, hq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[abs_eq_max_neg]`.
-
-Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem hgt_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n : ℕ) (X : Spc F E n) (r s : ℕ), B.IsGood σ → X.IsHerm σ B r s →
     ∀ (X₂ : Spc F E (n + n)) (i : UA σ X.J × UA σ X.J →* UA σ X₂.J) (K₂ : Subgroup (UA σ X₂.J)), IsDbl B X X₂ i K₂ →

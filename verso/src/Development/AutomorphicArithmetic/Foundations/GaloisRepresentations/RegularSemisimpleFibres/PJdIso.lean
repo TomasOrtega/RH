@@ -10,7 +10,7 @@ section Transport
 variable {F F' : Type} [Field F] [Field F'] (r : F ≃+* F')
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.GeneralLinearGroup.map_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem coe_phi {n : ℕ} (x : GL (Fin n) F) :
     ((Matrix.GeneralLinearGroup.map r.toRingHom x : GL (Fin n) F') : Matrix (Fin n) (Fin n) F') =
@@ -31,9 +31,9 @@ private def phiE (n : ℕ) : GL (Fin n) F ≃ GL (Fin n) F' where
     simp [Matrix.GeneralLinearGroup.map_apply]
 
 /- English proof (translation)
-Unfold `InPar`. Simplify using `only [coe_phi, Matrix.map_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j hj hi`. Conclude with `(map_eq_zero_iff r r.injective).1 (h i j hj hi)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h i j hj hi`. Rewrite using `[h i j hj hi, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inPar_phi (a : ℕ) {n : ℕ} (x : GL (Fin n) F) :
     InPar a (Matrix.GeneralLinearGroup.map r.toRingHom x) ↔ InPar a x := by
@@ -46,7 +46,7 @@ private theorem inPar_phi (a : ℕ) {n : ℕ} (x : GL (Fin n) F) :
     rw [h i j hj hi, map_zero]
 
 /- English proof (translation)
-Unfold `ent`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `(map_zero r).symm`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem ent_map {n : ℕ} (M : Matrix (Fin n) (Fin n) F) (i j : ℕ) :
     ent (M.map r) i j = r (ent M i j) := by
@@ -56,7 +56,7 @@ private theorem ent_map {n : ℕ} (M : Matrix (Fin n) (Fin n) F) (i j : ℕ) :
   · exact (map_zero r).symm
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[tl, ent_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem tl_map (a : ℕ) {n : ℕ} (M : Matrix (Fin n) (Fin n) F) :
     tl a (M.map r) = (tl a M).map r := by
@@ -64,7 +64,7 @@ private theorem tl_map (a : ℕ) {n : ℕ} (M : Matrix (Fin n) (Fin n) F) :
   simp [tl, ent_map]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[br, ent_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem br_map (a b : ℕ) {n : ℕ} (M : Matrix (Fin n) (Fin n) F) :
     br a b (M.map r) = (br a b M).map r := by
@@ -72,7 +72,7 @@ private theorem br_map (a b : ℕ) {n : ℕ} (M : Matrix (Fin n) (Fin n) F) :
   simp [br, ent_map]
 
 /- English proof (translation)
-Use `isUnit_map_iff (r.mapMatrix (m := Fin n)) M` as an intermediate fact. Simplify `this` using `[RingEquiv.mapMatrix_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem isUnit_map {n : ℕ} (M : Matrix (Fin n) (Fin n) F) :
     IsUnit (M.map r) ↔ IsUnit M := by
@@ -80,7 +80,7 @@ private theorem isUnit_map {n : ℕ} (M : Matrix (Fin n) (Fin n) F) :
   simpa [RingEquiv.mapMatrix_apply] using this
 
 /- English proof (translation)
-Unfold `toG`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem coe_toG {n : ℕ} {M : Matrix (Fin n) (Fin n) F} (h : IsUnit M) :
     ((toG M : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = M := by
@@ -89,9 +89,9 @@ private theorem coe_toG {n : ℕ} {M : Matrix (Fin n) (Fin n) F} (h : IsUnit M) 
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `h : IsUnit M`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_toG ((isUnit_map r M).2 h), coe_phi, coe_toG h]`. Establish `h' : ¬ IsUnit (M.map r)` using `fun k => h ((isUnit_map r M).1 k)`. Unfold `toG`.
+Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_neg h, dif_neg h', map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem toG_map {n : ℕ} (M : Matrix (Fin n) (Fin n) F) :
     toG (M.map r) = Matrix.GeneralLinearGroup.map r.toRingHom (toG M) := by
@@ -103,7 +103,7 @@ private theorem toG_map {n : ℕ} (M : Matrix (Fin n) (Fin n) F) :
     rw [dif_neg h, dif_neg h', map_one]
 
 /- English proof (translation)
-Unfold `tlG`. Rewrite using `[coe_phi, tl_map, toG_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem tlG_phi (a : ℕ) {n : ℕ} (x : GL (Fin n) F) :
     tlG a (Matrix.GeneralLinearGroup.map r.toRingHom x) =
@@ -112,7 +112,7 @@ private theorem tlG_phi (a : ℕ) {n : ℕ} (x : GL (Fin n) F) :
   rw [coe_phi, tl_map, toG_map]
 
 /- English proof (translation)
-Unfold `brG`. Rewrite using `[coe_phi, br_map, toG_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem brG_phi (a b : ℕ) {n : ℕ} (x : GL (Fin n) F) :
     brG a b (Matrix.GeneralLinearGroup.map r.toRingHom x) =
@@ -122,14 +122,14 @@ private theorem brG_phi (a b : ℕ) {n : ℕ} (x : GL (Fin n) F) :
 
 include r in
 /- English proof (translation)
-The claim follows from `(Nat.card_congr ((phiE r n).subtypeEquiv fun x => (inPar_phi r a x).symm)).symm`.
+A detailed English derivation is pending.
 -/
 private theorem card_phi (a n : ℕ) :
     Nat.card {p : GL (Fin n) F' // InPar a p} = Nat.card {p : GL (Fin n) F // InPar a p} :=
   (Nat.card_congr ((phiE r n).subtypeEquiv fun x => (inPar_phi r a x).symm)).symm
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[gal, Matrix.GeneralLinearGroup.map_apply]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem gal_id {K : Type} [Field K] (n : ℕ) (y : GL (Fin n) K) : gal (RingHom.id K) n y = y := by
   apply Units.ext
@@ -137,9 +137,9 @@ private theorem gal_id {K : Type} [Field K] (n : ℕ) (y : GL (Fin n) K) : gal (
   simp [gal, Matrix.GeneralLinearGroup.map_apply]
 
 /- English proof (translation)
-Unfold `hc hcTw`. Simplify using `only [gal_id]`. Rewrite using `[card_phi r a n, ← finsum_comp_equiv (phiE r n)]`. Use `congr 1`. Use `finsum_congr fun y => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (phiE r n y)⁻¹ * Matrix.GeneralLinearGroup.map r.toRingHom g * phiE r n y = Matrix.GeneralLinearGroup.map r.toRingHom (y⁻¹ * g * y)`. Simplify using `only [map_mul, map_inv]`. Both sides reduce to the same expression. Rewrite using `[e]`. Simplify using `only [inPar_phi, tlG_phi, brG_phi]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem hc_phi (a b : ℕ) (α : GL (Fin a) F' → ℂ) (β : GL (Fin b) F' → ℂ) (n : ℕ)
     (g : GL (Fin n) F) :
@@ -159,7 +159,7 @@ private theorem hc_phi (a b : ℕ) (α : GL (Fin a) F' → ℂ) (β : GL (Fin b)
   simp only [inPar_phi, tlG_phi, brG_phi]
 
 /- English proof (translation)
-Unfold `detc`. Establish `e : ((x : Matrix (Fin t) (Fin t) F).map r).det = r (x : Matrix (Fin t) (Fin t) F).det` using `(RingHom.map_det r.toRingHom _).symm`. Rewrite using `[coe_phi, e, ← hj]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem detc_phi (j : AlgebraicClosure F ≃+* AlgebraicClosure F')
     (hj : ∀ x, j (algebraMap _ _ x) = algebraMap _ _ (r x)) (θ : AlgebraicClosure F' →* ℂ)
@@ -174,15 +174,13 @@ private theorem detc_phi (j : AlgebraicClosure F ≃+* AlgebraicClosure F')
 end Transport
 
 /- English proof (translation)
-Introduce `hC F F' _ _ _ r j hj θ D L n g`. Establish `hJ : ∀ (L : List (ℕ × ℕ)) (n : ℕ) (g : GL (Fin n) F), J θ L n (Matrix.GeneralLinearGroup.map r.toRingHom g) = J (θ.comp j.toMonoidHom) L n g`. Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => intro n g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `cons p L ih`. Introduce `n g`. Rewrite using `[J_cons, J_cons, hc_phi]`. Use `congr 1`.
+Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `x`. Conclude with `hC F F' r j hj θ p.1 p.2 x`. Use function extensionality and compare the values at `x`. Conclude with `ih _ x`. Proceed by induction on `D generalizing n g with`.
+Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `nil => exact hJ L n g`. Consider the case `cons p D ih`. Rewrite using `[JD_cons, JD_cons, hc_phi]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
-
-Conclude with `detc_phi r j hj θ p.1 p.2 x`. Use function extensionality and compare the values at `x`. Conclude with `ih _ x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.jdIso :
     CuspIso → JDIso := by

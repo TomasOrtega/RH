@@ -14,7 +14,7 @@ open GlobalTheory.ChartCmp
 namespace GlobalTheory.ChartCmp
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h1` using `congrArg TrivSqZeroExt.fst h`. Establish `h2` using `congrArg TrivSqZeroExt.snd h`. Simplify using `only [Formalism.L2.Pj.dualMap, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, add_zero, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add] at h1 h2`. Conclude with `TrivSqZeroExt.ext (hf h1) (hf h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dualMap_injective_of_injective {A B : Type} [CommRing A] [CommRing B] (f : A →+* B)
     (hf : Function.Injective f) : Function.Injective (Formalism.L2.Pj.dualMap f) := by
@@ -27,15 +27,15 @@ theorem dualMap_injective_of_injective {A B : Type} [CommRing A] [CommRing B] (f
   exact TrivSqZeroExt.ext (hf h1) (hf h2)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c T io y I I'`. Use `letI := io.toAlgebra`. Take `⟨k, n, hk, hn⟩` from `GlobalTheory.sab_extensions_iso E H Dw l Xo T.V T.Fr y.x I.G I'.G I.t' I'.t' I.m1 I.m2 I'.m1 I'.m2`. Use `⟨n, fun τ i => ?_⟩` and prove the remaining obligations. Take `⟨u, hu1, hu2⟩` from `I.lift τ i`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv1, hv2⟩` from `I'.lift τ i`. Establish `hnw : n.φ ≫ I'.G.G.hom = I.G.G.hom` using `n.cart.1.w.trans (Category.comp_id _)`. Establish `hkw : k.φ ≫ I'.t'.G.hom = I.t'.G.hom` using `k.cart.1.w.trans (Category.comp_id _)`. Establish `huv : u ≫ k.φ = v`. Apply `I'.m1.cart.1.hom_ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Category.assoc]`. Conclude with `(congrArg (u ≫ ·) hk).trans (hu1.trans hv1.symm)`. Rewrite using `[Category.assoc, hkw]`. Apply `GlobalTheory.IntLie.spMap_frac_cancel (V := T.V)` to reduce the goal to its premises. Establish `e1 : (u ≫ I.m2.φ) ≫ I.G.G.hom = (v ≫ I'.m2.φ) ≫ I'.G.G.hom`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu2, hv2, Category.assoc, Category.assoc, Over.w (I.ub τ i), Over.w (I'.ub τ i)]`. Rewrite using `[Category.assoc, Category.assoc, ← I.m2.cart.1.w, ← I'.m2.cart.1.w]`. Simplify `e1` using `only [Category.assoc]`. Establish `hsep : IsSeparated I'.G.G.hom` using `I'.G.semi.separated`. Establish `hdom : IsSchemeTheoreticallyDominant (spMap (Formalism.L2.Pj.dualMap (algebraMap T.V T.Fr)))` using `GlobalTheory.ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective (CommRingCat.ofHom _) (dualMap_injective_of_injective _ (IsFractionRing.injective T.V T.Fr))`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.ExtUnique.hom_ext_of_dominant I'.G.G.hom ?_ (spMap (Formalism.L2.Pj.dualMap (algebraMap T.V T.Fr))) ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hnw, Over.w (I.ub τ i), Over.w (I'.ub τ i)]`. Rewrite using `[← Category.assoc, ← hu2, ← hv2, Category.assoc, hn, ← Category.assoc, huv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intData_models_iso : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (T : CDVR) (io : c.F →+* T.Fr) (y : letI := io.toAlgebra; FrPt Xo c T.Fr) (I I' : IntData Xo c T io y), ∃ n : SABMap I.G I'.G (𝟙 (Sp T.V)), ∀ τ i, (I.ub τ i).left ≫ n.φ = (I'.ub τ i).left := by
   intro E _ _ _ H Dw l Xo c T io y I I'

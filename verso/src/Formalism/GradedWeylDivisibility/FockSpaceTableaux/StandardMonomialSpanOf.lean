@@ -3,7 +3,7 @@ import Formalism.GradedWeylDivisibility.StatementC
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Introduce `h r n ν _`. Conclude with `h ℤ r n ν`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem standardMonomialSpanOf : StandardMonomialSpanOf := by
   intro h r n ν _

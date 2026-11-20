@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.PolFormNabla
 
 /- English proof (translation)
-Take `⟨C, _, φ, j, hφ, hic, -⟩` from `exists_const A`. Establish `hC` using `PolPull.isAbelianScheme_of_isGrpPullback hA hφ`. Establish `gC` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback hφ.1 hg`. Establish `su : Function.Surjective (TrivSqZeroExt.fstHom R R R).toRingHom` using `fun r => ⟨TrivSqZeroExt.inl r, rfl⟩`. Conclude with `GlobalTheory.Published.AbelianDualCrystal.cupSquare_crys GlobalTheory.abelianDeRham.1 GlobalTheory.abelianDualCrystal.2 (isDPNilpotent_squareZero _) su rfl hC gC hic.1 (liftMor (epsDP R) hic)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cupSquare_eps {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] {g : ℕ} (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) : GlobalTheory.AbDual.CupSquare (epsDP R) (GlobalTheory.DeRham.epsRed R) A := by

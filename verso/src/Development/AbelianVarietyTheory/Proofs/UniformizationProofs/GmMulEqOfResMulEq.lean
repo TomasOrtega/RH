@@ -16,7 +16,7 @@ namespace GlobalTheory
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Establish `e` using `congrArg (gm r z V) H`. Rewrite `e` using `[map_mul, map_mul, gm_res r z h₁ hz, gm_res r z h₂ hz, gm_res r z h₃ hz, gm_res r z h₄ hz]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gm_mul_eq_of_res_mul_eq {Y Z : Scheme.{0}} {V U₁ U₂ U₃ U₄ : Y.Opens} {h₁ : V ≤ U₁} {h₂ : V ≤ U₂}
     {h₃ : V ≤ U₃} {h₄ : V ≤ U₄} {a : Γ(Y, U₁)ˣ} {b : Γ(Y, U₂)ˣ} {c : Γ(Y, U₃)ˣ} {d : Γ(Y, U₄)ˣ}
@@ -26,7 +26,7 @@ theorem gm_mul_eq_of_res_mul_eq {Y Z : Scheme.{0}} {V U₁ U₂ U₃ U₄ : Y.Op
   rwa [map_mul, map_mul, gm_res r z h₁ hz, gm_res r z h₂ hz, gm_res r z h₃ hz, gm_res r z h₄ hz] at e
 
 /- English proof (translation)
-Apply `unit_ext` to reduce the goal to its premises. Introduce `y hy`. Rewrite using `[map_mul, map_mul, gm_res (𝟙 Y) y h₁ hy, gm_res (𝟙 Y) y h₂ hy, gm_res (𝟙 Y) y h₃ hy, gm_res (𝟙 Y) y h₄ hy]`. Conclude with `H y hy`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_mul_eq_of_gm_mul_eq {Y : Scheme.{0}} {V U₁ U₂ U₃ U₄ : Y.Opens} {h₁ : V ≤ U₁} {h₂ : V ≤ U₂}
     {h₃ : V ≤ U₃} {h₄ : V ≤ U₄} {a : Γ(Y, U₁)ˣ} {b : Γ(Y, U₂)ˣ} {c : Γ(Y, U₃)ˣ} {d : Γ(Y, U₄)ˣ}
@@ -39,13 +39,11 @@ theorem res_mul_eq_of_gm_mul_eq {Y : Scheme.{0}} {V U₁ U₂ U₃ U₄ : Y.Open
   exact H y hy
 
 /- English proof (translation)
-Establish `ef : ∀ y : Y', f (h y) = B (f' y)` using `fun y => congrArg (fun g => g y) hf`. Establish `ep : ∀ y : Y', p (h y) = F (p' y)` using `fun y => congrArg (fun g => g y) hp.symm`. Prove the components needed by the constructor for the conclusion. Introduce `H Z r z jM jM' jL jL' h₁ h₂ h₃ h₄`. Establish `m₁ : p' (r z) ∈ (LB.div (M.pull F) M').U (fun _ => jM, jM')` using `⟨mem_pull.2 h₁, h₂⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `m₂ : r z ∈ (LB.div (M'.pull p') (L'.pull f')).U (fun _ => jM', fun _ => jL')` using `⟨mem_pull.2 h₂, mem_pull.2 h₄⟩`. Establish `m₃ : h (r z) ∈ (LB.div (M.pull p) (L.pull f)).U (fun _ => jM, fun _ => jL)` using `⟨mem_pull.2 (by rw [ep]; exact h₁), mem_pull.2 (by rw [ef]; exact h₃)⟩`. Establish `m₄ : f' (r z) ∈ (LB.div (L.pull B) L').U (fun _ => jL, jL')` using `⟨mem_pull.2 h₃, h₄⟩`. Establish `e` using `gm_mul_eq_of_res_mul_eq (H (fun _ => jM) jM' jL' (fun _ => jL)) r z ⟨⟨⟨m₁, m₂⟩, m₃⟩, m₄⟩`. Rewrite `e` using `[gm_pull r p' z _ m₁, gm_pull r h z _ m₃, gm_pull r f' z _ m₄]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e`. Introduce `H jM jM' jL' jL`. Use `res_mul_eq_of_gm_mul_eq fun y hy => ?_` and prove the remaining obligations. Establish `e` using `H Y' (𝟙 Y') y (jM PUnit.unit) jM' (jL PUnit.unit) jL' (mem_pull.1 hy.1.1.1.1) hy.1.1.1.2 (mem_pull.1 hy.2.1) hy.2.2`. Rewrite using `[gm_pull (𝟙 Y') p' y _ hy.1.1.1, gm_pull (𝟙 Y') h y _ hy.1.2, gm_pull (𝟙 Y') f' y _ hy.2]`.
-
-Conclude with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem square_res_iff_gw {X X' G G' Y Y' : Scheme.{0}} {M : LB X} {M' : LB X'} {L : LB G} {L' : LB G'}
     {F : X' ⟶ X} {B : G' ⟶ G} {p : Y ⟶ X} {p' : Y' ⟶ X'} {f : Y ⟶ G} {f' : Y' ⟶ G'} {h : Y' ⟶ Y}
@@ -89,11 +87,11 @@ theorem square_res_iff_gw {X X' G G' Y Y' : Scheme.{0}} {M : LB X} {M' : LB X'} 
     exact e
 
 /- English proof (translation)
-Introduce `R R' _ _ _ _ I I' φ D D' hD A A' G _ _ G' _ _ bc U U'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨wL, hg, he, hr, H⟩`. Use `⟨wL, hg, he, hr, fun e => ?_⟩` and prove the remaining obligations. Take `⟨h, hf, hp, ht, hw⟩` from `H e`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨h, hf, ⟨hp, fun x => ?_⟩, (square_res_iff_gw hf hp hD.w wL (U.w e) (U'.w e)).1 hw⟩` and prove the remaining obligations. Take `⟨hψ, hm⟩` from `ht x`. Conclude with `⟨hψ, (maps_iff hD.w _ _ _ _ _ h _ (GeneratorPullback.pullAlong_le _ _ _ _ _ hψ) (fun _ => rfl)).1 hm⟩`. Introduce and unpack `⟨wL, hg, he, hr, H⟩`. Use `⟨wL, hg, he, hr, fun e => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h, hf, ⟨hp, ht⟩, hw⟩` from `H e`. Use `⟨h, hf, hp, fun x => ?_, (square_res_iff_gw hf hp hD.w wL (U.w e) (U'.w e)).2 hw⟩` and prove the remaining obligations. Take `⟨hψ, hm⟩` from `ht x`. Conclude with `⟨hψ, (maps_iff hD.w _ _ _ _ _ h _ (GeneratorPullback.pullAlong_le _ _ _ _ _ hψ) (fun _ => rfl)).2 hm⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isPullUnif_iff_stalks : ∀ (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (I : Ideal R) (I' : Ideal R') (φ : R →+* R') (D : DegData R I) (D' : DegData R' I') (hD : IsPullDeg φ D.toPre D'.toPre) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (A' : PolAV (Spec (CommRingCat.of (FractionRing R')))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (G' : Over (Spec (CommRingCat.of R'))) [GrpObj G'] [IsCommMonObj G'] (bc : G' ≅ (Over.pullback (specOf φ)).obj G) (U : Unif I D A G) (U' : Unif I' D' A' G'), IsPullUnif φ hD bc U U' ↔ ∃ wL : LB.Iso U'.LG.L (U.LG.L.pull (bc.hom.left ≫ pullback.fst G.hom (specOf φ))), wL.IsGen ∧ ∃ he : eSec G' ≫ bc.hom.left ≫ pullback.fst G.hom (specOf φ) = specOf φ ≫ eSec G, LB.Gen.Maps (LB.linCombIso wL (K := PUnit) (fun _ => eSec G') (fun _ => 1)) U'.LG.rig (rigPullOf (bc.hom.left ≫ pullback.fst G.hom (specOf φ)) (specOf φ) he U.LG.L U.LG.rig) ∧ ∀ e : ℕ, ∃ (h : (thickObj R' I' e G').left ⟶ (thickObj R I e G).left), h ≫ (fstG I e G).left = (fstG I' e G').left ≫ (bc.hom.left ≫ pullback.fst G.hom (specOf φ)) ∧ ((U'.gt e).pG.left ≫ (hD.e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf φ)) = h ≫ (U.gt e).pG.left ∧ ∀ x : D'.toPre.X, (∀ κ : Fin 4, D'.toPre.Oφ (U'.gt e).pG x κ ≫ (hD.e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf φ)) = h ≫ D.toPre.Oφ (U.gt e).pG (hD.xe x) κ) ∧ Geo.Tor.PMaps hD.w (D'.toPre.Oφ (U'.gt e).pG x) (D.toPre.Oφ (U.gt e).pG (hD.xe x)) Oinvε ((U'.gt e).t x) ((U.gt e).t (hD.xe x)) h) ∧ (∀ (Z : Scheme.{0}) (r : Z ⟶ (thickObj R' I' e G').left) (z : Z) (jM : D.toPre.P.L.ι) (jM' : D'.toPre.P.L.ι) (jL : U.LG.L.ι) (jL' : U'.LG.L.ι), ((hD.e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf φ))) ((U'.gt e).pG.left (r z)) ∈ D.toPre.P.L.U jM → (U'.gt e).pG.left (r z) ∈ D'.toPre.P.L.U jM' → ((bc.hom.left ≫ pullback.fst G.hom (specOf φ))) ((fstG I' e G').left (r z)) ∈ U.LG.L.U jL → (fstG I' e G').left (r z) ∈ U'.LG.L.U jL' → Geo.Tor.gw hD.w (r ≫ (U'.gt e).pG.left) z jM jM' * Geo.Tor.gw (U'.w e) r z jM' (fun _ => jL') = Geo.Tor.gw (U.w e) (r ≫ h) z jM (fun _ => jL) * Geo.Tor.gw wL (r ≫ (fstG I' e G').left) z jL jL') := by
   intro R R' _ _ _ _ I I' φ D D' hD A A' G _ _ G' _ _ bc U U'

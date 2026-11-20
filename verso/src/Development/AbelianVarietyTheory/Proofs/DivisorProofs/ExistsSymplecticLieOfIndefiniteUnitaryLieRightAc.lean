@@ -12,7 +12,7 @@ def sgnD {p q : ℕ} : Ix p q → ℂ
   | .inr _ => -1
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`. Apply the tactic sequence `simp [Jm, Formalism.UG.Jpq, sgnD, Matrix.diagonal_apply, Matrix.one_apply] <;> split_ifs <;> simp`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_eq_diagonal (p q : ℕ) : Jm p q = Matrix.diagonal sgnD := by
   ext a b
@@ -20,13 +20,13 @@ theorem Jm_eq_diagonal (p q : ℕ) : Jm p q = Matrix.diagonal sgnD := by
     simp [Jm, Formalism.UG.Jpq, sgnD, Matrix.diagonal_apply, Matrix.one_apply] <;> split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [lineSign, sgnD]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lineSign_eq_mul {p q r s : ℕ} (a : Ix p q) (b : Ix r s) : lineSign a b = sgnD a * sgnD b := by
   rcases a with a | a <;> rcases b with b | b <;> simp [lineSign, sgnD]
 
 /- English proof (translation)
-Establish `h : (Yᴴ * Jm r s + Jm r s * Y) b k = 0`. Rewrite using `[show Yᴴ * Jm r s + Jm r s * Y = 0 from hY]`. Both sides reduce to the same expression. Rewrite `h` using `[Jm_eq_diagonal]`. Simplify `h` using `[Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem upq_entry {r s : ℕ} {Y : Mat r s} (hY : Y ∈ upq r s) (b k : Ix r s) :
     star (Y k b) * sgnD k + sgnD b * Y b k = 0 := by
@@ -36,7 +36,7 @@ theorem upq_entry {r s : ℕ} {Y : Mat r s} (hY : Y ∈ upq r s) (b k : Ix r s) 
   simpa [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply] using h
 
 /- English proof (translation)
-Simplify using `[sympl, pPart, qPart, PiLp.inner_apply, Matrix.J, mulVec, dotProduct, Fintype.sum_sum_type, Matrix.one_apply, ite_mul, Finset.sum_ite_eq]`. Simplify using `only [mul_comm (v _)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sympl_eq_dot {l : Type} [Fintype l] [DecidableEq l] (u v : l ⊕ l → ℝ) :
     sympl u v = -(u ⬝ᵥ (Matrix.J l ℝ *ᵥ v)) := by
@@ -46,13 +46,13 @@ theorem sympl_eq_dot {l : Type} [Fintype l] [DecidableEq l] (u v : l ⊕ l → �
   ring
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Establish `e1 : ∀ b, lineSign a b * (c * Yᵀ) a b * star (c' a b) = ∑ k, sgnD a * c a k * star (c' a b) * (sgnD b * Y b k)`. Introduce `b`. Rewrite using `[lineSign_eq_mul, mul_apply, Finset.mul_sum, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [transpose_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∀ b, lineSign a b * c a b * star ((c' * Yᵀ) a b) = ∑ k, sgnD a * c a b * star (c' a k) * (sgnD b * star (Y b k))`. Introduce `b`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[lineSign_eq_mul, mul_apply, star_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [transpose_apply, star_mul']`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e1, e2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm (f := fun b k => sgnD a * c a b * star (c' a k) * (sgnD b * star (Y b k))), ← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `linear_combination (sgnD a * c a k * star (c' a b)) * upq_entry hY b k`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem sum_zero {P Q R S : ℕ} (c c' : Matrix (Ix P Q) (Ix R S) ℂ) (Y : Mat R S) (hY : Y ∈ upq R S) :
     (∑ a, ∑ b, lineSign a b * (c * Yᵀ) a b * star (c' a b)) +
@@ -80,9 +80,9 @@ theorem sum_zero {P Q R S : ℕ} (c c' : Matrix (Ix P Q) (Ix R S) ℂ) (Y : Mat 
   linear_combination (sgnD a * c a k * star (c' a b)) * upq_entry hY b k
 
 /- English proof (translation)
-Rewrite using `[LieAlgebra.Symplectic.sp, mem_skewAdjointMatricesLieSubalgebra, mem_skewAdjointMatricesSubmodule]`. Use `show Zᵀ * Matrix.J l ℝ = Matrix.J l ℝ * -Z`. Use extensionality with `a b`. Establish `h1` using `h (Pi.single a 1) (Pi.single b 1)`. Rewrite `h1` using `[sympl_eq_dot, sympl_eq_dot]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[mulVec, dotProduct, Pi.single_apply, mul_apply] at h1 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mem_sp_of_sympl {l : Type} [Fintype l] [DecidableEq l] (Z : Matrix (l ⊕ l) (l ⊕ l) ℝ)
     (h : ∀ u v, sympl (Z *ᵥ u) v + sympl u (Z *ᵥ v) = 0) : Z ∈ LieAlgebra.Symplectic.sp l ℝ := by
@@ -95,25 +95,25 @@ theorem mem_sp_of_sympl {l : Type} [Fintype l] [DecidableEq l] (Z : Matrix (l �
   linarith
 
 /- English proof (translation)
-Introduce `ι l _ _ _ _ P Q R S φ hφ Y hY`. Set `G : (ι → Matrix (Ix P Q) (Ix R S) ℂ) →ₗ[ℝ] (ι → Matrix (Ix P Q) (Ix R S) ℂ)` to `{ toFun := fun c w => c w * (Y w)ᵀ map_add' := fun c c' => by ext w : 1; simp [Matrix.add_mul] map_smul' := fun r c => by ext w : 1; simp [Matrix.smul_mul] }`. Use `set Z := LinearMap.toMatrix' (φ.toLinearMap ∘ₗ G ∘ₗ φ.symm.toLinearMap) with hZdef`. Establish `hZ : ∀ c, Z *ᵥ φ c = φ fun w => c w * (Y w)ᵀ`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hZdef, LinearMap.toMatrix'_mulVec]`. Simplify using `[G]`. Use `⟨Z, ?_, hZ, ?_⟩` and prove the remaining obligations. Use `mem_sp_of_sympl Z fun u v => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `φ.surjective u`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c', rfl⟩` from `φ.surjective v`. Establish `hs : (∑ w, ∑ a, ∑ b, lineSign a b * (c w * (Y w)ᵀ) a b * star (c' w a b)) + (∑ w, ∑ a, ∑ b, lineSign a b * c w a b * star ((c' w * (Y w)ᵀ) a b)) = 0`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_eq_zero fun w _ => sum_zero _ _ _ (hY w)`. Rewrite using `[hZ, hZ, hφ, hφ, ← mul_add, ← Complex.add_im]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hs, Complex.zero_im, mul_zero]`. Introduce `t c`. Establish `hpow : ∀ (n : ℕ) (c : ι → Matrix (Ix P Q) (Ix R S) ℂ), (t • Z) ^ n *ᵥ φ c = φ fun w => c w * ((t • Y w) ^ n)ᵀ`. Introduce `n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `zero => intro c`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `c`. Rewrite using `[pow_succ, ← mulVec_mulVec, Matrix.smul_mulVec, hZ, ← φ.map_smul]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: (t • fun w => c w * (Y w)ᵀ) = fun w => c w * (t • Y w)ᵀ`. Use function extensionality and compare the values at `w`. Simplify using `[Matrix.transpose_smul, Matrix.mul_smul]`. Rewrite using `[this, ih]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `w`. Rewrite using `[pow_succ, Matrix.transpose_mul, Matrix.mul_assoc]`. Use `letI : NormedRing (Matrix (l ⊕ l) (l ⊕ l) ℝ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Matrix (l ⊕ l) (l ⊕ l) ℝ) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedRing (Mat R S) := Matrix.linftyOpNormedRing`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : NormedAlgebra ℝ (Mat R S) := Matrix.linftyOpNormedAlgebra`. Establish `h1 : HasSum (fun n : ℕ => (((n.factorial : ℝ)⁻¹) • (t • Z) ^ n) *ᵥ φ c) (NormedSpace.exp (t • Z) *ᵥ φ c)` using `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℝ) (t • Z)).map (Matrix.mulVec.addMonoidHomLeft (φ c)) (Continuous.matrix_mulVec continuous_id continuous_const)`. Establish `hw : ∀ w, HasSum (fun n : ℕ => c w * (((n.factorial : ℝ)⁻¹ • (t • Y w) ^ n))ᵀ) (c w * (NormedSpace.exp (t • Y w))ᵀ)`. Introduce `w`. Use `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℝ) (t • Y w)).matrix_transpose` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this.map (AddMonoidHom.mk' (fun M => c w * M) fun _ _ => Matrix.mul_add _ _ _) (continuous_const.matrix_mul continuous_id)`. Establish `h2` using `(Pi.hasSum.2 hw).map φ (LinearMap.continuous_of_finiteDimensional φ.toLinearMap)`. Use `h1.unique ?_` and prove the remaining obligations. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Function.comp_def]`. Rewrite using `[Matrix.smul_mulVec, hpow, ← φ.map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Simplify using `[Matrix.transpose_smul, Matrix.mul_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_sp_rightAct : ∀ (ι l : Type) [Fintype ι] [DecidableEq ι] [Fintype l] [DecidableEq l] (P Q R S : ℕ)
     (φ : (ι → Matrix (Ix P Q) (Ix R S) ℂ) ≃ₗ[ℝ] (l ⊕ l → ℝ)),

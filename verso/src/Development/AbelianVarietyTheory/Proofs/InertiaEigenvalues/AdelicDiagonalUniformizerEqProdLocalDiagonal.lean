@@ -22,7 +22,7 @@ open Matrix
 namespace GlobalTheory.CellDecNat
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.ext fun i k => IsDedekindDomain.FiniteAdeleRing.ext _ fun v => congrArg (fun x : GL (Fin n) (v.adicCompletion E) => x.val i k) (h v))`.
+A detailed English derivation is pending.
 -/
 theorem glExt {E : Type} [Field E] [NumberField E] {n : ℕ} {x y : GL (Fin n) (Af E)}
     (h : ∀ w, GeneralLinearGroup.map (pLoc E w) x = GeneralLinearGroup.map (pLoc E w) y) : x = y :=
@@ -30,19 +30,19 @@ theorem glExt {E : Type} [Field E] [NumberField E] {n : ℕ} {x y : GL (Fin n) (
     congrArg (fun x : GL (Fin n) (v.adicCompletion E) => x.val i k) (h v))
 
 /- English proof (translation)
-Unfold `GlobalTheory.CellDec.tl GlobalTheory.JSW.tl`. Establish `hm : (List.map (fun w => finGL E n (locGL E n w (GlobalTheory.JSW.diagPow (ϖ w) (l' w)))) l'.support.toList).prod = finGL E n (List.map (fun w => locGL E n w (GlobalTheory.JSW.diagPow (ϖ w) (l' w))) l'.support.toList).prod`. Rewrite using `[map_list_prod, List.map_map]`. Both sides reduce to the same expression. Rewrite using `[hm]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply `glExt` to reduce the goal to its premises. Introduce `w`. Rewrite using `[map_list_prod, List.map_map, List.prod_map_eq_pow_single w _ (fun v hv _ => by simp only [Function.comp_apply]; exact pLoc_locGL_of_ne (Ne.symm hv) _)]`. Simplify using `only [Function.comp_apply, pLoc_locGL]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `hL : ∀ i, (Finsupp.mapRange (fun x : Fin n → ℤ => x i) rfl l) w = ((l' w i : ℕ) : ℤ)` using `fun i => by`. Rewrite using `[Finsupp.mapRange_apply, h]`. Express the relevant statement in the definitionally equal form `pLoc E w (((GlobalTheory.SmGL.diagT (Af E) (Fin n) _ : GL (Fin n) (Af E)) : Matrix (Fin n) (Fin n) (Af E)) i j) = _`. Rewrite using `[GlobalTheory.SmGL.val_diagT]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hw : w ∈ l'.support`. Rewrite using `[List.count_eq_one_of_mem (Finset.nodup_toList _) (Finset.mem_toList.2 hw), pow_one]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `only [Matrix.diagonal_apply_eq]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `((ϖ w ^ (Finsupp.mapRange (fun x : Fin n → ℤ => x i) rfl l) w : (w.adicCompletion E)ˣ) : w.adicCompletion E) = _`. Rewrite using `[hL, zpow_natCast]`. Simplify using `[GlobalTheory.JSW.diagPow]`. Simplify using `[Matrix.diagonal_apply_ne _ hij, GlobalTheory.JSW.diagPow]`. Rewrite using `[List.count_eq_zero_of_not_mem (by simpa using hw), pow_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : l' w = 0` using `by simpa using hw`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `only [Matrix.diagonal_apply_eq]`. Express the relevant statement in the definitionally equal form `((ϖ w ^ (Finsupp.mapRange (fun x : Fin n → ℤ => x i) rfl l) w : (w.adicCompletion E)ˣ) : w.adicCompletion E) = _`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hL, h0]`. Simplify using the standard rewrite rules. Simplify using `[Matrix.diagonal_apply_ne _ hij, Matrix.one_apply_ne hij]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem tl_eq_jsw_tl (E : Type) [Field E] [NumberField E] (n : ℕ) (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ)
     (l : HeightOneSpectrum (𝓞 E) →₀ (Fin n → ℤ)) (l' : HeightOneSpectrum (𝓞 E) →₀ (Fin n → ℕ))

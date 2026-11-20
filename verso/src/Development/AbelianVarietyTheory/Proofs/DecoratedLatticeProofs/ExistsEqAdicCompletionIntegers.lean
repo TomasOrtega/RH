@@ -7,13 +7,13 @@ open IsDedekindDomain NumberField IsLocalRing
 namespace GlobalTheory.BinaryUnitForm
 
 /- English proof (translation)
-Take `⟨r, s, hrs⟩` from `GlobalTheory.UnramifiedHermitian.exists_binary_eq_of_finite (a := residue R t) (n := residue R n) (by simpa only [map_sub, map_mul, map_pow, map_ofNat] using (hD.map (residue R)).ne_zero) (residue R u)`. Take `⟨r, rfl⟩` from `residue_surjective r`. Take `⟨s, rfl⟩` from `residue_surjective s`. Establish `hN : residue R (r ^ 2 + t * r * s + n * s ^ 2) = residue R u`. Simplify `hrs` using `only [map_add, map_mul, map_pow]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hNu : IsUnit (r ^ 2 + t * r * s + n * s ^ 2)`. Rewrite using `[← residue_ne_zero_iff_isUnit, hN]`. Conclude with `(hu.map _).ne_zero`. Take `⟨w, hw⟩` from `hNu.exists_right_inv`. Establish `he : u * w - 1 ∈ maximalIdeal R`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← residue_eq_zero_iff, map_sub, map_mul, ← hN, ← map_mul, hw, map_one, sub_self]`. Establish `hspan : Ideal.span {(2 : R), t} = ⊤`. Apply `Ideal.eq_top_of_isUnit_mem _ _ hD` to reduce the goal to its premises. Rewrite using `[Ideal.mem_span_pair]`. Conclude with `⟨-2 * n, t, by ring⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨α, β, hαβ⟩` from `Ideal.mem_span_pair.1 (show (1 : R) ∈ Ideal.span {(2 : R), t} by rw [hspan]; exact Submodule.mem_top)`. Take `⟨T, hT⟩` from `GlobalTheory.UnramifiedHermitian.exists_add_mul_sq_eq (maximalIdeal R) (α ^ 2 + t * α * β + n * β ^ 2) he`. Use `⟨r * (1 + T * α) - n * s * (T * β), r * (T * β) + (1 + T * α) * s + t * s * (T * β), ?_⟩` and prove the remaining obligations. Take the linear combination `(r ^ 2 + t * r * s + n * s ^ 2) * T * hαβ + (r ^ 2 + t * r * s + n * s ^ 2) * hT + u * hw`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_eq_of_henselian {R : Type*} [CommRing R] [IsLocalRing R]
     [HenselianRing R (maximalIdeal R)] [Finite (ResidueField R)] (t n u : R)
@@ -47,7 +47,7 @@ theorem exists_eq_of_henselian {R : Type*} [CommRing R] [IsLocalRing R]
     + (r ^ 2 + t * r * s + n * s ^ 2) * hT + u * hw
 
 /- English proof (translation)
-Introduce `F _ _ v t n u hD hu`. Use `haveI := GlobalTheory.SelfDualGenus.isAdicComplete_adicCompletionIntegers v`. Use `haveI := GlobalTheory.SelfDualGenus.finite_residueField_adicCompletionIntegers v`. Conclude with `exists_eq_of_henselian t n u hD hu`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_eq_adicCompletionIntegers : ∀ (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (t n u : v.adicCompletionIntegers F),

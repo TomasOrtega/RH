@@ -21,7 +21,7 @@ open scoped ComplexConjugate ENNReal
 noncomputable section
 
 /- English proof (translation)
-Use `⟨Formalism.FourierDecayAlt.P.JCTx6.Link2.ckOn_cutF Bs hχ hF.1 ε, ?_, ?_⟩` and prove the remaining obligations. Take `⟨R, hR⟩` from `hF.2.1`. Conclude with `⟨R, fun g hg hne => hR g hg (fun h0 => hne (by simp [D.cutF, h0]))⟩`. Take `⟨e, he, hge⟩` from `hF.2.2`. Conclude with `⟨e, he, fun g hg hne => hge g hg (fun h0 => hne (by simp [D.cutF, h0]))⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cptCoef_cutF {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (Bs : B.RealPlaceData k r Wp Wq)
@@ -34,7 +34,7 @@ theorem cptCoef_cutF {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerPr
     exact ⟨e, he, fun g hg hne => hge g hg (fun h0 => hne (by simp [D.cutF, h0]))⟩
 
 /- English proof (translation)
-The claim follows from `ContinuousLinearMap.add_comp x₁ x₂ y smul_left c x y := by ext v; simp add_right x y₁ y₂ := ContinuousLinearMap.comp_add x y₁ y₂ smul_right c x y := by ext v simp only [ContinuousLinearMap.comp_apply, smul_apply] exact ContinuousLinearMap.map_smul_of_tower x c (y v) bound := ⟨1, …`.
+A detailed English derivation is pending.
 -/
 theorem isBoundedBilinearMap_compR {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] :
@@ -51,9 +51,9 @@ theorem isBoundedBilinearMap_compR {Wp Wq : Type} [NormedAddCommGroup Wp] [Inner
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U1, f1, hU1, h1, hc1, he1⟩` from `hf g₀ hg₀`. Take `⟨U2, A1, hU2, h2, hc2, he2⟩` from `hA g₀ hg₀`. Use `⟨U1 ∩ U2, fun g => (f1 g).comp (A1 g), hU1.inter hU2, ⟨h1, h2⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isBoundedBilinearMap_compR.contDiff.comp_contDiffOn ((hc1.mono Set.inter_subset_left).prodMk (hc2.mono Set.inter_subset_right))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx hxG`. Simplify using `only [he1 x hx.1 hxG, he2 x hx.2 hxG]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ckOn_comp {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] {f : B.Mat k r → (Wq →L[ℂ] Wp)}
@@ -78,9 +78,9 @@ section fpm
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Establish `ha : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun g : B.Mat P.k P.r => ((Gf P.k P.r p.T.base.z p.T.base.z' g ^ p₀ : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp ((Formalism.FourierDecayAlt.P.JCx1.contDiff_Gf _ _).pow p₀)`. Establish `hne : ∀ g, TBBx4.fpm p f A p₀ g ≠ 0 → f g ≠ 0`. Introduce `g hg h0`. Apply `hg` to reduce the goal to its premises. Simplify using `[TBBx4.fpm, h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `⟨PI.UnitaryCorollaryDerivatives.cC_smul_ck ha hfA, ?_, ?_⟩` and prove the remaining obligations. Take `⟨R, hR⟩` from `hf.2.1`. Conclude with `⟨R, fun g hg hne' => hR g hg (hne g hne')⟩`. Take `⟨e, he, hge⟩` from `hf.2.2`. Conclude with `⟨e, he, fun g hg hne' => hge g hg (hne g hne')⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cptCoef_fpm (p : KB.Pl P Wp Wq) {f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)} {A : B.Mat P.k P.r → (Wq →L[ℂ] Wq)}
     (p₀ : ℕ) (hf : KB.CptCoef p.T.base f) (hfA : B.CkOn ⊤ (B.GV P.k P.r) fun g => (f g).comp (A g)) :
@@ -99,7 +99,7 @@ theorem cptCoef_fpm (p : KB.Pl P Wp Wq) {f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)
     exact ⟨e, he, fun g hg hne' => hge g hg (hne g hne')⟩
 
 /- English proof (translation)
-Conclude with `cptCoef_fpm p p₀ hf (ckOn_comp hf.1 hA)`.
+A detailed English derivation is pending.
 -/
 theorem cptCoef_fpm_of (p : KB.Pl P Wp Wq) {f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)} {A : B.Mat P.k P.r → (Wq →L[ℂ] Wq)}
     (p₀ : ℕ) (hf : KB.CptCoef p.T.base f) (hA : B.CkOn ⊤ (B.GV P.k P.r) A) :
@@ -109,9 +109,9 @@ theorem cptCoef_fpm_of (p : KB.Pl P Wp Wq) {f : B.Mat P.k P.r → (Wq →L[ℂ] 
 end fpm
 
 /- English proof (translation)
-Use `Formalism.FourierDecayAlt.P.TBBx3.posAt_of_forms p nn F Y N hnn ?_` and prove the remaining obligations. Introduce `j w h hj hw _`. Distinguish the cases in `hh : D.IsLocPt h j`. Rewrite using `[PBL.rr_eq_form p F j hj w h h hh hh]`. Take `⟨ε, hε, hnv⟩` from `PBL.slv_nv p hF j hj w h hh`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Formalism.FourierDecayAlt.P.TBBx5.form_re_nonneg p (Formalism.FourierDecayAlt.P.TBBx5.formNonneg_of hA (Formalism.FourierDecayAlt.P.pb_formPos : PBL.FormPos) p) j hj w hw.1 hε _ hnv`. Unfold `KB.Pl.RR D.RRplace`. Rewrite using `[dif_neg (fun h1 => hh h1.1)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem posAt_of_cpt (hA : P5.ThmPActual) (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
     (Y : Finset ℝ) (N : ℕ) (hnn : ∀ y, 0 ≤ nn y) (hF : KB.CptCoef p.T.base F) : TBB.PosAt p nn F Y N := by
@@ -164,13 +164,13 @@ def BigCellDerivativeExpansion (p : KB.Pl P Wp Wq) (f : B.Mat P.k P.r → (Wq �
 end place
 
 /- English proof (translation)
-Take `⟨C₂, hC₂, hLS⟩` from `Formalism.FourierDecayAlt.P.lemma_s_of_parts Formalism.FourierDecayAlt.P.lemma_s_induction_base Formalism.FourierDecayAlt.P.lemma_s_induction_up`. Take `⟨C₄, hC₄⟩` from `Formalism.FourierDecayAlt.P.theorem_b_of_parts C₃ CΛ C₀ C₂ Cκ hC₃ hCΛ hC₀ hC₂`. Use `⟨C₄, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f Ap Am ApPt AmPt b Λ κ₀ n₀ p₀ χ nn Y K N Cb hb hΛ hΛb hκ hκb hT hn₀ hp₀ hK hKN hχ hnn hCb hf hfAp hfAm hAm hexp hWG hLG hGp hGm hEp hEm hBp hBm`. Establish `hPS : KB.PStd` using `Formalism.FourierDecayAlt.P.standard_pairing_of_heads Formalism.FourierDecayAlt.P.radial_head Formalism.FourierDecayAlt.P.head_top`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hPt : ∀ F : B.Mat P.k P.r → (Wq →L[ℂ] Wp), KB.CptCoef p.T.base F → GermCut p nn χ F Y K N → LimE p nn χ F Y N → LemB p F κ₀ → TBB.PtBound p F (κ₀ * (C₂ * Λ ^ 2) ^ (P.r + 1))`. Introduce `F hF hG hE hB`. Use `Formalism.FourierDecayAlt.P.point_bound_of_corollary_s Wp Wq P p nn χ F Y Λ K N C₂ κ₀ hC₂.le hκ hnn ⟨1, one_pos, fun ε hε _ => ?_⟩ (Formalism.FourierDecayAlt.P.vector_truncation_at_place p χ F hχ.2.2) (Formalism.FourierDecayAlt.P.limit_zero_at_place p nn χ F Y N κ₀ hE hB)` and prove the remaining obligations. Establish `hGc : KB.CptCoef p.T.base (D.cutF p.T.base χ F ε)` using `cptCoef_cutF p.T.base hχ hF ε`. Establish `hPos : TBB.PosAt p nn (D.cutF p.T.base χ F ε) Y N` using `posAt_of_cpt hA p nn _ Y N (fun y => (hnn y).le) hGc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI2` using `Formalism.FourierDecayAlt.P.head_continuity_at_zero_of_compact_coefficients hPS hA p nn _ Y N Cb hCb hGc`. Establish `hI3` using `Formalism.FourierDecayAlt.P.integral_three_at_place hA hPS Formalism.FourierDecayAlt.P.vector_isomorphism_levels Formalism.FourierDecayAlt.P.list_duality_level_group Formalism.FourierDecayAlt.P.degree_of_plane_wave (Formalism.FourierDecayAlt.P.pb_formPos : PBL.FormPos) p nn _ Y Λ …`. Establish `hI4` using `Formalism.FourierDecayAlt.P.integral_four_at_place hA Formalism.FourierDecayAlt.P.list_duality_level_group Formalism.FourierDecayAlt.P.degree_of_lift_pairing (Formalism.FourierDecayAlt.P.pb_formPos : PBL.FormPos) p nn _ Y Λ K N hGc hnn hLG`. Establish `hI5` using `Formalism.FourierDecayAlt.P.integral_five_at_place p nn _ Y K N hPos (hG ε hε)`. Conclude with `Formalism.FourierDecayAlt.P.corSOfLemmaS_statement Wp Wq P p nn _ Y Λ K N C₂ hKN hC₂.le hPos (hLS Wp Wq P p nn _ Y Λ K N hK hΛ hPos hI2 hI3 hI4 hI5)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, h3, h4, h5⟩` from `hAm`. Establish `hNorm` using `Formalism.FourierDecayAlt.P.norm_bound_at_place p f Ap Am ApPt AmPt b n₀ p₀ h1 h2 h3 h4 h5`. Establish `hReg` using `Formalism.FourierDecayAlt.P.regularity_at_place p f b C₃ (2 * p₀ + n₀) (by linarith) hexp`. Conclude with `hC₄ Wp Wq P p f _ _ b Λ κ₀ n₀ p₀ hb hΛ hΛb hκ hκb hT hn₀ hp₀ hNorm (hPt _ (cptCoef_fpm_of p p₀ hf hfAp) hGp hEp hBp) (hPt _ (cptCoef_fpm_of p p₀ hf hfAm) hGm hEm hBm) hReg`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thmBpAt_of_leaves (hA : P5.ThmPActual) (C₃ CΛ C₀ Cκ : ℝ) (hC₃ : 0 ≤ C₃) (hCΛ : 0 ≤ CΛ)
     (hC₀ : 1 / 2 ≤ C₀) :

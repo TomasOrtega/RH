@@ -43,7 +43,7 @@ def trueVol (cm : CMData F E) {I : Type} [Fintype I] (τ : I → (E →+* ℂ)) 
   if h : ∃ x : ℝ, 0 < x ∧ VolIs cm τ cd W x then Classical.choose h else 1
 
 /- English proof (translation)
-Unfold `trueVol`. Use `split_ifs with h`. Conclude with `(Classical.choose_spec h).1`. Conclude with `one_pos`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem trueVol_pos (cm : CMData F E) {I : Type} [Fintype I] (τ : I → (E →+* ℂ)) (cd : CDHaar) (W : HSpace E) :
     0 < trueVol cm τ cd W := by
@@ -53,7 +53,7 @@ theorem trueVol_pos (cm : CMData F E) {I : Type} [Fintype I] (τ : I → (E →+
   · exact one_pos
 
 /- English proof (translation)
-Unfold `trueVol`. Rewrite using `[dif_pos h]`. Conclude with `(Classical.choose_spec h).2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trueVol_spec (cm : CMData F E) {I : Type} [Fintype I] (τ : I → (E →+* ℂ)) (cd : CDHaar) (W : HSpace E)
     (h : ∃ x : ℝ, 0 < x ∧ VolIs cm τ cd W x) : VolIs cm τ cd W (trueVol cm τ cd W) := by
@@ -77,7 +77,7 @@ def trueScale (cd : CDHaar) : ∀ n : ℕ, (Fin n → Bool) → NNReal :=
   else fun _ _ => 1
 
 /- English proof (translation)
-Unfold `trueScale`. Use `split_ifs with h`. Conclude with `(Classical.choose_spec h).1 n ε`. Conclude with `one_pos`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem trueScale_pos (cd : CDHaar) (n : ℕ) (ε : Fin n → Bool) : 0 < trueScale cd n ε := by
   unfold trueScale
@@ -108,13 +108,13 @@ def FormalDegreeFormula₂ : Prop :=
 attribute [local instance] Formalism.BasicNotions.Host.cmStar in
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem volTieG_iff (D : D7) : Formalism.L2.Theta.VolTieG D ↔
     ∀ W : HSpace D.host.E, W.SigOK → VolIs D.sp.cm (Formalism.BasicNotions.TH.tauE D) D.cd W (D.vol W) := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem cdScaleTie_iff (D : D7) : cdScaleTie D ↔ CdScaleIs D.cd D.s.cdScale := Iff.rfl
 

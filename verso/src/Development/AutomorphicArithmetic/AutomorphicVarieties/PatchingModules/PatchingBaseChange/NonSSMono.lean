@@ -3,27 +3,25 @@ open IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `R R' S G G' _ _ _ _ _ p I I' φ φ' Q hp hI ⟨κ, hκ, f, hf, hn⟩`. Use `⟨κ, hκ, f, hf, fun hs => hn ?_⟩` and prove the remaining obligations. Use `set J := TwoSidedIdeal.span (MonoidAlgebra.mapRingHom G (f.comp φ) '' I) with hJ`. Use `set J' := TwoSidedIdeal.span (MonoidAlgebra.mapRingHom G' (f.comp φ') '' I') with hJ'`. Set `ψ : MonoidAlgebra κ G' →+* J.ringCon.Quotient` to `J.ringCon.mk'.comp (MonoidAlgebra.mapDomainRingHom κ p)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψs : Function.Surjective ψ`. Establish `h1 : Function.Surjective (MonoidAlgebra.mapDomainRingHom κ p)`. Introduce `x`. Proceed by induction on `x using MonoidAlgebra.induction_linear with`. Consider the case `zero => exact ⟨0, map_zero _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add a b ha hb`. Take `⟨a', rfl⟩` from `ha`. Take `⟨b', rfl⟩` from `hb`. Conclude with `⟨a' + b', map_add _ _ _⟩`. Consider the case `single g c`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨g', rfl⟩` from `hp g`. Conclude with `⟨MonoidAlgebra.single g' c, by simp⟩`. Conclude with `(RingCon.mk'_surjective _).comp h1`. Establish `hcomm : ∀ w : MonoidAlgebra S G', MonoidAlgebra.mapDomainRingHom κ p (MonoidAlgebra.mapRingHom G' f w) = MonoidAlgebra.mapRingHom G f (MonoidAlgebra.mapDomainRingHom S p w)`. Introduce `w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `w using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single g c => simp`. Establish `hcomp : ∀ (T H : Type) [CommRing T] [Group H] (θ : T →+* S) (z : MonoidAlgebra T H), MonoidAlgebra.mapRingHom H (f.comp θ) z = MonoidAlgebra.mapRingHom H f (MonoidAlgebra.mapRingHom H θ z)`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `T H _ _ θ z`. Proceed by induction on `z using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single g c => simp`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hle : TwoSidedIdeal.span (MonoidAlgebra.mapRingHom G φ '' I) ≤ J.comap (MonoidAlgebra.mapRingHom G f)`. Rewrite using `[TwoSidedIdeal.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite using `[SetLike.mem_coe, TwoSidedIdeal.mem_comap, ← hcomp]`. Conclude with `TwoSidedIdeal.subset_span ⟨y, hy, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hle' : J' ≤ J.comap (MonoidAlgebra.mapDomainRingHom κ p)`. Rewrite using `[hJ', TwoSidedIdeal.span_le]`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Rewrite using `[SetLike.mem_coe, TwoSidedIdeal.mem_comap, hcomp, hcomm, ← TwoSidedIdeal.mem_comap]`. Conclude with `hle (hI z hz)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hker : J'.ringCon ≤ RingCon.ker ψ`. Introduce `a b hab`. Rewrite using `[RingCon.ker_apply]`. Establish `h1 : a - b ∈ J'` using `(TwoSidedIdeal.rel_iff _ _ _).1 hab`. Establish `h2` using `hle' h1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `h2` using `[TwoSidedIdeal.mem_comap, map_sub]`. Conclude with `(RingCon.eq _).2 ((TwoSidedIdeal.rel_iff _ _ _).2 h2)`. Use `RingHom.isSemisimpleRing_of_surjective (RingCon.lift _ ψ hker) ?_` and prove the remaining obligations. Introduce `y`. Take `⟨x, rfl⟩` from `hψs y`.
-
-Conclude with `⟨(x : J'.ringCon.Quotient), rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.BC.nonSS_mono :
     ∀ (R R' S G G' : Type) [CommRing R] [CommRing R'] [CommRing S] [Group G] [Group G'] (p : G' →* G) (I : Set (MonoidAlgebra R G)) (I' : Set (MonoidAlgebra R' G')) (φ : R →+* S) (φ' : R' →+* S) (Q : Ideal S), Function.Surjective p → (∀ z ∈ I', MonoidAlgebra.mapDomainRingHom S p (MonoidAlgebra.mapRingHom G' φ' z) ∈ TwoSidedIdeal.span (MonoidAlgebra.mapRingHom G φ '' I)) → NonSS I φ Q → NonSS I' φ' Q := by

@@ -21,20 +21,20 @@ def scalingMap (h : HermitianForm F E W) (v w : W) (α β : E) : W →ₗ[E] W :
 variable (h : HermitianForm F E W) {v w : W}
 
 /- English proof (translation)
-Simplify using `[scalingMap, mul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scalingMap_apply (α β : E) (x : W) :
     scalingMap h v w α β x = x + (α * h.toSesq w x) • v + (β * h.toSesq v x) • w := by
   simp [scalingMap, mul_smul]
 
 /- English proof (translation)
-Simplify using `[scalingMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scalingMap_zero : scalingMap h v w 0 0 = LinearMap.id := by
   simp [scalingMap]
 
 /- English proof (translation)
-Rewrite using `[scalingMap_apply, map_add, map_add, map_smul, map_smul, hwv, hww, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pairing_left (hww : h.toSesq w w = 0) (hwv : h.toSesq w v = 1) (α β : E) (x : W) :
     h.toSesq w (scalingMap h v w α β x) = (1 + α) * h.toSesq w x := by
@@ -42,7 +42,7 @@ theorem pairing_left (hww : h.toSesq w w = 0) (hwv : h.toSesq w v = 1) (α β : 
   ring
 
 /- English proof (translation)
-Rewrite using `[scalingMap_apply, map_add, map_add, map_smul, map_smul, hvv, hvw, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pairing_right (hvv : h.toSesq v v = 0) (hvw : h.toSesq v w = 1) (α β : E) (x : W) :
     h.toSesq v (scalingMap h v w α β x) = (1 + β) * h.toSesq v x := by
@@ -54,7 +54,7 @@ variable (hvv : h.toSesq v v = 0) (hww : h.toSesq w w = 0) (hvw : h.toSesq v w =
 include hvv hww hvw hwv
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[LinearMap.comp_apply, scalingMap_apply h α β, pairing_left h hww hwv, pairing_right h hvv hvw, scalingMap_apply, scalingMap_apply]`. Use `module`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scalingMap_comp (α β α' β' : E) :
     scalingMap h v w α β ∘ₗ scalingMap h v w α' β' =
@@ -65,9 +65,9 @@ theorem scalingMap_comp (α β α' β' : E) :
   module
 
 /- English proof (translation)
-Establish `hαβ' : conj F E α + β + conj F E α * β = 0`. Simplify `congrArg (conj F E) hαβ` using `[conj_conj]`. Establish `hc : ∀ z, conjHom F E z = conj F E z` using `fun _ => rfl`. Establish `hxv : h.toSesq x v = conj F E (h.toSesq v x)` using `(h.isSymm.eq v x).symm`. Establish `hxw : h.toSesq x w = conj F E (h.toSesq w x)` using `(h.isSymm.eq w x).symm`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[scalingMap_apply, scalingMap_apply]`. Simplify using `only [map_add, LinearMap.add_apply, LinearMap.map_smulₛₗ, map_smul, LinearMap.smul_apply, smul_eq_mul, hvv, hww, hvw, hwv, hxv, hxw, hc, map_mul]`. Take the linear combination `(h.toSesq w y * conj F E (h.toSesq v x)) * hαβ + (h.toSesq v y * conj F E (h.toSesq w x)) * hαβ'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem scalingMap_isometry {α β : E} (hαβ : α + conj F E β + α * conj F E β = 0) (x y : W) :
     h.toSesq (scalingMap h v w α β x) (scalingMap h v w α β y) = h.toSesq x y := by
@@ -99,13 +99,11 @@ variable {F E : Type*} [Field F] [Field E] [NumberField E] [Algebra F E]
 variable {W : Type*} [AddCommGroup W] [Module E W]
 
 /- English proof (translation)
-Set `S : Submodule E W` to `{ carrier := {w | ∃ N : ℕ, 0 < N ∧ N • w ∈ La} add_mem' := by`. Introduce and unpack `a b ⟨M, hM, ha⟩ ⟨N, hN, hb⟩`. Use `⟨N * M, Nat.mul_pos hN hM, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, mul_smul, mul_comm, mul_smul]`. Conclude with `add_mem (La.nsmul_mem ha N) (La.nsmul_mem hb M)`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use the proof step `zero_mem' := ⟨1, one_pos, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c a ⟨N, hN, ha⟩`. Establish `hc : IsAlgebraic ℤ c` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (.of_finite ℚ c)`. Take `⟨m, s, hm, hs⟩` from `hc.exists_nsmul_eq (𝓞 E)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨m * N, Nat.mul_pos (Nat.pos_of_ne_zero hm) hN, ?_⟩` and prove the remaining obligations. Establish `: (m * N) • (c • a) = (algebraMap (𝓞 E) E s) • (N • a)`. Rewrite using `[← hs]`. Use `module`. Rewrite using `[this]`.
-
-Conclude with `hLa.smul_mem s _ ha }`. Establish `hS : Submodule.span E (La : Set W) ≤ S` using `Submodule.span_le.2 fun x hx => ⟨1, one_pos, by simpa using hx⟩`. Conclude with `(hS (hLa.span_eq_top ▸ Submodule.mem_top : w ∈ Submodule.span E (La : Set W)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_nsmul_mem {La : AddSubgroup W} (hLa : IsLattice E La) (w : W) :
     ∃ N : ℕ, 0 < N ∧ N • w ∈ La := by
@@ -133,7 +131,7 @@ theorem exists_nsmul_mem {La : AddSubgroup W} (hLa : IsLattice E La) (w : W) :
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `IsIntegral.map ((conj F E : E ≃ₐ[F] E) : E →+* E).toIntAlgHom hz`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_integralClosure {z : E}
     (hz : z ∈ integralClosure ℤ E) : conj F E z ∈ integralClosure ℤ E :=
@@ -142,15 +140,13 @@ theorem conj_mem_integralClosure {z : E}
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `smem : ∀ z ∈ integralClosure ℤ E, ∀ y ∈ La, z • y ∈ La` using `fun z hz y hy => hLa.smul_mem ⟨z, hz⟩ y hy`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 (mem_congruenceUnits.1 hu)`. Establish `ht' : ((u : 𝓞 E) : E) - 1 = (t : E) * N` using `by exact_mod_cast ht.symm`. Establish `hu0 : conj F E ((u : 𝓞 E) : E) ≠ 0`. Rewrite using `[map_ne_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `u.ne_zero` after adjusting the coercions. Establish `hinv : (((u⁻¹ : (𝓞 E)ˣ) : 𝓞 E) : E) = ((u : 𝓞 E) : E)⁻¹`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Conclude with `u.inv_mul` after adjusting the coercions. Establish `hN : h.toSesq (N • w) x = N * h.toSesq w x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_nsmul, LinearMap.smul_apply, nsmul_eq_mul]`. Establish `e2 : ((conj F E ((u : 𝓞 E) : E))⁻¹ - 1) * h.toSesq v x = (-conj F E (((u⁻¹ : (𝓞 E)ˣ) : 𝓞 E) : E) * conj F E (t : E) * h.toSesq v x) * N`. Establish `hct : conj F E ((u : 𝓞 E) : E) - 1 = conj F E (t : E) * N`. Rewrite using `[← map_one (conj F E), ← map_sub, ht', map_mul, map_natCast]`. Rewrite using `[hinv, map_inv₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `(-h.toSesq v x) * hct`. Establish `key : scalingMap h v w (((u : 𝓞 E) : E) - 1) ((conj F E ((u : 𝓞 E) : E))⁻¹ - 1) x = x + ((t : E) * h.toSesq (N • w) x) • v + (-conj F E (((u⁻¹ : (𝓞 E)ˣ) : 𝓞 E) : E) * conj F E (t : E) * h.toSesq v x) • (N • w)`. Rewrite using `[scalingMap_apply, e2, ht', hN, ← Nat.cast_smul_eq_nsmul E]`. Use `module`.
-
-Rewrite using `[key]`. Use `add_mem (add_mem hx (smem _ ?_ v hv)) (smem _ ?_ _ hNw)` and prove the remaining obligations. Conclude with `mul_mem t.2 (hint _ hNw x hx)`. Conclude with `mul_mem (mul_mem (neg_mem (conj_mem_integralClosure (u⁻¹ : (𝓞 E)ˣ).val.2)) (conj_mem_integralClosure t.2)) (hint v hv x hx)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem scalingMap_mem (h : HermitianForm F E W) {La : AddSubgroup W} (hLa : IsLattice E La)
     (hint : IsIntegralOn h La) {v w : W} (hv : v ∈ La) {N : ℕ} (hNw : N • w ∈ La)
@@ -195,21 +191,21 @@ variable {F E : Type*} [Field F] [Field E] [NumberField E] [Algebra F E]
 variable {W : Type*} [AddCommGroup W] [Module E W]
 
 /- English proof (translation)
-Introduce `La x₀ hLa hint hx₀ hne hiso`. Take `⟨w₀, hvw, hww⟩` from `h₁ x₀ hne hiso`. Establish `hwv : h.toSesq w₀ x₀ = 1` using `by rw [← h.isSymm.eq x₀ w₀, hvw, map_one]`. Take `⟨N, hN, hNw⟩` from `exists_nsmul_mem hLa w₀`. Use `⟨N, hN, fun ε hε => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he : ((ε : 𝓞 E) : E) ≠ 0` using `by exact_mod_cast ε.ne_zero`. Establish `hce : conj F E ((ε : 𝓞 E) : E) ≠ 0` using `(map_ne_zero _).2 he`. Establish `hinv : (((ε⁻¹ : (𝓞 E)ˣ) : 𝓞 E) : E) = ((ε : 𝓞 E) : E)⁻¹` using `eq_inv_of_mul_eq_one_left (by exact_mod_cast ε.inv_mul)`. Use `set e : E := ((ε : 𝓞 E) : E)`. Establish `hcinv : (conj F E e⁻¹)⁻¹ = conj F E e` using `by rw [map_inv₀, inv_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k1 : e - 1 + (e⁻¹ - 1) + (e - 1) * (e⁻¹ - 1) = 0` using `sub_one_add_inv_sub_one_add_mul_eq_zero he`. Establish `k2 : (conj F E e)⁻¹ - 1 + (conj F E e - 1) + ((conj F E e)⁻¹ - 1) * (conj F E e - 1) = 0`. Use `sub_one_add_inv_sub_one_add_mul_eq_zero (inv_ne_zero hce)` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Establish `k3 : e⁻¹ - 1 + (e - 1) + (e⁻¹ - 1) * (e - 1) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `sub_one_add_inv_sub_one_add_mul_eq_zero (inv_ne_zero he)` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Establish `k4 : conj F E e - 1 + ((conj F E e)⁻¹ - 1) + (conj F E e - 1) * ((conj F E e)⁻¹ - 1) = 0` using `sub_one_add_inv_sub_one_add_mul_eq_zero hce`. Establish `h1 : scalingMap h x₀ w₀ (e - 1) ((conj F E e)⁻¹ - 1) ∘ₗ scalingMap h x₀ w₀ (e⁻¹ - 1) (conj F E e - 1) = LinearMap.id`. Rewrite using `[scalingMap_comp h hiso hww hvw hwv, k1, k2, scalingMap_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : scalingMap h x₀ w₀ (e⁻¹ - 1) (conj F E e - 1) ∘ₗ scalingMap h x₀ w₀ (e - 1) ((conj F E e)⁻¹ - 1) = LinearMap.id`. Rewrite using `[scalingMap_comp h hiso hww hvw hwv, k3, k4, scalingMap_zero]`. Set `γ : W ≃ₗ[E] W` to `LinearEquiv.ofLinearMap _ _ h1 h2`. Apply the tactic sequence `have hγU : γ ∈ h.unitaryGroup := HermitianForm.mem_unitaryGroup.2 fun x y => scalingMap_isometry h hiso hww hvw hwv (by rw [map_sub, map_inv₀, conj_conj, map_one]; exact k1) x y`. Establish `memT : ∀ x ∈ La, scalingMap h x₀ w₀ (e - 1) ((conj F E e)⁻¹ - 1) x ∈ La` using `fun x hx => scalingMap_mem h hLa hint hx₀ hNw hε hx`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `memT' : ∀ x ∈ La, scalingMap h x₀ w₀ (e⁻¹ - 1) (conj F E e - 1) x ∈ La` using `fun x hx => by`. Use `scalingMap_mem h hLa hint hx₀ hNw (inv_mem hε) hx` as an intermediate fact. Rewrite `this` using `[hinv, hcinv]`. Then use the resulting hypothesis. Use `⟨⟨γ, hγU⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[latticeStab, MulAction.mem_stabilizer_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Use `⟨fun hy => ?_, fun hy => ⟨_, memT' y hy, ?_⟩⟩` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `hy`. Conclude with `memT x hx`. Express the relevant statement in the definitionally equal form `scalingMap h x₀ w₀ (e - 1) ((conj F E e)⁻¹ - 1) (scalingMap h x₀ w₀ (e⁻¹ - 1) (conj F E e - 1) y) = y`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← LinearMap.comp_apply, h1, LinearMap.id_apply]`. Express the relevant statement in the definitionally equal form `scalingMap h x₀ w₀ (e - 1) ((conj F E e)⁻¹ - 1) x₀ = e • x₀`. Rewrite using `[scalingMap_apply, hwv, hiso]`. Use `module`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proof (h : HermitianForm F E W) (h₁ : WittPartner.Statement h) :
     IsotropicScaling.Statement h := by

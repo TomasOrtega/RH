@@ -8,15 +8,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.SecTransport
 
 /- English proof (translation)
-Introduce `E _ _ _ H S S' t t' v _ n U' θ' hθ'`. Establish `h` using `n.cart.1`. Establish `: IsOpenImmersion n.cm.F` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) h.flip ‹_›`. Take `⟨w, g, -⟩` from `n.lin`. Establish `sq : ∀ x, t.G.hom (n.cm.F x) = v (t'.G.hom x)` using `fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Hom.comp_apply, h.w, Scheme.Hom.comp_apply]`. Establish `hr : t.G.hom ⁻¹ᵁ (v ''ᵁ U') ≤ n.cm.F.opensRange`. Introduce and unpack `x ⟨y', -, e⟩`. Take `⟨x', h₁, -⟩` from `Scheme.exists_preimage_of_isPullback h x y' e.symm`. Conclude with `⟨x', h₁⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hW : n.cm.F ⁻¹ᵁ (t.G.hom ⁻¹ᵁ (v ''ᵁ U')) ≤ t'.G.hom ⁻¹ᵁ U'`. Introduce and unpack `x ⟨y', hy', e⟩`. Establish `e' : y' = t'.G.hom x` using `v.isOpenEmbedding.injective (e.trans (sq x))`. Use `show t'.G.hom x ∈ U'`. Rewrite using `[← e']`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hy'`. Take `⟨θ, hθ, hb⟩` from `GlobalTheory.ThetaLocal.exists_secOn_push t.PP.isLB t'.PP.isLB ⟨w, g⟩ hr hW hθ'`. Use `⟨θ, hθ, fun x k hk => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart t.PP.isLB (n.cm.F x)`. Establish `hx : t'.G.hom x ∈ U'` using `(t'.G.left.basicOpen_le _ hk).1`.
-
-Conclude with `⟨j, hb x ⟨t'.G.hom x, hx, (sq x).symm⟩ j k hj hk⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_secOn_image : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' : Scheme.{0}} (t : SAB H S) (t' : SAB H S') (v : S' ⟶ S) [IsOpenImmersion v] (n : SABMap t' t v) (U' : S'.Opens) (θ' : ∀ i, Γ(t'.G.left, t'.G.hom ⁻¹ᵁ U' ⊓ t'.PP.L.U i)), θ' ∈ secOn t'.PP.L (t'.G.hom ⁻¹ᵁ U') → ∃ θ : ∀ i, Γ(t.G.left, t.G.hom ⁻¹ᵁ (v ''ᵁ U') ⊓ t.PP.L.U i), θ ∈ secOn t.PP.L (t.G.hom ⁻¹ᵁ (v ''ᵁ U')) ∧ ∀ (g : t'.G.left) (j : t'.PP.L.ι), g ∈ t'.G.left.basicOpen (θ' j) → ∃ i, n.φ.base g ∈ t.G.left.basicOpen (θ i) := by
   intro E _ _ _ H S S' t t' v _ n U' θ' hθ'

@@ -6,13 +6,13 @@ open GlobalTheory.PsCo.PcEG
 namespace GlobalTheory.PsCo.PcEG
 
 /- English proof (translation)
-Introduce `n ε m c t ht`. Unfold `ReciprocityTheory.ChartRestriction.TR.Weyl.numK`. Establish `hfilt : (Finset.univ.filter (fun σ : Equiv.Perm (Fin n) => ∀ i, ε (σ i) = ε i)) = Finset.univ.filter (fun w : Equiv.Perm (Fin n) => ε ∘ w = ε)`. Use extensionality with `w`. Simplify using `[funext_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hfilt, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun w hw => ?_` and prove the remaining obligations. Establish `hw' : ∀ i, ε (w i) = ε i` using `fun i => congrFun (Finset.mem_filter.1 hw).2 i`. Rewrite using `[mul_assoc]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1 : ∏ i, t (w i) ^ (m i - c (ε i)) = (∏ i, t (w i) ^ m i) * ∏ i, t (w i) ^ (-c (ε (w i)))`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hw', sub_eq_add_neg, zpow_add₀ (ht _)]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Equiv.prod_comp w (fun a => t a ^ m (w.symm a))` as an intermediate fact. Simplify using `using this`. Conclude with `Equiv.prod_comp w (fun a => t a ^ (-c (ε a)))`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem numShift_holds : NumShift := by
   intro n ε m c t ht

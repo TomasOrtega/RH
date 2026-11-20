@@ -17,13 +17,11 @@ def tensA (t : HeightOneSpectrum (𝓞 F)) : AddSubgroup (E ⊗[F] t.adicComplet
   AddSubgroup.closure {w | ∃ x ∈ PI.UnitaryApproxDefs.intOE E, ∃ y ∈ t.adicCompletionIntegers F, w = x ⊗ₜ[F] y}
 
 /- English proof (translation)
-Proceed by induction on `ha using AddSubgroup.closure_induction with`. Consider the case `mem a ha'`. Proceed by induction on `hb using AddSubgroup.closure_induction with`. Consider the case `mem b hb'`. Take `⟨x, hx, y, hy, rfl⟩` from `ha'`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨x', hx', y', hy', rfl⟩` from `hb'`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Conclude with `⟨x * x', (PI.UnitaryApproxDefs.intOE E).mul_mem hx hx', y * y', mul_mem hy hy', by rw [Algebra.TensorProduct.tmul_mul_tmul]⟩`. Consider the case `zero => rw [mul_zero]`. Conclude with `(tensA (E := E) t).zero_mem`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Consider the case `add b c _ _ hb hc => rw [mul_add]`. Conclude with `(tensA (E := E) t).add_mem hb hc`. Consider the case `neg b _ hb => rw [mul_neg]`. Conclude with `(tensA (E := E) t).neg_mem hb`. Consider the case `zero => rw [zero_mul]`.
-
-Conclude with `(tensA (E := E) t).zero_mem`. Consider the case `add a c _ _ ha hc => rw [add_mul]`. Conclude with `(tensA (E := E) t).add_mem ha hc`. Consider the case `neg a _ ha => rw [neg_mul]`. Conclude with `(tensA (E := E) t).neg_mem ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tensA_mul (t : HeightOneSpectrum (𝓞 F)) {a b : E ⊗[F] t.adicCompletion F}
     (ha : a ∈ tensA (E := E) t) (hb : b ∈ tensA (E := E) t) : a * b ∈ tensA (E := E) t := by
@@ -44,11 +42,9 @@ theorem tensA_mul (t : HeightOneSpectrum (𝓞 F)) {a b : E ⊗[F] t.adicComplet
   | neg a _ ha => rw [neg_mul]; exact (tensA (E := E) t).neg_mem ha
 
 /- English proof (translation)
-Unfold `PI.UnitaryApproxDefs.tensInt at hs`. Proceed by induction on `hs using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨⟨x, hx⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩` into its components or cases. Conclude with `AddSubgroup.subset_closure ⟨x, hx, 1, (t.adicCompletionIntegers F).one_mem, rfl⟩`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Treat this case separately.
 
-Conclude with `AddSubgroup.subset_closure ⟨1, (PI.UnitaryApproxDefs.intOE E).one_mem, y, hy, rfl⟩`. Consider the case `zero => exact (tensA (E := E) t).zero_mem`. Consider the case `one => exact AddSubgroup.subset_closure ⟨1, (PI.UnitaryApproxDefs.intOE E).one_mem, 1, (t.adicCompletionIntegers F).one_mem, rfl⟩`. Consider the case `add a b _ _ ha hb => exact (tensA (E := E) t).add_mem ha hb`. Consider the case `neg a _ ha => exact (tensA (E := E) t).neg_mem ha`.
-
-Consider the case `mul a b _ _ ha hb => exact tensA_mul t ha hb`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tensInt_le (t : HeightOneSpectrum (𝓞 F)) {s : E ⊗[F] t.adicCompletion F}
     (hs : s ∈ PI.UnitaryApproxDefs.tensInt (F := F) (t.adicCompletion F) (PI.UnitaryApproxDefs.intOE E) (t.adicCompletionIntegers F).toSubring) :
@@ -67,9 +63,9 @@ theorem tensInt_le (t : HeightOneSpectrum (𝓞 F)) {s : E ⊗[F] t.adicCompleti
   | mul a b _ _ ha hb => exact tensA_mul t ha hb
 
 /- English proof (translation)
-Take `⟨r, rfl⟩ : ∃ r : 𝓞 F, algebraMap (𝓞 F) F r = z` from `⟨⟨z, hz⟩, rfl⟩`. Use `first`. Consider the case `exact HeightOneSpectrum.coe_mem_adicCompletionIntegers t r`. Consider the case `(rw [HeightOneSpectrum.mem_adicCompletionIntegers, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `HeightOneSpectrum.intValuation_le_one t r)`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `(rw [HeightOneSpectrum.mem_adicCompletionIntegers]`. Simplify using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_le_one])`.
+A detailed English derivation is pending.
 -/
 theorem intInt (t : HeightOneSpectrum (𝓞 F)) {z : F} (hz : IsIntegral ℤ z) :
     algebraMap F (t.adicCompletion F) z ∈ t.adicCompletionIntegers F := by
@@ -84,13 +80,13 @@ theorem intInt (t : HeightOneSpectrum (𝓞 F)) {z : F} (hz : IsIntegral ℤ z) 
        HeightOneSpectrum.intValuation_le_one])
 
 /- English proof (translation)
-Proceed by induction on `hs using AddSubgroup.closure_induction with`. Consider the case `mem s hs'`. Take `⟨x, hx, y, hy, rfl⟩` from `hs'`. Use `⟨algebraMap F (t.adicCompletion F) ((m : F) * B.coord k x) * y, mul_mem (intInt t (hm x hx k)) hy, ?_⟩` and prove the remaining obligations. Establish `e1 : PI.UnitaryApproxDefs.inclE (F` using `F) (t.adicCompletion F) (algebraMap F E (c : F)) * (x ⊗ₜ[F] y) = (algebraMap F E (c : F) * x) ⊗ₜ[F] y := by`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[PI.UnitaryApproxDefs.inclE, Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[e1, tcoord_tmul, ← Algebra.smul_def (c : F) x, map_smul, smul_eq_mul, Algebra.smul_def]`. Simplify using `only [map_mul, map_intCast]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb`. Take `⟨u1, hu1, e1⟩` from `ha`. Take `⟨u2, hu2, e2⟩` from `hb`. Use `⟨u1 + u2, add_mem hu1 hu2, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_add, map_add, mul_add, e1, e2, mul_add]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `neg a _ ha`. Take `⟨u1, hu1, e1⟩` from `ha`. Use `⟨-u1, neg_mem hu1, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_neg, map_neg, mul_neg, e1, mul_neg]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tcoord_bound {ι : Type} (B : Module.Basis ι F E) (m : ℤ)
     (hm : ∀ x ∈ PI.UnitaryApproxDefs.intOE E, ∀ k, IsIntegral ℤ ((m : F) * B.coord k x)) (t : HeightOneSpectrum (𝓞 F))
@@ -121,13 +117,13 @@ theorem tcoord_bound {ι : Type} (B : Module.Basis ι F E) (m : ℤ)
     rw [mul_neg, map_neg, mul_neg, e1, mul_neg]
 
 /- English proof (translation)
-Take `⟨n, d, hd, hnd⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) e`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Establish `hI : Ideal.span {d} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis. Establish `hc : (Ideal.span {d}).comap (algebraMap ℤ (𝓞 E)) ≠ ⊥` using `fun h => hI (Ideal.eq_bot_of_comap_eq_bot h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Take `⟨m, hm, hm0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hc`. Rewrite `hm` using `[Ideal.mem_comap, Ideal.mem_span_singleton']`. Take `⟨k, hk⟩` from `hm`. Establish `hdE : algebraMap (𝓞 E) E d ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 E) E)]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hmE : (m : E) = algebraMap (𝓞 E) E k * algebraMap (𝓞 E) E d`. Rewrite using `[← map_mul, hk]`. Simplify using the standard rewrite rules. Establish `hw : algebraMap (𝓞 E) E (k * n) = (m : E) * e`. Rewrite using `[← hnd, hmE, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Use `⟨m, hm0, ?_⟩` and prove the remaining obligations. Rewrite using `[← hw]`. Conclude with `NumberField.RingOfIntegers.isIntegral_coe (k * n)`.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_int_mul_isIntegral' {E : Type} [Field E] [NumberField E] (e : E) :
     ∃ m : ℤ, m ≠ 0 ∧ IsIntegral ℤ ((m : E) * e) := by
@@ -154,13 +150,13 @@ private theorem exists_int_mul_isIntegral' {E : Type} [Field E] [NumberField E] 
   exact NumberField.RingOfIntegers.isIntegral_coe (k * n)
 
 /- English proof (translation)
-Set `bw` to `NumberField.RingOfIntegers.basis E`. Use `choose m hm hmi using fun (p : Module.Free.ChooseBasisIndex ℤ (𝓞 E) × ι) => exists_int_mul_isIntegral' (B.coord p.2 (algebraMap (𝓞 E) E (bw p.1)))`. Use `⟨∏ p, m p, Finset.prod_ne_zero_iff.2 fun p _ => hm p, fun x hx k => ?_⟩` and prove the remaining obligations. Take `⟨w, rfl⟩` from `hx`. Establish `hx' : algebraMap (𝓞 E) E w = ∑ i, ((bw.repr w i : ℤ) : E) * algebraMap (𝓞 E) E (bw i)` using `by conv_lhs => rw [← bw.sum_repr w]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, zsmul_eq_mul]`. Rewrite using `[hx', map_sum, Finset.mul_sum]`. Use `IsIntegral.sum _ fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show B.coord k (((bw.repr w i : ℤ) : E) * algebraMap (𝓞 E) E (bw i)) = ((bw.repr w i : ℤ) : F) * B.coord k (algebraMap (𝓞 E) E (bw i)) by`. Rewrite using `[← zsmul_eq_mul, map_zsmul, zsmul_eq_mul]]`. Take `⟨q, hq⟩` from `Finset.dvd_prod_of_mem m (Finset.mem_univ (i, k))`. Establish `hq' : IsIntegral ℤ (((q * (bw.repr w i) : ℤ)) : F)`. Simplify using `using (isIntegral_algebraMap : IsIntegral ℤ (algebraMap ℤ F (q * bw.repr w i)))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hq'.mul (hmi (i, k)) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem coordBound {ι : Type} [Fintype ι] (B : Module.Basis ι F E) :
     ∃ m : ℤ, m ≠ 0 ∧ ∀ x ∈ PI.UnitaryApproxDefs.intOE E, ∀ k, IsIntegral ℤ ((m : F) * B.coord k x) := by
@@ -189,9 +185,9 @@ theorem coordBound {ι : Type} [Fintype ι] (B : Module.Basis ι F E) :
   ring
 
 /- English proof (translation)
-Use `choose m hm hmi using fun k => exists_int_mul_isIntegral' (B k)`. Use `⟨∏ k, m k, Finset.prod_ne_zero_iff.2 fun k _ => hm k, fun k => ?_⟩` and prove the remaining obligations. Take `⟨q, hq⟩` from `Finset.dvd_prod_of_mem m (Finset.mem_univ k)`. Establish `hq' : IsIntegral ℤ ((q : E))`. Simplify using `using (isIntegral_algebraMap : IsIntegral ℤ (algebraMap ℤ E q))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq, Int.cast_mul, mul_comm ((m k : ℤ) : E), mul_assoc]`. Conclude with `hq'.mul (hmi k)`.
+A detailed English derivation is pending.
 -/
 theorem basisInt {ι : Type} [Fintype ι] (B : Module.Basis ι F E) :
     ∃ n : ℤ, n ≠ 0 ∧ ∀ k, IsIntegral ℤ ((n : E) * B k) := by
@@ -211,25 +207,23 @@ end HX
 open HX in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Set `B` to `Module.finBasis F E`. Take `⟨m, hm0, hm⟩` from `coordBound B`. Take `⟨n, hn0, hn⟩` from `basisInt B`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨((m * n : ℤ) : 𝓞 F), Int.cast_ne_zero.2 (mul_ne_zero hm0 hn0), ?_⟩` and prove the remaining obligations. Introduce and unpack `t e c ⟨s, hs, hse⟩`. Establish `hsA` using `tensInt_le t hs`. Establish `hk : ∀ k, ∃ d ∈ t.asIdeal.primeCompl, ∃ a : 𝓞 F, ((m : F) * B.coord k e) * (d : F) = (c : F) * (a : F)`. Introduce `k`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, hue⟩` from `tcoord_bound B m hm t c k hsA`. Rewrite `hue` using `[← hse]`. Establish `h2 : tcoord B k (t.adicCompletion F) (PI.UnitaryApproxDefs.inclE (F` using `F) (t.adicCompletion F) e) = algebraMap F (t.adicCompletion F) (B.coord k e) := by`. Simplify using `[PI.UnitaryApproxDefs.inclE, tcoord_tmul, Algebra.smul_def]`. Rewrite `hue` using `[h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hI F t ((m : F) * B.coord k e) c u hu (by rw [map_mul, map_intCast]; exact hue)`. Use `choose d hd a ha using hk`. Set `D : 𝓞 F` to `∏ k, d k`. Establish `hD : D ∈ t.asIdeal.primeCompl` using `prod_mem fun k _ => hd k`. Use `choose q hq using fun k => Finset.dvd_prod_of_mem d (Finset.mem_univ k)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Set `β : _ → 𝓞 E` to `fun k => ⟨(n : E) * B k, hn k⟩`. Establish `hcoeF : ∀ x : 𝓞 F, ((algebraMap (𝓞 F) (𝓞 E) x : 𝓞 E) : E) = algebraMap F E (x : F)`. Introduce `x`. Use `first`. Consider the case `rfl`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `rw [← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Establish `key : ∀ k, ((D : 𝓞 F) : F) * ((m : F) * B.coord k e) = (c : F) * ((a k * q k : 𝓞 F) : F)`. Introduce `k`. Establish `h1 : ((D : 𝓞 F) : F) = ((d k * q k : 𝓞 F) : F)` using `congrArg (fun x : 𝓞 F => (x : F)) (hq k)`. Rewrite using `[h1]`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Take the linear combination `(q k : F) * ha k`. Use `⟨algebraMap (𝓞 F) (𝓞 E) D, Submonoid.mem_map_of_mem (algebraMap (𝓞 F) (𝓞 E)) hD, ∑ k, algebraMap (𝓞 F) (𝓞 E) (a k * q k) * β k, ?_⟩` and prove the remaining obligations. Establish `hy : ((∑ k, algebraMap (𝓞 F) (𝓞 E) (a k * q k) * β k : 𝓞 E) : E) = ∑ k, algebraMap F E ((a k * q k : 𝓞 F) : F) * ((n : E) * B k)` using `by show algebraMap (𝓞 E) E (∑ k, algebraMap (𝓞 F) (𝓞 E) (a k * q k) * β k) = _`. Rewrite using `[map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `congrArg₂ (· * ·) (hcoeF _) rfl`. Rewrite using `[hcoeF, hy]`. Use `conv_lhs => rw [← B.sum_repr e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, ← Module.Basis.coord_apply]`. Establish `hk2` using `congrArg (algebraMap F E) (key k)`. Move the coercions through the operations in `at hk2 ⊢`.
-
-Simplify using `only [map_mul, map_intCast] at hk2 ⊢`. Take the linear combination `((n : E) * B k) * hk2`.
+A detailed English derivation is pending.
 -/
 theorem tensLocX_of (hI : LocInt) : TensLoc := by
   intro F E _ _ _ _ _

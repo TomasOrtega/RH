@@ -5,7 +5,7 @@ open Matrix Polynomial NumberField IsDedekindDomain
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `F E k _ _ _ _ _ σ q h`. Conclude with `(UpperTheory.ConvolutionTheory.D.galBase F E k σ q h).2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.D.galExt :
     UpperTheory.ConvolutionTheory.D.GalExt := by

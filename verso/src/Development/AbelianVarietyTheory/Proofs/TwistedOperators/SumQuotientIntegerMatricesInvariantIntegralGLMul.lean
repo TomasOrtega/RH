@@ -10,13 +10,13 @@ namespace GlobalTheory.ResSumInv
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[Ideal.Quotient.eq, hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Establish `hne : ((ϖ : k)) ^ e ≠ 0` using `pow_ne_zero _ ϖ.ne_zero`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Establish `hc' : ((a : k) - b) = (ϖ : k) ^ e * c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `congrArg (fun x : 𝒪[k] => (x : k)) hc` as an intermediate fact. Simplify using `using this`. Rewrite using `[hc']`. Establish `: (((ϖ ^ e)⁻¹ : kˣ) : k) * ((ϖ : k) ^ e * c) = c`. Rewrite using `[Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val, ← mul_assoc, inv_mul_cancel₀ hne, one_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `c.2`. Introduce `h`. Use `⟨⟨_, h⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, mul_inv_cancel₀ hne, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem mk_eq_iff {ϖ : kˣ} (hϖ : IsUnif ϖ) (e : ℕ) (a b : 𝒪[k]) :
     (Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ e) a = Ideal.Quotient.mk _ b) ↔
@@ -38,7 +38,7 @@ theorem mk_eq_iff {ϖ : kˣ} (hϖ : IsUnif ϖ) (e : ℕ) (a b : 𝒪[k]) :
     rw [← mul_assoc, mul_inv_cancel₀ hne, one_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hX i l) (hY l j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_int {A C B : Type} [Fintype C] {X : Matrix A C k} {Y : Matrix C B k}
     (hX : ∀ i j, X i j ∈ 𝒪[k]) (hY : ∀ i j, Y i j ∈ 𝒪[k]) (i : A) (j : B) : (X * Y) i j ∈ 𝒪[k] := by
@@ -46,19 +46,19 @@ theorem mul_mem_int {A C B : Type} [Fintype C] {X : Matrix A C k} {Y : Matrix C 
   exact Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hX i l) (hY l j)
 
 /- English proof (translation)
-Take `⟨hM1, hM2⟩` from `(mem_KO_iff M).1 hM`. Use `set c : k := (((ϖ ^ e)⁻¹ : kˣ) : k) with hc`. Establish `hint : ∀ (S : A → B → Res k e) i j, (M.val * liftRes S) i j ∈ 𝒪[k]` using `fun S => mul_mem_int hM1 (liftRes_mem S)`. Set `φ : (A → B → Res k e) → (A → B → Res k e)` to `fun S i j => Ideal.Quotient.mk _ (⟨(M.val * liftRes S) i j, hint S i j⟩ : 𝒪[k])`. Establish `h1 : ∀ S i j, c * (liftRes (φ S) i j - (M.val * liftRes S) i j) ∈ 𝒪[k]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S i j`. Use `(mk_eq_iff hϖ e (Quotient.out (φ S i j)) ⟨(M.val * liftRes S) i j, hint S i j⟩).1 (Ideal.Quotient.mk_out _)` as an intermediate fact. Conclude with `this`. Establish `hinj : Function.Injective φ`. Introduce `S S' h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ∀ i j, c * ((M.val * liftRes S) i j - (M.val * liftRes S') i j) ∈ 𝒪[k]` using `fun i j => (mk_eq_iff hϖ e ⟨_, hint S i j⟩ ⟨_, hint S' i j⟩).1 (congrFun (congrFun h i) j)`. Establish `hD : ∀ i j, (c • (M.val * liftRes S - M.val * liftRes S')) i j ∈ 𝒪[k]` using `fun i j => by`. Simplify `hd i j` using `[mul_sub]`. Establish `hL : c • (liftRes S - liftRes S') = (M⁻¹).val * (c • (M.val * liftRes S - M.val * liftRes S'))`. Rewrite using `[Matrix.mul_smul, ← Matrix.mul_sub, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i j`. Establish `hij : c * (((Quotient.out (S i j) : 𝒪[k]) : k) - ((Quotient.out (S' i j) : 𝒪[k]) : k)) ∈ 𝒪[k]`. Use `mul_mem_int hM2 hD i j` as an intermediate fact. Rewrite `this` using `[← hL]`. Simplify `this` using `[liftRes, mul_sub]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(mk_eq_iff hϖ e (Quotient.out (S i j)) (Quotient.out (S' i j))).2 hij` as an intermediate fact. Rewrite `this` using `[Ideal.Quotient.mk_out, Ideal.Quotient.mk_out]`. Then use the resulting hypothesis. Establish `hbij : Function.Bijective φ` using `Finite.injective_iff_bijective.1 hinj`. Rewrite using `[← Fintype.sum_bijective φ hbij (fun S => f ((ϖ ^ e)⁻¹ • liftRes (φ S))) (fun S => f ((ϖ ^ e)⁻¹ • liftRes S)) (fun _ => rfl)]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsm : ∀ N : Matrix A B k, (ϖ ^ e)⁻¹ • N = c • N` using `fun N => rfl`. Rewrite using `[hsm, hsm, Matrix.mul_smul]`. Establish `: c • liftRes (φ S) = c • (M.val * liftRes S) + c • (liftRes (φ S) - M.val * liftRes S)`. Rewrite using `[← smul_add, add_sub_cancel]`. Rewrite using `[this, hf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `i j`. Simplify `h1 S i j` using `[mul_sub]`.
+A detailed English derivation is pending.
 -/
 theorem sum_res_mul_left {A B : Type} [Fintype A] [DecidableEq A] [Fintype B] [DecidableEq B]
     (ϖ : kˣ) (e : ℕ) (hϖ : IsUnif ϖ) (f : Matrix A B k → ℂ)

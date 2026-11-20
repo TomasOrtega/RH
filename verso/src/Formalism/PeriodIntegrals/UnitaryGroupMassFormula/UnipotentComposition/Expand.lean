@@ -12,7 +12,7 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.B Formalism.FourierDeca
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Use `continuous_pi fun i => ?_` and prove the remaining obligations. Break down `i with x | x` into its components or cases. Conclude with `(continuous_apply x.2).comp (continuous_apply x.1)`. Conclude with `continuous_star.comp ((continuous_apply x.2).comp (continuous_apply x.1))`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem continuous_vars {N : ℕ} : Continuous (vars : Matrix (Fin N) (Fin N) ℂ → Vr N → ℂ) := by
   refine continuous_pi fun i => ?_
@@ -21,7 +21,7 @@ theorem continuous_vars {N : ℕ} : Continuous (vars : Matrix (Fin N) (Fin N) �
   · exact continuous_star.comp ((continuous_apply x.2).comp (continuous_apply x.1))
 
 /- English proof (translation)
-Establish `h : DjU k j ρ = fun g => eval (vars g) (qD k j ρ)` using `funext fun g => (eval_qD g).symm`. Rewrite using `[h]`. Conclude with `(MvPolynomial.continuous_eval _).comp continuous_vars`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_DjU (k j ρ : ℕ) : Continuous (DjU k j ρ) := by
   have h : DjU k j ρ = fun g => eval (vars g) (qD k j ρ) := funext fun g => (eval_qD g).symm
@@ -29,7 +29,7 @@ theorem continuous_DjU (k j ρ : ℕ) : Continuous (DjU k j ρ) := by
   exact (MvPolynomial.continuous_eval _).comp continuous_vars
 
 /- English proof (translation)
-Rewrite `he` using `[step, List.mem_flatMap]`. Take `⟨e₀, he₀, h⟩` from `he`. Use `⟨e₀, he₀, ?_⟩` and prove the remaining obligations. Simplify using `only [stepOne, List.mem_cons, List.not_mem_nil, or_false] at h`. Apply the tactic sequence `rcases h with rfl | rfl | rfl | rfl <;> simp`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_step {k j ρ : ℕ} {X : Mat k (j + ρ)} {L : FS k (j + ρ)}
     {e : SC (2 * (j + ρ) + k + 1) × List (Mat k (j + ρ))} (he : e ∈ step k j ρ X L) :
@@ -41,15 +41,15 @@ theorem mem_step {k j ρ : ℕ} {X : Mat k (j + ρ)} {L : FS k (j + ρ)}
   rcases h with rfl | rfl | rfl | rfl <;> simp
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => intro e he; exact ⟨e, he, by simp, fun Y hY => Or.inl hY⟩`. Consider the case `cons X w ih`. Introduce `e he`. Establish `he' : e ∈ step k j ρ X (steps k j ρ w L)` using `he`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨e₁, he₁, h1⟩` from `mem_step he'`. Take `⟨e₀, he₀, hl, hY⟩` from `ih he₁`. Use `⟨e₀, he₀, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases h1 with h1 | h1 <;> rw [h1] <;> simp only [List.length_cons] <;> omega`. Introduce `Y hYm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `h1 with h1 | h1` into its components or cases. Rewrite `hYm` using `[h1]`. Break down `hY Y hYm with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (List.mem_cons_of_mem _ h)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Rewrite `hYm` using `[h1]`. Break down `List.mem_cons.1 hYm with rfl | hYm` into its components or cases. Conclude with `Or.inr (by simp)`. Break down `hY Y hYm with h | h` into its components or cases. Conclude with `Or.inl h`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr (List.mem_cons_of_mem _ h)`.
+Prove the second alternative.
 -/
 theorem mem_steps {k j ρ : ℕ} {w : List (Mat k (j + ρ))} {L : FS k (j + ρ)} :
     ∀ {e : SC (2 * (j + ρ) + k + 1) × List (Mat k (j + ρ))}, e ∈ steps k j ρ w L →
@@ -81,7 +81,7 @@ section calc_
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simpa using hasDerivAt_const (0 : ℝ) (0 : E)`. Consider the case `cons a L ih`. Simplify using `only [List.map_cons, List.sum_cons]`. Conclude with `(h a (by simp)).add (ih fun b hb => h b (List.mem_cons_of_mem _ hb))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_listSum {α : Type*} (L : List α) (f : α → ℝ → E) (f' : α → E)
     (h : ∀ a ∈ L, HasDerivAt (f a) (f' a) 0) :
@@ -93,7 +93,7 @@ theorem hasDerivAt_listSum {α : Type*} (L : List α) (f : α → ℝ → E) (f'
     exact (h a (by simp)).add (ih fun b hb => h b (List.mem_cons_of_mem _ hb))
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp [Dx]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem RdV_eq_Dx {k r : ℕ} (X : Mat k r) (f : Mat k r → E) : RdV X f = Dx (false, X) f := by
   first
@@ -101,7 +101,7 @@ theorem RdV_eq_Dx {k r : ℕ} (X : Mat k r) (f : Mat k r → E) : RdV X f = Dx (
   | simp [Dx]
 
 /- English proof (translation)
-Rewrite using `[← Dw_wR]`. Apply `CkOn_Dw (fun x hx => by obtain ⟨X, hX, rfl⟩ := List.mem_map.1 hx; exact hv X hX)` to reduce the goal to its premises. Simplify using `only [wR, List.length_map]`. Conclude with `sCkOn_mono (by exact_mod_cast hn) hF`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ck_Rw {k r m : ℕ} {F : Mat k r → E} (hF : CkOn (m : ℕ∞) (GV k r) F) {v : List (Mat k r)}
     (hv : ∀ X ∈ v, inLie k r X) (n : ℕ) (hn : n + v.length ≤ m) : CkOn (n : ℕ∞) (GV k r) (Rw v F) := by
@@ -111,13 +111,13 @@ theorem ck_Rw {k r m : ℕ} {F : Mat k r → E} (hF : CkOn (m : ℕ∞) (GV k r)
   exact sCkOn_mono (by exact_mod_cast hn) hF
 
 /- English proof (translation)
-Establish `hterm : ∀ e ∈ L, HasDerivAt (fun t => sv k j ρ e.1 (crv (false, X) g t) • Rw e.2 F (crv (false, X) g t)) (sv k j ρ e.1 g • Dx (false, X) (Rw e.2 F) g + (sv k j ρ (dP X e.1.1, e.1.2.1, e.1.2.2) g + sv k j ρ (C (-(e.1.2.1 : ℂ)) * e.1.1 * dP X (qD k j ρ), e.1.2.1 + 1, e.1.2.2) g + s …`. Introduce `e he`. Establish `h1` using `hasDerivAt_sv X g hD e.1`. Establish `hc` using `ck_Rw hF (hL e he) 1 (by have := hm e he; omega)`. Rewrite `hc` using `[Nat.cast_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : HasDerivAt (fun t => Rw e.2 F (crv (false, X) g t)) (Dx (false, X) (Rw e.2 F) g) 0` using `CkOn_diff (x := (false, X)) hX hc hg hg`. Establish `h3` using `h1.smul h2`. Simplify using `only [crv_zero] at h3`. Conclude with `h3`. Establish `hsum` using `hasDerivAt_listSum L _ _ hterm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum' : HasDerivAt (fun t => shape k j ρ F L (crv (false, X) g t)) _ 0` using `hsum`. Rewrite using `[RdV_eq_Dx, Dx_eq, hsum'.deriv, step, shape_flatMap]`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `e _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [shape, stepOne, List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero]`. Rewrite using `[show Rw (X :: e.2) F g = Dx (false, X) (Rw e.2 F) g by rw [← RdV_eq_Dx]; rfl]`. Simplify using `only [add_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem step_eq {k j ρ m : ℕ} {F : Mat k (j + ρ) → E} (hF : CkOn (m : ℕ∞) (GV k (j + ρ)) F)
     {X : Mat k (j + ρ)} (hX : inLie k (j + ρ) X) {L : FS k (j + ρ)}
@@ -154,13 +154,13 @@ theorem step_eq {k j ρ m : ℕ} {F : Mat k (j + ρ) → E} (hF : CkOn (m : ℕ�
 end calc_
 
 /- English proof (translation)
-Introduce `k j ρ E _ _ m F hF w`. Proceed by induction on `w with`. Consider the case `nil => intro L _ _ _ g _ _`. Both sides reduce to the same expression. Consider the case `cons X w ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Introduce `L hw hL hm g hg hD`. Establish `hO : IsOpen {g : Mat k (j + ρ) | DjU k j ρ g ≠ 0}` using `isOpen_ne_fun (continuous_DjU k j ρ) continuous_const`. Establish `hIH : ∀ g' ∈ GV k (j + ρ), g' ∈ {g : Mat k (j + ρ) | DjU k j ρ g ≠ 0} → Rw w (shape k j ρ F L) g' = shape k j ρ F (steps k j ρ w L) g'` using `fun g' hg' hg'O => ih L (fun Y hY => hw Y (List.mem_cons_of_mem _ hY)) hL (fun e he => by have := hm e he; simp only [List.length_cons] at this; omega) g' hg' hg'O`. Establish `hX` using `hw X List.mem_cons_self`. Use `show RdV X (Rw w (shape k j ρ F L)) g = shape k j ρ F (step k j ρ X (steps k j ρ w L)) g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RdV_eq_Dx, Dx_congr_loc (x := (false, X)) hX hO hIH g hg hD, ← RdV_eq_Dx]`. Use `step_eq hF hX (fun e he Y hY => ?_) (fun e he => ?_) hg hD` and prove the remaining obligations. Take `⟨e₀, he₀, _, hm'⟩` from `mem_steps he`. Break down `hm' Y hY with h | h` into its components or cases. Conclude with `hL e₀ he₀ Y h`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hw Y (List.mem_cons_of_mem _ h)`. Take `⟨e₀, he₀, hl, _⟩` from `mem_steps he`. Use `hm e₀ he₀` as an intermediate fact. Simplify using `only [List.length_cons] at this`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem expand : Expand := by
   intro k j ρ E _ _ m F hF w

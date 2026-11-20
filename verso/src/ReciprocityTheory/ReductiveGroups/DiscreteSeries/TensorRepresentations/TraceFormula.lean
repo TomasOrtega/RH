@@ -22,7 +22,7 @@ def formB {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {D : Subm
   ∑ c, (if ε c then (1 : ℂ) else -1) * inner ℂ ((f c : D) : H) ((g c : D) : H)
 
 /- English proof (translation)
-Unfold `adjSign`. Apply the tactic sequence `rcases Bool.eq_false_or_eq_true (ε r) with h | h <;> rcases Bool.eq_false_or_eq_true (ε s) with h' | h' <;>`. Simplify using `[h, h']`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem tfa_sign (ε : Fin n → Bool) (r s : Fin n) :
     (if ε s then (1 : ℂ) else -1) * adjSign ε r s = if ε r then (1 : ℂ) else -1 := by
@@ -31,7 +31,7 @@ theorem tfa_sign (ε : Fin n → Bool) (r s : Fin n) :
     simp [h, h']
 
 /- English proof (translation)
-Unfold `adjSign`. Apply the tactic sequence `rcases Bool.eq_false_or_eq_true (ε r) with h | h <;> rcases Bool.eq_false_or_eq_true (ε s) with h' | h' <;>`. Simplify using `[h, h']`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem tfa_sign' (ε : Fin n → Bool) (r s : Fin n) :
     (if ε s then (1 : ℂ) else -1) * adjSign ε s r = if ε r then (1 : ℂ) else -1 := by
@@ -40,14 +40,14 @@ theorem tfa_sign' (ε : Fin n → Bool) (r s : Fin n) :
     simp [h, h']
 
 /- English proof (translation)
-Rewrite using `[Submodule.coe_sum, sum_inner]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tfa_inner_sum {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {D : Submodule ℂ H}
     (x : Fin n → D) (y : D) : inner ℂ (((∑ r, x r : D)) : H) (y : H) = ∑ r, inner ℂ ((x r : D) : H) (y : H) := by
   rw [Submodule.coe_sum, sum_inner]
 
 /- English proof (translation)
-Rewrite using `[Submodule.coe_sum, inner_sum]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tfa_inner_sum' {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {D : Submodule ℂ H}
     (x : Fin n → D) (y : D) : inner ℂ (y : H) (((∑ r, x r : D)) : H) = ∑ r, inner ℂ (y : H) ((x r : D) : H) := by
@@ -57,7 +57,7 @@ section FormB
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {D : Submodule ℂ H} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Simplify using `only [formB, map_sum, map_mul, inner_conj_symm]`. Use `sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem formB_conj (f g : Fin n → D) : starRingEnd ℂ (formB ε f g) = formB ε g f := by
   simp only [formB, map_sum, map_mul, inner_conj_symm]
@@ -65,45 +65,45 @@ theorem formB_conj (f g : Fin n → D) : starRingEnd ℂ (formB ε f g) = formB 
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [formB, Pi.add_apply, Submodule.coe_add, inner_add_right, mul_add, sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem formB_add_right (f g g' : Fin n → D) : formB ε f (g + g') = formB ε f g + formB ε f g' := by
   simp only [formB, Pi.add_apply, Submodule.coe_add, inner_add_right, mul_add, sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [formB, Pi.smul_apply, Submodule.coe_smul, inner_smul_right, mul_sum]`. Use `sum_congr rfl fun c _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem formB_smul_right (f g : Fin n → D) (a : ℂ) : formB ε f (a • g) = a * formB ε f g := by
   simp only [formB, Pi.smul_apply, Submodule.coe_smul, inner_smul_right, mul_sum]
   refine sum_congr rfl fun c _ => by ring
 
 /- English proof (translation)
-Simplify using `only [formB, Pi.smul_apply, Submodule.coe_smul, inner_smul_left, mul_sum]`. Use `sum_congr rfl fun c _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem formB_smul_left (f g : Fin n → D) (a : ℂ) : formB ε (a • f) g = starRingEnd ℂ a * formB ε f g := by
   simp only [formB, Pi.smul_apply, Submodule.coe_smul, inner_smul_left, mul_sum]
   refine sum_congr rfl fun c _ => by ring
 
 /- English proof (translation)
-Simplify using `[formB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem formB_zero_right (f : Fin n → D) : formB ε f 0 = 0 := by
   simp [formB]
 
 /- English proof (translation)
-Simplify using `[formB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem formB_zero_left (f : Fin n → D) : formB ε 0 f = 0 := by
   simp [formB]
 
 /- English proof (translation)
-Simplify using `only [formB, Pi.sub_apply, Submodule.coe_sub, inner_sub_right, mul_sub, sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem formB_sub_right (f g g' : Fin n → D) : formB ε f (g - g') = formB ε f g - formB ε f g' := by
   simp only [formB, Pi.sub_apply, Submodule.coe_sub, inner_sub_right, mul_sub, sum_sub_distrib]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [formB_zero_right]`. Consider the case `insert a s ha ih => rw [sum_insert ha, sum_insert ha, formB_add_right, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem formB_sum_right {ι : Type*} (s : Finset ι) (f : Fin n → D) (g : ι → Fin n → D) :
     formB ε f (∑ i ∈ s, g i) = ∑ i ∈ s, formB ε f (g i) := by
@@ -119,17 +119,15 @@ def closRep {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : M
   S.orthogonalProjection ∘L σ g ∘L S.subtypeL
 
 /- English proof (translation)
-Name the introduced variables `hcas`. Establish `hPB' : ∀ f ∈ tensSub (genSub E V), ∀ g ∈ tensSub (genSub E V), tfFormBH ε (fun c => ((P f c : D) : H)) (fun c => ((g c : D) : H)) = tfFormBH ε (fun c => ((f c : D) : H)) (fun c => ((P g c : D) : H))` using `hPB`. Establish `hcore : ∀ y ∈ V, (y : H) ≠ 0 → ∃ r : ℝ, 0 ≤ r ∧ c = r ∧ (c = 0 → ∀ b, P (Pi.single b y) = 0)` using `fun y hy hy0 => tf_trace_core dual hσ hD hsm hgap hV hcas hVK hW hP hPP hPB' hEP hc hy hy0`. Take `⟨y0, hy0V, hy00, -⟩` from `hV.2.2.2`. Establish `hy0H : (y0 : H) ≠ 0` using `fun h => hy00 (Subtype.ext h)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, hcr, -⟩` from `hcore y0 hy0V hy0H`. Use `⟨by rw [hcr, Complex.ofReal_im], by rw [hcr, Complex.ofReal_re]; exact hr, fun h0 => ?_⟩` and prove the remaining obligations. Establish `hV0 : ∀ y ∈ V, ∀ b, P (Pi.single b y) = 0`. Introduce `y hy b`. Distinguish the cases in `hyz : (y : H) = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hy' : y = 0` using `Subtype.ext hyz`. Rewrite using `[hy', Pi.single_zero, map_zero]`. Take `⟨-, -, -, h⟩` from `hcore y hy hyz`. Conclude with `h h0 b`. Establish `hVt : ∀ f ∈ tensSub V, P f = 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `f hf`. Rewrite using `[← Finset.univ_sum_single f, map_sum]`. Conclude with `sum_eq_zero fun b _ => hV0 _ ((tset_mem.1 hf) b) b`. Establish `hle : tensSub (genSub E V) ≤ tensSub (genSub E V) ⊓ LinearMap.ker P`. Use `tfg_gen dual E V _ (fun f hf => ⟨tset_mem.2 fun b => rorth_le_genSub ((tset_mem.1 hf) b), hVt f hf⟩) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b f hf`. Use `⟨tensSub_stable dual a b f hf.1, ?_⟩` and prove the remaining obligations. Use `show P (tensF dual E a b f) = 0`. Rewrite using `[hP.2.1 a b f hf.1, show P f = 0 from hf.2, map_zero]`. Introduce `f hf`.
-
-Conclude with `(hle hf).2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem trace_nonneg (dual : Bool) {lam : Fin n → ℝ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {ε : Fin n → Bool}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
@@ -176,27 +174,25 @@ theorem trace_nonneg (dual : Bool) {lam : Fin n → ℝ} {H : Type*} [NormedAddC
   exact (hle hf).2
 
 /- English proof (translation)
-Name the introduced variables `hcas`. Establish `hPB' : ∀ f ∈ tensSub (genSub E V), ∀ g ∈ tensSub (genSub E V), tfFormBH ε (fun c => ((P f c : D) : H)) (fun c => ((g c : D) : H)) = tfFormBH ε (fun c => ((f c : D) : H)) (fun c => ((P g c : D) : H))` using `hPB`. Take `⟨d, hd⟩` from `tfClRep_fdeg hgap hσ hD hV hcas hVK hSq`. Take `⟨d', hd'⟩` from `tfClRep_fdeg hgap' hσ hD hV' hc' hVK' hSq'`. Establish `hfd : Formalism.MainNotions.S.fdegOf (Formalism.REAL.muG ε) (closRep σ (closGen E V)) w = d` using `fdegOf_of_isFdeg' hd hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfd' : Formalism.MainNotions.S.fdegOf (Formalism.REAL.muG ε) (closRep σ (closGen E V')) w' = d'` using `fdegOf_of_isFdeg' hd' hw'`. Rewrite using `[hfd, hfd']`. Take `⟨y0, hy0V, hy00, -⟩` from `hV.2.2.2`. Establish `hy0H : (y0 : H) ≠ 0` using `fun h => hy00 (Subtype.ext h)`. Establish `hy0G : y0 ∈ genSub E V` using `rorth_le_genSub hy0V`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨HP, wv, hHPc, hHPeq, hst, hrep, hc0eq⟩` from `tf_trace_data dual hσ hD hsm hgap hV hcas hVK hW hP hPP hPB' hEP hc hy0V hy0H hd`. Take `⟨V₂, hV₂, hc₂, hVK₂, hV₂0, hgen1, -⟩` from `tf_datum2 dual hσ hD hsm hgap hV hcas hVK hW hd hy0G hy0H hV' hc' hVK' hι`. Establish `hV'0 : V' ≠ ⊥`. Take `⟨u, hu, hu0, -⟩` from `hV'.2.2.2`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hu0` to reduce the goal to its premises. Establish `hub : u ∈ (⊥ : Submodule ℂ D)` using `h ▸ hu`. Conclude with `(Submodule.mem_bot ℂ).1 hub`. Establish `hR` using `tfRdiag_isURepOn ε`. Establish `hDR` using `isDerivedOn_smE hR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨U, hU⟩` from `data_unitary_equiv hgap' hσ hD hV' hc' hVK' hV'0 hR hDR hV₂ hc₂ hVK₂ hV₂0`. Establish `hschur` using `tf_schur_transfer (closGen E V') (closGen (smE ε (tfRdiag ε)) V₂) U hU (closGen_stable hgap' hσ hD hV' hc' hVK') hd'`. Establish `hH'c : IsClosed ((closGen (smE ε (tfRdiag ε)) V₂ : Submodule ℂ (tfL2n ε)) : Set (tfL2n ε))` using `Submodule.isClosed_topologicalClosure _`. Establish `hst2` using `closGen_stable hgap' hR hDR hV₂ hc₂ hVK₂`. Establish `hH'P : closGen (smE ε (tfRdiag ε)) V₂ ≤ HP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Submodule.topologicalClosure_minimal _ ?_ hHPc` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Take `⟨x, hx, hxe⟩` from `hgen1 v hv`. Rewrite using `[hHPeq]`. Use `Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨ι x, hι.1 x hx, ?_⟩)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (v : tfL2n ε) = _`. Rewrite using `[hxe, hιP x hx]`. Establish `hH'0 : closGen (smE ε (tfRdiag ε)) V₂ ≠ ⊥`. Take `⟨u, hu, hu0, -⟩` from `hV₂.2.2.2`. Introduce `h`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hu0` to reduce the goal to its premises. Establish `h1 : ((u : smD ε (tfRdiag ε)) : tfL2n ε) ∈ closGen (smE ε (tfRdiag ε)) V₂` using `Submodule.le_topologicalClosure _ ⟨u, Submodule.mem_sInf.mpr fun _ hT => hT.1 hu, rfl⟩`. Establish `h2 : ((u : smD ε (tfRdiag ε)) : tfL2n ε) ∈ (⊥ : Submodule ℂ (tfL2n ε))` using `h ▸ h1`. Conclude with `Subtype.ext ((Submodule.mem_bot ℂ).1 h2)`. Establish `hone : tfRdiag ε (Formalism.MainNotions.S.umat (1 : Formalism.REAL.UJ ε)) = 1` using `hR.1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmul : ∀ a b : Formalism.REAL.UJ ε, tfRdiag ε (Formalism.MainNotions.S.umat (a * b)) = (tfRdiag ε (Formalism.MainNotions.S.umat a)).comp (tfRdiag ε (Formalism.MainNotions.S.umat b))` using `fun a b => hR.1.2 _ (umat_mem_UJset ε a) _ (umat_mem_UJset ε b)`. Establish `hiso : ∀ (g : Formalism.REAL.UJ ε) v, ‖tfRdiag ε (Formalism.MainNotions.S.umat g) v‖ = ‖v‖` using `fun g v => hR.2.1 _ (umat_mem_UJset ε g) v`. Take `⟨hge, heq⟩` from `tf_ge_abstract (μ := Formalism.REAL.muG ε) (fun g => tfRdiag ε (Formalism.MainNotions.S.umat g)) hone hmul hiso HP _ hH'c hH'P (fun g v hv => hst2 _ (umat_mem_UJset ε g) v hv) hH'0 wv hrep hd'.1 hschur`. Establish `hdpos : 0 < d` using `hd.1`. Establish `hre : c.re = (∑ i, ‖wv i‖ ^ 2) / d` using `by rw [hc0eq, Complex.ofReal_re]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨by rw [hre]; exact div_le_div_of_nonneg_right hge hdpos.le, fun h => ?_⟩` and prove the remaining obligations. Establish `hT : ∑ i, ‖wv i‖ ^ 2 = d'`. Rewrite `h` using `[hre, div_left_inj' hdpos.ne']`. Conclude with `h`. Establish `hle` using `heq hT`.
-
-Use `tf_eq_case dual hσ hD hsm hgap hV hcas hVK hW hd hy0G hy0H hP hι.1 hgap' hV₂ hc₂ hVK₂ hgen1 ?_` and prove the remaining obligations. Introduce `f hf`. Apply `hle` to reduce the goal to its premises. Rewrite using `[hHPeq]`. Conclude with `Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨f, hf, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_ge (dual : Bool) {lam lam' : Fin n → ℝ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {ε : Fin n → Bool}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
@@ -293,11 +289,11 @@ theorem trace_ge (dual : Bool) {lam lam' : Fin n → ℝ} {H : Type*} [NormedAdd
   exact Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨f, hf, rfl⟩)
 
 /- English proof (translation)
-Establish `hU : IsInfUnitary ε E` using `isInfUnitary_of_isDerivedOn hσ hD`. Establish `hU' : ∀ a b (x y : D), inner ℂ ((E a b x : D) : H) (y : H) = adjSign ε a b * inner ℂ (x : H) ((E b a y : D) : H)`. Introduce `a b x y`. Use `hU a b x y` as an intermediate fact. Simplify `this` using `only [Submodule.coe_inner]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the cases of `dual`. Simplify using `only [formB, eeF, cond_false, eeV_coord, tfa_inner_sum, tfa_inner_sum', mul_sum, hU']`. Rewrite using `[sum_comm]`. Use `sum_congr rfl fun r _ => sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, tfa_sign]`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [formB, eeF, cond_true, eeVd_coord, Submodule.coe_neg, inner_neg_left, inner_neg_right, tfa_inner_sum, tfa_inner_sum', mul_neg, mul_sum, hU', sum_neg_distrib]`. Rewrite using `[sum_comm]`. Use `congrArg _ (sum_congr rfl fun r _ => sum_congr rfl fun s _ => ?_)` and prove the remaining obligations. Rewrite using `[← mul_assoc, tfa_sign']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eeF_formB_symm (dual : Bool) {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin n → Bool}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
@@ -320,19 +316,17 @@ theorem eeF_formB_symm (dual : Bool) {H : Type*} [NormedAddCommGroup H] [InnerPr
     rw [← mul_assoc, tfa_sign']
 
 /- English proof (translation)
-Take `⟨Bs, hdec, hreal⟩` from `ee_decomp dual hσ hD hgap hV hc hVK hW`. Establish `horth : ∀ x y : Fin n → D, ∀ a b : ℂ, a.im = 0 → eeF dual E x = a • x → eeF dual E y = b • y → a ≠ b → formB ε x y = 0`. Introduce `x y a b ha hx hy hab`. Establish `h` using `eeF_formB_symm dual hσ hD (ε := ε) x y`. Rewrite `h` using `[hx, hy, formB_smul_left, formB_smul_right]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hca : starRingEnd ℂ a = a` using `Complex.conj_eq_iff_im.mpr ha`. Rewrite `h` using `[hca]`. Establish `h2 : (a - b) * formB ε x y = 0` using `by rw [sub_mul, h, sub_self]`. Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases. Conclude with `absurd (sub_eq_zero.mp h3) hab`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `h3`. Establish `hL : ∀ f ∈ tensSub (genSub E V), ∀ h ∈ tensSub (genSub E V), formB ε (P f) (h - P h) = 0`. Introduce `f hf h hh`. Take `⟨hb, hbe, rfl⟩` from `hdec h hh`. Rewrite using `[map_sum, ← sum_sub_distrib, formB_sum_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hbz : ((b : ℝ) : ℂ) = z`. Rewrite using `[hP1 _ (hbe b).1 (by rw [(hbe b).2, hbz]), sub_self, formB_zero_right]`. Rewrite using `[hP0 _ (hbe b).1 _ hbz (hbe b).2, sub_zero]`. Distinguish the cases in `hPf : P f = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hPf, formB_zero_left]`. Take `⟨b0, _, hb0⟩` from `hreal z (P f) (hPM f hf) hPf (hPz f hf)`. Conclude with `horth _ _ z _ (by rw [hb0]; simp) (hPz f hf) (hbe b).2 (Ne.symm hbz)`. Introduce `f hf g hg`. Establish `e1 : formB ε (P f) g = formB ε (P f) (P g)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hL f hf g hg` as an intermediate fact. Rewrite `this` using `[formB_sub_right, sub_eq_zero]`. Conclude with `this`. Establish `e2 : formB ε f (P g) = formB ε (P f) (P g)`. Use `hL g hg f hf` as an intermediate fact.
-
-Rewrite `this` using `[formB_sub_right, sub_eq_zero]`. Rewrite using `[← formB_conj, this, formB_conj]`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigenProj_formB (dual : Bool) {lam : Fin n → ℝ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {ε : Fin n → Bool}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}

@@ -14,19 +14,17 @@ variable {E L Ψ V : Type} [Field E] [NumberField E] [Field L] [NumberField L] [
 
 open TorPart in
 /- English proof (translation)
-Establish `hres : Function.Bijective (fun t : E →+* L => t.comp (algebraMap (𝓞 E) E))`. Use `⟨fun a b h => IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) h, fun g => ?_⟩` and prove the remaining obligations. Take `⟨q, rfl⟩` from `A.σ_bij.2 g`. Conclude with `⟨IsFractionRing.lift (A.σ_inj q), RingHom.ext fun x => IsFractionRing.lift_algebraMap (A.σ_inj q) x⟩`. Establish `hfin1 : Finite (𝓞 E →+* L)` using `Finite.of_surjective A.σ A.σ_bij.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hfin2 : Finite (E →+* L)` using `Finite.of_injective _ hres.1`. Use `letI : Fintype (E →+* L) := Fintype.ofFinite _`. Establish `hcard : Fintype.card (E →+* L) = Module.finrank ℚ E`. Rewrite using `[← Nat.card_eq_fintype_card, Nat.card_congr (Equiv.ofBijective _ hres), ← Nat.card_congr (Equiv.ofBijective _ A.σ_bij), ← hΨ, Nat.card_eq_fintype_card, Fintype.card_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨t, ht⟩` from `hres.2 (A.σ s)`. Express the relevant statement in the definitionally equal form `t.comp (algebraMap (𝓞 E) E) = A.σ s at ht`. Establish `hsur : ∀ σ' : 𝓞 E →+* L, ∃ u : E →+* L, u.comp (algebraMap (𝓞 E) E) = σ'` using `hres.2`. Establish `hc : ∀ a, eigComp A.ρ (A.σ s) (v a) = HT.eigProj A.ρ t (v a)` using `fun a => by`. Rewrite using `[← ht, eigComp_comp hcard hsur]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htor : A.tor s = Submodule.span (𝓞 L) (A.I : Set V) ⊓ (HT.eigSp A.ρ t).restrictScalars (𝓞 L)`. Rewrite using `[LinPt.tor, ← ht, eigSp_comp]`. Simplify using `only [hc]`. Use `⟨?_, fun a => ?_, fun a => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearIndependent_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg a`. Establish `h` using `phi_injective hcard A.ρ hv A.I_stable A.I_basis t (a₁ := g) (a₂ := 0) (by rw [phi_apply, hg, map_zero])`. Rewrite using `[h]`. Both sides reduce to the same expression. Rewrite using `[← ht, eigSp_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `HT.LatBasic.eigProj_mem A.ρ t _`. Simplify using `only [HT.eigProj, LinearMap.sum_apply, LinearMap.smul_apply]`. Conclude with `sum_mem fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span (A.I_stable _ _ (hv.1 a)))`. Rewrite `hx` using `[htor, ← map_eigenLat hcard A.ρ hv A.I_stable A.I_basis t]`. Take `⟨w, -, rfl⟩` from `hx`.
-
-Rewrite using `[phi_apply]`. Conclude with `sum_mem fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tor_facts [Fintype Ψ] (hΨ : 2 * Fintype.card Ψ = Module.finrank ℚ E) {r : ℕ} {v : Fin r → V}
     (hv : IsOFamily A.ρ A.I v) (s : Ψ ⊕ Ψ) :
@@ -72,12 +70,12 @@ theorem tor_facts [Fintype Ψ] (hΨ : 2 * Fintype.card Ψ = Module.finrank ℚ E
     exact sum_mem fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.2 fun x hx => A.I_le x hx`.
+A detailed English derivation is pending.
 -/
 theorem span_I_le : Submodule.span (𝓞 L) (A.I : Set V) ≤ A.Λ := Submodule.span_le.2 fun x hx => A.I_le x hx
 
 /- English proof (translation)
-Take `⟨c, hc, h1⟩` from `exists_smul_mem_of_mem_span (Submodule.span (𝓞 L) (A.I : Set V)) (fun y hy => Submodule.subset_span hy) h`. Establish `h2` using `(A.ker (c • ⟨x, hx⟩)).2 h1`. Rewrite `h2` using `[map_smul]`. Conclude with `(A.ker ⟨x, hx⟩).1 ((smul_eq_zero.1 h2).resolve_left hc)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_I {x : V} (hx : x ∈ A.Λ) (h : x ∈ Submodule.span L (A.I : Set V)) :
     x ∈ Submodule.span (𝓞 L) (A.I : Set V) := by
@@ -88,14 +86,14 @@ theorem mem_span_I {x : V} (hx : x ∈ A.Λ) (h : x ∈ Submodule.span L (A.I : 
   exact (A.ker ⟨x, hx⟩).1 ((smul_eq_zero.1 h2).resolve_left hc)
 
 /- English proof (translation)
-The claim follows from `inf_le_inf_right _ (span_I_le A)`.
+A detailed English derivation is pending.
 -/
 theorem tor_le_eig (s : Ψ ⊕ Ψ) : A.tor s ≤ A.eig s := inf_le_inf_right _ (span_I_le A)
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Use `Fin.addCases (fun a => ?_) (fun c => ?_) i` and prove the remaining obligations. Conclude with `Or.inl ⟨a, (Fin.append_left _ _ _).symm⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Prove the first alternative.
 
-Conclude with `Or.inr ⟨c, (Fin.append_right _ _ _).symm⟩`. Introduce and unpack `(⟨a, rfl⟩ | ⟨c, rfl⟩)`. Conclude with `⟨_, Fin.append_left _ _ a⟩`. Conclude with `⟨_, Fin.append_right _ _ c⟩`.
+Prove the second alternative. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem range_append {α : Type} {r k : ℕ} (w : Fin r → α) (q : Fin k → α) :
     Set.range (Fin.append w q) = Set.range w ∪ Set.range q := by
@@ -110,9 +108,9 @@ theorem range_append {α : Type} {r k : ℕ} (w : Fin r → α) (q : Fin k → �
     · exact ⟨_, Fin.append_right _ _ c⟩
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `(Submodule.mem_span_range_iff_exists_fun L).1 hc`. Establish `h1` using `Fintype.linearIndependent_iff.1 h (Fin.append (fun a => -d a) fun j => algebraMap (𝓞 L) L (c j)) (by`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, neg_smul, Finset.sum_neg_distrib, algebraMap_smul, hd]`. Conclude with `neg_add_cancel _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Establish `h2` using `h1 (Fin.natAdd r j)`. Rewrite `h2` using `[Fin.append_right, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 L) L)]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_eq_zero {r k : ℕ} {w : Fin r → V} {q : Fin k → V} (h : LinearIndependent L (Fin.append w q))
     (c : Fin k → 𝓞 L) (hc : ∑ j, c j • q j ∈ Submodule.span L (Set.range w)) : c = 0 := by
@@ -129,9 +127,9 @@ theorem coeff_eq_zero {r k : ℕ} {w : Fin r → V} {q : Fin k → V} (h : Linea
 variable {s : Ψ ⊕ Ψ} {r k : ℕ} {w : Fin r → V} {q : Fin k → A.Λ}
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg j`. Establish `h1 : A.f (∑ c, g c • q c) = 0` using `by simpa only [map_sum, map_smul] using hg`. Establish `h2` using `(A.ker _).1 h1`. Establish `e : ((∑ c, g c • q c : A.Λ) : V) = ∑ c, g c • (q c : V)` using `by simp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[e]`. Establish `h3 : ∑ c, g c • (q c : V) ∈ A.eig s` using `sum_mem fun c _ => (A.eig s).smul_mem _ (hq c)`. Conclude with `congrFun (coeff_eq_zero hb g (h4 _ ⟨h2, h3.2⟩)) j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem linearIndependent_img (hb : LinearIndependent L (Fin.append w fun c => (q c : V)))
     (h4 : ∀ x ∈ A.tor s, x ∈ Submodule.span L (Set.range w)) (hq : ∀ c, (q c : V) ∈ A.eig s) :
@@ -146,15 +144,15 @@ theorem linearIndependent_img (hb : LinearIndependent L (Fin.append w fun c => (
   exact congrFun (coeff_eq_zero hb g (h4 _ ⟨h2, h3.2⟩)) j
 
 /- English proof (translation)
-Establish `k2 : T ⊔ (B₁ ⊔ B₂) ⊓ M = T ⊔ B₂`. Use `le_antisymm (sup_le le_sup_left ?_) (sup_le_sup_left (le_inf le_sup_right hB₂M) _)` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hxM⟩`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Establish `h5` using `M.sub_mem hxM (hB₂M hz)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h5` using `[add_sub_cancel_right]`. Conclude with `Submodule.add_mem_sup (hB₁T y hy h5) hz`. Establish `k3 : B₁ ⊔ M ⊓ (B₁ ⊔ B₂) = B₁ ⊔ B₂` using `le_antisymm (sup_le le_sup_left inf_le_right) (sup_le_sup_left (le_inf hB₂M le_sup_right) _)`. Establish `k4 : M ⊓ (B₁ ⊔ B₂) ⊓ B₁ = T ⊓ B₁` using `le_antisymm (fun x hx => ⟨hB₁T x hx.2 hx.1.1, hx.2⟩) fun x hx => ⟨⟨hTM hx.1, Submodule.mem_sup_left hx.2⟩, hx.2⟩`. Establish `inf_r : ∀ X Y : Submodule R N, (X ⊓ Y).toAddSubgroup.relIndex Y.toAddSubgroup = X.toAddSubgroup.relIndex Y.toAddSubgroup` using `fun X Y => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : (X ⊓ Y).toAddSubgroup = X.toAddSubgroup ⊓ Y.toAddSubgroup` using `AddSubgroup.ext fun _ => Iff.rfl`. Rewrite using `[h, AddSubgroup.inf_relIndex_right]`. Establish `sup_r : ∀ X Y : Submodule R N, Y.toAddSubgroup.relIndex (X ⊔ Y).toAddSubgroup = Y.toAddSubgroup.relIndex X.toAddSubgroup` using `fun X Y => by`. Rewrite using `[Submodule.sup_toAddSubgroup]`. Conclude with `AddSubgroup.relIndex_sup_right _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Establish `e1` using `AddSubgroup.relIndex_mul_relIndex ((B₁ ⊔ B₂) ⊓ M).toAddSubgroup (T ⊔ (B₁ ⊔ B₂) ⊓ M).toAddSubgroup M.toAddSubgroup (fun x hx => Submodule.mem_sup_right hx) fun x hx => (sup_le hTM inf_le_right : T ⊔ (B₁ ⊔ B₂) ⊓ M ≤ M) hx`. Establish `e2 : ((B₁ ⊔ B₂) ⊓ M).toAddSubgroup.relIndex T.toAddSubgroup = B₁.toAddSubgroup.relIndex T.toAddSubgroup`. Rewrite using `[← inf_r _ T, inf_assoc, inf_eq_right.2 hTM, k1, inf_r]`. Rewrite using `[← inf_r (B₁ ⊔ B₂) M, ← e1, sup_r, e2, k2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `sup_r B₁ (M ⊓ (B₁ ⊔ B₂))`. Rewrite `e1` using `[k3, inf_r]`. Rewrite using `[e1, ← inf_r _ B₁, k4, inf_r]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_abstract {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] {B₁ B₂ M T : Submodule R N}
     (hTM : T ≤ M) (hB₂M : B₂ ≤ M) (hB₁T : ∀ x ∈ B₁, x ∈ M → x ∈ T) (k1 : (B₁ ⊔ B₂) ⊓ T = B₁ ⊓ T) :
@@ -192,19 +190,17 @@ theorem index_abstract {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] {
     rw [e1, ← inf_r _ B₁, k4, inf_r]
 
 /- English proof (translation)
-Establish `e3` using `AddSubgroup.relIndex_comap (T ⊔ Submodule.span R (Set.range fun c => (q c : N))).toAddSubgroup Λ.subtype.toAddMonoidHom (M.comap Λ.subtype).toAddSubgroup`. Establish `e4 : (M.comap Λ.subtype).toAddSubgroup.map Λ.subtype.toAddMonoidHom = M.toAddSubgroup`. Establish `: (M.comap Λ.subtype).map Λ.subtype = M`. Rewrite using `[Submodule.map_comap_subtype]`. Conclude with `inf_eq_right.2 hM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg Submodule.toAddSubgroup this`. Establish `e5` using `AddSubgroup.relIndex_comap (Submodule.span R (Set.range fun c => f (q c))).toAddSubgroup f.toAddMonoidHom (M.comap Λ.subtype).toAddSubgroup`. Rewrite `e3` using `[e4]`. Use `e3.symm.trans (Eq.trans ?_ e5)` and prove the remaining obligations. Rewrite using `[← AddSubgroup.inf_relIndex_right, ← AddSubgroup.inf_relIndex_right (AddSubgroup.comap f.toAddMonoidHom _)]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use extensionality with `x`. Simplify using `only [AddSubgroup.mem_inf, AddSubgroup.mem_comap, Submodule.mem_toAddSubgroup]`. Use `and_congr_left fun hxM => ?_` and prove the remaining obligations. Establish `hxM' : (x : N) ∈ M` using `hxM`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ c : Fin k → R, f x = ∑ j, c j • f (q j) ↔ (x : N) - ∑ j, c j • (q j : N) ∈ T` using `fun c => by`. Establish `e : ((x - ∑ j, c j • q j : Λ) : N) = x - ∑ j, c j • (q j : N)` using `by simp`. Establish `h1` using `hT (x - ∑ j, c j • q j) (by`. Rewrite using `[e]`. Conclude with `M.sub_mem hxM' (sum_mem fun j _ => M.smul_mem _ (hq j)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h1` using `[e, map_sub, sub_eq_zero]`. Simplify `h1` using `only [map_sum, map_smul]`. Express the relevant statement in the definitionally equal form `(x : N) ∈ T ⊔ Submodule.span R (Set.range fun c => (q c : N)) ↔ f x ∈ _`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 hx`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 hz`. Use `(Submodule.mem_span_range_iff_exists_fun R).2 ⟨c, ((key c).2 ?_).symm⟩` and prove the remaining obligations. Rewrite using `[← hyz, add_sub_cancel_right]`. Conclude with `hy`.
-
-Introduce `hx`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 hx`. Conclude with `Submodule.mem_sup.2 ⟨_, (key c).1 hc.symm, _, (Submodule.mem_span_range_iff_exists_fun R).2 ⟨c, rfl⟩, sub_add_cancel _ _⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem index_quot {R N N' : Type} [CommRing R] [AddCommGroup N] [Module R N] [AddCommGroup N'] [Module R N']
     {Λ M T : Submodule R N} (f : Λ →ₗ[R] N') (hM : M ≤ Λ) {k : ℕ} (q : Fin k → Λ) (hq : ∀ c, (q c : N) ∈ M)
@@ -250,13 +246,13 @@ theorem index_quot {R N N' : Type} [CommRing R] [AddCommGroup N] [Module R N] [A
       sub_add_cancel _ _⟩
 
 /- English proof (translation)
-Establish `hB₁L : ∀ x ∈ Submodule.span (𝓞 L) (Set.range w), x ∈ Submodule.span L (Set.range w)` using `fun x hx => Submodule.span_le_restrictScalars (𝓞 L) L _ hx`. Establish `hwI : Submodule.span L (Set.range w) ≤ Submodule.span L (A.I : Set V)` using `Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; exact h3 a)`. Establish `hB₂ : Submodule.span (𝓞 L) (Set.range fun c => (q c : V)) ≤ A.eig s` using `Submodule.span_le.2 (by rintro _ ⟨c, rfl⟩; exact hq c)`. Establish `k1 : (Submodule.span (𝓞 L) (Set.range w) ⊔ Submodule.span (𝓞 L) (Set.range fun c => (q c : V))) ⊓ A.tor s = Submodule.span (𝓞 L) (Set.range w) ⊓ A.tor s`. Use `le_antisymm ?_ (inf_le_inf_right _ le_sup_left)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx'`. Take `⟨hx, hxT⟩` from `Submodule.mem_inf.1 hx'`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 L)).1 hz`. Establish `h5` using `Submodule.sub_mem _ (h4 _ hxT) (hB₁L y hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h5` using `[add_sub_cancel_left]`. Establish `h6` using `coeff_eq_zero hb c h5`. Use `Submodule.mem_inf.2 ⟨?_, hxT⟩` and prove the remaining obligations. Rewrite using `[h6]`. Simplify `hy` using `only [Pi.zero_apply, zero_smul, Finset.sum_const_zero, add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `index_abstract (tor_le_eig A s) hB₂ (fun x hx hxM => Submodule.mem_inf.2 ⟨mem_span_I A (Submodule.mem_inf.1 hxM).1 (hwI (hB₁L x hx)), (Submodule.mem_inf.1 hxM).2⟩) k1`. Establish `h'` using `index_quot (M := A.eig s) (T := A.tor s) A.f inf_le_left q hq fun x hx => (A.ker x).trans ⟨fun h => Submodule.mem_inf.2 ⟨h, (Submodule.mem_inf.1 hx).2⟩, fun h => (Submodule.mem_inf.1 h).1⟩`. Rewrite `h` using `[h']`. Rewrite using `[range_append, Submodule.span_union]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_split (hb : LinearIndependent L (Fin.append w fun c => (q c : V)))
     (h3 : ∀ a, w a ∈ Submodule.span L (A.I : Set V))
@@ -302,13 +298,13 @@ theorem gramDet_eq (ι : L →+* ℂ) (q : Fin k → A.Λ) :
     A.gramDet ι q = GroundTheory.Heights₂.Heights.gramDet A.Bq.metric ι fun c => A.f (q c) := rfl
 
 /- English proof (translation)
-Set `y : Fin k → A.img s` to `fun c => ⟨A.f (q c), q c, hq c, rfl⟩`. Establish `hy : LinearIndependent (𝓞 L) y` using `LinearIndependent.of_comp (A.img s).subtype hli`. Establish `hsp : (Submodule.span (𝓞 L) (Set.range fun c => A.f (q c))).comap (A.img s).subtype = Submodule.span (𝓞 L) (Set.range y)`. Rewrite using `[← Submodule.comap_map_eq_of_injective (A.img s).injective_subtype (Submodule.span (𝓞 L) (Set.range y)), Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hidx : (Submodule.span (𝓞 L) (Set.range fun c => A.f (q c))).toAddSubgroup.relIndex (A.img s).toAddSubgroup = (Submodule.span (𝓞 L) (Set.range y)).toAddSubgroup.index`. Rewrite using `[← hsp]`. Both sides reduce to the same expression. Rewrite `hi`, the goal using `[hidx]`. Establish `hr : Module.finrank (𝓞 L) (A.img s) = k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← LatticeLemmas.finrank_submodule_eq (Submodule.span (𝓞 L) (Set.range y)) fun x => ?_, finrank_span_eq_card hy, Fintype.card_fin]`. Use `⟨((Submodule.span (𝓞 L) (Set.range y)).toAddSubgroup.index : 𝓞 L), Nat.cast_ne_zero.2 hi, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `AddSubgroup.nsmul_index_mem (Submodule.span (𝓞 L) (Set.range y)).toAddSubgroup x`. Use `⟨hr, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HermitianBundle.degree_eq_arithDegree, arithDegree_eq _ hy (by rw [Fintype.card_fin, hr]), degreeWith, one_div_mul_eq_div]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rank_img (hli : LinearIndependent (𝓞 L) fun c => A.f (q c)) (hq : ∀ c, (q c : V) ∈ A.eig s)
     (hi : (Submodule.span (𝓞 L) (Set.range fun c => A.f (q c))).toAddSubgroup.relIndex (A.img s).toAddSubgroup ≠ 0) :

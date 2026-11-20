@@ -10,21 +10,21 @@ namespace PositivityTheory.RgEis.So
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ χ c h h' hχ hc ε ι _ _ hι hiw W _ _ _ ρ hρ`. Take `⟨r, δ, α, ω, hb⟩` from `hB F E σ χ c h h' hχ hc ε`. Establish `hg` using `hG F E σ χ c h h' hχ hc`. Take `⟨i, hi⟩` from `Fintype.card_eq_one_iff.1 hι`. Take `⟨j, hj⟩` from `hE F E _ _ ε _ r δ α ω ι i hb hi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨jc, t2, lc, sc⟩` from `hT F E _ _ ε _ r δ α ω ι i j hg hb hi hj`. Establish `kc` using `hC F E _ _ ε _ r δ α ω ι i j hg hb hi hj`. Take `⟨p1, p2, -⟩` from `hP F E _ _ ε _ r δ α ω ι i j hg hb hi hj`. Establish `iw` using `hI F E _ _ ε _ r δ α ω ι i j hg hb hi hj`. Take `⟨rm, -⟩` from `hR F E _ _ ε _ r δ α ω ι i j hg hb hi hj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, sc1, sc2, sc3⟩` from `hS F E _ _ ε _ r δ α ω ι i j hg hb hi hj`. Take `⟨ch0, htl⟩` from `hCh F E _ _ ε _ r δ α ω ι i j hg hb hi hj`. Establish `md` using `hM F E _ _ ε _ r δ α ω ι i j hg hb hi hj hiw`. Take `⟨-, -, -, u2, ulc, -, ukc⟩` from `hGT E _ (adCM σ χ) hg ι ε`. Establish `e : (adCM σ χ).uQ ε (Set.univ : Set ι) ⊓ (adCM σ χ).uQ ε Set.univ = (adCM σ χ).uQ ε Set.univ` using `inf_idem _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨par, ht, -⟩` from `(hPL E _ (adCM σ χ) hg ι ε Set.univ).2 (e.symm ▸ hiw)`. Rewrite `par` using `[e]`. Establish `hβ : IsHt ((adCM σ χ).uΓ ε ι) ((adCM σ χ).uK ε ι) ((adCM σ χ).uQ ε Set.univ) fun g => (Fintype.card ι : ℝ) * (adCM σ χ).uH ε Set.univ g`. Simplify `ht` using `[hι]`. Use `hD _ W _ ρ ukc hρ _ j _ _ (cΓ _ _ ι) (cK α j) _ _ _ _ s jc kc inf_le_left rm sc1 sc2 sc3 (p2 ▸ iw) par ht ht hβ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `par1` using `md.par`. Establish `w1 : AllRep (cK α j) fun ρ₁ => HasWall (cΓ _ _ ι) (cK α j) ((stab 𝔸[F] {Sum.inl i}).comap (prj _ _ ι)) ((stab 𝔸[F] {Sum.inl i}).comap (prj _ _ ι)) (c1 j) (fun x => ((adCM σ χ).uH ε Set.univ (j x) + ld x) / 2) (fun x => ((adCM σ χ).uH ε Set.univ (j x) - ld x) / 2) (fun x => ld x + …`. Introduce `W₁ _ _ _ ρ₁ hρ₁`. Use `(hMG _ W₁ (cK α j) ρ₁ kc hρ₁ F (ι ⊕ ι) _ _ _ _ ω _ _ _ _ _ sc md).1` as an intermediate fact. Rewrite `this` using `[p1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `w2` using `(hTw _ _ _ _ _ _ _ c0 _ _ _ (fun _ => 0) 0 kc ch0 par1 par1 par1).1 w1`. Introduce `W₁ _ _ _ ρ₁ hρ₁`. Establish `hl : IsHt (cΓ (adCM σ χ) (nuCM F E) ι) (cK α j) ⊤ fun x => -(ld x) / 2` using `⟨fun p hp g => by rw [htl.left p hp g]; ring, fun g k hk => by rw [htl.right g k hk], fun γ a b => by rw [htl.rat γ a b]; simp, htl.cont.neg.div_const 2⟩`. Establish `w3` using `hSc _ W₁ (cK α j) ρ₁ kc hρ₁ _ _ _ _ _ _ _ _ 2 two_pos hl (w2 W₁ ρ₁ hρ₁)`. Rewrite using `[p2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `w3 using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Establish `: (c0 x : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Simplify using `[c1, this]`. Simplify using `only [Function.comp]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Function.comp]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Function.comp, Fintype.card_sum, hι]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

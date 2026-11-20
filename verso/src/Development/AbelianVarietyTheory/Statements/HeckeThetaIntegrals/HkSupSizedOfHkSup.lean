@@ -28,7 +28,7 @@ def HeckeReadTie : Prop :=
       GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.FramePin T R i σ hV → GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.ReadsAt T R i σ hV (κ i)
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hC t` and use `h D G Pl0 T0 A T R F κ v₀ hC.lev hC.grp hC.fam hC.models hC.thP ⟨t.laws, t.alg_eq, t.kap, t.hv₀, t.chiR, t.x0⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HeckeReadTie.heckeRead (h : HeckeReadTie) : GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.HeckeRead :=
   fun D G _ _ Pl0 T0 A T _ R F κ v₀ hC t =>
@@ -40,7 +40,7 @@ def ThetaSpanAll : Prop :=
     GlobalTheory.IndefiniteRowSideFullHecke.ThetaTranslateSize.ThetaSpan R F
 
 /- English proof (translation)
-Introduce `D _` and use `h D`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hkSupSized_of_hkSup (h : GlobalTheory.IndefiniteRowSideFullHecke.LatticesOverBalls.HkSup) : HkSupSized := fun D _ => h D
 
@@ -53,7 +53,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hP.ωP i _, (hP.vP i A.μ0).1, chiTie_of_chiR T R ht.alg ht.laws.pins.2.2.1 ht.chiR i, hL.mu0 i, hL.xi_base, ht.laws.spaceW _ ⟨Nat.le_add_left _ _, i.2⟩ _ T.toCore.good_σ₀⟩`.
+Supply the required witnesses or components.
 -/
 theorem pinned (hL : R.toLevCh.Is A.μ0) (hP : R.IsThP) (ht : TieIn T R κ v₀) (i : Fin D.R.m) :
     Datum.IsWeilDatumO R.ψ (Vc D i) (Wc D i) (Lift.chrTh (R.toLevCh.mu A.μ0) R.eta ((i : ℕ) + 1)).1
@@ -65,7 +65,7 @@ theorem pinned (hL : R.toLevCh.Is A.μ0) (hP : R.IsThP) (ht : TieIn T R κ v₀)
     ht.laws.spaceW _ ⟨Nat.le_add_left _ _, i.2⟩ _ T.toCore.good_σ₀⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Iff.rfl, Iff.rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem pin_reads_congr (nW : Fin D.R.m → ℕ)
     (FW : ∀ i, Arith.FormsL D.what₂.LL T.Q.c.F (Fin (nW i) → D.what₂.LL) (fun σ => (R.HW i σ).H) G)
@@ -78,7 +78,7 @@ theorem pin_reads_congr (nW : Fin D.R.m → ℕ)
   ⟨Iff.rfl, Iff.rfl⟩
 
 /- English proof (translation)
-The claim follows from `@TieIn.mk D G _ _ Pl0 T0 A { T with cE := c' } iA R κ v₀ ⟨ht.laws.toLawsM, h, ht.laws.muVal, ht.laws.muConj, ht.laws.intAll, ht.laws.modelW, ht.laws.familyUniformisationBasePointOrthogonal, ht.laws.kfHalf, ht.laws.adPin⟩ ht.alg ht.kap ht.hv₀ ht.chiR ht.x0`.
+A detailed English derivation is pending.
 -/
 theorem tieIn_const (ht : TieIn T R κ v₀) (c' : ∀ (j : ℕ) (σ : T.Q.c.F →+* ℂ), (T.U j σ).Comp → ℂ)
     (h : ∀ j, InR D j → ∀ σ, GoodEmb T.Q.c σ → CUnit (c' j σ)) :
@@ -90,11 +90,11 @@ theorem tieIn_const (ht : TieIn T R κ v₀) (c' : ∀ (j : ℕ) (σ : T.Q.c.F �
 omit iA in
 
 /- English proof (translation)
-Establish `h1 : rdU (T.U ((i : ℕ) + 1) σ) g = 0`. Use function extensionality and compare the values at `c x`. Use `show (open Classical in if hx : x ∈ ((T.U ((i : ℕ) + 1) σ).X c).dom then toC (evR _ _ g ((T.U ((i : ℕ) + 1) σ).un c ⟨x, hx⟩)) else 0) = 0`. Use `split_ifs with hx`. Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ) haveI : IsAlgClosed (CAt σ) := inferInstanceAs (IsAlgClosed ℂ)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `(hr (CAt σ) ((T.U ((i : ℕ) + 1) σ).un c ⟨x, hx⟩)).trans ?_` and prove the remaining obligations. Break down `h0 with rfl | rfl` into its components or cases. Rewrite using `[map_zero, zero_mul]`. Both sides reduce to the same expression. Rewrite using `[← zero_smul T.Q.c.F (0 : T.R ((i : ℕ) + 1)), hkVal_smul, map_zero, zero_mul, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Both sides reduce to the same expression. Use `show T.phiJ _ σ a g _ = 0`. Rewrite using `[CoreJ.phiJ, h1, map_zero, smul_zero, Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiW_eq_zero (i : Fin D.R.m) (σ : T.Q.c.F →+* ℂ) (hV : T.V ((i : ℕ) + 1) σ = Wc D i)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) {P : Ideal (NumberField.RingOfIntegers D.host.E)} {p k : ℕ} {f g : T.R ((i : ℕ) + 1)}
@@ -116,9 +116,9 @@ theorem phiW_eq_zero (i : Fin D.R.m) (σ : T.Q.c.F →+* ℂ) (hV : T.V ((i : �
   rw [CoreJ.phiJ, h1, map_zero, smul_zero, Pi.zero_apply]
 
 /- English proof (translation)
-Rewrite using `[phiW_eq_zero i σ hV _ hr (h0.imp (fun e => by rw [hkScal, e, zero_mul]) id)]`. Break down `h0 with rfl | rfl` into its components or cases. Rewrite using `[map_zero, zero_mul, zero_mul]`. Establish `e : ∀ x, phiW T i σ hV (wtA w) 0 x = 0` using `fun x => by show T.phiJ _ σ _ 0 _ = 0`. Rewrite using `[CoreJ.phiJ, map_zero, map_zero, smul_zero, Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[e]`.
+Simplify using the standard rewrite rules.
 -/
 theorem reads_zero (i : Fin D.R.m) (σ : T.Q.c.F →+* ℂ) (hV : T.V ((i : ℕ) + 1) σ = Wc D i) (w : WeightFamilies.Wt D ((i : ℕ) + 1))
     (P : Formalism.L2.DIV.Pl D.host.E) (p k : ℕ) (Rc : Finset (GA D (Wc D i))) (cq : T.Q.c.F) (f g : T.R ((i : ℕ) + 1))

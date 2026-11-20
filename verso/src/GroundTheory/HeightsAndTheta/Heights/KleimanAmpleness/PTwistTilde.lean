@@ -13,13 +13,11 @@ universe u v w
 namespace TwistTildeProof
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun q _ => q • m ∈ T) ?_ ?_ ?_ ?_ hq` and prove the remaining obligations. Introduce `a ha`. Use `Submodule.span_induction (p := fun m _ => a • m ∈ T) ?_ ?_ ?_ ?_ hm` and prove the remaining obligations. Conclude with `fun b hb => h a ha b hb`. Rewrite using `[smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Conclude with `T.zero_mem`. Introduce `b c _ _ hb hc`. Rewrite using `[smul_add]`. Conclude with `T.add_mem hb hc`. Introduce `r b _ hb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_comm]`. Conclude with `T.smul_mem r hb`. Rewrite using `[zero_smul]`. Conclude with `T.zero_mem`. Introduce `a b _ _ ha hb`.
-
-Rewrite using `[add_smul]`. Conclude with `T.add_mem ha hb`. Introduce `r a _ ha`. Rewrite using `[smul_assoc]`. Conclude with `T.smul_mem r ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_of_mem_span {R A M : Type*} [CommRing R] [Ring A] [AddCommGroup M] [Module R A]
     [Module A M] [Module R M] [IsScalarTower R A M] [SMulCommClass A R M] {s : Set A} {t : Set M}
@@ -73,21 +71,19 @@ def prod (M : FinGradedSub (S := S) (x := x) E) (Q : FinGradedSub (S := S) (x :=
       congr 1; ring
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `q ∈ Q.tilde 0 I at hq`. Express the relevant statement in the definitionally equal form `y ∈ M.tilde 0 I at hy`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Use `smul_mem_of_mem_span ?_ hq hy` and prove the remaining obligations. Introduce and unpack `_ ⟨q, s₁, a₁, e₁, hs₁, hse₁, hq, ha₁, rfl⟩ _ ⟨m, s₂, a₂, e₂, hs₂, hse₂, hm, ha₂, rfl⟩`. Use `Submodule.subset_span ⟨q • m, s₁ * s₂, a₁ + a₂, e₁ + e₂, mul_mem hs₁ hs₂, hse₁.mul hse₂, Submodule.subset_span ⟨a₁, a₂, q, m, hq, hm, rfl, rfl⟩, by push_cast; omega, ?_⟩` and prove the remaining obligations. Simplify using `only [smul_eq_mul, smul_smul, map_mul, mul_inv]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨i, hi⟩` from `I.2.1`. Establish `hxi : x i ≠ 0` using `(mem_support x).mp (I.2.2 hi)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, s, a, e, hs, hse, hp, hae, rfl⟩`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hs0` using `eval_ne_zero_of_mem_monos I hs`. Use `Submodule.span_induction (p := fun p _ => (aeval x s)⁻¹ • p ∈ ((M.tildeSys 0).twist (Q.tildeSys 0)).sub I) ?_ ?_ ?_ ?_ hp` and prove the remaining obligations. Introduce and unpack `_ ⟨a', b', q, m, hq, hm, hab, rfl⟩ set k := a'.toNat set j := (-a').toNat`. Establish `hkj : (k : ℤ) - j = a'` using `Int.toNat_sub_toNat_neg a'`. Establish `hq' : (aeval x (X i ^ k : Poly S N))⁻¹ • (aeval x (X i ^ j : Poly S N) • q) ∈ Q.tilde 0 I`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Q.smul_mem j a' _ q (isHomogeneous_X_pow i j) hq`. Rewrite `h` using `[show a' + (j : ℤ) = k by omega]`. Conclude with `Submodule.subset_span ⟨_, X i ^ k, k, k, pow_mem (X_mem_monos hi) k, isHomogeneous_X_pow i k, h, by simp, rfl⟩`. Establish `hm' : (aeval x (s * X i ^ j))⁻¹ • (aeval x (X i ^ k : Poly S N) • m) ∈ M.tilde 0 I`. Establish `h` using `M.smul_mem k b' _ m (isHomogeneous_X_pow i k) hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.subset_span ⟨_, s * X i ^ j, b' + k, e + j, mul_mem hs (pow_mem (X_mem_monos hi) j), hse.mul (isHomogeneous_X_pow i j), h, by push_cast; omega, rfl⟩`. Establish `heq : (aeval x s)⁻¹ • (q • m) = ((aeval x (X i ^ k : Poly S N))⁻¹ • (aeval x (X i ^ j : Poly S N) • q)) • ((aeval x (s * X i ^ j))⁻¹ • (aeval x (X i ^ k : Poly S N) • m))`. Simplify using `only [smul_eq_mul, smul_smul, map_mul, map_pow, aeval_X]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq]`. Conclude with `Submodule.subset_span ⟨_, hq', _, hm', rfl⟩`. Rewrite using `[smul_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `a b _ _ ha hb`.
-
-Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ ha hb`. Introduce `r a _ ha`. Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_of_tower_mem _ r ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twist_eq (M : FinGradedSub (S := S) (x := x) E) (Q : FinGradedSub (S := S) (x := x) Ω)
     (I : Chart x) : ((M.tildeSys 0).twist (Q.tildeSys 0)).sub I = (prod M Q).tilde 0 I := by
@@ -141,7 +137,7 @@ end TwistTildeProof
 open TwistTildeProof in
 
 /- English proof (translation)
-Introduce `S _ Ω _ _ N x E _ _ _ _ M Q`. Conclude with `⟨prod M Q, fun c => rfl, twist_eq M Q⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem TwistTilde.proof : TwistTilde.Statement := by
   intro S _ Ω _ _ N x E _ _ _ _ M Q

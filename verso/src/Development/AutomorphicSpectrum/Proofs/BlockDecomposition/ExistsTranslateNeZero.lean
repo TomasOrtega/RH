@@ -23,14 +23,14 @@ theorem locRep_val (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)) (g : GL (
     (π.locRep w g v).1 = finRep E a (locGL E a w g) v.1 := rfl
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨g, v, hv, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_sphSpan (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)) (g : GL (Fin a) (w.adicCompletion E)) {v : π.V}
     (hv : IsFix π w v) : (π.locRep w g v).1 ∈ sphSpan π w :=
   Submodule.subset_span ⟨g, v, hv, rfl⟩
 
 /- English proof (translation)
-Introduce `k hk` and use `by refine Subtype.ext ?_ rw [locRep_val, CuspSub.op_val] have e := LinearMap.congr_fun (hc k) v.1 simp only [Module.End.mul_apply] at e rw [← e, ← locRep_val, hv k hk]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isFix_op (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)) (o : Op E a)
     (hc : ∀ g, act o * finRep E a (locGL E a w g) = finRep E a (locGL E a w g) * act o) {v : π.V} (hv : IsFix π w v) :
@@ -42,7 +42,7 @@ theorem isFix_op (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)) (o : Op E a
   rw [← e, ← locRep_val, hv k hk]
 
 /- English proof (translation)
-Establish `e` using `LinearMap.congr_fun (hc g) v.1`. Simplify using `only [Module.End.mul_apply] at e`. Rewrite using `[locRep_val, e]`. Conclude with `mem_sphSpan π w g (isFix_op π w o hc hv)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_translate (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)) (o : Op E a)
     (hc : ∀ g, act o * finRep E a (locGL E a w g) = finRep E a (locGL E a w g) * act o)
@@ -54,7 +54,7 @@ theorem act_translate (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)) (o : O
   exact mem_sphSpan π w g (isFix_op π w o hc hv)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `rt E a _ * rt E a _ = rt E a _ * rt E a _`. Rewrite using `[← map_mul, ← map_mul]`. Conclude with `congrArg (rt E a) (infGL_comm _ _)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cpt_comm (y : Kinf E a) (k : GL (Fin a) (Af E)) :
     act (.cpt y : Op E a) * finRep E a k = finRep E a k * act (.cpt y : Op E a) := by
@@ -63,18 +63,18 @@ theorem cpt_comm (y : Kinf E a) (k : GL (Fin a) (Af E)) :
   exact congrArg (rt E a) (infGL_comm _ _)
 
 /- English proof (translation)
-The claim follows from `lie_rt_fin X k`.
+A detailed English derivation is pending.
 -/
 theorem lie_comm' (X : Lie E a) (k : GL (Fin a) (Af E)) :
     act (.lie X : Op E a) * finRep E a k = finRep E a k * act (.lie X : Op E a) :=
   lie_rt_fin X k
 
 /- English proof (translation)
-Take `⟨h, gw, e, hc⟩` from `GlobalTheory.T.exists_split_adelicMatrix_localComponent E a w (finGL E a (k * locGL E a w g))`. Take `⟨h', hh'⟩ : ∃ h' : GL (Fin a) (Af E), h' = k * locGL E a w g * (locGL E a w gw)⁻¹` from `⟨_, rfl⟩`. Establish `hh : h = finGL E a h'`. Rewrite using `[hh', map_mul, map_inv, e, mul_inv_cancel_right]`. Establish `hcomm : ∀ u, finRep E a h' * finRep E a (locGL E a w u) = finRep E a (locGL E a w u) * finRep E a h'` using `fun u => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (rt E a) (hc u)`. Rewrite `h2` using `[hh, map_mul, map_mul]`. Conclude with `h2`. Establish `hfix : IsFix π w (π.op (.fin h') v)` using `isFix_op π w (.fin h') (fun u => hcomm u) hv`. Establish `e2 : finRep E a k (π.locRep w g v).1 = (π.locRep w gw (π.op (.fin h') v)).1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[locRep_val, locRep_val, CuspSub.op_val]`. Express the relevant statement in the definitionally equal form `(finRep E a k * finRep E a (locGL E a w g)) v.1 = (finRep E a (locGL E a w gw) * finRep E a h') v.1`. Rewrite using `[← hcomm, ← map_mul, ← map_mul, hh', inv_mul_cancel_right]`. Rewrite using `[e2]`. Conclude with `mem_sphSpan π w gw hfix`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_translate (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)) (k : GL (Fin a) (Af E))
     (g : GL (Fin a) (w.adicCompletion E)) {v : π.V} (hv : IsFix π w v) :
@@ -96,11 +96,11 @@ theorem fin_translate (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)) (k : G
   exact mem_sphSpan π w gw hfix
 
 /- English proof (translation)
-Introduce `o φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, v, hv, rfl⟩` from `hx`. Consider the cases of `o with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Consider the case `fin k => exact fin_translate π w k g hv`. Consider the case `cpt y => exact act_translate π w _ (fun u => cpt_comm y _) g hv`. Consider the case `lie X => exact act_translate π w _ (fun u => lie_comm' X _) g hv`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isStable_sphSpan (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)) : IsStable (sphSpan π w) := by
   intro o φ hφ
@@ -116,21 +116,19 @@ theorem isStable_sphSpan (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)) : I
   | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.2 fun _ ⟨g, v, _, e⟩ => e ▸ (π.locRep w g v).2`.
+A detailed English derivation is pending.
 -/
 theorem sphSpan_le (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)) : sphSpan π w ≤ π.V :=
   Submodule.span_le.2 fun _ ⟨g, v, _, e⟩ => e ▸ (π.locRep w g v).2
 
 /- English proof (translation)
-Introduce `E _ _ _ a π w B hB l hl`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨x, hx⟩` from `hB.exists_vec`. Establish `hfix : ∀ v : π.V, IsFix π w v → v ≠ 0 → IsSatVecGL w (π.locRep w) v B` using `fun v hv h0 => hB.2 v (GlobalTheory.LGrp.mem_fixed.2 hv) h0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxf : IsFix π w x` using `GlobalTheory.LGrp.mem_fixed.1 hx.2.1`. Establish `hker : sphSpan π w ≤ (LinearMap.ker l).map π.V.subtype`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, v, hv, rfl⟩`. Use `⟨π.locRep w g v, ?_, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : v = 0`. Simplify using `[h0]`. Conclude with `hcon v g (hfix v hv h0)`. Break down `π.irred _ (sphSpan_le π w) (isStable_sphSpan π w) with h | h` into its components or cases. Establish `h1` using `mem_sphSpan π w 1 hxf`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[h, Submodule.mem_bot]`. Conclude with `hx.1 (Subtype.ext (by simpa using h1))`. Use `hl (LinearMap.ext fun u => ?_)` and prove the remaining obligations. Establish `h1 : u.1 ∈ sphSpan π w` using `by rw [h]; exact u.2`. Take `⟨y, hy, e⟩` from `hker h1`.
-
-Rewrite using `[LinearMap.zero_apply, ← Subtype.ext (a1 := y) (a2 := u) e]`. Conclude with `hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_translate_ne_zero : G2 := by
   intro E _ _ _ a π w B hB l hl

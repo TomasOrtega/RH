@@ -24,9 +24,9 @@ def fin (s ξ₀ : ∀ i, N i) (S : Finset ι) : Submodule ℂ (RTens s) :=
   Submodule.span ℂ {z | ∃ ξ, (∀ i ∉ S, ξ i = ξ₀ i) ∧ z = pureT s ξ}
 
 /- English proof (translation)
-Use `(h0.union S.finite_toSet).subset fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `hS : i ∈ S`. Conclude with `Or.inr hS`. Use `left`. Simplify using `only [Set.mem_setOf_eq] at hi ⊢`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the second alternative. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hi` using `[h i hS]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem restr_of {s ξ₀ ξ : ∀ i, N i} (h0 : Restr s ξ₀) (S : Finset ι) (h : ∀ i ∉ S, ξ i = ξ₀ i) :
     Restr s ξ := by
@@ -38,7 +38,7 @@ theorem restr_of {s ξ₀ ξ : ∀ i, N i} (h0 : Restr s ξ₀) (S : Finset ι) 
     rwa [h i hS] at hi
 
 /- English proof (translation)
-Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨ξ, hξ, rfl⟩`. Conclude with `⟨ξ, fun i hi => hξ i fun h' => hi (h h'), rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem fin_mono (s ξ₀ : ∀ i, N i) {S T : Finset ι} (h : S ⊆ T) : fin s ξ₀ S ≤ fin s ξ₀ T := by
   refine Submodule.span_mono ?_
@@ -46,9 +46,9 @@ theorem fin_mono (s ξ₀ : ∀ i, N i) {S T : Finset ι} (h : S ⊆ T) : fin s 
   exact ⟨ξ, fun i hi => hξ i fun h' => hi (h h'), rfl⟩
 
 /- English proof (translation)
-Establish `: fin s ξ₀ S ≤ (fin s ξ₀ S).comap T`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨ξ, hξ, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Rewrite using `[hT ξ (restr_of h0 S hξ)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.subset_span ⟨_, fun k hk => ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (show k ≠ i by rintro rfl; exact hk hi)]`. Conclude with `hξ k hk`. Conclude with `fun x hx => this hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem fin_stable {s ξ₀ : ∀ i, N i} (h0 : Restr s ξ₀) (S : Finset ι) {i : ι} (hi : i ∈ S)
     (T : Module.End ℂ (RTens s)) (a : Module.End ℂ (N i))
@@ -65,9 +65,9 @@ theorem fin_stable {s ξ₀ : ∀ i, N i} (h0 : Restr s ξ₀) (S : Finset ι) {
   exact fun x hx => this hx
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `GlobalTheory.TripleAssembly.exists_rtensOp s (Function.update (fun i => (LinearMap.id : Module.End ℂ (N i))) j (f.smulRight n))`. Use `⟨T, fun ξ hξ => ?_⟩` and prove the remaining obligations. Rewrite using `[hT ξ hξ]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem exists_ins (s : ∀ i, N i) (j : ι) (f : N j →ₗ[ℂ] ℂ) (n : N j) :
     ∃ T : Module.End ℂ (RTens s), ∀ ξ, Restr s ξ →
@@ -87,14 +87,14 @@ def ins (s : ∀ i, N i) (j : ι) (f : N j →ₗ[ℂ] ℂ) (n : N j) : Module.E
   (exists_ins s j f n).choose
 
 /- English proof (translation)
-The claim follows from `(exists_ins s j f n).choose_spec ξ hξ`.
+A detailed English derivation is pending.
 -/
 theorem ins_pure (s : ∀ i, N i) (j : ι) (f : N j →ₗ[ℂ] ℂ) (n : N j) (ξ : ∀ i, N i) (hξ : Restr s ξ) :
     ins s j f n (pureT s ξ) = pureT s (Function.update ξ j (f (ξ j) • n)) :=
   (exists_ins s j f n).choose_spec ξ hξ
 
 /- English proof (translation)
-Establish `h` using `pureT_mlin hξ j 1 0 0`. Rewrite `h` using `[one_smul, add_zero]`. Simplify using `using h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pureT_zero (s : ∀ i, N i) (ξ : ∀ i, N i) (hξ : Restr s ξ) (j : ι) :
     pureT s (Function.update ξ j 0) = 0 := by
@@ -128,45 +128,39 @@ theorem phi_tmul (s ξ₀ : ∀ i, N i) (S : Finset ι) (j : ι) (f : N j →ₗ
     phi s ξ₀ S j f (n ⊗ₜ y) = ins s j f n y := rfl
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `Q _ x hx hxQ hx0`. Establish `hle : fin s ξ₀ ∅ ≤ ℂ ∙ pureT s ξ₀`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨ξ, hξ, rfl⟩`. Establish `: ξ = ξ₀` using `funext fun i => hξ i (Finset.notMem_empty i)`. Substitute `this` using the available equality. Conclude with `Submodule.mem_span_singleton_self _`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp (hle hx)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : c ≠ 0`. Introduce and unpack `rfl`. Conclude with `hx0 (zero_smul _ _)`. Establish `hp : pureT s ξ₀ ∈ Q`. Use `Q.smul_mem c⁻¹ hxQ` as an intermediate fact.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately.
 
-Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis. Conclude with `hle.trans ((Submodule.span_singleton_le_iff_mem _ _).mpr hp)`. Consider the case `insert j S' hj IH`. Introduce `Q hQ x hx hxQ hx0`. Take `⟨f, hf⟩` from `Module.Projective.exists_dual_eq_one ℂ (hne j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hrange : fin s ξ₀ (insert j S') ≤ LinearMap.range (phi s ξ₀ S' j f)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨ξ, hξ, rfl⟩`. Establish `hη : ∀ i ∉ S', Function.update ξ j (ξ₀ j) i = ξ₀ i`. Introduce `i hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne e]`. Conclude with `hξ i (by simp [e, hi])`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨ξ j ⊗ₜ ⟨pureT s (Function.update ξ j (ξ₀ j)), Submodule.subset_span ⟨_, hη, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[phi_tmul]`. Use `show ins s j f (ξ j) (pureT s (Function.update ξ j (ξ₀ j))) = pureT s ξ`. Rewrite using `[ins_pure s j f _ _ (restr_of h0 S' hη), Function.update_self, hf, one_smul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hΦj : ∀ a ∈ Sv j, (phi s ξ₀ S' j f).comp (LinearMap.rTensor (fin s ξ₀ S') a) = (Op j a).comp (phi s ξ₀ S' j f)`. Introduce `a ha`. Use `TensorProduct.ext' fun n y => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.rTensor_tmul, phi_tmul]`. Establish `key : Set.EqOn (ins s j f (a n)) ((Op j a).comp (ins s j f n)) {z | ∃ ξ, (∀ i ∉ S', ξ i = ξ₀ i) ∧ z = pureT s ξ}`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨η, hη, rfl⟩`. Establish `hr` using `restr_of h0 S' hη`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[ins_pure s j f _ η hr, ins_pure s j f _ η hr, hOp j a ha _ (restr_update hr j _)]`. Simplify using `[hη j hj, hf]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `LinearMap.eqOn_span' key y.2`. Establish `hΦi : ∀ b ∈ {b : Module.End ℂ (fin s ξ₀ S') | ∃ i ∈ S', ∃ a ∈ Sv i, ∀ y : fin s ξ₀ S', (b y : RTens s) = Op i a y}, ∃ i ∈ insert j S', ∃ a ∈ Sv i, (phi s ξ₀ S' j f).comp (LinearMap.lTensor (N j) b) = (Op i a).comp (phi s ξ₀ S' j f)`. Introduce and unpack `b ⟨i, hi, a, ha, hb⟩`. Use `⟨i, Finset.mem_insert_of_mem hi, a, ha, TensorProduct.ext' fun n y => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.lTensor_tmul, phi_tmul, hb]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hij : i ≠ j`. Introduce and unpack `rfl`. Conclude with `hj hi`. Establish `key : Set.EqOn ((ins s j f n).comp (Op i a)) ((Op i a).comp (ins s j f n)) {z | ∃ ξ, (∀ i ∉ S', ξ i = ξ₀ i) ∧ z = pureT s ξ}`. Introduce and unpack `_ ⟨η, hη, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Establish `hr` using `restr_of h0 S' hη`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hOp i a ha η hr, ins_pure s j f _ _ (restr_update hr i _), ins_pure s j f _ η hr, hOp i a ha _ (restr_update hr j _), Function.update_of_ne hij.symm, Function.update_of_ne hij, hη j hj, hf, one_smul, Function.update_comm hij]`. Conclude with `LinearMap.eqOn_span' key y.2`. Establish `hU : ∀ M : Submodule ℂ (fin s ξ₀ S'), (∀ b ∈ {b : Module.End ℂ (fin s ξ₀ S') | ∃ i ∈ S', ∃ a ∈ Sv i, ∀ y : fin s ξ₀ S', (b y : RTens s) = Op i a y}, ∀ y ∈ M, b y ∈ M) → M = ⊥ ∨ M = ⊤`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Introduce `M hM`. Distinguish the cases in `hM0 : M = ⊥`. Conclude with `Or.inl hM0`. Use `right`. Take `⟨y, hyM, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hM0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hst : ∀ i ∈ S', ∀ a ∈ Sv i, ∀ z ∈ M.map (fin s ξ₀ S').subtype, Op i a z ∈ M.map (fin s ξ₀ S').subtype`. Introduce and unpack `i hi a ha _ ⟨w, hw, rfl⟩`. Set `b : Module.End ℂ (fin s ξ₀ S')` to `(Op i a).restrict (fin_stable h0 S' hi (Op i a) a (hOp i a ha))`. Conclude with `⟨b w, hM b ⟨i, hi, a, ha, fun _ => rfl⟩ w hw, rfl⟩`. Establish `hle` using `IH (M.map (fin s ξ₀ S').subtype) hst y y.2 ⟨y, hyM, rfl⟩ (by simpa using hy0)`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eq_top_iff]`. Introduce `w _`. Take `⟨w', hw', he⟩` from `hle w.2`. Establish `: w' = w` using `Subtype.ext he`. Rewrite using `[← this]` and apply the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Establish `hN` using `GlobalTheory.T.tensor_irreducible_of_countable_dimension_irreducible (N j) (fin s ξ₀ S') (Sv j) _ (hrank j) (hnt j) (hirr j) hU (Q.comap (phi s ξ₀ S' j f)) (fun a ha t ht => by`. Rewrite `ht`, the goal using `[Submodule.mem_comap]`. Rewrite using `[← LinearMap.comp_apply, hΦj a ha, LinearMap.comp_apply]`. Conclude with `hQ j (Finset.mem_insert_self j S') a ha _ ht)`. Use the proof step `(fun b hb t ht => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨i, hi, a, ha, e⟩` from `hΦi b hb`. Rewrite `ht`, the goal using `[Submodule.mem_comap]`. Rewrite using `[← LinearMap.comp_apply, e, LinearMap.comp_apply]`. Conclude with `hQ i hi a ha _ ht)`. Take `⟨t, rfl⟩` from `hrange hx`.
-
-Break down `hN with hN | hN` into its components or cases. It suffices to derive a contradiction. Establish `ht : t ∈ Q.comap (phi s ξ₀ S' j f)` using `hxQ`. Rewrite `ht` using `[hN, Submodule.mem_bot]`. Conclude with `hx0 (by rw [ht, map_zero])`.
-
-Use `hrange.trans ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t', rfl⟩`. Establish `ht : t' ∈ Q.comap (phi s ξ₀ S' j f)`. Rewrite using `[hN]`. Discharge the goal by the elementary cases of `trivial`.
-
-Conclude with `ht`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem claim {s ξ₀ : ∀ i, N i} (h0 : Restr s ξ₀) (hne : ∀ i, ξ₀ i ≠ 0)
     (hrank : ∀ i, Module.rank ℂ (N i) ≤ Cardinal.aleph0) (hnt : ∀ i, Nontrivial (N i))
@@ -289,23 +283,23 @@ theorem claim {s ξ₀ : ∀ i, N i} (h0 : Restr s ξ₀) (hne : ∀ i, ξ₀ i 
 end GlobalTheory.RestrTensIrr
 
 /- English proof (translation)
-Introduce `ι _ N _ _ s hs hrank hnt Sv hirr Op hOp Q hQ`. Distinguish the cases in `hQ0 : Q = ⊥`. Conclude with `Or.inl hQ0`. Use `right`. Use `choose e he using fun i => exists_ne (0 : N i)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ξ₀ : ∀ i, N i` to `fun i => if s i = 0 then e i else s i`. Establish `hne : ∀ i, ξ₀ i ≠ 0`. Introduce `i`. Distinguish the cases in `h : s i = 0`. Simplify using `[ξ₀, h, he i]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[ξ₀, h]`. Establish `h0 : Formalism.MainNotions.KudlaSiegelWeil.Restr s ξ₀` using `hs.subset fun i hi => by`. Assume the negation of the conclusion as `h`. Simplify using `only [Set.mem_setOf_eq] at h hi`. Conclude with `hi (by simp [ξ₀, h])`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfinS : ∀ ξ, Formalism.MainNotions.KudlaSiegelWeil.Restr s ξ → ∃ S : Finset ι, ∀ i ∉ S, ξ i = ξ₀ i`. Introduce `ξ hξ`. Use `⟨(hξ.union h0).toFinset, fun i hi => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hi`. Rewrite using `[hi.1, hi.2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hall : ∀ x : GlobalTheory.SmallThetaModules.RTens s, ∃ S, x ∈ GlobalTheory.RestrTensIrr.fin s ξ₀ S`. Introduce `x`. Establish `hx : x ∈ Submodule.span ℂ {z | ∃ ξ, Formalism.MainNotions.KudlaSiegelWeil.Restr s ξ ∧ z = GlobalTheory.SmallThetaModules.pureT s ξ}`. Rewrite using `[GlobalTheory.SmallThetaModules.pureT_span]`. Discharge the goal by the elementary cases of `trivial`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨ξ, hξ, rfl⟩` from `hz`. Take `⟨S, hS⟩` from `hfinS ξ hξ`. Conclude with `⟨S, Submodule.subset_span ⟨ξ, hS, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `zero => exact ⟨∅, Submodule.zero_mem _⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨S, hS⟩` from `ha`. Take `⟨T, hT⟩` from `hb`. Conclude with `⟨S ∪ T, Submodule.add_mem _ (GlobalTheory.RestrTensIrr.fin_mono s ξ₀ Finset.subset_union_left hS) (GlobalTheory.RestrTensIrr.fin_mono s ξ₀ Finset.subset_union_right hT)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul c a _ ha`. Take `⟨S, hS⟩` from `ha`. Conclude with `⟨S, Submodule.smul_mem _ c hS⟩`. Take `⟨x, hxQ, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hQ0`. Take `⟨S, hxS⟩` from `hall x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eq_top_iff, ← GlobalTheory.SmallThetaModules.pureT_span s, Submodule.span_le]`. Introduce and unpack `_ ⟨ξ, hξ, rfl⟩`. Take `⟨T, hT⟩` from `hfinS ξ hξ`. Establish `hle` using `GlobalTheory.RestrTensIrr.claim h0 hne hrank hnt Sv hirr Op hOp (S ∪ T) Q (fun i _ a ha y hy => hQ i a ha y hy) x (GlobalTheory.RestrTensIrr.fin_mono s ξ₀ Finset.subset_union_left hxS) hxQ hx0`. Conclude with `hle (GlobalTheory.RestrTensIrr.fin_mono s ξ₀ Finset.subset_union_right (Submodule.subset_span ⟨ξ, hT, rfl⟩))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.rtens_irreducible : ∀ {ι : Type} [DecidableEq ι] (N : ι → Type) [∀ i, AddCommGroup (N i)] [∀ i, Module ℂ (N i)] (s : ∀ i, N i),
     {i | s i = 0}.Finite → (∀ i, Module.rank ℂ (N i) ≤ Cardinal.aleph0) → (∀ i, Nontrivial (N i)) →

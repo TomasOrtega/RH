@@ -7,7 +7,7 @@ open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR GlobalTheory.Compan
 namespace GlobalTheory.CompanionTheory.Ar.Num
 
 /- English proof (translation)
-Simplify using `[psumExpansion, map_sum, map_mul, map_pow, rename_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rename_map_psumExpansion {σ : Type} (r k : ℕ) (e : Fin r → σ) (a : Fin r) :
     rename (Sum.map e e) (MvPolynomial.map (Int.castRingHom ℝ) (psumExpansion r k a)) =
@@ -16,9 +16,9 @@ theorem rename_map_psumExpansion {σ : Type} (r k : ℕ) (e : Fin r → σ) (a :
   simp [psumExpansion, map_sum, map_mul, map_pow, rename_X]
 
 /- English proof (translation)
-Rewrite using `[rename_map_psumExpansion]`. Use `IsHomogeneous.sum _ _ _ fun j hj => ?_` and prove the remaining obligations. Establish `hj' : j + (k - 1 - j) = k - 1`. Use `Finset.mem_range.mp hj` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h` using `((isHomogeneous_X ℝ (Sum.inl (e a) : σ ⊕ σ)).pow j).mul ((isHomogeneous_X ℝ (Sum.inr (e a) : σ ⊕ σ)).pow (k - 1 - j))`. Simplify `h` using `[hj']`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isHomogeneous_rename_map_psumExpansion {σ : Type} (r k : ℕ) (e : Fin r → σ) (a : Fin r) :
     (rename (Sum.map e e) (MvPolynomial.map (Int.castRingHom ℝ) (psumExpansion r k a))).IsHomogeneous
@@ -33,7 +33,7 @@ theorem isHomogeneous_rename_map_psumExpansion {σ : Type} (r k : ℕ) (e : Fin 
   simpa [hj'] using h
 
 /- English proof (translation)
-Unfold `mixDiff`. Simplify using `only [map_sum, map_pow, rename_X, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[rename_map_psumExpansion, mul_comm, (Commute.all _ _).geom_sum₂_mul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mixDiff_sum_pow {σ : Type} [Fintype σ] (r k : ℕ) (e : Fin r → σ) :
     mixDiff (∑ a, X (e a) ^ k : MvPolynomial σ ℝ) =
@@ -45,9 +45,9 @@ theorem mixDiff_sum_pow {σ : Type} [Fintype σ] (r k : ℕ) (e : Fin r → σ) 
   rw [rename_map_psumExpansion, mul_comm, (Commute.all _ _).geom_sum₂_mul]
 
 /- English proof (translation)
-Introduce `σ _ _ r k m e G hG`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[mixDiff_sum_pow, ← Finset.sum_fiberwise Finset.univ e, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul, ← mul_assoc, Finset.mul_sum, Finset.sum_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.mp ha).2]`. Conclude with `(IsHomogeneous.sum _ _ _ fun a _ => isHomogeneous_rename_map_psumExpansion r k e a).mul hG`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMixExpansion_psum_mul : ∀ (σ : Type) [Fintype σ] [DecidableEq σ] (r k m : ℕ) (e : Fin r → σ) (G : MvPolynomial (σ ⊕ σ) ℝ), G.IsHomogeneous m → IsMixExpansion (k - 1 + m) (mixDiff (∑ a, X (e a) ^ k) * G) (fun i => (∑ a ∈ Finset.univ.filter (fun a => e a = i), rename (Sum.map e e) (MvPolynomial.map (Int.castRingHom ℝ) (psumExpansion r k a))) * G) := by
   intro σ _ _ r k m e G hG

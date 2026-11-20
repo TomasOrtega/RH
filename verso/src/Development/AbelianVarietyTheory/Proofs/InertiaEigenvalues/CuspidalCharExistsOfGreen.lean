@@ -15,23 +15,21 @@ open Polynomial Formalism.D.Classical Formalism.CyclotomicNorms Formalism.MainNo
 variable {g : ℕ} [hg : Fact g.Prime]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun i j hj hi => ?_, ?_, ?_⟩` and prove the remaining obligations. Break down `h i j with h1 | h1` into its components or cases. Rewrite using `[h1, if_neg]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Use extensionality with `i j`. Establish `hi` using `i.2`.
+Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hj` using `j.2`. Establish `hij : (i : ℕ) < d ∧ (j : ℕ) < d` using `by omega`. Break down `h ⟨i, hij.1⟩ ⟨j, hij.2⟩ with h1 | h1` into its components or cases. Simplify using `only [tl, entN, dif_pos hij, h1, Units.val_one, Matrix.one_apply, Fin.ext_iff]`. Simplify using `only at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Use extensionality with `i j`. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Establish `hij : a + (i : ℕ) < d ∧ a + (j : ℕ) < d` using `by omega`.
+Use linear arithmetic over natural numbers and integers. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `h ⟨a + i, hij.1⟩ ⟨a + j, hij.2⟩ with h1 | h1` into its components or cases. Simplify using `only [br, entN, dif_pos hij, h1, Units.val_one, Matrix.one_apply, Fin.ext_iff, add_right_inj]`. Simplify using `only at h1`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨h1, h2, h3⟩ i j`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components.
 
-Establish `hi` using `i.2`. Establish `hj` using `j.2`. Distinguish the cases in `hia : (i : ℕ) < a`. Distinguish the cases in `hja : (j : ℕ) < a`. Use `left`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `congrFun (congrFun h2 ⟨i, hia⟩) ⟨j, hja⟩` as an intermediate fact. Simplify `this` using `only [tl, entN, dif_pos (And.intro hi hj), Units.val_one, Matrix.one_apply, Fin.ext_iff]`. Use `right`. Use linear arithmetic over natural numbers and integers. Use `left`.
+Simplify to obtain the desired conclusion from the available facts. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hja : (j : ℕ) < a`. Rewrite using `[h1 i j hja (by omega), if_neg]; rintro rfl; omega`. Use `congrFun (congrFun h3 ⟨i - a, by omega⟩) ⟨j - a, by omega⟩` as an intermediate fact. Establish `e1 : a + (i - a) = (i : ℕ)` using `by omega`. Establish `e2 : a + (j - a) = (j : ℕ)` using `by omega`.
-
-Establish `e3 : ((i : ℕ) - a = j - a) ↔ (i : ℕ) = j` using `by omega`. Simplify `this` using `only [br, entN, e1, e2, e3, dif_pos (And.intro hi hj), Units.val_one, Matrix.one_apply, Fin.ext_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_grUnipBlock_iff {d a : ℕ} (ha : a < d) (u : Gn g d) :
     u ∈ (grUnipBlock d a : Set (GL (Fin d) (ZMod g))) ↔
@@ -77,7 +75,7 @@ theorem mem_grUnipBlock_iff {d a : ℕ} (ha : a < d) (u : Gn g d) :
           Fin.ext_iff] using this
 
 /- English proof (translation)
-Establish `hx : IsIntegral (ZMod g) z` using `Algebra.IsIntegral.isIntegral z`. Establish `has : Associated (minpoly (ZMod g) z) f` using `(minpoly.irreducible hx).associated_of_dvd hf (minpoly.dvd _ _ hz)`. Rewrite using `[hf.natDegree_dvd_iff_dvd_X_pow_card_pow_sub_X, ← has.dvd_iff_dvd_left, minpoly.dvd_iff]`. Simplify using `[sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pow_eq_self_iff {f : (ZMod g)[X]} (hf : Irreducible f) {z : Fbar g} (hz : aeval z f = 0) (n : ℕ) :
     z ^ g ^ n = z ↔ f.natDegree ∣ n := by
@@ -88,15 +86,15 @@ theorem pow_eq_self_iff {f : (ZMod g)[X]} (hf : Irreducible f) {z : Fbar g} (hz 
   simp [sub_eq_zero]
 
 /- English proof (translation)
-Establish `hroot : ∀ i, aeval (z ^ g ^ i) f = 0` using `fun i => by`. Use `aeval_algHom_apply ((FiniteField.frobeniusAlgHom (ZMod g) (Fbar g)) ^ i) z f` as an intermediate fact. Rewrite `this` using `[hz, map_zero]`. Rewrite using `[← this]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[AlgHom.coe_pow, FiniteField.coe_frobeniusAlgHom, pow_iterate, ZMod.card]`. Establish `hinj : ∀ i j, i < j → j < f.natDegree → z ^ g ^ i ≠ z ^ g ^ j` using `fun i j hij hj h => by`. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_lt hij`. Establish `h2 : (z ^ g ^ i) ^ g ^ (m + 1) = z ^ g ^ i`. Rewrite using `[← pow_mul, ← pow_add, ← add_assoc, ← h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Nat.le_of_dvd (Nat.succ_pos m) ((pow_eq_self_iff hf (hroot i) _).1 h2)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hnd : ((Finset.range f.natDegree).val.map fun i => z ^ g ^ i).Nodup`. Use `Multiset.Nodup.map_on (fun i hi j hj h => ?_) (Finset.range _).nodup` and prove the remaining obligations. Rewrite `hi`, `hj` using `[← Finset.mem_def, Finset.mem_range]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `lt_trichotomy i j with h1 | h1 | h1` into its components or cases. Conclude with `absurd h (hinj i j h1 hj)`. Conclude with `h1`. Conclude with `absurd h.symm (hinj j i h1 hi)`. Use `symm`.
+Separate the alternatives or extract the components of the hypothesis. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Multiset.eq_of_le_of_card_le ((Multiset.le_iff_subset hnd).2 fun w hw => ?_) ?_` and prove the remaining obligations. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hw`. Simplify `hroot i` using `[rootsBar, hf.ne_zero, aeval_def, eval_map]`. Use `card_roots' (f.map (algebraMap (ZMod g) (Fbar g)))` as an intermediate fact. Simplify `this` using `[rootsBar]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem rootsBar_eq {f : (ZMod g)[X]} (hf : Irreducible f) {z : Fbar g} (hz : aeval z f = 0) :
     rootsBar f = (Finset.range f.natDegree).val.map fun i => z ^ g ^ i := by

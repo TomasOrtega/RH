@@ -5,20 +5,20 @@ namespace PI.FGTFG
 open Module
 
 /- English proof (translation)
-The claim follows from `Function.Injective.noZeroSMulDivisors _ Subtype.val_injective rfl (fun _ _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem nzsd_sub {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [NoZeroSMulDivisors R M] (N : Submodule R M) : NoZeroSMulDivisors R N :=
   Function.Injective.noZeroSMulDivisors _ Subtype.val_injective rfl (fun _ _ => rfl)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `h1` using `(LinearMap.ker φ).finrank_quotient_add_finrank`. Establish `h2 : finrank R (M ⧸ LinearMap.ker φ) = 1`. Rewrite using `[(φ.quotKerEquivRange).finrank_eq, hφ]`. Rewrite using `[← (LinearEquiv.toSpanNonzeroSingleton R R b hb).finrank_eq]`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Module.finrank_self R`. Use linear arithmetic over natural numbers and integers. Establish `hbm : b ∈ LinearMap.range φ` using `hφ ▸ Ideal.mem_span_singleton_self b`. Take `⟨e, he⟩` from `hbm`. Use `⟨e, eq_top_iff.mpr fun m _ => ?_⟩` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hm' : φ m ∈ LinearMap.range φ` using `LinearMap.mem_range_self φ m`. Rewrite `hm'` using `[hφ, Ideal.mem_span_singleton']`. Take `⟨t, ht⟩` from `hm'`. Establish `hm : m = (m - t • e) + t • e` using `by abel`. Rewrite using `[hm]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.add_mem_sup ?_ (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self e))` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, map_sub, map_smul, he, smul_eq_mul, ht, sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem peel {R M : Type} [CommRing R] [IsDedekindDomain R] [AddCommGroup M] [Module R M]
     [Module.Finite R M] [NoZeroSMulDivisors R M] (φ : M →ₗ[R] R) (b : R) (hb : b ≠ 0)
@@ -44,15 +44,15 @@ theorem peel {R M : Type} [CommRing R] [IsDedekindDomain R] [AddCommGroup M] [Mo
     rw [LinearMap.mem_ker, map_sub, map_smul, he, smul_eq_mul, ht, sub_self]
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `M _ _ _ _ hM`. Establish `: Subsingleton M` using `Module.finrank_zero_iff.mp hM`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨∅, by simp, Subsingleton.elim _ _⟩`. Consider the case `succ n ih`. Introduce `M _ _ _ _ hM`. Break down `Nat.lt_or_ge n 1 with hn | hn` into its components or cases. Take `⟨s, hs, hsp⟩` from `h1 R M (by omega)`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s, by omega, hsp⟩`. Take `⟨φ, b, hb, hφ⟩` from `hS R M (by omega)`. Take `⟨hr, e, he⟩` from `peel φ b hb hφ`. Use `haveI := nzsd_sub (LinearMap.ker φ)`. Take `⟨s, hs, hspan⟩` from `ih (LinearMap.ker φ) (by omega)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨insert e (s.map (Function.Embedding.subtype _)), ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `himg : Submodule.span R ((s.map (Function.Embedding.subtype _) : Finset M) : Set M) = LinearMap.ker φ`. Rewrite using `[Finset.coe_map, Function.Embedding.coe_subtype]`. Use `Submodule.span_image (R := R) (s := (s : Set (LinearMap.ker φ))) (LinearMap.ker φ).subtype` as an intermediate fact.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Submodule.coe_subtype]`. Rewrite using `[this, hspan, Submodule.map_top, Submodule.range_subtype]`. Rewrite using `[Finset.coe_insert, Submodule.span_insert, himg, sup_comm, he]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main (hS : SplitStep) (h1 : RankOneStep) (R : Type) [CommRing R] [IsDedekindDomain R] :
     ∀ n : ℕ, ∀ (M : Type) [AddCommGroup M] [Module R M] [Module.Finite R M]

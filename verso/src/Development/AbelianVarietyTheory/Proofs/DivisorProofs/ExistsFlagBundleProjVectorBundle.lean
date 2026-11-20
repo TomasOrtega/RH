@@ -22,19 +22,17 @@ namespace GlobalTheory.Vert.Flag
 variable {X : Scheme.{0}} {E K : X.Modules} {r : ℕ}
 
 /- English proof (translation)
-Set `G : Fin (r + 2) → Σ A : X.Modules, (A ⟶ E)` to `fun j => Fin.lastCases (motive := fun _ => Σ A : X.Modules, (A ⟶ E)) ⟨E, 𝟙 E⟩ (fun k => ⟨fl.F k, fl.ι k ≫ i⟩) j`. Establish `hlast : G (Fin.last (r + 1)) = ⟨E, 𝟙 E⟩` using `Fin.lastCases_last ..`. Establish `hcast (k : Fin (r + 1)) : G k.castSucc = ⟨fl.F k, fl.ι k ≫ i⟩` using `Fin.lastCases_castSucc ..`. Establish `hsub (j : Fin (r + 2)) : IsSubbundle (G j).2`. Proceed by induction on `j using Fin.lastCases with`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `last => rw [hlast]`. Conclude with `VB.isSubbundle_of_isIso _`. Consider the case `cast k => rw [hcast]`. Conclude with `isSubbundle_ι_comp hi fl k`. Establish `hvb (j : Fin (r + 2)) : IsVB (G j).1 j`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => rw [hlast]`. Conclude with `hE`. Consider the case `cast k => rw [hcast]`. Conclude with `fl.isVB k`.
+Treat this case separately. Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `hstep (k : Fin (r + 1)) : ∃ f : (G k.castSucc).1 ⟶ (G k.succ).1, f ≫ (G k.succ).2 = (G k.castSucc).2`. Proceed by induction on `k using Fin.lastCases with`. Consider the case `last`. Rewrite using `[Fin.succ_last, hlast, hcast]`. Conclude with `⟨fl.ι _ ≫ i, Category.comp_id _⟩`.
+Supply the required witnesses or components. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Consider the case `cast k`. Rewrite using `[← Fin.castSucc_succ, hcast, hcast]`. Conclude with `⟨fl.step k, fl.step_ι_assoc k i⟩`. Use `choose step step_ι using hstep`. Establish `hiso : IsIso (G (Fin.last (r + 1))).2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hlast]`. Conclude with `IsIso.id E`. Use `⟨⟨fun j => (G j).1, fun j => (G j).2, hsub, hvb, step, step_ι, hiso⟩, fun j => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∃ e : (G j.castSucc).1 ≅ fl.F j, e.hom ≫ fl.ι j ≫ i = (G j.castSucc).2`. Rewrite using `[hcast]`.
-
-Conclude with `⟨Iso.refl _, Category.id_comp _⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_extend {i : K ⟶ E} (hi : IsSubbundle i) (hE : IsVB E (r + 1)) (fl : Vert.Flag K r) :
     ∃ fl' : Vert.Flag E (r + 1), ∀ j : Fin (r + 1),
@@ -70,9 +68,9 @@ theorem exists_extend {i : K ⟶ E} (hi : IsSubbundle i) (hE : IsVB E (r + 1)) (
   exact ⟨Iso.refl _, Category.id_comp _⟩
 
 /- English proof (translation)
-Proceed by induction on `j using Fin.induction with`. Consider the case `zero => obtain rfl := Fin.le_zero_iff.1 h`. Conclude with `⟨𝟙 _, Category.id_comp _⟩`. Consider the case `succ j ih`. Take `rfl | h'` from `h.eq_or_lt`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨𝟙 _, Category.id_comp _⟩`. Take `⟨t, ht⟩` from `ih (Fin.le_castSucc_iff.2 h')`. Conclude with `⟨t ≫ fl.step j, by rw [Category.assoc, fl.step_ι, ht]⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_comp_ι_of_le (fl : Vert.Flag E r) {i j : Fin (r + 1)} (h : i ≤ j) :
     ∃ t : fl.F i ⟶ fl.F j, t ≫ fl.ι j = fl.ι i := by
@@ -85,13 +83,11 @@ theorem exists_comp_ι_of_le (fl : Vert.Flag E r) {i j : Fin (r + 1)} (h : i ≤
       exact ⟨t ≫ fl.step j, by rw [Category.assoc, fl.step_ι, ht]⟩
 
 /- English proof (translation)
-Substitute `ha` using the available equality. Use `choose t ht using fun j : Fin (r + 1) => fl'.exists_comp_ι_of_le (Fin.castSucc_le_castSucc_iff.2 (Fin.le_last j))`. Establish `hm (j : Fin (r + 1)) : Mono (t j)` using `mono_of_mono_fac (ht j)`. Establish `hl : t (Fin.last r) = 𝟙 _` using `by rw [← cancel_mono (fl'.ι _), ht, Category.id_comp]`. Establish `hs (j : Fin (r + 1)) : IsSubbundle (t j)`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hm j, r - j, VB.isVB_X₁_of_shortExact X _ (r - j) _ (shortExact_cokernel_comp (t j) (fl'.ι (Fin.last r).castSucc)) ?_ (fl'.isVB_cokernel _)⟩` and prove the remaining obligations. Establish `h` using `(fl'.isVB_cokernel j.castSucc).of_iso (cokernelIsoOfEq (ht j).symm)`. Rewrite using `[show r + 1 - (j.castSucc : ℕ) = r - j + (r + 1 - ((Fin.last r).castSucc : ℕ)) by` and apply the resulting hypothesis. Use `j.2` as an intermediate fact. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use the proof step `omega] at h`. Set `fl : Vert.Flag (fl'.F (Fin.last r).castSucc) r` to `⟨fun j => fl'.F j.castSucc, t, hs, fun j => fl'.isVB j.castSucc, fun j => fl'.step j.castSucc, fun j => by`. Rewrite using `[← cancel_mono (fl'.ι _), Category.assoc, ht, ht]`. Conclude with `fl'.step_ι j.castSucc,`. Use `by rw [hl]; exact IsIso.id _⟩`.
-
-Use `⟨fl.ofIso a.symm, fun j => ⟨Iso.refl _, ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `𝟙 _ ≫ _ = (t j ≫ a.inv) ≫ _`. Simplify using `[ht]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_trunc {i : K ⟶ E} (fl' : Vert.Flag E (r + 1)) (a : K ≅ fl'.F (Fin.last r).castSucc)
     (ha : a.hom ≫ fl'.ι (Fin.last r).castSucc = i) : ∃ fl : Vert.Flag K r, ∀ j : Fin (r + 1),
@@ -125,13 +121,13 @@ variable {T : Scheme.{0}} {R : Type} [CommRing R] {N : ℕ} {L L' Q Q' : T.Modul
   {s : Fin (N + 1) → (L ⟶ Q)}
 
 /- English proof (translation)
-Introduce `i j W hW t` and use `h i j W hW (a.app W t)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Rel.pre (h : Rel φ s) (a : L' ⟶ L) : Rel φ fun j => a ≫ s j :=
   fun i j W hW t => h i j W hW (a.app W t)
 
 /- English proof (translation)
-Introduce `i j W hW t` and use `(congrArg (a.app W) (h i j W hW t)).trans (Scheme.Modules.Hom.app_smul ..)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Rel.post (h : Rel φ s) (a : Q ⟶ Q') : Rel φ fun j => s j ≫ a := fun i j W hW t =>
   (congrArg (a.app W) (h i j W hW t)).trans (Scheme.Modules.Hom.app_smul ..)
@@ -139,7 +135,7 @@ theorem Rel.post (h : Rel φ s) (a : Q ⟶ Q') : Rel φ fun j => s j ≫ a := fu
 end Rel
 
 /- English proof (translation)
-Establish `e (c : Φ.obj (⨁ f) ⟶ Z) : c = ∑ j, Φ.map (biproduct.π f j) ≫ Φ.map (biproduct.ι f j) ≫ c`. Simplify using `only [← Functor.map_comp_assoc, ← Preadditive.sum_comp, ← Functor.map_sum, biproduct.total, Φ.map_id, Category.id_comp]`. Rewrite using `[e a, e b]`. Simplify using `only [h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_biproduct_ext {C D : Type*} [Category C] [Category D] [Preadditive C] [Preadditive D] (Φ : C ⥤ D)
     [Φ.Additive] {ι : Type} [Fintype ι] (f : ι → C) [HasBiproduct f] {Z : D} {a b : Φ.obj (⨁ f) ⟶ Z}
@@ -151,23 +147,21 @@ theorem map_biproduct_ext {C D : Type*} [Category C] [Category D] [Preadditive C
   simp only [h]
 
 /- English proof (translation)
-Use `set π := pullback.fst q (PSpace.str k N) with hπ`. Use `set φ₀ := pullback.snd q (PSpace.str k N) with hφ₀`. Take `⟨Q, s, hQ, hs, hr⟩` from `GlobalTheory.T.projective_map_universal_line k N _ φ₀ _ (hL.pullback π)`. Set `u (j : Fin (N + 1)) : L ⟶ ⨁ fun _ : Fin (N + 1) => L` to `biproduct.ι (fun _ : Fin (N + 1) => L) j`. Take `⟨p, hp⟩ : ∃ p : (Scheme.Modules.pullback π).obj (⨁ fun _ : Fin (N + 1) => L) ⟶ Q, ∀ j, (Scheme.Modules.pullback π).map (u j) ≫ p = s j` from `⟨∑ j, (Scheme.Modules.pullback π).map (biproduct.π _ j) ≫ s j, fun j => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [u, Preadditive.comp_sum, ← Functor.map_comp_assoc]`. Rewrite using `[Finset.sum_eq_single j (fun i _ hi => by rw [biproduct.ι_π_ne _ hi.symm]; simp) (by simp)]`. Use the proof step `simp⟩`. Establish `hepi : Epi p` using `(Preadditive.epi_iff_cancel_zero _).2 fun Z a ha => hs Z a fun j => by`. Rewrite using `[← hp, Category.assoc, ha, comp_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨Q, p, hQ, hepi, fun T g Q' p' hQ' hp' => ?_⟩` and prove the remaining obligations. Set `s' (j : Fin (N + 1))` to `(Scheme.Modules.pullback g).map (u j) ≫ p'`. Establish `hs' : Gen s'` using `GlobalTheory.T.jointly_epi_sections_generate T _ _ N s' (hL.pullback g) hQ' fun Z a ha => by`. Rewrite using `[← cancel_epi p']`. Conclude with `map_biproduct_ext _ _ fun j => by simpa [s', u] using ha j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key (g' : T ⟶ pullback q (PSpace.str k N)) (w : g' ≫ π = g) (e : (Scheme.Modules.pullback g').obj Q ⟶ Q') : (Scheme.Modules.pullback g').map p ≫ e = (cmp g' π w).hom.app _ ≫ p' ↔ ∀ j, (Scheme.Modules.pullback g').map (s j) ≫ e = (cmp g' π w).hom.app _ ≫ s' j`. Establish `H (j) : (Scheme.Modules.pullback g').map ((Scheme.Modules.pullback π).map (u j)) ≫ (Scheme.Modules.pullback g').map p ≫ e = (Scheme.Modules.pullback g').map (s j) ≫ e`. Rewrite using `[← Functor.map_comp_assoc, hp]`. Use `⟨fun h j => by rw [← H, h, cmp_naturality_assoc], fun h => map_biproduct_ext (Scheme.Modules.pullback π ⋙ Scheme.Modules.pullback g') _ fun j => ?_⟩` and prove the remaining obligations. Conclude with `(H j).trans ((h j).trans (cmp_naturality_assoc g' π w (u j) p').symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨φ, hφ, hφr⟩` from `GlobalTheory.T.generating_sections_projective_map k N T (g ≫ q) _ _ s' (hL.pullback g) hQ' hs'`. Establish `w : pullback.lift g φ hφ.symm ≫ π = g` using `pullback.lift_fst ..`. Establish `w' : pullback.lift g φ hφ.symm ≫ φ₀ = φ` using `pullback.lift_snd ..`. Use `⟨pullback.lift g φ hφ.symm, ⟨w, ?_⟩, ?_⟩` and prove the remaining obligations. Generalize the expression as in `pullback.lift g φ hφ.symm = g' at w w'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Establish `hj : JointEpi fun j => (Scheme.Modules.pullback g').map (s j)` using `fun Z a ha => by`. Rewrite using `[← cancel_epi ((Scheme.Modules.pullback g').map p)]`. Use `map_biproduct_ext (Scheme.Modules.pullback π ⋙ Scheme.Modules.pullback g') _ fun j => ?_` and prove the remaining obligations. Use `ha j` as an intermediate fact. Simplify using `only at this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Rewrite `this` using `[← hp, Functor.map_comp, Category.assoc]`. Conclude with `this.trans (by simp)`. Establish `h₁` using `(hL.pullback π).pullback g'`. Take `⟨e, he⟩` from `GlobalTheory.T.projective_relation_unique_quotient k N T _ _ Q' _ _ φ h₁ (hQ.pullback g') hj (GlobalTheory.T.jointly_epi_sections_generate T _ _ N _ h₁ (hQ.pullback g') hj) (w' ▸ GlobalTheory.T.projective_relation_pullback k N _ _ g' _ _ s φ₀ (hL.pullback π) hQ hr) (hφr.pre ((cmp …`. Conclude with `⟨e, (key g' w e).2 he⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `g' ⟨w₁, e, he⟩`. Establish `h₁` using `((GlobalTheory.T.projective_relation_pullback k N _ _ g' _ _ s φ₀ (hL.pullback π) hQ hr).post e).pre ((cmp g' π w₁).inv.app L)`. Simplify using `only [(key g' w₁ e).1 he, Iso.inv_hom_id_app_assoc] at h₁`. Use `pullback.hom_ext (w₁.trans w.symm) (Eq.trans ?_ w'.symm)` and prove the remaining obligations. Use `GlobalTheory.T.projective_map_unique_of_relation k N T _ _ s' _ _ (hL.pullback g) hQ' hs' ?_ h₁ hφr` and prove the remaining obligations.
-
-Rewrite using `[hφ, Category.assoc, ← pullback.condition, ← Category.assoc, w₁]`.
+A detailed English derivation is pending.
 -/
 theorem exists_isLineQuot_sum {k : Type} [CommRing k] {B : Scheme.{0}} (q : B ⟶ Sp k) (N : ℕ) {L : B.Modules}
     (hL : IsVB L 1) [HasBiproduct fun _ : Fin (N + 1) => L] :
@@ -224,15 +218,15 @@ theorem exists_isLineQuot_sum {k : Type} [CommRing k] {B : Scheme.{0}} (q : B �
     rw [hφ, Category.assoc, ← pullback.condition, ← Category.assoc, w₁]
 
 /- English proof (translation)
-Take `⟨hQ, hp, H⟩` from `h`. Take `⟨Z, j, hj, hZ⟩` from `GlobalTheory.T.vanishing_locus_closed_subscheme Y _ Q ((Scheme.Modules.pullback π).map (kernel.ι a) ≫ p) inferInstance hQ`. Establish `hex` using `(ShortComplex.exact_kernel a).map_of_epi_of_preservesCokernel (Scheme.Modules.pullback (j ≫ π)) (inferInstanceAs (Epi a)) inferInstance`. Establish `: Epi ((ShortComplex.mk (kernel.ι a) a (kernel.condition a)).map (Scheme.Modules.pullback (j ≫ π))).g` using `inferInstanceAs (Epi ((Scheme.Modules.pullback (j ≫ π)).map a))`. Take `⟨p₁, hp₁⟩ : ∃ p₁ : (Scheme.Modules.pullback (j ≫ π)).obj E ⟶ (Scheme.Modules.pullback j).obj Q, (Scheme.Modules.pullback (j ≫ π)).map a ≫ p₁ = (cmp j π rfl).inv.app F ≫ (Scheme.Modules.pullback j).map p` from `hex.desc' _ (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `(hZ Z j).2 ⟨𝟙 _, Category.id_comp _⟩` as an intermediate fact. Express the relevant statement in the definitionally equal form `(Scheme.Modules.pullback (j ≫ π)).map (kernel.ι a) ≫ _ = _`. Rewrite using `[← cancel_epi ((cmp j π rfl).hom.app (kernel a)), ← cmp_naturality_assoc, Iso.hom_inv_id_app_assoc, ← Functor.map_comp, this, comp_zero])`. Use `⟨Z, j, _, p₁, hj, hQ.pullback j, epi_of_epi_fac hp₁, fun T g Q' p' hQ' hp' => ?_⟩` and prove the remaining obligations. Establish `key (h : T ⟶ Z) (g₁ : T ⟶ Y) (w₀ : h ≫ j = g₁) (w₁ : g₁ ≫ π = g) (w : h ≫ j ≫ π = g) (e₁ : (Scheme.Modules.pullback g₁).obj Q ⟶ Q') : (Scheme.Modules.pullback h).map p₁ ≫ (cmp h j w₀).hom.app Q ≫ e₁ = (cmp h (j ≫ π) w).hom.app E ≫ p' ↔ (Scheme.Modules.pullback g₁).map p ≫ e₁ = (c …`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← cancel_epi ((Scheme.Modules.pullback h).map ((Scheme.Modules.pullback (j ≫ π)).map a)), ← Functor.map_comp_assoc, hp₁, cmp_naturality_assoc, ← cancel_epi ((Scheme.Modules.pullback h).map ((cmp j π rfl).hom.app F)), ← Functor.map_comp_assoc, Iso.hom_inv_id_app_assoc, cmp_natura …`. Take `⟨g₁, ⟨w₁, e₁, he₁⟩, hu⟩` from `H T g Q' ((Scheme.Modules.pullback g).map a ≫ p') hQ' inferInstance`. Establish `: Epi e₁` using `epi_of_epi_fac he₁`. Use `SameLine.isIso_of_epi e₁ (hQ.pullback g₁) hQ'` as an intermediate fact. Take `⟨h, w₀⟩` from `(hZ T g₁).1 (by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← cancel_mono e₁, Functor.map_comp, Category.assoc, he₁, cmp_naturality_assoc, ← Functor.map_comp_assoc, kernel.condition]`. Use the proof step `simp)`. Establish `w : h ≫ j ≫ π = g` using `by rw [← Category.assoc, w₀, w₁]`. Use `⟨h, ⟨w, _, (key h g₁ w₀ w₁ w e₁).2 he₁⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `h' ⟨w', e', he'⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono j, w₀]`. Conclude with `hu _ ⟨(Category.assoc ..).trans w', (cmp h' j rfl).inv.app Q ≫ e', (key h' _ rfl _ w' _).1 (by simpa using he')⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsLineQuot.exists_closed {Y B : Scheme.{0}} {π : Y ⟶ B} {F E : B.Modules} [F.IsQuasicoherent]
     [E.IsQuasicoherent] {Q : Y.Modules} {p : (Scheme.Modules.pullback π).obj F ⟶ Q} (h : IsLineQuot π F p)
@@ -275,13 +269,13 @@ theorem IsLineQuot.exists_closed {Y B : Scheme.{0}} {π : Y ⟶ B} {F E : B.Modu
   exact hu _ ⟨(Category.assoc ..).trans w', (cmp h' j rfl).inv.app Q ≫ e', (key h' _ rfl _ w' _).1 (by simpa using he')⟩
 
 /- English proof (translation)
-Use `hE.isFiniteQC` as an intermediate fact. Use `hE.isQuasicoherent` as an intermediate fact. Use `Abelian.hasFiniteBiproducts (C := B.Modules)` as an intermediate fact. Take `⟨-, A, hA⟩` from `isProper_and_exists_isAmpleLB_of_isProjOver hq`. Take `⟨n, N, φ, hφ⟩` from `(hA.eventually_exists_epi_sigma E).exists`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hL` using `isVB_toMod (Twist.isLB_lbZPow hA.isLB (-n))`. Generalize the expression as in `LB.toMod (lbZPow A (-n)) = L at φ hφ hL`. Use `hL.isQuasicoherent` as an intermediate fact. Set `a : (⨁ fun _ : Fin (N + 1) => L) ⟶ E` to `biproduct.desc (Fin.cons 0 fun j => Sigma.ι (fun _ => L) j ≫ φ)`. Establish `: Epi a` using `(Preadditive.epi_iff_cancel_zero _).2 fun Z b hb => by`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← cancel_epi φ]`. Use `Sigma.hom_ext _ _ fun j => ?_` and prove the remaining obligations. Simplify `biproduct.ι _ j.succ ≫= hb` using `[a]`. Take `⟨Q, p, h⟩` from `exists_isLineQuot_sum q N hL`. Take `⟨Z, j, Q₁, p₁, hj, h₁⟩` from `h.exists_closed a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Z, _, Q₁, p₁, h₁, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Conclude with `ProjSpace.isProjOver_comp_of_isClosedImmersion j (ProjSpace.isProjOver_pullback hq ⟨N, 𝟙 _, inferInstance, Category.id_comp _⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isLineQuot_isProjOver {k : Type} [CommRing k] {B : Scheme.{0}} {q : B ⟶ Sp k} (hq : IsProjOver q)
     {E : B.Modules} {r : ℕ} (hE : IsVB E r) : ∃ (Y : Scheme.{0}) (π : Y ⟶ B) (Q : Y.Modules) (p : _ ⟶ Q),
@@ -313,34 +307,34 @@ namespace GlobalTheory.LineQuot
 open GlobalTheory.CovTest
 
 /- English proof (translation)
-The claim follows from `isVB_X₁_of_shortExact X (.mk (kernel.ι p) p (kernel.condition p)) r 1 { exact := ShortComplex.exact_kernel p } hE hQ`.
+A detailed English derivation is pending.
 -/
 theorem isVB_kernel {X : Scheme.{0}} {E Q : X.Modules} {r : ℕ} (hE : IsVB E (r + 1)) (hQ : IsVB Q 1) (p : E ⟶ Q)
     [Epi p] : IsVB (kernel p) r :=
   isVB_X₁_of_shortExact X (.mk (kernel.ι p) p (kernel.condition p)) r 1 { exact := ShortComplex.exact_kernel p } hE hQ
 
 /- English proof (translation)
-Take `⟨hQ, hp, H⟩` from `h`. Establish `hH` using `isVB_kernel (hE.pullback π₁) hQ p`. Establish `hι : IsSubbundle (kernel.ι p)` using `isSubbundle_of_shortExact (S := .mk (kernel.ι p) p (kernel.condition p)) { exact := ShortComplex.exact_kernel p } hQ`. Establish `hsub {T : Scheme.{0}} (g₁ : T ⟶ Y₁)` using `SubPull.isSubbundle_pullback _ _ g₁ _ _ _ r hH hι`. Establish `hex {T : Scheme.{0}} (g₁ : T ⟶ Y₁)` using `(ShortComplex.exact_kernel p).map_of_epi_of_preservesCokernel (Scheme.Modules.pullback g₁) hp inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨fl₁, hfl₁⟩` from `Vert.Flag.exists_extend (hsub π₂) ((hE.pullback π₁).pullback π₂) (fl ())`. Use `choose e₀ he₀ using hfl₁`. Use `⟨fun _ => fl₁.ofIso ((cmp π₂ π₁ rfl).app E), fun T g fl' => ?_⟩` and prove the remaining obligations. Establish `hB (g' : T ⟶ Y₂) (g₁ : T ⟶ Y₁) (w₂ : g' ≫ π₂ = g₁) (w₁ : g₁ ≫ π₁ = g) (w : g' ≫ π₂ ≫ π₁ = g) (j : Fin (r + 1)) : (Scheme.Modules.pullback g').map (fl₁.ι j.castSucc ≫ (cmp π₂ π₁ rfl).hom.app E) ≫ (cmp g' (π₂ ≫ π₁) w).hom.app E = (Scheme.Modules.pullback g').map (e₀ j).hom ≫ ((Sche …`. Rewrite using `[← he₀]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Functor.map_comp, Category.assoc]`. Rewrite using `[cmp_assoc g' π₂ π₁ rfl w w₂ w₁, cmp_naturality_assoc]`. Use `set i' := (fl' ()).ι (Fin.last r).castSucc with hi'`. Establish `hQ' : IsVB (cokernel i') 1` using `by simpa using (fl' ()).isVB_cokernel (Fin.last r).castSucc`. Take `⟨g₁, ⟨w₁, e, he⟩, hu⟩` from `H T g _ (cokernel.π i') hQ' inferInstance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Epi e` using `epi_of_epi_fac he`. Use `SameLine.isIso_of_epi e (hQ.pullback g₁) hQ'` as an intermediate fact. Use `(hsub g₁).mono` as an intermediate fact. Establish `: Mono ((ShortComplex.mk (kernel.ι p) p (kernel.condition p)).map (Scheme.Modules.pullback g₁)).f` using `this`. Take `⟨a, ha⟩ : ∃ a, a ≫ i' = (Scheme.Modules.pullback g₁).map (kernel.ι p) ≫ (cmp g₁ π₁ w₁).hom.app E` from `(ShortComplex.exact_cokernel i').lift' _ (by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Category.assoc, ← he, ← Functor.map_comp_assoc, kernel.condition]`. Use the proof step `simp)`. Take `⟨b, hb⟩ : ∃ b, b ≫ (Scheme.Modules.pullback g₁).map (kernel.ι p) = i' ≫ (cmp g₁ π₁ w₁).inv.app E` from `(hex g₁).lift' _ (by`. Express the relevant statement in the definitionally equal form `_ ≫ (Scheme.Modules.pullback g₁).map p = 0`. Rewrite using `[← cancel_mono e, Category.assoc, Category.assoc, he]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the proof step `simp)`. Take `⟨fl'', hfl''⟩` from `Vert.Flag.exists_trunc (fl' ()) ⟨a, b, by rw [← cancel_mono ((Scheme.Modules.pullback g₁).map (kernel.ι p)), Category.assoc, hb, reassoc_of% ha]; simp, by rw [← cancel_mono i', Category.assoc, ha, reassoc_of% hb]; simp⟩ ha`. Use `choose ε hε using hfl''`. Take `⟨g', ⟨w₂, hδ⟩, hu₂⟩` from `h₂ T g₁ fun _ => fl''`. Establish `w : g' ≫ π₂ ≫ π₁ = g` using `by rw [← Category.assoc, w₂, w₁]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Use `⟨g', ⟨w, fun _ i => ?_⟩, ?_⟩` and prove the remaining obligations. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Conclude with `⟨asIso ((Scheme.Modules.pullback g').map ((fl₁.ofIso ((cmp π₂ π₁ rfl).app E)).ι (Fin.last _)) ≫ (cmp g' (π₂ ≫ π₁) w).hom.app E) ≪≫ (asIso ((fl' ()).ι (Fin.last _))).symm, by simp [cmp_hom_app]⟩`. Consider the case `cast j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Take `⟨δ, hδ⟩` from `hδ () j`. Use `⟨(Scheme.Modules.pullback g').mapIso (e₀ j) ≪≫ δ ≪≫ ε j, Eq.trans ?_ (hB g' g₁ w₂ w₁ w j).symm⟩` and prove the remaining obligations. Rewrite using `[cmp_hom_app, ← hδ]`. Simplify using `[hε]`. Introduce and unpack `g'' ⟨w', hη⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w₂' : g'' ≫ π₂ = g₁`. Take `⟨η, hη⟩` from `hη () (Fin.last r).castSucc`. Establish `w₁'` using `(Category.assoc ..).trans w'`. Establish `hz` using `hη.trans (hB g'' _ rfl w₁' w' (Fin.last r))`. Establish `: Epi ((ShortComplex.mk (kernel.ι p) p (kernel.condition p)).map (Scheme.Modules.pullback (g'' ≫ π₂))).g` using `inferInstanceAs (Epi ((Scheme.Modules.pullback (g'' ≫ π₂)).map p))`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `hu _ ⟨w₁', (hex (g'' ≫ π₂)).desc' _ ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Scheme.Modules.pullback (g'' ≫ π₂)).map (kernel.ι p) ≫ _ = 0`. Rewrite using `[← cancel_epi ((Scheme.Modules.pullback g'').map ((fl ()).ι (Fin.last r)) ≫ (cmp g'' π₂ rfl).hom.app _), ← cancel_epi ((Scheme.Modules.pullback g'').map (e₀ (Fin.last r)).hom), Category.assoc, ← reassoc_of% hz, ← hi']`. Simplify using the standard rewrite rules. Use `hu₂ _ ⟨w₂', fun _ j => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨η, hη⟩` from `hη () j.castSucc`. Establish `hz` using `hη.trans (hB g'' _ w₂' w₁ w' j)`. Use `⟨((Scheme.Modules.pullback g'').mapIso (e₀ j)).symm ≪≫ η ≪≫ (ε j).symm, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono ((Scheme.Modules.pullback g₁).map (kernel.ι p) ≫ (cmp g₁ π₁ w₁).hom.app E), ← cancel_epi ((Scheme.Modules.pullback g'').map (e₀ j).hom), ← cmp_hom_app, ← hz, Category.assoc, ← hε]`. Simplify using `[← Functor.map_comp_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem IsLineQuot.tower {B Y₁ Y₂ : Scheme.{0}} {π₁ : Y₁ ⟶ B} {E : B.Modules} {r : ℕ} (hE : IsVB E (r + 1))
     {Q : Y₁.Modules} {p : (Scheme.Modules.pullback π₁).obj E ⟶ Q} (h : IsLineQuot π₁ E p) {π₂ : Y₂ ⟶ Y₁}
@@ -418,11 +412,11 @@ theorem IsLineQuot.tower {B Y₁ Y₂ : Scheme.{0}} {π₁ : Y₁ ⟶ B} {E : B.
 open ZeroObject in
 
 /- English proof (translation)
-Introduce `k _ _ B q E r hq hE`. Proceed by induction on `r generalizing B with`. Consider the case `zero`. Establish `h` using `hE.pullback (𝟙 B)`. Use `⟨B, 𝟙 B, fun _ => ⟨fun _ => _, fun _ => 𝟙 _, fun _ => isSubbundle_of_isIso _, fun i => by simpa using h, finZeroElim, finZeroElim, inferInstance⟩, fun T g fl' => ⟨g, ⟨Category.comp_id g, fun a i => ?_⟩, fun _ ⟨w, _⟩ => (Category.comp_id _).symm.trans w⟩, by rwa [Category.id_comp] …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `z` using `isVB_zero_iff.1 (h.pullback g)`. Conclude with `⟨z.iso (isVB_zero_iff.1 (by simpa using (fl' a).isVB i)), z.eq_of_src _ _⟩`. Consider the case `succ r ih`. Take `⟨Y₁, π₁, Q, p, h, h₁⟩` from `exists_isLineQuot_isProjOver hq hE`. Use `h.2.1` as an intermediate fact.
+Establish an intermediate fact. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Y₂, π₂, fl, h₂, h₃⟩` from `ih Y₁ (π₁ ≫ q) _ h₁ (isVB_kernel (hE.pullback π₁) h.1 p)`. Take `⟨fl₂, h₄⟩` from `h.tower hE h₂`. Conclude with `⟨Y₂, _, fl₂, h₄, by rwa [Category.assoc]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isFlagBundle_isProjOver : ∀ (k : Type) [CommRing k] [IsNoetherianRing k] (B : Scheme.{0}) (q : B ⟶ Sp k) (E : B.Modules) (r : ℕ), IsProjOver q → GlobalTheory.VB.IsVB E r → ∃ (Y : Scheme.{0}) (π : Y ⟶ B) (fl : ∀ _ : Unit, GlobalTheory.Vert.Flag ((Scheme.Modules.pullback π).obj E) r), GlobalTheory.CovTest.IsFlagBundle π (fun _ : Unit => E) (fun _ => r) fl ∧ IsProjOver (π ≫ q) := by
   intro k _ _ B q E r hq hE

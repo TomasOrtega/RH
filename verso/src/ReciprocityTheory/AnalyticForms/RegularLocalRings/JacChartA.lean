@@ -28,55 +28,55 @@ def jacS (K : Ideal (MvPolynomial (Fin n) ℂ)) (p : Fin n → ℂ) : Submodule 
   Submodule.span ℂ (gradP p '' (K : Set (MvPolynomial (Fin n) ℂ)))
 
 /- English proof (translation)
-The claim follows from `RingHom.mem_ker`.
+A detailed English derivation is pending.
 -/
 theorem mem_ptIdeal {p : Fin n → ℂ} {a : MvPolynomial (Fin n) ℂ} : a ∈ ptI p ↔ eval p a = 0 :=
   RingHom.mem_ker
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `[gradP]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem grad_add (p : Fin n → ℂ) (x y : MvPolynomial (Fin n) ℂ) :
     gradP p (x + y) = gradP p x + gradP p y := by
   ext j; simp [gradP]
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `[gradP, Derivation.leibniz]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem grad_mul (p : Fin n → ℂ) (x y : MvPolynomial (Fin n) ℂ) :
     gradP p (x * y) = eval p x • gradP p y + eval p y • gradP p x := by
   ext j; simp [gradP, Derivation.leibniz]
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `[gradP]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem grad_C (p : Fin n → ℂ) (c : ℂ) : gradP p (C c) = 0 := by
   ext j; simp [gradP]
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `[gradP, map_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem grad_sum (p : Fin n → ℂ) {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial (Fin n) ℂ) :
     gradP p (∑ i ∈ s, f i) = ∑ i ∈ s, gradP p (f i) := by
   ext j; simp [gradP, map_sum]
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `[gradP, pderiv_X, Pi.single_apply, eq_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem grad_lin (p : Fin n → ℂ) (i : Fin n) : gradP p (X i - C (p i)) = Pi.single i 1 := by
   ext j; simp [gradP, pderiv_X, Pi.single_apply, eq_comm]
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_left_more.goal1 .. | (apply Bl.general_b_fact_left_more.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left_more.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sub_C_mem_span_lin (p : Fin n → ℂ) (a : MvPolynomial (Fin n) ℂ) :
     a - C (eval p a) ∈ Ideal.span (Set.range fun i => X i - C (p i)) := by
   first | exact Bl.general_b_fact_left_more.goal1 .. | (apply Bl.general_b_fact_left_more.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left_more.goal1 <;> assumption)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `a ha`. Use `sub_C_mem_span_lin p a` as an intermediate fact. Rewrite `this` using `[mem_ptIdeal.mp ha, map_zero, sub_zero]`. Then use the resulting hypothesis. Rewrite using `[Ideal.span_le]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `[mem_ptIdeal]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem ptIdeal_eq_span (p : Fin n → ℂ) :
     ptI p = Ideal.span (Set.range fun i => X i - C (p i)) := by
@@ -89,11 +89,11 @@ theorem ptIdeal_eq_span (p : Fin n → ℂ) :
     simp [mem_ptIdeal]
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `(Ideal.mem_span_range_iff_exists_fun).mp (sub_C_mem_span_lin p a)`. Establish `ha : a = C (eval p a) + ∑ i, b i * (X i - C (p i))` using `by rw [hb]; ring`. Establish `hg : ∀ j, gradP p a j = eval p (b j)`. Introduce `j`. Establish `h1` using `congrArg (fun f => gradP p f j) ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [grad_add, grad_C, grad_sum, grad_mul, grad_lin] at h1`. Simplify `h1` using `[Pi.single_apply]`. Establish `: a - C (eval p a) - ∑ i, C (gradP p a i) * (X i - C (p i)) = ∑ i, (b i - C (eval p (b i))) * (X i - C (p i))`. Rewrite using `[← hb]`. Simplify using `only [hg, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, pow_two]`. Use `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_mul ?_ ?_` and prove the remaining obligations. Simplify using `[mem_ptIdeal]`. Simplify using `[mem_ptIdeal]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem taylor (p : Fin n → ℂ) (a : MvPolynomial (Fin n) ℂ) :
     a - C (eval p a) - ∑ i, C (gradP p a i) * (X i - C (p i)) ∈ ptI p ^ 2 := by
@@ -113,9 +113,9 @@ theorem taylor (p : Fin n → ℂ) (a : MvPolynomial (Fin n) ℂ) :
   · simp [mem_ptIdeal]
 
 /- English proof (translation)
-Rewrite `hq` using `[pow_two]`. Use `Submodule.mul_induction_on hq ?_ ?_` and prove the remaining obligations. Introduce `x hx y hy`. Rewrite using `[grad_mul, mem_ptIdeal.mp hx, mem_ptIdeal.mp hy]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `x y hx hy`. Rewrite using `[grad_add, hx, hy, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem grad_eq_zero_of_mem_sq (p : Fin n → ℂ) {q : MvPolynomial (Fin n) ℂ}
     (hq : q ∈ ptI p ^ 2) : gradP p q = 0 := by
@@ -131,16 +131,16 @@ def evLoc (p : Fin n → ℂ) : localization₂ p →+* ℂ :=
     (fun y => isUnit_iff_ne_zero.mpr fun h => y.2 (mem_ptIdeal.mpr h))
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ _`.
+A detailed English derivation is pending.
 -/
 theorem evLoc_algebraMap (p : Fin n → ℂ) (a : MvPolynomial (Fin n) ℂ) :
     evLoc p (algebraMap _ (localization₂ p) a) = eval p a :=
   IsLocalization.lift_eq _ _
 
 /- English proof (translation)
-Take `⟨⟨x, s⟩, hx⟩` from `(IsLocalization.mem_map_algebraMap_iff (ptI p).primeCompl (localization₂ p)).mp h`. Rewrite `hx` using `[← map_mul]`. Take `⟨c, hc⟩` from `(IsLocalization.eq_iff_exists (ptI p).primeCompl (localization₂ p)).mp hx`. Use `⟨c * s, (ptI p).primeCompl.mul_mem c.2 s.2, ?_⟩` and prove the remaining obligations. Establish `: (c : MvPolynomial (Fin n) ℂ) * s * a = c * x` using `by rw [← hc]; ring`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `I.mul_mem_left _ x.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_mem_of_algebraMap_mem (p : Fin n → ℂ) {I : Ideal (MvPolynomial (Fin n) ℂ)}
     {a : MvPolynomial (Fin n) ℂ}
@@ -160,9 +160,9 @@ abbrev psi (p : Fin n → ℂ) (K : Ideal (MvPolynomial (Fin n) ℂ)) : MvPolyno
   (Ideal.Quotient.mk _).comp (algebraMap _ (localization₂ p))
 
 /- English proof (translation)
-Introduce `k hk`. Assume the negation of the conclusion as `hkp`. Establish `hu : IsUnit (algebraMap _ (localization₂ p) k)` using `IsLocalization.map_units (localization₂ p) (⟨k, hkp⟩ : (ptI p).primeCompl)`. Establish `htop` using `Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem (algebraMap _ (localization₂ p)) hk) hu`. Establish `: (1 : locR K p) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_one (Ideal.Quotient.mk _), Ideal.Quotient.eq_zero_iff_mem, htop]`. Conclude with `Submodule.mem_top`. Conclude with `one_ne_zero this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_ptIdeal_of_nontrivial [Nontrivial (locR K p)] : K ≤ ptI p := by
   intro k hk
@@ -176,7 +176,7 @@ theorem le_ptIdeal_of_nontrivial [Nontrivial (locR K p)] : K ≤ ptI p := by
   exact one_ne_zero this
 
 /- English proof (translation)
-The claim follows from `(IsLocalization.map_units (localization₂ p) (⟨s, hs⟩ : (ptI p).primeCompl)).map (Ideal.Quotient.mk _)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_psi {s : MvPolynomial (Fin n) ℂ} (hs : s ∉ ptI p) : IsUnit (psi p K s) :=
   (IsLocalization.map_units (localization₂ p) (⟨s, hs⟩ : (ptI p).primeCompl)).map (Ideal.Quotient.mk _)
@@ -192,14 +192,14 @@ def evRing (hK : K ≤ ptI p) : locR K p →+* ℂ :=
     exact RingHom.mem_ker.mp (this hx))
 
 /- English proof (translation)
-Rewrite using `[evRing, psi, RingHom.comp_apply, Ideal.Quotient.lift_mk, evLoc_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evRing_psi (hK : K ≤ ptI p) (a : MvPolynomial (Fin n) ℂ) :
     evRing K hK (psi p K a) = eval p a := by
   rw [evRing, psi, RingHom.comp_apply, Ideal.Quotient.lift_mk, evLoc_algebraMap]
 
 /- English proof (translation)
-Establish `: (RingHom.ker (evRing K hK)).IsMaximal` using `RingHom.ker_isMaximal_of_surjective _ (fun c => ⟨psi p K (C c), by rw [evRing_psi, eval_C]⟩)`. Conclude with `IsLocalRing.eq_maximalIdeal this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ker_evRing [IsLocalRing (locR K p)] (hK : K ≤ ptI p) :
     RingHom.ker (evRing K hK) = maximalIdeal (locR K p) := by
@@ -208,16 +208,16 @@ theorem ker_evRing [IsLocalRing (locR K p)] (hK : K ≤ ptI p) :
   exact IsLocalRing.eq_maximalIdeal this
 
 /- English proof (translation)
-Rewrite using `[← ker_evRing K hK, RingHom.mem_ker, evRing_psi, mem_ptIdeal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_mem_max_iff [IsLocalRing (locR K p)] (hK : K ≤ ptI p)
     (a : MvPolynomial (Fin n) ℂ) : psi p K a ∈ maximalIdeal (locR K p) ↔ a ∈ ptI p := by
   rw [← ker_evRing K hK, RingHom.mem_ker, evRing_psi, mem_ptIdeal]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective m`. Take `⟨⟨a, s⟩, hx⟩` from `IsLocalization.surj (ptI p).primeCompl x`. Establish `h : Ideal.Quotient.mk _ x * psi p K s = psi p K a`. Simplify using `only [psi, RingHom.coe_comp, Function.comp_apply, ← hx, map_mul]`. Use `⟨a, s, ?_, s.2, h⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← psi_mem_max_iff K hK, ← h]`. Conclude with `Ideal.mul_mem_right _ _ hm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_of_mem_max [IsLocalRing (locR K p)] (hK : K ≤ ptI p) {m : locR K p}
     (hm : m ∈ maximalIdeal (locR K p)) :
@@ -231,11 +231,9 @@ theorem exists_of_mem_max [IsLocalRing (locR K p)] (hK : K ≤ ptI p) {m : locR 
   exact Ideal.mul_mem_right _ _ hm
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `m hm`. Take `⟨a, s, ha, hs, h⟩` from `exists_of_mem_max K hK hm`. Establish `hu` using `isUnit_psi K hs`. Establish `: m = psi p K a * ↑hu.unit⁻¹`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h, mul_assoc, IsUnit.mul_val_inv, mul_one]`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ ha)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`.
-
-Conclude with `(psi_mem_max_iff K hK a).mpr ha`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem max_eq_map [IsLocalRing (locR K p)] (hK : K ≤ ptI p) :
     maximalIdeal (locR K p) = (ptI p).map (psi p K) := by
@@ -252,7 +250,7 @@ theorem max_eq_map [IsLocalRing (locR K p)] (hK : K ≤ ptI p) :
     exact (psi_mem_max_iff K hK a).mpr ha
 
 /- English proof (translation)
-Rewrite using `[max_eq_map K hK, ← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem _ ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_mem_sq [IsLocalRing (locR K p)] (hK : K ≤ ptI p) {a : MvPolynomial (Fin n) ℂ}
     (ha : a ∈ ptI p ^ 2) : psi p K a ∈ maximalIdeal (locR K p) ^ 2 := by
@@ -260,7 +258,7 @@ theorem psi_mem_sq [IsLocalRing (locR K p)] (hK : K ≤ ptI p) {a : MvPolynomial
   exact Ideal.mem_map_of_mem _ ha
 
 /- English proof (translation)
-Rewrite `hl` using `[max_eq_map K hK, ← Ideal.map_pow, psi, ← Ideal.map_map]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (algebraMap _ (localization₂ p) l) ∈ _ at hl`. Rewrite `hl` using `[Ideal.mem_quotient_iff_mem_sup, ← Ideal.map_sup]`. Conclude with `exists_mul_mem_of_algebraMap_mem p hl`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_of_psi_mem_sq [IsLocalRing (locR K p)] (hK : K ≤ ptI p)
     {l : MvPolynomial (Fin n) ℂ} (hl : psi p K l ∈ maximalIdeal (locR K p) ^ 2) :

@@ -9,21 +9,19 @@ open scoped ENNReal NNReal
 namespace GlobalTheory.Proof.quotientMeasure_normalised_by_haar_unique
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ H _ _ hH hG hH' dg _ ν _`. Take `⟨⟨μ₀, hμ₀⟩, huniq⟩` from `GlobalTheory.T.quotientInvariantMeasure_exists_unique_unimodular G H hH hG hH'`. Take `⟨dg₀, ⟨hdg₀, hF₀⟩, -⟩` from `GlobalTheory.T.existsUnique_haar_of_invariantRadonOnCosets G H hH ν μ₀ hμ₀`. Use `set c : ℝ≥0 := haarScalarFactor dg dg₀ with hc`. Establish `hcpos : 0 < c` using `haarScalarFactor_pos_of_isHaarMeasure dg dg₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdg : dg = c • dg₀` using `isMulLeftInvariant_eq_smul dg dg₀`. Establish `hR : IsInvariantRadon H (c • μ₀)` using `by haveI := hμ₀.finiteOnCompacts haveI := hμ₀.invariant`. Use `⟨?_, inferInstance, ⟨fun g s hs => ?_⟩⟩` and prove the remaining obligations. Introduce `h`. Apply `hμ₀.ne_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: c⁻¹ • (c • μ₀) = μ₀`. Rewrite using `[smul_smul, inv_mul_cancel₀ hcpos.ne', one_smul]`. Rewrite using `[← this, h, smul_zero]`. Simplify using `only [Measure.coe_nnreal_smul_apply]`. Rewrite using `[SMulInvariantMeasure.measure_preimage_smul g hs]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hF : QuotientFormula H dg ν (c • μ₀)`. Introduce `f hf`. Take `⟨h1, h2⟩` from `hF₀ f hf`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[hdg, lintegral_smul_measure, lintegral_smul_measure, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c • μ₀, ⟨hR, hF⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `μ ⟨hμ, hμF⟩`. Take `⟨d, -, hd⟩` from `huniq _ _ hR hμ`. Take `⟨K⟩ : Nonempty (TopologicalSpace.PositiveCompacts G)` from `inferInstance`. Establish `hKm : MeasurableSet (K : Set G)` using `K.isCompact.measurableSet`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfm : Measurable ((K : Set G).indicator (fun _ => (1 : ℝ≥0∞)))` using `measurable_const.indicator hKm`. Establish `e1` using `(hF _ hfm).2`. Establish `e2` using `(hμF _ hfm).2`. Rewrite `e2` using `[hd, lintegral_smul_measure, ← e1, lintegral_indicator_const hKm, one_mul]`. Establish `hpos : dg K ≠ 0` using `(measure_pos_of_nonempty_interior dg K.interior_nonempty).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : dg K ≠ ∞` using `K.isCompact.measure_lt_top.ne`. Establish `hd1 : d = 1`. Establish `: (d : ℝ≥0∞) * dg K = 1 * dg K`. Rewrite using `[one_mul]`. Conclude with `e2.symm`.
-
-Conclude with `(ENNReal.mul_left_inj hpos hfin).mp this` after adjusting the coercions. Rewrite using `[hd, hd1, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normaliseQuotientClause : NormaliseQuotientClause := by
   intro G _ _ _ _ _ _ _ _ H _ _ hH hG hH' dg _ ν _

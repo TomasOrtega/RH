@@ -10,19 +10,19 @@ section
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Nf UpperTheory.V.Sd
   UpperTheory.V.Br CongruenceSubgroup
 /- English proof (translation)
-Use `haveI : NeZero (N * N) := ⟨mul_ne_zero (NeZero.ne N) (NeZero.ne N)⟩`. Take `⟨h, hc, hn⟩` from `clTwist N k χ ψ⁻¹ g.f g.char`. Establish `h0 : h ≠ 0`. Introduce and unpack `rfl`. Use `hn 1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[g.one, Nat.cast_one, map_one, mul_one]`. Simplify using `[coef, UpperHalfPlane.qExpansion_zero] at this`. Take `⟨g', hg'⟩` from `eigEx (N * N) k hk _ h hc h0 fun p => ψ⁻¹ (p : ZMod N) * g.a p`. Use `⟨_, g', fun p hp hd => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (p : ZMod (N * N))` using `(ZMod.isUnit_prime_iff_not_dvd hp).2 fun e => hd ((hp.dvd_mul.1 e).elim id id)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : IsUnit (p : ZMod N)` using `(ZMod.isUnit_prime_iff_not_dvd hp).2 hd`. Establish `e : DirichletCharacter.changeLevel (dvd_mul_right N N) (χ * ψ⁻¹ ^ 2) (p : ZMod (N * N)) = χ (p : ZMod N) * ψ⁻¹ (p : ZMod N) ^ 2`. Use `DirichletCharacter.changeLevel_eq_cast_of_dvd (χ * ψ⁻¹ ^ 2) (dvd_mul_right N N) hu.unit` as an intermediate fact. Rewrite `this` using `[IsUnit.unit_spec, ZMod.cast_natCast (dvd_mul_right N N)]`. Rewrite using `[this, MulChar.mul_apply, MulChar.pow_apply' _ two_ne_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : ψ⁻¹ (p : ZMod N) * ψ (p : ZMod N) = 1`. Rewrite using `[← MulChar.mul_apply, inv_mul_cancel, MulChar.one_apply hu']`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hg' p hp fun n h1 => ?_]`. Take the linear combination `g.a p * e1`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `g.eig p hp n h1` as an intermediate fact. Rewrite using `[e, hn, hn n, Nat.cast_mul, map_mul, Eigenform.a]`. Distinguish the cases in `hpn : p ∣ n`. Take `⟨m, rfl⟩` from `hpn`. Rewrite `this`, the goal using `[if_pos (dvd_mul_right _ _), Nat.mul_div_cancel_left _ hp.pos]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn, Nat.cast_mul, map_mul]`. Take the linear combination `ψ⁻¹ (p : ZMod N) * (ψ⁻¹ (p : ZMod N) * ψ⁻¹ (m : ZMod N)) * this`. Rewrite `this`, the goal using `[if_neg hpn]`. Take the linear combination `ψ⁻¹ (p : ZMod N) * ψ⁻¹ (n : ZMod N) * this`. Rewrite using `[e]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `χ (p : ZMod N) * (ψ⁻¹ (p : ZMod N) * ψ (p : ZMod N) + 1) * e1`.
+A detailed English derivation is pending.
 -/
 private theorem untwist (k N : ℕ) [NeZero N] (hk : 1 ≤ k) (χ ψ : DirichletCharacter ℂ N) (g : Eigenform k N χ) :
     ∃ (χ' : DirichletCharacter ℂ (N * N)) (g' : Eigenform k (N * N) χ'), ∀ p : ℕ, p.Prime → ¬ p ∣ N →
@@ -61,7 +61,7 @@ private theorem untwist (k N : ℕ) [NeZero N] (hk : 1 ≤ k) (χ ψ : Dirichlet
   · rw [e]
     linear_combination χ (p : ZMod N) * (ψ⁻¹ (p : ZMod N) * ψ (p : ZMod N) + 1) * e1
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Conclude with `hf ((finDim N k).2 f fun n hn => (mul_eq_zero.1 (show (a - b) * coef f n = 0 by linear_combination hb n hn - ha n hn)).resolve_left (sub_ne_zero.2 h))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private theorem eig_unique {k N p : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N} {f : CuspForm (Gamma1 N) (k : ℤ)} (hf : f ≠ 0)
     {a b : ℂ} (ha : IsEigAt k χ f p a) (hb : IsEigAt k χ f p b) : a = b := by
@@ -69,7 +69,7 @@ private theorem eig_unique {k N p : ℕ} [NeZero N] {χ : DirichletCharacter ℂ
   exact hf ((finDim N k).2 f fun n hn =>
     (mul_eq_zero.1 (show (a - b) * coef f n = 0 by linear_combination hb n hn - ha n hn)).resolve_left (sub_ne_zero.2 h))
 /- English proof (translation)
-Use extensionality with `g`. Use `⟨fun ⟨k, _, e⟩ => ⟨k, e⟩, fun ⟨k, e⟩ => ⟨k, ?_, e⟩⟩` and prove the remaining obligations. Use `haveI : Subsingleton (w.adicCompletionIntegers F ⧸ IsLocalRing.maximalIdeal (w.adicCompletionIntegers F) ^ 0) := Ideal.Quotient.subsingleton_iff.2 (by simp)`. Conclude with `Subsingleton.elim _ _`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem level_zero_eq_maximal_compact {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F)) :
     K1 w 0 = GlobalTheory.LFun.KGL w 2 := by
@@ -79,11 +79,9 @@ private theorem level_zero_eq_maximal_compact {F : Type} [Field F] [NumberField 
     Ideal.Quotient.subsingleton_iff.2 (by simp)
   exact Subsingleton.elim _ _
 /- English proof (translation)
-Establish `hX : TR.lie ℚ 2 (TR.oneL ℚ 2) = ∑ i, TR.lieS ℚ 2 i i 1`. Simplify using `only [TR.lieS_apply, ← map_sum]`. Conclude with `congrArg _ (Matrix.sum_single_one (m := Fin 2) (α := TR.Rinf ℚ)).symm`. Establish `h1 : ∀ i, TR.lieS ℚ 2 i i 1 = TR.Eop Rat.infinitePlace i i` using `fun i => by`. Rewrite using `[TR.Eop_eq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[Subsingleton.elim v Rat.infinitePlace]`. Simplify using the standard rewrite rules. Rewrite using `[hX, Fin.sum_univ_two, h1, h1]`.
-
-Conclude with `h _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lie_one (φ : TR.Sm ℚ 2) (h : ∀ v, TR.Eop v 0 0 φ + TR.Eop v 1 1 φ = 0) : TR.lie ℚ 2 (TR.oneL ℚ 2) φ = 0 := by
   classical
@@ -99,9 +97,9 @@ private theorem lie_one (φ : TR.Sm ℚ 2) (h : ∀ v, TR.Eop v 0 0 φ + TR.Eop 
   rw [hX, Fin.sum_univ_two, h1, h1]
   exact h _
 /- English proof (translation)
-Establish `h0 : Ideal.span {(a : 𝓞 ℚ)} ≠ 0` using `by simpa using h`. Use `Filter.eventually_cofinite.2 ((Ideal.finite_factors h0).subset fun w hw => ?_)` and prove the remaining obligations. Take `⟨c, rfl⟩` from `not_not.1 hw`. Use `Ideal.dvd_span_singleton.2 ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, (places w).2.1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+A detailed English derivation is pending.
 -/
 private theorem ev_not_dvd {a : ℕ} (h : a ≠ 0) : ∀ᶠ w : Pl ℚ in Filter.cofinite, ¬ normV w ∣ a := by
   have h0 : Ideal.span {(a : 𝓞 ℚ)} ≠ 0 := by simpa using h
@@ -111,23 +109,23 @@ private theorem ev_not_dvd {a : ℕ} (h : a ≠ 0) : ∀ᶠ w : Pl ℚ in Filter
   rw [Nat.cast_mul, (places w).2.1]
   exact Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)
 /- English proof (translation)
-Introduce `P hH k hk π hπ`. Establish `hk1 : 1 ≤ k` using `by omega`. Take `⟨H, hH⟩` from `hH ℚ 2 one_le_two π fun φ hφ => lie_one φ fun v => by`. Rewrite using `[(capTwo ℚ π v _ _ (hπ v) φ hφ).1, add_neg_cancel, zero_smul]`. Take `⟨N, ψ, ν, hN, hν, φ, hφ, h0, hlow, hfix⟩` from `levelVec k π (holVec k hk π hπ H hH)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI : NeZero N := ⟨by omega⟩`. Take `⟨ω, hω, -⟩` from `_root_.UpperTheory.V.Sd.Wc.centChar_alt P.toClassicalTheorems ℚ (π.twist ν)`. Establish `hc` using `fun z g => hω z φ hφ g`. Take `⟨χ, hχ⟩` from `charOf N hN ω φ h0 hlow.one hfix hc`. Establish `hcusp` using `(π.twist ν).cusp φ hφ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, hL⟩` from `deadel k N hN χ ω hχ φ hcusp hlow hfix hc`. Establish `hf0 : f ≠ 0`. Introduce and unpack `rfl`. Use `h0 (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Take `⟨γ, h, u, hu, rfl⟩` from `decomp N hN g`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL γ h u hu]`. Simplify using `[nsl]`. Establish `hhol : IsHol k (lev N) ω φ` using `⟨hcusp.1, fun w u hu => hfix _ (kLocal N hN w u hu), hc, hlow.wt, hlow.low⟩`. Take `⟨g, hg⟩` from `eigEx N k hk1 χ f hf hf0 fun p => Classical.epsilon (IsEigAt k χ f p)`. Take `⟨χ', g', hg'⟩` from `untwist k N hk1 χ ψ g`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨N * N, inferInstance, χ', g', ?_⟩` and prove the remaining obligations. Use `filter_upwards [Gk.satAE ℚ 2 π, ev_not_dvd (NeZero.ne N), Filter.eventually_cofinite.2 (GlobalTheory.Mem.UnrAe.unr_ae_and_level ℚ ν).1] with w ⟨B, hB⟩ hw hu`. Take `⟨α, β, rfl⟩` from `Multiset.card_eq_two.1 (TR.CuspSub.HasSat.card hB)`. Use `⟨α, β, hB, ?_⟩` and prove the remaining obligations. Establish `hT` using `TR.CuspSub.HasSat.twist hB hu`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `(places w).1`. Establish `hv : GlobalTheory.LFun.IsSatVecGL w (locSm ℚ w) φ {α * ν.val w, β * ν.val w}` using `(hT.2 ⟨φ, hφ⟩ (GlobalTheory.LGrp.mem_fixed.2 fun u hu => Subtype.ext (hfix _ (kLocal N hN w u (by`. Rewrite using `[(places w).2.2.2 N hN hw, level_zero_eq_maximal_compact])))) fun e => h0 (congrArg Subtype.val e)).map` and apply the resulting hypothesis. Use the proof step `(π.twist ν).V.subtype (fun _ _ => rfl) h0`. Take `⟨h1, h2⟩` from `eigOf k N hk1 hN χ ω hχ f φ hL hhol w _ _ hw hv`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h3` using `Classical.epsilon_spec (p := IsEigAt k χ f (normV w)) ⟨_, h1⟩`. Establish `h4` using `(hg _ hp h3).trans (eig_unique hf0 h3 h1)`. Take `⟨h5, h6⟩` from `hg' _ hp hw`. Establish `h7` using `(charVal N hN ψ ν hν).2 w hw`. Establish `h8 : ψ (normV w : ZMod N) ≠ 0` using `h7 ▸ Units.ne_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Units.val_mul, h7] at h2 h4 ⊢`. Prove the components needed by the constructor for the conclusion. Use `mul_right_cancel₀ h8 ?_` and prove the remaining obligations. Rewrite using `[h5, h4]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `mul_right_cancel₀ (pow_ne_zero 2 h8) ?_` and prove the remaining obligations. Rewrite using `[h6, ← h2]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Br.repEig_of_printsH_of_hermEx :
     _root_.UpperTheory.V.Af.HypothesesH' → UpperTheory.V.Af.Gk.HermEx → UpperTheory.V.Br.RepEig := by

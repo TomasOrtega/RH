@@ -12,7 +12,7 @@ open GlobalTheory
 namespace GlobalTheory.Div.TwistConst
 
 /- English proof (translation)
-Establish `e` using `congrFun (h.multiDiff_eq_zero (g := fun _ : Fin 3 => c) (by simp)) (y + c + c + c)`. Rewrite `e` using `[multiDiff_const]`. Simplify using `only [Function.iterate_succ, Function.iterate_zero, Function.comp, id, bwdDiff_apply, Pi.zero_apply, add_sub_cancel_right] at e`. Establish `e' : ((ψ (y + c + c + c) - ψ (y + c + c) - (ψ (y + c + c) - ψ (y + c)) - (ψ (y + c + c) - ψ (y + c) - (ψ (y + c) - ψ y)) : ℤ) : ℚ) = 0` using `by exact_mod_cast e`. Move the coercions through the operations in `at e'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -28,11 +28,11 @@ theorem step3 {P : Type*} [AddCommGroup P] {ψ : P → ℤ} (h : DiffVanish (2 +
   linarith
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `eventually_atTop.1 hc`. Establish `key : ∀ j n, N ≤ n + j → a n = c ∧ a (n + 1) = c ∧ a (n + 2) = c`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro n hn; exact ⟨hN n (by omega), hN _ (by omega), hN _ (by omega)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ j ih`. Introduce `n hn`. Take `⟨h1, h2, h3⟩` from `ih (n + 1) (by omega)`. Use `h n` as an intermediate fact. Use `⟨?_, h1, h2⟩` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `*` using `[show n + 1 + 1 = n + 2 by omega, show n + 1 + 2 = n + 3 by omega]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(key N 0 (by omega)).1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem const_of_step3 {a : ℕ → ℚ} (h : ∀ n, a (n + 3) - 3 * a (n + 2) + 3 * a (n + 1) - a n = 0)
     {c : ℚ} (hc : ∀ᶠ n in atTop, a n = c) : a 0 = c := by
@@ -55,19 +55,19 @@ end GlobalTheory.Div.TwistConst
 open GlobalTheory.Div.TwistConst in
 
 /- English proof (translation)
-Introduce `k _ T _ _ hT G D r hG ⟨e⟩ L hL c hc`. Use `hG.isFiniteQC` as an intermediate fact. Use `hG.dual.isFiniteQC` as an intermediate fact. Use `(isVB_structureModule T).isFiniteQC` as an intermediate fact. Establish `hd : ∀ F : T.Modules, QCoh.suppDim F ≤ ((2 : ℕ) : WithBot ℕ∞)` using `fun F => (QCoh.suppDim_le F).trans (by rw [hT.dim_eq]; rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `vG : DiffVanish (2 + 1) (chiPic k G)` using `diffVanish_chiPic_of_isProjOver (algebraMap_eq_strHom k T) G hT.isProjOver (hd G)`. Establish `vD : DiffVanish (2 + 1) (chiPic k D)`. Rewrite using `[chiPic_congr k e]`. Conclude with `diffVanish_chiPic_of_isProjOver (algebraMap_eq_strHom k T) _ hT.isProjOver (hd _)`. Establish `vO : DiffVanish (2 + 1) (chiPic k (structureModule T))` using `diffVanish_chiPic_of_isProjOver (algebraMap_eq_strHom k T) _ hT.isProjOver (hd _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c₀ := CechPic.cls L hL`. Establish `ev : ∀ (F : T.Modules) (n : ℕ), chi k (twist F (lbPow L n)) = chiPic k F (n • c₀)`. Introduce `F n`. Establish `h` using `Twist.isLB_lbZPow hL (n : ℤ)`. Establish `e₁ : chi k (twist F (lbPow L n)) = chiPic k F (CechPic.cls (lbZPow L (n : ℤ)) h)` using `(chiPic_cls k F h).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[e₁, cls_lbZPow hL (n : ℤ) h, natCast_zsmul]`. Set `a : ℕ → ℚ` to `fun n => ((chiPic k G (n • c₀) : ℚ) + (chiPic k D (n • c₀) : ℚ)) / 2 - (r : ℚ) * (chiPic k (structureModule T) (n • c₀) : ℚ)`. Establish `ha : ∀ n, a (n + 3) - 3 * a (n + 2) + 3 * a (n + 1) - a n = 0`. Introduce `n`. Establish `s : ∀ j, (n + j) • c₀ = n • c₀ + j • c₀` using `fun j => add_nsmul _ _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s3 : (n + 3) • c₀ = n • c₀ + c₀ + c₀ + c₀` using `by rw [s]; simp only [succ_nsmul, zero_nsmul, zero_add, add_assoc]`. Establish `s2 : (n + 2) • c₀ = n • c₀ + c₀ + c₀` using `by rw [s]; simp only [succ_nsmul, zero_nsmul, zero_add, add_assoc]`. Establish `s1 : (n + 1) • c₀ = n • c₀ + c₀` using `succ_nsmul _ _`. Establish `hG'` using `step3 vG c₀ (n • c₀)`. Establish `hD'` using `step3 vD c₀ (n • c₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hO'` using `step3 vO c₀ (n • c₀)`. Simplify using `only [a, s1, s2, s3]`. Take the linear combination `(1 / 2 : ℚ) * hG' + (1 / 2 : ℚ) * hD' - (r : ℚ) * hO'`. Establish `hc' : ∀ᶠ n in atTop, a n = c` using `hc.mono fun n hn => by`. Simplify using `only [a, ← ev]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hn`. Establish `h0` using `const_of_step3 ha hc'`. Simplify using `only [a, zero_nsmul, chiPic_zero] at h0`. Rewrite using `[degCh2_eq hG, ← chi_congr k e]`. Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Div.degCh2_eq_of_eventually_twist :
     ∀ (k : Type) [Field k] (T : Scheme.{0}) [Algebra k Γ(T, ⊤)] [IsIntegral T], IsProjSurface k T →

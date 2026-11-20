@@ -16,7 +16,7 @@ namespace MetricLocalB
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-The claim follows from `| 0, P, L, L', _, _, _, _, _ => by rw [Subsingleton.elim L L'] | n + 1, P, L, L', hP, hL, hL', ha, hh => by have key : ∀ (C C' : HermLine ι) (b : K → ℕ), (∀ k, C.a k = b k) → (∀ k, C'.a k = b k) → IsSmoothHerm C → IsSmoothHerm C' → (∀ z ∈ mcPts P, C.h z = C'.h z) → I P (n + 1) (F …`.
+A detailed English derivation is pending.
 -/
 theorem induct (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ)
     (hI : IsIntersectionFamily I) :
@@ -92,7 +92,7 @@ theorem induct (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) �
 end MetricLocalB
 
 /- English proof (translation)
-Introduce `K _ ι _ I hI P n L L' hP hL hL' ha hh`. Conclude with `MetricLocalB.induct I hI n P L L' hP hL hL' ha hh`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem MetricLocalB.full : MetricLocalStatement := by
   intro K _ ι _ I hI P n L L' hP hL hL' ha hh

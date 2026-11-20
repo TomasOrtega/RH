@@ -6,7 +6,7 @@ open NumberField Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.RayZeta 
 namespace GlobalTheory.CompanionTheory.RayFacts
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `𝔣 𝔣' I J hle ⟨a, b, ha, hb, ha1, hb1, hσ, h⟩`. Conclude with `⟨a, b, ha, hb, hle ha1, hle hb1, hσ, h⟩`. Introduce `l n m hnm`. Conclude with `Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow _ hnm)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rayRel_mono_powMod_anti (F : Type) [Field F] [NumberField F] :
     (∀ 𝔣 𝔣' I J : Ideal (𝓞 F), 𝔣' ≤ 𝔣 → RayRel F 𝔣' I J → RayRel F 𝔣 I J) ∧

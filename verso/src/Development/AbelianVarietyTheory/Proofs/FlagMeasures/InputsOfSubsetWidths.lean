@@ -22,13 +22,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Core.Deg
 
 /- English proof (translation)
-Introduce `S S' hSS`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h Cg cb Cu cT CT hb hT`. Take `⟨C, C2, Ch, h1, h2, h3⟩` from `h Cg cb Cu cT CT hb hT`. Use `⟨C, C2, Ch, h1, h2, fun Cpr δ hδ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨thr, ht⟩` from `h3 Cpr δ hδ`. Conclude with `⟨thr, fun C0 hC0 => ht C0 (hSS hC0)⟩`. Introduce `h Cg cb Cu cT CT δ hb hT hδ`. Take `⟨thr, ht⟩` from `h Cg cb Cu cT CT δ hb hT hδ`. Conclude with `⟨thr, fun C0 hC0 => ht C0 (hSS hC0)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `h Cg cb Cu cT CT`. Take `⟨c3, cH, cS, c4, thr, ht⟩` from `h Cg cb Cu cT CT`. Conclude with `⟨c3, cH, cS, c4, thr, fun C0 hC0 => ht C0 (hSS hC0)⟩`. Introduce `h Cg cb Cu cT CT`. Take `⟨c3, cH, thr, ht⟩` from `h Cg cb Cu cT CT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c3, cH, thr, fun C0 hC0 => ht C0 (hSS hC0)⟩`. Introduce `h Cg cb Cu cT CT`. Take `⟨cV, thr, ht⟩` from `h Cg cb Cu cT CT`. Conclude with `⟨cV, thr, fun C0 hC0 => ht C0 (hSS hC0)⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inputs_of_subset_widths : ∀ S S' : Set ℝ, S ⊆ S' → (AmpOn S' → AmpOn S) ∧ (SmallOn S' → SmallOn S) ∧ (CntOn S' → CntOn S) ∧ (CountBoundOn S' → CountBoundOn S) ∧ (TieOn S' → TieOn S) := by
   intro S S' hSS

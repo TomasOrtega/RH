@@ -5,15 +5,15 @@ import Formalism.FormalDegreeBessel.FormalDegreeRatio.BFCell
 namespace Formalism.QuantumDeterminants
 
 /- English proof (translation)
-The claim follows from `big_cell_mem_holds`.
+A detailed English derivation is pending.
 -/
 theorem bigCellMem : BigCellMem := big_cell_mem_holds
 /- English proof (translation)
-The claim follows from `big_cell_coordinate_holds`.
+A detailed English derivation is pending.
 -/
 theorem bigCellZhat : BigCellZhat := big_cell_coordinate_holds
 /- English proof (translation)
-The claim follows from `big_cell_minors_holds`.
+A detailed English derivation is pending.
 -/
 theorem bigCellMinors : BigCellMinors := big_cell_minors_holds
 

@@ -9,7 +9,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TailFix.tendsto_splU | exact GlobalTheory.TailFix.tendsto_splU | (intros; apply GlobalTheory.TailFix.tendsto_splU <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.split_unitary_idempotent_tendsto : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : UA σ J), At (fun u : AF F => u.2) (mat g - 1) → Filter.Tendsto (fun S : Finset (Pl F) => GlobalTheory.TailFix.splU (GlobalTheory.TailFix.idem S) (GlobalTheory.TailFix.idem_mul_self S) g) Filter.atTop (𝓝 g) := by
   first | exact @GlobalTheory.TailFix.tendsto_splU | exact GlobalTheory.TailFix.tendsto_splU | (intros; apply GlobalTheory.TailFix.tendsto_splU <;> assumption)

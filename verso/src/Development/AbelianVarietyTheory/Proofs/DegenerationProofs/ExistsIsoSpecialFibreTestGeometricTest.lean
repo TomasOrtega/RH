@@ -21,15 +21,15 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `w : (pullback.fst τ.H.hom (ZJ.rPt p ≫ spMap τ.j) ≫ τ.f) ≫ C.GG.hom = pullback.snd τ.H.hom (ZJ.rPt p ≫ spMap τ.j) ≫ ZJ.rPt p ≫ y`. Rewrite using `[Category.assoc, τ.f_over, pullback.condition_assoc, Category.assoc, τ.fac]`. Set `h` to `pullback.lift _ _ w`. Establish `h₁ : h ≫ pullback.fst _ _ = pullback.fst _ _ ≫ τ.f` using `pullback.lift_fst _ _ _`. Establish `h₂ : h ≫ pullback.snd _ _ = pullback.snd _ _` using `pullback.lift_snd _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `τ.imm h h₁ h₂`. Use `⟨h, h₁, h₂, hc, ?_⟩` and prove the remaining obligations. Use `(ZJ.kb_isAlgClosed_and_conj p).1` as an intermediate fact. Use `(ZJ.core_basic C).2.1` as an intermediate fact. Set `s` to `pullback.snd C.GG.hom (ZJ.rPt p ≫ y)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: JacobsonSpace ↥(pullback C.GG.hom (ZJ.rPt p ≫ y))` using `LocallyOfFiniteType.jacobsonSpace s`. Rewrite using `[← Set.univ_subset_iff, ← closure_closedPoints, h.isClosedEmbedding.isClosed_range.closure_subset_iff]`. Introduce `x hx`. Take `⟨z, hz, hzx⟩ : ∃ z : Sp (ZJ.kb p) ⟶ pullback C.GG.hom (ZJ.rPt p ≫ y), z ≫ pullback.snd _ _ = 𝟙 _ ∧ ∀ q, z q = x` from `⟨pointOfClosedPoint s x hx, pointOfClosedPoint_comp s x hx, pointOfClosedPoint_apply s x hx⟩`. Take `⟨c, hc₁, hc₂⟩` from `hF p y τ (z ≫ pullback.fst _ _) (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Category.assoc, pullback.condition, reassoc_of% hz])`. Establish `e : pullback.lift c (𝟙 _) (hc₁.trans (Category.id_comp _).symm) ≫ h = z`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, h₁, pullback.lift_fst_assoc, hc₂]`. Rewrite using `[Category.assoc, h₂, pullback.lift_snd, hz]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨pullback.lift c (𝟙 _) (hc₁.trans (Category.id_comp _).symm) (IsLocalRing.closedPoint (ZJ.kb p)), (congrArg (fun g => g (IsLocalRing.closedPoint (ZJ.kb p))) e).trans (hzx _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem ZJ.Core.Test.exists_fibre_immersion {C : ZJ.Core} (hF : C.Fib) {p : ℕ} [Fact p.Prime]
     {y : Sp (ZJ.OO p) ⟶ C.Z} (τ : C.Test y) :
@@ -63,11 +63,9 @@ theorem ZJ.Core.Test.exists_fibre_immersion {C : ZJ.Core} (hF : C.Fib) {p : ℕ}
     (congrArg (fun g => g (IsLocalRing.closedPoint (ZJ.kb p))) e).trans (hzx _)⟩
 
 /- English proof (translation)
-Use `τ.j_loc` as an intermediate fact. Establish `hr : Set.range (ZJ.rPt p ≫ spMap τ.j) = {IsLocalRing.closedPoint τ.V}`. Establish `h : ∀ q, (ZJ.rPt p ≫ spMap τ.j) q = IsLocalRing.closedPoint τ.V` using `fun q => by`. Rewrite using `[Subsingleton.elim q (IsLocalRing.closedPoint (ZJ.kb p))]`. Conclude with `(congrArg (PrimeSpectrum.comap τ.j) (IsLocalRing.comap_closedPoint (IsLocalRing.residue (ZJ.OO p)))).trans (IsLocalRing.comap_closedPoint τ.j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `Set.eq_singleton_iff_unique_mem.2 ⟨⟨IsLocalRing.closedPoint (ZJ.kb p), h _⟩, by`. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `h q⟩`. Take `⟨G₁, _, _, E, φ, hE, hφ⟩` from `τ.exists_isGt_fibre _ _ hr`. Take `⟨e, he, -⟩` from `grpPullback_iso hφ (isGrpPullback_pullback τ.H _)`.
-
-Conclude with `⟨E, isGt_of_iso e hE⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ZJ.Core.Test.exists_isGt_special {C : ZJ.Core} {p : ℕ} [Fact p.Prime]
     {y : Sp (ZJ.OO p) ⟶ C.Z} (τ : C.Test y) :
@@ -86,17 +84,15 @@ theorem ZJ.Core.Test.exists_isGt_special {C : ZJ.Core} {p : ℕ} [Fact p.Prime]
   exact ⟨E, isGt_of_iso e hE⟩
 
 /- English proof (translation)
-Use `Q.proper` as an intermediate fact. Establish `: IsDominant (Out.jK t.u.V)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (by`. Rewrite using `[CommRingCat.hom_ofHom, (RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective t.u.V _)]`. Conclude with `bot_le)⟩`. Take `⟨e₁, he₁, s₁⟩ : ∃ e₁ : Sp t.u.V ⟶ t.u.G.left, e₁ = eSec t.u.G ∧ e₁ ≫ t.u.G.hom = 𝟙 _` from `⟨_, rfl, Over.w η[t.u.G]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e₂, he₂, s₂⟩ : ∃ e₂ : Sp (FractionRing t.u.V) ⟶ pullback t.u.G.hom (jK t.u.V), e₂ = eSec ((Over.pullback (jK t.u.V)).obj t.u.G) ∧ e₂ ≫ pullback.snd _ _ = 𝟙 _` from `⟨_, rfl, Over.w η[(Over.pullback (jK t.u.V)).obj t.u.G]⟩`. Take `⟨e₃, he₃, s₃⟩ : ∃ e₃ : U₀.toScheme ⟶ pullback ρ.P.A.hom Q.u₀, e₃ = eSec ((Over.pullback Q.u₀).obj ρ.P.A) ∧ e₃ ≫ pullback.snd _ _ = 𝟙 _` from `⟨_, rfl, Over.w η[(Over.pullback Q.u₀).obj ρ.P.A]⟩`. Take `⟨e₄, he₄⟩ : ∃ e₄ : Sp S.R ⟶ ρ.P.A.left, e₄ = eSec ρ.P.A` from `⟨_, rfl⟩`. Establish `h₂ : e₂ ≫ pullback.fst _ _ = jK t.u.V ≫ e₁`. Substitute `he₁ he₂` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `ZJ.eSec_comp_of_isGrpPullback (isGrpPullback_pullback t.u.G (jK t.u.V))`. Establish `h₃ : e₃ ≫ pullback.fst _ _ = Q.u₀ ≫ e₄`. Substitute `he₃ he₄` using the available equality. Conclude with `ZJ.eSec_comp_of_isGrpPullback (isGrpPullback_pullback ρ.P.A Q.u₀)`. Establish `h₄ : e₂ ≫ t.u.U.gen.hom.left ≫ t.u.φ = spMap t.u.yK ≫ e₄`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `he₂ he₄` using the available equality. Use `t.u.U.gen_hom` as an intermediate fact. Conclude with `ZJ.eSec_comp_of_isGrpPullback (((isGrpPullback_of_iso t.u.U.gen).comp t.u.cart).congr (Category.id_comp _) rfl)`. Establish `h₅ : U₀.ι ≫ ex.e = e₃ ≫ ex.a` using `he₃ ▸ ex.e_zero`. Establish `h₆ : e₂ ≫ tm.φ = c.yK ≫ e₃`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, tm.φ_fst, h₃, reassoc_of% c.yK_u]`. Conclude with `h₄`. Rewrite using `[Category.assoc, Category.assoc, tm.φ_snd, s₃, reassoc_of% s₂, Category.comp_id]`. Rewrite using `[← he₁]`.
-
-Use `ext_of_isDominant_of_isSeparated Q.P.hom ?_ (Out.jK t.u.V) ?_` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Rewrite using `[tm.f_over, ex.e_sec, reassoc_of% s₁, Category.comp_id]`. Rewrite using `[← reassoc_of% c.yK_fac, reassoc_of% h₅, ex.a_eq, ← reassoc_of% h₆, tm.φ_f, reassoc_of% h₂]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ZH.Clos.TMap.eSec_comp_f {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} {ρ : S.Real}
     {M : RatModel o Ω} {U₀ : M.Z.Opens} {EE : M.Lat S.J} {Q : Clos ρ M U₀ EE} (ex : Q.Ext) {p : ℕ} [Fact p.Prime]
@@ -139,23 +135,21 @@ theorem ZH.Clos.TMap.eSec_comp_f {o Ω : Type} [CommRing o] [Field Ω] [Algebra 
   · rw [← reassoc_of% c.yK_fac, reassoc_of% h₅, ex.a_eq, ← reassoc_of% h₆, tm.φ_f, reassoc_of% h₂]
 
 /- English proof (translation)
-Introduce `hL o Ω _ _ _ _ S ρ M U₀ EE hB Q ex p _ y y₀ t c tm τ hS hF`. Take `⟨τ₀, e₀, he₁, he₂⟩` from `GlobalTheory.T.exists_uniformisationTest_of_geometricTest hL o Ω S ρ M U₀ EE hB Q ex p y y₀ t c tm hS`. Take `⟨h, h₁, h₂, hc, hr⟩` from `τ.exists_fibre_immersion hF`. Take `⟨h₀, h₀₁, h₀₂, hc₀, hr₀⟩` from `τ₀.exists_fibre_immersion hF`. Take `⟨E, hE⟩` from `τ.exists_isGt_special`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `(ZJ.kb_isAlgClosed_and_conj p).1` as an intermediate fact. Establish `: IsCommMonObj ((Over.pullback (ZJ.rPt p ≫ spMap τ.j)).obj τ.H)` using `Functor.isCommMonObj_obj`. Set `Y : Over (Sp (ZJ.kb p))` to `Over.mk (pullback.snd ex.core.GG.hom (ZJ.rPt p ≫ y))`. Set `f : (Over.pullback (ZJ.rPt p ≫ spMap τ.j)).obj τ.H ⟶ Y` to `Over.homMk h h₂`. Establish `w : (e₀.inv ≫ h₀) ≫ pullback.snd _ _ = t.mod.Φ.G.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, h₀₂, ← he₁, Iso.inv_hom_id_assoc]`. Set `f' : t.mod.Φ.G ⟶ Y` to `Over.homMk (e₀.inv ≫ h₀) w`. Establish `k : (e₀.inv ≫ h₀) ≫ pullback.fst _ _ ≫ Q.G.ι = t.mod.r ≫ tm.f ≫ (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι`. Rewrite using `[Category.assoc, Iso.inv_comp_eq, he₂]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ Q.G.ι) h₀₁).trans (Category.assoc _ _ _))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `k' : h ≫ pullback.fst _ _ ≫ Q.G.ι = pullback.fst _ _ ≫ τ.f ≫ Q.G.ι` using `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ Q.G.ι) h₁).trans (Category.assoc _ _ _))`. Establish `hr' : Set.range (e₀.inv ≫ h₀) = Set.univ`. Rewrite `hr₀`, the goal using `[Set.range_eq_univ]`. Conclude with `hr₀.comp e₀.inv.surjective`. Establish `hone : η[(Over.pullback (ZJ.rPt p ≫ spMap τ.j)).obj τ.H] ≫ f = η[t.mod.Φ.G] ≫ f'`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `(cancel_mono Q.G.ι).1 ?_` and prove the remaining obligations. Establish `u₁` using `ZJ.eSec_comp_of_isGrpPullback (isGrpPullback_pullback τ.H (ZJ.rPt p ≫ spMap τ.j))`. Establish `u₂` using `ZJ.eSec_comp_of_isGrpPullback t.mod.cart`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `v₁ : eSec ((Over.pullback (ZJ.rPt p ≫ spMap τ.j)).obj τ.H) ≫ pullback.fst _ _ ≫ τ.f ≫ Q.G.ι = (ZJ.rPt p ≫ y ≫ ex.e ≫ Q.G.ι : Sp (ZJ.kb p) ⟶ Q.P.left)`. Use `((Category.assoc _ _ _).symm.trans (congrArg (· ≫ τ.f ≫ Q.G.ι) u₁)).trans ?_` and prove the remaining obligations. Establish `a` using `congrArg (fun g => ZJ.rPt p ≫ spMap τ.j ≫ g ≫ Q.G.ι) τ.eSec_comp_f`. Conclude with `a.trans (congrArg (fun g => ZJ.rPt p ≫ g ≫ ex.e ≫ Q.G.ι) τ.fac)`. Establish `v₂ : eSec t.mod.Φ.G ≫ t.mod.r ≫ tm.f ≫ (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι = (ZJ.rPt p ≫ y ≫ ex.e ≫ Q.G.ι : Sp (ZJ.kb p) ⟶ Q.P.left)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `((Category.assoc _ _ _).symm.trans (congrArg (· ≫ tm.f ≫ (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι) u₂)).trans ?_` and prove the remaining obligations. Establish `a` using `congrArg (fun g => ZJ.rPt p ≫ spMap t.u.j ≫ g) (tm.eSec_comp_f ex)`. Simplify using `only [Category.assoc] at a ⊢`. Rewrite `a` using `[reassoc_of% c.fac]`. Conclude with `a`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `v₁` using `[← k']`. Rewrite `v₂` using `[← k]`. Conclude with `v₁.trans v₂.symm`. Conclude with `(Over.w _).trans (Over.w _).symm`. Take `⟨e, he, hef⟩` from `exists_iso_isMonHom_of_isGt_of_range_eq (ZJ.kb p) Y E t.mod.Φ.E _ _ f f' hE ⟨t.mod.Φ.D⟩ hc (inferInstanceAs (IsClosedImmersion (e₀.inv ≫ h₀))) (hr.trans hr'.symm) hone`.
-
-Use `⟨e, he, ?_⟩` and prove the remaining obligations. Establish `hl : e.hom.left ≫ e₀.inv ≫ h₀ = h` using `congrArg (fun g => g.left) hef`. Rewrite using `[← k, ← k', ← hl]`. Simplify using `only [Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ZH.exists_iso_special_fibre_of_test : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), BaseFacts S M U₀ EE → ∀ (Q : Clos ρ M U₀ EE) (ex : Q.Ext) (p : ℕ) [Fact p.Prime] (y : Sp (GlobalTheory.ZJ.OO p) ⟶ ex.core.Z) (y₀ : S.R →+* PadicAlgCl p) (t : ρ.GeoTest p y₀) (c : Q.Fac y t.u) (tm : Q.TMap t c) (τ : ex.core.Test y), S.Big → ex.core.Fib → ∃ e : (Over.pullback (GlobalTheory.ZJ.rPt p ≫ spMap τ.j)).obj τ.H ≅ t.mod.Φ.G, IsMonHom e.hom ∧ e.hom.left ≫ t.mod.r ≫ tm.f ≫ (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι = pullback.fst _ _ ≫ τ.f ≫ Q.G.ι := by
   intro hL o Ω _ _ _ _ S ρ M U₀ EE hB Q ex p _ y y₀ t c tm τ hS hF

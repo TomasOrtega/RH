@@ -16,11 +16,9 @@ noncomputable section
 namespace GlobalTheory.QLog.SqZero
 
 /- English proof (translation)
-Establish `hsub : (trunc' R n f).support ⊆ Finset.Iic n`. Introduce `m hm`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, coeff_trunc']`. Use `split_ifs at hm with h`. Conclude with `Finset.mem_Iic.mpr h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `absurd rfl hm`. Rewrite using `[MvPolynomial.eval_eq, Finset.sum_subset hsub]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[coeff_trunc', if_pos (Finset.mem_Iic.mp hm)]`. Introduce `m _ hm`.
-
-Rewrite using `[MvPolynomial.notMem_support_iff.mp hm, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mvPolynomialEval_truncFinsupp_eq_sum_coeff_mul_prod {R σ : Type} [CommRing R] [Fintype σ] [DecidableEq σ] (w : σ → R)
     (n : σ →₀ ℕ) (f : MvPowerSeries σ R) :
@@ -38,19 +36,19 @@ theorem mvPolynomialEval_truncFinsupp_eq_sum_coeff_mul_prod {R σ : Type} [CommR
     rw [MvPolynomial.notMem_support_iff.mp hm, zero_mul]
 
 /- English proof (translation)
-Introduce `B Q _ _ _ _ p x hx`. Use `set y : Q := algebraMap B Q x with hy`. Establish `hyy : y * y = 0` using `by rw [hy, ← map_mul, hx, map_zero]`. Establish `hcoeff : ∀ β : Unit →₀ ℕ, coeff β (PowerSeries.log Q : MvPowerSeries Unit Q) = PowerSeries.coeff (β ()) (PowerSeries.log Q)`. Introduce `β`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PowerSeries.coeff_def (by rfl)]`. Introduce `m`. Use `⟨1, fun N' hN' => ⟨0, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mul_zero, map_zero, sub_eq_zero, mvPolynomialEval_truncFinsupp_eq_sum_coeff_mul_prod]`. Rewrite using `[Finset.sum_eq_single (Finsupp.single () 1)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcoeff]`. Simplify using `[PowerSeries.coeff_log, hy]`. Introduce `β _ hβ`. Rewrite using `[hcoeff, PowerSeries.coeff_log]`. Distinguish the cases in `h0 : β () = 0`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h0]`. Establish `h1 : β () ≠ 1`. Introduce `h1`. Apply `hβ` to reduce the goal to its premises. Use extensionality with `u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[h1]`. Establish `hsupp : β.support = {()}`. Use extensionality with `u`. Simplify using `[h0]`. Rewrite using `[hsupp, Finset.prod_singleton]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩ : ∃ k, β () = k + 2` from `⟨β () - 2, by omega⟩`. Establish `hp : (algebraMap B Q) ((fun _ : Unit => x) ()) ^ (k + 2) = 0` using `by show y ^ (k + 2) = 0`. Rewrite using `[pow_add, pow_two, hyy, mul_zero]`. Rewrite using `[hk, hp, mul_zero]`. Introduce `h exfalso`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h` to reduce the goal to its premises. Rewrite using `[Finset.mem_Iic]`. Introduce `u`. Simplify using `using hN'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasVal_log_of_mul_self_eq_zero :
     ∀ (B Q : Type) [CommRing B] [CommRing Q] [Algebra B Q] [Algebra ℚ Q] (p : ℕ) (x : B), x * x = 0 → HasVal p (fun _ : Unit => x) (PowerSeries.log Q : MvPowerSeries Unit Q) (algebraMap B Q x) := by

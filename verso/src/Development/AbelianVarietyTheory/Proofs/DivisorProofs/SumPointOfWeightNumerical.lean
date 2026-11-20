@@ -17,11 +17,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AllWt GlobalTheor
 namespace GlobalTheory.RefSum
 
 /- English proof (translation)
-Establish `hcb : 0 ≤ C₁ * b` using `by positivity`. Establish `b1 : T * B ≤ C₁ * b` using `by nlinarith`. Establish `b2 : q * (T * B) ≤ m * (C₁ * b)` using `mul_le_mul hq b1 (by positivity) (by positivity)`. Establish `b3 : m * (T * (B + 1)) ≤ m * (C₁ * b)` using `mul_le_mul_of_nonneg_left a1 (by positivity)`. Establish `b4 : C₁ * b ≤ m * (C₁ * b)` using `le_mul_of_one_le_left hcb hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b5 : T * (m * (B + 1) + (Sg + 2 * q * B)) ≤ 4 * (m * (C₁ * b))` using `by nlinarith`. Establish `c1 : T * (m * (B + 1) + (Sg + 2 * q * B)) * (F * (K * l) * (K * x)) ≤ 4 * (m * (C₁ * b)) * (F * (K * l) * (K * x))` using `mul_le_mul_of_nonneg_right b5 (by positivity)`. Establish `hmx : 1 ≤ m * x` using `one_le_mul_of_one_le_of_one_le hm hx`. Establish `c2 : T * N ^ 3 * (F * (K * l)) ≤ C₂ * b * (F * (K * l))` using `mul_le_mul_of_nonneg_right a3 (by positivity)`. Establish `c3 : C₂ * b * (F * (K * l)) ≤ C₂ * b * (F * (K * l)) * (m * x)` using `le_mul_of_one_le_right (by positivity) hmx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hall : 1 ≤ F * l * (m * x)` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hF hl) hmx`. Establish `c4 : C₁ * b ≤ C₁ * b * (F * l * (m * x))` using `le_mul_of_one_le_right hcb hall`. Establish `c5 : T * (2 * B + 1) ≤ 2 * (C₁ * b)` using `by nlinarith`. Establish `c6 : (4 * C₁ * K ^ 2 + C₂ * K + 2 * C₁) * (F * m * b * l * x) ≤ (4 * C₁ * K ^ 2 + C₂ * K + 2 * C₁) * (C₂ * U)` using `mul_le_mul_of_nonneg_left a4 (by positivity)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem len_mul_total_le {T F m q N B Sg b l x C₁ C₂ K U : ℝ} (hT : 1 ≤ T) (hF : 1 ≤ F) (hm : 1 ≤ m) (hq : q ≤ m)
     (hB : 0 ≤ B) (hb : 1 ≤ b) (hl : 1 ≤ l) (hx : 1 ≤ x) (h1 : 0 ≤ C₁) (h2 : 0 ≤ C₂) (hK : 0 ≤ K)
@@ -47,7 +47,7 @@ theorem len_mul_total_le {T F m q N B Sg b l x C₁ C₂ K U : ℝ} (hT : 1 ≤ 
   nlinarith
 
 /- English proof (translation)
-Establish `b1 : B + 1 ≤ C₁ * b` using `by nlinarith`. Establish `b2 : Real.log (2 * B + 1) ≤ Real.log ((2 * C₁ + 1) * b)` using `Real.log_le_log (by positivity) (by nlinarith)`. Rewrite `b2` using `[Real.log_mul (by positivity) (by positivity)]`. Establish `b3 : Real.log (2 * C₁ + 1) ≤ 2 * C₁ + 1 - 1` using `Real.log_le_sub_one_of_pos (by positivity)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem log_top_le {T B b l C₁ C₂ : ℝ} (hT : 1 ≤ T) (hB : 0 ≤ B) (hb : 1 ≤ b) (hl : 1 ≤ l) (h1 : 0 ≤ C₁)
     (a1 : T * (B + 1) ≤ C₁ * b) (a2 : Real.log b ≤ C₂ * l) : Real.log (2 * B + 1) ≤ (2 * C₁ + C₂ + 1) * l := by
@@ -63,17 +63,17 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
 
 /- English proof (translation)
-Take `⟨hs, hk, B, Sg, hwt, a1, a2, hT1⟩` from `hw`. Take `⟨hl, hb, n1, hx, n2, n3, n4, n5, n6, n7⟩` from `hn`. Establish `hT1' : (1 : ℝ) ≤ lenT p i PP` using `by exact_mod_cast hT1`. Establish `hexp` using `GlobalTheory.T.thetaExponents_bigSmallFactorBounds _ _ (dat p i) D.R.f D.R.k D.R.m (nCol (dat p i)) B Sg u1 hs hk hwt`. Establish `hd : p.T.Q.H.d = D.host.d` using `p.fw.laws.pins.1.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htwo` using `GlobalTheory.CharDepth.twoPlaces_host D p.T.Q.H hd`. Establish `hvd : ∀ q, 0 ≤ D.host.vdH q` using `D.host.vdH_nonneg`. Take `⟨hsum, h2S, hunr⟩` from `UpperTheory.KR.small_vd_sum D.host.toHostAx`. Establish `hN : (dat p i).p + (dat p i).q = D.R.r`. Use `hs.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `hF : (1 : ℝ) ≤ D.R.f`. Establish `hn : 0 < D.R.n` using `D.R.ord_pos`. Conclude with `(by unfold Ranks.f; omega : 1 ≤ D.R.f)` after adjusting the coercions.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : (1 : ℝ) ≤ D.R.m` using `by exact_mod_cast hs.2.2.2.1`. Establish `hq : ((dat p i).q : ℝ) ≤ D.R.m` using `by exact_mod_cast hs.2.1`. Establish `hB : (0 : ℝ) ≤ B` using `Nat.cast_nonneg B`. Use `set K : ℝ := 2 * C₁ + C₂ + 1 with hK`. Establish `hK1 : 1 ≤ K` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK2 : C₂ ≤ K` using `by linarith`. Establish `hKl : C₂ * L.sc.L ≤ K * L.sc.L` using `mul_le_mul_of_nonneg_right hK2 (by linarith)`. Establish `hnum` using `GlobalTheory.T.weightedPrimeLogSum_oscillationBound_le D.R.f D.R.r D.R.k D.R.m (2 * B + 1) (B + 1) (D.R.f * (Sg + 2 * (dat p i).q * B)) D.host.vdH (K * L.sc.L) (K * Real.log (Real.log L.sc.x)) D.host.small {D.host.q, D.host.d} hexp.1 ((Nat.cast_nonneg _).trans hexp.2.2.1) hvd (hN …`. Use `⟨_, _, _, hnum, ?_, fun q hqp _ => ?_⟩` and prove the remaining obligations. Use `push_cast`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `len_mul_total_le hT1' hF hm hq hB hb hl hx h1 h2 (by linarith) a1 a2 n6 n2`. Use `GlobalTheory.T.depthOscillation_le_bound_every_prime _ _ (dat p i) _ (p.T.Q.Xo ((i : ℕ) + 1)) p.T.Q.c D.R.f D.R.k D.R.m (2 * B + 1) (B + 1) _ _ hs hexp D.host.vdH D.host.small {D.host.q, D.host.d} hvd (fun r _ hr => (htwo r hr).2.1) h2S (by simp [hd]) (fun r hr hr2 hrR => hunr r …` as an intermediate fact. Rewrite `this` using `[hN]`. Simplify `this` using `only [if_pos hqp.out]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sumAt_of_sizes {PP C₁ C₂ : ℝ} (h1 : 0 ≤ C₁) (h2 : 0 ≤ C₂) (u1 : Weight (dat p i))
     (hw : WtAt p i PP C₁ u1) (hn : NumAt p i PP C₂) :
@@ -122,7 +122,7 @@ theorem sumAt_of_sizes {PP C₁ C₂ : ℝ} (h1 : 0 ≤ C₁) (h2 : 0 ≤ C₂) 
 end Point
 
 /- English proof (translation)
-Introduce `hw hn` and use `Closed.imp (Closed.and hw hn) fun _ _ _ ⟨⟨C₁, h1, e1⟩, C₂, h2, e2⟩ => ⟨40 * (4 * C₁ * (2 * C₁ + C₂ + 1) ^ 2 + C₂ * (2 * C₁ + C₂ + 1) + 2 * C₁) * C₂, by positivity, (e1.and e2).imp fun _ h x hx hle ι p hp i hi u1 hu => sumAt_of_sizes p i h1 h2 u1 ((h x hx hle ι p hp).1 i hi u1 hu) …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sumPt_of_sizes : WtPt → NumPt → SumPt := fun hw hn =>
   Closed.imp (Closed.and hw hn) fun _ _ _ ⟨⟨C₁, h1, e1⟩, C₂, h2, e2⟩ =>

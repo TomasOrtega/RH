@@ -18,11 +18,11 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 namespace GlobalTheory.TubePack
 
 /- English proof (translation)
-Establish `hBA : B * A = 1` using `(Matrix.mul_eq_one_comm_of_equiv e).1 hAB`. Establish `hM : M = B * U * A`. Rewrite using `[Matrix.mul_assoc, h, ← Matrix.mul_assoc, hBA, Matrix.one_mul]`. Establish `h1 : B * U * A = (B.submatrix id e.symm * U.submatrix e.symm e.symm) * A.submatrix e.symm id`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, Matrix.submatrix_id_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : A.submatrix e.symm id * B.submatrix id e.symm = 1`. Establish `h0` using `Matrix.submatrix_mul_equiv A B (⇑e.symm) (Equiv.refl (Fin r)) (⇑e.symm)`. Rewrite `h0` using `[hAB, Matrix.submatrix_one_equiv]`. Conclude with `h0`. Establish `h3 : (A.submatrix e.symm id).det * (B.submatrix id e.symm).det = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.det_mul, h2, Matrix.det_one]`. Rewrite using `[hM, h1, Matrix.det_mul, Matrix.det_mul, Matrix.det_submatrix_equiv_self]`. Take the linear combination `(-U.det) * h3`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem det_eq_of_intertwine {ι : Type} [Fintype ι] [DecidableEq ι] {r : ℕ} (e : ι ≃ Fin r)
     (U : Matrix ι ι ℂ) (A : Matrix ι (Fin r) ℂ) (B : Matrix (Fin r) ι ℂ) (M : Matrix (Fin r) (Fin r) ℂ)
@@ -42,40 +42,38 @@ theorem det_eq_of_intertwine {ι : Type} [Fintype ι] [DecidableEq ι] {r : ℕ}
   linear_combination (-U.det) * h3
 
 /- English proof (translation)
-Simplify using `only [herm, Matrix.neg_apply, mul_neg, neg_mul, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_neg {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (G : Matrix (Fin r) (Fin r) E)
     (x y : Fin r → E) : herm (-G) x y = -herm G x y := by
   simp only [herm, Matrix.neg_apply, mul_neg, neg_mul, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Introduce `D V θ A rp Ψ Gm x₀ σ e π K Λ J s h F ρ₀ hGm hθ hrp hid hσ heq hF hlink1 hlink2 g hg j j' y hy hgy hsec`. Take `⟨δ, hδU, hδeq⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hg)`. Establish `hmat : matHom V g = Formalism.UG.bc (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F)) δ` using `hδeq.symm`. Establish `h1 : (matHom V g).1 = (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F))` using `by rw [hmat]; rfl`. Establish `hinf : ∀ ρ, infMat D.sp.cm.sig V.gram (θ ρ) g = (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (tauE D ρ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ρ`. Establish `hinc : ((δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (Ainf D.host.F))).map (θ ρ) = (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (tauE D ρ)`. Use extensionality with `a b`. Conclude with `(hθ ρ).1 _`. Rewrite using `[← hinc, ← GlobalTheory.UnitaryGlue.map_map_inclR (fstA D.host.F), ← h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hK : finE V ((h j')⁻¹ * g * h j) ∈ K`. Use `K.mul_mem hgy.1 (K.inv_mem hy.1)` as an intermediate fact. Rewrite `this` using `[← map_inv, ← map_mul]`. Use `this using 2` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Extract witnesses or component facts from the available result.
 
-Use `group`. Take `⟨hint, hdj⟩` from `hlink1 j j' g δ hg hmat hK`. Establish `hconj : ∀ (τ : D.host.E →+* ℂ) (x : D.host.E), τ ((D.sp.cm.sig : D.host.E →+* D.host.E) x) = starRingEnd ℂ (τ x)` using `fun τ x => IsCMField.complexEmbedding_complexConj D.host.E τ x`. Establish `hU' : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * V.gram * (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E) = V.gram` using `hδU`. Establish `hdd : (D.sp.cm.sig : D.host.E →+* D.host.E) (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).det * (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).det = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrArg Matrix.det hU'`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul, Formalism.UG.cT, Matrix.det_transpose, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Establish `hg0` using `GlobalTheory.UnitaryGlue.gram_det_ne_zero V`. Apply `mul_right_cancel₀ hg0` to reduce the goal to its premises. Take the linear combination `h2`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnorm : ∀ φ : D.host.E →+* ℂ, ‖φ (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).det‖ = 1`. Introduce `φ`. Establish `h2` using `congrArg φ hdd`. Rewrite `h2` using `[map_mul, hconj, map_one, mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `h3 : ‖φ (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).det‖ ^ 2 = 1` using `by exact_mod_cast h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h3`. Take `⟨n, hn, hpow⟩` from `NumberField.Embeddings.pow_eq_one_of_norm_eq_one D.host.E ℂ hint hnorm`. Establish `hpm` using `UpperTheory.Ram.Sector.pow_torsionOrder ⟨n, hn, hpow⟩`. Establish `hdetρ : ∀ ρ, (UpqT.mat (rp g ρ)).det = tauE D ρ (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).det`. Introduce `ρ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply]`. Use `det_eq_of_intertwine (e ρ) _ (A ρ) (mat x₀ (σ ρ) * (permM (e ρ))ᵀ) _ ?_ ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc, (hid ρ).2, permM_mul_transpose]`. Rewrite using `[hrp g ρ, hinf ρ]`. Establish `hmul : (UpqT.mat (rp (g * y) ρ₀)).det = tauE D ρ₀ (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).det * (UpqT.mat (rp y ρ₀)).det`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← hdetρ ρ₀, ← Matrix.det_mul, map_mul]`. Both sides reduce to the same expression. Establish `hd1 : (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).det = 1`. Establish `h4` using `hgy.2.2`. Rewrite `h4`, `hsec` using `[hmul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `h5` using `UpperTheory.Ram.Sector.eq_one_of_sec_eq (NumberField.Units.torsionOrder_pos D.host.E) (by rw [← map_pow, hpm, map_one]) hy.2.2 h4 hsec`. Conclude with `(tauE D ρ₀).injective (by rw [h5, map_one])`. Establish `hjj` using `hdj hd1`. Substitute `hjj` using the available equality. Establish `hstab` using `hlink2 j g δ hg hmat hd1 hK`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmemSU : embGL Ψ V.rank δ ∈ realSU Ψ Gm`. Use `embGL_mem_realSU Ψ Gm δ hd1 fun x y' => ?_` and prove the remaining obligations. Rewrite using `[hGm, herm_neg, herm_neg, hstab.2.1]`. Establish `hin : (⟨embGL Ψ V.rank δ, hmemSU⟩ : realSU Ψ Gm) ∈ inReal Ψ Gm (ratStab (V.gram)ᵀ (Λ : Set (Fin V.rank → D.host.E)) (s j))` using `Subgroup.mem_subgroupOf.2 (Subgroup.mem_map.2 ⟨δ, hstab, rfl⟩)`. Establish `heqv` using `heq ⟨embGL Ψ V.rank δ, hmemSU⟩ (rp g) (fun ρ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hrp g ρ, hinf ρ]`. Use `show _ = A ρ * (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (σ ρ).1`. Rewrite using `[hσ ρ]) (rp y)`. Establish `hs1` using `hF j _ hin (π (rp y)) hy.2.1 (by rw [← heqv, ← map_mul]; exact hgy.2.1)`. Establish `hδ1 : δ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5` using `congrArg (fun s : realSU Ψ Gm => ((s.1 (σ ρ₀) : GL (Fin V.rank) ℂ) : Matrix (Fin V.rank) (Fin V.rank) ℂ)) hs1`. Establish `h6 : (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (σ ρ₀).1 = (1 : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (σ ρ₀).1`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `h5`. Conclude with `Units.ext (Matrix.map_injective (σ ρ₀).1.injective h6)`.
-
-Use `⟨Subtype.ext ?_, rfl⟩` and prove the remaining obligations. Rewrite `hmat` using `[hδ1, map_one]`. Conclude with `hmat`.
+A detailed English derivation is pending.
 -/
 theorem tube_disjoint : ∀ (D : D7) (V : HSp D) (θ : InfFam D) (A : Frames V) (rp : GA D V →* (∀ ρ, Upq V ρ)) (Ψ : Finset (D.host.E →+* ℂ)) (Gm : Matrix (Fin V.rank) (Fin V.rank) D.host.E) (x₀ : Frame Ψ V.rank) (σ : D.what₂.Tau ≃ Ψ) (e : ∀ ρ : D.what₂.Tau, Fin (V.sig (tauE D ρ)).1 ⊕ Fin (V.sig (tauE D ρ)).2 ≃ Fin V.rank) (π : (∀ ρ, Upq V ρ) → realSU Ψ Gm) (K : Subgroup (GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D))) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (J : Type) (s : J → Matrix (Fin V.rank) (Fin V.rank) (RA (maximalRealSubfield D.host.E) D.host.E)) (h : J → GA D V) (F : J → Set (realSU Ψ Gm)) (ρ₀ : D.what₂.Tau), Gm = -(V.gram)ᵀ → IsInfFam θ → IsRealPart V θ A rp → IsIdent (fun ρ => (V.sig (tauE D ρ)).1) (fun ρ => (V.sig (tauE D ρ)).2) Ψ Gm x₀ σ A e → (∀ ρ, (σ ρ).1 = tauE D ρ) → (∀ (s' : realSU Ψ Gm) (b₀ : ∀ ρ, Upq V ρ), (∀ ρ, UpqT.mat (b₀ ρ) * A ρ = A ρ * ((s'.1 (σ ρ) : GL (Fin V.rank) ℂ) : Matrix (Fin V.rank) (Fin V.rank) ℂ)) → ∀ b, π (b₀ * b) = s' * π b) → (∀ j, ∀ γ ∈ inReal Ψ Gm (ratStab (V.gram)ᵀ (Λ : Set (Fin V.rank → D.host.E)) (s j)), ∀ y ∈ F j, γ * y ∈ F j → γ = 1) → (∀ (j j' : J) (g : GA D V) (γ : GL (Fin V.rank) D.host.E), g ∈ GQ V → matHom V g = Formalism.UG.bc (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F)) γ → finE V ((h j')⁻¹ * g * h j) ∈ K → IsIntegral ℤ (γ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).det ∧ ((γ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).det = 1 → j = j')) → (∀ (j : J) (g : GA D V) (γ : GL (Fin V.rank) D.host.E), g ∈ GQ V → matHom V g = Formalism.UG.bc (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F)) γ → (γ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).det = 1 → finE V ((h j)⁻¹ * g * h j) ∈ K → γ ∈ ratStab (V.gram)ᵀ (Λ : Set (Fin V.rank → D.host.E)) (s j)) → ∀ g ∈ GQ V, ∀ (j j' : J) (y : GA D V), (finE V ((h j)⁻¹ * y) ∈ K ∧ π (rp y) ∈ F j ∧ 0 < (UpqT.mat (rp y ρ₀)).det.im) → (finE V ((h j')⁻¹ * (g * y)) ∈ K ∧ π (rp (g * y)) ∈ F j' ∧ 0 < (UpqT.mat (rp (g * y) ρ₀)).det.im) → UpperTheory.Ram.Sector.sec (NumberField.Units.torsionOrder D.host.E) (UpqT.mat (rp y ρ₀)).det = UpperTheory.Ram.Sector.sec (NumberField.Units.torsionOrder D.host.E) (UpqT.mat (rp (g * y) ρ₀)).det → g = 1 ∧ j = j' := by
   intro D V θ A rp Ψ Gm x₀ σ e π K Λ J s h F ρ₀ hGm hθ hrp hid hσ heq hF hlink1 hlink2 g hg j j' y hy hgy hsec

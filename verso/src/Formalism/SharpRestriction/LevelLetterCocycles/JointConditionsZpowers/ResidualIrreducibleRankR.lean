@@ -12,11 +12,11 @@ open NumberField IsDedekindDomain
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `hu`. Establish `hfg : (⊤ : Submodule ℤ_[D.nd.l a] (D.nd.O a)).FG` using `Module.Finite.fg_top`. Establish `hle : (⊤ : Submodule ℤ_[D.nd.l a] (D.nd.O a)) ≤ (Ideal.span {(D.nd.l a : ℤ_[D.nd.l a])}) • (⊤ : Submodule ℤ_[D.nd.l a] (D.nd.O a))`. Introduce `y _`. Take `⟨u, hu'⟩` from `hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `: y = (D.nd.l a : ℤ_[D.nd.l a]) • (((u⁻¹ : (D.nd.O a)ˣ) : D.nd.O a) * y)`. Rewrite using `[Algebra.smul_def, map_natCast, ← hu', ← mul_assoc, Units.mul_inv, one_mul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) trivial`. Establish `hjac : Ideal.span {(D.nd.l a : ℤ_[D.nd.l a])} ≤ Ideal.jacobson ⊥`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top, PadicInt.maximalIdeal_eq_span_p]`. Conclude with `top_ne_bot (Submodule.eq_bot_of_le_smul_of_le_jacobson_bot _ _ hfg hle hjac)`.
+A detailed English derivation is pending.
 -/
 theorem l_not_unit (D : D7) (a : D.nd.Loc) : ¬ IsUnit ((D.nd.l a : ℕ) : D.nd.O a) := by
   intro hu
@@ -34,11 +34,11 @@ theorem l_not_unit (D : D7) (a : D.nd.Loc) : ¬ IsUnit ((D.nd.l a : ℕ) : D.nd.
   exact top_ne_bot (Submodule.eq_bot_of_le_smul_of_le_jacobson_bot _ _ hfg hle hjac)
 
 /- English proof (translation)
-Use `D.nd.T_local a` as an intermediate fact. Set `ev : D.nd.X a → (D.nd.T a →+* IsLocalRing.ResidueField (D.nd.O a))` to `fun y => (IsLocalRing.residue (D.nd.O a)).comp ((Pi.evalRingHom (fun _ : D.nd.X a => D.nd.O a) y).comp (D.nd.T a).val.toRingHom)`. Establish `hsurj : ∀ y, Function.Surjective (ev y)`. Introduce `y c`. Take `⟨c', rfl⟩` from `IsLocalRing.residue_surjective c`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨algebraMap (D.nd.O a) (D.nd.T a) c', rfl⟩`. Establish `hker : ∀ y, RingHom.ker (ev y) = IsLocalRing.maximalIdeal (D.nd.T a)` using `fun y => IsLocalRing.eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective (ev y) (hsurj y))`. Establish `h1 : f - algebraMap (D.nd.O a) (D.nd.T a) ((f : D.nd.X a → D.nd.O a) x) ∈ RingHom.ker (ev x)`. Rewrite using `[RingHom.mem_ker, map_sub]`. Conclude with `sub_self _`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hker x, ← hker x', RingHom.mem_ker, map_sub, sub_eq_zero]`. Conclude with `h1.symm`.
+A detailed English derivation is pending.
 -/
 theorem res_T_indep (D : D7) (a : D.nd.Loc) (f : D.nd.T a) (x x' : D.nd.X a) :
     IsLocalRing.residue (D.nd.O a) ((f : D.nd.X a → D.nd.O a) x) =
@@ -60,7 +60,7 @@ theorem res_T_indep (D : D7) (a : D.nd.Loc) (f : D.nd.T a) (x x' : D.nd.X a) :
   exact h1.symm
 
 /- English proof (translation)
-Unfold `heckePol`. Simplify using `only [Polynomial.map_add, Polynomial.map_pow, Polynomial.map_X, Polynomial.map_sum, Polynomial.map_mul, Polynomial.map_C, map_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[res_T_indep D a (D.nd.hT a w k) x x']`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem heckePol_res (D : D7) (a : D.nd.Loc) (x x' : D.nd.X a) (w : PlE D.host) :
     (heckePol D.nd a x w).map (IsLocalRing.residue (D.nd.O a)) =
@@ -73,11 +73,11 @@ theorem heckePol_res (D : D7) (a : D.nd.Loc) (x x' : D.nd.X a) (w : PlE D.host) 
   rw [res_T_indep D a (D.nd.hT a w k) x x']
 
 /- English proof (translation)
-Establish `hm : IsOpen ((IsLocalRing.maximalIdeal (D.nd.O a) : Ideal _) : Set (D.nd.O a))`. Use `(isAdic_iff.mp (D.nd.O_adic a)).1 1` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `y0 hy0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : Continuous fun y : D.nd.O a => y - y0` using `continuous_id.sub continuous_const`. Establish `hU` using `(hm.preimage hc).mem_nhds (x := y0) (by simp)`. Use `Filter.mem_of_superset hU fun y hy => ?_` and prove the remaining obligations. Establish `: IsLocalRing.residue (D.nd.O a) (y - y0) = 0` using `(IsLocalRing.residue_eq_zero_iff _).mpr hy`. Rewrite `this` using `[map_sub, sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.trans hy0`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_res_fiber (D : D7) (a : D.nd.Loc) (c : IsLocalRing.ResidueField (D.nd.O a)) :
     IsOpen {y : D.nd.O a | IsLocalRing.residue (D.nd.O a) y = c} := by
@@ -143,15 +143,13 @@ def LitBurnside (Γ : Type) [Group Γ] : Prop :=
       (Set.range fun g => ((ρ g : GL _ _) : Matrix (Fin a) (Fin a) (Formalism.CyclotomicNorms.Fbar ℓ))) = ⊤
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : ((redRep D.nd a ρ).ker : Set (G D.host.E D.nd.Om)) = (fun g => ((ρ g : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O a))) ⁻¹' (⋂ p : Fin D.R.r × Fin D.R.r, {M | IsLocalRing.residue (D.nd.O a) (M p.1 p.2) = (1 : Matrix (Fin D.R.r) (Fin D.R.r) (IsLocalRing.ResidueField (D.nd …`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_preimage, Set.mem_iInter, Set.mem_ofPred_eq, Prod.forall]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hg i j`. Use `congrArg (fun u : GL (Fin D.R.r) (IsLocalRing.ResidueField (D.nd.O a)) => u.val i j) hg` as an intermediate fact. Conclude with `this`. Introduce `hg`. Apply `Units.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Conclude with `hg i j`. Rewrite using `[e]`. Use `IsOpen.preimage h.1 (isOpen_iInter_of_finite fun p => ?_)` and prove the remaining obligations. Establish `hc : Continuous fun M : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O a) => M p.1 p.2` using `continuous_id.matrix_elem p.1 p.2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isOpen_res_fiber D a _).preimage hc`. Introduce `x' w hw B σ hB hσ`. Rewrite using `[← heckePol_res D a x x' w, ← h.2.2 w hw B σ hB hσ, Polynomial.map_mul, Polynomial.map_prod]`. Use `congr 1`. Conclude with `Matrix.charpoly_map _ _`.
-
-Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isRhoBar_of_isRhoOf (D : D7) (a : D.nd.Loc) (x : D.nd.X a)
     (ρ : G D.host.E D.nd.Om →* GL (Fin D.R.r) (D.nd.O a)) (h : IsRhoOf D.nd a x ρ) :
@@ -186,25 +184,25 @@ theorem isRhoBar_of_isRhoOf (D : D7) (a : D.nd.Loc) (x : D.nd.X a)
       simp
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hf⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.mpr hne)`. Set `c : Fin n → Fin n → k` to `fun i j => f (Matrix.single i j 1)`. Establish `hfc : ∀ M : Matrix (Fin n) (Fin n) k, f M = ∑ i, ∑ j, M i j * c i j`. Introduce `M`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_lhs => rw [Matrix.matrix_eq_sum_single M]`. Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `: Matrix.single i j (M i j) = M i j • Matrix.single i j (1 : k)`. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_smul, smul_eq_mul]`. Set `F : Matrix (Fin n) (Fin n) L →ₗ[L] L` to `∑ i, ∑ j, (φ (c i j)) • Matrix.entryLinearMap L L i j`. Establish `hF : ∀ M : Matrix (Fin n) (Fin n) L, F M = ∑ i, ∑ j, φ (c i j) * M i j`. Introduce `M`. Simplify using `[F, LinearMap.sum_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hker : Submodule.span L (Set.range fun i => (S i).map φ) ≤ LinearMap.ker F`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `h0 : f (S i) = 0` using `hf (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite `h0` using `[hfc]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show F ((S i).map φ) = 0`. Rewrite using `[hF]`. Use `congrArg φ h0` as an intermediate fact. Simplify using `only [map_sum, map_mul, map_zero] at this`. Rewrite using `[← this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, mul_comm]`. Rewrite `hker` using `[h, top_le_iff, LinearMap.ker_eq_top]`. Apply `hf0` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `M`. Rewrite using `[hfc]`. Establish `hc : ∀ i j, c i j = 0`. Introduce `i j`. Use `hF (Matrix.single i j 1)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hker, LinearMap.zero_apply]`. Establish `h2 : ∑ p, ∑ q, φ (c p q) * (Matrix.single i j (1 : L)) p q = φ (c i j)`. Rewrite using `[Finset.sum_eq_single i, Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `q _ hq`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.single_apply, Ne.symm hq]`. Simplify using the standard rewrite rules. Introduce `p _ hp`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.single_apply, Ne.symm hp]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `this` using `[h2]`. Conclude with `(map_eq_zero_iff φ φ.injective).mp this.symm`. Simplify using `[hc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem span_descent {k L : Type} [Field k] [Field L] (φ : k →+* L) {n : ℕ} {ι : Type}
     (S : ι → Matrix (Fin n) (Fin n) k)
@@ -262,15 +260,13 @@ theorem span_descent {k L : Type} [Field k] [Field L] (φ : k →+* L) {n : ℕ}
   simp [hc]
 
 /- English proof (translation)
-Establish `hmem : ∀ x : Ω, x ∈ τ • A ↔ (τ⁻¹ : G F Ω) x ∈ A`. Introduce `x`. Rewrite using `[← ValuationSubring.smul_mem_pointwise_smul_iff (g := τ⁻¹), inv_smul_smul]`. Both sides reduce to the same expression. Establish `hlt : ∀ y : Ω, (τ • A).valuation y < 1 ↔ A.valuation ((τ⁻¹ : G F Ω) y) < 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `y`. Rewrite using `[valuation_lt_one_iff', valuation_lt_one_iff', hmem, hmem, map_inv₀, map_eq_zero_iff _ (τ⁻¹ : G F Ω).injective]`. Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `show (τ * σ * τ⁻¹) • (τ • A) = τ • A`. Rewrite using `[mul_smul, mul_smul, inv_smul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `hσ.1`. Rewrite using `[hlt]`. Establish `hx' : A.valuation ((τ⁻¹ : G F Ω) x) ≤ 1`. Rewrite using `[A.valuation_le_one_iff, ← hmem]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((τ • A).valuation_le_one_iff x).mp hx`. Establish `e : (τ⁻¹ : G F Ω) ((τ * σ * τ⁻¹) x - x) = σ ((τ⁻¹ : G F Ω) x) - (τ⁻¹ : G F Ω) x`. Rewrite using `[map_sub]`. Use `congr 1`. Use `show (τ⁻¹ * (τ * σ * τ⁻¹)) x = _`.
-
-Rewrite using `[← mul_assoc, ← mul_assoc, inv_mul_cancel, one_mul]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hσ.2 _ hx'`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_Ine_smul {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     (A : ValuationSubring Ω) (τ σ : G F Ω) (hσ : σ ∈ Ine (F := F) A) :
@@ -302,13 +298,13 @@ theorem conj_mem_Ine_smul {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Al
     exact hσ.2 _ hx'
 
 /- English proof (translation)
-Introduce `h2`. Establish `hco : Nat.Coprime p q` using `(Nat.coprime_primes hp hq).mpr hpq`. Establish `h1' : ((p : ℤ) : 𝓞 E) ∈ v.asIdeal`. Establish `: ((p : ℕ) : 𝓞 E) ∈ v.asIdeal` using `h1`. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2' : ((q : ℤ) : 𝓞 E) ∈ v.asIdeal`. Establish `: ((q : ℕ) : 𝓞 E) ∈ v.asIdeal` using `h2`. Simplify using `using this`. Establish `hb : (1 : 𝓞 E) ∈ v.asIdeal`. Establish `hg` using `Nat.gcd_eq_gcd_ab p q`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hg` using `[hco.gcd_eq_one]`. Establish `: (1 : 𝓞 E) = ((p : ℤ) : 𝓞 E) * ((Nat.gcdA p q : ℤ) : 𝓞 E) + ((q : ℤ) : 𝓞 E) * ((Nat.gcdB p q : ℤ) : 𝓞 E)`. Use `congrArg (fun z : ℤ => (z : 𝓞 E)) hg` as an intermediate fact. Move the coercions through the operations in `at this`. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[this]`. Conclude with `v.asIdeal.add_mem (v.asIdeal.mul_mem_right _ h1') (v.asIdeal.mul_mem_right _ h2')`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr hb)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem placesOver_disj (E : Type) [Field E] [NumberField E] {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
     (hpq : p ≠ q) (v : HeightOneSpectrum (𝓞 E)) (h1 : v ∈ placesOver E p) : v ∉ placesOver E q := by

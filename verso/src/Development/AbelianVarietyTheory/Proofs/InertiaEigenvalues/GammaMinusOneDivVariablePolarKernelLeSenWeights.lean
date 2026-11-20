@@ -11,7 +11,7 @@ section lin
 variable {k : Type} [Field k] {U : Type} [AddCommGroup U] [Module k U]
 
 /- English proof (translation)
-Establish `h` using `(LinearMap.quotKerEquivRange (B.mkQ.domRestrict A)).finrank_eq`. Rewrite `h` using `[LinearMap.range_domRestrict, LinearMap.ker_domRestrict, Submodule.ker_mkQ]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_quot (A B : Submodule k U) :
     finrank k (↥A ⧸ B.submoduleOf A) = finrank k (A.map B.mkQ) := by
@@ -20,11 +20,9 @@ theorem finrank_quot (A B : Submodule k U) :
   exact h
 
 /- English proof (translation)
-Unfold `gmult`. Rewrite using `[finrank_quot, finrank_quot, map_zero (algebraMap k (Module.End k U)), sub_zero]`. Establish `hfin : FiniteDimensional k ((P ⊓ ⨆ m : ℕ, Q.comap (T ^ m)).map Q.mkQ)`. Establish `h : (P ⊓ ⨆ m : ℕ, Q.comap (T ^ m)).map Q.mkQ ≤ S.map Q.mkQ`. Use `Submodule.map_mono (f := Q.mkQ) ((inf_le_left (b := ⨆ m : ℕ, Q.comap (T ^ m))).trans hP)` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Submodule.map_sup, Submodule.mkQ_map_self, sup_bot_eq]`. Then use the resulting hypothesis. Conclude with `Submodule.finiteDimensional_of_le h`. Use `Submodule.finrank_mono (Submodule.map_mono fun x hx => ⟨(hZ x hx).1, ?_⟩)` and prove the remaining obligations. Use `Submodule.mem_iSup_of_mem 1 ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, pow_one]`.
-
-Conclude with `(hZ x hx).2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_le_gmult (T : Module.End k U) (P Q Z S : Submodule k U) [FiniteDimensional k S]
     (hP : P ≤ S ⊔ Q) (hZ : ∀ x ∈ Z, x ∈ P ∧ T x ∈ Q) :
@@ -46,11 +44,11 @@ variable {k : Type} [Field k] {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [M
   [IsScalarTower k⟦X⟧ k⸨X⸩ V] [IsScalarTower k k⟦X⟧ V]
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx` using `[Submodule.restrictScalars_mem, ← hP, Finsupp.mem_span_range_iff_exists_finsupp]`. Take `⟨c, rfl⟩` from `hx`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Use `show c i • e i ∈ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `he : e i ∈ P` using `hP ▸ Submodule.subset_span ⟨i, rfl⟩`. Take `⟨d, hd⟩ : ∃ d : k⟦X⟧, c i = algebraMap k k⟦X⟧ (PowerSeries.constantCoeff (c i)) + PowerSeries.X * d` from `⟨_, by rw [add_comm]; exact PowerSeries.eq_X_mul_shift_add_const (c i)⟩`. Rewrite using `[hd, add_smul, algebraMap_smul]`. Use `Submodule.add_mem_sup (Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)) ?_` and prove the remaining obligations. Use `mem_sh_iff_exists.2 ⟨d • e i, P.smul_mem _ he, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_one, vv_eq_coe_X, mul_smul]`. Conclude with `algebraMap_smul k⸨X⸩ (PowerSeries.X : k⟦X⟧) _`.
+A detailed English derivation is pending.
 -/
 theorem le_span_sup {ι : Type} (e : ι → V) (P : Submodule k⟦X⟧ V)
     (hP : Submodule.span k⟦X⟧ (Set.range e) = P) :
@@ -70,11 +68,11 @@ theorem le_span_sup {ι : Type} (e : ι → V) (P : Submodule k⟦X⟧ V)
   exact algebraMap_smul k⸨X⸩ (PowerSeries.X : k⟦X⟧) _
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => exact ⟨⊥, inferInstance, by simp⟩`. Consider the case `succ m ih`. Take `⟨S, hS, h⟩` from `ih`. Establish `hfg : (sh (a + m) N).FG` using `hN.map _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, e, he⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 hfg`. Establish `h2` using `le_span_sup e _ he`. Rewrite `h2` using `[sh_sh_eq, add_comm (1 : ℤ)]`. Establish `: FiniteDimensional k (Submodule.span k (Set.range e))` using `FiniteDimensional.span_of_finite k (Set.finite_range e)`. Use `⟨S ⊔ Submodule.span k (Set.range e), inferInstance, h.trans ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sup_assoc]`. Use `sup_le_sup_left ?_ _` and prove the remaining obligations. Rewrite using `[Nat.cast_succ, ← add_assoc]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_le_sup (N : Submodule k⟦X⟧ V) (hN : N.FG) (a : ℤ) (m : ℕ) :
     ∃ S : Submodule k V, FiniteDimensional k S ∧
@@ -96,9 +94,9 @@ theorem exists_finite_le_sup (N : Submodule k⟦X⟧ V) (hN : N.FG) (a : ℤ) (m
     exact h2
 
 /- English proof (translation)
-Introduce `k _ l _ _ R V _ _ _ _ _ _ _ _ g hg N hN hC w Z hZ`. Establish `hr` using `GlobalTheory.T.genEigenMultiplicity_laurentShift_eq_sum_sen R g hg N hN hC (-w) w 0`. Simplify using `only [zero_add, neg_add_cancel, sh_zero_eq] at hr`. Take `⟨S, hS, hF⟩` from `exists_finite_le_sup N hN.1 (-w) w`. Rewrite `hF` using `[neg_add_cancel, sh_zero_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hr]`. Conclude with `finrank_le_gmult (nab g) _ _ Z S hF hZ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {k : Type} [Field k] {l : ℕ} [Fact l.Prime] [CharP k l] (R : RingPG k l) {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Module k V] [IsScalarTower k⟦X⟧ k⸨X⸩ V] [IsScalarTower k k⸨X⸩ V] [IsScalarTower k k⟦X⟧ V] [FiniteDimensional k⸨X⸩ V] (g : V →ₗ[k] V), Semi R.γ g → ∀ N : Submodule k⟦X⟧ V, IsLat N → CondC g N → ∀ (w : ℕ) (Z : Submodule k V), (∀ x ∈ Z, x ∈ sh (-w) N ∧ nab g x ∈ N) → Module.finrank k (↥Z ⧸ (N.restrictScalars k).submoduleOf Z) ≤ ∑ j ∈ Finset.range w, sen g N ((-(w : ℤ) + j : ℤ) : k) := by
   intro k _ l _ _ R V _ _ _ _ _ _ _ _ g hg N hN hC w Z hZ

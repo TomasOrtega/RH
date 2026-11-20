@@ -3,17 +3,17 @@ open NumberField
 open scoped TensorProduct NNReal
 
 /- English proof (translation)
-Introduce `E _ _ d m hd h`. Establish `hd' : (d : E) ≠ 0` using `by exact_mod_cast hd`. Establish `hne : FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ≠ 0` using `FractionalIdeal.dual_ne_zero ℤ ℚ (by simp)`. Establish `hmem : (m : E) / (d : E) ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)`. Rewrite using `[← inv_inv (FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)), FractionalIdeal.mem_inv_iff (inv_ne_zero hne), ← coeIdeal_differentIdeal ℤ ℚ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Take `⟨a, ha, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hy`. Take `⟨c, hc⟩` from `h a ha`. Use `(FractionalIdeal.mem_one_iff _).2 ⟨c, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (algebraMap (𝓞 E) E) hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_mul, map_mul, map_natCast]`. Express the relevant statement in the definitionally equal form `(m : E) * (a : E) = (d : E) * (c : E) at h2`. Express the relevant statement in the definitionally equal form `(c : E) = (m : E) / (d : E) * (a : E)`. Rewrite using `[div_mul_eq_mul_div, h2, mul_div_cancel_left₀ _ hd']`. Rewrite `hmem` using `[FractionalIdeal.mem_dual (by simp)]`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx : ∀ x : 𝓞 E, ∃ n : ℤ, (n : ℚ) = Algebra.trace ℚ E ((m : E) * (x : E) / (d : E))`. Introduce `x`. Take `⟨n, hn⟩` from `hmem (x : E) ((FractionalIdeal.mem_one_iff _).2 ⟨x, rfl⟩)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite `hn` using `[Algebra.traceForm_apply, div_mul_eq_mul_div]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hn`. Use `choose f hf using hx`. Use `⟨AddMonoidHom.mk' f (fun x y => ?_), fun x => hf x⟩` and prove the remaining obligations. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[Int.cast_add, hf, hf, hf, ← map_add]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.WildB.traceForm :
     ∀ (E : Type) [Field E] [NumberField E] (d : 𝓞 E) (m : ℕ), d ≠ 0 → (∀ a ∈ differentIdeal ℤ (𝓞 E), d ∣ (m : 𝓞 E) * a) → ∃ lam : 𝓞 E →+ ℤ, ∀ x : 𝓞 E, (lam x : ℚ) = Algebra.trace ℚ E ((m : E) * (x : E) / (d : E)) := by

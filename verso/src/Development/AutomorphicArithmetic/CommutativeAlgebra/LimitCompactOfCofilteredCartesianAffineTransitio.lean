@@ -3,25 +3,25 @@ import Mathlib
 open CategoryTheory Limits AlgebraicGeometry
 
 /- English proof (translation)
-Set `tO : O ⟶ (Functor.const J).obj S0` to `ι ≫ qY ≫ (Functor.const J).map pY0`. Set `tZ : DZ ⟶ (Functor.const J).obj S0` to `qZ ≫ (Functor.const J).map pZ0`. Establish `htO : ∀ k, tO.app k = ι.app k ≫ qY.app k ≫ pY0` using `fun k => rfl`. Establish `htZ : ∀ k, tZ.app k = qZ.app k ≫ pZ0` using `fun k => rfl`. Establish `hgk : ∀ k, g.app k ≫ ι.app k = α.app k` using `fun k => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using congr_app hg k`. Establish `hαk : ∀ k, α.app k ≫ pY.app k = pZ.app k` using `fun k => by`. Simplify using `using congr_app hα k`. Establish `hcZg : ∀ k, cZ.π.app k ≫ g.app k = E.inv ≫ cO.π.app k`. Introduce `k`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hE k]`. Simplify using the standard rewrite rules. Establish `hOq : ∀ k, cO.π.app k ≫ ι.app k ≫ qY.app k = E.hom ≫ a ≫ α0`. Introduce `k`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← hE k]`. Simplify using the standard rewrite rules. Use `_ = E.hom ≫ (cZ.π.app k ≫ qZ.app k) ≫ α0 := by`. Rewrite using `[hgk, ← hq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `_ = E.hom ≫ a ≫ α0 := by rw [ha]`. Take `⟨i, h, hh1, hh2⟩` from `Scheme.exists_π_app_comp_eq_of_locallyOfFinitePresentation O tO pZ0 cO hO (E.hom ≫ a) (by`. Use `NatTrans.ext (funext fun k => ?_)` and prove the remaining obligations. Rewrite using `[NatTrans.comp_app, htO, Functor.const_map_app, reassoc_of% (hOq k), hα0]`. Use the proof step `simp)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, u, hu⟩` from `Scheme.exists_hom_comp_eq_comp_of_locallyOfFiniteType DZ tZ pZ0 cZ hcZ (g.app i ≫ h) (qZ.app i) (by`. Simplify using `only [htZ, Category.assoc, hh2, htO]`. Rewrite using `[reassoc_of% (hgk i), reassoc_of% (hq i).symm, hα0])`. Use the proof step `(htZ i)`. Use the proof step `(by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[reassoc_of% (hcZg i), hh1]`. Simplify using `[ha])`. Take `⟨k', v, hv⟩` from `Scheme.exists_hom_comp_eq_comp_of_locallyOfFiniteType O tO pY0 cO hO (h ≫ α0) (ι.app i ≫ qY.app i) (by rw [Category.assoc, hα0, hh2]) (by rw [htO]; simp only [Category.assoc]) (by rw [reassoc_of% hh1, hOq])`. Take `⟨m, w1, w2, hw⟩` from `IsCofiltered.cospan u v`. Establish `hZm : (O.map (w1 ≫ u) ≫ h) ≫ pZ0 = (ι.app m ≫ pY.app m) ≫ qB.app m`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Category.assoc, hh2, NatTrans.naturality]`. Simplify using `[htO, (hY m).w]`. Set `s` to `(hZ m).lift (O.map (w1 ≫ u) ≫ h) (ι.app m ≫ pY.app m) hZm`. Use `⟨m, ⟨⟨s, ?_, ?_⟩⟩⟩` and prove the remaining obligations. Apply `(hZ m).hom_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Category.assoc, (hZ m).lift_fst, Category.id_comp, ← g.naturality_assoc, Functor.map_comp, Category.assoc, hu, ← Category.assoc, ← Functor.map_comp, qZ.naturality]`. Simplify using the standard rewrite rules. Rewrite using `[Category.assoc, (hZ m).lift_snd, Category.id_comp, reassoc_of% (hgk m), hαk m]`. Rewrite using `[← cancel_mono (ι.app m), Category.assoc, hgk m, Category.id_comp]`. Apply `(hY m).hom_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, ← hq m, ← Category.assoc, (hZ m).lift_fst, hw, Functor.map_comp]`. Simplify using `only [Category.assoc]`. Rewrite using `[hv, ← Functor.map_comp_assoc, ι.naturality_assoc, qY.naturality]`. Simplify using the standard rewrite rules. Rewrite using `[Category.assoc, hαk m, (hZ m).lift_snd]`.
+A detailed English derivation is pending.
 -/
 private theorem core {J : Type} [SmallCategory J] [IsCofiltered J]
     (B DZ DY O : J ⥤ Scheme.{0}) (S0 Z0 Y0 : Scheme.{0})
@@ -113,23 +113,21 @@ private noncomputable def toConst {I : Type} [SmallCategory I] (D : I ⥤ Scheme
     rw [← D.map_comp, reassoc_of% this]
 
 /- English proof (translation)
-Introduce `I _ _ B DZ DY _ α pZ pY hα hZpb hYpb cZ hcZ cY hcY hcZ1 hqZ1 hcY1 hqY1 i0 _ _ m _ hm j e0 V hV hαV hmV`. Establish `hDZaff : ∀ {i j : I} (f : i ⟶ j), IsAffineHom (DZ.map f)` using `fun f => MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsAffineHom) (hZpb f).flip inferInstance`. Establish `hDYaff : ∀ {i j : I} (f : i ⟶ j), IsAffineHom (DY.map f)` using `fun f => MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsAffineHom) (hYpb f).flip inferInstance`. Establish `hDZaff' : ∀ {a b : Over j} (f : a ⟶ b), IsAffineHom ((Over.forget j ⋙ DZ).map f)` using `fun f => hDZaff f.left`. Establish `hDZc' : ∀ k : Over j, CompactSpace ((Over.forget j ⋙ DZ).obj k)` using `fun k => hcZ1 k.left`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `O` to `opensDiagram DY j V`. Set `ι : O ⟶ Over.forget j ⋙ DY` to `opensDiagramι DY j V`. Set `α' : Over.forget j ⋙ DZ ⟶ Over.forget j ⋙ DY` to `Functor.whiskerLeft (Over.forget j) α`. Establish `hOc : ∀ k : Over j, CompactSpace (O.obj k)` using `fun k => isCompact_iff_compactSpace.mp (QuasiCompact.isCompact_preimage (f := DY.map k.hom) _ V.2 hV)`. Establish `hOq : ∀ k : Over j, QuasiSeparatedSpace (O.obj k)` using `fun k => by haveI : QuasiSeparatedSpace ((Over.forget j ⋙ DY).obj k) := hqY1 k.left`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `quasiSeparatedSpace_of_quasiSeparated (ι.app k)`. Establish `hrange : ∀ k : Over j, Set.range (α'.app k) ⊆ Set.range (ι.app k)`. Introduce `k y hy`. Take `⟨x, rfl⟩` from `hy`. Establish `hpre : α.app k.left ⁻¹ᵁ (DY.map k.hom ⁻¹ᵁ V) = ⊤`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.Hom.comp_preimage, ← α.naturality, Scheme.Hom.comp_preimage, hαV]`. Simplify using the standard rewrite rules. Establish `hx : x ∈ α.app k.left ⁻¹ᵁ (DY.map k.hom ⁻¹ᵁ V)`. Rewrite using `[hpre]`. Discharge the goal by the elementary cases of `trivial`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Supply the required witnesses or components.
 
-Conclude with `⟨⟨_, hx⟩, rfl⟩`. Set `g : Over.forget j ⋙ DZ ⟶ O` to `{ app := fun k => IsOpenImmersion.lift (ι.app k) (α'.app k) (hrange k) naturality := by`. Introduce `k k' f`. Rewrite using `[← cancel_mono (ι.app k'), Category.assoc, Category.assoc, ι.naturality]`. Simplify using `only [IsOpenImmersion.lift_fac, IsOpenImmersion.lift_fac_assoc]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `α'.naturality f }`. Establish `hgk : ∀ k, g.app k ≫ ι.app k = α'.app k` using `fun k => IsOpenImmersion.lift_fac _ _ _`. Set `E : (cY.π.app j ⁻¹ᵁ V).toScheme ≅ cZ.pt` to `IsOpenImmersion.isoOfRangeEq (cY.π.app j ⁻¹ᵁ V).ι m (by simp [hmV])`. Establish `hE : ∀ k : Over j, E.hom ≫ (cZ.whisker (Over.forget j)).π.app k ≫ g.app k = (opensCone DY cY j V).π.app k`. Introduce `k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `(cancel_mono (ι.app k)).mp` to reduce the goal to its premises. Simplify using `only [Category.assoc, hgk]`. Establish `h1 : (cZ.whisker (Over.forget j)).π.app k ≫ α'.app k = m ≫ cY.π.app k.left` using `hm k.left`. Establish `h2 : E.hom ≫ m = (cY.π.app j ⁻¹ᵁ V).ι` using `IsOpenImmersion.isoOfRangeEq_hom_fac _ _ _`. Establish `h3 : E.hom ≫ m ≫ cY.π.app k.left = (cY.π.app j ⁻¹ᵁ V).ι ≫ cY.π.app k.left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[reassoc_of% h2]`. Establish `h4 : (opensCone DY cY j V).π.app k ≫ ι.app k = (cY.π.app j ⁻¹ᵁ V).ι ≫ cY.π.app k.left` using `Scheme.Hom.resLE_comp_ι _ _`. Rewrite using `[h1]`. Conclude with `h3.trans h4.symm`. Take `⟨k, hk⟩` from `core (J := Over j) (Over.forget j ⋙ B) (Over.forget j ⋙ DZ) (Over.forget j ⋙ DY) O (B.obj i0) (DZ.obj i0) (DY.obj i0) (Functor.whiskerLeft (Over.forget j) pZ) (Functor.whiskerLeft (Over.forget j) pY) α' ι g (NatTrans.ext (funext fun k => hgk k)) (NatTrans.ext (funext fun k => by …`.
-
-Use `⟨k.left, k.hom, ?_⟩` and prove the remaining obligations. Use `show IsOpenImmersion (α'.app k)`. Rewrite using `[← hgk k]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.limit_compact_of_cofiltered_cartesian_affine_transition :
     ∀ (I : Type) [SmallCategory I] [IsCofiltered I] (B DZ DY : I ⥤ Scheme.{0})

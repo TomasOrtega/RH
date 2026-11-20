@@ -14,9 +14,9 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {g : SplitG M.L} {r : ℕ}
 
 /- English proof (translation)
-Take `⟨h1, h2, c, hc⟩` from `comp_of_mem_R hs x.2`. Use `mem_R_of hs _ ⟨_, h2⟩ ⟨_, h1⟩ (-c) ?_ ?_` and prove the remaining obligations. Rewrite using `[g.e_cj]`. Both sides reduce to the same expression. Use `show (g.e (x : E)).2 - (g.e (x : E)).1 = (g.q : F) * ((-c : 𝒪[F]) : F) push_cast`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-hc`.
+A detailed English derivation is pending.
 -/
 theorem lift_cj_mem_R (hs : M.split = some g) (x : M.R) : M.L.cj (x : E) ∈ M.R := by
   obtain ⟨h1, h2, c, hc⟩ := comp_of_mem_R hs x.2
@@ -38,7 +38,7 @@ Both sides reduce to the same expression.
 theorem sigR_coe (hs : M.split = some g) (x : M.R) : ((sigR hs x : M.R) : E) = M.L.cj (x : E) := rfl
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Rewrite using `[hc, pow_two, mul_assoc, mul_div_cancel_left₀ _ (q_ne g)]`. Conclude with `mul_mem g.q.2 c.2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_eps_mem {T T' : F} (h : ∃ c : 𝒪[F], T - T' = (g.q : F) ^ 2 * c) : (T - T') / (g.q : F) ∈ 𝒪[F] := by
   obtain ⟨c, hc⟩ := h
@@ -49,7 +49,7 @@ def epsR (hs : M.split = some g) {T T' : F} (h : ∃ c : 𝒪[F], T - T' = (g.q 
   dgR hs ⟨_, lift_eps_mem h⟩
 
 /- English proof (translation)
-Unfold `HermSp.ZZplusOf`. Rewrite using `[hs]`. Distinguish the cases in `h : a = Fin.last r ∧ b = Fin.last r`. Simplify using `[firstProj_apply, cor, h]`. Simplify using `[firstProj_apply, cor, h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem firstProj_zzPlus (hs : M.split = some g) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F)
     (a b : Fin (r + 1)) :
@@ -61,7 +61,7 @@ theorem firstProj_zzPlus (hs : M.split = some g) (Zh : Matrix (Fin (r + 1)) (Fin
   · simp [firstProj_apply, cor, h]
 
 /- English proof (translation)
-Unfold `HermSp.ZZplusOf`. Rewrite using `[hs]`. Distinguish the cases in `h : a = Fin.last r ∧ b = Fin.last r`. Simplify using `[secondProj_apply, cor, h]`. Simplify using `[secondProj_apply, cor, h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem secondProj_zzPlus (hs : M.split = some g) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F)
     (a b : Fin (r + 1)) :
@@ -73,7 +73,7 @@ theorem secondProj_zzPlus (hs : M.split = some g) (Zh : Matrix (Fin (r + 1)) (Fi
   · simp [secondProj_apply, cor, h]
 
 /- English proof (translation)
-The claim follows from `secondProj_zzPlus_conj hs Zh T T' a b`.
+A detailed English derivation is pending.
 -/
 theorem secondProj_zzPlus_conj_eq (hs : M.split = some g) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F)
     (a b : Fin (r + 1)) :
@@ -81,11 +81,11 @@ theorem secondProj_zzPlus_conj_eq (hs : M.split = some g) (Zh : Matrix (Fin (r +
       -(ph1 g (Zh b a) / (g.q : F)) - cor r a b (T' / (g.q : F)) := secondProj_zzPlus_conj hs Zh T T' a b
 
 /- English proof (translation)
-Establish `hZ : ∀ a b, ((Z.Z a b : M.R) : E) = HermSp.ZZplusOf M Zh T T' a b` using `fun a b => by`. Use `congrFun (congrFun hG.2.2.2.1 a) b` as an intermediate fact. Simplify using `using this`. Establish `hZσ : ∀ a b, ((Zσ.Z a b : M.R) : E) = HermSp.ZZplusOf M (Zh.map M.L.cj) T T' a b` using `fun a b => by`. Use `congrFun (congrFun hG.2.2.2.2.1 a) b` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hq` using `q_ne g`. Use extensionality with `a b`. Rewrite using `[eq_iff_ph (g := g)]`. Simplify using `only [Matrix.add_apply, Matrix.neg_apply, Matrix.smul_apply, smul_eq_mul, lstar_apply, Subring.coe_add, Subring.coe_neg, Subring.coe_mul, sigR_coe, hZ, hZσ, liftE, Matrix.of_apply, epsR, dgR_coe, map_add, map_neg, map_mul, firstProj_algebraMap, ph2_algebraMap_eq]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[firstProj_zzPlus_conj hs, firstProj_conj_apply, secondProj_zzPlus hs]`. Apply the tactic sequence `by_cases ha : a = Fin.last r <;> by_cases hb : b = Fin.last r <;> simp [cor, ha, hb] <;> field_simp <;> ring`. Rewrite using `[secondProj_zzPlus_conj_eq hs, secondProj_conj_apply, firstProj_zzPlus hs]`. Apply the tactic sequence `by_cases ha : a = Fin.last r <;> by_cases hb : b = Fin.last r <;> simp [cor, ha, hb] <;> field_simp <;> ring`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_zsig (hs : M.split = some g) {T T' : F} {TT : M.R} {Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E}
     {Z Zσ : M.Mat (r + 1)} (hG : GHyp M g T T' TT Zh Z Zσ) :
@@ -107,9 +107,9 @@ theorem lift_zsig (hs : M.split = some g) {T T' : F} {TT : M.R} {Zh : Matrix (Fi
     by_cases ha : a = Fin.last r <;> by_cases hb : b = Fin.last r <;> simp [cor, ha, hb] <;> field_simp <;> ring
 
 /- English proof (translation)
-Establish `h1` using `congrArg (fun X => X.map M.R.subtype) h`. Simplify using `only [Matrix.map_mul] at h1`. Establish `h2 : A.map M.R.subtype = B.map M.R.subtype`. Rewrite using `[← Matrix.one_mul (A.map M.R.subtype), ← Matrix.nonsing_inv_mul _ Z.unit, Matrix.mul_assoc, h1, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ Z.unit, Matrix.one_mul]`. Use extensionality with `i j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `congrFun (congrFun h2 i) j`.
+A detailed English derivation is pending.
 -/
 theorem lift_cancel (Z : M.Mat (r + 1)) (A B : Matrix (Fin (r + 1)) (Fin (r + 1)) M.R) (h : Z.Z * A = Z.Z * B) :
     A = B := by

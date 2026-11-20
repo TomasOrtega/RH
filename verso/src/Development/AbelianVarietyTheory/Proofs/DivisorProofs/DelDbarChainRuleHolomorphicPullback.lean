@@ -17,7 +17,7 @@ namespace GlobalTheory.CxForm.PullChain
 variable {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one, ← bas_empty, map_smul, Module.Basis.repr_self]`. Apply the tactic sequence `by_cases h : S = ∅ <;> simp [Finsupp.single_apply, h, eq_comm]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem repr_algebraMap (t : ℂ) (S : Finset (Fin (n + n))) :
     (bas n).repr (algebraMap ℂ (Alt n) t) S = if S = ∅ then t else 0 := by
@@ -25,11 +25,11 @@ theorem repr_algebraMap (t : ℂ) (S : Finset (Fin (n + n))) :
   by_cases h : S = ∅ <;> simp [Finsupp.single_apply, h, eq_comm]
 
 /- English proof (translation)
-Establish `h : (fun x => algebraMap ℂ (Alt n) (g x)) = fun x => g x • bas n ∅`. Use function extensionality and compare the values at `x`. Rewrite using `[Algebra.algebraMap_eq_smul_one, bas_empty]`. Rewrite using `[h]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Unfold `delAt`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[coefwise_smul (T := fun f => del f v (coordVec a)) (by simp) g, bas_empty, mul_smul_comm, mul_one]`. Unfold `dbarAt`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coefwise_smul (T := fun f => dbar f v (coordVec a)) (by simp) g, bas_empty, mul_smul_comm, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem delAt_dbarAt_algebraMap (g : V n → ℂ) (v : V n) :
     delAt (fun x => algebraMap ℂ (Alt n) (g x)) v = ∑ a, del g v (coordVec a) • dz a ∧
@@ -46,7 +46,7 @@ theorem delAt_dbarAt_algebraMap (g : V n → ℂ) (v : V n) :
     rw [coefwise_smul (T := fun f => dbar f v (coordVec a)) (by simp) g, bas_empty, mul_smul_comm, mul_one]
 
 /- English proof (translation)
-Simplify using `only [repr_algebraMap]`. Use `split_ifs`. Use `exacts [hg, differentiableAt_const _]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableAt_repr_algebraMap {g : V n → ℂ} {v : V n} (hg : DifferentiableAt ℝ g v)
     (S : Finset (Fin (n + n))) : DifferentiableAt ℝ (fun x => (bas n).repr (algebraMap ℂ (Alt n) (g x)) S) v := by
@@ -55,19 +55,19 @@ theorem differentiableAt_repr_algebraMap {g : V n → ℂ} {v : V n} (hg : Diffe
   exacts [hg, differentiableAt_const _]
 
 /- English proof (translation)
-Establish `hτv : DifferentiableAt ℂ τ v` using `hτ.differentiableAt (hU.mem_nhds hv)`. Establish `hg : ∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (β (τ x)) S) v` using `fun S => (hβ S).comp v (hτv.restrictScalars ℝ)`. Establish `hPd : ∀ S T, DifferentiableAt ℝ (fun x => (bas m).repr (pull (fderiv ℂ τ x) (bas n S)) T) v` using `fun S T => ((GlobalTheory.T.contDiffOn_repr_pullbackComplexForm_fderiv m n τ U (bas n S) hU hτ T).contDiffAt (hU.mem_nhds hv)).differentiableAt (by simp)`. Establish `hA : ∀ S T, DifferentiableAt ℝ (fun x => (bas m).repr (algebraMap ℂ (Alt m) ((bas n).repr (β (τ x)) S)) T) v` using `fun S T => differentiableAt_repr_algebraMap (hg S) T`. Establish `hprod : ∀ S T, DifferentiableAt ℝ (fun x => (bas m).repr (algebraMap ℂ (Alt m) ((bas n).repr (β (τ x)) S) * pull (fderiv ℂ τ x) (bas n S)) T) v` using `fun S => (GlobalTheory.T.contDiffOn_coefficients_complexForm_mul m m (fun x => algebraMap ℂ (Alt m) ((bas n).repr (β (τ x)) S)) (fun x => pull (fderiv ℂ τ x) (bas n S))).2 v (hA S) (hPd S)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hexp : (fun x => pull (fderiv ℂ τ x) (β (τ x))) = fun x => ∑ S, algebraMap ℂ (Alt m) ((bas n).repr (β (τ x)) S) * pull (fderiv ℂ τ x) (bas n S)`. Use function extensionality and compare the values at `x`. Use `conv_lhs => rw [← (bas n).sum_repr (β (τ x))]`. Simplify using `only [map_sum, map_smul, Algebra.smul_def, map_mul, AlgHom.commutes]`. Establish `hsum` using `(GlobalTheory.T.delOperatorAt_dbarOperatorAt_linear_local m v).2.2.1 (Finset (Fin (n + n))) Finset.univ (fun S x => algebraMap ℂ (Alt m) ((bas n).repr (β (τ x)) S) * pull (fderiv ℂ τ x) (bas n S)) (fun S _ => hprod S)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `fun S => GlobalTheory.T.delOperatorAt_dbarOperatorAt_leibniz_of_commute m (fun x => algebraMap ℂ (Alt m) ((bas n).repr (β (τ x)) S)) (fun x => pull (fderiv ℂ τ x) (bas n S)) v (algebraMap ℂ (Alt m) ((bas n).repr (β (τ v)) S)) (hA S) (hPd S)`. Establish `hcl` using `fun S => GlobalTheory.T.delOperator_dbarOperator_pullback_constantForm_holomorphic m n τ U (bas n S) hU hτ v hv`. Establish `hch` using `fun S => GlobalTheory.T.wirtingerDerivs_comp_holomorphic_pullback_dz m n τ (fun y => (bas n).repr (β y) S) v hτv (hβ S)`. Establish `hfun` using `fun S => delAt_dbarAt_algebraMap (fun x => (bas n).repr (β (τ x)) S) v`. Rewrite using `[hexp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[hsum.1]`. Establish `key : ∀ S, delAt (fun x => algebraMap ℂ (Alt m) ((bas n).repr (β (τ x)) S) * pull (fderiv ℂ τ x) (bas n S)) v = pull (fderiv ℂ τ v) ((∑ a, del (fun y => (bas n).repr (β y) S) (τ v) (coordVec a) • dz a) * bas n S)`. Introduce `S`. Rewrite using `[(hL S).1 (fun a => (Algebra.commutes _ _).symm), (hcl S).1, mul_zero, add_zero, (hfun S).1, (hch S).1, map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [key, ← map_sum]`. Use `congr 1`. Unfold `delAt coefwise`. Simplify using `only [Finset.mul_sum, Finset.sum_mul, smul_mul_assoc, mul_smul_comm]`. Conclude with `Finset.sum_comm`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsum.2]`. Establish `key : ∀ S, dbarAt (fun x => algebraMap ℂ (Alt m) ((bas n).repr (β (τ x)) S) * pull (fderiv ℂ τ x) (bas n S)) v = pull (fderiv ℂ τ v) ((∑ a, dbar (fun y => (bas n).repr (β y) S) (τ v) (coordVec a) • dzb a) * bas n S)`. Introduce `S`. Rewrite using `[(hL S).2 (fun a => (Algebra.commutes _ _).symm), (hcl S).2, mul_zero, add_zero, (hfun S).2, (hch S).2, map_mul]`. Simplify using `only [key, ← map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Unfold `dbarAt coefwise`. Simplify using `only [Finset.mul_sum, Finset.sum_mul, smul_mul_assoc, mul_smul_comm]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem delAt_dbarAt_pull_comp (m n : ℕ) (τ : V m → V n) (U : Set (V m)) (β : V n → Alt n) (v : V m)
     (hU : IsOpen U) (hv : v ∈ U) (hτ : DifferentiableOn ℂ τ U)

@@ -24,9 +24,9 @@ lemma monoM_eq (D : RealPlaceData k r Wp Wq) (a b : Fin (r + 2) → ℕ) (c : �
     C6.monoM D a b c g = (∏ l, fct D.z D.z' a b g l) * ((Gf k r D.z D.z' g : ℝ) : ℂ)⁻¹ ^ c := rfl
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ l)]`. Use `congr 1`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `j hj`. Establish `hjl : j ≠ l` using `Finset.ne_of_mem_erase hj`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[fct, Pi.single_apply, hjl]`. Simplify using `[fct]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma prod_update_a (z z' : Fin (2 * r + k + 1) → ℂ) (a b : Fin (r + 2) → ℕ) (g : Mat k r) (l : Fin (r + 2)) :
     (∏ j ∈ Finset.univ.erase l, fct z z' a b g j) *
@@ -41,9 +41,9 @@ lemma prod_update_a (z z' : Fin (2 * r + k + 1) → ℂ) (a b : Fin (r + 2) → 
   · simp [fct]
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ l)]`. Use `congr 1`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `j hj`. Establish `hjl : j ≠ l` using `Finset.ne_of_mem_erase hj`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[fct, Pi.single_apply, hjl]`. Simplify using `[fct]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma prod_update_b (z z' : Fin (2 * r + k + 1) → ℂ) (a b : Fin (r + 2) → ℕ) (g : Mat k r) (l : Fin (r + 2)) :
     (∏ j ∈ Finset.univ.erase l, fct z z' a b g j) *
@@ -58,35 +58,31 @@ lemma prod_update_b (z z' : Fin (2 * r + k + 1) → ℂ) (a b : Fin (r + 2) → 
   · simp [fct]
 
 /- English proof (translation)
-Establish `hF : ∀ l ∈ (Finset.univ : Finset (Fin (r + 2))), HasDerivAt (fun s => fct D.z D.z' t.a t.b (crv (false, X) g s) l) ((-(t.a l : ℂ) * eval (vars g) (dP X (qDl D.z D.z' l)) * (Dmin k r D.z D.z' g l)⁻¹ ^ (t.a l + 1)) * (star (Dmin k r D.z D.z' g l))⁻¹ ^ t.b l + (Dmin k r D.z D.z' g l …`. Introduce `l _`. Establish `ha : t.a l = 0 ∨ Dmin k r D.z D.z' (crv (false, X) g 0) l ≠ 0`. Rewrite using `[crv_zero]`. Distinguish the cases in `h : t.a l = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inl h`. Conclude with `Or.inr (hnz l (Or.inl h))`. Establish `hb : t.b l = 0 ∨ star (Dmin k r D.z D.z' (crv (false, X) g 0) l) ≠ 0`. Rewrite using `[crv_zero]`. Distinguish the cases in `h : t.b l = 0`.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inl h`. Conclude with `Or.inr (star_ne_zero.2 (hnz l (Or.inr h)))`. Establish `h1` using `hasDerivAt_invpow' (hasDerivAt_polyD X g D.z D.z' l) ha`. Establish `h2` using `hasDerivAt_invpow' (hasDerivAt_polyDb X g D.z D.z' l) hb`. Use `h1.fun_mul h2` as an intermediate fact.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [fct, crv_zero]`. Establish `hprod` using `HasDerivAt.fun_finsetProd hF`. Establish `hGd` using `hasDerivAt_invpow' (hasDerivAt_polyG X g D.z D.z') (a := t.c) (by`. Rewrite using `[crv_zero]`. Distinguish the cases in `h : t.c = 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inl h`. Conclude with `Or.inr (hG h))`. Establish `hP` using `hasDerivAt_poly X g t.q`. Establish `hall` using `hP.fun_mul (hprod.fun_mul hGd)`. Establish `hfun : (fun s => cvs D t (crv (false, X) g s)) = fun s => eval (vars (crv (false, X) g s)) t.q * ((∏ l ∈ Finset.univ, fct D.z D.z' t.a t.b (crv (false, X) g s) l) * ((Gf k r D.z D.z' (crv (false, X) g s) : ℝ) : ℂ)⁻¹ ^ t.c)`.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `s`. Simplify using `[cvs, monoM_eq]`. Rewrite using `[hfun]`. Use `hall.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [crv_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `set P0 := eval (vars g) t.q`. Use `set G0 := ((Gf k r D.z D.z' g : ℝ) : ℂ)`. Use `set dG := eval (vars g) (dP X (qGf D.z D.z'))`. Establish `hsum : ∑ l ∈ (Finset.univ : Finset (Fin (r + 2))), (∏ j ∈ Finset.univ.erase l, fct D.z D.z' t.a t.b g j) • ((-(t.a l : ℂ) * eval (vars g) (dP X (qDl D.z D.z' l)) * (Dmin k r D.z D.z' g l)⁻¹ ^ (t.a l + 1)) * (star (Dmin k r D.z D.z' g l))⁻¹ ^ t.b l + (Dmin k r D.z D.z' g l)⁻¹ ^ t. …`. Rewrite using `[← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Rewrite using `[← prod_update_a, ← prod_update_b, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcq : cvs D { t with q` using `dP X t.q } g = eval (vars g) (dP X t.q) * ((∏ l, fct D.z D.z' t.a t.b g l) * G0⁻¹ ^ t.c) := by`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[cvs, monoM_eq, G0]`. Establish `hca : ∀ l, cvs D (if t.a l = 0 then { t with q` using `0 } else { t with q := C (-(t.a l : ℂ)) * t.q * dP X (qDl D.z D.z' l), a := t.a + Pi.single l 1 }) g = -(t.a l : ℂ) * P0 * eval (vars g) (dP X (qDl D.z D.z' l)) * ((∏ j, fct D.z D.z' (t.a + Pi.single l 1) t.b g j) * G0⁻¹ ^ t.c) := by`. Introduce `l`. Use `split_ifs with h`. Simplify using `[cvs, h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[cvs, monoM_eq, P0, G0]`. Apply the tactic sequence `try ring`. Establish `hcb : ∀ l, cvs D (if t.b l = 0 then { t with q` using `0 } else { t with q := C (-(t.b l : ℂ)) * t.q * dP X (qDbl D.z D.z' l), b := t.b + Pi.single l 1 }) g = -(t.b l : ℂ) * P0 * eval (vars g) (dP X (qDbl D.z D.z' l)) * ((∏ j, fct D.z D.z' t.a (t.b + Pi.single l 1) g j) * G0⁻¹ ^ t.c) := by`. Introduce `l`. Use `split_ifs with h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[cvs, h]`. Simplify using `[cvs, monoM_eq, P0, G0]`. Apply the tactic sequence `try ring`. Establish `hcc : cvs D (if t.c = 0 then { t with q` using `0 } else { t with q := C (-(t.c : ℂ)) * t.q * dP X (qGf D.z D.z'), c := t.c + 1 }) g = -(t.c : ℂ) * P0 * dG * ((∏ l, fct D.z D.z' t.a t.b g l) * G0⁻¹ ^ (t.c + 1)) := by split_ifs with h`. Simplify using `[cvs, h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[cvs, monoM_eq, P0, G0, dG]`. Apply the tactic sequence `try ring`. Establish `hlist : ((dscal D X t).map fun t' => cvs D t' g).sum = eval (vars g) (dP X t.q) * ((∏ l, fct D.z D.z' t.a t.b g l) * G0⁻¹ ^ t.c) + ∑ l, (-(t.a l : ℂ) * P0 * eval (vars g) (dP X (qDl D.z D.z' l)) * ((∏ j, fct D.z D.z' (t.a + Pi.single l 1) t.b g j) * G0⁻¹ ^ t.c)) + ∑ l, (-(t.b l : …`. Simplify using `only [dscal, List.map_append, List.map_cons, List.map_nil, List.map_ofFn, List.sum_append, List.sum_cons, List.sum_nil, List.sum_ofFn, add_zero, Function.comp_def, hcq, hca, hcb, hcc]`. Apply the tactic sequence `try ring`.
+Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hlist, hsum]`. Establish `eA : P0 * (∑ l, (-(t.a l : ℂ) * eval (vars g) (dP X (qDl D.z D.z' l)) * ∏ j, fct D.z D.z' (t.a + Pi.single l 1) t.b g j)) * G0⁻¹ ^ t.c = ∑ l, (-(t.a l : ℂ) * P0 * eval (vars g) (dP X (qDl D.z D.z' l)) * ((∏ j, fct D.z D.z' (t.a + Pi.single l 1) t.b g j) * G0⁻¹ ^ t.c))`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `eB : P0 * (∑ l, (-(t.b l : ℂ) * eval (vars g) (dP X (qDbl D.z D.z' l)) * ∏ j, fct D.z D.z' t.a (t.b + Pi.single l 1) g j)) * G0⁻¹ ^ t.c = ∑ l, (-(t.b l : ℂ) * P0 * eval (vars g) (dP X (qDbl D.z D.z' l)) * ((∏ j, fct D.z D.z' t.a (t.b + Pi.single l 1) g j) * G0⁻¹ ^ t.c))`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`.
-
-Expand and normalize the polynomial expressions, which then agree. Take the linear combination `eA + eB`.
+Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_cvs (D : RealPlaceData k r Wp Wq) {nf : ℕ} (X g : Mat k r) (t : CT k r nf)
     (hnz : ∀ l, (t.a l ≠ 0 ∨ t.b l ≠ 0) → Dmin k r D.z D.z' g l ≠ 0)

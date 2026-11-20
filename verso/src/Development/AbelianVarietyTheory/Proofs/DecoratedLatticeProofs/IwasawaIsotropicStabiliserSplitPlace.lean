@@ -19,7 +19,7 @@ variable {A R : Type} [CommRing A] [CommRing R] {n ρ s : Type} [Fintype n] [Fin
   [DecidableEq ρ] [DecidableEq s]
 
 /- English proof (translation)
-Establish `h1 : p.map f * j.map f = 1` using `by rw [← Matrix.map_mul, hp, Matrix.map_one _ (map_zero f) (map_one f)]`. Rewrite using `[Matrix.map_mul (L := j), Matrix.map_mul (L := p), Matrix.map_mul, h, ← Matrix.mul_assoc (p.map f), h1, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_keeps (f : A →+* R) {M : Matrix n n A} {j : Matrix n ρ A} {p : Matrix ρ n A} (hp : p * j = 1)
     {a : Matrix ρ ρ R} (h : M.map f * j.map f = j.map f * a) : (M * j).map f = (j * (p * (M * j))).map f := by
@@ -32,9 +32,9 @@ def lev : (ρ ⊕ s) ⊕ ρ → ℕ := Sum.elim (Sum.elim (fun _ => 0) fun _ => 
 omit [DecidableEq ρ] [DecidableEq s] in
 
 /- English proof (translation)
-Use `⟨Matrix.of fun k l => b.1 (ε.symm (.inl (.inl k))) (ε.symm (.inl (.inl l))), ?_⟩` and prove the remaining obligations. Establish `h : (B * b * B⁻¹).1 * B.1 = B.1 * b.1` using `by rw [← Units.val_mul, inv_mul_cancel_right, Units.val_mul]`. Generalize the expression as in `(B * b * B⁻¹).1 = x at h`. Use extensionality with `k l`. Establish `h1` using `congrFun (congrFun h k) (ε.symm (.inl (.inl l)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h2 : ∀ t, b.1 (ε.symm (.inl (.inr t))) (ε.symm (.inl (.inl l))) = 0` using `fun t => hb (by simp [lev])`. Establish `h3 : ∀ t, b.1 (ε.symm (.inr t)) (ε.symm (.inl (.inl l))) = 0` using `fun t => hb (by simp [lev])`. Rewrite `h1` using `[hB, Matrix.mul_apply, Matrix.mul_apply, ← ε.symm.sum_comp fun t => _ * b.1 t _]`. Simplify `h1` using `[Matrix.mul_apply, h2, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem keeps_cols (ε : n ≃ (ρ ⊕ s) ⊕ ρ) {e e' : Matrix n ρ A} {i : Matrix n s A} {B b : GL n A}
     (hB : B.1 = (Matrix.fromCols (Matrix.fromCols e i) e').submatrix id ε) (hb : b.1.BlockTriangular (lev ∘ ε)) :
@@ -52,9 +52,9 @@ theorem keeps_cols (ε : n ≃ (ρ ⊕ s) ⊕ ρ) {e e' : Matrix n ρ A} {i : Ma
 omit [DecidableEq ρ] [DecidableEq s] in
 
 /- English proof (translation)
-Use `⟨Matrix.of fun k l => b.1 (ε.symm (.inr k)) (ε.symm (.inr l)), ?_⟩` and prove the remaining obligations. Establish `h : (B⁻¹).1 * (B * b * B⁻¹).1 = b.1 * (B⁻¹).1`. Rewrite using `[← Units.val_mul, mul_assoc, inv_mul_cancel_left, Units.val_mul]`. Generalize the expression as in `(B * b * B⁻¹).1 = x at h`. Use extensionality with `k l`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. By extensionality, compare the relevant components.
 
-Establish `h1` using `congrFun (congrFun h (ε.symm (.inr k))) l`. Apply the tactic sequence `have h2 : ∀ t, b.1 (ε.symm (.inr k)) (ε.symm (.inl t)) = 0 := fun t => hb (by rcases t with t | t <;> simp [lev])`. Rewrite `h1` using `[hB, Matrix.mul_apply, Matrix.mul_apply, ← ε.symm.sum_comp fun t => b.1 _ t * _]`. Simplify `h1` using `[Matrix.mul_apply, h2]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem keeps_rows (ε : n ≃ (ρ ⊕ s) ⊕ ρ) {p p' : Matrix ρ n A} {q : Matrix s n A} {B b : GL n A}
     (hB : (B⁻¹).1 = (Matrix.fromRows (Matrix.fromRows p q) p').submatrix ε id) (hb : b.1.BlockTriangular (lev ∘ ε)) :
@@ -72,9 +72,9 @@ theorem keeps_rows (ε : n ≃ (ρ ⊕ s) ⊕ ρ) {p p' : Matrix ρ n A} {q : Ma
 omit [DecidableEq s] [Fintype s] in
 
 /- English proof (translation)
-Establish `h1 : e.transpose * G = c * (e.transpose * G * xi)`. Rewrite using `[← Matrix.mul_assoc, ← hc, Matrix.mul_assoc _ x, hx, Matrix.mul_one]`. Establish `h2 : c * (e.transpose * G * xi * f) = 1` using `by rw [← Matrix.mul_assoc, ← h1, hf]`. Establish `h3` using `mul_eq_one_comm.1 h2`. Generalize the expression as in `e.transpose * G * xi * f = c' at h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `h4 : e.transpose * G * xi = c' * (e.transpose * G)`. Rewrite using `[h1, ← Matrix.mul_assoc c', h3, Matrix.one_mul, ← h1]`. Establish `h5 : x'.transpose * G = G * xi` using `by conv_rhs => rw [← h, Matrix.mul_assoc, hx, Matrix.mul_one]`. Use `⟨c'.transpose, Matrix.transpose_injective ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, ← Matrix.mul_one (e.transpose * _), ← hG, ← Matrix.mul_assoc, Matrix.mul_assoc _ _ G, h5, ← Matrix.mul_assoc, h4, Matrix.mul_assoc, Matrix.mul_assoc, hG, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem keeps_dual {G x x' : Matrix n n A} {e f : Matrix n ρ A} {c : Matrix ρ ρ A} {xi Gi : Matrix n n A}
     (hx : x * xi = 1) (hG : G * Gi = 1) (h : x'.transpose * G * x = G) (hf : e.transpose * G * f = 1)
@@ -106,13 +106,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   [DecidableEq s]
 
 /- English proof (translation)
-Establish `key : ∀ (τ : E →ₐ[F] Fv F v) {a : Matrix ρ ρ (Fv F v)}, (splitHom σ J τ q).1 * e.map τ = e.map τ * a → (matHom _ σ J (emb σ J v q)).1.map (((splitProj τ).toRingHom).comp (compFin F E v)) * j.map (((splitProj τ).toRingHom).comp (compFin F E v)) = j.map (((splitProj τ).toRingHom).c …` using `fun τ a ha => by`. Establish `e1 : (matHom _ σ J (emb σ J v q)).1.map (((splitProj τ).toRingHom).comp (compFin F E v)) = (splitHom σ J τ q).1` using `by conv_rhs => rw [← proj_emb_self σ J v q]`. Both sides reduce to the same expression. Establish `e2 : j.map (((splitProj τ).toRingHom).comp (compFin F E v)) = e.map τ`. Use extensionality with `k l`.
+Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[hj, inclR, compFin]`. Rewrite using `[e1, e2, ha]`. Use extensionality with `k l`. Use `GlobalTheory.Doubling.adele_ext (fun w => ?_) fun u => ?_` and prove the remaining obligations. Establish `e1 : (matHom _ σ J (emb σ J v q)).1.map (compInf F E w) = 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(matHom _ σ J (projArch σ J w (emb σ J v q))).1 = 1`. Rewrite using `[projArch_emb, map_one, Units.val_one]`. Conclude with `congrFun (congrFun (map_keeps (compInf F E w) hp (a := 1) (by rw [e1, Matrix.one_mul, Matrix.mul_one])) k) l`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `split_ext h τ (congrFun (congrFun (map_keeps _ hp (key τ h1)) k) l) (congrFun (congrFun (map_keeps _ hp (key _ h2)) k) l)`. Establish `e1 : (matHom _ σ J (emb σ J v q)).1.map (compFin F E u) = 1`. Express the relevant statement in the definitionally equal form `(matHom _ σ J (proj σ J u (emb σ J v q))).1 = 1`. Rewrite using `[proj_emb_ne σ J hu, map_one, Units.val_one]`. Conclude with `congrFun (congrFun (map_keeps (compFin F E u) hp (a := 1) (by rw [e1, Matrix.one_mul, Matrix.mul_one])) k) l`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_keeps (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (q : GLoc σ J v) {j : Matrix (Fin n) ρ (AF F ⊗[F] E)}
     {p : Matrix ρ (Fin n) (AF F ⊗[F] E)} (hp : p * j = 1) {e : Matrix (Fin n) ρ E} (hj : j = e.map (inclR (AF F)))
@@ -147,13 +147,13 @@ theorem emb_keeps (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (q : GLoc σ J 
       exact congrFun (congrFun (map_keeps (compFin F E u) hp (a := 1) (by rw [e1, Matrix.one_mul, Matrix.mul_one])) k) l
 
 /- English proof (translation)
-Establish `hm : ((e.map σ)ᵀ * J).map τ = (e.map (τ.comp σ))ᵀ * J.map τ` using `Matrix.map_mul (f := (τ : E →+* Fv F v))`. Establish `hB : (Matrix.fromCols (Matrix.fromCols (e.map τ) (i.map τ)) (e'.map τ)).submatrix id ε * (Matrix.fromRows (Matrix.fromRows (p.map τ) (q.map τ)) ((e.map (τ.comp σ))ᵀ * J.map τ)).submatrix ε id = 1`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.submatrix_id_id, Matrix.fromCols_mul_fromRows, Matrix.fromCols_mul_fromRows, ← hm]`. Use `congrArg (τ : E →+* Fv F v).mapMatrix hsum` as an intermediate fact. Rewrite `this` using `[map_add, map_add, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_mul] at this`. Rewrite using `[hm]`. Conclude with `this`. Use `⟨⟨_, _, hB, mul_eq_one_comm.1 hB⟩, lev ∘ ε, fun g hg => ?_⟩` and prove the remaining obligations. Generalize the expression as in `hBe : (⟨_, _, hB, mul_eq_one_comm.1 hB⟩ : GL (Fin n) (Fv F v)) = B at hg`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hx : B * (B⁻¹ * splitHom σ J τ g * B) * B⁻¹ = splitHom σ J τ g` using `by group`. Take `⟨c, hc⟩` from `keeps_rows ε (B := B) (by rw [← hBe]; rfl) hg`. Use `⟨hx ▸ keeps_cols ε (B := B) (by rw [← hBe]) hg, ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[hx]`. Use `keeps_dual (G := J.map τ) (f := e'.map τ) (Units.mul_inv _) (splitGram hJ τ).mul_inv (splitHom_unitary τ g) ?_ hc` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hm]`. Conclude with `(Matrix.map_mul (f := (τ : E →+* Fv F v))).symm.trans (by rw [hf, Matrix.map_one _ (map_zero _) (map_one _)])`.
+A detailed English derivation is pending.
 -/
 theorem exists_flag_basis (τ : E →ₐ[F] Fv F v) (hJ : IsHermND σ J) {e e' : Matrix (Fin n) ρ E}
     {i : Matrix (Fin n) s E} {p : Matrix ρ (Fin n) E} {q : Matrix s (Fin n) E} (ε : Fin n ≃ (ρ ⊕ s) ⊕ ρ)
@@ -183,13 +183,13 @@ theorem exists_flag_basis (τ : E →ₐ[F] Fv F v) (hJ : IsHermND σ J) {e e' :
     (by rw [hf, Matrix.map_one _ (map_zero _) (map_one _)])
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `exists_isSplitBasis τ L h`. Establish `iw : ∀ x : GL (Fin n) (Fv F v), ∃ q ∈ Q, ∃ k ∈ stabLoc σ J L v, x * β = splitHom σ J τ q * B * β⁻¹ * splitHom σ J τ k * β` using `fun x => by`. Use `letI := GlobalTheory.LocalData.complRel v`. Use `haveI := GlobalTheory.LocalData.isLocalField v`. Take `⟨b, hb, w, hw, e⟩` from `GlobalTheory.SplitWeil.iwasawa_blockTriangular (Fv F v) (Fin n) lv (B⁻¹ * x * β)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hw` using `[← (GLint_eq_KO_and_princ_eq_KOne v n).1]`. Use `⟨(splitEquivIn h hJ τ B).symm b, hQ _ ?_, (splitEquivIn h hJ τ β).symm w, (mem_stabLoc_iff_GLint h hJ hL hβ).2 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← splitEquivIn_apply h hJ, ContinuousMulEquiv.apply_symm_apply]` and apply the resulting hypothesis. Rewrite using `[ContinuousMulEquiv.apply_symm_apply]` and apply the resulting hypothesis. Rewrite using `[splitHom_splitEquivIn_symm, splitHom_splitEquivIn_symm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨q₀, hq₀, k₀, hk₀, e₀⟩` from `iw 1`. Take `⟨q₁, hq₁, k₁, hk₁, e₁⟩` from `iw (splitHom σ J τ y)`. Use `⟨q₁ * q₀⁻¹, k₀⁻¹ * k₁, mul_mem hq₁ (inv_mem hq₀), mul_mem (inv_mem hk₀) hk₁, splitHom_injective h hJ τ ?_⟩` and prove the remaining obligations. Rewrite `e₀`, `e₁` using `[mul_left_inj]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₁, map_mul, map_mul, map_mul, map_inv, map_inv]`. Generalize the expression as in `splitHom σ J τ q₀ = a₀, splitHom σ J τ q₁ = a₁, splitHom σ J τ k₀ = c₀, splitHom σ J τ k₁ = c₁ at e₀ ⊢`. Rewrite using `[eq_inv_of_mul_eq_one_right e₀.symm]`. Use `group`.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwasawa_of_triangular (h : IsCMExt F E σ) (hJ : IsHermND σ J) (τ : E →ₐ[F] Fv F v)
     (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L] (hL : IsSelfDualAt σ J L v) (Q : Subgroup (GLoc σ J v))
@@ -234,11 +234,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 
 /- English proof (translation)
-Introduce `D T T₀ r d v ⟨P, P', hne, hP, hP'⟩ y`. Take `⟨τ, -⟩` from `existsUnique_splitPrime_eq (isCMExt_host D) (v := v) hne (HeightOneSpectrum.ext hP) (HeightOneSpectrum.ext hP')`. Use `haveI := SelfDual.isLattice_frameLat T`. Establish `hf : d.qY ⬝ d.e' = 1` using `rat_injective (by rw [rat_mul, rat_one]; exact d.pY_jY)`. Take `⟨B, lv, hB⟩` from `exists_flag_basis τ (GlobalTheory.Doubling.isHermND_gram T) (e := d.e) (e' := d.e') (i := d.i₀) (p := d.qX) (q := d.q0) (Fintype.equivOfCardEq (by simp [← d.rank_add]; ring)) d.sum_eq_one_rat hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `iwasawa_of_triangular (isCMExt_host D) (GlobalTheory.Doubling.isHermND_gram T) τ (frameLat T) (SelfDual.isSelfDualAt_frameLat D T v) ((stab d).comap (emb D.sp.cm.sig T.gram v)) B lv (fun g hg => ?_) y` and prove the remaining obligations. Take `⟨⟨a, ha⟩, a', ha'⟩` from `hB g hg`. Establish `h1 : mt T (emb D.sp.cm.sig T.gram v g) ⬝ d.jX = d.jX ⬝ (d.pX ⬝ (mt T (emb D.sp.cm.sig T.gram v g) ⬝ d.jX))` using `emb_keeps (isCMExt_host D) τ g d.pX_jX rfl ha ha'`. Rewrite using `[Subgroup.mem_comap]`. Generalize the expression as in `emb D.sp.cm.sig T.gram v g = x at h1 ⊢`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `h2 : (d.pX ⬝ (mt T x⁻¹ ⬝ d.jX)) ⬝ (d.pX ⬝ (mt T x ⬝ d.jX)) = 1`. Rewrite using `[Matrix.mul_assoc d.pX, Matrix.mul_assoc (mt T x⁻¹), ← h1, ← Matrix.mul_assoc (mt T x⁻¹), ← mt_mul, inv_mul_cancel, mt_one, Matrix.one_mul, d.pX_jX]`. Conclude with `⟨⟨_, _, mul_eq_one_comm.1 h2, h2⟩, h1⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem iwasawa_stab_split : ∀ (D : D7) (T T₀ : HSp D) (r : ℕ) (d : HypDec T T₀ r) (v : FinPl D), Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v → ∀ y : Gv T v, ∃ q k : Gv T v, emb D.sp.cm.sig T.gram v q ∈ stab d ∧ k ∈ stabLoc D.sp.cm.sig T.gram (frameLat T) v ∧ y = q * k := by
   intro D T T₀ r d v ⟨P, P', hne, hP, hP'⟩ y

@@ -9,9 +9,9 @@ set_option autoImplicit false
 namespace GlobalTheory.ConstLat
 
 /- English proof (translation)
-Establish `hpv : ((p : 𝓞 F)) ∈ v.asIdeal`. Establish `h0 : ((p : ℕ) : 𝓞 F ⧸ v.asIdeal) = 0` using `(ringChar.spec _ p).2 (by rw [← hv]; rfl)`. Rewrite `h0` using `[← map_natCast (Ideal.Quotient.mk v.asIdeal)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h0`. Establish `h` using `e.w_alg (p : F)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[map_natCast]`. Rewrite using `[h, ← map_natCast (algebraMap (𝓞 F) F) p, ← FinitePlace.norm_embedding]`. Conclude with `(FinitePlace.norm_lt_one_iff_mem F v _).2 hpv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem w_prime_lt_one {F : Type} [Field F] [NumberField F] {p : ℕ} {v : HeightOneSpectrum (𝓞 F)}
     (hv : resP v = p) (e : Ext v) : e.w (p : AlgebraicClosure F) < 1 := by
@@ -25,19 +25,15 @@ theorem w_prime_lt_one {F : Type} [Field F] [NumberField F] {p : ℕ} {v : Heigh
   exact (FinitePlace.norm_lt_one_iff_mem F v _).2 hpv
 
 /- English proof (translation)
-Establish `hna` using `isNonarchimedean_w e`. Establish `hwp` using `w_prime_lt_one hv e`. Use `set a := n.factorization p`. Use `set m := n / p ^ a`. Establish `hnm : p ^ a * m = n` using `Nat.ordProj_mul_ordCompl_eq_self n p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcop : m.Coprime p` using `(Nat.coprime_ordCompl hp hn).symm`. Establish `hm : e.w (m : AlgebraicClosure F) = 1`. Use `le_antisymm (hna.apply_natCast_le_one (n := m)) ?_` and prove the remaining obligations. Establish `hg : ((Nat.gcd m p : ℕ) : ℤ) = m * Nat.gcdA m p + p * Nat.gcdB m p` using `Nat.gcd_eq_gcd_ab m p`. Rewrite `hg` using `[hcop, Nat.cast_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg' : (1 : AlgebraicClosure F) = (m : AlgebraicClosure F) * ((Nat.gcdA m p : ℤ) : AlgebraicClosure F) + (p : AlgebraicClosure F) * ((Nat.gcdB m p : ℤ) : AlgebraicClosure F)`. Use `congrArg (Int.cast (R := AlgebraicClosure F)) hg` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `h1 : (1 : ℝ) ≤ max (e.w (m : AlgebraicClosure F)) (e.w (p : AlgebraicClosure F))`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hna ((m : AlgebraicClosure F) * ((Nat.gcdA m p : ℤ) : AlgebraicClosure F)) ((p : AlgebraicClosure F) * ((Nat.gcdB m p : ℤ) : AlgebraicClosure F))` as an intermediate fact. Rewrite `this` using `[← hg', map_one, map_mul, map_mul]`. Use `this.trans (max_le_max ?_ ?_)` and prove the remaining obligations. Conclude with `mul_le_of_le_one_right (e.w.nonneg _) hna.apply_intCast_le_one`. Conclude with `mul_le_of_le_one_right (e.w.nonneg _) hna.apply_intCast_le_one`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Break down `le_max_iff.1 h1 with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h (not_le.2 hwp)`. Establish `ha : a ≤ n`. Establish `h1 : a < p ^ a` using `Nat.lt_pow_self hp.one_lt`.
-
-Establish `h2 : p ^ a ≤ n` using `Nat.ordProj_le p hn`. Use linear arithmetic over natural numbers and integers. Establish `hwn : e.w (n : AlgebraicClosure F) = e.w (p : AlgebraicClosure F) ^ a`. Rewrite using `[← hnm, Nat.cast_mul, map_mul, hm, mul_one, Nat.cast_pow, map_pow]`. Rewrite using `[hwn]`.
-
-Conclude with `pow_le_pow_of_le_one (e.w.nonneg _) hwp.le ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem w_prime_pow_le_w_nat {F : Type} [Field F] [NumberField F] {p : ℕ} (hp : p.Prime) {v : HeightOneSpectrum (𝓞 F)}
     (hv : resP v = p) (e : Ext v) {n : ℕ} (hn : n ≠ 0) :
@@ -78,13 +74,11 @@ theorem w_prime_pow_le_w_nat {F : Type} [Field F] [NumberField F] {p : ℕ} (hp 
   exact pow_le_pow_of_le_one (e.w.nonneg _) hwp.le ha
 
 /- English proof (translation)
-Introduce `F _ _ p n k hp hn`. Use `⟨k + 3 * n + 1, fun v hv e => ?_⟩` and prove the remaining obligations. Establish `hwp` using `w_prime_lt_one hv e`. Establish `hP0 : 0 < e.w (p : AlgebraicClosure F)` using `e.w.pos (Nat.cast_ne_zero.2 hp.ne_zero)`. Establish `hlow` using `w_prime_pow_le_w_nat hp hv e hn`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set P := e.w (p : AlgebraicClosure F)`. Use `set N := e.w (n : AlgebraicClosure F)`. Establish `hPn : 0 < P ^ n` using `pow_pos hP0 n`. Establish `hN0 : 0 < N` using `hPn.trans_le hlow`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[div_le_iff₀ (pow_pos hN0 3)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hPn.le hlow 3) (by positivity)`. Rewrite using `[div_lt_one (pow_pos hN0 2)]`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `pow_lt_one₀ hP0.le hwp (by omega)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_prec_consts : ∀ {F : Type} [Field F] [NumberField F] (p n k : ℕ), p.Prime → n ≠ 0 → ∃ k' : ℕ,
     ∀ v : HeightOneSpectrum (𝓞 F), resP v = p → ∀ e : Ext v,

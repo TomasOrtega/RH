@@ -22,7 +22,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-The claim follows from `| [], _, y, hy => by simp at hy | z :: l, H, y, hy => by have H2 : (z.lpSum (sumList l)).mono0 := H obtain ⟨n, a, rfl⟩ := WD.exists_rep z obtain ⟨m, b, hb⟩ := WD.exists_rep (sumList l) rw [← hb, WD.lpSum_mk, WD.monodromyZero_ofWeilDeligneRepClass_iff, WDRep.sum_N] at H2 have ha : …`.
+A detailed English derivation is pending.
 -/
 theorem noMonodromy_of_mem_weilDeligneListSum : ∀ (l : List (WD h)), (sumList l).mono0 → ∀ y ∈ l, y.mono0
   | [], _, y, hy => by simp at hy
@@ -40,7 +40,7 @@ theorem noMonodromy_of_mem_weilDeligneListSum : ∀ (l : List (WD h)), (sumList 
     · exact noMonodromy_of_mem_weilDeligneListSum l (by rw [← hb]; exact (WD.monodromyZero_ofWeilDeligneRepClass_iff b).2 hb') y hy
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.WeilDeligne.WD.lpTw_one_ne x hx`.
+A detailed English derivation is pending.
 -/
 theorem lpTw_one_ne (x : WD h) (hx : 0 < x.lpDim) : x.lpTw 1 ≠ x := GlobalTheory.WeilDeligne.WD.lpTw_one_ne x hx
 

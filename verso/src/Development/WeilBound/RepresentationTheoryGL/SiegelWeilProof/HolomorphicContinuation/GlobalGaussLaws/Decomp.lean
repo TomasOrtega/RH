@@ -17,7 +17,7 @@ Both sides reduce to the same expression.
 theorem mR_mkGR (M : M2 n) (hu : IsUnit M.det) (hg : InG M) : mR (mkGR M hu hg) = M := rfl
 
 /- English proof (translation)
-Unfold `InG nU JJ`. Rewrite using `[fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `[hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inG_nU {b : Matrix (Fin n) (Fin n) ℂ} (hb : bᴴ = b) : InG (nU b) := by
   unfold InG nU JJ
@@ -25,7 +25,7 @@ theorem inG_nU {b : Matrix (Fin n) (Fin n) ℂ} (hb : bᴴ = b) : InG (nU b) := 
   simp [hb]
 
 /- English proof (translation)
-Unfold `InG nbar JJ`. Rewrite using `[fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `[hc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inG_nbar {c : Matrix (Fin n) (Fin n) ℂ} (hc : cᴴ = c) : InG (nbar c) := by
   unfold InG nbar JJ
@@ -33,9 +33,9 @@ theorem inG_nbar {c : Matrix (Fin n) (Fin n) ℂ} (hc : cᴴ = c) : InG (nbar c)
   simp [hc]
 
 /- English proof (translation)
-Establish `hu : IsUnit aᴴ.det`. Rewrite using `[det_conjTranspose]`. Conclude with `ha.star`. Unfold `InG mM JJ`. Rewrite using `[fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[conjTranspose_nonsing_inv, mul_nonsing_inv _ hu, nonsing_inv_mul _ ha]`.
+A detailed English derivation is pending.
 -/
 theorem inG_mM {a : Matrix (Fin n) (Fin n) ℂ} (ha : IsUnit a.det) : InG (mM a) := by
   have hu : IsUnit aᴴ.det := by
@@ -46,21 +46,19 @@ theorem inG_mM {a : Matrix (Fin n) (Fin n) ℂ} (ha : IsUnit a.det) : InG (mM a)
   simp [conjTranspose_nonsing_inv, mul_nonsing_inv _ hu, nonsing_inv_mul _ ha]
 
 /- English proof (translation)
-Simplify using `[nU, det_fromBlocks_zero₂₁]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_nU (b : Matrix (Fin n) (Fin n) ℂ) : (nU b).det = 1 := by
   simp [nU, det_fromBlocks_zero₂₁]
 
 /- English proof (translation)
-Simplify using `[nbar, det_fromBlocks_zero₁₂]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_nbar (c : Matrix (Fin n) (Fin n) ℂ) : (nbar c).det = 1 := by
   simp [nbar, det_fromBlocks_zero₁₂]
 
 /- English proof (translation)
-Establish `hu : IsUnit aᴴ.det`. Rewrite using `[det_conjTranspose]`. Conclude with `ha.star`. Unfold `mM`. Rewrite using `[det_fromBlocks_zero₂₁]`.
-
-Conclude with `ha.mul (isUnit_nonsing_inv_det _ hu)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_mM {a : Matrix (Fin n) (Fin n) ℂ} (ha : IsUnit a.det) : IsUnit (mM a).det := by
   have hu : IsUnit aᴴ.det := by
@@ -77,33 +75,31 @@ namespace PositivityTheory.Rg.Sw.Glob
 open PositivityTheory.Rg.Sw.Glob.DecH
 
 /- English proof (translation)
-Introduce `n y`. Establish `hmul : ∀ {X Y : M2 n}, InG X → InG Y → InG (X * Y)`. Introduce `X Y hX hY`. Unfold `InG at *`. Rewrite using `[conjTranspose_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = JJ n := by rw [hX, hY]`. Establish `hg : InG (mR y)` using `y.2`. Establish `hdet : IsUnit (mR y).det` using `Matrix.isUnits_det_units (y : GL (Fin n ⊕ Fin n) ℂ)`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨A, B, C, D, e⟩ : ∃ A B C D : Matrix (Fin n) (Fin n) ℂ, mR y = fromBlocks A B C D` from `⟨_, _, _, _, (fromBlocks_toBlocks _).symm⟩`. Rewrite `hg`, `hdet` using `[e]`. Take `⟨t, ht⟩` from `exists_real_det_ne_zero (det_sub_I_smul_ne_zero hg hdet)`. Take `⟨P, hP⟩ : ∃ P : Matrix (Fin n) (Fin n) ℂ, P = A - (t : ℂ) • C` from `⟨_, rfl⟩`. Take `⟨Q, hQ⟩ : ∃ Q : Matrix (Fin n) (Fin n) ℂ, Q = B - (t : ℂ) • D` from `⟨_, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ht` using `[← hP]`. Establish `hPu : IsUnit P.det` using `isUnit_iff_ne_zero.mpr ht`. Establish `hPHu : IsUnit Pᴴ.det`. Rewrite using `[det_conjTranspose]`. Conclude with `hPu.star`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hshift : nU ((-(t : ℂ)) • 1) * fromBlocks A B C D = fromBlocks P Q C D`. Unfold `nU`. Rewrite using `[fromBlocks_multiply]`. Simplify using `[hP, hQ, sub_eq_add_neg]`. Establish `hG : InG (fromBlocks P Q C D)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hshift]`. Conclude with `hmul (inG_nU (by simp)) hg`. Take `⟨r1, -, -⟩` from `inG_blocks hG`. Take `⟨s1, -, s3, -⟩` from `inG_blocks_dual hG`. Establish `hb : (P⁻¹ * Q)ᴴ = P⁻¹ * Q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[conjTranspose_mul, conjTranspose_nonsing_inv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc P⁻¹, nonsing_inv_mul _ hPu, Matrix.one_mul]`. Use `_ = P⁻¹ * (Q * Pᴴ) * Pᴴ⁻¹ := by rw [s1]`. Use `_ = P⁻¹ * Q := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, mul_nonsing_inv _ hPHu, Matrix.mul_one]`. Establish `hc : (C * P⁻¹)ᴴ = C * P⁻¹`. Rewrite using `[conjTranspose_mul, conjTranspose_nonsing_inv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc (Pᴴ⁻¹), Matrix.mul_assoc Cᴴ, mul_nonsing_inv _ hPu, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `_ = Pᴴ⁻¹ * (Pᴴ * C) * P⁻¹ := by rw [r1]`. Use `_ = C * P⁻¹ := by`. Rewrite using `[← Matrix.mul_assoc, nonsing_inv_mul _ hPHu, Matrix.one_mul]`. Establish `hD : D = C * (P⁻¹ * Q) + Pᴴ⁻¹`. Establish `h1 : D * Pᴴ = C * Qᴴ + 1`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `hb`. Rewrite `h2` using `[conjTranspose_mul, conjTranspose_nonsing_inv]`. Combine the equalities or inequalities in the displayed calculation. Establish `hinner : nbar (C * P⁻¹) * mM P * nU (P⁻¹ * Q) = fromBlocks P Q C D`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `nbar mM nU`. Rewrite using `[fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `only [Matrix.one_mul, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add]`. Rewrite using `[fromBlocks_inj]`. Use `⟨rfl, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc, mul_nonsing_inv _ hPu, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, nonsing_inv_mul _ hPu, Matrix.mul_one]`. Rewrite using `[hD, Matrix.mul_assoc C, nonsing_inv_mul _ hPu, Matrix.mul_one]`. Establish `hfront : nU ((t : ℂ) • 1) * fromBlocks P Q C D = fromBlocks A B C D`. Unfold `nU`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[fromBlocks_multiply]`. Simplify using `[hP, hQ]`. Use `⟨mkGR (nU ((t : ℂ) • 1)) (by rw [det_nU]; exact isUnit_one) (inG_nU (by simp)), mkGR (nbar (C * P⁻¹)) (by rw [det_nbar]; exact isUnit_one) (inG_nbar hc), mkGR (mM P) (isUnit_det_mM hPu) (inG_mM hPu), mkGR (nU (P⁻¹ * Q)) (by rw [det_nU]; exact isUnit_one) (inG_nU hb), ?_, ⟨t, mR_m …` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
-
-Use `show mR y = mR _ * mR _ * mR _ * mR _`. Rewrite using `[mR_mkGR, mR_mkGR, mR_mkGR, mR_mkGR, e, ← hfront, ← hinner]`. Simplify using `only [Matrix.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem decomp : Decomp := by
   intro n y

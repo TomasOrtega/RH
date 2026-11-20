@@ -9,7 +9,7 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.CMRam
 
 /- English proof (translation)
-The claim follows from `(A.valuation_le_one_iff _).2 (ReciprocityTheory.Gal.mem_of_isIntegral_int A (a.isIntegral_coe.map ι.toIntAlgHom))`.
+A detailed English derivation is pending.
 -/
 theorem val_int_le {E Ω : Type*} [Field E] [Field Ω] (ι : E →+* Ω) (A : ValuationSubring Ω) (a : 𝓞 E) :
     A.valuation (ι a) ≤ 1 :=
@@ -17,9 +17,9 @@ theorem val_int_le {E Ω : Type*} [Field E] [Field Ω] (ι : E →+* Ω) (A : Va
     (ReciprocityTheory.Gal.mem_of_isIntegral_int A (a.isIntegral_coe.map ι.toIntAlgHom))
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.UnitDenominatorValuation.exists_unit_denominator`. Consider the case `exact _root_.GlobalTheory.UnitDenominatorValuation.exists_unit_denominator`. Consider the case `(apply _root_.GlobalTheory.UnitDenominatorValuation.exists_unit_denominator <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.UnitDenominatorValuation.exists_unit_denominator <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.UnitDenominatorValuation.exists_unit_denominator <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.UnitDenominatorValuation.exists_unit_denominator ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_den_field {E Ω : Type*} [Field E] [NumberField E] [Field Ω] (ι : E →+* Ω)
     (A : ValuationSubring Ω) {x : E} (hx : A.valuation (ι x) ≤ 1) :

@@ -22,7 +22,7 @@ theorem rt_apply (h : Formalism.AUTREP.GAf L n) (f : Formalism.AUTREP.GAf L n �
     Formalism.L2.NG.rt L n h f g = f (g * h) := rfl
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `LinearMap.mem_range.1 hy`. Conclude with `⟨_, hΦ h f⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem range_equivariantMap_stable {ρ : Formalism.AUTREP.GAf L n →* Module.End ℂ A} {σ : Formalism.L2.NG.FinTyp L n} {Φ : σ.S →ₗ[ℂ] A}
     (hΦ : IsEqvA ρ σ Φ) (h : Formalism.AUTREP.GAf L n) (y : A) (hy : y ∈ LinearMap.range Φ) :
@@ -31,15 +31,15 @@ theorem range_equivariantMap_stable {ρ : Formalism.AUTREP.GAf L n →* Module.E
   exact ⟨_, hΦ h f⟩
 
 /- English proof (translation)
-Set `K : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ)` to `(LinearMap.ker Φ).map σ.S.subtype`. Establish `hle : K ≤ σ.S`. Introduce and unpack `_ ⟨f, -, rfl⟩`. Conclude with `f.2`. Establish `hst : ∀ h, ∀ f ∈ K, Formalism.L2.NG.rt L n h f ∈ K`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `h _ ⟨f, hf, rfl⟩`. Use `⟨⟨_, σ.stable h f f.2⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite `hf`, the goal using `[SetLike.mem_coe, LinearMap.mem_ker]`. Rewrite using `[hΦ h f, hf, map_zero]`. Break down `σ.irr K hle hst with hK | hK` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `right`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `f hf`. Establish `hm : (f : Formalism.AUTREP.GAf L n → ℂ) ∈ K` using `⟨f, hf, rfl⟩`. Rewrite `hm` using `[hK, Submodule.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Submodule.mem_bot _).2 (Subtype.ext hm)`. Use `left`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `f`. Establish `hm : (f : Formalism.AUTREP.GAf L n → ℂ) ∈ K` using `by rw [hK]; exact f.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨g, hg, hgf⟩` from `hm`. Establish `e : g = f` using `Subtype.ext hgf`. Substitute `e` using the available equality. Simplify using `using hg`.
+A detailed English derivation is pending.
 -/
 theorem zero_or_inj {ρ : Formalism.AUTREP.GAf L n →* Module.End ℂ A} {σ : Formalism.L2.NG.FinTyp L n} {Φ : σ.S →ₗ[ℂ] A}
     (hΦ : IsEqvA ρ σ Φ) : Φ = 0 ∨ Function.Injective Φ := by
@@ -69,17 +69,15 @@ theorem zero_or_inj {ρ : Formalism.AUTREP.GAf L n →* Module.End ℂ A} {σ : 
     simpa using hg
 
 /- English proof (translation)
-Set `K : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ)` to `(W.comap Φ).map σ.S.subtype`. Establish `hle : K ≤ σ.S`. Introduce and unpack `_ ⟨f, -, rfl⟩`. Conclude with `f.2`. Establish `hst : ∀ h, ∀ f ∈ K, Formalism.L2.NG.rt L n h f ∈ K`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `h _ ⟨f, hf, rfl⟩`. Use `⟨⟨_, σ.stable h f f.2⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite `hf`, the goal using `[SetLike.mem_coe, Submodule.mem_comap]`. Rewrite using `[hΦ h f]`. Conclude with `hW h _ hf`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `σ.irr K hle hst with hK | hK` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `y hy`. Rewrite `hy` using `[Submodule.mem_inf, LinearMap.mem_range]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨⟨f, rfl⟩, hy⟩` from `hy`. Establish `hm : (f : Formalism.AUTREP.GAf L n → ℂ) ∈ K` using `⟨f, hy, rfl⟩`. Rewrite `hm` using `[hK, Submodule.mem_bot]`. Establish `e : f = 0` using `Subtype.ext hm`. Rewrite using `[e, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.zero_mem _`. Use `right`. Introduce `y hy`. Rewrite `hy` using `[LinearMap.mem_range]`. Take `⟨f, rfl⟩` from `hy`.
-
-Establish `hm : (f : Formalism.AUTREP.GAf L n → ℂ) ∈ K` using `by rw [hK]; exact f.2`. Take `⟨g, hg, hgf⟩` from `hm`. Establish `e : g = f` using `Subtype.ext hgf`. Substitute `e` using the available equality. Conclude with `hg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem inf_bot_or_le {ρ : Formalism.AUTREP.GAf L n →* Module.End ℂ A} {σ : Formalism.L2.NG.FinTyp L n} {Φ : σ.S →ₗ[ℂ] A}
     (hΦ : IsEqvA ρ σ Φ) (W : Submodule ℂ A) (hW : ∀ h, ∀ y ∈ W, ρ h y ∈ W) :
@@ -119,19 +117,17 @@ def Indep {J : Type} (R : J → Submodule ℂ A) (t : Finset J) : Prop :=
   ∀ v : J → A, (∀ j ∈ t, v j ∈ R j) → ∑ j ∈ t, v j = 0 → ∀ j ∈ t, v j = 0
 
 /- English proof (translation)
-Establish `stab : ∀ t : Finset J, ∀ h, ∀ y ∈ ⨆ j ∈ t, R j, ρ h y ∈ ⨆ j ∈ t, R j`. Introduce `t h y hy`. Establish `hle : (⨆ j ∈ t, R j) ≤ (⨆ j ∈ t, R j).comap (ρ h)`. Use `iSup₂_le fun j hj => ?_` and prove the remaining obligations. Introduce `z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(le_iSup₂ (f := fun j (_ : j ∈ t) => R j) j hj) (hst j h z hz)`. Conclude with `hle hy`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨∅, subset_rfl, fun v _ _ j hj => by simp at hj, rfl⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `insert k s hk ih`. Take `⟨t, hts, hind, heq⟩` from `ih`. Break down `hirr k (⨆ j ∈ t, R j) (stab t) with hd | hle` into its components or cases. Establish `hkt : k ∉ t` using `fun h => hk (hts h)`. Use `⟨insert k t, Finset.insert_subset_insert k hts, ?_, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `v hv hsum j hj`. Rewrite `hsum` using `[Finset.sum_insert hkt]`. Establish `hvk : v k = 0`. Establish `h1 : v k ∈ R k ⊓ ⨆ j ∈ t, R j`. Use `Submodule.mem_inf.2 ⟨hv k (Finset.mem_insert_self k t), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : v k = -∑ j ∈ t, v j` using `eq_neg_of_add_eq_zero_left hsum`. Rewrite using `[e]`. Use `Submodule.neg_mem _ (Submodule.sum_mem _ fun j hj => ?_)` and prove the remaining obligations. Conclude with `le_iSup₂ (f := fun j (_ : j ∈ t) => R j) j hj (hv j (Finset.mem_insert_of_mem hj))`. Rewrite `h1` using `[hd]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Submodule.mem_bot _).1 h1`. Break down `Finset.mem_insert.1 hj with rfl | hj` into its components or cases. Conclude with `hvk`. Rewrite `hsum` using `[hvk, zero_add]`. Conclude with `hind v (fun i hi => hv i (Finset.mem_insert_of_mem hi)) hsum j hj`.
-
-Rewrite using `[Finset.iSup_insert, Finset.iSup_insert, heq]`. Use `⟨t, hts.trans (Finset.subset_insert k s), hind, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.iSup_insert, ← heq, sup_eq_right.2 hle]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem select {ρ : Formalism.AUTREP.GAf L n →* Module.End ℂ A} {J : Type} [DecidableEq J] (R : J → Submodule ℂ A)
     (hst : ∀ j h, ∀ y ∈ R j, ρ h y ∈ R j)
@@ -172,23 +168,19 @@ theorem select {ρ : Formalism.AUTREP.GAf L n →* Module.End ℂ A} {J : Type} 
       rw [Finset.iSup_insert, ← heq, sup_eq_right.2 hle]
 
 /- English proof (translation)
-Set `J` to `{Φ : σ.S →ₗ[ℂ] A // IsEqvA ρ σ Φ ∧ P Φ}`. Set `R : J → Submodule ℂ A` to `fun j => LinearMap.range j.1`. Rewrite `hx` using `[iSup_subtype']`. Take `⟨s, hs⟩` from `Submodule.mem_iSup_iff_exists_finset.1 hx`. Take `⟨t, -, hind, heq⟩` from `select (ρ := ρ) R (fun j h y hy => range_equivariantMap_stable j.2.1 h y hy) (fun j W hW => inf_bot_or_le j.2.1 W hW) s`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hs` using `[← heq]`. Take `⟨μ, hμ⟩` from `(Submodule.mem_iSup_finset_iff_exists_sum _ _).1 hs`. Establish `hψ : ∀ j : J, ∃ ψ : σ.S, j.1 ψ = μ j` using `fun j => LinearMap.mem_range.1 (μ j).2`. Use `choose ψ hψ using hψ`. Establish `hx' : x = ∑ j ∈ t, j.1 (ψ j)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hμ]`. Conclude with `Finset.sum_congr rfl fun j _ => (hψ j).symm`. Establish `hfix : ∀ j ∈ t, ∀ κ ∈ U, j.1 ⟨Formalism.L2.NG.rt L n κ (ψ j), σ.stable κ _ (ψ j).2⟩ = j.1 (ψ j)`. Introduce `j hj κ hκ`. Establish `h0` using `hind (fun j => j.1 ⟨Formalism.L2.NG.rt L n κ (ψ j), σ.stable κ _ (ψ j).2⟩ - j.1 (ψ j)) (fun j _ => Submodule.sub_mem _ (LinearMap.mem_range_self _ _) (LinearMap.mem_range_self _ _)) ?_ j hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.1 h0`. Rewrite using `[Finset.sum_sub_distrib]`. Establish `e : ∑ j ∈ t, j.1 ⟨Formalism.L2.NG.rt L n κ (ψ j), σ.stable κ _ (ψ j).2⟩ = ρ κ x`. Rewrite using `[hx', map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => j.2.1 κ (ψ j)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[e, hU κ hκ, ← hx', sub_self]`. Establish `hterm : ∀ j ∈ t, ∑ i, b i • ρ (lf i) (j.1 (ψ j)) = j.1 (ψ j)`. Introduce `j hj`. Break down `zero_or_inj j.2.1 with h0 | hinj` into its components or cases. Simplify using `[h0]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hψfix : ∀ κ ∈ U, Formalism.L2.NG.rt L n κ ((ψ j : σ.S) : Formalism.AUTREP.GAf L n → ℂ) = ψ j` using `fun κ hκ => congrArg Subtype.val (hinj (hfix j hj κ hκ))`. Establish `hH` using `H _ (ψ j).2 hψfix`. Establish `e : ∑ i, b i • (⟨Formalism.L2.NG.rt L n (lf i) (ψ j), σ.stable (lf i) _ (ψ j).2⟩ : σ.S) = ψ j`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `using hH`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul, j.2.1 (lf i) (ψ j)]`. Use `_ = j.1 (ψ j) := by rw [e]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hx']`. Simplify using `only [map_sum, Finset.smul_sum]`. Conclude with `Finset.sum_comm`. Use `_ = x := by`.
-
-Rewrite using `[Finset.sum_congr rfl hterm, ← hx']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_sum_of_mem {ρ : Formalism.AUTREP.GAf L n →* Module.End ℂ A} {σ : Formalism.L2.NG.FinTyp L n}
     (P : (σ.S →ₗ[ℂ] A) → Prop) (U : Set (Formalism.AUTREP.GAf L n)) {ι : Type} [Fintype ι] (b : ι → ℂ)
@@ -246,11 +238,11 @@ theorem fix_sum_of_mem {ρ : Formalism.AUTREP.GAf L n →* Module.End ℂ A} {σ
 end Gen
 
 /- English proof (translation)
-Introduce `D n A _ _ ρ C π U ι _ a lf hyp S hS hU`. Use `haveI := Fintype.ofFinite ι`. Rewrite using `[finsum_eq_sum_of_fintype]`. Use `fix_sum_of_mem (σ := FinTyp.conjT π) (fun Φ => LinearMap.range Φ ≤ C) U (fun i => star (a i)) lf ?_ S hS hU` and prove the remaining obligations. Introduce `ψ hψ hfix`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hφ : (fun g => star (ψ g)) ∈ π.S` using `hψ`. Establish `h1` using `hyp _ hφ (fun κ hκ => by rw [← conj_rt, hfix κ hκ])`. Rewrite `h1` using `[finsum_eq_sum_of_fintype]`. Use function extensionality and compare the values at `g`. Establish `h2` using `congrArg star (congrFun h1 g)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, star_sum, star_mul', star_star, rt_apply] at h2`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, rt_apply]`. Conclude with `h2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isotIn_conjT_fix_sum : ∀ (D : D7) (n : ℕ) (A : Type) [AddCommGroup A] [Module ℂ A] (ρ : GAf D.host.E n →* Module.End ℂ A) (C : Submodule ℂ A) (π : Formalism.L2.NG.FinTyp D.host.E n) (U : Set (GAf D.host.E n)) (ι : Type) [Finite ι] (a : ι → ℂ) (lf : ι → GAf D.host.E n), (∀ φ ∈ π.S, (∀ κ ∈ U, Formalism.L2.NG.rt D.host.E n κ φ = φ) → ∑ᶠ i, a i • Formalism.L2.NG.rt D.host.E n (lf i) φ = φ) → ∀ S ∈ isotIn ρ C (FinTyp.conjT π), (∀ κ ∈ U, ρ κ S = S) → ∑ᶠ i, star (a i) • ρ (lf i) S = S := by
   intro D n A _ _ ρ C π U ι _ a lf hyp S hS hU

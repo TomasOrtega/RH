@@ -19,44 +19,44 @@ import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.Cayley
 namespace Formalism.L2.Th1.H
 
 /- English proof (translation)
-The claim follows from `unitary_index`.
+A detailed English derivation is pending.
 -/
 theorem unitaryIndex : UnitaryIndex := unitary_index
 /- English proof (translation)
-The claim follows from `cayleyPhaseBasic`.
+A detailed English derivation is pending.
 -/
 theorem phiBasic : PhiBasic := cayleyPhaseBasic
 /- English proof (translation)
-The claim follows from `gaussSumEighthPower`.
+A detailed English derivation is pending.
 -/
 theorem gaussEighth : GaussEighth := gaussSumEighthPower
 /- English proof (translation)
-The claim follows from `UnitaryGauss_of gaussEighth`.
+A detailed English derivation is pending.
 -/
 theorem unitaryGauss : UnitaryGauss := UnitaryGauss_of gaussEighth
 /- English proof (translation)
-The claim follows from `cayleyDet`.
+A detailed English derivation is pending.
 -/
 theorem detCayley : DetCayley := cayleyDet
 /- English proof (translation)
-The claim follows from `UnitaryConstant_proof`.
+A detailed English derivation is pending.
 -/
 theorem unitaryConstant : UnitaryConstant := UnitaryConstant_proof
 /- English proof (translation)
-The claim follows from `UnitaryEighth_proof`.
+A detailed English derivation is pending.
 -/
 theorem unitaryEighth : UnitaryEighth := UnitaryEighth_proof
 
 /- English proof (translation)
-The claim follows from `TripleFormula_proof`.
+A detailed English derivation is pending.
 -/
 theorem tripleFormula : TripleFormula := TripleFormula_proof
 /- English proof (translation)
-The claim follows from `triplePhaseQuadratic`.
+A detailed English derivation is pending.
 -/
 theorem psiQuadratic : PsiQuadratic := triplePhaseQuadratic
 /- English proof (translation)
-The claim follows from `TripleEighth_proof`.
+A detailed English derivation is pending.
 -/
 theorem tripleEighth : TripleEighth := TripleEighth_proof
 

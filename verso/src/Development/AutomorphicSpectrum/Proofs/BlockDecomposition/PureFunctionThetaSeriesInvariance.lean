@@ -8,25 +8,23 @@ open scoped ENNReal NNReal Classical
 namespace GlobalTheory.CompanionTheory.BasePsi
 
 /- English proof (translation)
-Introduce `F _ _ _ θ _ S T G g a _ hGc hg hST ha δ hδ`. Take `⟨N, hN, hNint⟩` from `GlobalTheory.T.bounded_denominators_compact_idele_set F {a} isCompact_singleton S (fun v => tsupport (g v)) (fun v hv => (hg v hv).2)`. Establish `h1 : ((↑a⁻¹ : AF F)).1 * (↑a : AF F).1 = 1` using `congrArg Prod.fst (Units.inv_mul a)`. Establish `h2 : θ δ⁻¹ * θ δ = 1` using `by rw [← map_mul, inv_mul_cancel₀ hδ.ne', map_one]`. Establish `hcd : ∀ z : Ainf F, θ δ⁻¹ * ((↑a⁻¹ : AF F)).1 * ((↑a : AF F).1 * (θ δ * z)) = z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z`. Combine the equalities or inequalities in the displayed calculation. Establish `hK : IsCompact ((fun z => θ δ⁻¹ * ((↑a⁻¹ : AF F)).1 * z) '' tsupport G)` using `hGc.image (continuous_const.mul continuous_id)`. Use `choose C hC using fun w : NumberField.InfinitePlace F => hK.exists_bound_of_continuousOn (f := fun z : NumberField.InfiniteAdeleRing F => z w) (continuous_apply w).continuousOn`. Use `((NumberField.Embeddings.finite_of_norm_le F ℂ ((N : ℝ) * ∑ w, ‖C w‖)).image (fun y => y / (N : F))).subset ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x ⟨hxT, hne⟩`. Establish `hG0` using `left_ne_zero_of_mul hne`. Establish `hpsi : ∀ v ∈ T, psiA S g a v (fun _ => algebraMap F (Fv F v) x) ≠ 0` using `fun v hv => Finset.prod_ne_zero_iff.mp (right_ne_zero_of_mul hne) v hv`. Establish `hS : ∀ v ∈ S, algebraMap F (Fv F v) x * (↑a : AF F).2 v ∈ tsupport (g v)`. Introduce `v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hpsi v (hST hv)`. Simplify using `only [psiA, if_pos hv] at h`. Rewrite using `[mul_comm]`. Conclude with `subset_tsupport _ h`. Establish `hnS : ∀ v ∉ S, algebraMap F (Fv F v) x * (↑a : AF F).2 v ∈ v.adicCompletionIntegers F`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `v hv`. Distinguish the cases in `hvT : v ∈ T`. Establish `h` using `hpsi v hvT`. Simplify using `only [psiA, if_neg hv] at h`. Rewrite using `[mul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hc`. Conclude with `h (if_neg hc)`. Conclude with `mul_mem (hxT v hvT) (ha v hvT).1`. Take `⟨y, hy⟩` from `hNint a (Set.mem_singleton a) x hS hnS`. Establish `hN0 : (N : F) ≠ 0` using `by exact_mod_cast hN.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `harch : ∀ w : NumberField.InfinitePlace F, w x ≤ C w`. Introduce `w`. Establish `hmem : (↑a : AF F).1 * (θ δ * algebraMap F (Ainf F) x) ∈ tsupport G` using `subset_tsupport _ hG0`. Establish `hx' : algebraMap F (Ainf F) x ∈ (fun z => θ δ⁻¹ * ((↑a⁻¹ : AF F)).1 * z) '' tsupport G` using `⟨_, hmem, hcd _⟩`. Establish `hb` using `hC w _ hx'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : ‖(algebraMap F (NumberField.InfiniteAdeleRing F) x) w‖ = w x`. Rewrite using `[NumberField.InfiniteAdeleRing.algebraMap_apply, NumberField.InfinitePlace.Completion.norm_coe]`. Simplify using the standard rewrite rules. Rewrite using `[← hn]`. Conclude with `hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hφ : ∀ φ : F →+* ℂ, ‖φ x‖ ≤ ∑ w, ‖C w‖`. Introduce `φ`. Combine the equalities or inequalities in the displayed calculation. Use `⟨(N : F) * x, ⟨?_, fun φ => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`.
-
-Conclude with `NumberField.RingOfIntegers.isIntegral_coe y`. Rewrite using `[map_mul, norm_mul, map_natCast, Complex.norm_natCast]`. Conclude with `mul_le_mul_of_nonneg_left (hφ φ) (Nat.cast_nonneg N)`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem finite_contributing : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F → ∀ θ : ℝ →+* Ainf F, Continuous θ →
     ∀ (S T : Finset (HeightOneSpectrum (𝓞 F))) (G : Ainf F → ℝ) (g : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ) (a : (AF F)ˣ),

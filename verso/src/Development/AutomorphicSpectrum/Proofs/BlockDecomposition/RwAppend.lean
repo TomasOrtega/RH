@@ -27,7 +27,7 @@ Both sides reduce to the same expression.
 theorem expC_val (X : Mat n) (t : ℝ) : (expC X t).val = NormedSpace.exp (t • X) := rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `[expC_val]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem expC_zero (X : Mat n) : expC X 0 = 1 := by
   apply Units.ext
@@ -53,15 +53,15 @@ def lConv (φ : Mat n → ℝ) (x : Lp V 2 μ) : Lp V 2 μ := ∫ y : G n, φ y.
 variable {V}
 
 /- English proof (translation)
-The claim follows from `Lp.coeFn_compMeasurePreserving x (measurePreserving_mul_left μ y⁻¹)`.
+A detailed English derivation is pending.
 -/
 theorem lT_coe (y : G n) (x : Lp V 2 μ) : lT μ V y x =ᵐ[μ] fun z => x (y⁻¹ * z) :=
   Lp.coeFn_compMeasurePreserving x (measurePreserving_mul_left μ y⁻¹)
 
 /- English proof (translation)
-Use `haveI := (hU n μ).1`. Establish `hm : MeasurePreserving (fun y : G n => y * h) μ μ` using `measurePreserving_mul_right μ h`. Establish `: rR μ V h x = Lp.compMeasurePreserving (fun y : G n => y * h) hm x`. Simplify using `only [rR, dif_pos hm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Lp.coeFn_compMeasurePreserving x hm`.
+A detailed English derivation is pending.
 -/
 theorem rR_coe (hU : Unimod) (h : G n) (x : Lp V 2 μ) : rR μ V h x =ᵐ[μ] fun z => x (z * h) := by
   haveI := (hU n μ).1
@@ -73,7 +73,7 @@ theorem rR_coe (hU : Unimod) (h : G n) (x : Lp V 2 μ) : rR μ V h x =ᵐ[μ] fu
   exact Lp.coeFn_compMeasurePreserving x hm
 
 /- English proof (translation)
-Establish `hm : MemLp (fun y : G n => f y.val) 2 μ` using `(memLp_congr_ae h).2 (Lp.memLp x)`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Simplify using `only [cls, dif_pos hm]`. Conclude with `Lp.ext (hm.coeFn_toLp.trans h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cls_of_ae {f : Mat n → V} {x : Lp V 2 μ} (h : (fun y : G n => f y.val) =ᵐ[μ] x) :
     MemLp (fun y : G n => f y.val) 2 μ ∧ cls μ f = x := by
@@ -83,7 +83,7 @@ theorem cls_of_ae {f : Mat n → V} {x : Lp V 2 μ} (h : (fun y : G n => f y.val
   exact Lp.ext (hm.coeFn_toLp.trans h)
 
 /- English proof (translation)
-Simplify using `only [cls, dif_pos h]`. Conclude with `h.coeFn_toLp`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coe_cls {f : Mat n → V} (h : MemLp (fun y : G n => f y.val) 2 μ) :
     (cls μ f : G n → V) =ᵐ[μ] fun y => f y.val := by
@@ -93,7 +93,7 @@ theorem coe_cls {f : Mat n → V} (h : MemLp (fun y : G n => f y.val) 2 μ) :
 end Mol
 
 /- English proof (translation)
-Establish `: Continuous fun g : Mat n => g.det` using `Continuous.matrix_det continuous_id`. Conclude with `isOpen_ne.preimage this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_GLs : IsOpen (GLs n) := by
   have : Continuous fun g : Mat n => g.det := Continuous.matrix_det continuous_id
@@ -104,7 +104,7 @@ section Words
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Introduce `z hz`. Establish `: f =ᶠ[𝓝 z] f'` using `Filter.eventuallyEq_of_mem (isOpen_GLs.mem_nhds hz) h`. Simplify using `only [Rd, this.fderiv_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem Rd_congr {f f' : Mat n → V} (h : ∀ z ∈ GLs n, f z = f' z) (X : Mat n) :
     ∀ z ∈ GLs n, Rd X f z = Rd X f' z := by
@@ -113,7 +113,7 @@ theorem Rd_congr {f f' : Mat n → V} (h : ∀ z ∈ GLs n, f z = f' z) (X : Mat
   simp only [Rd, this.fderiv_eq]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons p w ih => simp only [List.cons_append, Rw, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem Rw_append (w w' : List (Bool × Fin n × Fin n)) (f : Mat n → V) :
     Rw (w ++ w') f = Rw w (Rw w' f) := by

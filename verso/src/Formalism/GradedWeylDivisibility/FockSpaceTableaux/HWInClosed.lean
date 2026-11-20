@@ -8,9 +8,9 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Introduce `r n hn ν hν M hMle hM hne`. Take `⟨v, hvM, hv0, hkill⟩` from `lhwin_exists_killed h2 M hM hne`. Take `⟨c, hc⟩` from `h1 ℚ r n hn ν hν v (hMle hvM) hkill`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hv0 (by simpa using hc)`. Establish `e : hw ℚ hn ν = c⁻¹ • v`. Rewrite using `[hc, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Rewrite using `[e]`. Conclude with `M.smul_mem _ hvM`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hwInClosed_of (h1 : HWLine) (h2 : RowDivClosedGraded) : HWInClosed := by
   intro r n hn ν hν M hMle hM hne

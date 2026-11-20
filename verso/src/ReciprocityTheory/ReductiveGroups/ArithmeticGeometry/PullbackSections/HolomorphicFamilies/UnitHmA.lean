@@ -11,35 +11,35 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 variable {g : ℕ}
 
 /- English proof (translation)
-Simplify using `[hermForm, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_add_left (Hm : Matrix (Fin g) (Fin g) ℂ) (z z' w : Fin g → ℂ) :
     hermForm Hm (z + z') w = hermForm Hm z w + hermForm Hm z' w := by
   simp [hermForm, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `[hermForm, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_smul_left (Hm : Matrix (Fin g) (Fin g) ℂ) (c : ℂ) (z w : Fin g → ℂ) :
     hermForm Hm (c • z) w = c * hermForm Hm z w := by
   simp [hermForm, smul_dotProduct]
 
 /- English proof (translation)
-Simplify using `[hermForm, star_add, Matrix.mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_add_right (Hm : Matrix (Fin g) (Fin g) ℂ) (z w w' : Fin g → ℂ) :
     hermForm Hm z (w + w') = hermForm Hm z w + hermForm Hm z w' := by
   simp [hermForm, star_add, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `[hermForm, star_smul, Matrix.mulVec_smul, dotProduct_smul, Complex.real_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_rsmul_right (Hm : Matrix (Fin g) (Fin g) ℂ) (c : ℝ) (z w : Fin g → ℂ) :
     hermForm Hm z (c • w) = c * hermForm Hm z w := by
   simp [hermForm, star_smul, Matrix.mulVec_smul, dotProduct_smul, Complex.real_smul]
 
 /- English proof (translation)
-Simplify using `[hermForm, Matrix.sub_mulVec, dotProduct_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_sub_mat (H₁ H₂ : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) :
     hermForm (H₁ - H₂) z w = hermForm H₁ z w - hermForm H₂ z w := by
@@ -55,17 +55,17 @@ def imForm (Hm : Matrix (Fin g) (Fin g) ℂ) : (Fin g → ℂ) →ₗ[ℝ] (Fin 
     (fun c z w => by rw [hermForm_rsmul_right, smul_eq_mul]; simp)
 
 /- English proof (translation)
-Establish `hD : ∀ x y, (hermForm (H₁ - H₂) (P x) (P y)).im = 0` using `fun x y => by`. Rewrite using `[hermForm_sub_mat, Complex.sub_im, h, sub_self]`. Establish `h0 : imForm (H₁ - H₂) = 0`. Apply `LinearMap.ext_on_range hP` to reduce the goal to its premises. Introduce `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `LinearMap.ext_on_range hP` to reduce the goal to its premises. Introduce `y`. Simplify `hD x y` using `[imForm]`. Establish `hall : ∀ z w, hermForm (H₁ - H₂) z w = 0`. Introduce `z w`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `him : ∀ z' : Fin g → ℂ, (hermForm (H₁ - H₂) z' w).im = 0` using `fun z' => by`. Simplify `LinearMap.congr_fun₂ h0 z' w` using `[imForm]`. Establish `hre` using `him (Complex.I • z)`. Rewrite `hre` using `[hermForm_smul_left]`. Apply `Complex.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using hre`. Simplify using `using him z`. Establish `hs : ∀ j : Fin g, star (Pi.single j 1 : Fin g → ℂ) = (Pi.single j 1 : Fin g → ℂ)` using `fun j => by`. Use extensionality with `k`. Distinguish the cases in `hk : k = j`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hk]`. Use `sub_eq_zero.1 ?_` and prove the remaining obligations. Use extensionality with `i j`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `hall (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Simplify `this` using `[hermForm, hs, Matrix.mulVec_single, single_dotProduct]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem herm_eq_of_im {L : Type} [AddCommGroup L] (P : L →+ (Fin g → ℂ))
     (hP : Submodule.span ℝ (Set.range P) = ⊤) (H₁ H₂ : Matrix (Fin g) (Fin g) ℂ)

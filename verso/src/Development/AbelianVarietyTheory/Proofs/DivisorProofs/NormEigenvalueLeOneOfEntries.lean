@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory.EigenvalueNormAtMostOne
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `Function.ne_iff.mp hc`. Take `⟨i, -, hi⟩` from `Finset.exists_max_image Finset.univ (fun j => ‖c j‖) ⟨k, Finset.mem_univ k⟩`. Establish `hpos : 0 < ‖c i‖` using `lt_of_lt_of_le (norm_pos_iff.mpr hk) (hi k (Finset.mem_univ k))`. Establish `hrow : ∑ j, A i j * c j = μ * c i`. Use `congrFun h i` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.mulVec, dotProduct]`. Establish `hle : ‖∑ j, A i j * c j‖ ≤ ‖c i‖`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _)` to reduce the goal to its premises. Introduce `j hj`. Rewrite using `[norm_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite `hle` using `[hrow, norm_mul]`. Conclude with `le_of_mul_le_mul_right (by rwa [one_mul]) hpos`.
+Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_eigenvalue_le_one_of_entries {K : Type} [NormedField K] [IsUltrametricDist K]
     {n : ℕ} (A : Matrix (Fin n) (Fin n) K) (hA : ∀ i j, ‖A i j‖ ≤ 1)
@@ -31,7 +31,7 @@ theorem norm_eigenvalue_le_one_of_entries {K : Type} [NormedField K] [IsUltramet
   exact le_of_mul_le_mul_right (by rwa [one_mul]) hpos
 
 /- English proof (translation)
-Introduce `l _ O _ emb hemb n N c μ hc h`. Conclude with `norm_eigenvalue_le_one_of_entries _ (fun i j => hemb (N i j)) c μ hc h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem norm_eigenvalue_le_one :
     ∀ (l : ℕ) [inst : Fact (Nat.Prime l)] (O : Type) [inst_1 : CommRing O]

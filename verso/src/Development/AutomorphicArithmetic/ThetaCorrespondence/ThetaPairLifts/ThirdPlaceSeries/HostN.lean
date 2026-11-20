@@ -11,17 +11,17 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2 Forma
 open Formalism.MainNotions.Gaps.EtaleWeightGaps.Num
 namespace GlobalTheory.CovTop.Sizes
 /- English proof (translation)
-Introduce `M`. Use `⟨1, one_pos, fun eps he _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH hF _ => ?_⟩⟩` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `eventually_scale he (22 + |Fm.Ct|) M`. Establish `hez : 0 < Fm.ez` using `div_pos he (lt_of_lt_of_le one_pos Fm.toFamCore.one_le_J)`. Take `⟨x2, hx2⟩` from `Filter.eventually_atTop.1 ((tendsto_rpow_atTop (by positivity : 0 < Fm.ez / 5)).eventually_ge_atTop 5)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨22 + |Fm.Ct|, by positivity, max x0 x2, fun x hx hle ι p _ _ => ?_⟩` and prove the remaining obligations. Take `⟨a1, a2, a3, a4, -, a6⟩` from `hx0 x ((le_max_left _ _).trans hle)`. Establish `a5 : 5 ≤ x ^ (Fm.ez / 5)` using `hx2 x ((le_max_right _ _).trans hle)`. Establish `hsz : (Fm.L x ι).sc.ez = Fm.ez` using `Fm.toFamCore.L_ez x ι`. Establish `hsx : (Fm.L x ι).sc.x = x` using `Fm.L_x x ι hx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hse : (Fm.L x ι).sc.eps = eps` using `Fm.L_eps x ι`. Establish `hsL : (Fm.L x ι).sc.L = x ^ eps` using `by unfold Scale.L; rw [hsx, hse]`. Establish `hg : ∀ k, Real.log ((Fm.D x ι).host.g k) ≤ 9 * (Fm.L x ι).sc.L + 1` using `fun k => by`. Establish `hlo : 0 < ((((Fm.D x ι).host.g k : ℕ)) : ℝ)` using `by exact_mod_cast ((Fm.D x ι).host.g_prime k).pos`. Use `(Real.log_le_iff_le_exp hlo).2 ((hF.1.2.2.2.2.2.2.2.2 x hx ι).2.2.1 k)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `hostNum_of_sizes (Fm.params x hx ι) (Fm.parT x hx ι) (Fm.sizes x hx ι) hg ?_ ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[Fm.Ct_eq]`. Combine the linear relations using `[le_abs_self Fm.Ct]`. Rewrite using `[hsL]` and apply the resulting hypothesis.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hsL]` and apply the resulting hypothesis. Rewrite using `[hsx]` and apply the resulting hypothesis. Unfold `Scale.b`. Rewrite using `[hsL, hsx]` and apply the resulting hypothesis. Rewrite using `[hsx, hsz]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hsx]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem hostN_alt : ∀ M : ℝ, _root_.GlobalTheory.CovTop.HostNAlt M := by
   intro M

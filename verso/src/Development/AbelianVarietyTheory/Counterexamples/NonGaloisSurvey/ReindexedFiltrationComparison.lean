@@ -18,19 +18,19 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibl
 def slow (a : ℤ) : ℤ := if 0 ≤ a then a else (a + 1) / 2
 
 /- English proof (translation)
-Apply the tactic sequence `unfold slow; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem slow_add (a b : ℤ) : slow (a + b) ≤ slow a + slow b := by
   unfold slow; split_ifs <;> omega
 
 /- English proof (translation)
-Apply the tactic sequence `unfold slow; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem slow_mono (a : ℤ) : slow a ≤ slow (a + 1) := by
   unfold slow; split_ifs <;> omega
 
 /- English proof (translation)
-Distinguish the cases in `h : 0 ≤ a`. Conclude with `⟨a, by simp [slow, h]⟩`. Apply the tactic sequence `exact ⟨2 * a, by unfold slow; split_ifs <;> omega⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem slow_surj (a : ℤ) : ∃ b, slow b = a := by
   by_cases h : 0 ≤ a
@@ -46,7 +46,7 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR]
 
 /- English proof (translation)
-The claim follows from `antitone_int_of_succ_le PD.Fil_anti`.
+A detailed English derivation is pending.
 -/
 theorem fil_antitone (PD : PeriodData G Qp K₀ K B BdR) : Antitone PD.Fil :=
   antitone_int_of_succ_le PD.Fil_anti
@@ -94,13 +94,13 @@ def slowA {P : LocPrime l} (AI : LocAinf l P) : LocAinf l (slowly P) :=
     ιA_teich := AI.ιA_teich }
 
 /- English proof (translation)
-Introduce `h` and use `h rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_jump_neg_one (P : LocPrime l) {K LL : FinExt l} (T : Lat K LL) (τ : Emb K LL) :
     ¬ IsJumpV ((slowly P).PD K) T.ρ τ (-1) := fun h => h rfl
 
 /- English proof (translation)
-Introduce `H` and use `not_jump_neg_one P T' τ (((H K s LL h T T' e hT).2 τ 0).1.2 h0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_twistJumps (P : LocPrime l) {K LL : FinExt l} {s : ℕ} (h : Good K s LL) (T T' : Lat K LL)
     (e : IsTwistRep (cycLL (P.PD K) ↥LL.1) T.ρ T'.ρ) (hT : IsDR (P.PD K) T.ρ) (τ : Emb K LL)
@@ -108,7 +108,7 @@ theorem not_twistJumps (P : LocPrime l) {K LL : FinExt l} {s : ℕ} (h : Good K 
   not_jump_neg_one P T' τ (((H K s LL h T T' e hT).2 τ 0).1.2 h0)
 
 /- English proof (translation)
-Introduce `H` and use `not_twistJumps P h T T' e hT τ h0 H.2.2.2.2.2.2.2.2.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_deRhamComparison (P : LocPrime l) {K LL : FinExt l} {s : ℕ} (h : Good K s LL)
     (T T' : Lat K LL) (e : IsTwistRep (cycLL (P.PD K) ↥LL.1) T.ρ T'.ρ) (hT : IsDR (P.PD K) T.ρ)
@@ -127,9 +127,9 @@ def trivLat (K LL : FinExt l) : Lat K LL :=
   lineLat K LL 1 (fun _ => (OL LL).one_mem) continuous_const
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.Cyc.cyc_basic l P.χQ P.χQ_cyc).2.1`. Establish `e : (fun g => ((cycLL (P.PD K) ↥LL.1 g : (↥LL.1)ˣ) : ↥LL.1)) = fun g : ↥(GK K) => algebraMap ℚ_[l] ↥LL.1 (P.χQ (g : GQ l) : ℚ_[l])`. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] ↥LL.1 (((P.PD K).χ g : ℚ_[l]ˣ) : ℚ_[l]) = _`. Rewrite using `[P.PD_χ]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `Continuous.subtype_mk (f := fun g : ↥(GK K) => algebraMap ℚ_[l] (Om l) (P.χQ (g : GQ l) : ℚ_[l])) ?_ _` and prove the remaining obligations. Conclude with `(continuous_algebraMap ℚ_[l] (Om l)).comp (h.comp continuous_subtype_val)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_cyc (P : LocPrime l) (K LL : FinExt l) :
     Continuous fun g => ((cycLL (P.PD K) ↥LL.1 g : (↥LL.1)ˣ) : ↥LL.1) := by
@@ -148,7 +148,7 @@ def tateLat (P : LocPrime l) (K LL : FinExt l) : Lat K LL :=
   lineLat K LL (cycLL (P.PD K) ↥LL.1) (GlobalTheory.IndefiniteRowSideFullHecke.SelmerFiniteUnramified.cyc_mem P K LL) (continuous_cyc P K LL)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LinearEquiv.refl _ _, fun g x => by change ((cycLL (P.PD K) ↥LL.1 g : (↥LL.1)ˣ) : ↥LL.1) * (show ↥LL.1 from x) = ((cycLL (P.PD K) ↥LL.1 g : (↥LL.1)ˣ) : ↥LL.1) * (1 * (show ↥LL.1 from x)) rw [one_mul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem twist_triv (P : LocPrime l) (K LL : FinExt l) :
     IsTwistRep (cycLL (P.PD K) ↥LL.1) (trivLat K LL).ρ (tateLat P K LL).ρ :=
@@ -167,7 +167,7 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     (LL : Type) [Field LL] [Algebra Qp LL]
 
 /- English proof (translation)
-Introduce `h` and use `PD.not_mem_filtration_two (by simpa using PD.Fil_mul 1 1 _ _ h PD.mem_filtration_one)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_notMem : (1 : BdR) ∉ PD.Fil 1 := fun h =>
   PD.not_mem_filtration_two (by simpa using PD.Fil_mul 1 1 _ _ h PD.mem_filtration_one)
@@ -176,17 +176,17 @@ def incK : LL ⊗[Qp] K →ₗ[LL] LL ⊗[Qp] BdR :=
   AlgebraTensorModule.map LinearMap.id (IsScalarTower.toAlgHom Qp K BdR).toLinearMap
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at hx`. Set `b` to `Module.Basis.ofVectorSpace Qp LL`. Set `e` to `TensorProduct.equivFinsuppOfBasisLeft (N := BdR) b`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `he : ∀ g y i, e (actVdR PD (charRep (1 : G →* LLˣ)) g y) i = PD.actdR g (e y i)`. Introduce `g y i`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `: ∀ (q : Qp) (z : BdR), PD.actdR g (q • z) = q • PD.actdR g z` using `fun q z => ((PD.actdR g).toLinearMap.restrictScalars Qp).map_smul q z`. Simplify using `[e, actVdR, charRep, this]`. Consider the case `add a b ha hb => simp only [map_add, Finsupp.add_apply, ha, hb]`. Establish `hx' : x = (e x).sum fun i c => b i ⊗ₜ[Qp] c`. Rewrite using `[← TensorProduct.equivFinsuppOfBasisLeft_symm_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(e.symm_apply_apply x).symm`. Rewrite using `[hx']`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `PD.invdR (e x i) fun g => by rw [← he, hx]`. Conclude with `⟨b i ⊗ₜ c, by simp [incK, hc]⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Introduce `g`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul v c => simp [incK, actVdR, charRep]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ddR_triv : DdR PD (charRep (1 : G →* LLˣ)) =
     LinearMap.range (incK (Qp := Qp) (K := K) (BdR := BdR) LL) := by
@@ -223,7 +223,7 @@ theorem ddR_triv : DdR PD (charRep (1 : G →* LLˣ)) =
     | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Establish `: Nontrivial BdR` using `⟨⟨1, 0, fun h => one_notMem PD (h ▸ (PD.Fil 1).zero_mem)⟩⟩`. Establish `hi : Function.Injective (incK (Qp` using `Qp) (K := K) (BdR := BdR) LL) := Module.Flat.lTensor_preserves_injective_linearMap (M := LL) (IsScalarTower.toAlgHom Qp K BdR).toLinearMap (algebraMap K BdR).injective`. Rewrite using `[IsDR, ddR_triv, LinearMap.finrank_range_of_inj hi, Module.finrank_baseChange, Module.finrank_self, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isDR_triv : IsDR PD (charRep (1 : G →* LLˣ)) := by
   have : Nontrivial BdR := ⟨⟨1, 0, fun h => one_notMem PD (h ▸ (PD.Fil 1).zero_mem)⟩⟩
@@ -234,15 +234,15 @@ theorem isDR_triv : IsDR PD (charRep (1 : G →* LLˣ)) := by
     Module.finrank_self, mul_one]
 
 /- English proof (translation)
-Introduce `h`. Establish `h0 : ((1 : LL) ⊗ₜ[Qp] (1 : BdR)) ∈ FildR PD (charRep (1 : G →* LLˣ)) τ 0`. Use `⟨⟨?_, ?_⟩, ⟨1 ⊗ₜ ⟨1, PD.one_mem⟩, rfl⟩⟩` and prove the remaining obligations. Rewrite using `[ddR_triv]`. Conclude with `⟨1 ⊗ₜ 1, by simp [incK]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Simplify using `only [SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `c`. Take `⟨q, rfl⟩` from `hK c`. Simplify using `only [mulVdR, LinearMap.sub_apply, AlgebraTensorModule.map_tmul, LinearMap.id_apply, LinearMap.mulLeft_apply, mul_one, LinearMap.smul_apply, AlgHom.commutes, sub_eq_zero, ← IsScalarTower.algebraMap_apply, algebraMap_smul]`. Rewrite using `[Algebra.algebraMap_eq_smul_one, tmul_smul]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[← h]`. Take `⟨y, hy⟩` from `h0.2`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : LL →ₗ[Qp] Qp, φ 1 = 1 := by`. Take `⟨φ, hφ⟩` from `(Algebra.linearMap Qp LL).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 (algebraMap Qp LL).injective)`. Conclude with `⟨φ, by simpa using LinearMap.congr_fun hφ 1⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `m : LL ⊗[Qp] BdR →ₗ[Qp] BdR` to `(TensorProduct.lid Qp BdR).toLinearMap ∘ₗ φ.rTensor BdR`. Establish `hm : ∀ y, m (AlgebraTensorModule.map (LinearMap.id : LL →ₗ[LL] LL) ((PD.Fil (0 + 1)).restrictScalars Qp).subtype y) ∈ (PD.Fil (0 + 1)).restrictScalars Qp`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul v c => simpa [m] using ((PD.Fil (0 + 1)).restrictScalars Qp).smul_mem (φ v) c.2`. Consider the case `add a b ha hb => simpa only [map_add] using Submodule.add_mem _ ha hb`. Use `hm y` as an intermediate fact. Rewrite `this` using `[hy]`. Conclude with `one_notMem PD (by simpa [m, hφ] using this)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jump_triv (hK : Function.Surjective (algebraMap Qp K)) (τ : K →ₐ[Qp] LL) :
     IsJumpV PD (charRep (1 : G →* LLˣ)) τ 0 := by
@@ -279,7 +279,7 @@ theorem jump_triv (hK : Function.Surjective (algebraMap Qp K)) (τ : K →ₐ[Qp
 end Triv
 
 /- English proof (translation)
-The claim follows from `not_deRhamComparison P h (trivLat K LL) (tateLat P K LL) (twist_triv P K LL) (isDR_triv (P.PD K) ↥LL.1) τ (jump_triv (P.PD K) ↥LL.1 hs τ)`.
+A detailed English derivation is pending.
 -/
 theorem not_comparison_of_surj (P : LocPrime l) {K LL : FinExt l} {s : ℕ} (h : Good K s LL)
     (hs : Function.Surjective (algebraMap ℚ_[l] ↥K.1)) (τ : Emb K LL) :
@@ -290,7 +290,7 @@ theorem not_comparison_of_surj (P : LocPrime l) {K LL : FinExt l} {s : ℕ} (h :
 def botK (l : ℕ) [Fact l.Prime] : FinExt l := ⟨⊥, inferInstance⟩
 
 /- English proof (translation)
-Take `⟨LL, hL⟩` from `GlobalTheory.MemLoc.exists_good_situation l (botK l) 2 (by norm_num) (fun _ => le_rfl) bot_le`. Establish `hs : Function.Surjective (algebraMap ℚ_[l] ↥(botK l).1)` using `fun x => ⟨IntermediateField.botEquiv ℚ_[l] (Om l) x, (IntermediateField.botEquiv ℚ_[l] (Om l)).injective (by exact (IntermediateField.botEquiv ℚ_[l] (Om l)).commutes _)⟩`. Set `τ : Emb (botK l) LL` to `(Algebra.ofId ℚ_[l] ↥LL.1).comp (IntermediateField.botEquiv ℚ_[l] (Om l)).toAlgHom`. Conclude with `not_comparison_of_surj P (hL LL le_rfl) hs τ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem not_comparison_slow (P : LocPrime l) : ¬ DeRhamComparison l (slowly P) := by
   obtain ⟨LL, hL⟩ := GlobalTheory.MemLoc.exists_good_situation l (botK l) 2 (by norm_num) (fun _ => le_rfl) bot_le
@@ -300,7 +300,7 @@ theorem not_comparison_slow (P : LocPrime l) : ¬ DeRhamComparison l (slowly P) 
   exact not_comparison_of_surj P (hL LL le_rfl) hs τ
 
 /- English proof (translation)
-Introduce `h` and use `not_comparison_slow P (h _ (slowA AI))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_forall (P : LocPrime l) (AI : LocAinf l P) :
     ¬ ∀ (P' : LocPrime l) (_ : LocAinf l P'), DeRhamComparison l P' := fun h =>

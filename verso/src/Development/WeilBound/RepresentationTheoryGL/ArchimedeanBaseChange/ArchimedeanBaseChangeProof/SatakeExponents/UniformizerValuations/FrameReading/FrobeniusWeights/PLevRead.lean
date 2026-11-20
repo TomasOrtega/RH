@@ -16,21 +16,17 @@ namespace PositivityTheory.Rg.BcB.F.FG
 attribute [local instance] borelG borelF borelA GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `hLI E _ _ _ n S d a ha hS hd hPS`. Use `⟨⟨fun w => ⟨(Rd.LevOC.locLev_oc d hd a ha w).1, (Rd.LevOC.locLev_oc d hd a ha w).2.2⟩, ?_⟩, ⟨fun w => ⟨(Rd.LevOC.locLev₂_oc d hd a ha w).1, (Rd.LevOC.locLev₂_oc d hd a ha w).2.2⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `filter_upwards [Rd.levCof d a] with w hw using hw.1`. Use `filter_upwards [Rd.levCof d a] with w hw using hw.2`. Introduce `W₁ W₂ G hT`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨h1o, -⟩, ⟨h2o, -⟩, hset, -⟩` from `hLI E n S d a ha hS hd hPS`. Establish `hTU : ∀ u ∈ (lev₁ S d a).prod (lev₂ S d a), ∀ x, G (x * finH u) = G x` using `fun u hu x => hT.1 u.1 (Subgroup.mem_prod.1 hu).1 u.2 (Subgroup.mem_prod.1 hu).2 x`. Take `⟨e, -, hcp, hcp', he₁, he₂⟩` from `GlobalTheory.T.position_embeddings_exist (E := E) a (n - a) hS`. Establish `hlev : ∀ (i : Slot S) m, m ∈ Rd.LevOC.C d a i → e i m ∈ (lev₁ S d a).prod (lev₂ S d a)`. Introduce `i m hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : e i m ∈ Rd.LevOC.gSet S d a`. Rewrite using `[Rd.LevOC.gSet_eq]`. Introduce `j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcp]`. Conclude with `hm`. Rewrite using `[hcp' i j m hij]`. Break down `j with w | w` into its components or cases. Conclude with `(d.lev a w.1).one_mem`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(d.lev₂ a w.1).one_mem`. Establish `h' : e i m ∈ (((lev₁ S d a).prod (lev₂ S d a) : Subgroup (Hf E a (n - a))) : Set (Hf E a (n - a)))`. Rewrite using `[hset]`. Conclude with `h`. Conclude with `h'`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨_, by rw [Subgroup.coe_prod]; exact h1o.prod h2o, hTU⟩, fun w hw => ⟨?_, fun hs => ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨m, hm⟩`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`. Use function extensionality and compare the values at `x`. Establish `h` using `hTU _ (hlev (.inl ⟨w, hw⟩) m hm) x`.
-
-Rewrite `h` using `[he₁]`. Conclude with `h`. Introduce and unpack `⟨m, hm⟩`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`. Use function extensionality and compare the values at `x`.
-
-Establish `h` using `hTU _ (hlev (.inr ⟨w, hw, hs⟩) m hm) x`. Rewrite `h` using `[he₂]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levReadOf_holds : LevReadOf := by
   intro hLI E _ _ _ n S d a ha hS hd hPS

@@ -5,7 +5,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨by rw [← Category.assoc, h.w, Category.assoc]⟩, ⟨PullbackCone.IsLimit.mk _ (fun c ↦ h.lift c.fst c.snd (by rw [← cancel_mono m]; simpa using c.condition)) (fun c ↦ h.lift_fst _ _ _) (fun c ↦ h.lift_snd _ _ _) (fun c n h₁ h₂ ↦ h.hom_ext (by rw [h.lift_fst, h₁]) (by rw [h.lift_sn …`.
+Supply the required witnesses or components.
 -/
 theorem isPullback_comp_mono_right_of_isPullback {𝒞 : Type*} [Category 𝒞] {P X Y Z Z' : 𝒞} {fst : P ⟶ X} {snd : P ⟶ Y}
     {a : X ⟶ Z} {b : Y ⟶ Z} (m : Z ⟶ Z') [Mono m] (h : IsPullback fst snd a b) :
@@ -16,11 +16,11 @@ theorem isPullback_comp_mono_right_of_isPullback {𝒞 : Type*} [Category 𝒞] 
     (fun c n h₁ h₂ ↦ h.hom_ext (by rw [h.lift_fst, h₁]) (by rw [h.lift_snd, h₂]))⟩⟩
 
 /- English proof (translation)
-Introduce `X S f V W h hV hW k _ _ _ hA hP`. Establish `sq` using `(isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_tensorProduct Γ(S, V) k Γ(X, W))).flip`. Establish `sq2` using `sq.of_iso (fst' := Spec.map (CommRingCat.ofHom Algebra.TensorProduct.includeRight.toRingHom) ≫ hW.isoSpec.inv) (snd' := Spec.map (CommRingCat.ofHom Algebra.TensorProduct.includeLeftRingHom)) (f' := hW.isoSpec.hom ≫ Spec.map (CommRingCat.ofHom (algebraMap Γ(S, V) Γ(X, W)))) (g' := …`. Establish `sq3` using `isPullback_comp_mono_right_of_isPullback hV.fromSpec sq2`. Establish `e : (hW.isoSpec.hom ≫ Spec.map (CommRingCat.ofHom (algebraMap Γ(S, V) Γ(X, W)))) ≫ hV.fromSpec = W.ι ≫ f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hA, CommRingCat.ofHom_hom, Category.assoc, IsAffineOpen.SpecMap_appLE_fromSpec f hV hW h, ← hW.isoSpec_inv_ι, Category.assoc, Iso.hom_inv_id_assoc]`. Rewrite `sq3` using `[e]`. Set `φ` to `sq3.isoPullback`. Establish `hsurj : Function.Surjective (Scheme.homeoOfIso φ.symm)` using `(Scheme.homeoOfIso φ.symm).surjective`. Use `⟨?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(PreirreducibleSpace.isPreirreducible_univ (X := ↥(pullback (W.ι ≫ f) (Spec.map (CommRingCat.ofHom (algebraMap Γ(S, V) k)) ≫ hV.fromSpec)))).image (Scheme.homeoOfIso φ.symm) (Scheme.homeoOfIso φ.symm).continuous.continuousOn` as an intermediate fact. Rewrite `this` using `[Set.image_univ_of_surjective hsurj]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem preirreducibleSpace_tensor_of_pullback :
     ∀ (X S : Scheme.{0}) (f : X ⟶ S) (V : S.Opens) (W : X.Opens) (h : W ≤ f ⁻¹ᵁ V)

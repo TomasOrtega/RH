@@ -13,13 +13,13 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.CompanionTheory.Ar.BT.RatKer
 
 /- English proof (translation)
-Introduce `R _ _ H _ Γf A E a b e ha hP g hg`. Establish `hwa : Γf.G.hom (a.left g) = A.hom g`. Rewrite using `[← Scheme.Hom.comp_apply, Over.w]`. Take `⟨t, x, hx⟩` from `Γf.11 (a.left g) (by rw [hwa]; exact hg)`. Establish `hgen : (GlobalTheory.CompanionTheory.Ar.BT.genPt R).hom x = A.hom g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Over.w (Γf.9 t), Scheme.Hom.comp_apply, hx, hwa]`. Establish `hab` using `congrArg (fun φ => φ.left g) hP.w`. Simplify using `only [Over.comp_left, Scheme.Hom.comp_apply, Over.toUnit_left] at hab`. Establish `hpt : Γf.9 t ≫ b = toUnit (GlobalTheory.CompanionTheory.Ar.BT.genPt R) ≫ e`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `GlobalTheory.CompanionTheory.Ar.BT.Tors.eq_of_same_point E.hom _ _ (Over.w _) (Over.w _) x x` to reduce the goal to its premises. Simplify using `only [Over.comp_left, Scheme.Hom.comp_apply, Over.toUnit_left]`. Rewrite using `[hx, hab, hgen]`. Use `⟨hP.lift (Γf.9 t) (toUnit _) hpt, x, ?_⟩` and prove the remaining obligations. Apply `a.left.isClosedEmbedding.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, hP.lift_fst, hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_section_of_generic : ∀ (R : Type) [CommRing R] [IsDomain R] (H : Type) [CommGroup H] (Γf : QFGroup R H) (A E : Over (Spec (CommRingCat.of R))) (a : A ⟶ Γf.G) (b : Γf.G ⟶ E) (e : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ E), IsClosedImmersion a.left → IsPullback a (toUnit A) b e → ∀ g : A.left, (A.hom g).asIdeal = ⊥ → ∃ (κ : genPt R ⟶ A) (x : Spec (CommRingCat.of (FractionRing R))), κ.left x = g := by
   intro R _ _ H _ Γf A E a b e ha hP g hg

@@ -15,9 +15,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Distinguish the cases in `h : j ≤ n`. Establish `e : (fun w : Matrix (Fin n) (Fin n) ℂ => lead j w) = fun w => (w.submatrix (Fin.castLE h) (Fin.castLE h)).det` using `funext fun w => dif_pos h`. Rewrite using `[e]`. Simplify using `only [Matrix.det_apply, Matrix.submatrix_apply, Units.smul_def, zsmul_eq_mul]`. Use `ContDiff.sum fun σ _ => contDiff_const.mul ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `contDiff_prod fun p _ => ?_` and prove the remaining obligations. Conclude with `contDiff_pi.1 (contDiff_pi.1 (contDiff_id (𝕜 := ℂ) (E := Matrix (Fin n) (Fin n) ℂ)) (Fin.castLE h (σ p))) (Fin.castLE h p)`. Establish `e : (fun w : Matrix (Fin n) (Fin n) ℂ => lead j w) = fun _ => 0` using `funext fun w => dif_neg h`. Rewrite using `[e]`. Conclude with `contDiff_const`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem contDiff_lead_casimir_coefficients (j : ℕ) :
     ContDiff ℂ 1 (fun w : Matrix (Fin n) (Fin n) ℂ => lead j w) := by
@@ -35,11 +35,11 @@ private theorem contDiff_lead_casimir_coefficients (j : ℕ) :
     exact contDiff_const
 
 /- English proof (translation)
-Establish `hz' : ∀ i : Fin n, lead ((i : ℕ) + 1) z ≠ 0` using `hz`. Establish `key : ∀ i : Fin n, ContDiffAt ℂ 1 (fun w : Matrix (Fin n) (Fin n) ℂ => lead ((i : ℕ) + 1) w ^ (-(μ i - muNext μ i))) z`. Introduce `i`. Establish `hd : ContDiffAt ℂ 1 (fun w : Matrix (Fin n) (Fin n) ℂ => lead ((i : ℕ) + 1) w) z` using `(contDiff_lead_casimir_coefficients ((i : ℕ) + 1)).contDiffAt`. Establish `key' : ∀ k : ℤ, ContDiffAt ℂ 1 (fun w : Matrix (Fin n) (Fin n) ℂ => lead ((i : ℕ) + 1) w ^ k) z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Consider the cases of `k with`. Consider the case `ofNat p => simpa using hd.pow p`. Consider the case `negSucc p`. Simplify using `only [zpow_negSucc]`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `(hd.pow (p + 1)).inv (pow_ne_zero _ (hz' i))`. Conclude with `key' _`. Establish `hc : ContDiffAt ℂ 1 (fun w : Matrix (Fin n) (Fin n) ℂ => ∏ i : Fin n, lead ((i : ℕ) + 1) w ^ (-(μ i - muNext μ i))) z` using `contDiffAt_prod fun i _ => key i`. Conclude with `hc.differentiableAt one_ne_zero`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem differentiableAt_PhiM_of_mem_OmegaSet (μ : Fin n → ℤ) {z : Matrix (Fin n) (Fin n) ℂ} (hz : z ∈ OmegaSet n) :
     DifferentiableAt ℂ (PhiM μ) z := by
@@ -64,25 +64,23 @@ private theorem differentiableAt_PhiM_of_mem_OmegaSet (μ : Fin n → ℤ) {z : 
   exact hc.differentiableAt one_ne_zero
 
 /- English proof (translation)
-Use `set m : ℕ → ℂ := fun k => if h : k < n then (μ ⟨k, h⟩ : ℂ) else 0 with hm`. Establish `hc : HasDerivAt (fun t : ℂ => z + t • V) V 0`. Conclude with `(((hasDerivAt_id (0 : ℂ)).smul_const V).const_add z).congr_deriv (one_smul ℂ V)`. Establish `hΦ : HasFDerivAt (PhiM μ) (fderiv ℂ (PhiM μ) z) (z + (0 : ℂ) • V)`. Rewrite using `[zero_smul, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(differentiableAt_PhiM_of_mem_OmegaSet μ hz).hasFDerivAt`. Establish `h1` using `hΦ.comp_hasDerivAt (0 : ℂ) hc`. Use `set p : Fin n → ℂ → ℂ := fun i t => ∏ a ∈ Finset.range ((i : ℕ) + 1), (1 + t * D a) with hp`. Establish `hfun : (PhiM μ ∘ fun t : ℂ => z + t • V) = fun t => (∏ i : Fin n, p i t ^ (-(μ i - muNext μ i))) * PhiM μ z`. Use function extensionality and compare the values at `t`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply, PhiM, hlead, mul_zpow, Finset.prod_mul_distrib, hp]`. Establish `hpd : ∀ i : Fin n, HasDerivAt (p i) (∑ a ∈ Finset.range ((i : ℕ) + 1), D a) 0`. Introduce `i`. Establish `h` using `HasDerivAt.finset_prod (u := Finset.range ((i : ℕ) + 1)) (x := (0 : ℂ)) (f := fun a t => 1 + t * D a) (f' := fun a => D a) (fun a _ => by simpa using ((hasDerivAt_id (0 : ℂ)).mul_const (D a)).const_add 1)`. Use `(h.congr_deriv (by simp [Finset.prod_apply])).congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hp, Finset.prod_apply]`. Establish `hp0 : ∀ i : Fin n, p i 0 = 1` using `fun i => by simp [hp]`. Establish `hfd : ∀ i : Fin n, HasDerivAt (fun t => p i t ^ (-(μ i - muNext μ i))) ((((-(μ i - muNext μ i)) : ℤ) : ℂ) * ∑ a ∈ Finset.range ((i : ℕ) + 1), D a) 0`. Introduce `i`. Establish `h` using `(hasDerivAt_zpow (-(μ i - muNext μ i)) (p i 0) (Or.inl (by rw [hp0]; exact one_ne_zero))).comp (0 : ℂ) (hpd i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `h.congr_deriv (by rw [hp0]; simp)`. Establish `h2 : HasDerivAt (fun t => (∏ i : Fin n, p i t ^ (-(μ i - muNext μ i))) * PhiM μ z) ((∑ i : Fin n, (((-(μ i - muNext μ i)) : ℤ) : ℂ) * ∑ a ∈ Finset.range ((i : ℕ) + 1), D a) * PhiM μ z) 0`. Establish `h` using `(HasDerivAt.finset_prod (u := Finset.univ) (fun i _ => hfd i)).mul_const (PhiM μ z)`. Use `(h.congr_deriv (by simp [hp0, Finset.prod_apply])).congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `[Finset.prod_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `htel : ∀ N : ℕ, ∑ k ∈ Finset.range N, (m (k + 1) - m k) * ∑ a ∈ Finset.range (k + 1), D a = m N * ∑ a ∈ Finset.range N, D a - ∑ a ∈ Finset.range N, m a * D a`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_range_succ (fun k => (m (k + 1) - m k) * ∑ a ∈ Finset.range (k + 1), D a), ih, Finset.sum_range_succ (fun a => m a * D a), Finset.sum_range_succ D]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmn : m n = 0` using `by simp [hm]`. Establish `hm0 : ∀ i : Fin n, m i = (μ i : ℂ)` using `fun i => by simp [hm, i.2]`. Establish `hmN : ∀ i : Fin n, ((muNext μ i : ℤ) : ℂ) = m ((i : ℕ) + 1)` using `fun i => by`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [muNext, hm]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hterm : ∀ i : Fin n, (((-(μ i - muNext μ i)) : ℤ) : ℂ) * ∑ a ∈ Finset.range ((i : ℕ) + 1), D a = (m ((i : ℕ) + 1) - m i) * ∑ a ∈ Finset.range ((i : ℕ) + 1), D a` using `fun i => by`. Rewrite using `[hm0 i, ← hmN i]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsumeq : ∑ i : Fin n, (((-(μ i - muNext μ i)) : ℤ) : ℂ) * ∑ a ∈ Finset.range ((i : ℕ) + 1), D a = -∑ a ∈ Finset.range n, m a * D a`. Rewrite using `[Finset.sum_congr rfl fun i _ => hterm i, Fin.sum_univ_eq_sum_range (fun k => (m (k + 1) - m k) * ∑ a ∈ Finset.range (k + 1), D a) n, htel n, hmn]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[hfun]`.
-
-Establish `hu` using `h1.unique h2`. Rewrite `hu` using `[hsumeq]`. Conclude with `hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fderiv_PhiM_of_lead_curve (μ : Fin n → ℤ) {z V : Matrix (Fin n) (Fin n) ℂ} (hz : z ∈ OmegaSet n)
     (D : ℕ → ℂ) (hlead : ∀ (t : ℂ) (i : Fin n), lead ((i : ℕ) + 1) (z + t • V) =
@@ -154,19 +152,17 @@ private theorem fderiv_PhiM_of_lead_curve (μ : Fin n → ℤ) {z V : Matrix (Fi
   exact hu
 
 /- English proof (translation)
-Establish `hi : (i : ℕ) + 1 ≤ n` using `i.2`. Use `set e : Fin ((i : ℕ) + 1) → Fin n := Fin.castLE hi with he`. Use `set A : Matrix (Fin n) (Fin n) ℂ := 1 + t • X with hA`. Establish `hAz : z + t • (X * z) = A * z`. Rewrite using `[hA, Matrix.add_mul, Matrix.one_mul, Matrix.smul_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzero : ∀ a c : Fin n, a < c → A a c = 0` using `fun a c hac => by`. Rewrite using `[hA, Matrix.add_apply, Matrix.one_apply_ne (ne_of_lt hac), Matrix.smul_apply, hX _ _ hac, smul_zero, zero_add]`. Establish `hsub : (A * z).submatrix e e = A.submatrix e e * z.submatrix e e`. Use extensionality with `p q`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Use `symm`. Use `Fintype.sum_of_injective e (Fin.castLE_injective hi) _ _ ?_ (fun r => rfl)` and prove the remaining obligations. Introduce `c hc`. Establish `hc' : (i : ℕ) + 1 ≤ c`. Assume the negation of the conclusion as `hlt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at hlt`. Conclude with `hc ⟨⟨c, hlt⟩, Fin.ext rfl⟩`. Establish `hlt : e p < c` using `by show (p : ℕ) < c`. Conclude with `lt_of_lt_of_le p.2 hc'`. Use `show A (e p) c * z c (e q) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hzero _ _ hlt, zero_mul]`. Establish `htri : (A.submatrix e e).BlockTriangular OrderDual.toDual`. Introduce `p q hpq`. Establish `hpq' : p < q` using `OrderDual.toDual_lt_toDual.1 hpq`. Establish `hlt : e p < e q` using `by show (p : ℕ) < q`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hpq'`. Conclude with `hzero _ _ hlt`. Simplify using `only [lead, dif_pos hi]`. Rewrite using `[hAz, hsub, Matrix.det_mul, Matrix.det_of_lowerTriangular _ htri]`. Use `congr 1`.
-
-Rewrite using `[← Fin.prod_univ_eq_prod_range (fun a => 1 + t * (if h : a < n then X ⟨a, h⟩ ⟨a, h⟩ else 0))]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Establish `hp : (p : ℕ) < n` using `lt_of_lt_of_le p.2 hi`. Establish `hep : (⟨(p : ℕ), hp⟩ : Fin n) = e p` using `Fin.ext rfl`. Simplify using `only [dif_pos hp, hep, Matrix.submatrix_apply, hA, Matrix.add_apply, Matrix.one_apply_eq, Matrix.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem lead_add_smul_mul_of_isLowerTri {X z : Matrix (Fin n) (Fin n) ℂ} (hX : IsLowerTri X) (t : ℂ)
     (i : Fin n) : lead ((i : ℕ) + 1) (z + t • (X * z)) =
@@ -213,19 +209,17 @@ private theorem lead_add_smul_mul_of_isLowerTri {X z : Matrix (Fin n) (Fin n) �
     Matrix.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hi : (i : ℕ) + 1 ≤ n` using `i.2`. Use `set e : Fin ((i : ℕ) + 1) → Fin n := Fin.castLE hi with he`. Use `set A : Matrix (Fin n) (Fin n) ℂ := 1 + t • X with hA`. Establish `hAz : z + t • (z * X) = z * A`. Rewrite using `[hA, Matrix.mul_add, Matrix.mul_one, Matrix.mul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzero : ∀ a c : Fin n, c < a → A a c = 0` using `fun a c hca => by`. Rewrite using `[hA, Matrix.add_apply, Matrix.one_apply_ne (ne_of_lt hca).symm, Matrix.smul_apply, hX _ _ hca, smul_zero, zero_add]`. Establish `hsub : (z * A).submatrix e e = z.submatrix e e * A.submatrix e e`. Use extensionality with `p q`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Use `symm`. Use `Fintype.sum_of_injective e (Fin.castLE_injective hi) _ _ ?_ (fun r => rfl)` and prove the remaining obligations. Introduce `c hc`. Establish `hc' : (i : ℕ) + 1 ≤ c`. Assume the negation of the conclusion as `hlt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at hlt`. Conclude with `hc ⟨⟨c, hlt⟩, Fin.ext rfl⟩`. Establish `hlt : e q < c` using `by show (q : ℕ) < c`. Conclude with `lt_of_lt_of_le q.2 hc'`. Use `show z (e p) c * A c (e q) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hzero _ _ hlt, mul_zero]`. Establish `htri : (A.submatrix e e).BlockTriangular id`. Introduce `p q hpq`. Establish `hlt : e q < e p` using `by show (q : ℕ) < p`. Conclude with `hpq`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hzero _ _ hlt`. Simplify using `only [lead, dif_pos hi]`. Rewrite using `[hAz, hsub, Matrix.det_mul, Matrix.det_of_upperTriangular htri, mul_comm]`. Use `congr 1`. Rewrite using `[← Fin.prod_univ_eq_prod_range (fun a => 1 + t * (if h : a < n then X ⟨a, h⟩ ⟨a, h⟩ else 0))]`.
-
-Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Establish `hp : (p : ℕ) < n` using `lt_of_lt_of_le p.2 hi`. Establish `hep : (⟨(p : ℕ), hp⟩ : Fin n) = e p` using `Fin.ext rfl`. Simplify using `only [dif_pos hp, hep, Matrix.submatrix_apply, hA, Matrix.add_apply, Matrix.one_apply_eq, Matrix.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem lead_add_smul_mul_of_isUpperTri {X z : Matrix (Fin n) (Fin n) ℂ} (hX : IsUpperTri X) (t : ℂ)
     (i : Fin n) : lead ((i : ℕ) + 1) (z + t • (z * X)) =
@@ -271,7 +265,7 @@ private theorem lead_add_smul_mul_of_isUpperTri {X z : Matrix (Fin n) (Fin n) �
     Matrix.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hs : ∑ a ∈ Finset.range n, (if h : a < n then (μ ⟨a, h⟩ : ℂ) else 0) * (if h : a < n then X ⟨a, h⟩ ⟨a, h⟩ else 0) = ∑ a, (μ a : ℂ) * X a a`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun a => (if h : a < n then (μ ⟨a, h⟩ : ℂ) else 0) * (if h : a < n then X ⟨a, h⟩ ⟨a, h⟩ else 0)) n]`. Simplify using the standard rewrite rules. Rewrite using `[fderiv_PhiM_of_lead_curve μ hz _ (fun t i => lead_add_smul_mul_of_isLowerTri hX t i), hs]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma fderiv_phiM_lower (μ : Fin n → ℤ) {z X : Matrix (Fin n) (Fin n) ℂ} (hz : z ∈ OmegaSet n)
     (hX : IsLowerTri X) :
@@ -284,7 +278,7 @@ lemma fderiv_phiM_lower (μ : Fin n → ℤ) {z X : Matrix (Fin n) (Fin n) ℂ} 
   rw [fderiv_PhiM_of_lead_curve μ hz _ (fun t i => lead_add_smul_mul_of_isLowerTri hX t i), hs]
 
 /- English proof (translation)
-Establish `hs : ∑ a ∈ Finset.range n, (if h : a < n then (μ ⟨a, h⟩ : ℂ) else 0) * (if h : a < n then X ⟨a, h⟩ ⟨a, h⟩ else 0) = ∑ a, (μ a : ℂ) * X a a`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun a => (if h : a < n then (μ ⟨a, h⟩ : ℂ) else 0) * (if h : a < n then X ⟨a, h⟩ ⟨a, h⟩ else 0)) n]`. Simplify using the standard rewrite rules. Rewrite using `[fderiv_PhiM_of_lead_curve μ hz _ (fun t i => lead_add_smul_mul_of_isUpperTri hX t i), hs]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma fderiv_phiM_upper (μ : Fin n → ℤ) {z X : Matrix (Fin n) (Fin n) ℂ} (hz : z ∈ OmegaSet n)
     (hX : IsUpperTri X) :
@@ -297,15 +291,15 @@ lemma fderiv_phiM_upper (μ : Fin n → ℤ) {z X : Matrix (Fin n) (Fin n) ℂ} 
   rw [fderiv_PhiM_of_lead_curve μ hz _ (fun t i => lead_add_smul_mul_of_isUpperTri hX t i), hs]
 
 /- English proof (translation)
-Use `set X1 : Matrix (Fin n) (Fin n) ℂ := Matrix.of fun a b => if b < a then 2 * B a b else if a = b then B a b else 0 with hX1`. Use `set X2 : Matrix (Fin n) (Fin n) ℂ := Matrix.of fun a b => if a < b then 2 * B a b else if a = b then B a b else 0 with hX2`. Establish `e1 : B + lowMinusUp B = X1`. Use extensionality with `a b`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases.
+Establish an intermediate fact. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `simp [lowMinusUp, hX1, h, lt_asymm h, ne_of_lt h] <;> ring`. Simplify using `[lowMinusUp, hX1]`. Apply the tactic sequence `simp [lowMinusUp, hX1, h, lt_asymm h, (ne_of_lt h).symm] <;> ring`. Establish `e2 : B - lowMinusUp B = X2`. Use extensionality with `a b`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation.
 
-Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Apply the tactic sequence `simp [lowMinusUp, hX2, h, lt_asymm h, ne_of_lt h] <;> ring`. Simplify using `[lowMinusUp, hX2]`. Apply the tactic sequence `simp [lowMinusUp, hX2, h, lt_asymm h, (ne_of_lt h).symm] <;> ring`. Establish `hL : IsLowerTri X1` using `fun a b hab => by simp [hX1, lt_asymm hab, ne_of_lt hab]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : IsUpperTri X2` using `fun a b hab => by simp [hX2, lt_asymm hab, (ne_of_lt hab).symm]`. Establish `hsplit : B * z + z * B = (z * lowMinusUp B - lowMinusUp B * z) + (X1 * z + z * X2)`. Rewrite using `[← e1, ← e2, Matrix.add_mul, Matrix.mul_sub]`. Normalize the expressions using the abelian group laws. Establish `d1 : ∑ a, (μ a : ℂ) * X1 a a = ∑ a, (μ a : ℂ) * B a a` using `by simp [hX1]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `d2 : ∑ a, (μ a : ℂ) * X2 a a = ∑ a, (μ a : ℂ) * B a a` using `by simp [hX2]`. Rewrite using `[hsplit, map_add, map_add, fderiv_phiM_lower μ hz hL, fderiv_phiM_upper μ hz hU, d1, d2]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem phiM_part (μ : Fin n → ℤ) {z B : Matrix (Fin n) (Fin n) ℂ} (hz : z ∈ OmegaSet n) :
     fderiv ℂ (PhiM μ) z (B * z + z * B) =

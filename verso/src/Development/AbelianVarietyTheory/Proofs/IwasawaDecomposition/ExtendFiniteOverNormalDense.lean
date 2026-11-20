@@ -9,9 +9,9 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `T P Q p a V a₀ hp hn hln hd h`. Use `GlobalTheory.IsNormalScheme.of_pred hn` as an intermediate fact. Establish `: IsDominant V.ι` using `⟨by rw [DenseRange, Scheme.Opens.range_ι]; exact hd⟩`. Establish `: IsIntegralHom p` using `inferInstance`. Take `⟨c, ⟨h1, h2⟩, -⟩` from `existsUnique_lift_of_isOpenImmersion_of_isDominant V.ι p a₀ a h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, h2, h1⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lift_of_isFinite_of_dense_opens :
     ∀ (T P Q : Scheme.{0}) (p : P ⟶ Q) (a : T ⟶ Q) (V : T.Opens) (a₀ : V.toScheme ⟶ P), IsFinite p →

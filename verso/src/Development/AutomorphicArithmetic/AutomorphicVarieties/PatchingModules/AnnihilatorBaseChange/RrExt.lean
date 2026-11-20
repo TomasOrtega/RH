@@ -6,13 +6,11 @@ open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.A
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `l _ L G0 T Λ n O _ _ _ _ _ r B _ _ _ u J D A W R' _ _ _ f f' hD hψ hs hU hy`. Take `⟨t', ht'⟩` from `UpperTheory.V.Pa.Core.tupMap l L G0 T Λ n O r B u J D A W.R R' W.t f`. Take `⟨-, -, hlam, -⟩` from `UpperTheory.V.CA.d_gmap W.t.D`. Establish `hl : ∀ (φ : W.R →+* R') i (g : Ph0 Λ), (W.t.D.map φ).lam i (MonoidAlgebra.single g 1) = φ (W.t.D.lam i (MonoidAlgebra.single g 1))` using `fun φ i g => by`. Use `(hlam φ (MonoidAlgebra.single g 1)).2 i` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[MonoidAlgebra.mapRingHom_single, map_one]`. Then use the resulting hypothesis. Use `(W.univ R' t').unique ht' ?_` and prove the remaining obligations. Take `⟨h1, h2, h3, h4, h5⟩` from `ht'`. Use `⟨?_, fun v i => ?_, ?_, fun j i => ?_, fun j i => ?_⟩` and prove the remaining obligations. Rewrite using `[← h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `UpperTheory.V.CA.d_gext _ _ fun g i _ _ => ?_` and prove the remaining obligations. Rewrite using `[hl, hl]`. Conclude with `(hD i g).symm`. Rewrite using `[← h2]`. Use extensionality with `g`.
-
-Conclude with `(hψ v i g).symm`. Conclude with `hs.symm.trans h3`. Conclude with `(hU j i).symm.trans (h4 j i)`. Conclude with `(hy j i).symm.trans (h5 j i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Core.rrExt :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (Λ : Lim T) (n : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (r : Resid G0.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (J : Ideal B) (D : ℕ) (A : TWAut u J Unit D T) (W : RRObj Λ A) (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (f f' : W.R →ₐ[O] R'), (∀ i g, f (W.t.D.lam i (MonoidAlgebra.single g 1)) = f' (W.t.D.lam i (MonoidAlgebra.single g 1))) → (∀ v i g, f (W.t.ψ v i g) = f' (W.t.ψ v i g)) → f W.t.s = f' W.t.s → (∀ j i, f (W.t.U j i) = f' (W.t.U j i)) → (∀ j i, f (W.t.y j i) = f' (W.t.y j i)) → f = f' := by

@@ -23,9 +23,9 @@ namespace GlobalTheory.CenterVac
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hint : Integrable (fun w => ‖f w‖ ^ 2) (μ.restrict s)` using `Integrable.of_integral_ne_zero (by rw [h]; exact one_ne_zero)`. Establish `e` using `ofReal_integral_eq_lintegral_ofReal hint (ae_of_all _ fun w => by positivity)`. Rewrite `e` using `[h, ENNReal.ofReal_one]`. Rewrite using `[e]`. Use `lintegral_congr fun w => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ofReal_norm_eq_enorm, ENNReal.ofReal_pow (norm_nonneg _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lintegral_enorm_sq_eq_one {α : Type} [MeasurableSpace α] {μ : Measure α} {s : Set α} {f : α → ℂ}
     (h : ∫ w in s, ‖f w‖ ^ 2 ∂μ = 1) : ∫⁻ w in s, ‖f w‖ₑ ^ 2 ∂μ = 1 := by
@@ -38,15 +38,15 @@ theorem lintegral_enorm_sq_eq_one {α : Type} [MeasurableSpace α] {μ : Measure
   rw [← ofReal_norm_eq_enorm, ENNReal.ofReal_pow (norm_nonneg _)]
 
 /- English proof (translation)
-Take `⟨χS, χT, hom⟩` from `hk.weil`. Take `⟨hψ, hv⟩` from `hk.vac`. Take `⟨η, hη⟩` from `GlobalTheory.WeilParts.exists_isEtaTilde_unramified D`. Establish `hdet : ∀ τ, (gramAt D S τ).det ≠ 0` using `fun τ h0 => by`. Use `(hx.cart τ).2.2.det_pos.ne'` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.det_mul, h0, zero_mul]`. Conclude with `this rfl`. Take `⟨r, hr, -⟩` from `GlobalTheory.VacuumCharacter.exists_root hθ S hdet z hz`. Establish `hy1 : IsDetRoot T 1 1` using `by show _ = _`. Rewrite using `[Units.val_one, RingHom.map_one, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Matrix.det_one).symm`. Establish `one : ∀ τ, compAt θ τ (Formalism.L2.Theta.mt T 1) = 1` using `fun τ => GlobalTheory.PointAtPlaceHom.infMat_one T _`. Apply the tactic sequence `obtain ⟨a, ha⟩ : ∃ a : ℂ, k.om (z, 1) k.vac = a • k.vac := ⟨_, GlobalTheory.WeilVacChar.vacuum_character D ψ hψ S T θ hθ χS χT k.om η hη hom x.s y.s hx.cart hy.cart z hz 1 (one_mem _) (fun τ => by rcases hx.pm τ with h | h <;> rw [h] <;> simp) (fun τ => by rw [one, one_mul, mul_o …`. Use `⟨a, ?_, ha⟩` and prove the remaining obligations. Take `⟨⟨p, hp⟩, hn⟩` from `hv.norm`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `n1 : nrm2 p.1 p.2 k.vac = 1` using `hn p hp`. Take `⟨hH, hF, -⟩` from `hp`. Establish `hu` using `hom.om_unit p.1 p.2 hH hF (z, 1) k.vac hv.theta`. Establish `hL` using `lintegral_enorm_sq_eq_one (μ := p.1) (s := p.2) (f := k.vac) n1`. Rewrite `hu` using `[ha]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, enorm_mul, mul_pow] at hu`. Rewrite `hu` using `[lintegral_const_mul' _ _ (by simp), hL, mul_one]`. Rewrite `hu` using `[← ofReal_norm_eq_enorm, ← ENNReal.ofReal_pow (norm_nonneg _), ENNReal.ofReal_eq_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg a) two_ne_zero).1 hu`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_vac_eq_smul {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : IsInfFam θ) {S T : HSp D} {x : DefSp S}
     {y : DefSp T} (hx : x.Is) (hy : y.Is) {k : KerDat S T} (hk : k.Is ψ θ x y) {z : GA D S} (hz : z ∈ GinfC S) :
@@ -81,9 +81,9 @@ theorem om_vac_eq_smul {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : I
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg a) two_ne_zero).1 hu
 
 /- English proof (translation)
-Introduce `D ψ θ hθ S T x y hx hy k hk`. Establish `h : ∀ z : GA D S, ∃ c : ℂ, z ∈ GinfC S → ‖c‖ = 1 ∧ k.om (z, 1) k.vac = c • k.vac` using `fun z => by`. Distinguish the cases in `hz : z ∈ GinfC S`. Take `⟨c, hc⟩` from `om_vac_eq_smul hθ hx hy hk hz`. Conclude with `⟨c, fun _ => hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨1, fun h' => absurd h' hz⟩`. Use `choose c hc using h`. Conclude with `⟨c, fun z hz _ => hc z hz⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_center_char : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ → ∀ (S T : HSp D) (x : DefSp S) (y : DefSp T), x.Is → y.Is → ∀ k : KerDat S T, k.Is ψ θ x y → ∃ c : GA D S → ℂ, ∀ z ∈ GinfC S, z ∈ Subgroup.center (GA D S) → ‖c z‖ = 1 ∧ k.om (z, 1) k.vac = c z • k.vac := by
   intro D ψ θ hθ S T x y hx hy k hk

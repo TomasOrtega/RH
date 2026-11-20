@@ -13,11 +13,11 @@ noncomputable section
 open NumberField MeasureTheory GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrowth Filter Topology
 
 /- English proof (translation)
-Introduce `E _ _ _ b hP L hL W hW q hq`. Establish `hfin : FiniteDimensional ℂ (GlobalTheory.CapKilled.space E b L W q)` using `GlobalTheory.T.tameKilledCapelliSpace_finiteDimensional_of_finiteness E b hP (GlobalTheory.T.capelliDet_eq_linearCombination_nat_nodes E b) L hL W hW q hq (GlobalTheory.T.tameInvariantKilledSmoothSpace_centre_mem E b L W hW q)`. Use `⟨GlobalTheory.CapKilled.space E b L W q, hfin, fun ψ h1 h2 h3 h4 h5 => ?_⟩` and prove the remaining obligations. Set `ν : Measure (Lie E b)` to `Measure.addHaar`. Take `⟨α, hα, hlim⟩` from `GlobalTheory.T.exists_conjInvariant_approxIdentity_realLieSmoothing E b ν`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `V' : Submodule ℂ (GA E b → ℂ)` to `(GlobalTheory.CapKilled.space E b L W q).map (Sm E b).subtype`. Establish `hc : IsClosed (V' : Set (GA E b → ℂ))` using `Submodule.closed_of_finiteDimensional V'`. Establish `hM : ψ ∈ leftInv E b ⊓ fixL E b L ⊓ GlobalTheory.CapKilled.ktype E b W ⊓ GlobalTheory.CapKilled.killed E b q` using `⟨⟨⟨h1, h2⟩, h3⟩, GlobalTheory.CapKilled.mem_killed.2 h5⟩`. Establish `hmem : ∀ n, smoothing ν (α n) ψ.1 ∈ V'` using `fun n => by`. Take `⟨h, hv⟩` from `GlobalTheory.T.capelliKilled_slowlyIncreasing_smoothing_mem E b ν (α n) (hα n).1 (hα n).2 L W hW q ψ hM h4`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, hv, rfl⟩`. Establish `hψ : ψ.1 ∈ V'` using `hc.mem_of_tendsto (tendsto_pi_nhds.2 fun g => hlim ψ.1 ψ.2 g) (Eventually.of_forall hmem)`. Take `⟨χ, hχ, e⟩` from `hψ`. Establish `e' : χ = ψ` using `Subtype.ext e`. Conclude with `e' ▸ hχ`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CapKilled.finite_of_finiteness : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (b : ℕ),
     (∀ (L : Subgroup (GL (Fin b) (Af E))), IsOpen (L : Set (GL (Fin b) (Af E))) → ∀ W : Submodule ℂ (Kinf E b → ℂ),

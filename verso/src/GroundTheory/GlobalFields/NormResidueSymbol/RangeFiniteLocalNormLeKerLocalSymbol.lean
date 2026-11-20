@@ -54,7 +54,7 @@ theorem coe_residueImageEquiv (y : M) :
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Rewrite using `[← coe_residueImageEquiv, AlgEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem residueEmbedding_residueImageEquiv_symm (z : residueImage k M) :
     residueEmbedding k M ((residueImageEquiv k M).symm z) = z := by
@@ -91,7 +91,7 @@ theorem normResidueSymbol_apply (x : kˣ) (y : M) :
   rfl
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.mk_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem exists_mk_eq_localReciprocityLimit (x : kˣ) :
     ∃ τ : AlgebraicClosure k ≃ₐ[k] AlgebraicClosure k,
@@ -100,7 +100,7 @@ theorem exists_mk_eq_localReciprocityLimit (x : kˣ) :
   QuotientGroup.mk_surjective _
 
 /- English proof (translation)
-Rewrite using `[normResidueSymbol_apply, ← hτ, LocalField.abelianRestrict_mk, residueEmbedding_residueImageEquiv_symm]`. Conclude with `AlgEquiv.restrictNormal_commutes τ (residueImage k M) (residueImageEquiv k M y)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residueEmbedding_normResidueSymbol {x : kˣ}
     {τ : AlgebraicClosure k ≃ₐ[k] AlgebraicClosure k}
@@ -112,9 +112,9 @@ theorem residueEmbedding_normResidueSymbol {x : kˣ}
   exact AlgEquiv.restrictNormal_commutes τ (residueImage k M) (residueImageEquiv k M y)
 
 /- English proof (translation)
-Use `set χ : residueImage k M ≃ₐ[k] i.fieldRange := (residueImageEquiv k M).symm.trans (equivFieldRange i) with hχ`. Use `set ρ : AlgebraicClosure k ≃ₐ[k] AlgebraicClosure k := χ.liftNormal (AlgebraicClosure k) with hρ`. Establish `hρi : ∀ z : M, ρ (residueEmbedding k M z) = i z` using `fun z ↦ (χ.liftNormal_commutes (AlgebraicClosure k) (residueImageEquiv k M z)).trans (by`. Rewrite using `[hχ, AlgEquiv.trans_apply, AlgEquiv.symm_apply_apply]`. Use the proof step `rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hτ' : ((ρ⁻¹ * τ * ρ : AlgebraicClosure k ≃ₐ[k] AlgebraicClosure k) : TopologicalAbelianization (AlgebraicClosure k ≃ₐ[k] AlgebraicClosure k)) = LocalField.localReciprocityLimit k (AlgebraicClosure k) x`. Rewrite using `[← hτ, QuotientGroup.mk_mul, QuotientGroup.mk_mul, mul_comm, ← mul_assoc, QuotientGroup.mk_inv, mul_inv_cancel, one_mul]`. Establish `h` using `residueEmbedding_normResidueSymbol hτ' y`. Rewrite using `[← hρi, ← hρi, h]`. Simplify using `[AlgEquiv.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem normResidueSymbol_spec (i : M →ₐ[k] AlgebraicClosure k) {x : kˣ}
     {τ : AlgebraicClosure k ≃ₐ[k] AlgebraicClosure k}
@@ -139,11 +139,11 @@ theorem normResidueSymbol_spec (i : M →ₐ[k] AlgebraicClosure k) {x : kˣ}
   simp [AlgEquiv.mul_apply]
 
 /- English proof (translation)
-Establish `hN : (LocalField.normUnits k (residueImage k M)).range = (LocalField.normUnits k M).range`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Use `⟨Units.map (residueImageEquiv k M).symm.toRingEquiv.toMonoidHom z, Units.ext ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LocalField.coe_normUnits, Units.coe_map]`. Conclude with `Algebra.norm_eq_of_algEquiv (residueImageEquiv k M).symm (z : residueImage k M)`. Introduce and unpack `⟨z, rfl⟩`. Use `⟨Units.map (residueImageEquiv k M).toRingEquiv.toMonoidHom z, Units.ext ?_⟩` and prove the remaining obligations. Simplify using `only [LocalField.coe_normUnits, Units.coe_map]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Conclude with `Algebra.norm_eq_of_algEquiv (residueImageEquiv k M) (z : M)`. Use extensionality with `x`. Rewrite using `[MonoidHom.mem_ker, ← hN]`. Express the relevant statement in the definitionally equal form `(AlgEquiv.autCongr (residueImageEquiv k M).symm) (LocalField.abelianRestrict (residueImage k M) (LocalField.localReciprocityLimit k (AlgebraicClosure k) x)) = 1 ↔ _`. Rewrite using `[LocalField.abelianRestrict_localReciprocityLimit, map_eq_one_iff _ (MulEquiv.injective _), map_eq_one_iff _ (MulEquiv.injective _), QuotientGroup.eq_one_iff]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_normResidueSymbol :
     (normResidueSymbol k M).ker = (LocalField.normUnits k M).range := by
@@ -170,7 +170,7 @@ theorem ker_normResidueSymbol :
 end NormResidue
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_one f ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one, nhds_discrete D, Filter.tendsto_pure]`. Conclude with `Filter.mem_of_superset (hf.mem_nhds f.ker.one_mem) fun x hx ↦ hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_monoidHom_of_isOpen_ker {G D : Type*} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [Group D] [TopologicalSpace D] [DiscreteTopology D] (f : G →* D)
@@ -198,14 +198,14 @@ def symbolAt (w : PlacesOver L v) : (v.adicCompletion K)ˣ →* (L ≃ₐ[K] L) 
       (normResidueSymbol (v.adicCompletion K) (w.1.adicCompletion L)))
 
 /- English proof (translation)
-The claim follows from `((decompositionMulEquiv v w.1).symm _).2`.
+A detailed English derivation is pending.
 -/
 theorem symbolAt_mem_stabilizer (w : PlacesOver L v) (x : (v.adicCompletion K)ˣ) :
     symbolAt L v w x ∈ MulAction.stabilizer (L ≃ₐ[K] L) w.1.asIdeal :=
   ((decompositionMulEquiv v w.1).symm _).2
 
 /- English proof (translation)
-Establish `h : decompositionToLocal v w.1 ((decompositionMulEquiv v w.1).symm (normResidueSymbol (v.adicCompletion K) (w.1.adicCompletion L) x)) = normResidueSymbol (v.adicCompletion K) (w.1.adicCompletion L) x` using `(decompositionMulEquiv v w.1).apply_symm_apply _`. Use `conv_rhs => rw [← h]`. Rewrite using `[decompositionToLocal_algebraMap]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem algebraMap_symbolAt_apply (w : PlacesOver L v) (x : (v.adicCompletion K)ˣ) (l : L) :
     algebraMap L (w.1.adicCompletion L) (symbolAt L v w x l) =
@@ -220,15 +220,13 @@ theorem algebraMap_symbolAt_apply (w : PlacesOver L v) (x : (v.adicCompletion K)
   rfl
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `MulAction.exists_smul_eq (L ≃ₐ[K] L) w w'`. Establish `h' : w'.1 = σ • w.1` using `by rw [← hσ]; rfl`. Use `set s := galEquiv v σ w.1 w'.1 h' with hs_def`. Use extensionality with `x l`. Take `⟨τ, hτ⟩` from `exists_mk_eq_localReciprocityLimit (k := v.adicCompletion K) x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set a := normResidueSymbol (v.adicCompletion K) (w.1.adicCompletion L) x with ha`. Use `set a' := normResidueSymbol (v.adicCompletion K) (w'.1.adicCompletion L) x with ha'`. Establish `hs : ∀ y, a' (s y) = s (a y)` using `fun y ↦ by`. Apply `(residueEmbedding (v.adicCompletion K) (w'.1.adicCompletion L)).toRingHom.injective` to reduce the goal to its premises. Establish `h2 : residueEmbedding _ _ (s (a y)) = τ (residueEmbedding _ _ (s y))` using `normResidueSymbol_spec ((residueEmbedding (v.adicCompletion K) (w'.1.adicCompletion L)).comp s.toAlgHom) hτ y`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `residueEmbedding _ _ (a' (s y)) = residueEmbedding _ _ (s (a y))`. Rewrite using `[ha', residueEmbedding_normResidueSymbol hτ, h2]`. Use `set d := symbolAt L v w x with hd_def`. Establish `hd : σ (d (σ⁻¹ l)) = d l`. Use `congrArg (fun g : L ≃ₐ[K] L ↦ g l) (show σ * d * σ⁻¹ = d by rw [mul_comm' σ d, mul_inv_cancel_right])` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `only [AlgEquiv.mul_apply]`. Apply `(algebraMap L (w'.1.adicCompletion L)).injective` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hd_def, algebraMap_symbolAt_apply]`. Use `_ = a' (s (algebraMap L (w.1.adicCompletion L) (σ⁻¹ l))) := (hs _).symm`.
-
-Use `_ = a' (algebraMap L (w'.1.adicCompletion L) (σ (σ⁻¹ l))) := by`. Rewrite using `[hs_def, galEquiv_algebraMap]`. Use `_ = a' (algebraMap L (w'.1.adicCompletion L) l) := by`. Rewrite using `[← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`. Use `_ = algebraMap L (w'.1.adicCompletion L) (symbolAt L v w' x l) := (algebraMap_symbolAt_apply L v w' x l).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symbolAt_eq (w w' : PlacesOver L v) : symbolAt L v w = symbolAt L v w' := by
   obtain ⟨σ, hσ⟩ := MulAction.exists_smul_eq (L ≃ₐ[K] L) w w'
@@ -269,13 +267,13 @@ def localSymbol : (v.adicCompletion K)ˣ →* (L ≃ₐ[K] L) :=
   symbolAt L v (nonempty_placesOver L v).some
 
 /- English proof (translation)
-The claim follows from `symbolAt_eq L v _ w`.
+A detailed English derivation is pending.
 -/
 theorem localSymbol_eq_symbolAt (w : PlacesOver L v) : localSymbol L v = symbolAt L v w :=
   symbolAt_eq L v _ w
 
 /- English proof (translation)
-Rewrite using `[localSymbol_eq_symbolAt L v w]`. Conclude with `symbolAt_mem_stabilizer L v w x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localSymbol_mem_stabilizer (w : PlacesOver L v) (x : (v.adicCompletion K)ˣ) :
     localSymbol L v x ∈ MulAction.stabilizer (L ≃ₐ[K] L) w.1.asIdeal := by
@@ -283,7 +281,7 @@ theorem localSymbol_mem_stabilizer (w : PlacesOver L v) (x : (v.adicCompletion K
   exact symbolAt_mem_stabilizer L v w x
 
 /- English proof (translation)
-Rewrite using `[localSymbol_eq_symbolAt L v w]`. Conclude with `algebraMap_symbolAt_apply L v w x l`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_localSymbol_apply (w : PlacesOver L v) (x : (v.adicCompletion K)ˣ) (l : L) :
     algebraMap L (w.1.adicCompletion L) (localSymbol L v x l) =
@@ -293,7 +291,7 @@ theorem algebraMap_localSymbol_apply (w : PlacesOver L v) (x : (v.adicCompletion
   exact algebraMap_symbolAt_apply L v w x l
 
 /- English proof (translation)
-Rewrite using `[localSymbol_eq_symbolAt L v w, ← ker_normResidueSymbol]`. Use extensionality with `x`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.mem_ker]`. Express the relevant statement in the definitionally equal form `(((decompositionMulEquiv v w.1).symm (normResidueSymbol (v.adicCompletion K) (w.1.adicCompletion L) x)) : L ≃ₐ[K] L) = 1 ↔ _`. Rewrite using `[OneMemClass.coe_eq_one, MulEquiv.map_eq_one_iff]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_localSymbol (w : PlacesOver L v) :
     (localSymbol L v).ker =
@@ -306,7 +304,7 @@ theorem ker_localSymbol (w : PlacesOver L v) :
   rw [OneMemClass.coe_eq_one, MulEquiv.map_eq_one_iff]
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite using `[ker_localSymbol L v w]`. Take `⟨y, -, hyu⟩` from `IdeleNorm.exists_norm_eq_of_ramificationIdx_eq_one v w.1 he hu`. Conclude with `⟨y, Units.ext hyu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem units_le_ker_localSymbol (w : PlacesOver L v)
     (he : w.1.asIdeal.ramificationIdx (𝓞 K) = 1) :
@@ -317,7 +315,7 @@ theorem units_le_ker_localSymbol (w : PlacesOver L v)
   exact ⟨y, Units.ext hyu⟩
 
 /- English proof (translation)
-Use `filter_upwards [IdeleNorm.eventually_forall_placesOver K (IdeleNorm.eventually_ramificationIdx_eq_one K L)] with v hv`. Take `⟨w⟩` from `nonempty_placesOver L v`. Conclude with `units_le_ker_localSymbol L v w (hv w)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eventually_units_le_ker_localSymbol :
     ∀ᶠ v : HeightOneSpectrum (𝓞 K) in Filter.cofinite,
@@ -328,7 +326,7 @@ theorem eventually_units_le_ker_localSymbol :
   exact units_le_ker_localSymbol L v w (hv w)
 
 /- English proof (translation)
-Take `⟨w⟩` from `nonempty_placesOver L v`. Use `continuous_monoidHom_of_isOpen_ker _ ?_` and prove the remaining obligations. Rewrite using `[ker_localSymbol L v w]`. Conclude with `LocalField.isOpen_range_normUnits _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_localSymbol : Continuous (localSymbol L v) := by
   obtain ⟨w⟩ := nonempty_placesOver L v
@@ -337,7 +335,7 @@ theorem continuous_localSymbol : Continuous (localSymbol L v) := by
   exact LocalField.isOpen_range_normUnits _ _
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨y, rfl⟩`. Express the relevant statement in the definitionally equal form `∏ w, Units.map (Algebra.norm (v.adicCompletion K) : w.1.adicCompletion L →* v.adicCompletion K) (y w) ∈ _`. Conclude with `Subgroup.prod_mem _ fun w _ ↦ by`. Rewrite using `[ker_localSymbol L v w]`. Conclude with `⟨y w, rfl⟩`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem range_finiteLocalNorm_le_ker_localSymbol :
     (IdeleNorm.finiteLocalNorm L v).range ≤ (localSymbol L v).ker := by

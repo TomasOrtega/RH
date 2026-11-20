@@ -13,9 +13,9 @@ namespace GlobalTheory.CompanionTheory.RealCount.IntegrateK
 variable {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, ← Matrix.exp_conjTranspose]`. Establish `h : ((s : ℂ) • X)ᴴ = -((s : ℂ) • X)`. Rewrite using `[conjTranspose_smul, hX]`. Simplify using the standard rewrite rules. Establish `hc : Commute ((s : ℂ) • X) (-((s : ℂ) • X))` using `(Commute.refl _).neg_right`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h, ← Matrix.exp_add_of_commute _ _ hc]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exp_smul_mem_unitary (X : Matrix (Fin n) (Fin n) ℂ) (hX : Xᴴ = -X) (s : ℝ) :
     NormedSpace.exp ((s : ℂ) • X) ∈ Matrix.unitaryGroup (Fin n) ℂ := by
@@ -31,14 +31,14 @@ def onePar (X : Matrix (Fin n) (Fin n) ℂ) (hX : Xᴴ = -X) (s : ℝ) : Matrix.
   ⟨NormedSpace.exp ((s : ℂ) • X), exp_smul_mem_unitary X hX s⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[onePar]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem onePar_zero (X : Matrix (Fin n) (Fin n) ℂ) (hX : Xᴴ = -X) : onePar X hX 0 = 1 := by
   apply Subtype.ext
   simp [onePar]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `hc : Commute ((h : ℂ) • X) ((s : ℂ) • X)` using `((Commute.refl X).smul_left _).smul_right _`. Use `show NormedSpace.exp (((h + s : ℝ) : ℂ) • X) = _ * _`. Simplify using `only [onePar]`. Rewrite using `[← Matrix.exp_add_of_commute _ _ hc, Complex.ofReal_add, add_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onePar_add (X : Matrix (Fin n) (Fin n) ℂ) (hX : Xᴴ = -X) (h s : ℝ) :
     onePar X hX (h + s) = onePar X hX h * onePar X hX s := by
@@ -50,9 +50,9 @@ theorem onePar_add (X : Matrix (Fin n) (Fin n) ℂ) (hX : Xᴴ = -X) (h s : ℝ)
   rw [← Matrix.exp_add_of_commute _ _ hc, Complex.ofReal_add, add_smul]
 
 /- English proof (translation)
-Establish `hent : ∀ a b, (starRingEnd ℂ) (X a b) = -X b a`. Introduce `a b`. Use `congrFun (congrFun hX b) a` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_apply]`. Simplify using `only [sum_inner, inner_sum, inner_smul_left, inner_smul_right, hs, hent]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inner_sum_left {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     (Kf : Fin n → Fin n → Module.End ℂ V)
@@ -71,27 +71,27 @@ theorem inner_sum_left {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ 
   ring
 
 /- English proof (translation)
-Introduce `n H V _ _ _ _ _ ρ G hG σ Kf hK hskew T hT k w`. Take `⟨X, hX, hk⟩` from `GlobalTheory.CompanionTheory.UnitaryExp.exists_skew_exp_eq n k`. Establish `hk1 : onePar X hX 1 = k`. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg Units.val hk` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h4 : ((uG k : _ˣ) : Matrix (Fin n) (Fin n) ℂ) = k.1` using `rfl`. Rewrite `this` using `[h4]`. Simplify `this.symm` using `[onePar]`. Set `Tc : H →L[ℝ] V` to `(⟨T, T.continuous_of_finiteDimensional⟩ : H →L[ℂ] V).restrictScalars ℝ`. Establish `hsub : ∀ u s : ℝ, onePar X hX (u - s) * onePar X hX s = onePar X hX u`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `u s`. Rewrite using `[← onePar_add, sub_add_cancel]`. Establish `hY : ∀ s, HasDerivAt (fun s => T (ρ (onePar X hX s) w)) (∑ a, ∑ b, X a b • Kf a b (T (ρ (onePar X hX s) w))) s`. Introduce `s`. Establish `h0` using `hG X (onePar X hX) hX (fun _ => rfl) (ρ (onePar X hX s) w)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : HasDerivAt (fun t => T (ρ (onePar X hX t) (ρ (onePar X hX s) w))) (T (∑ a, ∑ b, X a b • G a b (ρ (onePar X hX s) w))) 0` using `Tc.hasFDerivAt.comp_hasDerivAt 0 h0`. Establish `h2` using `HasDerivAt.comp_sub_const (f := fun t => T (ρ (onePar X hX t) (ρ (onePar X hX s) w))) s s (by simpa using h1)`. Establish `e : (fun u => T (ρ (onePar X hX (u - s)) (ρ (onePar X hX s) w))) = fun u => T (ρ (onePar X hX u) w)`. Use function extensionality and compare the values at `u`. Rewrite using `[← hsub u s, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `h2` using `[e]`. Simplify `h2` using `only [hT]`. Establish `hU : ∀ (v : V) (s : ℝ), HasDerivAt (fun s => σ (onePar X hX s) v) (∑ a, ∑ b, X a b • Kf a b (σ (onePar X hX s) v)) s`. Introduce `v s`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨S, _, hmem, _, _, hd⟩` from `hK.2 (σ (onePar X hX s) v)`. Establish `h0` using `hd X (onePar X hX) (fun _ => rfl) _ hmem`. Establish `h2` using `HasDerivAt.comp_sub_const (f := fun t => σ (onePar X hX t) (σ (onePar X hX s) v)) s s (by simpa using h0)`. Establish `e : (fun u => σ (onePar X hX (u - s)) (σ (onePar X hX s) v)) = fun u => σ (onePar X hX u) v`. Use function extensionality and compare the values at `u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← hsub u s, map_mul]`. Both sides reduce to the same expression. Rewrite `h2` using `[e]`. Conclude with `h2`. Establish `hconst : ∀ v : V, ⟪T (ρ k w), σ k v⟫_ℂ = ⟪T w, v⟫_ℂ`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Establish `hf : ∀ s : ℝ, HasDerivAt (fun s : ℝ => ⟪T (ρ (onePar X hX s) w), σ (onePar X hX s) v⟫_ℂ) 0 s`. Introduce `s`. Establish `h` using `(hY s).inner ℂ (hU v s)`. Rewrite `h` using `[inner_sum_left Kf hskew X hX, add_neg_cancel]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `h` using `is_const_of_deriv_eq_zero (fun s => (hf s).differentiableAt) (fun s => (hf s).deriv) 1 0`. Simplify using `only [hk1, onePar_zero, map_one] at h`. Simplify using `using h`. Establish `horth : ∀ v : V, ⟪T (ρ k w) - σ k (T w), σ k v⟫_ℂ = 0`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Rewrite using `[inner_sub_left, hconst v, hK.1 k, sub_self]`. Establish `hsurj : σ k (σ k⁻¹ (T (ρ k w) - σ k (T w))) = T (ρ k w) - σ k (T w)`. Establish `: (σ k * σ k⁻¹) (T (ρ k w) - σ k (T w)) = T (ρ k w) - σ k (T w)`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Conclude with `this`. Establish `hz` using `horth (σ k⁻¹ (T (ρ k w) - σ k (T w)))`. Rewrite `hz` using `[hsurj, inner_self_eq_zero]`. Conclude with `sub_eq_zero.1 hz`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intertwines_unitary : ∀ {n : ℕ} (H V : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H] [NormedAddCommGroup V] [InnerProductSpace ℂ V] (ρ : Matrix.unitaryGroup (Fin n) ℂ →* (H →L[ℂ] H)) (G : Fin n → Fin n → Module.End ℂ H), (∀ (X : Matrix (Fin n) (Fin n) ℂ) (γ : ℝ → Matrix.unitaryGroup (Fin n) ℂ), Xᴴ = -X → (∀ t : ℝ, (γ t).1 = NormedSpace.exp ((t : ℂ) • X)) → ∀ w : H, HasDerivAt (fun t : ℝ => ρ (γ t) w) (∑ a, ∑ b, X a b • G a b w) 0) → ∀ (σ : Matrix.unitaryGroup (Fin n) ℂ →* (V →ₗ[ℂ] V)) (Kf : Fin n → Fin n → Module.End ℂ V), IsDerivK σ Kf → (∀ a b (x y : V), ⟪Kf a b x, y⟫_ℂ = ⟪x, Kf b a y⟫_ℂ) → ∀ T : H →ₗ[ℂ] V, (∀ a b w, T (G a b w) = Kf a b (T w)) → ∀ k w, T (ρ k w) = σ k (T w) := by
   intro n H V _ _ _ _ _ ρ G hG σ Kf hK hskew T hT k w

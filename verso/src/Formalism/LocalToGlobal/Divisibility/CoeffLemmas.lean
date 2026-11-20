@@ -10,7 +10,7 @@ namespace Formalism.L2.DIV
 open Formalism.L2.Host Formalism.DivisionValues
 
 /- English proof (translation)
-Introduce `ι LL _ x`. Use `show ι (CoF.val ι LL (star x)) = _`. Rewrite using `[CoF.val_star, conjQb_spec]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sig0Conj : DistinguishedEmbeddingConjugation := by
   intro ι LL _ x
@@ -19,7 +19,7 @@ theorem sig0Conj : DistinguishedEmbeddingConjugation := by
   rfl
 
 /- English proof (translation)
-Introduce `h`. Take `⟨t, rfl⟩` from `Complex.conj_eq_iff_real.1 h`. Establish `: t ^ 2 = r` using `by exact_mod_cast hw`. Use polynomial arithmetic with `[sq_nonneg t]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem conj_ne_of_sq_neg {w : ℂ} {r : ℝ} (hr : r < 0) (hw : w ^ 2 = (r : ℂ)) : starRingEnd ℂ w ≠ w := by
   intro h
@@ -28,25 +28,25 @@ theorem conj_ne_of_sq_neg {w : ℂ} {r : ℝ} (hr : r < 0) (hw : w ^ 2 = (r : �
   nlinarith [sq_nonneg t]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `IsAlgClosed.exists_pow_nat_eq (m : Qb) (n := 2) (by norm_num)`. Conclude with `⟨x, hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sqrt (m : ℤ) : ∃ x : Qb, x ∈ sqrts m := by
   obtain ⟨x, hx⟩ := IsAlgClosed.exists_pow_nat_eq (m : Qb) (n := 2) (by norm_num)
   exact ⟨x, hx⟩
 
 /- English proof (translation)
-The claim follows from `subset_adjoin ℚ _`.
+A detailed English derivation is pending.
 -/
 theorem sqrts_sub (m : ℤ) : sqrts m ⊆ (sqQ m : Set Qb) := subset_adjoin ℚ _
 
 /- English proof (translation)
-Introduce `ι LL d hd hK`. Use `⟨fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[InfinitePlace.isComplex_iff]`. Introduce `hreal`. Take `⟨x, hx⟩` from `exists_sqrt (-(d : ℤ))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hxL : x ∈ LL` using `hK (sqrts_sub _ hx)`. Use `set y : CoF ι LL := CoF.mk ι LL x hxL with hy`. Establish `hy2 : y ^ 2 = ((-(d : ℤ) : ℤ) : CoF ι LL)`. Apply `CoF.val_injective ι LL` to reduce the goal to its premises. Rewrite using `[map_pow, CoF.val_mk, map_intCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hx`. Establish `h2 : (v.embedding y) ^ 2 = ((-(d : ℝ) : ℝ) : ℂ)`. Rewrite using `[← map_pow, hy2, map_intCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hneg : (-(d : ℝ)) < 0`. Establish `: (0 : ℝ) < d` using `by exact_mod_cast hd`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `conj_ne_of_sq_neg hneg h2 (RingHom.congr_fun (ComplexEmbedding.isReal_iff.1 hreal) y)`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem totComplex : TotComplex := by
   intro ι LL d hd hK
@@ -68,14 +68,14 @@ theorem totComplex : TotComplex := by
   exact conj_ne_of_sq_neg hneg h2 (RingHom.congr_fun (ComplexEmbedding.isReal_iff.1 hreal) y)
 
 /- English proof (translation)
-Establish `: Algebra.IsAlgebraic ℚ Qb` using `AlgebraicClosure.isAlgebraic ℚ`. Conclude with `Algebra.IsAlgebraic.tower_top (K := ℚ) LL`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAlgebraicQb (LL : Fld) : Algebra.IsAlgebraic LL Qb := by
   have : Algebra.IsAlgebraic ℚ Qb := AlgebraicClosure.isAlgebraic ℚ
   exact Algebra.IsAlgebraic.tower_top (K := ℚ) LL
 
 /- English proof (translation)
-Use `isAlgebraicQb LL` as an intermediate fact. Set `f : LL →ₐ[ℚ] ℂ` to `RingHom.toRatAlgHom (R := LL) σ`. Take `⟨φ, hφ⟩` from `IsAlgClosed.surjective_domRestrict_of_isAlgebraic (K := ℚ) (L := LL) (M := ℂ) (E := Qb) f`. Use `⟨φ.toRingHom, fun x => ?_⟩` and prove the remaining obligations. Conclude with `DFunLike.congr_fun hφ x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_ext (ι : Qb →+* ℂ) (LL : Fld) (σ : CoF ι LL →+* ℂ) :
     ∃ τ : Qb →+* ℂ, ∀ x : CoF ι LL, τ (CoF.val ι LL x) = σ x := by
@@ -86,7 +86,7 @@ theorem exists_ext (ι : Qb →+* ℂ) (LL : Fld) (σ : CoF ι LL →+* ℂ) :
   exact DFunLike.congr_fun hφ x
 
 /- English proof (translation)
-Use `⟨AlgEquiv.ofRingEquiv (f := (algC τ).trans (algC ι).symm) (fun r => by simp), fun x => ?_⟩` and prove the remaining obligations. Establish `h : ((algC ι ((algC ι).symm (algC τ x)) : algebraicClosure ℚ ℂ) : ℂ) = τ x`. Rewrite using `[RingEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Conclude with `h.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_aut (ι τ : Qb →+* ℂ) : ∃ σ : Qb ≃ₐ[ℚ] Qb, ∀ x, τ x = ι (σ x) := by
   refine ⟨AlgEquiv.ofRingEquiv (f := (algC τ).trans (algC ι).symm) (fun r => by simp), fun x => ?_⟩
@@ -95,9 +95,9 @@ theorem exists_aut (ι τ : Qb →+* ℂ) : ∃ σ : Qb ≃ₐ[ℚ] Qb, ∀ x, �
   exact h.symm
 
 /- English proof (translation)
-Establish `key : ∀ ι ι' : Qb →+* ℂ, ∀ x ∈ cmQb ι, conjQb ι x = conjQb ι' x`. Introduce `ι ι' x hx`. Apply `ι'.injective` to reduce the goal to its premises. Rewrite using `[conjQb_spec]`. Conclude with `hx ι'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `le : ∀ ι ι' : Qb →+* ℂ, cmQb ι ≤ cmQb ι'`. Introduce `ι ι' x hx τ`. Rewrite using `[← key ι ι' x hx]`. Conclude with `hx τ`. Conclude with `fun ι ι' => ⟨le_antisymm (le ι ι') (le ι' ι), key ι ι'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cmQbIndep : CmQbIndep := by
   have key : ∀ ι ι' : Qb →+* ℂ, ∀ x ∈ cmQb ι, conjQb ι x = conjQb ι' x := by
@@ -112,7 +112,7 @@ theorem cmQbIndep : CmQbIndep := by
   exact fun ι ι' => ⟨le_antisymm (le ι ι') (le ι' ι), key ι ι'⟩
 
 /- English proof (translation)
-Establish `h1 : (τ z) ^ N = 1` using `by rw [← map_pow, show z ^ N = 1 from hz, map_one]`. Rewrite using `[map_inv₀, Complex.inv_eq_conj (Complex.norm_eq_one_of_pow_eq_one h1 hN.ne')]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_root (τ : Qb →+* ℂ) {N : ℕ} (hN : 0 < N) {z : Qb} (hz : z ∈ mus N) :
     starRingEnd ℂ (τ z) = τ z⁻¹ := by
@@ -120,9 +120,9 @@ theorem conj_root (τ : Qb →+* ℂ) {N : ℕ} (hN : 0 < N) {z : Qb} (hz : z �
   rw [map_inv₀, Complex.inv_eq_conj (Complex.norm_eq_one_of_pow_eq_one h1 hN.ne')]
 
 /- English proof (translation)
-Introduce `ι N hN`. Rewrite using `[cycQ, adjoin_le_iff]`. Introduce `z hz τ`. Establish `hc : conjQb ι z = z⁻¹`. Apply `ι.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[conjQb_spec, conj_root ι hN hz]`. Rewrite using `[hc, conj_root τ hN hz]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cycLeCm : CycLeCm := by
   intro ι N hN
@@ -134,15 +134,13 @@ theorem cycLeCm : CycLeCm := by
   rw [hc, conj_root τ hN hz]
 
 /- English proof (translation)
-Establish `h2 : (starRingEnd ℂ w) ^ 2 = w ^ 2` using `by rw [← map_pow, hw, Complex.conj_ofReal]`. Use `split_ifs with hr`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h2 with h | h` into its components or cases. Conclude with `absurd h (conj_ne_of_sq_neg hr hw)`. Rewrite using `[h]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis.
 
-Expand and normalize the polynomial expressions, which then agree. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h2 with h | h` into its components or cases. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hre : w.re = 0`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg Complex.re h` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `him : w.im = 0`. Use `congrArg Complex.re hw` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[sq, Complex.mul_re, hre, Complex.ofReal_re]`. Establish `h0 : w.im * w.im ≤ 0` using `by have := not_lt.1 hr; linarith`. Use polynomial arithmetic with `[mul_self_nonneg w.im]`. Establish `hw0 : w = 0` using `Complex.ext hre him`. Rewrite using `[hw0]`.
-
-Simplify using the standard rewrite rules.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_sqrt {w : ℂ} {r : ℝ} (hw : w ^ 2 = (r : ℂ)) :
     starRingEnd ℂ w = (if r < 0 then -1 else 1) * w := by
@@ -166,13 +164,13 @@ theorem conj_sqrt {w : ℂ} {r : ℝ} (hw : w ^ 2 = (r : ℂ)) :
       rw [hw0]; simp
 
 /- English proof (translation)
-Introduce `ι m`. Rewrite using `[sqQ, adjoin_le_iff]`. Introduce `x hx τ`. Establish `hτ : ∀ τ : Qb →+* ℂ, (τ x) ^ 2 = ((m : ℝ) : ℂ)`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← map_pow, show x ^ 2 = (m : Qb) from hx, map_intCast]`. Use `push_cast`. Both sides reduce to the same expression. Distinguish the cases in `hm : (m : ℝ) < 0`. Establish `hc : conjQb ι x = -x`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Apply `ι.injective` to reduce the goal to its premises. Rewrite using `[conjQb_spec, conj_sqrt (hτ ι), if_pos hm, map_neg]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc, conj_sqrt (hτ τ), if_pos hm, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hc : conjQb ι x = x`. Apply `ι.injective` to reduce the goal to its premises. Rewrite using `[conjQb_spec, conj_sqrt (hτ ι), if_neg hm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc, conj_sqrt (hτ τ), if_neg hm]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -194,9 +192,9 @@ theorem sqLeCm : SqLeCm := by
     rw [hc, conj_sqrt (hτ τ), if_neg hm]; ring
 
 /- English proof (translation)
-Introduce `ι L LL _ h hL s x y hy`. Apply `CoF.val_injective ι LL` to reduce the goal to its premises. Rewrite using `[CoF.val_star, val_tauCo, val_tauCo]`. Apply `ι.injective` to reduce the goal to its premises. Rewrite using `[conjQb_spec]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hL x.2 (ι.comp (s.liftNormal Qb).toRingHom)`. Establish `h2 : ∀ u : L, s.liftNormal Qb (u : Qb) = s u` using `fun u => AlgHom.liftNormal_commutes s Qb u`. Establish `h3 : ι (s.liftNormal Qb (conjQb ι x)) = starRingEnd ℂ (ι (s.liftNormal Qb (x : Qb)))` using `h1`. Rewrite `h3` using `[← hy, h2, h2]`. Conclude with `h3.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tauStar : TauStar := by
   intro ι L LL _ h hL s x y hy
@@ -211,7 +209,7 @@ theorem tauStar : TauStar := by
   exact h3.symm
 
 /- English proof (translation)
-Use `(Polynomial.nthRoots n a).toFinset.finite_toSet.subset fun z hz => ?_` and prove the remaining obligations. Simplify `hz` using `[Polynomial.mem_nthRoots hn]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finite_pow_eq {n : ℕ} (hn : 0 < n) (a : Qb) : {z : Qb | z ^ n = a}.Finite := by
   classical
@@ -219,12 +217,12 @@ theorem finite_pow_eq {n : ℕ} (hn : 0 < n) (a : Qb) : {z : Qb | z ^ n = a}.Fin
   simpa [Polynomial.mem_nthRoots hn] using hz
 
 /- English proof (translation)
-The claim follows from `((AlgebraicClosure.isAlgebraic ℚ).isAlgebraic x).isIntegral`.
+A detailed English derivation is pending.
 -/
 theorem isIntegralQb (x : Qb) : IsIntegral ℚ x := ((AlgebraicClosure.isAlgebraic ℚ).isAlgebraic x).isIntegral
 
 /- English proof (translation)
-Establish `: Finite S` using `hS`. Conclude with `finiteDimensional_adjoin fun x _ => isIntegralQb x`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fin_adjoin {S : Set Qb} (hS : S.Finite) : FiniteDimensional ℚ (adjoin ℚ S) := by
   have : Finite S := hS

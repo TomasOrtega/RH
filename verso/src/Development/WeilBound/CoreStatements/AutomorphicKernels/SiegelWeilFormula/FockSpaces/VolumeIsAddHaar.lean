@@ -7,7 +7,7 @@ open MeasureTheory
 namespace PositivityTheory.SiegelWeilFormula.KFock
 
 /- English proof (translation)
-Establish `h2 : (volume : Measure (Fin n → ℂ)).IsAddHaarMeasure` using `inferInstance`. Establish `h3 : SigmaFinite (volume : Measure (Fin n → ℂ))` using `inferInstance`. Conclude with `Measure.pi.isAddHaarMeasure _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem volume_isAddHaar (m n : ℕ) : (volume : Measure (Fin m → Fin n → ℂ)).IsAddHaarMeasure := by
   have h2 : (volume : Measure (Fin n → ℂ)).IsAddHaarMeasure := inferInstance
@@ -23,7 +23,7 @@ variable {G H K : Type}
   [MeasurableSpace K] [BorelSpace K]
 
 /- English proof (translation)
-Establish `hmap : (Measure.map Φ (la.prod mu)).IsAddHaarMeasure` using `Φ.toAddEquiv.isAddHaarMeasure_map (la.prod mu) Φ.continuous Φ.symm.continuous`. Use `⟨Measure.addHaarScalarFactor ν (Measure.map Φ (la.prod mu)), Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _, ?_⟩` and prove the remaining obligations. Conclude with `Measure.isAddLeftInvariant_eq_smul ν _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measure_split (ν : Measure G) [ν.IsAddHaarMeasure] (la : Measure H) [la.IsAddHaarMeasure]
     (mu : Measure K) [mu.IsAddHaarMeasure] (Φ : H × K ≃ₜ+ G) :
@@ -35,9 +35,9 @@ theorem measure_split (ν : Measure G) [ν.IsAddHaarMeasure] (la : Measure H) [l
   exact Measure.isAddLeftInvariant_eq_smul ν _
 
 /- English proof (translation)
-Take `⟨c, hc, hν⟩` from `measure_split ν la mu Φ`. Use `⟨c, by exact_mod_cast hc, fun g => ?_⟩` and prove the remaining obligations. Establish `hm` using `integral_map_equiv (μ := la.prod mu) (Φ.toHomeomorph.toMeasurableEquiv) g`. Rewrite using `[hν, integral_smul_nnreal_measure]`. Use `erw [hm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[NNReal.smul_def, Complex.real_smul]`. Conclude with `Or.inl rfl`.
+Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem integral_split (ν : Measure G) [ν.IsAddHaarMeasure] (la : Measure H) [la.IsAddHaarMeasure]
     (mu : Measure K) [mu.IsAddHaarMeasure] (Φ : H × K ≃ₜ+ G) :

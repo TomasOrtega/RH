@@ -5,7 +5,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-Introduce `n Z u u' hprime hu hu' hadm W'' hW''`. Take `⟨W, hW, hW''W⟩` from `(h2 n Z u').2 W'' hW''`. Establish `hadmW : IsAdmissible (divCycle W u) u'` using `fun W' hW' => hadm W' ((h2 n Z u).1 W hW hW')`. Conclude with `h1 n W u u' (hprime W hW) (hu W hW) (hu' W hW) hadmW W'' hW''W`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ProperSymmCycle.proof (h1 : ProperSymm.Statement) (h2 : SupportCycleSection.Statement) :
     ProperSymmCycle.Statement := by

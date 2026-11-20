@@ -19,7 +19,7 @@ def locExpr (X : Loc) [Fact X.p.Prime] (O : Type) [CommRing O] [IsDomain O] [Alg
     ∏ j : Fin (numSeg X.TT), xvL X O w g j c.succ ^ (X.p ^ segG X.TT j - 1))
 
 /- English proof (translation)
-Rewrite using `[liftSubst_X_vec X.p X.n' O w (hhLetters X.TT) 1 g hg (topStart X j, true) a rfl]`. Simplify using `only [xvL, map_sum, map_mul, map_C, map_X, sigMat_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem liftSubst_start (X : Loc) [Fact X.p.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra (WF X.p X.n') O] (w : O)
     (g : Matrix (Fin (X.m + 1)) (Fin (X.m + 1)) (WF X.p X.n')) (hg : IsGLW g) (j : Fin (numSeg X.TT)) (a : Fin (X.m + 1)) :
@@ -30,7 +30,7 @@ theorem liftSubst_start (X : Loc) [Fact X.p.Prime] (O : Type) [CommRing O] [IsDo
   rfl
 
 /- English proof (translation)
-Unfold `locR locC locExpr`. Simplify using `only [map_mul, map_prod, map_sub, map_pow, liftSubst_start X O w g hg]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem locR_lift (X : Loc) [Fact X.p.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra (WF X.p X.n') O] (w : O)
     (g : Matrix (Fin (X.m + 1)) (Fin (X.m + 1)) (WF X.p X.n')) (hg : IsGLW g) (j0 : Fin (numSeg X.TT)) :
@@ -47,9 +47,9 @@ def LocalDivisibilityBound : Prop :=
       (C S.w : MvPolynomial ((X.TT × Bool) × Fin (X.m + 1)) O) ∣ locExpr X O S.w g j0
 
 /- English proof (translation)
-Introduce `X _ O _ _ _ _ S hS hD h2 j0 g hg hpl`. Take `⟨Q, hQ⟩` from `h X O S hS hD h2 j0 g hg hpl`. Unfold `InWjRg`. Rewrite using `[locR_lift X O S.w g hg j0, hQ]`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Q.coeff m, ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_map, coeff_C_mul, pow_one, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem loc4Ord_of (h : LocalDivisibilityBound) : LocalOrderBound := by
   intro X _ O _ _ _ _ S hS hD h2 j0 g hg hpl

@@ -29,11 +29,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Set `h : ptO Xo w.x ⟶ ptO Xo y.x` to `Over.homMk (spMap ψ.toRingHom) hm.1.symm`. Use `choose F' hF' using fun q i b => GermD.exists_pullSec Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (h ▷ Xo.univ.t.G) (whiskerRight_snd _ _) (F q i b)`. Take `⟨p1, -, p3, -⟩` from `GlobalTheory.inZh_geoInj_stable E H Dw l Xo n Λ N`. Use `⟨fun i b => h ≫ z i b, fun q b => h ≫ tp q b, F', fun i => p1 _ _ h _ (hz i), p3 S T y.x w.x ψ.toRingHom h rfl _ z hg, fun q b => ⟨?_, ?_⟩, fun q i b => ?_, fun q => ?_⟩` and prove the remaining obligations. Establish `e : h ≫ levPt Xo y.x (levRep (q b)) = levPt Xo w.x (levRep (q b))`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `levPt`. Rewrite using `[← Category.assoc, comp_toUnit]`. Rewrite using `[← e, ← (ht q b).1, MonObj.comp_pow]`. Take `⟨j, hj⟩` from `(ht q b).2`. Conclude with `⟨j, fun u hu => by rw [Category.assoc, hj u hu, MonObj.comp_one]⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.VtBaseChange.isVtOver_isUUOver_baseChange E H Dw l Xo N ⊤ _ _ h y.s w.s (GlobalTheory.FramedBaseChange.isPullSec ψ hm h rfl) (F q i b) (F' q i b) (hF' q i b)).2 _ _ (hF q i b)`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => GlobalTheory.harmonicValue_baseChange_field E H Dw l Xo c nab hnab S T ψ y w hm h rfl a n P hP N (F q i) (F' q i) (hF' q i)`.
+A detailed English derivation is pending.
 -/
 theorem exists_pull [StarRing (𝓞 E)] (nab : NabV Xo c) (hnab : IsNab Xo c nab)
     {n : ℕ} (Λ : GenLat E n) (N : ℕ) (a : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) c.F)
@@ -78,9 +78,9 @@ theorem exists_pull [StarRing (𝓞 E)] (nab : NabV Xo c) (hnab : IsNab Xo c nab
         (hF' q i)
 
 /- English proof (translation)
-Establish `hne : l.Mb ≠ ⊥`. Introduce `h`. Establish `hp` using `l.prod`. Rewrite `hp` using `[h, Ideal.bot_mul, eq_comm, Ideal.span_singleton_eq_bot, Nat.cast_eq_zero]`. Use `l.three_le` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `haveI : Finite (𝓞 E ⧸ l.Mb) := Ideal.finiteQuotientOfFreeOfNeBot _ hne`. Use `haveI := Dw.fin`. Conclude with `Submodule.finite_quotient_smul l.Mb (N := (⊤ : Submodule (𝓞 E) Dw.La)) Module.Finite.fg_top`.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finite_levQ (Dw : Datum H) (l : Geo.Tor.Level H) : Finite (LevQ Dw l) := by
   have hne : l.Mb ≠ ⊥ := by
@@ -94,7 +94,7 @@ theorem finite_levQ (Dw : Datum H) (l : Geo.Tor.Level H) : Finite (LevQ Dw l) :=
   exact Submodule.finite_quotient_smul l.Mb (N := (⊤ : Submodule (𝓞 E) Dw.La)) Module.Finite.fg_top
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite Q`. Simplify using `only [finsum_eq_sum_of_fintype, map_mul, map_sum, AlgHom.commutes, h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_weighted {F S₁ S₂ T Q : Type} [Field F] [CommRing S₁] [CommRing S₂] [CommRing T]
     [Algebra F S₁] [Algebra F S₂] [Algebra F T] [Finite Q] (ψ₁ : S₁ →ₐ[F] T) (ψ₂ : S₂ →ₐ[F] T)
@@ -105,7 +105,7 @@ theorem map_weighted {F S₁ S₂ T Q : Type} [Field F] [CommRing S₁] [CommRin
   simp only [finsum_eq_sum_of_fintype, map_mul, map_sum, AlgHom.commutes, h]
 
 /- English proof (translation)
-Take `⟨J, hJ⟩` from `Ideal.exists_maximal S`. Conclude with `⟨S ⧸ J, Ideal.Quotient.field J, inferInstance, ⟨Ideal.Quotient.mkₐ F J⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_algHom_field (F S : Type) [Field F] [CommRing S] [Nontrivial S] [Algebra F S] :
     ∃ (Ω : Type) (_ : Field Ω) (_ : Algebra F Ω), Nonempty (S →ₐ[F] Ω) := by
@@ -113,13 +113,13 @@ theorem exists_algHom_field (F S : Type) [Field F] [CommRing S] [Nontrivial S] [
   exact ⟨S ⧸ J, Ideal.Quotient.field J, inferInstance, ⟨Ideal.Quotient.mkₐ F J⟩⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ hstar nab hnab n Λ N hU hT hN w P hP cf β K k _ _ _ _ ψ y yk hψ z tp F hz hg ht hF v hv`. Establish `hL : Laws` using `GlobalTheory.firstFiveLaws.1`. Use `haveI := finite_levQ Dw l`. Take `⟨S1, _, _, φ1, y1, z1, tp1, F1, hf1, hm1, hz1, hg1, ht1, hu1, e1⟩` from `hv`. Establish `hinj : Function.Injective φ1` using `hf1.injective`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : Nontrivial S1 := hinj.nontrivial`. Take `⟨Ω, _, _, ⟨κ⟩⟩` from `exists_algHom_field c.F S1`. Take `⟨u, hu⟩` from `GlobalTheory.FramedBaseChange.exists_frMap hL E H Dw l Xo c S1 Ω κ y1`. Establish `hu' : FrMap (κ.comp (φ1.comp ψ)) y u` using `GlobalTheory.FramedBaseChange.trans (φ1.comp ψ) κ (GlobalTheory.FramedBaseChange.trans ψ φ1 hψ hm1) hu`. Take `⟨z1', tp1', G1, a1', b1', c1', d1', f1⟩` from `exists_pull nab hnab Λ N w P hP κ y1 u hu z1 tp1 F1 hz1 hg1 ht1 hu1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨z2', tp2', G2, a2', b2', c2', d2', f2⟩` from `exists_pull nab hnab Λ N w P hP (κ.comp (φ1.comp ψ)) y u hu' z tp F hz hg ht hF`. Apply `(κ.comp φ1).toRingHom.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `κ (φ1 v) = (κ.comp (φ1.comp ψ)) _`. Rewrite using `[e1]`. Use `map_weighted κ (κ.comp (φ1.comp ψ)) _ cf _ _ fun q => ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc` using `(GlobalTheory.PlaceInt.hv_linear E H Dw l Xo c hstar nab hnab K y n P).2.2 N`. Rewrite using `[← Finset.sum_congr rfl fun i _ => hc (F q i)]`. Conclude with `(f1 q).trans ((GlobalTheory.shortSum_indep_local hL E H Dw l Xo c nab hnab n Λ N hU hT hN P Ω u z1' tp1' G1 z2' tp2' G2 a1' b1' c1' d1' a2' b2' c2' d2' q).trans (f2 q).symm)`.
+A detailed English derivation is pending.
 -/
 theorem shortValAt_eq_map : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ nab : NabV Xo c, IsNab Xo c nab → ∀ (n : ℕ) (Λ : GenLat E n) (N : ℕ), Λ.Unimod → Λ.TrivAt l.M → Λ.LevOK N l.M → ∀ (w : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) c.F), P ∈ HH c w n → ∀ (cf : (Fin n → LevQ Dw l) → c.F) (β : c.F) (K k : Type) [Field K] [Algebra c.F K] [Field k] [Algebra c.F k] (ψ : K →ₐ[c.F] k) (y : FrPt Xo c K) (yk : FrPt Xo c k), FrMap ψ y yk → ∀ (z : Fin (Λ.zCard N (Dw.p + Dw.q)) → Fin n → (ptO Xo y.x ⟶ Xo.univ.t.G)) (tp : (Fin n → LevQ Dw l) → Fin n → (ptO Xo y.x ⟶ Xo.univ.t.G)) (F : (Fin n → LevQ Dw l) → Fin (Λ.zCard N (Dw.p + Dw.q)) → Fin n → LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (ptO Xo y.x))), (∀ i, InZh Xo Λ N (z i)) → GeoInj Xo y.x z → (∀ q b, tp q b ^ N = levPt Xo y.x (levRep (q b)) ∧ ∃ j : ℕ, KilledBy Xo (l.Mb ^ j) (tp q b)) → (∀ q i b, IsUUOver Xo.univ.t.G Xo.univ.t.PP N y.s (z i b) (tp q b) (F q i b)) → ∀ v : k, ShortValAt Xo c nab cf Λ β N P yk v → v = ψ (algebraMap c.F K (β⁻¹ * ((Λ.mIdx N (Dw.p + Dw.q) : c.F))⁻¹ * ((Nat.card (Fin n → LevQ Dw l) : c.F))⁻¹ * ((N : c.F) ^ P.totalDegree)⁻¹) * ∑ᶠ q : Fin n → LevQ Dw l, algebraMap c.F K (cf q) * ∑ i, hv Xo c nab y (N ^ 2) (fun b => sqN Xo N (F q i b)) P) := by
   intro E _ _ _ H Dw l Xo c _ hstar nab hnab n Λ N hU hT hN w P hP cf β K k _ _ _ _ ψ y yk hψ z tp F hz hg ht hF v hv

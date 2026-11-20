@@ -20,19 +20,19 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.LvChain
 
 /- English proof (translation)
-Establish `h1 : ∀ l : Lt n, ¬inUU lev l → annL l x = 0` using `fun l hl => by`. Use function extensionality and compare the values at `A`. Assume the negation of the conclusion as `h`. Conclude with `hl (hx _ (annL_ne h).2 l (mem_insert_self _ _))`. Establish `h2 : ∀ l m : Lt n, ¬inUU lev m → annL m (annL l x) = 0` using `fun l m hm => by`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `A`. Assume the negation of the conclusion as `h`. Take `⟨-, h3⟩` from `annL_ne h`. Take `⟨-, h4⟩` from `annL_ne h3`. Conclude with `hm (hx _ h4 m (mem_insert_of_mem (mem_insert_self _ _)))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [bdL, LinearMap.add_apply, LinearMap.sum_apply]`. Use `congr 1`. Use `sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : inUU lev l`. Rewrite using `[if_pos (Or.inr hl : inRR lev l), if_pos hl]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg hl] split_ifs`. Simplify using `[Module.End.mul_apply, h1 l hl]`. Both sides reduce to the same expression. Use `sum_congr rfl fun l _ => sum_congr rfl fun m _ => sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : inUU lev l`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hm : inUU lev m`. Distinguish the cases in `hc : l.2.1.2 = m.2.1.1 ∧ k.1 = xor l.1 m.1 ∧ k.2.1.1 = l.2.1.1 ∧ k.2.1.2 = m.2.1.2`. Rewrite using `[if_pos ⟨Or.inr hl, Or.inr hm, hc⟩, if_pos ⟨hl, hm, hc⟩]`. Rewrite using `[if_neg fun t => hc t.2.2, if_neg fun t => hc t.2.2]`. Establish `hn : ¬(inUU lev l ∧ inUU lev m ∧ l.2.1.2 = m.2.1.1 ∧ k.1 = xor l.1 m.1 ∧ k.2.1.1 = l.2.1.1 ∧ k.2.1.2 = m.2.1.2)` using `fun t => hm t.2.1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg hn]`. Use `split_ifs`. Simplify using `[Module.End.mul_apply, h2 l m hm]`. Both sides reduce to the same expression. Establish `hn : ¬(inUU lev l ∧ inUU lev m ∧ l.2.1.2 = m.2.1.1 ∧ k.1 = xor l.1 m.1 ∧ k.2.1.1 = l.2.1.1 ∧ k.2.1.2 = m.2.1.2)` using `fun t => hl t.1`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[if_neg hn]`. Use `split_ifs`. Simplify using `[Module.End.mul_apply, h1 l hl]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem bdL_inRR_eq {n : ℕ} {lev : Fin n → ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (E1 E2 : Fin n → Fin n → Module.End ℂ V) {x : Cq n V} (hx : SuppL (inUU lev) x) :
@@ -79,9 +79,9 @@ theorem bdL_inRR_eq {n : ℕ} {lev : Fin n → ℕ} {V : Type} [AddCommGroup V] 
 variable {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `A`. Rewrite using `[creL_apply, Pi.smul_apply]`. Distinguish the cases in `hA : A = insert f S`. Substitute `hA` using the available equality. Rewrite using `[if_pos (mem_insert_self f S), erase_insert h, Pi.single_eq_same, Pi.single_eq_same]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne hA, smul_zero] split_ifs with hf`. Establish `hne : A.erase f ≠ S` using `fun e => hA (by rw [← e, insert_erase hf])`. Rewrite using `[Pi.single_eq_of_ne hne, smul_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem creL_single (f : Lt n) (S : Finset (Lt n)) (w : V) (h : f ∉ S) :
     (creL f : Module.End ℂ (Cq n V)) (Pi.single S w : Cq n V) =
@@ -98,11 +98,11 @@ theorem creL_single (f : Lt n) (S : Finset (Lt n)) (w : V) (h : f ∉ S) :
     · rfl
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `cons f t ih`. Rewrite `hl` using `[List.nodup_cons]`. Take `⟨c, hc, e⟩` from `ih hl.2 fun i hi => hS i (List.mem_cons_of_mem f hi)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hf : f ∉ S ∪ t.toFinset`. Rewrite using `[mem_union, not_or]`. Conclude with `⟨hS f List.mem_cons_self, fun h => hl.1 (List.mem_toFinset.1 h)⟩`. Establish `hU : S ∪ (f :: t).toFinset = insert f (S ∪ t.toFinset)`. Rewrite using `[List.toFinset_cons, union_insert]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c * sgL f (insert f (S ∪ t.toFinset)), mul_ne_zero hc (sgL_ne_zero _ _), ?_⟩` and prove the remaining obligations. Rewrite using `[List.map_cons, List.prod_cons, Module.End.mul_apply, e, map_smul, creL_single f _ w hf, hU, smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_creL_single (l : List (Lt n)) (S : Finset (Lt n)) (w : V) (hl : l.Nodup) (hS : ∀ i ∈ l, i ∉ S) :
     ∃ c : ℂ, c ≠ 0 ∧
@@ -121,13 +121,13 @@ theorem prod_creL_single (l : List (Lt n)) (S : Finset (Lt n)) (w : V) (hl : l.N
     rw [List.map_cons, List.prod_cons, Module.End.mul_apply, e, map_smul, creL_single f _ w hf, hU, smul_smul]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa using And.intro hx hd`. Consider the case `cons i l ih`. Take `⟨ih1, ih2⟩` from `ih fun k hk => hl k (List.mem_cons_of_mem i hk)`. Establish `hi : P i` using `hl i List.mem_cons_self`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [List.map_cons, List.prod_cons, Module.End.mul_apply, List.length_cons]`. Prove the components needed by the constructor for the conclusion. Introduce `A hA k hk`. Take `⟨h1, h2⟩` from `creL_ne hA`. Distinguish the cases in `hki : k = i`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Conclude with `hki ▸ hi`. Conclude with `ih1 _ h2 k (Finset.mem_erase.2 ⟨hki, hk⟩)`. Introduce `A hA`. Take `⟨h1, h2⟩` from `creL_ne hA`. Establish `h3` using `ih2 _ h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h4` using `Finset.card_erase_add_one h1`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem suppL_degL_prod (P : Lt n → Prop) (l : List (Lt n)) (x : Cq n V) (j : ℕ) (hl : ∀ i ∈ l, P i)
     (hx : SuppL P x) (hd : DegL j x) :
@@ -158,17 +158,15 @@ namespace GlobalTheory.CompanionTheory.LvChain
 open GlobalTheory.CompanionTheory.FarReg in
 
 /- English proof (translation)
-Set `e : Cq n V ≃ₗ[ℂ] PiLp 2 (fun _ : Finset (Lt n) => V)` to `(WithLp.linearEquiv 2 ℂ (Finset (Lt n) → V)).symm`. Set `c : Module.End ℂ (Cq n V) → Module.End ℂ (PiLp 2 (fun _ : Finset (Lt n) => V))` to `fun f => (e : Cq n V →ₗ[ℂ] _) ∘ₗ f ∘ₗ (e.symm : _ →ₗ[ℂ] Cq n V)`. Establish `hc : ∀ f x, c f (e x) = e (f x)` using `fun f x => by simp [c]`. Use `haveI : FiniteDimensional ℂ (T.map e.toLinearMap) := Module.Finite.map T _`. Establish `key` using `highest_preimage_inner (T.map e.toLinearMap) (fun i => c (a i)) (fun i => c (b i)) (c D) (e y) inferInstance ?_ ?_ ?_ ?_ ?_ ⟨y, hy, rfl⟩ ?_`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨_, ⟨y', hy', rfl⟩, h1, h2⟩` from `key`. Use `⟨y', hy', fun i => e.injective ?_, e.injective ?_⟩` and prove the remaining obligations. Use `h1 i` as an intermediate fact. Simplify `this` using `[hc]`. Use `h2` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[hc]`. Introduce `i x z`. Take `⟨x, rfl⟩` from `e.surjective x`. Take `⟨z, rfl⟩` from `e.surjective z`. Use `show ⟪c (a i) (e x), e z⟫_ℂ = ⟪e x, c (b i) (e z)⟫_ℂ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hc, hc, PiLp.inner_apply, PiLp.inner_apply]`. Conclude with `hadj i x z`. Introduce and unpack `i _ ⟨t, ht, rfl⟩`. Conclude with `⟨a i t, haT i t ht, (hc _ _).symm⟩`. Introduce and unpack `i _ ⟨t, ht, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨b i t, hbT i t ht, (hc _ _).symm⟩`. Introduce and unpack `i _ ⟨t, ht, rfl⟩ show c (a i) (c D (e t)) = c D (c (a i) (e t))`. Simplify using `only [hc, haD i t ht]`. Introduce and unpack `i _ ⟨t, ht, rfl⟩ show c (b i) (c D (e t)) = c D (c (b i) (e t))`. Simplify using `only [hc, hbD i t ht]`.
-
-Introduce `i show c (a i) (c D (e y)) = 0`. Simplify using `only [hc, hDy i, map_zero]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem highest_preimage {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {ι : Type}
     (T : Submodule ℂ (Cq n V)) (a b : ι → Module.End ℂ (Cq n V)) (D : Module.End ℂ (Cq n V)) (y : Cq n V)
@@ -210,31 +208,29 @@ theorem highest_preimage {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProdu
     simp only [hc, hDy i, map_zero]
 
 /- English proof (translation)
-Introduce `hR n lam hlam lev hlev V _ _ E1 E2 hA u y hu hy hd hb`. Establish `hm : Monotone lev` using `hlev.1`. Establish `hP : IsPairA E1 E2` using `⟨hA.gl1, hA.gl2, hA.comm⟩`. Establish `hup : ∀ a b : Fin n, a < b → kA E1 E2 a b u = 0` using `fun a b hab => hu.2 a b hab rfl`. Take `⟨T, hTf, hyT, hTS, hTs⟩` from `GlobalTheory.T.exists_finite_levi_stable_chains n lev V E1 E2 _ y hA.locFin hy hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hC` using `GlobalTheory.T.levi_commute_unipotent_boundary n lev V E1 E2 hm hP`. Establish `hone` using `GlobalTheory.T.levi_raising_kills_top_chain n lev V E1 E2 u hup`. Take `⟨y', hy'T, hy'0, hy'b⟩` from `highest_preimage (ι := {pq : Fin n × Fin n // pq.1 < pq.2 ∧ lev pq.1 = lev pq.2}) T (fun i => Lv lev E1 E2 i.1.1 i.1.2) (fun i => Lv lev E1 E2 i.1.2 i.1.1) (bdL (inUU lev) E1 E2) y hTf (fun i x z => GlobalTheory.T.levi_adjoint_on_chains n lev V E1 E2 hA.unitK _ _ i.2.2 x z) (fun …`. Take `⟨hy's, hy'd⟩` from `hTS y' hy'T`. Take `⟨l, hnd, hmem, hcl⟩` from `GlobalTheory.CompanionTheory.RgClusterOrder.exists_inside_order n (fun _ => true) lev hm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hlc : ∀ e ∈ l, lev e.1.1 = lev e.1.2` using `fun e he => by`. Take `⟨-, h2⟩` from `(hmem e).1 he`. Use `le_antisymm (hm e.2.le) ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h3`. Conclude with `h2 (Finset.mem_filter.2 ⟨Finset.mem_univ _, rfl, not_le.1 h3⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hbd` using `GlobalTheory.T.boundary_prod_creation_levi_chains n lev V E1 E2 l y' hlc hcl hy's (fun e he => hy'0 ⟨e.1, e.2, hlc e he⟩)`. Rewrite `hbd` using `[bdL_inRR_eq E1 E2 hy's, hy'b, hb]`. Use `set l' : List (Lt n) := l.map fun i => (false, i) with hl'`. Establish `hmap : (l.map fun i => (creL (false, i) : Module.End ℂ (Cq n V))) = l'.map creL`. Rewrite using `[hl', List.map_map]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hnd' : l'.Nodup` using `hnd.map fun a b h => (Prod.ext_iff.1 h).2`. Establish `hout : ∀ i ∈ l', i ∉ omU lev`. Introduce `i hi h`. Take `⟨e, he, rfl⟩` from `List.mem_map.1 hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Finset.mem_filter.1 h).2.2` as an intermediate fact. Establish `h2` using `hlc e he`. Simplify using `only at this`. Use linear arithmetic over natural numbers and integers. Take `⟨c, hc0, hcw⟩` from `prod_creL_single (V := V) l' (omU lev) u hnd' hout`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hun : omU lev ∪ l'.toFinset = omN n`. Use extensionality with `⟨t, i⟩`. Simplify using `only [Finset.mem_union, List.mem_toFinset, hl', List.mem_map, omU, omN, Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | ⟨e, -, h⟩)`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Conclude with `h.1`. Conclude with `(Prod.ext_iff.1 h).1.symm`. Introduce and unpack `rfl`. Distinguish the cases in `h2 : lev i.1.1 < lev i.1.2`. Conclude with `Or.inl ⟨rfl, h2⟩`.
+Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `Or.inr ⟨i, (hmem i).2 ⟨Finset.mem_filter.2 ⟨Finset.mem_univ _, rfl⟩, fun h => h2 (Finset.mem_filter.1 h).2.2⟩, rfl⟩` and prove the remaining obligations. Establish `hcard : (omN n).card = (omU lev).card + l'.length`. Rewrite using `[← hun, Finset.card_union_of_disjoint, List.toFinset_card_of_nodup hnd']`. Conclude with `Finset.disjoint_left.2 fun i h1 h2 => hout i (List.mem_toFinset.1 h2) h1`. Take `⟨hs1, hs2⟩` from `suppL_degL_prod (V := V) (inRR lev) l' y' _ (fun i hi => by obtain ⟨e, -, rfl⟩ := List.mem_map.1 hi; exact Or.inl rfl) (fun A hA i hi => Or.inr (hy's A hA i hi)) hy'd`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set C : Cq n V := ((l'.map creL).prod : Module.End ℂ (Cq n V)) y' with hCd`. Establish `hsm : ∀ (s : ℂ) (x : Cq n V) (A : Finset (Lt n)), (s • x) A ≠ 0 → x A ≠ 0` using `fun s x A h h0 => h (by simp [h0])`. Use `hR n lam hlam lev hlev V E1 E2 hA u ((c⁻¹ * (-1 : ℂ) ^ l.length) • C) hu ?_ ?_ ?_` and prove the remaining obligations. Conclude with `fun A hA' => hs1 A (hsm _ C A hA')`. Introduce `A hA'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `hs2 A (hsm _ C A hA')`. Rewrite using `[h3, hcard]`. Establish `: l'.length = l.length` using `by rw [hl', List.length_map]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[map_smul, hCd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hbd` using `[hmap]`. Rewrite using `[hbd, hcw, hun, smul_smul, smul_smul]`. Establish `hlen : l'.length = l.length` using `by rw [hl', List.length_map]`. Establish `h1 : ((-1 : ℂ) ^ l.length) * ((-1 : ℂ) ^ l.length) = 1`. Rewrite using `[← mul_pow]`.
-
-Simplify using the standard rewrite rules. Establish `h2 : c⁻¹ * (-1 : ℂ) ^ l.length * (-1 : ℂ) ^ l.length * c = 1`. Rewrite using `[mul_assoc c⁻¹, h1, mul_one, inv_mul_cancel₀ hc0]`. Rewrite using `[h2, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injUU_of_injRL : InjRL → InjUU := by
   intro hR n lam hlam lev hlev V _ _ E1 E2 hA u y hu hy hd hb

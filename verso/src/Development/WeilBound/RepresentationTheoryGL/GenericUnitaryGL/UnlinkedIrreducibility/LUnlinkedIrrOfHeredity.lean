@@ -18,15 +18,15 @@ namespace GlobalTheory.RgGu.Unl
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.whittaker_rank_standard_of_heredity k (GlobalTheory.T.whittaker_heredity k) (PositivityTheory.rg.gu.whit.whitRankIrr k)`.
+A detailed English derivation is pending.
 -/
 theorem whitRankStd : GlobalTheory.BZSeg.WhitRankStd k :=
   GlobalTheory.T.whittaker_rank_standard_of_heredity k (GlobalTheory.T.whittaker_heredity k) (PositivityTheory.rg.gu.whit.whitRankIrr k)
 
 /- English proof (translation)
-Establish `hA : GlobalTheory.Published.IrreducibleAdmissibleGL` using `by first`. Consider the case `exact PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top`. Consider the case `exact PositivityTheory.Exh.irreducibleAdmissibleGL`. Consider the case `exact GlobalTheory.RgGu.irreducibleAdmissibleGL`. Establish `hF : GlobalTheory.BZSeg.ProdIrrFiniteLength k` using `by first`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `exact GlobalTheory.RgGu.prodIrrFiniteLength k`. Consider the case `exact fun h N x hd => GlobalTheory.CompanionTheory.ProdFL.hasFiniteLength_prodIrr hA x hd`. Conclude with `GlobalTheory.T.lUnlinkedIrr_of_irreducibleAdmissible k hA hJ hG hN (whitRankStd k) hF`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lUnlinkedIrr_nu (hJ : Zc.LSegJacquet k) (hG : GlobalTheory.Published.GeometricLemmaFiltration) (hN : GlobalTheory.BZSeg.NuPair k) :
     GlobalTheory.BZSeg.LUnlinkedIrr k := by
@@ -42,7 +42,7 @@ theorem lUnlinkedIrr_nu (hJ : Zc.LSegJacquet k) (hG : GlobalTheory.Published.Geo
   exact GlobalTheory.T.lUnlinkedIrr_of_irreducibleAdmissible k hA hJ hG hN (whitRankStd k) hF
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.unlinked_commute_of_irreducible k GlobalTheory.RgGu.irreducibleAdmissibleGL hL`.
+A detailed English derivation is pending.
 -/
 theorem lUnlinkedComm_of_irr (hL : GlobalTheory.BZSeg.LUnlinkedIrr k) : GlobalTheory.BZSeg.LUnlinkedComm k :=
   GlobalTheory.T.unlinked_commute_of_irreducible k GlobalTheory.RgGu.irreducibleAdmissibleGL hL

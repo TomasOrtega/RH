@@ -11,9 +11,9 @@ open PI.SqfLab
 variable {g : ℕ} [Fact g.Prime]
 
 /- English proof (translation)
-Establish `hint : IsIntegral (ZMod g) x` using `Algebra.IsIntegral.isIntegral x`. Establish `hfr` using `IntermediateField.adjoin.finrank hint`. Establish `: FiniteDimensional (ZMod g) (IntermediateField.adjoin (ZMod g) {x})` using `IntermediateField.adjoin.finiteDimensional hint`. Establish `: Finite (IntermediateField.adjoin (ZMod g) {x})` using `Module.finite_of_finite (ZMod g)`. Set `_` to `Fintype.ofFinite (IntermediateField.adjoin (ZMod g) {x})`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hc : Fintype.card (IntermediateField.adjoin (ZMod g) {x}) = g ^ (minpoly (ZMod g) x).natDegree`. Rewrite using `[Fintype.card_eq_nat_card, Module.natCard_eq_pow_finrank (K := ZMod g), Nat.card_zmod, hfr]`. Establish `h` using `FiniteField.pow_card (⟨x, IntermediateField.mem_adjoin_simple_self (ZMod g) x⟩ : IntermediateField.adjoin (ZMod g) {x})`. Rewrite `h` using `[hc]`. Conclude with `congrArg Subtype.val h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frob_fix (x : Fbar g) :
     x ^ (g ^ (minpoly (ZMod g) x).natDegree) = x := by
@@ -37,7 +37,7 @@ def Good (c : (ZMod g)ˣ) (P : (ZMod g)[X]) : Prop :=
     P ∣ X ^ (ℓ ^ j) - C ((c : ZMod g) ^ (ℓ ^ j))
 
 /- English proof (translation)
-Take `⟨q, rfl⟩` from `h`. Simplify using `[hz]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem aeval_eq_zero_of_dvd' {P Q : (ZMod g)[X]} (h : P ∣ Q) {z : Fbar g}
     (hz : aeval z P = 0) : aeval z Q = 0 := by
@@ -45,19 +45,17 @@ theorem aeval_eq_zero_of_dvd' {P Q : (ZMod g)[X]} (h : P ∣ Q) {z : Fbar g}
   simp [hz]
 
 /- English proof (translation)
-Take `⟨hmon, hirr, ℓ, hℓ, j, hdvd⟩` from `hP`. Use `set c' := algebraMap (ZMod g) (Fbar g) (c : ZMod g) with hc'`. Establish `hc0 : c' ≠ 0`. Rewrite using `[hc']`. Conclude with `(_root_.map_ne_zero _).2 c.ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz0 : aeval z P = 0`. Rewrite `hz` using `[mem_roots_map hmon.ne_zero]`. Rewrite using `[aeval_def]` and apply the resulting hypothesis. Establish `hmin : P = minpoly (ZMod g) z` using `minpoly.eq_of_irreducible_of_monic hirr hz0 hmon`. Establish `hfix : z ^ (g ^ P.natDegree) = z` using `by rw [hmin]; exact frob_fix z`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hℓj : z ^ (ℓ ^ j) = c' ^ (ℓ ^ j)`. Use `aeval_eq_zero_of_dvd' hdvd hz0` as an intermediate fact. Simplify using `only [map_sub, map_pow, aeval_X, aeval_C] at this`. Rewrite `this` using `[sub_eq_zero]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hzne : z ≠ 0`. Introduce `h0`. Rewrite `hℓj` using `[h0, zero_pow (pow_pos hℓ.pos j).ne']`. Conclude with `pow_ne_zero _ hc0 hℓj.symm`. Establish `hcfix : c' ^ (g ^ P.natDegree) = c'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc', ← map_pow, ZMod.pow_card_pow]`. Use `set y := z * c'⁻¹ with hy`. Establish `hy0 : y ≠ 0` using `mul_ne_zero hzne (inv_ne_zero hc0)`. Establish `hyfix : y ^ (g ^ P.natDegree) = y`. Rewrite using `[hy, mul_pow, inv_pow, hfix, hcfix]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hpos : 1 ≤ g ^ P.natDegree` using `Nat.one_le_pow _ _ (Fact.out : g.Prime).pos`. Use `⟨?_, ℓ, hℓ, j, ?_⟩` and prove the remaining obligations. Establish `h2 : y ^ (g ^ P.natDegree - 1) * y = 1 * y`. Rewrite using `[← pow_succ, Nat.sub_add_cancel hpos, hyfix, one_mul]`. Conclude with `mul_right_cancel₀ hy0 h2`.
-
-Rewrite using `[hy, mul_pow, inv_pow, hℓj, mul_inv_cancel₀ (pow_ne_zero _ hc0)]`.
+A detailed English derivation is pending.
 -/
 theorem good_root (c : (ZMod g)ˣ) (P : (ZMod g)[X]) (hP : Good c P) (z : Fbar g)
     (hz : z ∈ (P.map (algebraMap (ZMod g) (Fbar g))).roots) :

@@ -5,7 +5,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Establish `h : (Set.range fun i => (b i : E)) = (V.subtype.restrictScalars R) '' Set.range b`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[h, ← Submodule.map_span, Submodule.comap_map_eq_of_injective]`. Conclude with `Subtype.val_injective`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_restrict_comap_span {Ω R E : Type} [Field Ω] [AddCommGroup E] [Module Ω E] [Semiring R] [SMul R Ω]
     [Module R E] [IsScalarTower R Ω E] (V : Submodule Ω E) {r : ℕ} (b : Fin r → V) :
@@ -17,21 +17,19 @@ theorem lat_restrict_comap_span {Ω R E : Type} [Field Ω] [AddCommGroup E] [Mod
   exact Subtype.val_injective
 
 /- English proof (translation)
-Introduce `X Ω _ ξ E _ _ L T r V h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Take `⟨U, hpU, b, hb, hq⟩` from `h p hp`. Establish `hbV : ∀ i, b i ∈ V` using `fun i => hb ▸ Submodule.subset_span ⟨i, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `b' : Fin r → V` to `fun i => ⟨b i, hbV i⟩`. Establish `hval : (fun i => (b' i : E)) = b` using `rfl`. Use `⟨U, hpU, b', ?_, ?_⟩` and prove the remaining obligations. Apply `Submodule.map_injective_of_injective (f := V.subtype) Subtype.val_injective` to reduce the goal to its premises. Establish `h1 : (Set.range b) = V.subtype '' Set.range b'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[Submodule.map_span, ← h1, hb, Submodule.map_top, Submodule.range_subtype]`. Introduce `q hqT hqU`. Take `⟨hli, hsp⟩` from `hq q hqT hqU`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `LinearIndependent.of_comp V.subtype hli`. Use `show (L q).comap (V.subtype.restrictScalars (regAt ξ q)) = _`. Rewrite using `[hsp, ← hval]`. Conclude with `lat_restrict_comap_span V b'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `p hp`. Take `⟨U, hpU, b, hb, hq⟩` from `h p hp`. Take `⟨_, hsp⟩` from `hq p hp hpU`. Establish `hle : ∀ e ∈ L p, e ∈ V`. Introduce `e he`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `he` using `[hsp]`. Establish `: Submodule.span (regAt ξ p) (Set.range b) ≤ V.restrictScalars (regAt ξ p)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hb ▸ Submodule.subset_span ⟨i, rfl⟩`.
+Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `this he`. Use `show ((L p).comap (V.subtype.restrictScalars (regAt ξ p))).map (V.subtype.restrictScalars (regAt ξ p)) = L p`. Use extensionality with `e`. Simplify using `only [Submodule.mem_map, Submodule.mem_comap]`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `hv`. Introduce `he`. Conclude with `⟨⟨e, hle e he⟩, he, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Lat.restrict_isVBOn : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (E : Type)
     [AddCommGroup E] [Module Ω E] (L : Lat ξ E) (T : Set (Cpt ξ)) (r : ℕ) (V : Submodule Ω E),

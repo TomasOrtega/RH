@@ -23,7 +23,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Introduce `a b hab`. Conclude with `Submodule.map_mono (Submodule.map_mono (inf_le_inf_right _ fun x hx => Formalism.MainNotions.UnusedSlot80.LevR.filCris_anti T.ρ hab hx))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem filLev_anti (T : LocLat G Qp LL O) (i : ZMod n) :
     Antitone fun a : ℤ => Formalism.MainNotions.WachCoordinates.FilLev W T i 0 a := by
@@ -32,9 +32,9 @@ theorem filLev_anti (T : LocLat G Qp LL O) (i : ZMod n) :
     (inf_le_inf_right _ fun x hx => Formalism.MainNotions.UnusedSlot80.LevR.filCris_anti T.ρ hab hx))
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨x, hx, rfl⟩` from `hz`. Take `⟨τ, hτ, hover⟩` from `Formalism.MainNotions.UnusedSlot80.LevC.tau_over W hbij i`. Establish `h1` using `Formalism.MainNotions.UnusedSlot80.LevC.fil_low W T i τ hover hbij.2 H (hJ τ hτ) hx`. Establish `h2` using `Formalism.MainNotions.UnusedSlot80.LevR.filCris_anti T.ρ ha h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨x, ⟨x, ⟨h2, by simpa using hx⟩, by simp⟩, rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem ιDi_le_fil (hbij : Function.Bijective (algebraMap K₀ K)) (T : LocLat G Qp LL O) (i : ZMod n)
     (H : ℕ) (hJ : ∀ τ : K →ₐ[Qp] LL, Formalism.MainNotions.LiftingTheory.Over W τ i → ∀ a, IsJumpV PD T.ρ τ a → -(H : ℤ) ≤ a)
@@ -47,7 +47,7 @@ theorem ιDi_le_fil (hbij : Function.Bijective (algebraMap K₀ K)) (T : LocLat 
   refine ⟨x, ⟨x, ⟨h2, by simpa using hx⟩, by simp⟩, rfl⟩
 
 /- English proof (translation)
-Unfold `gE`. Rewrite using `[← algebraMap_smul W.EE (Formalism.MainNotions.LiftingTheory.qp W ^ c), smul_smul, map_pow, ← mul_pow, Ring.mul_inverse_cancel _ hq, one_pow, one_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem qp_smul_gE (hq : IsUnit (algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W))) (T : LocLat G Qp LL O)
     (h c : ℕ) {r : ℕ} (e' : Fin r → W.DD T) (Z : Matrix (Fin r) (Fin r) (PowerSeries O)) (k : Fin r) :
@@ -57,7 +57,7 @@ theorem qp_smul_gE (hq : IsUnit (algebraMap (LetA O n) W.EE (Formalism.MainNotio
     Ring.mul_inverse_cancel _ hq, one_pow, one_smul]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_pow, Ring.inverse_mul_cancel _ hq, one_pow, one_smul]`. Use `_ = (Ring.inverse (algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W))) ^ c • (algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W ^ c) • z) := by rw [smul_smul, map_pow]`. Use `_ = 0 := by rw [algebraMap_smul, hz, smul_zero]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qp_pow_inj (hq : IsUnit (algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W))) (T : LocLat G Qp LL O)
     (c : ℕ) (z : W.DD T) (hz : Formalism.MainNotions.LiftingTheory.qp W ^ c • z = 0) : z = 0 := by
@@ -69,17 +69,17 @@ theorem qp_pow_inj (hq : IsUnit (algebraMap (LetA O n) W.EE (Formalism.MainNotio
     _ = 0 := by rw [algebraMap_smul, hz, smul_zero]
 
 /- English proof (translation)
-The claim follows from `W.AΔ.add_mem (Formalism.MainNotions.RamifiedCoefficientChains.S9.LD.uniformizer_mem_delta_invariants W) (W.AΔ.natCast_mem _)`.
+A detailed English derivation is pending.
 -/
 theorem qp_mem_AΔ : Formalism.MainNotions.LiftingTheory.qp W ∈ W.AΔ :=
   W.AΔ.add_mem (Formalism.MainNotions.RamifiedCoefficientChains.S9.LD.uniformizer_mem_delta_invariants W) (W.AΔ.natCast_mem _)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Apply `sub_eq_zero.1` to reduce the goal to its premises. Apply `qp_pow_inj W hq T c` to reduce the goal to its premises. Rewrite using `[smul_sub, smul_comm (Formalism.MainNotions.LiftingTheory.qp W ^ c) (letE i : LetA O n) g, hgy, hy.1, sub_self]`. Introduce `δ hδ`.
+Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `sub_eq_zero.1` to reduce the goal to its premises. Apply `qp_pow_inj W hq T c` to reduce the goal to its premises. Establish `hA : W.γA δ (Formalism.MainNotions.LiftingTheory.qp W ^ c) = Formalism.MainNotions.LiftingTheory.qp W ^ c` using `W.AΔ.pow_mem (qp_mem_AΔ W) c δ hδ`. Establish `e` using `Formalism.MainNotions.RamifiedCoefficientChains.S9.NinQ.γD_smulA W T δ (Formalism.MainNotions.LiftingTheory.qp W ^ c) g`. Rewrite `e` using `[hA, hgy, hy.2 δ hδ]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[smul_sub, ← e, hgy, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dl_of_qp (hq : IsUnit (algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W))) (T : LocLat G Qp LL O)
     (i : ZMod n) (c : ℕ) (g y : W.DD T) (hgy : Formalism.MainNotions.LiftingTheory.qp W ^ c • g = y)
@@ -98,9 +98,9 @@ theorem dl_of_qp (hq : IsUnit (algebraMap (LetA O n) W.EE (Formalism.MainNotions
     rw [smul_sub, ← e, hgy, sub_self]
 
 /- English proof (translation)
-Establish `hfin1 : finrank K₀ K = 1`. Use `(LinearEquiv.ofBijective (Algebra.linearMap K₀ K) hA.1).finrank_eq` as an intermediate fact. Rewrite `this` using `[Module.finrank_self]`. Conclude with `this.symm`. Take `⟨-, -, h9'⟩` from `h9 T hT hA.2.1 hA.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hring, -⟩` from `h9' hfin1`. Conclude with `hring`.
+A detailed English derivation is pending.
 -/
 theorem ring_clauses_at_uniformizer (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (T : LocLat G Qp LL O)
     (hT : IsCrys PD T.ρ) : Formalism.MainNotions.RamifiedCoefficientChains.Sh.BT.Ring9 W := by
@@ -113,51 +113,45 @@ theorem ring_clauses_at_uniformizer (h9 : Formalism.MainNotions.DeltaInvariantLa
   exact hring
 
 /- English proof (translation)
-Establish `hie : (i.val + d) % 2 = 0` using `(Finset.mem_filter.1 hi).2`. Establish `hCA : Formalism.MainNotions.LiftingTheory.CaseA W` using `hS.1`. Establish `hT : IsCrys PD T₂.ρ` using `hS.2.2.2.2.2.1.2.1`. Establish `hl11 : 11 ≤ PD.p` using `hS.2.1`. Take `⟨ζ, hζ⟩` from `hS.2.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hπu, w, hw⟩` from `DetS.uniformizer_unit_and_q_factor W h9 hCA T₂ hT (by omega)`. Establish `hq` using `DetS.qp_unit W hπu`. Establish `hR9` using `ring_clauses_at_uniformizer W h9 hCA T₂ hT`. Take `⟨-, -, hmr', hwin, hfil, -⟩` from `id had`. Establish `hηb` using `Formalism.MainNotions.N.Pv.LocalLengthBound.rk_eta_lt W hS i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set h : ℕ := b i + S with hhdef`. Use `set k : Fin (finrank LL T₂.V) := Fin.castLE hmr j with hkdef`. Use `set c : ℕ := ((h : ℤ) + u j).toNat with hcdef`. Establish `hc : (c : ℤ) = h + u j` using `Int.toNat_of_nonneg (by have := (hwin j).1; omega)`. Establish `hyN : Formalism.MainNotions.LiftingTheory.qp W ^ h • ftE W T₂ e' Z k ∈ NDl W T₂ i`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `ftE`. Rewrite using `[Finset.smul_sum]`. Use `Submodule.sum_mem _ fun m₁ _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, pow_one]`. Establish `hm` using `DetA.qpφ_mem W hE hC hQ h5 h9 hS i hie e' had.1 m₁`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `ha` using `Formalism.MainNotions.RamifiedCoefficientChains.Sh.BT.evaluation_mem_invariants W hR9 (Z m₁ k)`. Use `⟨(W.N T₂).smul_mem _ hm.1, ?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm (letE i : LetA O n), hm.2.1]`. Rewrite using `[Formalism.MainNotions.RamifiedCoefficientChains.S9.NinQ.γD_smulA W T₂ δ, ha δ hδ, hm.2.2 δ hδ]`. Establish `hgy` using `qp_smul_gE W hq T₂ h c e' Z k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgDL` using `dl_of_qp W hq T₂ i c _ _ hgy hyN.2`. Take `⟨u0, hlq, hu0⟩` from `Formalism.MainNotions.RamifiedCoefficientChains.S9.NinQ.lev_q_X_mul W i ζ hζ (by omega) (Formalism.MainNotions.N.Pv.LocalLengthBound.p_ne_zero_LL W)`. Use `set U : PowerSeries LL := W.lev i ζ ((↑w⁻¹ : (LetA O n)ˣ) : LetA O n) * u0 with hUdef`. Establish `hwq : W.lev i ζ (Formalism.MainNotions.LiftingTheory.qp W) = PowerSeries.X * U`. Establish `e : Formalism.MainNotions.LiftingTheory.qp W = ((↑w⁻¹ : (LetA O n)ˣ) : LetA O n) * W.q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hw, ← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[e, map_mul, hlq, hUdef]`. Expand and normalize the polynomial expressions, which then agree. Establish `hU : PowerSeries.constantCoeff U ≠ 0`. Rewrite using `[hUdef, map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `mul_ne_zero ?_ hu0` and prove the remaining obligations. Conclude with `(PowerSeries.isUnit_iff_constantCoeff.1 ((Units.isUnit _).map (W.lev i ζ))).ne_zero`. Establish `hU0 : U ≠ 0` using `fun h0 => hU (by rw [h0, map_zero])`. Establish `hlevpow : ∀ t : ℕ, W.lev i ζ (Formalism.MainNotions.LiftingTheory.qp W ^ t) = PowerSeries.X ^ t * U ^ t`. Introduce `t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_pow, hwq, mul_pow]`. Establish `hlevne : ∀ t : ℕ, W.lev i ζ (Formalism.MainNotions.LiftingTheory.qp W ^ t) ≠ 0`. Introduce `t`. Rewrite using `[hlevpow]`. Conclude with `mul_ne_zero (pow_ne_zero _ PowerSeries.X_ne_zero) (pow_ne_zero _ hU0)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hEx, hDi, -, -, hconv, -, -⟩` from `hRu hCA T₂ hT i ζ hζ`. Take `⟨df, hdf, -⟩` from `hEx (ftE W T₂ e' Z k) _ hyN.1 (hlevne h)`. Take `⟨dg, hdg, -⟩` from `hEx (gE W T₂ h c e' Z k) (Formalism.MainNotions.LiftingTheory.qp W ^ c) (by rw [hgy]; exact hyN.1) (hlevne c)`. Establish `hy1` using `hconv (Formalism.MainNotions.LiftingTheory.qp W ^ h) _ df hdf`. Establish `hy2` using `hconv (Formalism.MainNotions.LiftingTheory.qp W ^ c) _ dg hdg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hy2` using `[hgy]`. Establish `huniq` using `(hEx (Formalism.MainNotions.LiftingTheory.qp W ^ h • ftE W T₂ e' Z k) 1 (by rw [one_smul]; exact hyN.1) (by rw [map_one]; exact one_ne_zero)).unique hy2 hy1`. Take `⟨mg, hmg⟩` from `hdg.1`. Establish `hi1 : i - 1 + ((1 : ℕ) : ZMod n) = i` using `by push_cast; ring`. Establish `hZ` using `hZP.2 k ζ hζ df (by rw [hi1]; exact hdf)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : ιV PD (LL` using `LL) (V := T₂.V) ((φVB PD (LL := LL) (V := T₂.V))^[1] (W.cmp T₂ ⟨e' k, (had.1.1 k).1⟩)) ∈ Formalism.MainNotions.WachCoordinates.FilLev W T₂ i 0 (u j) := by`. Rewrite using `[Function.iterate_one]`. Conclude with `hfil j _`. Use `set Fil : ℤ → Submodule LL (T₂.V ⊗[Qp] BdR) := fun a => Formalism.MainNotions.WachCoordinates.FilLev W T₂ i 0 a with hFil`. Establish `hanti : Antitone Fil` using `filLev_anti W T₂ i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hLBf : Formalism.MainNotions.N.Pv.LocalLengthBound.Ser.LB 0 df`. Introduce `t ht`. Rewrite using `[hZ t (by omega), if_neg (by omega)]`. Use `set Ff := Formalism.MainNotions.N.Pv.LocalLengthBound.Ser.smulS (U ^ h) df with hFf`. Use `set E := Formalism.MainNotions.N.Pv.LocalLengthBound.Ser.smulS (U ^ c) dg with hEdef`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hF_mem : ∀ s : ℤ, s < ((h + η : ℕ) : ℤ) → Ff s ∈ Fil (u j)`. Introduce `s hs`. Rewrite using `[hFf, Formalism.MainNotions.N.Pv.LocalLengthBound.Ser.smulS_eq_sum hLBf (U ^ h) s (s.toNat + 1) (by have := Int.self_le_toNat s; omega)]`. Use `Submodule.sum_mem _ fun t _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[hZ _ (by omega)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Conclude with `Submodule.smul_mem _ _ hv`. Conclude with `Submodule.zero_mem _`. Establish `hF_neg : ∀ s : ℤ, s < 0 → Ff s = 0` using `fun s hs => Formalism.MainNotions.N.Pv.LocalLengthBound.Ser.LB_smulS hLBf (U ^ h) s hs`. Establish `hEF : ∀ t : ℤ, E t = Ff (t + u j)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `t`. Establish `e1 : Formalism.MainNotions.RamifiedCoefficientChains.Sh.conv (W.lev i ζ (Formalism.MainNotions.LiftingTheory.qp W ^ c)) dg = fun s => E (s - c)`. Rewrite using `[hlevpow, Formalism.MainNotions.N.Pv.LocalLengthBound.conv_eq, Formalism.MainNotions.N.Pv.LocalLengthBound.Ser.smulS_mul hmg, Formalism.MainNotions.N.Pv.LocalLengthBound.Ser.smulS_X_pow (Formalism.MainNotions.N.Pv.LocalLengthBound.Ser.LB_smulS hmg _)]`. Establish `e2 : Formalism.MainNotions.RamifiedCoefficientChains.Sh.conv (W.lev i ζ (Formalism.MainNotions.LiftingTheory.qp W ^ h)) df = fun s => Ff (s - h)`. Rewrite using `[hlevpow, Formalism.MainNotions.N.Pv.LocalLengthBound.conv_eq, Formalism.MainNotions.N.Pv.LocalLengthBound.Ser.smulS_mul hLBf, Formalism.MainNotions.N.Pv.LocalLengthBound.Ser.smulS_X_pow (Formalism.MainNotions.N.Pv.LocalLengthBound.Ser.LB_smulS hLBf _)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e3` using `congrFun huniq (t + c)`. Rewrite `e3` using `[e1, e2]`. Simplify using `only at e3`. Rewrite `e3` using `[show t + (c : ℤ) - c = t by ring, show t + (c : ℤ) - h = t + u j by omega]`. Conclude with `e3`.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hEDi : ∀ t, E t ∈ Formalism.MainNotions.DeltaInvariantLattices.ιDi W T₂ i` using `fun t => Formalism.MainNotions.N.Pv.LocalLengthBound.smulS_mem hmg _ (hDi _ dg hgDL hdg) (U ^ c) t`. Establish `hlow : ∀ a : ℤ, a ≤ -(h : ℤ) → Formalism.MainNotions.DeltaInvariantLattices.ιDi W T₂ i ≤ Fil a`. Introduce `a ha`. Use `ιDi_le_fil W hCA.1 T₂ i h (fun τ hτ a' ha' => ?_) a ha` and prove the remaining obligations. Establish `hw2` using `Formalism.MainNotions.N.Pv.LocalLengthBound.rk_jumps₂ W hE hC hQ hS i τ hτ a' ha'`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `JumpWinS at hw2`. Rewrite `hw2` using `[if_pos hie]`. Simplify using `only [Set.mem_union, Set.mem_Icc] at hw2`. Rewrite using `[hhdef]`. Move the coercions through the operations in `at hw2 ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hDgE : Formalism.MainNotions.N.Pv.LocalLengthBound.Ser.Dg Fil 0 E`. Introduce `t`. Distinguish the cases in `ht : t + u j < ((h + η : ℕ) : ℤ)`. Rewrite using `[hEF t]`.
-
-Distinguish the cases in `h0 : t + u j < 0`. Rewrite using `[hF_neg _ h0]`. Conclude with `Submodule.zero_mem _`. Conclude with `hanti (show 0 - t ≤ u j by omega) (hF_mem _ ht)`. Conclude with `hlow (0 - t) (by have := (hwin j).2; push_cast at ht; omega) (hEDi t)`.
-
-Establish `hUc : PowerSeries.constantCoeff (U ^ c) ≠ 0` using `by rw [map_pow]; exact pow_ne_zero _ hU`. Establish `hdg_eq : dg = Formalism.MainNotions.N.Pv.LocalLengthBound.Ser.smulS (U ^ c)⁻¹ E` using `(Formalism.MainNotions.N.Pv.LocalLengthBound.Ser.smulS_inv hmg (U ^ c) hUc).symm`. Establish `hDg : Formalism.MainNotions.N.Pv.LocalLengthBound.Ser.Dg Fil 0 dg`. Rewrite using `[hdg_eq]`. Conclude with `Formalism.MainNotions.N.Pv.LocalLengthBound.Ser.Dg_smulS hanti (Formalism.MainNotions.N.Pv.LocalLengthBound.Ser.LB_smulS hmg _) hDgE _`.
-
-Establish `hcrit` using `(hEC hCA T₂ hT i ζ hζ _ dg hgDL hdg).1 ⟨c, by rw [hgy]; exact hyN.1⟩`. Use `⟨hcrit.2 fun t => ?_, hgDL⟩` and prove the remaining obligations. Use `hDg t` as an intermediate fact. Simplify `this` using `[hFil]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gE_mem (hE : Formalism.MainNotions.RamifiedCoefficientChains.DcrisExactStrict PD LL) (hC : Formalism.MainNotions.RamifiedCoefficientChains.CrysSubQuot PD LL)
     (hQ : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris PD LL) (h5 : Formalism.MainNotions.DeltaInvariantLattices.P5W W) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W)
@@ -290,7 +284,7 @@ theorem gE_mem (hE : Formalism.MainNotions.RamifiedCoefficientChains.DcrisExactS
   simpa [hFil] using this
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ hS i hi e' m' u had σ Z hZP j hmr` and use `gE_mem W hE hC hQ h5 h9 hRu hEC hS i hi e' m' u had σ Z hZP j hmr`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gMem_of (hE : Formalism.MainNotions.RamifiedCoefficientChains.DcrisExactStrict PD LL) (hC : Formalism.MainNotions.RamifiedCoefficientChains.CrysSubQuot PD LL)
     (hQ : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris PD LL) (h5 : Formalism.MainNotions.DeltaInvariantLattices.P5W W) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W)

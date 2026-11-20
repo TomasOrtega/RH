@@ -15,11 +15,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Introduce `p _ R _ N hN A _ hab hLE hN' G t ψ hψ l`. Take `⟨N', hc⟩` from `hN'`. Set `h : HdR A` to `l ∘ₗ Submodule.projectionOnto (PrimitiveSubmodule A) N' hc`. Take `⟨v, hv, -⟩` from `hLE.1 h`. Use `haveI := isAdicComplete_span_natCast_of_isNilpotent p R ⟨N, hN⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, -⟩` from `t.existsUnique_lieCorr hv.1`. Use `⟨x, fun c => ?_⟩` and prove the remaining obligations. Take `⟨⟨c, hc1⟩, hc2⟩` from `c`. Establish `hc3 : c ∈ F1 (A.hom ≫ 𝟙 _)` using `hc2`. Rewrite `hc3` using `[hodgeFiltration_eq_range]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨β, rfl⟩` from `hc3`. Rewrite using `[GlobalTheory.T.lie_pairing_canonical_rigidified_extension_tangent p R N hN A hab G t ψ hψ β hc1 hc2 x v hx, ← hv.2 β hc1]`. Express the relevant statement in the definitionally equal form `l (Submodule.projectionOnto (PrimitiveSubmodule A) N' hc ⟨_, hc1⟩) = _`. Conclude with `congrArg l (Submodule.projectionOnto_apply_left hc ⟨⟨_, hc1⟩, hc2⟩)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem exists_lie_comp_psi_eq : ∀ (p : ℕ) [Fact p.Prime]  (R : Type) [CommRing R] (N : ℕ), (p : R) ^ N = 0 → ∀ (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → LieExact A → (∃ N' : Submodule R (primDR A), IsCompl (PrimitiveSubmodule A) N') → ∀ (G : PDivGroup p R) (t : G.TorsionTower A) (ψ : PrimitiveSubmodule A →ₗ[R] G.omega), (∀ c : PrimitiveSubmodule A, IsCan t c.1 (G.rigOfOmega (ψ c))) → ∀ l : Module.Dual R (PrimitiveSubmodule A), ∃ x : G.Lie, ∀ c, x (ψ c) = l c := by
   intro p _ R _ N hN A _ hab hLE hN' G t ψ hψ l

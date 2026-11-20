@@ -12,11 +12,11 @@ noncomputable section
 namespace GlobalTheory.ClassUnfold
 
 /- English proof (translation)
-Introduce `H _ _ _ _ _ _ _ _ Γ _ γ hγ hc μ _ dt _ 𝓣 h𝓣 hfin f c hf hfc hO 𝓕 h𝓕`. Take `⟨α, hαm, hα1, hαI⟩` from `GlobalTheory.T.exists_weight_bruhat_fundamental_domain_centralizer H Γ γ hc μ dt 𝓣 h𝓣`. Establish `hL : ∀ G : H → ℝ≥0∞, Measurable G → ∫⁻ x in 𝓕, ∑' δ : GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.ratClass Γ γ, G (x⁻¹ * δ * x) ∂μ = dt 𝓣 * ∫⁻ q, G (q.out⁻¹ * γ * q.out) ∂(quotMeas (cent γ) dt μ)`. Introduce `G hG`. Establish `hψ : Measurable fun y : H => G (y⁻¹ * γ * y)` using `hG.comp (by fun_prop)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinv : LeftInv (cent γ) fun y : H => G (y⁻¹ * γ * y)` using `fun t ht y => by`. Establish `: (t * y)⁻¹ * γ * (t * y) = y⁻¹ * (t⁻¹ * (γ * t)) * y` using `by group`. Simplify using `only [this, ← mem_cent.1 ht, inv_mul_cancel_left]`. Establish `hF : ∀ g : Γ, AEMeasurable (fun x : H => α ((g : H) * x) * G (((g : H) * x)⁻¹ * γ * ((g : H) * x))) (μ.restrict 𝓕)` using `fun g => ((hαm.mul hψ).comp (measurable_const_mul (g : H))).aemeasurable`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `GlobalTheory.T.classTerm_converges_of_lintegral_unfolding_eq H Γ γ hγ μ 𝓕 (quotMeas (cent γ) dt μ) (dt 𝓣) hfin hL f c hf hfc hO.1 hO.2`.
+A detailed English derivation is pending.
 -/
 theorem hasClassInt_of_hasOrbInt : ∀ (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     [SecondCountableTopology H] [LocallyCompactSpace H] [T2Space H] [MeasurableSpace H] [BorelSpace H]

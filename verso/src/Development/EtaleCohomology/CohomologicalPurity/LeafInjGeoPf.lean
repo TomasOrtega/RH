@@ -6,11 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite
 namespace LateralTheory.CohomologicalPurity
 
 /- English proof (translation)
-Establish `h1 : (pullback.fst (pullback.fst f f ≫ f) ι ≫ pullback.fst f f) ≫ f = pullback.snd (pullback.fst f f ≫ f) ι ≫ ι`. Rewrite using `[Category.assoc]`. Conclude with `pullback.condition`. Establish `h2 : (pullback.fst (pullback.fst f f ≫ f) ι ≫ pullback.snd f f) ≫ f = pullback.snd (pullback.fst f f ≫ f) ι ≫ ι`. Rewrite using `[Category.assoc, ← pullback.condition]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1`. Establish `e1` using `hp.lift_fst _ _ h1`. Establish `e2` using `hp.lift_fst _ _ h2`. Establish `s1` using `hp.lift_snd _ _ h1`. Establish `s2` using `hp.lift_snd _ _ h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `s1`, `s2` using `[Category.comp_id]`. Rewrite using `[← e1, ← e2, s1, s2]`.
+A detailed English derivation is pending.
 -/
 theorem injGeo_fib {X' X Z : Scheme.{0}} (f : X' ⟶ X) (ι' : Z ⟶ X') (ι : Z ⟶ X)
     (hp : IsPullback ι' (𝟙 Z) f ι) :
@@ -30,7 +30,7 @@ theorem injGeo_fib {X' X Z : Scheme.{0}} (f : X' ⟶ X) (ι' : Z ⟶ X') (ι : Z
   rw [← e1, ← e2, s1, s2]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Simplify using `[injGeo_fib f ι' ι hp]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem injGeo_fib_diag {X' X Z : Scheme.{0}} (f : X' ⟶ X) (ι' : Z ⟶ X') (ι : Z ⟶ X)
     (hp : IsPullback ι' (𝟙 Z) f ι) :
@@ -41,7 +41,7 @@ theorem injGeo_fib_diag {X' X Z : Scheme.{0}} (f : X' ⟶ X) (ι' : Z ⟶ X') (�
   · simp [injGeo_fib f ι' ι hp]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨r, rfl⟩ : q ∈ Set.range (pullback.fst (pullback.fst f f ≫ f) ι) := by`. Rewrite using `[Scheme.Pullback.range_fst]`. Conclude with `hq`. Rewrite using `[injGeo_fib_diag f ι' ι hp]`. Conclude with `⟨(pullback.fst (pullback.fst f f ≫ f) ι ≫ pullback.fst f f) r, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem injGeo_mem {X' X Z : Scheme.{0}} (f : X' ⟶ X) (ι' : Z ⟶ X') (ι : Z ⟶ X)
     (hp : IsPullback ι' (𝟙 Z) f ι) (q : ↑(pullback f f))
@@ -52,23 +52,23 @@ theorem injGeo_mem {X' X Z : Scheme.{0}} (f : X' ⟶ X) (ι' : Z ⟶ X') (ι : Z
   exact ⟨(pullback.fst (pullback.fst f f ≫ f) ι ≫ pullback.fst f f) r, rfl⟩
 
 /- English proof (translation)
-Introduce `X' X Z f _ ι' ι _ hp U hU T y₁ y₂ hy`. Set `p : T ⟶ pullback f f` to `pullback.lift y₁ y₂ hy`. Set `W : T.Opens` to `p ⁻¹ᵁ (pullback.diagonal f).opensRange`. Set `V : T.Opens` to `(y₁ ≫ f) ⁻¹ᵁ U`. Establish `hW : ∀ (O : T.Opens), O ≤ W → O.ι ≫ y₁ = O.ι ≫ y₂`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `O hO`. Establish `H : Set.range (O.ι ≫ p) ⊆ Set.range (pullback.diagonal f)`. Introduce and unpack `_ ⟨t, rfl⟩`. Use `hO (show O.ι t ∈ O by rw [← SetLike.mem_coe, ← Scheme.Opens.range_ι]; exact ⟨t, rfl⟩)` as an intermediate fact. Simplify `this` using `[W]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hl` using `IsOpenImmersion.lift_fac (pullback.diagonal f) (O.ι ≫ p) H`. Establish `a1 : O.ι ≫ y₁ = (O.ι ≫ p) ≫ pullback.fst f f` using `by simp only [p, Category.assoc, pullback.lift_fst]`. Establish `a2 : O.ι ≫ y₂ = (O.ι ≫ p) ≫ pullback.snd f f` using `by simp only [p, Category.assoc, pullback.lift_snd]`. Rewrite using `[a1, a2, ← hl, Category.assoc, Category.assoc, pullback.diagonal_fst, pullback.diagonal_snd]`. Set `O : T → T.Opens` to `fun τ => if (y₁ ≫ f) τ ∈ (U : Set X) then V else W`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hO : ∀ τ, O τ ≤ W ∨ O τ ≤ V`. Introduce `τ`. Simplify using `only [O]`. Use `split_ifs`. Conclude with `Or.inr le_rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the second alternative. Prove the first alternative.
 
-Conclude with `Or.inl le_rfl`. Establish `hcov : ∀ τ, τ ∈ O τ`. Introduce `τ`. Simplify using `only [O]`. Use `split_ifs with h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h` using `[V]`. Establish `h' : (y₁ ≫ f) τ ∈ Set.range ι`. Establish `: (y₁ ≫ f) τ ∉ (Set.range ι)ᶜ` using `by rw [← hU]; exact h`. Simplify using `using this`. Establish `hq : (pullback.fst f f ≫ f) (p τ) ∈ Set.range ι`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: p ≫ pullback.fst f f ≫ f = y₁ ≫ f` using `by simp only [p, pullback.lift_fst_assoc]`. Rewrite `h'` using `[← this]`. Simplify using `using h'`. Simplify `injGeo_mem f ι' ι hp (p τ) hq` using `[W]`. Use `⟨Sieve.generate (Presieve.ofArrows (fun τ => (O τ).toScheme) (fun τ => (O τ).ι)), Precoverage.generate_mem_toGrothendieck ((Scheme.ofArrows_mem_precoverage_iff (P := @Etale)).2 ?_), ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Use `⟨fun τ => ⟨τ, ?_⟩, fun τ => inferInstance⟩` and prove the remaining obligations. Conclude with `⟨⟨τ, hcov τ⟩, rfl⟩`. Introduce and unpack `Y g ⟨Y', h, _, ⟨τ⟩, rfl⟩`. Break down `hO τ with h1 | h1` into its components or cases. Use `left`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc, hW _ h1]`. Use `right`. Use `⟨h ≫ (y₁ ≫ f).resLE U (O τ) h1, ?_⟩` and prove the remaining obligations. Simplify using `[Scheme.Hom.resLE_comp_ι]`.
+A detailed English derivation is pending.
 -/
 theorem LeafInjGeo_of : LeafInjGeo := by
   intro X' X Z f _ ι' ι _ hp U hU T y₁ y₂ hy

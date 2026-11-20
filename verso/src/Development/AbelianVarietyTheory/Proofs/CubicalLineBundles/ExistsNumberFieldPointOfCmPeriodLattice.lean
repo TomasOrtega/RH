@@ -23,9 +23,9 @@ section Points
 variable {S S' X : Scheme.{0}} {f : S' ⟶ S} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {φ : G'.left ⟶ G.left}
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `h1` using `map_list_prod (pushHom h (Over.mk t')) (List.ofFn x')`. Rewrite `h1` using `[List.map_ofFn]`. Establish `h2 : (pushHom h (Over.mk t')) ∘ x' = x` using `funext fun i => Over.OverMorphism.ext (hx i)`. Rewrite `h1` using `[h2]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congrArg (fun z => z.left) h1`.
+A detailed English derivation is pending.
 -/
 theorem prod_left (h : IsGrpPullback G' G f φ) {t' : X ⟶ S'} {t : X ⟶ S} (e : t' ≫ f = t) {n : ℕ}
     (x' : Fin n → (Over.mk t' ⟶ G')) (x : Fin n → (Over.mk t ⟶ G)) (hx : ∀ i, (x' i).left ≫ φ = (x i).left) :
@@ -40,7 +40,7 @@ theorem prod_left (h : IsGrpPullback G' G f φ) {t' : X ⟶ S'} {t : X ⟶ S} (e
 omit [GrpObj G] [GrpObj G'] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Over.homMk (h.lift x t' e) (h.lift_snd _ _ _), h.lift_fst _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lift_pt (h : IsPullback φ G'.hom G.hom f) {t' : X ⟶ S'} (x : X ⟶ G.left) (e : x ≫ G.hom = t' ≫ f) :
     ∃ x' : Over.mk t' ⟶ G', x'.left ≫ φ = x :=
@@ -49,13 +49,13 @@ theorem exists_lift_pt (h : IsPullback φ G'.hom G.hom f) {t' : X ⟶ S'} (x : X
 omit [GrpObj G] [GrpObj G'] in
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (h.hom_ext e ((Over.w x).trans (Over.w y).symm))`.
+A detailed English derivation is pending.
 -/
 theorem pt_ext (h : IsPullback φ G'.hom G.hom f) {T : Over S'} {x y : T ⟶ G'} (e : x.left ≫ φ = y.left ≫ φ) : x = y :=
   Over.OverMorphism.ext (h.hom_ext e ((Over.w x).trans (Over.w y).symm))
 
 /- English proof (translation)
-Take `⟨a, ha, ha'⟩` from `grpPullback_iso hG (isGrpPullback_pullback G f)`. Take `⟨b, hb, hb'⟩` from `grpPullback_iso (isGrpPullback_pullback H f) hH`. Use `⟨a.hom ≫ (Over.pullback f).map w ≫ b.hom, inferInstance, ?_⟩` and prove the remaining obligations. Establish `e : ((Over.pullback f).map w).left ≫ pullback.fst H.hom f = pullback.fst G.hom f ≫ w.left` using `pullback.lift_fst _ _ _`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, hb', e, ← Category.assoc, ha']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift_hom {H : Over S} {H' : Over S'} [GrpObj H] [GrpObj H'] {ψ : H'.left ⟶ H.left}
     (hG : IsGrpPullback G' G f φ) (hH : IsGrpPullback H' H f ψ) (w : G ⟶ H) [IsMonHom w] :
@@ -68,9 +68,9 @@ theorem exists_lift_hom {H : Over S} {H' : Over S'} [GrpObj H] [GrpObj H'] {ψ :
   rw [Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, hb', e, ← Category.assoc, ha']
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `⟨x, hx⟩` from `h (pushPt hG.1.w y)`. Use `choose x' hx' using fun i => exists_lift_pt hB (t' := t') (x i).left (Over.w (x i))`. Use `⟨x', pt_ext hG.1 ?_⟩` and prove the remaining obligations. Rewrite using `[prod_left hG rfl _ (fun i => x i ≫ w i) fun i => by`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hw, ← Category.assoc, hx'], ← hx]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem onto_lift {B : Over S} {B' : Over S'} {β : B'.left ⟶ B.left} (hB : IsPullback β B'.hom B.hom f)
     (hG : IsGrpPullback G' G f φ) {n : ℕ} (w : Fin n → (B ⟶ G)) (w' : Fin n → (B' ⟶ G'))
@@ -88,7 +88,7 @@ theorem onto_lift {B : Over S} {B' : Over S'} {β : B'.left ⟶ B.left} (hB : Is
 end Points
 
 /- English proof (translation)
-The claim follows from `| 0 => by have := hG.comm have : IsIso (Out.powObj G 0).hom := inferInstanceAs (IsIso (𝟙 S)) exact ⟨inferInstance, inferInstance, inferInstance, inferInstanceAs (GeometricallyConnected (𝟙 S))⟩ | n + 1 => AbelianSchemeGerms.isAbelianScheme_powObj G hG n`.
+A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_pow {S : Scheme.{0}} (G : Over S) [GrpObj G] (hG : IsAbelianScheme G) :
     ∀ n : ℕ, IsAbelianScheme (Out.powObj G n)
@@ -99,11 +99,11 @@ theorem isAbelianScheme_pow {S : Scheme.{0}} (G : Over S) [GrpObj G] (hG : IsAbe
   | n + 1 => AbelianSchemeGerms.isAbelianScheme_powObj G hG n
 
 /- English proof (translation)
-Use `hA.comm` as an intermediate fact. Establish `key : ∀ {T : Over (Sp R)} (x : T ⟶ Out.powObj B n), x ≫ (List.ofFn fun i => Out.powPr B i ≫ w i).prod = (List.ofFn fun i => (x ≫ Out.powPr B i) ≫ w i).prod`. Introduce `T x`. Establish `h1` using `map_list_prod (preHom (G := A) x) (List.ofFn fun i => Out.powPr B i ≫ w i)`. Rewrite `h1` using `[List.map_ofFn]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h1.trans ?_` and prove the remaining obligations. Use `congr 2`. Take `⟨x, hx⟩` from `(OntoSurj.surjective_of_onto_complex_points R σ hσ A (Out.powObj B n) (List.ofFn fun i => Out.powPr B i ≫ w i).prod hA (isAbelianScheme_pow B hB n) fun y => by`. Take `⟨x, hx⟩` from `h y`. Use `⟨(Out.powIsLimit B n).lift (Fan.mk _ x), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[key, hx]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `congrArg (· ≫ w i) ((Out.powIsLimit B n).fac (Fan.mk _ x) ⟨i⟩).symm).2 ℂ t y`. Conclude with `⟨fun i => x ≫ Out.powPr B i, by rw [hx, key]⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem onto_of_onto {R : Type} [CommRing R] [IsDomain R] (σ : R →+* ℂ) (hσ : Function.Injective σ)
     {A B : Over (Sp R)} [GrpObj A] [GrpObj B] (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) {n : ℕ}
@@ -130,9 +130,9 @@ theorem onto_of_onto {R : Type} [CommRing R] [IsDomain R] (σ : R →+* ℂ) (h�
   exact ⟨fun i => x ≫ Out.powPr B i, by rw [hx, key]⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Use `he 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Simplify using `using this.symm`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ n ih => rw [Fin.sum_univ_succ, he, ih, List.ofFn_succ, List.prod_cons]`.
+Treat this case separately.
 -/
 theorem map_sum_eq_prod {V Q : Type} [AddCommGroup V] [Group Q] (e : V → Q) (he : ∀ z w, e (z + w) = e z * e w)
     {n : ℕ} (z : Fin n → V) : e (∑ i, z i) = (List.ofFn fun i => e (z i)).prod := by
@@ -146,29 +146,25 @@ theorem map_sum_eq_prod {V Q : Type} [AddCommGroup V] [Group Q] (e : V → Q) (h
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hC hPt hT hL E _ _ _ H D l Xo g ty FU i Pe hP p q ⟨Z⟩`. Establish `hd` using `H.d_mod`. Take `⟨K, _, h2, hr⟩` from `exists_quadraticField_sq_eq_neg H.d_prime.pos`. Take `⟨M, _, w, P, v, hw, hg, hv, -, hcm, -⟩` from `hC H.d (by omega) H.d_prime.squarefree (by omega) K h2 hr`. Use `PureType.finiteDimensional_base l` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `k : IntermediateField ℚ ℂ` to `M ⊔ KA l`. Establish `hk : KA l ≤ k` using `le_sup_right`. Establish `hfin : FiniteDimensional ℚ k` using `inferInstance`. Set `f : 𝓞 M →+* k` to `(IntermediateField.inclusion (le_sup_left : M ≤ k)).toRingHom.comp (algebraMap (𝓞 M) M)`. Take `⟨P₀, π, hg₀, hπ, hL₀⟩` from `PureType.exists_baseChange hL.polBaseChange (spMap f) P`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨PC, ψ, hgC, hψ, hLC⟩` from `PureType.exists_baseChange hL.polBaseChange (spMap (algebraMap k ℂ)) P₀`. Take `⟨v₀, hv₀, -⟩` from `PureType.exists_tangent_over f hπ (hv.1 0)`. Take `⟨u₀, hu⟩` from `PureType.exists_isThetaUnif hT PC`. Establish `hLL : LBIso PC.L (P.L.pull (ψ ≫ π))` using `LBIso.trans PC.isLB (pull_isLB P₀.isLB ψ) (pull_isLB P.isLB _) hLC (LBIso.chartPull (chartPullPull P₀.L ψ ψ rfl) (chartPullSame P.L _ _ _ ψ fun _ => rfl) hL₀)`. Take `⟨c, hc0, hc⟩` from `hcm PC (ψ ≫ π) ⟨hgC.trans hg₀, (hψ.comp hπ).congr (spMap_comp_spMap _ _) rfl, hLL.symm⟩ u₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hc` using `[hw]`. Take `⟨R, hR, -, y, t, m, vR, φ, hy, hj, -, -, hφ⟩` from `hPt E H D l Xo g ty FU i Pe hP k hk hfin P₀ v₀ (hg₀.trans hg) hv₀ PC ψ u₀ c (hgC.trans (hg₀.trans hg)) hψ hLC hu hc0 hc (fun _ => ∅) (fun _ => Set.finite_empty) ⊥ Subalgebra.fg_bot`. Take `⟨ε, a, ha⟩` from `exists_pure_vectors_periods_span E H _ g ty Pe hP p q Z`. Establish `hρ : ∀ ρ : R →ₐ[k] ℂ, spMap ρ.toRingHom ≫ spMap (algebraMap k R) = spMap (algebraMap k ℂ)` using `fun ρ => (spMap_comp_spMap _ _).trans (congrArg _ ρ.comp_algebraMap)`. Establish `hB` using `isGrpPullback_pullback P₀.A (spMap (algebraMap k R))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : IsAbelianScheme t.G`. Use `Xo.univ.proper` as an intermediate fact. Establish `: IsProper t.G.hom` using `MorphismProperty.of_isPullback m.cart.1 this`. Conclude with `AbelianSchemeGerms.isAbelianScheme_of_proper _ t.semi`. Establish `onto` using `onto_of_onto R.val.toRingHom Subtype.val_injective hA (Out.TLinPf.isAb_pullback (spMap (algebraMap k R)) P₀.A P₀.isAb) (fun n => φ (ε n) (a n)) fun y' => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `FU.ex_onto i Pe hP (Over.homMk (y'.left ≫ m.φ) (by`. Rewrite using `[Category.assoc, m.cart.1.w, ← Category.assoc, Over.w y']`. Conclude with `hj))`. Take `⟨b, rfl⟩` from `ha z`. Use `choose x hx using fun n => exists_lift_pt (G := P₀.A) (G' := (Over.pullback (spMap (algebraMap k R))).obj P₀.A) hB.1 (t' := spMap R.val.toRingHom) ((u₀.ex fun _ => c * b n).left ≫ ψ) (by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hψ.1.w, ← Category.assoc, Over.w, hρ]`. Conclude with `Category.id_comp _)`. Use `⟨x, pt_ext m.cart.1 ?_⟩` and prove the remaining obligations. Rewrite using `[prod_left m.cart hj _ (fun n => FU.ex i Pe (b n • Pe (a n))) fun n => (Category.assoc _ _ _).trans ((hφ (ε n)).2 (a n) (b n) (x n).left (hx n) (Over.w (x n))), ← map_sum_eq_prod _ (FU.ex_add i Pe hP), hz]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : Smooth Xo.s`. Use `Xo.smooth` as an intermediate fact. Conclude with `SmoothOfRelativeDimension.smooth D.dim Xo.s`. Take `⟨K₁, hk₁, y₁, h₁, h₂, h₃⟩` from `exists_numberField_point_of_countable k R hR (KA l) (IntermediateField.inclusion hk).toRingHom Xo.X Xo.s y hy (by`. Use `(countable_points_of_onto hT hL E H D l Xo g ty FU PC).mono ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨ρ, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hy, spMap_comp_spMap]`. Conclude with `congrArg spMap (RingHom.ext fun x => ρ.commutes _)`. Choose the witnesses or unpack the hypotheses as in `⟨t', ⟨m'⟩⟩ : ∃ t' : SAB H (Sp ℂ), Nonempty (SABMap t' Xo.univ.t (spMap ρ.toRingHom ≫ y)) := by`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨_, _, _, _, _, m', -⟩` from `sabPull Out.CubePf.cubePull (spMap ρ.toRingHom ≫ y) Xo.univ.t`. Conclude with `⟨_, ⟨m'⟩⟩`. Set `κ` to `m.cart.1.lift m'.φ (t'.G.hom ≫ spMap ρ.toRingHom) (by rw [m'.cart.1.w, Category.assoc])`. Establish `hγ : IsGrpPullback t'.G t.G (spMap ρ.toRingHom) κ` using `m.cart.cancel (m'.cart.congr rfl (m.cart.1.lift_fst _ _ _).symm) (m.cart.1.lift_snd _ _ _)`. Set `β` to `hB.1.lift ψ (PC.A.hom ≫ spMap ρ.toRingHom) (by rw [hψ.1.w, Category.assoc, hρ])`.
-
-Establish `hβ : IsGrpPullback PC.A _ (spMap ρ.toRingHom) β` using `hB.cancel (hψ.congr (hρ ρ).symm (hB.1.lift_fst _ _ _).symm) (hB.1.lift_snd _ _ _)`. Use `choose w' hw₁ hw₂ using fun n => @exists_lift_hom _ _ _ _ _ _ _ _ _ _ _ _ _ hβ hγ (φ (ε n) (a n)) ((hφ (ε n)).1.1 (a n))`. Use `⟨t', m', _, w', hw₁, fun y' => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `onto_lift hβ.1 hγ _ w' hw₂ (Category.id_comp _) (onto _) y'`. Conclude with `⟨_, id, x, hx⟩)`.
-
-Conclude with `⟨K₁, hk.trans hk₁, y₁, h₁, h₂, h₃.trans hj⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_numberField_point_of_cmLat : CMCurve → CMPoint → ThetaUnifAV → Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n) (Pe : (FU.Di i).La →+ (Fin g → ℂ)) (hP : IsPeriod (FU.Di i) ty Pe) (p q : ℕ), Nonempty (CMLat hP p q) → ∃ (K₁ : IntermediateField ℚ ℂ) (hk : KA l ≤ K₁) (y : Sp K₁ ⟶ Xo.X), FiniteDimensional ℚ K₁ ∧ y ≫ Xo.s = spMap (IntermediateField.inclusion hk).toRingHom ∧ spMap (algebraMap K₁ ℂ) ≫ y = FU.u i Pe := by
   intro hC hPt hT hL E _ _ _ H D l Xo g ty FU i Pe hP p q ⟨Z⟩

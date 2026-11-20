@@ -9,31 +9,29 @@ open NumberField Matrix GlobalTheory.SgAlg GlobalTheory.SgGlob GlobalTheory.IntT
 namespace GlobalTheory.PtEx
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `w d hd hlt hinj hsur hC`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `⟨[], by simp, fun a ha => absurd ha (Nat.not_lt_zero a)⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Take `⟨s, hs⟩ : ∃ s, s = w 0 + 1` from `⟨_, rfl⟩`. Establish `hsn : s ≤ n` using `by have := hlt 0 hn; omega`. Establish `run (a : ℕ) : a < s → ∀ c ≤ a, w c + c + 1 = s ∧ d c = d 0`. Proceed by induction on `a with`. Consider the case `zero => intro _ c hc; obtain rfl : c = 0 := by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Conclude with `⟨by omega, rfl⟩`. Consider the case `succ a iha`. Introduce `ha c hc`. Establish `k` using `iha (by omega)`. Break down `Nat.lt_or_ge c (a + 1) with h | h` into its components or cases.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `k c (by omega)`. Take `rfl : c = a + 1` from `by omega`. Establish `ka` using `k a le_rfl`. Take `⟨b, hb, e⟩` from `hsur (w a - 1) (by omega)`. Establish `hab : a < b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `(k b (by omega)).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨rfl, e2⟩` from `hC a b hab hb (by omega)`. Conclude with `⟨by omega, e2.symm.trans ka.2⟩`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `lo (c : ℕ) (hc : c < s) : w c + c + 1 = s ∧ d c = d 0` using `run c hc c le_rfl`. Establish `hi (c : ℕ) (hc : s ≤ c) (hcn : c < n) : s ≤ w c`. Assume the negation of the conclusion as `h`. Establish `h1` using `(lo (s - 1 - w c) (by omega)).1`. Use `hinj c hcn (s - 1 - w c) (by omega) (by omega)` as an intermediate fact.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨bs, ⟨h1, h2⟩, h3⟩` from `ih (n - s) (by omega) (fun a => w (a + s) - s) (fun a => d (a + s)) (fun a ha => hd _ (by omega)) (fun a ha => by have := hlt (a + s) (by omega); have := hi (a + s) (by omega) (by omega); omega) (fun a ha b hb e => by`. Use `hi (a + s) (by omega) (by omega)` as an intermediate fact. Use `hi (b + s) (by omega) (by omega)` as an intermediate fact. Use `hinj (a + s) (by omega) (b + s) (by omega) (by omega)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use the proof step `omega)`. Use the proof step `(fun v hv => by`. Take `⟨b, hb, e⟩` from `hsur (v + s) (by omega)`. Establish `: s ≤ b`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components.
 
-Use `(lo b (by omega)).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `⟨b - s, by omega, by simp only [Nat.sub_add_cancel this]; omega⟩)`. Use the proof step `(fun a b hab hb e => by`. Use `hi (a + s) (by omega) (by omega)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `hi (b + s) (by omega) (by omega)` as an intermediate fact. Use `hC (a + s) (b + s) (by omega) (by omega) (by omega)` as an intermediate fact. Conclude with `⟨by omega, this.2⟩)`. Use `⟨(d 0, s) :: bs, ⟨?_, by simp [h2]; omega⟩, fun a ha b hb => ?_⟩` and prove the remaining obligations. Simplify using `only [List.mem_cons, forall_eq_or_imp]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨hd 0 hn, by omega⟩, h1⟩`. Rewrite using `[Formalism.MainNotions.S.ptEntry]`. Break down `Nat.lt_or_ge b s with hbs | hbs` into its components or cases. Take `⟨e1, e2⟩` from `lo b hbs`. Rewrite using `[e2]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Use `hi b hbs hb` as an intermediate fact. Rewrite using `[if_neg (by omega)]`. Break down `Nat.lt_or_ge a s with has | has` into its components or cases. Rewrite using `[if_neg (by omega), if_neg (by omega)]`.
-
-Rewrite using `[if_pos ⟨has, hbs⟩, h3 _ (by omega) _ (by omega)]`. Simplify using `only [Nat.sub_add_cancel hbs]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_blocks {K : Type} [Zero K] (n : ℕ) : ∀ (w : ℕ → ℕ) (d : ℕ → K), (∀ a < n, d a ≠ 0) →
     (∀ a < n, w a < n) → (∀ a < n, ∀ b < n, w a = w b → a = b) → (∀ v < n, ∃ a < n, w a = v) →
@@ -108,9 +106,9 @@ theorem exists_blocks {K : Type} [Zero K] (n : ℕ) : ∀ (w : ℕ → ℕ) (d :
         split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Take `⟨bs, h1, h2⟩` from `exists_blocks n (fun a => if h : a < n then (w ⟨a, h⟩ : ℕ) else 0) (fun a => if h : a < n then d ⟨a, h⟩ else 0) (fun a ha => by simpa [ha] using hd _) (fun a ha => by simp [ha]) (fun a ha b hb e => by`. Simplify using `only [ha, hb, dif_pos] at e`. Simplify using `using w.injective (Fin.ext e))`. Use the proof step `(fun v hv => ⟨w.symm ⟨v, hv⟩, (w.symm _).2, by simp⟩)`. Use the proof step `(fun a b hab hb e => by`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ha : a < n` using `hab.trans hb`. Simplify using `only [ha, hb, dif_pos] at e ⊢`. Conclude with `hC ⟨a, ha⟩ ⟨b, hb⟩ hab e)`. Use `⟨⟨bs, h1⟩, Matrix.ext fun a b => (h2 a a.2 b b.2).trans ?_⟩` and prove the remaining obligations. Simplify using `[Fin.ext_iff]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_point {K : Type} [Zero K] {n : ℕ} (w : Equiv.Perm (Fin n)) (d : Fin n → K) (hd : ∀ a, d a ≠ 0)
     (hC : ∀ a b, a < b → (w a : ℕ) = w b + 1 → (b : ℕ) = a + 1 ∧ d a = d b) :
@@ -132,9 +130,9 @@ theorem exists_point {K : Type} [Zero K] {n : ℕ} (w : Equiv.Perm (Fin n)) (d :
 variable {E : Type} [Field E]
 
 /- English proof (translation)
-Establish `h : (Z.submatrix Fin.revPerm id).det ≠ 0`. Rewrite using `[Matrix.det_permute]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n))) with e | e <;> simpa [e] using hZ`. Take `⟨m, v, hv, u, hu, e⟩` from `GlobalTheory.FinGL.Bruhat.exists_decomp (Matrix.GeneralLinearGroup.mkOfDetNeZero _ h)`. Use `⟨(v : Matrix (Fin n) (Fin n) E).submatrix Fin.rev Fin.rev, u, m.1.trans Fin.revPerm, fun b => m.2 b, fun i j => ⟨fun h => Formalism.L2.DIV.unip_lower hv (by simpa using h), fun h => h ▸ Formalism.L2.DIV.unip_diag hv _⟩, fun i j => ⟨fun h => Formalism.L2.DIV.unip_lower hu h, fun h …` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `a b`. Use `congrFun (congrFun e a.rev) b` as an intermediate fact. Simplify using `only [Matrix.GeneralLinearGroup.mkOfDetNeZero, Matrix.mul_apply] at this`. Simplify `this` using `[Matrix.mul_apply, GlobalTheory.FinGL.Bruhat.mono]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_lo_mono_up {n : ℕ} {Z : Matrix (Fin n) (Fin n) E} (hZ : Z.det ≠ 0) :
     ∃ (l u : Matrix (Fin n) (Fin n) E) (w : Equiv.Perm (Fin n)) (d : Fin n → E), IsLo l ∧ IsUp u ∧
@@ -158,27 +156,27 @@ variable {σ : E →+* E} {n r : ℕ} {J : Matrix (Fin n) (Fin n) E} {T T' : E}
   {P P' : Matrix (Fin n) (Fin (r + 1)) E} {Z A A' : Matrix (Fin (r + 1)) (Fin (r + 1)) E}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT, hσ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_cT (hσ : ∀ x, σ (σ x) = x) {a b : Type} (M : Matrix a b E) : cT σ (cT σ M) = M := by
   ext i j
   simp [cT, hσ]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_add {a b : Type} (M N : Matrix a b E) : cT σ (M + N) = cT σ M + cT σ N := by
   ext i j
   simp [cT]
 
 /- English proof (translation)
-Rewrite using `[cT, Matrix.det_transpose, RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_cT (Z : Matrix (Fin n) (Fin n) E) : (cT σ Z).det = σ Z.det := by
   rw [cT, Matrix.det_transpose, RingHom.map_det]; rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = Fin.last r <;> simp [TF, h, hA _ _ (Fin.le_last _)]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : j = Fin.last r <;> simp [TF, cT, h, hA _ _ (Fin.le_last _)]`.
+Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem TF_mul_strict (hA : IsStrict A) : TF r T * A = 0 ∧ cT σ A * TF r T = 0 := by
   constructor
@@ -188,17 +186,17 @@ theorem TF_mul_strict (hA : IsStrict A) : TF r T * A = 0 ∧ cT σ A * TF r T = 
     by_cases h : j = Fin.last r <;> simp [TF, cT, h, hA _ _ (Fin.le_last _)]
 
 /- English proof (translation)
-Introduce `h`. Take `⟨v, hv, e⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Rewrite `e` using `[← Sum.elim_comp_inl_inr v, Matrix.fromBlocks_mulVec]`. Simplify using `only [Sum.elim_comp_inl, Sum.elim_comp_inr] at e`. Establish `e1 : TF r T *ᵥ (v ∘ Sum.inl) + Z *ᵥ (v ∘ Sum.inr) = 0` using `funext fun i => congrFun e (Sum.inl i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : TF r T' *ᵥ (v ∘ Sum.inr) + cT σ Z *ᵥ (v ∘ Sum.inl) = 0` using `(add_comm _ _).trans (funext fun i => congrFun e (Sum.inr i))`. Apply `hv` to reduce the goal to its premises. Rewrite using `[← Sum.elim_comp_inl_inr v]`. Generalize the expression as in `v ∘ Sum.inl = a at *`. Generalize the expression as in `v ∘ Sum.inr = a' at *`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `d1` using `Iota.det_mul_last e1`. Establish `d2` using `Iota.det_mul_last e2`. Establish `c2 : SgAlg.lead (cT σ Z) r (Nat.le_succ r) = σ (SgAlg.lead Z r (Nat.le_succ r))`. Rewrite using `[SgAlg.lead, SgAlg.lead, ← det_cT]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `d2` using `[det_cT, c2]`. Establish `l1 : a (Fin.last r) = 0` using `(mul_eq_zero.1 (by`. Rewrite using `[Gq]`. Take the linear combination `Z.det * d2 + T' * σ (SgAlg.lead Z r (Nat.le_succ r)) * d1)).resolve_left hG`. Establish `l2 : a' (Fin.last r) = 0` using `(mul_eq_zero.1 (by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[Gq]`. Take the linear combination `σ Z.det * d1 + T * SgAlg.lead Z r (Nat.le_succ r) * d2)).resolve_left hG`. Establish `k (T : E) {x : Fin (r + 1) → E} (hx : x (Fin.last r) = 0) : TF r T *ᵥ x = 0`. Use extensionality with `i`. Apply the tactic sequence `by_cases hi : i = Fin.last r <;> simp [TF, Matrix.mulVec_diagonal, hi, hx]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `e1` using `[k T l1, zero_add]`. Rewrite `e2` using `[k T' l2, zero_add]`. Rewrite using `[Matrix.eq_zero_of_mulVec_eq_zero hZ e1, Matrix.eq_zero_of_mulVec_eq_zero (by rw [det_cT]; simpa using hZ) e2]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_gram_ne_zero (hZ : Z.det ≠ 0) (hG : Gq σ T T' Z ≠ 0) :
     (Matrix.fromBlocks (TF r T) Z (cT σ Z) (TF r T')).det ≠ 0 := by
@@ -235,11 +233,11 @@ theorem det_gram_ne_zero (hZ : Z.det ≠ 0) (hG : Gq σ T T' Z ≠ 0) :
   simp
 
 /- English proof (translation)
-Establish `h1 : cT σ A *ᵥ ((cT σ P * J) *ᵥ x) = 0`. Use extensionality with `i`. Rewrite using `[Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc]`. Establish `k (a : Fin r) : ((cT σ P * J) *ᵥ x) a.castSucc = 0` using `congrFun ((mem_perpX P x).1 hx) a`. Simplify using `only [k, mul_zero, Finset.sum_const_zero, zero_add]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[cT, hA _ _ (Fin.le_last _)]`. Establish `h2 : A' *ᵥ c' = 0`. Use `Matrix.eq_zero_of_mulVec_eq_zero hZ ?_` and prove the remaining obligations. Rewrite `h1` using `[← e, Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, (TF_mul_strict hA).2, Matrix.zero_mulVec, zero_add, eq_neg_of_add_eq_zero_left h, Matrix.neg_mulVec, neg_eq_zero]`. Rewrite using `[Matrix.mulVec_mulVec]` and apply the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[h2, Matrix.mulVec_zero, add_zero]`. Use `⟨fun a => (A *ᵥ c) a.castSucc, (Iota.eOf_mulVec P _).trans (congrArg _ ?_)⟩` and prove the remaining obligations. Use extensionality with `i`. Proceed by induction on `i using Fin.lastCases`. Simplify using `[Matrix.mulVec, dotProduct, hA _ _ (Fin.le_last _)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Proceed by induction. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -266,29 +264,25 @@ theorem mem_spanX_of_perp (hZ : Z.det ≠ 0) (hA : IsStrict A) (h : cT σ A * Z 
   · simp
 
 /- English proof (translation)
-Establish `h' : cT σ A' * cT σ Z + cT σ Z * A = 0`. Use `congrArg (cT σ) h` as an intermediate fact. Rewrite `this` using `[cT_add, cT_mul, cT_mul, cT_cT hσ]`. Conclude with `(add_comm _ _).trans <| this.trans (by ext; simp [cT])`. Establish `eZ' : cT σ Z = pairM σ J P P'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eZ, pairM, pairM, cT_mul, cT_mul, cT_cT hσ, hJ, Matrix.mul_assoc]`. Use `set Q := Matrix.fromCols P P' with hQ`. Use `set B := Matrix.fromBlocks A 0 0 A' with hB`. Use `set Γ := Matrix.fromBlocks (TF r T) Z (cT σ Z) (TF r T') with hΓ`. Establish `hu : IsUnit Γ.det` using `(det_gram_ne_zero hZ hG).isUnit`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `cQ : cT σ Q = Matrix.fromRows (cT σ P) (cT σ P')`. Apply the tactic sequence `ext (i | i) j <;> rfl`. Establish `cB : cT σ B = Matrix.fromBlocks (cT σ A) 0 0 (cT σ A')`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [hB, cT]`. Establish `g : cT σ Q * J * Q = Γ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[cQ, Matrix.fromRows_mul, hQ, Matrix.fromRows_mul_fromCols, hΓ, eZ', eZ, ← hP.2, ← hP'.2]`. Both sides reduce to the same expression. Establish `cΓ : cT σ Γ = Γ` using `by rw [← g, cT_mul, cT_mul, cT_cT hσ, hJ, Matrix.mul_assoc]`. Establish `cΓi : cT σ Γ⁻¹ = Γ⁻¹`. Use `(Matrix.inv_eq_left_inv ?_).symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => enter [2]`. Rewrite using `[← cΓ]`. Rewrite using `[← cT_mul, Matrix.mul_nonsing_inv _ hu]`. Use extensionality with `i j`. Simplify using `[cT, Matrix.one_apply, eq_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sk : cT σ B * Γ + Γ * B = 0`. Rewrite using `[cB, hΓ, hB, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply, Matrix.fromBlocks_add]`. Simplify using `[TF_mul_strict hA (σ := σ), TF_mul_strict hA' (σ := σ), h, h']`. Establish `sk' : Γ⁻¹ * cT σ B + B * Γ⁻¹ = 0`. Use `congrArg (fun M => Γ⁻¹ * M * Γ⁻¹) sk` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.nonsing_inv_mul_cancel_left _ _ hu, Matrix.mul_one, Matrix.mul_zero, Matrix.zero_mul]`. Use `set Y := Q * B * Γ⁻¹ * (cT σ Q * J) with hY`. Establish `y1 : cT σ Y * J + J * Y = 0`. Use `congrArg (fun M => J * Q * M * (cT σ Q * J)) sk'` as an intermediate fact. Simplify using `only [hY, cT_mul, cT_cT hσ, hJ, cΓi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify `this` using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_zero, Matrix.zero_mul]`. Establish `y2 : Matrix.fromCols (Y * P) (Y * P') = Matrix.fromCols (P * A) (P' * A')`. Rewrite using `[← Matrix.mul_fromCols, ← hQ, hY, Matrix.mul_assoc, g, Matrix.nonsing_inv_mul_cancel_right _ _ hu, hQ, hB, Matrix.fromCols_mul_fromBlocks]`. Simplify using the standard rewrite rules. Establish `y3 (x : Fin n → E) : ∃ c c', Y *ᵥ x = P *ᵥ (A *ᵥ c) + P' *ᵥ (A' *ᵥ c') ∧ TF r T *ᵥ c + Z *ᵥ c' = (cT σ P * J) *ᵥ x ∧ TF r T' *ᵥ c' + cT σ Z *ᵥ c = (cT σ P' * J) *ᵥ x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv⟩ : ∃ v, v = Γ⁻¹ *ᵥ ((cT σ Q * J) *ᵥ x)` from `⟨_, rfl⟩`. Establish `e : Γ *ᵥ v = (cT σ Q * J) *ᵥ x`. Rewrite using `[hv, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hu, Matrix.one_mulVec]`. Rewrite `e` using `[hΓ, Matrix.fromBlocks_mulVec, cQ, Matrix.fromRows_mul, Matrix.fromRows_mulVec]`. Use `⟨v ∘ Sum.inl, v ∘ Sum.inr, ?_, funext fun i => congrFun e (Sum.inl i), (add_comm _ _).trans (funext fun i => congrFun e (Sum.inr i))⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hY, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← hv, ← Matrix.mulVec_mulVec, hB, Matrix.fromBlocks_mulVec, hQ, Matrix.fromCols_mulVec_sumElim]`. Simplify using the standard rewrite rules. Take `⟨y4, y5⟩` from `Matrix.fromCols_ext_iff .. |>.1 y2`. Use `⟨Y, ⟨y1, hA, y4, fun x hx => ?_⟩, y1, hA', y5, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨c, c', e1, e2, -⟩` from `y3 x`.
-
-Rewrite using `[e1]`. Conclude with `mem_spanX_of_perp hZ hA h hx e2`. Take `⟨c, c', e1, -, e2⟩` from `y3 x`. Rewrite using `[e1, add_comm]`. Use `mem_spanX_of_perp (by rw [det_cT]; simpa using hZ) hA' ?_ hx e2` and prove the remaining obligations.
-
-Conclude with `h'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_lieN (hσ : ∀ x, σ (σ x) = x) (hJ : cT σ J = J) (hP : IsFrame σ J T P) (hP' : IsFrame σ J T' P')
     (eZ : Z = pairM σ J P' P) (hZ : Z.det ≠ 0) (hG : Gq σ T T' Z ≠ 0)
@@ -363,11 +357,9 @@ variable {σ : E →+* E} {n r : ℕ} {J : Matrix (Fin n) (Fin n) E} {T T' : E}
   {P P' : Matrix (Fin n) (Fin (r + 1)) E} {Z A A' : Matrix (Fin (r + 1)) (Fin (r + 1)) E}
 
 /- English proof (translation)
-Rewrite using `[simpleSum]`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single (⟨a, by have := b.2; omega⟩ : Fin r) _ (by simp)]`. Rewrite using `[Matrix.single_apply, if_pos ⟨rfl, Fin.ext h⟩]`. Introduce `k _ hk`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.single_apply, if_neg]`. Introduce and unpack `⟨rfl, -⟩`. Conclude with `hk rfl`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.single_apply, if_neg]`.
-
-Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `h rfl`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem simpleSum_single (a b : Fin (r + 1)) (x : E) :
     simpleSum (Matrix.single a b x) = if (b : ℕ) = a + 1 then x else 0 := by
@@ -385,7 +377,7 @@ theorem simpleSum_single (a b : Fin (r + 1)) (x : E) :
     exact h rfl
 
 /- English proof (translation)
-Introduce `i j hij`. Rewrite using `[Matrix.single_apply, if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `h.not_ge hij`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isStrict_single {m : ℕ} {a b : Fin m} (h : a < b) (x : E) : IsStrict (Matrix.single a b x) := by
   intro i j hij
@@ -396,17 +388,17 @@ theorem isStrict_single {m : ℕ} {a b : Fin m} (h : a < b) (x : E) : IsStrict (
 variable [CharZero E]
 
 /- English proof (translation)
-Establish `key (c : E) : c * (d a + if (b : ℕ) = a + 1 then d b else 0) + σ (c * (d a + if (b : ℕ) = a + 1 then d b else 0)) = 0`. Take `⟨Y, h1, h2⟩` from `exists_lieN hσ hJ hP hP' eZ hZ hG (isStrict_single (a := w b) (b := w a) (by rw [Fin.lt_def]; omega) (σ (-(c * d a)))) (isStrict_single hab (c * d b)) (by`. Establish `e : cT σ (Matrix.single (w b) (w a) (σ (-(c * d a)))) = Matrix.single (w a) (w b) (-(c * d a))`. Use extensionality with `i j`. Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply, Matrix.single_apply, apply_ite σ, hσ, map_zero, and_comm]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, hM]`. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.mul_apply, Matrix.single_apply, Matrix.of_apply, Matrix.zero_apply]`. Rewrite using `[Finset.sum_eq_single (w b) (fun k _ hk => by simp [hk.symm]) (by simp), Finset.sum_eq_single a (fun k _ hk => by simp [hk.symm]) (by simp)]`. Apply the tactic sequence `by_cases h1 : w a = i <;> by_cases h2 : b = j`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Substitute `h1 h2` using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h2]`. Simplify using `[h1, Ne.symm h1]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h2])`. Use `hR _ _ _ h1 h2` as an intermediate fact. Rewrite `this` using `[simpleSum_single, simpleSum_single, if_pos hw]`. Apply the tactic sequence `split_ifs at this ⊢ <;> simp only [map_sub, map_neg, map_mul, map_add, map_zero, hσ] at this ⊢ <;>`. Take the linear combination `-this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h0 : (d a + if (b : ℕ) = a + 1 then d b else 0) = 0`. Assume the negation of the conclusion as `h`. Use `key (d a + if (b : ℕ) = a + 1 then d b else 0)⁻¹` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel₀ h, map_one]`. Evaluate the numerical expressions using `at this`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Distinguish the cases in `h : (b : ℕ) = a + 1`. Rewrite `h0` using `[if_pos h]`. Conclude with `⟨h, eq_neg_of_add_eq_zero_left h0⟩`. Rewrite `h0` using `[if_neg h, add_zero]`. Conclude with `absurd h0 (hd a)`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inversion_of_relevant (hσ : ∀ x, σ (σ x) = x) (hJ : cT σ J = J) (hP : IsFrame σ J T P)
     (hP' : IsFrame σ J T' P') {w : Equiv.Perm (Fin (r + 1))} {d : Fin (r + 1) → E} (hd : ∀ a, d a ≠ 0)
@@ -448,13 +440,13 @@ theorem inversion_of_relevant (hσ : ∀ x, σ (σ x) = x) (hJ : cT σ J = J) (h
     exact absurd h0 (hd a)
 
 /- English proof (translation)
-Take `⟨l, u, w, d, hl, hu, hd, e⟩` from `exists_lo_mono_up hZ`. Use `set M : Matrix (Fin (r + 1)) (Fin (r + 1)) E := Matrix.of fun a b => if a = w b then d b else 0 with hM`. Establish `hv : IsUp (cT σ l)` using `fun i j => ⟨fun h => by simp [cT, (hl j i).1 h], fun h => by simp [cT, (hl j i).2 h.symm]⟩`. Establish `e1 : cT σ (cT σ l)⁻¹ * l = 1` using `by conv_lhs => enter [2]; rw [← cT_cT hσ l]`. Rewrite using `[← cT_mul, up_mul_inv hv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `[cT, Matrix.one_apply, eq_comm]`. Establish `e2 : M = pairM σ J (P' * u⁻¹) (P * (cT σ l)⁻¹)`. Rewrite using `[pairM_mul, ← eZ, e, ← Matrix.mul_assoc, ← Matrix.mul_assoc, e1, Matrix.one_mul, Matrix.mul_assoc, up_mul_inv hu, Matrix.mul_one]`. Establish `h1 : M.det ≠ 0` using `fun h => hZ (by rw [e, Matrix.det_mul, Matrix.det_mul, h, mul_zero, zero_mul])`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Gq σ T T' M ≠ 0` using `by rwa [e, Gq_mul T T' hl hu] at hG`. Take `⟨p, hp⟩` from `exists_point w (fun b => d b * (-1) ^ (r - (b : ℕ))) (fun a => mul_ne_zero (hd a) (pow_ne_zero _ (neg_ne_zero.2 one_ne_zero))) fun a b hab hw => by`. Take `⟨k1, k2⟩` from `inversion_of_relevant hσ hJ.1 (isFrame_mul hP (up_inv hv)) (isFrame_mul hP' (up_inv hu)) hd e2 hM h1 h2 (hR.mul (up_inv hv) (up_inv hu)) hab hw`. Use `⟨k1, ?_⟩` and prove the remaining obligations. Rewrite using `[k2, show r - (a : ℕ) = r - (b : ℕ) + 1 by have := b.2; omega, pow_succ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨p, e ▸ LiesAt.mul ⟨1, 1, fun _ _ => ⟨fun h => Matrix.one_apply_ne h.ne, fun h => h ▸ Matrix.one_apply_eq _⟩, up_one, ?_⟩ hl hu⟩` and prove the remaining obligations. Rewrite using `[hp, Matrix.one_mul, Matrix.mul_one]`. Use extensionality with `i j`. Simplify using `[eps, hM]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_liesAt (hσ : ∀ x, σ (σ x) = x) (hJ : IsHermU σ J) (hP : IsFrame σ J T P)
     (hP' : IsFrame σ J T' P') (eZ : Z = pairM σ J P' P) (hZ : Z.det ≠ 0) (hG : Gq σ T T' Z ≠ 0)
@@ -495,25 +487,23 @@ open scoped ComplexOrder
 variable {n r p : ℕ}
 
 /- English proof (translation)
-Introduce `h`. Take `⟨a, ha, e⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Take `⟨ε, Q, hQ⟩` from `hs`. Set `co : (Fin n → ℂ) →ₗ[ℂ] (Fin p ⊕ Fin (r + 1) → ℂ)` to `(Q⁻¹ : GL _ ℂ).1.mulVecLin ∘ₗ LinearMap.funLeft ℂ ℂ ε.symm`. Establish `hco (x : Fin n → ℂ) : x ∘ ε.symm = Q.1 *ᵥ co x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ = Q.1 *ᵥ ((Q⁻¹ : GL _ ℂ).1 *ᵥ (x ∘ ε.symm))`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `hq (x : Fin n → ℂ) : star x ⬝ᵥ J *ᵥ x = star (co x) ⬝ᵥ Formalism.UG.Jpq p (r + 1) *ᵥ co x`. Rewrite using `[← hQ, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← hco, Matrix.dotProduct_mulVec (star (co x)), show Formalism.UG.cT (starRingEnd ℂ) Q.1 = Q.1ᴴ from rfl, ← Matrix.star_mulVec, ← hco, Matrix.reindex_apply, Matrix.submatrix_mulVec_equiv]`. Rewrite using `[← comp_equiv_symm_dotProduct]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `i`. Simplify using the standard rewrite rules. Use `congr 1`. Use extensionality with `i`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Set `f : ((Fin (r + 1) → ℂ) × ℂ) →ₗ[ℂ] (Fin (r + 1) → ℂ)` to `LinearMap.funLeft ℂ ℂ Sum.inr ∘ₗ co ∘ₗ (P.mulVecLin.coprod (LinearMap.toSpanSingleton ℂ _ (P' *ᵥ a)))`. Take `⟨⟨c, t⟩, h0, hne⟩` from `(Submodule.ne_bot_iff _).1 (LinearMap.ker_ne_bot_of_finrank_lt (f := f) (by simp))`. Take `⟨x, hx⟩ : ∃ x, x = P *ᵥ c + P' *ᵥ (t • a)` from `⟨_, rfl⟩`. Establish `h1 : co x ∘ Sum.inr = 0` using `by rw [hx, Matrix.mulVec_smul]; exact h0`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : star x ⬝ᵥ J *ᵥ x = star (co x ∘ Sum.inl) ⬝ᵥ (co x ∘ Sum.inl)`. Rewrite using `[hq, Formalism.UG.Jpq, Matrix.fromBlocks_mulVec, h1]`. Simplify using `[dotProduct]`. Establish `pr (A B : Matrix (Fin n) (Fin (r + 1)) ℂ) (y z : Fin (r + 1) → ℂ) : star (A *ᵥ y) ⬝ᵥ J *ᵥ (B *ᵥ z) = star y ⬝ᵥ pairM (starRingEnd ℂ) J B A *ᵥ z`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `tf (S : ℂ) (hS : 0 ≤ S) (y : Fin (r + 1) → ℂ) : star y ⬝ᵥ TF r S *ᵥ y ≤ 0`. Establish `: star y ⬝ᵥ TF r S *ᵥ y = -(S * (star (y (Fin.last r)) * y (Fin.last r)))`. Simplify using `[TF, dotProduct, Matrix.mulVec_diagonal]`. Expand and normalize the polynomial expressions, which then agree.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this, neg_nonpos]`. Conclude with `mul_nonneg hS (star_mul_self_nonneg _)`. Establish `eZ : pairM (starRingEnd ℂ) J P P' = (pairM (starRingEnd ℂ) J P' P)ᴴ`. Express the relevant statement in the definitionally equal form `_ = cT (starRingEnd ℂ) (pairM (starRingEnd ℂ) J P' P)`. Rewrite using `[pairM, pairM, cT_mul, cT_mul, cT_cT (σ := starRingEnd ℂ) star_star, hJ, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : star x ⬝ᵥ J *ᵥ x ≤ 0`. Rewrite using `[hx, star_add, Matrix.mulVec_add, add_dotProduct, dotProduct_add, dotProduct_add, pr, pr, pr, pr, hP.2, hP'.2, eZ, Matrix.dotProduct_mulVec _ _ᴴ, ← Matrix.star_mulVec, Matrix.mulVec_smul, e]`. Simplify using `using add_nonpos (tf T hT c) (tf T' hT' (t • a))`. Establish `h4 : co x ∘ Sum.inl = 0` using `dotProduct_star_self_eq_zero.1 (le_antisymm (h2 ▸ h3) (dotProduct_star_self_nonneg _))`. Establish `h5 : x = 0`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hco x` as an intermediate fact. Rewrite `this` using `[← Sum.elim_comp_inl_inr (co x), h1, h4, Sum.elim_zero_zero, Matrix.mulVec_zero]`. Use extensionality with `i`. Simplify using `using congrFun this (ε i)`. Take `⟨k1, k2⟩` from `Iota.indep_of_Gq_ne_zero (σ := starRingEnd ℂ) star_star hJ ⟨hP, hP', rfl⟩ hG c (t • a) (hx.symm.trans h5)`.
-
-Conclude with `hne (Prod.ext k1 ((smul_eq_zero.1 k2).resolve_right ha))`.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_complex {J : Matrix (Fin n) (Fin n) ℂ} (hJ : cT (starRingEnd ℂ) J = J)
     (hs : Formalism.UG.HasSignature J p (r + 1)) {T T' : ℂ} (hT : 0 ≤ T) (hT' : 0 ≤ T')
@@ -577,7 +567,7 @@ variable {σ : E →+* E} {J : Matrix (Fin n) (Fin n) E} {T T' : E} {P P' : Matr
   {τ : E →+* ℂ}
 
 /- English proof (translation)
-Rewrite using `[pairM, pairM, Matrix.map_mul, Matrix.map_mul]`. Use `congr 2`. Use extensionality with `i j`. Simplify using `[cT, hτ]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pairM_map (hτ : ∀ x, τ (σ x) = starRingEnd ℂ (τ x)) :
     pairM (starRingEnd ℂ) (J.map τ) (P'.map τ) (P.map τ) = (pairM σ J P' P).map τ := by
@@ -587,7 +577,7 @@ theorem pairM_map (hτ : ∀ x, τ (σ x) = starRingEnd ℂ (τ x)) :
   simp [cT, hτ]
 
 /- English proof (translation)
-Take `⟨⟨L, hL⟩, h⟩` from `hP`. Use `⟨⟨L.map τ, by rw [← Matrix.map_mul, hL, Matrix.map_one _ (map_zero τ) (map_one τ)]⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[pairM_map hτ, h]`. Use extensionality with `i j`. Simplify using `[TF, Matrix.diagonal_apply, apply_ite τ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem isFrame_map (hτ : ∀ x, τ (σ x) = starRingEnd ℂ (τ x)) (hP : IsFrame σ J T P) :
     IsFrame (starRingEnd ℂ) (J.map τ) (τ T) (P.map τ) := by
@@ -598,9 +588,9 @@ theorem isFrame_map (hτ : ∀ x, τ (σ x) = starRingEnd ℂ (τ x)) (hP : IsFr
   simp [TF, Matrix.diagonal_apply, apply_ite τ]
 
 /- English proof (translation)
-Establish `h` using `det_ne_zero_complex (J := J.map τ) (by conv_rhs => rw [← hJ]`. Use extensionality with `i j`. Simplify using `[cT, hτ]) hs hT hT' (isFrame_map hτ hP) (isFrame_map hτ hP') (by`. Rewrite using `[pairM_map hτ]`. Use `fun h => hG ((map_eq_zero τ).1 (Eq.trans ?_ h))` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Gq, SgAlg.lead, map_sub, map_mul, hτ, RingHom.map_det τ]`. Use the proof step `rfl)`. Rewrite `h` using `[pairM_map hτ]`. Conclude with `fun e => h ((RingHom.map_det τ _).symm.trans (by rw [e, map_zero]))`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_signature (hτ : ∀ x, τ (σ x) = starRingEnd ℂ (τ x)) (hJ : cT σ J = J)
     (hs : Formalism.UG.HasSignature (J.map τ) p (r + 1)) (hT : 0 ≤ τ T) (hT' : 0 ≤ τ T') (hP : IsFrame σ J T P)
@@ -628,7 +618,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {u u' : D.what₂.Word}
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`. Establish `hs` using `D.sp.Y_sig 0 τ`. Rewrite `hs` using `[D.sp.baseSpace_signature_eq τ]`. Rewrite `hG` using `[Term.G, normOf_eq (isFrame_recFrame D u)]`. Conclude with `det_ne_zero_of_signature (D.sp.cm.cmUnram.2.1 τ) (isHermU_gram _).1 hs (by simp) (by simp) (isFrame_recFrame D u) t.adm.1.1 hG`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_Zhat_ne_zero (t : RecTerm D u u') (hG : t.G ≠ 0) : t.Zhat.det ≠ 0 := by
   obtain ⟨τ⟩ : Nonempty (D.host.E →+* ℂ) := inferInstance
@@ -639,7 +629,7 @@ theorem det_Zhat_ne_zero (t : RecTerm D u u') (hG : t.G ≠ 0) : t.Zhat.det ≠ 
     (isFrame_recFrame D u) t.adm.1.1 hG
 
 /- English proof (translation)
-Establish `hZ` using `det_Zhat_ne_zero t hG`. Rewrite `hG` using `[Term.G, normOf_eq (isFrame_recFrame D u)]`. Conclude with `t.at_ptOf (exists_liesAt star_star (isHermU_gram _) (isFrame_recFrame D u) t.adm.1.1 rfl hZ hG hR)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem at_ptOf_of_relevant (t : RecTerm D u u') (hR : t.relevant) (hG : t.G ≠ 0) : t.At t.ptOf := by
   have hZ := det_Zhat_ne_zero t hG

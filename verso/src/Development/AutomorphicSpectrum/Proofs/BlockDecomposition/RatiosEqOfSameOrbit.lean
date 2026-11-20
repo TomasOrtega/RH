@@ -53,14 +53,14 @@ def pieceSet {X : Scheme.{0}} [IsIntegral X] (i : X ⟶ MP ℤ m n) (Ψ : LinPro
   {y | ∃ e Γ, IsPiece i Ψ N e Γ ∧ y ∈ e.source}
 
 /- English proof (translation)
-The claim follows from `isOpen_iff_forall_mem_open.mpr fun _ ⟨e, Γ, hp, hy⟩ => ⟨e.source, fun _ hy' => ⟨e, Γ, hp, hy'⟩, e.open_source, hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_pieceSet {X : Scheme.{0}} [IsIntegral X] (i : X ⟶ MP ℤ m n) (Ψ : LinProj n D) (N : Pol n) :
     IsOpen (pieceSet i Ψ N) := isOpen_iff_forall_mem_open.mpr fun _ ⟨e, Γ, hp, hy⟩ =>
   ⟨e.source, fun _ hy' => ⟨e, Γ, hp, hy'⟩, e.open_source, hy⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use function extensionality and compare the values at `a`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Geo.segre, Finset.prod_mul_distrib]`.
+Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem segre_orbit {z z' : (Σ k, Bk n k) → ℂ} {c : Fin (m + 1) → ℂ} (h : z = fun p => c p.1 * z' p) :
     segre z = (∏ k, c k) • segre z' := by
@@ -69,7 +69,7 @@ theorem segre_orbit {z z' : (Σ k, Bk n k) → ℂ} {c : Fin (m + 1) → ℂ} (h
   simp [ReciprocityTheory.ChartRestriction.G.Geo.segre, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Establish `hprod : (∏ k, c k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hc k`. Use function extensionality and compare the values at `a`. Simplify using `only [ratios, segre_orbit (c := c) rfl, map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_div_mul_left _ _ hprod`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ratios_eq_of_sameOrbit (Ψ : LinProj n D) {z z' : (Σ k, Bk n k) → ℂ} (h : SameOrbit z z')
     (h0 : Ψ (segre z') 0 ≠ 0) : ratios Ψ z = ratios Ψ z' := by
@@ -80,7 +80,7 @@ theorem ratios_eq_of_sameOrbit (Ψ : LinProj n D) {z z' : (Σ k, Bk n k) → ℂ
   exact mul_div_mul_left _ _ hprod
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[ratios, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ratios_of_proj (Ψ : LinProj n D) {z : (Σ k, Bk n k) → ℂ} {v : Fin D → ℂ}
     (h : Ψ (segre z) = Fin.cons 1 v) : ratios Ψ z = v := by
@@ -88,7 +88,7 @@ theorem ratios_of_proj (Ψ : LinProj n D) {z : (Σ k, Bk n k) → ℂ} {v : Fin 
   simp [ratios, h]
 
 /- English proof (translation)
-Introduce `d hd k`. Take `⟨x, hx, y, hy, rfl⟩` from `Finset.mem_add.1 (MvPolynomial.support_mul f g hd)`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, hf x hx k, hg y hy k, Pi.add_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem homog_mul {f g : Pol n} {a b : Fin (m + 1) → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g b) :
     IsMultiHomog (f * g) (a + b) := by

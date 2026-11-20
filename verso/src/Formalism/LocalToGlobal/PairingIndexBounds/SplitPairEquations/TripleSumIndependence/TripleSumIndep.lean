@@ -12,15 +12,13 @@ open Formalism.L2.Th1.H
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hS`. Take `⟨h1', h2', h3'⟩` from `hS'`. Establish `hg : ∀ x ∈ S, ∃ x' ∈ S', x - x' ∈ M` using `fun x hx => h3' x (h1 x hx)`. Use `choose! g hgS hgM using hg`. Use `Finset.sum_bij (fun x _ => g x) (fun x hx => hgS x hx) ?_ ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha b hb hab`. Use `h2 a ha b hb ?_` and prove the remaining obligations. Establish `e : a - b = (a - g a) - (b - g b)` using `by rw [hab]; abel`. Rewrite using `[e]`. Conclude with `M.sub_mem (hgM a ha) (hgM b hb)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `b hb`. Take `⟨a, ha, hba⟩` from `h3 b (h1' b hb)`. Use `⟨a, ha, h2' _ (hgS a ha) b hb ?_⟩` and prove the remaining obligations. Establish `e : g a - b = -(a - g a) - (b - a)` using `by abel`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `M.sub_mem (M.neg_mem (hgM a ha)) hba`. Introduce `a ha`. Establish `hu : g a - a ∈ M`. Use `M.neg_mem (hgM a ha)` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis.
-
-Use `hf a (h1 a ha) (g a - a) (Λ.sub_mem (h1' _ (hgS a ha)) (h1 a ha)) hu` as an intermediate fact. Rewrite `this` using `[show a + (g a - a) = g a by abel]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_reps_eq {M Λ : AddSubgroup V} {S S' : Finset V} (hS : IsReps M Λ S) (hS' : IsReps M Λ S')
     (f : V → ℂ) (hf : ∀ x ∈ Λ, ∀ u ∈ Λ, u ∈ M → f (x + u) = f x) :
@@ -58,17 +56,17 @@ theorem tripleSum_eq (H : Sesq V) (α : V → ℂ) (Λ₁ : AddSubgroup V) (S₂
 variable {H : Sesq V} {α : V → ℂ} {Λ₁ Λ₂ Λ₃ : AddSubgroup V}
 
 /- English proof (translation)
-Establish `hq` using `(psiQuadratic V H α Λ₁ Λ₂ Λ₃ hT).2.2.2`. Establish `hyy : ∀ z ∈ Λ₃, ∀ y ∈ Λ₂, ∀ u ∈ Λ₂, u ∈ Λ₁ → tf H α Λ₁ z (y + u) = tf H α Λ₁ z y`. Introduce `z hz y hy u hu2 hu1`. Unfold `tf`. Distinguish the cases in `hc : z + y ∈ Λ₁`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Establish `hc' : z + (y + u) ∈ Λ₁` using `by rw [← add_assoc]; exact Λ₁.add_mem hc hu1`. Rewrite using `[if_pos hc', if_pos hc]`. Use `hq z hz y hy hc 0 (AddSubgroup.zero_mem _) u (AddSubgroup.mem_inf.2 ⟨hu1, hu2⟩) 0 (AddSubgroup.zero_mem _)` as an intermediate fact. Simplify using `using this`. Establish `hc' : z + (y + u) ∉ Λ₁` using `fun h => hc (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `Λ₁.sub_mem h hu1; rwa [show z + (y + u) - u = z + y by abel] at this)` as an intermediate fact. Rewrite using `[if_neg hc', if_neg hc]`. Establish `hzz : ∀ z ∈ Λ₃, ∀ t ∈ Λ₃, t ∈ Λ₂ → ∀ y ∈ Λ₂, tf H α Λ₁ (z + t) y = tf H α Λ₁ z (y + t)`. Introduce `z hz t ht3 ht2 y hy`. Unfold `tf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[show z + t + y = z + (y + t) by abel]`. Distinguish the cases in `hc : z + (y + t) ∈ Λ₁`. Rewrite using `[if_pos hc, if_pos hc]`. Use `hq z hz (y + t) (Λ₂.add_mem hy ht2) hc 0 (AddSubgroup.zero_mem _) 0 (AddSubgroup.zero_mem _) t (AddSubgroup.mem_inf.2 ⟨ht2, ht3⟩)` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[if_neg hc, if_neg hc]`. Rewrite using `[tripleSum_eq, tripleSum_eq]`. Combine the equalities or inequalities in the displayed calculation. Use `sum_reps_eq h3 h3' _ ?_` and prove the remaining obligations. Introduce `z hz t ht3 ht2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show ∑ y ∈ S₂', tf H α Λ₁ (z + t) y = ∑ y ∈ S₂', tf H α Λ₁ z (y + t) from Finset.sum_congr rfl fun y hy => hzz z hz t ht3 ht2 y (h2'.1 y hy)]`. Conclude with `CharacterSumTripleLemmas.sum_shift h2' (tf H α Λ₁ z) (fun x hx t' ht' ht1 => hyy z hz x hx t' ht' ht1) ht2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tripleSum_indep (hT : TripleData H α Λ₁ Λ₂ Λ₃)
     {S₂ S₂' S₃ S₃' : Finset V} (h2 : IsReps Λ₁ Λ₂ S₂) (h2' : IsReps Λ₁ Λ₂ S₂') (h3 : IsReps Λ₂ Λ₃ S₃)
@@ -119,12 +117,12 @@ def partQ (p : V →+ V) (Λ : AddSubgroup V) : AddSubgroup V where
   neg_mem' := fun {a} ha => ⟨Λ.neg_mem ha.1, by rw [map_neg, ha.2, neg_zero]⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_partP {p : V →+ V} {Λ : AddSubgroup V} {x : V} : x ∈ partP p Λ ↔ x ∈ Λ ∧ p x = x := Iff.rfl
 
 /- English proof (translation)
-Establish `a1` using `hm'M _ hmx`. Rewrite `a1` using `[inv]`. Use `M.sub_mem a1 (her x hx)` as an intermediate fact. Rewrite `this` using `[show x + e • r x - e • r x = x by abel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_of_mul {M Λ : AddSubgroup V} (m m' r : V →+ V) (e : ℕ) (inv : ∀ x, m' (m x) = x + e • r x)
     (hm'M : ∀ x ∈ M, m' x ∈ M) (her : ∀ x ∈ Λ, e • r x ∈ M) {x : V} (hx : x ∈ Λ) (hmx : m x ∈ M) : x ∈ M := by
@@ -134,13 +132,13 @@ theorem mem_of_mul {M Λ : AddSubgroup V} (m m' r : V →+ V) (e : ℕ) (inv : �
   rwa [show x + e • r x - e • r x = x by abel] at this
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hS`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.1 hw`. Conclude with `hmΛ x (h1 x hx)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw w' hw' hd`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.1 hw`. Take `⟨x', hx', rfl⟩` from `Finset.mem_image.1 hw'`. Establish `hxx : x - x' ∈ M` using `mem_of_mul m m' r e inv hm'M her (Λ.sub_mem (h1 x hx) (h1 x' hx')) (by rw [map_sub]; exact hd)`. Rewrite using `[h2 x hx x' hx' hxx]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Take `⟨x, hx, hd⟩` from `h3 (m' y) (hm'Λ y hy)`. Use `⟨m x, Finset.mem_image.2 ⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `a1` using `hmM _ hd`. Rewrite `a1` using `[map_sub, inv']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : y - m x = (y + e • r y - m x) - e • r y` using `by abel`. Rewrite using `[e2]`. Conclude with `M.sub_mem a1 (her y hy)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reps_image_mul {M Λ : AddSubgroup V} {S : Finset V} (hS : IsReps M Λ S) (m m' r : V →+ V) (e : ℕ)
     (inv : ∀ x, m' (m x) = x + e • r x) (inv' : ∀ x, m (m' x) = x + e • r x)
@@ -166,13 +164,13 @@ theorem reps_image_mul {M Λ : AddSubgroup V} {S : Finset V} (hS : IsReps M Λ S
     rw [e2]; exact M.sub_mem a1 (her y hy)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hS`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.1 hw`. Conclude with `hΛ x (h1 x hx)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw w' hw' hd`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.1 hw`. Take `⟨x', hx', rfl⟩` from `Finset.mem_image.1 hw'`. Use `hM _ hd` as an intermediate fact. Rewrite `this` using `[map_sub, hσσ, hσσ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2 x hx x' hx' this]`. Introduce `y hy`. Take `⟨x, hx, hd⟩` from `h3 (σ y) (hΛ' y hy)`. Use `⟨σ x, Finset.mem_image.2 ⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Use `hM _ hd` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[map_sub, hσσ]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem reps_image_inv {M Λ Λ' : AddSubgroup V} {S : Finset V} (hS : IsReps M Λ S) (σ : V →+ V)
     (hσσ : ∀ x, σ (σ x) = x) (hΛ : ∀ x ∈ Λ, σ x ∈ Λ') (hΛ' : ∀ x ∈ Λ', σ x ∈ Λ) (hM : ∀ x ∈ M, σ x ∈ M) :
@@ -195,7 +193,7 @@ theorem reps_image_inv {M Λ Λ' : AddSubgroup V} {S : Finset V} (hS : IsReps M 
     rwa [map_sub, hσσ] at this
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.P9.reps_prod p hpp hpΛ hpM hA hB`.
+A detailed English derivation is pending.
 -/
 theorem reps_prod {M Λ : AddSubgroup V} (p : V →+ V) (hpp : ∀ x, p (p x) = p x) (hpΛ : ∀ x ∈ Λ, p x ∈ Λ)
     (hpM : ∀ x ∈ M, p x ∈ M) {A B : Finset V} (hA : IsReps M (partP p Λ) A) (hB : IsReps M (partQ p Λ) B) :
@@ -203,7 +201,7 @@ theorem reps_prod {M Λ : AddSubgroup V} (p : V →+ V) (hpp : ∀ x, p (p x) = 
   _root_.UpperTheory.Reformulated.B.P9.reps_prod p hpp hpΛ hpM hA hB
 
 /- English proof (translation)
-Use `hporth u v` as an intermediate fact. Rewrite `this` using `[hv, sub_zero, hu]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem orthH (p : V →+ V) (hporth : ∀ x y, H (p x) (y - p y) = 0) {u v : V} (hu : p u = u) (hv : p v = 0) :
     H u v = 0 := by
@@ -211,11 +209,11 @@ theorem orthH (p : V →+ V) (hporth : ∀ x y, H (p x) (y - p y) = 0) {u v : V}
   rwa [hv, sub_zero, hu] at this
 
 /- English proof (translation)
-Establish `hH1 : H a₃ b₂ = 0` using `orthH p hporth ha₃.2 hb₂.2`. Establish `hH2 : H b₃ a₂ = 0` using `by rw [hT.herm a₂ b₃, orthH p hporth ha₂.2 hb₃.2, map_zero]`. Establish `hH3 : H a₃ b₃ = 0` using `orthH p hporth ha₃.2 hb₃.2`. Establish `hH4 : H a₂ b₂ = 0` using `orthH p hporth ha₂.2 hb₂.2`. Establish `hH5 : H (a₃ + a₂) (b₃ + b₂) = 0` using `orthH p hporth (by rw [map_add, ha₃.2, ha₂.2]) (by rw [map_add, hb₃.2, hb₂.2, add_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `hT.sc₃.2 a₃ ha₃.1 b₃ hb₃.1`. Establish `e2` using `hT.sc₂.2 a₂ ha₂.1 b₂ hb₂.1`. Establish `e1` using `hT.sc₁.2 _ h1 _ h1'`. Simplify using `only [altE, hH3, hH4, hH5, Complex.zero_im, Complex.ofReal_zero, mul_zero, Complex.exp_zero, mul_one] at e1 e2 e3`. Establish `him : altE H (a₃ + b₃) (a₂ + b₂) = altE H a₃ a₂ + altE H b₃ b₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [altE, map_add, LinearMap.add_apply, hH1, hH2, add_zero, zero_add, Complex.add_im]`. Unfold `psiT`. Rewrite using `[e3, e2, show a₃ + b₃ + (a₂ + b₂) = (a₃ + a₂) + (b₃ + b₂) by abel, e1, him, Complex.ofReal_add, mul_add, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psi_split (hT : TripleData H α Λ₁ Λ₂ Λ₃) (p : V →+ V) (hporth : ∀ x y, H (p x) (y - p y) = 0)
     {a₂ a₃ b₂ b₃ : V} (ha₂ : a₂ ∈ partP p Λ₂) (ha₃ : a₃ ∈ partP p Λ₃) (hb₂ : b₂ ∈ partQ p Λ₂)
@@ -240,21 +238,19 @@ theorem psi_split (hT : TripleData H α Λ₁ Λ₂ Λ₃) (p : V →+ V) (hport
   ring
 
 /- English proof (translation)
-Establish `hinj : ∀ {A B : Finset V}, (∀ x ∈ A, p x = x) → (∀ x ∈ B, p x = 0) → Set.InjOn (fun w : V × V => w.1 + w.2) ↑(A ×ˢ B)`. Introduce `A B hA hB w hw w' hw' h`. Rewrite `hw`, `hw'` using `[Finset.coe_product, Set.mem_prod]`. Establish `h'` using `congrArg p h`. Simplify using `only [map_add, hA _ hw.1, hB _ hw.2, hA _ hw'.1, hB _ hw'.2, add_zero] at h'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : w.2 = w'.2` using `by simp only at h; rw [h'] at h; exact add_left_cancel h`. Conclude with `Prod.ext h' h2`. Establish `hS2 : ∀ g : V → ℂ, ∑ y ∈ (A₂ ×ˢ B₂).image (fun w => w.1 + w.2), g y = ∑ w ∈ A₂ ×ˢ B₂, g (w.1 + w.2)` using `fun g => Finset.sum_image (hinj (fun x hx => (hA₂ x hx).2) (fun x hx => (hB₂ x hx).2))`. Establish `hS3 : ∀ g : V → ℂ, ∑ y ∈ (A₃ ×ˢ B₃).image (fun w => w.1 + w.2), g y = ∑ w ∈ A₃ ×ˢ B₃, g (w.1 + w.2)` using `fun g => Finset.sum_image (hinj (fun x hx => (hA₃ x hx).2) (fun x hx => (hB₃ x hx).2))`. Establish `hpt : ∀ a₃ ∈ A₃, ∀ b₃ ∈ B₃, ∀ a₂ ∈ A₂, ∀ b₂ ∈ B₂, tf H α Λ₁ (a₃ + b₃) (a₂ + b₂) = tf H α Λ₁ a₃ a₂ * tf H α Λ₁ b₃ b₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a₃ ha₃ b₃ hb₃ a₂ ha₂ b₂ hb₂`. Unfold `tf`. Establish `ex : a₃ + b₃ + (a₂ + b₂) = (a₃ + a₂) + (b₃ + b₂)` using `by abel`. Distinguish the cases in `c1 : a₃ + a₂ ∈ Λ₁`. Distinguish the cases in `c2 : b₃ + b₂ ∈ Λ₁`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (by rw [ex]; exact Λ₁.add_mem c1 c2), if_pos c1, if_pos c2]`. Conclude with `psi_split hT p hporth (hA₂ _ ha₂) (hA₃ _ ha₃) (hB₂ _ hb₂) (hB₃ _ hb₃) c1 c2`. Rewrite using `[if_neg c2, mul_zero, if_neg]`. Introduce `h`. Apply `c2` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[ex]`. Use `Λ₁.sub_mem h c1` as an intermediate fact. Rewrite `this` using `[show a₃ + a₂ + (b₃ + b₂) - (a₃ + a₂) = b₃ + b₂ by abel]`. Then use the resulting hypothesis. Rewrite using `[if_neg c1, zero_mul, if_neg]`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `c1` to reduce the goal to its premises. Use `hp1 _ h` as an intermediate fact. Simplify using `only [map_add, (hA₃ _ ha₃).2, (hB₃ _ hb₃).2, (hA₂ _ ha₂).2, (hB₂ _ hb₂).2, add_zero] at this`. Conclude with `this`. Rewrite using `[tripleSum_eq, tripleSum_eq, tripleSum_eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hS2, hS3]`. Rewrite using `[Finset.sum_product, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun a₃ ha₃ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun b₃ hb₃ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_product, Finset.sum_mul_sum]`.
-
-Use `Finset.sum_congr rfl fun a₂ ha₂ => ?_` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun b₂ hb₂ => hpt a₃ ha₃ b₃ hb₃ a₂ ha₂ b₂ hb₂`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tripleSum_prod (hT : TripleData H α Λ₁ Λ₂ Λ₃) (p : V →+ V) (hporth : ∀ x y, H (p x) (y - p y) = 0)
     (hp1 : ∀ x ∈ Λ₁, p x ∈ Λ₁) {A₂ A₃ B₂ B₃ : Finset V} (hA₂ : ∀ x ∈ A₂, x ∈ partP p Λ₂)
@@ -302,11 +298,11 @@ theorem tripleSum_prod (hT : TripleData H α Λ₁ Λ₂ Λ₃) (p : V →+ V) (
   exact Finset.sum_congr rfl fun b₂ hb₂ => hpt a₃ ha₃ b₃ hb₃ a₂ ha₂ b₂ hb₂
 
 /- English proof (translation)
-Establish `hinj : ∀ A : Finset V, Set.InjOn σ ↑A` using `fun A x _ y _ h => by rw [← hσσ x, h, hσσ]`. Rewrite using `[tripleSum_eq, tripleSum_eq, Finset.sum_image (hinj A₃)]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_image (hinj A₂)]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : σ z + σ y ∈ Λ₁ ↔ z + y ∈ Λ₁`. Rewrite using `[← map_add]`. Conclude with `⟨fun h => by have := hσ1 _ h; rwa [hσσ] at this, fun h => hσ1 _ h⟩`. Unfold `tf`. Distinguish the cases in `h : z + y ∈ Λ₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos (hc.2 h), if_pos h]`. Unfold `psiT altE`. Rewrite using `[← map_add, hσα, hσα, hσα, hσH]`. Rewrite using `[if_neg (fun h' => h (hc.1 h')), if_neg h]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tripleSum_inv (σ : V →+ V) (hσσ : ∀ x, σ (σ x) = x) (hσH : ∀ x y, H (σ x) (σ y) = H x y)
     (hσα : ∀ x, α (σ x) = α x) (hσ1 : ∀ x ∈ Λ₁, σ x ∈ Λ₁) (A₂ A₃ : Finset V) :
@@ -327,17 +323,17 @@ theorem tripleSum_inv (σ : V →+ V) (hσσ : ∀ x, σ (σ x) = x) (hσH : ∀
   · rw [if_neg (fun h' => h (hc.1 h')), if_neg h]
 
 /- English proof (translation)
-Establish `hreal : ∀ {Λ : AddSubgroup V}, IsSemiChar H Λ α → ∀ x ∈ Λ, conj (α x) = α x`. Introduce `Λ hs x hx`. Apply the tactic sequence `rcases hs.1 x hx with h | h <;> rw [h] <;> simp`. Rewrite using `[tripleSum_eq, tripleSum_eq, Finset.sum_image hi₃, map_sum]`. Use `Finset.sum_congr rfl fun z hz => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_image hi₂, map_sum]`. Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations. Establish `hz3` using `hA₃ z hz`. Establish `hy2` using `hA₂ y hy`. Establish `hc : m z + m y ∈ Λ₁ ↔ z + y ∈ Λ₁`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show m z + m y = m (z + y) from (map_add m z y).symm]`. Use `⟨fun h => ?_, fun h => hm1 _ h⟩` and prove the remaining obligations. Establish `a1` using `hm'1 _ h`. Rewrite `a1` using `[inv, map_add, smul_add]`. Use `Λ₁.sub_mem a1 (Λ₁.add_mem (her3 z hz3) (her2 y hy2))` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[show z + y + (e • r z + e • r y) - (e • r z + e • r y) = z + y by abel]`. Then use the resulting hypothesis. Unfold `tf`. Distinguish the cases in `h : z + y ∈ Λ₁`. Rewrite using `[if_pos (hc.2 h), if_pos h]`. Take `⟨k, hk⟩` from `hmH z hz3 y hy2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Unfold `psiT`. Rewrite using `[show m z + m y = m (z + y) from (map_add m z y).symm, hmα1 _ h, hmα2 _ hy2, hmα3 _ hz3, hk, map_mul, map_mul, map_mul, hreal hT.sc₁ _ h, hreal hT.sc₂ _ hy2, hreal hT.sc₃ _ hz3, ← Complex.exp_conj]`. Use `congr 1`. Use `Complex.exp_eq_exp_iff_exists_int.2 ⟨-k, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_neg, Complex.conj_ofReal, Complex.conj_I]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (fun h' => h (hc.1 h')), if_neg h, map_zero]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem tripleSum_conj (hT : TripleData H α Λ₁ Λ₂ Λ₃) (m m' r : V →+ V) (e : ℕ)
     (inv : ∀ x, m' (m x) = x + e • r x) (hm1 : ∀ x ∈ Λ₁, m x ∈ Λ₁) (hm'1 : ∀ x ∈ Λ₁, m' x ∈ Λ₁)
@@ -410,7 +406,7 @@ structure SignData (H : Sesq V) (α : V → ℂ) (Λ₁ Λ₂ Λ₃ : AddSubgrou
   mH : ∀ z ∈ Λ₃, ∀ y ∈ Λ₂, ∃ k : ℤ, altE H (m z) (m y) = -altE H z y + 2 * k
 
 /- English proof (translation)
-Use `AddSubgroup.nsmul_index_mem (M.addSubgroupOf Λ) (⟨x, hx⟩ : Λ)` as an intermediate fact. Rewrite `this` using `[AddSubgroup.mem_addSubgroupOf, AddSubgroup.coe_nsmul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIdx_smul_mem {M Λ : AddSubgroup V} {x : V} (hx : x ∈ Λ) : relIdx M Λ • x ∈ M := by
   have := AddSubgroup.nsmul_index_mem (M.addSubgroupOf Λ) (⟨x, hx⟩ : Λ)
@@ -418,11 +414,11 @@ theorem relIdx_smul_mem {M Λ : AddSubgroup V} {x : V} (hx : x ∈ Λ) : relIdx 
   exact this
 
 /- English proof (translation)
-Use `⟨relIdx Λ₁ Λ₂ * relIdx Λ₁ Λ₃ * relIdx Λ₂ Λ₃, Nat.pos_of_ne_zero (mul_ne_zero (mul_ne_zero hT.i₁₂ hT.i₁₃) hT.i₂₃), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `h` using `Λ₁.nsmul_mem (relIdx_smul_mem (M := Λ₁) hx) (relIdx Λ₁ Λ₃ * relIdx Λ₂ Λ₃)`. Rewrite `h` using `[smul_smul]`. Use `h using 2` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `x hx`. Establish `h` using `Λ₁.nsmul_mem (relIdx_smul_mem (M := Λ₁) hx) (relIdx Λ₁ Λ₂ * relIdx Λ₂ Λ₃)`. Rewrite `h` using `[smul_smul]`. Use `h using 2` and compare the differences between its conclusion and the goal.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `x hx`. Establish `h` using `Λ₂.nsmul_mem (relIdx_smul_mem (M := Λ₂) hx) (relIdx Λ₁ Λ₂ * relIdx Λ₁ Λ₃)`. Rewrite `h` using `[smul_smul]`. Use `h using 2` and compare the differences between its conclusion and the goal.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem exists_e (hT : TripleData H α Λ₁ Λ₂ Λ₃) :
     ∃ e : ℕ, 0 < e ∧ (∀ x ∈ Λ₂, e • x ∈ Λ₁) ∧ (∀ x ∈ Λ₃, e • x ∈ Λ₁) ∧ (∀ x ∈ Λ₃, e • x ∈ Λ₂) := by
@@ -442,19 +438,19 @@ theorem exists_e (hT : TripleData H α Λ₁ Λ₂ Λ₃) :
     convert h using 2
 
 /- English proof (translation)
-Establish `hi2 : relIdx Λ₁ (partP p Λ₂) ≠ 0` using `fun h => hT.i₁₂ (AddSubgroup.relIndex_eq_zero_of_le_right (fun x hx => (mem_partP.1 hx).1) h)`. Establish `hi3 : relIdx Λ₂ (partP p Λ₃) ≠ 0` using `fun h => hT.i₂₃ (AddSubgroup.relIndex_eq_zero_of_le_right (fun x hx => (mem_partP.1 hx).1) h)`. Take `⟨A₂, hA₂⟩` from `(repsExist V Λ₁ (partP p Λ₂) hi2).1`. Take `⟨A₃, hA₃⟩` from `(repsExist V Λ₂ (partP p Λ₃) hi3).1`. Establish `pq : ∀ {Λ : AddSubgroup V}, (∀ x ∈ Λ, σ x ∈ Λ) → ∀ x ∈ partP p Λ, σ x ∈ partQ p Λ` using `fun hσ x hx => ⟨hσ x hx.1, by rw [hD.σp, hx.2, sub_self]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `qp : ∀ {Λ : AddSubgroup V}, (∀ x ∈ Λ, σ x ∈ Λ) → ∀ x ∈ partQ p Λ, σ x ∈ partP p Λ` using `fun hσ x hx => ⟨hσ x hx.1, by rw [hD.σp, hx.2, map_zero, sub_zero]⟩`. Establish `mP : ∀ {Λ : AddSubgroup V} {f : V →+ V}, (∀ x, f (p x) = p (f x)) → (∀ x ∈ Λ, f x ∈ Λ) → ∀ x ∈ partP p Λ, f x ∈ partP p Λ` using `fun hfp hf x hx => ⟨hf x hx.1, by rw [← hfp, hx.2]⟩`. Establish `hB₂` using `reps_image_inv hA₂ σ hD.σσ (pq hD.σ2) (qp hD.σ2) hD.σ1`. Establish `hB₃` using `reps_image_inv hA₃ σ hD.σσ (pq hD.σ3) (qp hD.σ3) hD.σ2`. Establish `hC₂` using `reps_image_mul hA₂ m m' r e hD.inv hD.inv' (mP hD.mp hD.m2) (mP hD.m'p hD.m'2) hD.m1 hD.m'1 (fun x hx => hD.e21 _ (hD.r2 _ hx.1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC₃` using `reps_image_mul hA₃ m m' r e hD.inv hD.inv' (mP hD.mp hD.m3) (mP hD.m'p hD.m'3) hD.m2 hD.m'2 (fun x hx => hD.e32 _ (hD.r3 _ hx.1))`. Establish `hP₂` using `reps_prod p hD.pp hD.p2 hD.p1 hA₂ hB₂`. Establish `hP₃` using `reps_prod p hD.pp hD.p3 hD.p2 hA₃ hB₃`. Establish `hQ₂` using `reps_prod p hD.pp hD.p2 hD.p1 hC₂ hB₂`. Establish `hQ₃` using `reps_prod p hD.pp hD.p3 hD.p2 hC₃ hB₃`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : ∀ {M Λ : AddSubgroup V} {A : Finset V}, IsReps M Λ A → (∀ x ∈ M, m' x ∈ M) → (∀ x ∈ Λ, e • r x ∈ M) → Set.InjOn m ↑A`. Introduce `M Λ A hA hm' her x hx y hy hxy`. Use `hA.2.1 x hx y hy (mem_of_mul m m' r e hD.inv hm' her (Λ.sub_mem (hA.1 x hx) (hA.1 y hy)) ?_)` and prove the remaining obligations. Rewrite using `[map_sub, hxy, sub_self]`. Conclude with `M.zero_mem`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `eσ` using `tripleSum_inv (H := H) (Λ₁ := Λ₁) σ hD.σσ hD.σH hD.σα hD.σ1 A₂ A₃`. Establish `eP` using `tripleSum_prod hT p hD.porth hD.p1 hA₂.1 hA₃.1 hB₂.1 hB₃.1`. Establish `eQ` using `tripleSum_prod hT p hD.porth hD.p1 hC₂.1 hC₃.1 hB₂.1 hB₃.1`. Establish `eC` using `tripleSum_conj hT m m' r e hD.inv hD.m1 hD.m'1 (fun x hx => hD.e21 _ (hD.r2 _ hx)) (fun x hx => hD.e31 _ (hD.r3 _ hx)) hD.mα1 hD.mα2 hD.mα3 hD.mH (fun x hx => (hA₂.1 x hx).1) (fun x hx => (hA₃.1 x hx).1) (hinj hA₂ hD.m'1 (fun x hx => hD.e21 _ (hD.r2 _ hx.1))) (hinj hA₃ hD.m'2 (fu …`. Establish `hS : tripleSum H α Λ₁ S₂ S₃ = ((Complex.normSq (tripleSum H α Λ₁ A₂ A₃) : ℝ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tripleSum_indep hT h2 hQ₂ h3 hQ₃, eQ, eC, eσ, Complex.normSq_eq_conj_mul_self]`. Establish `h8` using `tripleEighth V H α Λ₁ Λ₂ Λ₃ hT hF S₂ S₃ h2 h3`. Unfold `tripleMu at h8 ⊢`. Rewrite `h8`, the goal using `[hS, ← Complex.ofReal_mul]`. Rewrite `h8` using `[← Complex.ofReal_pow, Complex.ofReal_eq_one]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hnn : 0 ≤ Real.sqrt (relIdx Λ₁ Λ₃) / (Real.sqrt (relIdx Λ₁ Λ₂) * Real.sqrt (relIdx Λ₂ Λ₃)) * Complex.normSq (tripleSum H α Λ₁ A₂ A₃)` using `mul_nonneg (div_nonneg (Real.sqrt_nonneg _) (mul_nonneg (Real.sqrt_nonneg _) (Real.sqrt_nonneg _))) (Complex.normSq_nonneg _)`. Rewrite using `[(pow_eq_one_iff_of_nonneg hnn (by norm_num)).1 h8, Complex.ofReal_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tripleMu_eq_one {p σ m m' r : V →+ V} {e : ℕ} (hT : TripleData H α Λ₁ Λ₂ Λ₃)
     (hF : ∃ F ∈ fixedBy H α Λ₁, F ≠ 0) (hD : SignData H α Λ₁ Λ₂ Λ₃ p σ m m' r e)

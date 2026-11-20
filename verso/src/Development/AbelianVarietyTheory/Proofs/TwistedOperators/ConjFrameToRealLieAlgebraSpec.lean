@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdSpan.ConjHol.ToLie
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hij` using `congrFun (congrFun h i) j`. Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.add_apply, Matrix.zero_apply, Matrix.conjTranspose_apply, Matrix.map_apply] at hij ⊢`. Use `congrArg star hij` as an intermediate fact. Simplify using `only [star_add, star_mul', star_star, star_zero, hd] at this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `this` using `[RCLike.star_def, add_comm, mul_comm]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma conj_mem_sgn {n : ℕ} (d : Fin n → ℂ) (hd : ∀ a, star (d a) = d a)
     (A : Matrix (Fin n) (Fin n) ℂ) (h : Aᴴ * diagonal d + diagonal d * A = 0) :
@@ -31,15 +31,15 @@ end GlobalTheory.AdSpan.ConjHol.ToLie
 
 open GlobalTheory.AdSpan.ConjHol GlobalTheory.HolRead.AdExt in
 /- English proof (translation)
-Introduce `D S T C R B hB Z hZ`. Establish `hfix : ∀ ρ, conjAt T ρ (B ρ * (mat Z (C.m.e ρ)).map (starRingEnd ℂ) * (B ρ)⁻¹) = B ρ * (mat Z (C.m.e ρ)).map (starRingEnd ℂ) * (B ρ)⁻¹`. Introduce `ρ`. Establish `hW` using `GlobalTheory.AdSpan.ConjHol.ToLie.conj_mem_sgn _ ?_ _ (hZ (C.m.e ρ))`. Establish `hB' : (B ρ)ᴴ * gramAt D T ρ * B ρ = diagonal fun (a : Fin T.rank) => ((sgn C.X.p0 (a : ℕ) : ℝ) : ℂ)` using `hB ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `conj_mem_lie (isUnit_det_B C hB ρ) hB' hW`. Conclude with `conj_eq_of_mem_lie (R.1 ρ).2 hL`. Introduce `a`. Simplify using the standard rewrite rules. Use `⟨fun ρ => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show ((HolRead.AdExt.toLie R B fun ρ => C.m.e ρ) (conjL Z) ρ).1 = _`. Rewrite using `[toLie_val, mat_conjL, hfix ρ]`. Use `module`. Use function extensionality and compare the values at `ρ`. Apply `Subtype.ext` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `show ((HolRead.AdExt.toLie R B fun ρ => C.m.e ρ) (conjL (I • Z)) ρ).1 = (0 : Matrix (Fin T.rank) (Fin T.rank) ℂ)`. Establish `hc : conjL (I • Z) = I • (-(conjL Z))`. Use function extensionality and compare the values at `τ a b`. Simplify using `[conjL]`. Establish `hm : mat (-(conjL Z)) (C.m.e ρ) = -(mat (conjL Z) (C.m.e ρ))` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hneg : ∀ M : Matrix (Fin T.rank) (Fin T.rank) ℂ, conjAt T ρ (B ρ * -M * (B ρ)⁻¹) = -(conjAt T ρ (B ρ * M * (B ρ)⁻¹))`. Introduce `M`. Simplify using `[conjAt]`. Rewrite using `[hc, toLie_I, hm, hneg, mat_conjL, hfix ρ]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AdSpan.ConjHol.ToLie.toLieC_spec : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (R : GlobalTheory.SmoothForms.RealPoints C.θ T) (B : C.Bas), C.IsB B → ∀ Z ∈ GlobalTheory.HolRead.unitLie C.X, (∀ ρ, (GlobalTheory.AdSpan.ConjHol.toLieC C R B Z ρ).1 = B ρ * (mat Z (C.m.e ρ)).map (starRingEnd ℂ) * (B ρ)⁻¹) ∧ GlobalTheory.AdSpan.ConjHol.toLieC C R B (I • Z) = 0 := by
   intro D S T C R B hB Z hZ

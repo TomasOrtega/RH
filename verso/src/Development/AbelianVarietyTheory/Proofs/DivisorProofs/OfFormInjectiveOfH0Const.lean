@@ -11,11 +11,11 @@ set_option autoImplicit false
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `ω hω`. Take `⟨g, hg, hD⟩` from `ofForm_eq_zero.1 hω`. Establish `h0 : d0 F g = 0`. Use function extensionality and compare the values at `T T' φ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : d0 F g T T' φ = g T' - mp F φ (g T)` using `rfl`. Rewrite using `[e, ← hg φ, sub_self]`. Both sides reduce to the same expression. Take `⟨r, hr, -⟩` from `hF g h0`. Use `Subtype.ext (Subtype.ext (funext fun T ↦ ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hD T, hr T]`. Conclude with `(D R (F.obj T)).map_algebraMap r`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofForm_injective_of_H0Const (R : Type) [CommRing R] (C : Type) [Category.{0} C]
     (F : C ⥤ CommAlgCat.{0} R) (hF : CohomZeroIsConstants F) : Function.Injective (ofForm F) := by

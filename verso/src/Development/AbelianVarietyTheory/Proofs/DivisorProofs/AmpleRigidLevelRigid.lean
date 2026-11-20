@@ -23,9 +23,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory Car
 attribute [local instance] Over.cartesianMonoidalCategory in
 
 /- English proof (translation)
-Establish `H` using `h.2 T x y`. Use `revert H`. Generalize the expression as in `hg : T.hom ≫ 𝟙 S = g`. Rewrite `hg` using `[Category.comp_id]`. Substitute `hg` using the available equality.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `H`. Conclude with `Over.OverMorphism.ext (H (x ≫ f) (y ≫ f) rfl rfl).symm`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.AmpleRigid.mul_comp_of_grpPullback_id {S : Scheme.{0}} {G' G : Over S} [GrpObj G'] [GrpObj G]
     (f : G' ⟶ G) (h : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsGrpPullback G' G (𝟙 S) f.left) {T : Over S} (x y : T ⟶ G') :
@@ -43,9 +43,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory Car
 attribute [local instance] Over.cartesianMonoidalCategory in
 
 /- English proof (translation)
-Establish `hone : (1 : 𝟙_ (Over S) ⟶ G) ≫ e = 1`. Establish `h1` using `mul (𝟙_ (Over S)) 1 1`. Rewrite `h1` using `[_root_.mul_one]`. Conclude with `_root_.left_eq_mul.mp h1`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hone` using `[Hom.one_def]`. Establish `h2` using `mul (G ⊗ G) (fst G G) (snd G G)`. Simplify `h2` using `[Hom.mul_def]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.AmpleRigid.isMonHom_of_mul_comp {S : Scheme.{0}} {G H : Over S} [GrpObj G] [GrpObj H]
     (e : G ⟶ H) (mul : ∀ (T : Over S) (x y : T ⟶ G), (x * y) ≫ e = (x ≫ e) * (y ≫ e)) :
@@ -62,9 +62,9 @@ theorem _root_.GlobalTheory.AmpleRigid.isMonHom_of_mul_comp {S : Scheme.{0}} {G 
 variable {F : Type} [Field F] [NumberField F] {𝔠 : FracId F}
 
 /- English proof (translation)
-Take `⟨x, hx0, hx⟩` from `FractionalIdeal.exists_ne_zero_mem_isInteger (𝔠.ne_zero)`. Use `⟨⟨x • algebraMap (𝓞 F) F x, Submodule.smul_mem _ x hx⟩, fun τ => ?_⟩` and prove the remaining obligations. Establish `hx' : algebraMap (𝓞 F) F x ≠ 0` using `(map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 F) F)).2 hx0`. Establish `hτ : τ (algebraMap (𝓞 F) F x) ≠ 0` using `(map_ne_zero τ).2 hx'`. Use `show 0 < τ (x • algebraMap (𝓞 F) F x)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.smul_def, map_mul]`. Conclude with `mul_self_pos.2 hτ`.
+A detailed English derivation is pending.
 -/
 theorem exists_totPos_mem (𝔠 : FracId F) : ∃ c : 𝔠.elt, IsTotPos (c : F) := by
   obtain ⟨x, hx0, hx⟩ := FractionalIdeal.exists_ne_zero_mem_isInteger (𝔠.ne_zero)
@@ -76,13 +76,13 @@ theorem exists_totPos_mem (𝔠 : FracId F) : ∃ c : 𝔠.elt, IsTotPos (c : F)
   exact mul_self_pos.2 hτ
 
 /- English proof (translation)
-Take `⟨φ₂, hsq, hiso⟩` from `hψ.pol`. Establish `hw : ψ ≫ X.A.hom = X.A.hom` using `by simpa using hψ.grp.1.w`. Establish `hw2 : φ₂ ≫ (X.A ⊗ X.A).hom = (X.A ⊗ X.A).hom`. Combine the equalities or inequalities in the displayed calculation. Set `Ψ : X.A ⟶ X.A` to `Over.homMk ψ hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression.
 
-Set `Φ : X.A ⊗ X.A ⟶ X.A ⊗ X.A` to `Over.homMk φ₂ hw2`. Establish `e : Ψ ≫ lift (𝟙 X.A) (𝟙 X.A) = lift (𝟙 X.A) (𝟙 X.A) ≫ Φ`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, lift_fst, Category.comp_id, Over.comp_left]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[show Φ.left = φ₂ from rfl, hsq.1, ← Category.assoc, ← Over.comp_left, lift_fst]`. Both sides reduce to the same expression. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, lift_snd, Category.comp_id, Over.comp_left]`. Rewrite using `[show Φ.left = φ₂ from rfl, hsq.2, ← Category.assoc, ← Over.comp_left, lift_snd]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e' : ψ ≫ (lift (𝟙 X.A) (𝟙 X.A)).left = (lift (𝟙 X.A) (𝟙 X.A)).left ≫ φ₂` using `congrArg (·.left) e`. Establish `h1 : pull φ₂ (cls (X.P c) (X.isLB c)) = cls (X.P c) (X.isLB c)` using `((cls_eq_iff (X.isLB c) (pull_isLB (X.isLB c) φ₂)).2 (hiso c)).symm`. Unfold `Obj.diag`. Rewrite using `[cls_pull (X.isLB c), ← pull_comp, e', pull_comp, h1]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_cls_diag {S : Scheme.{0}} (X : Obj F 𝔠 S) (ψ : X.A.left ⟶ X.A.left) (hψ : X.IsPullBy X (𝟙 _) ψ)
     (c : 𝔠.elt) :
@@ -112,11 +112,11 @@ theorem pull_cls_diag {S : Scheme.{0}} (X : Obj F 𝔠 S) (ψ : X.A.left ⟶ X.A
   rw [cls_pull (X.isLB c), ← pull_comp, e', pull_comp, h1]
 
 /- English proof (translation)
-Establish `hw : ψ ≫ X.A.hom = X.A.hom` using `by simpa using hψ.grp.1.w`. Use `haveI : IsIso ψ := hψ.grp.1.isIso_fst_of_isIso`. Set `σ : X.A ≅ X.A` to `Over.isoMk (asIso ψ) hw`. Establish `hσl : σ.hom.left = ψ` using `rfl`. Establish `hmul : ∀ (T : Over (Sp K)) (x y : T ⟶ X.A), (x * y) ≫ σ.hom = (x ≫ σ.hom) * (y ≫ σ.hom)` using `fun T x y => mul_comp_of_grpPullback_id σ.hom hψ.grp x y`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI hmon : IsMonHom σ.hom := isMonHom_of_mul_comp σ.hom hmul`. Take `⟨c, hc⟩` from `exists_totPos_mem 𝔠`. Establish `hpt : ∀ i, β.pt i ≫ σ.hom = β.pt i` using `fun i => Over.OverMorphism.ext (hfix i)`. Establish `hact : ∀ a, X.rm.act a ≫ σ.hom = σ.hom ≫ X.rm.act a` using `fun a => Over.OverMorphism.ext (hψ.act a)`. Establish `key` using `hS K X.A X.ab (X.diag c) (pull_isLB (X.isLB c) _) (X.pos c hc) N hN hNK σ hmon (pull_cls_diag X ψ hψ c) (fun Ω _ _ t x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, b, rfl⟩` from `β.surj Ω t x hx`. Rewrite using `[hmul, Category.assoc, Category.assoc, hact, ← Category.assoc (β.pt 0), hpt, Category.assoc, Category.assoc, hact, ← Category.assoc (β.pt 1), hpt])`. Conclude with `congrArg (·.left) key`.
+A detailed English derivation is pending.
 -/
 theorem eq_id_of_level_fixed (hS : SerreAmpleSt) {K : Type} [Field K] [IsAlgClosed K] (X : Obj F 𝔠 (Sp K))
     {N : ℕ} (hN : 3 ≤ N) (hNK : (N : K) ≠ 0) (β : X.Level N) (ψ : X.A.left ⟶ X.A.left)
@@ -139,17 +139,15 @@ theorem eq_id_of_level_fixed (hS : SerreAmpleSt) {K : Type} [Field K] [IsAlgClos
   exact congrArg (·.left) key
 
 /- English proof (translation)
-Introduce `hS F _ _ 𝔠 N hN R _ hNR X β g hg hfix`. Establish `hw : g ≫ X.A.hom = X.A.hom` using `by simpa using hg.grp.1.w`. Set `σ : X.A ⟶ X.A` to `Over.homMk g hw`. Use `haveI : IsMonHom σ := isMonHom_of_mul_comp σ (fun T x y => mul_comp_of_grpPullback_id σ hg.grp x y)`. Establish `key : σ = 𝟙 _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_id_of_forall_geometric_fibre laws_without_cohomology.1 X.A X.ab σ (IsMonHom.one_hom σ) fun t => ?_` and prove the remaining obligations. Set `K : Type` to `AlgebraicClosure ((Sp R).residueField t)`. Set `f : Sp K ⟶ Sp R` to `Spec.map (CommRingCat.ofHom (algebraMap ((Sp R).residueField t) K)) ≫ (Sp R).fromSpecResidueField t`. Take `⟨X', β', φ, hφ, hpt⟩` from `Obj.exists_isLevelPull β f`. Establish `h1 : X'.IsPullBy X (𝟙 _ ≫ f) (φ ≫ g)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hφ.comp hg` as an intermediate fact. Rewrite `this` using `[Category.comp_id, ← Category.id_comp f]`. Then use the resulting hypothesis. Take `⟨ψ, hψ, hψφ⟩` from `h1.cancel hφ`. Establish `hNK : (N : K) ≠ 0`. Establish `hu` using `hNR.map (Spec.preimage f).hom`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hu` using `[map_natCast]`. Conclude with `hu.ne_zero`. Establish `hψw : ψ ≫ X'.A.hom = X'.A.hom` using `by simpa using hψ.grp.1.w`. Establish `hψ1 : ψ = 𝟙 _` using `eq_id_of_level_fixed hS X' hN hNK β' ψ hψ fun i => by`. Use `hφ.grp.1.hom_ext ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hψφ, ← Category.assoc, hpt i, Category.assoc, hfix i]`. Rewrite using `[Category.assoc, hψw]`. Use `⟨Sp K, X'.A.left, f, φ, X'.A.hom, (default : PrimeSpectrum K), ?_, hφ.grp.1, ?_⟩` and prove the remaining obligations. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (Scheme.fromSpecResidueField_apply t _)`. Express the relevant statement in the definitionally equal form `φ ≫ g = φ`.
-
-Rewrite using `[← hψφ, hψ1, Category.id_comp]`. Conclude with `congrArg (·.left) key`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelRigid_of_serreAmple : SerreAmpleSt → LevelRigidSt := by
   intro hS F _ _ 𝔠 N hN R _ hNR X β g hg hfix

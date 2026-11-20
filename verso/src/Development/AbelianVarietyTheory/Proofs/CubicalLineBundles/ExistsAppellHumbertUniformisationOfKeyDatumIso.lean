@@ -22,9 +22,9 @@ open GlobalTheory.KeyPow GlobalTheory.KeyKa GlobalTheory.KeyEq GlobalTheory.KeyI
 namespace GlobalTheory.KeyTransport
 
 /- English proof (translation)
-Take `⟨a', ha', rfl⟩` from `hw'`. Take `⟨a, ha, rfl⟩` from `hw`. Set `m : (epsR ℂ ⟶ A') →* (epsR ℂ ⟶ A)` to `MonoidHom.mk' (fun p => p ≫ ψ) hm`. Establish `e : a = m ∘ a'`. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `ext`. Express the relevant statement in the definitionally equal form `_ = (a' i).left ≫ ψ.left`. Rewrite using `[ha, ha', hv, Category.assoc]`. Rewrite using `[e, ← List.map_ofFn, ← map_list_prod]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eq_comp_of_isLieComb {A A' : Over (Sp ℂ)} [GrpObj A] [GrpObj A'] (ψ : A' ⟶ A)
     (hm : ∀ a b : epsR ℂ ⟶ A', (a * b) ≫ ψ = (a ≫ ψ) * (b ≫ ψ)) {n : ℕ} {c : Fin n → ℂ}
@@ -42,7 +42,7 @@ theorem eq_comp_of_isLieComb {A A' : Over (Sp ℂ)} [GrpObj A] [GrpObj A'] (ψ :
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `eq_comp_of_isLieComb ψ hm hv hw' hw`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem eq_comp_of_isLieComb_cast {A A' : Over (Sp ℂ)} [GrpObj A] [GrpObj A'] (ψ : A' ⟶ A)
     (hm : ∀ a b : epsR ℂ ⟶ A', (a * b) ≫ ψ = (a ≫ ψ) * (b ≫ ψ)) {n n' : ℕ} (h : n = n') {c : Fin n' → ℂ}
@@ -54,29 +54,27 @@ theorem eq_comp_of_isLieComb_cast {A A' : Over (Sp ℂ)} [GrpObj A] [GrpObj A'] 
   exact eq_comp_of_isLieComb ψ hm hv hw' hw
 
 /- English proof (translation)
-Take `⟨φ, he, w, hg, F, hc, hw, hr, hs, hF, hFe, hv⟩` from `H`. Establish `hid : spMap (RingHom.id ℂ) = 𝟙 (Sp ℂ)` using `Spec.map_id _`. Establish `hFid : spMap F = 𝟙 _`. Rewrite using `[KeyCancel.dualNumber_ringHom_ext (F := F) (G := RingHom.id _) hF hFe]`. Conclude with `Spec.map_id _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `r` using `(maps_iff w _ (fun _ => eSec x.P.A) _ x'.rig x.rig (spMap (RingHom.id ℂ)) _ (rigPull_le φ (spMap (RingHom.id ℂ)) he x.P.L) (fun _ => rfl)).1 hr`. Rewrite `r`, `he` using `[hid]`. Rewrite `he` using `[Category.id_comp]`. Establish `hc'` using `hc.congr hid rfl`. Set `ψ : x'.P.A ⟶ x.P.A` to `Over.homMk φ (hc'.1.w.trans (Category.comp_id _))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hex, hΛ, hfr⟩` from `exists_push x.P.isLB x'.P.isLB ψ hc' w ((isGen_iff w).1 hw) u'`. Use `replace hex : ∀ z, (u.ex z).left = (u'.ex z).left ≫ φ := hex`. Use `replace hfr : ∀ j k z, φ ((u'.ex z).left pt) ∈ x.P.L.U j → (u'.ex z).left pt ∈ x'.P.L.U k → u.fr j z = wv w (u'.ex z).left j k * u'.fr k z := hfr`. Use `⟨u, hΛ, fun Hm χ' hA => ⟨fun l => χ' ⟨l.1, hΛ ▸ l.2⟩, hA.1, hA.2.1, fun l => hA.2.2.1 _, fun l j z hz => ?_⟩, fun h₄ j hj => ?_, fun θ h₅ j z hz => ?_, fun h c q' q W hq' hq h₆ U hU f => ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[hex]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hj : φ ((u'.ex z).left pt) ∈ x.P.L.U j` using `(top_le_preimage_iff_mem _ _).1 hz`. Take `⟨k, hk⟩` from `exists_chart x'.P.isLB ((u'.ex z).left pt)`. Establish `hl : u'.ex (z + l.1) = u'.ex z`. Rewrite using `[u'.ex_add, (u'.ker l.1).2 (hΛ ▸ l.2), _root_.mul_one]`. Establish `e` using `hA.2.2.2 ⟨l.1, hΛ ▸ l.2⟩ k z ((top_le_preimage_iff_mem _ _).2 hk)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hfr j k z hj hk, hfr j k (z + l.1) (hl ▸ hj) (hl ▸ hk), hl, e]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : (u'.ex 0).left = eSec x'.P.A`. Rewrite using `[(u'.ker 0).2 u'.Λ.zero_mem]`. Express the relevant statement in the definitionally equal form `(toUnit _ ≫ η[x'.P.A]).left = η[x'.P.A].left`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[toUnit_unit, Category.id_comp]`. Take `⟨k, hk⟩` from `exists_chart x'.P.isLB (eSec x'.P.A pt)`. Establish `hj' : φ (eSec x'.P.A pt) ∈ x.P.L.U (j PUnit.unit)`. Use `mem_pull.1 (hj (Set.mem_univ pt))` as an intermediate fact. Rewrite `this` using `[← he]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hk' : (𝟙 (Sp ℂ) : Sp ℂ ⟶ Sp ℂ) pt ∈ (x'.P.L.pull (eSec x'.P.A)).U (fun _ => k)` using `mem_pull.2 hk`. Establish `e` using `congrArg Units.val (r _ (𝟙 (Sp ℂ)) pt j (fun _ => k) (fun _ => hj') (fun _ => hk))`. Rewrite `e` using `[Fintype.prod_unique, zpow_one, Category.id_comp, Category.id_comp, Units.val_mul]`. Rewrite using `[hfr _ k 0 (h0 ▸ hj') (h0 ▸ hk), h0, h₄ (fun _ => k) ((top_le_preimage_iff_mem (𝟙 _) _).2 hk')]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `toStalk.injective` to reduce the goal to its premises. Rewrite using `[map_mul]`. Conclude with `(congrArg₂ (· * ·) (gw_eq_toStalk w _ hj' hk).symm (gm_eq_toStalk _ _ hk' _).symm).trans (e.symm.trans (gm_eq_toStalk _ _ (hj (Set.mem_univ pt)) _))`. Rewrite `hz`, the goal using `[hex]`. Establish `hj : φ ((u'.ex z).left pt) ∈ x.P.L.U j` using `(top_le_preimage_iff_mem _ _).1 hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨k, hk⟩` from `exists_chart x'.P.isLB ((u'.ex z).left pt)`. Establish `e` using `(KeyCancel.appLE_eq_iff_stalk w x.th x'.th).1 hs _ (u'.ex z).left pt j k hj hk`. Rewrite `e` using `[gs_eq_toStalk _ _ hj, gs_eq_toStalk _ _ hk, gw_eq_toStalk w _ hj hk, ← map_mul]`. Rewrite using `[toStalk.injective e, hfr j k z hj hk, h₅ k z ((top_le_preimage_iff_mem _ _).2 hk)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₀ : q = q' ≫ ψ` using `eq_comp_of_isLieComb_cast ψ (fun a b => comp_mul_of_isGrpPullback ψ hc' a b) h (fun i => by`. Express the relevant statement in the definitionally equal form `_ = _ ≫ φ`. Rewrite using `[hv, hFid, Category.id_comp]`. Use the proof step `rfl) hq' hq`. Establish `e : q.left = q'.left ≫ φ`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[e₀]`. Both sides reduce to the same expression. Use `h₆ (φ ⁻¹ᵁ U) (by rw [e] at hU; exact hU) ((φ.app U).hom f)` as an intermediate fact. Simplify using `only [valAt'_comp, ← hex] at this`. Rewrite using `[← this]`.
-
-Use `congr 2`. Generalize the expression as in `q.left = p at e hU`. Substitute `e` using the available equality. Rewrite using `[Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression.
+Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_push_key {x x' : KeyIn ℂ} (H : KeyPB x' x (RingHom.id ℂ)) {g : ℕ} (u' : HolUnif x'.P.A x'.P.L g) :
     ∃ u : HolUnif x.P.A x.P.L g, u.Λ = u'.Λ ∧ (∀ Hm χ', u'.IsAH Hm χ' → ∃ χ, u.IsAH Hm χ) ∧
@@ -161,9 +159,9 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 namespace GlobalTheory.KeyTransport
 
 /- English proof (translation)
-Introduce `x x' H hg g u Hm χ θ Fd ⟨h₁, h₂, h₃, h₄⟩`. Establish `H' : KeyPB x x' (RingHom.id ℂ)` using `KeyCancel.keyPB_cancel ℂ ℂ ℂ x x' x (RingHom.id ℂ) (RingHom.id ℂ) H (keyPB_id ℂ x)`. Establish `hH : Hm.map (RingHom.id ℂ) = Hm` using `rfl`. Take `⟨u', hΛ, hA, hR, hF, hD⟩` from `exists_push_key H' u`. Take `⟨χ', hχ⟩` from `hA Hm χ h₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨u', χ', θ, Fd, hχ, hR h₂, hF θ h₃, hΛ ▸ h₄, rfl, fun cf w w' W hw hw' hW => hD hg cf w w' W hw hw' hW⟩`.
+Supply the required witnesses or components.
 -/
 theorem uniformisation_transport : ∀ (x x' : KeyIn ℂ), KeyPB x' x (RingHom.id ℂ) → ∀ (hg : x'.P.g = x.P.g) (g : ℕ) (u : HolUnif x.P.A x.P.L g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ) (θ : (Fin g → ℂ) → ℂ) (Fd : Set (Fin g → ℂ)), u.IsAH Hm χ ∧ u.IsRig x.rig ∧ u.IsFn x.th θ ∧ IsAddFundamentalDomain u.Λ Fd volume → ∃ (u' : HolUnif x'.P.A x'.P.L g) (χ' : u'.Λ → ℂ) (θ' : (Fin g → ℂ) → ℂ) (Fd' : Set (Fin g → ℂ)), u'.IsAH (Hm.map (RingHom.id ℂ)) χ' ∧ u'.IsRig x'.rig ∧ u'.IsFn x'.th θ' ∧ IsAddFundamentalDomain u'.Λ Fd' volume ∧ (∫ z in Fd', ‖θ' z‖ ^ 2 * Real.exp (-Real.pi * (hermForm (Hm.map (RingHom.id ℂ)) z z).re)) / (volume Fd').toReal = (∫ z in Fd, ‖θ z‖ ^ 2 * Real.exp (-Real.pi * (hermForm Hm z z).re)) / (volume Fd).toReal ∧ ∀ (cf : Fin x.P.g → ℂ) (w : epsR ℂ ⟶ x.P.A) (w' : epsR ℂ ⟶ x'.P.A) (W : Fin g → ℂ), IsLieComb cf x.v w → IsLieComb (fun i => (RingHom.id ℂ) (cf (i.cast hg))) x'.v w' → u.IsDiff W w → u'.IsDiff (fun i => (RingHom.id ℂ) (W i)) w' := by
   intro x x' H hg g u Hm χ θ Fd ⟨h₁, h₂, h₃, h₄⟩

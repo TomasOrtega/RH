@@ -32,7 +32,7 @@ open scoped UpperHalfPlane MatrixGroups
 namespace GlobalTheory.RoadELatAlg
 
 /- English proof (translation)
-Use `⟨Polynomial.X ^ 2 - Polynomial.C q, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Polynomial.X_pow_sub_C_ne_zero (by norm_num) q`. Simplify using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_of_sq_eq_ratCast {x : ℂ} (q : ℚ) (h : x ^ 2 = (q : ℂ)) : IsAlgebraic ℚ x := by
   refine ⟨Polynomial.X ^ 2 - Polynomial.C q, ?_, ?_⟩
@@ -40,11 +40,11 @@ theorem isAlgebraic_of_sq_eq_ratCast {x : ℂ} (q : ℚ) (h : x ^ 2 = (q : ℂ))
   · simp [h]
 
 /- English proof (translation)
-Establish `hmem : ∀ z : ℂ, z ∈ Λ.lattice → ∃ a : K, ι a = z`. Introduce `z hz`. Establish `: z ∈ (Λ.lattice : Set ℂ)` using `hz`. Rewrite `this` using `[hΛ]`. Take `⟨a, -, ha⟩` from `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, ha⟩`. Take `⟨a, ha⟩` from `hmem c ((hτ.2 c).2 ⟨0, 1, by simp⟩)`. Take `⟨b, hb⟩` from `hmem (c * τ) ((hτ.2 _).2 ⟨1, 0, by simp⟩)`. Establish `hc : c ≠ 0` using `hτ.1`. Use `⟨b / a, ?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_div₀, ha, hb]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← ha]`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic a).algHom ι.toRatAlgHom`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_theta {K : Type} [Field K] [NumberField K] (ι : K →+* ℂ) (Λ : PeriodPair)
     (hΛ : GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport.IsLatOf ι 1 Λ) (c : ℂ) (τ : ℍ) (hτ : IsTauOf Λ c τ) :
@@ -63,7 +63,7 @@ theorem exists_theta {K : Type} [Field K] [NumberField K] (ι : K →+* ℂ) (Λ
   · rw [← ha]; exact (Algebra.IsAlgebraic.isAlgebraic a).algHom ι.toRatAlgHom
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[pow_add, pow_mul, div_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem term_div_eq (r Y H ω : ℂ) (a w W : ℕ) (h : W = 2 * a + w) :
     r * Y ^ a * H / ω ^ W = r * ((Y / ω ^ 2) ^ a * (H / ω ^ w)) := by
@@ -72,11 +72,11 @@ theorem term_div_eq (r Y H ω : ℂ) (a w W : ℕ) (h : W = 2 * a + w) :
   ring
 
 /- English proof (translation)
-Establish `h2 : (2 * im / r) ^ K * (pi / im) ^ K = (2 * pi / r) ^ K`. Rewrite using `[← mul_pow]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `h3 : c ^ W / p ^ W / (Ω * c / p) ^ W = 1 / Ω ^ W`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[div_pow, mul_pow]`. Clear the denominators using the available nonvanishing facts. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_mul_cancel₀ hsg, h2, h3, hc0]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ = _ := by rw [hD]; ring`.
+A detailed English derivation is pending.
 -/
 theorem coord_id (c0 S0 D Ω c cW P pi im r p sg : ℂ) (W K : ℕ) (hsg : sg ≠ 0) (hD : D = cW * (sg * P) * S0)
     (hc0 : c0 = cW * P * (2 * pi / r) ^ K) (hΩ : Ω ≠ 0) (hc : c ≠ 0) (hp : p ≠ 0) (him : im ≠ 0) (hr : r ≠ 0) :
@@ -91,53 +91,45 @@ theorem coord_id (c0 S0 D Ω c cW P pi im r p sg : ℂ) (W K : ℕ) (hsg : sg �
     _ = _ := by rw [hD]; ring
 
 /- English proof (translation)
-Introduce `hSKDR hPZ _ _`. Introduce `K _ _ d δ ι hK hd hδ Λ₀ Ω₀ hΛ hΩ E _ _ _ _ I _ φ s 𝔣 Q hDat κ y S hS`. Take `⟨hUn, hCM, hφι, hs, h𝔣, hQ⟩` from `hDat`. Establish `hf2 : 2 ≤ Module.finrank ℚ (maximalRealSubfield E)` using `GlobalTheory.LatAlgebraic.two_le_finrank hUn`. Establish `hc0 : condQ 𝔣 Q ≠ ⊥` using `by show 𝔣 * ∏ q ∈ Q, q.asIdeal ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero h𝔣.1 (Finset.prod_ne_zero_iff.2 fun q _ => q.ne_bot)`. Establish `hΩ0 : Ω₀ ≠ 0`. Introduce and unpack `rfl`. Conclude with `latDisc_ne_zero Λ₀ (by rw [← hΩ]; simp)`. Establish `hW2` using `GlobalTheory.T.heckeWeightTwoContinuation_of_functionalEquation hPZ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSt` using `GlobalTheory.T.cmLattice_derivClassInvariance_of_hecke hW2`. Establish `hEis` using `GlobalTheory.T.hilbertEisensteinExpansion_of_lipschitz_hecke_zeta GlobalTheory.T.lipschitz_formula_totally_real_poisson hW2 hPZ`. Take `⟨⟨z, hz⟩, -⟩` from `GlobalTheory.T.partialZetaDenominatorsCMField_of_siegelKlingenDeligneRibet hSKDR E s hs`. Take `⟨⟨g, hg⟩, hD⟩` from `(((hSt E I φ hf2 hCM).1 s hs).1 (condQ 𝔣 Q) y hc0).1`. Take `⟨u, hu⟩` from `GlobalTheory.LatAlgebraic.exists_list_count κ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hDg` using `((hD g hg).2 κ u hu).1 S hS`. Take `⟨c, τ, hτ⟩` from `latTau Λ₀`. Take `⟨θ, hθτ, hcalg⟩` from `exists_theta ι Λ₀ hΛ c τ hτ`. Establish `hc : c ≠ 0` using `hτ.1`. Establish `hφθ : ∀ i, φ i (algebraMap K E θ) = (τ : ℂ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[← RingHom.comp_apply, hφι i, hθτ]`. Take `⟨e, he⟩` from `GlobalTheory.CMTypeEmb.exists_equiv E I φ hCM`. Establish `hcard : Fintype.card I = Module.finrank ℚ (maximalRealSubfield E)` using `GlobalTheory.LatAlgebraic.card_eq_finrank hCM`. Establish `hI : Nonempty I` using `Fintype.card_pos_iff.1 (by omega)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i₀⟩` from `hI`. Establish `hθF : algebraMap K E θ ∉ Set.range (fun x : maximalRealSubfield E => (x : E))`. Introduce and unpack `⟨x, hx⟩`. Establish `h1` using `he i₀ x`. Express the relevant statement in the definitionally equal form `(x : E) = _ at hx`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hx, hφθ i₀]`. Establish `h2` using `congrArg Complex.im h1`. Simplify using `only [Complex.ofReal_im] at h2`. Conclude with `τ.im_pos.ne' h2`. Take `⟨n, N, L, hn, hN, hN2, hL, hLΛ⟩` from `GlobalTheory.RoadE.exists_level E (algebraMap K E θ) (condQ 𝔣 Q) y 2 hc0 hθF (by norm_num)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hN2' : 2 ≤ N` using `Nat.le_of_dvd hN hN2`. Use `haveI : NeZero N := ⟨by omega⟩`. Use `haveI : Fact (1 < N) := ⟨by omega⟩`. Set `y₁ : Fin 2 → ZMod N` to `![1, 0]`. Establish `hy₁ : y₁ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Use `congrFun h 0` as an intermediate fact. Simplify using `[y₁] at this`. Establish `hval` using `GlobalTheory.HilbFam.eValue_derivs hEis E I φ e (algebraMap K E θ) τ (lattice (condQ 𝔣 Q) y) L n s N g κ u (wB N y₁) hf2 hs hN hL he hφθ hn hLΛ hg hu`. Take `⟨hωDD, hj, hG2, hwp⟩` from `GlobalTheory.AlgTau.main K d δ ι 1 Λ₀ c Ω₀ τ hd hδ hΛ hτ hΩ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ω : ℂ := Ω₀ * c / (2 * Real.pi * Complex.I) with hω`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Establish `h2piI : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0`. Simplify using `[hpi, Complex.I_ne_zero]`. Establish `hω0 : ω ≠ 0` using `div_ne_zero (mul_ne_zero hΩ0 hc) h2piI`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hH : ∀ μ : GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb (maximalRealSubfield E) → ℕ, IsAlgebraic ℚ (GlobalTheory.HilbFam.hfun (2 * s) L μ (wB N y₁) τ / ω ^ GlobalTheory.HilbFam.wt (2 * s) μ)`. Introduce `μ`. Establish `h` using `GlobalTheory.QFam.fam_value_isAlgebraic (GL (Fin 2) (ZMod N)) (GlobalTheory.WpFam.gact N 1) (GlobalTheory.HilbFam.wt (2 * s) μ) N (fun α ↦ GlobalTheory.HilbFam.hfun (2 * s) (GlobalTheory.HilbFam.twist N L ((α : GL (Fin 2) (ZMod N)) : Matrix (Fin 2) (Fin 2) (ZMod N))) μ (wB N (Glo …`. Simplify `h` using `only [Units.val_one, GlobalTheory.HilbFam.twist_one_of_hasLevel _ N L hL, (GlobalTheory.T.modularGroup_rowVec_and_conj_rightActions N).2.2.2.1]`. Establish `hX : IsAlgebraic ℚ ((((Real.pi / τ.im : ℝ) : ℂ) / (2 * Real.pi * Complex.I) ^ 2 - wB N y₁ τ) / ω ^ 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.wB_nonhol_correction, neg_div, add_div]`. Conclude with `((hG2.add (hwp N y₁))).neg`. Use `set f := Module.finrank ℚ (maximalRealSubfield E) with hf`. Use `set k := ∑ i, κ i with hk`. Use `set P : ℂ := 2 * Real.pi * Complex.I with hP`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set Y : ℂ := ((Real.pi / τ.im : ℝ) : ℂ) / P ^ 2 - wB N y₁ τ with hY`. Use `set κ' : GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb (maximalRealSubfield E) → ℕ := fun j ↦ κ (e.symm j) with hκ'`. Establish `hsum' : ∑ j, κ' j = k` using `Equiv.sum_comp e.symm κ`. Establish `hA : ∀ x : ℂ, IsAlgebraic ℚ x → x ∈ algebraicClosure ℚ ℂ` using `fun x h ↦ mem_algebraicClosure_iff.2 h`. Establish `hRalg : IsAlgebraic ℚ (((n : ℂ) ^ (2 * s * f) * ∑ μ ∈ Finset.Iic κ', ((∏ j, GlobalTheory.HilbFam.rco (2 * s) (κ' j) (μ j) : ℤ) : ℂ) * Y ^ (∑ j, (κ' j - μ j)) * GlobalTheory.HilbFam.hfun (2 * s) L μ (wB N y₁) τ) / ω ^ (2 * s * f + 2 * k))`.
+Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key : ((n : ℂ) ^ (2 * s * f) * ∑ μ ∈ Finset.Iic κ', ((∏ j, GlobalTheory.HilbFam.rco (2 * s) (κ' j) (μ j) : ℤ) : ℂ) * Y ^ (∑ j, (κ' j - μ j)) * GlobalTheory.HilbFam.hfun (2 * s) L μ (wB N y₁) τ) / ω ^ (2 * s * f + 2 * k) = (n : ℂ) ^ (2 * s * f) * ∑ μ ∈ Finset.Iic κ', ((∏ j, Global …`. Rewrite using `[mul_div_assoc, Finset.sum_div]`. Use `congrArg _ (Finset.sum_congr rfl fun μ hμ ↦ ?_)` and prove the remaining obligations. Establish `hle : μ ≤ κ'` using `Finset.mem_Iic.1 hμ`. Establish `hexp : 2 * s * f + 2 * k = 2 * (∑ j, (κ' j - μ j)) + GlobalTheory.HilbFam.wt (2 * s) μ`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∑ j, (κ' j - μ j) + ∑ j, μ j = ∑ j, κ' j`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ ↦ Nat.sub_add_cancel (hle j)`. Express the relevant statement in the definitionally equal form `2 * s * f + 2 * k = 2 * (∑ j, (κ' j - μ j)) + (2 * s * f + 2 * ∑ j, μ j)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `term_div_eq _ _ _ _ _ _ _ hexp`. Rewrite using `[key, ← mem_algebraicClosure_iff]`. Use `mul_mem (pow_mem (natCast_mem _ _) _) (sum_mem fun μ _ ↦ mul_mem (intCast_mem _ _) (mul_mem (pow_mem (hA _ hX) _) (hA _ (hH μ))))` and prove the remaining obligations. Establish `hRalg' : IsAlgebraic ℚ (GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.iterD u g 0 * ((Real.pi / τ.im : ℝ) : ℂ) ^ k / P ^ (2 * s * f + 2 * k) / ω ^ (2 * s * f + 2 * k))`. Rewrite using `[hval]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `hRalg`. Rewrite `hRalg'` using `[Complex.ofReal_div]`. Establish `hsd : ((Real.sqrt d : ℝ) : ℂ) ≠ 0`. Establish `: (0 : ℝ) < Real.sqrt d` using `Real.sqrt_pos.2 (by exact_mod_cast hd)`. Conclude with `this.ne'` after adjusting the coercions.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `him : ((τ.im : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast τ.im_pos.ne'`. Establish `hcW : (GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.cWt E (2 * s) : ℂ) ≠ 0`. Establish `: (0 : ℝ) < GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.cWt E (2 * s)`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.cWt`. Establish `h1 : (0 : ℝ) < |(discr (maximalRealSubfield E) : ℝ)|` using `abs_pos.2 (by exact_mod_cast discr_ne_zero _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_pos (pow_pos (by exact_mod_cast Nat.factorial_pos _) _) (Real.rpow_pos_of_pos h1 _)`. Conclude with `this.ne'` after adjusting the coercions. Establish `hP' : (((∏ i, ∏ j ∈ Finset.range (κ i), (((2 * s : ℕ) : ℝ) + j)) : ℝ) : ℂ) ≠ 0`. Establish `: (0 : ℝ) < ∏ i, ∏ j ∈ Finset.range (κ i), (((2 * s : ℕ) : ℝ) + j)` using `Finset.prod_pos fun i _ => Finset.prod_pos fun j _ => by positivity`. Conclude with `this.ne'` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hsgn : ((-1 : ℂ) ^ k) ≠ 0` using `pow_ne_zero _ (by norm_num)`. Establish `hC0 : ((C0 E d (2 * s) κ : ℝ) : ℂ) = (GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.cWt E (2 * s) : ℂ) * (((∏ i, ∏ j ∈ Finset.range (κ i), (((2 * s : ℕ) : ℝ) + j)) : ℝ) : ℂ) * (2 * (Real.pi : ℂ) / ((Real.sqrt d : ℝ) : ℂ)) ^ k`. Rewrite using `[GlobalTheory.LatAlgebraic.cmPeriodConstant_eq_of_card_cmType hcard d s hs κ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite `hDg` using `[GlobalTheory.LatAlgebraic.risingFactor_eq]`. Establish `key2 : GlobalTheory.ToricTransport.coordIn E d s κ Ω₀ (S 0) = ((-1 : ℂ) ^ k)⁻¹ * (2 * ((τ.im : ℝ) : ℂ) / ((Real.sqrt d : ℝ) : ℂ)) ^ k * c ^ (2 * s * f + 2 * k) * (GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.iterD u g 0 * ((Real.pi : ℂ) / ((τ.im : ℝ) : ℂ)) ^ k / P …`. Rewrite using `[GlobalTheory.ToricTransport.coordIn, hcard]`. Conclude with `coord_id _ (S 0) (GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.iterD u g 0) Ω₀ c _ _ (Real.pi : ℂ) ((τ.im : ℝ) : ℂ) ((Real.sqrt d : ℝ) : ℂ) P ((-1 : ℂ) ^ k) (2 * s * f + 2 * k) k hsgn hDg hC0 hΩ0 hc h2piI him hsd`. Establish `hτalg : IsAlgebraic ℚ (τ : ℂ)`.
-
-Rewrite using `[← hθτ]`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic θ).algHom ι.toRatAlgHom`. Establish `hτc : IsAlgebraic ℚ (starRingEnd ℂ (τ : ℂ))`. Rewrite using `[← hθτ]`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic θ).algHom ((starRingEnd ℂ).comp ι).toRatAlgHom`.
-
-Establish `hIalg : IsAlgebraic ℚ Complex.I` using `isAlgebraic_of_sq_eq_ratCast (-1) (by simp [Complex.I_sq])`. Establish `himalg : IsAlgebraic ℚ ((τ.im : ℝ) : ℂ)`. Rewrite using `[← UpperHalfPlane.coe_im, Complex.im_eq_sub_conj, ← mem_algebraicClosure_iff]`. Conclude with `div_mem (sub_mem (hA _ hτalg) (hA _ hτc)) (mul_mem (ofNat_mem _ 2) (hA _ hIalg))`. Establish `hsdalg : IsAlgebraic ℚ ((Real.sqrt d : ℝ) : ℂ)`.
-
-Use `isAlgebraic_of_sq_eq_ratCast (d : ℚ) ?_` and prove the remaining obligations. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Simplify using the standard rewrite rules. Rewrite using `[key2, ← mem_algebraicClosure_iff]`. Conclude with `mul_mem (mul_mem (mul_mem (inv_mem (pow_mem (neg_mem (one_mem _)) _)) (pow_mem (div_mem (mul_mem (ofNat_mem _ 2) (hA _ himalg)) (hA _ hsdalg)) _)) (pow_mem (hA _ hcalg) _)) (hA _ hRalg')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latAlg_of_siegelKlingen : GlobalTheory.Published.SiegelKlingenDeligneRibet → GlobalTheory.Published.PartialZetaFunctionalEquation →
     GlobalTheory.Published.HilbertClassFieldJ → GlobalTheory.Published.EllipticMainTheoremCM → GlobalTheory.LatVal.LatAlg := by

@@ -7,11 +7,11 @@ namespace GlobalTheory.BinaryFormUniversal
 open Polynomial
 
 /- English proof (translation)
-Distinguish the cases in `h2 : ringChar k = 2`. Take `⟨r, hr⟩` from `FiniteField.isSquare_of_char_two h2 u`. Conclude with `⟨r, 0, by rw [hr]; ring⟩`. Use `letI := Fintype.ofFinite k`. Establish `hodd : Fintype.card k % 2 = 1` using `FiniteField.odd_card_of_char_ne_two h2`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h2' : (2 : k) ≠ 0` using `Ring.two_ne_zero h2`. Establish `hD' : -(a ^ 2 - 4 * n) ≠ 0` using `neg_ne_zero.mpr hD`. Establish `hf : degree (X ^ 2 : k[X]) = 2` using `by simp`. Establish `hg : degree (C (-(a ^ 2 - 4 * n)) * X ^ 2 + C 0 * X + C (-(4 * u)) : k[X]) = 2` using `degree_quadratic hD'`. Take `⟨x, s, h⟩` from `FiniteField.exists_root_sum_quadratic hf hg hodd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [eval_add, eval_mul, eval_pow, eval_X, eval_C] at h`. Use `⟨(x - a * s) / 2, s, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Take the linear combination `h`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem binary_form_universal {k : Type u_1} [Field k] [Finite k] {a n : k}
     (hD : a ^ (2 : ℕ) - (4 : k) * n ≠ (0 : k)) (u : k) :

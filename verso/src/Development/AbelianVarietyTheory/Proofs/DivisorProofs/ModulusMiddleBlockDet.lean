@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.CuspBlock
 
 /- English proof (translation)
-Unfold `GlobalTheory.SmGL.modExp`. Simplify using `[Fin.sum_univ_three, Finset.sum_filter, tripSizes]`. Apply the tactic sequence `congr 2 <;> exact Fintype.card_fin _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem modExp_tripSizes_one (l d N : ℕ) :
     GlobalTheory.SmGL.modExp (fun j : Fin 3 => Fin (tripSizes l d N j)) (1 : Fin 3) =
@@ -27,9 +27,9 @@ theorem modExp_tripSizes_one (l d N : ℕ) :
   congr 2 <;> exact Fintype.card_fin _
 
 /- English proof (translation)
-Introduce `k _ _ _ _ l d N h g`. Rewrite using `[GlobalTheory.SmGL.deltaHalf_apply, Fin.prod_univ_three]`. Establish `h0 : (midHom k l d N g) 0 = 1` using `Pi.mulSingle_eq_of_ne (M := fun j : Fin 3 => GL (Fin (tripSizes l d N j)) k) (i := 1) (i' := 0) (by decide) g`. Establish `h2 : (midHom k l d N g) 2 = 1` using `Pi.mulSingle_eq_of_ne (M := fun j : Fin 3 => GL (Fin (tripSizes l d N j)) k) (i := 1) (i' := 2) (by decide) g`. Establish `h1 : (midHom k l d N g) 1 = g` using `Pi.mulSingle_eq_same (M := fun j : Fin 3 => GL (Fin (tripSizes l d N j)) k) 1 g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h0, h2, h1]`. Simplify using `only [map_one, one_mul, mul_one, GlobalTheory.SmGL.detChar_apply]`. Rewrite using `[modExp_tripSizes_one]`. Use `congr 3`. Move the coercions through the operations in `[Nat.cast_sub h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

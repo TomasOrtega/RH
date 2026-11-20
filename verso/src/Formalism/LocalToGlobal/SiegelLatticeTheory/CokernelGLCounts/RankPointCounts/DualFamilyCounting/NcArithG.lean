@@ -23,7 +23,7 @@ variable {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubg
   (i0 i0' : ∀ _ : NumberField.InfinitePlace X.B.I.F, Fin D.R.k) (νq : X.B.I.Ginf → Measure X.B.I.Ginf)
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Use `show D.R.m = 2 * (D.R.m / 2 - 1 + 1)`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem rm_eq (D : D7) : D.R.m = 2 * (D.R.rS + 1) := by
   obtain ⟨j, hj⟩ := D.R.m_even
@@ -32,7 +32,7 @@ theorem rm_eq (D : D7) : D.R.m = 2 * (D.R.rS + 1) := by
   omega
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.Pf.Cnt.cMass`. Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Rewrite using `[Finset.prod_Icc_succ_top (by omega), Nat.add_sub_cancel, mul_assoc]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cMass_succ {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F] [Algebra F K]
     (k : ℕ) (hk : 2 ≤ k) :
@@ -43,55 +43,45 @@ theorem cMass_succ {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F]
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 /- English proof (translation)
-Use `set B := bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq with hB`. Take `⟨hKc, hFc, -⟩` from `Formalism.L2.SG.Pf.Cnt.field_dictionary_holds D`. Use `set dd : ℝ := |(NumberField.discr D.host.F : ℝ)| with hdd`. Use `set f : ℕ := Module.finrank ℚ D.host.F with hfdef`. Use `set k : ℕ := D.R.k with hkdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set s : ℕ := D.R.rS with hsdef`. Use `set gg : ℝ := ((Lat.gS D : ℕ) : ℝ) with hgg`. Use `set TT : ℝ := ((Tw u : ℕ) : ℝ) with hTT`. Use `set Lk : ℝ := ∏ i ∈ Finset.Icc (k + 1) D.R.r, Formalism.HermitianLattices.Ext.L3.lValEtaF D.host.E D.host.F i with hLk`. Establish `hm : D.R.m = 2 * (s + 1)` using `rm_eq D`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk5 : D.R.m + 3 ≤ k` using `D.R.m_add_three_le_k`. Establish `hk2 : 2 ≤ k` using `by omega`. Establish `hr : D.R.r = k + 2 * s + 1` using `by show D.R.k + D.R.m - 1 = k + 2 * s + 1`. Use linear arithmetic over natural numbers and integers. Establish `hf : 0 < f` using `Module.finrank_pos`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hdpos : 0 < dd` using `abs_pos.mpr (by exact_mod_cast NumberField.discr_ne_zero D.host.F)`. Establish `hgpos : 0 < gg`. Establish `h0` using `(D.host.g_prime 0).pos`. Establish `h1'` using `(D.host.g_prime 1).pos`. Rewrite using `[hgg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `Lat.gS`. Conclude with `Nat.mul_pos h0 h1'` after adjusting the coercions. Establish `hTpos : 0 < TT` using `by rw [hTT]; exact_mod_cast (D.mem u).A.T_prime.pos`. Take `⟨hp, hKo, hSo, hSo', hMo, hU00o, hH, hH', hHpp, hHpp', hN, hN', hZZ, hPP, hal, -⟩` from `hP`. Establish `hKp : ∀ p, 0 < B.μKp p` using `fun p => (hp p).2.2.2.2.2.1`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hμK : 0 < B.μK` using `mul_pos hKo (Finset.prod_pos fun p _ => hKp p)`. Establish `hLkpos : 0 < Formalism.HermitianLattices.Ext.L3.lValEtaF D.host.E D.host.F k`. Rewrite using `[← Formalism.HermitianLattices.Ext.L3.lValEta_eq_lValEtaF hKc hFc k hk2]`. Conclude with `Formalism.HermitianLattices.Ext.L3.lValEta_pos hKc k hk2`. Establish `hLkk : 0 < Lk`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `i hi`. Establish `hi2 : 2 ≤ i` using `by simp only [Finset.mem_Icc] at hi; omega`. Rewrite using `[← Formalism.HermitianLattices.Ext.L3.lValEta_eq_lValEtaF hKc hFc i hi2]`. Conclude with `Formalism.HermitianLattices.Ext.L3.lValEta_pos hKc i hi2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Establish `hcm` using `(Formalism.L2.SG.Pf.Asm.cMass_spec hKc hFc (k - 1) (by omega)).1`. Establish `hIcc : (∏ i ∈ Finset.Icc k D.R.r, Formalism.HermitianLattices.Ext.L3.lValEtaF D.host.E D.host.F i) = Formalism.HermitianLattices.Ext.L3.lValEtaF D.host.E D.host.F k * Lk`. Establish `hIo : Finset.Ioc k D.R.r = Finset.Icc (k + 1) D.R.r`. Use extensionality with `i`. Simplify using `only [Finset.mem_Ioc, Finset.mem_Icc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.Icc_eq_cons_Ioc (show k ≤ D.R.r by omega), Finset.prod_cons, hLk, hIo]`. Establish `hvI : 2 * Formalism.HermitianLatticesTheory.vInv D.host.E = dd ^ ((1 : ℝ) / f)` using `by rw [hV]; ring`. Establish `hvIpos : 0 < Formalism.HermitianLatticesTheory.vInv D.host.E`. Rewrite using `[hV]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hpow1 : (dd ^ ((1 : ℝ) / f)) ^ f = dd`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hdpos.le]`. Rewrite using `[show (1 : ℝ) / f * (f : ℝ) = 1 by field_simp]`. Conclude with `Real.rpow_one dd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hsq : Real.sqrt ((2 * Formalism.HermitianLatticesTheory.vInv D.host.E) ^ f) = dd ^ ((1 : ℝ) / 2)`. Rewrite using `[hvI, hpow1, Real.sqrt_eq_rpow]`. Establish `hvk : (Formalism.HermitianLatticesTheory.vInv D.host.E) ^ (k * f) = dd ^ (k : ℝ) / 2 ^ (k * f)`. Establish `h2 : Formalism.HermitianLatticesTheory.vInv D.host.E = dd ^ ((1 : ℝ) / f) / 2` using `by rw [hV]`. Rewrite using `[h2, div_pow, pow_mul', hpow1, Real.rpow_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `set e : ℝ := -(8 * (s : ℝ) ^ 3 + 6 * (s : ℝ) ^ 2 + 6 * k * (s : ℝ) ^ 2 + s) / 3 with he`. Use `set Xe : ℝ := ((s : ℝ) + 1) * (8 * (s : ℝ) ^ 2 + 10 * s + 3) / 3 with hXe`. Use `set e2 : ℝ := (D.R.r : ℝ) * (2 * s + 1) - ((2 * (s : ℝ) + 1) ^ 2) / 2 with he2`. Use `set E1 : ℝ := -((2 * s * (s + 1) * (k - 1) : ℕ) : ℝ) + 1 / 2 - k with hE1`. Establish `hrR : (D.R.r : ℝ) = k + 2 * s + 1` using `by rw [hr]; push_cast; ring`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hk1 : ((k - 1 : ℕ) : ℝ) = (k : ℝ) - 1` using `by rw [Nat.cast_sub (by omega)]; simp`. Establish `hexp : e = E1 - Xe + e2`. Rewrite using `[he, hE1, hXe, he2, hrR]`. Use `push_cast`. Rewrite using `[hk1]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hde : dd ^ e = dd ^ E1 * (dd ^ Xe)⁻¹ * dd ^ e2`. Rewrite using `[hexp, Real.rpow_add hdpos, Real.rpow_sub hdpos, div_eq_mul_inv]`. Establish `hdE1 : dd ^ E1 = dd ^ ((-((2 * s * (s + 1) * (k - 1) : ℕ) : ℤ) : ℤ) : ℝ) * dd ^ ((1 : ℝ) / 2) * (dd ^ (k : ℝ))⁻¹`. Rewrite using `[hE1, ← Real.rpow_neg hdpos.le, ← Real.rpow_add hdpos, ← Real.rpow_add hdpos]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hgc : gg ^ ((s + 1) * (2 * s + 3) * f) * gg ^ (D.R.m * f * (k - 1)) = gg ^ ((s + 1) * (2 * k + 2 * s + 1) * f)`. Rewrite using `[← pow_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Rewrite using `[hm]`. Take `⟨j, hj⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Rewrite using `[hj, Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hgpow : gg ^ (-(((s + 1) * (2 * k + 2 * s + 1) * f : ℕ) : ℤ)) = (gg ^ ((s + 1) * (2 * k + 2 * s + 1) * f))⁻¹`. Rewrite using `[zpow_neg, zpow_natCast]`. Establish `hTpow : TT ^ (-((k * f : ℕ) : ℤ)) = (TT ^ (k * f))⁻¹` using `by rw [zpow_neg, zpow_natCast]`. Establish `hal : B.al = AT * A' / ATyp` using `by rw [eq_div_iff hATyp.ne']; exact hG4`. Establish `hAT : AT = PT / Lk` using `by rw [eq_div_iff hLkk.ne']; exact hG5`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hratio : Formalism.HermitianLatticesTheory.massRatioRightSide D.host.E k = ((Nat.factorial (k - 1) : ℝ) ^ f * (dd ^ (k : ℝ) / 2 ^ (k * f)) / Real.pi ^ (k * f)) / dd ^ ((1 : ℝ) / 2) * Formalism.HermitianLattices.Ext.L3.lValEtaF D.host.E D.host.F k`. Unfold `Formalism.HermitianLatticesTheory.massRatioRightSide`. Rewrite using `[hfE, hsq, Formalism.HermitianLattices.Ext.L3.lValEta_eq_lValEtaF hKc hFc k hk2, mul_pow, ← pow_mul, div_pow, hvk]`. Expand and normalize the polynomial expressions, which then agree. Establish `hratio_pos : 0 < Formalism.HermitianLatticesTheory.massRatioRightSide D.host.E k` using `Formalism.HermitianLattices.Ext.L3.massRatio_pos hKc k hk2`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hKrat : B.μKnat / B.μH' = (B.μKnat / B.μK) * (Ω / a')`. Establish `h1 : B.μK / B.μH' = Ω / a'`. Rewrite using `[div_eq_div_iff hH'.ne' ha.ne']`. Combine the linear relations using `[hS]`. Rewrite using `[← h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Unfold `Formalism.L2.SG.Pf.NcAsm.NcValueC`. Rewrite using `[← hB]`. Combine the equalities or inequalities in the displayed calculation. Unfold `Formalism.L2.SG.Pf.Cnt.cExpl`.
-
-Apply the tactic sequence `try rw [← hdd]`. Apply the tactic sequence `try rw [← hfdef]`. Apply the tactic sequence `try rw [← hkdef]`. Apply the tactic sequence `try rw [← hsdef]`. Rewrite using `[hIcc, hRM, cMass_succ k hk2, hratio, hal, hAT, hdE1, ← Real.rpow_intCast dd, hTpow, div_pow, ← pow_mul]`.
-
-Establish `hpi : 0 < Real.pi` using `Real.pi_pos`. Establish `hfac : (0 : ℝ) < (Nat.factorial (k - 1) : ℝ)` using `by exact_mod_cast Nat.factorial_pos _`. Clear the denominators using the available nonvanishing facts. Use `_ = Formalism.L2.SG.RealObj.DisintegrationConstant X u u' 1 * B.volH * B.volN * B.volN' * (B.unitLevelVolume / B.volZZ) * B.μKnat / B.μH' * ngFac D := by`. Rewrite using `[show Formalism.L2.SG.RealObj.DisintegrationConstant X u u' 1 * B.volH * B.volN * B.volN' * (B.unitLevelVolume / B.volZZ) * B.μKnat / B.μH' * ngFac D = (Formalism.L2.SG.RealObj.DisintegrationConstant X u u' 1 * B.volH * B.volN * B.volN') * (B.unitLevelVolume / B.volZZ) * (B.μKnat …`.
-
-Rewrite using `[hR, hG1, hKrat, hG2, hG3, hng]`. Apply the tactic sequence `try rw [← hdd]`. Apply the tactic sequence `try rw [← hfdef]`. Apply the tactic sequence `try rw [← hkdef]`. Apply the tactic sequence `try rw [← hsdef]`.
-
-Apply the tactic sequence `try rw [← hgg]`. Apply the tactic sequence `try rw [← hTT]`. Rewrite using `[hde, hgpow, Real.rpow_neg hdpos.le]`. Rewrite using `[← hgc]`. Establish `hX : 0 < dd ^ Xe` using `Real.rpow_pos_of_pos hdpos _`.
-
-Establish `he2p : 0 < dd ^ e2` using `Real.rpow_pos_of_pos hdpos _`. Establish `hgA : 0 < gg ^ ((s + 1) * (2 * s + 3) * f)` using `pow_pos hgpos _`. Establish `hgC : 0 < gg ^ (D.R.m * f * (k - 1))` using `pow_pos hgpos _`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem ncValueC_of_global (a' Ω ATyp A' AT PT : ℝ)
     (hP : (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).Pos)

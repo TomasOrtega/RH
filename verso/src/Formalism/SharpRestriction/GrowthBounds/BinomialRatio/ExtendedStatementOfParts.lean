@@ -69,9 +69,9 @@ def LiftVecAt (C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ct Cc : ℝ) : Prop :=
           algebraMap O Kf ((if I = J then δ I else 0) + w ^ X.c * ν)
 
 /- English proof (translation)
-Establish `hk : 0 ≤ X.k` using `by unfold Loc.k; positivity`. Establish `hQ : 0 ≤ X.Q` using `by unfold Loc.Q; positivity`. Establish `hN : 0 ≤ X.N` using `by unfold Loc.N; positivity`. Establish `hY : 0 ≤ X.Y` using `le_trans zero_le_one h.Y1`. Establish `hm0 : 0 ≤ X.m0 Cm` using `by unfold Loc.m0 m0G4 m1G4; positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE` using `h.E0nn`. Establish `hb` using `h.bpos.le`. Unfold `Loc.kapP kappaMarginBound`. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem kapP_nonneg {C0 Cde CE1 CE2 Cm Ckap H : ℝ} {X : Loc} (h : Std C0 Cde CE1 CE2 H X) (hCm : 0 ≤ Cm)
     (hCk : 0 ≤ Ckap) : 0 ≤ X.kapP C0 CE1 CE2 Cm Ckap := by
@@ -86,9 +86,9 @@ theorem kapP_nonneg {C0 Cde CE1 CE2 Cm Ckap H : ℝ} {X : Loc} (h : Std C0 Cde C
   positivity
 
 /- English proof (translation)
-Establish `h1 : (1 : ℝ) < ((p ^ n' : ℕ) : ℝ)`. Establish `: 1 < p ^ n'` using `Nat.one_lt_pow (by omega) (by omega)`. Conclude with `this` after adjusting the coercions. Unfold `gaussianNumber`. Apply `div_pos` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `one_lt_pow₀ h1 (n := k) (by omega)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem Ne_pos {p n' k : ℕ} (hp : 2 ≤ p) (hn : 1 ≤ n') (hk : 1 ≤ k) : 0 < gaussianNumber (p ^ n') k := by
   have h1 : (1 : ℝ) < ((p ^ n' : ℕ) : ℝ) := by
@@ -101,23 +101,21 @@ theorem Ne_pos {p n' k : ℕ} (hp : 2 ≤ p) (hn : 1 ≤ n') (hk : 1 ≤ k) : 0 
   · linarith
 
 /- English proof (translation)
-Introduce `X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hH hc Dj kT hDj hcD e he`. Establish `hD1 : D1num X` using `⟨hS.1.prime, hS.1.five_le, hS.1.two_le, hS.1.even⟩`. Establish `hs` using `hstd X hD1 hH hc`. Establish `hkap` using `kapP_nonneg hs hCm hCk`. Establish `hm0 : 0 ≤ X.m0 Cm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : 0 ≤ X.k` using `by unfold Loc.k; positivity`. Establish `hQ : 0 ≤ X.Q` using `by unfold Loc.Q; positivity`. Unfold `Loc.m0 m0G4 m1G4`. Check the signs of the components of the expression. Establish `hNe : 0 < gaussianNumber (X.p ^ X.n') (X.m + 1)` using `Ne_pos (by have := hS.1.five_le; omega) (by have := hS.1.two_le; omega) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Use `choose L₁ hL₁ using fun j => (hDj j).2.2`. Establish `hF : ∀ j, BlockDiag X.p (segForm O X.p X.m (X.seg C0 CE1 CE2 j)) (Lj O C0 CE1 CE2 Cm X j) (Module.finrank O (L₁ j)) (Dj j)` using `fun j => hL1 X W Qq O Kf ι σ jO w hS hH hc j (Dj j) (L₁ j) (hDj j).1 (hL₁ j).1`. Establish `hT` using `hLift X W Qq O Kf ι σ jO w hS hH hc Dj (fun j => Module.finrank O (L₁ j)) (fun j => (hDj j).1) hF hcD e he`. Use `⟨∏ j, Module.finrank O (L₁ j), ?_, hT⟩` and prove the remaining obligations. Establish `hrank` using `hA2 X W Qq O Kf ι σ jO w hS hH hc (X.m0 Cm) hm0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : ∀ j, (1 - kT j) * (rkj O C0 CE1 CE2 Cm X j : ℝ) ≤ (Module.finrank O (L₁ j) : ℝ)` using `fun j => by`. Use `(hL₁ j).2` as an intermediate fact. Rewrite `this` using `[hRk X W Qq O Kf ι σ jO w hS hH hc j]`. Then use the resulting hypothesis. Establish `hdim : (0 : ℝ) ≤ (dimHH (m` using `X.m) Kf X.TT X.aT X.bT : ℝ) := Nat.cast_nonneg _`. Establish `hsum : 0 ≤ ∑ j, kT j` using `Finset.sum_nonneg fun j _ => (hDj j).2.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_le_iff₀ hNe]`. Distinguish the cases in `hall : ∀ j, kT j ≤ 1`. Distinguish the cases in `hs1 : ∑ j, kT j ≤ 1`. Establish `hsp` using `Formalism.CountingSumsFrames.Top.shareProd (numSeg X.TT) kT (fun j => Module.finrank O (L₁ j)) (fun j => rkj O C0 CE1 CE2 Cm X j) (fun j => ⟨(hDj j).2.1, hall j⟩) hg`. Establish `hrank' : (1 - X.kapP C0 CE1 CE2 Cm Ckap) * (dimHH (m` using `X.m) Kf X.TT X.aT X.bT : ℝ) ≤ gaussianNumber (X.p ^ X.n') (X.m + 1) * ((∏ j, rkj O C0 CE1 CE2 Cm X j : ℕ) : ℝ) := by`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Conclude with `hrank`. Establish `h1 : (1 - ∑ j, kT j) * ((1 - X.kapP C0 CE1 CE2 Cm Ckap) * (dimHH (m` using `X.m) Kf X.TT X.aT X.bT : ℝ)) ≤ (1 - ∑ j, kT j) * (gaussianNumber (X.p ^ X.n') (X.m + 1) * ((∏ j, rkj O C0 CE1 CE2 Cm X j : ℕ) : ℝ)) := mul_le_mul_of_nonneg_left hrank' (by linarith)`. Establish `h2 : gaussianNumber (X.p ^ X.n') (X.m + 1) * ((1 - ∑ j, kT j) * ((∏ j, rkj O C0 CE1 CE2 Cm X j : ℕ) : ℝ)) ≤ gaussianNumber (X.p ^ X.n') (X.m + 1) * ((∏ j, Module.finrank O (L₁ j) : ℕ) : ℝ)` using `mul_le_mul_of_nonneg_left hsp hNe.le`. Establish `h3 : 0 ≤ (∑ j, kT j) * X.kapP C0 CE1 CE2 Cm Ckap * (dimHH (m` using `X.m) Kf X.TT X.aT X.bT : ℝ) := by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[h1, h2, h3]`. Establish `h0 : (1 - X.kapP C0 CE1 CE2 Cm Ckap - ∑ j, kT j) ≤ 0` using `by linarith [not_le.mp hs1]`. Establish `h1 : (1 - X.kapP C0 CE1 CE2 Cm Ckap - ∑ j, kT j) * (dimHH (m` using `X.m) Kf X.TT X.aT X.bT : ℝ) ≤ 0 := mul_nonpos_of_nonpos_of_nonneg h0 hdim`. Establish `h2 : (0 : ℝ) ≤ ((∏ j, Module.finrank O (L₁ j) : ℕ) : ℝ) * gaussianNumber (X.p ^ X.n') (X.m + 1)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `push Not at hall`. Take `⟨j0, hj0⟩` from `hall`. Establish `hle : kT j0 ≤ ∑ j, kT j` using `Finset.single_le_sum (fun j _ => (hDj j).2.1) (Finset.mem_univ j0)`. Establish `h0 : (1 - X.kapP C0 CE1 CE2 Cm Ckap - ∑ j, kT j) ≤ 0` using `by linarith`. Establish `h1 : (1 - X.kapP C0 CE1 CE2 Cm Ckap - ∑ j, kT j) * (dimHH (m` using `X.m) Kf X.TT X.aT X.bT : ℝ) ≤ 0 := mul_nonpos_of_nonpos_of_nonneg h0 hdim`.
-
-Establish `h2 : (0 : ℝ) ≤ ((∏ j, Module.finrank O (L₁ j) : ℕ) : ℝ) * gaussianNumber (X.p ^ X.n') (X.m + 1)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem extended_statement_of_parts {D : Formalism.BasicNotions.D7} {C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc H : ℝ} (hCm : 0 ≤ Cm) (hCk : 0 ≤ Ckap)
     (hstd : ∀ X : Loc, D1num X → HIext C0 CYb Cde Ck CD Cb X → CBound Cc X → Std C0 Cde CE1 CE2 H X)
@@ -192,7 +190,7 @@ def RestLiftVec : Prop :=
     LiftVecAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ct Cc
 
 /- English proof (translation)
-The claim follows from `TransportedAlt.of_explicit (fun _ => 1) (fun _ _ => 1) (fun Cc _ CE1 CE2 _ => T2 CE1 CE2 Cc 1) fun _ _ _ _ _ _ _ _ _ _ hCc hC0 _ h1 h2 h3 _ _ _ _ _ _ _ _ t1 t2 t3 t4 t5 => ⟨by linarith, fun _ hD hI hc => std_of hCc hC0 h1 h2 le_rfl t1 t2 t3 t4 t5 hD hI hc⟩`.
+A detailed English derivation is pending.
 -/
 theorem thr_std : TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc => 0 ≤ Cm ∧
     ∀ X : Loc, D1num X → HIext C0 CYb Cde Ck CD Cb X → CBound Cc X → Std C0 Cde CE1 CE2 1 X :=
@@ -201,7 +199,7 @@ theorem thr_std : TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc => 0 ≤ 
       ⟨by linarith, fun _ hD hI hc => std_of hCc hC0 h1 h2 le_rfl t1 t2 t3 t4 t5 hD hI hc⟩
 
 /- English proof (translation)
-Use `TransportedAlt.mono ?_ ((((thr_std.and hRk).and hL1).and hLift).and hA2)` and prove the remaining obligations. Introduce and unpack `C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc ⟨⟨⟨⟨⟨hCm, hstd⟩, rk⟩, l1⟩, ⟨Ct0, hCt0, lift⟩⟩, ⟨Ck0, hCk0, a2⟩⟩`. Conclude with `⟨Ck0, Ct0, hCk0, hCt0, fun Ckap Ct h1 h2 => extended_statement_of_parts hCm (le_trans hCk0.le h1) hstd rk l1 (lift Ct h2) (a2 Ckap h1)⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem restExt_of {D : Formalism.BasicNotions.D7} (hRk : RestRk) (hL1 : PartnersToFactors) (hLift : RestLift) (hA2 : RemainderSegmentBoundSecond D) :
     RestExt D := by

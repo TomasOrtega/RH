@@ -12,7 +12,7 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : �
   {V : Type} [AddCommGroup V] [Module (KK O) V] [Module O V] [IsScalarTower O (KK O) V]
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Take `⟨q, hq, -⟩` from `h`. Rewrite `hq` using `[valuation_zero_alt]`. Conclude with `WithTop.top_ne_coe hq`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vLE_ne_zero' {κ : KK O} {D : ℝ} (h : vLE p κ D) : κ ≠ 0 := by
   rintro rfl
@@ -21,13 +21,13 @@ theorem vLE_ne_zero' {κ : KK O} {D : ℝ} (h : vLE p κ D) : κ ≠ 0 := by
   exact WithTop.top_ne_coe hq
 
 /- English proof (translation)
-Simplify using `[dvrOrderNat, IsDiscreteValuationRing.addVal_uniformizer hw]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nv_irr' {w : O} (hw : Irreducible w) : dvrOrderNat w = 1 := by
   simp [dvrOrderNat, IsDiscreteValuationRing.addVal_uniformizer hw]
 
 /- English proof (translation)
-Unfold `vK ordW`. Rewrite using `[if_neg hx]`. Conclude with `⟨_, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem vK_int_form (x : KK O) (hx : x ≠ 0) : ∃ k : ℤ, vK p x = (((k : ℚ) / (ramE p O : ℚ) : ℚ) : WithTop ℚ) := by
   unfold vK ordW
@@ -35,17 +35,15 @@ theorem vK_int_form (x : KK O) (hx : x ≠ 0) : ∃ k : ℤ, vK p x = (((k : ℚ
   exact ⟨_, rfl⟩
 
 /- English proof (translation)
-Establish `hw0 : S.w ≠ 0` using `S.w_irr.ne_zero`. Establish `hw0' : algebraMap O (KK O) S.w ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O (KK O))).2 hw0`. Establish `hepos : (0 : ℚ) < ramE p O`. Use `ramification_index_ne_zero S` as an intermediate fact. Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Apply `h` to reduce the goal to its premises. Rewrite using `[zero_mul, valuation_zero_alt]`. Conclude with `le_top`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `vK_int_form a ha`. Establish `hwinv : vK p ((algebraMap O (KK O) S.w)⁻¹) = (((-1 : ℚ) / (ramE p O : ℚ) : ℚ) : WithTop ℚ)`. Rewrite using `[valuation_eq_of_fraction p _ 1 S.w one_ne_zero hw0 (by rw [inv_mul_cancel₀ hw0', map_one]), nv_irr' S.w_irr]`. Simplify using `[dvrOrderNat]`. Rewrite `h` using `[valuation_mul_alt, hk, hwinv, ← WithTop.coe_add, ← WithTop.coe_zero, WithTop.coe_le_coe]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `push_neg at h`. Use `⟨(k : ℚ) / (ramE p O : ℚ), hk, ?_⟩` and prove the remaining obligations. Establish `h2 : ((k : ℚ) - 1) / (ramE p O : ℚ) < 0`. Rewrite using `[sub_div]`. Rewrite `h` using `[neg_div]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : (k : ℚ) - 1 < 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `absurd h2 (not_lt.2 (div_nonneg hc hepos.le))`.
-
-Establish `h4 : k < 1` using `by exact_mod_cast (by linarith : (k : ℚ) < 1)`. Establish `h5 : (k : ℚ) ≤ 0` using `by exact_mod_cast (by omega : k ≤ 0)`. Conclude with `div_nonpos_of_nonpos_of_nonneg h5 hepos.le`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vK_le_zero_of_not_int (S : UniformizedDVR p O) (a : KK O)
     (h : ¬ (0 : WithTop ℚ) ≤ vK p (a * (algebraMap O (KK O) S.w)⁻¹)) :
@@ -83,9 +81,9 @@ theorem vK_le_zero_of_not_int (S : UniformizedDVR p O) (a : KK O)
   exact div_nonpos_of_nonpos_of_nonneg h5 hepos.le
 
 /- English proof (translation)
-Establish `h0 : be 0 v = 0`. Use `hsm 0 0 v` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_mul]`. Then use the resulting hypothesis. Proceed by induction on `(Finset.univ : Finset (Fin n)) using Finset.induction_on with`. Consider the case `empty => simp [h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Proceed by induction. Treat this case separately.
 
-Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hadd, hsm, ih]`.
+Treat this case separately.
 -/
 theorem be_sum_left (be : V → V → KK O) (hsm : ∀ (a : KK O) (u v : V), be (a • u) v = a * be u v)
     (hadd : ∀ u u' v, be (u + u') v = be u v + be u' v) {n : ℕ} (a : Fin n → KK O) (x : Fin n → V) (v : V) :
@@ -99,41 +97,39 @@ theorem be_sum_left (be : V → V → KK O) (hsm : ∀ (a : KK O) (u v : V), be 
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hadd, hsm, ih]
 
 /- English proof (translation)
-Establish `hc0 : c ≠ 0` using `vLE_ne_zero' hc`. Establish `hw0 : S.w ≠ 0` using `S.w_irr.ne_zero`. Establish `hw0' : algebraMap O (KK O) S.w ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O (KK O))).2 hw0`. Establish `hbe0 : ∀ v, be 0 v = 0` using `fun v => by`. Use `hsm 0 0 v` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[zero_smul, zero_mul]`. Then use the resulting hypothesis. Establish `hsum : ∀ (t : Fin n → KK O) (j : Fin n), be (∑ i, t i • x i) (y j) = t j * c`. Introduce `t j`. Rewrite using `[be_sum_left be hsm hadd t x (y j)]`. Simplify using `[hxy]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hspan : ∀ s : Fin n → O, (∑ i, s i • x i) ∈ (Submodule.span (KK O) (Set.range x)).restrictScalars O`. Introduce `s`. Rewrite using `[Submodule.restrictScalars_mem]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul (KK O) (s i) (x i)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `⟨L ⊓ (Submodule.span (KK O) (Set.range x)).restrictScalars O, ⟨⟨inf_le_left, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `o u ho hu hou`. Use `Submodule.mem_inf.2 ⟨hu, ?_⟩` and prove the remaining obligations. Establish `h2` using `(Submodule.mem_inf.1 hou).2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h2`, the goal using `[Submodule.restrictScalars_mem]`. Establish `ho' : algebraMap O (KK O) o ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O (KK O))).2 ho`. Establish `hu' : u = (algebraMap O (KK O) o)⁻¹ • (o • u)`. Rewrite using `[← algebraMap_smul (KK O) o u, smul_smul, inv_mul_cancel₀ ho', one_smul]`. Rewrite using `[hu']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.smul_mem _ _ h2`. Introduce and unpack `u ⟨hu, hprim⟩`. Take `⟨hul, huw⟩` from `Submodule.mem_inf.1 hu`. Rewrite `huw` using `[Submodule.restrictScalars_mem, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨t, rfl⟩` from `huw`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction.
 
-Distinguish the cases in `hall : ∀ j, 0 ≤ vK p (t j * (algebraMap O (KK O) S.w)⁻¹)`. Use `exfalso choose s hs using fun j => (valuation_nonneg_iff_integral S _).1 (hall j)`. Establish `ht : ∀ j, t j = algebraMap O (KK O) S.w * algebraMap O (KK O) (s j)`. Introduce `j`. Rewrite using `[← hs j, mul_comm (t j), ← mul_assoc, mul_inv_cancel₀ hw0', one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : (∑ i, s i • x i) ∈ L ⊓ (Submodule.span (KK O) (Set.range x)).restrictScalars O` using `Submodule.mem_inf.2 ⟨Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hx i), hspan s⟩`. Establish `hu' : (∑ i, t i • x i) = S.w • ∑ i, s i • x i`. Rewrite using `[Finset.smul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ht i, mul_smul, algebraMap_smul, algebraMap_smul]`. Conclude with `S.w_irr.not_isUnit (hprim S.w _ hx' hu')`. Use `push_neg at hall`. Take `⟨j, hj⟩` from `hall`. Take `⟨q, hq, hq0⟩` from `vK_le_zero_of_not_int S (t j) (not_le.2 hj)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨qc, hqc, hqcD⟩` from `hc`. Establish `hq0' : (q : ℝ) ≤ 0` using `by exact_mod_cast hq0`. Use `⟨y j, hy j, q + qc, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hsum, valuation_mul_alt, hq, hqc, ← WithTop.coe_add]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hli : LinearIndependent (KK O) x`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Use `hsum g i` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hg, hbe0]`. Conclude with `(mul_eq_zero.1 this.symm).resolve_right hc0`. Establish `hliO : LinearIndependent O x` using `(LinearIndependent.iff_fractionRing O (KK O)).2 hli`. Set `f : Fin n → (L ⊓ (Submodule.span (KK O) (Set.range x)).restrictScalars O : Submodule O V)` to `fun i => ⟨x i, Submodule.mem_inf.2 ⟨hx i, by`. Rewrite using `[Submodule.restrictScalars_mem]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.subset_span ⟨i, rfl⟩⟩⟩`. Establish `hf : LinearIndependent O f` using `LinearIndependent.of_comp (L ⊓ (Submodule.span (KK O) (Set.range x)).restrictScalars O).subtype hliO`. Set `φ : (L ⊓ (Submodule.span (KK O) (Set.range x)).restrictScalars O : Submodule O V) →ₗ[O] (Fin n → KK O)` to `{ toFun := fun u j => be u (y j) map_add' := fun u u' => by`. Use function extensionality and compare the values at `j`. Conclude with `hadd _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use the proof step `map_smul' := fun o u => by`. Use function extensionality and compare the values at `j`. Simplify using `only [Submodule.coe_smul, RingHom.id_apply, Pi.smul_apply]`. Rewrite using `[← algebraMap_smul (KK O) o (u : V), hsm, Algebra.smul_def] }`. Establish `hφ : Function.Injective φ`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `u hu`. Take `⟨-, huw⟩` from `Submodule.mem_inf.1 u.2`. Rewrite `huw` using `[Submodule.restrictScalars_mem, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨t, ht⟩` from `huw`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `ht0 : ∀ j, t j = 0` using `fun j => by`. Establish `h1` using `congrFun hu j`. Establish `h2` using `hsum t j`. Rewrite `h2` using `[ht]`. Express the relevant statement in the definitionally equal form `be (u : V) (y j) = 0 at h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h2` using `[h1]`. Conclude with `(mul_eq_zero.1 h2.symm).resolve_right hc0`. Use `ext`. Rewrite using `[← ht]`. Simplify using `[ht0]`.
-
-Establish `hup : Module.rank O (L ⊓ (Submodule.span (KK O) (Set.range x)).restrictScalars O : Submodule O V) ≤ n`. Combine the equalities or inequalities in the displayed calculation. Establish `hlow : (n : Cardinal) ≤ Module.rank O (L ⊓ (Submodule.span (KK O) (Set.range x)).restrictScalars O : Submodule O V)`. Simplify using `using hf.cardinal_le_rank`. Rewrite using `[Module.finrank_eq_of_rank_eq (le_antisymm hup hlow)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodSub_of_dual (S : UniformizedDVR p O) (be : V → V → KK O)
     (hsm : ∀ (a : KK O) (u v : V), be (a • u) v = a * be u v)

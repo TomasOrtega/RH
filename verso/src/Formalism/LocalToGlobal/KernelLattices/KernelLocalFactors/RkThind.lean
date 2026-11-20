@@ -15,11 +15,11 @@ variable {X : Fields} (A : Amb X) {a b : ℕ} (S : Finset (HeightOneSpectrum (�
   (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b))
 
 /- English proof (translation)
-Establish `hH` using `heisHyp_of A a b S hLa`. Take `⟨-, hlev⟩` from `hH.2.2.2.2 N N' hN hN'`. Take `⟨hSc, hr1, hr2, -⟩` from `hlev c hc`. Rewrite using `[liftIndep_of A a b S hH N N' c x s hN hN' hc hs z]`. Unfold `xiInd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `h1` using `twist_induced_vanish _ _ _ _ _ _ hSc _ _ (repsOf_spec _ _ hr1) (repsOf_spec _ _ hr2) (volC A.AA S N N') (A.e a b N N')`. Rewrite using `[funext h1, opU_smul]`. Establish `h2 : ((Real.sqrt (volC A.AA S N N') : ℝ) : ℂ) * ((Real.sqrt (volC A.AA S N N') : ℝ) : ℂ) = ((volC A.AA S N N' : ℝ) : ℂ)`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt hv.le]`. Establish `h3 : ((Real.sqrt (volC A.AA S N N') : ℝ) : ℂ) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ne, Complex.ofReal_eq_zero]`. Conclude with `(Real.sqrt_pos.2 hv).ne'`. Rewrite using `[← h2]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem thInd_eq_lift (hLa : A.LaHyp a b S) (hN : IsSdLat N) (hN' : IsSdLat N') (c : ℕ) (hc : 0 < c) (x s : HomE X.E a b)
     (hs : A.IsLift S N N' c x s) (hv : 0 < volC A.AA S N N') (z : VCx X.Tau a b) :
@@ -43,7 +43,7 @@ theorem thInd_eq_lift (hLa : A.LaHyp a b S) (hN : IsSdLat N) (hN' : IsSdLat N') 
   field_simp
 
 /- English proof (translation)
-Unfold `perO`. Rewrite using `[Submodule.span_eq_bot]`. Introduce and unpack `z ⟨r, hr, x, -, rfl⟩`. Rewrite `hr` using `[Submodule.mem_bot]`. Simplify using `[hr]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem perO_bot : perO (⊥ : Submodule (𝓞 X.E) X.E) N N' = ⊥ := by
   unfold perO
@@ -53,28 +53,28 @@ theorem perO_bot : perO (⊥ : Submodule (𝓞 X.E) X.E) N N' = ⊥ := by
   simp [hr]
 
 /- English proof (translation)
-Unfold `volS`. Simplify using `[AddSubgroup.relIndex_self]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem volS_self (M : Submodule (𝓞 X.E) (HomE X.E a b)) : volS S M M = 1 := by
   unfold volS
   simp [AddSubgroup.relIndex_self]
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos a with ha | ha` into its components or cases. Establish `h0 : ∀ f : HomE X.E a b, f = 0` using `fun f => LinearMap.ext fun v => by`. Establish `hv : v = 0` using `funext fun i => (Fin.cast ha i).elim0`. Rewrite using `[hv, map_zero, LinearMap.zero_apply]`. Establish `he : perO A.AA (stdLat X.E a) (stdLat X.E b) = perO A.AA N N'`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `f`. Rewrite using `[h0 f]`. Simplify using `only [Submodule.zero_mem]`. Unfold `volC`. Rewrite using `[he, volS_self]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_pos`. Break down `Nat.eq_zero_or_pos b with hb | hb` into its components or cases. Establish `h0 : ∀ f : HomE X.E a b, f = 0` using `fun f => LinearMap.ext fun v => funext fun i => (Fin.cast hb i).elim0`. Establish `he : perO A.AA (stdLat X.E a) (stdLat X.E b) = perO A.AA N N'`. Use extensionality with `f`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0 f]`. Simplify using `only [Submodule.zero_mem]`. Unfold `volC`. Rewrite using `[he, volS_self]`. Conclude with `one_pos`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hAA : A.AA ≠ ⊥`. Introduce `h`. Establish `hsd` using `((hLa.2.2.2.2.2 N N' hN hN').2).1`. Take `⟨τ⟩` from `hLa.2.1`. Establish `hL : LamC (X.embC A.σ₀) A.δ A.AA N N' = ⊥`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `LamC laV`. Rewrite using `[h, perO_bot]`. Simplify using the standard rewrite rules. Rewrite `hsd` using `[hL]`. Establish `hv : (show VCx X.Tau a b from fun _ _ _ => (1 : ℂ)) ∈ dualLat (HV A.sc) (⊥ : AddSubgroup (VCx X.Tau a b))`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `y hy`. Rewrite `hy` using `[AddSubgroup.mem_bot]`. Conclude with `⟨0, by simp [hy, altE]⟩`. Unfold `IsSelfDual at hsd`. Rewrite `hv` using `[hsd, AddSubgroup.mem_bot]`.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrFun (congrFun (congrFun hv τ) ⟨0, hb⟩) ⟨0, ha⟩` as an intermediate fact. Simplify using `at this`. Conclude with `covolume_positive X.E a b A.AA S N N' hN.1.fg hN'.1.fg hN.1.span_eq_top hN'.1.span_eq_top hLa.2.2.2.2.1 hAA`.
+A detailed English derivation is pending.
 -/
 theorem volC_pos_of_laHyp (hLa : A.LaHyp a b S) (hN : IsSdLat N) (hN' : IsSdLat N') : 0 < volC A.AA S N N' := by
   rcases Nat.eq_zero_or_pos a with ha | ha
@@ -107,7 +107,7 @@ theorem volC_pos_of_laHyp (hLa : A.LaHyp a b S) (hN : IsSdLat N) (hN' : IsSdLat 
   exact covolume_positive X.E a b A.AA S N N' hN.1.fg hN'.1.fg hN.1.span_eq_top hN'.1.span_eq_top hLa.2.2.2.2.1 hAA
 
 /- English proof (translation)
-The claim follows from `thInd_eq_lift A S N N' hLa hN hN' c hc x s hs (volC_pos_of_laHyp A S N N' hLa hN hN') z`.
+A detailed English derivation is pending.
 -/
 theorem thInd_eq_lift' (hLa : A.LaHyp a b S) (hN : IsSdLat N) (hN' : IsSdLat N') (c : ℕ) (hc : 0 < c) (x s : HomE X.E a b)
     (hs : A.IsLift S N N' c x s) (z : VCx X.Tau a b) :

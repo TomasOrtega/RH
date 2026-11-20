@@ -19,7 +19,7 @@ def tieL : SizeData₂ D := tieWeightData L0 X0 K {p | NoGain X0 K Cr p} len hw 
 def tieX : G.Inst D (tieL L0 X0 K Cr len hw hg hu) := tieInst L0 X0 K {p | NoGain X0 K Cr p} len hw hg hu
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem tieL_drop_iff (p : ℕ) :
     p ∈ (tieL L0 X0 K Cr len hw hg hu).drop ↔
@@ -27,7 +27,7 @@ theorem tieL_drop_iff (p : ℕ) :
   Iff.rfl
 
 /- English proof (translation)
-The claim follows from `tie_supp_sat L0 X0 K _ len hw hg hu w h`.
+A detailed English derivation is pending.
 -/
 theorem tieL_supp_sat (w : D.what₂.places.Pl)
     (h : ((D.what₂.places.resChar w : ℕ) : ℝ) ≤ (tieL L0 X0 K Cr len hw hg hu).sc.X'' D.R.n) :
@@ -35,7 +35,7 @@ theorem tieL_supp_sat (w : D.what₂.places.Pl)
   tie_supp_sat L0 X0 K _ len hw hg hu w h
 
 /- English proof (translation)
-The claim follows from `tie_fills L0 X0 K _ len hw hg hu hf w`.
+A detailed English derivation is pending.
 -/
 theorem tieL_fills
     (hf : ∀ j ∈ SizeData₂.lifts D, ∀ (τ : D.what₂.Tau) (z : Bool × G.HH D),
@@ -44,7 +44,7 @@ theorem tieL_fills
   tie_fills L0 X0 K _ len hw hg hu hf w
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem tieL_keeps :
     (tieL L0 X0 K Cr len hw hg hu).sc = L0.sc ∧ (tieL L0 X0 K Cr len hw hg hu).aT = L0.aT ∧
@@ -94,20 +94,20 @@ Both sides reduce to the same expression.
 theorem hP_val (D : D7) (p : ℕ) : (G.hP D p).val = (fieldData D).hval p := rfl
 
 /- English proof (translation)
-Rewrite using `[hP_val, hP_val, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hP_val_eq {D D' : D7} (h : fieldData D = fieldData D') (p : ℕ) : (G.hP D p).val = (G.hP D' p).val := by
   rw [hP_val, hP_val, h]
 
 /- English proof (translation)
-Rewrite using `[bsC_val, bsC_val, hh, ht, hN]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bsC_val_eq {N N' : ℕ} [NeZero N] [NeZero N'] (hN : N = N') (h t : ZMod N) (h' t' : ZMod N')
     (hh : h.val = h'.val) (ht : t.val = t'.val) : (bsC h t).val = (bsC h' t').val := by
   rw [bsC_val, bsC_val, hh, ht, hN]
 
 /- English proof (translation)
-Substitute `hφ` using the available equality. Rewrite using `[Formalism.HC.Frame.A.val_injective _ hh, Formalism.HC.Frame.A.val_injective _ ht]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem bsA_val_eq {φ φ' : Formalism.HC.Frame} (hφ : φ = φ') (h t : φ.A) (h' t' : φ'.A)
     (hh : h.val = h'.val) (ht : t.val = t'.val) : (bsA h t).val = (bsA h' t').val := by
@@ -115,11 +115,9 @@ theorem bsA_val_eq {φ φ' : Formalism.HC.Frame} (hφ : φ = φ') (h t : φ.A) (
   rw [Formalism.HC.Frame.A.val_injective _ hh, Formalism.HC.Frame.A.val_injective _ ht]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : t.val ∈ D'.host.TT.image Formalism.HC.Frame.A.val` using `hTT ▸ Finset.mem_image_of_mem _ h`. Take `⟨s, hs, hst⟩` from `Finset.mem_image.1 h1`. Establish `: s = t'` using `Formalism.HC.Frame.A.val_injective _ (hst.trans ht)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `this ▸ hs`. Introduce `h`. Establish `h1 : t'.val ∈ D.host.TT.image Formalism.HC.Frame.A.val` using `hTT ▸ Finset.mem_image_of_mem _ h`. Take `⟨s, hs, hst⟩` from `Finset.mem_image.1 h1`. Establish `: s = t` using `Formalism.HC.Frame.A.val_injective _ (hst.trans ht.symm)`.
-
-Conclude with `this ▸ hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_TT_iff_val {D D' : D7} (_he : D.R.e = D'.R.e)
     (hTT : D.host.TT.image Formalism.HC.Frame.A.val = D'.host.TT.image Formalism.HC.Frame.A.val) (t : G.HH D) (t' : G.HH D')
@@ -137,11 +135,11 @@ theorem mem_TT_iff_val {D D' : D7} (_he : D.R.e = D'.R.e)
     exact this ▸ hs
 
 /- English proof (translation)
-Establish `h1 : G.IsTopPl D (false, t) ↔ G.IsTopPl D' (false, t')`. Unfold `G.IsTopPl`. Simplify using `only [true_and]`. Conclude with `mem_TT_iff_val (congrArg (fun R : Ranks => R.e) hR) hTT t t' ht`. Establish `h2 : ¬ G.IsThickPl D (false, t)` using `fun h => Bool.noConfusion h.1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ¬ G.IsThickPl D' (false, t')` using `fun h => Bool.noConfusion h.1`. Unfold `offC`. Rewrite using `[if_neg h2, if_neg h3, hR]`. Distinguish the cases in `h : G.IsTopPl D (false, t)`. Rewrite using `[if_pos h, if_pos (h1.1 h)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, if_neg (fun h' => h (h1.2 h'))]`.
+A detailed English derivation is pending.
 -/
 theorem offC_false_eq {D D' : D7} (hR : D.R = D'.R)
     (hTT : D.host.TT.image Formalism.HC.Frame.A.val = D'.host.TT.image Formalism.HC.Frame.A.val) (sc : Scale) (j : ℕ) (t : G.HH D) (t' : G.HH D')
@@ -159,7 +157,7 @@ theorem offC_false_eq {D D' : D7} (hR : D.R = D'.R)
   · rw [if_neg h, if_neg (fun h' => h (h1.2 h'))]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[Formalism.HC.Frame.A.val_injective _ hu]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_dig_add {φ φ' : Formalism.HC.Frame} (h : φ = φ') (s : ℕ) (u : φ.A) (u' : φ'.A) (hu : u.val = u'.val) :
     (φ.dig s + u).val = (φ'.dig s + u').val := by
@@ -167,9 +165,9 @@ theorem val_dig_add {φ φ' : Formalism.HC.Frame} (h : φ = φ') (s : ℕ) (u : 
   rw [Formalism.HC.Frame.A.val_injective _ hu]
 
 /- English proof (translation)
-Establish `key : ∀ (E E' : D7), E.R.toFrame = E'.R.toFrame → E.host.T2 = E'.host.T2 → E.host.u0.val = E'.host.u0.val → ∀ (t : G.HH E) (t' : G.HH E'), t.val = t'.val → G.IsThickPl E (true, t) → G.IsThickPl E' (true, t')`. Introduce `E E' he hT2 hu0 t t' ht h`. Take `⟨-, h⟩` from `h`. Take `⟨s, hs, hst⟩` from `Finset.mem_image.1 h`. Use `⟨rfl, Finset.mem_image.2 ⟨s, hT2 ▸ hs, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Formalism.HC.Frame.A.val_injective` to reduce the goal to its premises. Establish `h1 : (E.R.dig s + E.host.u0).val = t.val` using `congrArg Formalism.HC.Frame.A.val hst`. Rewrite using `[← ht, ← h1]`. Conclude with `val_dig_add he.symm s _ _ hu0.symm`. Conclude with `⟨key D D' he hT2 hu0 t t' ht, key D' D he.symm hT2.symm hu0.symm t' t ht.symm⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem thick_iff_val {D D' : D7} (he : D.R.toFrame = D'.R.toFrame) (hT2 : D.host.T2 = D'.host.T2)
     (hu0 : D.host.u0.val = D'.host.u0.val) (t : G.HH D) (t' : G.HH D') (ht : t.val = t'.val) :
@@ -187,9 +185,9 @@ theorem thick_iff_val {D D' : D7} (he : D.R.toFrame = D'.R.toFrame) (hT2 : D.hos
   exact ⟨key D D' he hT2 hu0 t t' ht, key D' D he.symm hT2.symm hu0.symm t' t ht.symm⟩
 
 /- English proof (translation)
-Consider the cases of `c`. Conclude with `offC_false_eq hR hTT sc j t t' ht`. Establish `h1` using `thick_iff_val (congrArg Ranks.toFrame hR) hT2 hu0 t t' ht`. Establish `h2 : ¬ G.IsTopPl D (true, t)` using `fun h => Bool.noConfusion h.1`. Establish `h3 : ¬ G.IsTopPl D' (true, t')` using `fun h => Bool.noConfusion h.1`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `offC`. Rewrite using `[if_neg h2, if_neg h3, hR]`. Distinguish the cases in `h : G.IsThickPl D (true, t)`. Rewrite using `[if_pos h, if_pos (h1.1 h)]`. Rewrite using `[if_neg h, if_neg (fun h' => h (h1.2 h'))]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem offC_eq {D D' : D7} (hR : D.R = D'.R)
     (hTT : D.host.TT.image Formalism.HC.Frame.A.val = D'.host.TT.image Formalism.HC.Frame.A.val) (hT2 : D.host.T2 = D'.host.T2)
@@ -207,9 +205,9 @@ theorem offC_eq {D D' : D7} (hR : D.R = D'.R)
     · rw [if_neg h, if_neg (fun h' => h (h1.2 h'))]
 
 /- English proof (translation)
-Establish `hl : j ∈ SizeData₂.lifts D ↔ j ∈ SizeData₂.lifts D'` using `by unfold SizeData₂.lifts; rw [hR]`. Unfold `offW`. Distinguish the cases in `hj : j ∈ SizeData₂.lifts D`. Rewrite using `[if_pos hj, if_pos (hl.1 hj)]`. Establish `hj'` using `Finset.mem_Icc.1 hj`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg (fun h => Bool.noConfusion h.1), if_neg (fun h => Bool.noConfusion h.1), hwj hj'.1 hj'.2]`. Rewrite using `[if_neg hj, if_neg (fun h' => hj (hl.2 h')), hsc]`. Conclude with `offC_eq hR hTT hT2 hu0 _ j true t t' ht`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem offW_true_eq {D D' : D7} (L : SizeData₂ D) (L' : SizeData₂ D') (hR : D.R = D'.R)
     (hTT : D.host.TT.image Formalism.HC.Frame.A.val = D'.host.TT.image Formalism.HC.Frame.A.val) (hT2 : D.host.T2 = D'.host.T2)
@@ -227,13 +225,11 @@ theorem offW_true_eq {D D' : D7} (L : SizeData₂ D) (L' : SizeData₂ D') (hR :
     exact offC_eq hR hTT hT2 hu0 _ j true t t' ht
 
 /- English proof (translation)
-Establish `hl : j ∈ SizeData₂.lifts D ↔ j ∈ SizeData₂.lifts D'` using `by unfold SizeData₂.lifts; rw [hR]`. Establish `hm` using `mem_TT_iff_val (congrArg (fun R : Ranks => R.e) hR) hTT t t' ht`. Unfold `offW`. Distinguish the cases in `hj : j ∈ SizeData₂.lifts D`. Rewrite using `[if_pos hj, if_pos (hl.1 hj)]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hj'` using `Finset.mem_Icc.1 hj`. Establish `h0` using `hwj hj'.1 hj'.2`. Distinguish the cases in `h : t ∈ D.host.TT`. Rewrite using `[if_pos ⟨rfl, h⟩, if_pos ⟨rfl, hm.1 h⟩]`. Conclude with `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : G.bL L t = 0` using `by unfold G.bL; rw [dif_neg h]`. Establish `e2 : G.bL L' t' = 0` using `by unfold G.bL; rw [dif_neg (fun h' => h (hm.2 h'))]`. Rewrite using `[if_neg (fun h' => h h'.2), if_neg (fun h' => h (hm.2 h'.2))]`. Simplify using `only [e1, e2, Int.cast_zero] at h0`. Conclude with `h0`.
-
-Rewrite using `[if_neg hj, if_neg (fun h' => hj (hl.2 h')), hsc]`. Conclude with `offC_false_eq hR hTT _ j t t' ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem offW_false_eq {D D' : D7} (L : SizeData₂ D) (L' : SizeData₂ D') (hR : D.R = D'.R)
     (hTT : D.host.TT.image Formalism.HC.Frame.A.val = D'.host.TT.image Formalism.HC.Frame.A.val) (hsc : L.sc = L'.sc) (j : ℕ)
@@ -267,9 +263,9 @@ variable {D : D7} (L0 : SizeData₂ D) (X0 : G.Inst D L0) (K : G.Consts) (dr : S
   (hu : ∀ w, D.what₂.muAt w = D.what₂.mu0 → ∀ j, 1 ≤ j → j ≤ D.R.m → Fval L0 j w = 0)
 
 /- English proof (translation)
-Unfold `suppAt`. Rewrite using `[Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.2`. Introduce `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨tie_supp_sat L0 X0 K dr len hw hg hu w (by rw [h]; exact hle), h⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_suppAt_below (p : ℕ) (hle : (p : ℝ) ≤ L0.sc.X'' D.R.n) (w : D.what₂.places.Pl) :
     w ∈ suppAt (tieWeightData L0 X0 K dr len hw hg hu) p ↔ D.what₂.places.resChar w = p := by
@@ -281,7 +277,7 @@ theorem mem_suppAt_below (p : ℕ) (hle : (p : ℝ) ≤ L0.sc.X'' D.R.n) (w : D.
     exact ⟨tie_supp_sat L0 X0 K dr len hw hg hu w (by rw [h]; exact hle), h⟩
 
 /- English proof (translation)
-Establish `h` using `factEtaMean D p hp S hS`. Unfold `SizeData₂.sz SizeData₂.lwP`. Rewrite using `[← h, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun w _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_sz_const (p : ℕ) (hp : p.Prime) (S : Finset D.what₂.places.Pl)
     (hS : ∀ w, w ∈ S ↔ D.what₂.places.resChar w = p) (c : ℝ) :
@@ -295,11 +291,11 @@ theorem sum_sz_const (p : ℕ) (hp : p.Prime) (S : Finset D.what₂.places.Pl)
 open Classical in
 
 /- English proof (translation)
-Establish `hS` using `mem_suppAt_below L0 X0 K dr len hw hg hu p hle`. Rewrite using `[← sum_sz_const p hp _ hS]`. Unfold `gainTot`. Use `Finset.sum_congr rfl (fun w hw' => ?_)` and prove the remaining obligations. Establish `hwp : D.what₂.places.resChar w = p` using `(hS w).1 hw'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hws : w ∈ tieSupp L0` using `(Finset.mem_filter.1 hw').1`. Use `congr 1`. Use `show (∑ j ∈ SizeData₂.lifts D, if w ∈ tieSupp L0 ∧ (G.IsResidueClassZero D (D.what₂.places.resChar w) ∨ G.IsSg D (D.what₂.places.resChar w)) then G.gainP X0 K (G.aL L0) (G.bL L0) (D.what₂.places.resChar w) j else 0) - G.tauP X0 K (G.aL L0) (G.bL L0) (D.what₂.places.resChar w) = _`. Rewrite using `[hwp]`. Distinguish the cases in `hin : G.IsResidueClassZero D p ∨ G.IsSg D p`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_pos hin, if_pos (And.intro hws hin)]`. Simplify using `only [if_neg hin, if_neg (fun h : w ∈ tieSupp L0 ∧ (G.IsResidueClassZero D p ∨ G.IsSg D p) => hin h.2), Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tie_gainTot_below (p : ℕ) (hp : p.Prime) (hle : (p : ℝ) ≤ L0.sc.X'' D.R.n) :
     gainTot (tieWeightData L0 X0 K dr len hw hg hu) p = 2 * Real.log p *
@@ -323,7 +319,7 @@ theorem tie_gainTot_below (p : ℕ) (hp : p.Prime) (hle : (p : ℝ) ≤ L0.sc.X'
       Finset.sum_const_zero]
 
 /- English proof (translation)
-Unfold `G.gainP`. Rewrite using `[if_pos (Or.inr h)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gainP_eq_zero_of_lt (a b : G.HH D → ℤ) (p j : ℕ) (h : L0.sc.X'' D.R.n < (p : ℝ)) :
     G.gainP X0 K a b p j = 0 := by
@@ -333,9 +329,9 @@ theorem gainP_eq_zero_of_lt (a b : G.HH D → ℤ) (p j : ℕ) (h : L0.sc.X'' D.
 open Classical in
 
 /- English proof (translation)
-Unfold `gainTot`. Use `Finset.sum_eq_zero (fun w hw' => ?_)` and prove the remaining obligations. Establish `hwp : D.what₂.places.resChar w = p` using `(Finset.mem_filter.1 hw').2`. Establish `e : (∑ j ∈ SizeData₂.lifts D, (tieWeightData L0 X0 K dr len hw hg hu).gain j w) - (tieWeightData L0 X0 K dr len hw hg hu).tau w = 0` using `by show (∑ j ∈ SizeData₂.lifts D, if w ∈ tieSupp L0 ∧ (G.IsResidueClassZero D (D.what₂.places.resChar w) ∨ G.IsSg D (D.what₂.places.resChar w)) then G.gainP X0 K (G.aL L0) (G.bL L0) (D.what₂.places.resChar w) j else 0) - G.tauP X0 K (G.aL L0) (G.bL L0) (D.what₂.places.resChar w) …`. Rewrite using `[hwp, tauP_above L0 X0 K _ _ _ h, sub_zero]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[gainP_eq_zero_of_lt L0 X0 K _ _ _ _ h, ite_self]`. Rewrite using `[e]`. Simplify using `[SizeData₂.sz]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tie_gainTot_above (p : ℕ) (h : L0.sc.X'' D.R.n < (p : ℝ)) :
     gainTot (tieWeightData L0 X0 K dr len hw hg hu) p = 0 := by
@@ -355,9 +351,9 @@ theorem tie_gainTot_above (p : ℕ) (h : L0.sc.X'' D.R.n < (p : ℝ)) :
   simp [SizeData₂.sz]
 
 /- English proof (translation)
-Establish `hS` using `mem_suppAt_below L0 X0 K dr len hw hg hu p hle`. Rewrite using `[← sum_sz_const p hp _ hS]`. Unfold `ioTot`. Use `Finset.sum_congr rfl (fun w hw' => ?_)` and prove the remaining obligations. Establish `hwp : D.what₂.places.resChar w = p` using `(hS w).1 hw'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show SizeData₂.sz w (G.ioP X0 K (G.aL L0) (G.bL L0) (D.what₂.places.resChar w)) = _`. Rewrite using `[hwp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tie_ioTot_below (p : ℕ) (hp : p.Prime) (hle : (p : ℝ) ≤ L0.sc.X'' D.R.n) :
     ioTot (tieWeightData L0 X0 K dr len hw hg hu) p = 2 * Real.log p * G.ioP X0 K (G.aL L0) (G.bL L0) p := by
@@ -370,9 +366,9 @@ theorem tie_ioTot_below (p : ℕ) (hp : p.Prime) (hle : (p : ℝ) ≤ L0.sc.X'' 
   rw [hwp]
 
 /- English proof (translation)
-Unfold `ioTot`. Use `Finset.sum_eq_zero (fun w hw' => ?_)` and prove the remaining obligations. Establish `hwp : D.what₂.places.resChar w = p` using `(Finset.mem_filter.1 hw').2`. Use `show SizeData₂.sz w (G.ioP X0 K (G.aL L0) (G.bL L0) (D.what₂.places.resChar w)) = 0`. Rewrite using `[hwp, ioP_eq_zero_of_lt L0 X0 K _ _ _ h]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[SizeData₂.sz]`.
+A detailed English derivation is pending.
 -/
 theorem tie_ioTot_above (p : ℕ) (h : L0.sc.X'' D.R.n < (p : ℝ)) :
     ioTot (tieWeightData L0 X0 K dr len hw hg hu) p = 0 := by
@@ -384,7 +380,7 @@ theorem tie_ioTot_above (p : ℕ) (h : L0.sc.X'' D.R.n < (p : ℝ)) :
   simp [SizeData₂.sz]
 
 /- English proof (translation)
-Establish `h : ((tieWeightData L0 X0 K dr len hw hg hu).TTw w).map (Function.Embedding.subtype _) = G.TTP X0 K (G.aL L0) (G.bL L0) (D.what₂.places.resChar w)` using `Finset.subtype_map_of_mem (TTP_subset L0 X0 K _ _ _)`. Rewrite using `[← h, Finset.map_eq_image, Finset.image_image]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tie_TTw_vals (w : D.what₂.places.Pl) :
     ((tieWeightData L0 X0 K dr len hw hg hu).TTw w).image (fun t : D.host.TT => (t : D.R.A).val) =
@@ -396,9 +392,9 @@ theorem tie_TTw_vals (w : D.what₂.places.Pl) :
   rfl
 
 /- English proof (translation)
-Unfold `TTwVals`. Use extensionality with `s`. Rewrite using `[Finset.mem_image, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw', rfl⟩`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[tie_TTw_vals, (Finset.mem_filter.1 hw').2]`. Introduce and unpack `rfl`. Use `⟨w0, h0, ?_⟩` and prove the remaining obligations. Rewrite using `[tie_TTw_vals, (Finset.mem_filter.1 h0).2]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tie_TTwVals_of_mem (p : ℕ) (w0 : D.what₂.places.Pl)
     (h0 : w0 ∈ suppAt (tieWeightData L0 X0 K dr len hw hg hu) p) :
@@ -414,7 +410,7 @@ theorem tie_TTwVals_of_mem (p : ℕ) (w0 : D.what₂.places.Pl)
     rw [tie_TTw_vals, (Finset.mem_filter.1 h0).2]
 
 /- English proof (translation)
-Take `⟨w0, h0⟩` from `exists_place_over D p hp`. Conclude with `tie_TTwVals_of_mem L0 X0 K dr len hw hg hu p w0 ((mem_suppAt_below L0 X0 K dr len hw hg hu p hle w0).2 h0)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tie_TTwVals_below (p : ℕ) (hp : p.Prime) (hle : (p : ℝ) ≤ L0.sc.X'' D.R.n) :
     TTwVals (tieWeightData L0 X0 K dr len hw hg hu) p = {(G.TTP X0 K (G.aL L0) (G.bL L0) p).image Formalism.HC.Frame.A.val} := by
@@ -428,15 +424,15 @@ def UnderSupp (p : ℕ) : Prop :=
 open Classical in
 
 /- English proof (translation)
-Distinguish the cases in `h : UnderSupp L0 p`. Rewrite using `[if_pos h]`. Establish `hex : ∃ w0, w0 ∈ suppAt (tieWeightData L0 X0 K dr len hw hg hu) p`. Break down `h with h | h | ⟨w, hw', hwp⟩` into its components or cases. Take `⟨w0, h0⟩` from `exists_place_over D p hp`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w0, Finset.mem_filter.2 ⟨(mem_tieSupp L0 w0).2 (Or.inl (by rw [h0]; exact h)), h0⟩⟩`. Take `⟨w0, h0⟩` from `exists_place_over D p hp`. Conclude with `⟨w0, Finset.mem_filter.2 ⟨(mem_tieSupp L0 w0).2 (Or.inr (Or.inl (by rw [h0]; exact h))), h0⟩⟩`. Conclude with `⟨w, Finset.mem_filter.2 ⟨(mem_tieSupp L0 w).2 (Or.inr (Or.inr hw')), hwp⟩⟩`. Take `⟨w0, h0⟩` from `hex`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `tie_TTwVals_of_mem L0 X0 K dr len hw hg hu p w0 h0`. Rewrite using `[if_neg h]`. Unfold `TTwVals`. Rewrite using `[Finset.image_eq_empty]`. Unfold `suppAt`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.filter_eq_empty_iff]`. Introduce `w hw' hwp`. Apply `h` to reduce the goal to its premises. Break down `(mem_tieSupp L0 w).1 hw' with h1 | h1 | h1` into its components or cases. Conclude with `Or.inl (by rw [← hwp]; exact h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inr (Or.inl (by rw [← hwp]; exact h1))`. Conclude with `Or.inr (Or.inr ⟨w, h1, hwp⟩)`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem tie_TTwVals (p : ℕ) (hp : p.Prime) :
     TTwVals (tieWeightData L0 X0 K dr len hw hg hu) p =

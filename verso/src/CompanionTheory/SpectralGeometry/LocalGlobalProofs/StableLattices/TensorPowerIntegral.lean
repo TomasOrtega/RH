@@ -8,15 +8,15 @@ namespace GlobalTheory.CompanionTheory.ZuckTens
 open scoped Matrix.Norms.Elementwise
 
 /- English proof (translation)
-Introduce `k r F F' hF hF'`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show F.ρ 1 ⊗ₖ F'.ρ 1 = 1`. Rewrite using `[hF.one, hF'.one, Matrix.one_kronecker_one]`. Introduce `g hg h hh show F.ρ (g * h) ⊗ₖ F'.ρ (g * h) = (F.ρ g ⊗ₖ F'.ρ g) * (F.ρ h ⊗ₖ F'.ρ h)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF.mul g hg h hh, hF'.mul g hg h hh, Matrix.mul_kronecker_mul]`. Introduce and unpack `⟨c, c'⟩ ⟨d, d'⟩ g₀ hg₀`. Take `⟨U, f, hU, hgU, hf, hfe⟩` from `hF.smooth c d g₀ hg₀`. Take `⟨U', f', hU', hgU', hf', hfe'⟩` from `hF'.smooth c' d' g₀ hg₀`. Use `⟨U ∩ U', fun x => f x * f' x, hU.inter hU', ⟨hgU, hgU'⟩, (hf.mono Set.inter_subset_left).mul (hf'.mono Set.inter_subset_right), ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg hin`. Establish `h1` using `hfe g hg.1 hin`. Establish `h2` using `hfe' g hg.2 hin`. Use `show F.ρ g c d * F'.ρ g c' d' = f g * f' g`. Simplify using `only at h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1, h2]`. Take `⟨C, hC⟩` from `hF.growth`. Take `⟨C', hC'⟩` from `hF'.growth`. Use `⟨C * C', ?_⟩` and prove the remaining obligations. Introduce and unpack `g hg ⟨c, c'⟩ ⟨d, d'⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ‖F.ρ g c d * F'.ρ g c' d'‖ ≤ C * C' * Formalism.FourierDecayAlt.B.gN g ^ (F.deg + F'.deg)`. Establish `h1` using `hC g hg c d`. Establish `h2` using `hC' g hg c' d'`. Rewrite using `[norm_mul, pow_add]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem okTens : OKTens := by
   intro k r F F' hF hF'

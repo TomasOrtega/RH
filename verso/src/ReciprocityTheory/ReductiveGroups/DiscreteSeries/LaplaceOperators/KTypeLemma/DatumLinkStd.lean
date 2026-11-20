@@ -10,19 +10,17 @@ namespace ReciprocityTheory.ChartRestriction.DS.Lap.LemK
 open ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Establish `hP` using `S7.isPsiFor_psiM ε lam h T μ hlam hμ hgap hq h8`. Use `set Ψ := S7.PsiM T μ with hΨ`. Apply the tactic sequence `replace hP : IsPsiFor ε lam T Ψ := by first | exact hP | exact hP.1`. Establish `hv₀ : T.w ≠ 0` using `fun h0 => by`. Establish `h1` using `T.w_norm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[h0, norm_zero]`. Conclude with `zero_ne_one h1`. Establish `hN0 : ‖uniformisationL2 ε Ψ T.w T.w‖ ≠ 0` using `norm_ne_zero_iff.mpr (datumEmbedding_highest_ne_zero hstd hP hv₀)`. Use `set c : ℂ := ((‖uniformisationL2 ε Ψ T.w T.w‖⁻¹ : ℝ) : ℂ) with hc`. Establish `hc0 : c ≠ 0` using `by rw [hc]; exact_mod_cast inv_ne_zero hN0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `j : T.V →ₗ[ℂ] datumV ε Ψ T.w` to `{ toFun := fun v => ⟨⟨uniformisationL2 ε Ψ T.w (c • v), datumEmbedding_mem_smooth hP T.w _⟩, (mem_datumV_iff hP T.w _).2 ⟨c • v, rfl⟩⟩ map_add' := fun v v' => Subtype.ext (Subtype.ext (by show uniformisationL2 ε Ψ T.w (c • (v + v')) = uniformisationL2 ε Ψ T.w (c • v) + uniformisa …`. Rewrite using `[smul_add, datumEmbedding_add hP]))`. Use the proof step `map_smul' := fun a v => Subtype.ext (Subtype.ext (by show uniformisationL2 ε Ψ T.w (c • (a • v)) = a • uniformisationL2 ε Ψ T.w (c • v)`. Rewrite using `[smul_comm, datumEmbedding_smul hP])) }`. Establish `hj : Function.Bijective j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun v v' hv => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `: uniformisationL2 ε Ψ T.w (c • v) = uniformisationL2 ε Ψ T.w (c • v')` using `congrArg (fun x : datumV ε Ψ T.w => ((x : smD ε (rreg ε)) : L2 ε)) hv`. Conclude with `smul_right_injective _ hc0 (uniformisationL2_injective hP hv₀ this)`. Take `⟨v, hv⟩` from `(mem_datumV_iff hP T.w x).1 x.2`. Use `⟨c⁻¹ • v, Subtype.ext (Subtype.ext ?_)⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `show uniformisationL2 ε Ψ T.w (c • c⁻¹ • v) = _`. Rewrite using `[smul_smul, mul_inv_cancel₀ hc0, one_smul, hv]`. Set `e` to `LinearEquiv.ofBijective j hj`. Use `⟨L2 ε, inferInstance, inferInstance, inferInstance, rreg ε, smD ε (rreg ε), smE ε (rreg ε), datumV ε Ψ T.w, e.symm, rreg_isURepOn ε, isDerivedOn_smE (rreg_isURepOn ε), datumV_isKIrrHW hP hv₀, datumV_casimir hP T.w, datumV_kStable hP T.w, fun g hgm v v' => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `e.surjective v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x', rfl⟩` from `e.surjective v'`. Rewrite using `[e.symm_apply_apply, e.symm_apply_apply]`. Use `show ⟪uniformisationL2 ε Ψ T.w (c • x'), rreg ε g (uniformisationL2 ε Ψ T.w (c • x))⟫_ℂ = _`. Establish `key : ((‖uniformisationL2 ε Ψ T.w T.w‖ ^ 2 : ℝ) : ℂ) * (starRingEnd ℂ c * c) = 1`. Rewrite using `[hc, Complex.conj_ofReal, ← Complex.ofReal_mul, ← Complex.ofReal_mul, ← Complex.ofReal_one]`.
-
-Use `congr 1`. Rewrite using `[pow_two, mul_mul_mul_comm, mul_inv_cancel₀ hN0, one_mul]`. Rewrite using `[formulaF hstd hP hv₀ hgm, map_smul, inner_smul_left, inner_smul_right]`. Take the linear combination `⟪x', Ψ g x⟫_ℂ * key`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem psiDatum_std {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ) (h : ℝ)
     (T : S7.KType ε (lowK ε lam)) (μ : Fin n → ℤ) (hlam : S7.IsHCParam lam) (hgap : GapAtLeast ε lam h)
@@ -79,19 +77,19 @@ theorem psiDatum_std {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ) (h : 
   linear_combination ⟪x', Ψ g x⟫_ℂ * key
 
 /- English proof (translation)
-Take `⟨H₂, _, _, _, σ₂, D₂, E₂, V₂, ι₂, hσ₂, hD₂, hV₂, hc₂, hVK₂, hco⟩` from `psiDatum_std ε lam h T μ hlam hgap hstd h8 hq hμ`. Take `⟨φ, hφK, hφI⟩` from `KTypeIsomorphism.exists_phi hσ hD hV hσ₂ hD₂ hV₂`. Take `⟨ψ, -, hψI⟩` from `KTypeIsomorphism.exists_phi hσ₂ hD₂ hV₂ hσ hD hV`. Use `hV.1` as an intermediate fact. Use `hV₂.1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφi : Function.Injective φ` using `(injective_iff_map_eq_zero φ).mpr fun v hv => by`. Establish `h1` using `hφI v v`. Rewrite `h1` using `[hv]`. Simplify using `using h1.symm`. Establish `hψi : Function.Injective ψ` using `(injective_iff_map_eq_zero ψ).mpr fun v hv => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1` using `hψI v v`. Rewrite `h1` using `[hv]`. Simplify using `using h1.symm`. Establish `hrk : Module.finrank ℂ V = Module.finrank ℂ V₂` using `le_antisymm (LinearMap.finrank_le_finrank_of_injective hφi) (LinearMap.finrank_le_finrank_of_injective hψi)`. Set `e : V ≃ₗ[ℂ] V₂` to `φ.linearEquivOfInjective hφi hrk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hU` using `rigid_universal hσ hD hV hc hVK hσ₂ hD₂ hV₂ hc₂ hVK₂ hstd φ hφK hφI`. Establish `h1J : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ UJset ε` using `by show (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * Jm ε * 1 = Jm ε`. Simplify using the standard rewrite rules. Establish `hcoef : ∀ g ∈ UJset ε, ∀ v v' : V, ⟪((v' : D) : H), σ g ((v : D) : H)⟫_ℂ = ⟪(e.trans ι₂) v', S7.PsiM T μ g ((e.trans ι₂) v)⟫_ℂ` using `fun g hgm v v' => by`. Rewrite using `[← hU g hgm v v', hco g hgm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hiso : ∀ v v' : V, ⟪(e.trans ι₂) v', (e.trans ι₂) v⟫_ℂ = ⟪((v' : D) : H), ((v : D) : H)⟫_ℂ` using `fun v v' => by`. Use `hcoef 1 h1J v v'` as an intermediate fact. Rewrite `this` using `[hσ.1.1, S7.psiM_one]`. Conclude with `this.symm`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e.trans ι₂, hcoef, hiso, fun k v w hw => ?_⟩` and prove the remaining obligations. Establish `hk : S7.PsiM T μ (S7.toMK k) = T.op k`. Use `S7.psiM_equiv T μ k 1 (g := 1) h1J` as an intermediate fact. Rewrite `this` using `[S7.toMK_one', Matrix.mul_one, Matrix.mul_one, S7.psiM_one, S7.op_one', mul_one, mul_one]`. Then use the resulting hypothesis. Use `ext_inner_left ℂ fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨v', rfl⟩` from `(e.trans ι₂).surjective x`. Rewrite using `[hiso, hw, hcoef _ k.1.2, hk]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem datum_link_std {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} {h : ℝ}
     {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]

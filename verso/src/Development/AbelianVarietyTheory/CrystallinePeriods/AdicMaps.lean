@@ -22,21 +22,21 @@ def levMap (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) (n
   Ideal.quotientMap (J ^ n) f (Reformulated.AutPerF.pow_le_comap_pow hf n)
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact @AdicLevelMap.Bridge.AdicMaps.levMap_mk | exact AdicLevelMap.Bridge.AdicMaps.levMap_mk .. | (intros; apply AdicLevelMap.Bridge.AdicMaps.levMap_mk <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem levMap_mk (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) (n : ℕ) (r : R) :
     levMap I J f hf n (Ideal.Quotient.mk _ r) = Ideal.Quotient.mk _ (f r) := by
   first | exact @AdicLevelMap.Bridge.AdicMaps.levMap_mk | exact AdicLevelMap.Bridge.AdicMaps.levMap_mk .. | (intros; apply AdicLevelMap.Bridge.AdicMaps.levMap_mk <;> assumption)
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact @FactorPowerEval.Bridge.AdicMaps.factorPow_evalₐ | exact FactorPowerEval.Bridge.AdicMaps.factorPow_evalₐ .. | (intros; apply FactorPowerEval.Bridge.AdicMaps.factorPow_evalₐ <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem factorPow_evalₐ (I : Ideal R) {m n : ℕ} (hle : m ≤ n) (x : AdicCompletion I R) :
     Ideal.Quotient.factorPow I hle (AdicCompletion.evalₐ I n x) = AdicCompletion.evalₐ I m x := by
   first | exact @FactorPowerEval.Bridge.AdicMaps.factorPow_evalₐ | exact FactorPowerEval.Bridge.AdicMaps.factorPow_evalₐ .. | (intros; apply FactorPowerEval.Bridge.AdicMaps.factorPow_evalₐ <;> assumption)
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact @AdicLevelCompat.Bridge.AdicMaps.levMap_compat | exact AdicLevelCompat.Bridge.AdicMaps.levMap_compat .. | (intros; apply AdicLevelCompat.Bridge.AdicMaps.levMap_compat <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem levMap_compat (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) {m n : ℕ}
     (hle : m ≤ n) :
@@ -50,7 +50,7 @@ def adicMap (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) :
   Reformulated.AutPerF.adicMap I J f hf
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact @AdicEvaluationMap.Bridge.AdicMaps.evalₐ_adicMap | exact AdicEvaluationMap.Bridge.AdicMaps.evalₐ_adicMap .. | (intros; apply AdicEvaluationMap.Bridge.AdicMaps.evalₐ_adicMap <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem evalₐ_adicMap (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) (n : ℕ)
     (x : AdicCompletion I R) :
@@ -58,7 +58,7 @@ theorem evalₐ_adicMap (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ 
   first | exact @AdicEvaluationMap.Bridge.AdicMaps.evalₐ_adicMap | exact AdicEvaluationMap.Bridge.AdicMaps.evalₐ_adicMap .. | (intros; apply AdicEvaluationMap.Bridge.AdicMaps.evalₐ_adicMap <;> assumption)
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact @AdicEvaluationMk.Bridge.AdicMaps.evalₐ_adicMap_mk | exact AdicEvaluationMk.Bridge.AdicMaps.evalₐ_adicMap_mk .. | (intros; apply AdicEvaluationMk.Bridge.AdicMaps.evalₐ_adicMap_mk <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem evalₐ_adicMap_mk (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) (n : ℕ)
     (x : AdicCompletion I R) (r : R) (h : AdicCompletion.evalₐ I n x = Ideal.Quotient.mk _ r) :
@@ -66,14 +66,14 @@ theorem evalₐ_adicMap_mk (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I �
   first | exact @AdicEvaluationMk.Bridge.AdicMaps.evalₐ_adicMap_mk | exact AdicEvaluationMk.Bridge.AdicMaps.evalₐ_adicMap_mk .. | (intros; apply AdicEvaluationMk.Bridge.AdicMaps.evalₐ_adicMap_mk <;> assumption)
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact @AdicMapAlgebra.Bridge.AdicMaps.adicMap_alg | exact AdicMapAlgebra.Bridge.AdicMaps.adicMap_alg .. | (intros; apply AdicMapAlgebra.Bridge.AdicMaps.adicMap_alg <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem adicMap_alg (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) (r : R) :
     adicMap I J f hf (algebraMap R (AdicCompletion I R) r) = algebraMap S (AdicCompletion J S) (f r) := by
   first | exact @AdicMapAlgebra.Bridge.AdicMaps.adicMap_alg | exact AdicMapAlgebra.Bridge.AdicMaps.adicMap_alg .. | (intros; apply AdicMapAlgebra.Bridge.AdicMaps.adicMap_alg <;> assumption)
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact @AdicSpanLeComap.Bridge.AdicMaps.span_le_comap | exact AdicSpanLeComap.Bridge.AdicMaps.span_le_comap .. | (intros; apply AdicSpanLeComap.Bridge.AdicMaps.span_le_comap <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem span_le_comap (p : ℕ) (f : R →+* S) :
     Ideal.span {(p : R)} ≤ (Ideal.span {(p : S)}).comap f := by
@@ -85,7 +85,7 @@ def padicMap (p : ℕ) (f : R →+* S) : PHat p R →+* PHat p S :=
   Reformulated.AutPerF.adicMap _ _ f (Reformulated.AutPerF.span_natCast_le_comap p f)
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact @PadicMapAlgebra.Bridge.AdicMaps.padicMap_alg | exact PadicMapAlgebra.Bridge.AdicMaps.padicMap_alg .. | (intros; apply PadicMapAlgebra.Bridge.AdicMaps.padicMap_alg <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem padicMap_alg (p : ℕ) (f : R →+* S) (r : R) :
     padicMap p f (algebraMap R (PHat p R) r) = algebraMap S (PHat p S) (f r) := by
@@ -94,7 +94,7 @@ theorem padicMap_alg (p : ℕ) (f : R →+* S) (r : R) :
 end Gen
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact @CrisCompletionExists.Bridge.AdicMaps.exists_acris_completion | exact CrisCompletionExists.Bridge.AdicMaps.exists_acris_completion .. | (intros; apply CrisCompletionExists.Bridge.AdicMaps.exists_acris_completion <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_acris_completion (l : ℕ) [Fact l.Prime] :
     ∃ e : Per.Acris l ≃+* AdicCompletion (Ideal.span {(l : Per.Acris0 l)}) (Per.Acris0 l),
@@ -103,7 +103,7 @@ theorem exists_acris_completion (l : ℕ) [Fact l.Prime] :
   first | exact @CrisCompletionExists.Bridge.AdicMaps.exists_acris_completion | exact CrisCompletionExists.Bridge.AdicMaps.exists_acris_completion .. | (intros; apply CrisCompletionExists.Bridge.AdicMaps.exists_acris_completion <;> assumption)
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact @AdicCoeffGalois.Bridge.AdicMaps.coeff_galois | exact AdicCoeffGalois.Bridge.AdicMaps.coeff_galois .. | (intros; apply AdicCoeffGalois.Bridge.AdicMaps.coeff_galois <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coeff_galois (l : ℕ) [Fact l.Prime] (g : PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) (x : Per.Fl l)
     (n : ℕ) (y : Per.OC l)

@@ -19,19 +19,19 @@ def crd (a : B.A) : Fin m → w.adicCompletion E := fun i => e (b.repr a i)
 def IntV (y : Fin m → w.adicCompletion E) : Prop := ∀ i, y i ∈ Ov E w
 
 /- English proof (translation)
-Simplify using `[vec, crd, b.sum_repr]`.
+Simplify using the standard rewrite rules.
 -/
 lemma vec_crd (a : B.A) : vec e b (crd e b a) = a := by
   simp [vec, crd, b.sum_repr]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [vec, crd]`. Rewrite using `[Module.Basis.repr_sum_self]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma crd_vec (y : Fin m → w.adicCompletion E) : crd e b (vec e b y) = y := by
   funext i; simp only [vec, crd]; rw [Module.Basis.repr_sum_self]; simp
 
 /- English proof (translation)
-Simplify using `only [vec, Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma sum_cols (M : Matrix (Fin m) (Fin m) (w.adicCompletion E)) (x : Fin m → w.adicCompletion E) :
     ∑ j, e.symm (x j) • vec e b (fun i => M i j) = vec e b (M *ᵥ x) := by
@@ -41,13 +41,13 @@ lemma sum_cols (M : Matrix (Fin m) (Fin m) (w.adicCompletion E)) (x : Fin m → 
   rw [mul_comm]
 
 /- English proof (translation)
-Simplify using `[Ov, IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]`.
+Simplify using the standard rewrite rules.
 -/
 lemma memOv (x : w.adicCompletion E) : x ∈ Ov E w ↔ Valued.v x ≤ 1 := by
   simp [Ov, IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]
 
 /- English proof (translation)
-Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Subring.sum_mem _ fun j _ => Subring.mul_mem _ (hM i j) (hz j)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma intV_mulVec {M : Matrix (Fin m) (Fin m) (w.adicCompletion E)} (hM : ∀ i j, M i j ∈ Ov E w)
     {z : Fin m → w.adicCompletion E} (hz : IntV z) : IntV (M *ᵥ z) := by
@@ -56,7 +56,7 @@ lemma intV_mulVec {M : Matrix (Fin m) (Fin m) (w.adicCompletion E)} (hM : ∀ i 
   exact Subring.sum_mem _ fun j _ => Subring.mul_mem _ (hM i j) (hz j)
 
 /- English proof (translation)
-Introduce `i`. Break down `eq_or_ne i j with rfl | h` into its components or cases. Simplify using `[Subring.one_mem]`. Simplify using `[Pi.single_apply, h, Subring.zero_mem]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma intV_single (j : Fin m) : IntV (w := w) (Pi.single j 1) := by
   intro i
@@ -65,31 +65,29 @@ lemma intV_single (j : Fin m) : IntV (w := w) (Pi.single j 1) := by
   · simp [Pi.single_apply, h, Subring.zero_mem]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma gl_vec (h : GL (Fin m) (w.adicCompletion E)) (z : Fin m → w.adicCompletion E) :
     (↑h⁻¹ : Matrix (Fin m) (Fin m) (w.adicCompletion E)) *ᵥ ((↑h : Matrix (Fin m) (Fin m) (w.adicCompletion E)) *ᵥ z) = z := by
   rw [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma gl_vec' (h : GL (Fin m) (w.adicCompletion E)) (z : Fin m → w.adicCompletion E) :
     (↑h : Matrix (Fin m) (Fin m) (w.adicCompletion E)) *ᵥ ((↑h⁻¹ : Matrix (Fin m) (Fin m) (w.adicCompletion E)) *ᵥ z) = z := by
   rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H`. Establish `hh : ∀ i j, (↑h : Matrix (Fin m) (Fin m) (w.adicCompletion E)) i j ∈ Ov E w`. Introduce `i j`. Use `(H (Pi.single j 1)).2 (intV_single j) i` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.mulVec_single_one]`. Establish `hi : ∀ i j, (↑h⁻¹ : Matrix (Fin m) (Fin m) (w.adicCompletion E)) i j ∈ Ov E w`. Introduce `i j`. Use `(H ((↑h⁻¹ : Matrix (Fin m) (Fin m) (w.adicCompletion E)) *ᵥ Pi.single j 1)).1 (by rw [gl_vec']; exact intV_single j) i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single_one]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `inj : Function.Injective ((Ov E w).subtype.mapMatrix : Matrix (Fin m) (Fin m) (Ov E w) →+* Matrix (Fin m) (Fin m) (w.adicCompletion E))`. Introduce `A A' hAA`. Conclude with `Matrix.ext fun i j => Subtype.ext (congrArg (fun M : Matrix (Fin m) (Fin m) (w.adicCompletion E) => M i j) hAA)`. Set `M1 : Matrix (Fin m) (Fin m) (Ov E w)` to `Matrix.of fun i j => ⟨_, hh i j⟩`. Set `M2 : Matrix (Fin m) (Fin m) (Ov E w)` to `Matrix.of fun i j => ⟨_, hi i j⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e1 : (Ov E w).subtype.mapMatrix M1 = ↑h` using `Matrix.ext fun i j => rfl`. Establish `e2 : (Ov E w).subtype.mapMatrix M2 = ↑h⁻¹` using `Matrix.ext fun i j => rfl`. Set `k : GL (Fin m) (Ov E w)` to `⟨M1, M2, inj (by rw [map_mul, map_one, e1, e2, ← Units.val_mul, mul_inv_cancel, Units.val_one]), inj (by rw [map_mul, map_one, e1, e2, ← Units.val_mul, inv_mul_cancel, Units.val_one])⟩`. Conclude with `⟨k, Units.ext (Matrix.ext fun i j => rfl)⟩`. Introduce and unpack `⟨k, rfl⟩ z`.
+Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `ent : ∀ (k : GL (Fin m) (Ov E w)) i j, ((bc (Ov E w).subtype k : GL (Fin m) (w.adicCompletion E)) : Matrix (Fin m) (Fin m) (w.adicCompletion E)) i j ∈ Ov E w` using `fun k i j => (k.val i j).2`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Use `intV_mulVec (ent k⁻¹) hz` as an intermediate fact. Rewrite `this` using `[map_inv, gl_vec]`. Then use the resulting hypothesis.
-
-Conclude with `intV_mulVec (ent k)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 lemma preserves_iff (h : GL (Fin m) (w.adicCompletion E)) :
     (∀ z, IntV ((↑h : Matrix (Fin m) (Fin m) (w.adicCompletion E)) *ᵥ z) ↔ IntV z) ↔ h ∈ GLint (Fin m) (Ov E w) := by
@@ -126,21 +124,19 @@ lemma preserves_iff (h : GL (Fin m) (w.adicCompletion E)) :
     · exact intV_mulVec (ent k)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `ha`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `: crd e b (∑ i, e.symm ((↑g : Matrix (Fin m) (Fin m) (w.adicCompletion E)) i j) • b i) = (↑g : Matrix (Fin m) (Fin m) (w.adicCompletion E)) *ᵥ Pi.single j 1`. Rewrite using `[Matrix.mulVec_single_one]`. Conclude with `crd_vec e b _`. Rewrite using `[this, gl_vec]`. Conclude with `intV_single j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero`. Establish `: crd e b (0 : B.A) = 0` using `by funext i; simp [crd]`. Rewrite using `[this, Matrix.mulVec_zero]`. Introduce `i`. Conclude with `Subring.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y _ _ hx hy`. Establish `: crd e b (x + y) = crd e b x + crd e b y` using `by funext i; simp [crd]`. Rewrite using `[this, Matrix.mulVec_add]`. Introduce `i`. Conclude with `Subring.add_mem _ (hx i) (hy i)`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Consider the case `smul c x _ hx`. Establish `hc : e (algebraMap K.O K.E c) ∈ Ov E w` using `(memOv _).2 ((hI _).1 ⟨c, rfl⟩)`. Establish `: crd e b (c • x) = e (algebraMap K.O K.E c) • crd e b x`. Use function extensionality and compare the values at `i`. Simplify using `only [crd, Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← algebraMap_smul K.E c x, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[this, Matrix.mulVec_smul]`. Introduce `i`. Conclude with `Subring.mul_mem _ hc (hx i)`. Introduce `hx set x := (↑g⁻¹ : Matrix (Fin m) (Fin m) (w.adicCompletion E)) *ᵥ crd e b a with hxdef`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : ∀ j, e.symm (x j) ∈ (algebraMap K.O K.E).range` using `fun j => (hI _).2 (by rw [RingEquiv.apply_symm_apply]; exact (memOv _).1 (hx j))`. Use `choose c hc using hr`. Establish `hsum : a = ∑ j, c j • vec e b (fun i => (↑g : Matrix (Fin m) (Fin m) (w.adicCompletion E)) i j)`. Repeatedly rewrite using `[← algebraMap_smul K.E (c _), hc]`. Rewrite using `[sum_cols, hxdef, gl_vec', vec_crd]`.
-
-Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 lemma mem_lat (hI : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) (g : GLw m w) (a : B.A) :
     a ∈ GlobalTheory.TwLat.lat e b g ↔
@@ -182,13 +178,13 @@ lemma mem_lat (hI : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) �
     exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Introduce `E _ _ _ _ w _ K e _ hI _ B m b`. Use `⟨fun g g' => ?_, fun g => ?_⟩` and prove the remaining obligations. Use `show _ ↔ g⁻¹ * g' ∈ GLint (Fin m) (Ov E w)`. Rewrite using `[SetLike.ext_iff, ← preserves_iff]`. Simplify using `only [mem_lat e b hI]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `H z`. Use `H (vec e b ((↑g' : Matrix (Fin m) (Fin m) (w.adicCompletion E)) *ᵥ z))` as an intermediate fact. Rewrite `this` using `[crd_vec, gl_vec]`. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `H a`. Use `H ((↑g'⁻¹ : Matrix (Fin m) (Fin m) (w.adicCompletion E)) *ᵥ crd e b a)` as an intermediate fact. Rewrite `this` using `[Units.val_mul, ← Matrix.mulVec_mulVec, gl_vec']`. Then use the resulting hypothesis. Use `⟨Submodule.fg_span (Set.finite_range _), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a _`. Establish `hsum : a = ∑ j, e.symm (((↑g⁻¹ : Matrix (Fin m) (Fin m) (w.adicCompletion E)) *ᵥ crd e b a) j) • vec e b (fun i => (↑g : Matrix (Fin m) (Fin m) (w.adicCompletion E)) i j)`. Rewrite using `[sum_cols, gl_vec', vec_crd]`. Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span (Submodule.subset_span ⟨j, rfl⟩))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_coset : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w →
     ∀ (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) →

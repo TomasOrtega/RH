@@ -18,11 +18,11 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 namespace GlobalTheory.PendClose
 
 /- English proof (translation)
-Introduce `D M hT hR hA hPar h0 h5 hIne hDep hGen hZL hCI hCT hSer hZeta hDZ hAdm`. Establish `hSU : GlobalTheory.EtaJoin.SplitUnif D` using `GlobalTheory.SplitConjPlace.splitEx_all D`. Establish `hSec : ∀ i, Nonempty (Sec D i)` using `fun i => GlobalTheory.T.nonempty_localised_forms_type_section_hecke D M i hT hR hA hSU (GlobalTheory.T.sphericalHeckeScalarOnTypeSpaces_all_places D M hT hA i)`. Take `⟨lz, hlz⟩` from `GlobalTheory.T.exists_finiteGroupData_seriesIdempotentsLabelSums D`. Take `⟨Ω, hΩ⟩` from `GlobalTheory.T.exists_label_inertia_eigenvalues D hIne hDep hGen`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hChar : LabChar D` using `GlobalTheory.T.labelTwistMultipliesRoots_of_tame_labels D h0 hIne hDep hGen`. Take `⟨Z⟩` from `GlobalTheory.T.nonempty_groupAlgebraCentreLatticeAction D hSec hZL hCI hCT`. Establish `hPr : PrType D` using `GlobalTheory.T.typeSpaceProjectionEigen_of_localisedFormsSection D hSec`. Establish `hSplit : ∀ (k : Fin 2) (v : D.nd.PlG k), IsSplitPl D.host (D.naut.plGw k v)` using `fun k v => GlobalTheory.T.isSplitPlace_of_over_type_prime D k _ (D.naut.plGw_over k v)`. Establish `hPS : ParSurj D` using `GlobalTheory.T.pointParameterIsTypeParameter_of_tame D hPar h0 h5 hSplit hDep hDZ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `P : PairedCharacterCondition.Pend D` to `mk lz hlz hSer hZeta Ω hΩ hChar Z hZL hPr hPS`. Conclude with `⟨P, GlobalTheory.T.depthZeroAdmissible_all_pending_data D P hAdm, GlobalTheory.T.centralActsOnHeckeEigenspace_of_typeSections D P hSec hCT⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem main : ∀ (D : D7) (M : MtFam D), HeckeTied D M → HeckeRational D M → AVTied D M →
     (∀ S : Formalism.L2.ParC D, ∃ σ' : D.ntypes.Par, ∀ w, D.ntypes.locPar σ' w = isoLoc D.nd D.naut S.1 w) →

@@ -16,7 +16,7 @@ section Residue
 variable {F : Type*} [Field F] [NumberField F] (u : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `toResidueInteger_surjective u (Ideal.Quotient.mk _ x)`. Conclude with `⟨r, Ideal.Quotient.eq.1 hr.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sub_ringOfIntegersToInteger_mem (x : 𝒪[u.adicCompletion F]) :
     ∃ r : 𝓞 F, x - ringOfIntegersToInteger u r ∈ 𝓂[u.adicCompletion F] := by
@@ -24,7 +24,7 @@ theorem exists_sub_ringOfIntegersToInteger_mem (x : 𝒪[u.adicCompletion F]) :
   exact ⟨r, Ideal.Quotient.eq.1 hr.symm⟩
 
 /- English proof (translation)
-Rewrite using `[← ker_toResidueInteger u, RingHom.mem_ker, toResidueInteger, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ringOfIntegersToInteger_mem_maximalIdeal_iff (r : 𝓞 F) :
     ringOfIntegersToInteger u r ∈ 𝓂[u.adicCompletion F] ↔ r ∈ u.asIdeal := by
@@ -32,7 +32,7 @@ theorem ringOfIntegersToInteger_mem_maximalIdeal_iff (r : 𝓞 F) :
     Ideal.Quotient.eq_zero_iff_mem]
 
 /- English proof (translation)
-The claim follows from `(Nat.card_congr (residueEquivInteger u).toEquiv).symm`.
+A detailed English derivation is pending.
 -/
 theorem natCard_residueField_integer :
     Nat.card 𝓀[u.adicCompletion F] = Nat.card (𝓞 F ⧸ u.asIdeal) :=
@@ -49,7 +49,7 @@ variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Alge
   [IsScalarTower K (v.adicCompletion K) (w.adicCompletion L)]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_integerAlgEquiv_apply, coe_ringOfIntegersToInteger, coe_ringOfIntegersToInteger, decompositionToLocal_algebraMap]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem integerAlgEquiv_ringOfIntegersToInteger (σ : MulAction.stabilizer Gal(L/K) w.asIdeal)
     (r : 𝓞 L) :
@@ -61,7 +61,7 @@ theorem integerAlgEquiv_ringOfIntegersToInteger (σ : MulAction.stabilizer Gal(L
   rfl
 
 /- English proof (translation)
-Simplify using `using integerAlgEquiv_mem_maximalIdeal_pow_iff τ 1 x`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem integerAlgEquiv_mem_maximalIdeal_iff (τ : Gal(w.adicCompletion L/v.adicCompletion K))
     (x : 𝒪[w.adicCompletion L]) :
@@ -70,13 +70,13 @@ theorem integerAlgEquiv_mem_maximalIdeal_iff (τ : Gal(w.adicCompletion L/v.adic
   simpa using integerAlgEquiv_mem_maximalIdeal_pow_iff τ 1 x
 
 /- English proof (translation)
-Establish `h0 : ((0 : ℕ) : ℤ) = 0` using `rfl`. Rewrite using `[← h0, mem_lowerRamificationGroup_natCast_iff, zero_add, pow_one]`. Express the relevant statement in the definitionally equal form `(∀ r : 𝓞 L, (σ : Gal(L/K)) • r - r ∈ w.asIdeal) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨r, hr⟩` from `exists_sub_ringOfIntegersToInteger_mem w x`. Establish `h1` using `(integerAlgEquiv_mem_maximalIdeal_iff v w (decompositionToLocal v w σ) _).2 hr`. Establish `h2 : integerAlgEquiv (v.adicCompletion K) (w.adicCompletion L) (decompositionToLocal v w σ) (ringOfIntegersToInteger w r) - ringOfIntegersToInteger w r ∈ 𝓂[w.adicCompletion L]`. Rewrite using `[integerAlgEquiv_ringOfIntegersToInteger, ← map_sub, ringOfIntegersToInteger_mem_maximalIdeal_iff]`. Conclude with `h r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[map_sub]`. Establish `: integerAlgEquiv (v.adicCompletion K) (w.adicCompletion L) (decompositionToLocal v w σ) x - x = (integerAlgEquiv (v.adicCompletion K) (w.adicCompletion L) (decompositionToLocal v w σ) x - integerAlgEquiv (v.adicCompletion K) (w.adicCompletion L) (decompositionToLocal v w σ) (rin …`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `sub_mem (add_mem h1 h2) hr`.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h r`. Use `h (ringOfIntegersToInteger w r)` as an intermediate fact. Rewrite `this` using `[integerAlgEquiv_ringOfIntegersToInteger, ← map_sub, ringOfIntegersToInteger_mem_maximalIdeal_iff]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_inertia_iff_decompositionToLocal_mem (σ : MulAction.stabilizer Gal(L/K) w.asIdeal) :
     (σ : Gal(L/K)) ∈ w.asIdeal.inertia Gal(L/K) ↔
@@ -132,20 +132,20 @@ omit [NumberField L] [IsGalois K L] [Algebra (v.adicCompletion K) (w.adicComplet
 include v in
 
 /- English proof (translation)
-Rewrite using `[natCard_residueField_integer v, ← Ideal.over_def w.asIdeal v.asIdeal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natCard_residueField_eq_under :
     Nat.card 𝓀[v.adicCompletion K] = Nat.card (𝓞 K ⧸ w.asIdeal.under (𝓞 K)) := by
   rw [natCard_residueField_integer v, ← Ideal.over_def w.asIdeal v.asIdeal]
 
 /- English proof (translation)
-Rewrite using `[natCard_residueField_eq_under v w]`. Express the relevant statement in the definitionally equal form `(∀ r : 𝓞 L, (σ : Gal(L/K)) • r - r ^ Nat.card (𝓞 K ⧸ w.asIdeal.under (𝓞 K)) ∈ w.asIdeal) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h x`. Take `⟨r, hr⟩` from `exists_sub_ringOfIntegersToInteger_mem w x`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `set q := Nat.card (𝓞 K ⧸ w.asIdeal.under (𝓞 K))`. Establish `h1` using `(integerAlgEquiv_mem_maximalIdeal_iff v w (decompositionToLocal v w σ) _).2 hr`. Rewrite `h1` using `[map_sub]`. Establish `h2 : integerAlgEquiv (v.adicCompletion K) (w.adicCompletion L) (decompositionToLocal v w σ) (ringOfIntegersToInteger w r) - ringOfIntegersToInteger w r ^ q ∈ 𝓂[w.adicCompletion L]`. Rewrite using `[integerAlgEquiv_ringOfIntegersToInteger, ← map_pow, ← map_sub, ringOfIntegersToInteger_mem_maximalIdeal_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h r`. Establish `h3 : ringOfIntegersToInteger w r ^ q - x ^ q ∈ 𝓂[w.adicCompletion L]`. Rewrite using `[← Ideal.Quotient.eq, map_pow, map_pow, Ideal.Quotient.eq.2 hr]`. Establish `: integerAlgEquiv (v.adicCompletion K) (w.adicCompletion L) (decompositionToLocal v w σ) x - x ^ q = (integerAlgEquiv (v.adicCompletion K) (w.adicCompletion L) (decompositionToLocal v w σ) x - integerAlgEquiv (v.adicCompletion K) (w.adicCompletion L) (decompositionToLocal v w σ) …`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `add_mem (add_mem h1 h2) h3`. Introduce `h r`. Use `h (ringOfIntegersToInteger w r)` as an intermediate fact. Rewrite `this` using `[integerAlgEquiv_ringOfIntegersToInteger, ← map_pow, ← map_sub, ringOfIntegersToInteger_mem_maximalIdeal_iff]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isArithFrobAt_iff_decompositionToLocal (σ : MulAction.stabilizer Gal(L/K) w.asIdeal) :
     IsArithFrobAt (𝓞 K) (σ : Gal(L/K)) w.asIdeal ↔
@@ -186,7 +186,7 @@ theorem isArithFrobAt_iff_decompositionToLocal (σ : MulAction.stabilizer Gal(L/
       ringOfIntegersToInteger_mem_maximalIdeal_iff] at this
 
 /- English proof (translation)
-The claim follows from `(isArithFrobAt_iff_decompositionToLocal v w _).1 (IsArithFrobAt.arithFrobAt _ _ _) x`.
+A detailed English derivation is pending.
 -/
 theorem decompositionToLocal_arithFrobAt (x : 𝒪[w.adicCompletion L]) :
     integerAlgEquiv (v.adicCompletion K) (w.adicCompletion L)
@@ -200,7 +200,7 @@ omit [Algebra (v.adicCompletion K) (w.adicCompletion L)]
 include v in
 
 /- English proof (translation)
-Rewrite using `[Ideal.card_inertia_eq_ramificationIdxIn (G := Gal(L/K)) v.asIdeal w.asIdeal, Ideal.ramificationIdxIn_eq_ramificationIdx v.asIdeal w.asIdeal Gal(L/K)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natCard_inertia :
     Nat.card (w.asIdeal.inertia Gal(L/K)) = w.asIdeal.ramificationIdx (𝓞 K) := by
@@ -208,9 +208,9 @@ theorem natCard_inertia :
     Ideal.ramificationIdxIn_eq_ramificationIdx v.asIdeal w.asIdeal Gal(L/K)]
 
 /- English proof (translation)
-Take `⟨σ, rfl⟩` from `(decompositionToLocal_bijective v w).2 τ`. Use `congr 1`. Establish `hσ : IsArithFrobAt (𝓞 K) (σ : Gal(L/K)) w.asIdeal` using `(isArithFrobAt_iff_decompositionToLocal v w σ).2 hτ`. Establish `hmem` using `hσ.mul_inv_mem_inertia (IsArithFrobAt.arithFrobAt (𝓞 K) Gal(L/K) w.asIdeal)`. Establish `hbot : w.asIdeal.inertia Gal(L/K) = ⊥` using `Subgroup.eq_bot_of_card_eq _ ((natCard_inertia v w).trans he)`.
+Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hmem` using `[hbot, Subgroup.mem_bot, mul_inv_eq_one]`. Conclude with `Subtype.ext hmem`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_decompositionToLocal_arithFrobAt (he : w.asIdeal.ramificationIdx (𝓞 K) = 1)
     (τ : Gal(w.adicCompletion L/v.adicCompletion K))
@@ -239,9 +239,9 @@ variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Alge
   [IsScalarTower K (v.adicCompletion K) (w.adicCompletion L)]
 
 /- English proof (translation)
-Use extensionality with `τ`. Take `⟨σ, rfl⟩` from `(decompositionMulEquiv v w).surjective τ`. Rewrite using `[Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨σ', hσ', h⟩`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← h]`. Conclude with `(mem_inertia_iff_decompositionToLocal_mem v w σ').1 (Subgroup.mem_subgroupOf.1 hσ')`. Introduce `h`. Conclude with `⟨σ, Subgroup.mem_subgroupOf.2 ((mem_inertia_iff_decompositionToLocal_mem v w σ).2 h), rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_inertia_decompositionMulEquiv :
     ((w.asIdeal.inertia Gal(L/K)).subgroupOf (MulAction.stabilizer Gal(L/K) w.asIdeal)).map

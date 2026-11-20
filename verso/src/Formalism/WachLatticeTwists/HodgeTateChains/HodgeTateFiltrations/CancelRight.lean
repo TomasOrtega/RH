@@ -8,19 +8,19 @@ namespace Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic
 open Matrix
 
 /- English proof (translation)
-Introduce `ℓ _ As AA WC _ _ _ _ jA ι φ Gg _ H act r ρ πs ξ M0 h0 W hfix hinj h hh h' hh'`. Establish `e1` using `W.fixH h hh`. Establish `e2` using `W.fixH h' hh'`. Establish `e3` using `W.fixH (h * h') (H.mul_mem hh hh')`. Generalize the expression as in `hR : ((ρ h : Matrix (Fin r) (Fin r) ℤ_[ℓ]).map (algebraMap ℤ_[ℓ] WC)) = R at *`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `hR' : ((ρ h' : Matrix (Fin r) (Fin r) ℤ_[ℓ]).map (algebraMap ℤ_[ℓ] WC)) = R' at *`. Establish `e6 : ((ρ (h * h') : Matrix (Fin r) (Fin r) ℤ_[ℓ]).map (algebraMap ℤ_[ℓ] WC)) = R * R'`. Rewrite using `[map_mul, Units.val_mul, Matrix.map_mul, hR, hR']`. Establish `e4 : (W.Xx.map (act h')).map (act h) * R' = W.Xx.map (act h)`. Establish `h1 : (W.Xx.map (act h') * R').map (act h) = W.Xx.map (act h)` using `by rw [e2]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h1]`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← hR']`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.map_apply, hfix]`. Establish `e5 : W.Xx.map (act (h * h')) = (W.Xx.map (act h')).map (act h)`. Use extensionality with `i j`. Simplify using `[Matrix.map_apply, map_mul]`. Generalize the expression as in `(W.Xx.map (act h')).map (act h) = Y at *`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Establish `k1 : Y * (R' * R) = W.Xx` using `by rw [← Matrix.mul_assoc, e4, e1]`. Establish `k2 : Y * (R * R') = W.Xx` using `by rw [← e6, ← e5]; exact e3`. Establish `hYl : ((R' * R) * W.Xi) * Y = 1`. Establish `: Y * ((R' * R) * W.Xi) = 1` using `by rw [← Matrix.mul_assoc, k1, W.inv1]`. Conclude with `mul_eq_one_comm.mp this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k3 : R' * R = R * R'`. Combine the equalities or inequalities in the displayed calculation. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul]`. Establish `: ((ρ h : Matrix (Fin r) (Fin r) ℤ_[ℓ]) * (ρ h' : Matrix (Fin r) (Fin r) ℤ_[ℓ])).map (algebraMap ℤ_[ℓ] WC) = ((ρ h' : Matrix (Fin r) (Fin r) ℤ_[ℓ]) * (ρ h : Matrix (Fin r) (Fin r) ℤ_[ℓ])).map (algebraMap ℤ_[ℓ] WC)`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_mul, hR, hR', k3]`. Conclude with `Matrix.map_injective hinj this`.
+A detailed English derivation is pending.
 -/
 theorem hypWComm : StatHypWComm := by
   intro ℓ _ As AA WC _ _ _ _ jA ι φ Gg _ H act r ρ πs ξ M0 h0 W hfix hinj h hh h' hh'
@@ -63,13 +63,13 @@ theorem hypWComm : StatHypWComm := by
   exact Matrix.map_injective hinj this
 
 /- English proof (translation)
-Introduce `ℓ _ As AA WC OC _ _ _ _ _ jA ι φ Gg _ H act GK _ inc r ρ πs ξ x M0 h0 W ϑ c hL hinj hx hξ hc`. Establish `hℓ : ℓ.Prime` using `Fact.out`. Take `⟨⟨A, hA⟩, ⟨A', hA'⟩⟩` from `sandwichAA AA WC ι φ (jA x) (jA ξ) r M0 h0 W.Xx W.Xi W.P (W.P1.map jA) (W.Q1.map jA) hL hx hξ W.inv1 W.inv2 W.W1 W.map_eq_xi_power_smul (by`. Rewrite using `[← Matrix.map_mul, W.product_eq_xi_power_smul_one, Matrix.map_smul' jA _ _ (map_mul jA), Matrix.map_one jA (map_zero jA) (map_one jA), map_pow])`. Establish `hminj : Function.Injective (fun M : Matrix (Fin r) (Fin r) AA => M.map ι)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `M M' h`. Use extensionality with `i j`. Conclude with `hinj (congrFun (congrFun h i) j)`. Establish `hscal : (((jA x) ^ (M0 + h0)) • (1 : Matrix (Fin r) (Fin r) AA)).map ι = (ι (jA x)) ^ (M0 + h0) • (1 : Matrix (Fin r) (Fin r) WC)`. Rewrite using `[Matrix.map_smul' ι _ _ (map_mul ι), Matrix.map_one ι (map_zero ι) (map_one ι), map_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : A * A' = ((jA x) ^ (M0 + h0)) • (1 : Matrix (Fin r) (Fin r) AA)`. Apply `hminj` to reduce the goal to its premises. Use `show (A * A').map ι = (((jA x) ^ (M0 + h0)) • (1 : Matrix (Fin r) (Fin r) AA)).map ι`. Rewrite using `[Matrix.map_mul, hA, hA', hscal, Matrix.smul_mul, Matrix.mul_smul, W.inv1, smul_smul, ← pow_add]`. Establish `h2 : A' * A = ((jA x) ^ (M0 + h0)) • (1 : Matrix (Fin r) (Fin r) AA)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hminj` to reduce the goal to its premises. Use `show (A' * A).map ι = (((jA x) ^ (M0 + h0)) • (1 : Matrix (Fin r) (Fin r) AA)).map ι`. Rewrite using `[Matrix.map_mul, hA, hA', hscal, Matrix.smul_mul, Matrix.mul_smul, W.inv2, smul_smul, ← pow_add, add_comm]`. Take `⟨Y', hY1, hY2⟩` from `sandwichOC ℓ hℓ AA OC ϑ (jA x) c r M0 h0 A A' hc h1 h2`. Conclude with `⟨A, Y', hA, hY1, hY2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem wSandwich' : StatWSandwich' := by
   intro ℓ _ As AA WC OC _ _ _ _ _ jA ι φ Gg _ H act GK _ inc r ρ πs ξ x M0 h0 W ϑ c hL hinj hx hξ hc
@@ -98,7 +98,7 @@ theorem wSandwich' : StatWSandwich' := by
   exact ⟨A, Y', hA, hY1, hY2⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `hinj (congrFun (congrFun h i) j)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 lemma mapmap_inj {As AA WC : Type} [CommRing As] [CommRing AA] [CommRing WC] (jA : As →+* AA)
     (ι : AA →+* WC) (hinj : Function.Injective (fun a : As => ι (jA a))) {r : ℕ}
@@ -107,14 +107,14 @@ lemma mapmap_inj {As AA WC : Type} [CommRing As] [CommRing AA] [CommRing WC] (jA
   exact hinj (congrFun (congrFun h i) j)
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_one jA (map_zero jA) (map_one jA), Matrix.map_one ι (map_zero ι) (map_one ι)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma mapmap_one {As AA WC : Type} [CommRing As] [CommRing AA] [CommRing WC] (jA : As →+* AA)
     (ι : AA →+* WC) {r : ℕ} : (((1 : Matrix (Fin r) (Fin r) As)).map jA).map ι = 1 := by
   rw [Matrix.map_one jA (map_zero jA) (map_one jA), Matrix.map_one ι (map_zero ι) (map_one ι)]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 lemma cancel_right {WC : Type} [CommRing WC] {r : ℕ} {Xx Xi A B : Matrix (Fin r) (Fin r) WC}
     (h1 : Xx * Xi = 1) (h : A * Xx = B * Xx) : A = B := by
@@ -123,7 +123,7 @@ lemma cancel_right {WC : Type} [CommRing WC] {r : ℕ} {Xx Xi A B : Matrix (Fin 
     _ = B := by rw [h1, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `ℓ _ As AA WC _ _ _ _ jA ι φ Gg _ H act GK _ inc r ρ πs ξ M0 h0 W hinj h hh`. Apply `mapmap_inj jA ι hinj` to reduce the goal to its premises. Rewrite using `[mapmap_one]`. Apply `cancel_right W.inv1` to reduce the goal to its premises. Rewrite using `[Matrix.one_mul, ← W.W2 h, W.fixH h hh]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem wFix : StatWFix := by
   intro ℓ _ As AA WC _ _ _ _ jA ι φ Gg _ H act GK _ inc r ρ πs ξ M0 h0 W hinj h hh
@@ -133,15 +133,15 @@ theorem wFix : StatWFix := by
   rw [Matrix.one_mul, ← W.W2 h, W.fixH h hh]
 
 /- English proof (translation)
-Introduce `ℓ _ As AA WC _ _ _ _ jA ι φ Gg _ H act GK _ inc r ρ πs ξ M0 h0 W hfix`. Prove the components needed by the constructor for the conclusion. Apply `cancel_right W.inv1` to reduce the goal to its premises. Rewrite using `[Matrix.one_mul, ← W.W2 1]`. Establish `e1 : W.Xx.map (act 1) = W.Xx` using `by ext i j; simp`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ((ρ (inc 1) : Matrix (Fin r) (Fin r) ℤ_[ℓ])ᵀ.map (algebraMap ℤ_[ℓ] WC)) = 1`. Rewrite using `[map_one, map_one, Units.val_one, Matrix.transpose_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[e1, e2, Matrix.mul_one]`. Introduce `g g'`. Apply `cancel_right W.inv1` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← W.W2 (g * g')]`. Establish `e1 : W.Xx.map (act (g * g')) = (W.Xx.map (act g')).map (act g)`. Use extensionality with `i j`. Simplify using `[Matrix.map_apply, map_mul]`. Establish `e2 : ((ρ (inc (g * g')) : Matrix (Fin r) (Fin r) ℤ_[ℓ])ᵀ.map (algebraMap ℤ_[ℓ] WC)) = ((ρ (inc g') : Matrix (Fin r) (Fin r) ℤ_[ℓ])ᵀ.map (algebraMap ℤ_[ℓ] WC)) * ((ρ (inc g) : Matrix (Fin r) (Fin r) ℤ_[ℓ])ᵀ.map (algebraMap ℤ_[ℓ] WC))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, Units.val_mul, Matrix.transpose_mul, Matrix.map_mul]`. Establish `e3 : (((ρ (inc g') : Matrix (Fin r) (Fin r) ℤ_[ℓ])ᵀ.map (algebraMap ℤ_[ℓ] WC))).map (act g) = ((ρ (inc g') : Matrix (Fin r) (Fin r) ℤ_[ℓ])ᵀ.map (algebraMap ℤ_[ℓ] WC))`. Use extensionality with `i j`. Simplify using `[Matrix.map_apply, hfix]`. Establish `e4 : (W.Xx.map (act g')).map (act g) * ((ρ (inc g') : Matrix (Fin r) (Fin r) ℤ_[ℓ])ᵀ.map (algebraMap ℤ_[ℓ] WC)) = (((W.Gm g').map jA).map ι).map (act g) * W.Xx.map (act g)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrArg (fun M : Matrix (Fin r) (Fin r) WC => M.map (act g)) (W.W2 g')` as an intermediate fact. Rewrite `this` using `[Matrix.map_mul, Matrix.map_mul, e3]`. Conclude with `this`. Rewrite using `[e1, e2, ← Matrix.mul_assoc, e4, Matrix.mul_assoc, W.W2 g, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wCocycle : StatWCocycle := by
   intro ℓ _ As AA WC _ _ _ _ jA ι φ Gg _ H act GK _ inc r ρ πs ξ M0 h0 W hfix
@@ -174,13 +174,13 @@ theorem wCocycle : StatWCocycle := by
     rw [e1, e2, ← Matrix.mul_assoc, e4, Matrix.mul_assoc, W.W2 g, Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `ℓ _ As AA WC _ _ _ _ jA ι φ Gg _ H act GK _ inc r ρ πs ξ M0 h0 W γ σ hfix hinj hσ k i`. Take `⟨c1, c2⟩` from `wCocycle ℓ As AA WC jA ι φ Gg H act GK inc r ρ πs ξ M0 h0 W hfix`. Proceed by induction on `k with`. Consider the case `zero`. Establish `h1 : W.Gm 1 = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Apply `mapmap_inj jA ι hinj` to reduce the goal to its premises. Rewrite using `[c1, mapmap_one]`. Rewrite using `[pow_zero, h1, Function.iterate_zero, id]`. Use extensionality with `j`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Establish `h1 : W.Gm (γ ^ (k + 1)) = (W.Gm (γ ^ k)).map σ * W.Gm γ`. Apply `mapmap_inj jA ι hinj` to reduce the goal to its premises. Rewrite using `[pow_succ', c2, Matrix.map_mul, Matrix.map_mul]`. Use `congr 1`.
+Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `a b`. Simplify using `[Matrix.map_apply, hσ]`. Rewrite using `[Function.iterate_succ_apply', ih, h1]`. Use extensionality with `j`. Simplify using `[gamN, Matrix.vecMul, dotProduct, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem wGam : StatWGam := by
   intro ℓ _ As AA WC _ _ _ _ jA ι φ Gg _ H act GK _ inc r ρ πs ξ M0 h0 W γ σ hfix hinj hσ k i
@@ -205,7 +205,7 @@ theorem wGam : StatWGam := by
     simp [gamN, Matrix.vecMul, dotProduct, Matrix.mul_apply]
 
 /- English proof (translation)
-Introduce `ℓ _ As AA WC R _ _ _ _ _ jA ι φ Gg _ H act GK _ inc r ρ πs ξ M0 h0 W γ σ ϑ z ϖ ϖ' s n hfix hinj hσ h1 h2 h3 h4 h5 h6 h7 i j`. Use `w3Um ℓ Fact.out As R σ πs ϑ z ϖ ϖ' r s n (W.Gm γ) h1 h2 (W.W3 γ) h3 h4 h5 h6 h7 i j` as an intermediate fact. Rewrite `this` using `[wGam ℓ As AA WC jA ι φ Gg H act GK inc r ρ πs ξ M0 h0 W γ σ hfix hinj hσ]`. Rewrite using `[Matrix.sub_apply]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wUm : StatWUm := by
   intro ℓ _ As AA WC R _ _ _ _ _ jA ι φ Gg _ H act GK _ inc r ρ πs ξ M0 h0 W γ σ ϑ z ϖ ϖ' s n hfix hinj hσ
@@ -216,11 +216,11 @@ theorem wUm : StatWUm := by
   exact this
 
 /- English proof (translation)
-Introduce `ℓ _ As AA WC OC _ _ _ _ _ _ jA ι φ Gg _ H act GK _ inc r ρ πs ξ x M0 h0 W ϑ A hinj hal hA E hE`. Take `⟨E', hE'⟩` from `W.W4 E hE`. Use `⟨E', ?_⟩` and prove the remaining obligations. Establish `hm : (Eᵀ.map (algebraMap ℤ_[ℓ] AA)).map ι = Eᵀ.map (algebraMap ℤ_[ℓ] WC)`. Use extensionality with `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.map_apply, hal]`. Establish `key : A * Eᵀ.map (algebraMap ℤ_[ℓ] AA) = E'.map jA * A`. Establish `hminj : Function.Injective (fun M : Matrix (Fin r) (Fin r) AA => M.map ι)`. Introduce `M M' h`. Use extensionality with `a b`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Conclude with `hinj (congrFun (congrFun h a) b)`. Apply `hminj` to reduce the goal to its premises. Use `show (A * Eᵀ.map (algebraMap ℤ_[ℓ] AA)).map ι = (E'.map jA * A).map ι`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hm, hA, Matrix.smul_mul, hE', Matrix.mul_smul]`. Rewrite using `[← Matrix.map_mul, key, Matrix.map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wEnd : StatWEnd := by
   intro ℓ _ As AA WC OC _ _ _ _ _ _ jA ι φ Gg _ H act GK _ inc r ρ πs ξ x M0 h0 W ϑ A hinj hal hA E hE
@@ -239,13 +239,13 @@ theorem wEnd : StatWEnd := by
   rw [← Matrix.map_mul, key, Matrix.map_mul]
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `i j hj`. Substitute `hj` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Use `piece ℓ w m hm h2 hw U (a + i) (D.H1 i (i + 1)) (D.piece i) (hP i)` as an intermediate fact. Simplify using `using this`. Consider the case `succ n ih`. Introduce `i j hj x hx`. Take `⟨t, ht⟩` from `hx`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hij : i < j` using `by omega`. Take `⟨_, hex, _, _, _⟩` from `hD i (i + 1) j (by omega) (by omega)`. Establish `h0` using `piece ℓ w m hm h2 hw U (a + i) (D.H1 i (i + 1)) (D.piece i) (hP i) (D.p1 i (i + 1) j x) ⟨t, by rw [← map_smul, ht, map_zero]⟩`. Rewrite `h0` using `[← map_smul]`. Take `⟨y', hy'⟩` from `(hex _).1 h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨t', ht'⟩` from `hk i (i + 1) j (by omega) (by omega) (((ℓ : ℤ_[ℓ]) ^ t) • y') (by`. Rewrite using `[map_smul, hy', smul_comm, ht, smul_zero])`. Establish `h1` using `ih (i + 1) j (by omega) y' ⟨t' + t, by rw [pow_add, mul_smul, ht']⟩`. Rewrite using `[Finset.sum_eq_sum_Ico_succ_bot hij, add_comm, pow_add, mul_smul, ← hy', ← map_smul, h1, map_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem torsAll (ℓ : ℕ) [Fact ℓ.Prime] (w : ℤ_[ℓ]ˣ) (m : ℕ) (hm : 1 ≤ m) (h2 : ℓ = 2 → 2 ≤ m)
     (hw : PadicInt.valuation ((w : ℤ_[ℓ]) - 1) = m) (U : Finset ℤ) (a : ℤ) (D : FreeData ℓ)
@@ -276,7 +276,7 @@ theorem torsAll (ℓ : ℕ) [Fact ℓ.Prime] (w : ℤ_[ℓ]ˣ) (m : ℕ) (hm : 1
       map_zero]
 
 /- English proof (translation)
-Introduce `ℓ _ w m hm h2 hw U a D hD hP hc hex`. Use `freeGm ℓ w m hm h2 hw U a D hD hP hc fun i j hij => ?_` and prove the remaining obligations. Use `torsAll ℓ w m hm h2 hw U a D hD hP (fun i k j hik hkj x hx => ?_) (j - i - 1) i j (by omega)` and prove the remaining obligations. Take `⟨z, rfl⟩` from `(hex i k j hik hkj x).1 hx`. Conclude with `(hD i k j hik hkj).2.2.2.2 z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem freeGm' : StatFreeGm' := by
   intro ℓ _ w m hm h2 hw U a D hD hP hc hex
@@ -286,9 +286,9 @@ theorem freeGm' : StatFreeGm' := by
   exact (hD i k j hik hkj).2.2.2.2 z
 
 /- English proof (translation)
-Introduce `ℓ _ InvariantsKilledOverCyclotomic H1K H1m H0m H0KQ H1KQ H0mQ H1mQ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ cupK b0 b1 cupKQ resQ res cup a0 a1 r0 cupQ al h1 h2 h3 h4 hinj hsur htf hker hpb hF y`. Take `⟨z, hz⟩` from `hsur (b1 y)`. Take `⟨zm, hzm⟩` from `freeK ℓ H1K H1m H0m H0KQ H0mQ H1mQ res cup a0 a1 r0 cupQ al h1 hinj htf hF y z (by rw [h3, ← hz, h4])`. Take `⟨zK, hzK⟩` from `hpb (((ℓ : ℤ_[ℓ]) ^ al) • z) zm (by rw [hzm, map_smul])`. Take `⟨t, ht⟩` from `hker (((ℓ : ℤ_[ℓ]) ^ al) • y - cupK zK) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_sub, map_smul, h2, hzK, map_smul, hz, sub_self])`. Conclude with `⟨zK, t, ht⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem freeKTop : StatFreeKTop := by
   intro ℓ _ InvariantsKilledOverCyclotomic H1K H1m H0m H0KQ H1KQ H0mQ H1mQ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ cupK b0 b1 cupKQ resQ

@@ -17,7 +17,7 @@ namespace VolUF
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[show star a = IsCMField.complexConj D.host.E a from rfl, IsCMField.complexEmbedding_complexConj]`. Conclude with `(D.host.conjE_apply D.host.φ₀ a).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_eq (a : D.host.E) : star a = D.host.conj a := by
   apply D.host.φ₀.injective
@@ -25,16 +25,16 @@ theorem star_eq (a : D.host.E) : star a = D.host.conj a := by
   exact (D.host.conjE_apply D.host.φ₀ a).symm
 
 /- English proof (translation)
-Establish `h1 : X.B.I.cm.sig b = star b` using `rfl`. Rewrite using `[h1, X.ιE_conj, star_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sig_eq (b : X.B.I.E) : X.ιE (X.B.I.cm.sig b) = star (X.ιE b) := by
   have h1 : X.B.I.cm.sig b = star b := rfl
   rw [h1, X.ιE_conj, star_eq]
 
 /- English proof (translation)
-Unfold `hE Formalism.UG.hform crdOf`. Simplify using `only [map_sum, map_mul, AlgHom.coe_toRingHom, RingHom.coe_coe]`. Simplify using `only [sig_eq, X.J_eq, RingEquiv.apply_symm_apply]`. Use `conv_rhs => rw [← X.bas.sum_repr x, ← X.bas.sum_repr y]`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, RingHom.id_apply, Finset.mul_sum]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hE_crd (x y : (VS D).V) :
     X.ιE (hE X.B.I.cm.sig X.B.I.J (crdOf X.B.I X.ιE X.bas x) (crdOf X.B.I X.ιE X.bas y)) = (VS D).hT x y := by
@@ -49,15 +49,15 @@ theorem hE_crd (x y : (VS D).V) :
   ring
 
 /- English proof (translation)
-Unfold `gramE`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Simplify using `only [F0, Fin.snoc_last, frameOf]`. Rewrite using `[hE_crd, X.zu_norm]`. Simplify using the standard rewrite rules. Consider the case `cast b`. Simplify using `only [F0, Fin.snoc_last, Fin.snoc_castSucc, frameOf]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[hE_crd, ← LinearMap.isSymm_def.1 (VS D).herm (X.eX b) (X.zu w), (X.zu_orth w b).1, map_zero]`. Simplify using `[Fin.castSucc_ne_last]`. Consider the case `cast a`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Simplify using `only [F0, Fin.snoc_last, Fin.snoc_castSucc, frameOf]`. Rewrite using `[hE_crd, (X.zu_orth w a).1]`. Simplify using `[Fin.castSucc_ne_last]`. Consider the case `cast b`. Simplify using `only [F0, Fin.snoc_castSucc, frameOf]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[hE_crd, X.ee]`. Simplify using `[Fin.castSucc_ne_last]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gram_eq (w : D.what₂.Word) (i j : Fin (D.R.rS + 1)) :
     X.ιE (gramE X.B.I.cm.sig X.B.I.J (F0 (frameOf X w)) i j) =
@@ -86,7 +86,7 @@ theorem gram_eq (w : D.what₂.Word) (i j : Fin (D.R.rS + 1)) :
       simp [Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Apply `X.ιE.injective` to reduce the goal to its premises. Rewrite using `[gram_eq]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gram_eq' (w : D.what₂.Word) (i j : Fin (D.R.rS + 1)) :
     gramE X.B.I.cm.sig X.B.I.J (F0 (frameOf X w)) i j =
@@ -96,9 +96,9 @@ theorem gram_eq' (w : D.what₂.Word) (i j : Fin (D.R.rS + 1)) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `TFv`. Simplify using `only [Matrix.map_apply, gram_eq']`. Use `split_ifs with h`. Rewrite using `[VolTU.sc_mul]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[VolUTr.TrW.sc_eq, map_sub, map_natCast, map_natCast, map_neg, map_neg, map_natCast, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[sub_self, zero_mul, VolUTr.TrW.sc_eq, map_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tf_diff (u u' : D.what₂.Word) (v : PlX X) (g : ℕ) (i j : Fin (D.R.rS + 1)) :
     (TFv X u' v i j - TFv X u v i j) * sc (E := X.B.I.E) v (g : Fv X.B.I.F v)⁻¹ =
@@ -115,7 +115,7 @@ theorem tf_diff (u u' : D.what₂.Word) (v : PlX X) (g : ℕ) (i j : Fin (D.R.rS
   · rw [sub_self, zero_mul, VolUTr.TrW.sc_eq, map_zero]
 
 /- English proof (translation)
-Simplify using `[sigR, sc, Algebra.TensorProduct.map_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_sc (v : PlX X) (x : Fv X.B.I.F v) :
     sigR (Fv X.B.I.F v) X.B.I.cm.sig (sc (E := X.B.I.E) v x) = sc (E := X.B.I.E) v x := by
@@ -124,13 +124,13 @@ theorem sigR_sc (v : PlX X) (x : Fv X.B.I.F v) :
 end VolUF
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `tCongX X u u' ⟨v, hv⟩`. Establish `hg0 : (gAt X v : Fv X.B.I.F v) ≠ 0` using `VolTU.natCast_ne_zero v (gAt_prime X v).ne_zero`. Establish `hk : ((((D.mem u).A.T : ℕ) : Fv X.B.I.F v) - (((D.mem u').A.T : ℕ) : Fv X.B.I.F v)) * (gAt X v : Fv X.B.I.F v)⁻¹ = (m : Fv X.B.I.F v)`. Establish `hm' : ((((D.mem u).A.T : ℕ) : ℤ) : Fv X.B.I.F v) - ((((D.mem u').A.T : ℕ) : ℤ) : Fv X.B.I.F v) = ((gAt X v : ℤ) : Fv X.B.I.F v) * (m : Fv X.B.I.F v)`. Rewrite using `[← Int.cast_sub, ← Int.cast_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ hm`. Move the coercions through the operations in `at hm'`. Rewrite using `[hm', mul_comm, ← mul_assoc, inv_mul_cancel₀ hg0, one_mul]`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[VolUF.tf_diff, VolUF.tf_diff, VolUF.sigR_sc]`. Use `congr 1`. Simplify using `only [and_comm]`. Simplify using `only`. Rewrite using `[VolUF.tf_diff]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Rewrite using `[hk, VolUTr.TrW.sc_eq]`. Conclude with `VolUTr.TrW.alg_mem v (_root_.intCast_mem _ m)`. Rewrite using `[VolUTr.TrW.sc_eq, map_zero]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volTTFCong_of {D : D7} (X : HidaSetting D) (u u' : D.what₂.Word) (v : PlX X) (hv : TypAt X v) :
     VolTTFCong X u u' v := by

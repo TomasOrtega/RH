@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.AmpleNefSmall
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `Opens.mem_iSup.1 hx`. Use `Opens.mem_iSup.2 ⟨fun _ => i, ?_⟩` and prove the remaining obligations. Use `show x ∈ X.basicOpen (resG X (Cartier.lbPow_U L 1 (fun _ => i)).le (s.f i) ^ 1)`. Rewrite using `[pow_one]`. Unfold `resG`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.basicOpen_res]`. Conclude with `⟨(Cartier.lbPow_U L 1 (fun _ => i)).ge (X.basicOpen_le _ hi), hi⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_nonzeroLocus_secPow_one {X : Scheme.{0}} {L : LB X} (s : L.Sec) {x : X}
     (hx : x ∈ Out.nonzeroLocus s) : x ∈ Out.nonzeroLocus (Cartier.secPow s 1) := by
@@ -39,21 +39,21 @@ namespace GlobalTheory.AmpleNefSmall
 open ProjSpace in
 
 /- English proof (translation)
-Introduce `hAr k _ X _ p D hX`. Take `⟨N, j, hj, hjp⟩` from `hX.isProjOver`. Use `hj` as an intermediate fact. Use `hX.finite` as an intermediate fact. Use `isProper_str k N` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper p` using `hjp ▸ inferInstance`. Set `B : LB X` to `(O1 k N).pull j`. Establish `hB : B.IsLB` using `LB.isLB_pull (O1_isLB k N) j`. Set `c : Fin (N + 1) → B.Sec` to `fun a => Cartier.secPull (coord k N a) j`. Establish `hc : ⨆ a, Out.nonzeroLocus (c a) = ⊤`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `Opens.mem_iSup.1 ((iSup_nonzeroLocus_coord k N).ge (Opens.mem_top (j x)))`. Use `Opens.mem_iSup.2 ⟨a, ?_⟩` and prove the remaining obligations. Use `show x ∈ Out.nonzeroLocus (Cartier.secPull (coord k N a) j)`. Rewrite using `[Cartier.nonzeroLocus_secPull]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `ha`. Set `A₀ : HermLB p` to `HermLB.fs p hB c hc (fun _ => 1) (fun _ => by simp) fun _ => ⟨1, one_mem _, by rw [mul_one, Matrix.map_one _ (map_zero _) (map_one _)]⟩`. Establish `hA : IsAmpleLB A₀.B` using `(isAmple_projective_O_one k N).pull_of_isClosedImmersion j`. Establish `hsmall : ∀ a, c a ∈ A₀.smallSec`. Introduce `a σ y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e (a) : Weight.combVal p σ c 1 a = secVal _ σ (c a)`. Simplify using `[Weight.combVal, Matrix.one_apply]`. Use `le_of_le_of_eq ?_ (Weight.sum_nsq_fs (hB := hB) (he := fun a => e a ▸ secVal_mem _) (h := Weight.noCommonZero_combVal hc (M := 1) (by simp)) y)` and prove the remaining obligations. Conclude with `le_of_eq_of_le (congrArg (Weight.nsq _ · y) (e a).symm) (Finset.single_le_sum (fun b _ => Weight.nsq_nonneg _ _ y) (Finset.mem_univ a))`. Establish `hgen : ∀ x : X, CharZero (X.residueField x) → ∃ i, x ∈ Out.nonzeroLocus (Cartier.secPow (c i) 1 : (A₀.pow 1).B.Sec)` using `fun x _ =>`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `⟨a, ha⟩` using `Opens.mem_iSup.1 (hc.ge (Opens.mem_top x))`. Use the proof step `⟨a, mem_nonzeroLocus_secPow_one _ ha⟩`. Take `⟨t, ht, hnef⟩` from `GlobalTheory.NefOfGen.nef_of_gen hAr k X p D hX A₀ 1 (N + 1) (fun i => Cartier.secPow (c i) 1) le_rfl hgen (HermLB.semiPos_fs hB c hc _ _ _) (ProjModel.nefFib_of_isAmpleLB A₀ hA)`. Use `⟨A₀.shift (fun _ => t) fun _ => rfl, hA, hnef, ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `Opens.mem_iSup.1 (hc.ge (Opens.mem_top (genericPoint X)))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨c a, fun σ y => ?_, fun h0 => ?_⟩` and prove the remaining obligations. Use `le_of_eq_of_le (HermLB.nsq_shift A₀ (fun _ => t) (fun _ => rfl) (secVal p σ (c a)) y) ?_` and prove the remaining obligations. Establish `h1` using `hsmall a σ y`. Establish `h2 : Real.exp (-(2 * t)) ≤ 1` using `Real.exp_le_one_iff.2 (by linarith)`. Establish `h3` using `Weight.nsq_nonneg (A₀.φ σ) (secVal p σ (c a)) y`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `e : c a = (0 : B.Sec)` using `h0`. Rewrite `ha` using `[e]`. Simplify using `[Out.nonzeroLocus] at ha`.
+A detailed English derivation is pending.
 -/
 theorem exists_ample_nef_smallSec : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0})
     [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D →

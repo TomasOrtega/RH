@@ -20,13 +20,11 @@ open Formalism.UG
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.AutFunCompare.map_tensNU_self _ _ (singleFin_mul v) (evalV_singleFin_self v) y`. Use `set Y := GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU (singleFin v) (singleFin_mul v) y with hY`. Establish `h2 : ∀ u : HeightOneSpectrum (𝓞 E), finAdEquiv F E Y u ∈ Ov E u` using `fun u => by`. Distinguish the cases in `e : u.under (𝓞 F) = v`. Rewrite using `[finAdEquiv_apply e, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy u e`. Rewrite using `[finAdEquiv_apply rfl, GlobalTheory.AutFunCompare.map_tensNU_zero _ _ _ (evalV_singleFin_ne e), map_zero]`. Conclude with `zero_mem _`. Set `c` to `(Algebra.TensorProduct.comm F E (Af F)).toRingEquiv`. Establish `hι : ∀ x a, ((toFinAd F E).comp c.toRingHom) (x ⊗ₜ[F] a) = algebraMap E _ x * GlobalTheory.AdeleBaseChange.adMap F E a` using `fun x a => (toFinAd_tmul a x).trans (mul_comm _ _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `GlobalTheory.AdeleBaseChange.mem_int_of_map hι (y := c.symm Y) fun u => by`. Express the relevant statement in the definitionally equal form `finAdEquiv F E (c (c.symm Y)) u ∈ _`. Rewrite using `[c.apply_symm_apply]`. Conclude with `h2 u`. Take `⟨m, g, hg⟩` from `Module.Finite.exists_fin (R := ℤ) (M := 𝓞 E)`.
-
-Take `⟨r, hr, e⟩` from `P.levelaf_decomp g hg h4`. Rewrite using `[← h1, ← c.apply_symm_apply Y, e, map_sum, map_sum]`. Conclude with `sum_mem fun j _ => tmul_mem_intLoc (hr j v) (g j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_intLoc_of_toCompl {v : HeightOneSpectrum (𝓞 F)} (y : Fv F v ⊗[F] E)
     (hy : ∀ (w : HeightOneSpectrum (𝓞 E)) (h : w.under (𝓞 F) = v), toCompl h y ∈ Ov E w) : y ∈ intLoc F E v := by
@@ -50,7 +48,7 @@ theorem mem_intLoc_of_toCompl {v : HeightOneSpectrum (𝓞 F)} (y : Fv F v ⊗[F
   exact sum_mem fun j _ => tmul_mem_intLoc (hr j v) (g j)
 
 /- English proof (translation)
-Rewrite using `[← compW_apply]`. Express the relevant statement in the definitionally equal form `_ ∈ w.adicCompletionIntegers E ↔ _`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, valued_compW, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem toCompl_mem_Ov_iff {v : Pl F} (m : idelesAt E (evFin F v)) {w : HeightOneSpectrum (𝓞 E)}
     (hw : w.under (𝓞 F) = v) : toCompl hw (compFin F E v (m.1 : AE F E)) ∈ Ov E w ↔ 0 ≤ ordW hw m := by
@@ -60,20 +58,18 @@ theorem toCompl_mem_Ov_iff {v : Pl F} (m : idelesAt E (evFin F v)) {w : HeightOn
   omega
 
 /- English proof (translation)
-The claim follows from `congrFun (ordV_inv v m) ⟨w, mem_aboveF.2 hw⟩`.
+A detailed English derivation is pending.
 -/
 theorem ordW_inv {v : Pl F} (m : idelesAt E (evFin F v)) {w : HeightOneSpectrum (𝓞 E)}
     (hw : w.under (𝓞 F) = v) : ordW hw m⁻¹ = -ordW hw m :=
   congrFun (ordV_inv v m) ⟨w, mem_aboveF.2 hw⟩
 
 /- English proof (translation)
-Rewrite using `[mem_unitsAt]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h1, h2⟩`. Use function extensionality and compare the values at `⟨w, hw⟩`. Establish `a` using `(toCompl_mem_Ov_iff l (mem_aboveF.1 hw)).1 (InertChart.toCompl_mem _ h1)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `b` using `(toCompl_mem_Ov_iff l⁻¹ (mem_aboveF.1 hw)).1 (InertChart.toCompl_mem _ h2)`. Rewrite `b` using `[ordW_inv]`. Express the relevant statement in the definitionally equal form `ordW (mem_aboveF.1 hw) l = 0`. Use linear arithmetic over natural numbers and integers. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : ∀ (w : HeightOneSpectrum (𝓞 E)) (hw : w.under (𝓞 F) = v), ordW hw l = 0` using `fun w hw => congrFun h ⟨w, mem_aboveF.2 hw⟩`. Use `⟨l.2, mem_intLoc_of_toCompl _ fun w hw => ?_, mem_intLoc_of_toCompl _ fun w hw => ?_⟩` and prove the remaining obligations. Conclude with `(toCompl_mem_Ov_iff l hw).2 (h0 w hw).ge`. Use `(toCompl_mem_Ov_iff l⁻¹ hw).2 ?_` and prove the remaining obligations. Rewrite using `[ordW_inv, h0 w hw]`.
-
-Conclude with `le_refl _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_unitsAt_iff_ordV_eq_zero (v : Pl F) (l : idelesAt E (evFin F v)) :
     l.1 ∈ unitsAt E v ↔ ordV v l = 0 := by

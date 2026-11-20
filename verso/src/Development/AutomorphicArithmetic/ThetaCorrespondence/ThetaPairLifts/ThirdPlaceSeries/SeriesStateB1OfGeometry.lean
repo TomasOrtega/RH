@@ -20,7 +20,7 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 4000000
 namespace GlobalTheory.HeightCounting.SerCopy
 /- English proof (translation)
-Take `rfl : kKs = n.kKs` from `RingHom.ext fun y => Subtype.ext ((hk y).trans (n.hk y).symm)`. Substitute `e1 e2 e3 e5 e6` using the available equality. Consider the cases of `e4`. Conclude with `⟨{ Bs := Bs, Sb_le := h1, rootsOfUnityRing_le_wittIntegers := h2, lam := ⟨ser.lam, ser.lam_ok, ser.lam_teich, ser.lam_C, ser.lam_q, ser.lam_tie⟩ YS := YS, eF := eF, fi := fi, ser := ser, tau := tau }⟩`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 -/
 theorem series_state_b1_of_geometry_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
     {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {C : Formalism.L2.Pj.CoreJ D} [Algebra C.Q.c.F D.what₂.LL] {R : RealDat3 D A3 C.Q.c.F}
@@ -41,7 +41,7 @@ theorem series_state_b1_of_geometry_alt {hL : _root_.UpperTheory.Zero.LLC.RecTEx
            YS := YS, eF := eF, fi := fi, ser := ser, tau := tau }⟩
 variable {K : Ctx} {B : GlobalTheory.Mem.Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w}
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, -⟩` from `_root_.GlobalTheory.T.isChoice_of_start_of_over hL hK hS x l.toLA`. Take `⟨Bs, hτ⟩` from `sideB_tau_congr h4.symm rfl rfl HEq.rfl hB`. Conclude with `⟨h4, l.rat.kKs, l.rat.hk, l.rat.In.hL, HEq.rfl, Bs, x.r.Y.hF, hτ, GlobalTheory.T.exists_newThetaData_series_classSums_lattices hA (Dof x) _ _ _ _ _ _ x.m.z.R x.m.z.F x.m.z.cG l.rat.kKs l.rat.hk _ _ _ _ _ Bs l.rat.In.Sb x.m.z.geo.v₀ x.r.Y.hF x.m.z.pins x.m.intersectionNumber_baseC …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pre_at_of_side_b_tau_true_lam_ok (hA : GlobalTheory.Published.GlobalArtinReciprocity) {hL : _root_.UpperTheory.Zero.LLC.RecTExists} (hK : K.Over B.toPre)
     (hS : Start K B f T w) (x : St P) (l : _root_.GlobalTheory.HeightCounting.Up.IntermediateLevel hL x)
@@ -55,11 +55,11 @@ theorem pre_at_of_side_b_tau_true_lam_ok (hA : GlobalTheory.Published.GlobalArti
       x.m.z.pins x.m.intersectionNumber_baseChange (fun j => x.m.z.geo.fw.hv₀ j _) x.m.z.geo.fw.ks l.rat.rat.hecke hSb hτ (h4 ▸ l.a.A.chr) (h4 ▸ l.a.val)
       l.a.elem.split l.Pq_over h1 h2 hZ h3⟩
 /- English proof (translation)
-Take `⟨x', l', ho, -, hrow, hPq, hS', hSb', hhL, heig, hθ, hR, hcG, hgeo⟩` from `_root_.GlobalTheory.T.twisted_state_transport_heq_levels' hL x l N`. Take `⟨o', fits', G_eq', etaF', bk', m', copy', coh', s', r', pin'⟩` from `x'`. Simplify using `only at ho`. Substitute `ho` using the available equality. Establish `hz : m'.z = datTw x N` using `moved_eq_datTw x N m' copy' hR hcG hgeo`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `e1 : l'.a.A.row = (by with_unfolding_all exact ((N.row l.a.A.row) :))` using `(by with_unfolding_all exact ((eq_of_heq hrow) :))`. Establish `e2 : l'.Pq = (by with_unfolding_all exact (l.Pq :))` using `(by with_unfolding_all exact ((eq_of_heq hPq) :))`. Establish `e3 : l'.rat.S = (by with_unfolding_all exact ((N.rat l.rat.S) :))` using `(by with_unfolding_all exact ((eq_of_heq hS') :))`. Establish `e4 : l'.rat.In.Sb = (by with_unfolding_all exact (l.rat.In.Sb :))` using `(by with_unfolding_all exact ((eq_of_heq hSb') :))`. Establish `e5 : l'.rat.In.eig = (by with_unfolding_all exact (l.rat.In.eig :))` using `(by with_unfolding_all exact ((eq_of_heq heig) :))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e6 : l'.rat.In.θ = (by with_unfolding_all exact (l.rat.In.θ :))` using `(by with_unfolding_all exact ((eq_of_heq hθ) :))`. Establish `h` using `_root_.GlobalTheory.HeightCounting.SerCopy.pre_at_of_side_b_tau_true_lam_ok hA hK hS _ l' (by rewrite [e1, e5, e6]`. Conclude with `sideB_tau_congr rfl e2.symm e3.symm hhL.symm ((by with_unfolding_all exact (hB :)))) (by rewrite [e4]; exact (by with_unfolding_all exact (hSb :))) ((by with_unfolding_all exact (hZ :)))`. Conclude with `preAt_congr hz e1 e2 hhL e5 e6 h`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pre_at_twisted_copy_of_side_b_tau_true (hA : GlobalTheory.Published.GlobalArtinReciprocity) {hL : _root_.UpperTheory.Zero.LLC.RecTExists} (hK : K.Over B.toPre)
     (hS : Start K B f T w) (x : St P) (l : _root_.GlobalTheory.HeightCounting.Up.IntermediateLevel hL x) (N : TwNew (Dof x))
@@ -90,7 +90,7 @@ variable {x : St P} {N₁ : TwNew (Dof x)} {kKs : (datTw x N₁).core.Q.c.F →+
   {Bs : SideB (DN x N₁) cf Rw (lowAll (DN x N₁)) Pq (ratDatR (datTw x N₁).R (datTw x N₁).cG kKs hk) hf eig θ} {hF}
   (p : PreTie (ysOf Bs) (datTw x N₁).geo.v₀ Bs.exp hF Pq)
 /- English proof (translation)
-Substitute `hz` using the available equality. Take `⟨Z, z1, z2, z3, z4, z5⟩` from `hZ`. Establish `e1 : ((by with_unfolding_all exact (((kwP p).cf cf) :)) : CharFrame (DN x (nP p))) = TC.cf w.I w.l (oTw x (nP p)).Z` using `(by with_unfolding_all exact ((congrArg (kwP p).cf hC) :))`. Conclude with `_root_.GlobalTheory.HeightCounting.SerCopy.series_state_b1_of_geometry_alt _ a n PV (bsP p) (ysP p) ((by with_unfolding_all exact ((Eq.refl Bs.eF) :))) ((by with_unfolding_all exact ((ysOf_fi Bs) :))) ((by with_unfolding_all exact ((serP p hu ho Bs.bsup PV hPV Z ⟨z1, z2, z3.trans …`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem series_state_b1_twist_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} (hτ : TauTrue Bs.exp) (hC : cf = TC.cf w.I w.l (oTw x N₁).Z)
     (hu : GlobalTheory.UnivChar.IsUnivChar (DN x N₁).nexp) (ho : NoOff (DN x N₁))

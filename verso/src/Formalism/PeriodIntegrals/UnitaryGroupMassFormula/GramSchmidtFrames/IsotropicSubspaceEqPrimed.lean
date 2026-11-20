@@ -76,7 +76,7 @@ def GfLocal : Prop :=
           (Fl g).1 ∈ UWset k r z ∧ (Fl g).2 ∈ UWset k r z' ∧ (Fl g).1 * g * (Fl g).2 ∈ gfSig D0
 
 /- English proof (translation)
-Introduce `k r z z' hk hr hz hz'`. Take `⟨D0⟩` from `hB k r z z' hk hr hz hz'`. Conclude with `⟨gfSig D0, hS k r z z' hk hr hz hz' D0, hT k r z z' hk hr hz hz' D0, hL k r z z' hk hr hz hz' D0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gsSliceP_of_gf (hB : GfBase) (hS : GfSat) (hT : GfStab) (hL : GfLocal) : GsSliceP := by
   intro k r z z' hk hr hz hz'
@@ -84,13 +84,13 @@ theorem gsSliceP_of_gf (hB : GfBase) (hS : GfSat) (hT : GfStab) (hL : GfLocal) :
   exact ⟨gfSig D0, hS k r z z' hk hr hz hz' D0, hT k r z z' hk hr hz hz' D0, hL k r z z' hk hr hz hz' D0⟩
 
 /- English proof (translation)
-The claim follows from `gramSlice_of_slice (gsSliceP_of_gf hB hS hT hL)`.
+A detailed English derivation is pending.
 -/
 theorem gramSlice_of_gf (hB : GfBase) (hS : GfSat) (hT : GfStab) (hL : GfLocal) : GramSlice :=
   gramSlice_of_slice (gsSliceP_of_gf hB hS hT hL)
 
 /- English proof (translation)
-The claim follows from `gsFrames_of_slice (gsSliceP_of_gf hB hS hT hL)`.
+A detailed English derivation is pending.
 -/
 theorem gsFrames_of_gf (hB : GfBase) (hS : GfSat) (hT : GfStab) (hL : GfLocal) : GsFrames :=
   gsFrames_of_slice (gsSliceP_of_gf hB hS hT hL)

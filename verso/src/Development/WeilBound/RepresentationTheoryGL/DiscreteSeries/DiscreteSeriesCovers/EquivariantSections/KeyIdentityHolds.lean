@@ -13,7 +13,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KeyPropositionO
 namespace PositivityTheory.RgDs.K
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.key_proposition_of_components GlobalTheory.T.low_degree_algebra_facts GlobalTheory.T.holomorphic_function_facts (PositivityTheory.RgDs.K.equivariant_section_holds) (PositivityTheory.RgDs.K.rho_representation_holds) GlobalTheory.T.action_equivariance_statement Globa …`.
+A detailed English derivation is pending.
 -/
 theorem key_identity_holds : PositivityTheory.RgDs.Key :=
   GlobalTheory.T.key_proposition_of_components GlobalTheory.T.low_degree_algebra_facts GlobalTheory.T.holomorphic_function_facts (PositivityTheory.RgDs.K.equivariant_section_holds) (PositivityTheory.RgDs.K.rho_representation_holds) GlobalTheory.T.action_equivariance_statement GlobalTheory.T.torus_restriction_representation

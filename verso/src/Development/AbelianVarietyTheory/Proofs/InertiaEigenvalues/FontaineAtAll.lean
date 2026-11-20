@@ -13,19 +13,19 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory.FontaineAll
 
 /- English proof (translation)
-Set `f : V₀ × V₂ →ₗ[L] V₁` to `ι.coprod s`. Establish `hf : ∀ a b, f (a, b) = ι a + s b` using `fun a b => rfl`. Establish `hπι : ∀ a, π (ι a) = 0` using `fun a => by`. Establish `: ι a ∈ LinearMap.ker π` using `hk ▸ LinearMap.mem_range_self ι a`. Conclude with `this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbij : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨a, b⟩ h`. Rewrite `h` using `[hf]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : b = 0`. Use `congrArg π h` as an intermediate fact. Rewrite `this` using `[map_add, hπι, hps, zero_add, map_zero]`. Then use the resulting hypothesis. Substitute `hb` using the available equality. Rewrite `h` using `[map_zero, add_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ha : a = 0` using `hi (by rw [h, map_zero])`. Rewrite using `[ha]`. Both sides reduce to the same expression. Introduce `z`. Establish `hz : z - s (π z) ∈ LinearMap.range ι`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, LinearMap.mem_ker, map_sub, hps, sub_self]`. Take `⟨a, ha⟩` from `hz`. Conclude with `⟨(a, π z), by rw [hf, ha, sub_add_cancel]⟩`. Set `e` to `(LinearEquiv.ofBijective f hbij).symm`. Use `⟨e, fun g v => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(LinearEquiv.ofBijective f hbij).injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `f (e (ρ₁ g v)) = f (ρ₀ g (e v).1, ρ₂ g (e v).2)`. Establish `h1 : ∀ w, f (e w) = w` using `fun w => (LinearEquiv.ofBijective f hbij).apply_symm_apply w`. Rewrite using `[h1, hf, hι, hs, ← map_add, ← hf]`. Establish `: ((e v).1, (e v).2) = e v` using `rfl`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, h1]`.
+A detailed English derivation is pending.
 -/
 theorem split_equiv {G L V₀ V₁ V₂ : Type} [Group G] [Field L] [AddCommGroup V₀] [Module L V₀]
     [AddCommGroup V₁] [Module L V₁] [AddCommGroup V₂] [Module L V₂]
@@ -66,15 +66,13 @@ theorem split_equiv {G L V₀ V₁ V₂ : Type} [Group G] [Field L] [AddCommGrou
   rw [this, h1]
 
 /- English proof (translation)
-Introduce `D l _ K LL`. Establish `T` using `D.locT l`. Unfold `Formalism.MainNotions.TruncatedSeriesCountingIdentities.FontaineAt`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `A₀ A₁ A₂ ι π hι hπ hi hs hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h1`. Establish `c0` using `(GlobalTheory.Per.CrysSubQuot.crys_sub_quot l (D.loc l) (D.locA l) T K LL A₀.V A₀.ρ A₁.V A₁.ρ ι hι).1 hi h1`. Establish `c2` using `((GlobalTheory.Per.CrysSubQuot.crys_sub_quot l (D.loc l) (D.locA l) T K LL A₁.V A₁.ρ A₂.V A₂.ρ π hπ).2 hs h1).1`. Establish `d1` using `(GlobalTheory.Per.CrisDR.isDR_of_isCrys l (D.loc l) (D.locA l) T K LL A₁.V A₁.ρ h1).1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, hm⟩` from `GlobalTheory.Per.ExactMult.exact_hodge_add l (D.loc l) (D.locA l) T K LL A₀.V A₀.ρ A₁.V A₁.ρ A₂.V A₂.ρ ι π hι hπ hi hs hk d1`. Conclude with `⟨c0, c2, fun τ a => (hm τ a).2.1⟩`. Introduce and unpack `⟨s, hs', hps⟩ h0 h2`. Take `⟨e, he⟩` from `split_equiv A₀.ρ A₁.ρ A₂.ρ ι π hι hi hk s hs' hps`. Conclude with `((GlobalTheory.Per.DirectSumHT.directSum_hodgeTate l (D.loc l) (D.locA l) T K LL A₁.V A₁.ρ A₀.V A₀.ρ A₂.V A₂.ρ e he).2.1).2 ⟨h0, h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `A A' χ htw hχ hA`. Conclude with `GlobalTheory.TwistRepCrys.isCrys_and_multV_twist l (D.loc l) (D.locA l) T K LL A.V A.ρ A'.V A'.ρ χ htw hχ hA`. Introduce `A A' P hD hA`. Conclude with `GlobalTheory.DualOne.isCrys_of_isDual1 l (D.loc l) (D.locA l) T K LL A.V A.ρ A'.V A'.ρ P hD hA`. Introduce `A hA`.
-
-Conclude with `(GlobalTheory.Per.CrisDR.isDR_of_isCrys l (D.loc l) (D.locA l) T K LL A.V A.ρ hA).1`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fontaineAt_all : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K LL : FinExt l),
     Formalism.MainNotions.TruncatedSeriesCountingIdentities.FontaineAt ((D.loc l).PD K) ↥LL.1 ↥(OL LL) := by

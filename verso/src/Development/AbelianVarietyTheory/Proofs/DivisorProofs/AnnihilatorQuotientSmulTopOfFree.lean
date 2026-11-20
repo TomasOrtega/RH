@@ -8,7 +8,7 @@ open IsLocalRing RingTheory.Sequence Pointwise
 namespace GlobalTheory.AnnRegSeq
 
 /- English proof (translation)
-Establish `hF : IsField B` using `IsLocalRing.isField_iff_maximalIdeal_eq.mpr hm`. Use `letI := hF.toField`. Conclude with `Module.Free.of_divisionRing B M`.
+Establish an intermediate fact. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem free_of_maximalIdeal_eq_bot {B M : Type} [CommRing B] [IsLocalRing B] [AddCommGroup M]
     [Module B M] (hm : maximalIdeal B = ⊥) : Module.Free B M := by
@@ -17,7 +17,7 @@ theorem free_of_maximalIdeal_eq_bot {B M : Type} [CommRing B] [IsLocalRing B] [A
   exact Module.Free.of_divisionRing B M
 
 /- English proof (translation)
-The claim follows from `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (maximalIdeal B) (maximalIdeal B) (maximalIdeal B).fg_of_isNoetherianRing (by rwa [smul_eq_mul, ← pow_two]) (maximalIdeal_le_jacobson ⊥)`.
+A detailed English derivation is pending.
 -/
 theorem maximalIdeal_eq_bot_of_le_sq {B : Type} [CommRing B] [IsLocalRing B] [IsNoetherianRing B]
     (h : maximalIdeal B ≤ maximalIdeal B ^ 2) : maximalIdeal B = ⊥ :=
@@ -26,13 +26,11 @@ theorem maximalIdeal_eq_bot_of_le_sq {B : Type} [CommRing B] [IsLocalRing B] [Is
     (maximalIdeal_le_jacobson ⊥)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hsub : ((maximalIdeal B : Ideal B) : Set B) ⊆ ⋃ p ∈ insert (maximalIdeal B ^ 2) (associatedPrimes B M), (id p : Set B)`. Introduce `z hz`. Rewrite using `[Set.biUnion_insert]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : z ∈ maximalIdeal B ^ 2`. Conclude with `Or.inl h2`. Use `right`. Establish `: z ∈ ({r : B | IsSMulRegular M r}ᶜ)` using `hcon z hz h2`. Rewrite `this` using `[← biUnion_associatedPrimes_eq_compl_regular B M]`. Then use the resulting hypothesis.
+Prove the first alternative. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨p, hp, hle⟩` from `(Ideal.subset_union_prime_finite ((associatedPrimes.finite B M).insert _) (f := id) (maximalIdeal B ^ 2) (maximalIdeal B ^ 2) (fun i hi h1 _ => by`. Break down `hi with rfl | hi` into its components or cases. Conclude with `absurd rfl h1`. Conclude with `hi.isPrime)).mp hsub`. Break down `hp with rfl | hp` into its components or cases.
-
-Conclude with `hsq hle`. Establish `: p = maximalIdeal B` using `le_antisymm (le_maximalIdeal hp.isPrime.ne_top) hle`. Conclude with `hass (this ▸ hp)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isSMulRegular_notMem_sq {B M : Type} [CommRing B] [IsLocalRing B]
     [IsNoetherianRing B] [AddCommGroup M] [Module B M] [Module.Finite B M]
@@ -60,27 +58,21 @@ theorem exists_isSMulRegular_notMem_sq {B M : Type} [CommRing B] [IsLocalRing B]
     exact hass (this ▸ hp)
 
 /- English proof (translation)
-Use `set I : Ideal B := Ideal.span {x} with hI`. Use `set P : Submodule B M := I • ⊤ with hP`. Establish `hIj : I ≤ (⊥ : Ideal B).jacobson`. Rewrite using `[hI, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `maximalIdeal_le_jacobson _ hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : IsLocalRing (B ⧸ I) := ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.isLocalRing_quotient_span_singleton hx`. Use `haveI : Module.Finite (B ⧸ I) (M ⧸ P) := Module.Finite.of_restrictScalars_finite B _ _`. Set `b` to `Module.finBasis (B ⧸ I) (M ⧸ P)`. Use `set r := Module.finrank (B ⧸ I) (M ⧸ P)`. Use `choose v hv using fun i => Submodule.Quotient.mk_surjective P (b i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Set `φ : (Fin r → B) →ₗ[B] M` to `Fintype.linearCombination B v`. Establish `hφ : ∀ c, φ c = ∑ i, c i • v i` using `fun c => by simp [φ, Fintype.linearCombination_apply]`. Establish `hmk : ∀ c : Fin r → B, (Submodule.Quotient.mk (φ c) : M ⧸ P) = ∑ i, Ideal.Quotient.mk I (c i) • b i`. Introduce `c`. Rewrite using `[hφ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `Submodule.mkQ P (∑ i, c i • v i) = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_smul, hv i, ← Ideal.Quotient.algebraMap_eq, algebraMap_smul]`. Establish `hsurj : LinearMap.range φ = ⊤`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `top_le_iff.mp (Submodule.le_of_le_smul_of_le_jacobson_bot Module.Finite.fg_top hIj ?_)` and prove the remaining obligations. Introduce `m _`. Use `choose c' hc' using fun i => Ideal.Quotient.mk_surjective (b.repr (Submodule.Quotient.mk m) i)`. Establish `h1 : (Submodule.Quotient.mk (φ c') : M ⧸ P) = Submodule.Quotient.mk m`. Rewrite using `[hmk]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hc']`. Conclude with `b.sum_repr _`. Rewrite `h1` using `[Submodule.Quotient.eq]`. Establish `h2 : m = φ c' - (φ c' - m)` using `by abel`. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_left ⟨c', rfl⟩) (Submodule.mem_sup_right h1)`. Establish `hker : LinearMap.ker φ = ⊥`. Use `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot I _ (IsNoetherian.noetherian _) ?_ hIj` and prove the remaining obligations. Introduce `k hk`. Rewrite `hk` using `[LinearMap.mem_ker]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h0 : ∑ i, Ideal.Quotient.mk I (k i) • b i = 0`. Rewrite using `[← hmk, hk]`. Both sides reduce to the same expression. Establish `hki : ∀ i, k i ∈ I` using `fun i => Ideal.Quotient.eq_zero_iff_mem.mp ((Fintype.linearIndependent_iff.mp b.linearIndependent) _ h0 i)`. Use `choose k' hk' using fun i => Ideal.mem_span_singleton'.mp (hki i)`.
-
-Establish `hkx : k = x • k'`. Use extensionality with `i`. Simplify using `[← hk' i, mul_comm]`. Establish `hk'ker : k' ∈ LinearMap.ker φ`. Rewrite using `[LinearMap.mem_ker]`.
-
-Apply `reg` to reduce the goal to its premises. Use `show x • φ k' = x • 0`. Rewrite using `[smul_zero, ← map_smul, ← hkx, hk]`. Rewrite using `[hkx]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self x) hk'ker`.
-
-Conclude with `Module.Free.of_equiv (LinearEquiv.ofBijective φ ⟨LinearMap.ker_eq_bot.mp hker, LinearMap.range_eq_top.mp hsurj⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem free_of_free_quotient {B M : Type} [CommRing B] [IsLocalRing B] [IsNoetherianRing B]
     [AddCommGroup M] [Module B M] [Module.Finite B M] {x : B} (hx : x ∈ maximalIdeal B)
@@ -144,19 +136,15 @@ theorem free_of_free_quotient {B M : Type} [CommRing B] [IsLocalRing B] [IsNoeth
     ⟨LinearMap.ker_eq_bot.mp hker, LinearMap.range_eq_top.mp hsurj⟩)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `B _ _ _ M _ _ _ _ hsp`. Conclude with `free_of_maximalIdeal_eq_bot ((Submodule.spanFinrank_eq_zero_iff_eq_bot (maximalIdeal B).fg_of_isNoetherianRing).mp (by omega))`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `B _ _ _ M _ _ _ hd hsp`. Distinguish the cases in `hsq : maximalIdeal B ≤ maximalIdeal B ^ 2`. Conclude with `free_of_maximalIdeal_eq_bot (maximalIdeal_eq_bot_of_le_sq hsq)`. Take `⟨rs, hlen, hmem, hreg⟩` from `hd`. Take `⟨y, ys, rfl⟩` from `List.exists_cons_of_length_eq_add_one hlen`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : y ∈ maximalIdeal B` using `hmem y (by simp)`. Establish `hass` using `ReciprocityTheory.CA.max_not_mem_ass_of_reg hy ((isRegular_cons_iff M y ys).mp hreg).1`. Take `⟨x, hx, hx2, hxreg⟩` from `exists_isSMulRegular_notMem_sq hass hsq`. Establish `hd'` using `ReciprocityTheory.CA.ModDepthGE.quotSMulTop hx hxreg ⟨y :: ys, hlen, hmem, hreg⟩`. Use `haveI : IsLocalRing (B ⧸ Ideal.span {x}) := ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.isLocalRing_quotient_span_singleton hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : Module.Finite (B ⧸ Ideal.span {x}) (M ⧸ Ideal.span {x} • (⊤ : Submodule B M)) := Module.Finite.of_restrictScalars_finite B _ _`. Establish `hsp' : (maximalIdeal (B ⧸ Ideal.span {x})).spanFinrank ≤ n`. Establish `h1` using `ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.spanFinrank_maximalIdeal_quotient_succ_le B hx hx2`. Rewrite `h1` using `[← spanFinrank_maximalIdeal_eq_finrank_cotangentSpace]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd'' : ReciprocityTheory.CA.ModDepthGE (B ⧸ Ideal.span {x}) (M ⧸ Ideal.span {x} • (⊤ : Submodule B M)) n`. Take `⟨zs, hzl, hzm, hzr⟩` from `hd'`. Set `e : QuotSMulTop x M ≃ₗ[B] M ⧸ Ideal.span {x} • (⊤ : Submodule B M)` to `Submodule.quotEquivOfEq _ _ (Submodule.ideal_span_singleton_smul x ⊤).symm`. Use `⟨zs.map (Ideal.Quotient.mk _), by simp [hzl], ?_, ?_⟩` and prove the remaining obligations. Introduce `r hr`.
-
-Take `⟨z, hz, rfl⟩` from `List.mem_map.mp hr`. Conclude with `ReciprocityTheory.CA.mk_mem_maximalIdeal_quot _ (hzm z hz)`. Rewrite using `[← Ideal.Quotient.algebraMap_eq]`. Conclude with `(ReciprocityTheory.CA.isRegular_map_algebraMap_iff' zs).mpr ((e.isRegular_congr zs).mp hzr)`. Use `haveI := ih (B ⧸ Ideal.span {x}) (M ⧸ Ideal.span {x} • (⊤ : Submodule B M)) hd'' hsp'`.
-
-Conclude with `free_of_free_quotient hx hxreg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem free_of_modDepthGE (n : ℕ) : ∀ (B : Type) [CommRing B] [IsLocalRing B] [IsNoetherianRing B]
     (M : Type) [AddCommGroup M] [Module B M] [Module.Finite B M],

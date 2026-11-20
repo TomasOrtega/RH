@@ -10,12 +10,12 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IdempotentTransfer.PerS
 namespace PI.Dv.Tr
 
 /- English proof (translation)
-The claim follows from `degPart_of splitBound perSBound`.
+A detailed English derivation is pending.
 -/
 theorem degPart : DegPart := degPart_of splitBound perSBound
 
 /- English proof (translation)
-The claim follows from `trace_formula_of_rank_degree rankPart degPart muPart`.
+A detailed English derivation is pending.
 -/
 theorem dvTransfer_main : PI.Dv.Conclusion4a := trace_formula_of_rank_degree rankPart degPart muPart
 

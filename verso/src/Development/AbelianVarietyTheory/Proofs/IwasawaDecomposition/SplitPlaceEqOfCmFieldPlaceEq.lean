@@ -14,15 +14,15 @@ open GlobalTheory.TwistChoice (Reading ReadsAt)
 namespace GlobalTheory.SplitByCompl
 
 /- English proof (translation)
-Introduce `L _ _ _ s s' h`. Establish `hv : s.v = s'.v` using `HeightOneSpectrum.ext (by rw [← s'.w_under, ← s.w_under, h])`. Take `⟨v, si⟩` from `s`. Take `⟨v', si'⟩` from `s'`. Simplify using `only at hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Substitute `hv` using the available equality. Take `⟨i, hi, -, hix⟩` from `GlobalTheory.SplitCompl.exists_ringEquiv L ⟨v, si⟩`. Take `⟨i', hi', -, hix'⟩` from `GlobalTheory.SplitCompl.exists_ringEquiv L ⟨v, si'⟩`. Simplify using `only at hix hix'`. Generalize the expression as in `hw : SplitPlace.w ⟨v, si⟩ = w at i hix hi`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `hw' : SplitPlace.w ⟨v, si'⟩ = w' at i' hix' hi'`. Establish `hww : w = w'` using `hw.symm.trans (h.trans hw')`. Substitute `hww` using the available equality. Establish `e : (i' : v.adicCompletion (maximalRealSubfield L) →+* w.adicCompletion L) = i` using `DFunLike.coe_injective ((HeightOneSpectrum.denseRange_algebraMap (maximalRealSubfield L) v).equalizer hi' hi (funext fun y => by`. Establish `h1` using `hix (algebraMap _ L y)`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hix' (algebraMap _ L y)`. Rewrite `h1`, `h2` using `[AlgHom.commutes]`. Conclude with `h2.trans h1.symm))`. Establish `e' : ∀ x, i' x = i x` using `fun x => congrArg (fun f : v.adicCompletion (maximalRealSubfield L) →+* w.adicCompletion L => f x) e`. Establish `hs : si = si'` using `AlgHom.ext fun x => i.injective (by rw [hix, ← e', hix'])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs]`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_w_eq : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (s s' : SplitPlace L),
     s.w = s'.w → s = s' := by

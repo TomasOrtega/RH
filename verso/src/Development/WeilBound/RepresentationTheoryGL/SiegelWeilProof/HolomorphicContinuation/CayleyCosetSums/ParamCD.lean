@@ -18,7 +18,7 @@ structure Good {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (Ω : Set F
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {Ω : Set F} {K : F → X → E}
 
 /- English proof (translation)
-Establish `h` using `(continuousMultilinearCurryFin0 ℝ F E).continuous.comp_continuousOn (hK.cont 0)`. Use `h.congr fun p _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem Good.continuousOn (hK : Good Ω K) : ContinuousOn (fun p : F × X => K p.1 p.2) (Ω ×ˢ univ) := by
   have h := (continuousMultilinearCurryFin0 ℝ F E).continuous.comp_continuousOn (hK.cont 0)
@@ -26,9 +26,9 @@ theorem Good.continuousOn (hK : Good Ω K) : ContinuousOn (fun p : F × X => K p
   simp
 
 /- English proof (translation)
-Use `⟨fun u => ((contDiffOn_infty_iff_fderiv_of_isOpen hΩ).1 (hK.smooth u)).2, fun N => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h : ContinuousOn (fun p : F × X => (continuousMultilinearCurryRightEquiv' ℝ N F E) (iteratedFDeriv ℝ (N + 1) (K · p.2) p.1)) (Ω ×ˢ univ)` using `(LinearIsometryEquiv.continuous _).comp_continuousOn (hK.cont (N + 1))`. Use `h.congr fun p _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[iteratedFDeriv_succ_eq_comp_right]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Take `⟨V, hV, hxV, C, hC, hKV⟩` from `hK.supp x hx`. Use `⟨V, hV, hxV, C, hC, fun x' hx' u hu => ?_⟩` and prove the remaining obligations. Establish `: (K · u) =ᶠ[𝓝 x'] fun _ => 0` using `by filter_upwards [hV.mem_nhds hx'] with y hy using hKV y hy u hu`. Rewrite using `[this.fderiv_eq]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -49,7 +49,7 @@ theorem Good.dK (hΩ : IsOpen Ω) (hK : Good Ω K) : Good Ω (fun x u => fderiv 
     simp
 
 /- English proof (translation)
-Take `⟨V, -, hxV, C, hC, hKV⟩` from `hK.supp x hx`. Establish `hc : Continuous (K x)`. Use `hK.continuousOn` as an intermediate fact. Conclude with `this.comp_continuous (Continuous.prodMk continuous_const continuous_id) (fun u => ⟨hx, mem_univ _⟩)`. Conclude with `hc.integrable_of_hasCompactSupport (HasCompactSupport.intro hC fun u hu => hKV x hxV u hu)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Good.integrable (hK : Good Ω K) (ν : Measure X) [IsFiniteMeasureOnCompacts ν] {x : F} (hx : x ∈ Ω) :
     Integrable (K x) ν := by
@@ -60,17 +60,15 @@ theorem Good.integrable (hK : Good Ω K) (ν : Measure X) [IsFiniteMeasureOnComp
   exact hc.integrable_of_hasCompactSupport (HasCompactSupport.intro hC fun u hu => hKV x hxV u hu)
 
 /- English proof (translation)
-Take `⟨V, hV, hxV, C, hC, hKV⟩` from `hK.supp x₀ hx₀`. Take `⟨ε, hε, hεs⟩` from `Metric.isOpen_iff.1 (hΩ.inter hV) x₀ ⟨hx₀, hxV⟩`. Establish `hK'` using `hK.dK hΩ`. Establish `hc'` using `hK'.continuousOn`. Establish `hcb : IsCompact (Metric.closedBall x₀ (ε / 2) ×ˢ C)` using `(isCompact_closedBall _ _).prod hC`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : Metric.closedBall x₀ (ε / 2) ×ˢ C ⊆ Ω ×ˢ univ`. Introduce `p hp`. Conclude with `⟨(hεs (Metric.closedBall_subset_ball (by linarith) hp.1)).1, mem_univ _⟩`. Take `⟨M, hM⟩` from `hcb.exists_bound_of_continuousOn (hc'.mono hsub)`. Establish `hcont_u : ∀ x ∈ Ω, Continuous (K x)` using `fun x hx => hK.continuousOn.comp_continuous (Continuous.prodMk continuous_const continuous_id) (fun u => ⟨hx, mem_univ _⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcont'_u : ∀ x ∈ Ω, Continuous (fun u => fderiv ℝ (K · u) x)` using `fun x hx => hc'.comp_continuous (Continuous.prodMk continuous_const continuous_id) (fun u => ⟨hx, mem_univ _⟩)`. Establish `hball : Metric.ball x₀ (ε / 2) ⊆ Ω ∩ V` using `fun y hy => hεs (Metric.ball_subset_ball (by linarith) hy)`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (μ := ν) (F := K) (F' := fun x u => fderiv ℝ (K · u) x) (s := Metric.ball x₀ (ε / 2)) (bound := C.indicator fun _ => M) (Metric.ball_mem_nhds _ (by linarith)) ?_ (hK.integrable ν hx₀) (hcont'_u x₀ hx₀).aestronglyMeasurable ?_ ?_ ?_` and prove the remaining obligations. Use `filter_upwards [hΩ.mem_nhds hx₀] with x hx using (hcont_u x hx).aestronglyMeasurable`. Use `Filter.Eventually.of_forall fun u x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hu : u ∈ C`. Rewrite using `[indicator_of_mem hu]`. Conclude with `hM (x, u) ⟨Metric.ball_subset_closedBall hx, hu⟩`. Rewrite using `[indicator_of_notMem hu]`. Establish `: (K · u) =ᶠ[𝓝 x] fun _ => 0` using `by filter_upwards [hV.mem_nhds (hball hx).2] with y hy using hKV y hy u hu`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this.fderiv_eq]`. Simplify using the standard rewrite rules. Conclude with `(integrableOn_const (C := M) hC.measure_lt_top.ne).integrable_indicator hC.isClosed.measurableSet`. Use `Filter.Eventually.of_forall fun u x hx => ?_` and prove the remaining obligations. Establish `hxΩ` using `(hball hx).1`.
-
-Conclude with `((hK.smooth u).differentiableOn (by simp) x hxΩ).differentiableAt (hΩ.mem_nhds hxΩ) |>.hasFDerivAt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Good.hasFDerivAt [CompleteSpace E] (hΩ : IsOpen Ω) (hK : Good Ω K) (ν : Measure X) [IsFiniteMeasureOnCompacts ν]
     {x₀ : F} (hx₀ : x₀ ∈ Ω) :
@@ -110,11 +108,11 @@ theorem Good.hasFDerivAt [CompleteSpace E] (hΩ : IsOpen Ω) (hK : Good Ω K) (�
 
 omit [NormedSpace ℝ E] in
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Introduce `E' _ _ _ K hK`. Rewrite using `[Nat.cast_zero, contDiffOn_zero]`. Conclude with `fun x hx => (hK.hasFDerivAt hΩ ν hx).continuousAt.continuousWithinAt`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Consider the case `succ N ih`. Introduce `E' _ _ _ K hK`. Rewrite using `[show ((N + 1 : ℕ) : WithTop ℕ∞) = (N : WithTop ℕ∞) + 1 by push_cast; rfl, contDiffOn_succ_iff_fderiv_of_isOpen hΩ]`. Use `⟨fun x hx => (hK.hasFDerivAt hΩ ν hx).differentiableAt.differentiableWithinAt, by simp, ?_⟩` and prove the remaining obligations. Use `(ih (F →L[ℝ] E') _ (hK.dK hΩ)).congr fun x hx => ?_` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hK.hasFDerivAt hΩ ν hx).fderiv`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_nat (hΩ : IsOpen Ω) (ν : Measure X) [IsFiniteMeasureOnCompacts ν] (N : ℕ) :
     ∀ (E' : Type) [NormedAddCommGroup E'] [NormedSpace ℝ E'] [CompleteSpace E'] (K : F → X → E'), Good Ω K →
@@ -133,14 +131,14 @@ theorem contDiffOn_nat (hΩ : IsOpen Ω) (ν : Measure X) [IsFiniteMeasureOnComp
     exact (hK.hasFDerivAt hΩ ν hx).fderiv
 
 /- English proof (translation)
-The claim follows from `contDiffOn_infty.2 fun N => contDiffOn_nat hΩ ν N E K hK`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_integral [CompleteSpace E] (hΩ : IsOpen Ω) (ν : Measure X) [IsFiniteMeasureOnCompacts ν]
     (hK : Good Ω K) : ContDiffOn ℝ ∞ (fun x => ∫ u, K x u ∂ν) Ω :=
   contDiffOn_infty.2 fun N => contDiffOn_nat hΩ ν N E K hK
 
 /- English proof (translation)
-The claim follows from `(hK.hasFDerivAt hΩ ν hx).fderiv`.
+A detailed English derivation is pending.
 -/
 theorem fderiv_integral [CompleteSpace E] (hΩ : IsOpen Ω) (ν : Measure X) [IsFiniteMeasureOnCompacts ν]
     (hK : Good Ω K) {x : F} (hx : x ∈ Ω) :
@@ -154,13 +152,13 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensiona
 
 omit [FiniteDimensional ℝ F] in
 /- English proof (translation)
-Use `set f' : F × V → E := fun p => k (p + (0, w))`. Establish `hS : IsOpen (Ω ×ˢ (univ : Set V))` using `hΩ.prod isOpen_univ`. Establish `hf' : ContDiffOn ℝ ∞ f' (Ω ×ˢ univ)`. Use `hk.comp (contDiffOn_id.add contDiffOn_const) fun p hp => ?_` and prove the remaining obligations. Conclude with `⟨by simpa using hp.1, mem_univ _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hpre : (ContinuousLinearMap.inl ℝ F V) ⁻¹' (Ω ×ˢ univ) = Ω` using `by ext y; simp`. Establish `h1` using `ContinuousLinearMap.iteratedFDerivWithin_comp_right (ContinuousLinearMap.inl ℝ F V) hf' hS.uniqueDiffOn (by rw [hpre]; exact hΩ.uniqueDiffOn) (x := x) (by simpa using hx) (i := N) (by exact_mod_cast le_top)`. Rewrite `h1` using `[hpre, iteratedFDerivWithin_of_isOpen N hΩ hx, iteratedFDerivWithin_of_isOpen N hS (by simpa using hx)]`. Establish `h2 : (f' ∘ ContinuousLinearMap.inl ℝ F V) = fun x => k (x, w)`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[f']`. Rewrite `h1` using `[h2]`. Rewrite using `[h1]`. Use `congr 1`. Establish `h3` using `iteratedFDeriv_comp_add_right (𝕜 := ℝ) (f := k) N ((0 : F), w) (ContinuousLinearMap.inl ℝ F V x)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h3`.
+A detailed English derivation is pending.
 -/
 theorem slice (hΩ : IsOpen Ω) {k : F × V → E} (hk : ContDiffOn ℝ ∞ k (Ω ×ˢ univ)) (N : ℕ) {x : F} (hx : x ∈ Ω) (w : V) :
     iteratedFDeriv ℝ N (fun x => k (x, w)) x =
@@ -183,13 +181,13 @@ theorem slice (hΩ : IsOpen Ω) {k : F × V → E} (hk : ContDiffOn ℝ ∞ k (�
   simpa using h3
 
 /- English proof (translation)
-Establish `hsl : ∀ u, ContDiffOn ℝ ∞ (fun x => k (x, v u)) Ω` using `fun u => hk.comp (contDiffOn_id.prodMk contDiffOn_const) fun x hx => ⟨hx, mem_univ _⟩`. Use `⟨fun u => (hsl u).const_smul (h u), fun N => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hS : IsOpen (Ω ×ˢ (univ : Set V))` using `hΩ.prod isOpen_univ`. Establish `hcont : ContinuousOn (fun q : F × V => iteratedFDeriv ℝ N k q) (Ω ×ˢ univ)`. Use `hk.continuousOn_iteratedFDerivWithin (m := N) (by exact_mod_cast le_top) hS.uniqueDiffOn` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.congr fun q hq => (iteratedFDerivWithin_of_isOpen N hS hq).symm`. Set `hL` to `ContinuousMultilinearMap.compContinuousLinearMapL (𝕜 := ℝ) (F := E) (fun _ : Fin N => ContinuousLinearMap.inl ℝ F V)`. Establish `hc2 : ContinuousOn (fun p : F × X => h p.2 • (hL (iteratedFDeriv ℝ N k (p.1, v p.2)))) (Ω ×ˢ univ)`. Use `(hh.comp continuous_snd).continuousOn.smul (hL.continuous.comp_continuousOn ?_)` and prove the remaining obligations. Conclude with `hcont.comp (continuous_fst.prodMk (hv.comp continuous_snd)).continuousOn fun p hp => ⟨hp.1, mem_univ _⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hc2.congr fun p hp => ?_` and prove the remaining obligations. Establish `hx : p.1 ∈ Ω` using `hp.1`. Simplify using `only`. Rewrite using `[iteratedFDeriv_const_smul_apply' ((hsl p.2).contDiffAt (hΩ.mem_nhds hx) |>.of_le (by exact_mod_cast le_top)), slice hΩ hk N hx (v p.2)]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW, C, hC, hKW⟩` from `hsupp x hx`. Take `⟨W', hW'W, hW'o, hxW'⟩` from `mem_nhds_iff.1 hW`. Conclude with `⟨W', hW'o, hxW', C, hC, fun x' hx' u hu => by simp [hKW x' (hW'W hx') u hu]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem good_of_joint (hΩ : IsOpen Ω) (k : F × V → E) (hk : ContDiffOn ℝ ∞ k (Ω ×ˢ univ)) (v : X → V)
     (hv : Continuous v) (h : X → ℂ) (hh : Continuous h)
@@ -218,7 +216,7 @@ theorem good_of_joint (hΩ : IsOpen Ω) (k : F × V → E) (hk : ContDiffOn ℝ 
     exact ⟨W', hW'o, hxW', C, hC, fun x' hx' u hu => by simp [hKW x' (hW'W hx') u hu]⟩
 
 /- English proof (translation)
-The claim follows from `contDiffOn_integral hΩ ν (good_of_joint hΩ k hk v hv h hh hsupp)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_integral' (hΩ : IsOpen Ω) (ν : Measure X) [IsFiniteMeasureOnCompacts ν] (k : F × V → E)
     (hk : ContDiffOn ℝ ∞ k (Ω ×ˢ univ)) (v : X → V) (hv : Continuous v) (h : X → ℂ) (hh : Continuous h)
@@ -227,9 +225,9 @@ theorem contDiffOn_integral' (hΩ : IsOpen Ω) (ν : Measure X) [IsFiniteMeasure
   contDiffOn_integral hΩ ν (good_of_joint hΩ k hk v hv h hh hsupp)
 
 /- English proof (translation)
-Establish `hG` using `good_of_joint hΩ k hk v hv h hh hsupp`. Use `hG.hasFDerivAt hΩ ν hx` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Establish `hsl : ContDiffOn ℝ ∞ (fun x => k (x, v u)) Ω` using `hk.comp (contDiffOn_id.prodMk contDiffOn_const) fun x hx => ⟨hx, mem_univ _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hd : DifferentiableAt ℝ (fun x => k (x, v u)) x` using `(hsl.differentiableOn (by simp) x hx).differentiableAt (hΩ.mem_nhds hx)`. Conclude with `((hd.hasFDerivAt.const_smul (h u)).fderiv).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_integral' (hΩ : IsOpen Ω) (ν : Measure X) [IsFiniteMeasureOnCompacts ν] (k : F × V → E)
     (hk : ContDiffOn ℝ ∞ k (Ω ×ˢ univ)) (v : X → V) (hv : Continuous v) (h : X → ℂ) (hh : Continuous h)

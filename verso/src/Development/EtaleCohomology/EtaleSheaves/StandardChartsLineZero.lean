@@ -39,13 +39,11 @@ def AlgGlue : Prop := ∀ (A : Type) [CommRing A] [IsLocalRing A] [HenselianLoca
   (e ∈ mS B ∧ f ∈ mS C) ∨ (e - 1 ∈ mS B ∧ f - 1 ∈ mS C)
 
 /- English proof (translation)
-Introduce `A _ _ hSH Z p hIL hZ`. Take `⟨hH, -⟩` from `hSH`. Establish `hne : Nonempty ↑(pullback p (cpt A))`. Take `⟨L, u, l, hu, hl, rfl⟩` from `hIL`. Use `hl.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hZ.1` as an intermediate fact. Conclude with `LateralTheory.E.LineZeroCut.lzNonempty A (u ≫ l) inferInstance inferInstance`. Take `⟨K, _, _, B, C, t, hc, hint, hW⟩` from `hS A p hIL hZ`. Establish `hpre : PreconnectedSpace ↑(pullback p (cpt A))`. Rewrite using `[preconnectedSpace_iff_clopen]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W hW'`. Take `⟨e, f, hef, h0, h1⟩` from `hW W hW'`. Break down `hG A K B C t hc hint e f hef with h | h` into its components or cases. Conclude with `Or.inl (h0 h)`. Conclude with `Or.inr (h1 h)`.
-
-Conclude with `{ toPreconnectedSpace := hpre, toNonempty := hne }`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem goal_of (hS : StdCharts) (hG : AlgGlue) : LateralTheory.E.t_E2Cut.LineZero := by
   intro A _ _ hSH Z p hIL hZ

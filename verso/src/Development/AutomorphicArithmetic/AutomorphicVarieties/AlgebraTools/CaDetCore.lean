@@ -7,17 +7,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaDet
 open IsLocalRing UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Introduce `P _ _ ι _ _ z m hC B A _ _ _ _ _ π hπ hrel Z hZ hdim hm Q' hQ' hdet`. Use `haveI := hZ`. Establish `hinj : Function.Injective (algebraMap B A)` using `FaithfulSMul.algebraMap_injective B A`. Take `⟨Z', -, hZ'p, hZ'c⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral Z (⊥ : Ideal A) (by`. Rewrite using `[Ideal.comap_bot_of_injective _ hinj]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `bot_le)`. Use `haveI := hZ'p`. Use `haveI := hQ'`. Take `⟨j, hj⟩` from `hm Z' hZ'p hZ'c`. Establish `hker : RingHom.ker ((Ideal.Quotient.mk Z').comp π) = Z'.comap π`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `[Ideal.Quotient.eq_zero_iff_mem]`. Establish `e : P ⧸ Z'.comap π ≃+* A ⧸ Z'` using `(Ideal.quotEquivOfEq hker.symm).trans (RingHom.quotientKerEquivOfSurjective (Ideal.Quotient.mk_surjective.comp hπ))`. Establish `hdimZ : ringKrullDim (P ⧸ Z'.comap π) = ringKrullDim (B ⧸ Z)`. Rewrite using `[ringKrullDim_eq_of_ringEquiv e, ReciprocityTheory.CA.ringKrullDim_quotient_eq_quotient_comap_of_isIntegral (A := B) (B := A) Z', hZ'c]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hrelQ : ∀ I : Ideal A, relIdeal z m ≤ I.comap π` using `fun I x hx => by`. Establish `h0 : π x = 0` using `RingHom.mem_ker.mp (hrel hx)`. Simplify using `[Ideal.mem_comap, h0]`. Establish `key` using `le_of_detIdeal_le P ι z m hC (Z'.comap π) inferInstance (hrelQ Z') ⟨j, hj⟩ (by rw [hdimZ]; exact hdim) (Q'.comap π) inferInstance (by show relIdeal z m ⊔ Ideal.span {z.det} ≤ _`. Use `sup_le (hrelQ Q') ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hdet)`. Establish `hle : Z' ≤ Q'`. Introduce `a ha`. Take `⟨x, rfl⟩` from `hπ a`.
-
-Conclude with `key ha`. Rewrite using `[← hZ'c]`. Conclude with `Ideal.comap_mono hle`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.under_le_of_det_mem :
     ∀ (P : Type) [CommRing P] [IsRegularLocalRing P] (ι : Type) [Fintype ι] [DecidableEq ι] (z : Matrix ι ι P) (m : ι → P),

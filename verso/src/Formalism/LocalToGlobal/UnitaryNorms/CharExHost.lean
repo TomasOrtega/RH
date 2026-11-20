@@ -26,19 +26,19 @@ def idF : Subgroup (Ideles L) :=
 def unitF : Subgroup (Ideles L) := unitIdeles L ⊔ idF (L := L) F
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_sup_right (Subgroup.subset_closure (Set.mem_union_left _ ⟨(v, k), rfl⟩))`.
+A detailed English derivation is pending.
 -/
 theorem aF_mem (v : HeightOneSpectrum (𝓞 F)) (k : Fˣ) : (aF F v k : Ideles L) ∈ unitF (L := L) F :=
   Subgroup.mem_sup_right (Subgroup.subset_closure (Set.mem_union_left _ ⟨(v, k), rfl⟩))
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_sup_right (Subgroup.subset_closure (Set.mem_union_right _ ⟨(w, k), rfl⟩))`.
+A detailed English derivation is pending.
 -/
 theorem aFi_mem (w : InfinitePlace F) (k : Fˣ) : (aFi F w k : Ideles L) ∈ unitF (L := L) F :=
   Subgroup.mem_sup_right (Subgroup.subset_closure (Set.mem_union_right _ ⟨(w, k), rfl⟩))
 
 /- English proof (translation)
-Unfold `HChar.resFin aF`. Rewrite using `[map_prod, MonoidHom.finset_prod_apply]`. Conclude with `Finset.prod_congr rfl fun P _ => rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resFin_eq (χ : HChar L) (v : HeightOneSpectrum (𝓞 F)) (k : Fˣ) : χ.resFin v k = χ.1 (aF F v k) := by
   unfold HChar.resFin aF
@@ -46,7 +46,7 @@ theorem resFin_eq (χ : HChar L) (v : HeightOneSpectrum (𝓞 F)) (k : Fˣ) : χ
   exact Finset.prod_congr rfl fun P _ => rfl
 
 /- English proof (translation)
-Unfold `HChar.resInf aFi`. Rewrite using `[map_prod, MonoidHom.finset_prod_apply]`. Conclude with `Finset.prod_congr rfl fun w' _ => rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resInf_eq (χ : HChar L) (w : InfinitePlace F) (k : Fˣ) : χ.resInf w k = χ.1 (aFi F w k) := by
   unfold HChar.resInf aFi
@@ -60,9 +60,9 @@ section Loc
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Use `show ∀ v' : HeightOneSpectrum (𝓞 L), Valued.v (((localIdele L v x : Ideles L) : AdeleRing (𝓞 L) L).2 v') = 1`. Introduce `v'`. Distinguish the cases in `h : v' = v`. Substitute `h` using the available equality. Rewrite using `[localIdele_snd_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Rewrite using `[(localIdele_isSupportedAt L v x).2 v' h]`. Conclude with `map_one _`.
+A detailed English derivation is pending.
 -/
 theorem localIdele_mem {v : HeightOneSpectrum (𝓞 L)} {x : (v.adicCompletion L)ˣ} (hx : IsUnitAt v x) :
     localIdele L v x ∈ unitIdeles L := by
@@ -76,9 +76,9 @@ theorem localIdele_mem {v : HeightOneSpectrum (𝓞 L)} {x : (v.adicCompletion L
     exact map_one _
 
 /- English proof (translation)
-Unfold `infDiag`. Rewrite using `[MonoidHom.finset_prod_apply]`. Use `Subgroup.prod_mem _ fun w _ => ?_` and prove the remaining obligations. Use `show ∀ v : HeightOneSpectrum (𝓞 L), Valued.v (((infIdele L w (atInf w k) : Ideles L) : AdeleRing (𝓞 L) L).2 v) = 1`. Introduce `v`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ((infIdele L w (atInf w k) : Ideles L) : AdeleRing (𝓞 L) L).2 = 1` using `rfl`. Rewrite using `[h1]`. Use `show Valued.v (1 : v.adicCompletion L) = 1`. Conclude with `map_one _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infDiag_mem (k : Lˣ) : infDiag k ∈ unitIdeles L := by
   unfold infDiag
@@ -132,9 +132,9 @@ structure DeltaQ (p : ℕ) (Φ : Ideles H.E →* ℂˣ) : Prop where
   glob : ∀ k : H.Eˣ, diagUnits H.E k ∈ unitF (L := H.E) H.F → Φ (diagUnits H.E k) = 1
 
 /- English proof (translation)
-Take `⟨n, hn, hx⟩` from `classExp L`. Introduce `x`. Take `⟨k, hk⟩` from `hx x`. Establish `hc : Continuous χ.1 ∧ ∀ k : Lˣ, χ.1 (diagUnits L k) = 1` using `χ.2`. Establish `h1` using `h _ hk`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_mul, hc.2 k, mul_one, map_pow, Units.val_pow_eq_pow_val, norm_pow]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unitary_lemma {L : Type} [Field L] [NumberField L] (χ : HChar L)
     (h : ∀ u ∈ unitIdeles L, ‖((χ.1 u : ℂˣ) : ℂ)‖ = 1) : χ.IsUnitary := by
@@ -147,13 +147,11 @@ private theorem unitary_lemma {L : Type} [Field L] [NumberField L] (χ : HChar L
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h1
 
 /- English proof (translation)
-Take `⟨χ, hχ⟩` from `exists_hchar_eq_on hD hO (unitF (L := H.E) H.F) (le_sup_left : unitIdeles H.E ≤ unitIdeles H.E ⊔ idF (L := H.E) H.F) Φ hq.cont hq.glob`. Establish `hU : ∀ u ∈ unitIdeles H.E, χ.1 u = Φ u` using `fun u hu => hχ u (Subgroup.mem_sup_left hu)`. Use `⟨χ, ⟨?_, ?_, ⟨?_, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Conclude with `unitary_lemma χ fun u hu => by rw [hU u hu]; exact hq.unitU u hu`. Introduce `v x hx show χ.1 (localIdele H.E v x) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU _ (localIdele_mem hx)]`. Conclude with `hq.unr v x hx`. Introduce `v k`. Rewrite using `[resFin_eq H.F χ v k, hχ _ (aF_mem H.F v k)]`. Conclude with `hq.resFin v k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w k`. Rewrite using `[resInf_eq H.F χ w k, hχ _ (aFi_mem H.F w k)]`. Conclude with `hq.resInf w k`. Introduce `k show ((χ.1 (infDiag k) : ℂˣ) : ℂ) = _`. Rewrite using `[hU _ (infDiag_mem k)]`.
-
-Use `hq.inf k using 2` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem etaTExists_of (hD : DivExtC) (hO : OpenUnits H.E) {Φ : Ideles H.E →* ℂˣ} (hq : EtaTQ (H := H) Φ) :
     EtaTExists H := by
@@ -178,15 +176,13 @@ theorem etaTExists_of (hD : DivExtC) (hO : OpenUnits H.E) {Φ : Ideles H.E →* 
     convert hq.inf k using 2
 
 /- English proof (translation)
-Take `⟨χ, hχ⟩` from `exists_hchar_eq_on hD hO (unitF (L := H.E) H.F) (le_sup_left : unitIdeles H.E ≤ unitIdeles H.E ⊔ idF (L := H.E) H.F) Φ hq.cont hq.glob`. Establish `hU : ∀ u ∈ unitIdeles H.E, χ.1 u = Φ u` using `fun u hu => hχ u (Subgroup.mem_sup_left hu)`. Use `⟨χ, ⟨?_, ⟨?_, ?_⟩, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `unitary_lemma χ fun u hu => by rw [hU u hu]; exact hq.unitU u hu`. Introduce `v k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[resFin_eq H.F χ v k, hχ _ (aF_mem H.F v k)]`. Conclude with `hq.trivFin v k`. Introduce `w k`. Rewrite using `[resInf_eq H.F χ w k, hχ _ (aFi_mem H.F w k)]`. Conclude with `hq.trivInf w k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, hn, hk⟩` from `hq.inf`. Use `⟨n, hn, fun k => ?_⟩` and prove the remaining obligations. Use `show ((χ.1 (infDiag k) : ℂˣ) : ℂ) = _`. Rewrite using `[hU _ (infDiag_mem k)]`. Use `hk k using 2` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv x hx show χ.1 (localIdele H.E v x) = 1`. Rewrite using `[hU _ (localIdele_mem hx)]`. Conclude with `hq.unr v hv x hx`. Introduce `v x hx hle show χ.1 (localIdele H.E v x) = 1`. Rewrite using `[hU _ (localIdele_mem hx)]`.
-
-Conclude with `hq.tame v x hx hle`. Introduce `k w hw a ha x hxa show χ.1 (localIdele H.E w (atFin w x)) = _`. Rewrite using `[hU _ (localIdele_mem (isUnitAt_nat (P.overP hw) ha hxa))]`. Conclude with `hq.atg k w hw a ha x hxa`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mu0Exists_of (hD : DivExtC) (hO : OpenUnits H.E) {P : PiBar H} {W : Omg H} {e : R.Psi → ℚ} {j : ℕ}
     {Φ : Ideles H.E →* ℂˣ} (hq : Mu0Q P W e j Φ) : Mu0Exists P W e j := by
@@ -220,21 +216,19 @@ theorem mu0Exists_of (hD : DivExtC) (hO : OpenUnits H.E) {P : PiBar H} {W : Omg 
     exact hq.atg k w hw a ha x hxa
 
 /- English proof (translation)
-Take `⟨χ, hχ⟩` from `exists_hchar_eq_on hD hO (unitF (L := H.E) H.F) (le_sup_left : unitIdeles H.E ≤ unitIdeles H.E ⊔ idF (L := H.E) H.F) Φ hq.cont hq.glob`. Establish `hU : ∀ u ∈ unitIdeles H.E, χ.1 u = Φ u` using `fun u hu => hχ u (Subgroup.mem_sup_left hu)`. Use `⟨χ, ⟨?_, ⟨?_, ?_⟩, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨n, hn, hu⟩` from `hq.finU`. Take `⟨h, hh, hx⟩` from `classExp H.E`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨h * n, Nat.mul_pos hh hn, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `MonoidHom.ext` to reduce the goal to its premises. Introduce `x`. Take `⟨k, hk⟩` from `hx x`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hc : Continuous χ.1 ∧ ∀ k : H.Eˣ, χ.1 (diagUnits H.E k) = 1` using `χ.2`. Establish `e1 : χ.1 (x ^ h * diagUnits H.E k) = Φ (x ^ h * diagUnits H.E k)` using `hU _ hk`. Rewrite `e1` using `[map_mul, hc.2 k, mul_one, map_pow]`. Establish `e2 : (χ.1 x) ^ (h * n) = 1` using `by rw [pow_mul, e1, hu _ hk]`. Simplify using `using e2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `v k`. Rewrite using `[resFin_eq H.F χ v k, hχ _ (aF_mem H.F v k)]`. Conclude with `hq.trivFin v k`. Introduce `w k`. Rewrite using `[resInf_eq H.F χ w k, hχ _ (aFi_mem H.F w k)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hq.trivInf w k`. Introduce `v x hx hle show χ.1 (localIdele H.E v x) = 1`. Rewrite using `[hU _ (localIdele_mem hx)]`. Conclude with `hq.tame v x hx hle`. Introduce `v hv x hx show χ.1 (localIdele H.E v x) = 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hU _ (localIdele_mem hx)]`. Conclude with `hq.unr v hv x hx`. Introduce `v hv n`. Establish `hloc : ∀ x, IsUnitAt v x → χ.loc v x = Φ (localIdele H.E v x)` using `fun x hx => hU _ (localIdele_mem hx)`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `(hq.ine v hv n).1` to reduce the goal to its premises. Introduce `x hx`. Rewrite using `[← hloc x hx]`. Conclude with `h x hx`.
-
-Introduce `h x hx`. Rewrite using `[hloc x hx]`. Conclude with `(hq.ine v hv n).2 h x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deltaExists_of (hD : DivExtC) (hO : OpenUnits H.E) {p : ℕ} {Φ : Ideles H.E →* ℂˣ} (hq : DeltaQ (H := H) p Φ) :
     DeltaExists (H := H) p := by

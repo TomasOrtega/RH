@@ -12,11 +12,11 @@ open MvPolynomial NumberField ReciprocityTheory.ChartRestriction.G
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 
 /- English proof (translation)
-Establish `hmon : ∀ e, χ (chartMonomial c e) = 1` using `fun e ↦ by`. Simplify using `[chartMonomial, map_prod, hχ]`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨0, C a, isWeightedHomogeneous_C _ _, rfl⟩`. Consider the case `add p q hp hq`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨D₁, G₁, h₁, e₁⟩` from `hp`. Take `⟨D₂, G₂, h₂, e₂⟩` from `hq`. Use `⟨D₁ + D₂, G₁ * chartMonomial c D₂ + G₂ * chartMonomial c D₁, ?_, ?_⟩` and prove the remaining obligations. Use `IsWeightedHomogeneous.add (h₁.mul (isWeightedHomogeneous_chartMonomial c D₂)) ?_` and prove the remaining obligations. Rewrite using `[add_comm D₁]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h₂.mul (isWeightedHomogeneous_chartMonomial c D₁)`. Rewrite using `[map_add, map_mul, map_mul, hmon, hmon, mul_one, mul_one, e₁, e₂, map_add]`. Consider the case `mul_X p i hp`. Take `⟨D, G, h, e⟩` from `hp`. Conclude with `⟨D + coordDeg n i, G * X i, h.mul (isWeightedHomogeneous_X ℤ _ i), by rw [map_mul, map_mul, e]⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isWeightedHomogeneous_eq_of_chart {R : Type*} [CommRing R]
     (χ : MvPolynomial (Coord n) ℤ →+* R) (c : (k : ι) → Fin (n k + 1))
@@ -41,11 +41,11 @@ theorem exists_isWeightedHomogeneous_eq_of_chart {R : Type*} [CommRing R]
       by rw [map_mul, map_mul, e]⟩
 
 /- English proof (translation)
-Rewrite using `[aeval_def, aeval_def, eval₂_eq, eval₂_eq, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm ↦ ?_` and prove the remaining obligations. Establish `hmd : ∀ k, ∑ i, m ⟨k, i⟩ = d k` using `(geoMultiHomog_iff G d).mpr hG m hm`. Rewrite using `[mul_assoc]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finset.prod_subset (Finset.subset_univ m.support) (fun p _ hp ↦ by`. Rewrite using `[Finsupp.notMem_support_iff.mp hp, pow_zero]),`. Use the proof step `Finset.prod_subset (Finset.subset_univ m.support) (fun p _ hp ↦ by`. Rewrite using `[Finsupp.notMem_support_iff.mp hp, pow_zero])]`. Establish `hden : ∏ p : Coord n, z ⟨p.1, c p.1⟩ ^ m p = ∏ k, z ⟨k, c k⟩ ^ d k`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[← hmd k, ← Finset.prod_pow_eq_pow_sum]`. Repeatedly rewrite using `[div_pow]`. Rewrite using `[Finset.prod_div_distrib, hden, div_eq_mul_inv, Finset.prod_inv_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_div_chart {Ω : Type*} [Field Ω] [Algebra ℤ Ω] (z : Coord n → Ω) (c : (k : ι) → Fin (n k + 1))
     (G : MvPolynomial (Coord n) ℤ) (d : ι → ℕ) (hG : IsWeightedHomogeneous (coordDeg n) G d) :
@@ -70,7 +70,7 @@ theorem aeval_div_chart {Ω : Type*} [Field Ω] [Algebra ℤ Ω] (z : Coord n �
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Establish `e : eval₂ (Int.castRingHom (AlgebraicClosure ℚ)) (flatCone x) F = algebraMap (coordField x) (AlgebraicClosure ℚ) (evalCone (coordVec x) F)`. Rewrite using `[← evalCone_map]`. Both sides reduce to the same expression. Rewrite using `[orbitIdeal, Geo.mCoordIdeal, RingHom.mem_ker, mConeMap_of_isMultiHomog _ F a hF, e, mul_eq_zero, C_eq_zero, map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective _ _)]`. Conclude with `or_iff_left (Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (X_ne_zero k))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_orbitIdeal_iff_of_isMultiHomog (x : Cone n (AlgebraicClosure ℚ))
     (F : MvPolynomial (Coord n) ℤ) (a : ι → ℕ) (hF : Geo.IsMultiHomog (ι := blockIdx n) F a) :
@@ -86,7 +86,7 @@ theorem mem_orbitIdeal_iff_of_isMultiHomog (x : Cone n (AlgebraicClosure ℚ))
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Use `choose c hc using fun k ↦ exists_eq_ciSup_of_finite (f := fun i ↦ v (coordVec x k i))`. Use `⟨c, fun k ↦ ⟨hc k, ?_⟩⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `Function.ne_iff.mp (hx k)`. Establish `hi' : coordVec x k i ≠ 0` using `fun h ↦ hi (congrArg Subtype.val h)`. Conclude with `(FinitePlace.pos_iff.mpr hi').trans_le (le_ciSup (f := fun i ↦ v (coordVec x k i)) (Set.finite_range _).bddAbove i)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_chart_ciSup (x : Cone n (AlgebraicClosure ℚ)) (hx : BlockNonzero x)
     (v : FinitePlace (coordField x)) :
@@ -100,9 +100,9 @@ theorem exists_chart_ciSup (x : Cone n (AlgebraicClosure ℚ)) (hx : BlockNonzer
     (le_ciSup (f := fun i ↦ v (coordVec x k i)) (Set.finite_range _).bddAbove i)
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[aeval_C, algebraMap_int_eq, eq_intCast]`. Conclude with `IsNonarchimedean.apply_intCast_le_one (fun a b ↦ FinitePlace.add_le v a b)`. Consider the case `add p q hp hq`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `(FinitePlace.add_le v _ _).trans (max_le hp hq)`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, map_mul, aeval_X]`. Conclude with `mul_le_one₀ hp (apply_nonneg v _) (hy i)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finitePlace_aeval_le_one {K : Type*} [Field K] [NumberField K] (v : FinitePlace K)
     {σ : Type*} (y : σ → K) (hy : ∀ p, v (y p) ≤ 1) (g : MvPolynomial σ ℤ) :
@@ -119,37 +119,33 @@ theorem finitePlace_aeval_le_one {K : Type*} [Field K] [NumberField K] (v : Fini
     exact mul_le_one₀ hp (apply_nonneg v _) (hy i)
 
 /- English proof (translation)
-Use `set xv := coordVec x`. Use `set M : ι → ℝ := fun k ↦ ⨆ i, v (xv k i)`. Establish `hxc : ∀ k, xv k (c k) ≠ 0` using `fun k ↦ FinitePlace.pos_iff.mp ((hc k).1 ▸ (hc k).2)`. Establish `hPpos : ∀ d : ι → ℕ, 0 < ∏ k, M k ^ d k` using `fun d ↦ Finset.prod_pos fun k _ ↦ pow_pos (hc k).2 _`. Set `φ : MvPolynomial (Coord n) ℤ →ₐ[ℤ] coordField x` to `aeval fun p ↦ xv p.1 p.2 / xv p.1 (c p.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hφ : ∀ G d, IsWeightedHomogeneous (coordDeg n) G d → φ G = evalCone xv G * ∏ k, (xv k (c k) ^ d k)⁻¹` using `fun G d hG ↦ by`. Use `(aeval_div_chart (fun q : Coord n ↦ xv q.1 q.2) c G d hG).trans ?_` and prove the remaining obligations. Rewrite using `[aeval_def, evalCone, Subsingleton.elim (algebraMap ℤ (coordField x)) (Int.castRingHom _)]`. Establish `hprod : ∀ d : ι → ℕ, ∏ k, (xv k (c k) ^ d k)⁻¹ ≠ 0` using `fun d ↦ Finset.prod_ne_zero_iff.mpr fun k _ ↦ inv_ne_zero (pow_ne_zero _ (hxc k))`. Establish `hφv : ∀ G d, IsWeightedHomogeneous (coordDeg n) G d → (v (φ G) < 1 ↔ v (evalCone xv G) < ∏ k, M k ^ d k)` using `fun G d hG ↦ by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[hφ G d hG, map_mul, map_prod]`. Repeatedly rewrite using `[map_inv₀, map_pow, (hc _).1]`. Rewrite using `[Finset.prod_inv_distrib, ← div_eq_mul_inv, div_lt_one (hPpos d)]`. Set `π : MvPolynomial (Coord n) ℤ →+* FractionRing (MvPolynomial (Coord n) ℤ ⧸ Q)` to `(algebraMap _ _).comp (Ideal.Quotient.mk Q)`. Establish `hπ : ∀ G, π G = 0 ↔ G ∈ Q` using `fun G ↦ by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[RingHom.comp_apply, map_eq_zero_iff _ (IsFractionRing.injective _ _), Ideal.Quotient.eq_zero_iff_mem]`. Establish `hXc : ∀ k, (X ⟨k, c k⟩ : MvPolynomial (Coord n) ℤ) ∉ Q` using `fun k h ↦ by`. Use `(hMI ι n x hx v _ _ ((geoMultiHomog_iff _ _).mpr (isWeightedHomogeneous_X ℤ (coordDeg n) ⟨k, c k⟩))).mp (hQv h)` as an intermediate fact. Simplify using `[evalCone, coordDeg, Pi.single_apply, pow_ite, xv, (hc k).1] at this`. Set `w : Coord n → FractionRing (MvPolynomial (Coord n) ℤ ⧸ Q)` to `fun p ↦ π (X p)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hwc : ∀ k, w ⟨k, c k⟩ ≠ 0` using `fun k h ↦ hXc k ((hπ _).mp h)`. Set `ψ : MvPolynomial (Coord n) ℤ →ₐ[ℤ] FractionRing (MvPolynomial (Coord n) ℤ ⧸ Q)` to `aeval fun p ↦ w p / w ⟨p.1, c p.1⟩`. Establish `hπa : ∀ G, aeval w G = π G` using `fun G ↦ by`. Establish `h : (aeval w : MvPolynomial (Coord n) ℤ →ₐ[ℤ] _).toRingHom = π` using `MvPolynomial.ringHom_ext' (RingHom.ext_int _ _) fun p ↦ by simp [w]`. Conclude with `DFunLike.congr_fun h G`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hψ : ∀ G d, IsWeightedHomogeneous (coordDeg n) G d → (ψ G = 0 ↔ G ∈ Q)` using `fun G d hG ↦ by`. Rewrite using `[show ψ G = aeval w G * ∏ k, (w ⟨k, c k⟩ ^ d k)⁻¹ from aeval_div_chart w c G d hG, hπa, mul_eq_zero, hπ, or_iff_left (Finset.prod_ne_zero_iff.mpr fun k _ ↦ inv_ne_zero (pow_ne_zero _ (hwc k)))]`. Establish `hhom : ∀ g, ∃ D G, IsWeightedHomogeneous (coordDeg n) G D ∧ φ G = φ g ∧ ψ G = ψ g` using `fun g ↦ by`. Take `⟨D, G, hG, e⟩` from `exists_isWeightedHomogeneous_eq_of_chart (R := coordField x × FractionRing (MvPolynomial (Coord n) ℤ ⧸ Q)) ((φ : MvPolynomial (Coord n) ℤ →+* coordField x).prod (ψ : MvPolynomial (Coord n) ℤ →+* FractionRing (MvPolynomial (Coord n) ℤ ⧸ Q))) c (fun k ↦ by`. Rewrite using `[RingHom.prod_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Prod.ext (by simp [φ, div_self (hxc k)]) (by simp [ψ, div_self (hwc k)])) g`. Conclude with `⟨D, G, hG, congrArg Prod.fst e, congrArg Prod.snd e⟩`. Set `φ'` to `φ.rangeRestrict`. Establish `hφ' : ∀ g, (φ' g : coordField x) = φ g` using `fun _ ↦ rfl`. Establish `hker : RingHom.ker φ' ≤ RingHom.ker ψ` using `fun g hg ↦ by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨D, G, hG, e₁, e₂⟩` from `hhom g`. Establish `h0 : φ g = 0` using `by rw [← hφ' g, (RingHom.mem_ker).mp hg]; rfl`. Rewrite using `[RingHom.mem_ker, ← e₂, hψ G D hG]`. Use `hWQ ((mem_orbitIdeal_iff_of_isMultiHomog x G D ((geoMultiHomog_iff _ _).mpr hG)).mpr ?_)` and prove the remaining obligations. Rewrite `h0` using `[← e₁, hφ G D hG]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.mp h0).resolve_right (hprod D)`. Establish `hsa` using `(geoMultiHomog_iff s a).mp hs`. Establish `: (RingHom.ker ψ).IsPrime` using `RingHom.ker_isPrime ψ`. Set `q : Ideal φ.range` to `Ideal.map φ' (RingHom.ker ψ)`. Establish `hqp : q.IsPrime` using `Ideal.map_isPrime_of_surjective (AlgHom.rangeRestrict_surjective φ) hker`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hqne : q ≠ ⊥` using `fun h ↦ by`. Establish `hm : φ' s ∈ q` using `Ideal.mem_map_of_mem _ ((RingHom.mem_ker).mpr ((hψ s a hsa).mpr hsQ))`. Rewrite `hm` using `[h, Ideal.mem_bot]`. Establish `h1` using `congrArg Subtype.val hm`. Rewrite `h1` using `[hφ', hφ s a hsa]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (evalCone_coordVec_ne_zero x s a hs hsW) (hprod a) h1`. Establish `hqm` using `hSP _ φ.range q hqp hqne`. Establish `hq1 : ∀ b ∈ q, v (b : coordField x) < 1` using `fun b hb ↦ by`. Take `⟨g, hg, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ (AlgHom.rangeRestrict_surjective φ)).mp hb`. Take `⟨D, G, hG, e₁, e₂⟩` from `hhom g`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[hφ', ← e₁, hφv G D hG]`. Rewrite `hg` using `[RingHom.mem_ker, ← e₂, hψ G D hG]`. Conclude with `(hMI ι n x hx v G D ((geoMultiHomog_iff _ _).mpr hG)).mp (hQv hg)`. Establish `hle1 : ∀ g, v (φ g) ≤ 1` using `finitePlace_aeval_le_one v _ fun p ↦ by`. Rewrite using `[map_div₀, div_le_one (((hc p.1).1).symm ▸ (hc p.1).2), (hc p.1).1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `le_ciSup (f := fun i ↦ v (xv p.1 i)) (Set.finite_range _).bddAbove p.2`. Establish `hinq : ∀ b : φ.range, v (b : coordField x) < 1 → b ∈ q` using `fun b hb ↦ by`. Assume the negation of the conclusion as `hnb`. Take `⟨u, i, hi, h1⟩` from `hqm.exists_inv hnb`. Take `⟨g, hg⟩` from `AlgHom.rangeRestrict_surjective φ u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1' : v ((u : coordField x) * b + i) = 1`. Rewrite using `[show (u : coordField x) * b + i = ((u * b + i : φ.range) : coordField x) from rfl, h1]`. Conclude with `map_one v`. Establish `hu : v (u : coordField x) ≤ 1` using `by rw [← hg, hφ']; exact hle1 g`. Use `(FinitePlace.add_le v _ _).trans_lt (max_lt (by` as an intermediate fact.
-
-Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left (apply_nonneg v _) hu).trans_lt hb) (hq1 i hi))`. Conclude with `absurd h1' this.ne`. Use `Ideal.span_le.mpr fun F ⟨d, hFd, hlt⟩ ↦ ?_` and prove the remaining obligations. Establish `hFw` using `(geoMultiHomog_iff F d).mp hFd`.
-
-Take `⟨g, hg, e⟩` from `(Ideal.mem_map_iff_of_surjective _ (AlgHom.rangeRestrict_surjective φ)).mp (hinq (φ' F) ((hφv F d hFw).mpr hlt))`. Establish `hFg : F - g ∈ RingHom.ker ψ` using `hker ((RingHom.mem_ker).mpr (by rw [map_sub, e, sub_self]))`. Rewrite `hFg` using `[RingHom.mem_ker, map_sub, (RingHom.mem_ker).mp hg, sub_zero]`. Conclude with `(hψ F d hFw).mp hFg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbitCenter_le_of_le (hMI : OrbitCenterMemIff.Statement)
     (hSP : SubringPrimeMaximal.Statement) (x : Cone n (AlgebraicClosure ℚ)) (hx : BlockNonzero x)

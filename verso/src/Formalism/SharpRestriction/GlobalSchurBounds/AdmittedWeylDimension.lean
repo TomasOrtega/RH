@@ -81,9 +81,9 @@ def BaseWeightColumnCondition (D : D7) (Lv : LevelData D) (u : D.what₂.Word) (
   Nonempty ((D.mem u).A.Mu0 ≃ₗ[ℂ] colFn D Lv u X.V X.a X.ψ)
 
 /- English proof (translation)
-Establish `hfd : ∀ ρ, FiniteDimensional ℂ (X.H ρ)` using `fun ρ => (X.π_type ρ).2.1`. Establish `h1 : Module.finrank ℂ X.V = ∏ ρ, Module.finrank ℂ (X.H ρ)`. Rewrite using `[Module.finrank_eq_card_basis (Basis.piTensorProduct (fun ρ => Module.finBasis ℂ (X.H ρ)))]`. Simplify using the standard rewrite rules. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Conclude with `Finset.prod_congr rfl fun ρ _ => hW D.R.k (uColR D u ρ) (X.H ρ) (X.π ρ) (X.π_type ρ)`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem ColRep.dim_eq {D : D7} {Lv : LevelData D} {u : D.what₂.Word} (X : ColRep D Lv u) (hW : AdmittedWeylDimension D) :
     ((Module.finrank ℂ X.V : ℕ) : ℝ) = ∏ ρ, dimV (uColR D u ρ) := by
@@ -97,7 +97,7 @@ theorem ColRep.dim_eq {D : D7} {Lv : LevelData D} {u : D.what₂.Word} (X : ColR
   exact Finset.prod_congr rfl fun ρ _ => hW D.R.k (uColR D u ρ) (X.H ρ) (X.π ρ) (X.π_type ρ)
 
 /- English proof (translation)
-Take `⟨e⟩` from `hX`. Establish `hfd : ∀ ρ, FiniteDimensional ℂ (X.H ρ)` using `fun ρ => (X.π_type ρ).2.1`. Rewrite using `[e.finrank_eq, h u hs X.V X.a X.ψ, ← X.dim_eq hW]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rankMu0_of_CL (D : D7) (Lv : LevelData D) (h : LevelDataRankBound D Lv) (hW : AdmittedWeylDimension D) (u : D.what₂.Word)
     (hs : TrivStab D Lv u) (X : ColRep D Lv u) (hX : BaseWeightColumnCondition D Lv u X) :
@@ -110,14 +110,14 @@ theorem rankMu0_of_CL (D : D7) (Lv : LevelData D) (h : LevelDataRankBound D Lv) 
   ring
 
 /- English proof (translation)
-Introduce `_` and use `rankMu0_of_CL D Lv h hW u hs X hX`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mu0Tie_of_CL (D : D7) (Lv : LevelData D) (h : LevelDataRankBound D Lv) (hW : AdmittedWeylDimension D) (u : D.what₂.Word)
     (hs : TrivStab D Lv u) (X : ColRep D Lv u) (hX : BaseWeightColumnCondition D Lv u X) : Mu0Tie D u :=
   fun _ => rankMu0_of_CL D Lv h hW u hs X hX
 
 /- English proof (translation)
-The claim follows from `h17 hg u (hp u)`.
+A detailed English derivation is pending.
 -/
 theorem trivStab_of (D : D7) (Lv : LevelData D) (h17 : adm17 D Lv) (hp : Conclusion4p D Lv) (hg : GBig D)
     (u : D.what₂.Word) : TrivStab D Lv u := h17 hg u (hp u)

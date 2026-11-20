@@ -31,17 +31,17 @@ namespace GlobalTheory.ArchProdRule
 open Filter Topology
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `T Q _ _ _ f`. Simplify using `using (tendsto_const_nhds (x := (0 : SchwartzMap V ℂ)) (f := 𝓝[≠] (0 : ℝ)))`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ k ih`. Introduce `T Q hc h0 hQ f`. Establish `ht` using `ih (fun i => T i.succ) (fun i => Q i.succ) (fun i => hc i.succ) (fun i => h0 i.succ) (fun i => hQ i.succ) f`. Set `S : ℝ → SchwartzMap V ℂ →L[ℂ] SchwartzMap V ℂ` to `fun t => ⟨T 0 t, hc 0 t⟩`. Establish `hS1 : ∀ g, Tendsto (fun t => S t g) (𝓝[≠] 0) (𝓝 g)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `g`. Establish `h2 : Tendsto (fun t : ℝ => t • (t⁻¹ • (T 0 t g - g)) + g) (𝓝[≠] 0) (𝓝 ((0 : ℝ) • Q 0 g + g))` using `((tendsto_nhdsWithin_of_tendsto_nhds tendsto_id).smul (hQ 0 g)).add_const g`. Rewrite `h2` using `[zero_smul, zero_add]`. Use `h2.congr' (eventually_nhdsWithin_of_forall fun t ht => ?_)` and prove the remaining obligations. Rewrite using `[smul_smul, mul_inv_cancel₀ ht, one_smul, sub_add_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h1` using `GlobalTheory.T.schwartz_tendsto_operatorCurve_of_pointwise V S hS1 _ _ ht`. Establish `h3` using `h1.add (hQ 0 f)`. Rewrite using `[Fin.sum_univ_succ, add_comm (Q 0 f)]`. Use `h3.congr fun t => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (List.ofFn fun i => T i t).prod f = T 0 t ((List.ofFn fun i : Fin k => T i.succ t).prod f)`. Rewrite using `[List.ofFn_succ, List.prod_cons]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `show T 0 t (t⁻¹ • ((List.ofFn fun i : Fin k => T i.succ t).prod f - f)) + _ = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.map_smul_of_tower, map_sub, ← smul_add, sub_add_sub_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem slope_prod {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] :
     ∀ (k : ℕ) (T : Fin k → ℝ → SchwartzMap V ℂ →ₗ[ℂ] SchwartzMap V ℂ) (Q : Fin k → SchwartzMap V ℂ → SchwartzMap V ℂ),
@@ -80,19 +80,17 @@ theorem slope_prod {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [Finite
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ n d X W M ψ χX χW om hCM hψ hW k γ hγ T hT hadd h0 f y c hc`. Establish `hQ : ∀ i g, ∃ q, Tendsto (fun t : ℝ => t⁻¹ • (T i t g - g)) (𝓝[≠] 0) (𝓝 q)` using `fun i g => GlobalTheory.T.weil_line_cm_model_action hP M ψ χX χW om hCM hψ hW (γ i) (hγ i) (T i) (hT i) (hadd i) (h0 i) g`. Use `choose Q hQ using hQ`. Establish `hcont : ∀ i t, Continuous (T i t)` using `fun i => GlobalTheory.T.weil_line_cm_model_sum hP M ψ χX χW om hCM hψ hW (γ i) (hγ i) (T i) (hT i) (hadd i) (h0 i)`. Establish `hprod` using `slope_prod k T Q hcont h0 hQ f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ev : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d) →L[ℂ] ℂ` to `(BoundedContinuousFunction.evalCLM ℂ y).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ)`. Establish `hev : ∀ (s : ℝ) (g h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d)), ev (s • (g - h)) = s • (g y - h y)`. Introduce `s g h`. Rewrite using `[ContinuousLinearMap.map_smul_of_tower, map_sub]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hevq : ∀ g : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d), ev g = g y` using `fun g => rfl`. Establish `hci : ∀ i, c i = Q i f y`. Introduce `i`. Establish `h1` using `hasDerivAt_iff_tendsto_slope_zero.1 (hc i)`. Establish `h2` using `(ev.continuous.tendsto _).comp (hQ i f)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hevq]`. Simplify using `only [zero_add, h0] at h1`. Use `tendsto_nhds_unique h1 (h2.congr fun t => ?_)` and prove the remaining obligations. Conclude with `hev _ _ _`. Establish `hsum : (∑ i, c i) = ev (∑ i, Q i f)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (hci i).trans (hevq _).symm`. Rewrite using `[hasDerivAt_iff_tendsto_slope_zero, hsum]`. Establish `hp0 : (List.ofFn fun i => T i 0).prod = 1`. Establish `e : (fun i => T i 0) = fun _ => (1 : Module.End ℂ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d)))`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun i => LinearMap.ext (h0 i)`. Rewrite using `[e, List.ofFn_const, List.prod_replicate, one_pow]`. Establish `h1` using `(ev.continuous.tendsto _).comp hprod`. Use `h1.congr fun t => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, zero_add, hp0]`.
-
-Conclude with `hev _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_prod : GlobalTheory.FunPr.Hypotheses₂ → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n d : ℕ} {X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d}

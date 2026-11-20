@@ -15,9 +15,9 @@ section Forms
 variable {Ω : Type} [Field Ω] {N : ℕ}
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.aeval_def, MvPolynomial.aeval_def, MvPolynomial.eval₂_eq', MvPolynomial.eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hdeg : ∑ i, m i = d`. Use `hG (MvPolynomial.mem_support_iff.1 hm)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum_fintype]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [h, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem aeval_eq_pow_mul {σ : Type} [Fintype σ] {v w : σ → Ω} {t : Ω} (h : ∀ i, w i = t * v i)
     {G : MvPolynomial σ ℤ} {d : ℕ} (hG : G.IsHomogeneous d) :
@@ -32,7 +32,7 @@ theorem aeval_eq_pow_mul {σ : Type} [Fintype σ] {v w : σ → Ω} {t : Ω} (h 
   ring
 
 /- English proof (translation)
-Use `aeval_eq_pow_mul (fun i => ?_) hG` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem ratEval_eq_pow_mul (x : Fin (N + 1) → Ω) {c c' : Fin (N + 1)} (hc : x c ≠ 0)
     {G : MRing (fun _ : Unit => Fin (N + 1))} {d : ℕ} (hG : G.IsHomogeneous d) :
@@ -41,21 +41,21 @@ theorem ratEval_eq_pow_mul (x : Fin (N + 1) → Ω) {c c' : Fin (N + 1)} (hc : x
   field_simp
 
 /- English proof (translation)
-The claim follows from `(MvPolynomial.aeval_C _ n).trans (eq_intCast _ n)`.
+A detailed English derivation is pending.
 -/
 theorem ratEval_C (x : Fin (N + 1) → Ω) (c : Fin (N + 1)) (n : ℤ) :
     ratEval x c (MvPolynomial.C n) = (n : Ω) :=
   (MvPolynomial.aeval_C _ n).trans (eq_intCast _ n)
 
 /- English proof (translation)
-Simplify using `only [map_mul, MvPolynomial.aeval_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ratEval_X_mul (x : Fin (N + 1) → Ω) (c c' : Fin (N + 1)) (H : MRing (fun _ : Unit => Fin (N + 1))) :
     ratEval x c' (MvPolynomial.X ⟨(), c⟩ * H) = x c / x c' * ratEval x c' H := by
   simp only [map_mul, MvPolynomial.aeval_X]
 
 /- English proof (translation)
-Rewrite using `[add_comm d 1]`. Conclude with `(MvPolynomial.isHomogeneous_X ℤ (⟨(), c⟩ : Σ _ : Unit, Fin (N + 1))).mul hH`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHomogeneous_X_mul (c : Fin (N + 1)) {H : MRing (fun _ : Unit => Fin (N + 1))} {d : ℕ}
     (hH : H.IsHomogeneous d) : (MvPolynomial.X ⟨(), c⟩ * H : MRing (fun _ : Unit => Fin (N + 1))).IsHomogeneous (d + 1) := by
@@ -63,17 +63,17 @@ theorem isHomogeneous_X_mul (c : Fin (N + 1)) {H : MRing (fun _ : Unit => Fin (N
   exact (MvPolynomial.isHomogeneous_X ℤ (⟨(), c⟩ : Σ _ : Unit, Fin (N + 1))).mul hH
 
 /- English proof (translation)
-Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem a ha`. Take `⟨j, rfl⟩` from `ha`. Conclude with `⟨1, 1, MvPolynomial.X ⟨(), j⟩, one_ne_zero, MvPolynomial.isHomogeneous_X _ _, by simp⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `algebraMap r`. Use `⟨r.den, 0, MvPolynomial.C r.num, r.den_nz, MvPolynomial.isHomogeneous_C _ _, ?_⟩` and prove the remaining obligations. Establish `hd : (r.den : Ω) ≠ 0` using `Nat.cast_ne_zero.2 r.den_nz`. Rewrite using `[eq_ratCast (algebraMap ℚ Ω) r, Rat.cast_def]`. Rewrite using `[ratEval_C]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Consider the case `add a b _ _ ha hb`. Take `⟨m₁, d₁, H₁, hm₁, hH₁, hv₁⟩` from `ha`. Take `⟨m₂, d₂, H₂, hm₂, hH₂, hv₂⟩` from `hb`. Establish `hX : (MvPolynomial.X ⟨(), c⟩ : MRing (fun _ : Unit => Fin (N + 1))).IsHomogeneous 1` using `MvPolynomial.isHomogeneous_X _ _`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m₁ * m₂, d₁ + d₂, MvPolynomial.C (m₂ : ℤ) * H₁ * MvPolynomial.X ⟨(), c⟩ ^ d₂ + MvPolynomial.C (m₁ : ℤ) * H₂ * MvPolynomial.X ⟨(), c⟩ ^ d₁, mul_ne_zero hm₁ hm₂, ?_, ?_⟩` and prove the remaining obligations. Use `MvPolynomial.IsHomogeneous.add ?_ ?_` and prove the remaining obligations. Simplify using `using ((MvPolynomial.isHomogeneous_C _ (m₂ : ℤ)).mul hH₁).mul (hX.pow d₂)`. Simplify `((MvPolynomial.isHomogeneous_C _ (m₁ : ℤ)).mul hH₂).mul (hX.pow d₁)` using `[add_comm]`. Simplify using `only [map_add, map_mul, map_pow, MvPolynomial.aeval_X, ratEval_C, hv₁, hv₂, div_self hc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul a b _ _ ha hb`. Take `⟨m₁, d₁, H₁, hm₁, hH₁, hv₁⟩` from `ha`. Take `⟨m₂, d₂, H₂, hm₂, hH₂, hv₂⟩` from `hb`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m₁ * m₂, d₁ + d₂, H₁ * H₂, mul_ne_zero hm₁ hm₂, hH₁.mul hH₂, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, hv₁, hv₂]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_form [Algebra ℚ Ω] (x : Fin (N + 1) → Ω) {c : Fin (N + 1)} (hc : x c ≠ 0) {a : Ω}
     (ha : a ∈ chartQ x c) :
@@ -120,7 +120,7 @@ section Pts
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {N : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simpa using intCast_mem (regAt ξ p) a`. Consider the case `add a b ha hb => simpa using (regAt ξ p).add_mem ha hb`. Consider the case `mul_X a i ha => simpa using (regAt ξ p).mul_mem ha (hc.2 i.2)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem ratEval_regular {x : Fin (N + 1) → Ω} {c : Fin (N + 1)} {p : Cpt ξ} (hc : InChart ξ x c p)
     (g : MRing (fun _ : Unit => Fin (N + 1))) : ratEval x c g ∈ regAt ξ p := by
@@ -130,9 +130,9 @@ theorem ratEval_regular {x : Fin (N + 1) → Ω} {c : Fin (N + 1)} {p : Cpt ξ} 
   | mul_X a i ha => simpa using (regAt ξ p).mul_mem ha (hc.2 i.2)
 
 /- English proof (translation)
-Use `⟨hc, fun j => ?_⟩` and prove the remaining obligations. Establish `e : x j / x c = x j / x c' * (x c / x c')⁻¹`. Use `hc'.1` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(regAt ξ q).mul_mem (hc'.2 j) ht.2.2`.
+A detailed English derivation is pending.
 -/
 theorem inChart_of_unitAt {x : Fin (N + 1) → Ω} {c c' : Fin (N + 1)} {q : Cpt ξ} (hc : x c ≠ 0)
     (hc' : InChart ξ x c' q) (ht : unitAt ξ q (x c / x c')) : InChart ξ x c q := by
@@ -144,11 +144,11 @@ theorem inChart_of_unitAt {x : Fin (N + 1) → Ω} {c c' : Fin (N + 1)} {q : Cpt
   exact (regAt ξ q).mul_mem (hc'.2 j) ht.2.2
 
 /- English proof (translation)
-Introduce `hunit`. Establish `ht : x c / x c' ∈ regAt ξ q` using `hc'.2 c`. Establish `h₁` using `hunit`. Rewrite `h₁` using `[ratEval_X_mul]`. Establish `htu : unitAt ξ q (x c / x c')` using `unitAt_of_mul_left h₁ ht (ratEval_regular hc' H)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcq : InChart ξ x c q` using `inChart_of_unitAt hc hc' htu`. Establish `hr : a ∈ regAt ξ q` using `har hcq`. Establish `hmu` using `Char0.unitAt_natCast hq0 hm`. Establish `h₂` using `hunit`. Rewrite `h₂` using `[ratEval_eq_pow_mul x hc (isHomogeneous_X_mul c hH), ratEval_X_mul, div_self hc, _root_.one_mul, hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hma : unitAt ξ q ((m : Ω) * a)` using `unitAt_of_mul_right h₂ ((regAt ξ q).pow_mem ht _) ((regAt ξ q).mul_mem hmu.2.1 hr)`. Conclude with `hnon hcq (unitAt_of_mul_right hma hmu.2.1 hr)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_unitAt_form [CharZero Ω] {x : Fin (N + 1) → Ω} {c c' : Fin (N + 1)} {q : Cpt ξ} {a : Ω}
     (hc : x c ≠ 0) (hq0 : Char0 ξ q) (hc' : InChart ξ x c' q) (har : InChart ξ x c q → a ∈ regAt ξ q)
@@ -176,7 +176,7 @@ section Sep
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] [CharZero Ω] {ξ : Sp Ω ⟶ X} {N : ℕ}
 
 /- English proof (translation)
-Establish `hmem : MvPolynomial.X ⟨(), c⟩ * H ∈ bdGens ξ x B` using `⟨d + 1, isHomogeneous_X_mul c hH, fun c' q hq hc' => not_unitAt_form hc.1 (hB q hq) hc' (hreg q (hB q hq)) (hnon q hq) hm hH hv⟩`. Use `⟨_, hmem, ?_⟩` and prove the remaining obligations. Rewrite using `[ratEval_X_mul, div_self hc.1, _root_.one_mul, hv]`. Conclude with `unitAt_mul (Char0.unitAt_natCast hp hm) hu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_form_sep {x : Fin (N + 1) → Ω} {c : Fin (N + 1)} {B : Set (Cpt ξ)} {p : Cpt ξ} {a : Ω}
     (hB : ∀ q ∈ B, Char0 ξ q) (hp : Char0 ξ p) (hc : InChart ξ x c p)
@@ -194,7 +194,7 @@ theorem exists_form_sep {x : Fin (N + 1) → Ω} {c : Fin (N + 1)} {B : Set (Cpt
 end Sep
 
 /- English proof (translation)
-Introduce `Ω _ _ X ξ N x c B p a hB hp hc ha hu hnon`. Take `⟨m, d, H, hm, hH, hv⟩` from `exists_form x hc.1 ha`. Conclude with `exists_form_sep hB hp hc (fun q hq hcq => chartQ_le hq hcq ha) hu hnon hm hH hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_bdGens_unitAt : ∀ (Ω : Type) [Field Ω] [CharZero Ω] (X : Scheme.{0}) (ξ : Sp Ω ⟶ X) (N : ℕ) (x : Fin (N + 1) → Ω) (c : Fin (N + 1)) (B : Set (Cpt ξ)) (p : Cpt ξ) (a : Ω), (∀ q ∈ B, Char0 ξ q) → Char0 ξ p → InChart ξ x c p → a ∈ Mdl.chartQ x c → unitAt ξ p a → (∀ q ∈ B, InChart ξ x c q → ¬ unitAt ξ q a) → ∃ G ∈ Mdl.bdGens ξ x B, unitAt ξ p (Mdl.ratEval x c G) := by
   intro Ω _ _ X ξ N x c B p a hB hp hc ha hu hnon

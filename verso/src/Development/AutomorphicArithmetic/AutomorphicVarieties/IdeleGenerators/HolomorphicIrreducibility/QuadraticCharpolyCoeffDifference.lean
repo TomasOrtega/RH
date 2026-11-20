@@ -7,7 +7,7 @@ open scoped Matrix
 namespace UpperTheory.V.Sd
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_fin_two, Matrix.trace_fin_two, Matrix.det_fin_three]`. Simplify using `[symSquareMatrixHom, Matrix.scalar_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem det_scalar_sub_symmetric_square (S : Type) [CommRing S] (x e : S) (g : Matrix (Fin 2) (Fin 2) S) :
     (Matrix.scalar (Fin 3) x - e • symSquareMatrixHom S g).det =
@@ -20,11 +20,11 @@ private noncomputable def a0F {S : Type} [CommRing S] (u : S) : S[X] :=
   X ^ 3 + C (-u) * X ^ 2 + C u * X ^ 1 + C (-1) * X ^ 0
 
 /- English proof (translation)
-Establish `h : Matrix.charmatrix (e • symSquareMatrixHom S g) = Matrix.scalar (Fin 3) X - C e • symSquareMatrixHom S[X] (g.map C)`. Unfold `Matrix.charmatrix`. Use `congr 1`. Use extensionality with `i j : 2`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [symSquareMatrixHom, map_ofNat]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hd : (g.map C).det = C g.det`. Simplify using `[Matrix.det_fin_two]`. Establish `ht : (g.map C).trace = C g.trace`. Simplify using `[Matrix.trace_fin_two]`. Establish `he' : C e * C g.det = 1` using `by rw [← map_mul, he, map_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.charpoly, h, det_scalar_sub_symmetric_square, hd, ht, mul_sub (C e), he']`. Simplify using `only [a0F, map_sub, map_mul, map_pow, map_neg, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem adjoint_square_charpoly (S : Type) [CommRing S] (e : S) (g : Matrix (Fin 2) (Fin 2) S) (he : e * g.det = 1) :
     (e • symSquareMatrixHom S g).charpoly = a0F (e * g.trace ^ 2 - 1) := by
@@ -43,9 +43,9 @@ private theorem adjoint_square_charpoly (S : Type) [CommRing S] (e : S) (g : Mat
   ring
 
 /- English proof (translation)
-Establish `h1 : (a * b)⁻¹ * (a + b) ^ 2 - 1 = a / b + 1 + b / a` using `by field_simp; ring`. Establish `h2 : C (a / b) * C (b / a) = 1`. Rewrite using `[← map_mul, show a / b * (b / a) = 1 by field_simp, map_one]`. Rewrite using `[h1]`. Simplify using `only [a0F, map_add, map_neg, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `(1 - X) * h2`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem adjoint_charpoly_roots {S : Type} [Field S] (a b : S) (ha : a ≠ 0) (hb : b ≠ 0) :
     a0F ((a * b)⁻¹ * (a + b) ^ 2 - 1) = (X - C (a / b)) * (X - C 1) * (X - C (b / a)) := by
@@ -57,9 +57,9 @@ private theorem adjoint_charpoly_roots {S : Type} [Field S] (a b : S) (ha : a �
   linear_combination (1 - X) * h2
 
 /- English proof (translation)
-Establish `h : (X - C a) * (X - C b) = X ^ 2 - C (a + b) * X + C (a * b)`. Simplify using `only [map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, Matrix.charpoly_fin_two]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [coeff_add, coeff_sub, coeff_X_pow, coeff_C_mul, coeff_X_one, coeff_C] simp`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [coeff_add, coeff_sub, coeff_X_pow, coeff_C_mul, coeff_X_zero, coeff_C]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem quadratic_charpoly_coeff_difference {S : Type} [CommRing S] [Nontrivial S] (g : Matrix (Fin 2) (Fin 2) S) (a b : S) :
     g.charpoly.coeff 1 - ((X - C a) * (X - C b)).coeff 1 = -(g.trace - (a + b)) ∧
@@ -80,7 +80,7 @@ variable {K : Type} [NormedField K] [IsUltrametricDist K]
 private def Rl (x y : K) : Prop := ‖y‖ ≤ 1 ∧ ‖x - y‖ < 1
 
 /- English proof (translation)
-Use `IsUltrametricDist.norm_add_le_max (x - y) y` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Conclude with `this.trans (max_le h.2.le h.1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Rl.left {x y : K} (h : Rl x y) : ‖x‖ ≤ 1 := by
   have := IsUltrametricDist.norm_add_le_max (x - y) y
@@ -88,9 +88,9 @@ private theorem Rl.left {x y : K} (h : Rl x y) : ‖x‖ ≤ 1 := by
   exact this.trans (max_le h.2.le h.1)
 
 /- English proof (translation)
-Use `⟨by rw [norm_mul]; exact mul_le_one₀ h.1 (norm_nonneg _) h'.1, ?_⟩` and prove the remaining obligations. Rewrite using `[show x * z - y * w = x * (z - w) + (x - y) * w by ring]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right h.left (norm_nonneg _) h'.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) h.2 h'.1`.
+A detailed English derivation is pending.
 -/
 private theorem Rl.mul {x y z w : K} (h : Rl x y) (h' : Rl z w) : Rl (x * z) (y * w) := by
   refine ⟨by rw [norm_mul]; exact mul_le_one₀ h.1 (norm_nonneg _) h'.1, ?_⟩
@@ -102,9 +102,9 @@ private theorem Rl.mul {x y z w : K} (h : Rl x y) (h' : Rl z w) : Rl (x * z) (y 
     exact mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) h.2 h'.1
 
 /- English proof (translation)
-Establish `hx : ‖x‖ = 1`. Use `le_antisymm h.left (not_lt.mp fun hx => ?_)` and prove the remaining obligations. Use `IsUltrametricDist.norm_add_le_max x (-(x - y))` as an intermediate fact. Rewrite `this` using `[norm_neg, show x + -(x - y) = y by ring, hy]`. Conclude with `absurd (max_lt hx h.2) (not_lt.mpr this)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hx0 : x ≠ 0` using `by rintro rfl; simp at hx`. Establish `hy0 : y ≠ 0` using `by rintro rfl; simp at hy`. Use `⟨by rw [norm_inv, hy, inv_one], ?_⟩` and prove the remaining obligations. Rewrite using `[show x⁻¹ - y⁻¹ = -(x - y) * (x⁻¹ * y⁻¹) by field_simp; ring, norm_mul, norm_mul, norm_neg, norm_inv, norm_inv, hx, hy]`. Simplify using `using h.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem Rl.inv {x y : K} (h : Rl x y) (hy : ‖y‖ = 1) : Rl x⁻¹ y⁻¹ := by
   have hx : ‖x‖ = 1 := by
@@ -120,9 +120,9 @@ private theorem Rl.inv {x y : K} (h : Rl x y) (hy : ‖y‖ = 1) : Rl x⁻¹ y�
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-Simplify using `only [a0F, coeff_add, coeff_C_mul, coeff_X_pow]`. Break down `i with _ | _ | _ | _ | i` into its components or cases. Simplify using the standard rewrite rules. Simplify using `using h`. Rewrite `h` using `[norm_sub_rev]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h` using `[neg_add_eq_sub]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem adjoint_charpoly_coeff_close {u u' : K} (h : ‖u - u'‖ < 1) (i : ℕ) :
     ‖(a0F u).coeff i - (a0F u').coeff i‖ < 1 := by
@@ -138,7 +138,7 @@ private theorem adjoint_charpoly_coeff_close {u u' : K} (h : ‖u - u'‖ < 1) (
 end Rel
 
 /- English proof (translation)
-Rewrite using `[ad0, tw_val]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem adjoint_square_apply {Γ k : Type} [Group Γ] [Field k] (ρ : Γ →* GL (Fin 2) k) (s : Γ) :
     (ad0 ρ s : Matrix (Fin 3) (Fin 3) k) =
@@ -147,7 +147,7 @@ private theorem adjoint_square_apply {Γ k : Type} [Group Γ] [Field k] (ρ : Γ
   simp
 
 /- English proof (translation)
-Rewrite using `[← map_inv, Units.val_mul, Units.val_mul, adjoint_square_apply, Units.val_mul, Units.val_mul, Matrix.det_units_conj, map_mul, map_mul, Matrix.mul_smul, Matrix.smul_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem adjoint_square_conjugate {Γ k : Type} [Group Γ] [Field k] (ρ : Γ →* GL (Fin 2) k) (g : GL (Fin 2) k) (s : Γ) :
     ((Units.map (symSquareMatrixHom k) g * ad0 ρ s * (Units.map (symSquareMatrixHom k) g)⁻¹ : GL (Fin 3) k) : Matrix (Fin 3) (Fin 3) k) =
@@ -158,7 +158,7 @@ private theorem adjoint_square_conjugate {Γ k : Type} [Group Γ] [Field k] (ρ 
   rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_fin_two]`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_three, Matrix.transpose_apply, Matrix.smul_apply, smul_eq_mul]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [symSquareMatrixHom] <;> ring`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem symmetric_square_preserves_form (S : Type) [CommRing S] (g : Matrix (Fin 2) (Fin 2) S) :
     (symSquareMatrixHom S g)ᵀ * !![0, 0, -2; 0, 1, 0; -2, 0, 0] * symSquareMatrixHom S g =
@@ -169,14 +169,14 @@ private theorem symmetric_square_preserves_form (S : Type) [CommRing S] (g : Mat
   fin_cases i <;> fin_cases j <;> simp [symSquareMatrixHom] <;> ring
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [symSquareMatrixHom] <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem continuous_symmetric_square (S : Type) [CommRing S] [TopologicalSpace S] [IsTopologicalRing S] : Continuous (symSquareMatrixHom S) := by
   refine continuous_matrix fun i j => ?_
   fin_cases i <;> fin_cases j <;> simp [symSquareMatrixHom] <;> fun_prop
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [symSquareMatrixHom]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem symmetric_square_diagonal (S : Type) [CommRing S] (d : Fin 2 → S) :
     symSquareMatrixHom S (Matrix.diagonal d) = Matrix.diagonal ![d 0 ^ 2, d 0 * d 1, d 1 ^ 2] := by
@@ -184,7 +184,7 @@ private theorem symmetric_square_diagonal (S : Type) [CommRing S] (d : Fin 2 →
   fin_cases i <;> fin_cases j <;> simp [symSquareMatrixHom]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `intro i j hij fin_cases i <;> fin_cases j <;> first | exact absurd hij (by decide) | simp [symSquareMatrixHom, h]`. Apply the tactic sequence `intro i fin_cases i <;> simp [symSquareMatrixHom, h]`.
+Prove the components needed by the constructor for the conclusion. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem symmetric_square_upper_triangular (S : Type) [CommRing S] (m : Matrix (Fin 2) (Fin 2) S) (h : m 1 0 = 0) :
     (∀ i j, j < i → symSquareMatrixHom S m i j = 0) ∧
@@ -199,27 +199,27 @@ end UpperTheory.V.Sd
 
 open UpperTheory.V.Sd in
 /- English proof (translation)
-Introduce `l _ Γ _ _ ρ`. Establish `hd0 : ∀ g : GL (Fin 2) (Qbar l), (g : Matrix (Fin 2) (Fin 2) (Qbar l)).det ≠ 0` using `fun g => g.det_ne_zero`. Establish `hcp : ∀ s, (ad0 ρ s : Matrix (Fin 3) (Fin 3) (Qbar l)).charpoly = a0F (((ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)).det)⁻¹ * (ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)).trace ^ 2 - 1)` using `fun s => by`. Rewrite using `[adjoint_square_apply, adjoint_square_charpoly _ _ _ (inv_mul_cancel₀ (hd0 _))]`. Use `⟨fun h => ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hA : Continuous fun g : GL (Fin 2) (Qbar l) => ((g : Matrix (Fin 2) (Fin 2) (Qbar l)).det)⁻¹ • symSquareMatrixHom (Qbar l) (g : Matrix (Fin 2) (Fin 2) (Qbar l))` using `(Units.continuous_val.matrix_det.inv₀ hd0).smul ((continuous_symmetric_square _).comp Units.continuous_val)`. Use `Units.continuous_iff.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(hA.comp h).congr fun s => (adjoint_square_apply ρ s).symm`. Use `(hA.comp h.inv).congr fun s => ?_` and prove the remaining obligations. Rewrite using `[← map_inv, adjoint_square_apply, map_inv]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero !![0, 0, -2; 0, 1, 0; -2, 0, 0] (by simp [Matrix.det_fin_three]), ?_, fun s => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(!![0, 0, -2; 0, 1, 0; -2, 0, 0] : Matrix (Fin 3) (Fin 3) (Qbar l))ᵀ = !![0, 0, -2; 0, 1, 0; -2, 0, 0]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ * (!![0, 0, -2; 0, 1, 0; -2, 0, 0] : Matrix (Fin 3) (Fin 3) (Qbar l)) * _ = !![0, 0, -2; 0, 1, 0; -2, 0, 0]`. Rewrite using `[adjoint_square_apply, Matrix.transpose_smul, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, symmetric_square_preserves_form, smul_smul, smul_smul, ← pow_two, ← mul_pow, inv_mul_cancel₀ (hd0 _), one_pow, one_smul]`. Introduce and unpack `H a b ⟨g, hg⟩`. Use `(shapeFacts l Γ 3 (ad0 ρ) 1).2.1 H ![a / b, 1, b / a] _ Fin.revPerm ⟨Units.map (symSquareMatrixHom _) g, fun s hs => ?_⟩ ?_` and prove the remaining obligations. Rewrite using `[adjoint_square_conjugate, hg s hs, symmetric_square_diagonal, ← Matrix.diagonal_smul, Matrix.det_diagonal]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp <;> field_simp`. Apply the tactic sequence `intro i s _ fin_cases i <;> rfl`. Introduce and unpack `H κ ⟨g, hg⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Units.map (symSquareMatrixHom _) g, fun s => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hg s`. Take `⟨k1, k2⟩` from `symmetric_square_upper_triangular _ _ (h1 1 0 (by decide))`. Rewrite using `[adjoint_square_conjugate]`. Use `⟨fun i j hij => by rw [Matrix.smul_apply, k1 i j hij, smul_zero], fun i => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_apply, k2, Matrix.det_fin_two, h2 0, h2 1, h1 1 0 (by decide)]`. Apply the tactic sequence `fin_cases i <;> simp <;> field_simp`. Introduce `s a b h`. Take `⟨h1, h0⟩` from `quadratic_charpoly_coeff_difference (ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)) a b`. Rewrite `h1`, `h0` using `[h, sub_self]`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcp, sub_eq_zero.mp (neg_eq_zero.mp h1.symm), sub_eq_zero.mp h0.symm, adjoint_charpoly_roots _ _ a.ne_zero b.ne_zero]`. Simplify using the standard rewrite rules. Introduce `a b hab h s i`. Take `⟨h1, h0⟩` from `quadratic_charpoly_coeff_difference (ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)) (a s) (b s)`. Establish `k1` using `h s 1`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k0` using `h s 0`. Simplify using `only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one] at k1 k0`. Rewrite `k1` using `[h1, norm_neg]`. Rewrite `k0` using `[h0]`. Establish `ht : Rl (ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)).trace ((a s : Qbar l) + b s)` using `⟨(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hab s).1.le (hab s).2.le), k1⟩`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ‖(a s : Qbar l) * b s‖ = 1` using `by rw [norm_mul, (hab s).1, (hab s).2, one_mul]`. Establish `hd : Rl (ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)).det ((a s : Qbar l) * b s)` using `⟨hn.le, k0⟩`. Establish `e` using `((hd.inv hn).mul (ht.mul ht)).2`. Rewrite `e` using `[← pow_two, ← pow_two, ← sub_sub_sub_cancel_right _ _ 1]`. Use `adjoint_charpoly_coeff_close e i` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[adjoint_charpoly_roots _ _ (a s).ne_zero (b s).ne_zero]`. Rewrite using `[hcp]`. Rewrite using `[Fin.prod_univ_three, mul_right_comm, mul_comm (X - C _) (X - C _), mul_right_comm]`. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Sd.ad0Facts :
     UpperTheory.V.Sd.Ad0Facts := by

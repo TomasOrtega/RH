@@ -11,15 +11,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.RowChain
 
 /- English proof (translation)
-Introduce `vN Φ₁ Φ₂ φ hΦ₁ hΦ₂ hφ g h₁ h₂`. Establish `rA : Pair.InRange D.R.m (.top t j)`. Simplify using `[Pair.InRange, Pair.big, Node.InRange]`. Use linear arithmetic over natural numbers and integers. Establish `rB : Pair.InRange D.R.m (.top t (j + 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Simplify using `[Pair.InRange, Pair.big, Node.InRange]`. Use linear arithmetic over natural numbers and integers. Establish `hA` using `Wl.om_is (.top t j) rA`. Establish `hB` using `Wl.om_is (.top t (j + 1)) rB`. Establish `hoa : IsWeilDatumO Wl.ψ (G.V (.top j)) (G.V (.top (j + 1))) (G.chrS (.top t j)) (G.chrT (.mu t D.R.m j)) (Wl.om (.top t j))` using `e2 ▸ hA`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hob : IsWeilDatumO Wl.ψ (G.V (.top (j + 1))) (G.V (.top (j + 1 + 1))) (G.chrS (.mu t D.R.m (j + 1))) (G.chrT (.top t (j + 1))) (Wl.om (.top t (j + 1)))` using `e3 ▸ hB`. Take `⟨omz, hoz⟩` from `GlobalTheory.WeilDatumExistence.weilDatumExists D (GlobalTheory.SeeSaw.Model.nLine D) (G.V (.top (j + 1))) Wl.ψ χz (G.chrT (.mu t D.R.m j)) Wl.ψ_std hz hoa.hecT hzr hoa.resT`. Take `⟨omz', hoz'⟩` from `GlobalTheory.WeilDatumExistence.weilDatumExists D (G.V (.top (j + 1))) (GlobalTheory.SeeSaw.Model.nLine D) Wl.ψ (G.chrS (.mu t D.R.m (j + 1))) χz Wl.ψ_std hob.hecS hz hob.resS hzr`. Establish `hth` using `GlobalTheory.Unf.FlatTheta.flat_isThetaFun D (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D) Wl.ψ`. Set `B` to `besAt G hM j (σ + 1) hj vN`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `J` to `jacAt G hM (j + 1) (σ + 1) (by omega)`. Set `B'` to `besAt G hM (j + 1 + 1) σ (by omega) (GlobalTheory.Unf.Inhab.nonempty_volN (besDecAt G (j + 1 + 1) σ (by omega))).some`. Set `s₁ : StepBF Wl.ψ B J` to `stepAt G Wl t hM j (by omega) (besDecAt G j (σ + 1) hj) (rowJac G (j + 1) (by omega) (σ + 1) (by omega))`. Set `s₂ : StepFB Wl.ψ J B'` to `stepAt G Wl t hM (j + 1) (by omega) (rowJac G (j + 1) (by omega) (σ + 1) (by omega)) (besDecAt G (j + 1 + 1) σ (by omega))`. Establish `hΞ₁ : IsThetaFunO Wl.ψ B.V₀ J.W₀ (flatBF s₁ (s₁.om (g, h₁) Φ₁))` using `hth.1 (σ + 1) B J s₁ _ (s₁.weil.om_pres (g, h₁) Φ₁ hΦ₁)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hΞ₂ : IsThetaFunO Wl.ψ J.W₀ B'.V₀ (flatFB s₂ (s₂.om (h₁, h₂) Φ₂))` using `hth.2 σ J B' s₂ _ (s₂.weil.om_pres (h₁, h₂) Φ₂ hΦ₂)`. Use function extensionality and compare the values at `h₂'`. Conclude with `(GlobalTheory.Unf.Contr.contrLaw D Wl.ψ σ B J B' s₁ s₂ (linkAt hM j σ hj vN (by omega) _) ((GlobalTheory.Unf.Inhab.nonempty_volM D _ _).some) (G.chrS (.top t j)) (G.chrT (.top t (j + 1))) χz (Wl.om (.top t j)) omz (Wl.om (.top t (j + 1))) omz' e1 e4 hoa hoz hob hoz' φ _ _ hφ hΞ₁ …`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem dbl_hand_of_chars {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (Wl : G.Weil) (t : T)
     {M : GlobalTheory.FunObj.Vol G} (hM : M.Is t) (σ j : ℕ) (hj : j + 2 * (σ + 1) + 2 = D.R.m) (χz : (AE D)ˣ →* Circle)

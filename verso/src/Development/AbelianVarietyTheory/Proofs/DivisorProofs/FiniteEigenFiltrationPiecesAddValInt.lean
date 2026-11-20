@@ -12,7 +12,7 @@ variable {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)} {S : Type} [Fin
   [DecidableEq S]
 
 /- English proof (translation)
-The claim follows from `monic_prod_of_monic _ _ fun s _ => monic_X_sub_C (a s)`.
+A detailed English derivation is pending.
 -/
 theorem monic_prod (a : S → Int0 v) : (∏ s, (X - Polynomial.C (a s)) : (Int0 v)[X]).Monic :=
   monic_prod_of_monic _ _ fun s _ => monic_X_sub_C (a s)
@@ -22,9 +22,9 @@ def powBasis (a : S → Int0 v) : PowerBasis (Int0 v) (RS a) := AdjoinRoot.power
 instance finite_RS (a : S → Int0 v) : Module.Finite (Int0 v) (RS a) := (powBasis a).finite
 
 /- English proof (translation)
-Establish `b` using `(powBasis a).basis`. Apply `b.repr.injective` to reduce the goal to its premises. Use `Finsupp.ext fun i => ?_` and prove the remaining obligations. Establish `h2` using `congrArg (fun z => b.repr z i) h`. Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul, map_zero, Finsupp.coe_zero, Pi.zero_apply] at h2`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_zero, Finsupp.coe_zero, Pi.zero_apply]`. Conclude with `(mul_eq_zero.1 h2).resolve_left hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_smul_RS (a : S → Int0 v) {c : Int0 v} (hc : c ≠ 0) {y : RS a}
     (h : c • y = 0) : y = 0 := by
@@ -38,7 +38,7 @@ theorem eq_zero_of_smul_RS (a : S → Int0 v) {c : Int0 v} (hc : c ≠ 0) {y : R
   exact (mul_eq_zero.1 h2).resolve_left hc
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `h3` using `congrFun h i`. Simplify using `only [Pi.smul_apply, Pi.zero_apply] at h3`. Conclude with `eq_zero_of_smul_RS a hc h3`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_smul_pi (a : S → Int0 v) {N : ℕ} {c : Int0 v} (hc : c ≠ 0)
     {y : Fin N → RS a} (h : c • y = 0) : y = 0 := by
@@ -48,7 +48,7 @@ theorem eq_zero_of_smul_pi (a : S → Int0 v) {N : ℕ} {c : Int0 v} (hc : c ≠
   exact eq_zero_of_smul_RS a hc h3
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.isSaturatedSubmodule_iff]`. Introduce `c hc x hx`. Simplify using `only [kerMul, Submodule.restrictScalars_mem, LinearMap.mem_ker, LinearMap.lsmul_apply] at hx ⊢`. Rewrite `hx` using `[smul_comm]`. Conclude with `htf c _ hc hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sat_kerMul (a : S → Int0 v) (r : RS a) (Q : Type) [AddCommGroup Q] [Module (RS a) Q]
     [Module (Int0 v) Q] [IsScalarTower (Int0 v) (RS a) Q]
@@ -61,15 +61,13 @@ theorem sat_kerMul (a : S → Int0 v) (r : RS a) (Q : Type) [AddCommGroup Q] [Mo
   exact htf c _ hc hx
 
 /- English proof (translation)
-Introduce `C _ v S _ _ a _ N Fil hFil τ`. Establish `hsatF : GlobalTheory.IsSaturatedSubmodule (Fil.restrictScalars (Int0 v))` using `GlobalTheory.isSaturatedSubmodule_iff.2 fun c hc x hx => hFil c x hc hx`. Establish `hT1 : ∀ (c : Int0 v) (y : Fin N → RS a), c ≠ 0 → c • y = 0 → y = 0` using `fun c y hc h => eq_zero_of_smul_pi a hc h`. Establish `hT2 : ∀ (c : Int0 v) (y : Fil), c ≠ 0 → c • y = 0 → y = 0` using `fun c y hc h => Subtype.ext (hT1 c y hc (congrArg Subtype.val h))`. Establish `hT3 : ∀ (c : Int0 v) (y : (Fin N → RS a) ⧸ Fil), c ≠ 0 → c • y = 0 → y = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c y hc h`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H x`. Rewrite `h` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hFil c x hc h`. Establish `hF : Module.Finite (Int0 v) (Fil.restrictScalars (Int0 v))` using `hsatF.finite_of_valuationRing`. Establish `hFil' : Module.Finite (Int0 v) Fil` using `hF`. Establish `hQ : Module.Finite (Int0 v) ((Fin N → RS a) ⧸ Fil)` using `Module.Finite.of_surjective (proj a Fil) (Submodule.mkQ_surjective Fil)`. Use `⟨hF, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hsatF.comap (mulR a N (lin a τ))).finite_of_valuationRing`. Use `(hsatF.inf ?_).finite_of_valuationRing` and prove the remaining obligations. Conclude with `sat_kerMul a (cofac a τ) (Fin N → RS a) hT1`. Conclude with `(sat_kerMul a (lin a τ) (Fin N → RS a) hT1).finite_of_valuationRing`. Conclude with `(sat_kerMul a (lin a τ) _ hT3).finite_of_valuationRing`.
-
-Conclude with `(sat_kerMul a (lin a τ) Fil hT2).finite_of_valuationRing`. Conclude with `(sat_kerMul a (cofac a τ) Fil hT2).finite_of_valuationRing`.
+A detailed English derivation is pending.
 -/
 theorem finite_main : ∀ (C : Type) [Field C] (v : AddValuation C (WithTop ℝ)) (S : Type) [Fintype S] [DecidableEq S] (a : S → Int0 v), Function.Injective a → ∀ (N : ℕ) (Fil : Submodule (RS a) (Fin N → RS a)), (∀ (c : Int0 v) (x : Fin N → RS a), c ≠ 0 → c • x ∈ Fil → x ∈ Fil) → ∀ τ : S, Module.Finite (Int0 v) (Fil.restrictScalars (Int0 v)) ∧ Module.Finite (Int0 v) (preEig a Fil τ) ∧ Module.Finite (Int0 v) (filKer a Fil τ) ∧ Module.Finite (Int0 v) (eigSub a τ (Fin N → RS a)) ∧ Module.Finite (Int0 v) (eigSub a τ ((Fin N → RS a) ⧸ Fil)) ∧ Module.Finite (Int0 v) (eigSub a τ Fil) ∧ Module.Finite (Int0 v) (kerMul a (cofac a τ) Fil) := by
   intro C _ v S _ _ a _ N Fil hFil τ

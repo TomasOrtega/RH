@@ -8,9 +8,9 @@ open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 namespace GlobalTheory.HTW
 
 /- English proof (translation)
-Introduce `R H τ φ hord a b ha hb`. Establish `key : ∀ g : R.GG, Thick H g → ∃ s ∈ H.T2, R.tau2 (R.dig s + H.u0) = plc g`. Introduce `g hg`. Unfold `Thick Host.thickPlaces at hg`. Simplify `hg` using `[Finset.mem_image]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `UpperTheory.KStar.Words.thick_one_place H.T2 H.second_set_range H.u0 τ φ ((Nat.le_of_dvd (orderOf_pos _) (R.toFrame.orderOf_hH_dvd φ.2)).trans hord) a.val b.val (key _ ha) (key _ hb)`.
+A detailed English derivation is pending.
 -/
 theorem short_orbit_one_thick : ∀ {R : Ranks} (H : Host R) (τ φ : R.GG),
     orderOf φ.2 ≤ 4 * H.Lw → ∀ a b : ZMod (orderOf φ), Thick H (letter τ φ a) →

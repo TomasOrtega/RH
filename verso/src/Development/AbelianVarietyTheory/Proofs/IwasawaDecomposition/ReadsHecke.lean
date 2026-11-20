@@ -42,7 +42,7 @@ def WtMatch {K : Type} [Field K] (e : K →+* ℂ) {W W' : Type} [AddCommGroup W
     ∀ γ, LinearMap.toMatrix b' b' (ρ' γ) = (LinearMap.toMatrix b b (ρ γ)).map e
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => Iff.rfl, fun _ _ => Iff.rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : FrameAut (MulEquiv.refl (GAf L n)) := ⟨fun _ => Iff.rfl, fun _ _ => Iff.rfl⟩
 

@@ -23,20 +23,20 @@ def red (n : ℕ) (F : Type) [Field F] : MRing (PBlk n) →+* MvPolynomial (Fin 
       MRing (PBlk n) →+* MvPolynomial (Fin n) ℤ)
 
 /- English proof (translation)
-The claim follows from `(MvPolynomial.map_surjective _ hF).comp (RingEquiv.surjective _)`.
+A detailed English derivation is pending.
 -/
 theorem red_surjective (hF : Function.Surjective (Int.castRingHom F)) :
     Function.Surjective (red n F) :=
   (MvPolynomial.map_surjective _ hF).comp (RingEquiv.surjective _)
 
 /- English proof (translation)
-Simplify using `[red, VerticalPartMultiplicity.eb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem red_X (i : Fin n) : red n F (X ⟨(), i⟩) = X i := by
   simp [red, VerticalPartMultiplicity.eb]
 
 /- English proof (translation)
-Rewrite using `[VerticalPartMultiplicity.finIdeal_eq_map, Ideal.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finIdeal_map (J : Ideal (MRing (PBlk n))) :
     (IndefiniteRowSideFullHecke.ArithBezout.finIdeal J).map (MvPolynomial.map (Int.castRingHom F)) = J.map (red n F) := by
@@ -44,11 +44,11 @@ theorem finIdeal_map (J : Ideal (MRing (PBlk n))) :
   rfl
 
 /- English proof (translation)
-Establish `: CharP F p` using `(CharP.charP_iff_prime_eq_zero hp).mpr (by exact_mod_cast hpF)`. Establish `hk : RingHom.ker (Int.castRingHom F) = Ideal.span {(p : ℤ)}`. Use extensionality with `a`. Rewrite using `[RingHom.mem_ker, Ideal.mem_span_singleton, eq_intCast, CharP.intCast_eq_zero_iff F p]`. Introduce `f hf`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf' : (renameEquiv ℤ (VerticalPartMultiplicity.eb n)).symm f ∈ RingHom.ker (MvPolynomial.map (σ` using `Fin n) (Int.castRingHom F)) := hf`. Rewrite `hf'` using `[MvPolynomial.ker_map, hk, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton]`. Take `⟨q, hq⟩` from `hf'`. Establish `hfq : f = C (p : ℤ) * rename (VerticalPartMultiplicity.eb n) q`. Establish `h1` using `congrArg (renameEquiv ℤ (VerticalPartMultiplicity.eb n)) hq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[AlgEquiv.apply_symm_apply]`. Rewrite using `[h1, map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[hfq]`. Conclude with `W.mul_mem_right _ hW`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_red_le {p : ℕ} (hp : p.Prime) (hpF : ((p : ℤ) : F) = 0) {W : Ideal (MRing (PBlk n))}
     (hW : C (p : ℤ) ∈ W) : RingHom.ker (red n F) ≤ W := by
@@ -70,7 +70,7 @@ theorem ker_red_le {p : ℕ} (hp : p.Prime) (hpF : ((p : ℤ) : F) = 0) {W : Ide
   exact W.mul_mem_right _ hW
 
 /- English proof (translation)
-Rewrite using `[Ideal.comap_map_of_surjective _ (red_surjective hF), ← RingHom.ker_eq_comap_bot, sup_eq_left.mpr hI]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_map_red (hF : Function.Surjective (Int.castRingHom F)) {I : Ideal (MRing (PBlk n))}
     (hI : RingHom.ker (red n F) ≤ I) : (I.map (red n F)).comap (red n F) = I := by
@@ -78,7 +78,7 @@ theorem comap_map_red (hF : Function.Surjective (Int.castRingHom F)) {I : Ideal 
     sup_eq_left.mpr hI]
 
 /- English proof (translation)
-Establish `hmem : ∀ j : Fin n, (X j : MvPolynomial (Fin n) F) ∈ W'.map (red n F) ↔ (X ⟨(), j⟩ : MRing (PBlk n)) ∈ W'`. Introduce `j`. Rewrite using `[← red_X, ← Ideal.mem_comap, comap_map_red hF hk]`. Simplify using `only [IsRelevant, ReciprocityTheory.ChartRestriction.G.Geo.IsRelevant, hmem]`. Conclude with `⟨fun ⟨j, hj⟩ k => ⟨j, by cases k; exact hj⟩, fun h => h ()⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem isRelevant_map_iff (hF : Function.Surjective (Int.castRingHom F)) {W' : Ideal (MRing (PBlk n))}
     (hk : RingHom.ker (red n F) ≤ W') :
@@ -91,11 +91,11 @@ theorem isRelevant_map_iff (hF : Function.Surjective (Int.castRingHom F)) {W' : 
   exact ⟨fun ⟨j, hj⟩ k => ⟨j, by cases k; exact hj⟩, fun h => h ()⟩
 
 /- English proof (translation)
-Establish `hsurj` using `red_surjective (n := n) hF`. Establish `hkW : RingHom.ker (red n F) ≤ W'` using `hJ.trans hJW`. Establish `hQ : (W'.map (red n F)).IsPrime` using `Ideal.map_isPrime_of_surjective hsurj hkW`. Set `e : (MRing (PBlk n) ⧸ J) ≃+* (MvPolynomial (Fin n) F ⧸ J.map (red n F))` to `(Ideal.quotEquivOfEq (by rw [← RingHom.comap_ker, Ideal.mk_ker, comap_map_red hF hJ])).trans (RingHom.quotientKerEquivOfSurjective (f := (Ideal.Quotient.mk (J.map (red n F))).comp (red n F)) (Ideal.Quotient.mk_surjective.comp hsurj))`. Establish `he : ∀ x, e (Ideal.Quotient.mk J x) = Ideal.Quotient.mk _ (red n F x)` using `fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hlen` using `NumbersDVR.length_localizedModule_eq_of_surjective (red n F) hsurj (W'.map (red n F)) W' (comap_map_red hF hkW).symm _ _ e.toAddEquiv fun s x => by`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Express the relevant statement in the definitionally equal form `e (Ideal.Quotient.mk _ (s * y)) = Ideal.Quotient.mk _ (red n F s) * e (Ideal.Quotient.mk _ y)`. Rewrite using `[he, he, map_mul, map_mul]`. Unfold `localMult ReciprocityTheory.ChartRestriction.G.Geo.multAt`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hQ, dif_pos hW', ← VerticalPartMultiplicity.length_localizedModule_quotient, hlen]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem localMult_map (hF : Function.Surjective (Int.castRingHom F)) {J W' : Ideal (MRing (PBlk n))}
     [hW' : W'.IsPrime] (hJ : RingHom.ker (red n F) ≤ J) (hJW : J ≤ W') :
@@ -118,23 +118,21 @@ theorem localMult_map (hF : Function.Surjective (Int.castRingHom F)) {J W' : Ide
   rw [dif_pos hQ, dif_pos hW', ← VerticalPartMultiplicity.length_localizedModule_quotient, hlen]
 
 /- English proof (translation)
-Introduce `n p W F _ hp _ hpW hF hpF i _`. Establish `hsurj` using `red_surjective (n := n) hF`. Use `set s : MRing (PBlk n) := X ⟨(), i⟩ with hs`. Use `set J := W ⊔ Ideal.span {s} with hJdef`. Establish `hkJ : RingHom.ker (red n F) ≤ J` using `(ker_red_le hp hpF hpW).trans le_sup_left`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hlin : linForm (Pi.single i (1 : F)) = X i`. Simplify using `[linForm, Pi.single_apply]`. Establish `hJF : (IndefiniteRowSideFullHecke.ArithBezout.finIdeal W).map (MvPolynomial.map (Int.castRingHom F)) ⊔ Ideal.span {linForm (Pi.single i (1 : F))} = J.map (red n F)`. Rewrite using `[finIdeal_map, hlin, hJdef, Ideal.map_sup, Ideal.map_span, Set.image_singleton, hs, red_X]`. Establish `hmin : (J.map (red n F)).minimalPrimes = Ideal.map (red n F) '' J.minimalPrimes`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ideal.minimalPrimes_map_of_surjective hsurj, sup_eq_left.mpr hkJ]`. Establish `hfun : (fun W' => (IndefiniteRowSideFullHecke.ArithBezout.finIdeal W').map (MvPolynomial.map (Int.castRingHom F))) = Ideal.map (red n F)` using `funext finIdeal_map`. Establish `hsupp : ∀ W', W' ∈ (ReciprocityTheory.ChartRestriction.G.Geo.divCycle W s).support → W' ∈ ReciprocityTheory.ChartRestriction.G.Geo.divSupp W s`. Introduce `W' hW'`. Rewrite `hW'` using `[Finsupp.mem_support_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `h`. Apply `hW'` to reduce the goal to its premises. Simplify using `only [ReciprocityTheory.ChartRestriction.G.Geo.divCycle, Finsupp.ofSupportFinite_coe, if_neg h]`. Establish `hS : ((ReciprocityTheory.ChartRestriction.G.Geo.divCycle W s).support : Set (Ideal (MRing (PBlk n)))) ⊆ {W' | J ≤ W'}` using `fun W' h => (hsupp W' h).1.1.2`. Establish `hinj : Set.InjOn (Ideal.map (red n F)) {W' : Ideal (MRing (PBlk n)) | J ≤ W'}` using `fun a ha b hb hab => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← comap_map_red hF (hkJ.trans ha), ← comap_map_red hF (hkJ.trans hb), hab]`. Unfold `divCycle`. Rewrite using `[hJF, hfun]`. Use extensionality with `Q`. Distinguish the cases in `hQ : ∃ W' ∈ ReciprocityTheory.ChartRestriction.G.Geo.divSupp W s, W'.map (red n F) = Q`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨W', hW', rfl⟩` from `hQ`. Rewrite using `[Finsupp.mapDomain_apply' _ _ hS hinj hW'.1.1.2]`. Establish `hrel : W'.map (red n F) ∈ relComps (J.map (red n F))` using `⟨hmin ▸ ⟨W', hW'.1, rfl⟩, (isRelevant_map_iff hF (hkJ.trans hW'.1.1.2)).mpr hW'.2⟩`. Use `hW'.1.1.1` as an intermediate fact. Simplify using `only [fundCycle, Finsupp.onFinset_apply, if_pos hrel, ReciprocityTheory.ChartRestriction.G.Geo.divCycle, Finsupp.ofSupportFinite_coe, if_pos hW']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `localMult_map hF hkJ hW'.1.1.2`. Establish `hR : Finsupp.mapDomain (Ideal.map (red n F)) (ReciprocityTheory.ChartRestriction.G.Geo.divCycle W s) Q = 0`. Rewrite using `[← Finsupp.notMem_support_iff]`. Introduce `h`. Take `⟨W', hW', rfl⟩` from `Finset.mem_image.mp (Finsupp.mapDomain_support h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hQ ⟨W', hsupp W' hW', rfl⟩`. Rewrite using `[hR, fundCycle, Finsupp.onFinset_apply, if_neg]`. Introduce and unpack `⟨hQm, hQr⟩`. Rewrite `hQm` using `[hmin]`. Take `⟨W', hW', rfl⟩` from `hQm`.
-
-Conclude with `hQ ⟨W', ⟨hW', (isRelevant_map_iff hF (hkJ.trans hW'.1.2)).mp hQr⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem proof : SectionCycleModP.Statement := by
   intro n p W F _ hp _ hpW hF hpF i _

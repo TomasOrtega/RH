@@ -26,13 +26,13 @@ variable {D : D7} {m n : ℕ}
 open GlobalTheory.ExportSeries.Onto in
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `GlobalTheory.ExportSeries.DeltaExtremal.harmFn_delta D m n w B hw hm`. Establish `hs0 : ((s : ℤ) : ℂ) ≠ 0` using `by exact_mod_cast s.ne_zero`. Establish `key : ∀ u : GLR D n, harmFn m w B (fockGL m w B u (w.delta m)) = ((s : ℤ) : ℂ) • coefLin w.lam (actP w.lam (invTrK (u * B)) (ten fun τ => extremal ℂ n (w.lam τ)))` using `fun u => by`. Use function extensionality and compare the values at `x`. Rewrite using `[harmFn_fockGL, hs, Pi.smul_apply, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = coefFn _ _ _ _`. Rewrite using `[coefFn_actP, _root_.mul_inv_rev, mul_assoc]`. Establish `hle : (VV ℂ w.lam).map (coefLin w.lam) ≤ (harm m w B).map (harmFn m w B)`. Rewrite using `[GlobalTheory.OrbitSpan.VV_eq_span_orbit, harm, Submodule.map_span, Submodule.map_span, Submodule.span_le]`.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨_, ⟨g, rfl⟩, rfl⟩`. Establish `h2` using `key (invTrK g * B⁻¹)`. Rewrite `h2` using `[inv_mul_cancel_right, invTrK_invTrK]`. Use `(Submodule.smul_mem_iff _ hs0).1 ?_` and prove the remaining obligations. Use `beta_reduce`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2]`. Conclude with `Submodule.subset_span ⟨_, ⟨_, rfl⟩, rfl⟩`. Conclude with `hle (Submodule.mem_map_of_mem F.2)`.
+A detailed English derivation is pending.
 -/
 theorem exists_harm (w : Weight D n) (B : GLR D n) (hw : w.Good) (hm : ∀ τ, w.p τ + w.q τ ≤ m) (F : VV ℂ w.lam) :
     ∃ P ∈ harm m w B, harmFn m w B P = coefFn (RingHom.id ℂ) w.lam (F : Pol ℂ D.what₂.Tau n) := by
@@ -59,19 +59,15 @@ theorem exists_harm (w : Weight D n) (B : GLR D n) (hw : w.Good) (hm : ∀ τ, w
 open GlobalTheory.ExportSeries.HarmLattice in
 
 /- English proof (translation)
-Use `set N := Submodule.span O' (harmLat (σ.comp f) emb O m w B M : Set (PolF D m n))`. Establish `hN : N ≤ (harm m w B).restrictScalars O'` using `Submodule.span_le.2 fun Q hQ => hQ.1`. Establish `hle : coefLatFn σ (fun τ => f.comp (emb τ)) O' w.lam M ≤ N.map ((harmFn m w B).restrictScalars O')`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨F, hF, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hF'` using `GlobalTheory.NabBC.nabBaseChange _ _ _ _ n f emb w.lam M hM hF`. Rewrite using `[coefFn_eq, SetLike.mem_coe]`. Use `clear hF`. Proceed by induction on `hF' using Submodule.span_induction with`. Consider the case `mem y hy`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, e⟩` from `hy`. Take `⟨Q, hQ, eQ⟩` from `exists_harm w B hw hm (GlobalTheory.CoefModel.mapVV (σ.comp f) w.lam x)`. Establish `e1 : harmFn m w B Q = coefFn (σ.comp f) w.lam (x : Pol K₀ D.what₂.Tau n)` using `eQ.trans (coefFn_eq _ _ x).symm`. Use `⟨Q, Submodule.subset_span ⟨hQ, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨x, hx, e1⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `eQ.trans (congrArg (cf w.lam) (Subtype.ext ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `MvPolynomial.map (σ.comp f) x.1 = MvPolynomial.map σ y.1`. Rewrite using `[e, MvPolynomial.map_map]`. Consider the case `zero => rw [map_zero, map_zero]`. Conclude with `zero_mem _`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Consider the case `add _ _ _ _ h1 h2 => rw [map_add, map_add]`. Conclude with `add_mem h1 h2`. Consider the case `smul a F _ h1`. Rewrite using `[← algebraMap_smul K a F, LinearMap.map_smulₛₗ, map_smul]`. Conclude with `Submodule.smul_mem _ (⟨σ a, hO' a⟩ : O') h1`.
-
-Take `⟨Q, hQ, e⟩` from `hle hP.2`. Establish `h0 : P - Q = 0` using `GlobalTheory.ExportSeries.HarmInj.harm_inj D m n w B hw hm _ (sub_mem hP.1 (hN hQ)) (by`. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `e.symm)`. Rewrite using `[sub_eq_zero.1 h0]`.
-
-Conclude with `hQ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem harmLat_le_span {K₀ K : Type} [Field K₀] [NumberField K₀] [Field K] [NumberField K] (f : K₀ →+* K) (σ : K →+* ℂ)
     (emb : D.what₂.Tau → (D.host.E →+* K₀)) (O O' : Subring ℂ) (hO' : ∀ a : 𝓞 K, σ a ∈ O') (w : Weight D n) (B : GLR D n)
@@ -109,14 +105,14 @@ theorem harmLat_le_span {K₀ K : Type} [Field K₀] [NumberField K₀] [Field K
   exact hQ
 
 /- English proof (translation)
-The claim follows from `Formalism.UG.P.global_lattice_isLattice_holds _ _ _ _ (Module.Finite.iff_fg.2 hF.sdS.1.fg) hF.sdS.1.span_eq_top _`.
+A detailed English derivation is pending.
 -/
 theorem isLattice_latAt {S T : HSp D} {B : Base S T} (hF : B.F.Good) (h : Bridge.Gf S) :
     Submodule.IsLattice D.host.E (B.latAt h) :=
   Formalism.UG.P.global_lattice_isLattice_holds _ _ _ _ (Module.Finite.iff_fg.2 hF.sdS.1.fg) hF.sdS.1.span_eq_top _
 
 /- English proof (translation)
-Introduce `D _ _ _ _ _ _ _ _ _ p j _ _ B hB _ O O' _ hO' h P hP`. Conclude with `harmLat_le_span D.LL0.val.toRingHom D.what₂.embLL (labLL0 D) O O' hO'.int B.w B.F.BS hB.wt (GlobalTheory.CoefLatConj.pq_le hB) (isLattice_latAt hB.frame _) hP`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smallSt : GlobalTheory.BigOn.Exp.TupLe.SmallSt := by
   intro D _ _ _ _ _ _ _ _ _ p j _ _ B hB _ O O' _ hO' h P hP

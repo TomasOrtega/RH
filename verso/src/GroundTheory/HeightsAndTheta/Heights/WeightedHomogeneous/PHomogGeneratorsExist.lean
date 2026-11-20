@@ -11,9 +11,9 @@ noncomputable section
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 
 /- English proof (translation)
-Use `conv_rhs => rw [← sum_weightedHomogeneousComponent (coordDeg n) f]`. Use `(finsum_eq_sum_of_support_subset _ ?_).symm` and prove the remaining obligations. Introduce `m hm`. Rewrite `hm` using `[Function.mem_support]`. Rewrite using `[Finset.coe_image, Set.mem_image]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `hm (weightedHomogeneousComponent_eq_zero' m f fun d hd hdm ↦ h ⟨d, hd, hdm⟩)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_weightedHomogeneousComponent_image (f : MvPolynomial (Coord n) ℤ) :
     ∑ m ∈ f.support.image (Finsupp.weight (coordDeg n)), weightedHomogeneousComponent (coordDeg n) m f = f := by
@@ -26,19 +26,19 @@ theorem sum_weightedHomogeneousComponent_image (f : MvPolynomial (Coord n) ℤ) 
   refine hm (weightedHomogeneousComponent_eq_zero' m f fun d hd hdm ↦ h ⟨d, hd, hdm⟩)
 
 /- English proof (translation)
-Introduce `ι _ _ n P`. Take `⟨s, hs⟩` from `(IsNoetherian.noetherian P.ideal : P.ideal.FG)`. Set `S : Finset (MvPolynomial (Coord n) ℤ)` to `s.biUnion fun f ↦ (f.support.image (Finsupp.weight (coordDeg n))).image fun m ↦ weightedHomogeneousComponent (coordDeg n) m f`. Establish `hShom : ∀ g ∈ S, ∃ m : ι → ℕ, IsWeightedHomogeneous (coordDeg n) g m`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [S, Finset.mem_biUnion, Finset.mem_image] at hg`. Take `⟨f, -, m, -, rfl⟩` from `hg`. Conclude with `⟨m, weightedHomogeneousComponent_isWeightedHomogeneous m f⟩`. Establish `hSP : ∀ g ∈ S, g ∈ P.ideal`. Introduce `g hg`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [S, Finset.mem_biUnion, Finset.mem_image] at hg`. Take `⟨f, hf, m, -, rfl⟩` from `hg`. Conclude with `P.homogeneous f (hs ▸ Ideal.subset_span hf) m`. Set `e` to `S.equivFin`. Use `⟨S.card, fun i ↦ (e.symm i : MvPolynomial (Coord n) ℤ), fun i ↦ Classical.choose (hShom _ (e.symm i).2), ⟨fun i ↦ Classical.choose_spec (hShom _ (e.symm i).2), ?_⟩⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hrange : Set.range (fun i ↦ (e.symm i : MvPolynomial (Coord n) ℤ)) = (S : Set _)`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `(e.symm i).2`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `hg`. Conclude with `⟨e ⟨g, hg⟩, by simp⟩`. Rewrite using `[hrange]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg`. Conclude with `hSP g hg`. Rewrite using `[← hs, Ideal.span_le]`. Introduce `f hf`. Rewrite using `[← sum_weightedHomogeneousComponent_image f]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use `Ideal.sum_mem _ fun m hm ↦ Ideal.subset_span ?_` and prove the remaining obligations. Simplify using `only [S, Finset.coe_biUnion, Finset.coe_image, Set.mem_iUnion, Set.mem_image]`. Conclude with `⟨f, hf, m, by simpa using hm, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem HomogGeneratorsExist.proof : HomogGeneratorsExist.Statement := by
   classical

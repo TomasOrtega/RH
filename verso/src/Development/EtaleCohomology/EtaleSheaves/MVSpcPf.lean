@@ -15,49 +15,49 @@ variable {R : Type} [CommRing R] {I : Cx R}
 abbrev pc {K L : Cx R} (φ : K ⟶ L) {m : ℤ} (z : Cochain L I m) : Cochain K I m := (Cochain.ofHom φ).comp z (zero_add m)
 
 /- English proof (translation)
-Simplify using `[pc, Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pc_comp {K L M : Cx R} (φ : K ⟶ L) (ψ : L ⟶ M) {m : ℤ} (z : Cochain M I m) : pc (φ ≫ ψ) z = pc φ (pc ψ z) := by
   simp [pc, Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain]
 
 /- English proof (translation)
-Simplify using `[pc, Cochain.ofHom_add, Cochain.add_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pc_addm {K L : Cx R} (φ ψ : K ⟶ L) {m : ℤ} (z : Cochain L I m) : pc (φ + ψ) z = pc φ z + pc ψ z := by
   simp [pc, Cochain.ofHom_add, Cochain.add_comp]
 
 /- English proof (translation)
-Simplify using `[pc, Cochain.ofHom_neg, Cochain.neg_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pc_negm {K L : Cx R} (φ : K ⟶ L) {m : ℤ} (z : Cochain L I m) : pc (-φ) z = -pc φ z := by
   simp [pc, Cochain.ofHom_neg, Cochain.neg_comp]
 
 /- English proof (translation)
-Simplify using `[pc, Cochain.ofHom_zero, Cochain.zero_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pc_zerom {K L : Cx R} {m : ℤ} (z : Cochain L I m) : pc (0 : K ⟶ L) z = 0 := by
   simp [pc, Cochain.ofHom_zero, Cochain.zero_comp]
 
 /- English proof (translation)
-Simplify using `[pc, Cochain.comp_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pc_add {K L : Cx R} (φ : K ⟶ L) {m : ℤ} (z z' : Cochain L I m) : pc φ (z + z') = pc φ z + pc φ z' := by
   simp [pc, Cochain.comp_add]
 
 /- English proof (translation)
-Simplify using `[pc, Cochain.comp_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pc_sub {K L : Cx R} (φ : K ⟶ L) {m : ℤ} (z z' : Cochain L I m) : pc φ (z - z') = pc φ z - pc φ z' := by
   simp [pc, Cochain.comp_sub]
 
 /- English proof (translation)
-The claim follows from `δ_ofHom_comp φ z m'`.
+A detailed English derivation is pending.
 -/
 theorem pc_δ {K L : Cx R} (φ : K ⟶ L) {m : ℤ} (z : Cochain L I m) (m' : ℤ) : δ m m' (pc φ z) = pc φ (δ m m' z) :=
   δ_ofHom_comp φ z m'
 
 /- English proof (translation)
-Rewrite using `[cpre_mk]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem cpre_mk' {K L : Cx R} (φ : K ⟶ L) {m : ℤ} (z : Cocycle L I m) :
     cpre (Cocycle.ofHom φ) I m m (zero_add m) (CohomologyClass.mk z) =
@@ -65,7 +65,7 @@ theorem cpre_mk' {K L : Cx R} (φ : K ⟶ L) {m : ℤ} (z : Cocycle L I m) :
   rw [cpre_mk]; congr 1
 
 /- English proof (translation)
-Distinguish the cases in `h : m + 1 = m'`. Conclude with `(Cocycle.mem_iff m m' h z.1).1 z.2`. Conclude with `δ_shape _ _ h _`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem cocy_δ {K : Cx R} {m : ℤ} (z : Cocycle K I m) (m' : ℤ) : δ m m' z.1 = 0 := by
   by_cases h : m + 1 = m'
@@ -73,23 +73,21 @@ theorem cocy_δ {K : Cx R} {m : ℤ} (z : Cocycle K I m) (m' : ℤ) : δ m m' z.
   · exact δ_shape _ _ h _
 
 /- English proof (translation)
-Establish `hC` using `fun m => LateralTheory.EtaleFoundations.etale_simplicial_cochain_short_exact_sequence_holds R I hI _ hS m`. Take `⟨z, rfl⟩` from `x.mk_surjective`. Rewrite `hu`, `hv` using `[cpre_mk', CohomologyClass.mk_eq_zero_iff]`. Take `⟨m, hm, aU, haU⟩` from `hu`. Take `⟨m', hm', aV, haV⟩` from `hv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e1 : n = m` using `by omega`. Substitute `e1` using the available equality. Establish `e2 : n = m'` using `by omega`. Substitute `e2` using the available equality. Simplify using `only [Cocycle.mk_coe] at haU haV`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `set b : Cochain (KA ⊞ KB) I n := pc biprod.fst aU + pc biprod.snd aV with hbdef`. Establish `hb : δ n (n + 1) b = pc (biprod.desc u v) z.1`. Rewrite using `[hbdef, δ_add, pc_δ, pc_δ, haU, haV, ← pc_comp, ← pc_comp, ← pc_addm, ← biprod.desc_eq]`. Establish `hαb : δ n (n + 1) (pc (biprod.lift φ (-ψ)) b) = 0`. Rewrite using `[pc_δ, hb, ← pc_comp, w, pc_zerom]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b0, hab⟩` from `hc (CohomologyClass.mk (Cocycle.mk (pc (biprod.lift φ (-ψ)) b) (n + 1) rfl hαb))`. Take `⟨a, rfl⟩` from `a.mk_surjective`. Take `⟨b0, rfl⟩` from `b0.mk_surjective`. Rewrite `hab` using `[cpre_mk', cpre_mk', ← CohomologyClass.mk_sub, ← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff]`. Take `⟨k, hk, e, he⟩` from `hab`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e2, he2⟩` from `(hC k).1 e`. Use `set b2 : Cochain (KA ⊞ KB) I n := pc biprod.fst a.1 + pc biprod.snd b0.1 with hb2def`. Establish `hαb2 : pc (biprod.lift φ (-ψ)) b2 = pc φ a.1 - pc ψ b0.1`. Rewrite using `[hb2def, pc_add, ← pc_comp, ← pc_comp, biprod.lift_fst, biprod.lift_snd, pc_negm, sub_eq_add_neg]`. Establish `hδb2 : δ n (n + 1) b2 = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hb2def, δ_add, pc_δ, pc_δ, cocy_δ, cocy_δ, pc, pc, Cochain.comp_zero, Cochain.comp_zero, add_zero]`. Establish `hr : pc (biprod.lift φ (-ψ)) (b - b2 - δ k n e2) = 0`. Establish `he2' : pc (biprod.lift φ (-ψ)) e2 = e` using `he2`. Rewrite using `[pc_sub, pc_sub, ← pc_δ, he2', he]`. Express the relevant statement in the definitionally equal form `_ - _ - (pc (biprod.lift φ (-ψ)) b - (pc φ a.1 - pc ψ b0.1)) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hαb2]`. Normalize the expressions using the abelian group laws. Take `⟨c3, hc3⟩` from `(hC n).2.1 _ hr`. Establish `hc3' : pc (biprod.desc u v) c3 = _` using `hc3`. Establish `hz : pc (biprod.desc u v) (δ n (n + 1) c3 - z.1) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[pc_sub, ← pc_δ]`. Express the relevant statement in the definitionally equal form `δ n (n + 1) (pc (biprod.desc u v) c3) - _ = 0`. Rewrite using `[hc3', δ_sub, δ_sub, δ_δ, hδb2, hb]`. Simplify using the standard rewrite rules. Use `(hC (n + 1)).2.2 _ hz` as an intermediate fact.
-
-Conclude with `(CohomologyClass.mk_eq_zero_iff _).2 ⟨n, rfl, c3, sub_eq_zero.1 this⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chase (hI : ∀ n, Injective (I.X n)) {K1 KA KB K3 : Cx R} (φ : K1 ⟶ KA) (ψ : K1 ⟶ KB) (u : KA ⟶ K3)
     (v : KB ⟶ K3) (w) (hS : (ShortComplex.mk (biprod.lift φ (-ψ)) (biprod.desc u v) w).ShortExact) (n : ℤ)
@@ -142,7 +140,7 @@ end LateralTheory.E.MVSpcPf
 
 open LateralTheory.E.MVSpcPf in
 /- English proof (translation)
-Introduce `_ R _ F U V E f g hc n hd x hxf hxg`. Take `⟨w, hw⟩` from `hS R f g hc`. Establish `hI : ∀ k, Injective ((res R F).X k)` using `fun k => by unfold res; infer_instance`. Conclude with `chase hI _ _ _ _ w hw n hd x hxf hxg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LateralTheory.E.MVPf.MVSpc_of (hS : Ses) : LateralTheory.E.MVPf.MVSpc := by
   intro _ R _ F U V E f g hc n hd x hxf hxg

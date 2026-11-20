@@ -17,11 +17,11 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions _
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hq` using `GlobalTheory.Mem.ReadTwist.mem_qprime_iff (hI.xi_reads a) v`. Establish `hab : ∀ w : HeightOneSpectrum (𝓞 B.host.E), w ∈ Formalism.L2.Host.aboveF (L` using `B.host.E) B.host.F v ↔ w.under (𝓞 B.host.F) = v := fun w => by`. Unfold `Formalism.L2.Host.aboveF`. Rewrite using `[Set.Finite.mem_toFinset]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P, hP, rfl⟩`. Take `⟨w, hw, hu⟩` from `hq.1 ((GlobalTheory.TwistPlaces.mem_QE_iff hI.sel_ok (I.tup a)).1 hP).1`. Conclude with `⟨w, (hab w).2 hw, hu⟩`. Introduce and unpack `⟨w, hw, hu⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `hv` using `hq.2 ⟨w, (hab w).1 hw, hu⟩`. Conclude with `⟨I.sel v, (Formalism.L2.Col.mem_QE I.sel (I.tup a) _).2 ⟨v, hv, rfl⟩, GlobalTheory.TwistPlaces.under_eq_iff.2 (hI.sel_ok v)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem underQ_iff {B : Base} {X : PreX B.toPre} {I : TC B X} (hI : I.Ok) (a : I.ι) (v : HeightOneSpectrum (𝓞 B.host.F)) :
     I.UnderQ a v ↔ ∃ w ∈ Formalism.L2.Host.aboveF (L := B.host.E) B.host.F v, ¬ (I.xi a).UnrAt w := by
@@ -39,7 +39,7 @@ theorem underQ_iff {B : Base} {X : PreX B.toPre} {I : TC B X} (hI : I.Ok) (a : I
     exact ⟨I.sel v, (Formalism.L2.Col.mem_QE I.sel (I.tup a) _).2 ⟨v, hv, rfl⟩, GlobalTheory.TwistPlaces.under_eq_iff.2 (hI.sel_ok v)⟩
 
 /- English proof (translation)
-The claim follows from `C.eV fv u v a := by rw [C.res u] exact (C.herm.atT u).res_F v a car0 := C.car0 carC := C.carC carM := C.carM sp := C.sp fr0 := C.fr0`.
+A detailed English derivation is pending.
 -/
 theorem carH_of_cols {D : D7} (C : ColsTiedSym D) : CarH C.herm.base C.forms where
   eV := C.eV
@@ -53,11 +53,11 @@ theorem carH_of_cols {D : D7} (C : ColsTiedSym D) : CarH C.herm.base C.forms whe
   fr0 := C.fr0
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z l0 nch tp C hxi hC hLv`. Establish `hQ : ∀ a v, tp.InQ' a v ↔ I.UnderQ a v` using `fun a v => by`. Rewrite using `[underQ_iff hI a v]`. Unfold `Formalism.L2.Host.TupTied.InQ'`. Rewrite using `[hxi]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Iff.rfl`. Establish `hF : ∀ u, I.StdF l Z u (C.forms u) ∧ I.StdLvC l Z u (C.forms u)` using `fun u => ⟨hC u, hLv u⟩`. Take `⟨T, J, W, hM, hW, ⟨lvJ⟩, hPt⟩` from `GlobalTheory.T.trueColumnChoice_exists_chainData_with_basePoints I hI hP l Z l0 (fun a v => tp.InQ' a v) C.herm.base C.forms hQ hF (carH_of_cols C)`. Take `⟨⟨Lv, hL⟩, ⟨same⟩⟩` from `GlobalTheory.T.tupleChains_levelStructure_compatible_at_levelPrime I hI hP l Z l0 (fun a v => tp.InQ' a v) C.herm.base C.forms T J W hF hW`. Take `⟨Pt, E, hG, hS⟩` from `GlobalTheory.T.tupleLayerCompatibilities_of_X_prime I hI hP l Z l0 (fun a v => tp.InQ' a v) C.herm.base C.forms T J W Lv hQ hF hW hL hPt`.
+Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨{ ch := T, chJ := J, chM := hM, forms := W, lv := Lv, same := same, lvJ := lvJ, pt := Pt, ptG := hG, ptE := E }, hW, hL, hS⟩`.
+Supply the required witnesses or components.
 -/
 theorem colsTwPTiedS_std : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (l0 : I.Law0 l) (nch : NChoice (I.rec7 l Z)) (tp : Formalism.L2.Host.TupTied (I.rec7 l Z) (I.cf l Z) nch) (C : ColsTiedSym (I.rec7 l Z)), tp.xi = I.xi → I.StdC l Z C → (∀ u, I.StdLvC l Z u (C.forms u)) → ∃ t : SymmetricTwistedColumnsAtPrimes tp C (I.tw l l0 Z), I.StdTw l Z l0 t := by
   intro B X I hI hP l Z l0 nch tp C hxi hC hLv

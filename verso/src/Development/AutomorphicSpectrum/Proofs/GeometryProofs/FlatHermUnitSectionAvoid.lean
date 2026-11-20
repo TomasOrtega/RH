@@ -11,7 +11,7 @@ open MvPolynomial NumberField ReciprocityTheory.ChartRestriction.G.Geo Reciproci
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Simplify using `only [Set.setOf_forall, Set.setOf_exists]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isOpen_blockNonzero {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] :
     IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
@@ -20,11 +20,9 @@ theorem isOpen_blockNonzero {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fin
     isOpen_ne_fun (continuous_apply _) continuous_const
 
 /- English proof (translation)
-Set `e` to `Finite.equivFin (F →+* ℂ)`. Set `t : (F →+* ℂ) → ℝ` to `fun τ => ((e τ : ℕ) : ℝ)`. Establish `ht : Function.Injective t` using `fun a b hab => by`. Establish `h0 : ((e a : ℕ) : ℝ) = ((e b : ℕ) : ℝ)` using `hab`. Establish `: ((e a : ℕ)) = (e b : ℕ)` using `by exact_mod_cast h0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e.injective (Fin.ext this)`. Take `⟨u, hu, -⟩` from `GlobalTheory.T.exists_place_weight_conj_invariant K ι Ω F y φ t hO`. Use `filter_upwards [hu.near σ z hz] with w hw hwP`. Take `⟨τ, hτ, -⟩` from `GlobalTheory.T.complex_point_existsUnique_embedding K ι Ω F y φ hO w hwP`. Establish `h1 : u w = t τ` using `(hu.near τ w hτ).self_of_nhds`.
-
-Establish `h2 : τ = σ` using `ht (h1.symm.trans hw)`. Conclude with `h2 ▸ hτ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem PtOver.eventually_ptOver {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
     {F : Type} [Field F] [NumberField F] {y : (Σ k, ι k) → Ω} {φ : F →+* Ω} (hO : OverInt y φ)
@@ -45,15 +43,15 @@ theorem PtOver.eventually_ptOver {K : Type} [Fintype K] {ι : K → Type} [∀ k
   exact h2 ▸ hτ
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ F _ _ y φ A S d W hO hV hA hW hPW`. Take `⟨f', g', df', dg', hf', hg', hdeg, hfW, hgW, hrel, hunit⟩` from `GlobalTheory.T.unit_section_avoid_prime K ι (mCoordIdeal y) W S.f S.g S.df S.dg hV.2.1 hW hPW S.hf S.hg S.g_ne S.unit`. Use `⟨f', g', df', dg', hf', hg', fun k => (hdeg k).trans (S.deg k), hfW, hgW, hrel, hunit, ?_⟩` and prove the remaining obligations. Introduce `σ z hz`. Establish `hcl` using `GlobalTheory.T.complex_points_dense_nonvanishing K ι (mCoordIdeal y) d S.g hV S.g_ne hz.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfreq` using `mem_closure_iff_frequently.mp hcl`. Establish `hnear` using `PtOver.eventually_ptOver hO hz`. Establish `hcontA : ContinuousAt A.h z` using `(hA.continuousOn).continuousAt (isOpen_blockNonzero.mem_nhds hz.1.1)`. Establish `hcf : Continuous fun w : (Σ k, ι k) → ℂ => evC w f'` using `MvPolynomial.continuous_eval _`. Establish `hcg : Continuous fun w : (Σ k, ι k) → ℂ => evC w g'` using `MvPolynomial.continuous_eval _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : Filter.Tendsto (fun w => ‖evC w f'‖) (nhds z) (nhds ‖evC z f'‖)` using `hcf.norm.continuousAt`. Establish `hR : Filter.Tendsto (fun w => (S.κ σ * A.h w) ^ S.M * ‖evC w g'‖) (nhds z) (nhds ((S.κ σ * A.h z) ^ S.M * ‖evC z g'‖))` using `(((continuousAt_const.mul hcontA).pow S.M).mul hcg.norm.continuousAt)`. Use `tendsto_nhds_unique_of_frequently_eq hL hR ?_` and prove the remaining obligations. Use `(hfreq.and_eventually hnear).mono ?_` and prove the remaining obligations. Introduce and unpack `w ⟨⟨hwP, hgw⟩, hwσ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hover` using `hwσ hwP`. Establish `hn` using `S.norm σ w hover`. Establish `h0 : evC w f' * evC w S.g - evC w g' * evC w S.f = 0`. Use `hwP.2 _ hrel` as an intermediate fact. Simplify `this` using `[evC, map_sub, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : ‖evC w f'‖ * ‖evC w S.g‖ = ‖evC w g'‖ * ‖evC w S.f‖`. Rewrite using `[← norm_mul, ← norm_mul, sub_eq_zero.mp h0]`. Establish `hg0 : ‖evC w S.g‖ ≠ 0` using `norm_ne_zero_iff.mpr hgw`. Apply `mul_right_cancel₀ hg0` to reduce the goal to its premises. Rewrite using `[h1, hn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

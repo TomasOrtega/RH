@@ -7,7 +7,7 @@ namespace GroundTheory.Heights₂.Heights.Kleiman
 open Module TensorProduct
 
 /- English proof (translation)
-Introduce `S _ _ G _ _ hfin htf 𝔪 h𝔪`. Establish `: Module.Flat S G` using `inferInstance`. Set `e₁ : (S ⧸ 𝔪) ≃ₐ[S] 𝔪.ResidueField` to `AlgEquiv.ofBijective (IsScalarTower.toAlgHom S (S ⧸ 𝔪) 𝔪.ResidueField) 𝔪.bijective_algebraMap_quotient_residueField`. Set `e : (G ⧸ 𝔪 • (⊤ : Submodule S G)) ≃ₗ[S] 𝔪.Fiber G` to `(TensorProduct.quotTensorEquivQuotSMul G 𝔪).symm ≪≫ₗ TensorProduct.congr e₁.toLinearEquiv (LinearEquiv.refl S G)`. Rewrite using `[e.length_eq, Module.length_eq_of_surjective (R := 𝔪.ResidueField) 𝔪.algebraMap_residueField_surjective, Module.length_eq_finrank, Ideal.finrank_fiber_eq_finrank]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem DedekindFibreRank.proof : DedekindFibreRank.Statement := by
   intro S _ _ G _ _ hfin htf 𝔪 h𝔪

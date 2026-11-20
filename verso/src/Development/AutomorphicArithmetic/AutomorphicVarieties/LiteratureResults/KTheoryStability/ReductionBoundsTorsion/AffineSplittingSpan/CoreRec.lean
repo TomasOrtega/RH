@@ -20,7 +20,7 @@ theorem Wtop_smul (pr : P →* Q) {n : ℕ} (r : ℝ) (b : (Fin n → Q) → ℝ
     Wtop pr (r • b) = r • Wtop pr b := rfl
 
 /- English proof (translation)
-Use `⟨fun g x => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, hb.1 g x]`. Rewrite using `[dc_smul, hb.2, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem QC.smul {n : ℕ} {b : (Fin (n + 1) → Q) → ℝ} (hb : QC b) (r : ℝ) : QC (r • b) := by
   refine ⟨fun g x => ?_, ?_⟩

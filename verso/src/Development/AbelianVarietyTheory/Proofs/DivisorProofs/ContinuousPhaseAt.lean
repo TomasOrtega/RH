@@ -69,9 +69,9 @@ def phaseAt (θ : InfFam D) (τ : D.what₂.Tau) : (AE D)ˣ →* Circle :=
 def infChar (θ : InfFam D) (n : D.what₂.Tau → ℤ) : (AE D)ˣ →* Circle := ∏ τ, phaseAt θ τ ^ n τ
 
 /- English proof (translation)
-Establish `h : ∀ s : Finset D.what₂.Tau, (((∏ τ ∈ s, phaseAt θ τ ^ n τ : (AE D)ˣ →* Circle) x : Circle) : ℂ) = ∏ τ ∈ s, ((phaseAt θ τ x : Circle) : ℂ) ^ n τ`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, MonoidHom.mul_apply, Circle.coe_mul, ih, MonoidHom.zpow_apply, Circle.coe_zpow]`. Conclude with `h Finset.univ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_infChar (θ : InfFam D) (n : D.what₂.Tau → ℤ) (x : (AE D)ˣ) :
     ((infChar θ n x : Circle) : ℂ) =
@@ -89,13 +89,13 @@ theorem coe_infChar (θ : InfFam D) (n : D.what₂.Tau → ℤ) (x : (AE D)ˣ) :
 def chi {N : ℕ} (c : HeckeU D N) (θ : InfFam D) (e : ℤ) : (AE D)ˣ →* Circle := (finChar c * infChar θ c.n) ^ e
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ChrEqUnique.continuous_phase.comp (Continuous.units_map _ (GlobalTheory.FockCompare.continuous_comp hθ τ))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_phaseAt {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) : Continuous (phaseAt θ τ) :=
   GlobalTheory.ChrEqUnique.continuous_phase.comp (Continuous.units_map _ (GlobalTheory.FockCompare.continuous_comp hθ τ))
 
 /- English proof (translation)
-Establish `e : ((infChar θ n : (AE D)ˣ →* Circle) : (AE D)ˣ → Circle) = fun x => ∏ τ, phaseAt θ τ x ^ n τ`. Use function extensionality and compare the values at `x`. Simplify using `only [infChar, MonoidHom.finset_prod_apply, MonoidHom.zpow_apply]`. Rewrite using `[e]`. Conclude with `continuous_finset_prod _ fun τ _ => (continuous_phaseAt hθ τ).zpow (n τ)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_infChar {θ : InfFam D} (hθ : IsInfFam θ) (n : D.what₂.Tau → ℤ) : Continuous (infChar θ n) := by
   have e : ((infChar θ n : (AE D)ˣ →* Circle) : (AE D)ˣ → Circle) = fun x => ∏ τ, phaseAt θ τ x ^ n τ := by
@@ -104,7 +104,7 @@ theorem continuous_infChar {θ : InfFam D} (hθ : IsInfFam θ) (n : D.what₂.Ta
   exact continuous_finset_prod _ fun τ _ => (continuous_phaseAt hθ τ).zpow (n τ)
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[coe_finY, RingEquiv.symm_apply_eq]`. Express the relevant statement in the definitionally equal form `GlobalTheory.LFun.toFinAd D.host.F D.host.E ((1 : Af D.host.F) ⊗ₜ (a : D.host.E)) = GlobalTheory.LFun.toFinAd ℚ D.host.E ((1 : IsDedekindDomain.FiniteAdeleRing (𝓞 ℚ) ℚ) ⊗ₜ (a : D.host.E))`. Rewrite using `[GlobalTheory.LFun.toFinAd_tmul, GlobalTheory.LFun.toFinAd_tmul, map_one, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem finY_incA (a : D.host.Eˣ) :
     finY D (Units.map (incA D).toMonoidHom a) = Units.map (Formalism.MainNotions.StandardLatticesGL3.inc D).toMonoidHom a := by
@@ -115,9 +115,9 @@ theorem finY_incA (a : D.host.Eˣ) :
   rw [GlobalTheory.LFun.toFinAd_tmul, GlobalTheory.LFun.toFinAd_tmul, map_one, map_one]
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Apply `(GlobalTheory.BotFormula.toFinE D).injective` to reduce the goal to its premises. Rewrite using `[Units.val_mul, map_mul]`. Express the relevant statement in the definitionally equal form `GlobalTheory.BotFormula.toFinE D ((GlobalTheory.BotFormula.toFinE D).symm _) = GlobalTheory.BotFormula.toFinE D ((GlobalTheory.BotFormula.toFinE D).symm _) * GlobalTheory.BotFormula.toFinE D (Formalism.MainNotions.StandardLatticesGL3.sgA D ((GlobalTheory.BotFormula.toFinE D).symm …`. Rewrite using `[GlobalTheory.BotFormula.toFinE_sgA, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply, coe_finIdl, coe_finIdl, h, RingHom.map_mul, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `e1 : finPart D (cA D (x : AE D)) = sigR (Af D.host.F) D.sp.cm.sig (finPart D (x : AE D))` using `GlobalTheory.FockCompare.LiftUnitary.snd_sigR D.sp.cm.sig (x : AE D)`. Rewrite using `[e1, GlobalTheory.DefU.ClassFin.finAdEquiv_sigR D.sp.cm.sig (D.host.conj : D.host.E ≃+* D.host.E) (fun z => Formalism.MainNotions.GlobalTheoryTheory.jnt_sig_eq_conj D z)]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem finY_mul_conj (x y : (AE D)ˣ) (h : (y : AE D) = x * cA D x) :
     finY D y = finY D x * Formalism.MainNotions.StandardLatticesGL3.sgU D (finY D x) := by

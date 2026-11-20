@@ -10,19 +10,17 @@ noncomputable section
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ M₁ M π hπ hprop D V g hg`. Use `haveI : QuasiCompact π := inferInstance`. Rewrite using `[Scheme.IdealSheafData.map, Scheme.Hom.ker_apply, RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `(D.idealSheaf.subschemeι.app (π ⁻¹ᵁ V.1)).hom ((π.app V.1).hom g) = 0`. Rewrite using `[GlobalTheory.Cartier.app_subschemeι_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W hW`. Use `show _ ∈ (EffCartierData.locIdeal D.U D.f D.exists_mem D.associated_germ).ideal W`. Rewrite using `[EffCartierData.mem_locIdeal_iff]`. Introduce `i x hx hi`. Establish `hxV : x ∈ π ⁻¹ᵁ V.1` using `hW hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hV : (V.1 : Set M₁.Z).Nonempty` using `⟨π x, hxV⟩`. Rewrite using `[GlobalTheory.Cartier.germ_resG]`. Establish `hval : valF M.pt (π ⁻¹ᵁ V.1) ((π.app V.1).hom g) = valF M₁.pt V.1 g` using `hπ.valF_app hV g`. Establish `hq` using `hg x hxV _ ⟨i, hi, rfl⟩`. Establish `hne : valF M.pt (D.U i) (D.f i) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h0`. Establish `hnz` using `GlobalTheory.Cartier.isRegularFn_iff_germ.1 (D.regular i) x hi`. Establish `: (M.Z.presheaf.germ (D.U i) x hi).hom (D.f i) = 0`. Apply `M.stalkHom_injective x` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(RatModel.stalkHom_germ hi (D.f i)).trans h0`. Rewrite `hnz` using `[this]`. Conclude with `zero_notMem_nonZeroDivisors hnz`. Rewrite using `[← map_dvd_iff (M.stalkEquiv x)]`. Establish `e1` using `RatModel.stalkEquiv_germ hi (D.f i)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e2` using `RatModel.stalkEquiv_germ hxV ((π.app V.1).hom g)`. Use `⟨⟨_, hq⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(M.stalkEquiv x ((M.Z.presheaf.germ _ x hxV) ((π.app V.1).hom g)) : Ω) = (M.stalkEquiv x ((M.Z.presheaf.germ _ x hi) (D.f i)) : Ω) * (valF M₁.pt V.1 g / valF M.pt (D.U i) (D.f i))`. Rewrite using `[e1, e2]`.
-
-Simplify using `only`. Rewrite using `[hval, mul_div_cancel₀ _ hne]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_map_idealSheaf_of_forall_div :
     ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M₁ M : RatModel o Ω) (π : M.Z ⟶ M₁.Z), M₁.IsHom M (AlgHom.id o Ω) π → IsProper π → ∀ (D : EffCartierData M.Z) (V : M₁.Z.affineOpens) (g : Γ(M₁.Z, V.1)), (∀ x' : M.Z, π x' ∈ V.1 → ∀ f', EqAt M D x' f' → valF M₁.pt V.1 g / f' ∈ M.O x') → g ∈ (D.idealSheaf.map π).ideal V := by

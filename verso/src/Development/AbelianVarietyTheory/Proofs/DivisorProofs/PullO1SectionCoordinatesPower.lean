@@ -10,14 +10,14 @@ open GlobalTheory.Points GlobalTheory.ZM
 namespace GlobalTheory.SiegTh.PullO1
 
 /- English proof (translation)
-Introduce `w _` and use `Set.mem_iInter.2 fun _ => hp (Set.mem_univ w)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem top_le_wchart {X : Scheme.{0}} (L : LB X) {K : Type} [Field K] (x : Sp K ⟶ X) (p : L.ι)
     (hp : ⊤ ≤ x ⁻¹ᵁ L.U p) : ⊤ ≤ (𝟙 (Sp K)) ⁻¹ᵁ (L.pull x).U (fun _ => p) :=
   fun w _ => Set.mem_iInter.2 fun _ => hp (Set.mem_univ w)
 
 /- English proof (translation)
-Rewrite using `[valR_res _ le_top hW]`. Use `valR_specMap (C := K) (𝟙 (CommRingCat.of K)) a` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem valR_id_resG_inv {K : Type} [Field K] {W : (Sp K).Opens} (hW : ⊤ ≤ (𝟙 (Sp K)) ⁻¹ᵁ W) (a : K) :
     valR (𝟙 (Sp K)) W (resG (Sp K) le_top ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom a)) = a := by
@@ -26,14 +26,14 @@ theorem valR_id_resG_inv {K : Type} [Field K] {W : (Sp K).Opens} (hW : ⊤ ≤ (
   simpa using this
 
 /- English proof (translation)
-The claim follows from `valR_res x e h f`.
+A detailed English derivation is pending.
 -/
 theorem valR_resG' {C : Type} [CommRing C] {X : Scheme.{0}} (x : Sp C ⟶ X) {U V : X.Opens} (e : V ≤ U)
     (h : ⊤ ≤ x ⁻¹ᵁ V) (f : Γ(X, U)) : valR x V (resG X e f) = valR x U f :=
   valR_res x e h f
 
 /- English proof (translation)
-Rewrite using `[valR_eq x W hW]`. Conclude with `(u.isUnit.map (valMap x W hW).hom).ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valR_unit_ne_zero {K : Type} [Field K] {X : Scheme.{0}} (x : Sp K ⟶ X) {W : X.Opens} (hW : ⊤ ≤ x ⁻¹ᵁ W)
     (u : Γ(X, W)ˣ) : valR x W (u : Γ(X, W)) ≠ 0 := by
@@ -45,19 +45,19 @@ end GlobalTheory.SiegTh.PullO1
 namespace GlobalTheory.SiegTh.PullO1
 
 /- English proof (translation)
-Take `⟨τ, hτ, hv⟩` from `hs`. Use `⟨fun p => valR (𝟙 (Sp K)) ((L.pull x).U (fun _ => p)) (τ.s (fun _ => p) : Γ(Sp K, _)), ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Establish `hW` using `top_le_wchart L x p hp`. Use `⟨valR_unit_ne_zero _ hW _, fun i => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `congrArg (valR (𝟙 (Sp K)) _) (hv i (fun _ => p) (LB.wchart_le L (fun _ => x) (fun _ => p) PUnit.unit))`. Simplify using `only at e`. Establish `e2` using `valR_appLE (𝟙 (Sp K)) x (LB.wchart_le L (fun _ => x) (fun _ => p) PUnit.unit) hW ((σ i).f p)`. Rewrite `e2` using `[Category.id_comp]`. Rewrite using `[valF_eq_valR, ← e2]`.
+Establish an intermediate fact. Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[valR_mul _ _ hW, valR_id_resG_inv hW]`. Introduce `p p' hpp`. Establish `hp : ⊤ ≤ x ⁻¹ᵁ L.U p` using `fun w hw => (hpp hw).1`. Establish `hp' : ⊤ ≤ x ⁻¹ᵁ L.U p'` using `fun w hw => (hpp hw).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW` using `top_le_wchart L x p hp`. Establish `hW'` using `top_le_wchart L x p' hp'`. Establish `hWW : ⊤ ≤ (𝟙 (Sp K)) ⁻¹ᵁ ((L.pull x).U (fun _ => p) ⊓ (L.pull x).U (fun _ => p'))` using `fun w hw => ⟨hW hw, hW' hw⟩`. Establish `e0` using `congrArg Units.val (hτ (fun _ => p) (fun _ => p'))`. Establish `e` using `congrArg (valR (𝟙 (Sp K)) _) e0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Units.val_mul] at e`. Rewrite `e` using `[valR_mul _ _ hWW]`. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe] at e`. Rewrite `e` using `[valR_res _ _ hWW, valR_res _ _ hWW]`. Use `show _ * valR _ _ _ = valR _ _ _`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `congr 1`. Rewrite using `[ProjSpace.linComb_punit_g, zpow_one]`. Express the relevant statement in the definitionally equal form `valF x _ _ = valR (𝟙 (Sp K)) _ (resG (Sp K) _ ((x.app (L.U p ⊓ L.U p')).hom (L.g p p' : Γ(X, _))))`. Use `Eq.symm ((valR_resG' (𝟙 (Sp K)) _ hWW _).trans ?_)` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(valR_comp (𝟙 (Sp K)) x _ _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem secCoord_vals {X : Scheme.{0}} {L : LB X} {I : Type} {σ : I → L.Sec} {K : Type} [Field K] {x : Sp K ⟶ X}
     {v : I → K} (hs : SecCoord L σ x v) :
@@ -120,21 +120,21 @@ theorem coe_res_mul {X : Scheme.{0}} {V P Q R : X.Opens} (a : Γ(X, P)ˣ) (b : �
       resG X ha (a : Γ(X, P)) * resG X hb (↑b⁻¹ : Γ(X, Q)) * resG X hc (c : Γ(X, R)) := rfl
 
 /- English proof (translation)
-Rewrite using `[← M.res_apply V hV, ← M.res_apply V hV, ← M.res_apply V hV, map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valF_pt_mul (M : RatModel o Ω) {V : M.Z.Opens} (hV : (V : Set M.Z).Nonempty) (f g : Γ(M.Z, V)) :
     valF M.pt V (f * g) = valF M.pt V f * valF M.pt V g := by
   rw [← M.res_apply V hV, ← M.res_apply V hV, ← M.res_apply V hV, map_mul]
 
 /- English proof (translation)
-Rewrite using `[← M.res_apply V hV, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valF_pt_one (M : RatModel o Ω) {V : M.Z.Opens} (hV : (V : Set M.Z).Nonempty) :
     valF M.pt V (1 : Γ(M.Z, V)) = 1 := by
   rw [← M.res_apply V hV, map_one]
 
 /- English proof (translation)
-Rewrite using `[← M.res_apply V hV, ← M.res_apply V hV]`. Conclude with `map_units_inv (M.res V hV) u`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valF_pt_inv (M : RatModel o Ω) {V : M.Z.Opens} (hV : (V : Set M.Z).Nonempty) (u : Γ(M.Z, V)ˣ) :
     valF M.pt V (↑u⁻¹ : Γ(M.Z, V)) = (valF M.pt V (u : Γ(M.Z, V)))⁻¹ := by
@@ -142,7 +142,7 @@ theorem valF_pt_inv (M : RatModel o Ω) {V : M.Z.Opens} (hV : (V : Set M.Z).None
   exact map_units_inv (M.res V hV) u
 
 /- English proof (translation)
-Rewrite using `[← M.res_apply V hV]`. Conclude with `(u.isUnit.map (M.res V hV)).ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valF_pt_ne_zero (M : RatModel o Ω) {V : M.Z.Opens} (hV : (V : Set M.Z).Nonempty) (u : Γ(M.Z, V)ˣ) :
     valF M.pt V (u : Γ(M.Z, V)) ≠ 0 := by
@@ -150,7 +150,7 @@ theorem valF_pt_ne_zero (M : RatModel o Ω) {V : M.Z.Opens} (hV : (V : Set M.Z).
   exact (u.isUnit.map (M.res V hV)).ne_zero
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `(RatModel.mem_ringOn_iff_exists hV).1 (RatModel.mem_ringOn.2 fun z hz => (h z hz).1)`. Take `⟨g, hg⟩` from `(RatModel.mem_ringOn_iff_exists hV).1 (RatModel.mem_ringOn.2 fun z hz => (h z hz).2)`. Establish `hfg : f * g = 1` using `M.valF_injective hV (by rw [valF_pt_mul M hV, valF_pt_one M hV, hf, hg, mul_inv_cancel₀ h0])`. Conclude with `⟨⟨f, g, hfg, by rw [mul_comm]; exact hfg⟩, hf⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_unit_of_val (M : RatModel o Ω) {V : M.Z.Opens} (hV : (V : Set M.Z).Nonempty) {w : Ω} (h0 : w ≠ 0)
     (h : ∀ z ∈ V, w ∈ M.O z ∧ w⁻¹ ∈ M.O z) : ∃ u : Γ(M.Z, V)ˣ, valF M.pt V (u : Γ(M.Z, V)) = w := by
@@ -166,17 +166,17 @@ namespace GlobalTheory.SiegTh.PullO1
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
 /- English proof (translation)
-Establish `key : ∀ pq : A.ι × L.ι, ∃ u : Γ(M.Z, A.U pq.1 ⊓ L.U pq.2)ˣ, ((A.U pq.1 ⊓ L.U pq.2 : M.Z.Opens) : Set M.Z).Nonempty → valF M.pt _ (u : Γ(M.Z, A.U pq.1 ⊓ L.U pq.2)) = cA pq.1 / cL pq.2`. Introduce `pq`. Distinguish the cases in `hV : ((A.U pq.1 ⊓ L.U pq.2 : M.Z.Opens) : Set M.Z).Nonempty`. Establish `h0 : cA pq.1 / cL pq.2 ≠ 0` using `div_ne_zero (hA0 _ (hV.mono fun _ h => h.1)) (hL0 _ (hV.mono fun _ h => h.2))`. Take `⟨u, hu⟩` from `exists_unit_of_val M hV h0 fun z hz => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[inv_div]`. Conclude with `hloc pq.1 pq.2 z hz.1 hz.2`. Conclude with `⟨u, fun _ => hu⟩`. Conclude with `⟨1, fun h => absurd h hV⟩`. Use `choose u hu using key`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `⟨⟨u⟩, fun pq pq' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hV : (((A.U pq.1 ⊓ L.U pq.2) ⊓ (A.U pq'.1 ⊓ L.U pq'.2) : M.Z.Opens) : Set M.Z).Nonempty`. Establish `h1 : ((A.U pq.1 ⊓ L.U pq.2 : M.Z.Opens) : Set M.Z).Nonempty` using `hV.mono fun _ h => h.1`. Establish `h2 : ((A.U pq'.1 ⊓ L.U pq'.2 : M.Z.Opens) : Set M.Z).Nonempty` using `hV.mono fun _ h => h.2`. Establish `hAA : ((A.U pq.1 ⊓ A.U pq'.1 : M.Z.Opens) : Set M.Z).Nonempty` using `hV.mono fun _ h => ⟨h.1.1, h.2.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLL : ((L.U pq.2 ⊓ L.U pq'.2 : M.Z.Opens) : Set M.Z).Nonempty` using `hV.mono fun _ h => ⟨h.1.2, h.2.2⟩`. Establish `cA'` using `hA0 _ (h2.mono fun _ h => h.1)`. Establish `cL'` using `hL0 _ (h2.mono fun _ h => h.2)`. Establish `cL0` using `hL0 _ (h1.mono fun _ h => h.2)`. Establish `eA` using `hAg pq.1 pq'.1 hAA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eL` using `hLg pq.2 pq'.2 hLL`. Establish `gL0 : valF M.pt _ (L.g pq.2 pq'.2 : Γ(M.Z, L.U pq.2 ⊓ L.U pq'.2)) ≠ 0` using `valF_pt_ne_zero M hLL _`. Simplify using `only [LB.div]`. Use `Units.ext (M.valF_injective hV ?_)` and prove the remaining obligations. Use `erw [coe_res_mul, coe_res]`.
+Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[valF_pt_mul M hV, valF_pt_mul M hV, M.valF_resG _ hV, M.valF_resG _ hV]`. Use `erw [M.valF_resG _ hV, M.valF_resG _ hV]`. Rewrite using `[valF_pt_inv M hLL, hu _ h1, hu _ h2, ← eA, ← eL]`. Clear the denominators using the available nonvanishing facts. Conclude with `unit_ext fun x hx => absurd ⟨x, hx⟩ hV`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_of_vals (M : RatModel o Ω) {L A : LB M.Z} (cL : L.ι → Ω) (cA : A.ι → Ω)
     (hL0 : ∀ q, (L.U q : Set M.Z).Nonempty → cL q ≠ 0) (hA0 : ∀ p, (A.U p : Set M.Z).Nonempty → cA p ≠ 0)
@@ -226,7 +226,7 @@ namespace GlobalTheory.SiegTh.PullO1
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
 /- English proof (translation)
-Rewrite using `[← M.res_apply V hV, ← M.res_apply V hV]`. Establish `h1 : ∀ w : Γ(M.Z, V)ˣ, M.res V hV (w : Γ(M.Z, V)) = ((Units.map (M.res V hV : Γ(M.Z, V) →* Ω) w : Ωˣ) : Ω)` using `fun _ => rfl`. Rewrite using `[h1, h1, map_zpow, Units.val_zpow_eq_zpow_val]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem valF_pt_zpow (M : RatModel o Ω) {V : M.Z.Opens} (hV : (V : Set M.Z).Nonempty) (u : Γ(M.Z, V)ˣ) (n : ℤ) :
     valF M.pt V (↑(u ^ n) : Γ(M.Z, V)) = (valF M.pt V (u : Γ(M.Z, V))) ^ n := by
@@ -236,7 +236,7 @@ theorem valF_pt_zpow (M : RatModel o Ω) {V : M.Z.Opens} (hV : (V : Set M.Z).Non
   rw [h1, h1, map_zpow, Units.val_zpow_eq_zpow_val]
 
 /- English proof (translation)
-Rewrite using `[ProjSpace.linComb_punit_g]`. Use `erw [valF_pt_zpow M hV]`. Use `congr 1`. Use `erw [coe_res, M.valF_resG _ hV]`. Conclude with `(valR_comp M.pt φ (L.U (P PUnit.unit) ⊓ L.U (P' PUnit.unit)) (L.g (P PUnit.unit) (P' PUnit.unit) : Γ(Y, _))).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem valF_linComb_g (M : RatModel o Ω) {Y : Scheme.{0}} (L : LB Y) (φ : M.Z ⟶ Y) (n : ℤ) (P P' : PUnit → L.ι)
     (hV : (((LB.LinComb L (K := PUnit) (fun _ => φ) (fun _ => n)).U P ⊓
@@ -256,33 +256,29 @@ end GlobalTheory.SiegTh.PullO1
 namespace GlobalTheory.SiegTh.PullO1
 
 /- English proof (translation)
-Introduce `k Ω o _ _ _ _ M I _ th δ t N D e h _ hcov hsc hpc hss`. Take `⟨c, hc0, hcg⟩` from `secCoord_vals hsc`. Take `⟨d, hd0, hdg⟩` from `secCoord_vals hpc`. Establish `ptU : ∀ {U : M.Z.Opens}, (U : Set M.Z).Nonempty → ⊤ ≤ M.pt ⁻¹ᵁ U` using `fun hU => M.top_le_preimage_pt hU`. Use `lbIso_of_vals M (fun Q => d (Q PUnit.unit)) (fun P => c (P PUnit.unit) ^ D) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Q hQ`. Conclude with `(hd0 _ (fun w hw => LB.wchart_le _ (fun _ => h) Q PUnit.unit (ptU hQ hw))).1`. Introduce `P hP`. Conclude with `pow_ne_zero _ (hc0 _ (fun w hw => LB.wchart_le δ (fun _ => 𝟙 M.Z) P PUnit.unit (ptU hP hw))).1`. Introduce `Q Q' hQQ`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[valF_linComb_g M _ h 1 Q Q' hQQ, zpow_one]`. Conclude with `hdg _ _ (fun w hw => ⟨LB.wchart_le _ (fun _ => h) Q PUnit.unit (ptU hQQ hw).1, LB.wchart_le _ (fun _ => h) Q' PUnit.unit (ptU hQQ hw).2⟩)`. Introduce `P P' hPP`. Rewrite using `[valF_linComb_g M δ (𝟙 M.Z) (D : ℤ) P P' hPP, zpow_natCast, Category.comp_id, ← mul_pow]`. Rewrite using `[hcg _ _ (fun w hw => ⟨LB.wchart_le δ (fun _ => 𝟙 M.Z) P PUnit.unit (ptU hPP hw).1, LB.wchart_le δ (fun _ => 𝟙 M.Z) P' PUnit.unit (ptU hPP hw).2⟩)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `P Q z hzP hzQ show c (P PUnit.unit) ^ D / d (Q PUnit.unit) ∈ M.O z ∧ d (Q PUnit.unit) / c (P PUnit.unit) ^ D ∈ M.O z`. Establish `hzp : z ∈ δ.U (P PUnit.unit)` using `LB.wchart_le δ (fun _ => 𝟙 M.Z) P PUnit.unit hzP`. Establish `hzq : z ∈ h ⁻¹ᵁ (GlobalTheory.ProjSpace.O1 o N).U (Q PUnit.unit)` using `LB.wchart_le _ (fun _ => h) Q PUnit.unit hzQ`. Generalize the expression as in `P PUnit.unit = p at hzp ⊢`. Generalize the expression as in `Q PUnit.unit = q at hzq ⊢`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hUp : ⊤ ≤ M.pt ⁻¹ᵁ δ.U p` using `ptU ⟨z, hzp⟩`. Establish `hUq : ⊤ ≤ (M.pt ≫ h) ⁻¹ᵁ (GlobalTheory.ProjSpace.O1 o N).U q` using `ptU (U := h ⁻¹ᵁ _) ⟨z, hzq⟩`. Take `⟨cp0, hcv⟩` from `hc0 p hUp`. Take `⟨dq0, hdv⟩` from `hd0 q hUq`. Establish `hed : ∀ i, e i * d q ∈ M.O z` using `fun i => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hdv i, valF_eq_valR, valR_comp]`. Conclude with `RatModel.valF_mem_O hzq _`. Establish `heq1 : e q * d q = 1`. Establish `h11 : (ProjSpace.coord o N q).f q = 1` using `ProjSpace.ratioOn_self (hi := le_rfl)`. Rewrite using `[← hdv q, h11, valF_eq_valR]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `valR_one _ _ hUq`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, z ∈ nonzeroLocus (t a) := by`. Establish `hz : z ∈ (⨆ a, nonzeroLocus (t a))` using `hcov ▸ trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 hz`. Take `⟨kk, hk⟩ : ∃ kk, z ∈ M.Z.basicOpen ((t a).f kk)` from `TopologicalSpace.Opens.mem_iSup.1 ha`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hzk : z ∈ δ.U kk` using `M.Z.basicOpen_le _ hk`. Establish `hbo : z ∈ M.Z.basicOpen ((t a).f p)`. Establish `e1` using `congrArg M.Z.basicOpen ((t a).compat p kk)`. Rewrite `e1` using `[Scheme.basicOpen_res, Scheme.basicOpen_mul, Scheme.basicOpen_res, Scheme.basicOpen_of_isUnit _ (δ.g p kk).isUnit]`. Establish `hz : z ∈ (δ.U p ⊓ δ.U kk) ⊓ ((δ.U p ⊓ δ.U kk) ⊓ M.Z.basicOpen ((t a).f kk))` using `⟨⟨hzp, hzk⟩, ⟨hzp, hzk⟩, hk⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hz` using `[← e1]`. Conclude with `hz.2`. Establish `hua : th a * c p ≠ 0 ∧ (th a * c p)⁻¹ ∈ M.O z`. Establish `hu` using `(RatModel.isUnit_O_iff _).1 ((RatModel.isUnit_valF_iff hzp ((t a).f p)).2 hbo)`. Simplify `hu` using `only [hcv a]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hmem : ∀ b, th b * c p ∈ M.O z` using `fun b => by`. Rewrite using `[← hcv b]`. Conclude with `RatModel.valF_mem_O hzp _`. Establish `tha0 : th a ≠ 0` using `left_ne_zero_of_mul hua.1`. Establish `hdiv : M.Div th a z` using `⟨tha0, fun b => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hb : th b / th a = (th b * c p) * (th a * c p)⁻¹` using `by field_simp`. Rewrite using `[hb]`. Conclude with `mul_mem (hmem b) hua.2⟩`. Take `⟨j, hj, h1, h2⟩` from `hss z a hdiv`. Establish `ej0 : e j ≠ 0` using `hj.1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : e q = (d q)⁻¹` using `eq_inv_of_mul_eq_one_left heq1`. Establish `key : c p ^ D / d q = (th a * c p) ^ D * (e j / th a ^ D) * (e q / e j)`. Rewrite using `[heq]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `U3 : (e q / e j)⁻¹ ∈ M.O z`. Rewrite using `[inv_div, heq, div_inv_eq_mul]`. Conclude with `hed j`. Establish `hx : c p ^ D / d q ∈ M.O z` using `key ▸ mul_mem (mul_mem (pow_mem (hmem a) D) h2) (hj.2 q)`. Establish `hy : (c p ^ D / d q)⁻¹ ∈ M.O z`.
-
-Rewrite using `[key, mul_inv, mul_inv, ← inv_pow, inv_div (e j) (th a ^ D)]`. Conclude with `mul_mem (mul_mem (pow_mem hua.2 D) h1) U3`. Conclude with `⟨hx, by rwa [inv_div] at hy⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lbIso_pull_O1_lbPow : ∀ (k Ω o : Type) [CommRing k] [Field Ω] [Algebra k Ω] [CommRing o] (M : RatModel k Ω) (I : Type) [Finite I]
     (th : I → Ω) (δ : LB M.Z) (t : I → δ.Sec) (N D : ℕ) (e : Fin (N + 1) → Ω) (h : M.Z ⟶ PSpace o N), δ.IsLB →

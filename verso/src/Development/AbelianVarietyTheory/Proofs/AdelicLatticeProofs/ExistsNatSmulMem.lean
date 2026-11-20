@@ -5,11 +5,11 @@ namespace GlobalTheory.NatMulIntegral
 open NumberField
 
 /- English proof (translation)
-Establish `h1 : IsAlgebraic ℚ a` using `Algebra.IsAlgebraic.isAlgebraic a`. Establish `h2 : IsAlgebraic ℤ a` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr h1`. Take `⟨y, hy, hi⟩` from `h2.exists_integral_multiple`. Use `⟨y.natAbs, Int.natAbs_pos.mpr hy, ?_⟩` and prove the remaining obligations. Rewrite `hi` using `[zsmul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : ((y.natAbs : ℕ) : E) = ((y.natAbs : ℤ) : E)` using `(Int.cast_natCast _).symm`. Break down `Int.natAbs_eq y with h | h` into its components or cases. Rewrite using `[hc, ← h]`. Conclude with `hi`. Establish `h' : (y.natAbs : ℤ) = -y` using `by omega`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, h', Int.cast_neg, neg_mul]`. Conclude with `hi.neg`.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_isIntegral {E : Type} [Field E] [NumberField E] (a : E) :
     ∃ d : ℕ, 0 < d ∧ IsIntegral ℤ ((d : E) * a) := by
@@ -27,7 +27,7 @@ theorem exists_nat_mul_isIntegral {E : Type} [Field E] [NumberField E] (a : E) :
     exact hi.neg
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hx d`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nat_smul_mem {E : Type} [Field E] [NumberField E] {n : ℕ}
     (L : Submodule (RingOfIntegers E) (Fin n → E)) (d : ℕ) {x : Fin n → E} (hx : x ∈ L) :
@@ -36,17 +36,17 @@ theorem nat_smul_mem {E : Type} [Field E] [NumberField E] {n : ℕ}
   exact nsmul_mem hx d
 
 /- English proof (translation)
-Establish `hy : y ∈ Submodule.span E (L : Set (Fin n → E))` using `hL ▸ Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_pos, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_pos, by simp⟩`. Consider the case `add x z _ _ hx hz`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨d, hd, hdx⟩` from `hx`. Take `⟨e, he, hez⟩` from `hz`. Use `⟨d * e, Nat.mul_pos hd he, ?_⟩` and prove the remaining obligations. Establish `h1` using `nat_smul_mem L e hdx`. Establish `h2` using `nat_smul_mem L d hez`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((d * e : ℕ) : E) • (x + z) = (e : E) • (d : E) • x + (d : E) • (e : E) • z`. Rewrite using `[smul_add, smul_smul, smul_smul, Nat.cast_mul, mul_comm (e : E)]`. Rewrite using `[this]`. Conclude with `L.add_mem h1 h2`. Consider the case `smul a x _ hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, hdx⟩` from `hx`. Take `⟨e, he, hea⟩` from `exists_nat_mul_isIntegral a`. Use `⟨d * e, Nat.mul_pos hd he, ?_⟩` and prove the remaining obligations. Set `b : RingOfIntegers E` to `⟨(e : E) * a, hea⟩`. Establish `h1 : b • (d : E) • x ∈ L` using `L.smul_mem b hdx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((d * e : ℕ) : E) • a • x = b • (d : E) • x`. Rewrite using `[← algebraMap_smul E b]`. Express the relevant statement in the definitionally equal form `_ = ((e : E) * a) • (d : E) • x`. Rewrite using `[smul_smul, smul_smul, Nat.cast_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_smul_mem {E : Type} [Field E] [NumberField E] {n : ℕ}
     (L : Submodule (RingOfIntegers E) (Fin n → E))

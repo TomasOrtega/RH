@@ -13,7 +13,7 @@ namespace GlobalTheory.CompanionTheory.HermPoisson
 variable {D : D7} {r : ℕ}
 
 /- English proof (translation)
-Use `show adj (rat β.1) = rat β.1`. Rewrite using `[← rat_conjTranspose]`. Use `congr 1`. Conclude with `β.2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem rat_mem_hermA (β : HermE D r) : rat β.1 ∈ hermA D r := by
   show adj (rat β.1) = rat β.1
@@ -30,9 +30,9 @@ Both sides reduce to the same expression.
 theorem ofHermE_val (β : HermE D r) : (ofHermE β).1.1 = β.1.map (incA D) := rfl
 
 /- English proof (translation)
-Use `⟨fun a b h => Subtype.ext (rat_injective (congrArg (fun c : ratHerm D r => c.1.1) h)), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨x, hx⟩, hr⟩`. Take `⟨γ, hγ⟩` from `(mem_ratMx).1 (AddSubgroup.mem_comap.1 hr)`. Establish `hγ' : rat γ = x` using `hγ`. Use `⟨⟨γ, rat_injective ?_⟩, Subtype.ext (Subtype.ext hγ')⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx' : adj x = x` using `hx`. Establish `: rat γᴴ = rat γ` using `by rw [rat_conjTranspose, hγ', hx']`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ofHermE_bijective : Function.Bijective (ofHermE (D := D) (r := r)) := by
   refine ⟨fun a b h => Subtype.ext (rat_injective (congrArg (fun c : ratHerm D r => c.1.1) h)), ?_⟩

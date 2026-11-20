@@ -27,7 +27,7 @@ abbrev qm {T T' : Thick (smFun Y q)} (φ : T ⟶ T') : Pt T' ⟶ Pt T :=
   Spec.map (CommRingCat.ofHom (Ideal.quotientMap T'.J φ.φ φ.hle))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.ConeLiftEx.exists_unit_lift T.J (fun x hx => GlobalTheory.CompanionTheory.SiteNil.thick_J_isNilpotent _ x hx) (Units.map (gam T).toMonoidHom v)`.
+A detailed English derivation is pending.
 -/
 theorem lift_unit (T : Thick (smFun Y q)) (v : (Γ(Pt T, ⊤))ˣ) :
     ∃ w : T.Bˣ, Ideal.Quotient.mk T.J (w : T.B) = gam T (v : Γ(Pt T, ⊤)) :=
@@ -35,7 +35,7 @@ theorem lift_unit (T : Thick (smFun Y q)) (v : (Γ(Pt T, ⊤))ˣ) :
     (Units.map (gam T).toMonoidHom v)
 
 /- English proof (translation)
-Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `h (show x ∈ (⊤ : Scheme.Opens _) from trivial)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem range_sub {T : Thick (smFun Y q)} {V : Y.Opens} (h : InU V T) : Set.range (pt T) ⊆ Set.range V.ι := by
   rw [Scheme.Opens.range_ι]
@@ -46,13 +46,13 @@ def lf (T : Thick (smFun Y q)) {V : Y.Opens} (h : InU V T) : Pt T ⟶ (V : Schem
   IsOpenImmersion.lift V.ι (pt T) (range_sub h)
 
 /- English proof (translation)
-The claim follows from `IsOpenImmersion.lift_fac _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem lf_fac (T : Thick (smFun Y q)) {V : Y.Opens} (h : InU V T) : lf T h ≫ V.ι = pt T :=
   IsOpenImmersion.lift_fac _ _ _
 
 /- English proof (translation)
-Rewrite using `[← cancel_mono V.ι, Category.assoc, lf_fac, lf_fac]`. Conclude with `pt_of_hom φ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lf_nat {T T' : Thick (smFun Y q)} (φ : T ⟶ T') {V : Y.Opens} (h : InU V T) (h' : InU V T') :
     qm φ ≫ lf T h = lf T' h' := by
@@ -60,16 +60,16 @@ theorem lf_nat {T T' : Thick (smFun Y q)} (φ : T ⟶ T') {V : Y.Opens} (h : InU
   exact pt_of_hom φ
 
 /- English proof (translation)
-Rewrite using `[← cancel_mono V'.ι, Category.assoc, lf_fac, Scheme.homOfLE_ι, lf_fac]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lf_le (T : Thick (smFun Y q)) {V V' : Y.Opens} (k : V ≤ V') (h : InU V T) (h' : InU V' T) :
     lf T h ≫ Y.homOfLE k = lf T h' := by
   rw [← cancel_mono V'.ι, Category.assoc, lf_fac, Scheme.homOfLE_ι, lf_fac]
 
 /- English proof (translation)
-Establish `e : (pt T).appLE V ⊤ h = V.topIso.inv ≫ (lf T h).appTop`. Establish `e1 : V.topIso.inv = V.ι.appLE V ⊤ V.ι_preimage_self.ge`. Rewrite using `[Scheme.Opens.ι_appLE]`. Both sides reduce to the same expression. Establish `e2 : (lf T h).appTop = (lf T h).appLE ⊤ ⊤ le_top`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Rewrite using `[e1, e2, Scheme.Hom.appLE_comp_appLE]`. Simplify using `only [lf_fac]`. Conclude with `congrArg (fun k => gam T (k.hom g)) e`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ev_eq (T : Thick (smFun Y q)) {V : Y.Opens} (h : InU V T) (g : Γ(Y, V)) :
     ev T h g = gam T ((lf T h).appTop.hom (V.topIso.inv.hom g)) := by
@@ -84,11 +84,11 @@ theorem ev_eq (T : Thick (smFun Y q)) {V : Y.Opens} (h : InU V T) (g : Γ(Y, V))
   exact congrArg (fun k => gam T (k.hom g)) e
 
 /- English proof (translation)
-Establish `h1 : (qm φ ≫ p) ≫ D.f = (qm φ ≫ e) ≫ D.f` using `by rw [Category.assoc, Category.assoc, hpe]`. Establish `nat` using `D.nat (qm φ) p e hpe`. Establish `A : Ideal.Quotient.mk T'.J ((Units.map φ.φ.toMonoidHom t : T'.Bˣ) : T'.B) = gam T' (D.u (qm φ ≫ p) (qm φ ≫ e) h1 : Γ(Pt T', ⊤))`. Express the relevant statement in the definitionally equal form `Ideal.quotientMap T'.J φ.φ φ.hle (Ideal.Quotient.mk T.J t) = _`. Rewrite using `[ht, nat, ← gamma_nat]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `coc` using `D.coc (qm φ ≫ p) p' e' hqp hpe'`. Establish `uc : D.u (qm φ ≫ p) e' (hqp.trans hpe') = D.u (qm φ ≫ p) (qm φ ≫ e) h1`. Substitute `hee` using the available equality. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 
-Establish `B : Ideal.Quotient.mk T'.J (w : T'.B) * Ideal.Quotient.mk T'.J (t' : T'.B) = Ideal.Quotient.mk T'.J ((Units.map φ.φ.toMonoidHom t : T'.Bˣ) : T'.B)`. Rewrite using `[A, hw, ht', ← map_mul, ← Units.val_mul, coc, uc]`. Rewrite using `[← Ideal.Quotient.eq, map_one, Units.val_mul, Units.val_mul, map_mul, map_mul, ← mul_assoc, B, ← map_mul, Units.mul_inv, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem compat (D : E.LineData Y) {T T' : Thick (smFun Y q)} (φ : T ⟶ T') (p e : Pt T ⟶ D.Y) (p' e' : Pt T' ⟶ D.Y)
     (hpe : p ≫ D.f = e ≫ D.f) (hpe' : p' ≫ D.f = e' ≫ D.f) (hqp : (qm φ ≫ p) ≫ D.f = p' ≫ D.f) (hee : qm φ ≫ e = e')
@@ -114,7 +114,7 @@ theorem compat (D : E.LineData Y) {T T' : Thick (smFun Y q)} (φ : T ⟶ T') (p 
   rw [← Ideal.Quotient.eq, map_one, Units.val_mul, Units.val_mul, map_mul, map_mul, ← mul_assoc, B, ← map_mul, Units.mul_inv, map_one]
 
 /- English proof (translation)
-Establish `h2 : (lf T h ≫ a) ≫ D.f = (lf T h ≫ a') ≫ D.f` using `by rw [Category.assoc, Category.assoc, haa]`. Establish `coc` using `D.coc p (lf T h ≫ a) (lf T h ≫ a') hp h2`. Establish `nat` using `D.nat (lf T h) a a' haa`. Rewrite using `[ev_eq, hu, ht, ht', ← congrArg Units.val coc, Units.val_mul, map_mul, nat]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tau_ev (D : E.LineData Y) {T : Thick (smFun Y q)} {V : Y.Opens} (h : InU V T) (p : Pt T ⟶ D.Y)
     (a a' : (V : Scheme.{0}) ⟶ D.Y) (haa : a ≫ D.f = a' ≫ D.f) (hp : p ≫ D.f = (lf T h ≫ a) ≫ D.f)
@@ -140,13 +140,13 @@ abbrev a1 : IdF (HH g) := (thFil (smFun Y q) ((1 : ℕ) : ℤ)).res g
 abbrev a2 : IdF (HH g) := (thFil (smFun Y q) (((1 : ℕ) : ℤ) + 1)).res g
 
 /- English proof (translation)
-The claim follows from `(grOk (smFun Y q) (show 1 + 0 = 1 from rfl)).ab (g.obj T) hx hy`.
+A detailed English derivation is pending.
 -/
 theorem hab1 (T : Cc) (x y : (HH g).obj T) (hx : x ∈ (a1 g).S T) (hy : y ∈ (a1 g).S T) : x * y ∈ (a2 g).S T :=
   (grOk (smFun Y q) (show 1 + 0 = 1 from rfl)).ab (g.obj T) hx hy
 
 /- English proof (translation)
-The claim follows from `Thick.J_le_pdPow_one _ hx`.
+A detailed English derivation is pending.
 -/
 theorem J_le (T : Cc) {x : (g.obj T).B} (hx : x ∈ (g.obj T).J) : x ∈ (a1 g).S T := Thick.J_le_pdPow_one _ hx
 
@@ -155,14 +155,14 @@ variable {g} {D : E.LineData Y}
 abbrev wΛ (Λ : CLiftK g D) {c c' : Cc} (φ : c ⟶ c') : ((HH g).obj c')ˣ := Λ.w φ
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, Λ.hp, Λ.hp]`. Conclude with `pt_of_hom (g.map φ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hq (Λ : CLiftK g D) {c c' : Cc} (φ : c ⟶ c') : (qm (g.map φ) ≫ Λ.p c) ≫ D.f = Λ.p c' ≫ D.f := by
   rw [Category.assoc, Λ.hp, Λ.hp]
   exact pt_of_hom (g.map φ)
 
 /- English proof (translation)
-The claim follows from `J_le g c' (compat D (g.map φ) (Λ.p c) (e c) (Λ.p c') (e c') (he c) (he c') (hq Λ φ) (hn φ) (Λ.w φ) (t c) (t c') (Λ.hw φ (hq Λ φ)) (ht c) (ht c'))`.
+A detailed English derivation is pending.
 -/
 theorem W_mem (Λ : CLiftK g D) (e : ∀ c, Pt (g.obj c) ⟶ D.Y) (he : ∀ c, Λ.p c ≫ D.f = e c ≫ D.f)
     (hn : ∀ {c c' : Cc} (φ : c ⟶ c'), qm (g.map φ) ≫ e c = e c') (t : ∀ c, ((HH g).obj c)ˣ)
@@ -173,9 +173,9 @@ theorem W_mem (Λ : CLiftK g D) (e : ∀ c, Pt (g.obj c) ⟶ D.Y) (he : ∀ c, �
     (Λ.hw φ (hq Λ φ)) (ht c) (ht c'))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Establish `hr : ((rU (fun φ => tw (fun φ => wΛ Λ φ) t φ) s : ((HH g).obj (s.obj (Fin.last 2)))ˣ) : (HH g).obj (s.obj (Fin.last 2))) - 1 ∈ (a1 g).S (s.obj (Fin.last 2))`. Rewrite using `[rU_tw]`. Conclude with `J_le g _ (r_sub_mem Λ (s.map' 0 1) (s.map' 1 2) (s.map' 0 2) (s.map'_comp 0 1 2))`. Rewrite using `[d_dl (a1 g) (a2 g) (hab1 g) _ hW s hr]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext ((?_ : _ = _).trans (hval s).symm)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ _ = _`. Rewrite using `[rU_tw]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem twisted_log_cocycle_d (Λ : CLiftK g D) (f : CH.Cn (sq (a1 g) (a2 g)) 2)
     (hval : ∀ s, (show sqM (a1 g) (a2 g) _ from f s).1 =
@@ -196,7 +196,7 @@ theorem twisted_log_cocycle_d (Λ : CLiftK g D) (f : CH.Cn (sq (a1 g) (a2 g)) 2)
 end Fam
 
 /- English proof (translation)
-Simplify using `only [mul_inv, inv_inv]`. Establish `: w * (b * n⁻¹) * (a * b⁻¹ * (m⁻¹ * n)) = w * (a * m⁻¹) * (b * b⁻¹) * (n * n⁻¹)`. Simplify using `only [mul_assoc, mul_left_comm, mul_comm]`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tw_id {G : Type} [CommGroup G] (w a b m n : G) :
     w * (a * m⁻¹) = w * (b * n⁻¹) * ((a * b⁻¹) * (m * n⁻¹)⁻¹) := by
@@ -207,9 +207,9 @@ theorem tw_id {G : Type} [CommGroup G] (w a b m n : G) :
   simp
 
 /- English proof (translation)
-Unfold `Lifts.form`. Rewrite using `[Fin.prod_univ_one]`. Establish `e : (s.map (homOfLE (Fin.le_last (Fin.succ (0 : Fin 1))))).hom.φ (Λ.v _ u) = Λ.v _ u`. Establish `: s.map (homOfLE (Fin.le_last (Fin.succ (0 : Fin 1)))) = 𝟙 _` using `s.map_id _`. Rewrite using `[this]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [Matrix.cons_val_fin_one]`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem form_one {V : Y.Opens} (Λ : Lifts q V) (g₀ u : Sec q V) (s : ComposableArrows (inU q V).FullSubcategory 1) :
     Λ.form g₀ ![u] s = Λ.v _ g₀ * (Λ.v _ u - (s.map' 0 1).hom.φ (Λ.v _ u)) := by
@@ -224,9 +224,9 @@ theorem form_one {V : Y.Opens} (Λ : Lifts q V) (g₀ u : Sec q V) (s : Composab
   rfl
 
 /- English proof (translation)
-Use `choose p hp using h`. Establish `hq' : ∀ {c c' : Cc} (φ : c ⟶ c'), (qm (g.map φ) ≫ p c) ≫ D.f = p c' ≫ D.f`. Introduce `c c' φ`. Rewrite using `[Category.assoc, hp, hp]`. Conclude with `pt_of_hom (g.map φ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hw : ∀ {c c' : Cc} (φ : c ⟶ c'), ∃ w : (g.obj c').Bˣ, Ideal.Quotient.mk (g.obj c').J (w : (g.obj c').B) = gam (g.obj c') (D.u _ _ (hq' φ) : Γ(Pt (g.obj c'), ⊤))` using `fun φ => lift_unit _ _`. Use `choose w hw using @hw`. Conclude with `⟨{ p := p, hp := hp, w := fun φ => w φ, hw := fun φ _ => hw φ }⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_lift {Cc : Type 1} [Category.{0} Cc] (g : Cc ⥤ Thick (smFun Y q)) (D : E.LineData Y)
     (h : ∀ c, ∃ p : Pt (g.obj c) ⟶ D.Y, p ≫ D.f = pt (g.obj c)) : Nonempty (CLiftK g D) := by
@@ -245,13 +245,13 @@ def PU (q : Y ⟶ Spec (CommRingCat.of K)) {ι : Type} (U : ι → Y.Opens) : Ob
   fun T => ∃ α, inU q (U α) T
 
 /- English proof (translation)
-Introduce `_ h` and use `⟨α, h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem jU (q : Y ⟶ Spec (CommRingCat.of K)) {ι : Type} (U : ι → Y.Opens) (α : ι) : inU q (U α) ≤ PU q U :=
   fun _ h => ⟨α, h⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cls_congr {R : Type} [CommRing R] (Kx : Cx.{1} R) {n : ℕ} {x y : Kx.X n} (h : x = y) (hx : Kx.d n x = 0) (hy : Kx.d n y = 0) :
     Kx.cls x hx = Kx.cls y hy := by
@@ -259,7 +259,7 @@ theorem cls_congr {R : Type} [CommRing R] (Kx : Cx.{1} R) {n : ℕ} {x y : Kx.X 
   rfl
 
 /- English proof (translation)
-Substitute `hb` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem u_right (D : E.LineData Y) {V : Scheme.{0}} {a b b' : V ⟶ D.Y} (hb : b = b')
     (h : a ≫ D.f = b ≫ D.f) (h' : a ≫ D.f = b' ≫ D.f) : D.u a b h = D.u a b' h' := by
@@ -276,7 +276,7 @@ def eA (σ : ∀ α, (U α : Scheme.{0}) ⟶ D.Y) (α : ι) (c : (inU q (U α)).
   lf c.obj c.property ≫ σ α
 
 /- English proof (translation)
-Rewrite using `[(Lα Λ α).hp, eA, Category.assoc, hσ, lf_fac]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem he_A (Λ : CLiftK (PU q U).ι D) (σ : ∀ α, (U α : Scheme.{0}) ⟶ D.Y) (hσ : ∀ α, σ α ≫ D.f = (U α).ι) (α : ι)
     (c : (inU q (U α)).FullSubcategory) : (Lα Λ α).p c ≫ D.f = eA σ α c ≫ D.f := by
@@ -284,7 +284,7 @@ theorem he_A (Λ : CLiftK (PU q U).ι D) (σ : ∀ α, (U α : Scheme.{0}) ⟶ D
   rfl
 
 /- English proof (translation)
-Rewrite using `[eA, eA, ← Category.assoc]`. Conclude with `congrArg (· ≫ σ α) (lf_nat φ.hom c.property c'.property)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hn_A (σ : ∀ α, (U α : Scheme.{0}) ⟶ D.Y) (α : ι) {c c' : (inU q (U α)).FullSubcategory} (φ : c ⟶ c') :
     qm ((inU q (U α)).ι.map φ) ≫ eA σ α c = eA σ α c' := by
@@ -294,9 +294,9 @@ theorem hn_A (σ : ∀ α, (U α : Scheme.{0}) ⟶ D.Y) (α : ι) {c c' : (inU q
 end Data
 
 /- English proof (translation)
-Establish `hb : lf T h₁ ≫ σ₁ = lf T h ≫ Y.homOfLE k₁ ≫ σ₁` using `by rw [← Category.assoc, lf_le T k₁ h h₁]`. Establish `hb' : lf T h₂ ≫ σ₂ = lf T h ≫ Y.homOfLE k₂ ≫ σ₂` using `by rw [← Category.assoc, lf_le T k₂ h h₂]`. Establish `hp` using `hp₁`. Establish `hp'` using `hp₂`. Rewrite `hp` using `[hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp'` using `[hb']`. Conclude with `tau_ev D h p _ _ haa hp hp' t t' (ht.trans (congrArg (fun v => gam T (Units.val v)) (u_right D hb _ _))) (ht'.trans (congrArg (fun v => gam T (Units.val v)) (u_right D hb' _ _))) u hu`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tau_ev' (D : E.LineData Y) {T : Thick (smFun Y q)} {V V₁ V₂ : Y.Opens} (h : InU V T) (p : Pt T ⟶ D.Y)
     (σ₁ : (V₁ : Scheme.{0}) ⟶ D.Y) (σ₂ : (V₂ : Scheme.{0}) ⟶ D.Y) (k₁ : V ≤ V₁) (k₂ : V ≤ V₂) (h₁ : InU V₁ T) (h₂ : InU V₂ T)
@@ -316,7 +316,7 @@ theorem tau_ev' (D : E.LineData Y) {T : Thick (smFun Y q)} {V V₁ V₂ : Y.Open
     (ht'.trans (congrArg (fun v => gam T (Units.val v)) (u_right D hb' _ _))) u hu
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul, hz, h, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mk3 {B : Type} [CommRing B] (J : Ideal B) (x y z : B) (e : B ⧸ J)
     (h : Ideal.Quotient.mk J x * Ideal.Quotient.mk J y * e = 1) (hz : Ideal.Quotient.mk J z = e) :
@@ -324,14 +324,14 @@ theorem mk3 {B : Type} [CommRing B] (J : Ideal B) (x y z : B) (e : B ⧸ J)
   rw [map_mul, map_mul, hz, h, map_one]
 
 /- English proof (translation)
-Rewrite using `[map_add, map_mul, hg, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mk2 {B : Type} [CommRing B] (J : Ideal B) (x y g : B) (e : B ⧸ J) (hg : Ideal.Quotient.mk J g = -e)
     (h : -e + Ideal.Quotient.mk J x * Ideal.Quotient.mk J y = 0) : Ideal.Quotient.mk J (g + x * y) = 0 := by
   rw [map_add, map_mul, hg, h]
 
 /- English proof (translation)
-Use `⟨by linear_combination bi * h1 + h2, ?_⟩` and prove the remaining obligations. Take the linear combination `ei * (bi * h1 + h2) - a * bi * h3`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem tau_alg {A : Type} [CommRing A] {a bi b e ei : A} (h1 : a * e = b) (h2 : b * bi = 1) (h3 : e * ei = 1) :
     a * bi * e = 1 ∧ -ei + a * bi = 0 := by
@@ -339,37 +339,35 @@ theorem tau_alg {A : Type} [CommRing A] {a bi b e ei : A} (h1 : a * e = b) (h2 :
   linear_combination ei * (bi * h1 + h2) - a * bi * h3
 
 /- English proof (translation)
-Introduce `K _ Y q D ι U σ hσ r hr hc`. Establish `hsec : ∀ c : (PU q U).FullSubcategory, ∃ V ∈ 𝒱D D, InU V ((PU q U).ι.obj c)`. Introduce and unpack `⟨T, α, h⟩`. Conclude with `⟨U α, ⟨σ α, hσ α⟩, h⟩`. Choose the witnesses or unpack the hypotheses as in `⟨Λ⟩ : Nonempty (CLiftK (PU q U).ι D) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `exists_lift _ D ?_` and prove the remaining obligations. Introduce and unpack `⟨T, α, h⟩`. Conclude with `⟨lf T h ≫ σ α, by rw [Category.assoc, hσ, lf_fac]; rfl⟩`. Take `⟨f, hf, hcl, hval⟩` from `hc (PU q U).FullSubcategory (PU q U).ι hsec Λ`. Establish `hy : CH.d ((PU q U).ι ⋙ G q 1) 2 ((CH.Mor.restrict (G q 1) (PU q U).ι).pullC 2 r) = 0`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[CH.Mor.d_pullC, hr, map_zero]`. Take `⟨bb, hbb⟩` from `cls_eq_d (F := (PU q U).ι ⋙ G q 1) hy hf hcl`. Establish `ex : ∀ (α : ι) (c : (inU q (U α)).FullSubcategory), ∃ t : ((HH (inU q (U α)).ι).obj c)ˣ, Ideal.Quotient.mk c.obj.J (show c.obj.B from (t : (HH (inU q (U α)).ι).obj c)) = gam ((inU q (U α)).ι.obj c) (Units.val (D.u _ _ (he_A Λ σ hσ α c)))` using `fun α c => lift_unit c.obj _`. Use `choose t ht using ex`. Establish `hW : ∀ (α : ι) {c c' : (inU q (U α)).FullSubcategory} (φ : c ⟶ c'), ((tw (fun φ => wΛ (Lα Λ α) φ) (t α) φ : ((HH (inU q (U α)).ι).obj c')ˣ) : (HH (inU q (U α)).ι).obj c') - 1 ∈ (a1 (inU q (U α)).ι).S c'` using `fun α _ _ φ => W_mem (Lα Λ α) (eA σ α) (he_A Λ σ hσ α) (hn_A σ α) (t α) (ht α) φ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨dA, hdA⟩ : ∃ dA : ∀ α, CH.Cn ((inU q (U α)).ι ⋙ G q 1) 1, ∀ α, dA α = dl (a1 (inU q (U α)).ι) (a2 (inU q (U α)).ι) (fun φ => tw (fun φ => wΛ (Lα Λ α) φ) (t α) φ) (hW α)` from `⟨_, fun α => rfl⟩`. Establish `dW : ∀ α : ι, CH.d ((inU q (U α)).ι ⋙ G q 1) 1 (dA α) = (resU (G q 1) (jU q U α)).pullC 2 f`. Introduce `α`. Rewrite using `[hdA]`. Conclude with `twisted_log_cocycle_d (Lα Λ α) ((resU (G q 1) (jU q U α)).pullC 2 f) (fun s => hval (s ⋙ ObjectProperty.ιOfLE (jU q U α))) (t α) (hW α)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hβ : ∀ α : ι, CH.d ((inU q (U α)).ι ⋙ G q 1) 1 ((resU (G q 1) (jU q U α)).pullC 1 bb + dA α) = (CH.Mor.restrict (G q 1) (inU q (U α)).ι).pullC 2 r`. Introduce `α`. Rewrite using `[map_add, CH.Mor.d_pullC, hbb, map_sub, dW, sub_add_cancel]`. Both sides reduce to the same expression. Use `⟨-1, fun α => (resU (G q 1) (jU q U α)).pullC 1 bb + dA α, hβ, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `α α' V h h' k k' u hu`. Set `W₁ : ∀ {c c' : (inU q V).FullSubcategory}, (c ⟶ c') → ((HH (inU q V).ι).obj c')ˣ` to `fun φ => tw (fun φ => wΛ (Lα Λ α) φ) (t α) ((ObjectProperty.ιOfLE k).map φ)`. Set `W₂ : ∀ {c c' : (inU q V).FullSubcategory}, (c ⟶ c') → ((HH (inU q V).ι).obj c')ˣ` to `fun φ => tw (fun φ => wΛ (Lα Λ α') φ) (t α') ((ObjectProperty.ιOfLE k').map φ)`. Establish `hW₁ : ∀ {c c' : (inU q V).FullSubcategory} (φ : c ⟶ c'), ((W₁ φ : ((HH (inU q V).ι).obj c')ˣ) : (HH (inU q V).ι).obj c') - 1 ∈ (a1 (inU q V).ι).S c'` using `fun φ => hW α ((ObjectProperty.ιOfLE k).map φ)`. Establish `hW₂ : ∀ {c c' : (inU q V).FullSubcategory} (φ : c ⟶ c'), ((W₂ φ : ((HH (inU q V).ι).obj c')ˣ) : (HH (inU q V).ι).obj c') - 1 ∈ (a1 (inU q V).ι).S c'` using `fun φ => hW α' ((ObjectProperty.ιOfLE k').map φ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `d₁ : CH.Cn ((inU q V).ι ⋙ G q 1) 1` to `dl (a1 (inU q V).ι) (a2 (inU q V).ι) (fun φ => W₁ φ) hW₁`. Set `d₂ : CH.Cn ((inU q V).ι ⋙ G q 1) 1` to `dl (a1 (inU q V).ι) (a2 (inU q V).ι) (fun φ => W₂ φ) hW₂`. Establish `e₁ : (resU (G q 1) k).pullC 1 ((resU (G q 1) (jU q U α)).pullC 1 bb + dA α) = (resU (G q 1) (le_trans k (jU q U α))).pullC 1 bb + d₁`. Rewrite using `[map_add, hdA]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₂ : (resU (G q 1) k').pullC 1 ((resU (G q 1) (jU q U α')).pullC 1 bb + dA α') = (resU (G q 1) (le_trans k (jU q U α))).pullC 1 bb + d₂`. Rewrite using `[map_add, hdA]`. Both sides reduce to the same expression. Establish `hz : CH.d ((inU q V).ι ⋙ G q 1) 1 ((resU (G q 1) k).pullC 1 ((resU (G q 1) (jU q U α)).pullC 1 bb + dA α) - (resU (G q 1) k').pullC 1 ((resU (G q 1) (jU q U α')).pullC 1 bb + dA α')) = 0`. Rewrite using `[map_sub, CH.Mor.d_pullC, CH.Mor.d_pullC, hβ, hβ, sub_eq_zero]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `e₃ : (resU (G q 1) k).pullC 1 ((resU (G q 1) (jU q U α)).pullC 1 bb + dA α) - (resU (G q 1) k').pullC 1 ((resU (G q 1) (jU q U α')).pullC 1 bb + dA α') = d₁ - d₂`. Rewrite using `[e₁, e₂, add_sub_add_left_eq_sub]`. Establish `hx` using `e₃ ▸ hz`. Use `⟨hz, fun Λ' => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ c : (inU q V).FullSubcategory, Ideal.Quotient.mk c.obj.J (show c.obj.B from Units.val (t α ((ObjectProperty.ιOfLE k).obj c))) * ev c.obj c.property (u : Sec q V) = Ideal.Quotient.mk c.obj.J (show c.obj.B from Units.val (t α' ((ObjectProperty.ιOfLE k').obj c)))`. Introduce `c`. Conclude with `tau_ev' D c.property ((Lα Λ α).p ((ObjectProperty.ιOfLE k).obj c)) (σ α) (σ α') h h' ((ObjectProperty.ιOfLE k).obj c).property ((ObjectProperty.ιOfLE k').obj c).property (by simp [hσ]) (he_A Λ σ hσ α ((ObjectProperty.ιOfLE k).obj c)) (he_A Λ σ hσ α' ((ObjectProperty.ιOfLE k').obj …`. Set `t₁ : ∀ c : (inU q V).FullSubcategory, ((HH (inU q V).ι).obj c)ˣ` to `fun c => t α ((ObjectProperty.ιOfLE k).obj c)`. Set `t₂ : ∀ c : (inU q V).FullSubcategory, ((HH (inU q V).ι).obj c)ˣ` to `fun c => t α' ((ObjectProperty.ιOfLE k').obj c)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `τ : ∀ c : (inU q V).FullSubcategory, ((HH (inU q V).ι).obj c)ˣ` to `fun c => t₁ c * (t₂ c)⁻¹`. Set `ũ : ∀ c : (inU q V).FullSubcategory, (HH (inU q V).ι).obj c` to `fun c => Λ'.v c (u : Sec q V)`. Set `gg : ∀ c : (inU q V).FullSubcategory, (HH (inU q V).ι).obj c` to `fun c => Λ'.v c (((-1 : ℤˣ) : ℤ) • (↑u⁻¹ : Sec q V))`. Establish `hτ : ∀ {c c' : (inU q V).FullSubcategory} (φ : c ⟶ c'), W₁ φ = W₂ φ * (τ c' * (mu φ (τ c))⁻¹)`. Introduce `c c' φ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : mu φ (τ c) = mu φ (t₁ c) * (mu φ (t₂ c))⁻¹` using `(map_mul _ _ _).trans (congrArg _ (map_inv _ _))`. Rewrite using `[e]`. Conclude with `tw_id _ _ _ _ _`. Establish `alg : ∀ c : (inU q V).FullSubcategory, _` using `fun c => tau_alg (key c) (show Ideal.Quotient.mk c.obj.J (show c.obj.B from Units.val (t α' ((ObjectProperty.ιOfLE k').obj c))) * Ideal.Quotient.mk c.obj.J (show c.obj.B from Units.val (t α' ((ObjectProperty.ιOfLE k').obj c))⁻¹) = 1 by`. Rewrite using `[← map_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg _ (Units.mul_inv (t α' ((ObjectProperty.ιOfLE k').obj c)))).trans (map_one _))`. Use the proof step `(show ev c.obj c.property (u : Sec q V) * ev c.obj c.property (↑u⁻¹ : Sec q V) = 1 by`. Rewrite using `[← map_mul, Units.mul_inv, map_one])`. Establish `h1 : ∀ c, (τ c : (HH (inU q V).ι).obj c) * ũ c - 1 ∈ (a1 (inU q V).ι).S c`. Introduce `c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `J_le _ c (Ideal.Quotient.eq.1 ?_)` and prove the remaining obligations. Conclude with `mk3 c.obj.J (Units.val (t₁ c)) (Units.val (t₂ c)⁻¹) (ũ c) _ (alg c).1 (Λ'.hv c _)`. Establish `h2 : ∀ c, gg c + (τ c : (HH (inU q V).ι).obj c) ∈ (a1 (inU q V).ι).S c`. Introduce `c`. Use `J_le _ c (Ideal.Quotient.eq_zero_iff_mem.1 ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (((-1 : ℤˣ) : ℤ) • (↑u⁻¹ : Sec q V)) = -(↑u⁻¹ : Sec q V)` using `by simp`. Use `mk2 c.obj.J (Units.val (t₁ c)) (Units.val (t₂ c)⁻¹) (gg c) _ ?_ (alg c).2` and prove the remaining obligations. Use `(Λ'.hv c _).trans ?_` and prove the remaining obligations. Rewrite using `[e, map_neg]`. Establish `rep` using `form_rep (a1 (inU q V).ι) (a2 (inU q V).ι) (hab1 _) (fun φ => W₁ φ) (fun φ => W₂ φ) hW₁ hW₂ τ hτ ũ gg h1 h2 hx`.
-
-Establish `ez : Λ'.form (((-1 : ℤˣ) : ℤ) • (↑u⁻¹ : Sec q V)) ![(u : Sec q V)] = _` using `funext (form_one Λ' _ _)`. Rewrite using `[ez, cls_congr _ e₃ hz hx]`. Conclude with `rep`.
+A detailed English derivation is pending.
 -/
 theorem main : CrystallineSemistableComparison.Onto.FirstChernCoboundary := by
   intro K _ Y q D ι U σ hσ r hr hc

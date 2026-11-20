@@ -7,7 +7,7 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[blockEmb, blockAct, rowAct, map_sum, rename_C]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem ldtensor_blockAct_comp (K : Type*) [CommRing K] {S : Type*} {k n : ℕ}
     (g : S → Matrix (Fin k) (Fin k) K) (s : S) :
@@ -18,7 +18,7 @@ theorem ldtensor_blockAct_comp (K : Type*) [CommRing K] {S : Type*} {k n : ℕ}
   simp [blockEmb, blockAct, rowAct, map_sum, rename_C]
 
 /- English proof (translation)
-Conclude with `AlgHom.congr_fun (ldtensor_blockAct_comp K g s) F`.
+A detailed English derivation is pending.
 -/
 theorem ldtensor_blockAct_blockEmb (K : Type*) [CommRing K] {S : Type*} {k n : ℕ}
     (g : S → Matrix (Fin k) (Fin k) K) (s : S) (F : MvPolynomial (Fin k × Fin n) K) :
@@ -26,13 +26,13 @@ theorem ldtensor_blockAct_blockEmb (K : Type*) [CommRing K] {S : Type*} {k n : �
   exact AlgHom.congr_fun (ldtensor_blockAct_comp K g s) F
 
 /- English proof (translation)
-Introduce `R K _ _ _ S _ k n g`. Use `⟨fun s F => ldtensor_blockAct_blockEmb K g s F, ?_⟩` and prove the remaining obligations. Introduce `M M' hMM' P hP`. Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨F, hF, rfl⟩` from `hx`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨fun s => rowAct K (g s) (F s), fun s => hMM' s (F s) (hF s), ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl (fun s _ => ldtensor_blockAct_blockEmb K g s (F s))`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero`. Rewrite using `[map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[← algebraMap_smul K a x, map_smul, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ a hx`.
+A detailed English derivation is pending.
 -/
 theorem block_action_tensor : BlockActTensor := by
   intro R K _ _ _ S _ k n g

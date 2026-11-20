@@ -20,9 +20,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Num.CkTop
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {Ω : Type} [Field Ω] [Algebra O Ω]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Establish `hmem : c ∈ (mcIdeal O x).comap (MvPolynomial.C : O →+* MvPolynomial (Σ k, ι k) O)`. Rewrite using `[Ideal.mem_comap]`. Simplify using `only [mcIdeal, GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.mcMap, RingHom.mem_ker]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hc]`. Rewrite `hmem` using `[h.2.2.1]`. Conclude with `(Ideal.mem_bot).1 hmem`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inj_of_model {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {x : (Σ k, ι k) → Ω} {d : ℕ}
@@ -43,11 +43,11 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintyp
   {p : ℕ} {w : O} {χ : Sg → F → O} {φ : Equiv.Perm Sg} {D : (∀ k, ι k) → LieLatticeData Ω F n Sg r s}
 
 /- English proof (translation)
-Take `⟨hp0, ⟨u, hu, hw⟩, -, h01, hχ⟩` from `hfam.char`. Use `⟨?_, Subalgebra.algebraMap_mem _ _, ?_, h01, fun τ => ⟨?_, ?_, fun a => Subalgebra.algebraMap_mem _ _⟩⟩` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap O Ω) p]`. Conclude with `fun h => hp0 (hinj (h.trans (map_zero _).symm))`. Use `⟨algebraMap O Ω (↑hu.unit⁻¹ * w ^ (p - 2)), Subalgebra.algebraMap_mem _ _, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_natCast (algebraMap O Ω), ← map_mul]`. Use `congr 1`. Establish `h2 : p - 1 = p - 2 + 1` using `by have := hp.two_le; omega`. Rewrite using `[mul_assoc, ← pow_succ, ← h2, hw, ← mul_assoc, hu.val_inv_mul, one_mul]`. Simplify using `[(hχ τ).1]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[(hχ τ).2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem charData_of (hinj : Function.Injective (algebraMap O Ω)) (hp : p.Prime)
     (hfam : IsLatticeFamily O x p w χ φ D) (c : ∀ k, ι k) :
@@ -65,17 +65,15 @@ theorem charData_of (hinj : Function.Injective (algebraMap O Ω)) (hp : p.Prime)
   · simp [(hχ τ).2]
 
 /- English proof (translation)
-Establish `hw0 : w ≠ 0`. Take `⟨u, hu, hw⟩` from `hfam.char.2.1`. Introduce `h`. Rewrite `hw` using `[h, zero_pow (by have := hp.two_le; omega)]`. Break down `mul_eq_zero.1 hw.symm with h' | h'` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hu.ne_zero h'`. Conclude with `hfam.char.1 h'`. Introduce `τ`. Prove the components needed by the constructor for the conclusion. Introduce `c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h1, h2, -, -⟩` from `hb τ c hc`. Establish `hB` using `((hfam.base c hc).incl τ)`. Use `⟨fun v hv => ⟨1, one_ne_zero, ?_⟩, fun v hv => ⟨w, hw0, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_one, one_smul, h2]`. Rewrite `hv` using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hB.1 hv`. Rewrite using `[h1]`. Rewrite `hv` using `[h2]`. Conclude with `hB.2.1 hv`. Introduce `c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, -, h3, h4⟩` from `hb τ c hc`. Establish `hB` using `((hfam.base c hc).incl τ)`. Use `⟨fun v hv => ⟨w, hw0, ?_⟩, fun v hv => ⟨1, one_ne_zero, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[h4]`. Rewrite `hv` using `[h3]`.
-
-Conclude with `hB.2.2.2 hv`. Rewrite using `[map_one, one_smul, h3]`. Rewrite `hv` using `[h4]`. Conclude with `hB.2.2.1 hv`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sameGeneric_of (hp : p.Prime) (hfam : IsLatticeFamily O x p w χ φ D)
     (Lie W : ∀ τ, ChartBundle O (mseg x) (r τ) (Fin (r τ) → Ω))
@@ -105,7 +103,7 @@ theorem sameGeneric_of (hp : p.Prime) (hfam : IsLatticeFamily O x p w χ φ D)
     · rw [map_one, one_smul, h3]; rw [h4] at hv; exact hB.2.2.1 hv
 
 /- English proof (translation)
-Introduce `Lie W Om OmHT hb`. Take `⟨-, -, hpull⟩` from `GlobalTheory.T.lattice_family_injective_model O Ω K ι x (inj_of_model hmod) p hp w χ φ D hfam K' ι' z`. Take `⟨Lie', W', Om', OmHT', hb', hP⟩` from `hpull Lie W Om OmHT hb`. Establish `hfn'` using `((GlobalTheory.T.chart_rings_noetherian_fraction O Ω K ι x).2.2 K' ι' z).1 hfn`. Conclude with `GlobalTheory.T.model_over_prime_perm_module_lattice O Ω K ι x d hmod p hfam.char.1 φ Lie W Om OmHT (sameGeneric_of hp hfam Lie W Om OmHT hb) K' ι' z hmod' (hfn'.trans hfn.symm) Lie' W' Om' OmHT' hP (h _ _ _ _ hb')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem descend (hmod : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O x) d) (hfn : fnField O x = ⊤) (hp : p.Prime) (hfam : IsLatticeFamily O x p w χ φ D)
     {K' : Type} [Fintype K'] [DecidableEq K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)]
@@ -125,7 +123,7 @@ theorem descend (hmod : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHec
     Lie' W' Om' OmHT' hP (h _ _ _ _ hb')
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.model_over_mod_p_lattice_eigen_split O Ω K ι x d hmod p hp w χ φ D hfam h1 h2 (fun c hc => GlobalTheory.T.lattice_facts_of_normal_holds (D c) (chartRing O (mseg x) c) p _ _ (charData_of (inj_of_model hmod) hp hfam c) (hfam.base c hc) hp ((GlobalTheory.T.chart_rings …`.
+A detailed English derivation is pending.
 -/
 theorem stage5 (hmod : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O x) d) (hfn : fnField O x = ⊤) (hp : p.Prime) (hfam : IsLatticeFamily O x p w χ φ D) (hN : NormalCharts O x) (h1 : (∀ c, mseg x c ≠ 0 → (D c).Good₁ (chartRing O (mseg x) c) p (fun τ a => algebraMap O Ω (χ τ a)))) (h2 : (∀ c, mseg x c ≠ 0 → (D c).Good₂ (chartRing O (mseg x) c) p (fun τ a => algebraMap O Ω (χ τ a))))
     (hl : (∀ τ i, ∃ (u : Ω) (a : _ → ℤ), u ≠ 0 ∧ IsLine O x u a fun c => (D c).xId (fun a => algebraMap O Ω (χ τ a)) i)) : ∀ (Lie W : ∀ τ, ChartBundle O (mseg x) (r τ) (Fin (r τ) → Ω)) (Om OmHT : ∀ τ, ChartBundle O (mseg x) (s τ) (Fin (s τ) → Ω)), HasBundles O x D Lie W Om OmHT → CkRelations O x d p φ Lie W Om OmHT :=
@@ -146,9 +144,9 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintyp
   {p : ℕ} {w : O} {χ : Sg → F → O} {φ : Equiv.Perm Sg} {D : (∀ k, ι k) → LieLatticeData Ω F n Sg r s}
 
 /- English proof (translation)
-Take `⟨K', _, _, ι', _, z, hmod', hN⟩` from `GlobalTheory.T.model_refinement_exists O Ω K ι x d hmod hfn`. Take `⟨hfam', hg, -⟩` from `GlobalTheory.T.lattice_family_injective_model O Ω K ι x (inj_of_model hmod) p hp w χ φ D hfam K' ι' z`. Establish `hfn'` using `((GlobalTheory.T.chart_rings_noetherian_fraction O Ω K ι x).2.2 K' ι' z).1 hfn`. Take `⟨h1', hg', hln⟩` from `hg h1`. Take `⟨-, hg2⟩` from `hg' haf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `descend hmod hfn hp hfam z hmod' (stage5 hmod' hfn' hp hfam' hN h1' (hg2 h2) (hln hl))`.
+A detailed English derivation is pending.
 -/
 theorem stage4 [CharZero O] (hmod : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O x) d) (hfn : fnField O x = ⊤) (hp : p.Prime) (hfam : IsLatticeFamily O x p w χ φ D) (h1 : (∀ c, mseg x c ≠ 0 → (D c).Good₁ (chartRing O (mseg x) c) p (fun τ a => algebraMap O Ω (χ τ a)))) (haf : (∀ c, mseg x c ≠ 0 → ∀ τ, mulLat (algebraMap O Ω w) (stdLat (chartRing O (mseg x) c) _) ≤ (D c).af (chartRing O (mseg x) c) p (fun a => algebraMap O Ω (χ τ a)))) (h2 : (∀ c, mseg x c ≠ 0 → (D c).Good₂ (chartRing O (mseg x) c) p (fun τ a => algebraMap O Ω (χ τ a))))
     (hl : (∀ τ i, ∃ (u : Ω) (a : _ → ℤ), u ≠ 0 ∧ IsLine O x u a fun c => (D c).xId (fun a => algebraMap O Ω (χ τ a)) i)) : ∀ (Lie W : ∀ τ, ChartBundle O (mseg x) (r τ) (Fin (r τ) → Ω)) (Om OmHT : ∀ τ, ChartBundle O (mseg x) (s τ) (Fin (s τ) → Ω)), HasBundles O x D Lie W Om OmHT → CkRelations O x d p φ Lie W Om OmHT := by
@@ -160,9 +158,9 @@ theorem stage4 [CharZero O] (hmod : GroundTheory.Heights₂.Heights.IndefiniteRo
   exact descend hmod hfn hp hfam z hmod' (stage5 hmod' hfn' hp hfam' hN h1' (hg2 h2) (hln hl))
 
 /- English proof (translation)
-Take `⟨K', _, _, ι', _, z, hmod', hl'⟩` from `GlobalTheory.T.lattice_family_model_chern O Ω K ι x d hmod hfn p hp w χ φ D hfam h1`. Take `⟨hfam', hg, -⟩` from `GlobalTheory.T.lattice_family_injective_model O Ω K ι x (inj_of_model hmod) p hp w χ φ D hfam K' ι' z`. Establish `hfn'` using `((GlobalTheory.T.chart_rings_noetherian_fraction O Ω K ι x).2.2 K' ι' z).1 hfn`. Take `⟨h1', hg', hln⟩` from `hg h1`. Take `⟨haf', hg2⟩` from `hg' haf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `descend hmod hfn hp hfam z hmod' (stage4 hmod' hfn' hp hfam' h1' haf' (hg2 h2) hl')`.
+A detailed English derivation is pending.
 -/
 theorem stage3 [CharZero O] (hmod : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O x) d) (hfn : fnField O x = ⊤) (hp : p.Prime) (hfam : IsLatticeFamily O x p w χ φ D) (h1 : (∀ c, mseg x c ≠ 0 → (D c).Good₁ (chartRing O (mseg x) c) p (fun τ a => algebraMap O Ω (χ τ a)))) (haf : (∀ c, mseg x c ≠ 0 → ∀ τ, mulLat (algebraMap O Ω w) (stdLat (chartRing O (mseg x) c) _) ≤ (D c).af (chartRing O (mseg x) c) p (fun a => algebraMap O Ω (χ τ a)))) (h2 : (∀ c, mseg x c ≠ 0 → (D c).Good₂ (chartRing O (mseg x) c) p (fun τ a => algebraMap O Ω (χ τ a)))) :
     ∀ (Lie W : ∀ τ, ChartBundle O (mseg x) (r τ) (Fin (r τ) → Ω)) (Om OmHT : ∀ τ, ChartBundle O (mseg x) (s τ) (Fin (s τ) → Ω)), HasBundles O x D Lie W Om OmHT → CkRelations O x d p φ Lie W Om OmHT := by
@@ -174,9 +172,9 @@ theorem stage3 [CharZero O] (hmod : GroundTheory.Heights₂.Heights.IndefiniteRo
   exact descend hmod hfn hp hfam z hmod' (stage4 hmod' hfn' hp hfam' h1' haf' (hg2 h2) hl')
 
 /- English proof (translation)
-Take `⟨K', _, _, ι', _, z, hmod', h2'⟩` from `GlobalTheory.T.lattice_family_model_comparison O Ω K ι x d hmod hfn p hp w χ φ D hfam h1 haf`. Take `⟨hfam', hg, -⟩` from `GlobalTheory.T.lattice_family_injective_model O Ω K ι x (inj_of_model hmod) p hp w χ φ D hfam K' ι' z`. Establish `hfn'` using `((GlobalTheory.T.chart_rings_noetherian_fraction O Ω K ι x).2.2 K' ι' z).1 hfn`. Take `⟨h1', hg', hln⟩` from `hg h1`. Take `⟨haf', -⟩` from `hg' haf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `descend hmod hfn hp hfam z hmod' (stage3 hmod' hfn' hp hfam' h1' haf' h2')`.
+A detailed English derivation is pending.
 -/
 theorem stage2 [CharZero O] (hmod : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O x) d) (hfn : fnField O x = ⊤) (hp : p.Prime) (hfam : IsLatticeFamily O x p w χ φ D) (h1 : (∀ c, mseg x c ≠ 0 → (D c).Good₁ (chartRing O (mseg x) c) p (fun τ a => algebraMap O Ω (χ τ a)))) (haf : (∀ c, mseg x c ≠ 0 → ∀ τ, mulLat (algebraMap O Ω w) (stdLat (chartRing O (mseg x) c) _) ≤ (D c).af (chartRing O (mseg x) c) p (fun a => algebraMap O Ω (χ τ a)))) : ∀ (Lie W : ∀ τ, ChartBundle O (mseg x) (r τ) (Fin (r τ) → Ω)) (Om OmHT : ∀ τ, ChartBundle O (mseg x) (s τ) (Fin (s τ) → Ω)), HasBundles O x D Lie W Om OmHT → CkRelations O x d p φ Lie W Om OmHT := by
   obtain ⟨K', _, _, ι', _, z, hmod', h2'⟩ := GlobalTheory.T.lattice_family_model_comparison O Ω K ι x d hmod hfn p hp w χ φ D hfam h1 haf
@@ -187,7 +185,7 @@ theorem stage2 [CharZero O] (hmod : GroundTheory.Heights₂.Heights.IndefiniteRo
   exact descend hmod hfn hp hfam z hmod' (stage3 hmod' hfn' hp hfam' h1' haf' h2')
 
 /- English proof (translation)
-The claim follows from `stage2 hmod hfn hp hfam h1 (fun c hc τ => GlobalTheory.T.hodge_annihilator_lattice_holds (D c) (chartRing O (mseg x) c) p _ _ (charData_of (inj_of_model hmod) hp hfam c) (hfam.base c hc) hp ((GlobalTheory.T.chart_rings_noetherian_fraction O Ω K ι x).1 c) ((GlobalTheory.T.chart_ri …`.
+A detailed English derivation is pending.
 -/
 theorem stage1b [CharZero O] (hmod : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O x) d) (hfn : fnField O x = ⊤) (hp : p.Prime) (hfam : IsLatticeFamily O x p w χ φ D) (h1 : (∀ c, mseg x c ≠ 0 → (D c).Good₁ (chartRing O (mseg x) c) p (fun τ a => algebraMap O Ω (χ τ a)))) (hN : NormalCharts O x) : ∀ (Lie W : ∀ τ, ChartBundle O (mseg x) (r τ) (Fin (r τ) → Ω)) (Om OmHT : ∀ τ, ChartBundle O (mseg x) (s τ) (Fin (s τ) → Ω)), HasBundles O x D Lie W Om OmHT → CkRelations O x d p φ Lie W Om OmHT :=
   stage2 hmod hfn hp hfam h1 (fun c hc τ => GlobalTheory.T.hodge_annihilator_lattice_holds (D c) (chartRing O (mseg x) c) p _ _
@@ -196,7 +194,7 @@ theorem stage1b [CharZero O] (hmod : GroundTheory.Heights₂.Heights.IndefiniteR
       (hfam.test c hc) (h1 c hc) τ)
 
 /- English proof (translation)
-Take `⟨K', _, _, ι', _, z, hmod', hN⟩` from `GlobalTheory.T.model_refinement_exists O Ω K ι x d hmod hfn`. Take `⟨hfam', hg, -⟩` from `GlobalTheory.T.lattice_family_injective_model O Ω K ι x (inj_of_model hmod) p hp w χ φ D hfam K' ι' z`. Establish `hfn'` using `((GlobalTheory.T.chart_rings_noetherian_fraction O Ω K ι x).2.2 K' ι' z).1 hfn`. Take `⟨h1', -, -⟩` from `hg h1`. Conclude with `descend hmod hfn hp hfam z hmod' (stage1b hmod' hfn' hp hfam' h1' hN)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem stage1 [CharZero O] (hmod : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O x) d) (hfn : fnField O x = ⊤) (hp : p.Prime) (hfam : IsLatticeFamily O x p w χ φ D) (h1 : (∀ c, mseg x c ≠ 0 → (D c).Good₁ (chartRing O (mseg x) c) p (fun τ a => algebraMap O Ω (χ τ a)))) : ∀ (Lie W : ∀ τ, ChartBundle O (mseg x) (r τ) (Fin (r τ) → Ω)) (Om OmHT : ∀ τ, ChartBundle O (mseg x) (s τ) (Fin (s τ) → Ω)), HasBundles O x D Lie W Om OmHT → CkRelations O x d p φ Lie W Om OmHT := by
   obtain ⟨K', _, _, ι', _, z, hmod', hN⟩ := GlobalTheory.T.model_refinement_exists O Ω K ι x d hmod hfn
@@ -206,7 +204,7 @@ theorem stage1 [CharZero O] (hmod : GroundTheory.Heights₂.Heights.IndefiniteRo
   exact descend hmod hfn hp hfam z hmod' (stage1b hmod' hfn' hp hfam' h1' hN)
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ _ ι _ x _ d hmod hfn F _ _ _ n Sg _ r s p hp w χ φ D hfam`. Take `⟨K', _, _, ι', _, z, hmod', h1'⟩` from `GlobalTheory.T.lattice_family_model_facts O Ω K ι x d hmod hfn p hp w χ φ D hfam`. Take `⟨hfam', -, -⟩` from `GlobalTheory.T.lattice_family_injective_model O Ω K ι x (inj_of_model hmod) p hp w χ φ D hfam K' ι' z`. Establish `hfn'` using `((GlobalTheory.T.chart_rings_noetherian_fraction O Ω K ι x).2.2 K' ι' z).1 hfn`. Conclude with `descend hmod hfn hp hfam z hmod' (stage1 hmod' hfn' hp hfam' h1')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ckRelations_of_model : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) [CharZero O] (d : ℕ), GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O x) d → fnField O x = ⊤ → ∀ {F : Type} [Zero F] [One F] [Fintype F] {n : ℕ} {Sg : Type} [Fintype Sg] {r s : Sg → ℕ} (p : ℕ), p.Prime → ∀ (w : O) (χ : Sg → F → O) (φ : Equiv.Perm Sg) (D : (∀ k, ι k) → LieLatticeData Ω F n Sg r s), IsLatticeFamily O x p w χ φ D → ∀ (Lie W : ∀ τ, ChartBundle O (mseg x) (r τ) (Fin (r τ) → Ω)) (Om OmHT : ∀ τ, ChartBundle O (mseg x) (s τ) (Fin (s τ) → Ω)), HasBundles O x D Lie W Om OmHT → CkRelations O x d p φ Lie W Om OmHT := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x _ d hmod hfn F _ _ _ n Sg _ r s p hp w χ φ D hfam

@@ -19,11 +19,9 @@ namespace GlobalTheory.FinPl.BoxDatum
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hL`. Use `choose N hN hm using fun t => GlobalTheory.VacUnique.Den.exists_nsmul_mem_lattice L' hL' (M.mulVec t)`. Use `⟨∏ t ∈ s, N t, Finset.prod_pos fun t _ => hN t, fun t ht => ?_⟩` and prove the remaining obligations. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem x hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_erase_mul s N (Finset.mem_coe.1 hx), mul_nsmul']`. Conclude with `nsmul_mem (hm x) _`. Consider the case `zero => rw [Matrix.mulVec_zero, nsmul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add, nsmul_add]`.
-
-Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [Matrix.mulVec_smul, smul_comm]`. Conclude with `L'.smul_mem c hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_nsmul_mulVec {m m' : ℕ} (M : Matrix (Fin m') (Fin m) D.host.E)
     {L : Submodule (NumberField.RingOfIntegers D.host.E) (Fin m → D.host.E)}
@@ -42,15 +40,15 @@ theorem exists_nsmul_mulVec {m m' : ℕ} (M : Matrix (Fin m') (Fin m) D.host.E)
   | smul c x _ hx => rw [Matrix.mulVec_smul, smul_comm]; exact L'.smul_mem c hx
 
 /- English proof (translation)
-Take `⟨N, hN, h⟩` from `exists_nsmul_mulVec M hL hL'`. Use `⟨N, hN, fun u hu => ?_⟩` and prove the remaining obligations. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hαi, hα, a, ha, s, hs, t, ht, rfl⟩` from `hw`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `AddSubgroup.subset_closure ⟨α, hαi, hα, a, ha, s, hs, _, h t ht, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.mul_apply, rat, Matrix.map_apply, Matrix.of_apply, Pi.smul_apply, Matrix.mulVec, dotProduct]`. Establish `e : ∀ l, (incA D (M i l) : AE D) * (pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * t l * ∑ k, star (s k) * S.gram k j)) = pairA D.host.F 0 α ⊗ₜ[D.host.F] (M i l * (a * t l * ∑ k, star (s k) * S.gram k j))` using `fun l => by`. Express the relevant statement in the definitionally equal form `((1 : AF D.host.F) ⊗ₜ[D.host.F] M i l) * _ = _`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Simplify using `only [e]`. Rewrite using `[← TensorProduct.tmul_sum, ← TensorProduct.mk_apply, ← map_nsmul, TensorProduct.mk_apply]`. Use `congr 1`. Generalize the expression as in `∑ k, star (s k) * S.gram k j = c`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the chosen expression with an arbitrary variable.
 
-Simplify using `only [nsmul_eq_mul, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => by ring` and prove the remaining obligations. Consider the case `zero => rw [Matrix.mul_zero, nsmul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.mul_add, nsmul_add]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [Matrix.mul_neg, neg_nsmul]`. Conclude with `neg_mem hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_nsmul_rat_mul (S : HSp D) {T T' : HSp D} (M : Matrix (Fin T'.rank) (Fin T.rank) D.host.E)
     (LS : Set (Fin S.rank → D.host.E)) {L : Lat T} {L' : Lat T'} (hL : L.FG)
@@ -80,7 +78,7 @@ theorem exists_nsmul_rat_mul (S : HSp D) {T T' : HSp D} (M : Matrix (Fin T'.rank
   | neg x _ hx => rw [Matrix.mul_neg, neg_nsmul]; exact neg_mem hx
 
 /- English proof (translation)
-Use `⟨Submodule.fg_span_singleton ζ, ?_⟩` and prove the remaining obligations. Establish `h0 : ζ ≠ 0` using `fun h0 => h.2 (by simp [h0])`. Rewrite using `[Submodule.span_span_of_tower]`. Establish `hr : Module.finrank D.host.E (Fin L.rank → D.host.E) = 1` using `by simp [h.1]`. Conclude with `(finrank_eq_one_iff_of_nonzero ζ h0).1 hr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLattice_span {L : HSp D} {ζ : Fin L.rank → D.host.E} (h : IsLineVec L ζ) :
     Submodule.IsLattice D.host.E (Submodule.span (NumberField.RingOfIntegers D.host.E) {ζ} : Lat L) := by
@@ -91,7 +89,7 @@ theorem isLattice_span {L : HSp D} {ζ : Fin L.rank → D.host.E} (h : IsLineVec
   exact (finrank_eq_one_iff_of_nonzero ζ h0).1 hr
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply, Finset.mul_sum] exact Finset.sum_congr rfl fun a _ => by rw [mul_left_comm, hu a j]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHalf_mul {l m n : ℕ} {e : AE D} (M : Mx D l m) {u : Mx D m n} (hu : IsHalf e u) : IsHalf e (M ⬝ u : Mx D l n) :=
   fun i j => by
@@ -127,9 +125,9 @@ theorem boxMap_apply (o : OrthDec X T L) (T₂ : (WO S T → ℂ) →ₗ[ℂ] (W
       T₃ (fun w => T₂ (fun x => Φ ((o.resT S).symm (x, w))) (o.resT S z).1) (o.resT S z).2 := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Rewrite using `[boxMap_apply]`. Establish `: (fun w => T₂ (fun x => o.boxT S φ φ' ((o.resT S).symm (x, w))) (o.resT S z).1) = T₂ φ (o.resT S z).1 • φ'`. Use function extensionality and compare the values at `w`. Establish `e : (fun x => o.boxT S φ φ' ((o.resT S).symm (x, w))) = φ' w • φ`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [OrthDec.boxT, AddEquiv.apply_symm_apply, Pi.smul_apply, smul_eq_mul, mul_comm]`. Rewrite using `[e, map_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_comm]`. Rewrite using `[this, map_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -148,26 +146,26 @@ theorem boxMap_boxT (o : OrthDec X T L) (T₂ : (WO S T → ℂ) →ₗ[ℂ] (WO
   rw [this, map_smul]; rfl
 
 /- English proof (translation)
-The claim follows from `isHalf_mul o.pA ht`.
+A detailed English derivation is pending.
 -/
 theorem half_fst (o : OrthDec X T L) {e : AE D} {t : WO S X} (ht : IsHalf e t) : IsHalf e (o.resT S t).1 :=
   isHalf_mul o.pA ht
 
 /- English proof (translation)
-The claim follows from `isHalf_mul o.pB ht`.
+A detailed English derivation is pending.
 -/
 theorem half_snd (o : OrthDec X T L) {e : AE D} {t : WO S X} (ht : IsHalf e t) : IsHalf e (o.resT S t).2 :=
   isHalf_mul o.pB ht
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.FinPl.Rebase.isHalf_add (isHalf_mul o.jA hx) (isHalf_mul o.jB hw)`.
+A detailed English derivation is pending.
 -/
 theorem half_symm (o : OrthDec X T L) {e : AE D} {x : WO S T} {w : WO S L} (hx : IsHalf e x) (hw : IsHalf e w) :
     IsHalf e ((o.resT S).symm (x, w)) :=
   GlobalTheory.FinPl.Rebase.isHalf_add (isHalf_mul o.jA hx) (isHalf_mul o.jB hw)
 
 /- English proof (translation)
-Introduce `_ _` and use `mul_zero _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem half_zero {m n : ℕ} (e : AE D) : IsHalf e (0 : Mx D m n) := fun _ _ => mul_zero _
 
@@ -180,11 +178,9 @@ structure Near (o : OrthDec X T L) (ΛX : AddSubgroup (WO S X)) (ΛT : AddSubgro
   inr : ∀ u ∈ ΛL, N • (o.resT S).symm (0, u) ∈ ΛX
 
 /- English proof (translation)
-Take `⟨a, ha, h1⟩` from `exists_nsmul_rat_mul S o.qA LS hX.fg hT P`. Take `⟨b, hb, h2⟩` from `exists_nsmul_rat_mul S o.qB LS hX.fg hL P`. Take `⟨c, hc, h3⟩` from `exists_nsmul_rat_mul S o.iA LS hT.fg hX P`. Take `⟨d, hd, h4⟩` from `exists_nsmul_rat_mul S o.iB LS hL.fg hX P`. Use `⟨a * b * c * d, by positivity, fun t ht => ?_, fun t ht => ?_, fun u hu => ?_, fun u hu => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show a * b * c * d = a * (b * c * d) by ring, mul_nsmul]`. Conclude with `nsmul_mem (h1 t ht) _`. Rewrite using `[show a * b * c * d = b * (a * c * d) by ring, mul_nsmul]`. Conclude with `nsmul_mem (h2 t ht) _`. Rewrite using `[show a * b * c * d = c * (a * b * d) by ring, mul_nsmul, OrthDec.resT_symm_apply, Matrix.mul_zero, add_zero]`.
-
-Conclude with `nsmul_mem (h3 u hu) _`. Rewrite using `[show a * b * c * d = d * (a * b * c) by ring, mul_nsmul, OrthDec.resT_symm_apply, Matrix.mul_zero, zero_add]`. Conclude with `nsmul_mem (h4 u hu) _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_near (o : OrthDec X T L) (LS : Set (Fin S.rank → D.host.E)) {LX : Lat X} {LT : Lat T} {LL : Lat L}
     (hX : Submodule.IsLattice D.host.E LX) (hT : Submodule.IsLattice D.host.E LT) (hL : Submodule.IsLattice D.host.E LL)
@@ -210,23 +206,23 @@ variable {o : OrthDec X T L} {ΛX : AddSubgroup (WO S X)} {ΛT : AddSubgroup (WO
   {e : AE D}
 
 /- English proof (translation)
-Rewrite using `[← map_nsmul, ← map_add, Prod.smul_mk, Prod.mk_add_mk, nsmul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symm_add_left (o : OrthDec X T L) (x u : WO S T) (w : WO S L) (K : ℕ) :
     (o.resT S).symm (x + K • u, w) = (o.resT S).symm (x, w) + K • (o.resT S).symm (u, 0) := by
   rw [← map_nsmul, ← map_add, Prod.smul_mk, Prod.mk_add_mk, nsmul_zero, add_zero]
 
 /- English proof (translation)
-Rewrite using `[← map_nsmul, ← map_add, Prod.smul_mk, Prod.mk_add_mk, nsmul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symm_add_right (o : OrthDec X T L) (x : WO S T) (w u : WO S L) (K : ℕ) :
     (o.resT S).symm (x, w + K • u) = (o.resT S).symm (x, w) + K • (o.resT S).symm (0, u) := by
   rw [← map_nsmul, ← map_add, Prod.smul_mk, Prod.mk_add_mk, nsmul_zero, add_zero]
 
 /- English proof (translation)
-Take `⟨h1, k, hk, h2, h3⟩` from `hΦ`. Use `⟨fun x hx => ?_, N * k, Nat.mul_pos h.pos hk, fun u hu hh x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `half_fst o (h1 _ hx)` as an intermediate fact. Rewrite `this` using `[AddEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Use `beta_reduce`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[symm_add_left, mul_nsmul]`. Conclude with `h2 _ (h.inl u hu) (GlobalTheory.FinPl.DatumBack.isHalf_nsmul' (half_symm o hh (half_zero e)) N) _`. Use `h.fst _ (h3 _ hx)` as an intermediate fact. Rewrite `this` using `[map_nsmul, AddEquiv.apply_symm_apply, Prod.smul_fst, ← mul_nsmul']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sb_slice_left (h : Near o ΛX ΛT ΛL N) {Φ : WO S X → ℂ} (hΦ : IsSBHalf e ΛX Φ) (w : WO S L) :
     IsSBHalf e ΛT fun x => Φ ((o.resT S).symm (x, w)) := by
@@ -241,15 +237,15 @@ theorem sb_slice_left (h : Near o ΛX ΛT ΛL N) {Φ : WO S X → ℂ} (hΦ : Is
     rwa [map_nsmul, AddEquiv.apply_symm_apply, Prod.smul_fst, ← mul_nsmul'] at this
 
 /- English proof (translation)
-Take `⟨h1, k, hk, h2, h3⟩` from `hΦ`. Establish `hne : ∀ w, T₂ (fun x => Φ ((o.resT S).symm (x, w))) z ≠ 0 → ∃ x, Φ ((o.resT S).symm (x, w)) ≠ 0`. Introduce `w hw`. Assume the negation of the conclusion as `hc`. Use `hw ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (fun x => Φ ((o.resT S).symm (x, w))) = 0` using `funext fun x => by`. Assume the negation of the conclusion as `hx`. Conclude with `hc ⟨x, hx⟩`. Rewrite using `[this, map_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun w hw => ?_, N * k, Nat.mul_pos h.pos hk, fun u hu hh w => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hne w hw`. Use `half_snd o (h1 _ hx)` as an intermediate fact. Rewrite `this` using `[AddEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Establish `: (fun x => Φ ((o.resT S).symm (x, w + (N * k) • u))) = fun x => Φ ((o.resT S).symm (x, w))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[symm_add_right, mul_nsmul]`. Conclude with `h2 _ (h.inr u hu) (GlobalTheory.FinPl.DatumBack.isHalf_nsmul' (half_symm o (half_zero e) hh) N) _`. Simplify using `only [this]`. Take `⟨x, hx⟩` from `hne w hw`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `h.snd _ (h3 _ hx)` as an intermediate fact. Rewrite `this` using `[map_nsmul, AddEquiv.apply_symm_apply, Prod.smul_snd, ← mul_nsmul']`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem sb_slice_right (h : Near o ΛX ΛT ΛL N) {Φ : WO S X → ℂ} (hΦ : IsSBHalf e ΛX Φ)
     (T₂ : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)) (z : WO S T) :
@@ -276,13 +272,13 @@ theorem sb_slice_right (h : Near o ΛX ΛT ΛL N) {Φ : WO S X → ℂ} (hΦ : I
     rwa [map_nsmul, AddEquiv.apply_symm_apply, Prod.smul_snd, ← mul_nsmul'] at this
 
 /- English proof (translation)
-Take `⟨a1, a, ha, a2, a3⟩` from `hφ`. Take `⟨b1, b, hb, b2, b3⟩` from `hφ'`. Establish `hN` using `h.pos`. Use `⟨fun t ht => ?_, N * a * b, by positivity, fun u hu hh t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Rewrite using `[← (o.resT S).symm_apply_apply t]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `half_symm o (a1 _ (left_ne_zero_of_mul ht)) (b1 _ (right_ne_zero_of_mul ht))`. Simplify using `only [OrthDec.boxT]`. Rewrite using `[map_add, map_nsmul, Prod.fst_add, Prod.snd_add, Prod.smul_fst, Prod.smul_snd]`. Use `congr 1`. Rewrite using `[show N * a * b = N * b * a by ring, mul_nsmul, mul_nsmul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `a2 _ (nsmul_mem (h.fst u hu) b) (GlobalTheory.FinPl.DatumBack.isHalf_nsmul' (GlobalTheory.FinPl.DatumBack.isHalf_nsmul' (half_fst o hh) N) b) _`. Rewrite using `[mul_nsmul, mul_nsmul]`. Conclude with `b2 _ (nsmul_mem (h.snd u hu) a) (GlobalTheory.FinPl.DatumBack.isHalf_nsmul' (GlobalTheory.FinPl.DatumBack.isHalf_nsmul' (half_snd o hh) N) a) _`. Establish `p1` using `h.inl _ (nsmul_mem (a3 _ (left_ne_zero_of_mul ht)) b)`. Establish `p2` using `h.inr _ (nsmul_mem (b3 _ (right_ne_zero_of_mul ht)) a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `add_mem p1 p2` as an intermediate fact. Rewrite `this` using `[← nsmul_add, ← map_add, Prod.mk_add_mk, add_zero, zero_add, ← mul_nsmul, ← mul_nsmul, mul_comm b a, ← Prod.smul_mk, map_nsmul, Prod.mk.eta, AddEquiv.symm_apply_apply, ← mul_nsmul']`. Rewrite using `[mul_assoc]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem sb_boxT (h : Near o ΛX ΛT ΛL N) {φ : WO S T → ℂ} {φ' : WO S L → ℂ} (hφ : IsSBHalf e ΛT φ)
     (hφ' : IsSBHalf e ΛL φ') : IsSBHalf e ΛX (o.boxT S φ φ') := by
@@ -309,17 +305,17 @@ theorem sb_boxT (h : Near o ΛX ΛT ΛL N) {φ : WO S T → ℂ} {φ' : WO S L �
     rwa [mul_assoc]
 
 /- English proof (translation)
-Use `⟨fun Φ hΦ x hx => ?_, fun Φ hΦ y hy => ?_, by rw [one_smul]⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Rewrite using `[boxMap_apply]`. Establish `e1 : (fun w => T₂ (fun x' => Φ ((o.resT S).symm (x', w) + x)) (o.resT S z).1) = ψ (symplOH S T (o.resT S z).1 (o.resT S x).1) • fun w => (fun w => T₂ (fun x' => Φ ((o.resT S).symm (x', w))) ((o.resT S z).1 + (o.resT S x).1)) (w + (o.resT S x).2)`. Use function extensionality and compare the values at `w`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e2 : (fun x' => Φ ((o.resT S).symm (x', w) + x)) = fun x' => (fun x' => Φ ((o.resT S).symm (x', w + (o.resT S x).2))) (x' + (o.resT S x).1)`. Use function extensionality and compare the values at `x'`. Use `show _ = Φ ((o.resT S).symm ((x', w) + o.resT S x))`. Rewrite using `[map_add, AddEquiv.symm_apply_apply]`. Rewrite using `[e2, h₂.trans _ (sb_slice_left h hΦ _) _ (half_fst o hx)]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e1, map_smul, h₃.trans _ (sb_slice_right h hΦ T₂ _) _ (half_snd o hx)]`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[boxMap_apply, o.symplOH_resT, AddChar.map_add_eq_mul, map_add, Prod.fst_add, Prod.snd_add, mul_assoc]`. Use function extensionality and compare the values at `z`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[boxMap_apply]`. Establish `e1 : (fun w => T₂ (fun x' => ψ (symplO S X ((o.resT S).symm (x', w)) y) * Φ ((o.resT S).symm (x', w))) (o.resT S z).1) = ψ (symplOH S T (o.resT S z).1 (o.resT S y).1) • fun w => ψ (symplO S L w (o.resT S y).2) * (fun w => T₂ (fun x' => Φ ((o.resT S).symm (x', w))) ((o.resT S z).1 …`. Use function extensionality and compare the values at `w`. Establish `e2 : (fun x' => ψ (symplO S X ((o.resT S).symm (x', w)) y) * Φ ((o.resT S).symm (x', w))) = ψ (symplO S L w (o.resT S y).2) • fun x' => ψ (symplO S T x' (o.resT S y).1) * (fun x' => Φ ((o.resT S).symm (x', w))) x'`. Use function extensionality and compare the values at `x'`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[o.symplO_resT, AddEquiv.apply_symm_apply, AddChar.map_add_eq_mul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, map_smul, h₂.modul _ (sb_slice_left h hΦ _) _ (half_fst o hy)]`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, map_smul, h₃.modul _ (sb_slice_right h hΦ T₂ _) _ (half_snd o hy)]`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[boxMap_apply, o.symplOH_resT, AddChar.map_add_eq_mul, map_add, Prod.fst_add, Prod.snd_add, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPlaceModel_boxMap {ψ : AddChar (AF D.host.F) ℂ} (h : Near o ΛX ΛT ΛL N) {f₂ : WO S T → ℂ} {f₃ : WO S L → ℂ}
     {T₂ : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)} {T₃ : (WO S L → ℂ) →ₗ[ℂ] (WO S L → ℂ)}
@@ -367,7 +363,7 @@ theorem isPlaceModel_boxMap {ψ : AddChar (AF D.host.F) ℂ} (h : Near o ΛX ΛT
 end Slices
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.FinPl.DatumBack.comb_eq_lc, Finsupp.linearCombination_apply, Finsupp.sum]`. Conclude with `Finset.sum_induction _ (IsThetaFunO ψ S X) (fun _ _ => GlobalTheory.WeilVacMove.isTheta_add) GlobalTheory.WeilVacMove.isTheta_zero fun u _ => GlobalTheory.WeilVacMove.isTheta_smul _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf u)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTheta_comb {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (c : WO S X →₀ ℂ) {f : WO S X → ℂ}
     (hf : IsThetaFunO ψ S X f) : IsThetaFunO ψ S X (comb ψ S X c f) := by
@@ -378,17 +374,17 @@ theorem isTheta_comb {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)
 open GlobalTheory.PlaceModel GlobalTheory.PlaceDatum GlobalTheory.FinPl.OverProof in
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p n n'' _ _ _ _ ψ hψ _ S X T L o ζ hζ β γ γ₀ hγ LS LT LX hS hT hX f₂ F₂ Ψ₂ hO b g₃ T₃ hg₃ h₃ hSB`. Take `⟨T₂, h₂⟩` from `hO.2.2.2.2.1`. Establish `hF : F₂ = T₂ (extFun β γ Ψ₂)` using `hO.2.2.2.2.2 T₂ h₂`. Take `⟨N, hN⟩` from `exists_near (S := S) o (LS : Set _) hX.1 hT.1 (isLattice_span hζ) (· = p.v)`. Establish `h₀` using `isPlaceModel_boxMap hN h₂ h₃`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ε, hε, heq⟩` from `p.above`. Establish `hs` using `p.split`. Establish `he` using `hs.1`. Establish `hec` using `hs.2.1`. Establish `heε : algebraMap (AF D.host.F) (AE D) ε * p.e = p.e` using `by rw [← heq]; linear_combination he + hec`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hLL', hXX, -, hfin, hden⟩` from `dualPair hψ hS hX hs hε heq`. Establish `hdX : ∀ x ∈ half S X p.e, ∃ k : ℕ, 0 < k ∧ k • x ∈ latO S X (LS : Set _) (LX : Set _) (· = p.v)`. Introduce `x hx`. Take `⟨k, hk, hkx⟩` from `exists_nsmul_mem_latO' hS.1 hX.1 x (infPart_half hε heε hx)`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(idem_smul_mem hε he heε hkx).1` as an intermediate fact. Rewrite `this` using `[smul_comm, (mem_half S X).1 hx]`. Then use the resulting hypothesis. Establish `hb` using `sb_boxT hN (GlobalTheory.isSBHalf_halfInd p.e _) (GlobalTheory.isSBHalf_halfInd p.e _)`. Take `⟨c, -, hc⟩` from `GlobalTheory.FinPl.DatumBack.exists_back ψ hec _ hLL' hXX hfin hdX hden hb fun h0 => by`. Use `congrFun h0 0` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[OrthDec.boxT_zero]`. Simplify using `[halfInd, half_zero] at this`. Establish `v₂` using `h₂.vac`. Establish `v₃` using `h₃.vac`. Rewrite `v₂`, `v₃` using `[one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨_, hS, hX, ⟨?_, GlobalTheory.FinPl.Rebase.latVac_image D k p ψ hψ S X LS LS LX LX hS hX hS hX _ _ h₀⟩, hSB, ⟨_, h₀⟩, fun T' hT' => ?_⟩` and prove the remaining obligations. Rewrite using `[hc _ _ h₀, boxMap_boxT, v₂, v₃]`. Conclude with `isTheta_comb hψ c (o.isThetaFunO_boxT hO.2.2.1.1 hg₃)`. Use `beta_reduce`. Rewrite using `[← placeModel_unique_of_dual ψ _ hLL' hXX hfin hden h₀ hT' (isSBHalf_extFun D k p _ n S X β γ₀ LS LX hS hX _ hSB), GlobalTheory.FinPl.ExtZero.extFun_tensRow D k p n n'' X T L S o ζ hζ γ γ₀ β hγ Ψ₂ b, boxMap_boxT, hF]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem over_boxT : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (n n'' : Type) [Fintype n] [DecidableEq n] [Fintype n''] [DecidableEq n''] (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → p.UnitAA → ∀ (S X T L'' : HSp D) (o'' : OrthDec X T L'') (ζ₀ : Fin L''.rank → D.host.E), IsLineVec L'' ζ₀ → ∀ (β : Frame p S n) (γ : Frame p T n'') (γ₀ : Frame p X (n'' ⊕ Fin 1)), IsSumFrame o'' ζ₀ γ γ₀ → ∀ (LS : Lat S) (LT : Lat T) (LX : Lat X), IsSelfDualC S LS → IsSelfDualC T LT → IsSelfDualC X LX → ∀ (f₂ F₂ : WO S T → ℂ) (Ψ₂ : Matrix n'' n k → ℂ), Over ψ β γ LS LT f₂ Ψ₂ F₂ → ∀ (b : (n → k) → ℂ) (g₃ : WO S L'' → ℂ) (T₃ : (WO S L'' → ℂ) →ₗ[ℂ] (WO S L'' → ℂ)), IsThetaFunO ψ S L'' g₃ → IsPlaceModel ψ (symplO S L'') (heisO ψ S L'') p.e (latO S L'' (LS : Set _) ((Submodule.span (NumberField.RingOfIntegers D.host.E) {ζ₀} : Lat L'') : Set _) (· = p.v)) 1 g₃ T₃ → GlobalTheory.FinPl.tensRow Ψ₂ b ∈ SB (Matrix (n'' ⊕ Fin 1) n k) → ∃ g, Over ψ β γ₀ LS LX g (GlobalTheory.FinPl.tensRow Ψ₂ b) (o''.boxT S F₂ (T₃ (rowFun β ζ₀ b))) := by
   intro D k _ _ _ _ p n n'' _ _ _ _ ψ hψ _ S X T L o ζ hζ β γ γ₀ hγ LS LT LX hS hT hX f₂ F₂ Ψ₂ hO b g₃ T₃ hg₃ h₃ hSB

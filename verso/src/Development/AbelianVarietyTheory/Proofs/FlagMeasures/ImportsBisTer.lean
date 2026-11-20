@@ -4,7 +4,7 @@ open NumberField
 namespace GlobalTheory.IntMulIntegral
 
 /- English proof (translation)
-Establish `hz : IsAlgebraic ℤ z` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ K).mpr (Algebra.IsAlgebraic.isAlgebraic z)`. Take `⟨y, hy, hint⟩` from `hz.exists_integral_multiple`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Simplify `hint` using `[zsmul_eq_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_int_mul_integral {K : Type} [Field K] [NumberField K] (z : K) :
     ∃ M : ℤ, M ≠ 0 ∧ IsIntegral ℤ ((M : K) * z) := by
@@ -15,17 +15,15 @@ theorem exists_int_mul_integral {K : Type} [Field K] [NumberField K] (z : K) :
   simpa [zsmul_eq_mul] using hint
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ A hA x`. Establish `hx : x ∈ Submodule.span K (↑A : Set V)` using `by rw [hA]; exact Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add y w _ _ hy hw`. Take `⟨N₁, h₁, m₁⟩` from `hy`. Take `⟨N₂, h₂, m₂⟩` from `hw`. Use `⟨N₁ * N₂, mul_ne_zero h₁ h₂, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `A.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `A.smul_of_tower_mem N₂ m₁`. Rewrite using `[mul_smul]`. Conclude with `A.smul_of_tower_mem N₁ m₂`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `smul c y _ hy`. Take `⟨N, hN, m⟩` from `hy`. Take `⟨M, hM, hint⟩` from `exists_int_mul_integral c`. Use `⟨M * N, mul_ne_zero hM hN, ?_⟩` and prove the remaining obligations. Set `o : NumberField.RingOfIntegers K` to `⟨(M : K) * c, hint⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : (M * N) • (c • y) = o • (N • y)`. Rewrite using `[← algebraMap_smul K o (N • y)]`. Establish `: algebraMap (NumberField.RingOfIntegers K) K o = (M : K) * c` using `rfl`. Rewrite using `[this, mul_smul, mul_smul, ← Int.cast_smul_eq_zsmul K M, ← Int.cast_smul_eq_zsmul K N, ← Int.cast_smul_eq_zsmul K N, smul_comm c ((N : K)) y]`. Rewrite using `[key]`.
-
-Conclude with `A.smul_mem o m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {K V : Type} [inst : Field K] [NumberField K] [inst_2 : AddCommGroup V] [inst_3 : Module K V]
     [inst_4 : Module (NumberField.RingOfIntegers K) V] [IsScalarTower (NumberField.RingOfIntegers K) K V]

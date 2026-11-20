@@ -74,7 +74,7 @@ def DualStdModelTransc.Statement : Prop :=
         (dualStdModelPt b (⟨Sum.inl (), c⟩ : Σ k, Sum.elim (dualBlocks T) (PBlk i) k))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨dualBasisStandard, _, Subfield.fieldRange_subtype _, le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ (b : Module.Basis Unit ℤ (dualLattice (HermLattice.standard ℚ 1)))
     (Φ₀ : Subfield (dualStdModelField ℚ 1)),
@@ -83,9 +83,9 @@ example : ∃ (b : Module.Basis Unit ℤ (dualLattice (HermLattice.standard ℚ 
   ⟨dualBasisStandard, _, Subfield.fieldRange_subtype _, le_rfl⟩
 
 /- English proof (translation)
-Establish `: (⊥ : Ideal (MRing (PBlk 1))).IsPrime` using `Ideal.isPrime_bot`. Use `⟨Inter.genFibreIdOf ⊥, fun q => algebraMap (MRing (PBlk 1)) _ (X q), _, ?_, Subfield.fieldRange_subtype _⟩` and prove the remaining obligations. Use `(RingHom.injective_iff_ker_eq_bot _).mp ?_` and prove the remaining obligations. Establish `h : (eval₂Hom (Int.castRingHom _) fun q => algebraMap (MRing (PBlk 1)) (FractionRing (MRing (PBlk 1))) (X q) : MRing (PBlk 1) →+* _) = algebraMap (MRing (PBlk 1)) (FractionRing (MRing (PBlk 1)))`. Use extensionality with `q`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite using `[h]`. Conclude with `IsFractionRing.injective _ _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example : ∃ (_ : GenFibre (ι := PBlk 1) (ι' := PBlk 1) id ⊥) (z : (Σ _ : Unit, Fin 1) → FractionRing (MRing (PBlk 1)))
     (Φ₀ : Subfield (FractionRing (MRing (PBlk 1)))),

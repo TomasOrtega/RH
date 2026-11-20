@@ -5,31 +5,31 @@ import Formalism.FlagUnipotentLattices.MinkowskiFactorialBounds.KappaConstantAss
 namespace Formalism.HermitianLatticeCounting.Final.NearFarVolumeBounds
 
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.polar_decomposition_inverse`.
+A detailed English derivation is pending.
 -/
 theorem polarInv : Formalism.HermitianLatticeCounting.S7.PolarInv := Formalism.HermitianLatticeCounting.P.polar_decomposition_inverse
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.all_sum_rate`.
+A detailed English derivation is pending.
 -/
 theorem allSumRate : Formalism.HermitianLatticeCounting.S7.AllSumRate := Formalism.HermitianLatticeCounting.P.all_sum_rate
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.threshold_count`.
+A detailed English derivation is pending.
 -/
 theorem threshCount : Formalism.HermitianLatticeCounting.S7.ThreshCount := Formalism.HermitianLatticeCounting.P.threshold_count
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.layer_count`.
+A detailed English derivation is pending.
 -/
 theorem layerCount : Formalism.HermitianLatticeCounting.S7.LayerCount := Formalism.HermitianLatticeCounting.P.layer_count
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.kappa_constant_assembly`.
+A detailed English derivation is pending.
 -/
 theorem kappaAssembly : Formalism.HermitianLatticeCounting.S7.KappaAssembly := Formalism.HermitianLatticeCounting.P.kappa_constant_assembly
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.log_volume_bound`.
+A detailed English derivation is pending.
 -/
 theorem logVolumeBound : Formalism.HermitianLatticeCounting.S7.LogVolumeBound := Formalism.HermitianLatticeCounting.P.log_volume_bound
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.room_for_iterations`.
+A detailed English derivation is pending.
 -/
 theorem stepsRoom : Formalism.HermitianLatticeCounting.S7.StepsRoom := Formalism.HermitianLatticeCounting.P.room_for_iterations
 

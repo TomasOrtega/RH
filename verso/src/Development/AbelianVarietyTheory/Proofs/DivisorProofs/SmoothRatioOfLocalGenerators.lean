@@ -13,27 +13,25 @@ noncomputable section
 namespace GlobalTheory.DivSec
 
 /- English proof (translation)
-Introduce `F _ _ Y σ C n V V' t t' f f' hC ht ht' hf hf' hn hn' y₀ hy₀`. Establish `hx : y₀.1 (IsLocalRing.closedPoint ℂ) ∈ V.1 ⊓ V'.1` using `⟨mem_ptsIn.1 hy₀.1, mem_ptsIn.1 hy₀.2⟩`. Take `⟨h, hhW, hxh⟩` from `V.2.exists_basicOpen_le (V := V.1 ⊓ V'.1) ⟨_, hx⟩ hx.1`. Set `Wa : Y.X.affineOpens` to `⟨Y.X.basicOpen h, V.2.basicOpen h⟩`. Establish `hWV : Wa.1 ≤ V.1` using `hhW.trans inf_le_left`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hWV' : Wa.1 ≤ V'.1` using `hhW.trans inf_le_right`. Establish `hy0W : y₀ ∈ ptsIn Y.str σ Wa.1` using `mem_ptsIn.2 hxh`. Use `haveI : Nonempty Wa.1 := ⟨⟨_, hxh⟩⟩`. Establish `e1 : (Scheme.IdealSheafData.vanishingIdeal C).ideal Wa = Ideal.span {resG Y.X hWV t}`. Rewrite using `[← Scheme.IdealSheafData.map_ideal _ (U := Wa) (V := V) hWV, ht, Ideal.map_span, Set.image_singleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `e2 : (Scheme.IdealSheafData.vanishingIdeal C).ideal Wa = Ideal.span {resG Y.X hWV' t'}`. Rewrite using `[← Scheme.IdealSheafData.map_ideal _ (U := Wa) (V := V') hWV', ht', Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression. Take `⟨u, hu⟩` from `Ideal.span_singleton_eq_span_singleton.1 (e2.symm.trans e1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hev : ∀ z ∈ ptsIn Y.str σ Wa.1, ev Y.str σ V.1 t z = ev Y.str σ V'.1 t' z * ev Y.str σ Wa.1 (u : Γ(Y.X, Wa.1)) z`. Introduce `z hz`. Rewrite using `[← ev_res hWV hz, ← hu, ev_mul, ev_res hWV' hz]`. Use `set g := ev Y.str σ Wa.1 ((u : Γ(Y.X, Wa.1)) * u) with hg_def`. Establish `hg0 : ∀ z ∈ ptsIn Y.str σ Wa.1, g z ≠ 0` using `fun z hz => ev_ne_zero hz (u.isUnit.mul u.isUnit)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgn : ∀ z, ‖g z‖ = ‖ev Y.str σ Wa.1 (u : Γ(Y.X, Wa.1)) z‖ ^ 2` using `fun z => by`. Rewrite using `[hg_def, ev_mul, norm_mul, sq]`. Take `⟨W₁, hW₁, hyW₁, hW₁s, G, hG, hGre⟩` from `((Y.an σ).holoOn_ev Wa.1 ((u : Γ(Y.X, Wa.1)) * u)).exists_log (isOpen_ptsIn _) hy0W (hg0 y₀ hy0W)`. Establish `hoff : ∀ z ∈ ptsIn Y.str σ Wa.1 ∩ {z | ¬ LiesIn z C}, f z - f' z = Real.log ‖g z‖`. Introduce and unpack `z ⟨hz, hzC⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzV` using `ptsIn_mono hWV hz`. Establish `hzV'` using `ptsIn_mono hWV' hz`. Establish `ht0 : ev Y.str σ V.1 t z ≠ 0` using `fun h0 => hzC ((ev_eq_zero_iff ht hzV).1 h0)`. Establish `hb : 0 < ‖ev Y.str σ Wa.1 (u : Γ(Y.X, Wa.1)) z‖` using `norm_pos_iff.2 (ev_ne_zero hz u.isUnit)`. Establish `ha : 0 < ‖ev Y.str σ V'.1 t' z‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `norm_pos_iff.2 fun h0 => ht0 ?_` and prove the remaining obligations. Rewrite using `[hev z hz, h0, zero_mul]`. Establish `e` using `(hn z hzV).symm.trans (hn' z hzV')`. Rewrite `e` using `[hev z hz, norm_mul, mul_pow, mul_assoc]`. Establish `e'` using `mul_left_cancel₀ (pow_ne_zero 2 ha.ne') e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hl` using `congrArg Real.log e'`. Rewrite `hl` using `[Real.log_mul (pow_ne_zero 2 hb.ne') (Real.exp_ne_zero _), Real.log_exp, Real.log_exp]`. Rewrite using `[hgn]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcont : ContinuousOn (fun z => f z - f' z - Real.log ‖g z‖) (ptsIn Y.str σ Wa.1)`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(((hf.continuousOn (isOpen_ptsIn _)).mono (ptsIn_mono hWV)).sub ((hf'.continuousOn (isOpen_ptsIn _)).mono (ptsIn_mono hWV'))).sub ?_` and prove the remaining obligations. Conclude with `((continuousOn_ev _).norm).log fun z hz => norm_ne_zero_iff.2 (hg0 z hz)`. Establish `hdense : Dense {z : Pts Y σ | ¬ LiesIn z C}`. Take `⟨y, hy⟩` from `hC`. Establish `hd` using `(CxPtsDense.nonempty_and_dense F Y σ).2 C.compl ⟨y, hy⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hs : ptsIn Y.str σ C.compl = {z : Pts Y σ | ¬ LiesIn z C}` using `Set.ext fun z => mem_ptsIn (U := C.compl)`. Rewrite `hd` using `[hs]`. Then use the resulting hypothesis. Establish `hall : Set.EqOn (fun z => f z - f' z - Real.log ‖g z‖) 0 (ptsIn Y.str σ Wa.1)` using `Set.EqOn.of_subset_closure (fun z hz => sub_eq_zero.2 (hoff z hz)) hcont continuousOn_const Set.inter_subset_left (hdense.open_subset_closure_inter (isOpen_ptsIn _))`. Use `⟨W₁, hW₁, hyW₁, G, hG, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[hGre z hz.1.1]`.
-
-Conclude with `sub_eq_zero.1 (hall (hW₁s hz.1.1))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_eq_re_of_eqns : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (σ : F →+* ℂ) (C : Closeds Y.X) (n : Pts Y σ → ℝ) (V V' : Y.X.affineOpens) (t : Γ(Y.X, V.1)) (t' : Γ(Y.X, V'.1)) (f f' : Pts Y σ → ℝ), (∃ y : Y.X, y ∉ C) → (Scheme.IdealSheafData.vanishingIdeal C).ideal V = Ideal.span {t} → (Scheme.IdealSheafData.vanishingIdeal C).ideal V' = Ideal.span {t'} → (Y.an σ).SmoothOn (ptsIn Y.str σ V.1) f → (Y.an σ).SmoothOn (ptsIn Y.str σ V'.1) f' → (∀ z ∈ ptsIn Y.str σ V.1, n z ^ 2 = ‖ev Y.str σ V.1 t z‖ ^ 2 * Real.exp (-f z)) → (∀ z ∈ ptsIn Y.str σ V'.1, n z ^ 2 = ‖ev Y.str σ V'.1 t' z‖ ^ 2 * Real.exp (-f' z)) → ∀ y₀ ∈ ptsIn Y.str σ V.1 ∩ ptsIn Y.str σ V'.1, ∃ W : Set (Pts Y σ), IsOpen W ∧ y₀ ∈ W ∧ ∃ G : Pts Y σ → ℂ, (Y.an σ).HoloOn W G ∧ ∀ z ∈ W ∩ ptsIn Y.str σ V.1 ∩ ptsIn Y.str σ V'.1, f z - f' z = (G z).re := by
   intro F _ _ Y σ C n V V' t t' f f' hC ht ht' hf hf' hn hn' y₀ hy₀

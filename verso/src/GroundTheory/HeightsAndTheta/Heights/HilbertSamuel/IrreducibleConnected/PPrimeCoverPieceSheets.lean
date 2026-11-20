@@ -17,11 +17,11 @@ open MvPolynomial Matrix
 namespace PrimeCoverPieceSheets
 
 /- English proof (translation)
-Rewrite using `[← Polynomial.modByMonic_eq_zero_iff_dvd hG]`. Use `Polynomial.ext fun i => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_zero]`. Establish `hQr : Q * (m %ₘ G).coeff i = 0`. Apply `MvPolynomial.funext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y`. Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `hy : eval y Q = 0`. Rewrite using `[hy, zero_mul]`. Establish `h1 : (m %ₘ G).map (eval y) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.map_modByMonic _ hG, (Polynomial.modByMonic_eq_zero_iff_dvd (hG.map _)).mpr (h y hy)]`. Establish `h2` using `congrArg (fun p => p.coeff i) h1`. Simplify using `only [Polynomial.coeff_map, Polynomial.coeff_zero] at h2`. Rewrite using `[h2, mul_zero]`. Conclude with `(mul_eq_zero.mp hQr).resolve_left hQ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_dvd_map_eval {d : ℕ} {G m : Polynomial (MvPolynomial (Fin d) ℂ)} (hG : G.Monic)
     {Q : MvPolynomial (Fin d) ℂ} (hQ : Q ≠ 0)
@@ -44,7 +44,7 @@ theorem dvd_of_dvd_map_eval {d : ℕ} {G m : Polynomial (MvPolynomial (Fin d) �
   exact (mul_eq_zero.mp hQr).resolve_left hQ
 
 /- English proof (translation)
-Rewrite using `[Polynomial.hom_eval₂, Polynomial.eval_map]`. Use `congr 1`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `P`. Conclude with `ComplexSets.FibreBound.eval_pullback A x P`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eval_eval₂_pullback {n d : ℕ} (A : Matrix (Fin d) (Fin n) ℂ) (x : Fin n → ℂ)
     (p : MvPolynomial (Fin n) ℂ) (G : Polynomial (MvPolynomial (Fin d) ℂ)) :
@@ -57,7 +57,7 @@ theorem eval_eval₂_pullback {n d : ℕ} (A : Matrix (Fin d) (Fin n) ℂ) (x : 
   exact ComplexSets.FibreBound.eval_pullback A x P
 
 /- English proof (translation)
-Simplify using `[ComplexSets.sum₂]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_linearForm {n : ℕ} (c x : Fin n → ℂ) :
     eval x (ComplexSets.sum₂ c) = ∑ j, c j * x j := by
@@ -69,37 +69,33 @@ open PrimeCoverPieceSheets in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `n d W A hW hdim hA`. Take `⟨P₁, hP₁, hcov⟩` from `ComplexSets.DiscriminantCover.proof ComplexSets.PrimitiveElementFibres.proof n d W A hW hdim hA`. Take `⟨D, hD, hprim⟩` from `ComplexSets.PrimitiveDiscriminant.proof ComplexSets.GenericPrimitive.proof ComplexSets.DiscrAdjoin.proof ComplexSets.FunctionFieldDegree.proof n d W A hW hdim hA`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, eval c D ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at h`. Conclude with `hD (MvPolynomial.funext fun x => by rw [h x, map_zero])`. Take `⟨hmon, hdeg, hroot, hdisc, hcoord⟩` from `hprim c hc`. Use `set m := ComplexSets.formMinpoly W A c with hm`. Use `⟨P₁ * m.discr, mul_ne_zero hP₁ hdisc, fun R hR O F k hO hF hOF hk => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQ : P₁ * m.discr * R ≠ 0` using `mul_ne_zero (mul_ne_zero hP₁ hdisc) hR`. Establish `hZroot : ∀ x ∈ ComplexSets.zeroSet W, (m.map (eval (A *ᵥ x))).IsRoot (∑ j, c j * x j)`. Introduce `x hx`. Establish `h0` using `hx _ hroot`. Rewrite `h0` using `[eval_eval₂_pullback, eval_linearForm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `h0`. Establish `hinj : ∀ x ∈ ComplexSets.zeroSet W, ∀ x' ∈ ComplexSets.zeroSet W, eval (A *ᵥ x) m.discr ≠ 0 → A *ᵥ x = A *ᵥ x' → ∑ j, c j * x j = ∑ j, c j * x' j → x = x'`. Introduce `x hx x' hx' hΔ hAx hℓ`. Use function extensionality and compare the values at `j`. Take `⟨Gj, hGj⟩` from `hcoord j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `hx _ hGj`. Establish `e2` using `hx' _ hGj`. Rewrite `e1`, `e2` using `[map_sub, map_mul, ComplexSets.FibreBound.eval_pullback, eval_X, eval_eval₂_pullback, eval_linearForm, sub_eq_zero]`. Rewrite `e2` using `[← hAx, ← hℓ, ← e1]`. Conclude with `(mul_left_cancel₀ hΔ e2).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨G, hGm, hGdeg, hGy⟩` from `hS n d (ComplexSets.projDegree W A) k A (ComplexSets.zeroSet W) c m (P₁ * m.discr * R) O F hmon hQ hZroot (fun y hy => by`. Establish `hy1 : eval y P₁ ≠ 0`. Introduce `h0`. Apply `hy` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, h0, zero_mul, zero_mul]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨hfin, hcard, hsec⟩` from `hcov y hy1`. Conclude with `⟨hfin, hcard, fun x hx hAx => hsec x ⟨hx, hAx⟩⟩) hO hF hOF hk`. Establish `hdvd : ∀ y : Fin d → ℂ, eval y (P₁ * m.discr * R) ≠ 0 → G.map (eval y) ∣ m.map (eval y)`. Introduce `y hy`. Establish `hΔ : eval y m.discr ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hy` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, h0, mul_zero, zero_mul]`. Use `set S := {x | x ∈ ComplexSets.zeroSet W ∧ x ∈ O ∧ A *ᵥ x = y} with hSdef`. Establish `hSfin : S.Finite`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy1 : eval y P₁ ≠ 0`. Introduce `h0`. Apply `hy` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, h0, zero_mul, zero_mul]`. Conclude with `(hcov y hy1).1.subset fun x hx => ⟨hx.1, hx.2.2⟩`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmap : hSfin.toFinset.val.map (fun x : Fin n → ℂ => Polynomial.X - Polynomial.C (∑ j, c j * x j)) = (hSfin.toFinset.val.map (fun x : Fin n → ℂ => ∑ j, c j * x j)).map (fun a => Polynomial.X - Polynomial.C a)`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression. Rewrite using `[hGy y hy, finprod_mem_eq_finite_toFinset_prod _ hSfin, Finset.prod_eq_multiset_prod, hmap]`. Establish `hm0 : m.map (eval y) ≠ 0` using `(hmon.map _).ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Multiset.prod_X_sub_C_dvd_iff_le_roots hm0]`. Establish `hnd : (hSfin.toFinset.val.map (fun x : Fin n → ℂ => ∑ j, c j * x j)).Nodup`. Use `Multiset.Nodup.map_on (fun x hx x' hx' he => ?_) hSfin.toFinset.nodup` and prove the remaining obligations. Establish `hx1 : x ∈ S` using `hSfin.mem_toFinset.mp hx`. Establish `hx2 : x' ∈ S` using `hSfin.mem_toFinset.mp hx'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hinj x hx1.1 x' hx2.1 ?_ (hx1.2.2.trans hx2.2.2.symm) he` and prove the remaining obligations. Rewrite using `[hx1.2.2]`. Conclude with `hΔ`. Use `(Multiset.le_iff_subset hnd).mpr fun τ hτ => ?_` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `Multiset.mem_map.mp hτ`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hx1 : x ∈ S` using `hSfin.mem_toFinset.mp hx`. Rewrite using `[Polynomial.mem_roots hm0]`. Use `hZroot x hx1.1` as an intermediate fact. Rewrite `this` using `[hx1.2.2]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨H, hH⟩` from `dvd_of_dvd_map_eval hGm hQ hdvd`. Establish `hirr : Irreducible m`. Set `_` to `ComplexSets.projAlgebra W A`. Establish `: Module.Finite (MvPolynomial (Fin d) ℂ) (MvPolynomial (Fin n) ℂ ⧸ W)` using `hA.finite`. Establish `: Algebra.IsIntegral (MvPolynomial (Fin d) ℂ) (MvPolynomial (Fin n) ℂ ⧸ W)` using `Algebra.IsIntegral.of_finite _ _`.
-
-Establish `: IsDomain (MvPolynomial (Fin n) ℂ ⧸ W)` using `Ideal.Quotient.isDomain W`. Conclude with `minpoly.irreducible (Algebra.IsIntegral.isIntegral _)`. Break down `hirr.isUnit_or_isUnit hH with hu | hu` into its components or cases. Use `left`. Rewrite using `[← hGdeg]`.
-
-Conclude with `Polynomial.natDegree_eq_zero_of_isUnit hu`. Use `right`. Rewrite using `[← hGdeg, ← hdeg, hH, Polynomial.natDegree_mul hGm.ne_zero hu.ne_zero, Polynomial.natDegree_eq_zero_of_isUnit hu, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem PrimeCoverPieceSheets.proof (hS : PieceRootProductPolynomial.Statement) :
     PrimeCoverPieceSheets.Statement := by

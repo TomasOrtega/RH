@@ -56,11 +56,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.S
 namespace UpperTheory.V.Af
 
 /- English proof (translation)
-Establish `hPft` using `Smo.pftSch_of Smo.schOfClosed Smo.pftDeriv Smo.pftMul`. Establish `hStep` using `StrongMultiplicityOne.archStep StrongMultiplicityOne.trDual (Smo.schTw (Smo.schTensor Smo.schOfClosed)) hPft (Smo.betaSch hPft) Smo.betaInt`. Establish `hArch` using `StrongMultiplicityOne.archKir Smo.colConj Smo.rowStep hStep StrongMultiplicityOne.linChange`. Establish `hLoc` using `Smo.locKir Smo.colConj Smo.rowStep (Smo.locStep Smo.avgChar Smo.locDual)`. Establish `hKill` using `StrongMultiplicityOne.killP hArch (StrongMultiplicityOne.finKir hLoc Smo.psiLoc StrongMultiplicityOne.embY) StrongMultiplicityOne.embY StrongMultiplicityOne.psiInf StrongMultiplicityOne.chartCont`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZero` using `Smo.sphZero Smo.sphDict (Smo.tjSet Smo.sphDict) Smo.centLoc`. Establish `hMap` using `StrongMultiplicityOne.eigMap StrongMultiplicityOne.chartCont`. Establish `hVan` using `StrongMultiplicityOne.vanish (StrongMultiplicityOne.sphAll Smo.awayInd hZero StrongMultiplicityOne.embY) Smo.injP Smo.denseAway Smo.whBasic hMap`. Establish `hCont` using `StrongMultiplicityOne.convCont StrongMultiplicityOne.chartCont`. Establish `hSet` using `StrongMultiplicityOne.setUp Smo.psiLoc Smo.levelS StrongMultiplicityOne.niceOf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPair` using `StrongMultiplicityOne.pair (StrongMultiplicityOne.seed Smo.whBasic (StrongMultiplicityOne.seedConv StrongMultiplicityOne.chartCont) StrongMultiplicityOne.niceOf) hSet hKill hVan Smo.whBasic Smo.whLin (StrongMultiplicityOne.convNice hCont (StrongMultiplicityOne.convFub StrongMulti …`. Conclude with `StrongMultiplicityOne.smoCentral_of (StrongMultiplicityOne.cenSame (Smo.centEq Smo.centLoc Smo.awayInd Smo.denseAway) hSet) hPair StrongMultiplicityOne.compl (StrongMultiplicityOne.proj hMap) Smo.orthTr (StrongMultiplicityOne.orthConv (StrongMultiplicityOne.orthStep StrongMultipl …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem StrongMultiplicityOne.smoCentral : StrongMultiplicityOne.SmoCentral := by
   have hPft := Smo.pftSch_of Smo.schOfClosed Smo.pftDeriv Smo.pftMul
@@ -79,7 +79,7 @@ theorem StrongMultiplicityOne.smoCentral : StrongMultiplicityOne.SmoCentral := b
     (StrongMultiplicityOne.proj hMap) Smo.orthTr (StrongMultiplicityOne.orthConv (StrongMultiplicityOne.orthStep StrongMultiplicityOne.chartCont) hCont)
 
 /- English proof (translation)
-The claim follows from `StrongMultiplicityOne.strong_of StrongMultiplicityOne.smoCentral StrongMultiplicityOne.carrier StrongMultiplicityOne.eigOfSat StrongMultiplicityOne.normTwist`.
+A detailed English derivation is pending.
 -/
 theorem strongMultOneC : StrongMultiplicityOne.StrongMultOneC :=
   StrongMultiplicityOne.strong_of StrongMultiplicityOne.smoCentral StrongMultiplicityOne.carrier StrongMultiplicityOne.eigOfSat StrongMultiplicityOne.normTwist

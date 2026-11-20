@@ -14,7 +14,7 @@ namespace ReciprocityTheory.ChartRestriction.DS.DecInf
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `pmProp_of_gap hp hq m hlam hgap hm T Ψ v₀ hP hv₀`.
+A detailed English derivation is pending.
 -/
 theorem pm_induction {ε : Fin n → Bool} (hp : 1 ≤ pOf ε) (hq : 1 ≤ qOf ε) (m : ℕ) {lam : Fin n → ℝ}
     (hlam : S7.IsHCParam lam) {h : ℝ} (hgap : GapAtLeast ε lam h) (hm : thrStar ε + m < h)

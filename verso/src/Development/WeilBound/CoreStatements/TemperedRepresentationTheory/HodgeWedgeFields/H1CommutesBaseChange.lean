@@ -158,7 +158,7 @@ structure Sys (X : Scheme.{0}) (P : Type) [SemilatticeInf P] where
 variable {X : Scheme.{0}} {P : Type} [SemilatticeInf P]
 
 /- English proof (translation)
-The claim follows from `fun a b h ↦ by have e := S.map_inf a b rw [inf_eq_left.2 h] at e exact (e.le.trans inf_le_right : (S.u a).1 ≤ (S.u b).1)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Sys.mono (S : Sys X P) : Monotone S.u := fun a b h ↦ by
   have e := S.map_inf a b
@@ -173,7 +173,7 @@ abbrev resSys {R : Type} [CommRing R] (s : X ⟶ Sp R) (S : Sys X P) : CoefMap (
   CoefMap.restrict (OAff s) S.fn
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.Cris.spMap_id, Category.comp_id]`. Conclude with `Over.w f`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wOver {R : Type} [CommRing R] {Y Z : Over (Sp R)} (f : Y ⟶ Z) :
     f.left ≫ Z.hom = Y.hom ≫ spMap (RingHom.id R) := by

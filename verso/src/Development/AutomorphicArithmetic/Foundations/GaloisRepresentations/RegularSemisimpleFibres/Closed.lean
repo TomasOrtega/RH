@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Regul
 namespace UpperTheory.Gal.InertialTypesAlt
 
 /- English proof (translation)
-The claim follows from `suppBC_holds L.inflMatch`.
+A detailed English derivation is pending.
 -/
 theorem suppBC_outright : SuppBC := suppBC_holds L.inflMatch
 

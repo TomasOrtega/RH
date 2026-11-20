@@ -16,35 +16,31 @@ open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMas
 namespace GlobalTheory.FockKFin
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' _hKP hP Φ hΦ`. Establish `hψ : IsStd B.ψ` using `hP.base.std`. Establish `hfin : ∀ m, FiniteDimensional ℂ (GlobalTheory.FockKFin.polLe M B.emb m)`. Introduce `m`. Proceed by induction on `m with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => exact GlobalTheory.T.fockVacua_span_finiteDimensional_dualPair F E σ B n d X W M χX χW om r s r' s' hP`. Consider the case `succ m ih`. Rewrite using `[GlobalTheory.FockKFin.polLe_succ]`. Use `haveI := ih`. Use `haveI := GlobalTheory.T.finiteDimensional_archimedeanSchwartzFockOperatorSpan F _ _ ih`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `infer_instance`. Establish `hle : ∀ m, GlobalTheory.FockKFin.polLe M B.emb m ≤ M.Pol B.ψ B.emb`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => exact Submodule.span_le.2 fun g hg => GlobalTheory.ThK.EvAt0.PolEv.gauss_mem hψ M B.emb hg`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `succ m ih`. Rewrite using `[GlobalTheory.FockKFin.polLe_succ]`. Use `sup_le ih (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, b, f, hf, rfl⟩`. Conclude with `GlobalTheory.ThK.EvAt0.PolEv.dOp_mem hψ M B.emb a b (ih hf)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hdir : Directed (· ≤ ·) (GlobalTheory.FockKFin.polLe M B.emb)` using `(GlobalTheory.FockKFin.polLe_mono M B.emb).directed_le`. Establish `hcov : ∀ f ∈ M.Pol B.ψ B.emb, ∃ m, f ∈ GlobalTheory.FockKFin.polLe M B.emb m`. Introduce `f hf`. Establish `hsub : M.Pol B.ψ B.emb ≤ ⨆ m, GlobalTheory.FockKFin.polLe M B.emb m`. Rewrite using `[GlobalTheory.ThK.EvAt0.PolEv.pol_eq hψ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `sInf_le ⟨fun g hg => Submodule.mem_iSup_of_mem 0 (Submodule.subset_span hg), fun a b g hg => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `(Submodule.mem_iSup_of_directed _ hdir).1 hg`. Use `Submodule.mem_iSup_of_mem (m + 1) ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.FockKFin.polLe_succ]`. Conclude with `Submodule.mem_sup_right (GlobalTheory.FockKFin.dOp_mem_dStep _ a b hm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Submodule.mem_iSup_of_directed _ hdir).1 (hsub hf)`. Establish `hst : ∀ k ∈ KInf σ W B.emb, ∀ A : SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d), (∀ f : SInf F (Fin n × Fin d), Acts (evI F) (om (1, k)) ⇑f ⇑(A f)) → ∀ m, ∀ f ∈ GlobalTheory.FockKFin.polLe M B.emb m, A f ∈ GlobalTheory.FockKFin.polLe M B.emb m`. Introduce `k hk A hA m`. Proceed by induction on `m with`. Consider the case `zero`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `f hf`. Rewrite `hf`, the goal using `[GlobalTheory.FockKFin.polLe_zero]`. Use `Submodule.span_induction (fun g hg => Submodule.subset_span (GlobalTheory.T.maximalCompact_archOperator_preserves_fockVacua F E σ B n d X W M χX χW om r s r' s' hP k hk A hA g hg)) (by rw [map_zero]; exact Submodule.zero_mem _) (fun x y _ _ hx hy => by rw [map_add]; exact Submodu …` and prove the remaining obligations. Consider the case `succ m ih`. Introduce `f hf`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `hf`, the goal using `[GlobalTheory.FockKFin.polLe_succ]`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hf`. Rewrite using `[map_add]`. Use `Submodule.add_mem _ (Submodule.mem_sup_left (ih y hy)) (Submodule.mem_sup_right ?_)` and prove the remaining obligations. Use `Submodule.span_induction (fun g hg => ?_) (by rw [map_zero]; exact Submodule.zero_mem _) (fun x y _ _ hx hy => by rw [map_add]; exact Submodule.add_mem _ hx hy) (fun c x _ hx => by rw [map_smul]; exact Submodule.smul_mem _ c hx) hz` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, g₀, hg₀, rfl⟩` from `hg`. Take `⟨a', b', hab⟩` from `GlobalTheory.T.archimedeanMaximalCompact_intertwines_fockDerivativeOps F E σ B n d X W M χX χW om r s r' s' hP k hk A hA a b`. Rewrite using `[hab]`. Conclude with `GlobalTheory.FockKFin.dOp_mem_dStep _ a' b' (ih g₀ hg₀)`. Proceed by induction on `hΦ using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx`. Take `⟨f, hf, φ, hφ, hvac, rfl⟩` from `hx`. Take `⟨m, hm⟩` from `hcov f hf`. Use `haveI := hfin m`. Use `⟨(GlobalTheory.FockKFin.polLe M B.emb m).map (GlobalTheory.FockKFin.pureL φ), inferInstance, ?_, fun k hk => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `g hg`. Conclude with `Submodule.subset_span ⟨g, hle m hg, φ, hφ, hvac, rfl⟩`. Take `⟨A, hA⟩` from `GlobalTheory.ArchLocalAct.exists_op_of_KInf F E σ B n d X W M om χX χW hP.base hP.good hP.weil k hk`. Rewrite using `[GlobalTheory.T.weil_rep_intertwines_action F E σ B.ψ n d X W M om hP.good (1, k) A hA f φ hφ hvac]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.mem_map_of_mem (hst k hk A hA m f hm)`. Consider the case `zero`. Conclude with `⟨⊥, inferInstance, bot_le, fun k _ => by rw [map_zero]; exact Submodule.zero_mem _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨S₁, h₁, l₁, k₁⟩` from `hx`.
-
-Take `⟨S₂, h₂, l₂, k₂⟩` from `hy`. Conclude with `⟨S₁ ⊔ S₂, inferInstance, sup_le l₁ l₂, fun k hk => by`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (k₁ k hk) (k₂ k hk)⟩`. Consider the case `smul c x _ hx`.
-
-Take `⟨S, h, l, k₁⟩` from `hx`. Conclude with `⟨S, h, l, fun k hk => by rw [map_smul]; exact Submodule.smul_mem _ c (k₁ k hk)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem polData_kfin : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)

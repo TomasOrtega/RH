@@ -23,9 +23,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
 
 /- English proof (translation)
-Introduce and unpack `x ⟨y, rfl⟩`. Establish `hle : (PD.Fil (a + 1)).restrictScalars Qp ≤ (PD.Fil a).restrictScalars Qp` using `PD.Fil_anti a`. Establish `hc : (TensorProduct.AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) ((PD.Fil a).restrictScalars Qp).subtype).comp (TensorProduct.AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) (Submodule.inclusion hle)) = TensorProduct.AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) …`. Apply `TensorProduct.AlgebraTensorModule.ext` to reduce the goal to its premises. Introduce `v b`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Conclude with `⟨TensorProduct.AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) (Submodule.inclusion hle) y, LinearMap.congr_fun hc y⟩`.
+Both sides reduce to the same expression. Supply the required witnesses or components.
 -/
 theorem filV_succ_le (a : ℤ) : FilV PD (LL := LL) (V := V) (a + 1) ≤ FilV PD (LL := LL) (V := V) a := by
   rintro x ⟨y, rfl⟩
@@ -42,23 +42,23 @@ theorem filV_succ_le (a : ℤ) : FilV PD (LL := LL) (V := V) (a + 1) ≤ FilV PD
     LinearMap.congr_fun hc y⟩
 
 /- English proof (translation)
-The claim follows from `inf_le_inf_left _ (filV_succ_le PD a)`.
+A detailed English derivation is pending.
 -/
 theorem fildR_succ_le (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) (a : ℤ) :
     FildR PD ρ τ (a + 1) ≤ FildR PD ρ τ a :=
   inf_le_inf_left _ (filV_succ_le PD a)
 
 /- English proof (translation)
-The claim follows from `inf_le_left.trans inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem fildR_le_DdR (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) (a : ℤ) :
     FildR PD ρ τ a ≤ DdR PD ρ :=
   inf_le_left.trans inf_le_left
 
 /- English proof (translation)
-Introduce `h0`. Apply `h` to reduce the goal to its premises. Use `haveI : FiniteDimensional LL ↥(FildR PD ρ τ a) := Submodule.finiteDimensional_of_le (fildR_le_DdR PD ρ τ a)`. Use `Submodule.eq_of_le_of_finrank_eq (fildR_succ_le PD ρ τ a) ?_` and prove the remaining obligations. Unfold `multV at h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem multV_ne_zero_of_jump (ρ : Representation LL G V) [Module.Finite LL ↥(DdR PD ρ)]
     (τ : K →ₐ[Qp] LL) (a : ℤ) (h : IsJumpV PD ρ τ a) : multV PD ρ τ a ≠ 0 := by
@@ -73,7 +73,7 @@ theorem multV_ne_zero_of_jump (ρ : Representation LL G V) [Module.Finite LL ↥
 end General
 
 /- English proof (translation)
-Introduce `l _ P K LL T hF τ u hJ`. Set `A : GRep ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)` to `{ V := T.V, ρ := T.ρ, cont := T.cont }`. Take `⟨-, ⟨hfin, -⟩, -⟩` from `hF ↥LL.1 ↥(OL LL) (GlobalTheory.T.goodCoefficientRing_integers_padicFiniteExtension l LL) A`. Use `haveI : Module.Finite ↥LL.1 ↥(DdR (P.PD K) T.ρ) := hfin`. Conclude with `multV_ne_zero_of_jump (P.PD K) T.ρ τ u hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem jump_multV_ne_zero : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l) (T : Lat K LL),
     Formalism.MainNotions.LocalSituation.fontCore (P.PD K) → ∀ τ u, IsJumpV (P.PD K) T.ρ τ u → multV (P.PD K) T.ρ τ u ≠ 0 := by

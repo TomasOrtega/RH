@@ -38,17 +38,15 @@ def Ann (hL : LocData ε c t p q e sL ρ) (L : C(KR n, ℂ) →L[ℂ] ℂ) : Sub
     rw [this, map_smul, hR y, smul_zero]
 
 /- English proof (translation)
-Introduce `y`. Establish `hR' : ∀ y', L (secK hL R y') = 0` using `hR`. Take `⟨f, hf⟩` from `hq y`. Use `set F : ℝ → C(KR n, ℂ) := fun s => (s : ℂ)⁻¹ • (secK hL R (y * f s) - secK hL R y) with hF`. Establish `hU : TendstoUniformly (fun s (k : KR n) => F s k) (secK hL D y) (𝓝[≠] (0:ℝ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Metric.tendstoUniformly_iff]`. Introduce `δ hδ`. Take `⟨η, hη, hs⟩` from `hf (δ / 2) (by linarith)`. Rewrite using `[eventually_nhdsWithin_iff, Metric.eventually_nhds_iff]`. Use `⟨η, hη, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs1 hs2 k`. Establish `hs0 : s ≠ 0` using `hs2`. Establish `habs : |s| < η` using `by simpa [Real.dist_eq] using hs1`. Establish `hk` using `hs s hs0 habs k`. Rewrite using `[dist_comm, dist_eq_norm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : F s k = (sL R ((k : GR n) * y * f s) - sL R ((k : GR n) * y)) / s`. Simplify using `[hF, secK_apply, mul_assoc, div_eq_inv_mul]`. Rewrite using `[e, secK_apply]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hT : Filter.Tendsto F (𝓝[≠] (0:ℝ)) (𝓝 (secK hL D y))` using `ContinuousMap.tendsto_iff_forall_isCompact_tendstoUniformlyOn.mpr (fun K _ => hU.tendstoUniformlyOn)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL0 : Filter.Tendsto (fun s => L (F s)) (𝓝[≠] (0:ℝ)) (𝓝 (L (secK hL D y)))` using `(L.continuous.tendsto _).comp hT`. Establish `hz : (fun s => L (F s)) = fun _ => (0 : ℂ)`. Use function extensionality and compare the values at `s`. Simplify using `only [hF, map_smul, map_sub, hR' (y * f s), hR' y, sub_self, smul_zero]`. Rewrite `hL0` using `[hz]`.
-
-Conclude with `tendsto_nhds_unique hL0 tendsto_const_nhds`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ann_of_quot (hL : LocData ε c t p q e sL ρ) (L : C(KR n, ℂ) →L[ℂ] ℂ) {R D : PX m n} (hR : R ∈ Ann hL L)
     (hq : ∀ y : GR n, ∃ f : ℝ → GR n, ∀ δ : ℝ, 0 < δ → ∃ η : ℝ, 0 < η ∧ ∀ s : ℝ, s ≠ 0 → |s| < η → ∀ k : KR n,
@@ -84,7 +82,7 @@ theorem ann_of_quot (hL : LocData ε c t p q e sL ρ) (L : C(KR n, ℂ) →L[ℂ
   exact tendsto_nhds_unique hL0 tendsto_const_nhds
 
 /- English proof (translation)
-Introduce `h0`. Establish `hc` using `hL.cpos`. Apply the tactic sequence `rcases hL.sign with ⟨h, -⟩ | ⟨h, -⟩ <;> linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem t_ne (hL : LocData ε c t p q e sL ρ) : t ≠ 0 := by
   intro h0
@@ -94,25 +92,25 @@ theorem t_ne (hL : LocData ε c t p q e sL ρ) : t ≠ 0 := by
 def lin (Φ : Fin n → Fin n → PX m n) (H : Matrix (Fin n) (Fin n) ℂ) : PX m n := ∑ i, ∑ j, C (H i j) * Φ j i
 
 /- English proof (translation)
-Simplify using `only [lin, Matrix.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lin_add (Φ : Fin n → Fin n → PX m n) (H H' : Matrix (Fin n) (Fin n) ℂ) : lin Φ (H + H') = lin Φ H + lin Φ H' := by
   simp only [lin, Matrix.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [lin, Matrix.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lin_sub (Φ : Fin n → Fin n → PX m n) (H H' : Matrix (Fin n) (Fin n) ℂ) : lin Φ (H - H') = lin Φ H - lin Φ H' := by
   simp only [lin, Matrix.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [lin, Matrix.smul_apply, smul_eq_mul, map_mul, Finset.smul_sum, smul_eq_C_mul, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lin_smul (Φ : Fin n → Fin n → PX m n) (z : ℂ) (H : Matrix (Fin n) (Fin n) ℂ) : lin Φ (z • H) = z • lin Φ H := by
   simp only [lin, Matrix.smul_apply, smul_eq_mul, map_mul, Finset.smul_sum, smul_eq_C_mul, mul_assoc]
 
 /- English proof (translation)
-Simplify using `[lin, Matrix.single_apply, ite_and, apply_ite C, ite_mul, Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lin_single (Φ : Fin n → Fin n → PX m n) (a b : Fin n) :
     lin Φ (Matrix.single a b (1 : ℂ)) = Φ b a := by
@@ -120,14 +118,14 @@ theorem lin_single (Φ : Fin n → Fin n → PX m n) (a b : Fin n) :
   simp [lin, Matrix.single_apply, ite_and, apply_ite C, ite_mul, Finset.sum_ite_eq]
 
 /- English proof (translation)
-Use `show (_ : Matrix (Fin n) (Fin n) ℂ)ᴴ = _`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_single, Matrix.conjTranspose_single, star_one, add_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm1 (a b : Fin n) : (Matrix.single a b (1 : ℂ) + Matrix.single b a 1).IsHermitian := by
   show (_ : Matrix (Fin n) (Fin n) ℂ)ᴴ = _
   rw [Matrix.conjTranspose_add, Matrix.conjTranspose_single, Matrix.conjTranspose_single, star_one, add_comm]
 
 /- English proof (translation)
-Use `show (_ : Matrix (Fin n) (Fin n) ℂ)ᴴ = _`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_single, Matrix.conjTranspose_single, star_one, Complex.star_def, Complex.conj_I, neg_smul, ← smul_neg, neg_sub]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm2 (a b : Fin n) : (Complex.I • (Matrix.single a b (1 : ℂ) - Matrix.single b a 1)).IsHermitian := by
   show (_ : Matrix (Fin n) (Fin n) ℂ)ᴴ = _
@@ -135,11 +133,11 @@ theorem herm2 (a b : Fin n) : (Complex.I • (Matrix.single a b (1 : ℂ) - Matr
     star_one, Complex.star_def, Complex.conj_I, neg_smul, ← smul_neg, neg_sub]
 
 /- English proof (translation)
-Establish `h1` using `h _ (herm1 a b)`. Establish `h2` using `h _ (herm2 a b)`. Rewrite `h1` using `[lin_add, lin_single, lin_single]`. Rewrite `h2` using `[lin_smul, lin_sub, lin_single, lin_single]`. Establish `hI : (-(Complex.I / 2)) * Complex.I = (1 / 2 : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[neg_mul, div_mul_eq_mul_div, Complex.I_mul_I]`. Evaluate the numerical expressions. Establish `h3 : Φ b a * R = (1 / 2 : ℂ) • ((Φ b a + Φ a b) * R) + (-(Complex.I / 2)) • ((Complex.I • (Φ b a - Φ a b)) * R)`. Rewrite using `[smul_mul_assoc, smul_smul, hI, add_mul, sub_mul]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Conclude with `S.add_mem (S.smul_mem _ h1) (S.smul_mem _ h2)`.
+A detailed English derivation is pending.
 -/
 theorem entry_of_lin (S : Submodule ℂ (PX m n)) (Φ : Fin n → Fin n → PX m n) (R : PX m n)
     (h : ∀ H : Matrix (Fin n) (Fin n) ℂ, H.IsHermitian → lin Φ H * R ∈ S) (a b : Fin n) :
@@ -158,11 +156,9 @@ theorem entry_of_lin (S : Submodule ℂ (PX m n)) (Φ : Fin n → Fin n → PX m
   exact S.add_mem (S.smul_mem _ h1) (S.smul_mem _ h2)
 
 /- English proof (translation)
-Establish `hle : Mon ε d ≤ Subalgebra.toSubmodule (Algebra.adjoin ℂ (Set.range fun k : Bool × Fin n × Fin n => (Qb ε k.1 k.2.1 k.2.2 : PX m n)))`. Unfold `Mon`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `M ⟨l, -, rfl⟩`. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_toSubmodule]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Apply `Subalgebra.list_prod_mem` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[List.mem_map]`. Take `⟨k, -, rfl⟩` from `hx`. Conclude with `Algebra.subset_adjoin ⟨k, rfl⟩`.
-
-Conclude with `hle hR`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mon_le_adjoin (ε : Fin m → Bool) (d : ℕ) {R : PX m n} (hR : R ∈ Mon ε d) :
     R ∈ Algebra.adjoin ℂ (Set.range fun k : Bool × Fin n × Fin n => (Qb ε k.1 k.2.1 k.2.2 : PX m n)) := by
@@ -179,19 +175,17 @@ theorem mon_le_adjoin (ε : Fin m → Bool) (d : ℕ) {R : PX m n} (hR : R ∈ M
   exact hle hR
 
 /- English proof (translation)
-Establish `hRA : R ∈ Ann hL L` using `hd hR`. Establish `hRad` using `mon_le_adjoin ε d hR`. Establish `hN : ∀ H : Matrix (Fin n) (Fin n) ℂ, H.IsHermitian → lin (fun j i => Qp ε j i) H * R ∈ Ann hL L`. Introduce `H hH`. Establish `hDN : DN ε t H R ∈ Ann hL L` using `ann_of_quot hL L hRA (fun y => (hD m n ε c t p q e sL ρ hL R hRad y H hH).1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ht : (Complex.I * (t : ℂ)) ≠ 0` using `mul_ne_zero Complex.I_ne_zero (Complex.ofReal_ne_zero.mpr (t_ne hL))`. Establish `e1 : lin (fun j i => Qp ε j i) H * R = (Complex.I * (t : ℂ))⁻¹ • DN ε t H R`. Rewrite using `[lin, DN, MvPolynomial.smul_eq_C_mul, ← mul_assoc, ← mul_assoc, ← map_mul, inv_mul_cancel₀ ht, map_one, one_mul]`. Rewrite using `[e1]`. Conclude with `(Ann hL L).smul_mem _ hDN`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hM : ∀ H : Matrix (Fin n) (Fin n) ℂ, H.IsHermitian → lin (fun j i => Qb ε true j i + Qb ε false j i) H * R ∈ Ann hL L`. Introduce `H hH`. Establish `hDM : DM ε c H R ∈ Ann hL L` using `ann_of_quot hL L hRA (fun y => (hD m n ε c t p q e sL ρ hL R hRad y H hH).2)`. Establish `hE : eulH H R ∈ Ann hL L` using `hd (eulH_mon ε H d hR)`. Establish `hc : (2 * (c : ℂ)) ≠ 0` using `mul_ne_zero two_ne_zero (Complex.ofReal_ne_zero.mpr hL.cpos.ne')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : lin (fun j i => Qb ε true j i + Qb ε false j i) H * R = (2 * (c : ℂ))⁻¹ • (((m : ℂ) * H.trace) • R + eulH H R - DM ε c H R)`. Rewrite using `[lin, DM, MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul, sub_sub_cancel, ← mul_assoc, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hc, map_one, one_mul]`. Rewrite using `[e1]`. Conclude with `(Ann hL L).smul_mem _ ((Ann hL L).sub_mem ((Ann hL L).add_mem ((Ann hL L).smul_mem _ hRA) hE) hDM)`. Take `⟨b, i, j⟩` from `k`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP` using `entry_of_lin (Ann hL L) (fun j i => Qp ε j i) R hN j i`. Establish `hS` using `entry_of_lin (Ann hL L) (fun j i => Qb ε true j i + Qb ε false j i) R hM j i`. Establish `hsum` using `(Ann hL L).add_mem ((Ann hL L).smul_mem (1 / 2 : ℂ) hS) ((Ann hL L).smul_mem (1 / 2 : ℂ) hP)`. Establish `hdif` using `(Ann hL L).sub_mem ((Ann hL L).smul_mem (1 / 2 : ℂ) hS) ((Ann hL L).smul_mem (1 / 2 : ℂ) hP)`. Consider the cases of `b`.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Use `hdif using 1` and compare the differences between its conclusion and the goal. Simplify using `only [gen, Qp, add_mul, sub_mul]`. Use `module`. Use `hsum using 1` and compare the differences between its conclusion and the goal. Simplify using `only [gen, Qp, add_mul, sub_mul]`.
-
-Use `module`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gen_mul_ann (hL : LocData ε c t p q e sL ρ) (L : C(KR n, ℂ) →L[ℂ] ℂ) (hD : SecDer) (d : ℕ)
     (hd : Mon ε d ≤ Ann hL L) {R : PX m n} (hR : R ∈ Mon ε d) (k : Bool × Fin n × Fin n) :
@@ -233,13 +227,13 @@ theorem gen_mul_ann (hL : LocData ε c t p q e sL ρ) (L : C(KR n, ℂ) →L[ℂ
     module
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Unfold `Mon`. Rewrite using `[Submodule.span_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `M ⟨l, hl, rfl⟩`. Establish `hl0 : l = []` using `List.eq_nil_of_length_eq_zero (Nat.le_zero.mp hl)`. Substitute `hl0` using the available equality. Simplify using `using h1`. Consider the case `succ d ih`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Unfold `Mon`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `M ⟨l, hl, rfl⟩`. Consider the cases of `l with`. Consider the case `nil => simpa using h1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `cons a l`. Simplify using `only [List.length_cons, Nat.add_le_add_iff_right] at hl`. Rewrite using `[List.map_cons, List.prod_cons]`. Establish `hM : (List.map (gen ε) l).prod ∈ Mon ε d` using `Submodule.subset_span ⟨l, hl, rfl⟩`. Conclude with `gen_mul_ann hL L hD d ih hM a`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mon_le_ann (hL : LocData ε c t p q e sL ρ) (L : C(KR n, ℂ) →L[ℂ] ℂ) (hD : SecDer)
     (h1 : (1 : PX m n) ∈ Ann hL L) : ∀ d, Mon ε d ≤ Ann hL L := by
@@ -271,13 +265,13 @@ namespace PositivityTheory.Rg.Sw.AbsSt
 open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.AbsSt.CycP
 
 /- English proof (translation)
-Introduce `m n ε c t p q e sL ρ hL L hL0 P h hh`. Establish `h1 : (1 : PX m n) ∈ Ann hL L`. Introduce `y`. Use `hL0 y _ fun k => ?_` and prove the remaining obligations. Simplify using `[hL.vac]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨R, hR, hPR⟩` from `hC m n ε c hL.cpos P`. Take `⟨d, hd⟩` from `adjoin_le ε hR`. Establish `hRA` using `mon_le_ann hL L hD h1 d hd`. Establish `hz` using `(hZ m n ε c t p q e sL ρ hL (P - R)).1 hPR`. Establish `: h = secK hL R 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `k`. Use `hz (k : GR n)` as an intermediate fact. Rewrite `this` using `[map_sub, Pi.sub_apply, sub_eq_zero]`. Rewrite using `[hh, secK_apply, mul_one, this]`. Rewrite using `[this]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hRA 1`.
+A detailed English derivation is pending.
 -/
 theorem cycSec_of (hC : Cyc) (hZ : SecZero) (hD : SecDer) : CycSec := by
   intro m n ε c t p q e sL ρ hL L hL0 P h hh

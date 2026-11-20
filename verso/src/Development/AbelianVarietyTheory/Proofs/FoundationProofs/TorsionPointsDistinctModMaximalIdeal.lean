@@ -24,7 +24,7 @@ end TorsionUnit
 open WeierstrassCurve WeierstrassCurve.Affine in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
 /- English proof (translation)
-Simplify using `[Affine.negY]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma short_negY_eq (A B x y : K) :
     ((⟨0, 0, 0, A, B⟩ : WeierstrassCurve K).toAffine).negY x y = -y := by
@@ -33,7 +33,7 @@ private lemma short_negY_eq (A B x y : K) :
 open WeierstrassCurve WeierstrassCurve.Affine in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
 /- English proof (translation)
-Simplify using `[Affine.addX]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma short_addX_eq (A B x₁ x₂ l : K) :
     ((⟨0, 0, 0, A, B⟩ : WeierstrassCurve K).toAffine).addX x₁ x₂ l = l ^ 2 - x₁ - x₂ := by
@@ -42,7 +42,7 @@ private lemma short_addX_eq (A B x₁ x₂ l : K) :
 open WeierstrassCurve WeierstrassCurve.Affine in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
 /- English proof (translation)
-The claim follows from `(IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)`.
+A detailed English derivation is pending.
 -/
 private lemma norm_add_le_one_of_le_one {a b : K} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) :
     ‖a + b‖ ≤ 1 :=
@@ -51,7 +51,7 @@ private lemma norm_add_le_one_of_le_one {a b : K} (ha : ‖a‖ ≤ 1) (hb : ‖
 open WeierstrassCurve WeierstrassCurve.Affine in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
 /- English proof (translation)
-Establish `hsq : ‖l ^ 2‖ ≤ 1`. Use `norm_add_le_one_of_le_one h hs` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Rewrite `hsq` using `[norm_pow]`. Conclude with `(pow_le_one_iff_of_nonneg (norm_nonneg l) two_ne_zero).mp hsq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma norm_le_one_of_norm_sq_sub_le_one {l s : K} (h : ‖l ^ 2 - s‖ ≤ 1) (hs : ‖s‖ ≤ 1) :
     ‖l‖ ≤ 1 := by
@@ -64,7 +64,7 @@ private lemma norm_le_one_of_norm_sq_sub_le_one {l s : K} (h : ‖l ^ 2 - s‖ �
 open WeierstrassCurve WeierstrassCurve.Affine in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
 /- English proof (translation)
-Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ ha (norm_nonneg _) hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma norm_mul_le_one_of_le_one {a b : K} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) :
     ‖a * b‖ ≤ 1 := by
@@ -74,7 +74,7 @@ private lemma norm_mul_le_one_of_le_one {a b : K} (ha : ‖a‖ ≤ 1) (hb : ‖
 open WeierstrassCurve WeierstrassCurve.Affine in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
 /- English proof (translation)
-Use `h.1` as an intermediate fact. Simplify using `[Affine.equation_iff] at this`. Take the linear combination `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private lemma short_equation_of_nonsingular {A B x y : K}
     (h : (⟨0, 0, 0, A, B⟩ : WeierstrassCurve K).toAffine.Nonsingular x y) :
@@ -86,7 +86,7 @@ private lemma short_equation_of_nonsingular {A B x y : K}
 open WeierstrassCurve WeierstrassCurve.Affine in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `norm_add_le_one_of_le_one ha (by rwa [norm_neg])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma norm_sub_le_one_of_le_one {a b : K} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) :
     ‖a - b‖ ≤ 1 := by
@@ -96,7 +96,7 @@ private lemma norm_sub_le_one_of_le_one {a b : K} (ha : ‖a‖ ≤ 1) (hb : ‖
 open WeierstrassCurve WeierstrassCurve.Affine in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
 /- English proof (translation)
-Conclude with `IsUltrametricDist.norm_natCast_le_one K n` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 private lemma norm_ofNat_le_one (n : ℕ) [n.AtLeastTwo] : ‖(OfNat.ofNat n : K)‖ ≤ 1 := by
   exact_mod_cast IsUltrametricDist.norm_natCast_le_one K n
@@ -104,31 +104,25 @@ private lemma norm_ofNat_le_one (n : ℕ) [n.AtLeastTwo] : ‖(OfNat.ofNat n : K
 open WeierstrassCurve WeierstrassCurve.Affine in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
 /- English proof (translation)
-Establish `hx` using `hT _ _ h hP`. Establish `h2ne : (2 : K) ≠ 0`. Introduce `h0`. Rewrite `h2` using `[h0, norm_zero]`. Conclude with `zero_ne_one h2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hy : y ≠ ((⟨0, 0, 0, A, B⟩ : WeierstrassCurve K).toAffine).negY x y`. Introduce `hyy`. Establish `hneg : -Point.some x y h = Point.some x y h`. Rewrite using `[Point.neg_some]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result.
 
-Conclude with `hyy.symm`. Take `⟨k, rfl⟩` from `hN`. Establish `hPP : Point.some x y h + Point.some x y h = 0` using `by nth_rewrite 1 [← hneg]`. Conclude with `neg_add_cancel _`. Rewrite `hP` using `[add_smul, one_smul, mul_comm, mul_smul, two_smul, hPP, smul_zero, zero_add]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `at hP`. Establish `hy0 : y ≠ 0`. Introduce `h0`. Apply `hy` to reduce the goal to its premises. Rewrite using `[short_negY_eq, h0, neg_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdbl` using `Point.add_of_Y_ne (h₁ := h) (h₂ := h) hy`. Establish `h3` using `hT _ _ _ (by rw [← hdbl, smul_add, hP, add_zero])`. Rewrite `h3` using `[short_addX_eq]`. Use `set l := ((⟨0, 0, 0, A, B⟩ : WeierstrassCurve K).toAffine).slope x x y y with hl`. Establish `hlrel : l * (2 * y) = 3 * x ^ 2 + A`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hl, slope_of_Y_ne rfl hy, short_negY_eq, sub_neg_eq_add, ← two_mul, div_mul_cancel₀ _ (mul_ne_zero h2ne hy0)]`. Simplify using the standard rewrite rules. Establish `hlle : ‖l‖ ≤ 1` using `norm_le_one_of_norm_sq_sub_le_one (s := x + x) (by rw [← sub_sub]; exact h3) (norm_add_le_one_of_le_one hx hx)`. Establish `hder : ‖3 * x ^ 2 + A‖ ≤ ‖y‖`. Rewrite using `[← hlrel, norm_mul, norm_mul, h2, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_of_le_one_left (norm_nonneg _) hlle`. Establish `hx2 : ‖x ^ 2‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hx`. Establish `hx3 : ‖x ^ 3‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hx`. Establish `hf : ‖x ^ 3 + A * x + B‖ ≤ 1` using `norm_add_le_one_of_le_one (norm_add_le_one_of_le_one hx3 (norm_mul_le_one_of_le_one hA hx)) hB`. Establish `hyeq` using `short_equation_of_nonsingular h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hyle : ‖y‖ ≤ 1`. Establish `: ‖y‖ ^ 2 ≤ 1` using `by rw [← norm_pow, hyeq]; exact hf`. Conclude with `(pow_le_one_iff_of_nonneg (norm_nonneg y) two_ne_zero).mp this`. Use `le_antisymm hyle (not_lt.mp fun hlt => ?_)` and prove the remaining obligations. Establish `hflt : ‖x ^ 3 + A * x + B‖ < 1`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hyeq, norm_pow]`. Use polynomial arithmetic with `[norm_nonneg y]`. Establish `hderlt : ‖3 * x ^ 2 + A‖ < 1` using `hder.trans_lt hlt`. Establish `ha : ‖27 * B - 18 * A * x‖ ≤ 1` using `norm_sub_le_one_of_le_one (norm_mul_le_one_of_le_one (norm_ofNat_le_one 27) hB) (norm_mul_le_one_of_le_one (norm_mul_le_one_of_le_one (norm_ofNat_le_one 18) hA) hx)`. Establish `hb : ‖6 * A * x ^ 2 - 9 * B * x + 4 * A ^ 2‖ ≤ 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `norm_add_le_one_of_le_one (norm_sub_le_one_of_le_one ?_ ?_) ?_` and prove the remaining obligations. Conclude with `norm_mul_le_one_of_le_one (norm_mul_le_one_of_le_one (norm_ofNat_le_one 6) hA) hx2`. Conclude with `norm_mul_le_one_of_le_one (norm_mul_le_one_of_le_one (norm_ofNat_le_one 9) hB) hx`. Use `norm_mul_le_one_of_le_one (norm_ofNat_le_one 4) ?_` and prove the remaining obligations. Rewrite using `[norm_pow]`.
-
-Conclude with `pow_le_one₀ (norm_nonneg _) hA`. Establish `hid : 4 * A ^ 3 + 27 * B ^ 2 = (27 * B - 18 * A * x) * (x ^ 3 + A * x + B) + (6 * A * x ^ 2 - 9 * B * x + 4 * A ^ 2) * (3 * x ^ 2 + A)` using `by ring`. Establish `hlt1 : ‖4 * A ^ 3 + 27 * B ^ 2‖ < 1`. Rewrite using `[hid]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ ?_)` and prove the remaining obligations.
-
-Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) ha).trans_lt hflt`. Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) hb).trans_lt hderlt`. Rewrite `hlt1` using `[hD]`.
-
-Conclude with `lt_irrefl _ hlt1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma norm_y_eq_one_of_nsmul_eq_zero [DecidableEq K] {A B : K} {N : ℕ} (hA : ‖A‖ ≤ 1) (hB : ‖B‖ ≤ 1)
     (h2 : ‖(2 : K)‖ = 1) (hD : ‖4 * A ^ 3 + 27 * B ^ 2‖ = 1) (hN : Odd N)
@@ -208,9 +202,9 @@ private lemma norm_y_eq_one_of_nsmul_eq_zero [DecidableEq K] {A B : K} {N : ℕ}
 open WeierstrassCurve WeierstrassCurve.Affine in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
 /- English proof (translation)
-Establish `hsum` using `Point.add_of_X_ne (h₁ := h₁) (h₂ := h₂) hx`. Establish `h3` using `hT _ _ _ (by rw [← hsum, smul_add, hP, hQ, add_zero])`. Rewrite `h3` using `[short_addX_eq, slope_of_X_ne hx]`. Establish `hl : ‖(y₁ - y₂) / (x₁ - x₂)‖ ≤ 1` using `norm_le_one_of_norm_sq_sub_le_one (s := x₁ + x₂) (by rw [← sub_sub]; exact h3) (norm_add_le_one_of_le_one (hT _ _ h₁ hP) (hT _ _ h₂ hQ))`. Establish `hne : x₁ - x₂ ≠ 0` using `sub_ne_zero.mpr hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: y₁ - y₂ = (y₁ - y₂) / (x₁ - x₂) * (x₁ - x₂)` using `by field_simp`. Rewrite using `[this, norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) hl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma norm_sub_y_le_norm_sub_x_of_torsion [DecidableEq K] {A B : K} {N : ℕ}
     (hT : ∀ (x y : K) (h : (⟨0, 0, 0, A, B⟩ : WeierstrassCurve K).toAffine.Nonsingular x y),
@@ -235,13 +229,13 @@ open WeierstrassCurve WeierstrassCurve.Affine in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
 
 /- English proof (translation)
-Introduce `K _ _ _ A B N hA hB h2 hD hN hT x y h hP`. Establish `hy1` using `norm_y_eq_one_of_nsmul_eq_zero hA hB h2 hD hN hT h hP`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← short_equation_of_nonsingular h, norm_pow, hy1, one_pow]`. Introduce `x' y' h' hP' hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxx : ‖x - x'‖ ≤ 1` using `norm_sub_le_one_of_le_one (hT _ _ h hP) (hT _ _ h' hP')`. Use `le_antisymm hxx (not_lt.mp fun hlt => ?_)` and prove the remaining obligations. Establish `hsub` using `norm_sub_y_le_norm_sub_x_of_torsion hT h h' hP hP' hx`. Establish `hnegP : N • Point.some x' _ (((⟨0, 0, 0, A, B⟩ : WeierstrassCurve K).toAffine.nonsingular_neg x' y').mpr h') = 0`. Rewrite using `[← Point.neg_some h', smul_neg, hP', neg_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hadd` using `norm_sub_y_le_norm_sub_x_of_torsion hT h _ hP hnegP hx`. Rewrite `hadd` using `[short_negY_eq, sub_neg_eq_add]`. Establish `h2y : ‖2 * y‖ < 1`. Establish `: 2 * y = (y - y') + (y + y')` using `by ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt (hsub.trans_lt hlt) (hadd.trans_lt hlt))`. Rewrite `h2y` using `[norm_mul, h2, hy1, one_mul]`. Conclude with `lt_irrefl _ h2y`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.torsion_points_distinct_mod_maximal_ideal : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [DecidableEq K] (A B : K) (N : ℕ), ‖A‖ ≤ 1 → ‖B‖ ≤ 1 → ‖(2 : K)‖ = 1 → ‖4 * A ^ 3 + 27 * B ^ 2‖ = 1 → Odd N → (∀ (x y : K) (h : (⟨0, 0, 0, A, B⟩ : WeierstrassCurve K).toAffine.Nonsingular x y), N • (WeierstrassCurve.Affine.Point.some x y h) = 0 → ‖x‖ ≤ 1) → ∀ (x y : K) (h : (⟨0, 0, 0, A, B⟩ : WeierstrassCurve K).toAffine.Nonsingular x y), N • (WeierstrassCurve.Affine.Point.some x y h) = 0 → ‖x ^ 3 + A * x + B‖ = 1 ∧ ∀ (x' y' : K) (h' : (⟨0, 0, 0, A, B⟩ : WeierstrassCurve K).toAffine.Nonsingular x' y'), N • (WeierstrassCurve.Affine.Point.some x' y' h') = 0 → x ≠ x' → ‖x - x'‖ = 1 := by
   intro K _ _ _ A B N hA hB h2 hD hN hT x y h hP

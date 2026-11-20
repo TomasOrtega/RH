@@ -22,9 +22,9 @@ section Gam
 variable (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Establish `e` using `PowerSeries.eq_X_mul_shift_add_const f`. Establish `hC : ∀ r : O, W.φ₀ (C r) = C r` using `fun r => by`. Use `W.φ₀.commutes r` as an intermediate fact. Rewrite `this` using `[show (algebraMap O (PowerSeries O) r) = C r from rfl]`. Then use the resulting hypothesis. Use `conv_lhs => rw [e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_mul, W.φ₀_X, hC]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cc_φ₀ (f : PowerSeries O) : constantCoeff (W.φ₀ f) = constantCoeff f := by
   have e := PowerSeries.eq_X_mul_shift_add_const f
@@ -36,15 +36,13 @@ theorem cc_φ₀ (f : PowerSeries O) : constantCoeff (W.φ₀ f) = constantCoeff
   simp
 
 /- English proof (translation)
-Take `⟨V, hV⟩` from `PowerSeries.X_dvd_iff.mpr (W.γ₀_X g).1`. Establish `hcV : constantCoeff V = (W.χΓ g : O)`. Use `(W.γ₀_X g).2` as an intermediate fact. Rewrite `this` using `[hV, PowerSeries.coeff_succ_X_mul, coeff_zero_eq_constantCoeff_apply]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hVu : IsUnit V`. Rewrite using `[PowerSeries.isUnit_iff_constantCoeff, hcV]`. Conclude with `Units.isUnit _`. Establish `hφVu : IsUnit (W.φ₀ V)`. Rewrite using `[PowerSeries.isUnit_iff_constantCoeff, cc_φ₀, hcV]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Units.isUnit _`. Establish `key : W.q₀ * W.φ₀ V = V * W.γ₀ g W.q₀`. Establish `h` using `W.γ₀_comm g PowerSeries.X`. Rewrite `h` using `[hV, map_mul, W.φ₀_X, map_mul, hV]`. Establish `h2 : PowerSeries.X * (W.q₀ * W.φ₀ V) = PowerSeries.X * (V * W.γ₀ g W.q₀)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mul_assoc, ← mul_assoc]`. Conclude with `h`. Conclude with `mul_left_cancel₀ PowerSeries.X_ne_zero h2`. Take `⟨Vu, hVu'⟩` from `hVu`. Use `⟨fun _ => W.φ₀ V * ((Vu⁻¹ : (PowerSeries O)ˣ) : PowerSeries O), ?_, ?_⟩` and prove the remaining obligations.
-
-Use function extensionality and compare the values at `i show W.γ₀ g W.q₀ = W.q₀ * (W.φ₀ V * ((Vu⁻¹ : (PowerSeries O)ˣ) : PowerSeries O))`. Rewrite using `[← mul_assoc, key, ← hVu', mul_comm (Vu : PowerSeries O), mul_assoc, Units.mul_inv, mul_one]`. Use `Pi.isUnit_iff.2 fun _ => hφVu.mul (Units.isUnit _)` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gam_q [IsDomain O] (g : W.Gam) :
     ∃ v : LetA O n, W.γA g W.q = W.q * v ∧ IsUnit v := by
@@ -75,7 +73,7 @@ end Gam
 section ArithmeticCylinders
 
 /- English proof (translation)
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, ← coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_rescale, pow_zero, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_rescale {LL' : Type} [Field LL'] (χ : LL') (u : PowerSeries LL') :
     constantCoeff (PowerSeries.rescale χ u) = constantCoeff u := by
@@ -85,37 +83,35 @@ theorem cc_rescale {LL' : Type} [Field LL'] (χ : LL') (u : PowerSeries LL') :
 variable (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
 /- English proof (translation)
-Establish `hQ : W.Q = W.q` using `Q_eq_q W hs`. Use `set x : ↥(W.N T) := ⟨W.Q ^ K • w, hwN⟩ with hxdef`. Take `⟨m₀, hm₀⟩` from `W.levN_supp T c ζ x`. Take `⟨d, hdLB, hde⟩` from `div_exists (m := m₀) hm₀ u hu0 K`. Use `⟨d, ⟨_, hdLB⟩, hde.symm, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨vv, hvv, hvu⟩` from `gam_q W W.gam`. Take `⟨vU, hvU⟩` from `hvu`. Use `set v' : LetA O n := ((vU⁻¹ : (LetA O n)ˣ) : LetA O n)`. Establish `hlv : W.lev c ζ vv = PowerSeries.C χ * PowerSeries.rescale χ u * u⁻¹`. Establish `h1` using `hγA W.q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hvv, map_mul, hu, map_mul, PowerSeries.rescale_X]`. Establish `h2 : X * (u * W.lev c ζ vv) = X * (PowerSeries.C χ * PowerSeries.rescale χ u)`. Rewrite using `[← mul_assoc, h1]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `mul_left_cancel₀ PowerSeries.X_ne_zero h2`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h3, mul_comm u, mul_assoc, PowerSeries.mul_inv_cancel _ hu0, mul_one]`. Establish `hv'vv : v' * vv = 1` using `by rw [← hvU]; exact Units.inv_mul vU`. Establish `hlv' : W.lev c ζ v' = PowerSeries.C χ⁻¹ * u * (PowerSeries.rescale χ u)⁻¹`. Establish `hr0 : constantCoeff (PowerSeries.rescale χ u) ≠ 0`. Rewrite using `[cc_rescale]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu0`. Establish `h1 : W.lev c ζ vv * W.lev c ζ v' = 1`. Rewrite using `[← map_mul, mul_comm, hv'vv, map_one]`. Rewrite `h1` using `[hlv]`. Establish `hAA : (PowerSeries.C χ⁻¹ * u * (PowerSeries.rescale χ u)⁻¹) * (PowerSeries.C χ * PowerSeries.rescale χ u * u⁻¹) = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul, inv_mul_cancel₀ hχ0, map_one, PowerSeries.mul_inv_cancel _ hu0, PowerSeries.inv_mul_cancel _ hr0]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Establish `hγx : W.γ T (W.Q ^ K • w) ∈ W.N T` using `W.N_Γ T W.gam _ hwN`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hγw' : W.Q ^ K • W.γ T w = v' ^ K • W.γ T (W.Q ^ K • w)`. Establish `e1 : W.γ T (W.Q ^ K • w) = W.γA W.gam (W.Q ^ K) • W.γ T w` using `Formalism.MainNotions.UnusedSlot80.SatW.γD_smulA' W T W.gam _ w`. Rewrite using `[e1, map_pow, hQ, hvv, smul_smul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hQγN : W.Q ^ K • W.γ T w ∈ W.N T`. Rewrite using `[hγw']`. Conclude with `(W.N T).smul_mem _ hγx`. Establish `hlevγ : W.levN T c ζ ⟨W.Q ^ K • W.γ T w, hQγN⟩ = smulS ((X * u) ^ K) (resc χ d)`. Establish `e2 : (⟨W.Q ^ K • W.γ T w, hQγN⟩ : ↥(W.N T)) = v' ^ K • ⟨W.γ T (W.Q ^ K • w), hγx⟩` using `Subtype.ext hγw'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hLBγ : LB m₀ (W.levN T c ζ ⟨W.γ T (W.Q ^ K • w), hγx⟩)` using `fun k hk => by`. Rewrite using `[hγN _ hwN hγx k, hm₀ k hk, smul_zero]`. Rewrite using `[e2]`. Establish `e3 : W.levN T c ζ (v' ^ K • ⟨W.γ T (W.Q ^ K • w), hγx⟩) = smulS (W.lev c ζ (v' ^ K)) (W.levN T c ζ ⟨W.γ T (W.Q ^ K • w), hγx⟩)`. Use function extensionality and compare the values at `fun k => W.levN_smul T c ζ _ _ k`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e4 : W.levN T c ζ ⟨W.γ T (W.Q ^ K • w), hγx⟩ = resc χ (W.levN T c ζ x)`. Use function extensionality and compare the values at `fun k => hγN _ hwN hγx k`. Rewrite using `[e3, e4, ← hde, ← smulS_rescale hdLB χ hχ0, ← smulS_mul (LB_resc hdLB χ), map_pow, hlv']`. Use `congr 1`. Rewrite using `[map_pow, map_mul, PowerSeries.rescale_X, ← mul_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Establish `hr0 : constantCoeff (PowerSeries.rescale χ u) ≠ 0`. Rewrite using `[cc_rescale]`. Conclude with `hu0`. Establish `hC : PowerSeries.C χ⁻¹ * PowerSeries.C χ = (1 : PowerSeries LL)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, inv_mul_cancel₀ hχ0, map_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hdiffN : W.Q ^ K • (W.γ T w - w) ∈ W.N T` using `(W.N T).smul_mem _ hγw`. Establish `hg : W.levN T c ζ ⟨W.Q ^ K • (W.γ T w - w), hdiffN⟩ = smulS ((X * u) ^ K) (W.levN T c ζ ⟨W.γ T w - w, hγw⟩)`. Establish `e5 : (⟨W.Q ^ K • (W.γ T w - w), hdiffN⟩ : ↥(W.N T)) = W.Q ^ K • ⟨W.γ T w - w, hγw⟩` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[e5]`. Use `funext fun k => W.levN_smul T c ζ (W.Q ^ K) ⟨W.γ T w - w, hγw⟩ k` as an intermediate fact. Rewrite using `[this, map_pow, hQ, hu]`. Both sides reduce to the same expression. Establish `hsplit : (⟨W.Q ^ K • (W.γ T w - w), hdiffN⟩ : ↥(W.N T)) = ⟨W.Q ^ K • W.γ T w, hQγN⟩ - x` using `Subtype.ext (by simp [hxdef, smul_sub])`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hg` using `[hsplit, map_sub, hlevγ]`. Take `⟨m₁, hm₁⟩` from `W.levN_supp T c ζ ⟨W.γ T w - w, hγw⟩`. Establish `hLBr` using `LB_resc hdLB χ`. Establish `heq : resc χ d - d = W.levN T c ζ ⟨W.γ T w - w, hγw⟩`. Establish `hx' : W.levN T c ζ x = smulS ((X * u) ^ K) d` using `hde.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hg` using `[hx', ← smulS_sub hLBr hdLB]`. Conclude with `div_unique (m := min (m₀ - K) m₁) (LB_mono (LB_sub hLBr hdLB) (min_le_left _ _)) (LB_mono hm₁ (min_le_right _ _)) u hu0 K hg`. Introduce `i`. Establish `h` using `hLv ⟨W.γ T w - w, hγw⟩ i`. Rewrite `h` using `[← heq]`.
-
-Simplify `h` using `[resc, sub_smul]`.
+A detailed English derivation is pending.
 -/
 theorem gamma_levels_expansion [IsDomain O] (hs : W.s = 1) (c : ZMod n) (ζ : LL)
     (hLv : ∀ (x : ↥(W.N T)) (k : ℤ), W.levN T c ζ x k ∈ Formalism.MainNotions.WachCoordinates.FilLev W T c 0 (-k))

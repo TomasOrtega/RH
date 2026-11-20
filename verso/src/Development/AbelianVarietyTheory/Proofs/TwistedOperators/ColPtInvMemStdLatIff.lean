@@ -19,11 +19,11 @@ namespace GlobalTheory.LastColLat
 variable {D : D7}
 
 /- English proof (translation)
-Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem u hu`. Take `⟨α, hα, -, a, ha, s, hs, t, ht, rfl⟩` from `hu`. Establish `e` using `GlobalTheory.AdelicLatMove.rankOne_pure S T a s t 1 α`. Rewrite `e` using `[mul_one]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← e, GlobalTheory.AdelicLatMove.actO_rankOne]`. Use `GlobalTheory.AdelicLatMove.rankOne_mem_latO S T LS LT a ha _ ?_ _ ((hh _).1 (GlobalTheory.AdelicLatMove.pure_mem_hatL LT α hα t ht))` and prove the remaining obligations. Rewrite using `[GlobalTheory.AdelicLatMove.mt_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`. Conclude with `GlobalTheory.AdelicLatMove.pure_mem_hatL LS 1 (one_mem _) s hs`. Consider the case `zero => simp only [actO, Matrix.mul_zero, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => simp only [actO, Matrix.mul_add, Matrix.add_mul] at hy hz ⊢`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => simp only [actO, Matrix.mul_neg, Matrix.neg_mul] at hy ⊢`. Conclude with `neg_mem hy`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem actO_one_mem_latO (S T : HSp D) (LS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E))
     (LT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (h : GA D T)
@@ -45,9 +45,9 @@ theorem actO_one_mem_latO (S T : HSp D) (LS : Submodule (𝓞 D.host.E) (Fin S.r
   | neg y _ hy => simp only [actO, Matrix.mul_neg, Matrix.neg_mul] at hy ⊢; exact neg_mem hy
 
 /- English proof (translation)
-Establish `hh' : Lev.finE T h⁻¹ ∈ Formalism.UG.stabGL (Formalism.L2.Herm.hatL (F` using `D.host.F) LT) := by`. Rewrite using `[map_inv]`. Conclude with `inv_mem hh`. Prove the components needed by the constructor for the conclusion. Introduce `hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `actO_one_mem_latO S T LS LT h hh _ hu` as an intermediate fact. Rewrite `this` using `[GlobalTheory.AdelicLatMove.actO_actO_inv]`. Then use the resulting hypothesis. Introduce `hu`. Rewrite using `[inv_one]`. Conclude with `actO_one_mem_latO S T LS LT h⁻¹ hh' u hu`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actO_inv_mem_latO_iff (S T : HSp D) (LS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E))
     (LT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (h : GA D T)
@@ -73,7 +73,7 @@ open Matrix
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finiteEmbedding_mem_stabilizer_auxiliaryLattice d Λ y hy`.
+A detailed English derivation is pending.
 -/
 theorem finEmb_stab {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData A B c ε)
     (Λ : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E)) (y : GfC A)
@@ -82,7 +82,7 @@ theorem finEmb_stab {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthog
   GlobalTheory.T.finiteEmbedding_mem_stabilizer_auxiliaryLattice d Λ y hy
 
 /- English proof (translation)
-Introduce `n hn h k hk`. Take `⟨i, rfl⟩ : ∃ i, n = i + 1` from `⟨n - 1, by omega⟩`. Establish `hmem : finG (G.V (.grid (i + 1) D.R.m)) k ∈ S.levRow t (i + 1) h ⊓ UA D.sp.cm (G.V (.grid (i + 1) D.R.m)).gram` using `Subgroup.mem_inf.2 ⟨hk, GlobalTheory.LevSplit.finE_mem_UA _ _⟩`. Rewrite `hmem` using `[GlobalTheory.FunObj.GridChoice.levRow_succ_inf_UA W S t i h, GridData.levMax, congLev_top]`. Conclude with `(Subgroup.mem_inf.1 hmem).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levRow_stab (S : GridChoice W U) (t : T) :
     ∀ n (hn : 1 ≤ n) (h : n ≤ D.R.m) (k : FinPt G (.grid n D.R.m)), finG (G.V (.grid n D.R.m)) k ∈ S.levRow t n h →
@@ -96,9 +96,9 @@ theorem levRow_stab (S : GridChoice W U) (t : T) :
   exact (Subgroup.mem_inf.1 hmem).2
 
 /- English proof (translation)
-Introduce `v`. Establish `hu` using `N.u_lat X hX`. Establish `e : ((Lev.finE (G.V X) ((N.u X)⁻¹ * g * N.u X).1 : GL _ _) : Matrix _ _ _) *ᵥ v = ((Lev.finE (G.V X) (N.u X).1)⁻¹ : GL _ _).1 *ᵥ ((Lev.finE (G.V X) g.1).1 *ᵥ ((Lev.finE (G.V X) (N.u X).1).1 *ᵥ v))`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_mul, map_inv, Units.val_mul, Units.val_mul, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Rewrite using `[e, hu, hu, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hg _`.
+A detailed English derivation is pending.
 -/
 theorem conj_stab (N : Std G U) {X : Node} (hX : DefNode D.R.m X) (g : FinPt G X)
     (hg : Lev.finE (G.V X) g.1 ∈ Formalism.UG.stabGL (Formalism.L2.Herm.hatL (F := D.host.F) (G.Λ X))) :
@@ -114,7 +114,7 @@ theorem conj_stab (N : Std G U) {X : Node} (hX : DefNode D.R.m X) (g : FinPt G X
   exact hg _
 
 /- English proof (translation)
-Establish `key : ∀ n (e : D.R.m = n) (g : FinPt G (.top D.R.m)), Lev.finE (G.V (.top D.R.m)) g.1 ∈ Formalism.UG.stabGL (Formalism.L2.Herm.hatL (F` using `D.host.F) (colLat (N.fr (.top D.R.m)))) → Lev.finE (G.V (.top n)) (e ▸ g : FinPt G (.top n)).1 ∈ Formalism.UG.stabGL (Formalism.L2.Herm.hatL (F := D.host.F) (colLat (N.fr (.top n)))) := by`. Introduce `n e g hg`. Substitute `e` using the available equality. Conclude with `hg`. Conclude with `key _ (lastIx_succ D) g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem topLast_stab (N : Std G U) (g : FinPt G (.top D.R.m))
     (hg : Lev.finE (G.V (.top D.R.m)) g.1 ∈
@@ -131,9 +131,9 @@ theorem topLast_stab (N : Std G U) (g : FinPt G (.top D.R.m))
   exact key _ (lastIx_succ D) g hg
 
 /- English proof (translation)
-Introduce `D T L sc G W U S t _ k hk x`. Establish `hm : 1 ≤ D.R.m` using `by have := D.R.two_le_m; omega`. Establish `h1` using `levRow_stab S t D.R.m hm le_rfl k hk`. Establish `e : G.Λ (.top D.R.m) = G.sp.topDec.lat (G.Λ (.grid D.R.m D.R.m)) (fun _ => 1)` using `G.sp.topLat`. Establish `h2 : Lev.finE (G.V (.top D.R.m)) (finEmb G.sp.topDec k).1 ∈ Formalism.UG.stabGL (Formalism.L2.Herm.hatL (F` using `D.host.F) (G.Λ (.top D.R.m))) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `finEmb_stab G.sp.topDec _ k h1`. Establish `h3` using `conj_stab S.N (X := .top D.R.m) (by simp [DefNode]) _ h2`. Establish `h4` using `topLast_stab S.N _ h3`. Conclude with `actO_inv_mem_latO_iff _ _ _ _ _ h4 x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem colPt_inv_mem_stdLat_iff : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {t : T}, t ∈ U → ∀ k : FinPt G (.grid D.R.m D.R.m),
     finG (G.V (.grid D.R.m D.R.m)) k ∈ S.levRow t D.R.m le_rfl →

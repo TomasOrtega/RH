@@ -5,7 +5,7 @@ open scoped TensorProduct
 namespace GlobalTheory.EtaleFibre
 
 /- English proof (translation)
-Establish `h` using `Module.rankAtStalk_baseChange (R := A) (M := M) (S := L) (⊥ : PrimeSpectrum L)`. Rewrite `h` using `[Module.rankAtStalk_eq_finrank_of_free, Module.rankAtStalk_eq, Ideal.finrank_fiber_eq_finrank]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_baseChange_field (A M L : Type*) [CommRing A] [IsDomain A] [AddCommGroup M]
     [Module A M] [Module.Finite A M] [Module.Flat A M] [Field L] [Algebra A L] :
@@ -16,7 +16,7 @@ theorem finrank_baseChange_field (A M L : Type*) [CommRing A] [IsDomain A] [AddC
   exact h
 
 /- English proof (translation)
-Establish `: IsArtinianRing (L ⊗[A] B)` using `.of_finite L _`. Use `Fintype.ofFinite (PrimeSpectrum (L ⊗[A] B))` as an intermediate fact. Establish `e : (B →ₐ[A] L) ≃ PrimeSpectrum (L ⊗[A] B)` using `(AlgHom.liftEquiv A L B L).trans (Algebra.IsFiniteSplit.algHomEquivPrimeSpectrum L (L ⊗[A] B))`. Use `⟨Finite.of_equiv _ e.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.card_congr e, ← finrank_baseChange_field A B L, (Algebra.FormallyEtale.equivPiOfIsSepClosed L (L ⊗[A] B)).toLinearEquiv.finrank_eq, Module.finrank_fintype_fun_eq_card, Nat.card_eq_fintype_card]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_algHom (A B L : Type*) [CommRing A] [IsDomain A] [CommRing B] [Algebra A B]
     [Module.Finite A B] [Algebra.Etale A B] [Field L] [IsSepClosed L] [Algebra A L] :
@@ -32,9 +32,9 @@ theorem card_algHom (A B L : Type*) [CommRing A] [IsDomain A] [CommRing B] [Alge
     Module.finrank_fintype_fun_eq_card, Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-Introduce `A B _ _ _ f hf he φ`. Use `letI := f.toAlgebra`. Use `letI := φ.toAlgebra`. Use `haveI : Module.Finite A B := hf`. Use `haveI : Algebra.Etale A B := he`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨hfin, hcard⟩` from `card_algHom A B ℂ`. Set `e : {ψ : B →+* ℂ | ψ.comp f = φ} ≃ (B →ₐ[A] ℂ)` to `{ toFun := fun ψ => { ψ.1 with commutes' := fun a => RingHom.congr_fun ψ.2 a } invFun := fun ψ => ⟨ψ.toRingHom, RingHom.ext fun a => ψ.commutes a⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Establish `hs : {ψ : B →+* ℂ | ψ.comp f = φ}.Finite` using `Finite.of_equiv _ e.symm`. Rewrite using `[← hs.cast_ncard_eq, ← Nat.card_coe_set_eq, Nat.card_congr e, hcard]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem encard_points_eq_finrank : ∀ (A B : Type) [CommRing A] [IsDomain A] [CommRing B] (f : A →+* B), f.Finite → f.Etale → ∀ φ : A →+* ℂ, {ψ : B →+* ℂ | ψ.comp f = φ}.encard = (letI := f.toAlgebra; Module.finrank A B : ℕ) := by
   intro A B _ _ _ f hf he φ

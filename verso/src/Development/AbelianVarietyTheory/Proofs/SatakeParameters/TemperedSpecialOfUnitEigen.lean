@@ -27,11 +27,11 @@ theorem vecShift_apply {n : ℕ} (v : Fin n → V) (i : Fin n) :
     vecShift n v i = if 1 ≤ (i : ℕ) then v ⟨i - 1, by omega⟩ else 0 := rfl
 
 /- English proof (translation)
-Proceed by induction on `k generalizing i with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ', End.mul_apply, vecShift_apply]`. Distinguish the cases in `h1 : 1 ≤ (i : ℕ)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h1, ih]`. Distinguish the cases in `h2 : k + 1 ≤ (i : ℕ)`. Rewrite using `[if_pos h2, if_pos (by simp only; omega)]`. Use `congr 2`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h2, if_neg (by simp only; omega)]`. Rewrite using `[if_neg h1, if_neg (by omega)]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem vecShift_pow_apply {n : ℕ} (k : ℕ) (v : Fin n → V) (i : Fin n) :
     (vecShift n ^ k) v i = if k ≤ (i : ℕ) then v ⟨i - k, by omega⟩ else 0 := by
@@ -60,21 +60,21 @@ theorem scaledDiag_apply {n : ℕ} (f : End ℂ V) (c : Fin n → ℂ) (v : Fin 
     scaledDiag f c v i = c i • f (v i) := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv i hi`. Establish `hle : absSpace (scaledDiag f c) r ≤ LinearMap.ker (LinearMap.proj i : (Fin n → V) →ₗ[ℂ] V)`. Use `iSup₂_le fun α hα u hu => ?_` and prove the remaining obligations. Establish `h1` using `congrFun (End.mem_eigenspace_iff.mp hu) i`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [scaledDiag_apply, Pi.smul_apply] at h1`. Establish `h2 : u i ∈ absSpace f ‖α / c i‖`. Use `Submodule.mem_iSup_of_mem (α / c i) (Submodule.mem_iSup_of_mem rfl ?_)` and prove the remaining obligations. Rewrite using `[End.mem_eigenspace_iff]`. Establish `: f (u i) = (c i)⁻¹ • (α • u i)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h1, smul_smul, inv_mul_cancel₀ (hc i), one_smul]`. Rewrite using `[this, smul_smul, div_eq_inv_mul]`. Establish `h3 : ‖α / c i‖ ≠ 1`. Rewrite using `[norm_div, Ne, div_eq_one_iff_eq (norm_ne_zero_iff.mpr (hc i)), hα]`. Conclude with `fun h => hi h.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite `h2` using `[absSpace_eq_bot_of_norm_charpoly_roots hf h3, Submodule.mem_bot]`. Simplify using `[h2]`. Simplify using `using hle hv`. Introduce `hv`. Rewrite using `[← Finset.univ_sum_single v]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : ‖c i‖ = r`. Establish `hvi : v i ∈ absSpace f 1`. Rewrite using `[absSpace_one_eq_top_of_norm_charpoly_roots hs hf]`. Discharge the goal by the elementary cases of `trivial`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Establish `hle : (absSpace f 1).map (LinearMap.single ℂ (fun _ : Fin n => V) i) ≤ absSpace (scaledDiag f c) r`. Simplify using `only [absSpace, Submodule.map_iSup]`. Use `iSup₂_le fun β hβ => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `Submodule.mem_iSup_of_mem (c i * β) (Submodule.mem_iSup_of_mem (by rw [norm_mul, hβ, mul_one, hi]) ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hx` using `[SetLike.mem_coe, End.mem_eigenspace_iff]`. Rewrite using `[End.mem_eigenspace_iff]`. Use extensionality with `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[scaledDiag_apply, hx, smul_smul]`. Simplify using `[scaledDiag_apply, hj]`. Conclude with `hle ⟨v i, hvi, by simp⟩`. Simplify using `[hv i hi]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_absSpace_scaledDiag [FiniteDimensional ℂ V] {f : End ℂ V} (hs : f.IsSemisimple)
     (hf : ∀ α ∈ f.charpoly.roots, ‖α‖ = 1) {n : ℕ} (c : Fin n → ℂ) (hc : ∀ i, c i ≠ 0) (r : ℝ)
@@ -122,27 +122,23 @@ theorem mem_absSpace_scaledDiag [FiniteDimensional ℂ V] {f : End ℂ V} (hs : 
     · simp [hv i hi]
 
 /- English proof (translation)
-Establish `hc0 : ∀ i, c i ≠ 0` using `fun i h0 => by`. Use `hc i` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `(Real.rpow_pos_of_pos (zero_lt_one.trans hq) _).ne this`. Establish `hmem : ∀ (j : ℤ) (v : Fin n → V), v ∈ absSpace (scaledDiag f c) (q ^ ((j : ℝ) / 2)) ↔ ∀ i : Fin n, 2 * ((i : ℕ) : ℤ) + 1 - n ≠ j → v i = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j v`. Rewrite using `[mem_absSpace_scaledDiag hs hf c hc0]`. Use `forall_congr' fun i => imp_congr_left (not_congr ?_)` and prove the remaining obligations. Rewrite using `[hc, Real.rpow_right_inj (zero_lt_one.trans hq) hq.ne', ← @Int.cast_inj ℝ]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> intro h <;> linarith`. Use `⟨eq_top_iff.mpr fun v _ => ?_, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.univ_sum_single v]`. Use `Submodule.sum_mem _ fun i _ => Submodule.mem_iSup_of_mem (2 * ((i : ℕ) : ℤ) + 1 - n) ((hmem _ _).mpr fun j hj => ?_)` and prove the remaining obligations. Rewrite using `[Pi.single_eq_of_ne]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `hj rfl`. Establish `e1 : (-(k : ℝ) / 2) = ((-(k : ℤ) : ℤ) : ℝ) / 2` using `by push_cast; ring`. Establish `e2 : ((k : ℝ) / 2) = (((k : ℤ) : ℤ) : ℝ) / 2` using `by push_cast; ring`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨fun v hv => ?_, fun v hv v' hv' hvv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite `hv`, the goal using `[SetLike.mem_coe, hmem]`. Introduce `i hi`. Rewrite using `[vecShift_pow_apply]`. Use `split_ifs with hk`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `hv _ (by simp only; omega)`. Both sides reduce to the same expression. Rewrite `hv`, `hv'`, `ext1`, `i` using `[SetLike.mem_coe, hmem]`. Distinguish the cases in `hi : 2 * ((i : ℕ) : ℤ) + 1 - n = -(k : ℤ)`. Use `congrFun hvv ⟨i + k, by omega⟩` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[vecShift_pow_apply, vecShift_pow_apply, if_pos (by simp), if_pos (by simp)]`. Simplify using `using this`. Rewrite using `[hv i hi, hv' i hi]`. Rewrite `hv` using `[SetLike.mem_coe, hmem]`. Use `⟨fun i => if hi : (i : ℕ) + k < n then v ⟨i + k, hi⟩ else 0, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, hmem]`. Introduce `i hi`. Use `split_ifs with hk`. Conclude with `hv _ (by simp only; omega)`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `ext1 i`. Rewrite using `[vecShift_pow_apply]`. Use `split_ifs with hk h2`. Use `congr 2`. Simplify using `only`.
-
-Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction. Apply `h2` to reduce the goal to its premises. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
-
-Conclude with `(hv i (by omega)).symm`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem isPurePair_scaledDiag_vecShift [FiniteDimensional ℂ V] {q : ℝ} (hq : 1 < q)
     {f : End ℂ V} (hs : f.IsSemisimple) (hf : ∀ α ∈ f.charpoly.roots, ‖α‖ = 1) {n : ℕ}
@@ -205,19 +201,19 @@ end VecShift
 end GlobalTheory.WeilDeligne
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h x`. Proceed by induction on `x using WD.ind with`. Consider the case `hP n a`. Introduce `hx heig l`. Establish `hN : a.N = 0` using `(WD.monodromyZero_ofWeilDeligneRepClass_iff a).mp hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[WD.lpSp, WD.lpChar_mk, WD.tempered_mk]`. Introduce `φ hφ`. Establish `hroots : ∀ α ∈ (a.ρ φ).charpoly.roots, ‖α‖ = 1` using `fun α hα => heig φ hφ α (by rw [WD.eig_mk]; exact hα)`. Establish `hq : (1 : ℝ) < ((normV w : ℕ) : ℝ)` using `by exact_mod_cast one_lt_normV w`. Establish `hp` using `isPurePair_scaledDiag_vecShift hq (a.semisimple φ) hroots (fun i => (WDRep.spEig w l i : ℂ)) (fun i => by rw [WDRep.spEig, norm_qPow])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `e` to `TensorProduct.piScalarRight ℂ ℂ (Fin n → ℂ) (Fin l)`. Establish `h1 : ∀ t, e ((a.tensor (WDRep.sp h l)).ρ φ t) = scaledDiag (a.ρ φ) (fun i => (WDRep.spEig w l i : ℂ)) (e t)`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul x y => ext1 i`. Simplify using `[e, TensorProduct.piScalarRightHom_tmul, scaledDiag_apply, hφ, smul_smul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `h2 : ∀ t, e ((a.tensor (WDRep.sp h l)).N t) = vecShift l (e t)`. Introduce `t`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => ext1 i`. Apply the tactic sequence `by_cases hi : 1 ≤ (i : ℕ) <;>`. Simplify using `[e, TensorProduct.piScalarRightHom_tmul, vecShift_apply, shiftEnd_apply, hN, hi]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Use `hp.of_equiv e.symm (fun v => ?_) (fun v => ?_)` and prove the remaining obligations. Take `⟨t, rfl⟩` from `e.surjective v`. Rewrite using `[← h1, e.symm_apply_apply, e.symm_apply_apply]`. Take `⟨t, rfl⟩` from `e.surjective v`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← h2, e.symm_apply_apply, e.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.WeilDeligne.WD.tempered_lpChar_lpSp_of_mono0 : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (x : WD h), x.mono0 → (∀ φ : Weil h, deg φ = 1 → ∀ α ∈ x.eig φ, ‖α‖ = 1) → ∀ l : ℕ, (x.lpChar (WD.lpSp h l)).tempered := by
   intro E Ω _ _ _ _ _ A w h x

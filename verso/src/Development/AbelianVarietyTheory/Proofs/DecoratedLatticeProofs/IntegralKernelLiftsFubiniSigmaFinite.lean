@@ -8,7 +8,7 @@ variable {X₁ X₂ Y : Type*} [MeasurableSpace X₁] [MeasurableSpace X₂] [Me
   {μ₁ : Measure X₁} {μ₂ : Measure X₂} {ν : Measure Y} [SigmaFinite μ₁] [SigmaFinite μ₂] [SigmaFinite ν]
 
 /- English proof (translation)
-Establish `h` using `ENNReal.lintegral_mul_le_Lp_mul_Lq ν Real.HolderConjugate.two_two h₁.aemeasurable h₂.aemeasurable`. Simplify `h` using `only [Pi.mul_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma lintegral_mul_le_sqrt (ν : Measure Y) {a₁ a₂ : Y → ℝ≥0∞} (h₁ : Measurable a₁) (h₂ : Measurable a₂) :
     ∫⁻ y, a₁ y * a₂ y ∂ν ≤
@@ -18,7 +18,7 @@ lemma lintegral_mul_le_sqrt (ν : Measure Y) {a₁ a₂ : Y → ℝ≥0∞} (h�
   simpa only [Pi.mul_apply] using h
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 lemma sqrt_le_of_sq_le {I N : ℝ≥0∞} (h : I ≤ N ^ 2) : I ^ (1 / (2:ℝ)) ≤ N := by
   calc I ^ (1 / (2:ℝ)) ≤ (N ^ 2) ^ (1 / (2:ℝ)) := ENNReal.rpow_le_rpow h (by norm_num)
@@ -26,7 +26,7 @@ lemma sqrt_le_of_sq_le {I N : ℝ≥0∞} (h : I ≤ N ^ 2) : I ^ (1 / (2:ℝ)) 
       rw [← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]; norm_num
 
 /- English proof (translation)
-Establish `m₁ : Measurable fun x => a₁ x y` using `ha₁.comp (measurable_id.prodMk measurable_const)`. Establish `m₂ : Measurable fun x => a₂ x y` using `ha₂.comp (measurable_id.prodMk measurable_const)`. Conclude with `(lintegral_prod_mul (f := fun x => a₁ x y) (g := fun x => a₂ x y) m₁.aemeasurable m₂.aemeasurable).symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma lintegral_prod_split {a₁ : X₁ → Y → ℝ≥0∞} {a₂ : X₂ → Y → ℝ≥0∞}
     (ha₁ : Measurable (Function.uncurry a₁)) (ha₂ : Measurable (Function.uncurry a₂)) (y : Y) :
@@ -37,17 +37,15 @@ lemma lintegral_prod_split {a₁ : X₁ → Y → ℝ≥0∞} {a₂ : X₂ → Y
     m₂.aemeasurable).symm
 
 /- English proof (translation)
-Establish `hA₁ : Measurable (Function.uncurry fun x y => a₁ x y * b₁ x)` using `ha₁.mul (hb₁.comp measurable_fst)`. Establish `hA₂ : Measurable (Function.uncurry fun x y => a₂ x y * b₂ x)` using `ha₂.mul (hb₂.comp measurable_fst)`. Use `set n₁ : X₁ → ℝ≥0∞ := fun x => (∫⁻ y, a₁ x y ^ (2:ℝ) ∂ν) ^ (1 / (2:ℝ)) with hn₁`. Use `set n₂ : X₂ → ℝ≥0∞ := fun x => (∫⁻ y, a₂ x y ^ (2:ℝ) ∂ν) ^ (1 / (2:ℝ)) with hn₂`. Establish `mn₁ : Measurable n₁` using `((ha₁.pow_const (2:ℝ)).lintegral_prod_right' (ν := ν)).pow_const _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mn₂ : Measurable n₂` using `((ha₂.pow_const (2:ℝ)).lintegral_prod_right' (ν := ν)).pow_const _`. Establish `nN₁ : ∀ x, n₁ x ≤ N₁ x` using `fun x => sqrt_le_of_sq_le (by simpa [ENNReal.rpow_two] using hN₁ x)`. Establish `nN₂ : ∀ x, n₂ x ≤ N₂ x` using `fun x => sqrt_le_of_sq_le (by simpa [ENNReal.rpow_two] using hN₂ x)`. Establish `hsplit` using `lintegral_prod_split (μ₁ := μ₁) (μ₂ := μ₂) hA₁ hA₂`. Simplify using `only [hsplit]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : Measurable (Function.uncurry fun (y : Y) (p : X₁ × X₂) => a₁ p.1 y * b₁ p.1 * (a₂ p.2 y * b₂ p.2))`. Establish `e₁ : Measurable fun z : Y × (X₁ × X₂) => a₁ z.2.1 z.1 * b₁ z.2.1` using `hA₁.comp ((measurable_fst.comp measurable_snd).prodMk measurable_fst)`. Establish `e₂ : Measurable fun z : Y × (X₁ × X₂) => a₂ z.2.2 z.1 * b₂ z.2.2` using `hA₂.comp ((measurable_snd.comp measurable_snd).prodMk measurable_fst)`. Conclude with `e₁.mul e₂`. Rewrite using `[lintegral_lintegral_swap hG.aemeasurable]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun p => ?_` and prove the remaining obligations. Establish `m₁ : Measurable fun y => a₁ p.1 y` using `ha₁.comp (measurable_const.prodMk measurable_id)`. Establish `m₂ : Measurable fun y => a₂ p.2 y` using `ha₂.comp (measurable_const.prodMk measurable_id)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (b₁ p.1 * b₂ p.2) * ∫⁻ y, a₁ p.1 y * a₂ p.2 y ∂ν := lintegral_const_mul _ (m₁.mul m₂)`. Use `_ ≤ (b₁ p.1 * b₂ p.2) * (n₁ p.1 * n₂ p.2) := by gcongr; exact lintegral_mul_le_sqrt ν m₁ m₂`.
-
-Use `_ = (n₁ p.1 * b₁ p.1) * (n₂ p.2 * b₂ p.2) := by ring`. Use `_ = (∫⁻ x, n₁ x * b₁ x ∂μ₁) * (∫⁻ x, n₂ x * b₂ x ∂μ₂) := lintegral_prod_mul (f := fun x => n₁ x * b₁ x) (g := fun x => n₂ x * b₂ x) (mn₁.mul hb₁).aemeasurable (mn₂.mul hb₂).aemeasurable`. Use `_ ≤ (∫⁻ x, N₁ x * b₁ x ∂μ₁) * (∫⁻ x, N₂ x * b₂ x ∂μ₂) := by gcongr with x x`. Conclude with `nN₁ x`. Conclude with `nN₂ x`.
+A detailed English derivation is pending.
 -/
 lemma core {a₁ : X₁ → Y → ℝ≥0∞} {a₂ : X₂ → Y → ℝ≥0∞} {b₁ : X₁ → ℝ≥0∞} {b₂ : X₂ → ℝ≥0∞}
     (ha₁ : Measurable (Function.uncurry a₁)) (ha₂ : Measurable (Function.uncurry a₂))
@@ -100,11 +98,11 @@ lemma core {a₁ : X₁ → Y → ℝ≥0∞} {a₂ : X₂ → Y → ℝ≥0∞}
           · exact nN₂ x
 
 /- English proof (translation)
-Establish `hF : Measurable fun q : Y × X₁ => k q.2 q.1 * u q.2` using `(hk.comp (measurable_snd.prodMk measurable_fst)).mul (hu.comp measurable_snd)`. Establish `hsm : StronglyMeasurable fun y => ∫ x, k x y * u x ∂μ₁` using `hF.stronglyMeasurable.integral_prod_right'`. Use `⟨hsm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num)]`. Use `ENNReal.rpow_lt_top_of_nonneg (by norm_num) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hA : Measurable (Function.uncurry fun x y => ‖k x y‖ₑ)` using `hk.enorm`. Establish `hb : Measurable fun x => ‖u x‖ₑ` using `hu.enorm`. Establish `hc` using `core (μ₁ := μ₁) (μ₂ := μ₁) (ν := ν) hA hA hb hb hN hN`. Use `ne_top_of_le_ne_top (ENNReal.mul_ne_top hfin hfin) (le_trans ?_ hc)` and prove the remaining obligations. Use `lintegral_mono fun y => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ‖∫ x, k x y * u x ∂μ₁‖ₑ ≤ ∫⁻ x, ‖k x y‖ₑ * ‖u x‖ₑ ∂μ₁`. Simplify `enorm_integral_le_lintegral_enorm (μ := μ₁) (fun x => k x y * u x)` using `only [enorm_mul]`. Simplify using `only [ENNReal.toReal_ofNat, ENNReal.rpow_two, pow_two]`. Conclude with `mul_le_mul' h1 h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma memLp_lift {k : X₁ → Y → ℂ} {u : X₁ → ℂ} (hk : Measurable (Function.uncurry k))
     (hu : Measurable u) {N : X₁ → ℝ≥0∞} (hN : ∀ x, ∫⁻ y, ‖k x y‖ₑ ^ 2 ∂ν ≤ N x ^ 2)
@@ -128,19 +126,19 @@ lemma memLp_lift {k : X₁ → Y → ℂ} {u : X₁ → ℂ} (hk : Measurable (F
   exact mul_le_mul' h1 h1
 
 /- English proof (translation)
-Introduce `X₁ X₂ Y _ _ _ μ₁ μ₂ ν _ _ _ k₁ k₂ u₁ u₂ hk₁ hk₂ hu₁ hu₂ N₁ N₂ hN₁ hN₂ hf₁ hf₂ _ _`. Use `⟨memLp_lift hk₁ hu₁ hN₁ hf₁, memLp_lift hk₂ hu₂ hN₂ hf₂, ?_⟩` and prove the remaining obligations. Use `set F : Y → X₁ × X₂ → ℂ := fun y p => k₁ p.1 y * u₁ p.1 * conj (k₂ p.2 y * u₂ p.2) with hFdef`. Establish `hFm : Measurable (Function.uncurry F)`. Establish `e₁ : Measurable fun z : Y × (X₁ × X₂) => k₁ z.2.1 z.1 * u₁ z.2.1` using `(hk₁.comp ((measurable_fst.comp measurable_snd).prodMk measurable_fst)).mul (hu₁.comp (measurable_fst.comp measurable_snd))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : Measurable fun z : Y × (X₁ × X₂) => k₂ z.2.2 z.1 * u₂ z.2.2` using `(hk₂.comp ((measurable_snd.comp measurable_snd).prodMk measurable_fst)).mul (hu₂.comp (measurable_snd.comp measurable_snd))`. Conclude with `e₁.mul (Complex.continuous_conj.measurable.comp e₂)`. Establish `hA₁ : Measurable (Function.uncurry fun x y => ‖k₁ x y‖ₑ)` using `hk₁.enorm`. Establish `hA₂ : Measurable (Function.uncurry fun x y => ‖k₂ x y‖ₑ)` using `hk₂.enorm`. Establish `hc` using `core (μ₁ := μ₁) (μ₂ := μ₂) (ν := ν) hA₁ hA₂ hu₁.enorm hu₂.enorm hN₁ hN₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hFi : Integrable (Function.uncurry F) (ν.prod (μ₁.prod μ₂))`. Use `⟨hFm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_enorm, lintegral_prod _ hFm.enorm.aemeasurable]`. Use `lt_of_le_of_lt (le_of_eq ?_) (lt_of_le_of_lt hc (ENNReal.mul_lt_top hf₁.lt_top hf₂.lt_top))` and prove the remaining obligations. Use `lintegral_congr fun y => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA₁' : Measurable (Function.uncurry fun x y => ‖k₁ x y‖ₑ * ‖u₁ x‖ₑ)` using `hA₁.mul (hu₁.enorm.comp measurable_fst)`. Establish `hA₂' : Measurable (Function.uncurry fun x y => ‖k₂ x y‖ₑ * ‖u₂ x‖ₑ)` using `hA₂.mul (hu₂.enorm.comp measurable_fst)`. Rewrite using `[lintegral_prod_split (μ₁ := μ₁) (μ₂ := μ₂) hA₁' hA₂' y]`. Use `lintegral_congr fun p => ?_` and prove the remaining obligations. Simplify using `only [Function.uncurry_apply_pair, hFdef, enorm_mul, RCLike.enorm_conj]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpt : ∀ y, (∫ x, k₁ x y * u₁ x ∂μ₁) * conj (∫ x, k₂ x y * u₂ x ∂μ₂) = ∫ p, F y p ∂μ₁.prod μ₂`. Introduce `y`. Rewrite using `[← integral_conj]`. Conclude with `(integral_prod_mul (fun x => k₁ x y * u₁ x) (fun x => conj (k₂ x y * u₂ x))).symm`. Repeatedly rewrite using `[hpt]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[integral_integral_swap hFi]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `only [hFdef]`. Establish `: ∀ y, k₁ p.1 y * u₁ p.1 * conj (k₂ p.2 y * u₂ p.2) = k₁ p.1 y * conj (k₂ p.2 y) * (u₁ p.1 * conj (u₂ p.2))`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities.
 
-Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[this]`. Rewrite using `[integral_mul_const]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem abstract_fubini_two_lifts : ∀ {X₁ X₂ Y : Type*} [MeasurableSpace X₁] [MeasurableSpace X₂] [MeasurableSpace Y]
     (μ₁ : Measure X₁) (μ₂ : Measure X₂) (ν : Measure Y) [SigmaFinite μ₁] [SigmaFinite μ₂] [SigmaFinite ν]

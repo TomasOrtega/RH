@@ -19,11 +19,11 @@ def succMinOf (N : V → ℝ) (S : Set V) (i : ℕ) : ℝ := sInf (succMinRadii 
 variable {K}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨b, hbT, hspan, hli⟩` from `exists_linearIndependent K T`. Rewrite `h` using `[← hspan, rank_span_set hli]`. Establish `h' : Cardinal.lift.{_} (Cardinal.mk (Fin i)) ≤ Cardinal.lift.{0} (Cardinal.mk b)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using h`. Take `⟨e⟩` from `Cardinal.lift_mk_le'.1 h'`. Conclude with `⟨fun j => (e j : V), hli.comp e e.injective, fun j => hbT (e j).2⟩`. Introduce and unpack `⟨v, hv, hT⟩`. Establish `: LinearIndependent K (fun j => (⟨v j, subset_span (hT j)⟩ : span K T))` using `LinearIndependent.of_comp (span K T).subtype hv`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `using this.cardinal_lift_le_rank`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem natCast_le_rank_span_iff {T : Set V} {i : ℕ} :
     (i : Cardinal) ≤ Module.rank K (span K T) ↔
@@ -44,7 +44,7 @@ theorem natCast_le_rank_span_iff {T : Set V} {i : ℕ} :
 variable {N N' : V → ℝ} {S S' : Set V} {i j : ℕ} {r : ℝ}
 
 /- English proof (translation)
-Simplify using `only [succMinRadii, Set.mem_setOf_eq, natCast_le_rank_span_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_succMinRadii_iff :
     r ∈ succMinRadii K N S i ↔
@@ -52,12 +52,12 @@ theorem mem_succMinRadii_iff :
   simp only [succMinRadii, Set.mem_setOf_eq, natCast_le_rank_span_iff]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun _ h => h.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem bddBelow_succMinRadii : BddBelow (succMinRadii K N S i) := ⟨0, fun _ h => h.1⟩
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[mem_succMinRadii_iff]`. Take `⟨h0, v, hv, hS⟩` from `h`. Conclude with `⟨h0.trans hr, v, hv, fun j => ⟨(hS j).1, (hS j).2.trans hr⟩⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem succMinRadii_upper {r' : ℝ} (h : r ∈ succMinRadii K N S i) (hr : r ≤ r') :
     r' ∈ succMinRadii K N S i := by
@@ -66,9 +66,9 @@ theorem succMinRadii_upper {r' : ℝ} (h : r ∈ succMinRadii K N S i) (hr : r �
   exact ⟨h0.trans hr, v, hv, fun j => ⟨(hS j).1, (hS j).2.trans hr⟩⟩
 
 /- English proof (translation)
-Rewrite using `[natCast_le_rank_span_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr⟩`. Take `⟨-, v, hv, hS⟩` from `mem_succMinRadii_iff.1 hr`. Conclude with `⟨v, hv, fun j => (hS j).1⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨v, hv, hS⟩`. Use `⟨∑ j, |N (v j)|, mem_succMinRadii_iff.2 ⟨Finset.sum_nonneg fun _ _ => abs_nonneg _, v, hv, fun j => ⟨hS j, ?_⟩⟩⟩` and prove the remaining obligations. Conclude with `(le_abs_self _).trans (Finset.single_le_sum (f := fun j => |N (v j)|) (fun _ _ => abs_nonneg _) (Finset.mem_univ j))`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem succMinRadii_nonempty_iff :
     (succMinRadii K N S i).Nonempty ↔ (i : Cardinal) ≤ Module.rank K (span K S) := by
@@ -84,24 +84,24 @@ theorem succMinRadii_nonempty_iff :
       (Finset.single_le_sum (f := fun j => |N (v j)|) (fun _ _ => abs_nonneg _) (Finset.mem_univ j))
 
 /- English proof (translation)
-The claim follows from `Real.sInf_nonneg fun _ h => h.1`.
+A detailed English derivation is pending.
 -/
 theorem succMinOf_nonneg : 0 ≤ succMinOf K N S i := Real.sInf_nonneg fun _ h => h.1
 
 /- English proof (translation)
-The claim follows from `le_antisymm (csInf_le bddBelow_succMinRadii ⟨le_rfl, by simp⟩) succMinOf_nonneg`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem succMinOf_zero : succMinOf K N S 0 = 0 :=
   le_antisymm (csInf_le bddBelow_succMinRadii ⟨le_rfl, by simp⟩) succMinOf_nonneg
 
 /- English proof (translation)
-The claim follows from `csInf_le bddBelow_succMinRadii h`.
+A detailed English derivation is pending.
 -/
 theorem succMinOf_le_of_mem (h : r ∈ succMinRadii K N S i) : succMinOf K N S i ≤ r :=
   csInf_le bddBelow_succMinRadii h
 
 /- English proof (translation)
-Take `⟨e⟩ : Nonempty (Fin i ↪ ι)` from `Function.Embedding.nonempty_of_card_le (by simpa using hi)`. Conclude with `succMinOf_le_of_mem (mem_succMinRadii_iff.2 ⟨hr, v ∘ e, hv.comp e e.injective, fun k => ⟨hS _, hN _⟩⟩)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem succMinOf_le_of_linearIndependent {ι : Type*} [Fintype ι] {v : ι → V}
     (hv : LinearIndependent K v) (hi : i ≤ Fintype.card ι) (hr : 0 ≤ r) (hS : ∀ k, v k ∈ S)
@@ -111,7 +111,7 @@ theorem succMinOf_le_of_linearIndependent {ι : Type*} [Fintype ι] {v : ι → 
     ⟨hr, v ∘ e, hv.comp e e.injective, fun k => ⟨hS _, hN _⟩⟩)
 
 /- English proof (translation)
-Take `⟨s, hs, hsr⟩` from `exists_lt_of_csInf_lt (succMinRadii_nonempty_iff.2 hi) h`. Conclude with `succMinRadii_upper hs hsr.le`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_succMinRadii_of_lt (hi : (i : Cardinal) ≤ Module.rank K (span K S))
     (h : succMinOf K N S i < r) : r ∈ succMinRadii K N S i := by
@@ -119,14 +119,14 @@ theorem mem_succMinRadii_of_lt (hi : (i : Cardinal) ≤ Module.rank K (span K S)
   exact succMinRadii_upper hs hsr.le
 
 /- English proof (translation)
-The claim follows from `le_csInf (succMinRadii_nonempty_iff.2 hi) h`.
+A detailed English derivation is pending.
 -/
 theorem le_succMinOf (hi : (i : Cardinal) ≤ Module.rank K (span K S)) {a : ℝ}
     (h : ∀ r ∈ succMinRadii K N S i, a ≤ r) : a ≤ succMinOf K N S i :=
   le_csInf (succMinRadii_nonempty_iff.2 hi) h
 
 /- English proof (translation)
-The claim follows from `le_succMinOf hj fun _ hr => succMinOf_le_of_mem ⟨hr.1, (Nat.cast_le.2 hij).trans hr.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem succMinOf_mono (hij : i ≤ j) (hj : (j : Cardinal) ≤ Module.rank K (span K S)) :
     succMinOf K N S i ≤ succMinOf K N S j :=
@@ -134,9 +134,9 @@ theorem succMinOf_mono (hij : i ≤ j) (hj : (j : Cardinal) ≤ Module.rank K (s
     ⟨hr.1, (Nat.cast_le.2 hij).trans hr.2⟩
 
 /- English proof (translation)
-Use extensionality with `r`. Simplify using `only [mem_succMinRadii_iff]`. Use `and_congr_right fun _ => ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨w, hw, hS⟩ choose v hvS hv using fun k => (hS k).1`. Use `⟨v, LinearIndependent.of_comp f (by convert hw using 1; ext k; exact hv k), fun k => ⟨hvS k, ?_⟩⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hM _ (hvS k), hv]`. Conclude with `(hS k).2`. Introduce and unpack `⟨v, hv, hS⟩`. Conclude with `⟨f ∘ v, hv.map' f (LinearMap.ker_eq_bot.2 hf), fun k => ⟨⟨_, (hS k).1, rfl⟩, (hM _ (hS k).1).trans_le (hS k).2⟩⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem succMinRadii_image {W : Type*} [AddCommGroup W] [Module K W] {M : W → ℝ}
     (f : V →ₗ[K] W) (hf : Function.Injective f) (hM : ∀ x ∈ S, M (f x) = N x) :
@@ -154,7 +154,7 @@ theorem succMinRadii_image {W : Type*} [AddCommGroup W] [Module K W] {M : W → 
       ⟨⟨_, (hS k).1, rfl⟩, (hM _ (hS k).1).trans_le (hS k).2⟩⟩
 
 /- English proof (translation)
-Rewrite using `[succMinOf, succMinRadii_image f hf hM, succMinOf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem succMinOf_image {W : Type*} [AddCommGroup W] [Module K W] {M : W → ℝ}
     (f : V →ₗ[K] W) (hf : Function.Injective f) (hM : ∀ x ∈ S, M (f x) = N x) :
@@ -162,7 +162,7 @@ theorem succMinOf_image {W : Type*} [AddCommGroup W] [Module K W] {M : W → ℝ
   rw [succMinOf, succMinRadii_image f hf hM, succMinOf]
 
 /- English proof (translation)
-Establish `: succMinRadii K (fun x => c * N x) S i = c • succMinRadii K N S i`. Use extensionality with `r`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem₀ hc.ne']`. Simplify using `only [mem_succMinRadii_iff, smul_eq_mul, le_inv_mul_iff₀ hc, mul_zero]`. Rewrite using `[succMinOf, this, Real.sInf_smul_of_nonneg hc.le, succMinOf, smul_eq_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem succMinOf_const_mul {c : ℝ} (hc : 0 < c) :
     succMinOf K (fun x => c * N x) S i = c * succMinOf K N S i := by
@@ -173,11 +173,11 @@ theorem succMinOf_const_mul {c : ℝ} (hc : 0 < c) :
   rw [succMinOf, this, Real.sInf_smul_of_nonneg hc.le, succMinOf, smul_eq_mul]
 
 /- English proof (translation)
-Use `set s := succMinOf K N S i with hs`. Establish `hA : ({x | x ∈ S ∧ N x ≤ s + 1} ∩ {x | s < N x}).Finite` using `(hfin _).inter_of_left _`. Choose the witnesses or unpack the hypotheses as in `⟨r, hsr, hr1, hr⟩ : ∃ r, s < r ∧ r ≤ s + 1 ∧ ∀ x ∈ ({x | x ∈ S ∧ N x ≤ s + 1} ∩ {x | s < N x}), r < N x := by`. Break down `({x | x ∈ S ∧ N x ≤ s + 1} ∩ {x | s < N x}).eq_empty_or_nonempty with h | h` into its components or cases. Conclude with `⟨s + 1, by linarith, le_rfl, by simp [h]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hmin⟩` from `Set.exists_min_image _ N hA h`. Establish `h1 : s < N x` using `hx.2`. Establish `h2 : N x ≤ s + 1` using `hx.1.2`. Conclude with `⟨(s + N x) / 2, by linarith, by linarith, fun y hy => by linarith [hmin y hy]⟩`. Take `⟨-, v, hv, hS⟩` from `mem_succMinRadii_iff.1 (mem_succMinRadii_of_lt hi hsr)`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_succMinRadii_iff.2 ⟨succMinOf_nonneg, v, hv, fun k => ⟨(hS k).1, ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Conclude with `absurd (hr (v k) ⟨⟨(hS k).1, (hS k).2.trans hr1⟩, not_le.1 hlt⟩) (not_lt.2 (hS k).2)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem succMinOf_mem (hfin : ∀ R, {x | x ∈ S ∧ N x ≤ R}.Finite)
     (hi : (i : Cardinal) ≤ Module.rank K (span K S)) :
@@ -198,7 +198,7 @@ theorem succMinOf_mem (hfin : ∀ R, {x | x ∈ S ∧ N x ≤ R}.Finite)
   exact absurd (hr (v k) ⟨⟨(hS k).1, (hS k).2.trans hr1⟩, not_le.1 hlt⟩) (not_lt.2 (hS k).2)
 
 /- English proof (translation)
-Take `⟨-, v, hv, hS⟩` from `mem_succMinRadii_iff.1 (succMinOf_mem hfin hi)`. Conclude with `(hN _ (hS ⟨0, h1⟩).1 (hv.ne_zero _)).trans_le (hS ⟨0, h1⟩).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem succMinOf_pos (hfin : ∀ R, {x | x ∈ S ∧ N x ≤ R}.Finite)
     (hN : ∀ x ∈ S, x ≠ 0 → 0 < N x) (h1 : 1 ≤ i)
@@ -207,7 +207,7 @@ theorem succMinOf_pos (hfin : ∀ R, {x | x ∈ S ∧ N x ≤ R}.Finite)
   exact (hN _ (hS ⟨0, h1⟩).1 (hv.ne_zero _)).trans_le (hS ⟨0, h1⟩).2
 
 /- English proof (translation)
-The claim follows from `succMinOf_le_of_linearIndependent (v := fun _ : Unit => x) (linearIndependent_unique_iff.2 h0) (by simp) hN (fun _ => hx) (fun _ => le_rfl)`.
+A detailed English derivation is pending.
 -/
 theorem succMinOf_one_le {x : V} (hx : x ∈ S) (h0 : x ≠ 0) (hN : 0 ≤ N x) :
     succMinOf K N S 1 ≤ N x :=
@@ -215,7 +215,7 @@ theorem succMinOf_one_le {x : V} (hx : x ∈ S) (h0 : x ≠ 0) (hN : 0 ≤ N x) 
     (linearIndependent_unique_iff.2 h0) (by simp) hN (fun _ => hx) (fun _ => le_rfl)
 
 /- English proof (translation)
-The claim follows from `le_succMinOf hi fun r hr => by obtain ⟨-, v, hv, hS⟩ := mem_succMinRadii_iff.1 hr exact (h _ (hS ⟨0, h1⟩).1 (hv.ne_zero _)).trans (hS ⟨0, h1⟩).2`.
+A detailed English derivation is pending.
 -/
 theorem le_succMinOf_of_forall {a : ℝ} (h : ∀ x ∈ S, x ≠ 0 → a ≤ N x) (h1 : 1 ≤ i)
     (hi : (i : Cardinal) ≤ Module.rank K (span K S)) : a ≤ succMinOf K N S i :=
@@ -238,7 +238,7 @@ def lastMin (L : Submodule ℤ E) : ℝ := succMin L (finrank ℝ (span ℝ (L :
 variable {L L' : Submodule ℤ E} {i j : ℕ} {r : ℝ}
 
 /- English proof (translation)
-Establish `h : DiscreteTopology (span ℤ (L : Set E))` using `by rw [span_eq]; infer_instance`. Use `Real.finrank_eq_int_finrank_of_discrete h` as an intermediate fact. Rewrite `this` using `[Set.finrank, Set.finrank, span_eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem finrank_span_eq_finrank_int [FiniteDimensional ℝ E] (L : Submodule ℤ E)
     [DiscreteTopology L] : finrank ℝ (span ℝ (L : Set E)) = finrank ℤ L := by
@@ -247,28 +247,28 @@ theorem finrank_span_eq_finrank_int [FiniteDimensional ℝ E] (L : Submodule ℤ
   rwa [Set.finrank, Set.finrank, span_eq] at this
 
 /- English proof (translation)
-Rewrite using `[IsZLattice.span_top, finrank_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_span_of_isZLattice (L : Submodule ℤ E) [DiscreteTopology L] [IsZLattice ℝ L] :
     finrank ℝ (span ℝ (L : Set E)) = finrank ℝ E := by
   rw [IsZLattice.span_top, finrank_top]
 
 /- English proof (translation)
-Rewrite using `[lastMin, finrank_span_eq_finrank_int]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lastMin_eq_succMin_finrank_int [FiniteDimensional ℝ E] (L : Submodule ℤ E)
     [DiscreteTopology L] : lastMin L = succMin L (finrank ℤ L) := by
   rw [lastMin, finrank_span_eq_finrank_int]
 
 /- English proof (translation)
-The claim follows from `natCast_le_rank_iff.2 (exists_linearIndependent_of_le_finrank h)`.
+A detailed English derivation is pending.
 -/
 theorem natCast_le_rank_of_le_finrank {K W : Type*} [DivisionRing K] [AddCommGroup W] [Module K W]
     (h : i ≤ finrank K W) : (i : Cardinal) ≤ Module.rank K W :=
   natCast_le_rank_iff.2 (exists_linearIndependent_of_le_finrank h)
 
 /- English proof (translation)
-Take `⟨x, hx, h0⟩` from `(Submodule.ne_bot_iff _).1 h`. Conclude with `natCast_le_rank_span_iff.2 ⟨fun _ => x, linearIndependent_unique_iff.2 h0, fun _ => hx⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem one_le_rank_span_of_ne_bot (h : L ≠ ⊥) :
     ((1 : ℕ) : Cardinal) ≤ Module.rank ℝ (span ℝ (L : Set E)) := by
@@ -277,7 +277,7 @@ theorem one_le_rank_span_of_ne_bot (h : L ≠ ⊥) :
     ⟨fun _ => x, linearIndependent_unique_iff.2 h0, fun _ => hx⟩
 
 /- English proof (translation)
-Establish `: DiscreteTopology L.toAddSubgroup` using `(inferInstance : DiscreteTopology L)`. Establish `h : (Metric.closedBall (0 : E) R ∩ L.toAddSubgroup).Finite` using `Metric.finite_isBounded_inter_isClosed DiscreteTopology.isDiscrete Metric.isBounded_closedBall inferInstance`. Conclude with `h.subset fun x hx => ⟨mem_closedBall_zero_iff.2 hx.2, hx.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_mem_and_norm_le [FiniteDimensional ℝ E] (L : Submodule ℤ E) [DiscreteTopology L]
     (R : ℝ) : {x : E | x ∈ L ∧ ‖x‖ ≤ R}.Finite := by
@@ -288,17 +288,17 @@ theorem finite_mem_and_norm_le [FiniteDimensional ℝ E] (L : Submodule ℤ E) [
   exact h.subset fun x hx => ⟨mem_closedBall_zero_iff.2 hx.2, hx.1⟩
 
 /- English proof (translation)
-The claim follows from `succMinOf_nonneg`.
+A detailed English derivation is pending.
 -/
 theorem succMin_nonneg (L : Submodule ℤ E) (i : ℕ) : 0 ≤ succMin L i := succMinOf_nonneg
 
 /- English proof (translation)
-The claim follows from `succMinOf_zero`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem succMin_zero (L : Submodule ℤ E) : succMin L 0 = 0 := succMinOf_zero
 
 /- English proof (translation)
-The claim follows from `(mem_succMinRadii_iff.1 (succMinOf_mem (finite_mem_and_norm_le L) (natCast_le_rank_of_le_finrank hi))).2`.
+A detailed English derivation is pending.
 -/
 theorem exists_linearIndependent_norm_le_succMin [FiniteDimensional ℝ E] [DiscreteTopology L]
     (hi : i ≤ finrank ℝ (span ℝ (L : Set E))) :
@@ -307,21 +307,21 @@ theorem exists_linearIndependent_norm_le_succMin [FiniteDimensional ℝ E] [Disc
     (succMinOf_mem (finite_mem_and_norm_le L) (natCast_le_rank_of_le_finrank hi))).2
 
 /- English proof (translation)
-The claim follows from `succMinOf_mono hij (natCast_le_rank_of_le_finrank hj)`.
+A detailed English derivation is pending.
 -/
 theorem succMin_mono (hij : i ≤ j) (hj : j ≤ finrank ℝ (span ℝ (L : Set E))) :
     succMin L i ≤ succMin L j :=
   succMinOf_mono hij (natCast_le_rank_of_le_finrank hj)
 
 /- English proof (translation)
-The claim follows from `succMin_mono hij (by rwa [finrank_span_of_isZLattice])`.
+A detailed English derivation is pending.
 -/
 theorem succMin_mono_of_isZLattice [DiscreteTopology L] [IsZLattice ℝ L] (hij : i ≤ j)
     (hj : j ≤ finrank ℝ E) : succMin L i ≤ succMin L j :=
   succMin_mono hij (by rwa [finrank_span_of_isZLattice])
 
 /- English proof (translation)
-The claim follows from `succMinOf_pos (finite_mem_and_norm_le L) (fun _ _ h => norm_pos_iff.2 h) h1 (natCast_le_rank_of_le_finrank hi)`.
+A detailed English derivation is pending.
 -/
 theorem succMin_pos [FiniteDimensional ℝ E] [DiscreteTopology L] (h1 : 1 ≤ i)
     (hi : i ≤ finrank ℝ (span ℝ (L : Set E))) : 0 < succMin L i :=
@@ -329,20 +329,20 @@ theorem succMin_pos [FiniteDimensional ℝ E] [DiscreteTopology L] (h1 : 1 ≤ i
     (natCast_le_rank_of_le_finrank hi)
 
 /- English proof (translation)
-The claim follows from `succMin_pos h1 (by rwa [finrank_span_of_isZLattice])`.
+A detailed English derivation is pending.
 -/
 theorem succMin_pos_of_isZLattice [FiniteDimensional ℝ E] [DiscreteTopology L] [IsZLattice ℝ L]
     (h1 : 1 ≤ i) (hi : i ≤ finrank ℝ E) : 0 < succMin L i :=
   succMin_pos h1 (by rwa [finrank_span_of_isZLattice])
 
 /- English proof (translation)
-The claim follows from `succMinOf_one_le hx h0 (norm_nonneg x)`.
+A detailed English derivation is pending.
 -/
 theorem minNorm_le_norm {x : E} (hx : x ∈ L) (h0 : x ≠ 0) : minNorm L ≤ ‖x‖ :=
   succMinOf_one_le hx h0 (norm_nonneg x)
 
 /- English proof (translation)
-The claim follows from `le_succMinOf_of_forall h le_rfl (one_le_rank_span_of_ne_bot hL)`.
+A detailed English derivation is pending.
 -/
 theorem le_minNorm {a : ℝ} (hL : L ≠ ⊥) (h : ∀ x ∈ L, x ≠ 0 → a ≤ ‖x‖) : a ≤ minNorm L :=
   le_succMinOf_of_forall h le_rfl (one_le_rank_span_of_ne_bot hL)
@@ -350,14 +350,14 @@ theorem le_minNorm {a : ℝ} (hL : L ≠ ⊥) (h : ∀ x ∈ L, x ≠ 0 → a �
 variable {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
 
 /- English proof (translation)
-The claim follows from `succMinOf_image f.toLinearMap f.injective (fun x _ => f.norm_map x)`.
+A detailed English derivation is pending.
 -/
 theorem succMin_map_linearIsometry (f : E →ₗᵢ[ℝ] F) (L : Submodule ℤ E) (i : ℕ) :
     succMin (L.map (f.toLinearMap.restrictScalars ℤ)) i = succMin L i :=
   succMinOf_image f.toLinearMap f.injective (fun x _ => f.norm_map x)
 
 /- English proof (translation)
-Apply the tactic sequence `rw [← succMin_map_linearIsometry f, ZLattice.comap, Submodule.map_comap_eq_self]`. Conclude with `fun x hx => h hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem succMin_comap_linearIsometry (f : F →ₗᵢ[ℝ] E) (h : (L : Set E) ⊆ Set.range f) (i : ℕ) :
     succMin (ZLattice.comap ℝ L f.toLinearMap) i = succMin L i := by
@@ -368,7 +368,7 @@ def inSpan (L : Submodule ℤ E) : Submodule ℤ (span ℝ (L : Set E)) :=
   ZLattice.comap ℝ L (span ℝ (L : Set E)).subtype
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] theorem mem_inSpan {x : span ℝ (L : Set E)} : x ∈ inSpan L ↔ (x : E) ∈ L := Iff.rfl
 
@@ -379,14 +379,14 @@ instance instIsZLatticeInSpan [DiscreteTopology L] : IsZLattice ℝ (inSpan L) :
   ⟨span_span_coe_preimage⟩
 
 /- English proof (translation)
-The claim follows from `succMin_comap_linearIsometry (span ℝ (L : Set E)).subtypeₗᵢ (fun x hx => ⟨⟨x, subset_span hx⟩, rfl⟩) i`.
+A detailed English derivation is pending.
 -/
 theorem succMin_inSpan (L : Submodule ℤ E) (i : ℕ) : succMin (inSpan L) i = succMin L i :=
   succMin_comap_linearIsometry (span ℝ (L : Set E)).subtypeₗᵢ
     (fun x hx => ⟨⟨x, subset_span hx⟩, rfl⟩) i
 
 /- English proof (translation)
-Establish `h : span ℝ (inSpan L : Set (span ℝ (L : Set E))) = ⊤` using `span_span_coe_preimage`. Rewrite using `[lastMin, succMin_inSpan, h, finrank_top, lastMin]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem lastMin_inSpan (L : Submodule ℤ E) : lastMin (inSpan L) = lastMin L := by
   have h : span ℝ (inSpan L : Set (span ℝ (L : Set E))) = ⊤ := span_span_coe_preimage
@@ -399,14 +399,14 @@ theorem smul_eq_map (c : ℝ) (L : Submodule ℤ E) :
     c • L = L.map ((c • LinearMap.id : E →ₗ[ℝ] E).restrictScalars ℤ) := rfl
 
 /- English proof (translation)
-Rewrite using `[← SetLike.mem_coe, Submodule.coe_pointwise_smul, Set.mem_smul_set_iff_inv_smul_mem₀ hc, SetLike.mem_coe]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_smul_iff_inv_smul_mem {c : ℝ} (hc : c ≠ 0) {x : E} : x ∈ c • L ↔ c⁻¹ • x ∈ L := by
   rw [← SetLike.mem_coe, Submodule.coe_pointwise_smul, Set.mem_smul_set_iff_inv_smul_mem₀ hc,
     SetLike.mem_coe]
 
 /- English proof (translation)
-Rewrite using `[succMin, succMin, ← succMinOf_const_mul (abs_pos.2 hc)]`. Establish `h : ((c • L : Submodule ℤ E) : Set E) = (c • LinearMap.id : E →ₗ[ℝ] E) '' (L : Set E)` using `rfl`. Rewrite using `[h]`. Conclude with `succMinOf_image (M := fun x : E => ‖x‖) (N := fun x : E => |c| * ‖x‖) (c • LinearMap.id : E →ₗ[ℝ] E) (smul_right_injective E hc) (fun x _ => by simp [norm_smul])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem succMin_smul {c : ℝ} (hc : c ≠ 0) (L : Submodule ℤ E) (i : ℕ) :
     succMin (c • L) i = |c| * succMin L i := by
@@ -417,7 +417,7 @@ theorem succMin_smul {c : ℝ} (hc : c ≠ 0) (L : Submodule ℤ E) (i : ℕ) :
     (c • LinearMap.id : E →ₗ[ℝ] E) (smul_right_injective E hc) (fun x _ => by simp [norm_smul])
 
 /- English proof (translation)
-The claim follows from `succMin_smul hc L 1`.
+A detailed English derivation is pending.
 -/
 theorem minNorm_smul {c : ℝ} (hc : c ≠ 0) (L : Submodule ℤ E) :
     minNorm (c • L) = |c| * minNorm L := succMin_smul hc L 1
@@ -425,7 +425,7 @@ theorem minNorm_smul {c : ℝ} (hc : c ≠ 0) (L : Submodule ℤ E) :
 def coveringRadius (L : Submodule ℤ E) : ℝ := ⨆ x : E, Metric.infDist x (L : Set E)
 
 /- English proof (translation)
-Establish `: DiscreteTopology L.toAddSubgroup` using `(inferInstance : DiscreteTopology L)`. Establish `hc : IsClosed (L.toAddSubgroup : Set E)` using `inferInstance`. Take `⟨w, hw, h⟩` from `hc.exists_infDist_eq_dist ⟨0, L.zero_mem⟩ x`. Conclude with `⟨w, hw, by rw [← dist_eq_norm]; exact h.symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_norm_sub_eq_infDist [FiniteDimensional ℝ E] (L : Submodule ℤ E)
     [DiscreteTopology L] (x : E) : ∃ w ∈ L, ‖x - w‖ = Metric.infDist x (L : Set E) := by
@@ -435,7 +435,7 @@ theorem exists_norm_sub_eq_infDist [FiniteDimensional ℝ E] (L : Submodule ℤ 
   exact ⟨w, hw, by rw [← dist_eq_norm]; exact h.symm⟩
 
 /- English proof (translation)
-The claim follows from `ciSup_le fun x => by obtain ⟨w, hw, h⟩ := h x exact (Metric.infDist_le_dist_of_mem hw).trans (by rwa [dist_eq_norm])`.
+A detailed English derivation is pending.
 -/
 theorem coveringRadius_le (h : ∀ x : E, ∃ w ∈ L, ‖x - w‖ ≤ r) : coveringRadius L ≤ r :=
   ciSup_le fun x => by
@@ -456,14 +456,14 @@ def dualLattice (L : Submodule ℤ E) : Submodule ℤ E :=
 variable {L L' : Submodule ℤ E}
 
 /- English proof (translation)
-Simplify using `only [dualLattice, LinearMap.BilinForm.mem_dualSubmodule, Submodule.mem_one, innerₗ_apply_apply, real_inner_comm y, eq_intCast]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_dualLattice {y : E} : y ∈ dualLattice L ↔ ∀ x ∈ L, ∃ m : ℤ, (m : ℝ) = ⟪x, y⟫_ℝ := by
   simp only [dualLattice, LinearMap.BilinForm.mem_dualSubmodule, Submodule.mem_one,
     innerₗ_apply_apply, real_inner_comm y, eq_intCast]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x h => inner_self_eq_zero.1 (h x), fun x h => inner_self_eq_zero.1 (h x)⟩`.
+Supply the required witnesses or components.
 -/
 theorem innerₗ_nondegenerate (E : Type*) [NormedAddCommGroup E] [InnerProductSpace ℝ E] :
     LinearMap.BilinForm.Nondegenerate (innerₗ E) :=
@@ -473,23 +473,23 @@ def innerDualBasis {ι : Type*} [Finite ι] [DecidableEq ι] (b : Basis ι ℝ E
   LinearMap.BilinForm.dualBasis (innerₗ E) (innerₗ_nondegenerate E) b
 
 /- English proof (translation)
-The claim follows from `LinearMap.BilinForm.apply_dualBasis_left (innerₗ_nondegenerate E) b i j`.
+A detailed English derivation is pending.
 -/
 theorem inner_innerDualBasis {ι : Type*} [Finite ι] [DecidableEq ι] (b : Basis ι ℝ E) (i j : ι) :
     ⟪innerDualBasis b i, b j⟫_ℝ = if j = i then 1 else 0 :=
   LinearMap.BilinForm.apply_dualBasis_left (innerₗ_nondegenerate E) b i j
 
 /- English proof (translation)
-The claim follows from `LinearMap.BilinForm.dualSubmodule_span_of_basis _ _ b`.
+A detailed English derivation is pending.
 -/
 theorem dualLattice_span_basis {ι : Type*} [Finite ι] [DecidableEq ι] (b : Basis ι ℝ E) :
     dualLattice (span ℤ (Set.range b)) = span ℤ (Set.range (innerDualBasis b)) :=
   LinearMap.BilinForm.dualSubmodule_span_of_basis _ _ b
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[mem_smul_iff_inv_smul_mem (inv_ne_zero hc), inv_inv, mem_dualLattice, mem_dualLattice]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Use `h (c • x) (Submodule.smul_mem_pointwise_smul _ _ _ hx)` as an intermediate fact.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[real_inner_smul_left, ← real_inner_smul_right]`. Then use the resulting hypothesis. Introduce `h x hx`. Use `h _ ((mem_smul_iff_inv_smul_mem hc).1 hx)` as an intermediate fact. Rewrite `this` using `[real_inner_smul_left, real_inner_smul_right, inv_mul_cancel_left₀ hc]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem dualLattice_smul {c : ℝ} (hc : c ≠ 0) (L : Submodule ℤ E) :
     dualLattice (c • L) = c⁻¹ • dualLattice L := by
@@ -506,7 +506,7 @@ theorem dualLattice_smul {c : ℝ} (hc : c ≠ 0) (L : Submodule ℤ E) :
 variable [FiniteDimensional ℝ E] (L) [DiscreteTopology L] [IsZLattice ℝ L]
 
 /- English proof (translation)
-Rewrite using `[← dualLattice_span_basis, Basis.ofZLatticeBasis_span]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dualLattice_eq_span {ι : Type*} [Finite ι] [DecidableEq ι] (b : Basis ι ℤ L) :
     dualLattice L = span ℤ (Set.range (innerDualBasis (b.ofZLatticeBasis ℝ L))) := by
@@ -524,7 +524,7 @@ instance instIsZLatticeDualLattice : IsZLattice ℝ (dualLattice L) where
     exact ZSpan.span_top _
 
 /- English proof (translation)
-Use `LinearMap.BilinForm.dualSubmodule_dualSubmodule_of_basis (R := ℤ) (innerₗ E) (innerₗ_nondegenerate E) ⟨fun x y => real_inner_comm y x⟩ ((Free.chooseBasis ℤ L).ofZLatticeBasis ℝ L)` as an intermediate fact. Rewrite `this` using `[Basis.ofZLatticeBasis_span]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 @[simp] theorem dualLattice_dualLattice : dualLattice (dualLattice L) = L := by
   have := LinearMap.BilinForm.dualSubmodule_dualSubmodule_of_basis (R := ℤ) (innerₗ E)
@@ -533,9 +533,9 @@ Use `LinearMap.BilinForm.dualSubmodule_dualSubmodule_of_basis (R := ℤ) (inner�
   rwa [Basis.ofZLatticeBasis_span] at this
 
 /- English proof (translation)
-Rewrite using `[Basis.det_apply, Basis.det_apply, mul_comm, ← Matrix.det_transpose, ← Matrix.det_mul, ← Matrix.det_one (n := ι)]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Basis.toMatrix_apply, OrthonormalBasis.coe_toBasis_repr_apply, OrthonormalBasis.repr_apply_apply, Matrix.one_apply]`. Repeatedly rewrite using `[real_inner_comm (innerDualBasis b i)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[o.sum_inner_mul_inner, inner_innerDualBasis]`. Simplify using `only [eq_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_mul_det_innerDualBasis {ι : Type*} [Fintype ι] [DecidableEq ι]
     (o : OrthonormalBasis ι ℝ E) (b : Basis ι ℝ E) :
@@ -553,7 +553,7 @@ theorem det_mul_det_innerDualBasis {ι : Type*} [Fintype ι] [DecidableEq ι]
 variable [MeasurableSpace E] [BorelSpace E]
 
 /- English proof (translation)
-Rewrite using `[ZLattice.covolume_eq_det_mul_measureReal _ _ (b.restrictScalars ℤ) o.toBasis, MeasureTheory.measureReal_congr (ZSpan.fundamentalDomain_ae_parallelepiped _ _), MeasureTheory.Measure.real, OrthonormalBasis.coe_toBasis, o.volume_parallelepiped]`. Simplify using `only [ENNReal.toReal_one, mul_one]`. Use `congr 2`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem covolume_span_basis {ι : Type*} [Fintype ι] [DecidableEq ι] (o : OrthonormalBasis ι ℝ E)
     (b : Basis ι ℝ E) : ZLattice.covolume (span ℤ (Set.range b)) = |o.toBasis.det b| := by
@@ -566,7 +566,7 @@ theorem covolume_span_basis {ι : Type*} [Fintype ι] [DecidableEq ι] (o : Orth
   simp
 
 /- English proof (translation)
-Set `b` to `(Free.chooseBasis ℤ L).ofZLatticeBasis ℝ L`. Set `o : OrthonormalBasis (Free.ChooseBasisIndex ℤ L) ℝ E` to `(stdOrthonormalBasis ℝ E).reindex (Fintype.equivOfCardEq (by rw [Fintype.card_fin, finrank_eq_card_basis b]))`. Establish `hL : L = span ℤ (Set.range b)` using `(Basis.ofZLatticeBasis_span ℝ L _).symm`. Rewrite using `[hL, dualLattice_span_basis, covolume_span_basis o, covolume_span_basis o, ← abs_mul, det_mul_det_innerDualBasis, abs_one]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem covolume_mul_covolume_dualLattice :
     ZLattice.covolume L * ZLattice.covolume (dualLattice L) = 1 := by
@@ -579,7 +579,7 @@ theorem covolume_mul_covolume_dualLattice :
     det_mul_det_innerDualBasis, abs_one]
 
 /- English proof (translation)
-The claim follows from `eq_inv_of_mul_eq_one_right (covolume_mul_covolume_dualLattice L)`.
+A detailed English derivation is pending.
 -/
 theorem covolume_dualLattice : ZLattice.covolume (dualLattice L) = (ZLattice.covolume L)⁻¹ :=
   eq_inv_of_mul_eq_one_right (covolume_mul_covolume_dualLattice L)
@@ -649,7 +649,7 @@ Both sides reduce to the same expression.
     ⟪equiv Q hQ x, equiv Q hQ y⟫_ℝ = QuadraticMap.associated (R := ℝ) Q x y := rfl
 
 /- English proof (translation)
-Rewrite using `[← real_inner_self_eq_norm_sq, inner_equiv]`. Conclude with `QuadraticMap.associated_eq_self_apply ℝ Q x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 @[simp] theorem norm_equiv_sq (x : V) : ‖equiv Q hQ x‖ ^ 2 = Q x := by
   rw [← real_inner_self_eq_norm_sq, inner_equiv]
@@ -659,14 +659,14 @@ def lattice (L : Submodule ℤ V) : Submodule ℤ (QuadSpace Q hQ) :=
   L.map ((equiv Q hQ).toLinearMap.restrictScalars ℤ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨_, hy, h⟩ => (equiv Q hQ).injective h ▸ hy, fun h => ⟨x, h, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 @[simp] theorem equiv_mem_lattice {L : Submodule ℤ V} {x : V} :
     equiv Q hQ x ∈ lattice Q hQ L ↔ x ∈ L :=
   ⟨fun ⟨_, hy, h⟩ => (equiv Q hQ).injective h ▸ hy, fun h => ⟨x, h, rfl⟩⟩
 
 /- English proof (translation)
-Rewrite using `[lattice, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lattice_span_basis {ι : Type*} (b : Basis ι ℝ V) :
     lattice Q hQ (span ℤ (Set.range b)) = span ℤ (Set.range (b.map (equiv Q hQ))) := by
@@ -677,7 +677,7 @@ instance instDiscreteTopologySpan {ι : Type*} [Finite ι] (b : Basis ι ℝ V) 
   rw [lattice_span_basis]; infer_instance
 
 /- English proof (translation)
-Rewrite using `[lattice, Submodule.map_coe, LinearMap.coe_restrictScalars, ← Submodule.map_span, h, Submodule.map_top, LinearEquiv.range]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isZLattice_lattice {L : Submodule ℤ V} [DiscreteTopology (lattice Q hQ L)]
     (h : span ℝ (L : Set V) = ⊤) : IsZLattice ℝ (lattice Q hQ L) where
@@ -717,15 +717,15 @@ end Quadratic
 section Examples
 
 /- English proof (translation)
-Simplify using `[Submodule.mem_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_one_real_iff {x : ℝ} : x ∈ (1 : Submodule ℤ ℝ) ↔ ∃ m : ℤ, (m : ℝ) = x := by
   simp [Submodule.mem_one]
 
 /- English proof (translation)
-Establish `h1 : (1 : ℝ) ∈ (1 : Submodule ℤ ℝ)` using `mem_one_real_iff.2 ⟨1, by simp⟩`. Use `le_antisymm (by simpa using minNorm_le_norm h1 one_ne_zero) (le_minNorm ?_ ?_)` and prove the remaining obligations. Conclude with `(Submodule.ne_bot_iff _).2 ⟨1, h1, one_ne_zero⟩`. Introduce `x hx h0`. Take `⟨m, rfl⟩` from `mem_one_real_iff.1 hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.norm_eq_abs]`. Conclude with `Int.one_le_abs (by exact_mod_cast h0)` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem minNorm_one_real : minNorm (1 : Submodule ℤ ℝ) = 1 := by
   have h1 : (1 : ℝ) ∈ (1 : Submodule ℤ ℝ) := mem_one_real_iff.2 ⟨1, by simp⟩
@@ -737,9 +737,9 @@ theorem minNorm_one_real : minNorm (1 : Submodule ℤ ℝ) = 1 := by
     exact_mod_cast Int.one_le_abs (by exact_mod_cast h0)
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[mem_dualLattice, mem_one_real_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `using h 1 (mem_one_real_iff.2 ⟨1, by simp⟩)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨m, rfl⟩ x hx`. Take `⟨k, rfl⟩` from `mem_one_real_iff.1 hx`. Conclude with `⟨m * k, by simp⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dualLattice_one_real : dualLattice (1 : Submodule ℤ ℝ) = 1 := by
   ext y
@@ -752,7 +752,7 @@ theorem dualLattice_one_real : dualLattice (1 : Submodule ℤ ℝ) = 1 := by
     exact ⟨m * k, by simp⟩
 
 /- English proof (translation)
-Rewrite using `[dualLattice_smul (by norm_num), dualLattice_one_real, minNorm_smul (by norm_num), minNorm_smul (by norm_num), minNorm_one_real]`. Evaluate the numerical expressions using `[abs_of_neg]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 example : minNorm ((-3 : ℝ) • (1 : Submodule ℤ ℝ)) = 3 ∧
     minNorm (dualLattice ((-3 : ℝ) • (1 : Submodule ℤ ℝ))) = 1 / 3 := by
@@ -761,17 +761,15 @@ example : minNorm ((-3 : ℝ) • (1 : Submodule ℤ ℝ)) = 3 ∧
   norm_num [abs_of_neg]
 
 /- English proof (translation)
-Establish `h1 : (1 : ℝ) ∈ (1 : Submodule ℤ ℝ)` using `mem_one_real_iff.2 ⟨1, by simp⟩`. Establish `hli : LinearIndependent ℝ ![((1 : ℝ), (0 : ℝ)), (0, 1)]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t h`. Simplify using `using h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hmem : ∀ k, ![((1 : ℝ), (0 : ℝ)), (0, 1)] k ∈ (((1 : Submodule ℤ ℝ).prod (1 : Submodule ℤ ℝ) : Submodule ℤ (ℝ × ℝ)) : Set (ℝ × ℝ))`. Introduce `k`. Use `fin_cases k`. Conclude with `⟨h1, Submodule.zero_mem _⟩`. Conclude with `⟨Submodule.zero_mem _, h1⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm (succMinOf_le_of_linearIndependent hli (by simp) (by norm_num) hmem ?_) (le_succMinOf (natCast_le_rank_span_iff.2 ⟨_, hli, hmem⟩) ?_)` and prove the remaining obligations. Apply the tactic sequence `intro k fin_cases k <;> simp [Real.sqrt_le_left] <;> norm_num`. Introduce `r hr`. Take `⟨h0, v, hv, h⟩` from `mem_succMinRadii_iff.1 hr`. Use `by_contra! hr2`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz : ∀ k, (v k).2 = 0`. Introduce `k`. Take `⟨m, hm⟩` from `mem_one_real_iff.1 (h k).1.2`. Establish `h2` using `(Real.sqrt_le_left h0).1 (h k).2`. Simplify using `only [QuadraticMap.prod_apply, QuadraticMap.smul_apply, QuadraticMap.sq_apply, smul_eq_mul, ← hm] at h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (m : ℝ) * m < 1` using `by nlinarith [mul_self_nonneg (v k).1]`. Establish `h4 : m * m < 1` using `by exact_mod_cast h3`. Establish `h5 : m = 0` using `by nlinarith`. Rewrite using `[← hm, h5, Int.cast_zero]`. Use `Fintype.linearIndependent_iff.1 hv ![(v 1).1, -(v 0).1] (by` as an intermediate fact.
-
-Apply the tactic sequence `ext <;> simp [Fin.sum_univ_two, hz]`. Use the proof step `ring) 1`. Conclude with `hv.ne_zero 0 (Prod.ext (by simpa using this) (hz 0))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 example : succMinQuad ((QuadraticMap.sq : QuadraticForm ℝ ℝ).prod ((4 : ℝ) • QuadraticMap.sq))
     ((1 : Submodule ℤ ℝ).prod 1) 2 = 2 := by
@@ -809,7 +807,7 @@ example : succMinQuad ((QuadraticMap.sq : QuadraticForm ℝ ℝ).prod ((4 : ℝ)
     exact hv.ne_zero 0 (Prod.ext (by simpa using this) (hz 0))
 
 /- English proof (translation)
-Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[covolume_dualLattice, covolume_span_basis (EuclideanSpace.basisFun (Fin n) ℝ), Basis.det_self, abs_one, inv_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 example (n : ℕ) :
     let L := span ℤ (Set.range (EuclideanSpace.basisFun (Fin n) ℝ).toBasis)

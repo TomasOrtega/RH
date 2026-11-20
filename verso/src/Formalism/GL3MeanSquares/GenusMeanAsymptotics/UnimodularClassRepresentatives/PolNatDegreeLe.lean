@@ -10,15 +10,13 @@ variable {n : Type*} [Fintype n] [DecidableEq n]
 namespace Node
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `zero`. Introduce `f hf hs hn`. Break down `hS.dv f hf hs with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `using h`. Conclude with `absurd (by simpa using h) hn`. Consider the case `succ l ih`. Introduce `f hf hs hn`. Break down `hS.dv f hf hs with h | h` into its components or cases.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, mul_assoc]`. Conclude with `S.mul_mem (S.pow_mem hS.mem _) (S.mul_mem hS.mem h)`. Establish `hgs : star (f * ϖ⁻¹) = f * ϖ⁻¹`. Rewrite using `[star_mul', star_inv₀, hS.fix, hs]`. Establish `hgn : f * ϖ⁻¹ * (ϖ⁻¹) ^ (l + 1) ∉ S`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, ← pow_succ']` and apply the resulting hypothesis. Use `ih (f * ϖ⁻¹) h hgs hgn` as an intermediate fact. Rewrite `this` using `[mul_inv, inv_inv]`. Establish `e : ϖ ^ (l + 1) * f⁻¹ = ϖ ^ l * (f⁻¹ * ϖ)` using `by ring`. Rewrite using `[e]`.
-
-Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_mem (hS : IsLocUnif S ϖ) : ∀ (l : ℕ) (f : K), f ∈ S → star f = f →
     f * (ϖ⁻¹) ^ (l + 1) ∉ S → ϖ ^ l * f⁻¹ ∈ S := by
@@ -45,7 +43,7 @@ theorem div_mem (hS : IsLocUnif S ϖ) : ∀ (l : ℕ) (f : K), f ∈ S → star 
       exact this
 
 /- English proof (translation)
-Use `choose L hL using hS.arch`. Use `⟨∑ i ∈ s, L (a i), fun i hi => ?_⟩` and prove the remaining obligations. Establish `hle : L (a i) ≤ ∑ j ∈ s, L (a j)` using `Finset.single_le_sum (f := fun j => L (a j)) (fun _ _ => Nat.zero_le _) hi`. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, mul_assoc]`. Conclude with `S.mul_mem (S.pow_mem hS.mem _) (hL _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow (hS : IsLocUnif S ϖ) {ι : Type*} (s : Finset ι) (a : ι → K) :
     ∃ l : ℕ, ∀ i ∈ s, ϖ ^ l * a i ∈ S := by
@@ -59,7 +57,7 @@ theorem exists_pow (hS : IsLocUnif S ϖ) {ι : Type*} (s : Finset ι) (a : ι �
 noncomputable def pol (A B : Matrix n n K) : K[X] := det ((X : K[X]) • A.map C + B.map C)
 
 /- English proof (translation)
-Unfold `pol`. Rewrite using `[← Polynomial.coe_evalRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.smul_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -72,7 +70,7 @@ theorem pol_eval (A B : Matrix n n K) (c : K) : (pol A B).eval c = det (c • A 
   ring
 
 /- English proof (translation)
-The claim follows from `Polynomial.natDegree_det_X_add_C_le A B`.
+A detailed English derivation is pending.
 -/
 theorem pol_natDegree_le (A B : Matrix n n K) : (pol A B).natDegree ≤ Fintype.card n :=
   Polynomial.natDegree_det_X_add_C_le A B
@@ -80,55 +78,49 @@ theorem pol_natDegree_le (A B : Matrix n n K) : (pol A B).natDegree ≤ Fintype.
 end Node
 
 /- English proof (translation)
-Take `⟨τ, hτS, hτ⟩` from `hS.tr`. Take `⟨θ, hθS, hθs, hθ0⟩` from `hS.skew`. Establish `hdetS : ∀ M : Matrix n n K, Ent S M → M.det ∈ S`. Introduce `M hM`. Establish `e : M = S.subtype.mapMatrix (Matrix.of fun i j => (⟨M i j, hM i j⟩ : S))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[e, ← RingHom.map_det]`. Conclude with `SetLike.coe_mem _`. Establish `hadjS : ∀ M : Matrix n n K, Ent S M → Ent S M.adjugate`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `M hM i j`. Establish `e : M = S.subtype.mapMatrix (Matrix.of fun i j => (⟨M i j, hM i j⟩ : S))`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[e, ← RingHom.map_adjugate]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `SetLike.coe_mem _`. Establish `hnot : ϖ⁻¹ ∉ S`. Introduce `h`. Use `(hS.rad (-ϖ⁻¹) (S.neg_mem h)).1` as an intermediate fact. Apply `this` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[mul_neg, mul_inv_cancel₀ hS.ne]`. Expand and normalize the polynomial expressions, which then agree. Set `N` to `Fintype.card n`. Set `s : Finset ℕ` to `Finset.range (2 * N + 1)`. Set `v : ℕ → K` to `fun k => τ + (k : K) * θ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv : Set.InjOn v s`. Introduce `a _ b _ hab`. Establish `h1 : (a : K) * θ = (b : K) * θ` using `add_left_cancel hab`. Conclude with `mul_right_cancel₀ hθ0 h1` after adjusting the coercions. Establish `hvS : ∀ k, v k ∈ S` using `fun k => S.add_mem hτS (S.mul_mem (natCast_mem S k) hθS)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hvs : ∀ k, star (v k) = 1 - v k`. Introduce `k`. Simplify using `only [v, star_add, star_mul', star_natCast, hθs]`. Take the linear combination `hτ`. Take `⟨l, hl⟩` from `Node.exists_pow hS s (fun k => (Lagrange.basis s v k).eval 1)`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨l, fun X hX hd hdi => ?_⟩` and prove the remaining obligations. Set `R : K[X]` to `Node.pol (1 - X) X * Node.pol (Xᴴ - 1) 1`. Establish `hRdeg : R.degree < (s.card : WithBot ℕ)`. Establish `h1 : R.natDegree ≤ 2 * N`. Use `(Polynomial.natDegree_mul_le).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[two_mul]`. Conclude with `add_le_add (Node.pol_natDegree_le _ _) (Node.pol_natDegree_le _ _)`. Use `lt_of_le_of_lt (Polynomial.degree_le_of_natDegree_le h1) ?_` and prove the remaining obligations. Simplify using `only [s, Finset.card_range]`. Conclude with `Nat.lt_succ_self _` after adjusting the coercions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `hReval : ∀ c : K, star c = 1 - c → R.eval c = (c • (1 : Matrix n n K) + star c • X).det * star ((c • (1 : Matrix n n K) + star c • X).det)`. Introduce `c hc`. Rewrite using `[Polynomial.eval_mul, Node.pol_eval, Node.pol_eval, ← Matrix.det_conjTranspose]`. Use `congr 2`. Rewrite using `[hc, smul_sub, sub_smul, one_smul]`.
+Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Simplify using `only [conjTranspose_add, conjTranspose_smul, conjTranspose_one, star_star]`. Rewrite using `[hc, smul_sub, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Establish `hR1 : R.eval 1 = star X.det`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [R]`. Rewrite using `[Polynomial.eval_mul, Node.pol_eval, Node.pol_eval]`. Simplify using `[Matrix.det_conjTranspose]`. Establish `hsum : R.eval 1 = ∑ k ∈ s, R.eval (v k) * (Lagrange.basis s v k).eval 1` using `by conv_lhs => rw [Lagrange.eq_interpolate hv hRdeg]`. Rewrite using `[Lagrange.interpolate_apply, Polynomial.eval_finset_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[Polynomial.eval_mul, Polynomial.eval_C]`. Establish `hX0 : X.det ≠ 0` using `hd`. Establish `hR1S : (R.eval 1)⁻¹ ∈ S`. Rewrite using `[hR1, ← star_inv₀]`. Conclude with `hS.star_mem _ hdi`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hR10 : R.eval 1 ≠ 0`. Rewrite using `[hR1]`. Conclude with `star_ne_zero.mpr hX0`. Establish `hMS : ∀ k, Ent S (v k • (1 : Matrix n n K) + star (v k) • X)`. Introduce `k i j`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Use `S.add_mem (S.mul_mem (hvS k) ?_) (S.mul_mem (hS.star_mem _ (hvS k)) (hX i j))` and prove the remaining obligations. Use `split_ifs`. Conclude with `S.one_mem`. Conclude with `S.zero_mem`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hex : ∃ k ∈ s, R.eval (v k) * (ϖ⁻¹) ^ (l + 1) ∉ S`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hnot` to reduce the goal to its premises. Establish `h1 : R.eval 1 * ϖ⁻¹ ∈ S`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e : R.eval 1 * ϖ⁻¹ = ∑ k ∈ s, (R.eval (v k) * (ϖ⁻¹) ^ (l + 1)) * (ϖ ^ l * (Lagrange.basis s v k).eval 1)`. Rewrite using `[hsum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `e1 : ϖ ^ l * (ϖ⁻¹) ^ (l + 1) = ϖ⁻¹`. Rewrite using `[pow_succ, ← mul_assoc, ← mul_pow, mul_inv_cancel₀ hS.ne, one_pow, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-(Polynomial.eval (v k) R * Polynomial.eval 1 (Lagrange.basis s v k))) * e1`. Rewrite using `[e]`. Conclude with `S.sum_mem fun k hk => S.mul_mem (hcon k hk) (hl k hk)`. Establish `e2 : ϖ⁻¹ = (R.eval 1)⁻¹ * (R.eval 1 * ϖ⁻¹)`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Conclude with `S.mul_mem hR1S h1`. Take `⟨k, hk, hkn⟩` from `hex`. Use `set M := v k • (1 : Matrix n n K) + star (v k) • X with hMdef`. Establish `hfk : R.eval (v k) = M.det * star M.det` using `hReval (v k) (hvs k)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfS : R.eval (v k) ∈ S`. Rewrite using `[hfk]`. Conclude with `S.mul_mem (hdetS M (hMS k)) (hS.star_mem _ (hdetS M (hMS k)))`. Establish `hfs : star (R.eval (v k)) = R.eval (v k)`. Rewrite using `[hfk, star_mul', star_star, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `hf0 : R.eval (v k) ≠ 0`. Introduce `h0`. Apply `hkn` to reduce the goal to its premises. Rewrite using `[h0, zero_mul]`. Conclude with `S.zero_mem`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hdiv` using `Node.div_mem hS l _ hfS hfs hkn`. Establish `hM0 : M.det ≠ 0`. Introduce `h0`. Apply `hf0` to reduce the goal to its premises. Rewrite using `[hfk, h0, zero_mul]`.
-
-Establish `hcS : ϖ ^ l * M.det⁻¹ ∈ S`. Establish `e : ϖ ^ l * M.det⁻¹ = ϖ ^ l * (R.eval (v k))⁻¹ * star M.det`. Rewrite using `[hfk]`. Establish `: star M.det ≠ 0` using `star_ne_zero.mpr hM0`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[e]`. Conclude with `S.mul_mem hdiv (hS.star_mem _ (hdetS M (hMS k)))`. Use `⟨v k, hvS k, by rw [hvs k]; ring, (ϖ ^ l * M.det⁻¹) • M.adjugate, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`.
-
-Conclude with `S.mul_mem hcS (hadjS M (hMS k) i j)`. Rewrite using `[Matrix.mul_smul, Matrix.mul_adjugate, smul_smul]`. Use `congr 1`. Rewrite using `[← hMdef]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_node [CharZero K] (hS : IsLocUnif S ϖ) (n : Type*) [Fintype n] [DecidableEq n] :
     ∃ l : ℕ, ∀ X : Matrix n n K, Ent S X → X.det ≠ 0 → X.det⁻¹ ∈ S →

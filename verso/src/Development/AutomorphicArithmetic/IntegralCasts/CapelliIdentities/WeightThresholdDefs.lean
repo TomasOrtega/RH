@@ -5,9 +5,9 @@ import Formalism.LocalRingCardinality.Params
 import Formalism.LocalRingCardinality.DataHost
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span K (L : Set V)` using `h ▸ Submodule.mem_top`. Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (NumberField.RingOfIntegers K)) K (L : Set V) x hx`. Use `⟨t, nonZeroDivisors.coe_ne_zero t, ?_⟩` and prove the remaining obligations. Rewrite `ht` using `[Submodule.span_eq, Submonoid.smul_def]`. Establish `: ((t : NumberField.RingOfIntegers K) : K) • x = (t : NumberField.RingOfIntegers K) • x` using `algebraMap_smul K (t : NumberField.RingOfIntegers K) x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.WeightThresholdDefs.core {K : Type*} [Field K] [NumberField K] {V : Type*} [AddCommGroup V] [Module K V]
     [Module (NumberField.RingOfIntegers K) V] [IsScalarTower (NumberField.RingOfIntegers K) K V]
@@ -24,7 +24,7 @@ private theorem UpperTheory.Reformulated.B.WeightThresholdDefs.core {K : Type*} 
   exact ht
 
 /- English proof (translation)
-Introduce `D N L₁ h x`. Conclude with `UpperTheory.Reformulated.B.WeightThresholdDefs.core h x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.WeightThresholdDefs.exists_smul_mem :
     ∀ {D : Formalism.L2.Ker.Car} {N : ℕ}

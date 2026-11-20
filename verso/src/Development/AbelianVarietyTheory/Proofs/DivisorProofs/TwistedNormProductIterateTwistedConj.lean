@@ -6,14 +6,14 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.LKMid
 
 /- English proof (translation)
-Simplify using `[nrmG, List.range_succ, List.map_append, List.prod_append]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nrmG_succ {H : Type} [Group H] (θ : H →* H) (r : ℕ) (δ : H) :
     nrmG θ (r + 1) δ = nrmG θ r δ * (⇑θ)^[r] δ := by
   simp [nrmG, List.range_succ, List.map_append, List.prod_append]
 
 /- English proof (translation)
-Proceed by induction on `r generalizing x y with`. Consider the case `zero => rfl`. Consider the case `succ r ih => rw [Function.iterate_succ_apply, Function.iterate_succ_apply, Function.iterate_succ_apply, map_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iter_hom_mul {H : Type} [Group H] (θ : H →* H) (r : ℕ) (x y : H) :
     (⇑θ)^[r] (x * y) = (⇑θ)^[r] x * (⇑θ)^[r] y := by
@@ -23,7 +23,7 @@ theorem iter_hom_mul {H : Type} [Group H] (θ : H →* H) (r : ℕ) (x y : H) :
       map_mul, ih]
 
 /- English proof (translation)
-Proceed by induction on `r generalizing x with`. Consider the case `zero => rfl`. Consider the case `succ r ih => rw [Function.iterate_succ_apply, Function.iterate_succ_apply, map_inv, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iter_hom_inv {H : Type} [Group H] (θ : H →* H) (r : ℕ) (x : H) :
     (⇑θ)^[r] x⁻¹ = ((⇑θ)^[r] x)⁻¹ := by
@@ -32,9 +32,9 @@ theorem iter_hom_inv {H : Type} [Group H] (θ : H →* H) (r : ℕ) (x : H) :
   | succ r ih => rw [Function.iterate_succ_apply, Function.iterate_succ_apply, map_inv, ih]
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => simp [nrmG]`. Consider the case `succ r ih`. Take `⟨h1, h2⟩` from `ih`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[nrmG_succ, nrmG_succ, h1, iter_hom_mul, iter_hom_mul, iter_hom_inv, Function.iterate_succ_apply] group`. Rewrite using `[nrmG_succ, map_mul, ← mul_assoc, h2, mul_assoc, ← Function.iterate_succ_apply' (⇑θ), mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem nrmG_twConj {H : Type} [Group H] (θ : H →* H) (r : ℕ) (δ g : H) :
     nrmG θ r (g⁻¹ * δ * θ g) = g⁻¹ * nrmG θ r δ * (⇑θ)^[r] g ∧

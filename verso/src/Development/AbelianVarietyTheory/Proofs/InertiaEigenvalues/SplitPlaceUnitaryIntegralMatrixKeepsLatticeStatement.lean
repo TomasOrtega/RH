@@ -12,7 +12,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting (FinPl id
 open GlobalTheory.DownLift.GenSplit
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.DownLift.SplitIntLift.lift_of_integral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FSplitPlaceUnitaryIntegralMatrixKeepsLattice.lean&line=83#L83)
 -/

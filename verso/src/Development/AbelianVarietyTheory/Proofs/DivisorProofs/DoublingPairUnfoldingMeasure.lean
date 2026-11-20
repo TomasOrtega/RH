@@ -17,13 +17,13 @@ namespace GlobalTheory.DblFinSmooth
 open ComplexConjugate
 
 /- English proof (translation)
-Set `a : AF F` to `((1 : Ainf F), (0 : Af F))`. Establish `ha : sndA F a = 0` using `rfl`. Establish `h0 : a • (mat g - 1) = 0` using `hg a ha`. Establish `hfa : fstA F a = 1` using `rfl`. Establish `key : ∀ x : AE F E, Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) (a • x) = Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[Algebra.smul_def, map_mul]`. Establish `: Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) (algebraMap (AF F) (AE F E) a) = 1` using `by show Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) (a ⊗ₜ[F] (1 : E)) = 1`. Rewrite using `[Algebra.TensorProduct.map_tmul, hfa]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[this, one_mul]`. Use extensionality with `i j`. Establish `hij` using `congrFun (congrFun h0 i) j`. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, Matrix.zero_apply] at hij`. Use `congrArg (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) hij` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[key, map_zero, map_sub]`. Establish `e1 : (1 : Matrix (Fin m) (Fin m) (AE F E)).map (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite using `[Matrix.map_apply, ← sub_eq_zero, ← e1, Matrix.map_apply]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fst_eq_one_of_mem_UAt {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {m : ℕ} (X : Spc F E m) (g : UA σ X.J) (hg : g ∈ UAt σ X (sndA F)) :
@@ -51,45 +51,41 @@ theorem fst_eq_one_of_mem_UAt {F E : Type} [Field F] [NumberField F] [Field E] [
   exact this
 
 /- English proof (translation)
-Use `letI : MeasurableSpace (Fin n × Fin d → AF F) := borel _`. Use `haveI : BorelSpace (Fin n × Fin d → AF F) := ⟨rfl⟩`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`.
+Equip the data with the indicated structure. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : Φ = 0`. Conclude with `⟨⊤, isOpen_univ, fun k _ _ => by rw [h0, map_zero]⟩`. Take `⟨x0, hx0⟩` from `Function.ne_iff.1 h0`. Establish `hx0' : Φ x0 ≠ 0` using `hx0`. Establish `hF : IsTotallyReal F` using `hB.cm.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hψ` using `GlobalTheory.StdCharFromIsStd.isCharAF hB.std`. Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hB.cm`. Establish `hW` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hweil`. Take `⟨Mo, hMo, hper⟩` from `GlobalTheory.T.partial_fourier_open_subgroup_support B.ψ hB.std Φ hΦ`. Take `⟨K, hK, hsupp⟩` from `GlobalTheory.T.compact_support_partial_fourier_integral B.ψ hB.std Φ hΦ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hS2` using `GlobalTheory.T.small_unitary_preserves_schwartz_support σ X W M Mo K hMo hK`. Establish `hc : Continuous fun k : UA σ W.J => om (1, k) Φ x0` using `(GlobalTheory.FixPure.continuous_eval hweil Φ hΦ x0).comp (continuous_const.prodMk continuous_id)`. Establish `hnear : ∀ᶠ k in 𝓝 (1 : UA σ W.J), ‖om (1, k) Φ x0 / Φ x0 - 1‖ < 1 / 2`. Use `(((hc.div_const _).sub continuous_const).norm.continuousAt (x := 1)).eventually_lt continuousAt_const ?_` and prove the remaining obligations. Establish `e1 : om ((1 : UA σ X.J), (1 : UA σ W.J)) = 1` using `map_one om`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ‖om ((1 : UA σ X.J), (1 : UA σ W.J)) Φ x0 / Φ x0 - 1‖ < 1 / 2`. Rewrite using `[e1, Module.End.one_apply, div_self hx0', sub_self, norm_zero]`. Evaluate the numerical expressions. Establish `hi : Tendsto (fun k : UA σ W.J => k⁻¹) (𝓝 1) (𝓝 1)`. Use `(continuous_inv (G := UA σ W.J)).tendsto 1` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[inv_one]`. Then use the resulting hypothesis. Take `⟨U, hUo, hUN⟩` from `GlobalTheory.T.exists_open_subgroup_in_neighbourhood σ hσ W.J _ ((hS2.and (hi.eventually hS2)).and hnear)`. Establish `hfinv : ∀ k : UA σ W.J, (mat k).map (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) = 1 → (mat k⁻¹).map (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) = 1`. Introduce `k hk`. Establish `e : mat k⁻¹ * mat k = 1` using `by show ((k⁻¹ * k : UA σ W.J) : GL (Fin d) (AE F E)).1 = 1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression. Establish `h1 : (mat k⁻¹ * mat k).map (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) = (mat k⁻¹).map (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) * (mat k).map (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E))` using `Matrix.map_mul (f := (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)).toRingHom)`. Rewrite `h1` using `[e, Matrix.map_one _ (map_zero _) (map_one _), hk, mul_one]`. Conclude with `h1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hfpow : ∀ k : UA σ W.J, (mat k).map (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) = 1 → ∀ m : ℕ, (mat (k ^ m)).map (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) = 1`. Introduce `k hk m`. Proceed by induction on `m with`. Consider the case `zero => show ((1 : UA σ W.J) : GL (Fin d) (AE F E)).1.map _ = 1`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ m ih`. Establish `e : mat (k ^ (m + 1)) = mat (k ^ m) * mat k` using `by show ((k ^ m * k : UA σ W.J) : GL (Fin d) (AE F E)).1 = _`. Both sides reduce to the same expression. Establish `h1 : (mat (k ^ m) * mat k).map (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) = (mat (k ^ m)).map (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) * (mat k).map (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E))` using `Matrix.map_mul (f := (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)).toRingHom)`. Rewrite using `[e, h1, ih, hk, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ k ∈ U, (mat k).map (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) = 1 → om (1, k) Φ = (om (1, k) Φ x0 / Φ x0) • Φ`. Introduce `k hk hfk`. Take `⟨⟨hPk, hPk'⟩, -⟩` from `hUN k hk hfk`. Establish `hfk'` using `hfinv k hfk`. Take `⟨c1, b1, i1⟩` from `GlobalTheory.SplitSvN.schA_facts hF hΦ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨c2, b2, i2⟩` from `GlobalTheory.SplitSvN.schA_facts hF (hW.pres (1, k) Φ hΦ)`. Take `⟨c, hc⟩` from `GlobalTheory.SplitSvN.proportional_of_coeff B.ψ hψ.1 hψ.2.1 (GlobalTheory.SWQ.Annihilator.self_annihilator F hF B.ψ hψ).1 1 (one_mul 1) Φ (om (1, k) Φ) (fun _ => 1) Φ (om (1, k) Φ) (fun x => by simp) (fun x => by simp) c1 c2 b1 b2 i1 i2 (fun x₁ y₁ _ _ μ hμ => by set w : (Fin n × …`. Establish `hact : actAB (cA σ) ((1 : UA σ X.J), k) u' = u`. Establish `e2 : mat k * mat k⁻¹ = 1` using `by show ((k * k⁻¹ : UA σ W.J) : GL (Fin d) (AE F E)).1 = 1`. Rewrite using `[mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin n) (Fin n) (AE F E)) * ((1 : Matrix (Fin n) (Fin n) (AE F E)) * u * Matrix.transpose (mat k⁻¹)) * Matrix.transpose (mat k) = u`. Rewrite using `[Matrix.one_mul, Matrix.one_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, e2, Matrix.transpose_one, Matrix.mul_one]`. Establish `e1 : schr B.ψ w (om (1, k) Φ) = om (1, k) (M.co.rho B.ψ u' Φ)`. Rewrite using `[hW.impl (1, k) u' Φ hΦ, hact]`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Darboux.rho, hu, LinearEquiv.apply_symm_apply]`. Use `show ∫ x, om (1, k) Φ x * conj (schr B.ψ w (om (1, k) Φ) x) ∂μ = ∫ x, Φ x * conj (schr B.ψ w Φ x) ∂μ`. Rewrite using `[e1, GlobalTheory.CptCoeff.integral_mul_conj_map (μ := μ) (schA F _) (fun f hf => GlobalTheory.T.adelic_schwartz_mem_L2 F _ μ hμ f hf) (om (1, k)) (fun f hf => hW.pres _ f hf) (fun f hf => hW.unit μ hμ _ f hf) hΦ (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hB.std u' Φ hΦ)]`. Use `show ∫ x, Φ x * conj (schr B.ψ (M.co.e u') Φ x) ∂μ = _`. Distinguish the cases in `hcw : ∫ x, Φ x * conj (schr B.ψ w Φ x) ∂μ = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hcw2 : ∫ x, Φ x * conj (schr B.ψ (M.co.e u') Φ x) ∂μ = 0`. Rewrite using `[hcw, hcw2]`. Take `⟨h1, h2⟩` from `hsupp μ hμ _ hcw2`. Take `⟨ha, hb1, hb2⟩` from `hPk hfk _ h1 h2`. Establish `hback : M.co.e (actAB (cA σ) ((1 : UA σ X.J), k) (M.co.e.symm (M.co.e u'))) = w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[LinearEquiv.symm_apply_apply, hact, hu, LinearEquiv.apply_symm_apply]`. Rewrite `ha`, `hb1`, `hb2` using `[hback]`. Use `hper μ hμ (M.co.e u') (w - M.co.e u') ha hb1 hb2` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Conclude with `this.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2⟩` from `hsupp μ hμ w hcw`. Take `⟨ha, hb1, hb2⟩` from `hPk' hfk' w h1 h2`. Use `hper μ hμ w (M.co.e u' - w) ha hb1 hb2` as an intermediate fact. Rewrite using `[add_sub_cancel] at this)` and apply the resulting hypothesis. Establish `hcx : c = om (1, k) Φ x0 / Φ x0`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[hc, Pi.smul_apply, smul_eq_mul, mul_div_cancel_right₀ _ hx0']`. Use `conv_lhs => rw [hc]`. Rewrite using `[hcx]`. Use `⟨U, hUo, fun k hk hfk => ?_⟩` and prove the remaining obligations. Use `set c := om (1, k) Φ x0 / Φ x0 with hcdef`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpow : ∀ m : ℕ, om (1, k ^ m) Φ = c ^ m • Φ`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Rewrite using `[pow_zero, pow_zero, one_smul]`.
-
-Conclude with `congrArg (· Φ) (map_one om)`. Consider the case `succ m ih`. Establish `e : ((1 : UA σ X.J), k ^ (m + 1)) = ((1 : UA σ X.J), k ^ m) * (1, k)`. Rewrite using `[Prod.mk_mul_mk, one_mul, pow_succ]`. Rewrite using `[e, map_mul, Module.End.mul_apply, key k hk hfk, map_smul, ih, smul_smul, pow_succ, mul_comm]`.
-
-Establish `hc1 : c = 1` using `GlobalTheory.Doubling.eq_one_of_forall_norm_pow_sub_one_le fun m => by`. Establish `hm` using `(hUN (k ^ m) (pow_mem hk m) (hfpow k hfk m)).2`. Rewrite `hm` using `[hpow m, Pi.smul_apply, smul_eq_mul, mul_div_cancel_right₀ _ hx0']`. Conclude with `hm.le`. Rewrite using `[key k hk hfk, ← hcdef, hc1, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_schA_of_weil {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W}
@@ -220,7 +216,7 @@ theorem fix_schA_of_weil {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   rw [key k hk hfk, ← hcdef, hc1, one_smul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d Xs W M χX χW om r s' r₁ s₁ hP W₂ _ _ _ co _ _ _ om₂ hweil Ψ hΨ`. Set `M₂ : Model σ Xs W₂` to `⟨co, fun _ _ => 0, 0, ∅⟩`. Take `⟨U, hUo, hU⟩` from `fix_schA_of_weil (M := M₂) (χW := 1) (om := om₂) hP.base hweil Ψ hΨ`. Conclude with `⟨U, hUo.mem_nhds U.one_mem, fun u hu hfin => hU u hu (fst_eq_one_of_mem_UAt W₂ u hfin)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fix_near_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (Xs : Spc F E n) (W : Spc F E d) (M : Model σ Xs W) (χX χW : Chr F E) (om : Rep σ Xs W) (r s' r₁ s₁ : ℕ),

@@ -5,27 +5,25 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.UPel.HT GlobalTheory.LKTri
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ _ n H hH hH' hd R _ _ K _ _ ψ β x t hx`. Set `L` to `K ⊗[↥(maximalRealSubfield E)] E`. Use `letI : Algebra ℚ L := ((algebraMap K L).comp (ψ.comp (algebraMap ℚ R))).toAlgebra`. Set `s : R →+* L` to `(algebraMap K L).comp ψ`. Set `e : E →+* L` to `Algebra.TensorProduct.includeRight.toRingHom`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f : R →ₐ[ℚ] Matrix (Fin n) (Fin n) L` to `((algebraMap L (Matrix (Fin n) (Fin n) L)).comp s).toRatAlgHom`. Set `g : Matrix (Fin n) (Fin n) E →ₐ[ℚ] Matrix (Fin n) (Fin n) L` to `(e.mapMatrix).toRatAlgHom`. Establish `hfg : ∀ a b, Commute (f a) (g b)` using `fun a b => Algebra.commutes (s a) (g b)`. Set `φ` to `Algebra.TensorProduct.lift f g hfg`. Establish `hφ : ∀ (r : R) (m : Matrix (Fin n) (Fin n) E), φ (r ⊗ₜ m) = s r • m.map e`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `r m`. Use `show f r * g m = _`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Set `c` to `GlobalTheory.HermGlobal.baseConj (IsCMField.complexConj E) K`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc1 : ∀ y : E, c (e y) = e (cj E y)`. Introduce `y`. Simplify using `[c, e, GlobalTheory.HermGlobal.baseConj]`. Establish `hc2 : ∀ r : R, c (s r) = s r`. Introduce `r`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `show c (ψ r ⊗ₜ 1) = ψ r ⊗ₜ 1`. Simplify using `[c, GlobalTheory.HermGlobal.baseConj]`. Establish `hHu : IsUnit H.det` using `isUnit_iff_ne_zero.mpr hd`. Establish `hinv : (H.map e)⁻¹ = H⁻¹.map e`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hHu, Matrix.map_one _ (map_zero e) (map_one e)]`. Establish `hright : H.map e * H⁻¹.map e = 1`. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ hHu, Matrix.map_one _ (map_zero e) (map_one e)]`. Establish `hmap : ∀ (r : R) (m : Matrix (Fin n) (Fin n) E), (s r • m.map e).map c = s r • (m.map (cj E)).map e`. Introduce `r m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, hc1, hc2]`. Establish `hH2 : H.map ⇑(↑(IsCMField.complexConj E) : E →+* E) = H` using `hH'`. Establish `hstar : ∀ y, φ (MulOpposite.unop ((starT (hermStar H hd) R) y)) = H⁻¹.map e * ((φ y).map c)ᵀ * H.map e`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r m`. Rewrite using `[starT_tmul, hermStar_apply, hφ, hφ, hmap, hH2, Matrix.map_mul, Matrix.map_mul, Matrix.transpose_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.transpose_map]`. Consider the case `add a b ha hb`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, MulOpposite.unop_add, ha, hb]`. Rewrite using `[Matrix.map_add _ (map_add c), Matrix.transpose_add, Matrix.mul_add, Matrix.add_mul]`. Use `⟨φ x, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Matrix.isUnit_iff_isUnit_det _).mp (x.isUnit.map φ)`. Establish `key` using `congrArg φ hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key` using `[map_mul, map_mul, hstar, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, hφ, hφ, map_one, one_smul, Matrix.map_one _ (map_zero e) (map_one e)]`. Use `show φ x * (β * H⁻¹).map e * ((φ x).map c)ᵀ = ψ t • H⁻¹.map e`. Establish `hsm : ψ t • H⁻¹.map e = s t • H⁻¹.map e` using `(algebraMap_smul L (ψ t) _).symm`. Rewrite using `[hsm]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc, hright, Matrix.mul_one]`. Use `_ = s t • H⁻¹.map e := by`. Rewrite using `[key, Matrix.smul_mul, Matrix.one_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G1.pTrivMat :
     TrivMat := by

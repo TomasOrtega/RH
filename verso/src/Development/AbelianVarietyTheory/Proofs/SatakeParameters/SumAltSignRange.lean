@@ -7,9 +7,9 @@ open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions F
 namespace GlobalTheory.TwV.Xc
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[show 2 * (m + 1) = 2 * m + 1 + 1 by ring, Finset.sum_range_succ, Finset.sum_range_succ, ih]`. Establish `h1 : (2 * m) % 2 = 0` using `by omega`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (2 * m + 1) % 2 = 1` using `by omega`. Simplify using `[h1, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem sum_alt_sign_range (m : ℕ) :
     ∑ i ∈ Finset.range (2 * m), (if i % 2 = 1 then (-1 : ℤ) else 1) = 0 := by
@@ -22,7 +22,7 @@ theorem sum_alt_sign_range (m : ℕ) :
     simp [h1, h2]
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `hn`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Fin.sum_univ_eq_sum_range]`. Both sides reduce to the same expression. Use `_ = 0 := by simpa [two_mul] using sum_alt_sign_range m`.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_alt_sign_pos (n' : ℕ) (hn : Even n') :
     ∑ s : Fin n', (if IsOddPos s then (-1 : ℤ) else 1) = 0 := by
@@ -33,11 +33,11 @@ theorem sum_alt_sign_pos (n' : ℕ) (hn : Even n') :
     _ = 0 := by simpa [two_mul] using sum_alt_sign_range m
 
 /- English proof (translation)
-Establish `hw : ∑ s : Fin (X.G.P.n' v), (if IsOddPos s then -1 else 1) * X.w v l s = X.vm v l`. Unfold `Sys.vm`. Rewrite using `[Finset.sum_filter, Finset.sum_filter, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : IsOddPos s <;> simp [h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[← hw]`. Establish `e1 : ∀ s, (if IsOddPos s then (-1 : ℤ) else 1) * X.w v l s = (if IsOddPos s then -1 else 1) * e s - (if IsOddPos s then (-1 : ℤ) else 1) * k`. Introduce `s`. Rewrite using `[hk s]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.sum_congr rfl (fun s _ => e1 s), Finset.sum_sub_distrib, ← Finset.sum_mul, sum_alt_sign_pos _ (X.G.P.setting v).even, zero_mul, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vm_eq_of_shift (p : ℕ) [Fact p.Prime] (X : Sys p) (v : X.Pl) (l : ℕ) (e : Fin (X.G.P.n' v) → ℤ) (k : ℤ)
     (hk : ∀ s, X.w v l s = e s - k) :
@@ -55,7 +55,7 @@ theorem vm_eq_of_shift (p : ℕ) [Fact p.Prime] (X : Sys p) (v : X.Pl) (l : ℕ)
     sum_alt_sign_pos _ (X.G.P.setting v).even, zero_mul, sub_zero]
 
 /- English proof (translation)
-Introduce `p _ X v l e k hk` and use `vm_eq_of_shift p X v l e k hk`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vm_shift_cancels : ∀ (p : ℕ) [Fact p.Prime] (X : Sys p) (v : X.Pl) (l : ℕ) (e : Fin (X.G.P.n' v) → ℤ) (k : ℤ),
     (∀ s, X.w v l s = e s - k) → X.vm v l = ∑ s : Fin (X.G.P.n' v), (if IsOddPos s then -1 else 1) * e s :=

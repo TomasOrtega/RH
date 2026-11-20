@@ -8,14 +8,14 @@ namespace GlobalTheory.IwConst.FlagMem
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Simplify using `using GlobalTheory.FlagLeviGroup.form_inv g⁻¹ x y`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem form_mul (g : Formalism.REAL.UJ ε) (x y : Fin n → ℂ) :
     star x ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ (uMat g *ᵥ y)) = star (uMat g⁻¹ *ᵥ x) ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ y) := by
   simpa using GlobalTheory.FlagLeviGroup.form_inv g⁻¹ x y
 
 /- English proof (translation)
-Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_mul_self : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   unfold Formalism.REAL.Jm
@@ -25,9 +25,9 @@ theorem Jm_mul_self : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hm : (uMat m)ᴴ * Formalism.REAL.Jm ε * uMat m = Formalism.REAL.Jm ε` using `m.2`. Establish `h1 : Formalism.REAL.Jm ε * uMat m⁻¹ = (uMat m)ᴴ * Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Jm_mul_self, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by rw [← h1, ← Matrix.mul_assoc, Jm_mul_self, Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem Jm_mul_conjTranspose (m : Formalism.REAL.UJ ε) :
     Formalism.REAL.Jm ε * (uMat m)ᴴ = uMat m⁻¹ * Formalism.REAL.Jm ε := by
@@ -41,7 +41,7 @@ theorem Jm_mul_conjTranspose (m : Formalism.REAL.UJ ε) :
     _ = _ := by rw [← h1, ← Matrix.mul_assoc, Jm_mul_self, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, Jm_mul_conjTranspose, ← Matrix.mulVec_mulVec, Matrix.star_mulVec, Matrix.conjTranspose_conjTranspose, Matrix.dotProduct_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_conjTranspose (m : Formalism.REAL.UJ ε) (x y : Fin n → ℂ) :
     star x ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ ((uMat m)ᴴ *ᵥ y)) = star ((uMat m⁻¹)ᴴ *ᵥ x) ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ y) := by
@@ -49,13 +49,13 @@ theorem form_conjTranspose (m : Formalism.REAL.UJ ε) (x y : Fin n → ℂ) :
     Matrix.conjTranspose_conjTranspose, Matrix.dotProduct_mulVec]
 
 /- English proof (translation)
-Introduce `n ε a j W hW`. Use `⟨fun u hu => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨N, hN⟩` from `(GlobalTheory.FlagMeas.UnipRad.flagN_subgroup_closed_keeps n ε a j W hW).1`. Establish `hu' : u⁻¹ ∈ flagN ε W`. Rewrite `hu`, the goal using `[← hN]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `N.inv_mem hu`. Simplify using `only [lowers, Submodule.mem_inf, Submodule.mem_iInf, mem_into, Matrix.sub_mulVec, Matrix.one_mulVec]`. Use `⟨⟨hu.1, hu.2⟩, fun i y hy x hx => ?_⟩` and prove the remaining obligations. Establish `h` using `hy _ (hu'.1 i x hx)`. Rewrite `h` using `[star_sub, sub_dotProduct]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_sub, dotProduct_sub, form_mul]`. Conclude with `h`. Establish `hm' : m⁻¹ ∈ flagM ε W` using `(GlobalTheory.FlagLeviGroup.leviSub ε W).inv_mem hm`. Simplify using `only [GlobalTheory.IwConst.keeps, Submodule.mem_inf, Submodule.mem_iInf, mem_into]`. Use `⟨⟨fun i y hy => (hm i y hy).1, fun i y hy x hx => ?_⟩, ⟨fun i y hy => (hm i y hy).2, fun i y hy x hx => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[form_mul]`. Conclude with `hy _ (hm' i x hx).1`. Rewrite using `[form_conjTranspose]`. Conclude with `hy _ (hm' i x hx).2`.
+A detailed English derivation is pending.
 -/
 theorem lowers_keeps : ∀ (n : ℕ) (ε : Fin n → Bool) (a : ℕ) (j : Fin a → ℕ)
     (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)), IsIsoFlag ε j W →

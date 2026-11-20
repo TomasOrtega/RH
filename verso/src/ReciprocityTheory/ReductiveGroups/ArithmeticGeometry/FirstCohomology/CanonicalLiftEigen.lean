@@ -18,9 +18,9 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
   {O : Type} [CommRing O] [StarRing O] [Module O D.toPre.X]
 
 /- English proof (translation)
-Establish `hmh : IsMonHom (oa.onB.act a)` using `oa.onB.hom a`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[DegPre.trPt, aF, DegPre.trF]`. Simplify using `only [DegPre.trPt, aF, DegPre.trF, DegPre.prB, padd, Category.assoc, CartesianMonoidalCategory.lift_snd, CartesianMonoidalCategory.comp_lift_assoc, CartesianMonoidalCategory.lift_snd_assoc]`. Rewrite using `[IsMonHom.mul_hom, CartesianMonoidalCategory.lift_map_assoc, Category.assoc, hb]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `cP`. Use `congr 2`. Apply the tactic sequence `all_goals first | rfl | (apply SemiCartesianMonoidalCategory.toUnit_unique) | simp`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem tr_aF (oa : D.toPre.OAct O) (a : O) (b : TF (R := V) F ⟶ D.toPre.P.A) (z : D.toPre.X)
     (hb : b ≫ oa.onB.act a = cP D.toPre _ (-z)) :
@@ -37,11 +37,11 @@ theorem tr_aF (oa : D.toPre.OAct O) (a : O) (b : TF (R := V) F ⟶ D.toPre.P.A) 
     all_goals first | rfl | (apply SemiCartesianMonoidalCategory.toUnit_unique) | simp
 
 /- English proof (translation)
-Establish `e1 : ∀ i, (DegPre.trPt D.toPre F p.g.b).left ≫ (aF D F oa a).left ≫ DegPre.famφ D.toPre F χ i = (aF D F oa a ≫ DegPre.trF D.toPre F (-z)).left ≫ DegPre.famφ D.toPre F χ i` using `fun i => by`. Rewrite using `[← Category.assoc, ← Over.comp_left, tr_aF oa a p.g.b z hb]`. Establish `e2 : ∀ i, (aF D F oa a).left ≫ (DegPre.trF D.toPre F (-z)).left ≫ DegPre.famφ D.toPre F χ i = (aF D F oa a ≫ DegPre.trF D.toPre F (-z)).left ≫ DegPre.famφ D.toPre F χ i` using `fun i => by`. Rewrite using `[← Category.assoc, ← Over.comp_left]`. Establish `e3 : star a • χ + p.y = star a • (χ - z)` using `by rw [hy, smul_sub, sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e4 : χ + 1 • -z = χ - z` using `by rw [one_smul, sub_eq_add_neg]`. Establish `hF : FormEq (Sum.elim (pullφ D F oa a (χ - z)) (fun i => (aF D F oa a).left ≫ DegPre.deltaφ D.toPre F 1 χ (-z) i)) (Sum.elim (pullε 1 N) (DegPre.deltaε 1)) (Sum.elim (fun i => (DegPre.trPt D.toPre F p.g.b).left ≫ pullφ D F oa a χ i) (DegPre.phiφ D.toPre F p.y (star a • χ) p.g.b)) …` using `fun U _ h => by`. Simplify using `only [pullφ, pullε, DegPre.phiφ, DegPre.deltaφ, DegPre.deltaε, Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, e1, e2, e3, e4]`. Simplify using `only [Fin.prod_univ_four]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ofMul_mul, ofMul_zpow]`. Use `module`. Establish `key` using `gen_unique' D.toPre.P.isLB hF (fst (TF (R := V) F) D.toPre.P.A).left (DegPre.zF D.toPre F).left (GC.zF_fst (D := D) (F := F)) (surj_appTop D.toPre F hG) (mulGen_isGen _ _ _ _ _ _ _ (pullGen_isGen _ _ _ _ huχ _) hΦ) (mulGen_isGen _ _ _ _ _ _ _ huχz (pullGen_isGen _ _ _ _ hfe _)) h …`. Rewrite `key` using `[val_mul hJ, val_mul hJ, val_pull hJ, val_pull hJ]`. Conclude with `key`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigen_of_origin (hG : GlobalFnsSt) (oa : D.toPre.OAct O) (a : O) (N : ℕ) (p : QkPt D.toPre F (1 * N))
     (z : D.toPre.X) (hy : p.y = -(star a • z)) (hb : p.g.b ≫ oa.onB.act a = cP D.toPre _ (-z)) (χ : D.toPre.X)

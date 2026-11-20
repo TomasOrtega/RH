@@ -17,7 +17,7 @@ set_option maxHeartbeats 2000000
 namespace GlobalTheory.GoodPlaceAtState
 
 /- English proof (translation)
-Rewrite using `[← Formalism.DivisionValues.GluingInclusion.conjIdeal_eq]`. Use `Ideal.subset_span ⟨(n : 𝓞 K), h, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem natCast_mem_conjPl {K : Type} [Field K] [NumberField K] [StarRing K] (w : HeightOneSpectrum (𝓞 K)) (n : ℕ)
     (h : ((n : ℕ) : 𝓞 K) ∈ w.asIdeal) : ((n : ℕ) : 𝓞 K) ∈ (Formalism.DivisionValues.conjPl w).asIdeal := by
@@ -26,7 +26,7 @@ theorem natCast_mem_conjPl {K : Type} [Field K] [NumberField K] [StarRing K] (w 
   simp
 
 /- English proof (translation)
-Use `natCast_mem_conjPl (Formalism.DivisionValues.conjPl w) n h` as an intermediate fact. Rewrite `this` using `[Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem natCast_mem_of_conjPl {K : Type} [Field K] [NumberField K] [StarRing K] (w : HeightOneSpectrum (𝓞 K)) (n : ℕ)
     (h : ((n : ℕ) : 𝓞 K) ∈ (Formalism.DivisionValues.conjPl w).asIdeal) : ((n : ℕ) : 𝓞 K) ∈ w.asIdeal := by
@@ -36,17 +36,15 @@ theorem natCast_mem_of_conjPl {K : Type} [Field K] [NumberField K] [StarRing K] 
 end GlobalTheory.GoodPlaceAtState
 
 /- English proof (translation)
-Introduce `K B f T w P x v hs hv`. Establish `hc` using `x.m.z.pins.char`. Establish `hA` using `hc.allPl`. Establish `hL` using `hc.base.lev`. Establish `hlow : ∀ k : Fin 2, (((Dof x).host.g k : ℕ) : 𝓞 (Dof x).host.E) ∉ v.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k hk`. Apply `hv` to reduce the goal to its premises. Use `(lowSet_finite (Dof x)).mem_toFinset.2 ⟨(Dof x).host.g k, ?_, ((Dof x).host.g_prime k).ne_zero, hk⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases k <;> simp [lowAll]`. Establish `hdiv : ∀ PP, PP ∈ x.m.z.R.toRealDat.Sb → ∃ k : Fin 2, (((Dof x).host.g k : ℕ) : 𝓞 (Dof x).host.E) ∈ PP.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `PP hPP`. Establish `hm : PP ∈ x.m.z.R.Pg` using `by rw [← hA]; exact hPP`. Take `⟨k, hk⟩` from `(hL.Pg PP).1 hm`. Conclude with `⟨k, Formalism.L2.Host.PiBar.overP _ hk⟩`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.RationalHeckeScalars.GoodPlace`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 
-Use `⟨⟨(GlobalTheory.HeckeTieCompare.isSplitPl_iff v).1 hs, fun hm => ?_, fun Q hQ he => ?_⟩, fun hm => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hdiv v hm`. Conclude with `hlow k hk`. Take `⟨k, hk⟩` from `hdiv Q hQ`. Rewrite `he` using `[Formalism.DivisionValues.GluingInclusion.conjIdeal_eq]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hk` using `[he]`. Conclude with `hlow k (GlobalTheory.GoodPlaceAtState.natCast_mem_of_conjPl v _ hk)`. Rewrite `hm` using `[Nat.cast_mul]`. Break down `v.isPrime.mem_or_mem hm with h | h` into its components or cases. Conclude with `hlow 0 h`.
-
-Conclude with `hlow 1 h`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GoodPlaceAtState.goodPlace_of_split_off : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} (P : Pre2 K w) (x : St P) (v : PlE (Dof x).host), IsSplitPl (Dof x).host v → v ∉ SbD (Dof x) → GlobalTheory.IndefiniteRowSideFullHecke.RationalHeckeScalars.GoodPlace x.m.z.R.toRealDat v := by
   intro K B f T w P x v hs hv

@@ -6,9 +6,9 @@ open Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ExponentialIntegralUnits.exists_exp_eq`. Consider the case `exact _root_.GlobalTheory.ExponentialIntegralUnits.exists_exp_eq`. Consider the case `(apply _root_.GlobalTheory.ExponentialIntegralUnits.exists_exp_eq <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ExponentialIntegralUnits.exists_exp_eq <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ExponentialIntegralUnits.exists_exp_eq <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ExponentialIntegralUnits.exists_exp_eq ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem banach_oneParamGroup_eq_exp {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸]
     [CompleteSpace 𝔸] (M : ℝ → 𝔸) (hc : Continuous M) (h0 : M 0 = 1)
@@ -23,7 +23,7 @@ theorem banach_oneParamGroup_eq_exp {𝔸 : Type*} [NormedRing 𝔸] [NormedAlge
   | (intros; exact _root_.GlobalTheory.ExponentialIntegralUnits.exists_exp_eq ..)
 
 /- English proof (translation)
-Introduce `ι _ _ M hc h0 hm`. Use `letI : NormedRing (Matrix ι ι ℝ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Matrix ι ι ℝ) := Matrix.linftyOpNormedAlgebra`. Take `⟨X, hX⟩` from `banach_oneParamGroup_eq_exp M hc h0 hm`. Conclude with `⟨X, fun t => (hX t).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem matrix_oneParamGroup_eq_exp : ∀ (ι : Type) [Fintype ι] [DecidableEq ι]
     (M : ℝ → Matrix ι ι ℝ), Continuous M → M 0 = 1 → (∀ s t, M (s + t) = M s * M t) →

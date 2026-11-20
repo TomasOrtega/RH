@@ -28,15 +28,15 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 def chartMono (i : (k : K) → ι k) : MRingOver ℂ ι := ∏ k, X ⟨k, i k⟩
 
 /- English proof (translation)
-Simplify using `[chartMono, segre]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_chartMono (i : (k : K) → ι k) (x : (Σ k, ι k) → ℂ) : eval x (chartMono i) = segre x i := by
   simp [chartMono, segre]
 
 /- English proof (translation)
-Take `⟨S, hS, rfl⟩` from `hQ`. Establish `hle : Ideal.span S ≤ RingHom.ker (eval (fun q : Σ k, ι k => c q.1 * x q))`. Rewrite using `[Ideal.span_le]`. Introduce `f hf`. Take `⟨a, ha⟩` from `hS f hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h` using `ReciprocityTheory.AnForm.R.aeval_smul_of_isMultiHomog ha c x`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker]`. Establish `h' : eval (fun q : Σ k, ι k => c q.1 * x q) f = (∏ k, c k ^ a k) * eval x f` using `h`. Rewrite using `[h', hx f (Ideal.subset_span hf), mul_zero]`. Conclude with `fun f hf => hle hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eval_scale_eq_zero {Q : Ideal (MRingOver ℂ ι)} (hQ : IsMultiHomogIdeal Q)
     (c : K → ℂ) {x : (Σ k, ι k) → ℂ} (hx : ∀ f ∈ Q, eval x f = 0) :
@@ -53,9 +53,9 @@ theorem eval_scale_eq_zero {Q : Ideal (MRingOver ℂ ι)} (hQ : IsMultiHomogIdea
   exact fun f hf => hle hf
 
 /- English proof (translation)
-Establish `hrad : g * chartMono i ∈ Q.radical`. Rewrite using `[← vanishingIdeal_zeroLocus_eq_radical (K := ℂ), mem_vanishingIdeal_iff]`. Introduce `x hx`. Establish `hae : ∀ p : MvPolynomial (Σ k, ι k) ℂ, aeval x p = eval x p` using `fun _ => rfl`. Rewrite using `[hae, map_mul, eval_chartMono]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h0 : segre x i = 0`. Rewrite using `[h0, mul_zero]`. Rewrite using `[h x (fun f hf => by have := hx f hf; rwa [hae] at this) h0, zero_mul]`. Rewrite `hrad` using `[hQp.radical]`. Conclude with `(hQp.mem_or_mem hrad).resolve_right hw`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_eval_eq_zero {Q : Ideal (MRingOver ℂ ι)} (hQp : Q.IsPrime) {i : (k : K) → ι k}
     (hw : chartMono i ∉ Q) {g : MRingOver ℂ ι}
@@ -75,13 +75,13 @@ def normAt (i : (k : K) → ι k) (x : (Σ k, ι k) → ℂ) : (Σ k, ι k) → 
   fun q => (x ⟨q.1, i q.1⟩)⁻¹ * x q
 
 /- English proof (translation)
-Introduce `h0` and use `h (Finset.prod_eq_zero (Finset.mem_univ k) h0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem entry_ne_zero {i : (k : K) → ι k} {x : (Σ k, ι k) → ℂ} (h : segre x i ≠ 0) (k : K) :
     x ⟨k, i k⟩ ≠ 0 := fun h0 => h (Finset.prod_eq_zero (Finset.mem_univ k) h0)
 
 /- English proof (translation)
-Simplify using `only [segre, normAt, Finset.prod_mul_distrib, Finset.prod_inv_distrib]`. Rewrite using `[div_eq_mul_inv, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem segre_normAt (i i' : (k : K) → ι k) (x : (Σ k, ι k) → ℂ) :
     segre (normAt i x) i' = segre x i' / segre x i := by
@@ -89,7 +89,7 @@ theorem segre_normAt (i i' : (k : K) → ι k) (x : (Σ k, ι k) → ℂ) :
   rw [div_eq_mul_inv, mul_comm]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun k => ⟨i k, mul_ne_zero (inv_ne_zero (entry_ne_zero h k)) (entry_ne_zero h k)⟩, eval_scale_eq_zero hQ (fun k => (x ⟨k, i k⟩)⁻¹) hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem normAt_mem {Q : Ideal (MRingOver ℂ ι)} (hQ : IsMultiHomogIdeal Q)
     {i : (k : K) → ι k} {x : (Σ k, ι k) → ℂ} (hx : ∀ f ∈ Q, eval x f = 0) (h : segre x i ≠ 0) :
@@ -98,7 +98,7 @@ theorem normAt_mem {Q : Ideal (MRingOver ℂ ι)} (hQ : IsMultiHomogIdeal Q)
     eval_scale_eq_zero hQ (fun k => (x ⟨k, i k⟩)⁻¹) hx⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨normAt i x, normAt_mem hQ hx h, by rw [segre_normAt, div_self h], funext fun a => (segre_normAt i (σ a) x).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem normAt_mem_chartSet {Q : Ideal (MRingOver ℂ ι)} (hQ : IsMultiHomogIdeal Q)
     {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) {i : (k : K) → ι k} {x : (Σ k, ι k) → ℂ}
@@ -108,11 +108,11 @@ theorem normAt_mem_chartSet {Q : Ideal (MRingOver ℂ ι)} (hQ : IsMultiHomogIde
     funext fun a => (segre_normAt i (σ a) x).symm⟩
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C c => exact ⟨C c, 0, fun x _ => by simp⟩`. Consider the case `add f g hf hg`. Take `⟨F, D, hF⟩` from `hf`. Take `⟨G, E, hG⟩` from `hg`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨F * chartMono i ^ E + G * chartMono i ^ D, D + E, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_pow, eval_chartMono, hF x hx, hG x hx]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X f a hf`. Take `⟨F, D, hF⟩` from `hf`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨F * chartMono (σ a), D + 1, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, eval_chartMono, hF x hx, eval_X]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_homogenise {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι k)
     (f : MvPolynomial (Fin m) ℂ) :
@@ -134,13 +134,13 @@ theorem exists_homogenise {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (i : (k 
     ring
 
 /- English proof (translation)
-Establish `back : ∀ (f : MvPolynomial (Fin m) ℂ) (F : MRingOver ℂ ι) (D : ℕ), (∀ x : (Σ k, ι k) → ℂ, segre x i ≠ 0 → eval x F = segre x i ^ D * eval (fun a => segre x (σ a) / segre x i) f) → F ∈ Q → f ∈ chartIdeal (conePts Q) σ i`. Introduce `f F D hF hFQ`. Rewrite using `[chartIdeal, mem_vanishingIdeal_iff]`. Introduce and unpack `_ ⟨z, hz, hz1, rfl⟩`. Establish `h0 : segre z i ≠ 0` using `by rw [hz1]; exact one_ne_zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h` using `hF z h0`. Rewrite `h` using `[hz.2 F hFQ, hz1]`. Simplify using `using h.symm`. Use `⟨hne, fun {f g} hfg => ?_⟩` and prove the remaining obligations. Take `⟨F, D, hF⟩` from `exists_homogenise σ i f`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨G, E, hG⟩` from `exists_homogenise σ i g`. Establish `hFG : F * G ∈ Q` using `mem_of_eval_eq_zero hQp hw fun x hx h0 => by`. Establish `h1 : eval (fun a => segre x (σ a) / segre x i) (f * g) = 0` using `(mem_vanishingIdeal_iff.1 hfg) _ (normAt_mem_chartSet hQh σ hx h0)`. Rewrite `h1` using `[map_mul]`. Rewrite using `[map_mul, hF x h0, hG x h0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(segre x i ^ D * segre x i ^ E) * h1`. Break down `hQp.mem_or_mem hFG with h | h` into its components or cases. Conclude with `Or.inl (back f F D hF h)`. Conclude with `Or.inr (back g G E hG h)`.
+Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem chartIdeal_isPrime {Q : Ideal (MRingOver ℂ ι)} (hQp : Q.IsPrime)
     (hQh : IsMultiHomogIdeal Q) {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k))
@@ -171,9 +171,9 @@ theorem chartIdeal_isPrime {Q : Ideal (MRingOver ℂ ι)} (hQp : Q.IsPrime)
   · exact Or.inr (back g G E hG h)
 
 /- English proof (translation)
-Proceed by induction on `s using MvPolynomial.induction_on with`. Consider the case `C c => simp [chartSection]`. Consider the case `add f g hf hg`. Simplify using `only [chartSection, map_add] at hf hg ⊢`. Rewrite using `[hf, hg]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mul_X f q hf`. Simplify using `only [chartSection, map_mul, aeval_X, eval_X] at hf ⊢`. Rewrite using `[hf]`. Both sides reduce to the same expression.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eval_chartSection [DecidableEq K] {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι k)
     (x : Fin m → ℂ) (s : MRingOver ℂ ι) : eval x (chartSection σ i s) = eval (chartLift σ i x) s := by
@@ -192,19 +192,17 @@ end SecNotIn
 open SecNotIn in
 
 /- English proof (translation)
-Introduce `K _ _ ι _ Q e m σ i s a hQ hs hsQ J hJ hmem`. Take `⟨-, ⟨hQp, hQh, -⟩, -⟩` from `hQ`. Establish `hJmin` using `mem_chartComponents.1 hJ`. Establish `hprimeJ : J.IsPrime` using `hJmin.1.1`. Establish `hne : chartIdeal (conePts Q) σ i ≠ ⊤` using `fun h => hprimeJ.ne_top (top_le_iff.1 (h ▸ hJmin.1.2))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : chartMono i ∉ Q`. Introduce `hwQ`. Apply `hne` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, chartIdeal, mem_vanishingIdeal_iff]`. Introduce and unpack `_ ⟨z, hz, hz1, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `h0` using `hz.2 _ hwQ`. Rewrite `h0` using `[eval_chartMono, hz1]`. Conclude with `absurd h0 one_ne_zero`. Establish `hprime` using `chartIdeal_isPrime hQp hQh σ hw hne`. Establish `hJI : J ≤ chartIdeal (conePts Q) σ i` using `hJmin.2 ⟨hprime, le_rfl⟩ hJmin.1.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI` using `hJI hmem`. Apply `hsQ` to reduce the goal to its premises. Use `mem_of_eval_eq_zero hQp hw fun x hx h0 => ?_` and prove the remaining obligations. Establish `hz1 : segre (normAt i x) i = 1` using `by rw [segre_normAt, div_self h0]`. Establish `hpt : (fun a => segre (normAt i x) (σ a)) ∈ chartSet (conePts Q) σ i` using `⟨normAt i x, normAt_mem hQh hx h0, hz1, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : eval (fun a => segre (normAt i x) (σ a)) (chartSection σ i s) = 0` using `(mem_vanishingIdeal_iff.1 hI) _ hpt`. Establish `hlift : chartLift σ i (fun a => segre (normAt i x) (σ a)) = normAt i x`. Use function extensionality and compare the values at `⟨k, j⟩`. Rewrite using `[chartLift_segre_apply σ i _ hz1]`. Establish `: normAt i x ⟨k, i k⟩ = 1` using `inv_mul_cancel₀ (entry_ne_zero h0 k)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, inv_one, mul_one]`. Rewrite `h1` using `[eval_chartSection, hlift]`. Establish `hsc : eval (normAt i x) s = (∏ k, ((x ⟨k, i k⟩)⁻¹) ^ a k) * eval x s` using `ReciprocityTheory.AnForm.R.aeval_smul_of_isMultiHomog (fun d hd k => hs d hd k) (fun k => (x ⟨k, i k⟩)⁻¹) x`. Rewrite `h1` using `[hsc]`. Use `(mul_eq_zero.1 h1).resolve_left ?_` and prove the remaining obligations.
-
-Conclude with `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (inv_ne_zero (entry_ne_zero h0 k))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem chartSection_notMem_component : ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (Q : Ideal (MRingOver ℂ ι)) (e m : ℕ) (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι k)

@@ -43,9 +43,9 @@ open GlobalTheory.FockPos
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `latO`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `w ⟨α, hα, hP, a, ha, s, hs, t, ht, rfl⟩`. Rewrite using `[← neg_neg (Matrix.of _)]`. Use `neg_mem (AddSubgroup.subset_closure ⟨α, hα, hP, a, ha, s, hs, t, ht, ?_⟩)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i j`. Simplify using `[negSp_gram, Finset.sum_neg_distrib, TensorProduct.tmul_neg]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem latO_negSp_le (S T : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E))
     (P : HeightOneSpectrum (𝓞 D.host.F) → Prop) : latO (negSp S) T LS LT P ≤ latO S T LS LT P := by
@@ -58,9 +58,9 @@ theorem latO_negSp_le (S T : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LT : S
   simp [negSp_gram, Finset.sum_neg_distrib, TensorProduct.tmul_neg]
 
 /- English proof (translation)
-Establish `hc : ContDiff ℂ (Multiset.card (Finsupp.toMultiset k)) (fun z : Formalism.MainNotions.TaylorLogMetric.VC D N N' => G (a • z))` using `((ReciprocityTheory.ChartRestriction.G.I2.contDiff_of_diff hG).comp (contDiff_const_smul a)).of_le (by exact_mod_cast le_top)`. Establish `h1 : Formalism.MainNotions.TaylorLogMetric.taylor D (fun z => c * G (a • z)) k = c * Formalism.MainNotions.TaylorLogMetric.taylor D (fun z => G (a • z)) k`. Unfold `Formalism.MainNotions.TaylorLogMetric.taylor`. Establish `e : (fun z : Formalism.MainNotions.TaylorLogMetric.VC D N N' => c * G (a • z)) = c • (fun z => G (a • z))` using `rfl`. Rewrite using `[e, iteratedFDeriv_const_smul_apply (hc.contDiffAt)]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ContinuousMultilinearMap.smul_apply, smul_eq_mul, mul_div_assoc]`. Rewrite using `[applyAt0_monomial', applyAt0_monomial', h1, taylor_comp_smul' D G hG a k]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem applyAt0_scale {N N' : ℕ} (G : Formalism.MainNotions.TaylorLogMetric.VC D N N' → ℂ) (hG : Differentiable ℂ G) (c a : ℂ)
     (k : Formalism.MainNotions.GL3Theta.Idx D N N' →₀ ℕ) :
@@ -84,33 +84,29 @@ open GlobalTheory.FockPos
 variable {D : D7}
 
 /- English proof (translation)
-Take `rfl` from `cart_one frS hS hcS`. Take `rfl` from `cart_one frT hT hcT`. Establish `hψ : IsStdChar D ψ (-1)` using `hF.1`. Establish `hθ : IsInfFam θ` using `hF.2.inf`. Take `⟨ΛS, hΛSe, hΛS⟩` from `GlobalTheory.T.isSelfDual_image_orthonormalFrame_lattice S frS hS Ls hLs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ΛT, hΛTe, hΛT⟩` from `GlobalTheory.T.isSelfDual_image_orthonormalFrame_lattice T frT hT Lt hLt`. Rewrite `hF`, `hw` using `[← hΛSe, ← hΛTe]`. Take `⟨M, ζ, hζ, hnM, heq⟩` from `GlobalTheory.T.heisenberg_root_smul_finiteRational_latticeDecomp ψ S T ΛS ΛT hψ hΛS hΛT F hF.2.lat n hn w hw`. Rewrite `hnM` using `[hΛSe, hΛTe]`. Take `⟨Φ, hΦd, hΦ⟩` from `GlobalTheory.T.fockVacuum_real_restriction_gaussian_entire ψ θ S T frS frT _ _ hS hT F hF`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `set sc : ℂ := (((Real.sqrt (2 * Real.pi * Formalism.L2.Pj.xiR D) : ℝ) : ℂ)⁻¹) with hsc`. Establish `hper : ∀ τ : D.what₂.Tau, GlobalTheory.FunObj.period δ τ = δ * sc` using `fun τ => by`. Rewrite using `[GlobalTheory.FunObj.period, GlobalTheory.AdTh.Fock.norm_embedding_hostFormConstant_eq, div_eq_mul_inv]`. Establish `hprod : ∀ k : FVar D T.rank S.rank →₀ ℕ, (k.prod fun v e => GlobalTheory.FunObj.period δ v.1 ^ e) = (δ * sc) ^ (k.sum fun _ n => n)` using `fun k => by`. Simplify using `only [hper, Finsupp.prod, Finsupp.sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Finset.prod_pow_eq_pow_sum _ _ _`. Establish `hsc0 : sc ≠ 0`. Rewrite using `[hsc]`. Use `inv_ne_zero ?_` and prove the remaining obligations. Establish `hx : 0 < Formalism.L2.Pj.xiR D` using `GlobalTheory.SupDict.xiR_pos D`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Real.sqrt_pos.2 (by positivity)).ne'` after adjusting the coercions. Establish `hΦeq : Φ = fun z => c * Θ₀ (δ • z)`. Use `GlobalTheory.T.entire_eq_of_monomial_derivations_at_zero_eq Φ _ hΦd ((hΘ.comp (differentiable_id.const_smul δ)).const_mul c) fun k => ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.T.fockMonomial_at_origin_gaussian_entire_orthonormal ψ θ S T frS frT hψ hθ hS hT F Φ hΦd hΦ k`. Establish `h2` using `hj k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[applyAt0_scale Θ₀ hΘ c δ k]`. Use `mul_left_cancel₀ (pow_ne_zero (k.sum fun _ n => n) hsc0) ?_` and prove the remaining obligations. Rewrite using `[← h1, h2, hprod, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `set X : Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank := fun τ a b => -(((GlobalTheory.FockPos.frAt frT τ)⁻¹ * Matrix.of (GlobalTheory.VacUnique.infRat S T M τ) * GlobalTheory.FockPos.frAt frS τ) a b) with hX`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hR` using `GlobalTheory.T.heisenbergTranslate_finiteRational_realGaussian ψ θ S T frS frT hS hT hψ hθ F hF.2.theta Φ hΦ M X hX`. Use `set Φ₁ : Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank → ℂ := fun Z => ζ * (Φ (Z + X) * Complex.exp (-(Real.pi : ℂ) * (2 * ((Formalism.L2.Pj.xiR D : ℝ) : ℂ) * ∑ τ, ∑ a, ∑ b, Z τ a b * starRingEnd ℂ (X τ a b)) - (Real.pi : ℂ) * (2 * ((Formalism.L2.Pj.xiR D : ℝ) : ℂ) * ∑ …`. Establish `hR' : ∀ w' : WO S T, w'.map (finPart D) = 0 → heisO ψ S T w F w' = GlobalTheory.FockPos.gaussO θ frS frT w' * Φ₁ (GlobalTheory.FockPos.zCo θ frS frT w')`. Introduce `w' hw'`. Rewrite using `[heq, Pi.smul_apply, smul_eq_mul, hR w' hw', hΦ₁]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `set G : Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank → ℂ := fun z => ζ * Formalism.MainNotions.TaylorLogMetric.U D (Formalism.MainNotions.TaylorLogMetric.tor0 D D.host.ccK δ) (δ • X) Θ₀ z with hGdef`. Establish `hGd : Differentiable ℂ G`. Establish `h : Differentiable ℂ (fun z : Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank => Formalism.MainNotions.TaylorLogMetric.Hf D (Formalism.MainNotions.TaylorLogMetric.tor0 D D.host.ccK δ) z (δ • X))`. Unfold `Formalism.MainNotions.TaylorLogMetric.Hf`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `fun_prop`. Establish `h2 : Differentiable ℂ (Formalism.MainNotions.TaylorLogMetric.U D (Formalism.MainNotions.TaylorLogMetric.tor0 D D.host.ccK δ) (δ • X) Θ₀)`. Unfold `Formalism.MainNotions.TaylorLogMetric.U`. Use `fun_prop`. Conclude with `h2.const_mul ζ`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hΦ₁eq : Φ₁ = fun Z => c * G (δ • Z)`. Use function extensionality and compare the values at `Z`. Simplify using `only [hΦ₁, hGdef, hΦeq, Formalism.MainNotions.TaylorLogMetric.U]`. Rewrite using `[GlobalTheory.ThetaLawOF.torusHermitianForm_scaled_coordinate_eq hδ, GlobalTheory.ThetaLawOF.torusHermitianForm_scaled_coordinate_eq hδ, smul_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hΦ₁d : Differentiable ℂ Φ₁`. Rewrite using `[hΦ₁eq]`. Conclude with `(hGd.comp (differentiable_id.const_smul δ)).const_mul c`. Use `⟨ζ, δ • X, hζ, ?_, fun k => ?_⟩` and prove the remaining obligations. Establish `hv : GlobalTheory.VacUnique.finRat S T (-(n • M)) ∈ latO S T (GlobalTheory.MovedDict.inV frS Ls) (GlobalTheory.MovedDict.inV frT Lt) (fun _ => True)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_neg]`. Conclude with `neg_mem hnM`. Use `GlobalTheory.T.delta_orthonormalCoords_mem_lattice_of_finiteRational S T frS frT hS hT Ls Lt hLs hLt δ (-(n • M)) hv` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Establish `e : ∀ τ, Matrix.of (GlobalTheory.VacUnique.infRat S T (-(n • M)) τ) = -((n : ℂ) • Matrix.of (GlobalTheory.VacUnique.infRat S T M τ))`.
-
-Introduce `τ`. Use extensionality with `i j`. Simplify using `[map_neg, map_nsmul, nsmul_eq_mul]`. Use function extensionality and compare the values at `τ a b`. Simplify using `only [e, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.neg_apply, Matrix.smul_apply, smul_eq_mul, Pi.smul_apply, hX, nsmul_eq_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[GlobalTheory.T.fockMonomial_at_origin_gaussian_entire_orthonormal ψ θ S T frS frT hψ hθ hS hT _ Φ₁ hΦ₁d hR' k, hΦ₁eq, applyAt0_scale G hGd c δ k, hprod, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem core (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)
     (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)
@@ -217,11 +213,11 @@ open GlobalTheory.FockPos
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hvac'` using `GlobalTheory.VacConj.isVacO_conj_negSp ψ θ S T sS sT _ _ F hF`. Establish `hψn : ∀ a, ‖ψ a‖ = 1` using `hF.1.1.2.1`. Establish `hθ : IsInfFam θ` using `hF.2.inf`. Establish `hj2 : ∀ k : FVar D T.rank S.rank →₀ ℕ, pureTensorO ψ θ S T sS sT (GlobalTheory.FockPos.frAt frS) (GlobalTheory.FockPos.frAt frT) (fun w => starRingEnd ℂ (F w)) (MvPolynomial.monomial k 1) 0 = starRingEnd ℂ c * ((k.prod fun v e => GlobalTheory.FunObj.period δ v.1 ^ e) * Formalism. …`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3` using `hj k`. Rewrite `h3` using `[GlobalTheory.FockConj.pureTensorO_negSp_monomial ψ θ S T sS sT _ _ F hF.1 hθ k 0]`. Establish `h4` using `congrArg (starRingEnd ℂ) h3`. Rewrite `h4` using `[Complex.conj_conj, map_mul, Complex.conj_conj]`. Conclude with `h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ζ, s, hζ, hs, hk⟩` from `core ψ θ S T sS sT frS frT hS hT hcS hcT Ls Lt hLs hLt δ hδ Θ₀ hΘ _ _ hvac' hj2 n hn w (latO_negSp_le S T _ _ _ hw)`. Use `⟨ζ, s, hζ, hs, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.FockConj.pureTensorO_negSp_monomial ψ θ S T sS sT _ _ _ hF.1 hθ k 0, ← GlobalTheory.VacConj.heisO_conj ψ hψn S T w F, hk k, map_mul, Complex.conj_conj]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coreNeg (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)
     (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)
@@ -270,7 +266,7 @@ end GlobalTheory.HeisTrans
 namespace GlobalTheory.HeisTrans
 
 /- English proof (translation)
-Take `⟨m, hm, hζ⟩` from `h`. Establish `hint : IsIntegral ℚ ζ` using `⟨Polynomial.X ^ m - 1, Polynomial.monic_X_pow_sub_C 1 hm.ne', by simp [hζ]⟩`. Use `⟨⟨ζ, mem_algebraicClosure_iff.2 hint.isAlgebraic⟩, rfl, m, hm, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hζ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem qbar_of_root {ζ : ℂ} (h : ∃ m : ℕ, 0 < m ∧ ζ ^ m = 1) :
     ∃ ζ' : Qbar, (ζ' : ℂ) = ζ ∧ ∃ m : ℕ, 0 < m ∧ ζ' ^ m = 1 := by
@@ -283,19 +279,17 @@ theorem qbar_of_root {ζ : ℂ} (h : ∃ m : ℕ, 0 < m ∧ ζ ^ m = 1) :
 end GlobalTheory.HeisTrans
 
 /- English proof (translation)
-Introduce `D T L sc G W S p hp Ls Lt κ F hLs hLt hdiff hvac hjets n hn w hw`. Establish `hδ : S.Z.δ ≠ 0` using `GlobalTheory.InertSign.delta_ne_zero S.Z.crv`. Use `set Θ₀ := fun z => κ * Iop D (tor0 D D.host.ccK S.Z.δ) (La0 D (tor0 D D.host.ccK S.Z.δ) _ _) (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D D.host.ccK S.Z.δ) Ls Lt) (S.Z.e0 p) z with hΘ₀`. Establish `hΘ : Differentiable ℂ Θ₀` using `hdiff.const_mul κ`. Establish `hU : ∀ (s : VC D (G.pS p).rank (G.pT p).rank) (ζ : ℂ), (fun z => ζ * Formalism.MainNotions.TaylorLogMetric.U D (tor0 D D.host.ccK S.Z.δ) s Θ₀ z) = fun z => κ * (ζ * Formalism.MainNotions.TaylorLogMetric.U D (tor0 D D.host.ccK S.Z.δ) s (Iop D (tor0 D D.host.ccK S.Z.δ) (La0 D (tor0 …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s ζ`. Use function extensionality and compare the values at `z`. Simplify using `only [hΘ₀, Formalism.MainNotions.TaylorLogMetric.U]`. Expand and normalize the polynomial expressions, which then agree. Consider the cases of `p with`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `top t j`. Establish `hj : j + 1 ≤ D.R.m` using `hp`. Establish `hcS` using `W.cart_is (.top j) (show j ≤ D.R.m by omega)`. Establish `hcT` using `W.cart_is (.top (j + 1)) hj`. Take `⟨ζ, s, hζ, hs, hk⟩` from `GlobalTheory.HeisTrans.core W.ψ W.θ _ _ _ _ (S.N.fr (.top j)) (S.N.fr (.top (j + 1))) (S.N.fr_on _ (show j ≤ D.R.m by omega)) (S.N.fr_on _ hj) hcS hcT Ls Lt hLs hLt S.Z.δ hδ Θ₀ hΘ (S.Z.c0 (.top t j)) F hvac hjets n hn w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ζ', hζ', hroot⟩` from `GlobalTheory.HeisTrans.qbar_of_root hζ`. Use `⟨ζ', s, hroot, hs, fun k => ?_⟩` and prove the remaining obligations. Use `hk k` as an intermediate fact. Rewrite `this` using `[hU]`. Rewrite using `[hζ']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `this`. Consider the case `chi i j`. Take `⟨hi, rfl⟩ : i + 1 ≤ D.R.m ∧ j = D.R.m` from `hp`. Take `⟨ζ, s, hζ, hs, hk⟩` from `GlobalTheory.HeisTrans.coreNeg W.ψ W.θ _ _ _ _ (S.N.fr (.grid (i + 1) D.R.m)) (S.N.fr (.grid i D.R.m)) (S.N.fr_on _ ⟨hi, rfl⟩) (S.N.fr_on _ ⟨by omega, rfl⟩) (W.cart_is (.grid (i + 1) D.R.m) ⟨hi, le_rfl⟩) (W.cart_is (.grid i D.R.m) ⟨by omega, le_rfl⟩) Ls Lt hLs hLt S.Z.δ hδ Θ₀ hΘ …`. Take `⟨ζ', hζ', hroot⟩` from `GlobalTheory.HeisTrans.qbar_of_root hζ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨ζ', s, hroot, hs, fun k => ?_⟩` and prove the remaining obligations. Use `hk k` as an intermediate fact. Rewrite `this` using `[hU]`. Rewrite using `[hζ']`. Conclude with `this`.
-
-Consider the case `mu _ i j => exact absurd hp (by simp [DefPair])`. Consider the case `core i => exact absurd hp (by simp [DefPair])`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeisTrans.main : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GlobalTheory.ChiGrid.GridData L sc} {W : G.Weil}
     (S : GridChoice W Set.univ) (p : GlobalTheory.ChiGrid.Pair T), DefPair D.R.m p →

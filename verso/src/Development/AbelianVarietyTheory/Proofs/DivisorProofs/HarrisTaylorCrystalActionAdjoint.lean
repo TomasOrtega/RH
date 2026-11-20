@@ -10,9 +10,9 @@ open GlobalTheory.UPel.Sm GlobalTheory.Cris GlobalTheory.DeRham
 namespace GlobalTheory.HTCount
 
 /- English proof (translation)
-Introduce `p _ D R _ b N _ _ k _ _ t o₀ β _ φ hφ c x y`. Use `haveI := o₀.act.hom c`. Use `haveI := o₀.act.hom (D.star c).unop`. Establish `hA` using `o₀.ab`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim k o₀.A hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `C` using `GlobalTheory.AbDual.cupSquare_of_free GlobalTheory.abelianDeRham.1 (AbelianSchemeGerms.isAbelianScheme_tensor _ _ hA hA) (GlobalTheory.AbDual.smooth_prod hg hg)`. Establish `e` using `GlobalTheory.AbDual.IsCorrForm.adjoint C o₀.isLB o₀.isLB hφ hφ (o₀.act.act c) (o₀.act.act (D.star c).unop) (LBIso.symm (o₀.rosati c)) x y`. Rewrite using `[GlobalTheory.HTCount.crysAct_apply, GlobalTheory.HTCount.crysAct_apply]`. Conclude with `e.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crysAct_adjoint : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k), t = spMap β → ∀ φ : LinearMap.BilinForm k (HdR o₀.A), GlobalTheory.AbDual.IsCorrForm (dp0 k) (𝟙 _) o₀.A o₀.A o₀.P φ → ∀ (c : D.O) x y, φ (GlobalTheory.HTCount.crysAct o₀ c x) y = φ x (GlobalTheory.HTCount.crysAct o₀ (D.star c).unop y) := by
   intro p _ D R _ b N _ _ k _ _ t o₀ β _ φ hφ c x y

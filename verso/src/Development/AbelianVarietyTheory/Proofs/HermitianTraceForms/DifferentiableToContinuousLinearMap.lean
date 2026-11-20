@@ -27,72 +27,72 @@ theorem coe_toLinearMap (b : R) :
     (isoTransvection h x hx b : M →ₗ[R] M) = LinearMap.transvection (b • h.flip x) x := rfl
 
 /- English proof (translation)
-Rewrite using `[apply, add_sub_cancel_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem apply_sub (b : R) (v : M) : isoTransvection h x hx b v - v = (b * h v x) • x := by
   rw [apply, add_sub_cancel_left]
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem zero : isoTransvection h x hx 0 = 1 := by
   ext v; simp [apply]
 
 /- English proof (translation)
-Simplify using `[apply, hx]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem apply_self (b : R) : isoTransvection h x hx b x = x := by
   simp [apply, hx]
 
 /- English proof (translation)
-Simplify using `[apply, hv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem apply_of_orth (b : R) {v : M} (hv : h v x = 0) : isoTransvection h x hx b v = v := by
   simp [apply, hv]
 
 /- English proof (translation)
-Simplify using `[apply, hx]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem form_apply_self (b : R) (v : M) :
     h (isoTransvection h x hx b v) x = h v x := by
   simp [apply, hx]
 
 /- English proof (translation)
-Simplify using `[apply, hx]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem form_self_apply (b : R) (v : M) :
     h x (isoTransvection h x hx b v) = h x v := by
   simp [apply, hx]
 
 /- English proof (translation)
-Rewrite using `[apply, form_apply_self, apply, apply, add_mul, add_smul, add_assoc, add_comm ((b' * _) • x)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem apply_apply (b b' : R) (v : M) :
     isoTransvection h x hx b (isoTransvection h x hx b' v) = isoTransvection h x hx (b + b') v := by
   rw [apply, form_apply_self, apply, apply, add_mul, add_smul, add_assoc, add_comm ((b' * _) • x)]
 
 /- English proof (translation)
-Use extensionality with `v`. Conclude with `apply_apply h x hx b b' v`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem mul (b b' : R) :
     isoTransvection h x hx b * isoTransvection h x hx b' = isoTransvection h x hx (b + b') := by
   ext v; exact apply_apply h x hx b b' v
 
 /- English proof (translation)
-Rewrite using `[Commute, SemiconjBy, mul, mul, add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem commute (b b' : R) :
     Commute (isoTransvection h x hx b) (isoTransvection h x hx b') := by
   rw [Commute, SemiconjBy, mul, mul, add_comm]
 
 /- English proof (translation)
-The claim follows from `inv_eq_of_mul_eq_one_right (by rw [mul, add_neg_cancel, zero])`.
+A detailed English derivation is pending.
 -/
 theorem inv (b : R) : (isoTransvection h x hx b)⁻¹ = isoTransvection h x hx (-b) :=
   inv_eq_of_mul_eq_one_right (by rw [mul, add_neg_cancel, zero])
 
 /- English proof (translation)
-The claim follows from `inv h x hx b`.
+A detailed English derivation is pending.
 -/
 theorem symm (b : R) : (isoTransvection h x hx b).symm = isoTransvection h x hx (-b) :=
   inv h x hx b
@@ -123,7 +123,7 @@ namespace isoTransvection
 variable (h : M →ₗ[R] M →ₗ⋆[R] R) (x : M) (hx : h x x = 0)
 
 /- English proof (translation)
-Rewrite using `[← isoTransvectionHom_ofAdd, ← map_pow, ← ofAdd_nsmul, isoTransvectionHom_ofAdd, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow (b : R) (n : ℕ) :
     isoTransvection h x hx b ^ n = isoTransvection h x hx (n * b) := by
@@ -131,7 +131,7 @@ theorem pow (b : R) (n : ℕ) :
     nsmul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[← isoTransvectionHom_ofAdd, ← map_zpow, ← ofAdd_zsmul, isoTransvectionHom_ofAdd, zsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zpow (b : R) (n : ℤ) :
     isoTransvection h x hx b ^ n = isoTransvection h x hx (n * b) := by
@@ -139,7 +139,7 @@ theorem zpow (b : R) (n : ℤ) :
     zsmul_eq_mul]
 
 /- English proof (translation)
-Simplify using `[apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_apply_left (b : R) (u v : M) :
     h (isoTransvection h x hx b u) v = h u v + b * h u x * h x v := by
@@ -148,7 +148,7 @@ theorem form_apply_left (b : R) (u v : M) :
 variable {h}
 
 /- English proof (translation)
-Establish `: h x v = star (h v x)` using `hh v x`. Simplify using `only [apply, map_add, LinearMap.map_smulₛₗ, starRingEnd_apply, star_mul', smul_eq_mul, this]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_apply_right (hh : ∀ u v, h v u = star (h u v)) (b : R) (u v : M) :
     h u (isoTransvection h x hx b v) = h u v + star b * h u x * h x v := by
@@ -157,7 +157,7 @@ theorem form_apply_right (hh : ∀ u v, h v u = star (h u v)) (b : R) (u v : M) 
   ring
 
 /- English proof (translation)
-Rewrite using `[form_apply_left, form_apply_right x hx hh, form_self_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_apply_apply (hh : ∀ u v, h v u = star (h u v)) (b : R) (u v : M) :
     h (isoTransvection h x hx b u) (isoTransvection h x hx b v)
@@ -166,7 +166,7 @@ theorem form_apply_apply (hh : ∀ u v, h v u = star (h u v)) (b : R) (u v : M) 
   ring
 
 /- English proof (translation)
-Rewrite using `[form_apply_left, form_apply_right x hx hh, form_self_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_apply_apply' (hh : ∀ u v, h v u = star (h u v)) (b b' : R) (u v : M) :
     h (isoTransvection h x hx b u) (isoTransvection h x hx b' v)
@@ -175,7 +175,7 @@ theorem form_apply_apply' (hh : ∀ u v, h v u = star (h u v)) (b b' : R) (u v :
   ring
 
 /- English proof (translation)
-Rewrite using `[form_apply_apply x hx hh, hh v x, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_apply_diag (hh : ∀ u v, h v u = star (h u v)) (b : R) (v : M) :
     h (isoTransvection h x hx b v) (isoTransvection h x hx b v)
@@ -183,35 +183,35 @@ theorem form_apply_diag (hh : ∀ u v, h v u = star (h u v)) (b : R) (v : M) :
   rw [form_apply_apply x hx hh, hh v x, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[form_apply_left, form_apply_right x hx hh, star_star]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adjoint (hh : ∀ u v, h v u = star (h u v)) (b : R) (u v : M) :
     h (isoTransvection h x hx b u) v = h u (isoTransvection h x hx (star b) v) := by
   rw [form_apply_left, form_apply_right x hx hh, star_star]
 
 /- English proof (translation)
-Introduce `u v` and use `adjoint x hx hh b u v`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isAdjointPair (hh : ∀ u v, h v u = star (h u v)) (b : R) :
     LinearMap.IsAdjointPair h h (isoTransvection h x hx b) (isoTransvection h x hx (star b)) :=
   fun u v => adjoint x hx hh b u v
 
 /- English proof (translation)
-Rewrite using `[form_apply_apply' x hx hh]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem form_apply_neg_star (hh : ∀ u v, h v u = star (h u v)) (b : R) (u v : M) :
     h (isoTransvection h x hx b u) (isoTransvection h x hx (-star b) v) = h u v := by
   rw [form_apply_apply' x hx hh]; simp
 
 /- English proof (translation)
-Rewrite using `[form_apply_apply x hx hh, hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isometry (hh : ∀ u v, h v u = star (h u v)) {b : R} (hb : b + star b = 0) (u v : M) :
     h (isoTransvection h x hx b u) (isoTransvection h x hx b v) = h u v := by
   rw [form_apply_apply x hx hh, hb]; simp
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨fun H => ?_, fun hb => isometry x hx hh hb⟩`. Take `⟨v, hv⟩` from `hx0`. Use `H v v` as an intermediate fact. Rewrite `this` using `[form_apply_diag x hx hh, add_eq_left]`. Simplify `this` using `[hv]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isometry_iff [NoZeroDivisors R] (hh : ∀ u v, h v u = star (h u v))
     (hx0 : ∃ v, h v x ≠ 0) (b : R) :
@@ -226,9 +226,9 @@ theorem isometry_iff [NoZeroDivisors R] (hh : ∀ u v, h v u = star (h u v))
 variable (h)
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `hx0`. Establish `hx1 : x ≠ 0` using `by rintro rfl; simp at hv`. Introduce `b b' H`. Establish `: isoTransvection h x hx b v = isoTransvection h x hx b' v` using `by rw [H]`. Rewrite `this` using `[apply, apply, add_right_inj]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_right_cancel₀ hv (smul_left_injective R hx1 this)`.
+A detailed English derivation is pending.
 -/
 theorem injective [IsDomain R] [IsTorsionFree R M] (hx0 : ∃ v, h v x ≠ 0) :
     Function.Injective (isoTransvection h x hx) := by
@@ -240,7 +240,7 @@ theorem injective [IsDomain R] [IsTorsionFree R M] (hx0 : ∃ v, h v x ≠ 0) :
   exact mul_right_cancel₀ hv (smul_left_injective R hx1 this)
 
 /- English proof (translation)
-Rewrite using `[coe_toLinearMap, LinearMap.transvection.det]`. Simplify using `[hx]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_toLinearMap [Module.Free R M] [Module.Finite R M] (b : R) :
     LinearMap.det (isoTransvection h x hx b : M →ₗ[R] M) = 1 := by
@@ -248,14 +248,14 @@ theorem det_toLinearMap [Module.Free R M] [Module.Finite R M] (b : R) :
   simp [hx]
 
 /- English proof (translation)
-Rewrite using `[← Units.val_inj, LinearEquiv.coe_det, det_toLinearMap, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det [Module.Free R M] [Module.Finite R M] (b : R) :
     LinearEquiv.det (isoTransvection h x hx b) = 1 := by
   rw [← Units.val_inj, LinearEquiv.coe_det, det_toLinearMap, Units.val_one]
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [apply, LinearMap.map_smulₛₗ, starRingEnd_apply, smul_eq_mul, smul_smul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem smul_vec (a b : R) (hax : h (a • x) (a • x) = 0 := by simp [*]) :
     isoTransvection h (a • x) hax b = isoTransvection h x hx (b * (a * star a)) := by
@@ -264,7 +264,7 @@ theorem smul_vec (a b : R) (hax : h (a • x) (a • x) = 0 := by simp [*]) :
   congr 2; ring
 
 /- English proof (translation)
-Simplify using `[apply, hj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_apply {R' M' : Type*} [CommRing R'] [StarRing R'] [AddCommGroup M'] [Module R' M']
     {φ : R →+* R'} (j : M →ₛₗ[φ] M') (h' : M' →ₗ[R'] M' →ₗ⋆[R'] R')
@@ -273,7 +273,7 @@ theorem map_apply {R' M' : Type*} [CommRing R'] [StarRing R'] [AddCommGroup M'] 
   simp [apply, hj]
 
 /- English proof (translation)
-Rewrite using `[mul_inv_eq_iff_eq_mul]`. Use extensionality with `v`. Simplify using `[LinearEquiv.mul_apply, apply, hg]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conj (g : M ≃ₗ[R] M) (hg : ∀ u v, h (g u) (g v) = h u v) (b : R)
     (hgx : h (g x) (g x) = 0) :
@@ -283,7 +283,7 @@ theorem conj (g : M ≃ₗ[R] M) (hg : ∀ u v, h (g u) (g v) = h u v) (b : R)
   simp [LinearEquiv.mul_apply, apply, hg]
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[LinearEquiv.mul_apply, apply, hg, hgx]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem commute_of_fix (g : M ≃ₗ[R] M) (hgx : g x = x) (hg : ∀ u, h (g u) x = h u x) (b : R) :
     Commute g (isoTransvection h x hx b) := by
@@ -295,7 +295,7 @@ section Lattice
 variable {R₀ : Type*} [CommRing R₀] [Algebra R₀ R] [Module R₀ M] [IsScalarTower R₀ R M]
 
 /- English proof (translation)
-Take `⟨c, hc, hcb⟩` from `hb`. Rewrite using `[apply_sub, ← hcb, algebraMap_smul]`. Conclude with `Submodule.smul_mem_smul hc hxL`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_mem_smul_of_mul {L : Submodule R₀ M} (hxL : x ∈ L) {I : Ideal R₀} {b : R} {v : M}
     (hb : ∃ c ∈ I, algebraMap R₀ R c = b * h v x) :
@@ -305,7 +305,7 @@ theorem sub_mem_smul_of_mul {L : Submodule R₀ M} (hxL : x ∈ L) {I : Ideal R�
   exact Submodule.smul_mem_smul hc hxL
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hL v hv`. Conclude with `sub_mem_smul_of_mul h x hx hxL ⟨b * c, I.mul_mem_right c hb, by rw [map_mul, hc]⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sub_mem_smul {L : Submodule R₀ M} (hxL : x ∈ L)
     (hL : ∀ v ∈ L, h v x ∈ (algebraMap R₀ R).range) {I : Ideal R₀} {b : R₀} (hb : b ∈ I)
@@ -315,7 +315,7 @@ theorem sub_mem_smul {L : Submodule R₀ M} (hxL : x ∈ L)
   exact sub_mem_smul_of_mul h x hx hxL ⟨b * c, I.mul_mem_right c hb, by rw [map_mul, hc]⟩
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hL v hv`. Use `⟨(b * c) • x, L.smul_mem _ hxL, ?_⟩` and prove the remaining obligations. Rewrite using `[apply_sub, ← hc, ← map_mul, algebraMap_smul, smul_smul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_sub_eq_smul {L : Submodule R₀ M} (hxL : x ∈ L)
     (hL : ∀ v ∈ L, h v x ∈ (algebraMap R₀ R).range) (q b : R₀) {v : M} (hv : v ∈ L) :
@@ -325,7 +325,7 @@ theorem exists_sub_eq_smul {L : Submodule R₀ M} (hxL : x ∈ L)
   rw [apply_sub, ← hc, ← map_mul, algebraMap_smul, smul_smul, mul_assoc]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hL v hv`. Rewrite using `[apply, ← hc, ← map_mul, algebraMap_smul]`. Conclude with `L.add_mem hv (L.smul_mem _ hxL)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_mem {L : Submodule R₀ M} (hxL : x ∈ L)
     (hL : ∀ v ∈ L, h v x ∈ (algebraMap R₀ R).range) (b : R₀) {v : M} (hv : v ∈ L) :
@@ -335,7 +335,7 @@ theorem apply_mem {L : Submodule R₀ M} (hxL : x ∈ L)
   exact L.add_mem hv (L.smul_mem _ hxL)
 
 /- English proof (translation)
-Use `⟨fun H => ?_, apply_mem h x hx hxL hL b⟩` and prove the remaining obligations. Use `apply_mem h x hx hxL hL (-b) H` as an intermediate fact. Rewrite `this` using `[apply_apply, map_neg, neg_add_cancel, zero]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem apply_mem_iff {L : Submodule R₀ M} (hxL : x ∈ L)
     (hL : ∀ v ∈ L, h v x ∈ (algebraMap R₀ R).range) (b : R₀) (v : M) :
@@ -345,9 +345,9 @@ theorem apply_mem_iff {L : Submodule R₀ M} (hxL : x ∈ L)
   rwa [apply_apply, map_neg, neg_add_cancel, zero] at this
 
 /- English proof (translation)
-Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `apply_mem h x hx hxL hL b hv`. Introduce `hw`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨isoTransvection h x hx (algebraMap R₀ R (-b)) w, apply_mem h x hx hxL hL _ hw, ?_⟩` and prove the remaining obligations. Rewrite using `[apply_apply, map_neg, add_neg_cancel, zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem image_eq {L : Submodule R₀ M} (hxL : x ∈ L)
     (hL : ∀ v ∈ L, h v x ∈ (algebraMap R₀ R).range) (b : R₀) :
@@ -361,7 +361,7 @@ theorem image_eq {L : Submodule R₀ M} (hxL : x ∈ L)
     rw [apply_apply, map_neg, add_neg_cancel, zero]; rfl
 
 /- English proof (translation)
-The claim follows from `SetLike.coe_injective (image_eq h x hx hxL hL b)`.
+A detailed English derivation is pending.
 -/
 theorem map_eq {L : Submodule R₀ M} (hxL : x ∈ L)
     (hL : ∀ v ∈ L, h v x ∈ (algebraMap R₀ R).range) (b : R₀) :
@@ -382,7 +382,7 @@ variable {W : Type*} [AddCommGroup W] [Module ℂ W] {h : W →ₗ[ℂ] W →ₗ
   (hx : h x x = 0)
 
 /- English proof (translation)
-Rewrite using `[form_apply_apply x hx hh, Complex.star_def, Complex.add_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_apply_apply_complex (hh : ∀ u v, h v u = star (h u v)) (b : ℂ) (u v : W) :
     h (isoTransvection h x hx b u) (isoTransvection h x hx b v)
@@ -390,7 +390,7 @@ theorem form_apply_apply_complex (hh : ∀ u v, h v u = star (h u v)) (b : ℂ) 
   rw [form_apply_apply x hx hh, Complex.star_def, Complex.add_conj]
 
 /- English proof (translation)
-Rewrite using `[form_apply_diag x hx hh, Complex.star_def, Complex.add_conj, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_apply_diag_complex (hh : ∀ u v, h v u = star (h u v)) (b : ℂ) (v : W) :
     h (isoTransvection h x hx b v) (isoTransvection h x hx b v)
@@ -400,7 +400,7 @@ theorem form_apply_diag_complex (hh : ∀ u v, h v u = star (h u v)) (b : ℂ) (
   push_cast; ring
 
 /- English proof (translation)
-Rewrite using `[form_apply_diag_complex x hx hh, Complex.add_re, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem re_form_apply_diag_complex (hh : ∀ u v, h v u = star (h u v)) (b : ℂ) (v : W) :
     (h (isoTransvection h x hx b v) (isoTransvection h x hx b v)).re
@@ -408,7 +408,7 @@ theorem re_form_apply_diag_complex (hh : ∀ u v, h v u = star (h u v)) (b : ℂ
   rw [form_apply_diag_complex x hx hh, Complex.add_re, Complex.ofReal_re]
 
 /- English proof (translation)
-Rewrite using `[isometry_iff x hx hh hx0, Complex.star_def, Complex.add_conj]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isometry_iff_re (hh : ∀ u v, h v u = star (h u v)) (hx0 : ∃ v, h v x ≠ 0) (b : ℂ) :
     (∀ u v, h (isoTransvection h x hx b u) (isoTransvection h x hx b v) = h u v)
@@ -417,7 +417,7 @@ theorem isometry_iff_re (hh : ∀ u v, h v u = star (h u v)) (hx0 : ∃ v, h v x
   simp
 
 /- English proof (translation)
-Rewrite using `[form_apply_apply_complex x hx hh, hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isometry_of_re (hh : ∀ u v, h v u = star (h u v)) {b : ℂ} (hb : b.re = 0) (u v : W) :
     h (isoTransvection h x hx b u) (isoTransvection h x hx b v) = h u v := by
@@ -430,7 +430,7 @@ theorem re_mul_I_mul (b : ℂ) (s : ℝ) : (b * (Complex.I * s)).re = -s * b.im 
   simp; ring
 
 /- English proof (translation)
-The claim follows from `isometry_of_re x hx hh (by rw [re_mul_I_mul]; simp) u v`.
+A detailed English derivation is pending.
 -/
 theorem isometry_ofReal_mul_I_mul (hh : ∀ u v, h v u = star (h u v)) (b s : ℝ) (u v : W) :
     h (isoTransvection h x hx (b * (Complex.I * s)) u)
@@ -445,16 +445,16 @@ variable {W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W] (h : W →ₗ[�
   (hx : h x x = 0)
 
 /- English proof (translation)
-Simplify using `only [apply]`. Use `fun_prop`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_param (v : W) :
     Differentiable ℂ fun b : ℂ => isoTransvection h x hx b v := by
   simp only [apply]; fun_prop
 
 /- English proof (translation)
-Establish `: CompleteSpace W` using `FiniteDimensional.complete ℂ W`. Set `f : W →L[ℂ] ℂ` to `LinearMap.toContinuousLinearMap (h.flip x)`. Establish `: (fun p : ℂ × W => isoTransvection h x hx p.1 p.2) = fun p : ℂ × W => p.2 + (p.1 * f p.2) • x` using `rfl`. Rewrite using `[this]`. Introduce `p _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `analyticAt_snd.add ((analyticAt_fst.mul ((f.analyticAt _).comp analyticAt_snd)).smul analyticAt_const)`.
+A detailed English derivation is pending.
 -/
 theorem analyticOnNhd_uncurry [FiniteDimensional ℂ W] :
     AnalyticOnNhd ℂ (fun p : ℂ × W => isoTransvection h x hx p.1 p.2) Set.univ := by
@@ -468,16 +468,16 @@ theorem analyticOnNhd_uncurry [FiniteDimensional ℂ W] :
     ((analyticAt_fst.mul ((f.analyticAt _).comp analyticAt_snd)).smul analyticAt_const)
 
 /- English proof (translation)
-Introduce `p` and use `(analyticOnNhd_uncurry h x hx p (Set.mem_univ p)).differentiableAt`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem differentiable_uncurry [FiniteDimensional ℂ W] :
     Differentiable ℂ fun p : ℂ × W => isoTransvection h x hx p.1 p.2 :=
   fun p => (analyticOnNhd_uncurry h x hx p (Set.mem_univ p)).differentiableAt
 
 /- English proof (translation)
-Set `f : W →L[ℂ] ℂ` to `LinearMap.toContinuousLinearMap (h.flip x)`. Establish `: (fun b : ℂ => LinearMap.toContinuousLinearMap (isoTransvection h x hx b : W →ₗ[ℂ] W)) = fun b : ℂ => ContinuousLinearMap.id ℂ W + b • f.smulRight x`. Use extensionality with `b v`. Simplify using `[apply, f, smul_smul]`. Rewrite using `[this]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `fun_prop`.
+A detailed English derivation is pending.
 -/
 theorem differentiable_toContinuousLinearMap [FiniteDimensional ℂ W] :
     Differentiable ℂ fun b : ℂ =>
@@ -495,7 +495,7 @@ end isoTransvection
 end Complex
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨fun _ _ => rfl, fun _ => rfl, isoTransvection.mul h x hx, isoTransvection.apply_self h x hx, isoTransvection.form_apply_self h x hx, isoTransvection.form_apply_apply x hx hh, isoTransvection.adjoint x hx hh, fun _ _ => isoTransvection.det_toLinearMap h x hx, fun b hb => i …`. Establish `hL' : ∀ v ∈ L, h v x ∈ (algebraMap R₀ R).range` using `fun v hv => ⟨⟨_, hL v hv⟩, rfl⟩`. Conclude with `⟨fun v hv => isoTransvection.sub_mem_smul h x hx hxL hL' hb hv, isoTransvection.image_eq h x hx hxL hL' b⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isoTransvection_spec {R M : Type*} [CommRing R] [StarRing R] [AddCommGroup M]
     [Module R M] (h : M →ₗ[R] M →ₗ⋆[R] R) (hh : ∀ u v, h v u = star (h u v))
@@ -535,7 +535,7 @@ private noncomputable def hyp : (ℂ × ℂ) →ₗ[ℂ] (ℂ × ℂ) →ₗ⋆[
     (by intros; simp; ring)
 
 /- English proof (translation)
-Use `⟨fun u v => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[hyp]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[isoTransvection.apply, hyp]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 example (b : ℂ) : (∀ u v, hyp v u = star (hyp u v)) ∧
     isoTransvection hyp (1, 0) (by simp [hyp]) b (0, 1) = (b, 1) := by

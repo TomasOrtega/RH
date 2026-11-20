@@ -6,7 +6,7 @@ open GlobalTheory.AlmostEt GlobalTheory.K5
 open scoped NNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.K5.LauZ.exists_pow_comb | exact GlobalTheory.K5.LauZ.exists_pow_comb | (intros; apply GlobalTheory.K5.LauZ.exists_pow_comb <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.laurentSeriesPadic_exists_pthPower_combination : ∀ (p : ℕ) [Fact p.Prime] (f : Lau p), ∃ (g : Fin p → Lau p) (h : Lau p), f = ∑ j : Fin p, HahnSeries.single ((j : ℕ) : ℤ) (1 : ℤ_[p]) * g j ^ p + (p : Lau p) * h := by
   first | exact @GlobalTheory.K5.LauZ.exists_pow_comb | exact GlobalTheory.K5.LauZ.exists_pow_comb | (intros; apply GlobalTheory.K5.LauZ.exists_pow_comb <;> assumption)

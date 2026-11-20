@@ -8,7 +8,7 @@ namespace IntegralOverComplete
 open IsLocalRing Polynomial
 
 /- English proof (translation)
-Establish `: Algebra.IsIntegral W' R` using `Algebra.IsIntegral.tower_top W`. Establish `: FaithfulSMul W' R` using `(faithfulSMul_iff_algebraMap_injective _ _).2 Subtype.val_injective`. Conclude with `inferInstanceAs (IsLocalHom (algebraMap W' R))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLocalHom_val {W R : Type} [CommRing W] [CommRing R] [Algebra W R]
     [Algebra.IsIntegral W R] (W' : Subalgebra W R) : IsLocalHom W'.val.toRingHom := by
@@ -17,15 +17,15 @@ theorem isLocalHom_val {W R : Type} [CommRing W] [CommRing R] [Algebra W R]
   exact inferInstanceAs (IsLocalHom (algebraMap W' R))
 
 /- English proof (translation)
-Set `F` to `FractionRing R`. Set `j : R →ₐ[W] F` to `IsScalarTower.toAlgHom W R F`. Establish `hj : Function.Injective j` using `IsFractionRing.injective R F`. Establish `: FaithfulSMul W F` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (by`. Rewrite using `[IsScalarTower.algebraMap_eq W R F]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hj.comp (FaithfulSMul.algebraMap_injective W R))`. Establish `: Algebra.IsAlgebraic R F` using `IsLocalization.isAlgebraic F (nonZeroDivisors R)`. Establish `: Algebra.IsAlgebraic W F` using `Algebra.IsAlgebraic.trans W R F`. Take `⟨V, hV, -, -, hfin, -, -, -, hs⟩` from `exists_complete_dvr_finite_subalgebra W F (s.image j)`. Establish `hle : V ≤ j.range` using `fun x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsIntegral W x` using `(Algebra.IsIntegral.isIntegral (R := W) (⟨x, hx⟩ : V)).map V.val`. Conclude with `IsIntegrallyClosed.isIntegral_iff.1 (h1.tower_top (A := R))`. Set `W' : Subalgebra W R` to `V.comap j`. Establish `hmap : W'.map j = V`. Apply `le_antisymm` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hx`. Introduce `x hx`. Take `⟨y, rfl⟩` from `hle hx`. Conclude with `⟨y, hx, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `e : V ≃ₐ[W] W'` to `((Subalgebra.equivMapOfInjective W' j hj).trans (Subalgebra.equivOfEq _ _ hmap)).symm`. Establish `hd : IsDiscreteValuationRing W'` using `IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing e`. Establish `hf : Module.Finite W W'` using `Module.Finite.equiv e.toLinearEquiv`. Use `⟨W', hd, fun x hx => ?_, CompleteFiniteExtension.isAdicComplete_of_finite_local W W', hf, isLocalHom_val W'⟩` and prove the remaining obligations. Conclude with `hs _ (Finset.mem_image_of_mem j hx) ((Algebra.IsIntegral.isIntegral x).map j)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_subalgebra (W R : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W]
     [IsAdicComplete (maximalIdeal W) W] [CharZero W] [CommRing R] [IsDomain R]
@@ -67,15 +67,15 @@ theorem exists_subalgebra (W R : Type) [CommRing W] [IsDomain W] [IsDiscreteValu
   exact hs _ (Finset.mem_image_of_mem j hx) ((Algebra.IsIntegral.isIntegral x).map j)
 
 /- English proof (translation)
-Use `⟨fun f hf a₀ h0 hu => ?_⟩` and prove the remaining obligations. Take `⟨V, _, hs, hc, hl⟩` from `h (insert a₀ f.coeffs ∪ {0})`. Set `i : V →+* R` to `V.val.toRingHom`. Establish `hlift : f ∈ lifts i`. Rewrite using `[lifts_iff_coeff_lifts]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Distinguish the cases in `hn : f.coeff n = 0`. Conclude with `⟨0, by simp [hn]⟩`. Conclude with `⟨⟨f.coeff n, hs (by simp [coeff_mem_coeffs hn])⟩, rfl⟩`. Take `⟨g, hg, -, hgm⟩` from `lifts_and_natDegree_eq_and_monic hlift hf`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩ : ∃ b : V, i b = a₀` from `⟨⟨a₀, hs (by simp)⟩, rfl⟩`. Substitute `hg` using the available equality. Rewrite `h0` using `[eval_map, eval₂_at_apply]`. Rewrite `hu` using `[derivative_map, eval_map, eval₂_at_apply]`. Establish `h0' : g.eval b ∈ maximalIdeal V` using `fun hu' => h0 (hu'.map i)`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu' : IsUnit (g.derivative.eval b)` using `IsLocalHom.map_nonunit _ hu`. Take `⟨a, ha, hab⟩` from `HenselianRing.is_henselian (I := maximalIdeal V) g hgm b h0' (hu'.map _)`. Use `⟨i a, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsRoot, eval_map, eval₂_at_apply, ha.eq_zero, map_zero]`. Rewrite using `[← map_sub]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun hh => hab (IsLocalHom.map_nonunit _ hh)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem henselian_of_union (W R : Type) [CommRing W] [CommRing R] [IsLocalRing R] [Algebra W R]
     (h : ∀ s : Finset R, ∃ (W' : Subalgebra W R) (_ : IsLocalRing W'), (↑s : Set R) ⊆ W' ∧
@@ -107,7 +107,7 @@ theorem henselian_of_union (W R : Type) [CommRing W] [CommRing R] [IsLocalRing R
 end IntegralOverComplete
 
 /- English proof (translation)
-Introduce `W R _ _ _ _ _ _ _ _ _ hinj hint`. Establish `: FaithfulSMul W R` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hinj`. Use `⟨inferInstance, IntegralOverComplete.henselian_of_union W R fun s => ?_, IntegralOverComplete.exists_subalgebra W R⟩` and prove the remaining obligations. Take `⟨V, hV, h1, h2, -, h3⟩` from `IntegralOverComplete.exists_subalgebra W R s`. Conclude with `⟨V, inferInstance, h1, h2, h3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem henselian_and_union_of_isIntegral_complete :
     ∀ (W R : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W]

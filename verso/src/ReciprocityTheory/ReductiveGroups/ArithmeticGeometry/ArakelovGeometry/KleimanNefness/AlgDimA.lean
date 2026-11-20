@@ -12,11 +12,11 @@ namespace ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.KrullDimensio
 open ReciprocityTheory.CA
 
 /- English proof (translation)
-Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => exact absurd rfl hx`. Consider the case `coe a`. Proceed by induction on `y using WithBot.recBotCoe with`. Consider the case `bot => exact absurd h (by simp)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `coe b`. Normalize the coercions in `at h hxn ⊢`. Proceed by induction on `a using ENat.recTopCoe with`. Consider the case `top => exact absurd hxn (by simp)`. Consider the case `coe a`.
+Treat this case separately. Put the expressions in a common number system so they can be compared. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `b using ENat.recTopCoe with`. Consider the case `top => exact WithTop.coe_lt_top a`. Consider the case `coe b`. Normalize the coercions in `at h ⊢`.
+Proceed by induction. Treat this case separately. Treat this case separately. Put the expressions in a common number system so they can be compared.
 -/
 theorem lt_of_add_one_le_fin (x y : WithBot ℕ∞) (n : ℕ) (hx : x ≠ ⊥) (hxn : x ≤ n)
     (h : x + 1 ≤ y) : x < y := by
@@ -36,7 +36,7 @@ theorem lt_of_add_one_le_fin (x y : WithBot ℕ∞) (n : ℕ) (hx : x ≠ ⊥) (
   norm_cast at h ⊢
 
 /- English proof (translation)
-Establish `: Nontrivial (R ⧸ I)` using `Ideal.Quotient.nontrivial_iff.mpr hI`. Conclude with `ne_bot_of_le_ne_bot (by simp) ringKrullDim_nonneg_of_nontrivial`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_quotient_ne_bot {R : Type*} [CommRing R] (I : Ideal R) (hI : I ≠ ⊤) :
     ringKrullDim (R ⧸ I) ≠ ⊥ := by
@@ -44,9 +44,9 @@ theorem ringKrullDim_quotient_ne_bot {R : Type*} [CommRing R] (I : Ideal R) (hI 
   exact ne_bot_of_le_ne_bot (by simp) ringKrullDim_nonneg_of_nontrivial
 
 /- English proof (translation)
-Introduce `F _ σ _ V W hV hW hVW`. Establish `h1` using `ReciprocityTheory.CA.Link.ringKrullDim_quotient_add_one_le_of_lt hVW`. Establish `h2 : ringKrullDim (MvPolynomial σ F ⧸ W) ≤ (Fintype.card σ : ℕ)`. Use `(ringKrullDim_quotient_le W).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, Nat.card_eq_fintype_card, zero_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_of_add_one_le_fin _ _ _ (ringKrullDim_quotient_ne_bot W hW.ne_top) h2 h1`.
+A detailed English derivation is pending.
 -/
 theorem dimLt' : DimLtStatement := by
   intro F _ σ _ V W hV hW hVW
@@ -58,11 +58,11 @@ theorem dimLt' : DimLtStatement := by
   exact lt_of_add_one_le_fin _ _ _ (ringKrullDim_quotient_ne_bot W hW.ne_top) h2 h1
 
 /- English proof (translation)
-Establish `hdisj : Disjoint (𝔐.primeCompl : Set S) (W : Set S)` using `Set.disjoint_left.mpr fun x hx hxp => hx (hle hxp)`. Set `p` to `W.map (algebraMap S (Localization.AtPrime 𝔐))`. Establish `: p.IsPrime` using `IsLocalization.isPrime_of_isPrime_disjoint 𝔐.primeCompl _ W inferInstance hdisj`. Establish `hc : p.comap (algebraMap S (Localization.AtPrime 𝔐)) = W` using `IsLocalization.under_map_of_isPrime_disjoint 𝔐.primeCompl _ (I := W) inferInstance hdisj`. Establish `h2` using `h.localization_atPrime p`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocalization W.primeCompl (Localization.AtPrime p)`. Establish `h0 : IsLocalization (p.comap (algebraMap S (Localization.AtPrime 𝔐))).primeCompl (Localization.AtPrime p)` using `inferInstance`. Use `h0 using 2` and compare the differences between its conclusion and the goal. Rewrite using `[hc]`. Set `e` to `IsLocalization.algEquiv W.primeCompl (Localization.AtPrime W) (Localization.AtPrime p)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `h2.of_ringEquiv e.symm.toRingEquiv`.
+A detailed English derivation is pending.
 -/
 theorem isCM_atPrime_of_le {S : Type*} [CommRing S] (𝔐 W : Ideal S) [𝔐.IsPrime] [W.IsPrime]
     (h : IsCM (Localization.AtPrime 𝔐)) (hle : W ≤ 𝔐) : IsCM (Localization.AtPrime W) := by
@@ -83,21 +83,19 @@ theorem isCM_atPrime_of_le {S : Type*} [CommRing S] (𝔐 W : Ideal S) [𝔐.IsP
   exact h2.of_ringEquiv e.symm.toRingEquiv
 
 /- English proof (translation)
-Establish `hWp : W.IsPrime` using `hW.1.1`. Establish `hVW : V ≤ W` using `le_sup_left.trans hW.1.2`. Establish `hsW : s ∈ W` using `hW.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self s))`. Take `⟨𝔐, h𝔐, hW𝔐⟩` from `Ideal.exists_le_maximal W hWp.ne_top`. Establish `hCM` using `(height_maximal_mvPolynomial_field F N 𝔐).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hCMW` using `isCM_atPrime_of_le 𝔐 W hCM hW𝔐`. Establish `hrel` using `height_eq_add_of_isCM_localization W V hCMW hVW`. Set `f` to `Ideal.Quotient.mk V`. Establish `hf : Function.Surjective f` using `Ideal.Quotient.mk_surjective`. Establish `hker : RingHom.ker f ≤ W` using `by rw [Ideal.mk_ker]; exact hVW`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : (W.map f).IsPrime` using `Ideal.map_isPrime_of_surjective hf hker`. Establish `hcomapJ : (Ideal.span {f s}).comap f = V ⊔ Ideal.span {s}`. Rewrite using `[← Set.image_singleton, ← Ideal.map_span, Ideal.comap_map_of_surjective _ hf, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker, sup_comm]`. Establish `hmin : W.map f ∈ (Ideal.span {f s}).minimalPrimes`. Establish `h0` using `hW`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[← hcomapJ, Ideal.comap_minimalPrimes_eq_of_surjective hf]`. Take `⟨Q, hQ, hQW⟩` from `h0`. Rewrite using `[← hQW, Ideal.map_comap_of_surjective _ hf]`. Conclude with `hQ`. Establish `: (Ideal.span {f s}).IsPrincipal` using `⟨⟨f s, rfl⟩⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle1 : (W.map f).height ≤ 1` using `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ _ hmin`. Establish `hne : W.map f ≠ ⊥`. Introduce `h0`. Establish `h3 : f s ∈ W.map f` using `Ideal.mem_map_of_mem f hsW`. Rewrite `h3` using `[h0, Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hs h3`. Establish `hge1 : 1 ≤ (W.map f).height`. Rewrite using `[Order.one_le_iff_ne_zero]`. Conclude with `fun h0 => hne (Ideal.height_eq_zero_iff_eq_bot.mp h0)`. Establish `h1 : (W.map f).height = 1` using `le_antisymm hle1 hge1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eV` using `height_add_ringKrullDim_quotient_mvPolynomial_field F N V`. Establish `eW` using `height_add_ringKrullDim_quotient_mvPolynomial_field F N W`. Rewrite `eW` using `[hrel, h1]`. Use `dimFormula_arith V.height 1 _ _ N (ringKrullDim_quotient_ne_bot W hWp.ne_top) (ringKrullDim_quotient_ne_bot V hV.ne_top) eW eV` as an intermediate fact. Rewrite using `[add_comm]`.
-
-Conclude with `this` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dimPIT_fin (F : Type) [Field F] (N : ℕ) (V W : Ideal (MvPolynomial (Fin N) F))
     (s : MvPolynomial (Fin N) F) (hV : V.IsPrime) (hs : s ∉ V)
@@ -145,13 +143,13 @@ theorem dimPIT_fin (F : Type) [Field F] (N : ℕ) (V W : Ideal (MvPolynomial (Fi
   exact_mod_cast this
 
 /- English proof (translation)
-Introduce `F _ σ _ V W s hV hs hW`. Set `e : MvPolynomial σ F ≃+* MvPolynomial (Fin (Fintype.card σ)) F` to `(MvPolynomial.renameEquiv F (Fintype.equivFin σ)).toRingEquiv`. Set `g : MvPolynomial (Fin (Fintype.card σ)) F →+* MvPolynomial σ F` to `e.symm`. Set `eh : MvPolynomial σ F →+* MvPolynomial (Fin (Fintype.card σ)) F` to `e`. Establish `hcm : ∀ I : Ideal (MvPolynomial σ F), I.comap g = I.map eh` using `fun I => Ideal.comap_symm e`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hV' : (V.map eh).IsPrime`. Establish `h0 : (V.comap g).IsPrime` using `Ideal.comap_isPrime g V`. Rewrite `h0` using `[hcm]`. Then use the resulting hypothesis. Establish `hs' : eh s ∉ V.map eh`. Rewrite using `[← hcm, Ideal.mem_comap]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `hs` using `[g, eh]`. Establish `key` using `Ideal.comap_minimalPrimes_eq_of_surjective (f := g) e.symm.surjective (V ⊔ Ideal.span {s})`. Establish `hmem : W.comap g ∈ ((V ⊔ Ideal.span {s}).comap g).minimalPrimes` using `key ▸ ⟨W, hW, rfl⟩`. Rewrite `hmem` using `[hcm, hcm, Ideal.map_sup, Ideal.map_span, Set.image_singleton]`. Use `dimPIT_fin F _ _ _ _ hV' hs' hmem` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ringKrullDim_eq_of_ringEquiv (Ideal.quotientEquiv W _ e rfl), ringKrullDim_eq_of_ringEquiv (Ideal.quotientEquiv V _ e rfl)]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dimPIT' : DimPITStatement := by
   intro F _ σ _ V W s hV hs hW

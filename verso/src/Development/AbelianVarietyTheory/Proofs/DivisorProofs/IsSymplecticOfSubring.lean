@@ -20,11 +20,9 @@ noncomputable section
 namespace GlobalTheory.SympDescent
 
 /- English proof (translation)
-Use `haveI := H.1.comm`. Establish `hP` using `H.2.2.1`. Establish `hb : IsSymBilin (cls P hP)` using `isSymBilin_of_gen hP (fun T x x' y => (Biadditive.biadditive_of_triv_axes globalFns_holds S A (diagPull A P) H.1 (pull_isLB hP _) ha P hP H.2.2.2.1 H.2.2.2.2.1 T x x' y).1) H.2.2.2.2.2`. Establish `d : ∀ f : A ⟶ A, pull f.left (cls (diagPull A P) (pull_isLB hP _)) = pairCls (cls P hP) f f` using `fun f => (pull_pairCls (cls P hP) f (𝟙 _) (𝟙 _)).trans (by rw [Category.comp_id])`. Establish `z : ∀ y : A ⟶ A, (M : ℤ) • pairCls (cls P hP) (toUnit A ≫ x) y = 0` using `fun y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `BilinCalc.map_prod_zpow (fun z => pairCls (cls P hP) z y) (fun a b => hb.mul _ a b y) (fun _ : Fin 1 => toUnit A ≫ x) fun _ => (M : ℤ)`. Simplify using `only [Finset.univ_unique, Finset.prod_const, Finset.card_singleton, pow_one, Finset.sum_const, one_smul, zpow_natCast] at e`. Rewrite using `[← e, ← MonObj.comp_pow, hx, MonObj.comp_one]`. Conclude with `one_left (hb.mul _) y`. Rewrite using `[d, hb.mul, hb.symm _ (𝟙 A) (_ * _), hb.mul, smul_add, smul_add, z, z, zero_add, zero_add]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem translFixed_of_pair {S : Scheme.{0}} {h M : ℕ} (A : Over S) [GrpObj A] (P : LB (A ⊗ A).left)
     (H : IsSymmetricPair h A P) (ha : Out.RelAmple A (diagPull A P)) (x : 𝟙_ (Over S) ⟶ A) (hx : x ^ M = 1) :
@@ -48,7 +46,7 @@ theorem translFixed_of_pair {S : Scheme.{0}} {h M : ℕ} (A : Over S) [GrpObj A]
   rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext (by simp [Scheme.Hom.comp_appTop]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem units_map_comp_appTop {X Y Z : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) (u : Γ(Z, ⊤)ˣ) :
     Units.map (f ≫ g).appTop.hom.toMonoidHom u =
@@ -56,29 +54,27 @@ theorem units_map_comp_appTop {X Y Z : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) (
   Units.ext (by simp [Scheme.Hom.comp_appTop]; rfl)
 
 /- English proof (translation)
-Introduce `h M B R _ _ ζ R₁ s₁ A _ P lv A₁ _ P₁ lv₁ hM hζ hu H₁ H₂ H₃ hPR Hpb Hs`. Use `haveI := H₁.1.comm`. Establish `hP` using `H₁.2.2.1`. Establish `hD : (diagPull A₁ P₁).IsLB` using `pull_isLB hP _`. Establish `z₀ : lv₁ 0 = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `H₃.1 0 0`. Rewrite `e` using `[add_zero]`. Conclude with `left_eq_mul.1 e`. Establish `tors : ∀ a, lv₁ a ^ M = 1` using `fun a => by`. Establish `e : ∀ n : ℕ, lv₁ (n • a) = lv₁ a ^ n` using `fun n => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, pow_zero, z₀]`. Consider the case `succ n ih => rw [succ_nsmul, H₃.1, ih, pow_succ]`. Apply the tactic sequence `rw [← e, show M • a = 0 by ext i <;> simp, z₀]`. Establish `th : ∀ a (p : (𝟙_ (Over (Sp R₁))).left), ∃ V : (𝟙_ (Over (Sp R₁))).left.Opens, p ∈ V ∧ ∃ θ : Out.ThetaGrp A₁ (diagPull A₁ P₁) M (Out.overRes V), θ.pt = Out.overResι V ≫ lv₁ a` using `fun a p => by`.
+Treat this case separately. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `T` to `Out.overRes (T := 𝟙_ (Over (Sp R₁))) ⊤`. Establish `hT : (Out.thetaLB A₁ (diagPull A₁ P₁) M (Out.overResι ⊤ ≫ lv₁ a)).IsLB` using `LB.isLB_linComb hD _ _`. Take `⟨t, ht⟩` from `(cls_eq_zero_iff hT).1 (by`. Unfold `Out.thetaLB at hT ⊢`. Rewrite using `[cls_linComb hD, Fin.sum_univ_two]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, neg_smul]`. Establish `e : Out.translPt A₁ (Out.overResι ⊤ ≫ lv₁ a) = snd T A₁ ≫ ((toUnit A₁ ≫ lv₁ a) * 𝟙 A₁)`. Rewrite using `[MonObj.comp_mul, Category.comp_id, comp_toUnit_assoc, Out.translPt, ← Hom.mul_def, ← Category.assoc, toUnit_unique (fst _ _ ≫ _) (toUnit _)]`. Rewrite using `[e, Over.comp_left, pull_comp, ← map_zsmul, ← map_zsmul, ← GlobalTheory.SympDescent.translFixed_of_pair A₁ P₁ H₁ H₂.1 (lv₁ a) (tors a), add_neg_cancel])`. Conclude with `⟨⊤, trivial, ⟨_, t, ht⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨φ, φ₂, pb, s₁', s₂', iso, hl⟩` from `Hpb`. Establish `hdi : LBIso (diagPull A P) ((diagPull A₁ P₁).pull φ)` using `GlobalTheory.SiegelPull.diag_iso ⟨s₁', s₂'⟩ iso`. Establish `hL : (diagPull A P).IsLB` using `pull_isLB hPR _`. Establish `inj : Function.Injective ((𝟙_ (Over (Sp R))).hom ≫ spMap R₁.subtype).appTop.hom`. Establish `u₁ : (𝟙_ (Over (Sp R))).hom = 𝟙 _` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[u₁, Category.id_comp]`. Establish `k : ∀ z, (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom ((spMap R₁.subtype).appTop.hom z) = ((Scheme.ΓSpecIso (CommRingCat.of R₁)).hom.hom z : R)` using `fun z => by`. Establish `e` using `congrArg (fun q => q.hom z) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom R₁.subtype))`. Use `first`. Consider the case `exact e`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `(simp only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom, Subring.subtype_apply] at e; exact e)`. Introduce `x y hxy`. Establish `h2` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom hxy`. Rewrite `h2` using `[k, k]`. Establish `h3` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of R₁)).inv.hom (Subtype.val_injective h2)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `using h3`. Introduce `a b`. Take `⟨c, hc⟩` from `CommutatorPairing.exists_weilIs globalFns_holds H₁.1 hD (th a) (th b)`. Set `X' : Over (Sp R₁)` to `Over.mk ((𝟙_ (Over (Sp R))).hom ≫ spMap R₁.subtype)`. Establish `ex : ∀ a, (toUnit X' ≫ lv₁ a).left = (lv a).left ≫ φ` using `fun a => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Over.comp_left, Over.toUnit_left, hl a]`. Conclude with `Category.assoc _ _ _`. Establish `w` using `(weilIs_grpPullback_of_comm (Sp R₁) (Sp R) A₁ A (spMap R₁.subtype) φ (diagPull A₁ P₁) (diagPull A P) hD hL pb hdi (𝟙_ (Over (Sp R))) M (lv a) (lv b) (toUnit X' ≫ lv₁ a) (toUnit X' ≫ lv₁ b) _ (ex a) (ex b)).1 (Hs a b)`. Establish `w'` using `CommPairing.weilIs_pull globalFns_holds H₁.1 hD (toUnit X') hc`. Establish `q` using `CommutatorPairing.weilIs_unique globalFns_holds H₁.1 hD w' w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `u₂ : (𝟙_ (Over (Sp R₁))).hom = 𝟙 _` using `rfl`. Establish `hinj : Function.Injective (Units.map (toUnit X').left.appTop.hom.toMonoidHom)` using `fun u v huv => Units.ext (inj (by`. Use `congrArg Units.val huv` as an intermediate fact. Simplify using `only [Units.coe_map, MonoidHom.coe_coe, Over.toUnit_left] at this`. Conclude with `this))`.
-
-Establish `q₂ : Units.map (toUnit X').left.appTop.hom.toMonoidHom (Units.map ((𝟙_ (Over (Sp R₁))).hom ≫ s₁).appTop.hom.toMonoidHom (unitOn (ζ ^ (2 * stdForm a b).val))) = Units.map ((𝟙_ (Over (Sp R))).hom ≫ spMap R₁.subtype ≫ s₁).appTop.hom.toMonoidHom (unitOn (ζ ^ (2 * stdForm a b).val))`. Rewrite using `[← GlobalTheory.SympDescent.units_map_comp_appTop, Over.toUnit_left, u₂, Category.id_comp]`. Both sides reduce to the same expression. Rewrite using `[← hinj (q.trans q₂.symm)]`. Conclude with `hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSymplectic_of_subring : ∀ (h M : ℕ) (B R : Type) [CommRing B] [CommRing R] (ζ : Bˣ) (R₁ : Subring R) (s₁ : Sp R₁ ⟶ Sp B) (A : Over (Sp R)) [GrpObj A] (P : LB (A ⊗ A).left) (lv : Std h M → (𝟙_ (Over (Sp R)) ⟶ A)) (A₁ : Over (Sp R₁)) [GrpObj A₁] (P₁ : LB (A₁ ⊗ A₁).left) (lv₁ : Std h M → (𝟙_ (Over (Sp R₁)) ⟶ A₁)), 0 < M → ζ ^ M = 1 → IsUnit (M : R₁) → IsSymmetricPair h A₁ P₁ → IsPrincipal A₁ P₁ → IsLevel A₁ lv₁ → P.IsLB → IsPullbackTriple A P lv A₁ P₁ lv₁ (spMap R₁.subtype) → IsSymplectic ζ (spMap R₁.subtype ≫ s₁) A P lv → IsSymplectic ζ s₁ A₁ P₁ lv₁ := by
   intro h M B R _ _ ζ R₁ s₁ A _ P lv A₁ _ P₁ lv₁ hM hζ hu H₁ H₂ H₃ hPR Hpb Hs

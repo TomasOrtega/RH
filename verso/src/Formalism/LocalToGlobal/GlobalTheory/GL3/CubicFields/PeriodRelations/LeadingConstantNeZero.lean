@@ -17,25 +17,25 @@ def brN (D : D7) : ℝ :=
       FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)) : ℚ) : ℝ)
 
 /- English proof (translation)
-Use `D.host.hyp.2.2.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem discriminant_mod_four (D : D7) : D.host.d % 4 = 3 := by
   have := D.host.hyp.2.2.2.1
   omega
 
 /- English proof (translation)
-The claim follows from `IntermediateField.mem_adjoin_simple_self ℚ D.host.sqd`.
+A detailed English derivation is pending.
 -/
 theorem br_sqrt_mem (D : D7) : D.host.sqrtMinusD ∈ D.host.K := IntermediateField.mem_adjoin_simple_self ℚ D.host.sqd
 
 /- English proof (translation)
-Conclude with `D.host.sqd_sq`.
+A detailed English derivation is pending.
 -/
 theorem br_sqrtE_sq (D : D7) : D.host.sqrtMinusD ^ 2 = -(D.host.d : D.host.E) := by
   exact D.host.sqd_sq
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `push_cast`. Conclude with `br_sqrtE_sq D`.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem br_sqrt_sq (D : D7) :
     (⟨D.host.sqrtMinusD, br_sqrt_mem D⟩ : D.host.K) ^ 2 = -(D.host.d : D.host.K) := by
@@ -44,19 +44,19 @@ theorem br_sqrt_sq (D : D7) :
   exact br_sqrtE_sq D
 
 /- English proof (translation)
-The claim follows from `Formalism.FrobeniusOrbits.SplitK.finrank_K (L := D.host.E) D.host.hyp.2.1.pos D.host.sqd_sq`.
+A detailed English derivation is pending.
 -/
 theorem br_finrank_K (D : D7) : Module.finrank ℚ D.host.K = 2 := Formalism.FrobeniusOrbits.SplitK.finrank_K (L := D.host.E) D.host.hyp.2.1.pos D.host.sqd_sq
 
 /- English proof (translation)
-Rewrite using `[← Module.finrank_mul_finrank ℚ D.host.K D.host.E, br_finrank_K]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem br_finrank_E (D : D7) :
     Module.finrank ℚ D.host.E = 2 * Module.finrank D.host.K D.host.E := by
   rw [← Module.finrank_mul_finrank ℚ D.host.K D.host.E, br_finrank_K]
 
 /- English proof (translation)
-Introduce `g g' h`. Establish `hx : ∀ x, D.host.sigmaOf g x = D.host.sigmaOf g' x` using `fun x => D.host.φ₀.injective (by simpa [Formalism.BasicNotions.Host.emb] using RingHom.congr_fun h x)`. Conclude with `D.host.gal.symm.injective (AlgEquiv.ext hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem br_emb_injective (D : D7) : Function.Injective D.host.emb := by
   intro g g' h
@@ -65,18 +65,18 @@ theorem br_emb_injective (D : D7) : Function.Injective D.host.emb := by
   exact D.host.gal.symm.injective (AlgEquiv.ext hx)
 
 /- English proof (translation)
-Introduce `τ τ' h`. Conclude with `D.eTau.injective (Subtype.ext (br_emb_injective D h))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem br_embT_injective (D : D7) : Function.Injective (embT D) := by
   intro τ τ' h
   exact D.eTau.injective (Subtype.ext (br_emb_injective D h))
 
 /- English proof (translation)
-Establish `hfix : D.host.sigmaOf g D.host.sqd = D.host.sqd`. Establish `h1` using `(D.host.toHostAx.galE_mem_Psi_iff (D.host.sigmaOf g)).mp`. Apply `h1` to reduce the goal to its premises. Simplify `hg` using `[Formalism.BasicNotions.Host.sigmaOf]`. Establish `hext : ((D.host.sigmaOf g : D.host.E ≃ₐ[ℚ] D.host.E) : D.host.E →ₐ[ℚ] D.host.E).comp D.host.K.val = D.host.K.val`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `IntermediateField.algHom_ext_of_eq_adjoin ℚ (S := D.host.K) (s := {D.host.sqd}) rfl ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Simplify using `using hfix`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `congrArg (fun φ => φ y) hext`.
+A detailed English derivation is pending.
 -/
 theorem br_sigma_fix (D : D7) (g : D.R.GG) (hg : g ∈ D.R.Psi) (y : D.host.K) :
     D.host.sigmaOf g (algebraMap D.host.K D.host.E y) = algebraMap D.host.K D.host.E y := by
@@ -94,7 +94,7 @@ theorem br_sigma_fix (D : D7) (g : D.R.GG) (hg : g ∈ D.R.Psi) (y : D.host.K) :
   exact congrArg (fun φ => φ y) hext
 
 /- English proof (translation)
-Use `show D.host.emb (D.eTau τ : D.R.GG) (algebraMap D.host.K D.host.E y) = brPhi D y`. Simplify using `only [Formalism.BasicNotions.Host.emb, brPhi, RingHom.comp_apply, RingHom.coe_coe]`. Rewrite using `[br_sigma_fix D _ (D.eTau τ).2 y]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem br_embT_res (D : D7) (τ : D.what₂.Tau) (y : D.host.K) :
     embT D τ (algebraMap D.host.K D.host.E y) = brPhi D y := by
@@ -103,7 +103,7 @@ theorem br_embT_res (D : D7) (τ : D.what₂.Tau) (y : D.host.K) :
   rw [br_sigma_fix D _ (D.eTau τ).2 y]
 
 /- English proof (translation)
-Rewrite using `[D.what₂.card_Tau]`. Establish `h1` using `br_finrank_E D`. Establish `h2` using `D.host.toHostAx.finrank_cmField`. Simplify using `only [Formalism.BasicNotions.Ranks.f, Formalism.BasicNotions.Ranks.n]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem br_card_tau (D : D7) : Fintype.card D.what₂.Tau = Module.finrank D.host.K D.host.E := by
   rw [D.what₂.card_Tau]
@@ -113,7 +113,7 @@ theorem br_card_tau (D : D7) : Fintype.card D.what₂.Tau = Module.finrank D.hos
   omega
 
 /- English proof (translation)
-Introduce `h`. Simplify using `only [Formalism.BasicNotions.Host.AA0, inv_eq_zero, FractionalIdeal.coeIdeal_eq_zero] at h`. Establish `h2` using `D.host.𝔟_spec.1`. Rewrite `h2` using `[h, Submodule.bot_mul]`. Conclude with `differentIdeal_ne_bot h2`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leading_constant_ne_zero (D : D7) : D.host.AA0 ≠ 0 := by
   intro h
@@ -123,7 +123,7 @@ theorem leading_constant_ne_zero (D : D7) : D.host.AA0 ≠ 0 := by
   exact differentIdeal_ne_bot h2
 
 /- English proof (translation)
-The claim follows from `D.host.𝔟_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem br_b_spec (D : D7) :
     differentIdeal (𝓞 D.host.K) (𝓞 D.host.E) = D.host.𝔟 * (D.host.conj • D.host.𝔟) := D.host.𝔟_spec.1

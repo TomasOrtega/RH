@@ -8,28 +8,26 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open Finset
 
 /- English proof (translation)
-Establish `h` using `Finset.sum_range_reflect (fun i : ℕ => i) k`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => k - 1 - i) k, h, Finset.sum_range_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_fin_staircase (k : ℕ) : ∑ i : Fin k, (k - 1 - (i : ℕ)) = k * (k - 1) / 2 := by
   have h := Finset.sum_range_reflect (fun i : ℕ => i) k
   rw [Fin.sum_univ_eq_sum_range (fun i => k - 1 - i) k, h, Finset.sum_range_id]
 
 /- English proof (translation)
-Introduce `k nu hk hanti hsum hnot`. Use `push Not at hnot`. Take `⟨j, hj0, hj2⟩` from `hnot`. Establish `hk2 : 2 ≤ k` using `by have := j.isLt; omega`. Assume the negation of the conclusion as `hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push Not at hcon`. Use `set l : Fin k → ℕ := fun i => nu i + (k - 1 - (i : ℕ)) with hl`. Establish `hinj : Function.Injective (fun i => l i % k)`. Introduce `a b hab`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hcon a b hne hab`. Establish `hle : ∀ i, nu i ≤ k` using `fun i => hsum ▸ Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`. Establish `hlt : ∀ i, l i < 2 * k`. Introduce `i`. Use `hle i` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `i.isLt` as an intermediate fact. Simplify using `only [hl]`. Use linear arithmetic over natural numbers and integers. Establish `hcount` using `h1 k l hlt hinj`. Establish `hsumL : ∑ i, l i = k + k * (k - 1) / 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [hl, Finset.sum_add_distrib, hsum, sum_fin_staircase]`. Set `i0 : Fin k` to `⟨0, by omega⟩`. Set `i1 : Fin k` to `⟨1, by omega⟩`. Establish `h1le : nu j ≤ nu i1` using `hanti (show i1 ≤ j by rw [Fin.le_iff_val_le_val]; simp [i1]; omega)`. Establish `h0le : nu i1 ≤ nu i0` using `hanti (show i0 ≤ i1 by rw [Fin.le_iff_val_le_val]; simp [i0, i1])`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsub : ({i0, i1} : Finset (Fin k)) ⊆ univ.filter fun i => k ≤ l i`. Introduce `x hx`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hx`. Establish `hv0 : (i0 : ℕ) = 0` using `rfl`. Establish `hv1 : (i1 : ℕ) = 1` using `rfl`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases hx with rfl | rfl <;>`. Apply the tactic sequence `simp only [Finset.mem_filter, Finset.mem_univ, true_and, hl, hv0, hv1] <;> omega`. Establish `hcard : 2 ≤ (univ.filter fun i => k ≤ l i).card`. Use `Finset.card_le_card hsub` as an intermediate fact. Rewrite `this` using `[Finset.card_pair (by simp [i0, i1, Fin.ext_iff])]`. Then use the resulting hypothesis.
-
-Establish `hmul` using `Nat.mul_le_mul_left k hcard`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem SchNonHookResidues.proof (h1 : SchResidueCount.Statement) :
     SchNonHookResidues.Statement := by

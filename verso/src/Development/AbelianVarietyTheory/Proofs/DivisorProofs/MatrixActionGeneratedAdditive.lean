@@ -20,7 +20,7 @@ variable {p h o : ℕ} {A : Type} [CommRing A] {π : A} {γ : ℕ → A} {Lie Om
   [AddCommGroup Om] [Module A Om]
 
 /- English proof (translation)
-Unfold `mv`. Rewrite using `[Matrix.map_add _ Int.cast_add, Matrix.add_mulVec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mv_add_matrix (N N' : Matrix (Fin h) (Fin h) ℤ) (x : Fin h → A) :
     mv (RingHom.id A) (N + N') x = mv (RingHom.id A) N x + mv (RingHom.id A) N' x := by
@@ -28,14 +28,14 @@ theorem mv_add_matrix (N N' : Matrix (Fin h) (Fin h) ℤ) (x : Fin h → A) :
   rw [Matrix.map_add _ Int.cast_add, Matrix.add_mulVec]
 
 /- English proof (translation)
-Unfold `mv`. Rewrite using `[Matrix.map_zero _ Int.cast_zero, Matrix.zero_mulVec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mv_zero_matrix (x : Fin h → A) : mv (RingHom.id A) (0 : Matrix (Fin h) (Fin h) ℤ) x = 0 := by
   unfold mv
   rw [Matrix.map_zero _ Int.cast_zero, Matrix.zero_mulVec]
 
 /- English proof (translation)
-Rewrite using `[eq_neg_iff_add_eq_zero, ← mv_add_matrix, neg_add_cancel, mv_zero_matrix]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mv_neg_matrix (N : Matrix (Fin h) (Fin h) ℤ) (x : Fin h → A) :
     mv (RingHom.id A) (-N) x = -mv (RingHom.id A) N x := by
@@ -44,13 +44,11 @@ theorem mv_neg_matrix (N : Matrix (Fin h) (Fin h) ℤ) (x : Fin h → A) :
 variable (D : RChain p A h o π γ Lie Om)
 
 /- English proof (translation)
-Rewrite using `[mv_zero_matrix]; exact zero_mem _ j y x x' e _ := by`. Rewrite `e` using `[mv_zero_matrix]`. Take `rfl : x' = 0` from `Subtype.ext e`. Simplify using the standard rewrite rules. Use `ρ y x x' e _ := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[mv_zero_matrix]`. Take `rfl : x' = 0` from `Subtype.ext e`. Simplify using the standard rewrite rules. Use `ψ n _ x x' y y' e e' _ := by`. Rewrite `e`, `e'` using `[mv_zero_matrix]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : x' = 0` from `Subtype.ext e`. Take `rfl : y' = 0` from `Subtype.ext e'`. Simplify using the standard rewrite rules. Use `κ n _ x x' y e _ := by`. Rewrite `e` using `[mv_zero_matrix]`.
-
-Take `rfl : x' = 0` from `Subtype.ext e`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_zero' : D.Map D (RingHom.id A) 0 (fun _ => 0) (fun _ => 0) where
   mem n x _ := by rw [mv_zero_matrix]; exact zero_mem _
@@ -75,9 +73,9 @@ theorem map_zero' : D.Map D (RingHom.id A) 0 (fun _ => 0) (fun _ => 0) where
 variable {D}
 
 /- English proof (translation)
-Establish `hs : ∀ x : Fin h → A, mv (RingHom.id A) (N - N') x = mv (RingHom.id A) N x - mv (RingHom.id A) N' x` using `fun x => by`. Rewrite using `[sub_eq_add_neg, mv_add_matrix, mv_neg_matrix, sub_eq_add_neg]`. Establish `sp : ∀ n (x x' : D.L n), x'.1 = mv (RingHom.id A) (N - N') x.1 → x' = ⟨_, H.mem n _ x.2⟩ - ⟨_, H'.mem n _ x.2⟩` using `fun n x x' e => Subtype.ext (e.trans (hs _))`. Use `⟨fun n x hx => ?_, fun y x x' e k => ?_, fun y x x' e k => ?_, fun n hn x x' y y' e e' k => ?_, fun n hn x x' y e k => ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_mem (H.mem n x hx) (H'.mem n x hx)`. Rewrite using `[sp _ _ _ e, map_sub, Submodule.Quotient.mk_sub, H.j y x ⟨_, H.mem _ _ x.2⟩ rfl k, H'.j y x ⟨_, H'.mem _ _ x.2⟩ rfl k]`. Rewrite using `[sp _ _ _ e, map_sub, Submodule.Quotient.mk_sub, Submodule.Quotient.mk_sub, H.ρ y x ⟨_, H.mem _ _ x.2⟩ rfl k, H'.ρ y x ⟨_, H'.mem _ _ x.2⟩ rfl k]`. Rewrite using `[sp _ _ _ e, sp _ _ _ e', Submodule.Quotient.mk_sub, Submodule.Quotient.mk_sub, map_sub, H.ψ n hn x ⟨_, H.mem _ _ x.2⟩ y ⟨_, H.mem _ _ y.2⟩ rfl rfl k, H'.ψ n hn x ⟨_, H'.mem _ _ x.2⟩ y ⟨_, H'.mem _ _ y.2⟩ rfl rfl k]`. Rewrite using `[sp _ _ _ e, Submodule.Quotient.mk_sub, Submodule.Quotient.mk_sub, map_sub, H.κ n hn x ⟨_, H.mem _ _ x.2⟩ y rfl k, H'.κ n hn x ⟨_, H'.mem _ _ x.2⟩ y rfl k]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_sub' {N N' : Matrix (Fin h) (Fin h) ℤ} {l l' : Lie → Lie} {m m' : Om → Om}
     (H : D.Map D (RingHom.id A) N l m) (H' : D.Map D (RingHom.id A) N' l' m') :
@@ -100,15 +98,13 @@ theorem map_sub' {N N' : Matrix (Fin h) (Fin h) ℤ} {l l' : Lie → Lie} {m m' 
       H.κ n hn x ⟨_, H.mem _ _ x.2⟩ y rfl k, H'.κ n hn x ⟨_, H'.mem _ _ x.2⟩ y rfl k]
 
 /- English proof (translation)
-Introduce `p h o A Λ _ _ π γ Lie Om _ _ _ _ D M α β G hα hβ hG hg`. Establish `a0 : ∀ y, α 0 y = 0` using `fun y => by simpa using hα 0 0 y`. Establish `b0 : ∀ y, β 0 y = 0` using `fun y => by simpa using hβ 0 0 y`. Establish `as : ∀ a b, α (a - b) = fun y => α a y - α b y` using `fun a b => funext fun y => by`. Rewrite using `[eq_sub_iff_add_eq, ← hα, sub_add_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `bs : ∀ a b, β (a - b) = fun y => β a y - β b y` using `fun a b => funext fun y => by`. Rewrite using `[eq_sub_iff_add_eq, ← hβ, sub_add_cancel]`. Establish `z : D.Map D (RingHom.id A) (M 0) (α 0) (β 0)`. Rewrite using `[map_zero, funext a0, funext b0]`. Conclude with `map_zero' D`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `s : ∀ a b, D.Map D (RingHom.id A) (M a) (α a) (β a) → D.Map D (RingHom.id A) (M b) (α b) (β b) → D.Map D (RingHom.id A) (M (a - b)) (α (a - b)) (β (a - b))` using `fun a b ha hb => by`. Rewrite using `[map_sub, as, bs]`. Conclude with `map_sub' ha hb`. Set `S : AddSubgroup Λ` to `{ carrier := {a | D.Map D (RingHom.id A) (M a) (α a) (β a)} zero_mem' := z neg_mem' := fun {a} ha => by`. Use `s 0 a z ha` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[zero_sub]`. Then use the resulting hypothesis. Use the proof step `add_mem' := fun {a b} ha hb => by`. Use `s a (0 - b) ha (s 0 b z hb)` as an intermediate fact. Rewrite using `[zero_sub, sub_neg_eq_add] at this }` and apply the resulting hypothesis. Establish `hle : Submodule.span ℤ G ≤ AddSubgroup.toIntSubmodule S` using `Submodule.span_le.2 hg`.
-
-Introduce `a`. Conclude with `hle (hG ▸ Submodule.mem_top : a ∈ Submodule.span ℤ G)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem map_of_span : ∀ (p h o : ℕ) (A Λ : Type) [CommRing A] [CommRing Λ] (π : A) (γ : ℕ → A) (Lie Om : Type) [AddCommGroup Lie] [Module A Lie] [AddCommGroup Om] [Module A Om] (D : RChain p A h o π γ Lie Om) (M : Λ →+* Matrix (Fin h) (Fin h) ℤ) (α : Λ → Lie → Lie) (β : Λ → Om → Om) (G : Set Λ), (∀ a b y, α (a + b) y = α a y + α b y) → (∀ a b y, β (a + b) y = β a y + β b y) → Submodule.span ℤ G = ⊤ → (∀ a ∈ G, D.Map D (RingHom.id A) (M a) (α a) (β a)) → ∀ a, D.Map D (RingHom.id A) (M a) (α a) (β a) := by
   intro p h o A Λ _ _ π γ Lie Om _ _ _ _ D M α β G hα hβ hG hg

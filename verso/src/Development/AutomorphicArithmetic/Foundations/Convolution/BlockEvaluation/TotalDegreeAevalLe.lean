@@ -4,7 +4,7 @@ open Classical
 open MeasureTheory NumberField IsDedekindDomain MvPolynomial Filter Topology GroundTheory.Automorphic GroundTheory.Automorphic.Reduction UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Ci PositivityTheory.Rg.Fx PositivityTheory.Rg.Tf.Core
 
 /- English proof (translation)
-Rewrite using `[Polynomial.aeval_eq_sum_range]`. Use `(totalDegree_finset_sum _ _).trans (Finset.sup_le fun i hi => ?_)` and prove the remaining obligations. Establish `hi' : i ≤ p.natDegree` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`. Use `(totalDegree_smul_le _ _).trans ((totalDegree_pow _ _).trans ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 private theorem totalDegree_aeval_le {σ : Type*} (q : MvPolynomial σ ℂ) (hq : q.totalDegree ≤ 1) (p : Polynomial ℂ) :
     (Polynomial.aeval q p).totalDegree ≤ p.natDegree := by
@@ -16,9 +16,9 @@ private theorem totalDegree_aeval_le {σ : Type*} (q : MvPolynomial σ ℂ) (hq 
     _ ≤ p.natDegree := by simpa using hi'
 
 /- English proof (translation)
-Substitute `hs` using the available equality. Proceed by induction on `s using Quotient.inductionOn with`. Consider the case `h l`. Use `⟨fun i => l.get (Fin.cast (by simp) i), ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.univ_val_map]`.
+Substitute using the available equality. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg _ ?_` and prove the remaining obligations. Apply the tactic sequence `apply List.ext_get <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem exists_fin_map (n : ℕ) (s : Multiset ℂ) (hs : s.card = n) :
     ∃ f : Fin n → ℂ, (Finset.univ : Finset (Fin n)).val.map f = s := by
@@ -31,19 +31,17 @@ private theorem exists_fin_map (n : ℕ) (s : Multiset ℂ) (hs : s.card = n) :
     apply List.ext_get <;> simp
 
 /- English proof (translation)
-Introduce `K _ _ n κ κ' D D' d d' R R'`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨h1, h2, h3⟩ ⟨h1', h2', h3'⟩`. Use `⟨?_, (totalDegree_mul _ _).trans (Nat.add_le_add h2 h2'), ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Finset.mem_union.mp (vars_mul R R' hx) with h | h` into its components or cases. Conclude with `Finset.mem_union_left _ (h1 x h)`. Conclude with `Finset.mem_union_right _ (h1' x h)`. Introduce `β`. Rewrite using `[coeff_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(totalDegree_finset_sum _ _).trans (Finset.sup_le fun p _ => ?_)` and prove the remaining obligations. Conclude with `(totalDegree_mul _ _).trans (Nat.add_le_add (h3 _) (h3' _))`. Introduce `η m`. Establish `hq : (C ((2 / η : ℝ) : ℂ) * X none - 1 : MvPolynomial (Option (Ix K n)) ℂ).totalDegree ≤ 1`. Use `(totalDegree_sub _ _).trans (max_le ?_ (by simp))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Simplify using `[totalDegree_X]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Simplify using `[chebP, vars_C] at hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Simplify using `[chebP]`. Introduce `β`. Unfold `chebP`. Rewrite using `[coeff_C]`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Use `(totalDegree_aeval_le _ hq _).trans ?_` and prove the remaining obligations. Simplify using `[Polynomial.Chebyshev.natDegree_T]`. Simplify using the standard rewrite rules. Introduce and unpack `hκ hD hd ⟨h1, h2, h3⟩`. Conclude with `⟨fun x hx => hκ (h1 x hx), h2.trans hD, fun β => (h3 β).trans hd⟩`.
-
-Introduce `Λ hΛ choose f hf using fun τ => exists_fin_map n (Λ τ) (hΛ τ)`. Use `⟨fun y => f y.1 y.2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ`. Conclude with `hf τ`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Ci.bdLem :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (κ κ' : Finset (Pl K)) (D D' d d' : ℕ) (R R' : PR K n),

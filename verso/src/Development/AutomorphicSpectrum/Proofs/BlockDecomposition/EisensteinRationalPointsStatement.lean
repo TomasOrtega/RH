@@ -8,7 +8,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.RatPtsUnn.ratPtsUnn | exact GlobalTheory.CompanionTheory.RatPtsUnn.ratPtsUnn | (intros; apply GlobalTheory.CompanionTheory.RatPtsUnn.ratPtsUnn <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.eisenstein_rational_points : PositivityTheory.GramSchwartzFunctions.EC.RatPts := by
   first | exact @GlobalTheory.CompanionTheory.RatPtsUnn.ratPtsUnn | exact GlobalTheory.CompanionTheory.RatPtsUnn.ratPtsUnn | (intros; apply GlobalTheory.CompanionTheory.RatPtsUnn.ratPtsUnn <;> assumption)

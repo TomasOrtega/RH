@@ -9,13 +9,13 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped nonZeroDivisors Pointwise
 
 /- English proof (translation)
-Establish `hp1 : 0 < p - 1` using `by have := hp.out.two_le; omega`. Establish `hd0 : 0 < d`. Break down `Nat.eq_zero_or_pos d with h | h` into its components or cases. Rewrite `hd` using `[h, mul_zero]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `h`. Take `⟨g, hg⟩` from `IsCyclic.exists_generator (α := (ZMod p)ˣ)`. Establish `hog : orderOf g = M * d`. Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers hg, Nat.card_eq_fintype_card, ZMod.card_units, hd]`. Establish `h2 : χ (g : ZMod p) ^ n = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← MulChar.pow_apply_coe, h, MulChar.one_apply_coe]`. Establish `h3 : g ^ (n * d) = 1`. Use `ext`. Use `congrArg π h2` as an intermediate fact. Rewrite `this` using `[map_pow, hχ g g.ne_zero, map_one, ← pow_mul, mul_comm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `h4` using `orderOf_dvd_of_pow_eq_one h3`. Rewrite `h4` using `[hog]`. Conclude with `Nat.dvd_of_mul_dvd_mul_right hd0 h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem xJac_pow_ne {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] (π : R →+* ZMod p)
     (χ : MulChar (ZMod p) R) (M d : ℕ) (hd : p - 1 = M * d)
@@ -40,23 +40,21 @@ private theorem xJac_pow_ne {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime
   exact Nat.dvd_of_mul_dvd_mul_right hd0 h4
 
 /- English proof (translation)
-Establish `hz` using `IsCyclotomicExtension.zeta_spec M ℚ K`. Establish `hζ : IsPrimitiveRoot hz.toInteger M` using `hz.toInteger_isPrimitiveRoot`. Take `⟨hπ, d, hd⟩` from `redRoot (𝓞 K) p π M _ hco hζ`. Rewrite `hχ` using `[hd, Nat.mul_div_cancel_left _ (NeZero.pos M)]`. Establish `hp1 : 0 < p - 1` using `by have := hp.out.two_le; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hd0 : 0 < d`. Break down `Nat.eq_zero_or_pos d with h | h` into its components or cases. Rewrite `hd` using `[h, mul_zero]`. Use linear arithmetic over natural numbers and integers. Conclude with `h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hne : ∀ n : ℕ, (n : ZMod M) ≠ 0 → χ ^ n ≠ 1`. Introduce `n hn h`. Conclude with `hn ((ZMod.natCast_eq_zero_iff n M).2 (xJac_pow_ne p π χ M d hd (fun x hx => (hχ x hx).2) n h))`. Establish `hval : ∀ (c : ZMod M) (t : (ZMod M)ˣ), c ≠ 0 → 0 < (c * t).val`. Introduce `c t hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[Nat.pos_iff_ne_zero, Ne, ZMod.val_eq_zero]`. Conclude with `fun h => hc ((Units.mul_left_eq_zero t).1 h)`. Establish `hred : ∀ (c : ZMod M) (t : (ZMod M)ˣ), c ≠ 0 → ∀ x : ZMod p, π (sgO M K t ((χ ^ c.val) x)) = x ^ (d * (c * t).val)`. Introduce `c t hc x`. Establish `hc0 : c.val ≠ 0` using `by rwa [Ne, ZMod.val_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Rewrite using `[MulChar.map_zero, map_zero, map_zero, zero_pow (Nat.mul_pos hd0 (hval c t hc)).ne']`. Take `⟨h1, h2⟩` from `hχ x hx`. Rewrite using `[MulChar.pow_apply' _ hc0, map_pow, sgO_apply M K t h1, ← pow_mul, pow_eq_pow_mod _ h1, mul_comm (t : ZMod M).val, ← ZMod.val_mul, map_pow, h2, ← pow_mul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨?_, fun t => ?_⟩` and prove the remaining obligations. Apply `jacDvd` to reduce the goal to its premises. Conclude with `hne _ (by simpa using ha)`. Conclude with `hne _ (by simpa using hb)`. Rewrite using `[← pow_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hne _ (by simpa using hab)`. Establish `hlt : ∀ c : ZMod M, d * c.val < p - 1`. Introduce `c`. Rewrite using `[hd, mul_comm M]`. Conclude with `Nat.mul_lt_mul_of_pos_left (ZMod.val_lt c) hd0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[mem_conjI, RingHom.mem_ker, jacobiSum, map_sum, map_sum]`. Simplify using `only [map_mul, hred a t ha, hred b t hb]`. Rewrite using `[ffsum p _ _ (Nat.mul_pos hd0 (hval a t ha)) (hlt _) (Nat.mul_pos hd0 (hval b t hb)) (hlt _), hd, ← mul_add, mul_comm M, Nat.mul_lt_mul_left hd0, carry]`. Use `split_ifs with h`. Simplify using `only [one_ne_zero, iff_false, not_lt]`.
-
-Conclude with `h`. Simplify using `only [iff_true]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 private theorem xJac_one (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K]
     (p : ℕ) [hp : Fact p.Prime] (π : 𝓞 K →+* ZMod p) (χ : MulChar (ZMod p) (𝓞 K)) (hco : p.Coprime M)
@@ -109,7 +107,7 @@ private theorem xJac_one (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField 
     · simp only [iff_true]; omega
 
 /- English proof (translation)
-Establish `hM : 0 < M` using `Nat.pos_of_ne_zero (NeZero.ne M)`. Establish `ht : t.val < M` using `ZMod.val_lt t`. Establish `h1 : ((k : ZMod M) * t).val = t.val * k % M`. Rewrite using `[ZMod.val_mul, ZMod.val_natCast, Nat.mod_mul_mod, mul_comm]`. Rewrite using `[mul_add, mul_one, Nat.add_div hM, Nat.div_eq_of_lt ht, Nat.mod_eq_of_lt ht, carry, h1, one_mul, add_zero, add_comm t.val]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem xJac_step (M : ℕ) [NeZero M] (k : ℕ) (t : ZMod M) :
     t.val * (k + 1) / M = t.val * k / M + carry M (1 * t) ((k : ZMod M) * t) := by
@@ -121,9 +119,9 @@ private theorem xJac_step (M : ℕ) [NeZero M] (k : ℕ) (t : ZMod M) :
     add_zero, add_comm t.val]
 
 /- English proof (translation)
-Proceed by induction on `b with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Simplify using `[Nat.div_eq_of_lt (ZMod.val_lt t)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_Ico_succ_top hk, xJac_step]`. Apply the tactic sequence `have : carry M (1 * t) ((k : ZMod M) * t) ≤ 1 := by unfold carry; split_ifs <;> omega`. Use `show ∑ j ∈ Finset.Ico 1 k, (1 - carry M (1 * t) ((j : ZMod M) * t)) + _ + _ = _`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem xJac_sum (M : ℕ) [NeZero M] (t : ZMod M) (b : ℕ) :
     ∑ j ∈ Finset.Ico 1 b, (1 - carry M (1 * t) ((j : ZMod M) * t)) + t.val * b / M = b - 1 := by
@@ -138,9 +136,9 @@ private theorem xJac_sum (M : ℕ) [NeZero M] (t : ZMod M) (b : ℕ) :
       omega
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `splitProd M K p π hco`. Rewrite using `[sqfree _ _ _ (splitInj M K p π hco) h1 J (Finset.univ.filter fun t => c t = 0) (by rw [h2]; exact Ideal.dvd_iff_le.2 (Ideal.span_singleton_le_span_singleton.2 hJ)) (by simp [hc]), Finset.prod_filter]`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Simplify using `[h]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show 1 - c t = 0 by omega, pow_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem xJac_span (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K]
     (p : ℕ) [hp : Fact p.Prime] (π : 𝓞 K →+* ZMod p) (hco : p.Coprime M) (J : 𝓞 K) (hJ : J ∣ (p : 𝓞 K))
@@ -155,7 +153,7 @@ private theorem xJac_span (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField
   · rw [show 1 - c t = 0 by omega, pow_zero]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show sg M K s (sg M K t x) = sg M K (s * t) x`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem xJac_sgO (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K]
     (s t : (ZMod M)ˣ) (x : 𝓞 K) : sgO M K s (sgO M K t x) = sgO M K (s * t) x := by
@@ -164,7 +162,7 @@ private theorem xJac_sgO (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField 
   rw [map_mul]; rfl
 
 /- English proof (translation)
-Use `congrArg (FractionalIdeal.coeIdealHom (𝓞 K)⁰ K) h` as an intermediate fact. Rewrite `this` using `[map_prod]`. Simplify using `only [map_pow, FractionalIdeal.coeIdealHom_apply, FractionalIdeal.coeIdeal_span_singleton] at this`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem xJac_frac {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] (P : ι → Ideal (𝓞 K))
     (e : ι → ℕ) (J : 𝓞 K) (h : Ideal.span {J} = ∏ t, P t ^ e t) :
@@ -175,23 +173,21 @@ private theorem xJac_frac {K : Type} [Field K] [NumberField K] {ι : Type} [Fint
   exact this
 
 /- English proof (translation)
-Introduce `M _ K _ _ _ b p hp π χ hco hb hχ`. Establish `key : ∀ j ∈ Finset.Ico 1 b, jacobiSum χ (χ ^ j) ∣ (p : 𝓞 K) ∧ ∀ t : (ZMod M)ˣ, jacobiSum χ (χ ^ j) ∈ conjI M K (RingHom.ker π) t ↔ carry M (1 * (t : ZMod M)) ((j : ZMod M) * t) = 0`. Introduce `j hj`. Take `⟨hj1, hj2⟩` from `Finset.mem_Ico.1 hj`. Use `haveI : Fact (1 < M) := ⟨by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn : ∀ n : ℕ, 0 < n → n < M → (n : ZMod M) ≠ 0` using `fun n h1 h2 h => absurd (Nat.le_of_dvd h1 ((ZMod.natCast_eq_zero_iff n M).1 h)) (by omega)`. Use `xJac_one M K p π χ hco hχ 1 j one_ne_zero (hn j hj1 (by omega)) (by have := hn (1 + j) (by omega) (by omega); rwa [Nat.cast_add, Nat.cast_one] at this)` as an intermediate fact. Rewrite `this` using `[ZMod.val_one, pow_one, ZMod.val_natCast_of_lt (by omega)]`. Then use the resulting hypothesis. Use `set P := conjI M K (RingHom.ker π) with hP`. Use `set e : ZMod M → ℕ := fun t => ∑ j ∈ Finset.Ico 1 b, (1 - carry M (1 * t) ((j : ZMod M) * t)) with he`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set J : 𝓞 K := ∏ j ∈ Finset.Ico 1 b, jacobiSum χ (χ ^ j) with hJ`. Establish `h1 : Ideal.span {J} = ∏ t : (ZMod M)ˣ, P t ^ e t`. Rewrite using `[hJ, ← Ideal.prod_span_singleton, Finset.prod_congr rfl fun j hj => xJac_span M K p π hco _ (key j hj).1 _ (key j hj).2, Finset.prod_comm]`. Conclude with `Finset.prod_congr rfl fun t _ => Finset.prod_pow_eq_pow_sum _ _ _`. Establish `h2 : Ideal.span {sgO M K (-1) J} = ∏ t : (ZMod M)ˣ, P t ^ e (-t)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hJ, map_prod, ← Ideal.prod_span_singleton, Finset.prod_congr rfl fun (j : ℕ) hj => xJac_span M K p π hco (sgO M K (-1) (jacobiSum χ (χ ^ j))) (by simpa using map_dvd (sgO M K (-1)) (key j hj).1) (fun t => carry M (1 * (-t : ZMod M)) ((j : ZMod M) * (-t : ZMod M))) (fun t => by`. Rewrite using `[mem_conjI, xJac_sgO, mul_neg_one, ← mem_conjI, (key j hj).2, Units.val_neg]), Finset.prod_comm]`. Conclude with `Finset.prod_congr rfl fun t _ => Finset.prod_pow_eq_pow_sum _ _ _`. Establish `hJ0 : J ≠ 0`. Rewrite using `[hJ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_ne_zero_iff.2 fun j hj h => ?_` and prove the remaining obligations. Use `(key j hj).1` as an intermediate fact. Rewrite `this` using `[h, zero_dvd_iff]`. Conclude with `hp.out.ne_zero (by exact_mod_cast this)`. Establish `hJK : (J : K) ≠ 0` using `by exact_mod_cast hJ0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hs : sg M K (-1) (J : K) ≠ 0` using `(map_ne_zero _).2 hJK`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `: sg M K (-1) (sg M K (-1) (J : K)) = J`. Rewrite using `[← AlgEquiv.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_div₀, this]`. Clear the denominators using the available nonvanishing facts. Establish `h3` using `xJac_frac _ _ _ h1`. Establish `h4 : FractionalIdeal.spanSingleton (𝓞 K)⁰ (sg M K (-1) (J : K)) = _` using `xJac_frac _ _ _ h2`. Rewrite using `[← FractionalIdeal.spanSingleton_div_spanSingleton, h3, h4, ← Finset.prod_div_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Establish `hP0 : (P t : FractionalIdeal (𝓞 K)⁰ K) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 ((splitProd M K p π hco).1 t).ne_zero`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_sub₀ hP0]`. Use `congr 1`. Establish `e1 : e t + _ = _` using `xJac_sum M t b`.
-
-Establish `e2 : e (-t) + _ = _` using `xJac_sum M (-t) b`. Unfold `th`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ML.xJac :
     ∀ (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] (b p : ℕ) [Fact p.Prime] (π : 𝓞 K →+* ZMod p) (χ : MulChar (ZMod p) (𝓞 K)), p.Coprime M → b < M →

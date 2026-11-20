@@ -11,9 +11,9 @@ namespace GroundTheory.Heights₂.Heights
 open ReciprocityTheory.ChartRestriction.G NumberField
 
 /- English proof (translation)
-Introduce `ι _ _ _ n A x s hx ⟨a, ha, hs, hsW⟩ v hv`. Establish `hsc : s ∉ orbitCenter x v` using `fun h ↦ hv (hDiv ι n x s a hx hs hsW v h)`. Establish `heq : v (evalCone (coordVec x) s) = ∏ k, (⨆ i, v (coordVec x k i)) ^ a k` using `le_antisymm (hLe ι n x v s a hs) (not_lt.mp (mt (hIff ι n x hx v s a hs).mpr hsc))`. Establish `hne : v (evalCone (coordVec x) s) ≠ 0` using `(FinitePlace.pos_iff.mpr (evalCone_coordVec_ne_zero x s a hs hsW)).ne'`. Rewrite `hne`, the goal using `[heq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Real.log_prod (fun k _ ↦ Finset.prod_ne_zero_iff.mp hne k (Finset.mem_univ k)), finiteTerm, sub_eq_zero]`. Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Real.log_pow, show (A.deg k : ℝ) = (a k : ℝ) by exact_mod_cast ha k]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem OrbitCenterZero.proof (hLe : OrbitCenterLe.Statement)
     (hIff : OrbitCenterMemIff.Statement) (hDiv : OrbitCenterDivSupp.Statement) :

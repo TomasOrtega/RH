@@ -11,7 +11,7 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 open scoped Formalism.Per NNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.BSP.approxRoot_gal_sub_mem_fil) | (exact GlobalTheory.BSP.approxRoot_gal_sub_mem_fil) | (intros; apply GlobalTheory.BSP.approxRoot_gal_sub_mem_fil <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.eisensteinApproxRoot_galois_sub_mem_bdRFil : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (n M : ℕ) (q : bk.S),
     bk.E ∣ q - (l : bk.S) ^ M * X →

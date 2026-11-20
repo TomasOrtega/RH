@@ -11,9 +11,9 @@ noncomputable section
 namespace FlagBundlePullbackVanish
 
 /- English proof (translation)
-Use function extensionality and compare the values at `o`. Consider the cases of `o with`. Consider the case `none`. Rewrite using `[FieldNumbers.pullDeg, Function.extend_apply' _ _ _ (by simp)]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `some k`. Conclude with `(Function.Embedding.some.injective.extend_apply L 0 k).symm`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem liftDeg_eq_pullDeg {K : Type*} (L : K → ℤ) :
     liftDeg L = FieldNumbers.pullDeg Function.Embedding.some L := by
@@ -26,11 +26,11 @@ theorem liftDeg_eq_pullDeg {K : Type*} (L : K → ℤ) :
     exact (Function.Embedding.some.injective.extend_apply L 0 k).symm
 
 /- English proof (translation)
-Set `ψ : MvPolynomial K Ω →+* MvPolynomial (Option K) Φ` to `(rename Option.some).toRingHom.comp (MvPolynomial.map (algebraMap Ω Φ))`. Establish `hψ : Function.Injective ψ` using `(rename_injective _ (Option.some_injective K)).comp (map_injective _ (algebraMap Ω Φ).injective)`. Use extensionality with `x`. Simplify using `only [FieldNumbers.contractPrime, projIdeal, pointIdeal, Ideal.mem_comap, RingHom.mem_ker]`. Use `Iff.trans ?_ (map_eq_zero_iff ψ hψ)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Iff.of_eq (congrArg (· = 0) ?_)` and prove the remaining obligations. Proceed by induction on `x using MvPolynomial.induction_on with`. Consider the case `C r`. Simplify using `[ψ, pointConeMap, MvPolynomial.algebraMap_eq]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `mul_X p v hp`. Simplify using `only [map_mul, hp, rename_X, eval₂Hom_X', pointConeMap, aeval_X]`. Simplify using `[ψ, FieldNumbers.blockIncl, projCoord]`. Conclude with `Or.inl rfl`.
+Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the first alternative.
 -/
 theorem contract_projIdeal {F : Type} [Field F] {Ω : Type} [Field Ω] [Algebra F Ω]
     {K : Type} {ι : K → Type} (y : (Σ k, ι k) → Ω) {N M : ℕ} {E : Type} [AddCommGroup E]
@@ -57,13 +57,13 @@ theorem contract_projIdeal {F : Type} [Field F] {Ω : Type} [Field Ω] [Algebra 
     exact Or.inl rfl
 
 /- English proof (translation)
-Introduce `F _ Ω _ _ K _ _ ι _ y e hV hVdim N E _ _ B w b hflag M a φ hφ Φ _ _ t ht i hi2 hiN L hL`. Take `⟨hP, hrel⟩` from `hDim F Ω K ι y e hV hVdim N E B w b hflag M a φ hφ Φ t ht i (by omega) hiN`. Establish `hlen : (L.map liftDeg).length = e + i - 1` using `by simp; omega`. Establish `hrel' : FieldNumbers.relDim (projIdeal F y w φ (truncCoord t i)) = (((L.map liftDeg).length : ℕ) : WithBot (WithTop ℤ))` using `by rw [hrel, hlen]`. Establish `hrelV : FieldNumbers.relDim (ι` using `ι) (pointIdeal F y) = (((e : ℤ) : WithTop ℤ) : WithBot (WithTop ℤ)) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[FieldNumbers.relDim, hVdim]`. Establish `: (((e + Fintype.card K : ℕ) : ℤ) - Fintype.card K) = e` using `by push_cast; ring`. Conclude with `congrArg (fun z : ℤ => ((z : WithTop ℤ) : WithBot (WithTop ℤ))) this`. Establish `hcontr : FieldNumbers.relDim (FieldNumbers.contractPrime Function.Embedding.some (projIdeal F y w φ (truncCoord t i))) < (((L.map liftDeg).length : ℕ) : WithBot (WithTop ℤ))`. Rewrite using `[contract_projIdeal]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show FieldNumbers.relDim (ι := ι) (pointIdeal F y) < _`. Rewrite using `[hrelV, hlen]`. Use `show (((e : ℤ) : WithTop ℤ) : WithBot (WithTop ℤ)) < ((((e + i - 1 : ℕ) : ℤ) : WithTop ℤ) : WithBot (WithTop ℤ))`. Conclude with `WithBot.coe_lt_coe.mpr (WithTop.coe_lt_coe.mpr (by omega))`. Establish `hzero` using `hPF F K (Option K) Function.Embedding.some (bundleIdx ι M) (projIdeal F y w φ (truncCoord t i)) hP _ hrel' hcontr (fun k => L.get (Fin.cast (by simp) k))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[intNumL, ← hzero]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[liftDeg_eq_pullDeg]`.
+A detailed English derivation is pending.
 -/
 theorem proof (hPF : FieldNumbers.ProjectionFormulaContracted.Statement.{0})
     (hDim : FlagBundleDim.Statement) : FlagBundlePullbackVanish.Statement := by

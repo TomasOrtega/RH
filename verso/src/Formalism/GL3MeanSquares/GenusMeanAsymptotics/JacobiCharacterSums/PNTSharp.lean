@@ -11,17 +11,17 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 open Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Establish `hρ0 : ρ ≠ 0`. Introduce `h`. Rewrite `h1` using `[h]`. Evaluate the numerical expressions using `at h1`. Establish `hρ1 : ρ ≠ 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `h2` using `[h]`. Evaluate the numerical expressions using `at h2`. Establish `hs : ρ - 1 ≠ 0` using `sub_ne_zero.2 hρ1`. Establish `hyc : (y : ℂ) ≠ 0` using `by exact_mod_cast hy.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδc : (δ : ℂ) ≠ 0` using `by exact_mod_cast hδ.ne'`. Establish `hpow : (y : ℂ) ^ ρ = (y : ℂ) * (y : ℂ) ^ (ρ - 1)`. Rewrite using `[Complex.cpow_sub _ _ hyc, Complex.cpow_one]`. Clear the denominators using the available nonvanishing facts. Establish `e : ((y * ((1 + δ) / δ) : ℝ) : ℂ) * ((((1 + δ) * y : ℝ) : ℂ) ^ (ρ - 1) / (ρ * (ρ - 1)) - (y : ℂ) ^ (ρ - 1) / (ρ * (ρ - 1))) - (y : ℂ) ^ ρ / ρ = (y : ℂ) ^ ρ / ρ * ((((1 + δ) / δ : ℝ) : ℂ) * ((((1 + δ : ℝ) : ℂ) ^ (ρ - 1) - 1) / (ρ - 1)) - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[Complex.ofReal_mul (1 + δ) y, Complex.mul_cpow_ofReal_nonneg (by linarith) hy.le, hpow]`. Generalize the expression as in `((1 + δ : ℝ) : ℂ) ^ (ρ - 1) = a`. Generalize the expression as in `(y : ℂ) ^ (ρ - 1) = b`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[e, norm_mul, norm_div, Complex.norm_cpow_eq_rpow_re_of_pos hy]`. Establish `hk` using `sharp_kernel hρ0 hρ1 h2.le hδ hδ2`. Establish `hn : 0 < ‖ρ‖` using `norm_pos_iff.2 hρ0`. Establish `hr : y ^ ρ.re = y * y ^ (ρ.re - 1)`. Rewrite using `[Real.rpow_sub_one hy.ne']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Combine the equalities or inequalities in the displayed calculation.
+Clear the denominators using the available nonvanishing facts. Chain the equalities or inequalities of the calculation.
 -/
 lemma sharp_zero_term {ρ : ℂ} (h1 : 1 / 2 ≤ ρ.re) (h2 : ρ.re < 1) {y δ : ℝ} (hy : 0 < y) (hδ : 0 < δ)
     (hδ2 : δ ≤ 1 / 2) :
@@ -55,7 +55,7 @@ lemma sharp_zero_term {ρ : ℂ} (h1 : 1 / 2 ≤ ρ.re) (h2 : ρ.re < 1) {y δ :
     _ = 2 * δ * y * y ^ (ρ.re - 1) := by rw [hr]; field_simp
 
 /- English proof (translation)
-The claim follows from `|y * ((1 + δ) / δ) * ((Real.log ((1 + δ) * y) - 1) - (Real.log y - 1)) - y| ≤ δ * y := by have h1 : (0 : ℝ) < 1 + δ := by linarith rw [Real.log_mul h1.ne' hy.ne'] have hup : Real.log (1 + δ) ≤ δ := by have := Real.log_le_sub_one_of_pos h1; linarith have hlo : δ / (1 + δ) ≤ Real.l …`.
+A detailed English derivation is pending.
 -/
 lemma sharp_log_term {y δ : ℝ} (hy : 0 < y) (hδ : 0 < δ) :
     |y * ((1 + δ) / δ) * ((Real.log ((1 + δ) * y) - 1) - (Real.log y - 1)) - y| ≤ δ * y := by
@@ -83,31 +83,29 @@ lemma sharp_log_term {y δ : ℝ} (hy : 0 < y) (hδ : 0 < δ) :
     linarith
 
 /- English proof (translation)
-Introduce `M _ χ Z m K E y δ hZ hy hδ hδ2 hE`. Establish `hy0 : 0 < y` using `by linarith`. Establish `hEu` using `hE ((1 + δ) * y) (Or.inr rfl)`. Establish `hEy` using `hE y (Or.inl rfl)`. Establish `hE0 : 0 ≤ E` using `(norm_nonneg _).trans hEy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huy : y < (1 + δ) * y` using `by nlinarith`. Establish `hR` using `sharp_arith χ (by linarith : (1 : ℝ) ≤ y) huy`. Establish `hc : y * ((1 + δ) * y) / ((1 + δ) * y - y) = y * ((1 + δ) / δ)`. Establish `: (1 + δ) * y - y = δ * y` using `by ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite `hR` using `[hc]`. Use `set c : ℝ := y * ((1 + δ) / δ) with hcdef`. Establish `hc0 : 0 < c` using `by positivity`. Establish `hcle : c ≤ 3 / 2 * y / δ`.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hcdef, show y * ((1 + δ) / δ) = (1 + δ) * y / δ by ring]`. Conclude with `div_le_div_of_nonneg_right (by nlinarith) hδ.le`. Use `set T : ℂ → ℂ := fun ρ => (c : ℂ) * ((((1 + δ) * y : ℝ) : ℂ) ^ (ρ - 1) / (ρ * (ρ - 1)) - (y : ℂ) ^ (ρ - 1) / (ρ * (ρ - 1))) - (y : ℂ) ^ ρ / ρ with hT`. Establish `hsum : ∑ ρ ∈ Z, (m ρ : ℂ) * T ρ = (c : ℂ) * (∑ ρ ∈ Z, (m ρ : ℂ) * (((1 + δ) * y : ℝ) : ℂ) ^ (ρ - 1) / (ρ * (ρ - 1)) - ∑ ρ ∈ Z, (m ρ : ℂ) * (y : ℂ) ^ (ρ - 1) / (ρ * (ρ - 1))) - ∑ ρ ∈ Z, (m ρ : ℂ) * (y : ℂ) ^ ρ / ρ`. Rewrite using `[mul_sub, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Simplify using `only [hT]`. Expand and normalize the polynomial expressions, which then agree. Establish `hTb : ‖∑ ρ ∈ Z, (m ρ : ℂ) * T ρ‖ ≤ 2 * δ * y * ∑ ρ ∈ Z, (m ρ : ℝ) * y ^ (ρ.re - 1)`. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `norm_sum_le_of_le _ fun ρ hρ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_natCast]`. Use `sharp_zero_term (hZ ρ hρ).1 (hZ ρ hρ).2 hy0 hδ hδ2` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `hS0 : 0 ≤ ∑ ρ ∈ Z, (m ρ : ℝ) * y ^ (ρ.re - 1)` using `Finset.sum_nonneg fun ρ _ => by positivity`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `hP : ‖(c : ℂ) * ((if χ = 1 then ((Real.log ((1 + δ) * y) - 1 : ℝ) : ℂ) else 0) - (if χ = 1 then ((Real.log y - 1 : ℝ) : ℂ) else 0)) - (if χ = 1 then (y : ℂ) else 0)‖ ≤ δ * y`. Distinguish the cases in `hχ : χ = 1`. Simplify using `only [hχ, if_true]`. Rewrite using `[← Complex.ofReal_sub, ← Complex.ofReal_mul, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs]`. Conclude with `sharp_log_term hy0 hδ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hχ, if_false] simp`. Check the signs of the components of the expression. Establish `hlog1 : 1 ≤ Real.log (2 * y)`. Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`. Use `Real.exp_one_lt_d9` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlogu : Real.log ((1 + δ) * y) ≤ Real.log (2 * y)` using `Real.log_le_log (by positivity) (by nlinarith)`. Establish `hD : ‖(c : ℂ) * ((Formalism.ZeroFreeDirichlet.Schi χ ((1 + δ) * y) / (((1 + δ) * y : ℝ) : ℂ) - K - (if χ = 1 then ((Real.log ((1 + δ) * y) - 1 : ℝ) : ℂ) else 0) + ∑ ρ ∈ Z, (m ρ : ℂ) * (((1 + δ) * y : ℝ) : ℂ) ^ (ρ - 1) / (ρ * (ρ - 1))) - (Formalism.ZeroFreeDirichlet.Schi χ y / (y …`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hc0]`. Use `mul_le_mul_of_nonneg_left ((norm_sub_le _ _).trans ?_) hc0.le` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : psiChi χ y - (if χ = 1 then (y : ℂ) else 0) + ∑ ρ ∈ Z, (m ρ : ℂ) * (y : ℂ) ^ ρ / ρ = (c : ℂ) * ((Formalism.ZeroFreeDirichlet.Schi χ ((1 + δ) * y) / (((1 + δ) * y : ℝ) : ℂ) - K - (if χ = 1 then ((Real.log ((1 + δ) * y) - 1 : ℝ) : ℂ) else 0) + ∑ ρ ∈ Z, (m ρ : ℂ) * (((1 + δ) * …`. Rewrite using `[hsum]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Use `(add_le_add ((norm_add_le _ _).trans (add_le_add ((norm_sub_le _ _).trans (add_le_add hD hR)) hP)) hTb).trans ?_` and prove the remaining obligations. Establish `b1 : c * (2 * E) ≤ 4 * y * E / δ`. Combine the equalities or inequalities in the displayed calculation. Establish `hdy : 0 < δ * y` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b2 : ((1 + δ) * y - y + 1) * Real.log ((1 + δ) * y) ≤ (δ * y + 1) * Real.log (2 * y)`. Rewrite using `[show (1 + δ) * y - y + 1 = δ * y + 1 by ring]`. Conclude with `mul_le_mul_of_nonneg_left hlogu (by positivity)`. Establish `b3 : δ * y ≤ (δ * y + 1) * Real.log (2 * y)` using `by nlinarith`. Establish `b4 : 2 * δ * y * ∑ ρ ∈ Z, (m ρ : ℝ) * y ^ (ρ.re - 1) ≤ 20 * δ * y * ∑ ρ ∈ Z, (m ρ : ℝ) * y ^ (ρ.re - 1)` using `mul_le_mul_of_nonneg_right (by nlinarith) hS0`.
-
-Establish `b5 : 0 ≤ (δ * y + 1) * Real.log (2 * y)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem differenced_explicit_formula : SharpenS := by
   intro M _ χ Z m K E y δ hZ hy hδ hδ2 hE

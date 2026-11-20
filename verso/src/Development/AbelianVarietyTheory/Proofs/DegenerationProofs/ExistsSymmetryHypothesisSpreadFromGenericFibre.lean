@@ -20,9 +20,9 @@ namespace GlobalTheory.SymSpread
 variable {S U : Scheme.{0}} {G : Over S} {A : Over U} [GrpObj G] [GrpObj A] {j : U ⟶ S} {a : A.left ⟶ G.left}
 
 /- English proof (translation)
-Set `l` to `lift (pushPt h.1.w (fst A A)) (pushPt h.1.w (snd A A))`. Establish `l₁ : l.left ≫ pullback.fst G.hom G.hom = pullback.fst A.hom A.hom ≫ a` using `congrArg (fun z => z.left) (lift_fst (pushPt h.1.w (fst A A)) (pushPt h.1.w (snd A A)))`. Establish `l₂ : l.left ≫ pullback.snd G.hom G.hom = pullback.snd A.hom A.hom ≫ a` using `congrArg (fun z => z.left) (lift_snd (pushPt h.1.w (fst A A)) (pushPt h.1.w (snd A A)))`. Establish `big : IsPullback (pullback.snd A.hom A.hom ≫ a) (pullback.fst A.hom A.hom) G.hom (A.hom ≫ j)` using `(IsPullback.of_hasPullback A.hom A.hom).flip.paste_horiz h.1`. Establish `h₁ : IsPullback l.left (pullback.fst A.hom A.hom) (pullback.fst G.hom G.hom) a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsPullback.of_right (h₁₂ := pullback.snd G.hom G.hom) (v₁₃ := G.hom) (h₂₂ := G.hom) ?_ l₁ (IsPullback.of_hasPullback G.hom G.hom).flip` and prove the remaining obligations. Rewrite using `[l₂, h.1.w]`. Conclude with `big`. Conclude with `h₁.paste_vert h.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_square (h : IsGrpPullback A G j a) :
     IsPullback (lift (pushPt h.1.w (fst A A)) (pushPt h.1.w (snd A A))).left (A ⊗ A).hom (G ⊗ G).hom j := by
@@ -41,7 +41,7 @@ theorem isPullback_square (h : IsGrpPullback A G j a) :
   exact h₁.paste_vert h.1
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _ rw [Category.assoc, ← e, Category.assoc])`.
+A detailed English derivation is pending.
 -/
 theorem pushPt_comp (h : IsGrpPullback A G j a) {u' : A ⟶ A} {u : G ⟶ G} (e : a ≫ u.left = u'.left ≫ a)
     {T : Over U} (x : T ⟶ A) : pushPt h.1.w (x ≫ u') = pushPt h.1.w x ≫ u :=
@@ -52,7 +52,7 @@ theorem pushPt_comp (h : IsGrpPullback A G j a) {u' : A ⟶ A} {u : G ⟶ G} (e 
 variable [IsCommMonObj G] [IsCommMonObj A]
 
 /- English proof (translation)
-The claim follows from `LBIso.trans (DVR.linComb_isLB _ hLA _ _) (DVR.linComb_isLB _ (pull_isLB hL a) _ _) (pull_isLB (DVR.linComb_isLB _ hL _ _) _) (GlobalTheory.PowPrimitive.lbIso_linComb hb _ _) (LBIso.chartPull (chartPullLinComb L a _ _ _ V.left fun I => psum_push h _ _ V hx I.down) (Geo.Tor.chartPu …`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_cube (h : IsGrpPullback A G j a) {L : LB G.left} {LA : LB A.left} (hL : L.IsLB) (hLA : LA.IsLB)
     (hb : LBIso LA (L.pull a)) {T : Over S} {T' : Over U} {n : ℕ} (x : Fin n → (T ⟶ G)) (x' : Fin n → (T' ⟶ A))
@@ -64,11 +64,9 @@ theorem lbIso_cube (h : IsGrpPullback A G j a) {L : LB G.left} {LA : LB A.left} 
       (Geo.Tor.chartPullPull _ V.left V.left rfl) (lbIso_refl (DVR.linComb_isLB _ hL _ _)))
 
 /- English proof (translation)
-Use `⟨?_, lbIso_cube h hL hLA hb _ _ _ fun i => ?_, lbIso_cube h hL hLA hb _ _ _ fun i => ?_⟩` and prove the remaining obligations. Set `V` to `pushPt h.1.w (𝟙 A)`. Establish `hV : V.left = a` using `Category.id_comp _`. Establish `c` using `lbIso_cube h hL hLA hb ![𝟙 G, w] ![𝟙 A, w'] V (fun i => by fin_cases i`. Simplify using `[V]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(congrArg (pushPt h.1.w) (Category.id_comp _).symm).trans (pa _))`. Rewrite `c` using `[hV]`. Then use the resulting hypothesis. Use `fin_cases i`. Conclude with `(pa _).trans (by simp)`. Simplify using the standard rewrite rules.
-
-Use `fin_cases i`. Simplify using the standard rewrite rules. Conclude with `(pd _).trans (by simp)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lbIso_sym (h : IsGrpPullback A G j a) {L : LB G.left} {LA : LB A.left} (hL : L.IsLB) (hLA : LA.IsLB)
     (hb : LBIso LA (L.pull a)) {w wd : G ⟶ G} {w' wd' : A ⟶ A}
@@ -95,21 +93,21 @@ theorem lbIso_sym (h : IsGrpPullback A G j a) {L : LB G.left} {LA : LB A.left} (
     · exact (pd _).trans (by simp)
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ G _ _ A _ _ φ L L₀ hG h hL hL₀ hb w wd w₀ wd₀ ew ewd hw₀ hwd₀ hs hp ha`. Take `⟨_, _⟩ : QuasiCompact (spMap (algebraMap R K)) ∧ IsSchemeTheoreticallyDominant (spMap (algebraMap R K))` from `ExtUnique.spec_fractionRing R K`. Use `hG.smooth` as an intermediate fact. Use `hG.proper` as an intermediate fact. Establish `hw : IsMonHom w` using `ExtUnique.isMonHom_of_isGrpPullback h h w₀ w ew.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwd : IsMonHom wd` using `ExtUnique.isMonHom_of_isGrpPullback h h wd₀ wd ewd.symm`. Establish `hsum : w * wd = 𝟙 G`. Use `ExtUnique.over_hom_ext_of_isPullback h.1 ?_` and prove the remaining obligations. Establish `b : pushPt h.1.w (w₀ * wd₀) = pushPt h.1.w w₀ * pushPt h.1.w wd₀` using `map_mul (pushHom h A) _ _`. Establish `c` using `pushPt_comp h ew (𝟙 A)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d` using `pushPt_comp h ewd (𝟙 A)`. Rewrite `c`, `d` using `[Category.id_comp]`. Rewrite `b` using `[c, d, ← MonObj.comp_mul, hs]`. Establish `e : 𝟙 A.left ≫ φ = (𝟙 A.left ≫ φ) ≫ (w * wd).left` using `congrArg (fun z => z.left) b`. Simplify using `only [Category.id_comp] at e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `using e.symm`. Establish `cl : ∀ {T : Over (Sp R)} (x : Fin 2 → (T ⟶ G)), (cubeLB G x L).IsLB` using `fun x => DVR.linComb_isLB _ hL _ _`. Establish `cl₀ : ∀ {T : Over (Sp K)} (x : Fin 2 → (T ⟶ A)), (cubeLB A x L₀).IsLB` using `fun x => DVR.linComb_isLB _ hL₀ _ _`. Take `⟨c₁, c₂, c₃⟩` from `lbIso_sym h hL hL₀ hb (fun x => pushPt_comp h ew x) (fun x => pushPt_comp h ewd x)`. Establish `: IsProper (G ⊗ G).hom`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `IsProper (pullback.fst G.hom G.hom ≫ G.hom)`. Use `infer_instance`. Take `⟨a₁, ha₁, H₁⟩` from `GenSpread.exists_lbIso G.hom h.1 hL (cl _) (hb.symm.trans (pull_isLB hL _) hL₀ (pull_isLB (cl _) _) (hp.trans hL₀ (cl₀ _) (pull_isLB (cl _) _) c₁))`. Take `⟨a₂, ha₂, H₂⟩` from `GenSpread.exists_lbIso (G ⊗ G).hom (isPullback_square h) (cl _) (cl _) (c₂.symm.trans (pull_isLB (cl _) _) (cl₀ _) (pull_isLB (cl _) _) (ha.trans (cl₀ _) (cl₀ _) (pull_isLB (cl _) _) c₃))`. Use `⟨a₁ * a₂, mul_ne_zero ha₁ ha₂, fun R' _ g hg G' _ _ π L' h' hL' hb' => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg` using `[map_mul, IsUnit.mul_iff]`. Take `⟨w', hw', pa⟩` from `SymBaseChange.exists_endo h' w`. Take `⟨wd', hwd', pd⟩` from `SymBaseChange.exists_endo h' wd`. Establish `cl' : ∀ {T : Over (Sp R')} (x : Fin 2 → (T ⟶ G')), (cubeLB G' x L').IsLB` using `fun x => DVR.linComb_isLB _ hL' _ _`. Take `⟨d₁, d₂, d₃⟩` from `lbIso_sym h' hL hL' hb' pa pd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨w', wd', hw', hwd', ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `SymBaseChange.pushPt_injective h'` to reduce the goal to its premises. Establish `b : pushPt h'.1.w (w' * wd') = pushPt h'.1.w w' * pushPt h'.1.w wd'` using `map_mul (pushHom h' G') _ _`. Establish `c` using `pa (𝟙 G')`. Establish `d` using `pd (𝟙 G')`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `c`, `d` using `[Category.id_comp]`. Rewrite using `[b, c, d, ← MonObj.comp_mul, hsum, Category.comp_id]`. Conclude with `hb'.trans hL' (pull_isLB hL _) (cl' _) ((H₁ R' g hg.1 _ π G'.hom h'.1.w).trans (pull_isLB hL _) (pull_isLB (cl _) _) (cl' _) d₁.symm)`. Conclude with `d₂.trans (cl' _) (pull_isLB (cl _) _) (cl' _) ((H₂ R' g hg.2 _ _ (G' ⊗ G').hom (isPullback_square h').w).trans (pull_isLB (cl _) _) (pull_isLB (cl _) _) (cl' _) d₃.symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_forall_hypS : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [Field K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A] (φ : A.left ⟶ G.left) (L : LB G.left) (L₀ : LB A.left), IsAbelianScheme G → IsGrpPullback A G (spMap (algebraMap R K)) φ → L.IsLB → L₀.IsLB → LBIso L₀ (L.pull φ) → ∀ (w wd : G ⟶ G) (w₀ wd₀ : A ⟶ A), φ ≫ w.left = w₀.left ≫ φ → φ ≫ wd.left = wd₀.left ≫ φ → IsMonHom w₀ → IsMonHom wd₀ → w₀ * wd₀ = 𝟙 A → LBIso L₀ (cubeLB A ![𝟙 A, w₀] L₀) → LBIso (cubeLB A ![fst A A ≫ w₀, snd A A] L₀) (cubeLB A ![fst A A, snd A A ≫ wd₀] L₀) → ∃ a : R, a ≠ 0 ∧ ∀ (R' : Type) [CommRing R'] (g : R →+* R'), IsUnit (g a) → ∀ (G' : Over (Sp R')) [GrpObj G'] [IsCommMonObj G'] (π : G'.left ⟶ G.left) (L' : LB G'.left), IsGrpPullback G' G (spMap g) π → L'.IsLB → LBIso L' (L.pull π) → HypS G' L' := by
   intro R K _ _ _ _ _ _ G _ _ A _ _ φ L L₀ hG h hL hL₀ hb w wd w₀ wd₀ ew ewd hw₀ hwd₀ hs hp ha

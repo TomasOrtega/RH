@@ -26,19 +26,17 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
 
 /- English proof (translation)
-Take `⟨k, x, t, hx, ht⟩` from `GlobalTheory.LamT.exists_ortho_frBor E H Dw l Xo c σ r U hU y`. Use `⟨⟨k, x.1⟩, ⟨x.2, liesOn_frBor ht hy⟩, ?_⟩` and prove the remaining obligations. Take `⟨g, hg0, hgd, hchg⟩` from `((GlobalTheory.Frames.frBor_calculus E H Dw l Xo c (CAt σ) (U.un k x) y y).1 t).1 ht`. Establish `hξ0 : 0 < ξ`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hξ k τ]`. Conclude with `norm_pos_iff.2 ((map_ne_zero τ).2 (U.X k).ξ0_ne)`. Establish `hκ : 0 < 2 * Real.pi * ξ` using `by positivity`. Establish `hm0` using `GlobalTheory.OrthoMetric.isMetric_of_isOrtho E H Dw l Xo c σ r U ξ hσ hU hpq k x (hξ k) hx`. Establish `hm1` using `GlobalTheory.MetricChange.isMetric_frChg E H Dw l Xo c σ (U.un k x) y 1 _ (fun b => Matrix.transpose (show Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) ℂ from g b)) (show ℂ from (t none : CAt σ)) (Units.ne_zero (M₀ := ℂ) (t none)) hchg hm0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hGr⟩` from `GlobalTheory.LamT.MetUniq.isMetric_unique E H Dw l Xo c σ y _ _ _ _ hN hm1`. Establish `hsome : ∀ p : Σ τ : E →+* ℂ, Fin (Dw.mult τ), ‖toC (t (some p) : CAt σ)‖ = Real.exp (-(1 / 2) * Real.log (2 * Real.pi * ξ))`. Introduce and unpack `⟨τ, i⟩`. Establish `hs : (Real.sqrt (2 * Real.pi * ξ))⁻¹ = Real.exp (-(1 / 2) * Real.log (2 * Real.pi * ξ))`. Rewrite using `[Real.sqrt_eq_rpow, Real.rpow_def_of_pos hκ, ← Real.exp_neg]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hgd τ i, ← hs]`. Conclude with `GlobalTheory.LamT.OrthoBound.norm_diag_of_triangular (Matrix.transpose (show Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ from g τ)) _ hκ (fun i j hij => hg0 τ j i hij) (congrFun hGr τ).symm i`. Use `haveI : _root_.IsReduced (CAt σ) := inferInstanceAs (_root_.IsReduced ℂ)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev` using `GlobalTheory.evR_frBor_of_mem_secZ GlobalTheory.lawsFieldsSeparately.2.1 Xo c _ hf (CAt σ) t _ _ ht`. Establish `hw : ‖toC ((∏ i, t i ^ exZ Dw G i : (CAt σ)ˣ) : CAt σ)‖ = lieFacZ Dw ξ G`. Establish `e : ‖toC ((∏ i, t i ^ exZ Dw G i : (CAt σ)ˣ) : CAt σ)‖ = ∏ i, ‖toC (t i : CAt σ)‖ ^ exZ Dw G i` using `by show ‖((∏ i, (show Ix Dw → ℂˣ from t) i ^ exZ Dw G i : ℂˣ) : ℂ)‖ = _`. Rewrite using `[Units.coe_prod, norm_prod]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [Units.val_zpow_eq_zpow_val, norm_zpow]; rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[e, Fintype.prod_option]`. Simplify using `only [hsome, exZ, hG, zpow_zero, one_mul, ← Real.rpow_intCast, ← Real.exp_mul]`. Rewrite using `[← Real.exp_sum, lieFacZ, ← Finset.mul_sum, Fintype.sum_sigma]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `hrd : rdU U f k x.1 = toC (evR Xo c f (U.un k x))` using `dif_pos x.2`. Rewrite using `[homN, ptN, ReciprocityTheory.ChartRestriction.G.PullbackSections.PfSupAtUnit.pnorm_unit _ _ _ (ReciprocityTheory.ChartRestriction.G.PullbackSections.PfSupAtUnit.dmin_ortho _ hx), hev, ← hw]`. Use `show _ * ‖rdU U f k x.1‖ = _`. Rewrite using `[hrd]`. Conclude with `(norm_mul (toC _) (toC _)).symm`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_homN_eq {σ : c.F →+* ℂ} (U : Unf Xo c σ r) {ξ : ℝ} (hσ : GoodEmb c σ) (hU : IsUnf U)
     (hξ : ∀ k (τ : E →+* ℂ), ‖τ (U.X k).ξ0‖ = ξ) (hpq : 1 ≤ Dw.p + Dw.q) {G : WTZ E} (hG : G.2 = 0) {f : Rul Xo c}
@@ -87,13 +85,11 @@ theorem exists_homN_eq {σ : c.F →+* ℂ} (U : Unf Xo c σ r) {ξ : ℝ} (hσ 
   exact (norm_mul (toC _) (toC _)).symm
 
 /- English proof (translation)
-Establish `key : ∀ σ' : c.F →+* ℂ, goodOf c σ = σ' → ∀ y' : FrPt Xo c (CAt σ'), LiesOn Z y' → (GlobalTheory.LamT.IsMetric y' N fun _ => 1) → s.cInf σ = ‖toC (evR Xo c s.sig y')‖`. Introduce and unpack `_ rfl y' hy' hN'`. Establish `hg` using `goodEmb_goodOf c σ`. Take `⟨z, hz, e⟩` from `exists_homN_eq (U _) hg (hU _ hg) (hξ _ hg) hpq (G := wtOf Dw la 0) rfl s.sig_mem hy' hN'`. Rewrite using `[← e, s.homN_eq hz]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hσ : GoodEmb c σ`. Conclude with `key σ (if_pos hσ) y hy hN`. Establish `hB` using `GlobalTheory.lawsFieldsSeparately.2.1`. Take `⟨y', hy'⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap hB E H Dw l Xo c (CAt σ) (CAt ((starRingEnd ℂ).comp σ)) (FrameNorm.conjAlg σ) y`. Establish `hm'` using `GlobalTheory.LamT.isMetric_conj E H Dw l Xo c σ y y' N (fun _ => 1) hpq hy' hN`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (fun b : E →+* ℂ => ((1 : Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) ℂ)).map (starRingEnd ℂ)) = fun _ => 1` using `funext fun b => Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite `hm'` using `[h1]`. Use `haveI : _root_.IsReduced (CAt σ) := inferInstanceAs (_root_.IsReduced ℂ)`. Establish `hev` using `evR_frMap (GlobalTheory.Frames.algebraic_laws hB E H Dw l Xo c).2.2.1 s.sig s.sig_mem.1 (FrameNorm.conjAlg σ) y (GlobalTheory.Frames.allTest_of_secBaseChange hB E H Dw l Xo c (CAt σ) y) y' hy'`. Rewrite using `[key _ (if_neg hσ) y' (liesOn_frMap hy' hy) hm', hev]`.
-
-Conclude with `Complex.norm_conj _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cInf_eq {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {ξ : ℝ} (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ))
     (hξ : ∀ σ, GoodEmb c σ → ∀ k (τ : E →+* ℂ), ‖τ ((U σ).X k).ξ0‖ = ξ) (hpq : 1 ≤ Dw.p + Dw.q) {Z : Comp Xo c}
@@ -122,11 +118,11 @@ theorem cInf_eq {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {ξ : ℝ} (hU : ∀
     exact Complex.norm_conj _
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U ξ hD Z P τ s b _ hb σ`. Take `⟨-, hX, hA⟩` from `P.arch σ`. Take `⟨z, hz⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c c.F (CAt σ) (Algebra.ofId c.F (CAt σ)) P.y₀`. Establish `hu : ∀ τ', IsUnit (M` using `ℂ) (P.X σ τ').det := fun τ' => (hX τ').isUnit`. Take `⟨y, hy⟩` from `(GlobalTheory.ArcQ.frChg_exists_unique_units E H Dw l Xo c (CAt σ) (fun τ' => (P.X σ τ')ᵀ) 1 z).1 (fun τ' => show IsUnit (M := ℂ) ((P.X σ τ')ᵀ).det from (Matrix.det_transpose (P.X σ τ')).symm ▸ hu τ') isUnit_one`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hon : LiesOn Z y` using `fun q => by`. Establish `e : ptF y = ptF z`. Apply `Limits.pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[ptF, Limits.pullback.lift_fst, ptF, Limits.pullback.lift_fst, hy.1]`. Rewrite using `[ptF, Limits.pullback.lift_snd, ptF, Limits.pullback.lift_snd]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `liesOn_frMap hz P.on q`. Establish `h : toC (evR Xo c s.sig y) * (P.X σ τ.1).det = σ b` using `hb (CAt σ) z y (P.X σ) 1 hu isUnit_one hz hy`. Rewrite using `[cInf_eq hD.unf hD.xi (hD.p.trans (Nat.le_add_right _ _)) s hon (hA z y hz hy), ← h, norm_mul, mul_div_cancel_right₀ _ (norm_ne_zero_iff.2 (hX τ.1))]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cInf_eq_norm_div_norm_det : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (ξ : ℝ), DefCase U ξ → ∀ (Z : Comp Xo c) (P : PtData Z) (τ : Psi H) (s : FlatSec U ξ Z τ) (b : c.F), b ≠ 0 → (∀ (S : Type) [CommRing S] [Algebra c.F S] (z y : FrPt Xo c S) (Y : Mats Dw S) (u : S), (∀ τ', IsUnit (Y τ').det) → IsUnit u → FrMap (Algebra.ofId c.F S) P.y₀ z → FrChg (fun τ' => (Y τ')ᵀ) u z y → evR Xo c s.sig y * (Y τ.1).det = algebraMap c.F S b) → ∀ σ, s.cInf σ = ‖σ b‖ / ‖(P.X σ τ.1).det‖ := by
   intro E _ _ _ H Dw l Xo c r U ξ hD Z P τ s b _ hb σ

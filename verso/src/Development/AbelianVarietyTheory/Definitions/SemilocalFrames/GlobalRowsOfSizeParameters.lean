@@ -15,7 +15,7 @@ namespace GlobalTheory.Diag.PG.Model0
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S
 
 /- English proof (translation)
-Establish `hG : 0 < (D.mem u).A.GamP` using `lt_trans one_pos (D.mem u).A.one_lt_gammaP`. Establish `hD : 0 < D.what₂.Dstar` using `by rw [← D.Dstar_eq u]; exact (D.mem u).A.Dstar_pos`. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem scale_pos (D : D7) (u : D.what₂.Word) : 0 < (D.mem u).A.GamP ^ (-2 : ℤ) * D.what₂.Dstar := by
   have hG : 0 < (D.mem u).A.GamP := lt_trans one_pos (D.mem u).A.one_lt_gammaP
@@ -23,25 +23,25 @@ theorem scale_pos (D : D7) (u : D.what₂.Word) : 0 < (D.mem u).A.GamP ^ (-2 : �
   positivity
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.2.2.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem duWin_of_data {D : D7} {C0 : ℝ} (h : StandingNumericalData D C0) : DuWin D C0 := h.2.2.2.2.2.2.2.2.2.1
 
 /- English proof (translation)
-Unfold `DuWin`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem duWin_zero_iff (D : D7) : DuWin D 0 ↔ ∀ u, D.duS u = 0 := by
   unfold DuWin
   simp
 
 /- English proof (translation)
-Take `⟨a, b⟩` from `h D.u₀`. Establish `hp` using `scale_pos D D.u₀`. Establish `hd : (0 : ℝ) ≤ D.duS D.u₀` using `Nat.cast_nonneg _`. Establish `hC : 0 < C0`. Break down `lt_or_gt_of_ne h0 with hc | hc` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use the polynomial consequences of the given equalities and inequalities. Conclude with `hc`. Use `⟨?_, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite `a` using `[div_le_iff₀ hC]`. Assume the negation of the conclusion as `hc`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1 : C0 < 1` using `not_le.1 hc`. Establish `h2 : (D.duS D.u₀ : ℝ) * C0 ≤ (D.mem D.u₀).A.GamP ^ (-2 : ℤ) * D.what₂.Dstar * C0 * C0` using `mul_le_mul_of_nonneg_right b hC.le`. Establish `h3 : C0 * C0 < 1` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `a` using `(h u).1`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `a` using `[hu, Nat.cast_zero]`. Conclude with `absurd a (not_le.2 (div_pos (scale_pos D u) hC))`.
+A detailed English derivation is pending.
 -/
 theorem duWin_forces {D : D7} {C0 : ℝ} (h : DuWin D C0) (h0 : C0 ≠ 0) : 1 ≤ C0 ∧ ∀ u, D.duS u ≠ 0 := by
   obtain ⟨a, b⟩ := h D.u₀
@@ -64,33 +64,31 @@ theorem duWin_forces {D : D7} {C0 : ℝ} (h : DuWin D C0) (h0 : C0 ≠ 0) : 1 �
     exact absurd a (not_le.2 (div_pos (scale_pos D u) hC))
 
 /- English proof (translation)
-Introduce `u`. Establish `hG : 0 < (D.mem u).A.GamP` using `lt_trans one_pos (D.mem u).A.one_lt_gammaP`. Establish `hD` using `(D.mem u).A.Dstar_pos`. Establish `hd : (0 : ℝ) < (D.mem u).A.duStar` using `by exact_mod_cast (D.mem u).A.duStar_pos`. Establish `hk : 0 < D.R.k` using `by have := D.R.m_add_three_le_k; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : 0 < D.R.f` using `by unfold Ranks.f Ranks.n; positivity`. Establish `hfk : D.R.f ≤ D.R.k` using `D.R.f_le_k`. Establish `hN : (0 : ℝ) < (D.R.f : ℝ) * D.R.k` using `by positivity`. Take `⟨w1, w2⟩` from `D.T_win u`. Use `set T : ℝ := ((D.mem u).A.T : ℝ) with hT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set S : ℝ := (D.mem u).A.Tstar with hS`. Establish `hS0 : 0 < S` using `by rw [hS]; unfold ColumnsAtT.Tstar ColumnsAtT.Xu; positivity`. Establish `hT2 : (2 : ℝ) ≤ T` using `by rw [hT]; exact_mod_cast (D.mem u).A.T_prime.two_le`. Establish `key : (D.mem u).A.GamP ^ (-2 : ℤ) * D.what₂.Dstar = (D.mem u).A.duStar * S ^ (D.R.f * D.R.k)`. Rewrite using `[hS, ← D.Dstar_eq u]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `ColumnsAtT.Tstar ColumnsAtT.Xu`. Rewrite using `[mul_pow, ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul (by positivity), ← Real.rpow_mul hG.le]`. Use `push_cast`. Rewrite using `[one_div_mul_cancel hN.ne', div_mul_cancel₀ _ hN.ne', Real.rpow_one, ← Real.rpow_intCast]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `hTk : 2 * (D.R.f : ℝ) ≤ T ^ D.R.k`. Establish `a : 2 * D.R.k ≤ 2 ^ D.R.k`. Take `⟨j, hj⟩ : ∃ j, D.R.k = j + 1` from `⟨D.R.k - 1, by omega⟩`. Rewrite using `[hj, pow_succ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `Nat.lt_two_pow_self (n := j)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `b : (2 : ℝ) * D.R.f ≤ 2 ^ D.R.k` using `by exact_mod_cast (by omega : 2 * D.R.f ≤ 2 ^ D.R.k)`. Conclude with `b.trans (pow_le_pow_left₀ (by norm_num) hT2 _)`. Establish `hf1 : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `hTp : 0 < T ^ D.R.k` using `by positivity`. Rewrite using `[key, hr u]`. Prove the components needed by the constructor for the conclusion. Establish `a : S ^ (D.R.f * D.R.k) ≤ (T ^ D.R.k) ^ D.R.f`. Rewrite using `[← pow_mul, mul_comm D.R.k]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `pow_le_pow_left₀ hS0.le w1 _`. Establish `hq : 1 / T ^ D.R.k ≤ 1` using `by rw [div_le_one hTp]; linarith`. Establish `b` using `one_add_mul_le_pow (a := -(1 / T ^ D.R.k)) (by linarith [show 0 ≤ 1 / T ^ D.R.k by positivity]) D.R.f`. Establish `c : (D.R.f : ℝ) * (1 / T ^ D.R.k) ≤ 1 / 2`. Rewrite using `[mul_one_div, div_le_iff₀ hTp]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : (T ^ D.R.k - 1) ^ D.R.f = (T ^ D.R.k) ^ D.R.f * (1 + -(1 / T ^ D.R.k)) ^ D.R.f`. Rewrite using `[← mul_pow]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `g : (1 : ℝ) / 2 ≤ (1 + -(1 / T ^ D.R.k)) ^ D.R.f` using `by linarith`. Establish `hp : 0 < (T ^ D.R.k) ^ D.R.f` using `by positivity`. Establish `: S ^ (D.R.f * D.R.k) / 3 ≤ (T ^ D.R.k - 1) ^ D.R.f` using `by rw [e]; nlinarith`. Rewrite using `[mul_div_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left this hd.le`. Establish `a : (T ^ D.R.k - 1) ^ D.R.f ≤ T ^ (D.R.f * D.R.k)`. Rewrite using `[mul_comm, pow_mul]; exact pow_le_pow_left₀ (by linarith) (by linarith) _`. Establish `b : T ^ (D.R.f * D.R.k) ≤ ((1 + 1 / ((D.R.f : ℝ) * D.R.k)) * S) ^ (D.R.f * D.R.k)` using `pow_le_pow_left₀ (by linarith) w2 _`. Establish `c : (1 + 1 / ((D.R.f : ℝ) * D.R.k)) ^ (D.R.f * D.R.k) ≤ 3`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `c1 : 1 + 1 / ((D.R.f : ℝ) * D.R.k) ≤ Real.exp (1 / ((D.R.f : ℝ) * D.R.k))`. Combine the linear relations using `[Real.add_one_le_exp (1 / ((D.R.f : ℝ) * D.R.k))]`. Use `(pow_le_pow_left₀ (by positivity) c1 _).trans ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_nat_mul]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_one_div_cancel hN.ne']`. Combine the linear relations using `[Real.exp_one_lt_d9]`. Rewrite `b` using `[mul_pow]`. Establish `hp : 0 < S ^ (D.R.f * D.R.k)` using `by positivity`. Establish `: (T ^ D.R.k - 1) ^ D.R.f ≤ S ^ (D.R.f * D.R.k) * 3` using `by nlinarith`.
-
-Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left this hd.le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem duWin_three (D : D7)
     (hr : ∀ u, (D.duS u : ℝ) = ((D.mem u).A.duStar : ℝ) * (((D.mem u).A.T : ℝ) ^ D.R.k - 1) ^ D.R.f) : DuWin D 3 := by
@@ -196,7 +194,7 @@ def recd (N : ℕ) : D7 :=
     (localData_rank_eq_classes H0 (fun _ _ => hc0) (fun _ : Unit => pkg N) (fun _ => T0) (fun _ _ => 0) (fun _ => 0) (fun _ _ => ∅))
 
 /- English proof (translation)
-The claim follows from `(atTN_rank (fun _ : Tau2 R0 => hc0) (pkg N) T0 (dstarOf T0) (dstarOf_pos T0) 1 one_pos 2 one_lt_two).trans (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem recd_duS (N u) : (recd N).duS u = N + 1 :=
   (atTN_rank (fun _ : Tau2 R0 => hc0) (pkg N) T0 (dstarOf T0) (dstarOf_pos T0) 1 one_pos 2 one_lt_two).trans (by simp)
@@ -204,7 +202,7 @@ theorem recd_duS (N u) : (recd N).duS u = N + 1 :=
 end Rec
 
 /- English proof (translation)
-Establish `a : 1 < T ^ k` using `Nat.one_lt_pow hk.ne' hT`. Establish `b : 0 < (T ^ k - 1) ^ f` using `pow_pos (by omega) _`. Use `⟨(T ^ k - 1) ^ f - 1, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.sub_add_cancel b]`. Move the coercions through the operations in `[Nat.cast_sub a.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -220,11 +218,11 @@ theorem succ_pred_pow (T k f : ℕ) (hT : 2 ≤ T) (hk : 0 < k) :
 open Formalism.BasicNotions.Examples₂ in
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `succ_pred_pow T0 R0.k R0.f examplePrime_prime.two_le (by decide)`. Establish `h : DuWin (recd N) 3` using `duWin_three _ fun u => by rw [recd_duS]; exact hN`. Use `⟨⟨_, h, (duWin_forces h (by norm_num)).2⟩, recd (9 * N + 9), fun h' => ?_, fun u => by` and prove the remaining obligations. Rewrite using `[recd_duS]`. Use the proof step `omega⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a` using `(h ()).1`. Establish `b` using `(h' ()).2`. Rewrite `a` using `[recd_duS N ()]`. Rewrite `b` using `[recd_duS (9 * N + 9) ()]`. Establish `e : ((recd (9 * N + 9)).mem ()).A.GamP ^ (-2 : ℤ) * (recd (9 * N + 9)).what₂.Dstar = ((recd N).mem ()).A.GamP ^ (-2 : ℤ) * (recd N).what₂.Dstar` using `rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `b` using `[e]`. Move the coercions through the operations in `at a b`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem duWin_nontrivial : (∃ D : D7, DuWin D 3 ∧ ∀ u, D.duS u ≠ 0) ∧ ∃ D : D7, ¬ DuWin D 3 ∧ ∀ u, D.duS u ≠ 0 := by
   obtain ⟨N, hN⟩ := succ_pred_pow T0 R0.k R0.f examplePrime_prime.two_le (by decide)
@@ -242,22 +240,22 @@ theorem duWin_nontrivial : (∃ D : D7, DuWin D 3 ∧ ∀ u, D.duS u ≠ 0) ∧ 
   linarith
 
 /- English proof (translation)
-The claim follows from `UpperTheory.Ram.Rd.two_le_rdE H`.
+A detailed English derivation is pending.
 -/
 theorem two_le_rd {R : Ranks} (H : Host R) : 2 ≤ H.rdE := UpperTheory.Ram.Rd.two_le_rdE H
 
 /- English proof (translation)
-Take `⟨-, -, q2, -, d2, -⟩` from `SzQ`. Establish `a` using `UpperTheory.Ram.Rd.log_rdE_le D.host`. Establish `b` using `logn_le L SzN`. Establish `c` using `logx_le L`. Establish `e21 : L.sc.x ^ (L.sc.eps / 5 + szTh L) = XX L ^ 21`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← xpow_nat L 21]`. Use `congr 1`. Unfold `szTh`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e50 : L.sc.x ^ (L.sc.eps / 2) = XX L ^ 50`. Rewrite using `[← xpow_nat L 50]`. Use `congr 1`. Unfold `szTh`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `q2`, `d2` using `[e21]`. Rewrite using `[e50]`. Establish `hth` using `th_pos L`. Establish `k1 : 5 * (XX L / szTh L) ≤ XX L ^ 2`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 5 * (XX L / szTh L) = 5 / szTh L * XX L` using `by ring`. Rewrite using `[this, sq]; exact mul_le_mul_of_nonneg_right h3 (by linarith)`. Establish `k0 : 0 ≤ XX L / szTh L` using `by positivity`. Establish `k2 : XX L ^ 2 ≤ XX L ^ 21` using `pow_le_pow_right₀ (by linarith) (by norm_num)`. Establish `k3 : 1 ≤ XX L ^ 21` using `one_le_pow₀ (by linarith)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k4 : 4 ≤ XX L ^ 29` using `le_trans (by norm_num) (pow_le_pow_left₀ (by norm_num) h2 29)`. Establish `k5 : XX L ^ 50 = XX L ^ 21 * XX L ^ 29` using `by ring`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem logrd_le {D : D7} (L : SizeData₂ D) (SzN : SizeN L) (SzQ : SizeQD L) (h2 : 2 ≤ XX L) (h3 : 5 / szTh L ≤ XX L) :
     Real.log D.host.rdE ≤ L.sc.x ^ (L.sc.eps / 2) := by
@@ -283,23 +281,21 @@ theorem logrd_le {D : D7} (L : SizeData₂ D) (SzN : SizeN L) (SzQ : SizeQD L) (
   nlinarith
 
 /- English proof (translation)
-Take `⟨SzN, SzM, SzK, SzKR, -, -, SzQ, -, -, -, -, -, -, -, SzNo, -, SzD, -⟩` from `Sz`. Establish `hx1` using `L.sc.one_lt_alt`. Establish `hx : 0 < L.sc.x` using `by linarith`. Establish `he` using `L.sc.eps_pos`. Establish `he'` using `L.sc.eps_lt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `hm` using `D.R.two_le_m`. Establish `hS` using `Sc_eq' L`. Use `⟨⟨?_, ?_, ?_, ?_, ?_, Real.log_le_log (by norm_num) (two_le_rd _), logrd_le L SzN SzQ h2 h3, count_power_le_discriminant L P CD h0 hC, ?_⟩, type_prime_size_bounds L P, fun τ j h => ?_, fun τ i => ?_, fun τ ht => ?_, two_le_rd _⟩` and prove the remaining obligations. Establish `a` using `SzM.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `a` using `[sqrt_xd L, ← Real.rpow_add hx]`. Use `le_trans (Real.rpow_le_rpow_of_exponent_le hx1.le ?_) a` and prove the remaining obligations. Unfold `szTh`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hyp3 L SzN SzM` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `D.R.f_le_k` after adjusting the coercions. Establish `a` using `SzKR.1`. Establish `b : L.sc.x ^ (L.sc.eps / 2) ≤ L.sc.x ^ L.sc.eps` using `Real.rpow_le_rpow_of_exponent_le hx1.le (by linarith)`. Establish `c : 1 ≤ L.sc.x ^ szTh L` using `(one_lt_XX L).le`. Establish `e : L.sc.L = L.sc.x ^ L.sc.eps` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `a` using `[e]`. Use `le_trans ?_ a` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `SzK.2.trans (Real.rpow_le_rpow_of_exponent_le hx1.le ?_)` and prove the remaining obligations. Unfold `szTh`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `b : L.sc.x ^ (L.sc.eps / 4) ≤ L.sc.x ^ (L.sc.eps / 2)` using `Real.rpow_le_rpow_of_exponent_le hx1.le (by linarith)`. Establish `c : 0 ≤ L.sc.x ^ (L.sc.eps / 4)` using `by positivity`. Combine the linear relations using `[P.logDel]`. Conclude with `le_trans SzNo.2.2.1 (P.nodes_gap τ j h).1`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hS]`. Conclude with `L.cloud_v τ i`. Establish `hn : (D.eTau τ : D.R.GG) ∉ D.host.topPlaces` using `fun h => ht ((isTop_iff τ).2 h)`. Establish `a` using `(L.cloud_gap τ (by omega) hn).1`. Establish `b` using `P.cloud_place_bound τ (by omega) hn`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `c` using `P.uk_extreme τ (by omega) hn`. Move the coercions through the operations in `at a b`. Unfold `uFirst vFirst uLast vLast`. Use `⟨by linarith, by linarith, ?_⟩` and prove the remaining obligations. Rewrite using `[c]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem globalRows_of_sizeData {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) (Sz : SizesAt L) (h2 : 2 ≤ XX L)
     (h3 : 5 / szTh L ≤ XX L) (CD : ℝ) (h0 : 0 < CD) (hC : CD ≤ P.CCount) :
@@ -347,27 +343,25 @@ theorem globalRows_of_sizeData {D : D7} (L : SizeData₂ D) (P : ParameterChoice
 open Formalism.MainNotions.Inhab Formalism.L2.GlobalTheoryTheory GlobalTheory.EX GlobalTheory.FieldSize GlobalTheory.FinalJoin GlobalTheory.FinalJoin2 GlobalTheory.RunJoin GlobalTheory.Mem GlobalTheory.EX.OB in
 
 /- English proof (translation)
-Establish `hH` using `DC.hostExQ_of_hostEx (smallPrimeOne_of_tzRat p6) (hostEx_of_zeroFreeRegion p1 p2 p3 p4 p5 p6 p7 p8 p9)`. Establish `hLP` using `(normPrimes_and_levelPrime p9).2`. Take `⟨CT2, C8, C5, c6, Cb, hC8, -, -, -, hK⟩` from `exists_chGood_unb hH _ he he52`. Take `⟨C, hStd, hCT2, hCp, hL, -⟩` from `exists_std_large ⟨0, 0, fun _ => 0, fun _ => CD⟩ ⟨0, 0, fun _ => 0, fun _ => 0⟩ CT2 C8 hC8`. Establish `hCC : CD ≤ C.P.CCount` using `hL.2.2.2 _ (by simp [FC.cLast])`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c1, hN⟩` from `szRow_numAt _ he he52 C hStd`. Take `⟨c2, hN⟩` from `hN (max c1 0) (le_max_left _ _)`. Take `⟨x1, hN⟩` from `hN (max c2 402) (le_max_left _ _)`. Take `⟨x3, h3⟩` from `exists_levCh_of_levelPrime hLP _ 1 C he he52 one_pos hStd`. Take `⟨x4, h4⟩` from `exists_record_over_choices hR _ (max c1 0) (max c2 402) C he he52 hStd (le_max_right _ _) (le_max_right _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hsy, hK⟩` from `hK C hStd hCT2 hCp (max c1 0) (le_max_right _ _) (max c2 402) (le_max_right _ _) (max x1 (max x3 (max x4 (max x ((max 2 (5 / (eps / 100))) ^ (eps / 100)⁻¹)))))`. Take `⟨y, hy⟩ : ∃ y, s.x = y` from `⟨_, rfl⟩`. Establish `hy1 : x1 ≤ y` using `hy ▸ (le_max_left _ _).trans hsy`. Establish `hy3 : x3 ≤ s.x` using `((le_max_left _ _).trans (le_max_right _ _)).trans hsy`. Establish `hy4 : x4 ≤ s.x` using `(((le_max_left _ _).trans (le_max_right _ _)).trans (le_max_right _ _)).trans hsy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyx : x ≤ y` using `hy ▸ ((((le_max_left _ _).trans (le_max_right _ _)).trans (le_max_right _ _)).trans (le_max_right _ _)).trans hsy`. Establish `hyP : (max 2 (5 / (eps / 100))) ^ (eps / 100)⁻¹ ≤ y` using `hy ▸ ((((le_max_right _ _).trans (le_max_right _ _)).trans (le_max_right _ _)).trans (le_max_right _ _)).trans hsy`. Take `⟨P, a, b, c, hP, -⟩` from `hK 0`. Establish `hfk : (0 : ℝ) < (P.R.f : ℝ) * P.R.k`. Establish `h1` using `P.R.m_add_three_le_k`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 0 < P.R.f` using `by unfold Ranks.f Ranks.n; positivity`. Establish `h3 : 0 < P.R.k` using `by omega`. Check the signs of the components of the expression. Take `⟨Ds, hDs, hlog⟩` from `exists_window_start _ (1 * P.R.m * s.L) (GamS C s P.R) hfk (Real.exp_pos _)`. Take `⟨Lv, -, -, l3⟩` from `h3 _ _ s P _ a b c (fun _ => 1) Ds hs hy3 hP.ok (fun _ => one_pos) hDs (fun _ => hlog)`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨D, -, -, -, hA, L, hsc, hV⟩` from `h4 s P _ a b c Lv hs hy4 hP.ok l3`. Establish `hsx : L.sc.x = y` using `by rw [hsc, hy]`. Establish `hse : L.sc.eps = eps` using `by rw [hsc, hs]`. Take `⟨⟨N⟩, -, -⟩` from `hN _ _ hse (hy1.trans hsx.ge) hV hA`. Establish `e1 : N.params.CCount = C.P.CCount`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrArg (fun l : List ℝ => l.getD 12 0) N.params_K` as an intermediate fact. Conclude with `this`. Establish `e2 : N.params.CYL = C.P.CYL`. Use `congrArg (fun l : List ℝ => l.getD 19 0) N.params_K` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hX : max 2 (5 / (eps / 100)) ≤ XX L`. Unfold `XX szTh`. Rewrite using `[hsx, hse]`. Establish `h0 : (0 : ℝ) ≤ max 2 (5 / (eps / 100))` using `le_trans (by norm_num) (le_max_left _ _)`. Establish `hp : 0 < eps / 100` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `Real.rpow_le_rpow (Real.rpow_nonneg h0 _) hyP hp.le` as an intermediate fact. Rewrite `this` using `[Real.rpow_inv_rpow h0 hp.ne']`. Then use the resulting hypothesis. Establish `G` using `globalRows_of_sizeData L N.params N.sizes ((le_max_left _ _).trans hX) (by unfold szTh; rw [hse]; exact (le_max_right _ _).trans hX) CD hCD (e1 ▸ hCC)`. Rewrite `G` using `[hsx, hse, e2, hStd.2.2.2.2.2.1, show (9 : ℝ) + 1 = 10 by norm_num]`. Use `⟨y, D, hyx, G, Model.exists_top D ?_, Model.exists_not_top D⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t1` using `hV.host.2.1.1`. Establish `hn : (0 : ℝ) < D.R.n`. Establish `: 0 < D.R.n` using `D.R.ord_pos`. Conclude with `this` after adjusting the coercions. Establish `hd : 0 < L.sc.delta1` using `Real.rpow_pos_of_pos (by linarith [L.sc.one_lt_alt]) _`.
-
-Establish `: (0 : ℝ) < D.host.TT.card` using `lt_of_lt_of_le (by positivity) t1`. Conclude with `Finset.card_pos.1 (by exact_mod_cast this)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_glob0_of_zeroFreeRegion (p1 : GlobalTheory.Mem.An.ExplZeta) (p2 : GlobalTheory.Mem.An.ExplChi) (p3 : GlobalTheory.Mem.An.LogDerOne)
     (p4 : GlobalTheory.Mem.An.ZeroCount) (p5 : Formalism.ZeroFreeDirichlet.ZFRDirichlet) (p6 : GlobalTheory.Mem.An.TZRat) (p7 : GlobalTheory.Mem.An.PageThm)
@@ -433,9 +427,9 @@ theorem exists_glob0_of_zeroFreeRegion (p1 : GlobalTheory.Mem.An.ExplZeta) (p2 :
   exact Finset.card_pos.1 (by exact_mod_cast this)
 
 /- English proof (translation)
-Establish `h` using `G.nums.k_hi`. Establish `hk : (5 : ℝ) ≤ D.R.k`. Use `D.R.m_add_three_le_k` as an intermediate fact. Use `D.R.two_le_m` as an intermediate fact. Conclude with `(by omega : 5 ≤ D.R.k)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[show (5 : ℝ) = ((5 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Assume the negation of the conclusion as `hc`. Establish `: x ^ 5 ≤ 1 ^ 5` using `(Odd.strictMono_pow (by decide : Odd 5)).monotone (not_lt.1 hc)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem one_lt_of_global_data {D : D7} {x eps CD Cg : ℝ} (G : Glob0 D x eps CD Cg) : 1 < x := by
   have h := G.nums.k_hi
@@ -448,7 +442,7 @@ theorem one_lt_of_global_data {D : D7} {x eps CD Cg : ℝ} (G : Glob0 D x eps CD
   linarith
 
 /- English proof (translation)
-Introduce `G` and use `by have h : ((2 : ℕ) : ℝ) ^ 4 ≤ ((8 : ℕ) : ℝ) := G.nums.mf norm_num at h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_glob0_small (x eps CD Cg : ℝ) : ¬ Glob0 (recd 0) x eps CD Cg := fun G => by
   have h : ((2 : ℕ) : ℝ) ^ 4 ≤ ((8 : ℕ) : ℝ) := G.nums.mf

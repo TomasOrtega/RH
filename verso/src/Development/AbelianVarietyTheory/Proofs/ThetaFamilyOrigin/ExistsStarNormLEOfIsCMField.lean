@@ -14,15 +14,15 @@ variable {E : Type} [Field E] [NumberField E] (σ : E ≃ₐ[ℚ] E)
 def normSums : AddSubmonoid E := AddSubmonoid.closure (Set.range fun b : E => σ b * b)
 
 /- English proof (translation)
-The claim follows from `AddSubmonoid.subset_closure ⟨b, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem norm_mem (b : E) : σ b * b ∈ normSums σ :=
   AddSubmonoid.subset_closure ⟨b, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hs using AddSubmonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨b, rfl⟩` from `hx`. Establish `h : σ t * t * (σ b * b) = σ (t * b) * (t * b)` using `by rw [map_mul]; ring`. Rewrite using `[h]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `norm_mem σ _`. Consider the case `zero => rw [mul_zero]`. Conclude with `(normSums σ).zero_mem`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `(normSums σ).add_mem hx hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem norm_mul_mem (t : E) {s : E} (hs : s ∈ normSums σ) : σ t * t * s ∈ normSums σ := by
   induction hs using AddSubmonoid.closure_induction with
@@ -35,13 +35,13 @@ theorem norm_mul_mem (t : E) {s : E} (hs : s ∈ normSums σ) : σ t * t * s ∈
   | add x y _ _ hx hy => rw [mul_add]; exact (normSums σ).add_mem hx hy
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `Int.eq_ofNat_of_zero_le (Rat.num_nonneg.mpr hq)`. Establish `hden : (q.den : ℚ) ≠ 0` using `by positivity`. Establish `hq' : q = ((n * q.den : ℕ) : ℚ) * ((q.den : ℚ)⁻¹ * (q.den : ℚ)⁻¹)`. Establish `h` using `Rat.num_div_den q`. Rewrite `h` using `[hn]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `conv_lhs => rw [← h]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hE : (q : E) = ((n * q.den : ℕ) : E) * (((q.den : ℚ)⁻¹ : ℚ) * ((q.den : ℚ)⁻¹ : ℚ) : E)` using `by conv_lhs => rw [hq']`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `key : (q : E) * s = (n * q.den) • (σ (((q.den : ℚ)⁻¹ : ℚ) : E) * (((q.den : ℚ)⁻¹ : ℚ) : E) * s)`. Rewrite using `[nsmul_eq_mul, map_ratCast, hE]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Conclude with `AddSubmonoid.nsmul_mem _ (norm_mul_mem σ _ hs) _`.
+A detailed English derivation is pending.
 -/
 theorem rat_mul_mem {q : ℚ} (hq : 0 ≤ q) {s : E} (hs : s ∈ normSums σ) : (q : E) * s ∈ normSums σ := by
   obtain ⟨n, hn⟩ := Int.eq_ofNat_of_zero_le (Rat.num_nonneg.mpr hq)
@@ -64,24 +64,22 @@ theorem rat_mul_mem {q : ℚ} (hq : 0 ≤ q) {s : E} (hs : s ∈ normSums σ) : 
   exact AddSubmonoid.nsmul_mem _ (norm_mul_mem σ _ hs) _
 
 /- English proof (translation)
-Establish `h1 : (1 : E) ∈ normSums σ` using `by simpa using norm_mem σ 1`. Simplify using `using rat_mul_mem σ hq h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rat_mem {q : ℚ} (hq : 0 ≤ q) : (q : E) ∈ normSums σ := by
   have h1 : (1 : E) ∈ normSums σ := by simpa using norm_mem σ 1
   simpa using rat_mul_mem σ hq h1
 
 /- English proof (translation)
-Use `set c := ∑ i, (Algebra.trace ℚ E (σ (e i) * e i))⁻¹ • (σ (e i) * e i) with hc`. Establish `htr : ∀ y : E, Algebra.trace ℚ E (c * y) = Algebra.trace ℚ E y`. Introduce `y`. Rewrite using `[Algebra.trace_eq_matrix_trace e y]`. Simplify using `only [Matrix.trace, Matrix.diag, Algebra.leftMulMatrix_eq_repr_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, map_smul, mul_assoc, mul_comm y (e i)]`. Use `conv_lhs => rw [← e.sum_repr (e i * y)]`. Rewrite using `[Finset.mul_sum, map_sum, Finset.sum_eq_single i]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[mul_smul_comm, map_smul, smul_eq_mul, smul_eq_mul]`. Clear denominators, using `[hd i]` for the nonvanishing conditions. Introduce `j _ hj`. Rewrite using `[mul_smul_comm, map_smul, ho i j (Ne.symm hj), smul_zero]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `absurd (Finset.mem_univ i) h`. Assume the negation of the conclusion as `hne`. Establish `hne' : c - 1 ≠ 0` using `sub_ne_zero.mpr hne`. Establish `h2 : Algebra.trace ℚ E ((c - 1) * (c - 1)⁻¹) = 0`. Rewrite using `[sub_mul, map_sub, htr, one_mul, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[mul_inv_cancel₀ hne']`. Establish `h3` using `Algebra.trace_algebraMap (R := ℚ) (S := E) 1`. Rewrite `h3` using `[map_one]`. Rewrite `h2` using `[h3]`. Establish `h4 : (Module.finrank ℚ E : ℚ) = 0` using `by simpa using h2`.
-
-Conclude with `Module.finrank_pos.ne' (by exact_mod_cast h4)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem casimir {ι : Type} [Fintype ι] [DecidableEq ι] (e : Module.Basis ι ℚ E)
     (ho : ∀ i j, i ≠ j → Algebra.trace ℚ E (σ (e i) * e j) = 0)
@@ -115,25 +113,23 @@ theorem casimir {ι : Type} [Fintype ι] [DecidableEq ι] (e : Module.Basis ι �
   exact Module.finrank_pos.ne' (by exact_mod_cast h4)
 
 /- English proof (translation)
-Establish `: Invertible (2 : ℚ)` using `invertibleOfNonzero two_ne_zero`. Establish `hsym : ∀ u v : E, Algebra.trace ℚ E (σ u * v) = Algebra.trace ℚ E (σ v * u)`. Introduce `u v`. Rewrite using `[← Algebra.trace_eq_of_algEquiv σ (σ v * u), map_mul σ, hσ, mul_comm]`. Take `⟨e, he⟩` from `LinearMap.BilinForm.exists_orthogonal_basis (B := LinearMap.mk₂ ℚ (fun u v : E => Algebra.trace ℚ E (σ u * v)) (fun a b c => by rw [map_add, add_mul, map_add]) (fun r a b => by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[show σ (r • a) = r • σ a by rw [Rat.smul_def, Rat.smul_def, map_mul, map_ratCast], smul_mul_assoc, map_smul])`. Use the proof step `(fun a b c => by rw [mul_add, map_add])`. Use the proof step `(fun r a b => by rw [mul_smul_comm, map_smul]))`. Use the proof step `(LinearMap.isSymm_def.mpr fun u v => by simp only [LinearMap.mk₂_apply, RingHom.id_apply]; exact hsym u v)`. Rewrite `he` using `[LinearMap.isOrthoᵢ_def]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.mk₂_apply] at he`. Establish `hd : ∀ i, Algebra.trace ℚ E (σ (e i) * e i) ≠ 0` using `fun i => (hp _ (e.ne_zero i)).ne'`. Establish `hcas` using `casimir σ e he hd`. Take `⟨d, hd_def⟩ : ∃ d : Fin (Module.finrank ℚ E) → ℚ, ∀ j, d j = Algebra.trace ℚ E (σ (e j) * e j)` from `⟨_, fun _ => rfl⟩`. Rewrite `hcas`, `hd` using `[← hd_def]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdpos : ∀ j, 0 < d j` using `fun j => by rw [hd_def]; exact hp _ (e.ne_zero j)`. Establish `hbasis : ∀ i, ∃ c : ℚ, (c : E) - σ (e i) * e i ∈ normSums σ`. Introduce `i`. Use `⟨d i, ?_⟩` and prove the remaining obligations. Establish `h1 : ((d i : ℚ) : E) = ∑ j, ((d i / d j : ℚ) : E) * (σ (e j) * e j)` using `by conv_lhs => rw [← mul_one ((d i : ℚ) : E), ← hcas]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Rat.smul_def]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ((d i : ℚ) : E) - σ (e i) * e i = ∑ j ∈ Finset.univ.erase i, ((d i / d j : ℚ) : E) * (σ (e j) * e j)`. Rewrite using `[h1, ← Finset.add_sum_erase _ _ (Finset.mem_univ i), div_self (hd i), Rat.cast_one, one_mul, add_sub_cancel_left]`. Rewrite using `[h2]`. Conclude with `AddSubmonoid.sum_mem _ fun j _ => rat_mul_mem σ (div_nonneg (hdpos i).le (hdpos j).le) (norm_mem σ _)`. Establish `hadd : ∀ u v : E, (∃ c : ℚ, (c : E) - σ u * u ∈ normSums σ) → (∃ c : ℚ, (c : E) - σ v * v ∈ normSums σ) → ∃ c : ℚ, (c : E) - σ (u + v) * (u + v) ∈ normSums σ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `u v ⟨a, ha⟩ ⟨b, hb⟩`. Use `⟨2 * a + 2 * b, ?_⟩` and prove the remaining obligations. Establish `h : ((2 * a + 2 * b : ℚ) : E) - σ (u + v) * (u + v) = ((2 : ℚ) : E) * ((a : E) - σ u * u) + ((2 : ℚ) : E) * ((b : E) - σ v * v) + σ (u - v) * (u - v)`. Rewrite using `[map_add, map_sub]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `add_mem (add_mem (rat_mul_mem σ (by norm_num) ha) (rat_mul_mem σ (by norm_num) hb)) (norm_mem σ _)`. Establish `hsmul : ∀ (r : ℚ) (u : E), (∃ c : ℚ, (c : E) - σ u * u ∈ normSums σ) → ∃ c : ℚ, (c : E) - σ (r • u) * (r • u) ∈ normSums σ`. Introduce and unpack `r u ⟨a, ha⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨r ^ 2 * a, ?_⟩` and prove the remaining obligations. Establish `h : ((r ^ 2 * a : ℚ) : E) - σ (r • u) * (r • u) = ((r ^ 2 : ℚ) : E) * ((a : E) - σ u * u)`. Rewrite using `[Rat.smul_def, map_mul, map_ratCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[h]`. Conclude with `rat_mul_mem σ (sq_nonneg r) ha`. Establish `hzero : ∃ c : ℚ, (c : E) - σ 0 * 0 ∈ normSums σ` using `⟨0, by simp⟩`. Rewrite using `[← e.sum_repr x]`. Conclude with `Finset.sum_induction _ (fun y => ∃ c : ℚ, (c : E) - σ y * y ∈ normSums σ) (fun u v hu hv => hadd u v hu hv) hzero (fun i _ => hsmul _ _ (hbasis i))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rat_bound (hσ : ∀ x, σ (σ x) = x) (hp : ∀ x, x ≠ 0 → 0 < Algebra.trace ℚ E (σ x * x))
     (x : E) : ∃ c : ℚ, (c : E) - σ x * x ∈ normSums σ := by
@@ -203,17 +199,17 @@ theorem exists_rat_bound (hσ : ∀ x, σ (σ x) = x) (hp : ∀ x, x ≠ 0 → 0
     (fun u v hu hv => hadd u v hu hv) hzero (fun i _ => hsmul _ _ (hbasis i))
 
 /- English proof (translation)
-Proceed by induction on `hs using AddSubmonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨b, rfl⟩` from `hx`. Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ (L := E) {b}`. Establish `hint : IsIntegral ℤ (y • b)` using `hy b (Finset.mem_singleton_self b)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨y.natAbs, 1, fun _ => ⟨y • b, hint⟩, Int.natAbs_pos.mpr hy0, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_one]`. Use `show _ = σ (y • b) * (y • b)`. Rewrite using `[zsmul_eq_mul, map_mul, map_intCast]`. Establish `h : ((y.natAbs : ℕ) : E) ^ 2 = (y : E) ^ 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Int.cast_natCast, ← Int.cast_pow, Int.natAbs_sq, Int.cast_pow]`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => exact ⟨1, 0, Fin.elim0, le_rfl, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨m, r, b, hm, hb⟩` from `hx`. Take `⟨n, r', b', hn, hb'⟩` from `hy`. Use `⟨m * n, r + r', Fin.append (fun i => (n : 𝓞 E) * b i) (fun j => (m : 𝓞 E) * b' j), Nat.mul_pos hm hn, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Simplify using `only [map_mul, map_natCast]`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hb, hb', Finset.mul_sum, Finset.mul_sum]`. Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl fun i _ => ?_ <;> ring`.
+A detailed English derivation is pending.
 -/
 theorem exists_integral_sum {s : E} (hs : s ∈ normSums σ) :
     ∃ (m r : ℕ) (b : Fin r → 𝓞 E), 1 ≤ m ∧ (m : E) ^ 2 * s = ∑ i, σ (b i : E) * (b i : E) := by
@@ -247,13 +243,11 @@ theorem exists_integral_sum {s : E} (hs : s ∈ normSums σ) :
         congr 1 <;> refine Finset.sum_congr rfl fun i _ => ?_ <;> ring
 
 /- English proof (translation)
-Use `set t := Algebra.trace ℚ E (IsCMField.complexConj E x * x) with ht`. Establish `h` using `trace_eq_sum_embeddings (K := ℚ) (L := E) (E := ℂ) (x := IsCMField.complexConj E x * x)`. Rewrite `h` using `[← ht, eq_ratCast]`. Establish `hre` using `congrArg Complex.re h`. Rewrite `hre` using `[Complex.ratCast_re, Complex.re_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : (0 : ℝ) < (t : ℝ)`. Rewrite using `[hre]`. Establish `: Nonempty (E →ₐ[ℚ] ℂ)` using `⟨IsAlgClosed.lift⟩`. Use `Finset.sum_pos (fun τ _ => ?_) Finset.univ_nonempty` and prove the remaining obligations. Establish `hc : τ (IsCMField.complexConj E x) = (starRingEnd ℂ) (τ x)` using `IsCMField.complexEmbedding_complexConj E (τ : E →+* ℂ) x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hc, Complex.mul_re, Complex.conj_re, Complex.conj_im]`. Establish `hne : τ x ≠ 0` using `(map_ne_zero τ).mpr hx`. Establish `h0` using `Complex.normSq_pos.mpr hne`. Rewrite `h0` using `[Complex.normSq_apply]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Conclude with `hpos` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem trace_conj_mul_pos [IsCMField E] (x : E) (hx : x ≠ 0) :
     0 < Algebra.trace ℚ E (IsCMField.complexConj E x * x) := by
@@ -280,13 +274,13 @@ end StarNormBound
 open StarNormBound in
 
 /- English proof (translation)
-Introduce `E _ _ _ _ hstar a`. Establish `hσ : ∀ x, ((IsCMField.complexConj E).restrictScalars ℚ) (((IsCMField.complexConj E).restrictScalars ℚ) x) = x` using `fun x => IsCMField.complexConj_apply_apply E x`. Establish `hp : ∀ x, x ≠ 0 → 0 < Algebra.trace ℚ E (((IsCMField.complexConj E).restrictScalars ℚ) x * x)` using `fun x hx => trace_conj_mul_pos x hx`. Take `⟨q, hq⟩` from `exists_rat_bound ((IsCMField.complexConj E).restrictScalars ℚ) hσ hp (a : E)`. Establish `hc : (((⌈q⌉₊ : ℕ) : ℚ) : E) - ((IsCMField.complexConj E).restrictScalars ℚ) a * a ∈ normSums ((IsCMField.complexConj E).restrictScalars ℚ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h : (((⌈q⌉₊ : ℕ) : ℚ) : E) - ((IsCMField.complexConj E).restrictScalars ℚ) a * a = ((((⌈q⌉₊ : ℕ) : ℚ) - q : ℚ) : E) + ((q : E) - ((IsCMField.complexConj E).restrictScalars ℚ) a * a)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `add_mem (rat_mem _ (sub_nonneg.mpr (Nat.le_ceil q))) hq`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m, r, b, hm, hb⟩` from `exists_integral_sum _ hc`. Use `⟨m ^ 2 * ⌈q⌉₊, m, r, b, hm, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `hconj : ∀ z : E, ((IsCMField.complexConj E).restrictScalars ℚ) z = IsCMField.complexConj E z` using `fun _ => rfl`. Simplify using `only [hconj] at hb`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at hb ⊢`. Simplify using `only [hstar]`. Use `push_cast`. Rewrite using `[map_mul, map_natCast]`. Take the linear combination `(-1 : E) * hb`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_starNormLE_of_isCMField : ∀ (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E]
     [StarRing (NumberField.RingOfIntegers E)],

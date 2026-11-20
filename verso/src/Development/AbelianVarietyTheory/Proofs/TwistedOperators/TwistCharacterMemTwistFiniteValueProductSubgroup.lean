@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.XiVals
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun _ _ _ => ⟨0, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hS _ _ _ t x => GlobalTheory.ColVac.xi_mem_xiVals hS.core.lev t x⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem xi_mem : Big fun {D} _ _ _ _ {T} _ _ _ _ _ {R} ch => ∀ (t : T) (x : (AE D)ˣ),
     Circle.toUnits (R.toLevCh.xi t x) ∈ xiVals R.toLevCh t :=

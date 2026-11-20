@@ -24,31 +24,31 @@ section Groups
 variable {D : D7} (V : HSp D) (u : HeightOneSpectrum (𝓞 D.host.F))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AdelicU.proj_emb_self _ _ u x`.
+A detailed English derivation is pending.
 -/
 theorem finLoc_locFin (x : Gv V u) : finLoc V u (locFin V u x) = x :=
   GlobalTheory.AdelicU.proj_emb_self _ _ u x
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (GlobalTheory.AdelicU.commute_emb _ _ x hg).eq`.
+A detailed English derivation is pending.
 -/
 theorem commute_locFin (x : Gv V u) {g : GfC V} (hg : finLoc V u g = 1) : Commute (locFin V u x) g :=
   Subtype.ext (GlobalTheory.AdelicU.commute_emb _ _ x hg).eq
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.AdelicU.continuous_emb _ _ u).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_locFin : Continuous (locFin V u) :=
   (GlobalTheory.AdelicU.continuous_emb _ _ u).subtype_mk _
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.AdelicU.continuous_proj _ _ u).comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_finLoc : Continuous (finLoc V u) :=
   (GlobalTheory.AdelicU.continuous_proj _ _ u).comp continuous_subtype_val
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_inv, finLoc_locFin, inv_mul_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finLoc_inv_mul (g : GfC V) : finLoc V u ((locFin V u (finLoc V u g))⁻¹ * g) = 1 := by
   rw [map_mul, map_inv, finLoc_locFin, inv_mul_cancel]
@@ -56,31 +56,29 @@ theorem finLoc_inv_mul (g : GfC V) : finLoc V u ((locFin V u (finLoc V u g))⁻�
 end Groups
 
 /- English proof (translation)
-Introduce `D V u W _ _ σ hirr hadm`. Take `⟨hnt, hinv⟩` from `(GlobalTheory.CuspRep.isIrreducible_iff σ).1 hirr`. Take `⟨x, hx0⟩` from `exists_ne (0 : W)`. Establish `hsplit : ∀ g (y : W), σ g y = σ (locFin V u (finLoc V u g)) (σ ((locFin V u (finLoc V u g))⁻¹ * g) y)` using `fun g y => by rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`. Establish `hcomm : ∀ g : GfC V, finLoc V u g = 1 → ∀ h (y : W), σ g (σ (locFin V u h) y) = σ (locFin V u h) (σ g y)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g hg h y`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← (commute_locFin V u h hg).eq, map_mul, Module.End.mul_apply]`. Establish `hρ : GlobalTheory.PRep.IsSmooth (σ.comp (locFin V u))` using `fun v => (hadm.1 v).preimage (continuous_locFin V u)`. Set `K₀ : Subgroup (GfC V)` to `stab σ x`. Establish `hK₀ : IsOpen (K₀ : Set (GfC V))` using `hadm.1 x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Kc : Subgroup (Gv V u)` to `K₀.comap (locFin V u) ⊓ Kv V u`. Establish `hKco : IsOpen (Kc : Set (Gv V u))` using `(hK₀.preimage (continuous_locFin V u)).inter (GlobalTheory.AdelicU.isOpen_stabLoc _ _ _ u)`. Establish `hKcc : IsCompact (Kc : Set (Gv V u))` using `(GlobalTheory.AdelicU.isCompact_stabLoc _ _ _ u).of_isClosed_subset (Subgroup.isClosed_of_isOpen _ hKco) fun k hk => hk.2`. Establish `hKcK₀ : ∀ k ∈ Kc, locFin V u k ∈ K₀` using `fun k hk => hk.1`. Establish `hxKc : x ∈ GlobalTheory.PRep.fixed (σ.comp (locFin V u)) Kc` using `mem_fix.2 fun k hk => hKcK₀ k hk`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnull : nullPart (σ.comp (locFin V u)) Kc = ⊥`. Break down `hinv (nullPart (σ.comp (locFin V u)) Kc) (fun g y hy => by` into its components or cases. Rewrite using `[hsplit g y]`. Conclude with `nullPart_act _ Kc (finLoc V u g) (nullPart_comm _ Kc (σ _) (fun h z => hcomm _ (finLoc_inv_mul V u g) h z) hy)) with h | h`. Conclude with `h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `absurd (eq_zero_of_mem_nullPart hρ hKcc hxKc (h ▸ Submodule.mem_top)) hx0`. Establish `h2 : ∀ Y : Submodule ℂ W, (∀ g, ∀ v ∈ Y, σ.comp (locFin V u) g v ∈ Y) → Y ⊓ GlobalTheory.PRep.fixed (σ.comp (locFin V u)) Kc = ⊥ → Y = ⊥` using `fun Y hY h => le_bot_iff.1 (hnull ▸ le_nullPart hρ hKcc Y hY h)`. Set `L' : Subgroup (GfC V)` to `K₀ ⊓ (finLoc V u).ker`. Set `U : Submodule ℂ W` to `GlobalTheory.PRep.fixed σ L'`. Establish `hU : ∀ g, ∀ v ∈ U, σ.comp (locFin V u) g v ∈ U` using `fun g v hv => mem_fix.2 fun k hk => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `σ k (σ (locFin V u g) v) = σ (locFin V u g) v`. Rewrite using `[hcomm k hk.2 g v, mem_fix.1 hv k hk]`. Establish `hU0 : U ≠ ⊥` using `(Submodule.ne_bot_iff _).2 ⟨x, mem_fix.2 fun k hk => hk.1, hx0⟩`. Take `⟨C, hCo, hCc⟩` from `GlobalTheory.CuspDec.exists_compact_open V`. Establish `hfin : ∀ K' : Subgroup (Gv V u), IsOpen (K' : Set (Gv V u)) → FiniteDimensional ℂ ↥(U ⊓ GlobalTheory.PRep.fixed (σ.comp (locFin V u)) K')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `K' hK'`. Set `M : Subgroup (GfC V)` to `(K₀ ⊓ (Kc ⊓ K').comap (finLoc V u)) ⊓ C`. Establish `hMo : IsOpen (M : Set (GfC V))` using `(hK₀.inter ((hKco.inter hK').preimage (continuous_finLoc V u))).inter hCo`. Establish `hMc : IsCompact (M : Set (GfC V))` using `hCc.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ hMo) fun k hk => hk.2`. Use `hadm.2 M hMo hMc` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.finiteDimensional_of_le (S₂ := GlobalTheory.PRep.fixed σ M) fun v hv => mem_fix.2 fun k hk => ?_` and prove the remaining obligations. Establish `hk1 : (locFin V u (finLoc V u k))⁻¹ * k ∈ L'` using `⟨K₀.mul_mem (K₀.inv_mem (hKcK₀ _ hk.1.2.1)) hk.1.1, finLoc_inv_mul V u k⟩`. Rewrite using `[hsplit k v, mem_fix.1 hv.1 _ hk1]`. Conclude with `mem_fix.1 hv.2 _ hk.1.2.2`. Take `⟨π, ⟨f, hf0, hf⟩, hπ⟩` from `exists_irred hρ hKco h2 U hU hU0 hfin`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨π.V, inferInstance, inferInstance, π.ρ, π.irred, hπ, ?_⟩` and prove the remaining obligations. Set `F : π.ρ.IntertwiningMap (σ.comp (locFin V u))` to `{ toLinearMap := f, isIntertwining' := fun g => LinearMap.ext (hf g) }`. Establish `hI : ∀ g, ∀ y ∈ isoPartAlg π.ρ (σ.comp (locFin V u)), σ g y ∈ isoPartAlg π.ρ (σ.comp (locFin V u))`. Introduce `g y hy`. Use `Submodule.iSup_induction _ (motive := fun y => σ g y ∈ isoPartAlg π.ρ (σ.comp (locFin V u))) hy ?_ ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `T _ ⟨z, rfl⟩`. Set `T' : π.ρ.IntertwiningMap (σ.comp (locFin V u))` to `{ toLinearMap := σ ((locFin V u (finLoc V u g))⁻¹ * g) ∘ₗ T.toLinearMap isIntertwining' := fun h => LinearMap.ext fun w => by`. Express the relevant statement in the definitionally equal form `σ _ (T (π.ρ h w)) = σ (locFin V u h) (σ _ (T w))`. Rewrite using `[T.isIntertwining]`. Conclude with `hcomm _ (finLoc_inv_mul V u g) h _ }`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Use `Submodule.mem_iSup_of_mem T' ⟨π.ρ (finLoc V u g) z, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `T' (π.ρ (finLoc V u g) z) = σ g (T z)`. Rewrite using `[T'.isIntertwining, hsplit g (T z)]`. Both sides reduce to the same expression. Simplify using `only [map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Introduce `a b ha hb`. Simplify using `only [map_add]`. Conclude with `add_mem ha hb`. Break down `hinv _ hI with h | h` into its components or cases.
-
-Use `absurd ?_ hf0` and prove the remaining obligations. Establish `hr : LinearMap.range F.toLinearMap ≤ ⊥` using `h ▸ le_iSup (fun T : π.ρ.IntertwiningMap (σ.comp (locFin V u)) => LinearMap.range T.toLinearMap) F`. Conclude with `LinearMap.range_eq_bot.1 (le_bot_iff.1 hr)`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem exists_locComp : ∀ (D : D7) (V : HSp D) (u : HeightOneSpectrum (𝓞 D.host.F)) (W : Type) [AddCommGroup W]
     [Module ℂ W] (σ : Representation ℂ (GfC V) W), σ.IsIrreducible → IsAdmissible σ →

@@ -18,21 +18,17 @@ namespace GlobalTheory.Cartier.PullIdeal
 open CartierDiv
 
 /- English proof (translation)
-Distinguish the cases in `ht : genericPoint Y ∈ Y.basicOpen t`. Use `swap`. Use `⟨1, fun z _ => ?_⟩` and prove the remaining obligations. Establish `h0 : fnOf V hηV t = 0`. Assume the negation of the conclusion as `h`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ht ((unitAt_fnOf_iff hηV hηV t).1 (unitAt_genericPoint h))`. Rewrite using `[h0, pow_one, zero_mul]`. Conclude with `(D.vanishesAt_zero z).regularAt`. Establish `loc : ∀ y : V, ∃ W : Y.Opens, y.1 ∈ W ∧ ∃ n : ℕ, ∀ z ∈ W, D.RegularAt z (fnOf V hηV t ^ n * F)`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨V', hyV', g, hg⟩` from `D.exists_isEqn_nhds y.1`. Take `⟨W, hW, hyW, hWV⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 Y.isBasis_affineOpens (show y.1 ∈ V ⊓ V' from ⟨y.2, hyV'⟩)`. Establish `hWV1 : W ≤ V` using `hWV.trans inf_le_left`. Use `set t' : Γ(Y, W) := Y.presheaf.map (homOfLE hWV1).op t`. Establish `hB : Y.basicOpen t' = W ⊓ Y.basicOpen t` using `Y.basicOpen_res t _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hgen : genericPoint Y ∈ Y.basicOpen t'` using `hB ▸ memInf (gen_mem hyW) ht`. Take `⟨b, hb⟩` from `exists_fnOf_eq (f := F * (g : Y.functionField)) hgen fun z hz => by`. Rewrite `hz` using `[hB]`. Conclude with `(hg z (hWV hz.1).2).regularAt_iff.1 (hF z hz.2)`. Take `⟨n, a, ha⟩` from `exists_eq_pow_mul_of_isAffineOpen Y W hW t' b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `key : fnOf W (gen_mem hyW) a = fnOf V hηV t ^ n * (F * (g : Y.functionField))`. Establish `e` using `congrArg (fnOf _ hgen) ha`. Rewrite `e` using `[map_mul, map_pow, hb]`. Use `erw [SecPowLoc.fnOf_map, SecPowLoc.fnOf_map, SecPowLoc.fnOf_map] at e`. Conclude with `e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨W, hyW, n, fun z hz => (hg z (hWV hz).2).regularAt_iff.2 ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, ← key]`. Conclude with `regAt_fnOf hz _ a`. Use `choose W hyW n hn using loc`. Take `⟨T, hT⟩` from `hV.elim_finite_subcover (fun y : V => (W y : Set Y)) (fun y => (W y).isOpen) (fun y hy => Set.mem_iUnion.2 ⟨⟨y, hy⟩, hyW _⟩)`.
-
-Use `⟨T.sup n, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨y, hyT, hzy⟩` from `Set.mem_iUnion₂.1 (hT hz)`. Establish `hle : n y ≤ T.sup n` using `Finset.le_sup hyT`. Establish `hr` using `regAt_fnOf hz hηV (t ^ (T.sup n - n y))`. Rewrite `hr` using `[map_pow]`.
-
-Rewrite using `[← Nat.sub_add_cancel hle, pow_add, mul_assoc]`. Conclude with `(hn y z hzy).regAt_mul hr`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_regularAt {Y : Scheme.{0}} [IsIntegral Y] (D : CartierDiv Y) {V : Y.Opens}
     (hV : IsCompact (V : Set Y)) (hηV : genericPoint Y ∈ V) (t : Γ(Y, V)) (F : Y.functionField)
@@ -80,7 +76,7 @@ theorem exists_pow_regularAt {Y : Scheme.{0}} [IsIntegral Y] (D : CartierDiv Y) 
   exact (hn y z hzy).regAt_mul hr
 
 /- English proof (translation)
-Establish `hy' : y ∈ s ⁻¹ᵁ U` using `hy`. Rewrite using `[← PullPres.fnOf_app s (gen_mem hy') c]`. Conclude with `regAt_fnOf hy' _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regAt_pull {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (s : Y ⟶ X) [IsDominant s]
     {U : X.Opens} {y : Y} (hy : s y ∈ U) (c : Γ(X, U)) :
@@ -157,7 +153,7 @@ def pullIdealSheaf [QuasiCompact s] : X.IdealSheafData where
       exact Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ hM)
 
 /- English proof (translation)
-Introduce `X Y _ _ s _ _ D`. Conclude with `⟨pullIdealSheaf s D, fun _ _ => Iff.rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_idealSheaf : ∀ (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (s : Y ⟶ X) [IsDominant s]
     [QuasiCompact s] (D : CartierDiv Y), ∃ J : X.IdealSheafData, (∀ (U : X.affineOpens) (f : Γ(X, U.1)),

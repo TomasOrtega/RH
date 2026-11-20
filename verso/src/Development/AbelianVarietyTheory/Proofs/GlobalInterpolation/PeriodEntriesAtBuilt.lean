@@ -16,7 +16,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fc
 
 /- English proof (translation)
-Introduce `𝒮 Lk`. Establish `hC : OverCols (sAnd (IsGoodE 𝒮) fun _ _ _ _ _ => True)` using `(GlobalTheory.T.goodTwistCores_over_trueColumns 𝒮 (fun _ _ _ _ _ => True)).2`. Establish `hT : LargeBaseCondition KPx (IsBuiltE 𝒮) fun _ _ _ _ _ => True` using `largeBaseProperty_true`. Conclude with `⟨⟨_, hT, GlobalTheory.T.referenceChainEvaluationAtBundlePoints_of_overCols _ hC _ Lk⟩, ⟨_, hT, GlobalTheory.T.twistedChainEvaluation_rational_integral_bundlePoints _ hC _ Lk⟩, ⟨_, hT, GlobalTheory.T.referencePeriodIntegral_bundlePoints_of_overColumns _ hC _ Lk⟩, ⟨_, hT, GlobalThe …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem six_rows_at_member : ∀ (𝒮 : Slots) (Lk : LkT Bundle),
     (Lg1 KPx (IsBuiltE 𝒮) (IsGoodE 𝒮) fun S => PeriodEntriesOverColumns.ReferenceChainEvaluationAtBundlePoints S Lk) ∧

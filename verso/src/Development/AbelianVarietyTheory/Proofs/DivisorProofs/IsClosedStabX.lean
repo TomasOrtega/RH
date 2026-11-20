@@ -13,7 +13,7 @@ section Defs
 variable {k E : Type} [Field k] [Field E] [Algebra k E] (c : E →ₐ[k] E)
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := c.toRingHom)`.
+A detailed English derivation is pending.
 -/
 theorem map_mul_c {α β γ : Type} [Fintype β] (A : Matrix α β E) (B : Matrix β γ E) :
     (A * B).map c = A.map c * B.map c := Matrix.map_mul (f := c.toRingHom)

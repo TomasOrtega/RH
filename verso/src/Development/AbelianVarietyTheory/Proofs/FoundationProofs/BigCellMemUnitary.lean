@@ -13,9 +13,9 @@ def pos (k r : ℕ) : (Fin r ⊕ Fin r) ⊕ Fin (k + 1) → Fin (2 * r + k + 1) 
   Sum.elim (Sum.elim (eI k r) (esI k r)) (wI k r)
 
 /- English proof (translation)
-Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Use `⟨?_, by simp; omega⟩` and prove the remaining obligations. Apply the tactic sequence `rintro ((a | a) | a) ((b | b) | b) h <;>`. Apply the tactic sequence `simp only [pos, eI, esI, wI, Sum.elim_inl, Sum.elim_inr, Fin.mk.injEq] at h <;>`. Apply the tactic sequence `have ha := a.isLt <;> have hb := b.isLt <;>`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `first`. Consider the case `(exfalso; omega)`. Consider the case `(have : a = b := Fin.ext (by omega); rw [this])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pos_bijective (k r : ℕ) : Function.Bijective (pos k r) := by
   rw [Fintype.bijective_iff_injective_and_card]
@@ -31,9 +31,9 @@ def posEquiv (k r : ℕ) : (Fin r ⊕ Fin r) ⊕ Fin (k + 1) ≃ Fin (2 * r + k 
   Equiv.ofBijective _ (pos_bijective k r)
 
 /- English proof (translation)
-Apply the tactic sequence `ext ((a | a) | a) ((b | b) | b) <;>`. Apply the tactic sequence `have ha := a.isLt <;> have hb := b.isLt <;>`. Apply the tactic sequence `simp only [pos, eI, esI, wI, Hpk, Hb, Sum.elim_inl, Sum.elim_inr, submatrix_apply, fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.one_apply, diagonal_apply, Fin.ext_iff, Fin.val_last] <;>`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | contradiction | (exfalso; simp_all; done) | (rename_i h1 h2 first`. Consider the case `exact (if_pos h2).trans (by rw [if_pos (by omega), if_pos (by omega)])`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Consider the case `exact (if_neg h2).trans (by rw [if_pos (by omega), if_neg (by omega)]))`.
+Treat this case separately.
 -/
 theorem gram_submatrix (k r : ℕ) :
     (Hpk k r).submatrix (pos k r) (pos k r) =
@@ -50,7 +50,7 @@ theorem gram_submatrix (k r : ℕ) :
         | exact (if_neg h2).trans (by rw [if_pos (by omega), if_neg (by omega)]))
 
 /- English proof (translation)
-Establish `hb : (eI k r b).val < r` using `b.isLt`. Unfold `bigCell`. Rewrite using `[dif_pos hb]`. Conclude with `if_congr Fin.ext_iff rfl rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem col_e (k r : ℕ) (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)
     (i : Fin (2 * r + k + 1)) (b : Fin r) :
@@ -61,9 +61,9 @@ theorem col_e (k r : ℕ) (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k
   exact if_congr Fin.ext_iff rfl rfl
 
 /- English proof (translation)
-Establish `hb` using `b.isLt`. Establish `hv : (wI k r b).val = r + b.val` using `rfl`. Unfold `bigCell`. Rewrite using `[dif_neg (by omega), dif_pos (by omega)]`. Use `split_ifs`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises. Use `show (wI k r b).val - r = b.val`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem col_w (k r : ℕ) (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)
     (i : Fin (2 * r + k + 1)) (b : Fin (k + 1)) :
@@ -81,9 +81,9 @@ theorem col_w (k r : ℕ) (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k
   · rfl
 
 /- English proof (translation)
-Establish `hb` using `b.isLt`. Establish `hv : (esI k r b).val = 2 * r + k - b.val` using `rfl`. Unfold `bigCell`. Rewrite using `[dif_neg (by omega), dif_neg (by omega)]`. Use `if_congr (by omega) ?_ rfl` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 3`. Apply `Fin.ext` to reduce the goal to its premises. Use `show 2 * r + k - (esI k r b).val = b.val`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem col_es (k r : ℕ) (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)
     (i : Fin (2 * r + k + 1)) (b : Fin r) :
@@ -99,15 +99,11 @@ theorem col_es (k r : ℕ) (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (
   omega
 
 /- English proof (translation)
-Apply the tactic sequence `ext ((a | a) | a) ((b | b) | b) <;>`. Apply the tactic sequence `have ha := a.isLt <;> have hb := b.isLt <;>`. Simplify using `only [pos, Sum.elim_inl, Sum.elim_inr, submatrix_apply, col_e, col_w, col_es, fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, Matrix.zero_apply, diagonal_apply]`. Conclude with `if_neg (by show ¬ a.val = _; omega)`. Establish `: ((eI k r a).val = b.val) ↔ a = b` using `(Fin.ext_iff (a := a) (b := b)).symm`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `exact (if_congr this rfl rfl).trans (by split_ifs with h <;> simp [h])`. Conclude with `dif_neg (by show ¬ (r ≤ a.val ∧ _); omega)`. Establish `: ((esI k r a).val = 2 * r + k - b.val) ↔ a = b`. Rewrite using `[Fin.ext_iff]`. Use `show 2 * r + k - a.val = _ ↔ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `exact (if_congr this rfl rfl).trans (by split_ifs with h <;> simp [h])`. Conclude with `if_neg (by show ¬ 2 * r + k - a.val = _; omega)`. Conclude with `dif_neg (by show ¬ (_ ∧ 2 * r + k - a.val ≤ _); omega)`. Conclude with `if_neg (by show ¬ r + a.val = _; omega)`.
-
-Conclude with `if_neg (by show ¬ r + a.val = _; omega)`. Rewrite using `[dif_pos (by show r ≤ r + a.val ∧ r + a.val ≤ _; omega)]`. Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises. Use `show r + a.val - r = a.val`.
-
-Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem bigCell_submatrix (k r : ℕ) (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) :
     (bigCell k r c μ).submatrix (pos k r) (pos k r) =
@@ -139,15 +135,13 @@ end BigCellUnitary
 open BigCellUnitary in
 
 /- English proof (translation)
-Introduce `k r c μ hc hμ`. Establish `key : ((bigCell k r c μ)ᴴ * Hpk k r * bigCell k r c μ).submatrix (posEquiv k r) (posEquiv k r) = (Hpk k r).submatrix (posEquiv k r) (posEquiv k r)`. Rewrite using `[← submatrix_mul_equiv _ _ _ (posEquiv k r), ← submatrix_mul_equiv _ _ _ (posEquiv k r), ← conjTranspose_submatrix]`. Establish `hp : ⇑(posEquiv k r) = pos k r` using `rfl`. Rewrite using `[hp, gram_submatrix, bigCell_submatrix]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : diagonal (fun a => star (c a)) * diagonal (fun a => (star (c a))⁻¹) = (1 : Matrix (Fin r) (Fin r) ℂ)`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `mul_inv_cancel₀ (star_ne_zero.2 (hc a))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h2 : diagonal (fun a => star (star (c a))⁻¹) * diagonal c = (1 : Matrix (Fin r) (Fin r) ℂ)`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[star_inv₀, star_star]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `inv_mul_cancel₀ (hc a)`. Simplify using `only [fromBlocks_conjTranspose, fromBlocks_multiply, conjTranspose_zero, diagonal_conjTranspose, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, add_zero, zero_add, hμ]`. Rewrite using `[show star c = fun a => star (c a) from rfl, show star (fun a => (star (c a))⁻¹) = fun a => star (star (c a))⁻¹ from rfl, h1, h2]`. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `(posEquiv k r).surjective i`.
-
-Take `⟨j, rfl⟩` from `(posEquiv k r).surjective j`. Conclude with `congrFun (congrFun key i) j`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem bigCell_mem_unitary : Formalism.QuantumDeterminants.BigCellMem := by
   intro k r c μ hc hμ

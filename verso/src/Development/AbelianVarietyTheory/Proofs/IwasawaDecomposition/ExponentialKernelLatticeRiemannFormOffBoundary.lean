@@ -23,13 +23,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ShFam.Hor.LogCh
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t p g g' ex e' hex hhol he' hhol'`. Establish `one : ∀ {m : ℕ} (f : (Fin m → ℂ) → (Over.mk p ⟶ t.G)), (∀ z w, f (z + w) = f z * f w) → f 0 = 1`. Introduce `m f hf`. Establish `h` using `hf 0 0`. Rewrite `h` using `[add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_left.1 h.symm)`. Establish `der : ∀ {m : ℕ} (f : (Fin m → ℂ) → (Over.mk p ⟶ t.G)), IsExpAt t p f → ∀ v : epsPt p ⟶ t.G, spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v.left = (f 0).left → ∃! w, IsDerivAt0 (fun z => (f z).left) w v.left`. Introduce `m f hf v hv`. Use `hf.2.2 v.left ⟨Over.w v, ?_⟩` and prove the remaining obligations. Rewrite using `[hv, one f hf.1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `H3` using `(GlobalTheory.holomorphic_hom_determined X t.G).2.2.1 p`. Take `⟨h, hh, -⟩` from `H3 (Fin g' → ℂ) g e' ex he'.1 hex.1 hhol' hhol (der ex hex)`. Take `⟨h', hh', -⟩` from `H3 (Fin g → ℂ) g' ex e' hex.1 he'.1 hhol hhol' (der e' he')`. Take `⟨k, -, hk⟩` from `H3 (Fin g' → ℂ) g' e' e' he'.1 he'.1 hhol' hhol' (der e' he')`. Take `⟨k', -, hk'⟩` from `H3 (Fin g → ℂ) g ex ex hex.1 hex.1 hhol hhol (der ex hex)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `c1 : h' ∘ₗ h = LinearMap.id` using `(hk _ fun z => by rw [LinearMap.comp_apply, ← hh', ← hh]).trans (hk _ fun z => rfl).symm`. Establish `c2 : h ∘ₗ h' = LinearMap.id` using `(hk' _ fun z => by rw [LinearMap.comp_apply, ← hh, ← hh']).trans (hk' _ fun z => rfl).symm`. Conclude with `⟨LinearEquiv.ofLinear h h' c2 c1, hh⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exp_eq_comp_linearEquiv : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (p : Sp ℂ ⟶ X) (g g' : ℕ) (ex : (Fin g → ℂ) → (Over.mk p ⟶ t.G)) (e' : (Fin g' → ℂ) → (Over.mk p ⟶ t.G)), IsExpAt t p ex → IsHolTo Set.univ (fun w => (ex w).left) → IsExpAt t p e' → IsHolTo Set.univ (fun w => (e' w).left) → ∃ L : (Fin g' → ℂ) ≃ₗ[ℂ] (Fin g → ℂ), ∀ z, e' z = ex (L z) := by
   intro E _ _ _ H X t p g g' ex e' hex hhol he' hhol'
@@ -56,13 +56,13 @@ theorem exp_eq_comp_linearEquiv : ∀ (E : Type) [Field E] [NumberField E] [IsCM
   exact ⟨LinearEquiv.ofLinear h h' c2 c1, hh⟩
 
 /- English proof (translation)
-Introduce `g g' L Hm₀ hH hpos`. Set `A : Matrix (Fin g') (Fin g) ℂ` to `LinearMap.toMatrix' L.symm.toLinearMap`. Establish `hA : ∀ v, A.mulVec v = L.symm v` using `fun v => LinearMap.toMatrix'_mulVec _ v`. Establish `key : ∀ v w, hermForm (Aᵀ * Hm₀ * A.map star) v w = hermForm Hm₀ (L.symm v) (L.symm w)`. Introduce `v w`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hermForm, ← hA]`. Rewrite using `[Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.dotProduct_mulVec, ← Matrix.vecMul_vecMul, ← Matrix.vecMul_vecMul, Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec]`. Use `congr 1`. Use extensionality with `j`. Simplify using `[Matrix.mulVec, Matrix.vecMul, dotProduct, Matrix.conjTranspose_apply, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `⟨Aᵀ * Hm₀ * A.map star, ?_, fun z hz => ?_, fun v w => ?_⟩` and prove the remaining obligations. Unfold `Matrix.IsHermitian`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, hH.eq, Matrix.mul_assoc]`. Use `congr 1`. Use extensionality with `a b`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.conjTranspose_apply]`. Rewrite using `[key]`. Conclude with `hpos _ (by simpa using hz)`. Rewrite using `[key, L.symm_apply_apply, L.symm_apply_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hermForm_transport : ∀ (g g' : ℕ) (L : (Fin g' → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (Hm₀ : Matrix (Fin g') (Fin g') ℂ), Hm₀.IsHermitian → (∀ z : Fin g' → ℂ, z ≠ 0 → 0 < (hermForm Hm₀ z z).re) → ∃ Hm : Matrix (Fin g) (Fin g) ℂ, Hm.IsHermitian ∧ (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re) ∧ ∀ v w, hermForm Hm (L v) (L w) = hermForm Hm₀ v w := by
   intro g g' L Hm₀ hH hpos
@@ -87,7 +87,7 @@ theorem exists_hermForm_transport : ∀ (g g' : ℕ) (L : (Fin g' → ℂ) ≃�
   · rw [key, L.symm_apply_apply, L.symm_apply_apply]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z g ty σ₀ Fu y i P p hP hu hp`. Conclude with `⟨pushEx Z Fu y i P p hu hp, GlobalTheory.T.isExponential_modelFiber_of_uniformisationExp E H Dw l Xo c O β Z g ty σ₀ Fu y i P p hu hp hP, GlobalTheory.T.isHolomorphic_uniformisationExp_modelFiber E H Dw l Xo c O β Z g ty σ₀ Fu y i P p hu hp hP, GlobalTheory.T.expModelFiber_eq_one …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_pushed_exp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (σ₀ : KA l →+* ℂ) (Fu : FamilyUnif Xo σ₀ ty) (y : Sp ℂ ⟶ Xo.XF c) (i : Fin Fu.n) (P : (Fu.Di i).La →+ (Fin g → ℂ)) (p : Sp ℂ ⟶ Z.X), IsPeriod (Fu.Di i) ty P → Fu.u i P = y ≫ pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) → y ≫ Z.jQ ≫ pullback.fst Z.s (spMap β) = p → ∃ e' : (Fin g → ℂ) → (Over.mk p ⟶ Z.t.G), IsExpAt Z.t p e' ∧ IsHolTo Set.univ (fun z => (e' z).left) ∧ (∀ z, e' z = 1 ↔ z ∈ P.range) ∧ ∀ (k : ℕ) (a b : (Fu.Di i).La) (ζ : ℂˣ), 0 < k → (ζ : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * ((Fu.Di i).EF a b : ℂ) / k) → GlobalTheory.UU.CubWeil Z.t.cub k (e' ((k : ℂ)⁻¹ • P a)) (e' ((k : ℂ)⁻¹ • P b)) (unitOn ζ) := by
   intro E _ _ _ H Dw l Xo c O _ β Z g ty σ₀ Fu y i P p hP hu hp
@@ -97,23 +97,23 @@ theorem exists_pushed_exp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
     GlobalTheory.T.weilPairing_expModelFiber_eq_alternatingForm E H Dw l Xo c O β Z g ty σ₀ Fu y i P p hu hp hP⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z σ g x ex hσ hpq hx hex hhol`. Take `⟨y, hy⟩` from `hx.exists_lift`. Set `e₀ : Fin (Fintype.card (Letter Dw)) ≃ Letter Dw` to `(Fintype.equivFin _).symm`. Establish `hty` using `(GlobalTheory.Relab.relab_good E H l c σ hσ).2.2.2 Dw _ e₀`. Take `⟨Fu⟩` from `GlobalTheory.closing_of_abelianSchemeLaws E H Dw l Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) _ (fun j => Formalism.L2.PjFree.relab c σ (e₀ j).1) hpq hσ hty`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hs : y ≫ pullback.snd _ _ = spMap σ`. Rewrite using `[← Z.jQ_over, ← Category.assoc, hy]`. Conclude with `x.2`. Take `⟨i, P, hP, hu⟩` from `Fu.onto (y ≫ pullback.fst _ _) (by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hs, OpenReg.spMap_comp])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e', he', hhol', hker, hweil⟩` from `exists_pushed_exp E H Dw l Xo c O β Z _ _ _ Fu y i P (x.1 ≫ genι Z) hP hu (by rw [← hy, Category.assoc])`. Take `⟨L, hL⟩` from `exp_eq_comp_linearEquiv E H Z.X Z.t (x.1 ≫ genι Z) g _ ex e' hex hhol he' hhol'`. Take `⟨Hm₀, hH₀, hpos₀, hEF⟩` from `hP.2.2.2.2`. Take `⟨Hm, hH, hpos, hform⟩` from `exists_hermForm_transport _ _ L Hm₀ hH₀ hpos₀`. Establish `hkerex : ∀ w, ex w = 1 ↔ ∃ a, w = L (P a)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : e' (L.symm w) = 1` using `by rw [hL, L.apply_symm_apply, h]`. Take `⟨a, ha⟩` from `(hker _).1 h'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a, by rw [ha, L.apply_symm_apply]⟩`. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[← hL]`. Conclude with `(hker _).2 ⟨a, rfl⟩`. Use `⟨Hm, hH, hpos, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hset : {w | ex w = 1} = (L.toLinearMap.restrictScalars ℝ) '' Set.range P`. Use extensionality with `w`. Simplify using `only [Set.mem_setOf_eq, hkerex, Set.mem_image, Set.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨P a, ⟨a, rfl⟩, rfl⟩`. Introduce and unpack `⟨_, ⟨a, rfl⟩, rfl⟩`. Conclude with `⟨a, rfl⟩`. Rewrite using `[hset, Submodule.span_image, hP.2.2.2.1, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `L.surjective`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `v w hv hw`. Take `⟨a, rfl⟩` from `(hkerex v).1 hv`. Take `⟨b, rfl⟩` from `(hkerex w).1 hw`. Conclude with `⟨(Fu.Di i).EF a b, by rw [hform, hEF]⟩`. Introduce `k v w ζ hk hv hw hζ`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, rfl⟩` from `(hkerex v).1 hv`. Take `⟨b, rfl⟩` from `(hkerex w).1 hw`. Rewrite using `[← L.map_smul, ← L.map_smul, ← hL, ← hL]`. Use `hweil k a b ζ hk ?_` and prove the remaining obligations. Rewrite using `[hζ, hform, hEF, Complex.ofReal_intCast]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kernel_lattice_of_inner : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (g : ℕ) (x : CxPts (genStr Z) σ) (ex : (Fin g → ℂ) → (Over.mk (x.1 ≫ genι Z) ⟶ Z.t.G)), Formalism.L2.PjFree.GoodEmb c σ → 1 ≤ Dw.p + Dw.q → Inner x → IsExpAt Z.t (x.1 ≫ genι Z) ex → IsHolTo Set.univ (fun w => (ex w).left) → ∃ Hm : Matrix (Fin g) (Fin g) ℂ, Hm.IsHermitian ∧ (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re) ∧ Submodule.span ℝ {w | ex w = 1} = ⊤ ∧ (∀ v w, ex v = 1 → ex w = 1 → ∃ m : ℤ, (hermForm Hm v w).im = m) ∧ ∀ (k : ℕ) (v w : Fin g → ℂ) (ζ : ℂˣ), 0 < k → ex v = 1 → ex w = 1 → (ζ : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * ((hermForm Hm v w).im : ℂ) / k) → GlobalTheory.UU.CubWeil Z.t.cub k (ex ((k : ℂ)⁻¹ • v)) (ex ((k : ℂ)⁻¹ • w)) (unitOn ζ) := by
   intro E _ _ _ H Dw l Xo c O _ β Z σ g x ex hσ hpq hx hex hhol

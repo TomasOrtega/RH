@@ -6,9 +6,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open scoped Matrix
 
 /- English proof (translation)
-Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Set `j : Ω →ₐ[ℚ] ℂ` to `IsAlgClosed.lift`. Use `letI : Algebra Ω ℂ := j.toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℚ Ω ℂ := IsScalarTower.of_algebraMap_eq fun x => (j.commutes x).symm`.
-
-Use `haveI : Normal ℚ Ω := IsAlgClosure.normal ℚ Ω`. Set `τ : ℂ ≃ₐ[ℚ] ℂ` to `AlgEquiv.ofRingEquiv (f := starRingAut) fun x => by simp`. Conclude with `⟨τ.restrictNormal Ω, algebraMap Ω ℂ, fun x => AlgEquiv.restrictNormal_commutes τ Ω x⟩`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem across_cc (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] : ∃ c : G ℚ Ω, IsConjEl c := by
   haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic
@@ -21,11 +19,11 @@ private theorem across_cc (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ
   exact ⟨τ.restrictNormal Ω, algebraMap Ω ℂ, fun x => AlgEquiv.restrictNormal_commutes τ Ω x⟩
 
 /- English proof (translation)
-Take `⟨J, hJ⟩` from `h`. Use `⟨J * r c⁻¹, fun s s' h => ?_⟩` and prove the remaining obligations. Establish `h' : resG F₀ F Ω s' = c * resG F₀ F Ω s * c⁻¹` using `h`. Establish `e : r c⁻¹ * r (resG F₀ F Ω s') = r (resG F₀ F Ω s) * r c⁻¹`. Rewrite using `[h', ← map_mul, ← map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `group`. Establish `e' : (r c⁻¹).val * (r (resG F₀ F Ω s')).val = (r (resG F₀ F Ω s)).val * (r c⁻¹).val` using `congrArg Units.val e`. Establish `hp` using `hJ (resG F₀ F Ω s)`. Simplify using `only [MonoidHom.comp_apply]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, ← Matrix.smul_mul, ← hp]`. Simplify using `only [Matrix.mul_assoc, e']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem across_pair {F₀ F Ω k : Type} [Field F₀] [Field F] [Field Ω] [Algebra F₀ F] [Algebra F₀ Ω] [Algebra F Ω]
     [IsScalarTower F₀ F Ω] [Field k] {n : ℕ} (r : G F₀ Ω →* GL (Fin n) k) (θ : G F₀ Ω →* kˣ) (h : DualTw r θ)
@@ -42,7 +40,7 @@ private theorem across_pair {F₀ F Ω k : Type} [Field F₀] [Field F] [Field �
   simp only [Matrix.mul_assoc, e']
 
 /- English proof (translation)
-The claim follows from `DivisionSemiring.to_moduleIsTorsionFree`.
+A detailed English derivation is pending.
 -/
 private theorem across_tf (L Ω : Type) [Field L] [Field Ω] [Algebra L Ω] : Module.IsTorsionFree L Ω :=
   DivisionSemiring.to_moduleIsTorsionFree
@@ -50,14 +48,14 @@ private theorem across_tf (L Ω : Type) [Field L] [Field Ω] [Algebra L Ω] : Mo
 attribute [local instance] across_tf
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) L⟩`.
+Supply the required witnesses or components.
 -/
 private theorem across_up (L Ω : Type) [Field L] [CharZero L] [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Algebra L Ω] :
     IsAlgClosure L Ω :=
   ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) L⟩
 
 /- English proof (translation)
-Use `⟨H.1, fun _ _ _ => trivial, fun W hW hI => H.2.2 W hW fun s v hv => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `h s`. Use `hI t v hv` as an intermediate fact. Rewrite `this` using `[MonoidHom.comp_apply, ht]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem across_irr {Γ Δ Δ' k : Type} [Group Γ] [Group Δ] [Group Δ'] [Field k] {n : ℕ} (r : Γ →* GL (Fin n) k)
     (f : Δ →* Γ) (f' : Δ' →* Γ) (h : ∀ s, ∃ t, f' t = f s) (H : IsIrr (r.comp f)) : IsIrr (r.comp f') := by

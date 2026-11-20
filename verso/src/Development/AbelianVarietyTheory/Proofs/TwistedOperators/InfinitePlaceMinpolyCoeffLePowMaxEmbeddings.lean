@@ -8,19 +8,17 @@ open Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `letI : Algebra F ℂ := w.embedding.toAlgebra`. Use `set M : ℝ≥0 := max 1 (Finset.univ.sup fun τ : EmbOver E w => ‖τ.1 x‖₊) with hM`. Use `set p := minpoly F x`. Establish `hx : IsIntegral F x` using `Algebra.IsIntegral.isIntegral x`. Establish `h1 : p.Monic` using `minpoly.monic hx`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : p.natDegree ≤ Module.finrank F E` using `minpoly.natDegree_le x`. Establish `h3 : ∀ z ∈ (p.map w.embedding).roots, ‖z‖ ≤ (M : ℝ)`. Introduce `z hz`. Establish `hz' : z ∈ p.rootSet ℂ`. Rewrite using `[Polynomial.mem_rootSet]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨h1.ne_zero, ?_⟩` and prove the remaining obligations. Use `(Polynomial.mem_roots (Polynomial.map_monic_ne_zero h1)).1 hz` as an intermediate fact. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map]`. Conclude with `this`. Rewrite `hz'` using `[← Algebra.IsAlgebraic.range_eval_eq_rootSet_minpoly]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨ψ, rfl⟩` from `hz'`. Set `τ : EmbOver E w` to `⟨ψ.toRingHom, RingHom.ext fun a => ψ.commutes a⟩`. Establish `: ‖ψ x‖₊ ≤ M` using `le_trans (Finset.le_sup (f := fun τ : EmbOver E w => ‖τ.1 x‖₊) (Finset.mem_univ τ)) (le_max_right _ _)`. Conclude with `this` after adjusting the coercions. Establish `key` using `Polynomial.coeff_le_of_roots_le (f := w.embedding) j h1 (IsAlgClosed.splits _) h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `key` using `[Polynomial.coeff_map]`. Establish `hw : w (p.coeff j) = ‖w.embedding (p.coeff j)‖` using `(InfinitePlace.norm_embedding_eq w _).symm`. Rewrite using `[hw]`. Use `key.trans ?_` and prove the remaining obligations. Establish `hM1 : (1 : ℝ) ≤ M` using `by exact_mod_cast le_max_left _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpow : (M : ℝ) ^ (p.natDegree - j) ≤ (M : ℝ) ^ Module.finrank F E` using `pow_le_pow_right₀ hM1 (le_trans (Nat.sub_le _ _) hd)`. Establish `hch : ((p.natDegree.choose j : ℕ) : ℝ) ≤ 2 ^ Module.finrank F E`. Use `(Nat.choose_le_two_pow p.natDegree j).trans (Nat.pow_le_pow_right (by norm_num) hd)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Rewrite using `[mul_comm]`.
-
-Conclude with `mul_le_mul hch hpow (by positivity) (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem minpoly_coeff_le_inf (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (x : E) (w : InfinitePlace F) (j : ℕ) :

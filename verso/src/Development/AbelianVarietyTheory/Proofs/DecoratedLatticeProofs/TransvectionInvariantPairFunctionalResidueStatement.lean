@@ -11,7 +11,7 @@ open GlobalTheory.Core.Mi.LatMatch
 open IsLocalRing
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.latPair_hasVal_residue_of_transvections` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FTransvectionInvariantPairFunctionalResidue.lean&line=13#L13)
 -/

@@ -5,9 +5,9 @@ open scoped Classical
 namespace GlobalTheory.DoubleCosetEuler
 
 /- English proof (translation)
-Establish `h1 : ∀ q : DoubleCoset.Quotient (TH : Set H) (KH : Set H), q ≠ DoubleCoset.mk TH KH 1 → f (Quotient.out q) = 0`. Introduce `q hq`. Rewrite using `[hf, if_neg]`. Introduce and unpack `⟨t, ht, k, hk, he⟩`. Apply `hq` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← DoubleCoset.out_eq' TH KH q, DoubleCoset.eq]`. Conclude with `⟨t⁻¹, inv_mem ht, k⁻¹, inv_mem hk, by rw [he]; group⟩`. Rewrite using `[finsum_eq_single _ (DoubleCoset.mk TH KH 1) h1, hf, if_pos]`. Take `⟨a, b, ha, hb, he⟩` from `DoubleCoset.mk_out_eq_mul TH KH (1 : H)`. Conclude with `⟨a, ha, b, hb, by rw [he, mul_one]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem finsum_doubleCoset_trivial_eq_one (H : Type) [Group H] (TH KH : Subgroup H) (f : H → ℂ)
     (hf : ∀ x, f x = if ∃ t ∈ TH, ∃ k ∈ KH, x = t * k then 1 else 0) :
@@ -25,9 +25,9 @@ theorem finsum_doubleCoset_trivial_eq_one (H : Type) [Group H] (TH KH : Subgroup
   exact ⟨a, ha, b, hb, by rw [he, mul_one]⟩
 
 /- English proof (translation)
-Establish `hR : ∀ j, ∑ᶠ a, f j a = ∑ a ∈ (hf j).toFinset, f j a` using `fun j => finsum_eq_sum_of_support_subset _ (by simp)`. Repeatedly rewrite using `[hR]`. Rewrite using `[Finset.prod_univ_sum]`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `y hy`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hy` using `[Function.mem_support, Finset.prod_ne_zero_iff]`. Rewrite using `[Finset.mem_coe, Fintype.mem_piFinset]`. Introduce `j`. Simplify using `using hy j (Finset.mem_univ j)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finsum_pi_prod_eq_prod_finsum (J : Type) [Fintype J] (α : J → Type) (f : ∀ j, α j → ℂ)
     (hf : ∀ j, (Function.support (f j)).Finite) :
@@ -44,15 +44,13 @@ theorem finsum_pi_prod_eq_prod_finsum (J : Type) [Fintype J] (α : J → Type) (
   simpa using hy j (Finset.mem_univ j)
 
 /- English proof (translation)
-Rewrite using `[hprod]`. Establish `hfin : {i | p i g ∉ KH i}.Finite` using `Filter.eventually_cofinite.mp (hcof g)`. Use `set B : Finset ι := S0 ∪ hfin.toFinset with hB`. Establish `hone : ∀ i ∉ B, s' i (p i g) = 1`. Introduce `i hi`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [B, Finset.mem_union, not_or, Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_not] at hi`. Rewrite using `[hS0 i hi.1, if_pos ⟨1, (TH i).one_mem, p i g, hi.2, (one_mul _).symm⟩]`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset (f := fun i => s' i (p i g)) (s := B) (fun i hi => by by_contra h; exact hi (hone i h))]`. Use `split_ifs with hgood`. Use `symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Finset.prod_subset Finset.subset_union_left` to reduce the goal to its premises. Introduce `i _ hi`. Rewrite using `[hS0 i hi, if_pos (hgood i hi)]`. Use `push_neg at hgood`. Take `⟨i, hi, hbad⟩` from `hgood`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Apply `Finset.prod_eq_zero (i := i)` to reduce the goal to its premises. Use `Finset.mem_union_right _ ?_` and prove the remaining obligations. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq]`. Introduce `hk`. Conclude with `hbad 1 (TH i).one_mem (p i g) hk (one_mul _).symm`.
-
-Rewrite using `[hS0 i hi, if_neg (by push_neg; exact hbad)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_eq_ite_prod_of_finprod (ι G : Type) [Group G] (H : ι → Type) [∀ i, Group (H i)] (p : ∀ i, G →* H i)
     (TH KH : ∀ i, Subgroup (H i)) (s : G → ℂ) (s' : ∀ i, H i → ℂ) (S0 : Finset ι)
@@ -83,15 +81,13 @@ theorem eval_eq_ite_prod_of_finprod (ι G : Type) [Group G] (H : ι → Type) [�
     · rw [hS0 i hi, if_neg (by push_neg; exact hbad)]
 
 /- English proof (translation)
-Establish `hloc : ∀ i, ∃ t ∈ TH i, ∃ k ∈ KH i, p i g' = t * p i g * k ∧ (p i g ∈ KH i → p i g' ∈ KH i → t = 1)`. Introduce `i`. Distinguish the cases in `hk : p i g ∈ KH i ∧ p i g' ∈ KH i`. Conclude with `⟨1, (TH i).one_mem, (p i g)⁻¹ * p i g', mul_mem (inv_mem hk.1) hk.2, by group, fun _ _ => rfl⟩`. Distinguish the cases in `hi : i ∈ S0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Take `⟨t, ht, k, hk', he⟩` from `(DoubleCoset.eq _ _ _ _).1 (h i hi)`. Conclude with `⟨t, ht, k, hk', he, fun h1 h2 => absurd ⟨h1, h2⟩ hk⟩`. Take `⟨a, ha, b, hb, hab⟩` from `hg i hi`. Take `⟨a', ha', b', hb', hab'⟩` from `hg' i hi`. Use `⟨a' * a⁻¹, mul_mem ha' (inv_mem ha), b⁻¹ * b', mul_mem (inv_mem hb) hb', ?_, fun h1 h2 => absurd ⟨h1, h2⟩ hk⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hab, hab']`. Use `group`. Use `choose t ht k hk he h1 using hloc`. Take `⟨x, hx⟩` from `hsurj t (by filter_upwards [hcof g, hcof g'] with i hi hi'`. Rewrite using `[h1 i hi hi']`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(KH i).one_mem)`. Rewrite using `[DoubleCoset.eq]`. Use `⟨x, (hT x).2 (fun i => by rw [hx]; exact ht i), g⁻¹ * x⁻¹ * g', (hK _).2 (fun i => ?_), by group⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_inv, map_inv, hx, he i]`. Use `hk i using 1` and compare the differences between its conclusion and the goal.
-
-Use `group`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem doubleCoset_mk_eq_of_local (ι G : Type) [Group G] (H : ι → Type) [∀ i, Group (H i)] (p : ∀ i, G →* H i)
     (T K : Subgroup G) (TH KH : ∀ i, Subgroup (H i)) (S0 : Finset ι)
@@ -127,25 +123,23 @@ theorem doubleCoset_mk_eq_of_local (ι G : Type) [Group G] (H : ι → Type) [�
   group
 
 /- English proof (translation)
-Introduce `ι G _ H _ p T K TH KH s s' hsurj hcof hK hT hinv hfin hgood hprod`. Establish `hS0fin` using `Filter.eventually_cofinite.mp hgood`. Use `set S0 : Finset ι := hS0fin.toFinset with hS0def`. Establish `hS0 : ∀ i ∉ S0, ∀ x, s' i x = if ∃ t ∈ TH i, ∃ k ∈ KH i, x = t * k then 1 else 0`. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hi` using `[S0]`. Establish `hloc : ∀ i (x : H i), s' i (Quotient.out (DoubleCoset.mk (TH i) (KH i) x)) = s' i x`. Introduce `i x`. Take `⟨a, b, ha, hb, he⟩` from `DoubleCoset.mk_out_eq_mul (TH i) (KH i) x`. Rewrite using `[he, hinv i a ha b hb]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hR : ∏ᶠ i, ∑ᶠ q : DoubleCoset.Quotient (TH i : Set (H i)) (KH i : Set (H i)), s' i (Quotient.out q) = ∏ i : S0, ∑ᶠ q : DoubleCoset.Quotient (TH i.1 : Set (H i.1)) (KH i.1 : Set (H i.1)), s' i.1 (Quotient.out q)`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset (s := S0)]`. Conclude with `(Finset.prod_coe_sort S0 (fun i => ∑ᶠ q : DoubleCoset.Quotient (TH i : Set (H i)) (KH i : Set (H i)), s' i (Quotient.out q))).symm`. Introduce `i hi`. Assume the negation of the conclusion as `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hi (finsum_doubleCoset_trivial_eq_one (H i) (TH i) (KH i) (s' i) (hS0 i h))`. Rewrite using `[hR, ← finsum_pi_prod_eq_prod_finsum S0 (fun i : S0 => DoubleCoset.Quotient (TH i.1 : Set (H i.1)) (KH i.1 : Set (H i.1))) (fun i q => s' i.1 (Quotient.out q)) (fun i => hfin i.1)]`. Take `⟨A, hAdef⟩ : ∃ A : Set (DoubleCoset.Quotient (T : Set G) (K : Set G)), ∀ q, q ∈ A ↔ ∀ i ∉ S0, ∃ t ∈ TH i, ∃ k ∈ KH i, p i (Quotient.out q) = t * k` from `⟨{q | ∀ i ∉ S0, ∃ t ∈ TH i, ∃ k ∈ KH i, p i (Quotient.out q) = t * k}, fun q => Iff.rfl⟩`. Take `⟨Φ, hΦ⟩ : ∃ Φ : DoubleCoset.Quotient (T : Set G) (K : Set G) → ∀ i : S0, DoubleCoset.Quotient (TH i.1 : Set (H i.1)) (KH i.1 : Set (H i.1)), ∀ q i, Φ q i = DoubleCoset.mk (TH i.1) (KH i.1) (p i.1 (Quotient.out q))` from `⟨fun q i => DoubleCoset.mk (TH i.1) (KH i.1) (p i.1 (Quotient.out q)), fun _ _ => rfl⟩`. Establish `hLHS : ∀ q : DoubleCoset.Quotient (T : Set G) (K : Set G), s (Quotient.out q) = ∑ᶠ (_ : q ∈ A), ∏ i : S0, s' i.1 (Quotient.out (Φ q i))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Introduce `q`. Rewrite using `[finsum_eq_if, eval_eq_ite_prod_of_finprod ι G H p TH KH s s' S0 hcof hS0 hprod (Quotient.out q)]`. Distinguish the cases in `hq : ∀ i ∉ S0, ∃ t ∈ TH i, ∃ k ∈ KH i, p i (Quotient.out q) = t * k`. Rewrite using `[if_pos hq, if_pos ((hAdef q).2 hq), ← Finset.prod_coe_sort S0]`. Simplify using `only [hΦ, hloc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_neg hq, if_neg (fun h => hq ((hAdef q).1 h))]`. Use `(finsum_congr hLHS).trans ?_` and prove the remaining obligations. Use `(finsum_mem_eq_of_bijOn (t := Set.univ) (g := fun y : (∀ i : S0, DoubleCoset.Quotient (TH i.1 : Set (H i.1)) (KH i.1 : Set (H i.1))) => ∏ j : S0, s' j.1 (Quotient.out (y j))) Φ ?_ (fun q _ => rfl)).trans (finsum_mem_univ _)` and prove the remaining obligations. Use `⟨fun q _ => Set.mem_univ _, ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq q' hq' he`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← DoubleCoset.out_eq' T K q, ← DoubleCoset.out_eq' T K q']`. Use `doubleCoset_mk_eq_of_local ι G H p T K TH KH S0 hsurj hcof hK hT _ _ ((hAdef q).1 hq) ((hAdef q').1 hq') (fun i hi => ?_)` and prove the remaining obligations. Use `congrFun he ⟨i, hi⟩` as an intermediate fact. Rewrite `this` using `[hΦ, hΦ]`. Then use the resulting hypothesis. Introduce `y _`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `hsurj (fun i => if hi : i ∈ S0 then Quotient.out (y ⟨i, hi⟩) else 1) (by filter_upwards [S0.finite_toSet.compl_mem_cofinite] with i hi`. Rewrite using `[dif_neg (by simpa using hi)]; exact (KH i).one_mem)`. Take `⟨a, b, ha, hb, he⟩` from `DoubleCoset.mk_out_eq_mul T K g`. Use `⟨DoubleCoset.mk T K g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hAdef]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `i hi`. Use `⟨p i a, (hT a).1 ha i, p i b, (hK b).1 hb i, ?_⟩` and prove the remaining obligations. Rewrite using `[he, map_mul, map_mul, hg i, dif_neg hi, mul_one]`. Use function extensionality and compare the values at `i`. Rewrite using `[hΦ, he, map_mul, map_mul, hg i.1, dif_pos i.2]`.
-
-Use `show DoubleCoset.mk (TH i.1) (KH i.1) (p i.1 a * Quotient.out (y i) * p i.1 b) = y i`. Establish `h1 : DoubleCoset.mk (TH i.1) (KH i.1) (p i.1 a * Quotient.out (y i) * p i.1 b) = DoubleCoset.mk (TH i.1) (KH i.1) (Quotient.out (y i))` using `(DoubleCoset.eq _ _ _ _).2 ⟨(p i.1 a)⁻¹, inv_mem ((hT a).1 ha i.1), (p i.1 b)⁻¹, inv_mem ((hK b).1 hb i.1), by group⟩`. Rewrite using `[h1, DoubleCoset.out_eq']`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_doubleCoset_eq_finprod_local : ∀ (ι G : Type) [Group G] (H : ι → Type) [∀ i, Group (H i)] (p : ∀ i, G →* H i) (T K : Subgroup G) (TH KH : ∀ i, Subgroup (H i)) (s : G → ℂ) (s' : ∀ i, H i → ℂ), (∀ y : ∀ i, H i, (∀ᶠ i in cofinite, y i ∈ KH i) → ∃ x : G, ∀ i, p i x = y i) → (∀ x : G, ∀ᶠ i in cofinite, p i x ∈ KH i) → (∀ x : G, x ∈ K ↔ ∀ i, p i x ∈ KH i) → (∀ x, x ∈ T ↔ ∀ i, p i x ∈ TH i) → (∀ i, ∀ t ∈ TH i, ∀ k ∈ KH i, ∀ x, s' i (t * x * k) = s' i x) → (∀ i, {q : DoubleCoset.Quotient (TH i : Set (H i)) (KH i : Set (H i)) | s' i (Quotient.out q) ≠ 0}.Finite) → (∀ᶠ i in cofinite, ∀ x, s' i x = if ∃ t ∈ TH i, ∃ k ∈ KH i, x = t * k then 1 else 0) → (∀ g, s g = ∏ᶠ i, s' i (p i g)) → ∑ᶠ q : DoubleCoset.Quotient (T : Set G) (K : Set G), s (Quotient.out q) = ∏ᶠ i, ∑ᶠ q : DoubleCoset.Quotient (TH i : Set (H i)) (KH i : Set (H i)), s' i (Quotient.out q) := by
   intro ι G _ H _ p T K TH KH s s' hsurj hcof hK hT hinv hfin hgood hprod

@@ -12,7 +12,7 @@ open GlobalTheory.IwasawaKAvgInt
 namespace GlobalTheory.IwasawaKAvgInt
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n X x hx`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hx`. Conclude with `(GlobalTheory.ConeSmallMeas.isClosed_lineStab (σ := σ) (J := X.J) x hi).preimage continuous_subtype_val`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isClosed_lineStab_arch : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n : ℕ) (X : Spc F E n) (x : Fin n → E), x ≠ 0 →

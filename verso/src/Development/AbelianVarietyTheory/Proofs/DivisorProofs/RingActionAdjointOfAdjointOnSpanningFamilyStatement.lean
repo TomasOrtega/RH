@@ -8,7 +8,7 @@ open GlobalTheory.EndLoc GlobalTheory.ActFin
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.AdjSpan.adj_of_span` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRingActionAdjointOfAdjointOnSpanningFamily.lean&line=17#L17)
 -/

@@ -6,9 +6,9 @@ open PositivityTheory.EisRk1 GroundTheory.Global GroundTheory.Automorphic Ground
 namespace GlobalTheory.CompanionTheory.EisRankOne
 
 /- English proof (translation)
-Establish `hmod : Q.f_modif = c • P.f_modif`. Use function extensionality and compare the values at `x`. Simplify using `only [WeakFEPair.f_modif, Pi.add_apply, Pi.smul_apply, Set.indicator_apply, hf, hf₀, hg₀, hk, hε, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> ring`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [WeakFEPair.Λ₀, hmod, Pi.smul_apply]`. Conclude with `mellin_const_smul P.f_modif s c`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weakFEPair_Λ₀_of_smul (P Q : WeakFEPair ℂ) (c : ℂ) (hf : Q.f = c • P.f)
     (hg : Q.g = c • P.g) (hk : Q.k = P.k) (hε : Q.ε = P.ε) (hf₀ : Q.f₀ = c • P.f₀)

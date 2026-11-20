@@ -125,7 +125,7 @@ section Examples
 variable {K : Type*} [DecidableEq K] {ι : K → Type*}
 
 /- English proof (translation)
-The claim follows from `Ideal.isPrime_bot multiHomog := by intro f hf b rw [Ideal.mem_bot] at hf ⊢ simp [hf] relevant := by intro k refine ⟨Classical.arbitrary _, ?_⟩ rw [Ideal.mem_bot] exact X_ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem isMultiProjPrime_bot {R : Type*} [CommRing R] [IsDomain R] [∀ k, Nonempty (ι k)] :
     IsMultiProjPrime (⊥ : Ideal (MRing ι R)) where
@@ -143,9 +143,9 @@ theorem isMultiProjPrime_bot {R : Type*} [CommRing R] [IsDomain R] [∀ k, Nonem
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Unfold `divCycle`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨h, -⟩`. Establish `hW : W.IsPrime` using `h.1.1`. Establish `: P ⊔ Ideal.span {(1 : MRing ι R)} = ⊤`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ideal.span_singleton_one, sup_top_eq]`. Conclude with `hW.ne_top (top_le_iff.mp (this ▸ h.1.2))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divCycle_one {R : Type*} [CommRing R] (P : Ideal (MRing ι R)) (W : Ideal (MRing ι R)) :
     divCycle P 1 W = 0 := by
@@ -158,7 +158,7 @@ theorem divCycle_one {R : Type*} [CommRing R] (P : Ideal (MRing ι R)) (W : Idea
   exact hW.ne_top (top_le_iff.mp (this ▸ h.1.2))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, 0, isWeightedHomogeneous_C _ _, isWeightedHomogeneous_one _ _, by funext k; simp⟩ num_not_mem := hϖ den_not_mem := Ideal.IsPrime.ne_top' ∘ (Ideal.eq_top_of_isUnit_mem _ · isUnit_one) vertical := by intro W hW unfold ratDiv at hW rw [divCycle_one, sub_zero] at hW unfold divCyc …`.
+Supply the required witnesses or components.
 -/
 theorem isVerticalDivisor_uniformiser {O : Type*} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (ϖ : O) (H : Ideal (MRing ι O)) [H.IsPrime]
@@ -184,7 +184,7 @@ theorem isVerticalDivisor_uniformiser {O : Type*} [CommRing O] [IsDomain O]
       exact H.zero_mem
 
 /- English proof (translation)
-The claim follows from `isMultiProjPrime_bot noTorsion := by ext a simp only [Ideal.mem_comap, Ideal.mem_bot, C_eq_zero] dim := by rw [ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _), MvPolynomial.ringKrullDim_of_isNoetherianRing, IsDiscreteValuationRing.ringKrullDim_eq_one] have hc : Nat.card (( …`.
+A detailed English derivation is pending.
 -/
 theorem isModelOver_projectiveSpace {O : Type*} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (n : ℕ) :

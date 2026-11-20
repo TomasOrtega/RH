@@ -4,11 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Set `S' : LinearMap.range T →ₗ[F] M` to `((LinearMap.ker T).liftQ S h).comp T.quotKerEquivRange.symm.toLinearMap`. Take `⟨d, hd⟩` from `LinearMap.exists_extend S'`. Use `⟨d, fun c => ?_⟩` and prove the remaining obligations. Establish `h1 : d (T c) = S' ⟨T c, LinearMap.mem_range_self T c⟩`. Rewrite using `[← hd]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2 : T.quotKerEquivRange.symm ⟨T c, LinearMap.mem_range_self T c⟩ = Submodule.Quotient.mk c`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[LinearMap.quotKerEquivRange_apply_mk]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Simplify using `only [S', LinearMap.comp_apply, LinearEquiv.coe_coe, h2, Submodule.liftQ_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem exists_factor {F A M : Type} [Field F] [AddCommGroup A] [Module F A] [AddCommGroup M] [Module F M]
     (T S : A →ₗ[F] M) (h : LinearMap.ker T ≤ LinearMap.ker S) : ∃ d : M →ₗ[F] M, ∀ c, d (T c) = S c := by
@@ -27,27 +27,27 @@ private theorem exists_factor {F A M : Type} [Field F] [AddCommGroup A] [Module 
   simp only [S', LinearMap.comp_apply, LinearEquiv.coe_coe, h2, Submodule.liftQ_apply]
 
 /- English proof (translation)
-Introduce `F G _ _ n D z hz hk`. Set `A` to `Finsupp.supported F F (D.G' : Set G)`. Set `T : A →ₗ[F] Matrix (Fin n) (Fin n) F` to `(Finsupp.linearCombination F (fun g => D.r g)).comp A.subtype`. Set `S : A →ₗ[F] Matrix (Fin n) (Fin n) F` to `(Finsupp.linearCombination F (fun g => z g * D.r g)).comp A.subtype`. Establish `hTS : LinearMap.ker T ≤ LinearMap.ker S`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `c hc`. Rewrite `hc`, the goal using `[LinearMap.mem_ker]`. Use extensionality with `i j`. Establish `hsupp : ∀ g ∈ (c : G →₀ F).support, g ∈ D.G'` using `fun g hg => (Finsupp.mem_supported F _).1 c.2 hg`. Use `hk i j (c : G →₀ F) hsupp (by simpa [T, Finsupp.linearCombination_apply] using hc)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[S, Finsupp.linearCombination_apply]`. Take `⟨d, hd⟩` from `exists_factor T S hTS`. Establish `hdr : ∀ g ∈ D.G', d (D.r g) = z g * D.r g`. Introduce `g hg`. Use `hd ⟨Finsupp.single g 1, Finsupp.single_mem_supported F 1 hg⟩` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[T, S]`. Establish `hr1 : ∀ g, D.r g⁻¹ * D.r g = 1` using `fun g => by`. Rewrite using `[← map_mul, inv_mul_cancel, map_one]`. Establish `hgen : ∀ g ∈ D.G', ∀ h ∈ D.G', d (D.r g * D.r h) = d (D.r g) * D.r h + D.r g * d (D.r h)`. Introduce `g hg h hh`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← D.r.map_mul, hdr _ (D.G'.mul_mem hg hh), hdr g hg, hdr h hh, hz g hg h hh, D.r.map_mul]`. Simplify using `only [one_smul, Matrix.add_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (D.r g⁻¹) (D.r g) (D.r h), hr1, Matrix.one_mul]`. Establish `hder : ∀ x ∈ Ev F F n D.a, ∀ y ∈ Ev F F n D.a, d (x * y) = d x * y + x * d y`. Introduce `x hx y hy`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx`, `hy` using `[← D.span]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx'`. Take `⟨g, hg, rfl⟩` from `hx'`. Proceed by induction on `hy using Submodule.span_induction with`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `mem y hy'`. Take `⟨h, hh, rfl⟩` from `hy'`. Conclude with `hgen g hg h hh`. Consider the case `zero => simp`. Consider the case `add y1 y2 _ _ h1 h2`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_add, map_add, h1, h2]`. Normalize the expressions using the abelian group laws. Consider the case `smul a y _ h1`. Simplify using `only [Matrix.mul_smul, map_smul, h1, smul_add]`. Consider the case `zero => simp`.
+Normalize the expressions using the abelian group laws. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `add x1 x2 _ _ h1 h2`. Simplify using `only [Matrix.add_mul, map_add, h1, h2]`. Normalize the expressions using the abelian group laws. Consider the case `smul a x _ h1`. Simplify using `only [Matrix.smul_mul, map_smul, h1, smul_add]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Treat this case separately. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨Y, hY⟩` from `Det.derEv d hder`. Use `⟨-Y, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h1` using `hY (D.r g) (D.ev g)`. Rewrite `h1` using `[hdr g hg]`. Establish `h2 : z g = (Y * D.r g - D.r g * Y) * D.r g⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, Matrix.mul_assoc, ← D.r.map_mul, mul_inv_cancel, map_one, Matrix.mul_one]`. Rewrite using `[h2]`. Simplify using `only [dTw, one_smul, Matrix.sub_mul, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`. Rewrite using `[← D.r.map_mul, mul_inv_cancel, map_one, Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Det.der :
     ∀ {F G : Type} [Field F] [Group G] {n : ℕ} (D : DetFr F G n) (z : G → Matrix (Fin n) (Fin n) F), TwCoc (fun _ => 1) D.r D.G' z → (∀ i j, D.KillsRel z i j) → ∃ Y, ∀ g ∈ D.G', z g = dTw (fun _ => 1) D.r Y g := by

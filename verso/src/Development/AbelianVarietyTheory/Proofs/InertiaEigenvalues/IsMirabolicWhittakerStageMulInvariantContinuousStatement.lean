@@ -22,7 +22,7 @@ open GlobalTheory.MirTower GlobalTheory.CuspGeneric
 open GroundTheory.Automorphic.FourierWhittaker (partialCoeff blockGL uGL)
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.GoodMul.good_mul_invariant) | (exact GlobalTheory.GoodMul.good_mul_invariant) | (intros; apply GlobalTheory.GoodMul.good_mul_invariant <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.isMirabolicWhittakerStage_mul_invariant_continuous : ∀ (E : Type) [Field E] [NumberField E] (a m : ℕ) (ψ : AddChar (Ad E) ℂ) (f c : GA E a → ℂ),
     Good ψ m f → Continuous c → (∀ γ : GL (Fin a) E, IsMir m γ → ∀ g, c (ratGL E a γ * g) = c g) →

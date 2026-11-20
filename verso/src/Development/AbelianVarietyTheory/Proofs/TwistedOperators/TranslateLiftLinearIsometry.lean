@@ -13,15 +13,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R hlev hMod i t g0 κ hκ`. Establish `hex` using `fun y => GlobalTheory.translate_unitary_lifts R hlev hMod.HV hMod.cV i t g0 κ hκ y`. Use `choose S hS hSn using hex`. Establish `hinj : Function.Injective (R.HV i t).e` using `(hMod.HV i t).1`. Use `⟨{ toFun := S, map_add' := ?_, map_smul' := ?_ }, hSn, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y z`. Apply `hinj` to reduce the goal to its premises. Use function extensionality and compare the values at `h`. Simplify using `only [map_add, Pi.add_apply, hS, smul_add]`. Introduce `a y`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj` to reduce the goal to its premises. Use function extensionality and compare the values at `h`. Simplify using `only [map_smul, Pi.smul_apply, hS, RingHom.id_apply]`. Conclude with `smul_comm _ _ _`. Introduce `y h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : (R.cV i).ρ κ⁻¹ = 1` using `(hMod.cV i).1 _ (inv_mem hκ.1)`. Establish `hrr : (finHom (Vc D i)).rangeRestrict (h * κ) = (finHom (Vc D i)).rangeRestrict h * (finHom (Vc D i)).rangeRestrict κ` using `map_mul _ _ _`. Use `show (R.cV i).ρ h⁻¹ ((R.HV i t).e (S y) ((finHom (Vc D i)).rangeRestrict h)) = (levChi _ (R.βV i) (flagL (R.datVt i t)) κ)⁻¹ • (R.cV i).ρ (h * κ)⁻¹ ((R.HV i t).e y ((finHom (Vc D i)).rangeRestrict (h * κ)))`. Establish `hρ : (R.cV i).ρ (h * κ)⁻¹ = (R.cV i).ρ h⁻¹`. Rewrite using `[mul_inv_rev, MonoidHom.map_mul, hk, one_mul]`.
-
-Use `(congrArg ((R.cV i).ρ h⁻¹) (hS y _)).trans ?_` and prove the remaining obligations. Use `(LinearMap.map_smul _ _ _).trans (congrArg (fun w => (levChi _ (R.βV i) (flagL (R.datVt i t)) κ)⁻¹ • w) ?_)` and prove the remaining obligations. Conclude with `congrArg₂ (fun (f : Module.End ℂ (R.cV i).W) w => f w) hρ.symm (congrArg ((R.HV i t).e y) hrr.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem translate_lift_linear_isometry : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.toLevCh.Is A.μ0 → R.IsModels → ∀ (i : Fin D.R.m) (t : T) (g0 : G0 R.Pg D.R.r) (κ : GA D (Vc D i)), IsLevelLift (Vc D i) (R.βV i) (R.datVt i t) g0 κ → ∃ S : (R.HV i t).H →ₗ[ℂ] (R.HV i t).H, (∀ y, ‖S y‖ = ‖y‖) ∧ ∀ y h, R.extV i t (S y) h = (levChi _ (R.βV i) (flagL (R.datVt i t)) κ)⁻¹ • R.extV i t y (h * κ) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R hlev hMod i t g0 κ hκ

@@ -19,9 +19,9 @@ theorem fc_val {n : ℕ} (i : ℕ) (l : Fin n) :
   rfl
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[fc_val]`. Break down `Nat.lt_or_ge (l : ℕ) (i : ℕ) with h | h` into its components or cases. Rewrite using `[if_pos h, Fin.succAbove_of_castSucc_lt _ _ (by simpa [Fin.lt_def] using h)]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[if_neg (by omega), Fin.succAbove_of_le_castSucc _ _ (by simpa [Fin.le_def] using h)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem succAbove_eq_fc {n : ℕ} (i : Fin (n + 1)) (l : Fin n) : i.succAbove l = fc i l := by
   apply Fin.ext
@@ -33,26 +33,26 @@ theorem succAbove_eq_fc {n : ℕ} (i : Fin (n + 1)) (l : Fin n) : i.succAbove l 
     rfl
 
 /- English proof (translation)
-Simplify using `only [dc, succAbove_eq_fc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dc_eq {m : ℕ} (F : (Fin (m + 1) → Y) → ℝ) (y : Fin (m + 2) → Y) :
     dc F y = ∑ i : Fin (m + 2), (-1 : ℝ) ^ (i : ℕ) * F (fun l => y (fc i l)) := by
   simp only [dc, succAbove_eq_fc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y; simp [dc, Finset.mul_sum]; refine Finset.sum_congr rfl fun i _ => by ring`.
+Apply function extensionality and compare values at an arbitrary argument.
 -/
 theorem dc_smul {m : ℕ} (r : ℝ) (F : (Fin (m + 1) → Y) → ℝ) : dc (r • F) = r • dc F := by
   funext y; simp [dc, Finset.mul_sum]; refine Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `[dc, mul_sub, Finset.sum_sub_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem dc_sub {m : ℕ} (F G : (Fin (m + 1) → Y) → ℝ) : dc (F - G) = dc F - dc G := by
   funext y; simp [dc, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [fc_val]`. Apply the tactic sequence `split_ifs <;> omega`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem fc_fc_eq_fc_fc_pred_of_lt {n : ℕ} (i j : ℕ) (hji : j < i) (l : Fin n) :
     (fc i (fc j l) : Fin (n + 2)) = fc j (fc (i - 1) l) := by
@@ -61,19 +61,19 @@ private theorem fc_fc_eq_fc_fc_pred_of_lt {n : ℕ} (i j : ℕ) (hji : j < i) (l
   split_ifs <;> omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Rewrite using `[Pi.zero_apply, dc_eq]`. Simplify using `only [dc_eq, Finset.mul_sum]`. Rewrite using `[← Finset.sum_product' (Finset.univ : Finset (Fin (m + 1 + 2))) (Finset.univ : Finset (Fin (m + 2))) (fun i j => (-1 : ℝ) ^ (i : ℕ) * ((-1 : ℝ) ^ (j : ℕ) * F (fun l => y (fc i (fc j l)))))]`. Use `Finset.sum_involution (fun p _ => if h : (p.2 : ℕ) < (p.1 : ℕ) then ((⟨p.2, by have := p.1.isLt; have := p.2.isLt; omega⟩ : Fin (m + 1 + 2)), (⟨p.1 - 1, by have := p.1.isLt; have := p.2.isLt; omega⟩ : Fin (m + 2))) else ((⟨p.2 + 1, by have := p.1.isLt; have := p.2.isLt; omega⟩ : …` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p _ split_ifs with h`. Simplify using `only [Fin.val_mk, fc_fc_eq_fc_fc_pred_of_lt _ _ h]`. Take `⟨t, ht⟩ : ∃ t, (p.1 : ℕ) = t + 1` from `⟨p.1 - 1, by omega⟩`. Simplify using `only [ht, Nat.add_sub_cancel, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Fin.val_mk, fc_fc_eq_fc_fc_pred_of_lt ((p.2 : ℕ) + 1) p.1 (by omega), Nat.add_sub_cancel, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Introduce `p _ _ split_ifs with h`. Introduce `he`. Rewrite `he` using `[Prod.ext_iff, Fin.ext_iff, Fin.ext_iff]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Fin.val_mk] at he`. Use linear arithmetic over natural numbers and integers. Introduce `he`. Rewrite `he` using `[Prod.ext_iff, Fin.ext_iff, Fin.ext_iff]`. Simplify using `only [Fin.val_mk] at he`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Introduce `p _`. Simplify using the standard rewrite rules. Introduce `p _`. Take `⟨i, j⟩` from `p`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : (j : ℕ) < (i : ℕ)`. Establish `h' : ¬ ((i : ℕ) - 1 < (j : ℕ))` using `by omega`. Simplify using `only [h, h', dif_pos, dif_neg, not_false_eq_true, Prod.mk.injEq, Fin.ext_iff, Fin.val_mk]`. Conclude with `⟨by omega, trivial⟩`. Establish `h' : (i : ℕ) < (j : ℕ) + 1` using `by omega`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Simplify using `only [h, h', dif_pos, dif_neg, not_false_eq_true, Prod.mk.injEq, Fin.ext_iff, Fin.val_mk]`. Conclude with `⟨trivial, by omega⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem dc_dc {m : ℕ} (F : (Fin (m + 1) → Y) → ℝ) : dc (dc F) = 0 := by
   funext y

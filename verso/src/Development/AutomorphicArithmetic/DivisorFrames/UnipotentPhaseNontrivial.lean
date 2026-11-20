@@ -19,9 +19,9 @@ open GlobalTheory.UnipMass
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Simplify using `only [hA, dotProduct, Matrix.mulVec, map_sum, map_mul, cA_cA hσ, incM, Matrix.map_apply, cA_inclR]`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hJ y x]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem hA_herm {σ : E →ₐ[F] E} (hσ : ∀ a, σ (σ a) = a) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hJ : ∀ i j, σ (J j i) = J i j) (v w : Fin n → AE F E) : cA σ (hA σ J v w) = hA σ J w v := by
@@ -34,7 +34,7 @@ private theorem hA_herm {σ : E →ₐ[F] E} (hσ : ∀ a, σ (σ a) = a) {n : �
   ring
 
 /- English proof (translation)
-Simplify using `only [hA, Pi.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[show (fun i => cA σ a * cA σ (w i)) = cA σ a • fun i => cA σ (w i) from rfl, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private theorem hA_smul_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a : AE F E)
     (v w : Fin n → AE F E) : hA σ J v (a • w) = cA σ a * hA σ J v w := by
@@ -43,9 +43,9 @@ private theorem hA_smul_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n)
     dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hc : (fun i => cA σ ((incM F A *ᵥ z') i)) = (incM F A).map (cA σ) *ᵥ fun i => cA σ (z' i)`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (cA σ).toRingHom (incM F A) z' i`. Establish `e : (incM F A)ᵀ * incM F J * (incM F A).map (cA σ) = incM F (Aᵀ * J * A.map σ)`. Use extensionality with `i j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [incM, Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, map_sum, map_mul, cA_inclR]`. Rewrite using `[hA, hA, hc, ← Matrix.vecMul_transpose (incM F A) z, ← Matrix.dotProduct_mulVec]`. Simplify using `only [Matrix.mulVec_mulVec]`. Rewrite using `[← Matrix.mul_assoc, e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hA_gram (σ : E →ₐ[F] E) {n m : ℕ} (J : Matrix (Fin n) (Fin n) E) (A : Matrix (Fin n) (Fin m) E)
     (z z' : Fin m → AE F E) :
@@ -60,11 +60,11 @@ private theorem hA_gram (σ : E →ₐ[F] E) {n m : ℕ} (J : Matrix (Fin n) (Fi
   rw [← Matrix.mul_assoc, e]
 
 /- English proof (translation)
-Introduce `h0`. Establish `e1 : θ *ᵥ (θ *ᵥ (τ ∘ ξ)) = τ ∘ ξ` using `by rw [Matrix.mulVec_mulVec, h.1, Matrix.one_mulVec]`. Establish `hne : θ *ᵥ (τ ∘ ξ) ≠ 0`. Introduce `h1`. Rewrite `e1` using `[h1, Matrix.mulVec_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hξ` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Conclude with `τ.injective (by simpa using (congrFun e1 i).symm)`. Establish `h2` using `h.2.2 _ hne`. Establish `e2 : (τ ∘ ξ) ᵥ* J.map τ = 0`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[← RingHom.map_vecMul, h0]`. Simplify using the standard rewrite rules. Rewrite `h2` using `[e1, Matrix.dotProduct_mulVec, e2]`. Simplify using `at h2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem vecMul_ne_zero {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (τ : E →+* ℂ) (θ : Matrix (Fin n) (Fin n) ℂ)
     (h : IsCartan (J.map τ) θ) (ξ : Fin n → E) (hξ : ξ ≠ 0) : ξ ᵥ* J ≠ 0 := by
@@ -84,9 +84,9 @@ private theorem vecMul_ne_zero {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (τ : E 
   simp at h2
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `Function.ne_iff.1 h`. Establish `hi' : (ξ ᵥ* J) i ≠ 0` using `hi`. Use `⟨Pi.single i (σ ((ξ ᵥ* J) i)⁻¹), ?_⟩` and prove the remaining obligations. Establish `e : (fun k => σ ((Pi.single i (σ ((ξ ᵥ* J) i)⁻¹) : Fin n → E) k)) = Pi.single i ((ξ ᵥ* J) i)⁻¹`. Use function extensionality and compare the values at `k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Rewrite using `[Pi.single_eq_same, Pi.single_eq_same, hσ]`. Rewrite using `[Pi.single_eq_of_ne hk, Pi.single_eq_of_ne hk, map_zero]`. Rewrite using `[form, e, Matrix.dotProduct_mulVec, dotProduct_single, mul_inv_cancel₀ hi']`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_form_one {σ : E →ₐ[F] E} (hσ : ∀ a, σ (σ a) = a) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (ξ : Fin n → E) (h : ξ ᵥ* J ≠ 0) : ∃ z₀, form σ J ξ z₀ = 1 := by
@@ -104,13 +104,13 @@ end UpperTheory.HermPhaseNe
 
 open UpperTheory.HermPhaseNe GlobalTheory.UnipMass in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n n₁ X X₁ H j₀ j₁ r s r₁ s₁ hB hX hX₁ hH ξ hξ`. Establish `hσ : ∀ a, σ (σ a) = a` using `cm_conj_conj hB.cm`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Take `⟨z₀, hz₀⟩` from `exists_form_one hσ X₁.J ξ (vecMul_ne_zero X₁.J _ _ (hX₁.cartan w) ξ hξ)`. Take `⟨s₀, hs₀⟩` from `GlobalTheory.T.standard_adelic_char_exists_ne_one F B.ψ hB.std`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set z : Fin n₁ → AE F E := algebraMap (AF F) (AE F E) (⅟2 * s₀) • incV F z₀ with hz`. Establish `h2 : algebraMap (AF F) (AE F E) (⅟2) + algebraMap (AF F) (AE F E) (⅟2) = 1`. Rewrite using `[← map_add, invOf_two_add_invOf_two, map_one]`. Take `⟨g, hg, hgy, -⟩` from `UpperTheory.exists_unipotent_heisenberg F E σ B n n₁ X X₁ H j₀ j₁ r s r₁ s₁ hB hX hX₁ hH z (-(algebraMap (AF F) (AE F E) (⅟2) * hA σ X₁.J z z)) (by`. Rewrite using `[map_neg, map_mul, AlgHom.commutes, hA_herm hσ hX₁.herm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-hA σ X₁.J z z) * h2)`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Use `haveI : Nontrivial (AF F) := ⟨s₀, 0, fun h => hs₀ (by rw [h, AddChar.map_zero_eq_one])⟩`. Establish `hr : Module.finrank (AF F) (AE F E) = 2`. Rewrite using `[Module.finrank_baseChange, hB.cm.2.2.1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : hA σ X.J (incV F (H.ι *ᵥ ξ)) (mat g⁻¹ *ᵥ incV F H.y) = algebraMap (AF F) (AE F E) (⅟2 * s₀)`. Rewrite using `[hgy, hA_add_right, hA_add_right, hA_smul_right, hA_incV, hA_incV, (hH.orth ξ).1, (hH.orth ξ).2, map_zero, mul_zero, zero_add, add_zero, ← incM_mulVec_incV, hA_gram, hH.gram, hz, hA_smul_right, hA_incV, hz₀, map_one, mul_one, AlgHom.commutes]`. Rewrite using `[GlobalTheory.IsoPhase.phase, neg_neg, e, Algebra.trace_algebraMap, hr, nsmul_eq_mul, ← mul_assoc, Nat.cast_ofNat, mul_invOf_self, one_mul]`. Conclude with `hs₀`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.unipotent_phase_nontrivial :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n n₁ : ℕ) (X : Spc F E n) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ r s r₁ s₁ : ℕ),

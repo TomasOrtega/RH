@@ -15,7 +15,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace UpperTheory.SubRep
 
 /- English proof (translation)
-Rewrite using `[Over.comp_left]`. Simplify using `only [Set.range_subset_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem range_pre {S : Scheme.{0}} {T' Z Z' : Over S} (m : T' ⟶ Z) (r : Z ⟶ Z') (U : Z'.left.Opens) :
     Set.range m.left ⊆ (r.left ⁻¹ᵁ U : Z.left.Opens) ↔ Set.range (m ≫ r).left ⊆ U := by
@@ -24,7 +24,7 @@ private theorem range_pre {S : Scheme.{0}} {T' Z Z' : Over S} (m : T' ⟶ Z) (r 
   rfl
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h'` using `h (Over.mk (O.ι ≫ (X ⊗ G).hom)) (Over.homMk O.ι ≫ fst X G) (Over.homMk O.ι ≫ snd X G)`. Rewrite `h'` using `[lift_comp_fst_snd]`. Conclude with `h' (by exact (Scheme.Opens.range_ι O).le) (by exact (Scheme.Opens.range_ι O).ge hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem opens_le {S : Scheme.{0}} {X G : Over S} {O O' : (X ⊗ G).left.Opens}
     (h : ∀ (T' : Over S) (t : T' ⟶ X) (a : T' ⟶ G),
@@ -35,7 +35,7 @@ private theorem opens_le {S : Scheme.{0}} {X G : Over S} {O O' : (X ⊗ G).left.
   exact h' (by exact (Scheme.Opens.range_ι O).le) (by exact (Scheme.Opens.range_ι O).ge hx)
 
 /- English proof (translation)
-The claim follows from `le_antisymm (opens_le fun T' t a => (h T' t a).1) (opens_le fun T' t a => (h T' t a).2)`.
+A detailed English derivation is pending.
 -/
 private theorem opens_ext {S : Scheme.{0}} {X G : Over S} {O O' : (X ⊗ G).left.Opens}
     (h : ∀ (T' : Over S) (t : T' ⟶ X) (a : T' ⟶ G),
@@ -43,59 +43,53 @@ private theorem opens_ext {S : Scheme.{0}} {X G : Over S} {O O' : (X ⊗ G).left
   le_antisymm (opens_le fun T' t a => (h T' t a).1) (opens_le fun T' t a => (h T' t a).2)
 
 /- English proof (translation)
-Use `haveI := hm`. Use `haveI := hh`. Take `⟨Y₀, U, hY₀f, hY₀e, hU, hrep⟩` from `UpperTheory.Cb.exists_finite_etale_representing_clopen_subschemes S G inferInstance inferInstance`. Take `⟨U₁, hU₁, hP⟩` from `UpperTheory.clopenCond_of_isClosed_subgroupLocus G Y₀ U hU`. Use `haveI := hY₀f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hY₀e`. Take `⟨Y, i₀, hYf, hYe, hi₀, hsub⟩` from `GlobalTheory.LevCover.exists_sub U₁ hU₁`. Use `haveI := hi₀`. Take `⟨U₂, hU₂def⟩ : ∃ U₂ : (Y ⊗ G).left.Opens, U₂ = (i₀ ▷ G).left ⁻¹ᵁ U` from `⟨_, rfl⟩`. Establish `hU₂ : IsClosed (U₂ : Set (Y ⊗ G).left)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hU₂def]`. Conclude with `IsClosed.preimage (i₀ ▷ G).left.continuous hU`. Establish `hlift : ∀ {T' : Over S} (t : T' ⟶ Y) (a : T' ⟶ G), Set.range (lift t a).left ⊆ ↑U₂ ↔ Set.range (lift (t ≫ i₀) a).left ⊆ ↑U`. Introduce `T' t a`. Rewrite using `[hU₂def, range_pre, lift_whiskerRight]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcond : ∀ (T' : Over S) (t : T' ⟶ Y), Set.range (lift t (1 : T' ⟶ G)).left ⊆ ↑U₂ ∧ ∀ (a b : T' ⟶ G), Set.range (lift t a).left ⊆ ↑U₂ → Set.range (lift t b).left ⊆ ↑U₂ → Set.range (lift t (a * b⁻¹)).left ⊆ ↑U₂`. Introduce `T' t`. Establish `hp` using `(hP T' (t ≫ i₀)).2 ((hsub T' (t ≫ i₀)).2 ⟨t, rfl⟩) T' (𝟙 T')`. Simplify using `only [Category.id_comp] at hp`. Simplify using `only [hlift]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hp`. Use `⟨Y, hYf, hYe, ?_⟩` and prove the remaining obligations. Introduce `A₀ _ _ φ₀ hpb`. Take `⟨H, instH, j, hjm, hjmono, hHf, hHe, hj⟩` from `UpperTheory.exists_lift_of_closed_subgroup_locus Y A G inc U₂ hm hh hU₂ hcond A₀ φ₀ hpb`. Take `⟨aj, haj1, -⟩` from `(hj (Over.mk (H.hom ≫ Y.hom)) (Over.homMk H.hom) j).1 ⟨𝟙 _, Category.id_comp _⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `PW : ∀ (T' : Over S) (z : T' ⟶ Y) (a : T' ⟶ G), Set.range (lift z a).left ⊆ ↑U₂ ↔ ∃ h : T'.left ⟶ H.left, h ≫ H.hom = z.left ∧ h ≫ j.left ≫ φ₀ = a.left ≫ inc.left`. Introduce `T' z a`. Take `⟨gA, hgA, -⟩` from `UpperTheory.SubRep.pull_existsUnique hpb T' z.left (Over.w z) (a ≫ inc)`. Rewrite `hgA` using `[Over.comp_left]`. Establish `H1` using `hj T' z gA`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hr`. Take `⟨hh', hhj⟩` from `H1.2 ⟨a, hgA.symm, hr⟩`. Use `⟨hh'.left, Over.w hh', ?_⟩` and prove the remaining obligations. Rewrite using `[← hgA, ← hhj, Over.comp_left, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce and unpack `⟨h, hH, hφ⟩`. Take `⟨a', ha', hr⟩` from `H1.1 ⟨Over.homMk h hH, UpperTheory.SubRep.pull_ext hpb (by`. Rewrite using `[Over.comp_left]`. Use `show (h ≫ j.left) ≫ φ₀ = gA.left ≫ φ₀`. Rewrite using `[Category.assoc, hφ, hgA])⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e : a' = a`. Establish `e' : a' ≫ inc = a ≫ inc`. Use `ext`. Rewrite using `[Over.comp_left, Over.comp_left, ha', hgA]`. Conclude with `(cancel_mono inc).1 e'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← e]`. Conclude with `hr`. Use `⟨H, instH, j, hjm, hjmono, hHf, hHe, ?_, ?_⟩` and prove the remaining obligations. Apply `UpperTheory.SubRep.pull_ext hpb` to reduce the goal to its premises. Establish `e1` using `UpperTheory.SubRep.pull_pow hpb (Over.mk (H.hom ≫ Y.hom)) H.hom rfl (g := j) (a := aj ≫ inc) (by rw [Over.comp_left, haj1]) k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2` using `UpperTheory.SubRep.pull_one hpb (Over.mk (H.hom ≫ Y.hom)) H.hom rfl`. Use `e1.trans ?_` and prove the remaining obligations. Rewrite using `[hk]`. Conclude with `e2.symm`. Introduce `T x A₁ _ _ φ₁ B₁ _ f hpb1 hB hf hker haveI := hf`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `huT : IsUnit ((k : ℕ) : Γ(T, ⊤))`. Establish `h2` using `hu.map (Scheme.Hom.appTop x).hom`. Rewrite `h2` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨V, hV, hVp⟩` from `UpperTheory.exists_closed_locus_of_torsion_abelianScheme x A G inc k hk huT A₁ φ₁ B₁ f hpb1 hB hf`. Take `⟨y₀, hy₀, hy₀u⟩` from `hrep (Over.mk x) V hV`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `PW2 : ∀ (y₁' : Over.mk x ⟶ Y) (T' : Over S) (t : T' ⟶ Over.mk x) (a : T' ⟶ G), Set.range (lift t a).left ⊆ ↑(((y₁' ≫ i₀) ▷ G).left ⁻¹ᵁ U) ↔ ∃ h : T'.left ⟶ H.left, h ≫ H.hom = t.left ≫ y₁'.left ∧ h ≫ j.left ≫ φ₀ = a.left ≫ inc.left`. Introduce `y₁' T' t a`. Rewrite using `[range_pre, lift_whiskerRight, ← Category.assoc, ← hlift, PW, Over.comp_left]`. Establish `hwt : ∀ {T' : Over S} (t : T' ⟶ Over.mk x), t.left ≫ x = T'.hom` using `fun t => Over.w t`. Establish `hyU : ∀ (T' : Over S) (t : T' ⟶ Over.mk x) (a : T' ⟶ G), Set.range (lift (t ≫ y₀) a).left ⊆ ↑U ↔ Set.range (lift t a).left ⊆ ↑V`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `T' t a`. Rewrite using `[← hy₀, range_pre, lift_whiskerRight]`. Establish `hPy : ∀ (T' : Over S) (t : T' ⟶ Over.mk x), Set.range (lift (t ≫ y₀) (1 : T' ⟶ G)).left ⊆ ↑U ∧ ∀ (a b : T' ⟶ G), Set.range (lift (t ≫ y₀) a).left ⊆ ↑U → Set.range (lift (t ≫ y₀) b).left ⊆ ↑U → Set.range (lift (t ≫ y₀) (a * b⁻¹)).left ⊆ ↑U`. Introduce `T' t`. Simplify using `only [hyU]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hVp T' t 1 1 ?_]`. Conclude with `MonObj.one_comp f`. Rewrite using `[UpperTheory.SubRep.pull_one hpb1 T' t.left (hwt t), ← Over.comp_left, MonObj.one_comp inc]`. Introduce `a b ha hb`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ga, hga0, -⟩` from `UpperTheory.SubRep.pull_existsUnique hpb1 T' t.left (hwt t) (a ≫ inc)`. Take `⟨gb, hgb0, -⟩` from `UpperTheory.SubRep.pull_existsUnique hpb1 T' t.left (hwt t) (b ≫ inc)`. Establish `hga : ga.left ≫ φ₁ = a.left ≫ inc.left` using `by rw [hga0, Over.comp_left]`. Establish `hgb : gb.left ≫ φ₁ = b.left ≫ inc.left` using `by rw [hgb0, Over.comp_left]`. Establish `hga'` using `(hVp T' t a ga hga).2 ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hgb'` using `(hVp T' t b gb hgb).2 hb`. Rewrite using `[← hVp T' t (a * b⁻¹) (ga * gb⁻¹) ?_]`. Rewrite using `[MonObj.mul_comp, GrpObj.inv_comp, hga', hgb', inv_one, _root_.mul_one]`. Rewrite using `[UpperTheory.SubRep.pull_mul hpb1 T' t.left (hwt t) hga0 (UpperTheory.SubRep.pull_inv hpb1 T' t.left (hwt t) hgb0), ← Over.comp_left, MonObj.mul_comp, GrpObj.inv_comp]`. Take `⟨y₁, hy₁⟩` from `(hsub (Over.mk x) y₀).1 ((hP (Over.mk x) y₀).1 hPy)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy₁x : y₁.left ≫ Y.hom = x` using `Over.w y₁`. Use `⟨y₁.left, ⟨hy₁x, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `T' g`. Establish `hpre : ((y₁ ≫ i₀) ▷ G).left ⁻¹ᵁ U = V` using `by rw [hy₁, hy₀]`. Establish `chain : ∀ a : Over.mk (T'.hom ≫ x) ⟶ G, g.left ≫ φ₁ = a.left ≫ inc.left → (g ≫ f = 1 ↔ ∃ h : T'.left ⟶ H.left, h ≫ H.hom = T'.hom ≫ y₁.left ∧ h ≫ j.left ≫ φ₀ = g.left ≫ φ₁)`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a ha`. Rewrite using `[ha]`. Conclude with `(hVp (Over.mk (T'.hom ≫ x)) (Over.homMk T'.hom) a g ha).trans (by rw [← hpre]; exact PW2 y₁ (Over.mk (T'.hom ≫ x)) (Over.homMk T'.hom) a)`. Prove the components needed by the constructor for the conclusion. Introduce `hg1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htk : g ^ k = 1` using `hker T' g hg1`. Establish `w : (g.left ≫ φ₁) ≫ A.hom = (Over.mk (T'.hom ≫ x)).hom`. Rewrite using `[Category.assoc, hpb1.1.w, ← Category.assoc, Over.w g]`. Both sides reduce to the same expression. Establish `ha₁k : (Over.homMk (g.left ≫ φ₁) w : Over.mk (T'.hom ≫ x) ⟶ A) ^ k = 1`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Establish `e1` using `UpperTheory.SubRep.pull_pow hpb1 (Over.mk (T'.hom ≫ x)) T'.hom rfl (g := g) (a := Over.homMk (g.left ≫ φ₁) w) rfl k`. Establish `e2` using `UpperTheory.SubRep.pull_one hpb1 (Over.mk (T'.hom ≫ x)) T'.hom rfl`. Use `e1.symm.trans ?_` and prove the remaining obligations. Rewrite using `[htk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `e2`. Take `⟨b, hb⟩` from `htor _ _ ha₁k`. Establish `hb' : g.left ≫ φ₁ = b.left ≫ inc.left`. Rewrite using `[← Over.comp_left, hb]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(chain b hb').1 hg1`. Introduce and unpack `⟨h, hH, hφ⟩`. Establish `w : (h ≫ aj.left) ≫ G.hom = (Over.mk (T'.hom ≫ x)).hom`. Rewrite using `[Category.assoc, Over.w aj]`. Use `show h ≫ H.hom ≫ Y.hom = T'.hom ≫ x`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, hH, Category.assoc, hy₁x]`. Establish `ha : g.left ≫ φ₁ = (Over.homMk (h ≫ aj.left) w : Over.mk (T'.hom ≫ x) ⟶ G).left ≫ inc.left`. Rewrite using `[← hφ]`. Use `show h ≫ j.left ≫ φ₀ = (h ≫ aj.left) ≫ inc.left`. Rewrite using `[Category.assoc, haj1]`.
-
-Conclude with `(chain _ ha).2 ⟨h, hH, hφ⟩`. Introduce and unpack `y' ⟨hy'x, hQ⟩`. Establish `hpre' : ((Over.homMk y' hy'x ≫ i₀ : Over.mk x ⟶ Y₀) ▷ G).left ⁻¹ᵁ U = V`. Apply `opens_ext` to reduce the goal to its premises. Introduce `T' t a`.
-
-Rewrite using `[PW2 (Over.homMk y' hy'x) T' t a]`. Take `⟨ga, hga0, -⟩` from `UpperTheory.SubRep.pull_existsUnique hpb1 T' t.left (hwt t) (a ≫ inc)`. Establish `hga : ga.left ≫ φ₁ = a.left ≫ inc.left` using `by rw [hga0, Over.comp_left]`. Rewrite using `[← hVp T' t a ga hga, hQ (Over.mk t.left) ga, hga]`. Both sides reduce to the same expression.
-
-Establish `e1 : (Over.homMk y' hy'x : Over.mk x ⟶ Y) ≫ i₀ = y₀` using `hy₀u _ hpre'`. Establish `e2 : (Over.homMk y' hy'x : Over.mk x ⟶ Y) = y₁`. Rewrite using `[← cancel_mono i₀, e1, hy₁]`. Rewrite using `[← e2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem core {S : Scheme.{0}} [IsLocallyNoetherian S] (A G : Over S) [GrpObj A] [IsCommMonObj A]
     [GrpObj G] (inc : G ⟶ A) (hm : Mono inc) (hh : IsMonHom inc) [IsFinite G.hom] [Etale G.hom] (k : ℕ)
@@ -265,17 +259,17 @@ private theorem core {S : Scheme.{0}} [IsLocallyNoetherian S] (A G : Over S) [Gr
 end UpperTheory.SubRep
 
 /- English proof (translation)
-Introduce `S _ A _ _ k hA hk0 hu`. Take `⟨-, hfin, het⟩` from `GlobalTheory.GrpTangent.finiteEtale_mulN_torsion A hu`. Establish `hpow : ∀ (T' : Over S) (b : T' ⟶ torsion A k), (b ≫ torsion.ι A k) ^ k = 1`. Introduce `T' b`. Rewrite using `[← comp_pow, GlobalTheory.LatticeTorsion.torsionι_pow_eq_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hmono : Mono (torsion.ι A k)`. Prove the components needed by the constructor for the conclusion. Introduce `Z g h e`. Conclude with `(GlobalTheory.LatticeTorsion.existsUnique_torsion A k (g ≫ torsion.ι A k) (hpow _ g)).unique rfl e.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmul : ∃ m, m ≫ torsion.ι A k = (torsion.ι A k ⊗ₘ torsion.ι A k) ≫ μ`. Use `(GlobalTheory.LatticeTorsion.existsUnique_torsion A k _ ?_).exists` and prove the remaining obligations. Establish `e : (torsion.ι A k ⊗ₘ torsion.ι A k) ≫ μ = fst _ _ ≫ torsion.ι A k * snd _ _ ≫ torsion.ι A k`. Rewrite using `[Hom.mul_def]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, mul_pow, hpow, hpow]`. Simplify using the standard rewrite rules. Establish `hone : ∃ e, e ≫ torsion.ι A k = η`. Use `(GlobalTheory.LatticeTorsion.existsUnique_torsion A k _ ?_).exists` and prove the remaining obligations. Establish `e : (η : 𝟙_ (Over S) ⟶ A) = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Hom.one_def]`. Simplify using the standard rewrite rules. Rewrite using `[e, one_pow]`. Establish `hinv : ∃ v, v ≫ torsion.ι A k = torsion.ι A k ≫ ι`. Use `(GlobalTheory.LatticeTorsion.existsUnique_torsion A k _ ?_).exists` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Hom.inv_def, inv_pow, GlobalTheory.LatticeTorsion.torsionι_pow_eq_one, inv_one]`. Take `⟨inst, hmon⟩` from `GlobalTheory.T.exists_grpObj_isMonHom_of_mono_factor S A (torsion A k) (torsion.ι A k) hmono hmul hone hinv`. Use `haveI := hfin`. Use `haveI := het`. Conclude with `UpperTheory.SubRep.core A (torsion A k) (torsion.ι A k) hmono hmon k hu (fun T' a ha => (GlobalTheory.LatticeTorsion.existsUnique_torsion A k a ha).exists) (fun T' b => hpow T' b)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Cb.exists_finite_etale_trivializing_torsion_abelianScheme :
     ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (A : Over S) [GrpObj A] [IsCommMonObj A] (k : ℕ), IsAbelianScheme A → 0 < k → IsUnit (k : Γ(S, ⊤)) → ∃ (Y : Over S), IsFinite Y.hom ∧ Etale Y.hom ∧ ∀ (A₀ : Over Y.left) [GrpObj A₀] [IsCommMonObj A₀] (φ₀ : A₀.left ⟶ A.left), IsGrpPullback A₀ A Y.hom φ₀ → ∃ (H : Over Y.left) (_ : GrpObj H) (i : H ⟶ A₀), IsMonHom i ∧ Mono i ∧ IsFinite H.hom ∧ Etale H.hom ∧ i ^ k = 1 ∧ ∀ (T : Scheme.{0}) (x : T ⟶ S) (A₁ : Over T) [GrpObj A₁] [IsCommMonObj A₁] (φ₁ : A₁.left ⟶ A.left) (B₁ : Over T) [GrpObj B₁] (f : A₁ ⟶ B₁), IsGrpPullback A₁ A x φ₁ → IsAbelianScheme B₁ → IsMonHom f → (∀ (T' : Over T) (g : T' ⟶ A₁), g ≫ f = 1 → g ^ k = 1) → ∃! y : T ⟶ Y.left, y ≫ Y.hom = x ∧ ∀ (T' : Over T) (g : T' ⟶ A₁), g ≫ f = 1 ↔ ∃ h : T'.left ⟶ H.left, h ≫ H.hom = T'.hom ≫ y ∧ h ≫ i.left ≫ φ₀ = g.left ≫ φ₁ := by

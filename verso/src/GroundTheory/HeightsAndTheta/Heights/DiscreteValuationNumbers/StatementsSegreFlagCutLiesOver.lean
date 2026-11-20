@@ -21,9 +21,9 @@ def flagProjPt {K' : Type*} (j : K' ↪ Option (Option K)) (y : (Σ k, ι k) →
 end Objects
 
 /- English proof (translation)
-Establish `key : ((pointConeMap R pt).comp (rename (FieldNumbers.blockIncl j ι'))) = ((rename j).restrictScalars R).comp (pointConeMap R (fun p => pt (FieldNumbers.blockIncl j ι' p)))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `[pointConeMap, FieldNumbers.blockIncl]`. Use extensionality with `f`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `only [pointIdeal, Ideal.mem_comap, RingHom.mem_ker]`. Establish `hf` using `congrArg (fun φ => φ f) key`. Simplify using `only [AlgHom.comp_apply] at hf`. Rewrite using `[hf, AlgHom.restrictScalars_apply]`. Conclude with `map_eq_zero_iff _ (rename_injective _ j.injective)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_pointIdeal_blockIncl {R : Type*} [CommRing R] {Φ : Type*} [Field Φ] [Algebra R Φ] {K K' : Type*}
     (j : K ↪ K') {ι' : K' → Type*} (pt : (Σ k', ι' k') → Φ) :

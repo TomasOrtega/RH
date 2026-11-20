@@ -11,11 +11,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HeightCounting.RatSide
 /- English proof (translation)
-Introduce `hL`. Use `(StepW.and (_root_.GlobalTheory.HeightCounting.RatSide.eigAd_of_rowEig_alt hL) GlobalTheory.HeckeField.Gap.rowEig_mem_fixedField).trans (StepW.of_all fun K B f T w _ _ H => ?_)` and prove the remaining obligations. Introduce `P x hx hL' h3 h5`. Use `⟨fun j σ k Pl => if h : ∃ c : ↥(Dof x).LL0, (Dof x).what₂.embLL (c : (Dof x).what₂.LL) = hkNorm x.m.z.R (idxOf (Dof x) j) k Pl * GlobalTheory.EigRows.rowEig x.r.Y (idxOf (Dof x) j) σ Pl (GlobalTheory.EigRows.diagLab (Dof x).R.r k) then h.choose else 0, H.1 P x hx _ ?_⟩` and prove the remaining obligations. Introduce `i σ k Pl α Rr hk hg h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `t2` using `H.2 P x hL' h3 h5 i σ k Pl α Rr hk h0`. Establish `hI` using `congrArg (fun i' : Fin (Dof x).R.m => hkNorm x.m.z.R i' k Pl * GlobalTheory.EigRows.rowEig x.r.Y i' σ Pl (GlobalTheory.EigRows.diagLab (Dof x).R.r k)) (NX.idxOf_succ (Dof x) i)`. Establish `hex : ∃ c : ↥(Dof x).LL0, (Dof x).what₂.embLL (c : (Dof x).what₂.LL) = hkNorm x.m.z.R (idxOf (Dof x) (i.1 + 1)) k Pl * GlobalTheory.EigRows.rowEig x.r.Y (idxOf (Dof x) (i.1 + 1)) σ Pl (GlobalTheory.EigRows.diagLab (Dof x).R.r k)`. Set `⟨c, hc⟩` to `t2`. Use the proof step `⟨c, hc.trans hI.symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (hex.choose_spec.trans hI)` and prove the remaining obligations. Simplify using `only [dif_pos hex]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_eigAd_of_state_alt : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, StepW Start fun K B f T w => ∀ (P : Pre2 K w) (x : St P), _root_.GlobalTheory.HeightCounting.Up.SameGaloisLevel hL x → ∀ hL' : ∀ j, ℕ → PlE (Dof x).host → Module.End (Dof x).what₂.LL ((SOf x).WL j), StabC (SOf x) hL' → HeckeRd x.m.z.R x.m.z.cG (kKsOf x) (hkOf x) (SbD (Dof x)) hL' → ∃ eig : ℕ → (Dof x).what₂.FT → ℕ → PlE (Dof x).host → ↥(Dof x).LL0, EigAd x.r.Y (SbD (Dof x)) eig := by
   intro hL

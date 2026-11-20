@@ -28,9 +28,9 @@ def jacSpan (K : Ideal (MvPolynomial (Fin n) ℂ)) (p : Fin n → ℂ) : Submodu
   Submodule.span ℂ (grad p '' (K : Set (MvPolynomial (Fin n) ℂ)))
 
 /- English proof (translation)
-Establish `hK : Ideal.map (algebraMap (MvPolynomial (Fin n) ℂ) (locPt p)) K ≤ IsLocalRing.maximalIdeal (locPt p)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `h hh`. Establish `h2 : h ∈ ptIdeal p` using `(RingHom.mem_ker).2 (hp h hh)`. Rewrite `h2` using `[← Localization.AtPrime.comap_maximalIdeal (I := ptIdeal p)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`. Establish `hne : Ideal.map (algebraMap (MvPolynomial (Fin n) ℂ) (locPt p)) K ≠ ⊤` using `ne_top_of_le_ne_top (IsLocalRing.maximalIdeal.isMaximal _).ne_top hK`. Use `haveI : Nontrivial (locRing K p) := Ideal.Quotient.nontrivial_iff.2 hne`. Use `haveI : IsNoetherianRing (locPt p) := IsLocalization.isNoetherianRing (ptIdeal p).primeCompl _ inferInstance`. Conclude with `⟨IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective, inferInstance⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem locRing_isLocalRing_isNoetherian (K : Ideal (MvPolynomial (Fin n) ℂ)) (p : Fin n → ℂ)
     (hp : ∀ h ∈ K, eval p h = 0) : IsLocalRing (locRing K p) ∧ IsNoetherianRing (locRing K p) := by
@@ -50,7 +50,7 @@ theorem locRing_isLocalRing_isNoetherian (K : Ideal (MvPolynomial (Fin n) ℂ)) 
     inferInstance⟩
 
 /- English proof (translation)
-Conclude with `@JacobianCriterionAlt.finrank_cot_eq n p K (inferInstanceAs (IsLocalRing (locRing K p)))`.
+A detailed English derivation is pending.
 -/
 theorem finrank_cotangentSpace_locRing (K : Ideal (MvPolynomial (Fin n) ℂ)) (p : Fin n → ℂ)
     [IsLocalRing (locRing K p)] :
@@ -59,7 +59,7 @@ theorem finrank_cotangentSpace_locRing (K : Ideal (MvPolynomial (Fin n) ℂ)) (p
   exact @JacobianCriterionAlt.finrank_cot_eq n p K (inferInstanceAs (IsLocalRing (locRing K p)))
 
 /- English proof (translation)
-Conclude with `@JacobianCriterionAlt.exists_jacobian_cut' n K p e (inferInstanceAs (IsRegularLocalRing (locRing K p))) he`.
+A detailed English derivation is pending.
 -/
 theorem exists_jacobian_cut (K : Ideal (MvPolynomial (Fin n) ℂ)) (p : Fin n → ℂ) (e : ℕ)
     [IsRegularLocalRing (locRing K p)] (he : ringKrullDim (locRing K p) = e) :
@@ -70,7 +70,7 @@ theorem exists_jacobian_cut (K : Ideal (MvPolynomial (Fin n) ℂ)) (p : Fin n �
     (inferInstanceAs (IsRegularLocalRing (locRing K p))) he
 
 /- English proof (translation)
-Conclude with `JacobianCriterionAlt.isRegularLocalRing_of_jacobian' K p hp F hF hlin hq`.
+A detailed English derivation is pending.
 -/
 theorem isRegularLocalRing_of_jacobian (K : Ideal (MvPolynomial (Fin n) ℂ)) (p : Fin n → ℂ)
     (hp : ∀ h ∈ K, eval p h = 0) {c : ℕ} (F : Fin c → MvPolynomial (Fin n) ℂ) (hF : ∀ i, F i ∈ K)

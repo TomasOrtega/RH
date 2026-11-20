@@ -10,7 +10,7 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.T
 namespace GlobalTheory.SmoothLift
 
 /- English proof (translation)
-Set `e : R ≃+* R ⧸ (⊥ : Ideal R)` to `RingEquiv.ofBijective (Ideal.Quotient.mk ⊥) ⟨fun a b h ↦ by simpa [sub_eq_zero] using Ideal.Quotient.eq.1 h, Ideal.Quotient.mk_surjective⟩`. Establish `: IsIso (spMap e.toRingHom)` using `inferInstanceAs (IsIso (Spec.map e.toCommRingCatIso.hom))`. Conclude with `this`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_spMap_mk_bot (R : Type) [CommRing R] : IsIso (spMap (Ideal.Quotient.mk (⊥ : Ideal R))) := by
   let e : R ≃+* R ⧸ (⊥ : Ideal R) := RingEquiv.ofBijective (Ideal.Quotient.mk ⊥)
@@ -44,11 +44,11 @@ namespace GlobalTheory.CechDR
 open GlobalTheory.SmoothLift
 
 /- English proof (translation)
-Introduce `R _ X s hs hsep hqc`. Take `⟨e₁, e₂, hcup, hcmp, -⟩` from `hP`. Set `D` to `ofSmooth R X s hs hsep hqc`. Establish `key : ∀ c : FirstDeRham s, e₁ D c = cmp1 s c` using `fun c ↦ by`. Establish `h1` using `hcmp D (IsMor.id (dp0 R) s) c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (IsMor.id (dp0 R) s).pull1 c = c` using `IsMor.pullCohomologyOne_id _ c`. Conclude with `(congrArg (e₁ D) h2).symm.trans h1`. Use `⟨?_, e₂ D, fun a b ↦ ?_⟩` and prove the remaining obligations. Establish `hf : (cmp1 s : FirstDeRham s → HH1 s) = e₁ D` using `funext fun c ↦ (key c).symm`. Rewrite using `[hf]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(e₁ D).bijective`. Rewrite using `[← key, ← key]`. Conclude with `hcup D a b`.
+A detailed English derivation is pending.
 -/
 theorem cechDeRham_comparison_bijective_cup_smooth (hP : GlobalTheory.Published.CrystallineSmoothLift) : ∀ (R : Type) [CommRing R] (X : Scheme.{0})
     (s : X ⟶ Sp R), Smooth s → IsSeparated s → QuasiCompact s → Function.Bijective (cmp1 s) ∧

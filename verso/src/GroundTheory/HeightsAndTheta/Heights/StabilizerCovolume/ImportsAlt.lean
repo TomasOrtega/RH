@@ -10,9 +10,9 @@ namespace GroundTheory.Heights₂.Heights.NineStatements
 open NumberField
 
 /- English proof (translation)
-Introduce `Em _ _ _ Ψ _ N j A I hI ρ v hv`. Take `⟨-, hvI, hli, -⟩` from `hv`. Establish `hliE : LinearIndependent Em v` using `(LinearIndependent.iff_fractionRing (𝓞 Em) Em).mp hli`. Establish `hS : ∀ x ∈ (I : Set (Fin N → Em)), ∀ y ∈ (I : Set (Fin N → Em)), hermForm Em A.H x y = 0` using `hI`. Establish `hle : Submodule.span Em (Set.range v) ≤ Submodule.span Em (I : Set (Fin N → Em))` using `Submodule.span_mono (Set.range_subset_iff.2 hvI)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[finrank_span_eq_card hliE, Fintype.card_fin]`. Use `_ ≤ Module.finrank Em (Submodule.span Em (I : Set (Fin N → Em))) := Submodule.finrank_mono hle`. Use `_ ≤ N - j := IsotropicRank.proof Em Ψ N j A (I : Set (Fin N → Em)) hS`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UnitaryIsotropicRank.proof : UnitaryIsotropicRank.Statement := by
   intro Em _ _ _ Ψ _ N j A I hI ρ v hv

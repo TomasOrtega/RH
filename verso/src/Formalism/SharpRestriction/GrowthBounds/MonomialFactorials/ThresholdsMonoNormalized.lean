@@ -11,11 +11,11 @@ namespace Formalism.MainNotions.G.SymmetricFormBlocks
 open MvPolynomial Finset Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.MainNotions.G.CountingStatementReduction
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.flipOneThree.TransportedAlt at hP ⊢`. Introduce `Cc hCc`. Take `⟨T0, hT0, h0⟩` from `hP Cc hCc`. Use `⟨max T0 1, lt_max_of_lt_left hT0, fun C0 hC0 => ?_⟩` and prove the remaining obligations. Take `⟨T1, hT1, h1⟩` from `h0 C0 (le_trans (le_max_left _ _) hC0)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨T1, hT1, fun CE1 CE2 hE1 hE2 => ?_⟩` and prove the remaining obligations. Take `⟨T2, hT2, h2⟩` from `h1 CE1 CE2 hE1 hE2`. Use `⟨max T2 2, lt_max_of_lt_left hT2, fun CYb Cde Ck CD Cb hY hde hk hD hb => ?_⟩` and prove the remaining obligations. Establish `hT2' : T2 ≤ max T2 2` using `le_max_left _ _`. Establish `h2' : (2 : ℝ) ≤ max T2 2` using `le_max_right _ _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1' : (1 : ℝ) ≤ max T0 1` using `le_max_right _ _`. Conclude with `h C0 CYb Cde Ck CD Cb CE1 CE2 Cc (by linarith) (by linarith) (by linarith) (by linarith) (by linarith) (by linarith) (h2 CYb Cde Ck CD Cb (hT2'.trans hY) (hT2'.trans hde) (hT2'.trans hk) (hT2'.trans hD) (hT2'.trans hb))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thresholds_mono_normalized {P Q : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → Prop}
     (h : ∀ C0 CYb Cde Ck CD Cb CE1 CE2 Cc, 1 ≤ C0 → 2 ≤ CYb → 0 ≤ CD → 1 ≤ Cb → 0 ≤ CE1 → 0 ≤ CE2 →
@@ -45,7 +45,7 @@ def RestOpen4E (D : Formalism.BasicNotions.D7) : Prop :=
     ∀ X : flipOneThree.Inst, AdmNoK D C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc Cs X → RestOpen4 C0 CYb Cde Ck CD Cb CE1 CE2 Cc CM X
 
 /- English proof (translation)
-Take `⟨CM, hCM, hTM⟩` from `restTM_closed`. Conclude with `thresholds_mono_normalized (fun C0 CYb Cde Ck CD Cb CE1 CE2 Cc hC0 hY hD hb h1 h2 hP Ckap Cs => ⟨CM, by linarith, fun X hA hH => by`. Take `⟨a, b, c, d⟩` from `hP Ckap Cs CM hCM X hA hH`. Establish `hY0 : (0 : ℝ) < X.L.Y` using `by linarith [hH.1.1]`. Conclude with `⟨block_bound_of_dual_families C0 CE1 CE2 X (block_valuation_over_Zp_holds C0 CE1 CE2 X (by linarith) h1 h2 hH) a, restPlus_of CM hY0 b (restRankL_proved C0 CE1 CE2 X) c, hTM D C0 CE1 CE2 CYb Cde Ck CD Cb Cc X hY hb hD hC0 h1 h2 hH, d⟩⟩) h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem openE_of_open4 (D : Formalism.BasicNotions.D7) (h : RestOpen4E D) : RestOpenE D := by
   obtain ⟨CM, hCM, hTM⟩ := restTM_closed
@@ -58,7 +58,7 @@ theorem openE_of_open4 (D : Formalism.BasicNotions.D7) (h : RestOpen4E D) : Rest
         hTM D C0 CE1 CE2 CYb Cde Ck CD Cb Cc X hY hb hD hC0 h1 h2 hH, d⟩⟩) h
 
 /- English proof (translation)
-The claim follows from `closed_of_open_conditions D (openE_of_open4 D h)`.
+A detailed English derivation is pending.
 -/
 theorem closed_of_open_directions (D : Formalism.BasicNotions.D7) (h : RestOpen4E D) : IntegralityFromMetricForLargeConstants D :=
   closed_of_open_conditions D (openE_of_open4 D h)

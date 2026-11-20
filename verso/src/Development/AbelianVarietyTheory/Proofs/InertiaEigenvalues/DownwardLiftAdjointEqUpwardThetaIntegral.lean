@@ -22,9 +22,9 @@ namespace GlobalTheory.AdjUp
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hP D G _ _ Pl0 T A Ks _ _ _ R F hL hF i t th hth v hv n b`. Use `(GlobalTheory.T.petersson_integral_formula hP D G Pl0 T A Ks R F hL i v hv).elim fun P hPx => ?_` and prove the remaining obligations. Use `(GlobalTheory.T.inner_product_integral_formula D G Pl0 T A Ks R F hL i t).elim fun c hcx => ?_` and prove the remaining obligations. Establish `hval : ∀ u, val R i v (th u) = R.thF i t u (fun ρ => v ρ)` using `fun u => by show (R.HW i (sg0 D A)).e (th u) (fun ρ => v ρ) = _`. Rewrite using `[hth u]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hK0 : ∀ k h, upLift (R.ωP i t) (R.νW i) (R.fdW i) (jointVec R i t v (b k)) (val R i v 0) h = 0` using `fun k h => by`. Rewrite using `[val_zero]`. Conclude with `upLift_zero _ _ _ _ h`. Conclude with `adjoint_formula_of_kernel th b ((R.νW i).restrict (R.fdW i)) ((R.νV i t).restrict (R.fdV i t)) (val R i v) (fun u => R.thF i t u (fun ρ => v ρ)) (R.extV i t) (fun k y h => upLift (R.ωP i t) (R.νW i) (R.fdW i) (jointVec R i t v (b k)) (val R i v y) h) P c hPx.1 hcx.1 hPx.2 hval (v …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjFormula_holds : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → R.FullP → ∀ i t, AdjFormula R i t := by
   intro hP D G _ _ Pl0 T A Ks _ _ _ R F hL hF i t th hth v hv n b

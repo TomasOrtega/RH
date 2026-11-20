@@ -14,7 +14,7 @@ open GlobalTheory.FlagZ GlobalTheory.ArInt Formalism.DegreeFormula GlobalTheory.
 namespace GlobalTheory.FlagZ.WeightDrop
 
 /- English proof (translation)
-Introduce `P ι _ N lam j τ h₁ h₂ h`. Establish `hX` using `(isArithVar_hasHh_unique ι N).1`. Use `hX.isIntegral` as an intermediate fact. Establish `hO` using `(smooth_dim_isArithVar_part ι {y // y ≠ ((τ, ⟨j, by omega⟩) : ι × Fin (N + 1))} N (fun y => y.1.1) (fun y => y.1.2)).2.2`. Conclude with `(isometric_wtLine_pull lam _ (coef_eq_zero lam τ j h₁ h₂ h)).symm.isSelfInter hX (GlobalTheory.ProjDrop.isSelfInter_zero_of_classicalTheorems P ℤ _ (Fl ι N) _ (flStr ι N) _ (dimFl ι N) hO hX (forget _) (toZ_ext _ _) (dim_closure_lt _ (by simp; omega) (by simpa using h₂)) _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isSelfInter_wtLine_zero : Hypotheses2 → ∀ (ι : Type) [Fintype ι] (N : ℕ)
     (lam : ι → Fin N → ℤ) (j : ℕ) (τ : ι), 1 ≤ j → j < N →

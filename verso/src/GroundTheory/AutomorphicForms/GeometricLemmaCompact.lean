@@ -23,7 +23,7 @@ abbrev EntryBound (e : ℕ) (A : Matrix (Fin n) (Fin n) F) : Prop :=
   ∀ i j, (uniformizer F : F) ^ e * A i j ∈ 𝒪[F]
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[mul_apply, Finset.mul_sum]`. Use `sum_mem fun k _ => ?_` and prove the remaining obligations. Use `mul_mem (hA i k) (hB k j)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -37,7 +37,7 @@ theorem EntryBound.mul {a b : ℕ} {A B : Matrix (Fin n) (Fin n) F} (hA : EntryB
   ring
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_pow_mul_mem_of_isCompact F n (hS.union (hS.image continuous_inv))`. Conclude with `⟨e, fun g hg => ⟨fun i j => he g (Or.inl hg) i j, fun i j => he g⁻¹ (Or.inr ⟨g, hg, rfl⟩) i j⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem entryBound_of_isCompact {S : Set (GL (Fin n) F)} (hS : IsCompact S) :
     ∃ e : ℕ, ∀ g ∈ S, EntryBound F e (g : Matrix (Fin n) (Fin n) F) ∧
@@ -47,9 +47,7 @@ theorem entryBound_of_isCompact {S : Set (GL (Fin n) F)} (hS : IsCompact S) :
     fun i j => he g⁻¹ (Or.inr ⟨g, hg, rfl⟩) i j⟩⟩
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[leviProj_apply]`. Use `split_ifs`. Conclude with `hp i j`. Rewrite using `[mul_zero]`.
-
-Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EntryBound.leviProj {γ : Fin n → ℕ} {e : ℕ} {p : blockUpper F n γ}
     (hp : EntryBound F e ((p : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)) :
@@ -73,7 +71,7 @@ def unipotentCompactG (e : ℕ) : Subgroup (GL (Fin n) F) :=
 variable {γ}
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨u, -, rfl⟩`. Conclude with `u.2`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem unipotentCompactG_le (e : ℕ) :
     unipotentCompactG (F := F) γ e ≤ unipotentRadical F n γ := by
@@ -81,7 +79,7 @@ theorem unipotentCompactG_le (e : ℕ) :
   exact u.2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `⟨v.2, mem_unipotentCompact.1 hv⟩`. Introduce and unpack `⟨hu, h⟩`. Conclude with `⟨⟨u, hu⟩, mem_unipotentCompact.2 h, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_unipotentCompactG {e : ℕ} {u : GL (Fin n) F} :
     u ∈ unipotentCompactG γ e ↔ u ∈ unipotentRadical F n γ ∧
@@ -93,7 +91,7 @@ theorem mem_unipotentCompactG {e : ℕ} {u : GL (Fin n) F} :
     exact ⟨⟨u, hu⟩, mem_unipotentCompact.2 h, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[unipotentCompactG, Subgroup.coe_map]`. Conclude with `(isCompact_unipotentCompact e).image continuous_subtype_val`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_unipotentCompactG (e : ℕ) :
     IsCompact (unipotentCompactG (F := F) γ e : Set (GL (Fin n) F)) := by
@@ -101,7 +99,7 @@ theorem isCompact_unipotentCompactG (e : ℕ) :
   exact (isCompact_unipotentCompact e).image continuous_subtype_val
 
 /- English proof (translation)
-Use extensionality with `u`. Rewrite using `[mem_unipotentCompactG, Subgroup.mem_inf, Subgroup.mem_comap]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem unipotentCompactG_eq (e : ℕ) :
     unipotentCompactG (F := F) γ e = unipotentRadical F n γ ⊓
@@ -111,7 +109,7 @@ theorem unipotentCompactG_eq (e : ℕ) :
   rfl
 
 /- English proof (translation)
-The claim follows from `(isOpen_integralGL F n).preimage (conjHomeomorph t).continuous`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_conj_integralGL (t : GL (Fin n) F) :
     IsOpen (((integralGL F n).comap (MulAut.conj t).toMonoidHom : Subgroup (GL (Fin n) F)) :
@@ -119,7 +117,7 @@ theorem isOpen_conj_integralGL (t : GL (Fin n) F) :
   (isOpen_integralGL F n).preimage (conjHomeomorph t).continuous
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨u, hu⟩, mem_unipotentCompact_of_bound (u := ⟨u, hu⟩) hb hb', rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_unipotentCompactG_of_bound {e : ℕ} {u : GL (Fin n) F}
     (hu : u ∈ unipotentRadical F n γ)
@@ -129,19 +127,17 @@ theorem mem_unipotentCompactG_of_bound {e : ℕ} {u : GL (Fin n) F}
   ⟨⟨u, hu⟩, mem_unipotentCompact_of_bound (u := ⟨u, hu⟩) hb hb', rfl⟩
 
 /- English proof (translation)
-Introduce `u hu`. Take `⟨huN, hu'⟩` from `mem_unipotentCompactG.1 hu`. Use `mem_unipotentCompactG.2 ⟨huN, ?_⟩` and prove the remaining obligations. Establish `key : ∀ v ∈ unipotentRadical F n γ, (rankTorus F n γ e * v * (rankTorus F n γ e)⁻¹ : GL (Fin n) F) ∈ integralGL F n → ∀ i j, ((rankTorus F n γ e' * v * (rankTorus F n γ e')⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j ∈ 𝒪[F]`. Introduce `v hv hint i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hij` using `((mem_integralGL_iff F n).1 hint).1 i j`. Rewrite `hij`, the goal using `[rankTorus_conj_apply]`. Take `⟨hvP, hv1⟩` from `mem_unipotentRadical.1 hv`. Break down `lt_trichotomy (γ i) (γ j) with hlt | heq | hgt` into its components or cases. Establish `hr` using `blockRank_lt hlt`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `: (((e' * blockRank γ j : ℕ) : ℤ) - ((e' * blockRank γ i : ℕ) : ℤ)) = (((e * blockRank γ j : ℕ) : ℤ) - ((e * blockRank γ i : ℕ) : ℤ)) + (((e' - e) * (blockRank γ j - blockRank γ i) : ℕ) : ℤ)`. Move the coercions through the operations in `[Nat.cast_sub h, Nat.cast_sub hr.le]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, zpow_add₀ uniformizer_ne_zero, zpow_natCast]`. Establish `e1 : ((GLnLocal.uniformizer F : F) ^ ((((e * blockRank γ j : ℕ) : ℤ) - ((e * blockRank γ i : ℕ) : ℤ))) * (GLnLocal.uniformizer F : F) ^ ((e' - e) * (blockRank γ j - blockRank γ i))) * (v : Matrix (Fin n) (Fin n) F) i j = ((GLnLocal.uniformizer F : F) ^ ((((e * blockRank γ j : ℕ) …`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Conclude with `mul_mem hij (pow_mem (GLnLocal.uniformizer F).2 _)`. Rewrite `hij`, the goal using `[blockRank_eq heq, sub_self]`. Conclude with `hij`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hvP hgt, mul_zero]`. Conclude with `zero_mem _`. Rewrite using `[mem_integralGL_iff F n]`. Use `⟨key u huN hu', ?_⟩` and prove the remaining obligations. Introduce `i j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (rankTorus F n γ e' * u * (rankTorus F n γ e')⁻¹)⁻¹ = rankTorus F n γ e' * u⁻¹ * (rankTorus F n γ e')⁻¹` using `by group`. Rewrite using `[this]`. Establish `h' : (rankTorus F n γ e * u * (rankTorus F n γ e)⁻¹)⁻¹ = rankTorus F n γ e * u⁻¹ * (rankTorus F n γ e)⁻¹` using `by group`. Establish `hinv` using `(integralGL F n).inv_mem hu'`. Rewrite `hinv` using `[h']`.
-
-Conclude with `key u⁻¹ ((unipotentRadical F n γ).inv_mem huN) hinv i j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipotentCompactG_mono {e e' : ℕ} (h : e ≤ e') :
     unipotentCompactG (F := F) γ e ≤ unipotentCompactG γ e' := by
@@ -198,13 +194,13 @@ variable {β γ : Fin n → ℕ} {W : Type*} [AddCommGroup W] [Module ℂ W]
   {σ : Representation ℂ (levi F n β) W}
 
 /- English proof (translation)
-Take `⟨-, K, hKo, hK⟩` from `(mem_parabolicIndSpace σ).1 f.2`. Establish `hnhds : ∀ g : GL (Fin n) F, (fun k => g * k) '' (K : Set (GL (Fin n) F)) ∈ 𝓝 g`. Introduce `g`. Use `(isOpenMap_mul_left g).image_mem_nhds (hKo.mem_nhds K.one_mem)` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hval : ∀ g, ∀ x ∈ (fun k => g * k) '' (K : Set (GL (Fin n) F)), (f : GL (Fin n) F → W) x = (f : GL (Fin n) F → W) g`. Introduce and unpack `g _ ⟨k, hk, rfl⟩`. Conclude with `hK k hk g`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Use `Filter.mem_of_superset (hnhds g) fun x hx => ?_` and prove the remaining obligations. Simplify using `only [mem_compl_iff, mem_ofPred_eq, not_not] at hg ⊢`. Rewrite using `[hval g x hx, hg]`. Rewrite using `[isOpen_iff_mem_nhds]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Use `Filter.mem_of_superset (hnhds g) fun x hx => ?_` and prove the remaining obligations. Simplify using `only [mem_ofPred_eq] at hg ⊢`. Rewrite using `[hval g x hx]`. Conclude with `hg`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClopen_support_parabolicInd (f : parabolicIndSpace F n β σ) :
     IsClopen {g : GL (Fin n) F | (f : GL (Fin n) F → W) g ≠ 0} := by
@@ -233,17 +229,17 @@ theorem isClopen_support_parabolicInd (f : parabolicIndSpace F n β σ) :
 variable (w : Equiv.Perm (Fin n))
 
 /- English proof (translation)
-Use `set C := doubleCoset (permGL F w) (blockUpper F n β : Set (GL (Fin n) F)) (blockUpper F n γ)`. Use `set S := {g : GL (Fin n) F | (f : GL (Fin n) F → W) g ≠ 0}`. Establish `hS` using `isClopen_support_parabolicInd f`. Establish `hSY : S ⊆ Y` using `fun g hg => by`. Assume the negation of the conclusion as `hgY`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hg (hf g hgY)`. Use `set Kc := (integralGL F n : Set (GL (Fin n) F)) ∩ (S ∩ closure C)`. Establish `hKc : IsCompact Kc` using `(isCompact_integralGL F n).inter_right (hS.1.inter isClosed_closure)`. Establish `hKcC : Kc ⊆ C`. Introduce and unpack `g ⟨-, hgS, hgC⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hCY]`. Conclude with `⟨hgC, hSY hgS⟩`. Establish `hCl : IsLocallyClosed C` using `⟨Y, closure C, hYo, isClosed_closure, by rw [inter_comm, hCY]⟩`. Take `⟨L, hL, hLQ, hKL⟩` from `exists_isCompact_subset_doubleCoset (Measures.isClosed_blockUpper F n β) (Measures.isClosed_blockUpper F n γ) hCl hKc hKcC`. Use `⟨L, hL, hLQ, fun q hq hfq => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨p, hp, k, hk, hpk⟩` from `exists_blockUpper_mul_integralGL' (β := β) (permGL F w * q)`. Establish `hfk : (f : GL (Fin n) F → W) k ≠ 0`. Introduce `h0`. Apply `hfq` to reduce the goal to its premises. Rewrite using `[hpk, ((mem_parabolicIndSpace σ).1 f.2).1 ⟨p, hp⟩ k, h0, map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hkC : k ∈ C`. Use `mem_doubleCoset.2 ⟨p⁻¹, (blockUpper F n β).inv_mem hp, q, hq, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, hpk, inv_mul_cancel_left]`. Take `⟨p', hp', l, hl, hkl⟩` from `hKL k ⟨hk, hfk, subset_closure hkC⟩`. Use `⟨q * l⁻¹, (blockUpper F n γ).mul_mem hq ((blockUpper F n γ).inv_mem (hLQ hl)), ?_, l, hl, by group⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `: permGL F w * (q * l⁻¹) * (permGL F w)⁻¹ = p * p'`. Establish `h1 : permGL F w * q = p * (p' * permGL F w * l)` using `by rw [hpk, hkl]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`. Conclude with `(blockUpper F n β).mul_mem hp hp'`.
+A detailed English derivation is pending.
 -/
 theorem exists_isCompact_support_doubleCoset {Y : Set (GL (Fin n) F)} (hYo : IsOpen Y)
     (hCY : closure (doubleCoset (permGL F w) (blockUpper F n β : Set (GL (Fin n) F))
@@ -290,31 +286,27 @@ theorem exists_isCompact_support_doubleCoset {Y : Set (GL (Fin n) F)} (hYo : IsO
   exact (blockUpper F n β).mul_mem hp hp'
 
 /- English proof (translation)
-Take `⟨L, hL, hLQ, hsupp⟩` from `exists_isCompact_support_doubleCoset w hYo hCY hf`. Take `⟨e₀, he₀⟩` from `entryBound_of_isCompact hL`. Take `⟨e₁, he₁⟩` from `entryBound_of_isCompact (isCompact_singleton (x := m))`. Take `⟨hmb, hmb'⟩` from `he₁ m rfl`. Use `⟨e₁ + e₀ + e₀ + e₁, fun u hu hfu => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmQ : m ∈ blockUpper F n γ` using `levi_le_blockUpper hm`. Establish `huQ : u ∈ blockUpper F n γ` using `unipotentRadical_le_blockUpper hu`. Take `⟨x, hxQ, hxP, l, hl, hum⟩` from `hsupp (u * m) ((blockUpper F n γ).mul_mem huQ hmQ) (by rwa [← mul_assoc])`. Establish `hlQ` using `hLQ hl`. Use `set b : levi F n γ := leviProj F n γ ⟨x, hxQ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c : levi F n γ := leviProj F n γ ⟨l, hlQ⟩`. Establish `hbc : (b : GL (Fin n) F) = m * (c : GL (Fin n) F)⁻¹`. Establish `h1 : leviProj F n γ ⟨u * m, (blockUpper F n γ).mul_mem huQ hmQ⟩ = b * c`. Rewrite using `[← map_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subtype.ext hum`. Establish `h2 : leviProj F n γ ⟨u * m, (blockUpper F n γ).mul_mem huQ hmQ⟩ = ⟨m, hm⟩`. Establish `: (⟨u * m, (blockUpper F n γ).mul_mem huQ hmQ⟩ : blockUpper F n γ) = ⟨u, huQ⟩ * ⟨m, hmQ⟩` using `rfl`. Rewrite using `[this, map_mul, (mem_unipotentRadical_iff_leviProj (p := ⟨u, huQ⟩)).1 hu, one_mul]`. Conclude with `leviProj_of_mem_levi hm`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[h2]`. Use `congrArg (fun z : levi F n γ => (z : GL (Fin n) F)) h1` as an intermediate fact. Simplify using `only [Subgroup.coe_mul] at this`. Rewrite using `[this]`. Use `group`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbQ : (b : GL (Fin n) F) ∈ blockUpper F n γ` using `levi_le_blockUpper b.2`. Establish `haQ : x * (b : GL (Fin n) F)⁻¹ ∈ blockUpper F n γ` using `(blockUpper F n γ).mul_mem hxQ ((blockUpper F n γ).inv_mem hbQ)`. Establish `haN : x * (b : GL (Fin n) F)⁻¹ ∈ unipotentRadical F n γ`. Rewrite using `[show x * (b : GL (Fin n) F)⁻¹ = ((⟨x, hxQ⟩ * (leviIncl b)⁻¹ : blockUpper F n γ) : GL (Fin n) F) from rfl, mem_unipotentRadical_iff_leviProj, map_mul, map_inv, leviProj_leviIncl, mul_inv_cancel]`. Establish `hxβ : x ∈ blockUpper F n (β ∘ w)` using `(conj_permGL_mem_blockUpper_iff w).1 hxP`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbβ : (b : GL (Fin n) F) ∈ blockUpper F n (β ∘ w)`. Introduce `i j hij`. Use `show ((leviProj F n γ ⟨x, hxQ⟩ : levi F n γ) : GL (Fin n) F) i j = 0`. Rewrite using `[leviProj_apply]`. Use `split_ifs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hxβ hij`. Both sides reduce to the same expression. Use `⟨x * (b : GL (Fin n) F)⁻¹, haN, (conj_permGL_mem_blockUpper_iff w).2 ((blockUpper F n (β ∘ w)).mul_mem hxβ ((blockUpper F n (β ∘ w)).inv_mem hbβ)), (b : GL (Fin n) F) * l * m⁻¹, ?_, ?_⟩` and prove the remaining obligations. Establish `hv : (b : GL (Fin n) F) * l * m⁻¹ = m * (c : GL (Fin n) F)⁻¹ * l * m⁻¹` using `by rw [hbc]`. Establish `hvN : (b : GL (Fin n) F) * l * m⁻¹ ∈ unipotentRadical F n γ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `: (b : GL (Fin n) F) * l * m⁻¹ = (x * (b : GL (Fin n) F)⁻¹)⁻¹ * u`. Rewrite using `[show u = x * l * m⁻¹ by rw [← hum]; group]`. Use `group`. Rewrite using `[this]`. Conclude with `(unipotentRadical F n γ).mul_mem ((unipotentRadical F n γ).inv_mem haN) hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨hlb, hlb'⟩` from `he₀ l hl`. Establish `hcinv : ((c : GL (Fin n) F)⁻¹ : GL (Fin n) F) = ((leviProj F n γ ⟨l⁻¹, (blockUpper F n γ).inv_mem hlQ⟩ : levi F n γ) : GL (Fin n) F)`. Rewrite using `[show (⟨l⁻¹, (blockUpper F n γ).inv_mem hlQ⟩ : blockUpper F n γ) = (⟨l, hlQ⟩)⁻¹ from rfl, map_inv]`. Both sides reduce to the same expression. Establish `hcb' : EntryBound F e₀ (((c : GL (Fin n) F)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hcinv]`. Conclude with `EntryBound.leviProj (p := ⟨l⁻¹, (blockUpper F n γ).inv_mem hlQ⟩) hlb'`. Establish `hcb : EntryBound F e₀ ((c : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)` using `EntryBound.leviProj (p := ⟨l, hlQ⟩) hlb`. Use `mem_unipotentCompactG_of_bound hvN ?_ ?_` and prove the remaining obligations. Rewrite using `[hv]`.
-
-Simplify using `only [Units.val_mul]`. Conclude with `((hmb.mul hcb').mul hlb).mul hmb'`. Establish `: ((b : GL (Fin n) F) * l * m⁻¹)⁻¹ = m * l⁻¹ * (c : GL (Fin n) F) * m⁻¹`. Rewrite using `[hbc]`. Use `group`.
-
-Rewrite using `[this]`. Simplify using `only [Units.val_mul]`. Conclude with `((hmb.mul hlb').mul hcb).mul hmb'`. Rewrite using `[show u = x * l * m⁻¹ by rw [← hum]; group] group`.
+A detailed English derivation is pending.
 -/
 theorem exists_unipotentCompactG_support {Y : Set (GL (Fin n) F)} (hYo : IsOpen Y)
     (hCY : closure (doubleCoset (permGL F w) (blockUpper F n β : Set (GL (Fin n) F))

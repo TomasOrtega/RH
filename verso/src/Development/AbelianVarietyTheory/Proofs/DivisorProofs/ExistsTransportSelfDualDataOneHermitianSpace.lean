@@ -24,7 +24,7 @@ variable {Ψ : Finset (E →+* ℂ)} {G G' : Matrix (Fin r) (Fin r) E} {u : (E �
 
 omit [IsCMField E] [NumberField E] in
 /- English proof (translation)
-Rewrite `hu` using `[CovolConj.gram_eq]`. Rewrite using `[CovolConj.gram_eq, CovolConj.gram_eq, Matrix.transpose_mul, Matrix.map_mul, ← hu]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gram_mul' {τ : E →+* ℂ} {v : Matrix (Fin r) (Fin r) ℂ}
     (hu : gram τ G' v = G.map τ) (x : Matrix (Fin r) (Fin r) ℂ) : gram τ G' (v * x) = gram τ G x := by
@@ -34,9 +34,9 @@ theorem gram_mul' {τ : E →+* ℂ} {v : Matrix (Fin r) (Fin r) ℂ}
 
 omit [IsCMField E] [NumberField E] in
 /- English proof (translation)
-Introduce `h`. Rewrite `hu` using `[CovolConj.gram_eq]`. Establish `h2` using `congrArg Matrix.det hu`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, h, zero_mul, zero_mul]`. Establish `h3 : τ G.det = (G.map τ).det` using `RingHom.map_det τ G`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hG ((map_eq_zero τ).1 (h3.trans h2.symm))`.
+A detailed English derivation is pending.
 -/
 theorem det_ne' {τ : E →+* ℂ} (hG : G.det ≠ 0)
     {v : Matrix (Fin r) (Fin r) ℂ} (hu : gram τ G' v = G.map τ) : v.det ≠ 0 := by
@@ -49,7 +49,7 @@ theorem det_ne' {τ : E →+* ℂ} (hG : G.det ≠ 0)
 
 omit [IsCMField E] [NumberField E] in
 /- English proof (translation)
-The claim follows from `congrArg (fun M => lminor M i) (gram_mul' (hu τ.1 τ.2) (mat x τ))`.
+A detailed English derivation is pending.
 -/
 theorem dmin_umul (hu : ∀ τ ∈ Ψ, gram τ G' (u τ) = G.map τ) (x : Frame Ψ r) (τ : Ψ) (i : Fin (r + 1)) :
     dmin G' (umul u x) τ i = dmin G x τ i :=
@@ -57,7 +57,7 @@ theorem dmin_umul (hu : ∀ τ ∈ Ψ, gram τ G' (u τ) = G.map τ) (x : Frame 
 
 omit [IsCMField E] [NumberField E] in
 /- English proof (translation)
-Use `forall_congr' fun τ => and_congr ?_ ?_` and prove the remaining obligations. Establish `: mat (umul u x) τ = u τ.1 * mat x τ` using `rfl`. Rewrite using `[this, Matrix.det_mul]`. Conclude with `⟨right_ne_zero_of_mul, mul_ne_zero (det_ne' hG (hu τ.1 τ.2))⟩`. Simplify using `only [dmin_umul hu]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 -/
 theorem umul_mem_GG (hG : G.det ≠ 0) (hu : ∀ τ ∈ Ψ, gram τ G' (u τ) = G.map τ) (p : ℕ) (x : Frame Ψ r) :
     umul u x ∈ GG Ψ G' p ↔ x ∈ GG Ψ G p := by
@@ -69,9 +69,9 @@ theorem umul_mem_GG (hG : G.det ≠ 0) (hu : ∀ τ ∈ Ψ, gram τ G' (u τ) = 
 
 omit [IsCMField E] [NumberField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `h1 : u τ.1 * mat x τ = u τ.1 * mat y τ` using `congrFun h τ`. Establish `hd : IsUnit (u τ.1).det` using `isUnit_iff_ne_zero.mpr (det_ne' hG (hu τ.1 τ.2))`. Use `congrArg (fun M => (u τ.1)⁻¹ * M) h1` as an intermediate fact. Simplify using `only [Matrix.nonsing_inv_mul_cancel_left _ _ hd] at this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem umul_inj' (hG : G.det ≠ 0) (hu : ∀ τ ∈ Ψ, gram τ G' (u τ) = G.map τ) {x y : Frame Ψ r}
     (h : umul u x = umul u y) : x = y := by
@@ -84,7 +84,7 @@ theorem umul_inj' (hG : G.det ≠ 0) (hu : ∀ τ ∈ Ψ, gram τ G' (u τ) = G.
 
 omit [IsCMField E] [NumberField E] in
 /- English proof (translation)
-Use `⟨umul (fun τ => (u τ)⁻¹) x, funext fun τ => ?_⟩` and prove the remaining obligations. Establish `hd : IsUnit (u τ.1).det` using `isUnit_iff_ne_zero.mpr (det_ne' hG (hu τ.1 τ.2))`. Conclude with `(Matrix.mul_nonsing_inv_cancel_left _ (mat x τ) hd).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem umul_surj (hG : G.det ≠ 0) (hu : ∀ τ ∈ Ψ, gram τ G' (u τ) = G.map τ) (x : Frame Ψ r) :
     ∃ y, x = umul u y := by
@@ -94,7 +94,7 @@ theorem umul_surj (hG : G.det ≠ 0) (hu : ∀ τ ∈ Ψ, gram τ G' (u τ) = G.
 
 omit [IsCMField E] [NumberField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show u τ.1 * ((γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ) = (γ' : Matrix (Fin r) (Fin r) E).map τ.1 * (u τ.1 * mat x τ)`. Rewrite using `[← Matrix.mul_assoc, h τ.1 τ.2, Matrix.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem umul_lact' {γ γ' : GL (Fin r) E}
     (h : ∀ τ ∈ Ψ, u τ * (γ : Matrix (Fin r) (Fin r) E).map τ =
@@ -110,7 +110,7 @@ end Frames
 def ratio (X Y : Data E r) : E := X.κ0 / Y.κ0
 
 /- English proof (translation)
-Establish `h` using `X.ξ0_im`. Unfold `cc at h ⊢`. Apply the tactic sequence `rcases X.κ0_xi with e | e <;> simp [e, h, map_ofNat]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cc_κ (X : Data E r) : cc X.κ0 = -X.κ0 := by
   have h := X.ξ0_im
@@ -118,19 +118,19 @@ theorem cc_κ (X : Data E r) : cc X.κ0 = -X.κ0 := by
   rcases X.κ0_xi with e | e <;> simp [e, h, map_ofNat]
 
 /- English proof (translation)
-Establish `h` using `X.ξ0_ne`. Apply the tactic sequence `rcases X.κ0_xi with e | e <;> simp [e, h]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem κ_ne (X : Data E r) : X.κ0 ≠ 0 := by
   have h := X.ξ0_ne
   rcases X.κ0_xi with e | e <;> simp [e, h]
 
 /- English proof (translation)
-The claim follows from `div_ne_zero (κ_ne X) (κ_ne Y)`.
+A detailed English derivation is pending.
 -/
 theorem ratio_ne (X Y : Data E r) : ratio X Y ≠ 0 := div_ne_zero (κ_ne X) (κ_ne Y)
 
 /- English proof (translation)
-Establish `h` using `cc_κ X`. Establish `h'` using `cc_κ Y`. Unfold `cc at h h' ⊢`. Rewrite using `[ratio, map_div₀, h, h', neg_div_neg_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_ratio (X Y : Data E r) : cc (ratio X Y) = ratio X Y := by
   have h := cc_κ X
@@ -139,11 +139,9 @@ theorem cc_ratio (X Y : Data E r) : cc (ratio X Y) = ratio X Y := by
   rw [ratio, map_div₀, h, h', neg_div_neg_eq]
 
 /- English proof (translation)
-Establish `h` using `Y.ξ0_ne`. Unfold `ratio`. Apply the tactic sequence `rcases X.κ0_xi with e | e <;> rcases Y.κ0_xi with e' | e' <;> rw [e, e']`. Use `left`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Clear the denominators using the available nonvanishing facts. Clear the denominators using the available nonvanishing facts.
 
-Use `right`. Clear the denominators using the available nonvanishing facts. Use `right`. Clear the denominators using the available nonvanishing facts. Use `left`.
-
-Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem ξ_mul_ratio (X Y : Data E r) : Y.ξ0 * ratio X Y = X.ξ0 ∨ Y.ξ0 * ratio X Y = -X.ξ0 := by
   have h := Y.ξ0_ne
@@ -155,9 +153,9 @@ theorem ξ_mul_ratio (X Y : Data E r) : Y.ξ0 * ratio X Y = X.ξ0 ∨ Y.ξ0 * ra
   · left; field_simp
 
 /- English proof (translation)
-Establish `h` using `IsCMField.complexEmbedding_complexConj E τ X.κ0`. Establish `h'` using `cc_κ X`. Unfold `cc at h'`. Rewrite `h` using `[h', map_neg]`. Use `congrArg Complex.re h` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem re_κ (X : Data E r) (τ : E →+* ℂ) : (τ X.κ0).re = 0 := by
   have h := IsCMField.complexEmbedding_complexConj E τ X.κ0
@@ -169,13 +167,13 @@ theorem re_κ (X : Data E r) (τ : E →+* ℂ) : (τ X.κ0).re = 0 := by
   linarith
 
 /- English proof (translation)
-Establish `h1` using `X.κ0_sign ⟨τ, hτ⟩`. Establish `h2` using `Y.κ0_sign ⟨τ, hΨ ▸ hτ⟩`. Simplify using `only at h1 h2`. Establish `e1 : τ X.κ0 = (τ X.κ0).im * Complex.I`. Apply the tactic sequence `apply Complex.ext <;> simp [re_κ]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e2 : τ Y.κ0 = (τ Y.κ0).im * Complex.I`. Apply the tactic sequence `apply Complex.ext <;> simp [re_κ]`. Establish `hp : 0 < (τ Y.κ0).im / (τ X.κ0).im` using `div_pos_of_neg_of_neg h2 h1`. Use `⟨Real.sqrt ((τ Y.κ0).im / (τ X.κ0).im), (Real.sqrt_pos.2 hp).ne', ?_⟩` and prove the remaining obligations. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt hp.le, ratio, map_div₀]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `n1 : ((τ X.κ0).im : ℂ) ≠ 0` using `by exact_mod_cast h1.ne`. Establish `n2 : ((τ Y.κ0).im : ℂ) ≠ 0` using `by exact_mod_cast h2.ne`. Generalize the expression as in `(τ X.κ0).im = a at *`. Generalize the expression as in `(τ Y.κ0).im = b at *`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem exists_sq (X Y : Data E r) (hΨ : X.Ψ = Y.Ψ) {τ : E →+* ℂ} (hτ : τ ∈ X.Ψ) :
     ∃ t : ℝ, t ≠ 0 ∧ (t : ℂ) * t * τ (ratio X Y) = 1 := by
@@ -199,7 +197,7 @@ theorem exists_sq (X Y : Data E r) (hΨ : X.Ψ = Y.Ψ) {τ : E →+* ℂ} (hτ :
 
 omit [IsCMField E] [NumberField E] in
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [gram, hermC, col, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, map_mul, Complex.conj_ofReal, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_smul (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (c : E) (t : ℝ) (Q : Matrix (Fin r) (Fin r) ℂ) :
     gram τ (c • G) ((t : ℂ) • Q) = ((t : ℂ) * t * τ c) • gram τ G Q := by
@@ -209,7 +207,7 @@ theorem gram_smul (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (c : E) (t :
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Simplify using `only [herm, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem herm_smul (G : Matrix (Fin r) (Fin r) E) (c : E) (x y : Fin r → E) :
     herm (c • G) x y = c * herm G x y := by
@@ -217,9 +215,9 @@ theorem herm_smul (G : Matrix (Fin r) (Fin r) E) (c : E) (x y : Fin r → E) :
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Break down `ξ_mul_ratio X Y with e | e` into its components or cases. Rewrite using `[← e]`. Put the polynomial expressions in normal form. Establish `: -Y.ξ0 * (ratio X Y * a) = -(-X.ξ0 * a)` using `by linear_combination (-a) * e`. Rewrite using `[this, map_neg]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun ⟨n, h⟩ => ⟨-n, by push_cast; linarith⟩, fun ⟨n, h⟩ => ⟨-n, by push_cast; linarith⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem trace_ratio (X Y : Data E r) (a : E) :
     (∃ n : ℤ, Algebra.trace ℚ E (-Y.ξ0 * (ratio X Y * a)) = n) ↔ ∃ n : ℤ, Algebra.trace ℚ E (-X.ξ0 * a) = n := by
@@ -230,17 +228,13 @@ theorem trace_ratio (X Y : Data E r) (a : E) :
     exact ⟨fun ⟨n, h⟩ => ⟨-n, by push_cast; linarith⟩, fun ⟨n, h⟩ => ⟨-n, by push_cast; linarith⟩⟩
 
 /- English proof (translation)
-Use `haveI := H.unram`. Establish `hb` using `inv_ne_zero (mul_ne_zero ((FractionalIdeal.spanSingleton_ne_zero_iff (R := 𝓞 E) (P := E)).2 Y.ξ0_ne) (coe_different_ne_zero (E := E)))`. Take `⟨P, hP0, hP⟩` from `GlobalTheory.SelfDualGenus.congr_of_modular (G := Y.Gm) (G' := ratio X Y • X.Gm) (L := Y.Λ) (L' := X.Λ) (GlobalTheory.LocalQuad.landherr_of_hasseNormSt GlobalTheory.QNorm.hasseNormSt) GlobalTheory.QNorm.hasseNormSt hb (GlobalTheory.SelfDualGenus.cc_mem_inv_mul_different Y.ξ0_im) …`. Establish `h1` using `cc_ratio X Y`. Establish `h2` using `X.Gm_herm a b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `cc at h1 h2 ⊢`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul, h1, h2])`. Use the proof step `Y.Gm_det`. Use the proof step `(by rw [Matrix.det_smul]; exact mul_ne_zero (pow_ne_zero _ (ratio_ne X Y)) X.Gm_det)`. Use the proof step `⟨Y.Λ_fg, Y.Λ_span⟩ ⟨X.Λ_fg, X.Λ_span⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Use the proof step `(fun x => by`. Rewrite using `[← mem_smul_hermDual_iff hb, ← traceFormDual_eq Y.ξ0_ne]`. Conclude with `hY x)`. Use the proof step `(fun x => by`. Rewrite using `[← mem_smul_hermDual_iff hb, ← traceFormDual_eq Y.ξ0_ne, mem_traceFormDual]`.
+Prove the second alternative. Prove the first alternative. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [EFf, herm_smul, trace_ratio]`. Conclude with `hX x)`. Use the proof step `(GlobalTheory.Published.Landherr.congr_of_signature (X.Ψ : Set (E →+* ℂ)) (fun τ => by`. Distinguish the cases in `h : ComplexEmbedding.conjugate τ ∈ X.Ψ`. Conclude with `Or.inr h`.
-
-Conclude with `Or.inl ((X.cmType τ).2 h))`. Use `fun τ hτ => ⟨X.p0, by rw [hp]; exact Y.signature ⟨τ, hΨ ▸ hτ⟩, by`. Take `⟨Q, hQ, e⟩` from `X.signature ⟨τ, hτ⟩`. Take `⟨t, ht, h⟩` from `exists_sq X Y hΨ hτ`. Use `⟨(t : ℂ) • Q, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ (by exact_mod_cast ht)) hQ`. Rewrite using `[gram_smul, h, one_smul]`. Conclude with `e⟩)`. Conclude with `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero P hP0, hP⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_similitude (H : Host E) (X Y : Data E r) (hΨ : X.Ψ = Y.Ψ) (hp : X.p0 = Y.p0)
     (hX : IsSelfDualTr X) (hY : IsSelfDualTr Y) :
@@ -285,7 +279,7 @@ def latMap (P : GL (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)) : Submodul
 
 omit [IsCMField E] [NumberField E] in
 /- English proof (translation)
-Use `congrArg (fun v => (P⁻¹).1 *ᵥ v) h` as an intermediate fact. Simplify `this` using `only [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mulVec_inj (P : GL (Fin r) E) {x y : Fin r → E} (h : P.1 *ᵥ x = P.1 *ᵥ y) : x = y := by
   have := congrArg (fun v => (P⁻¹).1 *ᵥ v) h
@@ -293,14 +287,14 @@ theorem mulVec_inj (P : GL (Fin r) E) {x y : Fin r → E} (h : P.1 *ᵥ x = P.1 
 
 omit [IsCMField E] [NumberField E] in
 /- English proof (translation)
-Introduce `x` and use `⟨(P⁻¹).1 *ᵥ x, by simp only [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem mulVec_surj (P : GL (Fin r) E) : Function.Surjective fun x : Fin r → E => P.1 *ᵥ x := fun x =>
   ⟨(P⁻¹).1 *ᵥ x, by simp only [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]⟩
 
 omit [IsCMField E] [NumberField E] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨_, hy, e⟩ => mulVec_inj P e ▸ hy, fun h => ⟨x, h, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_latMap (P : GL (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)) (x : Fin r → E) :
     P.1 *ᵥ x ∈ latMap P Λ ↔ x ∈ Λ :=
@@ -308,14 +302,14 @@ theorem mem_latMap (P : GL (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)) (x
 
 omit [IsCMField E] [NumberField E] in
 /- English proof (translation)
-The claim follows from `(Submodule.map_smul'' _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem latMap_smul (P : GL (Fin r) E) (I : Ideal (𝓞 E)) (Λ : Submodule (𝓞 E) (Fin r → E)) :
     I • latMap P Λ = latMap P (I • Λ) := (Submodule.map_smul'' _ _ _).symm
 
 omit [IsCMField E] [NumberField E] in
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul]`. Use `congr 2`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem conj_mulVec (P γ : GL (Fin r) E) (x : Fin r → E) :
     γ.1 *ᵥ (P.1 *ᵥ x) = P.1 *ᵥ ((P⁻¹ * γ * P).1 *ᵥ x) := by
@@ -325,9 +319,9 @@ theorem conj_mulVec (P γ : GL (Fin r) E) (x : Fin r → E) :
 
 omit [IsCMField E] [NumberField E] in
 /- English proof (translation)
-Rewrite using `[(mulVec_surj P).forall]`. Use `forall_congr' fun x => imp_congr (mem_latMap P _ x) ?_` and prove the remaining obligations. Rewrite using `[(mulVec_surj P).exists]`. Use `exists_congr fun y => and_congr (mem_latMap P _ y) ?_` and prove the remaining obligations. Rewrite using `[conj_mulVec, ← Matrix.mulVec_sub, ← Matrix.mulVec_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨mulVec_inj P, fun h => by rw [h]⟩`.
+Supply the required witnesses or components.
 -/
 theorem cong_iff (P γ : GL (Fin r) E) (Λ Λ' : Submodule (𝓞 E) (Fin r → E)) (n : ℕ) :
     (∀ x ∈ latMap P Λ', ∃ y ∈ latMap P Λ, γ.1 *ᵥ x - x = n • y) ↔
@@ -345,16 +339,16 @@ variable (X Y : Data E r) (P : GL (Fin r) E) (hP : ratio X Y • X.Gm = P.1ᵀ *
 
 include hP in
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SelfDualGenus.herm_mulVec, ← hP, herm_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_P (x y : Fin r → E) : herm Y.Gm (P.1 *ᵥ x) (P.1 *ᵥ y) = ratio X Y * herm X.Gm x y := by
   rw [GlobalTheory.SelfDualGenus.herm_mulVec, ← hP, herm_smul]
 
 include hP in
 /- English proof (translation)
-Use `and_congr ?_ ?_` and prove the remaining obligations. Rewrite using `[(mulVec_surj P).forall]`. Use `forall_congr' fun x => ?_` and prove the remaining obligations. Rewrite using `[(mulVec_surj P).forall]`. Use `forall_congr' fun y => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[conj_mulVec P γ x, conj_mulVec P γ y, herm_P X Y P hP, herm_P X Y P hP, mul_right_inj' (ratio_ne X Y)]`. Rewrite using `[(mulVec_surj P).forall]`. Use `forall_congr' fun x => ?_` and prove the remaining obligations. Rewrite using `[conj_mulVec, mem_latMap, mem_latMap]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUStab_iff (γ : GL (Fin r) E) :
     IsUStab Y.Gm (latMap P X.Λ) γ ↔ IsUStab X.Gm X.Λ (P⁻¹ * γ * P) := by
@@ -371,11 +365,11 @@ theorem isUStab_iff (γ : GL (Fin r) E) :
 include hP in
 
 /- English proof (translation)
-Use `choose! t ht using fun τ (hτ : τ ∈ X.Ψ) => exists_sq X Y hΨ hτ`. Use `⟨fun τ => (t τ : ℂ) • P.1.map τ, fun τ hτ => ?_, fun γ τ _ => ?_⟩` and prove the remaining obligations. Establish `h1` using `gram_smul τ Y.Gm 1 (t τ) (P.1.map τ)`. Establish `h2 : (P.1.map τ).map (starRingEnd ℂ) = (P.1.map cc).map τ`. Use extensionality with `a b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(IsCMField.complexEmbedding_complexConj E τ _).symm`. Rewrite `h1` using `[one_smul, map_one, mul_one]`. Rewrite using `[h1, CovolConj.gram_eq, h2, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, ← hP]`. Use extensionality with `a b`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, (ht τ hτ).2, one_mul]`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, ← Matrix.map_mul, ← Matrix.map_mul, ← Units.val_mul, ← Units.val_mul]`. Use `congr 3`. Use `group`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_isom (hΨ : X.Ψ = Y.Ψ) : ∃ u : (E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ,
     (∀ τ ∈ X.Ψ, gram τ Y.Gm (u τ) = X.Gm.map τ) ∧
@@ -397,9 +391,9 @@ theorem exists_isom (hΨ : X.Ψ = Y.Ψ) : ∃ u : (E →+* ℂ) → Matrix (Fin 
 
 include hP in
 /- English proof (translation)
-Establish `key : ∀ (G : Matrix (Fin r) (Fin r) E) (ξ x : Fin r → E) (α : E), transvMat G ξ α *ᵥ x = x + (α * herm G x ξ) • ξ`. Introduce `G ξ x α`. Use function extensionality and compare the values at `a`. Simplify using `only [transvMat, herm, Matrix.mulVec, dotProduct, Matrix.of_apply, add_mul, Finset.sum_add_distrib, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Use `Matrix.toLin'.injective (LinearMap.ext fun x => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, key, key, herm_P X Y P hP, Matrix.mulVec_add, Matrix.mulVec_smul, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transv_conj (ξ : Fin r → E) (α : E) :
     transvMat Y.Gm (P.1 *ᵥ ξ) α * P.1 = P.1 * transvMat X.Gm ξ (α * ratio X Y) := by
@@ -417,11 +411,9 @@ theorem transv_conj (ξ : Fin r → E) (α : E) :
     herm_P X Y P hP, Matrix.mulVec_add, Matrix.mulVec_smul, mul_assoc]
 
 /- English proof (translation)
-Take `⟨a, b, hb, e⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) (ratio X Y)`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hbE : algebraMap (𝓞 E) E b ≠ 0` using `by simpa using hb0`. Use `⟨b * X.den, mul_ne_zero hb0 X.den_ne, fun x hx y hy => ?_⟩` and prove the remaining obligations. Establish `: ((b * X.den : 𝓞 E) : E) * (ratio X Y * herm X.Gm x y) = algebraMap (𝓞 E) E a * ((X.den : E) * herm X.Gm x y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← e]`. Use `show algebraMap (𝓞 E) E (b * X.den) * _ = _ * (algebraMap (𝓞 E) E X.den * _)`. Rewrite using `[map_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
-
-Conclude with `a.isIntegral_coe.mul (X.Λ_int x hx y hy)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den : ∃ d : 𝓞 E, d ≠ 0 ∧
     ∀ x ∈ X.Λ, ∀ y ∈ X.Λ, IsIntegral ℤ ((d : E) * (ratio X Y * herm X.Gm x y)) := by
@@ -507,12 +499,12 @@ def move : Data E r where
       rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_move (γ : GL (Fin r) E) : γ ∈ (move X Y P hP hΨ hp).Γ ↔ P⁻¹ * γ * P ∈ X.Γ := Iff.rfl
 
 /- English proof (translation)
-Introduce `γ`. Rewrite using `[mem_move, h]`. Use `and_congr (isUStab_iff X Y P hP γ).symm (and_congr ?_ (cong_iff P γ _ _ _).symm)` and prove the remaining obligations. Use `(cong_iff P γ _ _ _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[← latMap_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -525,9 +517,9 @@ theorem isLevGrp_move {H : Host E} (l : Level H) (h : IsLevGrp l X) : IsLevGrp l
   rfl
 
 /- English proof (translation)
-Introduce `x`. Take `⟨x, rfl⟩` from `mulVec_surj P x`. Use `show P.1 *ᵥ x ∈ latMap P X.Λ ↔ ∀ y ∈ latMap P X.Λ, ∃ n : ℤ, Algebra.trace ℚ E (-Y.ξ0 * herm Y.Gm (P.1 *ᵥ x) y) = n`. Rewrite using `[mem_latMap, h x]`. Use `Iff.trans ?_ (mulVec_surj P).forall.symm` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `forall_congr' fun y => imp_congr (mem_latMap P _ y).symm ?_` and prove the remaining obligations. Rewrite using `[herm_P X Y P hP, trace_ratio]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSelfDualTr_move (h : IsSelfDualTr X) : IsSelfDualTr (move X Y P hP hΨ hp) := by
   intro x
@@ -540,21 +532,17 @@ theorem isSelfDualTr_move (h : IsSelfDualTr X) : IsSelfDualTr (move X Y P hP hΨ
   rw [herm_P X Y P hP, trace_ratio]
 
 /- English proof (translation)
-Take `⟨u, hu, hc⟩` from `exists_isom X Y P hP hΨ`. Establish `ho` using `GlobalTheory.TrueCx.isOrth_x0F X`. Generalize the expression as in `x0F X = x0 at ho`. Take `⟨FF, hF⟩` from `GlobalTheory.MetricWeightTest.exists_fundSet_orth X ho`. Use `set Z := move X Y P hP hΨ hp with hZ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcpt : ∀ z : V (nd X), rmul (umul u x0) (nmat X z) = umul u (cpt X x0 z)` using `fun z => (umul_rmul _ _).symm`. Establish `hO : OmF Z (umul u x0) = OmF X x0`. Use `Set.ext fun z : V (nd X) => ?_` and prove the remaining obligations. Use `show rmul (umul u x0) (nmat X z) ∈ GG X.Ψ Y.Gm X.p0 ↔ cpt X x0 z ∈ X.dom`. Rewrite using `[hcpt]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `umul_mem_GG X.Gm_det hu _ _`. Establish `hD : densF Z (umul u x0) = densF X x0`. Use `funext fun z : V (nd X) => ?_` and prove the remaining obligations. Use `show ∏ τ : X.Ψ, ∏ i : Fin r, ‖dmin Y.Gm (rmul (umul u x0) (nmat X z)) τ i.castSucc‖ ^ (-2 : ℤ) = _`. Simplify using `only [hcpt, dmin_umul hu, densF]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmu : muF Z (umul u x0) = muF X x0`. Conclude with `congrArg₂ (fun (O : Set (V (nd X))) (D : V (nd X) → ℝ) => (volume.restrict O).withDensity fun z => ENNReal.ofReal (D z)) hO hD`. Establish `ho' : IsOrth Z (umul u x0)` using `fun τ => (gram_mul' (hu τ.1 τ.2) (mat x0 τ)).trans (ho τ)`. Establish `hF' : IsFundSet Z (umul u x0) FF`. Use `⟨hF.1, hF.2.1.trans hO.ge, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `(z : V (nd X)) hz (z' : V (nd X)) hz' γ hγ (b : Frame X.Ψ r) hb h replace h : rmul (umul u x0) (nmat X z') = lact γ (rmul (rmul (umul u x0) (nmat X z)) b) := h`. Rewrite `h` using `[hcpt, hcpt]`. Establish `h' : umul u (cpt X x0 z') = umul u (lact (P⁻¹ * γ * P) (rmul (cpt X x0 z) b))`. Rewrite using `[umul_lact' (hc γ), umul_rmul]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hF.2.2.1 z hz z' hz' _ hγ b hb (umul_inj' X.Gm_det hu h')`. Establish `: ∀ᵐ z ∂muF X x0, ∃ z' ∈ FF, ∃ γ ∈ Z.Γ, ∃ b ∈ Bor X.Ψ r, rmul (umul u x0) (nmat X z) = lact γ (rmul (rmul (umul u x0) (nmat X z')) b)` using `?_`. Rewrite `this` using `[← hmu]`. Conclude with `this`. Use `filter_upwards [hF.2.2.2] with z hz`.
-
-Take `⟨z', hz', γ, hγ, b, hb, h⟩` from `hz`. Establish `e : P⁻¹ * (P * γ * P⁻¹) * P = γ` using `by group`. Use `⟨z', hz', P * γ * P⁻¹, (mem_move X Y P hP hΨ hp _).2 (by rwa [e]), b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[hcpt, hcpt]`. Use `umul_lact' (hc (P * γ * P⁻¹)) (rmul (cpt X x0 z') b)` as an intermediate fact.
-
-Rewrite `this` using `[e, ← h, umul_rmul]`. Conclude with `this`. Rewrite using `[(GlobalTheory.TrueCx.covol_eq Z ho' hF').2, (GlobalTheory.TrueCx.covol_eq X ho hF).2]`. Conclude with `congrArg (fun m : Measure (V (nd X)) => GlobalTheory.TrueCx.flagConst r ^ X.Ψ.card * (m FF).toReal) hmu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covol_move : GlobalTheory.TrueCx.covol (move X Y P hP hΨ hp) = GlobalTheory.TrueCx.covol X := by
   obtain ⟨u, hu, hc⟩ := exists_isom X Y P hP hΨ
@@ -606,7 +594,7 @@ end GlobalTheory.EqCovol.Transport
 open GlobalTheory.EqCovol.Transport in
 
 /- English proof (translation)
-Introduce `E _ _ _ H l r Y Y' _ hΨ hp _ _ hl hY hY'`. Take `⟨P, hP⟩` from `exists_similitude H Y' Y hΨ hp hY' hY`. Conclude with `⟨move Y' Y P hP hΨ hp, hΨ, rfl, rfl, hp, isLevGrp_move Y' Y P hP hΨ hp l hl, isSelfDualTr_move Y' Y P hP hΨ hp hY', covol_move Y' Y P hP hΨ hp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.EqCovol.exists_transport : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (r : ℕ) (Y Y' : ReciprocityTheory.ChartRestriction.G.FD.Data E r), (∀ τ : E →+* ℂ, τ ∈ Y.Ψ ↔ τ (H.rt : E) = H.rt0) → Y'.Ψ = Y.Ψ → Y'.p0 = Y.p0 → 1 ≤ Y.p0 → Y.p0 < r → GlobalTheory.EqCovol.IsLevGrp l Y' → GlobalTheory.EqCovol.IsSelfDualTr Y → GlobalTheory.EqCovol.IsSelfDualTr Y' → ∃ Y'' : ReciprocityTheory.ChartRestriction.G.FD.Data E r, Y''.Ψ = Y.Ψ ∧ Y''.Gm = Y.Gm ∧ Y''.ξ0 = Y.ξ0 ∧ Y''.p0 = Y.p0 ∧ GlobalTheory.EqCovol.IsLevGrp l Y'' ∧ GlobalTheory.EqCovol.IsSelfDualTr Y'' ∧ GlobalTheory.TrueCx.covol Y'' = GlobalTheory.TrueCx.covol Y' := by
   intro E _ _ _ H l r Y Y' _ hΨ hp _ _ hl hY hY'

@@ -12,7 +12,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Establish `: IsIso (Limits.pullback.snd f I.subschemeι)` using `(IsPullback.of_hasPullback f I.subschemeι).flip.isIso_fst_of_isIso`. Establish `hw : Limits.pullback.fst f I.subschemeι = Limits.pullback.snd f I.subschemeι ≫ I.subschemeι ≫ inv f`. Rewrite using `[← Category.assoc, ← Limits.pullback.condition, Category.assoc, IsIso.hom_inv_id, Category.comp_id]`. Unfold `AlgebraicGeometry.Scheme.IdealSheafData.comap`. Rewrite using `[hw, AlgebraicGeometry.Scheme.Hom.ker_comp_of_isIso]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem comap_eq_ker_subschemeι_comp_inv {A B : Scheme.{u}} (f : A ⟶ B) [IsIso f]
     (I : B.IdealSheafData) :
@@ -27,7 +27,7 @@ private theorem comap_eq_ker_subschemeι_comp_inv {A B : Scheme.{u}} (f : A ⟶ 
   rw [hw, AlgebraicGeometry.Scheme.Hom.ker_comp_of_isIso]
 
 /- English proof (translation)
-Rewrite using `[imageIdealSheaf_eq_ker, comap_eq_ker_subschemeι_comp_inv (inv f) J, IsIso.inv_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem imageIdealSheaf_eq_comap_inv {A B : Scheme.{u}} (f : A ⟶ B) [IsIso f]
     (J : A.IdealSheafData) :
@@ -35,7 +35,7 @@ theorem imageIdealSheaf_eq_comap_inv {A B : Scheme.{u}} (f : A ⟶ B) [IsIso f]
   rw [imageIdealSheaf_eq_ker, comap_eq_ker_subschemeι_comp_inv (inv f) J, IsIso.inv_inv]
 
 /- English proof (translation)
-Rewrite using `[imageIdealSheaf_eq_comap_inv, ← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, IsIso.inv_hom_id, AlgebraicGeometry.Scheme.IdealSheafData.comap_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem imageIdealSheaf_comap {A B : Scheme.{u}} (f : A ⟶ B) [IsIso f]
     (I : B.IdealSheafData) :
@@ -44,7 +44,7 @@ theorem imageIdealSheaf_comap {A B : Scheme.{u}} (f : A ⟶ B) [IsIso f]
     IsIso.inv_hom_id, AlgebraicGeometry.Scheme.IdealSheafData.comap_id]
 
 /- English proof (translation)
-Rewrite using `[imageIdealSheaf_eq_comap_inv, ← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, IsIso.hom_inv_id, AlgebraicGeometry.Scheme.IdealSheafData.comap_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_imageIdealSheaf {A B : Scheme.{u}} (f : A ⟶ B) [IsIso f]
     (J : A.IdealSheafData) :
@@ -53,7 +53,7 @@ theorem comap_imageIdealSheaf {A B : Scheme.{u}} (f : A ⟶ B) [IsIso f]
     IsIso.hom_inv_id, AlgebraicGeometry.Scheme.IdealSheafData.comap_id]
 
 /- English proof (translation)
-Rewrite using `[imageIdealSheaf_eq_ker, AlgebraicGeometry.Scheme.Hom.ker_comp, AlgebraicGeometry.Scheme.Hom.ker_comp, AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_comp_eq_imageIdealSheaf_ker {W A B : Scheme.{u}} (g : W ⟶ A) (w : A ⟶ B) :
     (g ≫ w).ker = imageIdealSheaf w g.ker := by
@@ -61,9 +61,9 @@ theorem ker_comp_eq_imageIdealSheaf_ker {W A B : Scheme.{u}} (g : W ⟶ A) (w : 
     AlgebraicGeometry.Scheme.Hom.ker_comp, AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι]
 
 /- English proof (translation)
-Establish `e1 : ((I.comap w).subschemeι ≫ w).ker = I`. Rewrite using `[ker_comp_eq_imageIdealSheaf_ker, AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι, imageIdealSheaf_comap]`. Establish `e2 : (I.subschemeι ≫ inv w).ker = I.comap w`. Rewrite using `[ker_comp_eq_imageIdealSheaf_ker, AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι, imageIdealSheaf_eq_comap_inv, IsIso.inv_inv]`. Establish `h1 : I.subschemeι.ker ≤ ((I.comap w).subschemeι ≫ w).ker` using `le_of_eq (by rw [e1, AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (I.comap w).subschemeι.ker ≤ (I.subschemeι ≫ inv w).ker` using `le_of_eq (by rw [e2, AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι])`. Use `⟨⟨IsClosedImmersion.lift I.subschemeι ((I.comap w).subschemeι ≫ w) h1, IsClosedImmersion.lift (I.comap w).subschemeι (I.subschemeι ≫ inv w) h2, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono (I.comap w).subschemeι, Category.assoc, IsClosedImmersion.lift_fac, ← Category.assoc, IsClosedImmersion.lift_fac, Category.assoc, IsIso.hom_inv_id, Category.comp_id, Category.id_comp]`. Rewrite using `[← cancel_mono I.subschemeι, Category.assoc, IsClosedImmersion.lift_fac, ← Category.assoc, IsClosedImmersion.lift_fac, Category.assoc, IsIso.inv_hom_id, Category.comp_id, Category.id_comp]`. Conclude with `IsClosedImmersion.lift_fac ..`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_iso_subscheme_comap_of_isIso {A B : Scheme.{u}} (w : A ⟶ B) [IsIso w]
     (I : B.IdealSheafData) :
@@ -90,7 +90,7 @@ private theorem exists_iso_subscheme_comap_of_isIso {A B : Scheme.{u}} (w : A �
   · exact IsClosedImmersion.lift_fac ..
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `exists_iso_subscheme_comap_of_isIso w I`. Rewrite using `[imageIdealSheaf_eq_ker (w ≫ g) (I.comap w), imageIdealSheaf_eq_ker g I, ← Category.assoc, ← hθ, Category.assoc, AlgebraicGeometry.Scheme.Hom.ker_comp_of_isIso]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem imageIdealSheaf_comp_comap_of_isIso {A B C : Scheme.{u}} (w : A ⟶ B) [IsIso w] (g : B ⟶ C)
     (I : B.IdealSheafData) :
@@ -100,7 +100,7 @@ theorem imageIdealSheaf_comp_comap_of_isIso {A B C : Scheme.{u}} (w : A ⟶ B) [
     Category.assoc, AlgebraicGeometry.Scheme.Hom.ker_comp_of_isIso]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[AlgebraicGeometry.Scheme.IdealSheafData.support_comap]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem compl_support_comap {A B : Scheme.{u}} (v : A ⟶ B) (I : B.IdealSheafData) :
     (I.comap v).support.compl = (TopologicalSpace.Opens.map v.base).obj I.support.compl := by
@@ -108,7 +108,7 @@ private theorem compl_support_comap {A B : Scheme.{u}} (v : A ⟶ B) (I : B.Idea
   simp [AlgebraicGeometry.Scheme.IdealSheafData.support_comap]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem opens_map_comp {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C) (U : C.Opens) :
     (TopologicalSpace.Opens.map (f ≫ g).base).obj U
@@ -117,7 +117,7 @@ private theorem opens_map_comp {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C) 
   simp
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `Iff.rfl`.
+By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem opens_map_id {B : Scheme.{u}} (W : B.Opens) :
     (TopologicalSpace.Opens.map (𝟙 B : B ⟶ B).base).obj W = W := by
@@ -125,9 +125,9 @@ private theorem opens_map_id {B : Scheme.{u}} (W : B.Opens) :
   exact Iff.rfl
 
 /- English proof (translation)
-Establish `hcomp : (TopologicalSpace.Opens.map θ.inv.base).obj V' = (TopologicalSpace.Opens.map (θ.inv ≫ θ.hom).base).obj V`. Rewrite using `[hVV', opens_map_comp]`. Establish `hle : V ≤ (TopologicalSpace.Opens.map θ.inv.base).obj V'` using `le_of_eq (by rw [hcomp, Iso.inv_hom_id, opens_map_id])`. Use `⟨⟨Scheme.Hom.resLE θ.hom V V' (le_of_eq hVV'), Scheme.Hom.resLE θ.inv V' V hle, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono V'.ι, Category.assoc, Scheme.Hom.resLE_comp_ι, ← Category.assoc, Scheme.Hom.resLE_comp_ι, Category.assoc, Iso.hom_inv_id, Category.comp_id, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono V.ι, Category.assoc, Scheme.Hom.resLE_comp_ι, ← Category.assoc, Scheme.Hom.resLE_comp_ι, Category.assoc, Iso.inv_hom_id, Category.comp_id, Category.id_comp]`. Conclude with `Scheme.Hom.resLE_comp_ι ..`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_iso_opens_preimage {A B : Scheme.{u}} (θ : A ≅ B) (V' : A.Opens) (V : B.Opens)
     (hVV' : V' = (TopologicalSpace.Opens.map θ.hom.base).obj V) :
@@ -146,18 +146,18 @@ private theorem exists_iso_opens_preimage {A B : Scheme.{u}} (θ : A ≅ B) (V' 
   · exact Scheme.Hom.resLE_comp_ι ..
 
 /- English proof (translation)
-Rewrite using `[← hc, AlgebraicGeometry.Scheme.Hom.ker_comp_of_isIso]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem ker_eq_of_iso_comp {P Q T : Scheme.{u}} (c : Q ≅ P) (h₁ : P ⟶ T) (h₂ : Q ⟶ T)
     (hc : c.hom ≫ h₁ = h₂) : h₁.ker = h₂.ker := by
   rw [← hc, AlgebraicGeometry.Scheme.Hom.ker_comp_of_isIso]
 
 /- English proof (translation)
-Establish `hψ : ψ = inv u₁ ≫ φ ≫ u`. Rewrite using `[← hsq, ← Category.assoc, IsIso.inv_hom_id, Category.id_comp]`. Establish `hmaps : ψ ≫ inv u = inv u₁ ≫ φ`. Rewrite using `[hψ, Category.assoc, Category.assoc, IsIso.hom_inv_id, Category.comp_id]`. Establish `hcm : ∀ I : X.IdealSheafData, (imageIdealSheaf u I).comap ψ = (I.comap φ).comap (inv u₁)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `I`. Rewrite using `[imageIdealSheaf_eq_comap_inv, ← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, ← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, hmaps]`. Take `⟨θ, hθ⟩` from `exists_iso_subscheme_comap_of_isIso (inv u₁) (D.comap φ)`. Establish `hVV' : (TopologicalSpace.Opens.map ((D.comap φ).comap (inv u₁)).subschemeι.base).obj ((Z.comap φ).comap (inv u₁)).support.compl = (TopologicalSpace.Opens.map θ.hom.base).obj ((TopologicalSpace.Opens.map (D.comap φ).subschemeι.base).obj (Z.comap φ).support.compl)`. Rewrite using `[compl_support_comap, ← opens_map_comp, ← opens_map_comp, hθ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `exists_iso_opens_preimage θ _ _ hVV'`. Rewrite using `[Blowup.strictTransform_eq_ker, Blowup.strictTransform_eq_ker, Blowup.strictTransformImmersion_eq, Blowup.strictTransformImmersion_eq, Blowup.strictTransformOpens_eq, Blowup.strictTransformOpens_eq, hcm Z, hcm D, ← ker_comp_eq_imageIdealSheaf_ker]`. Use `ker_eq_of_iso_comp c _ _ ?_` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Rewrite using `[← Category.assoc c.hom, hc, Category.assoc, reassoc_of% hθ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -195,17 +195,15 @@ theorem imageIdealSheaf_strictTransform_of_comm_sq {X X₁ Y Y₁ : Scheme.{u}}
 namespace IsPushforwardBlowupSeq
 
 /- English proof (translation)
-Take `⟨hlen, σ, hci, h0, hstep, hcent, hker⟩` from `h`. Take `⟨hlen2, e, he0, hestep, hecent⟩` from `he`. Establish `hestep' : ∀ (i : ℕ) (hp : i + 1 ≤ B.length) (hq : i ≤ B.length), (e (i + 1) hp).hom ≫ B'.transitionMapSucc i = B.transitionMapSucc i ≫ (e i hq).hom` using `fun i hp _ => hestep i hp`. Establish `hecent' : ∀ (i : ℕ) (hp : i < B.length) (hq : i ≤ B.length), (B'.center i).comap (e i hq).hom = B.center i` using `fun i hp _ => hecent i hp`. Use `⟨by omega, fun i hi => σ i hi ≫ (e i (by omega)).hom, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i hi`. Use `hci i hi` as an intermediate fact. Use `infer_instance`. Establish `hgoal : (σ 0 (Nat.zero_le _) ≫ (e 0 (Nat.zero_le _)).hom) ≫ B'.isoZero.hom = BS.isoZero.hom ≫ j`. Rewrite using `[Category.assoc, he0, h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hgoal`. Introduce `i hi`. Establish `hiB : i < B.length` using `by omega`. Establish `hgoal : (σ (i + 1) hi ≫ (e (i + 1) hiB).hom) ≫ B'.transitionMapSucc i = BS.transitionMapSucc i ≫ (σ i hi.le ≫ (e i hiB.le).hom)`. Rewrite using `[Category.assoc, hestep' i hiB hiB.le, ← Category.assoc, hstep i hi, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hgoal`. Introduce `i hi`. Establish `hiB : i < B.length` using `by omega`. Establish `hgoal : imageIdealSheaf (σ i hi.le ≫ (e i hiB.le).hom) (BS.center i) = B'.center i`. Rewrite using `[imageIdealSheaf_comp, ← hcent i hi, ← hecent' i hiB hiB.le, imageIdealSheaf_comap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hgoal.symm`. Introduce `i hi`. Establish `hiB : i < B.length` using `by omega`. Establish `hcen : imageIdealSheaf (e i hiB.le).hom (B.center i) = B'.center i`. Rewrite using `[← hecent' i hiB hiB.le, imageIdealSheaf_comap]`.
-
-Establish `hgoal : (σ (i + 1) hi ≫ (e (i + 1) hiB).hom).ker = Blowup.strictTransform (B'.transitionMapSucc i) (B'.center i) ((σ i hi.le ≫ (e i hiB.le).hom).ker)`. Rewrite using `[ker_comp_eq_imageIdealSheaf_ker, hker i hi, imageIdealSheaf_strictTransform_of_comm_sq (B.transitionMapSucc i) (B'.transitionMapSucc i) (e i hiB.le).hom (e (i + 1) hiB).hom (hestep' i hiB hiB.le) (B.center i) ((σ i hi.le).ker), hcen, ker_comp_eq_imageIdealSheaf_ker]`. Conclude with `hgoal`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_isomorphic {S X : Scheme.{u}} (j : S ⟶ X) [IsClosedImmersion j]
     {BS : SequenceOfBlowups S} {B B' : SequenceOfBlowups X}
@@ -253,25 +251,21 @@ theorem of_isomorphic {S X : Scheme.{u}} (j : S ⟶ X) [IsClosedImmersion j]
     exact hgoal
 
 /- English proof (translation)
-Take `⟨hlen2, τ, hτ0, hτsq, hτcent⟩` from `hpb`. Take `⟨hlen, σ, hci, h0, hstep, hcent, hker⟩` from `h`. Establish `hτ0' : ∀ hp : (0 : ℕ) ≤ BS'.length, τ 0 hp ≫ BS.isoZero.hom = BS'.isoZero.hom ≫ e` using `fun _ => hτ0`. Establish `hiso : ∀ (i : ℕ) (hi : i ≤ BS'.length), IsIso (τ i hi)`. Introduce `i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `i with`. Consider the case `zero`. Introduce `hi`. Establish `hzz : τ 0 hi = BS'.isoZero.hom ≫ e ≫ BS.isoZero.inv`. Rewrite using `[← Category.assoc, ← hτ0' hi]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hzz]`. Use `infer_instance`. Consider the case `succ n ih`. Introduce `hi`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hn : n < BS'.length` using `by omega`. Use `ih (by omega)` as an intermediate fact. Conclude with `(hτsq n hn).isIso_fst_of_isIso`. Use `⟨by omega, fun i hi => τ i hi ≫ σ i (by omega), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hiso i hi` as an intermediate fact. Use `hci i (by omega)` as an intermediate fact. Use `infer_instance`. Establish `hgoal : (τ 0 (Nat.zero_le _) ≫ σ 0 (Nat.zero_le _)) ≫ B.isoZero.hom = BS'.isoZero.hom ≫ j'`. Rewrite using `[hj, Category.assoc, h0, ← Category.assoc, hτ0, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hgoal`. Introduce `i hi`. Establish `hiS : i < BS.length` using `by omega`. Establish `hgoal : (τ (i + 1) hi ≫ σ (i + 1) hiS) ≫ B.transitionMapSucc i = BS'.transitionMapSucc i ≫ (τ i hi.le ≫ σ i hiS.le)`. Rewrite using `[Category.assoc, hstep i hiS, ← Category.assoc, (hτsq i hi).w, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hgoal`. Introduce `i hi`. Establish `hiS : i < BS.length` using `by omega`. Use `hiso i hi.le` as an intermediate fact. Establish `hgoal : imageIdealSheaf (τ i hi.le ≫ σ i hiS.le) (BS'.center i) = B.center i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hτcent i hi, hcent i hiS]`. Conclude with `imageIdealSheaf_comp_comap_of_isIso (τ i hi.le) (σ i hiS.le) (BS.center i)`. Conclude with `hgoal.symm`. Introduce `i hi`. Establish `hiS : i < BS.length` using `by omega`.
-
-Use `hiso (i + 1) hi` as an intermediate fact. Use `hiso i hi.le` as an intermediate fact. Establish `hgoal : (τ (i + 1) hi ≫ σ (i + 1) hiS).ker = Blowup.strictTransform (B.transitionMapSucc i) (B.center i) ((τ i hi.le ≫ σ i hiS.le).ker)`. Rewrite using `[AlgebraicGeometry.Scheme.Hom.ker_comp_of_isIso, AlgebraicGeometry.Scheme.Hom.ker_comp_of_isIso]`. Conclude with `hker i hiS`.
-
-Conclude with `hgoal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_comp {S' S X : Scheme.{u}} (e : S' ⟶ S) [IsIso e]
     (j : S ⟶ X) [IsClosedImmersion j] (j' : S' ⟶ X) [IsClosedImmersion j']
@@ -332,9 +326,9 @@ theorem isIso_comp {S' S X : Scheme.{u}} (e : S' ⟶ S) [IsIso e]
     exact hgoal
 
 /- English proof (translation)
-Establish `key : ∀ i : ℕ, i ≤ BS.length → i = 0` using `fun i hi => by omega`. Use `⟨by omega, fun i hi => eqToHom (congrArg BS.schemeAt (key i hi)) ≫ BS.isoZero.hom ≫ j ≫ B.isoZero.inv ≫ eqToHom (congrArg B.schemeAt (key i hi).symm), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi infer_instance`. Simplify using the standard rewrite rules. Introduce `i hi`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd hi (by omega)`. Introduce `i hi`. Conclude with `absurd hi (by omega)`. Introduce `i hi`. Conclude with `absurd hi (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem of_length_eq_zero {S X : Scheme.{u}} (j : S ⟶ X) [IsClosedImmersion j]
     (BS : SequenceOfBlowups S) (B : SequenceOfBlowups X)

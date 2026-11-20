@@ -24,45 +24,41 @@ variable {l : ℕ} [Fact l.Prime] {F : FinExt l} {Qp K₀ K : Type} [Field Qp] [
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Set `_ : ∀ T : LocLat ↥(GK F) Qp LL O, Module ℤ_[l] ↥T.L.T` to `fun T => Module.compHom ↥T.L.T (algebraMap ℤ_[l] O)`. Establish `: Nontrivial R.EE` using `R.EE_inj.nontrivial`. Establish `: Nontrivial RW` using `hinj.nontrivial`. Set `ψ : PS.A →+* WCb l` to `((inclW l).comp (ainfId F).toRingHom).comp ioH.f`. Establish `hψ1 : ∀ x, ψ x = inclW l (ainfId F (ioH.f x))` using `fun _ => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψ : ∀ x, I.ioE (algebraMap _ R.EE (a x)) = c (ψ x)` using `hψ₀`. Establish `hA : ∀ α : LetA O n, ∃ t : Fin d → PS.A, α = ∑ j, o j • a (t j)` using `fun α => by`. Take `⟨t, ht, -⟩` from `hA₀ α`. Use `⟨t, funext fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[ht, Finset.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => (PowerSeries.smul_eq_C_mul _ _).symm`. Establish `hQu : IsUnit (algebraMap _ R.EE (a Q))` using `hQ ▸ isUnit_Q R`. Establish `hQ0 : ψ Q ≠ 0` using `fun h => (hQu.map I.ioE).ne_zero (by rw [hψ, h, map_zero])`. Use `perfect_tilt (l := l)` as an intermediate fact. Establish `hE` using `coord_EE I a c ψ π hψ hπ hcu (by rw [hp]; exact WittVector.isAdicCompleteIdealSpanP) o hRW hA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose κ hκ using hκ`. Use `choose ρ C j hR hρ using hreal`. Use `choose q b cb hcb h1 h2 h3 h4 using fun T hT => GlobalTheory.T.prismaticFCrystal_value_localPrism_ainf_wittTensor l F PS PW ev ioH gH π Q ψ hψ1 hio hev hker (hI ▸ Ideal.mem_span_singleton_self Q) hloc hQ0 _ _ _ _ (hR T hT)`. Establish `hκs` using `fun T => kappa_smul c (κ T) (hκ T)`. Establish `hκφ : ∀ T y, κ T (TensorProduct.map (frobW l).toLinearMap LinearMap.id y) = TWmap φR T (κ T y)` using `fun T y => kappa_map c (κ T) (hκ T) (κ T) (hκ T) _ _ hcφ _ _ (fun _ => rfl) y`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hκg : ∀ T hT (g : ↥(GK F)) y, κ T (TensorProduct.map (galW l (g : GQ l)).toLinearMap (ρ T hT g) y) = TWact (gR g) T g (κ T y)` using `fun T hT g y => kappa_map c (κ T) (hκ T) (κ T) (hκ T) _ _ (hcg g) _ _ (hρ T hT g) y`. Set `ν : ∀ T hT, (C T hT).M PS → TW RW T` to `fun T hT x => κ T (j T hT ((C T hT).tr ioH x))`. Establish `hνs : ∀ T hT (t : PS.A) x, ν T hT (t • x) = c (ψ t) • ν T hT x` using `fun T hT t x => by`. Simplify using `only [ν]`. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, hκs]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hνsum : ∀ T hT (t : Fin (q T hT) → PS.A), ν T hT (∑ i, t i • b T hT i) = ∑ i, c (ψ (t i)) • κ T (cb T hT i)` using `fun T hT t => by`. Simplify using `only [ν]`. Rewrite using `[map_sum, map_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hcb]; exact hνs T hT _ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hν1 : ∀ T hT x, ∃ (k : ℕ) (m : (C T hT).M PS), c (ψ Q) ^ k • TWmap φR T (ν T hT x) = ν T hT m` using `fun T hT x => by`. Take `⟨k, m, h⟩` from `h1 T hT x`. Conclude with `⟨k, m, by simp only [ν]; rw [← h, hκs, map_pow, hκφ]⟩`. Establish `hν2 : ∀ T hT x, ∃ (k : ℕ) (t : Fin (q T hT) → PS.A), c (ψ Q) ^ k • ν T hT x = ∑ i, c (ψ (t i)) • TWmap φR T (κ T (cb T hT i))` using `fun T hT x => by`. Take `⟨k, t, h⟩` from `h2 T hT x`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨k, t, ?_⟩` and prove the remaining obligations. Simplify using `only [ν]`. Rewrite using `[← map_pow, ← hκs, h, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hκs, hκφ]`. Establish `hν3 : ∀ T hT g x, TWact (gR g) T g (ν T hT x) = ν T hT ((C T hT).tr (gH g) x)` using `fun T hT g x => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [ν]`. Rewrite using `[← h3, hκg]`. Establish `hνb : ∀ T hT i, κ T (cb T hT i) = ν T hT (b T hT i)` using `fun T hT i => by rw [hcb]`. Set `L : ∀ T : LocLat ↥(GK F) Qp LL O, Set (TW RW T)` to `fun T => {y | ∃ hT x, y = ν T hT x}`. Establish `hone : IsCrys PD Γ.one.ρ` using `GlobalTheory.TrivCrys.isCrys_lat_of_trivial Γ.one Γ.one_triv`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e₀, bo, he₀, hbo⟩` from `one_basis Γ hO o`. Use `build E a z c ψ π Q hψ ha hinj hunit hπ hQ hz d o hA hE L ?_ ?_ ?_ ?_ ?_ hone e₀ he₀ ?_` and prove the remaining obligations. Introduce `T hT`. Establish `hbas` using `kappa_basis c (κ T) (hκ T) (cb T hT)`. Take `⟨A, hAu, hAφ⟩` from `GlobalTheory.T.exists_isUnit_matrix_of_pow_smul_span_invert PS.A R.EE (WCb l) RW (TW RW T) ((algebraMap _ R.EE).comp a) I.ioE.toRingHom c ψ Q hinj hψ hQu _ (fun i => κ T (cb T hT i)) (fun i => TWmap φR T (κ T (cb T hT i))) (fun w hw => (hbas 0).unique hw.symm (by simp)) (fun i => …`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, m, h⟩` from `hν1 T hT (b T hT i)`. Conclude with `⟨k, (b T hT).repr m, by rw [hνb, h, ← hνsum, (b T hT).sum_repr]⟩)`. Use the proof step `(fun i => by rw [hνb]; exact hν2 T hT _)`. Establish `hm` using `hmem T _ (fun i => κ T (cb T hT i)) A hAu (fun g hg i => by`. Establish `e : gH g = Hom.id PS` using `Hom.ext' (RingHom.ext fun x => ha (by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hγ, hH g hg, map_one]`. Use the proof step `rfl))`. Rewrite using `[hνb, hν3, e, FCrys.tr_id]) (fun i => by`. Rewrite using `[hAφ]`. Conclude with `Finset.sum_congr rfl fun i _ => (map_mulLeft _ _).symm)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `choose x hx using hm`. Use `⟨q T hT, x, card_basis T o (cb T hT), by simpa only [hx] using hbas, fun y => ?_⟩` and prove the remaining obligations. Simplify using `only [hx, ← hνsum]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, m, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨(b T hT).repr m, by rw [(b T hT).sum_repr]⟩`. Introduce and unpack `⟨t, rfl⟩`. Conclude with `⟨hT, _, rfl⟩`. Introduce and unpack `T hT _ ⟨_, x, rfl⟩`. Take `⟨k, m, h⟩` from `hν1 T hT x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨k, hT, m, h⟩`. Introduce and unpack `T hT _ ⟨_, x, rfl⟩`. Take `⟨k, t, h⟩` from `hν2 T hT x`. Conclude with `⟨k, _, t, _, fun i => ⟨hT, _, hνb T hT i⟩, h⟩`. Introduce and unpack `T hT g _ ⟨_, x, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩` from `h4 T hT g x`. Use `⟨_, ⟨hT, y, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hν3, ← hνs, ← hy]`. Simplify using `only [ν, map_sub]`. Introduce and unpack `T T' f hT hT' _ ⟨_, x, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f', hf, hf'⟩` from `exists_restrict (Z := ℤ_[l]) f`. Take `⟨x', hx'⟩` from `full ioH BS (hR T hT) (hR T' hT') f' (fun g t => by rw [← hρ, ← hρ, hf']) x`. Use `⟨hT', x', ?_⟩` and prove the remaining obligations. Simplify using `only [ν]`. Rewrite using `[hx']`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `(kappa_map c (κ T) (hκ T) (κ T') (hκ T') LinearMap.id LinearMap.id (fun _ => rfl) f' _ hf _).symm`. Introduce `y`. Establish `key : ∀ t : Fin d → PS.A, κ Γ.one (∑ i, inclW l (ainfId F (ioH.f (t i))) ⊗ₜ[ℤ_[l]] bo i) = I.ioE (algebraMap _ R.EE (∑ i, o i • a (t i))) • ((1 : RW) ⊗ₜ[O] e₀)` using `fun t => by`. Rewrite using `[map_sum, map_sum, map_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hκ, hbo, Algebra.smul_def (o i) (a _), map_mul, ← IsScalarTower.algebraMap_apply, map_mul, AlgHom.commutes, hψ₀, TensorProduct.smul_tmul', smul_eq_mul, mul_one, ← Algebra.smul_def, TensorProduct.smul_tmul]`. Establish `hr` using `range_trivial ioH BS (hR _ hone) (fun g x => by rw [← hρ]; exact Subtype.ext (Γ.one_triv g x)) bo`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, x, rfl⟩`. Take `⟨t, ht⟩` from `(hr _).1 ⟨x, rfl⟩`.
-
-Conclude with `⟨_, by rw [← key, ← ht]⟩`. Introduce and unpack `⟨α, rfl⟩`. Take `⟨t, rfl⟩` from `hA α`. Take `⟨x, hx⟩` from `(hr _).2 ⟨t, rfl⟩`. Conclude with `⟨hone, x, by rw [← key, hx]⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem build_prism (BS : GlobalTheory.Published.BhattScholzeCrystallineLattices) (E : WEt I) [Algebra ℤ_[l] O]
     [Nontrivial O] [FiniteDimensional Qp LL] (hO : Function.Injective (algebraMap O LL)) (hp : PD.p = l)
@@ -214,15 +210,13 @@ set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-Introduce `BS l _ P AI tied K s LL hG Γ R I hW E`. Take `⟨PS, PW, ev, ioH, gH, a, z, π, Q, ha, hio, -, hγ, hioH, hev, hπ, -, hker, hI, hQ, hz, hloc, -, hS, hA⟩` from `GlobalTheory.T.exists_wach_prism_over_integers l P AI K s LL hG Γ R I hW`. Take `⟨hinj, hunit, -, -⟩` from `GlobalTheory.T.wachInclusion_injective_saturated_inter l P AI K s LL hG Γ R I hW`. Take `⟨d, ⟨o⟩⟩` from `exists_basis_OL LL`. Use `LL.2` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Module.Free.of_basis o` as an intermediate fact. Use `Module.Finite.of_basis o` as an intermediate fact. Establish `: Nontrivial R.EE` using `R.EE_inj.nontrivial`. Establish `: Nontrivial (RW LL)` using `hinj.nontrivial`. Establish `hO : Function.Injective (algebraMap ↥(OL LL) ↥LL.1)` using `Subtype.val_injective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Nonempty (WN E _)`. Rewrite using `[← hz]`. Use `build_prism BS E hO (P.PD_p K) ev ioH gH a z π Q (Algebra.TensorProduct.includeRight : WCb l →ₐ[ℤ_[l]] ↥(OL LL) ⊗[ℤ_[l]] WCb l).toRingHom (fun x => ?_) ha hinj hunit hγ hioH hev hπ hker hI hQ hloc hS o (hA d o) (coord_tensor o) (fun w => isUnit_of_one_tmul w) (fun w => ?_) (fun g …` and prove the remaining obligations. Rewrite using `[I.ioE_ext, hio]`. Conclude with `Algebra.TensorProduct.map_tmul _ _ _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Algebra.TensorProduct.map_tmul _ _ _ _`. Rewrite using `[← locAinf_actWCbHom_eq AI]`. Conclude with `Algebra.TensorProduct.map_tmul _ _ _ _`. Take `⟨C, j, h⟩` from `(BS l K _ _ (isAinf_ainfObj K)).1 P AI ⟨tied⟩ LL T hT`. Conclude with `⟨_, C, j, h, fun _ _ => rfl⟩`.
-
-Rewrite using `[P.PD_χ, hg, Units.val_one]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.Published.BhattScholzeCrystallineLattices →
     ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → WachEx AI := by

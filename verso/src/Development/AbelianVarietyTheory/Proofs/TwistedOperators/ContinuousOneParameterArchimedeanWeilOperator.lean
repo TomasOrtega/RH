@@ -11,13 +11,13 @@ noncomputable section
 namespace GlobalTheory.ArchLine.OpCont
 
 /- English proof (translation)
-The claim follows from `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`.
+A detailed English derivation is pending.
 -/
 theorem evI_fin {F : Type} [Field F] [NumberField F] : evI F ((0, 1) : AF F) = 0 :=
   map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)
 
 /- English proof (translation)
-Use `congrArg Prod.snd (congrFun (hz (0, 1) evI_fin) i)` as an intermediate fact. Express the relevant statement in the definitionally equal form `(((0, 1) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F).2 * (z i).2) = (0 : AF F).2 at this`. Rewrite `this` using `[one_mul]`. Conclude with `this`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem snd_eq_zero_of_at {F : Type} [Field F] [NumberField F] {κ : Type} {z : κ → AF F} (hz : At (evI F) z) (i : κ) :
     (z i).2 = 0 := by
@@ -30,11 +30,11 @@ def intInd {F : Type} [Field F] [NumberField F] (κ : Type) : (κ → FiniteAdel
   (Set.pi Set.univ fun _ : κ => (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set (FiniteAdeleRing (𝓞 F) F))).indicator 1
 
 /- English proof (translation)
-Use `set B := Set.pi Set.univ fun _ : κ => (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set (FiniteAdeleRing (𝓞 F) F)) with hB`. Establish `hO : IsOpen B` using `isOpen_set_pi Set.finite_univ fun _ _ => GroundTheory.Global.isOpen_integralFiniteAdeles`. Establish `hK : IsCompact B` using `isCompact_univ_pi fun _ => GroundTheory.Global.isCompact_integralFiniteAdeles F`. Establish `hC : IsClosed B` using `hK.isClosed`. Use `⟨?_, HasCompactSupport.intro hK fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Distinguish the cases in `hx : x ∈ B`. Use `⟨_, hO, hx, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [intInd, ← hB, Set.indicator_of_mem hy, Set.indicator_of_mem hx, Pi.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, hC.isOpen_compl, hx, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [intInd, ← hB, Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem intInd_mem {F : Type} [Field F] [NumberField F] (κ : Type) [Fintype κ] :
     intInd (F := F) κ ∈ SB (κ → FiniteAdeleRing (𝓞 F) F) := by
@@ -56,23 +56,23 @@ end GlobalTheory.ArchLine.OpCont
 namespace GlobalTheory.ArchLine
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d X W M ψ χX χW om hW hex γ hγ f x`. Establish `hC` using `hW.2.2`. Use `set r₀ : (Fin n × Fin d → AF F) → ℂ := fun y => GlobalTheory.ArchLine.OpCont.intInd (F := F) (Fin n × Fin d) (fun i => (y i).2) with hr₀`. Establish `hr₀1 : ∀ y : Fin n × Fin d → AF F, (∀ i, (y i).2 = 0) → r₀ y = 1`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (fun i => (y i).2) = 0` using `funext hy`. Simplify using `only [hr₀, this, GlobalTheory.ArchLine.OpCont.intInd]`. Rewrite using `[Set.indicator_of_mem (show (0 : Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) ∈ Set.pi Set.univ fun _ : Fin n × Fin d => (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set (FiniteAdeleRing (𝓞 F) F)) from fun i _ => zero_mem (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F))]`. Both sides reduce to the same expression. Establish `hrest : ∀ g : SInf F (Fin n × Fin d), Rest (evI F) (g : (Fin n × Fin d → mixedEmbedding.mixedSpace F) → ℂ) r₀`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Use `⟨fun y z hz => ?_, ?_⟩` and prove the remaining obligations. Establish `: (fun i => ((y + z) i).2) = fun i => (y i).2`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(y i).2 + (z i).2 = (y i).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.ArchLine.OpCont.snd_eq_zero_of_at hz i, add_zero]`. Simplify using `only [hr₀, this]`. Conclude with `Submodule.subset_span ⟨g, GlobalTheory.ArchLine.OpCont.intInd _, GlobalTheory.ArchLine.OpCont.intInd_mem _, rfl⟩`. Set `l : ((Fin n × Fin d → AF F) → ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun Φ => Φ (liftV x), map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `hl : l ∈ (adeleClass F).adm (Fin n × Fin d)`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g _`. Use `⟨g 0 • ((BoundedContinuousFunction.evalCLM ℂ x).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (Fin n × Fin d → mixedEmbedding.mixedSpace F) ℂ)), fun f' => ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.smul_apply, smul_eq_mul]`. Use `show pureA F f' g (liftV x) = _`. Simplify using `only [pureA, liftV, RingEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `f' x * g 0 = g 0 * f' x`. Expand and normalize the polynomial expressions, which then agree. Establish `hφ : tens (evI F) (f : (Fin n × Fin d → mixedEmbedding.mixedSpace F) → ℂ) r₀ ∈ (adeleClass F).sp (Fin n × Fin d)` using `(hrest f).2`. Establish `hcont` using `hC l hl _ hφ`. Establish `hpath : Continuous fun t : ℝ => (((1 : UA σ X.J), γ (Multiplicative.ofAdd t)) : UA σ X.J × UA σ W.J)` using `continuous_const.prodMk (hγ.1.comp continuous_ofAdd)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `key` using `hcont.comp hpath`. Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Establish `hh : γ (Multiplicative.ofAdd t) ∈ UAt σ W (evI F)` using `hγ.2 _`. Establish `ha` using `acts_archOp om (γ (Multiplicative.ofAdd t)) f (hex _ hh f) r₀ (hrest f)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp_apply]`. Use `show _ = om _ _ (liftV x)`. Express the relevant statement in the definitionally equal form `_ = om (1, γ (Multiplicative.ofAdd t)) (tens (evI F) (⇑f) r₀) (liftV x)`. Rewrite using `[ha]`. Establish `h1 : r₀ (liftV x) = 1` using `hr₀1 _ fun i => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h2 : (fun i => evI F (liftV x i)) = x`. Use function extensionality and compare the values at `i`. Simplify using `[evI, liftV]`. Simplify using `only [tens, h1, h2, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem archOp_apply_continuous : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),

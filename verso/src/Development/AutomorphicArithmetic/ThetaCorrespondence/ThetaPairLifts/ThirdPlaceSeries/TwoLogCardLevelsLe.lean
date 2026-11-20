@@ -11,33 +11,29 @@ noncomputable section
 namespace GlobalTheory.CovTop
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y0 cX ex Csz p _ _ PP A hN`. Establish `hq : ∀ k, D.host.g k ≠ 0`. Introduce `k h0`. Establish `h` using `hN.cop`. Apply the tactic sequence `fin_cases k <;> simp_all [Nat.Coprime]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hcard : Nat.card p.P.Gp = ∏ kv : (Σ k : Fin 2, D.nd.PlG k), Nat.card (GL (Fin D.R.r) (ZMod (D.host.g kv.1)))`. Rewrite using `[Nat.card_congr (p.R.eG.trans p.cG).toEquiv]`. Conclude with `Nat.card_pi`. Establish `hleN : Fintype.card p.P.Gp ≤ ∏ kv : (Σ k : Fin 2, D.nd.PlG k), D.host.g kv.1 ^ (D.R.r * D.R.r)`. Rewrite using `[← Nat.card_eq_fintype_card, hcard]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.prod_le_prod (fun _ _ => Nat.zero_le _) (fun kv _ => card_GL_zmod_le _ _ (hq kv.1))`. Establish `hpos : (0 : ℝ) < (Fintype.card p.P.Gp : ℝ)` using `by exact_mod_cast Fintype.card_pos`. Establish `hleR : (Fintype.card p.P.Gp : ℝ) ≤ ∏ kv : (Σ k : Fin 2, D.nd.PlG k), ((D.host.g kv.1 : ℝ) ^ (D.R.r * D.R.r))`. Conclude with `hleN` after adjusting the coercions. Establish `hlog : Real.log (Fintype.card p.P.Gp : ℝ) ≤ (2 * D.R.f : ℝ) * ((D.R.r : ℝ) * D.R.r) * (9 * L.sc.L + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `(Real.log_le_log hpos hleR).trans ?_` and prove the remaining obligations. Rewrite using `[Real.log_prod (fun kv _ => pow_ne_zero _ (by exact_mod_cast hq kv.1))]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun kv _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Conclude with `mul_le_mul_of_nonneg_left (hN.logg kv.1) (by positivity)`. Use `_ = (2 * D.R.f : ℝ) * ((D.R.r : ℝ) * D.R.r) * (9 * L.sc.L + 1) := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_sigma]`. Simplify using `[D.nd.card_PlG, nsmul_eq_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨-, hL10, hLx, -⟩` from `hN.big`. Establish `hf8 : (8 : ℝ) ≤ D.R.f` using `by exact_mod_cast hN.f8`. Take `⟨-, -, hpoly⟩` from `hN.poly`. Establish `hroom` using `hN.room`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `hX0 : 0 < L.sc.x ^ A` using `Real.rpow_pos_of_pos hx0 A`. Establish `h3 : (L.sc.x ^ A) ^ (3 : ℝ) = (L.sc.x ^ A) ^ (3 : ℕ)`. Rewrite using `[show (3 : ℝ) = ((3 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Rewrite `hroom` using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hrn : (D.R.r : ℝ) ≤ D.R.nV`. Establish `: D.R.r ≤ D.R.nV` using `by unfold Formalism.BasicNotions.Ranks.nV; omega`. Conclude with `this` after adjusting the coercions. Use `set X := L.sc.x ^ A with hX`. Use `set f : ℝ := (D.R.f : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `set r : ℝ := (D.R.r : ℝ)`. Use `set Lr := L.sc.L`. Establish `hr0 : 0 ≤ r` using `by positivity`. Establish `hY : f * r * r * Lr ≤ X`. Use `le_trans ?_ hpoly` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: f * r * r * Lr = (f * r) * Lr * r` using `by ring`. Establish `: f * r * (D.R.nV : ℝ) * Lr = (f * r) * Lr * D.R.nV` using `by ring`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg (by linarith : (0:ℝ) ≤ f) hr0) (by linarith : (0:ℝ) ≤ Lr)]`. Establish `key : 2 * ((2 * f) * (r * r) * (9 * Lr + 1)) ≤ L.sc.b`. Break down `Nat.eq_zero_or_pos D.R.r with h0 | h1` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: r = 0` using `by simp [r, h0]`. Rewrite using `[this]`. Use polynomial arithmetic with `[pow_pos hX0 3]`. Establish `hr1 : (1 : ℝ) ≤ r` using `Nat.one_le_cast.mpr h1`. Establish `hY80 : 80 ≤ f * r * r * Lr`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `: (1:ℝ) ≤ r * r` using `by nlinarith`. Establish `: (80:ℝ) ≤ f * Lr` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `hX80 : 80 ≤ X` using `le_trans hY80 hY`. Establish `hA : 2 * ((2 * f) * (r * r) * (9 * Lr + 1)) ≤ 40 * (f * r * r * Lr)`.
-
-Establish `: 0 ≤ f * r * r` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `hB : 40 * X ≤ X ^ 3`. Establish `hXX : 40 ≤ X * X` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
-
-Use the polynomial consequences of the given equalities and inequalities. Use polynomial arithmetic with `[hlog]`.
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem two_log_card_levels_le_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
     {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz), p.PointConditions' → GlobalTheory.CovTop.RecTied D L →

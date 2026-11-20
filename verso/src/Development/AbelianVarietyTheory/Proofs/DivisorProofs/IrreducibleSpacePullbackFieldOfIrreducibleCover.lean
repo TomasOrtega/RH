@@ -6,9 +6,9 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `{ isPreirreducible_univ := ?_, toNonempty := inferInstance }` and prove the remaining obligations. Introduce `u v hu hv ⟨x, _, hxu⟩ ⟨y, _, hyv⟩`. Take `⟨Wx, hWx, hxW⟩` from `hcov x`. Take `⟨Wy, hWy, hyW⟩` from `hcov y`. Take `⟨w, hwx, hwu, hwy⟩` from `hirr Wx hWx u Wy hu (hopen Wy hWy) ⟨x, hxW, hxu⟩ (hmeet Wx hWx Wy hWy)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hzW, hz⟩` from `hirr Wy hWy u v hu hv ⟨w, hwy, hwu⟩ ⟨y, hyW, hyv⟩`. Conclude with `⟨z, trivial, hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem irreducibleSpace_of_open_cover_meeting {P : Type} [TopologicalSpace P] [Nonempty P]
     (S : Set (Set P)) (hopen : ∀ W ∈ S, IsOpen W) (hirr : ∀ W ∈ S, IsPreirreducible W)
@@ -24,7 +24,7 @@ theorem irreducibleSpace_of_open_cover_meeting {P : Type} [TopologicalSpace P] [
   exact ⟨z, trivial, hz⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1 : (X.homOfLE e ≫ U.ι) ⟨x, hx⟩ = V.ι ⟨x, hx⟩` using `by rw [X.homOfLE_ι]`. Simplify using `using h1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem scheme_homOfLE_apply_mk {X : Scheme.{0}} {U V : X.Opens} (e : V ≤ U) (x : X) (hx : x ∈ V) :
     (X.homOfLE e) ⟨x, hx⟩ = ⟨x, e hx⟩ := by
@@ -33,7 +33,7 @@ theorem scheme_homOfLE_apply_mk {X : Scheme.{0}} {U V : X.Opens} (e : V ≤ U) (
   simpa using h1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x`. Take `⟨y⟩ : Nonempty (Sp k)` from `inferInstance`. Conclude with `⟨y, Subsingleton.elim _ _⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem surjective_spMap_of_field {F k : Type} [Field F] [Field k] (f : F →+* k) :
     Surjective (spMap f) := by
@@ -43,19 +43,17 @@ theorem surjective_spMap_of_field {F k : Type} [Field F] [Field k] (f : F →+* 
   exact ⟨y, Subsingleton.elim _ _⟩
 
 /- English proof (translation)
-Introduce `F _ X h k _ f U hU hV`. Use `haveI := surjective_spMap_of_field f`. Use `set q := pullback.fst (U.ι ≫ h) (spMap f) with hq`. Establish `hqs : Function.Surjective q` using `q.surjective`. Establish `key : ∀ (V : X.Opens) (hVU : V ≤ U), IrreducibleSpace ↑(pullback (V.ι ≫ h) (spMap f)) → IsOpen (Set.range (pullback.snd (X.homOfLE hVU) q)) ∧ IsPreirreducible (Set.range (pullback.snd (X.homOfLE hVU) q)) ∧ ∀ p, U.ι (q p) ∈ V → p ∈ Set.range (pullback.snd (X.homOfLE hVU) q)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `V hVU hirrV`. Use `⟨(pullback.snd (X.homOfLE hVU) q).isOpenEmbedding.isOpen_range, ?_, ?_⟩` and prove the remaining obligations. Set `e : pullback (V.ι ≫ h) (spMap f) ≅ pullback (X.homOfLE hVU) q` to `pullback.congrHom (by rw [← X.homOfLE_ι hVU, Category.assoc]) rfl ≪≫ (pullbackRightPullbackFstIso (U.ι ≫ h) (spMap f) (X.homOfLE hVU)).symm haveI : IrreducibleSpace ↑(pullback (X.homOfLE hVU) q) := (Scheme.homeoOfIso e).surjective.irreducibleSpace (Scheme.homeoOfIso e).continuous`. Rewrite using `[← Set.image_univ]`. Conclude with `(PreirreducibleSpace.isPreirreducible_univ (X := ↑(pullback (X.homOfLE hVU) q))).image _ (pullback.snd (X.homOfLE hVU) q).continuous.continuousOn`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p hp`. Rewrite using `[Scheme.Pullback.range_snd]`. Use `⟨⟨U.ι (q p), hp⟩, ?_⟩` and prove the remaining obligations. Use `show (X.homOfLE hVU) ⟨U.ι (q p), hp⟩ = q p`. Rewrite using `[scheme_homOfLE_apply_mk]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Establish `hUne : (U : Set X).Nonempty` using `hU.nonempty`. Take `⟨y₀, hy₀⟩` from `hUne`. Take `⟨p₀, -⟩` from `hqs ⟨y₀, hy₀⟩`. Use `haveI : Nonempty ↑(pullback (U.ι ≫ h) (spMap f)) := ⟨p₀⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `S : Set (Set ↑(pullback (U.ι ≫ h) (spMap f)))` to `{W | ∃ (V : X.Opens) (hVU : V ≤ U), IrreducibleSpace ↑(pullback (V.ι ≫ h) (spMap f)) ∧ (V : Set X).Nonempty ∧ W = Set.range (pullback.snd (X.homOfLE hVU) q)}`. Use `irreducibleSpace_of_open_cover_meeting S ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `W ⟨V, hVU, hi, -, rfl⟩`. Conclude with `(key V hVU hi).1`. Introduce and unpack `W ⟨V, hVU, hi, -, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `(key V hVU hi).2.1`. Introduce `p`. Establish `hyU : U.ι (q p) ∈ U` using `(q p).2`. Take `⟨V, hVU, hyV, hi⟩` from `hV _ hyU`. Conclude with `⟨_, ⟨V, hVU, hi, ⟨_, hyV⟩, rfl⟩, (key V hVU hi).2.2 p hyV⟩`.
-
-Introduce and unpack `W ⟨V, hVU, hi, ⟨a, ha⟩, rfl⟩ W' ⟨V', hVU', hi', ⟨b, hb⟩, rfl⟩`. Take `⟨z, hzU, hzV, hzV'⟩` from `hU.2 (V : Set X) (V' : Set X) V.isOpen V'.isOpen ⟨a, hVU ha, ha⟩ ⟨b, hVU' hb, hb⟩`. Take `⟨p, hp⟩` from `hqs ⟨z, hzU⟩`. Establish `hpz : U.ι (q p) = z` using `by rw [hp]; rfl`. Conclude with `⟨p, (key V hVU hi).2.2 p (hpz ▸ hzV), (key V' hVU' hi').2.2 p (hpz ▸ hzV')⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem irreducibleSpace_pullback_of_cover : ∀ {F : Type} [Field F] {X : Scheme.{0}} (h : X ⟶ Sp F) (k : Type)
     [Field k] (f : F →+* k) (U : X.Opens),

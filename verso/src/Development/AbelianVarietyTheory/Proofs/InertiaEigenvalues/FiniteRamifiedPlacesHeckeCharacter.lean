@@ -16,9 +16,9 @@ namespace GlobalTheory.ChiUnit
 open GlobalTheory.IndefiniteRowSideFullHecke.CentralInvolutionRing
 
 /- English proof (translation)
-Take `⟨hu0, n, hn1, hn2⟩` from `hu`. Take `⟨hv0, m, hm1, hm2⟩` from `hv`. Use `⟨mul_ne_zero hu0 hv0, n + m, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (N : ℂ) ^ (n + m) * (u * v) = ((N : ℂ) ^ n * u) * ((N : ℂ) ^ m * v)` using `by rw [pow_add]; ring`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hn1.mul hm1`. Establish `e : (N : ℂ) ^ (n + m) * (u * v)⁻¹ = ((N : ℂ) ^ n * u⁻¹) * ((N : ℂ) ^ m * v⁻¹)` using `by rw [pow_add, mul_inv]; ring`. Rewrite using `[e]`. Conclude with `hn2.mul hm2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitOff_mul {N : ℕ} {u v : ℂ} (hu : UnitOff N u) (hv : UnitOff N v) : UnitOff N (u * v) := by
   obtain ⟨hu0, n, hn1, hn2⟩ := hu
@@ -30,20 +30,20 @@ theorem unitOff_mul {N : ℕ} {u v : ℂ} (hu : UnitOff N u) (hv : UnitOff N v) 
     rw [e]; exact hn2.mul hm2
 
 /- English proof (translation)
-Take `⟨hu0, n, hn1, hn2⟩` from `hu`. Conclude with `⟨inv_ne_zero hu0, n, hn2, by rw [inv_inv]; exact hn1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unitOff_inv {N : ℕ} {u : ℂ} (hu : UnitOff N u) : UnitOff N u⁻¹ := by
   obtain ⟨hu0, n, hn1, hn2⟩ := hu
   exact ⟨inv_ne_zero hu0, n, hn2, by rw [inv_inv]; exact hn1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨one_ne_zero, 0, by simpa using isIntegral_one, by simpa using isIntegral_one⟩`.
+Supply the required witnesses or components.
 -/
 theorem unitOff_one (N : ℕ) : UnitOff N 1 :=
   ⟨one_ne_zero, 0, by simpa using isIntegral_one, by simpa using isIntegral_one⟩
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using unitOff_one N`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `unitOff_mul ih hu`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem unitOff_pow {N : ℕ} {u : ℂ} (hu : UnitOff N u) (k : ℕ) : UnitOff N (u ^ k) := by
   induction k with
@@ -51,7 +51,7 @@ theorem unitOff_pow {N : ℕ} {u : ℂ} (hu : UnitOff N u) (k : ℕ) : UnitOff N
   | succ k ih => rw [pow_succ]; exact unitOff_mul ih hu
 
 /- English proof (translation)
-Break down `Int.eq_nat_or_neg k with ⟨m, rfl | rfl⟩` into its components or cases. Rewrite using `[zpow_natCast]`. Conclude with `unitOff_pow hu m`. Rewrite using `[_root_.zpow_neg, zpow_natCast]`. Conclude with `unitOff_inv (unitOff_pow hu m)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitOff_zpow {N : ℕ} {u : ℂ} (hu : UnitOff N u) (k : ℤ) : UnitOff N (u ^ k) := by
   rcases Int.eq_nat_or_neg k with ⟨m, rfl | rfl⟩
@@ -59,7 +59,7 @@ theorem unitOff_zpow {N : ℕ} {u : ℂ} (hu : UnitOff N u) (k : ℤ) : UnitOff 
   · rw [_root_.zpow_neg, zpow_natCast]; exact unitOff_inv (unitOff_pow hu m)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using unitOff_one N`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha]`. Conclude with `unitOff_mul (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitOff_prod {N : ℕ} {ι : Type*} (s : Finset ι) (f : ι → ℂ) (h : ∀ i ∈ s, UnitOff N (f i)) :
     UnitOff N (∏ i ∈ s, f i) := by
@@ -71,9 +71,9 @@ theorem unitOff_prod {N : ℕ} {ι : Type*} (s : Finset ι) (f : ι → ℂ) (h 
     exact unitOff_mul (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Take `⟨hu0, n, hn1, hn2⟩` from `hu`. Use `⟨(map_ne_zero _).2 hu0, n, ?_, ?_⟩` and prove the remaining obligations. Use `hn1.map (RingHom.toIntAlgHom (starRingEnd ℂ))` as an intermediate fact. Simplify `this` using `[map_mul, map_pow, map_natCast]`. Use `hn2.map (RingHom.toIntAlgHom (starRingEnd ℂ))` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[map_mul, map_pow, map_natCast, map_inv₀]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unitOff_conj {N : ℕ} {u : ℂ} (hu : UnitOff N u) : UnitOff N (starRingEnd ℂ u) := by
   obtain ⟨hu0, n, hn1, hn2⟩ := hu
@@ -84,15 +84,15 @@ theorem unitOff_conj {N : ℕ} {u : ℂ} (hu : UnitOff N u) : UnitOff N (starRin
     simpa [map_mul, map_pow, map_natCast, map_inv₀] using this
 
 /- English proof (translation)
-Take `⟨hu0, n, hn1, hn2⟩` from `hu`. Establish `hN : IsIntegral ℤ ((N : ℂ) ^ (n * (k - 1)))`. Establish `: IsIntegral ℤ (N : ℂ)` using `by simpa using isIntegral_algebraMap (R := ℤ) (A := ℂ) (x := (N : ℤ))`. Conclude with `this.pow _`. Use `⟨fun h => hu0 (by rw [h, zero_pow hk.ne']), n, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsIntegral.of_pow hk ?_` and prove the remaining obligations. Establish `e : ((N : ℂ) ^ n * u) ^ k = (N : ℂ) ^ (n * (k - 1)) * ((N : ℂ) ^ n * u ^ k)`. Rewrite using `[mul_pow, ← pow_mul, ← mul_assoc, ← pow_add]`. Use `congr 2`. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_lt hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Nat.add_sub_cancel, zero_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hN.mul hn1`. Use `IsIntegral.of_pow hk ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((N : ℂ) ^ n * u⁻¹) ^ k = (N : ℂ) ^ (n * (k - 1)) * ((N : ℂ) ^ n * (u ^ k)⁻¹)`. Rewrite using `[mul_pow, ← pow_mul, ← mul_assoc, ← pow_add, inv_pow]`. Use `congr 2`. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_lt hk`. Simplify using `only [Nat.add_sub_cancel, zero_add]`.
+Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hN.mul hn2`.
+A detailed English derivation is pending.
 -/
 theorem unitOff_of_pow {N : ℕ} {u : ℂ} {k : ℕ} (hk : 0 < k) (hu : UnitOff N (u ^ k)) : UnitOff N u := by
   obtain ⟨hu0, n, hn1, hn2⟩ := hu
@@ -118,15 +118,15 @@ theorem unitOff_of_pow {N : ℕ} {u : ℂ} {k : ℕ} (hk : 0 < k) (hu : UnitOff 
     rw [e]; exact hN.mul hn2
 
 /- English proof (translation)
-The claim follows from `unitOff_of_pow hk (by rw [hu]; exact unitOff_one N)`.
+A detailed English derivation is pending.
 -/
 theorem unitOff_of_pow_eq_one (N : ℕ) {u : ℂ} {k : ℕ} (hk : 0 < k) (hu : u ^ k = 1) : UnitOff N u :=
   unitOff_of_pow hk (by rw [hu]; exact unitOff_one N)
 
 /- English proof (translation)
-Establish `hNm : (N : ℂ) ^ m ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hN)`. Establish `ha0 : a ≠ 0` using `fun h => hNm (by rw [← hab, h, zero_mul])`. Use `⟨ha0, m, ?_, ?_⟩` and prove the remaining obligations. Establish `: IsIntegral ℤ ((N : ℂ) ^ m)`. Establish `: IsIntegral ℤ (N : ℂ)` using `by simpa using isIntegral_algebraMap (R := ℤ) (A := ℂ) (x := (N : ℤ))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.pow _`. Conclude with `this.mul ha`. Establish `e : (N : ℂ) ^ m * a⁻¹ = b` using `by rw [← hab]; field_simp`. Rewrite using `[e]`. Conclude with `hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitOff_of_mul_eq {N m : ℕ} {a b : ℂ} (ha : IsIntegral ℤ a) (hb : IsIntegral ℤ b)
     (hab : a * b = (N : ℂ) ^ m) (hN : N ≠ 0) : UnitOff N a := by
@@ -146,7 +146,7 @@ namespace GlobalTheory.ChiUnit
 open GlobalTheory.IndefiniteRowSideFullHecke.CentralInvolutionRing
 
 /- English proof (translation)
-Establish `e : (χ ^ n).locK w k = (χ.locK w k) ^ n`. Simplify using `[Formalism.L2.Host.HChar.locK, Formalism.L2.Host.HChar.loc]`. Rewrite using `[← e, h]`. Simplify using `[Formalism.L2.Host.HChar.locK, Formalism.L2.Host.HChar.loc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem LR {L : Type} [Field L] [NumberField L] (χ : Formalism.L2.Host.HChar L) (n : ℕ) (h : χ ^ n = 1)
     (w : IsDedekindDomain.HeightOneSpectrum (𝓞 L)) (k : Lˣ) : (χ.locK w k) ^ n = 1 := by
@@ -156,7 +156,7 @@ theorem LR {L : Type} [Field L] [NumberField L] (χ : Formalism.L2.Host.HChar L)
   simp [Formalism.L2.Host.HChar.locK, Formalism.L2.Host.HChar.loc]
 
 /- English proof (translation)
-The claim follows from `χ.val_eq hw _ (by unfold Formalism.L2.Host.IsUnifAt rw [GlobalTheory.TypeValues.val_atFin w k a hk, GlobalTheory.TypeValues.intValuation_eq_of_mem h1 h2])`.
+A detailed English derivation is pending.
 -/
 theorem locK_eq_val {L : Type} [Field L] [NumberField L] (χ : Formalism.L2.Host.HChar L)
     {w : IsDedekindDomain.HeightOneSpectrum (𝓞 L)} (hw : χ.UnrAt w) (k : Lˣ) (a : 𝓞 L) (hk : (k : L) = a)
@@ -171,11 +171,11 @@ namespace GlobalTheory.ChiUnit
 open GlobalTheory.IndefiniteRowSideFullHecke.CentralInvolutionRing
 
 /- English proof (translation)
-Establish `hm : ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ≠ 0`. Conclude with `Nat.mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero` after adjusting the coercions. Establish `hI : Ideal.span {((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis. Use `(Ideal.finite_factors hI).subset fun w hw => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq] at hw ⊢`. Rewrite using `[Ideal.dvd_span_singleton]`. Assume the negation of the conclusion as `hc`. Use `hw (h w fun k hk => hc ?_)` and prove the remaining obligations. Unfold `Formalism.L2.Host.OverP at hk`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_mul]`. Use `fin_cases k`. Conclude with `Ideal.mul_mem_right _ _ hk`. Conclude with `Ideal.mul_mem_left _ _ hk`.
+A detailed English derivation is pending.
 -/
 theorem finite_ramified_places_hecke_character {D : D7} (χ : Formalism.L2.Host.HChar D.host.E)
     (h : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E), (∀ k : Fin 2, ¬Formalism.L2.Host.OverP D.host (D.host.g k) v) → χ.UnrAt v) :
@@ -196,9 +196,9 @@ theorem finite_ramified_places_hecke_character {D : D7} (χ : Formalism.L2.Host.
   · exact Ideal.mul_mem_left _ _ hk
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.NatCastNotMemPrimeIdeal.natCast_notMem_of_prime_ne`. Consider the case `exact _root_.GlobalTheory.NatCastNotMemPrimeIdeal.natCast_notMem_of_prime_ne`. Consider the case `(apply _root_.GlobalTheory.NatCastNotMemPrimeIdeal.natCast_notMem_of_prime_ne <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NatCastNotMemPrimeIdeal.natCast_notMem_of_prime_ne <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.NatCastNotMemPrimeIdeal.natCast_notMem_of_prime_ne <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NatCastNotMemPrimeIdeal.natCast_notMem_of_prime_ne ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem not_mem_of_prime_ne {L : Type} [Field L] [NumberField L] (w : IsDedekindDomain.HeightOneSpectrum (𝓞 L))
     {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hne : q ≠ p) (hqw : (q : 𝓞 L) ∈ w.asIdeal) : (p : 𝓞 L) ∉ w.asIdeal := by

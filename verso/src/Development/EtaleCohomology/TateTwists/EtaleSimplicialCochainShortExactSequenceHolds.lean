@@ -5,21 +5,19 @@ import Development.EtaleCohomology.TateTwists.EtaleCochainsInjectiveShortExact
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `R _ I hI S hS n`. Establish `hd` using `(HomologicalComplex.shortExact_iff_degreewise_shortExact S).1 hS`. Establish `hv : ∀ {Y : Cx R} (φ : S.X₁ ⟶ Y) (z : Cochain Y I n) (p q : ℤ) (hpq : p + n = q), ((Cochain.ofHom φ).comp z (zero_add n)).v p q hpq = φ.f p ≫ z.v p q hpq`. Introduce `Y φ z p q hpq`. Rewrite using `[Cochain.zero_cochain_comp_v, Cochain.ofHom_v]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hv2 : ∀ {Y : Cx R} (φ : S.X₂ ⟶ Y) (z : Cochain Y I n) (p q : ℤ) (hpq : p + n = q), ((Cochain.ofHom φ).comp z (zero_add n)).v p q hpq = φ.f p ≫ z.v p q hpq`. Introduce `Y φ z p q hpq`. Rewrite using `[Cochain.zero_cochain_comp_v, Cochain.ofHom_v]`. Establish `hm : ∀ p, Mono (S.f.f p)` using `fun p => (hd p).mono_f`. Establish `he : ∀ p, Epi (S.g.f p)` using `fun p => (hd p).epi_g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Use `⟨Cochain.mk (fun p q h => haveI := hm p; haveI := hI q Injective.factorThru (a.v p q h) (S.f.f p)), ?_⟩` and prove the remaining obligations. Apply `Cochain.ext` to reduce the goal to its premises. Introduce `p q hpq`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hv, Cochain.mk_v]`. Use `hm p` as an intermediate fact. Use `hI q` as an intermediate fact. Conclude with `Injective.comp_factorThru _ _`. Introduce `b hb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Cochain.mk (fun p q h => haveI := (hd p).epi_g (hd p).exact.desc (b.v p q h) (by` and prove the remaining obligations. Use `congrArg (fun z => z.v p q h) hb` as an intermediate fact. Simplify using `only [hv] at this`. Conclude with `this)), ?_⟩`. Apply `Cochain.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `p q hpq`. Rewrite using `[hv2]`. Use `haveI := (hd p).epi_g`. Conclude with `(hd p).exact.g_desc _ _`. Introduce `c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `Cochain.ext` to reduce the goal to its premises. Introduce `p q hpq`. Use `congrArg (fun z => z.v p q hpq) hc` as an intermediate fact. Simplify using `only [hv2, Cochain.zero_v] at this`. Establish `hep` using `he p`.
-
-Rewrite using `[Cochain.zero_v]`. Conclude with `(cancel_epi (S.g.f p)).1 (by simpa using this)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LateralTheory.EtaleFoundations.etale_simplicial_cochain_short_exact_sequence_holds : LateralTheory.EtaleFoundations.EtaleCochainsInjectiveShortExact := by
   intro R _ I hI S hS n

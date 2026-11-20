@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Introduce `F _ _ r`. Take `⟨M, α, hM, hα, h⟩` from `GlobalTheory.RootIdeal.exists_count_spanSingleton_eq_mul F r`. Conclude with `⟨M, α, hM, hα, fun v => ⟨_, h v, GlobalTheory.Idele.valuation_eq_exp_neg_count v hα⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pow_principal : ∀ (F : Type) [Field F] [NumberField F]
     (r : HeightOneSpectrum (𝓞 F) →₀ ℚ), ∃ (M : ℕ) (α : F), 0 < M ∧ α ≠ 0 ∧

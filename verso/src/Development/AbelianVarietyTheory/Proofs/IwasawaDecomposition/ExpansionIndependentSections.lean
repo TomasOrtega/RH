@@ -27,14 +27,14 @@ def resK (U : UnifPre I D A G) (N : ℕ) : SecG U N →ₛₗ[algebraMap R (Frac
   pullOver U.LG.L _ (pullback.condition (f := G.hom) (g := jK R)) (fun _ => (Category.comp_id _).symm)
 
 /- English proof (translation)
-The claim follows from `sval_pullOver _ _ σ r hJ`.
+A detailed English derivation is pending.
 -/
 theorem sval_resK (U : UnifPre I D A G) (N : ℕ) (σ : SecG U N) {Z : Scheme.{0}} (r : Z ⟶ pullback G.hom (jK R))
     {z : Z} {J} (hJ : Good U.LG.L z J) : sval (resK U N σ) r z J = sval σ (r ≫ pullback.fst G.hom (jK R)) z J :=
   sval_pullOver _ _ σ r hJ
 
 /- English proof (translation)
-Use `show chartLin _ _ j (∑ i, c i • b i : SecKM U N) = _`. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem comb_f (U : UnifPre I D A G) (N : ℕ) {n : ℕ} (c : Fin n → FractionRing R) (b : Fin n → SecKM U N) (j) :
     (∑ i, c i • b i : SecKM U N).f j = ∑ i, resTop _ (scal (pullback.snd G.hom (jK R)) (c i)) * (b i).f j := by
@@ -44,7 +44,7 @@ theorem comb_f (U : UnifPre I D A G) (N : ℕ) {n : ℕ} (c : Fin n → Fraction
   rfl
 
 /- English proof (translation)
-Use `⟨1, one_ne_zero, σ, f, ?_, fun α => ?_, hE⟩` and prove the remaining obligations. Conclude with `(secScal_iff pullback.condition (fun _ => (Category.comp_id _).symm) U.LG.isLB _ _ _ (algebraMap R (FractionRing R)) rfl 1).2 (by rw [map_one, one_smul]; rfl)`. Establish `e : scal (DegPre.BF D.toPre (FractionRing R)).hom (1 : R) = 1` using `by simp [scal]`. Rewrite using `[e]`. Conclude with `hf α`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expands_resK (U : Unif I D A G) {N : ℕ} (σ : H0 U.LG.L N) (Φ : Fam D.toPre (FractionRing R) N)
     (f : ∀ α, SecAb D.toPre N α) (hE : ∀ e, U.ExpandsAt e N σ f)
@@ -70,13 +70,13 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
 include hR hN hb
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.expands_linear R I hR D A G U.toUnifPre N n b Φ c _ hb (comb_f U.toUnifPre N c b)`.
+A detailed English derivation is pending.
 -/
 theorem expands_comb (c : Fin n → FractionRing R) : U.Expands N (∑ i, c i • b i : SecKM U.toUnifPre N) (∑ i, c i • Φ i) :=
   GlobalTheory.expands_linear R I hR D A G U.toUnifPre N n b Φ c _ hb (comb_f U.toUnifPre N c b)
 
 /- English proof (translation)
-Take `⟨F, hF, -⟩` from `(U.expand N hN).1 t`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 (hsp.ge (Submodule.mem_top : F ∈ ⊤))`. Use `⟨c, ((U.expand N hN).2 F).unique hF ?_⟩` and prove the remaining obligations. Rewrite using `[← hc]`. Conclude with `expands_comb hR U hN b Φ hb c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_comb (hsp : Submodule.span (FractionRing R) (Set.range Φ) = ⊤) (t : SecKM U.toUnifPre N) :
     ∃ c : Fin n → FractionRing R, t = ∑ i, c i • b i := by
@@ -87,7 +87,7 @@ theorem exists_comb (hsp : Submodule.span (FractionRing R) (Set.range Φ) = ⊤)
   exact expands_comb hR U hN b Φ hb c
 
 /- English proof (translation)
-Establish `e₁` using `expands_comb hR U hN b Φ hb c`. Rewrite `e₁` using `[h]`. Establish `e` using `((U.expand N hN).1 _).unique e₁ (expands_comb hR U hN b Φ hb c')`. Conclude with `funext (Fintype.linearIndependent_iffₛ.1 hli c c' e)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comb_inj (hli : LinearIndependent (FractionRing R) Φ) (c c' : Fin n → FractionRing R)
     (h : (∑ i, c i • b i : SecKM U.toUnifPre N) = ∑ i, c' i • b i) : c = c' := by
@@ -115,29 +115,29 @@ def fromGen : (baseK R ⊗ G).left ⟶ pullback G.hom (jK R) :=
     ((Over.w (snd (baseK R) G)).trans (Over.w (fst (baseK R) G)).symm)
 
 /- English proof (translation)
-Rewrite using `[toGen, ← Over.comp_left, lift_snd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toGen_snd : toGen G ≫ (snd (baseK R) G).left = pullback.fst G.hom (jK R) := by
   rw [toGen, ← Over.comp_left, lift_snd]; rfl
 
 /- English proof (translation)
-Rewrite using `[toGen, ← Over.comp_left, lift_fst]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toGen_fst : toGen G ≫ (fst (baseK R) G).left = pullback.snd G.hom (jK R) := by
   rw [toGen, ← Over.comp_left, lift_fst]; rfl
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem fromGen_fst : fromGen G ≫ pullback.fst G.hom (jK R) = (snd (baseK R) G).left := pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem fromGen_snd : fromGen G ≫ pullback.snd G.hom (jK R) = (fst (baseK R) G).left := pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, fromGen_fst, toGen_snd, Category.id_comp]`. Rewrite using `[Category.assoc, fromGen_snd, toGen_fst, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem toGen_fromGen : toGen G ≫ fromGen G = 𝟙 _ := by
   refine pullback.hom_ext ?_ ?_
@@ -145,9 +145,9 @@ theorem toGen_fromGen : toGen G ≫ fromGen G = 𝟙 _ := by
   · rw [Category.assoc, fromGen_snd, toGen_fst, Category.id_comp]
 
 /- English proof (translation)
-Set `fO : baseK R ⊗ G ⟶ genO G` to `Over.homMk (fromGen G) (by show fromGen G ≫ pullback.snd G.hom (jK R) ≫ jK R = _`. Rewrite using `[← Category.assoc, fromGen_snd]`. Conclude with `Over.w (fst (baseK R) G))`. Establish `e : fO ≫ lift (Over.homMk (pullback.snd G.hom (jK R)) rfl : genO G ⟶ baseK R) (Over.homMk (pullback.fst G.hom (jK R)) pullback.condition : genO G ⟶ G) = 𝟙 _`. Use `CartesianMonoidalCategory.hom_ext _ _ ?_ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, lift_fst, Category.id_comp]`. Conclude with `Over.OverMorphism.ext (fromGen_snd G)`. Rewrite using `[Category.assoc, lift_snd, Category.id_comp]`. Conclude with `Over.OverMorphism.ext (fromGen_fst G)`. Conclude with `congrArg CommaMorphism.left e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fromGen_toGen : fromGen G ≫ toGen G = 𝟙 _ := by
   let fO : baseK R ⊗ G ⟶ genO G := Over.homMk (fromGen G) (by
@@ -164,14 +164,14 @@ theorem fromGen_toGen : fromGen G ≫ toGen G = 𝟙 _ := by
   exact congrArg CommaMorphism.left e
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, Iso.hom_inv_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Γ_inv_hom (K : Type) [CommRing K] (x : Γ(Sp K, ⊤)) :
     (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom x) = x := by
   rw [← CommRingCat.comp_apply, Iso.hom_inv_id]; rfl
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, Iso.inv_hom_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Γ_hom_inv (K : Type) [CommRing K] (x : K) :
     (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom x) = x := by
@@ -181,9 +181,9 @@ variable {I : Ideal R} {D : DegData R I} {A : PolAV (Spec (CommRingCat.of (Fract
   [IsCommMonObj G] (U : Unif I D A G) {N n : ℕ} (σ : Fin n → H0 U.LG.L N)
 
 /- English proof (translation)
-Substitute `hq` using the available equality. Use `(sval_sum' hJ _ _ _).trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Use `(sval_smul' hJ _ _ _).trans (congrArg₂ (· * ·) ?_ ((sval_resK U.toUnifPre N (σ i) _ hJ).trans ?_))` and prove the remaining obligations. Use `show gs (fromGen G ≫ pullback.snd G.hom (jK R)) y ⊤ _ = _`. Rewrite using `[fromGen_snd]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (sval_upSec G (σ i) _ y hJ).symm` and prove the remaining obligations. Conclude with `congrArg (fun r => sval (σ i) r y J) ((fromGen_fst G).trans (VVRank.whisker_snd_left G _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem sval_comb (c : Fin n → FractionRing R) (q : (baseK R ⊗ G).left ⟶ pullback G.hom (jK R)) (hq : q = fromGen G)
     {y : (baseK R ⊗ G).left} {J} (hJ : Good U.LG.L y J) :
@@ -203,7 +203,7 @@ abbrev toK (s : LB.Sec (LPow G U.LG.L (N : ℤ) (baseK R))) : SecKM U.toUnifPre 
     (fun _ => toGen_snd G)
 
 /- English proof (translation)
-Introduce `y J hJ`. Use `Eq.trans ?_ (sval_comb G U σ c _ rfl hJ)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (fun t : SecKM U.toUnifPre N => sval t (fromGen G) y J) h)` and prove the remaining obligations. Use `Eq.trans ?_ (VVRank.sval_pullTo (φ := fun _ : Fin 1 => (snd (baseK R) G).left) (ε := fun _ => (N : ℤ)) s (toGen G) (fun _ => toGen_snd G) (fromGen G) y hJ).symm` and prove the remaining obligations. Conclude with `congrArg (fun r => sval (φ := fun _ : Fin 1 => (snd (baseK R) G).left) (ε := fun _ => (N : ℤ)) s r y J) (fromGen_toGen G).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lin_of_eq (s : LB.Sec (LPow G U.LG.L (N : ℤ) (baseK R))) (c : Fin n → FractionRing R)
     (h : toK G U s = ∑ i, c i • resK U.toUnifPre N (σ i)) :
@@ -218,9 +218,9 @@ theorem lin_of_eq (s : LB.Sec (LPow G U.LG.L (N : ℤ) (baseK R))) (c : Fin n �
     (fromGen_toGen G).symm
 
 /- English proof (translation)
-Use `set t : SecKM U.toUnifPre N := ∑ i, (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).hom.hom (c i) • resK U.toUnifPre N (σ i) with ht`. Establish `hs : s = VVRank.pullTo (φ` using `fun _ : Fin 1 => pullback.fst G.hom (jK R)) (ε := fun _ => (N : ℤ)) t (fromGen G) (fun _ => fromGen_fst G) := by`. Use `sec_ext' U.LG.isLB fun y J hJ => (h y J hJ).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (VVRank.sval_pullTo _ _ _ (𝟙 _) y hJ).symm` and prove the remaining obligations. Use `Eq.trans ?_ (sval_comb G U σ _ _ (Category.id_comp _) hJ).symm` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality.
 
-Conclude with `Finset.sum_congr rfl fun i _ => congrArg (· * _) (congrArg _ (Γ_inv_hom _ (c i)).symm)`. Substitute `hs` using the available equality. Use `sec_ext' U.LG.isLB fun x J hJ => ?_` and prove the remaining obligations. Use `(VVRank.sval_pullTo _ (toGen G) _ (𝟙 _) x hJ).trans ((VVRank.sval_pullTo _ (fromGen G) _ _ x hJ).trans ?_)` and prove the remaining obligations. Conclude with `congrArg (fun r => sval t r x J) (by rw [Category.id_comp, toGen_fromGen])`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eq_of_lin (s : LB.Sec (LPow G U.LG.L (N : ℤ) (baseK R))) (c : Fin n → Γ(Sp (FractionRing R), ⊤))
     (h : Lin G U.LG.L N (toBase (algebraMap R (FractionRing R))) (fun i => upSec G (σ i)) c s) :
@@ -242,11 +242,11 @@ theorem eq_of_lin (s : LB.Sec (LPow G U.LG.L (N : ℤ) (baseK R))) (c : Fin n �
 end Transfer
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D A G _ _ hG U N hN n σ Φ f hE hf hli hsp`. Establish `hadm : AdmBase R (maximalIdeal R)` using `⟨hR.1, inferInstance, hR.2.1, hR.2.2.1⟩`. Establish `: GeometricallyConnected G.hom` using `hG.geomConnected`. Establish `hb : ∀ i, U.Expands N (resK U.toUnifPre N (σ i)) (Φ i)` using `fun i => expands_resK U (σ i) (Φ i) (f i) (hE i) (hf i)`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc⟩` from `exists_comb hadm U hN _ Φ hb hsp (toK G U s)`. Use `⟨_, lin_of_eq G U σ s c hc, fun c' hc' => ?_⟩` and prove the remaining obligations. Establish `e` using `comb_inj hadm U hN _ Φ hb hli _ _ ((eq_of_lin G U σ s c' hc').symm.trans hc)`. Substitute `e` using the available equality. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(Γ_inv_hom _ (c' i)).symm`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsCN R →
     ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G]

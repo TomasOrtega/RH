@@ -27,12 +27,12 @@ abbrev ι : c.sch ⟶ X := redι c.1
 instance isIntegral : IsIntegral c.sch := isIntegral_red c.2.1
 
 /- English proof (translation)
-The claim follows from `(topologicalKrullDim_red c.1).trans c.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem dim_sch : topologicalKrullDim c.sch = 1 := (topologicalKrullDim_red c.1).trans c.2.2.1
 
 /- English proof (translation)
-Use `eq_zero_of_basicOpen_eq_bot _ (eq_bot_iff.2 fun y hy => ?_)` and prove the remaining obligations. Use `absurd hy ((c.sch.evaluation_eq_zero_iff_notMem_basicOpen (U := ⊤) y trivial _).1 ?_)` and prove the remaining obligations. Rewrite using `[map_natCast, ← map_natCast (c.ι.residueFieldMap y).hom, c.2.2.2 _ ((range_redι c.1).le ⟨y, rfl⟩), map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem natCast_eq_zero : (p : Γ(c.sch, ⊤)) = 0 := by
   refine eq_zero_of_basicOpen_eq_bot _ (eq_bot_iff.2 fun y hy => ?_)
@@ -57,13 +57,11 @@ def deg (L : LB X) : ℤ := interNumRed (ZMod p) (⊤ : Closeds c.sch) ![L.pull 
 abbrev str : c.sch ⟶ Sp (ZMod p) := strHom (ZMod p) c.sch
 
 /- English proof (translation)
-Establish `e : Scheme.IdealSheafData.vanishingIdeal c.1 = i.ker`. Rewrite using `[← InterModel.radical_ker i, ← Scheme.IdealSheafData.vanishingIdeal_support]`. Use `congr 1`. Use `ext1`. Rewrite using `[Scheme.Hom.support_ker, h, c.1.isClosed.closure_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `j : C ⟶ c.sch` to `IsClosedImmersion.lift c.ι i (by rw [← e]; simp)`. Establish `hj : j ≫ c.ι = i` using `IsClosedImmersion.lift_fac _ _ _`. Establish `: IsClosedImmersion (j ≫ c.ι)` using `hj ▸ inferInstance`. Establish `: IsClosedImmersion j` using `IsClosedImmersion.of_comp j c.ι`. Establish `hr : Set.range j = (⊤ : Closeds c.sch)` using `Set.eq_univ_of_forall fun y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `h.ge ((range_redι c.1).le ⟨y, rfl⟩)`. Conclude with `⟨x, c.ι.isClosedEmbedding.injective (by rw [← hx, ← hj]; rfl)⟩`. Establish `hL'` using `LB.isLB_pull hL c.ι`. Rewrite using `[deg, InterModel.interNumRed_eq_interNumOn (ZMod p) j ⊤ hr, interNumOn_eq_interNum_pull (fun r => RingHom.congr_fun (RingHom.ext_zmod (j.appTop.hom.comp (algebraMap _ _)) (algebraMap _ _)) r) (isLB_vecOne hL')]`. Use `interNum_congr_cls _ _ (fun a => LB.isLB_pull (isLB_vecOne hL' a) j) (isLB_vecOne (LB.isLB_pull hL i)) fun a => ?_` and prove the remaining obligations.
-
-Use `fin_cases a`. Conclude with `((CechPic.pull_comp j c.ι (cls L hL)).symm.trans (by rw [hj])).trans (CechPic.cls_pull hL i _).symm`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem deg_eq_of_imm {C : Scheme.{0}} [Algebra (ZMod p) Γ(C, ⊤)] (i : C ⟶ X) [IsClosedImmersion i] [IsReduced C]
     (h : Set.range i = c.1) (hL : L.IsLB) : c.deg L = interNum (ZMod p) (structureModule C) ![L.pull i] := by
@@ -87,13 +85,13 @@ theorem deg_eq_of_imm {C : Scheme.{0}} [Algebra (ZMod p) Γ(C, ⊤)] (i : C ⟶ 
   exact ((CechPic.pull_comp j c.ι (cls L hL)).symm.trans (by rw [hj])).trans (CechPic.cls_pull hL i _).symm
 
 /- English proof (translation)
-Set `φ : O →+* Γ(c.sch, ⊤)` to `((Scheme.ΓSpecIso (.of O)).inv ≫ (c.ι ≫ s).appTop).hom`. Set `ψ : O ⧸ Ideal.span {(p : O)} →+* Γ(c.sch, ⊤)` to `Ideal.Quotient.lift _ φ fun a ha => by`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Rewrite using `[map_mul, map_natCast, c.natCast_eq_zero, mul_zero]`. Use `letI : Algebra (ZMod p) (O ⧸ Ideal.span {(p : O)}) := ZMod.algebra' _ (ringChar _) (ringChar.dvd (by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Rewrite using `[← map_natCast (Ideal.Quotient.mk _), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton_self _))`. Set `g : c.sch ⟶ Sp (O ⧸ Ideal.span {(p : O)})` to `c.sch.toSpecΓ ≫ Spec.map (CommRingCat.ofHom ψ)`. Establish `h₁ : g ≫ spMap (Ideal.Quotient.mk _) = c.ι ≫ s`. Establish `e : CommRingCat.ofHom (Ideal.Quotient.mk (Ideal.span {(p : O)})) ≫ CommRingCat.ofHom ψ = (Scheme.ΓSpecIso (.of O)).inv ≫ (c.ι ≫ s).appTop` using `rfl`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Category.assoc _ _ _).trans ((congrArg (c.sch.toSpecΓ ≫ ·) ((Spec.map_comp _ _).symm.trans (congrArg Spec.map e))).trans ?_)` and prove the remaining obligations. Rewrite using `[Spec.map_comp, ← Scheme.toSpecΓ_naturality_assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`. Establish `h₂ : c.str = g ≫ spMap (algebraMap (ZMod p) _)` using `((Category.assoc _ _ _).trans (congrArg (c.sch.toSpecΓ ≫ ·) ((Spec.map_comp _ _).symm.trans (congrArg (fun f => Spec.map (CommRingCat.ofHom f)) (RingHom.ext_zmod (ψ.comp (algebraMap (ZMod p) _)) (algebraMap _ _)))))).symm`. Establish `: IsProper (g ≫ spMap (Ideal.Quotient.mk _))` using `h₁ ▸ inferInstance`. Establish `: IsProper g` using `IsProper.of_comp g (spMap (Ideal.Quotient.mk _))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsFinite (spMap (algebraMap (ZMod p) (O ⧸ Ideal.span {(p : O)})))` using `(IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 Module.Finite.of_finite)`. Rewrite using `[h₂]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProper_str {O : Type} [CommRing O] [Finite (O ⧸ Ideal.span {(p : O)})] (s : X ⟶ Sp O) [IsProper s] :
     IsProper c.str := by
@@ -125,14 +123,14 @@ theorem isProper_str {O : Type} [CommRing O] [Finite (O ⧸ Ideal.span {(p : O)}
 variable [IsProper c.str]
 
 /- English proof (translation)
-The claim follows from `(isCompleteCurve_iff (algebraMap_eq_strHom (ZMod p) c.sch)).2 ⟨IrreducibleSpace.isIrreducible_univ _, (topologicalKrullDim_eq_of_isEmbedding Topology.IsEmbedding.id Set.range_id).trans c.dim_sch⟩`.
+A detailed English derivation is pending.
 -/
 theorem isCompleteCurve_top : IsCompleteCurve (ZMod p) (⊤ : Closeds c.sch) :=
   (isCompleteCurve_iff (algebraMap_eq_strHom (ZMod p) c.sch)).2 ⟨IrreducibleSpace.isIrreducible_univ _,
     (topologicalKrullDim_eq_of_isEmbedding Topology.IsEmbedding.id Set.range_id).trans c.dim_sch⟩
 
 /- English proof (translation)
-The claim follows from `c.isCompleteCurve_top.interNumRed_of_cls_eq_add (hH.pull_of_isClosedImmersion c.ι) (LB.isLB_pull hN _) (LB.isLB_pull hL _) (LB.isLB_pull hM _) (by rw [CechPic.cls_pull hN, CechPic.cls_pull hL, CechPic.cls_pull hM, e, map_add])`.
+A detailed English derivation is pending.
 -/
 theorem deg_of_cls_eq_add (hH : IsAmpleLB H) (hN : N.IsLB) (hL : L.IsLB) (hM : M.IsLB)
     (e : cls N hN = cls L hL + cls M hM) : c.deg N = c.deg L + c.deg M :=
@@ -141,7 +139,7 @@ theorem deg_of_cls_eq_add (hH : IsAmpleLB H) (hN : N.IsLB) (hL : L.IsLB) (hM : M
     (by rw [CechPic.cls_pull hN, CechPic.cls_pull hL, CechPic.cls_pull hM, e, map_add])
 
 /- English proof (translation)
-The claim follows from `(hH.pull_of_isClosedImmersion c.ι).interNumRed_pos c.isCompleteCurve_top`.
+A detailed English derivation is pending.
 -/
 theorem deg_pos (hH : IsAmpleLB H) : 0 < c.deg H :=
   (hH.pull_of_isClosedImmersion c.ι).interNumRed_pos c.isCompleteCurve_top
@@ -156,14 +154,14 @@ abbrev Crv (z : admitted Y i₀) : Type := FibCrv p z.Z.X
 def cov (z : admitted Y i₀) : ℕ := levDeg z.Z.dvd (Xo i₀.l) i₀.c (Xo z.Z.i.l) z.Z.i.c
 
 /- English proof (translation)
-The claim follows from `levDeg_pos _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem cov_pos (z : admitted Y i₀) : 0 < cov z := levDeg_pos _ _ _ _ _
 
 /- English proof (translation)
-Rewrite `hW`, the goal using `[ValuationSubring.mem_nonunits_iff_or]`. Break down `hW with h | h` into its components or cases. Conclude with `absurd h (Nat.cast_ne_zero.mpr hp)`. Use `Or.inr fun h' => h ?_` and prove the remaining obligations. Rewrite `h'` using `[ValuationSubring.mem_comap]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h'`.
+A detailed English derivation is pending.
 -/
 theorem natCast_mem_nonunits {l : Level H} (c : Coeff l) (hp : p ≠ 0) (hW : (p : ℂ) ∈ W.nonunits) :
     (p : c.F) ∈ (c.V W).nonunits := by
@@ -175,9 +173,9 @@ theorem natCast_mem_nonunits {l : Level H} (c : Coeff l) (hp : p ≠ 0) (hW : (p
     simpa using h'
 
 /- English proof (translation)
-Use `⟨fun h (k : CharZero _) => hp.ne_zero (Nat.cast_eq_zero.1 h), fun h => ?_⟩` and prove the remaining obligations. Set `φ : Z.i.c.V W →+* Z.X.residueField x` to `((Scheme.ΓSpecIso (.of (Z.i.c.V W))).inv ≫ Z.s.appTop ≫ Z.X.Γevaluation x).hom`. Establish `hq : (ringChar (Z.X.residueField x)).Prime` using `(CharP.char_is_prime_or_zero (Z.X.residueField x) _).resolve_right fun k => h ((CharP.ringChar_zero_iff_CharZero _).1 k)`. Assume the negation of the conclusion as `hne`. Establish `hc : (ringChar (Z.X.residueField x)).Coprime p` using `hq.coprime_iff_not_dvd.2 fun k => hne ((ringChar.spec _ _).2 k)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `(GlobalTheory.CoeffRings.isUnit_of_coprime _ (natCast_mem_nonunits Z.i.c hp.ne_zero hW) hc).map φ` as an intermediate fact. Rewrite `this` using `[map_natCast, ringChar.Nat.cast_ringChar]`. Conclude with `not_isUnit_zero this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_eq_zero_iff (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : LocM.Mdl Y i₀) (x : Z.X) :
     (p : Z.X.residueField x) = 0 ↔ ¬ Z.inQ x := by
@@ -195,7 +193,7 @@ theorem natCast_eq_zero_iff (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : 
   exact not_isUnit_zero this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, (isAmple_projective_O_one _ Z.n).pull_of_isClosedImmersion Z.I.subschemeι⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isAmpleLB (Z : LocM.Mdl Y i₀) : ∃ A : LB Z.X, IsAmpleLB A :=
   ⟨_, (isAmple_projective_O_one _ Z.n).pull_of_isClosedImmersion Z.I.subschemeι⟩
@@ -232,7 +230,7 @@ def lineCrv : FibCrv p (PSpace O 1) :=
     (by rw [← map_natCast (algebraMap (ZMod p) _), ZMod.natCast_self, map_zero])
 
 /- English proof (translation)
-Establish `h` using `interNum_const_of_polynomial (ZMod p) (structureModule (PSpace (ZMod p) 1)) (O1_isLB (ZMod p) 1) (d := 1) (Polynomial.preHilbertPoly ℚ 1 0) (Polynomial.natDegree_preHilbertPoly ℚ 1 0).le (ProjCoh.chi_sheafO_eq_eval (ZMod p) 1)`. Rewrite `h` using `[Polynomial.coeff_preHilbertPoly_self, mul_inv_cancel₀ (Nat.cast_ne_zero.2 (Nat.factorial_ne_zero 1))]`. Rewrite using `[(lineCrv p φ).deg_eq_of_imm (baseChange 1 φ) rfl (O1_isLB O 1), interNum_congr_lbIso (ZMod p) _ (L' := fun _ => O1 (ZMod p) 1) (isLB_vecOne (LB.isLB_pull (O1_isLB O 1) _)) (fun _ => O1_isLB _ 1) fun i => by fin_cases i; exact lbIso_pull_O1 1 φ]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degree_twistingSheaf_line : (lineCrv p φ).deg (O1 O 1) = 1 := by
   have h := interNum_const_of_polynomial (ZMod p) (structureModule (PSpace (ZMod p) 1)) (O1_isLB (ZMod p) 1) (d := 1)
@@ -245,9 +243,9 @@ theorem degree_twistingSheaf_line : (lineCrv p φ).deg (O1 O 1) = 1 := by
   exact_mod_cast h
 
 /- English proof (translation)
-Use `isProper_str ℤ 1` as an intermediate fact. Establish `: Finite (ℤ ⧸ Ideal.span {(p : ℤ)})`. Establish `: NeZero p` using `⟨(Fact.out : p.Prime).ne_zero⟩`. Use the proof step `Finite.of_equiv _ (Int.quotientSpanNatEquivZMod p).toEquiv.symm`. Use `(lineCrv p (Int.castRingHom _)).isProper_str (PSpace.str ℤ 1)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `isAmple_projective_O_one ℤ 1`. Establish `h₀ : (lineCrv p (Int.castRingHom _)).deg (LB.triv _) = 0` using `interNumRed_one_eq_zero (LB.isLB_pull (LB.isLB_triv _) _) ((CechPic.cls_pull (LB.isLB_triv _) _ _).trans (map_zero _)) _`. Establish `h₁` using `degree_twistingSheaf_line p (Int.castRingHom _)`. Establish `h₂` using `(lineCrv p (Int.castRingHom _)).deg_of_cls_eq_add hA (LB.isLB_triv _) (CechPic.isLB_dual hA.isLB) hA.isLB (CechPic.cls_dual_add hA.isLB).symm`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 example : (lineCrv p (Int.castRingHom _)).deg (O1 ℤ 1) = 1 ∧ (lineCrv p (Int.castRingHom _)).deg (LB.triv _) = 0 ∧
     (lineCrv p (Int.castRingHom _)).deg (dual (O1 ℤ 1)) = -1 := by

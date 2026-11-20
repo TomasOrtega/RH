@@ -7,7 +7,7 @@ open GlobalTheory.GLq GlobalTheory.GLp Formalism.MainNotions.ArithmeticCylinders
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.GLq.Opp.label_eq_of_opposite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FIntertwinerUnipotentInvariant.lean&line=493#L493)
 -/

@@ -11,7 +11,7 @@ open GlobalTheory.UnitLemma GlobalTheory.UnitLemma.Desc Polynomial Filter Topolo
 namespace GlobalTheory.UnitLemma.SgnProd
 
 /- English proof (translation)
-Unfold `val`. Rewrite using `[map_mul, WithZero.log_mul ((Valuation.ne_zero_iff _).2 hx) ((Valuation.ne_zero_iff _).2 hy), neg_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_mul (K : UQ) {x y : K.E} (hx : x ≠ 0) (hy : y ≠ 0) :
     val K.O (x * y) = val K.O x + val K.O y := by
@@ -19,7 +19,7 @@ theorem val_mul (K : UQ) {x y : K.E} (hx : x ≠ 0) (hy : y ≠ 0) :
   rw [map_mul, WithZero.log_mul ((Valuation.ne_zero_iff _).2 hx) ((Valuation.ne_zero_iff _).2 hy), neg_add]
 
 /- English proof (translation)
-Unfold `UQ.eta`. Rewrite using `[val_mul K hx hy, zpow_add₀ (by norm_num)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eta_mul (K : UQ) {x y : K.E} (hx : x ≠ 0) (hy : y ≠ 0) :
     K.eta (x * y) = K.eta x * K.eta y := by
@@ -27,9 +27,9 @@ theorem eta_mul (K : UQ) {x y : K.E} (hx : x ≠ 0) (hy : y ≠ 0) :
   rw [val_mul K hx hy, zpow_add₀ (by norm_num)]
 
 /- English proof (translation)
-Establish `hε : ε ≠ 0` using `by rintro rfl; simp at h`. Establish `hv : val K.O ε = 0`. Establish `h1` using `val_mul K hε hε`. Rewrite `h1` using `[h]`. Establish `h0 : val K.O (1 : K.E) = 0` using `by simp [val]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Unfold `UQ.eta`. Distinguish the cases in `ha : a = 0`. Simplify using `[ha]`. Rewrite using `[val_mul K hε ha, hv, zero_add]`.
+Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eta_of_sq_one (K : UQ) {ε : K.E} (h : ε * ε = 1) (a : K.E) : K.eta (ε * a) = K.eta a := by
   have hε : ε ≠ 0 := by rintro rfl; simp at h
@@ -44,9 +44,9 @@ theorem eta_of_sq_one (K : UQ) {ε : K.E} (h : ε * ε = 1) (a : K.E) : K.eta (�
   rw [val_mul K hε ha, hv, zero_add]
 
 /- English proof (translation)
-Use `haveI : Submodule.IsLattice K.E L := ⟨hfg, hsp⟩`. Set `b` to `Module.Free.chooseBasis K.O L`. Set `e'` to `b.extendOfIsLattice K.E`. Establish `hc : Fintype.card (Module.Free.ChooseBasisIndex K.O L) = Module.finrank K.E V` using `(Module.finrank_eq_card_basis e').symm`. Use `⟨e'.reindex (Fintype.equivFinOfCardEq hc), ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.Basis.range_reindex]`. Establish `: Set.range e' = L.subtype '' Set.range b`. Use extensionality with `x`. Simplify using `[e', Set.range_comp]`. Rewrite using `[this, Submodule.span_image, b.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basis_lat (K : UQ) {V : Type} [AddCommGroup V] [Module K.E V] [Module K.O V]
     [IsScalarTower K.O K.E V] [Module.Finite K.E V] (L : Submodule K.O V) (hfg : L.FG) (hsp : Submodule.span K.E (L : Set V) = ⊤) :
@@ -63,9 +63,9 @@ theorem exists_basis_lat (K : UQ) {V : Type} [AddCommGroup V] [Module K.E V] [Mo
   rw [this, Submodule.span_image, b.span_eq, Submodule.map_top, Submodule.range_subtype]
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_basis_lat K L hfg hsp`. Take `⟨⟨s, hs⟩, hsc⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors K.O) Finset.univ (fun i => e.repr y i)`. Use `choose a ha using fun i => hsc i (Finset.mem_univ i)`. Use `⟨s, nonZeroDivisors.ne_zero hs, ?_⟩` and prove the remaining obligations. Establish `: s • y = ∑ i, a i • e i` using `by conv_lhs => rw [← e.sum_repr y]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul K.E (a i), ha i, ← smul_assoc]`. Rewrite using `[this, ← he]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem (K : UQ) {V : Type} [AddCommGroup V] [Module K.E V] [Module K.O V]
     [IsScalarTower K.O K.E V] [Module.Finite K.E V] (L : Submodule K.O V) (hfg : L.FG) (hsp : Submodule.span K.E (L : Set V) = ⊤) (y : V) :
@@ -88,19 +88,17 @@ end GlobalTheory.UnitLemma.SgnProd
 namespace GlobalTheory.UnitLemma.SgnProd
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨c, hc, hvm⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h0`. Use `set q : K.E[X] := ∑ k : Fin (Module.finrank K.E B.A), C (c k) * X ^ (k : ℕ) with hq`. Establish `hz : ∀ l, Algebra.trace K.E B.A (aeval B.g q * e l) = 0`. Introduce `l`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrFun hvm l` as an intermediate fact. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.of_apply, Pi.zero_apply] at this`. Rewrite using `[← this, hq, map_sum, Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `ha : aeval B.g (C (c k) * X ^ (k : ℕ)) = c k • B.g ^ (k : ℕ)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← smul_eq_C_mul, map_smul, aeval_X_pow]`. Rewrite using `[ha, smul_mul_assoc, map_smul, smul_eq_mul]`. Establish `hz' : aeval B.g q = 0`. Apply `GlobalTheory.UnitLemma.Centraliser.eq_zero_of_trace_mul B hsep` to reduce the goal to its premises. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e.sum_repr y, Finset.mul_sum, map_sum]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, map_smul, hz l, smul_zero]`. Establish `hdvd` using `GlobalTheory.UnitLemma.Centraliser.P_dvd_of_aeval_eq_zero B hsep q hz'`. Establish `hdeg : q.degree < B.P.degree`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : B.P.Monic` using `LinearMap.charpoly_monic _`. Establish `hn : B.P.natDegree = Module.finrank K.E B.A` using `LinearMap.charpoly_natDegree _`. Rewrite using `[degree_eq_natDegree hm.ne_zero, hn]`. Conclude with `degree_sum_fin_lt c`. Establish `hq0 : q = 0` using `eq_zero_of_dvd_of_degree_lt hdvd hdeg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `hc` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Use `congrArg (fun p : K.E[X] => p.coeff k) hq0` as an intermediate fact. Simplify using `only [hq, finset_sum_coeff, coeff_C_mul_X_pow, coeff_zero] at this`. Rewrite `this` using `[Finset.sum_eq_single k (fun b _ hb => if_neg (fun h => hb (Fin.ext h.symm))) (by simp)]`.
-
-Simplify using `using this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem det_trace_ne_zero {K : UQ} (B : InvAlg K) (hsep : B.P.Separable)
     (e : Module.Basis (Fin (Module.finrank K.E B.A)) K.E B.A) :
@@ -139,7 +137,7 @@ theorem det_trace_ne_zero {K : UQ} (B : InvAlg K) (hsep : B.P.Separable)
   simpa using this
 
 /- English proof (translation)
-Use extensionality with `k l`. Rewrite using `[Matrix.of_apply, Matrix.mul_apply, ← b.sum_toMatrix_smul_self f l, Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, map_smul, smul_eq_mul, Matrix.of_apply, mul_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_mat_toMatrix {E A : Type} [Field E] [CommRing A] [Algebra E A] {ι κ : Type} [Fintype ι]
     [DecidableEq ι] (b : Module.Basis ι E A) (x : κ → A) (f : ι → A) :
@@ -157,31 +155,27 @@ namespace GlobalTheory.UnitLemma.SgnProd
 open Module
 
 /- English proof (translation)
-Use `set M₁ := M.comap (LinearMap.inl K.O V₁ V₂) with hM₁`. Use `set M₂ := M.map (LinearMap.snd K.O V₁ V₂) with hM₂`. Establish `hfg₁ : M₁.FG` using `by haveI : IsNoetherian K.O M := isNoetherian_of_fg_of_noetherian M hfg`. Use `Submodule.fg_of_fg_map_injective (LinearMap.inl K.O V₁ V₂) LinearMap.inl_injective ?_` and prove the remaining obligations. Conclude with `Submodule.FG.of_le_of_isNoetherian (T := M) (Submodule.map_comap_le _ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hsp₁ : Submodule.span K.E (M₁ : Set V₁) = ⊤`. Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations. Take `⟨s, hs0, hs⟩` from `exists_smul_mem K M hfg hsp ((y, 0) : V₁ × V₂)`. Establish `hsy : s • y ∈ M₁` using `by show LinearMap.inl K.O V₁ V₂ (s • y) ∈ M`. Simplify `hs` using `[LinearMap.inl_apply, Prod.smul_mk]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hs' : algebraMap K.O K.E s ≠ 0`. Rewrite using `[ne_eq, (IsFractionRing.injective K.O K.E).eq_iff' (map_zero _)]` and apply the resulting hypothesis. Establish `: y = (algebraMap K.O K.E s)⁻¹ • (s • y)`. Rewrite using `[← algebraMap_smul K.E s y, smul_smul, inv_mul_cancel₀ hs', one_smul]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hsy)`. Establish `hfg₂ : M₂.FG` using `hfg.map _`. Establish `hsp₂ : Submodule.span K.E (M₂ : Set V₂) = ⊤`. Establish `h1 : (M₂ : Set V₂) = (LinearMap.snd K.E V₁ V₂) '' (M : Set (V₁ × V₂))`. Rewrite using `[hM₂, Submodule.map_coe]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Rewrite using `[h1, Submodule.span_image, hsp, Submodule.map_top, LinearMap.range_eq_top.2 LinearMap.snd_surjective]`. Take `⟨e₁, he₁⟩` from `exists_basis_lat K M₁ hfg₁ hsp₁`. Take `⟨e₂, he₂⟩` from `exists_basis_lat K M₂ hfg₂ hsp₂`. Establish `hlift : ∀ j, ∃ x ∈ M, x.2 = e₂ j` using `fun j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: e₂ j ∈ M₂` using `he₂ ▸ Submodule.subset_span ⟨j, rfl⟩`. Take `⟨x, hx, hxe⟩` from `Submodule.mem_map.1 this`. Conclude with `⟨x, hx, hxe⟩`. Use `choose x hxM hx2 using hlift`. Use `⟨e₁, e₂, x, he₁, he₂, hx2, le_antisymm ?_ ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨l, rfl⟩`. Proceed by induction on `l using Fin.addCases with`. Consider the case `left i`. Simplify using `only [Fin.addCases_left, SetLike.mem_coe]`.
+Establish an intermediate fact. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: e₁ i ∈ M₁` using `he₁ ▸ Submodule.subset_span ⟨i, rfl⟩`. Conclude with `this`. Consider the case `right j => simp only [Fin.addCases_right, SetLike.mem_coe]`. Conclude with `hxM j`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hy2 : y.2 ∈ M₂` using `Submodule.mem_map_of_mem hy`. Rewrite `hy2` using `[← he₂, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨c, hc⟩` from `hy2`. Use `set z := y - ∑ j, c j • x j with hz`. Establish `hzM : z ∈ M` using `M.sub_mem hy (M.sum_mem fun j _ => M.smul_mem _ (hxM j))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz2 : z.2 = 0`. Simplify using `only [hz, Prod.snd_sub, Prod.snd_sum, Prod.smul_snd, hx2, hc, sub_self]`. Establish `hz1 : z.1 ∈ M₁` using `by show LinearMap.inl K.O V₁ V₂ z.1 ∈ M`. Establish `: LinearMap.inl K.O V₁ V₂ z.1 = z` using `Prod.ext rfl hz2.symm`. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hzM`. Rewrite `hz1` using `[← he₁, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨d, hd⟩` from `hz1`. Establish `hyz : y = ∑ i, d i • ((e₁ i, 0) : V₁ × V₂) + ∑ j, c j • x j`. Establish `: ∑ i, d i • ((e₁ i, 0) : V₁ × V₂) = z`.
-
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `[Prod.fst_sum, hd]`. Simplify using `[Prod.snd_sum, hz2]`. Rewrite using `[this, hz, sub_add_cancel]`. Rewrite using `[hyz]`.
-
-Use `Submodule.add_mem _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_) (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ ?_)` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨Fin.castAdd _ i, Fin.addCases_left _⟩`. Conclude with `Submodule.subset_span ⟨Fin.natAdd _ j, Fin.addCases_right _⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lattice_split (K : UQ) (V₁ V₂ : Type) [AddCommGroup V₁] [Module K.E V₁] [Module K.O V₁]
     [IsScalarTower K.O K.E V₁] [Module.Finite K.E V₁] [AddCommGroup V₂] [Module K.E V₂] [Module K.O V₂]
@@ -265,23 +259,23 @@ namespace GlobalTheory.UnitLemma.SgnProd
 open Module
 
 /- English proof (translation)
-Use `set f : Fin (a + b) → A₁ × A₂ := Fin.addCases (fun i => ((e₁ i, 0) : A₁ × A₂)) x with hf`. Set `b₀` to `(e₁.prod e₂).reindex finSumFinEquiv`. Establish `hb₀ : ∀ l, b₀ l = Fin.addCases (fun i => ((e₁ i, 0) : A₁ × A₂)) (fun j => ((0, e₂ j) : A₁ × A₂)) l`. Introduce `l`. Proceed by induction on `l using Fin.addCases with`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `left i => simp [b₀]`. Consider the case `right j => simp [b₀]`. Establish `h` using `trace_mat_toMatrix b₀ (fun k : Fin (a + b) => g ^ (k : ℕ)) f`. Rewrite using `[h, Matrix.det_mul]`. Simplify using `only [hb₀]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the argument to an intermediate assertion.
 
-It suffices to establish `hU : (b₀.toMatrix f).det = 1 by rw [hU, mul_one]`. Establish `hcc : ∀ i' l', b₀.toMatrix f (Fin.castAdd b i') (Fin.castAdd b l') = if l' = i' then 1 else 0`. Introduce `i' l'`. Simplify using `[Basis.toMatrix_apply, b₀, hf, Finsupp.single_apply]`. Establish `hnc : ∀ j' l', b₀.toMatrix f (Fin.natAdd a j') (Fin.castAdd b l') = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j' l'`. Simplify using `[Basis.toMatrix_apply, b₀, hf]`. Establish `hnn : ∀ j' j, b₀.toMatrix f (Fin.natAdd a j') (Fin.natAdd a j) = if j = j' then 1 else 0`. Introduce `j' j`. Simplify using `[Basis.toMatrix_apply, b₀, hf, hx, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `htri : (b₀.toMatrix f).BlockTriangular id`. Introduce `i l hli`. Simplify using `only [id] at hli`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left i'`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Proceed by induction on `l using Fin.addCases with`. Consider the case `left l'`. Rewrite using `[hcc, if_neg]`. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hli`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Treat this case separately. It suffices to derive a contradiction.
 
-Consider the case `right j`. It suffices to derive a contradiction. Rewrite `hli` using `[Fin.lt_def, Fin.coe_natAdd, Fin.val_castAdd]`. Use `i'.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Treat this case separately. Proceed by induction.
 
-Consider the case `right j'`. Proceed by induction on `l using Fin.addCases with`. Consider the case `left l' => exact hnc j' l'`. Consider the case `right j`. Rewrite using `[hnn, if_neg]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hli`. Rewrite using `[Matrix.det_of_upperTriangular htri, Fin.prod_univ_add]`. Simplify using `[hcc, hnn]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_trace_lift {E A₁ A₂ : Type} [Field E] [CommRing A₁] [CommRing A₂] [Algebra E A₁] [Algebra E A₂]
     {a b : ℕ} (g : A₁ × A₂) (e₁ : Basis (Fin a) E A₁) (e₂ : Basis (Fin b) E A₂) (x : Fin b → A₁ × A₂)
@@ -343,25 +337,21 @@ namespace GlobalTheory.UnitLemma.SgnProd
 open Module
 
 /- English proof (translation)
-Introduce `K B₁ B₂ hsep M hM`. Take `⟨hfg, hsp⟩` from `hM.1`. Take `⟨e₁, e₂, x, he₁, he₂, hx, hspan⟩` from `lattice_split K B₁.A B₂.A M hfg hsp`. Establish `hP : (B₁.prod B₂).P = B₁.P * B₂.P`. Establish `h1 : LinearMap.mulLeft K.E (B₁.prod B₂).g = (LinearMap.mulLeft K.E B₁.g).prodMap (LinearMap.mulLeft K.E B₂.g)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `LinearMap.ext fun _ => rfl`. Establish `h2` using `LinearMap.charpoly_prodMap (LinearMap.mulLeft K.E B₁.g) (LinearMap.mulLeft K.E B₂.g)`. Rewrite `h2` using `[← h1]`. Conclude with `h2`. Set `f : Fin (finrank K.E B₁.A + finrank K.E B₂.A) → B₁.A × B₂.A` to `Fin.addCases (fun i => ((e₁ i, 0) : B₁.A × B₂.A)) x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hcard : Fintype.card (Fin (finrank K.E B₁.A + finrank K.E B₂.A)) = finrank K.E (B₁.A × B₂.A)`. Simplify using `[Module.finrank_prod]`. Establish `htop : ⊤ ≤ Submodule.span K.E (Set.range f)`. Rewrite using `[← Submodule.span_span_of_tower K.O, hspan]`. Conclude with `hsp.ge`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `bf : Basis (Fin (finrank K.E B₁.A + finrank K.E B₂.A)) K.E (B₁.A × B₂.A)` to `basisOfTopLeSpanOfCardEqFinrank f htop hcard`. Establish `hbf : ⇑bf = f` using `coe_basisOfTopLeSpanOfCardEqFinrank f htop hcard`. Establish `hN : finrank K.E B₁.A + finrank K.E B₂.A = finrank K.E (B₁.prod B₂).A`. Rewrite using `[← Fintype.card_fin (finrank K.E B₁.A + finrank K.E B₂.A)]`. Conclude with `hcard`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `bF : Basis (Fin (finrank K.E (B₁.prod B₂).A)) K.E (B₁.prod B₂).A` to `bf.reindex (finCongr hN)`. Establish `hrange : Set.range ⇑bF = Set.range f`. Conclude with `(Basis.range_reindex bf (finCongr hN)).trans (by rw [hbf])`. Establish `hspanF : Submodule.span K.O (Set.range ⇑bF) = M`. Rewrite using `[hrange]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hspan`. Establish `key` using `SgnBasis.sgnLat_span_basis K (B₁.prod B₂) bF`. Rewrite `key` using `[hspanF]`. Rewrite using `[key, ← he₁, ← he₂, SgnBasis.sgnLat_span_basis K B₁ e₁, SgnBasis.sgnLat_span_basis K B₂ e₂]`. Establish `hdet : (Matrix.of fun k l : Fin (finrank K.E (B₁.prod B₂).A) => Algebra.trace K.E (B₁.prod B₂).A ((B₁.prod B₂).g ^ (k : ℕ) * bF l)).det = (Matrix.of fun k l : Fin (finrank K.E B₁.A + finrank K.E B₂.A) => Algebra.trace K.E (B₁.A × B₂.A) ((B₁.g, B₂.g) ^ (k : ℕ) * f l)).det`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.det_submatrix_equiv_self (finCongr hN).symm]`. Use `congr 1`. Use extensionality with `k l`. Establish `hbF : bF l = f ((finCongr hN).symm l)`. Rewrite using `[← hbf]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Basis.reindex_apply bf (finCongr hN) l`. Simplify using `only [Matrix.submatrix_apply, Matrix.of_apply]`. Use `erw [hbF]`. Simplify using `only [finCongr_symm, finCongr_apply, Fin.val_cast]`. Both sides reduce to the same expression.
-
-Take `⟨ε, hε, hL7⟩` from `GlobalTheory.det_trace_pow_prod K.E B₁.A B₂.A B₁.g B₂.g _ _ e₁ e₂ hsep`. Establish `hchain : (Matrix.of fun k l : Fin (finrank K.E (B₁.prod B₂).A) => Algebra.trace K.E (B₁.prod B₂).A ((B₁.prod B₂).g ^ (k : ℕ) * bF l)).det = ε * resultant B₁.P B₂.P * (Matrix.of fun k l : Fin (finrank K.E B₁.A) => Algebra.trace K.E B₁.A (B₁.g ^ (k : ℕ) * e₁ l)).det * (Matrix.of fu …` using `hdet.trans ((det_trace_lift (B₁.g, B₂.g) e₁ e₂ x hx).trans hL7)`. Establish `hne` using `det_trace_ne_zero (B₁.prod B₂) (by rw [hP]; exact hsep) bF`. Rewrite `hne`, the goal using `[hchain]`. Simplify using `only [mul_ne_zero_iff] at hne`.
-
-Take `⟨⟨⟨-, hR⟩, h₁⟩, h₂⟩` from `hne`. Rewrite using `[mul_assoc, mul_assoc, eta_of_sq_one K hε, eta_mul K hR (mul_ne_zero h₁ h₂), eta_mul K h₁ h₂, mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sgnLat_prod : ∀ (K : UQ) (B₁ B₂ : InvAlg K), (B₁.P * B₂.P).Separable → ∀ M ∈ (B₁.prod B₂).Lin,
     (B₁.prod B₂).sgnLat M = K.eta (resultant B₁.P B₂.P) *

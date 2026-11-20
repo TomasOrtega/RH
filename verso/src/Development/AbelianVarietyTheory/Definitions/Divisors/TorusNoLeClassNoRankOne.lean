@@ -12,7 +12,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ
 variable (c : E ≃ₐ[F] E) (G : Matrix (Fin n) (Fin n) E) (L : Set (Fin n → E)) (M : ℕ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [det_mul]; exact hg.1.mul hh.1, fun x y => by rw [← mulVec_mulVec, ← mulVec_mulVec, hg.2, hh.2]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUA_mul {g h : Matrix (Fin n) (Fin n) (RA F E)} (hg : IsUA c G g) (hh : IsUA c G h) :
     IsUA c G (g * h) :=
@@ -20,14 +20,14 @@ theorem isUA_mul {g h : Matrix (Fin n) (Fin n) (RA F E)} (hg : IsUA c G g) (hh :
     rw [← mulVec_mulVec, ← mulVec_mulVec, hg.2, hh.2]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isUnit_nonsing_inv_det g hg.1, fun x y => by rw [← hg.2, mulVec_mulVec, mulVec_mulVec, mul_nonsing_inv g hg.1, one_mulVec, one_mulVec]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUA_inv {g : Matrix (Fin n) (Fin n) (RA F E)} (hg : IsUA c G g) : IsUA c G g⁻¹ :=
   ⟨isUnit_nonsing_inv_det g hg.1, fun x y => by
     rw [← hg.2, mulVec_mulVec, mulVec_mulVec, mul_nonsing_inv g hg.1, one_mulVec, one_mulVec]⟩
 
 /- English proof (translation)
-Take `⟨y, hy, e⟩` from `hk.2.1 x hx`. Establish `: k *ᵥ x = M • y + x` using `by rw [← e]; abel`. Rewrite using `[this]`. Conclude with `add_mem (nsmul_mem hy M) hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsKM_maps {k : Matrix (Fin n) (Fin n) (RA F E)} (hk : IsKM c G L M k) {x : Fin n → RA F E}
     (hx : x ∈ hat F L) : k *ᵥ x ∈ hat F L := by
@@ -37,9 +37,9 @@ theorem IsKM_maps {k : Matrix (Fin n) (Fin n) (RA F E)} (hk : IsKM c G L M k) {x
   exact add_mem (nsmul_mem hy M) hx
 
 /- English proof (translation)
-Use `⟨isUA_mul c G hk.1 hh.1, fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `hk.2.1 _ (IsKM_maps c G L M hh hx)`. Take `⟨z, hz, e'⟩` from `hh.2.1 x hx`. Use `⟨y + z, add_mem hy hz, ?_⟩` and prove the remaining obligations. Rewrite using `[← mulVec_mulVec, smul_add, ← e, ← e']`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Take `⟨y, hy, e⟩` from `hk.2.2 x hx`. Take `⟨z, hz, e'⟩` from `hh.2.2 y hy`. Conclude with `⟨z, hz, by rw [← mulVec_mulVec, e', e]⟩`.
+Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isKM_mul {k h : Matrix (Fin n) (Fin n) (RA F E)} (hk : IsKM c G L M k) (hh : IsKM c G L M h) :
     IsKM c G L M (k * h) := by
@@ -53,9 +53,9 @@ theorem isKM_mul {k h : Matrix (Fin n) (Fin n) (RA F E)} (hk : IsKM c G L M k) (
     exact ⟨z, hz, by rw [← mulVec_mulVec, e', e]⟩
 
 /- English proof (translation)
-Establish `hi : ∀ z, k⁻¹ *ᵥ (k *ᵥ z) = z` using `fun z => by`. Rewrite using `[mulVec_mulVec, nonsing_inv_mul k hk.1.1, one_mulVec]`. Use `⟨isUA_inv c G hk.1, fun x hx => ?_, fun x hx => ⟨k *ᵥ x, IsKM_maps c G L M hk hx, hi x⟩⟩` and prove the remaining obligations. Take `⟨z, hz, e⟩` from `hk.2.2 x hx`. Take `⟨y, hy, e'⟩` from `hk.2.1 z hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨-y, neg_mem hy, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, hi, smul_neg, ← e']`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem isKM_inv {k : Matrix (Fin n) (Fin n) (RA F E)} (hk : IsKM c G L M k) : IsKM c G L M k⁻¹ := by
   have hi : ∀ z, k⁻¹ *ᵥ (k *ᵥ z) = z := fun z => by
@@ -67,9 +67,9 @@ theorem isKM_inv {k : Matrix (Fin n) (Fin n) (RA F E)} (hk : IsKM c G L M k) : I
   rw [← e, hi, smul_neg, ← e']; abel
 
 /- English proof (translation)
-Use `⟨⟨?_, fun x y => ?_⟩, fun x hx => ⟨-x, neg_mem hx, ?_⟩, fun x hx => ⟨-x, neg_mem hx, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[det_neg, det_one, mul_one]`. Conclude with `isUnit_one.neg.pow _`. Simplify using `[hermA, neg_mulVec]`. Rewrite using `[neg_mulVec, one_mulVec, two_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Simplify using `[neg_mulVec, mulVec_neg]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isKM_neg_one : IsKM c G L 2 (-1) := by
   refine ⟨⟨?_, fun x y => ?_⟩, fun x hx => ⟨-x, neg_mem hx, ?_⟩, fun x hx => ⟨-x, neg_mem hx, ?_⟩⟩
@@ -79,25 +79,25 @@ theorem isKM_neg_one : IsKM c G L 2 (-1) := by
   · simp [neg_mulVec, mulVec_neg]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := (Algebra.TensorProduct.includeRight : E →ₐ[F] RA F E))`.
+A detailed English derivation is pending.
 -/
 theorem ratM_mul (a b : Matrix (Fin n) (Fin n) E) : ratM F (a * b) = ratM F a * ratM F b :=
   Matrix.map_mul (f := (Algebra.TensorProduct.includeRight : E →ₐ[F] RA F E))
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (by simp) rfl`.
+A detailed English derivation is pending.
 -/
 theorem ratM_one : ratM F (1 : Matrix (Fin n) (Fin n) E) = 1 :=
   Matrix.map_one _ (by simp) rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, by rw [ratM_one]; exact (isKM_one c G L M).1, 1, isKM_one c G L M, by rw [ratM_one]; simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem uEquiv_refl (g : Matrix (Fin n) (Fin n) (RA F E)) : UEquiv c G L M g g :=
   ⟨1, by rw [ratM_one]; exact (isKM_one c G L M).1, 1, isKM_one c G L M, by rw [ratM_one]; simp⟩
 
 /- English proof (translation)
-Take `⟨γ, hγ, k, hk, rfl⟩` from `h`. Take `⟨γ', hγ', k', hk', rfl⟩` from `h'`. Conclude with `⟨γ' * γ, by rw [ratM_mul]; exact isUA_mul c G hγ' hγ, k * k', isKM_mul c G L M hk hk', by`. Rewrite using `[ratM_mul]`. Simplify using `only [Matrix.mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem uEquiv_trans {a b d : Matrix (Fin n) (Fin n) (RA F E)} (h : UEquiv c G L M a b)
     (h' : UEquiv c G L M b d) : UEquiv c G L M a d := by
@@ -107,7 +107,7 @@ theorem uEquiv_trans {a b d : Matrix (Fin n) (Fin n) (RA F E)} (h : UEquiv c G L
     rw [ratM_mul]; simp only [Matrix.mul_assoc]⟩
 
 /- English proof (translation)
-Unfold `classNo`. Use `haveI : Nonempty (Quot fun a b : {g // IsUA c G g} => UEquiv c G L M a.1 b.1) := ⟨Quot.mk _ ⟨1, (isKM_one c G L M).1⟩⟩`. Conclude with `ENat.one_le_card_iff_nonempty _ |>.2 this`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem one_le_classNo : 1 ≤ classNo c G L M := by
   unfold classNo
@@ -116,7 +116,7 @@ theorem one_le_classNo : 1 ≤ classNo c G L M := by
   exact ENat.one_le_card_iff_nonempty _ |>.2 this
 
 /- English proof (translation)
-Unfold `torusNo`. Use `haveI : Nonempty (Quot fun a b : {t // IsTA c t} => TEquiv c G L M a.1 b.1) := ⟨Quot.mk _ ⟨1, by simp [IsTA]⟩⟩`. Conclude with `ENat.one_le_card_iff_nonempty _ |>.2 this`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem one_le_torusNo : 1 ≤ torusNo c G L M := by
   unfold torusNo
@@ -125,17 +125,17 @@ theorem one_le_torusNo : 1 ≤ torusNo c G L M := by
   exact ENat.one_le_card_iff_nonempty _ |>.2 this
 
 /- English proof (translation)
-Establish `key : gᵀ * ratM F G * g.map (sg (FiniteAdeleRing (𝓞 F) F) c) = ratM F G`. Use extensionality with `i j`. Establish `h` using `hg.2 (Pi.single i 1) (Pi.single j 1)`. Establish `h1 : hermA c G (Pi.single i (1 : RA F E)) (Pi.single j 1) = ratM F G i j`. Unfold `hermA`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.sum_eq_single i (by intro b _ hb; simp [hb]) (by simp), Finset.sum_eq_single j (by intro b _ hb; simp [hb]) (by simp)]`. Simplify using `[ratM]`. Establish `h2 : ∀ i a, (g *ᵥ Pi.single i (1 : RA F E)) a = g a i` using `fun i a => by`. Rewrite using `[mulVec_single_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← h1, ← h]`. Unfold `hermA`. Simplify using `only [h2]`. Rewrite using `[Finset.sum_comm, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`. Both sides reduce to the same expression. Establish `hd` using `congrArg det key`. Establish `hu : IsUnit (ratM F G).det`. Establish `: (ratM F G).det = (Algebra.TensorProduct.includeRight : E →ₐ[F] RA F E) G.det` using `(AlgHom.map_det (Algebra.TensorProduct.includeRight : E →ₐ[F] RA F E) G).symm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `(isUnit_iff_ne_zero.2 hG).map _`. Establish `hm : (g.map (sg (FiniteAdeleRing (𝓞 F) F) c)).det = sg (FiniteAdeleRing (𝓞 F) F) c g.det` using `(AlgHom.map_det _ g).symm`. Rewrite `hd` using `[det_mul, det_mul, det_transpose, hm]`. Unfold `IsTA`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hu.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[mul_one]`. Take the linear combination `hd`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isTA_det (hG : G.det ≠ 0) {g : Matrix (Fin n) (Fin n) (RA F E)} (hg : IsUA c G g) :
     IsTA c g.det := by
@@ -171,7 +171,7 @@ theorem isTA_det (hG : G.det ≠ 0) {g : Matrix (Fin n) (Fin n) (RA F E)} (hg : 
   linear_combination hd
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `h`. Use `⟨hk.1, fun x hx => ?_, hk.2.2⟩` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `hk.2.1 x hx`. Conclude with `⟨d • y, nsmul_mem hy d, by rw [e, mul_smul]⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isKM_of_dvd {M' : ℕ} (h : M ∣ M') {k : Matrix (Fin n) (Fin n) (RA F E)} (hk : IsKM c G L M' k) :
     IsKM c G L M k := by
@@ -181,9 +181,7 @@ theorem isKM_of_dvd {M' : ℕ} (h : M ∣ M') {k : Matrix (Fin n) (Fin n) (RA F 
   exact ⟨d • y, nsmul_mem hy d, by rw [e, mul_smul]⟩
 
 /- English proof (translation)
-Establish `hA : Function.Injective (algebraMap F (FiniteAdeleRing (𝓞 F) F))`. Take `⟨p, hp0, hp⟩` from `Ring.not_isField_iff_exists_prime.1 (RingOfIntegers.not_isField F)`. Set `v : HeightOneSpectrum (𝓞 F)` to `⟨p, hp, hp0⟩`. Use `haveI : Nontrivial (FiniteAdeleRing (𝓞 F) F) := ⟨0, 1, fun h => by`. Use `congrArg (fun a : FiniteAdeleRing (𝓞 F) F => a v) h` as an intermediate fact.
-
-Conclude with `zero_ne_one (α := v.adicCompletion F) this⟩`. Conclude with `(algebraMap F _).injective`. Conclude with `Algebra.TensorProduct.includeRight_injective hA`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_tmul_injective : Function.Injective fun x : E => (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] x := by
   have hA : Function.Injective (algebraMap F (FiniteAdeleRing (𝓞 F) F)) := by
@@ -196,14 +194,14 @@ theorem one_tmul_injective : Function.Injective fun x : E => (1 : FiniteAdeleRin
   exact Algebra.TensorProduct.includeRight_injective hA
 
 /- English proof (translation)
-The claim follows from `(AlgHom.map_det (Algebra.TensorProduct.includeRight : E →ₐ[F] RA F E) γ).symm`.
+A detailed English derivation is pending.
 -/
 theorem ratM_det (γ : Matrix (Fin n) (Fin n) E) :
     (ratM F γ).det = (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ γ.det :=
   (AlgHom.map_det (Algebra.TensorProduct.includeRight : E →ₐ[F] RA F E) γ).symm
 
 /- English proof (translation)
-Use `⟨by simpa using IsUnit.of_mul_eq_one _ ht, fun x y => ?_⟩` and prove the remaining obligations. Unfold `IsTA at ht`. Simplify using `only [hermA, Finset.univ_unique, Finset.sum_singleton, mulVec, dotProduct, Fin.default_eq_zero, of_apply, cons_val', cons_val_fin_one, map_mul]`. Take the linear combination `(x 0 * (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] G 0 0 * sg (FiniteAdeleRing (𝓞 F) F) c (y 0)) * ht`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem isUA_of_isTA (G : Matrix (Fin 1) (Fin 1) E) {t : RA F E} (ht : IsTA c t) : IsUA c G !![t] := by
   refine ⟨by simpa using IsUnit.of_mul_eq_one _ ht, fun x y => ?_⟩
@@ -214,11 +212,11 @@ theorem isUA_of_isTA (G : Matrix (Fin 1) (Fin 1) E) {t : RA F E} (ht : IsTA c t)
     sg (FiniteAdeleRing (𝓞 F) F) c (y 0)) * ht
 
 /- English proof (translation)
-Unfold `torusNo classNo`. Set `f : (Quot fun a b : {g // IsUA c G g} => UEquiv c G L M a.1 b.1) → (Quot fun a b : {t // IsTA c t} => TEquiv c G L M a.1 b.1)` to `Quot.map (fun g => ⟨g.1.det, isTA_det c G hG g.2⟩) (by`. Introduce and unpack `a b ⟨γ, hγ, k, hk, e⟩`. Use `⟨γ.det, one_tmul_injective (F := F) ?_, k, hk, ?_⟩` and prove the remaining obligations. Use `isTA_det c G hG hγ` as an intermediate fact.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[ratM_det]`. Simplify `this` using `[IsTA, sg, Algebra.TensorProduct.one_def]`. Simplify using `only [e, det_mul, ratM_det])`. Establish `hf : Function.Surjective f`. Introduce and unpack `⟨t, ht⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨Quot.mk _ ⟨!![t], isUA_of_isTA c G ht⟩, congrArg (Quot.mk _) (Subtype.ext (by simp))⟩`. Conclude with `ENat.card_le_card_of_injective (Function.injective_surjInv hf)`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem torusNo_le_classNo_rank_one (G : Matrix (Fin 1) (Fin 1) E) (hG : G.det ≠ 0) (L : Set (Fin 1 → E)) :
     torusNo c G L M ≤ classNo c G L M := by
@@ -238,9 +236,9 @@ theorem torusNo_le_classNo_rank_one (G : Matrix (Fin 1) (Fin 1) E) (hG : G.det �
   exact ENat.card_le_card_of_injective (Function.injective_surjInv hf)
 
 /- English proof (translation)
-Use `le_antisymm ?_ (one_le_classNo c G L M)` and prove the remaining obligations. Unfold `classNo`. Rewrite using `[ENat.card_le_one_iff_subsingleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a⟩ ⟨b⟩`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `congrArg (Quot.mk _) (Subtype.ext (Subsingleton.elim _ _))`.
+A detailed English derivation is pending.
 -/
 theorem classNo_rank_zero (G : Matrix (Fin 0) (Fin 0) E) (L : Set (Fin 0 → E)) : classNo c G L M = 1 := by
   refine le_antisymm ?_ (one_le_classNo c G L M)
@@ -251,9 +249,9 @@ theorem classNo_rank_zero (G : Matrix (Fin 0) (Fin 0) E) (L : Set (Fin 0 → E))
   exact congrArg (Quot.mk _) (Subtype.ext (Subsingleton.elim _ _))
 
 /- English proof (translation)
-Take `⟨γ, hγ, k, hk, rfl⟩` from `h`. Establish `hd : IsUnit γ.det`. Use `isUnit_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Establish `h1` using `hγ.1`. Rewrite `h1` using `[ratM_det, h0, TensorProduct.tmul_zero, isUnit_zero_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one (α := E) (one_tmul_injective (F := F) (by simpa [Algebra.TensorProduct.one_def] using h1))`. Establish `hi : ratM F γ⁻¹ * ratM F γ = 1` using `by rw [← ratM_mul, nonsing_inv_mul γ hd, ratM_one]`. Use `⟨γ⁻¹, by rw [← inv_eq_left_inv hi]; exact isUA_inv c G hγ, k⁻¹, isKM_inv c G L M hk, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, mul_nonsing_inv k hk.1.1, Matrix.mul_one, ← Matrix.mul_assoc, hi, Matrix.one_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uEquiv_symm {a b : Matrix (Fin n) (Fin n) (RA F E)} (h : UEquiv c G L M a b) : UEquiv c G L M b a := by
   obtain ⟨γ, hγ, k, hk, rfl⟩ := h

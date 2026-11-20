@@ -26,9 +26,9 @@ abbrev cst (s : X ⟶ Sp ℂ) (V : X.Opens) : ℂ →+* Γ(X, V) :=
   ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv ≫ s.appLE ⊤ V (fun _ _ => trivial)).hom
 
 /- English proof (translation)
-Establish `h : ∀ p, hV.fromSpec p ∈ hV'` using `fun p => by`. Rewrite using `[← SetLike.mem_coe, ← hV.range_fromSpec]`. Conclude with `⟨p, rfl⟩`. Establish `e` using `h (spMap ψ (show Sp ℂ from IsLocalRing.closedPoint ℂ))`. Rewrite `e` using `[← Scheme.Hom.comp_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(top_le_iff_centre _ hV').2 e`.
+A detailed English derivation is pending.
 -/
 theorem top_le_spMap (hV' : X.Opens) (hV : IsAffineOpen hV') (ψ : Γ(X, hV') →+* ℂ) :
     ⊤ ≤ (spMap ψ ≫ hV.fromSpec) ⁻¹ᵁ hV' := by
@@ -39,18 +39,16 @@ theorem top_le_spMap (hV' : X.Opens) (hV : IsAffineOpen hV') (ψ : Γ(X, hV') �
   exact (top_le_iff_centre _ hV').2 e
 
 /- English proof (translation)
-The claim follows from `(valAt'_fromSpec hV _ a).trans (valAt'_spMap ψ a)`.
+A detailed English derivation is pending.
 -/
 theorem val_spMap {V : X.Opens} (hV : IsAffineOpen V) (ψ : Γ(X, V) →+* ℂ) (a : Γ(X, V)) :
     valAt' (spMap ψ ≫ hV.fromSpec) V a = ψ a :=
   (valAt'_fromSpec hV _ a).trans (valAt'_spMap ψ a)
 
 /- English proof (translation)
-Establish `hr : Set.range y ⊆ Set.range hV.fromSpec`. Rewrite using `[hV.range_fromSpec]`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `h (Set.mem_univ p)`. Establish `hl : IsOpenImmersion.lift hV.fromSpec y hr ≫ hV.fromSpec = y` using `IsOpenImmersion.lift_fac _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ⟩ : ∃ φ : Γ(X, V) →+* ℂ, spMap φ = IsOpenImmersion.lift hV.fromSpec y hr` from `⟨(Spec.preimage (IsOpenImmersion.lift hV.fromSpec y hr)).hom, Spec.map_preimage _⟩`. Rewrite `hl` using `[← hφ]`. Establish `e : valHom y V h = φ` using `RingHom.ext fun a => by show valAt' y V a = φ a`. Rewrite using `[← hl]`. Conclude with `val_spMap hV φ a`.
-
-Rewrite using `[e, hl]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_spMap {V : X.Opens} (hV : IsAffineOpen V) (y : Sp ℂ ⟶ X) (h : ⊤ ≤ y ⁻¹ᵁ V) :
     y = spMap (valHom y V h) ≫ hV.fromSpec := by
@@ -69,7 +67,7 @@ theorem eq_spMap {V : X.Opens} (hV : IsAffineOpen V) (y : Sp ℂ ⟶ X) (h : ⊤
   rw [e, hl]
 
 /- English proof (translation)
-Rewrite using `[← IsAffineOpen.SpecMap_appLE_fromSpec s (isAffineOpen_top _) hV (fun _ _ => trivial), IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Conclude with `(Spec.map_comp _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fromSpec_comp_structure_map (s : X ⟶ Sp ℂ) {V : X.Opens} (hV : IsAffineOpen V) : hV.fromSpec ≫ s = spMap (cst s V) := by
   rw [← IsAffineOpen.SpecMap_appLE_fromSpec s (isAffineOpen_top _) hV (fun _ _ => trivial),
@@ -77,9 +75,9 @@ theorem fromSpec_comp_structure_map (s : X ⟶ Sp ℂ) {V : X.Opens} (hV : IsAff
   exact (Spec.map_comp _ _).symm
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, fromSpec_comp_structure_map]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `e : spMap (ψ.comp (cst s V)) = spMap (RingHom.id ℂ)` using `(Spec.map_comp _ _).trans (h.trans (Spec.map_id _).symm)`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `(Spec.map_comp _ _).symm.trans ?_` and prove the remaining obligations. Conclude with `(congrArg spMap h).trans (Spec.map_id _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem over_iff (s : X ⟶ Sp ℂ) {V : X.Opens} (hV : IsAffineOpen V) (ψ : Γ(X, V) →+* ℂ) :
     (spMap ψ ≫ hV.fromSpec) ≫ s = 𝟙 _ ↔ ψ.comp (cst s V) = RingHom.id ℂ := by
@@ -93,14 +91,14 @@ theorem over_iff (s : X ⟶ Sp ℂ) {V : X.Opens} (hV : IsAffineOpen V) (ψ : Γ
     exact (congrArg spMap h).trans (Spec.map_id _)
 
 /- English proof (translation)
-The claim follows from `(over_iff s hV _).1 (by rw [← eq_spMap hV y h]; exact hy)`.
+A detailed English derivation is pending.
 -/
 theorem comp_cst (s : X ⟶ Sp ℂ) {V : X.Opens} (hV : IsAffineOpen V) (y : Sp ℂ ⟶ X) (h : ⊤ ≤ y ⁻¹ᵁ V)
     (hy : y ≫ s = 𝟙 _) : (valHom y V h).comp (cst s V) = RingHom.id ℂ :=
   (over_iff s hV _).1 (by rw [← eq_spMap hV y h]; exact hy)
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `b ⟨hb, hj⟩`. Establish `h : ∀ j, ∀ᶠ y in 𝓝 b, ‖v j y - c j‖ < ε` using `fun j => (((hv j).continuousAt (hT.mem_nhds hb)).sub continuousAt_const).norm.eventually_lt continuousAt_const (hj j)`. Use `filter_upwards [hT.mem_nhds hb, Filter.eventually_all.2 h] with y h₁ h₂ using ⟨h₁, h₂⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_near {E : Type} [TopologicalSpace E] {T : Set E} (hT : IsOpen T) {n : ℕ} (v : Fin n → E → ℂ)
     (c : Fin n → ℂ) (ε : ℝ) (hv : ∀ j, ContinuousOn (v j) T) : IsOpen {b ∈ T | ∀ j, ‖v j b - c j‖ < ε} := by
@@ -111,15 +109,13 @@ theorem isOpen_near {E : Type} [TopologicalSpace E] {T : Set E} (hT : IsOpen T) 
   filter_upwards [hT.mem_nhds hb, Filter.eventually_all.2 h] with y h₁ h₂ using ⟨h₁, h₂⟩
 
 /- English proof (translation)
-Establish `oB : IsOpen {b ∈ B₀ | ∀ j, ‖Ψ b (g j) - ψ₀ (g j)‖ < ε}` using `isOpen_near o (fun j b => Ψ b (g j)) _ ε fun j => (a₂ (g j)).continuousOn`. Use `⟨oB, ?_, fun b hb => (over_iff s hV _).2 (a₁ b hb.1).1, ?_⟩` and prove the remaining obligations. Conclude with `isHolTo_comp (isHolTo_spMap oB fun a => (a₂ a).mono fun b hb => hb.1) hV.fromSpec`. Introduce `m B' y oB' hy ov b₀ h₀ b₁ h₁ e`. Establish `oT : IsOpen {b ∈ B' | ⊤ ≤ y b ⁻¹ᵁ V}` using `(hy V 0).1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `dv : ∀ a : Γ(X, V), DifferentiableOn ℂ (fun b => valAt' (y b) V a) {b ∈ B' | ⊤ ≤ y b ⁻¹ᵁ V}` using `fun a => (hy V a).2`. Establish `oT'` using `isOpen_near oT (fun j b => valAt' (y b) V (g j)) (fun j => ψ₀ (g j)) ε fun j => (dv (g j)).continuousOn`. Establish `v₀ : ∀ a, valAt' (y b₀) V a = Ψ b₁ a` using `fun a => by rw [e]; exact val_spMap hV _ a`. Establish `m₀ : b₀ ∈ {b ∈ {b ∈ B' | ⊤ ≤ y b ⁻¹ᵁ V} | ∀ j, ‖valAt' (y b) V (g j) - ψ₀ (g j)‖ < ε}` using `⟨⟨h₀, by rw [e]; exact top_le_spMap V hV _⟩, fun j => by rw [v₀]; exact h₁.2 j⟩`. Take `⟨δ, δ0, hδ⟩` from `Metric.isOpen_iff.1 oT' b₀ m₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨δ, fun b i => valAt' (y b) V (f i), δ0, fun b hb => (hδ hb).1.1, differentiableOn_pi.2 fun i => (dv (f i)).mono fun b hb => (hδ hb).1, funext fun i => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Use `show valAt' (y b₀) V (f i) = b₁ i`. Rewrite using `[v₀]`. Conclude with `(a₁ b₁ h₁.1).2 i`. Establish `t` using `(hδ hb).1.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `k` using `a₃ (valHom (y b) V t) (comp_cst s hV _ t (ov b (hδ hb).1.1)) (hδ hb).2`. Establish `k₂ : Ψ (fun i => valAt' (y b) V (f i)) = valHom (y b) V t` using `k.2`. Use `⟨⟨k.1, fun j => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[k₂]`. Conclude with `(hδ hb).2 j`.
-
-Use `show y b = spMap (Ψ (fun i => valAt' (y b) V (f i))) ≫ hV.fromSpec`. Rewrite using `[k₂]`. Conclude with `eq_spMap hV _ t`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isChart_of_data (s : X ⟶ Sp ℂ) {V : X.Opens} (hV : IsAffineOpen V) {D M : ℕ} (g : Fin M → Γ(X, V))
     (f : Fin D → Γ(X, V)) {B₀ : Set (Fin D → ℂ)} {ε : ℝ} (Ψ : (Fin D → ℂ) → (Γ(X, V) →+* ℂ)) (ψ₀ : Γ(X, V) →+* ℂ)
@@ -153,7 +149,7 @@ theorem isChart_of_data (s : X ⟶ Sp ℂ) {V : X.Opens} (hV : IsAffineOpen V) {
       rw [k₂]; exact eq_spMap hV _ t
 
 /- English proof (translation)
-The claim follows from `congr($(Scheme.Hom.appLE_map s (U := ⊤) (V := U) (fun _ _ => trivial) (homOfLE h).op) ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv c))`.
+A detailed English derivation is pending.
 -/
 theorem res_cst (s : X ⟶ Sp ℂ) {U V : X.Opens} (h : V ≤ U) (c : ℂ) :
     (X.presheaf.map (homOfLE h).op).hom (cst s U c) = cst s V c :=
@@ -161,15 +157,15 @@ theorem res_cst (s : X ⟶ Sp ℂ) {U V : X.Opens} (h : V ≤ U) (c : ℂ) :
     ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv c))
 
 /- English proof (translation)
-Take `⟨U₀, -, U, hU, hp, hle, hsm⟩` from `Smooth.exists_isStandardSmooth s q`. Establish `hU₀ : U₀ = ⊤`. Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations. Establish `h2 : y = s q` using `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Rewrite using `[h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hle hp`. Substitute `hU₀` using the available equality. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n, RingHom.IsStandardSmoothOfRelativeDimension n (s.appLE ⊤ U hle).hom := by`. Set `_` to `(s.appLE ⊤ U hle).hom.toAlgebra`. Establish `: Algebra.IsStandardSmooth Γ(Sp ℂ, ⊤) Γ(X, U)` using `hsm`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨_, _, _, _, ⟨P⟩⟩` from `this`. Conclude with `⟨P.dimension, _, _, _, ‹_›, P, rfl⟩`. Take `⟨a, haM, hqa⟩` from `hU.exists_basicOpen_le (V := M) ⟨q, hq⟩ hp`. Use `⟨X.basicOpen a, hU.basicOpen a, n, haM, hqa, ?_⟩` and prove the remaining obligations. Use `hU.isLocalization_basicOpen a` as an intermediate fact.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (algebraMap Γ(X, U) Γ(X, X.basicOpen a)).IsStandardSmoothOfRelativeDimension 0` using `RingHom.IsStandardSmoothOfRelativeDimension.algebraMap_isLocalizationAway a`. Establish `h2 : (cst s U).IsStandardSmoothOfRelativeDimension n` using `RingHom.isStandardSmoothOfRelativeDimension_respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).symm.commRingCatIsoToRingEquiv hn`. Establish `h3` using `h1.comp h2`. Rewrite `h3` using `[zero_add]`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use extensionality with `c`. Conclude with `(res_cst s (X.basicOpen_le a) c).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_std (s : X ⟶ Sp ℂ) [Smooth s] (q : X) (M : X.Opens) (hq : q ∈ M) :
     ∃ (V : X.Opens) (_ : IsAffineOpen V) (D : ℕ), V ≤ M ∧ q ∈ V ∧ (cst s V).IsStandardSmoothOfRelativeDimension D := by
@@ -199,7 +195,7 @@ theorem exists_std (s : X ⟶ Sp ℂ) [Smooth s] (q : X) (M : X.Opens) (hq : q �
   exact (res_cst s (X.basicOpen_le a) c).symm
 
 /- English proof (translation)
-Use `haveI : Nonempty V.toScheme := ⟨⟨q, hq⟩⟩`. Use `haveI : AlgebraicGeometry.IsIntegral V.toScheme := isIntegral_of_isOpenImmersion (X.homOfLE h)`. Use `haveI : Nonempty (⊤ : V.toScheme.Opens) := ⟨⟨⟨q, hq⟩, trivial⟩⟩`. Conclude with `MulEquiv.isDomain Γ(V.toScheme, ⊤) (Scheme.Opens.topIso V).symm.commRingCatIsoToRingEquiv.toMulEquiv`.
+A detailed English derivation is pending.
 -/
 theorem isDomain_of_le {Z V : X.Opens} [AlgebraicGeometry.IsIntegral Z.toScheme] (h : V ≤ Z) {q : X} (hq : q ∈ V) :
     IsDomain Γ(X, V) := by
@@ -209,19 +205,17 @@ theorem isDomain_of_le {Z V : X.Opens} [AlgebraicGeometry.IsIntegral Z.toScheme]
   exact MulEquiv.isDomain Γ(V.toScheme, ⊤) (Scheme.Opens.topIso V).symm.commRingCatIsoToRingEquiv.toMulEquiv
 
 /- English proof (translation)
-Introduce `hring X s Ω _ ξ W N x hs hξ hW hxs hgx hxN`. Use `haveI := hs`. Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian s`. Take `⟨Z, hZ, -, hZi⟩` from `cpt_open_integral X Ω ξ hξ`. Take `⟨V, hV, D, hVM, hxV, hstd⟩` from `exists_std s (centre x) (N ⊓ Z) ⟨hxN, (hZ _).2 hgx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI alg : Algebra ℂ Γ(X, V) := (cst s V).toAlgebra`. Use `haveI : Algebra.IsStandardSmoothOfRelativeDimension D ℂ Γ(X, V) := hstd`. Use `haveI : IsDomain Γ(X, V) := isDomain_of_le (hVM.trans inf_le_right) hxV`. Establish `hxt : ⊤ ≤ x ⁻¹ᵁ V` using `(top_le_iff_centre x V).2 hxV`. Establish `h₀ : (valHom x V hxt).comp (algebraMap ℂ Γ(X, V)) = RingHom.id ℂ` using `comp_cst s hV x hxt hxs`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨M, g, f, B₀, ε, Ψ, ε0, o, a₁, a₂, a₃⟩` from `anChart_alg D (RingHom.id ℂ) (valHom x V hxt) h₀`. Establish `hc` using `isChart_of_data s hV g f Ψ (valHom x V hxt) o a₁ a₂ a₃`. Establish `m₁` using `a₃ _ h₀ fun _ => by simpa using ε0`. Establish `hY : ∀ b, centre (spMap (Ψ b) ≫ hV.fromSpec) ∈ V` using `fun b => (top_le_iff_centre _ V).1 (top_le_spMap V hV _)`. Use `⟨D, _, _, fun i => valHom x V hxt (f i), hc, ⟨m₁.1, fun j => ?_⟩, ?_, fun b _ => ⟨(hVM (hY b)).1, (hZ _).1 (hVM (hY b)).2⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[m₁.2]`. Simplify using `using ε0`. Use `show spMap (Ψ fun i => valHom x V hxt (f i)) ≫ hV.fromSpec = x`. Rewrite using `[m₁.2]`. Conclude with `(eq_spMap hV x hxt).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce `O oO sO nO`. Establish `hgV : genPt ξ ∈ V` using `genPt_mem hgx hxV`. Take `⟨a, haW, haξ⟩` from `hV.exists_basicOpen_le (V := W) ⟨genPt ξ, hW⟩ hgV`. Establish `a0 : a ≠ 0`. Introduce and unpack `rfl`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `at haξ`. Assume the negation of the conclusion as `hc'`. Use `push_neg at hc'`. Use `a0 (hring Γ(X, V) D O Ψ f a oO nO (fun b hb => a₁ b (sO hb).1) fun b hb => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
-
-Use `hc' b hb (haW ?_)` and prove the remaining obligations. Establish `hv : valAt' (spMap (Ψ b) ≫ hV.fromSpec) V a ≠ 0` using `by rw [val_spMap]; exact hne`. Conclude with `(valAt'_ne_zero_iff _ V (top_le_spMap V hV _) a _).1 hv`.
+A detailed English derivation is pending.
 -/
 theorem exists_chart : (∀ (A : Type) [CommRing A] [IsDomain A] [Algebra ℂ A] (D : ℕ)
     [Algebra.IsStandardSmoothOfRelativeDimension D ℂ A] (O : Set (Fin D → ℂ)) (Ψ : (Fin D → ℂ) → (A →+* ℂ))

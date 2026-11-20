@@ -9,11 +9,9 @@ open Matrix
 namespace GlobalTheory.DeligneSerre
 
 /- English proof (translation)
-Use `set f := (σ p).charpoly with hf`. Establish `hq : Polynomial.aeval p f ∈ m`. Apply `hker` to reduce the goal to its premises. Rewrite using `[← Polynomial.aeval_algHom_apply, Matrix.aeval_self_charpoly]`. Establish `h0 : algebraMap O R (f.coeff 0) ∈ m`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hq`. Rewrite `h` using `[← Polynomial.X_mul_divX_add f, map_add, map_mul, Polynomial.aeval_X, Polynomial.aeval_C]`. Conclude with `(Submodule.add_mem_iff_right m (m.mul_mem_right _ hp)).1 h`. Establish `hc : IsUnit (f.coeff 0)`. Rewrite `hu` using `[Matrix.det_eq_sign_charpoly_coeff]`.
-
-Conclude with `isUnit_of_mul_isUnit_right hu`. Conclude with `Ideal.eq_top_of_isUnit_mem m h0 (hc.map _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_top_of_isUnit_det (O : Type) [CommRing O] (R : Type) [CommRing R] [Algebra O R] (n : ℕ)
     (σ : R →ₐ[O] Matrix (Fin n) (Fin n) O) (m : Ideal R) (hker : ∀ p, σ p = 0 → p ∈ m) (p : R)
@@ -32,11 +30,11 @@ theorem eq_top_of_isUnit_det (O : Type) [CommRing O] (R : Type) [CommRing R] [Al
   exact Ideal.eq_top_of_isUnit_mem m h0 (hc.map _)
 
 /- English proof (translation)
-Use `choose μ hμ using h`. Establish `inj : ∀ a b : K, a • c = b • c → a = b` using `fun a b h => smul_left_injective K hc h`. Use `⟨{ toFun := μ, map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, hμ⟩` and prove the remaining obligations. Apply `inj` to reduce the goal to its premises. Rewrite using `[← hμ, map_one, one_mulVec, one_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Apply `inj` to reduce the goal to its premises. Rewrite using `[← hμ, map_mul, ← mulVec_mulVec, hμ b, mulVec_smul, hμ a, smul_smul, mul_comm (μ b)]`. Apply `inj` to reduce the goal to its premises. Rewrite using `[← hμ, map_zero, zero_mulVec, zero_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Apply `inj` to reduce the goal to its premises. Rewrite using `[← hμ, map_add, add_mulVec, hμ a, hμ b, add_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigen_ringHom (R : Type) [CommRing R] (K : Type) [Field K] (n : ℕ)
     (τ : R →+* Matrix (Fin n) (Fin n) K) (c : Fin n → K) (hc : c ≠ 0)
@@ -51,15 +49,15 @@ theorem eigen_ringHom (R : Type) [CommRing R] (K : Type) [Field K] (n : ℕ)
   · intro a b; apply inj; rw [← hμ, map_add, add_mulVec, hμ a, hμ b, add_smul]
 
 /- English proof (translation)
-Establish `hroot : ∀ μ ∈ N.charpoly.roots, ‖μ‖ = 1`. Introduce `μ hμ`. Apply `h` to reduce the goal to its premises. Establish `hne : N.charpoly ≠ 0` using `(Matrix.charpoly_monic N).ne_zero`. Establish `hr` using `(Polynomial.mem_roots hne).1 hμ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hr` using `[Polynomial.IsRoot, Matrix.eval_charpoly]`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hr`. Use `⟨v, hv0, ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[sub_mulVec, sub_eq_zero]`. Rewrite using `[← hv]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i`. Simplify using `[Matrix.scalar_apply, mulVec_diagonal]`. Rewrite using `[Matrix.det_eq_prod_roots_charpoly]`. Use `revert hroot`. Generalize the expression as in `N.charpoly.roots = s`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => intro _`. Simplify using the standard rewrite rules. Consider the case `cons a s ih`. Introduce `hs`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Multiset.prod_cons, norm_mul, hs a (Multiset.mem_cons_self a s), ih (fun x hx => hs x (Multiset.mem_cons_of_mem hx)), one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem norm_det_eq_one (K : Type) [NormedField K] [IsAlgClosed K] (n : ℕ)
     (N : Matrix (Fin n) (Fin n) K)
@@ -91,9 +89,9 @@ end GlobalTheory.DeligneSerre
 namespace GlobalTheory.DeligneSerre
 
 /- English proof (translation)
-Use `first`. Consider the case `(rename_i h_1 h_3; revert l h_1 O h_3 emb hle n N c μ hc hN; exact @_root_.GlobalTheory.EigenvalueNormAtMostOne.norm_eigenvalue_le_one)`. Consider the case `exact @_root_.GlobalTheory.EigenvalueNormAtMostOne.norm_eigenvalue_le_one`. Consider the case `exact _root_.GlobalTheory.EigenvalueNormAtMostOne.norm_eigenvalue_le_one`. Consider the case `(apply _root_.GlobalTheory.EigenvalueNormAtMostOne.norm_eigenvalue_le_one <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply _root_.GlobalTheory.EigenvalueNormAtMostOne.norm_eigenvalue_le_one <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.EigenvalueNormAtMostOne.norm_eigenvalue_le_one <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.EigenvalueNormAtMostOne.norm_eigenvalue_le_one ..)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem norm_eigen_le_one (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] (emb : O →+* PadicAlgCl l)
     (hle : ∀ a, ‖emb a‖ ≤ 1) (n : ℕ) (N : Matrix (Fin n) (Fin n) O) (c : Fin n → PadicAlgCl l)
@@ -112,13 +110,13 @@ end GlobalTheory.DeligneSerre
 namespace GlobalTheory.DeligneSerre
 
 /- English proof (translation)
-Use `⟨{ carrier := {p | ‖χ p‖ < 1}, add_mem' := ?_, zero_mem' := ?_, smul_mem' := ?_ }, ?_, fun p => Iff.rfl⟩` and prove the remaining obligations. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq, map_add] at *`. Conclude with `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt ha hb)`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c x hx`. Simplify using `only [Set.mem_setOf_eq, smul_eq_mul, map_mul, norm_mul] at *`. Combine the equalities or inequalities in the displayed calculation. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one] show ¬ ‖χ 1‖ < 1`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `a b hab show ‖χ a‖ < 1 ∨ ‖χ b‖ < 1`. Establish `hab' : ‖χ a‖ * ‖χ b‖ < 1`. Establish `: ‖χ (a * b)‖ < 1` using `hab`. Simplify `this` using `[map_mul, norm_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `: 1 * 1 ≤ ‖χ a‖ * ‖χ b‖` using `mul_le_mul hno.1 hno.2 zero_le_one (norm_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem unitBall_prime (R : Type) [CommRing R] (l : ℕ) [Fact l.Prime] (χ : R →+* PadicAlgCl l)
     (h : ∀ p, ‖χ p‖ ≤ 1) : ∃ P : Ideal R, P.IsPrime ∧ ∀ p, p ∈ P ↔ ‖χ p‖ < 1 := by
@@ -147,35 +145,29 @@ theorem unitBall_prime (R : Type) [CommRing R] (l : ℕ) [Fact l.Prime] (χ : R 
       linarith
 
 /- English proof (translation)
-Set `τ : R →+* Matrix (Fin n) (Fin n) (PadicAlgCl l)` to `(emb.mapMatrix).comp (σ : R →+* Matrix (Fin n) (Fin n) O)`. Establish `hτ : ∀ p, τ p = (σ p).map emb` using `fun p => rfl`. Establish `hcomm : ∀ p q, Commute (τ p) (τ q)` using `fun p q => by show τ p * τ q = τ q * τ p`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`. Set `X : Set (R →+* PadicAlgCl l)` to `{χ | ∃ c : Fin n → PadicAlgCl l, c ≠ 0 ∧ ∀ p, τ p *ᵥ c = χ p • c}`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hXfin : X.Finite`. Establish `h` using `GlobalTheory.T.finite_joint_eigenvalues_of_commute (PadicAlgCl l) n R τ hcomm`. Use `Set.Finite.of_finite_image (f := fun χ : R →+* PadicAlgCl l => (χ : R → PadicAlgCl l)) (h.subset ?_) DFunLike.coe_injective.injOn` and prove the remaining obligations. Introduce and unpack `_ ⟨χ, ⟨c, hc, hχ⟩, rfl⟩`. Conclude with `⟨c, hc, hχ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hXle : ∀ χ ∈ X, ∀ p, ‖χ p‖ ≤ 1`. Introduce and unpack `χ ⟨c, hc, hχ⟩ p`. Conclude with `norm_eigen_le_one l O emb hle n (σ p) c (χ p) hc (hχ p)`. Establish `hP : ∀ χ ∈ X, ∃ P : Ideal R, P.IsPrime ∧ ∀ p, p ∈ P ↔ ‖χ p‖ < 1` using `fun χ hχ => unitBall_prime R l χ (hXle χ hχ)`. Use `choose! P hPprime hPmem using hP`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `key : ∃ χ ∈ X, m ≤ P χ`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Choose the witnesses or unpack the hypotheses as in `⟨p, hpm, hpX⟩ : ∃ p ∈ m, ∀ χ ∈ X, ¬ ‖χ p‖ < 1 := by`. Break down `X.eq_empty_or_nonempty with hX | ⟨χ0, hχ0⟩` into its components or cases.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨0, m.zero_mem, by simp [hX]⟩`. Establish `hns : ¬ ((m : Set R) ⊆ ⋃ χ ∈ X, (P χ : Set R))`. Rewrite using `[Ideal.subset_union_prime_finite hXfin χ0 χ0 (fun χ hχ _ _ => hPprime χ hχ)]`. Introduce and unpack `⟨χ, hχ, hle'⟩`. Conclude with `hno χ hχ hle'`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hns` using `[Set.not_subset]`. Take `⟨p, hpm, hp⟩` from `hns`. Use `⟨p, hpm, fun χ hχ hlt => hp ?_⟩` and prove the remaining obligations. Conclude with `Set.mem_biUnion hχ ((hPmem χ hχ p).2 hlt)`. Establish `hdet : ‖(τ p).det‖ = 1`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `norm_det_eq_one (PadicAlgCl l) n (τ p)` to reduce the goal to its premises. Introduce and unpack `μ ⟨c, hc, hcμ⟩`. Set `E : Submodule (PadicAlgCl l) (Fin n → PadicAlgCl l)` to `{ carrier := {v | τ p *ᵥ v = μ • v} add_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq] at *`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mulVec_add, ha, hb, smul_add]`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := by`. Introduce `a v hv`. Simplify using `only [Set.mem_setOf_eq] at *`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVec_smul, hv, smul_comm] }`. Establish `hcE : c ∈ E` using `hcμ`. Establish `hE : E ≠ ⊥` using `fun h => hc ((Submodule.mem_bot _).1 (h ▸ hcE))`. Establish `hstab : ∀ A ∈ Set.range τ, ∀ v ∈ E, A *ᵥ v ∈ E`. Introduce and unpack `_ ⟨q, rfl⟩ v hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv' : τ p *ᵥ v = μ • v` using `hv`. Use `show τ p *ᵥ (τ q *ᵥ v) = μ • (τ q *ᵥ v)`. Rewrite using `[mulVec_mulVec, (hcomm p q).eq, ← mulVec_mulVec, hv', mulVec_smul]`. Take `⟨v, hvE, hv0, hv⟩` from `GlobalTheory.T.exists_common_eigenvector_mem_of_commute (PadicAlgCl l) n (Set.range τ) (by rintro _ ⟨a, rfl⟩ _ ⟨b, rfl⟩; exact hcomm a b) E hE hstab`. Take `⟨χ, hχ⟩` from `eigen_ringHom R (PadicAlgCl l) n τ v hv0 (fun q => hv (τ q) ⟨q, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hχX : χ ∈ X` using `⟨v, hv0, hχ⟩`. Establish `hμ : χ p = μ`. Establish `h1 : τ p *ᵥ v = μ • v` using `hvE`. Conclude with `smul_left_injective (PadicAlgCl l) hv0 ((hχ p).symm.trans h1)`. Rewrite using `[← hμ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_antisymm (hXle χ hχX p) (not_lt.1 (hpX χ hχX))`. Establish `hdet' : ‖emb (σ p).det‖ = 1`. Rewrite using `[RingHom.map_det]`. Conclude with `hdet`. Conclude with `hm.ne_top (eq_top_of_isUnit_det O R n σ m hker p hpm (hunit _ hdet'))`.
-
-Take `⟨χ, hχX, hmP⟩` from `key`. Establish `hmeq : m = P χ` using `hm.eq_of_le (hPprime χ hχX).ne_top hmP`. Take `⟨c, hc, hχc⟩` from `id hχX`. Use `⟨χ, hXle χ hχX, fun p => by rw [hmeq]; exact hPmem χ hχX p, ?_, c, hc, hχc⟩` and prove the remaining obligations. Introduce `a`.
-
-Establish `h1` using `hχc (algebraMap O R a)`. Establish `h2 : τ (algebraMap O R a) *ᵥ c = emb a • c`. Rewrite using `[hτ, AlgHom.commutes, Matrix.algebraMap_eq_diagonal, Matrix.diagonal_map (map_zero emb)]`. Use extensionality with `i`. Simplify using `[mulVec_diagonal]`.
-
-Conclude with `smul_left_injective (PadicAlgCl l) hc (h1.symm.trans h2)`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem core (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] (emb : O →+* PadicAlgCl l)
     (hle : ∀ a, ‖emb a‖ ≤ 1) (hunit : ∀ a, ‖emb a‖ = 1 → IsUnit a)
@@ -270,21 +262,19 @@ end GlobalTheory.DeligneSerre
 namespace GlobalTheory.DeligneSerre
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ emb hinj hL I M _ _ _ _ hfin htf V _ _ j Tq hli hcomp m hm hann`. Take `⟨L, _, hL⟩` from `hL`. Establish `hmemL : ∀ a, emb a ∈ L ∧ ‖emb a‖ ≤ 1`. Introduce `a`. Establish `h : emb a ∈ Set.range emb` using `⟨a, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[hL]`. Conclude with `h`. Establish `hle : ∀ a, ‖emb a‖ ≤ 1` using `fun a => (hmemL a).2`. Establish `hunit : ∀ a, ‖emb a‖ = 1 → IsUnit a`. Introduce `a ha`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne : emb a ≠ 0`. Introduce `h0`. Rewrite `ha` using `[h0, norm_zero]`. Conclude with `zero_ne_one ha`. Establish `hinv : (emb a)⁻¹ ∈ Set.range emb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hL]`. Use `⟨L.inv_mem (hmemL a).1, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_inv, ha, inv_one]`. Take `⟨b, hb⟩` from `hinv`. Establish `hab : a * b = 1` using `hinj (by rw [map_mul, hb, map_one, mul_inv_cancel₀ hne])`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `IsUnit.of_mul_eq_one b hab`. Take `⟨n, σ, e, hσ, he_inj, he_span, he_T⟩` from `GlobalTheory.T.exists_matrices_intertwining_of_semilinear_alt l O emb I M hfin htf V j Tq hli hcomp`. Take `⟨χ, hχle, hχm, hχalg, c, hc, hχc⟩` from `core l O emb hle hunit (MvPolynomial I O) n σ m hm (fun p hp => hann p (hσ p hp))`. Use `set θ : I → PadicAlgCl l := fun i => χ (MvPolynomial.X i) with hθ`. Establish `hext : MvPolynomial.eval₂Hom emb θ = χ`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Rewrite using `[MvPolynomial.eval₂Hom_C, ← MvPolynomial.algebraMap_eq, hχalg]`. Introduce `i`. Rewrite using `[MvPolynomial.eval₂Hom_X']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `heval : ∀ p, MvPolynomial.eval₂ emb θ p = χ p` using `fun p => congrArg (fun f : MvPolynomial I O →+* PadicAlgCl l => f p) hext`. Use `⟨θ, fun i => hχle _, fun p => by rw [heval]; exact hχm p, e c, he_span c, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Conclude with `hc (he_inj (by rw [h, map_zero]))`. Introduce `i`.
-
-Rewrite using `[he_T, hχc, map_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integral_eigensystem : ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (emb : O →+* PadicAlgCl l), Function.Injective emb → (∃ L : IntermediateField ℚ_[l] (PadicAlgCl l), FiniteDimensional ℚ_[l] L ∧ Set.range emb = {x | x ∈ L ∧ ‖x‖ ≤ 1}) → ∀ (I : Type) (M : Type) [AddCommGroup M] [Module O M] [Module (MvPolynomial I O) M] [IsScalarTower O (MvPolynomial I O) M], Module.Finite O M → (∀ (c : O) (x : M), c • x = 0 → c = 0 ∨ x = 0) → ∀ (V : Type) [AddCommGroup V] [Module (PadicAlgCl l) V] (j : M →ₛₗ[emb] V) (Tq : I → V →ₗ[PadicAlgCl l] V), (∀ (n : ℕ) (x : Fin n → M), LinearIndependent O x → LinearIndependent (PadicAlgCl l) fun a => j (x a)) → (∀ i x, j ((MvPolynomial.X i : MvPolynomial I O) • x) = Tq i (j x)) → ∀ (m : Ideal (MvPolynomial I O)), m.IsMaximal → (∀ p : MvPolynomial I O, (∀ x : M, p • x = 0) → p ∈ m) → ∃ θ : I → PadicAlgCl l, (∀ i, ‖θ i‖ ≤ 1) ∧ (∀ p, p ∈ m ↔ ‖MvPolynomial.eval₂ emb θ p‖ < 1) ∧ ∃ v ∈ Submodule.span (PadicAlgCl l) (Set.range j), v ≠ 0 ∧ ∀ i, Tq i v = θ i • v := by
   intro l _ O _ _ _ emb hinj hL I M _ _ _ _ hfin htf V _ _ j Tq hli hcomp m hm hann

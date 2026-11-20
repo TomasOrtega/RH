@@ -12,7 +12,7 @@ open MvPolynomial GlobalTheory.FlagPoly GlobalTheory.FlagForm GlobalTheory.Publi
 namespace GlobalTheory.FlagForm
 
 /- English proof (translation)
-Introduce `hP hD hA hR ι _ _ N hh hHh τ Q`. Conclude with `GlobalTheory.FlagAnti.eq_formDeg_of_swap hh hHh τ (GlobalTheory.FlagSwapDefect.swap_defect hA hR hP hD ι N hh hHh τ) Q`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pSum_two_eq_bcForm : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.ArDegree → ArCalc → RegularAlteration → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (hh : Pol ι N →ₗ[ℝ] ℝ), GlobalTheory.FlagZ.IsHh ι N hh → ∀ (τ : ι) (Q : Pol ι N), hh (pSum τ 2 * Q) = formDeg (bcForm τ * toForm Q) := by
   intro hP hD hA hR ι _ _ N hh hHh τ Q

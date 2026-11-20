@@ -8,14 +8,14 @@ open scoped Classical
 namespace GlobalTheory.CompanionTheory.LTPer.QGal
 
 /- English proof (translation)
-Simplify using `only [ltIter, Function.iterate_succ_apply']`.
+Simplify using the standard rewrite rules.
 -/
 theorem ltIter_succ {A : Type} [CommRing A] (w : A) (q n : ℕ) (x : A) :
     ltIter w q (n + 1) x = w * ltIter w q n x + ltIter w q n x ^ q := by
   simp only [ltIter, Function.iterate_succ_apply']
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [ltIter]`. Consider the case `succ n ih => rw [ltIter_succ, ltIter_succ, map_add, map_mul, map_pow, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_ltIter {A A' : Type} [CommRing A] [CommRing A'] (g : A →+* A') (a : A) (q n : ℕ) (x : A) :
     g (ltIter a q n x) = ltIter (g a) q n (g x) := by
@@ -24,11 +24,11 @@ theorem map_ltIter {A A' : Type} [CommRing A] [CommRing A'] (g : A →+* A') (a 
   | succ n ih => rw [ltIter_succ, ltIter_succ, map_add, map_mul, map_pow, ih]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨c, by simpa [ltIter] using h⟩`. Consider the case `succ n ih`. Take `⟨d, hd⟩` from `ih`. Rewrite using `[ltIter_succ, ltIter_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `ltIter w q n a = x at hd ⊢`. Generalize the expression as in `ltIter w q n b = y at hd ⊢`. Establish `hx : x = y + w ^ (n + 1) * d` using `by linear_combination hd`. Take `⟨k, hk⟩` from `Polynomial.powAddExpansion y (w ^ (n + 1) * d) q`. Use `⟨d + s * y ^ (q - 1) * d + k * w ^ n * d ^ 2, ?_⟩` and prove the remaining obligations.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hx, hk, hq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ltIter_congr {A : Type} [CommRing A] (w s : A) (q : ℕ) (hq : (q : A) = w * s) (a b c : A)
     (h : a - b = w * c) (n : ℕ) : ∃ d, ltIter w q n a - ltIter w q n b = w ^ (n + 1) * d := by
@@ -46,9 +46,9 @@ theorem ltIter_congr {A : Type} [CommRing A] (w s : A) (q : ℕ) (hq : (q : A) =
     ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa [ltIter] using hy`. Consider the case `succ n ih`. Rewrite using `[ltIter_succ]`. Rewrite `ih`, the goal using `[← mem_nilradical]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `add_mem (Ideal.mul_mem_left _ _ ih) (Ideal.pow_mem_of_mem _ ih q (Nat.pos_of_ne_zero hq))`.
+A detailed English derivation is pending.
 -/
 theorem nil_ltIter {A : Type} [CommRing A] (w : A) {q : ℕ} (hq : q ≠ 0) {y : A} (hy : IsNilpotent y) (n : ℕ) :
     IsNilpotent (ltIter w q n y) := by
@@ -67,14 +67,14 @@ def nev (y : C) (φ : PowerSeries R) : C :=
   PowerSeries.constantCoeff (PowerSeries.subst (PowerSeries.C y : PowerSeries C) φ : PowerSeries C)
 
 /- English proof (translation)
-Establish `h : MvPowerSeries.constantCoeff (PowerSeries.C y : PowerSeries C) = y` using `PowerSeries.constantCoeff_C y`. Simplify `hy` using `[PowerSeries.HasSubst, h]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasSubst_C {y : C} (hy : IsNilpotent y) : PowerSeries.HasSubst (PowerSeries.C y : PowerSeries C) := by
   have h : MvPowerSeries.constantCoeff (PowerSeries.C y : PowerSeries C) = y := PowerSeries.constantCoeff_C y
   simpa [PowerSeries.HasSubst, h] using hy
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.subst_add ha, PowerSeries.subst_pow ha, PowerSeries.subst_X ha, ← PowerSeries.smul_eq_C_mul, PowerSeries.subst_smul ha, PowerSeries.subst_X ha, ← PowerSeries.smul_eq_C_mul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_lt {a : PowerSeries C} (ha : PowerSeries.HasSubst a) (π : R) (q : ℕ) :
     (PowerSeries.subst a (PowerSeries.C π * PowerSeries.X + PowerSeries.X ^ q : PowerSeries R) : PowerSeries C)
@@ -84,11 +84,11 @@ theorem subst_lt {a : PowerSeries C} (ha : PowerSeries.HasSubst a) (π : R) (q :
     ← PowerSeries.smul_eq_C_mul, algebraMap_smul]
 
 /- English proof (translation)
-Establish `hs` using `hasSubst_C (C := C) (y := y) ⟨N, hy⟩`. Establish `h1` using `PowerSeries.constantCoeff_subst (R := R) hs φ`. Establish `h2 : ∀ d, MvPowerSeries.constantCoeff ((PowerSeries.C y : PowerSeries C) ^ d) = y ^ d`. Introduce `d`. Rewrite using `[map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [h2] at h1`. Establish `h3 : nev y φ = ∑ᶠ d : ℕ, (PowerSeries.coeff d φ) • y ^ d` using `h1`. Rewrite using `[h3, finsum_eq_sum_of_support_subset (s := Finset.range D)]`. Conclude with `Finset.sum_congr rfl fun i _ => Algebra.smul_def _ _`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d hd`. Simplify using `only [Function.mem_support] at hd`. Simplify using `only [Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `hlt`. Conclude with `hd (by rw [pow_eq_zero_of_le (by omega) hy, smul_zero])`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem nev_eq_sum {y : C} {N D : ℕ} (hy : y ^ N = 0) (hD : N ≤ D) (φ : PowerSeries R) :
     nev y φ = ∑ i ∈ Finset.range D, algebraMap R C (PowerSeries.coeff i φ) * y ^ i := by
@@ -109,13 +109,13 @@ theorem nev_eq_sum {y : C} {N D : ℕ} (hy : y ^ N = 0) (hD : N ≤ D) (φ : Pow
     exact hd (by rw [pow_eq_zero_of_le (by omega) hy, smul_zero])
 
 /- English proof (translation)
-Establish `hs` using `hasSubst_C (C := C) hy`. Establish `hφ : PowerSeries.HasSubst φ` using `PowerSeries.HasSubst.of_constantCoeff_zero' h0`. Establish `hf : PowerSeries.HasSubst (PowerSeries.C π * PowerSeries.X + PowerSeries.X ^ q : PowerSeries R)`. Apply `PowerSeries.HasSubst.of_constantCoeff_zero'` to reduce the goal to its premises. Simplify using `[hq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `e1` using `PowerSeries.subst_comp_subst_apply (R := R) (S := R) (T := C) hφ hs (PowerSeries.C π * PowerSeries.X + PowerSeries.X ^ q : PowerSeries R)`. Establish `e2` using `PowerSeries.subst_comp_subst_apply (R := R) (S := R) (T := C) hf hs φ`. Rewrite `e1` using `[hc, e2]`. Establish `hΦ : PowerSeries.HasSubst (PowerSeries.subst (PowerSeries.C y : PowerSeries C) φ : PowerSeries C)`. Use `PowerSeries.HasSubst.comp hφ hs` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[PowerSeries.coe_substAlgHom]`. Then use the resulting hypothesis. Rewrite `e1` using `[subst_lt hs, subst_lt hΦ]`. Establish `e3 : (PowerSeries.C (algebraMap R C π) * PowerSeries.C y + PowerSeries.C y ^ q : PowerSeries C) = PowerSeries.C (algebraMap R C π * y + y ^ q)`. Simplify using `only [map_add, map_mul, map_pow]`. Rewrite `e1` using `[e3]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e4` using `congrArg (PowerSeries.constantCoeff (R := C)) e1`. Simplify `e4` using `[nev]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nev_step {y : C} (hy : IsNilpotent y) (π : R) (q : ℕ) (hq : q ≠ 0) {φ : PowerSeries R}
     (h0 : PowerSeries.constantCoeff φ = 0)
@@ -143,7 +143,7 @@ theorem nev_step {y : C} (hy : IsNilpotent y) (π : R) (q : ℕ) (hq : q ≠ 0) 
   simpa [nev] using e4
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [ltIter]`. Consider the case `succ n ih`. Rewrite using `[ltIter_succ, ltIter_succ, nev_step (nil_ltIter _ hq hy n) π q hq h0 hc, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem nev_iter {y : C} (hy : IsNilpotent y) (π : R) (q : ℕ) (hq : q ≠ 0) {φ : PowerSeries R}
     (h0 : PowerSeries.constantCoeff φ = 0)
@@ -156,7 +156,7 @@ theorem nev_iter {y : C} (hy : IsNilpotent y) (π : R) (q : ℕ) (hq : q ≠ 0) 
     rw [ltIter_succ, ltIter_succ, nev_step (nil_ltIter _ hq hy n) π q hq h0 hc, ih]
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `ltIter_congr _ s q hqs _ _ c h1 n`. Rewrite using `[nev_iter hy π q hq h0 hc]`. Rewrite `hd` using `[hw, zero_mul]`. Conclude with `sub_eq_zero.1 hd`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nev_core {y u c s : C} (hy : IsNilpotent y) (π : R) (q : ℕ) (hq : q ≠ 0)
     (hqs : (q : C) = algebraMap R C π * s) {φ : PowerSeries R}
@@ -177,7 +177,7 @@ section Main
 variable {B : Type} [CommRing B] {S : Subring B} {F : ℕ → Ideal B} {ϖ : B}
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [env.top]`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `env.mul_le k 1 (Ideal.mul_mem_mul ih hx)`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pow_mem_F (env : PerEnv S F ϖ) {x : B} (hx : x ∈ F 1) (k : ℕ) : x ^ k ∈ F k := by
   induction k with
@@ -185,11 +185,11 @@ theorem pow_mem_F (env : PerEnv S F ϖ) {x : B} (hx : x ∈ F 1) (k : ℕ) : x ^
   | succ k ih => rw [pow_succ]; exact env.mul_le k 1 (Ideal.mul_mem_mul ih hx)
 
 /- English proof (translation)
-Use `⟨Ideal.span {(⟨ϖ, hϖ⟩ : S) ^ m} ⊔ J.comap S.subtype, fun x => ⟨fun hx => ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hx`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Use `⟨c, c.2, ?_⟩` and prove the remaining obligations. Establish `hb' : (b : B) ∈ J` using `hb`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (((c * (⟨ϖ, hϖ⟩ : S) ^ m + b : S)) : B) - ϖ ^ m * c = b` using `by push_cast; ring`. Rewrite using `[e]` and apply the resulting hypothesis. Introduce and unpack `⟨s, hs, hx⟩`. Establish `e : x = (⟨s, hs⟩ : S) * (⟨ϖ, hϖ⟩ : S) ^ m + (x - (⟨ϖ, hϖ⟩ : S) ^ m * ⟨s, hs⟩)` using `by ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.add_mem _ (Ideal.mem_sup_left (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))) ?_` and prove the remaining obligations. Use `Ideal.mem_sup_right ?_` and prove the remaining obligations. Use `show (((x - (⟨ϖ, hϖ⟩ : S) ^ m * ⟨s, hs⟩ : S)) : B) ∈ J`. Use `push_cast`. Conclude with `hx`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem exists_near_ideal (hϖ : ϖ ∈ S) (J : Ideal B) (m : ℕ) :
     ∃ I : Ideal S, ∀ x : S, x ∈ I ↔ Near S ϖ J m (x : B) := by
@@ -211,47 +211,47 @@ theorem exists_near_ideal (hϖ : ϖ ∈ S) (J : Ideal B) (m : ℕ) :
     exact hx
 
 /- English proof (translation)
-Establish `hq0 : q ≠ 0` using `by omega`. Take `⟨ϖ', hϖ'⟩ : ∃ x : S, (x : B) = ϖ` from `⟨⟨ϖ, env.mem⟩, rfl⟩`. Take `⟨v', hv'⟩ : ∃ x : ℕ → S, ∀ n, (x n : B) = v n` from `⟨fun n => ⟨v n, hvS n⟩, fun _ => rfl⟩`. Take `⟨s', hs'⟩ : ∃ x : S, (x : B) = s` from `⟨⟨s, hsS⟩, rfl⟩`. Take `⟨s0', hs0'⟩ : ∃ x : S, (x : B) = s0` from `⟨⟨s0, hs0⟩, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Q', hQ'⟩ : ∃ x : S, (x : B) = Q` from `⟨⟨Q, hQS⟩, rfl⟩`. Take `⟨R', hR'⟩ : ∃ x : S, (x : B) = σ Q` from `⟨⟨σ Q, hσS _ hQS⟩, rfl⟩`. Take `⟨u', hu'⟩ : ∃ x : S, (x : B) = σ (v m)` from `⟨⟨σ (v m), hσS _ (hvS m)⟩, rfl⟩`. Establish `hπ' : h' π = ϖ'` using `Subtype.ext ((hh π).trans (hπ.trans hϖ'.symm))`. Establish `hw : algebraMap R C π = mk ϖ'` using `by rw [← hmk, hπ']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmF : ∀ x : S, (x : B) ∈ F k → mk x = 0` using `fun x hx => (hnear x).2 ⟨0, S.zero_mem, by simpa using hx⟩`. Establish `hwm : mk ϖ' ^ m = 0`. Rewrite using `[← map_pow]`. Use `(hnear _).2 ⟨1, S.one_mem, ?_⟩` and prove the remaining obligations. Simplify using `[hϖ']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hwm1 : mk ϖ' ^ (m + 1) = 0` using `by rw [pow_succ, hwm, zero_mul]`. Establish `hn0 : IsNilpotent (mk (v' 0))`. Establish `hf : ((v' 0 ^ M - ϖ' ^ 1 * s0' : S) : B) ∈ F 1`. Use `push_cast`. Rewrite using `[hv', hϖ', hs0']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf0`. Establish `hfk : mk (v' 0 ^ M - ϖ' ^ 1 * s0') ^ k = 0`. Rewrite using `[← map_pow]`. Use `hmF _ ?_` and prove the remaining obligations. Rewrite using `[SubmonoidClass.coe_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `pow_mem_F env hf k`. Establish `e : mk (v' 0) ^ M = mk (v' 0 ^ M - ϖ' ^ 1 * s0') + mk ϖ' * mk s0'`. Simplify using `only [map_sub, map_mul, map_pow, pow_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnil : IsNilpotent (mk (v' 0) ^ M)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e, ← mem_nilradical]`. Conclude with `add_mem (mem_nilradical.2 ⟨k, hfk⟩) (Ideal.mul_mem_right _ _ (mem_nilradical.2 ⟨m, hwm⟩))`. Take `⟨e', he⟩` from `hnil`. Conclude with `⟨M * e', by rw [pow_mul, he]⟩`. Establish `hn : ∀ n, IsNilpotent (mk (v' n))`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact hn0`. Consider the case `succ n ih`. Take `⟨e', he⟩` from `ih`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e : mk (v' (n + 1)) ^ q = mk (v' n)`. Rewrite using `[← map_pow]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[SubmonoidClass.coe_pow, hv', hv', hv n]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨q * e', by rw [pow_mul, e, he]⟩`. Establish `hsum : ∀ (y : S) (D : ℕ), ((∑ i ∈ Finset.range D, h' (PowerSeries.coeff i φ) * y ^ i : S) : B) = ∑ i ∈ Finset.range D, h (PowerSeries.coeff i φ) * (y : B) ^ i`. Introduce `y D`. Simplify using `[hh]`. Establish `hmsum : ∀ (y : S) {N D : ℕ}, mk y ^ N = 0 → N ≤ D → mk (∑ i ∈ Finset.range D, h' (PowerSeries.coeff i φ) * y ^ i) = nev (mk y) φ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `y N D hN hD`. Rewrite using `[nev_eq_sum hN hD]`. Simplify using `[map_sum, hmk]`. Take `⟨N, hN⟩` from `hn m`. Take `⟨D0, hD0⟩` from `hE m k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hcS, hcF⟩` from `hD0 (max D0 N) (le_max_left _ _)`. Take `⟨c', hc'⟩ : ∃ x : S, (x : B) = c` from `⟨⟨c, hcS⟩, rfl⟩`. Establish `h1 : nev (mk (v' m)) φ - mk u' = algebraMap R C π * mk c'`. Rewrite using `[← hmsum (v' m) hN (le_max_right D0 N), hw]`. Establish `e` using `hmF ((∑ i ∈ Finset.range (max D0 N), h' (PowerSeries.coeff i φ) * v' m ^ i) - u' - ϖ' ^ 1 * c') (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddSubgroupClass.coe_sub, AddSubgroupClass.coe_sub, hsum, hv', hu']`. Use `push_cast`. Rewrite using `[hϖ', hc']`. Conclude with `hcF)`. Rewrite `e` using `[map_sub, map_sub, map_mul, map_pow, pow_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take the linear combination `e`. Establish `hqs : (q : C) = algebraMap R C π * mk s'`. Rewrite using `[hw, ← map_mul, ← map_natCast mk q]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `push_cast`. Rewrite using `[hϖ', hs', hs]`. Establish `key` using `nev_core (hn m) π q hq0 hqs h0 hc m h1 (by rw [hw]; exact hwm1)`. Take `⟨a, haS, hQa⟩` from `hQ m`. Take `⟨a', ha'⟩ : ∃ x : S, (x : B) = a` from `⟨⟨a, haS⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨b', hb'⟩ : ∃ x : S, (x : B) = σ a` from `⟨⟨σ a, hσS _ haS⟩, rfl⟩`. Establish `hcoe : ∀ x : S, ((ltIter ϖ' q m x : S) : B) = ltIter ϖ q m (x : B)` using `fun x => by`. Use `map_ltIter S.subtype ϖ' q m x` as an intermediate fact. Simplify `this` using `[hϖ']`. Establish `e1 : mk Q' = ltIter (algebraMap R C π) q m (mk (v' m))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `e : Q' = ltIter ϖ' q m (v' m) + ϖ' ^ (m + 1) * a'`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddMemClass.coe_add, hcoe]`. Use `push_cast`. Rewrite using `[hQ', hv', hϖ', ha']`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `hQa`. Rewrite using `[e, map_add, map_mul, map_pow, hwm1, zero_mul, add_zero, map_ltIter, hw]`. Establish `e2 : mk R' = ltIter (algebraMap R C π) q m (mk u')`. Establish `e : R' = ltIter ϖ' q m u' + ϖ' ^ (m + 1) * b'`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[AddMemClass.coe_add, hcoe]`. Use `push_cast`. Rewrite using `[hR', hu', hϖ', hb']`. Establish `e3 : σ (ltIter ϖ q m (v m)) = ltIter ϖ q m (σ (v m))` using `by rw [map_ltIter, hσϖ]`. Establish `e4` using `congrArg σ hQa`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e4` using `[map_sub, map_mul, map_pow, hσϖ, e3]`. Take the linear combination `e4`. Rewrite using `[e, map_add, map_mul, map_pow, hwm1, zero_mul, add_zero, map_ltIter, hw]`. Establish `hfin : nev (mk Q') φ = mk R'` using `by rw [e1, e2]; exact key`. Establish `hnQ : IsNilpotent (mk Q')` using `by rw [e1]; exact nil_ltIter _ hq0 (hn m) m`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨N2, hN2⟩` from `hnQ`. Use `⟨N2, fun D' hD' => ?_⟩` and prove the remaining obligations. Establish `hfinal` using `(hnear ((∑ i ∈ Finset.range D', h' (PowerSeries.coeff i φ) * Q' ^ i) - R')).1 (by rw [map_sub, hmsum Q' hN2 hD', hfin, sub_self])`. Rewrite `hfinal` using `[AddSubgroupClass.coe_sub, hsum, hQ', hR']`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem finiteRing_sq_sub_mul_sq_eq_of_card {R C : Type} [CommRing R] [CommRing C] [Algebra R C] (env : PerEnv S F ϖ) (k m : ℕ) (mk : S →+* C)
     (hnear : ∀ x : S, mk x = 0 ↔ Near S ϖ (F k) m (x : B)) (h : R →+* B) (h' : R →+* S)
@@ -381,9 +381,9 @@ end Main
 end GlobalTheory.CompanionTheory.LTPer.QGal
 
 /- English proof (translation)
-Introduce `B _ S F ϖ R _ env h hS π hπ q hq2 hqs φ h0 hc σ hσS _ hσϖ v hvS hv hM Q hQS hQ hE m k`. Take `⟨s, hsS, hs⟩` from `hqs`. Take `⟨M, _, s0, hs0, hf0⟩` from `hM`. Take `⟨I, hI⟩` from `GlobalTheory.CompanionTheory.LTPer.QGal.exists_near_ideal (S := S) env.mem (F k) m`. Take `⟨h', hh⟩ : ∃ h' : R →+* S, ∀ c, (h' c : B) = h c` from `⟨h.codRestrict S hS, fun _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `letI : Algebra R (S ⧸ I) := ((Ideal.Quotient.mk I).comp h').toAlgebra`. Conclude with `GlobalTheory.CompanionTheory.LTPer.QGal.finiteRing_sq_sub_mul_sq_eq_of_card env k m (Ideal.Quotient.mk I) (fun x => Ideal.Quotient.eq_zero_iff_mem.trans (hI x)) h h' hh (fun _ => rfl) π hπ q hq2 s hsS hs φ h0 hc σ hσS hσϖ v hvS hv M s0 hs0 hf0 Q hQS hQ hE`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.LTPer.evalMod_sigma_of_congr : ∀ {B : Type} [CommRing B] {S : Subring B} {F : ℕ → Ideal B} {ϖ : B} {R : Type} [CommRing R], PerEnv S F ϖ →
     ∀ (h : R →+* B), (∀ c, h c ∈ S) → ∀ (π : R), h π = ϖ → ∀ (q : ℕ), 2 ≤ q → (∃ s ∈ S, (q : B) = ϖ * s) →

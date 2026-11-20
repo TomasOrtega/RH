@@ -11,12 +11,12 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteLevelFact
 namespace PositivityTheory.Rg.BcB.F.F0
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.globalComplexCoefficients_of_local_orbit_character GlobalTheory.T.elliptic_local_identity GlobalTheory.T.orbital_sign_almost_everywhere GlobalTheory.T.character_weight_map`.
+A detailed English derivation is pending.
 -/
 theorem complex_coefficient_multiplicity_holds : PositivityTheory.Rg.BcB.G8.GlobalComplexCoefficients := GlobalTheory.T.globalComplexCoefficients_of_local_orbit_character GlobalTheory.T.elliptic_local_identity GlobalTheory.T.orbital_sign_almost_everywhere GlobalTheory.T.character_weight_map
 
 /- English proof (translation)
-The claim follows from `chainEx_of complex_coefficient_multiplicity_holds PositivityTheory.Rg.BcB.G3.g3 h4`.
+A detailed English derivation is pending.
 -/
 theorem chain_existence_of_global_character (h4 : PositivityTheory.Rg.BcB.G8.G4) : PositivityTheory.Rg.BcB.F.ChainEx :=
   chainEx_of complex_coefficient_multiplicity_holds PositivityTheory.Rg.BcB.G3.g3 h4

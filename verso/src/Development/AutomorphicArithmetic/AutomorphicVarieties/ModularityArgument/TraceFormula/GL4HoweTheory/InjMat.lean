@@ -9,44 +9,44 @@ variable {E : Type} [Field E] [ValuativeRel E] {n : ℕ} {r s t : ValueGroupWith
 def Bd (s : ValueGroupWithZero E) (M : Matrix (Fin n) (Fin n) E) : Prop := ∀ i j, valuation E (M i j) ≤ s
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply] exact Valuation.map_sum_le _ fun l _ => by rw [map_mul]; exact mul_le_mul' (h i l) (h' l j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Bd.mul (h : Bd s M) (h' : Bd t N) : Bd (s * t) (M * N) := fun i j => by
   rw [Matrix.mul_apply]
   exact Valuation.map_sum_le _ fun l _ => by rw [map_mul]; exact mul_le_mul' (h i l) (h' l j)
 
 /- English proof (translation)
-Introduce `i j` and use `Valuation.map_add_le _ (h i j) (h' i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Bd.add (h : Bd s M) (h' : Bd s N) : Bd s (M + N) := fun i j => Valuation.map_add_le _ (h i j) (h' i j)
 
 /- English proof (translation)
-Introduce `i j` and use `Valuation.map_sub_le _ (h i j) (h' i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Bd.sub (h : Bd s M) (h' : Bd s N) : Bd s (M - N) := fun i j => Valuation.map_sub_le _ (h i j) (h' i j)
 
 /- English proof (translation)
-Introduce `i j` and use `(h i j).trans e`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Bd.mono (h : Bd s M) (e : s ≤ t) : Bd t M := fun i j => (h i j).trans e
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.smul_apply, smul_eq_mul, map_mul] exact mul_le_mul' le_rfl (h i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Bd.smul (h : Bd s M) (x : E) : Bd (valuation E x * s) (x • M) := fun i j => by
   rw [Matrix.smul_apply, smul_eq_mul, map_mul]
   exact mul_le_mul' le_rfl (h i j)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.one_apply]; split_ifs <;> simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem bd_one : Bd 1 (1 : Matrix (Fin n) (Fin n) E) := fun i j => by
   rw [Matrix.one_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `i j`. Take `⟨p, -, hp⟩` from `Finset.exists_max_image Finset.univ (fun p : Fin n × Fin n => valuation E (M p.1 p.2)) ⟨(i, j), Finset.mem_univ _⟩`. Establish `hM : Bd (valuation E (M p.1 p.2)) M` using `fun a b => hp (a, b) (Finset.mem_univ _)`. Establish `e2 : M = B - (A - 1) * M` using `by rw [← e, sub_mul, one_mul, sub_sub_cancel]`. Use `(hM i j).trans (not_lt.1 fun hlt => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : 0 < valuation E (M p.1 p.2)` using `lt_of_le_of_lt zero_le hlt`. Establish `h1` using `congrArg (valuation E) (congrFun (congrFun e2 p.1) p.2)`. Rewrite `h1` using `[Matrix.sub_apply]`. Use `(lt_of_le_of_lt (Valuation.map_sub _ _ _) (max_lt ((hB _ _).trans_lt hlt) ?_)).ne' h1` and prove the remaining obligations. Conclude with `((hA.mul hM) _ _).trans_lt (mul_lt_of_lt_one_left h0 hr)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem solve (hr : r < 1) (hA : Bd r (A - 1)) (e : A * M = B) (hB : Bd s B) : Bd s M := by
   intro i j
@@ -62,7 +62,7 @@ private theorem solve (hr : r < 1) (hA : Bd r (A - 1)) (e : A * M = B) (hB : Bd 
   exact ((hA.mul hM) _ _).trans_lt (mul_lt_of_lt_one_left h0 hr)
 
 /- English proof (translation)
-Establish `h1 : Bd 1 M` using `solve hr hA e (by simpa using (hB.mono hr.le).add bd_one)`. Establish `e2 : M - 1 = (B - 1) - (A - 1) * M` using `by rw [← e, sub_mul, one_mul]; abel`. Rewrite using `[e2]`. Conclude with `hB.sub (by simpa using hA.mul h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem near (hr : r < 1) (hA : Bd r (A - 1)) (e : A * M = B) (hB : Bd r (B - 1)) : Bd r (M - 1) := by
   have h1 : Bd 1 M := solve hr hA e (by simpa using (hB.mono hr.le).add bd_one)
@@ -71,9 +71,7 @@ private theorem near (hr : r < 1) (hA : Bd r (A - 1)) (e : A * M = B) (hB : Bd r
   exact hB.sub (by simpa using hA.mul h1)
 
 /- English proof (translation)
-Rewrite using `[Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero, Ne, ← Matrix.exists_mulVec_eq_zero_iff]`. Introduce and unpack `⟨x, hx, h⟩`. Establish `h1 : Bd 0 (Matrix.of fun i (_ : Fin n) => x i)` using `solve hr hA (B := 0) (by`. Use extensionality with `i j`. Conclude with `congrFun h i) fun i j => by simp`.
-
-Conclude with `hx (funext fun i => by simpa using h1 i i)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem unit_of (hr : r < 1) (hA : Bd r (A - 1)) : IsUnit A := by
   rw [Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero, Ne, ← Matrix.exists_mulVec_eq_zero_iff]
@@ -88,17 +86,17 @@ variable (E n) in
 private def Js : Matrix (Fin n) (Fin n) E := Matrix.of fun i j => if (i : ℕ) = j + 1 then 1 else 0
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Js, Matrix.of_apply]; split_ifs <;> simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Js_bd : Bd 1 (Js E n) := fun i j => by
   rw [Js, Matrix.of_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Proceed by induction on `k generalizing i with`. Consider the case `zero => simp [Matrix.one_apply, Fin.ext_iff]`. Consider the case `succ k ih`. Rewrite using `[pow_succ', Matrix.mul_apply]`. Establish `hJ : ∀ a b : Fin n, Js E n a b = if (a : ℕ) = b + 1 then 1 else 0` using `fun _ _ => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [ih, hJ]`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single ⟨j + k, by omega⟩]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hb`. Rewrite using `[if_neg (c := (b : ℕ) = j + k) fun e => hb (Fin.ext e), mul_zero]`. Simplify using the standard rewrite rules. Apply the tactic sequence `refine Finset.sum_eq_zero fun b _ => ?_ split_ifs <;> first | omega | simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem Js_pow (k : ℕ) (i j : Fin n) : (Js E n ^ k) i j = if (i : ℕ) = j + k then 1 else 0 := by
   induction k generalizing i with
@@ -117,9 +115,9 @@ private theorem Js_pow (k : ℕ) (i j : Fin n) : (Js E n ^ k) i j = if (i : ℕ)
       split_ifs <;> first | omega | simp
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨by simpa using bd_one, fun i j => by simp⟩`. Consider the case `succ k ih`. Use `⟨by simpa [pow_succ] using ih.1.mul Js_bd, ?_⟩` and prove the remaining obligations. Establish `e : (Js E n + Y) ^ (k + 1) - Js E n ^ (k + 1) = ((Js E n + Y) ^ k - Js E n ^ k) * (Js E n + Y) + Js E n ^ k * Y`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[pow_succ, pow_succ]`. Use `noncomm_ring`. Rewrite using `[e]`. Conclude with `Bd.add (by simpa using ih.2.mul (Js_bd.add (hY.mono hr))) (by simpa using ih.1.mul hY)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_near (hr : r ≤ 1) {Y : Matrix (Fin n) (Fin n) E} (hY : Bd r Y) (k : ℕ) :
     Bd 1 (Js E n ^ k) ∧ Bd r ((Js E n + Y) ^ k - Js E n ^ k) := by
@@ -134,13 +132,13 @@ private theorem pow_near (hr : r ≤ 1) {Y : Matrix (Fin n) (Fin n) E} (hY : Bd 
     exact Bd.add (by simpa using ih.2.mul (Js_bd.add (hY.mono hr))) (by simpa using ih.1.mul hY)
 
 /- English proof (translation)
-Establish `ek : ∀ k : ℕ, (Js E _ + Y) ^ k * u = u * (Js E _ + Z) ^ k` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', mul_assoc, ih, ← mul_assoc, e, mul_assoc, ← pow_succ']`. Establish `hn : ∀ {W : Matrix (Fin (n + 1)) (Fin (n + 1)) E}, Bd r W → Bd r ((Matrix.of fun (i j : Fin (n + 1)) => ((Js E (n + 1) + W) ^ (n - (i : ℕ)) : Matrix (Fin (n + 1)) (Fin (n + 1)) E) (Fin.last n) j) - 1)` using `fun {W} hW i j => by`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h1` using `(pow_near hr.le hW (n - (i : ℕ))).2 (Fin.last n) j`. Rewrite `h1` using `[Matrix.sub_apply, Js_pow]`. Rewrite using `[Matrix.sub_apply, Matrix.of_apply, Matrix.one_apply]`. Use `h1 using 4` and compare the differences between its conclusion and the goal. Rewrite using `[Fin.ext_iff, Fin.val_last]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `i.2` as an intermediate fact. Use `j.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `near hr (hn hY) ?_ (hn hZ)` and prove the remaining obligations. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Establish `h1` using `congrFun (congrFun (ek (n - (i : ℕ))) (Fin.last n)) j`. Rewrite `h1` using `[Matrix.mul_apply, Matrix.mul_apply]`. Simplify using `only [hu] at h1`. Rewrite `h1` using `[← Matrix.mul_apply (M := 1), one_mul]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cyclic (hr : r < 1) {Y Z u : Matrix (Fin (n + 1)) (Fin (n + 1)) E} (hY : Bd r Y) (hZ : Bd r Z)
     (hu : ∀ j, u (Fin.last n) j = (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) E) (Fin.last n) j)
@@ -172,15 +170,13 @@ section Local
 variable [TopologicalSpace E] [IsNonarchimedeanLocalField E]
 
 /- English proof (translation)
-Use `haveI : (Submodule.span 𝒪[E] S).IsLattice E := ⟨Submodule.fg_span hS, by rw [Submodule.span_span_of_tower, ht]⟩`. Use `haveI : Module.Free 𝒪[E] (Submodule.span 𝒪[E] S) := inferInstance`. Use `haveI : Module.Finite 𝒪[E] (Submodule.span 𝒪[E] S) := inferInstance`. Set `b` to `Module.Free.chooseBasis 𝒪[E] (Submodule.span 𝒪[E] S)`. Set `c` to `b.extendOfIsLattice E`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hc : ∀ i, c i = b i` using `fun i => by simp [c]`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hD` to reduce the goal to its premises. Establish `h1 : ∀ i, valuation E (c.repr D i) ≤ 1` using `fun i => h (c.coord i) fun x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : x = ∑ j, ((b.repr ⟨x, Submodule.subset_span hx⟩ j : 𝒪[E]) : E) • c j`. Use `congrArg Subtype.val (b.sum_repr ⟨x, Submodule.subset_span hx⟩)` as an intermediate fact. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul_of_tower] at this`. Use `this.symm.trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[hc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(algebraMap_smul E _ _).symm`. Rewrite using `[e, Module.Basis.coord_apply, c.repr_sum_self]`. Conclude with `(b.repr ⟨x, Submodule.subset_span hx⟩ i).2`. Rewrite using `[← c.sum_repr D]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
-
-Establish `e : c.repr D i • c i = (⟨c.repr D i, h1 i⟩ : 𝒪[E]) • (b i : V)`. Rewrite using `[hc]`. Conclude with `algebraMap_smul E (⟨c.repr D i, h1 i⟩ : 𝒪[E]) _`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (b i).2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sep {V : Type} [AddCommGroup V] [Module E V] [Module 𝒪[E] V] [IsScalarTower 𝒪[E] E V] (S : Set V) (hS : S.Finite)
     (ht : Submodule.span E S = ⊤) (D : V) (hD : D ∉ Submodule.span 𝒪[E] S) :
@@ -212,21 +208,19 @@ private theorem sep {V : Type} [AddCommGroup V] [Module E V] [Module 𝒪[E] V] 
   exact Submodule.smul_mem _ _ (b i).2
 
 /- English proof (translation)
-Set `S₁ : Set (Matrix (Fin n) (Fin n) E)` to `Set.range fun p : Fin n × Fin n => Matrix.single p.1 p.2 1`. Set `S₂ : Set (Matrix (Fin n) (Fin n) E)` to `Set.range fun p : Fin n × Fin n => w * Matrix.single p.1 p.2 1 * u`. Establish `hb : ∀ i j : Fin n, Bd 1 (Matrix.single i j (1 : E))` using `fun i j a b => by`. Apply the tactic sequence `rw [Matrix.single_apply]; split_ifs <;> simp`. Establish `hz : Bd 1 (0 : Matrix (Fin n) (Fin n) E)` using `fun _ _ => by simp`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Take `⟨φ, h1, h2⟩` from `sep (E := E) (S₁ ∪ S₂) ((Set.finite_range _).union (Set.finite_range _)) (by`. Use `eq_top_iff.2 fun M _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.matrix_eq_sum_single M]`. Use `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show Matrix.single i j (M i j) = M i j • Matrix.single i j (1 : E) by simp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Or.inl ⟨(i, j), rfl⟩))) D fun hD => h (by clear h`. Proceed by induction on `hD using Submodule.span_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨p, rfl⟩ | ⟨p, rfl⟩` into its components or cases. Conclude with `⟨0, _, hz, hb p.1 p.2, by simp⟩`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨_, 0, hb p.1 p.2, hz, by simp⟩`. Consider the case `zero => exact ⟨0, 0, hz, hz, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨Y, Z, a1, a2, rfl⟩` from `hx`. Take `⟨Y', Z', b1, b2, rfl⟩` from `hy`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨Y + Y', Z + Z', a1.add b1, a2.add b2, by noncomm_ring⟩`. Consider the case `smul a x _ hx`. Take `⟨Y, Z, a1, a2, rfl⟩` from `hx`. Establish `ha : valuation E (a : E) * 1 ≤ 1` using `by rw [mul_one]; exact a.2`. Use `⟨(a : E) • Y, (a : E) • Z, (a1.smul _).mono ha, (a2.smul _).mono ha, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, ← smul_add]`. Use the proof step `rfl)`. Set `X : Matrix (Fin n) (Fin n) E` to `Matrix.of fun j i => φ (Matrix.single i j 1)`. Establish `hX : ∀ M : Matrix (Fin n) (Fin n) E, (M * X).trace = φ M` using `fun M => by conv_rhs => rw [Matrix.matrix_eq_sum_single M]`. Simplify using `only [map_sum, Matrix.trace, Matrix.diag, Matrix.mul_apply, X, Matrix.of_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show Matrix.single i j (M i j) = M i j • Matrix.single i j (1 : E) by simp, map_smul, smul_eq_mul]`. Use `⟨X, fun j i => h1 _ (Or.inl ⟨(i, j), rfl⟩), fun j i => ?_, by rwa [hX]⟩` and prove the remaining obligations. Establish `e : (u * X * w) j i = φ (w * Matrix.single i j 1 * u)`. Rewrite using `[← hX, mul_assoc (w * _), mul_assoc w, Matrix.trace_mul_comm w, mul_assoc (Matrix.single i j 1), Matrix.trace_single_mul, one_smul]`.
-
-Rewrite using `[e]`. Conclude with `h1 _ (Or.inr ⟨(i, j), rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dual (u w D : Matrix (Fin n) (Fin n) E) (h : ¬ ∃ Y Z, Bd 1 Y ∧ Bd 1 Z ∧ D = Z + w * Y * u) :
     ∃ X, Bd 1 X ∧ Bd 1 (u * X * w) ∧ 1 < valuation E (D * X).trace := by
@@ -271,7 +265,7 @@ private theorem dual (u w D : Matrix (Fin n) (Fin n) E) (h : ¬ ∃ Y Z, Bd 1 Y 
   exact h1 _ (Or.inr ⟨(i, j), rfl⟩)
 
 /- English proof (translation)
-Establish `hJ : ∀ a b : Fin n, Js E n a b = if (a : ℕ) = b + 1 then 1 else 0` using `fun _ _ => rfl`. Simplify using `only [GlobalTheory.Whittaker.superDiag, Matrix.trace, Matrix.diag, Matrix.mul_apply, hJ, Finset.sum_filter, ite_mul, one_mul, zero_mul]`. Conclude with `Finset.sum_comm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sd_eq (g : GL (Fin n) E) : GlobalTheory.Whittaker.superDiag g = (Js E n * (g : Matrix (Fin n) (Fin n) E)).trace := by
   have hJ : ∀ a b : Fin n, Js E n a b = if (a : ℕ) = b + 1 then 1 else 0 := fun _ _ => rfl
@@ -279,23 +273,21 @@ private theorem sd_eq (g : GL (Fin n) E) : GlobalTheory.Whittaker.superDiag g = 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Break down `n with _ | n` into its components or cases. Conclude with `absurd (fun i => i.elim0) h`. Take `⟨U, hU⟩ : ∃ U, U = (u : Matrix (Fin (n + 1)) (Fin (n + 1)) E)` from `⟨_, rfl⟩`. Take `⟨W, hW⟩ : ∃ W, W = ((u⁻¹ : GL (Fin (n + 1)) E) : Matrix (Fin (n + 1)) (Fin (n + 1)) E)` from `⟨_, rfl⟩`. Establish `hUW : U * W = 1` using `by rw [hU, hW, Units.mul_inv]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : (p : E) ≠ 0` using `p.ne_zero`. Take `⟨X, h1, h2, h3⟩` from `dual U W ((p : E)⁻¹ • (W * Js E _ * U - Js E _)) (by`. Introduce and unpack `⟨Y, Z, a1, a2, e⟩`. Use `h (cyclic (Y := (-(p : E)) • Y) (Z := (p : E) • Z) hp (by simpa using a1.smul (-(p : E))) (by simpa using a2.smul (p : E)) (fun j => ?_) ?_)` and prove the remaining obligations. Break down `(Fin.le_last j).lt_or_eq with hj | rfl` into its components or cases.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[((GlobalTheory.SmGL.mem_unipB _).1 hu).1 _ _ hj, Matrix.one_apply_ne hj.ne']`. Rewrite using `[((GlobalTheory.SmGL.mem_unipB _).1 hu).2, Matrix.one_apply_eq]`. Establish `e2` using `congrArg (fun M => U * ((p : E) • M)) e`. Simplify using `only [smul_smul, mul_inv_cancel₀ hp0, one_smul, smul_add, mul_sub, mul_add, ← mul_assoc, hUW, one_mul, Matrix.mul_smul] at e2`. Rewrite using `[← hU, add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, neg_smul, sub_eq_iff_eq_add.1 e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `abel)`. Rewrite `h3` using `[Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul]`. Generalize the expression as in `hT : ((W * Js E _ * U - Js E _) * X).trace = T at h3`. Establish `hv : valuation E ((p : E) * p) < valuation E (p * T)`. Rewrite using `[show (p : E) * T = p * p * ((p : E)⁻¹ * T) by field_simp, map_mul _ (p * p : E)]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `lt_mul_of_one_lt_right (zero_lt_iff.2 (by simp)) h3`. Take `⟨y, hy, hy1⟩` from `hψ _ hv`. Establish `hx0 : (p : E) * T ≠ 0` using `fun e => by rw [e, map_zero] at hv; exact not_lt_zero hv`. Establish `ht : valuation E (y / (p * T) * p) * 1 ≤ valuation E (p : E)`. Rewrite using `[mul_one, map_mul, map_div₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_le_of_le_one_left' (div_le_one_of_le₀ hy zero_le)`. Establish `hk : Bd (valuation E (p : E)) ((1 + (y / (p * T) * p) • X) - 1)`. Rewrite using `[add_sub_cancel_left]`. Conclude with `(h1.smul _).mono ht`. Take `⟨k, hk'⟩` from `unit_of hp hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ((u * k * u⁻¹ : GL (Fin (n + 1)) E) : Matrix (Fin (n + 1)) (Fin (n + 1)) E) = 1 + (y / (p * T) * p) • (U * X * W)`. Rewrite using `[Units.val_mul, Units.val_mul, hk', ← hU, ← hW, mul_add, add_mul, mul_one, hUW, Matrix.mul_smul, Matrix.smul_mul]`. Use `⟨k, hk' ▸ hk, ?_, fun e => hy1 ?_⟩` and prove the remaining obligations. Rewrite using `[hc, add_sub_cancel_left]`. Conclude with `(h2.smul _).mono ht`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `e2 : GlobalTheory.Whittaker.superDiag (u * k * u⁻¹) = GlobalTheory.Whittaker.superDiag k + y`. Rewrite using `[sd_eq, sd_eq, hc, hk', mul_add, mul_add, Matrix.trace_add, Matrix.trace_add, Matrix.mul_smul, Matrix.mul_smul, Matrix.trace_smul, Matrix.trace_smul, smul_eq_mul, smul_eq_mul]`. Establish `e3 : (Js E _ * (U * X * W)).trace = T + (Js E _ * X).trace`. Rewrite using `[← hT, sub_mul, Matrix.trace_sub, sub_add_cancel, ← mul_assoc, Matrix.trace_mul_comm _ W]`. Simplify using `only [mul_assoc]`.
-
-Rewrite using `[e3, mul_add, mul_assoc (y / (p * T)), div_mul_cancel₀ _ hx0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `e` using `[e2, AddChar.map_add_eq_mul]`. Conclude with `mul_eq_left.1 e`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_intertwine (p : Eˣ) (hp : valuation E (p : E) < 1) (ψ : AddChar E Circle)
     (hψ : ∀ x : E, valuation E ((p : E) * p) < valuation E x → ∃ y, valuation E y ≤ valuation E x ∧ ψ y ≠ 1)

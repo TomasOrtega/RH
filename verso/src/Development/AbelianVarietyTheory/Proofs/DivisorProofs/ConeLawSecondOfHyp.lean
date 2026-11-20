@@ -14,11 +14,11 @@ noncomputable section
 namespace GlobalTheory.ThK.LemF
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a b G G₁ H H' cfg e' he' ei' ev' hloc K hK X om om' om₁ om₁' T T₁ v μK μ hμK hμ φ hφ`. Take `⟨N, f, c, hf, hc1, hc2, hsum⟩` from `GlobalTheory.T.config_b_local_part_stabilizer hP F E σ B a b G G₁ H H' cfg e' he' ei' ev' hloc K hK X om om' om₁ om₁' T T₁ v μK μ hμK hμ _ (Nat.le_add_left 1 _) φ hφ`. Establish `e : coneFin B G.M' om' v (ev' v) K μK μ (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) φ = ∑ i, (∫ k, ∫ l, c i k l ∂μ ∂μK) • f i`. Use function extensionality and compare the values at `y`. Establish `h1 : ∀ k : KAt K (evFin F v), ∫ l, coneFinInt B G.M' om' v (ev' v) (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) φ k.1 l.1 y ∂μ = ∑ i, (∫ l, c i k l ∂μ) * f i y` using `fun k => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[show (fun l : idelesAt E (evFin F v) => coneFinInt B G.M' om' v (ev' v) (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) φ k.1 l.1 y) = fun l => ∑ i, c i k l * f i y from funext fun l => hsum k l y]`. Rewrite using `[integral_finsetSum _ fun j _ => (hc1 j k).mul_const _]`. Conclude with `Finset.sum_congr rfl fun j _ => integral_mul_const _ _`. Simplify using `only [coneFin, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Repeatedly rewrite using `[h1]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_finsetSum _ fun j _ => (hc2 j).mul_const _]`. Conclude with `Finset.sum_congr rfl fun j _ => integral_mul_const _ _`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hf i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coneB_mem_SB : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
@@ -49,7 +49,7 @@ theorem coneB_mem_SB : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Fi
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hf i)
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a b G G₁ H H' cfg e' he' ei' ev' hloc K hK X om om' om₁ om₁' T T₁ v μK μ hμK hμ`. Conclude with `⟨coneB_mem_SB hP F E σ B a b G G₁ H H' cfg e' he' ei' ev' hloc K hK X om om' om₁ om₁' T T₁ v μK μ hμK hμ, GlobalTheory.T.config_b_local_part_integral hP F E σ B a b G G₁ H H' cfg e' he' ei' ev' hloc K hK X om om' om₁ om₁' T T₁ v μK μ hμK hμ, GlobalTheory.T.config_b_local_part_ide …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem coneLawB : GlobalTheory.FunPr.Hypotheses₂ → ConeLawB := by
   intro hP F E _ _ _ _ _ σ B a b G G₁ H H' cfg e' he' ei' ev' hloc K hK X om om' om₁ om₁' T T₁ v μK μ hμK hμ

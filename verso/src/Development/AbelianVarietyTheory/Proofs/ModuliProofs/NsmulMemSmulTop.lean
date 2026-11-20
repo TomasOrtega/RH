@@ -23,16 +23,16 @@ def idIso (L : LB X) : LB.Iso L (L.pull (𝟙 X)) where
     (L.pull (𝟙 X)).U p.1 ⊓ L.U p.2 ≤ L.U (p.1 PUnit.unit) ⊓ L.U p.2) (L.g (p.1 PUnit.unit) p.2)
 
 /- English proof (translation)
-The claim follows from `gm_res f y _ (show f y ∈ (L.pull (𝟙 X)).U (fun _ => j) ⊓ L.U k from ⟨mem_pull.2 hj, hk⟩) _`.
+A detailed English derivation is pending.
 -/
 theorem gw_idIso (L : LB X) {Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (j k : L.ι) (hj : f y ∈ L.U j) (hk : f y ∈ L.U k) :
     gw (idIso L) f y j k = gm f y _ (L.g j k) :=
   gm_res f y _ (show f y ∈ (L.pull (𝟙 X)).U (fun _ => j) ⊓ L.U k from ⟨mem_pull.2 hj, hk⟩) _
 
 /- English proof (translation)
-Introduce `Y f y j j' k k' hj hj' hk hk'`. Rewrite using `[gw_idIso L f y j k hj hk, gw_idIso L f y j' k' hj' hk', Category.comp_id, ← gm_cocycle hL f y hj' hk hk', ← gm_cocycle hL f y hj hj' hk]`. Generalize the expression as in `gm f y _ (L.g j j') = A`. Generalize the expression as in `gm f y _ (L.g j' k) = B`. Generalize the expression as in `gm f y _ (L.g k k') = C`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[_root_.mul_assoc, mul_comm B C, inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pgen_idIso {L : LB X} (hL : L.IsLB) : PGen (idIso L) := by
   intro Y f y j j' k k' hj hj' hk hk'
@@ -44,9 +44,9 @@ theorem pgen_idIso {L : LB X} (hL : L.IsLB) : PGen (idIso L) := by
   rw [_root_.mul_assoc, mul_comm B C, inv_mul_cancel_left]
 
 /- English proof (translation)
-Introduce `Z r z p q hp hq`. Establish `hm : r z ∈ LB.wchart L φ p ⊓ LB.wchart L φ q` using `⟨Set.mem_iInter.2 hp, Set.mem_iInter.2 hq⟩`. Establish `e` using `congrArg (gm r z (LB.wchart L φ p ⊓ LB.wchart L φ q)) (ht p q)`. Rewrite using `[Category.comp_id]`. Use `(gm_res r z _ hm _).symm.trans (e.trans ((map_mul _ _ _).trans ?_))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg₂ (· * ·) ?_ (gm_res r z _ hm _)` and prove the remaining obligations. Use `(map_prod _ _ _).trans (Finset.prod_congr rfl fun k _ => (map_zpow _ _ _).trans (congrArg (· ^ ε k) ?_))` and prove the remaining obligations. Rewrite using `[gw_idIso L (r ≫ φ k) z (p k) (q k) (hp k) (hq k)]`. Conclude with `(gm_res r z _ hm _).trans (gm_pull r (φ k) z (L.U (p k) ⊓ L.U (q k)) ⟨hp k, hq k⟩ _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pmaps_idIso (L : LB X) {K : Type} [Fintype K] {Y : Scheme.{0}} (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) : PMaps (idIso L) φ φ ε t t (𝟙 Y) := by
@@ -91,11 +91,11 @@ section Ideals
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Take `⟨J, hJ⟩` from `Ideal.dvd_iff_le.2 h.2.1`. Establish `hM : l.M ≠ 0` using `by have := l.three_le; omega`. Establish `h0 : Ideal.span {(l.M : 𝓞 E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hM` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : Ideal.span {(l.M : 𝓞 E)} * (J * J.map (H.bar : 𝓞 E →+* 𝓞 E)) = Ideal.span {(l.M : 𝓞 E)} * Ideal.span {((l₂.M / l.M : ℕ) : 𝓞 E)}`. Rewrite using `[Ideal.span_singleton_mul_span_singleton, ← Nat.cast_mul, Nat.mul_div_cancel' h.1, ← l₂.prod, ← l.prod, hJ, Ideal.map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hk : ((l₂.M / l.M : ℕ) : 𝓞 E) ∈ J`. Apply `(Ideal.mul_le_left : J * J.map (H.bar : 𝓞 E →+* 𝓞 E) ≤ J)` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_left_cancel₀ h0 e]`. Conclude with `Ideal.mem_span_singleton_self _`. Rewrite using `[hJ, mul_comm _ x]`. Conclude with `Ideal.mul_mem_mul hx hk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quot_mul_mem {l l₂ : Level H} (h : l.Dvd l₂) {x : 𝓞 E} (hx : x ∈ l.Mb) :
     ((l₂.M / l.M : ℕ) : 𝓞 E) * x ∈ l₂.Mb := by
@@ -116,7 +116,7 @@ theorem quot_mul_mem {l l₂ : Level H} (h : l.Dvd l₂) {x : 𝓞 E} (hx : x �
   exact Ideal.mul_mem_mul hx hk
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `(Ideal.mem_map_iff_of_surjective (H.bar : 𝓞 E →+* 𝓞 E) H.bar.surjective).1 hx`. Use `Ideal.mem_map_of_mem (H.bar : 𝓞 E →+* 𝓞 E) (quot_mul_mem h hy)` as an intermediate fact. Rewrite `this` using `[map_mul, map_natCast]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem quot_mul_mem_map {l l₂ : Level H} (h : l.Dvd l₂) {x : 𝓞 E}
     (hx : x ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)) :
@@ -126,7 +126,7 @@ theorem quot_mul_mem_map {l l₂ : Level H} (h : l.Dvd l₂) {x : 𝓞 E}
   rwa [map_mul, map_natCast] at this
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on ha (fun r hr m _ => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul R, smul_smul]`. Conclude with `Submodule.smul_mem_smul (h r hr) trivial`. Rewrite using `[smul_add]`. Conclude with `add_mem hx hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsmul_mem_smul_top {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M] {I J : Ideal R} {n : ℕ}
     (h : ∀ x ∈ I, (n : R) * x ∈ J) {a : M} (ha : a ∈ I • (⊤ : Submodule R M)) :
@@ -139,9 +139,9 @@ theorem nsmul_mem_smul_top {R M : Type*} [CommRing R] [AddCommGroup M] [Module R
 end Ideals
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Use `hf 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Rewrite using `[zero_nsmul, pow_zero]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `left_eq_mul.1 this`. Consider the case `succ n ih => rw [succ_nsmul, hf, ih, pow_succ]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem map_nsmul_of_add {A Q : Type*} [AddCommGroup A] [Group Q] (f : A → Q) (hf : ∀ a c, f (a + c) = f a * f c)
     (n : ℕ) (a : A) : f (n • a) = f a ^ n := by
@@ -188,7 +188,7 @@ end GlobalTheory.ObjLower
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l l₂ B _ b b₂ S s o₂ h hρ hζ`. Conclude with `⟨ObjLower.lower o₂ h hρ hζ, ObjLower.sabId o₂.t, fun _ => (Category.comp_id _).trans (Category.id_comp _).symm, fun _ => (Category.comp_id _).trans (Category.id_comp _).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem obj_lower_level : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (l l₂ : Level H) (B : Type) [CommRing B] (b : Base l B) (b₂ : Base l₂ B) (S : Scheme.{0}) (s : S ⟶ Sp B)

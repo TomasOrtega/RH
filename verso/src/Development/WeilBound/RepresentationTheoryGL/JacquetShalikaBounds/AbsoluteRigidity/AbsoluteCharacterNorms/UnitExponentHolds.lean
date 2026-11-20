@@ -20,7 +20,7 @@ def zc (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (t : ℝ) :=
   infId E (expU fun _ : InfinitePlace E => (t : ℂ))
 
 /- English proof (translation)
-Unfold `zc`. Rewrite using `[← map_mul, ← expU_add]`. Use `congr 2`. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem zc_add (s t : ℝ) : zc E (s + t) = zc E s * zc E t := by
   unfold zc
@@ -30,7 +30,7 @@ theorem zc_add (s t : ℝ) : zc E (s + t) = zc E s * zc E t := by
   simp
 
 /- English proof (translation)
-Unfold `zc`. Use `(continuous_infId E).comp (continuous_expU.comp ?_)` and prove the remaining obligations. Conclude with `continuous_pi fun _ => Complex.continuous_ofReal`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_zc : Continuous (zc E) := by
   unfold zc
@@ -38,9 +38,9 @@ theorem continuous_zc : Continuous (zc E) := by
   exact continuous_pi fun _ => Complex.continuous_ofReal
 
 /- English proof (translation)
-Unfold `zc`. Rewrite using `[Model.logNorm_infId]`. Establish `: ∀ w : InfinitePlace E, 2 * Real.log ‖((expU fun _ : InfinitePlace E => (t : ℂ) : (InfinitePlace E → ℂ)ˣ) : InfinitePlace E → ℂ) w‖ = 2 * t` using `fun w => by`. Establish `e : ((expU fun _ : InfinitePlace E => (t : ℂ) : (InfinitePlace E → ℂ)ˣ) : InfinitePlace E → ℂ) w = Complex.exp (t : ℂ)` using `rfl`. Rewrite using `[e, Complex.norm_exp, Complex.ofReal_re, Real.log_exp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl fun w _ => this w, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem logNorm_zc (t : ℝ) : GlobalTheory.Mem.Chr.CharModel.logNorm E (zc E t) = (2 * Fintype.card (InfinitePlace E) : ℝ) * t := by
   unfold zc
@@ -54,13 +54,11 @@ theorem logNorm_zc (t : ℝ) : GlobalTheory.Mem.Chr.CharModel.logNorm E (zc E t)
   ring
 
 /- English proof (translation)
-Set `G : ℝ →+ ℝ` to `{ toFun := fun t => Real.log ‖((ω.1 (zc E t) : ℂˣ) : ℂ)‖ map_zero' := by`. Establish `: zc E 0 = 1`. Establish `h` using `zc_add (E := E) 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_mul.mp h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_one, Units.val_one, norm_one, Real.log_one]`. Use the proof step `map_add' := fun s t => by show Real.log _ = Real.log _ + Real.log _`. Rewrite using `[zc_add, map_mul, Units.val_mul, norm_mul, Real.log_mul (norm_ne_zero_iff.2 (Units.ne_zero _)) (norm_ne_zero_iff.2 (Units.ne_zero _))] }`. Establish `hG : Continuous G` using `by show Continuous fun t => Real.log ‖((ω.1 (zc E t) : ℂˣ) : ℂ)‖`. Use `Continuous.log ?_ fun t => norm_ne_zero_iff.2 (Units.ne_zero _)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(Units.continuous_val.comp (ω.2.1.comp continuous_zc)).norm`. Use `⟨G 1, fun t => ?_⟩` and prove the remaining obligations. Establish `h1 : G t = t * G 1`. Use `(G.toRealLinearMap hG).map_smul t 1` as an intermediate fact. Simplify `this` using `[smul_eq_mul]`.
-
-Establish `h2 : G t = Real.log ‖((ω.1 (zc E t) : ℂˣ) : ℂ)‖` using `rfl`. Rewrite using `[← Real.exp_log (norm_pos_iff.2 (Units.ne_zero (ω.1 (zc E t)))), ← h2, h1, mul_comm]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_norm_zc (ω : HChar E) : ∃ c : ℝ, ∀ t : ℝ, ‖((ω.1 (zc E t) : ℂˣ) : ℂ)‖ = Real.exp (c * t) := by
   let G : ℝ →+ ℝ :=
@@ -87,7 +85,7 @@ theorem log_norm_zc (ω : HChar E) : ∃ c : ℝ, ∀ t : ℝ, ‖((ω.1 (zc E t
   rw [← Real.exp_log (norm_pos_iff.2 (Units.ne_zero (ω.1 (zc E t)))), ← h2, h1, mul_comm]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `‖Complex.exp ((r : ℂ) * GlobalTheory.Mem.Chr.CharModel.logNorm E (zc E t))‖ = _`. Rewrite using `[Complex.norm_exp, logNorm_zc]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem norm_absChar_zc (r t : ℝ) :
     ‖(((UnitExponent.nu E r).1 (zc E t) : ℂˣ) : ℂ)‖ =
@@ -101,27 +99,25 @@ end UnitExponent
 
 open UnitExponent in
 /- English proof (translation)
-Introduce `E _ _ _`. Use `⟨fun t => UnitExponent.nu E t, fun t => GlobalTheory.Mem.Chr.CharModel.absChar_isAbsPow (F := E) t, ?_⟩` and prove the remaining obligations. Introduce `m π hm`. Proceed by induction on `π using Quotient.inductionOn with`. Consider the case `_ π₁`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨ω, hω⟩` from `Central.exists_hasCentral E m π₁`. Take `⟨c, hc⟩` from `log_norm_zc ω`. Establish `hn : (0 : ℝ) < 2 * Fintype.card (InfinitePlace E)`. Establish `: Nonempty (InfinitePlace E)` using `inferInstance`. Use `Fintype.card_pos (α := InfinitePlace E)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hm' : (0 : ℝ) < m` using `by exact_mod_cast hm`. Use `set r : ℝ := -c / ((2 * Fintype.card (InfinitePlace E) : ℝ) * m) with hr`. Use `set χ : HChar E := UnitExponent.nu E r with hχ`. Use `set π₀ : CuspSub E m := π₁.twist χ with hπ₀`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hω₀ : π₀.HasCentral (ω * χ ^ m)` using `hω.twist χ`. Establish `hz : ∀ t, ‖(((ω * χ ^ m).1 (zc E t) : ℂˣ) : ℂ)‖ = 1` using `fun t => by`. Establish `e : (((ω * χ ^ m).1 (zc E t) : ℂˣ) : ℂ) = ((ω.1 (zc E t) : ℂˣ) : ℂ) * (((χ.1 (zc E t) : ℂˣ) : ℂ)) ^ m`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_pow, MonoidHom.mul_apply, MonoidHom.pow_apply, Units.val_mul, Units.val_pow_eq_pow_val]`. Rewrite using `[e, norm_mul, norm_pow, hc, hχ, norm_absChar_zc, ← Real.exp_nat_mul, ← Real.exp_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[Real.exp_eq_one_iff]`. Rewrite using `[hr]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hu : π₀.IsUnitary`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π₀.ne_bot`. Take `⟨C, hC⟩` from `GlobalTheory.CompanionTheory.CuspFinGL.cuspFormsBoundedGL E m φ (π₀.cusp φ hφ) fun t g => by`. Rewrite using `[CuspidalL2GL.splitCentre_eq_scalar, hω₀.apply hφ, norm_mul]`. Establish `: (infId E (expU fun _ : InfinitePlace E => (t : ℂ))) = zc E t` using `rfl`. Rewrite using `[this, hz t, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨g, hg⟩ : ∃ g, φ.1 g ≠ 0` from `Function.ne_iff.1 fun e => h0 (Subtype.ext e)`. Establish `hle : ∀ x, ‖(((ω * χ ^ m).1 x : ℂˣ) : ℂ)‖ ≤ 1` using `fun x => by`. Assume the negation of the conclusion as `hcon`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt (C / ‖φ.1 g‖) (not_le.1 hcon)`. Use `hC (GeneralLinearGroup.scalar (Fin m) (x ^ n) * g)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[hω₀.apply hφ, norm_mul, map_pow, Units.val_pow_eq_pow_val, norm_pow]`. Conclude with `hn.not_ge ((le_div_iff₀ (norm_pos_iff.2 hg)).2 this)`. Use `⟨ω * χ ^ m, fun x => le_antisymm (hle x) ?_, hω₀⟩` and prove the remaining obligations. Use `hle x⁻¹` as an intermediate fact. Rewrite `this` using `[map_inv, Units.val_inv_eq_inv_val, norm_inv]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(inv_le_one₀ (norm_pos_iff.2 (Units.ne_zero _))).1 this`. Use `⟨CG.mk π₀, -r, (CG.isUnitary_mk π₀).2 hu, ?_⟩` and prove the remaining obligations. Establish `hinv : χ * UnitExponent.nu E (-r) = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `MonoidHom.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Introduce `x`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Complex.exp ((r : ℂ) * GlobalTheory.Mem.Chr.CharModel.logNorm E x) * Complex.exp (((-r : ℝ) : ℂ) * GlobalTheory.Mem.Chr.CharModel.logNorm E x) = 1`. Rewrite using `[← Complex.exp_add]`. Use `push_cast`.
-
-Put the polynomial expressions in normal form. Conclude with `Complex.exp_zero`. Use `show CG.mk π₁ = (CG.mk (π₁.twist χ)).twist (UnitExponent.nu E (-r))`. Rewrite using `[show CG.mk (π₁.twist χ) = (CG.mk π₁).twist χ from rfl, ← CG.twist_mul, hinv, CG.twist_one]`.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_exponent_holds : UnitEx := by
   intro E _ _ _

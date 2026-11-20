@@ -14,11 +14,11 @@ open scoped MatrixOrder ComplexOrder
 variable {n : ℕ}
 
 /- English proof (translation)
-Take `⟨R, hR, hRR, hu⟩ : ∃ R : Matrix (Fin n) (Fin n) ℂ, R.PosSemidef ∧ R * R = A ∧ ∀ T : Matrix (Fin n) (Fin n) ℂ, T.PosSemidef → T * T = A → R = T` from `⟨CFC.sqrt A, (CFC.sqrt_nonneg A).posSemidef, CFC.sqrt_mul_sqrt_self A hA.nonneg, fun T hT e => CFC.sqrt_unique e hT.nonneg⟩`. Establish `a1 : R * (R * (S * A * S)) = 1`. Rewrite using `[← Matrix.mul_assoc, hRR, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h, h1]`. Establish `a2 : R⁻¹ * R = 1` using `Matrix.nonsing_inv_mul R (Matrix.isUnit_det_of_right_inverse a1)`. Establish `a3 : R⁻¹ * R⁻¹ = S * A * S`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `a4 : R = S * R⁻¹ * S`. Use `hu _ ?_ ?_` and prove the remaining obligations. Use `hR.inv.conjTranspose_mul_mul_same S` as an intermediate fact. Rewrite `this` using `[h2]`. Then use the resulting hypothesis.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨R, hR, hRR, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem root {S A : Matrix (Fin n) (Fin n) ℂ} (h1 : S * S = 1) (h2 : Sᴴ = S) (hA : A.PosSemidef)
     (h : A * S * A = S) : ∃ R : Matrix (Fin n) (Fin n) ℂ, R.PosSemidef ∧ R * R = A ∧ R * S * R = S := by
@@ -46,15 +46,15 @@ theorem root {S A : Matrix (Fin n) (Fin n) ℂ} (h1 : S * S = 1) (h2 : Sᴴ = S)
     _ = S := by rw [h1, Matrix.mul_one, a2, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hS : ∀ X : Matrix (Fin n) (Fin n) ℂ, S * (S * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, h1, Matrix.one_mul]`. Establish `b1 : (S * Uᴴ * S) * U = 1`. Rewrite using `[Matrix.mul_assoc S, Matrix.mul_assoc S, hU, h1]`. Establish `b2 : U * S * Uᴴ = S`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (· * S) (mul_eq_one_comm.1 b1)` as an intermediate fact. Simplify `this` using `only [Matrix.mul_assoc, h1, Matrix.mul_one, Matrix.one_mul]`. Take `⟨P, hP, hPP, hPS⟩` from `root h1 h2 (Matrix.posSemidef_conjTranspose_mul_self U) (by`. Combine the equalities or inequalities in the displayed calculation. Take `⟨Q, hQ, hQQ, hQS⟩` from `root h1 h2 hP hPS`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Establish `hP' : ∀ X : Matrix (Fin n) (Fin n) ℂ, P * (S * (P * X)) = S * X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hPS]`. Establish `c0 : (U * (S * P * S))ᴴ = S * P * S * Uᴴ`. Simplify using `only [Matrix.conjTranspose_mul, h2, hP.isHermitian.eq, Matrix.mul_assoc]`. Establish `c1 : (U * (S * P * S))ᴴ * S * (U * (S * P * S)) = S`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[c0]`. Combine the equalities or inequalities in the displayed calculation. Establish `c2 : (U * (S * P * S))ᴴ * (U * (S * P * S)) = 1`. Rewrite using `[c0]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `⟨U * (S * P * S), Q, c1, ?_, by rw [hQ.isHermitian.eq, hQS], ?_, ?_⟩` and prove the remaining obligations. Generalize the expression as in `U * (S * P * S) = K at c1 c2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc S, Matrix.mul_assoc S, hQS, h1]`. Rewrite using `[Matrix.mul_assoc _ Q, hQQ, Matrix.mul_assoc, Matrix.mul_assoc S, Matrix.mul_assoc S, hPS, h1, Matrix.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem polar_std {S U : Matrix (Fin n) (Fin n) ℂ} (h1 : S * S = 1) (h2 : Sᴴ = S) (hU : Uᴴ * S * U = S) :
     ∃ K Q : Matrix (Fin n) (Fin n) ℂ, Kᴴ * S * K = S ∧ S * K = K * S ∧ Qᴴ * S * Q = S ∧ S * Q * S * Q = 1 ∧
@@ -91,23 +91,21 @@ theorem polar_std {S U : Matrix (Fin n) (Fin n) ℂ} (h1 : S * S = 1) (h2 : Sᴴ
   · rw [Matrix.mul_assoc _ Q, hQQ, Matrix.mul_assoc, Matrix.mul_assoc S, Matrix.mul_assoc S, hPS, h1, Matrix.mul_one]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Establish `hG : Gᴴ = G`. Establish `e : sᴴ * Gᴴ = G * s` using `by rw [← Matrix.conjTranspose_mul, h3.isHermitian.eq]`. Establish `e1 : sᴴ * sᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_one]`. Rewrite using `[← Matrix.one_mul Gᴴ, ← e1, Matrix.mul_assoc, e, ← Matrix.mul_assoc, h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨B, hB, hBB⟩ : ∃ B : Matrix (Fin n) (Fin n) ℂ, Bᴴ = B ∧ B * B = G * s` from `⟨CFC.sqrt (G * s), (CFC.sqrt_nonneg _).posSemidef.isHermitian.eq, CFC.sqrt_mul_sqrt_self _ h3.posSemidef.nonneg⟩`. Establish `hd : IsUnit B.det`. Establish `: IsUnit (B * B).det` using `by rw [hBB]; exact (Matrix.isUnit_iff_isUnit_det _).1 h3.isUnit`. Rewrite `this` using `[Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_left this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC, i1, i2⟩ : ∃ C : Matrix (Fin n) (Fin n) ℂ, Cᴴ = C ∧ B * C = 1 ∧ C * B = 1` from `⟨B⁻¹, by rw [Matrix.conjTranspose_nonsing_inv, hB], Matrix.mul_nonsing_inv B hd, Matrix.nonsing_inv_mul B hd⟩`. Establish `j1 : ∀ X : Matrix (Fin n) (Fin n) ℂ, B * (C * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, i1, Matrix.one_mul]`. Establish `j2 : ∀ X : Matrix (Fin n) (Fin n) ℂ, C * (B * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, i2, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hs, hGS⟩ : ∃ S : Matrix (Fin n) (Fin n) ℂ, s = C * S * B ∧ G = B * S * B` from `⟨B * s * C, by simp only [Matrix.mul_assoc, j2, i2, Matrix.mul_one], by`. Simplify using `only [Matrix.mul_assoc, i2, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, hBB, Matrix.mul_assoc, h1, Matrix.mul_one]⟩`. Establish `hS : S = C * G * C` using `by rw [hGS]; simp only [Matrix.mul_assoc, j2, i1, Matrix.mul_one]`. Establish `s1 : S * S = 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun X => B * X * C) h1` as an intermediate fact. Simplify `this` using `only [hs, Matrix.mul_assoc, j1, i1, Matrix.mul_one]`. Establish `s2 : Sᴴ = S`. Rewrite using `[hS]`. Simplify using `only [Matrix.conjTranspose_mul, hC, hG, Matrix.mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `tr : ∀ X : Matrix (Fin n) (Fin n) ℂ, Xᴴ * S * X = S → (C * X * B)ᴴ * G * (C * X * B) = G` using `fun X hX => by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hGS]`. Simplify using `only [Matrix.conjTranspose_mul, hC, hB, Matrix.mul_assoc, j1, j2]`. Use `_ = G := by rw [hX, hGS]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 
-Take `⟨K, Q, k1, k2, q1, q2, e⟩` from `polar_std (U := B * u * C) s1 s2 (by`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, hC, hB, Matrix.mul_assoc]`. Use `_ = S := by rw [← hGS, hu, ← hS])`. Use `⟨C * K * B, C * Q * B, tr K k1, ?_, tr Q q1, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg (fun X => C * X * B) k2` as an intermediate fact. Simplify `this` using `only [hs, Matrix.mul_assoc, j1]`. Use `congrArg (fun X => C * X * B) q2` as an intermediate fact. Simplify `this` using `only [hs, Matrix.mul_assoc, j1, Matrix.one_mul, i2]`. Use `congrArg (fun X => C * X * B) e` as an intermediate fact.
-
-Simplify `this` using `only [Matrix.mul_assoc, j1, j2, i2, Matrix.mul_one]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem polar {G s u : Matrix (Fin n) (Fin n) ℂ} (h : Formalism.IndefR.Datum.IsCartanInv G s) (hu : uᴴ * G * u = G) :
     ∃ k q : Matrix (Fin n) (Fin n) ℂ, kᴴ * G * k = G ∧ s * k = k * s ∧ qᴴ * G * q = G ∧ s * q * s * q = 1 ∧
@@ -166,7 +164,7 @@ open scoped TensorProduct Classical ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (L := Formalism.L2.Theta.mt W g) (M := Formalism.L2.Theta.mt W g') (f := (θ τ).comp (infPart D))`.
+A detailed English derivation is pending.
 -/
 theorem compAt_mt_mul {D : D7} (θ : InfFam D) (W : HSp D) (τ : D.what₂.Tau) (g g' : GA D W) :
     compAt θ τ (Formalism.L2.Theta.mt W (g * g')) =
@@ -174,14 +172,14 @@ theorem compAt_mt_mul {D : D7} (θ : InfFam D) (W : HSp D) (τ : D.what₂.Tau) 
   Matrix.map_mul (L := Formalism.L2.Theta.mt W g) (M := Formalism.L2.Theta.mt W g') (f := (θ τ).comp (infPart D))
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one (f := (θ τ).comp (infPart D)) (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem compAt_mt_one {D : D7} (θ : InfFam D) (W : HSp D) (τ : D.what₂.Tau) :
     compAt θ τ (Formalism.L2.Theta.mt W 1) = 1 :=
   Matrix.map_one (f := (θ τ).comp (infPart D)) (map_zero _) (map_one _)
 
 /- English proof (translation)
-Use `mul_inv_eq_one.1 ((GlobalTheory.UnitarySplit.real_finite_split D W).2.2.1 _ (mul_mem hg (inv_mem hg')) ((GlobalTheory.SmoothForms.RealPts.glue θ hθ W).1 _ fun τ => ?_))` and prove the remaining obligations. Use `show compAt θ τ (Formalism.L2.Theta.mt W (g * g'⁻¹)) = 1`. Rewrite using `[compAt_mt_mul, h, ← compAt_mt_mul, mul_inv_cancel, compAt_mt_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_real {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) (W : HSp D) {g g' : GA D W} (hg : g ∈ GinfC W)
     (hg' : g' ∈ GinfC W) (h : ∀ τ, compAt θ τ (Formalism.L2.Theta.mt W g) = compAt θ τ (Formalism.L2.Theta.mt W g')) :
@@ -192,11 +190,11 @@ theorem ext_real {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) (W : HSp D) {g g' 
   rw [compAt_mt_mul, h, ← compAt_mt_mul, mul_inv_cancel, compAt_mt_one]
 
 /- English proof (translation)
-Introduce `D θ W hθ s hs c hm hK u hu`. Establish `gl : ∀ x : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ, (∀ τ, (x τ)ᴴ * gramAt D W τ * x τ = gramAt D W τ) → ∃ g ∈ GinfC W, ∀ τ, compAt θ τ (Formalism.L2.Theta.mt W g) = x τ` using `(GlobalTheory.SmoothForms.RealPts.glue θ hθ W).2`. Use `choose k q k1 k2 q1 q2 e using fun τ => polar (u := compAt θ τ (Formalism.L2.Theta.mt W u)) (hs τ) (GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ W u τ)`. Take `⟨k', hk, ek⟩` from `gl k k1`. Take `⟨q', hq, eq⟩` from `gl q q1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ, eσ⟩` from `gl s fun τ => (hs τ).2.1`. Establish `ck : c k' = 1` using `hK _ hk fun τ => by rw [ek, k2]`. Establish `cσ : c σ = 1` using `hK _ hσ fun τ => by rw [eσ]`. Establish `c1 : c 1 = 1` using `hK _ (one_mem _) fun τ => by rw [compAt_mt_one, Matrix.mul_one, Matrix.one_mul]`. Establish `e1 : u = k' * q' * q'` using `ext_real hθ W hu (mul_mem (mul_mem hk hq) hq) fun τ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[compAt_mt_mul, compAt_mt_mul, ek, eq, e]`. Establish `e2 : σ * q' * σ * q' = 1` using `ext_real hθ W (mul_mem (mul_mem (mul_mem hσ hq) hσ) hq) (one_mem _) fun τ => by`. Rewrite using `[compAt_mt_mul, compAt_mt_mul, compAt_mt_mul, eσ, eq, q2, compAt_mt_one]`. Rewrite `c1` using `[← e2, hm _ (mul_mem (mul_mem hσ hq) hσ) _ hq, hm _ (mul_mem hσ hq) _ hσ, hm _ hσ _ hq, cσ, one_mul, mul_one]`. Rewrite using `[e1, hm _ (mul_mem hk hq) _ hq, hm _ hk _ hq, ck, one_mul, c1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_eq_one : ∀ (D : D7) (θ : InfFam D) (W : HSp D), IsInfFam θ → ∀ (s : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ), (∀ τ, IsCartanInv (gramAt D W τ) (s τ)) → ∀ c : GA D W → ℂ, (∀ u ∈ GinfC W, ∀ u' ∈ GinfC W, c (u * u') = c u * c u') → (∀ u ∈ GinfC W, (∀ τ, s τ * compAt θ τ (Formalism.L2.Theta.mt W u) = compAt θ τ (Formalism.L2.Theta.mt W u) * s τ) → c u = 1) → ∀ u ∈ GinfC W, c u = 1 := by
   intro D θ W hθ s hs c hm hK u hu

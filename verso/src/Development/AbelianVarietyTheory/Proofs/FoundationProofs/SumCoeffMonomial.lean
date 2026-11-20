@@ -9,7 +9,7 @@ open scoped BigOperators
 namespace GlobalTheory.MinorBound
 
 /- English proof (translation)
-Establish `h : Function.Injective (fun s : {s : Fin a → Fin d // StrictMono s} => (Set.range s.1 : Set (Fin d)))`. Introduce `s t hst`. Conclude with `Subtype.ext ((s.2.range_inj t.2).1 hst)`. Use `Fintype.card_le_of_injective _ h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem card_strictMono_le (a d : ℕ) [Fintype {s : Fin a → Fin d // StrictMono s}] :
     Fintype.card {s : Fin a → Fin d // StrictMono s} ≤ 2 ^ d := by
@@ -21,9 +21,9 @@ theorem card_strictMono_le (a d : ℕ) [Fintype {s : Fin a → Fin d // StrictMo
   simpa using this
 
 /- English proof (translation)
-Set `L : MvPolynomial σ ℂ →ₗ[ℂ] ℂ` to `(MvPolynomial.basisMonomials σ ℂ).constr ℂ w`. Establish `h1 : ∀ α c, L (MvPolynomial.monomial α c) = c * w α`. Introduce `α c`. Establish `: MvPolynomial.monomial α c = c • (MvPolynomial.basisMonomials σ ℂ) α`. Simplify using `[MvPolynomial.smul_monomial]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, map_smul, Module.Basis.constr_basis, smul_eq_mul]`. Use `⟨L, h1, fun P => ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [P.as_sum, map_sum]`. Simplify using `only [h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_coeff_monomial {σ : Type} (w : (σ →₀ ℕ) → ℂ) :
     ∃ L : MvPolynomial σ ℂ →ₗ[ℂ] ℂ, (∀ α c, L (MvPolynomial.monomial α c) = c * w α) ∧
@@ -39,7 +39,7 @@ theorem sum_coeff_monomial {σ : Type} (w : (σ →₀ ℕ) → ℂ) :
   simp only [h1]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi, Finset.sum_insert hi, ih, MvPolynomial.monomial_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_monomial {σ ι : Type} (s : Finset ι) (α : ι → σ →₀ ℕ) (c : ι → ℂ) :
     ∏ i ∈ s, MvPolynomial.monomial (α i) (c i) =
@@ -55,11 +55,11 @@ noncomputable def expo (D : D7) {a d : ℕ} {n : D.what₂.Tau → ℕ} (T : Tup
   ∑ τ, ∑ j, ∑ i, Finsupp.single (τ, (T τ j).1 (p τ j i), i) 1
 
 /- English proof (translation)
-Unfold `minorPol`. Establish `hdet : ∀ τ (j : Fin (n τ)), (Matrix.of fun i i' : Fin a => (MvPolynomial.X (τ, (T τ j).1 i, i') : MvPolynomial (GL3Theta.Idx D a d) ℂ)).det = ∑ σ : Equiv.Perm (Fin a), MvPolynomial.monomial (∑ i, Finsupp.single ((τ, (T τ j).1 (σ i), i) : GL3Theta.Idx D a d) 1) (((Equiv.Perm.sign …`. Introduce `τ j`. Rewrite using `[Matrix.det_apply']`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.of_apply, MvPolynomial.X]`. Rewrite using `[prod_monomial, ← map_intCast (MvPolynomial.C : ℂ →+* MvPolynomial (GL3Theta.Idx D a d) ℂ), MvPolynomial.C_mul_monomial]`. Simplify using the standard rewrite rules. Simplify using `only [hdet]`. Simplify using `only [Finset.prod_univ_sum, Fintype.piFinset_univ]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr (by convert rfl) fun p _ => ?_` and prove the remaining obligations. Simplify using `only [prod_monomial, expo]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem minorPol_eq (D : D7) {a d : ℕ} {n : D.what₂.Tau → ℕ} (T : Tup D a d n) :
     minorPol D T = ∑ p : (∀ τ, Fin (n τ) → Equiv.Perm (Fin a)),
@@ -83,13 +83,13 @@ theorem minorPol_eq (D : D7) {a d : ℕ} {n : D.what₂.Tau → ℕ} (T : Tup D 
   simp only [prod_monomial, expo]
 
 /- English proof (translation)
-Take `⟨τ0, r, c⟩` from `k`. Simplify using `only [expo, Finsupp.coe_finset_sum, Finset.sum_apply]`. Rewrite using `[Finset.sum_eq_single τ0]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_eq_single c]`. Apply the tactic sequence `rw [Finsupp.single_apply]; split_ifs <;> simp`. Introduce `i _ hi`. Rewrite using `[Finsupp.single_apply, if_neg]`. Simplify using `[hi]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `_ = n τ0 := by simp`. Introduce `τ _ hτ`. Use `Finset.sum_eq_zero fun j _ => Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply, if_neg]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hτ]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem expo_le (D : D7) {a d : ℕ} {n : D.what₂.Tau → ℕ} (T : Tup D a d n)
     (p : ∀ τ, Fin (n τ) → Equiv.Perm (Fin a)) (k : D.what₂.Tau × Fin d × Fin a) :
@@ -113,7 +113,7 @@ theorem expo_le (D : D7) {a d : ℕ} {n : D.what₂.Tau → ℕ} (T : Tup D a d 
   · simp
 
 /- English proof (translation)
-Establish `: ((expo D T p).sum fun _ m => m) = Finsupp.degree (expo D T p)` using `rfl`. Rewrite using `[this]`. Simplify using `only [expo, map_sum, Finsupp.degree_single]`. Simplify using `[Finset.mul_sum, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem expo_sum (D : D7) {a d : ℕ} {n : D.what₂.Tau → ℕ} (T : Tup D a d n)
     (p : ∀ τ, Fin (n τ) → Equiv.Perm (Fin a)) :
@@ -124,21 +124,21 @@ theorem expo_sum (D : D7) {a d : ℕ} {n : D.what₂.Tau → ℕ} (T : Tup D a d
   simp [Finset.mul_sum, mul_comm]
 
 /- English proof (translation)
-Introduce `D a d n G S A B hA hB hS hn hG hbd`. Prove the components needed by the constructor for the conclusion. Simplify using `only [Fintype.card_pi, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[pow_mul, ← Finset.prod_pow_eq_pow_sum]`. Conclude with `Finset.prod_le_prod' fun τ _ => Nat.pow_le_pow_left (card_strictMono_le a d) _`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T`. Take `⟨L, hL1, hL2⟩` from `sum_coeff_monomial (fun α : Mono D a d => (α.prod fun _ n => (n.factorial : ℂ)) * taylor D G α)`. Establish `h0 : GL3Theta.applyAt0 D (minorPol D T) G = L (minorPol D T)`. Rewrite using `[hL2]`. Simplify using `only [GL3Theta.applyAt0, mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set M := S * (2 * Real.exp 1 * Real.pi * B / A) ^ (a * ∑ τ, n τ) with hM`. Establish `hM0 : 0 ≤ M`. Establish `: (0:ℝ) < B` using `by linarith`. Use `Real.pi_pos` as an intermediate fact. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hterm : ∀ p : (∀ τ, Fin (n τ) → Equiv.Perm (Fin a)), ‖L (MvPolynomial.monomial (expo D T p) (∏ τ, ∏ j, (((Equiv.Perm.sign (p τ j) : ℤˣ) : ℤ) : ℂ)))‖ ≤ Real.sqrt M`. Introduce `p`. Rewrite using `[hL1, norm_mul]`. Establish `hs : ‖(∏ τ, ∏ j, (((Equiv.Perm.sign (p τ j) : ℤˣ) : ℤ) : ℂ))‖ = 1`. Rewrite using `[norm_prod]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[norm_prod]`. Use `Finset.prod_eq_one fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (p τ j)) with h | h <;> simp [h]`. Rewrite using `[hs, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Use `GlobalTheory.T.monomialDeriv_cauchy_bound_gaussianGrowth D a d G S A B hA hB hS hG hbd (expo D T p) (fun k => le_trans (by exact_mod_cast expo_le D T p k) (hn k.1))` as an intermediate fact. Rewrite `this` using `[expo_sum]`. Then use the resulting hypothesis. Establish `hcard : (Fintype.card (∀ τ, Fin (n τ) → Equiv.Perm (Fin a)) : ℝ) = (a.factorial : ℝ) ^ (∑ τ, n τ)`. Simplify using `[Fintype.card_pi, Fintype.card_perm, Finset.prod_pow_eq_pow_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : ‖L (minorPol D T)‖ ≤ (a.factorial : ℝ) ^ (∑ τ, n τ) * Real.sqrt M`. Rewrite using `[minorPol_eq, map_sum]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum fun p _ => hterm p).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hcard]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[h0]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem minor_bound : ∀ (D : D7) (a d : ℕ) (n : D.what₂.Tau → ℕ) (G : VC D a d → ℂ) (S A B : ℝ), 0 < A → 1 ≤ B → 0 ≤ S → (∀ τ, (n τ : ℝ) ≤ 2 * B) → Differentiable ℂ G → (∀ z, ‖G z‖ ^ 2 ≤ S * Real.exp (Real.pi * (∑ τ, ∑ i, ∑ j, ‖z τ i j‖ ^ 2) / A)) → (Fintype.card (Tup D a d n) ≤ 2 ^ (d * ∑ τ, n τ)) ∧ ∀ T : Tup D a d n, ‖GL3Theta.applyAt0 D (minorPol D T) G‖ ^ 2 ≤ ((a.factorial : ℝ) ^ (∑ τ, n τ)) ^ 2 * (S * (2 * Real.exp 1 * Real.pi * B / A) ^ (a * ∑ τ, n τ)) := by
   intro D a d n G S A B hA hB hS hn hG hbd

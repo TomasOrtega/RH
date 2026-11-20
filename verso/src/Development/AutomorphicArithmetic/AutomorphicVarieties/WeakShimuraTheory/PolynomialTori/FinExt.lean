@@ -4,23 +4,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.Map
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Introduce `K _ _ V A B _ _ _ _ φ f hφ hfin hf`. Use `letI : Algebra A B := φ.toAlgebra`. Use `letI : Algebra A K := (V.subtype.comp f).toAlgebra`. Use `letI : Algebra A V := f.toAlgebra`. Use `haveI : Module.Finite A B := hfin`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hfK : Function.Injective (V.subtype.comp f)` using `Subtype.val_injective.comp hf`. Use `haveI : FaithfulSMul A B := (faithfulSMul_iff_algebraMap_injective A B).mpr hφ`. Use `haveI : FaithfulSMul A K := (faithfulSMul_iff_algebraMap_injective A K).mpr hfK`. Use `haveI : IsScalarTower A V K := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : Algebra.IsAlgebraic A B := inferInstance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `y₀ : B →ₐ[A] K` to `IsAlgClosed.lift`. Establish `hmem : ∀ b, y₀ b ∈ V`. Introduce `b`. Establish `h1 : IsIntegral A (y₀ b)` using `(Algebra.IsIntegral.isIntegral b).map y₀`. Establish `h2 : IsIntegral V (y₀ b)` using `h1.tower_top`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz⟩` from `IsIntegrallyClosed.isIntegral_iff.mp h2`. Rewrite using `[← hz]`. Conclude with `z.2`. Set `y : B →+* V` to `y₀.toRingHom.codRestrict V hmem`. Take `⟨n, g, hg⟩` from `Module.Finite.exists_fin (R := A) (M := B)`.
+By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Use `⟨y, Finset.univ.image (fun i => y₀ (g i)), ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Conclude with `y₀.commutes a`. Introduce `b show y₀ b ∈ _`. Establish `hb : b ∈ Submodule.span A (Set.range g)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[hg]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Apply `Subfield.subset_closure` to reduce the goal to its premises. Use `right`. Simplify using the standard rewrite rules. Consider the case `zero`. Rewrite using `[map_zero]`.
-
-Conclude with `zero_mem _`. Consider the case `add x z _ _ hx hz`. Rewrite using `[map_add]`. Conclude with `add_mem hx hz`. Consider the case `smul a x _ hx`.
-
-Rewrite using `[map_smul, Algebra.smul_def]`. Use `mul_mem (Subfield.subset_closure ?_) hx` and prove the remaining obligations. Use `left`. Conclude with `⟨a, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Po.finExt :
     ∀ (K : Type) [Field K] [IsAlgClosed K] (V : ValuationSubring K) (A B : Type) [CommRing A] [IsDomain A] [CommRing B] [IsDomain B]

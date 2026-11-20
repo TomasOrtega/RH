@@ -50,7 +50,7 @@ Both sides reduce to the same expression.
 theorem Ex.mul_u (p q : Ex h c) : (p * q).u = p.u * q.u * (θ c p.b q.b)⁻¹ := rfl
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero]`. Both sides reduce to the same expression. Consider the case `succ n ih => rw [pow_succ, pow_succ, Ex.mul_b, ih]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem Ex.pow_b (p : Ex h c) (n : ℕ) : (p ^ n).b = p.b ^ n := by
   induction n with
@@ -58,14 +58,14 @@ theorem Ex.pow_b (p : Ex h c) (n : ℕ) : (p ^ n).b = p.b ^ n := by
   | succ n ih => rw [pow_succ, pow_succ, Ex.mul_b, ih]
 
 /- English proof (translation)
-The claim follows from `Ex.ext (by show p.b * 1 = p.b; exact _root_.mul_one _) (by show p.u * x * (θ c p.b 1)⁻¹ = p.u * x; rw [h.face₃, inv_one, _root_.mul_one])`.
+A detailed English derivation is pending.
 -/
 theorem Ex.mul_const (p : Ex h c) (x : U) : p * ⟨1, x⟩ = ⟨p.b, p.u * x⟩ :=
   Ex.ext (by show p.b * 1 = p.b; exact _root_.mul_one _)
     (by show p.u * x * (θ c p.b 1)⁻¹ = p.u * x; rw [h.face₃, inv_one, _root_.mul_one])
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero]`. Both sides reduce to the same expression. Consider the case `succ n ih => rw [pow_succ, ih, Ex.mul_const, pow_succ]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem Ex.const_pow (x : U) (n : ℕ) : (⟨1, x⟩ : Ex h c) ^ n = ⟨1, x ^ n⟩ := by
   induction n with
@@ -78,9 +78,9 @@ def Mult (θ : A → A → A → U) (c : X → A) (b : A) (v : X → U) : Prop :
   v 0 = 1 ∧ ∀ χ χ', v (χ + χ') * θ (c χ) (c χ') b = v χ * v χ'
 
 /- English proof (translation)
-Establish `e1` using `h.coc c c' b₁ b₂`. Establish `e2` using `h.coc c' b₁ b₂ c`. Rewrite `e1` using `[h.s01 c (c' * b₁) b₂, h.s12 (c' * b₁) c b₂]`. Rewrite `e2` using `[h.s12 c' b₁ c, h.s01 c' c b₁, h.s12 c' (b₁ * b₂) c, h.s01 c' c (b₁ * b₂), h.s12 b₁ b₂ c, h.s01 b₁ c b₂]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e1'` using `congrArg Additive.ofMul e1`. Establish `e2'` using `congrArg Additive.ofMul e2`. Simplify using `only [ofMul_mul] at e1' e2' ⊢`. Take the linear combination `(norm := abel) -e1' - e2'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem isCub_theta_mul_left_relation (h : IsCub θ) (c c' b₁ b₂ : A) :
     θ c b₁ b₂ * θ c' b₁ b₂ * θ c c' (b₁ * b₂) = θ c c' b₁ * θ c c' b₂ * θ (c * c') b₁ b₂ := by
@@ -96,9 +96,9 @@ private theorem isCub_theta_mul_left_relation (h : IsCub θ) (c c' b₁ b₂ : A
   linear_combination (norm := abel) -e1' - e2'
 
 /- English proof (translation)
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e'` using `congrArg Additive.ofMul e`. Establish `m'` using `congrArg Additive.ofMul m`. Establish `k'` using `congrArg Additive.ofMul k`. Simplify using `only [ofMul_mul, ofMul_inv] at e' m' k' ⊢`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `(norm := abel) e' + m' + k'`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem mul_inv_mul_eq_mul_inv_mul_of_factorizations {G : Type} [CommGroup G] (a' v' t s a v t₁ b w t₂ p q : G) (e : a' * p = a * b)
     (m : v' * q = v * w) (k : t₁ * t₂ * s = p * q * t) : a' * v' * t⁻¹ * s = a * v * t₁⁻¹ * (b * w * t₂⁻¹) := by
@@ -110,17 +110,17 @@ private theorem mul_inv_mul_eq_mul_inv_mul_of_factorizations {G : Type} [CommGro
   linear_combination (norm := abel) e' + m' + k'
 
 /- English proof (translation)
-Take `⟨m0, m2⟩` from `m`. Establish `hc0 : c 0 = 1` using `by simpa using (hc 0 0).symm`. Establish `z : ∀ k : ℕ, ((⟨b, v 0⟩ : Ex h (c 0)) ^ k).u = 1`. Introduce `k`. Proceed by induction on `k with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => rw [pow_zero]`. Both sides reduce to the same expression. Consider the case `succ k ih`. Establish `t : θ (c 0) (b ^ k) b = 1` using `by rw [hc0]; exact h.face _ _`. Rewrite using `[pow_succ, Ex.mul_u, Ex.pow_b, ih]`.
+Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show 1 * v 0 * (θ (c 0) (b ^ k) b)⁻¹ = 1`. Rewrite using `[t, m0]`. Simplify using the standard rewrite rules. Establish `main : ∀ k : ℕ, ∀ χ χ', ((⟨b, v (χ + χ')⟩ : Ex h (c (χ + χ'))) ^ k).u * θ (c χ) (c χ') (b ^ k) = ((⟨b, v χ⟩ : Ex h (c χ)) ^ k).u * ((⟨b, v χ'⟩ : Ex h (c χ')) ^ k).u`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `χ χ'`. Rewrite using `[pow_zero, pow_zero, pow_zero, pow_zero, h.face₃]`. Both sides reduce to the same expression.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Consider the case `succ k ih`. Introduce `χ χ'`. Establish `key` using `isCub_theta_mul_left_relation h (c χ) (c χ') (b ^ k) b`. Rewrite `key` using `[← hc]`. Rewrite using `[pow_succ, pow_succ, pow_succ, pow_succ, Ex.mul_u, Ex.mul_u, Ex.mul_u, Ex.pow_b, Ex.pow_b, Ex.pow_b]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove both required implications or components.
 
-Conclude with `mul_inv_mul_eq_mul_inv_mul_of_factorizations _ _ _ _ _ _ _ _ _ _ _ _ (ih χ χ') (m2 χ χ') key`. Conclude with `And.intro (z n) (fun χ χ' => main n χ χ')`.
+A detailed English derivation is pending.
 -/
 theorem Mult.pow {c : X → A} (hc : ∀ χ χ', c (χ + χ') = c χ * c χ') {b : A} {v : X → U} (m : Mult θ c b v) (n : ℕ) :
     Mult θ c (b ^ n) fun χ => ((⟨b, v χ⟩ : Ex h (c χ)) ^ n).u := by
@@ -152,9 +152,9 @@ theorem Mult.pow {c : X → A} (hc : ∀ χ χ', c (χ + χ') = c χ * c χ') {b
   exact And.intro (z n) (fun χ χ' => main n χ χ')
 
 /- English proof (translation)
-Set `P : Additive (Ex h b) →+ Additive A` to `MonoidHom.toAdditive (MonoidHom.mk' (fun p : Ex h b => p.b) Ex.mul_b)`. Set `C : X →+ Additive A` to `AddMonoidHom.mk' (fun χ => Additive.ofMul (c χ)) (fun χ χ' => by rw [hc]; rfl)`. Take `⟨s, hs⟩` from `Module.projective_lifting_property P.toIntLinearMap C.toIntLinearMap (fun a => ⟨Additive.ofMul (⟨Additive.toMul a, 1⟩ : Ex h b), rfl⟩)`. Establish `hb : ∀ χ, (Additive.toMul (s χ)).b = c χ` using `fun χ => LinearMap.congr_fun hs χ`. Use `⟨fun χ => (Additive.toMul (s χ)).u, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (Additive.toMul (s 0)).u = 1`. Rewrite using `[map_zero]`. Both sides reduce to the same expression. Introduce `χ χ' show (Additive.toMul (s (χ + χ'))).u * θ (c χ) (c χ') b = (Additive.toMul (s χ)).u * (Additive.toMul (s χ')).u`. Rewrite using `[map_add, toMul_add, Ex.mul_u, hb, hb, h.s01 b, h.s12 (c χ) b, inv_mul_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mult [Module.Free ℤ X] (h : IsCub θ) {c : X → A} (hc : ∀ χ χ', c (χ + χ') = c χ * c χ') (b : A) :
     ∃ v, Mult θ c b v := by
@@ -172,9 +172,9 @@ theorem exists_mult [Module.Free ℤ X] (h : IsCub θ) {c : X → A} (hc : ∀ �
     rw [map_add, toMul_add, Ex.mul_u, hb, hb, h.s01 b, h.s12 (c χ) b, inv_mul_cancel_right]
 
 /- English proof (translation)
-Set `P : Additive U →+ Additive U` to `MonoidHom.toAdditive (powMonoidHom n)`. Set `L : X →+ Additive U` to `AddMonoidHom.mk' (fun χ => Additive.ofMul (l χ)) (fun χ χ' => by rw [hl]; rfl)`. Take `⟨s, hs⟩` from `Module.projective_lifting_property P.toIntLinearMap L.toIntLinearMap (fun a => by obtain ⟨r, hr⟩ := hU (Additive.toMul a); exact ⟨Additive.ofMul r, hr⟩)`. Use `⟨fun χ => Additive.toMul (s χ), fun χ χ' => ?_, fun χ => LinearMap.congr_fun hs χ⟩` and prove the remaining obligations. Use `show Additive.toMul (s (χ + χ')) = Additive.toMul (s χ) * Additive.toMul (s χ')`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, toMul_add]`.
+A detailed English derivation is pending.
 -/
 theorem exists_root [Module.Free ℤ X] {n : ℕ} (hU : ∀ u : U, ∃ r, r ^ n = u) (l : X → U) (hl : ∀ χ χ', l (χ + χ') = l χ * l χ') :
     ∃ ro : X → U, (∀ χ χ', ro (χ + χ') = ro χ * ro χ') ∧ ∀ χ, ro χ ^ n = l χ := by
@@ -193,7 +193,7 @@ section Pt
 variable {F : Type} [Field F] {X : Scheme.{0}} {M : LB X} {K K' : Type} [Fintype K] [Fintype K']
 
 /- English proof (translation)
-The claim follows from `corr_of_val hM fun y' I hI => by have : Subsingleton (Sp F) := inferInstanceAs (Subsingleton (PrimeSpectrum F)) obtain rfl := Subsingleton.elim y y' exact (gen_trans ht (𝟙 _) y (hI.mem _ _) (hJ.mem _ _)).trans ((congrArg₂ (· * ·) (hF.trF (𝟙 _) y (fun ψ => I (𝟙 _ ≫ ψ)) fun ψ => J …`.
+A detailed English derivation is pending.
 -/
 theorem corr_pt (hM : M.IsLB) {φ : K → (Sp F ⟶ X)} {ε : K → ℤ} {φ' : K' → (Sp F ⟶ X)} {ε' : K' → ℤ} (hF : FormEq φ ε φ' ε')
     {t : LB.Gen (LB.LinComb M φ ε)} {t' : LB.Gen (LB.LinComb M φ' ε')} (ht : t.IsGen) (ht' : t'.IsGen) {y : Sp F} {J}
@@ -206,11 +206,11 @@ theorem corr_pt (hM : M.IsLB) {φ : K → (Sp F ⟶ X)} {ε : K → ℤ} {φ' : 
       (gen_trans ht' (𝟙 _) y (hI.mem _ _) (hJ.mem _ _)).symm)
 
 /- English proof (translation)
-Introduce `t`. Take `⟨V, hyV, s, rfl⟩` from `TopCat.Presheaf.germ_exist (Sp F).presheaf t`. Establish `hV : (⊤ : (Sp F).Opens) ≤ V`. Introduce `x _`. Establish `hx : x = y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `x' : PrimeSpectrum F` to `x`. Set `y' : PrimeSpectrum F` to `y`. Establish `e : x' = y'` using `PrimeSpectrum.ext ((Ideal.eq_bot_of_prime x'.asIdeal).trans (Ideal.eq_bot_of_prime y'.asIdeal).symm)`. Conclude with `e`. Conclude with `hx ▸ hyV`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨(Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom ((Sp F).presheaf.map (homOfLE hV).op s), ?_⟩` and prove the remaining obligations. Simplify using `only [toStk]`. Simplify using the standard rewrite rules. Conclude with `TopCat.Presheaf.germ_res_apply (Sp F).presheaf (homOfLE hV) y trivial s`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toStk_surj (y : Sp F) : Function.Surjective (toStk y) := by
   intro t
@@ -229,9 +229,9 @@ theorem toStk_surj (y : Sp F) : Function.Surjective (toStk y) := by
   exact TopCat.Presheaf.germ_res_apply (Sp F).presheaf (homOfLE hV) y trivial s
 
 /- English proof (translation)
-Establish `all : ∀ w : Sp F, w ∈ LB.wchart M φ fun k => J (𝟙 _ ≫ φ k)` using `fun w => (top_le_iff_mem (𝟙 (Sp F)) _ y).2 (hJ.mem φ (𝟙 _)) trivial`. Establish `le : ∀ j, LB.wchart M φ j ≤ LB.wchart M φ j ⊓ LB.wchart M φ fun k => J (𝟙 _ ≫ φ k)` using `fun j w hw => ⟨hw, all w⟩`. Set `t₀ : LB.Gen (LB.LinComb M φ ε)` to `⟨fun j => res (le j) ((LB.LinComb M φ ε).g j fun k => J (𝟙 _ ≫ φ k))⟩`. Establish `h₀ : t₀.IsGen` using `isGen_of_gm _ fun w j j' h h' => ((gm_res _ w (le j) h _).trans (gm_linComb M _ ε (𝟙 _) w j _ h (all w))).trans ((trF_trans hM _ ε (𝟙 _) w h h' (all w)).symm.trans (congrArg _ ((gm_res _ w (le j') h' _).trans (gm_linComb M _ ε (𝟙 _) w j' _ h' (all w))).symm))`. Take `⟨f, hf⟩` from `toStk_surj y (u * (val t₀ (𝟙 _) y J)⁻¹).val`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `f0 : f ≠ 0` using `fun h => Units.ne_zero _ (hf.symm.trans (by rw [h, map_zero]))`. Use `⟨scaleGen t₀ (cU f f0), scaleGen_isGen hM t₀ h₀ _, (gm_scaleGen t₀ _ (𝟙 _) y _ (all y)).trans ?_⟩` and prove the remaining obligations. Rewrite using `[show gm (𝟙 (Sp F)) y ⊤ (cU f f0) = _ from Units.ext ((gm_cU f f0 y).trans hf)]`. Conclude with `inv_mul_cancel_right _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gen_val (hM : M.IsLB) (φ : K → (Sp F ⟶ X)) (ε : K → ℤ) {y : Sp F} {J} (hJ : Good M y J)
     (u : ((Sp F).presheaf.stalk y)ˣ) : ∃ t : LB.Gen (LB.LinComb M φ ε), t.IsGen ∧ val t (𝟙 _) y J = u := by
@@ -263,7 +263,7 @@ def ix (z χ : D.X) : Ex (isCub_cubV D.cub (T := T) hJ) (cP D T χ) :=
   ⟨cP D T z, val (D.tau z χ) (σ.left ≫ jFK (R := R) F) y J⟩
 
 /- English proof (translation)
-The claim follows from `Ex.ext (cPoint_add _ _ _ _) (by have C := isCub_cubV D.cub (T := T) hJ exact eq_mul_inv_of_mul_eq ((congrArg _ ((C.s01 _ _ _).trans (C.s12 _ _ _))).trans (tau_mul σ hJ hB z z' χ)))`.
+A detailed English derivation is pending.
 -/
 theorem ix_add (hB : D.TauBimult) (z z' χ : D.X) : ix σ hJ (z + z') χ = ix σ hJ z χ * ix σ hJ z' χ :=
   Ex.ext (cPoint_add _ _ _ _) (by
@@ -271,7 +271,7 @@ theorem ix_add (hB : D.TauBimult) (z z' χ : D.X) : ix σ hJ (z + z') χ = ix σ
     exact eq_mul_inv_of_mul_eq ((congrArg _ ((C.s01 _ _ _).trans (C.s12 _ _ _))).trans (tau_mul σ hJ hB z z' χ)))
 
 /- English proof (translation)
-Use `Ex.ext ((congrArg (σ ≫ ·) h.1).trans (MonObj.comp_mul _ _ _)) (eq_mul_inv_of_mul_eq ?_)` and prove the remaining obligations. Establish `e` using `(val_mul hJ _ _ _).symm.trans ((val_corr hJ (h.2 χ) σ.left).trans (val_mul hJ _ _ _))`. Use `Eq.trans (congrArg₂ (· * ·) rfl ?_) e` and prove the remaining obligations. Conclude with `((val_cub D.cub σ hJ _ _ _).trans (congrArg (fun c => cubV D.cub y J c _ _) (comp_cP D σ χ))).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gx_add {g g' g'' : GtPtF D F} (h : g.IsAdd g' g'') (χ : D.X) : gx σ hJ g'' χ = gx σ hJ g χ * gx σ hJ g' χ := by
   refine Ex.ext ((congrArg (σ ≫ ·) h.1).trans (MonObj.comp_mul _ _ _)) (eq_mul_inv_of_mul_eq ?_)
@@ -280,15 +280,15 @@ theorem gx_add {g g' g'' : GtPtF D F} (h : g.IsAdd g' g'') (χ : D.X) : gx σ hJ
   exact ((val_cub D.cub σ hJ _ _ _).trans (congrArg (fun c => cubV D.cub y J c _ _) (comp_cP D σ χ))).symm
 
 /- English proof (translation)
-The claim follows from `Ex.ext ((congrArg (σ ≫ ·) h.1).trans (comp_cP D σ z)) ((val_corr hJ (h.2 χ) σ.left).trans (val_pull hJ _ _ _))`.
+A detailed English derivation is pending.
 -/
 theorem gx_iota {z : D.X} {g : GtPtF D F} (h : GtPtF.IsIota z g) (χ : D.X) : gx σ hJ g χ = ix σ hJ z χ :=
   Ex.ext ((congrArg (σ ≫ ·) h.1).trans (comp_cP D σ z)) ((val_corr hJ (h.2 χ) σ.left).trans (val_pull hJ _ _ _))
 
 /- English proof (translation)
-Take `⟨h, ⟨gs, g₀, st, rfl⟩, hi⟩` from `q.eq`. Establish `: ∀ (i : ℕ) (hi : i < n + 1), gx σ hJ (gs ⟨i, hi⟩) χ = gx σ hJ q.g χ ^ i` using `fun i hi => by`. Proceed by induction on `i with`. Consider the case `zero => exact Ex.ext ((congrArg (σ ≫ ·) g₀.1).trans (MonObj.comp_one σ)) ((val_corr hJ (g₀.2 χ) σ.left).trans (val_one _))`. Consider the case `succ i ih => exact (gx_add σ hJ (st ⟨i, by omega⟩) χ).trans (by rw [pow_succ, ← ih (by omega)]; rfl)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `(this n (Nat.lt_succ_self n)).symm.trans (gx_iota σ hJ hi χ)`.
+A detailed English derivation is pending.
 -/
 theorem gx_qk {n : ℕ} (q : QkPt D F n) (χ : D.X) : gx σ hJ q.g χ ^ n = ix σ hJ q.y χ := by
   obtain ⟨h, ⟨gs, g₀, st, rfl⟩, hi⟩ := q.eq
@@ -299,7 +299,7 @@ theorem gx_qk {n : ℕ} (q : QkPt D F n) (χ : D.X) : gx σ hJ q.g χ ^ n = ix �
   exact (this n (Nat.lt_succ_self n)).symm.trans (gx_iota σ hJ hi χ)
 
 /- English proof (translation)
-Take `⟨z, hy, g, hi, ha⟩` from `h`. Conclude with `⟨z, hy, fun χ => by rw [gx_add σ hJ ha, gx_iota σ hJ hi]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gx_equiv {n : ℕ} {p p' : QkPt D F n} (h : QkPt.Equiv D F p p') :
     ∃ z, p'.y = p.y + n • z ∧ ∀ χ, gx σ hJ p'.g χ = gx σ hJ p.g χ * ix σ hJ z χ := by
@@ -308,7 +308,7 @@ theorem gx_equiv {n : ℕ} {p p' : QkPt D F n} (h : QkPt.Equiv D F p p') :
 
 include hJ in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(val_corr hJ g.s_zero _).trans (val_one _), gt_mul σ hJ g⟩`.
+Supply the required witnesses or components.
 -/
 theorem mult_gx (g : GtPtF D F) : Mult (th D y J) (cP D T) (σ ≫ g.b) fun χ => val (g.s χ) σ.left y J :=
   ⟨(val_corr hJ g.s_zero _).trans (val_one _), gt_mul σ hJ g⟩
@@ -319,9 +319,9 @@ variable {y : (TF (R := R) F).left} {J : ((TF (R := R) F).left ⟶ D.P.A.left) �
 include hJ
 
 /- English proof (translation)
-Use `choose s hs hv using fun χ => exists_gen_val D.P.isLB (DegPre.gtφ D F b χ) DegPre.gtε hJ (v χ)`. Use `⟨⟨b, s, hs, corr_pt D.P.isLB (fun U _ h => ?_) (hs 0) (fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm) hJ ((hv 0).trans (m.1.trans (val_one _).symm)), fun χ χ' => corr_pt D.P.isLB (fun U _ h => ?_) (mulGen_isGen …` and prove the remaining obligations. Rewrite using `[prod_gt, cPoint_zero, _root_.one_mul]`. Simplify using the standard rewrite rules. Use `(prod_sum₂ (K := Fin 4) (K' := thK.{0}) (U := U) _ (prod_gt b _ h) (prod_cub (cP D _ χ) (cP D _ χ') b h)).trans (Eq.trans ?_ (prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ (prod_gt b χ h) (prod_gt b χ' h)).symm)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cPoint_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_gt_pt (b : TF (R := R) F ⟶ D.P.A) (v : D.X → _) (m : Mult (th D y J) (cP D _) b v) :
     ∃ g : GtPtF D F, g.b = b ∧ ∀ χ, val (g.s χ) (𝟙 _) y J = v χ := by
@@ -341,15 +341,15 @@ theorem exists_gt_pt (b : TF (R := R) F ⟶ D.P.A) (v : D.X → _) (m : Mult (th
     abel
 
 /- English proof (translation)
-Establish `C` using `isCub_cubV D.cub (T := TF (R := R) F) hJ`. Take `⟨g, hb, hv⟩` from `exists_gt_pt hJ b v m`. Use `choose gs gb gv using fun i : ℕ => exists_gt_pt hJ _ _ (m.pow (h := C) (cPoint_add D _) i)`. Use `⟨⟨z, g, gs n, ⟨fun i => gs i, ⟨(gb 0).trans (pow_zero b), fun χ => corr_pt D.P.isLB (fun U _ h => ?_) ((gs 0).isGen χ) (fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm) hJ ((gv 0 χ).trans (val_one _).symm)⟩, fun …` and prove the remaining obligations. Use `show ∏ i, h (DegPre.gtφ D F (gs 0).b χ i) ^ DegPre.gtε i = _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[prod_gt, gb, pow_zero, _root_.mul_one]`. Simplify using the standard rewrite rules. Establish `e : (gs (i + 1)).b = (gs i).b * g.b` using `by rw [gb, gb, hb, pow_succ]`. Use `⟨e, fun χ => corr_pt D.P.isLB (fun U _ h => ?_) (mulGen_isGen _ _ _ _ _ _ _ ((gs _).isGen χ) (pullGen_isGen _ _ _ _ D.cub.isGen _)) (mulGen_isGen _ _ _ _ _ _ _ ((gs _).isGen χ) (g.isGen χ)) hJ (((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (gv (i + 1) χ) (val_cubAt hJ _ _ _))).tra …` and prove the remaining obligations. Use `(prod_sum₂ (K := Fin 4) (K' := thK.{0}) (U := U) _ (prod_gt (gs (i + 1)).b χ h) (prod_cub (cP D _ χ) (gs i).b g.b h)).trans (Eq.trans ?_ (prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ (prod_gt (gs i).b χ h) (prod_gt g.b χ h)).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[e, _root_.mul_assoc (cP D _ χ)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Use `show _ * th D y J (cP D _ χ) (gs i).b g.b = _`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_succ, Ex.mul_u, Ex.pow_b, gb, hb, inv_mul_cancel_right]`. Establish `e : (gs n).b = cP D _ z` using `(gb n).trans ((Ex.pow_b (h := C) ⟨b, v 0⟩ n).symm.trans (congrArg Ex.b (hn 0)))`. Use `⟨e, fun χ => corr_pt D.P.isLB (fun U _ h => ?_) ((gs n).isGen χ) (pullGen_isGen _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (D.psi_gen _) (invGen_isGen _ _ _ _ (D.psi_gen _))) (invGen_isGen _ _ _ _ (D.psi_gen _))) (invGen_isGen _ _ …` and prove the remaining obligations. Establish `a : ∀ x, jFK (R` using `R) F ≫ ptK (D.c x) = (cP D (TF (R := R) F) x).left := fun x => (Category.assoc _ _ _).symm`. Establish `a₀ : jFK (R` using `R) F ≫ (toUnit (TK R)).left ≫ eSec D.P.A = (1 : TF (R := R) F ⟶ D.P.A).left := (Category.assoc _ _ _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. The two sides agree by associativity and commutativity.
 
-Rewrite using `[prod_gt, e]`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fintype.prod_unique, a, a₀, cPoint_add, neg_neg, zpow_neg, zpow_one, mul_comm (cP D _ z)]`. The two sides agree by associativity and commutativity.
+A detailed English derivation is pending.
 -/
 theorem exists_qk {n : ℕ} (z : D.X) (b : TF (R := R) F ⟶ D.P.A) (v : D.X → _) (m : Mult (th D y J) (cP D _) b v)
     (hn : ∀ χ, (⟨b, v χ⟩ : Ex (isCub_cubV D.cub (T := TF (R := R) F) hJ) (cP D _ χ)) ^ n = ix (𝟙 _) hJ z χ) :
@@ -392,15 +392,15 @@ theorem exists_qk {n : ℕ} (z : D.X) (b : TF (R := R) F ⟶ D.P.A) (v : D.X →
     ac_rfl
 
 /- English proof (translation)
-Establish `C` using `isCub_cubV D.cub (T := TF (R := R) F) hJ`. Take `⟨v, m⟩` from `exists_mult C (cPoint_add D (TF (R := R) F)) b`. Establish `mp` using `m.pow (h := C) (cPoint_add D _) n`. Establish `sy` using `tau_symm (D := D) (𝟙 (TF (R := R) F)) hJ`. Take `⟨ro, hro, hron⟩` from `exists_root (n := n) (fun u => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `toStk_surj (F := F) y u.val`. Take `⟨r, rfl⟩` from `IsAlgClosed.exists_pow_nat_eq f hn`. Establish `r0 : r ≠ 0` using `fun h => u.ne_zero (hf.symm.trans (by rw [h, zero_pow hn.ne', map_zero]))`. Conclude with `⟨Units.map (toStk (F := F) y).toMonoidHom (Units.mk0 r r0), Units.ext ((map_pow (toStk (F := F) y) r n).symm.trans hf)⟩)`. Use the proof step `(fun χ => (ix (𝟙 _) hJ z χ).u * (((⟨b, v χ⟩ : Ex C (cP D _ χ)) ^ n).u)⁻¹) fun χ χ' => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `a₁` using `congrArg Additive.ofMul (mp.2 χ χ')`. Establish `a₂` using `congrArg Additive.ofMul (tau_mul (𝟙 (TF (R := R) F)) hJ hB χ χ' z)`. Rewrite `a₁` using `[hb]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ix, sy z, ofMul_mul, ofMul_inv] at a₁ a₂ ⊢`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(norm := abel) a₂ - a₁`. Establish `ro0 : ro 0 = 1` using `mul_eq_left.1 ((hro 0 0).symm.trans (by rw [add_zero]))`. Take `⟨q, h₁, h₂, -⟩` from `exists_qk hJ (n := n) z b (fun χ => v χ * ro χ) ⟨by simp only [m.1, ro0, _root_.mul_one], fun χ χ' => by beta_reduce`. Rewrite using `[hro, mul_right_comm, m.2, _root_.mul_mul_mul_comm]⟩ fun χ => by`. Rewrite using `[← Ex.mul_const (h := C) ⟨b, v χ⟩, mul_pow, Ex.const_pow, Ex.mul_const, hron]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `Ex.ext ((Ex.pow_b _ _).trans hb) (mul_mul_inv_cancel'_right _ _)`. Conclude with `⟨q, h₁, h₂⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_qk_over [IsAlgClosed F] (hB : D.TauBimult) {n : ℕ} (hn : 0 < n) (z : D.X) (b : TF (R := R) F ⟶ D.P.A)
     (hb : b ^ n = cP D _ z) : ∃ q : QkPt D F n, q.y = z ∧ q.g.b = b := by

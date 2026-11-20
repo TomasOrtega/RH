@@ -21,11 +21,11 @@ namespace GlobalTheory.ThK.Bot.CoefFin
 open GlobalTheory.TruncFix (truncU)
 
 /- English proof (translation)
-Establish `hT : T ⊆ T ∪ ha.toFinset` using `Finset.subset_union_left`. Establish `h1 : Function.mulSupport a ⊆ ((T ∪ ha.toFinset : Finset ι) : Set ι)` using `fun v hv => by`. Simplify using `only [Finset.coe_union, Set.Finite.coe_toFinset]`. Conclude with `Or.inr hv`. Establish `h2 : Function.mulSupport b ⊆ ((T ∪ ha.toFinset : Finset ι) : Set ι)` using `fun v hv => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the second alternative. Establish an intermediate fact.
 
-Simplify using `only [Finset.coe_union, Set.Finite.coe_toFinset]`. Distinguish the cases in `h : v ∈ T`. Conclude with `Or.inl h`. Use `Or.inr ?_` and prove the remaining obligations. Rewrite using `[Function.mem_mulSupport, ← hb v h]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv`. Rewrite `h0`, the goal using `[finprod_eq_prod_of_mulSupport_subset _ h1, ← Finset.prod_sdiff hT]`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ h2, ← Finset.prod_sdiff hT, Finset.prod_congr rfl (fun v hv => hb v (Finset.mem_sdiff.1 hv).2), mul_div_mul_left _ _ (left_ne_zero_of_mul h0), Finset.prod_div_distrib]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finprod_div_finprod {ι : Type} (a b : ι → ℂ) (ha : (Function.mulSupport a).Finite) (h0 : ∏ᶠ v, a v ≠ 0)
     (T : Finset ι) (hb : ∀ v ∉ T, b v = a v) : (∏ᶠ v, b v) / ∏ᶠ v, a v = ∏ v ∈ T, b v / a v := by
@@ -47,7 +47,7 @@ theorem finprod_div_finprod {ι : Type} (a b : ι → ℂ) (ha : (Function.mulSu
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.StabHaar.mat_mul, ← map_inv, mat_compArch, Matrix.add_mul, Matrix.smul_mul, Matrix.smul_mul, Matrix.one_mul, ← GlobalTheory.StabHaar.mat_mul, inv_mul_cancel, GlobalTheory.StabHaar.mat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_archRest {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (k : UA σ J) :
     mat ((compArch σ J k)⁻¹ * k) = eInf F • (1 : Matrix (Fin n) (Fin n) (AE F E)) + (1 - eInf F) • mat k := by
@@ -55,9 +55,9 @@ theorem mat_archRest {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (k : UA σ J) :
     ← GlobalTheory.StabHaar.mat_mul, inv_mul_cancel, GlobalTheory.StabHaar.mat_one]
 
 /- English proof (translation)
-Introduce `u hu`. Establish `h : u * eInf F = u`. Establish `h` using `partInf_of_at (M := AF F) hu`. Rewrite `h` using `[partInf, smul_eq_mul]`. Rewrite using `[mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Rewrite using `[mat_archRest, smul_sub, smul_add, smul_smul, smul_smul, h, mul_sub, mul_one, h, sub_self, zero_smul, add_zero, sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archRest_triv {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (k : UA σ J) :
     ∀ u : AF F, At (evI F) u → u • (mat ((compArch σ J k)⁻¹ * k) - 1) = 0 := by
@@ -70,11 +70,9 @@ theorem archRest_triv {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (k : UA σ J) :
     sub_self, zero_smul, add_zero, sub_self]
 
 /- English proof (translation)
-Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Use `show GlobalTheory.TruncFix.truncMat (GlobalTheory.TruncFix.idem {v}) (mat ((compArch σ J k)⁻¹ * k)) = mat (compAt σ J v k)`. Rewrite using `[GlobalTheory.TruncFix.idem_singleton, GlobalTheory.TruncFix.truncMat, mat_archRest, mat_compAt]`. Establish `h1 : GlobalTheory.LatVac.liftV v 1 * eInf F = 0`. Establish `h` using `at_partFin (M := AF F) v (1 : AF F) (eInf F) (map_zero (evalV F v))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[partFin, smul_eq_mul, smul_eq_mul, mul_one]`. Rewrite using `[mul_comm]`. Conclude with `h`. Establish `h2 : GlobalTheory.LatVac.liftV v 1 * (1 - eInf F) = GlobalTheory.LatVac.liftV v 1` using `by rw [mul_sub, mul_one, h1, sub_zero]`. Rewrite using `[smul_sub, smul_add, smul_smul, smul_smul, h1, h2, zero_smul, zero_add, show eFin v = GlobalTheory.LatVac.liftV v 1 from rfl, sub_smul, one_smul]`.
-
-Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem truncU_archRest {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (k : UA σ J) (v : Pl F) :
     truncU {v} ((compArch σ J k)⁻¹ * k) = compAt σ J v k := by
@@ -94,23 +92,21 @@ variable {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model �
   {r s' r₁ s₁ : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← Prod.one_eq_mk, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem om_one (Φ : Fn F n d) : om ((1 : UA σ X.J), (1 : UA σ W.J)) Φ = Φ := by
   rw [← Prod.one_eq_mk, map_one]; rfl
 
 /- English proof (translation)
-Establish `hM` using `hP.good`. Use `set S : Finset (Pl F) := T ∪ (Filter.eventually_cofinite.1 hcof).toFinset with hS`. Establish `hST : ∀ v ∉ S, v ∉ T` using `fun v hv h => hv (Finset.mem_union_left _ h)`. Establish `hSφ : ∀ v ∉ S, φ v = M.vac v` using `fun v hv => by`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hv (Finset.mem_union_right _ ((Set.Finite.mem_toFinset _).2 h))`. Establish `hfix : ∀ v ∉ S, Acts (evFin F v) (om (compAt σ X.J v k, 1)) (M.vac v) (M.vac v)`. Introduce `v hv`. Rewrite using `[hk v (hST v hv)]`. Conclude with `fun _ _ => om_one _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hvac : ∀ v ∉ S, locOp v (om (compAt σ X.J v k, 1)) (φ v) = M.vac v`. Introduce `v hv`. Rewrite using `[hSφ v hv]`. Conclude with `locOp_eq (hM.vac v).1 (hM.vac v).1 (hfix v hv)`. Use `set k' := (compArch σ X.J k)⁻¹ * k with hk'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsplit : (k, (1 : UA σ W.J)) = (compArch σ X.J k, 1) * (k', 1)`. Rewrite using `[Prod.mk_mul_mk, mul_one, hk', mul_inv_cancel_left]`. Establish `h1 : om (k', 1) (pure f φ) = pure f (fun v => locOp v (om (compAt σ X.J v k, 1)) (φ v))`. Use `GlobalTheory.TruncFixOm.om_archtriv B M _ _ om _ _ _ _ hA hP k' (archRest_triv X.J k) S f φ hSB hSφ (fun v hv => by rw [hk', truncU_archRest]; exact hfix v hv)` as an intermediate fact. Simplify `this` using `only [hk', truncU_archRest]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1mem : (1 : UA σ W.J) ∈ UAt σ W (evI F)` using `fun u _ => by show u • (mat (1 : UA σ W.J) - 1) = 0`. Rewrite using `[GlobalTheory.StabHaar.mat_one, sub_self, smul_zero]`. Take `⟨Aop, hAop⟩` from `GlobalTheory.FockCompactW.exists_op_of_UAt hP.base.std hP.weil (compArch σ X.J k, 1) (compArch_mem k) h1mem`. Establish `hcof' : ∀ᶠ v in Filter.cofinite, locOp v (om (compAt σ X.J v k, 1)) (φ v) = M.vac v` using `Filter.eventually_cofinite.2 (S.finite_toSet.subset fun v hv => by`. Assume the negation of the conclusion as `h`.
-
-Conclude with `hv (hvac v h))`. Rewrite using `[hsplit, map_mul, Module.End.mul_apply, h1, GlobalTheory.ArchPureAct.acts_pure F E σ B.ψ n d X W M om hM _ Aop hAop f _ (fun v => locOp_mem _ _ _) hcof', locOpInf_eq (hAop f)]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_pure_of_supp (hA : ActsEx) (hP : IsPair B M χX χW om r s' r₁ s₁) (f : SInf F (Fin n × Fin d))
     (φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ) (hSB : ∀ v, φ v ∈ SB _) (hcof : ∀ᶠ v in cofinite, φ v = M.vac v)
@@ -152,27 +148,23 @@ theorem om_pure_of_supp (hA : ActsEx) (hP : IsPair B M χX χW om r s' r₁ s₁
     locOpInf_eq (hAop f)]
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s' r₁ s₁ hP _ _ m hm f φ hSB hcof h0 T g hg`. Establish `hA : ActsEx` using `GlobalTheory.ThK.LocalOps.actsEx hKP.base`. Use `letI mI : MeasurableSpace (Fin n × Fin d → mixedEmbedding.mixedSpace F) := borel _`. Use `haveI : BorelSpace (Fin n × Fin d → mixedEmbedding.mixedSpace F) := ⟨rfl⟩`. Use `letI mV : ∀ v : Pl F, MeasurableSpace (Fin n × Fin d → Fv F v) := fun _ => borel _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `haveI bV : ∀ v : Pl F, BorelSpace (Fin n × Fin d → Fv F v) := fun _ => ⟨rfl⟩`. Use `haveI := hm`. Take `⟨μi, hμi⟩ : ∃ μ : Measure (Fin n × Fin d → mixedEmbedding.mixedSpace F), μ.IsAddHaarMeasure` from `⟨Measure.addHaar, inferInstance⟩`. Choose the witnesses or unpack the hypotheses as in `⟨μv, hμv, hμv1⟩ : ∃ μv : ∀ v : Pl F, Measure (Fin n × Fin d → Fv F v), (∀ v, (μv v).IsAddHaarMeasure) ∧ ∀ v, μv v {x | ∀ i, x i ∈ v.adicCompletionIntegers F} = 1 := by`. Set `K : ∀ v : Pl F, TopologicalSpace.PositiveCompacts (Fin n × Fin d → Fv F v)` to `fun v => ⟨⟨Set.pi Set.univ fun _ => (v.adicCompletionIntegers F : Set (Fv F v)), isCompact_univ_pi fun _ => ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isCompact_integers v⟩, by show (interior (Set.pi Set.univ fun _ => (v.adicCompletionIntegers F : Se …`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(isOpen_set_pi Set.finite_univ fun _ _ => ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isOpen_integers v).interior_eq]`. Conclude with `⟨0, fun i _ => (v.adicCompletionIntegers F).zero_mem⟩⟩`. Use `⟨fun v => Measure.addHaarMeasure (K v), fun v => inferInstance, fun v => ?_⟩` and prove the remaining obligations. Establish `e : {x : Fin n × Fin d → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} = (K v : Set (Fin n × Fin d → Fv F v))`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `[K]`. Rewrite using `[e]`. Conclude with `Measure.addHaarMeasure_self`. Use `haveI := hμv`. Take `⟨c₀, -, hpure⟩` from `GlobalTheory.AdelicHaarPure.integral_pure_haar F (Fin n × Fin d) m μi μv hμv1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hstd : ∀ᶠ v in cofinite, φ v = GlobalTheory.RatWeilOp.ind (Fin n × Fin d) v` using `(hcof.and hP.good.std).mono fun v hv => hv.1.trans hv.2`. Establish `hloc1 : ∀ v, locOp v (om ((1 : UA σ X.J), (1 : UA σ W.J))) (φ v) = φ v` using `fun v => locOp_of_fix (fun _ _ => om_one _) (hSB v)`. Establish `hinf1 : locOpInf (om ((1 : UA σ X.J), (1 : UA σ W.J))) f = f` using `locOpInf_eq fun _ _ => om_one _`. Set `I : UA σ X.J → ℂ` to `fun k => ∫ z, locOpInf (om (k, 1)) f z * starRingEnd ℂ (f z) ∂μi`. Set `L : ∀ v : Pl F, UA σ X.J → ℂ` to `fun v k => ∫ t, locOp v (om (k, 1)) (φ v) t * starRingEnd ℂ (φ v t) ∂(μv v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ (S : Finset (Pl F)) (k : UA σ X.J), (∀ v ∉ S, compAt σ X.J v k = 1) → coef m om (pure f φ) k = c₀ * I (compArch σ X.J k) * ∏ᶠ v, L v (compAt σ X.J v k)`. Introduce `S k hk`. Establish `hfam : GlobalTheory.RatWeilOp.IsFam (fun v => locOp v (om (compAt σ X.J v k, 1)) (φ v))`. Use `⟨fun v => locOp_mem _ _ _, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hstd, S.finite_toSet.eventually_cofinite_notMem] with v h1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hk v h2, hloc1, h1]`. Rewrite using `[coef, om_pure_of_supp hA hP f φ hSB hcof S k hk]`. Conclude with `(GlobalTheory.TensorSquareIntegral.integral_pure_mul_conj m μi μv c₀ hpure _ f _ φ hfam ⟨hSB, hstd⟩).2`. Establish `hfin : (Function.mulSupport fun v => L v 1).Finite`. Use `(Filter.eventually_cofinite.1 hstd).subset fun v hv h => hv ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `show ∫ t, locOp v (om (1, 1)) (φ v) t * starRingEnd ℂ (φ v t) ∂(μv v) = 1`. Rewrite using `[hloc1, h]`. Conclude with `GlobalTheory.TensorSquareIntegral.integral_ind v (μv v) (hμv1 v)`. Establish `k1 : coef m om (pure f φ) 1 = c₀ * I 1 * ∏ᶠ v, L v 1`. Simplify `key ∅ 1 fun v _ => map_one _` using `only [map_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `h0`, the goal using `[k1]`. Establish `hP0 : ∏ᶠ v, L v 1 ≠ 0` using `right_ne_zero_of_mul h0`. Establish `hc0 : c₀ * I 1 ≠ 0` using `left_ne_zero_of_mul h0`. Take `⟨a1, a2⟩` from `(SuppOne.comp_of_supp F E σ n X (compArch σ X.J g)).2 (compArch_mem g)`. Establish `kinf : coef m om (pure f φ) (compArch σ X.J g) = c₀ * I (compArch σ X.J g) * ∏ᶠ v, L v 1`.
-
-Simplify `key ∅ (compArch σ X.J g) fun v _ => a2 v` using `only [a1, a2]`. Establish `kv : ∀ v, coef m om (pure f φ) (compAt σ X.J v g) / (c₀ * I 1 * ∏ᶠ v, L v 1) = L v (compAt σ X.J v g) / L v 1`. Introduce `v`. Take `⟨b1, b2, b3⟩` from `(SuppOne.comp_of_supp F E σ n X (compAt σ X.J v g)).1 v (compAt_mem v g)`. Establish `b4 : ∀ w ∉ ({v} : Finset (Pl F)), compAt σ X.J w (compAt σ X.J v g) = 1` using `fun w hw => b3 w (by simpa using hw)`.
-
-Rewrite using `[key {v} _ b4, b2, mul_div_mul_left _ _ hc0, finprod_div_finprod _ _ hfin hP0 {v} (fun w hw => by rw [b4 w hw]), Finset.prod_singleton, b1]`. Rewrite using `[Finset.prod_congr rfl fun v _ => kv v, kinf, key T g hg, mul_div_mul_right _ _ hP0, ← finprod_div_finprod _ _ hfin hP0 T (fun w hw => by rw [hg w hw]), mul_div_mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_div_eq_prod : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s' r₁ s₁ : ℕ),
     IsPair B M χX χW om r s' r₁ s₁ →

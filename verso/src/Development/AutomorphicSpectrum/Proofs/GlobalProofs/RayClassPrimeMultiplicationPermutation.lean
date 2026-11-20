@@ -11,7 +11,7 @@ open NumberField Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.RayZeta 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani
 
 /- English proof (translation)
-Take `⟨a, b, ha, hb, ha', hb', hp, e⟩` from `h`. Use `⟨a, b, ha, hb, ha', hb', hp, mul_left_cancel₀ h𝔠 ?_⟩` and prove the remaining obligations. Rewrite using `[mul_left_comm, e, mul_left_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rayRel_of_mul_left {F : Type} [Field F] [NumberField F] {𝔣 𝔠 I J : Ideal (𝓞 F)} (h𝔠 : 𝔠 ≠ ⊥)
     (h : RayRel F 𝔣 (𝔠 * I) (𝔠 * J)) : RayRel F 𝔣 I J := by
@@ -20,17 +20,15 @@ theorem rayRel_of_mul_left {F : Type} [Field F] [NumberField F] {𝔣 𝔠 I J :
   rw [mul_left_comm, e, mul_left_comm]
 
 /- English proof (translation)
-Establish `hc : CoprimeTo F 𝔣 𝔠` using `⟨h0, hs⟩`. Establish `hex : ∀ d : S, ∃ a : S, RayRel F 𝔣 (𝔠 * d.1) a.1` using `fun d => by`. Take `⟨a, ha, h⟩` from `hr _ (coprimeTo_mul hc (hS d.1 d.2))`. Conclude with `⟨⟨a, ha⟩, h⟩`. Use `choose φ hφ using hex`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective φ` using `fun d d' h => by`. Establish `h1 : RayRel F 𝔣 (𝔠 * d.1) (𝔠 * d'.1)` using `rayRel_trans (hφ d) (h ▸ rayRel_symm (hφ d'))`. Conclude with `Subtype.ext (hu _ d.2 _ d'.2 (rayRel_of_mul_left h0 h1))`. Set `τ : Equiv.Perm S` to `(Equiv.ofBijective φ (Finite.injective_iff_bijective.1 hinj)).symm`. Establish `hτ : ∀ c : S, RayRel F 𝔣 (𝔠 * (τ c).1) c.1` using `fun c => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : φ (τ c) = c` using `(Equiv.ofBijective φ (Finite.injective_iff_bijective.1 hinj)).apply_symm_apply c`. Establish `h2` using `hφ (τ c)`. Rewrite `h2` using `[h1]`. Then use the resulting hypothesis. Use `⟨τ, fun c => ?_⟩` and prove the remaining obligations. Set `f : {I : Ideal (𝓞 F) // CoprimeTo F 𝔣 I ∧ RayRel F 𝔣 I (τ c).1} → {I : Ideal (𝓞 F) // (CoprimeTo F 𝔣 I ∧ RayRel F 𝔣 I c.1) ∧ I ≤ 𝔠}` to `fun J => ⟨𝔠 * J.1, ⟨coprimeTo_mul hc J.2.1, rayRel_trans (rayRel_mul_left 𝔠 J.2.2) (hτ c)⟩, Ideal.mul_le_left⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `J J' h`. Establish `h1 : 𝔠 * J.1 = 𝔠 * J'.1` using `congrArg (fun x : {I : Ideal (𝓞 F) // (CoprimeTo F 𝔣 I ∧ RayRel F 𝔣 I c.1) ∧ I ≤ 𝔠} => x.1) h`. Conclude with `Subtype.ext (mul_left_cancel₀ h0 h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨I, ⟨hI, hIc⟩, hle⟩`. Take `⟨J, rfl⟩` from `Ideal.dvd_iff_le.2 hle`. Establish `hJ0 : J ≠ ⊥` using `fun h => hI.1 (by rw [h, Ideal.mul_bot])`. Establish `hJ : CoprimeTo F 𝔣 J` using `⟨hJ0, top_le_iff.1 (hI.2 ▸ sup_le_sup_right Ideal.mul_le_right 𝔣)⟩`. Conclude with `⟨⟨J, hJ, rayRel_of_mul_left h0 (rayRel_trans hIc (rayRel_symm (hτ c)))⟩, rfl⟩`.
-
-Conclude with `⟨Equiv.ofBijective f hf, fun J => rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem shift_perm (F : Type) [Field F] [NumberField F] (𝔣 𝔠 : Ideal (𝓞 F)) (S : Finset (Ideal (𝓞 F))) (_h𝔣 : 𝔣 ≠ ⊥)
     (_hp : 𝔠.IsPrime) (h0 : 𝔠 ≠ ⊥) (hs : 𝔠 ⊔ 𝔣 = ⊤)

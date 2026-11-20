@@ -27,23 +27,21 @@ def stabSub (π : Representation ℂ G V) (w : V) : Subgroup G where
     rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Use `haveI : Fintype (G ⧸ H) := H.fintypeQuotientOfFiniteIndex`. Set `F : V → G → V` to `fun w x => ((θ x : ℂˣ) : ℂ)⁻¹ • π x w`. Establish `hFg : ∀ w g x, π g (F w x) = ((θ g : ℂˣ) : ℂ) • F w (g * x)`. Introduce `w g x`. Simplify using `only [F, map_smul, map_mul, Module.End.mul_apply, Units.val_mul, mul_inv, smul_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `: ((θ g : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Clear the denominators using the available nonvanishing facts. Establish `hFH : ∀ i ∈ s, ∀ x y : G, (x : G ⧸ H) = y → F (u i) x = F (u i) y`. Introduce `i hi x y hxy`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : x⁻¹ * y ∈ H` using `QuotientGroup.eq.1 hxy`. Take `⟨h, hh, rfl⟩ : ∃ h ∈ H, y = x * h` from `⟨x⁻¹ * y, hm, by group⟩`. Establish `hθh : θ h = 1` using `hHθ hh`. Simplify using `only [F, map_mul, Module.End.mul_apply, hu i hi h hh, hθh, mul_one]`. Set `e : V → V` to `fun w => ∑ q : G ⧸ H, F w q.out`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `heig : ∀ i ∈ s, ∀ g, π g (e (u i)) = ((θ g : ℂˣ) : ℂ) • e (u i)`. Introduce `i hi g`. Simplify using `only [e, map_sum, hFg, ← Finset.smul_sum]`. Use `congr 1`. Use `Fintype.sum_equiv (MulAction.toPerm g) _ _ fun q => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hFH i hi` to reduce the goal to its premises. Rewrite using `[MulAction.toPerm_apply, QuotientGroup.out_eq']`. Use `conv_rhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Establish `htot : ∑ i ∈ s, T i (e (u i)) = (Fintype.card (G ⧸ H) : ℂ) • f`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e, map_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `: ∀ q : G ⧸ H, ∑ i ∈ s, T i (F (u i) q.out) = f`. Introduce `q`. Simplify using `only [F, map_smul, ← Finset.smul_sum, hf, smul_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[inv_mul_cancel₀ (Units.ne_zero _), one_smul]`. Simplify using `only [this, Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul]`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hz : ∀ i ∈ s, e (u i) = 0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Introduce `i hi`. Assume the negation of the conclusion as `h0`. Take `⟨g, hg⟩` from `hne _ h0`. Conclude with `hg (heig i hi g)`. Rewrite `htot` using `[Finset.sum_eq_zero (fun i hi => by rw [hz i hi, map_zero])]`.
-
-Establish `hc : (Fintype.card (G ⧸ H) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Conclude with `hf0 ((smul_eq_zero.1 htot.symm).resolve_left hc)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_eigen_of_sum {M : Type} [AddCommGroup M] [Module ℂ M]
     (π : Representation ℂ G V) (θ : G →* ℂˣ) (H : Subgroup G) [H.FiniteIndex] (hHθ : H ≤ θ.ker)
@@ -100,19 +98,17 @@ end Algebra
 section Topology
 
 /- English proof (translation)
-Take `⟨W, hWo, hWH⟩` from `isOpen_induced_iff.1 hH`. Establish `h1 : (1 : G) ∈ W`. Establish `: (1 : K) ∈ (H : Set K)` using `H.one_mem`. Rewrite `this` using `[← hWH]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨V, hV, hVW⟩` from `exists_nhds_split_inv (hWo.mem_nhds h1)`. Establish `hV' : V⁻¹ ∈ nhds (1 : G)` using `inv_mem_nhds_one G hV`. Establish `hint : (interior V⁻¹).Nonempty` using `⟨1, mem_interior_iff_mem_nhds.2 hV'⟩`. Take `⟨t, ht⟩` from `compact_covered_by_mul_left_translates hC hint`. Establish `key : ∀ g : G, ((QuotientGroup.mk : K → K ⧸ H) '' {k : K | g * (k : G) ∈ V⁻¹}).Subsingleton`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `g _ ⟨k, hk, rfl⟩ _ ⟨k', hk', rfl⟩`. Apply `QuotientGroup.eq.2` to reduce the goal to its premises. Establish `hk1 : (g * (k : G))⁻¹ ∈ V` using `hk`. Establish `hk2 : (g * (k' : G))⁻¹ ∈ V` using `hk'`. Use `hVW _ hk1 _ hk2` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ((k⁻¹ * k' : K) : G) ∈ W`. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, div_eq_mul_inv, inv_inv, mul_inv_rev]`. Use `group`. Establish `: (k⁻¹ * k' : K) ∈ Subtype.val ⁻¹' W` using `hmem`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hWH]`. Conclude with `this`. Establish `hfin : (Set.univ : Set (K ⧸ H)).Finite`. Use `(t.finite_toSet.biUnion fun g _ => (key g).finite).subset ?_` and prove the remaining obligations. Introduce and unpack `q -`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨k, rfl⟩` from `QuotientGroup.mk_surjective q`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g ∈ t, (k : G) ∈ (fun h => g * h) ⁻¹' V⁻¹ := by`. Simplify using `using ht (hKC k.2)`. Conclude with `Set.mem_biUnion hg.1 ⟨k, hg.2, rfl⟩`. Use `haveI : Finite (K ⧸ H) := Set.finite_univ_iff.1 hfin`.
-
-Conclude with `Subgroup.finiteIndex_of_finite_quotient`.
+A detailed English derivation is pending.
 -/
 theorem finiteIndex_of_isOpen {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (K : Subgroup G) {C : Set G} (hC : IsCompact C) (hKC : (K : Set G) ⊆ C) (H : Subgroup K)
@@ -160,21 +156,19 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.LocVec
 
 /- English proof (translation)
-Introduce `L _ _ _ n a S hS s σ hσ c hc hci K θ hK hθ f hf hf0 hrt`. Establish `hmem` using `GlobalTheory.T.isotypicPart_spanned_by_splitPlace_localComponent L n a S hS s σ hσ c hc hci hf`. Rewrite `hmem` using `[iSup_subtype']`. Take `⟨φ, hφ, hsum⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ f).1 hmem`. Use `choose u hu using fun i => LinearMap.mem_range.1 (hφ i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `m : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L)) →* GL (Fin n) (s.w.adicCompletion L)` to `Matrix.GeneralLinearGroup.map c.toRingHom`. Establish `hm : Continuous m` using `Units.continuous_map (continuous_id.matrix_map hc)`. Set `π : Representation ℂ K σ.V` to `σ.ρ.comp (m.comp K.subtype)`. Establish `hπ : ∀ g : K, π g = σ.ρ (m g)` using `fun g => rfl`. Establish `hsumF : ∀ g : K, ∑ i ∈ φ.support, (i.1 : σ.V →ₗ[ℂ] _) (π g (u i)) = ((θ g : ℂˣ) : ℂ) • f`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨g, hg⟩`. Take `⟨κ, hκ, rfl⟩` from `GlobalTheory.SplitLift.exists_trivOutside_loc_eq n s g`. Establish `: ∀ i ∈ φ.support, (i.1 : σ.V →ₗ[ℂ] _) (π ⟨s.loc n κ, hg⟩ (u i)) = NG.rt L n κ (φ i)`. Introduce `i _`. Rewrite using `[hπ, ← hu i]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `i.2.2 κ hκ (u i)`. Rewrite using `[Finset.sum_congr rfl this, ← map_sum, ← hrt κ hκ hg]`. Rewrite using `[← hsum]`. Both sides reduce to the same expression. Set `H : Subgroup K` to `θ.ker ⊓ ⨅ i ∈ φ.support, stabSub π (u i)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hHo : IsOpen (H : Set K)`. Rewrite using `[Subgroup.coe_inf]`. Use `hθ.inter ?_` and prove the remaining obligations. Simplify using `only [Subgroup.coe_iInf]`. Use `isOpen_biInter_finset fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (stabSub π (u i) : Set K) = (fun g : K => m g) ⁻¹' {x | σ.ρ x (u i) = u i}` using `rfl`. Rewrite using `[this]`. Conclude with `(σ.smooth (u i)).preimage (hm.comp continuous_subtype_val)`. Establish `hC : IsCompact (Formalism.UG.GLint (Fin n) (s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring : Set (GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L))))`. Rewrite using `[(GlobalTheory.AdelicU.GLint_eq_KO_and_princ_eq_KOne s.v n).1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `GlobalTheory.SplitFlip.isCompact_KO`. Use `haveI : H.FiniteIndex := finiteIndex_of_isOpen K hC (fun g hg => hK g hg) H hHo`. Take `⟨w, hw0, hw⟩` from `exists_eigen_of_sum π θ H inf_le_left φ.support u (fun i hi h hh => by`. Use `(Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hh).2 i)` as an intermediate fact. Conclude with `(Subgroup.mem_iInf.1 this hi))`.
-
-Use the proof step `(fun i => (i.1 : σ.V →ₗ[ℂ] _)) f hf0 hsumF`. Conclude with `⟨w, hw0, fun g hg => hw ⟨g, hg⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : NG.AlgWt L n) (S : Submodule ℂ (GAf L n → a.W)), NG.IsIrrRep a.ρ S → ∀ (s : SplitPlace L) (σ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (s.w.adicCompletion L))), IsLocS S s σ → ∀ c : s.v.adicCompletion (maximalRealSubfield L) ≃+* s.w.adicCompletion L, Continuous c → (∀ x : L, c (s.i x) = algebraMap L (s.w.adicCompletion L) x) → ∀ (K : Subgroup (GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L)))) (θ : K →* ℂˣ), (∀ g ∈ K, g ∈ Formalism.UG.GLint (Fin n) (s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring) → IsOpen (θ.ker : Set K) → ∀ f ∈ NG.isoTyp a.ρ S, f ≠ 0 → (∀ κ, TrivOutside {s.v} κ → ∀ h : s.loc n κ ∈ K, NG.rt L n κ f = ((θ ⟨s.loc n κ, h⟩ : ℂˣ) : ℂ) • f) → ∃ u : σ.V, u ≠ 0 ∧ ∀ g (h : g ∈ K), σ.ρ (Matrix.GeneralLinearGroup.map c.toRingHom g) u = ((θ ⟨g, h⟩ : ℂˣ) : ℂ) • u := by
   intro L _ _ _ n a S hS s σ hσ c hc hci K θ hK hθ f hf hf0 hrt

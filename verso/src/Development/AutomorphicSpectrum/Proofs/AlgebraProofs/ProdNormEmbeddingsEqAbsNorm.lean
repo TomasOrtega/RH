@@ -4,7 +4,7 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Establish `h2 : ∏ σ : F →+* ℂ, σ α = ∏ σ : F →ₐ[ℚ] ℂ, σ α` using `Fintype.prod_equiv (RingHom.equivRatAlgHom F ℂ) _ _ (fun σ => rfl)`. Rewrite using `[← norm_prod, h2, ← Algebra.norm_eq_prod_embeddings ℚ ℂ α, eq_ratCast (algebraMap ℚ ℂ), Complex.norm_ratCast, Rat.cast_abs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_norm_embeddings_eq_abs_norm (F : Type) [Field F] [NumberField F] (α : F) :
     ∏ σ : F →+* ℂ, ‖σ α‖ = ((|Algebra.norm ℚ α| : ℚ) : ℝ) := by
@@ -14,7 +14,7 @@ theorem prod_norm_embeddings_eq_abs_norm (F : Type) [Field F] [NumberField F] (�
     Complex.norm_ratCast, Rat.cast_abs]
 
 /- English proof (translation)
-Rewrite using `[FinitePlace.norm_def', h, WithZeroMulInt.toNNReal_neg_apply _ (WithZero.exp_ne_zero (a := -k))]`. Establish `hk : Multiplicative.toAdd (WithZero.unzero (WithZero.exp_ne_zero (a` using `-k))) = -k := rfl`. Rewrite using `[hk, NNReal.coe_zpow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem norm_finite_embedding_eq_zpow (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (α : F) (k : ℤ)
@@ -26,19 +26,19 @@ theorem norm_finite_embedding_eq_zpow (F : Type) [Field F] [NumberField F]
   rfl
 
 /- English proof (translation)
-Establish `hσ : ∀ σ ∈ (Finset.univ : Finset (F →+* ℂ)), ‖σ α‖ ≠ 0` using `fun σ _ => norm_ne_zero_iff.mpr ((map_ne_zero σ).mpr hα)`. Rewrite using `[← Real.log_prod hσ, prod_norm_embeddings_eq_abs_norm]`. Establish `hv2 : ∀ v : HeightOneSpectrum (𝓞 F), ‖FinitePlace.embedding v α‖ = (Ideal.absNorm v.asIdeal : ℝ) ^ (-(n v))` using `fun v => norm_finite_embedding_eq_zpow F v α (n v) (hv v)`. Establish `key : ∏ᶠ v : HeightOneSpectrum (𝓞 F), ‖FinitePlace.embedding v α‖ = ∏ᶠ w : FinitePlace F, w α`. Rewrite using `[← finprod_comp_equiv (FinitePlace.equivHeightOneSpectrum (K := F)).symm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [FinitePlace.equivHeightOneSpectrum_symm_apply]`. Establish `hprod : ∏ᶠ v : HeightOneSpectrum (𝓞 F), ‖FinitePlace.embedding v α‖ = ∏ v ∈ n.support, (Ideal.absNorm v.asIdeal : ℝ) ^ (-(n v))`. Simplify using `only [hv2]`. Apply `finprod_eq_prod_of_mulSupport_subset` to reduce the goal to its premises. Introduce `v hvs`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hvs` using `[Function.mem_mulSupport]`. Assume the negation of the conclusion as `hn`. Simplify using `only [Finset.mem_coe, Finsupp.mem_support_iff, not_not] at hn`. Apply `hvs` to reduce the goal to its premises. Simplify using `[hn]`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `E0` using `FinitePlace.prod_eq_inv_abs_norm hα`. Rewrite `E0` using `[← key, hprod]`. Establish `hfac : ∀ v ∈ n.support, (Ideal.absNorm v.asIdeal : ℝ) ^ (-(n v)) ≠ 0`. Introduce `v _`. Apply `zpow_ne_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(mt Ideal.absNorm_eq_zero_iff.mp v.ne_bot)` after adjusting the coercions. Establish `L` using `congrArg Real.log E0`. Move the coercions through the operations in `at L ⊢`. Rewrite `L` using `[Real.log_prod hfac, Real.log_inv]`. Simplify using `only [Real.log_zpow] at L`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.sum]`. Establish `hneg : ∑ v ∈ n.support, ((-(n v) : ℤ) : ℝ) * Real.log (Ideal.absNorm v.asIdeal) = -∑ v ∈ n.support, (n v : ℝ) * Real.log (Ideal.absNorm v.asIdeal)`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_log_embeddings_eq (F : Type) [Field F] [NumberField F]
     (n : HeightOneSpectrum (𝓞 F) →₀ ℤ) (α : F) (hα : α ≠ 0)

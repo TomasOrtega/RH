@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.Reg
 
 /- English proof (translation)
-Establish `h : FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) w := ⟨p, φ, y, hw⟩`. Unfold `evR evalAt`. Rewrite using `[dif_pos h]`. Conclude with `hL.wd g hg.1 S _ p _ φ _ y w h.choose_spec.choose_spec.choose_spec hw`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evR_eq_map_of_test_point {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (hL : EvLaws Xo c) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ}
@@ -24,17 +24,15 @@ theorem evR_eq_map_of_test_point {E : Type} [Field E] [NumberField E] [IsCMField
   exact hL.wd g hg.1 S _ p _ φ _ y w h.choose_spec.choose_spec.choose_spec hw
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c hL h hA a n g hg h0`. Establish `hfield : ∀ (L : Type) [Field L] [Algebra c.F L] (w : FrPt Xo c L), evR Xo c g w = 0`. Introduce `L _ _ w`. Take `⟨C, ψ, z, t', hz, hb⟩` from `hA L w`. Take `⟨q, χ, y₀, hy₀⟩` from `hL.test C.R C.y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1 : evR Xo c g C.yg = 0`. Rewrite using `[hL.wt a n g hg _ C.t _ _ (hL.test _ _) (hL.test _ _) C.bor]`. Use `h0 C.Z` as an intermediate fact. Unfold `evC at this`. Rewrite using `[this, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : χ (g q y₀) = 0`. Rewrite `h1` using `[evR_eq_map_of_test_point hL hg q (C.R.val.comp χ) y₀ C.yg (frMap_trans _ _ _ _ _ _ _ _ hy₀ C.gen)]`. Conclude with `Subtype.ext h1`. Establish `h3 : evR Xo c g z = 0`. Rewrite using `[evR_eq_map_of_test_point hL hg q (ψ.comp χ) y₀ z (frMap_trans _ _ _ _ _ _ _ _ hy₀ hz), AlgHom.comp_apply, h2, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL.wt a n g hg _ t' _ _ (hL.test _ _) (hL.test _ _) hb, h3, mul_zero]`. Use function extensionality and compare the values at `p y`. Establish `hred : IsReduced p.R` using `(Ideal.isRadical_iff_quotient_reduced _).1 p.rad`. Use `show g p y = 0`. Use `IsNilpotent.eq_zero ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[nilpotent_iff_mem_prime]`. Introduce `P hP`. Set `φ : p.R →ₐ[c.F] P.ResidueField` to `IsScalarTower.toAlgHom c.F p.R P.ResidueField`. Take `⟨w, hw⟩` from `hL.bc _ _ φ y`. Establish `h4` using `hfield _ w`.
-
-Rewrite `h4` using `[evR_eq_map_of_test_point hL hg p φ y w hw]`. Conclude with `Ideal.algebraMap_residueField_eq_zero.1 h4`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_eq_zero_of_generic_values :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), EvLaws Xo c → ∀ h : GenFrEx Xo c, Atlas h → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), ∀ g ∈ sec Xo c a n, (∀ Z, evC h Z g = 0) → g = 0 := by

@@ -3,7 +3,7 @@ import Formalism.GL3MeanSquares.HookFormulaTorsion.GlobalBoundRefinements
 namespace Formalism.HermitianLattices.Final
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.HermitianLattices.GlobalBoundRefinements.shortIntervalLowerBound, Formalism.HermitianLattices.GlobalBoundRefinements.prime_divisor_count_absorption, Formalism.HermitianLattices.GlobalBoundRefinements.shortIntervalImpliesProgressions_statement, Formalism.HermitianLattic …`.
+Supply the required witnesses or components.
 -/
 theorem global_bound_refinement_results :
     Formalism.HermitianLattices.GlobalBoundRefinements.ShortIntervalLowerBound ∧

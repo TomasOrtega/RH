@@ -4,15 +4,15 @@ open AlgebraicGeometry CategoryTheory Limits Scheme.AffineZariskiSite
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R A B _ _ _ _ C φ hφ hC a b hab hloc`. Substitute `hab` using the available equality. Establish `hmem : ∀ y, φ y ∈ C` using `fun y => (hC _).2 ⟨y, rfl⟩`. Set `f : A →+* C` to `φ.codRestrict C.toSubsemiring hmem`. Establish `hf : Function.Bijective f`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨fun x y h => hφ (congrArg Subtype.val h), fun c => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `(hC c.1).1 c.2`. Conclude with `⟨y, Subtype.ext hy⟩`. Set `e : A ≃+* C` to `RingEquiv.ofBijective f hf`. Establish `H : Submonoid.map e.toMonoidHom (Submonoid.powers a) = Submonoid.powers (f a)` using `Submonoid.map_powers e.toMonoidHom a`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : Function.Bijective (Localization.awayMap f a)`. Establish `hb` using `(IsLocalization.ringEquivOfRingEquiv (Localization.Away a) (Localization.Away (f a)) e H).bijective`. Establish `key : ∀ z, Localization.awayMap f a z = IsLocalization.ringEquivOfRingEquiv (Localization.Away a) (Localization.Away (f a)) e H z`. Introduce `z`. Rewrite using `[IsLocalization.ringEquivOfRingEquiv_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[show (Localization.awayMap f a : Localization.Away a → Localization.Away (f a)) = _ from funext key]`. Conclude with `hb`. Establish `h2 : Localization.awayMap φ a = (Localization.awayMap C.val.toRingHom (f a)).comp (Localization.awayMap f a)`. Simplify using `only [Localization.awayMap, IsLocalization.Away.map]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsLocalization.map_comp_map]`. Both sides reduce to the same expression. Rewrite using `[h2]`. Conclude with `(hloc (hmem a)).comp h1`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem awayMap_bijective_of_range_eq_subalgebra :
     ∀ (R A B : Type) [CommRing R] [CommRing A] [CommRing B] [Algebra R B] (C : Subalgebra R B) (φ : A →+* B), Function.Injective φ → ∀ (_ : ∀ x, x ∈ C ↔ ∃ y, φ y = x) (a : A) (b : B), φ a = b → (∀ hb : b ∈ C, Function.Bijective (Localization.awayMap C.val.toRingHom (⟨b, hb⟩ : C))) → Function.Bijective (Localization.awayMap φ a) := by

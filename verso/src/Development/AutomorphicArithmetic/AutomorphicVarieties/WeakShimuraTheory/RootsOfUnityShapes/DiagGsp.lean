@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Use `show adj _ * _ = e • 1`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[adj_apply, Matrix.mul_apply, Fin.sum_univ_four, Matrix.diagonal_apply, sgn, Fin.rev]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem diag_gsp {R : Type} [CommRing R] (e : R) :
     IsGSp e (Matrix.diagonal ![1, 1, e, e] : M4 R) := by
@@ -15,17 +15,17 @@ private theorem diag_gsp {R : Type} [CommRing R] (e : R) :
     simp [adj_apply, Matrix.mul_apply, Fin.sum_univ_four, Matrix.diagonal_apply, sgn, Fin.rev]
 
 /- English proof (translation)
-Introduce `R _ ν X n₀ hν hX hn₀ h0 h1`. Take `⟨v, rfl⟩` from `hν`. Use `set D : M4 R := Matrix.diagonal ![1, 1, ((v⁻¹ : Rˣ) : R), ((v⁻¹ : Rˣ) : R)] with hD`. Use `set D' : M4 R := Matrix.diagonal ![1, 1, (v : R), (v : R)] with hD'`. Establish `hDD : D * D' = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hD, hD', Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp`. Establish `hu : IsGSp 1 (X * n₀ * D)`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `(grp R).2.2.2.2.2.2.2.1 _ _ _ _ ((grp R).2.2.2.2.2.2.2.1 _ _ _ _ hX hn₀.1) (diag_gsp ((v⁻¹ : Rˣ) : R))`. Simplify using `using h`. Establish `hcol : ∀ i, (X * n₀ * D) i 0 = (X * n₀) i 0 ∧ (X * n₀ * D) i 1 = (X * n₀) i 1`. Introduce `i`. Simplify using `[hD, Matrix.mul_diagonal]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, b, hn, -, hb, hfac⟩` from `Lab.luSp R _ hu (by rw [(hcol 0).1]; exact h0) (by rw [(hcol 0).1, (hcol 1).2, (hcol 0).2, (hcol 1).1]; exact h1)`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Establish `hnn : adj n * n = 1`. Establish `h` using `hn.1`. Unfold `IsGSp at h`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h, one_smul]`. Establish `key : adj n * X * n₀ = b * D'`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, hDD, Matrix.mul_one]`. Use `_ = adj n * (n * b) * D' := by rw [hfac]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `_ = b * D' := by rw [← Matrix.mul_assoc (adj n), hnn, Matrix.one_mul]`. Rewrite using `[key]`. Introduce `i j hij`. Simplify using `[hD', Matrix.mul_diagonal, hb i j hij]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Rq.luG :
     ∀ (R : Type) [CommRing R] (ν : R) (X n₀ : M4 R), IsUnit ν → IsGSp ν X → IsLow n₀ → IsUnit ((X * n₀) 0 0) →

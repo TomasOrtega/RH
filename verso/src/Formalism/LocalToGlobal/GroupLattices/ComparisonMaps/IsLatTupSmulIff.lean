@@ -8,13 +8,11 @@ open Formalism.MainNotions.G Formalism.L2.Forms Formalism.UG NumberField IsDedek
 open scoped TensorProduct
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h v`. Take `⟨g', hg', hL⟩` from `h v`. Use `⟨(((G.lev i).act v γ)⁻¹ : GL (Fin (G.P.m + 1)) (G.P.Qq v)).1 * g', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 ((G.lev i).act v γ)⁻¹.isUnit).mul hg'`. Establish `hinj : Function.Injective ((Matrix.mulVecLin (((G.lev i).act v γ : GL (Fin (G.P.m + 1)) (G.P.Qq v)) : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v))).restrictScalars (G.P.W v))` using `Matrix.mulVec_injective_of_isUnit ((G.lev i).act v γ).isUnit`. Apply `Submodule.map_injective_of_injective hinj` to reduce the goal to its premises. Rewrite using `[colSpan_map, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`. Conclude with `hL`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `h v`. Take `⟨g, hg, hL⟩` from `h v`. Use `⟨((G.lev i).act v γ).1 * g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 ((G.lev i).act v γ).isUnit).mul hg`.
-
-Use `show (L v).map _ = _`. Rewrite using `[hL, colSpan_map]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLatTup_smul_iff {p : ℕ} {G : GAtP p} (i : G.comp) (γ : (G.lev i).Γ) (L : G.P.Tup) :
     G.P.IsLatTup ((G.lev i).smul γ L) ↔ G.P.IsLatTup L := by
@@ -47,11 +45,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {yc : cls → UPts σ J (FiniteAdeleRing (𝓞 F) F)}
 
 /- English proof (translation)
-Use `choose g0 hg0 hLg using hL`. Set `g : ∀ v, GL (Fin (G.P.m + 1)) (G.P.Qq v)` to `fun v => ((Matrix.isUnit_iff_isUnit_det _).2 (hg0 v)).unit`. Establish `hg : ∀ v, L v = colSpan (G.P.W v) (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v))` using `hLg`. Take `⟨c, γ₀, κ₀, hγ₀, hpt⟩` from `hp i g`. Apply `MvPolynomial.map_injective embLL embLL.injective` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `sub_eq_zero.1` to reduce the goal to its premises. Apply `hi` to reduce the goal to its premises. Use function extensionality and compare the values at `z`. Take `⟨z₁, hz₁⟩` from `frames_tr emb hc (A.gamI i γ) hγ z`. Take `⟨z₂, hz₂⟩` from `frames_tr emb hc γ₀ hγ₀ z₁`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `(cmpC_tie (e := e) tE hex hpos hchi).val_equiv htE hBs hA x i L g hg γ hγ κ hκ c γ₀ hγ₀ κ₀ hpt z z₁ z₂ hz₁ hz₂`. Rewrite using `[map_sub, Pi.sub_apply, map_smul', map_smul, Pi.smul_apply, smul_eq_mul, hr]`. Conclude with `sub_eq_zero.2 h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valC_equiv (tE : Tau → E →+* LL) (htE : ∀ τ x, embLL (tE τ x) = emb τ x)
     (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (hBs : cT (σ : E →+* E) A.B.1 * J * A.B.1 = 1) (hA : A.ActB)
@@ -80,9 +78,9 @@ theorem valC_equiv (tE : Tau → E →+* LL) (htE : ∀ τ x, embLL (tE τ x) = 
   exact sub_eq_zero.2 h
 
 /- English proof (translation)
-Unfold `cmpC`. Distinguish the cases in `hL : G.P.IsLatTup L`. Establish `hL' : G.P.IsLatTup ((G.lev i).smul γ L)` using `(isLatTup_smul_iff i γ L).2 hL`. Take `⟨κ, hκ⟩` from `haw i γ`. Take `⟨r, hr, hr1⟩` from `hchi i γ κ hκ`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_pos hL, if_pos hL', actX_map A tE pos e hA hpos i γ, ← valC_equiv tE htE hc hBs hA hex hpos hchi hi hp x i γ (hU i γ) κ hκ r hr L hL, map_smul', ← algebraMap_smul G.Kf ((G.lev i).χ γ : G.O), smul_smul, hr1, one_smul]`. Establish `hL' : ¬ G.P.IsLatTup ((G.lev i).smul γ L)` using `fun h => hL ((isLatTup_smul_iff i γ L).1 h)`. Rewrite using `[if_neg hL, if_neg hL', map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cmpC_equiv (tE : Tau → E →+* LL) (htE : ∀ τ x, embLL (tE τ x) = emb τ x)
     (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (hBs : cT (σ : E →+* E) A.B.1 * J * A.B.1 = 1) (hA : A.ActB)

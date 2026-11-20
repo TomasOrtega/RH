@@ -24,15 +24,15 @@ variable {D : D7}
 abbrev fI (D : D7) : AE D := algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 1)
 
 /- English proof (translation)
-The claim follows from `Prod.ext (by show (0 : Ainf D.host.F) * 0 = 0; rw [mul_zero]) (by show α * 1 = α; rw [mul_one])`.
+A detailed English derivation is pending.
 -/
 theorem pairA_mul_one (α : Af D.host.F) : pairA D.host.F 0 α * pairA D.host.F 0 1 = pairA D.host.F 0 α :=
   Prod.ext (by show (0 : Ainf D.host.F) * 0 = 0; rw [mul_zero]) (by show α * 1 = α; rw [mul_one])
 
 /- English proof (translation)
-Take `⟨h1, h2, v, ε, ⟨α, rfl, -, -⟩, h3⟩` from `h`. Establish `he : e' = e' * algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α)`. Rewrite using `[← h3, mul_add, h1, h2, add_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = e' := by rw [pairA_mul_one, ← he]`.
+A detailed English derivation is pending.
 -/
 theorem splitIdem_mul_fI {e' : AE D} (h : IsSplitIdem D e') : e' * fI D = e' := by
   obtain ⟨h1, h2, v, ε, ⟨α, rfl, -, -⟩, h3⟩ := h
@@ -44,14 +44,14 @@ theorem splitIdem_mul_fI {e' : AE D} (h : IsSplitIdem D e') : e' * fI D = e' := 
     _ = e' := by rw [pairA_mul_one, ← he]
 
 /- English proof (translation)
-Take `⟨h1, h2, v, ε, hv, h3⟩` from `h`. Conclude with `⟨by rw [← map_mul, h1], by rw [cA_cA, mul_comm, h2], v, ε, hv, by rw [cA_cA, add_comm, h3]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem splitIdem_cA {e : AE D} (h : IsSplitIdem D e) : IsSplitIdem D (cA D e) := by
   obtain ⟨h1, h2, v, ε, hv, h3⟩ := h
   exact ⟨by rw [← map_mul, h1], by rw [cA_cA, mul_comm, h2], v, ε, hv, by rw [cA_cA, add_comm, h3]⟩
 
 /- English proof (translation)
-Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Rewrite using `[Finset.sum_mul, map_sum, Finset.sum_mul]`. Conclude with `⟨Finset.sum_congr rfl fun PP hPP => splitIdem_mul_fI (hes PP hPP).1, Finset.sum_congr rfl fun PP hPP => splitIdem_mul_fI (splitIdem_cA (hes PP hPP).1)⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem idemSum_mul_fI {e : AE D} {P : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e P) :
     e * fI D = e ∧ cA D e * fI D = cA D e := by
@@ -61,9 +61,7 @@ theorem idemSum_mul_fI {e : AE D} {P : Finset (Formalism.L2.DIV.Pl D.host.E)} (h
     Finset.sum_congr rfl fun PP hPP => splitIdem_mul_fI (splitIdem_cA (hes PP hPP).1)⟩
 
 /- English proof (translation)
-Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Conclude with `AddSubgroup.sum_mem _ fun PP hPP => splitIdem_int (hes PP hPP).1`. Rewrite using `[map_sum, map_sum]`.
-
-Conclude with `AddSubgroup.sum_mem _ fun PP hPP => splitIdem_int (splitIdem_cA (hes PP hPP).1)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idemSum_int {P : Finset (Formalism.L2.DIV.Pl D.host.E)} {e : AE D} (he : IsIdemSum e P) :
     finPart D e ∈ intAE D ∧ finPart D (cA D e) ∈ intAE D := by
@@ -75,9 +73,7 @@ theorem idemSum_int {P : Finset (Formalism.L2.DIV.Pl D.host.E)} {e : AE D} (he :
     exact AddSubgroup.sum_mem _ fun PP hPP => splitIdem_int (splitIdem_cA (hes PP hPP).1)
 
 /- English proof (translation)
-Use `show infPart D (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 1)) = 0`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Use `show (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)) (pairA D.host.F 0 1 ⊗ₜ[D.host.F] (1 : D.host.E)) = 0`. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Use `show fstA D.host.F (pairA D.host.F 0 1) ⊗ₜ[D.host.F] (AlgHom.id D.host.F D.host.E) 1 = 0`.
-
-Rewrite using `[show fstA D.host.F (pairA D.host.F 0 1) = 0 from rfl, TensorProduct.zero_tmul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infPart_fI : infPart D (fI D) = 0 := by
   show infPart D (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 1)) = 0
@@ -89,7 +85,7 @@ theorem infPart_fI : infPart D (fI D) = 0 := by
   rw [show fstA D.host.F (pairA D.host.F 0 1) = 0 from rfl, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.zero_apply]`. Combine the equalities or inequalities in the displayed calculation.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem half_infPart {m n : ℕ} {f : AE D} (hf : f * fI D = f) {y : Mx D m n} (hy : IsHalf f y) :
     y.map (infPart D) = 0 := by
@@ -101,7 +97,7 @@ theorem half_infPart {m n : ℕ} {f : AE D} (hf : f * fI D = f) {y : Mx D m n} (
 variable (S T : HSp D)
 
 /- English proof (translation)
-Unfold `hO`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul]`. Use `conv_lhs => rw [← hy d a]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hO_half_right {f : AE D} {y : WO S T} (hy : IsHalf (cA D f) y) (u : WO S T) :
     hO S T y u = hO S T y (f • u) := by
@@ -113,7 +109,7 @@ theorem hO_half_right {f : AE D} {y : WO S T} (hy : IsHalf (cA D f) y) (u : WO S
   ring
 
 /- English proof (translation)
-Unfold `symplO`. Rewrite using `[hO_half_right S T hy u]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_half_right {f : AE D} {y : WO S T} (hy : IsHalf (cA D f) y) (u : WO S T) :
     symplO S T y u = symplO S T y (f • u) := by
@@ -122,11 +118,11 @@ theorem symplO_half_right {f : AE D} {y : WO S T} (hy : IsHalf (cA D f) y) (u : 
 variable {S T}
 
 /- English proof (translation)
-Introduce `ψ hψ S T ΛS ΛT hS hT P e he y hy`. Establish `hL4` using `(hL ψ hψ S T ΛS ΛT hS hT).2.2.2`. Take `⟨hfe, hfc⟩` from `idemSum_mul_fI he`. Establish `hie` using `(idemSum_int he).1`. Establish `hee` using `idemSum_mul_self he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy0 : y.map (infPart D) = 0` using `half_infPart hfc hy`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `(hL4 y hy0).2 fun u hu => ?_` and prove the remaining obligations. Establish `hm : e • u ∈ latAll S T ΛS ΛT` using `latO_smul_mem S T ΛS ΛT hie hu`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hh : IsHalf e (e • u)` using `fun i j => by rw [Matrix.smul_apply, smul_eq_mul, ← mul_assoc, hee]`. Establish `h1` using `hx _ hm hh`. Rewrite using `[symplO_half_right S T hy u, symplO_swap S T (e • u) y, AddChar.map_neg_eq_inv, h1, inv_one]`. Introduce `hyL x hx hxh`. Conclude with `(hL4 x (half_infPart hfe hxh)).1 hx y hyL`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem placeLatDualIi_of (hL : LatSelfDual D) : PlaceLatDualIi D := by
   intro ψ hψ S T ΛS ΛT hS hT P e he y hy
@@ -146,13 +142,13 @@ theorem placeLatDualIi_of (hL : LatSelfDual D) : PlaceLatDualIi D := by
     exact (hL4 x (half_infPart hfe hxh)).1 hx y hyL
 
 /- English proof (translation)
-Introduce `ψ hψ S T ΛS ΛT hS hT P e he x hx`. Establish `hL4` using `(hL ψ hψ S T ΛS ΛT hS hT).2.2.2`. Take `⟨hfe, -⟩` from `idemSum_mul_fI he`. Establish `hic` using `(idemSum_int he).2`. Establish `hee` using `idemSum_mul_self he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc : cA D e * cA D e = cA D e` using `by rw [← map_mul, hee]`. Establish `hx0 : x.map (infPart D) = 0` using `half_infPart hfe hx`. Establish `hxc : IsHalf (cA D (cA D e)) x` using `by rw [cA_cA]; exact hx`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hL4 x hx0).2 fun u hu => ?_` and prove the remaining obligations. Establish `hm : cA D e • u ∈ latAll S T ΛS ΛT` using `latO_smul_mem S T ΛS ΛT hic hu`. Establish `hh : IsHalf (cA D e) (cA D e • u)` using `fun i j => by rw [Matrix.smul_apply, smul_eq_mul, ← mul_assoc, hcc]`. Rewrite using `[symplO_half_right S T hxc u]`. Conclude with `hy _ hm hh`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hxL y hy _`. Conclude with `(hL4 x hx0).1 hxL y hy`.
+A detailed English derivation is pending.
 -/
 theorem placeLatDualIii_of (hL : LatSelfDual D) : PlaceLatDualIii D := by
   intro ψ hψ S T ΛS ΛT hS hT P e he x hx

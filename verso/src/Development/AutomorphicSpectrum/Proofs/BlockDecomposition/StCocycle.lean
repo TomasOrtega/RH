@@ -13,11 +13,11 @@ def wz {d j : ℕ} (u : Fin d → ∀ T : C, Φ.A.obj T) (I : Fin j → Fin d) (
       (Φ.A.map (s.map (homOfLE (Fin.castSucc_lt_succ (i := k)).le))).hom (u (I k) (s.obj k.castSucc)))
 
 /- English proof (translation)
-Establish `key : ∀ (S : Finset (Fin j)) (f : Fin j → Φ.A.obj (s.obj (Fin.last j))), (∀ k, f k ∈ (Fil 1).S _) → ∏ k ∈ S, f k ∈ (Fil ((S.card : ℕ) : ℤ)).S _` using `by classical`. Introduce `S f hf`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.prod_empty, Finset.card_empty]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF.top _ (by simp)]`. Discharge the goal by the elementary cases of `trivial`. Consider the case `insert a S ha ih`. Establish `e : (insert a S).card = 1 + S.card` using `by rw [Finset.card_insert_of_notMem ha, Nat.add_comm]`. Rewrite using `[Finset.prod_insert ha, e]`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hF.mul 1 S.card _ (by simpa using hf a) ih`. Use `key Finset.univ (fun k => (Φ.A.map (s.map (homOfLE (Fin.le_last k.succ)))).hom (u (I k) (s.obj k.succ) - (Φ.A.map (s.map (homOfLE (Fin.castSucc_lt_succ (i := k)).le))).hom (u (I k) (s.obj k.castSucc)))) (fun k => by` as an intermediate fact. Rewrite using `[hF.one]`. Conclude with `Φ.J.map_mem _ (hu _ _))`. Simplify `this` using `[wz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem wz_mem {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) {d j : ℕ} (u : Fin d → ∀ T : C, Φ.A.obj T)
     (hu : ∀ i {T T' : C} (φ : T ⟶ T'), u i T' - (Φ.A.map φ).hom (u i T) ∈ Φ.J.S T')
@@ -55,9 +55,9 @@ abbrev SS (l s : ℕ) (W : X.Opens) : ObjectProperty (Thick (LL q)) :=
 variable {q}
 
 /- English proof (translation)
-Establish `e : pt T' = Spec.map (CommRingCat.ofHom (Ideal.quotientMap T'.J φ.φ φ.hle)) ≫ pt T`. Use `φ.pt` as an intermediate fact. Unfold `pt`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `key : ∀ (y : Spec (CommRingCat.of (T'.B ⧸ T'.J)) ⟶ X) (hy : y = Spec.map (CommRingCat.ofHom (Ideal.quotientMap T'.J φ.φ φ.hle)) ≫ pt T) (hh : ⊤ ≤ y ⁻¹ᵁ W), GlobalTheory.Cris.evalAt y W hh f = Ideal.quotientMap T'.J φ.φ φ.hle (ev T h f)`. Introduce `y hy hh`. Substitute `hy` using the available equality. Conclude with `evalAt_map (B := CommRingCat.of (T.B ⧸ T.J)) (B' := CommRingCat.of (T'.B ⧸ T'.J)) _ (pt T) h hh f`. Conclude with `key _ e h'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ev_nat {W : X.Opens} {T T' : Thick (LL q)} (φ : T ⟶ T') (h : InU W T) (h' : InU W T') (f : Γ(X, W)) :
     ev T' h' f = Ideal.quotientMap T'.J φ.φ φ.hle (ev T h f) := by
@@ -74,13 +74,13 @@ theorem ev_nat {W : X.Opens} {T T' : Thick (LL q)} (φ : T ⟶ T') (h : InU W T)
   exact key _ e h'
 
 /- English proof (translation)
-The claim follows from `evalAt_res (pt T) hW h h' f`.
+A detailed English derivation is pending.
 -/
 theorem ev_res {W W' : X.Opens} (hW : W' ≤ W) (T : Thick (LL q)) (h : InU W T) (h' : InU W' T) (f : Γ(X, W)) :
     ev T h' (rs hW f) = ev T h f := evalAt_res (pt T) hW h h' f
 
 /- English proof (translation)
-The claim follows from `(evalAt_base q (Ideal.Quotient.mk ⊥) (show PtOver X q (Ideal.Quotient.mk (⊥ : Ideal O)) (T.B ⧸ T.J) from T.y).1.1 (pt T) (show PtOver X q (Ideal.Quotient.mk (⊥ : Ideal O)) (T.B ⧸ T.J) from T.y).2 h a).trans (T.w a)`.
+A detailed English derivation is pending.
 -/
 theorem ev_str {W : X.Opens} (T : Thick (LL q)) (h : InU W T) (a : O) :
     ev T h (strV q W a) = Ideal.Quotient.mk T.J (T.i a) :=
@@ -93,7 +93,7 @@ def lft (W : X.Opens) (T : Thick (LL q)) (f : Γ(X, W)) : T.B :=
   if h : InU W T then Function.surjInv Ideal.Quotient.mk_surjective (ev T h f) else 0
 
 /- English proof (translation)
-Rewrite using `[lft, dif_pos h]`. Conclude with `Function.surjInv_eq _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lft_spec {W : X.Opens} (T : Thick (LL q)) (h : InU W T) (f : Γ(X, W)) :
     Ideal.Quotient.mk T.J (lft W T f) = ev T h f := by

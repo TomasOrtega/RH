@@ -9,15 +9,13 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.LieDisc
 
 /- English proof (translation)
-Introduce `E _ _ _ hu w hw`. Use `set F := maximalRealSubfield E`. Establish `hfu : Algebra.FormallyUnramified (𝓞 F) (𝓞 E)` using `by haveI : Algebra.Unramified (𝓞 F) (𝓞 E) := hu infer_instance`. Establish `hd : differentIdeal (𝓞 F) (𝓞 E) = ⊤` using `(GlobalTheory.formallyUnramified_ringOfIntegers_iff_differentIdeal_eq_top F E).1 hfu`. Establish `h10 : (1 : FractionalIdeal (𝓞 E)⁰ E) ≠ 0` using `one_ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdual : FractionalIdeal.dual (𝓞 F) F (1 : FractionalIdeal (𝓞 E)⁰ E) = 1`. Establish `h` using `coeIdeal_differentIdeal (𝓞 F) F (L := E) (B := 𝓞 E)`. Rewrite `h` using `[hd, FractionalIdeal.coeIdeal_top]`. Conclude with `(inv_eq_one.1 h.symm)`. Establish `hmem : w ∈ FractionalIdeal.dual (𝓞 F) F (1 : FractionalIdeal (𝓞 E)⁰ E)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[FractionalIdeal.mem_dual h10]`. Introduce `a ha`. Take `⟨b, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 ha`. Rewrite using `[Algebra.traceForm_apply]`. Establish `ht` using `Formalism.FourierDecayAlt.P.S6x3.trace_eq E (w * algebraMap (𝓞 E) E b)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hi : IsIntegral ℤ (Algebra.trace F E (w * algebraMap (𝓞 E) E b))`. Rewrite using `[← isIntegral_algebraMap_iff (FaithfulSMul.algebraMap_injective F E), ht]`. Conclude with `hw _ (RingOfIntegers.isIntegral_coe b)`. Conclude with `⟨⟨_, hi⟩, rfl⟩`. Rewrite `hmem` using `[hdual]`.
-
-Take `⟨z, hz⟩` from `(FractionalIdeal.mem_one_iff _).1 hmem`. Rewrite using `[← hz]`. Conclude with `RingOfIntegers.isIntegral_coe z`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_trace_integral :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ w : E,

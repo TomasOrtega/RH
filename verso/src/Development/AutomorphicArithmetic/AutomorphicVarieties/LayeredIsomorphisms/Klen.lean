@@ -5,11 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 open NumberField Formalism.GaloisCohomology UpperTheory.Top UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Win
 
 /- English proof (translation)
-Take `⟨ζ, hζ⟩` from `h`. Use `set n := if l = 2 then 4 else l with hn`. Establish `hn2 : 2 < n`. Use `(Fact.out : l.Prime).two_le` as an intermediate fact. Rewrite using `[hn]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Use `split_ifs with h2`. Evaluate the numerical expressions. Use linear arithmetic over natural numbers and integers. Establish `: NeZero n` using `⟨by omega⟩`. Establish `: IsCyclotomicExtension {n} ℚ (IntermediateField.adjoin ℚ {ζ})` using `hζ.intermediateField_adjoin_isCyclotomicExtension ℚ`.
-
-Establish `: IsTotallyComplex (IntermediateField.adjoin ℚ {ζ})` using `IsCyclotomicExtension.Rat.isTotallyComplex (IntermediateField.adjoin ℚ {ζ}) hn2`. Conclude with `isTotallyComplex_of_algebra (IntermediateField.adjoin ℚ {ζ}) L`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isTotallyComplex_of_hasMuQ (l : ℕ) [Fact l.Prime] (L : Type) [Field L] [NumberField L] (h : HasMuQ l L) :
     IsTotallyComplex L := by
@@ -28,15 +26,15 @@ private theorem isTotallyComplex_of_hasMuQ (l : ℕ) [Fact l.Prime] (L : Type) [
   exact isTotallyComplex_of_algebra (IntermediateField.adjoin ℚ {ζ}) L
 
 /- English proof (translation)
-Introduce `CK hK l _ L Ω _ _ _ _ _ D hmu e he`. Establish `htc` using `isTotallyComplex_of_hasMuQ l L hmu`. Take `⟨hfin, hlog⟩` from `hK l L Ω D htc hmu e he`. Take `⟨k, hlen, hcard⟩` from `Kum.lenOfCard l (ReciprocityTheory.Gal.H2 (zlTw D ((e : ℤ) + 1)))`. Establish `hV : VLen D e = (k : ℕ∞)` using `hlen`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨by rw [hV]; exact ENat.coe_ne_top k, ?_⟩` and prove the remaining obligations. Rewrite using `[hV, ENat.toNat_coe]`. Rewrite `hlog` using `[hcard]`. Move the coercions through the operations in `at hlog`. Rewrite `hlog` using `[Real.log_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hl2 : (2 : ℝ) ≤ l` using `by exact_mod_cast (Fact.out : l.Prime).two_le`. Establish `hlogl : (1 / 2 : ℝ) ≤ Real.log l`. Establish `h1 : Real.log 2 ≤ Real.log l` using `Real.log_le_log (by norm_num) hl2`. Establish `h2 : (1 / 2 : ℝ) < Real.log 2`. Use `Real.log_two_gt_d9` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk0 : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `hkB : (0 : ℝ) ≤ kBound CK e (Module.finrank ℚ L) (discr L).natAbs`. Unfold `kBound`.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `(Real.exp_pos _).le`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Win.klen :
     ∀ CK : ℝ, LemmaK CK → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω]

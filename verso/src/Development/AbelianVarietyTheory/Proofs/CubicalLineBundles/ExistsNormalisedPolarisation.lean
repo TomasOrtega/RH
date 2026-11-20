@@ -16,29 +16,25 @@ namespace GlobalTheory.CM
 open GlobalTheory.PrimNorm GlobalTheory.MulPull
 
 /- English proof (translation)
-Introduce `laws R _ _ P w w' hw hw' hs ha`. Establish `: IsCommMonObj P.A` using `P.isAb.comm`. Establish `hM` using `P.isLB`. Take `⟨rig, hrig⟩` from `P.rigid`. Take `⟨⟨c⟩, -⟩` from `laws.cube _ P ⟨P.L, rig, hM, hrig⟩ rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hT : ∃ t : LB.Gen (Theta P.A P.L), t.IsGen` using `⟨c.t, c.isGen⟩`. Establish `ha' : LBIso (cubeLB P.A ![fst P.A P.A ≫ w, snd P.A P.A] P.L) (cubeLB P.A ![fst P.A P.A, snd P.A P.A ≫ w'] P.L)`. Simplify `ha` using `only [LamEq, Category.comp_id]`. Take `⟨Q, -, e, -, iso⟩` from `exists_normalised_bundle laws.globalFns P.isAb hM hT w w' hs ha'`. Establish `hc` using `fun T : Over (Sp R) => diff₃_ptCls (T := T) hM hT`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hQ` using `Q.isLB`. Establish `lam : LamEq Q.L (𝟙 P.A) (𝟙 P.A) P.L (𝟙 P.A) (𝟙 P.A)` using `iso _ _ _`. Use `⟨Q.L, hQ, ⟨Q.rig, Q.rigGen⟩, fun s => ⟨⊤, trivial, ?_⟩, ?_, kTriv_of_lamEq _ _ _ _ hM hQ lam P.ktriv, lam, ?_⟩` and prove the remaining obligations. Establish `h : HasGen Q.L (K` using `Fin 2) ![(GrpObj.inv (X := P.A)).left, 𝟙 _] ![1, -1] := by`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hasGen_nested hM _ _ _ _ ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_two]`. Use `show normCls P.L w (GrpObj.inv (X := P.A)).left ^ (1 : ℤ) * normCls P.L w (𝟙 P.A : P.A ⟶ P.A).left ^ (-1 : ℤ) = 1`. Establish `e : GrpObj.inv (X` using `P.A) = (𝟙 P.A)⁻¹ := by simp [Hom.inv_def]`. Establish `e' : (𝟙 P.A)⁻¹ ≫ w = (𝟙 P.A ≫ w)⁻¹` using `map_inv (postHom w P.A) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[normCls_left, normCls_left, e, e', diff₂_inv_inv (hc P.A), zpow_neg, zpow_one, mul_inv_cancel]`. Establish `h'` using `h.pull (P.A.hom ⁻¹ᵁ ⊤).ι`. Establish `e₁ : (fun k => (P.A.hom ⁻¹ᵁ ⊤).ι ≫ (![(GrpObj.inv (X` using `P.A)).left, 𝟙 _] : Fin 2 → _) k) = ![(P.A.hom ⁻¹ᵁ ⊤).ι ≫ (GrpObj.inv : P.A ⟶ P.A).left, (P.A.hom ⁻¹ᵁ ⊤).ι] := by`. Use function extensionality and compare the values at `k`. Use `fin_cases k`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `exacts [rfl, Category.comp_id _]`. Rewrite `h'` using `[e₁]`. Conclude with `h'`. Establish `one : ptCls P.L P.A 1 = 1`. Establish `h` using `(hasGen_iff hM _ _).1 (HasGen.pull (φ := fun _ : PUnit => eSec P.A) (ε := fun _ => 1) ⟨rig, hrig⟩ (toUnit P.A).left)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Fintype.prod_unique, zpow_one]`. Conclude with `h`. Establish `two : ptCls P.L P.A (𝟙 P.A * 𝟙 P.A) = ptCls P.L P.A (𝟙 P.A) ^ (4 : ℤ)`. Establish `h` using `(hasGen_iff hM _ _).1 (laws.mulPull _ P 2)`. Rewrite `h` using `[Fin.prod_univ_two]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h' : ptCls P.L P.A (𝟙 P.A) ^ (((2 : ℕ) : ℤ) ^ 2) * ptCls P.L P.A (𝟙 P.A ^ 2) ^ (-1 : ℤ) = 1` using `h`. Rewrite `h'` using `[zpow_neg, zpow_one, mul_inv_eq_one, pow_two (𝟙 P.A)]`. Conclude with `h'.symm`. Establish `sq : LBIso (lbPow Q.L 2) (lbPow P.L 2)`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `lbIso_nested hM _ _ _ _ _ _ ?_` and prove the remaining obligations. Use `(Fintype.prod_unique _).trans (Eq.trans ?_ (Fintype.prod_unique _).symm)` and prove the remaining obligations. Use `show normCls P.L w (𝟙 P.A : P.A ⟶ P.A).left ^ ((2 : ℕ) : ℤ) = ptCls P.L P.A (𝟙 P.A) ^ ((2 : ℕ) : ℤ)`. Rewrite using `[normCls_left, zpow_natCast, zpow_natCast, pow_two, Category.id_comp]`. Establish `adj` using `diff₂_ptCls_adj hM ha' (𝟙 P.A) (𝟙 P.A)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `adj` using `[Category.id_comp, Category.id_comp, diff₂_comm w]`. Use `nth_rewrite 2 [adj]`. Rewrite using `[← diff₂_mul_right (hc P.A), hs, diff₂, one, two]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one, ofMul_zpow, ofMul_pow]`.
-
-Normalize the expressions using the abelian group laws. Establish `A₁` using `relAmple_finite_pow_iso _ P.A P.A (𝟙 _) P.L 2 two_pos P.isAb P.isAb hM (show IsFinite (𝟙 P.A.left) from inferInstance)`. Establish `A₂` using `relAmple_finite_pow_iso _ P.A P.A (𝟙 _) Q.L 2 two_pos P.isAb P.isAb hQ (show IsFinite (𝟙 P.A.left) from inferInstance)`. Establish `A₃` using `relAmple_finite_pow_iso _ P.A P.A (𝟙 _) (lbPow P.L 2) 2 two_pos P.isAb P.isAb (DVR.linComb_isLB _ hM _ _) (show IsFinite (𝟙 P.A.left) from inferInstance)`. Conclude with `A₂.2.1.1 (A₃.2.2.2 _ (DVR.linComb_isLB _ hQ _ _) sq.symm (A₁.2.1.2 P.ample))`.
-
-Use `(iso P.A (𝟙 P.A) w).symm` as an intermediate fact. Rewrite `this` using `[← e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_normalised_polarisation : Out.Laws → ∀ (R : Type) [CommRing R] [IsNoetherianRing R]
     (P : Out.PolAV (Sp R)) (w w' : P.A ⟶ P.A), IsMonHom w → IsMonHom w' → w * w' = 𝟙 P.A →

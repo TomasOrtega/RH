@@ -13,13 +13,13 @@ open Formalism.L2.Th1.E (px py IntCurve)
 open Formalism.L2.Th1.A (shortW)
 
 /- English proof (translation)
-Introduce `d L _ _ _ l _ hl _ ι lam hlam m2 m3 n2 n3 hΔ z N hN0 hN hz hz0`. Establish `hg : GoodPair l (lam ^ 4 * ι L.g₂) (lam ^ 6 * ι L.g₃)` using `⟨hl, m2, m3, n2, n3, hΔ⟩`. Take `⟨h, hNP⟩` from `hpt l L ι lam hlam z N hz hz0`. Establish `hP0 : (Affine.Point.some _ _ h) ≠ 0` using `Affine.Point.some_ne_zero h`. Take `⟨hx, hy⟩` from `tor_kur hg _ N hN0 hN hNP hP0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, ix, iy⟩` from `integral_of_not_mem_formalGroup hg _ (torsion_not_mem_formalGroup hg _ N hN hNP hP0)`. Establish `hx' : lam ^ 2 * ι (L.weierstrassP z) ∈ MaximalUnramifiedExtension l` using `hx`. Establish `hy' : lam ^ 3 * ι (L.derivWeierstrassP z) / 2 ∈ MaximalUnramifiedExtension l` using `hy`. Establish `ix' : ‖lam ^ 2 * ι (L.weierstrassP z)‖ ≤ 1` using `ix`. Establish `iy' : ‖lam ^ 3 * ι (L.derivWeierstrassP z) / 2‖ ≤ 1` using `iy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : lam ^ 3 * ι (L.derivWeierstrassP z) = 2 * (lam ^ 3 * ι (L.derivWeierstrassP z) / 2)`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ‖(2 : ℂ_[l])‖ ≤ 1`. Simplify using `using IsUltrametricDist.norm_natCast_le_one ℂ_[l] 2`. Use `⟨hx', ?_, ix', ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Conclude with `mul_mem (by simp) hy'`. Rewrite using `[e, norm_mul]`. Conclude with `mul_le_one₀ h2 (norm_nonneg _) iy'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmTorsion_of_point (hpt : TorPt) : CM4 := by
   intro d L _ _ _ l _ hl _ ι lam hlam m2 m3 n2 n3 hΔ z N hN0 hN hz hz0
@@ -43,12 +43,12 @@ theorem cmTorsion_of_point (hpt : TorPt) : CM4 := by
     exact mul_le_one₀ h2 (norm_nonneg _) iy'
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.Th1.E.scaled_torsion_point_of_add Formalism.L2.Th1.E.PtOfAdd_of`.
+A detailed English derivation is pending.
 -/
 theorem torPt : TorPt := Formalism.L2.Th1.E.scaled_torsion_point_of_add Formalism.L2.Th1.E.PtOfAdd_of
 
 /- English proof (translation)
-The claim follows from `cmTorsion_of_point torPt`.
+A detailed English derivation is pending.
 -/
 theorem cm4 : CM4 := cmTorsion_of_point torPt
 

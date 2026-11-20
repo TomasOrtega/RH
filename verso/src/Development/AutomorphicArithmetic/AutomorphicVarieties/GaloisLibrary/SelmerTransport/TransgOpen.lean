@@ -7,9 +7,9 @@ open ReciprocityTheory.Gal
 namespace UpperTheory.V.Base
 
 /- English proof (translation)
-Establish `h1 : Module.length R A ≤ Module.length R (P ⧸ LinearMap.ker g)`. Use `Module.length_le_of_surjective ((LinearMap.ker g).liftQ f hk) ?_` and prove the remaining obligations. Introduce `a`. Take `⟨p, rfl⟩` from `hf a`. Conclude with `⟨Submodule.Quotient.mk p, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h2 : Module.length R (P ⧸ LinearMap.ker g) = Module.length R (LinearMap.range g)` using `(LinearMap.quotKerEquivRange g).length_eq`. Establish `h3 : Module.length R (LinearMap.range g) ≤ Module.length R B` using `Module.length_le_of_injective (LinearMap.range g).subtype Subtype.val_injective`. Conclude with `h1.trans (h2.le.trans h3)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem len_le_of_ker_le {R P A B : Type} [CommRing R] [AddCommGroup P] [Module R P] [AddCommGroup A]
     [Module R A] [AddCommGroup B] [Module R B] (f : P →ₗ[R] A) (g : P →ₗ[R] B) (hf : Function.Surjective f)
@@ -35,7 +35,7 @@ instance continuousConstSMul_sub (N : Submodule R M) : ContinuousConstSMul R N :
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 /- English proof (translation)
-Establish `hm` using `QuotientGroup.eq.mp e`. Use `⟨⟨((a⁻¹ * b : U) : G), Subgroup.mem_subgroupOf.mp hm⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Subgroup.coe_inclusion]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 private theorem exists_mul_of_mk_eq {U' U : Subgroup G} (h : U' ≤ U) {a b : U}
     (e : (QuotientGroup.mk a : U ⧸ U'.subgroupOf U) = QuotientGroup.mk b) :
@@ -46,7 +46,7 @@ private theorem exists_mul_of_mk_eq {U' U : Subgroup G} (h : U' ≤ U) {a b : U}
   simp [Subgroup.coe_inclusion]
 
 /- English proof (translation)
-Use `⟨⟨(g : K)⁻¹ * u * g, Subgroup.Normal.conj_mem' ‹_› _ u.2 _⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 private theorem exists_inclusion_mul_eq_mul_inclusion_of_normal {K : Type} [Group K] {U' U : Subgroup K} [U'.Normal] (h : U' ≤ U) (u : U')
     (g : U) : ∃ v : U', Subgroup.inclusion h u * g = g * Subgroup.inclusion h v := by
@@ -55,43 +55,39 @@ private theorem exists_inclusion_mul_eq_mul_inclusion_of_normal {K : Type} [Grou
   simp [mul_assoc]
 
 /- English proof (translation)
-Establish `hm : ∀ s : U, ∃ m : M, ∀ u : U', ρ s (z.1 (conjHom U' (s : G) u)) - z.1 u = ρ u m - m`. Introduce `s`. Take `⟨z', hz'e, hz'⟩` from `conjU_mk ρ U' (s : G) z`. Establish `hinv : conjU ρ U' (s : G) (Submodule.Quotient.mk z) = Submodule.Quotient.mk z` using `hz s`. Rewrite `hinv` using `[hz'e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨m, hm⟩` from `(mk_eq_mk ρ U' z' z).mp hinv`. Conclude with `⟨m, fun u => by rw [← hz' u]; exact hm u⟩`. Use `choose mS hmS using hm`. Establish `hcz : ∀ a b : U', z.1 (a * b) = z.1 a + ρ a (z.1 b)` using `fun a b => z.2.2 a b`. Establish `hsp : ∀ g : U, ∃ t : U', g = (QuotientGroup.mk g : U ⧸ U'.subgroupOf U).out * Subgroup.inclusion h t` using `fun g => exists_mul_of_mk_eq h (QuotientGroup.out_eq' (QuotientGroup.mk g : U ⧸ U'.subgroupOf U))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose v hv using hsp`. Set `y0 : U → M` to `fun g => mS (QuotientGroup.mk g : U ⧸ U'.subgroupOf U).out + ρ (QuotientGroup.mk g : U ⧸ U'.subgroupOf U).out (z.1 (v g))`. Establish `hR0 : ∀ (u : U') (g : U), y0 (g * Subgroup.inclusion h u) = y0 g + ρ g (z.1 u)`. Introduce `u g`. Establish `hmk : (QuotientGroup.mk (g * Subgroup.inclusion h u) : U ⧸ U'.subgroupOf U) = QuotientGroup.mk g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[QuotientGroup.eq]`. Simplify using `[Subgroup.mem_subgroupOf, mul_assoc]`. Establish `e1` using `hv (g * Subgroup.inclusion h u)`. Establish `e0` using `hv g`. Simplify using `only [y0]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Generalize the expression as in `v (g * Subgroup.inclusion h u) = t at e1 ⊢`. Rewrite `e1`, the goal using `[hmk]`. Generalize the expression as in `(QuotientGroup.mk g : U ⧸ U'.subgroupOf U).out = s at e0 e1 ⊢`. Establish `eg : (g : G) = s * (v g)` using `congrArg Subtype.val e0`. Establish `ht : t = v g * u`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subgroup.inclusion_injective h` to reduce the goal to its premises. Rewrite using `[map_mul]`. Apply `mul_left_cancel (a := s)` to reduce the goal to its premises. Rewrite using `[← e1, ← mul_assoc, ← e0]`. Rewrite using `[ht, hcz, map_add, eg, map_mul, Module.End.mul_apply, add_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hL0 : ∀ (u : U') (g : U), y0 (Subgroup.inclusion h u * g) = z.1 u + ρ u (y0 g)`. Introduce `u g`. Take `⟨u', hu'⟩` from `exists_inclusion_mul_eq_mul_inclusion_of_normal h u g`. Establish `hmk : (QuotientGroup.mk (Subgroup.inclusion h u * g) : U ⧸ U'.subgroupOf U) = QuotientGroup.mk g`. Rewrite using `[hu', QuotientGroup.eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Subgroup.mem_subgroupOf, mul_assoc]`. Establish `e1` using `hv (Subgroup.inclusion h u * g)`. Establish `e0` using `hv g`. Simplify using `only [y0]`. Generalize the expression as in `v (Subgroup.inclusion h u * g) = t at e1 ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Rewrite `e1`, the goal using `[hmk]`. Generalize the expression as in `(QuotientGroup.mk g : U ⧸ U'.subgroupOf U).out = s at e0 e1 ⊢`. Establish `eg : (g : G) = s * (v g)` using `congrArg Subtype.val e0`. Establish `hsc : (s : G) * (conjHom U' (s : G) u : G) = u * s`. Simplify using `[conjHom, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `ht : t = conjHom U' (s : G) u * v g`. Apply `Subgroup.inclusion_injective h` to reduce the goal to its premises. Apply `mul_left_cancel (a := s)` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Establish `e1' : (u : G) * g = s * t` using `congrArg Subtype.val e1`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (s : G) * t = s * ((conjHom U' (s : G) u : G) * v g)`. Rewrite using `[← e1', ← mul_assoc, hsc, eg, mul_assoc]`. Establish `hc : ρ s (z.1 (conjHom U' (s : G) u)) = z.1 u + (ρ u (mS s) - mS s)`. Rewrite using `[← hmS s u]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomm : ∀ x : M, ρ s (ρ (conjHom U' (s : G) u : G) x) = ρ u (ρ s x)`. Introduce `x`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hsc, map_mul, Module.End.mul_apply]`. Rewrite using `[ht, hcz, map_add, hc, hcomm, map_add]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc1 : ∀ u : U', ρ u (y0 1) = y0 1`. Introduce `u`. Establish `a1` using `hL0 u 1`. Establish `a2` using `hR0 u 1`. Rewrite `a1` using `[mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `a2` using `[one_mul]`. Simplify using `only [OneMemClass.coe_one, map_one, Module.End.one_apply] at a2`. Establish `a3` using `a1.symm.trans a2`. Rewrite `a3` using `[add_comm]`. Conclude with `add_right_cancel a3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hR1 : ∀ (u : U') (g : U), y0 (g * Subgroup.inclusion h u) - y0 1 = (y0 g - y0 1) + ρ g (z.1 u)`. Introduce `u g`. Rewrite using `[hR0]`. Normalize the expressions using the abelian group laws. Use `⟨fun g => y0 g - y0 1, ?_, by simp, fun u g => ?_, hR1⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `g`. Establish `hι : Topology.IsOpenEmbedding (Subgroup.inclusion h)` using `Topology.IsOpenEmbedding.inclusion (s := (U' : Set G)) (t := (U : Set G)) h ho`. Establish `hψ : Topology.IsOpenEmbedding (fun u : U' => g * Subgroup.inclusion h u)` using `(Homeomorph.mulLeft g).isOpenEmbedding.comp hι`. Establish `key : ContinuousAt (fun x => y0 x - y0 1) (g * Subgroup.inclusion h 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hψ.continuousAt_iff]`. Establish `hfun : ((fun x => y0 x - y0 1) ∘ fun u : U' => g * Subgroup.inclusion h u) = fun u => (y0 g - y0 1) + ρ g (z.1 u)`. Use function extensionality and compare the values at `u`. Conclude with `hR1 u g`. Rewrite using `[hfun]`.
-
-Conclude with `(continuous_const.add (continuous_of_discreteTopology.comp z.2.1)).continuousAt`. Simplify using `only [map_one, mul_one] at key`. Conclude with `key`. Use `show y0 (Subgroup.inclusion h u * g) - y0 1 = z.1 u + ρ u (y0 g - y0 1)`. Rewrite using `[hL0, map_sub, hc1]`.
-
-Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 private theorem exists_ext (ρ : Representation R G M) (hρ : ContAction ρ) {U' U : Subgroup G} [U'.Normal] (h : U' ≤ U)
     (ho : IsOpen (U'.subgroupOf U : Set U)) (z : Z1U ρ U') (hz : Submodule.Quotient.mk z ∈ invariantsUnderSubgroupH1 ρ U U') :
@@ -197,7 +193,7 @@ private theorem exists_ext (ρ : Representation R G M) (hρ : ContAction ρ) {U'
     abel
 
 /- English proof (translation)
-Use `⟨⟨(g : K)⁻¹ * u * g, Subgroup.Normal.conj_mem' ‹_› _ u.2 _⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 private theorem exists_normal_conj_inclusion {K : Type} [Group K] {U' U : Subgroup K} [U'.Normal] (h : U' ≤ U) (u : U')
     (g : U) : ∃ v : U', Subgroup.inclusion h u * g = g * Subgroup.inclusion h v := by
@@ -208,27 +204,25 @@ private theorem exists_normal_conj_inclusion {K : Type} [Group K] {U' U : Subgro
 omit [IsTopologicalGroup G] [DiscreteTopology M] in
 
 /- English proof (translation)
-Use `set F : U → U → M := fun a b => ρ a (y b) - y (a * b) + y a with hF`. Establish `hFr : ∀ (a b : U) (u : U'), F a (b * Subgroup.inclusion h u) = F a b`. Introduce `a b u`. Simplify using `only [hF]`. Rewrite using `[← mul_assoc, hR, hR]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, Subgroup.coe_mul, map_mul, Module.End.mul_apply]`. Normalize the expressions using the abelian group laws. Establish `hFl : ∀ (a b : U) (u : U'), F (a * Subgroup.inclusion h u) b = F a b`. Introduce `a b u`. Take `⟨v, hv⟩` from `exists_normal_conj_inclusion h u b`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ρ u (y b) = y b + ρ b (z v) - z u`. Establish `e1` using `hL u b`. Rewrite `e1` using `[hv, hR]`. Rewrite using `[e1]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
 
-Simplify using `only [hF]`. Rewrite using `[mul_assoc a, hv, ← mul_assoc, hR, hR]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inclusion, map_mul, Module.End.mul_apply, key, map_add, map_sub]`. Normalize the expressions using the abelian group laws. Establish `hinv : ∀ (a b : U) (u : U'), ρ u (F a b) = F a b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b u`. Take `⟨v, hv⟩` from `exists_normal_conj_inclusion h u a`. Establish `e1 : ∀ g : U, ρ u (y g) = y (Subgroup.inclusion h u * g) - z u`. Introduce `g`. Rewrite using `[hL]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hF, map_add, map_sub, e1, mul_assoc]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inclusion, map_mul, Module.End.mul_apply]`. Normalize the expressions using the abelian group laws.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Use `_ = F (a * Subgroup.inclusion h v) b := by rw [hv]`. Use `_ = F a b := hFl a b v`. Establish `hN : ∀ a b : U, F a b ∈ Representation.invariants ((ρ.comp U.subtype).comp (U'.subgroupOf U).subtype)`. Introduce `a b v`. Conclude with `hinv a b ⟨(v : U), Subgroup.mem_subgroupOf.mp v.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hWF : ∀ a b : U, F (QuotientGroup.mk a : U ⧸ U'.subgroupOf U).out (QuotientGroup.mk b : U ⧸ U'.subgroupOf U).out = F a b`. Introduce `a b`. Take `⟨u, hu⟩` from `exists_mul_of_mk_eq h (QuotientGroup.out_eq' (QuotientGroup.mk a : U ⧸ U'.subgroupOf U)).symm`. Take `⟨v, hv⟩` from `exists_mul_of_mk_eq h (QuotientGroup.out_eq' (QuotientGroup.mk b : U ⧸ U'.subgroupOf U)).symm`. Rewrite using `[hu, hv, hFl, hFr]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `W : (U ⧸ U'.subgroupOf U) × (U ⧸ U'.subgroupOf U) → Representation.invariants ((ρ.comp U.subtype).comp (U'.subgroupOf U).subtype)` to `fun p => ⟨F p.1.out p.2.out, hN _ _⟩`. Establish `hW : ∀ a b : U, (W (QuotientGroup.mk a, QuotientGroup.mk b) : M) = F a b` using `hWF`. Use `⟨⟨W, continuous_of_discreteTopology, ?_⟩, fun a b => hW a b⟩` and prove the remaining obligations. Introduce `p q r`. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, rfl⟩` from `QuotientGroup.mk_surjective q`. Take `⟨c, rfl⟩` from `QuotientGroup.mk_surjective r`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← QuotientGroup.mk_mul, ← QuotientGroup.mk_mul]`. Use `show ρ a (W (QuotientGroup.mk b, QuotientGroup.mk c) : M) - (W (QuotientGroup.mk (a * b), QuotientGroup.mk c) : M) + (W (QuotientGroup.mk a, QuotientGroup.mk (b * c)) : M) - (W (QuotientGroup.mk a, QuotientGroup.mk b) : M) = 0`.
-
-Rewrite using `[hW, hW, hW, hW]`. Simplify using `only [hF, map_add, map_sub, Subgroup.coe_mul, map_mul, Module.End.mul_apply, mul_assoc]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 private theorem exists_infl (ρ : Representation R G M) {U' U : Subgroup G} [U'.Normal] (h : U' ≤ U)
     [DiscreteTopology (U ⧸ U'.subgroupOf U)] (z : U' → M) (y : U → M)
@@ -299,11 +293,11 @@ private theorem exists_infl (ρ : Representation R G M) {U' U : Subgroup G} [U'.
 
 omit [IsTopologicalGroup G] [DiscreteTopology M] in
 /- English proof (translation)
-Establish `hw0 : w ∈ Submodule.comap (Z2 (quotRep ρ U U')).subtype (B2 (quotRep ρ U U'))` using `(Submodule.Quotient.mk_eq_zero _).mp hw`. Establish `hw' : (w : _ → _) ∈ B2 (quotRep ρ U U')` using `hw0`. Take `⟨cb, hcb, hd⟩` from `(separated_dvr_second_cohomology_mem _ _).mp hw'`. Use `⟨fun a => (cb (QuotientGroup.mk a) : M), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_subtype_val.comp (hcb.comp continuous_coinduced_rng)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Establish `h1 : (QuotientGroup.mk (Subgroup.inclusion h u) : U ⧸ U'.subgroupOf U) = QuotientGroup.mk 1`. Rewrite using `[QuotientGroup.mk_one, QuotientGroup.eq_one_iff]`. Conclude with `Subgroup.mem_subgroupOf.mpr u.2`. Use `show ((cb _ : _) : M) = cb _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Introduce `a b`. Rewrite using `[← hd]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem exists_of_mk_eq_zero (ρ : Representation R G M) {U' U : Subgroup G} [U'.Normal] (h : U' ≤ U)
     (w : Z2 (quotRep ρ U U')) (hw : (Submodule.Quotient.mk w : H2 (quotRep ρ U U')) = 0) :
@@ -327,17 +321,17 @@ private theorem exists_of_mk_eq_zero (ρ : Representation R G M) {U' U : Subgrou
 
 omit [IsTopologicalGroup G] [DiscreteTopology M] in
 /- English proof (translation)
-Establish `hz1 : (z : U' → M) 1 = 0`. Establish `h0` using `z.2.2 1 1`. Simplify using `using h0`. Establish `hy1 : y 1 = 0`. Establish `h0` using `hz 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[map_one]`. Rewrite using `[h0, hz1]`. Establish `hc0 : c 1 = 0`. Establish `h0` using `e 1 1`. Simplify using `at h0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0, hy1]`. Establish `hx : (fun g => y g - c g) ∈ Z1U ρ U`. Use `⟨hy.sub hc, fun a b => ?_⟩` and prove the remaining obligations. Use `show y (a * b) - c (a * b) = (y a - c a) + ρ a (y b - c b)`. Rewrite using `[map_sub]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `e a b`. Rewrite `h0`, the goal using `[← sub_eq_zero]`. Rewrite using `[← h0]`. Normalize the expressions using the abelian group laws. Take `⟨x', hx'e, hx'⟩` from `resU_mk ρ h ⟨_, hx⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Submodule.Quotient.mk ⟨_, hx⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hx'e]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `u`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx' u]`. Use `show y (Subgroup.inclusion h u) - c (Subgroup.inclusion h u) = z.1 u`. Rewrite using `[hz u, hc1 u, hc0, sub_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_range_resU (ρ : Representation R G M) {U' U : Subgroup G} (h : U' ≤ U) (z : Z1U ρ U')
     (y c : U → M) (hy : Continuous y) (hc : Continuous c) (hz : ∀ u : U', y (Subgroup.inclusion h u) = z.1 u)
@@ -376,27 +370,23 @@ private theorem mem_range_resU (ρ : Representation R G M) {U' U : Subgroup G} (
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Use `haveI : DiscreteTopology (U ⧸ U'.subgroupOf U) := QuotientGroup.discreteTopology ho`. Set `P : Submodule R (↥(Z1U ρ U') × ((U → M) × ↥(Z2 (quotRep ρ U U'))))` to `{ carrier := {x | (Submodule.Quotient.mk x.1 : H1U ρ U') ∈ invariantsUnderSubgroupH1 ρ U U' ∧ Continuous x.2.1 ∧ (∀ u : U', x.2.1 (Subgroup.inclusion h u) = x.1.1 u) ∧ ∀ a b : U, (x.2.2.1 (QuotientGroup.mk a, QuotientGroup.mk b) : M) = ρ a (x.2.1 b) - x.2.1 (a * b) + x.2.1 a} add …`. Introduce and unpack `x x' ⟨h1, h2, h3, h4⟩ ⟨h1', h2', h3', h4'⟩`. Use `⟨?_, h2.add h2', fun u => ?_, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[Prod.fst_add, Submodule.Quotient.mk_add]`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `add_mem h1 h1'`. Simplify using `[h3 u, h3' u]`. Simplify using `[h4 a b, h4' a b]`. Normalize the expressions using the abelian group laws. Use the proof step `zero_mem' := by`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨?_, continuous_const, fun u => ?_, fun a b => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use the proof step `smul_mem' := by`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `r x ⟨h1, h2, h3, h4⟩`. Use `⟨?_, h2.const_smul r, fun u => ?_, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[Prod.smul_fst, Submodule.Quotient.mk_smul]`. Conclude with `Submodule.smul_mem _ r h1`. Simplify using `[h3 u]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[h4 a b, smul_sub, smul_add] }`. Set `q1 : ↥(Z1U ρ U') →ₗ[R] H1U ρ U'` to `Submodule.mkQ _`. Set `q2 : ↥(invariantsUnderSubgroupH1 ρ U U') →ₗ[R] resCoker ρ h` to `Submodule.mkQ _`. Set `q3 : ↥(Z2 (quotRep ρ U U')) →ₗ[R] H2 (quotRep ρ U U')` to `Submodule.mkQ _`. Establish `hq1 : Function.Surjective q1` using `Submodule.mkQ_surjective _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq2 : Function.Surjective q2` using `Submodule.mkQ_surjective _`. Set `f : P →ₗ[R] resCoker ρ h` to `q2 ∘ₗ LinearMap.codRestrict (invariantsUnderSubgroupH1 ρ U U') (q1 ∘ₗ LinearMap.fst R _ _ ∘ₗ P.subtype) (fun x => x.2.1)`. Set `g : P →ₗ[R] H2 (quotRep ρ U U')` to `q3 ∘ₗ (LinearMap.snd R _ _ ∘ₗ LinearMap.snd R _ _) ∘ₗ P.subtype`. Establish `hfs : Function.Surjective f`. Introduce `r`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, rfl⟩` from `hq2 r`. Take `⟨z, hz⟩` from `hq1 (x : H1U ρ U')`. Establish `hz' : (Submodule.Quotient.mk z : H1U ρ U') ∈ invariantsUnderSubgroupH1 ρ U U'`. Establish `hz3 : (Submodule.Quotient.mk z : H1U ρ U') = x` using `hz`. Rewrite using `[hz3]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `x.2`. Establish `hex` using `exists_ext ρ hρ h ho z hz'`. Take `⟨y, hy, hy1, hL, hR⟩` from `hex`. Take `⟨w, hw⟩` from `exists_infl ρ h z.1 y hL hR`. Use `⟨⟨(z, y, w), hz', hy, fun u => ?_, hw⟩, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e` using `hR u 1`. Simplify `e` using `[hy1]`. Conclude with `congrArg q2 (Subtype.ext hz)`. Establish `hker : LinearMap.ker g ≤ LinearMap.ker f`. Introduce `x hx`.
-
-Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Take `⟨⟨z, y, w⟩, h1, h2, h3, h4⟩` from `x`. Establish `hw0 : (Submodule.Quotient.mk w : H2 (quotRep ρ U U')) = 0` using `hx`. Take `⟨c, hc, hc1, hcw⟩` from `exists_of_mk_eq_zero ρ h w hw0`. Establish `hm` using `mem_range_resU ρ h z y c h2 hc h3 hc1 (fun a b => (hcw a b).symm.trans (h4 a b))`.
-
-Conclude with `(Submodule.Quotient.mk_eq_zero _ (x := (⟨_, h1⟩ : invariantsUnderSubgroupH1 ρ U U'))).mpr hm`. Conclude with `len_le_of_ker_le f g hfs hker`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem length_restriction_coker_le_H2 (ρ : Representation R G M) (hρ : ContAction ρ) {U' U : Subgroup G} [U'.Normal]
     (h : U' ≤ U) (ho : IsOpen (U'.subgroupOf U : Set U)) :
@@ -465,9 +455,7 @@ omit [TopologicalSpace G] [IsTopologicalGroup G] [TopologicalSpace M] [IsTopolog
   [ContinuousConstSMul R M] [DiscreteTopology M] in
 
 /- English proof (translation)
-Use `Module.length_le_of_injective (LinearMap.codRestrict (H0U ρ U) ((Representation.invariants ((ρ.comp U.subtype).comp (U'.subgroupOf U).subtype)).subtype ∘ₗ (H0 (quotRep ρ U U')).subtype) ?_) ?_` and prove the remaining obligations. Introduce `x g`. Conclude with `congrArg Subtype.val (x.2 (QuotientGroup.mk g))`. Introduce `x x' hxx`. Establish `hv` using `congrArg Subtype.val hxx`.
-
-Conclude with `Subtype.ext (Subtype.ext hv)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem length_H0_quotient_rep_le (ρ : Representation R G M) (U' U : Subgroup G) [(U'.subgroupOf U).Normal] :
     Module.length R (H0 (quotRep ρ U U')) ≤ Module.length R (H0U ρ U) := by

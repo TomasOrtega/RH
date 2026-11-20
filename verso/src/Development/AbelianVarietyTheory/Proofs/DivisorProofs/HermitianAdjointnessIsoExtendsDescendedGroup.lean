@@ -18,7 +18,7 @@ section Gen
 variable {X Y B : Scheme.{0}} {L : LB X} {K : Type} [Fintype K]
 
 /- English proof (translation)
-Use `⟨LB.mulGen L _ _ _ _ s (LB.pullGen L _ _ (LB.invGen L _ _ (LB.pullGen L ψ ε s e)) p), DVR.mulGen_isGen _ _ _ _ _ _ _ hs (DVR.pullGen_isGen _ _ _ _ (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hs e)) p), fun y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[val_mul hJ, val_pull hJ, val_inv, val_pull hJ, he, Category.id_comp, mul_inv_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_normalized {ψ : K → (Y ⟶ X)} {ε : K → ℤ} (p : Y ⟶ B) (e : B ⟶ Y) (he : e ≫ p = 𝟙 B)
     (s : LB.Gen (LB.LinComb L ψ ε)) (hs : s.IsGen) :
@@ -30,7 +30,7 @@ theorem exists_normalized {ψ : K → (Y ⟶ X)} {ε : K → ℤ} (p : Y ⟶ B) 
   rw [val_mul hJ, val_pull hJ, val_inv, val_pull hJ, he, Category.id_comp, mul_inv_cancel]
 
 /- English proof (translation)
-Introduce `U _ h`. Rewrite using `[Fintype.prod_empty, Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, ← Category.assoc, he, Category.id_comp, zpow_neg, Finset.prod_inv_distrib, mul_inv_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem formEq_sec {ψ : K → (Y ⟶ X)} {ε : K → ℤ} (p : Y ⟶ B) (e : B ⟶ Y) (he : e ≫ p = 𝟙 B) :
     FormEq (K := PEmpty) (PEmpty.elim : PEmpty → (B ⟶ X)) PEmpty.elim
@@ -49,7 +49,7 @@ def cφ (x : Fin 2 → (T ⟶ G)) : ULift.{0} (Finset (Fin 2)) → (T.left ⟶ G
 def cε : ULift.{0} (Finset (Fin 2)) → ℤ := fun I => (-1) ^ (2 - I.down.card)
 
 /- English proof (translation)
-Rewrite using `[CechPic.cls_linComb hL, CechPic.cls_linComb hL, CechPic.cls_linComb hL, Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, neg_smul, Finset.sum_neg_distrib, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cls_diff {L : LB G.left} (hL : L.IsLB) (x₁ x₂ : Fin 2 → (T ⟶ G))
     (h : (LB.LinComb L (Sum.elim (cφ x₁) (cφ x₂)) (Sum.elim cε (fun I => -cε I))).IsLB) :
@@ -59,7 +59,7 @@ theorem cls_diff {L : LB G.left} (hL : L.IsLB) (x₁ x₂ : Fin 2 → (T ⟶ G))
   simp only [Sum.elim_inl, Sum.elim_inr, neg_smul, Finset.sum_neg_distrib, sub_eq_add_neg]
 
 /- English proof (translation)
-Establish `z` using `(CechPic.cls_eq_zero_iff (LB.isLB_linComb hL _ _)).2 ⟨t, ht⟩`. Rewrite `z` using `[cls_diff hL x₁ x₂, sub_eq_zero]`. Conclude with `(CechPic.cls_eq_iff _ _).1 z`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lbIso_of_gen {L : LB G.left} (hL : L.IsLB) (x₁ x₂ : Fin 2 → (T ⟶ G))
     (t : LB.Gen (LB.LinComb L (Sum.elim (cφ x₁) (cφ x₂)) (Sum.elim cε (fun I => -cε I)))) (ht : t.IsGen) :
@@ -69,7 +69,7 @@ theorem lbIso_of_gen {L : LB G.left} (hL : L.IsLB) (x₁ x₂ : Fin 2 → (T ⟶
   exact (CechPic.cls_eq_iff _ _).1 z
 
 /- English proof (translation)
-Use `(CechPic.cls_eq_zero_iff (LB.isLB_linComb hL _ _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_diff hL x₁ x₂, sub_eq_zero]`. Conclude with `(CechPic.cls_eq_iff (LB.isLB_linComb hL (cφ x₁) cε) (LB.isLB_linComb hL (cφ x₂) cε)).2 H`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_of_lbIso {L : LB G.left} (hL : L.IsLB) (x₁ x₂ : Fin 2 → (T ⟶ G))
     (H : LBIso (cubeLB G x₁ L) (cubeLB G x₂ L)) :
@@ -84,9 +84,9 @@ section Origin
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Establish `h1 : η[G2 G] ≫ psum G x I.down = 1`. Establish `a` using `psum_hom (preHom (G := G) η[G2 G]) x I.down`. Establish `b` using `psum_hom (1 : (𝟙_ (Over S) ⟶ G) →* (𝟙_ (Over S) ⟶ G)) (fun _ => 1) I.down`. Simplify using `only [MonoidHom.one_apply] at b`. Conclude with `a.trans ((congrArg (fun z => psum G z I.down) (funext hx)).trans b.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun z => z.left) h1`. Simplify using `only [Over.comp_left] at h2`. Use `h2.trans ?_` and prove the remaining obligations. Simplify using `[Hom.one_def, eSec]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eSec_cφ (x : Fin 2 → (G2 G ⟶ G)) (hx : ∀ i, η[G2 G] ≫ x i = 1) (I : ULift.{0} (Finset (Fin 2))) :
     eSec (G2 G) ≫ cφ x I = eSec G := by
@@ -101,19 +101,19 @@ theorem eSec_cφ (x : Fin 2 → (G2 G ⟶ G)) (hx : ∀ i, η[G2 G] ≫ x i = 1)
   simp [Hom.one_def, eSec]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> simp [x2]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eSec_x2 (i : Fin 2) : η[G2 G] ≫ x2 G i = η[G] := by
   fin_cases i <;> simp [x2]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> simp [Hom.one_def]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem one_cube₁ (f : G ⟶ G) [IsMonHom f] (i : Fin 2) : η[G2 G] ≫ (![fst G G ≫ f, snd G G] : Fin 2 → (G2 G ⟶ G)) i = 1 := by
   fin_cases i <;> simp [Hom.one_def]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> simp [Hom.one_def]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem one_cube₂ (f : G ⟶ G) [IsMonHom f] (i : Fin 2) : η[G2 G] ≫ (![fst G G, snd G G ≫ f] : Fin 2 → (G2 G ⟶ G)) i = 1 := by
   fin_cases i <;> simp [Hom.one_def]
@@ -127,7 +127,7 @@ abbrev jTwo (he : IsGrpPullback A G j e) : (G2 A).left ⟶ (G2 G).left :=
   (lift (pushPt he.1.w (fst A A)) (pushPt he.1.w (snd A A))).left
 
 /- English proof (translation)
-Use `fin_cases i`. Conclude with `congrArg (fun z => z.left) (lift_fst (pushPt he.1.w (fst A A)) (pushPt he.1.w (snd A A)))`. Conclude with `congrArg (fun z => z.left) (lift_snd (pushPt he.1.w (fst A A)) (pushPt he.1.w (snd A A)))`.
+A detailed English derivation is pending.
 -/
 theorem doubleProductMapOfGrpPullback_comp_doubleCoordinate (he : IsGrpPullback A G j e) (i : Fin 2) : jTwo he ≫ (x2 G i).left = (x2 A i).left ≫ e := by
   fin_cases i
@@ -135,7 +135,7 @@ theorem doubleProductMapOfGrpPullback_comp_doubleCoordinate (he : IsGrpPullback 
   · exact congrArg (fun z => z.left) (lift_snd (pushPt he.1.w (fst A A)) (pushPt he.1.w (snd A A)))
 
 /- English proof (translation)
-Use `GlobalTheory.Mum.PowCart.square_over_hom_ext _ fun i => ?_` and prove the remaining obligations. Establish `a : eSec (G2 A) ≫ (x2 A i).left = eSec A` using `congrArg (fun z => Over.Hom.left z) (eSec_x2 (G := A) i)`. Establish `b : eSec (G2 G) ≫ (x2 G i).left = eSec G` using `congrArg (fun z => Over.Hom.left z) (eSec_x2 (G := G) i)`. Rewrite using `[Category.assoc, doubleProductMapOfGrpPullback_comp_doubleCoordinate, ← Category.assoc, a, Category.assoc, b]`. Conclude with `(cubeMapOf he).e_comm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eSec_jTwo (he : IsGrpPullback A G j e) : eSec (G2 A) ≫ jTwo he = j ≫ eSec (G2 G) := by
   refine GlobalTheory.Mum.PowCart.square_over_hom_ext _ fun i => ?_
@@ -145,7 +145,7 @@ theorem eSec_jTwo (he : IsGrpPullback A G j e) : eSec (G2 A) ≫ jTwo he = j ≫
   exact (cubeMapOf he).e_comm
 
 /- English proof (translation)
-The claim follows from `psum_push he x' x (lift (pushPt he.1.w (fst A A)) (pushPt he.1.w (snd A A))) (fun i => Over.OverMorphism.ext (by rw [Over.comp_left]; exact hx i)) I.down`.
+A detailed English derivation is pending.
 -/
 theorem cφ_push (he : IsGrpPullback A G j e) (x' : Fin 2 → (G2 A ⟶ A)) (x : Fin 2 → (G2 G ⟶ G))
     (hx : ∀ i, (x' i).left ≫ e = jTwo he ≫ (x i).left) (I : ULift.{0} (Finset (Fin 2))) :
@@ -158,7 +158,7 @@ section Drop
 variable {X Y B : Scheme.{0}} {K0 : Type} [Fintype K0]
 
 /- English proof (translation)
-Introduce `U _ h`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, hz, zpow_neg, neg_neg, inv_inv, Finset.prod_inv_distrib]`. Use `group`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem formEq_drop {ψ : K0 ⊕ K0 → (Y ⟶ X)} {ε₀ : K0 → ℤ} (p : Y ⟶ B) (e : B ⟶ Y) (z : B ⟶ X)
     (hz : ∀ k, e ≫ ψ k = z) :
@@ -172,29 +172,21 @@ theorem formEq_drop {ψ : K0 ⊕ K0 → (Y ⟶ X)} {ε₀ : K0 → ℤ} (p : Y �
 end Drop
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c φ _ _ _ Z zs i OZ N d J S π j _ BD hU _ tF _ G _ _ e hsa he _ act hact PP cub cm hF _ hpc a`. Take `⟨⟨-, -, -, -, -, -⟩, -, -, -, ⟨⟨hnorm, -⟩, hproj, -, hdense, -, -⟩, -⟩` from `hU`. Use `hsa.smooth` as an intermediate fact. Use `hsa.geomConnected` as an intermediate fact. Use `haveI : LocallyOfFiniteType (π ≫ zs) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨M, i', hi', hcomp⟩` from `hproj`. Use `haveI := hi'`. Use `haveI := ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str c.F M`. Rewrite using `[← hcomp]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : IsLocallyNoetherian S := LocallyOfFiniteType.isLocallyNoetherian (π ≫ zs)`. Use `haveI : IsDominant j := ⟨hdense⟩`. Establish `hS : Geo.Tor.IsNormalScheme S` using `(GlobalTheory.isNormalScheme_iff_pred S).mp hnorm`. Take `⟨w, hw, -, -⟩` from `hpc`. Establish `hw'` using `(isGen_iff w).1 hw`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI := act.hom a`. Use `haveI := act.hom (H.bar a)`. Use `haveI := tF.act.hom a`. Use `haveI := tF.act.hom (H.bar a)`. Set `x₁ : Fin 2 → (G2 G ⟶ G)` to `![fst G G ≫ act.act a, snd G G]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `x₂ : Fin 2 → (G2 G ⟶ G)` to `![fst G G, snd G G ≫ act.act (H.bar a)]`. Set `y₁ : Fin 2 → (G2 tF.G ⟶ tF.G)` to `![fst tF.G tF.G ≫ tF.act.act a, snd tF.G tF.G]`. Set `y₂ : Fin 2 → (G2 tF.G ⟶ tF.G)` to `![fst tF.G tF.G, snd tF.G tF.G ≫ tF.act.act (H.bar a)]`. Set `ψ` to `Sum.elim (cφ x₁) (cφ x₂)`. Set `ψ'` to `Sum.elim (cφ y₁) (cφ y₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Set `ε₁ : ULift.{0} (Finset (Fin 2)) ⊕ ULift.{0} (Finset (Fin 2)) → ℤ` to `Sum.elim cε (fun I => -cε I)`. Take `⟨s, hs⟩` from `gen_of_lbIso tF.PP.isLB y₁ y₂ (tF.adj a)`. Take `⟨s₂, hs₂, h1⟩` from `exists_normalized (G2 tF.G).hom (eSec (G2 tF.G)) (CubeExtension.eSec_comp _) s hs`. Establish `hsm` using `CubeExtension.smooth_tensor G G`. Establish `hgc` using `CubeExtension.geometricallyConnected_tensor G G`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpb : IsPullback (jTwo he) (G2 tF.G).hom (G2 G).hom j` using `GlobalTheory.Mum.PowCart.isPullback_two he.1`. Establish `f0 : jTwo he ≫ (fst G G).left = (fst tF.G tF.G).left ≫ e` using `doubleProductMapOfGrpPullback_comp_doubleCoordinate he 0`. Establish `f1 : jTwo he ≫ (snd G G).left = (snd tF.G tF.G).left ≫ e` using `doubleProductMapOfGrpPullback_comp_doubleCoordinate he 1`. Establish `hψ : ∀ k, ψ' k ≫ e = jTwo he ≫ ψ k`. Introduce and unpack `(I | I)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `cφ_push he y₁ x₁ (fun i => ?_) I fin_cases i` and prove the remaining obligations. Use `show (fst tF.G tF.G ≫ tF.act.act a).left ≫ e = jTwo he ≫ (fst G G ≫ act.act a).left`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hact a, ← Category.assoc, ← f0, Category.assoc]`. Conclude with `f1.symm`. Use `cφ_push he y₂ x₂ (fun i => ?_) I fin_cases i` and prove the remaining obligations.
-
-Conclude with `f0.symm`. Use `show (snd tF.G tF.G ≫ tF.act.act (H.bar a)).left ≫ e = jTwo he ≫ (snd G G ≫ act.act (H.bar a)).left`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hact (H.bar a), ← Category.assoc, ← f1, Category.assoc]`. Establish `hφ : ∀ k, Sum.elim ψ' (fun k => (G2 tF.G).hom ≫ eSec (G2 tF.G) ≫ ψ' k) k ≫ cm.F = jTwo he ≫ Sum.elim ψ (fun k => (G2 G).hom ≫ eSec (G2 G) ≫ ψ k) k`. Rewrite using `[hF]`.
-
-Introduce and unpack `(k | k)`. Conclude with `hψ k`. Simplify using `only [Sum.elim_inr, Category.assoc]`. Rewrite using `[hψ k, ← Category.assoc (eSec (G2 tF.G)), eSec_jTwo he, Category.assoc, ← Category.assoc (G2 tF.G).hom, ← hpb.w, Category.assoc]`. Take `⟨c', hc', -⟩` from `DenseCubeExt.exists_extension hS j (G2 G).hom (eSec (G2 G)) (jTwo he) (G2 tF.G).hom (eSec (G2 tF.G)) hsm hgc (CubeExtension.eSec_comp _) hpb (eSec_jTwo he) PP.isLB tF.PP.isLB hw' (Sum.elim ψ (fun k => (G2 G).hom ≫ eSec (G2 G) ≫ ψ k)) (Sum.elim ψ' (fun k => (G2 tF.G).hom ≫ eSec (G …`.
-
-Establish `hz : ∀ k, eSec (G2 G) ≫ ψ k = eSec G`. Introduce and unpack `(I | I)`. Conclude with `eSec_cφ x₁ (one_cube₁ (act.act a)) I`. Conclude with `eSec_cφ x₂ (one_cube₂ (act.act (H.bar a))) I`. Take `⟨t, ht, -⟩` from `exists_gen PP.isLB (formEq_drop (ε₀ := cε) (G2 G).hom (eSec (G2 G)) (eSec G) hz) c' hc'`.
-
-Conclude with `lbIso_of_gen PP.isLB x₁ x₂ t ht`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem adj_extends : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), 1 ≤ Dw.p + Dw.q → IsPolFan H.bar (min Dw.p Dw.q) φ → NoSelfInt H.bar (min Dw.p Dw.q) φ → ∀ {Z : Scheme.{0}} (zs : Z ⟶ Sp c.F) (i : Xo.XF c ⟶ Z) (OZ : LB Z) (N d : ℕ) (J : Z.IdealSheafData) {S : Scheme.{0}} (π : S ⟶ Z) (j : Xo.XF c ⟶ S) [IsOpenImmersion j] (BD : EffCartierData S), GlobalTheory.UPoinc.UPoinOnX Xo c φ zs i OZ N d J π j BD → (∀ x : S, x ∉ Set.range j → UPre Xo c φ j BD d x) → ∀ (tF : SAB H (Xo.XF c)), SABMap tF Xo.univ.t (pullback.fst _ _) → ∀ (G : Over S) [GrpObj G] [IsCommMonObj G] (e : tF.G.left ⟶ G.left), IsSemiAbelian G → IsGrpPullback tF.G G j e → (∀ {k : Type} [Field k] {m n : ℕ} (C : MonoFam Xo c φ (ChartRing k m n)), IsTaut C → ∀ ξ : Sp (ChartRing k m n) ⟶ S, C.y ≫ j = jK _ ≫ ξ → ∀ (tK : SAB H (Sp (FractionRing (ChartRing k m n)))) (a : SABMap tK C.t (jK _)) (b : SABMap tK tF C.y), ∃ πC : C.t.G.left ⟶ G.left, IsGrpPullback C.t.G G ξ πC ∧ a.φ ≫ πC = b.φ ≫ e) → ∀ (act : OAct (𝓞 E) G), (∀ a, (tF.act.act a).left ≫ e = e ≫ (act.act a).left) → ∀ (PP : RigLB G) (cub : CubicalStr G PP) (cm : CubeMap tF.G G), cm.F = e → cm.e = j → cm.IsPullCubical tF.cub cub → ∀ a, LBIso (cubeLB G ![fst G G ≫ act.act a, snd G G] PP.L) (cubeLB G ![fst G G, snd G G ≫ act.act (H.bar a)] PP.L) := by
   intro E _ _ _ H Dw l Xo c φ _ _ _ Z zs i OZ N d J S π j _ BD hU _ tF _ G _ _ e hsa he _ act hact PP cub cm hF _ hpc a

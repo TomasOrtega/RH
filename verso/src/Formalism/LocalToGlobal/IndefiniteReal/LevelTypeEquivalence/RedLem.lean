@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Establish `h0 : symplOH S T w 0 = 0`. Simplify using `[symplOH, symplO, hO]`. Simplify using `[heisO, h0]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem heisO_zero (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (f : WO S T → ℂ) : heisO ψ S T 0 f = f := by
   funext w
@@ -22,22 +22,22 @@ theorem heisO_zero (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (f : WO S T �
   simp [heisO, h0]
 
 /- English proof (translation)
-Introduce `ψ S T r C μ 𝓕 f`. Simplify using `only [Red, ellI, heisO_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem redZero_holds : RedZero D := by
   intro ψ S T r C μ 𝓕 f
   simp only [Red, ellI, heisO_zero]
 
 /- English proof (translation)
-Simplify using `[symplOH, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplOH_eq_zero_of (S T : HSp D) {x y : WO S T} (h : symplO S T x y = 0) : symplOH S T x y = 0 := by
   simp [symplOH, h]
 
 /- English proof (translation)
-Introduce `ψ S T r C μ 𝓕 w₀ _ f`. Use function extensionality and compare the values at `w`. Simplify using `only [Red, ellI, heisO]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `a`. Simplify using `only [Formalism.IndefR.Fin.symplOH_add_left, Formalism.IndefR.Fin.symplOH_add_right, AddChar.map_add_eq_mul, add_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem redPerp_holds : RedPerp D := by
   intro ψ S T r C μ 𝓕 w₀ _ f
@@ -55,11 +55,11 @@ Both sides reduce to the same expression.
 theorem star_eq_sig (e : D.host.E) : star e = D.sp.cm.sig e := rfl
 
 /- English proof (translation)
-Establish `hz : (y.map (cA D)).transpose * Brg.GG T * (C.map (incA D) * a) = 0`. Rewrite using `[← Matrix.mul_assoc, hy, Matrix.zero_mul]`. Unfold `hO embI`. Use `Finset.sum_eq_zero fun i1 _ => Finset.sum_eq_zero fun i2 _ => ?_` and prove the remaining obligations. Establish `e` using `congrFun (congrFun hz i2) i1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Generalize the expression as in `C.map (incA D) * a = X at e ⊢`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul, Matrix.zero_apply] at e`. Establish `e2 : ∑ i3, ∑ i4, (cA D) (y i3 i2) * (incA D) (HSpace.gram T i3 i4) * X i4 i1 = 0`. Rewrite using `[Finset.sum_comm]`. Conclude with `e`.
+Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.mul_sum, mul_assoc]`. Use `_ = 0 := by rw [e2, mul_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hO_eq_zero_of (S T : HSp D) {r : ℕ} (C : Matrix (Fin T.rank) (Fin r) D.host.E) (a : Mx D r S.rank)
     (y : WO S T) (hy : HMul.hMul (HMul.hMul (y.map (cA D)).transpose (Brg.GG T)) (C.map (incA D)) = 0) :
@@ -82,7 +82,7 @@ theorem hO_eq_zero_of (S T : HSp D) {r : ℕ} (C : Matrix (Fin T.rank) (Fin r) D
     _ = 0 := by rw [e2, mul_zero]
 
 /- English proof (translation)
-Unfold `symplO`. Rewrite using `[hO_eq_zero_of S T C a y hy]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem symplO_embI_eq_zero_of (S T : HSp D) {r : ℕ} (C : Matrix (Fin T.rank) (Fin r) D.host.E) (a : Mx D r S.rank)
     (y : WO S T) (hy : HMul.hMul (HMul.hMul (y.map (cA D)).transpose (Brg.GG T)) (C.map (incA D)) = 0) :
@@ -92,9 +92,9 @@ theorem symplO_embI_eq_zero_of (S T : HSp D) {r : ℕ} (C : Matrix (Fin T.rank) 
   simp
 
 /- English proof (translation)
-Unfold `ratW`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`. Use `first`. Consider the case `exact cA_incA D (x i j)`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `exact cA_incA (x i j)`. Consider the case `simp [cA_incA]`. Consider the case `simp [cA, incA, star_eq_sig, sigR_inclR]`. Consider the case `simp [cA, incA, star_eq_sig, sigR, inclR]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem conj_ratW (S T : HSp D) (x : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     (ratW T S x).map (cA D) = (x.map star).map (incA D) := by
@@ -109,15 +109,13 @@ theorem conj_ratW (S T : HSp D) (x : Matrix (Fin T.rank) (Fin S.rank) D.host.E) 
     | simp [cA, incA, star_eq_sig, sigR, inclR]
 
 /- English proof (translation)
-Apply `symplO_embI_eq_zero_of` to reduce the goal to its premises. Rewrite using `[conj_ratW]`. Establish `hG : Matrix.conjTranspose (HSpace.gram T) = HSpace.gram T`. Use extensionality with `i j`. Rewrite using `[Matrix.conjTranspose_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Unfold `HSpace.gram`. Use `first`. Consider the case `exact T.herm (T.frame j) (T.frame i)`. Consider the case `exact T.herm.eq (T.frame j) (T.frame i)`. Establish `hx' : Matrix.conjTranspose C * HSpace.gram T * x = 0` using `hx`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : Matrix.conjTranspose x * HSpace.gram T * C = 0`. Establish `h` using `congrArg Matrix.conjTranspose hx'`. Simplify `h` using `[Matrix.conjTranspose_mul, hG, Matrix.mul_assoc]`. Establish `h1 : (x.map star).transpose * HSpace.gram T * C = 0` using `h0`. Establish `h2 : ((x.map star).transpose * HSpace.gram T * C).map (incA D) = 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `Matrix.map_zero _ (map_zero _)`. Rewrite `h2` using `[Matrix.map_mul, Matrix.map_mul]`. Use `first`. Consider the case `exact h2`.
-
-Consider the case `(rw [Matrix.transpose_map] at h2; exact h2)`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem symplO_embI_perp (S T : HSp D) {r : ℕ} (C : Matrix (Fin T.rank) (Fin r) D.host.E)
     {x : Matrix (Fin T.rank) (Fin S.rank) D.host.E} (hx : IsPerpI S T C x) (a : Mx D r S.rank) :
@@ -147,15 +145,15 @@ theorem symplO_embI_perp (S T : HSp D) {r : ℕ} (C : Matrix (Fin T.rank) (Fin r
     | (rw [Matrix.transpose_map] at h2; exact h2)
 
 /- English proof (translation)
-Apply `symplO_embI_eq_zero_of` to reduce the goal to its premises. Establish `hC' : Matrix.conjTranspose C * HSpace.gram T * C = 0` using `by first`. Consider the case `exact hC`. Consider the case `exact hC.2.2`. Consider the case `exact hC.1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hc : (C.map (incA D)).map (cA D) = (C.map star).map (incA D)`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`. Use `first`. Consider the case `simp [cA, incA, star_eq_sig, sigR_inclR]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [cA, incA, star_eq_sig, sigR, inclR]`. Establish `h1 : (C.map star).transpose * HSpace.gram T * C = 0` using `hC'`. Establish `h2 : ((C.map star).transpose * HSpace.gram T * C).map (incA D) = 0`. Rewrite using `[h1]`. Conclude with `Matrix.map_zero _ (map_zero _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[Matrix.map_mul, Matrix.map_mul]`. Establish `h3 : ((C.map star).map (incA D)).transpose * Brg.GG T * C.map (incA D) = 0` using `by first`. Consider the case `exact h2`. Consider the case `(rw [Matrix.transpose_map] at h2; exact h2)`. Unfold `embI`.
+Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.map_mul, hc, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc ((C.map star).map (incA D)).transpose, h3, Matrix.mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symplO_embI_embI (S T : HSp D) {r : ℕ} {C : Matrix (Fin T.rank) (Fin r) D.host.E} (hC : IsIsoFrame T C)
     (a b : Mx D r S.rank) : symplO S T (embI S T C a) (embI S T C b) = 0 := by
@@ -186,11 +184,11 @@ theorem symplO_embI_embI (S T : HSp D) {r : ℕ} {C : Matrix (Fin T.rank) (Fin r
   rw [← Matrix.mul_assoc ((C.map star).map (incA D)).transpose, h3, Matrix.mul_zero]
 
 /- English proof (translation)
-Simplify using `only [Red, ellI, heisO]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Establish `hp` using `symplO_embI_perp S T C hx a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h2` using `Formalism.IndefR.Fin.symplOH_two S T (embI S T C a) (ratW T S x)`. Rewrite `h2` using `[hp]`. Establish `hsw` using `Formalism.IndefR.Fin.symplOH_swap S T (embI S T C a) (ratW T S x)`. Rewrite using `[show embI S T C a + (ratW T S x + w) = ratW T S x + (embI S T C a + w) by abel, hf.quasi, Formalism.IndefR.Fin.symplOH_add_right, Formalism.IndefR.Fin.symplOH_add_right, hsw]`. Establish `key : symplOH S T (embI S T C a) (ratW T S x) + symplOH S T (embI S T C a) w + -(-symplOH S T (embI S T C a) (ratW T S x) + symplOH S T (ratW T S x) w) = -symplOH S T (ratW T S x) w + symplOH S T (embI S T C a) w`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `h2`. Rewrite using `[← mul_assoc, ← AddChar.map_add_eq_mul, key, AddChar.map_add_eq_mul, mul_assoc]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem red_quasi (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) {r : ℕ} (C : Matrix (Fin T.rank) (Fin r) D.host.E)
     (μ : Measure (Mx D r S.rank)) (𝓕 : Set (Mx D r S.rank)) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
@@ -213,7 +211,7 @@ theorem red_quasi (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) {r : ℕ} (C : 
   rw [← mul_assoc, ← AddChar.map_add_eq_mul, key, AddChar.map_add_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Take `⟨U, hU, hUf⟩` from `hf.level`. Use `⟨U, hU, fun u hu hperp hinf => ?_⟩` and prove the remaining obligations. Rewrite using `[← redPerp_holds ψ S T r C μ 𝓕 u hperp f, hUf u hu hinf]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem red_level (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) {r : ℕ} (C : Matrix (Fin T.rank) (Fin r) D.host.E)
     (μ : Measure (Mx D r S.rank)) (𝓕 : Set (Mx D r S.rank)) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
@@ -232,9 +230,9 @@ instance measAddMx (m n : ℕ) : MeasurableAdd (Mx D m n) :=
   ⟨fun _ => (continuous_const.add continuous_id).measurable, fun _ => (continuous_id.add continuous_const).measurable⟩
 
 /- English proof (translation)
-Use `haveI : Countable D.host.E := Countable.of_equiv _ (Module.finBasis ℚ D.host.E).equivFun.symm.toEquiv`. Use `haveI : Countable (Matrix (Fin m) (Fin n) D.host.E) := inferInstanceAs (Countable (Fin m → Fin n → D.host.E))`. Unfold `ratMx`. Establish `hs : Function.Surjective (fun x : Matrix (Fin m) (Fin n) D.host.E => (⟨_, AddMonoidHom.mem_range.mpr ⟨x, rfl⟩⟩ : ((incA D).toAddMonoidHom.mapMatrix (m` using `Fin m) (n := Fin n)).range)) := by`. Introduce and unpack `⟨y, hy⟩`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨x, rfl⟩` from `AddMonoidHom.mem_range.mp hy`. Conclude with `⟨x, rfl⟩`. Conclude with `hs.countable`.
+A detailed English derivation is pending.
 -/
 theorem countable_ratMx (m n : ℕ) : Countable (ratMx D m n) := by
   haveI : Countable D.host.E :=
@@ -251,7 +249,7 @@ theorem countable_ratMx (m n : ℕ) : Countable (ratMx D m n) := by
   exact hs.countable
 
 /- English proof (translation)
-Unfold `embI`. Conclude with `Matrix.mul_add _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem embI_add (S T : HSp D) {r : ℕ} (C : Matrix (Fin T.rank) (Fin r) D.host.E) (a b : Mx D r S.rank) :
     embI S T C (a + b) = embI S T C a + embI S T C b := by
@@ -259,7 +257,7 @@ theorem embI_add (S T : HSp D) {r : ℕ} (C : Matrix (Fin T.rank) (Fin r) D.host
   exact Matrix.mul_add _ _ _
 
 /- English proof (translation)
-Unfold `embI ratW`. Rewrite using `[Matrix.map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem embI_rat (S T : HSp D) {r : ℕ} (C : Matrix (Fin T.rank) (Fin r) D.host.E)
     (g : Matrix (Fin r) (Fin S.rank) D.host.E) : embI S T C (g.map (incA D)) = ratW T S (C * g) := by
@@ -267,9 +265,9 @@ theorem embI_rat (S T : HSp D) {r : ℕ} (C : Matrix (Fin T.rank) (Fin r) D.host
   rw [Matrix.map_mul]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `γ.2`. Establish `hγ : (γ : Mx D r S.rank) = g.map (incA D)` using `hg.symm`. Use `show f (embI S T C ((γ : Mx D r S.rank) + a)) = f (embI S T C a)`. Rewrite using `[embI_add, hγ, embI_rat S T C g, hf.quasi]`. Establish `h0 : symplOH S T (ratW T S (C * g)) (embI S T C a) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← embI_rat S T C g]`. Establish `h2` using `Formalism.IndefR.Fin.symplOH_two S T (embI S T C (g.map (incA D))) (embI S T C a)`. Rewrite `h2` using `[symplO_embI_embI S T hC]`. Rewrite using `[← one_smul D.host.F (symplOH S T _ _), ← inv_mul_cancel₀ (two_ne_zero (α := D.host.F)), mul_smul, two_smul, h2, smul_zero]`. Rewrite using `[h0, neg_zero, AddChar.map_zero_eq_one, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem f_embI_periodic (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) {r : ℕ}
     {C : Matrix (Fin T.rank) (Fin r) D.host.E} (hC : IsIsoFrame T C) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
@@ -287,7 +285,7 @@ theorem f_embI_periodic (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) {r : ℕ}
   rw [h0, neg_zero, AddChar.map_zero_eq_one, one_mul]
 
 /- English proof (translation)
-Introduce `ψ _ S T r C hC μ 𝓕 𝓕' hμ h𝓕 h𝓕' f hf`. Use `haveI := hμ`. Use `haveI : Countable (ratMx D r S.rank) := countable_ratMx r S.rank`. Unfold `ellI`. Conclude with `h𝓕.setIntegral_eq h𝓕' (fun γ a => f_embI_periodic ψ S T hC hf γ a)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ellIndep_holds : EllIndep D := by
   intro ψ _ S T r C hC μ 𝓕 𝓕' hμ h𝓕 h𝓕' f hf
@@ -297,11 +295,9 @@ theorem ellIndep_holds : EllIndep D := by
   exact h𝓕.setIntegral_eq h𝓕' (fun γ a => f_embI_periodic ψ S T hC hf γ a)
 
 /- English proof (translation)
-Use `haveI : Countable (ratMx D m n) := countable_ratMx m n`. Establish `hq : MeasureTheory.Measure.QuasiMeasurePreserving (fun x : Mx D m n => x + -a) μ μ` using `(MeasureTheory.measurePreserving_add_right μ (-a)).quasiMeasurePreserving`. Establish `h𝓕' : IsAddFundamentalDomain (ratMx D m n) ((fun x : Mx D m n => x + -a) ⁻¹' 𝓕) μ` using `h𝓕.preimage_of_equiv hq (e := id) Function.bijective_id fun γ x => by`. Express the relevant statement in the definitionally equal form `((γ : Mx D m n) + x) + -a = (γ : Mx D m n) + (x + -a)`. Conclude with `add_assoc _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∫ x in 𝓕, g (x + a) ∂μ = ∫ y in (fun x : Mx D m n => x + -a) ⁻¹' 𝓕, g y ∂μ`. Establish `hpre : (fun x : Mx D m n => x + a) ⁻¹' ((fun x : Mx D m n => x + -a) ⁻¹' 𝓕) = 𝓕`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[← (MeasureTheory.measurePreserving_add_right μ a).setIntegral_preimage_emb (measurableEmbedding_addRight a) g ((fun x : Mx D m n => x + -a) ⁻¹' 𝓕), hpre]`.
-
-Rewrite using `[h1]`. Conclude with `h𝓕'.setIntegral_eq h𝓕 hg`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_add_right_periodic {m n : ℕ} (μ : Measure (Mx D m n)) [μ.IsAddHaarMeasure]
     {𝓕 : Set (Mx D m n)} (h𝓕 : IsAddFundamentalDomain (ratMx D m n) 𝓕 μ) (g : Mx D m n → ℂ)
@@ -326,17 +322,15 @@ theorem setIntegral_add_right_periodic {m n : ℕ} (μ : Measure (Mx D m n)) [μ
   exact h𝓕'.setIntegral_eq h𝓕 hg
 
 /- English proof (translation)
-Introduce `ψ _ S T r C hC μ 𝓕 hμ h𝓕 f hf a w`. Use `haveI := hμ`. Establish `hiso : ∀ b c : Mx D r S.rank, symplOH S T (embI S T C b) (embI S T C c) = 0`. Introduce `b c`. Establish `h2` using `Formalism.IndefR.Fin.symplOH_two S T (embI S T C b) (embI S T C c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[symplO_embI_embI S T hC]`. Rewrite using `[← one_smul D.host.F (symplOH S T _ _), ← inv_mul_cancel₀ (two_ne_zero (α := D.host.F)), mul_smul, two_smul, h2, smul_zero]`. Use `set g : Mx D r S.rank → ℂ := fun b => heisO ψ S T w f (embI S T C b) with hg`. Establish `hper : ∀ (γ : ratMx D r S.rank) (b : Mx D r S.rank), g (γ +ᵥ b) = g b`. Introduce `γ b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨γ', hγ'⟩` from `γ.2`. Establish `hγ : (γ : Mx D r S.rank) = γ'.map (incA D)` using `hγ'.symm`. Simplify using `only [hg, heisO]`. Use `show ψ (symplOH S T (embI S T C ((γ : Mx D r S.rank) + b)) w) * f (embI S T C ((γ : Mx D r S.rank) + b) + w) = _`. Rewrite using `[embI_add, add_assoc, hγ, embI_rat S T C γ', hf.quasi, Formalism.IndefR.Fin.symplOH_add_left, Formalism.IndefR.Fin.symplOH_add_right, ← embI_rat S T C γ', hiso, zero_add, ← mul_assoc, ← AddChar.map_add_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Use `congr 2`. Normalize the expressions using the abelian group laws. Establish `hshift` using `setIntegral_add_right_periodic μ h𝓕 g hper a`. Simplify using `only [Red, ellI]`. Rewrite using `[show (∫ b in 𝓕, heisO ψ S T w f (embI S T C b) ∂μ) = ∫ b in 𝓕, g (b + a) ∂μ from hshift.symm, ← integral_const_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `b`. Simplify using `only [hg, heisO]`. Rewrite using `[embI_add, Formalism.IndefR.Fin.symplOH_add_right, Formalism.IndefR.Fin.symplOH_add_left, hiso, zero_add, add_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul]`. Use `congr 2`.
-
-Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem redLeft_holds : RedLeft D := by
   intro ψ _ S T r C hC μ 𝓕 hμ h𝓕 f hf a w

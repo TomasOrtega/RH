@@ -11,7 +11,7 @@ namespace UpperTheory.Gal.TP.Chr
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Apply `(IsCMField.equivInfinitePlace E).injective` to reduce the goal to its premises. Rewrite using `[IsCMField.equivInfinitePlace_apply, IsCMField.equivInfinitePlace_apply, InfinitePlace.comap_mk, (emb (v.comap (algebraMap (maximalRealSubfield E) E))).2, InfinitePlace.mk_embedding]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem mk_emb_eq (emb : ∀ w : InfinitePlace (maximalRealSubfield E), EmbOver E w)
     (v : InfinitePlace E) :
@@ -21,9 +21,9 @@ private theorem mk_emb_eq (emb : ∀ w : InfinitePlace (maximalRealSubfield E), 
     (emb (v.comap (algebraMap (maximalRealSubfield E) E))).2, InfinitePlace.mk_embedding]
 
 /- English proof (translation)
-Establish `hn : (‖z‖ : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.2 hz`. Establish `hc : starRingEnd ℂ z * z = (‖z‖ : ℂ) ^ 2`. Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[RCLike.norm_conj, inv_div]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hc]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 -/
 private theorem conj_div_norm {z : ℂ} (hz : z ≠ 0) :
     starRingEnd ℂ z / (‖starRingEnd ℂ z‖ : ℂ) = (z / (‖z‖ : ℂ))⁻¹ := by
@@ -36,15 +36,15 @@ private theorem conj_div_norm {z : ℂ} (hz : z ≠ 0) :
 
 open Classical in
 /- English proof (translation)
-Introduce `E _ _ _ hU emb w₀ m hm`. Set `e : InfinitePlace E → ℤ` to `fun v => if v.embedding = (emb (v.comap (algebraMap (maximalRealSubfield E) E))).1 then m (v.comap (algebraMap (maximalRealSubfield E) E)) else - m (v.comap (algebraMap (maximalRealSubfield E) E))`. Establish `he : ∀ v, Odd (e v)` using `fun v => by`. Distinguish the cases in `h : v.embedding = (emb (v.comap (algebraMap (maximalRealSubfield E) E))).1`. Simplify `hm _` using `[e, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hm _` using `[e, h]`. Take `⟨μ, hμ, hS⟩` from `UpperTheory.ConvolutionTheory.D.muEx E hU {w₀} (Set.finite_singleton w₀) e he`. Use `⟨μ, hμ.1, hμ.2.1, fun k => ?_, hS w₀ rfl⟩` and prove the remaining obligations. Establish `hk : ((μ.inf k : ℂˣ) : ℂ) = _` using `GlobalTheory.BCT.inf_mu_unit E μ e hμ k`. Rewrite using `[hk]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Fintype.prod_equiv (IsCMField.equivInfinitePlace E) _ _ fun v => ?_` and prove the remaining obligations. Rewrite using `[IsCMField.equivInfinitePlace_apply]`. Establish `hmk` using `mk_emb_eq emb v`. Establish `hor` using `InfinitePlace.mk_eq_iff.1 (hmk.trans (InfinitePlace.mk_embedding v).symm)`. Distinguish the cases in `h : v.embedding = (emb (v.comap (algebraMap (maximalRealSubfield E) E))).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [e, if_pos h]`. Rewrite using `[← h]`. Establish `hc : (emb (v.comap (algebraMap (maximalRealSubfield E) E))).1 = ComplexEmbedding.conjugate v.embedding`. Break down `hor with h' | h'` into its components or cases. Conclude with `absurd h'.symm h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h']`. Conclude with `(star_star _).symm`. Establish `hz : v.embedding (k : E) ≠ 0` using `(map_ne_zero _).2 k.ne_zero`. Simplify using `only [e, if_neg h]`. Rewrite using `[hc, ComplexEmbedding.conjugate_coe_eq, conj_div_norm hz, inv_zpow']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem muEmb : MuEmb := by
   intro E _ _ _ hU emb w₀ m hm

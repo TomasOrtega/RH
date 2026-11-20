@@ -26,7 +26,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-Introduce `hSys hHS hBig hRes`. Conclude with `GroundTheory.Heights₂.Heights.HilbertSamuel.ArithmeticVolumeMultiplicative.proof (GlobalTheory.T.hilbert_samuel_G3_of_moriwaki hHS hBig) GroundTheory.Heights₂.Heights.HilbertSamuel.EmbeddingWeight.proof (GroundTheory.Heights₂.Heights.HilbertSamuel.TwistIntersectionInt.proof (Glob …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hilbert_samuel_G3Star_of_systems :
     ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiHSStatement →

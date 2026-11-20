@@ -25,17 +25,15 @@ def mulQ (F₁ G₁ G₂ : SubSystem k x Ω) (u : Ω) (hmap : ∀ I, ∀ y ∈ F
       map_smul' := fun c y => Subtype.ext (mul_smul_comm c u (y : Ω)) }
 
 /- English proof (translation)
-Establish `hk : ∀ I, LinearMap.ker (mulQ F₁ G₁ G₂ u hmap I) = SubSystem.quotSub F₁ F₂ I`. Introduce `I`. Use extensionality with `y`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = 0 ↔ _`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hker I y y.2`. Establish `hs : ∀ I, Function.Surjective (mulQ F₁ G₁ G₂ u hmap I)`. Introduce `I z`. Take `⟨z, rfl⟩` from `Submodule.mkQ_surjective _ z`. Take `⟨y, hy, hyz⟩` from `honto I z z.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨y, hy⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = Submodule.Quotient.mk _`. Rewrite using `[Submodule.Quotient.eq]`. Express the relevant statement in the definitionally equal form `u * y - (z : Ω) ∈ G₂.sub I`. Rewrite using `[← neg_sub]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `neg_mem hyz`. Set `φ : ∀ I, (F₁.sub I ⧸ SubSystem.quotSub F₁ F₂ I) ≃ₗ[k] (G₁.sub I ⧸ SubSystem.quotSub G₁ G₂ I)` to `fun I => (Submodule.quotEquivOfEq _ _ (hk I).symm).trans (LinearMap.quotKerEquivOfSurjective _ (hs I))`. Establish `hφ : ∀ I J h m, φ J (SubSystem.quotRes F₁ F₂ I J h m) = SubSystem.quotRes G₁ G₂ I J h (φ I m)`. Introduce `I J h m`. Take `⟨m, rfl⟩` from `Submodule.mkQ_surjective _ m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [φ, Submodule.mkQ_apply, SubSystem.quotRes, LinearEquiv.trans_apply, Submodule.quotEquivOfEq_mk, LinearMap.quotKerEquivOfSurjective_apply_mk]`. Both sides reduce to the same expression. Unfold `eulerCharQuot`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 2`.
-
-Conclude with `((Cech.hEquivOfEquiv φ hφ i).finrank_eq).symm`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem eulerCharQuot_eq_of_mul (F₁ F₂ G₁ G₂ : SubSystem k x Ω) (u : Ω)
     (hmap : ∀ I, ∀ y ∈ F₁.sub I, u * y ∈ G₁.sub I)
@@ -76,9 +74,9 @@ end Quot
 section Chart
 
 /- English proof (translation)
-Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem a ha`. Take `⟨l, hl, rfl⟩` from `ha`. Conclude with `hI l hl`. Consider the case `one => exact fun h => hp.ne_top ((Ideal.eq_top_iff_one _).mpr h)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `mul a b _ _ ha hb => exact fun h => (hp.mem_or_mem h).elim ha hb`.
+A detailed English derivation is pending.
 -/
 theorem not_mem_of_mem_monos {pp : Ideal (Poly k N)} (hp : pp.IsPrime) {I : Finset (Fin (N + 1))}
     (hI : ∀ l ∈ I, (X l : Poly k N) ∉ pp) {s : Poly k N} (hs : s ∈ monos I) : s ∉ pp := by
@@ -90,11 +88,11 @@ theorem not_mem_of_mem_monos {pp : Ideal (Poly k N)} (hp : pp.IsPrime) {I : Fins
   | mul a b _ _ ha hb => exact fun h => (hp.mem_or_mem h).elim ha hb
 
 /- English proof (translation)
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz => exact hz`. Consider the case `zero`. Conclude with `⟨0, 1, 0, pp.zero_mem, one_mem _, isHomogeneous_zero _ _ _, isHomogeneous_one _ _, by simp⟩`. Consider the case `add a b _ _ ha hb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨g, s, e, hg, hs, hge, hse, rfl⟩` from `ha`. Take `⟨g', s', e', hg', hs', hge', hse', rfl⟩` from `hb`. Use `⟨g * s' + s * g', s * s', e + e', pp.add_mem (pp.mul_mem_right _ hg) (pp.mul_mem_left _ hg'), mul_mem hs hs', (hge.mul hse').add (hse.mul hge'), hse.mul hse', ?_⟩` and prove the remaining obligations. Rewrite using `[div_add_div _ _ (eval_ne_zero_of_mem_monos I hs) (eval_ne_zero_of_mem_monos I hs')]`. Simplify using `only [map_add, map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `smul a b _ hb`. Take `⟨f, s₀, e₀, hs₀, hf, hse₀, ha⟩` from `a.2`. Take `⟨g, s, e, hg, hs, hge, hse, rfl⟩` from `hb`. Use `⟨f * g, s₀ * s, e₀ + e, pp.mul_mem_left _ hg, mul_mem hs₀ hs, hf.mul hge, hse₀.mul hse, ?_⟩` and prove the remaining obligations. Rewrite using `[chartRing_smul_def, ha, map_mul, map_mul, div_mul_div_comm]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_eq_of_mem_idealMod {pp : Ideal (Poly k N)} {I : Chart x} {z : Ω} (hz : z ∈ idealMod pp I) :
     ∃ (g s : Poly k N) (e : ℕ), g ∈ pp ∧ s ∈ monos I.1 ∧ g.IsHomogeneous e ∧ s.IsHomogeneous e ∧
@@ -117,7 +115,7 @@ theorem exists_eq_of_mem_idealMod {pp : Ideal (Poly k N)} {I : Chart x} {z : Ω}
     rw [chartRing_smul_def, ha, map_mul, map_mul, div_mul_div_comm]
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨X l, X l, 1, hX, X_mem_monos hl, isHomogeneous_X _ _, isHomogeneous_X _ _, by rw [aeval_X, div_self ((mem_support x).mp (I.2.2 hl))]⟩`.
+A detailed English derivation is pending.
 -/
 theorem one_mem_idealMod {pp : Ideal (Poly k N)} {I : Chart x} {l : Fin (N + 1)} (hl : l ∈ I.1)
     (hX : (X l : Poly k N) ∈ pp) : (1 : Ω) ∈ idealMod pp I :=
@@ -125,17 +123,15 @@ theorem one_mem_idealMod {pp : Ideal (Poly k N)} {I : Chart x} {l : Fin (N + 1)}
     rw [aeval_X, div_self ((mem_support x).mp (I.2.2 hl))]⟩
 
 /- English proof (translation)
-Distinguish the cases in `hI : ∃ l ∈ I.1, (X l : Poly k N) ∈ pp`. Take `⟨l, hl, hX⟩` from `hI`. Use `Submodule.smul_mem (idealMod pp I) (⟨r, hr⟩ : chartRing k x I) (one_mem_idealMod hl hX)` as an intermediate fact. Rewrite `this` using `[chartRing_smul_def, mul_one]`. Then use the resulting hypothesis. Use `push Not at hI`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨f, s, e, hs, hf, hse, rfl⟩` from `hr`. Take `⟨g, s', e', hg, hs', hge, hse', rfl⟩` from `exists_eq_of_mem_idealMod hq`. Establish `h0` using `eval_ne_zero_of_mem_monos I hs`. Establish `h0'` using `eval_ne_zero_of_mem_monos I hs'`. Rewrite `h` using `[mul_div_assoc', mul_div_assoc', div_eq_div_iff h0 h0']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hhom : (X i * f * s' - X j * g * s).IsHomogeneous (1 + e + e')`. Use `(((isHomogeneous_X k i).mul hf).mul hse').sub ?_` and prove the remaining obligations. Use `((isHomogeneous_X k j).mul hge).mul hse` as an intermediate fact. Rewrite `this` using `[show 1 + e' + e = 1 + e + e' by omega]`. Then use the resulting hypothesis. Establish `hev : aeval x (X i * f * s' - X j * g * s) = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sub, map_mul, aeval_X]`. Rewrite using `[h, sub_self]`. Establish `hmem : X i * f * s' ∈ pp`. Establish `h1` using `pp.add_mem (hle ((mem_primeOf_of_isHomogeneous x hhom).mpr hev)) (pp.mul_mem_right s (pp.mul_mem_left (X j) hg))`. Rewrite `h1` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hf' : f ∈ pp`. Break down `hp.mem_or_mem hmem with h2 | h2` into its components or cases. Break down `hp.mem_or_mem h2 with h3 | h3` into its components or cases. Conclude with `absurd h3 hi`. Conclude with `h3`.
-
-Conclude with `absurd h2 (not_mem_of_mem_monos hp hI hs')`. Conclude with `Submodule.subset_span ⟨f, s, e, hf', hs, hf, hse, rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem mem_idealMod_of_mul {pp : Ideal (Poly k N)} (hp : pp.IsPrime) (hle : primeOf (S := k) x ≤ pp)
     {i j : Fin (N + 1)} (hi : (X i : Poly k N) ∉ pp) {I : Chart x} {r q : Ω} (hr : r ∈ chartRing k x I)
@@ -170,15 +166,15 @@ theorem mem_idealMod_of_mul {pp : Ideal (Poly k N)} (hp : pp.IsPrime) (hle : pri
   exact Submodule.subset_span ⟨f, s, e, hf', hs, hf, hse, rfl⟩
 
 /- English proof (translation)
-Establish `hxj : x j ≠ 0` using `(mem_support x).mp (I.2.2 hj)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, s, e, hf, hs, hfe, hse, rfl⟩`. Take `⟨g, hg, y, hy, rfl⟩` from `Submodule.mem_sup.mp hf`. Take `⟨h, rfl⟩` from `Ideal.mem_span_singleton'.mp hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[SetLike.mem_coe, ← homogeneousComponent_eq_self hfe, map_add, map_add, add_div]`. Use `Submodule.add_mem _ (Submodule.mem_sup_left (Submodule.subset_span ⟨homogeneousComponent e g, s, e, hh g hg e, hs, homogeneousComponent_isHomogeneous e g, hse, rfl⟩)) (Submodule.mem_sup_right ?_)` and prove the remaining obligations. Establish `hspan` using `IdealTwistFamily.homogeneousComponent_mul_form h (X i) (isHomogeneous_X k i) e`. Generalize the expression as in `homogeneousComponent e (h * X i) = v at hspan ⊢`. Proceed by induction on `hspan using Submodule.span_induction with`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Consider the case `mem v hv`. Take `⟨h', d', hh', hd', rfl⟩` from `hv`. Rewrite using `[Submodule.mem_span_singleton]`. Use `⟨⟨aeval x (h' * X j) / aeval x s, h' * X j, s, e, hs, hd' ▸ hh'.mul (isHomogeneous_X k j), hse, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[chartRing_smul_def]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, aeval_X]`. Clear the denominators using the available nonvanishing facts. Consider the case `zero => simp`. Consider the case `add v w _ _ hv hw => rw [map_add, add_div]`. Conclude with `Submodule.add_mem _ hv hw`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c v _ hv`. Rewrite using `[map_smul, smul_div_assoc]`. Conclude with `Submodule.smul_of_tower_mem _ c hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idealMod_sup_le {pp : Ideal (Poly k N)} (hh : ∀ f ∈ pp, ∀ d : ℕ, homogeneousComponent d f ∈ pp)
     {i j : Fin (N + 1)} {I : Chart x} (hj : j ∈ I.1) :
@@ -211,25 +207,25 @@ theorem idealMod_sup_le {pp : Ideal (Poly k N)} (hh : ∀ f ∈ pp, ∀ d : ℕ,
     exact Submodule.smul_of_tower_mem _ c hv
 
 /- English proof (translation)
-Establish `hO : ∀ (I : Chart x) (j : Fin (N + 1)), j ∈ I.1 → (twistSys k x 1).sub I = Submodule.span (chartRing k x I) {x j}` using `fun I j hj => by`. Rewrite using `[show (twistSys k x 1).sub I = twistMod k x 1 I from rfl, twistMod_eq_span 1 I hj, zpow_one]`. Establish `hsub : ∀ (K : Ideal (Poly k N)) (I : Chart x), ((M.twist (twistSys k x 1)).twist (idealSys x K)).sub I = idealMod K I * ((twistSys k x 1).sub I * M.sub I)` using `fun K I => by rw [SubSystem.twist_sub_eq_mul_of_line, SubSystem.twist_sub_eq_mul_of_line]; rfl`. Establish `hsub' : ∀ I : Chart x, (M.twist (idealSys x pp)).sub I = idealMod pp I * M.sub I` using `fun I => by rw [SubSystem.twist_sub_eq_mul_of_line]; rfl`. Use `eulerCharQuot_eq_of_mul _ _ _ _ (x i) ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `I y hy`. Take `⟨j, hj⟩` from `I.2.1`. Establish `hxj : x j ≠ 0` using `(mem_support x).mp (I.2.2 hj)`. Rewrite using `[hsub, hO I j hj]`. Establish `hu : x i / x j ∈ idealMod (pp ⊔ Ideal.span {(X i : Poly k N)}) I` using `Submodule.subset_span ⟨X i, X j, 1, Ideal.mem_sup_right (Ideal.mem_span_singleton_self _), X_mem_monos hj, isHomogeneous_X _ _, isHomogeneous_X _ _, by rw [aeval_X, aeval_X]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Submodule.mul_mem_mul hu (Submodule.mul_mem_mul (Submodule.mem_span_singleton_self (x j)) hy)` as an intermediate fact. Rewrite `this` using `[← mul_assoc (x i / x j), div_mul_cancel₀ _ hxj]`. Then use the resulting hypothesis. Introduce `I z hz`. Take `⟨j, hj⟩` from `I.2.1`. Establish `hxj : x j ≠ 0` using `(mem_support x).mp (I.2.2 hj)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hz` using `[hsub, hO I j hj]`. Rewrite using `[hsub, hO I j hj]`. Establish `hz'` using `mul_le_mul' (idealMod_sup_le hh (i := i) hj) le_rfl hz`. Rewrite `hz'` using `[Submodule.sup_mul]`. Take `⟨w, hw, v, hv, rfl⟩` from `Submodule.mem_sup.mp hz'`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hv` using `[← mul_assoc, Submodule.span_mul_span, Set.singleton_mul_singleton, div_mul_cancel₀ _ hxj]`. Take `⟨m, hm, rfl⟩` from `Submodule.mem_span_singleton_mul.mp hv`. Conclude with `⟨m, hm, by rwa [add_sub_cancel_right]⟩`. Introduce `I y hy`. Take `⟨j, hj⟩` from `I.2.1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hsub, hsub', hO I j hj]`. Prove the components needed by the constructor for the conclusion. Introduce `h2`. Take `⟨M', hM'⟩` from `hM I`. Establish `key : ∀ m' ∈ M', y * m' ∈ idealMod pp I`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `m' hm'`. Establish `h3` using `Submodule.mul_mem_mul h2 hm'`. Rewrite `h3` using `[mul_assoc, mul_assoc, hM', mul_one, mul_comm, Submodule.mem_span_singleton_mul]`. Take `⟨q, hq, hqe⟩` from `h3`. Establish `hr : y * m' ∈ (1 : Submodule (chartRing k x I) Ω)` using `hM' ▸ Submodule.mul_mem_mul hy hm'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr⟩` from `Submodule.mem_one.mp hr`. Establish `hr' : y * m' ∈ chartRing k x I` using `hr ▸ r.2`. Conclude with `mem_idealMod_of_mul hp hle hi hr' hq (by rw [← mul_assoc, hqe])`. Establish `hy1 : y ∈ Submodule.span (chartRing k x I) {y} * (M' * M.sub I)`. Rewrite using `[mul_comm M', hM', mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Submodule.mem_span_singleton_self y`. Rewrite `hy1` using `[← mul_assoc]`. Use `mul_le_mul' (Submodule.mul_le.mpr fun a ha b hb => ?_) le_rfl hy1` and prove the remaining obligations. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp ha`. Rewrite using `[chartRing_smul_def, mul_assoc, ← chartRing_smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem _ c (key b hb)`. Introduce `h2`. Establish `hxi : x i ∈ Submodule.span (chartRing k x I) {x j}` using `hO I j hj ▸ mem_twistMod_one I i`. Use `Submodule.mul_mem_mul hxi h2` as an intermediate fact. Rewrite `this` using `[mul_left_comm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem eulerCharQuot_mid (pp : Ideal (Poly k N)) (hp : pp.IsPrime)
     (hh : ∀ f ∈ pp, ∀ d : ℕ, homogeneousComponent d f ∈ pp) (hle : primeOf (S := k) x ≤ pp)
@@ -301,11 +297,11 @@ end Chart
 end SnapperHyperplaneMid
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x pp hp hh hle i hi a t L n c`. Set `Mb` to `(twistPowsBundle (twistBundle k x a) t L n).tensorProd (twistBundle k x c)`. Establish `hM : Mb.toSubSystem = ((twistSys k x a).twistPows t (fun j => (L j).toSubSystem) n).twist (twistSys k x c)`. Express the relevant statement in the definitionally equal form `(twistPowsBundle (twistBundle k x a) t L n).toSubSystem.twist (twistSys k x c) = _`. Rewrite using `[twistPowsBundle_toSubSystem]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hG : ∀ (b : ℤ) (K : Ideal (Poly k N)), (((twistSys k x b).twist (idealSys x K)).twistPows t (fun j => (L j).toSubSystem) n).twist (twistSys k x c) = (((twistSys k x b).twistPows t (fun j => (L j).toSubSystem) n).twist (twistSys k x c)).twist (idealSys x K)`. Introduce `b K`. Rewrite using `[twistPows_twist_comm (twistSys k x b) (idealSys x K), SubSystem.twist_assoc, SubSystem.twist_comm (idealSys x K), ← SubSystem.twist_assoc]`. Establish `hQ : ((twistSys k x (a + 1)).twistPows t (fun j => (L j).toSubSystem) n).twist (twistSys k x c) = Mb.toSubSystem.twist (twistSys k x 1)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hM, ← twistSys_twist_eq_add a 1, twistPows_twist_comm (twistSys k x a) (twistSys k x 1), SubSystem.twist_assoc _ (twistSys k x 1) (twistSys k x c), SubSystem.twist_comm (twistSys k x 1) (twistSys k x c), ← SubSystem.twist_assoc]`. Unfold `pieceChar`. Rewrite using `[hG (a + 1) (pp ⊔ Ideal.span {(X i : Poly k N)}), hG (a + 1) pp, hG a pp, hQ, ← hM]`. Conclude with `SnapperHyperplaneMid.eulerCharQuot_mid pp hp hh hle i hi Mb.toSubSystem Mb.invertible`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SnapperHyperplaneMid.proof : SnapperHyperplaneMid.Statement.{u, w} := by
   intro k _ Ω _ _ N x pp hp hh hle i hi a t L n c

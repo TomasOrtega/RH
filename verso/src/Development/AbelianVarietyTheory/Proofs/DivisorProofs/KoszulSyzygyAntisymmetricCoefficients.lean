@@ -5,51 +5,49 @@ open MvPolynomial Finset
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A _ r G hG`. Set `R : ℕ → MvPolynomial (Fin r) A →ₐ[A] MvPolynomial (Fin r) A` to `fun n => aeval (fun j : Fin r => if (j : ℕ) < n then 0 else X j)`. Establish `hRX : ∀ n (k : Fin r), R n (X k) = if (k : ℕ) < n then 0 else X k`. Introduce `n k`. Simplify using `[R]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hR0 : ∀ P, R 0 P = P`. Introduce `P`. Establish `: (fun j : Fin r => if (j : ℕ) < 0 then (0 : MvPolynomial (Fin r) A) else X j) = X`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [R, this, aeval_X_left_apply]`. Establish `hdvd : ∀ (i : Fin r) (P : MvPolynomial (Fin r) A), X i ∣ R i P - R (i + 1) P`. Introduce `i P`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp [R]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add p q hp hq`. Rewrite using `[map_add, map_add, add_sub_add_comm]`. Conclude with `dvd_add hp hq`. Consider the case `mul_X p k hp`. Rewrite using `[map_mul, map_mul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : R i p * R i (X k) - R (i + 1) p * R (i + 1) (X k) = R i p * (R i (X k) - R (i + 1) (X k)) + (R i p - R (i + 1) p) * R (i + 1) (X k)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `dvd_add (dvd_mul_of_dvd_right ?_ _) (dvd_mul_of_dvd_left hp _)` and prove the remaining obligations. Rewrite using `[hRX, hRX]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality. Simplify using the standard rewrite rules. Establish `: (k : ℕ) ≠ i` using `fun h => hki (Fin.ext h)`. Distinguish the cases in `hk : (k : ℕ) < i`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hk, show (k : ℕ) < i + 1 by omega]`. Simplify using `[hk, show ¬ (k : ℕ) < i + 1 by omega]`. Use `choose D hD using hdvd`. Establish `htel : ∀ (P : MvPolynomial (Fin r) A) (n : ℕ), n ≤ r → P - R n P = ∑ j : Fin r, if (j : ℕ) < n then X j * D j P else 0`. Introduce `P n`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `n with`. Consider the case `zero => intro _`. Simplify using `[hR0]`. Consider the case `succ n ih`. Introduce `hn`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : n < r` using `by omega`. Establish `pt : ∀ j : Fin r, (if (j : ℕ) < n + 1 then X j * D j P else 0) = (if (j : ℕ) < n then X j * D j P else 0) + (if j = ⟨n, hlt⟩ then X j * D j P else 0)`. Introduce `j`. Distinguish the cases in `h1 : (j : ℕ) < n`. Establish `: j ≠ ⟨n, hlt⟩` using `fun h => by subst h; simp at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h1, this, show (j : ℕ) < n + 1 by omega]`. Distinguish the cases in `h2 : (j : ℕ) = n`. Establish `: j = ⟨n, hlt⟩` using `Fin.ext h2`. Simplify using `[h1, this]`. Establish `: j ≠ ⟨n, hlt⟩` using `fun h => h2 (by rw [h])`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h1, this, show ¬ (j : ℕ) < n + 1 by omega]`. Rewrite using `[Finset.sum_congr rfl (fun j _ => pt j), Finset.sum_add_distrib, ← ih (by omega), Finset.sum_ite_eq' Finset.univ, if_pos (Finset.mem_univ _), ← hD]`. Expand and normalize the polynomial expressions, which then agree. Establish `hrel : ∀ n, ∑ j : Fin r, (if (j : ℕ) < n then 0 else X j) * R n (G j) = 0`. Introduce `n`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg (R n) hG` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`. Simplify `this` using `[map_mul, hRX]`. Establish `key : ∀ i : Fin r, R i (G i) + ∑ j : Fin r, (if i < j then X j * D i (G j) else 0) = 0`. Introduce `i`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hrel i`. Establish `h2` using `hrel (i + 1)`. Establish `s1 : ∀ j : Fin r, (if (j : ℕ) < i then 0 else X j) * R i (G j) = (if j = i then X i * R i (G i) else 0) + (if i < j then X j * R i (G j) else 0)`. Introduce `j`. Break down `lt_trichotomy j i with h | h | h` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: (j : ℕ) < i` using `h`. Simplify using `[this, h.ne, not_lt.mpr h.le]`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `: ¬ (j : ℕ) < i` using `by have : (i : ℕ) < j := h; omega`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[this, h.ne', h]`. Establish `s2 : ∀ j : Fin r, (if (j : ℕ) < i + 1 then 0 else X j) * R (i + 1) (G j) = (if i < j then X j * R (i + 1) (G j) else 0)`. Introduce `j`. Distinguish the cases in `h : i < j`. Establish `: ¬ (j : ℕ) < i + 1` using `by have : (i : ℕ) < j := h; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[this, h]`. Establish `: (j : ℕ) < i + 1` using `by have : (j : ℕ) ≤ i := not_lt.mp h; omega`. Simplify using `[this, h]`. Rewrite `h1` using `[Finset.sum_congr rfl (fun j _ => s1 j), Finset.sum_add_distrib, Finset.sum_ite_eq' Finset.univ, if_pos (Finset.mem_univ _)]`. Rewrite `h2` using `[Finset.sum_congr rfl (fun j _ => s2 j)]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : X i * (R i (G i) + ∑ j : Fin r, (if i < j then X j * D i (G j) else 0)) = X i * 0`. Establish `e : ∀ j : Fin r, X i * (if i < j then X j * D i (G j) else 0) = (if i < j then X j * R i (G j) else 0) - (if i < j then X j * R (i + 1) (G j) else 0)`. Introduce `j`. Distinguish the cases in `h : i < j`. Simplify using `only [if_pos h]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-(X j : MvPolynomial (Fin r) A)) * hD i (G j)`. Simplify using `[h]`. Rewrite using `[mul_add, Finset.mul_sum, Finset.sum_congr rfl (fun j _ => e j), Finset.sum_sub_distrib, h2, mul_zero]`. Take the linear combination `h1`. Conclude with `(X_mul_cancel_left_iff).mp h3`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨fun i j => if j < i then D j (G i) else if i < j then -D i (G j) else 0, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Simplify using `[h, not_lt.mpr h.le]`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Simplify using `[h, not_lt.mpr h.le]`. Introduce `i`. Simplify using the standard rewrite rules. Introduce `i`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `e : ∀ j : Fin r, X j * (if j < i then D j (G i) else if i < j then -D i (G j) else 0) = (if (j : ℕ) < i then X j * D j (G i) else 0) - (if i < j then X j * D i (G j) else 0)`. Introduce `j`. Break down `lt_trichotomy j i with h | h | h` into its components or cases. Establish `: (j : ℕ) < i` using `h`. Simplify using `[h, this, not_lt.mpr h.le]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `: ¬ (j : ℕ) < i` using `by have : (i : ℕ) < j := h; omega`. Simplify using `[h, this, not_lt.mpr h.le]`. Rewrite using `[Finset.sum_congr rfl (fun j _ => e j), Finset.sum_sub_distrib, ← htel (G i) i (by omega)]`.
-
-Take the linear combination `key i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem koszul_relations_among_variables :
     ∀ (A : Type) [CommRing A] (r : ℕ) (G : Fin r → MvPolynomial (Fin r) A),

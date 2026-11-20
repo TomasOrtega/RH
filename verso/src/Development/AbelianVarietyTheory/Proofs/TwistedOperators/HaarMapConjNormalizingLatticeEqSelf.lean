@@ -20,25 +20,21 @@ def conjEquiv {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] (
     exact (continuous_const.mul continuous_subtype_val).mul continuous_const
 
 /- English proof (translation)
-Use `haveI : SecondCountableTopology N := TopologicalSpace.Subtype.secondCountableTopology (N : Set H)`. Use `haveI : LocallyCompactSpace N := hNc.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : Countable (Γ.subgroupOf N) := by`. Use `Function.Injective.countable (f := fun x : Γ.subgroupOf N => (⟨(x : N), x.2⟩ : Γ)) ?_` and prove the remaining obligations. Introduce `a b hab`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using congrArg Subtype.val hab`. Use `set e := conjEquiv N γ (hN γ hγ) (hN γ⁻¹ (Γ.inv_mem hγ)) with he_def`. Establish `hfun : (fun n : N => (⟨γ * n * γ⁻¹, hN γ hγ n n.2⟩ : N)) = ⇑e` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hfun]`. Use `haveI : (κ.map e).IsHaarMeasure := e.isHaarMeasure_map κ`. Establish `hsm : κ.map e = Measure.haarScalarFactor (κ.map e) κ • κ` using `Measure.isMulLeftInvariant_eq_smul (κ.map e) κ`. Use `set c := Measure.haarScalarFactor (κ.map e) κ`. Establish `hqmp : Measure.QuasiMeasurePreserving e κ κ` using `⟨e.continuous.measurable, by rw [hsm]; exact Measure.smul_absolutelyContinuous⟩`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hpre : IsFundamentalDomain (Γ.subgroupOf N) (e ⁻¹' 𝓝) κ`. Use `h𝓝.preimage_of_equiv hqmp (e := fun g : Γ.subgroupOf N => (⟨⟨γ⁻¹ * (g : H) * γ⁻¹⁻¹, hN γ⁻¹ (Γ.inv_mem hγ) _ (g : N).2⟩, by show γ⁻¹ * (g : H) * γ⁻¹⁻¹ ∈ Γ` and prove the remaining obligations. Conclude with `Γ.mul_mem (Γ.mul_mem (Γ.inv_mem hγ) g.2) (Γ.inv_mem (Γ.inv_mem hγ))⟩ : Γ.subgroupOf N)) ?_ ?_`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg (fun x : Γ.subgroupOf N => ((x : N) : H)) hab` as an intermediate fact. Simplify using `using this`. Introduce `g`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `⟨⟨⟨γ * (g : H) * γ⁻¹, hN γ hγ _ (g : N).2⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show γ * (g : H) * γ⁻¹ ∈ Γ`. Conclude with `Γ.mul_mem (Γ.mul_mem hγ g.2) (Γ.inv_mem hγ)`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[mul_assoc]`. Introduce `g x`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[he_def, conjEquiv, Subgroup.smul_def, mul_assoc]`. Establish `hmeq : κ (e ⁻¹' 𝓝) = κ 𝓝` using `hpre.measure_eq h𝓝`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap : κ.map e 𝓝 = κ (e ⁻¹' 𝓝)`. Use `e.toHomeomorph.toMeasurableEquiv.map_apply (μ := κ) 𝓝` as an intermediate fact. Conclude with `this`. Establish `hne : κ 𝓝 ≠ 0` using `h𝓝.measure_ne_zero (NeZero.ne κ)`. Establish `hc : (c : ENNReal) * κ 𝓝 = 1 * κ 𝓝`.
-
-Establish `h' : (c • κ) 𝓝 = κ 𝓝` using `by rw [← hsm, hmap, hmeq]`. Rewrite using `[one_mul]`. Use `conv_rhs => rw [← h']`. Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Establish `hc1 : (c : ENNReal) = 1` using `(ENNReal.mul_left_inj hne hfin).1 hc`.
-
-Establish `: c = 1` using `by exact_mod_cast hc1`. Rewrite using `[hsm, this, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_conj_eq_self (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     [LocallyCompactSpace H] [SecondCountableTopology H] [T2Space H] [MeasurableSpace H] [BorelSpace H]

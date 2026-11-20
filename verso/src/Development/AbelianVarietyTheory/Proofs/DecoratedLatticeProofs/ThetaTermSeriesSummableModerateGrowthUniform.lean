@@ -19,7 +19,7 @@ namespace GlobalTheory.Unf.SigConv
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨T, b, -, h1, -⟩` from `exists_blocks d hn`. Establish `e3 : blockX d n = 1 + T`. Rewrite using `[blockX, h1, Matrix.mul_add, d.pX_jX, cancel₂ d.pX_jX, Matrix.one_mul]`. Rewrite using `[e3, h1, Matrix.mul_add, Matrix.mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mt_jX_eq {V V₀ : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) {n : GA D V} (hn : n ∈ flagN d) :
     mt V n ⬝ d.jX = d.jX ⬝ blockX d n := by
@@ -29,9 +29,9 @@ theorem mt_jX_eq {V V₀ : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) {n : GA D V}
   rw [e3, h1, Matrix.mul_add, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `h1` using `mt_jX_eq d (inv_mem hn)`. Establish `h2` using `mt_jX_eq d hn`. Establish `h3 : d.jX ⬝ (blockX d n ⬝ blockX d n⁻¹) = d.jX`. Rewrite using `[← Matrix.mul_assoc, ← h2, Matrix.mul_assoc, ← h1, ← Matrix.mul_assoc, ← mt_mul, mul_inv_cancel, mt_one, Matrix.one_mul]`. Establish `h4 : d.pX ⬝ (d.jX ⬝ (blockX d n ⬝ blockX d n⁻¹)) = d.pX ⬝ d.jX` using `by rw [h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h4` using `[← Matrix.mul_assoc, d.pX_jX, Matrix.one_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem blockX_mul_inv {V V₀ : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) {n : GA D V} (hn : n ∈ flagN d) :
     blockX d n ⬝ blockX d n⁻¹ = 1 := by
@@ -44,7 +44,7 @@ theorem blockX_mul_inv {V V₀ : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) {n : G
   rwa [← Matrix.mul_assoc, d.pX_jX, Matrix.one_mul] at h4
 
 /- English proof (translation)
-The claim follows from `mem_ratMx.1 (ratMx_mul (rat_mem d.qX) (ratMx_mul ((mem_GQ_iff V γ).1 hγ) (rat_mem d.e)))`.
+A detailed English derivation is pending.
 -/
 theorem blockX_rat {V V₀ : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) {γ : GA D V} (hγ : γ ∈ GQ V) :
     ∃ B : Matrix (Fin ρ) (Fin ρ) D.host.E, rat B = blockX d γ :=
@@ -59,39 +59,35 @@ end GlobalTheory.Unf.SigConv
 open GlobalTheory.Unf.SigConv in
 
 /- English proof (translation)
-Introduce `D ψ V V₀ W ρ d χV χW om om' hW hW' vS Φ hΦ`. Take `⟨C, A, hC⟩` from `GlobalTheory.T.mixedCoordinate_absSum_weilTranslate_moderateGrowth D ψ V W χV χW om hW V₀ ρ d vS Φ hΦ`. Establish `hT` using `fun Ψ (hΨ : IsThetaFunO ψ V W Ψ) => GlobalTheory.T.mixedThetaSeries_terms_laws_unipotent_rational D ψ V V₀ W ρ d χV χW om om' hW hW' vS Ψ hΨ`. Establish `hA : ∀ g h, sumAbs ψ d W vS (om (g, h) Φ) ≤ ENNReal.ofReal (C * (height V g * height W h) ^ A)`. Introduce `g h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `le_trans ?_ (hC g h 0)` and prove the remaining obligations. Conclude with `ENNReal.tsum_comp_le_tsum_of_injective (f := fun x : Matrix (Fin W.rank) (Fin ρ) D.host.E => (⟨rat x, rat_mem x⟩ : ratMx D W.rank ρ)) (fun x y hxy => rat_injective (congrArg Subtype.val hxy)) (fun y : ratMx D W.rank ρ => ‖d.mixS W ψ vS.μ vS.𝓕 (om (g, h) Φ) y 0‖ₑ)`. Establish `hB : ∀ Ψ, IsThetaFunO ψ V W Ψ → ∀ γ ∈ GQ V, γ ∈ flagN d → sumAbs ψ d W vS (om (γ, 1) Ψ) ≤ sumAbs ψ d W vS Ψ`. Introduce `Ψ hΨ γ hQ hN`. Take `⟨B, hB⟩` from `blockX_rat d hQ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ x, term ψ d W vS (om (γ, 1) Ψ) x = term ψ d W vS Ψ (x * B)` using `fun x => (hT Ψ hΨ).2.1 γ hQ hN x (x * B) (by rw [rat_mul, hB])`. Unfold `sumAbs`. Simplify using `only [key]`. Use `ENNReal.tsum_comp_le_tsum_of_injective (f := fun x => x * B) ?_ (fun y => ‖term ψ d W vS Ψ y‖ₑ)` and prove the remaining obligations. Introduce `x y hxy`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `rat_injective` to reduce the goal to its premises. Establish `hxy' : x * B = y * B` using `hxy`. Establish `h5` using `congrArg (fun z : Matrix (Fin W.rank) (Fin ρ) D.host.E => (rat z : Mx D W.rank ρ) ⬝ blockX d γ⁻¹) hxy'`. Simplify using `only [rat_mul, hB, Matrix.mul_assoc, blockX_mul_inv d hN, Matrix.mul_one] at h5`. Conclude with `h5`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hD : ∀ Ψ, IsThetaFunO ψ V W Ψ → ∀ δ ∈ GQ W, sumAbs ψ d W vS (om (1, δ⁻¹) Ψ) ≤ sumAbs ψ d W vS Ψ`. Introduce `Ψ hΨ δ hQ`. Take `⟨M, hM⟩` from `mem_ratMx.1 ((mem_GQ_iff W δ).1 hQ)`. Establish `key : ∀ x, term ψ d W vS (om (1, δ⁻¹) Ψ) x = term ψ d W vS Ψ (M * x)` using `fun x => (hT Ψ hΨ).2.2.1 δ⁻¹ (inv_mem hQ) x (M * x) (by rw [rat_mul, hM, ← Matrix.mul_assoc, mt_inv_mul, Matrix.one_mul])`. Unfold `sumAbs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [key]`. Use `ENNReal.tsum_comp_le_tsum_of_injective (f := fun x => M * x) ?_ (fun y => ‖term ψ d W vS Ψ y‖ₑ)` and prove the remaining obligations. Introduce `x y hxy`. Apply `rat_injective` to reduce the goal to its premises. Establish `hxy' : M * x = M * y` using `hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h5` using `congrArg (fun z : Matrix (Fin W.rank) (Fin ρ) D.host.E => mt W δ⁻¹ ⬝ (rat z : Mx D W.rank ρ)) hxy'`. Simplify using `only [rat_mul, hM, ← Matrix.mul_assoc, mt_inv_mul, Matrix.one_mul] at h5`. Conclude with `h5`. Take `⟨K, hK, hcov⟩` from `(GlobalTheory.Mem.UnipCocompact.radicals_cocompact D V ρ d.e (isIsoSub_e d)).1`. Take `⟨c, hc⟩` from `exists_height_le_of_isCompact V (hK.image continuous_subtype_val)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c' := max c 1 with hc'`. Use `set C₀ := max C 0 with hC₀`. Establish `hc'1 : 1 ≤ c'` using `le_max_right _ _`. Establish `hC₀0 : 0 ≤ C₀` using `le_max_right _ _`. Use `set C' := C₀ * c' ^ A with hC'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC'0 : 0 ≤ C'` using `mul_nonneg hC₀0 (pow_nonneg (zero_le_one.trans hc'1) _)`. Establish `hN : ∀ g h, ∀ n ∈ flagN d, sumAbs ψ d W vS (om (n * g, h) Φ) ≤ ENNReal.ofReal (C' * (height V g * height W h) ^ A)`. Introduce `g h n hn`. Take `⟨γ, hγ, k, hk, hnk⟩` from `hcov ⟨n, hn⟩`. Establish `hγQ : γ.1 ∈ GQ V` using `Subgroup.mem_subgroupOf.1 hγ`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hn' : n = γ.1 * k.1` using `congrArg Subtype.val hnk`. Establish `hp : ((n * g, h) : GA D V × GA D W) = (γ.1, 1) * (k.1 * g, h)`. Apply the tactic sequence `rw [hn']; ext <;> simp [mul_assoc]`. Establish `hom : om (n * g, h) Φ = om (γ.1, 1) (om (k.1 * g, h) Φ)`. Rewrite using `[hp, map_mul, Module.End.mul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hom]`. Use `(hB _ (hW.om_pres _ _ hΦ) γ.1 hγQ γ.2).trans ((hA _ _).trans (ENNReal.ofReal_le_ofReal ?_))` and prove the remaining obligations. Establish `hk' : height V k.1 ≤ c'` using `(hc _ ⟨k, hk, rfl⟩).trans (le_max_left _ _)`. Establish `hkg : height V (k.1 * g) ≤ c' * height V g` using `(height_mul_le V _ _).trans (mul_le_mul_of_nonneg_right hk' (height_pos V g).le)`. Establish `hx0 : 0 ≤ height V (k.1 * g) * height W h` using `mul_nonneg (height_pos V _).le (height_pos W h).le`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : height V (k.1 * g) * height W h ≤ c' * (height V g * height W h)`. Rewrite using `[← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right hkg (height_pos W h).le`. Combine the equalities or inequalities in the displayed calculation. Use `⟨C', A, fun g h n hn => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hδ : ∀ δ : GQ W, sumAbs ψ d W vS (om (n * g, h) Φ) ≤ ENNReal.ofReal (C' * (height V g * max (height W (δ.1 * h)) 0) ^ A)`. Introduce `δ`. Rewrite using `[max_eq_left (height_pos W _).le]`. Establish `hp : ((n * g, h) : GA D V × GA D W) = (1, δ.1⁻¹) * (n * g, δ.1 * h)`. Apply the tactic sequence `ext <;> simp [← mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hom : om (n * g, h) Φ = om (1, δ.1⁻¹) (om (n * g, δ.1 * h) Φ)`. Rewrite using `[hp, map_mul, Module.End.mul_apply]`. Rewrite using `[hom]`. Conclude with `(hD _ (hW.om_pres _ _ hΦ) δ.1 δ.2).trans (hN g _ n hn)`. Set `φ : ℝ → ENNReal` to `fun t => ENNReal.ofReal (C' * (height V g * max t 0) ^ A)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hmono : Monotone φ`. Introduce `a b hab`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_left _ hC'0` to reduce the goal to its premises. Apply `pow_le_pow_left₀ (mul_nonneg (height_pos V g).le (le_max_right _ _))` to reduce the goal to its premises.
-
-Conclude with `mul_le_mul_of_nonneg_left (max_le_max hab le_rfl) (height_pos V g).le`. Establish `hcont : Continuous φ`. Use `ENNReal.continuous_ofReal.comp ?_` and prove the remaining obligations. Use `fun_prop`. Establish `hinf` using `hmono.map_ciInf_of_continuousAt (g := fun δ : GQ W => height W (δ.1 * h)) hcont.continuousAt ⟨1, by rintro _ ⟨_, rfl⟩; exact one_le_height W _⟩`.
-
-Establish `hq : ENNReal.ofReal (C' * (height V g * quotHeight W h) ^ A) = φ (quotHeight W h)`. Simplify using `only [φ, max_eq_left (quotHeight_pos W h).le]`. Express the relevant statement in the definitionally equal form `sumAbs ψ d W vS (om (n * g, h) Φ) ≤ _`. Rewrite using `[hq, quotHeight, hinf]`. Conclude with `le_iInf hδ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Unf.sum_term_bound : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V V₀ W : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ) (χV χW : (AE D)ˣ →* Circle) (om : Om V W) (om' : Om V₀ W), IsWeilDatumO ψ V W χV χW om → IsWeilDatumO ψ V₀ W χV χW om' → ∀ (vS : VolM D W.rank ρ) (Φ : WO V W → ℂ), IsThetaFunO ψ V W Φ → ∃ (C : ℝ) (A : ℕ), ∀ g h, ∀ n ∈ flagN d, ∑' x : Matrix (Fin W.rank) (Fin ρ) D.host.E, ‖term ψ d W vS (om (n * g, h) Φ) x‖ₑ ≤ ENNReal.ofReal (C * (height V g * quotHeight W h) ^ A) := by
   intro D ψ V V₀ W ρ d χV χW om om' hW hW' vS Φ hΦ

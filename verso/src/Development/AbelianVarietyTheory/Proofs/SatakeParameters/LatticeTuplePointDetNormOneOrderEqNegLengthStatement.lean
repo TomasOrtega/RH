@@ -5,7 +5,7 @@ open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions F
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.TwV.Xc.latticeTuplePoint_det_normOne_order_eq_neg_length` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FLatticeTuplePointDetNormOneOrderEqNegLength.lean&line=111#L111)
 -/

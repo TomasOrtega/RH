@@ -18,7 +18,7 @@ theorem put_entry (n o₁ o₂ : ℕ) {p q : ℕ} (X : Matrix (Fin p) (Fin q) R)
         X ⟨i.val - o₁, by omega⟩ ⟨j.val - o₂, by omega⟩ else 0 := rfl
 
 /- English proof (translation)
-Unfold `toGL`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toGL_coe {n : ℕ} {M : Matrix (Fin n) (Fin n) R} (h : IsUnit M) :
     ((toGL M : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = M := by
@@ -27,11 +27,11 @@ theorem toGL_coe {n : ℕ} {M : Matrix (Fin n) (Fin n) R} (h : IsUnit M) :
   rfl
 
 /- English proof (translation)
-Establish `hdiag : ∀ i : Fin n, (1 + put n o₁ o₂ X) i i = 1`. Introduce `i`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_eq, put_entry, dif_neg (by omega), add_zero]`. Break down `hd with hd | hd` into its components or cases. Rewrite using `[Matrix.det_of_upperTriangular]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hdiag]`. Introduce `i j hij`. Establish `h' : j.val < i.val` using `hij`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne (show i ≠ j from fun e => by subst e; omega), put_entry, dif_neg (by omega), add_zero]`. Rewrite using `[Matrix.det_of_lowerTriangular]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hdiag]`. Introduce `i j hij`. Establish `h' : i.val < j.val` using `hij`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne (show i ≠ j from fun e => by subst e; omega), put_entry, dif_neg (by omega), add_zero]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_one_add_put (n o₁ o₂ : ℕ) {p q : ℕ} (X : Matrix (Fin p) (Fin q) R)
     (hd : o₁ + p ≤ o₂ ∨ o₂ + q ≤ o₁) : (1 + put n o₁ o₂ X).det = 1 := by
@@ -51,7 +51,7 @@ theorem det_one_add_put (n o₁ o₂ : ℕ) {p q : ℕ} (X : Matrix (Fin p) (Fin
       rw [Matrix.add_apply, Matrix.one_apply_ne (show i ≠ j from fun e => by subst e; omega), put_entry, dif_neg (by omega), add_zero]
 
 /- English proof (translation)
-Establish `hm : ∀ X Y : Matrix (Fin p) (Fin p) R, put n o o X * put n o o Y = put n o o (X * Y)` using `fun X Y => (put_mul_put R n o o o 0 p p p 0 X Y 0).1 hp`. Unfold `eye`. Simplify using `only [sub_mul, mul_sub, add_mul, mul_add, Matrix.one_mul, Matrix.mul_one, hm]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem blk_mul (n o p : ℕ) (hp : o + p ≤ n) (A B : Matrix (Fin p) (Fin p) R) :
     (1 - eye R n o o p + put n o o A) * (1 - eye R n o o p + put n o o B) =
@@ -69,16 +69,16 @@ namespace GlobalTheory.GamMul.Hom
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-The claim follows from `toGL_coe ((Matrix.isUnit_iff_isUnit_det _).2 (by rw [det_one_add_put n o₁ o₂ X hd]; exact isUnit_one))`.
+A detailed English derivation is pending.
 -/
 theorem uni_coe (n o₁ o₂ : ℕ) {p q : ℕ} (X : Matrix (Fin p) (Fin q) R) (hd : o₁ + p ≤ o₂ ∨ o₂ + q ≤ o₁) :
     ((uni n o₁ o₂ X : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = 1 + put n o₁ o₂ X :=
   toGL_coe ((Matrix.isUnit_iff_isUnit_det _).2 (by rw [det_one_add_put n o₁ o₂ X hd]; exact isUnit_one))
 
 /- English proof (translation)
-Establish `h1` using `blk_mul (R := R) n o p hp g.val g⁻¹.val`. Establish `h2` using `blk_mul (R := R) n o p hp g⁻¹.val g.val`. Rewrite `h1` using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Rewrite `h2` using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `e1 : (1 : Matrix (Fin n) (Fin n) R) - eye R n o o p + put n o o (1 : Matrix (Fin p) (Fin p) R) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Unfold `eye`. Normalize the expressions using the abelian group laws. Rewrite `h1`, `h2` using `[e1]`. Conclude with `toGL_coe ⟨⟨_, _, h1, h2⟩, rfl⟩`.
+Replace the relevant objects with their definitions. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dg_coe (n o : ℕ) {p : ℕ} (g : GL (Fin p) R) (hp : o + p ≤ n) :
     ((dg n o g : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = 1 - eye R n o o p + put n o o g.val := by
@@ -92,9 +92,9 @@ theorem dg_coe (n o : ℕ) {p : ℕ} (g : GL (Fin p) R) (hp : o + p ≤ n) :
   exact toGL_coe ⟨⟨_, _, h1, h2⟩, rfl⟩
 
 /- English proof (translation)
-Unfold `dg`. Rewrite using `[Units.val_one]`. Establish `e1 : (1 : Matrix (Fin n) (Fin n) R) - eye R n o o p + put n o o (1 : Matrix (Fin p) (Fin p) R) = 1`. Unfold `eye`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[e1]`. Conclude with `Units.ext (toGL_coe isUnit_one)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dg_one' (n o p : ℕ) : dg n o (1 : GL (Fin p) R) = 1 := by
   unfold dg
@@ -105,7 +105,7 @@ theorem dg_one' (n o p : ℕ) : dg n o (1 : GL (Fin p) R) = 1 := by
   exact Units.ext (toGL_coe isUnit_one)
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, dg_coe n o _ hp, dg_coe n o _ hp, dg_coe n o _ hp, blk_mul n o p hp, Units.val_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem dg_mul' (n o : ℕ) {p : ℕ} (hp : o + p ≤ n) (g g' : GL (Fin p) R) :
     dg n o (g * g') = dg n o g * dg n o g' := by
@@ -119,9 +119,9 @@ namespace GlobalTheory.GamMul.Hom
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Unfold `eye`. Rewrite using `[Matrix.add_apply, Matrix.sub_apply, put_entry, put_entry, dif_pos ⟨hi, hj⟩, dif_pos ⟨hi, hj⟩]`. Simplify using `only [Matrix.one_apply, Fin.ext_iff]`. Distinguish the cases in `h : i.val = j.val`. Establish `h' : i.val - o = j.val - o` using `by omega`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `[h, h']`. Establish `h' : i.val - o ≠ j.val - o` using `by omega`. Simplify using `[h, h']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem dgM_in (n o p : ℕ) (A : Matrix (Fin p) (Fin p) R) (i j : Fin n) (hi : o ≤ i.val ∧ i.val < o + p)
     (hj : o ≤ j.val ∧ j.val < o + p) :
@@ -136,7 +136,7 @@ theorem dgM_in (n o p : ℕ) (A : Matrix (Fin p) (Fin p) R) (i j : Fin n) (hi : 
     simp [h, h']
 
 /- English proof (translation)
-Unfold `eye`. Rewrite using `[Matrix.add_apply, Matrix.sub_apply, put_entry, put_entry, dif_neg h, dif_neg h, sub_zero, add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dgM_out (n o p : ℕ) (A : Matrix (Fin p) (Fin p) R) (i j : Fin n)
     (h : ¬((o ≤ i.val ∧ i.val < o + p) ∧ (o ≤ j.val ∧ j.val < o + p))) :
@@ -145,17 +145,17 @@ theorem dgM_out (n o p : ℕ) (A : Matrix (Fin p) (Fin p) R) (i j : Fin n)
   rw [Matrix.add_apply, Matrix.sub_apply, put_entry, put_entry, dif_neg h, dif_neg h, sub_zero, add_zero]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GeneralLinearGroup.val_det_apply, GeneralLinearGroup.val_det_apply, dg_coe n o g hp]`. Set `P : Fin n → Prop` to `fun i => o ≤ i.val ∧ i.val < o + p`. Set `f : {i : Fin n // P i} ≃ Fin p` to `{ toFun := fun i => ⟨i.1.val - o, by have := i.2; simp only [P] at this; omega⟩ invFun := fun j => ⟨⟨o + j.val, by omega⟩, by simp only [P]; omega⟩ left_inv := fun i => by`. Use `i.2` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [P] at this`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `right_inv := fun j => by apply Fin.ext; simp only; omega }`. Rewrite using `[Matrix.twoBlockTriangular_det _ P]`. Establish `h1 : toSquareBlockProp (1 - eye R n o o p + put n o o g.val) P = (g.val).submatrix f f`. Use extensionality with `i j`. Establish `hi` using `i.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj` using `j.2`. Simplify using `only [P] at hi hj`. Rewrite using `[toSquareBlockProp_def, Matrix.of_apply]`. Rewrite using `[dgM_in n o p g.val i.1 j.1 hi hj]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h2 : toSquareBlockProp (1 - eye R n o o p + put n o o g.val) (fun i => ¬P i) = 1`. Use extensionality with `i j`. Establish `hi` using `i.2`. Rewrite using `[toSquareBlockProp_def, Matrix.of_apply]`. Rewrite using `[dgM_out n o p g.val i.1 j.1 (fun h => hi h.1)]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.one_apply, Subtype.ext_iff]`. Rewrite using `[h1, h2, Matrix.det_submatrix_equiv_self, Matrix.det_one, mul_one]`. Introduce `i hi j hj`. Rewrite using `[dgM_out n o p g.val i j (fun h => hi h.1), Matrix.one_apply_ne (by rintro rfl; exact hi hj)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_dg' (n o : ℕ) {p : ℕ} (hp : o + p ≤ n) (g : GL (Fin p) R) :
     GeneralLinearGroup.det (dg n o g) = GeneralLinearGroup.det g := by
@@ -195,19 +195,19 @@ namespace GlobalTheory.GamMul.Hom
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, dg_coe n 0 a (by omega), dg_coe n p b (by omega), val_emb₂]`. Establish `hz : ∀ (X : Matrix (Fin p) (Fin p) R) (Z : Matrix (Fin q) (Fin q) R), put n 0 0 X * put n p p Z = 0` using `fun X Z => (put_mul_put R n 0 0 p p p p q q X 0 Z).2 (Or.inl (by omega))`. Establish `hsum : put n 0 0 (1 : Matrix (Fin p) (Fin p) R) + put n p p (1 : Matrix (Fin q) (Fin q) R) = 1`. Establish `h1` using `(put_lin_pack R n 0 0 p q).2.2.2.2.1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(put_lin_pack R n 0 0 p q).2.2.2.2.2.1`. Simplify using `only [zero_add] at h1`. Rewrite `h1` using `[h]`. Rewrite using `[← h2, h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `key : (1 - eye R n 0 0 p + put n 0 0 a.val) * (1 - eye R n p p q + put n p p b.val) = put n 0 0 a.val + put n p p b.val`. Unfold `eye`. Simplify using `only [sub_mul, mul_sub, add_mul, mul_add, Matrix.one_mul, Matrix.mul_one, hz]`. Rewrite using `[← hsum]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[key]`. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `(stdSum h).surjective i`. Take `⟨j, rfl⟩` from `(stdSum h).surjective j`. Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply, Matrix.add_apply, put_entry, put_entry]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Rewrite using `[dif_pos (by simp only [stdSum_inl]; omega), dif_neg (by simp only [stdSum_inl]; omega), add_zero, fromBlocks_apply₁₁]`. Apply the tactic sequence `congr 1 <;> apply Fin.ext <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hi` using `i.2`. Rewrite using `[dif_neg (by simp only [stdSum_inl, stdSum_inr]; omega), dif_neg (by simp only [stdSum_inl, stdSum_inr]; omega), add_zero, fromBlocks_apply₁₂, Matrix.zero_apply]`. Establish `hj` using `j.2`. Rewrite using `[dif_neg (by simp only [stdSum_inl, stdSum_inr]; omega), dif_neg (by simp only [stdSum_inl, stdSum_inr]; omega), add_zero, fromBlocks_apply₂₁, Matrix.zero_apply]`. Establish `hi` using `i.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hj` using `j.2`. Rewrite using `[dif_neg (by simp only [stdSum_inr]; omega), dif_pos (by simp only [stdSum_inr]; omega), zero_add, fromBlocks_apply₂₂]`. Use `show _ = (b : Matrix (Fin q) (Fin q) R) i j`. Conclude with `congrArg₂ (fun x y => (b : Matrix (Fin q) (Fin q) R) x y) (Fin.ext (by simp)) (Fin.ext (by simp))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dg_mul_dg_eq_emb₂ (n p q : ℕ) (h : p + q = n) (a : GL (Fin p) R) (b : GL (Fin q) R) :
     dg n 0 a * dg n p b = emb₂ R (stdSum h) (a, b) := by
@@ -255,9 +255,9 @@ theorem dg_mul_dg_eq_emb₂ (n p q : ℕ) (h : p + q = n) (a : GL (Fin p) R) (b 
     exact congrArg₂ (fun x y => (b : Matrix (Fin q) (Fin q) R) x y) (Fin.ext (by simp)) (Fin.ext (by simp))
 
 /- English proof (translation)
-Unfold `shuf`. Establish `h1` using `(put_lin_pack R n 0 0 0 0).2.2.2.2.2.1`. Establish `h2` using `(put_lin_pack R n n 0 0 0).2.2.2.2.2.2.1 (1 : Matrix (Fin 0) (Fin 0) R) (Or.inl rfl)`. Rewrite using `[Nat.sub_zero]`. Express the relevant statement in the definitionally equal form `toGL (eye R n 0 0 n + put n n 0 (1 : Matrix (Fin 0) (Fin 0) R)) = 1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h1, h2, add_zero]`. Conclude with `Units.ext (toGL_coe isUnit_one)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shuf_zero' (n : ℕ) : shuf R n 0 = 1 := by
   unfold shuf
@@ -269,7 +269,7 @@ theorem shuf_zero' (n : ℕ) : shuf R n 0 = 1 := by
   exact Units.ext (toGL_coe isUnit_one)
 
 /- English proof (translation)
-Unfold `dg`. Rewrite using `[(put_lin_pack R n 0 0 0 0).2.2.2.2.2.1, (put_lin_pack R n 0 0 0 0).2.2.2.2.2.2.2, sub_self, zero_add]`. Conclude with `toGL_val g`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dg_zero_self (n : ℕ) (g : GL (Fin n) R) : dg n 0 g = g := by
   unfold dg
@@ -281,11 +281,11 @@ end GlobalTheory.GamMul.Hom
 namespace GlobalTheory.GamMul
 
 /- English proof (translation)
-Introduce `R _ n o₁ o₂ p q`. Establish `hone : ∀ M : Matrix (Fin n) (Fin n) R, M = 0 → toGL (1 + M) = 1`. Introduce `M hM`. Rewrite using `[hM, add_zero]`. Conclude with `Units.ext (Hom.toGL_coe isUnit_one)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun hd => ⟨fun X Y => ?_, fun X => ?_⟩, ?_, fun X hX => ?_, Hom.dg_one' n o₁ p, fun hp => ⟨fun g g' => Hom.dg_mul' n o₁ hp g g', fun g => Hom.det_dg' n o₁ hp g⟩, fun h a b => Hom.dg_mul_dg_eq_emb₂ n p q h a b, Hom.shuf_zero' n, Hom.dg_zero_self n⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Hom.uni_coe n o₁ o₂ _ hd, Hom.uni_coe n o₁ o₂ _ hd, Hom.uni_coe n o₁ o₂ _ hd, (put_lin_pack R n o₁ o₂ p q).1, add_mul, mul_add, mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.one_mul, (put_mul_put R n o₁ o₂ o₁ o₂ p q q p X 0 Y).2 (hd.symm.imp id id)]`. Normalize the expressions using the abelian group laws. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GeneralLinearGroup.val_det_apply, Hom.uni_coe n o₁ o₂ _ hd, Hom.det_one_add_put n o₁ o₂ X hd, Units.val_one]`. Conclude with `hone _ (put_lin_pack R n o₁ o₂ p q).2.2.1`. Conclude with `hone _ ((put_lin_pack R n o₁ o₂ p q).2.2.2.2.2.2.1 X hX)`.
+A detailed English derivation is pending.
 -/
 theorem uni_dg_hom : ∀ (R : Type) [CommRing R] (n o₁ o₂ p q : ℕ), ((o₁ + p ≤ o₂ ∨ o₂ + q ≤ o₁) → (∀ X Y : Matrix (Fin p) (Fin q) R, uni n o₁ o₂ (X + Y) = uni n o₁ o₂ X * uni n o₁ o₂ Y) ∧ (∀ X : Matrix (Fin p) (Fin q) R, GeneralLinearGroup.det (uni n o₁ o₂ X) = 1)) ∧ uni n o₁ o₂ (0 : Matrix (Fin p) (Fin q) R) = 1 ∧ (∀ X : Matrix (Fin p) (Fin q) R, (p = 0 ∨ q = 0) → uni n o₁ o₂ X = 1) ∧ dg n o₁ (1 : GL (Fin p) R) = 1 ∧ (o₁ + p ≤ n → (∀ g g' : GL (Fin p) R, dg n o₁ (g * g') = dg n o₁ g * dg n o₁ g') ∧ ∀ g : GL (Fin p) R, GeneralLinearGroup.det (dg n o₁ g) = GeneralLinearGroup.det g) ∧ (∀ (h : p + q = n) (a : GL (Fin p) R) (b : GL (Fin q) R), dg n 0 a * dg n p b = emb₂ R (stdSum h) (a, b)) ∧ shuf R n 0 = 1 ∧ (∀ g : GL (Fin n) R, dg n 0 g = g) := by
   intro R _ n o₁ o₂ p q

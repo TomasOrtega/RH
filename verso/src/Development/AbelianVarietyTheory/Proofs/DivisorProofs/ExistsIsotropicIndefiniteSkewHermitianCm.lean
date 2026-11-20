@@ -10,13 +10,13 @@ noncomputable section
 namespace GlobalTheory.PlaneSkew
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Take `⟨v, rfl⟩ : ∃ v, Q *ᵥ v = u` from `Matrix.mulVec_surjective_iff_isUnit.mpr ((Matrix.isUnit_iff_isUnit_det Q).mpr (isUnit_iff_ne_zero.mpr hQ)) u`. Establish `hs : star (Q *ᵥ v) = Q.map star *ᵥ star v`. Use extensionality with `i`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mulVec, dotProduct, star_sum, mul_comm]`. Establish `key : (Q *ᵥ v) ⬝ᵥ H *ᵥ star (Q *ᵥ v) = v ⬝ᵥ (Qᵀ * H * Q.map star) *ᵥ star v`. Rewrite using `[hs, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec v Qᵀ, Matrix.vecMul_transpose]`. Rewrite `hu` using `[key, hd]`. Establish `h2 : v ⬝ᵥ Matrix.diagonal δ *ᵥ star v = ∑ i, δ i * (Complex.normSq (v i) : ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [dotProduct, Matrix.mulVec_diagonal]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Simplify using `[Pi.star_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hu` using `[h2, Complex.re_sum]`. Use `hu.not_ge (Finset.sum_nonpos fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Complex.re_mul_ofReal]`. Conclude with `mul_nonpos_of_nonpos_of_nonneg (hneg i) (Complex.normSq_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_re_pos_of_congr_diagonal {n : ℕ} (H Q : Matrix (Fin n) (Fin n) ℂ) (δ : Fin n → ℂ)
     (hQ : Q.det ≠ 0) (hd : Qᵀ * H * Q.map star = Matrix.diagonal δ)
@@ -45,13 +45,13 @@ theorem exists_re_pos_of_congr_diagonal {n : ℕ} (H Q : Matrix (Fin n) (Fin n) 
   exact mul_nonpos_of_nonpos_of_nonneg (hneg i) (Complex.normSq_nonneg _)
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ h2`. Use `set V : Submodule F E := LinearMap.ker (σ.toLinearMap - LinearMap.id) with hV`. Establish `mem : ∀ x, x ∈ V ↔ σ x = x` using `fun x => by`. Simplify using `[hV, sub_eq_zero]`. Establish `hle : Submodule.span F {(1 : E)} ≤ V`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Submodule.span_le, Set.singleton_subset_iff, SetLike.mem_coe, mem, map_one]`. Establish `hne : V ≠ ⊤`. Introduce `htop`. Establish `: ξ ∈ V` using `htop ▸ Submodule.mem_top`. Rewrite `this` using `[mem, hξ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h2' : (2 : E) * ξ = 0` using `by linear_combination -this`. Break down `mul_eq_zero.mp h2' with h | h` into its components or cases. Conclude with `two_ne_zero h`. Conclude with `hξ0 h`. Establish `hlt` using `Submodule.finrank_lt hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : Module.finrank F (Submodule.span F {(1 : E)}) = 1` using `finrank_span_singleton one_ne_zero`. Establish `heq` using `Submodule.eq_of_le_of_finrank_le hle (by omega)`. Establish `: e ∈ Submodule.span F {(1 : E)}` using `heq ▸ (mem e).mpr he`. Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.mp this`. Conclude with `⟨a, by rw [Algebra.algebraMap_eq_smul_one, ha]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_algebraMap_eq_of_fixed {F E : Type} [Field F] [Field E] [CharZero E] [Algebra F E]
     (h2 : Module.finrank F E = 2) (σ : E →ₐ[F] E) {ξ : E} (hξ0 : ξ ≠ 0) (hξ : σ ξ = -ξ) {e : E}
@@ -78,9 +78,9 @@ theorem exists_algebraMap_eq_of_fixed {F E : Type} [Field F] [Field E] [CharZero
   exact ⟨a, by rw [Algebra.algebraMap_eq_smul_one, ha]⟩
 
 /- English proof (translation)
-Establish `h1` using `congrArg (fun f : F →+* ℂ => f a) (emb (InfinitePlace.mk (τ.comp (algebraMap F E)))).2`. Simplify using `only [RingHom.comp_apply] at h1`. Rewrite using `[h1]`. Break down `InfinitePlace.embedding_mk_eq (τ.comp (algebraMap F E)) with h | h` into its components or cases. Rewrite using `[h, RingHom.comp_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, ComplexEmbedding.conjugate_coe_eq, RingHom.comp_apply, Complex.conj_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem re_embedding_algebraMap {F E : Type} [Field F] [Field E] [Algebra F E]
     (emb : ∀ w : InfinitePlace F, GlobalTheory.AdelicU.EmbOver E w) (τ : E →+* ℂ) (a : F) :
@@ -94,53 +94,45 @@ theorem re_embedding_algebraMap {F E : Type} [Field F] [Field E] [Algebra F E]
   · rw [h, ComplexEmbedding.conjugate_coe_eq, RingHom.comp_apply, Complex.conj_re]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hcm n J r s hJ hsig hr hs hn`. Take `⟨hTR, hTC, h2, hconj⟩` from `hcm`. Take `⟨τ₀⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hσσ : ∀ x, σ (σ x) = x` using `fun x => τ₀.injective (by rw [hconj, hconj, star_star])`. Distinguish the cases in `hd : J.det = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hd`. Use `⟨fun i => σ (v i), fun h => hv0 (funext fun i => ?_), ?_⟩` and prove the remaining obligations. Use `congrArg σ (congrFun h i)` as an intermediate fact. Simplify `this` using `[hσσ]`. Establish `: (fun i => σ ((fun i => σ (v i)) i)) = v` using `funext fun i => hσσ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `only [form]`. Rewrite using `[this, hv, dotProduct_zero]`. Use `haveI := hTR`. Use `haveI := hTC`. Use `haveI : Algebra.IsQuadraticExtension F E := ⟨h2⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `haveI : IsCMField E := IsCMField.ofCMExtension F E`. Establish `hcc : ∀ a, σ a = IsCMField.complexConj E a` using `fun a => τ₀.injective (by rw [hconj, IsCMField.complexEmbedding_complexConj]; rfl)`. Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀⟩ : ∃ x, σ x ≠ x := by`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Apply `IsCMField.complexConj_ne_one E` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[← hcc, hno]`. Both sides reduce to the same expression. Use `set ξ := x₀ - σ x₀ with hξdef`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hξ : σ ξ = -ξ` using `by rw [hξdef, map_sub, hσσ]; ring`. Establish `hξ0 : ξ ≠ 0` using `sub_ne_zero.mpr (Ne.symm hx₀)`. Use `set G : Matrix (Fin n) (Fin n) E := ξ • J with hG`. Establish `hform : ∀ x, GlobalTheory.UTrans.hf (σ : E →+* E) G x x = ξ * form σ J x x` using `fun x => by`. Simplify using `only [GlobalTheory.UTrans.hf, form, dotProduct, Matrix.mulVec, hG, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.coe_toRingHom]`. Expand and normalize the polynomial expressions, which then agree. Establish `hherm : GlobalTheory.UTrans.IsHerm (σ : E →+* E) G` using `{ invol := hσσ ne_id := ⟨x₀, hx₀⟩ herm := fun a b => by`. Simplify using `only [AlgHom.coe_toRingHom, hG, Matrix.smul_apply, smul_eq_mul, map_mul, hξ, hJ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `det_ne := by`. Rewrite using `[hG, Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ hξ0) hd }`. Establish `hh : ∀ a b, ReciprocityTheory.ChartRestriction.G.FD.cc (G a b) = G b a` using `fun a b => by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hherm.herm a b]`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.cc, AlgHom.coe_toRingHom, hcc]`. Take `⟨P, d, hP, hPg, hdfix, -⟩` from `GlobalTheory.HermDiag.exists_congr_diagonal_herm hh`. Establish `hPg' : Pᵀ * G * P.map σ = Matrix.diagonal d`. Rewrite using `[← hPg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use extensionality with `a b`. Simplify using `[ReciprocityTheory.ChartRestriction.G.FD.cc, hcc]`. Establish `hdσ : ∀ i, σ (d i) = d i` using `fun i => by`. Rewrite using `[hcc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hdfix i`. Establish `hdiag : ∀ i, GlobalTheory.UTrans.hf (σ : E →+* E) G (fun a => P a i) (fun a => P a i) = d i` using `fun i => by`. Use `congrFun (congrFun hPg' i) i` as an intermediate fact. Rewrite `this` using `[Matrix.diagonal_apply_eq]`. Rewrite using `[← this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [GlobalTheory.UTrans.hf, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul, AlgHom.coe_toRingHom]`. Conclude with `Finset.sum_comm`. Establish `hsignE : ∀ w : InfinitePlace F, (∃ i, 0 < ((B.emb w).1 (d i)).re) ∧ ∃ j, ((B.emb w).1 (d j)).re < 0`. Introduce `w`. Use `set φ : E →+* ℂ := (B.emb w).1 with hφ`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hrs, A, hA⟩` from `hsig w`. Establish `hφσ : ∀ x, φ (σ x) = star (φ x)` using `hconj φ`. Establish `hQ : (P.map φ).det ≠ 0`. Establish `h` using `RingHom.map_det φ P`. Rewrite `h` using `[RingHom.mapMatrix_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← h]`. Conclude with `(map_ne_zero φ).mpr hP`. Establish `hdQ : (P.map φ)ᵀ * G.map φ * (P.map φ).map star = Matrix.diagonal (fun i => φ (d i))`. Establish `e1 : (P.map φ).map star = (P.map σ).map φ`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hφσ]`. Rewrite using `[e1, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, hPg', Matrix.diagonal_map (map_zero φ)]`. Use `set c : ℂ := -Complex.I * φ ξ with hc`. Establish `hGM : G.map φ = c • (Complex.I • J.map φ)`. Use extensionality with `a b`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [hG, hc, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`. Take the linear combination `(φ ξ * φ (J a b)) * Complex.I_sq`. Establish `hcol : ∀ k, (fun a => A a k) ⬝ᵥ G.map φ *ᵥ star (fun a => A a k) = c * (Matrix.fromBlocks 1 0 0 (-1) : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ) k k`. Introduce `k`. Rewrite using `[← hA, hGM, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, dotProduct, Matrix.mulVec, Finset.sum_mul, Finset.mul_sum, Pi.star_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hφξ : (φ ξ).re = 0`. Establish `h1` using `congrArg Complex.re (hφσ ξ)`. Rewrite `h1` using `[hξ, map_neg, Complex.neg_re, Complex.star_def, Complex.conj_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hφξ0 : (φ ξ).im ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Introduce `him`. Apply `hξ0` to reduce the goal to its premises. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `Complex.ext hφξ him`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hcre : c.re = (φ ξ).im` using `by simp [hc, hφξ]`. Establish `pos : ∀ u, 0 < (u ⬝ᵥ G.map φ *ᵥ star u).re → ∃ i, 0 < (φ (d i)).re` using `fun u hu => exists_re_pos_of_congr_diagonal _ _ _ hQ hdQ u hu`. Establish `neg : ∀ u, (u ⬝ᵥ G.map φ *ᵥ star u).re < 0 → ∃ i, (φ (d i)).re < 0` using `fun u hu => by`. Take `⟨i, hi⟩` from `exists_re_pos_of_congr_diagonal (-(G.map φ)) _ (fun i => -φ (d i)) hQ (by rw [Matrix.mul_neg, Matrix.neg_mul, hdQ, Matrix.diagonal_neg]) u (by rw [Matrix.neg_mulVec, dotProduct_neg, Complex.neg_re]; linarith)`. Conclude with `⟨i, by simpa using hi⟩`.
-
-Establish `v1` using `hcol (Sum.inl ⟨0, by omega⟩)`. Establish `v2` using `hcol (Sum.inr ⟨0, by omega⟩)`. Simplify using `only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₂₂, Matrix.one_apply_eq, Matrix.neg_apply, mul_one, mul_neg] at v1 v2`. Break down `lt_or_gt_of_ne hφξ0 with h | h` into its components or cases. Conclude with `⟨pos _ (by rw [v2, Complex.neg_re, hcre]; linarith), neg _ (by rw [v1, hcre]; exact h)⟩`.
-
-Conclude with `⟨pos _ (by rw [v1, hcre]; exact h), neg _ (by rw [v2, Complex.neg_re, hcre]; linarith)⟩`. Establish `hre : ∀ (τ : E →+* ℂ) i, (τ (d i)).re = ((B.emb (InfinitePlace.mk (τ.comp (algebraMap F E)))).1 (d i)).re` using `fun τ i => by`. Take `⟨a, ha⟩` from `exists_algebraMap_eq_of_fixed h2 σ hξ0 hξ (hdσ i)`. Rewrite using `[← ha]`. Conclude with `re_embedding_algebraMap B.emb τ a`.
-
-Take `⟨z, hz0, hz⟩` from `GlobalTheory.UTrans.exists_isotropic_of_indefinite E n (σ : E →+* E) G (fun a => hcc a) hherm hn (fun τ => by`. Take `⟨⟨i, hi⟩, j, hj⟩` from `hsignE (InfinitePlace.mk (τ.comp (algebraMap F E)))`. Conclude with `⟨⟨_, by rw [hdiag, hre]; exact hi⟩, _, by rw [hdiag, hre]; exact hj⟩)`. Use `⟨z, hz0, ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[hform]`.
-
-Conclude with `(mul_eq_zero.mp hz).resolve_left hξ0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isotropic_skew : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (r s : ℕ), (∀ i j, σ (J j i) = -J i j) →

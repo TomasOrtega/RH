@@ -14,19 +14,19 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Basic
 namespace UpperTheory.Gal.Mod
 
 /- English proof (translation)
-Conclude with `wtVal fibExt secGen (clopenAt resClosed hensSplit)`.
+A detailed English derivation is pending.
 -/
 theorem wtVal_holds : WtVal := by
   exact wtVal fibExt secGen (clopenAt resClosed hensSplit)
 
 /- English proof (translation)
-Conclude with `cycAll resClosed valLiftB (cycRes wtVal_holds) (cycExt fibExt)`.
+A detailed English derivation is pending.
 -/
 theorem cycAll_holds : CycAll := by
   exact cycAll resClosed valLiftB (cycRes wtVal_holds) (cycExt fibExt)
 
 /- English proof (translation)
-The claim follows from `esPt cycAll_holds`.
+A detailed English derivation is pending.
 -/
 theorem esPt_holds : ESPt := esPt cycAll_holds
 

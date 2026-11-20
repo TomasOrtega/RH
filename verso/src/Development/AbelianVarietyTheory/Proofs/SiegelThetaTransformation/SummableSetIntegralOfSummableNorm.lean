@@ -7,7 +7,7 @@ open scoped ComplexConjugate ComplexOrder Real Classical
 namespace GlobalTheory.SW
 
 /- English proof (translation)
-Conclude with `Summable.of_norm_bounded h fun i => norm_integral_le_integral_norm _`.
+A detailed English derivation is pending.
 -/
 theorem summable_setIntegral_of_summable_norm {I Y : Type} [MeasurableSpace Y] (ν : Measure Y)
     (D : I → Set Y) (f : I → Y → ℂ) (h : Summable fun i => ∫ y in D i, ‖f i y‖ ∂ν) :
@@ -74,11 +74,11 @@ noncomputable def finiteRankFunctional {I Y : Type} [MeasurableSpace Y] (ν : Me
     exact tsum_mul_left
 
 /- English proof (translation)
-Introduce `A I Y _ _ ν D S m e t hS`. Take `⟨g, hg⟩` from `LinearMap.exists_extend (finiteRankFunctional ν D t)`. Use `⟨fun j => g (Pi.single j 1), fun a ha => ?_⟩` and prove the remaining obligations. Establish `hmem : (fun j => e j a) ∈ finiteRankDomain ν D t` using `hS a ha`. Establish `h1 : g (fun j => e j a) = ∑' i, ∫ y in D i, ∑ j, e j a * t j i y ∂ν` using `LinearMap.congr_fun hg ⟨fun j => e j a, hmem⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h1]`. Establish `hx : (fun j => e j a) = ∑ j, e j a • (Pi.single j (1 : ℂ) : Fin m → ℂ)`. Use extensionality with `k`. Simplify using `[Pi.single_apply]`. Rewrite using `[hx, map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finiteRank_integral_mem_span : ∀ (A I Y : Type) [Countable I] [MeasurableSpace Y] (ν : Measure Y) (D : I → Set Y) (S : Set A) (m : ℕ) (e : Fin m → A → ℂ) (t : Fin m → I → Y → ℂ), (∀ a ∈ S, (∀ i, IntegrableOn (fun y => ∑ j, e j a * t j i y) (D i) ν) ∧ Summable fun i => ∫ y in D i, ‖∑ j, e j a * t j i y‖ ∂ν) → ∃ b : Fin m → ℂ, ∀ a ∈ S, ∑' i, ∫ y in D i, ∑ j, e j a * t j i y ∂ν = ∑ j, b j * e j a := by
   intro A I Y _ _ ν D S m e t hS

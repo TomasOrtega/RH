@@ -10,9 +10,9 @@ namespace GlobalTheory.Glob.JetChainLin
 variable {ι : Type} [Fintype ι] {a b : ℕ}
 
 /- English proof (translation)
-Establish `h1 : ((Finsupp.toMultiset e).map F).prod = e.prod fun k n => F k ^ n`. Rewrite using `[Finsupp.toMultiset_map, Finsupp.prod_toMultiset, Finsupp.prod_mapDomain_index]`. Introduce `_`. Simplify using the standard rewrite rules. Introduce `_ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_add]`. Rewrite using `[← h1, hm, Multiset.map_coe, Multiset.prod_coe, List.map_ofFn, List.prod_ofFn]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem prod_pow_eq {σ M : Type} [CommMonoid M] (F : σ → M) (e : σ →₀ ℕ) {n : ℕ} (f : Fin n → σ)
     (hm : Finsupp.toMultiset e = (↑(List.ofFn f) : Multiset σ)) :
@@ -26,7 +26,7 @@ theorem prod_pow_eq {σ M : Type} [CommMonoid M] (F : σ → M) (e : σ →₀ �
   rfl
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.monomial_eq, prod_pow_eq (fun k => (MvPolynomial.X k : MvPolynomial σ ℂ)) e f hm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem monomial_eq_prod {σ : Type} (e : σ →₀ ℕ) {n : ℕ} (f : Fin n → σ)
     (hm : Finsupp.toMultiset e = (↑(List.ofFn f) : Multiset σ)) :
@@ -35,11 +35,11 @@ theorem monomial_eq_prod {σ : Type} (e : σ →₀ ℕ) {n : ℕ} (f : Fin n �
   simp
 
 /- English proof (translation)
-Establish `hG' : ContDiff ℂ ∞ G` using `contDiff_infty.2 hG`. Establish `hc : (Finsupp.toMultiset e).card = n` using `by rw [hm]; simp`. Establish `p : ((List.ofFn f).map coordX).Perm ((Finsupp.toMultiset e).toList.map coordX)`. Use `List.Perm.map _ ?_` and prove the remaining obligations. Rewrite using `[← Multiset.coe_eq_coe, Multiset.coe_toList, hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.cml_perm p n (iteratedFDeriv ℂ _ G 0) (fun v σ => ReciprocityTheory.L2DbarEstimates.Y.zd_iteratedFDeriv_comp_perm isOpen_univ hG'.contDiffOn _ 0 trivial σ v) (by simp) (by simp [hc])`. Establish `h3 : ∀ (n n' : ℕ) (h : n = n') (v : Fin n → VCx ι a b) (w : Fin n' → VCx ι a b), (∀ i, v i = w (i.cast h)) → iteratedFDeriv ℂ n G 0 v = iteratedFDeriv ℂ n' G 0 w`. Introduce `n n' h v w hvw`. Substitute `h` using the available equality. Conclude with `congrArg _ (funext hvw)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Replace the relevant objects with their definitions.
 
-Unfold `derivAt0`. Use `Eq.trans (congrArg _ (funext fun i => ?_)) (h2.trans (h3 _ _ hc.symm _ _ fun i => ?_))` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem derivAt0_eq (G : VCx ι a b → ℂ) (hG : ∀ k : ℕ, ContDiff ℂ k G) (e : DVar ι a b →₀ ℕ) {n : ℕ}
     (f : Fin n → DVar ι a b) (hm : Finsupp.toMultiset e = (↑(List.ofFn f) : Multiset (DVar ι a b))) :
@@ -64,7 +64,7 @@ theorem derivAt0_eq (G : VCx ι a b → ℂ) (hG : ∀ k : ℕ, ContDiff ℂ k G
   · simp
 
 /- English proof (translation)
-Rewrite using `[derivAt0_eq G hG e f hm, jetC, prod_pow_eq (fun k : DVar ι a b => cD k.1) e f hm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jetC_eq (cD : ι → ℂ) (G : VCx ι a b → ℂ) (hG : ∀ k : ℕ, ContDiff ℂ k G) (e : DVar ι a b →₀ ℕ) {n : ℕ}
     (f : Fin n → DVar ι a b) (hm : Finsupp.toMultiset e = (↑(List.ofFn f) : Multiset (DVar ι a b))) :
@@ -72,7 +72,7 @@ theorem jetC_eq (cD : ι → ℂ) (G : VCx ι a b → ℂ) (hG : ∀ k : ℕ, Co
   rw [derivAt0_eq G hG e f hm, jetC, prod_pow_eq (fun k : DVar ι a b => cD k.1) e f hm]
 
 /- English proof (translation)
-Establish `hm : Finsupp.toMultiset (Multiset.toFinsupp (↑(List.ofFn f) : Multiset (DVar ι a b))) = (↑(List.ofFn f) : Multiset (DVar ι a b))` using `Multiset.toFinsupp_toMultiset _`. Rewrite using `[← monomial_eq_prod _ f hm, ← jetC_eq cD G hG _ f hm]`. Use `(MvPolynomial.basisMonomials (DVar ι a b) ℂ).constr_basis ℂ (jetC cD G) (Multiset.toFinsupp (↑(List.ofFn f) : Multiset (DVar ι a b)))` as an intermediate fact. Rewrite `this` using `[MvPolynomial.coe_basisMonomials]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem constr_prod_X (cD : ι → ℂ) (G : VCx ι a b → ℂ) (hG : ∀ k : ℕ, ContDiff ℂ k G) {n : ℕ}
     (f : Fin n → DVar ι a b) :
@@ -100,15 +100,15 @@ noncomputable def subst (g : ι → Matrix (Fin a) (Fin a) ℂ) (h : ι → Matr
 
 omit [Fintype ι] in
 /- English proof (translation)
-Take `⟨t, k, l⟩` from `k`. Use function extensionality and compare the values at `τ i j`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Express the relevant statement in the definitionally equal form `∑ k' : Fin b, ∑ l' : Fin a, h τ i k' * coordX (t, k, l) τ k' l' * g τ l' j = _`. Distinguish the cases in `hτ : τ = t`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails.
 
-Substitute `hτ` using the available equality. Rewrite using `[Finset.sum_eq_single (i, j), Finset.sum_eq_single k, Finset.sum_eq_single l]`. Simplify using `[coordX]`. Introduce `l' _ hl`. Simplify using `[coordX, hl]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `k' _ hk`. Simplify using `[coordX, hk]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨i', j'⟩ _ hne`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Establish `: ¬ (i = i' ∧ j = j')`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hne rfl`. Simplify using `[coordX, this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[coordX, hτ]`.
+A detailed English derivation is pending.
 -/
 theorem subst_coordX (g : ι → Matrix (Fin a) (Fin a) ℂ) (h : ι → Matrix (Fin b) (Fin b) ℂ) (k : DVar ι a b) :
     subst g h (coordX k) =
@@ -135,11 +135,11 @@ theorem subst_coordX (g : ι → Matrix (Fin a) (Fin a) ℂ) (h : ι → Matrix 
   · simp [coordX, hτ]
 
 /- English proof (translation)
-Introduce `ι _ a b cD G g h hG m`. Set `T : VCx ι a b →L[ℂ] VCx ι a b` to `LinearMap.toContinuousLinearMap (subst g h)`. Establish `h1 : (fun z : VCx ι a b => G (fun τ i j => ∑ k : Fin b, ∑ l : Fin a, h τ i k * z τ k l * g τ l j)) = G ∘ T` using `rfl`. Establish `hm : Finsupp.toMultiset m = (↑(List.ofFn (Finsupp.toMultiset m).toList.get) : Multiset (DVar ι a b))`. Rewrite using `[List.ofFn_get, Multiset.coe_toList]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `(Finsupp.toMultiset m).toList.get = f at hm`. Rewrite using `[h1, jetC_eq cD (G ∘ T) (fun k => (hG k).comp T.contDiff) m f hm, monomial_eq_prod m f hm, T.iteratedFDeriv_comp_right (hG _) 0 le_rfl, map_zero, ContinuousMultilinearMap.compContinuousLinearMap_apply, map_prod]`. Establish `h2 : (fun i => T (coordX (f i))) = fun i => ∑ p : Fin b × Fin a, (h (f i).1 p.1 (f i).2.1 * g (f i).1 (f i).2.2 p.2) • coordX ((f i).1, p.1, p.2)`. Use function extensionality and compare the values at `fun i => subst_coordX g h (f i)`. Rewrite using `[h2, ContinuousMultilinearMap.map_sum, Finset.mul_sum]`.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MvPolynomial.aeval_X, ← Fintype.sum_prod_type']`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ, map_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, ← map_prod, ← MvPolynomial.smul_eq_C_mul, map_smul, constr_prod_X cD G hG (fun i => ((f i).1, (r i).1, (r i).2)), ContinuousMultilinearMap.map_smul_univ]`. Simplify using `only [smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

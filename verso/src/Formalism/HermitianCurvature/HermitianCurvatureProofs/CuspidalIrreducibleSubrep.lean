@@ -12,17 +12,17 @@ noncomputable def geoS {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (t : ℂ) : Ma
   ∑ j ∈ Finset.range n, t ^ (n - 1 - j) • (-X) ^ j
 
 /- English proof (translation)
-Establish `hnil : ∀ k : ℕ, ∀ i j : Fin n, (j : ℕ) < i + k → (X ^ k) i j = 0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `i j hij`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_zero, Matrix.one_apply_ne]`. Introduce `h`. Rewrite `hij` using `[h]`. Use linear arithmetic over natural numbers and integers. Consider the case `succ k ih`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Introduce `i j hij`. Rewrite using `[pow_succ, Matrix.mul_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`. Distinguish the cases in `hl : (l : ℕ) < i + k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[ih i l hl, zero_mul]`. Rewrite using `[hX l j (by rw [Fin.le_def]; omega), mul_zero]`. Establish `hXn : X ^ n = 0`. Use extensionality with `i j`. Establish `hj` using `j.isLt`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `[hnil n i j (by omega)]`. Establish `hc : Commute (-X) (t • (1 : Matrix (Fin n) (Fin n) ℂ))` using `(Commute.one_right _).smul_right t`. Establish `h` using `hc.mul_geom_sum₂ n`. Establish `hS : ∑ i ∈ Finset.range n, (-X) ^ i * (t • (1 : Matrix (Fin n) (Fin n) ℂ)) ^ (n - 1 - i) = geoS X t`. Unfold `geoS`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_pow, one_pow, Matrix.mul_smul, mul_one]`. Rewrite `h` using `[hS, smul_pow, one_pow, neg_pow, hXn, mul_zero, zero_sub]`. Establish `e : t • (1 : Matrix (Fin n) (Fin n) ℂ) + X = -(-X - t • 1)` using `by rw [neg_sub, sub_neg_eq_add]`. Rewrite using `[e, neg_mul, h, neg_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem geom {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (hX : IsStrictUpper X) (t : ℂ) :
     (t • (1 : Matrix (Fin n) (Fin n) ℂ) + X) * geoS X t = t ^ n • (1 : Matrix (Fin n) (Fin n) ℂ) := by
@@ -56,7 +56,7 @@ theorem geom {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (hX : IsStrictUpper X) (
   rw [e, neg_mul, h, neg_neg]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular]`. Simplify using `[hX _ _ le_rfl]`. Introduce `i j hij`. Establish `hne : i ≠ j` using `(ne_of_lt hij).symm`. Simplify using `[Matrix.one_apply_ne hne, hX i j hij.le]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem det_shift {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (hX : IsStrictUpper X) (t : ℂ) :
     (t • (1 : Matrix (Fin n) (Fin n) ℂ) + X).det = t ^ n := by
@@ -67,9 +67,9 @@ theorem det_shift {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (hX : IsStrictUpper
     simp [Matrix.one_apply_ne hne, hX i j hij.le]
 
 /- English proof (translation)
-Unfold `geoS`. Establish `key : ∀ m : ℕ, ∑ j ∈ Finset.range m, (ρ ⬝ᵥ ((-X) ^ j *ᵥ B)) * t ^ (n - 1 - j) = ρ ⬝ᵥ ((∑ j ∈ Finset.range m, t ^ (n - 1 - j) • (-X) ^ j) *ᵥ B)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih`. Rewrite using `[Finset.sum_range_succ, Finset.sum_range_succ, ih, Matrix.add_mulVec, dotProduct_add, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, mul_comm (t ^ (n - 1 - k))]`. Conclude with `key n`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_eq_geoS {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (B ρ : Fin n → ℂ) (t : ℂ) :
     ∑ j ∈ Finset.range n, (ρ ⬝ᵥ ((-X) ^ j *ᵥ B)) * t ^ (n - 1 - j) = ρ ⬝ᵥ (geoS X t *ᵥ B) := by
@@ -85,11 +85,11 @@ theorem sum_eq_geoS {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (B ρ : Fin n →
   exact key n
 
 /- English proof (translation)
-Unfold `Mcoord blk`. Simplify using `only [Matrix.reindex_apply]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Use `congr 1`. Rewrite using `[Matrix.fromBlocks_inj]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Mcoord_eq {n : ℕ} (t : ℂ) (X : Matrix (Fin n) (Fin n) ℂ) (B ρ : Fin n → ℂ) (σ : ℂ) :
     Mcoord t X B ρ σ = blk (wMat n) 0 0 1 * blk (t • (1 : Matrix (Fin n) (Fin n) ℂ) + X) B ρ σ := by
@@ -105,13 +105,13 @@ theorem Mcoord_eq {n : ℕ} (t : ℂ) (X : Matrix (Fin n) (Fin n) ℂ) (B ρ : F
   · ext i j; simp [Matrix.mul_apply]
 
 /- English proof (translation)
-Unfold `blk`. Rewrite using `[Matrix.det_reindex_self]`. Establish `hdet : (t • (1 : Matrix (Fin n) (Fin n) ℂ) + X).det = t ^ n` using `det_shift X hX t`. Establish `ht' : t ^ n ≠ 0` using `pow_ne_zero n ht`. Establish `hinv : IsUnit (t • (1 : Matrix (Fin n) (Fin n) ℂ) + X).det` using `by rw [hdet]; exact ht'.isUnit`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI := (t • (1 : Matrix (Fin n) (Fin n) ℂ) + X).invertibleOfIsUnitDet hinv`. Establish `hA : ⅟(t • (1 : Matrix (Fin n) (Fin n) ℂ) + X) = (t ^ n)⁻¹ • geoS X t`. Apply `invOf_eq_right_inv` to reduce the goal to its premises. Rewrite using `[Matrix.mul_smul, geom X hX t, smul_smul, inv_mul_cancel₀ ht', one_smul]`. Rewrite using `[Matrix.det_fromBlocks₁₁, hdet, hA, Matrix.det_unique]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.sub_apply, Matrix.of_apply, Matrix.mul_apply, Matrix.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct]`. Rewrite using `[mul_sub]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem det_blk_ne {n : ℕ} (t : ℂ) (ht : t ≠ 0) (X : Matrix (Fin n) (Fin n) ℂ) (hX : IsStrictUpper X)
     (B ρ : Fin n → ℂ) (σ : ℂ) :
@@ -138,7 +138,7 @@ theorem det_blk_ne {n : ℕ} (t : ℂ) (ht : t ≠ 0) (X : Matrix (Fin n) (Fin n
   try ring
 
 /- English proof (translation)
-Unfold `blk`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_blk_shift {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (B ρ : Fin n → ℂ) (σ : ℂ) :
     Continuous fun t : ℂ => blk (t • (1 : Matrix (Fin n) (Fin n) ℂ) + X) B ρ σ := by
@@ -146,16 +146,14 @@ theorem continuous_blk_shift {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (B ρ : 
   fun_prop
 
 /- English proof (translation)
-Unfold `geoS`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_geoS {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) : Continuous fun t : ℂ => geoS X t := by
   unfold geoS
   fun_prop
 
 /- English proof (translation)
-Distinguish the cases in `ht : t = 0`. Use `swap`. Conclude with `det_blk_ne t ht X hX B ρ σ`. Establish `hc1 : Continuous fun s : ℂ => (blk (s • (1 : Matrix (Fin n) (Fin n) ℂ) + X) B ρ σ).det` using `(continuous_blk_shift X B ρ σ).matrix_det`. Establish `hc2 : Continuous fun s : ℂ => s ^ n * σ - ρ ⬝ᵥ (geoS X s *ᵥ B)` using `((continuous_pow n).mul continuous_const).sub (continuous_const.dotProduct ((continuous_geoS X).matrix_mulVec continuous_const))`.
-
-Establish `heq` using `Continuous.ext_on (dense_compl_singleton (0 : ℂ)) hc1 hc2 (fun s hs => det_blk_ne s hs X hX B ρ σ)`. Conclude with `congrFun heq t`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem det_blk {n : ℕ} (t : ℂ) (X : Matrix (Fin n) (Fin n) ℂ) (hX : IsStrictUpper X)
     (B ρ : Fin n → ℂ) (σ : ℂ) :
@@ -172,9 +170,9 @@ theorem det_blk {n : ℕ} (t : ℂ) (X : Matrix (Fin n) (Fin n) ℂ) (hX : IsStr
   exact congrFun heq t
 
 /- English proof (translation)
-Establish `hW : (blk (wMat n) 0 0 1).det = (wMat n).det`. Unfold `blk`. Rewrite using `[Matrix.det_reindex_self]`. Simplify using `only [Pi.zero_apply]`. Rewrite using `[show (Matrix.of fun _ _ => (0 : ℂ) : Matrix _ (Fin n) ℂ) = 0 from rfl, Matrix.det_fromBlocks_zero₂₁]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Mcoord_eq, Matrix.det_mul, det_blk t X hX, sum_eq_geoS, hW]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_Mcoord {n : ℕ} (t : ℂ) (X : Matrix (Fin n) (Fin n) ℂ) (hX : IsStrictUpper X)
     (B ρ : Fin n → ℂ) (σ : ℂ) :
@@ -189,9 +187,9 @@ theorem det_Mcoord {n : ℕ} (t : ℂ) (X : Matrix (Fin n) (Fin n) ℂ) (hX : Is
   rw [Mcoord_eq, Matrix.det_mul, det_blk t X hX, sum_eq_geoS, hW]
 
 /- English proof (translation)
-Introduce `m D t p hC`. Establish `hX` using `isStrictUpper_strictUpper (redOf m p).2.2.1`. Establish `h` using `det_Mcoord t (strictUpper (redOf m p).2.2.1) hX (redOf m p).2.2.2 (Fin.cons (rhoXY m D t p) (redOf m p).2.1) (redOf m p).1`. Rewrite `h` using `[cornerSplit m _ _ _ _ t]`. Establish `e : detM (MXY m D t p) = (Mcoord t (strictUpper (redOf m p).2.2.1) (redOf m p).2.2.2 (Fin.cons (rhoXY m D t p) (redOf m p).2.1) (redOf m p).1).det` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, h]`. Use `congr 1`. Establish `hC' : Cof (strictUpper (redOf m p).2.2.1) (redOf m p).2.2.2 t ≠ 0` using `hC`. Rewrite using `[rhoXY, rho1, mul_div_cancel₀ _ hC']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem detMXY : DetMXY := by
   intro m D t p hC
@@ -208,21 +206,19 @@ theorem detMXY : DetMXY := by
   ring
 
 /- English proof (translation)
-Introduce `m β t c ht V _ _ _ Φ hint`. Establish `hemb` using `embedding_coordMap (m + 1) t ht`. Establish `hJ` using `jacobian (m + 1) β t ht`. Establish `hfun : blockIntegrand β (m + 1) Φ t c = Fint β m Φ t c ∘ coordMap (m + 1) t`. Use function extensionality and compare the values at `(blockIntegrand_eq β m Φ t c ht)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hpos : (0 : ℝ) < ‖t‖` using `norm_pos_iff.2 ht`. Use `set κ : NNReal := Real.toNNReal ((‖t‖ ^ ((m + 1) * (m + 1 + 3)))⁻¹) with hκ`. Establish `hκ0 : κ ≠ 0`. Rewrite using `[hκ]`. Conclude with `(Real.toNNReal_pos.2 (by positivity)).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : Integrable (Fint β m Φ t c) (muBlock β (m + 1))`. Establish `h : Integrable (Fint β m Φ t c) (Measure.map (coordMap (m + 1) t) (muBlock β (m + 1)))` using `hemb.integrable_map_iff.2 (hfun ▸ hint)`. Rewrite `h` using `[hJ, ENNReal.smul_def]`. Conclude with `(integrable_smul_measure (by simpa using hκ0) ENNReal.coe_ne_top).1 h`. Establish `hmp` using `mp_consMap β m`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : Integrable (fun q => Fint β m Φ t c (consMap m q)) (muRed β m)` using `hmp.integrable_comp_of_integrable hF`. Establish `hcC : Measurable (fun y : (Fin m → ℂ) × (UT (m + 1) → ℂ) × (Fin (m + 1) → ℂ) => Cof (strictUpper y.2.1) y.2.2 t)` using `((continuous_cof m t).comp continuous_snd).measurable`. Use `set α : (Fin m → ℂ) × (UT (m + 1) → ℂ) × (Fin (m + 1) → ℂ) → ℂ := fun y => t ^ (m + 1) / Cof (strictUpper y.2.1) y.2.2 t with hα`. Use `set γ : (Fin m → ℂ) × (UT (m + 1) → ℂ) × (Fin (m + 1) → ℂ) → ℂ := fun y => (-(c * t ^ (m + 1)) - R0 (strictUpper y.2.1) y.2.2 y.1 t) / Cof (strictUpper y.2.1) y.2.2 t with hγ`. Establish `hαm : Measurable α` using `measurable_const.div hcC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγm : Measurable γ` using `(measurable_const.sub (continuous_remainder m t).measurable).div hcC`. Establish `hm` using `affine_fibre ((muPi β (Fin m)).prod ((muPi β (UT (m + 1))).prod (muPi β (Fin (m + 1))))) β α γ hαm hγm ((ae_cof_ne' β t ht m).mono fun y hy => div_ne_zero (pow_ne_zero _ ht) hy)`. Establish `hT : Measurable (fun p : RedCoord m => ((α p.2 * p.1 + γ p.2, p.2) : RedCoord m))` using `by fun_prop`. Establish `hd : Measurable (fun p : RedCoord m => (‖α p.2‖₊ ^ 2 : NNReal))` using `by fun_prop`. Establish `hG' : Integrable (fun q => Fint β m Φ t c (consMap m q)) (Measure.map (fun p : RedCoord m => ((α p.2 * p.1 + γ p.2, p.2) : RedCoord m)) ((muRed β m).withDensity (fun p => ((‖α p.2‖₊ ^ 2 : NNReal) : ENNReal))))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Measure.map (fun p : RedCoord m => ((α p.2 * p.1 + γ p.2, p.2) : RedCoord m)) ((muRed β m).withDensity (fun p => ((‖α p.2‖₊ ^ 2 : NNReal) : ENNReal))) = muRed β m` using `hm`. Rewrite using `[this]`. Conclude with `hG`. Establish `h5` using `hG'.comp_measurable hT`. Establish `h6` using `(integrable_withDensity_iff_integrable_smul hd).1 h5`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h7 : Integrable (fun q : RedCoord m => ((‖t‖ ^ (2 * (m + 1)) : ℝ) : ℂ) • redIntegrand β m Φ (c * t ^ (m + 1)) t q) (muRed β m)`. Use `h6.congr (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Use `pointwise_red β m Φ t c ht q` as an intermediate fact. Simplify using `only [NNReal.smul_def, NNReal.coe_pow, coe_nnnorm, Function.comp]`. Rewrite using `[← Complex.coe_smul]`.
-
-Conclude with `this`. Establish `hne : ((‖t‖ ^ (2 * (m + 1)) : ℝ) : ℂ) ≠ 0`. Rewrite using `[Ne, Complex.ofReal_eq_zero]`. Check the signs of the components of the expression. Conclude with `(integrable_smul_iff hne _).1 h7`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem redIntegrable : RedIntegrable := by
   intro m β t c ht V _ _ _ Φ hint
@@ -275,13 +271,13 @@ theorem redIntegrable : RedIntegrable := by
   exact (integrable_smul_iff hne _).1 h7
 
 /- English proof (translation)
-Introduce `hOm hRI hSplit hAmp m β t c ht V _ _ _ Φ hint`. Establish `hmp` using `(hSplit m β).2`. Establish `i1 : PolishSpace (XY m)` using `inferInstance`. Establish `i2 : StandardBorelSpace (XY m)` using `inferInstance`. Establish `i3 : SecondCountableTopology (RedCoord m)` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i4 : MeasurableSpace.CountablyGenerated (RedCoord m)` using `inferInstance`. Establish `i5 : MeasurableSpace.CountablySeparated (RedCoord m)` using `inferInstance`. Establish `hemb : MeasurableEmbedding (redOf m)` using `hmp.measurable.measurableEmbedding (hSplit m β).1.injective`. Establish `hfun : (fun p : XY m => psi β (g0 ((-1) ^ (m + 3) * (c * t ^ (m + 1))) p.1 / t) • amp β m Φ (c * t ^ (m + 1)) t p) = redIntegrand β m Φ (c * t ^ (m + 1)) t ∘ redOf m`. Use function extensionality and compare the values at `fun p => hAmp m β (c * t ^ (m + 1)) t ht V Φ p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `hRI m β t c ht V Φ hint`. Establish `h2` using `hOm m β t c ht V Φ hint`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun]`. Conclude with `(hmp.integrable_comp_emb hemb).2 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, hfun]`. Conclude with `(hmp.integral_comp hemb _).symm`.
+A detailed English derivation is pending.
 -/
 theorem innerXYOfReduced : InnerXYOfReduced := by
   intro hOm hRI hSplit hAmp m β t c ht V _ _ _ Φ hint
@@ -309,17 +305,17 @@ end Formalism.FourierDecayAlt.P.CuspidalIrreducibleSubrep
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `CuspidalIrreducibleSubrep.detMXY`.
+A detailed English derivation is pending.
 -/
 theorem det_matrix_xy : Formalism.FourierDecayAlt.G.DetMXY := CuspidalIrreducibleSubrep.detMXY
 
 /- English proof (translation)
-The claim follows from `CuspidalIrreducibleSubrep.redIntegrable`.
+A detailed English derivation is pending.
 -/
 theorem reduced_integrand_integrable : Formalism.FourierDecayAlt.G.RedIntegrable := CuspidalIrreducibleSubrep.redIntegrable
 
 /- English proof (translation)
-The claim follows from `CuspidalIrreducibleSubrep.innerXYOfReduced`.
+A detailed English derivation is pending.
 -/
 theorem inner_xy_of_reduced : Formalism.FourierDecayAlt.G.InnerXYOfReduced := CuspidalIrreducibleSubrep.innerXYOfReduced
 

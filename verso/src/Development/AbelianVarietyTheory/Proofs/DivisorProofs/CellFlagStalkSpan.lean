@@ -8,9 +8,9 @@ open GlobalTheory.QCoh (freeModule)
 open GlobalTheory.Twist (resM)
 
 /- English proof (translation)
-Introduce `ι _ N w τ l y hy`. Unfold `colSpan`. Use `congr 1`. Use extensionality with `v`. Simplify using `only [Set.mem_setOf_eq, Matrix.GeneralLinearGroup.map_apply, cellCol, map_sum, GlobalTheory.QCoh.germ_smul, GlobalTheory.Twist.germ_resM, stalkStd, RingHom.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `exists_congr fun j => and_congr_right fun _ => ?_` and prove the remaining obligations. Use `Eq.congr_right (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Conclude with `congrArg _ (VB.IsFrame.stalkBasis_apply _ _ _ _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FlagZ.Univ.colSpan_germ_cellGL : ∀ (ι : Type) [Fintype ι] (N : ℕ) (w : ι → Equiv.Perm (Fin N)) (τ : ι) (l : ℕ) (y : Fl ι N) (hy : y ∈ cellOpen ι N w), colSpan (Matrix.GeneralLinearGroup.map (((Fl ι N).presheaf.germ (cellOpen ι N w) y hy).hom.comp (cellRing ι N w)) (cellGL Prod.fst Prod.snd w τ)).1 l = Submodule.span _ {v | ∃ j : Fin N, (j : ℕ) < l ∧ v = (freeModule (Fl ι N) (Fin N)).presheaf.germ (cellOpen ι N w) y hy (cellCol ι N w τ j)} := by
   intro ι _ N w τ l y hy

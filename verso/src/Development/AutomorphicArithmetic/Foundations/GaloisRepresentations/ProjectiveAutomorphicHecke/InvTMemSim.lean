@@ -17,18 +17,18 @@ Both sides reduce to the same expression.
 theorem invT_val {n : ℕ} {R : Type} [CommRing R] (g : GL (Fin n) R) : (invT n R g).val = (g⁻¹).valᵀ := rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[invT_val, ← map_inv, invT_val, inv_inv, transpose_transpose]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem invT_invT' {n : ℕ} {R : Type} [CommRing R] (g : GL (Fin n) R) : invT n R (invT n R g) = g := by
   apply Units.ext
   rw [invT_val, ← map_inv, invT_val, inv_inv, transpose_transpose]
 
 /- English proof (translation)
-Establish `h1` using `mem_Sim.1 h`. Establish `h2 : p.1.valᵀ * p.1.val.map σ = i p.2 • (1 : Matrix (Fin n) (Fin n) A)`. Use `congrArg transpose h1` as an intermediate fact. Rewrite `this` using `[transpose_mul, transpose_transpose, transpose_smul, transpose_one]`. Then use the resulting hypothesis. Establish `h3 : i (p.2⁻¹ : Bˣ) * i p.2 = 1` using `by rw [← map_mul, Units.inv_mul, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h4 : (p.1⁻¹).valᵀ * p.1.valᵀ = 1` using `by rw [← transpose_mul, Units.mul_inv, transpose_one]`. Establish `h5 : (p.1⁻¹).val.map σ * p.1.val.map σ = 1`. Rewrite using `[← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero σ) (map_one σ)]`. Establish `h6 : p.1.val.map σ = i p.2 • (p.1⁻¹).valᵀ`. Rewrite using `[← Matrix.one_mul (p.1.val.map σ), ← h4, Matrix.mul_assoc, h2, Matrix.mul_smul, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mem_Sim.2 ?_` and prove the remaining obligations. Use `show (((p.1⁻¹).valᵀ).map σ)ᵀ * (p.1⁻¹).valᵀ = i (p.2⁻¹ : Bˣ) • 1`. Rewrite using `[transpose_map, transpose_transpose, ← h5, h6, Matrix.mul_smul, smul_smul, h3, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invT_mem_Sim {A B : Type} [CommRing A] [CommRing B] {σ : A →+* A} {i : B →+* A} {n : ℕ} {p : GL (Fin n) A × Bˣ}
     (h : p ∈ Sim σ i n) : (invT n A p.1, p.2⁻¹) ∈ Sim σ i n := by
@@ -66,29 +66,29 @@ Both sides reduce to the same expression.
 @[simp] theorem mat_th (g : GUf E n) : mat (th g) = invT n _ (mat g) := rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SplitPts.invT_map _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem comp_th (w : Plc E) (g : GUf E n) : comp w (th g) = invT n _ (comp w g) := GlobalTheory.SplitPts.invT_map _ _
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Prod.ext (invT_invT' _) (inv_inv _))`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem th_th (g : GUf E n) : th (th g) = g := Subtype.ext (Prod.ext (invT_invT' _) (inv_inv _))
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Prod.ext (GlobalTheory.SplitPts.invT_map _ _).symm (map_inv (Units.map (algebraMap ℚ AfQ).toMonoidHom) _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem th_rat (γ : Gam0 E n) : th (rat γ) = rat (th0 γ) :=
   Subtype.ext (Prod.ext (GlobalTheory.SplitPts.invT_map _ _).symm (map_inv (Units.map (algebraMap ℚ AfQ).toMonoidHom) _).symm)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Prod.ext (Units.ext (GlobalTheory.SplitPts.matAf_ext fun w => congrArg Units.val (h2 w))) h1)`.
+A detailed English derivation is pending.
 -/
 theorem guf_ext {g g' : GUf E n} (h1 : sim g = sim g') (h2 : ∀ w, comp w g = comp w g') : g = g' :=
   Subtype.ext (Prod.ext (Units.ext (GlobalTheory.SplitPts.matAf_ext fun w => congrArg Units.val (h2 w))) h1)
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `h`. Conclude with `⟨invT n _ z, GlobalTheory.SplitPts.invT_map _ z⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem invT_mem_KGL {w : Plc E} {y : GLw n w} (h : y ∈ KGL w n) : invT n _ y ∈ KGL w n := by
   obtain ⟨z, rfl⟩ := h
@@ -97,7 +97,7 @@ theorem invT_mem_KGL {w : Plc E} {y : GLw n w} (h : y ∈ KGL w n) : invT n _ y 
 def levT (Kw : ∀ w : Plc E, Subgroup (GLw n w)) : ∀ w : Plc E, Subgroup (GLw n w) := fun w => (Kw w).comap (invT n _)
 
 /- English proof (translation)
-Simplify using `only [mem_lev, sim_th, comp_th, inv_mem_iff, levT, Subgroup.mem_comap]`. Use `and_congr_right fun _ => and_congr_right fun _ => forall₃_congr fun w _ _ => ⟨fun h => ?_, invT_mem_KGL⟩` and prove the remaining obligations. Simplify using `using invT_mem_KGL h`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem th_mem_lev {S : Finset (Plc E)} {Kw : ∀ w : Plc E, Subgroup (GLw n w)} {k : GUf E n} :
     th k ∈ lev S Kw ↔ k ∈ lev S (levT Kw) := by
@@ -151,17 +151,17 @@ def ThLoc : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : 
     (0 < n → ∀ (x : E) (w : Plc E) (z : GUf E n), IsCen x w z → th z = z⁻¹)
 
 /- English proof (translation)
-Introduce `E _ _ _ n hn d x hd hx π W hW c Up hUp w₀ hw₀ hu J χ hJo hJc hT`. Take `⟨S, Kw, Φ, κ, hS, hJ, hχ, -, -, hsph, hΦ, hκ⟩` from `h0 E n hn d x hd hx π W hW (jOf W c) Up hUp w₀ hw₀ hu J χ hJo hJc hT`. Establish `hS' : Shape Up w₀ S (levT Kw)`. Use `⟨hS.mem, fun w hw => (hS.opn w hw).preimage (GlobalTheory.SplitPts.continuous_invT _), fun w hw => ?_, fun w hw hne y hy => ?_, hS.up⟩` and prove the remaining obligations. Use `(hS.cpt w hw).image (GlobalTheory.SplitPts.continuous_invT (n := n) _) using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `y`. Conclude with `⟨fun h => ⟨_, h, invT_invT' y⟩, fun ⟨z, hz, e⟩ => e ▸ (show invT n _ (invT n _ z) ∈ Kw w by rwa [invT_invT'])⟩`. Simplify using `using invT_mem_KGL (hS.le w hw hne hy)`. Use `⟨S, levT Kw, fun g => Φ (th g), κ, hS', by rw [levT, hJ], hχ, h3 E n S _ hS'.opn, h4 E n Up w₀ hw₀ S _ hS', hsph, fun h => hΦ.ne (funext fun g => by simpa using congrFun h (th g)), fun γ g => ?_, fun k hk h g => ?_, fun w hw a b B hB => ?_, hκ.alg, hκ.unr, fun w a b z hz g => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, th_rat, hΦ.left, h1]`.
+By extensionality, compare the relevant components. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : comp w₀ (th k) ∈ J` using `by rwa [comp_th]`. Rewrite using `[map_mul, hΦ.right _ (th_mem_lev.2 hk) h']`. Use `congr 3`. Take `⟨s1, s2, s3, s4⟩` from `hΦ.sat w hw a b B hB`. Set `L : (GUf E n → Module.Dual ℂ W.Sp) ≃ₗ[ℂ] (GUf E n → Module.Dual ℂ W.Sp)` to `LinearEquiv.funCongrLeft ℂ _ ⟨th, th, th_th, th_th⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hL : ∀ y Ψ, L (((rightReg ℂ (GUf E n) (Module.Dual ℂ W.Sp)).comp (loc hw)) y Ψ) = (((rightReg ℂ (GUf E n) (Module.Dual ℂ W.Sp)).comp (loc hw)).comp (invT n _)) y (L Ψ)` using `fun y Ψ => funext fun g => by show Ψ (th g * loc hw y) = Ψ (th (g * loc hw (invT n _ y)))`. Rewrite using `[map_mul, (h2 E n).1, invT_invT']`. Use `⟨fun h => s1 (L.map_eq_zero_iff.1 h), GlobalTheory.LGrp.mem_fixed.2 fun k hk => ?_, s3, fun p hp i hi => ?_⟩` and prove the remaining obligations. Conclude with `(hL k Φ).symm.trans (congrArg L (GlobalTheory.LGrp.mem_fixed.1 s2 k hk))`. Establish `e` using `congrArg L (s4 p hp i hi)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[map_smul]`. Use `Eq.trans ?_ e` and prove the remaining obligations. Unfold `heckeVec`. Rewrite using `[show L (∑ᶠ c, _) = _ from L.toAddEquiv.map_finsum _]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((congrArg _ (hL _ Φ)).symm.trans (L.map_smul _ _).symm)`. Rewrite using `[map_mul, map_inv, (h2 E n).2 hn x w z hz, inv_inv, hκ.cen w a b z hz]`.
+A detailed English derivation is pending.
 -/
 theorem seedG_of (h0 : SeedGU) (h1 : XiTh) (h2 : ThLoc) (h3 : LevOpen) (h4 : LevCompact) : SeedG := by
   intro E _ _ _ n hn d x hd hx π W hW c Up hUp w₀ hw₀ hu J χ hJo hJc hT

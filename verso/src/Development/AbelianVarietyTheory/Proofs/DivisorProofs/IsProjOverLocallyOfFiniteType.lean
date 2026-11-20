@@ -19,7 +19,7 @@ open GlobalTheory.FlatModel
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce and unpack `R _ X s ⟨N, i, hi, rfl⟩`. Use `haveI := ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str R N`. Use `infer_instance`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isProjOver_locallyOfFiniteType : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R),
     IsProjOver s → LocallyOfFiniteType s := by

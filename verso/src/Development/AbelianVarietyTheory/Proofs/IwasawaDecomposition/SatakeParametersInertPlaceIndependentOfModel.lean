@@ -17,9 +17,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.SatInd
 
 /- English proof (translation)
-Introduce `L _ _ _ n π π' hiso v w _ Dv Dv' α hsat`. Establish `h1 : NG.SatAt π Dv' α`. Take `⟨f, hfS, hf0, U, hU, hUv, hH⟩` from `hsat`. Use `⟨f, hfS, hf0, U, hU, hUv, fun h' hh' => ?_⟩` and prove the remaining obligations. Establish `hm : 2 * (n / 2) ≤ n` using `Nat.mul_div_le n 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.T.inertHeckeOperator_indep_of_inertDatum L n v w Dv Dv' U _ h' hh'.1 f, hH _ (GlobalTheory.T.heckeAlgebra_comp_unitaryGroupAntidiagTransport_mem (gEquiv Dv Dv') (gEquiv_comm Dv Dv') (gEquiv_intL Dv Dv') n h' hh'), GlobalTheory.T.unitarySatake_invariant_antidiagTrans …`. Conclude with `GlobalTheory.T.inertSatakeParameters_eq_of_iso L n π π' hiso v w Dv' α (GlobalTheory.T.finite_inertHecke_support_cosets L n v w Dv' (GlobalTheory.T.unitary_doubleCoset_finite_left_cosets Dv'.ϖ Dv'.σw _ n Dv'.unram) (GlobalTheory.T.mem_maxCompact_of_trivOutside_local_integral L n …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem satAt_indep : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (π π' : NG.AutRep L n), π.Iso π' → ∀ v w, NG.OverPl w v → ∀ (Dv Dv' : InertDatum L n v w) α, NG.SatAt π Dv α → NG.SatAt π' Dv' α := by
   intro L _ _ _ n π π' hiso v w _ Dv Dv' α hsat

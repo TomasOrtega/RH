@@ -11,9 +11,9 @@ namespace Formalism.MainNotions.PairMembershipBlocks
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNotions.SourceCleaning Formalism.MainNotions.Pf14 Formalism.MainNotions.PlaneGramData Formalism.MainNotions.TestSideCounting Formalism.MainNotions.TestSideWords Formalism.MainNotions.G.GLWeightTheory
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.coeff_sum]`. Simplify using `only [MvPolynomial.coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h0 : F.coeff mo = 0` using `by simpa [MvPolynomial.mem_support_iff] using h`. Rewrite using `[h0, hg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_sumSupp {σ R S : Type*} [CommSemiring R] [CommSemiring S] (F : MvPolynomial σ R) (g : R → S)
     (hg : g 0 = 0) (mo : σ →₀ ℕ) : (∑ x ∈ F.support, monomial x (g (F.coeff x))).coeff mo = g (F.coeff mo) := by
@@ -30,11 +30,11 @@ def tens {σ τ Kf : Type} [Field Kf] (A : MvPolynomial σ Kf) (G : MvPolynomial
   ∑ mo ∈ A.support, monomial mo (A.coeff mo • G)
 
 /- English proof (translation)
-Use extensionality with `mo`. Establish `h1 : (tens A G).coeff mo = A.coeff mo • G`. Unfold `tens`. Conclude with `coeff_sumSupp A (fun a => a • G) (by simp) mo`. Establish `h2 : ∀ T : MvPolynomial σ (MvPolynomial τ Kf), (oneT e T).coeff mo = e (T.coeff mo)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T`. Unfold `oneT`. Conclude with `coeff_sumSupp T e (by simp) mo`. Establish `h3 : ∀ X : MvPolynomial σ (MvPolynomial τ Kf), (planeCoeff nu X).coeff mo = (X.coeff mo).coeff nu`. Introduce `X`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `planeCoeff`. Conclude with `coeff_sumSupp X (fun q => q.coeff nu) (by simp) mo`. Rewrite using `[h3, h2, h1, LinearMap.map_smul]`. Simplify using `only [MvPolynomial.coeff_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem planeCoeff_oneT_tens {σ τ Kf : Type} [Field Kf] (e : Module.End Kf (MvPolynomial τ Kf)) (nu : τ →₀ ℕ)
     (A : MvPolynomial σ Kf) (G : MvPolynomial τ Kf) :
@@ -60,9 +60,9 @@ def compD {ι : Type} {s : ℕ} {Kf : Type} [Field Kf] (d : ι → ℕ) (H : MvP
   ∑ mo ∈ H.support.filter (fun mo => ∀ x, multideg mo x = d x), monomial mo (H.coeff mo)
 
 /- English proof (translation)
-Unfold `compD`. Use `Submodule.sum_mem _ (fun mo hmo => ?_)` and prove the remaining obligations. Rewrite `hmo` using `[Finset.mem_filter]`. Unfold `Pol`. Rewrite using `[MvPolynomial.mem_restrictSupport_iff]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Establish `hx'` using `MvPolynomial.support_monomial_subset hx`. Rewrite `hx'` using `[Finset.mem_singleton]`. Substitute `hx'` using the available equality. Conclude with `hmo.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem compD_mem_Pol {ι : Type} {s : ℕ} {Kf : Type} [Field Kf] (d : ι → ℕ) (H : MvPolynomial (ι × Fin s) Kf) :
     compD d H ∈ Pol Kf s d := by
@@ -218,29 +218,25 @@ def RestArithStep (C CLa : ℝ) : Prop :=
           1 / 8 * slU F p (flatDeg lam0) Y (r + K) Dt.nL jj (Dt.nL jj + (r - 1 - mm.val))
 
 /- English proof (translation)
-Introduce `p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r hpF _ TT L₁ L₂ de h' x lam0 aT bT a Y cpp c0 Dp cStar K _ _ hk hrk F nb B hD E' xs hxs l hl ga hga J _ Dt dPl dNo ka hTd rho hb e he nu`. Establish `S : UniformizedDVR p O` using `dvrOfStd hD.1`. Establish `hK : CharZero (KK O)` using `dvr_fraction_field_char_zero hpF.out S`. Establish `hR : AdmissibleDVR p n' O` using `Formalism.MainNotions.flipOneThree.admissible_dvr_of_unramified_quadratic_setting hD.1`. Establish `hV` using `hD.2.2.1.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : Even n'` using `hD.1.1.even`. Take `⟨t1, t2, t3, t4, t5, t6, t7, t8, t9⟩` from `hTd`. Establish `hS : TieS F Dt` using `⟨t1, t2, t3, t5, t6, t7⟩`. Establish `hgaP : PlaneEven r ga` using `hSP p n' r (m + 1) O F hrk _ _ L₁ _ hV hev (NeZero.pos r) ga hga`. Take `⟨hJ2, hAr'⟩` from `hAr p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h' x lam0 aT bT a Y cpp c0 Dp cStar K hk F nb B hD`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set mS : ℕ := mStar p F (r + K) (orbitWindowCount r de h' x) (p ^ goodG' r de h' x) (cPrime n' r TT.card c0 cpp cStar) with hmS`. Establish `hex : ∀ z : ℤ, ∃ (A : MvPolynomial (ℤ × Fin r) O) (G : MvPolynomial (ℤ × Fin K) O) (M : ℤ → ℤ), (0 ≤ z → z < F.J → A ∈ supported O {v : ℤ × Fin r | v.1 ∈ F.letters z} ∧ G ∈ supported O {v : ℤ × Fin K | v.1 ∈ F.letters z ∧ ¬ F.IsW z v.1} ∧ (∀ x ∈ F.letters z, ¬ F.IsW z x → (Even x …`. Introduce `z`. Distinguish the cases in `hz : 0 ≤ z ∧ z < F.J`. Take `⟨i, rfl⟩` from `Int.eq_ofNat_of_zero_le hz.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨A, G, M, h1, h2, h3, h4⟩` from `hxs i (by exact_mod_cast hz.2)`. Conclude with `⟨A, G, M, fun _ _ => ⟨h1, h2, h3, h4⟩⟩`. Conclude with `⟨0, 0, 0, fun h1 h2 => absurd ⟨h1, h2⟩ hz⟩`. Use `choose A G M hAGM using hex`. Establish `hnat : ∀ i : ℕ, i < F.J → (0 : ℤ) ≤ (i : ℤ) ∧ (i : ℤ) < F.J` using `fun i hi => ⟨Int.natCast_nonneg i, by exact_mod_cast hi⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAs : ∀ i : ℕ, i < F.J → A i ∈ supported O {v : ℤ × Fin r | v.1 ∈ F.letters i}` using `fun i hi => (hAGM i (hnat i hi).1 (hnat i hi).2).1`. Establish `hGs : ∀ i : ℕ, i < F.J → G i ∈ supported O {v : ℤ × Fin K | v.1 ∈ F.letters i ∧ ¬ F.IsW i v.1}` using `fun i hi => (hAGM i (hnat i hi).1 (hnat i hi).2).2.1`. Establish `hsym : symG p O hk F l ga xs = symG p O hk F l ga fun z => plEmb O r K (A z) * nmEmb O r K (G z)`. Unfold `symG`. Use `congr 4`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[(hAGM i (hnat i (Finset.mem_range.1 hi)).1 (hnat i (Finset.mem_range.1 hi)).2).2.2.2]`. Rewrite using `[hsym, hT p n' r K m O hk F L₁ _ hV J Dt.nL t1 t2 A G hAs hGs l hl ga hgaP rho dPl dNo]`. Use `split_ifs with hlow`. Use `swap`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[oneT_zero, planeCoeff_zero]`. Conclude with `XX_zero Dt`. Rewrite using `[planeCoeff_oneT_tens]`. Distinguish the cases in `he0 : e (compD dNo (levN F p hk Dt.nL (zNo p O hk F G))) = 0`. Rewrite using `[he0, coeff_zero, zero_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `XX_zero Dt`. Apply `XX_smul` to reduce the goal to its premises. Establish `hseg : ∀ jj : ZMod J, (0 : ℤ) ≤ segZ jj ∧ segZ jj < F.J`. Introduce `jj`. Use `⟨Int.natCast_nonneg _, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ZMod.val_lt jj` as an intermediate fact. Unfold `segZ`. Rewrite using `[← t1]`. Conclude with `this` after adjusting the coercions. Establish `hNN` using `hN p n' r K m O S hR hk F L₁ _ hV hev J Dt hS G hGs dNo ka e he he0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hval : ∀ (jj : ZMod J) (u : ℕ), u < Dt.nL jj + r → geZ (valS LZ {y | y < posU F (Dt.nL jj) (segZ jj) u} (A (segZ jj))) (thStar F p (flatDeg lam0) Y (r + K) mS Dt.nL K ka jj u)`. Introduce `jj`. Take `⟨g1, g2, g3, -⟩` from `hAGM (segZ jj) (hseg jj).1 (hseg jj).2`. Conclude with `hTh p n' r K O F L₁ _ hV (flatDeg lam0) Y mS J Dt.nL t1 t2 jj (A (segZ jj)) (G (segZ jj)) (M (segZ jj)) g1 g3 ka (hNN jj)`. Take `⟨hch, hlk⟩` from `hP p n' r K m O hk F L₁ _ hV hev J Dt hS (by rw [t1]; exact hJ2) A hAs l hl ga hgaP (fun jj u => thStar F p (flatDeg lam0) Y (r + K) mS Dt.nL K ka jj u) hval dPl`.
-
-Use `⟨by rw [t4]; exact compD_mem_Pol _ _, fun rho' jj i => ?_, fun jj mm hmm => ?_⟩` and prove the remaining obligations. Rewrite using `[t8 jj i, zero_mul, sub_zero]`. Conclude with `hch rho' jj i`. Rewrite using `[t9 jj mm hmm]`. Establish `h8` using `hAr' E' l hl ga hgaP J Dt hS dPl dNo rho hb hlow jj mm hmm`.
-
-Introduce `k hk'`. Establish `h9` using `hlk jj mm hmm k hk'`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rest5aPairBStep_of (hT : RestT) (hN : RestN) (hTh : RestTh) (hP : RestPl) (hSP : RestSP) (C CLa : ℝ)
     (hAr : RestArithStep C CLa) : PlanePairsOnBlocksAt C CLa := by
@@ -321,7 +317,7 @@ theorem rest5aPairBStep_of (hT : RestT) (hN : RestN) (hTh : RestTh) (hP : RestPl
     linarith
 
 /- English proof (translation)
-Apply `rest5aMono_of_B` to reduce the goal to its premises. Introduce `_`. Take `⟨C₁, hC₁, hC⟩` from `hAr`. Conclude with `⟨C₁, hC₁, fun C hC' => rest5aPairBStep_of hT hN hTh hP hSP C CLa (hC C hC' CLa)⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rest5aMono_of_cut (hT : RestT) (hN : RestN) (hTh : RestTh) (hP : RestPl) (hSP : RestSP)
     (hAr : ∃ C₁ : ℝ, 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → ∀ CLa : ℝ, RestArithStep C CLa)

@@ -8,35 +8,31 @@ open CategoryTheory AlgebraicGeometry NumberField MvPolynomial GlobalTheory.Comp
 namespace GlobalTheory.CompanionTheory.Ar.HT
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y S Ω _ K _ J _ y 𝔐 p _ hpS o _ _ ho Dc hfam s t w hw`. Establish `hp : p.Prime` using `Fact.out`. Establish `hT : CoordTie ℤ 𝔐.ξ (mseg y)` using `𝔐.tie`. Establish `hs0 : mseg y s.1 ≠ 0` using `s.2`. Establish `ht0 : mseg y t.1 ≠ 0` using `t.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfA : (mseg y s.1 / mseg y t.1) ∈ chartRing ℤ (mseg y) t.1` using `div_mem_chartRing (mseg y) t.1 s.1`. Establish `hle : ∀ a ∈ chartRing ℤ (mseg y) t.1, a ∈ chartRing o (mseg y) t.1`. Introduce `a ha`. Establish `h2 : chartRing ℤ (mseg y) t.1 ≤ (chartRing o (mseg y) t.1).restrictScalars ℤ` using `Algebra.adjoin_le (Algebra.subset_adjoin (R := o))`. Conclude with `h2 ha`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsm : ∀ a ∈ chartRing o (mseg y) t.1, ∀ e ∈ (Dc t).om, a • e ∈ (Dc t).om`. Introduce `a ha e he`. Use `(Dc t).om.smul_mem (⟨a, ha⟩ : chartRing o (mseg y) t.1) he` as an intermediate fact. Rewrite `this` using `[Subalgebra.smul_def]`. Then use the resulting hypothesis. Establish `hinv : ∀ b : ℕ, ¬ p ∣ b → ((b : Ω))⁻¹ ∈ chartRing o (mseg y) t.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b hb`. Take `⟨r, hr⟩` from `(ho ((b : Ω))⁻¹).2 ⟨1, b, hb, by simp⟩`. Rewrite using `[← hr]`. Conclude with `Subalgebra.algebraMap_mem _ r`. Assume the negation of the conclusion as `hcon`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at hcon`. Set `I : Ideal (chartRing ℤ (mseg y) t.1)` to `{ carrier := {a | (a : Ω) • w ∈ (Dc t).om} add_mem' := fun {u v} hu hv => by show ((u + v : chartRing ℤ (mseg y) t.1) : Ω) • w ∈ (Dc t).om`. Rewrite using `[Subalgebra.coe_add, add_smul]`. Conclude with `add_mem hu hv`. Use the proof step `zero_mem' := by show ((0 : chartRing ℤ (mseg y) t.1) : Ω) • w ∈ (Dc t).om`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Use the proof step `smul_mem' := fun a u hu => by show ((a • u : chartRing ℤ (mseg y) t.1) : Ω) • w ∈ (Dc t).om`. Rewrite using `[smul_eq_mul, Subalgebra.coe_mul, mul_smul]`. Conclude with `hsm _ (hle _ a.2) _ hu }`. Set `T : Submonoid (chartRing ℤ (mseg y) t.1)` to `{ carrier := {u | ∃ b n : ℕ, ¬ p ∣ b ∧ (b : Ω) ≠ 0 ∧ (u : Ω) = (b : Ω) * (mseg y s.1 / mseg y t.1) ^ n} one_mem' := ⟨1, 0, hp.not_dvd_one, by simp, by simp⟩ mul_mem' := by`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `u v ⟨b, n, hb, hb0, hu⟩ ⟨b', n', hb', hb0', hv⟩`. Use `⟨b * b', n + n', fun h => (hp.dvd_mul.1 h).elim hb hb', by push_cast; exact mul_ne_zero hb0 hb0', ?_⟩` and prove the remaining obligations. Rewrite using `[Subalgebra.coe_mul, hu, hv]`. Use `push_cast`. Use `ring }`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hdisj : Disjoint (I : Set (chartRing ℤ (mseg y) t.1)) (T : Set (chartRing ℤ (mseg y) t.1))`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `u hu ⟨b, n, hb, hb0, hub⟩`. Establish `hu' : ((b : Ω) * (mseg y s.1 / mseg y t.1) ^ n) • w ∈ (Dc t).om` using `by rw [← hub]; exact hu`. Establish `h2` using `hsm _ (hinv b hb) _ hu'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `h2` using `[smul_smul, ← _root_.mul_assoc, inv_mul_cancel₀ hb0, _root_.one_mul]`. Conclude with `hcon n h2`. Take `⟨P, hP, hIP, hPT⟩` from `Ideal.exists_le_prime_disjoint I T hdisj`. Take `⟨q, hq, hqP⟩` from `TieVB.exists_point hT ht0 P hP`. Establish `notP : ∀ u ∈ T, u ∉ P` using `fun u hu huP => Set.disjoint_left.1 hPT huP hu`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hfu : unitAt 𝔐.ξ q (mseg y s.1 / mseg y t.1)`. Assume the negation of the conclusion as `hn`. Conclude with `notP ⟨(mseg y s.1 / mseg y t.1), hfA⟩ ⟨1, 1, hp.not_dvd_one, by simp, by simp⟩ ((hqP ⟨(mseg y s.1 / mseg y t.1), hfA⟩).2 hn)`. Establish `hOver : OverZp 𝔐 p q`. Introduce `r hr hfib`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hrp`. Establish `hrp' : ¬ p ∣ r` using `fun h => hrp ((Nat.prime_dvd_prime_iff_eq hp hr).1 h).symm`. Distinguish the cases in `hr0 : (r : Ω) = 0`. Apply `hcon 0` to reduce the goal to its premises. Rewrite using `[pow_zero, one_smul, hfam.om_iff t w]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `q' _ hq'`. Conclude with `absurd (hq' r hr (fun hu => hu.1 hr0)) hrp`. Establish `hrT : (r : chartRing ℤ (mseg y) t.1) ∈ T` using `⟨r, 0, hrp', hr0, by simp⟩`. Establish `hu` using `not_not.1 (mt (hqP (r : chartRing ℤ (mseg y) t.1)).2 (notP _ hrT))`. Apply `hfib` to reduce the goal to its premises.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `using hu`. Establish `hqs : InChart 𝔐.ξ (mseg y) s.1 q`. Use `⟨hs0, fun c' => ?_⟩` and prove the remaining obligations. Establish `he : mseg y c' / mseg y s.1 = mseg y c' / mseg y t.1 * (mseg y s.1 / mseg y t.1)⁻¹`. Rewrite using `[inv_div]`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[he]`. Conclude with `mul_mem (hq.2 c') hfu.2.2`. Establish `hwq` using `hw q hqs hq hOver`. Rewrite `hwq` using `[hfam.om_loc t q hq hOver]`.
-
-Take `⟨s₀, hs₀A, hs₀u, hs₀M⟩` from `TieVB.exists_den_span hT hq ((Dc t).om.toAddSubgroup) (fun a ha e he => hsm a (hle a ha) e he) (show w ∈ Submodule.span _ (((Dc t).om.toAddSubgroup : Set (Module.Dual Ω 𝔐.Li))) from hwq)`. Establish `hI : (⟨s₀, hs₀A⟩ : chartRing ℤ (mseg y) t.1) ∈ I` using `hs₀M`. Conclude with `(hqP ⟨s₀, hs₀A⟩).1 (hIP hI) hs₀u`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pow_smul_mem_om_of_overlap : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (p : ℕ) [Fact p.Prime] (hpS : p ∈ S) (o : Type) [CommRing o] [Algebra o Ω] (ho : ∀ x : Ω, x ∈ (algebraMap o Ω).range ↔ ∃ (a : ℤ) (b : ℕ), ¬ p ∣ b ∧ x = (a : Ω) / (b : Ω)) (Dc : ∀ s : {s : ∀ k, J k // mseg y s ≠ 0}, HTChart (chartRing o (mseg y) s.1) Ω (cmConj E) p (𝔐.R p) (D.p + D.q) (Module.Dual Ω 𝔐.Li)), IsHTFamily 𝔐 p o Dc → ∀ (s t : {s : ∀ k, J k // mseg y s ≠ 0}) (w : Module.Dual Ω 𝔐.Li), (∀ q, InChart 𝔐.ξ (mseg y) s.1 q → InChart 𝔐.ξ (mseg y) t.1 q → OverZp 𝔐 p q → w ∈ 𝔐.M.omLat q) → ∃ n : ℕ, (mseg y s.1 / mseg y t.1) ^ n • w ∈ (Dc t).om := by
   intro E _ _ _ H D l Xo c O _ β Y S Ω _ K _ J _ y 𝔐 p _ hpS o _ _ ho Dc hfam s t w hw

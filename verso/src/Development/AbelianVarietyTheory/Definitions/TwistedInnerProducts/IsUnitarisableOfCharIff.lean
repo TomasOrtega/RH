@@ -28,14 +28,14 @@ Both sides reduce to the same expression.
     twist ρ χ g v = (χ g : F) • ρ g v := rfl
 
 /- English proof (translation)
-Use extensionality with `g v`. Simplify using `[smul_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem twist_twist (ρ : Representation F G V) (χ ψ : G →* Fˣ) :
     twist (twist ρ χ) ψ = twist ρ (ψ * χ) := by
   ext g v; simp [smul_smul]
 
 /- English proof (translation)
-Use extensionality with `g v`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem twist_one (ρ : Representation F G V) : twist ρ 1 = ρ := by
   ext g v; simp
@@ -43,15 +43,15 @@ Use extensionality with `g v`. Simplify using the standard rewrite rules.
 def ofChar (χ : G →* Fˣ) : Representation F G F := twist (Representation.trivial F G F) χ
 
 /- English proof (translation)
-Simplify using `[ofChar]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem ofChar_apply (χ : G →* Fˣ) (g : G) (x : F) : ofChar χ g x = (χ g : F) * x := by
   simp [ofChar]
 
 /- English proof (translation)
-Establish `: Nontrivial (Subrepresentation (ofChar χ))` using `⟨⊥, ⊤, fun h => by`. Use `congrArg Subrepresentation.toSubmodule h` as an intermediate fact. Conclude with `bot_ne_top (α := Submodule F F) this⟩`. Use `⟨fun S => ?_⟩` and prove the remaining obligations. Break down `eq_bot_or_eq_top S.toSubmodule with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inl (Subrepresentation.toSubmodule_injective h)`. Conclude with `Or.inr (Subrepresentation.toSubmodule_injective h)`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem isIrreducible_ofChar (χ : G →* Fˣ) : (ofChar χ).IsIrreducible := by
   have : Nontrivial (Subrepresentation (ofChar χ)) := ⟨⊥, ⊤, fun h => by
@@ -78,7 +78,7 @@ def IsSubquotient (σ : Representation F G W) (ρ : Representation F G V) : Prop
   ∃ (S : Subrepresentation ρ) (f : S.toRepresentation.IntertwiningMap σ), Function.Surjective f
 
 /- English proof (translation)
-Use `⟨⊤, ⟨f.toLinearMap ∘ₗ (⊤ : Subrepresentation ρ).toSubmodule.subtype, fun g => ?_⟩, fun w => ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Conclude with `f.isIntertwining _ _ g v`. Take `⟨v, rfl⟩` from `hf w`. Conclude with `⟨⟨v, trivial⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsSubquotient.of_surjective {σ : Representation F G W} {ρ : Representation F G V}
     (f : ρ.IntertwiningMap σ) (hf : Function.Surjective f) : IsSubquotient σ ρ := by
@@ -89,23 +89,19 @@ theorem IsSubquotient.of_surjective {σ : Representation F G W} {ρ : Representa
     exact ⟨⟨v, trivial⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `.of_surjective (.id ρ) Function.surjective_id`.
+A detailed English derivation is pending.
 -/
 theorem IsSubquotient.refl (ρ : Representation F G V) : IsSubquotient ρ ρ :=
   .of_surjective (.id ρ) Function.surjective_id
 
 /- English proof (translation)
-Take `⟨S, f, hf⟩` from `h₁`. Take `⟨T, g, hg⟩` from `h₂`. Set `R : Subrepresentation ρ` to `⟨(S.toSubmodule.comap g.toLinearMap).map T.toSubmodule.subtype, by`. Introduce and unpack `x _ ⟨v, hv, rfl⟩`. Use `⟨T.toRepresentation x v, ?_, rfl⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `show g (T.toRepresentation x v) ∈ S.toSubmodule`. Rewrite using `[g.isIntertwining]`. Conclude with `S.apply_mem_toSubmodule x hv⟩`. Establish `hRT : R.toSubmodule ≤ T.toSubmodule`. Introduce and unpack `_ ⟨v, -, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `v.2`. Establish `hmem : ∀ v : R.toSubmodule, (g.toLinearMap ∘ₗ Submodule.inclusion hRT) v ∈ S.toSubmodule`. Introduce and unpack `⟨_, v, hv, rfl⟩`. Conclude with `hv`. Use `⟨R, ⟨f.toLinearMap ∘ₗ LinearMap.codRestrict S.toSubmodule _ hmem, fun x => ?_⟩, fun u => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `v show f _ = τ x (f _)`. Rewrite using `[← f.isIntertwining]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `g.isIntertwining _ _ x (Submodule.inclusion hRT v)`.
-
-Take `⟨w, rfl⟩` from `hf u`. Take `⟨v, hv⟩` from `hg w`. Use `⟨⟨v, v, by show g v ∈ S.toSubmodule; rw [hv]; exact w.2, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show f _ = f w`. Use `congr 1`.
-
-Conclude with `Subtype.ext hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem IsSubquotient.trans {τ : Representation F G U} {σ : Representation F G W}
     {ρ : Representation F G V} (h₁ : IsSubquotient τ σ) (h₂ : IsSubquotient σ ρ) :
@@ -138,9 +134,9 @@ theorem IsSubquotient.trans {τ : Representation F G U} {σ : Representation F G
     exact Subtype.ext hv
 
 /- English proof (translation)
-Set `R : Subrepresentation ρ` to `⟨LinearMap.range f.toLinearMap, by`. Introduce and unpack `x _ ⟨v, rfl⟩`. Conclude with `⟨σ x v, f.isIntertwining _ _ x v⟩⟩`. Set `e` to `LinearEquiv.ofInjective f.toLinearMap hf`. Use `⟨R, ⟨e.symm.toLinearMap, fun x => ?_⟩, e.symm.surjective⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `v`. Take `⟨w, rfl⟩` from `e.surjective v`. Use `show e.symm _ = σ x (e.symm (e w))`. Rewrite using `[e.symm_apply_apply, LinearEquiv.symm_apply_eq]`. Conclude with `Subtype.ext (f.isIntertwining _ _ x w).symm`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsSubquotient.of_injective {σ : Representation F G W} {ρ : Representation F G V}
     (f : σ.IntertwiningMap ρ) (hf : Function.Injective f) : IsSubquotient σ ρ := by
@@ -174,7 +170,7 @@ def extTensor (ρ : Representation F G V) (σ : Representation F H W) :
   Representation.tprod (ρ.comp (MonoidHom.fst G H)) (σ.comp (MonoidHom.snd G H))
 
 /- English proof (translation)
-Simplify using `[extTensor]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem extTensor_tmul (ρ : Representation F G V) (σ : Representation F H W) (g : G × H)
     (v : V) (w : W) : extTensor ρ σ g (v ⊗ₜ w) = ρ g.1 v ⊗ₜ σ g.2 w := by
@@ -187,7 +183,7 @@ def piTensor {α : Type} {Γ X : α → Type} [∀ a, Group (Γ a)] [∀ a, AddC
     (MonoidHom.pi fun a => (ρ a).comp (Pi.evalMonoidHom Γ a))
 
 /- English proof (translation)
-Conclude with `PiTensorProduct.map_tprod _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem piTensor_tprod {α : Type} {Γ X : α → Type} [∀ a, Group (Γ a)]
     [∀ a, AddCommGroup (X a)] [∀ a, Module F (X a)] (ρ : ∀ a, Representation F (Γ a) (X a))
@@ -218,7 +214,7 @@ section Top
 variable [TopologicalSpace G]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isSmooth_iff_isSmoothRep {X : Type} [AddCommGroup X] [Module ℂ X] (ρ : Representation ℂ G X) :
     IsSmooth ρ ↔ IsSmoothRep ρ := Iff.rfl
@@ -226,21 +222,21 @@ theorem isSmooth_iff_isSmoothRep {X : Type} [AddCommGroup X] [Module ℂ X] (ρ 
 def IsSmoothChar (χ : G →* Fˣ) : Prop := IsOpen (χ.ker : Set G)
 
 /- English proof (translation)
-Introduce `v` and use `(hρ v).preimage hs`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmooth_comp [TopologicalSpace H] {ρ : Representation F G V} (hρ : IsSmooth ρ) (s : H →* G)
     (hs : Continuous s) : IsSmooth (ρ.comp s : Representation F H V) :=
   fun v => (hρ v).preimage hs
 
 /- English proof (translation)
-The claim follows from `IsOpen.preimage hs hχ`.
+A detailed English derivation is pending.
 -/
 theorem IsSmoothChar.comp [TopologicalSpace H] {χ : G →* Fˣ} (hχ : IsSmoothChar χ) (s : H →* G)
     (hs : Continuous s) : IsSmoothChar (χ.comp s) :=
   IsOpen.preimage hs hχ
 
 /- English proof (translation)
-Establish `: (χ⁻¹.ker : Set G) = χ.ker` using `by ext g; simp`. Unfold `IsSmoothChar`. Rewrite using `[this]`. Conclude with `hχ`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsSmoothChar.inv {χ : G →* Fˣ} (hχ : IsSmoothChar χ) : IsSmoothChar χ⁻¹ := by
   have : (χ⁻¹.ker : Set G) = χ.ker := by ext g; simp
@@ -249,7 +245,7 @@ theorem IsSmoothChar.inv {χ : G →* Fˣ} (hχ : IsSmoothChar χ) : IsSmoothCha
 variable [IsTopologicalGroup G]
 
 /- English proof (translation)
-The claim follows from `Subgroup.isOpen_of_mem_nhds { carrier := {g | ρ g v = v} mul_mem' := by intro x y hx hy simp only [Set.mem_ofPred_eq, map_mul, Module.End.mul_apply] at * rw [hy, hx] one_mem' := by simp inv_mem' := by intro x hx simp only [Set.mem_ofPred_eq] at * conv_lhs => rw [← hx] rw [← Modul …`.
+A detailed English derivation is pending.
 -/
 theorem mem_smoothPart_of_nhds {ρ : Representation F G V} {v : V}
     (h : {g : G | ρ g v = v} ∈ nhds (1 : G)) : v ∈ smoothPart ρ :=
@@ -267,14 +263,14 @@ theorem mem_smoothPart_of_nhds {ρ : Representation F G V} {v : V}
         rw [← Module.End.mul_apply, ← map_mul]; simp } h
 
 /- English proof (translation)
-Introduce `v` and use `mem_smoothPart_of_nhds (h v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmooth_of_nhds {ρ : Representation F G V}
     (h : ∀ v, {g : G | ρ g v = v} ∈ nhds (1 : G)) : IsSmooth ρ := fun v =>
   mem_smoothPart_of_nhds (h v)
 
 /- English proof (translation)
-The claim follows from `Subgroup.isOpen_mono (H₁ := χ.ker ⊓ ψ.ker) (fun g hg => by simp [MonoidHom.mem_ker.1 hg.1, MonoidHom.mem_ker.1 hg.2]) (IsOpen.inter hχ hψ)`.
+A detailed English derivation is pending.
 -/
 theorem IsSmoothChar.mul {χ ψ : G →* Fˣ} (hχ : IsSmoothChar χ) (hψ : IsSmoothChar ψ) :
     IsSmoothChar (χ * ψ) :=
@@ -282,7 +278,7 @@ theorem IsSmoothChar.mul {χ ψ : G →* Fˣ} (hχ : IsSmoothChar χ) (hψ : IsS
     (fun g hg => by simp [MonoidHom.mem_ker.1 hg.1, MonoidHom.mem_ker.1 hg.2]) (IsOpen.inter hχ hψ)
 
 /- English proof (translation)
-The claim follows from `isSmooth_of_nhds fun v => Filter.mem_of_superset (((hρ v).inter hχ).mem_nhds (by simp)) (by rintro g ⟨h1, h2⟩ have h1' : ρ g v = v := h1 have h2' : χ g = 1 := h2 simp [h1', h2'])`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_twist {ρ : Representation F G V} (hρ : IsSmooth ρ) {χ : G →* Fˣ}
     (hχ : IsSmoothChar χ) : IsSmooth (twist ρ χ) :=
@@ -293,7 +289,7 @@ theorem isSmooth_twist {ρ : Representation F G V} (hρ : IsSmooth ρ) {χ : G �
     simp [h1', h2'])
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => isSmooth_twist (fun v => by simp) h⟩` and prove the remaining obligations. Establish `: (χ.ker : Set G) = {g | ofChar χ g 1 = 1}` using `by ext g; simp`. Unfold `IsSmoothChar`. Rewrite using `[this]`. Conclude with `h 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmooth_ofChar_iff (χ : G →* Fˣ) : IsSmooth (ofChar χ) ↔ IsSmoothChar χ := by
   refine ⟨fun h => ?_, fun h => isSmooth_twist (fun v => by simp) h⟩
@@ -301,9 +297,9 @@ theorem isSmooth_ofChar_iff (χ : G →* Fˣ) : IsSmooth (ofChar χ) ↔ IsSmoot
   unfold IsSmoothChar; rw [this]; exact h 1
 
 /- English proof (translation)
-Take `⟨S, f, hf⟩` from `h`. Use `isSmooth_of_nhds fun w => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `hf w`. Use `Filter.mem_of_superset ((hρ v).mem_nhds (by simp)) fun g hg => ?_` and prove the remaining obligations. Use `show σ g (f v) = f v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← f.isIntertwining]`. Use `congr 1`. Conclude with `Subtype.ext hg`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem IsSubquotient.isSmooth {σ : Representation F G W} {ρ : Representation F G V}
     (h : IsSubquotient σ ρ) (hρ : IsSmooth ρ) : IsSmooth σ := by
@@ -317,7 +313,7 @@ theorem IsSubquotient.isSmooth {σ : Representation F G W} {ρ : Representation 
   exact Subtype.ext hg
 
 /- English proof (translation)
-Introduce `v` and use `by have : {g : G | smoothRep ρ g v = v} = {g : G | ρ g v = v} := by ext g; exact Subtype.ext_iff rw [this]; exact v.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmooth_smoothRep (ρ : Representation F G V) : IsSmooth (smoothRep ρ) := fun v => by
   have : {g : G | smoothRep ρ g v = v} = {g : G | ρ g v = v} := by
@@ -325,9 +321,9 @@ theorem isSmooth_smoothRep (ρ : Representation F G V) : IsSmooth (smoothRep ρ)
   rw [this]; exact v.2
 
 /- English proof (translation)
-Use `isSmooth_of_nhds fun w => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Use `Filter.mem_of_superset (((hρ v).preimage hc).mem_nhds (by simp)) fun g hg => ?_` and prove the remaining obligations. Establish `hg' : ρ (s g) v = v` using `hg`. Use `show jacquet ρ N s hs g _ = _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[jacquet_mk, hg']`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_jacquet [TopologicalSpace H] [IsTopologicalGroup H] {ρ : Representation F G V}
     (hρ : IsSmooth ρ) (N : Subgroup G) (s : H →* G)
@@ -341,9 +337,9 @@ theorem isSmooth_jacquet [TopologicalSpace H] [IsTopologicalGroup H] {ρ : Repre
   rw [jacquet_mk, hg']
 
 /- English proof (translation)
-Introduce `x`. Use `show x ∈ smoothPart (extTensor ρ σ)`. Proceed by induction on `x with`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y hx hy => exact add_mem hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul v w`. Use `mem_smoothPart_of_nhds (Filter.mem_of_superset (((hρ v).prod (hσ w)).mem_nhds (by simp)) fun g hg => ?_)` and prove the remaining obligations. Establish `h1 : ρ g.1 v = v` using `hg.1`. Establish `h2 : σ g.2 w = w` using `hg.2`. Simplify using `[h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSmooth_extTensor [TopologicalSpace H] [IsTopologicalGroup H] {ρ : Representation F G V}
     {σ : Representation F H W} (hρ : IsSmooth ρ) (hσ : IsSmooth σ) : IsSmooth (extTensor ρ σ) := by
@@ -360,9 +356,9 @@ theorem isSmooth_extTensor [TopologicalSpace H] [IsTopologicalGroup H] {ρ : Rep
     simp [h1, h2]
 
 /- English proof (translation)
-Introduce `x`. Use `show x ∈ smoothPart (piTensor ρ)`. Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `add x y hx hy => exact add_mem hx hy`. Consider the case `smul_tprod c x`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.smul_mem _ c (mem_smoothPart_of_nhds (Filter.mem_of_superset ((isOpen_set_pi Set.finite_univ fun a _ => hρ a (x a)).mem_nhds (by simp)) fun g hg => ?_))` and prove the remaining obligations. Establish `h : ∀ a, ρ a (g a) (x a) = x a` using `fun a => hg a trivial`. Simplify using `[h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSmooth_piTensor {α : Type} [Finite α] {Γ X : α → Type} [∀ a, Group (Γ a)]
     [∀ a, TopologicalSpace (Γ a)] [∀ a, IsTopologicalGroup (Γ a)] [∀ a, AddCommGroup (X a)]
@@ -387,7 +383,7 @@ Both sides reduce to the same expression.
     (contra ρ g l : Module.Dual F V) v = (l : Module.Dual F V) (ρ g⁻¹ v) := rfl
 
 /- English proof (translation)
-The claim follows from `isSmooth_smoothRep _`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_contra (ρ : Representation F G V) : IsSmooth (contra ρ) := isSmooth_smoothRep _
 
@@ -415,15 +411,13 @@ def IsUnitarisable {X : Type} [AddCommGroup X] [Module ℂ X] (ρ : Representati
 def IsUnitaryChar (χ : G →* ℂˣ) : Prop := ∀ g, ‖(χ g : ℂ)‖ = 1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨B, -, hp, hi⟩ g`. Establish `h` using `hi g 1 1`. Establish `h0 : B 1 1 ≠ 0` using `fun h => by simpa [h] using hp 1 one_ne_zero`. Rewrite `h` using `[ofChar_apply, ← smul_eq_mul, B.map_smul, LinearMap.smul_apply, LinearMap.map_smulₛₗ, smul_eq_mul, smul_eq_mul, ← mul_assoc, Complex.mul_conj, mul_eq_right₀ h0]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : ‖(χ g : ℂ)‖ ^ 2 = 1`. Rewrite using `[← Complex.normSq_eq_norm_sq]`. Conclude with `h` after adjusting the coercions. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h2`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun x y => x * starRingEnd ℂ y) (fun _ _ _ => add_mul _ _ _) (fun _ _ _ => by simp [mul_assoc]) (fun _ _ _ => by simp [mul_add]) (fun _ _ _ => by simp [mul_left_comm]), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v w`. Simplify using `[mul_comm]`. Introduce `v hv`. Simplify `hv` using `[Complex.mul_conj]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g v w`. Establish `: (χ g : ℂ) * starRingEnd ℂ (χ g) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, h g]`. Simplify using the standard rewrite rules. Simplify using `only [LinearMap.mk₂'ₛₗ_apply, ofChar_apply, map_mul]`.
-
-Take the linear combination `(v * starRingEnd ℂ w) * this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isUnitarisable_ofChar_iff (χ : G →* ℂˣ) : IsUnitarisable (ofChar χ) ↔ IsUnitaryChar χ := by
   constructor

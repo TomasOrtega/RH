@@ -65,21 +65,19 @@ def sumVar (U U' : HSp D) (n : ℕ) : FVar D U.rank n ⊕ FVar D U'.rank n ≃ F
     rcases s with s | s <;> simp
 
 /- English proof (translation)
-Establish `hfg` using `isThetaFunction_externalProductOnHermitianSum hf hg`. Rewrite using `[GlobalTheory.SquareRel.polTens_tmul]`. Establish `H : box2 f (ptF ψ θ A B' g Q) = ptF ψ θ A (GlobalTheory.SquareComm.frSum B B') (box2 f g) (MvPolynomial.rename (sumVar U U' S.rank ∘ Sum.inr) Q)`. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Rewrite using `[MvPolynomial.rename_C, ← mul_one (MvPolynomial.C a), ptF_C, ptF_one, ← mul_one (MvPolynomial.C a), ptF_C, ptF_one]`. Use function extensionality and compare the values at `x`. Simplify using `only [box2, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add p q hp hq`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Rewrite using `[map_add, ptF_add, ptF_add, ← hp, ← hq]`. Use function extensionality and compare the values at `x`. Simplify using `only [box2, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X p v hp`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Take `⟨τ, i, j⟩` from `v`. Rewrite using `[map_mul, MvPolynomial.rename_X, mul_comm (MvPolynomial.rename _ p), ptF_X_mul hψ hθ A _ hfg, ← hp, mul_comm p, ptF_X_mul hψ hθ A B' hg, show (sumVar U U' S.rank ∘ Sum.inr) (τ, i, j) = (τ, Fin.natAdd _ i, j) from rfl]`. Simplify using `only`. Rewrite using `[creationOperator_externalProductOnHermitianSum B B' τ hψ hθ A _ hf (ptF_theta hψ hθ A B' hg p)]`. Use `erw [((pr_unit B B' τ _ j).2 i).1, ((pr_unit B B' τ _ j).2 i).2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aPlus_zero τ hψ hθ hf]`. Use function extensionality and compare the values at `x`. Simplify using `[box2]`. Establish `hg'` using `ptF_theta hψ hθ A B' hg Q`. Proceed by induction on `P using MvPolynomial.induction_on with`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `C a => rw [MvPolynomial.rename_C, ptF_C, ← H, ← mul_one (MvPolynomial.C a), ptF_C, ptF_one, externalProductOnHermitianSum_smul_left]`. Consider the case `add p q hp hq => rw [map_add, add_mul, ptF_add, ptF_add, ← hp, ← hq, externalProductOnHermitianSum_add_left]`. Consider the case `mul_X p v hp`. Take `⟨τ, i, j⟩` from `v`. Rewrite using `[map_mul, MvPolynomial.rename_X, mul_comm (MvPolynomial.rename _ p), mul_assoc, ptF_X_mul hψ hθ A _ hfg, ← hp, mul_comm p, ptF_X_mul hψ hθ A B hf, show (sumVar U U' S.rank ∘ Sum.inl) (τ, i, j) = (τ, Fin.castAdd _ i, j) from rfl]`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Simplify using `only`. Rewrite using `[creationOperator_externalProductOnHermitianSum B B' τ hψ hθ A _ (ptF_theta hψ hθ A B hf p) hg']`. Use `erw [((pr_unit B B' τ _ j).1 i).1, ((pr_unit B B' τ _ j).1 i).2]`. Rewrite using `[aPlus_zero τ hψ hθ hg']`. Use function extensionality and compare the values at `x`.
-
-Simplify using `[box2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fockVector_product_mul_polynomials (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (A : Fr S) (B : Fr U) (B' : Fr U') {f : WO S U → ℂ}
     {g : WO S U' → ℂ} (hf : IsThetaFunO ψ S U f) (hg : IsThetaFunO ψ S U' g) (P : PolF D U.rank S.rank)
@@ -121,13 +119,13 @@ theorem fockVector_product_mul_polynomials (hψ : IsStdChar D ψ (-1)) (hθ : Is
     funext x; simp [box2]
 
 /- English proof (translation)
-Establish `lin : ∀ (a : ℂ) (g g' : WO S U → ℂ), IsThetaFunO ψ S U g → IsThetaFunO ψ S U g' → ptF ψ θ A B (a • g + g') P = a • ptF ψ θ A B g P + ptF ψ θ A B g' P`. Introduce `a g g' hg hg'`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C b`. Rewrite using `[← mul_one (MvPolynomial.C b), ptF_C, ptF_C, ptF_C, ptF_one, ptF_one, ptF_one, smul_add, smul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add p q hp hq => rw [ptF_add, ptF_add, ptF_add, hp, hq, smul_add]`. Normalize the expressions using the abelian group laws. Consider the case `mul_X p v hp`. Rewrite using `[mul_comm p, ptF_X_mul hψ hθ A B (GlobalTheory.OrientedHeis.theta_add (GlobalTheory.OrientedHeis.theta_smul a hg) hg'), ptF_X_mul hψ hθ A B hg, ptF_X_mul hψ hθ A B hg', hp, GlobalTheory.FockSubst.aPlus_add hψ hθ _ _ _ (GlobalTheory.OrientedHeis.theta_smul a (ptF_theta hψ hθ A B h …`. Proceed by induction on `s using Finset.induction_on with`.
+Treat this case separately. Normalize the expressions using the abelian group laws. Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `empty`. Use `⟨by rw [Finset.sum_empty]; exact GlobalTheory.OrientedHeis.theta_zero, ?_⟩` and prove the remaining obligations. Use `lin (-1) 0 0 GlobalTheory.OrientedHeis.theta_zero GlobalTheory.OrientedHeis.theta_zero` as an intermediate fact. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Simplify using `using this`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `insert i s hi ih`. Take `⟨h1, h2⟩` from `ih fun k hk => hf k (Finset.mem_insert_of_mem hk)`. Establish `h3` using `hf i (Finset.mem_insert_self _ _)`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, lin _ _ _ h3 h1, h2]`. Conclude with `⟨GlobalTheory.OrientedHeis.theta_add (GlobalTheory.OrientedHeis.theta_smul _ h3) h1, rfl⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem ptF_sum (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (A : Fr S) (B : Fr U) {ι : Type} (s : Finset ι) (c : ι → ℂ)
     (f : ι → WO S U → ℂ) (hf : ∀ i ∈ s, IsThetaFunO ψ S U (f i)) (P : PolF D U.rank S.rank) :
@@ -158,13 +156,13 @@ theorem ptF_sum (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (A : Fr S) (B : 
     exact ⟨GlobalTheory.OrientedHeis.theta_add (GlobalTheory.OrientedHeis.theta_smul _ h3) h1, rfl⟩
 
 /- English proof (translation)
-Take `⟨j, hjs, hj⟩` from `fock_dag D ψ θ hψ hθ U S B A`. Establish `cc : (starRingEnd ℂ).comp (starRingEnd ℂ) = RingHom.id ℂ` using `RingHom.ext fun z => Complex.conj_conj z`. Use `⟨⟨⟨fun P => MvPolynomial.map (starRingEnd ℂ) (j P), fun P Q => by rw [map_add, map_add]⟩, fun c P => ?_⟩, fun Q => ⟨j.symm (MvPolynomial.map (starRingEnd ℂ) Q), ?_⟩, fun g hg P => ?_⟩` and prove the remaining obligations. Use `show MvPolynomial.map _ (j (c • P)) = c • MvPolynomial.map _ (j P)`. Rewrite using `[hjs, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, Complex.conj_conj, MvPolynomial.smul_eq_C_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show MvPolynomial.map _ (j (j.symm _)) = _`. Rewrite using `[AddEquiv.apply_symm_apply, MvPolynomial.map_map, cc, MvPolynomial.map_id]`. Take `⟨hv, hP⟩` from `hj g hg`. Establish `e : ∀ φ : WO U S → ℂ, (fun y => φ (adjM S U y)) = GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id (GlobalTheory.PairLift.dag U S φ)` using `fun φ => by`. Use function extensionality and compare the values at `y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, id_eq, GlobalTheory.PairLift.dag, Complex.conj_conj]`. Both sides reduce to the same expression. Establish `hc` using `GlobalTheory.SquareAlg.isVacF_cj hψ hθ A B hv`. Establish `h` using `GlobalTheory.FockConjNeg.cj_ptF_neg hψ hθ A B hc.1 (MvPolynomial.map (starRingEnd ℂ) (j P))`. Rewrite `h` using `[GlobalTheory.CjNeg.cj_id_cj_id, MvPolynomial.map_map, cc, MvPolynomial.map_id, hP]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e g, e, ← h, GlobalTheory.CjNeg.cj_id_cj_id]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_adj_equiv (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (A : Fr S) (B : Fr U) :
     ∃ J : PolF D S.rank U.rank →ₗ[ℂ] PolF D U.rank S.rank, Function.Surjective J ∧ ∀ g, IsVacF ψ θ B A g → ∀ P,
@@ -189,19 +187,17 @@ theorem exists_adj_equiv (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (A : Fr
   rfl
 
 /- English proof (translation)
-Set `J : PolF D S.rank U.rank →ₐ[ℂ] PolF D U.rank S.rank` to `MvPolynomial.aeval fun v => MvPolynomial.C (sgv (negFr B) A v.1 v.2.1 v.2.2) * MvPolynomial.X (v.1, v.2.2, v.2.1)`. Establish `hX : ∀ τ i j, J (MvPolynomial.X (τ, i, j)) = MvPolynomial.C (sgv (negFr B) A τ i j) * MvPolynomial.X (τ, j, i)` using `fun τ i j => MvPolynomial.aeval_X _ _`. Use `⟨J.toLinearMap, fun Q => ?_, fun g hg P => ?_⟩` and prove the remaining obligations. Use `show Q ∈ J.range`. Proceed by induction on `Q using MvPolynomial.induction_on with`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `C a => exact J.range.algebraMap_mem a`. Consider the case `add p q hp hq => exact add_mem hp hq`. Consider the case `mul_X p v hp`. Use `mul_mem hp ⟨MvPolynomial.C (sgv (negFr B) A v.1 v.2.2 v.2.1) * MvPolynomial.X (v.1, v.2.2, v.2.1), ?_⟩` and prove the remaining obligations. Use `show J _ = _`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Rewrite using `[map_mul, hX, MvPolynomial.algHom_C, MvPolynomial.algebraMap_eq, ← mul_assoc, ← map_mul, sgv_mul_self, map_one, one_mul]`. Use `show _ = ptF ψ θ A B (rd S U g) (J P)`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[MvPolynomial.algHom_C, MvPolynomial.algebraMap_eq, ← mul_one (MvPolynomial.C a : PolF D U.rank S.rank), ptF_C, ptF_one]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `erw [← mul_one (MvPolynomial.C a), ptF_C, ptF_one]`. Both sides reduce to the same expression. Consider the case `add p q hp hq`. Rewrite using `[map_add, ptF_add, ptF_add, ← hp, ← hq]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Consider the case `mul_X p v hp`. Take `⟨τ, i, j⟩` from `v`. Rewrite using `[map_mul, hX, mul_comm (J p), mul_assoc, ptF_C, ptF_X_mul hψ hθ A B (rd_theta hψ hg), ← hp, mul_comm p]`. Use `erw [ptF_X_mul hψ hθ (negFr B) A hg]`. Simplify using `only`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `e` using `cdag_unitMap (negFr B) A τ i j`. Establish `e' : (negFr B).onb τ = B.onb τ` using `rfl`. Rewrite using `[aPlus_rd hψ hθ, ← e', e, aPlus_real_smul hψ hθ (ptF_theta hψ hθ (negFr B) A hg p)]`. Use function extensionality and compare the values at `x`. Use `sgv_mul_self (negFr B) A τ i j` as an intermediate fact.
-
-Simplify using `only [rd, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← mul_assoc]`. Express the relevant statement in the definitionally equal form `_ = (sgv (negFr B) A τ i j * sgv (negFr B) A τ i j) * _`. Rewrite using `[this, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rd_equiv (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (A : Fr S) (B : Fr U) :
     ∃ J : PolF D S.rank U.rank →ₗ[ℂ] PolF D U.rank S.rank, Function.Surjective J ∧ ∀ g, IsThetaFunO ψ (negSp U) S g → ∀ P,
@@ -244,7 +240,7 @@ theorem exists_rd_equiv (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (A : Fr 
     rw [this, one_mul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(GlobalTheory.SquareRel.polTens (sumVar U U' S.rank)).toLinearMap ∘ₗ LinearMap.lTensor _ J, fun x => by obtain ⟨y, rfl⟩ := (GlobalTheory.SquareRel.polTens (sumVar U U' S.rank)).surjective x obtain ⟨z, rfl⟩ := LinearMap.lTensor_surjective _ hJ y exact ⟨z, rfl⟩, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_iota (S U U' : HSp D) (J : PolF D S.rank U'.rank →ₗ[ℂ] PolF D U'.rank S.rank) (hJ : Function.Surjective J) :
     ∃ ι : PolF D U.rank S.rank ⊗[ℂ] PolF D S.rank U'.rank →ₗ[ℂ] PolF D (GlobalTheory.Doubling.hsum U U').rank S.rank,
@@ -255,9 +251,9 @@ theorem exists_iota (S U U' : HSp D) (J : PolF D S.rank U'.rank →ₗ[ℂ] PolF
     exact ⟨z, rfl⟩, fun _ _ => rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Finsupp.sum_sum_index (h := fun z (c : ℂ) => c • F z) (fun _ => zero_smul _ _) fun _ _ _ => add_smul _ _ _, toTens, Finsupp.linearCombination_apply, map_finsuppSum, map_finsuppSum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Finsupp.sum_sum_index (h := fun z (c : ℂ) => c • F z) (fun _ => zero_smul _ _) fun _ _ _ => add_smul _ _ _, map_smul, map_smul, h, Finsupp.smul_sum]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Rewrite using `[Finsupp.sum_single_index (h := fun z (c : ℂ) => c • F z) (zero_smul _ _), mul_smul]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_tens {P Q Z Y Pl : Type} [AddCommGroup P] [Module ℂ P] [AddCommGroup Q] [Module ℂ Q] [AddCommGroup Y] [Module ℂ Y]
     [AddCommGroup Pl] [Module ℂ Pl] (zip : Z → (Unit × P) × Q → Z) (F : Z → Y) (ι : P ⊗[ℂ] Q →ₗ[ℂ] Pl) (Ψ : Pl →ₗ[ℂ] Y)
@@ -277,19 +273,19 @@ end Real
 open GlobalTheory.FockAdjoint GlobalTheory.RouteSeesaw in
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ _ W i j A AV AV₁ hA hV hV₁`. Take `⟨J, hJ, hJ'⟩` from `exists_adj_equiv W.ψ_std W.θ_is A AV₁`. Take `⟨ι, hι, hι'⟩` from `exists_iota (G.V (.grid (↑i + 1) (↑j + 1))) (G.V (.grid ↑i (↑j + 1))) (G.V (.grid (↑i + 1) ↑j)) J hJ`. Use `⟨ι, hι, fun t B ρ n Φ τ τ' hF a => ?_⟩` and prove the remaining obligations. Take `⟨e, he, -, φ₁, φ₂, hφ, -⟩` from `hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `v₁` using `(ρ.vX_is i (j + 1) i.2 j.2).2`. Establish `v₂` using `(ρ.vT_is t (i + 1) j i.2 j.2).2`. Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum he`. Establish `cA : (GlobalTheory.SquareComm.frSgn true A).cart = fun τ => -W.cart (.grid (↑i + 1) (↑j + 1)) τ` using `funext fun τ => (GlobalTheory.PairLift.cart_frSgn true A τ).trans (congrArg Neg.neg (hA τ).2)`. Establish `cA' : A.cart = W.cart _` using `funext fun τ => (hA τ).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cV : AV.cart = W.cart _` using `funext fun τ => (hV τ).2`. Establish `cV₁ : AV₁.cart = W.cart _` using `funext fun τ => (hV₁ τ).2`. Establish `oA : A.onb = W.onb _` using `funext fun τ => (hA τ).1`. Establish `oV : AV.onb = W.onb _` using `funext fun τ => (hV τ).1`. Establish `oV₁ : AV₁.onb = W.onb _` using `funext fun τ => (hV₁ τ).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t₁` using `fun d hd => GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt W.ψ_std W.θ_is (hφ d hd).1.2 v₁.2`. Establish `t₂` using `fun d hd => GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt W.ψ_std W.θ_is (hφ d hd).2.2 v₂.2`. Establish `w₂ : ∀ d ∈ τ.support, IsVacF W.ψ W.θ AV₁ A d.2` using `fun d hd => ⟨t₂ d hd, fun τ => by`. Rewrite using `[cA', cV₁]`. Conclude with `GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt W.ψ_std.1.1 W.θ_is ho.infPart_eq ho.conj.infPart_eq (hφ d hd).2.2 v₂.theta (t₂ d hd) (v₂.fock τ)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `t₃` using `fun d hd => (GlobalTheory.SquareAlg.adj_ptF W.ψ_std W.θ_is A AV₁ (w₂ d hd)).1.1`. Use `sum_tens (Z := PureT G (routeBig t i j)) (fun d (P : PolT G (routeBig t i j)) => Path.Fam.zip (fun a (f : Sch G a) Q => W.fock a.pair f Q) d P) (fun d => box2 (S := negSp (G.V (.grid (↑i + 1) (↑j + 1)))) (A := (G.V (.grid ↑i (↑j + 1)))) (B := (G.V (.grid (↑i + 1) ↑j))) d.1.2 fun …` and prove the remaining obligations. Rewrite using `[hι']`. Use `(ptF_sum W.ψ_std W.θ_is (GlobalTheory.SquareComm.frSgn true A) (GlobalTheory.SquareComm.frSum AV AV₁) τ.support τ _ (fun d hd => GlobalTheory.SquareDict.AlgSmall.isThetaFunction_externalProductOnHermitianSum (t₁ d hd) (t₃ d hd)) _).2.trans (Finset.sum_congr rfl fun d hd => ?_)` and prove the remaining obligations. Establish `e₁ : W.fock (.chi i (j + 1)) d.1.2 P.1.2 = ptF W.ψ W.θ (GlobalTheory.SquareComm.frSgn true A) AV d.1.2 P.1.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `ptF`. Rewrite using `[cA, cV, oV, show (GlobalTheory.SquareComm.frSgn true A).onb = W.onb _ from oA]`. Both sides reduce to the same expression. Establish `e₂ : W.fock (.mu t (i + 1) j) d.2 P.2 = ptF W.ψ W.θ AV₁ A d.2 P.2`. Unfold `ptF`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cA', cV₁, oA, oV₁]`. Both sides reduce to the same expression. Establish `key` using `fockVector_product_mul_polynomials W.ψ_std W.θ_is (GlobalTheory.SquareComm.frSgn true A) AV AV₁ (t₁ d hd) (t₃ d hd) P.1.2 (J P.2)`. Rewrite `key` using `[← hJ' _ (w₂ d hd), ← e₁, ← e₂]`. Conclude with `congrArg (τ d • ·) key.symm`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realA : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ (W : G.Weil) (i j : Fin D.R.m)
     (A : Fr (G.V (.grid (↑i + 1) (↑j + 1)))) (AV : Fr (G.V (.grid ↑i (↑j + 1)))) (AV₁ : Fr (G.V (.grid (↑i + 1) ↑j))),
@@ -343,17 +339,17 @@ theorem realA : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridD
 open GlobalTheory.FockAdjoint GlobalTheory.RouteSeesaw GlobalTheory.SquareDict.AlgSmall in
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ _ W i j A₁ AV AV₁ h₁ hV hV₁`. Take `⟨J, hJ, hJ'⟩` from `exists_rd_equiv W.ψ_std W.θ_is A₁ AV₁`. Take `⟨ι, hι, hι'⟩` from `exists_iota (G.V (.grid ↑i ↑j)) (G.V (.grid ↑i (↑j + 1))) (G.V (.grid (↑i + 1) ↑j)) J hJ`. Use `⟨ι, hι, fun t B ρ n Φ τ τ' hF a => ?_⟩` and prove the remaining obligations. Take `⟨e, he, ⟨φ₁, φ₂, hφ, -⟩, -⟩` from `hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `v₁` using `ρ.vT_is t i j i.2.le j.2`. Establish `v₂` using `ρ.vX_is i j i.2 j.2.le`. Establish `t₁` using `fun d hd => GlobalTheory.VecTheta.isThetaFunO_of_thetaAt W.ψ_std W.θ_is (hφ d hd).1.2 v₁.2.theta`. Establish `t₂` using `fun d hd => GlobalTheory.VecTheta.isThetaFunO_of_thetaAt W.ψ_std W.θ_is (hφ d hd).2.2 v₂.2.theta`. Establish `c₁ : A₁.cart = W.cart _` using `funext fun s => (h₁ s).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cV : AV.cart = W.cart _` using `funext fun s => (hV s).2`. Establish `cV₁ : (negFr AV₁).cart = fun s => -W.cart (.grid (i + 1) j) s` using `funext fun s => by rw [negFr_cart, (hV₁ s).2]`. Establish `o₁ : A₁.onb = W.onb _` using `funext fun s => (h₁ s).1`. Establish `oV : AV.onb = W.onb _` using `funext fun s => (hV s).1`. Establish `oV₁ : (negFr AV₁).onb = W.onb (.grid (i + 1) j)` using `funext fun s => (hV₁ s).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ec : (GlobalTheory.SquareComm.frSgn false A₁).cart = A₁.cart` using `funext (frSgn_false_cart A₁)`. Establish `t₃` using `fun d hd => rd_theta W.ψ_std (t₂ d hd)`. Use `sum_tens (Z := PureT G (routeSmall t i j)) (fun d (P : PolT G (routeSmall t i j)) => Path.Fam.zip (fun a (f : Sch G a) Q => W.fock a.pair f Q) d P) (fun d => box2 (S := (G.V (.grid ↑i ↑j))) (A := (G.V (.grid ↑i (↑j + 1)))) (B := (G.V (.grid (↑i + 1) ↑j))) d.1.2 fun y => d.2 (adjM …` and prove the remaining obligations. Establish `ef : ∀ f Q, GlobalTheory.SquareComm.fockF W.ψ W.θ false A₁ (GlobalTheory.SquareComm.frSum AV AV₁) f Q = ptF W.ψ W.θ A₁ (GlobalTheory.SquareComm.frSum AV AV₁) f Q` using `fun f Q => by`. Unfold `GlobalTheory.SquareComm.fockF`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[ec]`. Both sides reduce to the same expression. Rewrite using `[hι', ef]`. Use `(ptF_sum W.ψ_std W.θ_is A₁ (GlobalTheory.SquareComm.frSum AV AV₁) τ'.support τ' _ (fun d hd => isThetaFunction_externalProductOnHermitianSum (t₁ d hd) (t₃ d hd)) _).2.trans (Finset.sum_congr rfl fun d hd => ?_)` and prove the remaining obligations. Establish `key` using `fockVector_product_mul_polynomials W.ψ_std W.θ_is A₁ AV AV₁ (t₁ d hd) (t₃ d hd) P.1.2 (J P.2)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `key` using `[← hJ' _ (t₂ d hd)]`. Use `congrArg (τ' d • ·) (key.symm.trans ?_)` and prove the remaining obligations. Unfold `ptF`. Rewrite using `[c₁, cV, cV₁, o₁, oV, oV₁]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem realB : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ (W : G.Weil) (i j : Fin D.R.m)
     (A₁ : Fr (G.V (.grid ↑i ↑j))) (AV : Fr (G.V (.grid ↑i (↑j + 1)))) (AV₁ : Fr (G.V (.grid (↑i + 1) ↑j))),
@@ -413,37 +409,31 @@ def FockRel (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model 
       IsDatum M ψ cS (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f₀ φ) F → IsDatum M ψ cS (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) (fockF ψ θ ε A B F P)
 
 /- English proof (translation)
-Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd Bs.ψ` using `hBs.std`. Establish `hψ : IsStdChar D Bs.ψ (-1)` using `GlobalTheory.StdCharFromIsStd.isStdChar_of_isStd D Bs.ψ hstd`. Establish `fin : ∀ φ, (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) → (∀ᶠ v in Filter.cofinite, φ v = M.vac v) → ∀ F : WO S X → ℂ, IsDatum M Bs.ψ cS (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f₀ φ) F → IsFinF Bs.ψ θ ε A B F` using `fun φ h1 h2 F hF => by`. Take `⟨F', a, b⟩` from `GlobalTheory.T.thetaTransform_gaussianVacuum_isFiniteDatum D Bs.ψ θ hθ ε S X A B e Bs hBs rfl Vs Ws r s r' s' hJ hJW hV hW hemb M hM cS hcS f₀ φ hG h1 h2`. Take `rfl : F = F'` from `funext fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, rfl⟩` from `cS.surjective x`. Conclude with `(hF.2 u).symm.trans (b.2 u)`. Conclude with `a`. Establish `L` using `GlobalTheory.SquareAgree.isDatum_linear M Bs.ψ hstd cS`. Establish `lin : ∀ (c : ℂ) P f P' f', FockRel M Bs.ψ θ ε A B cS f₀ P f → FockRel M Bs.ψ θ ε A B cS f₀ P' f' → FockRel M Bs.ψ θ ε A B cS f₀ (P + c • P') (f + c • f')` using `fun c P f P' f' h h' φ h1 h2 F hF => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.BigNZ.DatReal.pure_add, GlobalTheory.BigNZ.DatReal.pure_smul, map_add, map_smul]`. Conclude with `L.2 _ _ _ _ c (h φ h1 h2 F hF) (h' φ h1 h2 F hF)`. Establish `zero : FockRel M Bs.ψ θ ε A B cS f₀ 0 0` using `fun φ _ _ F _ => by`. Rewrite using `[GlobalTheory.BigNZ.DatReal.pure_zero, map_zero]`. Conclude with `L.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `one : FockRel M Bs.ψ θ ε A B cS f₀ 1 f₀` using `fun φ _ _ F hF => by`. Rewrite using `[show fockF Bs.ψ θ ε A B F 1 = F from ptF_one (frSgn ε A) B F]`. Conclude with `hF`. Establish `h0 : f₀ ∈ M.Pol Bs.ψ Bs.emb` using `Submodule.mem_sInf.2 fun N hN => hN.1 _ hG`. Use `⟨fin, fun P => ?_, fun hu => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Use `⟨0 + a • f₀, add_mem (zero_mem _) (Submodule.smul_mem _ a h0), ?_⟩` and prove the remaining obligations. Use `lin a _ _ _ _ zero one` as an intermediate fact. Rewrite `this` using `[zero_add, ← MvPolynomial.C_eq_smul_one]`. Then use the resulting hypothesis.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `add p q hp hq`. Take `⟨f, a, b⟩` from `hp`. Take `⟨f', a', b'⟩` from `hq`. Use `⟨f + f', add_mem a a', ?_⟩` and prove the remaining obligations. Simplify `lin 1 _ _ _ _ b b'` using `only [one_smul]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Consider the case `mul_X p v hp`. Take `⟨f, a, b⟩` from `hp`. Establish `der : ∀ z : Matrix (Fin X.rank) (Fin S.rank) ℂ, ∃ g ∈ M.Pol Bs.ψ Bs.emb, ∀ φ, (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) → (∀ᶠ v in Filter.cofinite, φ v = M.vac v) → ∀ F : WO S X → ℂ, IsDatum M Bs.ψ cS (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) F → IsDatum M Bs …` using `fun z => by`. Establish `hat` using `GlobalTheory.T.archimedean_preimage_realPlace_line D θ hθ ε S X e cS hcS v.1 z`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_heisenberg_derivative_archimedean_direction M Bs.ψ hstd f _ hat`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨g, Submodule.mem_sInf.2 fun N hN => hN.2 _ hat f (Submodule.mem_sInf.1 a N hN) g hg, fun φ h1 h2 F hF => GlobalTheory.T.heisenbergDerivative_realPlace_pureDatum D Bs.ψ θ hθ ε S X A B e Bs hBs rfl Vs Ws r s r' s' hJ hJW hV hW hemb M hM cS hcS f φ h1 h2 F hF v.1 z g hg⟩`. Take `⟨g₁, a₁, b₁⟩` from `der (unitMap (A.onb v.1) (B.onb v.1) v.2.1 v.2.2)`. Take `⟨g₂, a₂, b₂⟩` from `der (cplxO ((frSgn ε A).cart v.1) (B.cart v.1) (unitMap (A.onb v.1) (B.onb v.1) v.2.1 v.2.2))`. Use `⟨0 + (fockScale D v.1 : ℂ)⁻¹ • (g₁ + (-Complex.I) • g₂), add_mem (zero_mem _) (Submodule.smul_mem _ _ (add_mem a₁ (Submodule.smul_mem _ _ a₂))), fun φ h1 h2 F hF => ?_⟩` and prove the remaining obligations. Establish `k` using `L.2 _ _ _ _ (fockScale D v.1 : ℂ)⁻¹ L.1 (L.2 _ _ _ _ (-Complex.I) (b₁ φ h1 h2 _ (b φ h1 h2 F hF)) (b₂ φ h1 h2 _ (b φ h1 h2 F hF)))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[GlobalTheory.BigNZ.DatReal.pure_add, GlobalTheory.BigNZ.DatReal.pure_smul, GlobalTheory.BigNZ.DatReal.pure_add, GlobalTheory.BigNZ.DatReal.pure_smul, GlobalTheory.BigNZ.DatReal.pure_zero, mul_comm p, show fockF Bs.ψ θ ε A B F (MvPolynomial.X v * p) = _ from ptF_X_mul hψ hθ (frSg …`. Rewrite `k` using `[zero_add (M := WO S X → ℂ)]`. Conclude with `k`. Set `N : Submodule ℂ (SInf D.host.F (Fin S.rank × Fin d))` to `{ carrier := {f | ∃ P, FockRel M Bs.ψ θ ε A B cS f₀ P f} zero_mem' := ⟨0, zero⟩ add_mem' := by`. Introduce and unpack `f f' ⟨P, h⟩ ⟨P', h'⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, by simpa only [one_smul] using lin 1 _ _ _ _ h h'⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c f ⟨P, h⟩`. Conclude with `⟨_, by simpa only [zero_add] using lin c _ _ _ _ zero h⟩ }`. Establish `hle : M.Pol Bs.ψ Bs.emb ≤ N` using `sInf_le ⟨fun g hg => ?_, fun u hu f ⟨P, hP⟩ f₁ h₁ => ?_⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `fun f hf => hle hf`. Take `⟨c, rfl⟩` from `hu g hg`. Conclude with `N.smul_mem c ⟨1, one⟩`. Use `choose Lp hLp using fun τ => GlobalTheory.SquareComm.AlgDeriv.exists_dRho_pure_all (S := sgn ε S) (T := X) hψ hθ (frSgn ε A).cart (frSgn ε A).fr (frSgn ε A).ε B.cart B.fr B.ε (fun ρ => ⟨(frSgn ε A).fr_unit ρ, (frSgn ε A).fr_gram ρ, rfl⟩) (fun ρ => ⟨B.fr_unit ρ, B.fr_gram ρ, rfl⟩) …`. Establish `hsm : ∀ (a : AF D.host.F) (v : Matrix (Fin S.rank) (Fin d) (AE D)), cS (a • v) = a • cS v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `a v`. Rewrite using `[hcS, hcS]`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply, Matrix.transpose_apply, Matrix.smul_apply, Finset.smul_sum, smul_mul_assoc, id]`. Establish `hAt : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) (cS u)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `a ha`. Rewrite using `[← hsm, hu a ha, map_zero]`. Use `⟨∑ τ, Lp τ P, fun φ hφ hvac F hF => ⟨?_, fun u' => ?_⟩⟩` and prove the remaining obligations. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f₁ φ hφ ((hvac.and hM.std).mono fun v hv => hv.1.trans hv.2)`. Establish `hF'` using `fin φ hφ hvac F hF`.
-
-Establish `hD` using `hP φ hφ hvac F hF`. Establish `h2` using `GlobalTheory.T.hasDerivAt_thetaSum_archimedeanHeisenbergLine M Bs.ψ hstd hM u hu f f₁ φ hφ hvac h₁ u'`. Establish `h3` using `GlobalTheory.T.hasDerivAt_heisenbergOp_archimedean_sum_realPlaces D Bs.ψ θ hψ hθ (sgn ε S) X _ (ptF_theta hψ hθ (frSgn ε A) B hF'.1 P) (cS u) hAt (cS u')`. Establish `heq : (fun t : ℝ => GlobalTheory.WeilM.thetaSum D.host.F (M.co.rho Bs.ψ u' (M.heisLine Bs.ψ u t (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ)))) = fun t : ℝ => heisO Bs.ψ (sgn ε S) X (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t …`. Use function extensionality and compare the values at `t`.
-
-Establish `h4` using `(GlobalTheory.T.schrodingerThetaDatum_heisenberg_oriented D Bs.ψ θ hθ ε S X A B e Bs hBs rfl Vs Ws r s r' s' hJ hJW hV hW hemb M hM cS hcS (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) _ hD (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.h …`. Rewrite `h4` using `[hsm]`. Conclude with `h4`. Rewrite `h2` using `[heq]`. Rewrite using `[h2.unique h3, map_sum, Finset.sum_apply]`.
-
-Conclude with `Finset.sum_congr rfl fun τ _ => congrFun (hLp τ F hF'.1 (hF'.2 τ) P) _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_datum {θ : InfFam D} (hθ : IsInfFam θ) (ε : Bool) (A : Fr S) (B : Fr X) (e : Fin X.rank ≃ Fin d)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (hBs : Bs.IsGood D.sp.cm.sig) {r s r' s' : ℕ}

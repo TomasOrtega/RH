@@ -20,7 +20,7 @@ def IsFinExt (T T' : CDVR) (i : T.Fr →+* T'.Fr) : Prop :=
     ∃ r : ℕ, 0 < r ∧ ∀ x : T.Fr, vV T'.V (i x) = (r : ℤ) * vV T.V x
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Module.Finite.self _, 1, one_pos, fun x => by simp⟩`.
+Supply the required witnesses or components.
 -/
 example (T : CDVR) : IsFinExt T T (RingHom.id _) :=
   ⟨Module.Finite.self _, 1, one_pos, fun x => by simp⟩
@@ -84,7 +84,7 @@ def HeckeInt : Prop :=
     (Xo : Moduli Dw l) (c : Coeff l), HeckeIntGood Xo c ∧ HeckeIntAll Xo c
 
 /- English proof (translation)
-Introduce `la P p i hP hp T io e ho y hy _` and use `h la P p i hP hp T io e ho y hy trivial`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (h : HeckeValueInt Xo c (trivialClassCondition Xo c)) : HeckeValueInt Xo c (goodCls Xo c) :=
   fun la P p i hP hp T io e ho y hy _ => h la P p i hP hp T io e ho y hy trivial

@@ -27,11 +27,9 @@ def SecThrough (w : LB.Iso L' (L.pull Φ)) (s : LB.Sec L) (s' : LB.Sec L') : Pro
     gs (r ≫ Φ) z _ (s.f j) = (Geo.Tor.gw w r z j k).val * gs r z _ (s'.f k)
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Establish `hj' : Φ x ∈ L.U j` using `X.basicOpen_le _ hj`. Take `⟨k, hk⟩` from `exists_chart hL' x`. Establish `u : IsUnit (gs (𝟙 X) (Φ x) _ (s.f j))`. Rewrite using `[gs_eq (𝟙 X) (Φ x) _ hj']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(X.mem_basicOpen _ _ hj').1 hj`. Establish `e` using `h _ (𝟙 _) x j k hj' hk`. Rewrite `e` using `[Category.id_comp, gs_stalkMap Φ x _ hj']`. Establish `u' : IsUnit (gs (𝟙 X') x _ (s'.f k))` using `isUnit_of_mul_isUnit_right (e ▸ u.map _)`. Rewrite `u'` using `[gs_eq (𝟙 X') x _ hk]`.
-
-Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨k, (X'.mem_basicOpen _ _ hk).2 u'⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SecThrough.mem {w : LB.Iso L' (L.pull Φ)} {s : LB.Sec L} {s' : LB.Sec L'} (h : SecThrough w s s')
     (hL' : L'.IsLB) {x : X'} (hx : Φ x ∈ nonzeroLocus s) : x ∈ nonzeroLocus s' := by
@@ -56,7 +54,7 @@ def Vanishes (k : T' ⟶ T) (g : GtPt D T) : Prop :=
   k ≫ g.b = 1 ∧ ∀ χ (Z : Scheme.{0}) (r : Z ⟶ T'.left) (z : Z) J, Good D.P.L z J → val (g.s χ) (r ≫ k.left) z J = 1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [Category.assoc, h.1, MonObj.comp_one], fun χ Z r z J hJ => by rw [Over.comp_left, ← Category.assoc]; exact h.2 χ Z _ z J hJ⟩`.
+Supply the required witnesses or components.
 -/
 theorem Vanishes.comp {k : T' ⟶ T} {g : GtPt D T} (h : Vanishes k g) (k' : T'' ⟶ T') : Vanishes (k' ≫ k) g :=
   ⟨by rw [Category.assoc, h.1, MonObj.comp_one], fun χ Z r z J hJ => by
@@ -93,7 +91,7 @@ variable {p : IsPullDeg f D D'} {q : IsPullDeg f' D' D''} {r : IsPullDeg (f'.com
 include C
 
 /- English proof (translation)
-Establish `e : x ≫ proj r = (x ≫ proj q) ≫ proj p` using `(congrArg (x ≫ ·) C.proj_eq).trans (Category.assoc _ _ _).symm`. Conclude with `(congrArg (fun u => Geo.Tor.gw r.w x z (J u) (J'' x)) e).trans (C.tri Z x z _ _ _ (hJ ((x ≫ proj q) ≫ proj p)) (hJ' (x ≫ proj q)) (hJ'' x))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem om_eq {Z : Scheme.{0}} {z : Z} {J J' J''} (hJ : Good D.P.L z J) (hJ' : Good D'.P.L z J')
     (hJ'' : Good D''.P.L z J'') (x : Z ⟶ D''.P.A.left) :
@@ -103,13 +101,13 @@ theorem om_eq {Z : Scheme.{0}} {z : Z} {J J' J''} (hJ : Good D.P.L z J) (hJ' : G
     (C.tri Z x z _ _ _ (hJ ((x ≫ proj q) ≫ proj p)) (hJ' (x ≫ proj q)) (hJ'' x))
 
 /- English proof (translation)
-Use `isPullGtF_of_val r hF ?_ fun χ y J J'' hJ hJ'' => ?_` and prove the remaining obligations. Rewrite using `[C.proj_eq, ← Category.assoc]`. Conclude with `(congrArg (· ≫ proj p) H'.1).trans H.1`. Take `⟨J', hJ'⟩` from `DegPull.exists_good' D'.P.isLB (Z := Sp F) y`. Establish `v` using `pullGt_val p H (q.xe χ) (𝟙 _) hJ hJ'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `v'` using `pullGt_val q H' χ (𝟙 _) hJ' hJ''`. Take `⟨hψ, -⟩` from `H'.2 χ`. Establish `a₀ : (cP D'' _ χ * g''.b).left ≫ proj q = 𝟙 _ ≫ (cP D' _ (q.xe χ) * g'.b).left` using `hψ 0`. Establish `a₁ : (cP D'' (TF (R` using `R'') F) χ).left ≫ proj q = 𝟙 _ ≫ (cP D' (TF (R := R') F) (q.xe χ)).left := hψ 1`. Establish `a₂ : g''.b.left ≫ proj q = 𝟙 _ ≫ g'.b.left` using `hψ 2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₃ : (1 : TF (R` using `R'') F ⟶ D''.P.A).left ≫ proj q = 𝟙 _ ≫ (1 : TF (R := R') F ⟶ D'.P.A).left := hψ 3`. Simplify using `only [Category.id_comp] at v'`. Rewrite using `[C.xe_eq, C.om_eq hJ hJ' hJ'', C.om_eq hJ hJ' hJ'', C.om_eq hJ hJ' hJ'', C.om_eq hJ hJ' hJ'', a₀, a₁, a₂, a₃]`. Establish `alg : ∀ (U : Type) [CommGroup U] (a b c d a' b' c' d' v : U), a⁻¹ * b * c * d⁻¹ * (a'⁻¹ * b' * c' * d'⁻¹ * v) = (a * a')⁻¹ * (b * b') * (c * c') * (d * d')⁻¹ * v` using `fun U _ a b c d a' b' c' d' v => by`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Conclude with `(v.trans (congrArg₂ (· * ·) rfl v')).trans (alg _ _ _ _ _ _ _ _ _ _)`.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem isPullGtF {F : Type} [Field F] [Algebra (FractionRing R) F] [Algebra (FractionRing R') F]
     [Algebra (FractionRing R'') F] (hF : Compat (f'.comp f) F) (hF' : Compat f' F) {g : GtPtF D F} {g' : GtPtF D' F}

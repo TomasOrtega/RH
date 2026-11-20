@@ -18,31 +18,29 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
   (b : Module.Basis (Fin 2) F E) (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) (a : ℕ)
 
 /- English proof (translation)
-Introduce `g`. Establish `hinv : ∀ y : Fv F v ⊗[F] E, sigR (Fv F v) σ (sigR (Fv F v) σ y) = y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul r e => simp [sigR, hσ]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Use `set u : Fv F v := algebraMap F (Fv F v) (b.repr 1 k0) with hu_def`. Establish `hu0 : u ≠ 0` using `(map_ne_zero (algebraMap F (Fv F v))).mpr hk0`. Set `Y : Fin a → Fin a → Fv F v ⊗[F] E` to `fun i j => (Algebra.TensorProduct.basis (Fv F v) b).equivFun.symm ![(g (i, j) : Fv F v), (g (j, i) : Fv F v)]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `D : Fin a → Fv F v ⊗[F] E` to `fun i => ((g (i, i) : Fv F v) / u) • (1 : Fv F v ⊗[F] E)`. Set `M : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)` to `fun i j => if i < j then Y i j else if j < i then sigR (Fv F v) σ (Y j i) else D i`. Establish `hD : ∀ i, sigR (Fv F v) σ (D i) = D i`. Introduce `i`. Simplify using `[D, sigR, Algebra.TensorProduct.one_def, TensorProduct.smul_tmul']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hY : ∀ i j k, cr b v (Y i j) k = ![(g (i, j) : Fv F v), (g (j, i) : Fv F v)] k` using `fun i j k => cr_symm b v _ k`. Establish `hDk : ∀ i k, cr b v (D i) k = (g (i, i) : Fv F v) / u * algebraMap F (Fv F v) (b.repr 1 k)` using `fun i k => cr_smul_one b v _ k`. Establish `hM : M ∈ HermR (Fv F v) σ a` using `by show ∀ i j, sigR (Fv F v) σ (M j i) = M i j`. Introduce `i j`. Break down `lt_trichotomy i j with h | rfl | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[M, h, lt_asymm h, hinv]`. Simplify using `[M, hD]`. Simplify using `[M, h, lt_asymm h]`. Establish `hO : (⟨M, hM⟩ : HermR (Fv F v) σ a) ∈ hermO b v σ a`. Rewrite using `[mem_hermO_iff]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j k`. Rewrite using `[crdS_eq]`. Use `show cr b v (M i j) k ∈ _`. Break down `lt_trichotomy i j with h | rfl | h` into its components or cases. Simplify using `only [M, if_pos h]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hY]`. Apply the tactic sequence `fin_cases k <;> simp`. Simplify using `only [M, lt_irrefl, if_false]`. Rewrite using `[hDk]`. Establish `e : (g (i, i) : Fv F v) / u * algebraMap F (Fv F v) (b.repr 1 k) = (g (i, i) : Fv F v) * algebraMap F (Fv F v) (b.repr 1 k / b.repr 1 k0)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_div₀, ← hu_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mul_mem (g _).2 (hu k)`. Simplify using `only [M, if_neg (lt_asymm h), if_pos h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cr_sig]`. Use `sum_mem fun l _ => mul_mem (hC k l) ?_` and prove the remaining obligations. Rewrite using `[hY]`. Apply the tactic sequence `fin_cases l <;> simp`. Use `⟨⟨⟨M, hM⟩, hO⟩, ?_⟩` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `q`. Take `⟨i, j⟩` from `q`. Simplify using `only [psi, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Use `split_ifs with h1 h2`. Apply `Subtype.ext show cr b v (M i j) 0 = _` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [M, if_pos h1]`. Rewrite using `[hY]`. Simplify using the standard rewrite rules. Apply `Subtype.ext show cr b v (M j i) 1 = _` to reduce the goal to its premises. Simplify using `only [M, if_pos h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite using `[hY]`. Simplify using the standard rewrite rules. Establish `hij : i = j` using `le_antisymm (not_lt.mp h2) (not_lt.mp h1)`. Substitute `hij` using the available equality. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Use `show cr b v (M i i) k0 = _`. Simplify using `only [M, lt_irrefl, if_false]`. Rewrite using `[hDk, ← hu_def]`. Conclude with `div_mul_cancel₀ _ hu0`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_surj (k0 : Fin 2) (hσ : ∀ x, σ (σ x) = x)
     (hC : ∀ k l, algebraMap F (Fv F v) (Cmat b σ k l) ∈ v.adicCompletionIntegers F)

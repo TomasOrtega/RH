@@ -16,11 +16,11 @@ noncomputable section
 namespace GlobalTheory.ArcNormal
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ V Y a χ W M hM`. Establish `cast : ∀ (p q : Sp (PowerSeries ℂ) ⟶ Y.X) (_ : p = q) (n : SABMap W.t Y.t p), ∃ n' : SABMap W.t Y.t q, n'.φ = n.φ`. Introduce and unpack `p q rfl n`. Conclude with `⟨n, rfl⟩`. Take `⟨m', hm'⟩` from `cast _ (spMap (ev χ M.U hM) ≫ M.hU.fromSpec) (GlobalTheory.FlagMod.spMap_ev χ M.hU hM).symm W.m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨v', hv', hb, -⟩` from `M.lie (PowerSeries ℂ) (ev χ M.U hM) W.t m'`. Use `⟨v', fun j => ?_, hb⟩` and prove the remaining obligations. Rewrite using `[← hm', hv' j]`. Establish `e : ReciprocityTheory.ChartRestriction.G.Chart.dualMapR (ev χ M.U hM) = dualMap (ev χ M.U hM)`. Apply the tactic sequence `ext x <;> simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR, dualMap]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_chartLie_along : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : ValuationSubring c.F) (Y : Model Xo c V.subtype) (a : ArcIn Dw l V.subtype ℂ (σ.comp V.subtype)) (χ : Sp (PowerSeries ℂ) ⟶ Y.X) (W : GlobalTheory.ArcQ.Wit Y a χ) (M : GChart Y) (hM : ⊤ ≤ χ ⁻¹ᵁ M.U), ∃ v' : Fin M.n → (epsR (PowerSeries ℂ) ⟶ W.t.G), (∀ i, (v' i).left ≫ W.m.φ = spMap (dualMap (ev χ M.U hM)) ≫ M.v₀ i) ∧ IsLieBasis v' := by
   intro E _ _ _ H Dw l Xo c σ V Y a χ W M hM
@@ -37,11 +37,11 @@ theorem exists_chartLie_along : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
   rw [e]
 
 /- English proof (translation)
-Introduce `R _ _ G _ _ O _ act n n' v v' hv hv'`. Set `b` to `GlobalTheory.Serre.Lie.basis act hv`. Set `b'` to `GlobalTheory.Serre.Lie.basis act hv'`. Establish `h : n' = n` using `by simpa using Fintype.card_congr (b'.indexEquiv b)`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Substitute using the available equality.
 
-Use `⟨rfl, (b.toMatrix b').transpose, ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_transpose]`. Use `IsUnit.of_mul_eq_one (b'.toMatrix b).det ?_` and prove the remaining obligations. Rewrite using `[← Matrix.det_mul, Module.Basis.toMatrix_mul_toMatrix_flip, Matrix.det_one]`. Establish `hv_eq : v = fun k => (b k).hom` using `funext fun k => (GlobalTheory.Serre.Lie.hom_basis (a := act) hv k).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Fin.cast_eq_self, ← GlobalTheory.Serre.Lie.hom_basis (a := act) hv' i, hv_eq, GlobalTheory.Serre.Lie.isLieComb_iff]`. Use `congr 1`. Use `conv_lhs => rw [← b.sum_repr (b' i)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_lieComb_matrix : ∀ (R : Type) [CommRing R] [Nontrivial R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (O : Type) [CommRing O] (act : OAct O G) (n n' : ℕ) (v : Fin n → (epsR R ⟶ G)) (v' : Fin n' → (epsR R ⟶ G)), IsLieBasis v → IsLieBasis v' → ∃ h : n' = n, ∃ A : Matrix (Fin n) (Fin n) R, IsUnit A.det ∧ ∀ i, IsLieComb (A i) v (v' (Fin.cast h.symm i)) := by
   intro R _ _ G _ _ O _ act n n' v v' hv hv'
@@ -60,19 +60,17 @@ theorem exists_lieComb_matrix : ∀ (R : Type) [CommRing R] [Nontrivial R] (G : 
     rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ _ _ V Y a χ W g ty Fu Ha th Θ M h1 h2 h3 h4 h5 h6`. Take `⟨e, v, z, hev, hv, hz⟩` from `GlobalTheory.T.exists_constant_lieBasis_analytic_basis_arc E H Dw l Xo c σ V Y a χ W g ty Fu Ha`. Take `⟨v', hv'1, hv'2⟩` from `exists_chartLie_along E H Dw l Xo c σ V Y a χ W M h6`. Take `⟨hn, A, hA, hAc⟩` from `exists_lieComb_matrix (PowerSeries ℂ) W.t.G (𝓞 E) W.t.act g M.n v v' hv hv'2`. Take `⟨T₀, hT₀⟩` from `GlobalTheory.T.arc_lieBasis_exponentialCoords_hasSum E H Dw l Xo c σ V Y a χ W g ty Fu Ha M h6 e v z hn (fun i => v' (Fin.cast hn.symm i)) A h1 h2 h3 h4 h5 hev hv hz (fun i => hv'1 _) hAc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hex : ∃ w : ℂ, T₀ < w.im ∧ ∀ i k, Summable (fun m : ℕ => PowerSeries.coeff m (A i k) * eTwoPi w ^ m)`. Use `swap`. Use `⟨T₀, 1, one_pos, ?_⟩` and prove the remaining obligations. Introduce `w hw yF e1 e2 hz' x φ hk hg u Wv hf hdf`. Conclude with `(hex ⟨w, hw, fun i k => (hT₀ w hw yF e1 e2 hz' x φ hk hg u Wv hf hdf i).1 k⟩).elim`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w₀, -, hs⟩` from `hex`. Take `⟨T', C, hC, hb⟩` from `GlobalTheory.T.det_bounded_convergent_powerSeries_matrix_eTwoPi g A w₀ hA hs`. Establish `hd : 0 < ‖(Matrix.of z).det‖` using `norm_pos_iff.2 hz`. Use `⟨max T₀ T', C * (‖(Matrix.of z).det‖ + ‖(Matrix.of z).det‖⁻¹), by positivity, ?_⟩` and prove the remaining obligations. Introduce `w hw yF e1 e2 hz' x φ hk hg u Wv hf hdf`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hM : (Matrix.of fun i j : Fin g => Wv (Fin.cast hg.symm i) j) = (Matrix.of fun i j => ∑' m : ℕ, PowerSeries.coeff m (A i j) * eTwoPi w ^ m) * Matrix.of z`. Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, ((hT₀ w (lt_of_le_of_lt (le_max_left _ _) hw) yF e1 e2 hz' x φ hk hg u Wv hf hdf i).2 j), Matrix.mul_apply]`. Both sides reduce to the same expression. Rewrite using `[hM, Matrix.det_mul, norm_mul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Take `⟨b1, b2⟩` from `hb w (lt_of_le_of_lt (le_max_right _ _) hw)`. Use `set d := ‖(Matrix.of z).det‖`. Use `set t := ‖(Matrix.of fun i j => ∑' m : ℕ, PowerSeries.coeff m (A i j) * eTwoPi w ^ m).det‖`. Prove the components needed by the constructor for the conclusion. Rewrite using `[mul_inv, ← div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_le_iff₀ (by positivity)]`. Establish `: 1 ≤ d * (d + d⁻¹)` using `by rw [mul_add, mul_inv_cancel₀ hd.ne']; nlinarith`. Use polynomial arithmetic with `[inv_pos.2 hC]`. Use `_ ≤ t * d := mul_le_mul_of_nonneg_right b1 hd.le`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lieCoord_det_bounded : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (V : ValuationSubring c.F) (Y : Model Xo c V.subtype) (a : ArcIn Dw l V.subtype ℂ (σ.comp V.subtype)) (χ : Sp (PowerSeries ℂ) ⟶ Y.X) (W : GlobalTheory.ArcQ.Wit Y a χ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (Fu : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty) (Ha : HolArc Y σ a χ W Fu) (th : a.D₀.P.L.Sec) (Θ : GlobalTheory.ArcQ.ThetaDat Ha th) (M : GChart Y), Formalism.L2.PjFree.GoodEmb c σ → IsTypeFn H Dw.p Dw.q ty → PushInvertible Y.t.G Y.t.PP.L → χ ≫ Y.s = spMap (PowerSeries.C (R := ℂ)) ≫ spMap (σ.comp V.subtype) → (∀ x : Sp (PowerSeries ℂ), PowerSeries.X ∉ x.asIdeal → χ x ∈ Set.range Y.j) → ⊤ ≤ χ ⁻¹ᵁ M.U → ∃ T C : ℝ, 0 < C ∧ ∀ w : ℂ, T < w.im → ∀ yF : Sp ℂ ⟶ Xo.XF c, yF ≫ pullback.fst _ _ = Fu.u Ha.i (Ha.Pw w) → yF ≫ pullback.snd _ _ = spMap σ → ∀ (hz : ⊤ ≤ (yF ≫ Y.j) ⁻¹ᵁ M.U) (x : KeyIn ℂ) (φ : x.P.A.left ⟶ Y.t.G.left), GlobalTheory.ArcNormal.KeyAtVia M (yF ≫ Y.j) hz x φ → ∀ (hg : x.P.g = g) (u : HolUnif x.P.A x.P.L g) (Wv : Fin x.P.g → Fin g → ℂ), GlobalTheory.ArcNormal.ArcFib Y σ Fu Ha.i (Ha.Pw w) x φ u → (∀ i, u.IsDiff (Wv i) (x.v i)) → C⁻¹ ≤ ‖(Matrix.of fun i j : Fin g => Wv (Fin.cast hg.symm i) j).det‖ ∧ ‖(Matrix.of fun i j : Fin g => Wv (Fin.cast hg.symm i) j).det‖ ≤ C := by
   intro E _ _ _ H Dw l Xo c σ _ _ V Y a χ W g ty Fu Ha th Θ M h1 h2 h3 h4 h5 h6

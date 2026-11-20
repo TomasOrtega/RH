@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `n g g' D h1 h2 k`. Proceed by induction on `k with`. Consider the case `zero => simp [h1]`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ih, pow_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = g' * (D ^ k * D) * g := by rw [h2, Matrix.mul_one]; simp only [Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yhd8.main :
     ∀ {n : ℕ} (g g' D : Matrix (Fin n) (Fin n) ℂ),

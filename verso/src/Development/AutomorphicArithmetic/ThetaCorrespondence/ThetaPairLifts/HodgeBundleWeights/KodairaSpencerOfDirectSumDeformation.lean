@@ -21,27 +21,25 @@ open GlobalTheory.DeRham GlobalTheory.Cris GlobalTheory.Published ReciprocityThe
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {K : Type} [Field K] [Algebra c.F K]
 /- English proof (translation)
-Introduce `Pr E _ _ _ H Dw l Xo c K _ _ y ι _ _ X hpq hXs hXy N hN M`. Establish `P` using `Pr.p5`. Establish `e₀ : ∀ m : ι → K, DeRham.epsRed K ≫ spMap (dir c m).toRingHom = spMap (TrivSqZeroExt.fstHom K K (ι → K)).toRingHom` using `fun m => by`. Rewrite using `[← Cris.spMap_comp]`. Conclude with `congrArg spMap (RingHom.ext fun z => fst_dir (c := c) m z)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `tan : IsTanX y (spMap (dir c M).toRingHom ≫ X)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hXs]`. Unfold `sOf`. Rewrite using `[← Cris.spMap_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg spMap (RingHom.ext fun r => (dir c M).commutes _)`. Rewrite using `[← Category.assoc, ← hXy]`. Conclude with `congrArg (· ≫ X) (e₀ M)`. Take `⟨M₀, A, _, A', _, π, π', i, hi, ψ, ub, hb, hπ, hπ', hiπ, hpol, hu, hl, what₂⟩` from `_root_.GlobalTheory.T.exists_kodaira_spencer_flag_tangent Pr E H Dw l Xo c K y _ hpq tan`. Take `⟨C, _, πC, hC⟩` from `exists_isGrpPullback Xo.univ.t.G X`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU` using `ObjDim.isAbelianScheme Xo.univ`. Establish `hg` using `ObjDim.smoothOfRelativeDimension Xo.univ`. Establish `aC` using `PolPull.isAbelianScheme_of_isGrpPullback hU hC`. Establish `gC` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hC.1 hg`. Establish `hA` using `PolPull.isAbelianScheme_of_isGrpPullback hU hπ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `gA` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hπ.1 hg`. Establish `hL` using `(P.2.1 K A _ hA gA).1`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ, eφ⟩ : ∃ φ : A'.left ⟶ C.left, IsGrpPullback A' C (spMap (dir c M).toRingHom) φ ∧ φ ≫ πC = π' := by`. Establish `w : π' ≫ Xo.univ.t.G.hom = (A'.hom ≫ spMap (dir c M).toRingHom) ≫ X` using `hπ'.1.w.trans (Category.assoc _ _ _).symm`. Conclude with `⟨hC.1.lift _ _ w, hC.cancel (hπ'.congr rfl (hC.1.lift_fst _ _ w).symm) (hC.1.lift_snd _ _ w), hC.1.lift_fst _ _ w⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h₀` using `(hi.comp hφ).congr (e₀ M) rfl`. Use `⟨A, _, A', _, π, π', i, hi, ψ, ub, hb, hπ, hπ', hiπ, hpol, hu, hl, fun τ a => ?_⟩` and prove the remaining obligations. Take `⟨-, -, f, hf, hd, -⟩` from `what₂ τ a`. Take `⟨gs, hgs⟩` from `exists_isFilLift_dir P aC gC h₀ hf`. Establish `row : ∀ k, ∃ w, IsLieComb (fun b => N k ⟨τ, a, b⟩) (ub τ.1) w ∧ DeRham.IsLieImage (gs k) w` using `fun k => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨B, _, χ, hχ⟩` from `exists_isGrpPullback C (spMap (dir c (Pi.single k (1 : K))).toRingHom)`. Establish `w : (i ≫ φ) ≫ C.hom = (A.hom ≫ DeRham.epsRed K) ≫ spMap (dir c (Pi.single k (1 : K))).toRingHom`. Rewrite using `[Category.assoc _ (DeRham.epsRed K), e₀]`. Conclude with `h₀.1.w`. Establish `sq : hχ.1.lift _ _ w ≫ χ = i ≫ φ` using `hχ.1.lift_fst _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hj : IsGrpPullback A B (DeRham.epsRed K) (hχ.1.lift _ _ w)` using `hχ.cancel (h₀.congr (e₀ _).symm sq.symm) (hχ.1.lift_snd _ _ _)`. Take `⟨v, hc, hv⟩` from `(hN k).row P hj hπ (hχ.comp hC) (by rw [← Category.assoc, sq, Category.assoc, eφ, hiπ]) hpol hu hl τ a hf hd`. Take `⟨v', hv', -⟩` from `hL.1 (gs k)`. Establish `fl` using `hgs (Pi.single k 1) B χ _ hj hχ sq`. Simplify using `only [Pi.single_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at fl`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl` from `IsKSValue.unique P (PolPull.isAbelianScheme_of_isGrpPullback aC hχ) ((smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hχ.1 gC) hv ⟨_, fl, hv'⟩`. Conclude with `⟨_, hc, hv'⟩`. Use `choose w hwc hwl using row`. Set `e` to `(Fintype.equivFin ι).symm`. Use `⟨lieComb (fun q => M (e q)) (fun q => w (e q)), ?_, f, hf, hd, _, ?_, isLieImage_lieComb _ (f := fun q => gs (e q)) fun q => hwl _⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨V, _, _, v, -, -, htan, hcomb, -, -⟩` from `GlobalTheory.T.exists_tangent_module_universal_group E H Dw l Xo K y.x choose n hn using fun σ k => (htan _).1 (y.tan σ k)`. Establish `key : ∀ {m : ℕ} (cf : Fin m → K) (u : Fin m → (epsR K ⟶ A)) (b : Fin m → V) (w : epsR K ⟶ A), (∀ j, (u j).left ≫ π = v (b j)) → (IsLieComb cf u w ↔ w.left ≫ π = v (∑ j, cf j • b j))` using `fun cf u b w hu => by rw [isLieComb_iff_isCombAt hπ, funext hu, hcomb]`. Establish `hun : ∀ j, (ub τ.1 j).left ≫ π = v (n τ.1 j)` using `fun j => (hu _ j).trans (hn _ j).symm`. Rewrite using `[key _ _ _ _ hun, (key _ _ _ _ fun q => (key _ _ _ _ hun).1 (hwc (e q))).1 (isLieComb_lieComb _ _), e.sum_comp fun k => M k • ∑ j, N k ⟨τ, a, j⟩ • n τ.1 j]`. Use `congr 1`.
-
-Simplify using `only [Finset.smul_sum, smul_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Rewrite using `[e.sum_comp fun k => M k • gs k]`. Conclude with `hgs M A' φ i hi hφ rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kodaira_spencer_direct_sum : _root_.GlobalTheory.CovTop.Hypotheses'' → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [Algebra c.F K]
@@ -125,7 +123,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 open AlgebraicGeometry CategoryTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.FlagTan.kodaira_spencer_direct_sum | exact _root_.GlobalTheory.FlagTan.kodaira_spencer_direct_sum | (intros; apply _root_.GlobalTheory.FlagTan.kodaira_spencer_direct_sum <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.kodaira_spencer_of_direct_sum_deformation : _root_.GlobalTheory.CovTop.Hypotheses'' → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K) (ι : Type) [Fintype ι] [DecidableEq ι] (X : Sp (TrivSqZeroExt K (ι → K)) ⟶ Xo.X), 1 ≤ Dw.p + Dw.q → X ≫ Xo.s = sOf c _ → spMap (TrivSqZeroExt.fstHom c.F K (ι → K)).toRingHom ≫ X = y.x → ∀ N : ι → GlobalTheory.FlagTan.HIx Dw (GlobalTheory.FlagTan.psiSet H) → K, (∀ k, GlobalTheory.FlagTan.IsKS (GlobalTheory.FlagTan.psiSet H) y (spMap (GlobalTheory.FlagTan.dir c (Pi.single k (1 : K))).toRingHom ≫ X) (N k)) → ∀ M : ι → K, GlobalTheory.FlagTan.IsKS (GlobalTheory.FlagTan.psiSet H) y (spMap (GlobalTheory.FlagTan.dir c M).toRingHom ≫ X) (∑ k, M k • N k) := by
   first | exact @_root_.GlobalTheory.FlagTan.kodaira_spencer_direct_sum | exact _root_.GlobalTheory.FlagTan.kodaira_spencer_direct_sum | (intros; apply _root_.GlobalTheory.FlagTan.kodaira_spencer_direct_sum <;> assumption)

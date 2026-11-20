@@ -12,7 +12,7 @@ open scoped NNReal ENNReal
 noncomputable section
 
 /- English proof (translation)
-Use extensionality with `z`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem NullSmaller.zeroSetEuc_eq_preimage_equiv {n : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ)) :
     zeroSetEuc J =
@@ -21,9 +21,9 @@ theorem NullSmaller.zeroSetEuc_eq_preimage_equiv {n : ℕ} (J : Ideal (MvPolynom
   rfl
 
 /- English proof (translation)
-Generalize the expression as in `ringKrullDim R = a at h ⊢`. Proceed by induction on `a using WithBot.recBotCoe with`. Consider the case `bot => exact bot_le`. Consider the case `coe a`. Proceed by induction on `a using ENat.recTopCoe with`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `top => exact absurd h (by simp)`. Consider the case `coe a`. Establish `h' : a < k + 1` using `by exact_mod_cast h`. Conclude with `Nat.lt_succ_iff.1 h'` after adjusting the coercions.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem NullSmaller.ringKrullDim_le_of_lt_succ {R : Type*} [CommRing R] {k : ℕ}
     (h : ringKrullDim R < ((k + 1 : ℕ) : WithBot ℕ∞)) : ringKrullDim R ≤ (k : WithBot ℕ∞) := by
@@ -38,15 +38,13 @@ theorem NullSmaller.ringKrullDim_le_of_lt_succ {R : Type*} [CommRing R] {k : ℕ
       exact_mod_cast Nat.lt_succ_iff.1 h'
 
 /- English proof (translation)
-Introduce `n d J hJ`. Break down `Nat.eq_zero_or_pos d with rfl | hd` into its components or cases. Establish `htop : J = ⊤`. Assume the negation of the conclusion as `h`. Establish `: Nontrivial (MvPolynomial (Fin n) ℂ ⧸ J)` using `Ideal.Quotient.nontrivial_iff.2 h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h0` using `ringKrullDim_nonneg_of_nontrivial (R := MvPolynomial (Fin n) ℂ ⧸ J)`. Conclude with `absurd (h0.trans_lt hJ) (by simp)`. Establish `hempty : zeroSetEuc J = ∅`. Use extensionality with `z`. Simplify using `only [zeroSetEuc, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_forall]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨1, htop ▸ Submodule.mem_top, by simp⟩`. Rewrite using `[hempty, measure_empty]`. Take `⟨k, rfl⟩ : ∃ k, d = k + 1` from `⟨d - 1, by omega⟩`. Establish `hk` using `ZeroLocusDimH.proof n k J (NullSmaller.ringKrullDim_le_of_lt_succ hJ)`. Establish `hlt : dimH (zeroSetEuc J) < (((2 * (k + 1) : ℕ) : ℝ≥0) : ℝ≥0∞)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[NullSmaller.zeroSetEuc_eq_preimage_equiv, ContinuousLinearEquiv.dimH_preimage]`. Use `hk.trans_lt ?_` and prove the remaining obligations. Establish `: 2 * k < 2 * (k + 1)` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `h0` using `hausdorffMeasure_of_dimH_lt hlt`.
-
-Simplify using `using h0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem NullSmaller.proof : NullSmaller.Statement := by
   intro n d J hJ

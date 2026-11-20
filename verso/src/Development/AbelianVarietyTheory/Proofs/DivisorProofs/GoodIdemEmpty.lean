@@ -40,12 +40,12 @@ def GoodIdem (e : Formalism.L2.Theta.AE D) (P : Finset (Formalism.L2.DIV.Pl D.ho
   IsIdemSum e P ∧ ∀ w ∈ P, ((D.host.QS * D.host.q * D.host.d : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_pos, one_pow 1⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsRootOne.one : IsRootOne 1 := ⟨1, one_pos, one_pow 1⟩
 
 /- English proof (translation)
-Take `⟨m, hm, h⟩` from `ha`. Take `⟨n, hn, h'⟩` from `hb`. Conclude with `⟨m * n, Nat.mul_pos hm hn, by rw [mul_pow, pow_mul, h, mul_comm m n, pow_mul, h', one_pow, one_pow, one_mul]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsRootOne.mul {a b : ℂ} (ha : IsRootOne a) (hb : IsRootOne b) : IsRootOne (a * b) := by
   obtain ⟨m, hm, h⟩ := ha
@@ -53,7 +53,7 @@ theorem IsRootOne.mul {a b : ℂ} (ha : IsRootOne a) (hb : IsRootOne b) : IsRoot
   exact ⟨m * n, Nat.mul_pos hm hn, by rw [mul_pow, pow_mul, h, mul_comm m n, pow_mul, h', one_pow, one_pow, one_mul]⟩
 
 /- English proof (translation)
-Take `⟨m, hm, h⟩` from `ha`. Introduce and unpack `rfl`. Rewrite `h` using `[zero_pow hm.ne']`. Conclude with `zero_ne_one h`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRootOne.ne_zero {a : ℂ} (ha : IsRootOne a) : a ≠ 0 := by
   obtain ⟨m, hm, h⟩ := ha
@@ -62,16 +62,16 @@ theorem IsRootOne.ne_zero {a : ℂ} (ha : IsRootOne a) : a ≠ 0 := by
   exact zero_ne_one h
 
 /- English proof (translation)
-Take `⟨m, hm, h⟩` from `ha`. Conclude with `⟨m, hm, by rw [inv_pow, h, inv_one]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsRootOne.inv {a : ℂ} (ha : IsRootOne a) : IsRootOne a⁻¹ := by
   obtain ⟨m, hm, h⟩ := ha
   exact ⟨m, hm, by rw [inv_pow, h, inv_one]⟩
 
 /- English proof (translation)
-Establish `h0` using `ha.ne_zero`. Take `⟨m, hm, h⟩` from `ha`. Establish `hq : a ∈ Qbar` using `mem_algebraicClosure_iff.2 (IsAlgebraic.of_pow hm (by rw [h]; exact isAlgebraic_one))`. Use `⟨h0, hq, fun p _ lam => ?_⟩` and prove the remaining obligations. Establish `h1 : (⟨a, hq⟩ : Qbar) ^ m = 1` using `Subtype.ext h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : ‖lam ⟨a, hq⟩‖ ^ m = 1` using `by rw [← norm_pow, ← map_pow, h1, map_one, norm_one]`. Unfold `lamC`. Rewrite using `[dif_pos hq]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').1 h2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRootOne.isAlgUnit {a : ℂ} (ha : IsRootOne a) : IsAlgUnit a := by
   have h0 := ha.ne_zero
@@ -85,7 +85,7 @@ theorem IsRootOne.isAlgUnit {a : ℂ} (ha : IsRootOne a) : IsAlgUnit a := by
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').1 h2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mul_ne_zero ha.1 hb.1, Qbar.mul_mem ha.2.1 hb.2.1, fun p _ lam => by rw [GlobalTheory.BotFormula.lamC_mul lam ha.2.1 hb.2.1, norm_mul, ha.2.2 p lam, hb.2.2 p lam, one_mul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsAlgUnit.mul {a b : ℂ} (ha : IsAlgUnit a) (hb : IsAlgUnit b) : IsAlgUnit (a * b) :=
   ⟨mul_ne_zero ha.1 hb.1, Qbar.mul_mem ha.2.1 hb.2.1, fun p _ lam => by

@@ -7,9 +7,9 @@ open scoped InnerProductSpace
 namespace GlobalTheory.Core.Rk
 
 /- English proof (translation)
-Establish `h1 : (2.7 : ℝ) < Real.exp 1` using `lt_trans (by norm_num) Real.exp_one_gt_d9`. Establish `h5 : Real.exp 5 = Real.exp 1 ^ 5`. Rewrite using `[← Real.exp_nat_mul]`. Evaluate the numerical expressions. Establish `h2 : (2.7 : ℝ) ^ 5 < Real.exp 1 ^ 5` using `pow_lt_pow_left₀ h1 (by norm_num) (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `h3 : (128 : ℝ) < Real.exp 5`. Rewrite using `[h5]; exact lt_trans (by norm_num) h2`. Rewrite using `[Real.exp_neg, one_div]`. Conclude with `inv_strictAnti₀ (by norm_num) h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_neg_five_lt : Real.exp (-5) < 1 / 128 := by
   have h1 : (2.7 : ℝ) < Real.exp 1 := lt_trans (by norm_num) Real.exp_one_gt_d9
@@ -22,13 +22,13 @@ theorem exp_neg_five_lt : Real.exp (-5) < 1 / 128 := by
   exact inv_strictAnti₀ (by norm_num) h3
 
 /- English proof (translation)
-Establish `hk : 5 ≤ D.R.k`. Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_add_three_le_k`. Use linear arithmetic over natural numbers and integers. Establish `hf : 2 ≤ D.R.f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h1 : 0 < D.R.n` using `D.R.toFrame.ord_pos`. Establish `h2 : D.R.f = 2 * D.R.n` using `rfl`. Use linear arithmetic over natural numbers and integers. Establish `hkR : (5 : ℝ) ≤ (D.R.k : ℝ)` using `by exact_mod_cast hk`. Establish `hfR : (2 : ℝ) ≤ (D.R.f : ℝ)` using `by exact_mod_cast hf`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : 1 ≤ Real.log (D.R.k : ℝ)`. Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hkf : (10 : ℝ) ≤ (D.R.k : ℝ) * D.R.f` using `by nlinarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: (10 : ℝ) ≤ (D.R.k : ℝ) * D.R.f * Real.log (D.R.k : ℝ)` using `by nlinarith`. Unfold `kfk`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem five_le_half_kfk (D : D7) : 5 ≤ kfk D / 2 := by
   have hk : 5 ≤ D.R.k := by
@@ -51,11 +51,11 @@ theorem five_le_half_kfk (D : D7) : 5 ≤ kfk D / 2 := by
   linarith
 
 /- English proof (translation)
-Introduce `D u L C hC hT`. Establish `hf : 2 ≤ D.R.f`. Establish `h1 : 0 < D.R.n` using `D.R.toFrame.ord_pos`. Establish `h2 : D.R.f = 2 * D.R.n` using `rfl`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hfR : (2 : ℝ) ≤ (D.R.f : ℝ)` using `by exact_mod_cast hf`. Establish `hTR : 4 * (D.R.f : ℝ) + 1 ≤ ((D.mem u).A.T : ℝ)` using `by exact_mod_cast hT`. Establish `hden : 0 < ((D.mem u).A.T : ℝ) - 1` using `by linarith`. Establish `hq : (D.R.f : ℝ) / (((D.mem u).A.T : ℝ) - 1) ≤ 1 / 4`. Rewrite using `[div_le_iff₀ hden]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5` using `exp_neg_five_lt`. Establish `hA : Real.exp (-(C * mfL D L)) ≤ Real.exp (-5)` using `Real.exp_le_exp.mpr (by linarith)`. Establish `hB : Real.exp (-(kfk D / 2)) ≤ Real.exp (-5)` using `Real.exp_le_exp.mpr (by linarith [five_le_half_kfk D])`. Unfold `eDiag`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

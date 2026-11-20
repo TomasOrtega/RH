@@ -17,7 +17,7 @@ namespace PI.OmLocU.Done
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.LocVol NumberField IsDedekindDomain PI.OmLocU
 
 /- English proof (translation)
-Establish `hR : Red.ResAlg σ J ψ v` using `Red.resAlg_of_sp σ J ψ v (Red.etaSp_holds σ J ψ v)`. Establish `hUN` using `UnN.unitNorm_of_res σ J ψ v Λ hR`. Establish `hP : SdB.TrPerf σ J ψ v` using `SdB.trPerf_of_res σ J ψ v hR`. Introduce `hS`. Conclude with `omLocU_of_tr σ J ψ v Λ a Y hSd hOm (UnitaryOrbitCounting.orbAll_of_res σ J ψ v Λ a Y hR hUN) (gramInvO_holds σ J v Λ ψ a Y) (Red.trOnto_holds σ J ψ v hS) (UnitaryOrbitCounting.countU_of_res' σ J ψ v Λ a Y hR hUN) (SdB.sdVolW_of_perf σ J ψ v Λ a hP) (SdB.sdVolH_of_perf σ J ψ v a h …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem local_omega_volume_unique {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (ψ : AddChar (AF F) ℂ)
@@ -35,7 +35,7 @@ theorem local_omega_volume_unique {F E : Type} [Field F] [NumberField F] [Field 
     (SdB.sdVolW_of_perf σ J ψ v Λ a hP) (SdB.sdVolH_of_perf σ J ψ v a hP) hS
 
 /- English proof (translation)
-The claim follows from `local_omega_volume_unique σ J ψ v Λ a Y (fun hS => ⟨(PI.SelfDualBridge.W.sdExists_holds σ J ψ v a (Fin 1) hS).1, (PI.SelfDualBridge.W.sdExists_holds σ J ψ v a (Fin 1) hS).2.1⟩) (omUnique σ J ψ v a)`.
+A detailed English derivation is pending.
 -/
 theorem omLocU_closed {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (ψ : AddChar (AF F) ℂ)

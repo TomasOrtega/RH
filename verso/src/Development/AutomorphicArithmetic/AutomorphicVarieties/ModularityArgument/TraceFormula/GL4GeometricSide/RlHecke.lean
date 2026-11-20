@@ -13,27 +13,25 @@ open scoped InnerProductSpace ComplexConjugate
 namespace UpperTheory.V.Z.GSp4Splitting
 
 /- English proof (translation)
-Take `⟨T, -, hT⟩` from `hC.elim_nhds_subcover p (fun a _ => (ho a).mem_nhds (hm a))`. Set `Q : Finset (Set X)` to `T.image p`. Establish `hQ : ∀ S ∈ Q, ∃ a, p a = S` using `fun S hS => by`. Take `⟨a, -, ha⟩` from `Finset.mem_image.1 hS`. Conclude with `⟨a, ha⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hsum : ∀ x, F x = ∑ S ∈ Q, S.indicator F x`. Introduce `x`. Distinguish the cases in `hx : p x ∈ Q`. Rewrite using `[Finset.sum_eq_single (p x), Set.indicator_of_mem (hm x)]`. Introduce `S hS hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, rfl⟩` from `hQ S hS`. Conclude with `Set.indicator_of_notMem (fun h => hne (he a x h).symm) _`. Conclude with `fun h => (h hx).elim`. Establish `h0 : F x = 0` using `hz x fun hc => by`. Take `⟨a, ha, hxa⟩` from `Set.mem_iUnion₂.1 (hT hc)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx (Finset.mem_image.2 ⟨a, ha, (he a x hxa).symm⟩)`. Rewrite using `[h0]`. Conclude with `(Finset.sum_eq_zero fun S _ => Set.indicator_apply_eq_zero.2 fun _ => h0).symm`. Establish `e1 : ∀ a, (p a).indicator F = (p a).indicator (fun _ => F a)` using `fun a => Set.indicator_congr fun b hb => hF a b hb`. Establish `e2 : ∀ a, (fun x => (((μ.real (p (t x)) / μ.real (p x) : ℝ)) : ℂ) * (p a).indicator F (t x)) = (p (t a)).indicator (fun _ => (((μ.real (p a) / μ.real (p (t a)) : ℝ)) : ℂ) * F a)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Introduce `a`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ p (t a)`. Establish `hx' : t x ∈ p a` using `by simpa [ht] using hpt _ _ hx`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem hx', he _ _ hx, he _ _ hx', hF _ _ hx']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx' : t x ∉ p a` using `fun h => hx (by simpa [ht] using hpt _ _ h)`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem hx', mul_zero]`. Establish `hi : ∀ a (c : ℂ), Integrable ((p a).indicator (fun _ => c)) μ` using `fun a c => (integrable_indicator_iff (ho a).measurableSet).2 (integrableOn_const (hfin a))`. Establish `l : ∫ x, F x ∂μ = ∑ S ∈ Q, ∫ x, S.indicator F x ∂μ`. Rewrite using `[← integral_finset_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `integral_congr_ae (Filter.Eventually.of_forall hsum)`. Introduce `S hS`. Take `⟨a, rfl⟩` from `hQ S hS`. Rewrite using `[e1]`. Conclude with `hi a _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `r : ∫ x, (((μ.real (p (t x)) / μ.real (p x) : ℝ)) : ℂ) * F (t x) ∂μ = ∑ S ∈ Q, ∫ x, (((μ.real (p (t x)) / μ.real (p x) : ℝ)) : ℂ) * S.indicator F (t x) ∂μ`. Rewrite using `[← integral_finset_sum]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only []`. Rewrite using `[← Finset.mul_sum, ← hsum]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `S hS`. Take `⟨a, rfl⟩` from `hQ S hS`. Rewrite using `[e2]`. Conclude with `hi _ _`. Rewrite using `[l, r]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun S hS => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hQ S hS`. Rewrite using `[e2, e1, integral_indicator_const _ (ho a).measurableSet, integral_indicator_const _ (ho _).measurableSet]`. Establish `hne : (μ.real (p (t a)) : ℂ) ≠ 0`. Establish `: μ.real (p (t a)) ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨hpos _, hfin _⟩`.
-
-Conclude with `this` after adjusting the coercions. Simplify using `only [Complex.real_smul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 private theorem integral_invol {X : Type} [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X] (μ : Measure X)
     (p : X → Set X) (hm : ∀ a, a ∈ p a) (he : ∀ a b, b ∈ p a → p b = p a) (ho : ∀ a, IsOpen (p a))
@@ -109,9 +107,9 @@ private def dc (K : Subgroup G) (a : G) : Set G := {g | ∃ k₁ ∈ K, ∃ k₂
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] in
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l₁, m₁, l₂, m₂, rfl⟩`. Conclude with `⟨l₁ * k₁, K.mul_mem m₁ h₁, k₂ * l₂, K.mul_mem h₂ m₂, by group⟩`. Introduce and unpack `⟨l₁, m₁, l₂, m₂, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨l₁ * k₁⁻¹, K.mul_mem m₁ (K.inv_mem h₁), k₂⁻¹ * l₂, K.mul_mem (K.inv_mem h₂) m₂, by group⟩`.
+Supply the required witnesses or components.
 -/
 private theorem dc_mul (K : Subgroup G) {k₁ k₂ : G} (h₁ : k₁ ∈ K) (h₂ : k₂ ∈ K) (a : G) :
     dc K (k₁ * a * k₂) = dc K a := by
@@ -123,19 +121,17 @@ private theorem dc_mul (K : Subgroup G) {k₁ k₂ : G} (h₁ : k₁ ∈ K) (h�
     exact ⟨l₁ * k₁⁻¹, K.mul_mem m₁ (K.inv_mem h₁), k₂⁻¹ * l₂, K.mul_mem (K.inv_mem h₂) m₂, by group⟩
 
 /- English proof (translation)
-Use `⟨fun g => ((μ.real (dc K g⁻¹) / μ.real (dc K g) : ℝ) : ℂ), fun k₁ h₁ k₂ h₂ g => ?_, fun C hC F hz hF => ?_⟩` and prove the remaining obligations. Establish `e : (k₁ * g * k₂)⁻¹ = k₂⁻¹ * g⁻¹ * k₁⁻¹` using `by group`. Simplify using `only []`. Rewrite using `[e, dc_mul K h₁ h₂, dc_mul K (K.inv_mem h₂) (K.inv_mem h₁)]`. Establish `hm : ∀ a, a ∈ dc K a` using `fun a => ⟨1, K.one_mem, 1, K.one_mem, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ho : ∀ a, IsOpen (dc K a)` using `fun a => by`. Establish `e : dc K a = ⋃ k ∈ K, (fun x => (k * a)⁻¹ * x) ⁻¹' (K : Set G)`. Use extensionality with `g`. Simplify using `only [Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨l₁, m₁, l₂, m₂, rfl⟩`. Conclude with `⟨l₁, m₁, by rwa [inv_mul_cancel_left]⟩`. Introduce and unpack `⟨l₁, m₁, m₂⟩`. Conclude with `⟨l₁, m₁, _, m₂, by group⟩`. Rewrite using `[e]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isOpen_biUnion fun k _ => hKo.preimage (continuous_const.mul continuous_id)`. Establish `hc : ∀ a, IsCompact (dc K a)` using `fun a => by`. Establish `e : dc K a = (fun x : G × G => x.1 * a * x.2) '' ((K : Set G) ×ˢ (K : Set G))`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨l₁, m₁, l₂, m₂, rfl⟩`. Conclude with `⟨(l₁, l₂), ⟨m₁, m₂⟩, rfl⟩`. Introduce and unpack `⟨⟨l₁, l₂⟩, ⟨m₁, m₂⟩, rfl⟩`. Conclude with `⟨l₁, m₁, l₂, m₂, rfl⟩`. Rewrite using `[e]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hKc.prod hKc).image (by fun_prop)`. Use `integral_invol μ (dc K) hm ?_ ho (fun a => (hc a).measure_lt_top.ne) (fun a => ((ho a).measure_pos μ ⟨a, hm a⟩).ne') (fun g => g⁻¹) inv_inv ?_ C hC F hz ?_` and prove the remaining obligations. Introduce and unpack `a b ⟨l₁, m₁, l₂, m₂, rfl⟩`. Conclude with `dc_mul K m₁ m₂ a`. Introduce and unpack `a b ⟨l₁, m₁, l₂, m₂, rfl⟩`.
-
-Conclude with `⟨l₂⁻¹, K.inv_mem m₂, l₁⁻¹, K.inv_mem m₁, by group⟩`. Introduce and unpack `a b ⟨l₁, m₁, l₂, m₂, rfl⟩`. Conclude with `hF _ m₁ _ m₂ a`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem integral_inv (μ : Measure G) [μ.IsHaarMeasure] (K : Subgroup G) (hKo : IsOpen (K : Set G))
     (hKc : IsCompact (K : Set G)) : ∃ δ : G → ℂ, (∀ k₁ ∈ K, ∀ k₂ ∈ K, ∀ g, δ (k₁ * g * k₂) = δ g) ∧
@@ -177,15 +173,15 @@ private theorem integral_inv (μ : Measure G) [μ.IsHaarMeasure] (K : Subgroup G
       exact hF _ m₁ _ m₂ a
 
 /- English proof (translation)
-Establish `hv : ∀ a, μ ((fun x => a⁻¹ * x) ⁻¹' (K : Set G)) = μ K` using `fun a => measure_preimage_mul μ _ _`. Establish `h0 : μ K ≠ 0` using `(hKo.measure_pos μ ⟨1, K.one_mem⟩).ne'`. Establish `h1 : μ K ≠ ⊤` using `hKc.measure_lt_top.ne`. Establish `h2 : μ.real K ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨h0, h1⟩`. Rewrite using `[integral_invol μ (fun a => (fun x => a⁻¹ * x) ⁻¹' (K : Set G)) (fun a => by simp [K.one_mem]) ?_ (fun a => hKo.preimage (continuous_const.mul continuous_id)) (fun a => by rw [hv]; exact h1) (fun a => by rw [hv]; exact h0) t ht ?_ C hC F hz ?_]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [Measure.real, hv]`. Rewrite using `[div_self (by exact h2)]`. Simplify using the standard rewrite rules. Introduce `a b hb`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `g`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe] at hb ⊢`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify `K.mul_mem hb h` using `[mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Simplify `K.mul_mem (K.inv_mem hb) h` using `[mul_assoc]`. Introduce `a b hb`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe] at hb ⊢`. Simplify using `using hK _ hb`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `a b hb`. Use `hF a _ hb` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem integral_aut (μ : Measure G) [μ.IsHaarMeasure] (K : Subgroup G) (hKo : IsOpen (K : Set G))
     (hKc : IsCompact (K : Set G)) (t : G →* G) (ht : ∀ g, t (t g) = g) (hK : ∀ k ∈ K, t k ∈ K)
@@ -224,14 +220,14 @@ section Conc
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Unfold `thetaF finOf`. Rewrite using `[PositivityTheory.Rg.BcB.thetaA, GlobalTheory.CompanionTheory.TwY.ThInv.map_thetaR _ _ _ GlobalTheory.ThetaPull.pFin_conjAd, pFin_finGL]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem thetaF_eq (g : GL (Fin n) (Af E)) : thetaF E n g = thetaR (GlobalTheory.ThetaPull.cFin E) n g := by
   unfold thetaF finOf
   rw [PositivityTheory.Rg.BcB.thetaA, GlobalTheory.CompanionTheory.TwY.ThInv.map_thetaR _ _ _ GlobalTheory.ThetaPull.pFin_conjAd, pFin_finGL]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CompanionTheory.OnlyStab.thetaA_invol (finGL E n g)`. Rewrite `h` using `[GlobalTheory.CompanionTheory.TwY.ThInv.thetaA_finGL, GlobalTheory.CompanionTheory.TwY.ThInv.thetaA_finGL]`. Establish `h2` using `congrArg (GeneralLinearGroup.map (pFin E)) h`. Rewrite `h2` using `[pFin_finGL, pFin_finGL]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem thetaF_thetaF (g : GL (Fin n) (Af E)) : thetaF E n (thetaF E n g) = g := by
   have h := GlobalTheory.CompanionTheory.OnlyStab.thetaA_invol (finGL E n g)
@@ -240,7 +236,7 @@ private theorem thetaF_thetaF (g : GL (Fin n) (Af E)) : thetaF E n (thetaF E n g
   rwa [pFin_finGL, pFin_finGL] at h2
 
 /- English proof (translation)
-Rewrite using `[funext (thetaF_eq (E := E) (n := n))]`. Conclude with `Units.continuous_iff.2 ⟨(Units.continuous_coe_inv.matrix_map (continuous_conjFin _)).matrix_transpose, (Units.continuous_val.matrix_map (continuous_conjFin _)).matrix_transpose⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem continuous_thetaF : Continuous (thetaF E n) := by
   rw [funext (thetaF_eq (E := E) (n := n))]
@@ -257,18 +253,18 @@ private theorem tr_apply (π : CuspSub E n) (g : GL (Fin n) (Af E)) (φ : π.V) 
     (tr π g φ).1.1 x = φ.1.1 (x * finGL E n g) := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by simp [tr])`.
+A detailed English derivation is pending.
 -/
 private theorem tr_mul (π : CuspSub E n) (g g' : GL (Fin n) (Af E)) (φ : π.V) :
     tr π (g * g') φ = tr π g (tr π g' φ) :=
   Subtype.ext (by simp [tr])
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `GlobalTheory.CompanionTheory.HeckeStabY.exists_integral_eq_sum μf K hKo hKc h.1 h.2.1`. Establish `hfix : ∀ k ∈ K, tr π k (D.i u) = D.i u` using `fun k hk => Subtype.ext ((D.rng _).1 ⟨u, rfl⟩ k hk)`. Establish `hr : ∀ g, ∀ k ∈ K, h.1 (g * k) = h.1 g` using `fun g k hk => by simpa using h.2.2 1 K.one_mem k hk g`. Establish `key : ∀ M : π.V →ₗ[ℂ] ℂ, ∫ g, h.1 g * M (tr π g (D.i u)) ∂μf = M (∑ s ∈ S, (((μf.real (K : Set (GL (Fin n) (Af E))) : ℝ) : ℂ) * h.1 s) • tr π s (D.i u))`. Introduce `M`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hS _ (fun g k hk => by simp only [hr g k hk, tr_mul, hfix k hk]) (fun g hg => by simp [hg]), map_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun s _ => by rw [map_smul, smul_eq_mul, mul_assoc]`. Rewrite using `[key]`. Use `congr 1`. Use `Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[D.hR]`. Use function extensionality and compare the values at `x`. Conclude with `key { toFun := fun φ => φ.1.1 x map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem form_R {π : CuspSub E n} {K : Subgroup (GL (Fin n) (Af E))} (hKo : IsOpen (K : Set (GL (Fin n) (Af E))))
     (hKc : IsCompact (K : Set (GL (Fin n) (Af E)))) [MeasurableSpace (GL (Fin n) (Af E))]
@@ -297,23 +293,23 @@ private theorem form_R {π : CuspSub E n} {K : Subgroup (GL (Fin n) (Af E))} (hK
 end Conc
 
 /- English proof (translation)
-Introduce `_ E _ _ _ n _ π _ K hKo hKc hKθ _ _ μf _ D`. Establish `hfix : ∀ u, ∀ k ∈ K, tr π k (D.i u) = D.i u` using `fun u k hk => Subtype.ext ((D.rng _).1 ⟨u, rfl⟩ k hk)`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Take `⟨δ, hδ, hint⟩` from `integral_inv μf K hKo hKc`. Establish `hsym` using `D.pet.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htr : ∀ g φ ψ, D.H (tr π g φ) (tr π g ψ) = D.H φ ψ` using `fun g φ ψ => D.pet.2.2.2.1 (finGL E n g) φ ψ _ _ (tr_apply π g φ) (tr_apply π g ψ)`. Establish `hone : ∀ φ, tr π 1 φ = φ` using `fun φ => Subtype.ext (by simp [tr])`. Establish `hmove : ∀ g φ ψ, D.H (tr π g φ) ψ = D.H φ (tr π g⁻¹ ψ)` using `fun g φ ψ => by`. Rewrite using `[← htr g φ, ← tr_mul, mul_inv_cancel, hone]`. Establish `hh' : IsHeckeF K (fun g => δ g * conj (h.1 g⁻¹))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨HasCompactSupport.mul_left (f := δ) (f' := fun g => conj (h.1 g⁻¹)) ?_, fun k₁ h₁ k₂ h₂ g => ?_⟩` and prove the remaining obligations. Conclude with `(h.2.1.comp_homeomorph (Homeomorph.inv _)).comp_left (g := fun z : ℂ => conj z) (map_zero _)`. Establish `e : (k₁ * g * k₂)⁻¹ = k₂⁻¹ * g⁻¹ * k₁⁻¹` using `by group`. Simplify using `only []`. Rewrite using `[hδ _ h₁ _ h₂, e, h.2.2 _ (K.inv_mem h₂) _ (K.inv_mem h₁)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨_, hh'⟩, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[D.inner_eq, D.inner_eq, ← hsym, form_R hKo hKc D h x (D.H (D.i y)), form_R hKo hKc D _ y (D.H (D.i x)), ← integral_conj, hint (tsupport h.1) h.2.1]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only []`. Rewrite using `[map_mul, hsym, hmove, inv_inv, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Simplify using `[image_eq_zero_of_notMem_tsupport hg]`. Introduce `k₁ h₁ k₂ h₂ g`. Establish `e` using `hmove k₁⁻¹ (D.i y) (tr π g (D.i x))`. Rewrite `e` using `[hfix y _ (K.inv_mem h₁), inv_inv]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.2.2 _ h₁ _ h₂, tr_mul, tr_mul, hfix x _ h₂, ← e]`. Establish `hh' : IsHeckeF K (fun g => h.1 (thetaF E n g))`. Use `⟨h.2.1.comp_homeomorph ⟨⟨thetaF E n, thetaF E n, thetaF_thetaF, thetaF_thetaF⟩, continuous_thetaF, continuous_thetaF⟩, fun k₁ h₁ k₂ h₂ g => ?_⟩` and prove the remaining obligations. Establish `e` using `h.2.2 _ (hKθ _ h₁) _ (hKθ _ h₂) (thetaF E n g)`. Simplify `e` using `only [thetaF_eq, map_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨_, hh'⟩, rfl, LinearMap.ext fun u => D.inj (Subtype.ext (Subtype.ext (funext fun x => ?_)))⟩` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, D.hΘ, D.hR, D.hR]`. Unfold `heckeOp`. Rewrite using `[integral_aut μf K hKo hKc (MonoidHom.mk' (thetaF E n) fun a b => by simp only [thetaF_eq, map_mul]) thetaF_thetaF hKθ (tsupport h.1) h.2.1]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only []`. Rewrite using `[D.hΘ, map_mul, GlobalTheory.CompanionTheory.TwY.ThInv.thetaA_finGL]`. Both sides reduce to the same expression. Introduce `g hg`. Simplify using `[image_eq_zero_of_notMem_tsupport hg]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g k hk`. Establish `e : h.1 (g * k) = h.1 g` using `by simpa using h.2.2 1 K.one_mem k hk g`. Rewrite using `[e, ← tr_apply, ← tr_apply, tr_mul, hfix u k hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rlHecke :
     HeckeMem → RlHecke := by

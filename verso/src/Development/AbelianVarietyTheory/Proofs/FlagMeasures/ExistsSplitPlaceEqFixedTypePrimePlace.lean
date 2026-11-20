@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LabPi
 namespace GlobalTheory.SplitPlaceOfFixed
 
 /- English proof (translation)
-Introduce `D kv`. Take `⟨s, -, h, -⟩` from `GlobalTheory.SplitConjPlace.splitEx_all D _ (GlobalTheory.FixedPlaceSplit.isSplitPl_plGw D kv.1 kv.2)`. Use `⟨GlobalTheory.SplitConjPlace.conjSP s, IsDedekindDomain.HeightOneSpectrum.ext (Ideal.ext fun x => ?_)⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SplitConjPlace.mem_conj_w]`. Use `(h x _ ?_).symm` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[IsCMField.coe_ringOfIntegersComplexConj]`. Conclude with `D.host.φ₀.injective (by`. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_splitPlace_plGw : ∀ (D : D7) (kv : Σ k : Fin 2, D.nd.PlG k), ∃ s : ReciprocityTheory.Aut.SplitPlace D.host.E, s.w = D.naut.plGw kv.1 kv.2 := by
   intro D kv

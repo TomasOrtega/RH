@@ -11,11 +11,11 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.ThK.IwasawaLine
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH g`. Establish `hcm` using `hT.base.cm`. Establish `hW` using `hT.geo.hW`. Establish `hx : H'.x ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hH.xy` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `[form] at this`. Take `⟨gi, hgi, gf, hgf, rfl⟩` from `GlobalTheory.T.adelic_unitary_finite_infinite_split F E σ G.W g`. Take `⟨p, t, hpt, k, hk, rfl⟩` from `GlobalTheory.T.iwasawa_decomp_infinite_isotropic F E σ B G.W _ _ H'.x hcm hW hx hH.xx gi hgi`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn, m₁, hm₁, h₁, m₂, hm₂, rfl⟩` from `GlobalTheory.T.parabolic_levi_unipotent_split F E σ B G.W W₁ H' _ _ i₀ i₁ hcm hW hH p t hpt`. Conclude with `⟨n, hn, t, m₁, hm₁, h₁, m₂, hm₂, k * gf, ⟨k, hk, gf, hgf, rfl⟩, by simp only [mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem iwasawa : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ)
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

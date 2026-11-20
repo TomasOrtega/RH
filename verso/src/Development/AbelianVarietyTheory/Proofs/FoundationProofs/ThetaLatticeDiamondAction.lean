@@ -14,9 +14,9 @@ namespace GlobalTheory.CyclotomicQExpansion.ThnEx
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Establish `h : (0 : ℤ) < (σ : Matrix (Fin 2) (Fin 2) ℤ).det`. Rewrite using `[Matrix.SpecialLinearGroup.det_coe]`. Conclude with `one_pos`. Unfold `toGQ`. Rewrite using `[dif_pos h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[ofSL]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toGQ_coe (σ : SL(2, ℤ)) : toGQ (σ : Matrix (Fin 2) (Fin 2) ℤ) = ofSL σ := by
   have h : (0 : ℤ) < (σ : Matrix (Fin 2) (Fin 2) ℤ).det := by
@@ -29,11 +29,9 @@ theorem toGQ_coe (σ : SL(2, ℤ)) : toGQ (σ : Matrix (Fin 2) (Fin 2) ℤ) = of
   simp [ofSL]
 
 /- English proof (translation)
-Apply `KmapA.kmap_mem_A` to reduce the goal to its premises. Introduce `W hW`. Use `⟨fun c => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ValuationSubring.mem_comap]`. Express the relevant statement in the definitionally equal form `X.sl _ (algebraMap Ω X.K c) ∈ W`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[AlgEquiv.commutes]`. Conclude with `hW.1 c`. Rewrite using `[ValuationSubring.mem_comap]`. Express the relevant statement in the definitionally equal form `X.sl _ X.jK ∈ W`. Rewrite using `[toGQ_coe, X.j_inv]`.
-
-Conclude with `hW.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kmap_SL_A (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (σ : SL(2, ℤ)) :
     ∀ a ∈ X.A l, X.kmap l (X.sl (toGQ (σ : Matrix (Fin 2) (Fin 2) ℤ))).toRingEquiv a ∈ X.A l := by
@@ -48,13 +46,13 @@ theorem kmap_SL_A (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (σ : SL(2, ℤ)) :
     rw [toGQ_coe, X.j_inv]; exact hW.2
 
 /- English proof (translation)
-Take `⟨e, heN, hel⟩` from `Nat.chineseRemainder hNl d 1`. Establish `hcop : Nat.Coprime e (N * l)`. Apply `Nat.Coprime.mul_right` to reduce the goal to its premises. Rewrite using `[Nat.Coprime, Nat.ModEq.gcd_eq heN]`. Conclude with `hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.Coprime, Nat.ModEq.gcd_eq hel]`. Simplify using the standard rewrite rules. Establish `hbez` using `Nat.gcd_eq_gcd_ab e (N * l)`. Rewrite `hbez` using `[hcop.gcd_eq_one]`. Use `⟨⟨!![Nat.gcdA e (N * l), -Nat.gcdB e (N * l); ((N * l : ℕ) : ℤ), (e : ℤ)], ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_fin_two_of]`. Move the coercions through the operations in `at hbez ⊢`. Take the linear combination `-hbez`. Use `Subgroup.mem_inf.mpr ⟨CongruenceSubgroup.Gamma0_mem.mpr ?_, CongruenceSubgroup.Gamma0_mem.mpr ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [en]`. Simplify using `only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_fin_one, Matrix.head_fin_const, Int.cast_natCast]`. Conclude with `(ZMod.natCast_eq_natCast_iff _ _ _).mpr heN`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_isDiam_of_coprime {N l d : ℕ} (hNl : Nat.Coprime N l) (hd : Nat.Coprime d N) :
     ∃ γ : SL(2, ℤ), IsDiam N l d γ := by
@@ -76,9 +74,9 @@ private theorem exists_isDiam_of_coprime {N l d : ℕ} (hNl : Nat.Coprime N l) (
     exact (ZMod.natCast_eq_natCast_iff _ _ _).mpr heN
 
 /- English proof (translation)
-Establish `hγ0 : γ ∈ CongruenceSubgroup.Gamma0 N` using `CongruenceSubgroup.Gamma1_in_Gamma0 N hγ`. Establish `hg0 : σ * γ * σ⁻¹ ∈ CongruenceSubgroup.Gamma0 N` using `Subgroup.mul_mem _ (Subgroup.mul_mem _ hσ hγ0) (Subgroup.inv_mem _ hσ)`. Establish `h1 : (⟨γ, hγ0⟩ : CongruenceSubgroup.Gamma0 N) ∈ CongruenceSubgroup.Gamma1' N`. Rewrite using `[CongruenceSubgroup.Gamma1_to_Gamma0_mem]`. Conclude with `(CongruenceSubgroup.Gamma1_mem N γ).1 hγ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (⟨σ * γ * σ⁻¹, hg0⟩ : CongruenceSubgroup.Gamma0 N) ∈ CongruenceSubgroup.Gamma1' N` using `(CongruenceSubgroup.Gamma0Map N).normal_ker.conj_mem _ h1 ⟨σ, hσ⟩`. Conclude with `(CongruenceSubgroup.Gamma1_mem N _).2 ((CongruenceSubgroup.Gamma1_to_Gamma0_mem _).1 h2)`.
+A detailed English derivation is pending.
 -/
 private theorem conj_mem_Gamma1_of_mem_Gamma0 {N : ℕ} {σ γ : SL(2, ℤ)} (hσ : σ ∈ CongruenceSubgroup.Gamma0 N)
     (hγ : γ ∈ CongruenceSubgroup.Gamma1 N) : σ * γ * σ⁻¹ ∈ CongruenceSubgroup.Gamma1 N := by
@@ -93,7 +91,7 @@ private theorem conj_mem_Gamma1_of_mem_Gamma0 {N : ℕ} {σ γ : SL(2, ℤ)} (h�
   exact (CongruenceSubgroup.Gamma1_mem N _).2 ((CongruenceSubgroup.Gamma1_to_Gamma0_mem _).1 h2)
 
 /- English proof (translation)
-Unfold `Tower.kmap`. Simplify using `only [LinearMap.coe_restrictScalars]`. Rewrite using `[AdicCompletion.map_comp_apply, ← LinearMap.baseChange_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem kmap_kmap_eq_kmap_trans (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (φ ψ : X.K ≃+* X.K) (x : X.Khat l) :
     X.kmap l ψ (X.kmap l φ x) = X.kmap l (φ.trans ψ) x := by
@@ -103,9 +101,9 @@ private theorem kmap_kmap_eq_kmap_trans (X : Tower Ω ε) (l : ℕ) [Fact l.Prim
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Express the relevant statement in the definitionally equal form `X.kmap l (X.sl (toGQ (τ : Matrix (Fin 2) (Fin 2) ℤ))).toRingEquiv (X.kmap l (X.sl (toGQ (σ : Matrix (Fin 2) (Fin 2) ℤ))).toRingEquiv (b (mZl l (σ : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ (mZl l (τ : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ u)))) = X.kmap l (X.sl (toGQ ((σ * τ : SL(2, ℤ)) : Matrix (Fin …`. Establish `hm : mZl l ((σ * τ : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ) = mZl l (σ : Matrix (Fin 2) (Fin 2) ℤ) * mZl l (τ : Matrix (Fin 2) (Fin 2) ℤ)`. Simplify using `only [mZl, Matrix.SpecialLinearGroup.coe_mul, Matrix.map_mul]`. Establish `hs : (X.sl (ofSL σ * ofSL τ)).toRingEquiv = (X.sl (ofSL σ)).toRingEquiv.trans (X.sl (ofSL τ)).toRingEquiv`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `f`. Conclude with `X.sl_mul _ _ f`. Rewrite using `[kmap_kmap_eq_kmap_trans, toGQ_coe, toGQ_coe, toGQ_coe, map_mul, Matrix.mulVec_mulVec, hm, hs]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem act_act_eq_act_mul (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (σ τ : SL(2, ℤ)) (b : X.Fn l) :
     X.act l (τ : Matrix (Fin 2) (Fin 2) ℤ) (X.act l (σ : Matrix (Fin 2) (Fin 2) ℤ) b) =
@@ -125,9 +123,9 @@ private theorem act_act_eq_act_mul (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (�
   rw [kmap_kmap_eq_kmap_trans, toGQ_coe, toGQ_coe, toGQ_coe, map_mul, Matrix.mulVec_mulVec, hm, hs]
 
 /- English proof (translation)
-Establish `hσ : IsDiam N l d (sgD N l d)` using `Classical.epsilon_spec (exists_isDiam_of_coprime hNl hd)`. Take `⟨hpol, hinv⟩` from `hb`. Use `⟨GlobalTheory.T.intMatrixAction_mem_homogeneousPolyFunctions X l w _ (kmap_SL_A X l (sgD N l d)) b hpol, ?_⟩` and prove the remaining obligations. Introduce `γ hγ`. Take `⟨hσN, hσl⟩` from `Subgroup.mem_inf.mp hσ.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hγN, hγl⟩` from `Subgroup.mem_inf.mp hγ`. Establish `hconj : sgD N l d * γ * (sgD N l d)⁻¹ ∈ Gam N l` using `Subgroup.mem_inf.mpr ⟨conj_mem_Gamma1_of_mem_Gamma0 hσN hγN, Subgroup.mul_mem _ (Subgroup.mul_mem _ hσl hγl) (Subgroup.inv_mem _ hσl)⟩`. Establish `hswap : sgD N l d * γ = sgD N l d * γ * (sgD N l d)⁻¹ * sgD N l d` using `(inv_mul_cancel_right _ _).symm`. Rewrite using `[act_act_eq_act_mul X l _ _ b, hswap, ← act_act_eq_act_mul X l (sgD N l d * γ * (sgD N l d)⁻¹) (sgD N l d) b, hinv _ hconj]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem diam_BSet (X : Tower Ω ε) (N l w d : ℕ) [Fact l.Prime] (hN : 0 < N) (hNl : Nat.Coprime N l)
     (hd : Nat.Coprime d N) (b : X.Fn l) (hb : b ∈ X.BSet N l w) :
@@ -147,7 +145,7 @@ theorem diam_BSet (X : Tower Ω ε) (N l w d : ℕ) [Fact l.Prime] (hN : 0 < N) 
     hinv _ hconj]
 
 /- English proof (translation)
-Establish `hle : X.B N l w ≤ (X.B N l w).comap (X.act l (sgD N l d : Matrix (Fin 2) (Fin 2) ℤ))` using `Submodule.span_le.mpr (fun x hx => Submodule.subset_span (diam_BSet X N l w d hN hNl hd x hx))`. Conclude with `hle hb`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem diam_B (X : Tower Ω ε) (N l w d : ℕ) [Fact l.Prime] (hN : 0 < N) (hNl : Nat.Coprime N l)
     (hd : Nat.Coprime d N) (b : X.Fn l) (hb : b ∈ X.B N l w) :
@@ -161,9 +159,7 @@ end GlobalTheory.CyclotomicQExpansion.ThnEx
 namespace GlobalTheory.CyclotomicQExpansion
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X A N l _ hj hl2 hlN hN hlA n w d hw hd b hb`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Establish `hl : l.Prime` using `Fact.out`. Establish `hNl : Nat.Coprime N l` using `((Nat.Prime.coprime_iff_not_dvd hl).mpr hlN).symm`. Establish `hb'` using `ThnEx.diam_B X N l w d (by omega) hNl hd b hb`.
-
-Conclude with `thN_spec X A N l n d b (GlobalTheory.T.exists_cuspFunctional_oddWeight_oddPrime Ω ε X A N l (IsAlgClosure.isAlgebraic (R := ℚ)) hj hl2 hlN (by omega) hlA n w hw _ hb')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thN_isThB : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε)
     (A : ValuationSubring Ω) (N l : ℕ) [Fact l.Prime],

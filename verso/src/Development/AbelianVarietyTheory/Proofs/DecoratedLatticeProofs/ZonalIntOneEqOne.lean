@@ -5,9 +5,9 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.PRep GlobalTheory.SplitWeil 
 namespace GlobalTheory.ZonalOne
 
 /- English proof (translation)
-Introduce `hK γ ψ hψ`. Establish `h1 : ψ 1 = 1`. Rewrite using `[hψ.2 1 (one_mem _) (fun _ => 1) (fun i => by simp)]`. Simplify using `[ord]`. Establish `hκ : ∀ κ ∈ (KO k (Fin N) : Set (GL (Fin N) k)), ψ (κ * 1) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `κ hκ`. Rewrite using `[mul_one, ← one_mul κ, hψ.1 1 κ hκ, h1]`. Unfold `zonalInt`. Rewrite using `[setIntegral_congr_fun GlobalTheory.SplitFlip.isOpen_KO.measurableSet hκ]`. Simplify using `[Measure.real, hK]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem zonalInt_one_eq_one (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ)
     [MeasurableSpace (GL (Fin N) k)] [BorelSpace (GL (Fin N) k)] (μK : Measure (GL (Fin N) k)) [μK.IsHaarMeasure] :

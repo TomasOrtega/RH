@@ -15,7 +15,7 @@ open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DualFlagBc.sum_bcMeas_dualFlag | exact GlobalTheory.DualFlagBc.sum_bcMeas_dualFlag | (intros; apply GlobalTheory.DualFlagBc.sum_bcMeas_dualFlag <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.dual_flag_bott_chern_sum : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X] (E : X.Modules) (r : ℕ) (h : VMetric p E r) (H : h.IsCInf) (fl : Vert.Flag E r) (σ : k →+* ℂ), IsRegSurf p → ∑ i, ((h.dual.stepMet (GlobalTheory.DualFlag.dualFlag fl) i).met σ).bcMeas (VMetric.stepSeq_shortExact (GlobalTheory.DualFlag.dualFlag fl) i) ((GlobalTheory.DualFlag.dualFlag fl).isVB i.castSucc) ((GlobalTheory.DualFlag.dualFlag fl).isVB_gr i) univ = ∑ i, ((h.stepMet fl i).met σ).bcMeas (VMetric.stepSeq_shortExact fl i) (fl.isVB i.castSucc) (fl.isVB_gr i) univ := by
   first | exact @GlobalTheory.DualFlagBc.sum_bcMeas_dualFlag | exact GlobalTheory.DualFlagBc.sum_bcMeas_dualFlag | (intros; apply GlobalTheory.DualFlagBc.sum_bcMeas_dualFlag <;> assumption)

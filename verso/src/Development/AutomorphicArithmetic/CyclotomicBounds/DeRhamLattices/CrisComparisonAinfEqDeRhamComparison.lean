@@ -7,7 +7,7 @@ set_option maxHeartbeats 2000000
 set_option synthInstance.maxHeartbeats 400000
 
 /- English proof (translation)
-Introduce `l _ Pl AI Td w`. Use `Td.eD.injective ?_` and prove the remaining obligations. Establish `h` using `GlobalTheory.CrisIncl.incl_aB l _ Td.incl w`. Use `Eq.trans h ?_` and prove the remaining obligations. Conclude with `(Td.eD.apply_symm_apply _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.KN.crisComparison_ainf_eq_deRhamComparison :
     ∀ (l : ℕ) [Fact l.Prime] (Pl : LocPrime l) (AI : LocAinf l Pl) (Td : LocTied l Pl AI) (w : Ainf l), GlobalTheory.BKGal.JumpDR.cB Td (acrisToBcris l (ainfToAcris l w)) = GlobalTheory.BKGal.JumpDR.cD Td (ainfToBdRp l w) := by

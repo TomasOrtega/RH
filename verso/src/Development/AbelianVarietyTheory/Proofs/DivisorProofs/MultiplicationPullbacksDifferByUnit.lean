@@ -18,9 +18,9 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Establish `hd : IsDiscreteValuationRing W` using `T.cdvr.1`. Use `T.U.smooth` as an intermediate fact. Use `T.U.separated` as an intermediate fact. Use `C.semi.quasiCompact` as an intermediate fact. Establish `: QuasiCompact T.G.hom` using `MorphismProperty.of_isPullback (P := @QuasiCompact) T.cart.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalFunctionsDvrGeneric.bij_of_generic T.G (GlobalFunctionsDvrPowers.bijective_of_iso T.U.gen (GlobalTheory.allSixLaws.1.globalFns _ T.A.A T.A.isAb))`.
+A detailed English derivation is pending.
 -/
 theorem Trait.bijective_appTop {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {D : DegData R (maximalIdeal R)}
     {C : LabCover D} {W : Type} [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) :
@@ -34,7 +34,7 @@ theorem Trait.bijective_appTop {R : Type} [CommRing R] [IsDomain R] [IsLocalRing
     (GlobalFunctionsDvrPowers.bijective_of_iso T.U.gen (GlobalTheory.allSixLaws.1.globalFns _ T.A.A T.A.isAb))
 
 /- English proof (translation)
-Set `e : W ≃+* Γ(T.G.left, ⊤)` to `RingEquiv.ofBijective (T.G.hom.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of W)).inv.hom) (T.bijective_appTop.comp (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of W)).inv))`. Conclude with `⟨Units.map e.symm.toMonoidHom c, e.apply_symm_apply c.val⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem Trait.exists_unit_scal {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {D : DegData R (maximalIdeal R)}
     {C : LabCover D} {W : Type} [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (c : Γ(T.G.left, ⊤)ˣ) :
@@ -45,19 +45,17 @@ theorem Trait.exists_unit_scal {R : Type} [CommRing R] [IsDomain R] [IsLocalRing
   exact ⟨Units.map e.symm.toMonoidHom c, e.apply_symm_apply c.val⟩
 
 /- English proof (translation)
-Introduce `R _ _ _ _ D C W _ _ _ T m u hu uG huG b σ' σ hcar σ₂ σ'' h₂ h''`. Establish `hm` using `GlobalTheory.ZH.TorsFrame.mulA_comm T.cart m`. Take `⟨a, ha, hP⟩` from `ReciprocityTheory.ChartRestriction.G.H1.exists_gen_move C.P.L.isLB T.U.LG.isLB T.ℓ ((isGen_iff _).1 T.ℓ_gen) (K := Fin 2) ![𝟙 C.G.left, (mulA C.G m).left] ![𝟙 T.G.left, (mulA T.G m).left] ![((m ^ 2 : ℕ) : ℤ), -((1 : ℕ) : ℤ)] T.β (fun k => by fin_cases k`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`. Conclude with `hm) u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `GlobalTheory.ZM.Coord.exists_global_unit (DVR.linComb_isLB _ T.U.LG.isLB _ _) ha huG`. Take `⟨v, hv⟩` from `T.exists_unit_scal c`. Use `⟨v, fun Z r z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Establish `e₁ : (r ≫ T.β) ≫ (mulA C.G m).left = (r ≫ (mulA T.G m).left) ≫ T.β`. Rewrite using `[Category.assoc, Category.assoc, hm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp : val u (r ≫ T.β) z J = (gw T.ℓ r z (J (r ≫ T.β)) (J' r) ^ (m ^ 2) * (gw T.ℓ (r ≫ (mulA T.G m).left) z (J ((r ≫ (mulA T.G m).left) ≫ T.β)) (J' (r ≫ (mulA T.G m).left)))⁻¹) * val a r z J'`. Use `(hP Z r z _ _ (fun k => ?_) (fun k => hJ' (r ≫ _))).trans ?_` and prove the remaining obligations. Use `fin_cases k`. Conclude with `hJ ((r ≫ T.β) ≫ 𝟙 _)`. Use `hJ ((r ≫ T.β) ≫ (mulA C.G m).left)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(congrArg (fun q => q z ∈ C.P.L.L.U (J ((r ≫ T.β) ≫ (mulA C.G m).left))) e₁).mp this`. Use `congrArg (· * val a r z J') ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Category.comp_id, e₁, zpow_natCast, zpow_neg, pow_one]`. Establish `hq : val a r z J' = gm r z ⊤ c * val uG r z J'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hm'` using `hJ'.mem ![𝟙 T.G.left, (mulA T.G m).left] r`. Conclude with `(congrArg (gm r z _) (hc _)).trans ((map_mul _ _ _).trans (congrArg (· * val uG r z J') (gm_res r z _ hm' _)))`. Establish `hs : gs (r ≫ (mulA T.G m).left) z ⊤ (scal T.G.hom b) = gs r z ⊤ (scal T.G.hom b)`. Use `(gs_pull r (mulA T.G m).left z ⊤ trivial _).symm.trans (congrArg (gs r z ⊤) ?_)` and prove the remaining obligations. Use `show ((mulA T.G m).left ≫ T.G.hom).appTop.hom _ = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules.
 
-Rewrite using `[Over.w]`. Both sides reduce to the same expression. Establish `hbv : gs r z ⊤ (scal T.G.hom (b * v)) = gs r z ⊤ (scal T.G.hom b) * (gm r z ⊤ c).val`. Rewrite using `[← gs_unit r z ⊤ trivial, ← hv, ← gs_mul r z ⊤ trivial, scal, scal, scal, map_mul, map_mul]`. Rewrite using `[h₂ Z r z J hJ, h'' Z r z J' hJ', hcar Z _ z J J' hJ hJ', hp, hq, hs, hbv, Category.comp_id, pow_one]`.
-
-Generalize the expression as in `gw T.ℓ (r ≫ (mulA T.G m).left) z _ _ = g`. Simplify using `only [Units.val_mul]`. Take the linear combination `(gs r z ⊤ (scal T.G.hom b) * (gm r z ⊤ c).val * (gw T.ℓ r z (J (r ≫ T.β)) (J' r) ^ (m ^ 2)).val * (val uG r z J').val * sval σ' (r ≫ (mulA T.G m).left) z J') * g.inv_mul`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem Trait.carries_mulPull : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R))
     (C : LabCover D) (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (m : ℕ)

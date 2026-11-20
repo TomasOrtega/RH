@@ -18,11 +18,11 @@ namespace LiftGraphPoints
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Take `rfl : z = fun p => t p.1 * x p` from `funext hz`. Rewrite using `[aeval_def, aeval_def, eval₂_eq', eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hprod : ∏ p, (t p.1 * x p) ^ m p = (∏ k, t k ^ a k) * ∏ p, x p ^ m p`. Simplify using `only [mul_pow, Finset.prod_mul_distrib]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ∏ i, t k ^ m ⟨k, i⟩ = t k ^ a k`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hg m hm k]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hprod]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem aeval_scale {S : Type} [CommRing S] {g : MRing ι} {a : K → ℕ} (hg : IsMultiHomog g a)
     (t : K → S) (x z : (Σ k, ι k) → S) (hz : ∀ p, z p = t p.1 * x p) :
@@ -41,7 +41,7 @@ theorem aeval_scale {S : Type} [CommRing S] {g : MRing ι} {a : K → ℕ} (hg :
   ring
 
 /- English proof (translation)
-Rewrite using `[eval_map, aeval_def, algebraMap_int_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_map_int {σ : Type} (z : σ → ℂ) (f : MvPolynomial σ ℤ) :
     eval z (map (Int.castRingHom ℂ) f) = aeval z f := by
@@ -51,9 +51,9 @@ def homogAt (c : ∀ k, ι k) (M : ℕ) (F : MRing ι) : MRing ι :=
   ∑ m ∈ F.support, monomial m (coeff m F) * ∏ k, (X ⟨k, c k⟩ : MRing ι) ^ (M - ∑ i, m ⟨k, i⟩)
 
 /- English proof (translation)
-Introduce `m' hm' k`. Take `⟨m, hm, hm'⟩` from `Finset.mem_biUnion.mp (support_sum hm')`. Establish `h` using `Inter.ThmIUnique.isMultiHomog_mul' (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_monomial m (coeff m F)) (Inter.ThmIUnique.isMultiHomog_coordMonomial c (fun k => M - ∑ i, m ⟨k, i⟩)) m' hm' k`. Simplify using `only [Pi.add_apply] at h`. Use `hM m hm k` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `show _ = M`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem homogAt_isMultiHomog (c : ∀ k, ι k) (M : ℕ) (F : MRing ι)
     (hM : ∀ m ∈ F.support, ∀ k, ∑ i, m ⟨k, i⟩ ≤ M) : IsMultiHomog (homogAt c M F) (fun _ => M) := by
@@ -68,7 +68,7 @@ theorem homogAt_isMultiHomog (c : ∀ k, ι k) (M : ℕ) (F : MRing ι)
   omega
 
 /- English proof (translation)
-Use `conv_rhs => rw [F.as_sum]`. Simplify using `only [homogAt, map_sum, map_mul, map_prod, map_pow, aeval_X, hx, one_pow, Finset.prod_const_one, mul_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aeval_homogAt {S : Type} [CommRing S] (c : ∀ k, ι k) (M : ℕ) (F : MRing ι)
     (x : (Σ k, ι k) → S) (hx : ∀ k, x ⟨k, c k⟩ = 1) : aeval x (homogAt c M F) = aeval x F := by
@@ -76,11 +76,9 @@ theorem aeval_homogAt {S : Type} [CommRing S] (c : ∀ k, ι k) (M : ℕ) (F : M
   simp only [homogAt, map_sum, map_mul, map_prod, map_pow, aeval_X, hx, one_pow, Finset.prod_const_one, mul_one]
 
 /- English proof (translation)
-Use `set M := ∑ m ∈ F.support, ∑ p, m p`. Establish `hM : ∀ m ∈ F.support, ∀ k, ∑ i, m ⟨k, i⟩ ≤ M`. Introduce `m hm k`. Combine the equalities or inequalities in the displayed calculation. Establish `hG` using `homogAt_isMultiHomog c M F hM`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyG : aeval y (homogAt c M F) = 0`. Rewrite using `[aeval_scale hG (fun k => y ⟨k, c k⟩) (fun p => y p / y ⟨p.1, c p.1⟩) y (fun p => by field_simp [hyc p.1]), aeval_homogAt c M F _ (fun k => div_self (hyc k)), hF, mul_zero]`. Establish `hmem : homogAt c M F ∈ mCoordIdeal y` using `(BlockImageInverse.mem_mCoordIdeal_iff y hG).mpr hyG`. Establish `hwG` using `hw.2 _ hmem`. Rewrite `hwG` using `[eval_map_int, aeval_scale hG (fun k => w ⟨k, c k⟩) (fun p => w p / w ⟨p.1, c p.1⟩) w (fun p => by field_simp [hwc p.1]), aeval_homogAt c M F _ (fun k => div_self (hwc k))]`.
-
-Conclude with `(mul_eq_zero.mp hwG).resolve_left (Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hwc k))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_ratio_eq_zero {Ω : Type} [Field Ω] {y : (Σ k, ι k) → Ω} {w : (Σ k, ι k) → ℂ}
     (hw : w ∈ mcPts (mCoordIdeal y)) (c : ∀ k, ι k) (hyc : ∀ k, y ⟨k, c k⟩ ≠ 0)
@@ -109,35 +107,33 @@ end LiftGraphPoints
 open LiftGraphPoints in
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y n r v hv hgen w hw`. Use `choose c hwc using hw.1`. Establish `hyc : ∀ k, y ⟨k, c k⟩ ≠ 0`. Introduce `k h0`. Apply `hwc k` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hX : (X ⟨k, c k⟩ : MRing ι) ∈ mCoordIdeal y`. Rewrite using `[mCoordIdeal, RingHom.mem_ker, mConeMap, aeval_X, h0, C_0, zero_mul]`. Simplify using `using hw.2 _ hX`. Establish `hrange : chartRingZ y c = (aeval fun p => y p / y ⟨p.1, c p.1⟩).range`. Rewrite using `[chartRingZ, Algebra.adjoin_range_eq_range_aeval]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hQ : ∀ j, ∃ Q : MRing ι, aeval (fun p => y p / y ⟨p.1, c p.1⟩) Q = v j * ∏ k, y ⟨k, c k⟩ ^ (-n k)`. Introduce `j`. Establish `h` using `hv j c hyc`. Simplify using `only [Nat.cast_one, one_mul] at h`. Rewrite `h` using `[hrange]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(AlgHom.mem_range _).mp h`. Use `choose Q hQ using hQ`. Use `set σ : Fin r → ℂ := fun j => aeval (fun p => w p / w ⟨p.1, c p.1⟩) (Q j) with hσ`. Use `⟨addBlock w σ, ⟨fun k => ?_, fun f hf => ?_⟩, rfl⟩` and prove the remaining obligations. Consider the cases of `k with`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `some k => exact ⟨c k, hwc k⟩`. Consider the case `none`. Take `⟨u, hu, hsum⟩` from `hgen c hyc`. Establish `hU : ∀ j, ∃ U : MRing ι, aeval (fun p => y p / y ⟨p.1, c p.1⟩) U = u j` using `fun j => (AlgHom.mem_range _).mp (hrange ▸ hu j)`. Use `choose U hU using hU`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hF : aeval (fun p => y p / y ⟨p.1, c p.1⟩) (∑ j, U j * Q j - 1) = 0`. Simplify using `only [map_sub, map_sum, map_mul, hU, hQ, map_one, hsum, sub_self]`. Establish `h1` using `aeval_ratio_eq_zero hw c hyc hwc hF`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Establish `hσ0 : ∀ j, aeval (fun p => w p / w ⟨p.1, c p.1⟩) (Q j) = 0` using `fun j => hcon j`. Simplify using `[hσ0] at h1`. Take `⟨S, hS, hspan⟩` from `CoordinateConeArithVar.isMultiHomogIdeal (addBlock y v)`. Rewrite `hf` using `[hspan]`. Proceed by induction on `hf using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `mem g hg`. Take `⟨a, ha⟩` from `hS g hg`. Establish `hg0 : aeval (addBlock y v) g = 0` using `(BlockImageInverse.mem_mCoordIdeal_iff _ ha).mp (hspan ▸ Ideal.subset_span hg)`. Establish `hP : (∏ k, y ⟨k, c k⟩ ^ (-n k)) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hyc k)`. Establish `hY : ∀ o : Option K, (o.elim (∏ k, y ⟨k, c k⟩ ^ (-n k))⁻¹ fun k => y ⟨k, c k⟩) ≠ 0`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce `o`. Consider the cases of `o with`. Consider the case `none => exact inv_ne_zero hP`. Consider the case `some k => exact hyc k`. Rewrite using `[aeval_scale ha (fun o => o.elim (∏ k, y ⟨k, c k⟩ ^ (-n k))⁻¹ fun k => y ⟨k, c k⟩) (addBlock (fun p => y p / y ⟨p.1, c p.1⟩) fun j => aeval (fun p => y p / y ⟨p.1, c p.1⟩) (Q j)) _ (by`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Introduce and unpack `⟨o, i⟩`. Consider the cases of `o with`. Consider the case `none`. Conclude with `(show ∀ j : Fin r, v j = (∏ k, y ⟨k, c k⟩ ^ (-n k))⁻¹ * aeval (fun p => y p / y ⟨p.1, c p.1⟩) (Q j) from fun j => by rw [hQ]; field_simp) i`. Consider the case `some k => show y ⟨k, i⟩ = y ⟨k, c k⟩ * (y ⟨k, i⟩ / y ⟨k, c k⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Clear denominators, using `[hyc k])] at hg0` for the nonvanishing conditions. Establish `hg1` using `(mul_eq_zero.mp hg0).resolve_left (Finset.prod_ne_zero_iff.mpr fun o _ => pow_ne_zero _ (hY o))`. Establish `hsub : ∀ (T : Type) [CommRing T] [Algebra ℤ T] (x : (Σ k, ι k) → T), aeval x (aeval (addBlock (fun p => (X p : MRing ι)) Q) g) = aeval (addBlock x fun j => aeval x (Q j)) g`. Introduce `T _ _ x`. Rewrite using `[comp_aeval_apply]`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `hfun : (fun q => aeval x (addBlock (fun p => (X p : MRing ι)) Q q)) = addBlock x fun j => aeval x (Q j)`. Use function extensionality and compare the values at `q`. Take `⟨o, i⟩` from `q`. Consider the cases of `o with`. Consider the case `none => rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Consider the case `some k => exact aeval_X _ _`. Rewrite using `[hfun]`. Rewrite `hg1` using `[← hsub]`. Establish `h2` using `aeval_ratio_eq_zero hw c hyc hwc hg1`. Rewrite `h2` using `[hsub]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Clear the denominators using the available nonvanishing facts. Treat this case separately.
 
-Rewrite using `[eval_map_int, aeval_scale ha (fun o => o.elim 1 fun k => w ⟨k, c k⟩) (addBlock (fun p => w p / w ⟨p.1, c p.1⟩) σ) _ (by`. Introduce and unpack `⟨o, i⟩`. Consider the cases of `o with`. Consider the case `none => exact (one_mul _).symm`. Consider the case `some k => show w ⟨k, i⟩ = w ⟨k, c k⟩ * (w ⟨k, i⟩ / w ⟨k, c k⟩)`.
-
-Clear denominators, using `[hwc k]), h2, mul_zero]` for the nonvanishing conditions. Consider the case `zero => simp`. Consider the case `add x₁ x₂ _ _ h₁ h₂ => simp [map_add, h₁, h₂]`. Consider the case `smul a x _ hx => simp [smul_eq_mul, map_mul, hx]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem LiftGraphPoints.proof : LiftGraphPoints.Statement := by
   classical

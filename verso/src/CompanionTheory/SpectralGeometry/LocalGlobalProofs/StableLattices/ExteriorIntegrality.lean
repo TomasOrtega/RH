@@ -12,9 +12,9 @@ def er (I : BranchingSupport.Sub n (m + 1)) (j : Fin (m + 1)) : BranchingSupport
     rw [Finset.card_erase_of_mem (Finset.orderEmbOfFin_mem _ _ _), I.2]; rfl⟩
 
 /- English proof (translation)
-Use `symm`. Apply `Finset.orderEmbOfFin_unique` to reduce the goal to its premises. Introduce `a show _ ∈ I.1.erase _`. Rewrite using `[Finset.mem_erase]`. Conclude with `⟨fun h => Fin.succAbove_ne j a ((I.1.orderEmbOfFin I.2).injective h), Finset.orderEmbOfFin_mem _ _ _⟩`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `(I.1.orderEmbOfFin I.2).strictMono.comp (Fin.strictMono_succAbove j)`.
+A detailed English derivation is pending.
 -/
 theorem er_emb (I : BranchingSupport.Sub n (m + 1)) (j : Fin (m + 1)) :
     ⇑((er I j).1.orderEmbOfFin (er I j).2) = fun a => I.1.orderEmbOfFin I.2 (j.succAbove a) := by
@@ -27,7 +27,7 @@ theorem er_emb (I : BranchingSupport.Sub n (m + 1)) (j : Fin (m + 1)) :
   · exact (I.1.orderEmbOfFin I.2).strictMono.comp (Fin.strictMono_succAbove j)
 
 /- English proof (translation)
-Establish `h : t ∈ Set.range (I.1.orderEmbOfFin I.2)`. Rewrite using `[Finset.range_orderEmbOfFin]`. Conclude with `ht`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_emb (I : BranchingSupport.Sub n (m + 1)) {t : Fin n} (ht : t ∈ I.1) : ∃ j, I.1.orderEmbOfFin I.2 j = t := by
   have h : t ∈ Set.range (I.1.orderEmbOfFin I.2) := by
@@ -36,11 +36,11 @@ theorem exists_emb (I : BranchingSupport.Sub n (m + 1)) {t : Fin n} (ht : t ∈ 
   exact h
 
 /- English proof (translation)
-Establish `key : ((er I j).1.filter fun a => a < I.1.orderEmbOfFin I.2 j) = (Finset.Iio j).map (I.1.orderEmbOfFin I.2).toEmbedding`. Use extensionality with `a`. Simplify using `only [Finset.mem_filter, Finset.mem_map, Finset.mem_Iio, RelEmbedding.coe_toEmbedding]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ha, hlt⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `ha' : a ∈ I.1` using `Finset.mem_of_mem_erase ha`. Take `⟨i, rfl⟩` from `exists_emb I ha'`. Conclude with `⟨i, (I.1.orderEmbOfFin I.2).lt_iff_lt.mp hlt, rfl⟩`. Introduce and unpack `⟨i, hi, rfl⟩`. Establish `hlt` using `(I.1.orderEmbOfFin I.2).lt_iff_lt.mpr hi`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `⟨Finset.mem_erase.mpr ⟨hlt.ne, Finset.orderEmbOfFin_mem _ _ _⟩, hlt⟩`. Rewrite using `[key, Finset.card_map, Fin.card_Iio]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem er_card (I : BranchingSupport.Sub n (m + 1)) (j : Fin (m + 1)) :
     ((er I j).1.filter fun a => a < I.1.orderEmbOfFin I.2 j).card = j := by
@@ -59,9 +59,9 @@ theorem er_card (I : BranchingSupport.Sub n (m + 1)) (j : Fin (m + 1)) :
   rw [key, Finset.card_map, Fin.card_Iio]
 
 /- English proof (translation)
-Establish `h1 : I.1.orderEmbOfFin I.2 j ∉ (er I j).1` using `by simp [er]`. Establish `h2 : insert (I.1.orderEmbOfFin I.2 j) (er I j).1 = I.1` using `Finset.insert_erase (Finset.orderEmbOfFin_mem _ _ _)`. Simplify using `only [jW, h1, not_false_eq_true, true_and, h2, er_card]`. Distinguish the cases in `hI : I' = I`. Substitute `hI` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun h => hI (Subtype.ext h)), if_neg hI]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem jW_er (I I' : BranchingSupport.Sub n (m + 1)) (j : Fin (m + 1)) :
     jW n m (er I j, I.1.orderEmbOfFin I.2 j) I' = if I' = I then (-1) ^ (j : ℕ) else 0 := by
@@ -75,11 +75,11 @@ theorem jW_er (I I' : BranchingSupport.Sub n (m + 1)) (j : Fin (m + 1)) :
   · rw [if_neg (fun h => hI (Subtype.ext h)), if_neg hI]
 
 /- English proof (translation)
-Take `⟨J, t⟩` from `p`. Simplify using `only [jW] at h`. Distinguish the cases in `hc : t ∉ J.1 ∧ I.1 = insert t J.1`. Establish `htI : t ∈ I.1`. Rewrite using `[hc.2]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.mem_insert_self t J.1`. Take `⟨j, hj⟩` from `exists_emb I htI`. Use `⟨j, ?_⟩` and prove the remaining obligations. Rewrite using `[hj]`. Use `Prod.ext ?_ rfl` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show I.1.erase (I.1.orderEmbOfFin I.2 j) = J.1`. Rewrite using `[hj, hc.2, Finset.erase_insert hc.1]`. Conclude with `(h (if_neg hc)).elim`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jW_ne (p : BranchingSupport.Sub n m × Fin n) (I : BranchingSupport.Sub n (m + 1)) (h : jW n m p I ≠ 0) :
     ∃ j, (er I j, I.1.orderEmbOfFin I.2 j) = p := by
@@ -99,9 +99,9 @@ theorem jW_ne (p : BranchingSupport.Sub n m × Fin n) (I : BranchingSupport.Sub 
   · exact (h (if_neg hc)).elim
 
 /- English proof (translation)
-Establish `hq : Function.Injective (fun j : Fin (m + 1) => (er I j, I.1.orderEmbOfFin I.2 j))` using `fun a b hab => (I.1.orderEmbOfFin I.2).injective (congrArg Prod.snd hab)`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Finset.univ.image (fun j : Fin (m + 1) => (er I j, I.1.orderEmbOfFin I.2 j)))) ?_]`. Rewrite using `[Finset.sum_image (fun a _ b _ hab => hq hab)]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[jW_er, if_pos rfl, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `p _ hp`. Assume the negation of the conclusion as `hne`. Take `⟨j, hj⟩` from `jW_ne p I (right_ne_zero_of_mul hne)`. Conclude with `hp (Finset.mem_image.mpr ⟨j, Finset.mem_univ _, hj⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sum_jW (F : BranchingSupport.Sub n m × Fin n → ℂ) (I : BranchingSupport.Sub n (m + 1)) :
     ∑ p, F p * jW n m p I = ∑ j : Fin (m + 1), (-1) ^ (j : ℕ) * F (er I j, I.1.orderEmbOfFin I.2 j) := by
@@ -118,13 +118,13 @@ theorem sum_jW (F : BranchingSupport.Sub n m × Fin n → ℂ) (I : BranchingSup
     exact hp (Finset.mem_image.mpr ⟨j, Finset.mem_univ _, hj⟩)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.kroneckerMap_apply]`. Establish `hs` using `sum_jW (fun p => cmp m g J p.1 * g (r i) p.2) I`. Simplify using `only at hs`. Rewrite using `[hs, Matrix.det_succ_row _ i, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Establish `hd : cmp m g J (er I j) = ((g.submatrix r ⇑(I.1.orderEmbOfFin I.2)).submatrix i.succAbove j.succAbove).det`. Unfold `BranchingSupport.cmp`. Rewrite using `[hJ, er_emb]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2 : ((-1 : ℂ)) ^ (i : ℕ) * (-1) ^ (i : ℕ) = 1`. Rewrite using `[← mul_pow]`. Evaluate the numerical expressions. Rewrite using `[hd, Matrix.submatrix_apply, pow_add]`. Generalize the expression as in `((g.submatrix r ⇑(I.1.orderEmbOfFin I.2)).submatrix i.succAbove j.succAbove).det = d`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `g (r i) (I.1.orderEmbOfFin I.2 j) = x`. Take the linear combination `(-(-1 : ℂ) ^ (j : ℕ) * d * x) * h2`.
+Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem laplace (g : Matrix (Fin n) (Fin n) ℂ) (r : Fin (m + 1) → Fin n) (i : Fin (m + 1))
     (J : BranchingSupport.Sub n m) (hJ : ⇑(J.1.orderEmbOfFin J.2) = fun a => r (i.succAbove a)) (I : BranchingSupport.Sub n (m + 1)) :
@@ -150,21 +150,19 @@ theorem laplace (g : Matrix (Fin n) (Fin n) ℂ) (r : Fin (m + 1) → Fin n) (i 
   linear_combination (-(-1 : ℂ) ^ (j : ℕ) * d * x) * h2
 
 /- English proof (translation)
-Use extensionality with `⟨J, t⟩ I`. Distinguish the cases in `ht : t ∈ J.1`. Establish `hL : (jW n m * cmp (m + 1) g) (J, t) I = 0`. Rewrite using `[Matrix.mul_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `I'' _`. Simplify using `only [jW, ht, not_true_eq_false, false_and, if_false, zero_mul]`. Establish `hl` using `laplace g (Fin.cons t ⇑(J.1.orderEmbOfFin J.2)) 0 J (by`. Use function extensionality and compare the values at `a`. Simplify using `only [Fin.succAbove_zero, Fin.cons_succ]) I`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite `hl` using `[Fin.cons_zero]`. Rewrite using `[hL, hl]`. Establish `hr : t ∈ Set.range (J.1.orderEmbOfFin J.2)`. Rewrite using `[Finset.range_orderEmbOfFin]`. Conclude with `ht`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hr`. Rewrite using `[Matrix.det_zero_of_row_eq (i := (0 : Fin (m + 1))) (j := a.succ) (Fin.succ_ne_zero a).symm ?_, mul_zero]`. Use function extensionality and compare the values at `c`. Simplify using `only [Matrix.submatrix_apply, Fin.cons_zero, Fin.cons_succ, ha]`. Set `K : BranchingSupport.Sub n (m + 1)` to `⟨insert t J.1, by simp [ht, J.2]⟩`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `exists_emb K (Finset.mem_insert_self t J.1)`. Establish `hJK : er K i = J`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show K.1.erase (K.1.orderEmbOfFin K.2 i) = J.1`. Rewrite using `[hi]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.erase_insert ht`. Establish `hl` using `laplace g ⇑(K.1.orderEmbOfFin K.2) i J (by rw [← hJK]; exact er_emb K i) I`. Rewrite `hl` using `[hi]`. Rewrite using `[hl, Matrix.mul_apply, Finset.sum_eq_single K]`. Establish `hp : ((J, t) : BranchingSupport.Sub n m × Fin n) = (er K i, K.1.orderEmbOfFin K.2 i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hJK, hi]`. Rewrite using `[hp, jW_er, if_pos rfl]`. Both sides reduce to the same expression. Introduce `I'' _ hne`. Simplify using `only [jW]`.
-
-Rewrite using `[if_neg (fun h => hne (Subtype.ext h.2)), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ K) h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem first (g : Matrix (Fin n) (Fin n) ℂ) : jW n m * cmp (m + 1) g = (cmp m g ⊗ₖ g) * jW n m := by
   ext ⟨J, t⟩ I
@@ -207,7 +205,7 @@ theorem first (g : Matrix (Fin n) (Fin n) ℂ) : jW n m * cmp (m + 1) g = (cmp m
       exact absurd (Finset.mem_univ K) h
 
 /- English proof (translation)
-Use extensionality with `I J`. Simplify using `only [BranchingSupport.cmp, Matrix.transpose_apply]`. Rewrite using `[← Matrix.det_transpose, Matrix.transpose_submatrix, Matrix.transpose_transpose]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cmp_tr (l : ℕ) (g : Matrix (Fin n) (Fin n) ℂ) : BranchingSupport.cmp l gᵀ = (BranchingSupport.cmp l g)ᵀ := by
   ext I J
@@ -215,11 +213,11 @@ theorem cmp_tr (l : ℕ) (g : Matrix (Fin n) (Fin n) ℂ) : BranchingSupport.cmp
   rw [← Matrix.det_transpose, Matrix.transpose_submatrix, Matrix.transpose_transpose]
 
 /- English proof (translation)
-Establish `h1 : ∀ j : Fin (m + 1), ((-1 : ℂ)) ^ (j : ℕ) * (-1) ^ (j : ℕ) = 1` using `fun j => by`. Rewrite using `[← mul_pow]`. Evaluate the numerical expressions. Use extensionality with `I I'`. Rewrite using `[Matrix.mul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `show ∑ p, jW n m p I * jW n m p I' = _`. Establish `hs` using `sum_jW (fun p => jW n m p I') I`. Rewrite using `[Finset.sum_congr rfl (fun p _ => mul_comm (jW n m p I) (jW n m p I')), hs]`. Simplify using `only [jW_er]`. Distinguish the cases in `h : I' = I`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Establish `hc : ∀ j : Fin (m + 1), ((-1 : ℂ)) ^ (j : ℕ) * (if I' = I' then (-1) ^ (j : ℕ) else 0) = 1` using `fun j => by rw [if_pos rfl, h1]`. Rewrite using `[Finset.sum_congr rfl (fun j _ => hc j), Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_one, Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one]`. Evaluate the numerical expressions. Simplify using `only [if_neg h, mul_zero, Finset.sum_const_zero, Matrix.smul_apply, Matrix.one_apply_ne (Ne.symm h), smul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem third : (jW n m)ᵀ * jW n m = ((m : ℂ) + 1) • (1 : Matrix (BranchingSupport.Sub n (m + 1)) (BranchingSupport.Sub n (m + 1)) ℂ) := by
   have h1 : ∀ j : Fin (m + 1), ((-1 : ℂ)) ^ (j : ℕ) * (-1) ^ (j : ℕ) = 1 := fun j => by
@@ -242,7 +240,7 @@ theorem third : (jW n m)ᵀ * jW n m = ((m : ℂ) + 1) • (1 : Matrix (Branchin
       Matrix.one_apply_ne (Ne.symm h), smul_zero]
 
 /- English proof (translation)
-Introduce `n m`. Use `⟨fun g => ⟨first g, ?_⟩, third⟩` and prove the remaining obligations. Establish `h` using `congrArg Matrix.transpose (first (n := n) (m := m) gᵀ)`. Simplify using `only [Matrix.transpose_mul, cmp_tr, Matrix.transpose_transpose, Matrix.kroneckerMap_transpose] at h`. Conclude with `h.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wedgeInt : WedgeInt := by
   intro n m

@@ -10,27 +10,23 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Ω _ _ _ S`. Establish `hZQ : Algebra.IsAlgebraic ℤ ℚ` using `IsLocalization.isAlgebraic ℚ (nonZeroDivisors ℤ)`. Establish `hZ : Algebra.IsAlgebraic ℤ Ω` using `Algebra.IsAlgebraic.trans ℤ ℚ Ω`. Take `⟨y, hy0, hy⟩` from `Algebra.IsAlgebraic.exists_integral_multiples (R := ℤ) S`. Use `set D : ℕ := y.natAbs with hDdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨D, Int.natAbs_pos.mpr hy0, ?_⟩` and prove the remaining obligations. Establish `hDint : ∀ j : ℕ, IsIntegral ℤ ((D : Ω) ^ j)`. Introduce `j`. Establish `h : ((D : Ω) ^ j) = algebraMap ℤ Ω ((D : ℤ) ^ j)` using `by simp`. Rewrite using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `isIntegral_algebraMap`. Set `T : Subring Ω` to `{ carrier := {x | ∃ k : ℕ, IsIntegral ℤ ((D : Ω) ^ k * x)} mul_mem' := by`. Introduce and unpack `a b ⟨i, hi⟩ ⟨j, hj⟩`. Use `⟨i + j, ?_⟩` and prove the remaining obligations. Establish `: (D : Ω) ^ (i + j) * (a * b) = ((D : Ω) ^ i * a) * ((D : Ω) ^ j * b)` using `by ring`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[this]`. Conclude with `hi.mul hj`. Use the proof step `one_mem' := ⟨0, by simpa using (isIntegral_one : IsIntegral ℤ (1 : Ω))⟩`. Use the proof step `add_mem' := by`. Introduce and unpack `a b ⟨i, hi⟩ ⟨j, hj⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨i + j, ?_⟩` and prove the remaining obligations. Establish `: (D : Ω) ^ (i + j) * (a + b) = (D : Ω) ^ j * ((D : Ω) ^ i * a) + (D : Ω) ^ i * ((D : Ω) ^ j * b)` using `by ring`. Rewrite using `[this]`. Conclude with `((hDint j).mul hi).add ((hDint i).mul hj)`. Use the proof step `zero_mem' := ⟨0, by simpa using (isIntegral_zero : IsIntegral ℤ (0 : Ω))⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `neg_mem' := by`. Introduce and unpack `a ⟨i, hi⟩`. Use `⟨i, ?_⟩` and prove the remaining obligations. Establish `: (D : Ω) ^ i * -a = -((D : Ω) ^ i * a)` using `by ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hi.neg }`. Establish `hST : (S : Set Ω) ⊆ T`. Introduce `x hx`. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `hx'` using `hy x hx`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pow_one]`. Break down `Int.natAbs_eq y with h | h` into its components or cases. Establish `e : y • x = (D : Ω) * x`. Rewrite using `[zsmul_eq_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h]`. Simplify using `[hDdef]`. Rewrite using `[← e]`. Conclude with `hx'`. Establish `e : y • x = -((D : Ω) * x)`.
-
-Rewrite using `[zsmul_eq_mul, h]`. Simplify using `[hDdef]`. Use `hx'.neg` as an intermediate fact. Rewrite `this` using `[e, neg_neg]`. Conclude with `this`.
-
-Introduce `x hx`. Conclude with `(Subring.closure_le.mpr hST) hx`.
+A detailed English derivation is pending.
 -/
 theorem finite_subring_common_denominator :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [Algebra.IsAlgebraic ℚ Ω] (S : Finset Ω),

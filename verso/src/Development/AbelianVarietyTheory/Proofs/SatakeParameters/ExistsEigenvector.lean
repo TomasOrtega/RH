@@ -4,33 +4,29 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.Valuati
 namespace GlobalTheory.ExistsEigenvector
 
 /- English proof (translation)
-Establish `hone : θ 1 = 1` using `hθ 1 h1 K.one_mem`. Establish `hθne : ∀ a ∈ K, θ a ≠ 0` using `fun a ha h0 => by`. Use `hmul a ha a⁻¹ (K.inv_mem ha)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, hone, h0, zero_mul]`. Conclude with `one_ne_zero this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `H : Subgroup K` to `{ carrier := {k | θ k = 1 ∧ ∀ i, ρ k (y i) = y i} mul_mem' := by`. Introduce and unpack `a b ⟨ha, ha'⟩ ⟨hb, hb'⟩`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, hmul _ a.2 _ b.2, ha, hb, one_mul]`. Rewrite using `[Subgroup.coe_mul, map_mul, Module.End.mul_apply, hb', ha']`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use the proof step `one_mem' := ⟨hone, fun i => by simp⟩`. Use the proof step `inv_mem' := by`. Introduce and unpack `a ⟨ha, ha'⟩`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Use `hmul _ a.2 _ (K.inv_mem a.2)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[mul_inv_cancel, hone, ha, one_mul]`. Conclude with `this.symm`. Use `conv_lhs => rw [← ha' i]`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using `}`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hHo : IsOpen (H : Set K)`. Establish `ho : IsOpen ((fun k : K => (k : G)) ⁻¹' (U ∩ ⋂ i, {g : G | ρ g (y i) = y i}))` using `(hU.inter (isOpen_iInter_of_finite fun i => hρ (y i))).preimage continuous_subtype_val`. Use `H.isOpen_of_mem_nhds (g := 1) (Filter.mem_of_superset (ho.mem_nhds ⟨h1, by simp⟩) ?_)` and prove the remaining obligations. Introduce and unpack `k ⟨hk, hk'⟩`. Conclude with `⟨hθ _ hk k.2, fun i => Set.mem_iInter.1 hk' i⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Use `haveI : Finite (K ⧸ H) := H.quotient_finite_of_isOpen hHo`. Use `haveI : Fintype (K ⧸ H) := Fintype.ofFinite _`. Set `f : K → ι → V` to `fun k i => (θ k)⁻¹ • ρ k (y i)`. Establish `hf : ∀ a b : K, QuotientGroup.leftRel H a b → f a = f b`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a b hab`. Take `⟨h, h'⟩ : a⁻¹ * b ∈ H` from `QuotientGroup.leftRel_apply.1 hab`. Establish `e : (b : G) = a * ((a⁻¹ * b : K) : G)` using `by simp`. Use function extensionality and compare the values at `i`. Simplify using `only [f]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hmul _ a.2 _ (a⁻¹ * b).2, h, mul_one, map_mul, Module.End.mul_apply, h']`. Set `F : K ⧸ H → ι → V` to `fun q => Quotient.liftOn' q f hf`. Establish `hF : ∀ (h : K) (q : K ⧸ H) (i : ι), ρ h (F q i) = θ h • F (h • q) i`. Introduce `h q i`. Proceed by induction on `q using QuotientGroup.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Consider the case `H k`. Express the relevant statement in the definitionally equal form `ρ h ((θ k)⁻¹ • ρ k (y i)) = θ h • ((θ (h * k))⁻¹ • ρ (h * k) (y i))`. Rewrite using `[hmul _ h.2 _ k.2, map_mul, Module.End.mul_apply, map_smul, smul_smul, mul_inv, mul_inv_cancel_left₀ (hθne _ h.2)]`. Establish `hT : ∀ q : K ⧸ H, ∑ i, T i (F q i) = ∑ i, T i (y i)`. Introduce `q`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H k`. Express the relevant statement in the definitionally equal form `∑ i, T i ((θ k)⁻¹ • ρ k (y i)) = _`. Simplify using `only [map_smul]`. Rewrite using `[← Finset.smul_sum, heq _ k.2, smul_smul, inv_mul_cancel₀ (hθne _ k.2), one_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hex : ∃ i, ∑ q, F q i ≠ 0`. Assume the negation of the conclusion as `hc`. Establish `hc' : ∀ i, ∑ q, F q i = 0` using `fun i => not_not.1 fun h => hc ⟨i, h⟩`. Establish `h0 : ∑ i, T i (∑ q, F q i) = 0` using `by simp [hc']`. Simplify using `only [map_sum] at h0`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[Finset.sum_comm]`. Simplify using `only [hT] at h0`. Rewrite `h0` using `[Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ, smul_eq_zero]`. Break down `h0 with h0 | h0` into its components or cases. Conclude with `Fintype.card_ne_zero (Nat.cast_eq_zero.1 h0)`.
-
-Conclude with `hne h0`. Take `⟨i, hi⟩` from `hex`. Use `⟨_, hi, fun h hh => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, Finset.smul_sum]`. Rewrite using `[Finset.sum_congr rfl fun q _ => hF ⟨h, hh⟩ q i]`.
-
-Conclude with `Equiv.sum_comp (MulAction.toPerm (⟨h, hh⟩ : K)) (fun q : K ⧸ H => θ h • F q i)`.
+A detailed English derivation is pending.
 -/
 theorem exists_eigenvector {G V W ι : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] [Fintype ι] {ρ : Representation ℂ G V}

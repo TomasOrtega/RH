@@ -18,9 +18,9 @@ variable {Xf : Formalism.L2.Col.Fields} {n : ℕ} {ST SG : Finset (HeightOneSpec
   (C : Formalism.L2.Col.CoefPk Xf n (Formalism.L2.Col.DecoSet Xf.E n ST SG)) (Λ : Formalism.L2.Col.LevFam Xf.E Xf.K n SG)
 
 /- English proof (translation)
-Establish `e` using `φ.2 ((1, u) : Formalism.L2.Col.FormG Λ) (((1 : Formalism.L2.Col.UF Xf.E n), a) • d)`. Establish `e' : ((1, u) : Formalism.L2.Col.FormG Λ) • (((1 : Formalism.L2.Col.UF Xf.E n), a) • d) = ((1 : Formalism.L2.Col.UF Xf.E n), (u : Formalism.L2.Col.GLG Xf.E n SG) * a) • d` using `by show ((1 : Formalism.L2.Col.UF Xf.E n), (u : Formalism.L2.Col.GLG Xf.E n SG)) • (((1 : Formalism.L2.Col.UF Xf.E n), a) • d) = _`. Rewrite using `[smul_smul, Prod.mk_mul_mk, one_mul]`. Rewrite `e` using `[e']`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ((Λ.chr u : Xf.Kˣ) : Xf.K) • C.rho 1 _ = _`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eqFun_smul_grp (φ : (Formalism.L2.Col.formGSD C Λ).EqFun) (u : Λ.grp) (a : Formalism.L2.Col.GLG Xf.E n SG)
     (d : Formalism.L2.Col.DecoSet Xf.E n ST SG) :
@@ -40,7 +40,7 @@ theorem eqFun_smul_grp (φ : (Formalism.L2.Col.formGSD C Λ).EqFun) (u : Λ.grp)
 end Forms
 
 /- English proof (translation)
-Rewrite using `[LinearMap.map_smulₛₗ, hk, smul_smul, Units.inv_mul, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem semilin_inv_smul {K V W : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup W] [Module ℂ W]
     {σ : K →+* ℂ} (m : V →ₛₗ[σ] W) (k : K) (c : ℂˣ) (hk : σ k = c) (x : V) :
@@ -52,19 +52,17 @@ end GlobalTheory.Mem.R3.RowAct
 namespace GlobalTheory.Mem.R3.RowAct
 
 /- English proof (translation)
-Introduce `X px I hX U Xg tr L eG hI hV hL hG cX gramR c0R hcX hgram hTie hinner t P hRD`. Use `⟨{ red := eG.symm.toMonoidHom.comp (rTupQ X.toD7.sp.X' L.βX (L.datXt t)) red_surj := ?_ red_ker := ?_ act_eq := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `g`. Establish `key` using `GlobalTheory.Mem.R3.FlagOnto.exists_flag_rTup X px I hX U L hI hV hL t (eG g)`. Take `⟨q, hq⟩` from `key`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨q, ?_⟩` and prove the remaining obligations. Establish `e : rTupQ X.toD7.sp.X' L.βX (L.datXt t) q = eG g` using `hq`. Use `show eG.symm (rTupQ X.toD7.sp.X' L.βX (L.datXt t) q) = g`. Rewrite using `[e, MulEquiv.symm_apply_apply]`. Introduce `q`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `rTupQ_eq_one_iff X.toD7.sp.X' L.βX (L.datXt t) q`. Use `show eG.symm (rTupQ X.toD7.sp.X' L.βX (L.datXt t) q) = 1 ↔ _`. Conclude with `(MulEquiv.map_eq_one_iff eG.symm).trans e`. Introduce `g κ hκ f`. Take `⟨m, hm⟩` from `hRD`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u, hdeco, hch⟩` from `GlobalTheory.T.decoratedRowLattices_flagLevel_rightTranslation X px I hX U L eG hI hV hL hG t κ`. Establish `hg : eG.symm (rTup L.βX (L.datXt t) (Formalism.UG.bc (swapAE X.toD7) ((κ : Bridge.Gf X.toD7.sp.X') : GL _ _))) = g` using `hκ`. Rewrite `hdeco` using `[hg]`. Use function extensionality and compare the values at `h`. Establish `e1` using `hm ((famR X I hX U Xg tr).A.leftGroupActionRight t g f) h`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2` using `hm f (h * (κ : Bridge.Gf X.toD7.sp.X'))`. Use `e1.trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (fun v => (((((levEnv X.toD7.sp.X' L.βX (L.datXt t)).ch κ)⁻¹ : ℂˣ) : ℂ)) • v) e2).symm` and prove the remaining obligations. Establish `e3 : ((Formalism.L2.Col.mtildeKGSD X.B.wts I.Ch I.sel t.1).res (Formalism.L2.Col.mtildeKOk _ _ _ _ hX)).symm ((famR X I hX U Xg tr).A.leftGroupActionRight t g f) = Formalism.L2.Col.g0HatRepEqFunX X.B.wts I.Ch I.sel t.1 g (((Formalism.L2.Col.mtildeKGSD X.B.wts I.Ch I.sel t.1).res …` using `LinearEquiv.symm_apply_apply _ _`. Establish `e4` using `eqFun_smul_grp _ _ (((Formalism.L2.Col.mtildeKGSD X.B.wts I.Ch I.sel t.1).res (Formalism.L2.Col.mtildeKOk _ _ _ _ hX)).symm f) u (Formalism.L2.Col.unipotentGroupBlockEmbedding (X.B.primes px) I.sel t.1 (Formalism.L2.Col.r_le_X' X.B.R) g)⁻¹ (RowAd.decoAd X I t h)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg (fun ψ : (Formalism.L2.Col.mtildeKGSD X.B.wts I.Ch I.sel t.1).EqFun => m ((ψ : (Formalism.L2.Col.mtildeKGSD X.B.wts I.Ch I.sel t.1).D → (Formalism.L2.Col.mtildeKGSD X.B.wts I.Ch I.sel t.1).V) (RowAd.decoAd X I t h))) e3).trans ?_` and prove the remaining obligations. Use `(semilin_inv_smul m _ _ hch _).trans ?_` and prove the remaining obligations. Use `congrArg (fun v => (((((levEnv X.toD7.sp.X' L.βX (L.datXt t)).ch κ)⁻¹ : ℂˣ) : ℂ)) • m v) ?_` and prove the remaining obligations. Conclude with `e4.symm.trans (congrArg _ (hdeco h).symm)`. Introduce `q`.
-
-Establish `e : eG (eG.symm (rTupQ X.toD7.sp.X' L.βX (L.datXt t) q)) = rTupQ X.toD7.sp.X' L.βX (L.datXt t) q` using `MulEquiv.apply_symm_apply _ _`. Conclude with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem act_tie : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι) (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r), I.Ok → ValsIn I → LevOf X I U L → IsPlacewiseIdentity X (px := px) eG → ∀ (cX : CoefA X.toD7.sp.X') (gramR : Matrix (Fin X.toD7.sp.X'.rank) (Fin X.toD7.sp.X'.rank) X.toD7.host.E)
     (c0R : VV X.toD7.what₂.LL (fun τ => Bridge.lamRdef (Ptw X.toD7) τ) →ₛₗ[X.toD7.what₂.embLL] cX.W),

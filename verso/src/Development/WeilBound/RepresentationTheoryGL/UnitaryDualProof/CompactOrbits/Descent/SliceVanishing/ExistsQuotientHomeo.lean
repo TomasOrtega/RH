@@ -10,15 +10,15 @@ variable {G T : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Si
   [TopologicalSpace T] [T2Space T] [BaireSpace T] [MulAction G T] [ContinuousSMul G T] [IsPretransitive G T]
 
 /- English proof (translation)
-Set `f : G ⧸ stabilizer G t → T` to `ofQuotientStabilizer G t`. Establish `hinj : Function.Injective f` using `injective_ofQuotientStabilizer G t`. Establish `hsurj : Function.Surjective f`. Introduce `y`. Take `⟨g, hg⟩` from `exists_smul_eq G t y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(g : G ⧸ stabilizer G t), by simp [f, hg]⟩`. Establish `hmk : ∀ g : G, f (g : G ⧸ stabilizer G t) = g • t` using `fun g => ofQuotientStabilizer_mk G t g`. Establish `hcont : Continuous f`. Rewrite using `[(QuotientGroup.isQuotientMap_mk (stabilizer G t)).continuous_iff]`. Establish `: f ∘ (QuotientGroup.mk : G → G ⧸ stabilizer G t) = fun g => g • t` using `funext hmk`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `continuous_id.smul continuous_const`. Establish `hopen : IsOpenMap f`. Introduce `U hU`. Establish `: f '' U = (fun g : G => g • t) '' ((QuotientGroup.mk : G → G ⧸ stabilizer G t) ⁻¹' U)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective c`. Conclude with `⟨g, hc, (hmk g).symm⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `⟨_, hg, hmk g⟩`. Rewrite using `[this]`. Conclude with `isOpenMap_smul_of_sigmaCompact t _ (hU.preimage QuotientGroup.continuous_mk)`. Conclude with `⟨(Equiv.ofBijective f ⟨hinj, hsurj⟩).toHomeomorphOfContinuousOpen hcont hopen, hmk⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_quotient_homeo (t : T) :
     ∃ e : G ⧸ stabilizer G t ≃ₜ T, ∀ g : G, e (g : G ⧸ stabilizer G t) = g • t := by

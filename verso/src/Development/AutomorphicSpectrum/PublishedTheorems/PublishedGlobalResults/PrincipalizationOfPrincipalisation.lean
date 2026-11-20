@@ -35,9 +35,9 @@ def Principalization : Prop :=
       Smooth (f ≫ g) ∧ IsProjOver (f ≫ g) ∧ IsIso (f ∣_ I.support.compl) ∧ IsSncIdeal (I.comap f)
 
 /- English proof (translation)
-Take `⟨r, e, he, hc⟩` from `hp`. Establish `hs : IsSeparated (PSpace.str K M)`. Unfold `PSpace.str`. Use `infer_instance`. Use `⟨r, pullback.lift h e hc.symm, ?_, (pullback.lift_fst _ _ _).symm⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : IsClosedImmersion (pullback.lift h e hc.symm ≫ pullback.snd (PSpace.str K M) (PSpace.str K r))`. Rewrite using `[pullback.lift_snd]`. Conclude with `he`. Conclude with `IsClosedImmersion.of_comp _ (pullback.snd (PSpace.str K M) (PSpace.str K r))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_closed_in_prod {K : Type} [Field K] {M : ℕ} {X' : Scheme.{0}} (h : X' ⟶ PSpace K M)
     (hp : IsProjOver (h ≫ PSpace.str K M)) :
@@ -53,13 +53,11 @@ theorem exists_closed_in_prod {K : Type} [Field K] {M : ℕ} {X' : Scheme.{0}} (
   exact IsClosedImmersion.of_comp _ (pullback.snd (PSpace.str K M) (PSpace.str K r))
 
 /- English proof (translation)
-Rewrite using `[← interior_eq_empty_iff_dense_compl, Set.eq_empty_iff_forall_notMem]`. Introduce `y hyT`. Take `⟨hreg, U, hy, n, f, J, hrsp, hI⟩` from `h y`. Establish `hdom : IsDomain (Y.presheaf.stalk y)` using `ReciprocityTheory.AnForm.R.isDomain_of_isRegularLocalRing`. Take `⟨V, hV, hyV, e⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 Y.isBasis_affineOpens (show y ∈ U.1 ⊓ ⟨interior (T : Set Y), isOpen_interior⟩ from ⟨hy, hyT⟩)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hVU : V ≤ U.1` using `e.trans inf_le_left`. Establish `hnil : IsNilpotent (Y.presheaf.map (homOfLE hVU).op (∏ i ∈ J, f i))`. Rewrite using `[Scheme.isNilpotent_iff_basicOpen_eq_bot_of_isCompact hV.isCompact, Scheme.basicOpen_res, eq_bot_iff]`. Introduce and unpack `z ⟨hzV, hz⟩`. Establish `h1 : z ∈ (Scheme.IdealSheafData.vanishingIdeal T).support`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[← SetLike.mem_coe, Scheme.IdealSheafData.coe_support_vanishingIdeal]`. Conclude with `interior_subset (e hzV).2`. Rewrite `h1` using `[Scheme.IdealSheafData.mem_support_iff_of_mem (hVU hzV), hI, Scheme.zeroLocus_span, Scheme.zeroLocus_singleton]`. Conclude with `(h1 hz).elim`. Establish `h2` using `(hnil.map (Y.presheaf.germ V y hyV).hom).eq_zero`.
-
-Rewrite `h2` using `[TopCat.Presheaf.germ_res_apply, map_prod]`. Conclude with `Finset.prod_ne_zero_iff.2 (fun i _ => (prime_of_regular_params _ hrsp.1 hrsp.2 i).ne_zero) h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dense_compl_of_snc {Y : Scheme.{0}} (T : TopologicalSpace.Closeds Y)
     (h : FinalTheorems.Snc (Scheme.IdealSheafData.vanishingIdeal T)) : Dense (T : Set Y)ᶜ := by

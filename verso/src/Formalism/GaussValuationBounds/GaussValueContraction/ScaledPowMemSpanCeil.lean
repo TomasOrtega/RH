@@ -5,35 +5,31 @@ import Formalism.WachModuleLifts.WachModuleProofs.LemmaHLift
 namespace Formalism.NOK
 
 /- English proof (translation)
-Introduce `A _ ℓ _ hℓ X u p y M j hj hq r`. Establish `hnum` using `truncationExponentBounds ℓ hℓ y M j r hj`. Use `set c := ⌈(r : ℝ) * ℓ / ((ℓ : ℝ) - 1)⌉₊ with hc`. Use `set σ := sigNOK ℓ y M j with hσ`. Establish `hL : (0 : ℝ) < (ℓ : ℝ) ^ (j - 1)` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hℓ1 : 1 ≤ ℓ` using `by omega`. Distinguish the cases in `hry : (ℓ - 1) * r < y`. Establish `h1 : (r : ℝ) * ℓ / ((ℓ : ℝ) - 1) ≤ σ`. Establish `h2` using `hnum.2`. Establish `h3 : ((ℓ : ℝ) - 1) * r - y - (M : ℝ) / (ℓ : ℝ) ^ (j - 1) ≤ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `h4 : (((ℓ - 1) * r : ℕ) : ℝ) < y` using `by exact_mod_cast hry`. Move the coercions through the operations in `[Nat.cast_sub hℓ1] at h4`. Establish `h5 : (0 : ℝ) ≤ M / (ℓ : ℝ) ^ (j - 1)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h2` using `[max_eq_left h3, sub_zero]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`. Establish `hcs : c ≤ σ` using `Nat.ceil_le.mpr h1`. Rewrite using `[← Nat.add_sub_cancel' hcs, pow_add, mul_assoc]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span (by simp))`. Use `push_neg at hry`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Take `⟨m, hm⟩ : ∃ m, (ℓ - 1) * r = y + m` from `⟨(ℓ - 1) * r - y, by omega⟩`. Establish `hmR : ((ℓ : ℝ) - 1) * r - y = m`. Establish `h6` using `congrArg (Nat.cast : ℕ → ℝ) hm`. Move the coercions through the operations in `[Nat.cast_sub hℓ1] at h6`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key : (ℓ : A) ^ σ * X ^ r * p (j - 1) ^ m ∈ Ideal.span {(ℓ : A) ^ c, X ^ M}`. Take `⟨a, b, hab⟩` from `Ideal.mem_span_pair.mp hq`. Rewrite using `[← hab, add_pow, Finset.mul_sum]`. Use `Ideal.sum_mem _ fun k hk => ?_` and prove the remaining obligations. Establish `hk' : k ≤ m` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hX : M ≤ r + ℓ ^ (j - 1) * (m - k)`. Establish `e : (ℓ : A) ^ σ * X ^ r * ((a * ℓ) ^ k * (b * X ^ (ℓ ^ (j - 1))) ^ (m - k) * (m.choose k : A)) = X ^ M * (X ^ (r + ℓ ^ (j - 1) * (m - k) - M) * ((ℓ : A) ^ σ * (a * ℓ) ^ k * b ^ (m - k) * (m.choose k : A)))`. Rewrite using `[← mul_assoc (X ^ M), ← pow_add, Nat.add_sub_cancel' hX, pow_add, pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span (by simp))`. Establish `hcs : c ≤ σ + k`. Apply `Nat.ceil_le.mpr` to reduce the goal to its premises. Establish `h2` using `hnum.2`. Establish `h5 : ((ℓ ^ (j - 1) * (m - k) : ℕ) : ℝ) < M`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `(by omega : ℓ ^ (j - 1) * (m - k) < M)` after adjusting the coercions. Move the coercions through the operations in `[Nat.cast_sub hk'] at h5`. Establish `h7 : (m : ℝ) - k ≤ M / (ℓ : ℝ) ^ (j - 1)`. Rewrite using `[le_div_iff₀ hL]`. Combine the linear relations using `[mul_comm ((ℓ : ℝ) ^ (j - 1)) ((m : ℝ) - k)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hmax : max 0 (((ℓ : ℝ) - 1) * r - y - M / (ℓ : ℝ) ^ (j - 1)) ≤ k` using `max_le (Nat.cast_nonneg _) (by rw [hmR]; linarith)`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : (ℓ : A) ^ σ * X ^ r * ((a * ℓ) ^ k * (b * X ^ (ℓ ^ (j - 1))) ^ (m - k) * (m.choose k : A)) = (ℓ : A) ^ c * ((ℓ : A) ^ (σ + k - c) * (X ^ r * a ^ k * (b * X ^ (ℓ ^ (j - 1))) ^ (m - k) * (m.choose k : A)))`. Rewrite using `[← mul_assoc ((ℓ : A) ^ c) ((ℓ : A) ^ (σ + k - c)), ← pow_add, Nat.add_sub_cancel' hcs]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span (by simp))`. Establish `hj1 : j = (j - 1) + 1` using `by omega`. Establish `hprod : (∏ s ∈ Finset.range j, p s ^ (ℓ - 1)) ^ r = (∏ s ∈ Finset.range j, p s ^ y) * ((∏ s ∈ Finset.range (j - 1), p s ^ m) * p (j - 1) ^ m)`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_pow]`. Establish `e1 : ∀ s, (p s ^ (ℓ - 1)) ^ r = p s ^ y * p s ^ m` using `fun s => by`. Rewrite using `[← pow_mul, hm, pow_add]`. Repeatedly rewrite using `[e1]`. Rewrite using `[Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Use `conv_lhs => rw [hj1]`. Rewrite using `[Finset.prod_range_succ]`. Establish `heq : (ℓ : A) ^ σ * (u * X * ∏ s ∈ Finset.range j, p s ^ (ℓ - 1)) ^ r = ((ℓ : A) ^ σ * X ^ r * p (j - 1) ^ m) * (∏ s ∈ Finset.range j, p s ^ y) * (u ^ r * ∏ s ∈ Finset.range (j - 1), p s ^ m)`. Rewrite using `[mul_pow, mul_pow, hprod]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Use `Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Take `⟨α, β, hαβ⟩` from `Ideal.mem_span_pair.mp key`. Rewrite using `[← hαβ]`.
-
-Conclude with `Ideal.mem_span_pair.mpr ⟨α * ∏ s ∈ Finset.range j, p s ^ y, β, by ring⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scaledPowMemSpanCeil : Trunc := by
   intro A _ ℓ _ hℓ X u p y M j hj hq r

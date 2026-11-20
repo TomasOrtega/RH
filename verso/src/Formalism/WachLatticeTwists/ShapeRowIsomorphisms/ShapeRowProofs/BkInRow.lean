@@ -12,11 +12,11 @@ noncomputable section
 namespace Formalism.RepresentationBoundsCohomology.LocallyConstantCohomology
 
 /- English proof (translation)
-Introduce `p _ K O _ _ _ _ _ _ _ VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ G _ _ D i X _ _ k hk _ _ _ _ HfV HfV' hK hO hF hD hinv hinvF hc hBK`. Use `⟨ReciprocityTheory.ChartRestriction.T2.finite_H1_of_iso hK hO i hD, hBK, ?_, ?_, ?_, ?_, rfl⟩` and prove the remaining obligations. Introduce `f`. Conclude with `ReciprocityTheory.ChartRestriction.T2.tate_rational_frac hK hO hF i hD hinvF f`. Introduce `a t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `D.pr ((LinearEquiv.ofInjective k hk).symm ((LinearEquiv.ofInjective k hk) (D.q a))) t = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Conclude with `ReciprocityTheory.ChartRestriction.T2.tate_compat_iso D hc a t`. Introduce `x hx`. Establish `h0 : (LinearEquiv.ofInjective k hk).symm x = 0` using `ReciprocityTheory.ChartRestriction.T2.tate_integral_iso hK hO hF i hD hinv _ hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `congrArg (LinearEquiv.ofInjective k hk) h0` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply, map_zero]`. Then use the resulting hypothesis. Rewrite using `[← Submodule.map_comp, ← Submodule.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bkInIso : StatBKInIso := by
   intro p _ K O _ _ _ _ _ _ _ VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ G _ _ D i X _ _ k hk _ _ _ _ HfV HfV'
@@ -37,7 +37,7 @@ theorem bkInIso : StatBKInIso := by
     rfl
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ _ _ VT VT' _ _ _ _ _ _ _ _ _ _ G _ _ D M _ _ ρM u hu`. Conclude with `(ReciprocityTheory.ChartRestriction.T2.transportH1_injective (MulEquiv.refl G) u ρM D.ρA hu).comp (ReciprocityTheory.ChartRestriction.T2.continuousH1_toH1_injective D.ρA)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kRowInj : StatKRowInj := by
   intro O _ _ _ _ _ _ _ VT VT' _ _ _ _ _ _ _ _ _ _ G _ _ D M _ _ ρM u hu
@@ -45,7 +45,7 @@ theorem kRowInj : StatKRowInj := by
     (ReciprocityTheory.ChartRestriction.T2.continuousH1_toH1_injective D.ρA)
 
 /- English proof (translation)
-Introduce `p _ K O _ _ _ _ _ _ _ VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ A T' G _ _ _ _ _ M _ _ _ _ r χ Dw _ D i u hu _ _ _ _ HfV HfV' hK hO hF hD hinv hinvF hc hBK`. Establish `hk` using `kRowInj O VT VT' Dw D M _ u hu`. Conclude with `⟨hk, bkInIso p K O VT VT' Dw D i _ _ hk HfV HfV' hK hO hF hD hinv hinvF hc hBK⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem bkInRow : StatBKInRow := by
   intro p _ K O _ _ _ _ _ _ _ VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ A T' G _ _ _ _ _ M _ _ _ _ r χ Dw _ D i u hu

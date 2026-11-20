@@ -7,17 +7,15 @@ open scoped ContDiff ENNReal Matrix
 namespace GlobalTheory.FrameSplit
 
 /- English proof (translation)
-Establish `hLm : Measurable L` using `hL.measurable`. Use `set ρ : Measure B := (μ.restrict S).map L with hρ`. Establish `happ : ∀ T : Set B, MeasurableSet T → ρ T = μ (L ⁻¹' T ∩ S)`. Introduce `T hT`. Rewrite using `[hρ, Measure.map_apply hLm hT, Measure.restrict_apply (hLm hT)]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsFiniteMeasureOnCompacts ρ := by`. Use `⟨fun T hT => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hT.isBounded.exists_norm_le`. Take `⟨D, hD⟩` from `hb C`. Rewrite using `[happ T hT.measurableSet]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `lt_of_le_of_lt (measure_mono (t := Metric.closedBall 0 D) ?_) (isCompact_closedBall (0 : A) D).measure_lt_top` and prove the remaining obligations. Introduce `x hx`. Simplify using `using hD x hx.2 (hC _ hx.1)`. Use `haveI : ρ.IsAddLeftInvariant := by`. Use `⟨fun b => ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `T hT`. Establish `hm : Measurable fun z : B => b + z` using `(continuous_const.add continuous_id).measurable`. Rewrite using `[Measure.map_apply hm hT, happ _ (hm hT), happ _ hT, ← measure_preimage_add μ (s b) (L ⁻¹' T ∩ S)]`. Use `congr 1`. Use extensionality with `x`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hadd, hs, hinv]`. Use `⟨(ρ.addHaarScalarFactor ν : ℝ≥0∞), ENNReal.coe_lt_top, fun g hg => le_of_eq ?_⟩` and prove the remaining obligations. Rewrite using `[← lintegral_map hg hLm, ← hρ]`. Use `conv_lhs => rw [Measure.isAddLeftInvariant_eq_smul ρ ν]`. Rewrite using `[lintegral_smul_measure]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lintegral_le_of_section {A B : Type*} [NormedAddCommGroup A] [NormedAddCommGroup B]
     [MeasurableSpace A] [BorelSpace A] [MeasurableSpace B] [BorelSpace B]
@@ -61,19 +59,17 @@ theorem lintegral_le_of_section {A B : Type*} [NormedAddCommGroup A] [NormedAddC
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `r X R`. Use `haveI h1 : (volume : Measure (Fin r → ℂ)).IsAddHaarMeasure := inferInstance`. Use `haveI h2 : (volume : Measure (Fin r → Fin r → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI h3 : (volume : Measure (Frame X.Ψ r)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `lintegral_le_of_section (volume : Measure (Frame X.Ψ r)) (volume : Measure (V (nd X))) (fun y => WithLp.toLp 2 fun j => y ((Fintype.equivFin (Ent X)).symm j).1 ((Fintype.equivFin (Ent X)).symm j).2.1.1 ((Fintype.equivFin (Ent X)).symm j).2.1.2) ?_ ?_ (fun z τ a c => if h : c < a …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use `(PiLp.continuous_toLp 2 _).comp (continuous_pi fun j => ?_) fun_prop` and prove the remaining obligations. Introduce `x y`. Use extensionality with `j`. Simplify using the standard rewrite rules. Introduce `z`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use extensionality with `j`. Establish `h` using `((Fintype.equivFin (Ent X)).symm j).2.2`. Simplify using `only [dif_pos h]`. Conclude with `congrArg (fun k => z k) ((Fintype.equivFin (Ent X)).apply_symm_apply j)`. Apply `IsClosed.measurableSet` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.setOf_forall]`. Use `isClosed_iInter fun τ => isClosed_iInter fun a => isClosed_iInter fun c => isClosed_iInter fun _ => isClosed_le ?_ continuous_const` and prove the remaining obligations. Use `fun_prop`. Introduce `z x`. Simplify using `only [Set.mem_setOf_eq, Pi.add_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `forall_congr' fun τ => forall_congr' fun a => forall_congr' fun c => forall_congr' fun h => ?_` and prove the remaining obligations. Rewrite using `[dif_neg h, zero_add]`. Introduce `C`. Use `⟨max (max C R) 0, fun x hx hC => ?_⟩` and prove the remaining obligations. Establish `h0 : 0 ≤ max (max C R) 0` using `le_max_right _ _`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(pi_norm_le_iff_of_nonneg h0).2 fun τ => (pi_norm_le_iff_of_nonneg h0).2 fun a => (pi_norm_le_iff_of_nonneg h0).2 fun c => ?_` and prove the remaining obligations. Distinguish the cases in `h : c < a`. Use `(PiLp.norm_apply_le _ ((Fintype.equivFin (Ent X)) ⟨τ, ⟨(a, c), h⟩⟩)).trans hC` as an intermediate fact. Establish `h' : ‖x τ a c‖ ≤ C`. Establish `e` using `(Fintype.equivFin (Ent X)).symm_apply_apply ⟨τ, ⟨(a, c), h⟩⟩`.
-
-Simplify using `only at this`. Use `erw [e] at this`. Conclude with `this`. Conclude with `h'.trans ((le_max_left _ _).trans (le_max_left _ _))`. Conclude with `(hx τ a c h).trans ((le_max_right _ _).trans (le_max_left _ _))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frameSplit : (∀ (r : ℕ) (X : Data E r) (R : ℝ), ∃ K : ℝ≥0∞, K < ⊤ ∧ ∀ g : V (nd X) → ℝ≥0∞, Measurable g → ∫⁻ y in {y : Frame X.Ψ r | ∀ τ a c, ¬ c < a → ‖y τ a c‖ ≤ R}, g (WithLp.toLp 2 fun j => y ((Fintype.equivFin (Ent X)).symm j).1 ((Fintype.equivFin (Ent X)).symm j).2.1.1 ((Fintype.equivFin (Ent X)).symm j).2.1.2) ≤ K * ∫⁻ z, g z) := by
   intro r X R

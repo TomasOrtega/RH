@@ -14,7 +14,7 @@ variable {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Set `ev : cIndSpace H ρ →ₗ[ℂ] W` to `(LinearMap.proj g) ∘ₗ (indSpace H ρ).subtype ∘ₗ (smoothPart (ind H ρ)).subtype ∘ₗ (cIndSpace H ρ).subtype`. Conclude with `map_sum ev _ _`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem sum_apply (H : Subgroup G) (ρ : Representation ℂ H W) {ι : Type} (s : Finset ι)
     (F : ι → cIndSpace H ρ) (g : G) :
@@ -25,19 +25,17 @@ theorem sum_apply (H : Subgroup G) (ρ : Representation ℂ H W) {ι : Type} (s 
   exact map_sum ev _ _
 
 /- English proof (translation)
-Establish `hO : (fun x : G => c⁻¹ * x * c) ⁻¹' (K₁ : Set G) ∈ 𝓝 (1 : G)` using `(hK₁o.preimage (by fun_prop)).mem_nhds (by simp [one_mem])`. Take `⟨K, hKo, hKO, B₀, hB₀, hB1, hB0⟩` from `hloc (y.1.1.1 c) _ hO`. Set `K' : Subgroup G` to `K.comap (MulAut.conj c).toMonoidHom`. Establish `hmem : ∀ x, x ∈ K' ↔ c * x * c⁻¹ ∈ K` using `fun x => Iff.rfl`. Establish `hK'o : IsOpen (K' : Set G)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Continuous fun x : G => c * x * c⁻¹` using `by fun_prop`. Conclude with `hKo.preimage this`. Establish `hle : K' ≤ K₁`. Introduce `x hx`. Establish `h` using `hKO ((hmem x).1 hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : c⁻¹ * (c * x * c⁻¹) * c = x` using `by group`. Simplify `h` using `[e]`. Use `⟨K', hK'o, hle, cInd H ρ c⁻¹ B₀, hI _ _ hB₀, fun g => ?_⟩` and prove the remaining obligations. Establish `e1 : (cInd H ρ c⁻¹ B₀).1.1.1 g = B₀.1.1.1 (g * c⁻¹)` using `rfl`. Rewrite using `[e1]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hg : g ∈ dc H K' c`. Rewrite using `[Set.indicator_of_mem hg]`. Take `⟨b, k, hk, rfl⟩` from `hg`. Establish `e2 : (b : G) * c * k * c⁻¹ = (b : G) * (c * k * c⁻¹)` using `by group`. Rewrite using `[e2, hB1 b _ ((hmem k).1 hk), mul_assoc, y.1.1.2 b, hy c k (hle hk)]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem hg]`. Apply `hB0` to reduce the goal to its premises. Introduce and unpack `⟨a, x, hx, e⟩`. Apply `hg` to reduce the goal to its premises. Use `⟨a, c⁻¹ * x * c, (hmem _).2 ?_, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e3 : c * (c⁻¹ * x * c) * c⁻¹ = x` using `by group`. Rewrite using `[e3]`. Conclude with `hx`. Establish `e4 : g = (g * c⁻¹) * c` using `by group`. Rewrite using `[e4, e]`.
-
-Use `group`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_small_cut (H : Subgroup G) (ρ : Representation ℂ H W)
     (I : Submodule ℂ (cIndSpace H ρ)) (hI : ∀ (g : G) (B : cIndSpace H ρ), B ∈ I → cInd H ρ g B ∈ I)
@@ -83,35 +81,33 @@ theorem exists_small_cut (H : Subgroup G) (ρ : Representation ℂ H W)
       group
 
 /- English proof (translation)
-Use `haveI : CompactSpace K₁ := isCompact_iff_compactSpace.1 hK₁c`. Set `L : Subgroup K₁` to `K'.subgroupOf K₁`. Establish `hLo : IsOpen (L : Set K₁)` using `hK'o.preimage continuous_subtype_val`. Use `haveI : Finite (K₁ ⧸ L) := Subgroup.quotient_finite_of_isOpen _ hLo`. Use `haveI := Fintype.ofFinite (K₁ ⧸ L)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : G → ℕ` to `fun g => ∑ q : K₁ ⧸ L, if g * ((q.out : K₁) : G) ∈ dc H K' c then 1 else 0`. Set `Sg : cIndSpace H ρ` to `∑ q : K₁ ⧸ L, cInd H ρ ((q.out : K₁) : G) B`. Establish `hSg : Sg ∈ I` using `Submodule.sum_mem _ fun q _ => hI _ _ hBI`. Establish `hval : ∀ g, Sg.1.1.1 g = (φ g : ℂ) • y.1.1.1 g`. Introduce `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e0 : Sg.1.1.1 g = ∑ q : K₁ ⧸ L, (cInd H ρ ((q.out : K₁) : G) B).1.1.1 g` using `sum_apply H ρ _ _ g`. Rewrite using `[e0]`. Simplify using `only [φ]`. Use `push_cast`. Rewrite using `[Finset.sum_smul]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `e1 : (cInd H ρ ((q.out : K₁) : G) B).1.1.1 g = B.1.1.1 (g * ((q.out : K₁) : G))` using `rfl`. Rewrite using `[e1, hB]`. Distinguish the cases in `h : g * ((q.out : K₁) : G) ∈ dc H K' c`. Rewrite using `[Set.indicator_of_mem h, hy g _ q.out.2, if_pos h, one_smul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.indicator_of_notMem h, if_neg h, zero_smul]`. Establish `hleft : ∀ (b : H) g, φ ((b : G) * g) = φ g`. Introduce `b g`. Simplify using `only [φ, mul_assoc, dc_left H K' c (b : G) b.2]`. Establish `hright : ∀ κ ∈ K₁, ∀ g, φ (g * κ) = φ g`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `κ hκ g`. Set `κ' : K₁` to `⟨κ, hκ⟩`. Establish `key : ∀ q : K₁ ⧸ L, g * κ * ((q.out : K₁) : G) ∈ dc H K' c ↔ g * (((κ' • q).out : K₁) : G) ∈ dc H K' c`. Introduce `q`. Establish `e : ((κ' * q.out : K₁) : K₁ ⧸ L) = κ' • q` using `by conv_rhs => rw [← QuotientGroup.out_eq' q]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Both sides reduce to the same expression. Establish `e2 : (κ' • q).out⁻¹ * (κ' * q.out) ∈ L`. Apply `QuotientGroup.eq.1` to reduce the goal to its premises. Rewrite using `[e, QuotientGroup.out_eq']`. Establish `e3 : ((((κ' • q).out⁻¹ * (κ' * q.out) : K₁)) : G) ∈ K'` using `e2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `e4 : g * κ * ((q.out : K₁) : G) = g * (((κ' • q).out : K₁) : G) * ((((κ' • q).out⁻¹ * (κ' * q.out) : K₁)) : G)`. Use `push_cast`. Use `show g * κ * ((q.out : K₁) : G) = g * (((κ' • q).out : K₁) : G) * ((((κ' • q).out : K₁) : G)⁻¹ * (κ * ((q.out : K₁) : G)))`. Use `group`. Rewrite using `[e4]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `dc_right H K' c _ e3 _`. Simplify using `only [φ, mul_assoc] at key ⊢`. Simplify using `only [← mul_assoc] at key ⊢`. Simplify using `only [key]`. Conclude with `Equiv.sum_comp (MulAction.toPerm κ') (fun q : K₁ ⧸ L => if g * ((q.out : K₁) : G) ∈ dc H K' c then 1 else 0)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφc : φ c ≠ 0`. Set `q₀ : K₁ ⧸ L` to `((1 : K₁) : K₁ ⧸ L)`. Establish `h1 : (q₀.out : K₁)⁻¹ * 1 ∈ L`. Apply `QuotientGroup.eq.1` to reduce the goal to its premises. Rewrite using `[QuotientGroup.out_eq']`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (q₀.out : K₁) ∈ L`. Use `inv_mem h1` as an intermediate fact. Simplify using `using this`. Establish `h3 : ((q₀.out : K₁) : G) ∈ K'` using `h2`. Establish `h4 : c * ((q₀.out : K₁) : G) ∈ dc H K' c` using `⟨1, _, h3, by simp⟩`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h5 : (if c * ((q₀.out : K₁) : G) ∈ dc H K' c then 1 else 0) ≤ φ c` using `Finset.single_le_sum (f := fun q : K₁ ⧸ L => if c * ((q.out : K₁) : G) ∈ dc H K' c then 1 else 0) (fun _ _ => Nat.zero_le _) (Finset.mem_univ q₀)`. Rewrite `h5` using `[if_pos h4]`. Use linear arithmetic over natural numbers and integers. Establish `hoff : ∀ g, g ∉ dc H K₁ c → φ g = 0`. Introduce `g hg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `Finset.sum_eq_zero fun q _ => if_neg fun h => hg ?_` and prove the remaining obligations. Take `⟨b, k, hk, e⟩` from `h`. Conclude with `(dc_right H K₁ c _ q.out.2 g).1 ⟨b, k, hle hk, e⟩`. Establish `hc0 : (φ c : ℂ) ≠ 0` using `by exact_mod_cast hφc`. Use `⟨(φ c : ℂ)⁻¹ • Sg, Submodule.smul_mem _ _ hSg, fun g => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : ((φ c : ℂ)⁻¹ • Sg).1.1.1 g = (φ c : ℂ)⁻¹ • Sg.1.1.1 g` using `rfl`. Rewrite using `[e, hval]`. Distinguish the cases in `hg : g ∈ dc H K₁ c`. Rewrite using `[Set.indicator_of_mem hg]`. Take `⟨b, k, hk, rfl⟩` from `hg`.
-
-Rewrite using `[mul_assoc, hleft, hright k hk, smul_smul, inv_mul_cancel₀ hc0, one_smul, y.1.1.2 b, hy c k hk]`. Rewrite using `[Set.indicator_of_notMem hg, hoff g hg]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem average_cut (H : Subgroup G) (ρ : Representation ℂ H W)
     (I : Submodule ℂ (cIndSpace H ρ)) (hI : ∀ (g : G) (B : cIndSpace H ρ), B ∈ I → cInd H ρ g B ∈ I)
@@ -206,31 +202,29 @@ theorem average_cut (H : Subgroup G) (ρ : Representation ℂ H W)
     simp
 
 /- English proof (translation)
-Introduce `G W _ _ _ _ _ H ρ hbasis I hI hloc y`. Establish `hyo : IsOpen {g : G | ind H ρ g y.1.1 = y.1.1}` using `y.1.2`. Take `⟨K₁, hK₁o, hK₁c, hK₁U⟩` from `hbasis _ (hyo.mem_nhds (by simp))`. Establish `hinv : ∀ g, ∀ x ∈ K₁, y.1.1.1 (g * x) = y.1.1.1 g`. Introduce `g x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : ind H ρ x y.1.1 = y.1.1` using `hK₁U hx`. Conclude with `congrArg (fun v : indSpace H ρ => v.1 g) h`. Establish `hdc : ∀ c : G, ∃ z ∈ I, ∀ g, z.1.1.1 g = (dc H K₁ c).indicator y.1.1.1 g`. Introduce `c`. Take `⟨K', hK'o, hle, B, hBI, hB⟩` from `exists_small_cut H ρ I hI hloc K₁ hK₁o y hinv c`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `average_cut H ρ I hI K₁ hK₁c y hinv c K' hK'o hle B hBI hB`. Establish `key : ∀ t : Finset G, ∃ S : Set G, (∀ h ∈ H, ∀ g, h * g ∈ S ↔ g ∈ S) ∧ (∀ k ∈ K₁, ∀ g, g * k ∈ S ↔ g ∈ S) ∧ (∀ c ∈ t, c ∈ S) ∧ ∃ z ∈ I, ∀ g, z.1.1.1 g = S.indicator y.1.1.1 g`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨∅, by simp, by simp, by simp, 0, Submodule.zero_mem _, fun g => by simp⟩`. Consider the case `insert c t _ ih`. Take `⟨S, hl, hr, hcov, z, hz, ez⟩` from `ih`. Distinguish the cases in `hcS : c ∈ S`. Use `⟨S, hl, hr, fun c' hc' => ?_, z, hz, ez⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Break down `Finset.mem_insert.1 hc' with rfl | hc'` into its components or cases. Conclude with `hcS`. Conclude with `hcov c' hc'`. Take `⟨z', hz', ez'⟩` from `hdc c`. Establish `hdisj : ∀ g, g ∈ dc H K₁ c → g ∉ S`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce and unpack `g ⟨b, k, hk, rfl⟩ hg`. Rewrite `hg` using `[mul_assoc, hl _ b.2, hr k hk]`. Conclude with `hcS hg`. Use `⟨S ∪ dc H K₁ c, fun h hh g => ?_, fun k hk g => ?_, fun c' hc' => ?_, z + z', Submodule.add_mem _ hz hz', fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_union, hl h hh g, dc_left H K₁ c h hh g]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the first alternative. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_union, hr k hk g, dc_right H K₁ c k hk g]`. Break down `Finset.mem_insert.1 hc' with rfl | hc'` into its components or cases. Conclude with `Or.inr ⟨1, 1, one_mem _, by simp⟩`. Conclude with `Or.inl (hcov c' hc')`. Establish `e : (z + z').1.1.1 g = z.1.1.1 g + z'.1.1.1 g` using `rfl`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[e, ez, ez']`. Distinguish the cases in `h2 : g ∈ dc H K₁ c`. Establish `h1` using `hdisj g h2`. Simplify using `[Set.indicator, h1, h2]`. Apply the tactic sequence `by_cases h1 : g ∈ S <;> simp [Set.indicator, h1, h2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC, hsupp⟩` from `y.2`. Take `⟨t, -, ht⟩` from `hC.elim_nhds_subcover (fun c => (fun x => c * x) '' (K₁ : Set G)) (fun c _ => by`. Establish `: (fun x => c⁻¹ * x) ⁻¹' (K₁ : Set G) ∈ 𝓝 c` using `(hK₁o.preimage (continuous_const.mul continuous_id)).mem_nhds (by simp [one_mem])`. Use `filter_upwards [this] with x hx`. Conclude with `⟨c⁻¹ * x, hx, by group⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Take `⟨S, hl, hr, hcov, z, hz, ez⟩` from `key t`. Establish `hyz : y = z`. Use `Subtype.ext (Subtype.ext (Subtype.ext (funext fun g => ?_)))` and prove the remaining obligations. Use `show y.1.1.1 g = z.1.1.1 g`. Rewrite using `[ez]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h0 : y.1.1.1 g = 0`. Rewrite using `[h0]`. Distinguish the cases in `hg : g ∈ S`. Rewrite using `[Set.indicator_of_mem hg, h0]`. Rewrite using `[Set.indicator_of_notMem hg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, c', hc', e⟩` from `hsupp g h0`. Take `⟨c, hc, hcc⟩` from `Set.mem_iUnion₂.1 (ht hc')`. Take `⟨x, hx, rfl⟩` from `hcc`. Establish `hg : g ∈ S`. Rewrite using `[e]`.
-
-Conclude with `(hl a ha _).2 ((hr x hx c).2 (hcov c hc))`. Rewrite using `[Set.indicator_of_mem hg]`. Rewrite using `[hyz]`. Conclude with `hz`.
+A detailed English derivation is pending.
 -/
 theorem eq_top_of_bumps : ∀ {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup W] [Module ℂ W]

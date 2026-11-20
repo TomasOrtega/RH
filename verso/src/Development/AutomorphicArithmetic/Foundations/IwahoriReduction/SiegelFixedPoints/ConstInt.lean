@@ -18,14 +18,14 @@ namespace UpperTheory.Kd.L.KummerExtensionIntegrality
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨AlgEquiv.ofRingEquiv (f := g.toRingEquiv) fun a => (TopW.mem_geo g).1 hg a, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem resGeo {F K Kb : Type} [Field F] [Field K] [Field Kb] [Algebra F K] [Algebra F Kb] [Algebra K Kb] [IsScalarTower F K Kb]
     (g : Kb ≃ₐ[F] Kb) (hg : g ∈ geo F K Kb) : ∃ g' : Kb ≃ₐ[K] Kb, ∀ z, g' z = g z :=
   ⟨AlgEquiv.ofRingEquiv (f := g.toRingEquiv) fun a => (TopW.mem_geo g).1 hg a, fun _ => rfl⟩
 
 /- English proof (translation)
-Establish `e` using `h θ`. Unfold `kum`. Generalize the expression as in `g' θ = a at e ⊢`. Substitute `e` using the available equality. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem kumRes {F K Kb : Type} [Field F] [Field K] [Field Kb] [Algebra F Kb] [Algebra K Kb] {N : ℕ} (ζ θ : Kb)
     {g : Kb ≃ₐ[F] Kb} {g' : Kb ≃ₐ[K] Kb} (h : ∀ z, g' z = g z) : kum (K := K) (N := N) ζ θ g' = kum (K := F) (N := N) ζ θ g := by
@@ -36,9 +36,9 @@ private theorem kumRes {F K Kb : Type} [Field F] [Field K] [Field Kb] [Algebra F
   rfl
 
 /- English proof (translation)
-Establish `key : ∃ P : Polynomial Ω, algebraMap (Polynomial Ω) (topL X M) P = f`. Break down `h with h | ⟨c, h⟩` into its components or cases. Use `⟨Polynomial.X, Subtype.ext ?_⟩ show ((jPoly X _ Polynomial.X : topL X M) : X.K) = _` and prove the remaining obligations. Rewrite using `[coe_jPoly, Polynomial.aeval_X, h]`. Use `⟨Polynomial.C c, Subtype.ext ?_⟩ show ((jPoly X _ (Polynomial.C c) : topL X M) : X.K) = _` and prove the remaining obligations.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coe_jPoly, Polynomial.aeval_C, h]`. Take `⟨P, rfl⟩` from `key`. Conclude with `isIntegral_algebraMap`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem constInt (X : Tower Ω ε) (M : ℕ) (f : topL X M) (h : (f : X.K) = X.jK ∨ (f : X.K) ∈ Set.range (algebraMap Ω X.K)) :
     f ∈ FunctionField.ringOfIntegers Ω (topL X M) := by
@@ -54,11 +54,9 @@ private theorem constInt (X : Tower Ω ε) (M : ℕ) (f : topL X M) (h : (f : X.
   exact isIntegral_algebraMap
 
 /- English proof (translation)
-Establish `hC : ∀ c : Ω, algebraMap (topL X M) (topBar X M) (algebraMap (Polynomial Ω) (topL X M) (Polynomial.C c)) ∈ B` using `fun c => hB _ (Or.inr ⟨c, by show _ = ((jPoly X _ (Polynomial.C c) : topL X M) : X.K)`. Rewrite using `[coe_jPoly, Polynomial.aeval_C]⟩)`. Establish `hX : algebraMap (topL X M) (topBar X M) (algebraMap (Polynomial Ω) (topL X M) Polynomial.X) ∈ B` using `hB _ (Or.inl (by show ((jPoly X _ Polynomial.X : topL X M) : X.K) = _`. Rewrite using `[coe_jPoly, Polynomial.aeval_X]))`. Proceed by induction on `P using Polynomial.induction_on with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `C a => exact hC a`. Consider the case `add p q hp hq => rw [map_add, map_add]`. Conclude with `add_mem hp hq`. Consider the case `monomial n a h`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, map_mul]`.
-
-Conclude with `mul_mem h hX`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem polyMem (X : Tower Ω ε) (M : ℕ) (B : ValuationSubring (topBar X M))
     (hB : ∀ f : topL X M, ((f : X.K) = X.jK ∨ (f : X.K) ∈ Set.range (algebraMap Ω X.K)) → algebraMap (topL X M) (topBar X M) f ∈ B)
@@ -79,9 +77,9 @@ private theorem polyMem (X : Tower Ω ε) (M : ℕ) (B : ValuationSubring (topBa
     exact mul_mem h hX
 
 /- English proof (translation)
-Take `⟨p, hp, hev⟩ : IsIntegral (Polynomial Ω) x` from `hx`. Set `φ : Polynomial Ω →+* B` to `((algebraMap (topL X M) (topBar X M)).comp (algebraMap (Polynomial Ω) (topL X M))).codRestrict B.toSubring (fun P => polyMem X M B hB P)`. Establish `hφ : (algebraMap B (topBar X M)).comp φ = (algebraMap (topL X M) (topBar X M)).comp (algebraMap (Polynomial Ω) (topL X M))` using `rfl`. Establish `hi : IsIntegral B (algebraMap (topL X M) (topBar X M) x)`. Use `⟨p.map φ, hp.map φ, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.eval₂_map, hφ, ← Polynomial.hom_eval₂, hev, map_zero]`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hi`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem memOfInt (X : Tower Ω ε) (M : ℕ) (B : ValuationSubring (topBar X M))
     (hB : ∀ f : topL X M, ((f : X.K) = X.jK ∨ (f : X.K) ∈ Set.range (algebraMap Ω X.K)) → algebraMap (topL X M) (topBar X M) f ∈ B)
@@ -99,27 +97,25 @@ private theorem memOfInt (X : Tower Ω ε) (M : ℕ) (B : ValuationSubring (topB
   exact y.2
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Use `haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ hl⟩`. Use `haveI := isScalarTower_poly_rat X (CongruenceSubgroup.Gamma M)`. Use `haveI : FiniteDimensional (RatFunc Ω) (topL X M) := GlobalTheory.T.finiteDimensional_lev_of_gamma_le Ω ε X _ M (Nat.pos_of_ne_zero hM) le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : Normal (topF X M) (topL X M) := UpperTheory.normal_modularTowerTop X hM`. Use `haveI : Algebra.IsAlgebraic (topF X M) (topBar X M) := Algebra.IsAlgebraic.trans (topF X M) (topL X M) (topBar X M)`. Establish `hN : 0 < l ^ n` using `pow_pos (Nat.pos_of_ne_zero hl) n`. Establish `hζ` using `isPrimitiveRoot_topZeta X M hl n`. Establish `hfix` using `topGal_topZeta X hl hd`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `a : topL X M` to `⟨u, mdl_le_lev X _ _ hu⟩`. Set `b : topL X M` to `⟨v, mdl_le_lev X _ _ hv⟩`. Set `aF : topF X M` to `⟨u, hu⟩`. Set `bF : topF X M` to `⟨v, hv⟩`. Establish `ha0 : a ≠ 0` using `fun h => hu0 (congrArg Subtype.val h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : b ≠ 0` using `fun h => hv0 (congrArg Subtype.val h)`. Establish `haF0 : aF ≠ 0` using `fun h => hu0 (congrArg Subtype.val h)`. Establish `hbF0 : bF ≠ 0` using `fun h => hv0 (congrArg Subtype.val h)`. Establish `hpl : ∀ W : ValuationSubring X.K, X.OverY W → ∀ z : X.K, W.valuation z = 1 → z ∈ W ∧ z⁻¹ ∈ W` using `fun W _ z hz => ⟨(W.valuation_le_one_iff z).1 hz.le, (W.valuation_le_one_iff _).1 (by rw [map_inv₀, hz, inv_one])⟩`. Establish `hai : a ∈ FunctionField.ringOfIntegers Ω (topL X M)` using `UpperTheory.mem_ringOfIntegers_modularTowerTop_of_forall_valuation X M a fun W hw => (hpl W hw u (hW W hw).1).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbi : b ∈ FunctionField.ringOfIntegers Ω (topL X M)` using `UpperTheory.mem_ringOfIntegers_modularTowerTop_of_forall_valuation X M b fun W hw => (hpl W hw v (hW W hw).2).1`. Establish `hai' : a⁻¹ ∈ FunctionField.ringOfIntegers Ω (topL X M)` using `UpperTheory.mem_ringOfIntegers_modularTowerTop_of_forall_valuation X M a⁻¹ fun W hw => (hpl W hw u (hW W hw).1).2`. Establish `hbi' : b⁻¹ ∈ FunctionField.ringOfIntegers Ω (topL X M)` using `UpperTheory.mem_ringOfIntegers_modularTowerTop_of_forall_valuation X M b⁻¹ fun W hw => (hpl W hw v (hW W hw).2).2`. Establish `hα : topRoot X M (l ^ n) u ^ (l ^ n) = algebraMap (topL X M) (topBar X M) a` using `topRoot_pow X M hN.ne' _`. Establish `hβ : topRoot X M (l ^ n) v ^ (l ^ n) = algebraMap (topL X M) (topBar X M) b` using `topRoot_pow X M hN.ne' _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hαF : topRoot X M (l ^ n) u ^ (l ^ n) = algebraMap (topF X M) (topBar X M) aF`. Rewrite using `[hα, IsScalarTower.algebraMap_apply (topF X M) (topL X M) (topBar X M)]`. Both sides reduce to the same expression. Establish `hβF : topRoot X M (l ^ n) v ^ (l ^ n) = algebraMap (topF X M) (topBar X M) bF`. Rewrite using `[hβ, IsScalarTower.algebraMap_apply (topF X M) (topL X M) (topBar X M)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Establish `hx` using `topChar_apply X hl hd hu hu0`. Establish `hy` using `topChar_apply X hl hd hv hv0`. Take `⟨-, -, -, -, η₀, hlc, hcob, hin⟩` from `GlobalTheory.T.kummerCupProduct_coboundary_theorem Ω (topL X M) (topBar X M) (l ^ n) (topZeta X M l n) hN hζ a b _ _ ha0 hb0 hai hai' hbi hbi' hα hβ`. Take `⟨η, hηlc, hηe⟩` from `UpperTheory.exists_isLocallyConstant_lift_to_geometric_galois (F := topF X M) η₀ hlc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : ∃ η, IsTopEta X M (topChar X M l n u) (topChar X M l n v) η`. Use `⟨η, ?_, hηlc, ?_⟩` and prove the remaining obligations. Introduce `g hg h hh`. Take `⟨g', hg'⟩` from `resGeo g hg`. Take `⟨h', hh'⟩` from `resGeo h hh`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e1` using `hηe g g' hg hg'`. Establish `e2` using `hηe h h' hh hh'`. Establish `e3` using `hηe (g * h) (g' * h') (mul_mem hg hh) fun z => by`. Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply, hg', hh']`. Rewrite using `[e1, e2, e3, hx, hy, ← kumRes _ _ hg', ← kumRes _ _ hh']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hcob g' h'`. Introduce `B g hB hI hg`. Take `⟨g', hg'⟩` from `resGeo g hg`. Rewrite using `[hηe g g' hg hg']`. Use `hin B (fun x hx => memOfInt X M B hB x hx) g' fun z hz => ?_` and prove the remaining obligations.
-
-Rewrite using `[hg']`. Conclude with `hI z hz`. Establish `hT` using `isTopEta_topEta X M hex`. Use `⟨hT, fun σ => ⟨topW (K := topL X M) (topZeta X M l n) (topChar X M l n u) (topChar X M l n v) (topEta X M (topChar X M l n u) (topChar X M l n v)) σ, ?_⟩⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.edgeClass_eq_kummerCharacter_of_chosen_root_function_field Ω (topL X M) (topBar X M) (topF X M) (l ^ n) (topZeta X M l n) hN hζ hfix (UpperTheory.algEquiv_mem_ringOfIntegers_modularTowerTop X M) aF bF _ _ haF0 hbF0 hai hai' hbi hbi' hαF hβF _ _ hx hy _ hT.1 hT.2.1 …`.
+A detailed English derivation is pending.
 -/
 private theorem topexOf [IsAlgClosure ℚ Ω] (X : Tower Ω ε) {M l n : ℕ} (hM : M ≠ 0) (hl : l ≠ 0) (hd : l ^ n ∣ M) {u v : X.K}
     (hu : u ∈ topF X M) (hv : v ∈ topF X M) (hu0 : u ≠ 0) (hv0 : v ≠ 0)
@@ -189,13 +185,11 @@ private theorem topexOf [IsAlgClosure ℚ Ω] (X : Tower Ω ε) {M l n : ℕ} (h
 end UpperTheory.Kd.L.KummerExtensionIntegrality
 
 /- English proof (translation)
-Introduce `Ω _ _ _ _ ε X l _ N _ c d gm hP x m n hm`. Establish `hl : l.Prime` using `Fact.out`. Establish `hN0 : 0 < N` using `Nat.pos_of_ne_zero (NeZero.ne N)`. Establish `hD0 : 0 < N * l ^ (m + n)` using `Nat.mul_pos hN0 (pow_pos hl.pos _)`. Take `⟨⟨hu, hu0, hv, hv0⟩, -⟩` from `UpperTheory.Kd.L.units ε X l N c d gm hP x m n hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hld : (l : ℤ) ∣ ((N * l ^ (m + n) : ℕ) : ℤ)`. Conclude with `Dvd.dvd.mul_left (dvd_pow_self l (by omega)) N` after adjusting the coercions. Establish `hlp : (l : ℤ) ∣ (l : ℤ) ^ (m + n)` using `dvd_pow_self _ (by omega)`. Establish `hlN : ¬ (l : ℤ) ∣ (N : ℤ)` using `fun h => hP.cop (Int.natCast_dvd_natCast.1 h)`. Establish `c6 : ∀ e : ℕ, Nat.Coprime e (6 * l * N) → Nat.Coprime e 6 ∧ Nat.Coprime e (N * l ^ (m + n))` using `fun e he => ⟨Nat.Coprime.coprime_dvd_right (Dvd.intro _ (by rw [mul_assoc])) he, Nat.Coprime.mul_right (Nat.Coprime.coprime_dvd_right (Dvd.intro_left _ rfl) he) (Nat.Coprime.pow_right _ (Nat.Coprime.coprime_dvd_right (Dvd.dvd.mul_right (Dvd.intro_left 6 rfl) N) he))⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `KummerExtensionIntegrality.topexOf X (NeZero.ne _) hl.ne_zero ?_ hu hv hu0 hv0 fun W hW => ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Dvd.dvd.mul_right (pow_dvd_pow l (by omega)) _`. Use `UpperTheory.valuation_siegelUnitLevel_eq_one ε X c N _ _ hP.c1 (c6 c hP.cc).1 (c6 c hP.cc).2 hN0 hD0 (fun h => hlN ?_) W hW` and prove the remaining obligations. Establish `h1` using `hld.trans h.1`. Establish `h2 : (l : ℤ) ∣ (x.val : ℤ) * (topT l (m + n) N : ℤ) * (l : ℤ) ^ (m + n)` using `Dvd.dvd.mul_left hlp _`.
-
-Conclude with `(Int.dvd_add_left h2).1 h1`. Use `UpperTheory.valuation_siegelUnitLevel_eq_one ε X d N _ _ hP.d1 (c6 d hP.dc).1 (c6 d hP.dc).2 hN0 hD0 (fun h => hlN (hld.trans h.2)) W hW` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Kd.L.topex :
     ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] [CharZero Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (N : ℕ) [NeZero N] (c d : ℕ) (gm : (ZMod l)ˣ → SL(2, ℤ)), Par l N c d gm → ∀ (x : ZMod N) (m n : ℕ), 1 ≤ m → IsTopEta X (topMu l n m N) (topChar X (topMu l n m N) l n (sgN X c N (N * l ^ (m + n)) ((N : ℤ) + (x.val : ℤ) * (topT l (m + n) N : ℤ) * (l : ℤ) ^ (m + n), 0))) (topChar X (topMu l n m N) l n (sgN X d N (N * l ^ (m + n)) ((topT l (m + n) N : ℤ) * (l : ℤ) ^ (m + n), (N : ℤ)))) (topEta X (topMu l n m N) (topChar X (topMu l n m N) l n (sgN X c N (N * l ^ (m + n)) ((N : ℤ) + (x.val : ℤ) * (topT l (m + n) N : ℤ) * (l : ℤ) ^ (m + n), 0))) (topChar X (topMu l n m N) l n (sgN X d N (N * l ^ (m + n)) ((topT l (m + n) N : ℤ) * (l : ℤ) ^ (m + n), (N : ℤ))))) ∧ ∀ σ : topGal X (topMu l n m N), ∃ w : topL X (topMu l n m N), IsTopW (K := topL X (topMu l n m N)) (topZeta X (topMu l n m N) l n) (topChar X (topMu l n m N) l n (sgN X c N (N * l ^ (m + n)) ((N : ℤ) + (x.val : ℤ) * (topT l (m + n) N : ℤ) * (l : ℤ) ^ (m + n), 0))) (topChar X (topMu l n m N) l n (sgN X d N (N * l ^ (m + n)) ((topT l (m + n) N : ℤ) * (l : ℤ) ^ (m + n), (N : ℤ)))) (topEta X (topMu l n m N) (topChar X (topMu l n m N) l n (sgN X c N (N * l ^ (m + n)) ((N : ℤ) + (x.val : ℤ) * (topT l (m + n) N : ℤ) * (l : ℤ) ^ (m + n), 0))) (topChar X (topMu l n m N) l n (sgN X d N (N * l ^ (m + n)) ((topT l (m + n) N : ℤ) * (l : ℤ) ^ (m + n), (N : ℤ))))) σ w := by

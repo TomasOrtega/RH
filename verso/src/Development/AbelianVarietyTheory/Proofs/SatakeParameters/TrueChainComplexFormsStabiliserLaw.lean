@@ -16,7 +16,7 @@ section Gen
 variable {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [NumberField K] [StarRing K] [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-Unfold `CSpan Formalism.L2.DIV.VV Formalism.GradedWeylDivisibility.tensorLat`. Use `congr 1`. Use extensionality with `p`. Simplify using `only [Set.mem_ofPred_eq, nablaSq_eq_delSq]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem cSpan_eq_VV (lam : ι → DomWeight n) : CSpan lam = Formalism.L2.DIV.VV ℂ lam := by
   unfold CSpan Formalism.L2.DIV.VV Formalism.GradedWeylDivisibility.tensorLat
@@ -26,11 +26,11 @@ theorem cSpan_eq_VV (lam : ι → DomWeight n) : CSpan lam = Formalism.L2.DIV.VV
   rfl
 
 /- English proof (translation)
-Establish `key : ∀ P : Pol ℂ ι n, fnOf (Gr emb σ n) (shiftOf lam) 1 P = evG (fun y : Fr emb σ n => y.1) (fun τ => (lam τ).detShift) (RingHom.id ℂ) P`. Introduce `P`. Use function extensionality and compare the values at `y`. Simplify using `only [fnOf, LinearMap.coe_mk, AddHom.coe_mk, Pi.one_apply, Matrix.one_mul, evG, shiftOf]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Unfold `ValC GlobalTheory.KerJ.IsVal`. Rewrite using `[Submodule.mem_map, cSpan_eq_VV]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P, hP, rfl⟩`. Conclude with `⟨P, hP, key P⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨P, hP, rfl⟩`. Conclude with `⟨P, hP, key P⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_ValC_iff_isVal (emb : ι → E →+* K) (σ : K →+* ℂ) (lam : ι → DomWeight n) (f : Fr emb σ n → ℂ) :
     f ∈ ValC (Gr emb σ n) lam ↔ GlobalTheory.KerJ.IsVal (fun y : Fr emb σ n => y.1) lam (RingHom.id ℂ) f := by
@@ -49,11 +49,11 @@ theorem mem_ValC_iff_isVal (emb : ι → E →+* K) (σ : K →+* ℂ) (lam : ι
     exact ⟨P, hP, key P⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h y y' hy`. Establish `hy' : y = frMul emb σ (S.gam b g) y'` using `Subtype.ext (funext hy)`. Establish `e` using `congrFun h y`. Rewrite `e` using `[GStep.tr, trFr_apply, hy', ← GlobalTheory.Mem.Col2.frMul_mul, inv_mul_cancel, GlobalTheory.Mem.Col2.frMul_one]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hy']`. Conclude with `e.symm`. Introduce `h`. Use function extensionality and compare the values at `y`. Rewrite using `[GStep.tr, trFr_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(h y (frMul emb σ (S.gam b g)⁻¹ y) fun τ => ?_).symm` and prove the remaining obligations. Use `show y.1 τ = _ * ((((S.gam b g)⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).map (embAt σ emb τ) * y.1 τ)`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tr_eq_iff (S : GStep E K n) (emb : ι → E →+* K) (σ : K →+* ℂ) (b : S.β) (g : S.G b) (f : Fr emb σ n → ℂ) :
     S.tr emb σ b g f = f ↔ ∀ y y' : Fr emb σ n,
@@ -76,7 +76,7 @@ theorem tr_eq_iff (S : GStep E K n) (emb : ι → E →+* K) (σ : K →+* ℂ) 
 end Gen
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use extensionality with `y`. Use `show B.host.φ₀ _ = _`. Rewrite using `[← B.embE_φ₀]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem embT_eq {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) :
     TaylorLogMetric.embT (I.rec7 l Z) = embAt B.embLL B.fields.emb := by
@@ -87,11 +87,11 @@ theorem embT_eq {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Take `⟨c, hc⟩` from `B.R.t_odd`. Establish `h : (((i * ((I.rec7 l Z).R.t + 1) / 2 : ℕ) : ℤ)) = (i : ℤ) * (((B.R.t + 1) / 2 : ℕ) : ℤ)` using `by show (((i * (B.R.t + 1) / 2 : ℕ) : ℤ)) = _`. Rewrite using `[hc, show 2 * c + 1 + 1 = 2 * (c + 1) by ring, mul_left_comm, Nat.mul_div_cancel_left _ two_pos, Nat.mul_div_cancel_left _ two_pos]`. Use `push_cast`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `show Formalism.L2.Forms.shW _ _ = GlobalTheory.Mem.Col2.shW _ _`. Unfold `Formalism.L2.Forms.shW GlobalTheory.Mem.Col2.shW`. Use `congr 1`. Use function extensionality and compare the values at `r`.
+Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hx : (((I.tw l l0 Z).fm u a).lam i τ).w r = (Examples₂.lamOf (B.hcW u τ) i).w r` using `rfl`. Rewrite using `[hx, h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lamTG_eq {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (l0 : I.Law0 l) (u : B.Word)
     (a : I.ι) (i : ℕ) : lamTG ((I.tw l l0 Z).fm u a) i = lamT (B.hcW u) i := by
@@ -112,15 +112,15 @@ theorem lamTG_eq {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC
   ring
 
 /- English proof (translation)
-Introduce `B X I _hOk _hP l Z l0 Qp O hO u a`. Establish `hfr : ∀ i, (O u a).frm i = fun y => y.1` using `fun i => funext (hO.frm u a i)`. Establish `hemb` using `embT_eq I l Z`. Establish `hlaw : ∀ i (c : (I.stp u a i).Cl) (s : (I.stp u a i).Stab c) (f : Fr B.fields.emb B.embLL (B.R.N i) → ℂ), (I.stp u a i).tr B.fields.emb B.embLL c.1 s.1 f = f ↔ GlobalTheory.KerJ.LawAt (O u a) i ((((I.stp u a i).gam c.1 s.1 : GL (Fin (B.R.N i)) B.host.E) : Matrix (Fin (B.R.N i)) ( …`. Introduce `i c s f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[tr_eq_iff]`. Unfold `GlobalTheory.KerJ.LawAt`. Simplify using `only [hfr i, hemb]`. Conclude with `Iff.rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i _ φ hφ c`. Establish `hφ' : ∀ c, φ c ∈ ValC (Gr B.fields.emb B.embLL (B.R.N i)) (lamT (B.hcW u) i) ∧ ∀ g : (I.stp u a i).Stab c, (I.stp u a i).tr B.fields.emb B.embLL c.1 g.1 (φ c) = φ c` using `hφ`. Rewrite using `[hfr i, lamTG_eq I l Z l0 u a i]`. Conclude with `(mem_ValC_iff_isVal B.fields.emb B.embLL _ (φ c)).1 (hφ' c).1`. Introduce `i _ _ φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfr i, lamTG_eq I l Z l0 u a i]`. Use `show (∀ c, φ c ∈ ValC (Gr B.fields.emb B.embLL (B.R.N i)) (lamT (B.hcW u) i) ∧ ∀ g : (I.stp u a i).Stab c, (I.stp u a i).tr B.fields.emb B.embLL c.1 g.1 (φ c) = φ c) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `hφ c`. Use `⟨(mem_ValC_iff_isVal B.fields.emb B.embLL _ (φ c)).1 (hφ c).1, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `g ⟨s, rfl⟩`. Conclude with `(hlaw i c s (φ c)).1 ((hφ c).2 s)`. Introduce `hφ c`. Use `⟨(mem_ValC_iff_isVal B.fields.emb B.embLL _ (φ c)).2 (hφ c).1, fun s => ?_⟩` and prove the remaining obligations. Conclude with `(hlaw i c s (φ c)).2 ((hφ c).2 _ ⟨s, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem formsAre_stabStd : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (l0 : I.Law0 l) (Qp : I.ι → Finset ℕ) (O : ∀ u a, GL3Theta.LiftObj (I.rec7 l Z) ((I.rec7 l Z).chTw u a)), I.StdO l Z Qp O → ∀ u a, GlobalTheory.KerJ.FormsAre ((I.tw l l0 Z).fm u a) (O u a) (GlobalTheory.Pdv.stabStd I l Z u a) := by
   intro B X I _hOk _hP l Z l0 Qp O hO u a

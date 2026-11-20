@@ -15,7 +15,7 @@ open scoped Formalism.Per
 namespace GlobalTheory.MemLoc.FitsEx
 
 /- English proof (translation)
-Use `choose g hg using h`. Conclude with `⟨{ toFun := g map_one' := hi (by rw [← hg, map_one, map_one]) map_mul' := fun x y => hi (by rw [map_mul, ← hg, ← hg, ← hg, map_mul]) map_zero' := hi (by rw [← hg, map_zero, map_zero]) map_add' := fun x y => hi (by rw [map_add, ← hg, ← hg, ← hg, map_add]) }, fun x => (hg x).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (i : B →+* C)
     (hi : Function.Injective i) (f : A →+* C) (h : ∀ x, ∃ y, f x = i y) :
@@ -30,9 +30,9 @@ theorem exists_lift {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (i : B
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `: rootT (l` using `l) AI.ε m = AI.ζ m := by`. Use `Perfection.teichmuller_spec (I := Ideal.span {(l : Per.OC l)}) fun n => ?_` and prove the remaining obligations. Use `⟨AI.ζ (m + n), ?_, by rw [zeta_pow_iter AI.ζ_succ]⟩` and prove the remaining obligations. Use `zeta_coeff_root_iterate (p := l) (O := Per.OC l) AI.ε m n` as an intermediate fact. Rewrite `this` using `[add_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(AI.ε_coeff (m + n)).symm.trans this.symm`. Rewrite using `[this]`. Conclude with `AI.ζ_eq m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eps_root {P : LocPrime l} (AI : LocAinf l P) (m : ℕ) :
     (rootT (l := l) AI.ε m : ℂ_[l]) = algebraMap (Om l) ℂ_[l] (P.ζQ m) := by
@@ -46,7 +46,7 @@ theorem eps_root {P : LocPrime l} (AI : LocAinf l P) (m : ℕ) :
   exact AI.ζ_eq m
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CrisIncl.log_unique l e he y y' h h'`.
+A detailed English derivation is pending.
 -/
 theorem isLog_unique {e : Per.Fl l} (he : e.untilt = 1) {y y' : Per.BdRp l}
     (h : Per.IsLog l e y) (h' : Per.IsLog l e y') :
@@ -54,7 +54,7 @@ theorem isLog_unique {e : Per.Fl l} (he : e.untilt = 1) {y y' : Per.BdRp l}
   GlobalTheory.CrisIncl.log_unique l e he y y' h h'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨IntermediateField.adjoin ℚ_[l] {x}, IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral x)⟩, IntermediateField.mem_adjoin_simple_self _ x⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_finExt (x : Om l) : ∃ K : FinExt l, x ∈ K.1 :=
   ⟨⟨IntermediateField.adjoin ℚ_[l] {x},
@@ -62,7 +62,7 @@ theorem exists_finExt (x : Om l) : ∃ K : FinExt l, x ∈ K.1 :=
     IntermediateField.mem_adjoin_simple_self _ x⟩
 
 /- English proof (translation)
-Take `⟨K, hK⟩` from `exists_finExt (c : Om l)`. Rewrite using `[← P.PD_ι K]`. Conclude with `(P.PD K).ι.commutes (⟨c, hK, c.2⟩ : ↥(K0 K))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_alg (P : LocPrime l) (c : ↥(MaximalUnramifiedExtension l)) :
     P.ιB (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B c) = algebraMap (Om l) P.R.BdR (c : Om l) := by
@@ -71,7 +71,7 @@ theorem iota_alg (P : LocPrime l) (c : ↥(MaximalUnramifiedExtension l)) :
   exact (P.PD K).ι.commutes (⟨c, hK, c.2⟩ : ↥(K0 K))
 
 /- English proof (translation)
-Take `⟨K, -⟩` from `exists_finExt (0 : Om l)`. Introduce `a b h`. Conclude with `(P.PD K).ι_inj (by rw [P.PD_ι, P.PD_ι, h])`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem iota_inj (P : LocPrime l) : Function.Injective P.ιB := by
   obtain ⟨K, -⟩ := exists_finExt (0 : Om l)
@@ -79,9 +79,9 @@ theorem iota_inj (P : LocPrime l) : Function.Injective P.ιB := by
   exact (P.PD K).ι_inj (by rw [P.PD_ι, P.PD_ι, h])
 
 /- English proof (translation)
-Establish `key : P.φB.comp (IsScalarTower.toAlgHom ℚ_[l] ↥(MaximalUnramifiedExtension l) P.R.B) = (IsScalarTower.toAlgHom ℚ_[l] ↥(MaximalUnramifiedExtension l) P.R.B).comp σ`. Use `IntermediateField.algHom_ext_of_eq_adjoin ℚ_[l] (S := MaximalUnramifiedExtension l) rfl fun x hx => ?_` and prove the remaining obligations. Take `⟨m, hm, hlm, hxm⟩` from `id hx`. Take `⟨xb, hxb⟩` from `exists_isTiltOf x m hm hlm hxm`. Establish `hx' : x ∈ MaximalUnramifiedExtension l` using `IntermediateField.subset_adjoin _ _ hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `AI.ιA_teich ⟨x, hx'⟩ m hm hlm hxm xb hxb`. Express the relevant statement in the definitionally equal form `P.φB (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B ⟨x, hx'⟩) = algebraMap ↥(MaximalUnramifiedExtension l) P.R.B (σ ⟨x, hx'⟩)`. Rewrite using `[hσ ⟨x, hx'⟩ m hm hlm (Subtype.ext hxm), map_pow, ← h1, ← AI.ιA_φ, ← map_pow, WittVector.frobenius_eq_map_frobenius, WittVector.map_teichmuller, frobenius_def, map_pow]`. Conclude with `DFunLike.congr_fun key c`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_alg {P : LocPrime l} (AI : LocAinf l P) (σ : ↥(MaximalUnramifiedExtension l) →ₐ[ℚ_[l]] ↥(MaximalUnramifiedExtension l))
     (hσ : ∀ (c : ↥(MaximalUnramifiedExtension l)) (m : ℕ), 0 < m → ¬ l ∣ m → c ^ m = 1 → σ c = c ^ l) (c : ↥(MaximalUnramifiedExtension l)) :
@@ -99,9 +99,9 @@ theorem phi_alg {P : LocPrime l} (AI : LocAinf l P) (σ : ↥(MaximalUnramifiedE
   exact DFunLike.congr_fun key c
 
 /- English proof (translation)
-Establish `: Nontrivial P.R.B`. Use `⟨⟨1, 0, fun h0 => one_ne_zero (AI.ιA_inj ?_)⟩⟩` and prove the remaining obligations. Rewrite using `[map_one, map_zero, h0]`. Establish `h1` using `(P.PD K).φ_K₀ x`. Rewrite `h1` using `[P.PD_φ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : c = ⟨x, x.2.2⟩` using `Subtype.ext h`. Establish `h2` using `phi_alg AI σ hσ c`. Rewrite `h2`, the goal using `[hc]`. Establish `h3 : algebraMap ↥(MaximalUnramifiedExtension l) P.R.B ⟨((P.PD K).σ x : ↥(K0 K)), ((P.PD K).σ x).2.2⟩ = _` using `h1.symm.trans h2`. Conclude with `congrArg Subtype.val ((algebraMap ↥(MaximalUnramifiedExtension l) P.R.B).injective h3)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sigma_eq {P : LocPrime l} (AI : LocAinf l P) (σ : ↥(MaximalUnramifiedExtension l) →ₐ[ℚ_[l]] ↥(MaximalUnramifiedExtension l))
     (hσ : ∀ (c : ↥(MaximalUnramifiedExtension l)) (m : ℕ), 0 < m → ¬ l ∣ m → c ^ m = 1 → σ c = c ^ l)
@@ -119,9 +119,9 @@ theorem sigma_eq {P : LocPrime l} (AI : LocAinf l P) (σ : ↥(MaximalUnramified
   exact congrArg Subtype.val ((algebraMap ↥(MaximalUnramifiedExtension l) P.R.B).injective h3)
 
 /- English proof (translation)
-Establish `h0` using `zeta_pow_iter P.ζQ_succ 0 (m + 1)`. Rewrite `h0` using `[zero_add, P.ζQ_zero]`. Establish `h1` using `zeta_pow_iter P.ζQ_succ 1 m`. Rewrite `h1` using `[add_comm]`. Use `orderOf_eq_prime_pow (x := P.ζQ (m + 1)) (p := l) (n := m) (by rw [h1]; exact P.ζQ_one) h0` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Conclude with `IsPrimitiveRoot.orderOf _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zeta_prim (P : LocPrime l) (m : ℕ) : IsPrimitiveRoot (P.ζQ (m + 1)) (l ^ (m + 1)) := by
   have h0 := zeta_pow_iter P.ζQ_succ 0 (m + 1)
@@ -133,17 +133,17 @@ theorem zeta_prim (P : LocPrime l) (m : ℕ) : IsPrimitiveRoot (P.ζQ (m + 1)) (
   exact IsPrimitiveRoot.orderOf _
 
 /- English proof (translation)
-Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `key : ∀ m : ℕ, ‖((P.χQ g : ℚ_[l]ˣ) : ℚ_[l]) - (((χ g : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l])‖ ≤ (l : ℝ) ^ (-((m + 1 : ℕ) : ℤ))`. Introduce `m`. Establish `hp` using `zeta_prim P m`. Take `⟨a, ha, hg⟩` from `P.χQ_cyc g (m + 1) _ hp.pow_eq_one`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hg` using `[hχ g (m + 1) _ hp.pow_eq_one]`. Establish `hmod : (PadicInt.toZModPow (m + 1) (χ g : ℤ_[l])).val ≡ a [MOD l ^ (m + 1)]`. Establish `hfin : IsOfFinOrder (P.ζQ (m + 1))` using `isOfFinOrder_iff_pow_eq_one.2 ⟨_, pow_pos (Fact.out : l.Prime).pos _, hp.pow_eq_one⟩`. Use `hfin.pow_eq_pow_iff_modEq.1 hg` as an intermediate fact. Rewrite `this` using `[← hp.eq_orderOf]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hk : ((a : ℤ_[l]) - (χ g : ℤ_[l])) ∈ Ideal.span {(l : ℤ_[l]) ^ (m + 1)}`. Rewrite using `[← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, ← (ZMod.natCast_eq_natCast_iff _ _ _).2 hmod]`. Establish `: NeZero (l ^ (m + 1))` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Rewrite using `[ZMod.natCast_zmod_val, sub_self]`. Establish `hn` using `(PadicInt.norm_le_pow_iff_mem_span_pow _ _).2 hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn' : ‖(a : ℚ_[l]) - (((χ g : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l])‖ ≤ (l : ℝ) ^ (-((m + 1 : ℕ) : ℤ))`. Simplify `hn` using `[PadicInt.norm_def]`. Rewrite using `[← sub_add_sub_cancel _ (a : ℚ_[l])]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha hn')`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hpos` using `norm_pos_iff.2 (sub_ne_zero.2 hne)`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hpos (inv_lt_one_of_one_lt₀ hl)`. Establish `h1` using `key n`. Rewrite `h1` using `[zpow_neg, zpow_natCast, ← inv_pow]`. Establish `h2 : (l : ℝ)⁻¹ ^ (n + 1) ≤ (l : ℝ)⁻¹ ^ n` using `pow_le_pow_of_le_one (by positivity) (inv_lt_one_of_one_lt₀ hl).le (Nat.le_succ n)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem chi_eq (P : LocPrime l) (χ : GQ l →* ℤ_[l]ˣ)
     (hχ : ∀ (g : GQ l) (m : ℕ) (x : Om l), x ^ (l ^ m) = 1 → g x = x ^ (PadicInt.toZModPow m (χ g : ℤ_[l])).val)
@@ -183,19 +183,19 @@ set_option allowUnsafeReducibility true in
 attribute [local irreducible] Per.Acris Per.Bcris
 
 /- English proof (translation)
-Introduce `l _ P AI T`. Establish `hinj` using `(BdRField.bdR_isField l).2.1`. Take `⟨o, ho⟩` from `exists_lift _ hinj (T.eD.toRingHom.comp (algebraMap (Om l) P.R.BdR)) fun x => (T.om x).imp fun _ h => h.1`. Establish `hosec : IsSec o`. Use `⟨fun x => ?_, fun z => hinj ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy, hy'⟩` from `T.om x`. Rewrite using `[← hy', hinj ((ho x).trans hy)]`. Rewrite using `[ho]`. Express the relevant statement in the definitionally equal form `T.eD (algebraMap (Om l) P.R.BdR _) = _`. Rewrite using `[← IsScalarTower.algebraMap_apply, T.zD]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.RingIface.zD_eq_alg l z`. Establish `hincl` using `T.incl`. Use `set ι := (T.eD.toRingHom.comp (P.ιB : P.R.B →+* P.R.BdR)).comp T.eB.symm.toRingHom with hι`. Establish `hιe : ∀ b : P.R.B, T.eD (P.ιB b) = ι (T.eB b)` using `fun b => by simp [hι]`. Use `clear_value ι`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨j, hj', hj0, hjb⟩` from `GlobalTheory.CrisIncl.exists_restrict l ι hincl`. Establish `hj : ∀ x, algebraMap (Per.BdRp l) (Per.BdR l) (j x) = (ι.comp (algebraMap (Per.Acris l) (Per.Bcris l))) x` using `fun x => (hj' x).symm`. Establish `hjc : IsCrisP j` using `⟨hj0, hjb⟩`. Establish `he : PreTilt.untilt (AI.ε : Per.Fl l) = 1` using `Subtype.ext (by`. Use `eps_root AI 0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[P.ζQ_zero, map_one]`. Conclude with `this)`. Take `⟨t, -, ht, -⟩` from `exists_isLogA l AI.ε he`. Take `⟨σ, hσ⟩` from `exists_frobenius_Kur l`. Take `⟨χ, hχ⟩` from `exists_cyclotomicChar l`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨{ ζ := P.ζQ, ζ_zero := P.ζQ_zero, ζ_succ := P.ζQ_succ, ζ_one := P.ζQ_one ε := AI.ε, ε_root := eps_root AI, o := o, o_sec := hosec, j := j, j_cris := hjc ι := ι, ι_j := fun x => (hj x).symm u := T.eB.toRingHom.comp (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B) ι_u := fun c = …` and prove the remaining obligations. Rewrite using `[ho]`. Conclude with `(hιe _).symm.trans (congrArg T.eD (iota_alg P c))`. Take `⟨y, hy, hy'⟩` from `T.t`. Establish `h1` using `isLog_unique he hy ((LogFun.log_fun l AI.ε t he ht).2.2.2 j hjc)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2 : T.eD (P.ιB P.tB) = T.eD (P.ιB (T.eB.symm (algebraMap (Per.Acris l) (Per.Bcris l) t)))`. Rewrite using `[hy', h1, hj, hιe, RingEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Rewrite using `[iota_inj P (T.eD.injective h2), RingEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_fits : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI),
     ∃ C : Core l, Fits T C := by

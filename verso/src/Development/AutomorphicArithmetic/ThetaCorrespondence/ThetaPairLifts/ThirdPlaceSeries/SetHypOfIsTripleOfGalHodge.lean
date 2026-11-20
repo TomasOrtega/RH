@@ -12,7 +12,7 @@ namespace GlobalTheory.SettingHypotheses
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions.BlochKatoReduction Formalism.MainNotions.BlochKatoReduction.Gen
 variable {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
 /- English proof (translation)
-Introduce `i hi` and use `have hA := (_root_.GlobalTheory.TripleLocal.adm1_adm8_selfDual_noJump_of_isTriple S (GlobalTheory.SplitFrobDense.frobDense D (GlobalTheory.Published.chebotarevDegreeOne_iff_cheb.1 hC)) hG h2 h).2.2 i hi have hT := GlobalTheory.LamTie.sum_th_empty_ne_zero D D.nd D.ntw Z hZ (Global …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem setHyp_of_isTriple_of_nonzeroIndexPlace (hC : GlobalTheory.Published.ChebotarevDegreeOne) (D : D7)
     (T : GlobalTheory.RowTie.WDTie D.nd D.naut) (C₀ : Formalism.L2.Host.CharFrame D) (S : GlobalTheory.HeightCounting.CharSide D C₀)

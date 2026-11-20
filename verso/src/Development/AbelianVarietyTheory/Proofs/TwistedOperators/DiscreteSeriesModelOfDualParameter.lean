@@ -65,21 +65,21 @@ variable {n : ℕ}
 def rv (g : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ := g.submatrix Fin.revPerm Fin.revPerm
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[rv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rv_rv (g : Matrix (Fin n) (Fin n) ℂ) : rv (rv g) = g := by
   ext i j
   simp [rv]
 
 /- English proof (translation)
-Unfold `rv`. Rewrite using `[submatrix_mul_equiv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rv_mul (g h : Matrix (Fin n) (Fin n) ℂ) : rv (g * h) = rv g * rv h := by
   unfold rv
   rw [submatrix_mul_equiv]
 
 /- English proof (translation)
-Unfold `rv`. Conclude with `submatrix_one_equiv _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rv_one : rv (1 : Matrix (Fin n) (Fin n) ℂ) = 1 := by
   unfold rv
@@ -91,7 +91,7 @@ Both sides reduce to the same expression.
 theorem rv_ct (g : Matrix (Fin n) (Fin n) ℂ) : rv gᴴ = (rv g)ᴴ := rfl
 
 /- English proof (translation)
-Unfold `rv`. Rewrite using `[submatrix_diagonal_equiv]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rv_diag (d : Fin n → ℂ) : rv (diagonal d) = diagonal fun a => d a.rev := by
   unfold rv
@@ -99,7 +99,7 @@ theorem rv_diag (d : Fin n → ℂ) : rv (diagonal d) = diagonal fun a => d a.re
   rfl
 
 /- English proof (translation)
-Unfold `rv`. Conclude with `continuous_id.matrix_submatrix _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rv_cont : Continuous (rv : Matrix (Fin n) (Fin n) ℂ → _) := by
   unfold rv
@@ -108,12 +108,12 @@ theorem rv_cont : Continuous (rv : Matrix (Fin n) (Fin n) ℂ → _) := by
 variable {ε ε' : Fin n → Bool}
 
 /- English proof (translation)
-Introduce `a` and use `by rw [he, Fin.rev_rev]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sg_symm (he : ∀ a, ε' a = ε a.rev) : ∀ a, ε a = ε' a.rev := fun a => by rw [he, Fin.rev_rev]
 
 /- English proof (translation)
-Unfold `Formalism.REAL.Jm`. Rewrite using `[rv_diag]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `[he]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rv_Jm (he : ∀ a, ε' a = ε a.rev) : rv (Formalism.REAL.Jm ε') = Formalism.REAL.Jm ε := by
   unfold Formalism.REAL.Jm
@@ -123,7 +123,7 @@ theorem rv_Jm (he : ∀ a, ε' a = ε a.rev) : rv (Formalism.REAL.Jm ε') = Form
   simp [he]
 
 /- English proof (translation)
-Establish `h0 : gᴴ * Formalism.REAL.Jm ε' * g = Formalism.REAL.Jm ε'` using `hg`. Use `show (rv g)ᴴ * Formalism.REAL.Jm ε * rv g = Formalism.REAL.Jm ε`. Rewrite using `[← rv_ct, ← rv_Jm he, ← rv_mul, ← rv_mul, h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rv_UJ (he : ∀ a, ε' a = ε a.rev) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε') : rv g ∈ UJset ε := by
   have h0 : gᴴ * Formalism.REAL.Jm ε' * g = Formalism.REAL.Jm ε' := hg
@@ -131,7 +131,7 @@ theorem rv_UJ (he : ∀ a, ε' a = ε a.rev) {g : Matrix (Fin n) (Fin n) ℂ} (h
   rw [← rv_ct, ← rv_Jm he, ← rv_mul, ← rv_mul, h0]
 
 /- English proof (translation)
-Take `⟨hu, hc⟩` from `hg`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite `hu`, the goal using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose]`. Rewrite using `[← rv_ct, ← rv_mul, hu, rv_one]`. Rewrite using `[← rv_Jm he, ← rv_mul, ← rv_mul, hc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rv_K (he : ∀ a, ε' a = ε a.rev) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.REAL.Kset ε') :
     rv g ∈ Formalism.REAL.Kset ε := by
@@ -144,23 +144,23 @@ theorem rv_K (he : ∀ a, ε' a = ε a.rev) {g : Matrix (Fin n) (Fin n) ℂ} (hg
 def nr (μ : Fin n → ℝ) : Fin n → ℝ := fun a => -μ a.rev
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[nr]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem nr_nr (μ : Fin n → ℝ) : nr (nr μ) = μ := by
   funext a
   simp [nr]
 
 /- English proof (translation)
-Apply the tactic sequence `refine Finset.card_nbij' Fin.rev Fin.rev ?_ ?_ ?_ ?_ <;> intro a ha <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem card_rev (p : Fin n → Prop) [DecidablePred p] :
     (Finset.univ.filter fun b : Fin n => p b.rev).card = (Finset.univ.filter p).card := by
   refine Finset.card_nbij' Fin.rev Fin.rev ?_ ?_ ?_ ?_ <;> intro a ha <;> simp_all
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Establish `h1` using `card_rev (fun b => a.rev < b ∧ ε b = ε a.rev)`. Establish `h2` using `card_rev (fun b => b < a.rev ∧ ε b = ε a.rev)`. Simplify using `only [Fin.rev_lt_rev] at h1 h2`. Simplify using `only [Formalism.REAL.rhoC, nr, he]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rhoC_rev (he : ∀ a, ε' a = ε a.rev) : Formalism.REAL.rhoC ε' = nr (Formalism.REAL.rhoC ε) := by
   funext a
@@ -172,9 +172,9 @@ theorem rhoC_rev (he : ∀ a, ε' a = ε a.rev) : Formalism.REAL.rhoC ε' = nr (
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Establish `h1` using `card_rev (fun b => a.rev < b ∧ ε b ≠ ε a.rev)`. Establish `h2` using `card_rev (fun b => b < a.rev ∧ ε b ≠ ε a.rev)`. Simplify using `only [Fin.rev_lt_rev] at h1 h2`. Simplify using `only [Formalism.REAL.rhoN, nr, he]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rhoN_rev (he : ∀ a, ε' a = ε a.rev) : Formalism.REAL.rhoN ε' = nr (Formalism.REAL.rhoN ε) := by
   funext a
@@ -186,7 +186,7 @@ theorem rhoN_rev (he : ∀ a, ε' a = ε a.rev) : Formalism.REAL.rhoN ε' = nr (
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [Formalism.QuantumDeterminants.lowK, rhoN_rev he, rhoC_rev he, nr, Pi.add_apply, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lowK_rev (he : ∀ a, ε' a = ε a.rev) (lam : Fin n → ℝ) :
     Formalism.QuantumDeterminants.lowK ε' (nr lam) = nr (Formalism.QuantumDeterminants.lowK ε lam) := by
@@ -195,16 +195,16 @@ theorem lowK_rev (he : ∀ a, ε' a = ε a.rev) (lam : Fin n → ℝ) :
   ring
 
 /- English proof (translation)
-Simplify using `only [vNormSq, Formalism.REAL.nsq, Formalism.REAL.dot, rhoC_rev he]`. Conclude with `Fintype.sum_equiv Fin.revPerm _ _ (fun a => by simp [nr]; ring)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vNormSq_rev (he : ∀ a, ε' a = ε a.rev) (μ : Fin n → ℝ) : vNormSq ε' (nr μ) = vNormSq ε μ := by
   simp only [vNormSq, Formalism.REAL.nsq, Formalism.REAL.dot, rhoC_rev he]
   exact Fintype.sum_equiv Fin.revPerm _ _ (fun a => by simp [nr]; ring)
 
 /- English proof (translation)
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Fintype.sum_equiv Fin.revPerm _ _ (fun b => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Fintype.sum_equiv Fin.revPerm _ _ (fun a => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Formalism.REAL.root, Pi.sub_apply, Pi.single_apply, Fin.revPerm_apply, Fin.rev_inj]`. Apply the tactic sequence `split_ifs <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sum_rev_smul_root_apply (c : Fin n → Fin n → ℕ) (x : Fin n) :
     (∑ a, ∑ b, ((c b.rev a.rev : ℕ) : ℝ) • Formalism.REAL.root a b) x =
@@ -218,11 +218,11 @@ private theorem sum_rev_smul_root_apply (c : Fin n → Fin n → ℕ) (x : Fin n
   split_ifs <;> ring
 
 /- English proof (translation)
-Take `⟨c, hc, hsum⟩` from `h`. Use `⟨fun a b => c b.rev a.rev, fun a b hab => ?_, ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hc _ _ hab`. Use `⟨Fin.rev_lt_rev.mp h1, ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[he, he, Fin.rev_rev, Fin.rev_rev]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2.symm`. Use function extensionality and compare the values at `x`. Establish `hx` using `congrFun hsum x.rev`. Rewrite using `[sum_rev_smul_root_apply c x]`. Simplify using `only [nr, Pi.sub_apply] at hx ⊢`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hx]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cdom_rev (he : ∀ a, ε' a = ε a.rev) {μ Λ : Fin n → ℝ} (h : CDom ε' μ Λ) : CDom ε (nr μ) (nr Λ) := by
   obtain ⟨c, hc, hsum⟩ := h
@@ -247,7 +247,7 @@ def rvU (he : ∀ a, ε' a = ε a.rev) : Formalism.REAL.UJ ε' ≃* Formalism.RE
   map_mul' g h := Subtype.ext (Units.ext (rv_mul _ _))
 
 /- English proof (translation)
-Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `rv_cont.comp (Units.continuous_val.comp continuous_subtype_val)`. Conclude with `rv_cont.comp (Units.continuous_coe_inv.comp continuous_subtype_val)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rvU_cont (he : ∀ a, ε' a = ε a.rev) : Continuous (rvU he) := by
   refine continuous_induced_rng.2 ?_
@@ -256,9 +256,9 @@ theorem rvU_cont (he : ∀ a, ε' a = ε a.rev) : Continuous (rvU he) := by
   · exact rv_cont.comp (Units.continuous_coe_inv.comp continuous_subtype_val)
 
 /- English proof (translation)
-Establish `hc : Continuous (rvU he)` using `rvU_cont he`. Establish `hcs : Continuous (rvU he).symm` using `rvU_cont (sg_symm he)`. Establish `: (Measure.map (rvU he) (Formalism.REAL.muG ε')).IsHaarMeasure` using `(rvU he).isHaarMeasure_map (Formalism.REAL.muG ε') hc hcs`. Establish `hmap : Measure.map (rvU he) (Formalism.REAL.muG ε') = Measure.haarScalarFactor (Measure.map (rvU he) (Formalism.REAL.muG ε')) (Formalism.REAL.muG ε) • Formalism.REAL.muG ε` using `Measure.isMulLeftInvariant_eq_smul _ _`. Use `MemLp.comp_of_map ?_ hc.measurable.aemeasurable` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hmap]`. Conclude with `hF.smul_measure ENNReal.coe_ne_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem memLp_rev (he : ∀ a, ε' a = ε a.rev) {F : Formalism.REAL.UJ ε → ℂ} (hF : MemLp F 2 (Formalism.REAL.muG ε)) :
     MemLp (F ∘ rvU he) 2 (Formalism.REAL.muG ε') := by
@@ -283,7 +283,7 @@ variable {n : ℕ} {ε ε' : Fin n → Bool} {H H' : Type} [NormedAddCommGroup H
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {σ' : Matrix (Fin n) (Fin n) ℂ → (H' →L[ℂ] H')}
 
 /- English proof (translation)
-Introduce `g v`. Apply `T.injective` to reduce the goal to its premises. Rewrite using `[T.apply_symm_apply, h, rv_rv, T.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem symm_inter (T : H' ≃ₗᵢ⋆[ℂ] H) (h : ∀ g v, T (σ' g v) = σ (rv g) (T v)) :
     ∀ g v, T.symm (σ g v) = σ' (rv g) (T.symm v) := by
@@ -292,11 +292,11 @@ theorem symm_inter (T : H' ≃ₗᵢ⋆[ℂ] H) (h : ∀ g v, T (σ' g v) = σ (
   rw [T.apply_symm_apply, h, rv_rv, T.apply_symm_apply]
 
 /- English proof (translation)
-Establish `hre : ∀ u w : H', RCLike.re ⟪T u, T w⟫_ℂ = RCLike.re ⟪u, w⟫_ℂ`. Introduce `u w`. Rewrite using `[re_inner_eq_norm_add_mul_self_sub_norm_mul_self_sub_norm_mul_self_div_two, re_inner_eq_norm_add_mul_self_sub_norm_mul_self_sub_norm_mul_self_div_two, ← map_add, T.norm_map, T.norm_map, T.norm_map]`. Establish `h1` using `hre x y`. Establish `h2` using `hre x (Complex.I • y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[LinearIsometryEquiv.map_smulₛₗ, inner_smul_right, inner_smul_right]`. Establish `s1` using `inner_re_symm (𝕜 := ℂ) y x`. Establish `s2` using `inner_im_symm (𝕜 := ℂ) y x`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [RCLike.re_to_complex] at h1 s1 ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, s1]`. Simplify using `only [RCLike.re_to_complex, RCLike.im_to_complex, Complex.conj_I, Complex.mul_re, Complex.neg_re, Complex.neg_im, Complex.I_re, Complex.I_im] at h2 s2 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem inner_conj_map (T : H' ≃ₗᵢ⋆[ℂ] H) (x y : H') : ⟪T x, T y⟫_ℂ = ⟪y, x⟫_ℂ := by
   have hre : ∀ u w : H', RCLike.re ⟪T u, T w⟫_ℂ = RCLike.re ⟪u, w⟫_ℂ := by
@@ -317,13 +317,13 @@ theorem inner_conj_map (T : H' ≃ₗᵢ⋆[ℂ] H) (x y : H') : ⟪T x, T y⟫_
     linarith
 
 /- English proof (translation)
-Introduce `θ hθ`. Establish `hK` using `rv_K (sg_symm he) hθ`. Rewrite `hK` using `[rv_diag]`. Establish `h1` using `hv (fun a => θ a.rev) hK`. Establish `h2` using `h (diagonal fun a => Complex.exp ((θ a.rev : ℂ) * Complex.I)) v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[h1, rv_diag]`. Simplify using `only [Fin.rev_rev] at h2`. Rewrite using `[← h2, LinearIsometryEquiv.map_smulₛₗ]`. Use `congr 1`. Rewrite using `[← Complex.exp_conj, map_mul, Complex.conj_ofReal, Complex.conj_I]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `hs : ∑ a, nr μ a * θ a = -∑ a, μ a * θ a.rev`. Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Fintype.sum_equiv Fin.revPerm _ _ (fun a => by simp [nr])`. Rewrite using `[hs]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem wt_transfer (he : ∀ a, ε' a = ε a.rev) (T : H' ≃ₗᵢ⋆[ℂ] H) (h : ∀ g v, T (σ' g v) = σ (rv g) (T v))
     {μ : Fin n → ℝ} {v : H'} (hv : IsWtOn (Formalism.REAL.Kset ε') σ' μ v) :
@@ -347,7 +347,7 @@ theorem wt_transfer (he : ∀ a, ε' a = ε a.rev) (T : H' ≃ₗᵢ⋆[ℂ] H) 
   ring
 
 /- English proof (translation)
-Establish `hS : S.FG` using `Module.Finite.iff_fg.mp inferInstance`. Rewrite using `[Submodule.comap_equiv_eq_map_symm]`. Conclude with `Module.Finite.iff_fg.mpr (hS.map _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_comap (T : H ≃ₗᵢ⋆[ℂ] H') (S : Submodule ℂ H') [FiniteDimensional ℂ S] :
     FiniteDimensional ℂ (S.comap (T.toLinearEquiv : H →ₗ⋆[ℂ] H')) := by
@@ -356,23 +356,21 @@ theorem finite_comap (T : H ≃ₗᵢ⋆[ℂ] H') (S : Submodule ℂ H') [Finite
   exact Module.Finite.iff_fg.mpr (hS.map _)
 
 /- English proof (translation)
-Take `⟨hfin, hst, hirr, ⟨v, hvS, hv0, hvw⟩, hdom⟩` from `hS`. Establish `hinv` using `symm_inter T h`. Use `⟨finite_comap T.symm S, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg w hw show T.symm (σ g w) ∈ S`. Rewrite using `[hinv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hst _ (rv_K (sg_symm he) hg) _ hw`. Introduce `S' hle hst'`. Establish `hst'' : IsKStableOn ε' σ' (S'.comap (T.toLinearEquiv : H' →ₗ⋆[ℂ] H))`. Introduce `g hg v hv`. Use `show T (σ' g v) ∈ S'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h]`. Conclude with `hst' _ (rv_K he hg) _ hv`. Establish `hle' : S'.comap (T.toLinearEquiv : H' →ₗ⋆[ℂ] H) ≤ S`. Introduce `v hv`. Establish `: T v ∈ S.comap (T.symm.toLinearEquiv : H →ₗ⋆[ℂ] H')` using `hle hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this`. Break down `hirr _ hle' hst'' with h0 | h0` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: T.symm w ∈ S'.comap (T.toLinearEquiv : H' →ₗ⋆[ℂ] H)` using `by show T (T.symm w) ∈ S'`. Simplify using `using hw`. Rewrite `this` using `[h0, Submodule.mem_bot]`. Rewrite using `[Submodule.mem_bot]`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `right`. Apply `le_antisymm hle` to reduce the goal to its premises. Introduce `w hw`. Establish `hw' : T.symm w ∈ S'.comap (T.toLinearEquiv : H' →ₗ⋆[ℂ] H)`. Rewrite using `[h0]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hw`. Establish `: T (T.symm w) ∈ S'` using `hw'`. Simplify using `using this`. Use `⟨T v, ?_, ?_, wt_transfer he T h hvw⟩` and prove the remaining obligations. Use `show T.symm (T v) ∈ S`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `using hvS`. Simplify using `using hv0`. Introduce `μ w hw hw0 hww`. Establish `hv'` using `wt_transfer (sg_symm he) T.symm hinv hww`. Establish `hd` using `hdom (nr μ) (T.symm w) hw (by simpa using hw0) hv'`.
-
-Use `cdom_rev he hd` as an intermediate fact. Rewrite `this` using `[nr_nr]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem ktype_transfer (he : ∀ a, ε' a = ε a.rev) (T : H' ≃ₗᵢ⋆[ℂ] H) (h : ∀ g v, T (σ' g v) = σ (rv g) (T v))
     {Λ : Fin n → ℝ} {S : Submodule ℂ H'} (hS : IsKTypeOf ε' σ' Λ S) :
@@ -423,31 +421,27 @@ theorem ktype_transfer (he : ∀ a, ε' a = ε a.rev) (T : H' ≃ₗᵢ⋆[ℂ] 
     rwa [nr_nr] at this
 
 /- English proof (translation)
-Take `⟨hcomp, hnt, ⟨⟨h1, hmul⟩, hnorm, hcont⟩, hirr, hsq, ⟨S0, hS0⟩, hmin⟩` from `hσ`. Establish `key : ∀ g v, σ' g v = T.symm (σ (rv g) (T v))` using `fun g v => by`. Rewrite using `[← h, T.symm_apply_apply]`. Establish `hinv` using `symm_inter T h`. Use `⟨?_, ?_, ⟨⟨?_, ?_⟩, ?_, ?_⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hcomp` as an intermediate fact. Conclude with `T.toIsometryEquiv.completeSpace`. Use `hnt` as an intermediate fact. Conclude with `T.toLinearEquiv.toEquiv.nontrivial`. Use extensionality with `v`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[key, rv_one, h1]`. Simplify using the standard rewrite rules. Introduce `a ha b hb`. Use extensionality with `v`. Rewrite using `[ContinuousLinearMap.comp_apply, key, key, key, rv_mul, hmul _ (rv_UJ he ha) _ (rv_UJ he hb), ContinuousLinearMap.comp_apply, T.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg v`. Rewrite using `[key, LinearIsometryEquiv.norm_map, hnorm _ (rv_UJ he hg), LinearIsometryEquiv.norm_map]`. Introduce `v`. Establish `hfun : (fun g => σ' g v) = fun g => T.symm (σ (rv g) (T v))` using `funext fun g => key g v`. Rewrite using `[hfun]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `T.symm.continuous.comp_continuousOn ((hcont (T v)).comp rv_cont.continuousOn (fun g hg => rv_UJ he hg))`. Introduce `S hcl hst`. Establish `hcl' : IsClosed ((S.comap (T.symm.toLinearEquiv : H →ₗ⋆[ℂ] H') : Submodule ℂ H) : Set H)` using `hcl.preimage T.symm.continuous`. Establish `hst' : ∀ g ∈ UJset ε, ∀ w ∈ S.comap (T.symm.toLinearEquiv : H →ₗ⋆[ℂ] H'), σ g w ∈ S.comap (T.symm.toLinearEquiv : H →ₗ⋆[ℂ] H')`. Introduce `g hg w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `show T.symm (σ g w) ∈ S`. Rewrite using `[hinv]`. Conclude with `hst _ (rv_UJ (sg_symm he) hg) _ hw`. Break down `hirr _ hcl' hst' with h0 | h0` into its components or cases. Use `left`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_bot_iff]`. Introduce `v hv`. Establish `: T v ∈ S.comap (T.symm.toLinearEquiv : H →ₗ⋆[ℂ] H')` using `by show T.symm (T v) ∈ S`. Simplify using `using hv`. Rewrite `this` using `[h0, Submodule.mem_bot]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_bot]`. Simplify using `using this`. Use `right`. Rewrite using `[eq_top_iff]`. Introduce `v _`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: T v ∈ S.comap (T.symm.toLinearEquiv : H →ₗ⋆[ℂ] H')`. Rewrite using `[h0]`. Conclude with `Submodule.mem_top`. Establish `: T.symm (T v) ∈ S` using `this`. Simplify using `using this`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Introduce `v w`. Establish `hm` using `memLp_rev he (hsq (T v) (T w))`. Establish `hfun : coefOn (ε` using `ε') σ' v w = fun g => starRingEnd ℂ ((coefOn (ε := ε) σ (T v) (T w) ∘ rvU he) g) := by`. Use function extensionality and compare the values at `g`. Simplify using `only [coefOn, Function.comp]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `conv_lhs => rw [← T.symm_apply_apply w, key]`. Rewrite using `[inner_conj_map T.symm, inner_conj_symm]`. Both sides reduce to the same expression. Rewrite using `[hfun]`. Conclude with `hm.congr_norm (Complex.continuous_conj.comp_aestronglyMeasurable hm.1) (Filter.Eventually.of_forall fun g => by simp)`.
-
-Take `hK` from `ktype_transfer (sg_symm he) T.symm hinv hS0`. Conclude with `⟨_, by rw [lowK_rev he]; exact hK⟩`. Introduce `μ S' hS'`. Establish `hK` using `ktype_transfer he T h hS'`. Establish `hle` using `hmin _ _ hK`.
-
-Rewrite using `[lowK_rev he, vNormSq_rev he, ← nr_nr μ, vNormSq_rev he]`. Conclude with `hle`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDS_transfer (he : ∀ a, ε' a = ε a.rev) (T : H' ≃ₗᵢ⋆[ℂ] H) (h : ∀ g v, T (σ' g v) = σ (rv g) (T v))
     {lam : Fin n → ℝ} (hσ : IsDS ε lam σ) : IsDS ε' (nr lam) σ' := by
@@ -522,11 +516,11 @@ theorem isDS_transfer (he : ∀ a, ε' a = ε a.rev) (T : H' ≃ₗᵢ⋆[ℂ] H
     exact hle
 
 /- English proof (translation)
-Take `⟨hanti, q, hq, hS⟩` from `h`. Use `⟨fun a b hab => ?_, fun a => -q a.rev, fun a => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [nr]`. Conclude with `neg_lt_neg (hanti (Fin.rev_lt_rev.mpr hab))`. Simplify using `[nr, hq]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS, dualPar, Finset.image_image]`. Use extensionality with `x`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and, Function.comp]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨a.rev, by simp⟩`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨a.rev, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isEnum_dual {S : SPar} {lam : Fin n → ℝ} (h : IsEnum S lam ε) :
     IsEnum (dualPar S) (nr lam) (fun a => ε a.rev) := by
@@ -545,9 +539,9 @@ theorem isEnum_dual {S : SPar} {lam : Fin n → ℝ} (h : IsEnum S lam ε) :
       exact ⟨a.rev, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[inv_submatrix_equiv]`. Establish `e1 : A.submatrix Fin.revPerm (Equiv.refl (Fin n)) * g = (A * g).submatrix Fin.revPerm (Equiv.refl (Fin n))`. Rewrite using `[← submatrix_mul_equiv A g Fin.revPerm (Equiv.refl (Fin n)) (Equiv.refl (Fin n))]`. Simplify using the standard rewrite rules. Rewrite using `[e1, submatrix_mul_equiv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `rv`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem rv_revPerm_conj_eq_conj {n : ℕ} (A g : Matrix (Fin n) (Fin n) ℂ) :
     rv (A.submatrix Fin.revPerm (Equiv.refl (Fin n)) * g * (A.submatrix Fin.revPerm (Equiv.refl (Fin n)))⁻¹) =
@@ -580,7 +574,7 @@ def conjModel {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S
     rfl
 
 /- English proof (translation)
-Introduce `D V S M`. Use `⟨conjModel M, fun τ => cj (M.H τ), fun τ g _ w => ?_⟩` and prove the remaining obligations. Simplify using `only [DSModel.rep, conjModel]`. Rewrite using `[rv_revPerm_conj_eq_conj]`. Conclude with `cj_cjOp _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conjModel : ∀ {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S), ∃ (M' : DSModel V (fun τ => dualPar (S τ))) (c : ∀ τ, M'.H τ ≃ₗᵢ⋆[ℂ] M.H τ), ∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ w, c τ (M'.rep τ g w) = M.rep τ g (c τ w) := by
   intro D V S M

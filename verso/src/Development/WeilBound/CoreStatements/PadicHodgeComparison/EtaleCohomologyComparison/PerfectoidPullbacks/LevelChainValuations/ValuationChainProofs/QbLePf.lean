@@ -16,11 +16,11 @@ namespace CrystallineSemistableComparison.Pb.Kap
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} {R : Per l K} {m : ℕ}
 
 /- English proof (translation)
-Introduce `T hT`. Take `⟨⟨h1, h2⟩, V, hV, hU⟩` from `hT`. Establish `hu : IsUnit ((l : ℕ) : T.B)`. Use `(unit_B_pf (R := R) hL).map T.i` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨u, hu'⟩` from `hu`. Use `⟨⟨h1, fun r (x : T.B) hx => ?_⟩, ⊤, Set.mem_singleton _, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((l : ℕ) : T.B) * x ∈ T.pdPow r at hx`. Express the relevant statement in the definitionally equal form `x ∈ T.pdPow r`. Establish `e : x = ((u⁻¹ : T.Bˣ) : T.B) * ((l : T.B) * x)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[← hu', ← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_left _ _ hx`. Introduce `x _`. Conclude with `Set.mem_univ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem qb_le_pf {L : Lev R m} (hL : L.Good) (M : Model l K) (s : ℕ) :
     ∀ T, QB L M s T → QA L M s (((nmB M hL).mor 0).obj T) := by

@@ -6,15 +6,15 @@ namespace GlobalTheory.BurnsideMonoid
 open scoped MonoidAlgebra
 
 /- English proof (translation)
-Establish `hscal : ∀ φ : Module.End K[G] τ.asModule, ∃ c : K, ∀ m, φ m = c • m`. Introduce `φ`. Take `⟨c, hc⟩` from `(IsSimpleModule.algebraMap_end_bijective_of_isAlgClosed (A := K[G]) (V := τ.asModule) K).2 φ`. Conclude with `⟨c, fun m => by rw [← hc]; rfl⟩`. Establish `hsurj : Function.Surjective τ.asAlgebraHom`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `f`. Set `F : Module.End (Module.End K[G] τ.asModule) τ.asModule` to `{ toFun := fun m => τ.asModuleEquiv.symm (f (τ.asModuleEquiv m)) map_add' := fun x y => by simp map_smul' := fun φ m => by`. Take `⟨c, hc⟩` from `hscal φ`. Simplify using `only [Module.End.smul_def, RingHom.id_apply, hc, map_smul] }`. Set `b` to `Module.finBasis K V`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Take `⟨r, hr⟩` from `jacobson_density F (Finset.univ.image fun i => τ.asModuleEquiv.symm (b i))`. Use `⟨r, b.ext fun i => ?_⟩` and prove the remaining obligations. Use `congrArg τ.asModuleEquiv (hr _ (Finset.mem_image_of_mem _ (Finset.mem_univ i)))` as an intermediate fact. Conclude with `this.symm`. Use `eq_top_iff.2 fun f _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨r, rfl⟩` from `hsurj f`. Proceed by induction on `r using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ (hx trivial) (hy trivial)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `single g c`. Rewrite using `[Representation.asAlgebraHom_single]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨g, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem span_range_eq_top_of_isIrreducible {G K V : Type} [Monoid G] [Field K] [IsAlgClosed K]
     [AddCommGroup V] [Module K V] [FiniteDimensional K V] (τ : Representation K G V)
@@ -49,15 +49,15 @@ theorem span_range_eq_top_of_isIrreducible {G K V : Type} [Monoid G] [Field K] [
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨g, rfl⟩)
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty ι with hι | hι` into its components or cases. Conclude with `eq_top_iff.2 fun x _ => by rw [Subsingleton.elim x 0]; exact Submodule.zero_mem _`. Set `τ : Representation K Γ (ι → K)` to `{ toFun := fun g => Matrix.toLin' (σ g) map_one' := by simp; rfl map_mul' := fun g g' => by simp [Matrix.toLin'_mul]; rfl }`. Establish `hτ : ∀ g v, τ g v = (σ g).mulVec v` using `fun g v => Matrix.toLin'_apply _ _`. Establish `hirr : τ.IsIrreducible`.
+Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnt : Nontrivial (Subrepresentation τ)`. Use `⟨⊥, ⊤, fun hbt => ?_⟩` and prove the remaining obligations. Establish `h1 : (⊥ : Submodule K (ι → K)) = ⊤` using `congrArg Subrepresentation.toSubmodule hbt`. Conclude with `bot_ne_top h1`. Use `⟨fun W => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `h W.toSubmodule (fun g v hv => by` into its components or cases. Use `W.apply_mem_toSubmodule g hv` as an intermediate fact. Rewrite using `[hτ] at this) with h1 | h1` and apply the resulting hypothesis. Conclude with `Or.inl (Subrepresentation.toSubmodule_injective h1)`. Conclude with `Or.inr (Subrepresentation.toSubmodule_injective h1)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `span_range_eq_top_of_isIrreducible τ hirr`. Establish `hm : Set.range σ = (LinearMap.toMatrix' (R` using `K) (m := ι) (n := ι)) '' Set.range τ := by`. Rewrite using `[← Set.range_comp]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(LinearMap.toMatrix'_toLin' (σ g)).symm`. Rewrite using `[hm]`. Use `Submodule.map_span (LinearMap.toMatrix' (R := K) (m := ι) (n := ι)).toLinearMap (Set.range τ)` as an intermediate fact. Rewrite `this` using `[hs, Submodule.map_top, LinearEquiv.range]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_matrix_eq_top_of_isAlgClosed {K : Type} [Field K] [IsAlgClosed K]
     {ι : Type} [Fintype ι] [DecidableEq ι] {Γ : Type} [Monoid Γ] (σ : Γ →* Matrix ι ι K)

@@ -14,7 +14,7 @@ open Polynomial UpperHalfPlane in
 open scoped MatrixGroups ModularForm in
 open scoped Manifold in
 /- English proof (translation)
-Break down `eq_or_ne p 0 with rfl | h` into its components or cases. Simplify using the standard rewrite rules. Conclude with `(natDegree_lt_iff_degree_lt h).2 (mem_degreeLT.1 hp)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem natDegree_lt_of_mem_degreeLT {w : ℕ} {p : ℂ[X]} (hp : p ∈ degreeLT ℂ (w + 1)) :
     p.natDegree < w + 1 := by
@@ -27,7 +27,7 @@ open scoped MatrixGroups ModularForm in
 open scoped Manifold in
 open Filter Topology in
 /- English proof (translation)
-Rewrite using `[eval_eq_sum_range' (natDegree_lt_of_mem_degreeLT hp)]`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `[norm_mul, norm_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem norm_eval_le_sum_of_mem_degreeLT {w : ℕ} {p : ℂ[X]} (hp : p ∈ degreeLT ℂ (w + 1))
     (x : ℂ) : ‖p.eval x‖ ≤ ∑ j ∈ Finset.range (w + 1), ‖p.coeff j‖ * ‖x‖ ^ j := by
@@ -40,11 +40,11 @@ open scoped MatrixGroups ModularForm in
 open scoped Manifold in
 open Filter Topology in
 /- English proof (translation)
-Establish `hn' : (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `hroot : ∀ k : ℕ, IsRoot (Q - C (Q.eval 0)) ((k : ℂ) * n)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih`. Establish `hk : ((k + 1 : ℕ) : ℂ) * n = (k : ℂ) * n + n` using `by push_cast; ring`. Simplify using `only [IsRoot.def, eval_sub, eval_C] at ih ⊢`. Rewrite using `[hk, hQ]`. Conclude with `ih`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinf : Set.Infinite {x | IsRoot (Q - C (Q.eval 0)) x}` using `Set.infinite_of_injective_forall_mem (f := fun k : ℕ => (k : ℂ) * n) (fun a b hab => by exact_mod_cast mul_right_cancel₀ hn' hab) hroot`. Rewrite using `[coeff_zero_eq_eval_zero]`. Conclude with `sub_eq_zero.1 (eq_zero_of_infinite_isRoot _ hinf)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_C_of_eval_add_natCast_eq {Q : ℂ[X]} {n : ℕ} (hn : 0 < n)
     (hQ : ∀ x : ℂ, Q.eval (x + n) = Q.eval x) : Q = C (Q.coeff 0) := by
@@ -69,9 +69,9 @@ open scoped MatrixGroups ModularForm in
 open scoped Manifold in
 open Filter Topology in
 /- English proof (translation)
-Establish `h1` using `((isLittleO_pow_exp_pos_mul_atTop m hc).comp_tendsto (tendsto_atTop_add_const_left atTop b tendsto_id)).tendsto_div_nhds_zero`. Establish `h2` using `h1.const_mul (Real.exp (c * b))`. Rewrite `h2` using `[mul_zero]`. Use `h2.congr fun y => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, id]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_add, Real.exp_add, neg_mul, Real.exp_neg]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 private theorem tendsto_exp_neg_mul_mul_add_pow_zero {c : ℝ} (hc : 0 < c) (b : ℝ) (m : ℕ) :
     Tendsto (fun y : ℝ => Real.exp (-c * y) * (b + y) ^ m) atTop (𝓝 0) := by
@@ -90,27 +90,25 @@ open scoped Manifold in
 open Filter Topology in
 
 /- English proof (translation)
-Introduce `w n V Q C' c hn hc hQ hV hper h`. Establish `hT : _root_.GlobalTheory.HeckeFamilyMatrices.mat (ModularGroup.T ^ (n : ℤ)) = !![1, (n : ℤ); 0, 1]`. Unfold `_root_.GlobalTheory.HeckeFamilyMatrices.mat`. Conclude with `ModularGroup.coe_T_zpow _`. Establish `htrans : ∀ (τ : ℍ) (x : ℂ), (V τ).eval x = (V (ModularGroup.T ^ (n : ℤ) • τ)).eval (x + n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ x`. Rewrite using `[← hper τ, _root_.GlobalTheory.HeckeFamilyMatrices.eval_polySlash w _ _ x (hV _) (by rw [hT]; simp), hT]`. Simplify using the standard rewrite rules. Establish `hbound : ∀ τ : ℍ, 1 ≤ τ.im → ∀ b : ℝ, 1 + ‖(τ : ℂ)‖ ≤ b → ∀ x : ℂ, ‖(V τ - Q).eval x‖ ≤ C' * Real.exp (-c * τ.im) * b ^ w * ∑ j ∈ Finset.range (w + 1), ‖x‖ ^ j`. Introduce `τ hτ b hb x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hC' : 0 ≤ C'`. Establish `h0` using `h τ hτ 0 (Nat.zero_le _)`. Establish `: 0 < Real.exp (-c * τ.im) * (1 + ‖(τ : ℂ)‖) ^ w` using `by positivity`. Use polynomial arithmetic with `[norm_nonneg ((V τ - Q).coeff 0)]`. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_eval_le_sum_of_mem_degreeLT (Submodule.sub_mem _ (hV τ) hQ) x).trans (Finset.sum_le_sum fun j hj => ?_)` and prove the remaining obligations. Establish `hj' : j ≤ w` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hj)`. Conclude with `mul_le_mul_of_nonneg_right ((h τ hτ j hj').trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) hb w) (mul_nonneg hC' (Real.exp_pos _).le))) (by positivity)`. Use `eq_C_of_eval_add_natCast_eq hn fun x => ?_` and prove the remaining obligations. Use `set M : ℝ := ∑ j ∈ Finset.range (w + 1), ‖x + n‖ ^ j + ∑ j ∈ Finset.range (w + 1), ‖x‖ ^ j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hest : ∀ y : ℝ, 1 ≤ y → ‖Q.eval (x + n) - Q.eval x‖ ≤ C' * M * (Real.exp (-c * y) * ((1 + n) + y) ^ w)`. Introduce `y hy`. Set `τ : ℍ` to `⟨(y : ℂ) * Complex.I, by simp; linarith⟩`. Establish `hτim : τ.im = y` using `by simp [τ, UpperHalfPlane.im]`. Establish `hτn : ‖(τ : ℂ)‖ = y`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[τ, abs_of_pos (show (0 : ℝ) < y by linarith)]`. Establish `hτ'c : ((ModularGroup.T ^ (n : ℤ) • τ : ℍ) : ℂ) = τ + n`. Rewrite using `[ModularGroup.coe_T_zpow_smul_eq]`. Simplify using the standard rewrite rules. Establish `hτ'im : (ModularGroup.T ^ (n : ℤ) • τ).im = y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hτim, ← UpperHalfPlane.coe_im, hτ'c, ← UpperHalfPlane.coe_im]`. Simplify using the standard rewrite rules. Establish `hτ'n : 1 + ‖((ModularGroup.T ^ (n : ℤ) • τ : ℍ) : ℂ)‖ ≤ (1 + n) + y`. Rewrite using `[hτ'c]`. Use `norm_add_le (τ : ℂ) (n : ℂ)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `this` using `[hτn, Complex.norm_natCast]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `e1` using `hbound τ (by rw [hτim]; exact hy) ((1 + n) + y) (by rw [hτn]; linarith) x`. Establish `e2` using `hbound _ (by rw [hτ'im]; exact hy) ((1 + n) + y) hτ'n (x + n)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e1` using `[hτim]`. Rewrite `e2` using `[hτ'im]`. Establish `hsplit : Q.eval (x + n) - Q.eval x = (V τ - Q).eval x - (V (ModularGroup.T ^ (n : ℤ) • τ) - Q).eval (x + n)`. Simplify using `only [eval_sub, htrans τ x]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsplit]`. Use `(norm_sub_le _ _).trans ((add_le_add e1 e2).trans (le_of_eq ?_))` and prove the remaining obligations. Simplify using `only [M]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlim` using `(tendsto_exp_neg_mul_mul_add_pow_zero hc (1 + n) w).const_mul (C' * M)`.
-
-Rewrite `hlim` using `[mul_zero]`. Establish `hle : ‖Q.eval (x + n) - Q.eval x‖ ≤ 0` using `ge_of_tendsto hlim (eventually_atTop.2 ⟨1, hest⟩)`. Conclude with `sub_eq_zero.1 (norm_le_zero_iff.1 hle)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HeckeFamilyMatrices.QConst.qconst : ∀ (w n : ℕ) (V : ℍ → ℂ[X]) (Q : ℂ[X]) (C' c : ℝ), 0 < n → 0 < c → Q ∈ degreeLT ℂ (w + 1) →
     (∀ τ, V τ ∈ degreeLT ℂ (w + 1)) →

@@ -5,9 +5,9 @@ namespace Formalism.FourierDecayAlt.P.RecText
 open Finset Real
 
 /- English proof (translation)
-Introduce `i hi`. Proceed by induction on `i, hi using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ n hn ih`. Rewrite using `[Finset.sum_Icc_succ_top (by omega), Nat.add_sub_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `: a ^ (n + 1) = a ^ n * a` using `pow_succ a n`. Establish `h0 : 0 ≤ a ^ n` using `pow_nonneg ha0 n`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem geo (a : ℝ) (ha0 : 0 ≤ a) (ha1 : a ≤ 1/2) :
     ∀ i, 1 ≤ i → ∑ t ∈ Icc 2 i, a ^ (t - 1) ≤ 2 * a - 2 * a ^ i := by
@@ -21,51 +21,49 @@ theorem geo (a : ℝ) (ha0 : 0 ≤ a) (ha1 : a ≤ 1/2) :
     nlinarith
 
 /- English proof (translation)
-Use `⟨Real.exp 9, ?_⟩` and prove the remaining obligations. Introduce `r a ε e σ ha0 ha1 hε hεa hra he hσ hrec`. Use `set lam := 1 + ε + 2 * a with hlam`. Use `set Q : ℕ → ℝ := fun k => ∏ j ∈ Icc 1 k, √(1 + e j) with hQdef`. Establish `hQsucc : ∀ k, Q (k + 1) = Q k * √(1 + e (k + 1))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k; simp only [hQdef]; rw [Finset.prod_Icc_succ_top (by omega)]`. Establish `hsq1 : ∀ j, 1 ≤ √(1 + e j)` using `fun j => by`. Rewrite using `[Real.one_le_sqrt]`. Combine the linear relations using `[he j]`. Establish `hQ0 : Q 0 = 1` using `by simp [hQdef]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQ1 : ∀ k, 1 ≤ Q k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => rw [hQ0]`. Consider the case `succ k ih => rw [hQsucc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[hsq1 (k + 1)]`. Establish `hQmono : Monotone Q`. Apply `monotone_nat_of_le_succ` to reduce the goal to its premises. Introduce `k`. Rewrite using `[hQsucc]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[hsq1 (k + 1), hQ1 k]`. Establish `hlam1 : 1 ≤ lam` using `by linarith`. Establish `hs0` using `hσ 0`. Establish `main : ∀ i, i ≤ r + 1 → σ i ≤ lam ^ i * Q i * σ 0`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `i using Nat.strong_induction_on with`. Consider the case `_ i ih`. Introduce `hir`. Break down `Nat.eq_zero_or_pos i with h0 | hpos` into its components or cases. Substitute `h0` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hQ0]`. Establish `hrec'` using `hrec i hpos hir`. Take `⟨k, rfl⟩ : ∃ k, i = k + 1` from `⟨i - 1, by omega⟩`. Establish `hk : k + 1 - 1 = k` using `by omega`. Rewrite `hrec'` using `[hk]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set M := lam ^ k * Q (k + 1) * σ 0 with hM`. Establish `hM0 : 0 ≤ M`. Use `pow_nonneg (by linarith : (0:ℝ) ≤ lam) k` as an intermediate fact. Use `hQ1 (k + 1)` as an intermediate fact. Check the signs of the components of the expression.
+Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk'` using `ih k (by omega) (by omega)`. Establish `h1 : (1 + ε) * √(1 + e (k + 1)) * σ k ≤ (1 + ε) * M`. Rewrite using `[hM, hQsucc]`. Establish `: √(1 + e (k + 1)) * σ k ≤ √(1 + e (k + 1)) * (lam ^ k * Q k * σ 0)` using `mul_le_mul_of_nonneg_left hk' (Real.sqrt_nonneg _)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : ∑ t ∈ Icc 2 (k + 1), a ^ (t - 1) * σ (k + 1 - t) ≤ ∑ t ∈ Icc 2 (k + 1), a ^ (t - 1) * M`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `t ht`. Rewrite `ht` using `[Finset.mem_Icc]`. Apply `mul_le_mul_of_nonneg_left _ (pow_nonneg ha0 _)` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `ih (k + 1 - t) (by omega) (by omega)` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[hM]`. Establish `e1 : lam ^ (k + 1 - t) ≤ lam ^ k` using `pow_le_pow_right₀ hlam1 (by omega)`. Establish `e2 : Q (k + 1 - t) ≤ Q (k + 1)` using `hQmono (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : 0 ≤ lam ^ (k + 1 - t)` using `pow_nonneg (by linarith) _`. Establish `e4 : 0 ≤ Q (k + 1 - t)` using `by linarith [hQ1 (k + 1 - t)]`. Establish `e5 : 0 ≤ lam ^ k` using `pow_nonneg (by linarith) _`. Use `mul_le_mul e1 e2 e4 e5` as an intermediate fact. Conclude with `mul_le_mul_of_nonneg_right this hs0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∑ t ∈ Icc 2 (k + 1), a ^ (t - 1) * M ≤ 2 * a * M`. Rewrite using `[← Finset.sum_mul]`. Use `geo a ha0 ha1 (k + 1) (by omega)` as an intermediate fact. Establish `: 0 ≤ a ^ (k + 1)` using `pow_nonneg ha0 _`. Apply `mul_le_mul_of_nonneg_right _ hM0` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `: lam ^ (k + 1) * Q (k + 1) * σ 0 = lam * M` using `by rw [hM]; ring`. Rewrite using `[this]`. Combine the equalities or inequalities in the displayed calculation. Establish `hfin` using `main (r + 1) le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hQsq : Q (r + 1) ^ 2 = ∏ i ∈ Icc 1 (r + 1), (1 + e i)`. Simplify using `only [hQdef]`. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Real.sq_sqrt]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear relations using `[he j]`. Establish `hP : 0 ≤ ∏ i ∈ Icc 1 (r + 1), (1 + e i)` using `by rw [← hQsq]; positivity`. Establish `hsr` using `hσ (r + 1)`. Establish `step1 : σ (r + 1) ^ 2 ≤ (lam ^ (r + 1)) ^ 2 * (∏ i ∈ Icc 1 (r + 1), (1 + e i)) * σ 0 ^ 2`. Rewrite using `[← hQsq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `pow_le_pow_left₀ hsr hfin 2` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Use `set x := ((r : ℝ) + 1) * a with hxdef`. Establish `hx0 : 0 ≤ x` using `by positivity`. Establish `hx32 : x ≤ 3 / 2` using `by rw [hxdef]; nlinarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `step2 : (lam ^ (r + 1)) ^ 2 ≤ Real.exp (6 * x)`. Rewrite using `[← pow_mul]`. Establish `h1 : lam ≤ Real.exp (ε + 2 * a)`. Use `Real.add_one_le_exp (ε + 2 * a)` as an intermediate fact. Rewrite using `[hlam]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `pow_le_pow_left₀ (by linarith) h1 ((r + 1) * 2)`. Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_nat_mul]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises.
+Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Establish `step3 : Real.exp (6 * x) ≤ 1 + Real.exp 9 * x`. Establish `ht0 : 0 ≤ 2 / 3 * x` using `by positivity`. Establish `hc` using `convexOn_exp.2 (Set.mem_univ (0:ℝ)) (Set.mem_univ (9:ℝ)) (by linarith : (0:ℝ) ≤ 1 - 2 / 3 * x) ht0 (by ring)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Simplify using `only [smul_eq_mul, mul_zero, zero_add, Real.exp_zero, mul_one] at hc`. Establish `: 6 * x = 2 / 3 * x * 9` using `by ring`. Rewrite using `[this]`. Establish `: 0 ≤ Real.exp 9` using `(Real.exp_pos 9).le`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (lam ^ (r + 1)) ^ 2 ≤ 1 + Real.exp 9 * ((r : ℝ) + 1) * a`. Use `step2.trans step3` as an intermediate fact. Rewrite `this` using `[hxdef]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `step1.trans ?_` and prove the remaining obligations.
-
-Apply `mul_le_mul_of_nonneg_right _ (sq_nonneg _)` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_right this hP`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem recT : Formalism.FourierDecayAlt.RecursionText := by
   refine ⟨Real.exp 9, ?_⟩
@@ -176,6 +174,6 @@ theorem recT : Formalism.FourierDecayAlt.RecursionText := by
 end Formalism.FourierDecayAlt.P.RecText
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.RecText.recT`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.coarseBound : Formalism.FourierDecayAlt.RecursionText := Formalism.FourierDecayAlt.P.RecText.recT

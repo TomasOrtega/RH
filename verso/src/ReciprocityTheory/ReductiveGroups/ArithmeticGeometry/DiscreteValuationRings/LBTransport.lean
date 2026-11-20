@@ -11,7 +11,7 @@ namespace ReciprocityTheory.ChartRestriction.G.DVR
 open ReciprocityTheory.ChartRestriction.G.Semi
 
 /- English proof (translation)
-Use `TopCat.Sheaf.existsUnique_gluing' Y.sheaf V W (fun i => homOfLE (hle i)) hcov f (fun i j => hf i j)` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma sec_glue {Y : Scheme.{0}} (W : Y.Opens) {ι : Type} (V : ι → Y.Opens) (hle : ∀ i, V i ≤ W)
     (hcov : W ≤ ⨆ i, V i) (f : ∀ i, Γ(Y, V i))
@@ -22,13 +22,13 @@ lemma sec_glue {Y : Scheme.{0}} (W : Y.Opens) {ι : Type} (V : ι → Y.Opens) (
   exact this
 
 /- English proof (translation)
-Establish `hv : ∀ i j, (Y.presheaf.map (homOfLE (inf_le_left : V i ⊓ V j ≤ V i)).op).hom ((u i : Γ(Y, V i))) = (Y.presheaf.map (homOfLE (inf_le_right : V i ⊓ V j ≤ V j)).op).hom ((u j : Γ(Y, V j)))` using `fun i j => congrArg Units.val (hu i j)`. Establish `hv' : ∀ i j, (Y.presheaf.map (homOfLE (inf_le_left : V i ⊓ V j ≤ V i)).op).hom (((u i)⁻¹ : Γ(Y, V i)ˣ) : Γ(Y, V i)) = (Y.presheaf.map (homOfLE (inf_le_right : V i ⊓ V j ≤ V j)).op).hom (((u j)⁻¹ : Γ(Y, V j)ˣ) : Γ(Y, V j))`. Introduce `i j`. Use `congrArg (fun x => ((x⁻¹ : Γ(Y, V i ⊓ V j)ˣ) : Γ(Y, V i ⊓ V j))) (hu i j)` as an intermediate fact. Simplify `this` using `[res]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨g, hg, -⟩` from `sec_glue W V hle hcov (fun i => (u i : Γ(Y, V i))) hv`. Take `⟨g', hg', -⟩` from `sec_glue W V hle hcov (fun i => ((u i)⁻¹ : Γ(Y, V i)ˣ)) hv'`. Establish `h1 : g * g' = 1`. Take `⟨o, -, ho⟩` from `sec_glue W V hle hcov (fun _ => 1) (fun i j => by simp)`. Establish `e1` using `ho (g * g') (fun i => by rw [map_mul, hg i, hg' i]; simp)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2` using `ho 1 (fun i => by simp)`. Rewrite using `[e1, e2]`. Use `⟨⟨g, g', h1, by rw [mul_comm]; exact h1⟩, fun i => ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `hg i`.
+A detailed English derivation is pending.
 -/
 lemma units_glue {Y : Scheme.{0}} (W : Y.Opens) {ι : Type} (V : ι → Y.Opens) (hle : ∀ i, V i ≤ W)
     (hcov : W ≤ ⨆ i, V i) (u : ∀ i, Γ(Y, V i)ˣ)
@@ -59,7 +59,7 @@ section Regroup
 open scoped Classical
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.prod_insert hi, zpow_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma zpow_fsum {ι M : Type} [CommGroup M] (a : M) (s : Finset ι) (f : ι → ℤ) :
     a ^ (∑ i ∈ s, f i) = ∏ i ∈ s, a ^ f i := by
@@ -68,13 +68,13 @@ lemma zpow_fsum {ι M : Type} [CommGroup M] (a : M) (s : Finset ι) (f : ι → 
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.prod_insert hi, zpow_add, ih]
 
 /- English proof (translation)
-Use `set S : Finset (Y ⟶ X) := Finset.univ.image φ ∪ Finset.univ.image φ'`. Establish `h1 : ∏ k, e (φ k) ^ ε k = ∏ ψ ∈ S, e ψ ^ (∑ k, if φ k = ψ then ε k else 0)`. Rewrite using `[← Finset.prod_fiberwise_of_maps_to (s := Finset.univ) (t := S) (g := φ) (fun k _ => Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_univ k)))]`. Use `Finset.prod_congr rfl fun ψ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, add_zero, zpow_fsum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr (by ext; simp) fun k hk => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 hk).2]`. Establish `h2 : ∏ k', e (φ' k') ^ ε' k' = ∏ ψ ∈ S, e ψ ^ (∑ k', if φ' k' = ψ then ε' k' else 0)`. Rewrite using `[← Finset.prod_fiberwise_of_maps_to (s := Finset.univ) (t := S) (g := φ') (fun k _ => Finset.mem_union_right _ (Finset.mem_image_of_mem _ (Finset.mem_univ k)))]`. Use `Finset.prod_congr rfl fun ψ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, add_zero, zpow_fsum]`. Use `Finset.prod_congr (by ext; simp) fun k hk => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 hk).2]`. Rewrite using `[h1, h2]`. Use `Finset.prod_congr rfl fun ψ _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hs ψ` as an intermediate fact. Apply the tactic sequence `convert congrArg (fun n => e ψ ^ n) this using 2 <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma prod_zpow_of_sameSum {X Y : Scheme.{0}} {K K' : Type} [Fintype K] [Fintype K'] {M : Type} [CommGroup M]
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ)
@@ -109,7 +109,7 @@ open scoped Classical
 variable {X Y : Scheme.{0}} (L : LB X)
 
 /- English proof (translation)
-Use `ext`. Use `show (Z.presheaf.map (𝟙 (op U))).hom x.val = x.val`. Rewrite using `[CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma res_refl' {Z : Scheme.{0}} {U : Z.Opens} (x : Γ(Z, U)ˣ) : res (le_refl U) x = x := by
   ext
@@ -121,21 +121,21 @@ def tr (V : Y.Opens) (ψ : Y ⟶ X) (a b : L.ι) : Γ(Y, V)ˣ :=
   if h : V ≤ ψ ⁻¹ᵁ (L.U a ⊓ L.U b) then res h (pullU ψ _ (L.g a b)) else 1
 
 /- English proof (translation)
-Simplify using `[tr, h]`.
+Simplify using the standard rewrite rules.
 -/
 lemma tr_def {V : Y.Opens} {ψ : Y ⟶ X} {a b : L.ι} (h : V ≤ ψ ⁻¹ᵁ (L.U a ⊓ L.U b)) :
     tr L V ψ a b = res h (pullU ψ _ (L.g a b)) := by
   simp [tr, h]
 
 /- English proof (translation)
-Rewrite using `[tr_def L h, tr_def L (hV.trans h), res_res']`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma tr_res {V V' : Y.Opens} (hV : V' ≤ V) {ψ : Y ⟶ X} {a b : L.ι} (h : V ≤ ψ ⁻¹ᵁ (L.U a ⊓ L.U b)) :
     res hV (tr L V ψ a b) = tr L V' ψ a b := by
   rw [tr_def L h, tr_def L (hV.trans h), res_res']
 
 /- English proof (translation)
-Establish `h' : V ≤ ψ ⁻¹ᵁ (L.U a ⊓ L.U a)` using `fun y hy => ⟨h hy, h hy⟩`. Rewrite using `[tr_def L h']`. Establish `e` using `res_pullU_eq ψ (le_inf le_rfl le_rfl : L.U a ≤ L.U a ⊓ L.U a) h' h (L.g a a)`. Rewrite using `[e, hL.g_self, map_one, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma tr_self (hL : L.IsLB) {V : Y.Opens} {ψ : Y ⟶ X} {a : L.ι} (h : V ≤ ψ ⁻¹ᵁ L.U a) :
     tr L V ψ a a = 1 := by
@@ -145,9 +145,9 @@ lemma tr_self (hL : L.IsLB) {V : Y.Opens} {ψ : Y ⟶ X} {a : L.ι} (h : V ≤ �
   rw [e, hL.g_self, map_one, map_one]
 
 /- English proof (translation)
-Establish `hab : V ≤ ψ ⁻¹ᵁ (L.U a ⊓ L.U b)` using `fun y hy => (h hy).1`. Establish `hbc : V ≤ ψ ⁻¹ᵁ (L.U b ⊓ L.U c)` using `fun y hy => ⟨(h hy).1.2, (h hy).2⟩`. Establish `hac : V ≤ ψ ⁻¹ᵁ (L.U a ⊓ L.U c)` using `fun y hy => ⟨(h hy).1.1, (h hy).2⟩`. Rewrite using `[tr_def L hab, tr_def L hbc, tr_def L hac]`. Establish `c1` using `hL.cocycle a b c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[res_pullU_eq ψ (inf_le_left : L.U a ⊓ L.U b ⊓ L.U c ≤ L.U a ⊓ L.U b) hab h, res_pullU_eq ψ (le_inf (inf_le_left.trans inf_le_right) inf_le_right : L.U a ⊓ L.U b ⊓ L.U c ≤ L.U b ⊓ L.U c) hbc h, res_pullU_eq ψ (le_inf (inf_le_left.trans inf_le_left) inf_le_right : L.U a ⊓ L.U b ⊓ …`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma tr_cocycle (hL : L.IsLB) {V : Y.Opens} {ψ : Y ⟶ X} {a b c : L.ι}
     (h : V ≤ ψ ⁻¹ᵁ (L.U a ⊓ L.U b ⊓ L.U c)) :
@@ -164,9 +164,9 @@ lemma tr_cocycle (hL : L.IsLB) {V : Y.Opens} {ψ : Y ⟶ X} {a b c : L.ι}
       L.U a ⊓ L.U b ⊓ L.U c ≤ L.U a ⊓ L.U c) hac h, ← map_mul, ← map_mul, c1]
 
 /- English proof (translation)
-Simplify using `only [LB.LinComb]`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hk : V ≤ φ k ⁻¹ᵁ (L.U (j k) ⊓ L.U (j₂ k))` using `fun y hy => ⟨LB.wchart_le L φ j k (h hy).1, LB.wchart_le L φ j₂ k (h hy).2⟩`. Rewrite using `[map_zpow, tr_def L hk]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `erw [res_res']`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma linComb_g_res {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ) (j j₂ : K → L.ι) {V : Y.Opens}
     (h : V ≤ LB.wchart L φ j ⊓ LB.wchart L φ j₂) :
@@ -192,9 +192,7 @@ variable {X Y : Scheme.{0}} (L : LB X) {K K' : Type} [Fintype K] [Fintype K']
 def piece (ρ : (Y ⟶ X) → L.ι) : Y.Opens := LB.wchart L φ (ρ ∘ φ) ⊓ LB.wchart L φ' (ρ ∘ φ')
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hex : ∀ ψ : Y ⟶ X, ∃ i, ψ.base y ∈ L.U i` using `fun ψ => by`. Establish `: ψ.base y ∈ (⨆ i, L.U i : X.Opens)` using `by rw [hL.cover]; trivial`. Simplify `this` using `[TopologicalSpace.Opens.mem_iSup]`. Use `choose ρ hρ using hex`.
-
-Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨ρ, hy, Set.mem_iInter.2 fun k => hρ (φ k), Set.mem_iInter.2 fun k => hρ (φ' k)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma le_iSup_piece (hL : L.IsLB) (W : Y.Opens) : W ≤ ⨆ ρ, W ⊓ piece L φ φ' ρ := by
   intro y hy
@@ -208,13 +206,13 @@ lemma le_iSup_piece (hL : L.IsLB) (W : Y.Opens) : W ≤ ⨆ ρ, W ⊓ piece L φ
 variable {L φ φ'}
 
 /- English proof (translation)
-Introduce `_ hy` and use `hy.2.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma piece_le_wchart {W : Y.Opens} {ρ : (Y ⟶ X) → L.ι} : W ⊓ piece L φ φ' ρ ≤ LB.wchart L φ (ρ ∘ φ) :=
   fun _ hy => hy.2.1
 
 /- English proof (translation)
-Introduce `_ hy` and use `⟨LB.wchart_le L φ' (ρ ∘ φ') k' (hV hy).2.2, LB.wchart_le L φ' j' k' (hV hy).1⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 lemma piece_le_tr {j' : K' → L.ι} {V : Y.Opens} {ρ : (Y ⟶ X) → L.ι} (hV : V ≤ LB.wchart L φ' j' ⊓ piece L φ φ' ρ)
     (k' : K') : V ≤ φ' k' ⁻¹ᵁ (L.U (ρ (φ' k')) ⊓ L.U (j' k')) :=
@@ -230,7 +228,7 @@ def cand (t : LB.Gen (LB.LinComb L φ ε)) (j' : K' → L.ι) (ρ : (Y ⟶ X) �
 variable {L φ ε φ' ε'}
 
 /- English proof (translation)
-Simplify using `only [cand, map_mul, map_inv, map_prod, map_zpow]`. Use `erw [res_res']`. Use `congr 2`. Conclude with `Finset.prod_congr rfl fun k' _ => by rw [tr_res L hV (piece_le_tr le_rfl k')]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma cand_res (t : LB.Gen (LB.LinComb L φ ε)) (j' : K' → L.ι) (ρ : (Y ⟶ X) → L.ι) {V : Y.Opens}
     (hV : V ≤ LB.wchart L φ' j' ⊓ piece L φ φ' ρ) :
@@ -242,11 +240,11 @@ lemma cand_res (t : LB.Gen (LB.LinComb L φ ε)) (j' : K' → L.ι) (ρ : (Y ⟶
   exact Finset.prod_congr rfl fun k' _ => by rw [tr_res L hV (piece_le_tr le_rfl k')]
 
 /- English proof (translation)
-Use `set V := (LB.wchart L φ' j' ⊓ piece L φ φ' ρ) ⊓ (LB.wchart L φ' j' ⊓ piece L φ φ' ρ₂)`. Rewrite using `[cand_res, cand_res]`. Establish `hw : V ≤ LB.wchart L φ (ρ ∘ φ) ⊓ LB.wchart L φ (ρ₂ ∘ φ)` using `fun _ hy => ⟨hy.1.2.1, hy.2.2.1⟩`. Establish `hg` using `congrArg (res hw) (ht (ρ ∘ φ) (ρ₂ ∘ φ))`. Use `erw [map_mul, res_res', res_res'] at hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hg` using `[linComb_g_res L φ ε _ _ hw]`. Use `erw [hg]`. Establish `hsum : ∏ k, tr L V (φ k) ((ρ ∘ φ) k) ((ρ₂ ∘ φ) k) ^ ε k = ∏ k', tr L V (φ' k') (ρ (φ' k')) (ρ₂ (φ' k')) ^ ε' k'` using `prod_zpow_of_sameSum φ ε φ' ε' hs (fun ψ => tr L V ψ (ρ ψ) (ρ₂ ψ))`. Rewrite using `[hsum]`. Establish `hcoc : ∀ k', tr L V (φ' k') (ρ (φ' k')) (j' k') = tr L V (φ' k') (ρ (φ' k')) (ρ₂ (φ' k')) * tr L V (φ' k') (ρ₂ (φ' k')) (j' k')` using `fun k' => (tr_cocycle L hL (fun _ hy => ⟨⟨(piece_le_tr inf_le_left k' hy).1, (piece_le_tr inf_le_right k' hy).1⟩, (piece_le_tr inf_le_left k' hy).2⟩)).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : ∏ k', tr L V (φ' k') (ρ (φ' k')) (j' k') ^ ε' k' = (∏ k', tr L V (φ' k') (ρ (φ' k')) (ρ₂ (φ' k')) ^ ε' k') * ∏ k', tr L V (φ' k') (ρ₂ (φ' k')) (j' k') ^ ε' k'`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k' _ => by rw [hcoc k', mul_zpow]`. Rewrite using `[hA, mul_inv_rev, mul_assoc, inv_mul_cancel_left]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma cand_compat (hL : L.IsLB) (hs : LB.SameSum φ ε φ' ε') (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen)
     (j' : K' → L.ι) (ρ ρ₂ : (Y ⟶ X) → L.ι) :
@@ -280,9 +278,9 @@ lemma cand_compat (hL : L.IsLB) (hs : LB.SameSum φ ε φ' ε') (t : LB.Gen (LB.
   rfl
 
 /- English proof (translation)
-Establish `hv : ∀ i j, (Y.presheaf.map (homOfLE (inf_le_left : V i ⊓ V j ≤ V i)).op).hom ((res (hle i) a : Γ(Y, V i)ˣ) : Γ(Y, V i)) = (Y.presheaf.map (homOfLE (inf_le_right : V i ⊓ V j ≤ V j)).op).hom ((res (hle j) a : Γ(Y, V j)ˣ) : Γ(Y, V j))`. Introduce `i j`. Establish `e1` using `congrArg Units.val (res_res' (hle i) (inf_le_left : V i ⊓ V j ≤ V i) a)`. Establish `e2` using `congrArg Units.val (res_res' (hle j) (inf_le_right : V i ⊓ V j ≤ V j) a)`. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe] at e1 e2 ⊢`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2]`. Take `⟨g, -, hu⟩` from `sec_glue W V hle hcov (fun i => ((res (hle i) a : Γ(Y, V i)ˣ) : Γ(Y, V i))) hv`. Establish `ea` using `hu a.val (fun i => rfl)`. Establish `eb` using `hu b.val (fun i => by rw [h i]; rfl)`. Conclude with `Units.ext (ea.trans eb.symm)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma units_ext_cover {Y : Scheme.{0}} (W : Y.Opens) {ι : Type} (V : ι → Y.Opens) (hle : ∀ i, V i ≤ W)
     (hcov : W ≤ ⨆ i, V i) (a b : Γ(Y, W)ˣ) (h : ∀ i, res (hle i) a = res (hle i) b) : a = b := by
@@ -300,25 +298,21 @@ lemma units_ext_cover {Y : Scheme.{0}} (W : Y.Opens) {ι : Type} (V : ι → Y.O
   exact Units.ext (ea.trans eb.symm)
 
 /- English proof (translation)
-Establish `glue : ∀ j' : K' → L.ι, ∃ w : Γ(Y, LB.wchart L φ' j')ˣ, ∀ ρ, res (inf_le_left : LB.wchart L φ' j' ⊓ piece L φ φ' ρ ≤ _) w = cand L φ ε φ' ε' t j' ρ` using `fun j' => units_glue (LB.wchart L φ' j') (fun ρ => LB.wchart L φ' j' ⊓ piece L φ φ' ρ) (fun _ => inf_le_left) (le_iSup_piece L φ φ' hL _) (cand L φ ε φ' ε' t j') (fun ρ ρ₂ => cand_compat hL hs t ht j' ρ ρ₂)`. Use `choose w hw using glue`. Establish `hwV : ∀ (j' : K' → L.ι) (ρ : (Y ⟶ X) → L.ι) {V : Y.Opens} (hV : V ≤ LB.wchart L φ' j' ⊓ piece L φ φ' ρ), res (hV.trans inf_le_left) (w j') = (∏ k', tr L V (φ' k') (ρ (φ' k')) (j' k') ^ ε' k')⁻¹ * res (hV.trans piece_le_wchart) (t.s (ρ ∘ φ))`. Introduce `j' ρ V hV`. Rewrite using `[← res_res' (inf_le_left : LB.wchart L φ' j' ⊓ piece L φ φ' ρ ≤ _) hV, hw j' ρ, cand_res]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨w⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `(i : K' → L.ι) (j : K' → L.ι)`. Use `show res _ (w i) = _ * res _ (w j)`. Apply `units_ext_cover _ (fun ρ => (LB.wchart L φ' i ⊓ LB.wchart L φ' j) ⊓ piece L φ φ' ρ) (fun _ => inf_le_left) (le_iSup_piece L φ φ' hL _)` to reduce the goal to its premises. Introduce `ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVi : (LB.wchart L φ' i ⊓ LB.wchart L φ' j) ⊓ piece L φ φ' ρ ≤ LB.wchart L φ' i ⊓ piece L φ φ' ρ` using `fun _ hy => ⟨hy.1.1, hy.2⟩`. Establish `hVj : (LB.wchart L φ' i ⊓ LB.wchart L φ' j) ⊓ piece L φ φ' ρ ≤ LB.wchart L φ' j ⊓ piece L φ φ' ρ` using `fun _ hy => ⟨hy.1.2, hy.2⟩`. Use `erw [map_mul, res_res', res_res']`. Establish `hV12 : (LB.wchart L φ' i ⊓ LB.wchart L φ' j) ⊓ piece L φ φ' ρ ≤ LB.wchart L φ' i ⊓ LB.wchart L φ' j` using `fun _ hy => hy.1`. Use `erw [hwV i ρ hVi, hwV j ρ hVj, linComb_g_res L φ' ε' i j hV12]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hcoc : ∀ k', tr L ((LB.wchart L φ' i ⊓ LB.wchart L φ' j) ⊓ piece L φ φ' ρ) (φ' k') (ρ (φ' k')) (j k') = tr L _ (φ' k') (ρ (φ' k')) (i k') * tr L _ (φ' k') (i k') (j k')` using `fun k' => (tr_cocycle L hL (fun _ hy => ⟨⟨(piece_le_tr hVi k' hy).1, (piece_le_tr hVi k' hy).2⟩, (piece_le_tr hVj k' hy).2⟩)).symm`. Establish `hA : ∏ k', tr L ((LB.wchart L φ' i ⊓ LB.wchart L φ' j) ⊓ piece L φ φ' ρ) (φ' k') (ρ (φ' k')) (j k') ^ ε' k' = (∏ k', tr L _ (φ' k') (ρ (φ' k')) (i k') ^ ε' k') * ∏ k', tr L _ (φ' k') (i k') (j k') ^ ε' k'`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k' _ => by rw [hcoc k', mul_zpow]`. Rewrite using `[hA, mul_inv_rev, ← mul_assoc, mul_inv_cancel_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j j' hj hj' hjj'`. Apply `units_ext_cover _ (fun ρ => (LB.wchart L φ j ⊓ LB.wchart L φ' j') ⊓ piece L φ φ' ρ) (fun _ => inf_le_left) (le_iSup_piece L φ φ' hL _)` to reduce the goal to its premises. Introduce `ρ`. Use `set O := (LB.wchart L φ j ⊓ LB.wchart L φ' j') ⊓ piece L φ φ' ρ`. Establish `hO' : O ≤ LB.wchart L φ' j' ⊓ piece L φ φ' ρ` using `fun _ hy => ⟨hy.1.2, hy.2⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hOw : O ≤ LB.wchart L φ (ρ ∘ φ) ⊓ LB.wchart L φ j` using `fun _ hy => ⟨hy.2.1, hy.1.1⟩`. Use `erw [res_res', res_res', hwV j' ρ hO']`. Establish `hg` using `congrArg (res hOw) (ht (ρ ∘ φ) j)`. Use `erw [map_mul, res_res', res_res'] at hg`. Rewrite `hg` using `[linComb_g_res L φ ε _ _ hOw]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `erw [hg]`. Set `σ : (Y ⟶ X) → L.ι` to `fun ψ => if h : ∃ k', φ' k' = ψ then j' h.choose else if h₂ : ∃ k, φ k = ψ then j h₂.choose else ρ ψ`. Establish `hσ : ∀ k, σ (φ k) = j k`. Introduce `k`. Simplify using `only [σ]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `split_ifs with h h₂`. Conclude with `(hjj' k h.choose h.choose_spec.symm).symm`. Conclude with `hj _ _ h₂.choose_spec`. Conclude with `absurd ⟨k, rfl⟩ h₂`. Establish `hσ' : ∀ k', σ (φ' k') = j' k'`.
-
-Introduce `k'`. Simplify using `only [σ]`. Rewrite using `[dif_pos ⟨k', rfl⟩]`. Conclude with `hj' _ _ (⟨k', rfl⟩ : ∃ k₀, φ' k₀ = φ' k').choose_spec`. Establish `hsum : ∏ k, tr L O (φ k) ((ρ ∘ φ) k) (j k) ^ ε k = ∏ k', tr L O (φ' k') (ρ (φ' k')) (j' k') ^ ε' k'`.
-
-Use `prod_zpow_of_sameSum φ ε φ' ε' hs (fun ψ => tr L O ψ (ρ ψ) (σ ψ))` as an intermediate fact. Simplify using `only [hσ, hσ'] at this`. Conclude with `this`. Rewrite using `[hsum, inv_mul_cancel_left]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem gen_transport (hL : L.IsLB) (hs : LB.SameSum φ ε φ' ε') (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) :
     ∃ t' : LB.Gen (LB.LinComb L φ' ε'), t'.IsGen ∧ LB.Gen.Corr L φ ε φ' ε' t t' := by
@@ -405,7 +399,7 @@ abbrev rs {Z : Scheme.{0}} {U V : Z.Opens} (h : V ≤ U) (x : Γ(Z, U)) : Γ(Z, 
   (Z.presheaf.map (homOfLE h).op).hom x
 
 /- English proof (translation)
-Simplify using `only [rs]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma rs_rs {Z : Scheme.{0}} {U W V : Z.Opens} (h : W ≤ U) (h' : V ≤ W) (x : Γ(Z, U)) :
     rs h' (rs h x) = rs (h'.trans h) x := by
@@ -420,13 +414,13 @@ lemma rs_units {Z : Scheme.{0}} {U V : Z.Opens} (h : V ≤ U) (x : Γ(Z, U)ˣ) :
     rs h (x : Γ(Z, U)) = ((res h x : Γ(Z, V)ˣ) : Γ(Z, V)) := rfl
 
 /- English proof (translation)
-The claim follows from `map_mul _ x y`.
+A detailed English derivation is pending.
 -/
 lemma rs_mul {Z : Scheme.{0}} {U V : Z.Opens} (h : V ≤ U) (x y : Γ(Z, U)) :
     rs h (x * y) = rs h x * rs h y := map_mul _ x y
 
 /- English proof (translation)
-Take `⟨g, -, hu⟩` from `sec_glue W V hle hcov (fun i => rs (hle i) a) (fun i j => by`. Simplify using `only [rs_rs])`. Conclude with `(hu a (fun i => rfl)).trans (hu b (fun i => (h i).symm)).symm`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma sec_ext_cover {Y : Scheme.{0}} (W : Y.Opens) {ι : Type} (V : ι → Y.Opens) (hle : ∀ i, V i ≤ W)
     (hcov : W ≤ ⨆ i, V i) (a b : Γ(Y, W)) (h : ∀ i, rs (hle i) a = rs (hle i) b) : a = b := by
@@ -440,9 +434,9 @@ def candS (s : LB.Sec (LB.LinComb L φ ε)) (j' : K' → L.ι) (ρ : (Y ⟶ X) �
     Γ(Y, LB.wchart L φ' j' ⊓ piece L φ φ' ρ)ˣ) : Γ(Y, _)) * rs piece_le_wchart (s.f (ρ ∘ φ))
 
 /- English proof (translation)
-Unfold `candS`. Rewrite using `[rs_mul, rs_units]`. Use `congr 1`. Use `congr 1`. Simplify using `only [map_inv, map_prod, map_zpow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Conclude with `Finset.prod_congr rfl fun k' _ => by rw [tr_res L hV (piece_le_tr le_rfl k')]`. Conclude with `rs_rs _ _ _`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma candS_rs (s : LB.Sec (LB.LinComb L φ ε)) (j' : K' → L.ι) (ρ : (Y ⟶ X) → L.ι) {V : Y.Opens}
     (hV : V ≤ LB.wchart L φ' j' ⊓ piece L φ φ' ρ) :
@@ -459,7 +453,7 @@ lemma candS_rs (s : LB.Sec (LB.LinComb L φ ε)) (j' : K' → L.ι) (ρ : (Y ⟶
   · exact rs_rs _ _ _
 
 /- English proof (translation)
-Establish `h' : V ≤ (LB.LinComb L φ ε).U j ⊓ (LB.LinComb L φ ε).U j₂` using `h`. Establish `e : rs h' (rs (inf_le_left : (LB.LinComb L φ ε).U j ⊓ (LB.LinComb L φ ε).U j₂ ≤ _) (s.f j)) = rs h' ((((LB.LinComb L φ ε).g j j₂ : Γ(Y, (LB.LinComb L φ ε).U j ⊓ (LB.LinComb L φ ε).U j₂)ˣ) : Γ(Y, (LB.LinComb L φ ε).U j ⊓ (LB.LinComb L φ ε).U j₂)) * rs (inf_le_right : (LB.LinComb L …` using `congrArg (rs h') (s.compat j j₂)`. Rewrite `e` using `[rs_rs, rs_mul, rs_rs, rs_units]`. Use `erw [linComb_g_res L φ ε j j₂ h] at e`. Conclude with `e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sec_compat_rs (s : LB.Sec (LB.LinComb L φ ε)) (j j₂ : K → L.ι) {V : Y.Opens}
     (h : V ≤ LB.wchart L φ j ⊓ LB.wchart L φ j₂) :
@@ -476,11 +470,9 @@ lemma sec_compat_rs (s : LB.Sec (LB.LinComb L φ ε)) (j j₂ : K → L.ι) {V :
   exact e
 
 /- English proof (translation)
-Use `set V := (LB.wchart L φ' j' ⊓ piece L φ φ' ρ) ⊓ (LB.wchart L φ' j' ⊓ piece L φ φ' ρ₂)`. Rewrite using `[candS_rs, candS_rs]`. Establish `hw : V ≤ LB.wchart L φ (ρ ∘ φ) ⊓ LB.wchart L φ (ρ₂ ∘ φ)` using `fun _ hy => ⟨hy.1.2.1, hy.2.2.1⟩`. Establish `hg` using `sec_compat_rs s (ρ ∘ φ) (ρ₂ ∘ φ) hw`. Use `erw [hg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∏ k, tr L V (φ k) ((ρ ∘ φ) k) ((ρ₂ ∘ φ) k) ^ ε k = ∏ k', tr L V (φ' k') (ρ (φ' k')) (ρ₂ (φ' k')) ^ ε' k'` using `prod_zpow_of_sameSum φ ε φ' ε' hs (fun ψ => tr L V ψ (ρ ψ) (ρ₂ ψ))`. Rewrite using `[hsum]`. Establish `hcoc : ∀ k', tr L V (φ' k') (ρ (φ' k')) (j' k') = tr L V (φ' k') (ρ (φ' k')) (ρ₂ (φ' k')) * tr L V (φ' k') (ρ₂ (φ' k')) (j' k')` using `fun k' => (tr_cocycle L hL (fun _ hy => ⟨⟨(piece_le_tr inf_le_left k' hy).1, (piece_le_tr inf_le_right k' hy).1⟩, (piece_le_tr inf_le_left k' hy).2⟩)).symm`. Establish `hA : ∏ k', tr L V (φ' k') (ρ (φ' k')) (j' k') ^ ε' k' = (∏ k', tr L V (φ' k') (ρ (φ' k')) (ρ₂ (φ' k')) ^ ε' k') * ∏ k', tr L V (φ' k') (ρ₂ (φ' k')) (j' k') ^ ε' k'`. Rewrite using `[← Finset.prod_mul_distrib]`.
-
-Conclude with `Finset.prod_congr rfl fun k' _ => by rw [hcoc k', mul_zpow]`. Rewrite using `[hA, mul_inv_rev, ← mul_assoc, ← Units.val_mul, mul_assoc, inv_mul_cancel, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma candS_compat (hL : L.IsLB) (hs : LB.SameSum φ ε φ' ε') (s : LB.Sec (LB.LinComb L φ ε))
     (j' : K' → L.ι) (ρ ρ₂ : (Y ⟶ X) → L.ι) :
@@ -509,25 +501,19 @@ lemma candS_compat (hL : L.IsLB) (hs : LB.SameSum φ ε φ' ε') (s : LB.Sec (LB
   rw [hA, mul_inv_rev, ← mul_assoc, ← Units.val_mul, mul_assoc, inv_mul_cancel, mul_one]
 
 /- English proof (translation)
-Establish `glue : ∀ j' : K' → L.ι, ∃ w : Γ(Y, LB.wchart L φ' j'), ∀ ρ, rs (inf_le_left : LB.wchart L φ' j' ⊓ piece L φ φ' ρ ≤ _) w = candS (φ'` using `φ') (ε' := ε') s j' ρ := fun j' => (sec_glue (LB.wchart L φ' j') (fun ρ => LB.wchart L φ' j' ⊓ piece L φ φ' ρ) (fun _ => inf_le_left) (le_iSup_piece L φ φ' hL _) (candS (φ' := φ') (ε' := ε') s j') (fun ρ ρ₂ => candS_compat hL hs s j' ρ ρ₂)).exists`. Use `choose w hw using glue`. Establish `hwV : ∀ (j' : K' → L.ι) (ρ : (Y ⟶ X) → L.ι) {V : Y.Opens} (hV : V ≤ LB.wchart L φ' j' ⊓ piece L φ φ' ρ), rs (hV.trans inf_le_left) (w j') = (((∏ k', tr L V (φ' k') (ρ (φ' k')) (j' k') ^ ε' k')⁻¹ : Γ(Y, V)ˣ) : Γ(Y, V)) * rs (hV.trans piece_le_wchart) (s.f (ρ ∘ φ))`. Introduce `j' ρ V hV`. Rewrite using `[← rs_rs (inf_le_left : LB.wchart L φ' j' ⊓ piece L φ φ' ρ ≤ _) hV, hw j' ρ, candS_rs]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨w, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `(i : K' → L.ι) (j : K' → L.ι) show rs _ (w i) = _ * rs _ (w j)`. Apply `sec_ext_cover _ (fun ρ => (LB.wchart L φ' i ⊓ LB.wchart L φ' j) ⊓ piece L φ φ' ρ) (fun _ => inf_le_left) (le_iSup_piece L φ φ' hL _)` to reduce the goal to its premises. Introduce `ρ`. Establish `hVi : (LB.wchart L φ' i ⊓ LB.wchart L φ' j) ⊓ piece L φ φ' ρ ≤ LB.wchart L φ' i ⊓ piece L φ φ' ρ` using `fun _ hy => ⟨hy.1.1, hy.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVj : (LB.wchart L φ' i ⊓ LB.wchart L φ' j) ⊓ piece L φ φ' ρ ≤ LB.wchart L φ' j ⊓ piece L φ φ' ρ` using `fun _ hy => ⟨hy.1.2, hy.2⟩`. Establish `hV12 : (LB.wchart L φ' i ⊓ LB.wchart L φ' j) ⊓ piece L φ φ' ρ ≤ LB.wchart L φ' i ⊓ LB.wchart L φ' j` using `fun _ hy => hy.1`. Use `erw [rs_mul, rs_rs, rs_rs, rs_units]`. Use `erw [hwV i ρ hVi, hwV j ρ hVj, linComb_g_res L φ' ε' i j hV12]`. Establish `hcoc : ∀ k', tr L ((LB.wchart L φ' i ⊓ LB.wchart L φ' j) ⊓ piece L φ φ' ρ) (φ' k') (ρ (φ' k')) (j k') = tr L _ (φ' k') (ρ (φ' k')) (i k') * tr L _ (φ' k') (i k') (j k')` using `fun k' => (tr_cocycle L hL (fun _ hy => ⟨⟨(piece_le_tr hVi k' hy).1, (piece_le_tr hVi k' hy).2⟩, (piece_le_tr hVj k' hy).2⟩)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : ∏ k', tr L ((LB.wchart L φ' i ⊓ LB.wchart L φ' j) ⊓ piece L φ φ' ρ) (φ' k') (ρ (φ' k')) (j k') ^ ε' k' = (∏ k', tr L _ (φ' k') (ρ (φ' k')) (i k') ^ ε' k') * ∏ k', tr L _ (φ' k') (i k') (j k') ^ ε' k'`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k' _ => by rw [hcoc k', mul_zpow]`. Rewrite using `[hA, mul_inv_rev, ← mul_assoc, ← Units.val_mul, ← mul_assoc, mul_inv_cancel, one_mul]`. Introduce `j j' hj hj' hjj'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `sec_ext_cover _ (fun ρ => (LB.wchart L φ j ⊓ LB.wchart L φ' j') ⊓ piece L φ φ' ρ) (fun _ => inf_le_left) (le_iSup_piece L φ φ' hL _)` to reduce the goal to its premises. Introduce `ρ`. Use `set O := (LB.wchart L φ j ⊓ LB.wchart L φ' j') ⊓ piece L φ φ' ρ`. Establish `hO' : O ≤ LB.wchart L φ' j' ⊓ piece L φ φ' ρ` using `fun _ hy => ⟨hy.1.2, hy.2⟩`. Establish `hOw : O ≤ LB.wchart L φ (ρ ∘ φ) ⊓ LB.wchart L φ j` using `fun _ hy => ⟨hy.2.1, hy.1.1⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `erw [rs_rs, rs_rs, hwV j' ρ hO']`. Establish `hg` using `sec_compat_rs s (ρ ∘ φ) j hOw`. Use `erw [hg]`. Set `σ : (Y ⟶ X) → L.ι` to `fun ψ => if h : ∃ k', φ' k' = ψ then j' h.choose else if h₂ : ∃ k, φ k = ψ then j h₂.choose else ρ ψ`. Establish `hσ : ∀ k, σ (φ k) = j k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Simplify using `only [σ]`. Use `split_ifs with h h₂`. Conclude with `(hjj' k h.choose h.choose_spec.symm).symm`. Conclude with `hj _ _ h₂.choose_spec`.
-
-Conclude with `absurd ⟨k, rfl⟩ h₂`. Establish `hσ' : ∀ k', σ (φ' k') = j' k'`. Introduce `k'`. Simplify using `only [σ]`. Rewrite using `[dif_pos ⟨k', rfl⟩]`.
-
-Conclude with `hj' _ _ (⟨k', rfl⟩ : ∃ k₀, φ' k₀ = φ' k').choose_spec`. Establish `hsum : ∏ k, tr L O (φ k) ((ρ ∘ φ) k) (j k) ^ ε k = ∏ k', tr L O (φ' k') (ρ (φ' k')) (j' k') ^ ε' k'`. Use `prod_zpow_of_sameSum φ ε φ' ε' hs (fun ψ => tr L O ψ (ρ ψ) (σ ψ))` as an intermediate fact. Simplify using `only [hσ, hσ'] at this`. Conclude with `this`.
-
-Rewrite using `[hsum, ← mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_transport (hL : L.IsLB) (hs : LB.SameSum φ ε φ' ε') (s : LB.Sec (LB.LinComb L φ ε)) :
     ∃ s' : LB.Sec (LB.LinComb L φ' ε'), ∀ (j : K → L.ι) (j' : K' → L.ι), LB.Coh L φ j → LB.Coh L φ' j' →
@@ -610,16 +596,16 @@ variable {X Y : Scheme.{0}} {K K' : Type} [Fintype K] [Fintype K']
 def fsum (φ : K → (Y ⟶ X)) (ε : K → ℤ) : (Y ⟶ X) →₀ ℤ := ∑ k, Finsupp.single (φ k) (ε k)
 
 /- English proof (translation)
-Simplify using `only [fsum, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma fsum_apply (φ : K → (Y ⟶ X)) (ε : K → ℤ) (ψ : Y ⟶ X) :
     fsum φ ε ψ = ∑ k, if φ k = ψ then ε k else 0 := by
   simp only [fsum, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.single_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `ψ`. Rewrite using `[fsum_apply, fsum_apply]`. Apply the tactic sequence `convert h ψ using 2 <;> simp`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `h ψ`. Use `congrArg (fun f => f ψ) h` as an intermediate fact. Simplify using `only [fsum_apply] at this`. Apply the tactic sequence `convert this using 2 <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sameSum_iff_fsum (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ) :
     LB.SameSum φ ε φ' ε' ↔ fsum φ ε = fsum φ' ε' := by
@@ -634,33 +620,33 @@ lemma sameSum_iff_fsum (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y 
     convert this using 2 <;> simp
 
 /- English proof (translation)
-Simplify using `[fsum, Fintype.sum_sum_type]`.
+Simplify using the standard rewrite rules.
 -/
 lemma fsum_sumElim {K₂ : Type} [Fintype K₂] (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ₂ : K₂ → (Y ⟶ X)) (ε₂ : K₂ → ℤ) :
     fsum (Sum.elim φ φ₂) (Sum.elim ε ε₂) = fsum φ ε + fsum φ₂ ε₂ := by
   simp [fsum, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Simplify using `[fsum, Finsupp.single_neg]`.
+Simplify using the standard rewrite rules.
 -/
 lemma fsum_neg (φ : K → (Y ⟶ X)) (ε : K → ℤ) : fsum φ (fun k => - ε k) = - fsum φ ε := by
   simp [fsum, Finsupp.single_neg]
 
 /- English proof (translation)
-Simplify using `[fsum, Finset.smul_sum, Finsupp.smul_single]`.
+Simplify using the standard rewrite rules.
 -/
 lemma fsum_smul (φ : K → (Y ⟶ X)) (ε : K → ℤ) (n : ℤ) : fsum φ (fun k => n * ε k) = n • fsum φ ε := by
   simp [fsum, Finset.smul_sum, Finsupp.smul_single]
 
 /- English proof (translation)
-Simplify using `[fsum, Finsupp.mapDomain_finset_sum, Finsupp.mapDomain_single]`.
+Simplify using the standard rewrite rules.
 -/
 lemma fsum_comp (φ : K → (Y ⟶ X)) (ε : K → ℤ) {Z : Scheme.{0}} (h : Z ⟶ Y) :
     fsum (fun k => h ≫ φ k) ε = Finsupp.mapDomain (fun ψ => h ≫ ψ) (fsum φ ε) := by
   simp [fsum, Finsupp.mapDomain_finset_sum, Finsupp.mapDomain_single]
 
 /- English proof (translation)
-Simplify using `[fsum]`.
+Simplify using the standard rewrite rules.
 -/
 lemma fsum_empty : fsum (Y := Y) (X := X) (K := PEmpty) PEmpty.elim PEmpty.elim = 0 := by
   simp [fsum]

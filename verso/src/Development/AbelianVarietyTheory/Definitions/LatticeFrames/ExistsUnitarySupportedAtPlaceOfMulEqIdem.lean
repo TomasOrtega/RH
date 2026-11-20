@@ -106,9 +106,9 @@ def Frame.ofFinPl {q : GlobalTheory.FinPl.SplitPt D k} {S : HSp D} {n : Type} [F
     (F : GlobalTheory.FinPl.Frame q S n) : Frame k S.rank n := ⟨F.b, F.b', F.bb', F.b'b⟩
 
 /- English proof (translation)
-Establish `key : ∀ x, q.sec ((Place.ofSplitPt q).xi * x) = incA D D.host.xi0 * q.sec x` using `fun x => by`. Express the relevant statement in the definitionally equal form `q.sec (q.pr (incA D D.host.xi0) * x) = _`. Establish `h1 : q.e * q.sec x = q.sec x` using `by rw [← q.sec_pr, q.pr_sec]`. Use `conv_lhs => rw [← q.pr_sec x, ← RingHom.map_mul, q.sec_pr, mul_left_comm, h1]`. Use `forall_congr' fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Circle.ext_iff, hχ, key]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Place.isChar_ofSplitPt (q : GlobalTheory.FinPl.SplitPt D k) {ψ : AddChar (AF D.host.F) ℂ} {χ ψk : AddChar k Circle}
     (hχ : q.IsChar ψ χ) : (Place.ofSplitPt q).IsChar ψ ψk ↔ ∀ x, ψk x = χ ((Place.ofSplitPt q).xi * x) := by
@@ -128,14 +128,14 @@ theorem Place.down_ofSplitPt {q : GlobalTheory.FinPl.SplitPt D k} {S T : HSp D} 
     (Place.ofSplitPt q).down (Frame.ofFinPl α) (Frame.ofFinPl β) t = GlobalTheory.FinPl.rd α β t := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨F.gl_supp g, F.gl_mat g⟩`.
+Supply the required witnesses or components.
 -/
 theorem Place.isLoc_ofSplitPt {q : GlobalTheory.FinPl.SplitPt D k} {S : HSp D} {n : Type} [Fintype n] [DecidableEq n]
     (F : GlobalTheory.FinPl.Frame q S n) (g : GL n k) : (Place.ofSplitPt q).IsLoc (Frame.ofFinPl F) (F.gl g) g :=
   ⟨F.gl_supp g, F.gl_mat g⟩
 
 /- English proof (translation)
-Use `⟨by simpa using h.2.2.1 0 0 rfl r, h.2.2.2.1 1 rfl r, ?_⟩` and prove the remaining obligations. Rewrite using `[h.2.2.2.2 0 2 rfl r]`. Simplify using `[neg_div]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example {n : Type} [Fintype n] [DecidableEq n] (B : BesLev D 1) (s : k) (FA : Frame k B.A.rank n)
     (F : Frame k B.V.rank (n ⊕ Fin 3)) (h : p.IsBesFrame B s FA F) (r) :
@@ -146,7 +146,7 @@ example {n : Type} [Fintype n] [DecidableEq n] (B : BesLev D 1) (s : k) (FA : Fr
   simp [neg_div]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simpa using h.2.2.1 0 0 rfl r, by simpa using h.2.2.2 0 1 rfl r⟩`.
+Supply the required witnesses or components.
 -/
 example {n : Type} [Fintype n] [DecidableEq n] (J : JacLev D 1) (s hh : k) (F₀ : Frame k J.W₀.rank n)
     (F : Frame k J.W.rank (n ⊕ Fin 2)) (h : p.IsJacFrame J s hh F₀ F) (r) :
@@ -158,7 +158,7 @@ open GlobalTheory.SplitHalf
 open scoped Topology
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LocalData.isLocalField v ∃ p : Place D (v.adicCompletion D.host.F), p.e = e := by obtain ⟨v, π, hπ⟩ := GlobalTheory.SplitChart.exists_chart e he letI := GlobalTheory.LocalData.complRel v haveI := GlobalTheory.LocalData.isLocalField v exact ⟨v, ⟨e, he, π, sec e v, cha …`.
+A detailed English derivation is pending.
 -/
 theorem exists_place {e : AE D} (he : IsSplitIdem D e) : ∃ v : HeightOneSpectrum (𝓞 D.host.F),
     letI := GlobalTheory.LocalData.complRel v
@@ -170,7 +170,7 @@ theorem exists_place {e : AE D} (he : IsSplitIdem D e) : ∃ v : HeightOneSpectr
   exact ⟨v, ⟨e, he, π, sec e v, chart_sec he.1 hπ, sec_chart he.1 hπ, chart_cont he hπ, sec_cont e v⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LocalData.isLocalField v Nonempty (Place D (v.adicCompletion D.host.F)) := by obtain ⟨e, he⟩ := exists_idem D obtain ⟨v, p, -⟩ := exists_place he exact ⟨v, ⟨p⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_place (D : D7) : ∃ v : HeightOneSpectrum (𝓞 D.host.F),
     letI := GlobalTheory.LocalData.complRel v
@@ -181,12 +181,12 @@ theorem nonempty_place (D : D7) : ∃ v : HeightOneSpectrum (𝓞 D.host.F),
   exact ⟨v, ⟨p⟩⟩
 
 /- English proof (translation)
-Rewrite using `[← p.ι_π, p.π_ι]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem e_ι (x : k) : p.e * p.ι x = p.ι x := by rw [← p.ι_π, p.π_ι]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ toFun := fun x => ⟨psiE ψ (incA D D.host.xi0 * p.ι x), mem_sphere_zero_iff_norm.2 (hψ.1.2.1 _)⟩ map_zero_eq_one' := Subtype.ext (by simp only [map_zero, mul_zero, psiE_zero]; rfl) map_add_eq_mul' := fun a b => Subtype.ext (by simp only [map_add, mul_add, psiE_add]; rfl) }, fun …`.
+Supply the required witnesses or components.
 -/
 theorem exists_isChar {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) : ∃ ψk, p.IsChar ψ ψk :=
   ⟨{ toFun := fun x => ⟨psiE ψ (incA D D.host.xi0 * p.ι x), mem_sphere_zero_iff_norm.2 (hψ.1.2.1 _)⟩
@@ -197,26 +197,26 @@ variable {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y']
   (FS : Frame k S.rank Y') (FT : Frame k T.rank Y)
 
 /- English proof (translation)
-Introduce `_ _` and use `e_ι p _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem up_half (x) : IsHalf p.e (p.up FS FT x) := fun _ _ => e_ι p _
 
 /- English proof (translation)
-Unfold `Place.up`. Rewrite using `[Matrix.mul_add, Matrix.add_mul, Matrix.map_add _ (map_add p.ι)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem up_add (x y) : p.up FS FT (x + y) = p.up FS FT x + p.up FS FT y := by
   unfold Place.up
   rw [Matrix.mul_add, Matrix.add_mul, Matrix.map_add _ (map_add p.ι)]
 
 /- English proof (translation)
-Unfold `Place.down`. Rewrite using `[Matrix.map_add _ (map_add p.π), Matrix.mul_add, Matrix.add_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem down_add (x y) : p.down FS FT (x + y) = p.down FS FT x + p.down FS FT y := by
   unfold Place.down
   rw [Matrix.map_add _ (map_add p.π), Matrix.mul_add, Matrix.add_mul]
 
 /- English proof (translation)
-Unfold `Place.down Place.up`. Establish `: ((FT.β * x * FS.γ).map p.ι).map p.π = FT.β * x * FS.γ` using `Matrix.ext fun _ _ => p.π_ι _`. Rewrite using `[this, ← Matrix.mul_assoc, ← Matrix.mul_assoc, FT.γβ, Matrix.one_mul, Matrix.mul_assoc, FS.γβ, Matrix.mul_one]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem down_up (x) : p.down FS FT (p.up FS FT x) = x := by
   unfold Place.down Place.up
@@ -224,7 +224,7 @@ theorem down_up (x) : p.down FS FT (p.up FS FT x) = x := by
   rw [this, ← Matrix.mul_assoc, ← Matrix.mul_assoc, FT.γβ, Matrix.one_mul, Matrix.mul_assoc, FS.γβ, Matrix.mul_one]
 
 /- English proof (translation)
-Unfold `Place.down Place.up`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, FT.βγ, Matrix.one_mul, Matrix.mul_assoc, FS.βγ, Matrix.mul_one]`. Use extensionality with `i j`. Conclude with `(p.ι_π _).trans (ht i j)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem up_down {t : WO S T} (ht : IsHalf p.e t) : p.up FS FT (p.down FS FT t) = t := by
   unfold Place.down Place.up
@@ -233,13 +233,13 @@ theorem up_down {t : WO S T} (ht : IsHalf p.e t) : p.up FS FT (p.down FS FT t) =
   exact (p.ι_π _).trans (ht i j)
 
 /- English proof (translation)
-The claim follows from `((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const).matrix_map p.cont_ι`.
+A detailed English derivation is pending.
 -/
 theorem up_cont : Continuous (p.up FS FT) :=
   ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const).matrix_map p.cont_ι
 
 /- English proof (translation)
-The claim follows from `(continuous_const.matrix_mul (continuous_id.matrix_map p.cont_π)).matrix_mul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem down_cont : Continuous (p.down FS FT) :=
   (continuous_const.matrix_mul (continuous_id.matrix_map p.cont_π)).matrix_mul continuous_const
@@ -249,7 +249,7 @@ def upH : Matrix Y Y' k →+ WO S T := AddMonoidHom.mk' (p.up FS FT) (up_add p F
 def downH : WO S T →+ Matrix Y Y' k := AddMonoidHom.mk' (p.down FS FT) (down_add p FS FT)
 
 /- English proof (translation)
-Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, mul_add, hy i j, add_left_inj]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem half_add {e : AE D} {x y : WO S T} (hy : IsHalf e y) : IsHalf e (x + y) ↔ IsHalf e x := by
   refine forall_congr' fun i => forall_congr' fun j => ?_
@@ -274,9 +274,9 @@ variable {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Subm
 include hS hT
 
 /- English proof (translation)
-Use `(isCompact_half p.split hS hT).image (down_cont p FS FT) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨_, ⟨hx, up_half p FS FT x⟩, down_up p FS FT x⟩`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨t, ⟨h1, h2⟩, rfl⟩`. Express the relevant statement in the definitionally equal form `p.up FS FT (p.down FS FT t) ∈ (latO S T ΛS ΛT fun _ => True)`. Rewrite using `[up_down p FS FT h2]` and apply the resulting hypothesis.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem lat_compact : IsCompact (((latO S T ΛS ΛT fun _ => True).comap (upH p FS FT) : AddSubgroup _) : Set (Matrix Y Y' k)) := by
   convert (isCompact_half p.split hS hT).image (down_cont p FS FT) using 1
@@ -289,13 +289,13 @@ theorem lat_compact : IsCompact (((latO S T ΛS ΛT fun _ => True).comap (upH p 
     rwa [up_down p FS FT h2]
 
 /- English proof (translation)
-Use `(GlobalTheory.LatOpen.isOpen_nsmul_latO D S T ΛS ΛT hS hT 1 one_pos).preimage (up_cont p FS FT) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨_, hx, ?_⟩` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(p.up FS FT x - 1 • p.up FS FT x).map _ = 0`. Rewrite using `[one_smul, sub_self]`. Conclude with `Matrix.map_zero _ (finPart D).map_zero`. Introduce and unpack `⟨l, hl, h⟩`. Establish `: p.up FS FT x = l`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Establish `h1` using `congrFun (congrFun h i) j`. Rewrite `h1` using `[one_smul]`. Establish `h2` using `congrFun (congrFun (GlobalTheory.SplitScalar.latO_fin hl) i) j`. Establish `h3` using `congrFun (congrFun (GlobalTheory.SplitScalar.half_fin p.split (up_half p FS FT x)) i) j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.SplitScalar.adele_ext (h3.trans h2.symm) (sub_eq_zero.1 ?_)` and prove the remaining obligations. Rewrite using `[← RingHom.map_sub]`. Conclude with `h1`. Express the relevant statement in the definitionally equal form `p.up FS FT x ∈ (latO S T ΛS ΛT fun _ => True)`. Rewrite using `[this]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem lat_open : IsOpen (((latO S T ΛS ΛT fun _ => True).comap (upH p FS FT) : AddSubgroup _) : Set (Matrix Y Y' k)) := by
   convert (GlobalTheory.LatOpen.isOpen_nsmul_latO D S T ΛS ΛT hS hT 1 one_pos).preimage (up_cont p FS FT) using 1
@@ -320,17 +320,15 @@ theorem lat_open : IsOpen (((latO S T ΛS ΛT fun _ => True).comap (upH p FS FT)
     rwa [this]
 
 /- English proof (translation)
-Take `⟨N, hN, h1⟩` from `exists_inv Φ _ (lat_compact p FS FT hS hT)`. Take `⟨M, hM, h2⟩` from `exists_supp Φ.2.2 _ (lat_open p FS FT hS hT) fun x => by`. Take `⟨n, hn, h⟩` from `GlobalTheory.PlaceDatum.exists_nsmul_mem_latO' hS.1 hT.1 _ (GlobalTheory.SplitScalar.half_fin p.split (up_half p FS FT x))`. Conclude with `⟨n, hn, AddSubgroup.mem_comap.2 (by rw [map_nsmul]; exact h)⟩`. Establish `hne : ∀ t, ext p FS FT Φ t ≠ 0 → IsHalf p.e t ∧ Φ.1 (p.down FS FT t) ≠ 0` using `fun t ht => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `ht` using `[ext_apply]`. Use `split_ifs at ht with h`. Conclude with `⟨h, ht⟩`. Conclude with `absurd rfl ht`. Use `⟨fun t ht => (hne t ht).1, N * M, Nat.mul_pos hN hM, fun u hu hu' t => ?_, fun t ht => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hh : IsHalf p.e ((N * M) • u)` using `fun i j => by`. Rewrite using `[Matrix.smul_apply, nsmul_eq_mul, mul_left_comm, hu' i j]`. Rewrite using `[ext_apply, ext_apply]`. Use `if_congr (half_add hh) ?_ rfl` and prove the remaining obligations. Establish `e1 : p.down FS FT ((N * M) • u) = N • (M • p.down FS FT u)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_smul]`. Conclude with `map_nsmul (downH p FS FT) _ _`. Rewrite using `[down_add, e1]`. Use `h1 _ (nsmul_mem ?_ _) _` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `p.up FS FT (p.down FS FT u) ∈ (latO S T ΛS ΛT fun _ => True)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[up_down p FS FT hu']` and apply the resulting hypothesis. Establish `h3` using `AddSubgroup.mem_comap.1 (h2 _ (subset_tsupport _ (hne t ht).2))`. Rewrite `h3` using `[map_nsmul]`. Express the relevant statement in the definitionally equal form `M • p.up FS FT (p.down FS FT t) ∈ _ at h3`. Rewrite `h3` using `[up_down p FS FT (hne t ht).1]`.
-
-Rewrite using `[mul_smul]`. Conclude with `nsmul_mem h3 _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_sb (Φ) : IsSBHalf p.e (latO S T ΛS ΛT fun _ => True) (ext p FS FT Φ) := by
   classical
@@ -365,23 +363,21 @@ theorem ext_sb (Φ) : IsSBHalf p.e (latO S T ΛS ΛT fun _ => True) (ext p FS FT
 omit hS hT
 
 /- English proof (translation)
-Establish `hS` using `GlobalTheory.PlaceModel.isSelfDualC_latFrame S`. Establish `hT` using `GlobalTheory.PlaceModel.isSelfDualC_latFrame T`. Take `⟨θ, hθ⟩` from `GlobalTheory.Member.exists_isInfFam_family D`. Establish `hc : ∀ (V : HSp D) τ, ∃ s, IsCartanInv (gramAt D V τ) s` using `fun V τ => GlobalTheory.Mem.ThetaNonzero.exists_isCartanInv (GlobalTheory.SmoothForms.RealPts.gramAt_herm V τ) (GlobalTheory.SmoothForms.RealPts.gramAt_unit V τ)`. Use `choose s hs using hc`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f, f0, hf⟩` from `GlobalTheory.VacuumO.exists_ne_zero ψ θ hψ hθ S T (s S) (s T) (hs S) (hs T) _ _ hS hT`. Establish `hf1` using `hf 1`. Simplify using `only [one_mul] at hf1`. Establish `hO : GlobalTheory.PlaceModelSum.IsOrthSum p.e` using `⟨Unit, {()}, fun _ => p.e, fun _ _ => p.split, fun _ _ _ _ h => absurd rfl h, by simp⟩`. Take `⟨T₀, h₀⟩` from `hO.exists_model hψ hS hT p.split.2.1 hf1.2.1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨T₀.comp (ext p FS FT), ⟨fun Φ => ?_, fun x Φ Φ' h => ?_, fun y hy Φ Φ' h => ?_⟩, fun h => f0 ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.SchrTheta.isTheta_placeModel D ψ hψ S T _ _ hS hT p.e p.split.1 (GlobalTheory.PlaceCoord.infPart_split p.split) _ hf1.1 T₀ h₀ _ (ext_sb p FS FT hS hT Φ)`. Use `Eq.trans (congrArg T₀ ?_) (h₀.trans _ (ext_sb p FS FT hS hT Φ) _ (up_half p FS FT x))` and prove the remaining obligations. Use function extensionality and compare the values at `t`. Rewrite using `[ext_apply, ext_apply, down_add, down_up, h]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `if_congr (half_add (up_half p FS FT x)).symm rfl rfl`. Use `Eq.trans (congrArg T₀ ?_) (h₀.modul _ (ext_sb p FS FT hS hT Φ) _ hy)` and prove the remaining obligations. Use function extensionality and compare the values at `t`. Rewrite using `[ext_apply, ext_apply, h]`. Use `split_ifs with ht`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[up_down p FS FT ht]`. Rewrite using `[mul_zero]`. Establish `ho` using `lat_open p FS FT hS hT`. Establish `hk` using `lat_compact p FS FT hS hT`. Generalize the expression as in `hA : ((latO S T _ _ fun _ => True).comap (upH p FS FT) : AddSubgroup _) = A at ho hk`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hcl : IsClopen (A : Set (Matrix Y Y' k))` using `⟨A.isClosed_of_isOpen ho, ho⟩`. Set `Φ : SB (Matrix Y Y' k)` to `⟨(A : Set (Matrix Y Y' k)).indicator 1, (LocallyConstant.charFn ℂ hcl).isLocallyConstant, HasCompactSupport.intro hk fun x hx => Set.indicator_of_notMem hx _⟩`. Establish `e1 : ext p FS FT Φ = (1 : ℂ) • halfInd p.e (latO S T (GlobalTheory.PlaceModel.latFrame S) (GlobalTheory.PlaceModel.latFrame T) fun _ => True)`. Use function extensionality and compare the values at `t`. Rewrite using `[one_smul, ext_apply, halfInd]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `ht : IsHalf p.e t`. Rewrite using `[if_pos ht]`. Express the relevant statement in the definitionally equal form `(A : Set (Matrix Y Y' k)).indicator 1 _ = _`. Rewrite using `[Set.indicator_apply, ← hA]`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `p.up FS FT (p.down FS FT t) ∈ (latO S T (GlobalTheory.PlaceModel.latFrame S) (GlobalTheory.PlaceModel.latFrame T) fun _ => True) ↔ _`. Rewrite using `[up_down p FS FT ht, and_iff_left ht]`. Rewrite using `[if_neg ht, if_neg fun h => ht h.2]`. Establish `e2 : T₀ (ext p FS FT Φ) = 0` using `congrArg (fun L => L Φ) h`. Rewrite `e2` using `[e1, h₀.vac]`.
-
-Conclude with `e2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isModel {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) :
     ∃ Tm, p.IsModel ψ FS FT Tm ∧ Tm ≠ 0 := by
@@ -434,9 +430,9 @@ theorem exists_isModel {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-
     exact e2
 
 /- English proof (translation)
-Establish `h1` using `p.split.1`. Establish `hm : ∀ x y, p.ι (x * y) = p.ι x * p.ι y` using `fun x y => by conv_lhs => rw [← p.π_ι x, ← p.π_ι y, ← RingHom.map_mul, p.ι_π, ← mul_assoc, e_ι]`. Establish `ho : p.ι 1 = p.e` using `by rw [← p.π.map_one, p.ι_π, mul_one]`. Set `j : k →* AE D` to `{ toFun := fun x => p.ι x + (1 - p.e) map_one' := by rw [ho, add_sub_cancel] map_mul' := fun x y => by`. Rewrite using `[hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `e_ι p x + e_ι p y - h1 }`. Use `⟨Circle.toUnits.comp (χ.comp (Units.map j)), fun x a h => ?_⟩` and prove the remaining obligations. Establish `: Units.map j x = a` using `Units.ext h.symm`. Simplify using `only [MonoidHom.comp_apply, this]`. Both sides reduce to the same expression.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem exists_isComp (χ : (AE D)ˣ →* Circle) : ∃ μ, p.IsComp χ μ := by
   have h1 := p.split.1
@@ -459,19 +455,19 @@ def mkFrame {N : ℕ} {Z : Type} [Fintype Z] [DecidableEq Z] (β : Matrix (Fin N
   ⟨β, γ, h, (Matrix.mul_eq_one_comm_of_card_eq _ _ _ (by simp [hc])).1 h⟩
 
 /- English proof (translation)
-Simplify using `using Matrix.square_of_invertible (R := k) F.β F.γ F.βγ F.γβ`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem card_frame {N : ℕ} {Z : Type} [Fintype Z] [DecidableEq Z] (F : Frame k N Z) : N = Fintype.card Z := by
   simpa using Matrix.square_of_invertible (R := k) F.β F.γ F.βγ F.γβ
 
 /- English proof (translation)
-Use `⟨⟨Matrix.of fun r z => t z * F.β r (σ z), Matrix.of fun z r => (t z)⁻¹ * F.γ (σ z) r, ?_, ?_⟩, fun _ _ => rfl⟩` and prove the remaining obligations. Rewrite using `[← F.βγ]`. Use extensionality with `r s`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, ← σ.sum_comp]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.of_apply]`. Clear denominators, using `[ht z]` for the nonvanishing conditions. Use extensionality with `z w`. Use `congrFun (congrFun F.γβ (σ z)) (σ w)` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.of_apply]`. Establish `e : ∀ r, (t z)⁻¹ * F.γ (σ z) r * (t w * F.β r (σ w)) = (t z)⁻¹ * t w * (F.γ (σ z) r * F.β r (σ w))` using `fun r => by ring`. Simplify using `only [e, ← Finset.mul_sum, this, Matrix.one_apply, σ.injective.eq_iff]`. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, mul_one, inv_mul_cancel₀ (ht w)]`. Rewrite using `[mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_scaled {N : ℕ} {Z Z' : Type} [Fintype Z] [DecidableEq Z] [Fintype Z'] [DecidableEq Z'] (F : Frame k N Z)
     (σ : Z' ≃ Z) (t : Z' → k) (ht : ∀ z, t z ≠ 0) : ∃ F' : Frame k N Z', ∀ r z, F'.β r z = t z * F.β r (σ z) := by
@@ -497,9 +493,9 @@ theorem exists_scaled {N : ℕ} {Z Z' : Type} [Fintype Z] [DecidableEq Z] [Finty
 def prH : D.host.E →+* k := p.π.comp (incA D)
 
 /- English proof (translation)
-Establish `hs` using `congrArg (fun M => Matrix.map M (prH p)) d.sum_eq_one_rat`. Simplify using `only [Matrix.map_add _ (map_add (prH p)), Matrix.map_mul, Matrix.map_one _ (map_zero (prH p)) (map_one (prH p))] at hs`. Use `⟨mkFrame (fromCols (d.i₀.map p.pr * G₀.β) (fromCols (d.e.map p.pr) (d.e'.map p.pr))) (fromRows (G₀.γ * d.q0.map (prH p)) (fromRows (d.qX.map (prH p)) (d.qY.map (prH p)))) ?_ ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[fromCols_mul_fromRows, fromCols_mul_fromRows, Matrix.mul_assoc, ← Matrix.mul_assoc G₀.β, G₀.βγ, Matrix.one_mul, ← hs]`. Express the relevant statement in the definitionally equal form `(d.i₀.map (prH p) * _ + (d.e.map (prH p) * _ + d.e'.map (prH p) * _)) = _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Normalize the expressions using the abelian group laws. Simplify using `[← card_frame G₀, ← d.rank_add]`. Expand and normalize the polynomial expressions, which then agree.
+Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_witt {V V₀ : HSp D} {σ : ℕ} (d : HypDec V V₀ σ) (G₀ : Frame k V₀.rank Y) :
     ∃ F : Frame k V.rank (Y ⊕ (Fin σ ⊕ Fin σ)),
@@ -513,7 +509,7 @@ theorem exists_witt {V V₀ : HSp D} {σ : ℕ} (d : HypDec V V₀ σ) (G₀ : F
   · simp [← card_frame G₀, ← d.rank_add]; ring
 
 /- English proof (translation)
-Set `σ` to `Equiv.ofBijective τ ((Fintype.bijective_iff_injective_and_card τ).2 ⟨hτ, hc⟩)`. Take `⟨F', h⟩` from `exists_scaled F σ.symm (fun z => t (σ.symm z)) fun z => ht _`. Use `⟨F', fun r z => ?_⟩` and prove the remaining obligations. Use `h r (σ z)` as an intermediate fact. Rewrite `this` using `[σ.symm_apply_apply]`. Then use the resulting hypothesis.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_scaled' {N : ℕ} {Z Z' : Type} [Fintype Z] [DecidableEq Z] [Fintype Z'] [DecidableEq Z'] (F : Frame k N Z)
     (τ : Z → Z') (hτ : Function.Injective τ) (hc : Fintype.card Z = Fintype.card Z') (t : Z → k) (ht : ∀ z, t z ≠ 0) :
@@ -525,23 +521,23 @@ theorem exists_scaled' {N : ℕ} {Z Z' : Type} [Fintype Z] [DecidableEq Z] [Fint
   rwa [σ.symm_apply_apply] at this
 
 /- English proof (translation)
-The claim follows from `(map_ne_zero (prH p)).2 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D)`.
+A detailed English derivation is pending.
 -/
 theorem xi_ne : p.xi ≠ 0 := (map_ne_zero (prH p)).2 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D)
 
 /- English proof (translation)
-The claim follows from `(map_ne_zero (prH p)).2 B.line.2`.
+A detailed English derivation is pending.
 -/
 theorem hz_ne {ρ : ℕ} (B : BesLev D ρ) : p.hz B ≠ 0 := (map_ne_zero (prH p)).2 B.line.2
 
 /- English proof (translation)
-Establish `hL` using `B.line.1`. Set `ζ : Matrix (Fin B.L.rank) Unit D.host.E` to `Matrix.of fun r _ => B.ζ r`. Set `η : Matrix Unit (Fin B.L.rank) D.host.E` to `Matrix.of fun _ r => (star B.ζ ⬝ᵥ B.L.gram *ᵥ B.ζ)⁻¹ * (star B.ζ ᵥ* B.L.gram) r`. Establish `h1 : η * ζ = 1`. Use extensionality with `a b`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.mul_apply, Subsingleton.elim a b, Matrix.one_apply_eq]`. Simplify using `only [η, ζ, Matrix.of_apply, mul_assoc, ← Finset.mul_sum]`. Rewrite using `[show ∑ i, (star B.ζ ᵥ* B.L.gram) i * B.ζ i = star B.ζ ⬝ᵥ B.L.gram *ᵥ B.ζ from (dotProduct_mulVec _ _ _).symm, inv_mul_cancel₀ B.line.2]`. Establish `h2 : ζ * η = 1` using `(Matrix.mul_eq_one_comm_of_card_eq _ _ _ (by simp [hL])).1 h1`. Establish `h3 : B.o.iA * B.o.qA + (B.o.iB * ζ) * (η * B.o.qB) = 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc ζ, h2, Matrix.one_mul, B.o.iA_qA_add]`. Establish `hs'` using `congrArg (fun M => Matrix.map M (prH p)) h3`. Simplify using `only [Matrix.map_add _ (map_add (prH p)), Matrix.map_one _ (map_zero (prH p)) (map_one (prH p))] at hs'`. Rewrite `hs'` using `[Matrix.map_mul, Matrix.map_mul]`. Set `F₀ : Frame k B.V₀.rank (Y ⊕ Unit)` to `mkFrame (fromCols (B.o.iA.map (prH p) * FA.β) ((B.o.iB * ζ).map (prH p))) (fromRows (FA.γ * B.o.qA.map (prH p)) ((η * B.o.qB).map (prH p))) (by rw [fromCols_mul_fromRows, Matrix.mul_assoc, ← Matrix.mul_assoc FA.β, FA.βγ, Matrix.one_mul, hs']) (by simp [← card_frame FA, ← B.o.rank …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Apply the tactic sequence `obtain ⟨F, hF⟩ := exists_scaled' F₀ id Function.injective_id rfl (Sum.elim (fun _ => 1) fun _ => s) (by rintro (a | a) <;> simp [hs])`. Conclude with `⟨F, fun r a => (hF r (Sum.inl a)).trans (one_mul _), fun r => hF r (Sum.inr ())⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 -/
 theorem exists_core {ρ : ℕ} (B : BesLev D ρ) {s : k} (hs : s ≠ 0) (FA : Frame k B.A.rank Y) :
     ∃ F, p.IsCoreFrame B s FA F := by
@@ -571,11 +567,9 @@ theorem exists_core {ρ : ℕ} (B : BesLev D ρ) {s : k} (hs : s ≠ 0) (FA : Fr
   exact ⟨F, fun r a => (hF r (Sum.inl a)).trans (one_mul _), fun r => hF r (Sum.inr ())⟩
 
 /- English proof (translation)
-Take `⟨G, hG⟩` from `exists_witt p J.d F₀`. Establish `hx` using `xi_ne p`. Take `⟨F, hF⟩` from `exists_scaled' G (Sum.map id (Sum.elim (fun i : Fin ρ => (⟨i.val, by omega⟩ : Fin (2 * ρ))) fun i : Fin ρ => ⟨2 * ρ - 1 - i.val, by omega⟩)) (by`. Apply the tactic sequence `rintro (a | a | a) (b | b | b) h <;> simp [Fin.ext_iff] at h ⊢ <;> first | exact h | omega)`. Use the proof step `(by simp; ring)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Use the proof step `(Sum.elim (fun _ => 1) (Sum.elim (fun i => s * p.xi ^ (ρ - i.val)) fun i => s * (hh / p.xi) * (-1 / p.xi) ^ (ρ - 1 - i.val)))`. Apply the tactic sequence `(by rintro (a | a | a) <;> simp [hs, hh0, hx])`. Rewrite `hF` using `[hG]`. Use `⟨F, rfl, fun r a => (hF r (Sum.inl a)).trans (one_mul _), fun i j h r => ?_, fun i j h r => ?_⟩` and prove the remaining obligations. Rewrite using `[show j = ⟨i.val, by omega⟩ from Fin.ext h]`.
-
-Conclude with `hF r (Sum.inr (Sum.inl i))`. Rewrite using `[show j = ⟨2 * ρ - 1 - i.val, by omega⟩ from Fin.ext (by simp only; omega)]`. Conclude with `hF r (Sum.inr (Sum.inr i))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_jac {ρ : ℕ} (J : JacLev D ρ) {s hh : k} (hs : s ≠ 0) (hh0 : hh ≠ 0) (F₀ : Frame k J.W₀.rank Y) :
     ∃ F : Frame k J.W.rank (Y ⊕ Fin (2 * ρ)), p.IsJacFrame J s hh F₀ F := by
@@ -596,15 +590,13 @@ theorem exists_jac {ρ : ℕ} (J : JacLev D ρ) {s hh : k} (hs : s ≠ 0) (hh0 :
     exact hF r (Sum.inr (Sum.inr i))
 
 /- English proof (translation)
-Take `⟨F₀, h₀⟩` from `exists_core p B one_ne_zero FA`. Take `⟨G, hG⟩` from `exists_witt p B.d F₀`. Establish `hx` using `xi_ne p`. Establish `hz` using `hz_ne p B`. Take `⟨F, hF⟩` from `exists_scaled' G (Sum.elim (Sum.map id fun _ => (⟨ρ, by omega⟩ : Fin (2 * ρ + 1))) (Sum.elim (fun i : Fin ρ => Sum.inr (⟨i.val, by omega⟩ : Fin (2 * ρ + 1))) fun i : Fin ρ => Sum.inr ⟨2 * ρ - i.val, by omega⟩)) (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `rintro ((a | a) | a | a) ((b | b) | b | b) h <;> simp [Fin.ext_iff] at h ⊢ <;> first | exact h | omega)`. Use the proof step `(by simp; ring)`. Use the proof step `(Sum.elim (Sum.elim (fun _ => 1) fun _ => s) (Sum.elim (fun i => s * p.xi ^ (ρ - i.val)) fun i => s * (-p.hz B / p.xi) * (-1 / p.xi) ^ (ρ - 1 - i.val)))`. Apply the tactic sequence `(by rintro ((a | a) | a | a) <;> simp [hs, hz, hx])`. Rewrite `hF` using `[hG]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨F, rfl, fun r a => ((hF r (Sum.inl (Sum.inl a))).trans (one_mul _)).trans ?_, fun i j h r => ?_, fun j h r => ?_, fun i j h r => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(B.d.i₀.map (prH p) * F₀.β) r (Sum.inl a) = ((B.d.i₀ * B.o.iA).map (prH p) * FA.β) r a`. Rewrite using `[Matrix.map_mul, Matrix.mul_assoc, Matrix.mul_apply, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun u _ => by rw [h₀.1]; rfl`. Rewrite using `[show j = ⟨i.val, by omega⟩ from Fin.ext h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `hF r (Sum.inr (Sum.inl i))`. Rewrite using `[show j = ⟨ρ, by omega⟩ from Fin.ext h]`. Use `(hF r (Sum.inl (Sum.inr ()))).trans (congrArg (s * ·) ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(B.d.i₀.map (prH p) * F₀.β) r (Sum.inr ()) = prH p (∑ u, B.d.i₀ r u * vecB B.o B.ζ u)`. Rewrite using `[Matrix.mul_apply, map_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun u _ => by rw [h₀.2, one_mul, map_mul]; rfl`. Rewrite using `[show j = ⟨2 * ρ - i.val, by omega⟩ from Fin.ext (by simp only; omega)]`. Conclude with `hF r (Sum.inr (Sum.inr i))`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bes {ρ : ℕ} (B : BesLev D ρ) {s : k} (hs : s ≠ 0) (FA : Frame k B.A.rank Y) :
     ∃ F : Frame k B.V.rank (Y ⊕ Fin (2 * ρ + 1)), p.IsBesFrame B s FA F := by
@@ -639,11 +631,11 @@ theorem exists_bes {ρ : ℕ} (B : BesLev D ρ) {s : k} (hs : s ≠ 0) (FA : Fra
     exact hF r (Sum.inr (Sum.inr i))
 
 /- English proof (translation)
-Establish `h1` using `p.split.1`. Establish `h2` using `p.split.2.1`. Establish `h1' : cA D p.e * cA D p.e = cA D p.e` using `by rw [← RingHom.map_mul, h1]`. Establish `ho : p.ι 1 = p.e` using `by rw [← p.π.map_one, p.ι_π, mul_one]`. Establish `p1 : p.π p.e = 1` using `by rw [← ho, p.π_ι]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p2 : p.π (cA D p.e) = 0` using `by rw [← one_mul (p.π _), ← p1, ← RingHom.map_mul, h2, RingHom.map_zero]`. Use `⟨ofMat S _ (reflectionBoost_matrix_conjTranspose_mul_self p.e _ _ a b h1 h2 rfl rfl hba), fun i j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mt_ofMat]`. Simplify using `only [Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Take the linear combination `a i j * (h1 + h2) + (giA S * (adj b * gA S)) i j * (h1' + h2) - (1 : Mx D S.rank S.rank) i j * (h1 + h1' + 2 * h2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[mt_ofMat]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, RingHom.map_add, RingHom.map_mul, RingHom.map_sub, RingHom.map_one, p1, p2, one_mul, zero_mul, add_zero, sub_self]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem exists_unitary_supportedAt_place_of_mul_eq_idem (a b : Mx D S.rank S.rank) (hba : b * a = p.e • (1 : Mx D S.rank S.rank)) :
     ∃ g : GA D S, SuppAt p.e S g ∧ (mt S g).map p.π = a.map p.π := by
@@ -664,13 +656,13 @@ theorem exists_unitary_supportedAt_place_of_mul_eq_idem (a b : Mx D S.rank S.ran
       RingHom.map_sub, RingHom.map_one, p1, p2, one_mul, zero_mul, add_zero, sub_self]
 
 /- English proof (translation)
-Establish `hm : ∀ x y, p.ι (x * y) = p.ι x * p.ι y` using `fun x y => by conv_lhs => rw [← p.π_ι x, ← p.π_ι y, ← RingHom.map_mul, p.ι_π, ← mul_assoc, e_ι]`. Establish `ho : p.ι 1 = p.e` using `by rw [← p.π.map_one, p.ι_π, mul_one]`. Establish `mm : ∀ A B : Matrix (Fin S.rank) (Fin S.rank) k, A * B = 1 → (A.map p.ι : Mx D S.rank S.rank) * B.map p.ι = p.e • (1 : Mx D S.rank S.rank)` using `fun A B h => by`. Use extensionality with `i j`. Use `congrArg p.ι (congrFun (congrFun h i) j)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.mul_apply, map_sum]`. Rewrite using `[Matrix.mul_apply, Matrix.smul_apply]`. Simplify using `only [Matrix.map_apply, ← hm]`. Rewrite using `[this, Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ho, smul_eq_mul, mul_one]`. Rewrite using `[map_zero, smul_zero]`. Establish `hAB : (F.β * (gk⁻¹).val * F.γ) * (F.β * gk.val * F.γ) = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc F.β gk.val, ← Matrix.mul_assoc F.γ, F.γβ, Matrix.one_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (gk⁻¹).val, Units.inv_mul, Matrix.one_mul, F.βγ]`. Establish `hba` using `mm _ _ hAB`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπa : ((F.β * gk.val * F.γ).map p.ι).map p.π = F.β * gk.val * F.γ` using `Matrix.ext fun _ _ => p.π_ι _`. Take `⟨g, g1, g2⟩` from `exists_unitary_supportedAt_place_of_mul_eq_idem p _ _ hba`. Conclude with `⟨g, g1, g2.trans hπa⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isLoc (F : Frame k S.rank Y) (gk : GL Y k) : ∃ g, p.IsLoc F g gk := by
   have hm : ∀ x y, p.ι (x * y) = p.ι x * p.ι y := fun x y => by
@@ -696,7 +688,7 @@ theorem exists_isLoc (F : Frame k S.rank Y) (gk : GL Y k) : ∃ g, p.IsLoc F g g
   exact ⟨g, g1, g2.trans hπa⟩
 
 /- English proof (translation)
-Take `⟨ψk, h0⟩` from `exists_isChar p st.weil.std`. Take `⟨F₀, h1⟩` from `exists_core p B hs FA`. Take `⟨FV, h2⟩` from `exists_bes p B hs FA`. Take `⟨FW, h3⟩` from `exists_jac p J hs (hz_ne p B) G₀`. Conclude with `⟨ψk, F₀, FV, FW, h0, h1, h2, h3, exists_isModel p FV FW st.weil.std⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hyp_flatBF {ψ : AddChar (AF D.host.F) ℂ} {ρ : ℕ} (B : BesLev D ρ) (J : JacLev D ρ) (st : StepBF ψ B J)
     {s : k} (hs : s ≠ 0) (FA : Frame k B.A.rank Y') (G₀ : Frame k J.W₀.rank Y) :
@@ -711,9 +703,9 @@ theorem hyp_flatBF {ψ : AddChar (AF D.host.F) ℂ} {ρ : ℕ} (B : BesLev D ρ)
   exact ⟨ψk, F₀, FV, FW, h0, h1, h2, h3, exists_isModel p FV FW st.weil.std⟩
 
 /- English proof (translation)
-Take `⟨ψk, h0⟩` from `exists_isChar p st.weil.std`. Establish `hx` using `xi_ne p`. Take `⟨F₀, h1⟩` from `exists_core p B (mul_ne_zero hs hx) FA`. Take `⟨FV, h2⟩` from `exists_bes p B (mul_ne_zero hs hx) FA`. Take `⟨FW, h3⟩` from `exists_jac p J hs (mul_ne_zero (neg_ne_zero.2 (pow_ne_zero 2 hx)) (hz_ne p B)) G₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ψk, FW, F₀, FV, h0, h3, h1, h2, exists_isModel p FW FV st.weil.std⟩`.
+Supply the required witnesses or components.
 -/
 theorem hyp_flatFB {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} (J : JacLev D (σ + 1)) (B : BesLev D σ) (st : StepFB ψ J B)
     {s : k} (hs : s ≠ 0) (G₀ : Frame k J.W₀.rank Y') (FA : Frame k B.A.rank Y) :
@@ -729,7 +721,7 @@ theorem hyp_flatFB {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} (J : JacLev D (σ
   exact ⟨ψk, FW, F₀, FV, h0, h3, h1, h2, exists_isModel p FW FV st.weil.std⟩
 
 /- English proof (translation)
-Take `⟨ψk, h0⟩` from `exists_isChar p hψ`. Take `⟨F₀, h1⟩` from `exists_core p B hs FA`. Take `⟨F₀', h2⟩` from `exists_core p B' (mul_ne_zero hs (xi_ne p)) FA'`. Conclude with `⟨ψk, F₀, F₀', h0, h1, h2, exists_isModel p F₀ F hψ, exists_isModel p F F₀' hψ⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hyp_contr {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {ρ σ : ℕ} (B : BesLev D ρ) (B' : BesLev D σ)
     {s : k} (hs : s ≠ 0) {Z : Type} [Fintype Z] [DecidableEq Z] (FA : Frame k B.A.rank Y') (FA' : Frame k B'.A.rank Z)
@@ -743,7 +735,7 @@ theorem hyp_contr {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {
   exact ⟨ψk, F₀, F₀', h0, h1, h2, exists_isModel p F₀ F hψ, exists_isModel p F F₀' hψ⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Measure.addHaar, inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_haar (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] : ∃ ν : Measure k, ν.IsAddHaarMeasure :=
@@ -791,9 +783,9 @@ def Place.IsBiModel (ψ : AddChar (AF D.host.F) ℂ) {A S A' : HSp D} {n n' n'' 
     ∀ (Ξ₂ : SB (Matrix n'' n k)) Ξ, (∀ q, Ξ.1 q = Ξ₁.1 q.1 * Ξ₂.1 q.2) → ∀ v, Λ Ξ u v = T₂ Ξ₂ v
 
 /- English proof (translation)
-Establish `hs : ∀ y (f : WO S T → ℂ), c • heisO ψ S T y f = heisO ψ S T y (c • f)` using `fun y f => by`. Use function extensionality and compare the values at `w`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun Φ => ?_, fun x Φ Φ' e => ?_, fun y hy Φ Φ' e => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.smul_apply, ← map_smul]`. Conclude with `h.theta _`. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, h.trans x Φ Φ' e, hs]`. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, h.modul y hy Φ Φ' e, hs]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Witness.isModel_smul {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y']
     [DecidableEq Y'] {FS : Frame k S.rank Y'} {FT : Frame k T.rank Y} {Tm : SB (Matrix Y Y' k) →ₗ[ℂ] (WO S T → ℂ)}
@@ -809,11 +801,11 @@ theorem Witness.isModel_smul {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {Y Y
   · rw [LinearMap.smul_apply, LinearMap.smul_apply, h.modul y hy Φ Φ' e, hs]
 
 /- English proof (translation)
-Take `⟨Λ, hΛ⟩` from `GlobalTheory.LocFlat.CFac.exists_linear_of_bilinear_prodSB X X' (U → U' → ℂ) (LinearMap.mk₂ ℂ (fun Ξ₁ Ξ₂ u v => T₁ Ξ₁ u * T₂ Ξ₂ v) (fun _ _ _ => by funext u v; simp [add_mul]) (fun _ _ _ => by funext u v; simp [mul_assoc]) (fun _ _ _ => by funext u v; simp [mul_add]) (fun _ _ _ = …`. Establish `key : ∀ (Ξ₁ : SB X) (Ξ₂ : SB X') Ξ, (∀ q, Ξ.1 q = Ξ₁.1 q.1 * Ξ₂.1 q.2) → ∀ u v, Λ Ξ u v = T₁ Ξ₁ u * T₂ Ξ₂ v` using `fun Ξ₁ Ξ₂ Ξ e u v => by`. Rewrite using `[show Ξ = GlobalTheory.LocFlat.CFac.prodSB Ξ₁ Ξ₂ from Subtype.ext (funext e), hΛ]`. Both sides reduce to the same expression. Use `⟨Λ, fun h => ?_, key⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Ξ₁, a₁⟩` from `DFunLike.ne_iff.1 n₁`. Take `⟨Ξ₂, a₂⟩` from `DFunLike.ne_iff.1 n₂`. Take `⟨u, hu⟩` from `Function.ne_iff.1 a₁`. Take `⟨v, hv⟩` from `Function.ne_iff.1 a₂`. Use `key Ξ₁ Ξ₂ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁ Ξ₂) (fun _ => rfl) u v` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[h]`. Conclude with `mul_ne_zero hu hv this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Witness.exists_prod {X X' U U' : Type} [TopologicalSpace X] [TopologicalSpace X'] (T₁ : SB X →ₗ[ℂ] (U → ℂ))
     (T₂ : SB X' →ₗ[ℂ] (U' → ℂ)) (n₁ : T₁ ≠ 0) (n₂ : T₂ ≠ 0) : ∃ Λ : SB (X × X') →ₗ[ℂ] (U → U' → ℂ), Λ ≠ 0 ∧
@@ -836,9 +828,9 @@ theorem Witness.exists_prod {X X' U U' : Type} [TopologicalSpace X] [Topological
   exact mul_ne_zero hu hv this.symm
 
 /- English proof (translation)
-Take `⟨T₁, h₁, n₁⟩` from `Witness.exists_isModel p FA FS hψ`. Take `⟨T₂, h₂, n₂⟩` from `Witness.exists_isModel p FS FA' hψ`. Take `⟨Λ, h0, key⟩` from `Witness.exists_prod T₁ T₂ n₁ n₂`. Use `⟨Λ, ⟨fun Ξ₂ v => ⟨_, Witness.isModel_smul p h₁ (T₂ Ξ₂ v), fun Ξ₁ Ξ e u => ?_⟩, fun Ξ₁ u => ⟨_, Witness.isModel_smul p h₂ (T₁ Ξ₁ u), fun Ξ₂ Ξ e v => ?_⟩⟩, h0⟩` and prove the remaining obligations. Rewrite using `[key _ _ _ e, mul_comm, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key _ _ _ e, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Witness.exists_isBiModel {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {A S A' : HSp D} {n n' n'' : Type}
     [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] [Fintype n''] [DecidableEq n''] (FA : Frame k A.rank n')

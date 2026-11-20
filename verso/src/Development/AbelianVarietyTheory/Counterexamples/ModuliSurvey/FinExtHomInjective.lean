@@ -20,11 +20,11 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R}
   {F : Type} [Field F] [Algebra (FractionRing R) F]
 
 /- English proof (translation)
-Take `⟨gs, h0, hs, hl⟩` from `H`. Establish `key : ∀ (n : ℕ) (hn : n < k + 1), (gs ⟨n, hn⟩).b = g.b ^ n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[pow_zero]`. Conclude with `h0.1`. Consider the case `succ n ih`. Introduce `hn`. Establish `e` using `(hs ⟨n, by omega⟩).1`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, ← ih (by omega)]`. Conclude with `e`. Rewrite using `[← hl]`. Conclude with `key k (Nat.lt_succ_self k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNsmul_b {k : ℕ} {g h : GtPtF D F} (H : GtPtF.IsNsmul k g h) : h.b = g.b ^ k := by
   obtain ⟨gs, h0, hs, hl⟩ := H
@@ -43,7 +43,7 @@ theorem isNsmul_b {k : ℕ} {g h : GtPtF D F} (H : GtPtF.IsNsmul k g h) : h.b = 
 end Tors
 
 /- English proof (translation)
-Introduce `h` and use `by haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩ have h2 : (2 : FractionRing ℤ_[2]) ≠ 0 := two_ne_zero have e := (RelModel.fe_zeroUq_iff ℤ_[2] (IsLocalRing.maximalIdeal ℤ_[2]) (FractionRing ℤ_[2]) 1 (Units.mk0 2 h2)).1 (h ℤ_[2] (cdvr_padicInt 2) _ _ _ (RelModel.zeroUq ℤ_[2] _ (Un …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_allPre_fe : ¬ AllPre fun {V} _ _ _ {_} {_} {_} _ _ U => U.FE (FractionRing V) 2 := fun h => by
   haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩

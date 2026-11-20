@@ -19,9 +19,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi (mulN)
 namespace GlobalTheory.AVTower
 
 /- English proof (translation)
-Take `⟨hi, hd⟩` from `GlobalTheory.MulIsogeny.mul_isogeny k A (N : ℤ) (by exact_mod_cast hN)`. Take `⟨-, hfl, -, hrk⟩` from `GlobalTheory.AV.AbVar.isogeny_flat_finrank k A A _ hi`. Establish `hf : IsFinite ((N : ℤ) • 𝟙 A).hom.left` using `hi.1`. Establish `e : ((N : ℤ) • 𝟙 A).hom = mulN A.X N`. Rewrite using `[zsmul_hom, id_hom, GrpTangent.mulN_eq_pow, zpow_natCast]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hf`, `hfl`, `hrk` using `[e]`. Establish `h2` using `Scheme.Hom.finrank_of_isPullback _ _ _ _ h (⊥ : PrimeSpectrum k)`. Rewrite `h2` using `[hrk, hd, Int.natAbs_natCast]`. Rewrite using `[← h2, spMap, Scheme.Hom.finrank_SpecMap_algebraMap, Module.rankAtStalk_eq_finrank_of_free]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finrank_torsion {k : Type} [Field k] (A : AbVar k) {N : ℕ} (hN : N ≠ 0)
     {S : Type} [CommRing S] [Algebra k S] [Module.Finite k S] (y : SpAlg k S ⟶ A.X)
@@ -39,9 +39,9 @@ theorem finrank_torsion {k : Type} [Field k] (A : AbVar k) {N : ℕ} (hN : N ≠
   rfl
 
 /- English proof (translation)
-Use `A.ab.comm` as an intermediate fact. Establish `hN : ∀ n : ℕ, 1 ≤ p ^ n` using `fun n => Nat.one_le_pow _ _ hp.out.pos`. Use `choose R _ _ y h1 h2 H using fun n : ℕ => AbelianPDiv.exists_isPullback (A := A.X) A.ab (hN n)`. Establish `h` using `fun n => AbelianPDiv.isUnivTorsion_of_isPullback (y n) (H n)`. Establish `hr : ∀ n (q : PrimeSpectrum k), Module.rankAtStalk (R n) q = (p ^ n) ^ (2 * A.dim)` using `fun n q => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.rankAtStalk_eq_finrank_of_free]`. Conclude with `finrank_torsion A (pow_ne_zero _ hp.out.ne_zero) (y n) (H n)`. Use `choose r r1 r2 r3 using fun n : ℕ => (h n).exists_res (h (n + 1)) (by rw [pow_succ, pow_mul, (h n).1, one_pow])`. Set `G : PDivGroup p k` to `{ height := 2 * A.dim A := R hopf := fun n => (h n).hopfAlgebra cocomm := fun n => (h n).isCocomm finite := h1 projective := h2 rank_eq := fun n q => (hr n q).trans (pow_mul _ _ _).symm res := r res_surjective := r1 ker_res := r2 }`. Conclude with `⟨G, rfl, ⟨{ y := y mul := fun n B _ _ => (h n).mul_y inj := fun n B _ _ _ _ => (h n).inj surj := fun n B _ _ z hz => ((h n).2 B z hz).exists res := r3 }⟩⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_tower (p : ℕ) [hp : Fact p.Prime] (k : Type) [Field k] (A : AbVar k) :
     ∃ G : PDivGroup p k, G.height = 2 * A.dim ∧ Nonempty (G.TorsionTower A.X) := by
@@ -73,11 +73,11 @@ theorem exists_tower (p : ℕ) [hp : Fact p.Prime] (k : Type) [Field k] (A : AbV
     res := r3 }⟩⟩
 
 /- English proof (translation)
-Establish `P` using `(TorsionTower.isPullback_y p k G A.X t 1).map (Over.forget _)`. Establish `e : (toUnit (SpAlg k (G.A 1))).left = spMap (algebraMap k (G.A 1))`. Simplify using `using Over.w (toUnit (SpAlg k (G.A 1)))`. Simplify using `only [Over.forget_map] at P`. Rewrite `P` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hf` using `finrank_torsion A (pow_ne_zero 1 hp.out.ne_zero) (t.y 1) P`. Establish `hr` using `G.rank_eq 1 ⊥`. Rewrite `hr` using `[Module.rankAtStalk_eq_finrank_of_free]`. Express the relevant statement in the definitionally equal form `Module.finrank k (G.A 1) = _ at hr`. Rewrite `hr` using `[hf, pow_one, Nat.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Nat.pow_right_injective hp.out.two_le hr).symm`.
+A detailed English derivation is pending.
 -/
 theorem height_eq {p : ℕ} [hp : Fact p.Prime] {k : Type} [Field k] (A : AbVar k) (G : PDivGroup p k)
     (t : G.TorsionTower A.X) : G.height = 2 * A.dim := by
@@ -94,7 +94,7 @@ theorem height_eq {p : ℕ} [hp : Fact p.Prime] {k : Type} [Field k] (A : AbVar 
   exact (Nat.pow_right_injective hp.out.two_le hr).symm
 
 /- English proof (translation)
-Introduce `p _ k _ A`. Take `⟨G, -, hG⟩` from `exists_tower p k A`. Conclude with `⟨⟨G, hG⟩, fun G t => height_eq A G t⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_tower_and_height_eq : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] (A : AbVar k),
     (∃ G : PDivGroup p k, Nonempty (G.TorsionTower A.X)) ∧

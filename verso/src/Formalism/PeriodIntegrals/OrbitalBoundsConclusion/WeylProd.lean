@@ -3,6 +3,6 @@ import Formalism.PeriodIntegrals.WeylProd
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeylProduct.WeylProd
 
 /- English proof (translation)
-The claim follows from `PI.WeylProdWork.weylProd`.
+A detailed English derivation is pending.
 -/
 theorem weyl_product_formula : PI.WeylProd := PI.WeylProdWork.weylProd

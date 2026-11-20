@@ -5,21 +5,19 @@ open Polynomial
 namespace Formalism.IrreducibleCountingLemmas.Z
 
 /- English proof (translation)
-Introduce `k _ P _ r f I _ n d h hdeg hsq hprod hhdeg hn hd hno`. Take `⟨v0⟩` from `‹Nonempty P›`. Establish `hdvd : ∀ v i, h v i ∣ f v`. Introduce `v i`. Rewrite using `[hprod v]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(dvd_pow_self (h v i) (by have := hd i; omega)).trans (Finset.dvd_prod_of_mem (fun j => h v j ^ d j) (Finset.mem_univ i))`. Establish `hd1 : ∀ i, d i = 1`. Introduce `i`. Assume the negation of the conclusion as `hne`. Establish `h2 : 2 ≤ d i` using `by have := hd i; omega`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq' : h v0 i * h v0 i ∣ f v0`. Rewrite using `[hprod v0]`. Use `(?_ : h v0 i * h v0 i ∣ h v0 i ^ d i).trans (Finset.dvd_prod_of_mem (fun j => h v0 j ^ d j) (Finset.mem_univ i))` and prove the remaining obligations. Rewrite using `[← pow_two]`. Conclude with `pow_dvd_pow _ h2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu` using `hsq v0 _ hsq'`. Establish `e1` using `Polynomial.natDegree_eq_zero_of_isUnit hu`. Establish `e2` using `hhdeg v0 i`. Establish `e3` using `hn i`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨hd1, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcard`. Use `push_neg at hcard`. Use `haveI : Nontrivial I := Fintype.one_lt_card_iff_nontrivial.mp hcard`. Take `⟨i, j, hij⟩` from `exists_pair_ne I`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hf0 : f v0 ≠ 0` using `(hsq v0).ne_zero`. Establish `hne : ∀ l, h v0 l ≠ 0`. Introduce `l hl`. Use `hdvd v0 l` as an intermediate fact. Rewrite `this` using `[hl, zero_dvd_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hf0 this`. Establish `hr : r = ∑ l, n l`. Rewrite using `[← hdeg v0, hprod v0, Polynomial.natDegree_prod _ _ (fun l _ => pow_ne_zero _ (hne l))]`. Simplify using `[Polynomial.natDegree_pow, hd1, hhdeg]`. Establish `hle : n i + n j ≤ ∑ l, n l` using `by classical`.
-
-Rewrite using `[← Finset.sum_pair hij]`. Conclude with `Finset.sum_le_sum_of_subset (Finset.subset_univ _)`. Break down `le_total (n i) (n j) with hij' | hji'` into its components or cases. Conclude with `hno ⟨n i, hn i, by omega, fun v => ⟨h v i, hdvd v i, hhdeg v i⟩⟩`. Conclude with `hno ⟨n j, hn j, by omega, fun v => ⟨h v j, hdvd v j, hhdeg v j⟩⟩`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem goodCuspidal_holds : GoodCuspidal := by
   intro k _ P _ r f I _ n d h hdeg hsq hprod hhdeg hn hd hno

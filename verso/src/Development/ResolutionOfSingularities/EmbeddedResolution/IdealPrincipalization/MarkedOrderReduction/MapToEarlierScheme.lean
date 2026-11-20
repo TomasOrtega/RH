@@ -31,9 +31,9 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Rewrite using `[MarkedIdealWithBoundary.sameNontrivialBoundary_iff]`. Proceed by induction on `L with`. Consider the case `nil => simp [MarkedIdealWithBoundary.nontrivialPart]`. Consider the case `cons D t ih`. Simplify using `only [MarkedIdealWithBoundary.nontrivialPart, List.cons_append, List.filter_cons] at ih ⊢`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[ih]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem sameNontrivialBoundary_append_top {X : Scheme.{u}} (L : List X.IdealSheafData) :
     MarkedIdealWithBoundary.SameNontrivialBoundary (L ++ [⊤]) L := by
@@ -45,7 +45,7 @@ private theorem sameNontrivialBoundary_append_top {X : Scheme.{u}} (L : List X.I
       rw [ih]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem sameNontrivialBoundary_of_eq {X : Scheme.{u}} {A B C : List X.IdealSheafData}
     (h : MarkedIdealWithBoundary.SameNontrivialBoundary A B) (e : C = B) : MarkedIdealWithBoundary.SameNontrivialBoundary A C := by
@@ -53,7 +53,7 @@ private theorem sameNontrivialBoundary_of_eq {X : Scheme.{u}} {A B C : List X.Id
   exact h
 
 /- English proof (translation)
-Establish `e : (1 : X.IdealSheafData) = ⊤` using `rfl`. Rewrite using `[← e, one_pow, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem top_pow_mul {X : Scheme.{u}} (J : X.IdealSheafData) (m : ℕ) :
     (⊤ : X.IdealSheafData) ^ m * J = J := by
@@ -61,7 +61,7 @@ private theorem top_pow_mul {X : Scheme.{u}} (J : X.IdealSheafData) (m : ℕ) :
   rw [← e, one_pow, one_mul]
 
 /- English proof (translation)
-Consider the cases of `h`. Establish `e : (eqToHom (congrArg F (rfl : a = a)) : F a ⟶ F a) = 𝟙 (F a)` using `rfl`. Rewrite using `[e, Category.comp_id]`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem comap_comp_eqToHom {F : ℕ → Scheme.{u}} (G : ∀ n, (F n).IdealSheafData)
     {a b : ℕ} (h : a = b) {W : Scheme.{u}} (f : W ⟶ F a) :
@@ -71,7 +71,7 @@ private theorem comap_comp_eqToHom {F : ℕ → Scheme.{u}} (G : ∀ n, (F n).Id
   rw [e, Category.comp_id]
 
 /- English proof (translation)
-Consider the cases of `h`. Establish `e : (eqToHom (congrArg F (rfl : a = a)) : F a ⟶ F a) = 𝟙 (F a)` using `rfl`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem map_comap_comp_eqToHom {F : ℕ → Scheme.{u}} (G : ∀ n, List (F n).IdealSheafData)
     {a b : ℕ} (h : a = b) {W : Scheme.{u}} (f : W ⟶ F a) :
@@ -83,13 +83,13 @@ private theorem map_comap_comp_eqToHom {F : ℕ → Scheme.{u}} (G : ∀ n, List
   simp
 
 /- English proof (translation)
-Use `hnoe` as an intermediate fact. Establish `he : ((s.center n).comap (s.map n)).comap f = ⊤`. Rewrite using `[← Scheme.IdealSheafData.comap_comp]`. Conclude with `hf`. Establish `hST : ∀ D : (s.obj n).IdealSheafData, (Blowup.strictTransform (s.map n) (s.center n) D).comap f = D.comap (f ≫ s.map n)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `D`. Rewrite using `[strictTransform_comap_of_comap_center_eq_top (s.map n) (s.center n) D f he, ← Scheme.IdealSheafData.comap_comp]`. Prove the components needed by the constructor for the conclusion. Establish `h1` using `s.ideal_succ n hn`. Simplify using `only [Blowup.exceptionalIdeal_eq_comap] at h1`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun J : (s.obj (n + 1)).IdealSheafData => J.comap f) h1`. Rewrite `h2` using `[Scheme.IdealSheafData.comap_mul, Scheme.IdealSheafData.comap_pow, he, top_pow_mul]`. Simplify `h2.symm` using `[Scheme.IdealSheafData.comap_comp]`. Establish `hfun : ((fun D : (s.obj (n + 1)).IdealSheafData => D.comap f) ∘ Blowup.strictTransform (s.map n) (s.center n)) = fun D => D.comap (f ≫ s.map n)`. Use function extensionality and compare the values at `D`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hST D`. Rewrite using `[s.boundary_succ n hn, List.map_append, List.map_map, List.map_cons, List.map_nil, Blowup.exceptionalIdeal_eq_comap, he, hfun]`. Conclude with `sameNontrivialBoundary_append_top _`.
+A detailed English derivation is pending.
 -/
 private theorem comap_ideal_boundary_succ_of_comap_center_eq_top {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -141,7 +141,7 @@ theorem mapToEarlierScheme_eq_map_comp_transitionMap {s' : SequenceOfBlowups X'}
     c.mapToEarlierScheme j hj i hi = c.map j hj ≫ s.transitionMap hi := rfl
 
 /- English proof (translation)
-Rewrite using `[mapToEarlierScheme_eq_map_comp_transitionMap, SequenceOfBlowups.transitionMap_self_eq_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mapToEarlierScheme_index {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (c : SequenceOfBlowupsPullback φ s' s)
     (j : ℕ) (hj : j ≤ s'.length) :
@@ -149,7 +149,7 @@ theorem mapToEarlierScheme_index {s' : SequenceOfBlowups X'} {s : SequenceOfBlow
   rw [mapToEarlierScheme_eq_map_comp_transitionMap, SequenceOfBlowups.transitionMap_self_eq_id, Category.comp_id]
 
 /- English proof (translation)
-Simplify using `only [mapToEarlierScheme_eq_map_comp_transitionMap, SequenceOfBlowups.blowupMorphism_eq_transitionMap, Category.assoc, SequenceOfBlowups.transitionMap_trans]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mapToEarlierScheme_eq_comp_blowupMorphism {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (c : SequenceOfBlowupsPullback φ s' s)
     (j : ℕ) (hj : j ≤ s'.length) (i : ℕ) (hi : i < c.idx j) :
@@ -157,7 +157,7 @@ theorem mapToEarlierScheme_eq_comp_blowupMorphism {s' : SequenceOfBlowups X'} {s
   simp only [mapToEarlierScheme_eq_map_comp_transitionMap, SequenceOfBlowups.blowupMorphism_eq_transitionMap, Category.assoc, SequenceOfBlowups.transitionMap_trans]
 
 /- English proof (translation)
-Rewrite using `[mapToEarlierScheme_eq_map_comp_transitionMap, Category.assoc, SequenceOfBlowups.transitionMap_comp_projectionToBase]`. Conclude with `(c.isPullback j hj).w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapToEarlierScheme_comp_projectionToBase {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (c : SequenceOfBlowupsPullback φ s' s)
     (j : ℕ) (hj : j ≤ s'.length) (i : ℕ) (hi : i ≤ c.idx j) :
@@ -166,11 +166,11 @@ theorem mapToEarlierScheme_comp_projectionToBase {s' : SequenceOfBlowups X'} {s 
   exact (c.isPullback j hj).w
 
 /- English proof (translation)
-Introduce `b`. Proceed by induction on `b with`. Consider the case `zero`. Introduce `_ a ha`. Rewrite using `[Nat.le_zero.1 ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ n ih`. Introduce `hb a ha`. Break down `Nat.lt_or_ge a (n + 1) with h | h` into its components or cases. Conclude with `le_trans (ih (Nat.le_of_succ_le hb) a (Nat.lt_succ_iff.1 h)) (le_of_lt (c.idx_strictMono n hb))`. Establish `hae : a = n + 1` using `le_antisymm ha h`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hae` using the available equality. Conclude with `le_rfl`.
+A detailed English derivation is pending.
 -/
 private theorem index_mono {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
     (c : SequenceOfBlowupsPullback φ s' s) :
@@ -190,7 +190,7 @@ private theorem index_mono {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
         exact le_rfl
 
 /- English proof (translation)
-Break down `Nat.lt_or_ge j s'.length with h | h` into its components or cases. Conclude with `le_of_lt (c.idx_lt j h)`. Establish `hje : j = s'.length` using `le_antisymm hj h`. Substitute `hje` using the available equality. Conclude with `le_of_eq c.idx_length`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem index_le_length {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (c : SequenceOfBlowupsPullback φ s' s)
     (j : ℕ) (hj : j ≤ s'.length) : c.idx j ≤ s.length := by
@@ -201,9 +201,9 @@ theorem index_le_length {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (c
     exact le_of_eq c.idx_length
 
 /- English proof (translation)
-Establish `hilt : i < s.length` using `lt_of_lt_of_le hi (c.index_le_length j hj)`. Establish `hw : c.mapToEarlierScheme j hj i (le_of_lt hi) ≫ s.projectionToBase i = s'.projectionToBase j ≫ φ` using `c.mapToEarlierScheme_comp_projectionToBase j hj i (le_of_lt hi)`. Rewrite using `[Scheme.IdealSheafData.eq_top_iff_support_eq_empty]`. Use extensionality with `y`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `hy`. Rewrite `hy` using `[Scheme.IdealSheafData.support_comap]`. Use `c.omitted i hilt hmiss _ hy ((s'.projectionToBase j).base y) ?_` and prove the remaining obligations. Establish `hb : (c.mapToEarlierScheme j hj i (le_of_lt hi) ≫ s.projectionToBase i).base y = (s'.projectionToBase j ≫ φ).base y` using `by rw [hw]`. Simplify using `using hb.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem comap_center_mapToEarlierScheme_eq_top_of_unmatched {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
     (c : SequenceOfBlowupsPullback φ s' s) (j : ℕ) (hj : j ≤ s'.length) (i : ℕ) (hi : i < c.idx j)
@@ -223,7 +223,7 @@ theorem comap_center_mapToEarlierScheme_eq_top_of_unmatched {s' : SequenceOfBlow
   simpa using hb.symm
 
 /- English proof (translation)
-Introduce `j' hj' hEq`. Break down `Nat.lt_or_ge j' (j + 1) with h | h` into its components or cases. Establish `hm` using `index_mono c j (Nat.le_of_succ_le hj) j' (Nat.lt_succ_iff.1 h)`. Use linear arithmetic over natural numbers and integers. Establish `hm` using `index_mono c j' (le_of_lt hj') (j + 1) h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -239,7 +239,7 @@ theorem index_ne_of_index_lt_of_lt_index_succ {s' : SequenceOfBlowups X'} {s : S
     omega
 
 /- English proof (translation)
-Introduce `j' hj' hEq`. Establish `hm` using `index_mono c j' (le_of_lt hj') 0 (Nat.zero_le _)`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem index_ne_of_lt_index_zero {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
     (c : SequenceOfBlowupsPullback φ s' s) (i : ℕ) (hi : i < c.idx 0) :
@@ -249,7 +249,7 @@ theorem index_ne_of_lt_index_zero {s' : SequenceOfBlowups X'} {s : SequenceOfBlo
   omega
 
 /- English proof (translation)
-Establish `h : MorphismProperty.IsStableUnderBaseChange (@AlgebraicGeometry.Flat)` using `inferInstance`. Conclude with `h.of_isPullback (c.isPullback j hj).flip inferInstance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem flat_map {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (c : SequenceOfBlowupsPullback φ s' s)
     [AlgebraicGeometry.Flat φ] (j : ℕ) (hj : j ≤ s'.length) :
@@ -258,13 +258,13 @@ theorem flat_map {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (c : Sequ
   exact h.of_isPullback (c.isPullback j hj).flip inferInstance
 
 /- English proof (translation)
-Establish `hidxlt : c.idx j < s.length` using `c.idx_lt j hj`. Establish `hbl : Blowup.IsBlowupAlongIdealSheaf (s.transitionMapSucc (c.idx j)) (s.center (c.idx j))` using `s.isBlowupAlongIdealSheaf_blowupMorphism _ hidxlt`. Establish `: AlgebraicGeometry.Flat (c.map j (le_of_lt hj))` using `c.flat_map j (le_of_lt hj)`. Establish `hbj : Blowup.IsBlowupAlongIdealSheaf (s'.transitionMapSucc j) (s'.center j)` using `s'.isBlowupAlongIdealSheaf_blowupMorphism j hj`. Establish `hbl' : Blowup.IsBlowupAlongIdealSheaf (s'.transitionMapSucc j) ((s.center (c.idx j)).comap (c.map j (le_of_lt hj)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← c.center_comap j hj]`. Conclude with `hbj`. Take `⟨q, hq, hsq⟩` from `hbl.exists_isPullback_of_flat (c.map j (le_of_lt hj)) hbl'`. Establish `hcart0 : Blowup.IsLocallyGeneratedByNonZeroDivisor ((s'.center j).comap (s'.transitionMapSucc j))`. Unfold `FunctorialResolution.Blowup.IsBlowupAlongIdealSheaf at hbj`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `hbj.1`. Establish `hcart : Blowup.IsLocallyGeneratedByNonZeroDivisor ((s.center (c.idx j)).comap (s'.transitionMapSucc j ≫ c.map j (le_of_lt hj)))`. Rewrite using `[AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, ← c.center_comap j hj]`. Conclude with `hcart0`. Establish `hstep : c.mapToEarlierScheme (j + 1) hj (c.idx j + 1) (c.idx_strictMono j hj) ≫ s.transitionMapSucc (c.idx j) = s'.transitionMapSucc j ≫ c.map j (le_of_lt hj)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← c.mapToEarlierScheme_eq_comp_blowupMorphism (j + 1) hj (c.idx j) (c.idx_strictMono j hj), mapToEarlierScheme_eq_map_comp_transitionMap]`. Conclude with `(c.step j hj).symm`. Establish `heq : c.mapToEarlierScheme (j + 1) hj (c.idx j + 1) (c.idx_strictMono j hj) = q` using `hbl.hom_ext_of_comp_eq hcart hstep hq`. Rewrite using `[heq]`. Conclude with `hsq`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_blowupMorphism {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (c : SequenceOfBlowupsPullback φ s' s)
     [AlgebraicGeometry.Flat φ] (j : ℕ) (hj : j < s'.length) :
@@ -312,7 +312,7 @@ private def markedMap {k k' : Type u} [Field k] [Field k'] {A B : Scheme.{u}}
   c.map j hj
 
 /- English proof (translation)
-Establish `h` using `c.mapToEarlierScheme_comp_projectionToBase j hj i hi`. Rewrite `h` using `[MarkedBlowupSequenceData.toMarkedSequence_projectionToBase, MarkedBlowupSequenceData.toMarkedSequence_projectionToBase]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem markedMapToEarlierScheme_comp_projectionToBase {k k' : Type u} [Field k] [Field k'] {A B : Scheme.{u}}
     {p : A ⟶ Spec (CommRingCat.of k)} {q : B ⟶ Spec (CommRingCat.of k')} {g : B ⟶ A}
@@ -326,7 +326,7 @@ private theorem markedMapToEarlierScheme_comp_projectionToBase {k k' : Type u} [
   exact h
 
 /- English proof (translation)
-The claim follows from `c.mapToEarlierScheme_index j hj`.
+A detailed English derivation is pending.
 -/
 private theorem markedMapToEarlierScheme_index {k k' : Type u} [Field k] [Field k'] {A B : Scheme.{u}}
     {p : A ⟶ Spec (CommRingCat.of k)} {q : B ⟶ Spec (CommRingCat.of k')} {g : B ⟶ A}
@@ -338,57 +338,51 @@ private theorem markedMapToEarlierScheme_index {k k' : Type u} [Field k] [Field 
   c.mapToEarlierScheme_index j hj
 
 /- English proof (translation)
-Substitute `hI` using the available equality. Establish `hrun : ∀ (j : ℕ) (hj : j ≤ s'.length) (b : ℕ) (hb : b ≤ c.idx j) (a : ℕ) (hab : a ≤ b), (∀ t : ℕ, a ≤ t → t < b → ∀ j' : ℕ, j' < s'.length → c.idx j' ≠ t) → (s.ideal a).comap (markedMapToEarlierScheme s s' c j hj a (le_trans hab hb)) = (s.ideal b).comap (markedMapToEarlierScheme …`. Introduce `j hj b`. Proceed by induction on `b with`. Consider the case `zero`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `hb a hab _`. Establish `ha0 : a = 0` using `Nat.le_zero.1 hab`. Substitute `ha0` using the available equality. Conclude with `⟨rfl, MarkedIdealWithBoundary.SameNontrivialBoundary.refl _⟩`. Consider the case `succ nn ihb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `hb a hab hun`. Break down `Nat.lt_or_ge a (nn + 1) with h | h` into its components or cases. Establish `han : a ≤ nn` using `Nat.lt_succ_iff.1 h`. Establish `hnb : nn ≤ c.idx j` using `le_trans (Nat.le_succ nn) hb`. Take `⟨i1, b1⟩` from `ihb hnb a han (fun t ht ht2 => hun t ht (Nat.lt_succ_of_lt ht2))`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hnlt : nn < c.idx j` using `lt_of_lt_of_le (Nat.lt_succ_self nn) hb`. Establish `hlen : c.idx j ≤ s.length` using `c.index_le_length j hj`. Establish `hnlen : nn < s.length` using `lt_of_lt_of_le hnlt hlen`. Establish `hntop : (s.center nn).comap (markedMapToEarlierScheme s s' c j hj nn hnb) = ⊤`. Establish `h0` using `c.comap_center_mapToEarlierScheme_eq_top_of_unmatched j hj nn hnlt (hun nn han (Nat.lt_succ_self nn))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[MarkedBlowupSequenceData.toMarkedSequence_center]`. Conclude with `h0`. Establish `hmt : markedMapToEarlierScheme s s' c j hj nn hnb = markedMapToEarlierScheme s s' c j hj (nn + 1) hb ≫ s.map nn`. Establish `h0` using `c.mapToEarlierScheme_eq_comp_blowupMorphism j hj nn hnlt`. Rewrite `h0` using `[MarkedBlowupSequenceData.toMarkedSequence_blowupMorphism]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h0`. Establish `htop2 : (s.center nn).comap (markedMapToEarlierScheme s s' c j hj (nn + 1) hb ≫ s.map nn) = ⊤`. Rewrite using `[← hmt]`. Conclude with `hntop`. Take `⟨i2, b2⟩` from `comap_ideal_boundary_succ_of_comap_center_eq_top s nn hnlen (markedMapToEarlierScheme s s' c j hj (nn + 1) hb) (hN (nn + 1) hnlen) htop2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Use `i1.trans ?_` and prove the remaining obligations. Rewrite using `[hmt]`. Conclude with `i2`. Use `b1.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 
-Rewrite using `[hmt]`. Conclude with `b2.symm`. Establish `hae : a = nn + 1` using `le_antisymm hab h`. Substitute `hae` using the available equality. Conclude with `⟨rfl, MarkedIdealWithBoundary.SameNontrivialBoundary.refl _⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `main : ∀ (j : ℕ) (hj : j ≤ s'.length), s'.ideal j = (s.ideal (c.idx j)).comap (markedMap s s' c j hj) ∧ MarkedIdealWithBoundary.SameNontrivialBoundary (s'.boundary j) ((s.boundary (c.idx j)).map (fun D => D.comap (markedMap s s' c j hj)))`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `hj0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : (0 : ℕ) ≤ c.idx 0` using `Nat.zero_le _`. Take `⟨r1, r2⟩` from `hrun 0 hj0 (c.idx 0) le_rfl 0 hz (fun t _ ht => c.index_ne_of_lt_index_zero t ht)`. Establish `hmi : markedMapToEarlierScheme s s' c 0 hj0 (c.idx 0) le_rfl = markedMap s s' c 0 hj0` using `markedMapToEarlierScheme_index s s' c 0 hj0`. Establish `e1 : s'.ideal 0 = (s.ideal 0).comap (markedMapToEarlierScheme s s' c 0 hj0 0 hz)`. Rewrite using `[s'.ideal_zero, s.ideal_zero, ← s.proj_zero, ← s'.proj_zero, ← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, markedMapToEarlierScheme_comp_projectionToBase]`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Use `e1.trans ?_` and prove the remaining obligations. Rewrite using `[← hmi]`. Conclude with `r1`. Establish `hmap : MarkedIdealWithBoundary.SameNontrivialBoundary (E'.map (fun D => D.comap (s'.proj 0))) ((E.map (fun D => D.comap g)).map (fun D => D.comap (s'.proj 0)))` using `MarkedIdealWithBoundary.SameNontrivialBoundary.map _ (by simp) hE`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hlist : (E.map (fun D => D.comap g)).map (fun D => D.comap (s'.proj 0)) = (E.map (fun D => D.comap (s.proj 0))).map (fun D => D.comap (markedMapToEarlierScheme s s' c 0 hj0 0 hz))`. Simplify using `only [List.map_map]`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `D _`. Simplify using `only [Function.comp_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, markedMapToEarlierScheme_comp_projectionToBase]`. Establish `hb0 : s'.boundary 0 = E'.map (fun D => D.comap (s'.proj 0))`. Rewrite using `[s'.boundary_zero, ← s'.proj_zero]`. Establish `hb0s : s.boundary 0 = E.map (fun D => D.comap (s.proj 0))`. Rewrite using `[s.boundary_zero, ← s.proj_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hb0]`. Use `hmap.trans ?_` and prove the remaining obligations. Rewrite using `[hlist, ← hb0s, ← hmi]`. Conclude with `r2`. Consider the case `succ n ih`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hj`. Establish `hn : n < s'.length` using `hj`. Establish `hnle : n ≤ s'.length` using `le_of_lt hn`. Take `⟨ihI, ihB⟩` from `ih hnle`. Establish `hidxlt : c.idx n < s.length` using `c.idx_lt n hn`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hstr : c.idx n < c.idx (n + 1)` using `c.idx_strictMono n hn`. Establish `hcen : s'.center n = (s.center (c.idx n)).comap (markedMap s s' c n hnle)`. Establish `h0` using `c.center_comap n hn`. Rewrite `h0` using `[MarkedBlowupSequenceData.toMarkedSequence_center, MarkedBlowupSequenceData.toMarkedSequence_center]`. Conclude with `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : IsPullback (markedMapToEarlierScheme s s' c (n + 1) hj (c.idx n + 1) hstr) (s'.map n) (s.map (c.idx n)) (markedMap s s' c n hnle)`. Establish `h0` using `c.isPullback_blowupMorphism n hn`. Rewrite `h0` using `[MarkedBlowupSequenceData.toMarkedSequence_blowupMorphism, MarkedBlowupSequenceData.toMarkedSequence_blowupMorphism]`. Conclude with `h0`. Establish `hw` using `hsq.w`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hexc : (s'.center n).comap (s'.map n) = ((s.center (c.idx n)).comap (s.map (c.idx n))).comap (markedMapToEarlierScheme s s' c (n + 1) hj (c.idx n + 1) hstr)`. Rewrite using `[hcen, ← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, hw]`. Establish `hblow : Blowup.IsBlowupAlongIdealSheaf (s.map (c.idx n)) (s.center (c.idx n))` using `s.isBlowup _ hidxlt`. Establish `hb' : Blowup.IsBlowupAlongIdealSheaf (s'.map n) (s'.center n)` using `s'.isBlowup n hn`. Establish `hcart : Blowup.IsLocallyGeneratedByNonZeroDivisor ((s'.center n).comap (s'.map n))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `FunctorialResolution.Blowup.IsBlowupAlongIdealSheaf at hb'`. Conclude with `hb'.1`. Establish `hstepI : s'.ideal (n + 1) = (s.ideal (c.idx n + 1)).comap (markedMapToEarlierScheme s s' c (n + 1) hj (c.idx n + 1) hstr)`. Use `(hcart.pow m).eq_of_mul_eq_mul ?_` and prove the remaining obligations. Establish `h1` using `s'.ideal_succ n hn`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `s.ideal_succ (c.idx n) hidxlt`. Simplify using `only [Blowup.exceptionalIdeal_eq_comap] at h1 h2`. Rewrite using `[h1, ihI, ← Scheme.IdealSheafData.comap_comp, ← hw, Scheme.IdealSheafData.comap_comp, ← h2, Scheme.IdealSheafData.comap_mul, Scheme.IdealSheafData.comap_pow, ← hexc]`. Establish `: AlgebraicGeometry.Flat (markedMap s s' c n hnle)` using `c.flat_map n hnle`. Use `hN (c.idx n + 1) hidxlt` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hN' (n + 1) hj` as an intermediate fact. Establish `hST : ∀ D : (s.obj (c.idx n)).IdealSheafData, (Blowup.strictTransform (s.map (c.idx n)) (s.center (c.idx n)) D).comap (markedMapToEarlierScheme s s' c (n + 1) hj (c.idx n + 1) hstr) = Blowup.strictTransform (s'.map n) (s'.center n) (D.comap (markedMap s s' c n hnle))`. Introduce `D`. Rewrite using `[comap_strictTransform_of_flat_of_isLocallyNoetherian (s.map (c.idx n)) (markedMap s s' c n hnle) (s'.map n) (markedMapToEarlierScheme s s' c (n + 1) hj (c.idx n + 1) hstr) hsq (s.center (c.idx n)) D hblow, ← hcen]`. Establish `hB2 : ((s.boundary (c.idx n)).map (fun D => D.comap (markedMap s s' c n hnle))).map (Blowup.strictTransform (s'.map n) (s'.center n)) ++ [(s'.center n).comap (s'.map n)] = (s.boundary (c.idx n + 1)).map (fun D => D.comap (markedMapToEarlierScheme s s' c (n + 1) hj (c.idx n + 1) h …`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[s.boundary_succ (c.idx n) hidxlt, List.map_append, List.map_map, List.map_map, List.map_cons, List.map_nil, Blowup.exceptionalIdeal_eq_comap, ← hexc]`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `D _`. Conclude with `(hST D).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hB1 : MarkedIdealWithBoundary.SameNontrivialBoundary (s'.boundary (n + 1)) (((s.boundary (c.idx n)).map (fun D => D.comap (markedMap s s' c n hnle))).map (Blowup.strictTransform (s'.map n) (s'.center n)) ++ [(s'.center n).comap (s'.map n)])`. Rewrite using `[s'.boundary_succ n hn, Blowup.exceptionalIdeal_eq_comap]`. Conclude with `MonomialCenter.sameNontrivialBoundary_append (MarkedIdealWithBoundary.SameNontrivialBoundary.map _ (strictTransform_top _ _) ihB) (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _)`. Take `⟨r1, r2⟩` from `hrun (n + 1) hj (c.idx (n + 1)) le_rfl (c.idx n + 1) hstr (fun t ht ht2 => c.index_ne_of_index_lt_of_lt_index_succ n hj t (by omega) ht2)`. Establish `hmi : markedMapToEarlierScheme s s' c (n + 1) hj (c.idx (n + 1)) le_rfl = markedMap s s' c (n + 1) hj` using `markedMapToEarlierScheme_index s s' c (n + 1) hj`.
-
-Prove the components needed by the constructor for the conclusion. Use `hstepI.trans ?_` and prove the remaining obligations. Rewrite using `[← hmi]`. Conclude with `r1`. Use `hB1.trans ?_` and prove the remaining obligations.
-
-Rewrite using `[hB2, ← hmi]`. Conclude with `r2`. Take `⟨hmI, hmB⟩` from `main s'.length le_rfl`. Establish `e1 : (s.ideal s.length).comap c.lastMap = (s.ideal (c.idx s'.length)).comap (markedMap s s' c s'.length le_rfl)` using `comap_comp_eqToHom (F := s.toMarkedSequenceOfBlowups.toSequenceOfBlowups.schemeAt) (fun n => s.ideal n) c.idx_length (c.map s'.length le_rfl)`. Establish `e2 : (s.boundary s.length).map (fun D => D.comap c.lastMap) = (s.boundary (c.idx s'.length)).map (fun D => D.comap (markedMap s s' c s'.length le_rfl))` using `map_comap_comp_eqToHom (F := s.toMarkedSequenceOfBlowups.toSequenceOfBlowups.schemeAt) (fun n => s.boundary n) c.idx_length (c.map s'.length le_rfl)`.
-
-Conclude with `⟨hmI.trans e1.symm, sameNontrivialBoundary_of_eq hmB e2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ideal_boundary_last_eq_comap_lastMap {k k' : Type u} [Field k] [Field k'] {X Y : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {q : Y ⟶ Spec (CommRingCat.of k')}

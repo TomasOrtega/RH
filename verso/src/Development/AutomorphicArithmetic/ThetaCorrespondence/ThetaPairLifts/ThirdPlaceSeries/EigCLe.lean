@@ -12,11 +12,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 noncomputable section
 namespace GlobalTheory.EigGoodTypes
 /- English proof (translation)
-Take `⟨-, Sig, ⟨P0, hP0, hB0⟩, hg⟩` from `hx`. Set `σ' : D.ntypes.Par` to `P.ty.par.eP.symm ⟨Sig, sig_parC h0 h4 h5 hB0 hg⟩`. Establish `hloc : ∀ w, D.ntypes.locPar σ' w = isoLoc D.nd D.naut Sig w` using `fun w => by`. Establish `e : P.ty.par.eP σ' = ⟨Sig, sig_parC h0 h4 h5 hB0 hg⟩` using `Equiv.apply_symm_apply _ _`. Rewrite using `[P.ty.par.locPar_def, e]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨σ', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hMt i σ']`. Use `iSup₂_le fun Q hQ => le_iSup₂_of_le Q ⟨Sig, fun w => (hloc w).symm, ?_⟩ le_rfl` and prove the remaining obligations. Establish `hQ' : D.naut.ptV i Q = some x` using `hQ`. Take `⟨Pa, hPa⟩` from `hbc i Q`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hperm` using `((h41 i).2.1 P0 Q (by rw [hP0]; simp) (hP0.trans hQ'.symm)).1 _ _ hB0 hPa`. Conclude with `GlobalTheory.RowThetaParam.isBCV_of_perm D.nd D.naut hperm.symm hPa`. Introduce `k`. Simplify using `only [D.ntypes.labPar_def, hloc]`. Conclude with `hg k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eigC_le_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D) (h41 : _root_.Formalism.MainNotions.SumRepresentations.provisionFortyOne D)
     (hMt : MtParTie D.nd D.naut D.ntypes) (hbc : Formalism.MainNotions.SumRepresentations.adm1 D) (h0 : SumRepresentations.tie0 D) (h4 : SumRepresentations.ArchimedeanSignatureMatching D)
@@ -38,7 +38,7 @@ theorem eigC_le_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} (P : 
     simp only [D.ntypes.labPar_def, hloc]
     exact hg k
 /- English proof (translation)
-Introduce `hL D P X h41 _ hMt hbc h0 h4 h5 hE0 hRead i hμ j hj x hx f hf y hy`. Take `⟨σ', hle, hgood⟩` from `_root_.GlobalTheory.EigGoodTypes.eigC_le_alt P h41 hMt hbc h0 h4 h5 i x hx`. Conclude with `(hRead _ hμ j f y hy).1 (onMt_cast hj f (hE0 i σ' _ (hle hf) hgood))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main_alt_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), ∀ (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp),
     _root_.Formalism.MainNotions.SumRepresentations.provisionFortyOne D → Formalism.MainNotions.SumRepresentations.tieLab D → MtParTie D.nd D.naut D.ntypes → Formalism.MainNotions.SumRepresentations.adm1 D → Formalism.MainNotions.SumRepresentations.tie0 D →

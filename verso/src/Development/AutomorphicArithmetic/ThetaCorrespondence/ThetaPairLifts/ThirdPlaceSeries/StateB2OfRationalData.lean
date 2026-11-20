@@ -23,9 +23,9 @@ variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} {G : Type} [Grou
   {F : Face3 D A3} {X0 : BaseLevelRowSide D} {Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0} {cG : G0 R.Pg D.R.r ≃* G0g D.nd} {cf : CharFrame D}
   {g : GlobalTheory.RealGeo.GeoHalf C R.toRealDat fun _ => 1}
 /- English proof (translation)
-Consider the cases of `eq_of_heq hrow`. Consider the cases of `eq_of_heq hS`. Consider the cases of `eq_of_heq hhL`. Consider the cases of `eq_of_heq heig`. Consider the cases of `eq_of_heq hθ`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `eq_of_heq hSb`. Consider the cases of `hPV`. Consider the cases of `eq_of_heq hPq`. Conclude with `⟨⟨⟨⟨Bs, Sb_le, rootsOfUnityRing_le_wittIntegers, lam⟩, YS, eF, fi, ser, tau⟩, geo⟩⟩`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 -/
 theorem state_b2_of_rational_data_alt {a : _root_.GlobalTheory.HeightCounting.HeightCountingBaseData hL D cf (repOf Y)} {n : InRat Y cG} {PV : ∀ i : Fin D.R.m, principalLevelFrame.RowPsi (Vc D i) D.R.nV}
     {Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host}
@@ -56,9 +56,9 @@ end Gen2
 section MtCopy
 variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w}
 /- English proof (translation)
-Break down `m with ⟨z⟩` into its components or cases. Simplify using `only at hm`. Substitute `hm` using the available equality. Use `⟨{ M := (by with_unfolding_all exact (((thTw (Dof x) th).mt l.mt.M) :)) ad := { PV := fun i => (by with_unfolding_all exact ((rowPsi (a := x.o.Z) (oTw x (thTw (Dof x) th)).Z (l.mt.ad.PV ((i)))) : _)) std := (by with_unfolding_all exact (l.mt.ad.std :)) eW := (by with_unfolding_al …` and prove the remaining obligations. Establish `e` using `congrFun (eq_of_heq (hj μ h i y)) ((l.mt.ad.PV i).ψ g)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify by unfolding definitions. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Eq.trans ((by with_unfolding_all exact ((l.mt.ad.read μ h i y g) :))) e.symm`. Use `rat := (by with_unfolding_all exact (l.mt.ad.rat :))`. Use `wt := (by with_unfolding_all exact (l.mt.ad.wt :))`. Use `id := (by with_unfolding_all exact (l.mt.ad.id :)) }`. Use `mt := (by with_unfolding_all exact (((_root_.GlobalTheory.HeightCounting.twist_settings_unread_alt (Dof x) (cfOf x) l.a.jE l.a.A (thTw (Dof x) th)).2.1 _ _ _ l.mt.mt) :)) }, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_in_mt_theta_twist_pv_eq (x : St P) (l : _root_.GlobalTheory.HeightCounting.Up.IntermediateLevel hL x) (th : NTh (Dof x).R (Dof x).host (Dof x).what₂ (Dof x).LL0 (Dof x).nd (Dof x).ntw (Dof x).nexp)
     (m : Moved (oTw x (thTw (Dof x) th))) (hm : m.z = datTw x (thTw (Dof x) th)) (hc : m.Copy) (hh : m.Coh)

@@ -38,7 +38,7 @@ def intVec (LL' : FinExt l) (k : ℕ) : Submodule ↥(OL LL') (Fin k → ↥LL'.
     exact mul_mem c.2 (hv i)
 
 /- English proof (translation)
-Establish `hx' : IsIntegral ℤ_[l] x` using `hx`. Conclude with `hx'.map ((incl h).restrictScalars ℤ_[l])`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem incl_integral {LL LL' : FinExt l} (h : LL.1 ≤ LL'.1) {x : ↥LL.1} (hx : x ∈ OL LL) :
     incl h x ∈ OL LL' := by
@@ -62,7 +62,7 @@ def intVecEquiv (LL' : FinExt l) (k : ℕ) : ↥(intVec LL' k) ≃ₗ[↥(OL LL'
   right_inv _ := rfl
 
 /- English proof (translation)
-Rewrite using `[matRep, MonoidHom.comp_apply]`. Express the relevant statement in the definitionally equal form `LinearMap.toMatrix b b (T.ρ g) i j ∈ OL LL`. Rewrite using `[LinearMap.toMatrix_apply]`. Conclude with `hb.2 _ (T.L.stable g _ (hb.1 j)) i`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr_integral {LL : FinExt l} {T : LocLat G ℚ_[l] ↥LL.1 ↥(OL LL)} {k : ℕ}
     {b : Module.Basis (Fin k) ↥LL.1 T.V} (hb : IsLatBasis T b) (g : G) (i j : Fin k) :
@@ -105,7 +105,7 @@ abbrev extLat {LL LL' : FinExt l} (h : LL.1 ≤ LL'.1) (T : LocLat G ℚ_[l] ↥
         · simp [Pi.single_apply, Ne.symm hij, zero_mem] }
 
 /- English proof (translation)
-Rewrite using `[LinearMap.toMatrix_apply]`. Conclude with `hb₂.2 _ (F.T_le _ (hb₁.1 j)) i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_integral {LL : FinExt l} {T₁ T₂ : LocLat G ℚ_[l] ↥LL.1 ↥(OL LL)} {k₁ k₂ : ℕ}
     {b₁ : Module.Basis (Fin k₁) ↥LL.1 T₁.V} {b₂ : Module.Basis (Fin k₂) ↥LL.1 T₂.V}
@@ -121,11 +121,11 @@ def extMat {LL LL' : FinExt l} (h : LL.1 ≤ LL'.1) {T₁ T₂ : LocLat G ℚ_[l
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `e1 : matRepExt h T₁ b₁ g = (LinearMap.toMatrix b₁ b₁ (T₁.ρ g)).map (incl h)` using `rfl`. Establish `e2 : matRepExt h T₂ b₂ g = (LinearMap.toMatrix b₂ b₂ (T₂.ρ g)).map (incl h)` using `rfl`. Establish `key : LinearMap.toMatrix b₁ b₂ F.f * LinearMap.toMatrix b₁ b₁ (T₁.ρ g) = LinearMap.toMatrix b₂ b₂ (T₂.ρ g) * LinearMap.toMatrix b₁ b₂ F.f`. Establish `c1` using `LinearMap.toMatrix_comp b₁ b₁ b₂ F.f (T₁.ρ g)`. Establish `c2` using `LinearMap.toMatrix_comp b₁ b₂ b₂ (T₂.ρ g) F.f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : F.f ∘ₗ T₁.ρ g = T₂.ρ g ∘ₗ F.f` using `LinearMap.ext fun y => F.equiv g y`. Rewrite using `[← c1, ← c2, hc]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `congrArg (fun M => incl h (M i j)) key` as an intermediate fact. Simplify using `only [Matrix.mul_apply, map_sum, map_mul] at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `this` using `only [e1, e2, Matrix.mul_apply, extMat, Matrix.map_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem extMat_comm {LL LL' : FinExt l} (h : LL.1 ≤ LL'.1) {T₁ T₂ : LocLat G ℚ_[l] ↥LL.1 ↥(OL LL)} {k₁ k₂ : ℕ}
     (b₁ : Module.Basis (Fin k₁) ↥LL.1 T₁.V) (b₂ : Module.Basis (Fin k₂) ↥LL.1 T₂.V) (F : LatHom T₁.L T₂.L)

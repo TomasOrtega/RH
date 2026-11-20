@@ -46,9 +46,9 @@ def siegelPtZero : SiegelPt 0 where
   im_posDef := ⟨Matrix.ext fun i _ => i.elim0, fun _v hv => (hv (Finsupp.ext fun i => i.elim0)).elim⟩
 
 /- English proof (translation)
-Establish `hf : f = fun _ => f 0` using `funext fun z => congrArg f (Subsingleton.elim z 0)`. Use `⟨?_, fun v z => ?_, fun u z => ?_⟩` and prove the remaining obligations. Rewrite using `[hf]`. Conclude with `differentiable_const _`. Rewrite using `[Subsingleton.elim (z + intVec v) z]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[perFactor, dotProduct]`. Rewrite using `[Subsingleton.elim (z + siegelPtZero.τ *ᵥ intVec u) z]`. Simplify using `[autFactor, dotProduct]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_thetaSec_siegelPtZero (n : ℕ) (f : (Fin 0 → ℂ) → ℂ) :
     f ∈ thetaSec siegelPtZero (HalfChar.zero 0) n := by
@@ -74,7 +74,7 @@ def pointForm : RigSymForm ℂ where
   rig_mem := fun n f _ => ⟨(1 : ℂ) ^ n * f 0, by simp⟩
 
 /- English proof (translation)
-The claim follows from `funext fun i => (show Fin 0 from i).elim0`.
+A detailed English derivation is pending.
 -/
 theorem pointForm_fn_eq (z w : Fin pointForm.g → ℂ) : z = w :=
   funext fun i => (show Fin 0 from i).elim0
@@ -82,11 +82,11 @@ theorem pointForm_fn_eq (z w : Fin pointForm.g → ℂ) : z = w :=
 def pointX : Fin (0 + 1) → pointForm.Fn := fun _ _ => 1
 
 /- English proof (translation)
-Use `⟨fun i => mem_thetaSec_siegelPtZero 3 _, ?_, ?_⟩` and prove the remaining obligations. Establish `: Unique (Fin (0 + 1))` using `inferInstanceAs (Unique (Fin 1))`. Rewrite using `[linearIndependent_unique_iff]`. Introduce `h`. Use `congrFun h 0` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[pointX] at this`. Use `le_antisymm (Submodule.span_le.2 ?_) fun f _ => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `mem_thetaSec_siegelPtZero 3 _`. Establish `hf : f = f 0 • pointX 0` using `funext fun z => by`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[pointX, pointForm_fn_eq z 0]`. Rewrite using `[hf]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pointX_isBasisOf : pointForm.IsBasisOf 3 pointX := by
   refine ⟨fun i => mem_thetaSec_siegelPtZero 3 _, ?_, ?_⟩
@@ -103,9 +103,9 @@ theorem pointX_isBasisOf : pointForm.IsBasisOf 3 pointX := by
       exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)
 
 /- English proof (translation)
-Establish `hw` using `(mem_weightedHomogeneousSubmodule _ _ _ _).1 hm`. Use extensionality with `d`. Rewrite using `[coeff_zero]`. Assume the negation of the conclusion as `hd`. Establish `e` using `hw hd`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hnn : 0 ≤ Finsupp.weight (fun _ : Fin (N + 1) => (1 : ℤ)) d`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum]`. Conclude with `Finset.sum_nonneg fun i _ => nsmul_nonneg zero_le_one _`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem polyPiece_eq_zero_of_neg {N : ℕ} {c : ℤ} (hc : c < 0) {m : Poly ℂ N}
     (hm : m ∈ polyPiece ℂ N c) : m = 0 := by
@@ -120,11 +120,11 @@ theorem polyPiece_eq_zero_of_neg {N : ℕ} {c : ℤ} (hc : c < 0) {m : Poly ℂ 
   omega
 
 /- English proof (translation)
-Establish `hw` using `(mem_weightedHomogeneousSubmodule _ _ _ _).1 hm`. Establish `key : ∀ d d' : Fin (0 + 1) →₀ ℕ, coeff d m ≠ 0 → coeff d' m ≠ 0 → d = d'`. Introduce `d d' hd hd'`. Establish `e1` using `hw hd`. Establish `e2` using `hw hd'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1` using `[← e2]`. Use extensionality with `i`. Use `fin_cases i`. Simplify `e1` using `[Finsupp.weight_apply, Finsupp.sum_fintype]`. Use extensionality with `d`.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_zero]`. Assume the negation of the conclusion as `hd`. Apply `hd` to reduce the goal to its premises. Rewrite `h0` using `[MvPolynomial.eval_eq, Finset.sum_eq_single d (fun d' hd' hne => absurd (key d d' hd (mem_support_iff.1 hd')).symm hne) (fun h => absurd (mem_support_iff.2 hd) h)]`. Simplify using `using h0`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem polyPiece_zero_eq_zero_of_eval {c : ℤ} {m : Poly ℂ 0} (hm : m ∈ polyPiece ℂ 0 c)
     (h0 : MvPolynomial.eval (fun _ => (1 : ℂ)) m = 0) : m = 0 := by
@@ -150,7 +150,7 @@ def pointι : Poly ℂ 0 →ₗ[ℂ] pointForm.Fn :=
   LinearMap.pi fun z => (aeval fun j => pointX j z).toLinearMap
 
 /- English proof (translation)
-Simplify using `[pointι, pointX]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pointι_apply (p : Poly ℂ 0) (z : Fin pointForm.g → ℂ) :
     pointι p z = MvPolynomial.eval (fun _ => (1 : ℂ)) p := by
@@ -184,7 +184,7 @@ def pointChartModel : ResidueChartModel pointForm 3 0 pointX where
       simp
 
 /- English proof (translation)
-Use `⟨inferInstanceAs (Nontrivial (Poly ℂ 0)), fun h => ?_⟩` and prove the remaining obligations. Use `congrFun h 0` as an intermediate fact. Express the relevant statement in the definitionally equal form `pointι 1 0 = 0 at this`. Rewrite `this` using `[pointι_apply]`. Simplify using `at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pointChartModel_nontrivial :
     Nontrivial pointChartModel.M ∧ pointChartModel.ι (1 : Poly ℂ 0) ≠ 0 := by

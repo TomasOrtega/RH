@@ -12,16 +12,16 @@ variable {C D : Type} [CommRing C] [CommRing D] (v : C →+* D) (Q : Ideal D) [Q
 abbrev phi : C →+* D ⧸ Q := (Ideal.Quotient.mk Q).comp v
 
 /- English proof (translation)
-Use `ext`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 lemma phi_comp : (phi v Q).range.subtype.comp (phi v Q).rangeRestrict = phi v Q := by ext; rfl
 
 /- English proof (translation)
-Use `⟨p.map (phi v Q).rangeRestrict, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Use `congrArg (fun q => q.coeff n) h0` as an intermediate fact. Simplify using `only [coeff_map, coeff_zero] at this`. Apply `hn` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Establish `h2` using `congrArg Subtype.val this`. Simplify using `using h2`. Rewrite using `[aeval_def, eval₂_map]`. Establish `: (algebraMap (phi v Q).range (D ⧸ Q)).comp (phi v Q).rangeRestrict = phi v Q` using `phi_comp v Q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, phi, ← Polynomial.hom_eval₂, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma alg_of (x : D) (p : C[X]) (n : ℕ) (hn : v (p.coeff n) ∉ Q) (hp : p.eval₂ v x ∈ Q) :
     IsAlgebraic (phi v Q).range (Ideal.Quotient.mk Q x) := by
@@ -39,11 +39,11 @@ lemma alg_of (x : D) (p : C[X]) (n : ℕ) (hn : v (p.coeff n) ∉ Q) (hp : p.eva
     exact hp
 
 /- English proof (translation)
-Take `⟨q, hq0, hq⟩` from `h`. Take `⟨p, rfl⟩` from `Polynomial.map_surjective _ (phi v Q).rangeRestrict_surjective q`. Use `⟨p, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hall push Not at hall`. Apply `hq0` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `n`. Simplify using `only [coeff_map, coeff_zero]`. Simplify using `only [ZeroMemClass.coe_zero]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk Q (v (p.coeff n)) = 0`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (hall n)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hq` using `[aeval_def, eval₂_map]`. Establish `: (algebraMap (phi v Q).range (D ⧸ Q)).comp (phi v Q).rangeRestrict = phi v Q` using `phi_comp v Q`. Rewrite `hq` using `[this, phi, ← Polynomial.hom_eval₂, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma of_alg (x : D) (h : IsAlgebraic (phi v Q).range (Ideal.Quotient.mk Q x)) :
     ∃ p : C[X], (∃ n, v (p.coeff n) ∉ Q) ∧ p.eval₂ v x ∈ Q := by
@@ -70,15 +70,13 @@ namespace LateralTheory.E.PushPf
 open LateralTheory.E.t_E3Cut TensorProduct
 
 /- English proof (translation)
-Use `algebraize [f.hom, g.hom]`. Establish `ht : IsPushout f g (CommRingCat.ofHom (S` using `B ⊗[A] C) Algebra.TensorProduct.includeLeftRingHom) (CommRingCat.ofHom (S := B ⊗[A] C) Algebra.TensorProduct.includeRight.toRingHom) := CommRingCat.isPushout_tensorProduct A B C`. Use `set e := ht.isoIsPushout _ _ h`. Establish `h1 : ∀ b : B, e.hom.hom (b ⊗ₜ[A] (1 : C)) = u.hom b` using `fun b => by`. Use `congr($(ht.inl_isoIsPushout_hom _ _ h).hom b)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Simplify using `only [CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply, CommRingCat.hom_ofHom] at this`. Conclude with `this`. Establish `h2 : ∀ c : C, e.hom.hom ((1 : B) ⊗ₜ[A] c) = v.hom c` using `fun c => by`. Use `congr($(ht.inr_isoIsPushout_hom _ _ h).hom c)` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply, CommRingCat.hom_ofHom] at this`.
+Establish an intermediate fact. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `this`. Establish `hd : d = e.hom.hom (e.inv.hom d)`. Use `congrArg (fun φ => φ.hom d) e.inv_hom_id` as an intermediate fact. Simplify using `using this.symm`. Rewrite using `[hd]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `(e.inv.hom d) using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero]`. Conclude with `T.zero_mem`. Consider the case `tmul b c`. Establish `hbc : b ⊗ₜ[A] c = (b ⊗ₜ[A] (1 : C)) * ((1 : B) ⊗ₜ[A] c)`.
-
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[hbc, map_mul, h1, h2]`. Conclude with `T.mul_mem (hu b) (hv c)`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `T.add_mem hx hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma gen {A B C D : CommRingCat.{0}} (f : A ⟶ B) (g : A ⟶ C) (u : B ⟶ D) (v : C ⟶ D)
     (h : IsPushout f g u v) (T : Subring D) (hu : ∀ b, u.hom b ∈ T) (hv : ∀ c, v.hom c ∈ T) (d : D) :
@@ -110,19 +108,15 @@ lemma gen {A B C D : CommRingCat.{0}} (f : A ⟶ B) (g : A ⟶ C) (u : B ⟶ D) 
   | add x y hx hy => rw [map_add]; exact T.add_mem hx hy
 
 /- English proof (translation)
-Introduce `A B C D f g u v h hf Q hQ d`. Establish `hw : ∀ a, u.hom (f.hom a) = v.hom (g.hom a)` using `fun a => by`. Use `congrArg (fun φ => φ.hom a) h.w` as an intermediate fact. Simplify using `using this`. Set `S` to `(phi v.hom Q).range`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `T : Subring D` to `{ carrier := {x | IsAlgebraic S (Ideal.Quotient.mk Q x)} mul_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_ofPred_eq, map_mul] at *`. Conclude with `ha.mul hb`. Use the proof step `one_mem' := by simp only [Set.mem_ofPred_eq, map_one]; exact isAlgebraic_one`. Use the proof step `add_mem' := fun {a b} ha hb => by`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_ofPred_eq, map_add] at *`. Conclude with `ha.add hb`. Use the proof step `zero_mem' := by simp only [Set.mem_ofPred_eq, map_zero]; exact isAlgebraic_zero`. Use the proof step `neg_mem' := fun {a} ha => by`. Simplify using `only [Set.mem_ofPred_eq, map_neg] at *`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `(isAlgebraic_algebraMap (R := S) (A := D ⧸ Q) (-1)).mul ha` as an intermediate fact. Simplify using `using this }`. Establish `hv : ∀ c, v.hom c ∈ T` using `fun c => by`. Use `alg_of v.hom Q (v.hom c) (X - Polynomial.C c) 1 ?_ ?_` and prove the remaining obligations. Simplify using `only [coeff_sub, coeff_X_one, coeff_C, one_ne_zero, if_false, sub_zero, map_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h1 => hQ.ne_top ((Ideal.eq_top_iff_one Q).2 h1)`. Simplify using `[Q.zero_mem]`. Establish `hu : ∀ b, u.hom b ∈ T` using `fun b => by`. Take `⟨p, ⟨n, hn⟩, hp⟩` from `hf (Q.comap u.hom) (Ideal.comap_isPrime u.hom Q) b`. Use `alg_of v.hom Q (u.hom b) (p.map g.hom) n ?_ ?_` and prove the remaining obligations.
-
-Rewrite using `[coeff_map, ← hw]`. Conclude with `hn`. Establish `hc : v.hom.comp g.hom = u.hom.comp f.hom` using `by ext a; exact (hw a).symm`. Rewrite using `[eval₂_map, hc, ← Polynomial.hom_eval₂]`. Conclude with `hp`.
-
-Conclude with `of_alg v.hom Q d (gen f g u v h T hu hv d)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Push_of : LateralTheory.E.AlgResPropsPf.Push := by
   intro A B C D f g u v h hf Q hQ d

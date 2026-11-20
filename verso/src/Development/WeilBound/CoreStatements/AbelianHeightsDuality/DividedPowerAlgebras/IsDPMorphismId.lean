@@ -17,7 +17,7 @@ def NT (κ : DividedPowers I) {s : X ⟶ Sp R} {K : Type} (U : K → X.Opens) : 
   fun S ↦ InN κ S.T
 
 /- English proof (translation)
-The claim follows from `(DPMorphism.id δ).isDPMorphism`.
+A detailed English derivation is pending.
 -/
 theorem isDPMorphism_id {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) :
     IsDPMorphism δ δ (RingHom.id B) := (DPMorphism.id δ).isDPMorphism
@@ -37,7 +37,7 @@ namespace Red
 include h
 
 /- English proof (translation)
-Use `IsMor.of_dividedPowersZeroIdeal κ ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Cris.spMap_id, Category.comp_id]`. Conclude with `h.pb.w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mor : IsMor (dp0 R) s κ (s₀ ≫ spMap π) (RingHom.id R) i := by
   refine IsMor.of_dividedPowersZeroIdeal κ ?_
@@ -45,13 +45,13 @@ theorem mor : IsMor (dp0 R) s κ (s₀ ≫ spMap π) (RingHom.id R) i := by
   exact h.pb.w
 
 /- English proof (translation)
-Establish `hnil : ∀ x ∈ I, ∃ N : ℕ, x ^ N = 0`. Introduce `x hx`. Take `⟨N, hN⟩` from `h.nil`. Use `⟨N, ?_⟩` and prove the remaining obligations. Use `hN (List.replicate N (1, x)) (by` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `p hp`. Rewrite using `[List.eq_of_mem_replicate hp]`. Conclude with `hx)`. Use the proof step `(by simp)`. Simplify `this` using `[List.map_replicate, List.prod_replicate, κ.dpow_one hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsurj : Function.Surjective (spMap π)`. Introduce `p`. Establish `hp : p ∈ Set.range (PrimeSpectrum.comap π)` using `by open PrimeSpectrum in rw [range_comap_of_surjective _ π h.surj, h.ker]`. Express the relevant statement in the definitionally equal form `(I : Set R) ⊆ (p : PrimeSpectrum R).asIdeal`. Introduce `x hx`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨N, hN⟩` from `hnil x hx`. Conclude with `p.isPrime.mem_of_pow_mem N (by rw [hN]; exact p.asIdeal.zero_mem)`. Conclude with `hp`. Establish `hS : AlgebraicGeometry.Surjective (spMap π)` using `(AlgebraicGeometry.surjective_iff _).mpr hsurj`. Conclude with `(AlgebraicGeometry.surjective_iff i).mp (MorphismProperty.of_isPullback (P := @AlgebraicGeometry.Surjective) h.pb.flip hS)`.
+A detailed English derivation is pending.
 -/
 theorem surjective : Function.Surjective i := by
   have hnil : ∀ x ∈ I, ∃ N : ℕ, x ^ N = 0 := by
@@ -79,7 +79,7 @@ theorem surjective : Function.Surjective i := by
     (MorphismProperty.of_isPullback (P := @AlgebraicGeometry.Surjective) h.pb.flip hS)
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨y, rfl⟩` from `h.surjective x`. Conclude with `(show y ∈ i ⁻¹ᵁ V from e (show y ∈ i ⁻¹ᵁ U from hx))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem le_of_le {U V : X.Opens} (e : i ⁻¹ᵁ U ≤ i ⁻¹ᵁ V) : U ≤ V := by
   intro x hx
@@ -87,7 +87,7 @@ theorem le_of_le {U V : X.Opens} (e : i ⁻¹ᵁ U ≤ i ⁻¹ᵁ V) : U ≤ V :
   exact (show y ∈ i ⁻¹ᵁ V from e (show y ∈ i ⁻¹ᵁ U from hx))
 
 /- English proof (translation)
-Use `show ∃ δ' : DividedPowers (T.J ⊔ Ideal.map (algebraMap R T.B) I), T.δ.IsDPMorphism δ' (RingHom.id T.B) ∧ κ.IsDPMorphism δ' (algebraMap R T.B)`. Rewrite using `[sup_eq_left.mpr T.dp.ideal_comp]`. Conclude with `⟨T.δ, isDPMorphism_id T.δ, T.dp⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inN_obj (T : Thick κ (s₀ ≫ spMap π)) : InN κ (h.mor.obj T) := by
   show ∃ δ' : DividedPowers (T.J ⊔ Ideal.map (algebraMap R T.B) I),
@@ -108,7 +108,7 @@ def rho (I : Ideal R) : S.B₀ →+* S.B ⧸ big S I :=
     Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_sup_left ((S.ker b).1 hb))⟩
 
 /- English proof (translation)
-The claim follows from `RingHom.liftOfSurjective_comp_apply _ _ _ b`.
+A detailed English derivation is pending.
 -/
 theorem rho_π (I : Ideal R) (b : S.B) : rho S I (S.π b) = Ideal.Quotient.mk _ b :=
   RingHom.liftOfSurjective_comp_apply _ _ _ b
@@ -118,7 +118,7 @@ def Red.sig : R₀ →+* S.B ⧸ big S I :=
     Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_sup_right (Ideal.mem_map_of_mem _ (h.ker ▸ hr)))⟩
 
 /- English proof (translation)
-The claim follows from `RingHom.liftOfSurjective_comp_apply _ _ _ r`.
+A detailed English derivation is pending.
 -/
 theorem Red.sig_π (r : R) : h.sig S (π r) = Ideal.Quotient.mk _ (algebraMap R S.B r) :=
   RingHom.liftOfSurjective_comp_apply _ _ _ r
@@ -130,12 +130,12 @@ def Red.pt : Sp (S.B ⧸ big S I) ⟶ X₀ :=
     exact RingHom.ext fun r ↦ (rho_π S I _).trans (h.sig_π S r).symm)
 
 /- English proof (translation)
-The claim follows from `h.pb.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem Red.pt_i : h.pt S ≫ i = spMap (rho S I) ≫ S.x := h.pb.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `h.pb.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem Red.pt_s : h.pt S ≫ s₀ = spMap (h.sig S) := h.pb.lift_snd _ _ _
 
@@ -161,7 +161,7 @@ def Red.rh {T : Thick κ (s₀ ≫ spMap π)} (f : S ⟶ h.mor.obj T) : S.B →+
   (f.φ : S.B →+* (h.mor.obj T).B)
 
 /- English proof (translation)
-The claim follows from `f.φ.commutes r`.
+A detailed English derivation is pending.
 -/
 theorem Red.rh_algebraMap {T : Thick κ (s₀ ≫ spMap π)} (f : S ⟶ h.mor.obj T) (r : R) :
     h.rh f (algebraMap R S.B r) = algebraMap R T.B r := f.φ.commutes r
@@ -260,7 +260,7 @@ def Red.ε : h.G U ⋙ h.H U ⟶ 𝟭 _ where
     exact (rfl : (Tag.Hom.f f).φ b = (Tag.Hom.f f).φ b)
 
 /- English proof (translation)
-Use `Function.bijective_iff_has_inverse.2 ⟨(h.cH U).pull1, fun c ↦ ?_, fun c ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← CoefMap.pullCohomologyOne_comp]`. Conclude with `((CoefMap.id _).pullCohomologyOne_eq_of_natTrans ((h.cG U).comp (h.cH U)) (h.η U) (fun _ b ↦ (rfl : b = b)) c).symm.trans (CoefMap.pullCohomologyOne_id c)`. Rewrite using `[← CoefMap.pullCohomologyOne_comp]`. Conclude with `(((h.cH U).comp (h.cG U)).pullCohomologyOne_eq_of_natTrans (CoefMap.id _) (h.ε U) (fun _ b ↦ (rfl : b = b)) c).trans (CoefMap.pullCohomologyOne_id c)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Red.cG_pull1 : Function.Bijective (h.cG U).pull1 := by
   refine Function.bijective_iff_has_inverse.2 ⟨(h.cH U).pull1, fun c ↦ ?_, fun c ↦ ?_⟩
@@ -272,7 +272,7 @@ theorem Red.cG_pull1 : Function.Bijective (h.cG U).pull1 := by
       (CoefMap.pullCohomologyOne_id c)
 
 /- English proof (translation)
-Use `Function.bijective_iff_has_inverse.2 ⟨(h.cH U).pull2, fun c ↦ ?_, fun c ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← CoefMap.pullCohomologyTwo_comp]`. Conclude with `((CoefMap.id _).pullCohomologyTwo_eq_of_natTrans ((h.cG U).comp (h.cH U)) (h.η U) (fun _ b ↦ (rfl : b = b)) c).symm.trans (CoefMap.pullCohomologyTwo_id c)`. Rewrite using `[← CoefMap.pullCohomologyTwo_comp]`. Conclude with `(((h.cH U).comp (h.cG U)).pullCohomologyTwo_eq_of_natTrans (CoefMap.id _) (h.ε U) (fun _ b ↦ (rfl : b = b)) c).trans (CoefMap.pullCohomologyTwo_id c)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Red.cG_pull2 : Function.Bijective (h.cG U).pull2 := by
   refine Function.bijective_iff_has_inverse.2 ⟨(h.cH U).pull2, fun c ↦ ?_, fun c ↦ ?_⟩

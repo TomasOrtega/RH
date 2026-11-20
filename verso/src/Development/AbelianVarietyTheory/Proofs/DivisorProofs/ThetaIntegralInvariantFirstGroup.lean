@@ -26,27 +26,23 @@ set_option maxHeartbeats 400000 in
 set_option synthInstance.maxHeartbeats 100000 in
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT Ψ hΨ g' h`. Establish `hTB : ThetaBasic` using `GlobalTheory.T.theta_basic_properties hKP.base`. Establish `hP` using `GlobalTheory.ThKContSmall.isPair_big hT`. Establish `hB` using `(hTB F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hP).1 Ψ hΨ`. Establish `hM` using `hT.geo.hM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hM.haar`. Take `⟨htg, hlc, hsc, ht2⟩` from `GlobalTheory.UnipCT.topFacts σ G.V.J`. Use `haveI : BorelSpace (UA σ G.V.J) := ⟨rfl⟩`. Use `haveI := GlobalTheory.UnitaryVol.countable_ratU σ G.V.J`. Use `haveI : MeasurableMul (UA σ G.V.J) := inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SigmaCompactSpace (UA σ G.V.J) := sigmaCompactSpace_of_locallyCompact_secondCountable`. Use `haveI : SigmaFinite G.M.μ := Measure.IsHaarMeasure.sigmaFinite G.M.μ`. Use `haveI : SFinite G.M.μ := inferInstance`. Use `haveI : MeasurableConstSMul (ratU σ G.V.J) (UA σ G.V.J) := ⟨fun γ => (measurable_const_mul (γ.1 : UA σ G.V.J))⟩`. Use `haveI : SMulInvariantMeasure (ratU σ G.V.J) (UA σ G.V.J) G.M.μ := ⟨fun γ A _ => measure_preimage_mul G.M.μ γ.1 A⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : G.M.μ G.M.dom < ⊤` using `GlobalTheory.ThKContSmall.measure_dom_lt_top hKP.siegelSetUnitary hT.base hT.geo.hV hM`. Establish `hR : G.M.μ.map (· * g') = G.M.μ` using `by haveI : (G.M.μ.map (· * g')).IsHaarMeasure := Measure.isHaarMeasure_map_mul_right G.M.μ g'`. Establish `hc` using `Measure.isMulLeftInvariant_eq_smul (G.M.μ.map (· * g')) G.M.μ`. Use `set c := Measure.haarScalarFactor (G.M.μ.map (· * g')) G.M.μ`. Establish `h𝓕' : IsFundamentalDomain (ratU σ G.V.J) ((· * g') ⁻¹' G.M.dom) G.M.μ`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hM.dom.preimage_of_equiv (quasiMeasurePreserving_mul_right G.M.μ g') (e := id) Function.bijective_id ?_` and prove the remaining obligations. Introduce `γ x`. Simplify using `only [id, Subgroup.smul_def, smul_eq_mul, mul_assoc]`. Establish `hm : G.M.μ ((· * g') ⁻¹' G.M.dom) = G.M.μ G.M.dom` using `h𝓕'.measure_eq hM.dom`. Establish `h0 : G.M.μ G.M.dom ≠ 0` using `hM.dom.measure_ne_zero (NeZero.ne G.M.μ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmap : (G.M.μ.map (· * g')) G.M.dom = G.M.μ ((· * g') ⁻¹' G.M.dom)` using `MeasurableEquiv.map_apply (MeasurableEquiv.mulRight g') G.M.dom`. Establish `h1 : (c : ENNReal) * G.M.μ G.M.dom = 1 * G.M.μ G.M.dom`. Combine the equalities or inequalities in the displayed calculation. Establish `hc1 : c = 1`. Use `(ENNReal.mul_left_inj h0 hfin.ne).1 h1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `this` after adjusting the coercions. Rewrite using `[hc, hc1, one_smul]`. Establish `hmp : MeasurePreserving (· * g') G.M.μ G.M.μ` using `⟨measurable_mul_const g', hR⟩`. Establish `hemb : MeasurableEmbedding (· * g' : UA σ G.V.J → UA σ G.V.J)` using `(MeasurableEquiv.mulRight g').measurableEmbedding`. Establish `h𝓕' : IsFundamentalDomain (ratU σ G.V.J) ((· * g') ⁻¹' G.M.dom) G.M.μ`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `hM.dom.preimage_of_equiv hmp.quasiMeasurePreserving (e := id) Function.bijective_id ?_` and prove the remaining obligations. Introduce `γ x`. Simplify using `only [id, Subgroup.smul_def, smul_eq_mul, mul_assoc]`. Use `set f : UA σ G.V.J → ℂ := fun x => theta om Ψ x h with hf`. Establish `hk : ∀ x, theta om (om (g', 1) Ψ) x h = f (x * g')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Introduce `x`. Simplify using `only [hf, theta]`. Use `congr 1`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Establish `hinv : ∀ (γ : ratU σ G.V.J) (x : UA σ G.V.J), f (γ • x * g') = f (x * g')`.
-
-Introduce `γ x`. Simplify using `only [hf, Subgroup.smul_def, smul_eq_mul, mul_assoc]`. Establish `e` using `hB.2.1 γ.1 γ.2 1 (one_mem _) (x * g') h`. Rewrite `e` using `[one_mul]`. Then use the resulting hypothesis. Unfold `Model.I`.
-
-Repeatedly rewrite using `[hk]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem I_weil_left : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ Ψ ∈ schA F (Fin a × Fin (a + a')), ∀ (g : UA σ G.V.J) (h : UA σ G.W.J), G.M.I om (om (g, 1) Ψ) h = G.M.I om Ψ h := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' hT Ψ hΨ g' h

@@ -4,15 +4,13 @@ import Mathlib.RingTheory.AdicCompletion.Functoriality
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 /- English proof (translation)
-Introduce `O _ _ R _ _ _ R' _ _ _ f hf`. Establish `hle : (maximalIdeal R).map f ≤ maximalIdeal R'`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, ← res_eq_zero_iff O R', res_map, res_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Establish `heq : (maximalIdeal R).map (f : R →+* R') = maximalIdeal R'`. Use `le_antisymm hle ?_` and prove the remaining obligations. Establish `hfg : (maximalIdeal R').FG` using `IsNoetherian.noetherian _`. Use `Submodule.le_of_le_smul_of_le_jacobson_bot hfg (maximalIdeal_le_jacobson _) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_eq_mul, ← pow_two]`. Conclude with `hf`. Use `haveI : IsAdicComplete (maximalIdeal R) R := IsCO.complete (O := O)`. Use `haveI : IsAdicComplete (maximalIdeal R') R' := IsCO.complete (O := O)`. Use `haveI : IsHausdorff ((maximalIdeal R).map (f : R →+* R')) R' := by`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[heq]`. Use `infer_instance`. Apply `surjective_of_mk_map_comp_surjective (I := maximalIdeal R) (f : R →+* R')` to reduce the goal to its premises. Introduce `y`. Take `⟨y0, rfl⟩` from `Ideal.Quotient.mk_surjective y`.
-
-Take `⟨a, ha⟩` from `IsCO.res_surj (O := O) y0`. Use `⟨algebraMap O R a, ?_⟩` and prove the remaining obligations. Use `show Ideal.Quotient.mk _ ((f : R →+* R') (algebraMap O R a)) = Ideal.Quotient.mk _ y0`. Rewrite using `[Ideal.Quotient.eq, heq, AlgHom.coe_toRingHom, AlgHom.commutes, ← neg_sub]`. Conclude with `neg_mem ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.co_surj :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R'), maximalIdeal R' ≤ (maximalIdeal R).map f ⊔ maximalIdeal R' ^ 2 → Function.Surjective f := by

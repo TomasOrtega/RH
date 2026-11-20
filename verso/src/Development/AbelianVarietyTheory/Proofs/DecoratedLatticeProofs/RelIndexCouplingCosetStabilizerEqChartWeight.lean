@@ -19,9 +19,9 @@ open ValuativeRel
 variable {k n : Type} [Field k] [ValuativeRel k] [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Introduce `i`. Use `show valuation k ((A *ᵥ y) i) ≤ valuation k (c : k)`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Valuation.map_sum_le _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem mulVec_mem_box_of_int (A : Matrix n n k) (hA : ∀ i j, valuation k (A i j) ≤ 1) {c : kˣ} {y : n → k}
     (hy : y ∈ GlobalTheory.StepData.box n c) : A *ᵥ y ∈ GlobalTheory.StepData.box n c := by
@@ -34,7 +34,7 @@ theorem mulVec_mem_box_of_int (A : Matrix n n k) (hA : ∀ i j, valuation k (A i
     _ = valuation k (c : k) := one_mul _
 
 /- English proof (translation)
-Take `⟨h, rfl⟩` from `hg`. Conclude with `(h.val i j).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem val_le_one_of_mem_KO {g : GL (n ⊕ Fin 0) k} (hg : g ∈ GlobalTheory.SplitWeil.KO k (n ⊕ Fin 0)) (i j : n ⊕ Fin 0) :
     valuation k (g.val i j) ≤ 1 := by
@@ -42,7 +42,7 @@ theorem val_le_one_of_mem_KO {g : GL (n ⊕ Fin 0) k} (hg : g ∈ GlobalTheory.S
   exact (h.val i j).2
 
 /- English proof (translation)
-The claim follows from `mulVec_mem_box_of_int _ (fun i j => val_le_one_of_mem_KO hg (Sum.inl i) (Sum.inl j)) hy`.
+A detailed English derivation is pending.
 -/
 theorem toBlocks₁₁_mulVec_mem_box {g : GL (n ⊕ Fin 0) k} (hg : g ∈ GlobalTheory.SplitWeil.KO k (n ⊕ Fin 0)) {c : kˣ}
     {y : n → k} (hy : y ∈ GlobalTheory.StepData.box n c) : g.val.toBlocks₁₁ *ᵥ y ∈ GlobalTheory.StepData.box n c :=
@@ -73,17 +73,17 @@ def boxAct (J : Subgroup (GL (n ⊕ Fin 0) k)) (hJ : J ≤ GlobalTheory.SplitWei
       toBlocks_mul_fin_zero, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Use `letI := boxAct J hJ c`. Establish `smk : ∀ (g : J) (y : n → k), g • (Submodule.Quotient.mk y : (n → k) ⧸ GlobalTheory.StepData.box n c) = Submodule.Quotient.mk (g.val.val.toBlocks₁₁ *ᵥ y)` using `fun _ _ => rfl`. Establish `hst : (cosStab J (GlobalTheory.StepData.box n c) x).subgroupOf J = MulAction.stabilizer J x`. Use extensionality with `g`. Rewrite using `[Subgroup.mem_subgroupOf, mem_cosStab, MulAction.mem_stabilizer_iff]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[smk]`. Conclude with `(h y).2 rfl`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `⟨g.2, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← smk]`. Prove the components needed by the constructor for the conclusion. Introduce `h'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h'` using `[← h]`. Conclude with `smul_left_cancel g h'`. Introduce `h'`. Rewrite using `[h', h]`. Establish `horb : MulAction.orbit J x = {yb | GlobalTheory.QPl.SameOrb J (GlobalTheory.StepData.box n c) x yb}`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `yb`. Simplify using `only [MulAction.mem_orbit_iff, Set.mem_setOf_eq, GlobalTheory.QPl.SameOrb]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨g.1, g.2, y, rfl, (smk g y).symm⟩`. Introduce and unpack `⟨g, hg, y, rfl, h⟩`. Conclude with `⟨⟨g, hg⟩, by rw [smk]; exact h⟩`. Rewrite using `[Subgroup.relIndex, hst, MulAction.index_stabilizer, horb, Nat.card_coe_set_eq]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_cosStab_box (J : Subgroup (GL (n ⊕ Fin 0) k)) (hJ : J ≤ GlobalTheory.SplitWeil.KO k (n ⊕ Fin 0)) (c : kˣ)
     (x : (n → k) ⧸ GlobalTheory.StepData.box n c) :
@@ -128,7 +128,7 @@ end
 namespace GlobalTheory.PenVol
 
 /- English proof (translation)
-Establish `hJ` using `E.le (G.s + 1) 0 rfl`. Rewrite using `[← Subgroup.relIndex_mul_relIndex _ _ _ (cosStab_le _ _ _) hJ, relIndex_cosStab_box _ hJ, E.wt_pen y, E.idx_mid (G.s + 1) 0 rfl]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem relIndex_cosStab_eq_wt {D : D7} {c : Comm D} {v : VCom c} {B : GlobalTheory.Fam.Base c} {PP : Formalism.L2.DIV.Pl D.host.E}
     (G : QGeo v B PP) {χ : ℕ → (AE D)ˣ →* Circle} (E : QExt G χ) (y : E.Ch (G.s + 1)) :

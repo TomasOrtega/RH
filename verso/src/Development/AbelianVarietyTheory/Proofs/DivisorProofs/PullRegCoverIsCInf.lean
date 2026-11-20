@@ -12,7 +12,7 @@ open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ _ p _ _ _ _ H C` and use `H.pull_isCInf_of_local C.ρ (GlobalTheory.RegGenSmooth.genSmooth_of_isRegSurf k C.Y (C.ρ ≫ p) C.reg).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem VMetric.pull_regCover_isCInf : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k)
     [IsIntegral X] (E : X.Modules) (r : ℕ) (h : VMetric p E r), h.IsCInfNorm →

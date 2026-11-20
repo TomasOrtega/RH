@@ -20,11 +20,9 @@ set_option autoImplicit false
 namespace GlobalTheory.GenFinEtField
 
 /- English proof (translation)
-Establish `hxU : f (genericPoint Y) ∈ U` using `h ▸ hxU₀`. Use `letI := (f.app U).hom.toAlgebra`. Use `letI := (X.evaluation U _ hxU).hom.toAlgebra`. Use `letI : Algebra Γ(Y, f ⁻¹ᵁ U) (Y.residueField (genericPoint Y)) := (Y.evaluation (f ⁻¹ᵁ U) _ hxU).hom.toAlgebra`. Use `letI := (f.residueFieldMap (genericPoint Y)).hom.toAlgebra`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : Algebra Γ(X, U) (Y.residueField (genericPoint Y)) := (f.app U ≫ Y.evaluation (f ⁻¹ᵁ U) _ hxU).hom.toAlgebra`. Use `haveI : IsScalarTower Γ(X, U) Γ(Y, f ⁻¹ᵁ U) (Y.residueField (genericPoint Y)) := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : IsScalarTower Γ(X, U) (X.residueField (f (genericPoint Y))) (Y.residueField (genericPoint Y)) := IsScalarTower.of_algebraMap_eq' congr($(Scheme.evaluation_naturality f _ hxU).hom).symm`. Use `haveI := GlobalTheory.ProjFin.isFractionRing_evaluation X hU h hxU`. Use `haveI := GlobalTheory.ProjFin.isFractionRing_evaluation Y hU' rfl hxU`.
-
-Conclude with `(IsFractionRing.finrank_eq Γ(X, U) (X.residueField (f (genericPoint Y))) Γ(Y, f ⁻¹ᵁ U) (Y.residueField (genericPoint Y))).symm`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem finrank_app_eq_residueDegree {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (f : Y ⟶ X)
     (h : f (genericPoint Y) = genericPoint X) {U : X.Opens} (hU : IsAffineOpen U)
@@ -50,33 +48,27 @@ theorem finrank_app_eq_residueDegree {X Y : Scheme.{0}} [IsIntegral X] [IsIntegr
     Γ(Y, f ⁻¹ᵁ U) (Y.residueField (genericPoint Y))).symm
 
 /- English proof (translation)
-Introduce `k _ X Y _ _ p q _ hX hY π hπ hg hδ`. Establish `hpP : IsProper p`. Take `⟨N, j, _, hj⟩` from `hX`. Use `isProper_str k N` as an intermediate fact. Conclude with `hj ▸ inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqP : IsProper q`. Take `⟨N, j, _, hj⟩` from `hY`. Use `isProper_str k N` as an intermediate fact. Conclude with `hj ▸ inferInstance`. Establish `: IsSeparated (π ≫ p)` using `hπ ▸ (inferInstance : IsSeparated q)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsep : IsSeparated π` using `IsSeparated.of_comp π p`. Establish `: LocallyOfFiniteType (π ≫ p)` using `hπ ▸ (inferInstance : LocallyOfFiniteType q)`. Establish `hlft : LocallyOfFiniteType π` using `locallyOfFiniteType_of_comp π p`. Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian p`. Take `⟨U₀, hU₀, hxU₀, -⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (TopologicalSpace.Opens.mem_top (genericPoint X))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hyU₀ : genericPoint Y ∈ π ⁻¹ᵁ U₀` using `by show π (genericPoint Y) ∈ U₀`. Rewrite using `[hg]`. Conclude with `hxU₀`. Take `⟨V₀, hV₀, hyV₀, hVle⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 Y.isBasis_affineOpens hyU₀`. Use `haveI : Nonempty U₀ := ⟨⟨_, hxU₀⟩⟩`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : Nonempty V₀ := ⟨⟨_, hyV₀⟩⟩`. Use `letI : Algebra Γ(X, U₀) Γ(Y, V₀) := (π.appLE U₀ V₀ hVle).hom.toAlgebra`. Use `haveI : IsNoetherianRing Γ(X, U₀) := IsLocallyNoetherian.component_noetherian ⟨U₀, hU₀⟩`. Use `haveI : CharZero Γ(X, U₀) := (((Scheme.ΓSpecIso (CommRingCat.of k)).inv ≫ p.appLE ⊤ U₀ le_top).hom.charZero_iff (RingHom.injective (R := k) _)).1 ‹CharZero k›`. Use `haveI : FaithfulSMul Γ(X, U₀) Γ(Y, V₀) := (faithfulSMul_iff_algebraMap_injective _ _).2 (GlobalTheory.appLE_injective_of_genericPoint_map π hg ⟨_, hyV₀⟩ hVle)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Algebra.FiniteType Γ(X, U₀) Γ(Y, V₀) := HasRingHomProperty.appLE @LocallyOfFiniteType π hlft ⟨U₀, hU₀⟩ ⟨V₀, hV₀⟩ hVle`. Use `haveI : Algebra.IsAlgebraic Γ(X, U₀) Γ(Y, V₀) := GlobalTheory.GenDegAlg.isAlgebraic_appLE π hg hδ hU₀ ⟨_, hyV₀⟩ hVle`. Take `⟨a₁, ha₁, H₁⟩` from `GlobalTheory.finite_away_of_isAlgebraic_of_finiteType (A := Γ(X, U₀)) (B := Γ(Y, V₀))`. Take `⟨a₂, ha₂, H₂⟩` from `GlobalTheory.free_away_mul_of_finiteType (A := Γ(X, U₀)) (B := Γ(Y, V₀))`. Take `⟨a₃, ha₃, H₃⟩` from `GlobalTheory.GenericEtale.exists_etale_away_of_isAlgebraic (A := Γ(X, U₀)) (B := Γ(Y, V₀))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : a₁ * a₂ * a₃ ≠ 0` using `mul_ne_zero (mul_ne_zero ha₁ ha₂) ha₃`. Establish `hUU₀ : X.basicOpen (a₁ * a₂ * a₃) ≤ U₀` using `X.basicOpen_le _`. Establish `hUa : IsAffineOpen (X.basicOpen (a₁ * a₂ * a₃))` using `hU₀.basicOpen _`. Establish `hxU : genericPoint X ∈ X.basicOpen (a₁ * a₂ * a₃)`. Establish `hne : X.basicOpen (a₁ * a₂ * a₃) ≠ ⊥` using `fun h => ha ((basicOpen_eq_bot_iff _).1 h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Take `⟨z, hz⟩` from `(TopologicalSpace.Opens.ne_bot_iff_nonempty _).1 hne`. Conclude with `((genericPoint_spec X).mem_open_set_iff (X.basicOpen (a₁ * a₂ * a₃)).isOpen).2 ⟨z, trivial, hz⟩`. Use `set U : X.Opens := X.basicOpen (a₁ * a₂ * a₃) with hU_def`. Use `set V : Y.Opens := Y.basicOpen (π.appLE U₀ V₀ hVle (a₁ * a₂ * a₃)) with hV_def`. Establish `hVV₀ : V ≤ V₀` using `Y.basicOpen_le _`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVe : V = V₀ ⊓ π ⁻¹ᵁ U` using `Scheme.basicOpen_appLE π V₀ U₀ hVle _`. Establish `hVU : V ≤ π ⁻¹ᵁ U` using `by rw [hVe]; exact inf_le_right`. Establish `hVa : IsAffineOpen V` using `hV₀.basicOpen _`. Establish `hyV : genericPoint Y ∈ V`. Rewrite using `[hVe]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨hyV₀, show π (genericPoint Y) ∈ U from hg ▸ hxU⟩`. Use `letI iA : Algebra Γ(X, U₀) Γ(X, U) := (X.presheaf.map (homOfLE hUU₀).op).hom.toAlgebra`. Use `letI iB : Algebra Γ(Y, V₀) Γ(Y, V) := (Y.presheaf.map (homOfLE hVV₀).op).hom.toAlgebra`. Use `letI iAB : Algebra Γ(X, U) Γ(Y, V) := (π.appLE U V hVU).hom.toAlgebra`. Use `letI iAB' : Algebra Γ(X, U₀) Γ(Y, V) := (π.appLE U₀ V (hVV₀.trans hVle)).hom.toAlgebra`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `haveI : IsScalarTower Γ(X, U₀) Γ(X, U) Γ(Y, V) := IsScalarTower.of_algebraMap_eq' (congrArg CommRingCat.Hom.hom (π.map_appLE hVU (homOfLE hUU₀).op).symm)`. Use `haveI : IsScalarTower Γ(X, U₀) Γ(Y, V₀) Γ(Y, V) := IsScalarTower.of_algebraMap_eq' (congrArg CommRingCat.Hom.hom (π.appLE_map hVle (homOfLE hVV₀).op).symm)`. Use `haveI hlA : IsLocalization.Away (a₁ * a₂ * a₃) Γ(X, U) := hU₀.isLocalization_of_eq_basicOpen _ (homOfLE hUU₀) rfl`. Use `haveI hlB : IsLocalization.Away (algebraMap Γ(X, U₀) Γ(Y, V₀) (a₁ * a₂ * a₃)) Γ(Y, V) := hV₀.isLocalization_of_eq_basicOpen _ (homOfLE hVV₀) rfl`. Establish `e1 : a₁ * (a₂ * a₃) = a₁ * a₂ * a₃` using `(mul_assoc _ _ _).symm`.
-
-Establish `e2 : a₂ * (a₁ * a₃) = a₁ * a₂ * a₃` using `by ring`. Establish `e3 : a₃ * (a₁ * a₂) = a₁ * a₂ * a₃` using `by ring`. Establish `hfin : Module.Finite Γ(X, U) Γ(Y, V)` using `H₁ (a₂ * a₃) Γ(X, U) Γ(Y, V) (by rw [e1]; exact hlA) (by rw [e1]; exact hlB)`. Establish `hfree : Module.Free Γ(X, U) Γ(Y, V)` using `H₂ (a₁ * a₃) Γ(X, U) Γ(Y, V) (by rw [e2]; exact hlA) (by rw [e2]; exact hlB)`. Establish `het : Algebra.Etale Γ(X, U) Γ(Y, V)` using `H₃ (a₁ * a₂) Γ(X, U) Γ(Y, V) (by rw [e3]; exact hlA) (by rw [e3]; exact hlB)`.
-
-Establish `hpre : π ⁻¹ᵁ U = V` using `GlobalTheory.preimage_eq_of_finite_appLE π hUa hVa ⟨_, hyV⟩ hVU hfin`. Establish `key : ∀ (W : Y.Opens) (hW : W ≤ π ⁻¹ᵁ U), W = π ⁻¹ᵁ U → (π.appLE U W hW).hom.Etale → (π.appLE U W hW).hom.Finite → (letI` using `(π.appLE U W hW).hom.toAlgebra; Module.Free Γ(X, U) Γ(Y, W)) → (π.app U).hom.Etale ∧ (π.app U).hom.Finite ∧ (letI := (π.app U).hom.toAlgebra; Module.Free Γ(X, U) Γ(Y, π ⁻¹ᵁ U)) := by`. Introduce and unpack `W hW rfl h1 h2 h3`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `⟨h1, h2, h3⟩`.
-
-Take `⟨h1, h2, h3⟩` from `key V hVU hpre.symm het hfin hfree`. Conclude with `⟨U, hUa, hxU, hpre ▸ hVa, h1, h2, h3, finrank_app_eq_residueDegree π hg hUa (hpre ▸ hVa) hxU⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_affine_finite_etale_free : ∀ (k : Type) [Field k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp k) (q : Y ⟶ Sp k) [CharZero k], IsProjOver p → IsProjOver q → ∀ (π : Y ⟶ X), π ≫ p = q → π (genericPoint Y) = genericPoint X → π.residueDegree (genericPoint Y) ≠ 0 → ∃ U : X.Opens, IsAffineOpen U ∧ genericPoint X ∈ U ∧ IsAffineOpen (π ⁻¹ᵁ U) ∧ (π.app U).hom.Etale ∧ (π.app U).hom.Finite ∧ (letI := (π.app U).hom.toAlgebra; Module.Free Γ(X, U) Γ(Y, π ⁻¹ᵁ U) ∧ Module.finrank Γ(X, U) Γ(Y, π ⁻¹ᵁ U) = π.residueDegree (genericPoint Y)) := by
   intro k _ X Y _ _ p q _ hX hY π hπ hg hδ

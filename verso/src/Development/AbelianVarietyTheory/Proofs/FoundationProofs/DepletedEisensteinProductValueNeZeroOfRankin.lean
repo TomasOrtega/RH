@@ -19,7 +19,7 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 namespace GlobalTheory.DepletedValue
 
 /- English proof (translation)
-Take `⟨u, v, huv⟩` from `h`. Establish `h1` using `congrArg (Int.cast : ℤ → ZMod n) huv`. Move the coercions through the operations in `at h1`. Simplify using `only [ZMod.natCast_self, mul_zero, add_zero] at h1`. Conclude with `isUnit_iff_exists_inv.mpr ⟨_, by rw [mul_comm]; exact h1⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma isUnit_of_isCoprime {n : ℕ} {d : ℤ} (h : IsCoprime d (n : ℤ)) : IsUnit (d : ZMod n) := by
   obtain ⟨u, v, huv⟩ := h
@@ -29,31 +29,31 @@ lemma isUnit_of_isCoprime {n : ℕ} {d : ℤ} (h : IsCoprime d (n : ℤ)) : IsUn
   exact isUnit_iff_exists_inv.mpr ⟨_, by rw [mul_comm]; exact h1⟩
 
 /- English proof (translation)
-The claim follows from `((isUnit_of_isCoprime h).map χ).ne_zero`.
+A detailed English derivation is pending.
 -/
 lemma ch_ne_zero {n : ℕ} (χ : DirichletCharacter ℂ n) {d : ℤ} (h : IsCoprime d (n : ℤ)) : ch χ d ≠ 0 :=
   ((isUnit_of_isCoprime h).map χ).ne_zero
 
 /- English proof (translation)
-The claim follows from `MulChar.inv_apply_eq_inv' _ _`.
+A detailed English derivation is pending.
 -/
 lemma ch_inv {n : ℕ} (χ : DirichletCharacter ℂ n) (d : ℤ) : ch χ⁻¹ d = (ch χ d)⁻¹ :=
   MulChar.inv_apply_eq_inv' _ _
 
 /- English proof (translation)
-Simplify using `[ch]`.
+Simplify using the standard rewrite rules.
 -/
 lemma ch_mul {n : ℕ} (θ χ : DirichletCharacter ℂ n) (d : ℤ) : ch (θ * χ) d = ch θ d * ch χ d := by
   simp [ch]
 
 /- English proof (translation)
-The claim follows from `MulChar.one_apply (isUnit_of_isCoprime h)`.
+A detailed English derivation is pending.
 -/
 lemma ch_one {n : ℕ} {d : ℤ} (h : IsCoprime d (n : ℤ)) : ch (1 : DirichletCharacter ℂ n) d = 1 :=
   MulChar.one_apply (isUnit_of_isCoprime h)
 
 /- English proof (translation)
-Use `haveI : Fact l.Prime := ⟨hl⟩`. Establish `: (d : ZMod l) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd d l).2 h`. Simplify using `only [ch, this]`. Conclude with `MulChar.map_zero ψ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma ch_dvd {l : ℕ} (hl : l.Prime) (ψ : DirichletCharacter ℂ l) {d : ℤ} (h : (l : ℤ) ∣ d) : ch ψ d = 0 := by
   haveI : Fact l.Prime := ⟨hl⟩
@@ -61,66 +61,66 @@ lemma ch_dvd {l : ℕ} (hl : l.Prime) (ψ : DirichletCharacter ℂ l) {d : ℤ} 
   simp only [ch, this]; exact MulChar.map_zero ψ
 
 /- English proof (translation)
-Move the coercions through the operations in `at h`. Conclude with `h.of_mul_right_left`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 lemma coprime_left {d : ℤ} {N l : ℕ} (h : IsCoprime d ((N * l : ℕ) : ℤ)) : IsCoprime d (N : ℤ) := by
   push_cast at h; exact h.of_mul_right_left
 
 /- English proof (translation)
-Move the coercions through the operations in `at h`. Conclude with `h.of_mul_right_right`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 lemma coprime_right {d : ℤ} {N l : ℕ} (h : IsCoprime d ((N * l : ℕ) : ℤ)) : IsCoprime d (l : ℤ) := by
   push_cast at h; exact h.of_mul_right_right
 
 /- English proof (translation)
-Use function extensionality and compare the values at `n; simp [mul, Finset.mul_sum]; exact Finset.sum_congr rfl (fun _ _ => by ring)`.
+Apply function extensionality and compare values at an arbitrary argument.
 -/
 lemma mul_smul_right (a b : ℕ → ℂ) (s : ℂ) : mul a (s • b) = s • mul a b := by
   funext n; simp [mul, Finset.mul_sum]; exact Finset.sum_congr rfl (fun _ _ => by ring)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `n; simp [mul, Finset.mul_sum]; exact Finset.sum_congr rfl (fun _ _ => by ring)`.
+Apply function extensionality and compare values at an arbitrary argument.
 -/
 lemma mul_smul_left (a b : ℕ → ℂ) (s : ℂ) : mul (s • a) b = s • mul a b := by
   funext n; simp [mul, Finset.mul_sum]; exact Finset.sum_congr rfl (fun _ _ => by ring)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `n`. Simplify using `[mul, mul_add, Finset.sum_add_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma mul_add_right (a b b' : ℕ → ℂ) : mul a (b + b') = mul a b + mul a b' := by
   funext n; simp [mul, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[lam, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma lam_add (B : ℕ) (c a b : ℕ → ℂ) : lam B c (a + b) = lam B c a + lam B c b := by
   simp [lam, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[lam, Finset.mul_sum]; exact Finset.sum_congr rfl (fun _ _ => by ring)`.
+Simplify using the standard rewrite rules.
 -/
 lemma lam_smul (B : ℕ) (c a : ℕ → ℂ) (s : ℂ) : lam B c (s • a) = s * lam B c a := by
   simp [lam, Finset.mul_sum]; exact Finset.sum_congr rfl (fun _ _ => by ring)
 
 /- English proof (translation)
-Simplify using `[lam, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma lam_sub (B : ℕ) (c a b : ℕ → ℂ) : lam B c (a - b) = lam B c a - lam B c b := by
   simp [lam, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `n`. Simplify using `[mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma mul_zero_right (a : ℕ → ℂ) : mul a 0 = 0 := by
   funext n; simp [mul]
 
 /- English proof (translation)
-Simplify using `[lam]`.
+Simplify using the standard rewrite rules.
 -/
 lemma lam_zero (B : ℕ) (c : ℕ → ℂ) : lam B c 0 = 0 := by simp [lam]
 
 /- English proof (translation)
-Simplify using `only [val, Function.iterate_one, pow_one]`. Rewrite using `[(GlobalTheory.T.coeffHecke_UV_cauchyProduct_identities ℂ l hl).2.1, hF, hE, mul_smul_left, lam_sub, lam_smul, hU, ← sub_mul]`. Conclude with `mul_ne_zero (inv_ne_zero hα0) (mul_ne_zero (sub_ne_zero.mpr hα) h0)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma core {l : ℕ} (hl : 0 < l) (B : ℕ) (c : ℕ → ℂ) (α t₀ : ℂ) (F E : ℕ → ℂ) (hF : Uo l F = t₀ • F) (hE : Uo l E = E)
     (hU : lam B c (Uo l (mul F E)) = α * lam B c (mul F E)) (h0 : lam B c (mul F E) ≠ 0) (hα : α ≠ t₀) (hα0 : α ≠ 0) :
@@ -134,9 +134,9 @@ end GlobalTheory.DepletedValue
 namespace GlobalTheory.DepletedValue
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.T.zs_monomial_ratio_eq_mul_dep_eis (2 * e + 1) l e (ch θ) (hat ⇑(θ * χ)) (ch ψ) (ch ψ⁻¹) c₀ c' (by omega)`. Establish `hk : 2 * e + 1 - 1 - e = e` using `by omega`. Rewrite `h` using `[hk]`. Rewrite using `[← h]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `x y`. Simplify using `[ch]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma zs_eq (e l : ℕ) (he : 1 ≤ e) {N : ℕ} (θ χ : DirichletCharacter ℂ N) (ψ : DirichletCharacter ℂ l) (c₀ c' : ℂ) :
     Zs (2 * e + 1) l (ch θ) (hat ⇑(θ * χ)) (fun x y => ψ x * ψ⁻¹ y * ((y : ℂ) / x) ^ e) =
@@ -150,9 +150,9 @@ lemma zs_eq (e l : ℕ) (he : 1 ≤ e) {N : ℕ} (θ χ : DirichletCharacter ℂ
   simp [ch]
 
 /- English proof (translation)
-Establish `hper : ∀ d : ℤ, (fun d => ch ψ d * ch θ d) (d + ((N * l : ℕ) : ℤ)) = (fun d => ch ψ d * ch θ d) d`. Introduce `d`. Simplify using `[ch]`. Establish `h1` using `(GlobalTheory.T.isModularFormCoeffSeq_heckeU_and_depletion e (N * l) l _ _ he hl (dvd_mul_left l N) hper hF).1`. Establish `h2` using `((GlobalTheory.T.modularFormCoeffSeq_linear_structure e (N * l) _).2.2.1 (θ l) _ hF).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.T.modularFormCoeffSeq_eq_of_pos_coeff_eq e (N * l) _ _ _ he (Nat.mul_pos hN hl.pos) h1 h2 (fun n hn => ?_)` and prove the remaining obligations. Establish `h3` using `(GlobalTheory.T.coeffEisensteinSeriesTwisted_heckeU_heckeV e l c₀ (θ l) (ch ψ) (ch θ) hl).1 (fun x hx => ch_dvd hl ψ hx) (fun y => by simp [ch]) n hn`. Simplify `h3` using `[Uo]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma U_FF (e N l : ℕ) (he : 1 ≤ e) (hN : 0 < N) (hl : l.Prime) (θ : DirichletCharacter ℂ N) (ψ : DirichletCharacter ℂ l) (c₀ : ℂ)
     (hF : MF e (N * l) (fun d => ch ψ d * ch θ d) (eis e c₀ (ch ψ) (ch θ))) :
@@ -166,7 +166,7 @@ lemma U_FF (e N l : ℕ) (he : 1 ≤ e) (hN : 0 < N) (hl : l.Prime) (θ : Dirich
   simpa [Uo] using h3
 
 /- English proof (translation)
-Use function extensionality and compare the values at `n`. Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Simplify using `[Uo]`. Establish `h3` using `(GlobalTheory.T.coeffEisensteinSeriesTwisted_heckeU_heckeV (e + 1) l c' 1 (fun y => ch ψ⁻¹ y * hat ⇑θ' y) (fun _ => 1) hl).1 (fun x hx => by simp [ch_dvd hl ψ⁻¹ hx]) (fun y => by simp) n hn`. Simplify `h3` using `[Uo]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma U_EE (e N l : ℕ) (hl : l.Prime) (θ' : DirichletCharacter ℂ N) (ψ : DirichletCharacter ℂ l) (c' : ℂ) :
     Uo l (eis (e + 1) c' (fun y => ch ψ⁻¹ y * hat ⇑θ' y) fun _ => 1) = eis (e + 1) c' (fun y => ch ψ⁻¹ y * hat ⇑θ' y) fun _ => 1 := by
@@ -178,7 +178,7 @@ lemma U_EE (e N l : ℕ) (hl : l.Prime) (θ' : DirichletCharacter ℂ N) (ψ : D
   simpa [Uo] using h3
 
 /- English proof (translation)
-Establish `h1` using `ch_ne_zero ψ (coprime_right hd)`. Establish `h2` using `ch_ne_zero θ (coprime_left hd)`. Establish `h3` using `ch_ne_zero χ (coprime_left hd)`. Rewrite using `[ch_inv, ch_inv, hφ, ch_mul]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 lemma char_eq {N l : ℕ} (χ θ : DirichletCharacter ℂ N) (ψ : DirichletCharacter ℂ l) (φ : DirichletCharacter ℂ (N * l))
     (hφ : ∀ d : ℤ, ch φ d = ch (θ * χ) d * ch ψ d) (d : ℤ) (hd : IsCoprime d ((N * l : ℕ) : ℤ)) :
@@ -194,17 +194,15 @@ end GlobalTheory.DepletedValue
 namespace GlobalTheory.DepletedValue
 
 /- English proof (translation)
-Establish `hcop : N.Coprime l` using `(Nat.coprime_comm.mp ((Nat.Prime.coprime_iff_not_dvd hl).2 hlN))`. Use `set κ : ℂ := ch (θ * χ) l * ch ψ N * hat ψ 1 with hκ`. Establish `hhat : ∀ x, hat φ x = κ * (ch ψ⁻¹ x * hat ⇑(θ * χ) x)`. Introduce `x`. Rewrite using `[(GlobalTheory.T.dirichletCharFiniteFourierTransform_properties).2.1 N l (θ * χ) ψ φ hN hl.pos hcop hφ x, ((GlobalTheory.T.dirichletCharFiniteFourierTransform_properties).2.2 l ψ hl).1 hψ |>.2 x, hκ]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hEn : ∀ c' : ℂ, ∀ n, n ≠ 0 → (eis (e + 1) c₁ (hat φ) fun _ => 1) n = κ * (eis (e + 1) c' (fun y => ch ψ⁻¹ y * hat ⇑(θ * χ) y) fun _ => 1) n`. Introduce `c' n hn`. Simplify using `only [eis, if_neg hn, Finset.mul_sum, hhat]`. Conclude with `Finset.sum_congr rfl (fun _ _ => by ring)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hκ0 : κ ≠ 0`. Introduce `h0`. Establish `hz : (eis (e + 1) c₁ (hat φ) fun _ => 1) = 0` using `GlobalTheory.T.modularFormCoeffSeq_eq_of_pos_coeff_eq (e + 1) (N * l) _ _ _ (by omega) (Nat.mul_pos hN hl.pos) hE (GlobalTheory.T.modularFormCoeffSeq_linear_structure (e + 1) (N * l) _).1 (fun n hn => by rw [hEn 0 n hn, h0, zero_mul]; rfl)`. Rewrite `hlam` using `[hz, mul_zero_right, lam_zero]`. Conclude with `hlam rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `refine ⟨c₁ / κ, ?_, ?_⟩ <;>`. Establish `hEE : (eis (e + 1) (c₁ / κ) (fun y => ch ψ⁻¹ y * hat ⇑(θ * χ) y) fun _ => 1) = κ⁻¹ • (eis (e + 1) c₁ (hat φ) fun _ => 1)`. Use function extensionality and compare the values at `n`. Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Simplify using `[eis, div_eq_inv_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Pi.smul_apply, hEn (c₁ / κ) n hn, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hκ0, one_mul]`. Rewrite using `[hEE]`. Establish `h1` using `((GlobalTheory.T.modularFormCoeffSeq_linear_structure (e + 1) (N * l) _).2.2.1 κ⁻¹ _ hE).1`. Establish `h2` using `GlobalTheory.T.modularFormCoeffSeq_mul_and_qExpansion.2 _ _ _ _ _ _ _ hF h1`. Establish `hw : e + (e + 1) = 2 * e + 1` using `by ring`.
-
-Rewrite `h2` using `[hw]`. Conclude with `(GlobalTheory.T.modularFormCoeffSeq_linear_structure (2 * e + 1) (N * l) _).2.2.2.1 _ _ (fun d hd => char_eq χ θ ψ φ hφ d hd) h2`. Rewrite using `[hEE, mul_smul_right, lam_smul]`. Conclude with `mul_ne_zero (inv_ne_zero hκ0) hlam`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma good_ne (e N l : ℕ) (χ θ : DirichletCharacter ℂ N) (ψ : DirichletCharacter ℂ l) (φ : DirichletCharacter ℂ (N * l))
     (c₀ c₁ : ℂ) (B : ℕ) (c : ℕ → ℂ) (he : 1 ≤ e) (hN : 0 < N) (hl : l.Prime) (hlN : ¬ l ∣ N) (hψ : ψ ≠ 1)
@@ -251,7 +249,7 @@ end GlobalTheory.DepletedValue
 namespace GlobalTheory.DepletedValue
 
 /- English proof (translation)
-Use `haveI : Fact l.Prime := ⟨hl⟩`. Establish `h' : (d : ZMod l) ≠ 0` using `fun h0 => h ((ZMod.intCast_zmod_eq_zero_iff_dvd d l).1 h0)`. Conclude with `MulChar.one_apply h'.isUnit`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma ch_one_of_not_dvd {l : ℕ} (hl : l.Prime) {d : ℤ} (h : ¬ (l : ℤ) ∣ d) : ch (1 : DirichletCharacter ℂ l) d = 1 := by
   haveI : Fact l.Prime := ⟨hl⟩
@@ -259,43 +257,39 @@ lemma ch_one_of_not_dvd {l : ℕ} (hl : l.Prime) {d : ℤ} (h : ¬ (l : ℤ) ∣
   exact MulChar.one_apply h'.isUnit
 
 /- English proof (translation)
-Use `haveI : Fact l.Prime := ⟨hl⟩`. Establish `hcop : N.Coprime l` using `(Nat.coprime_comm.mp ((Nat.Prime.coprime_iff_not_dvd hl).2 hlN))`. Establish `hlZ : IsCoprime (l : ℤ) (N : ℤ)` using `Nat.isCoprime_iff_coprime.mpr hcop.symm`. Establish `hNZ : IsCoprime (N : ℤ) (l : ℤ)` using `Nat.isCoprime_iff_coprime.mpr hcop`. Use `set θ' := θ * χ with hθ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set FF := eis e c₀ (ch (1 : DirichletCharacter ℂ l)) (ch θ) with hFF`. Take `⟨hper, htw, hz⟩` from `(GlobalTheory.T.dirichletCharFiniteFourierTransform_properties).1 N θ' hN`. Take `⟨c'', hBs⟩` from `GlobalTheory.T.eisenstein_periodic_weights_isModularForm (e + 1) N 1 (hat ⇑θ') (fun _ => 1) (ch θ'⁻¹) (fun _ => 1) (by omega) hN one_pos (hz hθχ) hper (fun _ => rfl) (fun d hd => ⟨fun x => htw d x (by simpa using hd), fun x => by simp⟩) (by`. Establish `h1 : ch θ (-1) = θ (-1)` using `by simp [ch]`. Establish `h2 : ch χ (-1) = χ (-1)` using `by simp [ch]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h3 : (1 : DirichletCharacter ℂ l) (-1) = 1` using `MulChar.one_apply isUnit_one.neg`. Rewrite using `[ch_inv, ch_mul, h1, h2, hθ, hχ, h3, pow_succ]`. Simplify using the standard rewrite rules. Rewrite using `[← inv_pow, inv_neg, inv_one])`. Rewrite `hBs` using `[Nat.mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Bs := eis (e + 1) c'' (hat ⇑θ') fun _ => 1 with hBsdef`. Establish `hBsL : MF (e + 1) (N * l) (fun d => ch θ'⁻¹ d * 1) Bs` using `(GlobalTheory.T.modularFormCoeffSeq_linear_structure (e + 1) N _).2.2.2.2.1 _ _ (dvd_mul_right N l) hBs`. Establish `hVBs : MF (e + 1) (N * l) (fun d => ch θ'⁻¹ d * 1) (Vo l Bs)` using `(GlobalTheory.T.coeffHeckeVOperator_raises_level (e + 1) N l _ Bs hl.pos).1 hBs`. Use `set et := ch θ'⁻¹ (l : ℤ) with het`. Establish `hVpart : ∀ n, n ≠ 0 → eis (e + 1) c'' (fun x => if (l : ℤ) ∣ x then hat ⇑θ' x else 0) (fun _ => 1) n = et * (l : ℂ) ^ e * Vo l Bs n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `n hn`. Use `(GlobalTheory.T.coeffEisensteinSeriesTwisted_heckeU_heckeV (e + 1) l c'' et (hat ⇑θ') (fun _ => 1) hl).2 (by omega) (fun x => by rw [mul_comm]; exact htw l x hlZ) n hn` as an intermediate fact. Simplify using `using this`. Establish `hinv : (1 : DirichletCharacter ℂ l)⁻¹ = 1` using `inv_one`. Establish `hEE : (eis (e + 1) (c'' + (-(et * (l : ℂ) ^ e)) * c'') (fun y => ch (1 : DirichletCharacter ℂ l)⁻¹ y * hat ⇑θ' y) fun _ => 1) = Bs + (-(et * (l : ℂ) ^ e)) • Vo l Bs`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `n`. Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Simplify using `[hBsdef, eis, Vo]`. Rewrite using `[Pi.add_apply, Pi.smul_apply, smul_eq_mul, neg_mul (et * (l : ℂ) ^ e) (Vo l Bs n), ← hVpart n hn, hBsdef]`. Simplify using `only [eis, if_neg hn, hinv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← sub_eq_add_neg, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun p _ => ?_)` and prove the remaining obligations. Distinguish the cases in `h : (l : ℤ) ∣ (p.1 : ℤ)`. Simplify using `[h, ch_dvd hl 1 h]`. Simplify using `[h, ch_one_of_not_dvd hl h]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEEmf : MF (e + 1) (N * l) (fun d => ch θ'⁻¹ d * 1) (Bs + (-(et * (l : ℂ) ^ e)) • Vo l Bs)` using `((GlobalTheory.T.modularFormCoeffSeq_linear_structure (e + 1) (N * l) _).2.1 _ _ hBsL ((GlobalTheory.T.modularFormCoeffSeq_linear_structure (e + 1) (N * l) _).2.2.1 _ _ hVBs).1).1`. Establish `hprod : ∀ G, MF (e + 1) (N * l) (fun d => ch θ'⁻¹ d * 1) G → MF (2 * e + 1) (N * l) (ch χ⁻¹) (mul FF G)`. Introduce `G hG`. Establish `h2` using `GlobalTheory.T.modularFormCoeffSeq_mul_and_qExpansion.2 _ _ _ _ _ _ _ hF hG`. Establish `hw : e + (e + 1) = 2 * e + 1` using `by ring`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[hw]`. Use `(GlobalTheory.T.modularFormCoeffSeq_linear_structure (2 * e + 1) (N * l) _).2.2.2.1 _ _ (fun d hd => ?_) h2` and prove the remaining obligations. Establish `h1` using `ch_ne_zero θ (coprime_left hd)`. Establish `h3` using `ch_ne_zero χ (coprime_left hd)`. Simplify using `only [ch_one (coprime_right hd), ch_inv, hθ', ch_mul]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `hhatE : ∀ x, hat φ x = ch θ' l * (hat ⇑θ' x * ((if (l : ℤ) ∣ x then (l : ℂ) else 0) - 1))`. Introduce `x`. Rewrite using `[(GlobalTheory.T.dirichletCharFiniteFourierTransform_properties).2.1 N l θ' 1 φ hN hl.pos hcop hφ x, ((GlobalTheory.T.dirichletCharFiniteFourierTransform_properties).2.2 l 1 hl).2 rfl x, ch_one hNZ, mul_one]`. Establish `hEn : ∀ n, n ≠ 0 → (eis (e + 1) c₁ (hat φ) fun _ => 1) n = ((ch θ' l * (et * (l : ℂ) ^ (e + 1))) • Vo l Bs + (-ch θ' l) • Bs) n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `n hn`. Establish `hV` using `hVpart n hn`. Establish `hsplit : ((ch θ' l * (et * (l : ℂ) ^ (e + 1))) • Vo l Bs + (-ch θ' l) • Bs) n = ch θ' l * (l : ℂ) * eis (e + 1) c'' (fun x => if (l : ℤ) ∣ x then hat ⇑θ' x else 0) (fun _ => 1) n - ch θ' l * Bs n`. Rewrite using `[hV, Pi.add_apply, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[hsplit, hBsdef]`. Simplify using `only [eis, if_neg hn, Finset.mul_sum, ← Finset.sum_sub_distrib, hhatE]`. Use `Finset.sum_congr rfl (fun p _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`. Establish `hRmf : MF (e + 1) (N * l) (ch φ⁻¹) ((ch θ' l * (et * (l : ℂ) ^ (e + 1))) • Vo l Bs + (-ch θ' l) • Bs)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `((GlobalTheory.T.modularFormCoeffSeq_linear_structure (e + 1) (N * l) _).2.1 _ _ ((GlobalTheory.T.modularFormCoeffSeq_linear_structure (e + 1) (N * l) _).2.2.1 (ch θ' l * (et * (l : ℂ) ^ (e + 1))) _ hVBs).1 ((GlobalTheory.T.modularFormCoeffSeq_linear_structure (e + 1) (N * l) _). …`. Use `(GlobalTheory.T.modularFormCoeffSeq_linear_structure (e + 1) (N * l) _).2.2.2.1 _ _ (fun d hd => ?_) h1` and prove the remaining obligations. Simplify using `only [ch_inv, hφ, ch_one (coprime_right hd), mul_one]`. Establish `hEeq` using `GlobalTheory.T.modularFormCoeffSeq_eq_of_pos_coeff_eq (e + 1) (N * l) _ _ _ (by omega) (Nat.mul_pos hN hl.pos) hE hRmf hEn`. Establish `hUFF` using `U_FF e N l he hN hl θ 1 c₀ hF`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hUV : α * lam B c (mul FF (Vo l Bs)) = θ l * lam B c (mul FF Bs)`. Rewrite using `[← hU _ (hprod _ hVBs), (GlobalTheory.T.coeffHecke_UV_cauchyProduct_identities ℂ l hl.pos).1, hUFF, mul_smul_left, lam_smul]`. Establish `hlamE : lam B c (mul FF (eis (e + 1) c₁ (hat φ) fun _ => 1)) = ch θ' l * (et * (l : ℂ) ^ (e + 1)) * lam B c (mul FF (Vo l Bs)) + (-ch θ' l) * lam B c (mul FF Bs)`. Rewrite using `[hEeq, mul_add_right, mul_smul_right, mul_smul_right, lam_add, lam_smul, lam_smul]`. Establish `hB0 : lam B c (mul FF Bs) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Establish `hV0 : lam B c (mul FF (Vo l Bs)) = 0`. Use `hUV` as an intermediate fact. Rewrite `this` using `[h0, mul_zero]`. Conclude with `(mul_eq_zero.mp this).resolve_left hα0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hlam (by rw [hlamE, hV0, h0]; ring)`. Establish `hetθ : et * θ l = χ⁻¹ l`. Establish `h1 : ch θ (l : ℤ) ≠ 0` using `ch_ne_zero θ hlZ`. Establish `h3 : ch χ (l : ℤ) ≠ 0` using `ch_ne_zero χ hlZ`. Establish `e1 : θ l = ch θ (l : ℤ)` using `by simp [ch]`.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2 : χ⁻¹ l = ch χ⁻¹ (l : ℤ)` using `by simp [ch]`. Rewrite using `[e1, e2, het, ch_inv, ch_inv, hθ', ch_mul]`. Clear the denominators using the available nonvanishing facts. Use `⟨c'' + (-(et * (l : ℂ) ^ e)) * c'', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hEE]`.
-
-Conclude with `hprod _ hEEmf`. Rewrite using `[hEE, mul_add_right, mul_smul_right, lam_add, lam_smul]`. Introduce `h0`. Establish `: (α - (l : ℂ) ^ e * χ⁻¹ l) * lam B c (mul FF Bs) = 0`. Rewrite using `[← hetθ]`.
-
-Take the linear combination `α * h0 + et * (l : ℂ) ^ e * hUV`. Break down `mul_eq_zero.mp this with h | h` into its components or cases. Conclude with `hαχ (sub_eq_zero.mp h)`. Conclude with `hB0 h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma good_one (e N l : ℕ) (χ θ : DirichletCharacter ℂ N) (φ : DirichletCharacter ℂ (N * l))
     (α c₀ c₁ : ℂ) (B : ℕ) (c : ℕ → ℂ) (he : 1 ≤ e) (hN : 0 < N) (hl : l.Prime) (hlN : ¬ l ∣ N) (hα0 : α ≠ 0)
@@ -420,9 +414,7 @@ end GlobalTheory.DepletedValue
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Introduce `e N l χ θ ψ φ t α c₀ c₁ B c he hN hl hlN hα0 hEig hθ hχ hθχ hφ hF hE hlam hαθ hαχ`. Choose the witnesses or unpack the hypotheses as in `⟨c', hmf, hne⟩ : ∃ c' : ℂ, MF (2 * e + 1) (N * l) (ch χ⁻¹) (mul (eis e c₀ (ch ψ) (ch θ)) (eis (e + 1) c' (fun y => ch ψ⁻¹ y * hat ⇑(θ * χ) y) fun _ => 1)) ∧ lam B c (mul (eis e c₀ (ch ψ) (ch θ)) (eis (e + 1) c' (fun y => ch ψ⁻¹ y * hat ⇑(θ * χ) y) fun _ => 1)) ≠ 0 := by`. Break down `eq_or_ne ψ 1 with rfl | hψ` into its components or cases. Conclude with `GlobalTheory.DepletedValue.good_one e N l χ θ φ α c₀ c₁ B c he hN hl hlN hα0 hEig.U hθ hχ hθχ hφ hF hE hlam hαχ`. Conclude with `GlobalTheory.DepletedValue.good_ne e N l χ θ ψ φ c₀ c₁ B c he hN hl hlN hψ hφ hF hE hlam`.
-
-Rewrite using `[GlobalTheory.DepletedValue.zs_eq e l he θ χ ψ c₀ c']`. Conclude with `GlobalTheory.DepletedValue.core hl.pos B c α (θ l) _ _ (GlobalTheory.DepletedValue.U_FF e N l he hN hl θ ψ c₀ hF) (GlobalTheory.DepletedValue.U_EE e N l hl (θ * χ) ψ c') (hEig.U _ hmf) hne hαθ hα0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_depleted_ne_zero : ∀ (e N l : ℕ) (χ θ : DirichletCharacter ℂ N) (ψ : DirichletCharacter ℂ l) (φ : DirichletCharacter ℂ (N * l)) (t : ℕ → ℂ) (α c₀ c₁ : ℂ) (B : ℕ) (c : ℕ → ℂ), 1 ≤ e → 0 < N → l.Prime → ¬ l ∣ N → α ≠ 0 → EigF (2 * e + 1) N l χ⁻¹ t α B c → θ (-1) = (-1) ^ e * ψ (-1) → χ (-1) = -1 → θ * χ ≠ 1 → (∀ d : ℤ, ch φ d = ch (θ * χ) d * ch ψ d) → MF e (N * l) (fun d => ch ψ d * ch θ d) (eis e c₀ (ch ψ) (ch θ)) → MF (e + 1) (N * l) (ch φ⁻¹) (eis (e + 1) c₁ (hat φ) fun _ => 1) → lam B c (mul (eis e c₀ (ch ψ) (ch θ)) (eis (e + 1) c₁ (hat φ) fun _ => 1)) ≠ 0 → α ≠ θ l → α ≠ (l : ℂ) ^ e * χ⁻¹ l → val B c l α 1 (Zs (2 * e + 1) l (ch θ) (hat ⇑(θ * χ)) (fun x y => ψ x * ψ⁻¹ y * ((y : ℂ) / x) ^ e)) ≠ 0 := by
   intro e N l χ θ ψ φ t α c₀ c₁ B c he hN hl hlN hα0 hEig hθ hχ hθχ hφ hF hE hlam hαθ hαχ

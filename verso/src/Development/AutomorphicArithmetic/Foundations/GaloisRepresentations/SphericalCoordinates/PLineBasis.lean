@@ -7,7 +7,7 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Rewrite using `[Matrix.add_mulVec, Matrix.one_mulVec]`. Use `congr 1`. Use extensionality with `a`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.replicateCol_apply, Matrix.replicateRow_apply, Finset.univ_unique, Finset.sum_singleton, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -23,30 +23,28 @@ private theorem one_add_col_mul_rank_one_mulVec {n : ℕ} (u w v : Fin n → ℂ
   ring
 
 /- English proof (translation)
-Simplify using `[hv, Matrix.mulVec_sub, Matrix.mulVec_smul, dotProduct_sub, dotProduct_smul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hv_sub_smul_left {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (x y z : Fin n → ℂ) (a : ℂ) :
     hv M (x - a • y) z = hv M x z - a * hv M y z := by
   simp [hv, Matrix.mulVec_sub, Matrix.mulVec_smul, dotProduct_sub, dotProduct_smul]
 
 /- English proof (translation)
-Introduce `n M z _ hpos`. Establish `hz : ∃ i, z i ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `: z = 0` using `funext h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `this` using the available equality. Simplify using `[hv] at hpos`. Take `⟨i₀, hi₀⟩` from `hz`. Establish `hφ : hv M z z ≠ 0`. Introduce `h`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hpos` using `[h]`. Simplify using `at hpos`. Use `set e : Fin n → ℂ := Pi.single i₀ 1 with he`. Use `set c : Fin n → ℂ := fun j => if j = i₀ then 0 else hv M (Pi.single j 1) z / hv M z z with hc`. Use `⟨i₀, (1 + Matrix.replicateCol Unit (z - e) * Matrix.replicateRow Unit e) * (1 + Matrix.replicateCol Unit (-e) * Matrix.replicateRow Unit c), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.det_mul, Matrix.det_one_add_replicateCol_mul_replicateRow, Matrix.det_one_add_replicateCol_mul_replicateRow]`. Establish `h1 : e ⬝ᵥ (z - e) = z i₀ - 1`. Simplify using `[he, dotProduct_sub]`. Establish `h2 : c ⬝ᵥ (-e) = 0`. Simplify using `[he, hc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2]`. Simplify using `using hi₀`. Rewrite using `[← Matrix.mulVec_mulVec, one_add_col_mul_rank_one_mulVec, one_add_col_mul_rank_one_mulVec]`. Establish `h2 : c ⬝ᵥ e = 0` using `by simp [he, hc]`. Establish `h3 : e ⬝ᵥ e = 1` using `by simp [he]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h2]`. Simplify using `[h3, he]`. Introduce `i hi`. Rewrite using `[← Matrix.mulVec_mulVec, one_add_col_mul_rank_one_mulVec, one_add_col_mul_rank_one_mulVec]`. Establish `h2 : c ⬝ᵥ (Pi.single i 1 : Fin n → ℂ) = hv M (Pi.single i 1) z / hv M z z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hc, hi]`. Establish `h3 : e ⬝ᵥ ((Pi.single i 1 : Fin n → ℂ) + (hv M (Pi.single i 1) z / hv M z z) • (-e)) = - (hv M (Pi.single i 1) z / hv M z z)`. Simplify using `[he, dotProduct_add, Pi.single_apply, hi]`. Rewrite using `[h2, h3]`. Establish `h4 : (Pi.single i 1 : Fin n → ℂ) + (hv M (Pi.single i 1) z / hv M z z) • (-e) + (-(hv M (Pi.single i 1) z / hv M z z)) • (z - e) = (Pi.single i 1 : Fin n → ℂ) - (hv M (Pi.single i 1) z / hv M z z) • z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use extensionality with `a`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h4, hv_sub_smul_left]`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.lineBasis_of :
     UpperTheory.Gal.W2.LineBasis := by

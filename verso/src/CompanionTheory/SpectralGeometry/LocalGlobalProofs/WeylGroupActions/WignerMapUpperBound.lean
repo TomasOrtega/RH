@@ -9,7 +9,7 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Form
 namespace GlobalTheory.CompanionTheory.WigAtOmega
 
 /- English proof (translation)
-Introduce `Wq _ _ Wq' _ _ k r z z' π' π'' d A hz hT hz' hT' hA g hg`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.WigSh.OmgNorm.omg_norm k r z z' g hz hT hz' hT' hg`. Establish `h` using `hA.2.2.2 _ h1 h2`. Rewrite `h` using `[h3]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wigUpper_omg : ∀ (Wq : Type) [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (Wq' : Type)
     [NormedAddCommGroup Wq'] [InnerProductSpace ℂ Wq'] (k r : ℕ) (z z' : (Fin (2 * r + k + 1) → ℂ))

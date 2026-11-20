@@ -12,17 +12,17 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 open Formalism.L2.SG.HidaSetting Formalism.L2.SG.PoincareInHH.PoincareSetting Formalism.L2.SG.TermOp Formalism.L2.SG.TermOp.IdBlocks Formalism.L2.SG.Full
 
 /- English proof (translation)
-Introduce `D X Y u hneat _ ρ t hid hmeet`. Take `⟨-, hlin⟩` from `hK D X Y u hneat ρ ρ t hid hmeet`. Establish `hR : RatLink X t.pt t.lin` using `t.rep.2.1`. Establish `hN : t.pt.1 ∈ X.NinfU u` using `Formalism.L2.SG.Pf.nLamNinf_holds D X u _ t.pt t.lin hR hlin`. Establish `hNf : t.pt.2 ∈ X.NfinU u` using `Formalism.L2.SG.Pf.nLamNfin_holds D X u _ t.pt t.lin hR hlin`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1, hmul, hinv⟩` from `Formalism.L2.SG.Pf.psiInfChar_holds D X u`. Take `⟨-, hchi, -⟩` from `Formalism.L2.SG.Pf.nilradical_conj_level' D X Y u ρ t.pt t.lin hlin hR`. Establish `hprod` using `Formalism.L2.SG.Pf.psiProd_all D X u t.pt (ratLink_mem X hR) hN hNf`. Use `⟨hinv _ hN, ?_⟩` and prove the remaining obligations. Establish `hψ1 : X.psiInfU u 1 = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h11` using `(hmul 1 h1 1 h1).2`. Rewrite `h11` using `[mul_one]`. Establish `hn` using `Formalism.L2.SG.RealObj.InfCut.norm_psiInfU X u 1`. Establish `h0 : X.psiInfU u 1 ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hn` using `[h, norm_zero]`. Conclude with `zero_ne_one hn`. Conclude with `mul_left_cancel₀ h0 (h11.symm.trans (mul_one _).symm)`. Establish `hinvψ : X.psiInfU u t.pt.1⁻¹ * X.psiInfU u t.pt.1 = 1`. Rewrite using `[← (hmul _ (hinv _ hN) _ hN).2, inv_mul_cancel, hψ1]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hconj : starRingEnd ℂ (X.psiInfU u t.pt.1⁻¹) = X.psiInfU u t.pt.1`. Establish `hn` using `Formalism.L2.SG.RealObj.InfCut.norm_psiInfU X u t.pt.1⁻¹`. Establish `hz : starRingEnd ℂ (X.psiInfU u t.pt.1⁻¹) = (X.psiInfU u t.pt.1⁻¹)⁻¹`. Rewrite using `[Complex.inv_def, Complex.normSq_eq_norm_sq, hn]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, inv_eq_of_mul_eq_one_right hinvψ]`. Use `show X.chi2 ((((Y.cs u).h ρ : X.B.I.Gf) * X.xu u)⁻¹ * t.pt.2 * (((Y.cs u).h ρ : X.B.I.Gf) * X.xu u)) * starRingEnd ℂ (X.psiInfU u t.pt.1⁻¹) = 1`. Rewrite using `[hchi, hconj, mul_comm]`. Conclude with `hprod`.
+A detailed English derivation is pending.
 -/
 theorem idMeetPhaseC_of (hK : IdMeetKeyC) : IdMeetPhaseC := by
   intro D X Y u hneat _ ρ t hid hmeet

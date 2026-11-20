@@ -13,11 +13,11 @@ open scoped TensorProduct
 namespace GlobalTheory.St.G
 
 /- English proof (translation)
-Establish `hT0 : 0 < T` using `hT.pos`. Establish `hpow0 : T ^ (2 * f) ≠ 0` using `pow_ne_zero _ hT.ne_zero`. Establish `hprod0 : ∏ i ∈ s, r i ≠ 0`. Introduce `h`. Rewrite `hdvd` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hpow0 (zero_dvd_iff.mp hdvd)`. Establish `hge : ∀ i ∈ s, T ^ 2 ≤ r i` using `fun i hi => hlow i hi (fun h => hprod0 (Finset.prod_eq_zero hi h))`. Establish `hle : ∏ i ∈ s, r i ≤ ∏ _i ∈ s, T ^ 2`. Rewrite using `[Finset.prod_const, hcard, ← pow_mul]`. Conclude with `Nat.le_of_dvd (Nat.pos_of_ne_zero hpow0) hdvd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `i hi`. Assume the negation of the conclusion as `hne`. Establish `hlt : ∏ _i ∈ s, T ^ 2 < ∏ i ∈ s, r i` using `Finset.prod_lt_prod (fun j _ => pow_pos hT0 2) hge ⟨i, hi, lt_of_le_of_ne (hge i hi) (Ne.symm hne)⟩`. Conclude with `absurd hle (not_le.mpr hlt)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tidx_arith {ι : Type} (s : Finset ι) (r : ι → ℕ) (T f : ℕ) (hT : T.Prime) (hcard : s.card = f)
     (hdvd : ∏ i ∈ s, r i ∣ T ^ (2 * f)) (hlow : ∀ i ∈ s, r i ≠ 0 → T ^ 2 ≤ r i) : ∀ i ∈ s, r i = T ^ 2 := by
@@ -41,13 +41,13 @@ theorem tidx_arith {ι : Type} (s : Finset ι) (r : ι → ℕ) (T f : ℕ) (hT 
   exact absurd hle (not_le.mpr hlt)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ cm n J hJ hdet T f L hT hs hdeg hL v hv`. Take `⟨hncard, hloc⟩` from `GlobalTheory.St.G.SplitPrime.split_place F E cm T hT hs`. Establish `hF : Module.finrank ℚ F = f`. Establish `h` using `Module.finrank_mul_finrank ℚ F E`. Rewrite `h` using `[cm.deg2, hdeg]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hfin : {w : HeightOneSpectrum (𝓞 F) | (T : 𝓞 F) ∈ w.asIdeal}.Finite` using `Set.finite_of_ncard_pos (by rw [hncard]; exact Module.finrank_pos)`. Establish `hcard : hfin.toFinset.card = f`. Rewrite using `[← Set.ncard_eq_toFinset_card _ hfin, hncard, hF]`. Establish `hlow : ∀ w ∈ hfin.toFinset, (loc w L).toAddSubgroup.relIndex (loc w (dualL cm.sig J L)).toAddSubgroup ≠ 0 → T ^ 2 ≤ (loc w L).toAddSubgroup.relIndex (loc w (dualL cm.sig J L)).toAddSubgroup`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `w hw h0`. Establish `hw' : (T : 𝓞 F) ∈ w.asIdeal` using `(Set.Finite.mem_toFinset hfin).mp hw`. Take `⟨_, _, sp, hsp1, hsp2⟩` from `hloc w hw'`. Conclude with `GlobalTheory.T.prime_sq_le_local_hermitian_dual_index F E cm n J hJ hdet T f L hT hs hdeg hL w hw' sp hsp1 hsp2 (GlobalTheory.T.split_place_dual_quotient_components_iff F E cm n J hJ hdet T f L hT hs hdeg hL w hw' sp hsp1 hsp2) h0`. Establish `hdvd` using `GlobalTheory.T.prod_local_relIndex_dvd_hermitian_dual F E cm n J hJ hdet T f L hT hs hdeg hL hfin.toFinset (fun w hw => (Set.Finite.mem_toFinset hfin).mp hw)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdvd` using `[hL.2.2.2.1]`. Establish `heq` using `tidx_arith hfin.toFinset (fun w => (loc w L).toAddSubgroup.relIndex (loc w (dualL cm.sig J L)).toAddSubgroup) T f hT hcard hdvd hlow v ((Set.Finite.mem_toFinset hfin).mpr hv)`. Use `⟨heq, ?_⟩` and prove the remaining obligations. Take `⟨_, _, sp, hsp1, hsp2⟩` from `hloc v hv`. Conclude with `GlobalTheory.T.local_hermitian_dual_quotient_cyclic_split_place F E cm n J hJ hdet T f L hT hs hdeg hL v hv sp hsp1 hsp2 (GlobalTheory.T.split_place_dual_quotient_components_iff F E cm n J hJ hdet T f L hT hs hdeg hL v hv sp hsp1 hsp2) heq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tLat_local_index : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (cm : CMData F E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHerm (cm.sig : E →+* E) J → J.det ≠ 0 → ∀ (T f : ℕ) (L : Submodule (𝓞 E) (Fin n → E)), T.Prime → SplitsIn E T → Module.finrank ℚ E = 2 * f → TLat cm.sig J T f L → ∀ (v : HeightOneSpectrum (𝓞 F)), (T : 𝓞 F) ∈ v.asIdeal → (loc v L).toAddSubgroup.relIndex (loc v (dualL cm.sig J L)).toAddSubgroup = T ^ 2 ∧ ∃ d ∈ loc v (dualL cm.sig J L), ∀ x ∈ loc v (dualL cm.sig J L), ∃ a ∈ intV E v, x - a • d ∈ loc v L := by
   intro F E _ _ _ _ _ _ cm n J hJ hdet T f L hT hs hdeg hL v hv

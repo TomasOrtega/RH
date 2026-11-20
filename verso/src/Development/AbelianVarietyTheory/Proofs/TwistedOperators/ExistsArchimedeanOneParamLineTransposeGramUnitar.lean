@@ -19,9 +19,9 @@ namespace GlobalTheory.TransportedLine
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hu' : IsUnit H` using `(isUnit_iff_isUnit_det H).2 hu`. Establish `e : (t • X)ᴴ = H * (-(t • X)) * H⁻¹`. Establish `h1 : Xᴴ * H = -(H * X)` using `eq_neg_of_add_eq_zero_left hX`. Establish `h2 : Xᴴ = -(H * X) * H⁻¹` using `by rw [← h1, mul_assoc, mul_nonsing_inv _ hu, mul_one]`. Rewrite using `[conjTranspose_smul, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `show (NormedSpace.exp (t • X))ᴴ * H * NormedSpace.exp (t • X) = H`. Rewrite using `[← Matrix.exp_conjTranspose, e, Matrix.exp_conj _ _ hu', mul_assoc _ H⁻¹, nonsing_inv_mul _ hu, mul_one, mul_assoc, ← Matrix.exp_add_of_commute _ _ (Commute.refl (t • X)).neg_left, neg_add_cancel, NormedSpace.exp_zero, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_mem_UH_of_lie {n : ℕ} {H : Matrix (Fin n) (Fin n) ℂ} (hu : IsUnit H.det) {X : Matrix (Fin n) (Fin n) ℂ}
     (hX : Xᴴ * H + H * X = 0) (t : ℝ) : NormedSpace.exp (t • X) ∈ Formalism.QuantumDeterminants.UH H := by
@@ -36,7 +36,7 @@ theorem exp_mem_UH_of_lie {n : ℕ} {H : Matrix (Fin n) (Fin n) ℂ} (hu : IsUni
     ← Matrix.exp_add_of_commute _ _ (Commute.refl (t • X)).neg_left, neg_add_cancel, NormedSpace.exp_zero, mul_one]
 
 /- English proof (translation)
-Establish `: (gramAt D V τ).det = tauE D τ V.gram.det` using `(RingHom.map_det (tauE D τ) V.gram).symm`. Rewrite using `[this]`. Conclude with `((_root_.map_ne_zero _).2 (Formalism.L2.Theta.gram_det_ne V)).isUnit`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramAt_det_isUnit (V : HSp D) (τ : D.what₂.Tau) : IsUnit (gramAt D V τ).det := by
   have : (gramAt D V τ).det = tauE D τ V.gram.det := (RingHom.map_det (tauE D τ) V.gram).symm
@@ -58,9 +58,9 @@ def toUXHom : GA D X →* GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjuga
     simp [Formalism.L2.Theta.mt, Matrix.submatrix_mul_equiv]
 
 /- English proof (translation)
-Establish `hm : Continuous fun g : GA D X => (matHom X g)` using `continuous_subtype_val`. Use `continuous_induced_rng.2 (Units.continuous_iff.2 ⟨?_, ?_⟩)` and prove the remaining obligations. Establish `hv : Continuous fun g : GA D X => (matHom X g).1` using `Units.continuous_val.comp hm`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Conclude with `(continuous_apply (e j)).comp ((continuous_apply (e i)).comp hv)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hv : Continuous fun g : GA D X => ((matHom X g)⁻¹).1` using `Units.continuous_coe_inv.comp hm`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Use `((continuous_apply (e j)).comp ((continuous_apply (e i)).comp hv)).congr fun g => ?_` and prove the remaining obligations. Use `show ((matHom X g)⁻¹).1 (e i) (e j) = (mt X g⁻¹) (e i) (e j)`. Simplify using `[Formalism.L2.Theta.mt]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_toUX : Continuous (GlobalTheory.TripleRead.toUX X e hJ) := by
   have hm : Continuous fun g : GA D X => (matHom X g) := continuous_subtype_val
@@ -86,15 +86,13 @@ def finIncl (F : Type) [Field F] [NumberField F] : Formalism.MainNotions.GlobalT
     simp
 
 /- English proof (translation)
-Set `e : AF F` to `((0, 1) : Ainf F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F)`. Establish `h1 : (show Ainf F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F from u).1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)`. Establish `hu' : u = u * e`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (show Ainf F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F from u).1 = (show Ainf F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F from u).1 * 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_zero]`. Conclude with `h1`. Use `show (show Ainf F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F from u).2 = (show Ainf F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F from u).2 * 1`. Rewrite using `[mul_one]`. Establish `key : ∀ y : AF F ⊗[F] E, e • y = (finIncl F).rTensor E (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) y)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Rewrite using `[TensorProduct.smul_tmul', Algebra.TensorProduct.map_tmul, LinearMap.rTensor_tmul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Use `congr 1`. Use `show ((0, 1) : Ainf F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) * (show Ainf F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F from a) = ((0, (show Ainf F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F from a).2) : Ainf F …`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `zero_mul _`. Conclude with `one_mul _`.
-
-Consider the case `add y z hy hz => rw [smul_add, hy, hz, map_add, map_add]`. Rewrite using `[hu', mul_smul, key, hx, map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_eq_zero_of_snd (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (x : AF F ⊗[F] E) (hx : Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) x = 0) (u : AF F)
@@ -125,13 +123,13 @@ theorem smul_eq_zero_of_snd (F E : Type) [Field F] [NumberField F] [Field E] [Nu
   rw [hu', mul_smul, key, hx, map_zero, smul_zero]
 
 /- English proof (translation)
-Introduce `u hu`. Establish `h1 : (finHom X g).val = 1` using `by rw [show finHom X g = 1 from hg]; rfl`. Establish `hM : ∀ a b, Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sndA D.host.F) (AlgHom.id D.host.F D.host.E) ((Formalism.L2.Theta.mt X g - 1) a b) = 0`. Introduce `a b`. Establish `e2` using `congrFun (congrFun h1 a) b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Matrix.sub_apply, map_sub]`. Use `sub_eq_zero.2 ((congrArg id e2).trans ?_)` and prove the remaining obligations. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hr : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat (GlobalTheory.TripleRead.toUX X e hJ g) - 1 = (Formalism.L2.Theta.mt X g - 1).submatrix e e` using `by show (Formalism.L2.Theta.mt X g).submatrix e e - 1 = _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[Matrix.one_apply, e.injective.eq_iff]`. Rewrite using `[hr]`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, Matrix.zero_apply, Matrix.submatrix_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `smul_eq_zero_of_snd _ _ _ (hM _ _) u hu`.
+A detailed English derivation is pending.
 -/
 theorem toUX_mem_UAt (Z : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E k) (hJ : Z.J = D.host.xi0 • (X.gramᵀ).submatrix e e)
     {g : GA D X} (hg : g ∈ GinfC X) :
@@ -156,7 +154,7 @@ theorem toUX_mem_UAt (Z : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
   exact smul_eq_zero_of_snd _ _ _ (hM _ _) u hu
 
 /- English proof (translation)
-Use `letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedAlgebra ℚ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Conclude with `NormedSpace.exp_continuous.comp (continuous_id.smul continuous_const)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem continuous_exp_smul {n : ℕ} (Y : Matrix (Fin n) (Fin n) ℂ) :
     Continuous fun t : ℝ => NormedSpace.exp (t • Y) := by
@@ -170,11 +168,9 @@ end GlobalTheory.TransportedLine
 namespace GlobalTheory.TransportedLine
 
 /- English proof (translation)
-Introduce `D θ hθ X k e Z hJ τ Y hY`. Establish `hU : ∀ t : ℝ, NormedSpace.exp (t • Y) ∈ Formalism.QuantumDeterminants.UH (gramAt D X τ)` using `exp_mem_UH_of_lie (gramAt_det_isUnit X τ) hY`. Set `φ : Multiplicative ℝ →* GA D X` to `{ toFun := fun t => oneP θ X τ Y (Multiplicative.toAdd t) map_one' := by show atTau θ X τ (NormedSpace.exp ((0 : ℝ) • Y)) = 1`. Rewrite using `[zero_smul, NormedSpace.exp_zero]`. Conclude with `GlobalTheory.PointAtPlaceHom.atTau_one hθ X τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_mul' := fun s t => by show atTau θ X τ (NormedSpace.exp ((Multiplicative.toAdd s + Multiplicative.toAdd t) • Y)) = atTau θ X τ (NormedSpace.exp (Multiplicative.toAdd s • Y)) * atTau θ X τ (NormedSpace.exp (Multiplicative.toAdd t • Y))`. Rewrite using `[add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl Y).smul_left _).smul_right _)]`. Conclude with `GlobalTheory.PointAtPlaceHom.atTau_mul hθ X τ (hU _) (hU _) }`. Use `⟨(toUXHom X e hJ).comp φ, ⟨?_, fun t => ?_⟩, fun t => rfl⟩` and prove the remaining obligations. Establish `hc : Continuous fun t : ℝ => oneP θ X τ Y t` using `(GlobalTheory.PointAtPlaceHom.continuousOn_atTau hθ X τ).comp_continuous (continuous_exp_smul Y) hU`.
-
-Conclude with `(continuous_toUX X e hJ).comp (hc.comp continuous_toAdd)`. Conclude with `toUX_mem_UAt X e Z hJ (GlobalTheory.PointAtPlaceHom.atTau_mem X τ _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_line_toUX_oneP : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (X : HSp D) {k : ℕ} (e : Fin k ≃ Fin X.rank)
     (Z : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E k) (hJ : Z.J = D.host.xi0 • (X.gramᵀ).submatrix e e) (τ : D.what₂.Tau),

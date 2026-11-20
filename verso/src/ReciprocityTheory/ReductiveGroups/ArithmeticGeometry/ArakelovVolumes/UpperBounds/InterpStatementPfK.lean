@@ -13,13 +13,11 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Establish `hn : ∀ (τ : X.Ψ) (a b : Fin r), Differentiable ℂ fun z : V (nd X) => nmat X z τ a b`. Introduce `τ a b`. Distinguish the cases in `h : b < a`. Simplify using `only [nmat, dif_pos h] first`. Consider the case `exact (EuclideanSpace.proj (𝕜 := ℂ) _).differentiable`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `fun_prop`. Distinguish the cases in `h' : a = b`. Simplify using `only [nmat, dif_neg h, if_pos h']`. Conclude with `differentiable_const _`. Simplify using `only [nmat, dif_neg h, if_neg h']`.
+Treat this case separately. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `differentiable_const _`. Use `differentiable_pi.2 fun τ => differentiable_pi.2 fun a => differentiable_pi.2 fun b => ?_` and prove the remaining obligations. Use `show Differentiable ℂ fun z => ∑ k, mat x0 τ a k * mat (nmat X z) τ k b`. Use `first`. Consider the case `exact Differentiable.fun_sum fun k _ => (differentiable_const _).mul (hn τ k b)`.
-
-Consider the case `(have hk : ∀ k, Differentiable ℂ fun z : V (nd X) => nmat X z τ k b := fun k => hn τ k b fun_prop)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cpt_diff (x0 : Frame X.Ψ r) : Differentiable ℂ (cpt X x0) := by
   have hn : ∀ (τ : X.Ψ) (a b : Fin r), Differentiable ℂ fun z : V (nd X) => nmat X z τ a b := by
@@ -42,13 +40,13 @@ theorem cpt_diff (x0 : Frame X.Ψ r) : Differentiable ℂ (cpt X x0) := by
        fun_prop)
 
 /- English proof (translation)
-The claim follows from `hP.comp (cpt_diff X x0).differentiableOn (fun _ hz => hz)`.
+A detailed English derivation is pending.
 -/
 theorem comp_cpt_diffOn {P : Frame X.Ψ r → ℂ} (hP : DifferentiableOn ℂ P X.dom) (x0 : Frame X.Ψ r) :
     DifferentiableOn ℂ (fun z => P (cpt X x0 z)) (OmF X x0) := hP.comp (cpt_diff X x0).differentiableOn (fun _ hz => hz)
 
 /- English proof (translation)
-Unfold `bchar`. Use `Finset.prod_ne_zero_iff.2 fun τ _ => Finset.prod_ne_zero_iff.2 fun i _ => zpow_ne_zero _ ?_` and prove the remaining obligations. Establish `h` using `(hb τ).1`. Rewrite `h` using `[Matrix.det_of_upperTriangular (by intro a c hca; exact (hb τ).2 a c hca)]`. Conclude with `Finset.prod_ne_zero_iff.1 h i (Finset.mem_univ _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bchar_ne_zero {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (la : Wt X.Ψ r) : bchar la b ≠ 0 := by
   unfold bchar
@@ -58,7 +56,7 @@ theorem bchar_ne_zero {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (la : Wt X.Ψ r
   exact Finset.prod_ne_zero_iff.1 h i (Finset.mem_univ _)
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `X.χ_fin la`. Introduce `h0`. Establish `h1` using `h γ hγ`. Rewrite `h1` using `[h0, zero_pow hn.ne']`. Conclude with `zero_ne_one h1`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_ne {la : Wt X.Ψ r} {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) : X.χ la γ ≠ 0 := by
   obtain ⟨n, hn, h⟩ := X.χ_fin la
@@ -68,7 +66,7 @@ theorem chi_ne {la : Wt X.Ψ r} {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) : X.χ l
   exact zero_ne_one h1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show ((((1 : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1) * mat x τ : Matrix (Fin r) (Fin r) ℂ) = x τ`. Rewrite using `[Units.val_one, Matrix.map_one _ (map_zero τ.1) (map_one τ.1), Matrix.one_mul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lact_one (x : Frame X.Ψ r) : lact (1 : GL (Fin r) E) x = x := by
   funext τ
@@ -78,7 +76,7 @@ theorem lact_one (x : Frame X.Ψ r) : lact (1 : GL (Fin r) E) x = x := by
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Conclude with `Matrix.mul_assoc ((γ : Matrix (Fin r) (Fin r) E).map τ.1) (mat x τ) (mat (nmat X z) τ)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem cpt_lact (γ : GL (Fin r) E) (x : Frame X.Ψ r) (z : V (nd X)) :
     cpt X (lact γ x) z = lact γ (cpt X x z) := by
@@ -89,7 +87,7 @@ def sig (w0 : Frame X.Ψ r → ℂ) (s : Fin (nd X) → Frame X.Ψ r → ℂ) (x
   WithLp.toLp 2 fun k => s k x / w0 x
 
 /- English proof (translation)
-Unfold `sig`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[(hs k).2.2 γ hγ x hx, hw0.2.2 γ hγ x hx, mul_div_mul_left _ _ (chi_ne X (la := L) hγ)]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem sig_lact {L : Wt X.Ψ r} {w0 : Frame X.Ψ r → ℂ} {s : Fin (nd X) → Frame X.Ψ r → ℂ}
     (hw0 : X.IsSec L w0) (hs : ∀ k, X.IsSec L (s k)) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ)
@@ -100,7 +98,7 @@ theorem sig_lact {L : Wt X.Ψ r} {w0 : Frame X.Ψ r → ℂ} {s : Fin (nd X) →
   rw [(hs k).2.2 γ hγ x hx, hw0.2.2 γ hγ x hx, mul_div_mul_left _ _ (chi_ne X (la := L) hγ)]
 
 /- English proof (translation)
-Unfold `sig`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[(hs k).2.1 x hx b hb, hw0.2.1 x hx b hb, mul_div_mul_left _ _ (bchar_ne_zero X hb L)]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem sig_rmul {L : Wt X.Ψ r} {w0 : Frame X.Ψ r → ℂ} {s : Fin (nd X) → Frame X.Ψ r → ℂ}
     (hw0 : X.IsSec L w0) (hs : ∀ k, X.IsSec L (s k)) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r)
@@ -111,13 +109,13 @@ theorem sig_rmul {L : Wt X.Ψ r} {w0 : Frame X.Ψ r → ℂ} {s : Fin (nd X) →
   rw [(hs k).2.1 x hx b hb, hw0.2.1 x hx b hb, mul_div_mul_left _ _ (bchar_ne_zero X hb L)]
 
 /- English proof (translation)
-The claim follows from `differentiable_pi.1 (differentiable_pi.1 (differentiable_pi.1 hf τ) a) b`.
+A detailed English derivation is pending.
 -/
 theorem frame_entry_diff {f : V (nd X) → Frame X.Ψ r} (hf : Differentiable ℂ f) (τ : X.Ψ) (a b : Fin r) :
     Differentiable ℂ fun z => f z τ a b := differentiable_pi.1 (differentiable_pi.1 (differentiable_pi.1 hf τ) a) b
 
 /- English proof (translation)
-Use `differentiable_pi.2 fun τ => differentiable_pi.2 fun i => differentiable_pi.2 fun j => ?_` and prove the remaining obligations. Use `show Differentiable ℂ fun z => ∑ k, ((γ : Matrix (Fin r) (Fin r) E).map τ.1) i k * ∑ l, mat (f z) τ k l * mat b τ l j`. Use `first`. Consider the case `exact Differentiable.fun_sum fun k _ => (differentiable_const _).mul (Differentiable.fun_sum fun l _ => (frame_entry_diff X hf τ k l).mul (differentiable_const _))`. Consider the case `(have hk : ∀ k l, Differentiable ℂ fun z => f z τ k l := fun k l => frame_entry_diff X hf τ k l fun_prop)`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lact_rmul_diff {f : V (nd X) → Frame X.Ψ r} (hf : Differentiable ℂ f) (γ : GL (Fin r) E)
     (b : Frame X.Ψ r) : Differentiable ℂ fun z => lact γ (rmul (f z) b) := by
@@ -131,7 +129,7 @@ theorem lact_rmul_diff {f : V (nd X) → Frame X.Ψ r} (hf : Differentiable ℂ 
        fun_prop)
 
 /- English proof (translation)
-Unfold `dmin lminor gram hermC col mat`. Use `first`. Consider the case `fun_prop`. Consider the case `(apply Continuous.matrix_det; apply Continuous.matrix_submatrix; fun_prop)`. Consider the case `continuity`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma continuous_dmin_Gm (τ : X.Ψ) (i : Fin (r + 1)) :
     Continuous fun x : Frame X.Ψ r => dmin X.Gm x τ i := by
@@ -142,11 +140,9 @@ private lemma continuous_dmin_Gm (τ : X.Ψ) (i : Fin (r + 1)) :
     | continuity
 
 /- English proof (translation)
-Establish `hd : ∀ (τ : X.Ψ) (i : Fin (r + 1)), Continuous fun x : Frame X.Ψ r => dmin X.Gm x τ i` using `fun τ i => continuous_dmin_Gm X τ i`. Establish `hdet : ∀ τ : X.Ψ, Continuous fun x : Frame X.Ψ r => (mat x τ).det`. Introduce `τ`. Use `first`. Consider the case `exact Continuous.matrix_det (continuous_apply τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately.
 
-Consider the case `(unfold mat; fun_prop)`. Use `show IsOpen {x : Frame X.Ψ r | ∀ τ : X.Ψ, (mat x τ).det ≠ 0 ∧ ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm x τ i).re}`. Simplify using `only [Set.setOf_forall, Set.setOf_and]`. Use `isOpen_iInter_of_finite fun τ => ?_` and prove the remaining obligations. Use `(isOpen_ne_fun (hdet τ) continuous_const).inter (isOpen_iInter_of_finite fun i => ?_)` and prove the remaining obligations.
-
-Conclude with `isOpen_lt continuous_const (continuous_const.mul (Complex.continuous_re.comp (hd τ i)))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOpen_dom : IsOpen X.dom := by
   have hd : ∀ (τ : X.Ψ) (i : Fin (r + 1)), Continuous fun x : Frame X.Ψ r => dmin X.Gm x τ i :=
@@ -164,11 +160,11 @@ theorem isOpen_dom : IsOpen X.dom := by
   exact isOpen_lt continuous_const (continuous_const.mul (Complex.continuous_re.comp (hd τ i)))
 
 /- English proof (translation)
-Establish `hO : IsOpen X.dom` using `isOpen_dom X`. Establish `hd : ∀ P : Frame X.Ψ r → ℂ, X.IsSec L P → DifferentiableAt ℂ (fun w => P (cpt X x1 w)) z`. Introduce `P hP`. Conclude with `(hP.1.differentiableAt (hO.mem_nhds hz)).comp z ((cpt_diff X x1) z)`. Rewrite using `[differentiableAt_euclidean]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Establish `hq : DifferentiableAt ℂ (fun w => s k (cpt X x1 w) / w0 (cpt X x1 w)) z`. Simplify using `only [div_eq_mul_inv]`. Conclude with `(hd (s k) (hs k)).mul ((hd w0 hw0).inv hw)`. Use `first`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact hq`. Consider the case `(unfold sig; exact hq)`. Consider the case `simpa [sig] using hq`.
+A detailed English derivation is pending.
 -/
 theorem sig_cpt_diffAt {L : Wt X.Ψ r} {w0 : Frame X.Ψ r → ℂ} {s : Fin (nd X) → Frame X.Ψ r → ℂ}
     (hw0 : X.IsSec L w0) (hs : ∀ k, X.IsSec L (s k)) {x1 : Frame X.Ψ r} {z : V (nd X)}
@@ -189,21 +185,19 @@ theorem sig_cpt_diffAt {L : Wt X.Ψ r} {w0 : Frame X.Ψ r → ℂ} {s : Fin (nd 
     | simpa [sig] using hq
 
 /- English proof (translation)
-Take `⟨Δ, zOf, bOf, hΔd, -, hzOf, -, hdec, hlast⟩` from `hLU r X x1 ho1`. Use `set Y : V (nd X) → Frame X.Ψ r := fun z => lact γ (rmul (cpt X xa z) b) with hYdef`. Establish `hYd : Differentiable ℂ Y` using `lact_rmul_diff X (cpt_diff X xa) γ b`. Establish `hY0 : Y 0 = rmul (cpt X x1 0) b1`. Simplify using `only [hYdef, cpt_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `hy`. Take `⟨hΔ0, hz0, -⟩` from `hlast 0 (zero_mem_OmF X x1 ho1) b1 hb1`. Rewrite `hΔ0`, `hz0` using `[← hY0]`. Use `set G := {x : Frame X.Ψ r | x ∈ X.dom ∧ Δ x ≠ 0} with hGdef`. Establish `hGo : IsOpen G` using `hΔd.continuous.continuousOn.isOpen_inter_preimage (isOpen_dom X) isOpen_compl_singleton`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY0G : Y 0 ∈ G` using `⟨by rw [hY0, cpt_zero]; exact OntoS.dom_rmul X (orth_mem_dom X x1 ho1) hb1, hΔ0⟩`. Establish `e1 : ∀ᶠ z in 𝓝 (0 : V (nd X)), Y z ∈ G` using `hYd.continuous.continuousAt.preimage_mem_nhds (hGo.mem_nhds hY0G)`. Establish `e2 : ∀ᶠ z in 𝓝 (0 : V (nd X)), cpt X xa z ∈ X.dom` using `(cpt_diff X xa).continuous.continuousAt.preimage_mem_nhds ((isOpen_dom X).mem_nhds (by rw [cpt_zero]; exact hxa))`. Establish `hev : ∀ᶠ z in 𝓝 (0 : V (nd X)), Y z ∈ G ∧ cpt X xa z ∈ X.dom` using `e1.and e2`. Use `set Λ : V (nd X) → V (nd X) := fun z => zOf (Y z) with hΛdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hΛ0 : Λ 0 = 0` using `hz0`. Establish `hΛd : DifferentiableAt ℂ Λ 0` using `((hzOf (Y 0) hY0G).differentiableAt (hGo.mem_nhds hY0G)).comp 0 (hYd 0)`. Establish `hrel : (fun z => sig X w0 s (cpt X xa z)) =ᶠ[𝓝 0] (fun w => sig X w0 s (cpt X x1 w)) ∘ Λ` using `by filter_upwards [hev] with z hz`. Take `⟨⟨hYdom, hΔz⟩, hcz⟩` from `hz`. Take `⟨hzO, hbO, hdecz⟩` from `hdec (Y z) hYdom hΔz`.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hσ1 : DifferentiableAt ℂ (fun w => sig X w0 s (cpt X x1 w)) (Λ 0)`. Rewrite using `[hΛ0]`. Use `sig_cpt_diffAt X hw0 hs ?_ ?_` and prove the remaining obligations. Rewrite using `[cpt_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `orth_mem_dom X x1 ho1`. Rewrite using `[cpt_zero]`. Conclude with `hw1`. Establish `hfd : fderiv ℂ (fun z => sig X w0 s (cpt X xa z)) 0 = (fderiv ℂ (fun w => sig X w0 s (cpt X x1 w)) 0).comp (fderiv ℂ Λ 0)`. Rewrite using `[hrel.fderiv_eq, fderiv_comp 0 hσ1 hΛd, hΛ0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hdet` using `[hfd]`. Introduce `h1`. Apply `hdet` to reduce the goal to its premises. Use `show LinearMap.det (((fderiv ℂ (fun w => sig X w0 s (cpt X x1 w)) 0 : V (nd X) →L[ℂ] V (nd X)) : V (nd X) →ₗ[ℂ] V (nd X)) ∘ₗ ((fderiv ℂ Λ 0 : V (nd X) →L[ℂ] V (nd X)) : V (nd X) →ₗ[ℂ] V (nd X))) = 0`. Rewrite using `[LinearMap.det_comp]`.
-
-Establish `h1' : LinearMap.det ((fderiv ℂ (fun w => sig X w0 s (cpt X x1 w)) 0 : V (nd X) →L[ℂ] V (nd X)) : V (nd X) →ₗ[ℂ] V (nd X)) = 0` using `h1`. Rewrite using `[h1', zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem etale_transfer (hLU : LUStatement (E := E)) {L : Wt X.Ψ r} {w0 : Frame X.Ψ r → ℂ}
     {s : Fin (nd X) → Frame X.Ψ r → ℂ} (hw0 : X.IsSec L w0) (hs : ∀ k, X.IsSec L (s k))
@@ -264,9 +258,9 @@ theorem etale_transfer (hLU : LUStatement (E := E)) {L : Wt X.Ψ r} {w0 : Frame 
   rw [h1', zero_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_lowerTriangular]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `a _`. Simplify using `[mat, nmat]`. Introduce `i j h`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hij : i < j` using `OrderDual.toDual_lt_toDual.1 h`. Simplify using `[mat, nmat, not_lt.2 hij.le, hij.ne]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private lemma det_mat_nmat (z : V (nd X)) (τ : X.Ψ) : (mat (nmat X z) τ).det = 1 := by
   rw [Matrix.det_of_lowerTriangular]
@@ -278,7 +272,7 @@ private lemma det_mat_nmat (z : V (nd X)) (τ : X.Ψ) : (mat (nmat X z) τ).det 
     simp [mat, nmat, not_lt.2 hij.le, hij.ne]
 
 /- English proof (translation)
-Use `show (mat x0 τ * mat (nmat X z) τ).det = (mat x0 τ).det`. Rewrite using `[Matrix.det_mul, det_mat_nmat X z τ, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_cpt (x0 : Frame X.Ψ r) (z : V (nd X)) (τ : X.Ψ) :
     (mat (cpt X x0 z) τ).det = (mat x0 τ).det := by
@@ -286,23 +280,21 @@ theorem det_cpt (x0 : Frame X.Ψ r) (z : V (nd X)) (τ : X.Ψ) :
   rw [Matrix.det_mul, det_mat_nmat X z τ, mul_one]
 
 /- English proof (translation)
-Establish `hc` using `(cpt_diff X x0).continuous`. Establish `hcont : ∀ (τ : X.Ψ) (a c : Fin r), Continuous fun p : Frame X.Ψ r × V (nd X) => ((mat (cpt X x0 p.2) τ).adjugate * mat p.1 τ) a c`. Introduce `τ a c`. Establish `h1 : Continuous fun p : Frame X.Ψ r × V (nd X) => mat (cpt X x0 p.2) τ` using `by first`. Consider the case `exact (continuous_apply τ).comp (hc.comp continuous_snd)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `(unfold mat; fun_prop)`. Establish `h2 : Continuous fun p : Frame X.Ψ r × V (nd X) => mat p.1 τ` using `by first`. Consider the case `exact (continuous_apply τ).comp continuous_fst`. Consider the case `(unfold mat; fun_prop)`. Conclude with `(h1.matrix_adjugate.matrix_mul h2).matrix_elem a c`.
+Treat this case separately. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hx1P : ∀ z ∈ K, ∃ (τ : X.Ψ) (a c : Fin r), c < a ∧ ((mat (cpt X x0 z) τ).adjugate * mat x1 τ) a c ≠ 0`. Introduce `z hz`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Establish `hdc : ∀ τ, (mat (cpt X x0 z) τ).det ≠ 0` using `fun τ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[det_cpt X x0 z τ]`. Conclude with `hx0 τ`. Establish `hu : ∀ τ, IsUnit (mat (cpt X x0 z) τ).det` using `fun τ => isUnit_iff_ne_zero.2 (hdc τ)`. Use `hx1 z hz (fun τ => (mat (cpt X x0 z) τ)⁻¹ * mat x1 τ) ?_ ?_` and prove the remaining obligations. Introduce `τ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, fun a c hca => ?_⟩` and prove the remaining obligations. Use `show ((mat (cpt X x0 z) τ)⁻¹ * mat x1 τ).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero (Matrix.isUnit_nonsing_inv_det _ (hu τ)).ne_zero (hx1d τ)`. Use `show ((mat (cpt X x0 z) τ)⁻¹ * mat x1 τ) a c = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Matrix.inv_def, Matrix.smul_mul, Matrix.smul_apply, hneg τ a c hca, smul_zero]`. Use function extensionality and compare the values at `τ show mat x1 τ = mat (cpt X x0 z) τ * ((mat (cpt X x0 z) τ)⁻¹ * mat x1 τ)`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (hu τ), Matrix.one_mul]`. Establish `hev : ∀ᶠ x in 𝓝 x1, ∀ z ∈ K, ∃ (τ : X.Ψ) (a c : Fin r), c < a ∧ ((mat (cpt X x0 z) τ).adjugate * mat x τ) a c ≠ 0`. Use `hK.eventually_forall_of_forall_eventually fun z hz => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨τ, a, c, hca, hne⟩` from `hx1P z hz`. Establish `hO : IsOpen {p : Frame X.Ψ r × V (nd X) | ((mat (cpt X x0 p.2) τ).adjugate * mat p.1 τ) a c ≠ 0}` using `isOpen_ne_fun (hcont τ a c) continuous_const`. Establish `hmem : ((x1, z) : Frame X.Ψ r × V (nd X)) ∈ {p : Frame X.Ψ r × V (nd X) | ((mat (cpt X x0 p.2) τ).adjugate * mat p.1 τ) a c ≠ 0}` using `hne`. Use `filter_upwards [hO.mem_nhds hmem] with p hp`. Conclude with `⟨τ, a, c, hca, hp⟩`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨N, hN, hNp⟩` from `Filter.eventually_iff_exists_mem.1 hev`. Use `⟨N, hN, fun x hx z hz b hb heq => ?_⟩` and prove the remaining obligations. Take `⟨τ, a, c, hca, hne⟩` from `hNp x hx z hz`. Apply `hne` to reduce the goal to its premises. Rewrite using `[heq]`.
-
-Use `show ((mat (cpt X x0 z) τ).adjugate * (mat (cpt X x0 z) τ * mat b τ)) a c = 0`. Establish `hz0 : mat b τ a c = 0` using `(hb τ).2 a c hca`. Rewrite using `[← Matrix.mul_assoc, Matrix.adjugate_mul, Matrix.smul_mul, Matrix.one_mul, Matrix.smul_apply, hz0, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem nbhd_avoid (x0 : Frame X.Ψ r) (hx0 : ∀ τ, (mat x0 τ).det ≠ 0) {K : Set (V (nd X))}
     (hK : IsCompact K) {x1 : Frame X.Ψ r}

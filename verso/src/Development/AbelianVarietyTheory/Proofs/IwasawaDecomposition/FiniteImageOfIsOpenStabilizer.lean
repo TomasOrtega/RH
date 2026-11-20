@@ -8,9 +8,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hS.elim_finite_subcover (fun s : G => (fun x => s⁻¹ * x) ⁻¹' {g : G | ρ g v = v}) (fun s => hH.preimage (continuous_const.mul continuous_id)) (fun x _ => Set.mem_iUnion.2 ⟨x, by simp⟩)`. Use `((t : Set G).toFinite.image (fun g => ρ g v)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨s, hs, hxs⟩` from `Set.mem_iUnion₂.1 (ht hx)`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ρ (s⁻¹ * x) v = v` using `hxs`. Establish `hx' : x = s * (s⁻¹ * x)` using `by group`. Use `show ρ s v = ρ x v`. Use `conv_rhs => rw [hx', map_mul, Module.End.mul_apply, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_image_of_isOpen_stabilizer (G : Type) [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] (V : Type) [AddCommGroup V] [Module ℂ V]

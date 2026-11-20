@@ -14,7 +14,7 @@ open GlobalTheory.Core.Rk.IP GlobalTheory.Core.Rk.SWLaw
 open GlobalTheory.Core.Rk.SW
 
 /- English proof (translation)
-Introduce `D θ hθ m n φ`. Conclude with `⟨fun h => GlobalTheory.SchwartzBruhatTensor.mem_schwartzA_of_isSchwartzBruhat D θ hθ m n φ h, fun h => GlobalTheory.T.isSchwartzBruhatAdelicMatrix_of_mem_adelicSchwartz D θ hθ m n φ h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.SchwartzIff.isSchwartzBruhat_iff_mem_schwartzA :
     ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (m n : ℕ) (φ : Mx D m n → ℂ),

@@ -12,9 +12,9 @@ variable {n : ℕ} {M : Type} [AddCommGroup M] [Module ℂ M] {P : Type} [Fintyp
 def labR : {p // ¬ lab p = τ₀} → {τ // τ ≠ τ₀} := fun p => ⟨lab p.1, p.2⟩
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Rewrite using `[cj_apply]`. Apply `(spl (n := n) (M := M) fun p => lab p = τ₀).injective` to reduce the goal to its premises. Establish `h1 : Finset.subtype (fun p => lab p = τ₀) (fib lab τ₀) = Finset.univ`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[fib, Finset.mem_subtype, x.2]`. Establish `h2 : Finset.subtype (fun p => ¬ lab p = τ₀) (fib lab τ₀) = ∅`. Use extensionality with `x`. Simplify using `[fib, Finset.mem_subtype, x.2]`. Rewrite using `[LinearEquiv.apply_symm_apply, spl_tE, h1, h2, tE_empty]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_tensor_entry_base (F : Fin n → Fin n → Module.End ℂ M) (c d : Fin n) :
     cj (spl (n := n) (M := M) fun p => lab p = τ₀) (tE Finset.univ (fun a b => lift (F a b)) c d) =
@@ -31,11 +31,11 @@ theorem conj_tensor_entry_base (F : Fin n → Fin n → Module.End ℂ M) (c d :
   rw [LinearEquiv.apply_symm_apply, spl_tE, h1, h2, tE_empty]
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Rewrite using `[cj_apply]`. Apply `(spl (n := n) (M := M) fun p => lab p = τ₀).injective` to reduce the goal to its premises. Establish `h1 : Finset.subtype (fun p => lab p = τ₀) (fib lab τ.1) = ∅`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_subtype, fib, Finset.mem_filter, Finset.mem_univ, true_and, Finset.notMem_empty, iff_false]`. Rewrite using `[x.2]`. Conclude with `fun h => τ.2 h.symm`. Establish `h2 : Finset.subtype (fun p => ¬ lab p = τ₀) (fib lab τ.1) = fib (labR lab τ₀) τ`. Use extensionality with `x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[fib, labR, Finset.mem_subtype, Subtype.ext_iff]`. Rewrite using `[LinearEquiv.apply_symm_apply, spl_tE, h1, h2, tE_empty]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_tensor_entry_fibre (τ : {τ // τ ≠ τ₀}) (F : Fin n → Fin n → Module.End ℂ M) (c d : Fin n) :
     cj (spl (n := n) (M := M) fun p => lab p = τ₀) (lift (tE (fib (labR lab τ₀) τ) F c d)) =
@@ -56,11 +56,9 @@ theorem conj_tensor_entry_fibre (τ : {τ // τ ≠ τ₀}) (F : Fin n → Fin n
 
 omit [DecidableEq P] in
 /- English proof (translation)
-Use `Finset.card_bij (fun p _ => p.1) ?_ ?_ ?_` and prove the remaining obligations. Introduce `p hp`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, labR, Subtype.ext_iff] at hp ⊢`. Conclude with `hp`. Introduce `p _ q _ h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subtype.ext h`. Introduce `p hp`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hp`. Use `⟨⟨p, fun h => τ.2 (hp.1.symm.trans h)⟩, ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, labR, Subtype.ext_iff]`.
-
-Conclude with `hp`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_R (τ : {τ // τ ≠ τ₀}) (co : P → Fin n) (k : Fin n) :
     (Finset.univ.filter fun p : {p // ¬ lab p = τ₀} => labR lab τ₀ p = τ ∧ co p.1 = k).card =
@@ -79,13 +77,13 @@ theorem card_R (τ : {τ // τ ≠ τ₀}) (co : P → Fin n) (k : Fin n) :
 
 omit [Fintype P] in
 /- English proof (translation)
-Establish `hfib : ∀ τ, fib lab τ = ∅` using `fun τ => Finset.eq_empty_of_isEmpty _`. Establish `hG : colG col = {1}`. Use extensionality with `σ`. Simplify using `[colG, Subsingleton.elim σ 1]`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m, ℓ m ≠ 0 := by`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hℓ (LinearMap.ext h)`. Use `⟨1, Subalgebra.one_mem _, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hm` to reduce the goal to its premises. Use `LinearMap.congr_fun h (fun _ => m)` as an intermediate fact. Simplify `this` using `[cA, alt, hG, pm]`. Introduce `τ u`. Establish `hc` using `qdet_lift (P := P) (E τ) (fun k => (l τ k : ℂ)) (hl τ) u`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hfib, tE_empty]`. Rewrite using `[hc, Algebra.algebraMap_eq_smul_one, LinearMap.comp_smul]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem base (E : ι → Fin n → Fin n → Module.End ℂ M) (l : ι → Fin n → ℤ)
     (hl : ∀ τ, HasChar (E τ) fun k => (l τ k : ℂ)) (ℓ : M →ₗ[ℂ] ℂ) (hℓ : ℓ ≠ 0) [Fintype P] [IsEmpty P]

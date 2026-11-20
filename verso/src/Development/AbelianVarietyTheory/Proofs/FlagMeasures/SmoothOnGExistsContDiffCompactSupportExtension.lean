@@ -9,15 +9,13 @@ open scoped InnerProductSpace ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `n ε β hβ hc`. Take `⟨F₀, hF₀, hF₀eq⟩` from `smoothOnG_exists_contDiff_extension n ε β hβ`. Establish `hp : Continuous (fun g : UJ ε => (fun i j => umat g i j : Fin n → Fin n → ℂ))`. Establish `hu : Continuous (fun g : UJ ε => umat g)` using `Units.continuous_val.comp continuous_subtype_val`. Conclude with `continuous_pi fun i => continuous_pi fun j => hu.matrix_elem i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : IsCompact ((fun g : UJ ε => (fun i j => umat g i j : Fin n → Fin n → ℂ)) '' tsupport (fun g : UJ ε => β (umat g)))` using `hc.isCompact.image hp`. Take `⟨R, hR⟩` from `hK.isBounded.subset_closedBall 0`. Set `χ : ContDiffBump (0 : Fin n → Fin n → ℂ)` to `⟨max R 0 + 1, max R 0 + 2, by positivity, by linarith⟩`. Use `⟨fun x => (χ x : ℂ) * F₀ x, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Complex.ofRealCLM.contDiff.comp χ.contDiff).mul hF₀`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(χ.hasCompactSupport.comp_left Complex.ofReal_zero).mul_right`. Introduce `g`. Establish `h₀ : F₀ (fun i j => umat g i j) = β (umat g)` using `hF₀eq (umat g) g.2`. Distinguish the cases in `hz : β (umat g) = 0`. Use `show β (umat g) = (χ (fun i j => umat g i j) : ℂ) * F₀ (fun i j => umat g i j)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[h₀, hz, mul_zero]`. Establish `hmem : (fun i j => umat g i j : Fin n → Fin n → ℂ) ∈ Metric.closedBall 0 χ.rIn`. Use `Metric.closedBall_subset_closedBall ?_ (hR ⟨g, subset_tsupport _ hz, rfl⟩)` and prove the remaining obligations. Use `show R ≤ max R 0 + 1`. Combine the linear relations using `[le_max_left R 0]`.
-
-Use `show β (umat g) = (χ (fun i j => umat g i j) : ℂ) * F₀ (fun i j => umat g i j)`. Rewrite using `[χ.one_of_mem_closedBall hmem, h₀, Complex.ofReal_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothOnG_exists_contDiff_compactSupport_extension :
     ∀ (n : ℕ) (ε : Fin n → Bool) (β : Matrix (Fin n) (Fin n) ℂ → ℂ), SmoothOnG ε β →

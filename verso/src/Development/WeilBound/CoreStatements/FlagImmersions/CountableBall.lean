@@ -19,9 +19,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {g g' :
   [Module (𝓞 E) Λ] [AddCommGroup Λ'] [Module (𝓞 E) Λ']
 
 /- English proof (translation)
-Use `R.free` as an intermediate fact. Use `R.fin` as an intermediate fact. Use `R'.free` as an intermediate fact. Use `R'.fin` as an intermediate fact. Establish `: Countable Λ'` using `(Module.Free.chooseBasis ℤ Λ').equivFun.toEquiv.injective.countable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b` to `Module.Free.chooseBasis ℤ Λ`. Use `Function.Injective.countable (f := fun (ga : Λ →+ Λ') i => ga (b i)) fun ga ga' h => ?_` and prove the remaining obligations. Establish `: ga.toIntLinearMap = ga'.toIntLinearMap` using `b.ext fun i => congrFun h i`. Conclude with `AddMonoidHom.ext fun a => LinearMap.congr_fun this a`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem countable_hom (R : RiemLat E g Λ) (R' : RiemLat E g' Λ') : Countable (Λ →+ Λ') := by
   have := R.free
@@ -35,9 +35,9 @@ theorem countable_hom (R : RiemLat E g Λ) (R' : RiemLat E g' Λ') : Countable (
   exact AddMonoidHom.ext fun a => LinearMap.congr_fun this a
 
 /- English proof (translation)
-Establish `hi` using `SheetDecomposition.Riem.inj R'`. Establish `h1 : ∀ a, ∃ a', R'.P a' = φ (R.P a)` using `fun a => by`. Establish `: φ (R.P a) ∈ Set.range R'.P` using `h ▸ ⟨_, ⟨a, rfl⟩, rfl⟩`. Conclude with `this`. Use `choose ga hga using h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨AddMonoidHom.mk' ga fun a b => hi (by rw [map_add, hga, hga, hga, map_add, map_add]), fun a' => ?_, hga⟩` and prove the remaining obligations. Take `⟨_, ⟨a, rfl⟩, e⟩ : R'.P a' ∈ φ '' Set.range R.P` from `h ▸ ⟨a', rfl⟩`. Conclude with `⟨a, hi ((hga a).trans e)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_hom (R : RiemLat E g Λ) (R' : RiemLat E g' Λ') (φ : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g' → ℂ))
     (h : φ '' Set.range R.P = Set.range R'.P) :
@@ -52,7 +52,7 @@ theorem exists_hom (R : RiemLat E g Λ) (R' : RiemLat E g' Λ') (φ : (Fin g →
   exact ⟨a, hi ((hga a).trans e)⟩
 
 /- English proof (translation)
-Establish `: (φ : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)).restrictScalars ℝ = (φ' : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)).restrictScalars ℝ` using `LinearMap.ext_on_range (SheetDecomposition.Riem.span_top R) h`. Conclude with `LinearEquiv.ext fun a => LinearMap.congr_fun this a`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ext_of_P (R : RiemLat E g Λ) {φ φ' : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g' → ℂ)} (h : ∀ a, φ (R.P a) = φ' (R.P a)) : φ = φ' := by
   have : (φ : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)).restrictScalars ℝ = (φ' : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)).restrictScalars ℝ :=
@@ -60,7 +60,7 @@ theorem ext_of_P (R : RiemLat E g Λ) {φ φ' : (Fin g → ℂ) ≃ₗ[ℂ] (Fin
   exact LinearEquiv.ext fun a => LinearMap.congr_fun this a
 
 /- English proof (translation)
-Use `countable_hom R R` as an intermediate fact. Use `choose ga _ hga using fun φ : {φ : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ) | φ '' Set.range R.P = Set.range R.P} => exists_hom R R φ.1 φ.2`. Use `Function.Injective.countable (f := ga) fun φ φ' h => Subtype.ext (ext_of_P R fun a => ?_)` and prove the remaining obligations. Rewrite using `[← hga, ← hga, h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem countable_aut (R : RiemLat E g Λ) :
     {φ : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ) | φ '' Set.range R.P = Set.range R.P}.Countable := by
@@ -71,9 +71,9 @@ theorem countable_aut (R : RiemLat E g Λ) :
   rw [← hga, ← hga, h]
 
 /- English proof (translation)
-Use `countable_hom R (F.R 0)` as an intermediate fact. Use `choose φ hφ using fun t : {t | t ∈ ballDom F.q ∧ ∃ φ : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g' → ℂ), φ '' Set.range R.P = Set.range (F.R t).P} => t.2.2`. Use `choose ga hs hga using fun t => exists_hom R _ (φ t) (hφ t)`. Use `Function.Injective.countable (f := ga) fun t t' h => Subtype.ext ?_` and prove the remaining obligations. Use `(F.univ (F.R t') (F.form_eq _) (F.sig _ t'.2.1)).unique ⟨t.2.1, (φ t).symm.trans (φ t'), fun a => ?_⟩ ⟨t'.2.1, LinearEquiv.refl _ _, fun _ => rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, rfl⟩` from `hs t a`. Use `show (F.R t').P (ga t a) = φ t' ((φ t).symm ((F.R t).P (ga t a)))`. Rewrite using `[hga t a, LinearEquiv.symm_apply_apply, h, hga t' a]`.
+A detailed English derivation is pending.
 -/
 theorem countable_ball {Ψ : Type} [Fintype Ψ] {j j' n : ℕ} (R : RiemLat E g Λ) (F : UnivFam E Ψ j j' n g' Λ') :
     {t | t ∈ ballDom F.q ∧ ∃ φ : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g' → ℂ), φ '' Set.range R.P = Set.range (F.R t).P}.Countable := by
@@ -89,7 +89,7 @@ theorem countable_ball {Ψ : Type} [Fintype Ψ] {j j' n : ℕ} (R : RiemLat E g 
   rw [hga t a, LinearEquiv.symm_apply_apply, h, hga t' a]
 
 /- English proof (translation)
-Take `⟨A, _, φ, u, χ, h1, h2, h3, h4, h5, h6⟩` from `h`. Conclude with `⟨A, inferInstance, φ, u, χ, h1, h2, h3, h4, h5, fun a => h6 (r a)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem restrict {X : Scheme.{0}} {t : SAB H X} {z : Sp ℂ ⟶ X} {R : RiemLat E g Λ} {A₀ A₁ : Type} {x : A₀ → Fin g → ℂ}
     {v : A₀ → (epsAt z ⟶ t.G)} (h : FibreLatVec t z R x v) (r : A₁ → A₀) :
@@ -98,7 +98,7 @@ theorem restrict {X : Scheme.{0}} {t : SAB H X} {z : Sp ℂ ⟶ X} {R : RiemLat 
   exact ⟨A, inferInstance, φ, u, χ, h1, h2, h3, h4, h5, fun a => h6 (r a)⟩
 
 /- English proof (translation)
-Take `⟨A, _, φ, u, χ, h1, h2, h3, h4, h5, -⟩` from `h`. Conclude with `⟨A, inferInstance, φ, u, χ, h1, h2, h3, h4, h5, fun a => a.elim⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem toLat {X : Scheme.{0}} {t : SAB H X} {z : Sp ℂ ⟶ X} {R : RiemLat E g Λ} {A₀ : Type} {x : A₀ → Fin g → ℂ}
     {v : A₀ → (epsAt z ⟶ t.G)} (h : FibreLatVec t z R x v) : FibreLat t z R := by
@@ -106,11 +106,11 @@ theorem toLat {X : Scheme.{0}} {t : SAB H X} {z : Sp ℂ ⟶ X} {R : RiemLat E g
   exact ⟨A, inferInstance, φ, u, χ, h1, h2, h3, h4, h5, fun a => a.elim⟩
 
 /- English proof (translation)
-Substitute `hz` using the available equality. Use `⟨Over.homMk (v.left ≫ m.φ) (by` and prove the remaining obligations. Rewrite using `[Category.assoc, m.cart.1.w, ← Category.assoc, Over.w v]`. Use the proof step `simp), rfl, ?_⟩`. Use `show _ ≫ v.left ≫ m.φ = _`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, show _ ≫ v.left = _ from hv]`. Establish `e` using `GlobalTheory.PolBaseChange.eSec_comm m.cart`. Establish `e1 : (1 : Over.mk z ⟶ t'.G).left = z ≫ eSec t'.G` using `by show (toUnit _ ≫ η[t'.G]).left = _`. Simplify using `[eSec]`. Establish `e2 : (1 : Over.mk (z ≫ f) ⟶ t.G).left = (z ≫ f) ≫ eSec t.G` using `by show (toUnit _ ≫ η[t.G]).left = _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[eSec]`. Rewrite using `[e1, e2, Category.assoc, Category.assoc]`. Conclude with `congrArg (z ≫ ·) e`.
+A detailed English derivation is pending.
 -/
 theorem exists_push {X X' : Scheme.{0}} {t : SAB H X} {t' : SAB H X'} {f : X' ⟶ X} (m : SABMap t' t f) {z : Sp ℂ ⟶ X'}
     {p : Sp ℂ ⟶ X} (hz : z ≫ f = p) (v : epsAt z ⟶ t'.G) (hv : IsTanAt t'.G z v) :
@@ -132,11 +132,11 @@ theorem exists_push {X X' : Scheme.{0}} {t : SAB H X} {t' : SAB H X'} {f : X' �
   exact congrArg (z ≫ ·) e
 
 /- English proof (translation)
-Take `⟨A, _, φ, u, χ, hp, hAH, hact, hinj, hmem, -⟩` from `hF`. Use `t.semi.smooth` as an intermediate fact. Use `t.semi.geomConnected` as an intermediate fact. Establish `sm : Smooth A.hom` using `MorphismProperty.of_isPullback hp.1 ‹_›`. Establish `hc : ConnectedSpace A.left` using `GeometricallyConnected.geometrically_connectedSpace (f := t.G.hom) z _ _ hp.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨d, hd⟩` from `exists_dim_of_preconnected A.hom (Classical.arbitrary _)`. Take `rfl` from `FibreUnique.dim_eq_of_smooth u hd`. Establish `key : ∀ i, ∃ (x : Fin g → ℂ) (v' : epsR ℂ ⟶ A), v'.left ≫ φ = (v i).left ∧ u.IsDiff x v'` using `fun i => by`. Set `Φ` to `HodgeLin.tanEquiv hp`. Establish `hl : (Φ.symm (v i)).left ≫ φ = (v i).left` using `congrArg (fun q => q.left) (Φ.apply_symm_apply (v i))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨w, hw⟩` from `((GlobalTheory.TorusTransfer.tangent_bijective u hd).1 _ (SheetDecomposition.Cj.isTangent_of_fibre hp (hv i) hl)).exists`. Conclude with `⟨w, _, hl, hw⟩`. Use `choose x v' h1 h2 using key`. Conclude with `⟨x, A, inferInstance, φ, u, χ, hp, hAH, hact, hinj, hmem, fun i => ⟨v' i, h1 i, h2 i⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem extend {X : Scheme.{0}} {t : SAB H X} {z : Sp ℂ ⟶ X} {R : RiemLat E g Λ} (hF : FibreLat t z R) {A₀ : Type}
     (v : A₀ → (epsAt z ⟶ t.G)) (hv : ∀ i, IsTanAt t.G z (v i)) : ∃ x : A₀ → Fin g → ℂ, FibreLatVec t z R x v := by
@@ -156,7 +156,7 @@ theorem extend {X : Scheme.{0}} {t : SAB H X} {z : Sp ℂ ⟶ X} {R : RiemLat E 
   exact ⟨x, A, inferInstance, φ, u, χ, hp, hAH, hact, hinj, hmem, fun i => ⟨v' i, h1 i, h2 i⟩⟩
 
 /- English proof (translation)
-Unfold `flagStep`. Rewrite using `[Submodule.map_span, Set.image_image]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem flagStep_map {r : ℕ} (φ : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g' → ℂ)) (a : Fin r → Fin g → ℂ) (k : ℕ) :
     flagStep ℂ (fun i => φ (a i)) k = (flagStep ℂ a k).map (φ : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)) := by
@@ -168,21 +168,19 @@ end Cnt
 
 open Cnt in
 /- English proof (translation)
-Introduce `hR hG E _ _ _ H D l Xo c Y Ω _ K _ J _ y 𝔐 Fl h1 hd`. Take `⟨U, hU, hrig⟩` from `hR hG E H D l Xo c Y Ω K J y 𝔐 Fl h1 hd`. Use `⟨U, hU, fun b g Λ _ _ R F hb => ?_⟩` and prove the remaining obligations. Take `⟨B⟩` from `SheetDecomposition.baseUnifEx hG E H D l Xo c Y Sum.inr D.p D.q _ h1 (Or.inl ⟨rfl, rfl, rfl⟩) rfl`. Use `set Z := {z : Sp ℂ ⟶ 𝔐.X | centre z ∈ U ∧ 𝔐.Interior z ∧ (∀ s, (𝔐.V s).IsFrameAt (b s) ⟨centre z, 𝔐.all _⟩) ∧ ∃ (x : (Σ s, Fin (labelRk D s)) → Fin g → ℂ) (v : (Σ s, Fin (labelRk D s)) → (epsAt z ⟶ 𝔐.t.G)), (∀ a, 𝔐.M.ValAt z (b a.1 a.2) (v a)) ∧ FibreLatVec 𝔐.t z R x v ∧ ∀ s k, f …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `himg : ((fun z : Sp ℂ ⟶ 𝔐.X => z ≫ 𝔐.f) '' Z).Countable`. Use `(Set.countable_iUnion fun k => (countable_ball R (B.F k)).image (B.pt k)).mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, ⟨-, hin, -, x, v, -, hF, -⟩, rfl⟩`. Take `⟨k, t, ht, e⟩` from `B.onto (z ≫ 𝔐.f) ((abLocus_pullback abLocusOne Y.t.semi 𝔐.m.cart.1 _).2 hin)`. Establish `h2 : FibreLat Y.t (z ≫ 𝔐.f) R` using `(SheetDecomposition.fibreLatVec_move 𝔐.m rfl _ (fun i : Empty => i.elim) (fun i => i.elim) fun i => i.elim).1 (toLat hF)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `B.lat k t ht`. Rewrite `h3` using `[e]`. Take `⟨φ, hφ, -⟩` from `FibreUnique.exists_linearEquiv_of_fibreLatVec E H _ Y.t _ _ _ _ _ R _ Empty _ _ _ h2 h3`. Conclude with `Set.mem_iUnion.2 ⟨k, t, ⟨ht, φ, hφ⟩, e⟩`. Establish `hfib : ∀ p, {z ∈ Z | z ≫ 𝔐.f = p}.Countable`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `p`. Break down `Set.eq_empty_or_nonempty {z ∈ Z | z ≫ 𝔐.f = p} with h0 | ⟨z₀, hz₀, rfl⟩` into its components or cases. Rewrite using `[h0]`. Conclude with `Set.countable_empty`. Set `W` to `{z ∈ Z | z ≫ 𝔐.f = z₀ ≫ 𝔐.f}`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose x v hv hF hfl using fun z : W => z.2.1.2.2.2`. Use `choose w hw htan using fun (z : W) a => exists_push 𝔐.m z.2.2 (v z a) (hv z a).isTanAt`. Establish `hF' : ∀ z : W, FibreLatVec Y.t (z₀ ≫ 𝔐.f) R (x z) (w z)` using `fun z => (SheetDecomposition.fibreLatVec_move 𝔐.m z.2.2 _ _ _ (hw z)).1 (hF z)`. Take `⟨a, ha⟩` from `extend (toLat (hF' ⟨z₀, hz₀, rfl⟩)) (fun q : W × (Σ s, Fin (labelRk D s)) => w q.1 q.2) fun q => htan q.1 q.2`. Use `choose φ hφ _ _ hφa using fun z : W => FibreUnique.exists_linearEquiv_of_fibreLatVec E H _ Y.t _ _ _ _ _ R R _ _ _ _ (restrict ha fun i => (z, i)) (hF' z)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `(countable_aut R).to_subtype` as an intermediate fact. Use `Function.Injective.countable (f := fun z : W => (⟨φ z, hφ z⟩ : {φ : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ) | φ '' Set.range R.P = Set.range R.P})) fun z z' h => Subtype.ext ?_` and prove the remaining obligations. Establish `h' : φ z = φ z'` using `congrArg Subtype.val h`. Establish `hj` using `restrict ha (Sum.elim (fun i => (z, i)) fun i => (z', i))`. Use `hrig b z.1 z'.1 _ (v z) (v z') (w z) (w z') g Λ R (fun i => a (z, i)) (fun i => a (z', i)) hb z.2.1.1 z'.2.1.1 z.2.1.2.1 z'.2.1.2.1 z.2.1.2.2.1 z'.2.1.2.2.1 z.2.2 z'.2.2 (hv z) (hv z') (hw z) (hw z') ?_ fun s k => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `convert hj using 1 <;> funext i <;> cases i <;> rfl`. Use `Submodule.map_injective_of_injective (f := (φ z : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ))) (φ z).injective ?_` and prove the remaining obligations. Rewrite using `[← flagStep_map, ← flagStep_map]`. Simplify using `only [hφa z]`. Rewrite using `[h']`.
-
-Simplify using `only [hφa z']`. Rewrite using `[hfl, hfl]`. Use `(himg.biUnion fun p _ => hfib p).mono fun z hz => ?_` and prove the remaining obligations. Conclude with `Set.mem_biUnion ⟨z, hz, rfl⟩ ⟨hz, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem countGen_of : GenRigid → CountGen := by
   intro hR hG E _ _ _ H D l Xo c Y Ω _ K _ J _ y 𝔐 Fl h1 hd

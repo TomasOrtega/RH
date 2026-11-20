@@ -10,15 +10,13 @@ namespace GlobalTheory.TamOneGlob
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨s, hs, hsu⟩ : ∃ s ∈ v.asIdeal ^ k, s ∉ u.asIdeal := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `hle : v.asIdeal ≤ u.asIdeal` using `u.isPrime.le_of_pow_le hc`. Conclude with `h (HeightOneSpectrum.ext ((v.isMaximal.eq_of_le u.isPrime.ne_top hle).symm))`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set c : F := algebraMap (𝓞 F) F s with hcdef`. Establish `hval : Valued.v (algebraMap F (Fv F u) c) = 1`. Rewrite using `[show algebraMap F (Fv F u) c = (c : u.adicCompletion F) from rfl, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hcdef, HeightOneSpectrum.valuation_eq_one_iff_notMem]`. Conclude with `hsu`. Establish `hc0 : algebraMap F (Fv F u) c ≠ 0` using `fun e => by rw [e, map_zero] at hval; exact zero_ne_one hval`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hunit : (algebraMap F (Fv F u) c)⁻¹ ∈ u.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hval, inv_one]`. Introduce `y hy`. Use `latLoc_induction (p := fun y => y ∈ latLoc F _ u) (fun a ha x hx => ?_) (zero_mem _) (fun _ _ => add_mem) (fun _ => neg_mem) hy` and prove the remaining obligations. Establish `hx' : (algebraMap (𝓞 F) (𝓞 E) s) • x ∈ ((v.asIdeal ^ k).map (algebraMap (𝓞 F) (𝓞 E))) • Λ` using `Submodule.smul_mem_smul (Ideal.mem_map_of_mem _ hs) hx`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `tmul_mem_latLoc (mul_mem ha hunit) hx' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Establish `e1 : ((algebraMap (𝓞 F) (𝓞 E) s) • x) i = c • x i`. Simplify using `only [hcdef, Pi.smul_apply, Algebra.smul_def]`. Use `congr 1`.
-
-Rewrite using `[e1, ← TensorProduct.smul_tmul, Algebra.smul_def, mul_comm a, ← mul_assoc, mul_inv_cancel₀ hc0, one_mul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latLoc_le_smul_of_ne {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E)) {u v : HeightOneSpectrum (𝓞 F)}
     (h : u ≠ v) (k : ℕ) :
@@ -49,11 +47,9 @@ theorem latLoc_le_smul_of_ne {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E)) {
   rw [e1, ← TensorProduct.smul_tmul, Algebra.smul_def, mul_comm a, ← mul_assoc, mul_inv_cancel₀ hc0, one_mul]
 
 /- English proof (translation)
-Establish `h1 : Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) z = 1`. Use `GlobalTheory.AutFunCompare.infTens_ext fun w => ?_` and prove the remaining obligations. Rewrite using `[map_one, ← AlgHom.comp_apply, ← Algebra.TensorProduct.map_comp, AlgHom.comp_id]`. Conclude with `hi w`. Establish `h2 : Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) z = 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.LatticeLocalGlobal.ext_components _ _ fun v => ?_` and prove the remaining obligations. Rewrite using `[map_one, ← AlgHom.comp_apply, ← Algebra.TensorProduct.map_comp, AlgHom.comp_id]`. Conclude with `hf v`. Use `GlobalTheory.AutFunCounterexample.tens_inj (F := F) (E := E) (A := Ainf F) (B := Af F) (n := 1) (Matrix.of fun _ _ => z) (by ext i j; fin_cases i; fin_cases j; exact h1.trans (Matrix.one_apply_eq (0 : Fin 1)).symm) (by ext i j; fin_cases i; fin_cases j; exact h2.trans (Matrix.one …` as an intermediate fact. Establish `h3` using `congrFun (congrFun this 0) 0`.
-
-Conclude with `h3.trans (Matrix.one_apply_eq (0 : Fin 1))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_one_of_comp (z : AF F ⊗[F] E) (hf : ∀ v, compFin F E v z = 1) (hi : ∀ w, compInf F E w z = 1) :
     z = 1 := by
@@ -74,7 +70,7 @@ theorem eq_one_of_comp (z : AF F ⊗[F] E) (hf : ∀ v, compFin F E v z = 1) (hi
 variable (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
 /- English proof (translation)
-Rewrite using `[matHom_proj, RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_proj (v : HeightOneSpectrum (𝓞 F)) (g : GAd σ J) :
     ((matHom _ σ J (proj σ J v g) : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)).det =
@@ -82,7 +78,7 @@ theorem det_proj (v : HeightOneSpectrum (𝓞 F)) (g : GAd σ J) :
   rw [matHom_proj, RingHom.map_det]; rfl
 
 /- English proof (translation)
-Rewrite using `[matHom_projArch, RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_projArch (w : InfinitePlace F) (g : GAd σ J) :
     ((matHom _ σ J (projArch σ J w g) : GL (Fin n) (w.Completion ⊗[F] E)) : Matrix (Fin n) (Fin n) (w.Completion ⊗[F] E)).det =
@@ -90,7 +86,7 @@ theorem det_projArch (w : InfinitePlace F) (g : GAd σ J) :
   rw [matHom_projArch, RingHom.map_det]; rfl
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[det_proj]`. Use `GlobalTheory.Published.StrongApprox.mem_SUAdelic.1 a.1.2` as an intermediate fact. Rewrite using `[matHom_apply, this, map_one]`. Conclude with `(mem_levelOpen.1 ((mem_levelOpen_iff_latHat σ J hΛ a.1.1).2 a.2)) v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_mem_stabOne {Λ : Submodule (𝓞 E) (Fin n → E)} (hΛ : Λ.FG) (v : HeightOneSpectrum (𝓞 F))
     (a : stabSet σ J Λ) : proj σ J v a.1.1 ∈ stabOne σ J Λ v := by
@@ -101,9 +97,9 @@ theorem proj_mem_stabOne {Λ : Submodule (𝓞 E) (Fin n → E)} (hΛ : Λ.FG) (
   · exact (mem_levelOpen.1 ((mem_levelOpen_iff_latHat σ J hΛ a.1.1).2 a.2)) v
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.Published.StrongApprox.mem_SUAdelic, ← matHom_apply]`. Use `eq_one_of_comp _ (fun u => ?_) (fun w => ?_)` and prove the remaining obligations. Rewrite using `[← det_proj]`. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[proj_emb_self, hx]`. Rewrite using `[proj_emb_ne σ J e]`. Simplify using the standard rewrite rules. Rewrite using `[← det_projArch, projArch_emb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem emb_mem_SUAdelic (v : HeightOneSpectrum (𝓞 F)) (x : GLoc σ J v)
     (hx : ((matHom _ σ J x : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)).det = 1) :
@@ -117,9 +113,7 @@ theorem emb_mem_SUAdelic (v : HeightOneSpectrum (𝓞 F)) (x : GLoc σ J v)
   · rw [← det_projArch, projArch_emb]; simp
 
 /- English proof (translation)
-Use `(mem_levelOpen_iff_latHat σ J hΛ (emb σ J v x)).1 (mem_levelOpen.2 fun u => ?_)` and prove the remaining obligations. Break down `eq_or_ne u v with rfl | e` into its components or cases. Rewrite using `[proj_emb_self]`. Conclude with `hx.2`. Rewrite using `[proj_emb_ne σ J e]`.
-
-Conclude with `one_mem _`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_mem_stabSet {Λ : Submodule (𝓞 E) (Fin n → E)} (hΛ : Λ.FG) (v : HeightOneSpectrum (𝓞 F))
     (x : GLoc σ J v) (hx : x ∈ stabOne σ J Λ v) :
@@ -130,17 +124,15 @@ theorem emb_mem_stabSet {Λ : Submodule (𝓞 E) (Fin n → E)} (hΛ : Λ.FG) (v
   · rw [proj_emb_ne σ J e]; exact one_mem _
 
 /- English proof (translation)
-Establish `hΛ' : (((v.asIdeal ^ k).map (algebraMap (𝓞 F) (𝓞 E))) • Λ).FG` using `by haveI := isNoetherian_of_fg_of_noetherian Λ hΛ`. Conclude with `Submodule.FG.of_le_of_isNoetherian Submodule.smul_le_right`. Establish `key : ∀ u y, vecLoc u ((finMat σ J a - finMat σ J b) *ᵥ y) = (((matHom _ σ J (proj σ J u a) : GL (Fin n) (Fv F u ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F u ⊗[F] E)) - ((matHom _ σ J (proj σ J u b) : GL (Fin n) (Fv F u ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F u ⊗[F] E))) *ᵥ vecLoc u …`. Introduce `u y`. Rewrite using `[Matrix.sub_mulVec, Matrix.sub_mulVec, ← vecLoc_mulVec, ← vecLoc_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Conclude with `map_sub _ _ _`. Simplify using `only [mem_latHat_iff hΛ, mem_latHat_iff hΛ', key]`. Prove the components needed by the constructor for the conclusion. Introduce `h z hz`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `y : Fin n → Af F ⊗[F] E` to `fun i => GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU (singleFin v) (singleFin_mul v) (z i)`. Establish `h1 : vecLoc v y = z`. Use function extensionality and compare the values at `fun i => GlobalTheory.AutFunCompare.map_tensNU_self _ _ _ (evalV_singleFin_self v) _`. Establish `h2 : ∀ u, u ≠ v → vecLoc u y = 0` using `fun u hu =>`. Use function extensionality and compare the values at `fun i => GlobalTheory.AutFunCompare.map_tensNU_zero _ _ _ (evalV_singleFin_ne hu) _`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `h y (fun u => by` as an intermediate fact. Break down `eq_or_ne u v with rfl | e` into its components or cases. Rewrite using `[h1]`. Conclude with `hz`. Rewrite using `[h2 u e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `zero_mem _) v`. Rewrite `this` using `[h1]`. Then use the resulting hypothesis. Introduce `h y hy u`. Break down `eq_or_ne u v with rfl | e` into its components or cases. Conclude with `h _ (hy u)`.
-
-Use `latLoc_le_smul_of_ne Λ e k ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_mulVec]`. Conclude with `sub_mem ((mem_stabLoc.1 (mem_levelOpen.1 ha u) _).1 (hy u)) ((mem_stabLoc.1 (mem_levelOpen.1 hb u) _).1 (hy u))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_iff {Λ : Submodule (𝓞 E) (Fin n → E)} (hΛ : Λ.FG) (v : HeightOneSpectrum (𝓞 F)) (k : ℕ)
     {a b : GAd σ J} (ha : a ∈ levelOpen σ J Λ) (hb : b ∈ levelOpen σ J Λ) :
@@ -184,9 +176,9 @@ theorem rel_iff {Λ : Submodule (𝓞 E) (Fin n → E)} (hΛ : Λ.FG) (v : Heigh
         ((mem_stabLoc.1 (mem_levelOpen.1 hb u) _).1 (hy u))
 
 /- English proof (translation)
-Use `Nat.card_congr (Equiv.ofBijective (Quot.map f fun a b hab => (h a b).1 hab) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce `p q`. Proceed by induction on `p using Quot.ind with | mk a => ?_`. Proceed by induction on `q using Quot.ind with | mk b => ?_`. Introduce `hpq`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Proceed by induction. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Quot.sound ((h a b).2 (hs.eqvGen_iff.1 (Quot.eqvGen_exact hpq)))`. Introduce `q`. Proceed by induction on `q using Quot.ind with | mk x => ?_`. Take `⟨a, rfl⟩` from `hf x`. Conclude with `⟨Quot.mk _ a, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_quot_eq_of_surj {α β : Type} (r : α → α → Prop) (s : β → β → Prop) (hs : Equivalence s) (f : α → β)
     (hf : Function.Surjective f) (h : ∀ a b, r a b ↔ s (f a) (f b)) : Nat.card (Quot r) = Nat.card (Quot s) := by
@@ -202,9 +194,7 @@ theorem card_quot_eq_of_surj {α β : Type} (r : α → α → Prop) (s : β →
     exact ⟨Quot.mk _ a, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[sub_self, Matrix.zero_mulVec]`. Conclude with `zero_mem _`. Use symmetry as in `{x y} h z hz := by rw [← neg_sub, Matrix.neg_mulVec]; exact neg_mem (h z hz)`. Use `trans {x y w} h1 h2 z hz := by`. Use `add_mem (h1 z hz) (h2 z hz)` as an intermediate fact.
-
-Rewrite `this` using `[← Matrix.add_mulVec, sub_add_sub_cancel]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem congRel_equiv (Λ : Submodule (𝓞 E) (Fin n → E)) (v : HeightOneSpectrum (𝓞 F)) (𝔞 : Ideal (𝓞 E)) :
     Equivalence (congRel σ J Λ v 𝔞) where
@@ -219,7 +209,7 @@ end GlobalTheory.TamOneGlob
 open GlobalTheory.TamOneGlob in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J Λ hΛ v k`. Unfold `locCount`. Establish `hlev : ∀ a : stabSet σ J Λ, a.1.1 ∈ levelOpen σ J Λ` using `fun a => (mem_levelOpen_iff_latHat σ J hΛ a.1.1).2 a.2`. Use `card_quot_eq_of_surj _ _ (congRel_equiv σ J Λ v _) (fun a : stabSet σ J Λ => (⟨proj σ J v a.1.1, proj_mem_stabOne σ J hΛ v a⟩ : stabOne σ J Λ v)) (fun x => ⟨⟨⟨emb σ J v x.1, emb_mem_SUAdelic σ J v x.1 x.2.1⟩, emb_mem_stabSet σ J hΛ v x.1 x.2⟩, Subtype.ext (proj_emb_self σ J v x.1 …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem GlobalTheory.TamOne.locCount_eq_card_congRel : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (Λ : Submodule (𝓞 E) (Fin n → E)), Λ.FG → ∀ (v : HeightOneSpectrum (𝓞 F)) (k : ℕ), locCount σ J Λ v k = Nat.card (Quot (congRel σ J Λ v ((v.asIdeal ^ k).map (algebraMap (𝓞 F) (𝓞 E))))) := by
   intro F E _ _ _ _ _ σ n J Λ hΛ v k
